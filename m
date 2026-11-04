@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F246072829
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91656072F89
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a4qjG/En
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gQ6D33zb
 Received: by kanga.kvack.org (Postfix)
-	id 3533B6B05C9; Wed,  4 Nov 2026 14:41:36 -0500 (EST)
+	id E79D06B05B7; Wed,  4 Nov 2026 14:42:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32B766B05F1; Wed,  4 Nov 2026 14:41:36 -0500 (EST)
+	id E31346B05C0; Wed,  4 Nov 2026 14:42:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21ACD6B05F2; Wed,  4 Nov 2026 14:41:36 -0500 (EST)
+	id CF9DD6B05C1; Wed,  4 Nov 2026 14:42:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 03C966B05C9
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:41:35 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5C98DA7F4D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:41:35 +0000 (UTC)
-X-FDA: 85398456150.28.763A12F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A4B066B05B7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:42:29 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3ED3F16084C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:42:29 +0000 (UTC)
+X-FDA: 85398458418.15.8DA2EE0
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8088DC000C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:41:33 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="a4qjG/En";
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 636F620010
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:42:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQ6D33zb;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821293;
+	s=arc-20220608; t=1793821347;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QnuUeY+9+QMi3OegoRzUMDksdZE42uDQ+p1ThOeCsVw=;
-	b=ZT1t4emyCVznMjbGt3qHdDlsPGhsEHyaEy8PLkejzLhvM2TjkuFBzIaMld8/b1QUdd3r06
-	Wb7gXIXZMxJ9E1W5Pdf5sBIFHEZC0v6oVLNQ4IYJzHcdQtuAVsYvKJoSdJrkKk5VUVwjey
-	h7Nq8HXYBnAdzZDPeuehF7EBaBxU9Vk=
+	bh=h//OaF9XF6OuytQdpTDkenswlUXBnTpq7KX5ptGy7O0=;
+	b=YaZGqnJhLhql8KttsKd65+UGYnV9W6IjUsqFbZrLEc4ALuFdw+a8t7+ddLFFlOyUZxY+cL
+	hfmcXYepVPHYkFsxxsq7ijAeWUhpxN42xt1bZ058mZ/ykjnKTt6gQxH5oX9yPkozd2i5L+
+	rEV0cy3dhNZzmsm2G3YOAgmEFgqnHa4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821293;
-	b=iu5lO9jGUv53EEqMERzj/zJ6BpWKeh04QcOh4hjPWSimEFzWnBGzF0D1iuADKyoBdJiGPa
-	AMUWEYIWpj4/qUQgBgqkh3/qtWo4HQLvnCgKiMpNkSmHrmrUjxJevWsm1QbeAgqUVmZ21I
-	NfAgTz5m3JgfquftYToPiHGDMjWGdyg=
+	t=1793821347;
+	b=JfbhV2bIlJizrz3gn1O1h/iGyj7sTMIQZldgJp7NXnxlkrpgUg0vO9oqEwckaGN6pd5mYe
+	2PSxjH6YvD3vtrc0v9ID7t/pJR7GhoB0Ai/Y8x1morPm2AFhtPRqohnRHBxMG72V21aoUD
+	ZYGsw1OMeNAxVk0mGKdt7wlJtVte3Ek=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="a4qjG/En";
-	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gQ6D33zb;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0C03F609F9;
-	Wed,  4 Nov 2026 19:41:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876321F000C1;
-	Wed,  4 Nov 2026 19:41:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E583C60A7F;
+	Wed,  4 Nov 2026 19:42:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B49A1F000C1;
+	Wed,  4 Nov 2026 19:42:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821292;
-	bh=QnuUeY+9+QMi3OegoRzUMDksdZE42uDQ+p1ThOeCsVw=;
+	s=k20260515; t=1793821346;
+	bh=h//OaF9XF6OuytQdpTDkenswlUXBnTpq7KX5ptGy7O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=a4qjG/Enl784wKvVxl/9ldVwuuHEc87Y0LUedobA/KdwuI3SCxAckwhwEAtDdOOqU
-	 UqZPPnd0i1wsEQPINzLmBf7fes9X1w97pMqml0mB5btMrfd8uToyQFpFM0Tl2wlAjD
-	 kgF4RA3JR3lH8viB9FAeGA4ZqAZXhhvVqKaCxsHsidrZt3ppkwceT62jwKoGEsMlOx
-	 78OYFlBnZIcEweu6rx9OyaYzVUpLMbaYn5Kxkk/UsZEPHpo8JcSdi7maG+VD8tqYHf
-	 NonEOsq87sjklv+/uShbdJtRlOOZ5V+hHfFMq2FNCALvQq2gchvAnrCclCithYaHdM
-	 zs/aDQjJX2z7g==
+	b=gQ6D33zbBn75XdTNgQSCUwa2/NjxDbLQNQnV/325ejI2UB5FUYC6+R4VLUGHaas13
+	 7tqpKTfWKXp3xKD1YkzZSAwTaX4OJV29lTay6gDRduxpuwTo9wrIt+a7MSjAmTfQnH
+	 5cQUiJmxGo6I4vawHEomerIZON0f5qOy6DStJ2G99rBVKyIHkFT+LIn0YRSCfWTjiI
+	 ffaxHsNREnkZnIm/9H9PrtiNDtdXkzYosySFilOUaWUvzCKVWTjjW9DBs2k5lcTowQ
+	 Nlhz+rYot83QCwRW1xNsdVsW6Jhv72EjVrgDZpfXEhz43rDtvrKY9BD6MAODP/TQx5
+	 iDT2dH106gH/Q==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -120,32 +120,34 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-modules@vger.kernel.org,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 23/23] PNP: isapnp: let procfs copy out reads
-Date: Wed,  4 Nov 2026 20:41:18 +0100
-Message-ID: <20261104-work-procfs-arch-v2-23-2aeb952c9597@kernel.org>
-In-Reply-To: <20261104-work-procfs-arch-v2-0-2aeb952c9597@kernel.org>
-References: <20261104-work-procfs-arch-v2-0-2aeb952c9597@kernel.org>
+	Chuck Lever <cel@kernel.org>,
+	Jiri Slaby <jirislaby@kernel.org>
+Subject: [PATCH RESEND v2 00/26] proc: convert the driver entries (Part 4/7)
+Date: Wed,  4 Nov 2026 20:42:12 +0100
+Message-ID: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
+In-Reply-To: <20261104-work-procfs-v2-0-b45cd5789ac5@brauner>
+References: <20261104-work-procfs-v2-0-b45cd5789ac5@brauner>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20261101-work-procfs-drivers-58cd83649658
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1810; i=brauner@kernel.org; h=from:subject:message-id; bh=O9tLcZSRMcgAQbB8Pp6p1hVEIxcx9tANJYkp4CgYVW0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97uRoSC+OPd30eNcyzvc/yy/YbGGdvPLwp7wL4ZnJy 2++kTT52VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRoLeMDKvtZufJ1LDZnWzr aM1t2LBM8N+nLa95p/c8m1iiUHw97gDDP8vnB0xly+JWrdKTyXnq2i/YvW3iPe61nAKrrcqOL/1 xhQUA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12126; i=brauner@kernel.org; h=from:subject:message-id; bh=/Ke7GE1Lku+aW5nhVStvo53gUocaN49Ji1fBG+M5T6w=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97ioKWnK2eJpQsjoH73N3nTvXWy3+Po9a2ie6tbsrp EpH89DRjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgInUbmT4py44+2RaWJFiUciz fe/a/QQkxZ9meaq2Ki9ktl3IIbLAl5Fh7pNs3wOVex003rW0fBS7/INpD8sTienMruxpxZN+q0k yAwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 98rcumdm95dd847skys1rk7fg69kybgn
-X-Rspamd-Queue-Id: 8088DC000C
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 3pczbc7nz5qxpcjqswpzpamwagcusmea
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793821293-699789
-X-HE-Meta: U2FsdGVkX19LDJPPt+A1PF8aU2evo97iTYRKDApfxP6sClysH7KSJa4jYylvyZPmOpFJHQjKiaVdyHXIXylQi/VKbuLlRO3yhPYJNrKUbliiaxqqa11pKodDlPMfREju+5s9DmXP8l+vZCIFv0BaYxvgt7rUI6RGFeIMI4syEusKZ4uvQDttf4JGgGeKo87KlDtbfj77t4vBwY+1R1cBLBXqycaKg4wAlcpiPH/PxPL7GMkdCvL79C+7vIj5Wsvs7lKyAGrucUs6KzgHxobI95f6ZY07jKcAFQnixPEN9Psvx6zACeY8/4Qq1w0/JzLERNchQQaEA+sQHyfWQ7OVp43454nM3u1TG0nCL18px+1AxWFDc/MsPs2CADPytAMrH6k+mHtuZ3Iwn2i+HH4LOZZAX5/1f2TmkrgHxbQp1/FefPD79RwZs+uxM6UkoK0Wz95XigGHo8BKrSwu6KBddLs+ItW94sTAVBgS3zrMfP0rm935W4hsuOwA2VFfiJqpDoaDB0voDsuxcsnJWBGesFCCfu5mTaa0iAwG5z+EoH0MxVAQM+n4IBg1svhyxFwkAHBvHAYCfJJKfDu2LKNMnm1SHpkNWe4TVXcteSCh7wqU3OiC2TcGVXwuVlSTxxHw8G+xoAOVLZJ+etm2tat/9pwVZcEylzhqzXI+faU2k+REdx1vmiJTvMjW/5VhgeihkNw6N0ZUcldXhytqMfS2v6jZj9a9fNuUTlvgR+Yn8wGSzUjtNDMwaWPZZI3CQbw1vSaM16OYQk+H7j6D1N7wBAuK0hLUuuXZfUgNwR7EPpii6ZMhykDcGDVaV21eZJm7Suc2wWtqJornaww7EJ0MQhPk8gc8vB86yMPN1+vaxgzKsF8qBVLil3UP8C4pPkzdVBCk+Lih3cl2UxbRJXsaIpAtE8/FL/0fxLxJKB96BMemZc6SGA9Wxwt++09qIgWLXhYu5UuaZQV2nwWWAAh
- 2Xn2jYoc
- MfqzIXmslMC/pWwwmjnwO39yH6CkoRU+mUDWblWGh4DzU++AO6DTFmFy25joij4fxlpyQM36qsLRpzhDd/RhuLcg9BrDM3hGhy/07E9cO/d1cvAHbYPtPzOBSVpgO6wntlR4M9AQeZowuDtkojenL5AMLKNm+zkXl8ThRR2olGFeJ9nGAtHOlwkZ1wD+B/nl0BIXBjZ96u61V6EM+emvdkYoP+a0iI+pMO8VWwXD8NI60/Ivdcm4L/hg3+PnDYPosv1awIos62JMGZ8oFYWANcJ93Jw==
+X-Rspamd-Queue-Id: 636F620010
+X-Rspam-User: 
+X-HE-Tag: 1793821347-586060
+X-HE-Meta: U2FsdGVkX1+XxWA02gMrvgxM6qbqd7Wa/q+tgP9nxMYiG5CZL3GDxZX3V0QqBON/JWxLGEtrcPYw5EHkW1pFXhpc+MK3b2/wGBAciF2mA5eOAcn3NmYELIwbPcsLzOztx2z5RWnPt914T42c9b2rCakEiOweJD9rO2rgPzvOOpPtSnhkI7mND5/+jJL6QrSIClfWEMqbmVcJBOvVJpluwzCY5dQjbEZzmAVgULSOl2nt6+naIB+56bx9Wkj9Uih5ir0Orh26LAGXl2bU1WgwScxTFQZIrdANql9VIcYIU2OsrBPqX3NaEUnyf9jZCFiCti6EcOqhrbVg2kYKSHeqeKQGZIbJLvTtrVFZGRqaP3Yo4a3lpkQ5u6qXF5ak2r8hzFaMCSHHDgH9vMHKcdz7VEpwX3/wG+ZbLA+rNmCKQXazkkbQgRrOxc7ddsW8D4OuXzkMvi3cW78FH6CcVssbj00q38cGXMIT0gZtq52arahk3skaCGTR/nzB2OsHCU9dZbt+OOD7Dml9m1X6joANhf5RqZbYbzD470Nyrzk5ZG9krFKff+uOf48roRG4JH+wcj1DfcBr+YX1BNsu+OT6hCoyhTcKR1Y6ZuMDRjNoiU0ZYCxlnXQnIdBOuWSXopYK/qlLIVxEUipVyUr0HDkXXLEecUgQqq0BCH3YM15UcfTeeVgwxbhH5o98a6fQCR6KNqkBqiaWGA0m1sB815jSCoPZLPX3VTQf8GKguFueEclKWjyVY1McvRJ5btOYYWLClW4hmIZq+fKxBRvBsdQNTLQlfW0Syx5MNL0Np1GreDqXsiqPgcDkydpK1/iz63w/yJ4TRYJUBtOohtNnzGtR4v1QzXBhgoPyaRkCumYZt9upcK5bylckwHt5HnUFeW6feyIm5pld29oXovbUd0fcSbYY9IMPz1HouErl5bG8tHXmXqEIEd4vt6ZR3cpqKCbwNc4O8FyYUKAT0WS0pX5
+ JG9rTKeY
+ pfGxICneAzD6rS+WuPzwLKCTQ60m/d1kGghGY4WabQ0b0hM9FKK71wU3/dyy+TjJpWToyPjOZ7qXgKxmkv8XOxuMdAsn3r/MXg0VEcyJg4o1hYgBplEUiZo2ho+8V4SMoUZb/YhYngvVxBRCTx0EANiTQ/ySYkPq7p4Mv3c4IjVzbSfYyAtRq4SHPC5PtQHB/f9rSd39NJiKblAUEsc+WhFacyBexW7WPQl2aUVbT9ZP9p2xFxk7UQX8OXieJk6bRi8P6sB4aCE8Cv1MwU1r8S+0AxkGTLPvxyIz9xQCjWpwvxANzUo9QeCZEZwbdC95Hr+rvjBOrUdPsMWr+Z3ewEL1ikhz1cZOXudJveRdxLLU+MFA5y/WwIEsTHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,68 +156,206 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_read_buf() so procfs copies what is read from
-/proc/bus/isapnp/<card>/<dev> to userspace after it unpinned the entry.
+Part 4/7 of "proc: move procfs to what kernfs does", on top of part 2
+and independent of parts 3, 5 and 6:
+
+  https://patch.msgid.link/20261104-work-procfs-v2-0-b45cd5789ac5@brauner
+
+This converts the proc entries of nubus, zorro, PCI, md, dasd and cio,
+scsi, dell-smm, viafb, rndis, ipw2x00, sysrq, the input devices file and
+ALSA to what "proc: let procfs own the data path" set up. Afterwards the
+entries' code only runs with the entry pinned and never touches
+userspace memory. One patch per subsystem and method.
+
+- procfs owns the seq_file of the nubus resource files, /proc/mdstat,
+  the scsi host files, sg's allow_dio and def_reserved_size and ALSA's
+  text entries. Their open and release hooks only do what is left,
+  private data or the event count, and reading a scsi host file or an
+  ALSA entry no longer holds up the removal of the host or the card.
+- procfs copies in the writes of the PCI config space,
+  /proc/dasd/statistics, cio_ignore and cio_settle, /proc/scsi/scsi,
+  device_info and the host files, sg, viafb, rndis, ipw2x00's debug
+  level, /proc/sysrq-trigger and ALSA's entries. Most of them just parse
+  procfs' copy. Where a write larger than anything the entry parses now
+  fails with -EINVAL from procfs the commit says so.
+- procfs copies out the reads of /proc/bus/zorro, the PCI config space
+  and ALSA's data entries.
+- the PCI config space and ALSA's data entries take binary data at
+  positions and keep doing that, PROC_ENTRY_SHORT_WRITES for writes in
+  pieces, and ALSA's data entries ask for PROC_ENTRY_FULL_READS so that
+  reading all of one at once keeps working. They hand procfs' buffer to
+  the drivers, so struct snd_info_entry_ops changes along with them.
+- procfs copies the ioctl arguments of PCI, esas2r's ATTONode file and
+  dell-smm's i8k in and out. The PCI commands only pass values and the
+  i8k ones encode the wrong sizes, both tables list what is really
+  copied. ALSA's ioctl hook that no driver implements goes away.
+- /proc/mdstat and /proc/bus/input/devices move their pollers to the
+  wait queue procfs owns for the entry, which ends md's wakeup loop at
+  unload, and the poll op of an ALSA info entry, which nothing
+  implements, loses its poll_table.
+
+The selftest writes to the file of a scsi_debug host from a buffer
+backed by userfaultfd and removes the host while procfs copies in. On a
+KASAN and lockdep kernel it fails without the series and passes with it.
+Build tested per commit on x86_64 and with W=1 on the touched objects on
+their own architectures. The entries I could get at in a VM behave the
+same with and without the series.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/pnp/isapnp/proc.c | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+Changes in v2:
+- md and Input let procfs own the wait queues of /proc/mdstat and
+  /proc/bus/input/devices, md's wakeup loop at unload is gone and
+  /proc/mdstat is removed last, Input forgets the entry when it is
+  removed, and the poll op of an ALSA info entry loses its poll_table
+- the scsi_debug selftest skips without /proc/scsi and removes the host
+  it added when its file can't be found
+- Reviewed-by from Jiri on sysrq
+- rebased onto v7.4-rc1
+- Link to v1: https://patch.msgid.link/20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org
 
-diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
-index 1829c20d5446..2634db5f41e2 100644
---- a/drivers/pnp/isapnp/proc.c
-+++ b/drivers/pnp/isapnp/proc.c
-@@ -19,40 +19,34 @@ static loff_t isapnp_proc_bus_lseek(struct file *file, loff_t off, int whence)
- 	return fixed_size_llseek(file, off, whence, 256);
- }
- 
--static ssize_t isapnp_proc_bus_read(struct file *file, char __user * buf,
-+static ssize_t isapnp_proc_bus_read(struct file *file, char *buf,
- 				    size_t nbytes, loff_t * ppos)
- {
- 	struct pnp_dev *dev = pde_data(file_inode(file));
- 	loff_t pos = *ppos;
--	int cnt, size = 256;
-+	int size = 256;
-+	size_t cnt;
- 	int ret;
- 
- 	if (pos >= size)
- 		return 0;
- 	if (nbytes > size - pos)
- 		nbytes = size - pos;
--	cnt = nbytes;
--
--	if (!access_ok(buf, cnt))
--		return -EINVAL;
- 
- 	ret = isapnp_cfg_begin(dev->card->number, dev->number);
- 	if (ret)
- 		return ret;
--	for (; pos < 256 && cnt > 0; pos++, buf++, cnt--) {
--		unsigned char val;
--		val = isapnp_read_byte(pos);
--		put_user(val, buf);
--	}
-+	for (cnt = 0; cnt < nbytes; cnt++)
-+		buf[cnt] = isapnp_read_byte(pos + cnt);
- 	isapnp_cfg_end();
- 
--	*ppos = pos;
-+	*ppos = pos + nbytes;
- 	return nbytes;
- }
- 
- static const struct proc_ops isapnp_proc_bus_proc_ops = {
- 	.proc_lseek	= isapnp_proc_bus_lseek,
--	.proc_read	= isapnp_proc_bus_read,
-+	.proc_read_buf	= isapnp_proc_bus_read,
- };
- 
- static int isapnp_proc_attach_device(struct pnp_dev *dev)
+---
+Christian Brauner (26):
+      nubus: let procfs own the seq_file of the resource files
+      zorro: let procfs copy out reads
+      PCI/proc: let procfs copy in config space writes
+      PCI/proc: let procfs copy out config space reads
+      PCI/proc: let procfs handle the ioctls
+      md: let procfs own the seq_file of /proc/mdstat
+      md: let procfs own the wait queue of /proc/mdstat
+      s390/dasd: let procfs copy in writes to /proc/dasd/statistics
+      s390/cio: let procfs copy in writes
+      scsi: let procfs own the seq_file of the host files
+      scsi: core: let procfs copy in writes
+      selftests/proc: check that a faulting writer doesn't hold up removal
+      scsi: sg: let procfs own the seq_file of allow_dio and def_reserved_size
+      scsi: sg: let procfs copy in writes
+      scsi: esas2r: let procfs copy the ioctl argument of the ATTONode file
+      hwmon: (dell-smm) let procfs copy the i8k ioctl arguments
+      fbdev: viafb: let procfs copy in writes
+      usb: gadget: function: rndis: let procfs copy in writes
+      wifi: ipw2x00: let procfs copy in writes to the debug level
+      tty: sysrq: let procfs copy in writes to /proc/sysrq-trigger
+      Input: let procfs own the wait queue of /proc/bus/input/devices
+      ALSA: info: let procfs own the seq_file of text entries
+      ALSA: info: let procfs copy in writes
+      ALSA: info: let procfs copy out reads of data entries
+      ALSA: info: drop the ioctl hook of data entries
+      ALSA: info: drop the poll_table from the info entry poll op
 
--- 
-2.53.0
+ .../sound/kernel-api/writing-an-alsa-driver.rst    |  10 +-
+ drivers/hwmon/dell-smm-hwmon.c                     |  48 ++---
+ drivers/input/input.c                              |  13 +-
+ drivers/md/md.c                                    |  44 ++---
+ drivers/net/wireless/intel/ipw2x00/libipw_module.c |   7 +-
+ drivers/nubus/proc.c                               |  12 +-
+ drivers/pci/proc.c                                 |  69 +++----
+ drivers/s390/block/dasd_proc.c                     |  17 +-
+ drivers/s390/cio/blacklist.c                       |  33 +---
+ drivers/s390/cio/css.c                             |   4 +-
+ drivers/scsi/esas2r/esas2r.h                       |   2 +
+ drivers/scsi/esas2r/esas2r_ioctl.c                 |  58 +++---
+ drivers/scsi/esas2r/esas2r_main.c                  |  44 ++++-
+ drivers/scsi/scsi_devinfo.c                        |  29 +--
+ drivers/scsi/scsi_proc.c                           |  55 ++----
+ drivers/scsi/sg.c                                  |  44 ++---
+ drivers/tty/sysrq.c                                |   9 +-
+ drivers/usb/gadget/function/rndis.c                |   9 +-
+ drivers/video/fbdev/via/viafbdev.c                 |  46 +++--
+ drivers/zorro/proc.c                               |   7 +-
+ include/sound/gus.h                                |   2 +-
+ include/sound/info.h                               |   9 +-
+ sound/core/info.c                                  |  59 +++---
+ sound/drivers/opl4/opl4_proc.c                     |  23 +--
+ sound/isa/gus/gus_dram.c                           |   7 +-
+ sound/isa/gus/gus_mem_proc.c                       |   2 +-
+ sound/pci/cs4281.c                                 |  10 +-
+ sound/pci/cs46xx/cs46xx_lib.c                      |   5 +-
+ sound/pci/emu10k1/emuproc.c                        |   8 +-
+ sound/pci/mixart/mixart.c                          |  10 +-
+ sound/usb/mixer_scarlett2.c                        |   9 +-
+ tools/testing/selftests/proc/.gitignore            |   1 +
+ tools/testing/selftests/proc/Makefile              |   1 +
+ tools/testing/selftests/proc/config                |   3 +
+ .../selftests/proc/proc-remove-slow-writer.c       | 209 +++++++++++++++++++++
+ 35 files changed, 503 insertions(+), 415 deletions(-)
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261101-work-procfs-drivers-58cd83649658
+prerequisite-change-id: 20261101-work-procfs-core-8fa4a4f412cf:v2
+prerequisite-patch-id: a81e8b894107e48d607f8257d2c9f56e0dd6f400
+prerequisite-patch-id: 7edf7ca7ecd32c9e09085e4b65922af10097beaa
+prerequisite-patch-id: 81f6893f79b4236637675553298a6f2892b603f3
+prerequisite-patch-id: 598c2b1a389f47adcac88ebcf1c9f74e2511fbab
+prerequisite-patch-id: 6f5a2172dacc5ff2491fa9832c48ccd0e1ce1eda
+prerequisite-patch-id: 8947af6490288e4e2a3b2bf8844a974bedb1d975
+prerequisite-patch-id: 8cbe756286fd95967d31b0c46cacfeb05f0a2c6b
+prerequisite-patch-id: 3fa159f2b6ccd0ac51a2662e4eec5587ec18de89
+prerequisite-patch-id: bfb4e4ffe9631cb58015fefe6bd3698cd53e2244
+prerequisite-patch-id: 56ff6667a57a962264c07c0227c61aa2f1f4c22c
+prerequisite-patch-id: bc506323e29944ec0c29eae84950c706a8592042
+prerequisite-patch-id: 326c0ebb5accf0f40cbee1323fb4c3378f5be154
+prerequisite-patch-id: d6eaf7690a54a0dfda7500936a048b769fa265dd
+prerequisite-patch-id: 7c7b2535642b4d388e13eab518cbe0f9550eb1e6
+prerequisite-patch-id: 0474af12959624910718795bf86684383664c685
+prerequisite-patch-id: f6d4191e23c22e2d2cc90cc5d04781f913e98a8e
+prerequisite-patch-id: b0031a7c4855b7ec38259c59f30f65101a8fc4b5
+prerequisite-patch-id: 0b7f226abf2b9ff41873a1aa55cf97747647d56b
+prerequisite-patch-id: f63e345f897619af54813958046617c655fb7daf
+prerequisite-patch-id: c0e21e762a2960e3324c5ab04634a7035e515fa6
+prerequisite-patch-id: fd59c71eadd8f39c58b3baea93567bc093bc9b0e
+prerequisite-patch-id: 5d52cc8a5c73e4c5ba16b8e24f51408c17583bf9
+prerequisite-patch-id: 1f9179284e2f3314d4b46ac5e989089a21c7576c
+prerequisite-patch-id: 10397bbf696bee16dc71eb79fff6c5e73842bcbc
+prerequisite-patch-id: 9b44279dcf08912238d2f6438a3328a778a79a0c
+prerequisite-patch-id: 16854b621a3a71dfc365aaf7abaa7f65adfe9f7e
+prerequisite-patch-id: ca42eea21fae1fd1cd3518ab057c74b61ffd68fe
+prerequisite-patch-id: 23255dc2be76b0479c083dbd4c897bfbb533aed5
+prerequisite-patch-id: 82129c687ebf0a41b369893b92f2c038420ab801
+prerequisite-patch-id: 56ad57a99a5bda075a9f4e844368974296744934
+prerequisite-patch-id: 288b3cbaa11e01a778cc3d7beb6c0549aacf59f2
+prerequisite-patch-id: a163b1549608652bfa5bd9ff93efa55b541010c4
+prerequisite-patch-id: 43b92dfc1a98fbf0d14597a3e3ae99972844773b
+prerequisite-patch-id: 19c12bc6e3fbed35acc1f657196b1a997f48cdfe
+prerequisite-patch-id: 5800c3076694bad719954b2ad4d7448c6e013bfd
+prerequisite-patch-id: 2a2f63d8843b159594b9eee6ddea028ce76a6270
+prerequisite-patch-id: 40a1951d57906c4a1b98a4bd96a814b80339b9c5
+prerequisite-patch-id: e2141077e69f20a2b27fab69c8d61d0686682f53
+prerequisite-patch-id: c4d6018c26c40dc549d88330d23ce48f872c2b7f
+prerequisite-patch-id: 6de8ec17746031bc6d1d9ac262c5be0f905fcd79
+prerequisite-patch-id: b87bcb167884605bff1fd0f2ed8a88942d07efd5
+prerequisite-patch-id: cfa9a8b4c67e20cfd22d77035bfd21ee96ab3298
+prerequisite-patch-id: abf3482ed2399b7b2e1ee72e937af05bb9200667
+prerequisite-patch-id: 02c175b2dee565a85b3308ecf2ec8e3c9a029e0f
+prerequisite-patch-id: d58c239fba616b366a725de6acba3f88734156d0
+prerequisite-patch-id: dbe02fe3f784776fda5e7ae99f077bef0cd4b48d
+prerequisite-patch-id: 53edc9a95afff57c4acba40095a8054924261ea2
+prerequisite-patch-id: 5348d8957eb7eae7430ca8b101aa84ce77d3aa4f
+prerequisite-patch-id: 36c96d781e2dd80b20932667bbe6e7fd14976069
+prerequisite-patch-id: efeb2d6f7df71d5dede2c1d12fe999a28e38aab9
+prerequisite-patch-id: 17f95c7fdf0bdc7c8aaaf7883bff1dcc19a0f529
+prerequisite-patch-id: 117db27dcdef433de7c6be5e95973cac1e373927
+prerequisite-patch-id: a0844aa26ffb65ccb362b88ef6c2f4758e15edbf
+prerequisite-patch-id: 9c64355dfde62e399f2717d9208c4607834d4650
+prerequisite-patch-id: 9644739854ddfe2876f17fda8727fd5119255957
+prerequisite-patch-id: c61bba24c035f79a2a32a80ace0924ab58e97f46
+prerequisite-patch-id: 143fb91bddf33068b6ee11e205818c4c2815e23d
+prerequisite-patch-id: 9ce9be2ff05250f92d945c0084f4bb31d3d0b27d
+prerequisite-patch-id: aee0961341523547095a43ae298cb8b551302f10
+prerequisite-patch-id: 2f0fdb970ddd760d85ff5d2caad0b96348270182
+prerequisite-patch-id: f2aa468ff5cbb1cabab3f70e1b8eeee0286cfb4a
+prerequisite-patch-id: 5555895bcbca4d7c9888ecc9e82c0e4d76da8f40
+prerequisite-patch-id: 487141c49e2548310bfb6c2a0964a78f08b285a9
+prerequisite-patch-id: c3d3008819fa5629a18142ec9ba6d7024ade7fdb
+prerequisite-patch-id: ca587c976690ac16e3d759fccab2116fef0508e8
+prerequisite-patch-id: 9423f410b99853693db06c29f12f1c08278b050d
+prerequisite-patch-id: e269815617a6324615a38916b8886f99d98c641e
+prerequisite-patch-id: 3d24be1897a624d519ef144801f76d152c7528a9
+prerequisite-patch-id: 1ea3fc8319d9012faaf3a182ac61d5da89aafdb7
+prerequisite-patch-id: 7547b4e2c1b3588acf6caf90cc01fe7884fdb6bd
+prerequisite-patch-id: 695d325349ebeb89bf0ea24bcf0c4f1c4edacab5
+prerequisite-patch-id: e33502a202979aba0d6fdaf196e8471d906992a1
+prerequisite-patch-id: 47bfe4f07677ad75fe8d9accc8923a1cbdf3afa6
+prerequisite-patch-id: 9fc0739226572203fcb36f2c271be7b27f405ef2
 
 
