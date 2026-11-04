@@ -1,127 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C204606A326
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 02:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8DF606A331
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 02:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=TQcEhuYs
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=a3uy0tnS
 Received: by kanga.kvack.org (Postfix)
-	id C9C1E6B05C1; Tue,  3 Nov 2026 21:36:35 -0500 (EST)
+	id 50C966B00EF; Tue,  3 Nov 2026 21:45:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C72BB6B05C2; Tue,  3 Nov 2026 21:36:35 -0500 (EST)
+	id 4BC896B05B1; Tue,  3 Nov 2026 21:45:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3C1D6B05C3; Tue,  3 Nov 2026 21:36:35 -0500 (EST)
+	id 3AD776B05B2; Tue,  3 Nov 2026 21:45:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B31B6B05C1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:36:35 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B9FA2160615
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:36:33 +0000 (UTC)
-X-FDA: 85395873066.19.F8F4C57
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 06D9B100002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:36:31 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=TQcEhuYs;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf14.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 127556B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 21:45:21 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1B56E80622
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:45:20 +0000 (UTC)
+X-FDA: 85395895200.22.03CBA4D
+Received: from va-2-113.ptr.blmpb.com (va-2-113.ptr.blmpb.com [209.127.231.113])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DF3E7140006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:45:17 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=a3uy0tnS;
+	spf=pass (imf09.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793759792;
+	s=arc-20220608; t=1793760318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yzNBix1nrXAgkPziKzHxzDac28NAhHx2suDgNBU8pFw=;
-	b=VkQRN+rDoKKfnIubd3hfye12yt9F0LkQQ0rC08AcgxDf3xANsH0maK97KElSO8sof3HH8Y
-	Tw02ApMoL1oamegb60t8scYXNz2/Ogc+j1ef/L8Bg+GQQ2ReagD4cx6JiBS6aC8KdHLtmM
-	GB/fS/pX3wsTgvycQgaJWuiZ2lIdlSM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=TQcEhuYs;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf14.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	bh=rRzhUBlhk/MV6qetpAub4eArNWxfVuqj/T9Xhffcs+I=;
+	b=cekI+aKaaqb9RbttcZY98vH0u57YAr3+/xay0EToikneq8hRYX1twUtKshkiT9h2oil7eP
+	22nrLVSQxcRzkZw7oQA08qKKekw0v5Y9IPtDY5mGkJugupWReJKu9wyDOfm7KP2Z5ZBYqW
+	20GSlPfBgVK6jyI6h6WREXFKjpex9RQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793759792;
-	b=1qRXikps0tEBMdmQjm3sEd4dH8dW616Vs5WdRPgHLEBdatffxeIqaBoql9n6a6YPpQeQmC
-	ad5Emrp7fcg9gaSGCkVQ43q8tr0u4jhGAdEnZVaLbwPc5F2zrnbpgcNG4BO42HPVbGVSa/
-	fWP31gPE1/RDt5hm8YLoeuIJlSJaVS4=
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-8a058f74a54so73072b3a.1
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 18:36:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1793759791; x=1794364591; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=yzNBix1nrXAgkPziKzHxzDac28NAhHx2suDgNBU8pFw=;
-        b=TQcEhuYsOJZeYqYgLaa8X/lGg+e4Of2oIKyD0eMf/cgpgtWjYPb8J898KU/+YMQkzJ
-         w88fQQZ9ofpHLXNfttNmunz0oN0nV0oNzBSimuJBqAzO+UCXfgb2MHmDppk7XxutgPe+
-         Gq92R8E/sOVTx8AbsgjUK0bqZaL+FWLHjURS38NQAyDQnoi2CRYoV2qVzlOxgrfqm8kN
-         obxEIh+C4cojQ/yR8yDYFldrZTt1XPIpP1nr3tq/okIhNNGY0UYYuJ1xV080Qr3d2QMy
-         D31aROo54ilavGCgjZmR0kBC0jhu2S51qq8NYhuBUgOhsbrJyuToKZNYADZV9vPLz7kq
-         DB5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793759791; x=1794364591;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=yzNBix1nrXAgkPziKzHxzDac28NAhHx2suDgNBU8pFw=;
-        b=c9D0UhHyQ2I24n0cU24NlvPPSvq9IIOl0rNAmUktJwEH+A4A2RkSEtmLctryx61Lk2
-         RfAwGgQsJYKm8anTh2S73tkh0r3OgO0EGfvxTSRrs01fWgbdr8QRnRCw1eKRUFjAfcPG
-         dYsNKJAHIM9/8/AcLFBVngb/AXNXNp/g8An75zjsNIRDGYLs824SxHA+wZAR12FuOtPW
-         JzZUEdaxhxgm07Iiykh/biRAETQUC4Vv+3Ic4fD5D/c9X+rXt44mtLvroxWDmIoMWoUw
-         ZEaH3v/UfeQHBw9v+HFu92rf/XM/kqOFJmHVB9TX1zrf4CTjSMYDcZW93vZgk0lRRsW4
-         WJ/A==
-X-Forwarded-Encrypted: i=1; AKwUvBy9IEDzLojX89zRe0zIwIn9ebDS5iTDI8C/4adcBIDvt5rih2SVWkLpmAN5/LY6BT4AzA1UPtTczg==@kvack.org
-X-Gm-Message-State: APuU4Z9smwK426yLUdiZp/BDpZPFpMuVO8wXKRSaVmaQdMPDpDZjk6bl
-	usfLNScYPrLXSP6qGxY+3PajCNkGGL+mq7E/j2qVIWwOUzKJ0nak47JBNbPvf/sWdfY=
-X-Gm-Gg: AYBFou1JcjVvmZYiYLaGTBNtwJT/7860zUBuMSOZEZvuDxWqYjkv6mQ/nEki4cFDfSG
-	uhVAdqONse+RbXrDFvzuETzHhDMB1nMZk8Gs2pjrpCX0n+vBlXSDPaUbrTUC49FdvFKHtOqlQLk
-	V+BIpqe8zf/bFhpGiM3JG/L8QkJ5tTrScf/dXrOyq/pomOr4VKsuo5qCLDCNLJvpaLUBkY4kRDJ
-	tdxf4bdkEA5BaMgXiZp+ctnHv+vRHHMI0H4/lO1BRPgfwW5RJfD9plXeacdG8t4PP4RgE+Ilgzq
-	HlV3+UrfrB6AVD0biVcqQ3OdKQ8JCgDfGlWjNCwyFSVFrVyadYhyGshQE1RXgsZsBQGs7auBNGV
-	3ejtzgtc9s6UPhSj1XWGkYPmf+nG42GMl+TYTcVA92SSMshXSu22OKSSvRiaSAS74zWZ4eh40O5
-	91H91QwY28dAzSzf8b2mw6oDBOiU9RK2b6uvCwjpwkynYF9cSGYkvqviJIzu9cB/QqKAkLWwFjc
-	m2sSOox3XkA+3ITe8DwB2AGwPyYVSa2rQYy1cOrbXogJ6E4YehLYTr1ho+If9HNuU0YoQyC5+yH
-	NYXbHPn/d0+rwxi2t46GUSozWsQBArBChuqBZbiro0mYhoXnsw==
-X-Received: by 2002:a05:6a00:1c85:b0:899:74d0:8a72 with SMTP id d2e1a72fcca58-8a9c0b796d7mr11334632b3a.59.1793759790744;
-        Tue, 03 Nov 2026 18:36:30 -0800 (PST)
-Received: from n232-176-004.byted.org ([36.110.163.99])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8b09bc3d1f2sm240815b3a.50.2026.11.03.18.36.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 18:36:30 -0800 (PST)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: Qi Zheng <qi.zheng@linux.dev>,
-	Lance Yang <lance.yang@linux.dev>,
-	James Houghton <jthoughton@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH v3 12/12] mm: hugetlb_vmemmap: make vmemmap PTE conversion folio-oriented
-Date: Wed,  4 Nov 2026 10:35:10 +0800
-Message-ID: <20261104023510.260766-13-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261104023510.260766-1-songmuchun@bytedance.com>
-References: <20261104023510.260766-1-songmuchun@bytedance.com>
+	t=1793760318;
+	b=SpwRjCZglDwMRipxwet40cB8sa8cM+eX9Egwg+XXmd0D8tiaSnGUeIjiedrNFnYvwxKlW3
+	DP+nbGwh3pTZPYXHn/pRAvkaXIotAfAmGanNLIGlpCcwhaOSV0eT2Pt92gWUpfMMLjG1bV
+	QLNv3LjAvTPjoyQIOJXuWwFY1umaAMM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=a3uy0tnS;
+	spf=pass (imf09.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.231.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1793760311; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=rRzhUBlhk/MV6qetpAub4eArNWxfVuqj/T9Xhffcs+I=;
+ b=a3uy0tnSn2cJBr5aBLK8fXX5Ap+fy0xWiabvtBdkU30DxrO5TfMZMmfSbqWVG5UQ8DMX7Y
+ 5SRrXF+D395hSWT3hX2UJD8DMrWn+XO6vzfJg3g1BOd5xn80IPBmZUdxN32Avvk37foB0w
+ DoeDyCoPlToHA3kZLB0gLh3AZXqdubVxF33fnCvt8hlM4qhfgswauCoccOk8e/tzyk/Ug+
+ 9eFkJ6+CDc8x/15HlMWqXDrg2sgq+G+HdygOrKyXCzCsQZw+dHnSbNo6ltBSg2EsNfIcmz
+ eFMexcSAP5x7RHi9SLOwKv3OG1hKtQGuYICvLX7N3y7szk/xK9DSjU/NKP7XQw==
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+X-Lms-Return-Path: <lba+26aea9c34+144ed5+kvack.org+lizhe.67@bytedance.com>
+References: <20261103122816.48037-1-lizhe.67@bytedance.com> <0efbf4db1decd8e6bb6a5fcdcf897314@kernel.org>
+Content-Transfer-Encoding: 7bit
+To: "Tejun Heo" <tj@kernel.org>
+Cc: <hannes@cmpxchg.org>, <mkoutny@suse.com>, <akpm@linux-foundation.org>, 
+	<david@kernel.org>, <gourry@gourry.net>, <ziy@nvidia.com>, 
+	<joshua.hahnjy@gmail.com>, <ying.huang@linux.alibaba.com>, 
+	<ljs@kernel.org>, <liam@infradead.org>, <rppt@kernel.org>, 
+	<surenb@google.com>, <mhocko@suse.com>, <cgroups@vger.kernel.org>, 
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
+	<bpf@vger.kernel.org>
+Subject: Re: [PATCH 0/3] mm/mempolicy: add per-cgroup weighted interleave controls
+User-Agent: Mozilla Thunderbird
+Message-Id: <03bceb67-d362-47a6-b555-ed5aa1f9bd3e@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 06D9B100002
-X-Stat-Signature: k4egowj6bg4brj1kscx39311fq8tgboc
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Mime-Version: 1.0
+In-Reply-To: <0efbf4db1decd8e6bb6a5fcdcf897314@kernel.org>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+Date: Wed, 4 Nov 2026 10:44:46 +0800
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793759791-171986
-X-HE-Meta: U2FsdGVkX18UQGtlhJrVfZZndEdFeLnVZPeJ+b/ucA59DEAqKk7ROMuB1D5+K9em0mFNCcZFL/CMxeVdPxerou+0LUk3NmFijSsdbpVhdtaoZLcGAzM7TfbJJDhFb8idpdBACtTapy10LwrdHPwpCdlbmxjd9LTHSoijLvQhuHDJ16qii/VfuTiuTzidbdmMI0qR5U7GicZhW0loBENN7eUAtvMjzgZnh8Cby9eP+7zsjUZA/lt7ttBr/Juc+TwloOyS7LvOihvGF4kV0dopiOtwp3Ry3gpHm2UjJHfaFp6JipSZv8j4uFbveWf06gkrvVidx/vu+ZS1eSP6iw0JTqc+uENAmr7SUgsgQ8c3FKWf0d/5XS2yz1vigK1jt7Sbw186hb+qPkACEXJ5JsXAxUiObp6xCcaJnP/mBfjese4qS1YNxn3IW0KaqOg1dAak1gsvXX/Mh1TCBDAtrNM5k+HAWq/FYllPL84JDUcCs4Ng5MJ12owQAA8FZuwNT6EjtgrEPAR2uiWAxWCmvlwd532cHGYWQYjESEsWSoH43GuGtspoGgYRmIQgn21LuXDHVBEgsUWcoFCPmX45rrl7YDpo8UHxhg2yjCRBrgw/kNTgLcz1FiT7kRTZNQgxTngezkgC0FLPQBb/OE9KdYdG5FK1E3dwEM1DhRgg5CQwQm+73o9XkZpnTHO90LJtjBpp3mqwcMm7pvRxJM5SXhqS9lmzaS7Golh+friUkFyryq0bzziH+tETSwXONA5LXAm1QwSKHCyEPuZ0xaIh64pKdI8xrx6y83sWNPaityJ7VmDAeoJm+NbRUFPVccat6/2x5GsrlbOi7PmY00DZ9ZG1+7t6Lla2xTKl1SVABqALIdWQRKXUw5yjR0ygEVwaVh4ncxWfGfqTcOSD0gm/9srrJqZl3axcBEiE43ADm99GmA2HzcE2+cXgXIQc3GGWpUBzwUX/AMbOsCYT+6ZkVPm
- GAudUtUv
- V8nZUoBp3yn0FASJanqlUGNxsUwLi4NIQwqMNCberG/U79Uu66g0palSmjZemoyuyj3cx0JhGkBLFcsRx54vIpjyjGAvaLqXjZLEIi3QLqLLUc70Jj5GbLr0D16IvzZmAS2ysHoqoTp9gxUqWuIw7vv0ovEZ1iTbkxCGkuP2cJ9VXkRIIq5W5hbKHgl2RpO6nEdqTTPcwgp2fi+IZ6gQAn4V7RzoJLe+SkPYz2HTbBcO6Iy7HfnOEeNQ5tY3lECtqjwba1FeZVi95RbfSgUZwYYo4/uhJaV0kBY21TzdlD3W4lQlLQM/T/LPps7J3Xu+fw2obGdGH7KxfiV7801gC+sz99J1w8HAwdyF/QiC0od9G8sdRdlh+NnLtjKiboaguRAmM
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: f5icqhag6n33559fcrjebgxhcuhkt5i4
+X-Rspamd-Queue-Id: DF3E7140006
+X-Rspam-User: 
+X-HE-Tag: 1793760317-964352
+X-HE-Meta: U2FsdGVkX198aLpDap1VOFp88PvadcmoJNGGZqrwWcJY0ZZNV1bCi/3ft8JPfm1hD4kK3sr0/CIGZ0Qq2pRO5AfZIVs7jvMUKzOYkxYVETNawqfiEr3WlDAK+iVz+KygqwzpcY5bEocZ4phdW8lmzlkC3NtVnQVk3QMBh1qeNwbK4JL8TuxnHIA3+mzwicws6MFVAIg385ryjtSzlfFJerEoBRK6bl5k1nS4rEoS9edtwA4GDDFXye+QPzHq+QB6rYIwqor68ZLEnT6UbC3C2KqjmxaHLhVHephGJSQjlYxYa5MkBWX7VkNZvKQSnK7LNLbzahY/zWOk5ZMfUNStvQoQlEoNXzBLH9tWbwhvA70DmZAy1R89j6z8d3YpYLy9JEJhh3X6gDXD8sb9OjX0dGwTwrI4T9OyaQKcQC8N9kLSWca4PSSXsZDJAAuBRFtgCH92eeOeCumm1dzsCgyDFQ7D8hrsYzhqgGy2WzKrcK6DjzGCTrXCqStf8EVyrIOIc1IzScJgjTpRjmvUntyclRV9IWGBMV3vAVnomUcyezeaoIeRAMJnEqq5jtnf2vSSNrYBBBbIqMFnCT13lgAFecAgm3NdGUPmliYmiiEDc68iltXCPHK+o2FqzJdxCvT6ix+Y28NLRsvMyNB3gpRci9dhKt4N4JJABt1Z4wNIWi5C61qr6TbUjV2R6Zt8Cpv1ugS+wFQTX2wuPLd6/xQrkZrb3PsFgctdkwIkYOF+BvgQZModYNTyk7FG90wBwrXU+CM5ZEDt/+1rdI5/xOX4dDU0zmBkkaUwdEK/zjSL6QlCyvDvmCfTAhvJJiCkiFIy67flCxM0x0nEDe6LRcMxZojyALIV/x8K+9CMJF5r+UhdcaNY2E7nlf2g9LA4KhrxDeRvAJ2Nj5RX72z2Q2q/mPKwnpWKG4TZreIvdFtjdctyMTMVy4DodWLXVc4jSyHQBtQ2uIdxROaHLa1bovG
+ rp4Wy7gv
+ x5hJcI9BoUDAj53o4tS8b2puJCAe4I81R7AKZmfS5/HDpzjKxv4hWbUYQ4FQ4ycGJKReaLUL/AxIJanXNHWWA1mBCHF/EQdGAEaWzX7hblbNWq1gOtnQUrMXPIsnmWKjeXW6x6nqtKBUYxdtHuz43x4f8RcaO+2uict7WXKr9Nzky8IqBMLFpf9z7Z3bADRj3QjPBAcZlyai3oZ1o9+OGnK4kH7ou4HYQjHJjTsdvxrhfrynGrUjQlF+pwK0BluG3E8BLEy52JoHs8wcuE3uzJxQlaq6gV8Pwf0qB3H35aDYvq4qjzoQo9EZjVWWCDGazbEkJf/CvoknfigZywTZtf7KYrOTzPpId7rUYPKMCZdN3BP7SrJi6IS92+z68tJE2WN52jP7VP+AygJzzVzvnrOnUojT0gHFqZAV7Ra9d2q3QZbs17ZeAnTF/gT6azEqAK6t8zi0pCZRsBzEoD/hV+JoFtA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,108 +97,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Converting a folio's vmemmap mappings from PMDs to PTEs is a per-folio
-operation, but the current interface exposes a raw address range and
-hardcodes deferred TLB flushing.  This splits the common mechanism
-across layers and couples it to the HugeTLB batching policy.
+On 11/3/26 11:35 PM, Tejun Heo wrote:
+> Hello, Zhe.
+>
+> On Tue, Nov 03, 2026 at 08:28:13PM +0800, Li Zhe wrote:
+>> MPOL_WEIGHTED_INTERLEAVE currently has one system-wide weight table,
+>> configured through sysfs or auto-derived from node bandwidth. This series
+>> adds an optional BPF control plane that lets privileged BPF syscall
+>> programs install manual weighted-interleave overrides for individual
+>> cgroups.
+> ...
+>
+> I don't think this has much to do with cgroups. Weighted interleave is
+> already a per-thread/per-VMA policy chosen through set_mempolicy() and
+> mbind(), and the weights are parameters of that policy. I think this
+> should be tied to the memory policy instead. This is different from
+> the per-cgroup NUMA balancing kfuncs. NUMA balancing has no per-task
+> opt-in and acts on memory with no task context.
+>
+> Gregory Price's mempolicy2 series already proposed set_mempolicy2() and
+> mbind2() with task-local weights:
+>
+>    https://lore.kernel.org/all/20240103224209.2541-1-gregory.price@memverge.com/
 
-Make the folio the unit of PTE conversion and let callers select the TLB
-flush policy through the folio-oriented interface.  This keeps
-HugeTLB-specific eligibility and batching outside the common operation.
 
-No functional change intended.
+Hi Tejun. Thanks for taking a look.
 
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
----
-v3:
-- Use two tabs for the new wrapper parameter continuation (suggested by
-  Mike Rapoport)
-- Collect Reviewed-by from Mike Rapoport
+I agree that MPOL_WEIGHTED_INTERLEAVE itself is selected by the task or
+VMA through the existing mempolicy interfaces. This series is not trying
+to make cgroups select that policy for tasks. A task still has to opt in
+to MPOL_WEIGHTED_INTERLEAVE explicitly.
 
-v2:
-- Collect Reviewed-by from Lance Yang and Qi Zheng
----
- mm/hugetlb_vmemmap.c | 40 +++++++++++++++++++---------------------
- 1 file changed, 19 insertions(+), 21 deletions(-)
+The part this series tries to make cgroup-scoped is the weight table.
+Today that table is already outside struct mempolicy and is configured
+as a system-wide administrative parameter. The problem we are trying to
+solve is that different co-located workloads may need different DRAM/CXL
+ratios while using the same MPOL_WEIGHTED_INTERLEAVE policy.
 
-diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-index 0dcbc2b72384..17fac64d411f 100644
---- a/mm/hugetlb_vmemmap.c
-+++ b/mm/hugetlb_vmemmap.c
-@@ -300,20 +300,26 @@ static inline int vmemmap_restore_range(unsigned long start, unsigned long end,
- }
- 
- /**
-- * vmemmap_remap_split - split the vmemmap virtual address range [@start, @end)
-- *                      backing PMDs of the directmap into PTEs
-- * @start:     start address of the vmemmap virtual address range that we want
-- *             to remap.
-- * @end:       end address of the vmemmap virtual address range that we want to
-- *             remap.
-+ * vmemmap_pteify_folio - convert the vmemmap backing of a folio to PTE mappings
-+ * @folio:	folio whose vmemmap range should be converted to PTE mappings.
-+ * @flags:	vmemmap remap control flags passed to vmemmap_remap_walk.
-+ *
-+ * Convert mappings covering @folio's vmemmap into PTE mappings. If TLB flushing
-+ * is skipped, the caller must flush TLBs after all pteify operations are complete
-+ * before remapping the folio's vmemmap pages.
-+ *
-  * Return: %0 on success, negative error code otherwise.
-  */
--static int vmemmap_remap_split(unsigned long start, unsigned long end)
-+static int vmemmap_pteify_folio(const struct folio *folio, unsigned long flags)
- {
- 	struct vmemmap_remap_walk walk = {
--		.remap_pte	= NULL,
--		.flags		= VMEMMAP_DEFER_TLB_FLUSH,
-+		.flags		= flags,
- 	};
-+	unsigned long start = (unsigned long)folio_page(folio, 0);
-+	unsigned long end = start + folio_vmemmap_size(folio);
-+
-+	if (!vmemmap_optimizable_order(folio_order(folio)))
-+		return -EOPNOTSUPP;
- 
- 	return vmemmap_remap_range(start, end, &walk);
- }
-@@ -532,21 +538,13 @@ void hugetlb_vmemmap_optimize_folio(const struct hstate *h, struct folio *folio)
- 	free_vmemmap_page_list(&vmemmap_pages);
- }
- 
--static int hugetlb_vmemmap_split_folio(const struct hstate *h, struct folio *folio)
-+static int hugetlb_vmemmap_pteify_folio(const struct hstate *h, struct folio *folio,
-+		unsigned long flags)
- {
--	unsigned long vmemmap_start, vmemmap_end;
--
- 	if (!vmemmap_should_optimize_folio(h, folio))
- 		return 0;
- 
--	vmemmap_start	= (unsigned long)&folio->page;
--	vmemmap_end	= vmemmap_start + hugetlb_vmemmap_size(h);
--
--	/*
--	 * Split PMDs on the vmemmap virtual address range [@vmemmap_start,
--	 * @vmemmap_end]
--	 */
--	return vmemmap_remap_split(vmemmap_start, vmemmap_end);
-+	return vmemmap_pteify_folio(folio, flags);
- }
- 
- void hugetlb_vmemmap_optimize_folios(struct hstate *h, struct list_head *folio_list)
-@@ -571,7 +569,7 @@ void hugetlb_vmemmap_optimize_folios(struct hstate *h, struct list_head *folio_l
- 
- 		nr_to_optimize++;
- 
--		ret = hugetlb_vmemmap_split_folio(h, folio);
-+		ret = hugetlb_vmemmap_pteify_folio(h, folio, flags);
- 
- 		/*
- 		 * Splitting the PMD requires allocating a page, thus let's fail
--- 
-2.54.0
+I have looked at the mempolicy2/mbind2 direction. It would model the
+weights as task-local or VMA-local policy parameters, but it also requires
+new syscall ABI and a much larger mempolicy UAPI extension. This BPF kfunc
+interface was intended as a smaller administrative control plane for the
+existing global-weight model: keep the existing mempolicy ABI, keep the
+global sysfs table as the default, and allow a privileged manager to
+install an override for a cgroup in the default hierarchy.
 
+Does that distinction make the cgroup-scoped override acceptable? If not,
+could you suggest a better way to support this kind of administrative
+weight override without adding new mempolicy syscalls?
+
+Thanks,
+Zhe
+
+>
+> Thanks.
+>
+> --
+> tejun
 
