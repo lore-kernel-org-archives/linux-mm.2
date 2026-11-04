@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B13606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:20:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7B06072673
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:20:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gx1ml92n
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xc/lpKFD
 Received: by kanga.kvack.org (Postfix)
-	id 798796B05C5; Wed,  4 Nov 2026 14:20:10 -0500 (EST)
+	id BE1ED6B05C7; Wed,  4 Nov 2026 14:20:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 770136B05C6; Wed,  4 Nov 2026 14:20:10 -0500 (EST)
+	id B8FAF6B05C8; Wed,  4 Nov 2026 14:20:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 65F686B05C7; Wed,  4 Nov 2026 14:20:10 -0500 (EST)
+	id A58B36B05C9; Wed,  4 Nov 2026 14:20:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 467496B05C5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:20:10 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E883B1C3CA1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:20:09 +0000 (UTC)
-X-FDA: 85398402138.29.7891CE7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 21A35100009
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:20:07 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 852C66B05C7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:20:24 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 301CC1C357B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:20:24 +0000 (UTC)
+X-FDA: 85398402768.05.37AE329
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 71D8710000C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:20:22 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gx1ml92n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Xc/lpKFD";
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820008;
+	s=arc-20220608; t=1793820022;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bK3Qf/Fgrn1kHJyqbDbeKZxjvVolEa0ioklWbWt66po=;
-	b=GRA8cWYZ7u9lsbE6qoO0Jz4AdhsY9tOTDL5BUIUeUE8Ty06KDo89ZQh35kzet1r3dC1K9Z
-	SQZfDaL10oCHcK23bcVLNqb3Y0oKLwfFSJ+V9r3QzKa73qIc2Z6hGwC3nYzV2ZhTBoGeBj
-	2cqwEFJENJfaAN6XExlE4yetrHujyFc=
+	bh=bDYBcNUn+VWuCpTwTZF6KvGO9475Dcj2RU9o+tvUNt0=;
+	b=Ino/rakAR+8oaHkQ2Tm/BSBPcX2j8J+4ukwaqf3FrAghufz6jXWZB+Eo2C4G1EvlgMF9MX
+	FEpvyoyAyNRb7eb8QRYECvjDF/IfJ40D/YjMjCFJ7PPQRPJuGHUF/A/P5eG1ehQl8W0Pn1
+	B9LFlVHdld4Xh6PY/okk8o+BsrHrVQE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820008;
-	b=ut6GP3HO0wKRrnxNE/slV9AGl1r/9Q7H1DhZs+EUlkd6PNObytsTNCKpOdbsQ6J8Qc2Wwt
-	MSwTIZfoirXZ3sIU7sy2VE/Dp+ZEYUiUwe4Lwill+0hnvCvf+xCH2/Ggl4k06pY5QEb5eR
-	n6nz7A4IqXd9vj87yqE+RWH8FxtD/ls=
+	t=1793820022;
+	b=Waf+O/4P8Qnk4k5e9T92CmJR2w3R16yTERgaEZsdhhfd7CQdHW2ToTcsERBLbRRJF88gzd
+	XLflEylLPvVHJc0ZnwCAon9p+c8LE8ZjF8Wrqb0P2BXOupM+hDO/Wl64LNjKnXhKzC/Tck
+	MejwJueQRwEMgj9uXMFQ52Dgk9T/6bc=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gx1ml92n;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Xc/lpKFD";
+	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 711E44386D;
-	Wed,  4 Nov 2026 19:20:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBF81F00919;
-	Wed,  4 Nov 2026 19:19:55 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 06D7E60D89;
+	Wed,  4 Nov 2026 19:20:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53051F00919;
+	Wed,  4 Nov 2026 19:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820007;
-	bh=bK3Qf/Fgrn1kHJyqbDbeKZxjvVolEa0ioklWbWt66po=;
+	s=k20260515; t=1793820021;
+	bh=bDYBcNUn+VWuCpTwTZF6KvGO9475Dcj2RU9o+tvUNt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gx1ml92nagZ7BrakhHXJtPQ+gcEUXo9KcayoMJOCqeD8l4YNPDO/HrtuxrVu5D/yq
-	 AkBUy+fEu7DUS3PpJdPB8rP4qDEH7v+3NmBlnra1bCI78Eid7vxjW2+TTJjKFk1pa7
-	 AD/p7tsz2i4zyXv6Wo6PwRfTfO4UBAA/iJgcwnGbIppd57DabriHGLgMEnacFdb1iY
-	 GWlISVkMuIM9OcUzNZg45npnuMJt6k2wY5mP16R0b4wLk6SxDPuMPpdKe7JIGFtdcz
-	 NWUGr2t2OzbQHDfP3LGVAcsb0fhKK1thVAFYLu2RzFUd22BqXfCyjuiOfZQwNar7gn
-	 x0rZz3DaKTIvg==
+	b=Xc/lpKFDn4s3PLh92W7MP/0EYRbr9DtSlo+aTgCoiS4rp456CG2OTm4mdzAcBJWEq
+	 Ldjk5qAoEyhPyjStEGoJwwsLF6muQudRMZSm3dpoh/6WOOqikDwAONtjMuVpHReos4
+	 Y67yz+y4bnZfnPjGe5X72XzUWZlpcgaEPlqDhTQSTzjJGylhHoAXVkmsvgtRloeENx
+	 Ezkm9787vd7BxlmMILJww46DT1dWDqRcMPOg2nMKQMVCbPmPG41MkkecEf01xpeInf
+	 S+AV+2Ll9y4McQGjdLnxElbFeubshKJGcRNGF7y6UPi9zZBWMvJNlUtStZmpr1zHH6
+	 a4kGFVBEfnA0w==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,33 +121,32 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 16/51] PNP: isapnp: don't read past the end of the buffer on a large pread()
-Date: Wed,  4 Nov 2026 20:19:53 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-16-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 17/51] s390/dasd: don't look in front of the buffer on an empty write
+Date: Wed,  4 Nov 2026 20:20:07 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-17-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1354; i=brauner@kernel.org; h=from:subject:message-id; bh=PRZX3tU6vm07qtbuZVgSHwh1cNhLueRVjGfMu08d6P4=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9brwfzl4y9YPS+9UnzD/xWPz9cFZ3YUK46s/HNev+T X6yzjO1pKOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAik/IZGTbFfnLPjP3etuFi 3uYXH/odI/9bLkx7YPeroPeyylQ3HSWGf0oRmziNpv1f8fdY/M9fuwrPnSgJELfs+hiheTJ/BWs JOxMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=952; i=brauner@kernel.org; h=from:subject:message-id; bh=vNxDJDpmoyfXJahneUuQ9vEH9eL70g/8w71rNTJgUxc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bnywlMF3yW3bTMV5otIz0k5cNnaUnbRb6akLs2LWJ ybd53uyOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACYyczUjw+J7+6Q6zp3ZqLzq nmj5ZNvI96xHteJ17jyP5eFsniikWcrIcPHN7+NqVe8Wda9KbvPRPx9rN23XpqQDn9ky+1XSGSp leAE=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 6dyodxmztw1a71u44risxenf4ypkze4z
-X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 21A35100009
-X-HE-Tag: 1793820007-207436
-X-HE-Meta: U2FsdGVkX1+XdbS19/qwR81rkRW7JurJw7Ikkt7nfV/BU+qaGAs5b2/BGky5gAs/K8F8D7qhlZu17x1HvkQVdDf39srsDIeBQ29/0X0gIIPD1J9Ddc5NDVNUh3tA5v6ohICJQxdnayGukTAXR3vB87LqB/YGpm/i5DPSfi3DQ7JIBrChp3nGAM4WDXF7tyiNvaUp6BP9CDSf/dxjFbbdfi9qi7OZ4ALM+B21AdyX4iHfSKSIB5+Fjawt5nPU1Nb2XysJTXrQdN/nHBCKERHe6FQ2E9eoNMNZtmj3cGVNNI2acDSKTKxrNvGvBLA8rnMLnZyAnQMek515v+jBb9gEN7RwnAk5WQspcuAb7ZOFNWNVu2T2zHfl4p8cmlq/u3B3kAHa9zLNvPWD7sSVf7ZOlfyQ/x5HIuP7LyDMJGDVto8mXETlnhehBGbEcZg2PRq9wg0xHA7oncnUGWdGKg8v9q4BBq7UyAbRgSAdIBdx+Efe4Egfzw3e6CayWSYnEuLceZWgexTSiKwrsdLizpeOUrsix3CMnXoDgGQdftp2JR6KFuMbu+e4GU288+dJmTbh49NCIKxEwjdBYvlmfv5+tw9e5KYR3P1r6tZpwIsy3xVA3a5QaTKXaFR4PWgvg/37qIOvGt9JHjTN6BXdFAQCK3n6depmpXVs3mkXAJMQxKM7LTIPOWj/VPQqpPJYS5F7Fl5L8OYsOngu33X7QEivY1m+hrwuZgNpmjvu4SvyJ+ZSRJQKb3LiExgX/9bUk9FXYbu9UWVq5zvzda0TWU8RSEGUQdFOG3tyLcFuCDmjYmydawcwpD4eoj09/k5AC7EW6Sj5MQLszWMBKxIcmHjtvLkdDvxEhQHVXkjLL+F9e6tKdKdM4uFwDWsxybMR9jOz3LlsMLx7hYnJPnDmDber7Yo1id87n4TNasq71GqcCJ5ng1HDKZ4lP354Cyqyce7Qq0HmJ5UWU58wP+G168o
- Q2tMrolM
- ttRlKm3JKnF/SYmPzWJSlcTKGZQ7Y1kN30ANJMw8WrEc+MoXqE4EwPCcEIPGdoC+PbghfKUn8y1MyyB7/oi238kkdbtbzqSzmYyXJqt2MhYv55hLyjcq/rgbkDlDWnDUxhGFg0Lap5idsRa3k4ivlktdM3lzePKK5/FV8+VcU1Spl1kE3bLqBy0VEmIjOOSGguA9ZQlAO1/+/HCuHhI2/B/3Pxh89FJ8s4mqWcm5BwSSSZgQa/9UbzyWpDJ3jWUbay7rUnQ1xQhDZrJMz1W8q0X/OfEN5gYJ5ZhDPhozp2KohfWPXhzqfnpXXLBdSEB9seUIh/O/TXs6nT/YLnxyQYbYMtAhLInH2lZ7HXq5LLlGuu4W/qV+/dv+jEpmS9Yg4CVPYyczdNeEFY+0OI19y52FEsQ+/Bc/084H3I913bEHjJgULboSKjaymRw==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: h9u3pgtohn63zaaxopznk96gtrzd394m
+X-Rspamd-Queue-Id: 71D8710000C
+X-Rspam-User: 
+X-HE-Tag: 1793820022-189097
+X-HE-Meta: U2FsdGVkX19qqG4J4gKXp12Yr13uszr8wvf9eVgTSPZVkSycZ1Vz7VgWYHy+Nj6gnA/wYkPISWiWKEEnNQWr35aScGAgGXb/7V0HrEfMrbx5UqBiN0Gpv8bxMGF1k1/zJD6EK+As7rssS9xiW05NFXYs2k5kOzYxV9iCcBa9TFnMWeL9aSTR0F1pN3HTzw7CL9SKQqzXetUyv9zJvO54uhZsz3eShzleLosqa664sucGu/b5E9/paxM/CZrqOM5oCzZT4wbuxnPYWerEbrj5ewNVmkohKQeU5YyysCSz68XF4W6irYcopoWhJTPJ+LTTt1DToCGMN9i2V/xvncw1eyC8TviW7jieC+A7cvPYDorWrweN34ceTvleJ/YZLR5zw1HCrBc5E3Y5LRUs2IRZTOUKN8+TMI4WYhm0x+gDNclPdfKXoY4Jje1ZmWAVGvBYHNYwi3PAqVzmSbwrY9Xo2E2UIEz1SunfUcL1upkCdM9ztPWq68kyVO1iNGjR0M0gXRYYV7CxZzsVFMQ5R2BEiGbdP+BD+hiRoiMSGhX7zU1anH/8zjXfWjk/aF7P18mhh0rwYSPUDrPSpnHR+q31Y8cYRAHvUS/fpcpJlVlGR0cqbOfEg86J+yISryGKviparjOu3qxkd1AqhdLRc5RTMEcPqcCe0z37pZq/voh1TUX5ovIAxaWq3mP6SJWB3e3hL/5+OKbcMTzc96S1QatbQnwu2F/vTbmsAl4CypgUb7esta9hueog1wCXffEzT6mYRsyS0TpVVCfk4XE7uHHDJvYCoy2rfmEQ3BHGlDGV3vsbcvNSD820tQYvy8TPWMQ9N7acFJVlurMoKnCCoRNacsoQDZ0ONMcftB94CehMS6BMog4HNMaCZc/uRZjynIxMw89pBJKJ3cnrTgnToFBkHk6kkeEPY4JS1CJ4fu0N6HsAg6AQc0bRxoD5NtY3L3Bb4Qod46YsJCenXv8oj53
+ wifSnsnh
+ d0e26H23/NrWo16OsAqzIyMDWf087sJSQLRo7TCsE2ttSZOa/ezsxCgaQwF/TVC5UogBz4TMKCzR3/nQvA32QLNohFXIZRpuLm7BQCzqBXkODxie8ee3gWSpJFuDBu3TPFjsHEJvRf3rN6Y7pKpPGRx6K8a3pmZRiOyW4f/j7VTiJX7Bb0asV0/S0MTFGHgsbCNLAnrIrItDGAJ5vRnRVer5CWvTcpSmHaBcxLQRyMo8kEqrxR6o5w9Y7kPURfOFIaMm48XcoxX10/RHZE+8fqN83WbOgKQCXQN3BFJRHFniLugyOtHC8PBOTCA13s6hNedaY2wbujvxa/gkdYuMk6iqeA5gmqmr8TNMPn8FESA5zejrYxaKZOXbHrZV24TA6g0tx9GQaS2UVDR73nMBOnhuIkTrWIOHI58OLl2Mgn1z0Z8hmk8f5Ehcixg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,45 +155,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-isapnp_proc_bus_read() truncates the position to an int. A pread() at
-an offset like 0xfffffc00 turns it negative, the check against the size
-of the configuration space passes, and the loop then puts everything
-from that position up to byte 256 into the reader's buffer, no matter
-how few bytes were asked for.
-
-Keep the position as a loff_t and clamp the count against what is left
-of the configuration space.
+dasd_get_user_string() strips a trailing newline by looking at the last
+byte that was written. For an empty write that's the byte in front of
+the buffer it just allocated. Only look if something was written.
 
 Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/pnp/isapnp/proc.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/s390/block/dasd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pnp/isapnp/proc.c b/drivers/pnp/isapnp/proc.c
-index b3abab24050b..1829c20d5446 100644
---- a/drivers/pnp/isapnp/proc.c
-+++ b/drivers/pnp/isapnp/proc.c
-@@ -23,15 +23,13 @@ static ssize_t isapnp_proc_bus_read(struct file *file, char __user * buf,
- 				    size_t nbytes, loff_t * ppos)
- {
- 	struct pnp_dev *dev = pde_data(file_inode(file));
--	int pos = *ppos;
-+	loff_t pos = *ppos;
- 	int cnt, size = 256;
- 	int ret;
- 
- 	if (pos >= size)
- 		return 0;
--	if (nbytes >= size)
--		nbytes = size;
--	if (pos + nbytes > size)
-+	if (nbytes > size - pos)
- 		nbytes = size - pos;
- 	cnt = nbytes;
- 
+diff --git a/drivers/s390/block/dasd.c b/drivers/s390/block/dasd.c
+index 2ffe404b890f..e97891e58957 100644
+--- a/drivers/s390/block/dasd.c
++++ b/drivers/s390/block/dasd.c
+@@ -933,7 +933,7 @@ char *dasd_get_user_string(const char __user *user_buf, size_t user_len)
+ 		return ERR_PTR(-EFAULT);
+ 	}
+ 	/* got the string, now strip linefeed. */
+-	if (buffer[user_len - 1] == '\n')
++	if (user_len && buffer[user_len - 1] == '\n')
+ 		buffer[user_len - 1] = 0;
+ 	else
+ 		buffer[user_len] = 0;
 
 -- 
 2.53.0
