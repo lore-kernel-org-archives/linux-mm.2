@@ -1,103 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48A7B606A851
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:14:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7CE606B2DD
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=OCsdJg+A
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Oxi50B5v
 Received: by kanga.kvack.org (Postfix)
-	id 361816B00EF; Wed,  4 Nov 2026 17:14:30 -0500 (EST)
+	id 895ED6B05B2; Wed,  4 Nov 2026 17:17:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 339896B05B0; Wed,  4 Nov 2026 17:14:30 -0500 (EST)
+	id 846F36B05B4; Wed,  4 Nov 2026 17:17:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2537C6B05B1; Wed,  4 Nov 2026 17:14:30 -0500 (EST)
+	id 7359E6B05B5; Wed,  4 Nov 2026 17:17:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E16846B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:14:29 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 73CDD1A0890
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:14:28 +0000 (UTC)
-X-FDA: 85398841416.15.7CCA486
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 43D7C1C0009
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:14:26 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=OCsdJg+A;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E1AA6B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:17:05 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D8D69140863
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:17:04 +0000 (UTC)
+X-FDA: 85398847968.11.2CFCA9C
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0AC2BC0003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:17:02 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Oxi50B5v;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793830466;
+	s=arc-20220608; t=1793830623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D2FzhDRzTtc/XzcM0zNgPuhyPMJQZQhyp9SQGVRa/yY=;
-	b=z6LkdsBUYwnJtyFHw3yvOmVC+CLonh9KLs7FNbw01DkkQzYRgXOOjLLlBpsIar3+/VWUVv
-	Nmel5LSJPvmcSMtuxx8Q9J9t+INWhDpHJq2r500uraX6yXgmJpsAh+m+znkjWaHq+DStRS
-	ES/q2CiHPgVesKLm/ml7WrCH/Y5DO4g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793830466;
-	b=jD7y7gNmOFXNOif4n7ENFAj71FjTH4H5LoAVxm47o0X0N7ueL2WTc2JSscNAO1FizyiEdG
-	Nv7/A0B1zecEWTmIMbYZFVWohJiTXJjzpJtfV7RZ4JPal9d/zE0i6aMXR7vwK5hv6F46VC
-	d+y5mOAneFBR0pFep89n2VjUuuP92u4=
+	bh=AoRyT2gWGztVgBxsNZy1AlqhQ+YolidchQOTos+xRqQ=;
+	b=IaW3IPvqmKU8u/AxNOsG3mmVsv8jckygHVSGZg4QGtLPi41XbRYXSXB0sCN8GMP+L8hdf8
+	2efv3MTPaNnwKab8rLMnrtrVifZzYI1v//jxrjVq+RlaOZ3Exavi1a9iHsKbeR5IA0RLYD
+	+Q0OeToRnUIGNMXTSokDCBgaNjFj74Y=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=OCsdJg+A;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Oxi50B5v;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-48af4d4e61fso859731f8f.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:14:26 -0800 (PST)
+	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793830623;
+	b=TxhWnBSqvkq69bwG3MU1z0rpkzwTUqONxTYBuHboo5IBdAkcd6hxCoDqqdxqQaWGgtTV+H
+	trxBLhxFEh+gUl2WGcTPjyUMYir6KfErk2iCmhfK4wuv8CaD/H48R+BCPbdwxyCN7HMZw/
+	acsm0OE9DFAaJ4UlS+XBVr7yVA/d9Yo=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a35ac4475dso8206425e9.2
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:17:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793830465; x=1794435265; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793830622; x=1794435422; darn=kvack.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=D2FzhDRzTtc/XzcM0zNgPuhyPMJQZQhyp9SQGVRa/yY=;
-        b=OCsdJg+AaRo+oRLDkIF+ich223nYHheNLkMnt9sWIvv2UnhbW7YQYOGp1gpwJ7inJC
-         aBpKgHJI0q4rLNf/J67013IghZ/SYPxeoBi5i9o5A3gCr2EKnA0kzg4PNzUTt+CHzGu2
-         9QPFDiC9i+gfQjTKMRfuei4M0JDPjV7584dQZMYlSKgrrKbfof7nw/nJFLfy+yDSavBQ
-         uQ8HBkbrgno+9oQFXc77/kJ6uJI31XCDyF6G8MdEjH8XhqtOS/5TUtkRf9BzRM6RK2Wk
-         M24J5xG2pb02seUHv+wnWJziCBjwLwPx+RkVG/u6/XIXH5ou9zysAaWwDB+Ks70raTHD
-         2AaA==
+        bh=AoRyT2gWGztVgBxsNZy1AlqhQ+YolidchQOTos+xRqQ=;
+        b=Oxi50B5voRYOx/wHro1B2OluJLKCqIpp48J9X/EqVo7nTIykoGVuUS908EzDrKjpEH
+         //M3DrY7c6N6dV1YFKI5TaN4+UFDAT6RL469YblQttPp6nwet9Bh/2UCgCdvrHZn430u
+         2nukUKvfNfl6oiKlGp/hK5lkEYEXi2EdHbm8k72M16EI3sTHEvtUeYpkioVaQu2r59q5
+         pelJWKfXhSxTBJr9smGsJLA1V1nsIIoCcouJg+kSW/uj/fJVfZd4CHvzpioEmQVKfqg4
+         C6sCogapGMlN2lPivV601W/jBFzUYxed3LiCH3NNbcZHD97scCYkRPFJ2K2EmXh+eJE+
+         D6uQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793830465; x=1794435265;
+        d=1e100.net; s=20260707; t=1793830622; x=1794435422;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=D2FzhDRzTtc/XzcM0zNgPuhyPMJQZQhyp9SQGVRa/yY=;
-        b=WielZ9AgAzi00Yfg8stjP5ZIFGInLySYktmiZz0g/Lje6OFjSnn2dtP/Vs8DYSNPux
-         zI9JNxTPMv2gbEwldcf3dcR8+F4DI953OuV1wJkwigZM8QO69vIIBf8stTKhlq7kT9C1
-         hjgLNvc3V5bQ780HfRv7VjgPAYKtCcK6dqSnb85/myZ2dmCwf53BVTsY0L2hDMT2bfNr
-         2+qKYvGmnLqoZvLsYkJvDGp7MIjfwUWV6MNmYvQx9VXWDBVkR3fJV8vXTfRV7ukeL9X+
-         PS+XfYWm3d5K3kaeq9mfSBrNvHZnBHF/+C5StQvwEP3wO2Bj1GER0AejqiRnqWh3rzE4
-         cjNA==
-X-Forwarded-Encrypted: i=1; AKwUvBzddzP1WaRKuTBb3DiCmXZwSljSlOGnWUqqRNeTdHbQgyAukWH4AOd+5uSbaKQ7EkjIEoQNZtnH4A==@kvack.org
-X-Gm-Message-State: APuU4Z85eeyBQ73kZK7wvt9DKnMaNIRXd5uYrMRMvQwmE2dqiZAbjNYX
-	+OM5jXQnE7i7yBfWwvWPxsuqUVBFli/nnc7lSQWhAu75XeuTDni1PtDyA6InNvIGxes=
-X-Gm-Gg: AYBFou1nEuEeSM+GnDTEcuGPYtqTFZr1iqFA+FgPfl305iXLsen5NCH8HFz9CUOy4MB
-	Y50CRm+pJHU7RHZ3L5hlgTr1rFGdRt7a/Csm8PBIA8SBtKOEl94xS8QnTDzV87ttjx0Z7tNV03l
-	hsmE4FSdVsyXLqRlMLrFifuAaHcXr1u+/9SXmNMdm2wvCqBcMBaQdu5LRVZCvWpryBN9bczB9nW
-	IR4lIGc8UrkEUu1+WzawmVe8yEnH6D4q7BDR3ogF73glhl3emZEld9SM0sELCbDLUKLN3L8tFW/
-	ZujhDcinbmYqGmzGXEMlbu2nYcNMbri490SUtua8sRTAoFJQGwAIQTLPuQvKW6I7hrLR1YoEjTh
-	4m/shF0DNdtrYZGnXlw9gWen86Ys7Nu5fa499Ye2smfu3sZgtmZ2SWY+3nODM1WtIErvOW8ZiGP
-	rOpyLdvUEc+kIw7fK+W7GUAfzqKUUIiWZtTHQnWdMYRTLElfH+cOHIkFfnpYlA2bs52mWxdYIp+
-	YXrbD06M+U9SGV906ScDYotN9RsdytoD5dvXGZykidvw1jyPV2Lhp6TNV1k3dHMns3WcfjMmGXP
-	+e7oCZL3iW1NZrw65mHD82QIW8f6/EACpqLMi090iuTl
-X-Received: by 2002:a05:6000:2c04:b0:48d:f7af:be35 with SMTP id ffacd0b85a97d-48e6e303f44mr39514518f8f.29.1793830464779;
-        Wed, 04 Nov 2026 14:14:24 -0800 (PST)
+        bh=AoRyT2gWGztVgBxsNZy1AlqhQ+YolidchQOTos+xRqQ=;
+        b=Iw6f0qXxvAtXLfizPE7uVnbEauTD4nbSj9qUyhFS22wNxY73sFrUk03ltkSHHyJQgC
+         +LfjgGKpfrxGgDp8giBvxtf3cGcWZ4JalrFCf56I7YCh/xra/+/Kzha285TFVNSfrqQE
+         xcldUecvwSAhPOPqU9AB5OiXea9+kf83jv4uxRNKims+6uM5kYiNdIdklm+2fdXjhPSH
+         k2RRgKaThAT81Th+fwFpU0gc46dzspw2UEfupPIeUbzJ/FBDpdbNS5iDQW1Hj+1UvuBW
+         wqaA91tOEJemFCVbVTY5ES/2HaOUBK5mCyItbgmugpwje0s5SnSK92HTuV4G0G4L9oJq
+         7M+g==
+X-Forwarded-Encrypted: i=1; AKwUvBzVjJUH2dqwVJuYwYarEMTVWkYjTPNtn1IuiaWqrQB5xUU8buReRt4Wyg8t4ADnr6HdA/7noe/guQ==@kvack.org
+X-Gm-Message-State: APuU4Z9hcwxAOxYKuXqGtUQk6pGeSfPH3QBt75wkG7t1XcJulZNVEO5S
+	hlEL1DigOaMH4m/nAV88GuGxEcNWS0d9G6obusAs3RJXnBcoLnsVBeZ1ZCeOUOBVyrY=
+X-Gm-Gg: AYBFou3yhP4qIHnT5spo1RbjHAgP0w8i4YBoz/IyHrZy+EG04t39eZs0cvM9is1Fs7A
+	6FnuUa71rsDjb3th2OZwur9Z1DG7wqj8GDHoaHjOrhZizmWxwJV3CNG/niy8qTlvTCisVldOr29
+	GJGGLrG/3cpLZ+7Q5fy06MAHbD0fSWERdeRSceaFs+3ciMy+S9P/Gzc50YEkhFFkHnhyHrvQkEt
+	4vQfK0qvmlrQditFS5fdQnv1fPe+TTxe9yxNt/+nMevNZwOX50oKUhOP+Zc3Ow5aJgvGXnU/9Vr
+	79BH/2HXTo7maqu4OyvdSx4GSjQ1D4NmErjJL1wNtjMaXLrWb9EJaz+VTgNensHZplH0vhGECvH
+	i1ujKNK14qv/7JysJ9Y03NL5XEjl/GMxvqKHY3H87UM0yWkzOnRNP0IaHRte0J4fOmWlhw/GZQU
+	z/mHVAnQG4JlELmOHH5atYRYfQy4QPGuUNrPaokW7b0fsd+gl6VneXtJHkWFQW7ARFGFhtGf0C7
+	Qb9+G1d5Ui0PP3qB0pmMPNwPOHZDqIERJXLRhNaCQorDHNAOl+gvXiG5mTk/grWg961HQy8uDCb
+	5UYaTg/0Qgj0kmmXOezxf+I=
+X-Received: by 2002:a05:600c:e548:20b0:4ac:86c9:b09c with SMTP id 5b1f17b1804b1-4ac86c9b146mr248866895e9.13.1793830621562;
+        Wed, 04 Nov 2026 14:17:01 -0800 (PST)
 Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed552aaesm6405241f8f.40.2026.11.04.14.14.22
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56ef2e968sm16301645e9.8.2026.11.04.14.17.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 14:14:23 -0800 (PST)
-Message-ID: <ee08889d-4cbf-46e7-b6e5-3cf4fa8cfc6c@gmail.com>
-Date: Wed, 4 Nov 2026 23:14:21 +0100
+        Wed, 04 Nov 2026 14:17:01 -0800 (PST)
+Message-ID: <be34e0ca-4706-44a8-8264-3b9827829e9b@gmail.com>
+Date: Wed, 4 Nov 2026 23:17:00 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] kho: walk bootmem areas in address order
+Subject: Re: [PATCH v2 2/3] kho: skip zero-sized lowmem and global bootmem
+ areas
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
  Pasha Tatashin <pasha.tatashin@soleen.com>,
  Pratyush Yadav <pratyush@kernel.org>
@@ -107,25 +108,25 @@ Cc: Alexander Graf <graf@amazon.com>,
  Kexin Liu <liukexin@kylinos.cn>, Sourabh Jain <sourabhjain@linux.ibm.com>,
  kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
- <20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org>
+ <20261104-kho-bootmem-sizing-v2-2-b0d1a834780f@kernel.org>
 Content-Language: en-US
 From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org>
+In-Reply-To: <20261104-kho-bootmem-sizing-v2-2-b0d1a834780f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qjs96uj1co1bb5k9hq3djfym3o8swsay
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 0AC2BC0003
+X-Stat-Signature: 64jabn7uwrium891uneio4py87uujnee
 X-Rspam-User: 
 X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 43D7C1C0009
-X-HE-Tag: 1793830466-391596
-X-HE-Meta: U2FsdGVkX19wZz2vDVab5Cut41CQ7x0z6YbhGjJDmBQNn6tsVMAeGmDXy8olmSbYOOmmT54TOPNix7hpnUfG7qLO+7g5rs8HzI6gJYpdh9fnTM84n78IDHaXJD1cJDww79EDpmfq9XXI8FdXkPFSK8Ga2cpGK/Ywqd50XNDoO+SY2TEcoZEbPLB6tN92H9LpKOoCqPrsZIauWsc0Z7Cif8uufD390rp7Ik5gRrRuD+pEpq+152GOp0ce4gkF5zmzsTARDaZnmFt3Xu7U4cVJLa9ixn13eJ1Uu7Cy8hSKvyA6U01OIMiuVnAifWibJRQrRrbUsqy85zEW7Upiywl566UGkxMtq87b9QlS3dtjOGrLnXnbQSVauqgbnqVnkgyu6qapSfVfE9xH3WiOdL4c+sFoqr9QYsWYO+m+LxwhRAzbdjeMyw+iPNch9FZoIPBeDvGYH6KROBfYobAjqBRFXRJAohlYHxbFjkfQNfK4xv24FrYzJsMqFL0A2IDwxFaL1/y0Ig4qOzw8DS2MnK6MRef+dN3nULtE6DP2+krnts/ZDjpMyPfNK5pDLQw+S7I3GVlp2HunzKL8v4yhnvgONaC5dfPfTaVijR6MMrSRcb1qaYvuxsXn4Bx8exx2/fJuWdKHUwyrxEgmRoOgoE0YCuu3p8XWIzSpPGCzhw1ouRY9p4a4SEMVb8baLji+ITUYp/3S3jrn1xsDVXgxwzENXt4euxd+RKcMTVwbVNlijQh1at33zG5eKYN0/amj/L5T+gH3oVxdf7KNzJelWTH56IpW83x4LXAqH3NQv4rRw4rfyAkuh+Fl5IeL2PJznvYdQd/uDc5h1Iz7WG+rDPijgNoByffiEC/r3U5m5VPSle7YTAcyEzVlNvnSAlhL+EtDRsfekQM2lYIBICF3/kv3q8kyLaOXLjc0p7x7DeVjCqRzzrLaiRXkrHdosU9jvyf4vH7Xds3lYaAL6amCA6n
- YRzC2C6j
- EE/YYhfX9Atix1p8KlvaBSfRWtfNIjjGJSRSDA4nhlleGcOEktJQ/FazvAo2kfZs2lHJwzjUdGMrFdJhX7KHvxvRCXH4jbzTqNajXT3WD2DEFBwYaCYc2B56t5vPnzgnmlLaV1qpYRiGYd5yWIdzHSpHbemFQ36g8d4IrmQtJyDmplqWhnK+dAnjFXDPFHwJih4vwNUR11My1yBg1QGa+3IdsP4Lv4WdiZVUKvjirtwy03oS0pfhTGWS4shQDJ8QZyyW4JjdvgxOSsvJDs+3MoHRylOJEegFm0htrM8f3d+67ma0EBbhS+VzZrxK6gWWOtFDqKfcOJvh3KB82DIu69mgFyv1h4B5SFMQ+hXtOFmDHEySE7jmlBvf1qe3pd0u6KpMA82mDM6zxM1KukYbU2hwgYvTtIBRz3sGcrZ94F9sltJ2UBocobJJC1ERrIRL52vl5UMSc1X5S+pjJAAmvEw6zlRHotYQ0rns5ZDPmyBOOzyA=
+X-HE-Tag: 1793830622-139344
+X-HE-Meta: U2FsdGVkX18lenxP9rVs2Am8RYYWW4OyET6nqDS45NlaRRS2Yp0U2sLAkEFshls2muPaIlseLc1Y+c2zwDzNcFic9XBb0L4icNR2inS73ePuRk4fWutl4FhzMj1PUCmYZYb9Kqn4GUIy6eG1kIIlorVGtptofQvXcq0qJumC+fWaqb07dGUxYM6JKG/Rahgh8sQAM44TLtpJLynkR1dzvRHdGwyFlnCgdSMONH4zezQ/jWGAN+2rO+hFJubeqrq5k189HIxEc2+U9n5Hh/8Ymra+du21gDZ4kgdZ+sjMdmjkQXxeBdRlnvg9/uCwSPvnExnNXv8rvrR9qE5Q3Jhce9x+oG5Ou1m33L2qvnjvRlx0uyT/DvRB3fv37Nohcp/VLVw+cd044WnWpXxu2QLEXbigl4IGi+7lUB+/8xOzbe+La4UILpgmc1V1u3TZE9k9fjXOt0XmwznIolkTMcGdUCe3xlfMdVo/H8itXKgqLr0rql/dO3iWYRR9VI+v9hsiLcU/9PZSDGnRT3JPeYSn4FaJgkZW33V5vR1ZJZzzYVmK8CqQ6rdD+oHeCsuReNAU6MWLd0vmpkGJ9y9UjeDLKmUqQedAMw2Nw8NAe913Vnrm56/iUlVPssst0NULAljCGT+ypMUXtL5HMUiZG5TElDuWVfFNl9kzpLNgJrtvaKIXVgdHe0g9cIn2A8hKVYoxTiBF3XmfrcoQ/Br2DuS/P0Z4S75PuWtd6EmVJLkAIkNrX0RDGtloHCmxbFm9hJxRDYWfvfqWv1fd6IAg6xBlVLOZhQleA3dmAJHDFYtl3Iu8jCq0AfzPFJPS2XApHRp5cmm6wCQSzUDP76PElq6uqRQKuDLiUwYQFiqUiAa9aaO4WjvN0jbwQOq6UiDlzhfypeW2Xyxb4FrJhzF4r4MyAOwXoqCOc0eYyRiSD3MQ129fvgEDBoom9IxfC5m2h784nTyftUfHlfu4DPB+/oO
+ syf1lq8/
+ 6INs2h0rlUt32qPt2aSzruXOnCZrmCpb7vvi36dE8ts5XuDAZpvYnU5iXgDezCwhGZnEu+NOX4RQE3qqU2XT8DZXdzcK1VEu3fr7hSnTa7DvUsGOaxw03gfqfDsEfVr1INLN4g9Q7JJpjgrH342RrxpkRkQepKSFYhEQB51nrxzmdjKY8tLxzB9FrdrBzpQEoVbqMDKm1qOkb6sUePeokvgXXV+D6X/Xf3i4L1dA9npFEb0lM3y4g8SHkaSPUlgyZ3ouvDWcY859uJyIY3mrLz+6NhXByMYpBA89woCRnw1kki3uZz41S1oRFSN6x3XO8b2rlwAG9cxAE64WsdWeqGvzbV/HbjD3v2tOASz+tUpmUimy9+oeGV9wM3ScOOpg/MbRO+tC03DqlWgUOzaPKLtqV2uTZhRj733iBak1VQTmotFCFrRptFw3toMq/1h+Ni2DG0HS/ePTHOFxmyPFfc6iEY8uSb1mt9ToWpeu58wG1a5Zmmc8rN5CBhVDVCgQQ0H0J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,23 +136,22 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/4/26 5:50 PM, Mike Rapoport (Microsoft) wrote:
-> kexec_add_buffer() users may depend on the order in which memory holes are
-> searched. For instance, arm64 places the kernel bottom-up and then
-> requires the DTB to be above the kernel.
+> The lowmem and the global bootmem areas can have zero size, for example
+> when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
+> either of those areas is explicitly set to zero with kho_bootmem=.
 > 
-> kho_walk_bootmem() walks the bootmem areas in the order they were
-> reserved, so if the kernel lands in a small area at the top of the memory
-> there is no room left for the DTB and kexec fails. For example, on an
-> arm64 VM with 2G of RAM and kho_bootmem=8M,64M,64M, the lowmem area is
-> reserved first at the top of the memory, the kernel image takes most of
-> it and kexec fails with
+> For a zero-sized allocation memblock returns an address without reserving
+> anything, and that empty area is recorded in kho_bootmem. If there is no
+> memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
+> fails and KHO gets disabled.
 > 
->   kexec_file(Image): Could not find any suitable kernel location!
+> Extract a helper that checks for zero size and allocates memory from
+> memblock, and use it to skip empty areas the same way as empty per-node
+> areas are skipped.
 > 
-> Sort the bootmem areas by address and walk them in ascending order, or in
-> descending order for top-down searches, like kexec_walk_resources() does.
-> 
-> Fixes: 3bdecc3c93f9 ("kexec: add KHO support to kexec file loads")
+> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> Reported-by: Chen Pei <cp0613@linux.alibaba.com>
+> Closes: https://lore.kernel.org/all/20261026131851.9942-1-cp0613@linux.alibaba.com
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
