@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1E7607F29F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2264607E917
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oLDqIOTw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dEYUfVLB
 Received: by kanga.kvack.org (Postfix)
-	id F35256B05E1; Wed,  4 Nov 2026 14:38:07 -0500 (EST)
+	id C285E6B05EA; Wed,  4 Nov 2026 14:38:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E96656B05EA; Wed,  4 Nov 2026 14:38:07 -0500 (EST)
+	id BD8176B05EB; Wed,  4 Nov 2026 14:38:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D60036B05EB; Wed,  4 Nov 2026 14:38:07 -0500 (EST)
+	id AA3AC6B05EC; Wed,  4 Nov 2026 14:38:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ADAC16B05E1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:38:07 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 485D4C06B3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:38:07 +0000 (UTC)
-X-FDA: 85398447414.23.7D38CD8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 73F30A0003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:38:05 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLDqIOTw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8794D6B05EA
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:38:22 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2961F1A0854
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:38:22 +0000 (UTC)
+X-FDA: 85398448044.14.C3FE531
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 62419180010
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:38:20 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dEYUfVLB;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821085;
+	s=arc-20220608; t=1793821100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K/nPdp0KTrkO/JWfX0DeaffmMq6r1stKUZ+oHzzOxP0=;
-	b=p6tIisSByoLFmibK2DIOeQA5ntLUIKNoG6O6weenWzscOR4ZcjTmwKu17Cb5cWpKKn/Uxj
-	lUCZzK3u6szfBrB9WxcGiXWaZ6Fi4JPRkGI54mWlYcNNRhNPHf4T9xEfRZQYVXkCS4uoZc
-	DPaJmZzorU9CXPBXNEPVlyCTSgYqPPk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oLDqIOTw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=moTp49XZfW2IxIkO6/t4/a2jJtvDF10yNUa6q6hnE3E=;
+	b=hvnnX/Hd7HmJgqkx5H9Ci9iWjvUpk+Gnmm1gcH0kqCvYqIpRyvZXARrxK9p9wF+99w0U9D
+	rrY/9b7xjf23XYh/5XQ8gqnFthZRsg0jTcH+amfU5hUB0vnJpBl591PFjiBLMmZvTkaZpC
+	+JC2xcunNh+VjddvCxHmp6jhaeTkOrs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821085;
-	b=LgSWmoyJAdtOGcoc7ucXEWMAty0L5YROvqJW20N9gcj/pUpLLGVJ6EhiA1KLTeMmvKA7Oq
-	73U4IUjsBhkclCrtWf3exc9hGlFLvYxsKL5IKTH9Xh7pnsrgane8kh6b2sAViYkzjrRAO2
-	IVGwA4duPHzbNBHY+1q9zSy2/YTjE+0=
+	t=1793821100;
+	b=vSq6v9wjpHHutwAmcqyLSSjGaKM87lRoYHrZZz/0dfrDMhkZkyWRZYk9pqPBhtw72mif2r
+	tMaXmRg3nzq1IjJD9wQj7vRU8nr7yWdx8PDuFnsXZUlg+yaNVsLIiCEtexy9wSZz4EV0yY
+	ubc7MplgIdij8CoeKGTdFJebTSpudvU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dEYUfVLB;
+	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C691C42E5D;
-	Wed,  4 Nov 2026 19:38:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9BF1F00A1B;
-	Wed,  4 Nov 2026 19:37:52 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EB3DC60D9D;
+	Wed,  4 Nov 2026 19:38:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 655801F00919;
+	Wed,  4 Nov 2026 19:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821084;
-	bh=K/nPdp0KTrkO/JWfX0DeaffmMq6r1stKUZ+oHzzOxP0=;
+	s=k20260515; t=1793821099;
+	bh=moTp49XZfW2IxIkO6/t4/a2jJtvDF10yNUa6q6hnE3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oLDqIOTwTl44qDXUKo0I6FzsXq0+ba0WjB4YCiCZU9JLqh15F/mdEZNy1ACYE+I0B
-	 qPq4Ssz+iK/J+eJu6nff/NkdfEp6rYdZwfCVKcczyKz5fHXjpvVlG/Qm/dEw9ZL0xG
-	 8PXHN37KmNVPmN5T23ck2GcUncr5vJ52nd5OFcXFUE5Goto+9up/68B7m4SIC6mV83
-	 dUnBRd6UMVtOXc059f+OnYX0WXgqO/Uzy4tsZ8wr2OaUSvl2vGEki/eN5mj7meJO8a
-	 M72qqDynVfbDFqAmqr+C62uIaJhArxnrmC/9rNVTKL6uBLhc9SJ6BYF+yeJf+SxLKs
-	 ki60VRKb9D3jg==
+	b=dEYUfVLBA2EwlpohdyDXzTpTkRMJNpEZw07PenB3nQEME5dlyhNXhUUoG8mOjVcfv
+	 oPDIsebnx4tZSNv75ByRLEUZV0ZfOVLMGkLYWrqFTsxkA4voQYbiWI7Chp/G19hq8j
+	 DKzQFd+kG9Z/ZczXaQksi6FimDULy8ynh1v+zV87qzzRKlJkR46N6iuYi3HyauJb0/
+	 ixnpXSjhwjAMxt3EXBGirkIdHW2TupS7i0FdK5IMsq4hJkLRXlD9MCqRth25zPpRvr
+	 XFXCckKRVb1cNliO2C/VaesIJ4kkrjLqwN3PZvlgzr9t7ORqmcl1O6UD3IPPtWLnEr
+	 6EHLI6lqSf6WA==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 09/23] powerpc/procfs: let procfs copy out reads of /proc/powerpc/systemcfg
-Date: Wed,  4 Nov 2026 20:37:50 +0100
-Message-ID: <20261104-work-procfs-arch-v2-9-2aeb952c9597@kernel.org>
+Subject: [PATCH RESEND v2 10/23] sh: alignment: let procfs copy in writes
+Date: Wed,  4 Nov 2026 20:38:05 +0100
+Message-ID: <20261104-work-procfs-arch-v2-10-2aeb952c9597@kernel.org>
 In-Reply-To: <20261104-work-procfs-arch-v2-0-2aeb952c9597@kernel.org>
 References: <20261104-work-procfs-arch-v2-0-2aeb952c9597@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1293; i=brauner@kernel.org; h=from:subject:message-id; bh=BKyq5EW+jipwXgvVj6hm7sFkYOn+uIZEAZe7arc6MQo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97vjOI7W5OU2Ecf0JRpsD2T2N0rxx3fUCk8WEDn860 LbzeX1YRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwERWv2T4Z/np554211z5HPtN Ea8e5coKrXxtW8d48eZXNxb/m5d+8jD8T260OtJsUDiLw3pdFscpPeXZpb3vZ9Y1ll1xmP9kwnc DJgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1293; i=brauner@kernel.org; h=from:subject:message-id; bh=pcWTmpkZi08Bh4Hys88761LsQ4siFbSCZrSZZozxPfE=; b=kA0DAAoWkcYbwGV43KIByyZiAGrriPihaE1Ps2uzOVufjFEo6SEyunTx1SnW2Cza+IFLmTCnS Ih1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmrriPgACgkQkcYbwGV43KIBxwEA3vYT I915GRHPWFgUXtRSl6XArUTI58ux3r8jCqihWjgA/RPKZfjZEripcr0Hh6B3Oon/z2/aODYAora Qp9As5NML
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 73F30A0003
-X-Stat-Signature: p1x9rsi3xci8etr59swhs14i6ynce4fx
-X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793821085-371807
-X-HE-Meta: U2FsdGVkX1/2p66LjYUlOq/ILmRNu0RCLCMNucAXsVC8wsLoR6DJ0g42Wy4CTO8Dhy1/N8VihA6I6cguXrwniUpu7ss1ZzN2I5KYlRqI6BcHUlkrIvDDx1m6mKTRYIQT52nxrCyHra7K44RKuG4gJVal6aMd8F+/Bw2dXdk2welz7Szi+26HbKdywX5NwtrmgLf+2ZabgVzzFkZhx6SiMJbQPZOOfYVSPh+h/3Vs3d7wII16VuFpN0toH9DpE62bN5q4gvlkht0CTl6gRgQ8mMiu8Yxh9pfcYa2a2HrlNzCtH54T8jLViPqnwCrGtpAP/yRUbgPbZuGHIISgBEMNxh78qGlJ2cjclXdKwYsgngptecg0unzfiUyFpML/Z8ZaR3gXZA+8XRbKNfS5sDTbxI3PcGkdGbVxUoGaHvWrZjF9kMH/4Or72LJ1kLjjNypO0VAooYnbXi1l0mYEtc5rLkM6i70qYI2OMAUD76SFW2Gs3H72+g2Q/3ZQ9JoRzrdzApke8KoLyzxmEET+NJavRnkbqn7rxj4nNxqahIiiQYnVnjhBY4LBxGAuiliwXdXmHy69FZglx2nrFCoY3DwxcQ8TjwXkwD+QzzzV8c+qEhD1L6riNiN5kwo+9Y/IUYaYo4Kzcyz0q0Kr/qRHDkUs204bL55LxTAcvztXhzNdFgyqjzsDv1zN1UqTUawKCTDHB2s13SnaXd64PamHjXVZyj4JsgsejCw7Grj11To5vRQ39swyWIcbmGCUxQ6hS7azqP3YdCeq9tS5FHr2F/YfEDqCuulp9AvI/EZb78oNSiLd5OjyROaUF9yrZ9pmCdcLWWkoM+6CV9NWLnZjMy6MgIChTnu/loWE9cG8FLRH/zzLlDpdu9oSeB+tsKWsNWWm3fkhzsE9qjauQkgSNekpPYVQ9bCg3ysiZ+8Kj+a5wWhXR0hHkII9V3OqTPP2c3bJnOCIKDtOueccYvj+WPr
- qwnL3yex
- 0vdBuSuhQog+G8B1uYcq9rH0Z3TH39tSsLLihlF5dkZTv6K16SJe9PhXTrDRwsEvxyplXO4prf9pzCXMOV1ffg7U+urYYqvXKMtEr0DqkW3SJGq1Cc0iNVBKg+rUgl8/dzmvdFR0kWn/hpDtOIs6aO5dGJwg0A91Pqoj59Nv3Aa44isPPBa/P6PfhpNIUoWciwBbgme78G2jJ5mCWBG8ALFIQqXGJ9G7inx8XXBn6I9NLtrIwrBJS9LgCjNrOYEcu5aZRu18f7X/prt2OJnsmQ/jJhGMGkwnB25KH6vSD4ToDGwAUAyaLcPWn13DMjLDARiqFDi98z71ITXovUyK6Vj9oBAyDoYJ2zQnCe4g59G7skpmJ58jcs8KowITlPWf09btEAzKsOW4HAlQzJPhbdWRJUg==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: rj5qbqifruj3qdkhmd9skn6nxrmjmqt3
+X-Rspamd-Queue-Id: 62419180010
+X-Rspam-User: 
+X-HE-Tag: 1793821100-874828
+X-HE-Meta: U2FsdGVkX18mx7T3kgAVdHXaRzh+hXTAnktVVtBJSNmexdqBb9EJfoOCSvY9qWDLD7EnWruSqf7O5XmTazlfPcN+T1zwgbadTwEpymV/XyzZHGz6Vpc6WkCFWlaUxPqwPmFYaD10x7xQReuqVuOQYImRaHggktGyBTGgpYr9XgsdamAeiVVmbijh4pngLcJ9GiNvv5PV0KtCmg0VwHKLkk6gEAvLAZE9qjTsopYqaBcv1BuM65Vd4OWysgATdsYrBG1a/cp2u81KIb8ch9VFJYKc6v4FhYILFWSxgWJj3vWTUep0HHeN+/VaAjUMp/CIobyHC/oUjMTBylxRs+Hw9MD5Cm6/2Umz/vo+5TpA4z2oK4Y9H9b7cPr4LOCNVtSQKAKXwrfJiyOrfwOh7y7L2kbFSQrVzQn0Se+Q7GvPP1V8zVWruXWtvInQ8q7+V2dcB3Eqn2l2nDf1hqNiNGrz7HwO0G72eXIItgjMCeqQNoeV95NgKr9uZXp0XsPHPJPthgxdI8Iy1c8ghosp5sXDFv19+25/v1uPGJstprGWwDfoHTvmgCQ6PiWOq5exKb53aDdhMFmfe1+A7Yff3vtA+wl+pwn1jDKG5aUcG69Kdu0tysbSoDLlJWBn/qYThCeveIxHPviWEtTtFrawBDzTZQwS+w2l1g4KxQn5aTV1V8pnC9FbwWFXvonu5M65qQaEEXfFpJXvmGQpKjQpd3+y85/UgvJBy7CV+mhFIZb9i5+IqNFGqdTkJazVushR4ilO0Ou1yqJA1YE66L7tqKeuWE+vg+SuctXAUHttN/OwVI0YVoFqt3CuNiDrgugzL5qcIt39VMrJ+omVpveNDp6dF9aCi74LncbimJgjrF1kAdMLF7OPPPwc08ppTXLLBuowygY86tTMdvEEvMsWKaJTPkHFtfxtpQjg/uoJcF+2rOlz3wW0/LrIZccSGLBmlicFA/CNIP29PnbSYooiWFo
+ YBKNobNo
+ hL8pUAHeurpITNUj8csLF06C7uknvU8nEGs8YoWFg5Be4RktZGGVwkBjZleKo7Qf+3/OYo4AvVCxXLLm3jMQ5wMnp5fZQ4EzTdphM+axow5xd/blA/hSTxWsbZtOJ5O6/twP73x7J7k5QIVMOaXztvVAqFm6QY/8yAfAjf8+IuZfoda9suw67Hne+NeBqzHK2gielSL6fdU67ksqcRw/xQheO/UXD2CTSCPNTpZ+BdZ4lrvO7K5CIkyyYlbqaf4nKtoGJXTFXfZiQcvW4Ur22Mfyvhu6yiQ5vJxbkioj6SUGt3qKMeCrUNg0hoynJxUOxpyuVOyeHcr23fDqya8mCfuyVsJSBk4rSCW0i/BhjT52EwQNGJ/D2BOzR1Lb5JlfnPt+qx6qqpd0hWVlJ07BzbjOhJA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,40 +154,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_read_buf() so procfs copies what is read to userspace
-after it unpinned the entry.
+Implement ->proc_write_buf() so procfs copies in what is written to the
+alignment files before it pins the entry, and take the mode from that
+copy. Writes larger than PAGE_SIZE - 1 bytes fail with -EINVAL now.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/kernel/proc_powerpc.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/sh/mm/alignment.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/proc_powerpc.c b/arch/powerpc/kernel/proc_powerpc.c
-index d083b4517065..46bc914d74b9 100644
---- a/arch/powerpc/kernel/proc_powerpc.c
-+++ b/arch/powerpc/kernel/proc_powerpc.c
-@@ -24,10 +24,10 @@ static loff_t page_map_seek(struct file *file, loff_t off, int whence)
- 	return fixed_size_llseek(file, off, whence, PAGE_SIZE);
+diff --git a/arch/sh/mm/alignment.c b/arch/sh/mm/alignment.c
+index 2198c6f2ea63..d832249a8e18 100644
+--- a/arch/sh/mm/alignment.c
++++ b/arch/sh/mm/alignment.c
+@@ -133,14 +133,13 @@ static int alignment_proc_show(struct seq_file *m, void *v)
  }
  
--static ssize_t page_map_read( struct file *file, char __user *buf, size_t nbytes,
-+static ssize_t page_map_read( struct file *file, char *buf, size_t nbytes,
- 			      loff_t *ppos)
+ static ssize_t alignment_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *pos)
++		char *buffer, size_t count, loff_t *pos)
  {
--	return simple_read_from_buffer(buf, nbytes, ppos,
-+	return memory_read_from_buffer(buf, nbytes, ppos,
- 			pde_data(file_inode(file)), PAGE_SIZE);
- }
+ 	int *data = pde_data(file_inode(file));
+ 	char mode;
  
-@@ -43,7 +43,7 @@ static int page_map_mmap( struct file *file, struct vm_area_struct *vma )
+ 	if (count > 0) {
+-		if (get_user(mode, buffer))
+-			return -EFAULT;
++		mode = buffer[0];
+ 		if (mode >= '0' && mode <= '5')
+ 			*data = mode - '0';
+ 	}
+@@ -149,7 +148,7 @@ static ssize_t alignment_proc_write(struct file *file,
  
- static const struct proc_ops page_map_proc_ops = {
- 	.proc_lseek	= page_map_seek,
--	.proc_read	= page_map_read,
-+	.proc_read_buf	= page_map_read,
- 	.proc_mmap	= page_map_mmap,
+ static const struct proc_ops alignment_proc_ops = {
+ 	.proc_show	= alignment_proc_show,
+-	.proc_write	= alignment_proc_write,
++	.proc_write_buf	= alignment_proc_write,
  };
  
+ /*
 
 -- 
 2.53.0
