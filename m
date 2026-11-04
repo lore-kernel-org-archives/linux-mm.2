@@ -1,146 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6ABC606A338
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 18:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D86606D811
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=W32vtbGR
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=PKpNpa/F
 Received: by kanga.kvack.org (Postfix)
-	id 4D5626B05B4; Wed,  4 Nov 2026 13:57:13 -0500 (EST)
+	id F406F6B00EF; Wed,  4 Nov 2026 14:02:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 486286B05B5; Wed,  4 Nov 2026 13:57:13 -0500 (EST)
+	id EF0476B05B1; Wed,  4 Nov 2026 14:02:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 375786B05B6; Wed,  4 Nov 2026 13:57:13 -0500 (EST)
+	id DDE626B05B8; Wed,  4 Nov 2026 14:02:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0B8356B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:57:13 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B60D96B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:02:10 -0500 (EST)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9CCDEA852B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:57:12 +0000 (UTC)
-X-FDA: 85398344304.18.D9651B5
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 9E5C5A000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:57:10 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=W32vtbGR;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793818630;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3D858A082F
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:02:10 +0000 (UTC)
+X-FDA: 85398356820.18.F1B8405
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5119A40003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:02:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="PKpNpa/F";
+	spf=pass (imf04.hostedemail.com: domain of 2dgodoy01227@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=2dgodoy01227@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793818928;
+	b=U5nvZUbb/20co+Y0wc2D1ZNQBNa7kxwTtEtMd5/Jrv1VD4Fnk53RHZ7J8Ql+Q+GQjDe6nC
+	sgtMtPzR3e2mbkXAh/WBmhXt6a3NXCxL1wvzXtnc5Z+3Q8Zmbu9YNaI8W8noI68eRYX5jR
+	BYNN7x7sTX5qPMM8PQTAHt+EWriXoJY=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="PKpNpa/F";
+	spf=pass (imf04.hostedemail.com: domain of 2dgodoy01227@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=2dgodoy01227@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793818928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iDac3SJ3sAacdSf0W+GWhjMPaQx0+h6n24uVhknSWmw=;
-	b=XxAqAw8LN3IUVPqt6G63Qk1BR07t83/jngyrmZIrVWdZNRPMdVPXMD9Urst/Oq5Lu945Lq
-	gJqECqMuBEBGe5790opn0PwjV00s+qid5GyUjH3cCcrcJCKp4ITTpKR2e2+3aVi+AQA4oW
-	OqWSmZBvixku8dP7LaP18rIS77MwTVQ=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=W32vtbGR;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793818630;
-	b=OdE2NUw2qkN9WekfCdCb8zSMaz0ylaBwCj1hkbApwyoq1cdLj1Pcc2P8g1bp7dp7g60vE5
-	TuQc3RU1Vva6Cy/a0zcP1ud6jV5aC//VHjQjwmLRM73vLTgNL9ykoKdixVOtDwGTmN/wUb
-	D0dA0LI99wXSFBswYBvhUnTpkiAWQpM=
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-9851592ada1so303687241.0
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 10:57:10 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=pwH85IO2Kmd9UvCosC1bqbkR6Q4A/lE32+TPIoCPrKY=;
+	b=wREHaVecVVsWY9tZh7e5Ht+mmSVf+zOuqvNsM5nlhZSoQB9NidHigrGLism9j34QXQQFdK
+	B8J8viKgsEcKgyPhLYe6hc9/n03vE2NM8sM8CyY9qv/PLI+U412KBn5ysg4T3bmN7Ls6zI
+	k+PoKFbZYGt4Ls4Ke4QffFzeT5pGnIw=
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-cd3310348d2so978108a12.1
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 11:02:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793818927; cv=none;
+        d=google.com; s=arc-20260327;
+        b=JZ5ZqPRB2RlSlTGmKpd5RaaFAIMzGCx98GnJCRuMJC3u5Onz714IjAqMGZJEYLRelO
+         JjUK9if7Wgr7baGlokIkUipUvEP8Ol4EZW0z7s4cxVl2wr7eHyB4sBcxn3pqk8AZHQJ+
+         l6yy6qEOElB63Pu9mWokb5i/74XG9Mw0QaHgRC+uz+dhx8pNG+AJRWYdY3VTYVmpOKZP
+         3FCihYydn/a6Fn3KCsbzBTsHOuRIFe8A7mFDWGqZABU5ENWf3GgznenHgxhIaQTEIT7O
+         CIyYJtCX5G3e3Ltm1KZp2HNU83JH7ruBIuL6lqhxXa4uh7c4W6KC3VmpmQQhWMsMT4zI
+         q1vA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
+        bh=pwH85IO2Kmd9UvCosC1bqbkR6Q4A/lE32+TPIoCPrKY=;
+        fh=YxaQX7GTjfBsN7A2Jl+A9yP6mmGOQanoqU6QROKhVaA=;
+        b=HiDv1YLXpVjUlm0iQZRRIOfyjnQ7FBce1Ldu8cKYdIOW/R87Z3/teKs3H8MCeF7V3f
+         1UxzfycQ3mVhoD3ourD7Vh5dBmUvfHJ6UF48Xxi96H3Q6yHHhKMEG3FVTrQKKYxWKAW6
+         cWsSDpKDvI3FhnfxDcI/17KzZ0XKwyihHNj4UGyTC9Lp2kJVfMWiOb+/7BIqbFpruf5C
+         /Iz/UbBhTq8GPkv50HF87n1LuKGRNB/KpYqfYvOuJsKZWKPhQjzFo+8slBfVY7PvdYx1
+         pXwRG1CiJWnddVtVEUx4y2jfBvrQ3TCmvNIhYyszPrpPdAXj1aP4OdTp3Asj97OMxlSS
+         rG5w==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1793818630; x=1794423430; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=iDac3SJ3sAacdSf0W+GWhjMPaQx0+h6n24uVhknSWmw=;
-        b=W32vtbGRRBBM+M6R4Gl5kJeN6YAXc7jlC/jMEyr/vnUDXVgLUxCVXPczyEqyluMraA
-         rLZRoSCxND6WEs374FK7Bap5XCzkcZ95YIMBJouJRApQ39mEurjDtcTHI1JZkklwSglP
-         f9mthXsNpLjyL/u96QTIJtg2Vdvz8FuD4la+tMYPse6VvXP+IovWgQf1Xe3x9cZxkEW2
-         GxBZAC5FUMg+skJIEd7ad3XcevywBqI7A4OesjraBjo/5JVRhgZqQhPZIEnUDrShW/8N
-         3PNcaKZgtMg5vlhN47nXpjZlobS1MYg2QiybrCts+bziioJE9ZHOD55VKyXBQQ8LIc7h
-         4rjw==
+        d=gmail.com; s=20260707; t=1793818927; x=1794423727; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:mime-version:from:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=pwH85IO2Kmd9UvCosC1bqbkR6Q4A/lE32+TPIoCPrKY=;
+        b=PKpNpa/F8QBQrM/NX1HU65q0EvZasyh1hfNd4/82cXLN5GT3968sw990HIITSDli5p
+         EzgcSgsdLqSElfMuvB1tUiDYTWE3E8cMYh7s509Uy2ZUxRRJ6npQlJE3/ZFQukAJIGix
+         z7H3bf3j6NZLQtZ0dWgdiOc9HiEKm9bjzjuY9YLvmyWqQXiBbM0mrZ2EFXXEo3gPna8Z
+         CoSllRG8yG6szL80v4Vh98YGiJwz/ojXraBb3kOveRSZEoliXc+k/0wR+R5fIwgcUX6r
+         uDjc0wlXBoPT8u8nyswfpsYCRAuN8lrlbTyPjH3NNd0O5IJwPnMkCubTEYMyiVw8oTwh
+         7Ylw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793818630; x=1794423430;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=iDac3SJ3sAacdSf0W+GWhjMPaQx0+h6n24uVhknSWmw=;
-        b=jnh9ccPrqrNA1Cu974Eu+3D9Nm6ZQ9BefmLbFbxPqpt/NVR28QDVGnokRPX80NVC05
-         XZO4MJr1N9WtfsxkGaD/Gw8Gabv4KigVaEcXme7lrm4qZTXtPMjIYu/jA1yT346+NjuH
-         sjaB3ApAOH6BtEcxr28qeddVIf5PVdeBj4XMcU9ILaX0YdVlOMBl0EBAbsEdGygQrKdx
-         /d/GmP8CIyG3VYNHNWfC+HAPXCkeoXWXZE1Hg20Ca5+kvLsZzL7guzUy41jSfJvCVKHL
-         hppztPA+3Rm7mGXSUI7bthfE/wP9DWi78aDKixJoCEUSODvtZkadDdU9snXuV2CNdR4u
-         VZwg==
-X-Forwarded-Encrypted: i=1; AKwUvBwv/Bi9l9XYaiFz+cEsXFgWk5iupedXaBMgyb2UNzsHlJAv29uvjDAStkJRi4d7zAwkFywmFNlxlQ==@kvack.org
-X-Gm-Message-State: APuU4Z97DAEoeLySTOp0eBAt8zG9dk2rGbchhAmbfnQnMOh4cZZNwBDq
-	JZnXMQMgH0ASps0sshqqI2KWqzrTlszvEfyV9j+hUlC8Q+o91VkoQySxG0ltiyGWVI0=
-X-Gm-Gg: AYBFou0c/E2q/fNJWUe+dVgtoVWR4YQxilBW0Inrbg/Kf7gNqfYghPl0VSqQ/QKpDFi
-	hXPlv0vM2Zzr92BNNR79BJE5mnmwA2wsALfvd2jHA25poIZ3WQElgrLOsSEDHDOf8i7X2YHobNx
-	Refkh2X6pp4I0vcJUNoayJErTtUoKb9Zv3iM/tCFsWftpj5GtnMHDrvQU4XV2llyvWk7ZBi0ULt
-	hwuPhAj4uHXLmEhYatR6GbR9OAnyO4lqpiCR5x0Eiw5Z/LgXtx6WNqORv29oeiUzt6SpRoZ/Rva
-	kf2Q9hLI/svFeXclHP1/KIj1gTYRa6jfTuH9GslVt2G5lYJDTLpnj+N+yzJ91bcyCqTe4hkEHio
-	dSNDcmt3gTCubvqYzlDH/PvehoWyVN+P46Z55QH6lJSJHlLKsjld3GRKl8mOnvVHgqbh0d+Xw+6
-	sdSmlZcfmAhYbY5dqTAypP+CBLFtTIwqkH97hBpqZ7pWC6dy7k4hdcWZlZx+6e/tY5UAmJxFhqi
-	uyZGOJ0qGiriiDB4N7Kc3vaZuDmIVessS3f2Cz2tJmfEqucdGRyCPVOEfFwytBaDQMBapvRAqfQ
-	UJeDd5h1i+oO9zXpNnHhYPN1UbH+jfN2/qc+xPAG9+DRK1X8yNuJdLKnBwrmes8s3x8RmIaxaRS
-	hVpe8AHZFZ23EzcJgadW3R62gg4mczZTWfTexipIX/w7y
-X-Received: by 2002:a05:6102:3f8b:b0:7b5:4700:3a6a with SMTP id ada2fe7eead31-7d07267f972mr6534578137.26.1793818629622;
-        Wed, 04 Nov 2026 10:57:09 -0800 (PST)
-Received: from soleen.c.googlers.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-999f3006224sm736210241.9.2026.11.04.10.57.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 10:57:09 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793818927; x=1794423727;
+        h=content-type:cc:to:subject:message-id:date:mime-version:from
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=pwH85IO2Kmd9UvCosC1bqbkR6Q4A/lE32+TPIoCPrKY=;
+        b=PGmT+eZftONrp5ulnT1QDSB0ZzlWee1OxofxKbqHmsUywEiZl5b6hp8zB7Ep6nJDpG
+         LLAdIgz34lxKOQWLwShXAKdbesD9uixQ3pukDuRSbvjVUEQ5jvKuOQXa/oYyvuNt0oJ2
+         8ioHJkmchM/hfeV6o5YlfjUDrEvtYJ4x5/ZslNTOjEHVI/vWpDykquyZHI0Nb/AWcSl2
+         xoXZvNc16A7qfb4QAiUwCndZCDuQjytfvC5c/jIMm2CnAV+lvwaYEKMWKFCAmSuekW3y
+         I9ot61SYld8tEtcrG8rYl1EjIVWOjkXDRgynsEXjy0gNGENNKm/sqM955NgTsHmIJUP0
+         ShkA==
+X-Gm-Message-State: APuU4Z+Wp8j+HyZOvTsriIt4hHJhjiODyMNpiUq1PbhrcwTRWcXNOJg8
+	80zfdJAOeF73td8uiot7MgE/BBds+dbFuI+pI774dnXZSw9Sd1uuwORGsz5NJKwCFsao4jUPfkZ
+	TFGT4azxlB/hxDaRjJHVkQ+tozxdKVNY=
+X-Gm-Gg: AYBFou1qNvpgn8NJAmyR3U5QoQsJiXtb31/nzmAQfWdDJrIbsG1L7GPNumOzAmdpeT9
+	KqDnaIXvVsnC/sJF+zj/s5lJQsD7xRQ01d4qgX65vOgrXxilEi1o3FeWH9fFAtNwXdwwVfBM8mk
+	hbpytnn0lJdsWs9EyC4K2eBVJldQc/SC8y2hMFqHqnNPQUqxHLGRyWdjCqStZBBbtm/RJ9p16gp
+	QRNU7MnBu3fyfeKiMkdUpgMpwT9IE3sowbNZC/UWSuGlD5dO3Q0pc2y31/LRmANftCshOxS2zEn
+	36BiMY0U3InRVPCcx8RRuLFntPsGnfyWk1CfHOg0+Me7Mjz9Z9RorZrg3iZvSYwpJRDf4LlzI+N
+	an3S98dyfzqRGndtEVGvhRb7p8ImnEi4Zwkf/iIv6b/qj6qzDdkX8elCsOtsG2zQ/U0vjJhgTw6
+	5SSNve8XHCQae8
+X-Received: by 2002:a17:90b:1a8a:b0:3a0:eec6:b065 with SMTP id
+ 98e67ed59e1d1-3b0afc28fc2mr223845a91.13.1793818926988; Wed, 04 Nov 2026
+ 11:02:06 -0800 (PST)
+Received: from 511566560828 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 4 Nov 2026 19:02:06 +0000
+Received: from 511566560828 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 4 Nov 2026 19:02:06 +0000
+From: Henrique Godoy <2dgodoy01227@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2 3/3] kho: fix bootmem sizing
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Chen Pei <cp0613@linux.alibaba.com>, George Guo <guodongtai@kylinos.cn>, 
- Kexin Liu <liukexin@kylinos.cn>, Sourabh Jain <sourabhjain@linux.ibm.com>, 
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261104-kho-bootmem-sizing-v2-3-b0d1a834780f@kernel.org>
-References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
- <20261104-kho-bootmem-sizing-v2-3-b0d1a834780f@kernel.org>
-Date: Wed, 04 Nov 2026 13:57:03 -0500
-Message-Id: <179381862329.2089669.11972657670874869389.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6733;
- i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=8NqiYICk6wvIGUqgp0gIb5QmvDxLmCEuClGbEqhbbDE=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq64ACI6dHufVqtKRAfASZU9NnRUoz33nR3D/hW
- 5PGUMiqqByJAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCauuAAgAKCRC7dyhM23N6
- 3q47D/460EB5pARhfkcmCTGOpBx3BVr9a19rLtkQ6IrAevVjF5Usw/TPnwMpU8Ix3kYcbE2HpHO
- g/wizPi9m2UDvdGZX+7Z/UfLYhxq0nc8wtN95e8YGoDhxZUT6qrSX9Uy8bQE2roqYWqsSF1LJgr
- ZJDQBstGnNLSC8oc36m1rwMPmaewALX69WBBsjBiYxjfscHWjSaiLLhL7g1FMDNf9RxWf79NR7d
- daUDV1DoFeNVbe/o+AcvafKPuZfrbfxtikuln4wO6d/0xM+cOy7o31nTslA1XtaWA9DpqlpyifJ
- bV1NjvAMnKfmwiGFYPH1HBAd6BbWxOEhR4I2aJfD9DT9AhwSqrgZMN+H04cflhGprYEIg2Axsdi
- mWLd/R7OYvsdqeZOOKgL5SUHJ6fzeg1pfefjwn2KFervJjfpBqonfzHoR0+bNG5NPYqmNluH0D5
- wlKiEhcRbG33gj6aQuOrXZeYXyXnn6GMogLZgahuIydGI6HBaCWj2P40bbD7sEK8N+QcRCu7GQT
- 6tyG+UwuSRYLuUHCe1BYooIhGvmF+tMXM1kQZpvDfZbaAccsD+sgjbXfA7MrvdyTBxcjNS/nl2y
- 5SnK4Y4e909G3Z1kx2p6aqysRv3f0nT0ytC4EmB1JStQWhVaLQHJGiYuNbf2GDPCNn0A84Lvcpr
- zcKUMYSVpL4L+ug==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
- fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+Date: Wed, 4 Nov 2026 19:02:06 +0000
+X-Gm-Features: AclHuK_f094t9Aarf_ICuOIqlKf8WmOIyvUEgEjQ3oNqea5atvStlotKptHyeQw
+Message-ID: <CAL1HEBAHwP68MigcYpBqTeRo5YhZY3Xfp5=HDZzvhm=SpMAA=A@mail.gmail.com>
+Subject: [PATCH 0/3] tools/mm: page_owner_sort: three input-handling fixes
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 5119A40003
+X-Stat-Signature: 54c61pacyrujd5oepcjh4o3p8hiqq85g
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9E5C5A000A
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: bqcr89h6cteonbxst1y1wpen4a5m3s6f
-X-HE-Tag: 1793818630-581903
-X-HE-Meta: U2FsdGVkX18/SWtTBwpGCnHshdjmYdPA2RoQExZ833YISV3uKzqm/Ja1O7ncIJbVlwf1oB/15XGATat0i+05CeXUpUrthmFZVhyDcRCJsms32JobfneBf4oZ9zSEkXdSSmIUaFmXtuKIO06i9GC35PrFuI22EsLZbZRhX8qXP5D041l2Rg3cbA1bhQe1yVDWtDCQLnDp0grKvEHYVpRvchX0msL940p+nXbhrjeGkkPERSgIJ+fj86LvKxmGUdU/6RjtrlI5N/vWWDzRiwxz1c7R06M8uIvvbn08hf/fT2wUPfxiS61WuiDbXEQT8gP2M3AxMBzi/w+coj51qjcUpChQ8PvXXS2BTGZogtWvPZjul3w8lprjAULrNc8o/nvx3GvCwSBb5aWAOCNlivTm6Algwemhs4zJimyl4nuhL2sP4Vt+y1sMsfJm1Zs8mU4zY0Pc/yuyJvl2aE1VWb1yabpfgfUN0Hf8kJi6q8bL5ixGqsv2i89ik6gsT2mPMQrXxVCxeiKhozWV4L6ip44oMTQB76wwy/FVSSrpHof0YzYzSfhpzBQdQVlCd++dK8m0fy1e+kkjA1FxtVBJE95ZiCdHQNnQHoywPRh43+CjBisN0plj9lzmiiKI++6RMhORMFsD3DRjr0f3GtLe3+FADxl5o6HMOup10hlhtXvvRBMnLjBuSkqdIEs105/+vLl0yLmwtWkGfZmEh+XFwNhsJajWQUvXGitia/3G553GGmZBK8vJe4Krren6BZUIUCXV4kAkdwny1RZ7ZHKq0usnQKeY8Wgvbqhur8US7wOTCdEOW9I0TuYiYHZkgApF4pmD+3HxuwFv+ziNq9uh/dwo/oGFPgUwt78nT8ZPFXwGhvHG8X+SjCQ/eJnpTHU6CcKvVV87+Fl7srUHKSAjKCr1kNxic4h/Bb7X5B9nhWXJCFpmU6CLm2M6uyzNk6X4k1t9DZ+rmSfyrevFOdtAXBh
- j5lRkDoM
- wEGTYIvAt78wjA/fQSIs/Q+UgHTB6F1Eosng/YiVttKIEw8ieCym7mHcoEYM32Wi8aQ4ZAKDltsbDRKAWjAWRkolMzx5J2oOJTHvIUgW61pCD1hPW6CS3MB6NiqT/DomIk2PDKY2qruRsS9WPSrOeGQnDGWYa2Nrk99EcpgRxtNCDSnG1dnqlhJybT6Hg0NtNK3aiW8xXckxu7ZqlxDHKSGTJ9PGFMTlrZnH28kwOkVoKliIk5RaZd5x7QCM/7Prun8BasSLfM1IT75mSV5sdtmRqhgwUZe104JRePFFoNUKQlxqmlw1k+PRFTSNAeyQM6e9fPzhuxhcroDqPuouGlgOy+kUZQWsBoFOUpx5PfXgV54/0wnqTKSEQb90jNUIBkGkV
+X-HE-Tag: 1793818928-377242
+X-HE-Meta: U2FsdGVkX1+5L4Fzvt52i4MJX34EQRzTKR0+nmfhm1iqzF+Dbq3ZdLvwvelwlIVLEECjTSDNXzv9eDxHEILN093mfGsHspjFhLGLxPXvlpSotyUa5+FzbBoHGpdXMPWkW2Q7g71aQPNJGgLjxoEyZyugHBXflGMURdEFgfn14mM1eWkQzC/ulojwFZ36HuPQpddOrlginRqGOcHwBpAIAIWy0P94Klc2B4RdnstoXrpnHsQxyWeQ+7Zc0+AxhnjF+44hiK5tFIfNKTq4QDLgfHnImIyQM3ZEfBTdJKIz6KnZM6phTvVDVPZ/7T5Wi1he3reir8Db65+OE1f8yldEPIsQORvOIyAb/7q1Bwiq4NYAUs+CmbRCoV3scxOzO7oekEN+hZV3Fog65OONUWHj4tAM4x91uEvvbaSPub+cTZIwfInTB1zB9DM8JflmnrroplmjJ/ZUdUE3X1INQue8jqmUFEp9oUAaZZxq0GWs7qq/dhf2e76oqhAqGMGHukTW0h1jzZvFmK3QrsU+m8gMN2BAOWBefblgtzscvY4DcMYwxxJglibI/NmfQuZ6HTbmbtyEsLuNXQsU4j5KmMwLbVaJtqlBAcuzNx+ruTDoj+AE48hxrxU2XNUlI/vEF4JRFwXW5QIVFqC9UUA+MqY8ToCCoqMj3gUGkTUMMCtQqcRrf7LnbUxpfxmK1pcy2wSuwSLuSpMCF/04Ip/cjj8Iaar0J6q9ipU4BSgObypq+9n8Nrtv5YFk1WWbAKWRA9qGAXXRWrJaz0OwyORIfByNHVv2cNadb+EZUGli8G7XmJRvXUICl8+wGaPbdJh8I6jDSDpC1PPxgtfevhnI8mXycEvoVPPJdbwPlGt2Lq2DQ97gCFCcIiYZ3h0zEeW52Tmp3hEWg1Y4yDEOE0rDvnmEFtUdovBrYNGXreaFnK0PZOqtD+8rWemUxSZGbcQsgaGpa+dAvHJpClgL9fT+IBF
+ ufsOdp1N
+ hqxV6J32+w1haFZxFcGYwhiULIQcmiwzRDQX/XFkNqkopofQIadg/oWPekyh9PqLhhJRGmZxAsoqI+JAeYLDYO9k3ANL6bIhx8AQ05kSP8OgH0rFFqZ58QcovtP5fAtpAhWMcciewtpnpfbGPeoVJ6tx5t8T96rE+MQgZlKDVi34JNlkDgx2Z4FMlYFNB9MojKrLTqib9NMmjDHQo79fxBL6ESOCDqbemDZA+4N6//nGMP9r8nEtp4oraYpeCkQqacFuLrcHe0E4KtS+sNSs2xLyepHd+bvzC2onMW919n8VhIVL69Gtn6fPZ9jh+jYcKItVZxbvln3iV0QNfC8oj2Uidw8XPE/qRd7Pe0Yxp6qhveUe87hkJijhtEdC/VNhjeF2TTWqrorQeDgd5V5baWmZgq2hlK68lh6Hldd3xcdg/hrH0uiKAZjBqnCSs8ayhR2yWf1Slfuv0WiHjqexsvLoqa6AhOVOW1p+YQJf7zNJWIFyN/KcNTWIhCczBelNQD4R2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,173 +138,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> Bootmem areas are sized from overlapping views of the memory reserved in
-> memblock:
-> 
-> * the global area is sized from all reserved memory, including memory
->   allocated on specific nodes, so on NUMA systems everything allocated
->   on a node is accounted in both the global area and the area of that
->   node.
-> * per-node sizes are calculated after the lowmem and the global areas
->   are reserved. With CONFIG_NUMA=n all memblock regions belong to node 0,
->   so the lowmem and the global areas are accounted in the size of node 0
->   area and scaled once again.
-> 
-> As a result, bootmem is about twice bigger than it should be on NUMA
-> systems and about four times bigger with CONFIG_NUMA=n. On small systems
-> reservation of the bootmem may fail and then KHO gets disabled.
-> 
-> Make the areas cover separate parts of the reserved memory: the lowmem
-> area covers allocations below ARCH_LOW_ADDRESS_LIMIT, per-node areas
-> cover allocations above it on each node and the global area covers
-> allocations that are not bound to any node. Calculate all sizes before
-> reserving any of the areas.
-> 
-> With CONFIG_NUMA=n the global area becomes empty and it is not reserved.
-> 
-> If ARCH_LOW_ADDRESS_LIMIT covers all memory, as may happen on arm64, any
-> area can serve lowmem allocations, so don't reserve the lowmem area.
-> 
-> Bootmem sizes in MiB in x86 QEMU VMs, before -> after:
-> 
->                      CONFIG_NUMA=y     CONFIG_NUMA=n
->   1G,  1 node         176 ->   92       320 ->   80
->   4G,  1 node         508 ->  332      1264 ->  316
->   16G, 2 nodes       1268 ->  704      2944 ->  736
->   32G, 4 nodes       2296 -> 1224      5196 -> 1300
->   64G, 4 nodes       4344 -> 2248      9664 -> 2420
-> 
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Reported-by: Kexin Liu <liukexin@kylinos.cn>
-> Reported-by: George Guo <guodongtai@kylinos.cn>
-> Closes: https://lore.kernel.org/all/20260904025101.9959-1-dongtai.guo@linux.dev
-> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-> Closes: https://lore.kernel.org/all/20260922131217.698809-1-sourabhjain@linux.ibm.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index 5b1797d1289c..c4b697a612f6 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -685,6 +685,7 @@ static unsigned int bootmem_scale __initdata = 200;
->  static phys_addr_t bootmem_size_global __initdata;
->  static phys_addr_t bootmem_size_pernode __initdata;
->  static phys_addr_t bootmem_size_lowmem __initdata;
-> +static phys_addr_t bootmem_size_node[MAX_NUMNODES] __initdata;
->  
->  static int __init kho_parse_bootmem_size(char *p)
->  {
-> @@ -754,29 +755,58 @@ static int __init kho_parse_bootmem_size(char *p)
->  }
->  early_param("kho_bootmem", kho_parse_bootmem_size);
->  
-> +static phys_addr_t __init reserved_mem_size(phys_addr_t limit, int nid)
-> +{
-> +	return memblock_reserved_kern_size(limit, nid) -
-> +	       memblock_reserved_hugetlb_size(limit, nid);
-> +}
-> +
-> +static phys_addr_t __init bootmem_scale_size(phys_addr_t size)
-> +{
-> +	return size * bootmem_scale / 100;
-> +}
-> +
-> +/*
-> + * The lowmem area covers allocations below ARCH_LOW_ADDRESS_LIMIT, per-node
-> + * areas cover allocations above it on each node and the global area covers
-> + * allocations that are not bound to any node.
-> + *
-> + * The reserved memory on a node and the total reserved memory include
-> + * lowmem, so it is subtracted from both.
-> + *
-> + * If ARCH_LOW_ADDRESS_LIMIT covers all memory, any area can serve lowmem
-> + * allocations and there is no lowmem area.
-> + *
-> + * All sizes must be calculated before any area is reserved, otherwise the
-> + * areas reserved first will be accounted in the sizes of the others.
-> + */
->  static void __init bootmem_size_update(void)
->  {
-> -	/*
-> -	 * If fixed sizes are not provided via command line, calculate them now.
-> -	 * Remove HugeTLB allocations from it because they never get allocated
-> -	 * from bootmem.
-> -	 */
-> +	int nid;
-> +
->  	if (bootmem_scale) {
-> -		phys_addr_t size;
-> -
-> -		size = memblock_reserved_kern_size(ARCH_LOW_ADDRESS_LIMIT,
-> -						   NUMA_NO_NODE);
-> -		size -= memblock_reserved_hugetlb_size(ARCH_LOW_ADDRESS_LIMIT,
-> -						       NUMA_NO_NODE);
-> -		size = size * bootmem_scale / 100;
-> -		bootmem_size_lowmem = size;
-> -
-> -		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						   NUMA_NO_NODE);
-> -		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						       NUMA_NO_NODE);
-> -		size = size * bootmem_scale / 100 - bootmem_size_lowmem;
-> -		bootmem_size_global = size;
-> +		phys_addr_t low_limit = ARCH_LOW_ADDRESS_LIMIT;
-> +		phys_addr_t lowmem, global, size;
-> +
-> +		if (low_limit >= memblock_end_of_DRAM() - 1)
-> +			low_limit = 0;
-> +
-> +		lowmem = reserved_mem_size(low_limit, NUMA_NO_NODE);
-> +		global = reserved_mem_size(MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE);
-> +		global -= lowmem;
-> +
-> +		for_each_node_state(nid, N_MEMORY) {
-> +			size = reserved_mem_size(MEMBLOCK_ALLOC_ANYWHERE, nid) -
-> +			       reserved_mem_size(low_limit, nid);
-> +			bootmem_size_node[nid] = bootmem_scale_size(size);
-> +			global -= size;
-> +		}
-> +
-> +		bootmem_size_lowmem = bootmem_scale_size(lowmem);
-> +		bootmem_size_global = bootmem_scale_size(global);
-> +	} else {
-> +		for_each_node_state(nid, N_MEMORY)
-> +			bootmem_size_node[nid] = bootmem_size_pernode;
->  	}
->  
->  	/*
-> @@ -785,24 +815,9 @@ static void __init bootmem_size_update(void)
->  	 */
->  	bootmem_size_lowmem = round_up(bootmem_size_lowmem, BOOTMEM_ALIGNMENT_BYTES);
->  	bootmem_size_global = round_up(bootmem_size_global, BOOTMEM_ALIGNMENT_BYTES);
-> -}
-> -
-> -static phys_addr_t __init bootmem_size_node(int nid)
-> -{
-> -	phys_addr_t size;
-> -
-> -	if (bootmem_scale) {
-> -		size = memblock_reserved_kern_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						   nid);
-> -		/* Do not count HugeTLB pages. */
-> -		size -= memblock_reserved_hugetlb_size(MEMBLOCK_ALLOC_ANYWHERE,
-> -						       nid);
-> -		size = size * bootmem_scale / 100;
-> -	} else {
-> -		size = bootmem_size_pernode;
-> -	}
-> -
-> -	return round_up(size, BOOTMEM_ALIGNMENT_BYTES);
-> +	for_each_node_state(nid, N_MEMORY)
-> +		bootmem_size_node[nid] = round_up(bootmem_size_node[nid],
-> +						  BOOTMEM_ALIGNMENT_BYTES);
+These three patches are fixes for tools/mm/page_owner_sort.c and are
+independent of the out-of-bounds series posted a moment ago; they touch the
+record reader and the array of records.
 
-Nit, but I prefer to avoid multi-line indented statements without 
-braces. Just put a braces around the above.
+1/3 keeps a record that ends the file.  A dump whose last record is not
+    followed by an empty line loses that record: ten records load as nine,
+    and the tenth disappears without a word.
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+2/3 stops reading a full buffer as the end of the file.  read_block()
+    returns -1 both at the end of the file and when a record does not fit
+    in BUF_SIZE, so a dump carrying a long record is sorted as if the file
+    ended there:
 
--- 
-Pasha
+      $ ./page_owner_sort dump.txt out.txt
+      loaded 0
 
+    With the patch it reports the record that does not fit, with the name
+    of the file, and exits with a non-zero status.
+
+3/3 grows the array of records instead of deriving its size from
+    st.st_size / 100.  A dump whose records are shorter than 100 bytes
+    holds more records than that, so a valid input is rejected:
+
+      $ ./page_owner_sort dump.txt out.txt
+      max_size too small??
+
+    Measured on a dump of 200 records of 93 bytes: before, no output at
+    all; after, all 200 records sorted.
+
+The three inputs above are the reproduction cases: 9 records loaded before
+and 10 after, "loaded 0" before and an error naming the file after, and
+"max_size too small??" before and 200 records after.
+
+The output of the tool on a realistic dump is byte for byte the same before
+and after the series, and checkpatch --strict reports 0 errors, 0 warnings
+and 0 checks on each patch.
 
