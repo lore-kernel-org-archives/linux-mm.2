@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA89E606A32E
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013EE606A330
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:01:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Kj8h01YM
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Faz3ZjK2
 Received: by kanga.kvack.org (Postfix)
-	id 074EB6B05B2; Wed,  4 Nov 2026 08:01:47 -0500 (EST)
+	id 157FB6B05B5; Wed,  4 Nov 2026 08:01:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 046DD6B05B4; Wed,  4 Nov 2026 08:01:46 -0500 (EST)
+	id 130026B05B6; Wed,  4 Nov 2026 08:01:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E736C6B05B2; Wed,  4 Nov 2026 08:01:46 -0500 (EST)
+	id F12C16B05B7; Wed,  4 Nov 2026 08:01:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B7FA26B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:01:46 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF4071206A2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:01:45 +0000 (UTC)
-X-FDA: 85397448570.18.5680985
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id B3F99C000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:01:43 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kj8h01YM;
-	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C2CC56B05B5
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:01:52 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 384EE406F9
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:01:52 +0000 (UTC)
+X-FDA: 85397448864.15.1514103
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0CC031C0014
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:01:49 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Faz3ZjK2;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793797303;
+	s=arc-20220608; t=1793797310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O/dxa82xWVm6PMFOoBLZfnKEj8mtykd0dOrhKJ+ZGuY=;
-	b=MnBgelvo2hEVKPE2SF0d5//DCfVt9R0MV2B500yWdjjGQ3QX8nkowCUqAZ9Btj+O0Bej34
-	LTDHfJwm+hKOUZA29FoaZQB5AizlDj1yiOHyVa3LKFuxuH9GSalm3v70nqBCPw5V1GZtw6
-	P9Hga3X3s6JOwRNhZQuQYi/E5URVR8o=
+	bh=I5JDyfdMkj2wCtOOfN649rnZ+9k1JAyMoYfLCV4c9D0=;
+	b=KegZE0NzW5jDBmz69eMqsV+DKt4GBeBmcET4aVAiRFATFYk6dYSb+UgP5JG8NxgdFRzRk7
+	d8k/R4gdhKOoh0U/LkhwxOB9o5OEIWUrLwTLLzvzGe1lyrBQx//UP5l8bnb0Vm14BP9/JX
+	/URWBKU0i6ejVZt/ICfwUatSVpssZes=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793797303;
-	b=Qip9lfaHxG2oetGaWePllINFLEaPNTxJsAgOyUgt0wtZpm6rV+bfPMiR9IZT7Tl6hacGM3
-	Yx4KuJ4U2H4Po2dXgzaLzwnPMq7DVAkh5i6WGBhouA6ap6dv1N5IRZlODUTWgOOQXsY9gg
-	X6YxtY0iehRpkitkVlf+4kAfwiU/DWg=
+	t=1793797310;
+	b=LQ1NBt9IJuAayzyTD3hDpBHkpmi+uBznOMstdpkU7QcU2ZtBH6lRa9iIqTnq3enBMu49GW
+	1BHp/AxOxdZ0m+tDdNKDqt0KU/5IjzzL1IhYfvls/Q2GiXv3VaSG3rmMTutzEcRZ/CSAwm
+	n87ENdvXbzYC2nJIaHGfmTqd1ejUXpA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Kj8h01YM;
-	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Faz3ZjK2;
+	spf=pass (imf21.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02A8E41130;
-	Wed,  4 Nov 2026 13:01:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49C3C1F00A1E;
-	Wed,  4 Nov 2026 13:01:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A6ACC60F29;
+	Wed,  4 Nov 2026 13:01:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375651F0093A;
+	Wed,  4 Nov 2026 13:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793797302;
-	bh=O/dxa82xWVm6PMFOoBLZfnKEj8mtykd0dOrhKJ+ZGuY=;
+	s=k20260515; t=1793797309;
+	bh=I5JDyfdMkj2wCtOOfN649rnZ+9k1JAyMoYfLCV4c9D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Kj8h01YMHVT7XPUbl54W9a+Cf9NnC3mkXY1i//tL2xAMm2zD9aatg4HZPm7QkL/Qn
-	 lWfQpSSIBvn9+NIKtoOTzp+foBpgBYSDmroA9sDxSjRNAk2M5KfsQFXE3zuEvASHKi
-	 D6BRxfUo7stWTmzfraDVHwhBzU8r6qP5m+HbdBIUl2krZTPJzmOHQrEeAU8c7aSTjy
-	 wKa3HovZ3hGG2NUZYbpoK+NQHAqDJtv3/V2UK1drkUlYXgENsxd5qGIFo1sP6+HzTx
-	 9WVE8EqWp9aCpe0rUUm9ywKJkTjjxZT8CthiNA52/YxZwDh6+cVvok28CYKjV6zGlQ
-	 IrIKF86VeIVAA==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 18C311980052;
-	Wed,  4 Nov 2026 08:01:35 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-10.internal (MEProxy); Wed, 04 Nov 2026 08:01:38 -0500
-X-ME-Sender: <xms:rizramMhR3FwPI5-KuM6iDPnV3bRBUy9QeXTrkejJ4rRMuylCN58TQ>
-    <xme:rizrar542OiBnGHAuFkdWIy8e2x7ol8kQCXnQx6wC2HaQ4DRLq4PQ8gJ06zgTsl-U
-    _Ma_SIThk_Qxy2JzqsisrJZk5r99Js9PW844Dw6hrFURAc3ednGEsRn>
-X-ME-Received: <xmr:rizraiY5lXWqOx8hhKxWSZ8JoEgRQ0MeeiV9MDKJXzghgWmQ1Jv_UTF9X2o>
+	b=Faz3ZjK2Csai2VwqGdu5cZgm1R7gHNhAOvUatxXst7kNVDGJtMEIlR04nRTkJw00o
+	 J93jsV1xz5rOv0TmN56RwnDBl2DAjjL1JGlbXV38vGVlt+uGI9bO0ags6GCgIbPIdj
+	 LC9efBKf7oBCiaEcae2u1IyA+KpVgXJA5vWw9vBiFBtNBtNSwXFSNqXjYc8JkYTAQV
+	 fKmejEOKaozskhfLf044dCXODEMfKizop4ijrC9HXIMmUphSa4ijQYYdacyGAvdtev
+	 AP9I8ZusXEp1DjbEm1Iagq1oz/0kKnPNjp3hG6xjCnDyXsraG+HVTxX+kbEU6aSaJ/
+	 0b8BFmpDKpBJQ==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 11C551980054;
+	Wed,  4 Nov 2026 08:01:40 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Wed, 04 Nov 2026 08:01:44 -0500
+X-ME-Sender: <xms:tCzrasLnQ-6aoTAivy6dIwb3QAXiDgsOwkB7XNibpfHeE300IgzEIQ>
+    <xme:tCzrahYN1w4j905SN3NhF4jplVsHNsXUlUc5JnqlrL7nOXX3rrLDNn6YZPutix5ri
+    D1SJErl3C5VDQDAvUmssApnUGf7L3krnoy3BZsPIouzDdrEB0m8L6k>
+X-ME-Received: <xmr:tCzravWl5s_fXCNZi1Y-t1CAFz9SGWtnNx5qTk_tp0POGVoUrk2uCd8vxAI>
 X-ME-Proxy-Cause: dmFkZTGcnWxWNdwzviArTqwO8SleswujEAoF3G5cAnzgWuj9VIXYzVn8L/YtSSoCVpDQCx
     AFAjkaMBKJDECegKseyQPi3BoJ2ULdzgEWHQh0kOOdV3qcZ96T5qYw8zvnYBduU6y+7gOl
     ju1hRqdfaUd029Zpq0M1QKVfvNYpVJXA03mIXM/FVYF2n1TVZdGxcwDBil6kVRafbiJtv0
     QuPNDwYksKVrYzT4QGS7HIxmz8ayVgiPQk5G9zoQji1nSBMTr/zV+0QH6w0a9BT4L54N+d
-    cRhB7KhKgiZgmWNJc1G8l9d+gvjQ75B75nEIsy2loqzEXGvtqjUcmfJ5UhZu2fDzNX4RXN
-    Sos3iNNV9RQQ+6u4LQiUkpyMrihOoJ01WcTinUsG//G0WyVORGzl/J6YD9u3h+RbNhtPuK
-    Fo53IOAMnXTw1Ofxe3I1lptXm4IL/KoDyapzPRkcOl6t9VEJnbx5PTZeXVFOelGmkmiMm9
-    fdmKcVmV56TLAB4Vg7nKut/7z2cVFZF/tju/fjr23Njo7juq6GrcVzYUN5TcCWyd4E9zdi
-    ZodfXYJg+CHnrHsD4BiEIUjvFnzurjL5k2LpqmWZNqI4QLawAlZOCj1IdOgA9oEt3zaM+h
-    w2nWvBmvJsCpEGgu9fY+X7D0puSrcuRoICY+NZKENxCkPLVE2qppRUjbaBaQ
-X-ME-Proxy: <xmx:rizrarEHAnpecQdYd6l_ChFGjfCsimVZBZes41VJIZ8nNTxERFIaZA>
-    <xmx:rizrauJeS6DfQBn8GD_dijDgSBwrCvzCjm5f2GiHKIZWoCbMD1g8hQ>
-    <xmx:rizraiesLrPteMRJHMkuAiPhBBXW0IZGSitpI51cZeyT9uWyCSG0RA>
-    <xmx:rizrajacWYJ_3Pmq9yzbtS5qTw-3CspOaj5U9zZ0baQq1kf0hNYK9g>
-    <xmx:rizran79poDBkQLiKB8Fk-xAqyX6OLWB3p-ubGRjRyYnUTLmi9-6cZbv>
+    cRhB7KhKgiZgmWNJc1G8l9d+gvjQ75B75nEIsy2loqzEXGvtqjUcmfJ5UhZu2fDzNX4RJx
+    MXTgBiPaExnSeSGdTd2uIQPIf04/vV8GeZZGlCpJD3MJZYqa3/ilpSwupO/6D8DuMuVdgf
+    lRhydXCQ6Xa2S+8DXLnkhoRuc1AjZzapOvhFIm7zq8MW9dqCj5VxcPf4OCv5NvmFJ7UYZ2
+    W5KDa8ES6KsPHniHYnWGGUwJ2J4K/1PV1PHsiPmmHvenRB0ZPoybQ89E0SeGb9bommOpqP
+    nH7w/zl3rKWJgnqBtibtcvEVgCGNRaGZi5A1a5NqGqAreUQOZZ+flJMakBeKirePoTtvdm
+    jmXr2MmwPG2xEc7XfTnFlMnp2TzDvQD9nw3/qiRcvcRcLHI9+hkvlT78GBIQ
+X-ME-Proxy: <xmx:tCzrapHj8fNK7yMBcpF29XSoU7Co7uGuP-5XZ3IpQ9GIsIXoWSQu3w>
+    <xmx:tCzrakC5Nm0lKtJYDGNGsLNIOv5n9mqZVigJ3V2aszFgd3UQ5JQEAw>
+    <xmx:tCzrasVyFTfFltq4x2-saDnpvghTxCZn5zweaKj3fmmbIpygVzC22g>
+    <xmx:tCzras4VW6TSobJGmtOJftnDT4qY_mRwirpxa-3AhBFeorfQ2rWlCg>
+    <xmx:tCzralGiIlFvyC1gpv3jZPsZOa5eFtYPy0MBq-9V20rRKnakIHq6cEMm>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Nov 2026 08:01:33 -0500 (EST)
+ 4 Nov 2026 08:01:40 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
@@ -99,7 +99,8 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	Christian Brauner <brauner@kernel.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
 	Harry Yoo <harry@kernel.org>
-Cc: Miklos Szeredi <miklos@szeredi.hu>,
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	Miklos Szeredi <miklos@szeredi.hu>,
 	Miaohe Lin <linmiaohe@huawei.com>,
 	Naoya Horiguchi <nao.horiguchi@gmail.com>,
 	Oscar Salvador <osalvador@suse.de>,
@@ -133,11 +134,10 @@ Cc: Miklos Szeredi <miklos@szeredi.hu>,
 	linux-kernel@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org,
 	fuse-devel@lists.linux.dev,
-	kernel-team@meta.com,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [RFC PATCH v2 02/18] splice: don't steal page cache folios
-Date: Wed,  4 Nov 2026 13:00:58 +0000
-Message-ID: <20261104130118.2507513-3-kas@kernel.org>
+	kernel-team@meta.com
+Subject: [RFC PATCH v2 03/18] fuse: don't move a folio with PG_rcu_free into a fuse file
+Date: Wed,  4 Nov 2026 13:00:59 +0000
+Message-ID: <20261104130118.2507513-4-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261104130118.2507513-1-kas@kernel.org>
 References: <20261104130118.2507513-1-kas@kernel.org>
@@ -149,13 +149,13 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam09
-X-Stat-Signature: ssskd6amqif8cr9ceoaf5inif3gwq8fz
-X-Rspamd-Queue-Id: B3F99C000A
+X-Stat-Signature: krmyfboz19p87wug6uh6kc1wk7fanuzx
+X-Rspamd-Queue-Id: 0CC031C0014
 X-Rspam-User: 
-X-HE-Tag: 1793797303-763979
-X-HE-Meta: U2FsdGVkX19hLnP1EvIl/H+JX+VU3D7AWFHYQi9eaPajmBYEHyJ1BfTGUu4q9jQaMc2rlo6w4zUSvVjET0tZRCLthE1xQCEZnkI0LgAOferxK0Zihp9gevaC3Wf12J+fsYM8R5FWkJdnsP2UoxjU3SAfJcHOi+8j+GHIbfBeoeJkRXcXb8TznN3T51QEB7gL+vKlGc5sJiZJ5wtmJmclGWLYj/SmnsClqm+Il4UJWw6ZuJSW4lur/MIxbWre5rwppY8GvbUqvi7ucBSFuj0JdssClHbrGz+Ye16M+QEiOTQv+uA85TdR0NQ/KjncxBYr8MFbtG1/a/j71JmxhE9X0/noD9NlhVXKredAB+vNsZmnNZSzmYKgi21l9QXMEZqD67GsdrnneTE62rvLGsv3+yzl9LgwPiKdyBwZq58TjLFGqwngiwo5005E0EXKS2gNaqScIH6kv9z+EwJ6vCE6yYJ48auOQKpIEf0e/hFBf9CITGCNp+R1TYnosHxWLQN3Ousl8obtw3DqSJh5VYjt+P8uPHYN7T+hi606oigQ3AJGVmXtZCqkAGQoohNds7qMcwbLeV8kaBMVE3sZYjNo3eIQxsTYV4v05w33mis/D6u6JqPKFkcptRnwzZ+mbTLgl7Dmir4akH3hfBN9McNksSALBdQEUlhTIotv/FhVkvRgkh7Vxc6Y1yIFSIb7qTCyTZEfw3MQCeLfZQ+CJWNfsWyR53NphPy8Us15KcFB5hDDMS310g0EAoHo+gy7N6XdzV6gKdRN176TcL6Fo75tOZ6t0kZzbuVuP2acdbIjoqhOBGd1tKYxBHZMIeQ8LYT41voyfwl9uyPesnqtB8zn/jVD5IC7J7UtpE7KUV3UpCL21jdHPapEuemOHs3qfZVEfV0vzaglJsOBP+isKoO7v3d+w4O7BLgKsKQOrjtD/6CQ0oXT8tdQ+jLBoYsmH55HwLsVP5vZtolD5jzciDN
- iEGAcuP/
- l7f1N37C5R4EgbUa/KNbdkOQsQAgL92ky5AMUCyWUf4/OtHJoNMk3Eq9U3YPv77Aos7wk7s6t4Ydw9tu384IgCeaLRBTkQjiDME9c5HD+WP2Utwqh7shJ+kB2jA14DHtx/eU+Yq4j9epnuQkgaAMTywP2WcoAsWT/hFPwqZsFFC1qHaFqczO71+Zbe+bFPWsVPjK2fHuW0PDRaJD3qpChVOdsq+8Uq6NK+8kG080Ca7UgqU+o5EirILVmDIthVm0wqxswKVo1GkvHpT49NDIIyM1xtX09/RpA9eFH9xLwvxY5rJ9SaHlGyNcuMePOwv7fFFUFdyFnm0HbMpd5oUilpG/I4mSIU/B/XlW3A+M9GgYvWtvxw79Nsi4bFwjwEtiQw8js48UCzgYREyU=
+X-HE-Tag: 1793797309-296656
+X-HE-Meta: U2FsdGVkX19gBc8q/krfl97oPi4u3ALSrQyNbVtX/LuIhTeM/7jKVGKTEnU9PZXB7/13xMal6mft9umUtsLfRxZqj9HMeW6MYP/JftS9R3Tso4tWVaobc6R/MikjYHwozN2aILDeI/J0FpFYAZEqcyr8EpuKW4iKMsMVf/s+2LayRD5Rl8CiEZQiGrcv80s6Dhsz5erXzAF2HQJmF5OsUMGuDodmLOQ3eXKmx9nhh0f2KNxOvbQzNPN2nZVkJazvJBCZyXDkVBH1FiRf0NeqZzSSD2lnckIJ4y5LpdQJ+RvoJPWd7tfSiqpP3MXeZgzj1p16Y8uRTC6eBVjmJefTm+Tad1jPqWs4c5CX/WPp9oA7migV/sp6dpgP0k06elVF9IWDFK/CJC6YBt91fqnmRfpQsSunQq1jfAkZAY6PH9lf7NoTh15K1j6zNscV+iUxNYeVGKRBgyVb+SyxZzAh/taVs52Io1qhEwzDnUI8B9A1nH+L4dI6l6xUfv8RmSxg/pL9Ha/H7H2jBIBlrMWlxnbS1ndukkzP+KwMHsVLF/CW6U2+lzLxrREleltuefCEyQvwmRygc8xSx6xYlSewq+ghS75HbTvBxkdhK5UofxsgTgJNCKreEgygUOgRbAZhhGFzWV2OBvxGXoFdunjoc6lWtKQE8S5J0xr0O24/avLQa/wgKdOCA7aj/FBqQ25RjMESLm7J2htk7KVxG+q6NnMRUTvKmx/m08/yNmsQR2hNzkwDIzmA6eOKCQAOAdMjHLUGfZ7fuPX0NlFZCJIwVhfqOwpc3KcamznID6DX7XtRxzUmWg4Q/+deUpflnKZZxplnELzwg3INeNprEX03WOSmj219Sj3USMlMpRCotUz1DgPZGk76bfQr1K0lP8HCGESYfehgtTSDEyFNRvT/SvWCNacDNWCM3oJDUdPTu0KVs0TBuj2exLVxAC0XjnnnWQhX+Vd70iLbN6ExjWk
+ oM6o9YKa
+ Q2drHFbtN2kHL+KYzpZZXEURn1Tm3RWQh2P2gCWH8l6aqL9sDRLoxYOAmBhAuMdF4BiP4tVRwt72LOiYmddNYWh+Z/Oe/bBay3GZdmQ+E8lqRfCc+JPORiiA6do4kRKIRKIbXwY103NcV0lMA3ZD20X/YxaP4A9XbZ53RQ5vyy28nH1beoS4ZeviL0XbwSjKsGF0iytgBNELXJEW0tIFY97Io6O2cLGIEGgEGCO8JwWw3zIOOTdeyYEt+dxPO0ruabr5R6QCZPOrxrgTtFjXJIHfbDEUQhm8bT2X5PO4VvwLMvTpn2qJaJOtCms8aU04Pmoo0oaY+Y6SLy8fc2tMaN8AtfD6EJVj2p5F7vSPC83RdDYXSAtlzhbpDRffVch2oKuMK
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,95 +164,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+fuse_try_move_folio() takes the folio of a pipe buffer and puts it into
+a fuse file, where writes change it.  A folio with PG_rcu_free may still
+be copied by a lockless page cache read that found it before it left
+the page cache.
 
-PG_rcu_free holds back the reuse of a folio's memory until a grace
-period after the folio is freed.  A stolen page cache pipe buffer is
-reused without being freed: remove_mapping() takes the folio out of the
-page cache and the caller keeps it.  fuse_try_move_folio() puts it into
-a fuse file, where writes change it under a reader that found it before
-the steal.
+Such a folio reaches fuse when a mapped file page is gifted with
+vmsplice(SPLICE_F_GIFT) and its file is then truncated.
+fuse_check_folio() refuses it only because the flag is not among those
+it allows, and with a dump_page().
 
-Drop ->try_steal from page_cache_pipe_buf_ops.  fuse_try_move_folio()
-and virtio_console's pipe_to_sg() then copy, as they already do when
-stealing fails.  SPLICE_F_MOVE from the page cache into a fuse file or
-a virtio console now copies.
+Copy such a folio instead, as fuse does whenever it cannot take one.
 
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-[kas: rewrote the changelog]
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- fs/splice.c | 51 ---------------------------------------------------
- 1 file changed, 51 deletions(-)
+ fs/fuse/dev.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/splice.c b/fs/splice.c
-index 9d8f63e2fd1a..0133c2348da0 100644
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -55,56 +55,6 @@ static noinline void pipe_clear_nowait(struct file *file)
- 	} while (!try_cmpxchg(&file->f_mode, &fmode, fmode & ~FMODE_NOWAIT));
- }
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index 4fec31fc0b84..526929c7b3f1 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1152,6 +1152,10 @@ static int fuse_try_move_folio(struct fuse_copy_state *cs, struct folio **foliop
  
--/*
-- * Attempt to steal a page from a pipe buffer. This should perhaps go into
-- * a vm helper function, it's already simplified quite a bit by the
-- * addition of remove_mapping(). If success is returned, the caller may
-- * attempt to reuse this page for another destination.
-- */
--static bool page_cache_pipe_buf_try_steal(struct pipe_inode_info *pipe,
--		struct pipe_buffer *buf)
--{
--	struct folio *folio = page_folio(buf->page);
--	struct address_space *mapping;
--
--	folio_lock(folio);
--
--	mapping = folio_mapping(folio);
--	if (mapping) {
--		WARN_ON(!folio_test_uptodate(folio));
--
--		/*
--		 * At least for ext2 with nobh option, we need to wait on
--		 * writeback completing on this folio, since we'll remove it
--		 * from the pagecache.  Otherwise truncate wont wait on the
--		 * folio, allowing the disk blocks to be reused by someone else
--		 * before we actually wrote our data to them. fs corruption
--		 * ensues.
--		 */
--		folio_wait_writeback(folio);
--
--		if (!filemap_release_folio(folio, GFP_KERNEL))
--			goto out_unlock;
--
--		/*
--		 * If we succeeded in removing the mapping, set LRU flag
--		 * and return good.
--		 */
--		if (remove_mapping(mapping, folio)) {
--			buf->flags |= PIPE_BUF_FLAG_LRU;
--			return true;
--		}
--	}
--
--	/*
--	 * Raced with truncate or failed to remove folio from current
--	 * address space, unlock and return failure.
--	 */
--out_unlock:
--	folio_unlock(folio);
--	return false;
--}
--
- static void page_cache_pipe_buf_release(struct pipe_inode_info *pipe,
- 					struct pipe_buffer *buf)
- {
-@@ -155,7 +105,6 @@ static int page_cache_pipe_buf_confirm(struct pipe_inode_info *pipe,
- const struct pipe_buf_operations page_cache_pipe_buf_ops = {
- 	.confirm	= page_cache_pipe_buf_confirm,
- 	.release	= page_cache_pipe_buf_release,
--	.try_steal	= page_cache_pipe_buf_try_steal,
- 	.get		= generic_pipe_buf_get,
- };
+ 	newfolio = page_folio(buf->page);
+ 
++	/* A lockless page cache read may still be copying from it */
++	if (folio_test_rcu_free(newfolio))
++		goto out_fallback_unlock;
++
+ 	folio_clear_uptodate(newfolio);
+ 	folio_clear_mappedtodisk(newfolio);
  
 -- 
 2.54.0
