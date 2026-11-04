@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A826086B95
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D14F6072643
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fe+qeY3o
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OZmY/n0G
 Received: by kanga.kvack.org (Postfix)
-	id B275F6B05C8; Wed,  4 Nov 2026 14:26:19 -0500 (EST)
+	id 730E46B05DD; Wed,  4 Nov 2026 14:26:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFE0C6B05DD; Wed,  4 Nov 2026 14:26:19 -0500 (EST)
+	id 707386B05DE; Wed,  4 Nov 2026 14:26:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A14326B05DE; Wed,  4 Nov 2026 14:26:19 -0500 (EST)
+	id 5F6BC6B05DF; Wed,  4 Nov 2026 14:26:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D7AE6B05C8
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:26:19 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2ADDD1A0769
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:19 +0000 (UTC)
-X-FDA: 85398417678.11.783C219
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 621C5180004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:17 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fe+qeY3o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3BF046B05DD
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:26:34 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C35BE80852
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:33 +0000 (UTC)
+X-FDA: 85398418266.18.A3F790A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 18ECB20008
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:26:31 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OZmY/n0G";
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820377;
+	s=arc-20220608; t=1793820392;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XnpcpCSyDLdfO+af8k17UBoE0jHP5SM09VNPrTlP5mU=;
-	b=fQRu823+xu+mY4q6JLMjADpa0Vh3hwvzK5J/grCrt53hPU0H5D+YywxkDqs9JnNTFv2EL/
-	BmIk5CyWA1z013x6Rfx6vvJtRqVzaxoov/DEIO0EuwlTHZTIw4hdxycDN6sSONd48dNfq1
-	2g5sxHkB+h8rbrOPM6i/gNydWtecZ/U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820377;
-	b=FiFFjV47+TPJ8CtNeelk+NaFlkdTumHeIpSClVyllwtfV/ETkPPFyxHcY/e6lMnxqkfZZ0
-	awLvWcNEzmzFVp6dYcWXgnAQyEB0/R/cKZ0V1b+5+TxXJjTWV6S3hA06zClkFNbL+HOHAX
-	qxilLDkpAltaWf3iepUiptJuLfUH5eA=
+	bh=KzL9ZYHhLfhD3DOSumSkk0Gb2fITAVoHxCDSq8u5ZOY=;
+	b=yZFB/Q+dhhJMsvHGx1jGdrq0liVx6yA5iLoU5ol/3cbePE/x9sKTmQZtcDEBSZbaJRUktr
+	U7G6LrvyBmvMQMxhVBGrZCyQ+aBa6Lfu11/BAGzSabNeLJ2B8ByGWnyca8VDxRYJtZdME5
+	QrFtdKmeeUqS0dXcVyiaDvZauP0n+lk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fe+qeY3o;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OZmY/n0G";
+	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793820392;
+	b=XlRtDN262yZJXDJpk3nCsFc85rViSFgAJMtA3M1eUXgm4rHO6ZyXeTbkvEqVEBrGb7eMbg
+	YjPeWQN+LuTfVla1teSLdMhfxJC155JC1u5M1AMQNPSG9aLRTZA8F7BgejXPRg4QJQacu+
+	mb9T1BtZiBi2cN5qNJYXDc2tZsPDVwA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B006840F5F;
-	Wed,  4 Nov 2026 19:26:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DAD1F000C1;
-	Wed,  4 Nov 2026 19:26:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A876A60A8A;
+	Wed,  4 Nov 2026 19:26:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A02B1F00A18;
+	Wed,  4 Nov 2026 19:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820376;
-	bh=XnpcpCSyDLdfO+af8k17UBoE0jHP5SM09VNPrTlP5mU=;
+	s=k20260515; t=1793820391;
+	bh=KzL9ZYHhLfhD3DOSumSkk0Gb2fITAVoHxCDSq8u5ZOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Fe+qeY3o8miJBk7XZvXWRPJiLnP1GdJPOqLtWaz6J/8VQem5/V0ND1YF0y/caRLDt
-	 DgMyPqaYb8QP/iR50E51P8bLvmgXDHfJQAP+4NJ3uCNVkwg8J4gXwnwNVy6o82qXxc
-	 G4M//wQeR0/W9Y+xsP86unflMsj2VnJzFCD6/c4qwO8PIZgOw5+bi09ifndSMUg6Pu
-	 SBcZj+IhaDAR0z3bc6SfeGcPmjQvgoRYlFKz/iKxUED/8QkGs8uB9cNmos93pL495J
-	 NXdA035THee9lHe8V5hdzJBAPFs5jWlBFKpe5bzr3vs+R1j21omP9eJIItBPXuLVUe
-	 AfP65GL9MMizQ==
+	b=OZmY/n0GXXd/waY5eO8CY5Onurst3JuvNiiWNIXcNO2ZuOFKp902BomvRAZeqhqov
+	 gVBa7tGTm8eGOA6FIqPzs+gKGb0cET9WaFFoJDGhKN+qiibaBT/bgrlsrKWepwCufy
+	 7xbZtg/lGvVf2Z6lEc3/gKQcCopkPYa2/MYuxGe78rFjMFuwi6sASyH6Jok98Wg17F
+	 cJ/qQVE/skC9zQGR9GKwMIm//f3mEfB8/4bBi4VeRM6Lw8lfYzjOtO7fBSGQY1KnwG
+	 yl+O33qpdvuGjSLboBidD8ILci0GW1gs7UGQ/cvvcbiCIna8PYu+uszQ30CIehYMR+
+	 tDP/eU01ohS5g==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -122,31 +122,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 41/51] scsi: esas2r: bound the lengths of the HBA, SMP and firmware ioctls
-Date: Wed,  4 Nov 2026 20:26:02 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-41-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 42/51] powerpc/pseries: bound the lengths in the ofdt property parser
+Date: Wed,  4 Nov 2026 20:26:17 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-42-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6672; i=brauner@kernel.org; h=from:subject:message-id; bh=2aMnK188zalc9NOhuhHvIjnHW4mP6VOaoGggC08Jevg=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bvw38ZaPqVai5VQBfePvMdFLldYLB/4OlJ7R5jbN+ cnWF7WVHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNx2czIcNZ6Tv0XfyY9Wfn1 Dz4wh21XeGn22GPftdT+xljFz2cVORkZNr9fFHrlp67vsf/hjvXt0SfXTw4XF5NakZJvybXowMa J/AA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4036; i=brauner@kernel.org; h=from:subject:message-id; bh=1x5L5ygLqoH4QYrbzxN55G88uXTL5wNw5UNSw5/l5lQ=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bvx/eMaUE0I+8x7uP2vLHsplqPp8Uf8cnbKLyd/ve zkpum1k6ChlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIciOGfwpWqRcLVdK6Yk+U 7Mjin33JpmbO+9ppHJaBzs+t3kx9ZcXwV37rzQebpE0czPNr1/Zo75BRluja0J3FW2zd03c/onQ XAwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 5bnmkse8n55a4xzktjw9tek8bidgm644
+X-Stat-Signature: cwkmysf8ewcqrf6bzm56qm6gnpch1uo1
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 621C5180004
-X-HE-Tag: 1793820377-212273
-X-HE-Meta: U2FsdGVkX19GlFKKwv6Hlc9gmMdPyaJeMNuvEikb0Ebr6x8Y+lyV8KDEJm2yA+6W0K+DpoeYNfhzqsWflUhdzqJvxmZOZ1Zfy2jTlBERKJBlwV4+ekeL1d64Ni1jS+P7tID/tpAMPCILv3waJJE/lI0dCZEMHDk+4/TQiwKMVLzQcw8pYhQ0mW4TZ6WMbTYPjVz8kHDOg4xEmyr7lfG+NygabsWV5s8OXitcC578vTohuR8OVCnqkkLFM6l/16WIVpjNnNWToRDAeGz6Iq6lGH7II6IfKCv2a06zrQuJQR1HAMvquVSka0tveVeJ1dweYqzvxfOxdkqXF2rrVRMd7vYfel8+bb8D8LU6B09j7La5SLgH7qF6Ke/nuHFPeZYK7R9MhkF6rrRe4o7gygnl4c6IXquad/DQ18l8lpYiLcIWvp0Ev2RDSauBX9xe7TzMFHtMJ/NyrJgYcVNf5BkTAmg6nb1Ih+6UI2uGB9kpGtwQlUL85KlQFy015xu1qNUMQFMyOhTTr8aUARKqo3Nvf5XgjTiCYaRq2zuFdPvi5TqMvw6WqYnPHanFMkBFJIBojkIRh9p++vGMGHxdPJVSD/0P9hghG/czckFBxQesCjZU1c8JpudCv/nv5uycpZMFu8aJEsDnPRzf8bxBDSIYdHcLh8Kxn8n9Pk72JM4YGsap8EqgRfq+pms3e5WWXsrVzd7tXGeZeEiDHO5/D8H2Mn5PgGPuVq2yOF3HdJoAoWxPUufflykHRRVgvUVdZX+7oorj9ZBkVukdjesEWnAoD/4ksKzsMeTEFno4rmFXmaZMZXMzqUVledchpFNI6BByjeUVr02c+aKgMO9/KO/bypJSIaL45NCi1w+UTYUaL2HTPAZzLPvk/vuck+tZDGFDLIo8cOLWEJa9CDc1UY26msZJn30GwXnaESqV+s6vLlO95aRrfDDk5eiFzhaKknA3pRfwNGrJY6QPv7/0BdB
- xbvc3o2N
- k/HCS26cuZaCrxwjxVEtvpwlJBy38IWJcEY7iIBoegIU54grxzxoksDnlmMutfyuyI2n6qNRzjn+yACjkNvpjhGWmFa4GIBxsXB8dSYV082ojipHPDuUcoxuipsUWHA4bWynv2VLniZlUSv2PuLWKPgvooYHv18+at+jSbQuPCUmM5cNTznObwO+gkYkchF0DkO/XGF55msMcDQm8OnGDgoUpGwPiOWA7/a7SpxhX9EUV4rNpGhZeV8dUKVChpx3KeGID+Am0bAEVc4//U/lzetSNnMomJZSvBQFWfJkqMBjV+p5s2HOODcIpnGXL7KetYkt5LPR9sgmflo6rdCfAGlf+g1n0UaDjtFFIFmilc7Y0C66VnYZkVsZgH2QTNgQdqcz++X+LO/KkWZNMN7YASV6Mvw==
+X-Rspamd-Queue-Id: 18ECB20008
+X-HE-Tag: 1793820391-571515
+X-HE-Meta: U2FsdGVkX1+/30vKy5/BU40/SBrmUnNncrOQ6ChU1aJqhs+SNOUMJwuz81/CPb8YmoAlC5unJXdOA0iisvk6BUhk7a/J9PTcI7bThvWp8+PM7P04xHw8FBjyT365HlkYkNfQsQpGDQ0d2x3mqskDspJf++MC1eUCRdFlJXDV/xhIPTiSQ7mS1CeFjUhvBSUjrm90YQjZhvzOYg12GM7RJ1/+Lex5pcsfgFm1A4Kl4N5XrTlAvif7qW+j5+pXEWzOVIa6xa5elsR6VBykkc/dCSdGPs64XvK5GmmFwhdnlHFJHfeGfAILRRtCMlzbHq+Z1RDhF2XLhWwjSQNu8PFa0UW3gKuxlvBZuxTI/7qV+sjM37tNdt65a8A08j/kuLTKJzSscc4vXMihM7es+lKxJJOtDuqehcj9q6KakIPkoE6b0z/MJ+P0VdWRIb5cxPz+E9Q1ND27KF0IBgl2e0N91RG950RvOSuPskCNCYWQ3Aea6s0o3khWj/G9UO5xIZz1SQSGf/R1k6UOc7fpl2aJWQmLcTQu5goqx7AX4is5pv7N6hqTFspiAowzUoLosvIcojXjqrwQwxB3Z00XaNBfHo77A4xwWkoFc35iSsJTRiRfdLVdnNrEwDhzEyyvQyZ9yIqostLzsJdXP69XsSYyvqmnSE1DuE5Xil7AaLcOLLUcDlL5mnCoRtI6QqzWZY54goTnUYVQu+moNVTp7MMcWH5JhNBtF/tsTbDFDHpUG5Uz1pwraf0LszIrqfvz6icnWA6N4E1yXEu5kFXKOoLXwtmuwc4QTzV8AocBEolHLPqKTrVd3f7O/9BN+QZcVVamsl0ODjwLLSZ2aLBW/ZroqqlwXaQVdFTRChqv9ivZqMkH3r9Umf7+MabKREiRJGUvj70SdR1PAmMCIbooKRmyjK9Z8Vt1d0M8MFM8IA1yt6mZVRH/tziyAT0WG2Mo87NJIhBmFrtPVBr2sxCAilL
+ hcU3Vi6u
+ jJPZHtP+jVW6imj+q4tds2v8uaUwkmeTvVbU2UBHOyr4IcsY3yB6j5zz8rjnu99Ccu7fr88MfhIa0Fz5lme1iBK/4SseM+GMq8GUcTRPavfCYyWE2ext3TC81lCks5bm7rIOtxvTEsluGju7GUbHspcqrydCaKsNsUdt38lwZggqErRMX1lBANuxsrCuIr1h0v0mZR2z7/FQvHAhg8cpoor2QsTVySRpCVshiQ5TN5z8sbVbi1gbC+SUmccoSermBsxFdEHcg4LgKsEqBnJIMOCl42WRoZMQOBk0Jlfvw4JLsNmUxFVaqOggdCvuzZxISXnDupOrB8CX7VAKlPmF2N4m7i4JmlfjyufcMWdZIQKG0Gzbo4JyGULAlSHxoB4SpFPD/o2xRBkEjQOVQIVjS0QvR4Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,177 +155,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-esas2r_ioctl_handler() copies in a struct atto_express_ioctl, a bit over
-512k, and hands the union member for the command to the handlers. For
-EXPRESS_IOCTL_HBA and EXPRESS_IOCTL_SMP the length of the buffered ioctl
-is the size of the member plus lengths that come straight from
-userspace:
+The commands for /proc/powerpc/ofdt that carry properties, "add_node",
+"add_property" and "update_property", can make the parser read past the
+buffer they were copied into:
 
-  bi.length = sizeof(struct atto_ioctl) + ioctl_hba->data_length;
+(1) do_update_property() computes the end of the buffer after
+    parse_node() moved buf past the phandle. So the end is off by the
+    length of the phandle string, which can be padded with zeroes, and
+    parse_next_property() accepts a value that reaches that far past
+    the command. new_property() then copies those bytes into the
+    property, which everyone can read in /proc/device-tree.
 
-  bi.length = sizeof(struct atto_ioctl_smp)
-	    + le32_to_cpu(si->req_length)
-	    + le32_to_cpu(si->rsp_length);
+(2) parse_next_property() parses the length with simple_strtoul() into
+    an int and only rejects -1. A length above INT_MAX turns negative,
+    tmp += *length moves backwards and passes the check against the
+    end, so *tmp is read up to 2G in front of the buffer.
 
-handle_buffered_ioctl() copies bi.length bytes from the member into a
-DMA buffer and, once the adapter is done, copies the DMA buffer back
-over the member. Nothing checks that the lengths fit into the struct
-that was copied in. So a large data_length makes it read past the
-struct and then write the DMA buffer back over the memory behind it.
+(3) Updating "slb-size" or "ibm,slb-size" reads an int from the value
+    whatever its length.
 
-The firmware commands pass sizeof(struct atto_express_ioctl) to
-esas2r_{read,write}_{fw,fs}() as the length of data.fwrw.image, which
-starts 28 bytes into the struct. So they can read and write 28 bytes
-past it as well.
-
-The handler is reachable through /proc/scsi/esas2r/ATTONode. It is
-created with mode 0, which procfs turns into 0444, and esas2r doesn't
-check for a capability anywhere. So any local user can do this on a
-machine with such an adapter.
-
-Bound all of these by the room from the member to the end of the
-struct. read_hw() passes handle_hba_ioctl() a single struct atto_ioctl
-and only ever returns that, so there the data length has to be zero.
+Compute the end before parsing the phandle, reject lengths that don't
+fit into an int or into what is left of the buffer, and only take the
+slb size from a value that holds one. The file is root-only and
+refused under lockdown but the parser still shouldn't read past its
+input.
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: 26780d9e12ed ("[SCSI] esas2r: ATTO Technology ExpressSAS 6G SAS/SATA RAID Adapter Driver")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 610d91511f99 ("[PATCH] powerpc: Add support for changing properties from userspace")
+Fixes: 46db2f86a3b2 ("powerpc/pseries: Fix to handle slb resize across migration")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/scsi/esas2r/esas2r.h       |  2 +-
- drivers/scsi/esas2r/esas2r_ioctl.c | 41 ++++++++++++++++++++++++--------------
- drivers/scsi/esas2r/esas2r_main.c  |  3 ++-
- 3 files changed, 29 insertions(+), 17 deletions(-)
+ arch/powerpc/platforms/pseries/reconfig.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/scsi/esas2r/esas2r.h b/drivers/scsi/esas2r/esas2r.h
-index a763edd05fe4..10101f50b282 100644
---- a/drivers/scsi/esas2r/esas2r.h
-+++ b/drivers/scsi/esas2r/esas2r.h
-@@ -967,7 +967,7 @@ int esas2r_write_params(struct esas2r_adapter *a, struct esas2r_request *rq,
- int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg);
- int esas2r_ioctl(struct scsi_device *dev, unsigned int cmd, void __user *arg);
- u8 handle_hba_ioctl(struct esas2r_adapter *a,
--		    struct atto_ioctl *ioctl_hba);
-+		    struct atto_ioctl *ioctl_hba, size_t room);
- enum scsi_qc_status esas2r_queuecommand(struct Scsi_Host *host,
- 					struct scsi_cmnd *cmd);
- int esas2r_show_info(struct seq_file *m, struct Scsi_Host *sh);
-diff --git a/drivers/scsi/esas2r/esas2r_ioctl.c b/drivers/scsi/esas2r/esas2r_ioctl.c
-index c93d9265e100..80ae5b9d45db 100644
---- a/drivers/scsi/esas2r/esas2r_ioctl.c
-+++ b/drivers/scsi/esas2r/esas2r_ioctl.c
-@@ -311,17 +311,27 @@ static int smp_ioctl_callback(struct esas2r_adapter *a,
- 	return true;
- }
- 
-+/* The room from @member to the end of a struct atto_express_ioctl. */
-+#define EXPRESS_IOCTL_ROOM(member)				\
-+	(sizeof(struct atto_express_ioctl) -			\
-+	 offsetof(struct atto_express_ioctl, member))
-+
- static u8 handle_smp_ioctl(struct esas2r_adapter *a, struct atto_ioctl_smp *si)
+diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/platforms/pseries/reconfig.c
+index 5a0c9c0b6253..b543afbc1efb 100644
+--- a/arch/powerpc/platforms/pseries/reconfig.c
++++ b/arch/powerpc/platforms/pseries/reconfig.c
+@@ -114,6 +114,7 @@ static void release_prop_list(const struct property *prop)
+ static char * parse_next_property(char *buf, char *end, char **name, int *length,
+ 				  unsigned char **value)
  {
- 	struct esas2r_buffered_ioctl bi;
-+	u64 length = (u64)sizeof(struct atto_ioctl_smp) +
-+		     le32_to_cpu(si->req_length) +
-+		     le32_to_cpu(si->rsp_length);
-+
-+	/* The request and the response follow @si in the same buffer. */
-+	if (length > EXPRESS_IOCTL_ROOM(data.ioctl_smp))
-+		return IOCTL_INVALID_PARAM;
++	unsigned long len;
+ 	char *tmp;
  
- 	memset(&bi, 0, sizeof(bi));
- 
- 	bi.a = a;
- 	bi.ioctl = si;
--	bi.length = sizeof(struct atto_ioctl_smp)
--		    + le32_to_cpu(si->req_length)
--		    + le32_to_cpu(si->rsp_length);
-+	bi.length = length;
- 	bi.offset = 0;
- 	bi.callback = smp_ioctl_callback;
- 	return handle_buffered_ioctl(&bi);
-@@ -1221,11 +1231,16 @@ static void hba_ioctl_done_callback(struct esas2r_adapter *a,
+ 	*name = buf;
+@@ -133,13 +134,13 @@ static char * parse_next_property(char *buf, char *end, char **name, int *length
  	}
- }
  
-+/* @room is the size of the buffer that starts with @ioctl_hba. */
- u8 handle_hba_ioctl(struct esas2r_adapter *a,
--		    struct atto_ioctl *ioctl_hba)
-+		    struct atto_ioctl *ioctl_hba, size_t room)
- {
- 	struct esas2r_buffered_ioctl bi;
+ 	/* now we're on the length */
+-	*length = -1;
+-	*length = simple_strtoul(tmp, &tmp, 10);
+-	if (*length == -1) {
++	len = simple_strtoul(tmp, &tmp, 10);
++	if (len > INT_MAX) {
+ 		printk(KERN_ERR "property parse failed in %s at line %d\n",
+ 		       __func__, __LINE__);
+ 		return NULL;
+ 	}
++	*length = len;
+ 	if (*tmp != ' ' || ++tmp >= end) {
+ 		printk(KERN_ERR "property parse failed in %s at line %d\n",
+ 		       __func__, __LINE__);
+@@ -148,13 +149,13 @@ static char * parse_next_property(char *buf, char *end, char **name, int *length
  
-+	/* The data follows @ioctl_hba in the same buffer. */
-+	if (ioctl_hba->data_length > room - sizeof(struct atto_ioctl))
-+		return IOCTL_INVALID_PARAM;
-+
- 	memset(&bi, 0, sizeof(bi));
+ 	/* now we're on the value */
+ 	*value = tmp;
+-	tmp += *length;
+-	if (tmp > end) {
++	if (len > end - tmp) {
+ 		printk(KERN_ERR "property parse failed in %s at line %d\n",
+ 		       __func__, __LINE__);
+ 		return NULL;
+ 	}
+-	else if (tmp < end && *tmp != ' ' && *tmp != '\0') {
++	tmp += len;
++	if (tmp < end && *tmp != ' ' && *tmp != '\0') {
+ 		printk(KERN_ERR "property parse failed in %s at line %d\n",
+ 		       __func__, __LINE__);
+ 		return NULL;
+@@ -320,8 +321,8 @@ static int do_update_property(char *buf, size_t bufsize)
+ 	char *name, *end, *next_prop;
+ 	int length;
+ 	struct property *newprop;
+-	buf = parse_node(buf, bufsize, &np);
+ 	end = buf + bufsize;
++	buf = parse_node(buf, bufsize, &np);
  
- 	bi.a = a;
-@@ -1349,31 +1364,27 @@ int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg)
- 			err = esas2r_write_fw(a,
- 					      (char *)ioctl->data.fwrw.image,
- 					      0,
--					      sizeof(struct
--						     atto_express_ioctl));
-+					      EXPRESS_IOCTL_ROOM(data.fwrw.image));
- 
- 			if (err >= 0) {
- 				err = esas2r_read_fw(a,
- 						     (char *)ioctl->data.fwrw.
- 						     image,
- 						     0,
--						     sizeof(struct
--							    atto_express_ioctl));
-+						     EXPRESS_IOCTL_ROOM(data.fwrw.image));
- 			}
- 		} else if (ioctl->data.fwrw.img_type == FW_IMG_FS_API) {
- 			err = esas2r_write_fs(a,
- 					      (char *)ioctl->data.fwrw.image,
- 					      0,
--					      sizeof(struct
--						     atto_express_ioctl));
-+					      EXPRESS_IOCTL_ROOM(data.fwrw.image));
- 
- 			if (err >= 0) {
- 				err = esas2r_read_fs(a,
- 						     (char *)ioctl->data.fwrw.
- 						     image,
- 						     0,
--						     sizeof(struct
--							    atto_express_ioctl));
-+						     EXPRESS_IOCTL_ROOM(data.fwrw.image));
- 			}
- 		} else {
- 			ioctl->header.return_code = IOCTL_BAD_FLASH_IMGTYPE;
-@@ -1441,9 +1452,9 @@ int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg)
- 		break;
- 
- 	case EXPRESS_IOCTL_HBA:
--		ioctl->header.return_code = handle_hba_ioctl(a,
--							     &ioctl->data.
--							     ioctl_hba);
-+		ioctl->header.return_code =
-+			handle_hba_ioctl(a, &ioctl->data.ioctl_hba,
-+					 EXPRESS_IOCTL_ROOM(data.ioctl_hba));
- 		break;
- 
- 	case EXPRESS_IOCTL_VDA:
-diff --git a/drivers/scsi/esas2r/esas2r_main.c b/drivers/scsi/esas2r/esas2r_main.c
-index ada278c24c51..75a70ae9441b 100644
---- a/drivers/scsi/esas2r/esas2r_main.c
-+++ b/drivers/scsi/esas2r/esas2r_main.c
-@@ -178,7 +178,8 @@ static ssize_t read_hw(struct file *file, struct kobject *kobj,
- 	if (!a->local_atto_ioctl)
+ 	if (!np)
+ 		return -ENODEV;
+@@ -337,7 +338,8 @@ static int do_update_property(char *buf, size_t bufsize)
+ 	if (!newprop)
  		return -ENOMEM;
  
--	if (handle_hba_ioctl(a, a->local_atto_ioctl) != IOCTL_SUCCESS)
-+	if (handle_hba_ioctl(a, a->local_atto_ioctl,
-+			     sizeof(struct atto_ioctl)) != IOCTL_SUCCESS)
- 		return -ENOMEM;
+-	if (!strcmp(name, "slb-size") || !strcmp(name, "ibm,slb-size"))
++	if ((!strcmp(name, "slb-size") || !strcmp(name, "ibm,slb-size")) &&
++	    length >= (int)sizeof(int))
+ 		slb_set_size(*(int *)value);
  
- 	memcpy(buf, a->local_atto_ioctl, length);
+ 	return of_update_property(np, newprop);
 
 -- 
 2.53.0
