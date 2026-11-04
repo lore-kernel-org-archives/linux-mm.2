@@ -1,143 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01042606A32C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 11:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328A3606A331
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 11:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SUzV4Hv2
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Xv/UWXpb
 Received: by kanga.kvack.org (Postfix)
-	id 18DE96B00EF; Wed,  4 Nov 2026 06:03:04 -0500 (EST)
+	id 5165B6B05B1; Wed,  4 Nov 2026 06:06:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 13F706B05B1; Wed,  4 Nov 2026 06:03:04 -0500 (EST)
+	id 4C78B6B05B2; Wed,  4 Nov 2026 06:06:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02DA76B05B2; Wed,  4 Nov 2026 06:03:03 -0500 (EST)
+	id 3DE706B05B3; Wed,  4 Nov 2026 06:06:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CDA7C6B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:03:03 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6333C140694
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:03:03 +0000 (UTC)
-X-FDA: 85397149446.20.67DFE67
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 73B0A180009
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:03:01 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 0E5496B05B1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:06:24 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6AF29140679
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:06:23 +0000 (UTC)
+X-FDA: 85397157846.08.A2A6729
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A4D18180007
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:06:21 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SUzV4Hv2;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793790181;
-	b=GJGA2/Cj8f8VKWuylGuIIL7WDq5PKarWP0vrrpIUYCkKiXXCXlPZW2zOHY1DrB/yfS2GXR
-	snbNvbSt218ivy2BaftfdoYU2xpl8gRyacOr5Kgp+adlduMzstiqRKMLQUCLWugrZ/RQ7y
-	5YsnlHC4UUBSQAEdrwEt7CC5GV+c/xY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SUzV4Hv2;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="Xv/UWXpb";
+	spf=pass (imf16.hostedemail.com: domain of meven29@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=meven29@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793790181;
+	s=arc-20220608; t=1793790381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MmAAu5i6ADNm9DWcT6htUpjVYsuBgc5FPA1Ofa2D4uU=;
-	b=TgsLxg0tKvNILVd8cXgPQO2HJU976q5RYJriw2tyzLJofvPTGmw7jiGbZ5P1MKOkrlNCId
-	TEhMAQ2ZL7cd40y49rCkgWQn2WYZox6Z1j5cjObPNDFY6NAMk/L8oAelQzefrxosgSEXAX
-	yrsXDWrj+hKOKGG4JI11tN6dyCv+Nto=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D4FF260F22;
-	Wed,  4 Nov 2026 11:03:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E98D11F000C1;
-	Wed,  4 Nov 2026 11:02:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793790180;
-	bh=MmAAu5i6ADNm9DWcT6htUpjVYsuBgc5FPA1Ofa2D4uU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SUzV4Hv2uoryb9Q24Qln7PLzOfILm3kcqdwfobU3M4CtRlVN+xvpdBz65WTxlF/gG
-	 8zP5EQSJRfHEWirYplJxgwJ29EazRs1Mtzvxmn9j/5BRuUCriKNjEQ6vWa85IZ7zvE
-	 WuILPXj4mRjIbJhGR3aqB1qDZw9j/RFjbb8AafNxTetksy2ejxRbqHLTQ4RvqYD9jb
-	 O6hf0LTX03ok0deyQOvKIkyVnEJ0dhPdL49nmq+b6ZSKK7ln/bUJ6qWmoIrk5VacIF
-	 naGDLX+xTp/LHq6a1qbMWKniZntZ//3XK//oLTIAOMcf6eoMlnZhva7GG2ft0UJFOs
-	 uJq1G/yQE/gmg==
-Message-ID: <b181dade-ffa1-4b58-9927-8a2429a59ac1@kernel.org>
-Date: Wed, 4 Nov 2026 12:02:55 +0100
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=8O/Rp6nZ3ve9lS3n1SP2Ck1e4kzh3avxuWTAnkwjO20=;
+	b=obif216qA//eotbAlcu5coJn7oMpa7Z5hozQfGq4fMZXdn7Jm/aJ2yRqVinUnL68TWrIZ2
+	AIvcC2foqMeW6IFlHLxPgDdVoEbx4HMW8yiI1HGjHvLA41/S8sNgwKD7j1uRbLYHGoHUxX
+	dvHbq4AQIlzWKAAQHhmPJK0jYgbhpic=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793790381;
+	b=0BYMXouk6P+NqKOcJ18WWe3IB7l+WNt7vabAWw8kKPGiwhBbaw3JptXBNFv5bonWR8mCkl
+	3BdkbwN97B4RNmHBs6n7JeKPfegSuFQApTRUZqtn8Nz8FZpRmoY9pFxasDFOP0Yth5u/av
+	BH+NvNexRZlxZ9igvN1125KTsIXyHBE=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="Xv/UWXpb";
+	spf=pass (imf16.hostedemail.com: domain of meven29@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=meven29@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a4d7ae1ae9so5221815e9.1
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 03:06:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793790380; x=1794395180; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=8O/Rp6nZ3ve9lS3n1SP2Ck1e4kzh3avxuWTAnkwjO20=;
+        b=Xv/UWXpb0GyOYwr0TFdoMmyRKfHsGOtMPCasy1FYj7WAlyDABbz4MXwBqMG6EkQjiC
+         9r+q6QogP9Al+Nc+9QTI11pAv8H8Im35c0iUxiD7O5vYNE1A7TyzHvqBt3dzafqqLHEy
+         uldXeAzYfLoTWQ1HxoHKO+x4INiS2UcKUiz4FOu8agqk4d3PbHp7pYOGFLBmUozO0ZbS
+         x2AGAxvv0OGreMZ3G7RyU0q4gPC7CO9JaqQnszd5yGQoBmciQv2Kxh9PuwlP5wFn8mLa
+         9a1Qitm/QHVa43NcFBJ/VSB61i39Usicnmw552bWnHxlqGdJ0EGpIOiFOk6eoebIv5Il
+         2ZAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793790380; x=1794395180;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=8O/Rp6nZ3ve9lS3n1SP2Ck1e4kzh3avxuWTAnkwjO20=;
+        b=VzNaTGw43uz+sgHDziLBO7DIqz8BlD/jyRuLCEjHv0TI0wLJvrZgrQP8qH2DUhuCQd
+         GcSxR4LT2xHJyU9Nwvhq+0NYqx6Ed8O4Dc3Fim8IDObAEs7I95H11fZR34eAaypddJEP
+         2pJQOKhzn7CTFObHvRE+Z4vC3tJVjtCAudteJfYwzei2BsuhofvSNAWi50+2WE18Qrxq
+         HzsxEVN5hdJ/FJbJ4mnCn69a65fS5tXp2ItQb0+thOo5DsLuOuLUWZaWpsNeIUt3YiUf
+         J6Y5FXVl2g0Fhnku486EA1jwfzzIOmoj5lWtF1NYDrP47s2DF0wY55YhnMHKjGfifBUo
+         YPzQ==
+X-Forwarded-Encrypted: i=1; AKwUvBx77tTi3HpXbyqMrfKnI6pQfubwM9THbbsv9VRTHNOwHcemyd/JsyN/SctdtBpemCqazSJi/9N9wQ==@kvack.org
+X-Gm-Message-State: APuU4Z9PoiquNMiolCwkrxcuX53tJd/7BO9rd3nO//5irFmz7TOMJvwr
+	RjFZL1oNiEfbI3Wh9aSS/QJ7DLrTtR6UCDn8H1p3or8Q43VwWzAW7qeJNwVTIFIF
+X-Gm-Gg: AYBFou3QL57f1fXg9soztYC3pxiAMZ0LGx8jCr22fjlQBXCN8BUC697ifaMXRhEh/z4
+	HAGpkl7tRfptQsFV+YU5rOOLcIFs5wMoI2B5bbqjb+3L3nI3IixZfINJmOd5DsjnHiR5SlHpcYL
+	Ou9tB0dEae5q8GsaAx7gAayOuUvNLwWiBfSvDbfcNrRhG9Ox9KBQCQzAzYqsBrFvnl8XeFAr56y
+	PKOHHGhPbxUCGQh/S3D++y1kOaZH71tI4f5Ls5hqPpGYmVQRGCjbQ4RclLpuO/4QHfAq4MVuVvl
+	TSt/eDlLvngFF/R5jli3VRvkyIUJ2159jP4p+i0XexrYzKhAu4hR4AnXRnARwXtUoYvkvagVPiB
+	mKs2tvNx6xePTUfd4x8/VMbbyod+jcKX870/AobxpsaHYspVZpQTLrxij+MupYAa5KuGyC0h/C5
+	Cc5YF+tO0pMmLilKoAF+2zlEK0xx4WKtP51wwmJ+zgzyj03T5sohO7gNHkFKISh0occs5y/SPUY
+	D2zliot4xpC5Kgnfu3e6ePDwy8+bs/aBkXVkrpYb/1ZU0OBq0RBxHiOtQmqNZ9oDZEcZZ8SKGsD
+	Net+Xw240ZBGUtDi6pYwK52mWPwtXLUKU+JE9+QPJ35b0PlovIhuQwumzAwpe8fz61brT3j1/0T
+	MHQ7Pfo3y5xrsbVRIV6PFYGhA
+X-Received: by 2002:a05:600c:6387:b0:4a2:150f:1605 with SMTP id 5b1f17b1804b1-4ac1904a81amr368417625e9.24.1793790380090;
+        Wed, 04 Nov 2026 03:06:20 -0800 (PST)
+Received: from meven-thinkpad.home (2a01cb088745e00090de407b41070a01.ipv6.abo.wanadoo.fr. [2a01:cb08:8745:e000:90de:407b:4107:a01])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed92a753sm3704835f8f.45.2026.11.04.03.06.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 03:06:19 -0800 (PST)
+From: =?UTF-8?q?M=C3=A9ven=20Car?= <meven29@gmail.com>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: io-uring@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	=?UTF-8?q?M=C3=A9ven=20Car?= <meven@kde.org>
+Subject: [RFC PATCH v2 0/3] io_uring: add IORING_OP_UTIMENSAT
+Date: Wed,  4 Nov 2026 12:06:01 +0100
+Message-ID: <20261104110604.126717-1-meven29@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH for-next-fixes v2 1/5] mm/memcontrol: defer
- obj_cgroup_release() to irq_work
-Content-Language: en-US
-To: "Harry Yoo (Meta)" <harry@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: kernel-team@meta.com, cgroups@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev
-References: <20261103-kmalloc-nolock-fixes-v2-0-19167cfe4779@kernel.org>
- <20261103-kmalloc-nolock-fixes-v2-1-19167cfe4779@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261103-kmalloc-nolock-fixes-v2-1-19167cfe4779@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: y9d65yjf6jqggnm3x4wxo1det6iya4sc
-X-Rspamd-Queue-Id: 73B0A180009
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793790181-413199
-X-HE-Meta: U2FsdGVkX1/VfHClHkbNeF/xIfL60JLTdJTq3gTqrYiL6JGUWPjeRnLUsGNZCuNg/TFuSk8k2wHgar1GuC+AQVLaILDy0CJ/qsozuP5+yjWRSwmr6yGltxDQLMNLTDmaS7BMsmW3Vl7j/D9PJzHn7Uq20CyVs5Rg4luh5OyClDtg526xKBUAN1Ax25qUZnAC8IimNSyi4ZlK8/HFcD4c9oNQLKdvNweSFQaULbCbCYQmd+Y0jWEEc9vz3LNqcGTqdjpoxHw8HMf7w2lYLoRCU6fmlhzeHS3nW7tBvQMLN2hdC4Qyf314f4L5dx+dtG4XE5DrEqxrs0A68FDGWNoOCbxqrUWNhFJGeiTiFdGh54lubTolYzqIvKSUUxP1hKf0/diIHvKYB6pMQEzQby8uwdP6cjYSR4TZRVNWVnL3BXActzNhYGFJhHArAieXHeXWNDtqlgqNC0NkGvxBMWz7UtOC45LyAXpoLjIsv/tJPlcSqGg7pPCwCaBwHp51i+oj4C45p/QeppCTNn0P1M0kSaySeGPcpBYxy87jnpb9lQIRZeA+FUxCVrPTLXLeudg+gpKjlFibGV8jSxoaw3oJgHtxVWK1PcYzX35ISIDFlBRZBBi+Qa8TzfXi+bk0xFCkO/BMFJsZHhG9V6QN6AgbUpFl+D9/mG9dTDZRGViPUKAqPKyFDtZBg7/NMhB196TYemOiUDPzhjm9DyS1KD1X7n+qEpbOZ2OYzmoDon2RLI9l1698BRz4Q5twGPcdj5othVYylz6oQD2VdNzsjTvKI26KSYMNeP8+TLZT6BNNqRYANb0SAqTIqP7X2GPt2h3KrHRl1pnDIraSC/YE3LziOsP6UxciCwV1chwGKdRLr+J6+r+Y09vqOg3qmdD22nsQtp4zluQCHSRa7BUlXk/7WwmpSzouVdP4ALn7bTX9ChMw7/AYtcABKvf9vSyunN3UJEIu0l9N/3TyWJ+XgSp
- sXRqUpFE
- rU8kKw9r3f5SujEF74Zaa16Z3n4WJrM5Be/LtOdIj7A08WNPG0BSMX/G5dus6JwCPd4sFeC/5qckMdOksxaMnUvYtCthpyW3du0ztDACvLw/zYiq0uLUUTaPMrwOLaWLbsSSryUvZHhpHDTWRHSOPwCfVpGVvj73EIvroEYjTvizAE20kJgeOxYPZAD40E6UzhWvYoU52jCjzGhQlEnMJM6icbDXu98Zww29t1M9obBoriMPkKNJtXf5kKaFlndIDPjnEH2x4TXl9Xb8nxYUSPREanMrDZjm9v44rFAnt5s/y+vm4/NNciYunSPFXB53XJaymNSyPM5BrO/+q06rWKdcCVppgbLXbj5tO
+X-Rspamd-Server: rspam09
+X-Stat-Signature: kj4xzmmu1nffp31f3ty8xh1axwwwesy1
+X-Rspamd-Queue-Id: A4D18180007
+X-Rspam-User: 
+X-HE-Tag: 1793790381-892757
+X-HE-Meta: U2FsdGVkX191GW2eK0mMjsUoCwSZ4jY6I/CjR9ga0Q9xMb2z5GVdoYY8HLKZiSThmZeTGHa67cskUh3vd++VircftNIQisLHURCwf0XUv7d+XpV+o2yszMiMV+pIFkABmrLmSFvI8uVLgJAea3D64EzhkZI5Kqp7PGGpvVDl4/y4Elk73nkWJCwrlVjBaCUC6X8D1Sv2Fsu5D6xAnZQg4pRHXTOSTuqNngIWaALiTUUd9ENodCxQ5fJnhm2rzhbcFFdqgFLEcAwrRZRAJbd45VMEPDc/PlkD9P7A40Uj1q8zTC6IB7Eml1NPsD3As1GBo2Xi0DLWaJ2m4PN9yYgrPyHJAm0uLrtgN+HnSpI2eyKxoonNeJqzJ5B1fRIXhmrzLm07yY3SnLXS/EiwWnsDBcFXFzwzNbiW8BmhPRqfhmHaXwMV11tH5/aT5JkRwIghxpuWVzdh0TYwCNak4Lyr59HGYFX56Uknn86IflGIqQpmT14uYZ1c82dma1oMZDXQztLywkxu0m9/IelZAIO03k1dmkDXkymd75RVqIVZL2/FJxGAPjSsC6l15FBI/QWasH6uVtZmzgUwujRNNM/tvyQ83Fp2wFYiYn5LW8f9PStsqNV9AMdueIf0ryryLPZYnLMT/I3V+3Sbqm3amwczsM36aoCbh4V8QXNz2RtYvLXt9ZZ/g+wjdfw0Kr5bg5vW8puLhiFQC0v0AKnmfWXaOX9aeNx7U/kapttFzCa/TNc0ON0MKcc7s7kpk+c9fahOGDRzqOeF7R9EmL1OnD7HtsEs9JdmZs0T+lpoZxnh1HOq5zw4n3qHWOf+aQUgJ70TKn3OEL/I+mnPDup4LYBcvCgDZSoAZOKgEnXkJJ8KlPRhVGNTpmef1/bYndCTy6b73tR4Sv45M2ifsMMaZb86tSTALDo5tF0gSZGHco8nPxLqyMiS8V+eFRbV3Hbo5gm8p/4EPsudDu3w7qGPjg3
+ Ds3t6xcp
+ 8z6dVcS9jRlDVunyBA8h4/tTAJVpibUkF3EHwXB4LaYXZBPlEVm9uyCUBdOh2XA4tlxiipVWUbwLDGxZtbv1S1wsoznqbL+GwbujEMmox60h/WNQXk0YCLpDN3gfP/l3AO5LludYLaSfYx4xL2zwFrSKZi1XoZOm3Hg/pIFAPQE9IBLu8ra/HystNNpiRaCH7t/HuVo4R4cipj7KikyYQlXrXtb6M0wfXSKuP88eujLHyq8e+1SvbNQVyojalN68oUOho+d+bdwl7Kl0uShKpgQKQ1s0NpSvbqlpxbbPcTbHowMsrMECmoceh07fe9XZnjHI7IA+lmNGFHFBKEY/nk7sMd7rpwxyEd0Vem4cFPGtsQZJOL9MSBi25g71/fbW6MLPmSVkEdQ/LBIU5fu6L1XrXk53BN6VnewV0I3LdlRSq6vyyvrEUw99BFmohuXiPXzP3IrM9O78gE73Zb4+wppLRKC3QipuIdOrcEOObsR/3Ve0v9TizsQ3GofUj9j3LjRmlWtyJKbJy5RkR44CeaE9yP/RoNyVLHfyJmPGicUe7bsfvWFwPxrzfLYcmTRdb71Iv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,105 +131,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 15:47, Harry Yoo (Meta) wrote:
-> obj_cgroup_put() can be called from any context.
-> __memcg_slab_free_hook() puts a per-object reference on
-> every accounted free, and draining a per-cpu objcg stock slot puts
-> the cached reference. When it drops the last reference,
-> obj_cgroup_release() takes objcg_lock, frees percpu memory
-> (pcpu_lock, via percpu_ref_exit()) and calls kfree_rcu(). Each of
-> these can deadlock when the current context interrupted a holder of
-> the respective lock.
-> 
-> Defer the release to irq_work. llist_add() and irq_work_queue() are
-> NMI-safe, and the irq_work runs in a context where acquiring a
-> spinlock is allowed.
-> 
-> Add a separate llist_node instead of reusing the list/rcu union
-> because the list stays linked until the deferred release. struct
-> obj_cgroup grows from 56 to 64 bytes, but both are served from
-> kmalloc-64, so no memory is additionally consumed.
-> 
-> Closes: https://lore.kernel.org/20261001044056.75079-3-kmehltretter@gmail.com
-> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+From: Méven Car <meven@kde.org>
 
-I guess releasing objcg isn't too frequent, so it won't matter that we make
-all cases use the defered work instead of somehow trying to do that only in
-contexts that would really need it.
+A file manager or cp -p that copies many files sets the times of every
+copy after its last write. KDE's KIO does not use io_uring yet, but
+could in the future. In a KIO prototype that copies batches of small
+files through io_uring, open, create, read and write run in the ring,
+but the metadata of each copy is set outside the ring, with futimens()
+and, when needed, fchmod() and fchown(). On NFS and SMB each of these
+calls is a round trip to the server.
 
-Reviewed-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+In that prototype, setting the metadata from a pool of 16 threads
+instead of one file at a time cut the copy of 200 files of 4 KiB by 22%
+on NFS and 45% on SMB. The test copied from ext4 to an NFS 4.2 and an
+SMB mount of the same machine, over loopback with a netem delay of 2 ms
+each way. An opcode would give the same parallelism from the ring, and
+would let a copy be one linked chain per file: WRITE, UTIMENSAT, CLOSE.
 
-since memcg tree will be used from the next cycle, we can just keep this as
-part of the series in the slab tree?
+Patch 1 splits filename_utimensat() out of do_utimes_path(), so that
+io_uring can pass a name imported at submission time, as it does for
+mkdirat and the other path ops.
 
-> ---
->  include/linux/memcontrol.h |  2 ++
->  mm/memcontrol.c            | 27 ++++++++++++++++++++++++---
->  2 files changed, 26 insertions(+), 3 deletions(-)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 69e1bcc67c58..4d5c634daef8 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -185,6 +185,8 @@ struct obj_cgroup {
->  		struct list_head list; /* protected by objcg_lock */
->  		struct rcu_head rcu;
->  	};
-> +	/* Used to defer obj_cgroup_release() to irq_work */
-> +	struct llist_node release_node;
->  	bool is_root;
->  };
->  
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index a05d9a8baa1b..c53147a88580 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -147,9 +147,8 @@ static void memcg_uncharge_kmem(struct mem_cgroup *memcg, unsigned int nr_pages)
->  		memcg_uncharge(memcg, nr_pages);
->  }
->  
-> -static void obj_cgroup_release(struct percpu_ref *ref)
-> +static void __obj_cgroup_release(struct obj_cgroup *objcg)
->  {
-> -	struct obj_cgroup *objcg = container_of(ref, struct obj_cgroup, refcnt);
->  	unsigned int nr_bytes;
->  	unsigned int nr_pages;
->  	unsigned long flags;
-> @@ -190,10 +189,32 @@ static void obj_cgroup_release(struct percpu_ref *ref)
->  	list_del(&objcg->list);
->  	spin_unlock_irqrestore(&objcg_lock, flags);
->  
-> -	percpu_ref_exit(ref);
-> +	percpu_ref_exit(&objcg->refcnt);
->  	kfree_rcu(objcg, rcu);
->  }
->  
-> +static LLIST_HEAD(objcg_release_llist);
-> +
-> +static void objcg_release_workfn(struct irq_work *work)
-> +{
-> +	struct llist_node *head = llist_del_all(&objcg_release_llist);
-> +	struct obj_cgroup *objcg, *tmp;
-> +
-> +	llist_for_each_entry_safe(objcg, tmp, head, release_node)
-> +		__obj_cgroup_release(objcg);
-> +}
-> +
-> +static DEFINE_IRQ_WORK(objcg_release_work, objcg_release_workfn);
-> +
-> +static void obj_cgroup_release(struct percpu_ref *ref)
-> +{
-> +	struct obj_cgroup *objcg = container_of(ref, struct obj_cgroup, refcnt);
-> +
-> +	/* The last put may come from a context that cannot take spinlocks */
-> +	if (llist_add(&objcg->release_node, &objcg_release_llist))
-> +		irq_work_queue(&objcg_release_work);
-> +}
-> +
->  static struct obj_cgroup *obj_cgroup_alloc(void)
->  {
->  	struct obj_cgroup *objcg;
-> 
+Patch 2 adds IORING_OP_UTIMENSAT with the semantics of utimensat(2).
+Like the other path ops it runs from io-wq.
+
+Patch 3 is the RFC part. On a local filesystem the handoff to io-wq
+costs more than the setattr: in a qemu guest on v7.2.3, setting the
+times of 2000 files on tmpfs took 6-8 ms with utimensat(2) and 19-29 ms
+through the ring with patch 2 alone, 32 requests per submit. The patch
+tries the request inline with LOOKUP_CACHED and trylocks, on filesystems
+that declare FS_SETATTR_TIMES_NOWAIT, which only tmpfs sets. The ring
+then matches the syscall (6.4-6.8 ms). ext4, xfs and btrfs cannot set
+the flag, because their ->setattr() starts a journal transaction. Is a
+per-filesystem flag acceptable here, or would you rather keep patch 2
+alone?
+
+IORING_OP_FCHMOD was proposed in 2024 [1] and not merged. The same
+questions apply to fchmod and fchown, which a copy also needs, and a
+single setattr opcode could set the mode, owner and times in one
+->setattr() call. I started with the times because a copy always sets
+them.
+
+Testing: a userspace test of 30 cases (paths, AT_EMPTY_PATH on O_PATH
+fds, NULL path, UTIME_OMIT, permission and read-only errors, links, copy
+at submission, inline on tmpfs and punt on ramfs) passes in a qemu
+guest on for-7.4/io_uring. v1 also passed on v7.2.3. A liburing helper,
+test and man page will follow if the interface is acceptable.
+
+[1] https://lore.kernel.org/io-uring/e291085644e14b3eb4d1c3995098bf4e@huawei.com/
+
+Changes in v2:
+- A NULL path now sets the times through the fd itself, like
+  do_utimes_fd(), instead of a lookup of an empty name. As with
+  utimensat(2), it takes no flags (-EINVAL), an O_PATH fd gives -EBADF,
+  and an open file that was unlinked needs no revalidation. (Sashiko)
+- Patch 3: the nowait attempt passes no delegated_inode to
+  notify_change(), so a delegation gives -EWOULDBLOCK. v1 read di_inode,
+  which does not build with CONFIG_FILE_LOCKING=n. (Sashiko)
+- Patch 2 message: drop the wrong claim that AT_EMPTY_PATH on an O_PATH
+  fd differs from the syscall.
+- Not changed: the inline lookup can still call ->d_weak_revalidate()
+  and audit_inode() before __vfs_utimes() returns -EAGAIN for a
+  filesystem without FS_SETATTR_TIMES_NOWAIT. IORING_OP_OPENAT does the
+  same lookup inline, but rarely fails after it, while here every
+  request on ext4, xfs or btrfs looks the path up twice. (Sashiko)
+
+v1: https://lore.kernel.org/io-uring/20261030123945.1704118-1-meven@kde.org/
+
+Méven Car (3):
+  fs: add filename_utimensat()
+  io_uring: add support for utimensat
+  io_uring: set times inline when the filesystem cannot sleep
+
+ fs/internal.h                 |   5 ++
+ fs/namespace.c                |  20 +++++++
+ fs/utimes.c                   |  53 +++++++++++++----
+ include/linux/fs.h            |   1 +
+ include/uapi/linux/io_uring.h |   2 +
+ io_uring/fs.c                 | 103 ++++++++++++++++++++++++++++++++++
+ io_uring/fs.h                 |   4 ++
+ io_uring/opdef.c              |   8 +++
+ mm/shmem.c                    |   3 +-
+ 9 files changed, 187 insertions(+), 12 deletions(-)
+
+
+base-commit: ecb6817b769fd7d71af2c9f446188649020b2e53
+-- 
+2.56.0
 
 
