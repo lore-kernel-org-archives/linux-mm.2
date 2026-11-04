@@ -1,98 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCAE606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 12:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A663606A33F
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 12:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bjt0GwCP
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VjXz8EtB
 Received: by kanga.kvack.org (Postfix)
-	id 23EA26B05B2; Wed,  4 Nov 2026 07:13:33 -0500 (EST)
+	id 571F46B05B4; Wed,  4 Nov 2026 07:16:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C2626B05B3; Wed,  4 Nov 2026 07:13:33 -0500 (EST)
+	id 522DE6B05B5; Wed,  4 Nov 2026 07:16:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08A056B05B4; Wed,  4 Nov 2026 07:13:33 -0500 (EST)
+	id 43C556B05B6; Wed,  4 Nov 2026 07:16:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C73336B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:13:32 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CFDA5A757F
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:13:31 +0000 (UTC)
-X-FDA: 85397327022.17.51A727D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 2815C14000C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:13:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bjt0GwCP;
-	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 229A86B05B4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:16:53 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 044A81C4052
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:16:50 +0000 (UTC)
+X-FDA: 85397335422.05.1E8EDE7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7872E20004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:16:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VjXz8EtB;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793794410;
-	b=C3mPS0y2yRxLiTaL9MhZEBoeVRcLE2XZso8d2vVtDsNe4XaPYpOE/9KEoIyII67rfYqL86
-	as166PJgNWhkSKJUxQpb5v9rkw+7YfnlD1/CGmkxbRsZFVRXxDQHIjCId7WFIc6LbqECqv
-	0bwTqYlugo2Wetz/o1VNAfPDoDsKIuA=
+	t=1793794609;
+	b=OXjKpaUlrhPJ5goEKaNojNBEgmCWpyDI3BkGEww/OlWhmlZsMNRqCQxDxdQ6jld5cjmgAz
+	gfs6PeO3Ha+o0vIqqPLS63EFVIUDJGrNOP+er3+zchMet0f058p9KCESdKtqnrEYFT1p96
+	VE3L8uvcfx5cVL4pclCShfNGL+X4xRY=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bjt0GwCP;
-	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VjXz8EtB;
+	spf=pass (imf13.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793794410;
+	s=arc-20220608; t=1793794609;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xI1Euu70YUflyL8kMW3VkLtf2BBOiDl/YP7uIS54om4=;
-	b=6uznii+IK+je34QuqETDWJ4lQQTLunrVYxQ7cJqDYMrhxL/U5+BqriFRKUOOh+sUBoAVaa
-	I+2Kdw1+LWSr34kGeNi9lV2dEIs6DMnV4J2BIdWpQYH+D+iPyqY5fue3PEc9rJbPjrMJ6J
-	aFwVmTZdw1ITMBIkxNSX1Ob5jILKcRU=
+	bh=5/3vwj+tiIm8HubUvjjG20WDs17JU+2NaRtagz2TVFw=;
+	b=bpeEwnQg5gZ9jH/5S7Qo3+UqVIR+sUZsgtLScPBDNVRrgKqX2bEnKcpjbWjjsyYeD9ISBX
+	HYiWD4ytqFAL4OO5PjIITwyYr4vfgyYA0VGxYqHVbFZRpmZVHA+o3GfVGPZY/TyRdKaYqN
+	taBgwQrIGIujVz7Ey8E0SWNtyfqJEH8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4767143CCD;
-	Wed,  4 Nov 2026 12:13:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4871F000C1;
-	Wed,  4 Nov 2026 12:13:26 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EB13C60DD3;
+	Wed,  4 Nov 2026 12:16:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6581F000C1;
+	Wed,  4 Nov 2026 12:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793794409;
-	bh=xI1Euu70YUflyL8kMW3VkLtf2BBOiDl/YP7uIS54om4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=bjt0GwCPsVqSBZmBajC5cqnTxurvBTha5TBGNnuGjMcY/0RTazrh5fIHq8bFWGQJZ
-	 Sl3ZZM5n6doE/Ftx4asgxVmHQR2R1O/dLRdMTU+uCRc5KobE6A61lhMFJxz2AAXL/n
-	 mwLfVnHy8mP8qKSgleVvE0YCsvOODm/0zkLprwAHYenBDBa5Hu96BT20L6ne2x8mqc
-	 eaMc0NaaRIaVF4HKwPhtv0exAzuTDF+YQSqiLvhEhZtocQ5lU6tno7VrHd/Ukf5JPF
-	 lv8lFVhK9j8reWbzfJSRVa1gx4MjwWy8dUqz65qOkXdM62ndm/VwxfOTM4FL5S4tPK
-	 yqE/KXNjxSACw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Alexander Graf <graf@amazon.com>,  Andrew
- Morton <akpm@linux-foundation.org>,  Chen Pei <cp0613@linux.alibaba.com>,
-  George Guo <guodongtai@kylinos.cn>,  Kexin Liu <liukexin@kylinos.cn>,
-  Sourabh Jain <sourabhjain@linux.ibm.com>,  kexec@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH 2/2] kho: fix bootmem sizing
-In-Reply-To: <auopkIsiqxzg4anJ@kernel.org> (Mike Rapoport's message of "Tue, 3
-	Nov 2026 20:36:00 +0200")
-References: <20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org>
-	<20261103-kho-bootmem-sizing-v1-2-45aa74098f34@kernel.org>
-	<2vxz5wydnbuj.fsf@kernel.org> <auopkIsiqxzg4anJ@kernel.org>
-Date: Wed, 04 Nov 2026 13:13:25 +0100
-Message-ID: <2vxzse1glrq2.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1793794608;
+	bh=5/3vwj+tiIm8HubUvjjG20WDs17JU+2NaRtagz2TVFw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VjXz8EtBZHlvkbgkiDZA4dGgUrfn6x4W2ZaYI3reZytIB49vC7+K9tkSlFq8cnvAr
+	 MfTS0Ovayt0zPn9AW9/ZEz4jx+zZMRXBsSe5PR/RhIo04p8vyofcnRSZ4KBKWTmfrk
+	 IhqAJ8VQaaez+i9POmQRNK9CK0LGAu1yM0EDY8gbYijmKxNAX13KWX8qq21nIeKqr9
+	 g3rl7By2zm9EO55PQvYWsyGKv+1McckTMwir1q56IvK7COH9oQmi/pZLA9ktpXwjB2
+	 Q/Yjvxfu2GEOG7a3eSS85xpv06XoRIKkv9fOkKYZ7lpJQzrj4Y0FHzGeLTC0tuEJJF
+	 pfUiyu44MfovQ==
+Date: Wed, 4 Nov 2026 12:16:46 +0000
+From: Harry Yoo <harry@kernel.org>
+To: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Nickolai Zeldovich <nickolai@csail.mit.edu>
+Cc: kernel-team@meta.com, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mempool: fix min_nr exceeding the elements array
+ after concurrent resizes
+Message-ID: <aush3AHoVsuLJ_Ig@thinkstation>
+References: <20261016132510.789715-1-nickolai@csail.mit.edu>
+ <179330739525.606664.13318485044610934477.b4-ty@b4>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: rhpbdffwfzx993ws6a1r8s48o4xmnhrp
-X-Rspamd-Queue-Id: 2815C14000C
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <179330739525.606664.13318485044610934477.b4-ty@b4>
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793794409-166669
-X-HE-Meta: U2FsdGVkX18qsfepHDX1dHt1NTSukEMpFK5O7ZAVAz4X1rFuYzNGI3HMhrWtUdPQw7YVLmWi3tp+Mu0KvZKLfkJNLdJ4XgVOLu21h9j3HDRjmXSrbXGfvuUyWh8fGJdea/QO62JcpdKSbS7oxU0XxobTRFUW80xuEejUbIQiPWCAdXITVOYMxc/uPLdQ1NkimRIApCxZNmmF6QfuMt6ZXQUjXosPCqQ4Pi2azjc/TWJel+CWK8RJe7M4JTd5NaYSMjpf65m2MDv+f4zPHeKrE+UpI2N8e3bF165k3hPnwzchhJdQNRIF2k7T2qHfEyTYzWc9iwH+hIVsuIxS3PzHBOM/LnkVL7oRb7/mDnI3O4sx/5Ya7ktMmJyDeC3xLuQVlsBmqr3fMlXSG/hfOudyxoGmzF2VewZR7ueBlOQK1dNLHb6UDlWN3wabLyWITvSfvQ1ZMLXTkVGwHy6rizVe5oLMcPxxJGJvPq6tpujh+RmYB771dDxSaWrz7UAo0JOZnRkk6Y0zZ8+58CeFE9CoHFLSPjGB8ZUD96BKynGi3wSVxIH/dv1zPdbwQkVKeqJe/GdEGIbKXmQ6XUSlA3zWjag9cUJDCdAnHEYh1a7JzW/JcW5YiaRDDt4KCjEUdWLBHDueQccR6spFSli2uzuQEoVb+orxelfxXsYN924KM6O9rWKwUSreM2GKkEzfXjO1sN0kh4Ze+tOugBMUHaAtkEFJDV2em6tQ+bh9FKKYpx+W0+PeEEFuOF3jpV3ct/YF70p+vBsJdQhLhL75jOHewLR1OzGqZ9toDPHuMsvx+l9juNcBZ1VUtGH6XsD4kDendW/+JwQ5Iva1T+tXDnYFeA+6fZKroSwXtMmqVKzU8SpmuFI5FX1twiqHjnNfSqsB3M6LbYpEhBAxoivqa4u4AZlflUkW/blQFrtFWFumLTSaoLmrfCs6hh9NFyXMqwV4i8y5+YO4J+0YNSVXDwx
- 0xhmmMSt
- qFkOQVeMJUobP35K/m+Vp2nD8SevMUQ3fr/PUBxnLrv5EmDJq3xRFM0v66axeXROt0gDEUnS5QUj1wD/Lyu0SFYW3qWOhtqzSXOXmjNTO9E+udTl+3zCsuazmFlZf/7huJ4ZyXc8kx1Ykig8d/UO+uAHw7CEKj7KCgKKGOdTFMlUsPhrhDyXymVrAHXO+AfN799Pean4OfGrBIil+63Sw1Iezwc10HmDpq53wImqpEVZTMOE7/A9zKc52m3/l0e3FuIU8
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7872E20004
+X-Stat-Signature: 8xkobdjwbqeufosbgrn5jr6wgm1az4w9
+X-Rspam-User: 
+X-HE-Tag: 1793794609-571813
+X-HE-Meta: U2FsdGVkX19va4d29zJZolt7JUKGE5NGCPzJkM0A+nVmVDSA/fcfnPHCQm/0x9rBeCxRtngPEovgQ1DfhIOL1bJCtBzF46SlUXxOoh6xHUx2biXm6M8tvHfnSncQxPcPlMyQL0e7yuPCISgoV3QPADO6FCTxh5shpwDrJVA3MDjkMF0fNayg1CeyvRWYt7aArtps6W8ZTr+XhNK95XKEIoFat9vJpKosUULu2t0bOBAvqvaA0ahyxPQ7xa+thitqagNz2JCl8xMen2bVMvoFPv+ZvJRlC/V+v4aj+cwcyW2xrqYLx6X3EfbrxSQxfWAzA395h404dJ3ZgYXFGtFtukuOhCB2CMHXcgN2ehmyv32RC/E+DmL2W3eokSy7AxxyL9xOWf9kRdcHcIFODREi5ljyAYfffrKC28wyFJDJpUxNgwUDkgV3P2AHHUyQOVk142BlCZishUrphLjr2CNOlZpcn3sjt2Y07zGvkD4Ljk0S27/MPWv81khjYp+ALggOQc+v7IwXK+Oe2Td8LFormpApv2OwZfwnz/9vdXNgLYVmtxvLx+EBbGUfgmfoYvFEeichHXs8D0jdpMlsJew/mx7qwk0+jwOOAXMQTsr6ph1w0Xt5AVjTTYNEpJRvbmc8CE7zwlFYZG4U7x5c9q5IaWgAc0iHWty2K4h2vFAF+Pu4lHGOywPZKF/8HsuD79Lin+fmsnDqYctDKe5gDzGN3ssv9J9Yno3f4+tZ4oyJd1Zahr9IWnQ1Ygo2rb6Kpb7WvbFRwUtF54u9LQU3xNv05VURVYDG8xn9Tv2MXX9xMO2F/RuXEG8dhdyJwxkdKgQNJEW562vu8IJP9cypA1X13n2Br7jjNAv71C84PCwvQosRW5CnBuqmp8TVtVZqLRyeVMwVpXiyi0hr+QZHIwlRqoxFRtVTfo579/5pxxHsD+N2P/+ifb7BB6dNIRTp83/e0S1v8SLRyD+ixMcSkA0
+ kjNqag65
+ YHl3Um9jC8EPKyzHaS2h5vMW7BZ1YjVe/DQbVbLjQ971BYGuSO0zfXfs9MoJvbdnZVHb+nkdyJMVFR6ZT4Wa0GPKVlt9SfgedGpCK+YeVHNn3t4fuoQgabiIKRmNmOkbVPwQB4XIrI4E+zY0Xex0Lbhu8/HaWYkjuFLIgFyfdry4QEUFPLhak6Aw8sxnlKLa0yRqz9jpny3ldwTLI3PJf8l3k0jf3K5uJl8GoOJPVKL87biznldiR8sl9cEjyHR4HHeDSL2JOvAkelU9ONeUEx6r3fdPqx0gj14JLHlbGMyrhx6Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,100 +97,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03 2026, Mike Rapoport wrote:
+On Thu, Oct 29, 2026 at 08:59:01PM +0000, Harry Yoo (Meta) wrote:
+> On Fri, 16 Oct 2026 09:25:10 -0400, Nickolai Zeldovich wrote:
+> > mempool_resize() shrinks a pool by dropping pool->lock around every
+> > free_fn() call and, once the pool holds no more than new_min_nr
+> > elements, stores new_min_nr into pool->min_nr.  new_min_nr was only
+> > compared against pool->min_nr before the lock was first dropped, so that
+> > store assumes nothing changed meanwhile.  The kernel-doc allows
+> > mempool_alloc()/mempool_free() to run while a resize is in progress and
+> > the grow path also copes with concurrent resizes ("Raced, other resize
+> > will do our work"), but the shrink path does not: while its lock is
+> > dropped another resize may shrink the pool below new_min_nr and a third
+> > one may grow it again to a size between the two, replacing
+> > pool->elements with an array of exactly that size.  Storing the stale
+> > new_min_nr afterwards leaves pool->min_nr larger than the elements
+> > array.
+> > 
+> > [...]
+> 
+> Applied to mm/slab.git slab/for-next-fixes, thanks!
+> 
+> [1/1] mempool: fix min_nr exceeding the elements array after concurrent resizes
+>       commit: 8dde7b06d2d819422c736dad7efb9635b6673cc2
 
-> On Tue, Nov 03, 2026 at 05:01:08PM +0100, Pratyush Yadav wrote:
->> Hi Mike,
->> 
->> On Tue, Nov 03 2026, Mike Rapoport (Microsoft) wrote:
->> 
->> > Bootmem areas are sized from overlapping views of the memory reserved in
->> > memblock:
->> >
->> > * the global area is sized from all reserved memory, including memory
->> >   allocated on specific nodes, so on NUMA systems everything allocated
->> >   on a node is accounted in both the global area and the area of that
->> >   node.
->> > * per-node sizes are calculated after the lowmem and the global areas
->> >   are reserved. With CONFIG_NUMA=n all memblock regions belong to node 0,
->> >   so the lowmem and the global areas are accounted in the size of node 0
->> >   area and scaled once again.
->> >
->> > As a result, bootmem is about twice bigger than it should be on NUMA
->> > systems and about four times bigger with CONFIG_NUMA=n. On small systems
->> > reservation of the bootmem may fail and then KHO gets disabled.
->> >
->> > Make the areas cover separate parts of the reserved memory: the lowmem
->> > area covers allocations below ARCH_LOW_ADDRESS_LIMIT, per-node areas
->> > cover allocations above it on each node and the global area covers
->> > allocations that are not bound to any node. Calculate all sizes before
->> > reserving any of the areas.
->> >
->> > With CONFIG_NUMA=n the global area becomes empty and it is not reserved.
->> >
->> > Bootmem sizes in MiB in x86 QEMU VMs, before -> after:
->> >
->> >                      CONFIG_NUMA=y     CONFIG_NUMA=n
->> >   1G,  1 node         176 ->   92       320 ->   80
->> >   4G,  1 node         508 ->  332      1264 ->  316
->> >   16G, 2 nodes       1268 ->  704      2944 ->  736
->> >   32G, 4 nodes       2296 -> 1224      5196 -> 1300
->> >   64G, 4 nodes       4344 -> 2248      9664 -> 2420
->> >
->> > Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
->> > Reported-by: Kexin Liu <liukexin@kylinos.cn>
->> > Reported-by: George Guo <guodongtai@kylinos.cn>
->> > Closes: https://lore.kernel.org/all/20260904025101.9959-1-dongtai.guo@linux.dev
->> > Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> > Closes: https://lore.kernel.org/all/20260922131217.698809-1-sourabhjain@linux.ibm.com
->> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
->> 
->> Thanks for the patch! My LLM caught an interesting problems that is
->> worth considering.
->> 
->> On arm64, ARCH_LOW_ADDRESS_LIMIT is arm64_dma_phys_limit - 1, and
->> dma_limits_init() sets the default value to PHYS_MASK + 1, and it can
->> also be memblock_end_of_dram() in some cases. So on arm64, it is
->> possible for lowmem to span the entire RAM.
->> 
->> Currently, that results in over-allocation of bootmem, and it ends up
->> being 4x what it should be. While obviously problematic, it should still
->> work. With this patch, all memory is in lowmem, and nothing ever goes to
->> per-node bootmem (except for the node that hosts the lowmem area).
->> 
->> All this is from reading the code, I haven't tried anything out yet.
->> 
->> Not sure how to fix this though. Should we perhaps use
->> min(ARCH_LOW_ADDRESS_LIMIT, U32_MAX) for the lowmem limit?
->
-> Argh :)
->
-> Maybe we reset lowmem to zero if memblock_end_of_DRAM() <
-> ARCH_LOW_ADDRESS_LIMIT?
+For the record, I rerouted this from slab/for-next-fixes to
+slab/for-next as it's not targeting -stable.
 
-Sounds good.
-
->  
->> Also, a couple nitpicks below.
->> 
->> > ---
->> >  kernel/liveupdate/kexec_handover.c | 83 ++++++++++++++++++++------------------
->> >  1 file changed, 44 insertions(+), 39 deletions(-)
->> >
->> > +
->> > +		lowmem = reserved_mem_size(ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NODE);
->> > +		global = reserved_mem_size(MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE);
->> > +		global -= lowmem;
->> 
->> Nit: Please add a short comment above this to explain why you remove
->> lowmem from global.
->
-> I prefer to extend the comment above the function to say that calculations
-> for global and node that includes lowmem remove that.
-
-Sure, that works too.
+mempool: mempool: fix min_nr exceeding the elements array after concurrent resizes
+commit: ce6518e61e3b4bf4f97f7ac6204049b9eba7eb75
 
 -- 
-Regards,
-Pratyush Yadav
+Cheers,
+Harry / Hyeonggon
 
