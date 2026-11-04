@@ -1,139 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D48606A331
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 07:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EEF606A332
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 07:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NVo64i6H
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=j0W4uOzR
 Received: by kanga.kvack.org (Postfix)
-	id 850DD6B00EF; Wed,  4 Nov 2026 02:17:30 -0500 (EST)
+	id 597556B05B4; Wed,  4 Nov 2026 02:19:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 801D36B05B3; Wed,  4 Nov 2026 02:17:30 -0500 (EST)
+	id 5478C6B05B5; Wed,  4 Nov 2026 02:19:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F1606B05B4; Wed,  4 Nov 2026 02:17:30 -0500 (EST)
+	id 40F8B6B05B6; Wed,  4 Nov 2026 02:19:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 492BA6B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:17:30 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 61CC640330
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:17:29 +0000 (UTC)
-X-FDA: 85396581018.12.E534DBA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 81CE6160005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:17:27 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVo64i6H;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 210956B05B4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:19:54 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 999A41205F6
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:19:53 +0000 (UTC)
+X-FDA: 85396587066.23.58E61F0
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 3127B4000C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:19:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=j0W4uOzR;
+	spf=pass (imf04.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793776791;
+	b=SPr7DD4l9uv5eD8IkxvdLTnh5gHMPvAypDFAb6y8NFM+9JA9/1Kfpe8usEq7vWFxdjiMek
+	Lb/h9hbqr3Oca5rNRFIbrMkx4BRbAhmc96QW99h4fXl+OBEbeFY4hhVEq07jn65tuRATWM
+	sQuwlCD0uv+sYDTKKDEK1eDCuLvtXRY=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=j0W4uOzR;
+	spf=pass (imf04.hostedemail.com: domain of songmuchun@bytedance.com designates 209.85.216.46 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793776647;
+	s=arc-20220608; t=1793776791;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ktg5izJKG60I2UPIEWlV3M+KtBzsylr/JSki197Myic=;
-	b=bJsMDTPSY/QEv8CqHc5fURiBwSwAVwLCUE9L+ZnlasL4NLZJ5OqihHac+MDQqdnhSv9PUu
-	H6kkRRQBz8XUsvTCf54YMP71XDxeMZ3Y+hZa1TNQQ2sVoBjffFc0YUa5dLruWO7d9SkgGI
-	g6LeZqaK4hXpnbFF5/moZJQEMiNlKY0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NVo64i6H;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793776647;
-	b=5WzUkHGbZcGirqqvzSNm3DcOFuFQ5987uTSn4lXFk7EOhPG83WGUnGoFgm+7MbWsl7pea6
-	kL7IT9mwfWkEHwdqlAe3ucLOoAtGVBlS019kByKvCurP2kJs51/XhkfmMoBi+8L1NDlkGP
-	mPgzWm8ySftAo70IAnb5F1u7/uPSNp0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B37324391C;
-	Wed,  4 Nov 2026 07:17:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D41C11F00A02;
-	Wed,  4 Nov 2026 07:17:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793776646;
-	bh=Ktg5izJKG60I2UPIEWlV3M+KtBzsylr/JSki197Myic=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=NVo64i6Hy2J2/JtCvmk7jr+3z3y7ow2D6wnKnOqR75VbQOb9ns/fhqmrpw5s7XOYO
-	 ZTaun93U9u+EennRsz2Y8jXTpQwUVEFNJNitiu/lrdfG6oB5tUfN6azMEZqBASF3x4
-	 mFQNzpy2iyhPQpr6xRHRcw+L7u4a2kqD6r7eiaH2wuwZgH8BUcSWx6Rw1T7cEwdzD6
-	 3UZE4EBgQ30QNryMbH64W+sdA1VoFuQWVHvj6re8m/2E1Htsx3rujkqFkF5WI3Wgru
-	 NjGR2wrqrbfeiV4B2GMLu/HCUi1LHyNM7CEsNxhhoX1rYOUsohwuY08qi+kjBHSPVq
-	 ZX1CgzNdOPl3A==
-Message-ID: <c714b285-4bd1-4475-880c-30aaed262fff@kernel.org>
-Date: Wed, 4 Nov 2026 08:17:21 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=rrzBvJUH0m6X73oGrOP8Fx5drxVGiUnw51WPWWQEE/8=;
+	b=GdJ1jIkWDNtWYAW66MYkOyRmJdJbIdxZhKb7MS/sShue9J9CqBvm43cOszWPz05m+ZUAW/
+	SMnnwXNZoZBjSqcuSjHW8rSFnOpm3z1AnDnRcxGvBdUNWd8P7AS0nA7HxlgNzFXjpYAoFP
+	rmuDK+dGsnKaDDLIb/Mj5d/kYnrR+30=
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-3b0a0d19a60so61669a91.0
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 23:19:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1793776789; x=1794381589; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=rrzBvJUH0m6X73oGrOP8Fx5drxVGiUnw51WPWWQEE/8=;
+        b=j0W4uOzRUCaYKBHXETvCQWXJRKVD6mUHvvrUFU4ZbDc2kRGPGbo0I8WWaj2R77IidS
+         72bUnmS4bz7vQJoZJ4D23CJE7RtuhrV0zBhkXEVA4rSUBREZ1PeibjTfBpkV33wrpVFo
+         fCqTMLPvUn05YVKwQfJzSCCVkqaKTqbG9ghzhFa9rC/KlchCkvM0mUXYVRt8PVPDcXC2
+         BV1iu7xSnlzO+W0zUNkd0BR68GqlQrSuHYQAukPoAneCGQAPsz9rdKdg3YOZ2JqpUQ9P
+         NRV2nrVQ1zYAf4IIul/H3VIKw+lL60GMw5m/qlAt69LK3XmzA68KGCUeVPT5imwqL+ZE
+         fpqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793776789; x=1794381589;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=rrzBvJUH0m6X73oGrOP8Fx5drxVGiUnw51WPWWQEE/8=;
+        b=2dwcpnCEHGz3hJZp6tljzoUQG6nIEf6BU/geyaAcrO+n35dGSCIhiXIAvxhPhCnkyE
+         ZUGgy2/5cHPttHgX3/2R1pQN1INPCxl1zJjabA2PGTSMVGVSZLmu9jkHCbjdeIVmYB9M
+         4+dckIAn0bnjdr+W5TIVUflw6l70004uoYNZ0f9cElYTJZo9TqyM0AVxj9RJqZlFcnTH
+         z680A2sVIpXxuwiLmqmcLfz2J0fdXqJPDKPgjRnS5W5r6qzAHF8w3MeFHFqPrFaV7uOi
+         WqwKcB73AmMAHDQltJ5Z2pcOu3FF6Svn0kKEFIHrp3MIyd1U8SSNl6HnEXJklAgLf8Xz
+         0IlA==
+X-Forwarded-Encrypted: i=1; AKwUvBxjWEK/ggwMieqLyQBYwNkXKA3/F1/XcwGeBCYD/ha73qbrgYeKsZsTRSQZLhHeGyV4BfaVgoXrtA==@kvack.org
+X-Gm-Message-State: APuU4Z+S4pDlc+quSxvVJiqCbpW7cYiXDq63I2k00xM5xniY4WLYeoUv
+	XzwMfrJ/bHqDZc1u7AwQ/mRBnt5m4qMyuZ9Ge+mEJUv2ZGH9+MVlNK/ncUuN2LnUmf4=
+X-Gm-Gg: AYBFou1Xnz0KoPuElbgM5ZDjnYbbbV4Z1TgQSF9rdLr40mdDF0xG5ep5K9EkRVoyIj0
+	i5yO1IHJOyncXNJ0mELC70ZW1m180zF7AK0A17nPM1qPRtTZ/JqrrheLiwAF6Ofe1efMwcPwlxQ
+	Ua6GIHN++6z/QtHkBRfKP6hWgaMo6OFBae2hfOVmAYtdbtTlHRRe2sFnydRzGVlZCgiRzdyBCJy
+	d9pZpWyRdQv/vO2hpxGhgi36QKtQg6SW6jVC9Nod0G3ZmFLafzrHbX+KUt5P07dO0//23Hs/9tZ
+	H9GRIlXR3MV0grMv9ggueGiSmBVHkwLIXGQ6ky6BcJEtTs2Qgd7iXEJLXlM3zeingj/2h3o26KN
+	kFvUwf1eH8jxbfLIoIW/RrF6DrztcjEd/W8FSjttQULBJbF9yUe/9bjcxGAlX9MsPN2/nNDwY+O
+	dngsITBvZo0mACTyMN0cI5XFY9WFo1Z1zeDxTg6vjfze/s7PlmjPKckHogMERIOETZUknjAAYRr
+	74OKTybSQ7Q1VkBYcK0BHLD91ZkSyFfTYv0VgKetM6WTFTxjLBDndk7WElQp8M/MnhxiPRZ4vgv
+	Ob31yoD1rnuR755AfLvS+rfzlshVXd4Vw5TZ21xGcFz5LLWM653kYWVzqyjGePoXkDs8I6zf
+X-Received: by 2002:a17:90b:2691:b0:3ab:189b:6980 with SMTP id 98e67ed59e1d1-3ae89776111mr11952482a91.39.1793776788793;
+        Tue, 03 Nov 2026 23:19:48 -0800 (PST)
+Received: from n232-176-004.byted.org ([36.110.163.103])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b099189fb6sm1027403a91.2.2026.11.03.23.19.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Nov 2026 23:19:48 -0800 (PST)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Oscar Salvador <osalvador@suse.de>
+Cc: Muchun Song <muchun.song@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Sashiko <sashiko-bot@kernel.org>,
+	linux-mm@kvack.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH v2] mm/hugetlb: fix validation of unsupported HugeTLB orders
+Date: Wed,  4 Nov 2026 15:18:57 +0800
+Message-ID: <20261104071858.757793-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/5] mm, page_alloc: several stable fixes
-To: Johannes Weiner <hannes@cmpxchg.org>,
- "Gregory Price (Meta)" <gourry@gourry.net>, Zi Yan <ziy@nvidia.com>,
- Shakeel Butt <shakeel.butt@linux.dev>, Mike Rapoport <rppt@kernel.org>,
- David Hildenbrand <david@kernel.org>, Oscar Salvador <osalvador@suse.de>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- stable@vger.kernel.org
-References: <20261103-pgalloc-ai-hotfixes-v2-0-e0d2890ab74f@kernel.org>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261103-pgalloc-ai-hotfixes-v2-0-e0d2890ab74f@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 81CE6160005
-X-Stat-Signature: h3ys8yr4asf69fp5m69h6mb33citnttb
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: cjjjhqhxuh8x9rrehqbjtn1egimqppms
+X-Rspamd-Queue-Id: 3127B4000C
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793776647-198254
-X-HE-Meta: U2FsdGVkX181M+79uT4jXKX5Hyvp+/V7Xa7O+F8sMBXQQCZMtb3tPPNCp0boZUO3XfE0cuub1zh5U8hh26DV83y9e803hrRs3jgWeQcyxOUdJK9xz32VYlCb2D0hg2ahTxMS4eH/XaIqHubwxL0+pXCFU3ApLigCE8PXDHJ4fSm5WCED4fs/sKpCZFvKbSr2ZyztKfhmWwVyuyQWdyKZ1jyBWxQmnjcXl8OwJuLfdxJCApvO7fNnxvm5OT8biCf7rIAr+uP8+EaR9QIFYagnfBpw4o2tt6vdTHd4ttMFc1vtLPeUdm7n4kkwVBbb1/BYzKz/aRKCoqrHnUm4d3xFloqkl/FVSx39KiezuHGtejY2MwkXBUSJltL2m1kYTeQX8qhX85KW1d4hLJmOY7HMn1hURMDHHfffH9wykFuTV3ojHSZJTd97hJT80IhAvHT42ZZ9Hl86Od0KLKg4EqN+C8D2Jviiu+KQvP8Ism81NBlWK47NoK3r/WZjmkSpiozQdBXVBxX/OMce2ko4RcarAjQESebNFgp2wLMxUylWmxlFjuVv5vIp6etQXtRbwq8HPqtWBeSwfn1SsEtWf7XGuAQifp6z85pCClfEnShR82o3x1KZnMAtV5VKiksp+48zhJkR+QYu04iysXEi0kqsv7o7qlEfsvOJcVdKwgG9O9Ad/hMmoy84Zgyl/AwucvL5bmwSYD+DeC3hzZRNsmS1DjK1MFq8ZJ7Ce/Z8Pm2b2hVgCxbHOF7GmQD4FHs27SwtY+L2JsIkczFYkgrhMsNMkBTtceCKfMsKnhURUhsvF4smsOemLEQ7K89u4jiaK9aZ+qefcCsGUgrCv2WLkn6fRoA/lLBIRNQfaLDIsYjBiITWDa99jRSJ7dPAqFUNimFMYBmu91IRPVWWygMTgViVUZO4FHFU7k/S4zotuPiMldFprnMz92VRtyS0w+PO37GC6auCXZglI4pBWU0qtFR
- RKYqiH71
- WAI4Gr1LUC7jDApeyqLWpHVABdz9fTtBbF0sOX68yDr07ZzY5Jx8ahHd/mhZKQAD8F6BlQpmhAjS6a1e/bLhw4hGiIew4KWChePADd8KE4fdu73I6I6OqgIIAr78+ZnuSiQdebRTMcBj1mudLj065L7u1ikGcKWnRRzhw8pmFGHuhfTviKK6+YJiI8cfOhpG2CZJsDOdERqeGBuBrW7Xwgugw/cpeWsavOOLG3NLEOfU/IHrN4wk/A2GGUNaWROqNcnR5TPMulaSeUth0meOhCqlEMKoNjSgOgmtW4vqm7hCDX8D3wN7lp6UNj7GrJ0Pd0whIDMHL78XISRucC0ZobJWMB1MG2J7ejZXCf+FcLfbB1zMxXHUBkTr8hNUxtn/z3GdYN0fmUzCE4HjKyQ6R/PK4HJ97DZj84t0F
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793776790-175004
+X-HE-Meta: U2FsdGVkX1+jFoRhvNuzYE/Bn5Jvs5rXcFqDzn6jrOck84IPZ2g5Z8AlRjnJQnPAm8XjTeybrjIOPBbjzqNMVP011QRZ4MacsMsFMMzcBiiOIywEI+dunFSsdTecwysDEBbaHA2aE+yCx628JCaBT1Puw9tQVtCS+UBgzXifpb0sZErXq7zG7M4gLcJ1o5UFx6F9Ftd4651a7Sj/1MiDoIkfwMAalAK5lt7As/5Sx6ZrrBLXcTDAZsfS97iD78LOU2Me6RsuSALmjysigc/RjR7lkYdWySDb9uxmZRJCEfPus1y/1BOkZDlYus5mh7YHUiDuXSHb8UuOQ0pNGEbo6ltt9TuNxrOUgs/3l3ZO5vMGnczxjl7ylDcs36dK9k4ADeR9lHYeXkdWIjnIp3IYOewvq+NiYnVFPJVYzPznyP5fFYnqAL0CFiReGsRnpbFQCE+pp+9aJeYCsA8Muw1kit8kWcF55rMdliUN3M6Wa+1nO+VBp51yhdlL3C89Z85gfGZqhEJ5t3vu+mcfDQ1Py1gGcu8wQYR6wpPCwONrI+7BM3BEnesw6tVR+Nv0zLm60YP/v8RYYLcopYyDxFEY5uicfwLvEHuBUCOmcaHXQoC9d7G5soznmPZniFXB0/FoAyXSWYdtx7sYjvpmztc+aPF1cCcXAOnweaZ1NZqV5mIC8QHmW7gOa//PRea9tCIIHEnTP5aIBNcF5vPdog6HVXRD2LVaI2851L6MLNeDgTpf26wgePYfB0lUO5SMkHZN+/URT+rVQx9A3v6zHrskNFXYtr0jVKMyW+EVEPqYOIDy8OHPLBleszYDNG1Xtlrgci1uSZxxHfhuBTTBojDdAOTSXYhrJYmhNwHBVjmZDiMxrdgygbDYhR54OmtN/9TLaBnT21GHGm6Qmeiw2Gy9ee8T/vt8aC0/f2n0NMCS0rttJKIG3pFo8tc2xbDXM1YfcXTR+H7zIhTFRQFuLhP
+ WqJfVF/Z
+ izWvuJFhM3UJIcu7Dwy3up8XoChdOgfRi3rbvR6ofF9M7tXsNxV/WEwQtWE+hOxYNeMFOH6ztBXhzNSvO/BypdjnA4r15WczUXAd/bsgYFCprJvlDVxxE9McmnIoTf+DCDBQAXmrykBUKWw3DLtNPqMZ52hiL0QU8s4r125JoXIKTpmAdEkWZppYj/xxsbcRwxicjoNcYnol534A+IsbeWUVenABfPAcrPXuk03jhltZS1uOLFgHWtgZmUdZvi2WN+rz0ji2gf40yQ+wjdffFN35y9udMLaLJl1E8dzefB90CtN+QoypZd6ZNQuoOeMEU70CTbHnluPADZ80=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,48 +129,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 17:16, Vlastimil Babka (SUSE) wrote:
-> A bunch of fixes from Josef, filtered for page allocator by David.
-> 
-> I have tweaked some commit logs and a comment in one case.
-> 
-> In v2 some were dropped as they were merged already, the last one was
-> changed to fix things differently. "mm/compaction: trust
-> zone->contiguous only in the span" was dropped due to lots of sashiko
-> feedback. compaction (as a pfn scanner) needs much more thought
-> 
-> Based on page_alloc/for-next-fixes, to be applied there as well.
+Commit 7ce6048d3a7d ("loongarch: drop ranges for definition of
+ARCH_FORCE_MAX_ORDER") removed the ARCH_FORCE_MAX_ORDER ranges for
+LoongArch. Besides dropping unreasonable upper limits, this allowed
+values below the architecture defaults.
 
-Now done.
+With 16KB pages, LoongArch defaults ARCH_FORCE_MAX_ORDER to 11,
+matching HUGETLB_PAGE_ORDER. Forcing it to 10 while enabling HugeTLB
+permits order-11 HugeTLB folios even though MAX_FOLIO_ORDER is 10.
+LoongArch does not select ARCH_HAS_GIGANTIC_PAGE, so this violates the
+generic MM assumption that folios cannot exceed MAX_PAGE_ORDER.
 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
-> Changes in v2:
-> - rebased on page_alloc/for-next-fixes
-> - dropped 3 patches that were already merged from Gregory
-> - dropped "mm/compaction: trust zone->contiguous only in the span" as it
->   needs more thougt
-> - in the last patch, remove the VM_BUG_ON_PAGE completely
-> - Link to v1: https://patch.msgid.link/20261027-pgalloc-ai-hotfixes-v1-0-9c7d1aca801e@kernel.org
-> 
-> ---
-> Josef Bacik (4):
->       mm/page_alloc: clear ->private of deferred free pages
->       mm: page_frag: refill the cache for large fragments
->       mm: page_isolation: do not take slab pages for free
->       mm/memory_hotplug: resize zones under their seqlock
-> 
-> Vlastimil Babka (SUSE) (1):
->       mm/page_alloc: remove the zone_spans_pfn() check from get_pfnblock_bitmap_bitidx()
-> 
->  mm/memory_hotplug.c  | 51 +++++++++++++++++++++++++++++++++++----------------
->  mm/page_alloc.c      |  3 ++-
->  mm/page_frag_cache.c | 21 +++++++++++++--------
->  mm/page_isolation.c  |  7 +++++++
->  4 files changed, 57 insertions(+), 25 deletions(-)
-> ---
-> base-commit: 743a99d7e339e81acaf76f3c902b23abb29abc15
-> change-id: 20261027-pgalloc-ai-hotfixes-59bcd873a355
-> 
+This invalid configuration is accepted by Kconfig.
+BUILD_BUG_ON_INVALID() does not reject it either because it only checks
+whether the expression is valid and never evaluates the comparison.
+Detection is left to the runtime warning in hugetlb_add_hstate(), after
+earlier boot paths may already have used the invalid configuration.
+
+When an invalid HugeTLB order can be identified at build time, reject it
+there. Otherwise, reject it at runtime before the mismatch propagates
+further. Use MAYBE_BUILD_BUG_ON() so constant violations fail the build
+while dynamically determined orders are checked at runtime.
+
+Fixes: 7ce6048d3a7d ("loongarch: drop ranges for definition of ARCH_FORCE_MAX_ORDER")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/sashiko-outbox-192874@kernel.org/
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Suggested-by: Huacai Chen <chenhuacai@kernel.org>
+---
+v2:
+- Move the order check after hugepages_supported() to avoid a false
+  PowerPC BUG_ON() (suggested by Sashiko)
+---
+ mm/hugetlb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 779b1de33c78..b49130eb7ad8 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -4197,7 +4197,6 @@ static int __init hugetlb_init(void)
+ 
+ 	BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE <
+ 			__NR_HPAGEFLAGS);
+-	BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+ 
+ 	if (!hugepages_supported()) {
+ 		if (hugetlb_max_hstate || default_hstate_max_huge_pages)
+@@ -4205,6 +4204,8 @@ static int __init hugetlb_init(void)
+ 		return 0;
+ 	}
+ 
++	MAYBE_BUILD_BUG_ON(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
++
+ 	/*
+ 	 * Make sure HPAGE_SIZE (HUGETLB_PAGE_ORDER) hstate exists.  Some
+ 	 * architectures depend on setup being done here.
+
+base-commit: 74d73ffcffe03804f97e9fb82301dadf75671282
+-- 
+2.54.0
 
 
