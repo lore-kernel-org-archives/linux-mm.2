@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C34606A336
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D572D606D801
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X1jgy3lG
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=alKTGqUn
 Received: by kanga.kvack.org (Postfix)
-	id 831D56B05BE; Wed,  4 Nov 2026 04:28:10 -0500 (EST)
+	id 01CC16B05B3; Wed,  4 Nov 2026 04:28:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E3116B05C1; Wed,  4 Nov 2026 04:28:10 -0500 (EST)
+	id F37D66B05B7; Wed,  4 Nov 2026 04:28:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6AB0B6B05C7; Wed,  4 Nov 2026 04:28:10 -0500 (EST)
+	id E74446B05B9; Wed,  4 Nov 2026 04:28:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 454926B05BE
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:28:10 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D70EB140661
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:28:09 +0000 (UTC)
-X-FDA: 85396910298.24.30D9691
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C4EDF6B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:28:54 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 55E9812062B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:28:54 +0000 (UTC)
+X-FDA: 85396912188.26.DC9DFA6
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4876D40009
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:28:08 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1jgy3lG;
+	by imf22.hostedemail.com (Postfix) with ESMTP id B9D51C0005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:28:52 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=alKTGqUn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793784488;
+	s=arc-20220608; t=1793784532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gr7svhS/YSc9d7laFr7PXJQ2SsJ994DEnu6A9NyzDrI=;
-	b=tpVjiajP7TT2EZWDioxGSnWCCNkQDpFKjv8YbRmtlC7ExbELqVoqlwB419KNHNNmp2utR6
-	s0RQXO9aUD3PTTr4FJThoz3A/yvYE9ycU4o5KdhDjF+5/sEnvZ2BSLFDDJypPYkZesuX41
-	4s8BAkqUZJO5tcmGDpoE1/JoFWzyiGk=
+	bh=T01zQUJSjbZp4aJnpwJVQI9JvpnXX6u13mZcG0ZeyDQ=;
+	b=UOji3wJxhEKaB5NukK1fTdsSs9MonOYIgMgmWaOssckqXAmICAVAPt+00o+A2NBi45Zit/
+	QW2Fn30YdDmgKRePjrLcUQ3vE9zjQEY+Zkem2LFiR2ZAUXa59oftsTsxRXHi3QbzUSGJcw
+	Ofpowtsx1JcJS+19ZE8JFIwq30nyXjA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1jgy3lG;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=alKTGqUn;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793784488;
-	b=jxcCGBqmY62X2S1F9UQfpdxyeEI2xRNy3KU0SNaQSfLenfZVq7A9zsLa+M/0EC450NiaCN
-	hr2ZLp53hY0rFbLBa4hD+cYaz9Teou5MmO+m4Nzq2N1LyU9zgkfak40uezX276mp7kR4kC
-	vaLx69N4WcnzCjGSglkx2aYyA3iDhVE=
+	t=1793784532;
+	b=x+/50eTrl2PjOoQxti6FzPCq7GgNRYP0WVI/1Ym8WluHEZal3+/UCIecNOUYhVkJSxq1cy
+	h0EZcX2Ch/P9LT2cPpR40JFZRl5EOARTnz+uIEUVT1zuYDGnjm4MaZ3DdU0zsz7n7vxiyf
+	IoQtWRtrFDEj9pdf919iZpMRFxuckLY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C108060098;
-	Wed,  4 Nov 2026 09:28:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4001F00A17;
-	Wed,  4 Nov 2026 09:27:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 596F8605F0;
+	Wed,  4 Nov 2026 09:28:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AB561F000C1;
+	Wed,  4 Nov 2026 09:28:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793784487;
-	bh=Gr7svhS/YSc9d7laFr7PXJQ2SsJ994DEnu6A9NyzDrI=;
+	s=k20260515; t=1793784532;
+	bh=T01zQUJSjbZp4aJnpwJVQI9JvpnXX6u13mZcG0ZeyDQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=X1jgy3lGK+B8wHnMJmPUlW00+DythG+u8ZdEslw9l+mYGsCluF0yALGaeLj7ksrDg
-	 EcNjCUMoKMdxcyD0WsxPb4Cp4iKUAxNR9okqjQhF+09x5q+3kuYpexwXQlXsHIw+os
-	 TkFeMF2FhQ5UjzAqNfBp6xMNGmn825VDWt1gtK+nxiDDItHSDAD0XUEkYDsawNyiA7
-	 /4Xh7LGcOgeD7u3hApqggi+GDOh8nhBNcBO0pFhjuZykmUExXJEtisP76hRDnMqyNT
-	 NxfQEUBzADkSfaq0PsDOx4woXNhrClwQtQmsRawkfviLN+SXF+cZMarB1vamQDxvXp
-	 LI66cNBmM2ktw==
-Date: Wed, 4 Nov 2026 10:27:55 +0100
+	b=alKTGqUnuzoexCqwA81KPAyGy0rneY6r5MbFqbvV697+Ik/bjfxk9LHef9GM+MQJQ
+	 QlHwwMzWgTBR+V1EVZkBqvL2y+0fpSnZdIRpFx1eImmWwcDpXf+kwZoN+KfbPRIwjh
+	 GLUEX2tS20NdiCJARKDNfWQpLYmSC9HacZQpjtFGF6DQjakJaImqqw+1NVIZp8Jkve
+	 rhjW0cKAwa0rgro+T+KAxTAshgpXhyosdPn/BLM1fw2d0BZ8BRed4fxkWyQdPz2E0I
+	 sRYd32Lzz24ZCjwV4++8ADyzClHdrBNXy/ODBoctV+0gtJXx39Cw7SDphwQ7RfGct5
+	 fVZStrNkhDPHg==
+Date: Wed, 4 Nov 2026 10:28:38 +0100
 From: Christian Brauner <brauner@kernel.org>
 To: sashiko-reviews@lists.linux.dev
 Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
@@ -81,29 +81,29 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Anna Schumaker <anna@kernel.org>, yukuai@fygo.io, Heiko Carstens <hca@linux.ibm.com>, 
 	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
 	Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: Re: [PATCH RFC 15/16] proc: let procfs copy ioctl arguments in and
- out
-Message-ID: <20261104-muskel-filmabend-parklandschaft-f02c910a4fb4@brauner>
-References: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
- <20261102-work-procfs-core-v1-15-75df35e4f8b8@kernel.org>
- <sashiko-outbox-195542@kernel.org>
+Subject: Re: [PATCH RFC 11/23] selftests/proc: check that a faulting writer
+ doesn't hold up removal
+Message-ID: <20261104-miterleben-erdaushub-insel-df331d74044d@brauner>
+References: <20261102-work-procfs-drivers-v1-0-a994bd4d3b1a@kernel.org>
+ <20261102-work-procfs-drivers-v1-11-a994bd4d3b1a@kernel.org>
+ <sashiko-outbox-195591@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-195542@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4876D40009
-X-Stat-Signature: eoh1ecbyztf16bqia197papdrhqccwtg
+In-Reply-To: <sashiko-outbox-195591@kernel.org>
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B9D51C0005
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793784488-75420
-X-HE-Meta: U2FsdGVkX1+XIwGKoSCk4+dN3FB7cYJE3U0uIYclGL1SUiKoNk5icH58HSQ4Yi3kYc95OTZu5phJFsn5mLu7SRK9EoGLRJiBYRdiHDDUr8rHeEGZSvwwNeRfo4uJl3cmHMZyTuptYqeG9n/9rIybEVA51S4DrD7irY5iJNfxmNkn3tNaXmmZi2SF/rRX4NlNohf8cMK8/AaleppMNgcpKJ7F19tKqQyvMT3ecWY4jpbmlPCaYvaNLL3lbHkYPoU6tZtHdp1MWDw3Pys0kchbDNGwNP6W+CnFQ955V4//cZSKRRnS9cjo7TKsbbxQhI0QhEfhRx+n2MHOtHZyThDRPdVyWm4bFSVEsiBfGzrOVehFLsv5kOk31vpee0g+LuuI9QrVCDicL3f4NEXRLHqLjbkr1qhBQnUMWzK/3/STeUBpCrD49P08Pymzobl6AzbgqF8iWm5Fm3TvpVKb0kz8cWBis9R55aeIZSbrGh5bpyxX63VIi4KdlUNaPwcPPkKdBOoodzX8Eu9Ou/t/HjmuHjIcpwbvheSBNl4ltXzmmc8e15VvbvXiHBknQ700utxM3sv7cKIUeq//Y0+S1X+86o1fETcaQ4nNbJIjT0FDaDS7kNn2Gp22OCELtyUaQ8OGt8MBGJ8GfPsXZXB8cPUjte65yi9nszKMLwwTVkdkJW+c1Yh+6QnzbzssM7a0RoWn7Q9+rErHuQwuEE/lErJEXWGhLtwChiiY4BtsDdkl9czLa2ncaqspT7rNwokPplQyyVq+u4AvFtPKsl4NnfOwPgsSHGghHYj4xvFImndy7Ts41ugPEHuCSULSDuyXOMmQInutjksQKsJzD62R4n2RI/5b4Y94dYEr7yYTV4xIiEvk0DgNBZOAp9qDFuLHvFXx7aGL1jgO2jLVib/7dBaiJtEOf73hikF55H/eLoqxBiPja92pw5y8CWD9SnyYjKoO/mEyrUNBOYtGOJ+gFsB
- JZwtpMY5
- 9Pyea7B72fmjVV3aJTDMrwnaQW/zTBRpOJHMR79hzJlN+c+1zz6xWQZ+Dsmp8UnpN3JBBmO5FGxvqt9z+OldHSg5qgm+10XNmR4oCO19y/SncB8zJNZrQ32ThaUgPoM+wSf/jYcJBvXrPP5UPiXRUCkK4mfldGuAubhfZ1c0KJrrZl0QeK7btUhs744ksfNt2KLiee1e8rzgMeGH5Jvj/nNY3xbLNRBG4VjyuXyfjGjB/+AyDOMUOAHo5wl85NHsVSJX0lmPNuKaA+zNWoNEkMwzkmrOqWCiU/FIx0snr/+vh5Z7LOLgD6J1tNxyCve4MHzIs2C1lHueWdrigNseMM+WjZOUyOC/0oC7Znn7OSrQfUCvzoi9RBmbqX94myjrD8yvW5TVyOvbjqoA6pwyqNfElxQ==
+X-Stat-Signature: gstpictfx7f1s3835adiw4wnchf6i7nj
+X-HE-Tag: 1793784532-309889
+X-HE-Meta: U2FsdGVkX1+AlKW+J7LHFGJ7dcn0ZtzsZey+iQ/9y+z2ZSJaFjJQzjtAxu1RvvZOgnt6ERPPQTEDVkhhhuDcJtWNVqvZvX93O5r9T9iSF80U3eH+ObF8Q6YfLKAJ4OAgxZLt0ZO94aLHSw+Gcjl5O8sFDkz8rGsQ5yvmSDgodIDNgFKB9V4GNc7RonEqDrHFXa5yHrcCPgybMnfBCanIF46jlchS8eY2jZjQj0FtgQUMoUgnn0SyLPh5KFZJC6teEmGCLj0VZm/b81u2TcMZjUW6/YbZfwUp/CxyZjwr0EOgQE16EHNZALTq236BGBHkSg6lMrJK3M5W9mDb6BjrMEHAeDd12aSSpMUDKAVhH/kJiTRcYMzSHBl4M0fu5A3YqBnXMWaUYq765Wlq4q9ol683kqVRdhh48o9w/YptM+J3/aorSOzzWd/MRRtjAKnvrnif5vcmFC9GkeRV3r+VzsdsvK+8t8jp2+DEQIP+WnUWog7mHdy+ddt2m5bHhLrFTfBDmFVDhR5v35DRRfwuG0QzTrnw/BH7gdPuqeODb+jEMydJE8A9G1eXeZPCrjhEm84grr5wtg2HdbkzEcLZ7SZ6wevHjgjSlsMaikSlqtli4xQ3B5HE3jmIVDd21O66IIntOXNix3o4ioaxzQym88B8HSiwrYwhuB/AVPpd5Xan0ZaM0PSw1IxRJjhmOW4d8TnsBqh1BAw3hewJBuKwNqL4yeEyT0VNv9Z7raBm6m6l/PvWpz8nc6y7CNhxl2pSnOI+hcREHBzvqxY9N56jc6Vf1PKhgEtQ9b5jjFHOcEaK8jSl0uzqwiZgDOhxOLE/5K2k/HE7ortK+L0TLeSNiHZGAtI4fQE7MwHSMh0RAfOFv6jgQRHpA2wgqpGtBDX2aq2QgeMO5py2eYtNSjV2ELxplh0Ks3XV0UwSBG1RZrnHcQrMcGMLAZnWN5vW/KSe7yAdD3SSZv5AzPxfbWi
+ rzts2F11
+ g0X/R00MC0FnYglEtM2ZqVlq3s97lDJHlpBN2fUdDCy/BKmW9Ihhok1C8k5U9WbSJdgT6JHOJOLCRkUaxfaybLpczBzKLRsNDFLFXvbsXCTIBmCNJpkSX/b8WLHrjrs+e2MRnFV/vONBNFYem2cQB9wwFO0lTP1YDbsLzaMi1hYdoGDZvy0kSJHlXqY0VxThbzIyHT9hBKWV7coAdqBFWmkdDLVF5/xRvqKil3mj70OHwfBS2h6JROFLnf8hA3CX9iMe79J8VcTi5P/G2KtaqURQxaSvzzQPNwvS9HbxWQCVpFjrIZ/wHlxXIM53OHbBHX1tAgpwo/1gj+JYgZ3g3eiSqXci318HZVYVuDhqsSmaB/SCH2du7pkMdhztzf/jEINAx82njdYwHqNUhOFdHxpbxElFSw/V7StSy8BB7mtjIVww=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,15 +112,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 03:01:36PM +0000, sashiko-bot@kernel.org wrote:
-> - [Medium] proc: unguarded zero-length user copies in pde_ioctl_buf()
+On Tue, Nov 03, 2026 at 03:18:48PM +0000, sashiko-bot@kernel.org wrote:
+> - [Medium] selftests/proc: fail and leak scsi_debug host without CONFIG_SCSI_PROC_FS
 
-Hm, a zero-length copy isn't a nop on every arch. Adventurous. It's
-skipped now.
-
-> - [Low] proc: split declaration and initialization of __free() variable in pde_ioctl_buf()
-
-Intentional.
-
--- 
+Fixed.
 
