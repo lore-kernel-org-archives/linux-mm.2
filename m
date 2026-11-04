@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2426606A7DD
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69369606B22A
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Lt+YaIK4
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TjKPb5Zz
 Received: by kanga.kvack.org (Postfix)
-	id EB7556B05BC; Wed,  4 Nov 2026 12:49:42 -0500 (EST)
+	id 51A246B05BE; Wed,  4 Nov 2026 12:50:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E676A6B05BD; Wed,  4 Nov 2026 12:49:42 -0500 (EST)
+	id 4CABA6B05BF; Wed,  4 Nov 2026 12:50:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D08F96B05BE; Wed,  4 Nov 2026 12:49:42 -0500 (EST)
+	id 392DD6B05C0; Wed,  4 Nov 2026 12:50:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A83436B05BC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:49:42 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3EA78A853A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:49:42 +0000 (UTC)
-X-FDA: 85398174204.28.BB89E77
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 105536B05BE
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:50:01 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95175160777
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:50:00 +0000 (UTC)
+X-FDA: 85398174960.10.77EFBE5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 81D71C000F
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:49:40 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lt+YaIK4;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793814580;
-	b=F1X6YpvDtUiCEJlhRl3m4+eDZSQOtGCJmJZNEJimT7Lep0dz494fjlZVYp/Y4MtidP3kR1
-	izVDxp1cY7GYuCsF7TNWvGd9Gen36LiHJ2sctbfu8Pu2tyaQm7GCrRlY9LxDv2WIOKX9K9
-	nHJCw/6t+E+TUEFls9iHrF/qeXGzyxY=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Lt+YaIK4;
-	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf30.hostedemail.com (Postfix) with ESMTP id C2E8580003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:49:58 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TjKPb5Zz;
+	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793814580;
+	s=arc-20220608; t=1793814599;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WXeWRtHDTvlcvQqGcGXKpHSOkC75TIYAS6cttW7V/+A=;
-	b=Q/N/cLyPSbqZJg/PgBbkH2bfmMhrUtf+mdDRH+D7TJPdQnoUTrjuXbtcuMKu4OVYgVjooc
-	NVR8gjsdPT1y4bZlD9gF803+22FUzWilui+54QU79ldK5poqLKMLFcIEY3/wK+TEACubyz
-	1E9la5Pg2gS42vhNQewRiJBbzNhD374=
+	bh=weMUCFn2uihXk/tOxGBDEw27Pws++kgwJ6Tcia3ltcw=;
+	b=EyFsXkUKzUZhxbs5ZrqGd/FbSGfBWs7USwMFH1Bo1rK60d+5fB7bpqlq072iCwW3W65uV0
+	8JPrhX5gvg1bNhCTgZMytTmGBvZugBj2EMwfReIFLLo9OecWMj2PJvgHIuoPNwCiZD7zuP
+	4ydnjxFOM/iiKnGMVmCZtiyEXb1ZtE0=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TjKPb5Zz;
+	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793814599;
+	b=spg8iHRX+Q0/vQX3wTkfFTqrgl1BEky/L66C3C95VlwJhZiHknSS6RhylNM1A81V4nafgx
+	bDGEpIwnBokCKiC55uHvgDQKLGQPdH205v61odtFQu1rVBe0UtWjqlObh4++YzT407Gi7o
+	rXUv329jS+rV4eW29/kiRf9lKZheI2o=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA84D44098;
-	Wed,  4 Nov 2026 17:49:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBC01F00A02;
-	Wed,  4 Nov 2026 17:49:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1227341F95;
+	Wed,  4 Nov 2026 17:49:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A9F1F000C1;
+	Wed,  4 Nov 2026 17:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793814579;
-	bh=WXeWRtHDTvlcvQqGcGXKpHSOkC75TIYAS6cttW7V/+A=;
+	s=k20260515; t=1793814597;
+	bh=weMUCFn2uihXk/tOxGBDEw27Pws++kgwJ6Tcia3ltcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Lt+YaIK4iwvhO88yz6f+jCVQ4EeVtRm3q99whbt1o/jNi7xtD4GqEdXZoJFzfX6Mp
-	 WhMZbYdWqf2DxTyriqyK8bk+1pkoMOeKNlWc1KnsmnTw9VPIopuCsvCi1M52TYyyYy
-	 mLRpfJ5+g7TTPX7fTPYeQh+RWFIoWO07NXukL0yXrI10YEQ4gET0I5LF9DVoDQmUfc
-	 lxhs2rswNnIdaIHeRhuWnBLDBlekuRGf9w/PHx4KPTJhR73a5GVIB+8eRNFo3DUyff
-	 XmvJcy95iTPua8zzn9tBaoG3qUN1vOZ1Duxa0Dj2HpRO0snpxh5ps1EWgqor16H8rg
-	 xLTK+rVahkKTw==
+	b=TjKPb5ZzIiyiPgvuQdFoHuUkVx/a9GRzTloH+KR4l/JxBBb+Ol/moI3iP+vc7jhxh
+	 Ps/jhLkGJWT4b45mLDzTmXs0Nq6ur+emr3Mnae7d+PkH9J0ghZeeOzUERLhCb/2x/I
+	 Bwr8JHwweuJMSvPLSvB9rFxVcNiRrk8Nku+fNgyLtGVeEaDxUpEY6iJFDv9syz/nxS
+	 a2j63GShxcJSlKeqquyWTJ1SJRA6a75PgRtqXfY4thvlg42TMO3Ay+5b5+IY0bEO1l
+	 k3RvIz3DDBF5vn8/zalT+H7o+LqH0DwmSQZgpn2Tax7AQIoVLkHn44OG3fzujjSSY4
+	 17TkLkudUusDA==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -122,31 +122,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 18/51] platform/x86: toshiba_acpi: reject malformed brightness and fan writes
-Date: Wed,  4 Nov 2026 18:47:04 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-18-bbf7d5546809@kernel.org>
+Subject: [PATCH v2 19/51] xtensa: simdisk: don't read the file name without the lock
+Date: Wed,  4 Nov 2026 18:47:05 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-19-bbf7d5546809@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1850; i=brauner@kernel.org; h=from:subject:message-id; bh=dBPyRrfA4AE5uU+SDwP01KQAXBYhly7L9ZsRpXHhzrM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zruys4H5zATJQ56FL4QUZwrEz3fqPb76g29l8a1fL 34Us/t+6yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIpPMMf0V6J05hXXkg4U7m Il2PkyIVrevVp6rG3zbnfJ6waxtPdw/D/+K7i173sLVVenL7Mu5oFdvPFn8nM9t33dyDiXp7bPP NWAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1811; i=brauner@kernel.org; h=from:subject:message-id; bh=wpJfI2N0Y4TYbGny8B/EWcsaN47/8hdz2WKuRaZg6Os=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zrtmmihY93BLSLDu9Ie5rjb2qRU3I+zPe+3cqF86e 5KJ7eaZHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNZeo6R4WJUn/qcs7t1vaJm L5zZ9iJOJiprB/f/Sr7aQnnr1cdmdDIy7M/18T9/7EByzmbvb0u/Gdlr8edumNMXNW0bh1H7s7O CzAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rbxmey61o49mshqziz6nuo4c6919ikdd
-X-Rspamd-Queue-Id: 81D71C000F
+X-Stat-Signature: ezp8hmq9jm1zp75ftq75mae9r813eje1
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793814580-496787
-X-HE-Meta: U2FsdGVkX19RBf2JPs/2ghSFw2Gq6u1aUewN9c+szbIFMHbiwuZGIEqAtTJWeaeXRTgIqH0CK7YPl28Yie1wfoptIdg+mIELpcR+YZEHFpqjk/g6PJ0VsnhuzPk66uhIeomhvWuqpxbFR6DYLbJecPrZLotZe/cGillpA9rB5wOPoFHl8IAzfzQ/c/oZuCJBZAcotMxn9ANtOY9DDmWVEF4nlIJbYJ+ldJ1iaBMvRHMw3ZZdFUgQ//J2aPV6eM/HWeRB+azvr//hCP2OzE5Y+xBJ8qaZkxdQX/dQWuWXZi0lYf5w44FgV4zNiMQr5j7slQv8LxjtfzBwy+1yKWeFdsioF5tUTDHapJZhnypf3q6o4CGwQGf0K4PbaWZvQRBcx5ill29FSxLIoK9MH+sMHpMtXO1Haw4/I1X15av+uh4CGYUCidQzDVilRAbs5g2cTIbFMSgQAasqFbzWcw5FAHQouD+DB3WdqE16k9PPnStXNFxjat2dzU1KTKDbP2CnAs0XIDXAwb/2UxTigQ9Dqs1/oMXdi/0FW0EzgZayizM3GQBKocMAVgsBILEiKbWSbb89XVkhqz7a5/gHb5ie/i+YcFY+vFrrPvUbqr3UY7OXNqihClbhzAPdw1ZjDQut9o9LKdjL5P3/yhLMqgCu78gAXDoTASZcwEC+vX8WVDrxTFyRh6HQnnXAshOQFFo8ahEiy7uasGkY3d9GYjVvNgyil04fpzWXoJYQxsFiGRRM2PN6HfXVNAsvm3YNOQTHOitOO36wVLI+oMRZlOmZRTMwuwL4BVatlnqBkG/DjJCvCUu4RgR4+hFTeBtBi3f/P9wvnzSJKPSWmjuaoR+QDUikZyPXW38KhQXkTwKm8pJVxvH3FsRTyycPH+Grcm7SehGJW+FzgycVBWoofwr0pw9IGtD7iYMqdlMPiu1zRvTKSiBC23Nmw4q72uBTPdIN86zq19o6sn3Up0ElziI
- uk8Jhdl/
- ep7FkXKsAYr7RamKPP2bKkkOlxSELRQBZBR0KtPQnATDCW3ZMi+4raYUL7w6yg4CeItXErhSWEtOIL9YgEWpIRQFgnE8gwQHZ/KZRSJdmTG8yNujL0oSyL6Rz0DsYt1Qnifl/ZikLRBW48OOAEhBLVS/Pf0JowbtHoPkmgkHbTA7uVH799X/liUcqL0pldNzVV0DdMuDQr1GY/s0qPq76eTQp/2ALliFYDBTQdLfXObCKHG5yvfEJFjB261imzmsiq5Y3WtqCS8PGB79BC3iymKyw9RE/Un37cH6nAdtIH2lefHLsCwf6NjVwitsVSfaSGGosX7e9StrYlDkNpy8ICJjsb4/u0JD6YvGOSyMhg+1cs394TsC2sX6GZk2L3FbfeUMMqjPhuyp8fOqKQEkt1GLXrJdbyxwpbe+4TUGFFUYJKwNtGuMcJtJ1Kj7TECis72Yd
+X-Rspamd-Queue-Id: C2E8580003
+X-HE-Tag: 1793814598-677119
+X-HE-Meta: U2FsdGVkX19yGeVrMKR9TdVQUZ/L733emw9I0e2dJkVyatY8xAacvJslYi6geP0jniw0dexYIm02KCJ+3uB/gxsyv947sae22ftx45h1pNCSRzMBjtK3ZseRZhVK3Cmmy36YZJolOXkXOfCBG3jcjbM3UsrvNvI+jvYMvtwN12NNNhkrnzp91qTB6Dn3Xf7bCknM5jJAIGU5Imz0HteWOicY4omdrTwDp4TL1tzUOOHJtfOZzQMWmTy+dj+aDuXb9sDlL+ES7FL4BQbEF5hSE34xzL9mzHNKv4XBbleagLrXcfnnLMWat9tUBLOmQjaMOORsU3W67+NHaoAZfgW87XRSlaZSoPlCuus72ZAB24znIKEL/JpJ0DZF6toQX5Mho6q9emOaLSYQY3aF3UvQT3uUJDTzGIftFhjkAtx/cW8hItcKeLjyEr09FmUgtgE8Y9DByrIo6F1/JHVf3m7QIEdG2w6f5fNA2I2EVyHawk4C5YKOzi2oBvfJOaJ56FsBoObBC5LQ+uwf1x9zdWuAmQBIzh4ggZkpJQBdRDc06Yd/+DH7TPhrVoGphqCfFgg1gokCTx7YG036BKEhjTVToC2Slq/LPvdPPEr3tLmfDzsr/PovoFeRzEYGqa02ui6bb8QzsWX0KdbQ8IZeWATlS/ZlqxQYr5lUw0q8AzxjAVWeaiNcmjWOIU4avMU2xlNkJ1bQuygQ0y9om9io5fYG0Lm0egkoZxOydfCjzBRBBbWQULnDGbjfk5f5YVcYYstmT6RvhPhV+XN+lAKi0NxDdWj7CoGCiK9E3KdCZ7oRjOAfcMMggcAJOn/rVW1Yg3+URFxBJ6woOLVVVM69vZccE3uMwAJXAxar9MQI3R3sH9dX8P1fWMRyCJUmSaxpghEjLuQJGZMHh5MZy5icYHLJlTdWN82r+K3vicdi3jPhN58iVxruRVnOCsGPCtbVbPo9mmblILBnn1DCDbqvs2d
+ k5wdqxaM
+ dQevpJSrsf0irmtoFnQklevk81DYOnNIZNxT67cIDgUNpC77Y4i9QFnA2pZD5q59FDaOeyNId8b5ffuoD8rChPlQTZvrP7nSxVtQcrkrjv/GlndRL57j4v3/B6sVjeLgu87GwkyGbl+2bDXoSqD4P55E8YTYuXLiMzPYp0oLDI78HXQDbDR3R3tkx3FsoeTPwQpHCAM9Jz5Kp/F498Kyg4Q2514eKwFD8Us1Z6pJYQQ8Y2O8ocLk1h1U1yhqiCofEQmYFwxi+0WTxE+ppxQeUEr0ZpXPyGyQOimbxksQkc6qJhGNpgF4eTwJgr5HFoArP45ZcFia9PovORsg9e+qZUNQmBNIacmJ1C7CuFEfvhgihjr9pgKfXR4zpXfJlH4XjgRrwAEJsnONurhaF/BGwDjH1lA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,49 +155,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When lcd_proc_write() and fan_proc_write() were refactored their checks
-were inverted but the && stayed. They only fail if sscanf() didn't
-parse anything and the value is out of range at the same time, and for
-the brightness value < 0 && value > levels can't be true at all. So an
-out of range brightness or fan setting is passed on to the hardware,
-and so is the uninitialized value if nothing could be parsed.
+proc_read_simdisk() looks at dev->filename without holding dev->lock. A
+write to the same file detaches the disk and frees the name under the
+lock, so a concurrent reader can copy out freed memory. Copy the name
+with the lock held.
 
-Restore the checks as they were before the refactoring.
-
-Fixes: e1a949c1b988 ("toshiba_acpi: Refactor *{get, set} functions return value")
-Fixes: 3e07e5baa2af ("toshiba_acpi: Add set_fan_status function")
+Fixes: b6c7e873daf7 ("xtensa: ISS: add host file-based simulated disk")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/platform/x86/toshiba_acpi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/xtensa/platforms/iss/simdisk.c | 25 ++++++++++++-------------
+ 1 file changed, 12 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/platform/x86/toshiba_acpi.c b/drivers/platform/x86/toshiba_acpi.c
-index a0b8060836d0..9eb8f1e5aeda 100644
---- a/drivers/platform/x86/toshiba_acpi.c
-+++ b/drivers/platform/x86/toshiba_acpi.c
-@@ -1498,8 +1498,8 @@ static ssize_t lcd_proc_write(struct file *file, const char __user *buf,
- 	cmd[len] = '\0';
+diff --git a/arch/xtensa/platforms/iss/simdisk.c b/arch/xtensa/platforms/iss/simdisk.c
+index e51edb8cf872..1248d960e5d3 100644
+--- a/arch/xtensa/platforms/iss/simdisk.c
++++ b/arch/xtensa/platforms/iss/simdisk.c
+@@ -238,22 +238,21 @@ static ssize_t proc_read_simdisk(struct file *file, char __user *buf,
+ 			size_t size, loff_t *ppos)
+ {
+ 	struct simdisk *dev = pde_data(file_inode(file));
+-	const char *s = dev->filename;
+-	if (s) {
+-		ssize_t len = strlen(s);
+-		char *temp = kmalloc(len + 2, GFP_KERNEL);
++	ssize_t len;
++	char *temp;
  
- 	levels = dev->backlight_dev->props.max_brightness + 1;
--	if (sscanf(cmd, " brightness : %i", &value) != 1 &&
--	    value < 0 && value > levels)
-+	if (sscanf(cmd, " brightness : %i", &value) != 1 ||
-+	    value < 0 || value >= levels)
- 		return -EINVAL;
+-		if (!temp)
+-			return -ENOMEM;
++	/* a write sets at most a page, see proc_write_simdisk() */
++	temp = kmalloc(PAGE_SIZE + 2, GFP_KERNEL);
++	if (!temp)
++		return -ENOMEM;
  
- 	if (set_lcd_brightness(dev, value))
-@@ -1678,8 +1678,8 @@ static ssize_t fan_proc_write(struct file *file, const char __user *buf,
- 		return -EFAULT;
- 	cmd[len] = '\0';
+-		len = scnprintf(temp, len + 2, "%s\n", s);
+-		len = simple_read_from_buffer(buf, size, ppos,
+-					      temp, len);
++	spin_lock(&dev->lock);
++	len = scnprintf(temp, PAGE_SIZE + 2, "%s\n", dev->filename ?: "");
++	spin_unlock(&dev->lock);
  
--	if (sscanf(cmd, " force_on : %i", &value) != 1 &&
--	    value != 0 && value != 1)
-+	if (sscanf(cmd, " force_on : %i", &value) != 1 ||
-+	    value < 0 || value > 1)
- 		return -EINVAL;
+-		kfree(temp);
+-		return len;
+-	}
+-	return simple_read_from_buffer(buf, size, ppos, "\n", 1);
++	len = simple_read_from_buffer(buf, size, ppos, temp, len);
++	kfree(temp);
++	return len;
+ }
  
- 	if (set_fan_status(dev, value))
+ static ssize_t proc_write_simdisk(struct file *file, const char __user *buf,
 
 -- 
 2.53.0
