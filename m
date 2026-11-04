@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42861606D333
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 019866078C0D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SlFSsHO5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lv3gFXSS
 Received: by kanga.kvack.org (Postfix)
-	id 60ECF6B05D5; Wed,  4 Nov 2026 12:55:15 -0500 (EST)
+	id 28DBE6B05D7; Wed,  4 Nov 2026 12:55:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BFD66B05D6; Wed,  4 Nov 2026 12:55:15 -0500 (EST)
+	id 23E426B05D8; Wed,  4 Nov 2026 12:55:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 469146B05D7; Wed,  4 Nov 2026 12:55:15 -0500 (EST)
+	id 1328A6B05D9; Wed,  4 Nov 2026 12:55:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 262D76B05D5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:55:15 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B277A1C41E0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:55:14 +0000 (UTC)
-X-FDA: 85398188148.27.91B03B0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id E2A01180002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:55:12 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SlFSsHO5;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E66AC6B05D7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:55:39 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8B47840748
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:55:39 +0000 (UTC)
+X-FDA: 85398189198.29.CB9085A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B5E5F1C0005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:55:37 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lv3gFXSS;
+	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793814913;
+	s=arc-20220608; t=1793814937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iZnPQiZm1xh8fsSdf/bokwm1XgR51VX0qi8vvYA3hwA=;
-	b=SVuKzL66m6EEJk1EFDjn2xG0zCxStbYN/HBY7lsmY7LIozJ5Xp9PrMRV3zkfZQ77vBRPsA
-	AKRVkLbbDrGNrwF5cH2JqSAEC4ZECrwMD5CDLr3IoTqP6ww3b5CIxfNDIwmEELXd7tPNBJ
-	69uf48mrmHaDZAokQmzU74IBOgWDSSw=
+	bh=89c02+ELWuX5+S2o66zdN47fZ8jrr3os6Vl1YJUNtuU=;
+	b=UMRFzcSmNe9VgB2bwTOK9iMVYhrvmrWZgnz5ATwujj3bsY2jpiAjYpl69DTnzapik1L8U+
+	z5A31Tn2oENIMKg28jSR4+82+DTXSnwT27XEv4+gGIqJf2utvjTAkKNUwzfyJyB7e2dYhs
+	Nthj25iyqIsLbAgk2KrJ4UgjU4wRYyY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793814913;
-	b=j8ZBaCqPJMHlIomxgLZQpaMXdNoaG9QtStEL342CKoJHaqfxgQPpyq/UqHBZBhxcZsd+UK
-	Nu4jSEzKsL0pnJDquKlnvrVHTJ6zKaOUXhfBu/WSvB8l32+BeE3dcCMKmqg3o2HRx/oxG0
-	JGT45J9RBJGhf4K1YihR1tyhxrwH1J4=
+	t=1793814937;
+	b=6SUKPt3Vpm24N+27jI0RUeP7yL7pgAUeP+nQZ1M+JHI4xi7YXgX7Lf5Q2uMk+pCOrVx4vr
+	+bqsNScWqciuyrx+/3D7BPgTDH6T752N8Nf8ax+EPym2dvaMvJ8kKDdRzrjXn7bt8Vkyo0
+	H6PBWr980OM1nCXoMkhQxejhympXoVQ=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SlFSsHO5;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lv3gFXSS;
+	spf=pass (imf20.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 34B62415CF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 31A0960AB0;
+	Wed,  4 Nov 2026 17:55:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4DE1F00A16;
 	Wed,  4 Nov 2026 17:55:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D3271F000C1;
-	Wed,  4 Nov 2026 17:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793814912;
-	bh=iZnPQiZm1xh8fsSdf/bokwm1XgR51VX0qi8vvYA3hwA=;
+	s=k20260515; t=1793814936;
+	bh=89c02+ELWuX5+S2o66zdN47fZ8jrr3os6Vl1YJUNtuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SlFSsHO5MUq2O6WLRSzH/kwnOXG0RBDaVA5yuQO5hn4K+9IRHij4SFJOearozlUmu
-	 ryNjrwrxO93mrdKcwUpCtHe0cJOY6zqAy46TNETlRiewuda5MzZTRaXzHp1qbqSsWn
-	 rc91gDjcn/LnZxWaQBS7GHBKm4wFKYeuVgkhcm0VTkwyfObV4xm5tv8COyv1HWcC73
-	 uWh4HDfgN/YukgYQm84vDllPWKGLyrQjAsPJ6MdOB6m4XgVqnRwMrIybs3huKyAMx+
-	 TFo5AoSqNsJmUsyY7pn+8XyVC4dXBLRuVv2+B8CbX7oWJsvIKjv8oMnHCHB3fR0uhs
-	 bhPYLOIMy9M/A==
+	b=lv3gFXSSZQ1eyeFxl4sMw4NV+sDGb399yJy5J5a617cu3SzjnnFfUG43Lfl/7N2wR
+	 K+IhSwvXPWPYjM+q4YQ+IDJcS26tQY7yPe6vUEMgkrymmspdu0EotaGD42o6rpaRl9
+	 0A3kHepPv/ApdT3/KV9Zp4gd4PPOjbWG6usoLl5/UMWpBcxegT2cBWuUjFbtBLH7mv
+	 6ymbGGCGv3TrMbwp1kdSSvCMr+6QGHtpTwZWaklXV25iOtzvIgzYNxKq9awhT/uEik
+	 dFy+Ax1siZAlHQyp0vw3cAsPNd4lTDPGDdUR7g3JwRgFyHgFv3m15tZ2mAVMcDLMbJ
+	 1KqqoJMCmMAiQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,20 +121,20 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH v2 34/51] proc: let proc_remove() remove the entry it was given
-Date: Wed,  4 Nov 2026 18:47:20 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-34-bbf7d5546809@kernel.org>
+Subject: [PATCH v2 35/51] proc: warn about entries left in /proc/net of a dying namespace
+Date: Wed,  4 Nov 2026 18:47:21 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-35-bbf7d5546809@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4142; i=brauner@kernel.org; h=from:subject:message-id; bh=TWEC0A9DF1l/jNuw2UHiBUJ2nMkOgHxIGSf9WilEatA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zntx7JNDLLu2/KpNf38ZXuo0aZx2lqv1v1Pox44Z1 ixmC8u6O0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACZy8x/Df2fxE7yaG9luq2mf /vrk6F+dMN/lp6fcmf58/UaneOMM60JGhvVce13u7eXbvnJ7ldxy4c0neVaUrZh+PWKH0bO62B/ qqzgB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1410; i=brauner@kernel.org; h=from:subject:message-id; bh=WtI/bNxyA4ZViPTNrsQhWLRSUjQUZ6M8VP3x2XTkww0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9znslLxak6zXzI89Tlobt8x2XHObOOr/+XjXLr/wSD pcMiUNGHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABOZcIHhv9PR9Kbfsr9EuEwS 1OuN4o2O2Xfx2elLdO/WqT/FzfBsLsMfvrrlGXyfnU+ePfxJ5/kd5mMSt0XZXSfwl/mEMKZnOc9 mAwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ocuznyziwkkxzkkomiuey1gjwaa9s7xa
-X-Rspamd-Queue-Id: E2A01180002
+X-Stat-Signature: haihcpeqicfsagtg6kciimtnbkx41c36
+X-Rspamd-Queue-Id: B5E5F1C0005
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -142,10 +142,10 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793814912-363180
-X-HE-Meta: U2FsdGVkX1+UoF6J5QuSsJrmCfSBbRS2YTU1ZBAX3/QZXUD/qPiqkjjFmytK9Wg9Q8ERSNPmQhiRRZa5RUYWs0S1fokWWnaiHMhttY6wYmXOLmd9e3hTXrBBSc8w5sh90w+Pw1DiTFu4K6HUN0Zpx4+H/w7AfNZDnxrKb4fHCn+Alo6uVlvHXb+rFEXF6bLu45eqmbAXD1C+czFMNfyca8kWcrwD88QQ7oQztxF6+YRNn9NQfCkN1ph1kktIbZT1Yn43xVxKoos56cYoHKLHnRjiAWPGHx8RO8hG4FRYpeiWQ1OF+YPc9XegDqIG3CI4eDYF539jo7JZTvPVPO6EQPDJKocNg/XsMI+5osx5VekvQOtaWUqsKI0K3g9+To4VQb3vX1XSbYinEVz52up7Z9ZvYdKvuJykExDrb56+/0Rj+j7+eos882PD+nip9KauVYBduHq3gUbLyJ3B3BtLovMojeA541MMOuYQa41ucJW6Hx0HnGs24aICHenOxBlf7iytUdzIs8ZitP8AMa1ljlmxfTu1jE/pFx3ELMOIMmK11DZT4Qr1pfpD1ZJD9IyZZa7wrOggF4mQ9lg7InOpYWnFa8xJR9FMg6UULK4wjEPgC8Q4QJXzHbtxrvC9H7xDsVA0DnxVZNMNlQyC4rCHCfnMgVzRbaayUm/e4fH2DEr0LEQgzRp0EV3pacomJsj1aYpFTLhLn2IA+dNCYoUk2UueJX8W3EJy47JHLcXxFYF1CMmSYBkh5HwLbtd4esPdSPtxoaPaeYL0PikGAXDLt/FHYYAcrjDh1SMaDGYSmubHktSBFUu9Czqp9grg3/fSGCRLMOcHEzsG9PRmYTD8+Ity6fYnVBSJSrB39s1LF888bgK4dCV7yVeqOgAYGueZtJYTE6D/19R0nUjunh1VrRb4CGHmnpOKsMbzuvtzjWcQT36PtJocgNB7Cfl2rktqnHofqna+HkfM5BGVnr3
- WgfRd72N
- 2vkA2GcaUCCzn8ORJxO9HdNhjo3qYZq+pzkYH1l5opWmnjJAcHoKR39yRXkQ4PEYD/CAwg+rNQ8AODk6lsXfjK/o+iL6eXIYOEWfnJ+rfIAm8/mr7pY91fGBxBiWCPBV6KCkjhXz+l6nncPBfGDKuAmadP7bRy7BjD5IDU15bMWpsavlo0NAaSv9DVU3BO8QBKkaxc4ZNSlg+UjP4sedIRg4UMo8VBeME1xnPA3sVamtZ+fhJr8Qbn2/kqZKDzMXlQcd8Q1z+lNVjlAkeqVE2nEDn67DkpIimlDz2vHxfs2OBDckKCo8L6dmI6fVfTCKovkoQtB5z0L3tqaMRYJHbUiSl/0I2/stDjqXOPLByZeYzcIU4ZRtsqdsDrmcU5Inkrnzytb6UTl1tNaOo2Y6TE9RrNcXR/4dhanYveR5K0kAunHVBE0WxyVj+CQs2k3QlVc+j
+X-HE-Tag: 1793814937-572927
+X-HE-Meta: U2FsdGVkX18+a4SHJJ9Z6RjKp18B3lEtVQz38Ryv9esTSCPATTvEyP3Pc40Nv6nxtLteO3RjKkhzgNX7GQMIwRmn1mP1XVpqCkdtIKb8Wz37ZkyWkRcJ1vipbdSuU7Z5t2x1r/wqBzyZz/9i7R0ibvujuC7W5QRRMoe8HkDyK5GBtIna+6l0pQMjAcKTg9tsbjxTlyPY3P0pocnn2qeP3XMERtzSaQM0iOrfgbOOvrQ8vOTpS4fnhvN8eLBl+WSTvuwEcLj2RCPIR16fU4QKXQXpTGQtFo6yso0F0gRi5cSMufEwHFvOhepoYgjPbbBR7xGBg6VvjvOkbwEuLsLHWc711s+bzQnxZbP9ib4AOpSm6wv7KJJU5lu2WYaBDzkKhMizzxY5/jfqyaaEznp3VDHadaN1QGoXf8BJof4BYMP5VXTY2ShnedofncdxgcUnDA56fHmFXCUv0B/e+DFdGNKC14QzNmiOoOTZRbsiIVnses30XqRKKNxc13wm5U2ahGCkwd0FDhKsNJ6yfFEanjC4bRNPVx915y2e9PfQXgrc06ggWP0j/77yE0oDJcMb4qhFvSZ1wZulJerBlDdM8VL/7+jOV4OSlgvkn5ZtVGoHP0w9cXCMJbjyEBNFRMJZmAm0GWOhsEEUe/mQqXRo+EhM0P5Kcwr2rJPTR7XcWXu9D0FdC5YrSOm0SOZ+PDGZufTKy9UDDbxzQd25XVxdgxdstOKxLg85Ri5bM9KxGeemM+ZyjbPljgux4PY1kc+jPoYjHcVlsnmL2u8QvVH5riIUVX85n+71OZD7BTJW+S8+GcIhIlOsbyOqfvl761Q4EP02jIO6Uf6n1gpAAeGdnlTnziOg/V++GUaj0F0mYtkwGiitwxXIPs9xMQV0tkGzm+zL9TJnIoAKKWeGyPy6QPBbmbaIgvtcZ5WVpUsh1W1eS0ZJ6IqwGzjxy8rdnsFiILLXykoYcqz0lwVVesm
+ UavVybro
+ WUryUm+AbIT+iM5rprncbJVh79FGK6igmVogWvxK1wVmn5Tiu8e9A2INl7FWXoBOvXpggBk8gHGO6mepARxzBTHZQE1yjAeOtGm/KyQmXU0TNwsSIcdXwwQacZdvv3DEkDDMOv4Kj+teo0oU5t1h8rED8OrQq0Bfp2bSvknptYZjEmDlhIVz9/BzooskjL6txfdamQWZrfvLTeDjRoQu8tBuNL0FSS12xp+N9PRQS0LWDKl8SN/GDzoswJMUAuYSFyBfbBDm7rPl+8K0jnODVF70cSg9BZl0QSFhG+WajsZ1mkEh82mgQCkRTNQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,135 +154,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_remove() looks the entry up by its name in its parent and removes
-whatever it finds there:
+proc_net_ns_exit() runs after all the other pernet exits and frees
+net->proc_net right after removing "stat" from it. An entry that some
+pernet exit forgot to remove is left with a freed ->parent, and so
+PDE_NET() hands seq_open_net() and single_open_net() a freed struct net
+when the entry is opened through a file descriptor that someone kept.
 
-  remove_proc_subtree(de->name, de->parent);
-
-If the entry was removed already, say along with its parent, that is
-either nothing or a different entry that got the same name in the
-meantime, and de->parent may well be gone. Two removals of the same
-entry are a bug in the caller, but going by the name turns it into
-removing an entry that belongs to somebody else.
-
-Since commit 895b4c0c79b0 ("fs/proc: fix uaf in proc_readdir_de()")
-an entry that was unlinked has an empty rb node. So check for that
-under proc_subdir_lock and otherwise remove the entry itself, with the
-loop of remove_proc_subtree() moved into a helper both of them use.
-Nothing can help a caller that passes an entry that has been freed
-already.
+There is no such entry in the tree that we know of, but nothing would
+tell us about one either. So warn about it like remove_proc_entry()
+does for a directory that isn't empty.
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: a8ca16ea7b0a ("proc: Supply a function to remove a proc entry by PDE")
+Fixes: e9720acd728a ("[NET]: Make /proc/net a symlink on /proc/self/net (v3)")
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/generic.c | 78 ++++++++++++++++++++++++++++++++++++-------------------
- 1 file changed, 51 insertions(+), 27 deletions(-)
+ fs/proc/proc_net.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index 588999058e66..9a0a2fcac7c7 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -818,33 +818,14 @@ void remove_proc_entry(const char *name, struct proc_dir_entry *parent)
- }
- EXPORT_SYMBOL(remove_proc_entry);
+diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
+index dbcf87a257e1..df5484813d5d 100644
+--- a/fs/proc/proc_net.c
++++ b/fs/proc/proc_net.c
+@@ -410,7 +410,13 @@ out:
  
--int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
-+/*
-+ * Remove @root, already erased from its parent, and everything below it.
-+ * Called with proc_subdir_lock held for writing, returns with it dropped.
-+ */
-+static int __remove_proc_subtree(struct proc_dir_entry *root)
+ static __net_exit void proc_net_ns_exit(struct net *net)
  {
--	struct proc_dir_entry *root = NULL, *de, *next;
--	const char *fn = name;
--	unsigned int len;
--
--	write_lock(&proc_subdir_lock);
--	if (__xlate_proc_name(name, &parent, &fn) != 0) {
--		write_unlock(&proc_subdir_lock);
--		return -ENOENT;
--	}
--	len = strlen(fn);
-+	struct proc_dir_entry *de = root, *next;
- 
--	root = pde_subdir_find(parent, fn, len);
--	if (!root) {
--		write_unlock(&proc_subdir_lock);
--		return -ENOENT;
--	}
--	if (unlikely(pde_is_permanent(root))) {
--		write_unlock(&proc_subdir_lock);
--		WARN(1, "removing permanent /proc entry '%s/%s'",
--			root->parent->name, root->name);
--		return -EINVAL;
--	}
--	pde_erase(root, parent);
--
--	de = root;
- 	while (1) {
- 		next = pde_subdir_first(de);
- 		if (next) {
-@@ -872,6 +853,34 @@ int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
- 	pde_put(root);
- 	return 0;
++	struct proc_dir_entry *left;
++
+ 	remove_proc_entry("stat", net->proc_net);
++	/* Whatever is left still points at net->proc_net and so at net. */
++	left = rb_entry_safe(rb_first(&net->proc_net->subdir),
++			     struct proc_dir_entry, subdir_node);
++	WARN(left, "/proc/net: leaking at least '%s'\n", left->name);
+ 	pde_free(net->proc_net);
  }
-+
-+int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
-+{
-+	struct proc_dir_entry *root = NULL;
-+	const char *fn = name;
-+	unsigned int len;
-+
-+	write_lock(&proc_subdir_lock);
-+	if (__xlate_proc_name(name, &parent, &fn) != 0) {
-+		write_unlock(&proc_subdir_lock);
-+		return -ENOENT;
-+	}
-+	len = strlen(fn);
-+
-+	root = pde_subdir_find(parent, fn, len);
-+	if (!root) {
-+		write_unlock(&proc_subdir_lock);
-+		return -ENOENT;
-+	}
-+	if (unlikely(pde_is_permanent(root))) {
-+		write_unlock(&proc_subdir_lock);
-+		WARN(1, "removing permanent /proc entry '%s/%s'",
-+			root->parent->name, root->name);
-+		return -EINVAL;
-+	}
-+	pde_erase(root, parent);
-+	return __remove_proc_subtree(root);
-+}
- EXPORT_SYMBOL(remove_proc_subtree);
- 
- void *proc_get_parent_data(const struct inode *inode)
-@@ -883,8 +892,23 @@ EXPORT_SYMBOL_GPL(proc_get_parent_data);
- 
- void proc_remove(struct proc_dir_entry *de)
- {
--	if (de)
--		remove_proc_subtree(de->name, de->parent);
-+	if (!de)
-+		return;
-+
-+	write_lock(&proc_subdir_lock);
-+	/* Removed already, maybe along with its parent. */
-+	if (RB_EMPTY_NODE(&de->subdir_node)) {
-+		write_unlock(&proc_subdir_lock);
-+		return;
-+	}
-+	if (unlikely(pde_is_permanent(de))) {
-+		write_unlock(&proc_subdir_lock);
-+		WARN(1, "removing permanent /proc entry '%s/%s'",
-+		     de->parent->name, de->name);
-+		return;
-+	}
-+	pde_erase(de, de->parent);
-+	__remove_proc_subtree(de);
- }
- EXPORT_SYMBOL(proc_remove);
  
 
 -- 
