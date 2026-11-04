@@ -1,82 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7C7606A33D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B51606A333
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:37:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g6RtbLrc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cwqHozyI
 Received: by kanga.kvack.org (Postfix)
-	id 4C9FD6B00EF; Wed,  4 Nov 2026 08:35:32 -0500 (EST)
+	id C6F716B05B2; Wed,  4 Nov 2026 08:37:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4A19E6B05B1; Wed,  4 Nov 2026 08:35:32 -0500 (EST)
+	id BF9A16B05B3; Wed,  4 Nov 2026 08:37:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 390946B05B2; Wed,  4 Nov 2026 08:35:32 -0500 (EST)
+	id A99436B05B4; Wed,  4 Nov 2026 08:37:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 17E406B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:35:32 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9788E1206E9
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:35:26 +0000 (UTC)
-X-FDA: 85397533452.01.C81F5BC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BF9BB4000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:35:24 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g6RtbLrc;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793799324;
-	b=142DFJYcGDx9UEBAZRQsKXQe5WRdQps2LK0t3Ek7cm/U0gHkyJo58+HA/nCvb2HsOf8rBB
-	xpHqKGle89MXYnHI7w6FeUh6+Rqho0eNycX/JGHVf5zjYLOpzBE+zhWUi6UMlnwkzXLtz9
-	5Y/oeWjkPq1u3ysKQ/GB51iWwToHj0Y=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g6RtbLrc;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A0BC6B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:37:54 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7D27DC074C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:37:52 +0000 (UTC)
+X-FDA: 85397539584.06.311BAF3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id BECD51C000B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:37:50 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cwqHozyI;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793799324;
+	s=arc-20220608; t=1793799470;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MqdPmBaoUJnGfJ3H8rQp/poxysg2bFQew8nX+MtUTMY=;
-	b=t6jvxcwtDsv1zW/z2V/blFutWjLcD9AdXZkkt3q99COaOT0D5jFnpbMSEoKQr+IRiLEURv
-	3IfON23XuG7w9g/PPZNrn8Tv1j1cBNUJotqcAGY98KpzxxoCLMsIZ1zObAqFTt0i9ewf3S
-	tkwb3kxLdSjjdoK+bQ35ykfb3XKzWnM=
+	bh=QIRwlWq1POK80nPhJP4wZpDMtEESF+NRtsJgzdhVq2Q=;
+	b=BQiYAiMej05BKJn2VlJlEl/SbTfwqqRwMmMfPe+Ik+xdZMqagoY0g8+UYskzlHr3clcHHP
+	3F2RsWjgypH4ux/3DMpSyFpMKJbIEi22/O7zbqOZwe7sSUNMFxWORxo3r2mbdlmuPf4z9g
+	ZLm+vjK2pCjadkegjzuRNgaNPX+TgOU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793799470;
+	b=jXw5Bo3Rpsfq53EdKw/IN2NzForFkhDerKOczF76AwfRzd/szus7QV0icplZ7OVEk9u+6q
+	L6SuGHwH6vSspbE4BPHoqagktHra9DtFL+2ySMJi27snl/2/5iBxAZzkcy2WL4GXsaqZTu
+	5ZdlFFeOYxSTjw4PAOPAU1kXip4MF+4=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cwqHozyI;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 00BD941FE4;
-	Wed,  4 Nov 2026 13:35:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDE0B1F000C1;
-	Wed,  4 Nov 2026 13:35:18 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4BBE460DEE;
+	Wed,  4 Nov 2026 13:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9751F000C1;
+	Wed,  4 Nov 2026 13:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793799323;
-	bh=MqdPmBaoUJnGfJ3H8rQp/poxysg2bFQew8nX+MtUTMY=;
+	s=k20260515; t=1793799470;
+	bh=QIRwlWq1POK80nPhJP4wZpDMtEESF+NRtsJgzdhVq2Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=g6RtbLrc50PuR2+Gt7IkaluB+X+QhOhWLlreFRtgfF7H3qOE+DU+ZS54we4sLvmvJ
-	 BLaDA/RxAXfXJUJqxuZqRwTbq7RpoDtSk3NHgAHBkzN4PYzqQEu8WrLL9j+DRtg0ZN
-	 zDKI4nrL6g+pc1GgimWqTRBLqENtQeOOsHcsZit01W2bcNpUa5v2I+Ng3cAAud2dCY
-	 y+3sfDr9MXFoOIo1/66JJevMH+yvdbI9p/BqlchvjPfMyvU9WPJZVVAFNHO9d4Rg2g
-	 79CedPrCI1UxzIruR39nCQVqLv1aTKrt0aRP2nepvwtWTy+oYRVwsob9MDq72kgajq
-	 grQlA1vBmEbww==
-Message-ID: <fa75220f-fa3a-4198-a2cd-90fb72ee0127@kernel.org>
-Date: Wed, 4 Nov 2026 14:35:14 +0100
+	b=cwqHozyI+ycDGjqocXr3v7WBJevddi1Lm+mvjsW4ZILeiZFcOYgijmp3MZGE4bA7w
+	 mQzS3/yVPBzmu5AotQVz4CKV6CUpIpSE+gU0tDzS93Am231SM9Qgr0eUwqpaqunlhX
+	 SA3Z5OfMOWVo7ICFutTgALLBphPSNbZjPFeZBqpCX5tGlrkLW7+zyyGEjl/jaGFNC/
+	 ilywGHugTe77QeQUPBE0unTEsNcljWGsqcKgPv0sJ2gXZUkJDitaRDKL1S/u/Ckrge
+	 r97Ci+PXClHHhoby5wgFqej4yypQ9CR0Iov1FgLSmPzVeJ5j8IniLSI0Km9XEZrXvn
+	 YmI95RfThFacw==
+Message-ID: <287698ab-76dc-4aee-8e6c-db1f5d18974c@kernel.org>
+Date: Wed, 4 Nov 2026 14:37:39 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] sparc64: replace move_pte() with a D-cache flush in
- flush_cache_range()
-To: Imre Kaloz <kaloz@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Andreas Larsson <andreas@gaisler.com>
+Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
+ mapcount removal
+To: Pranith Kumar <bobby.prani@gmail.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
  Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20261104105300.16260-1-kaloz@kernel.org>
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
+ Richard Cochran <richardcochran@gmail.com>,
+ "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ "open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)"
+ <netdev@vger.kernel.org>
+References: <20261104013139.1341582-1-bobby.prani@gmail.com>
+ <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org>
+ <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,22 +129,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261104105300.16260-1-kaloz@kernel.org>
+In-Reply-To: <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BF9BB4000A
-X-Stat-Signature: gz9i3w5inswiwifkwwsi6ktbxsj8bhba
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 5xjchkt61uf69mxui3uwuy5pm5x465wk
+X-Rspamd-Queue-Id: BECD51C000B
 X-Rspam-User: 
-X-HE-Tag: 1793799324-920499
-X-HE-Meta: U2FsdGVkX19m6fiG0fyQv/hLBc0KELHgJpAceJe2Kozx70bMIQLPw6Iy8XF8ly7RJ1vfCuSUh1QNoFfMcZGuLQfIsx89qUsJvHs5veZCny2NZJGUmB5rA/zZocBHo4c+99023r4buMoAZ84vapZZQQxL66eKFZk/HmOeAzEBA5N5fGmMNYyLTSoQXEzPbl250C3d5pBRC1MCpB1V7WvAATXlW9H8bv1u8cINVtBTYVmuizOQwnidJQAMMlRBjXMooNTzyGtvvjM5LyLbVumcn+/8ziyhvdHknYt9T2n3xeswVjUY8I+Pn2ba3YRJiAz+cGxQZev4I5mKhn8ARHr6Dg5agnabbT1GcT4n8a11ydrfqpiBp99iNtsneODP3GgzJkIBCljpAQL5OqVtU41z8EoKyN/KI7WWl+vf643x6qPU7T7Tm+pRL9GUtt+C5BRiKUDRDMAvWEalbG+lShCpDjxwvNvEfFv8VSp7mHRzEyf0Vu5loz9O+k+b9ItQMM2QPKBtyHNDsyHnCbXWdX6AuFYoPbJ3dVRgspPZFKXK5pCSjwPtYxe9VWnRDUJNOvEHgkODFnpU7lFkLRmOpbKr3lmt+Lv8Is4ucozQXxlZhpNaPe1DUreeYinySvhmccZduqYSAi2JDSlnZGgTV1rHblnckooHGeAPsPA7VKkPejx1mJPjbmhWR+FUcVBfEEmB54/cHb3k1mH2LO8HUJUid7p0SUK86n95ShpYmm/x5NCgs03fxYBYxq+6cdsVwb6M2f1NFPsBcOBQOvBT+3oo4qJ6lp08Taet4hKR/H+M3htMdH5xdHkD2flyllzDvNQ4X/Q7kXjIfo5y2RAaxtk9n+mDUWR8szJsb/S6ZMMrmpYGXg/TRpZpCuAkkaM4KrIwP7FBwETdUIexR/fs+Y5wF12qiPVsZmMYwL43ueZV9fwKc3EW/5sa2OnU4kVtRgdLg48y0zl8RJgHKakbTPX
- JbOEQzzz
- UrGKTfIzaEH0ySiaMQR9AeGcuCEFvBfi/dh8RvvXA4OZkiPI3Z1veYC3QU64vCsJTZXd0nAdPqH1y086NR4UUvOLgtu/BPIiyxj0gy5YBo6MBDulS0WxSdgXJIt4yWQN3lpMNNU2spKaUDFqitxYLwavwLf2fdzsVMTZP0o6VdV6a5J7KQSK4gSVn/BMh2Y3RHgwQjsg7HIGgy7nuN5Vb5ghB/frXCipvysxB4aQ0miuX/IaJvv0Pjc47KmODFwTZ9tzoEpFqvhRss3+R1FraReY2my1Vqc0fWW2EmGMJo17Zf7g89pOQpLo62rvKUSeEZBBnd9m/2UPPPbEqKzSE9IoRkixE3SL4pqFB18SbAwXj2OANgBSMlh9jL2QhcOEQPGtv7qVFWvyCf6Q=
+X-HE-Tag: 1793799470-137058
+X-HE-Meta: U2FsdGVkX1/E+gcgzsVf3PHVdITIRQddu5P/3eGP5+stbqiM+GXYMu+fA7JmYDc9flufdaJt84d9fl6L0AvysgediPp81KQcRfPGEepK+Jq4Cf0KqqkzmvY/V5EgibTsXFZOix6ajMeQUrS8/wHYM23bAzfI+k+k59PmYAJiBlkh2k5bC3UjrwtG5qpRNNKkCoWZs51nCcKXFOrL1/tMYjvYhIuAdGanYUWwJ0cENC2n/B9GjRHT3D8fHK4/iww6Vjny54ZmCZ/pPVVUAhYKOnCPnbDx0/LhGc4nDSXu7TSJnB0jw6qATrPvdWze/cLyxzOivMtCMX88+cZEm1h6hfG+qY3XcnkTaFY3qCmCJL6jJX5i3njzdCtM+BodypBNZ1I2O5fUMq1yHZTG3Qsdi79/bzMLC0s53u/q/uTFzs7GKBGrPxvrwNNWyPklvzY0VhvyERQD24Gxo9bTcZyKzVvBRmcKSSI75gUKfpgNytXGcnfwrT/gsegEC4gDgTFv9icVc4MjGHFMAcsqtPUJbkToh/v22VZcfuXUdpqbNheoQsRmkZ5knoKPlNEjcpoSfgBNu0iN9N1+yL4cyPmK57Ua2jXUjriaHP1aBPFXCsaDRlkTxCpsjQF7DNH2nXR1/+lAdUst3maT0TwWn+SMm0HPKnoYT10mlXrwM62ElD05TpivxrrkS4D4NRYs91tDdgiUn1VXyOU3h4y5L12VCgm7aYYRBf5b3c1UQD8YsrTyDZyVTNp/Bk6vVbGHKjlPJ3D/elE3w54+juw0UYCbTtmpFEqqdhBXfyDzjtsTM0aFAHsYVCEa8VPCgRRSfLN5Ivn5WWD0Kk7/b8LK0gbZD/a+vox0fIqyik7NhcRyxq0mwYPyruHP8LyZEG8iofTiWD1YVszFD6AgLPlI3LKpb1vNj9hAjcuFzNxNJzuuCtLqlqXhmRBnMyJcCsEmEIyUrvNDXWtuKXyLXSD3TT0
+ VQGwV/9C
+ 9Bm1ku2l4RJ4JhqWBHkGrsXCaVOKKxuGbJutlDEbZTr4ngE6tYN6a9Jd0rKqdNlDQONSIgyVLidxxL+OHJVfLlSWxWCO15k2+zY1gTnnPHl1Afg8WKOOrIWxW/fxQq5cBPwmuv53rIrM34P74akbo82lXafdQyHt72V1CANWdnEjzH72mfU6k1/HgHuDONtnR9aBGB163dRcXnzh2kpiVT0klVnDwBGMx1Wgs+Bsulvhfi3oAuzZEDnQ07NXwYqU9ZBU1IPKD/sBeZky/yJYUNU5UUEiA3XjaQqISq1w+Fne268EaY5rYNE3dEoalm/63HaNGXus//O4H8QQh1bj3s6t83014p+04h1AheGct5w1h2iZfySrZyYNF31xYVXDf2oNO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,143 +152,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/4/26 11:52, Imre Kaloz wrote:
-> mremap() can move a page to an address of the other D-cache color,
-> leaving lines of the old color in the virtually indexed D-cache of
-> Spitfire and Cheetah CPUs.  move_pte() flushed the page for each PTE
-> moved, which is only correct while move_ptes() handles one PTE at a
-> time.
+On 11/4/26 10:46, Pranith Kumar wrote:
+> Hi David,
 > 
-> Drop move_pte(), which no other architecture defines, and flush the
-> whole D-cache in flush_cache_range(), which mremap() calls on the old
-> range before moving the PTEs.  This keeps the fix in sparc64 without
-> a page table walk.
+> Thank you for looking at the patch.
 > 
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Link: https://lore.kernel.org/all/409079fe-ab52-4389-9fe0-d7246eb27bad@kernel.org/
-> Signed-off-by: Imre Kaloz <kaloz@kernel.org>
-> ---
-> Andreas asked for this as a separate patch once the merge window was
-> over [1]. It applies on top of sparc for-next.
+> On Wed, Nov 4, 2026 at 1:16 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>
+>>
+>>> In an arm64 page map/unmap microbenchmark with 20,480 minor
+>>> faults, simulated cycles fell by 1.54%.
+>>
+>> Thanks for the patch.
+>>
+>> While I see value, I am not convinced this is the right time for this
+>> micro-optimization while we are busy with other things.
+>>
+>> This needs a better evaluation: 1.54% in a micro-benchmark without knowing the
+>> stddev isn't particularly helpful.
+>>
 > 
-> [1] https://lore.kernel.org/all/4fba060e-c4f4-4d73-8efe-dbed0b5a7bc3@gaisler.com/
-> 
->  arch/sparc/include/asm/cacheflush_64.h |  4 ++--
->  arch/sparc/include/asm/pgtable_64.h    | 21 ---------------------
->  arch/sparc/mm/init_64.c                | 18 ++++++++++++++++++
->  include/linux/pgtable.h                |  4 ----
->  mm/mremap.c                            |  1 -
->  5 files changed, 20 insertions(+), 28 deletions(-)
-> 
-> diff --git a/arch/sparc/include/asm/cacheflush_64.h b/arch/sparc/include/asm/cacheflush_64.h
-> index 54a2d37008e6..1a116b288816 100644
-> --- a/arch/sparc/include/asm/cacheflush_64.h
-> +++ b/arch/sparc/include/asm/cacheflush_64.h
-> @@ -21,8 +21,8 @@ void __flushw_user(void);
->  #define flush_cache_mm(__mm) \
->  	do { if ((__mm) == current->mm) flushw_user(); } while(0)
->  #define flush_cache_dup_mm(mm) flush_cache_mm(mm)
-> -#define flush_cache_range(vma, start, end) \
-> -	flush_cache_mm((vma)->vm_mm)
-> +void flush_cache_range(struct vm_area_struct *vma, unsigned long start,
-> +		       unsigned long end);
->  #define flush_cache_page(vma, page, pfn) \
->  	flush_cache_mm((vma)->vm_mm)
->  
-> diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
-> index c26f2888aa18..310b66459521 100644
-> --- a/arch/sparc/include/asm/pgtable_64.h
-> +++ b/arch/sparc/include/asm/pgtable_64.h
-> @@ -935,27 +935,6 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
->  #define pte_clear(mm,addr,ptep)		\
->  	set_pte_at((mm), (addr), (ptep), __pte(0UL))
->  
-> -#ifdef DCACHE_ALIASING_POSSIBLE
-> -/* This flushes only the page the PTE maps, so it relies on move_ptes()
-> - * calling it for one PTE at a time, which the default pte_batch_hint()
-> - * guarantees.
-> - */
-> -#define __HAVE_ARCH_MOVE_PTE
-> -#define move_pte(pte, old_addr, new_addr)				\
-> -({									\
-> -	pte_t newpte = (pte);						\
-> -	if (tlb_type != hypervisor && pte_present(pte)) {		\
-> -		unsigned long this_pfn = pte_pfn(pte);			\
-> -									\
-> -		if (pfn_valid(this_pfn) &&				\
-> -		    (((old_addr) ^ (new_addr)) & (1 << 13)))		\
-> -			flush_dcache_page_all(current->mm,		\
-> -					      pfn_to_page(this_pfn));	\
-> -	}								\
-> -	newpte;								\
-> -})
-> -#endif
-> -
->  extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
->  
->  void paging_init(void);
-> diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-> index 6a0ba9a01a21..a1ab1eacbf33 100644
-> --- a/arch/sparc/mm/init_64.c
-> +++ b/arch/sparc/mm/init_64.c
-> @@ -3115,6 +3115,24 @@ void flush_cache_vmap(unsigned long start, unsigned long end)
->  #endif
->  }
->  
-> +/*
-> + * mremap() moves the PTEs of [start, end) to addresses that may have the
-> + * other color, and calls this on the old range first.  Flush the whole
-> + * D-cache so no line of the old color outlives the move.
-> + */
-> +void flush_cache_range(struct vm_area_struct *vma, unsigned long start,
-> +		       unsigned long end)
-> +{
-> +	/* flush_cache_mm() spills the user register windows. */
-> +	flush_cache_mm(vma->vm_mm);
-> +#ifdef DCACHE_ALIASING_POSSIBLE
-> +	/* The D-cache is virtually indexed on Spitfire and Cheetah. */
-> +	if (tlb_type == spitfire || tlb_type == cheetah ||
-> +	    tlb_type == cheetah_plus)
-> +		flush_dcache_all();
-> +#endif
-> +}
-> +
->  void flush_tlb_kernel_range(unsigned long start, unsigned long end)
->  {
->  	if (start < HI_OBP_ADDRESS && end > LOW_OBP_ADDRESS) {
-> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-> index 780fe849ff8b..c729c3cc8bda 100644
-> --- a/include/linux/pgtable.h
-> +++ b/include/linux/pgtable.h
-> @@ -1470,10 +1470,6 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
->  }
->  #endif
->  
-> -#ifndef __HAVE_ARCH_MOVE_PTE
-> -#define move_pte(pte, old_addr, new_addr)	(pte)
-> -#endif
-> -
->  #ifndef pte_accessible
->  # define pte_accessible(mm, pte)	((void)(pte), 1)
->  #endif
-> diff --git a/mm/mremap.c b/mm/mremap.c
-> index 0d06d7f37f19..87cb15027bfd 100644
-> --- a/mm/mremap.c
-> +++ b/mm/mremap.c
-> @@ -289,7 +289,6 @@ static int move_ptes(struct pagetable_move_control *pmc,
->  			force_flush = true;
->  		}
->  		pte = get_and_clear_ptes(mm, old_addr, old_ptep, nr_ptes);
-> -		pte = move_pte(pte, old_addr, new_addr);
->  		pte = move_soft_dirty_pte(pte);
->  
->  		if (need_clear_uffd_wp && pte_is_uffd_wp_marker(pte))
-> 
-> base-commit: c95443b98771a74c6689f5e7bbc56794fe95f550
+> This result is from a deterministic simulation, hence no stddev.
 
-Lovely.
+Ah, I'd assume even a deterministic simulator would have some variance due to
+preemption, TLB flushes etc.
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+But the bigger question is: which arm64 variant is simulated? I'd assume it
+might vary heavily no?
 
 -- 
 Cheers,
