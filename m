@@ -1,130 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E665D606A328
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54A4606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=EVFNqegP
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RI03ExhV
 Received: by kanga.kvack.org (Postfix)
-	id DF6766B05B2; Wed,  4 Nov 2026 04:19:47 -0500 (EST)
+	id BA58A6B05B3; Wed,  4 Nov 2026 04:20:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9F406B05B3; Wed,  4 Nov 2026 04:19:47 -0500 (EST)
+	id B55E46B05B7; Wed,  4 Nov 2026 04:20:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB7B96B05B7; Wed,  4 Nov 2026 04:19:47 -0500 (EST)
+	id A93E76B05C3; Wed,  4 Nov 2026 04:20:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A11326B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:19:47 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2D499A069B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:19:47 +0000 (UTC)
-X-FDA: 85396889214.10.52D83BA
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0F012C0005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:19:44 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=EVFNqegP;
-	spf=pass (imf10.hostedemail.com: domain of pmladek@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=pmladek@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 917176B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:20:22 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1A2EA404AC
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:20:22 +0000 (UTC)
+X-FDA: 85396890684.13.3FF6BD3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 8A3D1100009
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:20:20 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RI03ExhV;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793783985;
+	s=arc-20220608; t=1793784020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yvthss1FZeqCIQjhmXOlwbHPhSn4bLFrdViNSfOo4xU=;
-	b=kFlhY87GURAL5Cj9gGXW0Q90tMWlCZmRQi2UBRmkgN7LZxfZmmhoDk4pP2mpu14nI6Kpj9
-	VP9UuvfWL8BSeidC6+e6dLuxnzkOUIdu6HNn67tLv/7+If7MgDyt3j8JzGC6v9POh7e+wB
-	ZKMy/G/gVacM8XTjN5MpPpmc4WKqg3Q=
+	bh=BqLsI51xXE9XvqQwrewS8kVZYOVybuvhFSYA9nKiQ5w=;
+	b=iqWJUQBnj0Vnmg+Cx0DpwMSNuZU6PtAscJblRtkQ9zl1bzn0gTA9OsrEJqNYsrX7ZueNlt
+	wp2bjlRs/+SDa2mJxz6+iYO9DMsITpBZhZm4FVz40PALCwrhlWcfuQ8KrYmQniSVBvHoz+
+	oWJ0Xj1F8Y5+BsUWpyfn0bYGJW+haNE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793783985;
-	b=ov3uTyPc519kR0kCd4a+zCcXZQn/9dVlxhK+2XX4uBhoe1zJCQPXv2+H2jGal32T2Nr0OC
-	SANFFym1rIMJ+HT9IPA6XRhmWm7P29yIYO6sUdDU+ls3Gil6BM0WJw7iYUS969evdzDs/M
-	8YHV6bbHOYqaWs7m+xR1dhtm8zLijPI=
+	t=1793784020;
+	b=rP6AE5zEYAXolQ7QgJZ83fcaxlvtPGB3jT6IcFXQJwJyJELgBX/4t3gV7lmmHcyXqgWFQ8
+	1GEHBDJ40ecaEUpvIHd5NLGRQw098bLkGtmHUBaXxQdypB0F5+bjP+3EPmxnLICyOod3lA
+	132ofuxsfCBrZRpfhhTpk8+5lhZkkbI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=EVFNqegP;
-	spf=pass (imf10.hostedemail.com: domain of pmladek@suse.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=pmladek@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-48e0d1da913so275060f8f.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 01:19:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1793783983; x=1794388783; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Yvthss1FZeqCIQjhmXOlwbHPhSn4bLFrdViNSfOo4xU=;
-        b=EVFNqegPlPXvCvougXdLoL18fEFWIIlfOEXSgH4lV3w4rIIB2fjpNqEn3G1W3Jkse7
-         wK1DOJyQbOppz42tAftnKWb7Bp3Jx36wdrWtMP4eCIjLqLtqKr7zrlFP26q/HKYohPQL
-         nhooaHz1wl9CSHXnM1nWkRFbVGbikG3kc10ev28Yc6baRkxM4Y6MqI16nSwMp+5h4lh0
-         aN+FQP2PRKM9N/zt8n92hLxvFs+Rl7x8OV55R7oR2PGX+C/juEzgk6LwbfAO7AfthsbC
-         fSL/j9Qx12UlIhzOBj9G89U72JMZ5p/jHVj1Oaa/LZzD2tC0KjqVh1Jj3ImEh06W55HY
-         6fng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793783983; x=1794388783;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Yvthss1FZeqCIQjhmXOlwbHPhSn4bLFrdViNSfOo4xU=;
-        b=pCVXj9PIw6v4KCvFwG0yrXgrlosh80NxwsIL/e2ricpyy6YnGa9IT/BVof9ecNega2
-         /hHE8/ankG0LBqDdKxbputRmAr7wtCU0cDXLx0TTcfZx85gHgGvyWL9XfhazEa4/+787
-         eqnMO8kr2VEpEs2a51qISlI48FcEnNRJHugt+uhy7fKrHszsE0iBFZX9oI/6NZ0qV4Rr
-         xbKI6enuuB/L94VymQTcYa527orH3HhJ4JnR1gqOXd82DbYlh/O8j+vqtcTtXvlynUGL
-         3+1JNM9BlrN4WJy1JZCox8LMWIVUMo/NQIUtbl83HZzIsAQa16e7aWWS1dqdmPGqZxOq
-         DgMQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxGpZnAqTkauMjnRgK3rwTm7Q50zT4zXThjt8oY1mA24wN1gT2t7k8vUxptcjH/GUCrZWLyh5HcGA==@kvack.org
-X-Gm-Message-State: APuU4Z98GaiyqDp/arhdY++LCrZv4OHwOdrwtwmQjaWeOB3WQKAWyOQO
-	Z+6vHCspCnNiSYyat8YDUpzwOfOAEVYSDqkBwW4WKn5bcFX22Q3XAN+fh5IjR2dAyaI=
-X-Gm-Gg: AYBFou1HyD8K49TnqYjXCH+UDBHZn0ABTOxU0FWKH9gz+bkb645ldUqkUQuVBh08AqT
-	5MexMWduNNX4eVHoF8GgzKAQUmcMeRMDrAz69ERnZAPKmRaU4IunJ43ErdNEEzWEzvqhsAUBBVL
-	+yt8PrMaUl58FT5nGkNlj+7BNhax8T79RI9SdPJBvzo6Awun0qDUZwcO/Mz0py6v79s4idrU0ku
-	OuQwungyRD24j7ge4aBxHeG/KSGPRTkHaJMLNp1SehrT0WwOghoIbqSBhVMrVgn7rKyU/zYwBpM
-	+HEC6te4kae+v8BsEFP+rWkMA6CjGI465A9DZ8ayqnCwSAStSyV8f1n6TdnXniv7PwsPejx9+ld
-	IxvD4XE+fDO9TcmbtBX2SkDmyZ+ydDWoRF/SoZR0RL+Rxg+lkRI08RtUYF088xIfQOc3dVNXOxI
-	kY+wq5bERRW3o7Ee/TBhE/z/+Bcl7DWcaIZJMhJYiWepiEkueKVS+W6GpAwr4KbUnT3JlgAsGnP
-	+H17AsaKBAsOty1JdI+4uCXXXWiHQijBSMv8qysL4OTJGnrtfSlio2bYXwoBvyhaH5BAECjZQRA
-	CCSHcYT6XGYdBoqYOO6nPGv9yipopHpObGROJU1/PIUd
-X-Received: by 2002:a05:6000:3106:b0:48f:bbea:1a93 with SMTP id ffacd0b85a97d-48fbbea1c39mr8637656f8f.15.1793783983526;
-        Wed, 04 Nov 2026 01:19:43 -0800 (PST)
-Received: from pathway.suse.cz (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fea1811c4sm2887982f8f.3.2026.11.04.01.19.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 01:19:43 -0800 (PST)
-Date: Wed, 4 Nov 2026 10:19:41 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: John Ogness <john.ogness@linutronix.de>
-Cc: Breno Leitao <leitao@debian.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Marco Elver <elver@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>, kasan-dev@googlegroups.com,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com, Toshiyuki Sato <fj6611ie@aa.jp.fujitsu.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH] stackdepot: don't WARN when the depot runs out of pools
-Message-ID: <aur4rU-I1BhxrxYK@pathway.suse.cz>
-References: <20261103-stackdepot-full-warn-v1-1-41f1fc651b64@debian.org>
- <87wlqtxb14.fsf@jogness.linutronix.de>
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RI03ExhV;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id BEECD4022E;
+	Wed,  4 Nov 2026 09:20:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14201F000C1;
+	Wed,  4 Nov 2026 09:20:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793784019;
+	bh=BqLsI51xXE9XvqQwrewS8kVZYOVybuvhFSYA9nKiQ5w=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RI03ExhVHW+vXW50GI/z1t5fOv/JldWAfo3PTbpnjtH9ZHo58Lc2AcPxXJ5PtbXAX
+	 8g4KSTO5fOZQCtpyjjL/bJvrwiezCM9YEtZIA/HFUZUjXdYaQqcpF0TeHFBMUlhQKU
+	 cwV4vnKJXipMsVWc69bizj8nAauOCKTGcIiZij9G7eWxZ3rmj4e0CBFYHzcKtXnQSl
+	 AJB/iwP2dB6oj6qGqoWsBFGeMkJxlpj4mX3YlYJ3ZSSJ9f+IEjQkqzGNq+iWXf8V9P
+	 ITxx8RHhN/lsRkk2i0dJRQVWI5FBwtmizQ/MBQbxSu+48ni+gfhGCNjOwQDZHYMP7B
+	 rmF7LwmTvp1Aw==
+Date: Wed, 4 Nov 2026 10:20:07 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
+	Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, coreteam@netfilter.org, 
+	kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-usb@vger.kernel.org, samba-technical@lists.samba.org, sparclinux@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linux-serial@vger.kernel.org, Takashi Iwai <tiwai@suse.de>, 
+	linux-input@vger.kernel.org, linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-modules@vger.kernel.org, Chuck Lever <cel@kernel.org>, tytso@mit.edu, 
+	dmitry.torokhov@gmail.com, Petr Pavlu <petr.pavlu@suse.com>, 
+	Anna Schumaker <anna@kernel.org>, yukuai@fygo.io, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>
+Subject: Re: [PATCH RFC 35/38] proc: sysctl: don't hold the tables while
+ readdir copies to userspace
+Message-ID: <20261104-getreide-fallpauschalen-uralt-d366f2bf03b0@brauner>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-35-59422ed3e465@kernel.org>
+ <sashiko-outbox-195507@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <87wlqtxb14.fsf@jogness.linutronix.de>
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
+In-Reply-To: <sashiko-outbox-195507@kernel.org>
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam09
-X-Stat-Signature: xg3p5umx3easutg8n7daray5z53edaxs
-X-Rspamd-Queue-Id: 0F012C0005
+X-Stat-Signature: f4z3ftp65jxna6aa8osugtd3y5kk68z3
+X-Rspamd-Queue-Id: 8A3D1100009
 X-Rspam-User: 
-X-HE-Tag: 1793783984-722475
-X-HE-Meta: U2FsdGVkX1/mv8n9a8GFPopIDZ2TicT0M4KNYqX+XoDDrT8e8iwlGdR+rCFjFR1ufDS0kzmek0QO07R2oWgBTrodNge+1g1mrfFphT6d03OWrk6K9wUZzfnUQmwMTPi+Dm0DPNDr0dgQIghV3NzXXqFdthV8pg51y2y50goz5JzJ3yi6OoMP9NHsa6x+jT+F8uf/ScW+bPUtp0w8pBekJREqiex4tsK0WmmCu8PgQna5i6e+t1jBHSxtvwcHZgZzV3T7cVrKThutc0tXq7Ps3RnCNPKEZPRhTW1NisqB2mN1ux/Ugz3CbTzkMSaLERJ6f7ssYlV5+bto5qnjNL/COZORcAZReWKRyfutG7EwyXWbHlkYF4nCpkz6g/4/ncdCzhUbnchSyalf1kU9ma/K1Jqo6Qr4YfP2J37MKdlnqXeqFuqoenSwog0+xB1tsOkh47I3215YCaInpaDjm7gnXCOsjZbi6Flhr7ndTDGok9EkbJVFDMDFR+c22Xr0cogBDVojWn2ly+CfS7+4QoQGaJ9Uvoi20f0M28axCcmcMWxtowL6dJ1bSgKxdtcDiY2AHBv71PP9OtZc6u0lEyIYpnYKVU+E/43hzpFBgoz1ekzVcZ344iiFIQkcJiuqqTDWfcgesHLz+SXlTukJ7PH5px8MWiBANldDBxfinhGgP/HAUHC9MWKanpScMN2UXa6nWTeJn28v7ZKZX8qsdk2LP/xV4pxYLkG8yidHoMH9aKq3j3izBdu4wml5c7glquUc/7lj1teoh/YGLq53QNJL6a0gpJ0e9ByVDWvA9k7P+BvAOCO/6+243tySFSYNTEqizU4kkDOx7MrT7dsX6wwqKuMikCYvZuiQA+RPG4z4elvWVM7NAZMrp6Ccv8l82IrAAcyHoFtwCBRhgk7WoO1ji6JOl92iWu39eAtSLUYTEOt12AiTg++oqu/pDvPdMMdnUEy1bBIl6Mp1OGIQY+Y
- xwzRQ2HF
- 4Hdj8rxa0MVzremjd/zEsKADpInnlHHhJ1Ii1UFa1dgoLNVAQ7TBt1Kdt7PN99bagoe4vB6VMxhEuSQUvY01OEcSt2eLjT+Ar6Osy26bThtoHbExdPFCsHVpmQPKzjhT0/7s2ym6CsKHyvcGqdZm53Cd68juAUfqVlSGnApP0nR1PF1vD3zrgvpV1ZmSkb5TWbr4MBVbxuiM7jpRjnxImQAm6UMvUqMJfVW16eokKCiVaVhDTFfnMdEUVy+up4ongjjwf31vb9ijdFN1iZg/IPMErITOivCCCBNgXpc8qYuLOZyQXvo8AgkAzn5UO8G6JNRbaWDKWhKK5iq//YBOWXfJpJCLdN721ySwoR+mWQCUOS74LRCJxWNDENClx3qLVzR5V6ey960kKRF+FrOQJksfrGRwG6UI9dNdRWevvgVR4exc/DTkFNWc3cw==
+X-HE-Tag: 1793784020-520831
+X-HE-Meta: U2FsdGVkX1+7KuKimQOq17VdMWSlKtm3GMhniycgoQxK3cFBR787op8rZ3gL5VxjLMzkw5L6t7eqax4f8DqD1Tl1Gmvlpwcj4fVLwePo7rXvvtFH/bmdE6rrRbMwLxSp1pUpmQzOuKqvMkfGqJLGE/wa8gdnkePc2rBF5g78Jsr5F0BNIAxhKoYxbFefhORWbFEXz5RltSZf3zW2VEECz8CQ1GGmCMXAKjybdkTS9XXx1lyavjrV412y+OU+QyY9wliV1jPxGTAeLi2RyMYwEa0dpV2wnOT+U9kJBx2Arznh/zRAuBbD8lInNu6MGdx8q9QnDQzvf5c4oHBcZ1ok807bJ+PmN7g35eSmjaTEaTnAbFSP/NqUg6+hZw1E1BnlEMwBXmnDoyjBcZ+JCm4pEK3ZdNmQf7qd0RPq8de35STJ493myVpf8gECo7OPGOMJFUkWr1OlI/WF2b0ErFcfhMDsc7WjoBZr8mJrOtwZDULkBs8gGK4/1GFo7nIT7nadfHiejvkGFpwv85/Un+MhhXHKxyKtqPCVDc4e1x3LwXVU3saXbsqJX6nxpT3JuGMJSBq1o7pMMGXxD2PmUxDeQx2Ev4DkIzqlxrzShkmi2+ImXuFr2fxlLbtWtAEZNpIP3TxEID0EsfT9OcRicoRPhUFFbdrHpX/vYupRUxXt2ORmNyIsehw3RMTnzKJ5+C3BLVzcK94+wRY0sAZfLce7SDgTAPFc8VC+BKw0fPCPsHufNfX5zaTrcjMiNnlpMYx7qmLrf5+eQFQ5NVFf4mEmwZ6bZlJDFQx2C1lmw8ORmM9A8arwnWuXKCXFr0TnRTAaFFfx6dmX7pY2NECzN92/XYlwoVE/Vv6pywOKeQln2VdU5iZ+aL1B+l6U33JDiA8ADI27Q9TQOw8W78qeidv69wVcu2ooaLhPQqNOEYV3hfob55t44/L7uZNe+ewy8xvbR58QHI6khBbErGzJktp
+ yZcHLsNr
+ qn3Qik3GYiyoSOOK+CjOfwAZVZkmhpIIovSmxchaf0TzmWzyBpPY+tNqdGtzuik+d5weooMpCr/UW4vv1Eqkz8uvq1O+Wruv1DSYbkBlqSVzP7uipxrnZi1LvtVKdcOBZV+hcSS2mLfa61w5YL7IME+d4daedIzrXsJQLhzIO+AsWBGQn+MnCvb2Y8b5gXMkguS0BspSXOcDXvNhy67VqVvPj4KN6e5wpdbzGD98uKOoRZZqXql6yYI7l15NNVMwtUZBPkhOa7l0bZ7GonPg9CqSPhiPeSzxGe7PMnayRbYgmmt+Ze8+lh/+4NR0fbm/Nvf5G5NC4/pDH/62bDyvyu7MvdH8TCJg57EBgybdLl/0R8DzJo5gbq5w1C17LN2xwipPsAw/9z8GW96vQerD0PUattw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,48 +112,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed 2026-11-04 09:26:55, John Ogness wrote:
-> On 2026-11-03, Breno Leitao <leitao@debian.org> wrote:
-> > That deferral only applies to legacy consoles. ON nbcon WARN() puts the
-> > CPU in emergency mode, and in emergency mode printk() flushes all
-> > pending records to the nbcon consoles from the calling context.
-> 
-> Yes. WARN() is supposed to be for critical issues.
+On Tue, Nov 03, 2026 at 02:48:38PM +0000, sashiko-bot@kernel.org wrote:
+> - [Medium] proc: sysctl: premature EOF and lost errors in proc_sys_readdir()
 
-I thought whether it is fine that NBCON consoles ignored printk
-deferred context. I could imagine that WARN() is used just to
-generate the backtrace but the message itself is not that critical.
+This is pre-existing. proc_sys_make_inode() refuses a table that is
+being unregistered since ace0c791e6c3 ("proc/sysctl: Don't grab i_lock
+under sysctl_lock."). The old proc_sys_readdir() stops at an entry the
+same way.
 
-Well, it was added to the stackdepot code by the commit a914d8d6cf204287aa
-("lib/stackdepot: add printk_deferred_enter/exit guards"). And the
-reason was to avoid deadlocks in the console code. And the deadlock
-is prevented in the NBCON code by using try_lock approach. So that
-NBCON consoles do not need to be deferred to prevent deadlocks.
+We can fix this by skpping the entry.
 
-And if anyone wants a less critical backtrace then we should introduce
-another API for this, e.g. INFO().
+> - [Low] proc: sysctl: unused mode field in struct sysctl_dirent
 
-> > With
-> > a slow serial console (pl011 is an nbcon console) and a backlog of
-> > messages, that flush can outlast the hard lockup threshold, all of it
-> > with pool_lock held and IRQs disabled, while every other CPU that needs
-> > to save a new stack trace spins on pool_lock.
-> 
-> Several serial drivers call touch_nmi_watchdog() (such as 8250) to avoid
-> this issue. Perhaps the pl011 should be doing this as well (at least for
-> the write_atomic() path)?
+Dropped.
 
-I agree that it would make sense.
-
-> > Running out of depot space is an expected condition under heavy debug
-> > load, not a kernel bug, so report it with pr_warn_once() instead.
-> 
-> This is the key takeaway. WARN() is not appropriate here.
-
-I agree:
-
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-
-Best Regards,
-Petr
+-- 
 
