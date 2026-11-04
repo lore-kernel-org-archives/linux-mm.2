@@ -1,108 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C582606A329
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C0D606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:11:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lcmEB/R6
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hwR0yKeh
 Received: by kanga.kvack.org (Postfix)
-	id 6D7896B05B2; Wed,  4 Nov 2026 04:08:56 -0500 (EST)
+	id 6DB896B05B3; Wed,  4 Nov 2026 04:11:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B0B56B05B3; Wed,  4 Nov 2026 04:08:56 -0500 (EST)
+	id 68C556B05B4; Wed,  4 Nov 2026 04:11:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C64C6B05B4; Wed,  4 Nov 2026 04:08:56 -0500 (EST)
+	id 5AA906B05B5; Wed,  4 Nov 2026 04:11:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FE686B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:08:56 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CDF0F160658
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:08:55 +0000 (UTC)
-X-FDA: 85396861830.19.D426BB7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D1352120004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:08:53 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lcmEB/R6";
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 24B116B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:11:20 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AD32DA0617
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:11:19 +0000 (UTC)
+X-FDA: 85396867878.23.44E3555
+Received: from mta1.migadu.com (out-22.mta1.migadu.com [95.215.58.22])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 07224100004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:11:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hwR0yKeh;
+	spf=pass (imf14.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.22 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793783478;
+	b=4mgyOepkySfoloy8LRX94bTnHEwy86eEvlDydfadmii8EuO9v0O0Nc+NklwrjgWfvf28HT
+	a1/2ncxF8zzPPcYmcpl1jnk5mjJZPyhqsfuHk0Do0JG4ekfRay08Cvjbj1fVEQx5y6ZQ1r
+	ypS5w5/0H/LRztqyZAbu2Yh7q70PuUc=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hwR0yKeh;
+	spf=pass (imf14.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.22 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793783334;
+	s=arc-20220608; t=1793783478;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CwbssC3IcsbRd7BqfSzfMYQRORQNQUvKDFxxlCd3lXw=;
-	b=vCgIaFKDI6EzI6tNYIadu8RvWKTM0W9MN/FKLg8yzkX6bvIpYoGpvi812HDukl/bxTOjrN
-	UHNxtNs3M/rVuAZktrVom3pRn8dpqJg5PVXXJkBC9zHIbsy/UzgywIWyMzddNGslsHIIzF
-	f60sTt4ZGn2gZ+y6/m0fkP7uFFhkosA=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lcmEB/R6";
-	spf=pass (imf29.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793783334;
-	b=CGEopNX8VMDEgRWsUQVXYuGKfeEwHdTnXDyxlmVzufJPA31f5+AmiEdMD/lNclSAV/X/l5
-	HTfJ8hyorqPEXFPOaDtL1Raij0hL2gaFPNYrIJNjxPREsd3R35OWAiULyeuPDOcxdva7Ct
-	1ZPqI/3IZr/AJX5pHXQXMiXtitcifec=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 353E243C52
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:08:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CB581F00A02
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:08:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793783333;
-	bh=CwbssC3IcsbRd7BqfSzfMYQRORQNQUvKDFxxlCd3lXw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=lcmEB/R6akcJdDRia+T5rGWp4agY6KiX6qiYpvTJ8Fi4wSGBW+ouMzIM5xhJhtIZc
-	 PQyrh00XtISp6tP5KqjmL/pDsx77Y9YjVQ0kFn7NF253J0OaGT1WoEi3v+p1ujRkn2
-	 ga4TmCjxu6LdUp3QZEVh5/CpXTzkW+bLSzcwn2XnlXUC6Kk0WEBJ48IlxV2S8q6663
-	 n0fHi8hMv9XYd7VYyaHE1tZehMNWE58GKgF4ego9G7B5eXG88JagfLL6trQlQEbiWG
-	 YQXc+0NZsUhcha6BMuUCRFC8IzICG4U0Rmr955GgZspNXBcmXauXEJ6qCHI6wCqs3v
-	 bg3pzAcT+tlxQ==
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-5eafb65e163so311673e0c.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 01:08:53 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBy/V0dTYdJgjk/I0Ybo0zZ1TuKoB+NuE5eH1D+3CHpsZr9MTnwSKNw11vHDUzdSvfM866d0N/jSRQ==@kvack.org
-X-Gm-Message-State: APuU4Z//D7K8XjqK2e6MbVhpwmOaOgA4ub9GVvcY5ud+JV70Vbs5+Hxi
-	uHlnm20zNjNTVKWMb5hFcNjoXVzQuOHMOOJtNblW0XyLT1jlJV+lGSqVnzdmqm7rJe4DGok95z0
-	jVZiLoZY4xhGHnNFUDzakK7SKgkz+U/E=
-X-Received: by 2002:a05:6122:3108:b0:5e7:8bd1:731f with SMTP id
- 71dfb90a1353d-5ec6897757amr6563644e0c.10.1793783332317; Wed, 04 Nov 2026
- 01:08:52 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=lym/yCSp9IOZ33mo2Zonha/3NwdJfu2J/obLEkGbH4w=;
+	b=294yhC79cJ3ili7c0EEEaO2gZMsCNc3A9T3prWwmOz/ESzVF3KlVFP1lk10FtBs9j9zC29
+	LefQIoyKlEFqCKp0hs91YUG1Tbmm9U46utBIzXKeXXkExllgiPURFS3PJI12LDUwCswsKl
+	6bgtDaR0uQqOBB75WBMoHFtxwpGp2O4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=RMrOy4ebmI9IZjOcYQefm4hAy/GI4zVqN7pxA9iZQdI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793783473; v=1; x=1794388273;
+ b=hwR0yKehZU9Hw34Jo5AZUuH5lenRNC1HVfHZx/oAUYWTufVnM2mjV2bPqZ6Jqm1Qpy/qQ+N3
+ sNfXlGatBoPPXpYAdJR3kYlHurk5z4b1sVr4LEbfr+5GFMVpXxm2PSjUSEEc0zA1P68lIsDAq0e
+ 1Yfzfh4Ern1p95SqKbKuDVtI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 6253b911e0e229c8;
+	Wed, 04 Nov 2026 09:11:12 +0000
+X-Mizu-Trace-ID: 6253b911e0e229c8
+X-Migadu-Flow: FLOW_OUT
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>,
+	stable+noautosel@kernel.org
+Subject: [PATCH v4] mm/memory: use pmdp_get_lockless() for the pmd read in do_fault_around()
+Date: Wed,  4 Nov 2026 17:10:50 +0800
+Message-ID: <20261104091050.117076-1-hui.zhu@linux.dev>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261103113711.1832834-1-max.kellermann@ionos.com>
- <20261103113711.1832834-5-max.kellermann@ionos.com> <CAGsJ_4wpd-e+xjm5KwihVziAeVnQp3XYG=+-BKmx0SVEhmyqqw@mail.gmail.com>
- <CAKPOu+9textOydxZYng=Bo9Sf91Wq_7rv5r2pBrhXOfiex=qGA@mail.gmail.com>
-In-Reply-To: <CAKPOu+9textOydxZYng=Bo9Sf91Wq_7rv5r2pBrhXOfiex=qGA@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Wed, 4 Nov 2026 17:08:40 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zzZZSaAwG=VLhuMvoD0YcAFdqyUr-8zRSibNw28j8wzQ@mail.gmail.com>
-X-Gm-Features: AclHuK8306bVpFSltXAI1ZXaA68bWTketiXOy1YGPxl8Unk8QhQOKTXLATnYAlc
-Message-ID: <CAGsJ_4zzZZSaAwG=VLhuMvoD0YcAFdqyUr-8zRSibNw28j8wzQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] mm/mglru: avoid redundant rotations of young memcgs
-To: Max Kellermann <max.kellermann@ionos.com>
-Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
-	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
-	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
-	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 95mz3cfx59kswsywfmtcycfze4rfc3pz
-X-Rspamd-Server: rspam01
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 4neu83cm38pqquxjyc5r1bckedn3zhk4
+X-Rspamd-Queue-Id: 07224100004
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D1352120004
-X-HE-Tag: 1793783333-450263
-X-HE-Meta: U2FsdGVkX1/v674gtzdmYhvlLQkpGxNWU7dcV6vP6eFb2EdzU8L2SZ6/ZqEN9DMTu+By1qKTldqvlmWlmJNszTjUq1xSIg60jsI3zH3aZxj+VkOvzzHv3Tty0/9n0UGqdYzHeP/6dPZ0qFB9PEwnOHVUcL1Vtj2GkssFJA44frFjorT6pTLPZx9z8JEZGBtJy5+Y/tFaisNH6DLLPgZl4yyONGqyhuuSv8arFatf99AjGRj08HohPGuvHy5zmhd31hZ3lgOxynE2UdX7WLC3dgKQh2rdFsCSZBXv60TkeqTETO+Orb152ATlJz3isVLAA2gcuQMiTSNXyKbdoirRPGbWvrZtLw4cEEma7i2VL3EBoJVNK9vY2HzeJWlwRN9FDCoSN04+BGgqkDaO8dBOJtBRTkg3VSpg1dHNNDlFvBQbcniU7pyMi0C52OhZZWeH1EKh3/lztVg0CT0jfR8wT5i9Sc9i7C5XkmVuAlMIpya4+K3dYpdsdMcBO7LifQhAaHqLp1Uxds0143Jmj+Z4s82oItYIzI7wFeP3ays5IsXkHQU1OztgzIoUUeEATQ93cWR/4EUcaOcpeo/Q9aui1ZMt+7pVwbgfX0oB/KDSuTCQsA3Oke+Jxm1sEB1HSUpNgx033xyN+bBbi6clRCqUNqxEgen9xokK70fxv5rPZKLGANcW42V3FZn9Aq9bG/udzcFqFBpH+xjb0qEWk8rD0jeWZvBJ0cMDvRD+Uqw2dRWxw86iVR/0U/7KVOJsn9aw6LDV1X7IG4sYVpVWM5ZJmdzHLs03c3saSTzVNw233Ck++davS79pU9ngOkWD4nxVf4aqGplB1SM3CMXHXv0wvPm+JLtKba4rtt5l0G9IJ8aaRVUWY9rodla7151wCns/djbpUwuNkbqk7778wveEqo9dcp6vql16GW9y64RwOPI4a0HYyxCPUTFUv5iPFq8f+lNm/7nwKRtPuymLIOe
- LLiuSaox
- fNrasHkSEKCBwACzOdvz0FPdLYrqnOfnjZjpncIGxXINoLPSxNWx3hmor7lpAGGspAQWl1mUfc80rkTEbxcP7Ckh8QFNERQAytpiG0IGpnBftz0Y6i7Or/ib98JBRPXBcNlvJJsjqWljUh5RuQd0d8bMdmxcm8O36R9+6+5hTeVxmZaWVKgDuVygBSUlhIph6Ri3mOr/1qC9dX8cY0k6zk3UTnW01mOV5AF7QqnXFj5p4/jg1bn9sZkyICRVTS4QNEXfGBt+P2Lw6orWsdlg7H7FYb7gjT6Z/y5OCx5NYXVyDJuGPKPNcOhaTRLiQ0jc1On6nHp1VijXm186YxfdIenMmC2N08okTgs/MSNL4HIXe8Ei+zt6awjs7EQ==
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793783475-896225
+X-HE-Meta: U2FsdGVkX18U34xduuzOZMTk8BR2cyORDvY4MCiJMWOrOkihsrd3bLorppGPb5j4Cfdek5bU8hRrNVbOC1AJkucDRc75xHkKWMlQENgNi9D+r3v13zxwxAfDxhQHFLyqJ7TG9M9nWEviqsc1K0CYiBBZXkBHPd0edl7o2iF57eRsSxAvrFdzjwa0/7vDJ1tpvxZWYoNOed1rnamtQhdn4ukkuyQtEibXC3j8l90fP4Sz2bdTKreYgUAuU63SIdlnWeEr8rJiZ4YlV6Xbel4JR2DrdrjfI/TPzBgU+t3NbMWjX0ldTi8DAReqWXlFPHzvcAf3rrPSFa3HOmqg0FkhBCq6dexrmObqj3EBtisot8VvxTUyjNc6I4U4KJxk54/lKMs4QxAu/gAu+QE5LCPrmJZj6n3fk1Qzi6L0tC536ifuTbC8OOLmemhlXL8nAQUQ7KCl7Dz1BgZ/ErMpyaafU7tPggQlc7pnyHZX7LemohXjTYzWO3jrf9FRC9/Sg5o8PiU4VldAU2ayK4nbtAyzYbns6MUJWaM7lC4zX+hqdaQ+6tC7GaXa7CnqJQosiRwIgcfCyIVkbP3ndUx32Sn0wE40xe7juiYMZhkjEY2+XNRQ6G7TNe9G/xpohFEb6zDMlg2Qef/BzMn3bhTARzt0beaEbqYPzwP8Zpc8elcFwLt1XbIJaca5KgPXhVbfUj7XtxeYMcreYrYcS0bQqvRbAxYTvvdU5/uKOIsDXEyRiiIa9l54zoJRZSKF2yjIyIn/E3Csc+lyoUTYM2Q3us+w9FxNrUbHu4F8VzpOBWUDUyfPkHgCQxtvL/jufttvyE9TEVTjfRj50NwIzxTLMSOZcIQDSDtO4eWtLF6y7crVslOn3VWGN28n5dFoWIPyiwJjsP2g/JLC+NN/Uy1JmI46mivgMC2yNlaIaQ9eWNDxVCKD4UuMfDPysZbG0NLhnBAIq+NO0J1hBCF1yv5onue
+ F/Pa26p0
+ CbJ3u3xFkqh3yQjF1FY8qmMkXeDpxGob7iyhWzBARN7RaqisYTX5xU8otw4MW/ocIzHH38+266cyorUrgimonQbLPHWG+qbx1sXsRW9V7pyHVG0EKSw1s0uNarj4zUJGw6cAMXP/tMMkfpZfca7gff6w/WQcky5NtSRszxkua436A3LoXhWGuXtD8F3qGMkJnIsDt3+vjvtGrPFQUbUs/SxRzDwsqKMeEEm7HM/fKpxK7pqFIqTUc66zCJ9o41XKzmfO9Ma6mec8zEpsNkTWy7maYrKUX4epDLNDIZdz/H/zNZ7bs7bGzVwuEurmB+/fJiQI4qj5IewZWbRUJp/nXQ7DrPUBI6JQMB7QodfhxHQHDk4IPnRFmYuriLiW5zZ+9X3EYcGebEednB/hetKkRpoa1KUcn4ajmPWDj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,95 +98,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 4, 2026 at 4:27=E2=80=AFPM Max Kellermann <max.kellermann@ionos=
-.com> wrote:
->
-> On Wed, Nov 4, 2026 at 6:18=E2=80=AFAM Barry Song <baohua@kernel.org> wro=
-te:
-> > > In my micro benchmark, this increases the request rate by 36% and
-> > > reduces the average duration of each write request by 27%.
-> >
-> > Could you share your microbenchmark somewhere (or post it here
-> > if it's not too lengthy), perhaps on GitHub, so others can
-> > reproduce it? You could then refer to it in your changelog.
->
-> Will do.  A note of warning: it's ugly LLM slop, and if I had written
-> it manually, probably 99% of it could be removed because it's
-> pointless garbage.  The LLM wrote it for me before I had any clue
-> where the problem could be.  It helped me find the problem, but
-> uploading this garbage triggers a bit of shame in me ;-)
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-Thanks!
+KCSAN reports a data-race in do_read_fault / pmd_install; the same code
+is in mainline:
 
->
-> > I think this is a correct change. I wonder if we can
-> > reproduce the issue even without concurrent reclaimers.
-> > In other words, can a single thread running in a
-> > memory-limited memcg trigger it as well?
->
-> Your question is not really related to this [4/5] patch, is it?
-> Because this one is just an incremental optimization on top of the
-> real linked list scalability issue.
+  write (marked) to 0xffff8d52a75fb810 of 8 bytes by task 27487 on cpu 5:
+   native_set_pmd arch/x86/include/asm/pgtable_64.h:83 [inline]
+   pmd_populate arch/x86/include/asm/pgalloc.h:84 [inline]
+   pmd_install+0xe0/0x120 mm/memory.c:444
+   finish_fault+0x5bc/0xb00 mm/memory.c:5204
+   do_cow_fault mm/memory.c:5432 [inline]
+   do_fault+0x5d0/0x6e0 mm/memory.c:5526
+   handle_mm_fault+0x211/0x4c0 mm/memory.c:6218
+   __mm_populate+0x144/0x270 mm/gup.c:2207
+   __do_sys_mlockall+0x2cd/0x380 mm/mlock.c:764
 
-I think it is related. Although lock contention isn't a concern
-with a single thread, the early goto unlock could still save
-some CPU cycles.
+  read to 0xffff8d52a75fb810 of 8 bytes by task 27527 on cpu 9:
+   do_fault_around mm/memory.c:5341 [inline]
+   do_read_fault+0x162/0x670 mm/memory.c:5381
+   do_fault+0x31a/0x6e0 mm/memory.c:5524
+   handle_mm_fault+0x211/0x4c0 mm/memory.c:6218
+   faultin_page_range+0x227/0x530 mm/gup.c:2156
+   __x64_sys_madvise+0x67/0x80 mm/madvise.c:1479
 
-I can imagine a scenario on a system with a large amount
-of memory, where a single memcg (e.g. one running a kernel
-build) is limited to 1 GB. If this is the only memcg
-constantly being aged and rotated, it should remain in
-YOUNG most of the time.
+  value changed: 0x0000000000000000 -> 0x000000001386c067
 
-We could still skip things like:
+Both paths only hold mmap_lock for read, so do_fault_around() tests
+vmf->pmd while pmd_install() populates it under the pmd lock.  The race is
+benign: a stale pmd_none() only wastes the prealloc_pte, which do_fault()
+frees again, and a pmd seen as populated only makes ->map_pages() find no
+PTE and do_read_fault() fall back to __do_fault().
 
-        hlist_nulls_del_rcu(&lruvec->lrugen.list);
-        hlist_nulls_add_tail_rcu(&lruvec->lrugen.list,
-&pgdat->memcg_lru.fifo[new][bin]);
+The load still has to be lockless-safe.  The store side already is: on
+i386-PAE, pmd_install() publishes both halves of the pmd with a single
+cmpxchg8b.  The load side is not.  pmdp_get() is a plain READ_ONCE() over
+a pmd_t that is wider than a word there, so it becomes two 32-bit loads
+and can return the low half of one pmd together with the high half of
+another.  Use pmdp_get_lockless(), the accessor for pmd reads that do not
+hold the pmd lock: it re-reads until both halves come from the same pmd.
+It is also what __pte_offset_map() already uses on this very pmd a few
+instructions later.
 
->
-> A single thread means there is no spinlock contention and the linked
-> list is only walked once.  I don't think the problem is visible then.
->
-> > One thing I noticed is that you may not need to call
-> > get_random_u32_below(MEMCG_NR_BINS) upfront. Could you
-> > defer generating the random number until you actually need
-> > to rotate the memcg? I wonder if this could further improve
-> > your microbenchmark results.
->
-> Good idea, optimization added for the v3 patch.  I don't think it
-> makes much of a difference, but it really makes sense.
->
-> (And I still hate that the Linux coding style requires having all
-> variable declarations at the top.  Code would be simpler by
-> declaring+initializing variables where you need them, and additionally
-> it opens more opportunities for compiler optimizations, but... it's
-> the way it is.)
->
-> > Anyway, the compiler might be able to defer it for you.
-> > I'm not sure, though. Could you take a look?
->
-> The compiler is not allowed to because it is not allowed to make
-> assumptions on what get_random_u8() does, therefore it must not
-> reorder the call.
->
-> (I wish C had a way to express a promise like "this function call
-> won't modify global state reachable by the caller's pointers", there's
-> just GCC's "pure" attribute which is too strong here.)
->
-> Minor note: deferring the PRNG call will move it inside spinlock
-> protection.  I think that's okay, but it can theoretically have a
-> performance impact, and I'm not expert enough on this part of the
-> kernel.
+Only X86_32+X86_PAE and SH+X2TLB compile the retry loop, these being the
+GUP_GET_PXX_LOW_HIGH selectors that have more than two page table levels.
+mips32 with 64-bit physical addresses selects GUP_GET_PXX_LOW_HIGH too,
+but is 2-level and so falls back to pmdp_get().  On every other
+configuration, x86-64 included, pmdp_get_lockless() is pmdp_get(): the
+pmd is loaded in one go, the READ_ONCE() silences the report the same
+way, and there is no functional change.
 
-Thanks for pointing this out. I missed it.
+Fixes: 7267ec008b5c ("mm: postpone page table allocation until we have page to map")
+Cc: stable+noautosel@kernel.org # KCSAN annotation only, no functional change
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+Acked-by: Lorenzo Stoakes <ljs@kernel.org>
+---
+Changelog:
+v4:
+Commit message only, the diff is identical to v3.  Spell out the affected
+arches and add the lore links for v1-v3 (Lorenzo Stoakes).  Reword the
+cmpxchg8b sentence: the store is already atomic, it is the load that tears.
+Add the Fixes: tag (David Hildenbrand).
+v3:
+https://lore.kernel.org/all/20261103014749.96764-1-hui.zhu@linux.dev/
+Shorten the comment to one line (David Hildenbrand).
+v2:
+https://lore.kernel.org/all/20261102093120.92654-1-hui.zhu@linux.dev/
+Use pmdp_get_lockless() instead of pmdp_get() (David Hildenbrand).
+v1:
+https://lore.kernel.org/all/20261102031308.66177-1-hui.zhu@linux.dev/
 
-It might be a problem, as it could increase lock contention
-by holding the spinlock for longer.
-Only testing can tell for sure. If it does increase lock
-contention, I think we can simply keep the redundant
-random number generation.
+ mm/memory.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Best,
-Barry
+diff --git a/mm/memory.c b/mm/memory.c
+index 0fb676dd2bd63..f25c2ce0ef153 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6017,7 +6017,8 @@ static vm_fault_t do_fault_around(struct vm_fault *vmf)
+ 	to_pte = min3(from_pte + nr_pages, (pgoff_t)PTRS_PER_PTE,
+ 		      pte_off + vma_pages(vmf->vma) - vma_off) - 1;
+ 
+-	if (pmd_none(*vmf->pmd)) {
++	/* pmd_install() rechecks pmd_none() under the pmd lock. */
++	if (pmd_none(pmdp_get_lockless(vmf->pmd))) {
+ 		vmf->prealloc_pte = pte_alloc_one(vmf->vma->vm_mm);
+ 		if (!vmf->prealloc_pte)
+ 			return VM_FAULT_OOM;
+-- 
+2.43.0
+
 
