@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AEDB606A32F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97DC4606F6A8
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WdWrZpQZ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dr8wSvAV
 Received: by kanga.kvack.org (Postfix)
-	id 3C6DF6B05DB; Wed,  4 Nov 2026 12:56:26 -0500 (EST)
+	id AF34E6B05DD; Wed,  4 Nov 2026 12:56:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 378166B05DC; Wed,  4 Nov 2026 12:56:26 -0500 (EST)
+	id ACB106B05DE; Wed,  4 Nov 2026 12:56:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 266DA6B05DD; Wed,  4 Nov 2026 12:56:26 -0500 (EST)
+	id 9B9DE6B05DF; Wed,  4 Nov 2026 12:56:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 075AD6B05DB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:56:25 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8BEBBC07AA
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:56:25 +0000 (UTC)
-X-FDA: 85398191130.01.6695E2C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id D3A74A0007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:56:23 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WdWrZpQZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7CECF6B05DD
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:56:46 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 05325120785
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:56:45 +0000 (UTC)
+X-FDA: 85398192012.05.AA1879F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 21CE0160005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:56:43 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dr8wSvAV;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793814983;
+	s=arc-20220608; t=1793815004;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xlRe6ByN3zpYNOlJQq83OVbC6fU3d9RayIfuGISBpLE=;
-	b=UCaEyGkiOm3/4ShjPd7aqOs5HmyxdDk8bAAKPpQgXSceylKaa+icLCZX7g+lb+PFt2tzow
-	ZGGEApiKiOqazjMLfreb6Q48hayp/VQDA8ETrh+DsSqJUORI6c/w3/aOGFXAGAmWWNaA1i
-	kxl/4nREcQThvthntoE+cxudvxMhROY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WdWrZpQZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=v5t8qKNo68SCWoforDimF8hL2ZYL+p0Okj8bWoZ1JT0=;
+	b=Ilvu+lirnJNPVH28MJfF4twnhNStXWZCL/ntnzfQpET6+Ml2ETGbIgH7LjyJVSNqyoSV+K
+	Cb5MmYEMaNHDgnr1gxCckGXJWABiep+mztZIfcc/wJSIZm9ouTSDZZu1VrA3mcOiet1JDI
+	3N/27G2QFb+x/H1OX+CY+gaMi8k2efQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793814983;
-	b=eTCXf0eOxn53stUJL01JUuBt15IJ5p/xLjUK/iCGf4aXJmkUPYk4Zz6D9iC/QVn+Amk17K
-	+lZTLQQ7qLASnXSzleHlWBHmV3yg2Jq9Cn85zyFZCjDCbaagPGmAcRyDhL0srfoyu7vyXq
-	foebgN4FLVdaQg2NWk+pib6MHPGwgEc=
+	t=1793815004;
+	b=wMW9X99peKnJBWZU7Ts6/x+47ZM8Xc5CvZIc7CYUoNzd6PszMxOAL9watefq84FdjMZGKc
+	F3Twp2nKpVxLa+K5XWy00PYioa3Lwu/ZaPr4aoeLg6EFZvNymB5uSjiKcfOYh50gSFDLcB
+	N9A3Ftz29Qyi4GdF9/BR3HV1xR7tz2Q=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dr8wSvAV;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 72DB96021C;
+	by sea.source.kernel.org (Postfix) with ESMTP id 688A343313;
+	Wed,  4 Nov 2026 17:56:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F33CA1F00919;
 	Wed,  4 Nov 2026 17:56:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B8A1F00919;
-	Wed,  4 Nov 2026 17:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793814983;
-	bh=xlRe6ByN3zpYNOlJQq83OVbC6fU3d9RayIfuGISBpLE=;
+	s=k20260515; t=1793815003;
+	bh=v5t8qKNo68SCWoforDimF8hL2ZYL+p0Okj8bWoZ1JT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=WdWrZpQZG3jkjCCQpsfQrBfgI1HDfynUYNY6vSK8rFGYC+yFDlqVfIlEyf4lUkT0P
-	 47Qva0HSuMAdzfViLwsaTOh+Gv11NHerf7rOfu6InrqZM/g/ogcoP2D8FesuH1O8lI
-	 hy7orIASJbsGEcOppEShVEs3qXLaqbCm2X1l58C/mLO7S3SSho647wFT/6dMID+10o
-	 OEsRp/bw90rGUnntzwTIKbrSuRSgPWrqC9DAx8itOX9VTQCmMsQmbO+kpoEevaaznU
-	 jpanOJfr9ANyVI0+/ZlgBo3nJ2sRa69PFXETlEYKduVxU+xF7MZ1giUdKYjN5C4/6X
-	 bQ/q4gyj9YA2A==
+	b=dr8wSvAVbxP/ZcIFTBwPH9dzXvhuBn9mA9nVh+Xgz7CJcVvdC39CZkNme4AyXP6YJ
+	 FWGyi7uuOUICVXiiTT/mIG9BdyZemGP4/ngMXLnrprJvuOVJflcC9gK/hPD0oGCWag
+	 aT5p1c3BKTvIpwJq4lWpELTuhZe/zgt3mUlYbqxRoekrxsz67uxzSSFqG5FXwM9E/o
+	 G1ugeyanFn0rXRDRijLJnbwzKap1acFDZxxJu4ignABfVoZxvW4pCLBHKwBhqj5cvl
+	 DjsJARsAA6SkUoD00o6dTzmSQNCeteiSTEpImZSPqwk0YU1IwQ0d1qUYo0SM+byxVD
+	 zCyAfk3cQXcsg==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -122,31 +122,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 37/51] proc/vmcore: don't let vmcore_cleanup() run twice at once
-Date: Wed,  4 Nov 2026 18:47:23 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-37-bbf7d5546809@kernel.org>
+Subject: [PATCH v2 38/51] powerpc/crash_dump: check ioremap_cache() in copy_oldmem_page()
+Date: Wed,  4 Nov 2026 18:47:24 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-38-bbf7d5546809@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1758; i=brauner@kernel.org; h=from:subject:message-id; bh=gmON/Vwu30bm66aR7FLjt15bWl4pslPspuVjwp92LoI=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zntzeuekQwxr7P0OOe39UCH++f+GeYsr8k/NVg0Tb VTs/Xvpc0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEwtsZGWZcnzuvlVNJw+uO fOP1dOFrwRJ3O9wSfjxvbSqZ8obd7yEjw9/p+SJB0Us0z7YI1mVedF7t1tNceCBK08xCfvPP1Pt LeAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1312; i=brauner@kernel.org; h=from:subject:message-id; bh=2dbZnDPFapx3dAW5qeN54CL6hHWBvjsrs28L3h6tsIk=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9znt7V9L6ks/CitImMTaFT/P3tq0qmfiJVas86t5hC 6GvD3+pdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEwkXpbhf8Xs/zMjY/xX/2qd /0Cs7fedC69yp7xLetqeaik/5Q+3dQEjw6/vcxdp8XXWMTbHvTmdmR79flXw2aaoGkbuF4vOPfZ YwQ0A
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D3A74A0007
-X-Stat-Signature: xuabgiidj5thjx5u5jrenpmf6rk367q6
-X-Rspam-User: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 21CE0160005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793814983-755019
-X-HE-Meta: U2FsdGVkX1/0+NQa77U/r0uEJjANBtY109tvDlvFMAYBr4HeJxb35gMZ69+yCUrw695hVFpx66itvC8EOQ4litlHPJINzZ9bsMlW35JdWJdJ9Z+7fQ/8+9Sb2gzrhSpNwFh8gkvNEP+WW/sqTBrgyrQ0McNYJIGqZH8afHFYp5P5RMrEPXqJG6s6Zbi7kOs7u+DkX2xWY1PdCggtg5j2IxFopkCgAnukNmwoXigMmXTVdPxHfNXTYQp4sxmMHZj7sRR+eNXPQtlZRIa32RHDnBuZdjdRLSMreNOBVPC5tk/g7fxRNqBegrzp3wyoxvDZgpzMtyxFbRSIS6oyqqkAiBV0dIzMuUHjeNY9lh73dg7nldRsi5WXYdrJ7VopoVM2cBj7y7c3oD/+4id33Q79dL+V4hikUeUfVqZipWATxTH3Gh4gQKPY3KS5EIEJcLGiV5Yi5kKSUT7Vozhuo2CxSw+yGWNJLezvXbSzOBV28vFmf1aCn/nQt2sNMVQN2yyGriVWMJj1jq0Em7SFchIuqfup7/5D1g+13CvoG2CUVxZ1Lkv4E1CG0KdGz45Is5yQHE6CF2lNfGwThIujXU8oy82WDvIwWJdEiNSi1GgshviPVjYIxUJk6L9Wele6PUu0imrbm7Z1iOTz2zmaEroujoCS/z6/3VMeHpqlwRiNSSH2+6StCJOk1y3Ww5ALwp4+nlKnYN2E6DR/nw/2hTChp/+3MR7NODvWM3W+hzLXKCaCkNoBbuip2gJqn6ZJjscImXoPFh+OtBPoQA6Z87vvVLRfS8W+CFn+I5A2SGoguEgV7KU/lSSFI6ZlwqpafgpNpIIgTAdilyj7g691JL4U/KZYDVje+ywbPs1hv8qSzg7x31nPnr9bb/LDmt6SPEanoSj61zyLTWJa90GzpLWw+1nQ8Hj2tQBqwRhyByHfCaWZYfnvOkf3edsygETZBwPXuKg79cRckIWbzDWF2Jd
- v5llhHNg
- sc2TYTavLI8bH+rdXSy/aeFiIJVbIBLUt1x61r706ZavMb5Esm1wKYDbIyW1KWpcKEuPy43dfcKWoL3Q+Qrb4BWC2VSMYBsCbM5fKlx341bBsqgN5gRJS/3Ji2YDOxj298w6gN7yFO1si6L+V2Sdu8lfaNw26NFCp8dMSiL/QIqezPPGUAB3xAREjJLfGoOVW/8f0L+5pzjYLDIWnahLByndjJQtpCWfp2ABhiebKJQ5rEgSRvdpbsYc/qArH5z5+yC/3siA1TBtrkbqn3k8LH/XsGJCOpz6PYbMwpRBa9sFDBVBEmsPB6csJV/ZqD0//tn2wRTYvS9+eADrZpaAIEAcElL0qL9qBAPpXxEAplzxCUTx3eDdn8Z4EJdNyhxiRbwzqQdHRKiNmA8BsvokjT4Td0DpclpOh80WhboE0SZHhQYDt12A9mrwe7n3u6o/EvS89
+X-Stat-Signature: iojiexso8bohbogathdx19iwtt6apbw9
+X-Rspam-User: 
+X-HE-Tag: 1793815003-250129
+X-HE-Meta: U2FsdGVkX19Tm2gUg0rFAv8GEwb1N/RKJRB/zaBb96RDFbhq2Dsq/kbcKaVl2nfmdk4FWeOF6haGy8wYbb5FFBUUCjaYAgffqxN4hQ/ci3VrRwLaRSPS/Yemk4/V+C9VBUyFk+x/u4McEZhg6OZ1zaFtH7wvcViVOYMly5g9vLGh+01JOLUeg2JaNkwTf0bsYMh6me6pJuejLf557PwYP66SJ2A7IXkmyWB5SNu/fyIhqOs6901gvYPjZRnlYIeCVFxXGnRvaAXxFq8zY9yNZwj2PvHz7emDi7qP0efKKjaZhtjaNl2g+ByzEy+Jx0UIm1PkU6r/tMSZLbilKm68JBL6RhB407PGzhvRNmxgRbr2EuRkVQO01YmdkEnbhGMBcMZpma0+KJXXr6zGHOMJU28wme4BGdJ/nLcAYRUg4Rgs/EVIFiCq6CKzYKmZMacCEsrqWbJ6VRluvGh87oty/FbEMIv5VErd2N1NnfZdh5o9wNSEJsBGTUr/iYf8jikOHLb9vT48k6JmQPeBFGRlny8JSKS61XPXqBoVOmPZcKik50LJlp3c+x7Xtke9HjoPL+k6d8CVXvOjIBpaD0gBbUomB3q+n8Lj8TAxAl8rYazh7HQDQc8sps1aSqO0U9wEtfwPfXLCeIt0tfAXr1iKp2eJ82u4t7kGsUk6R3UXsE5n6CvJIlu4aiyBg52V+jmLjuGdstyK8HwkAaOJ6MRj+KTRw0WYy3QNbnMEPQs4UHSoBHoEG1fsRIHu9lyY2mmDVzWQeZEfn84wtnayVpve7rPYTV4hHDnxb3gWQ3hGJuHM2rNkZc1ymNUORsr6DMMWA/Iw5GvEUsLzLkCFHHG8LsyHOUQDMVzW56hpbFILWedqc2APmlChR5bKoPUVRAMCfatAdH82aPPlqJtnUMLbbk1rzoj4lb4xqY7mXexKcMEbqwiXXsOzxEFVqwQLazH1hObDxtMPyI1uZqotVYK
+ lL2Yzc62
+ tGPQRZMR36fZCLnnvbrc65s/64GG0giVNlto3HxWyXWAjdHckqWPrABd+Vm3ChKHaYbdyakhP2b80KkTBpqrdZ4IZW+Ylsn1mB+YaSW0lKKKsr04TVvPdif8qsenEP9huL76x2hYbJo7AUb9wCsISe7b0VF/MeKf/UfeVbBfnYzA+4l3eKiJ/Syq+sCOoYWVPcLMoUjqSm+PkrQGkSbj4uF0Yefj5/kEmRomzVJfb6HunRzyPuPF74lfI09FqFKRsf54tWsPQAxW6xRlP3GOYiAy3iDW9sDUaLTbAzzqYBMqP370mYZby9XwKRI8cZ+XN4walNrtaNyJaYFNap8xossH6lsrbYne5oy6V23SPafqMIRwVrbxQ5cFrfFtxwB1HEF3f8Th3I7joiRRf5cXJzH1mcb2pPQBQO+qNB05bMqdaalpA31rxzMy4SkbueXNo7Dfv
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,47 +155,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-vmcore_cleanup() has a single caller, fadump's release_mem_store() on
-powerpc. That checks fw_dump.dump_active without a lock and calls
-vmcore_cleanup() without one, and kernfs only serializes the writers of
-one open file. So two tasks that write to
-/sys/kernel/fadump/release_mem through different files run
-vmcore_cleanup() at the same time.
+copy_oldmem_page() maps a page of the old kernel that isn't in the
+linear mapping with ioremap_cache() and copies from it without checking
+whether the mapping worked. If it didn't, the copy reads from an offset
+into the NULL page. That oopses unless the copy happens to be a user
+copy, whose exception table entries turn the fault into a short copy.
 
-The first one removes /proc/vmcore and waits for its readers in
-proc_remove(). The second one finds the entry already unlinked, returns
-from proc_remove() right away and frees vmcore_list, the ELF headers
-and the device dumps while those readers still walk them. Or both of
-them free the same lists at once.
-
-Serialize vmcore_cleanup() with a mutex of its own. It can't be
-vmcore_mutex, removing /proc/vmcore calls release_vmcore() which takes
-it. The second caller then finds nothing left to free.
+Return -ENOMEM like the other architectures do. read_from_oldmem()
+turns that into -EFAULT like any other short copy.
 
 Reported-by: Chris Mason <mason@kernel.org>
-Fixes: b500afff11f6 ("fadump: Invalidate registration and release reserved memory for general use.")
+Fixes: 54c32021eb6f ("[PATCH] powerpc: Add arch-dependent copy_oldmem_page")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/vmcore.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/kernel/crash_dump.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
-index 1fe70c4ecc54..ccb795b85509 100644
---- a/fs/proc/vmcore.c
-+++ b/fs/proc/vmcore.c
-@@ -1764,6 +1764,11 @@ fs_initcall(vmcore_init);
- /* Cleanup function for vmcore module. */
- void vmcore_cleanup(void)
- {
-+	/* Not vmcore_mutex, removing /proc/vmcore calls release_vmcore(). */
-+	static DEFINE_MUTEX(vmcore_cleanup_mutex);
-+
-+	/* Two writers of fadump's release_mem can get here at once. */
-+	guard(mutex)(&vmcore_cleanup_mutex);
- 	if (proc_vmcore) {
- 		proc_remove(proc_vmcore);
- 		proc_vmcore = NULL;
+diff --git a/arch/powerpc/kernel/crash_dump.c b/arch/powerpc/kernel/crash_dump.c
+index 103b6605dd68..1543917bd3e1 100644
+--- a/arch/powerpc/kernel/crash_dump.c
++++ b/arch/powerpc/kernel/crash_dump.c
+@@ -86,6 +86,8 @@ ssize_t copy_oldmem_page(struct iov_iter *iter, unsigned long pfn,
+ 		csize = copy_to_iter(vaddr + offset, csize, iter);
+ 	} else {
+ 		vaddr = ioremap_cache(paddr, PAGE_SIZE);
++		if (!vaddr)
++			return -ENOMEM;
+ 		csize = copy_to_iter(vaddr + offset, csize, iter);
+ 		iounmap(vaddr);
+ 	}
 
 -- 
 2.53.0
