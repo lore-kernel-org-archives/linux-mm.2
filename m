@@ -1,134 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8EEC606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 12:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF91606A330
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 12:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=DBXHHs+L
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j+JjsJAY
 Received: by kanga.kvack.org (Postfix)
-	id BCB5E6B05B2; Wed,  4 Nov 2026 07:29:53 -0500 (EST)
+	id 3DF6F6B00EF; Wed,  4 Nov 2026 07:31:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7C546B05B3; Wed,  4 Nov 2026 07:29:53 -0500 (EST)
+	id 3B6DF6B05B1; Wed,  4 Nov 2026 07:31:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A471B6B05B4; Wed,  4 Nov 2026 07:29:53 -0500 (EST)
+	id 2CE376B05B4; Wed,  4 Nov 2026 07:31:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 718A66B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:29:53 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E1425A8317
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:29:52 +0000 (UTC)
-X-FDA: 85397368224.18.A5CB343
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf21.hostedemail.com (Postfix) with ESMTP id F08A91C0007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:29:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=DBXHHs+L;
-	spf=pass (imf21.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 055DB6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:31:40 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 59E931205D3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:31:40 +0000 (UTC)
+X-FDA: 85397372760.07.9393CAC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BC1994000B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:31:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j+JjsJAY;
+	spf=pass (imf12.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793795390;
+	s=arc-20220608; t=1793795498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y3sjZ1/zDmNq7aGULg41fVtfLI807ZzIhfXxdB/64Uc=;
-	b=RjTZnuoE4CEJh9RfhRuvUl4HEHIALL+kXFgpHWtNJIeW4JGLsNpSuKWbVuG7OLP+7CRZsE
-	G+AS9f+K+XMB5J1I60xfbSvCwrDXkNoRsN+byw+hfr+T/hTV5TbugXLwHdykQOs4HLxBDW
-	VI03iAl9XjU96BLWTYakJJQbTe9T+ys=
+	bh=d7N3s/Fk0FC0DIJXDd2TXVzu86yiov/bVF/UpU5EDxA=;
+	b=Fpkyz8t/EJTSh/dsk4MPJUZTT49BEnEqQOJ7hlUeO2i20kgHgrCN/KB2nnhP/97nwji5Ss
+	EN0YkOokSfrqyG5acS9mZaop4FDI8KgcA7Tyr/UDRjU/L4I26MtOq0vYpaUzS681FJMFkY
+	xfHESvILBQNkq9OMBkOF/dxfyjtTZyI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793795391;
-	b=lrb5H2Qzazlucrt+0Pm3crcuoRiS7zA7QLNGBTZ5Qi0jhsbhRTZB5OXA7fkdtH73Hbztn+
-	sGWLtMPymF33GA/HaHFqsjNTQmpOxzdAn4UazpUhOpOr5SR0oiQB3RF21zmpNL1R8JFXby
-	7d3DcPI+qm3xF/2BMZ7ad+ZrzEWGqYY=
+	t=1793795498;
+	b=vMmsge3p05yC+46HUH3OP37jiJgz7zNc6W45yjcs1ZZObO0GgWZytbBdrxr6IrFOIMbPD9
+	ON0SNTVZ6TfjS2pvCn1J3+j9xLGJ3j1K8aktKs81npylfNtpiyAiiKQG89eJPZXOrYH2KY
+	nNP8pv+m0sbX8C8Lj1ZQFGQN1xuEHQs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=DBXHHs+L;
-	spf=pass (imf21.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a3517554f7so4903045e9.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 04:29:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793795389; x=1794400189; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Y3sjZ1/zDmNq7aGULg41fVtfLI807ZzIhfXxdB/64Uc=;
-        b=DBXHHs+LMCD4Rc2wTKwhO/BouPSV/myu/0B4Mx1y8pD3SPFPqLEHjdaRV5M7ddDo5a
-         yOFxcnn0wf6Aii9pvwXcszcv0kLDJo1xh4LtzvOm3Jcpc060o2BtOELoaWAdlT5xytU4
-         jln5WoMp01Pf9ck8FvlmQB0rUmYydwLZuSFAHhSbwLeUoE+ZDhqcnEYay6PtN3HFT6kt
-         m3OAR+Vgc/DYyuMQYa858FOEtJa51Ff1akYAvnqWdT4TxIj448op2isjtYL/wGYBZIL+
-         hSTmvTZ0FOtoz4LS/gD2k2BxLMwYrV9wJM4AG275/BWEy8gVrL2JIfFViSm2/GfRyJUf
-         8O2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793795389; x=1794400189;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Y3sjZ1/zDmNq7aGULg41fVtfLI807ZzIhfXxdB/64Uc=;
-        b=jII6A7sFKJEQcKLL7jzbgxsThDygX6t2Yx3FDxEXYy9tyzJRfLiu5nEFFDLU38cIQy
-         w2cMwn8MckR/uKxpNZUvlpEZmZPjwuvWVsCJP33JtOc1MEvYdWv9EqObPv/T4XrWikb9
-         qn4Zgpkx0j8odnX2b+1ZJiWlUhCqF6jMr+3Ulp7uejeQSdYc+/9C1FWbQLXclq/E5zzi
-         qtGw3+VsVzunQ+k6w9tQ6WeBYswrOYODgYubAopBZe7oC51tVHhAklvfwQGiDQF1ENZR
-         pH8xJ/JnScbz4sLlaEkZ6xm3vqfHqMyB9KbMt4wkIN004zFml3OJ15yML0Qscj5Ovmjm
-         rtcA==
-X-Forwarded-Encrypted: i=1; AKwUvBwm4I/G81kKv+ulpa1GrJ2UJqmOG9cTZO+wNFnLUrc4YpVZ/i+JYgD5Zc3Ax6cY5fkVDIuBPTPyEQ==@kvack.org
-X-Gm-Message-State: APuU4Z9PrDoXRMcH5yHCJR3rqF4MJrtn6knlSQjm6QLiVQQgHdH0tvw4
-	D3hOpjhxm+qBFc0FxyZ53Il2ZK800QaxSQTlT+vSTyG5aCSUMJ/qfndI
-X-Gm-Gg: AYBFou12ZjDvjWFbTHRjQmOoY8FcjN3kRs2VxGtZVOSc+YYqUgjhNwPfAigTw9A2bD0
-	eJAv0qfO2WuUgzanXzmqh4/UV6tayXY8MFPRJXCVeIpETVjkspxDUr0cPOOcqZECybkL5wFDi8P
-	I7sM9n3xRHzjAqZOhQ7l6z6VG+F71n2QcS/5XoGLqjZGsdMA/ImL+CZCizD+d8C3xXIPQHpsX8r
-	sckFdW59vVa8eCzp/q6hRSz3yxE0+BwrurTWcG/EnN2ukxztrYcJwkN51K4JPWOrysmwV6wdHmJ
-	xqo9YK7uV9VErN+PZzesrYelk0OCNhyqlOQB1xM3AW+28aKma5QV3zKCp5P/L0JScpyWOp/VSjq
-	Rk0Kq2lqdaZmSUAvMZEAo5ffRl5+bK/I+tw3qa5kXnvdG30/59ImNaPGBAr95B/qC3HZJ6qcxcn
-	mLkwc/ilqfPL8kx7TnD1YY7HcwZInzHHDBkyD+5HBVWK6P8YM8LbgFm71shWqgyO4jTRdCa0BKX
-	p9/Q3yCgc/8f5GedN3ksb+U1Nj8F0/R8UAVEf5edM8n19+/xgr9jlO/DWA0Hz0n0PvtKNxT36cn
-	SNGKjqryO2o/PLPvIAvYVtg=
-X-Received: by 2002:a05:600c:1d02:b0:4a0:1c94:7042 with SMTP id 5b1f17b1804b1-4ac16bc4731mr395490185e9.8.1793795384605;
-        Wed, 04 Nov 2026 04:29:44 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2aae24b32sm129017035e9.12.2026.11.04.04.29.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 04:29:44 -0800 (PST)
-Message-ID: <bb3a8a16-daef-43e5-8ede-d9a6b7a7bf38@gmail.com>
-Date: Wed, 4 Nov 2026 13:29:43 +0100
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j+JjsJAY;
+	spf=pass (imf12.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4B35060F32;
+	Wed,  4 Nov 2026 12:31:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9431F000C1;
+	Wed,  4 Nov 2026 12:31:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793795498;
+	bh=d7N3s/Fk0FC0DIJXDd2TXVzu86yiov/bVF/UpU5EDxA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=j+JjsJAYkPpZEw11dLp/jNcSe2cW7ZtaW501/o17Jebog2qcBPsZHeT2iz62r2ae1
+	 WLk4RorrJUNOZk1wfUVtX0q/D2494vTsgA6m1EkyzcnRqumKVl5JkWhU/xmkSy6WqX
+	 OOdehNRcyKKe4Wzk6WK50t2c7/27ovl2oC8hmpafP6aCD5rDynipvmry4fIUcYmpb2
+	 tD0bdg5ktq+JKFY1K90H6FiBXm3qP5N7gf+YBI/gFda4CBZvVyPyG/wEgdhShr+/OI
+	 xBB8dE+rAHcXcTnvsv+xYB4B9Vz8KDFpbsWF3dJxEfs64gbpZIUL1iT/IV5GQp1yRM
+	 bqcbnsNEabvcw==
+Date: Wed, 4 Nov 2026 13:31:35 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Waiman Long <longman@redhat.com>
+Cc: Matthew Ruffell <matthew.ruffell@canonical.com>,
+	Tejun Heo <tj@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Caron Wills <caron.wills@pulsar.com>,
+	Ridong Chen <ridong.chen@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org, linux-mm@kvack.org,
+	Jay Vosburgh <jay.vosburgh@canonical.com>
+Subject: Re: [PATCH 2/6] kthread: Keep unbound kthreads off nohz_full CPUs
+Message-ID: <auslp4kRazpwtlKZ@localhost.localdomain>
+References: <20261103075940.110308-1-matthew.ruffell@canonical.com>
+ <20261103075940.110308-3-matthew.ruffell@canonical.com>
+ <aunpNqPV38FG94-f@localhost.localdomain>
+ <c9b24dd9-8c6a-4d35-8f68-07274f06299d@redhat.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] memblock: keep reserve_mem regions out of KHO
- bootmem
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>,
- Alexander Graf <graf@amazon.com>, Changyuan Lyu <changyuanl@google.com>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Pasha Tatashin <pasha.tatashin@soleen.com>, kexec@lists.infradead.org
-References: <20261021211058.83483-1-azpijr@gmail.com>
- <2vxzqzhhg8l3.fsf@kernel.org>
- <32dd1f28-db55-4674-99bc-74d9d3ab25db@gmail.com>
- <70686061-787c-4c99-ba5b-ff982c8cc2ad@gmail.com>
- <2vxzfqxglrg6.fsf@kernel.org>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <2vxzfqxglrg6.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F08A91C0007
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: oap1qk3a7jhe894yciggu9ptyurgzyz8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c9b24dd9-8c6a-4d35-8f68-07274f06299d@redhat.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 818oxs69g9rffmm1rpdsrc13u6hzjfbw
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: BC1994000B
 X-Rspam-User: 
-X-HE-Tag: 1793795390-298474
-X-HE-Meta: U2FsdGVkX1+3mFyEuJjsyV8Q1glQZRDGBd0Q5mpJ2rzeL6QvnzBzZ80N+TL9T3bboJDvI80eaZ53rIVNMm1UZSGQXLDR8qc5PJQ1YYdevrWrq7YR3+uiOgki2sANEbUw5fDD7MCDRadV5F7jCdsBoYWFK6Lok8AwVpUdMzBtlgzg5n2mS40y6fk34KB4JCJ40dkkGyXUpCrgVm0GW7+oexqc5bMZmtsx2ddQ7FvalioaXZFQk9EJlveJmaDBeMW5dEYqKp5/OUdWAnop8DvBAmOokXWbZr+feQAXvVMai8DHBV/ssB7IWb0VBlFSQO+hBgQfy6FL28OPJfziexZXsM2l04I3QMXu7j+6UekYCf4qlgOeLBwt0zEOFtej3LoHWZdZ4YkxMC+VFPOFqmqPd+RbHPOzSYNnZ+4K7NeXxuciS5oo0nvRb+J4ftfzq+Ue6YOnaU4b1m+WeTfZmQcGU+SXdrX9VTZJQhsnqiDNZKOV8H7nXPj4wS+3cWSP9JpIeEZm8UMyA8mV/Mb1ENQL1nvFvhAWwAAx5v0ZspXwPwtNlNz2Ay4m6OFUVoAUVU4/3LlECci+VGqA4Kj6JgmU1YFtlAqN1lkbgvVF2V0cST8CDbTptUFOZQ0jUz9I1w3t0oQAAbPJrpcVb1Oai2+rJqhqjP8S/KSMIWZ1OBQ+WUokfPZVexvO3YrGoNdMVJT78BnUV0/HXiMQhODik8Klio5BVAmzZr58wdfm8EhgUR7yHxLpjU5HduOr/Y7rcSL//YWpCib1I+ZEVKfAuCFN6tgadbjwR+Tc8o2B42w7afguTfzBsMifOuuvHyx4EZZCLx1I0p0G9naCFlhXN1Sy2Ows/sQq/3nZIp3IB2RwGrnKRfXn64SaFZ7Eu0I7+Ipj1wxGDCM8EWtTM3wyY1NhX4NeRam3mhtoirmHrbMBcwu00AS8hC8k2X1KKYQkCufw2mZ+N6xne6knk8GEXx0
- eJRjOp6a
- CegllN9Kl4RADjICdLl/AeYb3VqUdhcKfAMfXe6P37t+jI90QJqY8MVz0wbMSQ5+8bSDsJnIf6aDrZvW4gOIEGOM4Y2wqRx3/LKfFKdmpkRIYDwZO5sBW0pTx55onGRicrnxUeQuzuBNPfUWQ8VkIdTbxUSmzHWDWSjpB2Cx40ShvJFl0IfdVVOJqz8jL9jCRxUEXf+AP62bUI8T7gMCZVpu+prZSDQomlsyVPA4SUe186cIyq9JoLOHljG90qg4VceG/bRaLzk6DvPVuCIg6k6z10u06lgitTcTsX1lHTtKsfeOy2y8GmwNP4p0LIJxi40hh3ag+p3NtmijICGzqmDS3q7tK7i8e/9409Wm99wfUg3wGQYPr9nscj4CxfHLQ+gAgid5hX/KtpJiFxWtTa1Q3RU036ebLeaDrvlSlzoo8Xw4hQ9iWTZ0s7aluiYrsW8mpUHpkhB925qsfmsn2/q1tA+cKTsbszDPSNuh8raLG/7c=
+X-HE-Tag: 1793795498-167280
+X-HE-Meta: U2FsdGVkX18/rwkkxiLD/iWL03Abg8NjUP2dnMQPN6/Jos06r9fIcgBJJj1ydav/YBy9k1Me2MK9fHV24J4zVvUbE2kGQgtuWqmHNpjr9nb6HCogODcYtB/fI1d3Hs4260vrS0qk/PDgcK/rGf8KVE/QY2q+WFEP//kGrGIcCbRqTObYzQb5BHYgoaLp/FtVNmMbJsu7TGsRqEoyZ4ldzdMGxk7GDxD3+oaLwGAJvd9kJXX4lfbbCTiib2JRU51+/hh0ugaii3hwHkQPmEFrbDD5+91xivkqOKcvzj0MoZxXh8na7hv3fWwabXmfJTTkzzECTeWleq2MaMPAk/g8w+NsfRvsWggTz+yCPWFYnmKcndEJudzUEQ+XBvxMFEU3xJtZmxiwbCGVsqu0kUWEta9AoiUWAjtN2w0R5u49VkQsI7v82JlzIaGMZ8XcmIsY3BWj1seFy8m9ld2iBKtcOuKWgLN81KOGfUTuq57BkCJzSvmYBmJRAriG9o+y133Fb2O+u2btwuc5nq5zcMxjEFl25niFy9OISswCUsSw9QWYWdbqyb33TrusduJmOumObbN3dKvlQLDb+ki2/37PDKoB49W/chE6Ki/RxXwqCs8jYgFCMcbNXD90xMJCj2N7iXZTW2+eSB2UBuODJ7F1OMQ5XFN6SW0WbD1CGhs1OqgZVNpt7oLbnKUlaSsYb51HvHAm2cQ/9Ub8tTNib6t/o7V4WsGmeizEU2DgxdUzxfXqpEXQsCt86ieKiFXHX1mInNi3RwzkssGIX2kq8OAUvRGHX5OK3eEO+x9rFiLafcEQ5VLlrPPAOL4H8IArCnji0hUVijYpkneixq2Uf3UU+46xQvJFDW6ES02y39pkeLObv+EFPXlds3/OWvExy+vtCgmSAIVlEC8YbxJy3ycmw9raq5piO7ijIlTDdsTRaF5D2W95uaDQ60VS+BEAKlKhPUEFiDo15N/cc80BNNU
+ Pd4LgZ5N
+ WCH68mOr4RDBz2vbCK65jKnbauwfEwzNYc3CZTJc8gSF+JFaOD/3CerIPGjbmdvqTYYz0Y8+t7CmBaLrjXMdzM5TjOHel4s/OoqgifDmbLOcMGrjVu+0fEf4jK7LawhSq+5na4g0rwLpzDtfcz2k1ZBjWUrHaJXniFodNexmnouT7w+UKwgFmeBNo7wG1k4MB9x4/KjsKjhM3A4doOG3eyeHp73+M8INujbzJ8spIfT6Ndmpk3PGmX60sCTvXdsVQArAXsfjpyicxjCBftSdiPXhog+5Bgg7XzyeYxMNRm9F1nxNjTN/L8cG0Yet8GsDwktZ/r8Tr+FB2gI8RqjA7Nl3QUu3aWH0y6wzR
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,36 +121,40 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/4/26 1:19 PM, Pratyush Yadav wrote:
-> On Wed, Nov 04 2026, Jose A. Perez de Azpillaga wrote:
+Le Tue, Nov 03, 2026 at 10:13:38AM -0500, Waiman Long a écrit :
+> On 11/3/26 9:01 AM, Frederic Weisbecker wrote:
+> > Le Tue, Nov 03, 2026 at 08:59:36PM +1300, Matthew Ruffell a écrit :
+> > > From: Caron Wills <caron.wills@pulsar.com>
+> > > 
+> > > Since commit 041ee6f3727a ("kthread: Rely on HK_TYPE_DOMAIN for
+> > > preferred affinity management") kthread_fetch_affinity() only removes
+> > > domain isolated CPUs from a kthread's affinity, assuming that nohz_full
+> > > CPUs are always domain isolated as well. Up to v6.13 every kthread
+> > > inherited kthreadd's affinity to housekeeping_cpumask(HK_TYPE_KTHREAD),
+> > > and from v6.14 the preferred affinity was filtered with HK_TYPE_KTHREAD,
+> > > so nohz_full CPUs were always excluded.
+> > This was done on purpose because on all setup we have met so far, it didn't
+> > make sense to run nohz_full with load balancing. After all the point is to
+> > run a pinned single task on a single CPU. We have seen too many misconfigured
+> > CPU isolation workloads due to that constraint not being enforced since the
+> > origins.
+> > 
+> > I'm open to counter-arguments of course but you better have a good case.
 > 
->> On 10/22/26 10:16 PM, Jose A. Perez de Azpillaga wrote:
->>> On 10/22/26 3:37 PM, Pratyush Yadav wrote:
->>>> On Wed, Oct 21 2026, Jose A. Perez de Azpillaga wrote:
->>>>
->>>>> On a KHO boot, a reserve_mem= region that can't be revived (new name,
->>>>> size or alignment) can be allocated from KHO bootmem, which the next
->>>>> kernel boots out of. With CONFIG_KEXEC_HANDOVER_DEBUG preserving it
->>>>> fails; without it, the next kernel's memmap ends up on top of it.
->>>> What's your use-case? Why are you adding new reserve_mem regions after
->>>> cold boot? I'd rather avoid making purely theoretical fixes.
->>>
->>> I don't have one, I found it through the TODO. a different reserve_mem=
->>> in the cmdline passed to kexec is enough to hit it.
-> 
-> If there was a use case, I wouldn't mind fixing it. But I'd rather not
-> add code we don't have a use case for.
-> 
->>>
->>> if it isn't meant to work across a live update, would you rather have
->>> reserve_mem() fail on KHO boot when it can't revive the region?
-> 
-> This sounds good I think.
-> 
+> I do see configurations where nohz_full/managed_irq CPUs are set at boot
+> time without isolcpus=domain. But these nohz_full CPUs are there as a backup
+> in case some latency critical workloads need a set of fully isolated CPUs to
+> run on.
 
-okay, I'll drop 1/2 and send that as v2 :)
+Sure.
+
+> Right now, isolcpus=domain can be set dynamically by using the
+> cpuset isolated partition feature and they will be used when the need
+> arises.
+
+Exactly. Whathever way you use to do domain isolation.
 
 -- 
-cheers,
-jose a. p-a
+Frederic Weisbecker
+SUSE Labs
 
