@@ -1,90 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CCC607030A
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 20:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85233606AE04
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 20:30:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OwpL7hTQ
+	dkim=pass (2048-bit key, unprotected) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=B2jez2gn
 Received: by kanga.kvack.org (Postfix)
-	id CC7ED6B05B0; Wed,  4 Nov 2026 15:22:01 -0500 (EST)
+	id 9067B6B05B1; Wed,  4 Nov 2026 15:30:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C78BD6B05B9; Wed,  4 Nov 2026 15:22:01 -0500 (EST)
+	id 8B80F6B05B2; Wed,  4 Nov 2026 15:30:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8E556B05BA; Wed,  4 Nov 2026 15:22:01 -0500 (EST)
+	id 7CE116B05B3; Wed,  4 Nov 2026 15:30:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E9896B05B0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:22:01 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 227FC160812
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:22:01 +0000 (UTC)
-X-FDA: 85398558042.04.6830EFC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 6A1BA14000C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:21:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OwpL7hTQ;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793823719;
-	b=cTu/FxC9xMLHofYMpSzngoOjnzTdP8KnaWhgR2ugTCtddA9W77nvQZpjTs5zm76KjQhANQ
-	MxiczbLoj5yP2oZB/K5kxzXlbXIH7Pk4+DuqyxTH0NfnVojr6lTCxOXlp15iKrEX2CAygY
-	ZPZGkorrGz68yI9J8xBNaTYKWeYvAJ4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OwpL7hTQ;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F4CB6B05B1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:30:51 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9605012081F
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:30:50 +0000 (UTC)
+X-FDA: 85398580260.18.52C4C8E
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 7D9C41C0011
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 20:30:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=B2jez2gn;
+	spf=pass (imf18.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.171 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793823719;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=c79mtMtTmR8W2N7fJ3pCDIAmR3UmpHMtcxCuo2DrfRA=;
-	b=bogdn/NLD2xpql/XYzsodQrWlIy06tc5itCCyMP6wTotpB4ZV0fQzVl8iYgQnD/AuB9Xqk
-	ZWSqlte8oNebb2MV+mJ13DHpKxhP6u2MWKMY815g/hWqfJ1wONdY5fvaZnoXMdlR4CL8Xo
-	zkaQLmGtFZsgIvaWgr1ruNS951tkaUY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 57B3441E90;
-	Wed,  4 Nov 2026 20:21:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 952171F0093A;
-	Wed,  4 Nov 2026 20:21:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793823718;
-	bh=c79mtMtTmR8W2N7fJ3pCDIAmR3UmpHMtcxCuo2DrfRA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OwpL7hTQHIkydt04ynJRTnW8To9g5DCcrrP/efN7ZLoOIymLitEcCOqct5osCyy+P
-	 TVoLUVmr1r1aBhe4uqXhmHnh/xQUg9awB5vnMTzHeTfBZbAzBUdHNMobHhqFfrdjVH
-	 a90D2T3O+Lr60TkHaRcjQ7du6+Jd3K7uJXrhL4sQuHT+Wp2Upar1iFpAcuMrbc/qE3
-	 FGbQvLxHoWGxOS2NaDHA0h5vZuZt+17hw4vgsRA4qxo4+CqT1+28KXOngMwBRuzH6o
-	 DXieOfF8JfLO4HxinXqRQGbIWcer80+huRYojwJJTyV+e18JvlbjaB8Ip0BKRseZDR
-	 EMEq712LT0DAw==
-Message-ID: <sashiko-outbox-198006@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] selftests/mm: scale uffd memory region contingent upon
- base page size
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "John J. Coleman" <jocolema@redhat.com>, zenghui.yu@linux.dev
-Cc: akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, linux-mm@kvack.org, ljs@kernel.org, mhocko@suse.com, peterx@redhat.com, rppt@kernel.org, surenb@google.com, vbabka@kernel.org, audra@redhat.com
-In-Reply-To: <20261103202049.499206-1-jocolema@redhat.com>
-References: <20261011163527.95988-1-zenghui.yu@linux.dev>
- <20261103202049.499206-1-jocolema@redhat.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 04 Nov 2026 20:21:57 +0000
-X-Stat-Signature: b5jm5wwbngtcodtmz4nx5wos41ws6azs
+	s=arc-20220608; t=1793824248;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=JIMiU9y0vbuCD/B9Q5lvFFGjmQ5GlwLyj7wmrnkHlyg=;
+	b=NRF3j8dM4+BznQ3aYl9C1nRYFg+2yVK3hXTEO+PuKl41xeRxnrj20yns72Lt3I6PaB+UBE
+	MjYd0NsGOCCaUaln7Rr7/JaYp5edGPU0/929seX2U9RGKt77hc+KhcyCbi6jpu3ouvK6Tl
+	uZNCHFEt7h7H4pHah9q1huNPzFnN4zA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793824248;
+	b=3QFQjVW9A8083uUje0KKP3/v0zpc2wleWbwFVjf21dVNUABcOFWMywLZhZKVMhk4WTMz0n
+	WT8DhE2YV+hkabrPruK57Vve4oYzzLYExb1zLE422ox8snk+dRdiSZsL/b2+GLPG7fXXb/
+	UtdUfVzzqbTzFvkqZ9GwxuQnQnAIzSs=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=B2jez2gn;
+	spf=pass (imf18.hostedemail.com: domain of manuelebnerli@mailbox.org designates 80.241.56.171 as permitted sender) smtp.mailfrom=manuelebnerli@mailbox.org;
+	dmarc=pass (policy=reject) header.from=mailbox.org
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519MLKEM768 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4jKcX50jDBzMlCp;
+	Wed, 04 Nov 2026 21:30:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1793824245;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=JIMiU9y0vbuCD/B9Q5lvFFGjmQ5GlwLyj7wmrnkHlyg=;
+	b=B2jez2gnt5yTgJFBiUcy3vBZd4MMeVLOjZ1E+S0wNg18H1AxJ9ZNSzbcaNEKjgXwITvTho
+	s82bYij3bzAz6GSJtqSYYZXXxu8DoB8zDo6Mgiv00t3tupNFo9UX31hBjUyhVKway+P4yn
+	0utTnn5NiRMNI+Ua+WuaOhKojsK+odEB0DMvUyeqdap7AkQaB1I3Ud1N+UgPpVkPTdH+Hh
+	tP2zgupLJciwpgyUGSpe5+X+2bcXHEpIbIvMpc6i8+agi01uDUAn+TWM++R26ubWJwcCHB
+	4YNQ8UVRLnPOniFkG1efNIqO2yCzMP3zLtu9UY4a0b3em/LYvz8gIop5PegiAw==
+From: Manuel Ebner <manuelebnerli@mailbox.org>
+To: SJ Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
+	Daniel Pereira <danielmaraboo@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4] Docs/admin-guide/mm/damon/lru_sort: fix grammar and style
+Date: Wed,  4 Nov 2026 21:29:58 +0100
+Message-ID: <20261104202959.128646-2-manuelebnerli@mailbox.org>
+X-Mailer: git-send-email 2.55.0
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 8310e9f3ba41376803e
+X-MBO-RS-META: q14mur6h1s4sx8s85bqojgytr34moh6g
+X-Stat-Signature: ejwbbewzriui5jwitahpxwx6b316n8og
+X-Rspamd-Queue-Id: 7D9C41C0011
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 6A1BA14000C
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793823719-736558
-X-HE-Meta: U2FsdGVkX19F1cR8NOXotNrQLXhOHHh8vuJh/aDLROGuws8W23tJAS5CiiOX9xML5yxRACUZ5MmZnxf7w8InZSbeyuvv7zIJispGZzQ2msDKmNIYoxNb+5R/+iSMOIRmQBffu4yUPytBdmj8FLe3UzfP7i6I7G+r1rnKx9BGvxIRL3ueIRmfHQ5rGcZX41IzHkPfcyxw35Z6ZBLLxfyj5zt7mjxID7Bfxxb5RTIr6UTaOpqkxrcfmNb4koTYXa4szwzG84GQM9KFy/vGwOpdSKGzt92cxqESCX2OIGPMg4JcTzeUP5yUqfYVm7sFJsX5+tbtc2zj8xMLmeeYbYfmqelidsyb/2uVwqJs6tu0S1hqP1XjfQsfCtTPX0mYY6Irj5kCKZRZ1Mzqu1atlfsTd6PScsAFVylmm/NOOql2snjLRTi9vu8Xhsz3HwUT9NJ7Dy+5tChbTr7YeDiUipXNwtIiiuaYKyBPCMlm1luEqqBBeMmrBTBk0W8+a+bopoDVjAugbuRasYbXe465sWKbRcbnYCaqgJN2gGl38+YKU2TrF5GsDveGryPqwL7NvLTfaEYVivx77e/kBz4FUckqwrJd1T1CqlqMbQzueRFdSW0stTIpiLVANcE9TDUHQN1Q575wGv8exlcQEFQjcCwykpLe1LRsKaGV2q8KIf5ySv0vB9FYLARE2HbUbmdT51floCVgQiWS11ssKt5SB2HUXmHPWQvap/PnvtYjuvNc/jgNhMRGi1LFGkx3/y9SNmYZlIvh8wumToWBbPB4uGw1vMgV+RD269E6M0S27c4p4s+g1k42j6TR5iymswEpf17OreEpVHgJ+1MqDb303mwlo0NSYUH4322masvPadiu3Vd8LXxzk7Uxmxwn7X4rVi75QEf2Di3mPNP0er3YLluMe5Jiq+QcBsH8H5sNrXvx1GvkRElpABzFhUtHNNaBukay2iHYGSo6kNNB4Inqh7D
- 9qt9WhK5
- M7Wb4IrTyUBcdbKSouvHRjE5Lu/WjiXLQ4KreN4++xf3jj8TxBZCj/1KH/8LQQQ/xU8eDZbvk5Wr+58l5HeQGClNBEhDOB8OJ7Ero5M+ivoUbLew+4/3E9gfOkP7gKGM3W2MzPRswtdz3AHF+MVOeR3Zt4nJWJRGz5Hp5R8CMF1ChUuAmlv/4QolDrYe5J13ky4Z6X1aeUN1eI9Ieg+SVhL+x7F4VAWyyR4EBJ8hPLAwMei/RMJwzXct53EBpZd+1KaDZf4W3WTDWP7MVIu+WpMnw6w+w9uxofAjfXGTqA/AJUnY1mIye/6EPz6OtFk0ModLFhHNeZnc0qB+rsbl3gesQOv2jrLPndIWAPW6sKkn9ky8dlzZL47Hob9sbAlKoMeyHeNi8H40QESyL5DhFfO+bjTJZrZlI5G8zoWeu3i0xVySu2DuxsqhOIIVt97j4fcgEcy/QEzU1sCiYFtK9REFuhn9YVzZ/qls0jFUlhoVCtBp86ydDOi7H0g+gu0kElVpNrb8XFCYMUE0zH/OZ2Gy2Hy4dHahliYbxybB1g0KGCMFryFT1FUCXeLByVPL54C5fOWvpD5KnDNqEIvx0bAuUfA==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793824248-875992
+X-HE-Meta: U2FsdGVkX18vwQihXIqqLLB17fNaaN2+MXkWzGGmQGHro22E3yxnD53JxW9tt2JIslGwU5RuEd9JTfyuI16tcIB8hJ69QB7FTFrH7r4Ctsip01Bq/RNwrceYMsBLMbbbwPsn4qbdUgHGzk/p1gE2ooSRjbEzTE3LaUmA4A7YMDgkyBnXwnjvwW6W6Tb6fvlNZCjg7Y7bFHRbCnOsgq3Q3kaT9VWT1iFOGGdCekk51KqBQwo2trBWLqBwzFaHBt6MqP3z1HQwyNNE9s8stWIJdpUUvlPDMbqXEtBO9uiFtSPmUruFDpsQLFbJ/cFOEHnHe60FyRAkiaW35ovEiD3erVCPs7Ui29SkR3UUjjeZThBsXg2/AlU4nwf1xO+4euVY6DK2P/k89JvGjLZyevMZlljuTMuDrmyhzOWqE3uMAMSGjIiZUdew3rGYwIhswSiVnJ7teQjPCYAeQY+64fEpb1qM8W/BYKlRPeD/fF7o2zHhLK3cAx+QzDbzYEf1+hf0xFcnkQCKSrf4+s4eR+uXmz4q9IWmbQRZTIpnwUGuJnIDaur3yzOS6toOGoa0iD9nEhpbaCZSTYbXDgp973GiiwbsEOT8HoA2eRBzk6yIn/2eL4QGIdrlakhGo5Izlsui69kIQbkgaIr3X+3qxj2U0zIlDaHdtoEGSEOwfNbAJwDpYishmWsXwCNhEvtYKNVNo3ugiDWVNSiDaRxpVwpsteyRyZ3Fc1m8qTXn0a9MA/qkmzuO0lZYmBWCwM8u/HbwsKuE3YAojTs9uS0jamjoUAraZjI9CrHMghHE9CvUVhyZfee3M5lPfppJ78ba5MPBx6fPFe+a2VEE9jgdR3xDJlU+lcfwKiJnS9F/ydkDzyJ8L/cKZQ95IzGtQCgrp0gNBzV9s02MHGPlxhjDSi1VccTWgTAiu8fCssjC7kEjyosgg4V7XiNfWNHR4eAkszPO3uZDElplVES+MtoJY3z
+ 0Vz+5vy6
+ 6LGCsQohRAjaBFhp6m3yoECpwixkoLoja1osvs2Zuacz7M7YJunXJDlau2XCDKlOl1GCx577ol5tsRUAHUjJ4sBWw0rTLJ6mjx+Zd2IKvktP4ETUiWDpq0n45Z97vSAJxSHfqDK6EKc0o5YAj8dmRIb6mKXnNpxAm1Eo/R4wlEXsDXpYSdrtco7R4+QOaXX0CR7VoizgYwFa9jpXgsq9MKaMHojiEuW+Hpn3cwZFV6i8luG0l/SV9CXtLA2efYB6nfLLZxjHTxUxXiX2Ft8frTbQnbRgIweYqyGBlZpKDJxKFwi8B9nGTSM+qdQYcEJf+/uRmZilp5GdP/oZLo5/mI7Jdp+wQuMEdXwGztOog8601s5JuQEZNnfMEEan2HrRhAUi4d0qg0B09Pvs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,146 +101,208 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Medium] selftests/mm: global UFFD_TEST_MEM_SIZE scaling inflates all tes=
-ts to 1 GiB
-- [Medium] selftests/mm: 32-bit off_t and address space overflow in shmem_a=
-llocate_area()
-- [Low] selftests/mm: PAGE_SIZE macro duplicates psize() and risks redefini=
-tion
---
+Fix tenses. Split long sentences thereby improve readability.  Replace
+'set as' with 'set to'. Replace [] with () to make the file uniform.
 
-commit 10ea7f3e59b6ab7f3100a4c6de93cabccc122a33
-Author: John J. Coleman <jocolema@redhat.com>
+Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
+Reviewed-by: SJ Park <sj@kernel.org>
+CC: Daniel Pereira <danielmaraboo@gmail.com>
+---
+Daniel thanks for the Feedback.
+SJ, could you please reapply this patch, if you think it's worth it.
+Thanks
+ Manuel
 
-selftests/mm: scale uffd memory region contingent upon base page size
+[v4]
+ Fixed issues pointed out by Daniel Pereira
+  typos in subject, log message and diff
+  https://lore.kernel.org/all/CAMAsx6epLXuUjaV3J0=SWAuLvajr4h58DTM9gL+LMmaCyjcxUg@mail.gmail.com/
+ trusworthy -> trustworthy
+  I think this is in another patch.
 
-This patch scales UFFD_TEST_MEM_SIZE in uffd-unit-tests.c based on the
-architecture base page size so that move-pmd tests on aarch64 with 64K base
-pages have a large enough memory region instead of being skipped.
+[v3]
+ https://lore.kernel.org/all/20261017083535.1261388-2-manuelebnerli@mailbox.org/
+ Split long line
+ Fix path in subject / One-line summary
 
-> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing=
-/selftests/mm/uffd-unit-tests.c
-> index 298609544445e..4037a7160b13d 100644
-> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
-> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-> @@ -13,8 +13,14 @@
-> =20
->  #ifdef __NR_userfaultfd
-> =20
-> -/* The unit test doesn't need a large or random size, make it 32MB for n=
-ow */
-> -#define  UFFD_TEST_MEM_SIZE               (32UL << 20)
-> +/*
-> + * The unit test does not need a large or random size, but the allocatio=
-n size
-> + * needs to scale with base page size per architecture otherwise pmd ali=
-gnment
-> + * tests will fail for architectures like aarch64+64k.  For standard 4k =
-pages,=20
-> + * this will allocate 64MiB, while allocating 1GiB for 64k page sizes.
-> + */
-> +#define  PAGE_SIZE                        sysconf(_SC_PAGESIZE)
+[v2]
+ https://lore.kernel.org/20261015072947.802821-2-manuelebnerli@mailbox.org
+ Collect R-b: from SJ.
 
-[Severity: Low]
-This isn't a bug, but uffd-unit-tests.c already includes vm_util.h (via
-uffd-common.h) and calls psize() in main():
+[v1]
+ https://lore.kernel.org/20261013191327.663331-2-manuelebnerli@mailbox.org
+ Wordsmith commit message.
+ Fixup a few trivial wording.
+---
+ .../admin-guide/mm/damon/lru_sort.rst         | 63 +++++++++----------
+ 1 file changed, 31 insertions(+), 32 deletions(-)
 
-tools/testing/selftests/mm/vm_util.h:psize() {
-	if (!__page_size)
-		__page_size =3D sysconf(_SC_PAGESIZE);
-	return __page_size;
-}
+diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
+index b93ca9b085..90a6cff893 100644
+--- a/Documentation/admin-guide/mm/damon/lru_sort.rst
++++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+@@ -5,20 +5,19 @@ DAMON-based LRU-lists Sorting
+ =============================
+ 
+ DAMON-based LRU-lists Sorting (DAMON_LRU_SORT) is a static kernel module that
+-aimed to be used for proactive and lightweight data access pattern based
++aims to be used for proactive and lightweight data access pattern based
+ (de)prioritization of pages on their LRU-lists for making LRU-lists a more
+-trusworthy data access pattern source.
++trustworthy data access pattern source.
+ 
+ Where Proactive LRU-lists Sorting is Required?
+ ==============================================
+ 
+-As page-granularity access checking overhead could be significant on huge
+-systems, LRU lists are normally not proactively sorted but partially and
+-reactively sorted for special events including specific user requests, system
+-calls and memory pressure.  As a result, LRU lists are sometimes not so
+-perfectly prepared to be used as a trustworthy access pattern source for some
+-situations including reclamation target pages selection under sudden memory
+-pressure.
++As page-granularity access checking overhead could be significant on huge systems,
++LRU lists are normally not fully nor proactively sorted but rather partially
++and reactively sorted for special events.  These events include specific user requests,
++system calls and memory pressure.  As a result, LRU lists are sometimes not
++suitable to be used as a trustworthy access pattern source.  These situations
++include reclamation target page selection under sudden memory pressure.
+ 
+ Because DAMON can identify access patterns of best-effort accuracy while
+ inducing only user-specified range of overhead, proactively running
+@@ -28,9 +27,9 @@ pattern source with low and controlled overhead.
+ How It Works?
+ =============
+ 
+-DAMON_LRU_SORT finds hot pages (pages of memory regions that showing access
+-rates that higher than a user-specified threshold) and cold pages (pages of
+-memory regions that showing no access for a time that longer than a
++DAMON_LRU_SORT finds hot pages (pages of memory regions that show access
++rates that are higher than a user-specified threshold) and cold pages (pages of
++memory regions that show no access for a duration that is longer than a
+ user-specified threshold) using DAMON, and prioritizes hot pages while
+ deprioritizing cold pages on their LRU-lists.  To avoid it consuming too much
+ CPU for the prioritizations, a CPU time usage limit can be configured.  Under
+@@ -63,10 +62,10 @@ enabled
+ 
+ Enable or disable DAMON_LRU_SORT.
+ 
+-You can enable DAMON_LRU_SORT by setting the value of this parameter as ``Y``.
+-Setting it as ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
++You can enable DAMON_LRU_SORT by setting the value of this parameter to ``Y``.
++Setting it to ``N`` disables DAMON_LRU_SORT.  Note that DAMON_LRU_SORT could do
+ no real monitoring and LRU-lists sorting due to the watermarks-based activation
+-condition.  Refer to below descriptions for the watermarks parameter for this.
++condition.  Refer to below descriptions of the watermarks parameter for this.
+ 
+ commit_inputs
+ -------------
+@@ -74,9 +73,9 @@ commit_inputs
+ Make DAMON_LRU_SORT reads the input parameters again, except ``enabled``.
+ 
+ Input parameters that updated while DAMON_LRU_SORT is running are not applied
+-by default.  Once this parameter is set as ``Y``, DAMON_LRU_SORT reads values
++by default.  Once this parameter is set to ``Y``, DAMON_LRU_SORT reads values
+ of parameters except ``enabled`` again.  Once the re-reading is done, this
+-parameter is set as ``N``.  If invalid parameters are found while the
++parameter is set to ``N``.  If invalid parameters are found while the
+ re-reading, DAMON_LRU_SORT will be disabled.
+ 
+ Once ``Y`` is written to this parameter, the user must not write to any
+@@ -86,37 +85,37 @@ violate this rule, the kernel may exhibit undefined behavior.
+ active_mem_bp
+ -------------
+ 
+-Desired active to [in]active memory ratio in bp (1/10,000).
++Desired active to (in)active memory ratio in bp (1/10,000).
+ 
+ While keeping the caps that set by other quotas, DAMON_LRU_SORT automatically
+ increases and decreases the effective level of the quota aiming the LRU
+-[de]prioritizations of the hot and cold memory resulting in this active to
+-[in]active memory ratio.  Value zero means disabling this auto-tuning feature.
++(de)prioritizations of the hot and cold memory resulting in this active to
++(in)active memory ratio.  Value zero means disabling this auto-tuning feature.
+ 
+ Disabled by default.
+ 
+ autotune_monitoring_intervals
+ -----------------------------
+ 
+-If this parameter is set as ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
++If this parameter is set to ``Y``, DAMON_LRU_SORT automatically tunes DAMON's
+ sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
+ amount of access events in each DAMON-snapshot, while keeping the sampling
+-interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
+-``N`` disables the auto-tuning.
++interval to 5 milliseconds in minimum, and to 10 seconds in maximum.  Setting this
++to ``N`` disables the auto-tuning.
+ 
+ Disabled by default.
+ 
+ filter_young_pages
+ ------------------
+ 
+-Filter [non-]young pages accordingly for LRU [de]prioritizations.
++Filter (non-)young pages accordingly for LRU (de)prioritizations.
+ 
+ If this is set, check page level access (youngness) once again before each
+-LRU [de]prioritization operation.  LRU prioritization operation is skipped
++LRU (de)prioritization operation.  LRU prioritization operation is skipped
+ if the page has not accessed since the last check (not young).  LRU
+ deprioritization operation is skipped if the page has accessed since the
+ last check (young).  The feature is enabled or disabled if this parameter is
+-set as ``Y`` or ``N``, respectively.
++set to ``Y`` or ``N``, respectively.
+ 
+ Disabled by default.
+ 
+@@ -235,7 +234,7 @@ max_nr_regions
+ Maximum number of monitoring regions.
+ 
+ The maximum number of monitoring regions of DAMON for the cold memory
+-monitoring.  This can be used to set upper-bound of the monitoring overhead.
++monitoring.  This can be used to set the upper-bound of the monitoring overhead.
+ However, setting this too low could result in bad monitoring quality.  Please
+ refer to the DAMON documentation (:doc:`usage`) for more detail.  1000 by
+ defaults.
+@@ -268,7 +267,7 @@ This parameter is for setting and getting the :ref:`address unit
+ 
+ ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
+ unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
+-``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
++``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
+ Then DAMON_LRU_SORT will work for 10 KiB length of physical address range that
+ starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
+ 
+@@ -291,22 +290,22 @@ If DAMON_LRU_SORT is enabled, this becomes the PID of the worker thread.  Else,
+ nr_lru_sort_tried_hot_regions
+ -----------------------------
+ 
+-Number of hot memory regions that tried to be LRU-sorted.
++Number of hot memory regions that were tried to be LRU-sorted.
+ 
+ bytes_lru_sort_tried_hot_regions
+ --------------------------------
+ 
+-Total bytes of hot memory regions that tried to be LRU-sorted.
++Total bytes of hot memory regions that were tried to be LRU-sorted.
+ 
+ nr_lru_sorted_hot_regions
+ -------------------------
+ 
+-Number of hot memory regions that successfully be LRU-sorted.
++Number of hot memory regions that were successfully LRU-sorted.
+ 
+ bytes_lru_sorted_hot_regions
+ ----------------------------
+ 
+-Total bytes of hot memory regions that successfully be LRU-sorted.
++Total bytes of hot memory regions that were successfully LRU-sorted.
+ 
+ nr_hot_quota_exceeds
+ --------------------
+-- 
+2.55.0
 
-An unguarded PAGE_SIZE macro can also collide with system headers on libcs
-such as musl (which defines PAGE_SIZE in limits.h under _GNU_SOURCE), and
-sysconf(_SC_PAGESIZE) returns a signed long rather than an unsigned value.
-
-Could this reuse psize() instead of defining a new PAGE_SIZE macro?
-
-> +#define  UFFD_TEST_MEM_SIZE               (PAGE_SIZE * (16 << 10))
-
-[Severity: Medium]
-Does scaling UFFD_TEST_MEM_SIZE globally inflate memory allocation, runtime,
-and HugeTLB reservations across the entire test suite?
-
-In main(), UFFD_TEST_MEM_SIZE is applied to every test case and memory type:
-
-tools/testing/selftests/mm/uffd-unit-tests.c:main() {
-    ...
-			/* Ensure we have at least 2 pages */
-			gopts.nr_pages =3D MAX(UFFD_TEST_MEM_SIZE, gopts.page_size * 2)
-				/ gopts.page_size;
-    ...
-}
-
-And uffd_setup_hugetlb() reserves twice UFFD_TEST_MEM_SIZE in HugeTLB pages
-up front for the entire test binary execution:
-
-tools/testing/selftests/mm/uffd-unit-tests.c:uffd_setup_hugetlb() {
-    ...
-	/* need twice UFFD_TEST_MEM_SIZE, one for src area and one for dst */
-	nr_hugepages =3D 2 * MAX(UFFD_TEST_MEM_SIZE, hp_size * 2) / hp_size;
-	hugetlb_set_nr_default_pages(nr_hugepages);
-    ...
-}
-
-On 64K base page systems, only the PMD-granularity tests (such as move-pmd
-and move-pmd-split in uffd_move_test_common(), which align area_src and
-area_dst up to pmd_psize()) need a buffer of at least 2 * pmd_psize().
-Scaling UFFD_TEST_MEM_SIZE globally increases every test on 64K base pages
-from 32 MiB (512 pages) to 1 GiB (16,384 pages) per area (2 GiB total for
-area_src and area_dst), forcing every base-page test to fault in 16,384
-pages and scan 1 GiB byte-by-byte in helpers like check_memory_contents().
-
-It also raises the HugeTLB reservation in uffd_setup_hugetlb() from 64 MiB
-to 2 GiB on 64K-page systems with 2 MiB or 16 MiB default hugepages (such as
-powerpc64 or arm64 cont-PTE hugepages), which causes all hugetlb tests to be
-skipped if 2 GiB of hugepages cannot be reserved, or pins 2 GiB of RAM in
- the HugeTLB pool while subsequent anon/shmem tests allocate another 2 GiB.
-Additionally, PMD size is not a fixed multiple of base page size across
-architectures (powerpc64 with 64K pages has a 2 MiB or 16 MiB PMD size, and
-4K-page systems double from 32 MiB to 64 MiB).
-
-Since struct uffd_test_case_ops provides a pre_alloc hook invoked in
-uffd_test_ctx_init() before allocate_area(), would it be better to keep
-UFFD_TEST_MEM_SIZE at 32 MiB and adjust gopts->nr_pages based on
-2 * pmd_psize() in uffd_move_test_pmd_case_ops (and any other PMD-sized tes=
-t)?
-
-[Severity: Medium]
-Can setting UFFD_TEST_MEM_SIZE to 1 GiB on 64K-page kernels overflow 32-bit
-signed off_t and the 32-bit virtual address space when uffd-unit-tests is
-built as a 32-bit binary (for example, a 32-bit compat binary on an
-aarch64 or powerpc64 64K-page kernel, or 32-bit powerpc with 64K/256K pages=
-)?
-
-In main() -> uffd_test_ctx_init() -> shmem_allocate_area():
-
-tools/testing/selftests/mm/uffd-common.c:shmem_allocate_area() {
-	size_t bytes =3D gopts->nr_pages * gopts->page_size, hpage_size =3D pmd_ps=
-ize();
-	unsigned long offset =3D is_src ? 0 : bytes;
-	char *p =3D NULL, *p_alias =3D NULL;
-	int mem_fd =3D uffd_mem_fd_create(bytes * 2, false);
-	size_t region_size =3D bytes * 2 + hpage_size;
-    ...
-}
-
-Because tools/testing/selftests/mm/Makefile does not define
-_FILE_OFFSET_BITS=3D64, off_t and size_t are 32-bit on 32-bit builds. When
-bytes is 1 GiB (0x40000000), bytes * 2 is 0x80000000, which overflows the
-32-bit signed off_t parameter of uffd_mem_fd_create(off_t mem_size, bool hu=
-getlb)
-to -2147483648 and causes ftruncate() to fail with EINVAL, while mapping two
-regions of size bytes * 2 + hpage_size exceeds the 32-bit address space. On
-256K base page kernels (CONFIG_PPC_256K_PAGES), PAGE_SIZE * (16 << 10) also
-overflows a 32-bit signed long directly.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261103202049.4992=
-06-1-jocolema@redhat.com?part=3D1
 
