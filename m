@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A9F60E8716
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D30606D4CF
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gs5GVn7P
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jRideeBZ
 Received: by kanga.kvack.org (Postfix)
-	id BB15F6B05EB; Wed,  4 Nov 2026 14:58:27 -0500 (EST)
+	id 178CA6B05ED; Wed,  4 Nov 2026 14:58:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B61B96B05EC; Wed,  4 Nov 2026 14:58:27 -0500 (EST)
+	id 1296E6B05EE; Wed,  4 Nov 2026 14:58:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A2D8F6B05ED; Wed,  4 Nov 2026 14:58:27 -0500 (EST)
+	id F332A6B05EF; Wed,  4 Nov 2026 14:58:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D3A96B05EB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:58:27 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 91598140841
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:58:25 +0000 (UTC)
-X-FDA: 85398498570.19.AD1A6FC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C5F98180004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:58:23 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gs5GVn7P;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C2D526B05ED
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:58:40 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 555E740843
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:58:40 +0000 (UTC)
+X-FDA: 85398499200.25.97FA709
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 95A841A000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:58:38 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jRideeBZ;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793822303;
+	s=arc-20220608; t=1793822318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vwjxO3TYvy6WGJQYdN5saH6B1iVdIocyydf/9B8LfXQ=;
-	b=0oltxbqC1IY3OZJSHt3S6dzVhh8RIJhtQRyjWMQOHZ5IO23MC6PHvdEy/h4N6wigQCmycZ
-	TxfvCaEdvo9YUwkuKVGwuG2zXgVLzOyB11bfkrH4zWAEdCBzQmWTXrCd9E/uvMqZyQx7js
-	39v0BAvfqdHMj9ospIkfAhOCmlQSB40=
+	bh=FuQ+O9AN/EhfuAINsZT/2MGBlHToxixjGEE2AnbYkS0=;
+	b=4IQ+GW+Twa28iPLzzdjfiZFQNeq8/fIOAcEKKrRrzoAXXllAfOiIgCq4YrapsJ/xhcxPdG
+	7BsRT9Y4wQYvxvQdBSBWbam25PoA54ipz3pAGaef4GSLe2XN1TIkSQwKci7T1spf9AbiOt
+	Ohhzj3SZ4axAis0tL1+iNxTjB6J1F2w=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793822303;
-	b=xi1WNtrLJB/6SoCbpGdmRCqUW4EaOazxifSobLJ3P5r04gZKMUVLrFZV3MQfE1RCX81PvC
-	AvUX3cedQtzbxPjwH6Jpz+N+JRV2fw22S3H4dgsOHZhMDXZBa9us9+8cEGvyaCCkmSqeOC
-	rRckS5m3Sag9pN3TvUF2JBICVjLOcHs=
+	t=1793822318;
+	b=GMX/bii0NiJswB3WMUJ0PUJWr7Hq4sWcCgTjWRWT++BzZb7TGWxy6t7NXSqveZEapW550L
+	iwlg8/3mBYkhc0KrlKE93wk4YJHm0I0p/lscewgNpWeTXjb4nwS1iArDwlpc2iYLEDw0Sd
+	08FaCCIZWFJ/XeOENwc7K26hoxm/kCM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gs5GVn7P;
-	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jRideeBZ;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2CCC341E4F;
-	Wed,  4 Nov 2026 19:58:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443461F0093A;
-	Wed,  4 Nov 2026 19:58:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 0060860DC3;
+	Wed,  4 Nov 2026 19:58:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6AF01F00919;
+	Wed,  4 Nov 2026 19:58:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793822303;
-	bh=vwjxO3TYvy6WGJQYdN5saH6B1iVdIocyydf/9B8LfXQ=;
+	s=k20260515; t=1793822317;
+	bh=FuQ+O9AN/EhfuAINsZT/2MGBlHToxixjGEE2AnbYkS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Gs5GVn7PVZyaHxQYP1oX1TlJKCs3atmjJ7YDkZGohYKM8gAGNVV9VT9s37IvLT63p
-	 L4L5EC1cjQvvtlvaNLN0gxqkT0/JHX+G8Jskr1+i5iT/1BEoXTgOvTBU2JoiVX9QJn
-	 SVcwPycBujDMI11yUPUBwIZob9xvtdHom3bNPfdTI6rcdnhnR9XEYbVnGufjUjHyY5
-	 XS9Zten/fLmAjd1NEGRd3O5Jj7NFk3hoVCpRY/0FlbIUHIKxjpKo/CyBBcBbqFFOah
-	 Yl3b+onZRchWRKJM5w0VJoHNNmoc2XKJUSt61/Af1LESg+Z9BzGmnqiHsRNVJ2UfrB
-	 Y73jnPC+BIspQ==
+	b=jRideeBZ8oxAXL6268eYmn+YEeTwdfLWgvKXD9/7wD79tZYk7c5DiZCAIV2Ed3bwb
+	 YWQRgSD2jU4vVyf5pd6Fp/OwMhqpw0pEzvJNc/5CO814j/jCHWPvNFJybI+doeQwSa
+	 OpQ46BOV+iwz4Cx5rb/iLqaBXNAMo8bJbHXV28HpUDKHDG7BprRhrw7b2hrCdF01bg
+	 0cpbc+GFBaegbtyEuAbtmzWoxuI04Ywy6El4+84vT4YlXPl9bsTkGJq2uYE28H64ez
+	 J2K0AA2qwL6I1M12hoT+BT/5TQUoZqOJ/cF7ZyMjn5hayi7nhzUJF/7Tom+ZjsTxWG
+	 7ClukSDqhmK1A==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 02/13] l2tp: let procfs own the seq_file of /proc/net/pppol2tp
-Date: Wed,  4 Nov 2026 20:58:09 +0100
-Message-ID: <20261104-work-procfs-net-v2-2-221e2437fed1@kernel.org>
+Subject: [PATCH RESEND v2 03/13] net: pktgen: let procfs copy in commands
+Date: Wed,  4 Nov 2026 20:58:23 +0100
+Message-ID: <20261104-work-procfs-net-v2-3-221e2437fed1@kernel.org>
 In-Reply-To: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
 References: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1918; i=brauner@kernel.org; h=from:subject:message-id; bh=/g5R4n0Ms+FYrKqMM/T6cxyrF8YI/t11/rZZuOTaMss=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97lPdVvdYzebqhhVnXpw8xDvHsuzZ4RnqoW8ipiutf T4/NK+VsaOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiFR8Z/rtd/L6gwWtGUN41 FW63f2knOZOaTxXGXHuqJqJe7TlP+xMjw4k/LBOnuz10aXA54HTj1Qv+RZ4dDHz6dapLw8s5Ofu 5GAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12253; i=brauner@kernel.org; h=from:subject:message-id; bh=34PmFPP0nUXBNdGZFJGgCKj9cc2ZCkqII5e47ivrIBI=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97lPT47g02frChbkrDtYrT9WdJJ3C8at+YczFU1+49 1kz+DMu7ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIR0mG/9V9qu0rcn6cWtse rHOy7shiV8/57U/nfTfYwXmrweB/YR3D/ww7HSP/tNTFtY0WB3rKhG32Lfl1cJrxecFOqe05zSv u8QAA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: mjrhnxhwaysd7ptuagitjc834reh3xen
-X-Rspamd-Queue-Id: C5F98180004
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam06
+X-Stat-Signature: r6chffw91dmgo7gyp56mkmrrhsb7bjic
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793822303-650464
-X-HE-Meta: U2FsdGVkX1+BYVOsWvWhNNVBBYhErZdTANCjJzhAtCNbpcDWqtaRzHuP2hPUMtpxY+1XAvOgAh2G6N4LuirK3cwcFt9U72hDsLO0fnGVPP9dDAzY8ivBQTnGsS0mkFsUFqZH8Mz8YkkEWmY7xn53kWA+L33LowBfpzE9N3lFomaU1FPLUAnzQdMSOvH0AR6Aa197Cj5yAUa9jhprv3B759HujrYvR91NJRe/Y2Zzgt8B2y21e885AoUbDbUEcwL8dH2fiDU3sBiDfF2cvYZYiEabNtZhl4CTo5OIztyBm3fjK/J8E0RYru1XaigMl/CeECuCT3JnOtMfBsXtL6iwNhAt2wxXGtS1eAxOoxsaTLNHvL9b9tIBRJjuc/XoymwZuhtELJhwuMLHXNyWMWoQj8p1sWGIyznWE7AFYXfuiSQnsW2pouBXRQNWzDpVvGYKPQrrVBeqHEC6kp4f9dpkM/L2WAyVTXDMfVwCXxppsBdG3pR4r4XJfrhglElx06iIozQiBpqMxh/u7e0/evEus2+VZpdst1YwkpIgabBW6CbcKkQ40Bg1bKo4UuUEmMchGY4vhLVm30CtIetZbseYEMdr2EmTBtHBgCRZy+F+8SradldeKfen87NpRrdXVA8SmpqNfGNe5Gn6/cPXMkXo2xuFYDNKVwdCzs9QR0T4hfKDroRXjVi735YpXdrtQjynzltrzMn07AcUqRNh2OhNaksIZnlC6nE4WQMEHaxgnT+yGM9yDXCQBYs6QMf4G0/l24Dz/cQIagSUJjAVyXK/fC00vygiul1AxrRvk+1noRTT5H1pZmWlZGuIK+zbiBLKuKCIsrBJbOS5HHGKN+wH4waXzIMNgTTs870euvgb9k+vShJdWkPZfXcWuX5DlxOwC++bPP5Nx/d5vKit/ND33vLSB18qZaYKd9leYFjIdCwILtq+/5Q6efaUqPa8k4Mr5o68sAZ7TJyUzJcwvzu
- J8S2egeD
- 3cwUSmjxLP+YfTYEOyNEP5oGZrx6BPZlTlRLqWyzllN4HhS40TMYt9npeNBCaqmqtn5Nn62EuK2Ka/iMqDgadtHFNd7Mh61Z2yK8OXhGGE1+VOUHl6Abjte4guIZCLV1+qpv+vu5Nu68fDql+PI3rVrH3G+SzQAF4CScs6hVlZ8KMp3XYohBtzaF0vHpqYPXwIozs8prOUFJ3qe6YcWtwwRMYAgG7mH+oMfGNBHQGC3XX0Aa4TX3C1zikhAwn/MV1JILEL0hfDHvD482S3MYeM2aQB38190AqJpH8LhVk+CEC0tDvLvWb1w3QkRcR1qCpewe8y3slrTTxHLjUJBk0j3Elc6Gma8pyUcGTlSX4JTmU/mu8/AyjzlfM2qtzxrvn4Z1/He2GeExOcGCkdGyZZ0Kflo0uzndjwvQKbJQXOluRvU16nSlcPqw1WTK82L+a5Hlt3bPIqg26vISWsBuY9PR5bh6pd/05zqjtfg93qkg+xZ8ez9mC8PLYL7XYViU/bXjF
+X-Rspamd-Queue-Id: 95A841A000A
+X-Rspam-User: 
+X-HE-Tag: 1793822318-897381
+X-HE-Meta: U2FsdGVkX1/oWUYCPL+27R0fg7YM+yLKDB4ToC7Jdno6evex0X1MRbF6x3UIL/u9mpqWOm88abTXOVi8Fee/6kweCL6vIVlkJ0QNhJaUb8mLQo5KW0ANuWQmMLrHmpAac1O+CCbz/YDSVTF3DY73YCPaSMU2TOr1XjvJ9UMe8+qZ0Sx+KPvOcr4HChzsLAoHZt/qPdOrqbqwi5SEZ1k0qy3/jVgRiWGoIBgfxTpqmBwU4uQPmLJCmBNjJQez1P5fG2o3d16wJ8Adaj/zhlgaiuUg7f+96c14eTxEaBcanRnT57xyvwkt1eT9K8P1VFxWkN64STYZWSjKDjlnEgneplcP9GPJ2KLtTeUHkG5ksw/deY+p9EsGhUIEnMs22yNtpFAT6BxFEKIzRpgXej+/U7R3ly3dI+8xobI+8LNQZ8DMcCt/WMyeZfmS4cIAuO4suby5WaB/ofRJO4ciu1bUV1pKl0D2WIp2ZZpXkwaS/n0xsK6JV+2sRPg+oJq1CCDssKRqrplMmu4ljXCQIpc5mnLOI4yAyMXtQeWSi/sC9MdFd2bB20dT+RSa04yg1p9V83C0GZZkKFzM/80CZh8wBkMYTSxl+0GJzAxkHwcRO3aWXqo3JvwCWFZxdj8h98CXqZ4TZz0ICUm7bTdLWRteAJ788iVPVWgfU7XzOITug0wohiX5RvuVlXyMBN9Q6bcej8f+bO47+8F1dvX4u/FO9qIrFS2BNdJ5Db7J3LIGP2pDUeA6dL25ZSx2Hc/m2pNtguxG5+DYWuBH+bg4UThDQfpcRR1dkjqIXv/r8y6mBdw+zjVMn8+40I5P7KPm2bBmwOmXreZylb3LDgFpSwPdGfBuHrMV1WWWMILSlCpv4xmiskDpb8f9BrmIJStx4kCol6HZ5Bscy8cQrydbIeOleQTn0Woa3T8KAZHXa6bmmhT6+GDV6mvGCIkakYfZItlnk4ZLIFUaE16vkeywQE0
+ BaT9+gYA
+ EPABVQfKFyncpDrp0FdUT/co+R84FTgECKhagNVnGAYy+V5eaO21/SDcwHZjhj0E9d2ZgT0b7valdKev79OY0kBAomTVczq+EBMYYpTVNP4L0EC/xACsLOVfNGUvQpXBzvQ5dMBUzucsX9z4pADvKdG5d89nEX6F31V1IQmEVT6Z+vsz1FigLFtIIJDXvClvObmMMi8wCX+JcTx+BvFc0C9SRI2O7Ie/cTY7gG0BcqWy+NlFNYyvosKyLQASsk4TxdLdibik6BY7JHxOlSY56EhjU+WNikEuTod4isCtafplV3hzkaNR0VpGCP9JohME36YgfCoJarkdN1ItJraPGDiwdh+69vpE0314Pg0cEwTdSPh5skl7V/IUGZSUGLaXhwVxmpt0z+7LfhZtwMnMjXiSoZQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,65 +154,407 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Declare the seq_operations and the size of the iterator state and let
-procfs open and free the seq_file. ->proc_open() only takes the
-reference to the network namespace now and ->proc_release() drops that
-and the references the iterator holds. Reading the file then no longer
-holds up its removal.
+Implement ->proc_write_buf() for the files in /proc/net/pktgen so
+procfs copies in what is written before it pins the entry, and parse
+the commands from that copy. The parse helpers read the copy instead of
+fetching every character with get_user(). Commands longer than
+PAGE_SIZE - 1 bytes fail with -EINVAL now.
+
+With debug on, the dump of the command went through strndup_user() and
+failed the write with -EINVAL when there was no NUL right behind the
+command in the writer's buffer. The copy is NUL-terminated, so that's
+gone.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- net/l2tp/l2tp_ppp.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ net/core/pktgen.c | 128 +++++++++++++++++++-----------------------------------
+ 1 file changed, 45 insertions(+), 83 deletions(-)
 
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index 4f311d473a64..499e37eb788a 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -1596,21 +1596,17 @@ static const struct seq_operations pppol2tp_seq_ops = {
- 	.show		= pppol2tp_seq_show,
- };
- 
-+/* procfs opened the seq_file and allocated @pd */
- static int pppol2tp_proc_open(struct inode *inode, struct file *file)
- {
--	struct net *net = pde_data(inode);
--	struct pppol2tp_seq_data *pd;
-+	struct seq_file *seq = file->private_data;
-+	struct pppol2tp_seq_data *pd __maybe_unused = seq->private;
-+	struct net *net;
- 
--	net = maybe_get_net(net);
-+	net = maybe_get_net(pde_data(inode));
- 	if (!net)
- 		return -ENXIO;
- 
--	pd = __seq_open_private(file, &pppol2tp_seq_ops, sizeof(*pd));
--	if (!pd) {
--		put_net(net);
--		return -ENOMEM;
--	}
--
- #ifdef CONFIG_NET_NS
- 	pd->p.net = net;
- 	netns_tracker_alloc(net, &pd->p.ns_tracker, GFP_KERNEL);
-@@ -1633,13 +1629,13 @@ static int pppol2tp_proc_release(struct inode *inode, struct file *file)
- #else
- 	put_net(&init_net);
- #endif
--	return seq_release_private(inode, file);
-+	return 0;
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 12363a373fb8..84f4db86a5b0 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -516,11 +516,9 @@ static int pgctrl_show(struct seq_file *seq, void *v)
+ 	return 0;
  }
  
- static const struct proc_ops pppol2tp_proc_ops = {
-+	.proc_seq_ops	= &pppol2tp_seq_ops,
-+	.proc_state_size = sizeof(struct pppol2tp_seq_data),
- 	.proc_open	= pppol2tp_proc_open,
--	.proc_read	= seq_read,
--	.proc_lseek	= seq_lseek,
- 	.proc_release	= pppol2tp_proc_release,
+-static ssize_t pgctrl_write(struct file *file, const char __user *buf,
+-			    size_t count, loff_t *ppos)
++static ssize_t pgctrl_write(struct file *file, char *buf, size_t count,
++			    loff_t *ppos)
+ {
+-	char data[128];
+-	size_t max;
+ 	struct pktgen_net *pn = net_generic(current->nsproxy->net_ns, pg_net_id);
+ 
+ 	if (!capable(CAP_NET_ADMIN))
+@@ -529,20 +527,15 @@ static ssize_t pgctrl_write(struct file *file, const char __user *buf,
+ 	if (count < 1)
+ 		return -EINVAL;
+ 
+-	max = min(count, sizeof(data) - 1);
+-	if (copy_from_user(data, buf, max))
+-		return -EFAULT;
++	/* strip trailing '\n' */
++	if (buf[count - 1] == '\n')
++		buf[count - 1] = 0;
+ 
+-	if (data[max - 1] == '\n')
+-		data[max - 1] = 0; /* strip trailing '\n', terminate string */
+-	else
+-		data[max] = 0; /* terminate string */
+-
+-	if (!strcmp(data, "stop"))
++	if (!strcmp(buf, "stop"))
+ 		pktgen_stop_all_threads(pn);
+-	else if (!strcmp(data, "start"))
++	else if (!strcmp(buf, "start"))
+ 		pktgen_run_all_threads(pn);
+-	else if (!strcmp(data, "reset"))
++	else if (!strcmp(buf, "reset"))
+ 		pktgen_reset_all_threads(pn);
+ 	else
+ 		return -EINVAL;
+@@ -552,7 +545,7 @@ static ssize_t pgctrl_write(struct file *file, const char __user *buf,
+ 
+ static const struct proc_ops pktgen_proc_ops = {
+ 	.proc_show	= pgctrl_show,
+-	.proc_write	= pgctrl_write,
++	.proc_write_buf	= pgctrl_write,
  };
  
+ static int pktgen_if_show(struct seq_file *seq, void *v)
+@@ -741,7 +734,7 @@ static int pktgen_if_show(struct seq_file *seq, void *v)
+ }
+ 
+ 
+-static ssize_t hex32_arg(const char __user *user_buffer, size_t maxlen,
++static ssize_t hex32_arg(const char *user_buffer, size_t maxlen,
+ 			 __u32 *num)
+ {
+ 	size_t i = 0;
+@@ -752,8 +745,7 @@ static ssize_t hex32_arg(const char __user *user_buffer, size_t maxlen,
+ 		int value;
+ 		char c;
+ 
+-		if (get_user(c, &user_buffer[i]))
+-			return -EFAULT;
++		c = user_buffer[i];
+ 		value = hex_to_bin(c);
+ 		if (value >= 0) {
+ 			*num <<= 4;
+@@ -765,15 +757,14 @@ static ssize_t hex32_arg(const char __user *user_buffer, size_t maxlen,
+ 	return i;
+ }
+ 
+-static ssize_t count_trail_chars(const char __user *user_buffer, size_t maxlen)
++static ssize_t count_trail_chars(const char *user_buffer, size_t maxlen)
+ {
+ 	size_t i;
+ 
+ 	for (i = 0; i < maxlen; i++) {
+ 		char c;
+ 
+-		if (get_user(c, &user_buffer[i]))
+-			return -EFAULT;
++		c = user_buffer[i];
+ 		switch (c) {
+ 		case '\"':
+ 		case '\n':
+@@ -790,7 +781,7 @@ done:
+ 	return i;
+ }
+ 
+-static ssize_t num_arg(const char __user *user_buffer, size_t maxlen,
++static ssize_t num_arg(const char *user_buffer, size_t maxlen,
+ 		       unsigned long *num)
+ {
+ 	size_t i;
+@@ -799,8 +790,7 @@ static ssize_t num_arg(const char __user *user_buffer, size_t maxlen,
+ 	for (i = 0; i < maxlen; i++) {
+ 		char c;
+ 
+-		if (get_user(c, &user_buffer[i]))
+-			return -EFAULT;
++		c = user_buffer[i];
+ 		if ((c >= '0') && (c <= '9')) {
+ 			*num *= 10;
+ 			*num += c - '0';
+@@ -810,15 +800,14 @@ static ssize_t num_arg(const char __user *user_buffer, size_t maxlen,
+ 	return i;
+ }
+ 
+-static ssize_t strn_len(const char __user *user_buffer, size_t maxlen)
++static ssize_t strn_len(const char *user_buffer, size_t maxlen)
+ {
+ 	size_t i;
+ 
+ 	for (i = 0; i < maxlen; i++) {
+ 		char c;
+ 
+-		if (get_user(c, &user_buffer[i]))
+-			return -EFAULT;
++		c = user_buffer[i];
+ 		switch (c) {
+ 		case '\"':
+ 		case '\n':
+@@ -840,7 +829,7 @@ done_str:
+  * where each entry consists of size and weight delimited by commas.
+  * "size1,weight_1 size2,weight_2 ... size_n,weight_n" for example.
+  */
+-static ssize_t get_imix_entries(const char __user *buffer,
++static ssize_t get_imix_entries(const char *buffer,
+ 				size_t maxlen,
+ 				struct pktgen_dev *pkt_dev)
+ {
+@@ -867,8 +856,7 @@ static ssize_t get_imix_entries(const char __user *buffer,
+ 		i += len;
+ 		if (i >= maxlen)
+ 			return -EINVAL;
+-		if (get_user(c, &buffer[i]))
+-			return -EFAULT;
++		c = buffer[i];
+ 		/* Check for comma between size_i and weight_i */
+ 		if (c != ',')
+ 			return -EINVAL;
+@@ -894,15 +882,14 @@ static ssize_t get_imix_entries(const char __user *buffer,
+ 
+ 		if (i >= maxlen)
+ 			break;
+-		if (get_user(c, &buffer[i]))
+-			return -EFAULT;
++		c = buffer[i];
+ 		i++;
+ 	} while (c == ' ');
+ 
+ 	return i;
+ }
+ 
+-static ssize_t get_labels(const char __user *buffer,
++static ssize_t get_labels(const char *buffer,
+ 			  size_t maxlen, struct pktgen_dev *pkt_dev)
+ {
+ 	unsigned int n = 0;
+@@ -936,8 +923,7 @@ static ssize_t get_labels(const char __user *buffer,
+ 		n++;
+ 		if (i >= maxlen)
+ 			break;
+-		if (get_user(c, &buffer[i]))
+-			return -EFAULT;
++		c = buffer[i];
+ 		i++;
+ 	} while (c == ',');
+ 
+@@ -974,9 +960,8 @@ static __u32 pktgen_read_flag(const char *f, bool *disable)
+ 	return 0;
+ }
+ 
+-static ssize_t pktgen_if_write(struct file *file,
+-			       const char __user *user_buffer, size_t count,
+-			       loff_t *offset)
++static ssize_t pktgen_if_write(struct file *file, char *user_buffer,
++			       size_t count, loff_t *offset)
+ {
+ 	struct seq_file *seq = file->private_data;
+ 	struct pktgen_dev *pkt_dev = seq->private;
+@@ -1009,8 +994,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 		return len;
+ 
+ 	memset(name, 0, sizeof(name));
+-	if (copy_from_user(name, &user_buffer[i], len))
+-		return -EFAULT;
++	memcpy(name, &user_buffer[i], len);
+ 	i += len;
+ 
+ 	max = count - i;
+@@ -1020,16 +1004,9 @@ static ssize_t pktgen_if_write(struct file *file,
+ 
+ 	i += len;
+ 
+-	if (debug) {
+-		size_t copy = min_t(size_t, count + 1, 1024);
+-		char *tp = strndup_user(user_buffer, copy);
+-
+-		if (IS_ERR(tp))
+-			return PTR_ERR(tp);
+-
+-		pr_debug("%s,%zu  buffer -:%s:-\n", name, count, tp);
+-		kfree(tp);
+-	}
++	if (debug)
++		pr_debug("%s,%zu  buffer -:%.*s:-\n", name, count,
++			 (int)min_t(size_t, count, 1023), user_buffer);
+ 
+ 	if (!strcmp(name, "min_pkt_size")) {
+ 		max = min(10, count - i);
+@@ -1322,8 +1299,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 			return len;
+ 
+ 		memset(f, 0, sizeof(f));
+-		if (copy_from_user(f, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(f, &user_buffer[i], len);
+ 
+ 		if (strcmp(f, "start_xmit") == 0) {
+ 			pkt_dev->xmit_mode = M_START_XMIT;
+@@ -1362,8 +1338,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 			return len;
+ 
+ 		memset(f, 0, 32);
+-		if (copy_from_user(f, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(f, &user_buffer[i], len);
+ 
+ 		flag = pktgen_read_flag(f, &disable);
+ 		if (flag) {
+@@ -1410,8 +1385,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 		if (len < 0)
+ 			return len;
+ 
+-		if (copy_from_user(buf, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(buf, &user_buffer[i], len);
+ 		buf[len] = 0;
+ 		if (strcmp(buf, pkt_dev->dst_min) != 0) {
+ 			strscpy_pad(pkt_dev->dst_min, buf);
+@@ -1430,8 +1404,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 		if (len < 0)
+ 			return len;
+ 
+-		if (copy_from_user(buf, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(buf, &user_buffer[i], len);
+ 		buf[len] = 0;
+ 		if (strcmp(buf, pkt_dev->dst_max) != 0) {
+ 			strscpy_pad(pkt_dev->dst_max, buf);
+@@ -1452,8 +1425,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 
+ 		pkt_dev->flags |= F_IPV6;
+ 
+-		if (copy_from_user(buf, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(buf, &user_buffer[i], len);
+ 		buf[len] = 0;
+ 
+ 		in6_pton(buf, -1, pkt_dev->in6_daddr.s6_addr, -1, NULL);
+@@ -1475,8 +1447,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 
+ 		pkt_dev->flags |= F_IPV6;
+ 
+-		if (copy_from_user(buf, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(buf, &user_buffer[i], len);
+ 		buf[len] = 0;
+ 
+ 		in6_pton(buf, -1, pkt_dev->min_in6_daddr.s6_addr, -1, NULL);
+@@ -1497,8 +1468,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 
+ 		pkt_dev->flags |= F_IPV6;
+ 
+-		if (copy_from_user(buf, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(buf, &user_buffer[i], len);
+ 		buf[len] = 0;
+ 
+ 		in6_pton(buf, -1, pkt_dev->max_in6_daddr.s6_addr, -1, NULL);
+@@ -1518,8 +1488,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 
+ 		pkt_dev->flags |= F_IPV6;
+ 
+-		if (copy_from_user(buf, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(buf, &user_buffer[i], len);
+ 		buf[len] = 0;
+ 
+ 		in6_pton(buf, -1, pkt_dev->in6_saddr.s6_addr, -1, NULL);
+@@ -1539,8 +1508,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 		if (len < 0)
+ 			return len;
+ 
+-		if (copy_from_user(buf, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(buf, &user_buffer[i], len);
+ 		buf[len] = 0;
+ 		if (strcmp(buf, pkt_dev->src_min) != 0) {
+ 			strscpy_pad(pkt_dev->src_min, buf);
+@@ -1559,8 +1527,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 		if (len < 0)
+ 			return len;
+ 
+-		if (copy_from_user(buf, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(buf, &user_buffer[i], len);
+ 		buf[len] = 0;
+ 		if (strcmp(buf, pkt_dev->src_max) != 0) {
+ 			strscpy_pad(pkt_dev->src_max, buf);
+@@ -1580,8 +1547,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 			return len;
+ 
+ 		memset(valstr, 0, sizeof(valstr));
+-		if (copy_from_user(valstr, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(valstr, &user_buffer[i], len);
+ 
+ 		if (!mac_pton(valstr, pkt_dev->dst_mac))
+ 			return -EINVAL;
+@@ -1598,8 +1564,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 			return len;
+ 
+ 		memset(valstr, 0, sizeof(valstr));
+-		if (copy_from_user(valstr, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(valstr, &user_buffer[i], len);
+ 
+ 		if (!mac_pton(valstr, pkt_dev->src_mac))
+ 			return -EINVAL;
+@@ -1864,7 +1829,7 @@ static ssize_t pktgen_if_write(struct file *file,
+ 
+ static const struct proc_ops pktgen_if_proc_ops = {
+ 	.proc_show	= pktgen_if_show,
+-	.proc_write	= pktgen_if_write,
++	.proc_write_buf	= pktgen_if_write,
+ };
+ 
+ static int pktgen_thread_show(struct seq_file *seq, void *v)
+@@ -1897,8 +1862,7 @@ static int pktgen_thread_show(struct seq_file *seq, void *v)
+ 	return 0;
+ }
+ 
+-static ssize_t pktgen_thread_write(struct file *file,
+-				   const char __user *user_buffer,
++static ssize_t pktgen_thread_write(struct file *file, char *user_buffer,
+ 				   size_t count, loff_t *offset)
+ {
+ 	struct seq_file *seq = file->private_data;
+@@ -1927,8 +1891,7 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 		return len;
+ 
+ 	memset(name, 0, sizeof(name));
+-	if (copy_from_user(name, &user_buffer[i], len))
+-		return -EFAULT;
++	memcpy(name, &user_buffer[i], len);
+ 	i += len;
+ 
+ 	max = count - i;
+@@ -1959,8 +1922,7 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 			ret = len;
+ 			goto out;
+ 		}
+-		if (copy_from_user(f, &user_buffer[i], len))
+-			return -EFAULT;
++		memcpy(f, &user_buffer[i], len);
+ 
+ 		mutex_lock(&pktgen_thread_lock);
+ 		ret = pktgen_add_device(t, f);
+@@ -1996,7 +1958,7 @@ out:
+ 
+ static const struct proc_ops pktgen_thread_proc_ops = {
+ 	.proc_show	= pktgen_thread_show,
+-	.proc_write	= pktgen_thread_write,
++	.proc_write_buf	= pktgen_thread_write,
+ };
+ 
+ /* Think find or remove for NN */
 
 -- 
 2.53.0
