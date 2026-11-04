@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682FF606A87E
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2BD608F102
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=byXXsxYw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NJukzHF4
 Received: by kanga.kvack.org (Postfix)
-	id 733996B00EF; Wed,  4 Nov 2026 14:28:29 -0500 (EST)
+	id D756C6B05CD; Wed,  4 Nov 2026 14:28:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70B646B05D3; Wed,  4 Nov 2026 14:28:29 -0500 (EST)
+	id D4C886B05D3; Wed,  4 Nov 2026 14:28:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FC0F6B05E3; Wed,  4 Nov 2026 14:28:29 -0500 (EST)
+	id C3C316B05E3; Wed,  4 Nov 2026 14:28:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 40D156B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:28:29 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D35581A0828
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:28:28 +0000 (UTC)
-X-FDA: 85398423096.30.CD58D21
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 487A920005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:28:28 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byXXsxYw;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9C36E6B05D3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:28:43 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3531316083F
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:28:43 +0000 (UTC)
+X-FDA: 85398423726.10.E8B4B83
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 64950180004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:28:41 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NJukzHF4;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793820521;
+	b=tAtYuc9CM2X7aTgKa6p/O9o/PbCTDAxS5oCT6gD40HJDtTZ122fR/oQcyoH+SH9xNNh4ug
+	89Jue0EvDLNOJnWkncMRQXtOz/XyV/jq7UqBZaGoZj0eeyPklvyLUsLCYoH2bTutiqDESZ
+	S4KLL52J0mrOSK3Pl4fkDPqX4+njTgs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NJukzHF4;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820507;
+	s=arc-20220608; t=1793820521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gGh9qQAToZE5wrWgcgjg72Buy8fnK2LgswQGjbfg87A=;
-	b=MggyP45MpXY2jAH5/NzmRSaxjKfeQWNcMldQzKF5X9VcVONZUmmWmj+EAOtmlAG99s1QcS
-	TFXjMXO9yjGNkhLSUJtg39F84XVvlszGj3DQfK0Dm+XwI5ItgIEnYdMm4Bn8n2ec/n/OSQ
-	sRIANfCVbFH0KGqoOfaxhhxnwYj30Bk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=byXXsxYw;
-	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820507;
-	b=71Vyf4TiDLij8CLPFh1OzzQ3uDct34C1OLFawbiUP6FJdAFoLyculla/sr4nvvFvugsYLu
-	qyrzw/7FPUtYq2CwvRbPw7N2K2jukrWltQi6cu8Tk49OaHS9z1KAE+VxAOSHptWXxaDXxr
-	yi+aG4QwTp3+QzARm1vYU3QWzIknybs=
+	bh=KE0FjFLg86Wqg2LOdvIKebjks/LaCpUOq5x1mMvJN8E=;
+	b=XJsqBUh92aR5S7BVbNLM0Lsi3vg01sinPK+wg2bEBc6XMZIsiVBlr/hVfO5tp+NcZCmQda
+	3jwa0yKHMje2nPvroih0R0NZ4AxhmzlewplM8g/PHemyLujAeYQHE6EiP6xmQ88hClFgUx
+	cNA16Le1h9S1JtaFxMvcKl8ucDZPNqc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 625A1418AD;
-	Wed,  4 Nov 2026 19:28:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F5B61F00A02;
-	Wed,  4 Nov 2026 19:28:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id EDA1A60DA2;
+	Wed,  4 Nov 2026 19:28:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5AB1F000C1;
+	Wed,  4 Nov 2026 19:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820506;
-	bh=gGh9qQAToZE5wrWgcgjg72Buy8fnK2LgswQGjbfg87A=;
+	s=k20260515; t=1793820520;
+	bh=KE0FjFLg86Wqg2LOdvIKebjks/LaCpUOq5x1mMvJN8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=byXXsxYwwlEEzVCdRuUNyOsLcAI+STSe55KsEGh4BJlF7vBluSLDj7xpOzM7lQKQ4
-	 uvVISAxqyAtBDBpIeAqQ8oGCN092NLKfSJVGkw+BNmr8dzLnc2og/C96qttPNVfs93
-	 XwoNGni8iN/tC1YXe5AYuIZI6WQoC4tduRrr4C9eyl+yKXSLVR4nkDnOPM7geCc4uC
-	 ftqw04+u+hakNSgLNjIxLDcE9txZXHVKfyY+39OrDntZluhV0w61HCQ45L1DfF68Lg
-	 gd5gAsNrRK9OI6wE3u0lJntjeJWYJdgnxgjqgVsDg+10MAEUapfIUfBLUOI675u60V
-	 wveEeYDFgw+HA==
+	b=NJukzHF4aV1KUnciVzdApjdNLx1CFG6CVAD2vCJ43JPCAnjjn1zUpxzmLM9SfrWre
+	 gCGPTz2pnkhsoLDD0ufQYz7LJbRa17CKdFnkfKWFZpzCvx3VornSWUNThr1WFvwPGn
+	 CADeWgCgoQP5K7ENKjJkvGY6u4437GknzfxpYekJnpL3cgHKr3XG5TRSEcefhaKP7V
+	 nX57prmegY0CCerzsNzag/fJkXOMUpt/ed2ZwMst0kUSU+NPQt8+F88n3teURVqhXg
+	 7vNgcQSCorU7kpZuBp2BFO4KHe0i6WajNcx/gISK920csNZ4jtjgQF1W1PAyzKkO5E
+	 yV22BOQaWeKsQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -120,33 +120,32 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-modules@vger.kernel.org,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 50/51] proc: don't pin a symlink's entry while readlink() copies it out
-Date: Wed,  4 Nov 2026 20:28:12 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-50-021c84d852e0@kernel.org>
+	Chuck Lever <cel@kernel.org>
+Subject: [PATCH RESEND v2 51/51] selftests/proc: check that a faulting readlink() doesn't hold up removal
+Date: Wed,  4 Nov 2026 20:28:26 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-51-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1874; i=brauner@kernel.org; h=from:subject:message-id; bh=RrDLfW/scZN49peKw6fM9m5dxManPY8dszrBpi62+JM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9buKUeD/54oKQeSXpZxZOuLHujuvOvQuDLBr9a+Q0/ fdzHMw27yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjIxk+MDF0xzMdUqudtc4xq io94MDlmc+iGj38/VuQy/ygRejLx7E1Ghg97a149/ZQ8UYb1fduSSTfDdZwEJovX7fM76eJtPX3 mTFYA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7257; i=brauner@kernel.org; h=from:subject:message-id; bh=tBvbDpChuad7Gf34o7zrAy5GeGJ/8Uzeoj8ryWST3Tk=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9buLeeHbphO3/N55kVVv59tmN3VuetO2e/UrKp4azz iWph8NwQkcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEjIIZ/vAeD7jB+vdim/Jj tQ0hkWc2r77GNq27cuqvPzkuqa9flfYz/NOXCS3acGvTlZz++E+JTd/e+ny6wif2bUN30YcXfYm /q1kB
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: kdhg5mfxmig6xcgh7dg8sjbdrc91iekf
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: 487A920005
-X-HE-Tag: 1793820508-20478
-X-HE-Meta: U2FsdGVkX1/n6xoj3bsxy3g2w1hfh5Ik5Qg6J9JLixu02h1Hx2KXHZZLYyeEG1cV5/Zi+TwtE/EWSM0Ipe4BbavhW5qMTWPbi77QukPNMYg2zExtlwgQ/rN7CAd44ayRLkLNuuAmKArv7x399H7zTJKZmmiUgjCGqY0Bpr60HEzyC/hqmjmQiY1WEmSDP+4TfX9ot/KBzSptgxOPUYoitCoL1nlsLf1me3+/gr7Yhgb6fqTqmCdw+nTmyxmBrw6tChxxfYAB4BRwpQaJ3k6NGbHdDarHuZlhkKWLkWkLBs61FW2YmvhYXfWPi6xz0DuWnnsSwS0Y+doCy0MUIuOsGiLo5huQaa1ieNaa6A11QGNThZGVrF46Ss9OFpSkx34d0Zw+axktaHivmRVNpZmupdTFUq4kjJUgq2SoyP/6/1yoYhcPuQYdzzXSIdto8dgU+nEEOEEBWFBvtLHAhRE9HGn8+zmoP+A6rkTZwSq+G3VpNityGM/t9H8vVXJ8ny4HhcZOv/imCvO563eDH6C/JpimAGevbtbbdmjoEpOvbrAkx64StXovtDCPTeWtN8RsBUpSxQEhChaNgvYBdM2f3b82Qy8a8SK/h9NNtXpiKcxqZhdE3ekBdnQcISfECqzu1fDpgEloCKjNqRiBlrtge8IJx3B6NUrC1wua7mjb4aNNJqQ3gzaFkJGO89gDfwwa3lw3IAGKavXs9M+2hcMo4q20QzIOAdeRL6iNPwDZiivqSszlhvoLc8Rbjlg+96DsADO01gp0lI1eDxAmWbbH0MRGJWLcGvO04f2oXUtl50XdJfdNKHfJrQH1pyXNMShX6tJ9VAPCLAIFRIl/PQNik+L/cDHhnV2ul/Xm5DVTzzVPsqqrepLEX8dcVX0SJHAbtImRxfU43NVwzKUe1XxqEA7+om53tkZsioSZogNGLnKPYtCZWwyLQWOcQw+Z3wQloFehcyjnurIBDqCpCEj
- 1xqwMvpp
- 2+nOk0Hc7nLJV8U3c/Yj/tIRhaWo116t6HPIgm59qKEi3IRyF1Wbe3vWXjUO5RTCoQwsmn/0VuNksWx7BWjnzHvtUreE1aOU3HZA+BD4dySTyG7qojUQY00uKl89FzBMtXzD7/TCkDGs1W/UiBPpeHNavZ62Uv1jwU/v0n7PutJdZUNqLcpA6fjFNQfIV9hj2u9Itdhl9Su9xi9mKwj0eGMQVE7aNAqwaCzlvgadlEyUT7AovClRvCnhmTk3aREJIs+IsShzROzUe6E3IojWKP5LVFgk1pbTpguIwPLyc16SlHX+cqZMU0Fe/aRX/NerczFCMxMAsBgc8DtY8lrrqLnfxrXOHS9MHcSpByK5JpM3mLMnpW+o6axKQyUHgKR6P4gRyqsrhRQR6LtaWfT1hG2ymZHyhKk8YALlNk2cQ3RHr+eLudQp7hL9+Vg==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 64950180004
+X-Stat-Signature: beo19awzf9wepdpd3hr6oecotc6adstj
+X-Rspam-User: 
+X-HE-Tag: 1793820521-504432
+X-HE-Meta: U2FsdGVkX1/n21bdCZwbpxINIS9xm8X+0gtun/1E94srlO+lqndW5VB7hn/aIi63FGEZQcSAaYaYSYTrfaahx2IrMxpYXJ73S/GdoIGYQ3b+5vz+yelLQM7kOvLSXSOAYW5nEPl8wuSe0IHasRomlxD3rFnYs+o+460TGvPIIM53G24+pbr4+9rVL8/OOwhVF0Lhtqx9FM4QiCvrZT0KDPy1fNg8jwOf1cMIZxZQ8rD8M+gJC/iyAjxhe5iCVXudRndVFYl6syo8Xp5TjlV9gV36hLbwyBs7JvWTkT40RsoQ77fxqlRo5rX/pP7ulK1uWfo345FtWPgnrRZwQ/rn0qcYMhQXAw1p/BwdLpD+SmjfV3/NivHIEFpHqtlL151KOPDylHhktbnPDM+ts2kGAfAglG5kzO5KjdmERMItYQItXUL+HCxUJn6x41yLShijYccwk+f9VPx2rLVtR/Gxk/V2KwpK6Sm5QGEsxzNCX/eh71w34+ggK1nosqzCJLDob9tcMnYaVDXSuP1pWoB+B7vRntN4yNvwBjLLYEmm8h0jHb0wIxZjlLGUwiQRTdgKvAckAMVAAtB98cAAeIEnUosteuIeF5HmViTtEK6vMK9fDxeHvAy+Ot9vDg5b0rAixekPTsaNJ6s4sXkrh1j+W09ZyoZIqqiyY8TsYCHdY4x4E2jBPg+lTvuH8/lPY1BWwtxH5yIFiPXIuZCUXE2tw+ZAJa7wAh0xoWH/vh1dU0wCw1NUlQwHNbhlhdYkt6V7VsSJC+GBsrSbF/ygNC/pcLsbcdOHzbG4Qbu3fZJEU62fPSQ7cab8jTl/1dRwNO+WN1Shy1TPeOM8T/B6tUlsWilAArRIe34mT0QqMRwRyfAyM7eRrJqb3tkYPals/TITBKlrscm4fnHrhH0Q5qazbqyA+RPV+mgvggZxhPlSW9ogLMlK0lD5r8IsYD7AyFeDiyJP1mZp05RmvzE3d3F
+ iRN03P/7
+ s3z0cOLXidl53IB+Rk2OZ/QF1cM29oE33K7SmNf0Kjx4LyXtbYCI+6uFuFWRaTB5tERQw0XyobZ8nzUhjdpIvscDtIBVgsWHtss0eSuEcms8Us/zDBOfvYBHxUu2ccNci9e+6NNAQFFw/9frVR5VI28Mt/rwKSDamRcKdlS7QTY2ZY3KqSkIlwlXb2eeiYww1cxAA5jw0qM0PcZaVhxyDHLRAM59V8od92oZsfV4WRoRxTL4arwDuxPMXC2HJuejsA57NpJvlPZCdeztBTipfJpQOnFEnqH3rxvSRdQt8Xp28l9Ut06r6W5EmbfUCqJqM8H3IWz7S4lzOXbRGVKcc3//RRGc+IWORjq99u0Ie4OXIpbiY1BXVZ7jDb4HUhhexmchUzkIOzsT3a0o7oWFmUn5wqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,58 +154,259 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_get_link() pins the entry with use_pde() and the delayed call
-unpins it. vfs_readlink() copies the link to userspace in between. So a
-page fault in that copy holds up remove_proc_entry() just like the
-copies of reads and writes do, and the callers hold locks while they
-wait. /proc/asound/<id> is removed with snd_card_mutex and info_mutex
-held when a card changes its id.
+Add the symlink case:
 
-The pin doesn't keep anything alive. proc_symlink() copies the target
-and pde_free() frees it with the entry, and the inode holds a reference
-to the entry. What the pin does is keep a removed symlink from being
-followed. So check ->in_use instead and drop the delayed call. That
-also takes an atomic pair off every traversal of /proc/net and
-/proc/mounts.
+- readlink() /proc/asound/<id> of a dummy card into a buffer backed by
+  userfaultfd
 
-Fixes: 7e0e953bb0cf ("procfs: fix race between symlink removals and traversals")
-Cc: stable@vger.kernel.org
+- change the card's id through sysfs while the reader faults, which
+  removes the symlink with snd_card_mutex and info_mutex held
+
+- expect that to finish without waiting for the reader
+
+Skipped without snd-dummy.
+
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/inode.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ tools/testing/selftests/proc/.gitignore            |   1 +
+ tools/testing/selftests/proc/Makefile              |   1 +
+ tools/testing/selftests/proc/config                |   5 +
+ .../selftests/proc/proc-remove-slow-readlink.c     | 191 +++++++++++++++++++++
+ 4 files changed, 198 insertions(+)
 
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index 9933f03ab9fb..2d65f3c8ec03 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -629,19 +629,19 @@ static const struct file_operations proc_iter_file_ops_compat = {
- };
- #endif
+diff --git a/tools/testing/selftests/proc/.gitignore b/tools/testing/selftests/proc/.gitignore
+index 7b8133492782..3fa89f46b9c7 100644
+--- a/tools/testing/selftests/proc/.gitignore
++++ b/tools/testing/selftests/proc/.gitignore
+@@ -22,6 +22,7 @@
+ /proc-uptime-002
+ /proc-pidns
+ /proc-remove-slow-sysctl
++/proc-remove-slow-readlink
+ /read
+ /self
+ /setns-dcache
+diff --git a/tools/testing/selftests/proc/Makefile b/tools/testing/selftests/proc/Makefile
+index bce6beca7274..df02699a3587 100644
+--- a/tools/testing/selftests/proc/Makefile
++++ b/tools/testing/selftests/proc/Makefile
+@@ -33,5 +33,6 @@ TEST_GEN_PROGS += proc-fsconfig-hidepid
+ TEST_GEN_PROGS += proc-sysctl-readdir-churn
+ TEST_GEN_PROGS += proc-pidns
+ TEST_GEN_PROGS += proc-remove-slow-sysctl
++TEST_GEN_PROGS += proc-remove-slow-readlink
  
--static void proc_put_link(void *p)
--{
--	unuse_pde(p);
--}
--
- static const char *proc_get_link(struct dentry *dentry,
- 				 struct inode *inode,
- 				 struct delayed_call *done)
- {
- 	struct proc_dir_entry *pde = PDE(inode);
--	if (!use_pde(pde))
+ include ../lib.mk
+diff --git a/tools/testing/selftests/proc/config b/tools/testing/selftests/proc/config
+index 052e365af5a9..1504a761b39b 100644
+--- a/tools/testing/selftests/proc/config
++++ b/tools/testing/selftests/proc/config
+@@ -3,3 +3,8 @@ CONFIG_NET_NS=y
+ CONFIG_IPV6=y
+ CONFIG_TUN=y
+ CONFIG_USERFAULTFD=y
++CONFIG_SOUND=y
++CONFIG_SND=y
++CONFIG_SND_DUMMY=m
++CONFIG_MODULES=y
++CONFIG_MODULE_UNLOAD=y
+diff --git a/tools/testing/selftests/proc/proc-remove-slow-readlink.c b/tools/testing/selftests/proc/proc-remove-slow-readlink.c
+new file mode 100644
+index 000000000000..3290225daecd
+--- /dev/null
++++ b/tools/testing/selftests/proc/proc-remove-slow-readlink.c
+@@ -0,0 +1,191 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * A readlink() that faults while copying out the link must not hold up
++ * removal of the /proc symlink. Changing a sound card's id removes
++ * /proc/asound/<id> with snd_card_mutex and info_mutex held.
++ */
++#define _GNU_SOURCE
++#include <dirent.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <limits.h>
++#include <linux/userfaultfd.h>
++#include <poll.h>
++#include <pthread.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ioctl.h>
++#include <sys/mman.h>
++#include <sys/syscall.h>
++#include <unistd.h>
 +
-+	/*
-+	 * No pin. The link lives with the entry, which the inode holds, and a
-+	 * reader could fault while vfs_readlink() copies it out. Just don't
-+	 * follow a removed one.
-+	 */
-+	if (unlikely(atomic_read(&pde->in_use) < 0))
- 		return ERR_PTR(-EINVAL);
--	set_delayed_call(done, proc_put_link, pde);
- 	return pde->data;
- }
- 
++#include "../kselftest_harness.h"
++
++#define CARD_ID		"Dummy"
++#define NEW_ID		"procslow"
++#define LINK_PATH	"/proc/asound/" CARD_ID
++#define TIMEOUT_MS	5000
++
++struct reader {
++	char *buf;
++	size_t len;
++	ssize_t ret;
++};
++
++struct renamer {
++	const char *id_path;
++	const char *id;
++	int done;
++	int ret;
++};
++
++static void *readlink_thread(void *arg)
++{
++	struct reader *r = arg;
++
++	r->ret = readlink(LINK_PATH, r->buf, r->len);
++	return NULL;
++}
++
++/* a new id removes the card's old /proc/asound/<id> link */
++static int set_id(const char *id_path, const char *id)
++{
++	int fd, ret;
++
++	fd = open(id_path, O_WRONLY | O_CLOEXEC);
++	if (fd < 0)
++		return -errno;
++	ret = write(fd, id, strlen(id)) < 0 ? -errno : 0;
++	close(fd);
++	return ret;
++}
++
++static void *rename_thread(void *arg)
++{
++	struct renamer *r = arg;
++	ssize_t ret;
++
++	r->ret = set_id(r->id_path, r->id);
++	ret = write(r->done, "x", 1);
++	return (void *)ret;
++}
++
++/* the sysfs id file of the card with @id */
++static int find_card(const char *id, char *id_path, size_t size)
++{
++	struct dirent *d;
++	int ret = -1;
++	DIR *dir;
++
++	dir = opendir("/sys/class/sound");
++	if (!dir)
++		return -1;
++	while (ret && (d = readdir(dir))) {
++		char cur[32];
++		FILE *f;
++
++		if (strncmp(d->d_name, "card", 4))
++			continue;
++		snprintf(id_path, size, "/sys/class/sound/%s/id", d->d_name);
++		f = fopen(id_path, "r");
++		if (!f)
++			continue;
++		if (fgets(cur, sizeof(cur), f)) {
++			cur[strcspn(cur, "\n")] = '\0';
++			if (!strcmp(cur, id))
++				ret = 0;
++		}
++		fclose(f);
++	}
++	closedir(dir);
++	return ret;
++}
++
++FIXTURE(dummy) {
++	char id_path[PATH_MAX];
++	bool renamed;
++};
++
++FIXTURE_SETUP(dummy)
++{
++	self->renamed = false;
++	if (access(LINK_PATH, F_OK) && system("modprobe -q snd-dummy"))
++		SKIP(return, "no snd-dummy");
++	if (access(LINK_PATH, F_OK))
++		SKIP(return, LINK_PATH ": %s", strerror(errno));
++	if (find_card(CARD_ID, self->id_path, sizeof(self->id_path)))
++		SKIP(return, "no sysfs id file for " CARD_ID);
++	if (access(self->id_path, W_OK))
++		SKIP(return, "%s: %s", self->id_path, strerror(errno));
++}
++
++FIXTURE_TEARDOWN(dummy)
++{
++	if (self->renamed && set_id(self->id_path, CARD_ID))
++		TH_LOG("couldn't name the card " CARD_ID " again");
++}
++
++TEST_F(dummy, remove_while_readlink_faults)
++{
++	struct uffdio_api api = { .api = UFFD_API };
++	struct uffdio_register reg = {};
++	struct uffdio_zeropage zero = {};
++	long psz = sysconf(_SC_PAGESIZE);
++	struct renamer rn = {};
++	struct reader r = {};
++	struct uffd_msg msg;
++	struct pollfd pfd;
++	pthread_t rt, nt;
++	int uffd, done[2];
++	char *buf;
++
++	uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
++	if (uffd < 0)
++		SKIP(return, "userfaultfd: %s", strerror(errno));
++	ASSERT_EQ(ioctl(uffd, UFFDIO_API, &api), 0);
++
++	buf = mmap(NULL, psz, PROT_READ | PROT_WRITE,
++		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
++	ASSERT_NE(buf, MAP_FAILED);
++	reg.range.start = (unsigned long)buf;
++	reg.range.len = psz;
++	reg.mode = UFFDIO_REGISTER_MODE_MISSING;
++	ASSERT_EQ(ioctl(uffd, UFFDIO_REGISTER, &reg), 0);
++
++	r.buf = buf;
++	r.len = psz;
++	ASSERT_EQ(pthread_create(&rt, NULL, readlink_thread, &r), 0);
++
++	/* The reader now sleeps in the copy of the link to userspace. */
++	pfd = (struct pollfd){ .fd = uffd, .events = POLLIN };
++	ASSERT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1);
++	ASSERT_EQ(read(uffd, &msg, sizeof(msg)), sizeof(msg));
++	ASSERT_EQ(msg.event, UFFD_EVENT_PAGEFAULT);
++
++	/* Renaming the card removes the link that is being read. */
++	ASSERT_EQ(pipe2(done, O_CLOEXEC), 0);
++	rn.id_path = self->id_path;
++	rn.id = NEW_ID;
++	rn.done = done[1];
++	self->renamed = true;
++	ASSERT_EQ(pthread_create(&nt, NULL, rename_thread, &rn), 0);
++	pfd = (struct pollfd){ .fd = done[0], .events = POLLIN };
++	EXPECT_EQ(poll(&pfd, 1, TIMEOUT_MS), 1) {
++		TH_LOG("removing " LINK_PATH " waited for the reader");
++	}
++
++	zero.range.start = (unsigned long)buf;
++	zero.range.len = psz;
++	ASSERT_EQ(ioctl(uffd, UFFDIO_ZEROPAGE, &zero), 0);
++	ASSERT_EQ(pthread_join(rt, NULL), 0);
++	ASSERT_EQ(pthread_join(nt, NULL), 0);
++	EXPECT_EQ(rn.ret, 0);
++
++	/* The link was read before it went away. */
++	EXPECT_GT(r.ret, 0);
++	EXPECT_EQ(readlink(LINK_PATH, buf, psz), -1);
++	EXPECT_EQ(errno, ENOENT);
++}
++
++TEST_HARNESS_MAIN
 
 -- 
 2.53.0
