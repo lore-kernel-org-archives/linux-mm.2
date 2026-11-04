@@ -1,151 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325CA60B4C21
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588B8607F2AB
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IGC4y00A
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=KFTY6WS7
 Received: by kanga.kvack.org (Postfix)
-	id 3EA656B05DC; Wed,  4 Nov 2026 14:37:53 -0500 (EST)
+	id 6CFFF6B05E0; Wed,  4 Nov 2026 14:38:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 39AB26B05E0; Wed,  4 Nov 2026 14:37:53 -0500 (EST)
+	id 6330B6B05E1; Wed,  4 Nov 2026 14:38:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 262FD6B05E1; Wed,  4 Nov 2026 14:37:53 -0500 (EST)
+	id 5226D6B05EA; Wed,  4 Nov 2026 14:38:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EAB8E6B05DC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:37:52 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83A081C4240
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:37:52 +0000 (UTC)
-X-FDA: 85398446784.06.A445563
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id ABBC71A0008
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:37:50 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGC4y00A;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 29DF26B05E0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:38:04 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BBD65120807
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:38:03 +0000 (UTC)
+X-FDA: 85398447246.07.475F48D
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	by imf24.hostedemail.com (Postfix) with ESMTP id CD9BA180003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:38:01 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=KFTY6WS7;
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821070;
+	s=arc-20220608; t=1793821081;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JUeWoKePwtQbwIaIqH9pLOo2XgGktDed7c18k0485G4=;
-	b=8qjndtoJwOqskB40PO3YLi09terY2lU3i7QMjiM0AlE/cU1iVcbvt9uUQlPbLps2CmNzr9
-	lXAChefRkOE4vFBlWdnK3C98j6dgJauo+mkhNS9TuKwee2zE8durZNrotvzAoBNQucJesB
-	zG3kPxK8hyvCeo2vj5o+i7ByCJy9BD0=
+	bh=gHsVZIyLB4LY6jVwLQ9hDHHfJ9C6/ccEH9xuZg5C7+0=;
+	b=2WSvDNj8i0ZD8JP6dF9FeXDxVt5fcyH70R2+BO6o6ZNsenX5rrTaPumfTZY9Hr47wttTf9
+	60kTh4moh67ufa06uVzW2468evsxDCn+7u+oil6Mhj8wW3bd+H50DcXWjMYLoYW3VsONbr
+	HNXSA1jitabMQTmO/b+a2h5x+Q7basM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821070;
-	b=dLVWgcR5Jix4oT78ttX2R8ZAfsc/rupU5sP57bTXr9KBtLFncEOhiL5BMuYt61CWEx1hZ0
-	7Yfg3aIB6A0ybWREsvW8hitWIAQ5zwaO+z1EyS6i3a5MxVZw2MIcdre0zSCuIhs0mibXWZ
-	f6mfvacVAghZm4GGkO7RTBhciXLFr8Q=
+	t=1793821081;
+	b=sMMktZD0YHxkknHlXtEKvGn+ROYCK6610lvV2f91+a7w1uilHDi9zp/vea422wssSMo+ET
+	wp4yogP05n7jcApdPdrGTbIqti1H9SNPUInApMTMVpwfnCaPMd8yExiTEbHcVYRVTGe2pg
+	FMta/7VNPZgafID1HnCd+4YaB2/4XZo=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGC4y00A;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0C9C741875;
-	Wed,  4 Nov 2026 19:37:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099291F00A02;
-	Wed,  4 Nov 2026 19:37:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821069;
-	bh=JUeWoKePwtQbwIaIqH9pLOo2XgGktDed7c18k0485G4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IGC4y00AETc18leOOoiGNlJjI14uptUXwL1lAk39h5bFLDzozGmXP95FjcQk1ai3d
-	 qHvAP6G/y59z8vruoDW5Y1VeWIGTKlWb3dS3NUkuiWuDTaM3k3qDR2DhBmAlAVa/1+
-	 jkEC8ZsTOxq9kedteP9jaXc0YU1IKsX6hdj0bx6p0gNUMMcxE+pQQ/pK252kFB4GIS
-	 hTq5UB6PWymKT/rN8RRkkmh+m3ZSylCXxhaihAqxEz2EOYZbBvhmLGNZuz6vL29QGa
-	 VhgHDRMX/6Xwut4w4xO7r/ecc/JCMProqA/4Q644WrS17ADmUJzAwlPQ6KlQcm2EPd
-	 PESuNHlL70alw==
-From: Christian Brauner <brauner@kernel.org>
-To: linux-fsdevel@vger.kernel.org
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	Jann Horn <jannh@google.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Chris Mason <mason@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Eric Dumazet <edumazet@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Christoph Hellwig <hch@lst.de>,
-	Greg Kroah-Hartman <gregkh@suse.de>,
-	Joel Granados <joel.granados@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jan Kara <jack@suse.com>,
-	linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org,
-	linux-acpi@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	linux-wireless@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	netdev@vger.kernel.org,
-	ntfs3@lists.linux.dev,
-	platform-driver-x86@vger.kernel.org,
-	coreteam@netfilter.org,
-	kexec@lists.infradead.org,
-	linux-pci@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	netfilter-devel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	ibm-acpi-devel@lists.sourceforge.net,
-	jfs-discussion@lists.sourceforge.net,
-	linux-alpha@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-cifs@vger.kernel.org,
-	linux-fbdev@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-sh@vger.kernel.org,
-	linux-usb@vger.kernel.org,
-	samba-technical@lists.samba.org,
-	sparclinux@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linux-doc@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-atm-general@lists.sourceforge.net,
-	Takashi Iwai <tiwai@suse.de>,
-	linux-input@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	linux-ext4@vger.kernel.org,
-	linux-modules@vger.kernel.org,
-	linux-debuggers@vger.kernel.org,
-	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 08/23] powerpc/pseries: let procfs copy in writes
-Date: Wed,  4 Nov 2026 20:37:35 +0100
-Message-ID: <20261104-work-procfs-arch-v2-8-2aeb952c9597@kernel.org>
-In-Reply-To: <20261104-work-procfs-arch-v2-0-2aeb952c9597@kernel.org>
-References: <20261104-work-procfs-arch-v2-0-2aeb952c9597@kernel.org>
+	imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=KFTY6WS7;
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-98c7798ce74so336697241.1
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 11:38:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1793821081; x=1794425881; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=gHsVZIyLB4LY6jVwLQ9hDHHfJ9C6/ccEH9xuZg5C7+0=;
+        b=KFTY6WS7u7EQyp/7gQsAaYzlmm4calQxLZxzjU5ldu/IusxtaJIQ6laNocgqnPYerG
+         ujsaaomsqzAX9pBMKHUep8T0HMDqm6veLWNByhRv1YRCgll+uL7ZWdeHSEPcLnDsTxxB
+         2edV4lPrxqGqffzrJMwhpoFHjwLnvsMNWx5W2NkZvH5pDSyi9dmGkKV2M54qrizq+n/i
+         QeFvWiibj3foRSelqJUs6ovNby1n+xiO9wUEojX0lFbb/HzyF6qvKg3JBl9HrZ7SY37e
+         7SIc8OeEtU3LNLoOi8pPmz6GaB2Mw2yuxk1K2B+AW8kP4I2ekrdQ6ZptvAV3sLdDBAw5
+         selQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793821081; x=1794425881;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=gHsVZIyLB4LY6jVwLQ9hDHHfJ9C6/ccEH9xuZg5C7+0=;
+        b=hn+GIub7QBVdFlCXX624Nq1h3qzYHtmwopSxQrjG4gZ/d3v6SBBN76bznkqeIsZDLe
+         NzMLBZGt2r4ReKqwbKtGYjuRBkkzrktrnoExx1ffm8Vu82AK7DmGviSS8r6qKyQOZtdu
+         KGo6vje25/icgzDWGNU54ckoRWsgIR6hoOWw+RV9NcrimRDTII7oVPXARrqyNG5wRRuD
+         wwAYWx4v5E2DMOUnWxVDwUq+7ju7ECUTQpRwCfJpSEOEkkqy1ZoOqGp/fLJv+HCJza8X
+         vNQ9x3ZpwyAl2goLa6HR0uWfjpqXbxiXfznYQvXTHeIVC6wFVC2JUMhxTG4TS0nhVf89
+         mI2g==
+X-Forwarded-Encrypted: i=1; AKwUvBy769bJAkNkmzfjeFzLzh7j86Tqm+JzJUBJcwbzJQuUVR4oNt2CPuz9C0m/hiN6Ez13wsEDsQaH/A==@kvack.org
+X-Gm-Message-State: APuU4Z8EDoyn6WW+QrifjTVntbI8+Uvq6ep7E1o6V8UNmNYGttEaeE5A
+	DNyWrTEQgfpQr++kX8rneBdLWuS2Bj+nRTUpnQWSyik4I9rHiwNSpZa3ZTy/ex3Fa6w=
+X-Gm-Gg: AYBFou3KBpljt/WbIZ0O2iLrwH1+hGm1UVIsOaP7EeSbtpAYZyWfUJdMCuctPoj+M/a
+	1rgqpTYhlPrW0e+Dc3bOZ0AfM6G1DMx2xbO4z4dRXM0QbJFy6sTUw/XS+IlFlJ8qwfly8ZSbEk2
+	c/XUJOs8YYSRS55LWNNaEbPUID8JwXdYixY1Y9nhjSJ5Rpn5hFhzO7r5yHavuP6BcGZOBhtY9ZT
+	LOBGltNKadPLFvuhHmDj04nJlLOnqPTFhU9UrlBeK3isderUsl5hQrwWXVUEcDbBV79Z0oZKPZk
+	vuBA+7757mr0AtlB6F7Jk9laBegPsWK+sWAtu7W5fDlmJhrk6E74ccgDu/Irxj6pASeYSPxIPZp
+	jphfRVlY0/ijTuuj3lWsewXoE/CWwR2+wJJ2+Aa122mp3t+zimQ9CBgBDQ5szuXzcCCdrn2i7II
+	MiTuybNt0kh5Gqf4zQCosFrEfyr3PYID0jroOFY/kFnL/NfVMEn/7P3MHWMXJTTClUsyUM6BgaF
+	ApS9CyRYzGx96B6ZvpyeGR+8e25z49TA2BmbGruFRwCzKBFuWJgK9X7FDYxYT4ZaPDferMOx4ys
+	KrO9bTQnxARqzDQkB+r0aNq2cTG0Tt4a64tEKY7TqsMUuX1WEIABgam2OmxHyjmcw74g8GZBLAu
+	847nY/StyxxR2ahPQ9plL56FM08KAekwoCLxoXnhE5WPDmO84vA==
+X-Received: by 2002:a05:6102:6b0b:b0:7d0:3ed0:c61c with SMTP id ada2fe7eead31-7d0726a9cd7mr6446000137.16.1793821080773;
+        Wed, 04 Nov 2026 11:38:00 -0800 (PST)
+Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-998d91d2a3asm2569956241.8.2026.11.04.11.37.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 11:38:00 -0800 (PST)
+Date: Wed, 4 Nov 2026 14:37:59 -0500
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: David Matlack <dmatlack@google.com>, kexec@lists.infradead.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, Alexander Graf <graf@amazon.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Christian Brauner <brauner@kernel.org>, David Hildenbrand <david@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, Jonathan Corbet <corbet@lwn.net>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Randy Dunlap <rdunlap@infradead.org>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v3 10/10] selftests/liveupdate: Add a test for preserving
+ tmpfs files
+Message-ID: <auuJM8c-bE43NP54@google.com>
+References: <20261103010216.3447716-1-dmatlack@google.com>
+ <20261103010216.3447716-11-dmatlack@google.com>
+ <2vxz1p90jzx4.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5534; i=brauner@kernel.org; h=from:subject:message-id; bh=R72k2XaBDNkNWoVo7wOLN896i1gM+zYb0aj1A9vFVUU=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97vgWxbNt8wYWhvlH5RZK+OjxWGdnm7duUb1soNTor 3Rw5+3ijlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgInkrmVk+MQl1Nv2KdDqueyX 08pFh+YVduR7t06b45nf4Rck/P9LDsN/n+PLK+08DBJ4p96cFfH166t5EqlFHC8yROYun/7XY7Y 9JwA=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3gjqnoxm7qw51bp5e5337mhc8i39zax3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2vxz1p90jzx4.fsf@kernel.org>
+X-Stat-Signature: 83ztox1uphtcxif9rtpho5jouhir87sg
+X-Rspamd-Queue-Id: CD9BA180003
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: ABBC71A0008
-X-HE-Tag: 1793821070-387232
-X-HE-Meta: U2FsdGVkX18TVzX83sXGABn0tQBOHTaqr3fxDXLdXxinahr+S8h37ZnO6ak5fMwA54ZAW0kYKLOJfSWiYzij1CTAIKri1+F/8tXuN0oHRf3tCydzhv/gsnZOfP03cbnbF7cqlGnV1mAPQZ/KPCyrfEwlCZCbLcTLjJsOODxuHGWF708SSZUwQ+YZu3JqlWBS6MOQHh9SBkXXQAYKBAM/bPux2USu1pSMpQwgn/qcwTaAZrpazAYuzh20CmU+61oZIzdzn0WS4S2NR4/iIGRDA5Hx3rroPNUN9WjtyshoYe+y3TW1dNJf7gF/TJ/5X5f+oWM+r+FnX1MiZ7oXiXohaBeNonm/WmXNpmVAL+Lms8QYV7SaSMn2pY//0PCIim/wVzB8AvUlkVNgixa3oy7NRRPCVcgt3x9E0CEoa1l34AJH6UxNgZcZ4KzWXnpE8GQOoqH2kkB2lSq4GsQWMkClTXPRsrUI55g0X9UhL1LBwap34x37UQndGls9m6rH8AFuvhytfQjireLcozMVCFpndLfI5PEoKdBHxE2Zz42e0akAxpCy2tOzJkPCm2CmU70QzyEA/f089EG+XucKA3cOFaiT+SFIE9+h19N+V7FvwvoKwQe8/ItwYYPLnnxlm94hqIJC5s5M7/7XwUaDMPz07D3hszKDSoHCFxxE9CrXdFjBRJxAgIytOVqga4zu4I5tya/tgarn8FECvV9NOWJlUggPjbqyIEuClCMgyEuu23n6j308T2R+xRVzFQG/CfOr9AhS6NM4UGSh6Zn3sAutuRBwAXwoMcUyyeo02YpRJNiRXZQOPPmQGcBd5qV3+IZawULeV2pIqAKQI4YLrvx3WWN7EAPvvsYmb6EwoC/NBHkv18HXcbJTX1koFnznwH3tMrShKEVANSA7VXirI8eVl//m9V+7EUk2GWLNqBpkYNqffNY9+wFXibxMoEzwPaS+STkblgauJ2MzsFNT8eU
- Hc7wIFiQ
- +zq0ccNeb+LnQw7CWAnP9Las4r/wtzQiwtAQeIpQp368HP7H+H3ssl4gXIRbu/6AlSJYSRmfo36RnD1k2ogcyGPTEKxK7XXh/uk+7wt4bpwoYpc5v/3CCCAnd216fe4UvkrtFoK28zkd1eMtgDpuvbhyRSoDeyWJYD7RxfaYx8araaOA9WE5u2FbVANPtKAH51/PJKVv1k3Gdeh5n5cDtwpyXzX1fRKrh1T1n1RW0HOdJpsDZFyc9ax0uiyNsa6MdaTCSKWeUBmwhepwD4rk21Pfyhnqgy9CPITiizw3vNgaLVY8UFipdqg0Aye6Kcy50N4FsDEPRfHumu4krN6uCI+44IHJzbeibKtlNiRvwL5EYnwUKbsANb/3T/zCgaxHgmQLcLPAP357vqH8COr06I/kg7g==
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793821081-699489
+X-HE-Meta: U2FsdGVkX19Khys3mVClnPGjlJRBv437nPhXOoGs30+Dy7Ni1PtCOTUOZ/GrNODR/6XrOqG/EIZ6UKrFAEiMUkDor33W/l/pGG74qWB6Evvn8EzOMK5+SYhe0x4bPwgAKCS5jkSAZAvQW+fBl4kM80znYrQDgd65STHsMvlMXqZ+6xIsA8h5iG+RhQNXjipZCE1iSZw6A859VjQb9fLR6CMj94qi5k+M3Z3n0gq/rMDOf46VxOptcgRzKDfmTLqyiTTPQY6XgzSf1CAbXDCEV/w+Kxcb8o8fS1HV9xR8bShluWI9WYED5EpoyBP459I7R9yKtQGzvT6hALykkEF863TOTjB9CeXE4Nrz0r8ZRxthO+nipXzUrAjXDoFiyj8xYpbVZQ4VEbGSMNrtGikARhCT0wD6GrxO4MdU9qtbI5jOHzKs2XCnHsx9YTVYrHmSmbJSs9H6C+BnuNXMGwGhD6sGvPtkrcPfTo22Cax/87UnvYtwkiaPy4Ma7Lizl508Q6TdUcr/HyKD+IOLV0qYtE8smPRYL+1wvbbCMqqGcMTzwn5j7nEr8TJFp/RTVmk2UH1nX8OivDZBphsTXansMhd+auZh/NMSuH1A83cwfEYVjME6t9DYln8PyPWGML9PDG+ou0lTKjUxYoqNU2r1JFBYEJ8xFDdgILJRgKKSHPQSuTCiNRBjK6GH3o0advWfT4W9ZalrN7/4NBVs/DW22AZ8pgBbEHEXMuaNrIWjQzFrFD4Qks1trLhnCYeZ5BZQKLnJmsnfaPe4c1z8Ko16hay8P/1jTtQqMhxBVtsREzEsZkxJbNCUx+159CSOeLemekcIER8mMMxVprpyJCwVf8rYMJRq+VQJzCHcGcAqbCgDdu8rhBVgmRogWwgQMxYyBjWlIXkUABZv/zqe/koOGtFgrLOuJs+UHZeIp8Fa9Hh6cprTOO+e00p5XZMcNxuryrwMcoEHy1ZEwGAAnrq
+ UO3B+Kjq
+ 7rrmOA65A4pv20JwxuNBQU2B8SAZJymQe+ZQedkTLS7Tx5JhxmLIIsLYxX5lB2taZI76tozCVMZjaVc7K77GHCE/gHlOkePJCpvQKY32Pwfr1g9P9jcqa6NIBH8HhAtAZmeTPdkOpbuC0NBj8cEcAV8PcPv68YY6/I7lf3yY/KWdNHFqWPqI6DQT+7inwDwwSeDY9vgA7AYazIqyxpP44c8QeSElZT6HjkFEmgXbIbk8PspI18oPtdVx/Y+b/SgHOOaIHEWmfiWlGs43FouosNbt8qT92Wdd4pEBgudtmw4BGQqTJtOsyIIaDKcLfXHMsU6zcdhCVadNELeo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,170 +136,95 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Implement ->proc_write_buf() for lparcfg, ofdt and the vcpudispatch
-files so procfs copies in what is written before it pins the entry, and
-parse what was written from that copy. ofdt takes as much as
-memdup_user_nul() could copy before since device tree updates can be
-large.
+On 11-04 17:59, Pratyush Yadav wrote:
+> On Tue, Nov 03 2026, David Matlack wrote:
+> 
+> > Add luo_tmpfs, a kexec test for preserving tmpfs files and memfds, and
+> > for retrieving tmpfs files onto a tmpfs mount with struct
+> > liveupdate_shmem_retrieve_arg.
+> >
+> > Stage 1 preserves the source files of each test case. Stage 2 runs
+> > each test case in its own directory, with its own tmpfs mounts, so that
+> > block usage can be checked exactly with statfs() and st_blocks. The test
+> > cases cover:
+> >
+> >  - The restored file: contents, size, position, seals and holes, for
+> >    linked and unlinked source files.
+> >
+> >  - Creating the file: it is created like with open(O_TMPFILE), with the
+> >    requested mode minus the umask, owned by the caller, and not linked
+> >    until userspace links it, unless it asked for O_EXCL. Also O_RDONLY
+> >    and O_WRONLY files, other open() flags such as O_APPEND, O_NONBLOCK
+> >    and O_CLOEXEC, read-only mounts, and directories that the caller
+> >    can't write to.
+> >
+> >  - Preserving files that can't be written to: a binary while it is
+> >    executed, through a read-only fd, files on read-only mounts and
+> >    superblocks, and immutable files, including sparse ones, whose holes
+> >    are filled. Preserving someone else's file that the caller can't
+> >    write to fails, and so does preserving a file through a write-only
+> >    fd or an append-only file.
+> >
+> >  - Executing restored binaries: a restored binary can be executed
+> >    before the session is finished if it was retrieved with O_RDONLY, but
+> >    not if it was retrieved for writing, since LUO keeps the file open
+> >    until then. These test cases execute copies of the test binary.
+> >
+> >  - Block accounting: the file fits a mount of exactly its size, and a
+> >    large folio that extends past the end of the file is charged in full.
+> >    Running out of space, or hitting the memcg limit, fails permanently,
+> >    and leaves nothing charged to the mount or the memcg. The session can
+> >    still be finished.
+> >
+> >  - memfds: they are only retrieved as memfds, with their seals, and
+> >    files from tmpfs mounts only onto a tmpfs mount.
+> >
+> >  - Interactions with LUO: invalid arguments, which can be retried,
+> >    retrieving a token twice, and outgoing sessions.
+> >
+> > Also check that the size of a preserved file is frozen, and that the
+> > test doesn't trigger kernel warnings.
+> >
+> > Enable CONFIG_TRANSPARENT_HUGEPAGE for the large folio test cases,
+> > CONFIG_MEMCG for the memcg test case and CONFIG_TMPFS_XATTR for
+> > FS_IOC_SETFLAGS. Those test cases are skipped without them.
+> >
+> > tmpfs quotas are not tested, since the test runs as root, which is not
+> > subject to quota limits.
+> >
+> > Signed-off-by: David Matlack <dmatlack@google.com>
+> > ---
+> >  tools/testing/selftests/liveupdate/Makefile   |    1 +
+> >  tools/testing/selftests/liveupdate/config     |    4 +
+> >  .../testing/selftests/liveupdate/luo_tmpfs.c  | 2055 +++++++++++++++++
+> 
+> Umm, no way I am reading all this...
+> 
+> LLMs are great at generating tests, and I'm not saying there is no value
+> in this. It is just that this massive code dump is unreviewable by
+> humans. It is also unfair to the human reviewer because it took many
+> orders of magnitude less effort to _write_ them with an LLM.
+> 
+> What do you all reckon we should do about this? Trust the LLM to get the
+> testing right? Do we give up human maintenance of tests entirely? Do we
+> do fault injection to test the tests themselves?
+> 
+> Or do we make the tests smaller and more human reviewable?
 
-Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
----
- arch/powerpc/platforms/pseries/lpar.c     | 14 ++++++--------
- arch/powerpc/platforms/pseries/lparcfg.c  |  7 +++----
- arch/powerpc/platforms/pseries/reconfig.c | 22 ++++++++--------------
- 3 files changed, 17 insertions(+), 26 deletions(-)
+We need good test coverage, but I believe we can break this patch down 
+into smaller changes where tested features are incrementally added.
 
-diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
-index 48fe0be71a89..dfd027cc9047 100644
---- a/arch/powerpc/platforms/pseries/lpar.c
-+++ b/arch/powerpc/platforms/pseries/lpar.c
-@@ -498,7 +498,7 @@ static void dtl_worker_disable(unsigned long *time_limit)
- 	up_write(&dtl_access_lock);
- }
- 
--static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
-+static ssize_t vcpudispatch_stats_write(struct file *file, char *p,
- 		size_t count, loff_t *ppos)
- {
- 	unsigned long time_limit = jiffies + HZ;
-@@ -509,8 +509,7 @@ static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
- 	if (count > 15)
- 		return -EINVAL;
- 
--	if (copy_from_user(buf, p, count))
--		return -EFAULT;
-+	memcpy(buf, p, count);
- 
- 	buf[count] = 0;
- 	rc = kstrtoint(buf, 0, &cmd);
-@@ -586,11 +585,11 @@ static int vcpudispatch_stats_display(struct seq_file *p, void *v)
- 
- static const struct proc_ops vcpudispatch_stats_proc_ops = {
- 	.proc_show	= vcpudispatch_stats_display,
--	.proc_write	= vcpudispatch_stats_write,
-+	.proc_write_buf	= vcpudispatch_stats_write,
- };
- 
- static ssize_t vcpudispatch_stats_freq_write(struct file *file,
--		const char __user *p, size_t count, loff_t *ppos)
-+		char *p, size_t count, loff_t *ppos)
- {
- 	int rc, freq;
- 	char buf[16];
-@@ -598,8 +597,7 @@ static ssize_t vcpudispatch_stats_freq_write(struct file *file,
- 	if (count > 15)
- 		return -EINVAL;
- 
--	if (copy_from_user(buf, p, count))
--		return -EFAULT;
-+	memcpy(buf, p, count);
- 
- 	buf[count] = 0;
- 	rc = kstrtoint(buf, 0, &freq);
-@@ -622,7 +620,7 @@ static int vcpudispatch_stats_freq_display(struct seq_file *p, void *v)
- 
- static const struct proc_ops vcpudispatch_stats_freq_proc_ops = {
- 	.proc_show	= vcpudispatch_stats_freq_display,
--	.proc_write	= vcpudispatch_stats_freq_write,
-+	.proc_write_buf	= vcpudispatch_stats_freq_write,
- };
- 
- static int __init vcpudispatch_stats_procfs_init(void)
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index cb3d96efb225..bda3cac1552b 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -687,7 +687,7 @@ static ssize_t update_mpp(u64 *entitlement, u8 *weight)
-  * This function should be invoked only on systems with
-  * FW_FEATURE_SPLPAR.
-  */
--static ssize_t lparcfg_write(struct file *file, const char __user * buf,
-+static ssize_t lparcfg_write(struct file *file, char *buf,
- 			     size_t count, loff_t * off)
- {
- 	char kbuf[64];
-@@ -702,8 +702,7 @@ static ssize_t lparcfg_write(struct file *file, const char __user * buf,
- 	if (count == 0 || count >= sizeof(kbuf))
- 		return -EINVAL;
- 
--	if (copy_from_user(kbuf, buf, count))
--		return -EFAULT;
-+	memcpy(kbuf, buf, count);
- 	kbuf[count] = '\0';
- 	tmp = strchr(kbuf, '=');
- 	if (!tmp)
-@@ -798,7 +797,7 @@ static int lparcfg_data(struct seq_file *m, void *v)
- }
- 
- static const struct proc_ops lparcfg_proc_ops = {
--	.proc_write	= lparcfg_write,
-+	.proc_write_buf	= lparcfg_write,
- 	.proc_show	= lparcfg_data,
- };
- 
-diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/platforms/pseries/reconfig.c
-index b543afbc1efb..d74a0710ec74 100644
---- a/arch/powerpc/platforms/pseries/reconfig.c
-+++ b/arch/powerpc/platforms/pseries/reconfig.c
-@@ -349,7 +349,7 @@ static int do_update_property(char *buf, size_t bufsize)
-  * ofdt_write - perform operations on the Open Firmware device tree
-  *
-  * @file: not used
-- * @buf: command and arguments
-+ * @kbuf: command and arguments
-  * @count: size of the command buffer
-  * @off: not used
-  *
-@@ -357,26 +357,19 @@ static int do_update_property(char *buf, size_t bufsize)
-  * whole nodes along with their properties.  Operations on individual
-  * properties are not implemented (yet).
-  */
--static ssize_t ofdt_write(struct file *file, const char __user *buf, size_t count,
-+static ssize_t ofdt_write(struct file *file, char *kbuf, size_t count,
- 			  loff_t *off)
- {
- 	int rv;
--	char *kbuf;
- 	char *tmp;
- 
- 	rv = security_locked_down(LOCKDOWN_DEVICE_TREE);
- 	if (rv)
- 		return rv;
- 
--	kbuf = memdup_user_nul(buf, count);
--	if (IS_ERR(kbuf))
--		return PTR_ERR(kbuf);
--
- 	tmp = strchr(kbuf, ' ');
--	if (!tmp) {
--		rv = -EINVAL;
--		goto out;
--	}
-+	if (!tmp)
-+		return -EINVAL;
- 	*tmp = '\0';
- 	tmp++;
- 
-@@ -392,13 +385,14 @@ static ssize_t ofdt_write(struct file *file, const char __user *buf, size_t coun
- 		rv = do_update_property(tmp, count - (tmp - kbuf));
- 	else
- 		rv = -EINVAL;
--out:
--	kfree(kbuf);
-+
- 	return rv ? rv : count;
- }
- 
- static const struct proc_ops ofdt_proc_ops = {
--	.proc_write	= ofdt_write,
-+	.proc_write_buf	= ofdt_write,
-+	/* what memdup_user_nul() could copy in */
-+	.proc_write_size = KMALLOC_MAX_SIZE - 1,
- 	.proc_lseek	= noop_llseek,
- };
- 
+> 
+> >  .../selftests/liveupdate/run-vmtests.sh       |    1 +
+> >  4 files changed, 2061 insertions(+)
+> >  create mode 100644 tools/testing/selftests/liveupdate/luo_tmpfs.c
+> >
+> [...]
+> 
+> -- 
+> Regards,
+> Pratyush Yadav
 
 -- 
-2.53.0
-
+Pasha
 
