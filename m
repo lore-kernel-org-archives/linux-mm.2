@@ -1,95 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00360606A32D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 03:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9BB606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 03:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MyX5D/kW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MogoHxc1
 Received: by kanga.kvack.org (Postfix)
-	id A34B66B05B1; Tue,  3 Nov 2026 22:39:26 -0500 (EST)
+	id 88AE06B05B2; Tue,  3 Nov 2026 22:40:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0D756B05B2; Tue,  3 Nov 2026 22:39:26 -0500 (EST)
+	id 861BD6B05B3; Tue,  3 Nov 2026 22:40:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94C6A6B05B3; Tue,  3 Nov 2026 22:39:26 -0500 (EST)
+	id 79F356B05B4; Tue,  3 Nov 2026 22:40:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6530F6B05B1
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 22:39:26 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 49293140350
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:39:25 +0000 (UTC)
-X-FDA: 85396031490.25.3A19DBB
-Received: from mta1.migadu.com (out-197.mta1.migadu.com [95.215.58.197])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 987EB140005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:39:21 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 441BD6B05B2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 22:40:34 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EE52C160643
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:40:32 +0000 (UTC)
+X-FDA: 85396034304.05.ABBDB9D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1C576140005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:40:30 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="MyX5D/kW";
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.197 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793763563;
-	b=iIZzzU7EtUCIqYlMjT6Zlvng1Cg2sxG3uWFk4zCUUJ1O/tJpi239F54T8TenUDxUUeHL/V
-	mku4Jz3/qK+0Gc6/qclfY68q5ERidb7sdtHg8yLz3px3KF0L+aG+KzTWJrJluOWmSiLi3T
-	BWQtQZ35qd2xA16YprySk2p4rvqgpWE=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="MyX5D/kW";
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.197 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MogoHxc1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793763563;
+	s=arc-20220608; t=1793763631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=01Aq7gKPieZxE3SBl3+t+xrp06XwQVnR3Mk/k1CLSlA=;
-	b=bKKuskNO4wEyjVDo12ZdGYWgRfLGIyyYqPj1oITnwBi1i6PADu/O18ZZvqBlN1dFJk+OVa
-	gUtAv+LfcJGambs0xXW/XYHzu81B1OKvQh3zHVeOy6mXSwFDXWpBcgn9bEgiFufqrkNlaF
-	eDVFcIC+qfwFMkrcy+IzT0fryLDy0eI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jqUVmAlPtX6mbUXql1pA60JQ91sSKa7gr/G4bWwt47g=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793763560; v=1; x=1794368360;
- b=MyX5D/kW0AqUhD0Q/cHG9pm+8XXS6sMt8TkP9NdXO+CvGqNUlgJ5vZG+HoJjJ2wWjwDffLr7
- DxgIUfSAce18eh/8+TmNdFDLxQiXaezPFaxWuGFeKYQdwfT6OVarApE/YPz4hY+7pSjYE3HWoVt
- 4GdOeOTHtiXRWfj219rxGcEI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5171a04d1f5983c4;
-	Wed, 04 Nov 2026 03:39:20 +0000
-X-Mizu-Trace-ID: 5171a04d1f5983c4
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <c8e43f76-3f99-44e5-9c33-d45660d9b5f7@linux.dev>
-Date: Wed, 4 Nov 2026 11:39:15 +0800
+	bh=+tZw0K5+jfSV2aRm7WOFqugUNHNTb6GHxCzlpfjuQew=;
+	b=PO3Tpxz1ZnaeZAGPjcqYHaiLW2J0LewuLnYdT8/7OaO96HvMeUkuaRJYQsLcFRzCjTjSk+
+	SqQCe5j6HkMWXqe0rczG0mD29YPPHMBUJbSErh5VJoj6TOMsjOKEchZJ7q5pXlWsmb0f0x
+	075G6hThKHSBuw5k2Hz8MKnaUGckwSs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793763631;
+	b=RKKRWf6agZYqUdNhIbWJoEAmTKa8V+ynXxnleaQ41xGsDGjn+4YicJMtb7JtqqE5/ebVvh
+	jWEuH9qkks8Ih1YXcr6870Z9EedGTZsJyP8cQeVHUu1Ozd9pefhw2kl/d9p/AW/msbAF6m
+	JKNOHyeOG3RFWwhKxiSUBxXO67M1wSM=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MogoHxc1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A5DAC60AAB
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:40:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE651F00A16
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 03:40:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793763630;
+	bh=+tZw0K5+jfSV2aRm7WOFqugUNHNTb6GHxCzlpfjuQew=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=MogoHxc1lDU2P1JZYWhARSR1ywNNKCZ8EfaS02CKoiTvz5PrWZR2PF50pgo5KbwYr
+	 4DB+o0PIXodT0XRysk7/W/FJ3GssiEo3GZe/I8DRjr5VScVGmrzSYpXy8wb3EZAQRn
+	 N9yFj/iSV7VxQu8MJctXaBVZLxgx3IDugiJDaiDqBGYTHmatKwSKUdZxPPde6mlugc
+	 5lkROUH1J+Dg/qvVOJRx3E5QjYc5tYut+NwMQvAuR0nOAnB5/8lPtBKHQR5G28Cs75
+	 A+bAtJCW7H/5vy0OicCC+tBWWZYzBvNK0tLnn0XSqgIqRHFfx7drVEGhKsKVgF7Ml/
+	 Np3l598dUmasw==
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-91c60e30054so3192516d6.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 19:40:30 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBw0zj7PUG+PDz1dFt2dbc7CNbhwte+FvgqDWoceP1utqp2Ggc+YrkBVgENFFqfpq+migSJCZ5earw==@kvack.org
+X-Gm-Message-State: APuU4Z/p0MxbRiAMdAIvh1QhFhFh+6aLZf76pMIRDTqePqW9L/pw9Eed
+	lGqW+CAA/AAmrSj/LCAmafxoGO4RGYBiMxIVLnhjT3NKr+MI0Kz4/AU1zl7SanvKDJwE3XCYBKm
+	5WAcgSzvzVUzHVn0pQtXRMn2YQy7CTdA=
+X-Received: by 2002:a05:620a:1a07:b0:93e:c12c:9dd3 with SMTP id
+ af79cd13be357-94421796eafmr2530707085a.83.1793763629745; Tue, 03 Nov 2026
+ 19:40:29 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] mm: hugetlb: respect cpuset restrictions for surplus
- allocations
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, muchun.song@linux.dev,
- osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
- Lance Yang <lance.yang@linux.dev>, Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1793692578.git.zhengqi.arch@bytedance.com>
- <d1e41a65970ced879715a73ce2607de7ad102fb2.1793692578.git.zhengqi.arch@bytedance.com>
- <b1c86bc9-24e8-4c87-b2a7-2eefbdd96c12@gmail.com>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <b1c86bc9-24e8-4c87-b2a7-2eefbdd96c12@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: gfttx36w14o54co8mozd4qi1snuaxd1m
-X-Rspamd-Queue-Id: 987EB140005
+References: <20261103113711.1832834-1-max.kellermann@ionos.com> <20261103113711.1832834-4-max.kellermann@ionos.com>
+In-Reply-To: <20261103113711.1832834-4-max.kellermann@ionos.com>
+From: Barry Song <baohua@kernel.org>
+Date: Wed, 4 Nov 2026 11:40:16 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4y+LX-CSnDJ59VT2nc-i=rB=4iMuBQYawMCktk-_SPykg@mail.gmail.com>
+X-Gm-Features: AclHuK_7q4sg1JpsDk1OEkyOWm8WF60WPZ6zY6tzDeYRFIK1cRTEyQLp5iaugqM
+Message-ID: <CAGsJ_4y+LX-CSnDJ59VT2nc-i=rB=4iMuBQYawMCktk-_SPykg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] mm/mglru: cache the last memcg node, make tail
+ insertion constant time
+To: Max Kellermann <max.kellermann@ionos.com>
+Cc: akpm@linux-foundation.org, kasong@tencent.com, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, 
+	weixugc@google.com, baoquan.he@linux.dev, baolin.wang@linux.alibaba.com, 
+	david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: rdzbdc4fmb8cuziy1uuhsj3iftfif1hu
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793763561-139581
-X-HE-Meta: U2FsdGVkX18Kd8zuyN2sjRcQkDpBUIHkrbMvymBvmqFO0S4LLB5z8aLeqcqNywX+g/svD3Lu9lL+ItX4JvljwWftzR5UExjUUPW/VvraGiW6rU7SJ/Ixl6F/oimfpqN1Q3lElE6IHVFBAw4Te0Mg46wQ2LX2sDln43ZqJ9haIxnobXvxVW0ooZtNRrkfUSh5eHrM/TIK3syAK39gUYKTDDCQ8Hh6LIfpQoUX4sMiVVy+Zm//eRFnJ5mLVZnVJf9KNeJeHWLRHxv2L3GXl7qCsubQ0kEKINShNeofqgcCuYjYvDPeDbZHSaLSOSYufn7DYpnlJAAJlmNjWdqLwYsc4AFVYzH9lmBbgFH7vac9LH76WVDAG7OxUKw0JvOA6+yNDRAx5QGz14/kHQT31K5NVILYyRQ47J8yH4uD37jFy2xLSuxtCscknmCI2cY0oZDxYW8J7+KpLJi/1bG7+P/mPWBwXFNPKH4/nDGMhS05ueieGmBjq0yo6Fw7q0lWp8B/DEU/y1DgRi2VppN07eDlKLkVTkCPo66cfvjdumZG1I2AJetvqg6WgMAHDiskElvc/Z8DMxRhs907IJ6HqXH0xGyWBHQjaqGlnJvho3vcgdV5T8ycFXWE5HAYC55a4PVfb0NQlmCI5UENqW1iTlJFIyFKcTDC9mIq5+Zcu05jK0/jKIkGdPzluPb5aWV/dy7LOugMLCFT0OaB4bKxFV+ndbKvjX/KvZ7EM29/XpHql7VkxMYmMJI7Ge7sCIyHHXnoM94L3YyjxuJRRRljDKzpj7Jc69WkpS2U7/2EVhOj7x76QFXpex88HV4UwKZBmQhGuSAqNVMZ7NWBFnaFYOCpPxgo5Jsf5MPJDZmSAL4zNr5r79E68OeLgpbPYBBmPkH6PIeZGClCWPBcfpbcCJ6O9GweA2Z3q7+CNm/NLQrQcij/Qpl+0Xbn8dPkEgjByu9HvS5FWLwImjE9QivyUEq
- 9jQu0Ill
- MV1oBzAfJl8NSNc9VqtJb59sz4cpdHHkVETw6iR3KlMhEYHbqzHYCXxPFhB2aBsx9M8sCBw4CTpbStMCKA2JzxoYWRz7Fn93wlCLltiOEeEThTraanNfm+hT278FEVyV5428A2E7tzl6sLWAmS7Oh3pfjObKY1ydc/ti7BL0mEvdphKCsrYT738HWMucN2tVNVSZR9JM2jgrJLW29+rTJjFYkZNCB6sT9CrwwQxKfqA+MLKBqS1lcjNGOBcfQh37ceJeQWtAtYMT3Ixw/yTnDRGlQ2ctm7NpTpJHl3XRr6ZfZIKOmoke66Qn0jWNxmL5673+5
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1C576140005
+X-HE-Tag: 1793763630-403168
+X-HE-Meta: U2FsdGVkX19etbOM43kQb1VgA5TUPKAsL8eDKCpLRPJOzgwbvzEc6xC81EVFEy8cKO6ZTZcr27CyO/vsFdHbl1p7XT/+w8rH+aCtR3jshSeL65ZvYrQ6FbDh0xy6bZhlObTFfpHRU/S6VdB1ixWHxIqA30osOsvuYvGe5VAF3YPc4eAdgwqEJRchwOQf3CkA8FkaDgjNFLcpY0RUggjjk8vNcFG1+juP/B748+2jhIMy2eKNk2DS9I/pNSGNapBA/x3b/SnP6yplG3+tEOtSBvE/p40ntaqWjCn8ytcVVSs9cf6r9c3SS343oP3WOFKRLiIJc2EOJDjnWTIYVyN4C5uGEfIG+r0ZOZSurERlxWzvnMsoQAYDxPr22R4XDIlZKku8KSZythdze4jhqagnCJqUmM87uo4MmBS6E2cPrPwTVrdiSF20eM7Iu+GEXcWnF3TimcyI1imspd4NNup1gZV74znSwRBodjTaTZ+30V/jXPIPzmiHHFisbDcX3mESrqmKWIE0qhw2dOgSw+f641PRDmSbBkol+ueUHvGKMsoBvNnHoNjx7H/RfWMKh/EfM+4PzkarZqHQgMiHvnVSfyNBzkkaigzGL4CLPNsgjN8dxwH/3eA6HEqI0WFNhnULQzGq2fZB2REDLxnVGjpehWTV4npvwQClg0ZfWuhFMEaR5DI0yzr6r4usYPmtjo2OXbHNoFvvEXDHhJQlBR4Hh5Lh+ZIqjLdW2pV0w2SsmbSNzFULW06/iZSRHY37cndIfJebhWH62+07+thsqII29KFX/C1xBkndc259chkpL3FfFl701mvJpE1KZ0l2mEjae81/QBOKYWMIUow0Qc4HeTCdc4gVuF5//Q5tbdkHxP8hdYfaX8c3e92Lvaxak/LyvE13IBf186DwDqomzAt3WhjhMqNNk6KxPbS+ZGUZk4T4ABKt8X90w5VAbJgLsDGD1LmZDrhx81Yjtdbcqm1
+ vUT95rzQ
+ 4UYiCmHFsxnSiiTVUF7Z47dCU93DqT4WVcP27wpQX50BC1CjyRHmjCEn+BDIEa1oQOtZBN/B/Vorq6gwPwqfbzbm3OE3Nxd0Z9lo2F8id3h3vrFKp508dNlr7XnVe8sofa9vfAW2M1cGO7dAMJIiBcSTDUu9lyS7EchsOSpqoXgN2qJJxlY86ag7yDv/qxJnu9PiHd/xiILPVKxOqOPFnpBIAjk3gcGWr1MWKvDF9vV3PF/2rcwH1C0JbP83NgKrDH53qcbWY6tH6k0Re0cZmuk8g37YotsG2UY1MuCCcTLYZfQbPtat0xa/tXWyjYXeK/M2/95ltBZsGFV1tHT3Ul95eBJHlaVA+sM/mpNu4JzMgB3peCJyjerXh1l0k3xRqR1fIPz5rdiGs8qU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,134 +110,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Tue, Nov 3, 2026 at 7:37=E2=80=AFPM Max Kellermann <max.kellermann@ionos=
+.com> wrote:
+>
+> Rotating or onlining a memcg currently uses hlist_nulls_add_tail_rcu()
+> which walks the destination bin to find its tail while holding
+> `memcg_lru.lock` with interrupts disabled.  With thousands of cgroups,
+> this takes a long time and causes severe lock contention.
 
+This is the main cause of the soft lockups and RCU stalls,
+right? If so, we may want to add a Fixes tag.
 
-On 11/3/26 8:21 PM, Jose A. Perez de Azpillaga wrote:
-> On 11/3/26 9:01 AM, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> Gigantic surplus allocations can escape the faulting task's cpuset.
->> CMA and the contiguous allocator trust the supplied nodemask without
->> checking the current cpuset.
->>
->> For example, a shared HugeTLB VMA has MPOL_BIND={0,1}, and T is a
->> non-leader thread. With surplus allocation enabled and no eligible free
->> HugeTLB folio, the following sequence can occur:
->>
->>    CPU0 (cgroup v1 migration)       CPU1 (thread T)
->>    -------------------------       ---------------
->>    cpuset_attach_task(..., T)
->>      T->mems_allowed = {0}
->>      /* Non-leader: skip
->>         mpol_rebind_mm(). */
->>                                    /* Fault; VMA policy is still {0,1}. */
->>                                    policy_nodemask()
->>                                      /* {0,1} intersects {0}. */
->>                                      nodemask = {0,1}
->>                                    hugetlb_cma_alloc_frozen_folio()
->>                                      /* node0 fails; node1 succeeds. */
->>
->> The 1 GiB folio is allocated on node1 despite T being restricted to node0.
->>
->> Intersect the interpreted policy with the current cpuset before surplus
->> allocation, preserving MPOL_BIND and MPOL_PREFERRED_MANY fallback rules.
->> Apply the restriction at the policy-aware entry point to preserve
->> per-node pool management semantics.
->>
->> If the cpuset changes during allocation, rebuild the mask and revalidate
->> any allocated folio against the current constraints. Keep it if it is
->> still eligible: freeing an HVO-optimized folio can defer returning its
->> range to CMA, so discarding a usable folio can cause a needless allocation
->> failure. Only release the folio and allocate again if it is no longer
->> eligible.
->>
->> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
->> Cc: stable@vger.kernel.org
->> Reported-by: Lance Yang <lance.yang@linux.dev>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> ---
->>   mm/hugetlb.c | 38 +++++++++++++++++++++++++++++++-------
->>   1 file changed, 31 insertions(+), 7 deletions(-)
->>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index ce9c8e57b8e5c..6fd6e58ace869 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -2181,22 +2181,46 @@ struct folio *alloc_buddy_hugetlb_folio(struct hstate *h,
->>   		gfp_t gfp_mask, struct mempolicy_interpreted *mpoli)
->>   {
->>   	struct folio *folio = NULL;
->> -	nodemask_t *nodemask = mpoli->nodemask;
->> +	nodemask_t alloc_nodemask;
->> +	unsigned int cpuset_mems_cookie;
->> +
->> +retry:
->> +	cpuset_mems_cookie = read_mems_allowed_begin();
->> +	alloc_nodemask = cpuset_current_mems_allowed;
->> +	if (mpoli->mode == MPOL_BIND && mpoli->nodemask &&
->> +	    nodes_intersects(*mpoli->nodemask, alloc_nodemask))
->> +		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
->> +
->> +	if (folio) {
->> +		if (unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
->> +			goto retry;
->> +
->> +		if (node_isset(folio_nid(folio), alloc_nodemask))
->> +			return folio;
->> +
->> +		/* Balance free_huge_folio()'s decrement before caller accounting */
->> +		lruvec_stat_mod_folio(folio, NR_HUGETLB, pages_per_huge_page(h));
->> +		free_huge_folio(folio);
->> +		folio = NULL;
->> +	}
-> 
-> the page allocator only retries when the allocation fails, why does this
-> need to drop a folio that raced with a cpuset change? retrying only on
-> !folio would make this whole block go away, with the check at the end as:
+The fix itself may not be directly applicable to stable
+kernels, but based on the logic of this patch, we should
+be able to work out a backport, right?
 
-You're right. I overthought the cpuset race and added unnecessary
-revalidation of successful allocations.
+Another option is to leave the cleanups in patches 1 and 2
+out for now, and make patch 3 self-contained as the first
+patch in your series, if that makes backporting easier.
 
-> 
->          if (!folio &&
->              unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
->                  goto retry;
+You can then move the cleanups from patches 1 and 2 to
+follow the new patch 1.
 
-I'll follow your suggestion and retry only failed allocations, and
-update the commit message accordingly.
+>
+> Cache a pointer to each bin's last node, making tail insertion O(1).
+> This requires remembering the bin number (but the new struct field
+> occupies a hole, so it does not grow).
+>
+> In a micro benchmark that creates 1500 cgroups and repeatedly writes
+> `1024M swappiness=3D0` to `memory.reclaim` in 8 threads, the request
+> rate increases by a factor of 9.5 and the average duration of each
+> write request is reduced by 89%.
+>
+> All writes return EAGAIN in both runs; the benchmark measures the cost
+> of reclaim attempts that cannot meet their requested target, not
+> reclaimed throughput.
 
-Thanks,
-Qi
+I'd appreciate it if you could also mention Ridong's earlier
+work in the changelog:
 
-> 
->>   
->>   	if (mpoli->mode == MPOL_PREFERRED_MANY) {
->>   		gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
->>   
->> +		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
->>   		folio = alloc_surplus_hugetlb_folio(h, gfp, mpoli->nid,
->> -						    nodemask);
->> +						    &alloc_nodemask);
->>   
->> -		/* Fallback to all nodes if page==NULL */
->> -		nodemask = NULL;
->> +		/* Fallback to all nodes allowed by the current cpuset */
->> +		alloc_nodemask = cpuset_current_mems_allowed;
->>   	}
->>   
->> -	if (!folio) {
->> +	if (!folio)
->>   		folio = alloc_surplus_hugetlb_folio(h, gfp_mask, mpoli->nid,
->> -						    nodemask);
->> -	}
->> +						    &alloc_nodemask);
->> +
->> +	if (unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
->> +		goto retry;
->>   
->>   	return folio;
->>   }
-> 
-> 
+https://lore.kernel.org/all/20251119083722.1365680-1-chenridong@huaweicloud=
+.com/
 
+>
+> Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+> ---
+[...]
+> @@ -4561,21 +4561,37 @@ static void lru_gen_add_memcg(struct lru_gen_memc=
+g *memcg_lru,
+>                               int gen, int bin, bool at_head)
+>  {
+>         struct hlist_nulls_head *head =3D &memcg_lru->fifo[gen][bin];
+> +       struct hlist_nulls_node *last =3D memcg_lru->tail[gen][bin];
+>
+>         lockdep_assert_held(&memcg_lru->lock);
+>
+> -       if (at_head)
+> +       lrugen->bin =3D bin;
+> +
+> +       if (at_head || !last)
+>                 hlist_nulls_add_head_rcu(&lrugen->list, head);
+
+Do we still need at_head now that MEMCG_LRU_OLD has been removed?
+
+>         else
+> -               hlist_nulls_add_tail_rcu(&lrugen->list, head);
+> +               hlist_nulls_add_behind_rcu(&lrugen->list, last);
+> +
+> +       if (!at_head || !last)
+> +               memcg_lru->tail[gen][bin] =3D &lrugen->list;
+>  }
+
+Best,
+Barry
 
