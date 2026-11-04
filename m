@@ -1,94 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D569606D809
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94ABA606A332
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xeRQDtml
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AAQeB94N
 Received: by kanga.kvack.org (Postfix)
-	id 12FD76B05B2; Wed,  4 Nov 2026 08:22:42 -0500 (EST)
+	id B22786B05B7; Wed,  4 Nov 2026 08:26:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1094C6B05B3; Wed,  4 Nov 2026 08:22:42 -0500 (EST)
+	id AFAB16B05B8; Wed,  4 Nov 2026 08:26:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 047D76B05B5; Wed,  4 Nov 2026 08:22:41 -0500 (EST)
+	id A38946B05B9; Wed,  4 Nov 2026 08:26:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE71E6B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:22:41 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6176D1406F4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:22:41 +0000 (UTC)
-X-FDA: 85397501322.27.DCB6F0A
-Received: from mta0.migadu.com (out-203.mta0.migadu.com [91.218.175.203])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3858E4000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:22:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xeRQDtml;
-	spf=pass (imf07.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.203 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793798559;
-	b=6uk1yLwU72o7Zwx1dSixSAVzHjGWjfXDfHJnmVw25ldq3RVrPl97VaEUB+9nMTPqWuzHGu
-	xjqSl3cA/PSUwHagDP9vYtP3Er9DaJqD3GytcRQt/YXDSfMPxB8xNsxSt4eNOeZlxAREag
-	XyfLHCKt3eCZxcw1FBas4w9Q/13dz68=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xeRQDtml;
-	spf=pass (imf07.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.203 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8182B6B05B7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:26:37 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0E4A21C40C3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:26:37 +0000 (UTC)
+X-FDA: 85397511234.08.718CFAA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 747FD180008
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:26:35 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AAQeB94N;
+	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793798559;
+	s=arc-20220608; t=1793798795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YJLp1C61ZMTzYyDI1094DXPw0QeoLZ9TuClqgP3WcCo=;
-	b=vmqpWb/YmJHg/zhLoFue9YwMmXrsEt0tF2WoBq/EwoFRGFhzgwSD+455sRXNoaImmOVKr4
-	uwq0T/L3PLoX65zOKNwkwU9MB32X8FbR81+Ikp9EoShNGYA7Fhsg3rSW+Qtx0EgsN596MP
-	HOi8/uRb09Clqf0wU3YrTwyjvgdnlCs=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jUJDOuWPwhfc5ioY6VwjRsiAmlQlmYoBB1u+kPlxRXw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793798558; v=1; x=1794403358;
- b=xeRQDtmlQWyfLPfmAyq2/c/j715HB5HtOQHH6h5RFPtHbrR8D0QfolUIf44z8+J3bDxFyI3T
- 4dnoLaxH7QfmLRz4MGMW7fxYxTjnzAO08EI9+BEsLlRcwLBXJ/ANQ2SMSaQZ6TawAdQf8Na0oeP
- 8acjarK+F8KL/3s31DQu6e3A=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9af1b8cea7f251b8;
-	Wed, 04 Nov 2026 13:22:37 +0000
-X-Mizu-Trace-ID: 9af1b8cea7f251b8
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <0fd8f5aa-2636-4171-9300-3e04ab98d393@linux.dev>
-Date: Wed, 4 Nov 2026 21:22:31 +0800
+	bh=pvQk7gkgjyECtllSEXxMYHx9i1xSAVAK6APJPPvCqm0=;
+	b=s9q97fsJNegGWhQbv6DLl2lK5lDG4+IJaseJ54T5LUW94AYhAkHTamE19pokb4DAxONlvz
+	T2N2gwYfpvmZqZXDuhY1YDj5k/wVG5gL8b7zFBFBVo9rjDlbm6ch5F70hgS4Qq+He3Li9T
+	tWfbrXKKuzW72SKL6cjfDkYL7ejGRe0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793798795;
+	b=t1yNbMJUN7NB543hv9Hx2QrNyXwWL4MKC5owzdxBNa0py13bK9qAM1Er+it6Z3rAUg0QCn
+	jm8sz6m9n14HDqlZOjuS4OAG6jDhij12fBFHose4mpzTXJG2gisw3DAib0HKf0vPfftJhl
+	tWSBWTUfOOnBFXchJeRtNmjZHzjUG+U=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AAQeB94N;
+	spf=pass (imf16.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 92EDB40356;
+	Wed,  4 Nov 2026 13:26:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9C61F000C1;
+	Wed,  4 Nov 2026 13:26:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793798794;
+	bh=pvQk7gkgjyECtllSEXxMYHx9i1xSAVAK6APJPPvCqm0=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=AAQeB94NpsdVxdbYF50v7JrxTJ1MLmAG6T5ILf5+I7BHKtmTQeMeLUsVdV9aAKJVb
+	 F8aobQ2oDHgTUEkO+hLUrZO2Fs6BLUEX9y/S/oqQY7sF61wAP95BBkBCz+S2kZIm7M
+	 2qygBxvGCen/9kY8WP5FXnqVn2NYpENQNyoFzj6xasHx04ktg3N7JTbponsO+FBA8O
+	 MTq59fCOT+AWqw7PxNNGuzK5yvxfXmIt6oNkjBUWq3LDHFJtB9aJHmvFZQAf7pBYf5
+	 Ai+VKaIUMG/mOwbCQu68+3iEQ7bkX8G/U0l1OHYMA92ntsVjriWAeYkIvkV0ZemmzI
+	 mqKBfJJ0rQ/1g==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org,  linux-doc@vger.kernel.org,
+  linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org,
+  linux-mm@kvack.org,  Alexander Graf <graf@amazon.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
+  Christian Brauner <brauner@kernel.org>,  David Hildenbrand
+ <david@kernel.org>,  Hugh Dickins <hughd@google.com>,  Jonathan Corbet
+ <corbet@lwn.net>,  "Liam R. Howlett" <liam@infradead.org>,  Lorenzo
+ Stoakes <ljs@kernel.org>,  Michal Hocko <mhocko@suse.com>,  Mike Rapoport
+ <rppt@kernel.org>,  Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush
+ Yadav <pratyush@kernel.org>,  Randy Dunlap <rdunlap@infradead.org>,
+  Samiullah Khawaja <skhawaja@google.com>,  Shuah Khan
+ <skhan@linuxfoundation.org>,  Suren Baghdasaryan <surenb@google.com>,
+  Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v3 02/10] selftests: liveupdate: Add tests for preserve
+ and retrieve user argument
+In-Reply-To: <20261103010216.3447716-3-dmatlack@google.com> (David Matlack's
+	message of "Tue, 3 Nov 2026 01:02:08 +0000")
+References: <20261103010216.3447716-1-dmatlack@google.com>
+	<20261103010216.3447716-3-dmatlack@google.com>
+Date: Wed, 04 Nov 2026 14:26:29 +0100
+Message-ID: <2vxzzevok9ru.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: cui.tao@linux.dev, Chengming Zhou <chengming.zhou@linux.dev>,
- Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org, cgroups@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/cgroup: test_zswap: use the total RAM in bytes
-To: Sasha Levin <sashal@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
- Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
- Tejun Heo <tj@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>
-References: <20261103163919.641249-1-sashal@kernel.org>
-From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <20261103163919.641249-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+Content-Type: text/plain
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xdy9kn8yih6835efqinym75u9p5tkjrx
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3858E4000A
-X-Stat-Signature: o79topugumu5uaatjj7az1j8mhtfoxrk
+X-Rspamd-Queue-Id: 747FD180008
 X-Rspam-User: 
-X-HE-Tag: 1793798559-182677
-X-HE-Meta: U2FsdGVkX1+6h9SP1T2amwMmR7eU6qcYP4kQOgGhw6LOWQuL7ZCC8jZajqXqSPjSfnRKhRdTb0SkemOJhw3qqnlxOxLWPxec3oZh/fovsKlU89TDLjWR6Dlxn35NB+2ndOwZL3RWolzZraCXnjJuqxCLImpXbU30w7ANHFIUC9Dee162zjr8ZdXRW0VHFFgVGVBk990tpsiW7yP3Bbqng3ng3voqOLWZ2dKNosIJKrbKofRDckRh0cgoCR1/3gMNeZMopiPdWoWYMBJ82rdhYzDRdvNer2gX91xI2ZkJIFzf6S2W159preA4a97OlP2SBx6vwkfAxElUEKszrB70rdAgaily/2ODKqKCj0zFkclPJ48D6Es7/eKFWvvytEadB3HDQQ2HSg1d9M2lQmsowLU4MSAYWvVqRxRtT7E7qV/Jy38qEoRGZtgD8L+3J0FR1wIux7mdaGmZF5cPNClICt4SeUwvR8MR3p7XqfwordgmW/rNKYOuCiuUbUi+eAHts8KkndUMlL4wKcTa+EnDJiaIodP4TaGJ/yb6bjenuWBXh4Yj5cYFGezd1YrnkuAWYInpFSCxnhPopgagRWU90LhaupDTPw705+Xn9v82JKuT8qvZKvhcBqoyMZ4rVqfGY+dGPqcJd0qEaEhYAgttBGCQblFEB+hgXeV8IgJgYGGpsXXF5SsDuNvI0ZZjClypvb2wcYUlb7+gpeagKkr1ivgdOnJGYUGrr+qOJNgRFv6f2njXSAfyTe3fJ5lkHKsM4AO3cbVBF4WsSAZsBaZ3kml5Pl8h2IZG7Tzs11fKunIxRzzRNKt5uts4UB0X9tRTgCkb63jfwhvF0dTn59WzDSRaOZ27hBDduTjfxvsK6tNQdTlf5XvPoyXVeBX4eA75AQjnT+gmJ4mVw5gdUJxXeC+cearZV95LBFfFmnXEB2J8mX8fHBTVEKi/uyCMkIlcSwuCo8y3ENmtZPFYkaA
- VoVGoXjt
- A4JvfJNCyLjFgr79ZyOsAyG2SmMpr3u1+9VPomeW9Dtg9lSMuhtomboR0JsQB13AXQr8HwWyZ28rdzedqcQkSw53jyuETQeqt8tFmc9dfxeKCWMrDTClnUjJ1fFk9MvkSWAo4JQlpsU6OECkd4HppUeOw8LlJXSRtwDHBRQUBaKTVU0Rlo2dRmTNOrxTicTS0YTxG4OSP9+vDOudXgEEWqB6ZyowVoaR1rXmGwMfzt3acsN+/fVBtZ92zTL7rVRnboXP24As4Y7KbVmto/Q8hvnAoTqhS/5QV0JlVCoxvMKcyAJvgY6aZ/mTKr3nTwi/QZWAhm504/yAJ1CDZ1y4Vz9I/sbh5A9tx6ndveKX/+ElwjAzuaHpLTTcTWA==
+X-HE-Tag: 1793798795-812610
+X-HE-Meta: U2FsdGVkX18ESUMSwkAEqoCEMq5vrdjDwiub3svDTzWN8b20RLjyfr7vux+AC+jTWk5ARH+DJ69gutrrhvP7veIzTicPGPwXRxsEy0j7Ixjoxg+8DdLiDycfJ1jLZvy8bWleOk4bNt/pEgWd8ME5Kj+QfL7hFYPOSgNUFKWP22Y8ZQuZzp2kJIJF2jj+kod7ve0WYBoq+yJBtF378LUlZZN/QTX2AROIVkwymMrgeL6nV5OS1p7sey0faA7fOEZnxX/r+IVx8M6aDBL/cqBfH7jxLRYVPSAlXInOXrygWbB3nqgvklm5qnz11o1v8RUEw7IIFd2/567QfNnbaNd7RGOm26FMk0RIBA5QzrCyImYgp7xnTqXObO9a6gShhxv3gidpb9HuxMTa89SyK56E1j7o21rr13Vcswt7wIrTJ7xwR67LF86IQTrak3670dwrINyxEMtpl5SDr3gduxqpWwBShScVygfG9mZs3hsopmeOKucM6Qi0MKua3EguTRR9hgu8hLgoKJLFSdU0CfYgaVDyj8ooFWB+66JOrNgdRMk8mbIGkd9aZdwsG0He1Cv0XE2k1S0t4VyKQATJVtnswUGNO0mdsyzKM8ZK7OJP299eX5ObobRMKtlCvpIsI/uVKjtuz+hkEx99RJiHensImJBs3d0sDzEQ6uxQCWOrP7M8OUQCw7faP0D5DJZkXJgq/rqd7LAhTuv34cObwuzsAOSpssLp6w88vdMXKUhDwNIGvC9bB1fFemz6pRxFFjCehops2ei2J4TTyj375ZhHsHMjQEfG7XHUVMf/XO1gDWwdoDM0ssDttmjJCUca5vaGPyC9Xzy2SahfDghtw4Wt8T2GTxlvpb/J4kN8ArQZ1ZySQVSytQ9oeRFUL2TqtxB670Po+A6RLFPtK0RruLzDuz1H477lW1sVxvwpm95FlaRQeYNp2VsBtI5nmsF/2qViJK9dlRIQ/l6ecolBXxe
+ et+KlXqS
+ avLqCTHNuf5tVRUZlEm7j7323Cs2mJuUHsYrtPc9CHD/8kgpya4LUutSBw9YHmJANOuHfrxModpF2f2DM9aoQ6gY86iJRk+LKPdBv2BpoP3sdS8Vu/CdMPH0/9Je4uGPDGlXcf8E0RE3I49mST89fnzRyce88401sAXqG3WbamEoFH8BKxybWOAJwhD+yA0TXx4SBw9C2Pq3rJPLyOjtDm8YMhcNYvP4Ye6NeFoyl1nLeEf255mLJUJzYL2efqkdtcyh7kWm5sRycxYsZQmUWerHBmu1D7RFRN4SmWlkamUoXSv8I12ZTLWGIGkqGxFXkWF7vnr0G44eSfRGCS/X0msDkxw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,88 +108,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Sasha,
+On Tue, Nov 03 2026, David Matlack wrote:
 
-在 2026/11/4 00:39, Sasha Levin 写道:
-> test_no_kmem_bypass() uses the totalram field of struct sysinfo as a
-> byte count, but it is in units of mem_unit, which can be larger than 1
-> on 32-bit architectures. There totalram also can't exceed GB(4), so the
-> size check never triggers:
-> 
->   test_zswap.c:609:24: warning: result of comparison of constant 4294967296 with expression of type '__kernel_ulong_t' (aka 'unsigned long') is always false [-Wtautological-constant-out-of-range-compare]
-> 
-> Multiply totalram by mem_unit as an unsigned long long and use that for
-> the check and the values derived from it. Nothing changes on 64-bit,
-> where mem_unit is 1.
-> 
-Built test_zswap before and after on next-20261103 and ran both on a 4G
-VM, identical results, no change on 64-bit as claimed.
+> From: Pasha Tatashin <pasha.tatashin@soleen.com>
+>
+> Verify the user argument support in LIVEUPDATE_SESSION_PRESERVE_FD and
+> LIVEUPDATE_SESSION_RETRIEVE_FD. Add luo_session_preserve_fd_arg() and
+> luo_session_retrieve_fd_arg() helpers to libliveupdate so tests can pass
+> a handler-specific argument.
+>
+> Add a preserve_memfd_with_arg test case to verify that memfd
+> preservation rejects a non-zero argument with -EOPNOTSUPP, accepts an
+> explicit zero argument, and remains compatible with callers passing the
+> legacy struct size up to the token field.
+>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Signed-off-by: David Matlack <dmatlack@google.com>
 
-One small thing: could you add a Fixes tag? The issue seems to date
-back to a549f9f31561a ("selftests: cgroup: add test_zswap with no kmem
-bypass test"), which introduced the sysinfo block, and 6f615890b848
-later reshaped it into the current GB(4) comparison with the warning.
+Reviewed-by: Pratyush Yadav (Google) <pratyush@kernel.org>
 
-Reviewed-by: Tao Cui <cuitao@kylinos.cn>
-Tested-by: Tao Cui <cuitao@kylinos.cn>
+[...]
 
-Thanks,
-Tao
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
-> Found with 32-bit builds of the selftests (gcc 16 and clang 21 with
-> -m32, with and without -D_TIME_BITS=64 -D_FILE_OFFSET_BITS=64);
-> KernelCI's 32-bit arm builds show the same warnings. The changed files
-> build without them now, and the x86_64 builds don't change.
-> 
->  tools/testing/selftests/cgroup/test_zswap.c | 20 +++++++++++---------
->  1 file changed, 11 insertions(+), 9 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/cgroup/test_zswap.c b/tools/testing/selftests/cgroup/test_zswap.c
-> index d50acc1b83ac8..223e2eb1329ab 100644
-> --- a/tools/testing/selftests/cgroup/test_zswap.c
-> +++ b/tools/testing/selftests/cgroup/test_zswap.c
-> @@ -597,6 +597,7 @@ static int test_no_kmem_bypass(const char *root)
->  	size_t trigger_allocation_size;
->  	int wait_child_iteration = 0;
->  	long stored_pages_threshold;
-> +	unsigned long long totalram;
->  	struct sysinfo sys_info;
->  	int ret = KSFT_FAIL;
->  	int child_status;
-> @@ -606,10 +607,11 @@ static int test_no_kmem_bypass(const char *root)
->  	/* Read sys info and compute test values accordingly */
->  	if (sysinfo(&sys_info) != 0)
->  		return KSFT_FAIL;
-> -	if (sys_info.totalram > GB(4)) {
-> +	totalram = (unsigned long long)sys_info.totalram * sys_info.mem_unit;
-> +	if (totalram > GB(4)) {
->  		ksft_print_msg(
-> -			"requires less than 4GB total ram, sys_info.totalram: %.1fGB\n",
-> -			(double)sys_info.totalram / GB(1));
-> +			"requires less than 4GB total ram, total ram: %.1fGB\n",
-> +			(double)totalram / GB(1));
->  		return KSFT_SKIP;
->  	}
->  	if (access(PATH_ZSWAP_STORED_PAGES, R_OK)) {
-> @@ -622,12 +624,12 @@ static int test_no_kmem_bypass(const char *root)
->  		return KSFT_FAIL;
->  	if (read_min_free_kb(&min_free_kb_original))
->  		return KSFT_FAIL;
-> -	min_free_kb_high = sys_info.totalram / 2000;
-> -	min_free_kb_low = sys_info.totalram / 500000;
-> -	values->target_alloc_bytes = (sys_info.totalram - min_free_kb_high * 1000) +
-> -		sys_info.totalram * 5 / 100;
-> -	stored_pages_threshold = sys_info.totalram / 5 / page_size;
-> -	trigger_allocation_size = sys_info.totalram / 20;
-> +	min_free_kb_high = totalram / 2000;
-> +	min_free_kb_low = totalram / 500000;
-> +	values->target_alloc_bytes = (totalram - min_free_kb_high * 1000) +
-> +		totalram * 5 / 100;
-> +	stored_pages_threshold = totalram / 5 / page_size;
-> +	trigger_allocation_size = totalram / 20;
->  
->  	/* Set up test memcg */
->  	test_group = cg_name(root, "kmem_bypass_test");
-
+-- 
+Regards,
+Pratyush Yadav
 
