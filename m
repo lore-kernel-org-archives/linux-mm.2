@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5309A607ED56
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325CA60B4C21
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:37:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oZGa4uxN
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IGC4y00A
 Received: by kanga.kvack.org (Postfix)
-	id 6A8936B05BA; Wed,  4 Nov 2026 14:37:38 -0500 (EST)
+	id 3EA656B05DC; Wed,  4 Nov 2026 14:37:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 658E86B05DC; Wed,  4 Nov 2026 14:37:38 -0500 (EST)
+	id 39AB26B05E0; Wed,  4 Nov 2026 14:37:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D1546B05E0; Wed,  4 Nov 2026 14:37:38 -0500 (EST)
+	id 262FD6B05E1; Wed,  4 Nov 2026 14:37:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B2AE6B05BA
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:37:38 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AA21E14081A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:37:37 +0000 (UTC)
-X-FDA: 85398446154.07.0F02DEF
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 065252000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:37:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oZGa4uxN;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821056;
-	b=2xRvcvOGrt4vdwJlyg22vpctaIdCqzThUeVn68WYZQhow36AKB3meXmCZB8+k1SrTOLAdx
-	+A9+fep39wNzfeZ0llUJrwFr0b4ldN5gEgkFKGhLe9FaZHkhECgN/cFO0eEJDARoXw2rn7
-	EtKJwuwerXHArIFW6nVSq43NZ/lrphI=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oZGa4uxN;
-	spf=pass (imf03.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EAB8E6B05DC
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:37:52 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83A081C4240
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:37:52 +0000 (UTC)
+X-FDA: 85398446784.06.A445563
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id ABBC71A0008
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:37:50 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGC4y00A;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821056;
+	s=arc-20220608; t=1793821070;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FBXs+Ai9hCvv2gTN7UF7ctcncQyXKpM3GPgKiB4YAT8=;
-	b=W0mkfgqZA1lx+dLxcL6av2Rocs1x2S+/ZQmFEujR5witaClxsX8q7Qxa5GdJeebn8O10tR
-	DRdEb2W5ttM3G3smFTdx72q9paM5OEUS2wze6FV3TQ9PGqpaTErXasY+mfeU2j7+3cOqUS
-	OQoBziorfhRd+rCKV9H8NUxEBwhGy5g=
+	bh=JUeWoKePwtQbwIaIqH9pLOo2XgGktDed7c18k0485G4=;
+	b=8qjndtoJwOqskB40PO3YLi09terY2lU3i7QMjiM0AlE/cU1iVcbvt9uUQlPbLps2CmNzr9
+	lXAChefRkOE4vFBlWdnK3C98j6dgJauo+mkhNS9TuKwee2zE8durZNrotvzAoBNQucJesB
+	zG3kPxK8hyvCeo2vj5o+i7ByCJy9BD0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793821070;
+	b=dLVWgcR5Jix4oT78ttX2R8ZAfsc/rupU5sP57bTXr9KBtLFncEOhiL5BMuYt61CWEx1hZ0
+	7Yfg3aIB6A0ybWREsvW8hitWIAQ5zwaO+z1EyS6i3a5MxVZw2MIcdre0zSCuIhs0mibXWZ
+	f6mfvacVAghZm4GGkO7RTBhciXLFr8Q=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGC4y00A;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8BE6760DBB;
-	Wed,  4 Nov 2026 19:37:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DB91F00919;
-	Wed,  4 Nov 2026 19:37:22 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0C9C741875;
+	Wed,  4 Nov 2026 19:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099291F00A02;
+	Wed,  4 Nov 2026 19:37:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821055;
-	bh=FBXs+Ai9hCvv2gTN7UF7ctcncQyXKpM3GPgKiB4YAT8=;
+	s=k20260515; t=1793821069;
+	bh=JUeWoKePwtQbwIaIqH9pLOo2XgGktDed7c18k0485G4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oZGa4uxNa4f8lPnKCnZcOshs5bIS38FNrm9Me6KMthFTmP+MOwFabIXkXu/wyKAZr
-	 eMuwJ+f88gJjEcbCjCfZt9K+REs55uNNlIGT+aTII7ZPio3yO+n12ryLYxF/Wa4AGF
-	 RTs/sXBBLK+HuDFmMw4GQx8DcZDiGoyEhXa9KRIJsWTr/ApICfUXhkzLdIecTTSsZM
-	 nHz+oFP0Qjh5+4b8BIeAsHx40sCyakErwgtYM1ptBy94JFV23RAvKVaGe6b4yCL5Fu
-	 zKdbeftWi3Cfr5diHQHdPhNunK20Crp1slFjQ4GoZOScF/vgZqztop91HodBl1uB/4
-	 9Lcb7Om7gZE0g==
+	b=IGC4y00AETc18leOOoiGNlJjI14uptUXwL1lAk39h5bFLDzozGmXP95FjcQk1ai3d
+	 qHvAP6G/y59z8vruoDW5Y1VeWIGTKlWb3dS3NUkuiWuDTaM3k3qDR2DhBmAlAVa/1+
+	 jkEC8ZsTOxq9kedteP9jaXc0YU1IKsX6hdj0bx6p0gNUMMcxE+pQQ/pK252kFB4GIS
+	 hTq5UB6PWymKT/rN8RRkkmh+m3ZSylCXxhaihAqxEz2EOYZbBvhmLGNZuz6vL29QGa
+	 VhgHDRMX/6Xwut4w4xO7r/ecc/JCMProqA/4Q644WrS17ADmUJzAwlPQ6KlQcm2EPd
+	 PESuNHlL70alw==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 07/23] powerpc/rtasd: let procfs own the wait queue of the rtas error log
-Date: Wed,  4 Nov 2026 20:37:20 +0100
-Message-ID: <20261104-work-procfs-arch-v2-7-2aeb952c9597@kernel.org>
+Subject: [PATCH RESEND v2 08/23] powerpc/pseries: let procfs copy in writes
+Date: Wed,  4 Nov 2026 20:37:35 +0100
+Message-ID: <20261104-work-procfs-arch-v2-8-2aeb952c9597@kernel.org>
 In-Reply-To: <20261104-work-procfs-arch-v2-0-2aeb952c9597@kernel.org>
 References: <20261104-work-procfs-arch-v2-0-2aeb952c9597@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1920; i=brauner@kernel.org; h=from:subject:message-id; bh=URY8OmvUYSj7cGs0MgqVpOcYmOKyD/AnlDpC5EfxAis=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97vhysuHhtP2XD0+QvcrjIThN4YyziduaSa0B5Ze45 bccDt8i3VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRdXcYGf47m6tcV9TUtJW6 6rN1+ac5lkXuOyKb82c41N9Z+KfrawEjw4GOwjOGH8J1JW9/u80gYm/VabKvXdx4/nGt/Pjujku VLAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5534; i=brauner@kernel.org; h=from:subject:message-id; bh=R72k2XaBDNkNWoVo7wOLN896i1gM+zYb0aj1A9vFVUU=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97vgWxbNt8wYWhvlH5RZK+OjxWGdnm7duUb1soNTor 3Rw5+3ijlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgInkrmVk+MQl1Nv2KdDqueyX 08pFh+YVduR7t06b45nf4Rck/P9LDsN/n+PLK+08DBJ4p96cFfH166t5EqlFHC8yROYun/7XY7Y 9JwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3gjqnoxm7qw51bp5e5337mhc8i39zax3
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 065252000A
-X-Stat-Signature: 4sga9r7uewj4cwpr48tro67ocom9iwno
-X-Rspam-User: 
-X-HE-Tag: 1793821055-766934
-X-HE-Meta: U2FsdGVkX1/Sa3rafn5pRgkB1ZJ3Vs4PEDmfcse7BqqDdJwKGHRjK7c0FGazvC6hLnsr77MmaOVJXE+9ed+RivmLNhVqfXaRZHhY4x2aLKZ4CeHuP+/nk92FxfkGWIxCvnGe9qV53Cp3uRZbydOsK7x0bY4cNf2pUxLE7/Ersfx4u9zIrlBX3KNEz3NxxEuvWsl0izErFYn36a95H+NPi3q8PlSr03CUL17njPLahvdpCG6piG8FyWwoa5eyjnklsAyFD5d/oeXu98mcXvOa565l+fwdVlIYdxwngDJ9VJLzUIoybKALf5TriVrS9TZva6X7g/a7oD813+h5agIisML6ymqkrQSTiwiu8ivAVVGUnU5NH9PfuwWjV4krOvb8FkZooAykCQQuyzSFJS+nnfe4pdie3SQC82HNYQARVbl71APKKb7XhrAqt69JO4tyNEtfUTfIKmYRo6fi2YhOmBpX+zRQpa/QSqc/XsqYOYHzSo8Zx6OX01XzwDsAAI7foFh6bD4weiBKttIr8iUZzkxZFPEznrIABIxk0GBLegcnRsb+eG7Tv2PEE1rViECfEH30DdDOdT1fjD72jx/BJE2noE5+UyKdx5yr4VO7SwqsMP65IWnHpwzAOkJ2eWZyAVmBI/bmBOOMUPjTBhF0RCMxB8dS1Gwxg0oKwkVvCHH5vGNTQUuWxLXdqZCnaB6rTRlGxyrlz+DSBch7VaBNfSFUz2kzb2LOtAgp+cBkl6nl+Y8pSaL2Qfw88MucCSDyUowzFH/z+O0FRVku2/uuGj8F+hGVmZsVLJefTbhcxYwIjx2q3D7wLyCLHrThGx6Fz1rflWwBE4UJSJd+7C3PjwmR7yqnUv0ELpCG7kaXp8unUM0gFMuB/65NSiNGKvpB1aB3DM2UQ5i7TmNy8TCnVraDhAtxwfu0IGOPU/UJbQDUOrdpEros4hFwTOwOOmh4dPg84Nr8QB3xBeU63j5
- NYymq35B
- Cnh88m8ntJkCnH4OZKidX3QU82TEO2NM+7AQn+C3xsmulSb2Q9OWIcWYPMYXaqjtw/dECuJPImH0fUXKzZufFl3+225PI5Pj8wTntUhE0tj5Cd663sXMkavbFcjisgNWgXBCxKBT4G0P6uoYKvlL4EzvD/OJUJJJZxJc0imyBXf8ZHYn9KfAGWph2c9+Y0e2FTetvnpsdCDKHIPhu18rbSlIM4qIH2v4KJA30fLEGiMRi7aXioifG+Z9AAOiRbqxBnvK211Ox+DNU5KiiS71tnEQrog==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: ABBC71A0008
+X-HE-Tag: 1793821070-387232
+X-HE-Meta: U2FsdGVkX18TVzX83sXGABn0tQBOHTaqr3fxDXLdXxinahr+S8h37ZnO6ak5fMwA54ZAW0kYKLOJfSWiYzij1CTAIKri1+F/8tXuN0oHRf3tCydzhv/gsnZOfP03cbnbF7cqlGnV1mAPQZ/KPCyrfEwlCZCbLcTLjJsOODxuHGWF708SSZUwQ+YZu3JqlWBS6MOQHh9SBkXXQAYKBAM/bPux2USu1pSMpQwgn/qcwTaAZrpazAYuzh20CmU+61oZIzdzn0WS4S2NR4/iIGRDA5Hx3rroPNUN9WjtyshoYe+y3TW1dNJf7gF/TJ/5X5f+oWM+r+FnX1MiZ7oXiXohaBeNonm/WmXNpmVAL+Lms8QYV7SaSMn2pY//0PCIim/wVzB8AvUlkVNgixa3oy7NRRPCVcgt3x9E0CEoa1l34AJH6UxNgZcZ4KzWXnpE8GQOoqH2kkB2lSq4GsQWMkClTXPRsrUI55g0X9UhL1LBwap34x37UQndGls9m6rH8AFuvhytfQjireLcozMVCFpndLfI5PEoKdBHxE2Zz42e0akAxpCy2tOzJkPCm2CmU70QzyEA/f089EG+XucKA3cOFaiT+SFIE9+h19N+V7FvwvoKwQe8/ItwYYPLnnxlm94hqIJC5s5M7/7XwUaDMPz07D3hszKDSoHCFxxE9CrXdFjBRJxAgIytOVqga4zu4I5tya/tgarn8FECvV9NOWJlUggPjbqyIEuClCMgyEuu23n6j308T2R+xRVzFQG/CfOr9AhS6NM4UGSh6Zn3sAutuRBwAXwoMcUyyeo02YpRJNiRXZQOPPmQGcBd5qV3+IZawULeV2pIqAKQI4YLrvx3WWN7EAPvvsYmb6EwoC/NBHkv18HXcbJTX1koFnznwH3tMrShKEVANSA7VXirI8eVl//m9V+7EUk2GWLNqBpkYNqffNY9+wFXibxMoEzwPaS+STkblgauJ2MzsFNT8eU
+ Hc7wIFiQ
+ +zq0ccNeb+LnQw7CWAnP9Las4r/wtzQiwtAQeIpQp368HP7H+H3ssl4gXIRbu/6AlSJYSRmfo36RnD1k2ogcyGPTEKxK7XXh/uk+7wt4bpwoYpc5v/3CCCAnd216fe4UvkrtFoK28zkd1eMtgDpuvbhyRSoDeyWJYD7RxfaYx8araaOA9WE5u2FbVANPtKAH51/PJKVv1k3Gdeh5n5cDtwpyXzX1fRKrh1T1n1RW0HOdJpsDZFyc9ax0uiyNsa6MdaTCSKWeUBmwhepwD4rk21Pfyhnqgy9CPITiizw3vNgaLVY8UFipdqg0Aye6Kcy50N4FsDEPRfHumu4krN6uCI+44IHJzbeibKtlNiRvwL5EYnwUKbsANb/3T/zCgaxHgmQLcLPAP357vqH8COr06I/kg7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,64 +154,168 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-rtas_log_poll() sleeps the poller on rtas_log_wait, which the blocking
-read sleeps on as well. procfs owns the queue poll() uses now, so leave
-the poll_wait() to it and wake its pollers along with the readers.
+Implement ->proc_write_buf() for lparcfg, ofdt and the vcpudispatch
+files so procfs copies in what is written before it pins the entry, and
+parse what was written from that copy. ofdt takes as much as
+memdup_user_nul() could copy before since device tree updates can be
+large.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/kernel/rtasd.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/pseries/lpar.c     | 14 ++++++--------
+ arch/powerpc/platforms/pseries/lparcfg.c  |  7 +++----
+ arch/powerpc/platforms/pseries/reconfig.c | 22 ++++++++--------------
+ 3 files changed, 17 insertions(+), 26 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtasd.c b/arch/powerpc/kernel/rtasd.c
-index 360ed2e30fd5..fa9574131f40 100644
---- a/arch/powerpc/kernel/rtasd.c
-+++ b/arch/powerpc/kernel/rtasd.c
-@@ -33,6 +33,7 @@
- static DEFINE_SPINLOCK(rtasd_log_lock);
+diff --git a/arch/powerpc/platforms/pseries/lpar.c b/arch/powerpc/platforms/pseries/lpar.c
+index 48fe0be71a89..dfd027cc9047 100644
+--- a/arch/powerpc/platforms/pseries/lpar.c
++++ b/arch/powerpc/platforms/pseries/lpar.c
+@@ -498,7 +498,7 @@ static void dtl_worker_disable(unsigned long *time_limit)
+ 	up_write(&dtl_access_lock);
+ }
  
- static DECLARE_WAIT_QUEUE_HEAD(rtas_log_wait);
-+static struct proc_dir_entry *rtas_log_entry;
- 
- static char *rtas_log_buf;
- static unsigned long rtas_log_start;
-@@ -259,6 +260,7 @@ void pSeries_log_error(char *buf, unsigned int err_type, int fatal)
- 		WARN_ON_ONCE(!irqs_disabled()); /* @@@ DEBUG @@@ */
- 		spin_unlock_irqrestore(&rtasd_log_lock, s);
- 		wake_up_interruptible(&rtas_log_wait);
-+		proc_poll_notify(rtas_log_entry);
- 		break;
- 	case ERR_TYPE_KERNEL_PANIC:
- 	default:
-@@ -343,7 +345,6 @@ out:
- 
- static __poll_t rtas_log_poll(struct file *file, poll_table * wait)
+-static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
++static ssize_t vcpudispatch_stats_write(struct file *file, char *p,
+ 		size_t count, loff_t *ppos)
  {
--	poll_wait(file, &rtas_log_wait, wait);
- 	if (rtas_log_size)
- 		return EPOLLIN | EPOLLRDNORM;
- 	return 0;
-@@ -529,17 +530,15 @@ arch_initcall(rtas_event_scan_init);
+ 	unsigned long time_limit = jiffies + HZ;
+@@ -509,8 +509,7 @@ static ssize_t vcpudispatch_stats_write(struct file *file, const char __user *p,
+ 	if (count > 15)
+ 		return -EINVAL;
  
- static int __init rtas_init(void)
+-	if (copy_from_user(buf, p, count))
+-		return -EFAULT;
++	memcpy(buf, p, count);
+ 
+ 	buf[count] = 0;
+ 	rc = kstrtoint(buf, 0, &cmd);
+@@ -586,11 +585,11 @@ static int vcpudispatch_stats_display(struct seq_file *p, void *v)
+ 
+ static const struct proc_ops vcpudispatch_stats_proc_ops = {
+ 	.proc_show	= vcpudispatch_stats_display,
+-	.proc_write	= vcpudispatch_stats_write,
++	.proc_write_buf	= vcpudispatch_stats_write,
+ };
+ 
+ static ssize_t vcpudispatch_stats_freq_write(struct file *file,
+-		const char __user *p, size_t count, loff_t *ppos)
++		char *p, size_t count, loff_t *ppos)
  {
--	struct proc_dir_entry *entry;
+ 	int rc, freq;
+ 	char buf[16];
+@@ -598,8 +597,7 @@ static ssize_t vcpudispatch_stats_freq_write(struct file *file,
+ 	if (count > 15)
+ 		return -EINVAL;
+ 
+-	if (copy_from_user(buf, p, count))
+-		return -EFAULT;
++	memcpy(buf, p, count);
+ 
+ 	buf[count] = 0;
+ 	rc = kstrtoint(buf, 0, &freq);
+@@ -622,7 +620,7 @@ static int vcpudispatch_stats_freq_display(struct seq_file *p, void *v)
+ 
+ static const struct proc_ops vcpudispatch_stats_freq_proc_ops = {
+ 	.proc_show	= vcpudispatch_stats_freq_display,
+-	.proc_write	= vcpudispatch_stats_freq_write,
++	.proc_write_buf	= vcpudispatch_stats_freq_write,
+ };
+ 
+ static int __init vcpudispatch_stats_procfs_init(void)
+diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
+index cb3d96efb225..bda3cac1552b 100644
+--- a/arch/powerpc/platforms/pseries/lparcfg.c
++++ b/arch/powerpc/platforms/pseries/lparcfg.c
+@@ -687,7 +687,7 @@ static ssize_t update_mpp(u64 *entitlement, u8 *weight)
+  * This function should be invoked only on systems with
+  * FW_FEATURE_SPLPAR.
+  */
+-static ssize_t lparcfg_write(struct file *file, const char __user * buf,
++static ssize_t lparcfg_write(struct file *file, char *buf,
+ 			     size_t count, loff_t * off)
+ {
+ 	char kbuf[64];
+@@ -702,8 +702,7 @@ static ssize_t lparcfg_write(struct file *file, const char __user * buf,
+ 	if (count == 0 || count >= sizeof(kbuf))
+ 		return -EINVAL;
+ 
+-	if (copy_from_user(kbuf, buf, count))
+-		return -EFAULT;
++	memcpy(kbuf, buf, count);
+ 	kbuf[count] = '\0';
+ 	tmp = strchr(kbuf, '=');
+ 	if (!tmp)
+@@ -798,7 +797,7 @@ static int lparcfg_data(struct seq_file *m, void *v)
+ }
+ 
+ static const struct proc_ops lparcfg_proc_ops = {
+-	.proc_write	= lparcfg_write,
++	.proc_write_buf	= lparcfg_write,
+ 	.proc_show	= lparcfg_data,
+ };
+ 
+diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/platforms/pseries/reconfig.c
+index b543afbc1efb..d74a0710ec74 100644
+--- a/arch/powerpc/platforms/pseries/reconfig.c
++++ b/arch/powerpc/platforms/pseries/reconfig.c
+@@ -349,7 +349,7 @@ static int do_update_property(char *buf, size_t bufsize)
+  * ofdt_write - perform operations on the Open Firmware device tree
+  *
+  * @file: not used
+- * @buf: command and arguments
++ * @kbuf: command and arguments
+  * @count: size of the command buffer
+  * @off: not used
+  *
+@@ -357,26 +357,19 @@ static int do_update_property(char *buf, size_t bufsize)
+  * whole nodes along with their properties.  Operations on individual
+  * properties are not implemented (yet).
+  */
+-static ssize_t ofdt_write(struct file *file, const char __user *buf, size_t count,
++static ssize_t ofdt_write(struct file *file, char *kbuf, size_t count,
+ 			  loff_t *off)
+ {
+ 	int rv;
+-	char *kbuf;
+ 	char *tmp;
+ 
+ 	rv = security_locked_down(LOCKDOWN_DEVICE_TREE);
+ 	if (rv)
+ 		return rv;
+ 
+-	kbuf = memdup_user_nul(buf, count);
+-	if (IS_ERR(kbuf))
+-		return PTR_ERR(kbuf);
 -
- 	if (!machine_is(pseries) && !machine_is(chrp))
- 		return 0;
+ 	tmp = strchr(kbuf, ' ');
+-	if (!tmp) {
+-		rv = -EINVAL;
+-		goto out;
+-	}
++	if (!tmp)
++		return -EINVAL;
+ 	*tmp = '\0';
+ 	tmp++;
  
- 	if (!rtas_log_buf)
- 		return -ENODEV;
+@@ -392,13 +385,14 @@ static ssize_t ofdt_write(struct file *file, const char __user *buf, size_t coun
+ 		rv = do_update_property(tmp, count - (tmp - kbuf));
+ 	else
+ 		rv = -EINVAL;
+-out:
+-	kfree(kbuf);
++
+ 	return rv ? rv : count;
+ }
  
--	entry = proc_create("powerpc/rtas/error_log", 0400, NULL,
--			    &rtas_log_proc_ops);
--	if (!entry)
-+	rtas_log_entry = proc_create("powerpc/rtas/error_log", 0400, NULL,
-+				     &rtas_log_proc_ops);
-+	if (!rtas_log_entry)
- 		printk(KERN_ERR "Failed to create error_log proc entry\n");
+ static const struct proc_ops ofdt_proc_ops = {
+-	.proc_write	= ofdt_write,
++	.proc_write_buf	= ofdt_write,
++	/* what memdup_user_nul() could copy in */
++	.proc_write_size = KMALLOC_MAX_SIZE - 1,
+ 	.proc_lseek	= noop_llseek,
+ };
  
- 	return 0;
 
 -- 
 2.53.0
