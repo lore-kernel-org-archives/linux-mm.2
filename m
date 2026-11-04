@@ -1,104 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7CE606B2DD
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 663C9606B2DD
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Oxi50B5v
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CNO+9P4p
 Received: by kanga.kvack.org (Postfix)
-	id 895ED6B05B2; Wed,  4 Nov 2026 17:17:05 -0500 (EST)
+	id 4C7016B05B4; Wed,  4 Nov 2026 17:17:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 846F36B05B4; Wed,  4 Nov 2026 17:17:05 -0500 (EST)
+	id 4784B6B05B5; Wed,  4 Nov 2026 17:17:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7359E6B05B5; Wed,  4 Nov 2026 17:17:05 -0500 (EST)
+	id 38E366B05B6; Wed,  4 Nov 2026 17:17:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4E1AA6B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:17:05 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D8D69140863
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:17:04 +0000 (UTC)
-X-FDA: 85398847968.11.2CFCA9C
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 0AC2BC0003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:17:02 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Oxi50B5v;
+	by kanga.kvack.org (Postfix) with ESMTP id 0301F6B05B4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:17:43 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5DB9E14068A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:17:43 +0000 (UTC)
+X-FDA: 85398849606.02.84E06AD
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7BB59C0002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:17:41 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=CNO+9P4p;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	spf=pass (imf22.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793830623;
+	s=arc-20220608; t=1793830661;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AoRyT2gWGztVgBxsNZy1AlqhQ+YolidchQOTos+xRqQ=;
-	b=IaW3IPvqmKU8u/AxNOsG3mmVsv8jckygHVSGZg4QGtLPi41XbRYXSXB0sCN8GMP+L8hdf8
-	2efv3MTPaNnwKab8rLMnrtrVifZzYI1v//jxrjVq+RlaOZ3Exavi1a9iHsKbeR5IA0RLYD
-	+Q0OeToRnUIGNMXTSokDCBgaNjFj74Y=
+	bh=Zy3RXc1tcA1988kqstuh2d2K+SulFtJvQ4wEaNytXWM=;
+	b=jqHxAu+Nxq67TQ5I5Byk8fE9iMthDhyH1J7aG5v+upefdqVkdcqrO4hvvvUJ6tmi9P84oU
+	m145u1X2l2CkLnG9J3zvDiPwjeQexCDT9jy0R66Km99Lhl+oBiZJIXVMj//NKQPMEGkEbK
+	+56jUVDNEtNfcaSKKzw2LTyjrqhjYfE=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Oxi50B5v;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=CNO+9P4p;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+	spf=pass (imf22.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793830623;
-	b=TxhWnBSqvkq69bwG3MU1z0rpkzwTUqONxTYBuHboo5IBdAkcd6hxCoDqqdxqQaWGgtTV+H
-	trxBLhxFEh+gUl2WGcTPjyUMYir6KfErk2iCmhfK4wuv8CaD/H48R+BCPbdwxyCN7HMZw/
-	acsm0OE9DFAaJ4UlS+XBVr7yVA/d9Yo=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a35ac4475dso8206425e9.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:17:02 -0800 (PST)
+	t=1793830661;
+	b=1ou89yBPTPbC9FhENnfYkA6BIXOM/qoPgS4oAU5uYS+c14JTxQ3YjfRm2UINxSPuuw6It9
+	MZRibCFw/AGBsfBf5z6MzNGUb46jl/Z8RNuCV1gRp+e1LNkIG4UFecReyg7zBgs5zX3O/3
+	zM77MJESYdvIzB5trjoq60JL0DkMhVo=
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a2167bd087so10093675e9.3
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:17:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793830622; x=1794435422; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793830660; x=1794435460; darn=kvack.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=AoRyT2gWGztVgBxsNZy1AlqhQ+YolidchQOTos+xRqQ=;
-        b=Oxi50B5voRYOx/wHro1B2OluJLKCqIpp48J9X/EqVo7nTIykoGVuUS908EzDrKjpEH
-         //M3DrY7c6N6dV1YFKI5TaN4+UFDAT6RL469YblQttPp6nwet9Bh/2UCgCdvrHZn430u
-         2nukUKvfNfl6oiKlGp/hK5lkEYEXi2EdHbm8k72M16EI3sTHEvtUeYpkioVaQu2r59q5
-         pelJWKfXhSxTBJr9smGsJLA1V1nsIIoCcouJg+kSW/uj/fJVfZd4CHvzpioEmQVKfqg4
-         C6sCogapGMlN2lPivV601W/jBFzUYxed3LiCH3NNbcZHD97scCYkRPFJ2K2EmXh+eJE+
-         D6uQ==
+        bh=Zy3RXc1tcA1988kqstuh2d2K+SulFtJvQ4wEaNytXWM=;
+        b=CNO+9P4pYg2lk9vYOGMwb6xgJYembzV2J+fkycx4PZP2TDzydd/IFhTNsUQ3/5F4fM
+         byMOWcZmcBsIxBwQ1wrXz2WIurMIEA/QalPEHiWXwsyqb18PrHfyUGKkQp6c58ggtI79
+         xaL9xLf42hA8oygbmhhq2lzmMOCl/2j9IWIK0J4PoYtNp1X9hdxgdRCgc898pU5ZD6cc
+         dpINP4akEAog/9lZttA95GrRYMGZSGXB51ffns8Uh0Kp0gXuqEsLFusw6uZHJAo6snaF
+         vmCmQTnuOl6qJASCQuyvU46fgNW/irD8w1bTwNUAeZF/QWblVs3iHmQFgqYsmuJk/+TB
+         z7Vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793830622; x=1794435422;
+        d=1e100.net; s=20260707; t=1793830660; x=1794435460;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=AoRyT2gWGztVgBxsNZy1AlqhQ+YolidchQOTos+xRqQ=;
-        b=Iw6f0qXxvAtXLfizPE7uVnbEauTD4nbSj9qUyhFS22wNxY73sFrUk03ltkSHHyJQgC
-         +LfjgGKpfrxGgDp8giBvxtf3cGcWZ4JalrFCf56I7YCh/xra/+/Kzha285TFVNSfrqQE
-         xcldUecvwSAhPOPqU9AB5OiXea9+kf83jv4uxRNKims+6uM5kYiNdIdklm+2fdXjhPSH
-         k2RRgKaThAT81Th+fwFpU0gc46dzspw2UEfupPIeUbzJ/FBDpdbNS5iDQW1Hj+1UvuBW
-         wqaA91tOEJemFCVbVTY5ES/2HaOUBK5mCyItbgmugpwje0s5SnSK92HTuV4G0G4L9oJq
-         7M+g==
-X-Forwarded-Encrypted: i=1; AKwUvBzVjJUH2dqwVJuYwYarEMTVWkYjTPNtn1IuiaWqrQB5xUU8buReRt4Wyg8t4ADnr6HdA/7noe/guQ==@kvack.org
-X-Gm-Message-State: APuU4Z9hcwxAOxYKuXqGtUQk6pGeSfPH3QBt75wkG7t1XcJulZNVEO5S
-	hlEL1DigOaMH4m/nAV88GuGxEcNWS0d9G6obusAs3RJXnBcoLnsVBeZ1ZCeOUOBVyrY=
-X-Gm-Gg: AYBFou3yhP4qIHnT5spo1RbjHAgP0w8i4YBoz/IyHrZy+EG04t39eZs0cvM9is1Fs7A
-	6FnuUa71rsDjb3th2OZwur9Z1DG7wqj8GDHoaHjOrhZizmWxwJV3CNG/niy8qTlvTCisVldOr29
-	GJGGLrG/3cpLZ+7Q5fy06MAHbD0fSWERdeRSceaFs+3ciMy+S9P/Gzc50YEkhFFkHnhyHrvQkEt
-	4vQfK0qvmlrQditFS5fdQnv1fPe+TTxe9yxNt/+nMevNZwOX50oKUhOP+Zc3Ow5aJgvGXnU/9Vr
-	79BH/2HXTo7maqu4OyvdSx4GSjQ1D4NmErjJL1wNtjMaXLrWb9EJaz+VTgNensHZplH0vhGECvH
-	i1ujKNK14qv/7JysJ9Y03NL5XEjl/GMxvqKHY3H87UM0yWkzOnRNP0IaHRte0J4fOmWlhw/GZQU
-	z/mHVAnQG4JlELmOHH5atYRYfQy4QPGuUNrPaokW7b0fsd+gl6VneXtJHkWFQW7ARFGFhtGf0C7
-	Qb9+G1d5Ui0PP3qB0pmMPNwPOHZDqIERJXLRhNaCQorDHNAOl+gvXiG5mTk/grWg961HQy8uDCb
-	5UYaTg/0Qgj0kmmXOezxf+I=
-X-Received: by 2002:a05:600c:e548:20b0:4ac:86c9:b09c with SMTP id 5b1f17b1804b1-4ac86c9b146mr248866895e9.13.1793830621562;
-        Wed, 04 Nov 2026 14:17:01 -0800 (PST)
+        bh=Zy3RXc1tcA1988kqstuh2d2K+SulFtJvQ4wEaNytXWM=;
+        b=mC3+rIjTNmqWaYARSwehTk68pZnx8B4MOqQtax207Fj/skumx/CdIpjBywTabccpiV
+         Jx6JIGs0T+Y2IWHYgqV6ec6kSS+PqvKaJ6QcRhz7B06h/PraEQE4UgxCUOuojSxZGRYk
+         UriMR07lILrl2292Gnt62kcVPFhqKAAFsfflDVaZ/L8xJjT4CVhto30lgeimcjdot1gL
+         JGyPbujYWR5J6cFQY7/MqqzahNDNRMMLM81qp6+EBxRM1XViVBWIFQtx3uvczhVLmnzc
+         Poqr6hLlT1/l9oSOkiSROEkqXomkWXZyCeKCBu6sopm/yN6dvqDcFTeaPFViopVKmhv8
+         ph8A==
+X-Forwarded-Encrypted: i=1; AKwUvBzR7MW7HWKV+hiEFnMKZU7b9SwKQqdEvXVGSesbU0mdi7uY5jl3fH691KF4iGM1cv8wNSAaArSTXA==@kvack.org
+X-Gm-Message-State: APuU4Z8UwTYFx8rlKmuOtXOPRYojLn7OPuawhptYJgQkqdJQaqo6hZlN
+	iw2YWgt9EFBftxIygB94dP9km6ueBrFSnRv87N+uXBlWtnuHTKj1t+jT
+X-Gm-Gg: AYBFou231WIPYTBFHPCE89fiM9LluWevK6e+NFt9yPko2hL2iUBrRstKE6wZsjgwofj
+	37gNUfvoxcWmMf3xjXiz7iVy79tu0t7ejuGXBMi618FOzC3Ew2xqkJHBCVm5KzQqXLTbECO/gVL
+	567msuRo9sKwkjo94I8AAVUoIAKLd8d0WylzmiAumo1lnMPztLOR/x//54HTMVIz3SICLPPN1j7
+	DXFkuGL2a6fuqzK/nTVHnmAtZ29LKlMPLAbk/WGJqOWmFv6Gg1E3JBISmBhBcCtw20IBbtO9vyF
+	XkILuZq5UkLaTZ1UNasv6haOsNCUAH2F58ZzH1Pcha/4oHQH5l/kyoA0UDaBjOsXMOfD6jFNZOD
+	yxTt1ZaR41jDny3LPWY2Ss4+sqIxMUtDLCNJP2hjr5WheHJTi+shNz08EOI7I2d4+8jTKgC4zO1
+	k85QudOPb6T4jMTnrDeZYpMR0TnMte9Y7bnW1EjhBZLH5eOPUFjyGVSOT3FHXHhFHthQGgt1EYs
+	rzOS2UyKl+mu8QbSk9Vg95gsPHkPqvtBcnB92lrh8cLUT8rC4VXDtNrqh9J09wmd74qCJ8DXVo5
+	TQSPa5ZY2sxyBZv0ZC+KOHZi
+X-Received: by 2002:a05:600c:1f93:b0:4a3:2f35:38b6 with SMTP id 5b1f17b1804b1-4ac180f1e69mr370561825e9.24.1793830660020;
+        Wed, 04 Nov 2026 14:17:40 -0800 (PST)
 Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56ef2e968sm16301645e9.8.2026.11.04.14.17.00
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b56b78d656sm16661715e9.0.2026.11.04.14.17.38
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 14:17:01 -0800 (PST)
-Message-ID: <be34e0ca-4706-44a8-8264-3b9827829e9b@gmail.com>
-Date: Wed, 4 Nov 2026 23:17:00 +0100
+        Wed, 04 Nov 2026 14:17:39 -0800 (PST)
+Message-ID: <7b3388a4-31c1-4966-af92-367e1219cb42@gmail.com>
+Date: Wed, 4 Nov 2026 23:17:38 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] kho: skip zero-sized lowmem and global bootmem
- areas
+Subject: Re: [PATCH v2 3/3] kho: fix bootmem sizing
 To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
  Pasha Tatashin <pasha.tatashin@soleen.com>,
  Pratyush Yadav <pratyush@kernel.org>
@@ -108,25 +107,25 @@ Cc: Alexander Graf <graf@amazon.com>,
  Kexin Liu <liukexin@kylinos.cn>, Sourabh Jain <sourabhjain@linux.ibm.com>,
  kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
 References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
- <20261104-kho-bootmem-sizing-v2-2-b0d1a834780f@kernel.org>
+ <20261104-kho-bootmem-sizing-v2-3-b0d1a834780f@kernel.org>
 Content-Language: en-US
 From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261104-kho-bootmem-sizing-v2-2-b0d1a834780f@kernel.org>
+In-Reply-To: <20261104-kho-bootmem-sizing-v2-3-b0d1a834780f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0AC2BC0003
-X-Stat-Signature: 64jabn7uwrium891uneio4py87uujnee
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7BB59C0002
 X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
 	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793830622-139344
-X-HE-Meta: U2FsdGVkX18lenxP9rVs2Am8RYYWW4OyET6nqDS45NlaRRS2Yp0U2sLAkEFshls2muPaIlseLc1Y+c2zwDzNcFic9XBb0L4icNR2inS73ePuRk4fWutl4FhzMj1PUCmYZYb9Kqn4GUIy6eG1kIIlorVGtptofQvXcq0qJumC+fWaqb07dGUxYM6JKG/Rahgh8sQAM44TLtpJLynkR1dzvRHdGwyFlnCgdSMONH4zezQ/jWGAN+2rO+hFJubeqrq5k189HIxEc2+U9n5Hh/8Ymra+du21gDZ4kgdZ+sjMdmjkQXxeBdRlnvg9/uCwSPvnExnNXv8rvrR9qE5Q3Jhce9x+oG5Ou1m33L2qvnjvRlx0uyT/DvRB3fv37Nohcp/VLVw+cd044WnWpXxu2QLEXbigl4IGi+7lUB+/8xOzbe+La4UILpgmc1V1u3TZE9k9fjXOt0XmwznIolkTMcGdUCe3xlfMdVo/H8itXKgqLr0rql/dO3iWYRR9VI+v9hsiLcU/9PZSDGnRT3JPeYSn4FaJgkZW33V5vR1ZJZzzYVmK8CqQ6rdD+oHeCsuReNAU6MWLd0vmpkGJ9y9UjeDLKmUqQedAMw2Nw8NAe913Vnrm56/iUlVPssst0NULAljCGT+ypMUXtL5HMUiZG5TElDuWVfFNl9kzpLNgJrtvaKIXVgdHe0g9cIn2A8hKVYoxTiBF3XmfrcoQ/Br2DuS/P0Z4S75PuWtd6EmVJLkAIkNrX0RDGtloHCmxbFm9hJxRDYWfvfqWv1fd6IAg6xBlVLOZhQleA3dmAJHDFYtl3Iu8jCq0AfzPFJPS2XApHRp5cmm6wCQSzUDP76PElq6uqRQKuDLiUwYQFiqUiAa9aaO4WjvN0jbwQOq6UiDlzhfypeW2Xyxb4FrJhzF4r4MyAOwXoqCOc0eYyRiSD3MQ129fvgEDBoom9IxfC5m2h784nTyftUfHlfu4DPB+/oO
- syf1lq8/
- 6INs2h0rlUt32qPt2aSzruXOnCZrmCpb7vvi36dE8ts5XuDAZpvYnU5iXgDezCwhGZnEu+NOX4RQE3qqU2XT8DZXdzcK1VEu3fr7hSnTa7DvUsGOaxw03gfqfDsEfVr1INLN4g9Q7JJpjgrH342RrxpkRkQepKSFYhEQB51nrxzmdjKY8tLxzB9FrdrBzpQEoVbqMDKm1qOkb6sUePeokvgXXV+D6X/Xf3i4L1dA9npFEb0lM3y4g8SHkaSPUlgyZ3ouvDWcY859uJyIY3mrLz+6NhXByMYpBA89woCRnw1kki3uZz41S1oRFSN6x3XO8b2rlwAG9cxAE64WsdWeqGvzbV/HbjD3v2tOASz+tUpmUimy9+oeGV9wM3ScOOpg/MbRO+tC03DqlWgUOzaPKLtqV2uTZhRj733iBak1VQTmotFCFrRptFw3toMq/1h+Ni2DG0HS/ePTHOFxmyPFfc6iEY8uSb1mt9ToWpeu58wG1a5Zmmc8rN5CBhVDVCgQQ0H0J
+X-Stat-Signature: fuq4fcdj1b7outxx1kf1y8gt971rzwhg
+X-HE-Tag: 1793830661-961546
+X-HE-Meta: U2FsdGVkX1+WOFPHnRTDAJ6mvC26iKtcLSE8aaxe6i+9xwuUbAgOgsEpSHgab0bBxHxVaDyk2tIyN+JSxlZk6UI50AM7tgGZ2OHFYawYyDwY3vcHwVUYDuLufs+eNSdOH7LIe/cPeQVPbzEJDIXyEo+1L6NPF+8qruEBB42WmwKsGKgEDJeimxpm+S1BXPX1gUQAlgDVCZI6wfZO+IAMCxL7IdnOaXgXye2Xmtcquv2sBG5mMtJFGxSQP2S2dLYvnKE/DdtnA5kTXUovlJ0SnF/vIkWl31U7tFdlj0rdUbue1Xgvd6yaDdUivt+LyPTi6S5vNEOm9qY/RbiVPkuLeyOQh3gErpgIARs2It/tYDx1PnFtT1uSaftWShBXTnJDV8gIlvY3P7t/4saTBGnTNYfxgmdeLlBFVvVD6m2NnoPEco6pCy2OnC3IH26QTAg1sYH0ZApSNY4vz+S/4gD33tzGiWN6GivNabS8j16fEa+kGp1Qn7AUF8y+xmvQG9ln0g5ciC/qAYqOaFKF94yKWeZATPt3soXVvCNvIUQ3w67cPGF/5EGvg2VNioyn/VQLWDy1R//I7Qn3EIBJgYnRIP7+S5qwjGiSNV2mSATwzAClHCOE3g5Lp0Ah8xjDFIsR+D7pjstwqwz23iDoiCR2R13hJUr5jPZs4rCMP1cOF/3tNi3D3oreTSs0ywHBtg7lCL4ZCpVNPwaXQW1UZ7ophvWbT3UNUJuIORXPeIXy8OmFzhZjBv9sSrpmNNqX4fiwg5wIOtk2dF4naEuZPVI/n9HNd1FEvkzdcEPa9Dzpvgi5XJAu7Q9FPZqStqZIbvLId4ZGX5qoswPQ2EpmfvfePgnbvrZyI5MUkKgvhYZqHYr+NPB2XjA7asAbLcAbZNvHLZHr0vJ2Cxw+r8A/uJXb8Jxbw2izMhNLwwLAKrTtmVfdn0sNzUhMZKntpIz9CgYVUtwGkrVhN/sbnjZNz9O
+ AIoAWXGQ
+ no1PmmB6FMCuT4TS7vyH54wdUNHVj5BpH8xDSobsu9xXSJMiIMVZcUoaclGzpDqpFAoUDFASQh6cDDkLvD68w6gLJvGSphgNhRAV/lMHb0gjkWwih9yEacyCNl0jrhNij/XSCtaowEQeADhRB/inwsFi+Oar7ARutboOZrhyym54Gg4r4pqBBTFknximZ/uouPxVRbOJ8tcPFkUKWSNx9mhnPJm0t1AAz03JeSiYkNTdk11g7cDjI2nhNid+LAIIhvE0gEwbMf7y4cbOXYFQ6CtD6PfC5bm7wezhcXcCyMaiEcd5ZgJkISNYTLBS9//2YRgTouvO/kxXw1MVnScayXrWRx6u5EHwUCv+al8bY7qKVs0dEnl7lzcA9JiZHZ69VJQZllIgt/CuiBdmSEL1GUdtLrGhAzMJmW1jSZ+TooYGSuxC7oxublyh5ob4IuZeJ+cu2PRmQ+0HxRI/KVAkqWFPacmJQBllopcnUiTjWBmvVpHBCJQ+vhSfIJSNz0nPa6dXL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,22 +135,48 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/4/26 5:50 PM, Mike Rapoport (Microsoft) wrote:
-> The lowmem and the global bootmem areas can have zero size, for example
-> when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
-> either of those areas is explicitly set to zero with kho_bootmem=.
+> Bootmem areas are sized from overlapping views of the memory reserved in
+> memblock:
 > 
-> For a zero-sized allocation memblock returns an address without reserving
-> anything, and that empty area is recorded in kho_bootmem. If there is no
-> memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
-> fails and KHO gets disabled.
+> * the global area is sized from all reserved memory, including memory
+>   allocated on specific nodes, so on NUMA systems everything allocated
+>   on a node is accounted in both the global area and the area of that
+>   node.
+> * per-node sizes are calculated after the lowmem and the global areas
+>   are reserved. With CONFIG_NUMA=n all memblock regions belong to node 0,
+>   so the lowmem and the global areas are accounted in the size of node 0
+>   area and scaled once again.
 > 
-> Extract a helper that checks for zero size and allocates memory from
-> memblock, and use it to skip empty areas the same way as empty per-node
-> areas are skipped.
+> As a result, bootmem is about twice bigger than it should be on NUMA
+> systems and about four times bigger with CONFIG_NUMA=n. On small systems
+> reservation of the bootmem may fail and then KHO gets disabled.
+> 
+> Make the areas cover separate parts of the reserved memory: the lowmem
+> area covers allocations below ARCH_LOW_ADDRESS_LIMIT, per-node areas
+> cover allocations above it on each node and the global area covers
+> allocations that are not bound to any node. Calculate all sizes before
+> reserving any of the areas.
+> 
+> With CONFIG_NUMA=n the global area becomes empty and it is not reserved.
+> 
+> If ARCH_LOW_ADDRESS_LIMIT covers all memory, as may happen on arm64, any
+> area can serve lowmem allocations, so don't reserve the lowmem area.
+> 
+> Bootmem sizes in MiB in x86 QEMU VMs, before -> after:
+> 
+>                      CONFIG_NUMA=y     CONFIG_NUMA=n
+>   1G,  1 node         176 ->   92       320 ->   80
+>   4G,  1 node         508 ->  332      1264 ->  316
+>   16G, 2 nodes       1268 ->  704      2944 ->  736
+>   32G, 4 nodes       2296 -> 1224      5196 -> 1300
+>   64G, 4 nodes       4344 -> 2248      9664 -> 2420
 > 
 > Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Reported-by: Chen Pei <cp0613@linux.alibaba.com>
-> Closes: https://lore.kernel.org/all/20261026131851.9942-1-cp0613@linux.alibaba.com
+> Reported-by: Kexin Liu <liukexin@kylinos.cn>
+> Reported-by: George Guo <guodongtai@kylinos.cn>
+> Closes: https://lore.kernel.org/all/20260904025101.9959-1-dongtai.guo@linux.dev
+> Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> Closes: https://lore.kernel.org/all/20260922131217.698809-1-sourabhjain@linux.ibm.com
 > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
