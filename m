@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43AD66070317
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76A7607383D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aicfXnWV
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HynF0hwX
 Received: by kanga.kvack.org (Postfix)
-	id 295B26B05BA; Wed,  4 Nov 2026 14:44:14 -0500 (EST)
+	id CF6DC6B05D2; Wed,  4 Nov 2026 14:44:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2476C6B05BE; Wed,  4 Nov 2026 14:44:14 -0500 (EST)
+	id CA7416B05D3; Wed,  4 Nov 2026 14:44:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15C9F6B05D2; Wed,  4 Nov 2026 14:44:14 -0500 (EST)
+	id B96326B05D5; Wed,  4 Nov 2026 14:44:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E9B5E6B05BA
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:44:13 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B473116084F
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:44:12 +0000 (UTC)
-X-FDA: 85398462744.29.6D7D546
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id D1B2D40005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:44:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aicfXnWV;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821451;
-	b=s01psZwmvYpwqTVaCPxuok7v/73WORTGWNPCv+sykYL5GpGSRXKl2SEdCP873GNx2yxZhm
-	jzrdEMQaJuNhOBzU0bKrjSPuzKqSzjyb4h9vKYw4ccN8qL4lsg44+l7STWcatQtPU3jfEd
-	S1xHvLlrshLUTw/uQde6g8YsRA+5EB0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aicfXnWV;
-	spf=pass (imf12.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 963706B05D2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:44:27 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 31D7D8083D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:44:27 +0000 (UTC)
+X-FDA: 85398463374.02.85EFC42
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 725FF180004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:44:25 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HynF0hwX;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821451;
+	s=arc-20220608; t=1793821465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z72TnyR4FqZWuZXLi7RAB/58/idtKzOn4i9EyTHtGiw=;
-	b=3c5zqq9UzhqhGLbG5QJ532qqOwGwq6xHvcq2ekSq6lz/4hOJl9LEElUgH+yLXsZ/3sSDV7
-	4SSLq9EwfCE7RNN17NyoEzWuhox/LP26xM2e2/K9aCA1+tllQJB5vb/zrnoMMx8TP1rUiz
-	h7FNpdLbvZQKNFHAxEV53PjzlvPo5BM=
+	bh=RGxB3CLuL3hdMOFW6c8rETuQc0/Gu93ks+OA3zHK0Kk=;
+	b=P4D2aXHA9yL3C3/yR/vtCbteprPtnaHzTxFZJlmoRNpTN73wml6pyd24KhPrssxH+8nR4q
+	FJderrn+qFsMbpXH54J5tcXYFwE0dVnniyUN3KHqHtmLah6ZZ0eEqclrVAhLQAryNlQnkb
+	AHSvV2Gw3Z6WLJxt5ERCqlLrfQlsGiI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793821465;
+	b=yO9l0PY3jWFw1kA2J9cRTsz/ovVqEkYOrk6fmH9W8PxyyvwdwKt/HCzFcTvOb1Oq+VvvkT
+	+BY8sVrfhKMmm0LcK6Fu7F/j8rhhX4ITMjBProoEdQGUoi7g8Y/FoxbumsPHvShqB9dvJn
+	VqzY3IJFYMIemokHOKWY5IG3cefB0io=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HynF0hwX;
+	spf=pass (imf24.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1024940584;
-	Wed,  4 Nov 2026 19:44:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0511F00919;
-	Wed,  4 Nov 2026 19:43:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E839260F13;
+	Wed,  4 Nov 2026 19:44:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9144A1F00919;
+	Wed,  4 Nov 2026 19:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821449;
-	bh=Z72TnyR4FqZWuZXLi7RAB/58/idtKzOn4i9EyTHtGiw=;
+	s=k20260515; t=1793821464;
+	bh=RGxB3CLuL3hdMOFW6c8rETuQc0/Gu93ks+OA3zHK0Kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=aicfXnWVc+2sorHSEArN9gD6s+r89vzM3QCItz87jq7xenbwZcKkxAyhEzMN4zilO
-	 XEmAW5nDi6Qpy1HAR+3dogNdprQDzauusCx/5cNW0SrbZVyC5GFUF34a5Ax3Ufz9Ir
-	 pPUXceddaTjvbGaHwgGMseQ+qlmEYJQbjS+TTvruu0qlgjbpKch86CrjWevskZ10dt
-	 CPwtCbH1BlXfDfr1nCeM9GXk83OUHSgxmRLaA86TuRr7s0NevUTTC4SfMspApoUqNj
-	 2Bq8k9a+tUVTivUfQqiyVO9j0Bzx/5RNz+dYk3t96b4Fnb5fexWFIEeXgiYZ4/X6vz
-	 2jCoIj12+zkWQ==
+	b=HynF0hwXz2ytbvRQ/tRwwiFgyWz0vIkPCQxUNQGSX/NnDGQ1w68NuKQ3Kbl+MqoQX
+	 8J7oHXHcLTQG2lwNLxQCXX70LF0ZV8X7+sNuxCRB/h6LupRGDVaGgTpLhVB66N3rc6
+	 tI4jBI+gZnk53Jn6xXJOB3T4pShCBRo0303YUYjU36zpeR5Fq1VBCTSBJgs9D7xNoL
+	 nRM7Nf0ZRQUe280MUMB6gTrfEPRIGT2ideQc9QRKVPxb3VQzoUYiRRvvW4mXYoSbZK
+	 CT7o3OoXqIatD6R9YkyrZxRNz94QoWOLCKEAfJ5VkH6HUvCBuSP/1PTuWytCnUt3iX
+	 I33mD4o8jVx+w==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 07/26] md: let procfs own the wait queue of /proc/mdstat
-Date: Wed,  4 Nov 2026 20:43:55 +0100
-Message-ID: <20261104-work-procfs-drivers-v2-7-245e54e87116@kernel.org>
+Subject: [PATCH RESEND v2 08/26] s390/dasd: let procfs copy in writes to /proc/dasd/statistics
+Date: Wed,  4 Nov 2026 20:44:10 +0100
+Message-ID: <20261104-work-procfs-drivers-v2-8-245e54e87116@kernel.org>
 In-Reply-To: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 References: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3404; i=brauner@kernel.org; h=from:subject:message-id; bh=Nn5OVy8ZnyI1nSFUur3mK5MV0AP1ijE3ArueCKeFRT8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97qpelclm2eRivDzv95ei9M8+3HNPnr9QzG/qmrjCP rmm56dyRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwEQCXzP8L+Ry03raKlfQfVPu 0IPvj5U0WoW+KZ9MOfz5Lev7yvuRzAx/BR75d/79PlNgAlP5pc8HHJqssrPnl5s3P0u6bivP2cv FBgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2121; i=brauner@kernel.org; h=from:subject:message-id; bh=tPoM7KW2jugAI3HBgjDAkvMMKrMKVevq5gq8BMZsIqc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97qqZsvLFCqNf+6XMazRbVi3d/ODSoR215t5nK5i4r bYImJcc6yhlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZjI84cM/wy2X+zn+HlNtd83 kD+IaZPCPqU9hps4WOckbNvx/OehSHlGhlOcc5yPTdmUf3fCaiuLkJ2aUg1lKVZe31ctszCW1p/ gyQMA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: f593zcu7agegy7u1dhkko3d6c1npurn3
-X-Rspamd-Queue-Id: D1B2D40005
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam06
+X-Stat-Signature: rprg5mgg7qc1ab44qtwjcjub5t655354
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793821450-188106
-X-HE-Meta: U2FsdGVkX19qfS3/bC5JimJOsHFNcWsnBvGoIaVzuoYgKYk63BUhbFMjbohnU0K1HMPFwM3cFOw9vFuIlDIZnWFNVTpO4wopacuHkMVw/gnx1Od2w33rav/fWdg8jddDsKumNAVbTQFRIzrRTqE1h7PpFPvWY1WOnPyZFs511+2ML+htxnwh4W56gJ5uV03ZviaN7O6IrYd15MGf/WryyhxMbsztDdPSaJ3u/i3xSh9LfJgJ2rvtJbcvtI5KmaQUU215DHL/MOIERqap0AjIM74qaPAA5t1DZZNTOGpajVarcryZDuMoovxVFqKhaZQQn3VS9KNf7aCPdGVZNtgfsWs+0xBsmkPaWOeqVK3dsCa61wL7mo0VCO5csJw1uZTZGAZbrPb5Dj40fad35v82yY3q8+ZXIW/U8bl1+uBhWnx8KAWjXwaqbO2BjmDAxliMncsrXQtOvQUBTDKaj+rvDAliewxIJDvoof8/LK+b21byQQgh2SoLpOs/PmVRKNg3IXVhwq9X4KwLcIuSh/mtVAxMoMIwIsOTyAKDuPzKcdacK9jnlFgq6MC9nL9t9Op/3lTaqzxAiy0djqSHJh64SSDkl+USny3W7BT2BfQw+5Osm/SFyWNNrDvhW8WvZcpBQGWt4+T+X/dTemwXbxwvSz8Uy9k5EsLIad2dEUrIzbWb8gya4hmNDm7UnASS0R1OeWhDAmXmi+WgtR0CxfK5Lp2M7APk3HZ2korb+WQeYaoGQ82VreI6dfjnikzMfWQnL9kowGupAzYlzji37gM9RwlyBkOHIYMNBL9L+qL/q5OttspH8z3blWDjhoPZyv7hhR/oijNGHxR8q3iVvC6CbchzEHDlchXMUAuduK3wQMI2tZ/Mz0yRyQywu5DUNgue471689loEqwhBYIG8ojUbKLhGaObu3efrzj1pX2J6mmJ3SQhFOdJ4ECXhemEeoxKAxSuSAYU9Ty9sPr3MHp
- uq39lMSb
- zRNz0LI18tK1pMzNrJegvexkk6TZuwVwbony1gbkOBbGFSP3x4WzzWQlWaCyamMwJY9D15MCAl5i8EruVcoZysqtz1sbsQFiK9CX+m6y/1KZNOTnH4QGA2TIbHIZ6erEELmz5Iu/25Z4u4I0VytCE6CM9Kjncv+nlLoF/3PDaFNqaLM/LB5lp3AmskCD0aopOFT/XPNxTPCtz0S76VGnDI7c0b2fz5CGp+Ie3ooMfhG2Bo7enhi0sLMSZnTqSN1cnr2Iq2IHFDOqrHEAaUJqwLor4s6Y1KRCWmYVO
+X-Rspamd-Queue-Id: 725FF180004
+X-Rspam-User: 
+X-HE-Tag: 1793821465-578375
+X-HE-Meta: U2FsdGVkX1+eDaPO8x+wjnDWpciPizgbih0cuoD4GfA0kwYXW1/bl/oCLZa6tEIqVgC6J8Oim12/YeAbfY+b/FsB3S/rCbgwTWXjb3c/7SJJhNV/3c4nzu/9Jw1UNnLTEuSTMjMFubc/yQ7F5LS5Q7/GF/Dh1rZkknCnt/ROVyfq+kZoJABsh6pYWNgXeschm+p9GvBh23Ipq5jfHkHxstgCxd1Krftt5RbMnyL9yGeeAUX00xqX8u7HPbFTtoNwSzORiRRN6HK+r0G/dUvwCSFfBbm3i0yN3wIg4h7CuX7OkndR3VuCBIofIdMiLV/OBQ5J9kyWkrKhOyG8XE6SVkXWOp+tb7tISSryg4GBp5VN5T9Sq7Gvc0vcmkdJkuB0oP3f0BvNq6ytp/hh2pHiIV7UHf1+aC3BHcelfj5EqisAF3Ig1Fw8BlKuBZSezgt9TnnO1QBB7ggzk/D5QQ8jDjtIIB7UowKJFpJCxLMHQRti0n3IldBllXJ9stB/C+NlVdbHp2zY8Mqqh0F2xPiu2g6Ni0i3RYStvz5nJrlFkLi0KoR7fCFUj1xwF4VcNWfaELo9azb8/6H4NwTz2s1Tz139JXHz8JkS5RIzM0c/j85xJD+Uqyx3OJAyI1lYLL/9e3ko/Pxv6lAdEXcDawGG0zJy9i3U5RqKIauxIWvHQ1pb15fQnqFeVsuma0MzrY0ujq0xkeByBuWskjZMq8o+hxS3itetLmwhwdShJd3+lqxNVAhXliGY28rAU5UYZTEE86xqsveK/XKlvWiExSX082v5i7VYgexHDe+jCkolOuLmIP/O5Pa4lzzRN/ZZa8UJQljG4hFa0zezDrwc8Os4WOP6RVTa4ADWUMhcHI6pBAKJTTxjTpUappe5eRdt9qAvFdnHJMgFRK/uNLlJOZW9J8NHcaSQDwNPJGXZQwls66JlKxS5CO5ZviAciuleZkyPDZ9E4h9otzpxLtiB+pN
+ wivONrC7
+ I+/cSaOAeVSytGzT+7372Bks3oR7TevAXwPiLcTZQ2zKlCE5Zhn6jVBkA2VtujPfLpaeiW3q9knNwC2KYrgGkRjFgJY8vWvABc2Q6LZsoltHTJIdwX/yfo5TCQPLjTWbuGuNyPcBCeucfOhdHECUcxYmYCMUFMPeScYI6veuCABwFpwtEn+MRv5Tjn4F4WwXJ78ffiV9oL1HxbGxewC0CNxBFA//PWc5B6lxeD4Xo1fxl8Rv1hbj6Ky5UPThcvmUax9qzbjQb5vGRrU0Jrw73r5HKFyoqFQV7XtD7twrtcphh+jIpyTi8Xv79DvfD+x7IgFfhAc8uZ2Bx+sVbg4hRasDu7KlFFjhsWz6QZEXBYfupRmawKCvEe4YFpzZUnchq2Y3JQ/nptwCEDV4ydU8Q72VRO9lPaPaweJ/fxBAz8339vquWW8/b0C/2ng==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,107 +154,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-mdstat_poll() sleeps the poller on md_event_waiters and md_exit() has
-to wake it in a loop until nobody is left on the queue, because the
-queue goes away with the module. procfs owns the queue poll() uses
-now, it outlives the module, and a poll of the removed entry reports
-EPOLLERR | EPOLLPRI, so md_new_event() wakes the pollers through
-proc_poll_notify() and the loop and md_unloading go.
-
-md_exit() removes /proc/mdstat last now. A sysfs store on an inactive
-array doesn't hold the module, so it can still reach md_new_event()
-while md_exit() runs, until destroy_workqueue() has waited for the last
-array to go, and a wake-up through a removed entry is a use after free.
-The static queue didn't mind that, the entry does.
+Implement ->proc_write_buf() so procfs copies in what is written before
+it pins the entry, and parse the command from that copy. Commands longer
+than PAGE_SIZE - 1 bytes are rejected now instead of cut at 64k.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/md/md.c | 29 ++++++++---------------------
- 1 file changed, 8 insertions(+), 21 deletions(-)
+ drivers/s390/block/dasd_proc.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 64abf1743e41..7560dcf0f5c8 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -351,12 +351,12 @@ static bool check_new_feature = true;
-  *  start array, stop array, error, add device, remove device,
-  *  start build, activate spare
-  */
--static DECLARE_WAIT_QUEUE_HEAD(md_event_waiters);
-+static struct proc_dir_entry *mdstat_entry;
- static atomic_t md_event_count;
- void md_new_event(void)
- {
- 	atomic_inc(&md_event_count);
--	wake_up(&md_event_waiters);
-+	proc_poll_notify(mdstat_entry);
- }
- EXPORT_SYMBOL_GPL(md_new_event);
+diff --git a/drivers/s390/block/dasd_proc.c b/drivers/s390/block/dasd_proc.c
+index 86399427f01d..6c3bbb7dfe85 100644
+--- a/drivers/s390/block/dasd_proc.c
++++ b/drivers/s390/block/dasd_proc.c
+@@ -15,7 +15,6 @@
+ #include <linux/slab.h>
+ #include <linux/string.h>
+ #include <linux/seq_file.h>
+-#include <linux/vmalloc.h>
+ #include <linux/proc_fs.h>
  
-@@ -9176,16 +9176,11 @@ static int md_seq_open(struct inode *inode, struct file *file)
- 	return 0;
+ #include <asm/debug.h>
+@@ -247,17 +246,15 @@ static int dasd_stats_proc_show(struct seq_file *m, void *v)
  }
  
--static int md_unloading;
- static __poll_t mdstat_poll(struct file *filp, poll_table *wait)
+ static ssize_t dasd_stats_proc_write(struct file *file,
+-		const char __user *user_buf, size_t user_len, loff_t *pos)
++		char *buffer, size_t user_len, loff_t *pos)
  {
- 	struct seq_file *seq = filp->private_data;
- 	__poll_t mask;
+ #ifdef CONFIG_DASD_PROFILE
+-	char *buffer, *str;
++	char *str;
+ 	int rc;
  
--	if (md_unloading)
--		return EPOLLIN|EPOLLRDNORM|EPOLLERR|EPOLLPRI;
--	poll_wait(filp, &md_event_waiters, wait);
--
- 	/* always allow read */
- 	mask = EPOLLIN | EPOLLRDNORM;
+-	if (user_len > 65536)
+-		user_len = 65536;
+-	buffer = dasd_get_user_string(user_buf, user_len);
+-	if (IS_ERR(buffer))
+-		return PTR_ERR(buffer);
++	/* strip linefeed */
++	if (user_len && buffer[user_len - 1] == '\n')
++		buffer[user_len - 1] = 0;
  
-@@ -10765,7 +10760,7 @@ static void md_geninit(void)
- {
- 	pr_debug("md: sizeof(mdp_super_t) = %d\n", (int)sizeof(mdp_super_t));
+ 	/* check for valid verbs */
+ 	str = skip_spaces(buffer);
+@@ -296,13 +293,11 @@ static ssize_t dasd_stats_proc_write(struct file *file,
+ 		pr_info("The statistics have been reset\n");
+ 	} else
+ 		goto out_parse_error;
+-	vfree(buffer);
+ 	return user_len;
+ out_parse_error:
+ 	rc = -EINVAL;
+ 	pr_warn("%s is not a supported value for /proc/dasd/statistics\n", str);
+ out_error:
+-	vfree(buffer);
+ 	return rc;
+ #else
+ 	pr_warn("/proc/dasd/statistics: is not activated in this kernel\n");
+@@ -312,7 +307,7 @@ out_error:
  
--	proc_create("mdstat", S_IRUGO, NULL, &mdstat_proc_ops);
-+	mdstat_entry = proc_create("mdstat", S_IRUGO, NULL, &mdstat_proc_ops);
- }
+ static const struct proc_ops dasd_stats_proc_ops = {
+ 	.proc_show	= dasd_stats_proc_show,
+-	.proc_write	= dasd_stats_proc_write,
++	.proc_write_buf	= dasd_stats_proc_write,
+ };
  
- static int __init md_init(void)
-@@ -11074,25 +11069,12 @@ void md_autostart_arrays(int part)
- static __exit void md_exit(void)
- {
- 	struct mddev *mddev;
--	int delay = 1;
- 
- 	unregister_blkdev(MD_MAJOR,"md");
- 	unregister_blkdev(mdp_major, "mdp");
- 	unregister_reboot_notifier(&md_notifier);
- 	unregister_sysctl_table(raid_table_header);
- 
--	/* We cannot unload the modules while some process is
--	 * waiting for us in select() or poll() - wake them up
--	 */
--	md_unloading = 1;
--	while (waitqueue_active(&md_event_waiters)) {
--		/* not safe to leave yet */
--		wake_up(&md_event_waiters);
--		msleep(delay);
--		delay += delay;
--	}
--	remove_proc_entry("mdstat", NULL);
--
- 	spin_lock(&all_mddevs_lock);
- 	list_for_each_entry(mddev, &all_mddevs, all_mddevs) {
- 		if (!mddev_get(mddev))
-@@ -11112,6 +11094,11 @@ static __exit void md_exit(void)
- 	spin_unlock(&all_mddevs_lock);
- 
- 	destroy_workqueue(md_misc_wq);
-+	/*
-+	 * Only now can nothing reach md_new_event() anymore, which wakes the
-+	 * pollers of /proc/mdstat through its entry.
-+	 */
-+	remove_proc_entry("mdstat", NULL);
- 	md_bitmap_exit();
- }
- 
+ /*
 
 -- 
 2.53.0
