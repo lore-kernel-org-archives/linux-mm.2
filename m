@@ -1,123 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58579606A330
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 15:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93B53606A334
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 15:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J04GpwmK
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=bOvgs7bp
 Received: by kanga.kvack.org (Postfix)
-	id 6C6206B00EF; Wed,  4 Nov 2026 10:21:02 -0500 (EST)
+	id A37E16B00EF; Wed,  4 Nov 2026 10:32:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 676DE6B05B2; Wed,  4 Nov 2026 10:21:02 -0500 (EST)
+	id 9E8CF6B05B1; Wed,  4 Nov 2026 10:32:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5654A6B05B4; Wed,  4 Nov 2026 10:21:02 -0500 (EST)
+	id 8D7326B05B2; Wed,  4 Nov 2026 10:32:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 335C76B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:21:02 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C570D14076B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:21:01 +0000 (UTC)
-X-FDA: 85397799522.21.B66EEE5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C1A2640013
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:20:59 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J04GpwmK;
-	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 60D656B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:32:20 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B72C2120751
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:32:19 +0000 (UTC)
+X-FDA: 85397827998.24.047F913
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+	by imf18.hostedemail.com (Postfix) with ESMTP id BF3421C0008
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 15:32:17 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=bOvgs7bp;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793805659;
-	b=2ZK9hH9q0tuW3UVxPU4g94iqrzvjGQxJ/hSjj7HGBM7ocavulXBevcdNuy/Wv6MjzF4H7n
-	innCYqkmFT6X0wJNTgOFyKK5pJkFcBJgr+C33bdNZkYzk4Sx2bYZzI5ttkTMebdXvzP9n0
-	WKQAzI5WtFHxkwwxTIpy2EBZbLL+i/g=
+	t=1793806337;
+	b=VuGVI80VDTZCowvvtAwCedoQp5iFbMrsAoZqW3Ixj50omqnKb3F58WcsQpVy1EOkyQG4J3
+	6NIDEpPxA7Y9OLkRk6BVobytlpp8HrPNqJWRfwoD0lU9X0JJN3KRMMeyJz4w+3p/nDDSFb
+	HXAG68VSMp7GDat4J3t8PFBR3CIDPHM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J04GpwmK;
-	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=bOvgs7bp;
+	spf=pass (imf18.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.47 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793805659;
+	s=arc-20220608; t=1793806337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kJ//CR0rNJB7v4/EWrk6Rgg5jN7w2KYrl2J7vZDJGZY=;
-	b=aR2e6Z9wx0edfNwdkMN3LV2wjUEAGtYo969sgJi4kn0t+iffoj3oZh8I9QCfJG1ROSh0tE
-	5iQLVG5Sw5UdgkhbRyAcRkT5+QNnOcFXZdGSqM+kEV2+CJ/zijGXN2N0SjBsMXW3IX2l9d
-	8p4CE9Db1isU5DV5xiQoC5g2i/UIX3c=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 33FCF407EC;
-	Wed,  4 Nov 2026 15:20:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D97921F00919;
-	Wed,  4 Nov 2026 15:20:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793805658;
-	bh=kJ//CR0rNJB7v4/EWrk6Rgg5jN7w2KYrl2J7vZDJGZY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=J04GpwmKvwAvs5rvSq6YwT5Zq9je2GxUIiTrhVG2nBwZcdPfHjPQfInyEK880+tG1
-	 wfkOfIVxeHWCezi8+24T/FuHWcz/MenvLN1yjdAWCXC2ZrjmfrTiZUJcVWGaYqItqX
-	 HNEvdX6ssO5Bd5Y9pBuoM3uEqEv4B6EB6MR5ozg/OwrjyfE2G6NoaTFenz5GecG1fy
-	 Z3HGwO3J755E9uCjFAWDfqCtB+33seQlaND6Miab8V8rbnvOD7Y3Wq6fC5/3i7/g3y
-	 uy/6Ft2l/oJqLiMSM4D82qyRmP26bj6XroqOSTrEY73f/+vP5RL5C1pDGVj8cb/eaM
-	 DXKMiygT229uQ==
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 577C3198003A;
-	Wed,  4 Nov 2026 10:20:51 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 04 Nov 2026 10:20:55 -0500
-X-ME-Sender: <xms:Uk3rasYNqcr0e7oX_N81eL0LZXGbBpMgeTVyguwhoWE1deuGbU8VRA>
-    <xme:Uk3raqkRwJA3NCHdCd2e-3d3UsbBBd3_hWmmG-yaagIX-Kj_QLSPl46GRUdZjMXmd
-    9egYpQCqDMYyaNxmKYvMlKUQybVmyetKPdMIXU-MOb4diUc1NZa-UGKAQ>
-X-ME-Received: <xmr:Uk3rajF3y4JOG8Lz_bJnitNrMmWcxB_a1dEiDKLOgwUebEP4zXW8dXTCBG0>
-X-ME-Proxy-Cause: dmFkZTFtxpiu2LP14cIYcyJ7X5qabzm2BzpkyynMyiWriFQOhwO4iOlilGAYuG72swqRJi
-    Bz8ZzcQ02LzCtXShfIs8nQwvr70QyU4BQ3QGSMTor0iqq1/umFVKzuPdZvGyZHpuAWbgUk
-    YtJYpDNQU5eGtxkWAafn6R00XepYhmon5wsUybRAp1fyx25PodgGzm5XnTdaZ8/m/W318m
-    ueFHNJOCuNFrSnRbN0ljsfFnJhIFQ1CTjoWhk+jPLi5y1GCZF4hKgzXGkldAtCAQq2wM97
-    9+7I0RiDOJ1Wn8GcLWLH9LY1cuCc5mxnJslpqjVhHYjF7KE/HVWL6z7MRT7MuPxGnS/eYj
-    T29jPgd4eodMdNH4DcjlWcD14WrHarLiWrEOrqYlYVpu7KKm0ZWeANy+dECylIIuTFu7zy
-    LTGcyz27eAnQByqLr1NdcAwSH4C/6Q4Bw7Ogwvph1gYdZ2MyCiBaNIH6FMK2y3o0f84Q3L
-    p2xKs8qurGukJ22IwBPNoSfbzPpC/KCrGS4y2MDhjbX0uO8R1lWRLw5Qh9VCcyR9s65+qZ
-    4KID4H9Y7zzBUjd4hNNMTPEGBXRHn1y5jVskNGYt0nAzzYpN4X2CTMXrDWclf4ZfOq2tgp
-    viuCv95jefJTx+bdkT9rAn8PUT0PqPIMnfKlV4uWjYXWOLnG2GEbuK84Ba6A
-X-ME-Proxy: <xmx:Uk3rahHKq18GiQZ3nyDskj6S66qC9l5zFlQ6NBrq42V8pWmtDTHxnw>
-    <xmx:Uk3rakxgzWtRN7zjBavMjABxjpDUcgRkOH59QIjhgCPm_pfj6wLIXg>
-    <xmx:Uk3raqTPchiT8nft2yn3Rv82synIhoZ_VU2xumyCcOXC-vhPUYonZQ>
-    <xmx:Uk3raqp12uS3JTOm8qXzawV8IlzevdpwPwxlmD4GdeuBWbxDd4IM1Q>
-    <xmx:Uk3raqvxVr0tfkuHZM52LGQpZuZBFJbugGo5z2yo_9nC6sElCg_8FRO6>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Nov 2026 10:20:50 -0500 (EST)
-Date: Wed, 4 Nov 2026 15:20:49 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Usama Arif <usama.arif@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, baoquan.he@linux.dev, 
-	rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, 
-	ruirui.yang@linux.dev, corbet@lwn.net, skhan@linuxfoundation.org, rdunlap@infradead.org, 
-	muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, jbohac@suse.cz, 
-	sourabhjain@linux.ibm.com, ruanjinjie@huawei.com, leitao@debian.org, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev, 
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory
-Message-ID: <autMHwldMudQOO3j@thinkstation>
-References: <20261104142727.2894800-1-usama.arif@linux.dev>
+	bh=RsAyHrXNfqX02yWykA3lATIbdnc5zjm5tP62HlWexE4=;
+	b=J+OXQb70nX6I0v1PC7D0tQHZuXbWSwmV2mEJISJrpiOousKXoZMuCK3FHGnvFGgRK+Ob57
+	PGgLRSGo6EHUahlfw9AClm8rp0m6e4tbSeccSZtEWnfnupXz56eN2q1Ebu6IaglCf6JmAE
+	iLcPpTdeui3PtzbAmNYf7jUhK8flngg=
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-7cc81984fceso234959137.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 07:32:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1793806337; x=1794411137; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RsAyHrXNfqX02yWykA3lATIbdnc5zjm5tP62HlWexE4=;
+        b=bOvgs7bppKeR4/f3UQCi6Gpu8re59g8YT5qOQ3eMO3qe2yGHcqOHyJXfpYqIP1Sv/T
+         Wp2FOZuoZAVPTgI+guaKuBs8Aw3eCUXnoLHvHbVYcccsU3WU3jSlrx7EITiCQ5Y4q8Q1
+         8UWMUgRxkmbFb3YTIZULodaZfkgPvIYkFvebEspkvoB7UJKr3dlEdolpuft/rAdFLORy
+         MSJ8+ISNxri49pcX0FNs1nDBLRMqbDyb1JR1eNXvjaGvpM+AYk2kAbcAhhuODA1/K5nN
+         aAYpAegLEtCgmANUiKudhQ6YSKPcEX0p3UNkOpOn6WQEzuLHSg5AePTMHyxwBfRrLHks
+         UdTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793806337; x=1794411137;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RsAyHrXNfqX02yWykA3lATIbdnc5zjm5tP62HlWexE4=;
+        b=igYgKr+WjvKTmYmPn5BfmJn9eeCtPwCK6T8YDA553kqKcQhD3J82EcrAaq0j0r5xsn
+         AfV4ugZUfKvorPZ/0Cb1osXFcMGnlXsnJdEDOreyJUNXQMs5tgxkaWmo1BNHukAm10jp
+         r2UxZXQOWXxQGK33X0rW87NnKwXVn5BCK+KaxHBi5PPj8hZiE8NrYmMx0xSoZpHNxZqB
+         IeBi6sYeztq6E1qM+DIeQd+MvInnEDyhPVKRZbKXKyVP4naDvZ0ALNba6/6GyBCvVuci
+         OcUbpniNHZly0EUQbhySdU9SW05Rljj5GQUCCvrChdqyFbQ87XW0JGwZjNV3JXV9S/BL
+         MLtQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzQVQjhCVDyTQspP6ptKIiBX82JGENncv2p3/3qZ9qvPnAcYaPIEYahTBltn8TRzXcXXR/SSoCxSQ==@kvack.org
+X-Gm-Message-State: APuU4Z+nJJyJPdpd0HJ69b9F9emTCfEDT6Ohglo3KpxHus1Qpne6z5l0
+	SlkMNlbV+53gUYUKNirJsuUTXPXKLcg3oBVDt9QTaMWXVWp3aE0sYdImBh7MbDJWZ24=
+X-Gm-Gg: AYBFou1OffE17vzlX7FCapKh11wSkB8i9+Djz78TGjZ333fl1Pt/D0VtWi248mlgE+A
+	i5OEYCA3aKB9zwLqKUxirQQ8eskVWloxdyYEoidObgqmOsKAth3Jx3mSfXEyFL2Mtxer+U/v3jU
+	Yn5LBxnvqwmTGcUW/qTO7fg8Ez/lEpOkDgwoTgEz1T0HaiZX3hH9DVm9AveYHcgpvCKyOVehN7Q
+	xQkkzDVNm84hbKKF6eNmM0IQw/BmpSUNmjji0qYmD5EsGRq/qPDm4sbXb625VQATIJcXjNIyhiz
+	6nIMUKgIofcOii99C6Ox3R16in+c52o3dTyzn9siX5r0M/MaYzgA04NpV/tnLvZKWMyxflpAxQC
+	gCa1OUkceMahuBKNWp4jC5h6v76LIHZ2jlx+ixbRPrUrblORiDRJnGtZoJjWFzIksIH/JV8gJ3b
+	YJr1geyaQo4J5XZYTheg4HzsXPCOvjBCddyfZnNOvYlRp2+AS/IKpn9huo2T8iA7QIo9nC3VSYN
+	SEvoz3lzOz0GTR45gnPsQWa0jDPNZDYCPHMG4Hz+w74CyBgTiCrHB5FNPVdP5p9PkVICRPdczwC
+	lF7/RgFWjJt/atxCPdP4zEWFa64CwFMpHSoTGIDEFDgU9TyDwSi/wuur0DUphUQ7wWee4ilNgSX
+	2XBVLE2nkP/nBU3OdeWcKeSilcQAQb5M=
+X-Received: by 2002:a05:6102:e0d:b0:7bd:b263:14c8 with SMTP id ada2fe7eead31-7d072784174mr5342781137.30.1793806336602;
+        Wed, 04 Nov 2026 07:32:16 -0800 (PST)
+Received: from google.com (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-7d2770ffbb4sm1208724137.0.2026.11.04.07.32.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 07:32:15 -0800 (PST)
+Date: Wed, 4 Nov 2026 10:32:14 -0500
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chen Pei <cp0613@linux.alibaba.com>, 
+	George Guo <guodongtai@kylinos.cn>, Kexin Liu <liukexin@kylinos.cn>, 
+	Sourabh Jain <sourabhjain@linux.ibm.com>, kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] kho: skip zero-sized lowmem and global bootmem areas
+Message-ID: <autM3_pSLuOGZQCh@google.com>
+References: <20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org>
+ <20261103-kho-bootmem-sizing-v1-1-45aa74098f34@kernel.org>
+ <auo3PzmisfK3br1l@google.com>
+ <ausVbqZd9qgZf4zc@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104142727.2894800-1-usama.arif@linux.dev>
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+In-Reply-To: <ausVbqZd9qgZf4zc@kernel.org>
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C1A2640013
-X-Stat-Signature: 19ybew1m63oppj5mzcoxxp35ij17y8zy
+X-Rspamd-Queue-Id: BF3421C0008
+X-Stat-Signature: ma5sxfy5q9r7mmeae39hha938ijm4nus
 X-Rspam-User: 
-X-HE-Tag: 1793805659-684442
-X-HE-Meta: U2FsdGVkX19WOqu/vI/ALOYdepLUSiCj+Et3AXDJfZPqe7Ksuk4SfbW2yfOie5AfxNspTCWwt02A88K0RsabdU0ofbVQw5TJLXtV+JVptU7wuRkx3OYCtfPlCXNrHcj5jb8P8vanhU3xngiGejs1SoLueHZQB7GbPqJYDivzRcYL+RbmyuX1OoiUo2Lxjpn7HRHy1s3TFxJR8S/63BG0eGVjCTvOlcA5WEHQclWJc7PbpxPpHFLAtV4ojdUb80vZkABo4aTgArt+JhtircXfnPzqGMdZKsk2EzNxk0COYAkUgIceMLbShAkP04UyRzSTJYdhZ+IwF5JIlBBBE1gap5AO5p5bCA2AuglJPyAf9CybPCZyE800EbqS61bhBxcpQyd5slqi7QPbfZY4ryHxaBrSJnJnenr8ydaTmHT8Ao6bz+RvoZ7ZKRzi2JInzXoyu1elhvL4FDXtAXCUvP8F21sTNvpIlqeyTS1cUZExCKzNmV+LA6JDzTs2J5PA8z+bH2m77T83SLOPc1hvMsyhjOTeAuzcRufkRn6zERnleWxfHz3U+OxP1uhBxR6JeDqr9Fj+iLbQl/Q6PPXAnEpXb73y41KJQjVKnjUJ4bBNUCnJ0omaaxO6WuGWq/mzNXRDn5lzVsNOGrK0sWOygEGMUKtxzhy59wbSUCtVSetUO8avMHz9EunCL9iutzEqH628qYzv/rwS1phoGN9LwX+HTno09DXwRMQKGzlbN5+ZEXssHqia9MRcPbGBp2+WAEgfX7dUcjINBButZ7OYdOh7a1dx/ANs/3NBurFSzVRA9Lq5nKqgSoOiONNNUuIS1IJD0FaJzzpkYh5x9QWxchpjGgHrZR/7vQ0WocJ3jDmLsnleqxqYrzcAC+MpHiqnm6A/OTgUHm1dYKSGbc0KwVeHatxkb80n1wtNlSIOpkasB+8Y4zZeBAICsnVhDZdR5SiPHPVQbAvrI8nSf7iMQxw
- 3ZaeiBrx
- CpYuFh4IDPhmFCmJbZ9pv41x8RzQCGWiMenWfT2NNWbqqaTjD2LTZNj5xxibya4rEZlyj4R8EkfVIIal4SyxWJLq+USOPhoyWlSe1U4CLBzmHBjbdcn3/Dp5VSId3n21NULUH7hMPelkZl8/pH6gDpaSJYZc0Ns7gKEiNmYKAnV1n4quTaO8GsodS9sOdiadZa6PSzY3iIsk9e7iIxUGeD3roHUyNMMhYXMiuMx0AsOM8xtV7xO/Y1+qODBX0Fnp7AdGRkN12SX9Vefbi2LT50Cx+nQ==
+X-HE-Tag: 1793806337-645631
+X-HE-Meta: U2FsdGVkX19tRtDHWH7qGL0sYUTQR6s7lKlO+5G2qA64JB+b1ZV3Q4EtdDcBPJpPJTva3GQCstCcgSqjCChEyo0K+r4nz0OOtneXEkKMieXy3M8Mey9krmE1IZLxnSmow+uyZDqDlioRpyFPHjfJwZsmRl8d1LyHpNGp3YULvY9wGfV3JtsHti1CkFXmM7nXe6/B4iG5pAJdasDy37LdfPiyU82EBjyUwhwxA2Ckm8QwgRbF8CR2KrVB/9epiSjX+HcUWWLTimlnBdxZldXd34j8lc0ijTMhdKyFkaC6I+idmFEZsCjEFamvLwvR/jawj1D/Z3kLVlb1C/ebgLe60eUIzfdtRm9Z1OsUmmkyR3OR4Avslv/ai5AaEn7jJ4RycmBRaJthRssqoD4KUIp/R1ippTRukedkTSiYJmiWxjrUsIyxjoSZpKzPo6SNmcgs6KB71P9ou1KdGCMwia2F4DCBiXewmrX7ZB/dUIUNge0sJYkIs3oSd/MQbG/WbDavkft2SjmpUYw5ihaRno47q8pjD+2bAoxSmn0k2KkDeR+GoiFa4H693yJurxMggkJ4X28bTwIHvyJ5HNRrCYDDmJyOD6jcIkdDxiEe7Okde2jKnfhjI1zbmx9gTafrCDNgu0Oc0C22JngGk6BsNTi6IYztBFS9IrmFQo1qVB7KxdDb/pXfMhdRcLRB6vCqjISKc6W5OUhKjaGKlV3J/3IzwcRoz2bu/6bRXngwpsdinXbkBL+sUWZQ2Y0tKXIjd+PZXA0s7x9slHgLMGfu87YeNL8HqXodYCGiy9Nsl/Xp3fdzafb4yq5D+TSpB3IA7ICNgWPWXRnvw0EvDbIBXk+Y4A77PByUWbpBfpHIrcm3Md09/j+mzeIbl5KWWxcLGiRb4rN9j/rwnUBanAo/kE4pp780fymQHmlwV+ey5mwybkTnHNFoeNrRJsDP3N26LhWi7/KgfSXOfSsg0KqipD7
+ GJgIEYUD
+ 5Mhy2oH3vEc/Yci4hhUd3jIIyPukf0gywhwPyjj7Lu5SW4RO8dCRyub7S0Lwne23HJ1I9XIsHBBBKQyOpFYil++aKm5qPul83t0E/EE05owDCFLHSm8Uq3EQkRv4coVqbp1f7oJLLmwM+G2tE+6qkQmhk6ItT1Ev11UMr7kvPSV5nItH8VVBkYmXq2+jNKWELWC3rVRCGw/FdB6/LmYi/1dGdN5yAjlIuiA04K6ur6JANORHQA8BekfvLxxaWx9b/pLVPZkagBzVjaoIybu/RzJIzgTwTJ+MQ2Pp+Rjuo0zb14ZbfPWSMGTCeUq9diUbrSBCt5vTi03wfIYW6KjS5EhKEodWvWbq2PPaAsFVeAkmF+avzem1sBoZQwzwckm1GHrXsrxekmBOsO3U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,29 +131,119 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 06:27:27AM -0800, Usama Arif wrote:
-> Use a separate suffix to make the exclusion of existing HugeTLB
-> allocations from the vmcore an explicit choice.
+On 11-04 13:22, Mike Rapoport wrote:
+> On Tue, Nov 03, 2026 at 02:48:36PM -0500, Pasha Tatashin wrote:
+> > On 11-03 13:49, Mike Rapoport (Microsoft) wrote:
+> > > The lowmem and the global bootmem areas can have zero size, for example
+> > > when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
+> > > either of those areas is explicitly set to zero with kho_bootmem=.
+> > > 
+> > > For a zero-sized allocation memblock returns an address without reserving
+> > > anything, and that empty area is recorded in kho_bootmem. If there is no
+> > > memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
+> > > fails and KHO gets disabled.
+> > > 
+> > > Extract a helper that checks for zero size and allocates memory from
+> > > memblock, and use it to skip empty areas the same way as empty per-node
+> > > areas are skipped.
+> > > 
+> > > Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> > > Reported-by: Chen Pei <cp0613@linux.alibaba.com>
+> > > Closes: https://lore.kernel.org/all/20261026131851.9942-1-cp0613@linux.alibaba.com
+> > > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > > ---
+> > >  kernel/liveupdate/kexec_handover.c | 61 ++++++++++++++++++--------------------
+> > >  1 file changed, 29 insertions(+), 32 deletions(-)
+> > > 
+> > > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> > > index 6f1f55fe31819..f268c57413a7e 100644
+> > > --- a/kernel/liveupdate/kexec_handover.c
+> > > +++ b/kernel/liveupdate/kexec_handover.c
+> > > @@ -820,6 +820,27 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+> > >  	return false;
+> > >  }
+> > >  
+> > > +static int __init kho_reserve_bootmem_area(int *idx, phys_addr_t size,
+> > > +					   phys_addr_t end, int nid)
+> > > +{
+> > > +	phys_addr_t addr;
+> > > +	int i = *idx;
+> > > +
+> > > +	if (!size)
+> > > +		return 0;
+> > > +
+> > > +	addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES, 0, end,
+> > > +					nid, true);
+> > > +	if (!addr)
+> > > +		return -ENOMEM;
+> > > +
+> > > +	kho_bootmem[i].addr = addr;
+> > > +	kho_bootmem[i].size = size;
+> > > +	*idx = i + 1;
+> > > +
+> > > +	return 0;
+> > > +}
+> > > +
+> > >  /**
+> > >   * kho_reserve_bootmem - Reserve a contiguous chunk of memory for kexec
+> > >   *
+> > > @@ -832,7 +853,7 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+> > >  static void __init kho_reserve_bootmem(void)
+> > >  {
+> > >  	int nid, i = 0, max_nr_bootmem;
+> > > -	phys_addr_t addr, size;
+> > > +	phys_addr_t size;
+> > >  
+> > >  	if (!kho_enable)
+> > >  		return;
+> > > @@ -852,56 +873,32 @@ static void __init kho_reserve_bootmem(void)
+> > >  	 * reserve bootmem area in low memory for lowmem allocations in the
+> > >  	 * next kernel
+> > >  	 */
+> > > -	size = bootmem_size_lowmem;
+> > > -	addr = memblock_phys_alloc_range(size, BOOTMEM_ALIGNMENT_BYTES, 0,
+> > > -					 ARCH_LOW_ADDRESS_LIMIT);
+> > > -	if (!addr) {
+> > > +	if (kho_reserve_bootmem_area(&i, bootmem_size_lowmem,
+> > > +				     ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NODE)) {
+> > >  		pr_err("Failed to reserve lowmem bootmem\n");
+> > 
+> > You are adding a helper that returns an error code and then ignoring it 
+> > at all call sites. Even though it can only return -ENOMEM right now, 
+> > dropping the return value is not good practice.
+> 
+> I don't think error code is important here.
 
-The crashkernel=size,cma documentation already says that pages allocated
-from the range are not in the vmcore and that it should not be used if
-dumping of userspace memory is intended. HugeTLB pages are userspace
-memory. I don't see what a new suffix makes explicit that ",cma" does
-not already.
+Perhaps, but it is just not elegant to add a function that returns an 
+error, call that function from three places, and ignore that error every 
+time.
 
-Why not let crashkernel=size,cma take hugetlb CMA first and reserve a
-dedicated area only for what hugetlb CMA does not cover? With
-hugetlb_cma=6G crashkernel=2G,cma there would be no extra CMA at all.
-With hugetlb_cma=2G crashkernel=4G,cma the crash kernel would reuse the
-2G and a dedicated 2G area would be reserved for the rest. Either way,
-nobody has to learn a new option.
+What is wrong with:
 
-The catch is ordering. reserve_crashkernel_cma() runs from setup_arch(),
-but hugetlb_cma_reserve() runs later, from mm_core_init_early(). The arch
-code could record the size and leave the reservation to generic code
-right after hugetlb_cma_reserve(). That is still memblock time, so the
-remainder can be declared there. An early_initcall is too late for that.
+err = kho_reserve_bootmem_area(...);
+if (err) {
+        pr_err("Failed to reserve lowmem bootmem: %pe\n", ERR_PTR(err));
+        ...
+}
+
+> Even if some theoretical future update will change
+> kho_reserve_bootmem_area() to return anything but -ENOMEM I don't see why
+> the error code should be printed at all.
+> 
+> And anyway, that would be the part of that change.
+
+I just don't see why not do it right away? If the function is only used 
+as a boolean check, then just make it return a bool, and move prints 
+inside.
+
+In any case, this is not critical and I am not insisting on the change, 
+but I think it would look better.
+
+> 
+> -- 
+> Sincerely yours,
+> Mike.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Pasha
 
