@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0635E606A337
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BA2606A334
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:02:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UjdubPzx
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UjMCkRY3
 Received: by kanga.kvack.org (Postfix)
-	id 1F45F6B05BD; Wed,  4 Nov 2026 08:02:17 -0500 (EST)
+	id C2E0C6B05BE; Wed,  4 Nov 2026 08:02:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AAC36B05BE; Wed,  4 Nov 2026 08:02:17 -0500 (EST)
+	id BDF4C6B05BF; Wed,  4 Nov 2026 08:02:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 094A36B05BE; Wed,  4 Nov 2026 08:02:17 -0500 (EST)
+	id AF4E46B05C0; Wed,  4 Nov 2026 08:02:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CE33B6B05BC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:02:16 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4E1081206C7
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:02:16 +0000 (UTC)
-X-FDA: 85397449872.16.129A1F9
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 2398D20002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:02:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UjdubPzx;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BB266B05BE
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:02:21 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FC391406F0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:02:21 +0000 (UTC)
+X-FDA: 85397450082.29.5B7D868
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 1B64620018
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:02:18 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UjMCkRY3;
+	spf=pass (imf03.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793797334;
+	s=arc-20220608; t=1793797339;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wtaEY9fzrvK18OFaBVNKZjtlPWkQZVD0YtOAcEkaXqU=;
-	b=SSAqvQTBjIo4DsQ+ZQ7tDQABFKcdFjuXaiPwbqYaAMWE63NnPRaIKObU2GT0GB9fX4DFq4
-	bfU23ru82Y9aj9PkBAYtEOTLxukDC+l+ZO2129siaimKgWPZaak3UP9RIwXMO43jvziLv5
-	aiUL1ohLbxil38SB8UUdk5cEFnvih5o=
+	bh=MLMUyhdzk/noOyENVlDlfK94lvgbxXguMgh8R60gx84=;
+	b=uRCqP6vA+NRBg4altoRk89LmUOX+plfCby/e3N+HO7PfhiGoedHi1QdIHATG7E7HXt3GJj
+	mdxg88UYQT/4bT8K71CBbec68Fk7yBW77mB+ehU/Y0DRJ+qsd9nECZbaCTQPuaBi44P4kH
+	tMbyZYwDjhL0ltfuBwWRs2qgZcmt5x8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793797334;
-	b=bYv/1WCypZGzToKNXkx6qtEPA4hM1bHIwpbiOxXEf5jSsYzPzfa0wUX/5OBLLiYfEN9bUd
-	j9NOEgpw145c6LY6M5z2xVIKLBk4jRTQrl+g+PL73kyxj545nr1jRLUa/6DPuG/L3Pk2K4
-	qBQZiogEoqwd8waoo0C79v1BPgxttBU=
+	t=1793797339;
+	b=WLrDCj4AkkkqSdo2Rc1jcv0BvfKY47ZXScfZFL5FlmMzediKibPe7ajDz7W3RSvZO1Gm+f
+	atiz67KDx2fHeecq0ql7vCR0fsM3Avv4gdFVWrl0E1WBR8WAFZE2sKEfieRXtmX5o9DNGK
+	D0EBElC/HhUCLNhkXWbBIkrHC+98l5E=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UjdubPzx;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UjMCkRY3;
+	spf=pass (imf03.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 76729408EE;
-	Wed,  4 Nov 2026 13:02:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 468AD1F00A1B;
-	Wed,  4 Nov 2026 13:02:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9D8E360A97;
+	Wed,  4 Nov 2026 13:02:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607C81F00A17;
+	Wed,  4 Nov 2026 13:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793797333;
-	bh=wtaEY9fzrvK18OFaBVNKZjtlPWkQZVD0YtOAcEkaXqU=;
+	s=k20260515; t=1793797338;
+	bh=MLMUyhdzk/noOyENVlDlfK94lvgbxXguMgh8R60gx84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=UjdubPzxWUENBUWnpdGCjAz3BrV8kE2psrWVzL2IQ4QKhJmFJRJwU5WZffzD6NnWv
-	 9eCl7wHhW4WtfpHoMISs0/Cc5piO5Hngfol+Kk36ddl7STal6r0otZsHLyU2DLbLNZ
-	 a0Gxsw0R/qLSWv7lACV+1SypgZ1J9BzqZjY2w8oWLI0+E5OSKcNhqkxd2oIe4NS7ZX
-	 1CnjNQdo6HfXv8SV1iILAtfwt1amZPh4P45D1cXm3KBObe9YIGUYtvvcK9U4Gd2ni9
-	 eSXB0jV8S/uW0UAkcUGZ2gMWU0jmiq8mmmI6tLpx/V7TezoGkcwgTIKaqAiItwByLD
-	 kTnKC6VH1ubKw==
+	b=UjMCkRY3e5y95n28AJKow5Anskxk7woj5bQXQq/rwl19FvzF+XjRf7RaYOtp09tJ5
+	 J/7BsP1Qwq7hHv3sMJjx0O0kwWrbjxTFGp25e7YrlBL4uzca0Yqeu2dwETYlOKp8dZ
+	 Y/dPGJdx7aVrPJwSK/nKRuFD8OOliPkWcvfPHNZAK7CMVOnHwf71/1kN3zZv0vmwVY
+	 jVBsUrjlAeLD42MOX6iHNaRcexvf3rX/tUpUtUZpOXJH+Dtzwb3HzFX3+vo+ZrcOVY
+	 +4kQ4K6XWrQOBzNc3XSCc7qqd4hCGTbyCU84DbejtlKxjqFdt+lPZNc5XK7RKXXpDg
+	 gkVcBSNJ7ufGg==
 Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 223F91980054;
-	Wed,  4 Nov 2026 08:02:05 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 04 Nov 2026 08:02:08 -0500
-X-ME-Sender: <xms:zCzraoUzuUuUvLSrLoLQGjthj3YhcIDRLIsJ6a-8TW8Xj0kgpSiLdA>
-    <xme:zCzrah2BnS0w3ZwXk2G3H2Oqrn1XSrsp3xvYPdLCcaBVgqfN5ZINgFMEOnDUSohxH
-    91vZFj7nrSkI29PWXSkrGVfogy3dvAYm1K-rYVsP-ZueuAa60sDIA>
-X-ME-Received: <xmr:zCzravBWGD-LvUCp8Ls_bpS2FprfcTAnVaJblNXsvZFzI8VormaGwKnalS8>
-X-ME-Proxy-Cause: dmFkZTGcnWxWNdwzviArTqwO8SleswujEAoF3G5cAnzgWuj9VIXYzVn8L/YtSSoCVpDQCx
-    AFAjkaMBKJDECegKseyQPi3BoJ2ULdzgEWHQh0kOOdV3qcZ96T5qYw8zvnYBduU6y+7gOl
-    ju1hRqdfaUd029Zpq0M1QKVfvNYpVJXA03mIXM/FVYF2n1TVZdGxcwDBil6kVRafbiJtv0
-    QuPNDwYksKVrYzT4QGS7HIxmz8ayVgiPQk5G9zoQji1nSBMTr/zV+0QH6w0a9BT4L54N+d
-    cRhB7KhKgiZgmWNJc1G8l9d+gvjQ75B75nEIsy2loqzEXGvtqjUcmfJ5UhZu2fDzNX4RUy
-    yqjtDl07aOkno7b+BsV25YMs8FGfUFhvSdF5CmrEF+BRAEDNYtPtZEBdr9GzYYz5Ir4xet
-    VPeV7zR4ju5b/gbBIrfTW7xlWNbV3ueMqogm/EC+7NxKoY7/sFULyIgJg3hyPDqDWChsuS
-    q+CBo44bPpiYd7kiotB279FFCnODiwC/N6vBH59I2o1Kz7jpjpFhNxyQqNyO45Cso9f1hC
-    yKmqmPr3GJGD3iUbhSJZeXvBgzfElr2HPXLruTw07ZlkIKHpBQg0gx//7jenADPMGHPZS6
-    HsT39bw2z0v2GjfOZgdRWiyEjGKJzyZbL0FFAyn46xMPSueILkJ0xJ07WOGA
-X-ME-Proxy: <xmx:zCzranDAf8JKcZdHGDXZaSKMq27-My5VExBF_835DWWDKBDUhzQ5tw>
-    <xmx:zCzrajMeotNceECQJ708Qj-5xU_U681zY7khqT0Ka9PNTZx20t64zg>
-    <xmx:zCzrajzAhRmTgneRpMBdbLtX_UKFAcz7ad0K4O9-UmbSz11o38OWAA>
-    <xmx:zCzrann7eI_g9sy_CgHj7HLy8kB1eTh6BEGSmC_PNCHYOinq22_nSg>
-    <xmx:zCzraiAO2UyLzrsnocZPShhVaIhKZsLXM57tzqQC-MOeFhbhjfnyOUul>
+	by mailfauth.ams.internal (Postfix) with ESMTP id 31E881980052;
+	Wed,  4 Nov 2026 08:02:11 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Wed, 04 Nov 2026 08:02:14 -0500
+X-ME-Sender: <xms:0izraupDhaEQGFDMq6Iy4t0MnGYC0Rb6eTg4xD05b7PVKLoT9I4nRQ>
+    <xme:0izrah46V7-Y8BNqivCCxwaUu5dO7bo5La9Q0hjpFwtKxLzudWEg9uaDxv755YzxU
+    uScc1pPKcbtXdFQHa_ljNzputNMDMMLOhsbRu619SVgB6z89PHASYQ>
+X-ME-Received: <xmr:0izral0CT5KMzV2Qk1bzOvpPV53W-6s_Nq-xJMPUsnVZsC2VDYpkd6GjYPU>
+X-ME-Proxy-Cause: dmFkZTGhPc1Yg5t9Q8eRQaKCLT0heVoXQqf6h4uqMuRtXQYzheOI1jp47nBw26mcWoxz9A
+    DH10HnpPYob7RxaCTf32YkHXSpJmh1hLC1IxxzXB90aJAI2wMnFT+nxhjDMKjWZ9Ablulj
+    X6EGhbUdQWvr3vCsmIbyKlTdtYm8QJi2H9b42DzXiIRq27TGzwIAKeq7xgftm17WrW++J+
+    RK/ZhBFKi/01LbyIuttpTNhw8T5nzUYT3/gbSIkELTYoQfWYa9TU1xDsUR8Sja7r663Vhq
+    dT9Vb6Q8iqTkFCbamg7ObiOCckNJsrzr7UPmHz2jvO2iFJ92ew01ZxP0mcoMzU2JutwOVF
+    8u+V40EsbW3Xm19sfo4Oy0BtGYrJ+rDGsmaV/Kus0W8Htiy2bsPuViVsmyIYkLeevGJAtH
+    h0iz39M/T+K/qBGGGeXvMu4rBFjQRHTjU1ZK8f1mUPMV1VO2wj+TLFjnw26BYULH/8FfTe
+    1w3gQ/UarqXmQmwUTIpb/JUxos5OXhxdIXVlnKTj1rWyePytEvna8Lsl0PJKZXm1hP9Ova
+    v39yitZDVVeGHjQ4cJhoaac4oo9Ja1doxwuIxCCh6Xda7rpbXU5w1HAqkhHOo9bKl43cTs
+    gLwIs1gHymXAW7aAb2PgnRy+eqAteBWCDRbNyKzAdA/aG+hdRslAIuPTncuA
+X-ME-Proxy: <xmx:0izratmrRt0eSJTMfEPusZmPdI5uXn88JaGkJv6MTbsMrBh_xQFfLQ>
+    <xmx:0izrauivoASPu0vf94NsePIXppPs14EHLUQcQpobahRMu1POT6Ppdw>
+    <xmx:0izrak1orvV1Vrf01IjcsY15Rs-MF9hR_Uq5WSU-1ZgnjMsjTnla9A>
+    <xmx:0izrarbQc4GWVyu_ITVwoxLjhwkfGFgwQGkrjCmdowAZS8y4AklCdQ>
+    <xmx:0izrahmndiq1ff-toqKwyeg82b3eR7tQ05BOIfOJ8S4eAjzj7InKQcyu>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Nov 2026 08:02:03 -0500 (EST)
+ 4 Nov 2026 08:02:10 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
@@ -135,27 +135,27 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	linux-fsdevel@vger.kernel.org,
 	fuse-devel@lists.linux.dev,
 	kernel-team@meta.com
-Subject: [RFC PATCH v2 07/18] mm: free the pages waiting for a grace period before isolation fails
-Date: Wed,  4 Nov 2026 13:01:03 +0000
-Message-ID: <20261104130118.2507513-8-kas@kernel.org>
+Subject: [RFC PATCH v2 08/18] mm/compaction: free the migrated folios that wait for a grace period
+Date: Wed,  4 Nov 2026 13:01:04 +0000
+Message-ID: <20261104130118.2507513-9-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261104130118.2507513-1-kas@kernel.org>
 References: <20261104130118.2507513-1-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: aq38siko4eb99jr5oyei49waa5oz91c6
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1B64620018
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 2398D20002
+X-Stat-Signature: y9gxo3k8qqjgf4tdmi5csbpeteiobgq8
 X-Rspam-User: 
-X-HE-Tag: 1793797333-680266
-X-HE-Meta: U2FsdGVkX18mGuk6zDRkke0gSnLA0VyT7HD90/bPkOFS5uLS0l4T4r+wnGgM0crPpim+6KnztXEpTdAW6uGZ0i2nlAkhf1AYb1J7rbbmFgXuCjHwbRM02bEcSukTvKMRmEwx/6nxiamzOH756JleGYTYwI748XNjZryf/wVqI0fc0jre3/ZEm8ZuM0TtMLfzrVyKc1qLsE0NhvL6WtD44I7yXBTeiKrEIV9EhKqEWoi0Nz6w+YxhO50m9zh6B5u4NB076XlXI/PpwHIMc1GKdvGFF3T3gyZj/+or83dH3TzxeJIUSybTlw7N3IhDtNTe07T2Uoj5/+L4CHZqEtMFcT9qa3UV7agtb5ljy3yuGi/irDvG9qdI5hAK2gbowgYSh2vmEJdVSFjs2KAK4RJfw2ZBSlNYMCWhi32m/nL7Zc9CyZV42Ry+TvyuTtNwXimohGOfBl7D2ERtlkVDLmy2g15X9NHMUn9/1IHDsawBSmK/Y/fBQfHaCX/qx6CV9RVncj6xxgPedS4OppBf8xJ6WD4kxv1EznBI0c9H4BViL1isib7V3Q0Ecy6cv/cGd2L9gQRz+g3HnTuZFnBZF0rJSLzJ583//K2A0T4pKRQNPu1JGLci0a/Jv4Aquq7S5hbpOYTRqzFvTQ0pSp3XiEv/y0f1hAp+Ibhe8o3DY7eZJlo0Wzg7PZ318n8LU9JslDQ7qIti4Ck+iyissC9Zv2QUpFAoRHuZgkclbh54dY2lKNH2Gg74mdxRCvOddHYdBgJEy7PlzyKOX21b0+46aVrmDUBG9MsCRmh7ke4xd1amxD5iPJ8CGq3mNX8eYAAmAUhHZg6feqRQ03L3ZsOZy3a7njJC0+37NCu5+lbaCAxoZDkwHDAMiYArs1G0EWA67MGKHAJ0YfIST2bGymQzqMTZ0KJooL+tjJl07WYbXALCAij8KX+d5M0ywOnd8E+kMAjCjvJlwp+AOfr43pQrEqz
- YmKdQOTh
- BbeSvnwxvPcMWho0rh4KG3aTqXf8CrcNXUr9CAZnT5m8qJgmepnjWDY41eQjGUel9Sf2bVw/I/hH/988ZhGvJ21PFozg06KhOlfqhQCfPvh3fVK7WjecDvBKoP/UK/TPbcIjHDVRfaEHmyAXfRZdYCepYohb7r3pNOtH9j4Ot4UXXcMxWLYeBEqLnyfCry1lc8km2IVgkw560+r8xZlOitrYtNusipGWIRNQ5/u+TvkoBUvEaUVStwlQmflY8I+ayqgM4km4+jykzuy/c8I50h2+xSkILOprt4tLI3y29IBtA655iWZSXjhgmLC2PkWRrw9uSvBorMMkCuwUAkv+ully1Ig==
+X-HE-Tag: 1793797338-560123
+X-HE-Meta: U2FsdGVkX1+J39fzZjDyECZ4WEtiFD7pIEe4ivrVb4wgFdsxVI/BLM6xIy8iGRmapI4AM6iQTeNch8EJoj44s0b+c4a0YoI9/FDGpCpSgbZGdUsjP3YGzS5DORY5879B94MaowAmszGMkI1UbCfuBf69mLuplbe9tdczX1H/w5CJIs9SgiyONoftqclB96bzDcijJXbsGYCJeKWEUebKfoLL1j45dLlZLZEJte1FqLgsbEhci9SNff4luIzrp2YQtuaTZJPI//+QLtV0eVdRDs9RkQGM+UaVUiAJ/CrD2+iNjL5PDV0/mq+NnE1fFbBlulrdSrQzKTdo3d2s7RFeHpIOf9XXo/vXeW+3GKGWsEhbdv3XLAZE3dgl59wPkoMwK8Vin2EDTaNvWOpbzo/As+iZN36pVupXc3PnvHNZo0YcM4ks1iuImlhQoRLjfg+Mi8+K+cTax+vovW4m3emniYjP9beODBZ0NGHXT8gUudy27q9G2He8YXkntWa1q0ZgXlgSrR4I8w0OIfosU6NPSKkw0AhF+iOAU0egd5Vxz5RC9RcL58feJvQ/hfQnfsAOUbFsl/IUYSR8iM14EPhMD5UUUOu7NIcnzCPQRBE0YC2CPFOAf1STdlZ/HxCjgpNOHwA3zmHXlil47BgUcsG04JC7zn6A0/YrqsT6Knt3Y+DN0EW9o+BhIcONlzZw5MUsX/mZKkgPQ1fuV9aNUaG7M0Vy1SgW576XT3Ir1AXf6Oz1ihSKgbSyHyP9nxtHUloPF9g9TWiMTqwlVbb8XVLvu/rIjMXsdB5EI+y0Eq9RF2IP6W89Y4zNU6y2jiIE1OusNfzByFf+CtGLiri7JR0IMVzD/aQIkFqpe/OyG1UDUAPd2yytxaba3wjEKWvy0s273aoNJQOQ+UyRy/oWZQ2wjIBRA3yTlVYstTlJwa+7URHIPTmiML1I/nFOfBhB/HsoGh7hilVLwSsMVn71SN5
+ t6aHtBXU
+ kqxMu6NkhTjfgHFuAUrA6RrIDZxmRSHbefq49z7pf7gbrfbIq4j9VnZHPO2f/Qjyg7Pw34jt92Ap2O+dTEhtITYDicmrquRMKtNbSraWbwqpmnDGu56DwrIGkO1nRS+nPohfOYL9WWD98SuEQyha6L+dejoEGxdwJzexedpQ9oQtThdzApFZq6TBjJPkZ8EwzpYK8ycmTBqwDgce/QYHUZnUlAIJQrNgHEMR+xeGRulRnI45nkoTG8WZIpXbXdosabDcPPfb+W08lyvrHlxSCyBclo8km/33U7ObxAkjSEyYSOYNWhM35RygZJLCRwLlB5ix9Xa81akuFx2rah+J43Nr1hu5sT4A2QMSmKhiVWcLn+I8Ko0t/2ZEMDw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,126 +164,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-alloc_contig_range() and offline_pages() migrate the folios out of a
-range and then check with test_pages_isolated() that every page is free.
-A migrated folio that had PG_rcu_free waits for a grace period after its
-free, so the check fails.  alloc_contig_range() returns -EBUSY, and a
-CMA or gigantic page allocation can fail; offline_pages() retries until
-the grace period ends.
+A block that compaction has migrated every folio out of becomes free
+once those folios are back in the buddy lists.  A migrated folio that
+had PG_rcu_free comes back only after a grace period, so compaction
+finds the block still in use, migrates more blocks than it needs and
+fails more often.  defrag_mode relies on compaction making whole free
+blocks, and there it shows up as allocation stalls.
 
-When the check fails and the zone has pages waiting, free them first.
-alloc_contig_range() then finds the start of the free range again, as
-the freed folio can merge with a free buddy below it.
-offline_pages() does so only after a pass that migrated folios: an
-offline stuck on a busy page would otherwise start an expedited grace
-period on every retry.
+When compaction moves past a block it migrated from and the zone has
+pages waiting, free them before it drains the per-cpu lists and checks
+whether it is done.  The drain costs an expedited grace period, so
+async compaction, which must not block, skips it.
 
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/memory_hotplug.c |  6 ++++++
- mm/page_alloc.c     | 24 +++++++++++++++++++++++-
- mm/page_alloc.h     |  8 ++++++++
- 3 files changed, 37 insertions(+), 1 deletion(-)
+ mm/compaction.c | 8 ++++++++
+ mm/page_alloc.c | 2 +-
+ mm/page_alloc.h | 1 +
+ 3 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 226ab9cb078a..c23fab652957 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1967,6 +1967,7 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
- 		.nid = NUMA_NO_NODE,
- 	};
- 	unsigned long flags;
-+	bool migrated;
- 	char *reason;
- 	int ret;
- 	unsigned long normal_pages = 0;
-@@ -2050,6 +2051,7 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
+diff --git a/mm/compaction.c b/mm/compaction.c
+index a049415512c6..2acb87a3446d 100644
+--- a/mm/compaction.c
++++ b/mm/compaction.c
+@@ -2760,6 +2760,14 @@ compact_zone(struct compact_control *cc, struct capture_control *capc)
+ 				block_start_pfn(cc->migrate_pfn, cc->order);
  
- 	do {
- 		pfn = start_pfn;
-+		migrated = false;
- 		do {
- 			/*
- 			 * Historically we always checked for any signal and
-@@ -2071,6 +2073,7 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
- 				 * out
- 				 */
- 				do_migrate_range(pfn, end_pfn);
-+				migrated = true;
- 			}
- 		} while (!ret);
- 
-@@ -2092,6 +2095,9 @@ int offline_pages(unsigned long start_pfn, unsigned long nr_pages,
- 
- 		ret = test_pages_isolated(start_pfn, end_pfn,
- 					  PB_ISOLATE_MODE_MEM_OFFLINE);
-+		/* What this pass migrated can wait for a grace period */
-+		if (ret && migrated && zone_rcu_free_waiting(zone))
-+			rcu_free_sync();
- 
- 	} while (ret);
- 
+ 			if (last_migrated_pfn < current_block_start) {
++				/*
++				 * Folios migrated away from lockless readers
++				 * are freed after a grace period.  Async
++				 * compaction does not wait for it.
++				 */
++				if (cc->mode != MIGRATE_ASYNC &&
++				    zone_rcu_free_waiting(cc->zone))
++					rcu_free_drain();
+ 				lru_add_drain_cpu_zone(cc->zone);
+ 				/* No more flushing until we migrate again */
+ 				last_migrated_pfn = 0;
 diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 9caaa57bf51d..eea287ab2a01 100644
+index eea287ab2a01..afd4343ad572 100644
 --- a/mm/page_alloc.c
 +++ b/mm/page_alloc.c
-@@ -1479,6 +1479,19 @@ static void rcu_free_drain(void)
- 	mutex_unlock(&lock);
- }
- 
-+/* Free every waiting folio, including those a work took off the lists */
-+void rcu_free_sync(void)
-+{
-+	int cpu;
-+
-+	if (!IS_ENABLED(CONFIG_PAGE_RCU_FREE))
-+		return;
-+
-+	rcu_free_drain();
-+	for_each_possible_cpu(cpu)
-+		flush_work(&per_cpu_ptr(&rcu_free_pcpu, cpu)->rwork.work);
-+}
-+
- static void __init rcu_free_init(void)
+@@ -1457,7 +1457,7 @@ static void rcu_free_defer(struct folio *folio)
+  * callers want to allocate the pages next.  A concurrent drain holds the
+  * lock until it has freed what it took.
+  */
+-static void rcu_free_drain(void)
++void rcu_free_drain(void)
  {
- 	int cpu;
-@@ -7649,7 +7662,16 @@ int alloc_contig_frozen_range_noprof(unsigned long start, unsigned long end,
- 	outer_start = find_large_buddy(start);
- 
- 	/* Make sure the range is really isolated. */
--	if (test_pages_isolated(outer_start, end, mode)) {
-+	ret = test_pages_isolated(outer_start, end, mode);
-+	if (ret && zone_rcu_free_waiting(cc.zone)) {
-+		rcu_free_sync();
-+
-+		/* A freed folio can merge with a free buddy below start */
-+		outer_start = find_large_buddy(start);
-+		ret = test_pages_isolated(outer_start, end, mode);
-+	}
-+
-+	if (ret) {
- 		ret = -EBUSY;
- 		goto done;
- 	}
+ 	static DEFINE_MUTEX(lock);
+ 	LIST_HEAD(list);
 diff --git a/mm/page_alloc.h b/mm/page_alloc.h
-index b9259deddb59..764e3f43b3b9 100644
+index 764e3f43b3b9..4f5f06adbfdc 100644
 --- a/mm/page_alloc.h
 +++ b/mm/page_alloc.h
-@@ -235,6 +235,14 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order, int nid,
+@@ -235,6 +235,7 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, unsigned int order, int nid,
  	alloc_hooks(__alloc_frozen_pages_noprof(__VA_ARGS__))
  void free_frozen_pages(struct page *page, unsigned int order);
  void free_unref_folios(struct folio_batch *fbatch);
-+void rcu_free_sync(void);
-+
-+/* Whether @zone has pages waiting for a grace period */
-+static inline bool zone_rcu_free_waiting(struct zone *zone)
-+{
-+	return IS_ENABLED(CONFIG_PAGE_RCU_FREE) &&
-+	       zone_page_state_snapshot(zone, NR_FREE_RCU_PAGES);
-+}
++void rcu_free_drain(void);
+ void rcu_free_sync(void);
  
- #ifdef CONFIG_NUMA
- struct page *alloc_frozen_pages_noprof(gfp_t, unsigned int order);
+ /* Whether @zone has pages waiting for a grace period */
 -- 
 2.54.0
 
