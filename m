@@ -1,135 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE48606D81F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D463D606A326
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:57:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=RQDT1ifx
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WJdsZjfS
 Received: by kanga.kvack.org (Postfix)
-	id 2BE1C6B00EF; Wed,  4 Nov 2026 17:55:19 -0500 (EST)
+	id C388E6B05B1; Wed,  4 Nov 2026 17:57:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 295A56B05B0; Wed,  4 Nov 2026 17:55:19 -0500 (EST)
+	id BE9356B05B2; Wed,  4 Nov 2026 17:57:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1ABFC6B05B1; Wed,  4 Nov 2026 17:55:19 -0500 (EST)
+	id ADACE6B05B3; Wed,  4 Nov 2026 17:57:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DE1D56B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:55:18 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7EFCB1401D9
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:55:18 +0000 (UTC)
-X-FDA: 85398944316.05.85CA0AA
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B16921C0005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:55:16 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=RQDT1ifx;
-	spf=pass (imf20.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8333D6B05B1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:57:54 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E0C4C0848
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:57:54 +0000 (UTC)
+X-FDA: 85398950868.24.6F29DAE
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 28D1DA0009
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:57:52 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=WJdsZjfS;
+	spf=pass (imf15.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793832916;
+	s=arc-20220608; t=1793833072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/zbs/VJDYV0GvGSr2Zgo/ryZBI/tPePChlLCcPRtDrw=;
-	b=Xn8RD7EgxLaFex4R5grbaZJYYeuGWupgC8kQrN4Jkr54bcqCRCMzEFTPsRdai2xOHLwSid
-	avwooOR0thmkii6YP4GnYy7qnWv6hbpAaAcRtw5DdLKD6v0+yDujL8UzfUaAxND4zHiQah
-	F1dZCesP1Gyiu6L0se38CSYymcwrDp4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793832916;
-	b=sXlmeRmQK7FXj1Lhg16MN0oN5j4tZFEnLSepIMbUvCkCzk3Nl06Fwbeae+QbNhQSNoGQM6
-	EwBtuO7NfljEFAfpD9tUYTktVQgjlPMPRjlBsn7EeX5XGWcWo6vtEjUrMhO7gIKew9Q0CX
-	onMLGSdu/1MHTDmRVhctNTV8VBiXDYw=
+	bh=bZmm/fjciQHFDsHygF6gqzElYGHv0HpumcgfM0NGUjo=;
+	b=OSwnr2uyEhJTxs9VqH6R+ZjKWq6jY1onRyLKzKAEx7ButVVwMVUhk923Zp3PHtVDRlisd5
+	f5V3HcEPRJj+UD0XijhqTR9nCUSOK2ZutoyAn+1ipfyMhev9W4S6VdkHKR6coWyyXZa/nI
+	1QxbKwrQ2ZhFox9Sumi1u4KC1H/imvM=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=RQDT1ifx;
-	spf=pass (imf20.hostedemail.com: domain of vipinsh@google.com designates 209.85.214.180 as permitted sender) smtp.mailfrom=vipinsh@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ea7f9c11e6so21395ad.0
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:55:16 -0800 (PST)
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=WJdsZjfS;
+	spf=pass (imf15.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793833072;
+	b=pqC+7HgPqDS4gNXlexdH02iceF7U63j6mRyaLRVLf0CkduuiJK4SH3sjUBeLGJvfUiLKem
+	d6vRyPbkbJbifj9O+f4qUt1aqnQsv3/1nomdLz53HFvL4vZVV5m2GfM0ue4lDGp64Tsmv8
+	aVeoOpWQQwO1AESPVqyHUXLMz2Q/mfo=
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4a214af2076so8994465e9.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:57:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793832915; x=1794437715; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=/zbs/VJDYV0GvGSr2Zgo/ryZBI/tPePChlLCcPRtDrw=;
-        b=RQDT1ifxkxV+9SA3u9MXDlTzIOTUlv/z2FHWSVotk9nnaRvyvpHm9aNFXizhvAuUc6
-         vh7/oNrt9v5aBKq2vNCMGXzrBOgff6jzf96AV7w4v7wlnlJDfeKHtoyV5yxy/Cj1fqNm
-         9yBxFw9ffdxh2VnMZOroWjkUUiFh5EE4VQSf/PprBXCgq3rJjP4KvDW0Cwfqn972nnXL
-         hgl/6MX4r1ht8lMCquuwiX6dtr764clwsCZfNTopV7sp9EwmIG5bS19SbynnQ2cqWK+w
-         wZxfsFt5L6vu0EKrp7vji54rkIQFkHwxGjIJTkHcPupJGcUZsg3s2hJ8zM+a14yRSPw6
-         b/Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793832915; x=1794437715;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1793833071; x=1794437871; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/zbs/VJDYV0GvGSr2Zgo/ryZBI/tPePChlLCcPRtDrw=;
-        b=HYkH5bWyE8BArpegdju4NqiZrVUpd1fCYIHivEcGeOtGZ8aAYnusgUyHvt0xA78iLW
-         +MprTvXqn3qxY/18NG/OtqpBbGgyI9A23Z1mzyj8raBaqY7+ZmjGEI/7en7sl5GVsW8u
-         0Z9KBuTBKGocSu21dvA4rfYt0fsBLjctYVF+umCXk8pTBarenqqS0Ci/eALgDlhf97pM
-         575ELvyZMlehU7Y18H3ZktnFg7tK42zUf1u6cLowDAP7Z1BCNQMWnceiofWWfEr+WZ7v
-         s/Z6dwhxgtGt4NjHhg+5hfAdWAYe9NwD1jzqrUJLOWZ3OZYfqFZCqY87ClxHPDitvH2J
-         o5ZA==
-X-Forwarded-Encrypted: i=1; AKwUvBw/MZfaOT7lEO3JfZbR+eHEn8YppCLbt+Xmpx//z2LTTW/vtiO0DRIwCRsjLw73vwroNUrSHt6poQ==@kvack.org
-X-Gm-Message-State: APuU4Z+zyIedJtiFiGThbqkC33Q520XB0t8ojuBUoLzt/Dti0SQMG6fz
-	MDjDDZZO4nubkS8etnhsJF/EO0Hm6K3qFQ6lU074bUQc1wUS8ZflqYZSEwn48KwnvQ==
-X-Gm-Gg: AYBFou2GK6SAfF4u1i/iHLx2dSU91dfqGSqx1aGBCbE0/M1eWhl0oMllLFuUql6lvDx
-	+jAJ4wx7npEV83ncD3zLUladQTGgb59hskDblYljc1Wlqu7oMcrViJdZd6QH8xhJxj5mgcb3wMP
-	b1AE4SF61gt80UHCwnj5AulfMg/PIft7VTT5ckZbGxko47R60ibSQjCFDX0rvlvuQCoXYazov8G
-	1xtnL7R0OBK/KTED4kET1Q7RdT/rFg5S0xVmOkWl0UeL6TjKmdfdAou9bjF2lTxPd8wC/iaQ5m8
-	gTPGi/9vUqz5kBXKEj5ypHZbK97dDpDgpn305qEghWF/eVm55VwHUZfU9lZOyBGO6DPVcNwICqc
-	cOCN+KhUl0l7edPfamDcG+bfWdYNvKAbo61ES+GP2CBsaKyd+pMSptdWDNp4NFGF33qZJ0Khn1v
-	FgIVEvNlROYhM6VwNqlZbR6auRMmsMBOgdRQ0+1X7TmeZHG65hrKyR6jb5rFZy3NTuD1iYGRNI7
-	QHb0daBTp37MJiKzpLyMsNlCgw+XgdNJkMIFyA0Le6L/zvBdqCuzWD610nneGtduNVjnwW6fcUt
-	NL2CBYr7ipBHp40kxCIiPu8m4c/mxoU0gRPUdk/d05T6yASnGQvWbof9EZAcbR+QMQ==
-X-Received: by 2002:a17:902:db11:b0:2dd:3a08:d47b with SMTP id d9443c01a7336-2ed27e06d7bmr1039485ad.13.1793832914948;
-        Wed, 04 Nov 2026 14:55:14 -0800 (PST)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b09455fbdasm2528714a91.0.2026.11.04.14.55.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 14:55:14 -0800 (PST)
-Date: Wed, 4 Nov 2026 14:55:07 -0800
-From: Vipin Sharma <vipinsh@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: Bjorn Helgaas <helgaas@kernel.org>, kexec@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, 
-	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, 
-	apopple@nvidia.com, bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, 
-	corbet@lwn.net, graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, 
-	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
-	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
-	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
-	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
-	rdunlap@infradead.org, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
-	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
-	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, 
-	yi.l.liu@intel.com
-Subject: Re: [PATCH v6 05/27] PCI: liveupdate: Add helpers to preserve struct
- pci_saved_state
-Message-ID: <20261104222438.GB511751.vipinsh@google.com>
-References: <20261102153656.1431701-6-vipinsh@google.com>
- <20261102230624.GA1038787@bhelgaas>
- <aukvTvnfyAvahb51@google.com>
+        bh=bZmm/fjciQHFDsHygF6gqzElYGHv0HpumcgfM0NGUjo=;
+        b=WJdsZjfSuj6zOcxF7cBGVv7rz0XD19BRl4OozmheCPObhzhtrCDkWsNwC1WhjZWWXT
+         ZQjtSUz8swSCPywFO4SDkyP/SR8Af5Cz7S1/19GG9+eh2S28lkpDfJC+xfnJdAmLE8a2
+         3UJVVQtkL1o06iHF/CK5iW5gXP1C17go6juOK/z/tBTXrDFTCgl0sJVUHliMnptRSC9R
+         gNlcXYp0+a9kG+05L+qlK+eWsgfSblt3BWbWceqjYlUdYpKKI5lcevVRRp4BUD4hNmB4
+         p2X5cN3WruOwsMSUXswQMpuXu0yf5pmUMq0MfE1caK/Ks8wrP65XrJ+gz77Vg5NM10xK
+         bGhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793833071; x=1794437871;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=bZmm/fjciQHFDsHygF6gqzElYGHv0HpumcgfM0NGUjo=;
+        b=nFDy5jFFHQBzvvXgTI+qSLfHPGPJ3kcMhSaOiwWZJpaUmJxAdKCB/0xgwjNend+0bl
+         6ToBqQqyktb+nbi0gEbBdE29kqTZH6qVeraRgFhQgcDTU4V77qB7p1yByOZkW+3Fn2Gu
+         1TrdiDdAVztMb4GM5U+KprxEYfZuVclz6aciL08JUxsTbz4NcuRDMRFJmGOEW2t+LU8c
+         mV+9pOb8nT2Ld93V4clMvn10KvBxxZQkxpo/XMzmt5INC3RgumPRx66gKEowCDZLzexV
+         7csb8bG79OwJ0Bs6P8KSjk2XNXRkjbxJS59gdLpFZpgpL+8T07CeUUD38pBAfb3MjkPP
+         Wt7Q==
+X-Forwarded-Encrypted: i=1; AKwUvBzYOFgzymP6IIUNWpomIjMSuj5EW2fD7gBzst0CxZAovVxc07AOsJKwz4eNPFCQCCrBjpDMtVdacg==@kvack.org
+X-Gm-Message-State: APuU4Z+YPKhEo5IKnOdVInPipgB/bjaMEbHZnzrn5qEaEMLF2BJYUiMn
+	pLKlHr8M0Q09LIz+dDhR+nmj6IKPP9H37/8YUZuCmluWG1q36lxmgqWM
+X-Gm-Gg: AYBFou0pcwJsqQMqUQ/tySIwO/hAjPVRqVkaY3J7qfEa0u7uw5XtUdoyoQD9eJE/Beu
+	3RoqrE8PYV8twhQZM4yWUJHc9Bc4c3NHpYKrUJuupdGkJUgwWlbpT3tO/Y3Wvz4k3t1NEguxJSS
+	jxO97G0wzISXAXHy4KPaiRvO97nzQwTJPDFfrm3L+3AkFAEeAKoKWtW3UJbcLGJi7pwiO8Mi3iL
+	ZLQAQIQO1To5S6moEBy2ti3h5X3LxBhdjhwWCpPBc9X4u6zkmFXHTDeNgyZLkgavypZBULbhOHD
+	QO6yYjm1Ivu6+V81suX6niULSLjO7FG/Clx82SBjau6w6AhYXTjqX8C9Qn+KIxY/GsUbsd2EmaH
+	s4kUkNJKYT9pAEVmZoTrM0BYf1xjBgN5ed6L0O0yRqUbCAmTjWEgaBVFtABQw+mDyc3SEJfLNcn
+	0hsUOJBrw/ZgljMS+ZoopXObqROgLDcmCDLTcA4sBKCya1HR048XFozSekOqvd9ItSv+VyVy5Ee
+	74fLT2AuwgedmvwUjz+EJ3zZTvztPUYjgBzHO1iNGcZ2L98cJndM8N721vlL3hP8AW8Z1HWbQPp
+	eXywV/Ejf/nEBMEwo5e0jE8=
+X-Received: by 2002:a05:600c:6212:b0:4b0:a7aa:843 with SMTP id 5b1f17b1804b1-4b0a7aa0a54mr222825565e9.25.1793833070285;
+        Wed, 04 Nov 2026 14:57:50 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b5725061e1sm17756545e9.7.2026.11.04.14.57.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 14:57:49 -0800 (PST)
+Message-ID: <93d13781-0c37-4a3c-8fca-6f8108eff35a@gmail.com>
+Date: Wed, 4 Nov 2026 23:57:47 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aukvTvnfyAvahb51@google.com>
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: tmq9gxs53ty5a355xpf4ojmfhosptgn6
-X-Rspamd-Queue-Id: B16921C0005
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 1/4] mm/rmap: duplicate a PMD mapping as one in
+ folio_dup_file_rmap_pmd()
+To: Konstantin Khorenko <khorenko@virtuozzo.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Peter Xu <peterx@redhat.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
+ =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ stable@vger.kernel.org
+References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
+ <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-1-c56d0d26f970@virtuozzo.com>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-1-c56d0d26f970@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9ixap4b14dzzgx8d5ps1h741riy485dm
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793832916-856775
-X-HE-Meta: U2FsdGVkX19NhzgiQescQz89yMTLOAB/hWFteUcPDG+GELFLvJmu1tRfuV/SzXQwfJkSwb7VRO9KL9tIUSSltExJJiCbk4xhvH9D2LNmBRh83fLSlHmBSijoEzU/zTtZHc12id0H5Q12EkSuCtwcSvvMK57HfmiuaYVCoPWaHJE/QcweObY1OoxcBcjxiTcCO+Kdrqy/R/PBr193sIDCjZRS+ejj/rtXdjSzOSY+ahFvicVgjp0AYIYYRPipW36KICjiEGsO9mBajsVT5ljaOvf2Kz7/Lem5VLrsrUeQrB1hZTiEnuWvhMl3RgE5fy53NchXvHICDe4A9UOEqEBk+5aOpEk8h16yF7rJ9RIZjPVmagCl6Z5VugYrgEb8Ixk1C6dxedwNfjuRzPDo3ZJsMNGuN6UZAsv9G3aQtm1kSDZo1MaibVrv8zeWBcMnIm7nTGL5ybM6/ns59PGGUUzMMHHOOILhttytlm3Cqx5ZnO6TX4dqH2BNoDr+ek/OBMA9IuocBbRFBCUPPS+XOUg9VGwII9gJxSTRJrAGt1iua8LZ1Wu7leWcaPIpABbTs43cVMkfrDIfj/MHVdEeziB6CcyXikaTOC5BApzSKUHRjqQfePd2D93936vAyrsMt0Fw8kSr7/RXtj5TE275TPMlWqgidb8yvPkidrRn0LU1XG3fLH/DP2xSdatA5DObR5mksq7Q+z9nklj8ujsEZiJRGkcc7Ob1sYYJF44IgPLDa1afL+ZI+MyPII/lppvXhRfWXV58Y1cj6iFW0rX+qw7rgR42zPBVNr7mb8efF05S0MAB/IHxNImOFruBcuKHMFfPHDX5XCKTm+qi/QXgt7IrqGUZ29HUQ26Gpb+LtaSPqQWYnmkGOoNfv29k8qefS3y+r8dDZ/hBtaEHzuSGK4JeaiLMAeTlGaGeRS+PNiPmxh8my89VWbQLL7lMwJ04E/7RHPXUM3zJYpVywlHtTiQ
- a3Ob6B6C
- nuD0fOtfI86ZqosrNhTyv8nRWKIgPlOxIWu5++v/D0JA7/SfyLcodeR7CAehDYuT2GQq48ZfYYZvNgwbmOI9aIIPPG/WKi2lmz1IMGLRBQe8PVdQWOp9W7QCtycIKQTuFWawRY5bPEcU19tfNov6f9//EsXzlQDJ+zWo0jMf36uqJPVjg+HPBZS6dEmITPlcxnpP6//N2W0Et0n7h71JIGmzg51lyPMVxutG18mj71KJ2HkvY23eAlBD4DjGK0qbcka2figptle30LRI+phTfVEi86q2KDrcl6ymh8rWYQrgyYmbpsddqdj4/YqgDIBNfzbC9k5b7bVzZN9capGb2weP/JZNMEz3gXlCtTGOs2/ukOAEJLjfZVvgYW1lOZKB7C3TSqGAk6C+K4KCGF1tPJ042XqqHOQsNg0vq8j/iBMef/cc=
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 28D1DA0009
+X-HE-Tag: 1793833072-44292
+X-HE-Meta: U2FsdGVkX18s8bC4cvo1+Si7s9yGuyu7IJYQ006KkgfDTIqNXCjRrZi1hxUIDUkjWdBtWRxeM9NFM3wpG+ok7nUywBB1TM57mmZOhcql6uq1J/3yjrX02zuyhldanRojfoDsgSlS5dRClL7ABaG9si8kvAih5pRQrERMQGrZAFNLX6F2392V3B6vghmCLOFuyPGKDV4f8t0I/dda+MBWNp8BoLhCACsOp08U8PCYXD7LpFBYX1A1UrMmM4ttWTSrh1VxBzZfyRYx1pl6X6ZkDkEVOjhuaHJAEaZlKx9VM84KcEzgwB8QvtBAZHvQY9+D0yfbWbO31qgZJmaioOrmOf3l+slnoyF1QFocuVKUtCskDFqM/6jtevCu9joNE58CjKKq+LOlW71CwUZdHX5s/9eHr/+ZwFdzuDhQZPmTr5VpABSm/bsQ6aHg7CgU+/4FSEja04I7CDmReSJwBY2Cacm+dHaSFGO5mZz7Ct/z5xp3AcOLnczFsD6Iwcj9NONu2emCV3TYrcqlMGAoR5p7sGZfgGixdVtZ4lwd6ZhXkD65AxqJuL6FnBMHD2hgNH5RGkT1yrzDROxmbC6IzGIod43fGbJxF1t149BXoRt8X4thZZI3+EklwHrIvv/bJd1eaOOSwQDmfjYw7V/zVsamqBh69u7PMYtEKZG5DhoNSyleN4MmdjW71gcXhrHhKr995UMmy2hPDtNQtmEaBuX/whfNwxN0iJbeWoVae3Y52I3T0VrevVw82HouRVWdMs5Y5s7znUCuFeyNkKQwxVdtcijf837aj6IPlRI7Hm92tH7pETBJbmzdMx/F65j8HZThDhzAYfekl7zM3n7vBWj6ZWCC686cum5533e603YkeUD/UXzIQeFc5AqfBjZsfrHWG+hA9hXC6yBGrJHfp7zjgcmOf1NnjhmnWnyDjEFV1wMLlj8T7TyRlZfqM45j+xUAQQv2nPIIOxesCbqijOo
+ JnYsYSDw
+ d2nM18Z+pYvXJ+dS/6wxG1ycyvZ1pMxCOWWrSo6SW98IKNjUe6EgJgwiTWtbKCGzxi2PSH+PEsS9hMiGVdVUwrA/YIvTIWKx+vqynxIZX2aS5pkbfHHx/1iVfQmqGAEehHLm2ZIeoWJBpsQPDy4vlid+9ygyQ9tEm0vK11NKE0wdY7odvxo0rtGIPZDA4I3HFiFbNRg+DIjxhckrdFeUgIe5Uzjv50yt0Kx7BK6YKqG/+5wCV/V4GN5Tyimh/7iYaMaTckRyp0LKAtvvMF6bqTrjEqhr81CkOriT5AZ01q8Ga1sDYyxRgnsAghgxH1OHA1w/GLBAXta+nBt7+AvRxYjXYCJNF5XJK4mn4JKGqToZwq/LuP/Pg5EHMnZnjdOSdvGiek9pnVH65i/EQ+9teSMX/fTVQKuprxGpXR3iH0sWRFrN3ScAgY4bUAVZYca5KADyisJ7H5+405xO9FbWKFAU07UAW34N6STJrHXlQElU0e/NmJ2FwCFf7deXNypKuH2K+Iy5Iw1B4vbhk6iPDrMmcglxy1tIa04LsRuOUFUa7pgDxZMaoF3aJ6hkd2xlIsFedmFXamgkRA6GXQ2p4QpoOKMhQe4uDutBVyKXSulcX8WW4jFjjbO2dlxbb/NUd2h/LkrFpiPL9/VC7Vp8DvbUWiiCORg4DtNn+bVlDZ0E7iowf4RUGNTRztw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,88 +145,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 12:48:14AM +0000, David Matlack wrote:
-> On 2026-11-02 05:06 PM, Bjorn Helgaas wrote:
-> > On Mon, Nov 02, 2026 at 07:36:34AM -0800, Vipin Sharma wrote:
-> > > struct pci_saved_state is private to the PCI core and its in-memory
-> > > layout is not a stable ABI. Add helpers to serialize it into a
-> > > caller-provided buffer and rebuild it in the next kernel with a stable
-> > > struct pci_saved_state_ser ABI. Using caller-provided buffers allows
-> > > drivers to embed the serialized saved state directly in their own
-> > > KHO-preserved data with a single allocation and lifetime.
-> >
-> > Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+On 11/4/26 9:40 PM, Konstantin Khorenko wrote:
+> folio_dup_file_rmap_pmd() passes PGTABLE_LEVEL_PTE to
+> __folio_dup_file_rmap() for HPAGE_PMD_NR pages, so it adds HPAGE_PMD_NR
+> PTE mappings to the folio instead of one PMD mapping.
 > 
-> We discussed this patch off-list this morning. I'll sharing the context
-> here since you were not there Bjorn.
+> The helper has no caller yet, the next patch adds the first one. Pass
+> PGTABLE_LEVEL_PMD, as folio_try_dup_anon_rmap_pmd() does.
 > 
-> The ABI added by this patch is not actually stable across kernel
-> versions.
-> 
-> struct pci_saved_state_ser is stable, but the contents of each
-> capability entry are not:
-> 
-> > > +struct pci_cap_saved_data_ser {
-> > > +	u16 cap_nr;
-> > > +	u16 extended;
-> > > +	u32 size;
-> > > +	u8 data[];
-> > > +} __packed;
-> 
-> @data is a memcpy() of the per-capability save buffer, and the layout
-> of that buffer is not defined by the device or the spec. It is whatever
-> registers that capability's pci_save_*_state() function happens to
-> read, in whatever order it reads them. 
-> 
-> None of that is described in include/linux/kho/abi/pci.h, so this patch
-> implicitly turns the private layout of every capability save buffer in
-> drivers/pci/ into Live Update ABI. Someone changing
-> pci_save_pcie_state() or pci_save_aer_state() has no way of knowing they
-> just broke Live Update compatibility.
-> 
-> And these layouts do change. Commit 898585172fa7 ("PCI: save and restore
-> PCIe 2.0 registers") grew the PCIe buffer from 4 to 7 registers, and the
-> AER, LTR, L1SS, PTM, TPH and DPC buffers were all added over time.
-> 
-> This is the problem I was trying to solve with:
-> 
->   https://lore.kernel.org/linux-pci/20260924173501.856380-1-dmatlack@google.com/
-> 
-> That series replaces the per-capability buffers with a single store
-> indexed by config space offset.
-> 
-> Where a saved value goes is then determined by the device's config
-> space, not by the kernel that saved it, so the PCI core can change which
-> registers it saves without changing what the data means. Serializing
-> that for Live Update should be trivial (a size/flags header plus the
-> bitmap and the values). The cross-kernel compatibility question also
-> becomes explicit and per-register ("the previous kernel saved offset X
-> and this kernel doesn't restore it") instead of a size mismatch on an
-> opaque blob.
-> 
-> Bjorn, this is also related to your last comment:
-> 
-> > I think it would be helpful if the names of "config_space[]" and
-> > "caps[]" hinted at the connection between them (both are in config
-> > space).
-> 
-> With the offset-indexed layout the two are no longer separate. The
-> header and the capability registers are all just DWORDs in the same
-> config space map in struct pci_saved_state.
-> 
-> So I'd suggest that we land the saved state series first and then rebase
-> this patch on top of it.
-> 
-> I can send a v2 of that series this week that addresses Josh's feedback,
-> rebases on top of the PCI Live Update v10 series, and includes the
-> serialization helpers. We can use that as the basis for the next version
-> of this series.
-> 
+> Fixes: d8ef5e311d7b ("mm/rmap: convert page_dup_file_rmap() to folio_dup_file_rmap_[pte|ptes|pmd]()")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
 
-Agree with David here. I think David's series will make things more
-explicit in saving PCI state and easier to find changes. I will review
-your series provide my feedback but don't stop your v2 on it.
+LGTM:
 
-Thanks,
-Vipin
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+
+-- 
+cheers,
+jose a. p-a
 
