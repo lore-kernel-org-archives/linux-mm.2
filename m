@@ -1,103 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2D7606D807
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD9E6606D80E
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ApjvTxv+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QnqKLYh2
 Received: by kanga.kvack.org (Postfix)
-	id 536B56B05B2; Wed,  4 Nov 2026 12:23:38 -0500 (EST)
+	id C693D6B05B4; Wed,  4 Nov 2026 12:27:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E8576B05B3; Wed,  4 Nov 2026 12:23:38 -0500 (EST)
+	id C1B306B05B5; Wed,  4 Nov 2026 12:27:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3FEF76B05B4; Wed,  4 Nov 2026 12:23:38 -0500 (EST)
+	id AE2056B05B6; Wed,  4 Nov 2026 12:27:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 13B636B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:23:38 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 905C912078A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:23:37 +0000 (UTC)
-X-FDA: 85398108474.11.B5B639F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 87DE96B05B4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:27:17 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1903F1C419C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:27:17 +0000 (UTC)
+X-FDA: 85398117714.19.27E824A
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id F1F09180002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:23:35 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ApjvTxv+;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793813016;
-	b=IUvlq1oKNDXIfrpDnseT/s8G8nfYKQmf4Cc+vjaY2X9R3qT+OjOh0OxikDKn2EKrcZmtyy
-	Qw9xYLR44f29NUgdl4eilh3LuAhQH+lZS1ozH9KWWNlwLrP0Dj+9bBmyjq6KsE56CSCeo+
-	h4UO0QB8H40W7KbDRTa0eiDgHtkb6ow=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ApjvTxv+;
-	spf=pass (imf16.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 5BD414000D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:27:15 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QnqKLYh2;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793813016;
+	s=arc-20220608; t=1793813235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jf+fsnmGIryZf3OQ6Nnm/qTexCHP5OkJmTCMajaRAPc=;
-	b=VAjoDYq0pvt/u/2uVy0iVhmFkXiA5/lRP24w0mc2XskTCr2GVehIYwT17cq5Kb1yXlua//
-	tWftAqrb5OXEG4Ay2eRuysLnTor9+E+UoKQxsDWP9aB/Nn2v96lce6VLcMwb7SCA/tzN4Y
-	7ZqJtK2JmgtoEKPmJfpv1iOYMumpyjk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=lAdqJZq7DckAfewXRPAVCUONZuQAofOCOPOWHFZTOPQ=;
+	b=3wYIBv66+jHa+llGWWYruVtLXkOYQNwJ/PzLT1tc/Wjopd8aiJyOOcLYSPH3GGAmRD1zyl
+	DTH5N2zl2k/8/B1DegLRzqFoFxwrFVqLgQj9DOPTuNoXYoPLkBAuwunnbPSB2XxMGj8Q2V
+	4HRYtFM0dw+n+C8EsaVSsdH7YPkmGVY=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793813235;
+	b=msEh+bpA8v7sWWvjT+iIKgPpx9vhCsEH1IBtyyInWKnQRTkMZQJauvHDRF33ipQKlf0WPM
+	T0uoxCy4r8ly7Qg0tDQLAZB6pIUY+kx4WGvGmXFqSgVTjzlBrVQZTteGx5cf5knTicS2BZ
+	RW+BI4CLBzxI3CXHgtrjMwdMzGEnI9g=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QnqKLYh2;
+	spf=pass (imf04.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 81A0C601F0;
-	Wed,  4 Nov 2026 17:23:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C761F000C1;
-	Wed,  4 Nov 2026 17:23:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B661F601EF;
+	Wed,  4 Nov 2026 17:27:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4F031F00A02;
+	Wed,  4 Nov 2026 17:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793813015;
-	bh=Jf+fsnmGIryZf3OQ6Nnm/qTexCHP5OkJmTCMajaRAPc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=ApjvTxv+ADLbOjqM3lRPCeOqwPSRSuzNxz+D5QFXxKZEpVzQ/EFeKhrIDwv8VEdM8
-	 i9RvCnt/KyKcFM8ISXIjcUxUxOfvAJL5tJLn8T3QSTU3A1m6zCq8HrIiugsso4IK8x
-	 SBGDr1kxsyYCidMpPztvPalv93jum4bx40RUEvbeoD3Tj4FPlBsNeZmz/YZBU+Y7wv
-	 QHNVgyMX2F+C/k+J4JEQyhmDcIwhurdn+mLvbljUR4WuBLEp8JvXhxiuoBk8utBvkD
-	 6gFRFRk2JACDzEb6seZjcCs81SF8R3xvTCzbx3drnNuheB2smeO32cq+evv3RiXX42
-	 MATu3FSRICB/w==
-Date: Wed, 4 Nov 2026 17:23:24 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>, 
-	Naoya Horiguchi <nao.horiguchi@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Zi Yan <ziy@nvidia.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-cxl@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH] mm: split out memory-failure declarations from internal.h
-Message-ID: <autp6fWoGnnsPkbL@gremlin>
-References: <20261104-memory-failure-split-v1-1-3b0a85f0b7e7@debian.org>
+	s=k20260515; t=1793813234;
+	bh=lAdqJZq7DckAfewXRPAVCUONZuQAofOCOPOWHFZTOPQ=;
+	h=From:To:Cc:Subject:Date;
+	b=QnqKLYh2fAMD+U5HTXeOnACd1cOBaWr2au0sexyO6Tega8pNFvJ3KwBqyWlewJUso
+	 MIi2fzXRHEQROZC9gLvS1bZZ/9/KcmfDhERzkLaXXdIl+Qf8wPegziV2OdOn/5z79r
+	 3iTqL/OK9DAdbhv97um4MytPwotOejrYkLFgVhoshHzNg842ittp+lNu4zRCpPsoG2
+	 KqhP8Ng8p49cNRXsXj5NGkMfzBM+kKXiniguFgYtTFtMwPvnenK73TWNMd887NGQbI
+	 1pG3OChIWDhqEolCKBiLCVppfrBMevoWgaGWalA6fc1c1Jt43H5RxZZPnk2L1SezgW
+	 Bq+TYnLLsbzyA==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Christian Brauner <brauner@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jann Horn <jannh@google.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Chris Mason <mason@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Christoph Hellwig <hch@lst.de>,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	Joel Granados <joel.granados@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jan Kara <jack@suse.com>,
+	linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org,
+	coreteam@netfilter.org,
+	kexec@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	ibm-acpi-devel@lists.sourceforge.net,
+	jfs-discussion@lists.sourceforge.net,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-sh@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	sparclinux@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-doc@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-input@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-debuggers@vger.kernel.org
+Subject: [PATCH v2 0/7] proc: move procfs to what kernfs does
+Date: Wed,  4 Nov 2026 18:26:54 +0100
+Message-ID: <20261104-trompete-gejagt-raddampfer-9fb5640a6102@brauner>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104-memory-failure-split-v1-1-3b0a85f0b7e7@debian.org>
-X-Spam-Status: No, score=-20.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6699; i=brauner@kernel.org; h=from:subject:message-id; bh=vwrWu4QhJtoloSbOepgjr6FTno3vPTd4Ym/VDTikOkw=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zrofyGH5UuGlf8QM041zGftlZmtyqi7/2jv5suCKX cadvXNTOkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACaSkMjI8PXT/ahLzms2tG95 p/y6Wd4h+MQHNf/VL1dGn7i1utyl/SQjw+WcTXp/Xn+/v4hxooZnZYRWmPKsDU2ur9N2RKRMsj5 7gh0A
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: mbrfoakcum3y1c5fdr7rngtprosnxdhq
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: F1F09180002
-X-Stat-Signature: ksgwymn8zyr37d7kpf3zxheyq145tr1o
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 5BD414000D
 X-Rspam-User: 
-X-HE-Tag: 1793813015-152950
-X-HE-Meta: U2FsdGVkX18SQR1zHdvuyrymwuDSVJRM4S1pP4uj1wUNxkvv7mLKGNaWCAFWsOLd02AW4pFDtwqNtP9xML1cDmBErrEx84XBEFAcWvsMlaG6S5oDmM0K/e2Cfo9E+tqBc3XEO/2ELlyu+Ij3yEfZZ+iDx6Zf3dTlhqlZLbLdJGOb2tRxszLD+3sbjS9jSAZocf9/8ve2bWpAkwgCXzWErE5maIX78A0XIAg/QY2OF/9g/WVrOkyiTpcoirE+aLXX4uf5EjZn1qTNMUgtct/w9ukrxFLUYlvHTZtiBj5u5jz4t9P7/Xe2+pfJwVGtTanN6tXW218gcs9NbFVsM5wzqVzxIPtR1k4zRCgM3Nw3aQIJt6kOIxWnOvs9ckZzAgi0z65f/q312M4n35JdrK+rfHrsAFUwnLfLJwxnaEhz587LOcYDWBdDofbIm4o/8gzr3jLa6IAwDxmGVYgiGiacxPcrB25Y/PsZdgEFoSTQ5btBZ5Sr2SsV+vhVm3uzMPCFG+ky8ynxUinZfdEHDGvalv0TzLQhD048YT6rVm4vOorPNh9eWdL5NJ6g2pspZYft0IcMlx1jmVP6irmBJgQ42nh7wL+2M0jQmkqzVkKsbYrnt2D4LxwAuV9OTQUS9HNOV/j/+hujt2t7OyO7wKNb3HAxZT2X5A4+z+29PghjUiWACYUeCCNDNz5erZMaCUcTRxafuajK4B1fQEma3TC1KMTM1DNz6JYNGD4Tb9/1+4w7DGQfzkwdDtFb1xpq+Zev5tmC9yPiN+tE1WqKIjXW6IvQN8im6toFhYXAhu5DoINeVoKEaq0oq9Mtixblp8sJBj3qZTTlVOslSxK6ZEJ5s7LBeFgurebm4xYEK6rcU08cnRCwddUQP/Cm3ZRlbMENhS3hzO9UpO0BZiCxZWAoA/U7Ghuhpnt8IGj/krKhnws+v0+OeZaNf/QY4kfIS/De7uObHZGTS2qLgpHUihN
- Ktlg0eue
- vR/WGKpga4gXAMrQgj3l8O5eO/jGulDM+DHpQM6lT/C4o2y+Qiz6Pvlg0Drdyw74HM9Efy9wMZ2FMnfRkOTYrREmCFkmJk6CtkyASFAjPwvYi5qzQb0GN3LEICUq4It0NoD+pmBifVyksv/lg2dXYAxlj3MEPnL7dtdBJ9Aarbh9WuLrEXOGqyzFoQjZkPA6Jk6FlP8WaBVjh/UdBJNRHaAWFveagtU9xwqW3kta+dtl0pLny2SLtoLlncnmlLdb/pK/6VC3VKUi3/FOvR7zH2cvA8P/gh/dUoIGlmlIZJa4PIoFjbBzu5jvI7bCMob9MrStmXPzrpNUSmu2Un4KJgkzh1Vespi5mBzd0cozrxIynfL7qakcDAvhmNQ==
+X-HE-Tag: 1793813235-354897
+X-HE-Meta: U2FsdGVkX19fq5FfqivwnQkju2iSDpCCRWANLKJ9e+FLY0NODYLRGoe7ugbMVWjmU8zENnlJw0CcKG2djz+YVr8BxvgLKKahyy2xbocXu8hlOC+63/nOI+N9KEIJHsQ9mM2sA59Qb4Ai0NJkfeBV0ngmls4+SmZBh7G81DzrnLkB5OCnSCPd81rRh1dld79T1BuVWNt6s1TPwNGTCOZJvktV9b0psi5HR5J6fP2/kGLEN7Zzk+hh/JylnH3GIRvzKx8lQs9u1JdPZoqSOP7IeoYhSFPMXTjWZ7oNPkolB9XlGLE3wZpKK2sDeSiTU2b/Ma9y5kgRxz+PGlrLN9oJYR25G0BJe1pSoF1M43cOJdOid9vQVC8tPyRDlNox2cJa3+v6JB9QKDrph7SrXkzvkwCrrnD9OTylef4f9Oh3Y8YzPuVj8JyaTAXY2sBYcgLdECkqPg5qRXsiXiXhtLCmDJXa+oW12zxTw5m0Xjdae2cuCcGTdhF1zbDeJH9HWI+e4CnQkYr/XQnIkrFfFzWUSB2s2tYlM7RYwguLsQ3wh04Qcoe29C57XY8mc7Nvdetfbt30RNrfXV0ByxEsAthUfyPbI64iePJbJEBYWZGBmIHjz40x76bu2b3VpRKIwrueFqiX/LAu0RwYPVdi0EqI/cvaNNAW0Uk3o67Pr7YFqTqJoutx+q934LP69//mKIISdZ9A30/UAFVaCwiw2XjxACqMskj7QNdt19sXiZSKrwB8Ntaia13gHK5xwg08z6WnyZAywKDLp602P7syWTT9O8ttYCT56OM0pcz40h7uZDYwsFbkPvYJ+orifMq+PHjY9zVxdChqmMUFKOlhjiFPzbzKCtLPd3HZpiMWDs2Tv09/p48O1mlHcakc4oJRnuxBoXLzJL9MlxEHo9gdDiiSFF6xlftoeVvLkqKNZ4JdIhCfrQ9fJUSi8py1dUNDbUHQG5IwRyPRShRvn3zBBbj
+ lPgoTqNp
+ W9hqNRsJ90H9bBl8XyuBKwNMHrBrQnRkm7yvBbGEv0G0/FubfOubG+tPNEzGdNXO5LPO/wBIk6ZenxgaBSvfOJtBubC2++3PWVmLpbydd6ahDkiDHDAT87Sd+/NgL34CmGNeV6GEFE8wXgBjFwvwfYxGIC57pHcQUM6uSVqiokDX1YyevII4mq1unrzewx8gA+Z/+oMsBaMEW2CTjfBlfiYdqz2oD1i7N4K73idc1hG7SRPoYr16LwDT3WGBqng5nR/5rkaUjIfVadny152oTT1Ihf7hPa+3ttKnw99dcvud+zd7+JTuPkB6t+AzMsnOKj0TC0s7+5bRGudbQwDVMhqJABPt0FWknzLdK7GrR18HKFypn+Lf3540gNwCVeoCNfE/Iq/UB4+A8by+bJjNQneDrw29jucObR2szMxw9t1/ALksBYLbkZXxU2PaoBeXbUSPRX2agk9nn/58aSfIbUI9Jr0C0Rakf9JG343DGMy0SJLre9bUU6hdEpQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,234 +150,137 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 08:45:34AM -0800, Breno Leitao wrote:
-> mm/internal.h carries the memory failure declarations, but only seven
-> of the 81 .c files that include it use them.
->
-> Move memory failure declarations to a new mm/memory-failure.h and
-> include that from those seven files that need them.
->
-> Move the block as is, including take_page_off_buddy(),
-> put_page_back_buddy() and page_mapped_in_vma(): they live in
-> page_alloc.c and page_vma_mapped.c, but are built only for
-> CONFIG_MEMORY_FAILURE and called only from memory-failure.c.
->
-> Keep the declarations private to mm/.
->
-> No functional change.
->
-> Suggested-by: Mike Rapoport <rppt@kernel.org>
-> Link: https://lore.kernel.org/all/aumt-4kfGGtoXuh-@kernel.org/
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+This series aims to get rid of copying to and from userspace while pinning
+procfs entries allowing userspace to delay removal as long as it wants.
 
-Thanks, nice to break this up a bit!
+In essence, it aligns procfs with what kernfs is already doing. That
+gets rid of a big attack surface and a whole bug class in one go. The
+bounce buffer will come with some costs but luckily some codepaths (like
+readdir) have been so criminally slow and buggy that massaging them ends
+up speeding things up or at least leaving them on par with mainline even
+with a bounce buffer in the mix.
 
-LGTM so:
+There was a hackish and very narrow AI solution to a small part of this
+bug class which was sent off-list. In essence, it used a second
+buffering mechanism on top of seqfiles which was really nasty. It also
+didn't address any of the non-seqfile users.
 
-Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+If we want to get rid of the this whole bug class we need a bigger
+hammer. That means reworking how procfs handles data. So I tried to work
+through all of that. The series is now in a decent shape (I'm not saying
+"glorious" as there's so so many warts. If they were ironed out it could
+be a lot nicer but that's for another day.).
 
-> ---
->  MAINTAINERS          |  1 +
->  mm/hwpoison-inject.c |  1 +
->  mm/internal.h        | 29 -----------------------------
->  mm/ksm.c             |  1 +
->  mm/memory-failure.c  |  1 +
->  mm/memory-failure.h  | 36 ++++++++++++++++++++++++++++++++++++
->  mm/memory_hotplug.c  |  1 +
->  mm/page_alloc.c      |  1 +
->  mm/page_vma_mapped.c |  1 +
->  mm/vmscan.c          |  1 +
->  10 files changed, 44 insertions(+), 29 deletions(-)
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 27d5b599558ae7..cc973903fda09d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12441,6 +12441,7 @@ F:	include/linux/memory-failure.h
->  F:	include/trace/events/memory-failure.h
->  F:	mm/hwpoison-inject.c
->  F:	mm/memory-failure.c
-> +F:	mm/memory-failure.h
->  F:	tools/testing/selftests/mm/memory-failure.c
->
->  HYCON HY46XX TOUCHSCREEN SUPPORT
-> diff --git a/mm/hwpoison-inject.c b/mm/hwpoison-inject.c
-> index a11222572f9789..07032ec63080e8 100644
-> --- a/mm/hwpoison-inject.c
-> +++ b/mm/hwpoison-inject.c
-> @@ -10,6 +10,7 @@
->  #include <linux/page-flags.h>
->  #include <linux/memcontrol.h>
->  #include "internal.h"
-> +#include "memory-failure.h"
->
->  static u32 hwpoison_filter_enable;
->  static u32 hwpoison_filter_dev_major = ~0U;
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 3e15dcdd8af768..b9278329f9a239 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1196,35 +1196,6 @@ static inline bool node_reclaim_enabled(void)
->  	return node_reclaim_mode & (RECLAIM_ZONE|RECLAIM_WRITE|RECLAIM_UNMAP);
->  }
->
-> -/*
-> - * mm/memory-failure.c
-> - */
-> -#ifdef CONFIG_MEMORY_FAILURE
-> -int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill);
-> -void shake_folio(struct folio *folio);
-> -typedef int hwpoison_filter_func_t(struct page *p);
-> -void hwpoison_filter_register(hwpoison_filter_func_t *filter);
-> -void hwpoison_filter_unregister(void);
-> -
-> -#define MAGIC_HWPOISON	0x48575053U	/* HWPS */
-> -void SetPageHWPoisonTakenOff(struct page *page);
-> -void ClearPageHWPoisonTakenOff(struct page *page);
-> -bool take_page_off_buddy(struct page *page);
-> -bool put_page_back_buddy(struct page *page);
-> -struct task_struct *task_early_kill(struct task_struct *tsk, int force_early);
-> -void add_to_kill_ksm(struct task_struct *tsk, const struct page *p,
-> -		     struct vm_area_struct *vma, struct list_head *to_kill,
-> -		     unsigned long ksm_addr);
-> -unsigned long page_mapped_in_vma(const struct page *page,
-> -		struct vm_area_struct *vma);
-> -
-> -#else
-> -static inline int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill)
-> -{
-> -	return -EBUSY;
-> -}
-> -#endif
-> -
->  extern unsigned long  __must_check vm_mmap_pgoff(struct file *, unsigned long,
->          unsigned long, unsigned long,
->          unsigned long, unsigned long);
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index d24b129932bf79..623a2cdb392428 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -44,6 +44,7 @@
->
->  #include <asm/tlbflush.h>
->  #include "internal.h"
-> +#include "memory-failure.h"
->  #include "mm_slot.h"
->
->  #define CREATE_TRACE_POINTS
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index b215312f261b83..78f0a13349cb3e 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -68,6 +68,7 @@
->  #include "swap.h"
->  #include "page_alloc.h"
->  #include "internal.h"
-> +#include "memory-failure.h"
->
->  static int sysctl_memory_failure_early_kill __read_mostly;
->
-> diff --git a/mm/memory-failure.h b/mm/memory-failure.h
-> new file mode 100644
-> index 00000000000000..153aea6c610c03
-> --- /dev/null
-> +++ b/mm/memory-failure.h
-> @@ -0,0 +1,36 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +/*
-> + * mm/ internal memory failure declarations
-> + */
-> +#ifndef __MM_MEMORY_FAILURE_H
-> +#define __MM_MEMORY_FAILURE_H
-> +
-> +#include <linux/mm.h>
-> +
-> +#ifdef CONFIG_MEMORY_FAILURE
-> +int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill);
-> +void shake_folio(struct folio *folio);
-> +typedef int hwpoison_filter_func_t(struct page *p);
-> +void hwpoison_filter_register(hwpoison_filter_func_t *filter);
-> +void hwpoison_filter_unregister(void);
-> +
-> +#define MAGIC_HWPOISON	0x48575053U	/* HWPS */
-> +void SetPageHWPoisonTakenOff(struct page *page);
-> +void ClearPageHWPoisonTakenOff(struct page *page);
-> +bool take_page_off_buddy(struct page *page);
-> +bool put_page_back_buddy(struct page *page);
-> +struct task_struct *task_early_kill(struct task_struct *tsk, int force_early);
-> +void add_to_kill_ksm(struct task_struct *tsk, const struct page *p,
-> +		     struct vm_area_struct *vma, struct list_head *to_kill,
-> +		     unsigned long ksm_addr);
-> +unsigned long page_mapped_in_vma(const struct page *page,
-> +		struct vm_area_struct *vma);
-> +
-> +#else
-> +static inline int unmap_poisoned_folio(struct folio *folio, unsigned long pfn, bool must_kill)
-> +{
-> +	return -EBUSY;
-> +}
-> +#endif
-> +
-> +#endif /* __MM_MEMORY_FAILURE_H */
-> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-> index 41fcdc04e54042..b0971404f0ac0a 100644
-> --- a/mm/memory_hotplug.c
-> +++ b/mm/memory_hotplug.c
-> @@ -40,6 +40,7 @@
->  #include <asm/tlbflush.h>
->
->  #include "internal.h"
-> +#include "memory-failure.h"
->  #include "mm_init.h"
->  #include "page_alloc.h"
->  #include "shuffle.h"
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index abebfb1f202e9b..b6d9f2c9cdef53 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -57,6 +57,7 @@
->  #include <linux/pgalloc_tag.h>
->  #include <asm/div64.h>
->  #include "internal.h"
-> +#include "memory-failure.h"
->  #include "mm_init.h"
->  #include "page_alloc.h"
->  #include "shuffle.h"
-> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-> index e6b6170c2f4f72..d45d52436f99a0 100644
-> --- a/mm/page_vma_mapped.c
-> +++ b/mm/page_vma_mapped.c
-> @@ -6,6 +6,7 @@
->  #include <linux/leafops.h>
->
->  #include "internal.h"
-> +#include "memory-failure.h"
->
->  static inline bool not_found(struct page_vma_mapped_walk *pvmw)
->  {
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 50c352e9ffefc4..3db2db65319c00 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-> @@ -67,6 +67,7 @@
->  #include <linux/sched/sysctl.h>
->
->  #include "internal.h"
-> +#include "memory-failure.h"
->  #include "page_alloc.h"
->  #include "swap.h"
->
->
-> ---
-> base-commit: 8b7179210b22f8e48a82c5ceacb9d56a9c4cfec4
-> base-tree: git://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-> change-id: 20261104-memory-failure-split-4c7abedbe0dc
->
-> Best regards,
-> --
-> Breno Leitao <leitao@debian.org>
->
+I understand it's big but I think it is nicer to be able to look at the
+end result since we have some transitory states that are gone at the end
+of the series.
 
---
-Cheers, Lorenzo
+I have polished this a bit more and have sorted out a few more bugs and
+tried to clean up some codepaths given the current constraints. Again, I
+think we could go a lot further there if we wanted to but I think that
+blows this out of proportion and at some point it becomes difficult to
+grasp the scope.
+
+So, remove_proc_entry() waits until every call into the procfs entry has
+returned. Most of those calls copy to or from userspace with the entry
+pinned.
+
+A reader or writer can induce a page fault in that copy take as long as
+it wants. For example, with userfaultfd or by punching holes into a
+memfd over and over. Plus, the callers of remove_proc_entry() like to
+hold locks while they wait. For example, addrconf holds RTNL when it
+removes /proc/net/dev_snmp6/<dev> and xt_hashlimit holds a mutex that
+all network namespaces share.
+
+So every network device with IPv6 gets a /proc/net/dev_snmp6/<dev> that
+everyone can read, and addrconf_ifdown() removes it with RTNL held. So
+any local user can keep RTNL for as long as their read stays stalled.
+Until then no device can be registered, removed or renamed and no
+network namespace can be created or torn down.
+
+If the caller lacks privileges for userfaultfd a FUSE mount in a user
+namespace whose daemon never answers is enough to stall the copy.
+Killing the reader ends it, but until then whoever removes the file sits
+in D state.
+
+xt_hashlimit removes the proc file of a table with hashlimit_mutex
+held. Every rule insert in every network namespace takes that mutex and
+so does network namespace cleanup. cleanup_net() runs on a single
+workqueue with pernet_ops_rwsem held, so a stalled reader also stops
+every later network namespace teardown and every module load that
+registers pernet operations. xt_recent does the same with recent_mutex.
+
+And of course, it's not specific to networking. remove_proc_entry(),
+proc_remove() and remove_proc_subtree() have over 200 callers and plenty
+of them hold locks. For example, a stalled reader of
+/proc/fs/ext4/<dev>/options holds up the unmount of that filesystem with
+s_umount held, and every sync(2) with it. The same goes for PCI
+hot-removal, for freeing IRQ descriptors, which CPU bring-up waits on,
+and for unplugging a USB sound card.
+
+And btw, syzbot has hit removal under locks before (cf. [1]), and the
+xt_recent deadlock fixed in (1) below is another one.
+
+Stalling the kernel in a copy to or from userspace is a well-known
+exploitation primitive. It's why unprivileged userfaultfd can't do it
+by default anymore since v5.11 (d0d4730ac2e4), and FUSE has been used
+the same way.
+
+This series touches just about every ->proc_read(), ->proc_write() and
+->proc_ioctl() in the tree, so I've split it up into seven series. They
+go out as replies to this mail:
+
+Part 1/7: proc: fix a few old bugs in /proc handlers (51 patches)
+
+    Bugs in the handlers and in procfs itself that are a lot older than
+    the conversion and that reviewing it turned up. Most of them are for
+    stable. They come first so they can go there on their own and the
+    conversion doesn't have to bother with that crap.
+
+Part 2/7: proc: let procfs own the data path (23 patches)
+
+    The procfs side. procfs owns the seq_file of an entry, copies in
+    writes, copies out reads and copies ioctl arguments in and out, and
+    only calls into an entry with it pinned. The open files procfs has
+    to know and the wait queue a pollable entry is polled on live in an
+    open node that only those entries get, the entry is pinned around
+    the vm_operations of its mappings, and lockdep checks the pin.
+    proc_create_seq() and friends and the plain seq_file users are
+    switched over here too.
+
+Part 3/7: proc: convert the arch and platform entries (23 patches)
+Part 4/7: proc: convert the driver entries (26 patches)
+Part 5/7: proc: convert the fs, kernel and mm entries (30 patches)
+Part 6/7: proc: convert the net entries and the kfifo samples (13 patches)
+
+Part 7/7: proc: drop the __user methods (6 patches)
+
+    Drops the old methods. kcore, kmsg and the kpage files, which are
+    never removed and keep reading straight into userspace, get
+    file_operations of their own, so nothing in struct proc_ops takes a
+    __user pointer anymore, and the new methods get the names kernfs
+    uses, ->proc_read(), ->proc_write() and ->proc_ioctl(). The last
+    patch takes the poll_table away from ->proc_poll(). This needs all
+    four conversion series.
+
+Parts 1 and 2 are the base. Parts 3 to 6 go on top of part 2 in any
+order and don't depend on each other. Part 7 needs all four.
+
+The series should all indicate cleanly what dependencies they have so b4
+should be able to pull it for review.
+
+With all of it on a KASAN and lockdep kernel the removal selftests of
+every part pass, the proc, pktgen and allocinfo selftests behave like
+without it and the bugs from (1) that reproduce in a VM are gone. Every
+patch builds on its own on x86_64 and i386, and with W=1 on the
+architectures it touches.
+
+[1]: https://lore.kernel.org/r/000000000000f24f4705b6988f3e@google.com
+[2]: https://lore.kernel.org/r/20231109212251.213873-7-johannes@sipsolutions.net
+
+---
+Link to v1: https://patch.msgid.link/20261102-defizit-jobaussicht-kurios-7016c6e67442@brauner
+
+-- 
+Christian Brauner <brauner@kernel.org>
 
