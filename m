@@ -1,94 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE12606A328
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598B5606A332
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mIrbZaDl
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=M1Dvvfjm;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hJ+fAk3O;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=M1Dvvfjm;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=hJ+fAk3O
 Received: by kanga.kvack.org (Postfix)
-	id 93FE06B05B6; Wed,  4 Nov 2026 08:40:51 -0500 (EST)
+	id 793B66B05B8; Wed,  4 Nov 2026 08:41:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F1E16B05B7; Wed,  4 Nov 2026 08:40:51 -0500 (EST)
+	id 76BB26B05B9; Wed,  4 Nov 2026 08:41:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8074C6B05B8; Wed,  4 Nov 2026 08:40:51 -0500 (EST)
+	id 681926B05BA; Wed,  4 Nov 2026 08:41:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D6066B05B6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:40:51 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id EF68B1206CB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:40:50 +0000 (UTC)
-X-FDA: 85397547060.06.AE92E5A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 56D49180005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:40:49 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 460A86B05B8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:41:17 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id DD159C0753
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:41:16 +0000 (UTC)
+X-FDA: 85397548152.13.B115810
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D1427180006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:41:14 +0000 (UTC)
 Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mIrbZaDl;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=M1Dvvfjm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hJ+fAk3O;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=M1Dvvfjm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hJ+fAk3O;
+	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793799649;
+	s=arc-20220608; t=1793799675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EZAUQMhN3rMe7FCapRNk/7rrtwkPUHUoi09OPENdnHg=;
-	b=y6AKyagRfh4fu0E/uoi5y5aBzkjZsWFhJNbOa3K0WPrNHp98Yk5gkfELjApnLLnGeTEuSB
-	knQjGe2LRF+XQxumSfp/fC7K9lLtY+5GzwUNyyMmqzjkvnhLSodT3cMoFW6g9E3nJR8nCv
-	NJd7YiaPK6Y2m6ADjWoGH/uuORtEm6Y=
+	bh=d0fx3jue6yBdKZwD4p5LcxlMdLny64B3v9Q+ZGMsubA=;
+	b=OlQsbzIEFoLdw3TUbRrinkdkMbymc3NpX9PEKdXKgulPejGlG3dqvsapNrS1RZHVFqRbMU
+	1MIzQfqZ7XvvPyTx2dpH/QqgX8yzX5nYn1MXZZADQGlvq7h+bHoXGAU5U2coFbfdxQIgZx
+	/QNa1eY8QFedblg4TxBxUB4fKrvkvi4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793799649;
-	b=frzX0shXu+C2Rcwasb6im+5RaLAwi1xG5WirYeTdP0O6s2G5HfOgjFBkG3FyVsxwLxAaCx
-	zD4ZnuNuaoqzgq2V3eMXeMNYMo0vArpJ8muKP25qTh+ssUGV724tYARUih6J1JW9n4OBgf
-	dlJ3oY0X57KwQX+KjY9TC+hhHaEZt04=
+	t=1793799675;
+	b=hil8rz3ByotfAq6ARb3pJEm0cfkoJOEVNjTIliIsWvFaBvbab9IWj5jaLjcsXVgK6ytl9B
+	9aHvQnMTCrrDzeNLjPAioe8jvxptEg7f7jF/RP5EWENnw03fiNoyAFibd99KcJPacfSwGT
+	cjBEOqQQefkG04ujsYwvY1ll29R0CME=
 ARC-Authentication-Results: i=1;
 	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mIrbZaDl;
-	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 87C9F41A33;
-	Wed,  4 Nov 2026 13:40:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 263761F000C1;
-	Wed,  4 Nov 2026 13:40:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793799648;
-	bh=EZAUQMhN3rMe7FCapRNk/7rrtwkPUHUoi09OPENdnHg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=mIrbZaDlsoXr337Dd1aQvpZtyvWkUbui9aNsdGO39rnOez9/LC9vHEkL6oLEMmOjM
-	 5ZS/EHVquAEEDjPxCrKhN3kshP7TS3JrO7w5Z0n0AQEv2MP6imfd5lntHJRp9EEZzU
-	 AO1b/xidJ4xZJiAUB8EK5i2yqdQFoIbjV2rlSzG1AWl8xYdHcII+CrKkb2amyd2Tgn
-	 siqgy24+C2iDDSdGuvES7WbPh2sAvX4J3wa6ToVDiYzL70KuyKjQ1uvZiShbArseLU
-	 OZvXeGJ81KpgtvCcDjm84M+yrDFCeHPphdgMb/Wl3mb7UkVZo1aN5xTbwtXqV3KT5q
-	 Uk3jtazUmpszg==
-Date: Wed, 4 Nov 2026 15:40:42 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v10 00/13] PCI: liveupdate: PCI core support for Live
- Update
-Message-ID: <aus12iOdLyiIiywZ@kernel.org>
-References: <20261013162529.1928093-1-dmatlack@google.com>
- <179373348545.623992.16522569527665218421.b4-ty@b4>
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=M1Dvvfjm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hJ+fAk3O;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=M1Dvvfjm;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hJ+fAk3O;
+	spf=pass (imf06.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 64F091F795;
+	Wed,  4 Nov 2026 13:41:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793799673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d0fx3jue6yBdKZwD4p5LcxlMdLny64B3v9Q+ZGMsubA=;
+	b=M1DvvfjmuOl6MeDPykrHeEITAQNrJbxTmMnti13XKWSzJysAKC/6g0Bz71SUbYPC6zrqLW
+	1gf2frwtAvxm99smHRiskyxL1chC7OclWFaFZlgBIjvlA+zKkcJNICW3LFBKO4ClGtLnlY
+	R7zaPHsJtd1MCowUCA/we7gL+8XKkJ8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793799673;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d0fx3jue6yBdKZwD4p5LcxlMdLny64B3v9Q+ZGMsubA=;
+	b=hJ+fAk3O0waErwrATsWzqvdGxQn4P02zc0ezttMXg1V/DtCfNTP7PLYZmBWnN6UAiVKk6s
+	WWLHsT0wIb554nCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793799673; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d0fx3jue6yBdKZwD4p5LcxlMdLny64B3v9Q+ZGMsubA=;
+	b=M1DvvfjmuOl6MeDPykrHeEITAQNrJbxTmMnti13XKWSzJysAKC/6g0Bz71SUbYPC6zrqLW
+	1gf2frwtAvxm99smHRiskyxL1chC7OclWFaFZlgBIjvlA+zKkcJNICW3LFBKO4ClGtLnlY
+	R7zaPHsJtd1MCowUCA/we7gL+8XKkJ8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793799673;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d0fx3jue6yBdKZwD4p5LcxlMdLny64B3v9Q+ZGMsubA=;
+	b=hJ+fAk3O0waErwrATsWzqvdGxQn4P02zc0ezttMXg1V/DtCfNTP7PLYZmBWnN6UAiVKk6s
+	WWLHsT0wIb554nCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 29E34134A5;
+	Wed,  4 Nov 2026 13:41:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +ybCOPc162reOwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Wed, 04 Nov 2026 13:41:12 +0000
+Date: Wed, 4 Nov 2026 13:41:10 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Imre Kaloz <kaloz@kernel.org>
+Cc: "David S. Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, sparclinux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH] sparc64: replace move_pte() with a D-cache flush in
+ flush_cache_range()
+Message-ID: <aus13nY84jxvzOHF@pedro-suse.tail5790ac.ts.net>
+References: <20261104105300.16260-1-kaloz@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <179373348545.623992.16522569527665218421.b4-ty@b4>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: bxab9ofuwcobqzj3u4uw16mmdu94myki
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 56D49180005
+In-Reply-To: <20261104105300.16260-1-kaloz@kernel.org>
+X-Rspamd-Action: no action
+X-Spam-Score: -13.51
+X-Spam-Level: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: D1427180006
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 5u94j9ynmiskkrjk1f8913y4tp6eed1q
 X-Rspam-User: 
-X-HE-Tag: 1793799649-747721
-X-HE-Meta: U2FsdGVkX1/wLej/0mlNygOHlBsVQPa87tlMS9cmk7uLlRzasNJXYW8wODw6QqHkt5uR5/KTs8pwGzuLqj73xoT2EHQm7xIHcv88NC6xHNyT2G/myHZ0/cRaBgmiv+ko0q6/C6KLkNLjesK4NpozorD4GPISyCnKGDs0O25ZqqG4Nx0wypb4Dzw/ayTCt/j3jnCHEnN/9fPkAuQzddVk4YA0zyesz5thIqYMxn9+grEnp+r2hbq7tM/FBiqSRPin09d/GaCl9wzTD+pr6EiVvQiE0OJNn0IUI/7p/3D/zMtKuYXoqvNxwOuq8o6/50cR0bRiZLLDSeq/5UzF0CNbg5eOFS0vBDXp1KAFkSzuuNZJAn2Fjcfwcg2yh/VxwxcQCOa0UKUl6o0gyUhX8ZvXvAZpGxLaZjMskv9ALFQaDE6Oq/+stN/TUs2cFIQRCd8M/eZROsqg1uVrmXI+NcmpSuSg9EzDypcTjAoSjgidyj3plfDUySxCvefmXKeb/I9YeG2mIT7E7stmhUmvgbpRVyq6krbMP1mOw83VqyuLd/xSLHuRAmktvhzH4cPE1H78QzTrSvV74w968jQ5fO4MZ6LL4Bhxq4K/iyhtBFHoG1JYwjEwXkozVOaeo3JOeHDoVuaMp366DeZulDL4qGbTor/14R8WsTK/q+LXXN1xG76P1vrzwn5XJo69JXu1BLW2/EsRP0rkPEzYkF/Ii5k3kzFSDMSo5uAPWekB6u8TldGXgkss844DDeOi1EhE31iBd590WhH3jHiiheY/xiFgkf5qzOUca2hbr7a7eYusG98K6C0O70qMPggTO13CwphEkbjkvJzRYVVyC0qgjkFnomFw1PORW1yP73rzdScUJBr2LNoG7GhCf2RIDKCPmCCZRfTshzHNDSRxyulZNIZQqyh85FoeIIoSGNQzq0vpBQ5lGzC1ojhki2YKAflP9rdkDu8u2H/WuEn6/0LqgnA
- O9yepKLi
- Xcn7Bp7PJUmZL9VwoTU90jAHdgO5KBEwpzlguLznq7vx9yr2t0PwzpoWrb1ILKxnKmXLreHNySgrj6A2a17yGBumnRpKElD5wGP2NCgh6EvuE8TgX8DAm50RPnIDeWhQTMinZCmVyk4vUn72g3pF4IAoIjlH34TIbkJcbOOmg7gJHL9pmqIR6XeuVYAPBSmYLN5waa0obHr3/dJ0CntVvYbCvg9mbPOBm/M/LG9wx1DUNpdtwCOz2gbTbkizXPQ+pgcr6/8lr08LHbPzw96sdawwQw7L/decNo4QW4lPLmvdXKxw=
+X-HE-Tag: 1793799674-835701
+X-HE-Meta: U2FsdGVkX1+SDrQYcpLZV4A3Caoo8G6qgYlePLK2jSC8LXRNZu37e3rHYLgjtYULQXqAKbivyHnozfzh2YgzlIxUhyc0/0p64GAeOAImAudNSPzF049U3jWwOC577b6rJCEHfNrgsAGhlGAdcZMjOgb4Cda4970GSAKzfCpmWsRhtl8Fqzg8DD2y2rkuBWReHBjIFhwkD5bvcc/hpVYFMpcVtxhi/V62aZG/gMrcq07MHa3P7wBlwO1TrXEL72wkCNF6VXwSQjqvcezA75cqArsG73wz/xAAgx9ETVM/K/sZtNb8RNqgjbjtpjhToneCPUpmwTC0fys+rIHwPimSi4VgrIhgxbGQS9jDxL29Y4o6V4bLXTlCA52uiFoSdg/BxM1t7KqeoxazDQ6mC2kgj5AlmobQllxpykhnrVQSD3UBQc/kt/8AkiRVh028SuZbUOHIWHtANnuAjgTKv2RcSTtKDc4eD0V0SRBBrbzO7drlI0QYZmtsQ57omCEIrgXzw8r3ARKhWQGe+NohKJgj6FJxuWitCoT9oCjOWyVqyrkTsp9R6kTEtkGodYhdaFFgiJlSrUhzFarUaq/kkvjqmEcpA7uEl2xHkTr4R0oNQvO7Hq1PrM3wdCOLzdRokUTw8UZqXSiKybesYPllav/cnJB86jIgJFbXoPeoHFd8amY1jiOS5MZe7pkLO3XkvNrrUFVrdm7EMqnar914yg23f6gIqfeEN+vWaFU47JOACNqasj/M8il6e438LcyAO3bGrL9J3NNxUzG8W4aqFcjyIpm+mFP7e8QES2QZrDMS3YG4htkHAx+uATciuClLbSCDv1AHu3IwUva3Cf6TfTmKDMew+qbE2B3DxKMSW4QOn6cltSsCdUguH0Cfu+LK0l6xDZ6vZRgXIBXaW3/2HBZOOZkrUm4vUqlWVL3SFMWDrOri8vmJdtZzX+TSrkcC6L7e7tvcgSsf76NakCXhBUd
+ 9tnhuwWH
+ HshCraGpuOH+WFsNGScDFpRN0++l3fqqGfd5VB0SXSgbko0fEpsoLAxEx9XMSrEPDlg70TxFIDnQsdEcIJZxipNyVAYXpqmAb8cJUxbARQH0CAjDRpdHOTkK/oqlR51CxhDcleSpzo6v5xbG6rcbb54ZvTV4Lnfp0BxeDxYs3crklnYyCuuERvi4NI+N4ykM9ZSwSSQFfo5AY5UU4eUVCiKcOLnRUjFpuTqN6iWd1zCE2uRsdNxrskGCCdYvRiziMPj4jOAKJoeunQc8yf021svFEPP7B/LQ/nYXgCSiI4gMCFj1ymWwtF6v+G4IBlwQODnKIJdZqS5wXn3g=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,33 +144,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 02:21:10PM -0500, Pasha Tatashin wrote:
-> On Tue, 13 Oct 2026 16:25:16 +0000, David Matlack wrote:
-> > This series can be found on GitHub:
-> > 
-> >   https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v10
-> > 
-> > This series introduces support in the PCI core for Live Update, enabling
-> > drivers to preserve PCI devices across a kexec-based kernel update
-> > without interrupting the device. This functionality is critical for
-> > minimizing downtime in environments where PCI devices (e.g., those
-> > assigned to VMs via VFIO) must continue operating or maintain state
-> > across a host kernel upgrade.
-> > 
-> > [...]
+On Wed, Nov 04, 2026 at 11:52:58AM +0100, Imre Kaloz wrote:
+> mremap() can move a page to an address of the other D-cache color,
+> leaving lines of the old color in the virtually indexed D-cache of
+> Spitfire and Cheetah CPUs.  move_pte() flushed the page for each PTE
+> moved, which is only correct while move_ptes() handles one PTE at a
+> time.
 > 
-> Applied, thanks!
+> Drop move_pte(), which no other architecture defines, and flush the
+> whole D-cache in flush_cache_range(), which mremap() calls on the old
+> range before moving the PTEs.  This keeps the fix in sparc64 without
+> a page table walk.
 > 
-> https://git.kernel.org/pub/scm/linux/kernel/git/liveupdate/linux.git/log/?h=lu-pci-preservation
- 
-And luckily we have a few weeks chase Bjorn and Alex for Acks ;-)
- 
-> Best regards,
-> -- 
-> Pasha
-> 
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Link: https://lore.kernel.org/all/409079fe-ab52-4389-9fe0-d7246eb27bad@kernel.org/
+> Signed-off-by: Imre Kaloz <kaloz@kernel.org>
+
+yay!
+
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
 
 -- 
-Sincerely yours,
-Mike.
+Pedro
 
