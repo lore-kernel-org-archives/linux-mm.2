@@ -1,95 +1,162 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B39606A32C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 01:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE77B606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 01:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=UjGpG3oB
+	dkim=pass (2048-bit key, unprotected) header.d=themaw.net header.i=@themaw.net header.a=rsa-sha256 header.s=fm2 header.b=pTf3P/b0;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=2gJWjarR
 Received: by kanga.kvack.org (Postfix)
-	id 5A2346B00EF; Tue,  3 Nov 2026 20:21:54 -0500 (EST)
+	id 7B78D6B00EF; Tue,  3 Nov 2026 20:35:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 552856B05B3; Tue,  3 Nov 2026 20:21:54 -0500 (EST)
+	id 768816B05B1; Tue,  3 Nov 2026 20:35:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 441D46B05B4; Tue,  3 Nov 2026 20:21:54 -0500 (EST)
+	id 657926B05B2; Tue,  3 Nov 2026 20:35:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 217E96B00EF
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:21:54 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ACE5C40612
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:21:53 +0000 (UTC)
-X-FDA: 85395684906.03.B8AF63E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id E48051A0006
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:21:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UjGpG3oB;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2AED26B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:35:12 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 302FBA0616
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:35:11 +0000 (UTC)
+X-FDA: 85395718422.18.3E0D43C
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E1205140003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:35:08 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=themaw.net header.s=fm2 header.b="pTf3P/b0";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="2 gJWjar";
+	dmarc=pass (policy=none) header.from=themaw.net;
+	spf=pass (imf26.hostedemail.com: domain of raven@themaw.net designates 202.12.124.145 as permitted sender) smtp.mailfrom=raven@themaw.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793755312;
+	s=arc-20220608; t=1793756109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Q5/n+lMO8hXflt+/fw8C33ZJeW4TIpqo/+mXVJXPEc=;
-	b=2qLhluGAmwsnW8jXitvV8dTqmJukuguLUOscFHUZDwKEDAEYvRQUazKS5VQUApUGY6upvk
-	mP/0nLCOwJVRtlb+4ZnbjYvsoKh3uIOli+qjm9pfNd9Lj4s+nU5lwKrExWn7RvNTAlfK+l
-	ZAc0gzFqhMRiIRX9cTrcCsniivkhjvU=
+	bh=nrCeA0Hqd3kzPVtOoYwsmHRxx4PIWhKMqYln/tuojws=;
+	b=aVwVDJrc2NMwevFjzFyyWxGo2kpB3EmkwFqKKJhthdyBKE+COId7wkTmViuDSXP+ISHwHR
+	G6rrr8wgWq/4SKkspOmBBc00ZwhPI7VahiR2d7heH/s6S3lSlrxTN4qAJsCuo6jTkodzo3
+	nBDnmnSYUZiivD8KJHEPYLhQjd7gE4g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793755312;
-	b=wt/V7zoKjmbVW+6Mtji5zP7PkgFfMBGniOQWg+laHN2xcn3UrmRA+DzreTNKvGFctaawc6
-	7u0S7PRAFLG9vxoJ+AtCPDkVXwuE1kjc8vY6TFxanXU8zkV7eUstHeIHPbsibqlS8uKniL
-	T48TVq2doWjbJVWK/C0YgVOZVZiK2ZU=
+	t=1793756109;
+	b=D/lL/C7sdUYJjJ61VsRb5HRES9WvXMD9OM2y4YZ0buiYwCNk+LBq5+5gUyVaUwLU9GJ7Z4
+	DFxYFHQniMjy9Qx2cFEgfCab6feYRs4IFcaZezx8tUm8v4qD+mHEHjanqGh+uWaq5zuwv6
+	lH7KNZpwgX1zAt89jwCZzvp+drEguhE=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=UjGpG3oB;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5DDEC60142;
-	Wed,  4 Nov 2026 01:21:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914531F000C1;
-	Wed,  4 Nov 2026 01:21:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793755311;
-	bh=3Q5/n+lMO8hXflt+/fw8C33ZJeW4TIpqo/+mXVJXPEc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=UjGpG3oBmG7swsK9ZzyPdqaDfK2bSJXx673GJ32yahnXtcyErEZd5uEkYt1QyYNJb
-	 dupMFGFBaex2t7vP8gfvw5utKKJTtTzI3wtIt7K8G9XXC3hsWIWTgSCioRoPJ7PYv8
-	 HL95CDgWBQrE0B3pFRJgpmGyFguBp5Pq+B2LuOIo=
-Date: Tue, 3 Nov 2026 17:21:50 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, David
- Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah Khan
- <shuah@kernel.org>, Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] selftests/mm: fix pointer width warnings on 32-bit
- architectures
-Message-Id: <20261103172150.3753dfa00f3106b6014e4d2c@linux-foundation.org>
-In-Reply-To: <20261103212805.1537354-1-sashal@kernel.org>
-References: <20261103212805.1537354-1-sashal@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	imf26.hostedemail.com;
+	dkim=pass header.d=themaw.net header.s=fm2 header.b="pTf3P/b0";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="2 gJWjar";
+	dmarc=pass (policy=none) header.from=themaw.net;
+	spf=pass (imf26.hostedemail.com: domain of raven@themaw.net designates 202.12.124.145 as permitted sender) smtp.mailfrom=raven@themaw.net
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfout.stl.internal (Postfix) with ESMTP id 2F7F01D001C2
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:35:08 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Tue, 03 Nov 2026 20:35:08 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1793756105;
+	 x=1793842505; bh=nrCeA0Hqd3kzPVtOoYwsmHRxx4PIWhKMqYln/tuojws=; b=
+	pTf3P/b0NVeUia3wP4piQmr+iXUMn5apqHAoRi5qdpHeGXoAuWaiYn7/Gtm55OjL
+	KKMyTSVA/IDMH7fuXspg84fZVCevce32KQh20ZQY7uDPPBVGE7PtqBNp6jPT4CQ/
+	ZhT1MbixOOJQSEYFp3sv0kdcq8tIpc/xm3QwFy/Pbix76hVv+XrlCy4kzBPlVDeZ
+	VUCPglmyUXP3NhHZL2rnFYfBWriit+r7uKHIa0sYbD0CdrXomeDBCu7z3B+LVp4n
+	FKiHOh7966GeV2bK3KEFMPzGET7WhlwSXNv8VFYTzCjrdv4YkAqzMaOs88Zr8uCh
+	QqORpgQZzV2M+q515r1a1Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1793756105; x=
+	1793842505; bh=nrCeA0Hqd3kzPVtOoYwsmHRxx4PIWhKMqYln/tuojws=; b=2
+	gJWjarRGHJlRgxMFKcfin7DfF+EJoIRFnG4Qt3WtEkqBPGxsQLr446yzS6nYGjjP
+	ChnhleRifJbhwhCRbKWp//wWh/cADyzjkHhHV05jshyhmC9Zl29pDnBROSnw3ue7
+	lspGwsipjdx2cQ2ZRro3WB+ZhZb04i/Vzf7o0gzjBqlgPGtnFXv1m9sexah0GnxR
+	psAUbbXbXuOkFYB9UCaJMDh04rubD3o202nYpdOLgzxuTf2OCDbDtB2ly11e9X8C
+	iv+1eckMHAkffmU8lR2cmf4JJ882Pz9fGeMCjvp97zE3Y4Cqji2QqWD/JrLLgrIF
+	OaWyxAxWFNoMt8GI+4Dog==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=sign d=themaw.net a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1793756105; d=themaw.net;
+	mf=PHJhdmVuQHRoZW1hdy5uZXQ+; rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm2:rsa-sha256:jh3NSSAnZejbCPw+WaAQ4sIVImtS/3dUQU+iTtFxrEszwvZ
+	2PA1IAHBmKs0UyiKHV0p31mg0XGF+RHLlrpybGCJjNHq4/UnL9NhMYEzV3ve3cty
+	vYSmhJK2bwGiZZgvD9jneAo4L04zlH6L7OSInLozymGXbswyUnC3yGaGOP3BDjvq
+	YuP3cFDfEznjYYHS4C5wItYZ8ZcKXVIWDf+HIxuUqNN63xelKVmSxY4e+Ah5k8xH
+	vid8900ClaWBe9fBeTq274GS8BykzJk+PonZyb+l3Ib2tIIlKcuNa9wcNzhttc9O
+	izeq8xFg4Y/nUV/4xLulthHUPsK17TpYwa1smQA==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-08;
+	repo=github.com/dkim2wg/interop; date=2026-10-28; sw=lmtpprox;
+	action=mi-m=1; hc=13;
+	hn=cc,content-transfer-encoding,content-type,date,feedback-id,
+	from,in-reply-to,message-id,mime-version,references,subject,to,
+	user-agent;
+Message-Instance: m=1; h=sha256:JZSYRBJ4XfKKK2c2F966LsA3L7y0qeazKA9dPaqM5cM=:nrCeA0Hqd3kzPVtOoYwsmHRxx4PIWhKMqYln/tuojws=;
+X-ME-Sender: <xms:yIvqak8aW8vPP1wYuTZ66-FXE9JchOqUoOVVSM7tlJZ7mdGpH_TJeA>
+    <xme:yIvqajqLJEcFCWNrUyX1bDL7F5xyR17ghCWEvdnIgaHcjM9XdivA3OfavbyD8VgS4
+    liFw17oQwZ1opRAwYIIkkxl0rNIzqAarNIf1w9ov_Q-o9Hoxw>
+X-ME-Received: <xmr:yIvqavG1DHcwBbAdaiwmEThm9aL97Wp6aB6SWZEsAOSj50H8iQR6FluRryywLJL5kEfkPNEApMBaq-O6446Z7zyqDvVFxmEteWqTE5dzu5bq8KjDLo0BpMqHPQ>
+X-ME-Proxy-Cause: dmFkZTF+04G1PZLn5pVjkUdTZfXjvyvZ6+U8BNsX6Uz8TcRc7Dni9tGiF8trMZFnpdP36Y
+    WHAL+f0oLMU/tIJzmPRU9AUycwgLXwKMpwM7jFAgggPAZBT7SEinY49CDSHBLUZ0duPrOG
+    60Hk2CxBQTEF+b0uas6CmNxLaF48T9Cxtd/9VessSqrDrlRugMRTU/njgW67f7ND2p8MqW
+    Y09NMG7WMw4H7Y7p2mmxSdp63XKWcwPK3ck3UWp5AtX4jqct0L7pzOwPioj1oIlihAD5La
+    KoEOFT8xunxLYwDO6gFh7KnaKyay3ISiJl7StpuFQnbKzeT/4G4nyRUAtSrsRJYR1MGLTA
+    +rE6/UCqkXrEj7q8MXO4i/llTiKfX6vggR3eEuXWNwmtNHSJwIYkf9YScRro0S5cdaeSQ0
+    bhIV6u+hjNbe1NXBJZW3XsdgEgerqBBB+vGM5nrWDQd895tmhXzgVKVhsyLbrU7WBqF869
+    SUuKaGeXkpVuh2JTVKgapzKlNAOyeXhT18ChFXraqrpsVje9DaWMGs7qG/+FCRMvxFzNiw
+    5zABJu8ivCSKjcYzjYLzhgicApQpftUvcizSU7TCplIlaRJ+GQUlJkR9y8cIsaNV/IpHmu
+    20S9LU4MNblqdmiYRMA9KfjqlE5IyOOQbG8Bw+K4F20VV2CcQ+czVzf6bTTg
+X-ME-Proxy: <xmx:yIvqark1wviiPfMu8HYNEWnOToeqrhsKrOXTFBE99yWAUi3eRgCiQQ>
+    <xmx:yIvqaj8K4HXatZ_JQ0Tckbw1w6GV4_ToSJ8zZPEbihmhQDZn8GJ4ng>
+    <xmx:yIvqaknOfgp_nNrncPU6STsGJR_9-dHlKgaR71KrKP3nGpbNFrVfSQ>
+    <xmx:yIvqapmz6xFiMTnO8t9nGJXF-bbdQGteWI51Dd5So6kaCp-56EJ68w>
+    <xmx:yYvqahZMBV8w9xZ8JtI64350QsWdvRuMHUA1Tghdr8XHsDRzO5N_Li-L>
+Feedback-ID: i31e841b0:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Nov 2026 20:34:58 -0500 (EST)
+Message-ID: <6ca657f75453ddf7ccf3acd608cb1794f2c937d4.camel@themaw.net>
+Subject: Re: [PATCH 0/2] kernfs, autofs: fix pipe lock cycles through sysfs
+ stores
+From: Ian Kent <raven@themaw.net>
+To: Krystian Kaniewski <krystianmkaniewski@gmail.com>, Greg Kroah-Hartman
+	 <gregkh@linuxfoundation.org>
+Cc: Tejun Heo <tj@kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
+ Danilo Krummrich	 <dakr@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner	 <brauner@kernel.org>, Jan
+ Kara <jack@suse.cz>, Ingo Molnar <mingo@redhat.com>,  Peter Zijlstra
+ <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Jens
+ Axboe <axboe@kernel.dk>, 	driver-core@lists.linux.dev,
+ autofs@vger.kernel.org, 	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, 
+	syzbot+002fb7b2d0bc53bf7e75@syzkaller.appspotmail.com
+Date: Wed, 04 Nov 2026 09:34:55 +0800
+In-Reply-To: <5f659257d9842544d6830f9041e5ede63416d214.camel@themaw.net>
+References: <6aa23178.f81106d8.2ab401.0006.GAE@google.com>
+				 <cover.1792577179.git.krystianmkaniewski@gmail.com>
+			 <dc65c28e408d6b64d4b13b7ad30e5fe70ddaa441.camel@themaw.net>
+		 <4f56c93a9fc5fee152364974773df0a319c84af9.camel@themaw.net>
+	 <5f659257d9842544d6830f9041e5ede63416d214.camel@themaw.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 (3.60.2-1.fc44app2) 
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: kw41wr3h6g7dydn8q7oi38bamx657g94
-X-Rspamd-Queue-Id: E48051A0006
+MIME-Version: 1.0
+X-Stat-Signature: fu1g91oujd7z7yfo3sd3ai6jn6zrgobb
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793755311-934036
-X-HE-Meta: U2FsdGVkX18HJZ0gw0UgQnxhkGbfiPGx+MFvrLyUAl4X4Mp53OOJ1rIHVk624nuqw/pRdSKu3EJCfZ7eWjwLuJz4VXOTHRVa1y2P8Ro4Z4O484zYOyzy0lGh7KNf8Vhru1F2cSYXCsH4qX2UESGrBMUvKyjcstIMouhXM6Yl64ZCyLwskq55Fi+mGktodYedibIJM5JcxQQwrQ1FWi3yF+PtUv5OSxr1clwZuz7RdJLFiC2Ne4v02CCOdHLiTlw9VxdxxdAJMZYswtlAAbONY/y1oFLod5nEit06WvH7U2Oyp2s+cWZh044R32dMhMInF0VvkDnUh/ubdHrgWEuVrz9opasws3BYX+Fy6LvGFbhEKV8lyJ1b/KD3QApQdIz8opdkvsLr4ewMiKlwGFSnURu0tttzHH/ggqKZiiff4gJTYMNhrKc/Q2wKCk8fMAEbHn6DkeVhQuPBU9d9PBigfbpZVZBElQ+GNjxgFn4ihnk+L7OePOV6Dn4EqMrOVJJsoZ/BAMYTp8BrL4JhKQiyiIcIe2QhsccruYkJJO2S4Ei+vpiTp/WLiBJk4q0FLHnJ+3s4QOddruf6XQCj2NzjJcAFsfpG4BD2SXHDIhAy9SUK1MAz9wRi66eymJanL+7WUkUq+nKmFgYxouSpSzUcTL+ncWqklrjGtmWEoyw9E1lBiAwaOOzMnLmPSRqByCpwdt/HOhGnKCPE1UAmngjKVHrORpM7fEnoPqmA7N7fbf69Psy+IYckLqkGUOJZEDPlxpohEGJVu3rM40Xu9fR4KbvJZNMF8ALgTM18fIlKhX2SCdTbXiUexn+rP+gPSc7t4VBlgzm+Z3FNgkoIGl+pDWJzXMhiOrd2PYUOSX8h58HZIjdVSfrZDn+20W+0b9G32wu51nzdgzIlZxb1KAW0/nVcjUcew/+rwoxuk/4W85ADsvoZROd7Q/aoDbtzV3lgNBoezcfITcgUWd9uUAb
- tFPj075n
- KraXC9YV9OiCq4HQKH7Ip3hlfgsQjyJtuAiL9MPn/jLpHhIj8jwGlowKNk/CT/CsuQASOVfNQ2IM+6cvoyoYar1RZZeZJwQQQCu5SbRwmahWCi6FEwcHn0Lm6xFsrITOK7+yXNvMZZOUcqHa2/Sd8nKBISgWg1u1wz9TiYjVrFj6PK3n7nMDOYLoMzsW/FY/44p9DOKh5I1ckNleqDwHlLBkCUQHnkupJ4hep+1JB9GSpoLrnxFMhv+V8MPV3O3CvzrnSo2Lcn/I1JuM8K4jfIBK1bw1YMwIQYGuJwYdcNvN20UsA8P+s5ZGWBN8zDTriP5nQcpOobyiB/GM=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E1205140003
+X-HE-Tag: 1793756108-800709
+X-HE-Meta: U2FsdGVkX1+fkSbOyxjwR0U66I0xCu9ZLh/7ERIY0Fn94bN3MVxtrkgdgiCwcBSGDCRce9bdovkjb4CW4seG9+AG708xI9T19af17kjheO1GBWBgx1NK3I4YJYuptXYzwj9JQxdzEFtWP/V44609L8IB/mW0qpii42zwX5J7BvilkNkWsbIcq/2pJZzQVHrUUziriyuXRusguGYArZVgBPwQCuXmY8J7hDrQiSUhmjkv77K6yQr9gIhWG5S2phL98ZqhRGEa08Q8MjYeVDBoEYOMCxJ3I8PUwI1Pes2bJXPuO08KgjMDf+UCRVjkDWkESmMV9M71pHsCsTkxDLHfGKJRgPYhA73VqhypoW+Dh9ULXDoLcwrjeSTyzfYetMxBngiUMDOTB1aaJvPODqpTR71noOPpGWzEWyiqHhrazEnZYv3C8xH6WunNXD2xsnzV34u4IeM7Lbe8tiMhHQTq9HBSU6Mur1fJJs45XtscGwjL6teVjdsixzBhFXBJraoEiVhPgY5VBgn5yEcOpixPxka/YTdNYpDAJwfmHPfVz649M+DlK7W06beZZlRX8lHlTjaobXCGMytanGvUM1aaD5gZORuTkqvkRyjVJZdQZpQfE/RtllhZBoIlsozBO7KI5ENj6nCiuwmwNcSMXWYTcj5zH2BjPjz2NpACB2a6Y9PiZ9ut2HrxVEzpI9CDS7cp6OqdTt/ZDMqPIM5eOn6KgcVP1Q7yOnY/pDjO100hQxrNLKJvxMK2U//zmBDVh2hAj8BopebejO02XFZlAb47LC4k2f9wuhBsf+BjzztJbCRQiqQqHfe/KYkcmdkEKIzA11f1Qsyw4gonqao688vHMy6sENBuuKgi2oPVwX8hXke3uzvQiGYTsj2VcV3rz27m6vj6KdMPOxyYB3KT6gT/rwbe2zvpY/J9cXEjk5MYIu9dXCyULjp/XnEFLmMlDaeYuqjuPv/xMK7N25SuW9V
+ Qw5fkkbu
+ 6ToH5YbDSiRl2avmtL/VZk9mKrVjX4BDNf9ko/W6SaDF0IZ+YM2fFcff38iroAG76fv8CgunvrdaycKxvvh4U8tWNByR7zBm3kGy9AwUY8aHOhP9naawKdvxTHkrAW3NqaZDXyQCO6MWdJ1Rt73nOCEU0uoYKgUAzPpMA444M6Kx/RPibGPF8qNPy839fnito56lm2zdMTOY5I2bd6eH0QtYQjihyLI8hUWSAIMu0jFDX/EOrEh4pZth9eSRQ4UmhDja3e3xQWdOe/T72T+lVzFKqcHDpTnf5bja42lApriQPZsKAEgNTDjbY5DObqRXAjDhqO4opSIHJUojLx/QBVMFIAGrDysVPcTRbJlZyf+SsLKasz8MBulcZd9j5aADxQ/rwcUERY6Bzj+wDsSakJ3LklU6XfjylC1RDxvnylHu4TNuO/k3Qb70tCM/CkUuUPVNC6tAva1CSrQlbZ35K6d9+KpbpAWz4qHT9C8cPNrf1xPVbKQOjWMmV96aONThnfyZ5L49u5YDPBgQtXZ0OZfr+jw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,66 +165,165 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue,  3 Nov 2026 16:28:05 -0500 Sasha Levin <sashal@kernel.org> wrote:
+On Tue, 2026-10-27 at 08:46 +0800, Ian Kent wrote:
+> On Tue, 2026-10-27 at 07:11 +0800, Ian Kent wrote:
+> > On Tue, 2026-10-27 at 06:07 +0800, Ian Kent wrote:
+> > > On Wed, 2026-10-21 at 14:51 +0200, Krystian Kaniewski wrote:
+> > > > syzbot reports a lockdep cycle &pipe->mutex --> &of->mutex -->
+> > > > &sbi->pipe_mutex. splice holds a pipe mutex while it calls the
+> > > > write
+> > > > or
+> > > > read handler of a kernfs file, kernfs takes of->mutex there,
+> > > > and
+> > > > a
+> > > > write
+> > > > to /sys/power/resume looks up a path that can make autofs write
+> > > > a
+> > > > request
+> > > > into its daemon pipe and wait for the daemon.
+> > > >=20
+> > > > Patch 1 stops holding of->mutex around the ->store() callback
+> > > > of
+> > > > regular
+> > > > sysfs attributes, which do not get the open file and already
+> > > > run
+> > > > concurrently for separate opens.
+> > > >=20
+> > > > Patch 2 handles the case that patch 1 leaves. A store called
+> > > > from
+> > > > splice
+> > > > still runs with the pipe locked. autofs no longer sends or
+> > > > waits
+> > > > for
+> > > > a
+> > > > request in that context and returns -EAGAIN instead. A new
+> > > > mount
+> > > > is
+> > > > refused before it is marked pending, so no other lookup sends
+> > > > the
+> > > > request
+> > > > in its place. This also removes a deadlock in which the spliced
+> > > > pipe
+> > > > is
+> > > > the autofs daemon pipe itself.
+> > > >=20
+> > > > Patch 2 changes behavior for one narrow case. A lookup from a
+> > > > splice
+> > > > callback that needs an automount fails with -EAGAIN instead of
+> > > > waiting.
+> > > >=20
+> > > > The series was tested in QEMU with lockdep using the original C
+> > > > and
+> > > > syz
+> > > > reproducers and focused splice and autofs cases. The target
+> > > > reports
+> > > > were
+> > > > not reproduced with the series applied, and the paired
+> > > > functional
+> > > > cases
+> > > > matched the unpatched baseline.
+> > > I can't seem to find a reproducer that reproduces the bug or
+> > > maybe
+> > > I don't know what to expect from running the syzbot reproducer I
+> > > did locate.
+> >=20
+> > I think I have found the appropriate reproducer, certainly looks
+> > like it.
+> >=20
+> > Commit 1e8c813b083c ("PM: hibernate: don't use early_lookup_bdev
+> > in resume_store") looks like it's been around for a while so I
+> > assume the reproducer should work on 7.2.12?
+> >=20
+> > What should I expect, a hang, it doesn't.
+> >=20
+> > Also it looks to me like the reproducer is trying exploit an
+> > invalid request similar to what I described earlier but I can't
+> > test to see if my simple autofs resolution fixes it if I don't
+> > know what to expect from the reproducer.
+>=20
+> Further investigation shows that the reproducer is initiating path
+> walks within the autofs mount it has mounted which is valid in the
+> sense the autofs file system will attempt to send a request over
+> it's pipe. These are not seen as invalid so I can't prevent them
+> in the way I thought I might be able to.
+>=20
+> I can't confirm there is a deadlock, how do I do this?
+>=20
+> A little more validation and I'll be in a position to review and
+> probably ack the autofs changes.
 
-> Several mm tests convert between pointers and 64-bit integers with a
-> plain cast, which warns on 32-bit architectures, and hugetlb-mremap
-> passes 47-bit mmap() hints that don't fit in an unsigned long:
-> 
->   uffd-unit-tests.c:344:31: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
-> 
-> Add ptr_to_u64() and u64_to_ptr() to vm_util.h, which cast through
-> uintptr_t, and use them where pointers meet the 64-bit UAPI fields and
-> the 64-bit address arithmetic in mremap_test. The hugetlb-mremap hints
-> don't fit in a 32-bit address space, so only pass them when long is 64
-> bits.
+Sorry for taking so long getting back but I'm struggling with a
+few time critical tasks (including this one).
 
-lgtm, thanks.  I used this as the first test case for my shiny new
-kernel testing bunnybot,
+I haven't looked as far as I wanted to yet but I have looked at
+the autofs patch again mainly because it occurred to me that the
+EAGAIN return might be a bit of a problem.
 
-Turns out, you accidentally fixed a bug!
+The expiration of automounts has always handled EAGAIN returns
+even though that handling has changed over the years. So this
+amounts to little more than deferring an expire which is fine.
 
-: I compiled all six affected C files with GCC 13.3 for i386 and x86-64.
-: The patch eliminated all 40 targeted warnings on i386. In a Debian VM,
-: both ABIs passed checks for pointer round trips and high-bit addresses.
-: All three hugepage mmap hints were NULL on i386 and retained their
-: requested values on x86-64.
-: 
-: There's also a runtime fix worth mentioning in the changelog. In the
-: unpatched i386 wp-unpopulated test, UFFDIO_REGISTER successfully
-: registered 0xf3f7a000. The test then passed the sign-extended address
-: 0xfffffffff3f7a000 to UFFDIO_WRITEPROTECT and got EINVAL. With the
-: cast through uintptr_t, wp-unpopulated passed on every run.
-: 
-: With userfaultfd enabled, hugetlb-mremap and the userfaultfd case in
-: mremap_test passed on both ABIs, with and without the patch.
-: 
-: Separately, mremap_test cases 10-13 failed with EINVAL on i386 both
-: before and after the patch. Each tries to move a 2 GiB mapping from a
-: 1 GiB-aligned source to a nonoverlapping destination. Only the
-: destination alignment varies: 4 KiB, 1 MiB, 2 MiB or 1 GiB. The two
-: ranges alone would fill a 32-bit address space. As a follow-up, I'd
-: make these four cases report SKIP for 32-bit userspace and keep the
-: existing coverage on 64-bit.
-: 
-: Tested-by: Andrew Morton <akpm@linux-foundation.org>
+But mount requests have never handled EAGAIN and I'm pretty
+sure this return will result in an unexpected mount fail being
+returned to the requester in user space. OTOH this deadlock
+case should not occur very often and neither should the case
+where an automount has expired (so the mount has gone away and
+hence a path walk initiated) but the automount daemon has not
+yet finalised the expire by notifying the kernel.
 
+Also I still think the scenario where this occurs is something
+that will not happen in normal use and would most likely only
+only occur for nefarious purposes. For these reasons it's a
+little bit of an open question whether the autofs changes are OK.
 
-By my count, we have 15 implementations of ptr_to_u64() splattered all
-over the tree. 
+Updating user space is of course possible but significantly
+difficult due to the number of distributions that would/may
+need to update the daemon.
 
-> --- a/tools/testing/selftests/mm/vm_util.h
-> +++ b/tools/testing/selftests/mm/vm_util.h
-> @@ -59,6 +59,16 @@ static inline unsigned int pshift(void)
->  	return __page_shift;
->  }
->  
-> +static inline uint64_t ptr_to_u64(const void *ptr)
-> +{
-> +	return (uintptr_t)ptr;
-> +}
+Another option is to handle these EAGAIN returns for NFY_MOUNT
+requests in the autofs fs itself by re-queuing the mount
+request. In fact I already had a patch series to do something
+very similar to handle stale request entries after a "kill -9"
+followed immediately by an autofs startup. Sadly I got side
+tracked by overthinking what was happening and reworked the
+patch series considerably and had not tested it at all. I'm
+pretty sure that a recent contributed autofs patch will fix
+what lead me to this diversion and it will take a while to
+recover the original series (or re-write it).
 
-16!
-
-
+Ian
+>=20
+> Ian
+> >=20
+> > Ian
+> > >=20
+> > > Can anyone help please.
+> > >=20
+> > > Ian
+> > > >=20
+> > > > Krystian Kaniewski (2):
+> > > > =C2=A0 kernfs: do not hold of->mutex across sysfs ->store()
+> > > > =C2=A0 autofs: do not wait for the daemon while splice holds a pipe
+> > > >=20
+> > > > =C2=A0fs/autofs/expire.c=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 6 +++++
+> > > > =C2=A0fs/autofs/root.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 28 +++=
+++++++++++++++++++--
+> > > > =C2=A0fs/kernfs/file.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 52 +++=
+++++++++++++++++++++++++-------
+> > > > --
+> > > > --
+> > > > --
+> > > > --
+> > > > =C2=A0fs/splice.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 | 13 ++++++++++-
+> > > > =C2=A0fs/sysfs/file.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 1=
+8 ++++++++++++++-
+> > > > =C2=A0include/linux/kernfs.h | 11 +++++++++
+> > > > =C2=A0include/linux/sched.h=C2=A0 |=C2=A0 2 ++
+> > > > =C2=A0kernel/fork.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 1 +
+> > > > =C2=A08 files changed, 109 insertions(+), 22 deletions(-)
+> > > >=20
+> > > >=20
+> > > > base-commit: 93f51579e7df248780214094418f205253383cc5
 
