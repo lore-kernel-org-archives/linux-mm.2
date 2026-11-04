@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C752606D835
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C773C606FAE8
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:19:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gxIENLz0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UquQVFdG
 Received: by kanga.kvack.org (Postfix)
-	id 882746B05BF; Wed,  4 Nov 2026 14:19:27 -0500 (EST)
+	id D648D6B05C1; Wed,  4 Nov 2026 14:19:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8323D6B05C1; Wed,  4 Nov 2026 14:19:27 -0500 (EST)
+	id D15336B05C2; Wed,  4 Nov 2026 14:19:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 727CA6B05BF; Wed,  4 Nov 2026 14:19:27 -0500 (EST)
+	id C04BF6B05C3; Wed,  4 Nov 2026 14:19:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4B60A6B05BF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:19:27 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 952561207DE
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:19:26 +0000 (UTC)
-X-FDA: 85398400332.27.3CA2E0F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 938E96B05C1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:19:41 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1FAFF1C4229
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:19:41 +0000 (UTC)
+X-FDA: 85398400962.30.0A9E0E6
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CCAA614000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:19:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gxIENLz0;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 370141A0008
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:19:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UquQVFdG;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793819964;
-	b=m1jGee8E/9Vku6F9Q10/xuaHdiiiX3kt3B1dhJ0Yere3bUSs2DN80Aj9WZJ60G05JZCInQ
-	U5/oL9IWM8sUWsUFXYcsHlgEu6ynd+wZzDmMGNu8x/Ti+eLXys4tPirx+r8IQfvtnkzFlI
-	Ar9Xj+n4Gd+TxoG8EzbBnFkqAVW+wUE=
+	t=1793819979;
+	b=08gRw/UbYqLBQ625PHa50VPWZks+J0nXKl2gt2lBQIiaIH9AWjGw4HhXd/mNQM+M1pHZwE
+	7wFcwnR/RCXV5TMq7I5Mw2QnrNflFjIKn0cxiAY3xaT8GdONxfm15eI77PBcRLY8DXmdok
+	TujGtwt1wE24SCQ47b0X6MIwZ0TO7Dw=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gxIENLz0;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UquQVFdG;
+	spf=pass (imf19.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793819964;
+	s=arc-20220608; t=1793819979;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+QMuJvtMuQ+CXnn6xLeWoxU7H9VJY0mzKEyTXi76/+M=;
-	b=minbmjescUtJd4Rz8bA2CQVLrSosavivsgsKSjHh48hExYOwlq8ePnsIR5d//KDvhn0cQz
-	jkDUpHluuvLWiXmNek5nzba4hq14n5fDxCUQdM28Vi6TajZDcIZ0KarCqoyoT7gmpLr+mH
-	tHyjNfevnRiNCSq37Y7K6H2pcwzOGq0=
+	bh=3ZyIQLij17XFBIkY/FnNnjbp2RgAs/rkMBTgRuVD6WA=;
+	b=JHf/fScQ1iV09cg4cxpDoLpKhpI7vgRLD0oA7YKqVbh5YoIdZuRdB35yla2TNoZo+TcGnu
+	s1CwBcIVY9wyJHMLfnNMQ9zpR12UVxqSQMF3aCPjuGHlq87gvm1h8LooGFn523D4vMWlH3
+	CGigHjDXErGIeSvXkkMUd1d7mPv5Gck=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1D28B43EF3;
-	Wed,  4 Nov 2026 19:19:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C301F00919;
-	Wed,  4 Nov 2026 19:19:11 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 808B941485;
+	Wed,  4 Nov 2026 19:19:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2211F000C1;
+	Wed,  4 Nov 2026 19:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793819964;
-	bh=+QMuJvtMuQ+CXnn6xLeWoxU7H9VJY0mzKEyTXi76/+M=;
+	s=k20260515; t=1793819978;
+	bh=3ZyIQLij17XFBIkY/FnNnjbp2RgAs/rkMBTgRuVD6WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=gxIENLz0UJSM86XrOE1Sp3JOvLA1u1MA6tN2TKsN8z69sY8YtYsnY9pKSo3aFOcfQ
-	 It+yrAGN09WT7v77bOcS26Rrfp6yDzWLpkBPnc74ur6LeQ3oTzrvuG6Ky0kmVgi5Bb
-	 Z3j0QjnFD8aYVcI8yWVigWpiQHEHJJZHAuuleBaspMz1mpQ5rRYAMWLJX0zRU4vJo6
-	 RVoQiNLCqpiXG3Q/pt4TC6GrXdJ/RtFA4o6YSTd9QUZ7eQ0PuRnoorZ/GGmdi0VNty
-	 8+ElarT6h6fA4UlBB9caj85En7ce0T5GP9cwgZFrj2EBL5oKo+5dRL8rx9quzBAg6O
-	 vLwWBgOdvm1Pw==
+	b=UquQVFdGSzwe7fOqi+LzTOMp+2rigsfWxIAUBskeYKdDPktAPBz0dC1Ky9xVgLPJ6
+	 PxjYY4ad50AsLCrFoewzc6rxKhLSxBpDvF0I5ej6BOl/KhPCUg0fxW0LnI/ODrAteZ
+	 gjr5s8RQxg56swgMcrzZtkIliG4rHYkP/qWWVil89NvValFsxYuugkdm3C+LD7HEVh
+	 JaWz4IeTKnJ3KLOVpGdXpdtkBFXK3vnj1bwsYl7cZuhnH0ZL7cCDtZWYuzFyV19v4t
+	 59bUwTSf4dkWbRcTPcvwXUGjo4Xs+7a4ChNX/KHaOiJQMZrRfbBtelWToON7Uage1C
+	 8mpDuOEVUITsA==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -122,31 +122,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 13/51] sched/psi: don't drop the last byte of a trigger write
-Date: Wed,  4 Nov 2026 20:19:09 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-13-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 14/51] proc: sysctl: don't stop readdir at an entry that is being unregistered
+Date: Wed,  4 Nov 2026 20:19:24 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-14-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1310; i=brauner@kernel.org; h=from:subject:message-id; bh=/5ST8groFWC3ZYrB9+5K2L5OtN8hrslkTr6MpvXzbng=; b=kA0DAAoWkcYbwGV43KIByyZiAGrrgdqjlnhsS+Xn2bQzAZGlod8csUEIbzAtYr5Z7PKO7g1AP Ih1BAAWCgAdFiEEQIc0Vx6nDHizMmkokcYbwGV43KIFAmrrgdoACgkQkcYbwGV43KLVfgEA1c1M +KyfIhJG/BAv6BFn00vAnDN1zj94NkCXNtd8aaQBAIjacXos/OXrlYuIrWKCfCTQiGjILl4kpqo N1Eyu2lMK
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1722; i=brauner@kernel.org; h=from:subject:message-id; bh=6hLGzd3ohIjIvoG2NrLKRAR6DerSlran3UFG44ON0F0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bryzb4l1yo+SbW0v26c6WF3kejzthlPTlKvH65zrf 4ekRggkdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExkZRMjw7lnT3e45jJIFvEe lD2X/fbQ8Qfz7ab9fzQ1681BpYwLPlsZfjGre3twV17+P+2PxgzpuirDdx07b2yVkzfcP7Xlxf1 UFxYA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 76tfiu538ns7xec5iffzjnpetkkg15xs
-X-Rspamd-Queue-Id: CCAA614000B
+X-Stat-Signature: snkug3d6u1mwykrgyw3kcohoh8gmbtb4
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 370141A0008
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793819964-893469
-X-HE-Meta: U2FsdGVkX198yK6KGoB1kSv9oMgM48U4PnvFHefKNcOuc7oJmd63ROZWKfQy+ujYZ1VURzOim7YIFP7SdBIbtreImpuShI0JXTRTa7rB1MHv+c/R1GqNDFeHBTmL9kCsnJKKerpl+QLDJqjVd27tWgUKO/D/48jSOXdRRcJJWF4Dyya8nzCOExSL1yO1dKRqdOLK4BE8un0c/KnlbV0cd4AosQnUdMGN/uGk0U7FsNyULqni/UCMzAi96j4l6NaNnoDSWzpydKvE/c6JO2VF0Y7Mcv+46gHbnfg7ulEqI/GwZmzU2cN5VffRI1UNNU/sTfdzoKUWZQegfE/q4WtcXXNHV98n/zyNGQpwroaQAwImM1w9zt9CsvxIfaEtN34Jl5VmIFZQNxrSwulAPoGTFbMcGTH1CUAL6X3hH1xXTieF/IZQdAJygjqCjqhZzrVIabqHXycxOLzuKArt7eud1pisBoZqt2/ApoHEmGCsbbGEBbea/n8t1sLGjSWWK9GlUT/odzz9JE5PtOI/hLQavmzbQkYQD7ZQooNYtLSvJxNjBmIxtlmEsAlxMLZL0gtJeCOSJNVJHolWmHW1acAZaiPAAHUGf+bLlBnCdvybNNFFQ9u51rzjS52PTueagkBM+laj2DieLWZ48ldEqPiIbem/v+fl7vqXZ1h4oPBxEOR5+L2czOMDx0TGqKmOB9luuUj5OVN4TDLIJoQ4CiBfkGNmzpyENXomUrAxV91S9y/6+MW24dnvlWyLZgEl1vcYpw56w75ybiBKXCY3MNImhSHqfwtdq34R/BJ7uGXTECiUMxEDNWrg0OwRVi7kGq2jHVwnEkk+xxlxKctyoWctzdEuknWUpY5Xw28OwGUdwNzRyw3N1bSZs5FiDnC6JeI4WA43vt4tYOUGXqlHwA+cb9Ojl9k35+yQBqP3wBOwNeO1YqxhU0dA+FXtciCr9Aqqy+mwzhpc2IA9O46XiHZ
- kt5Qfcht
- GaynDN+I4pIJqp2XL4sDjqfX2XBxFVVOJaLTrVNK3DxuzbtoUSmCAF9bK1ZxHvrm3idmvhWe0BwTqyF/Q6wJIdADHpEpsylESBYXYEUXCsFBIOkY91Q8hH0HHyxN93MbPIA7wuv40KBx+AXw3j6Sb7HGNke1uGM1q65ByOFI98P4K406khbMqPldBCfnN1uzFdGetOcYDwzg5Gj+9U8OoRPocpmCszdHvTbNTnL7BFYEEIifkqJZi9e901eLAzCw1V/RerveM4qvVn5UOqyF766L7n+a6KZI8YqZmpQOo4K2g+rvy5hak3jtvzSNjqE6AGa5VbcebY3pkhIxftwZiR1cUqKPO+Xkce44i7QULU4opZQ+TtGRHtXsPEnxJlPDewDjHHTsIg2oAnaENMJYCwNuWXUPe+ai9u6+F
+X-HE-Tag: 1793819979-770253
+X-HE-Meta: U2FsdGVkX1/FWhBMIxpzADVoLGpTFEcJjSZvP3q2fv3MuAMP8o+79IzTJyq+ajK1JwNHioFXdlY3iTBxCaKU2kZURHF7IK96VMm79RSbYlSS2vbjprkQxj9EV1aElNzmw7XNbKpGG8JYPCMuZLanMcQCgoMey3ZKNsESN2c7CHatdlUkNU5ln4PXXxR88Kot/yBLdFgYWYf8Vdj3RkXHeAO5Uvt0DUEr025AVkEmYwmA9P/P7cmhPoficWWYcdl277noaqy8jteqQEK+jMehm29KYF/tNkpY68oliqAjaJSpM8Emxs29LXk25CJuUB6L71dFRG+XENUGu18aPH7SSkqE0fVKcUZm3G1nxck9TCLFrvGE8aB3G79RfA/j0Cpg+XuamyKmycObf27pZHVFKNdVNRM5lg/4MratncOlHccfrgNdNvMSGgQ9dibaZD9mCgb2JvVqsfhXVFyXO8mtHXuhpFIJ4K87ajZdGLyEBLi5CzfoovZ8iLnEIZhuEFIMKQogMX8TaKjHJOAX28C3siw1Sx+SJUYkYhpZH2qyuYevcyQPQlp9e/mYMDZ5KCXpXelRy1A/fAzlYQexmgiSnEMKDtvZZm8ttQgfXrCzupS4Apts6xIQP2H5jyMyKo6KNnHPg4rOL8Sp7lnH/wo3wgQRyZI01cG7zZPFzcMYs/hHzmeEL6E1EDoxcmt5HjeXwj5MUGNnMTZnCzCP+PIg1kYyCoDj3kVWTjKrv2/yxUz2kF3W+OQApxZrTsJvRaPz+GbirjmhskijHE+byM3AGZevTGZvF92tN9Vk+iUef+VHwz3eZoicTtceoWw7jLyYZxZ2kNB9PWe285Y+iuXl2rwaQWvfmtnhlko5b0yJ2KomchAGeDTbVQwMvcBBREQsTIaKnBMhZgmXctlHYSsFFVq1U0o2DfNbejzu6i/fiTQkuThEm51JPNQRPpOMh6FsChj71zFwWyarlJimK1u
+ 7xu2NjkZ
+ KGKzTTmgpu/F8sRtPbw3d0wk3kvjjnF/PCf8u7QTGezzf27dn8aqGgduAJfp0R842YhtrtwMLpNTV1NhJW3nfWhaCkWn5lCM5YSNdYFE6pPRR0bc5fr2R2fRlEruQ2zNb260NO5Y638AOTJnt0CBxgET9qUT/+7ybTWHYTHYRvxspIPND8/hUN+/WVVafu4aRsfWxxDbCA2Ru1ZOCj1CESB1wwWHfJQq+Lop9Y+ZtDN9mLVZKJN7fGf5fCrQKKxiv/XDTuJr7JVPMU6ZqzC63WlUCy+T8Esr4fFgUaZruniyefrUpjBJEooTjyHOgKVtrZG63VUxyedBRPiuxxWWuYKWpWw1WdwbDQ9hdtaJpF7+eNidgyUoOR5CP1uLu0TM/4dpWYWoG6+iydSJ/+yN91qkccGQSwJQyo4N7O5c1ehDg4RSXuc1axgtW8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,40 +155,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-psi_write() copies at most 32 bytes of the write into its buffer and
-terminates the buffer by overwriting its last byte. For a write shorter
-than 32 bytes that is the last byte the writer sent. A trigger written
-without a trailing newline loses its last digit then, "some 150000
-1000000" turns into "some 150000 100000", and a shorter one like
-"some 150 10000" fails with -EINVAL because the window doesn't fit
-anymore. Only writes that end in a newline parse as intended.
+proc_sys_fill_cache() creates the inode of an entry that has no dentry
+yet. Since ace0c791e6c3 ("proc/sysctl: Don't grab i_lock under
+sysctl_lock.") proc_sys_make_inode() refuses to do that once the table
+is being unregistered and fails with -ENOENT. readdir takes every table
+it lists into use and unregister_sysctl_table() marks the table as
+being unregistered before it waits for readdir to let go of it. So an
+entry that is unregistered right then makes proc_sys_fill_cache() fail,
+proc_sys_readdir() stops there and returns 0. If that getdents64() call
+hadn't emitted anything before that entry userspace sees the end of the
+directory and never gets the entries behind it. A listing of
+/proc/sys/net/ipv6/conf can end early that way while a device goes
+away.
 
-Copy at most 31 bytes and terminate behind them.
+So skip an entry whose table is being unregistered, like readdir
+already skips a link it can't follow. Lookup treats such an entry as
+gone too since ea5751ccd665 ("proc/sysctl: don't return ENOMEM on
+lookup when a table is unregistering").
 
-Fixes: 0e94682b73bf ("psi: introduce psi monitor")
+Fixes: ace0c791e6c3 ("proc/sysctl: Don't grab i_lock under sysctl_lock.")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- kernel/sched/psi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/proc/proc_sysctl.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
-index 7c5381423334..8b59635e95d4 100644
---- a/kernel/sched/psi.c
-+++ b/kernel/sched/psi.c
-@@ -1566,11 +1566,11 @@ static ssize_t psi_write(struct file *file, const char __user *user_buf,
- 	if (!nbytes)
- 		return -EINVAL;
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index 6c0859c66563..b4a309d49698 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -704,6 +704,9 @@ static bool proc_sys_fill_cache(struct file *file,
+ 			if (unlikely(res)) {
+ 				dput(child);
  
--	buf_size = min(nbytes, sizeof(buf));
-+	buf_size = min(nbytes, sizeof(buf) - 1);
- 	if (copy_from_user(buf, user_buf, buf_size))
- 		return -EFAULT;
- 
--	buf[buf_size - 1] = '\0';
-+	buf[buf_size] = '\0';
- 
- 	seq = file->private_data;
++				/* skip an entry whose table is being unregistered */
++				if (res == ERR_PTR(-ENOENT))
++					return true;
+ 				if (IS_ERR(res))
+ 					return false;
  
 
 -- 
