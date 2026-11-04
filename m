@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02E760A2609
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB43606EE80
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F1LyX8R4
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LcdXsSLP
 Received: by kanga.kvack.org (Postfix)
-	id DB5D86B05C8; Wed,  4 Nov 2026 08:02:57 -0500 (EST)
+	id F3CB56B05C9; Wed,  4 Nov 2026 08:03:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D66326B05C9; Wed,  4 Nov 2026 08:02:57 -0500 (EST)
+	id F14186B05CA; Wed,  4 Nov 2026 08:03:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2E0F6B05CA; Wed,  4 Nov 2026 08:02:57 -0500 (EST)
+	id E030A6B05CB; Wed,  4 Nov 2026 08:03:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EE936B05C8
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:02:57 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20852805EC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:02:57 +0000 (UTC)
-X-FDA: 85397451594.09.D608DB5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 2DE0540002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:02:55 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F1LyX8R4;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793797375;
-	b=Kf7GpfbvHh6X7bGz+o5Dql0UYCh+38OtRIFvqOLvHbqXKBMJv7XxtzIVptkhsZh2hYBHm9
-	+dIzNuyXFUYjSiMlhp36zMhE79UdK5SfJ+0TKlzJaE60RnEBAZjHn20081Z+2h6HKWnLfG
-	qBlySyz+JtmSmyFD7wONYSZ5aKtJSX4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F1LyX8R4;
-	spf=pass (imf07.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id AF3386B05C9
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:03:04 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3595E806F2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:03:04 +0000 (UTC)
+X-FDA: 85397451888.14.6A35A71
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 160C82001A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:03:01 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LcdXsSLP;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793797375;
+	s=arc-20220608; t=1793797382;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l4BGAIhk72GrMEl0bP2Tn3Taagv1PMlryAAvqGAVCp8=;
-	b=xCNdyow98rIAT+Uq4skKz6XKc8OBKUkzHB91fOYEAb5cNe9pANZRozE+u9WLGMUs2RXJ5f
-	fx9+GiHNWHxXXoXZVimZwYBMw15YMIox5keqxgik+jYW/SEioJ3ed+ZR71RyF4Svb9AWMk
-	khlbKL5HXQjY4yK0E2rusTaJD1eMG0Q=
+	bh=rz5gqclVsI7Nyi3wdIsP2V0gZuIMwOehVRh4pvFPagk=;
+	b=qzXclvavY2ptLTlygK7zJ7UC7WmJhNSPa6A2PEUUc/G5DzIQw1V1jFrnI/P61LN5aZl+wm
+	ILueQ15g0j2tJnPZTasGXIA3m0X95K6McyhYk2UnsWrguiT0IqU94RhiVPLiD0LuNqVZJJ
+	rLbGXLFIsBQbIRXre1JYKoZMVZLUKpg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793797382;
+	b=bARt35trg4BcKJJ1SaFjMx4+bBSh8WNBszSEi3rX2KSYVMLSTYh11id11QOOPieC0eEh3C
+	rto8njEwKqUdYZKZG/EJ4xnJaouc9n8oAp2fjKl77lnhqqEOCBT5dkjettkNjWqvdUGjf7
+	La0qLbfuRzzIGGquHmlulDhnyRpLaag=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LcdXsSLP;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DD32062CCD;
-	Wed,  4 Nov 2026 13:02:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC01E1F00919;
-	Wed,  4 Nov 2026 13:02:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 61A36438DC;
+	Wed,  4 Nov 2026 13:03:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F091F000C1;
+	Wed,  4 Nov 2026 13:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793797374;
-	bh=l4BGAIhk72GrMEl0bP2Tn3Taagv1PMlryAAvqGAVCp8=;
+	s=k20260515; t=1793797381;
+	bh=rz5gqclVsI7Nyi3wdIsP2V0gZuIMwOehVRh4pvFPagk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=F1LyX8R4P3vBU4b+F2XBXrMDfS07VL/kzGTZl5WZ2jilUL/Pv1sFab1/6HkwUOlfR
-	 49VIhSwtwo/qkshsUOk19XQ6RpXvnixjanFkzFWUp43QFVeOetVvEuuUwMm8N7JoWG
-	 jkuhQ2o9pcJKHXN+Q21/k6Wi8roWbPx485Th/DPe8g7YjgPHJfINrWpG/1uqAMS+ws
-	 lWMIQukGqXIvO2CAadONoMSgHNjZmSMr6d6+MIEvTihJemX9WdgZiT8x63YldoVVC+
-	 JQo8D3OBlW7yNBOuqzSnWHrkGcilchJ6E6qVXHXbSgAw+iEnxkeiDGRAeFvi/CKKNy
-	 BTL25I50GQ2eQ==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 90B541980052;
-	Wed,  4 Nov 2026 08:02:47 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Wed, 04 Nov 2026 08:02:51 -0500
-X-ME-Sender: <xms:9yzrajt91AZFpLBodMj6k_PS6-YllUd7evvZYhKdxHO7oUFQBm763g>
-    <xme:9yzraptnPSSxy0OXh8kpgQPiB5dqxyeWpbqVMo8pz7MV6H5HSC_N-pK8s2awEiwIo
-    TWsMFGtVQdBcGAqb0tOeOC0PiFUhkSqikqMb2OuZ1z-BZhEN6Q1Qd4s>
-X-ME-Received: <xmr:9yzrapauaqrB4nFlNq9-vwGqRSb-ZRFfSUzzmuDf8Acqoba839jvtoib3UU>
-X-ME-Proxy-Cause: dmFkZTFt4psseRmmhNB25obH6e3Jmvg5MI9YjhYCShYB0WDZIR/sfoknekqjPtgLdp/VUx
-    DAjH23g16+lAAecMdJ7OTa+nj8nV+GeN+FQlk8C1gy1317lcxEZjhrwlk2drfC/uxjeZcm
-    3c59gZriNo2ojihZ9Y23fsOBzYxPIsmJfU1uqjzKUR4FkiS0+meIWSsOSNIu46exUFpFDS
-    Im6fJ1GXvBUs0GlP10d0JMz3tbvwwBF4SAjp/2yPzCkhjLYZeeIZwbBiU7bowbKHBhNqDH
-    kkHjCH0P4lA1CsjneqhclSHZw/vFFT3nC/F46W32G1Imcq8qWwl+hWhNeM9PLDwYqAznrA
-    botFO87QZCf63ZMvqVrnxb4nRvMNa+SpXn1D3yNUO949q+ZPxt3g0Q6ELkZXrR6s9Tt5Z0
-    ygM9U8EzPTNorTVCkjy5tsM8rFr9kFdYDVudOtiYHqHMxYcySn8RIfNNjnRUWWKZmhv6EJ
-    A0e6dWvhemwxXDPDlUnv3Hc1Qm5gXgWiz7JGXFuPLBHEFAKqBqEE0FP/ZWPB29J8cwEAHu
-    0lxgC9mgUGjHS+HCAI4Qe6VaLlUtffp+n04M3cP3XOdZoK+8upPna2GA9e9RLqtS3uoj/q
-    r46Z3ZkokvRgfkQcnyoj99Q8Bbh121zyfSLccAZ+JLsDBGND9pRiA/Iwt54Q
-X-ME-Proxy: <xmx:9yzrah42VjCbtjvba91Li-1qyFt43m9W8LuN8HYOjeDNczh8kkMRAg>
-    <xmx:9yzrakmNFKbPyz558y0RvD02sSlD3Xu-MoNpJ5QF0vSoUXrNdXHxHg>
-    <xmx:9yzraprQVACPA0z8r3I-z1FGeHInM1ZJ5QQ4_sf6nJfOfQS3E-aVCw>
-    <xmx:9yzran9n_3hDXu_qHcPi0lAWRYsk9hedK7Uebn3Jt4TvcHAup-PTHw>
-    <xmx:9yzraq5wqkk704d7_zAqSwKAYvGWfq9CXT_tQvEpgKPrGcDVYzVOh9aM>
+	b=LcdXsSLPAg5DKaj/aTv9PSu2NP1TfKv/KnATTp80uFZvAj/RMdBW+1ZOPeFrFXIx7
+	 C8QG6ERv/NLY32h5WhymVgGeNa+YQYciUPxku0pk8GVL18LnAMrB2tjXMT35BVtc1f
+	 RKHAHigPew3UGAZSjvFYrFmd/K1cEReTLTZLPr6jKunichT+DFykWt/XzltrNGwlxj
+	 wZP27+w9nPxPszO97Il7WVkaoQE/QEWONuTFLsBkK3oKjpihaYjzEp9BjCpS5snY85
+	 FpI1lwH5PeatNZSbHRappTVAIgHvJ3XURdvAarRP31JRYg3s/AIJ3b1+rDwU6eY0Om
+	 XcDyC66dIpPig==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.ams.internal (Postfix) with ESMTP id AFE2F1980054;
+	Wed,  4 Nov 2026 08:02:53 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 04 Nov 2026 08:02:57 -0500
+X-ME-Sender: <xms:_SzrajjhOxjr2XwmQIqse1UH4LUbP5FMftC_A5W_XWSuGXPGh7Ne8Q>
+    <xme:_SzralRIVATV3PkPWnjCM5SvKMZ0McdyzgmUKTIQJtK-L_e3PbBXnMpYJOjbb0UGt
+    9u8BTkQyp3pWleC3fWEBloQXw-hlE-bVCkfIqL5wIp8dHO3NAWZouI>
+X-ME-Received: <xmr:_SzraluTmjoqOwcQy9e6ka_pj-2Ujp5hVDTOHn6Ct-5eQUDjaP9sMcvxvkM>
+X-ME-Proxy-Cause: dmFkZTFyj9iBgTb70dT7Nrskf29uuOyI8LMvpppsr+ztaR0SBDghph+zBPTBpK5ZS8w9Hs
+    ZfoFoa0Z54ye4qFPVN9z+iBcUmGJLuDx+F5E+GwM0Yai8h0Kc4rjSxG6WPfOH2iKPLuf3P
+    s2X5S/AicHnwf5qqVsIRpEEeMef/YyNBtQ+L8UUZ6s+iWkyfT6d384myBgsvxs/VTn39m/
+    MUnuiW24J8M/zjUd3ANt41C4Bw9zgbZVxkihnU4ozkl0ylLdfdgBXUdCPFEeO2l/cn91tf
+    naFqCjfGvhGtglGyOuDPbmSg5ttJSGEvGw0VM28OvYSuugU2nbyQInHmfNiv9aGwbOcLH4
+    On74nzUC3nPKqfDN/sMhYaGYO1MhljVDfGE2vC9FhLtaOGURgAAOil+k7jNMbJdmEX0NvH
+    swNaHl/JaFLs6rjXZGOyd5xvwPmbfq1hTp5NWLUbQ12f+BXP5EvzTG4tMGeerrxcrufkjh
+    EzwpMH60K5EW6Z37zOiO9WWgNGElXeReO7uYKlOLtTpSMyfzof0LBZaT33gmHu1A7UQtNY
+    npzMWa+RFPD0Yae0NV8sWf7t87X19860EPPgf/BtLIW4Vsla8t/wiVOklLjsi1yFPg05B2
+    P13+BfYZVFRbqLI4WVn7+IhSyz5k7yg8mJzNRGz+x/GOLEdoSNUNQCEsYylg
+X-ME-Proxy: <xmx:_Szrav-b31d6zMJAwAENaJdU8AZEIB2CijIOzOdlc-_ugaDjKdk7Hw>
+    <xmx:_SzrahYUifZzOGQwa65MAOu6uQsW36D4cuUMV9Bs5zReC8nLjx-3AQ>
+    <xmx:_SzrauNjCv6ipufU8vee145tFV4L_LJ8ioWtu4UN3clsM2caO2UP1w>
+    <xmx:_SzrapSz7raAMh0YiZbyG2yxTyALTmGivrf6UazVsdQ5EDkaFvVucg>
+    <xmx:_Szrap-zRACVOvdl3tdSQLZ_LHA2ubYpNiblmBUTaBM0i1IvgdP3_fM6>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 4 Nov 2026 08:02:46 -0500 (EST)
+ 4 Nov 2026 08:02:52 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
@@ -135,27 +135,27 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	linux-fsdevel@vger.kernel.org,
 	fuse-devel@lists.linux.dev,
 	kernel-team@meta.com
-Subject: [RFC PATCH v2 14/18] mm/filemap: read large folios without folio references
-Date: Wed,  4 Nov 2026 13:01:10 +0000
-Message-ID: <20261104130118.2507513-15-kas@kernel.org>
+Subject: [RFC PATCH v2 15/18] mm/filemap: don't store f_ra.prev_pos for FMODE_RANDOM files
+Date: Wed,  4 Nov 2026 13:01:11 +0000
+Message-ID: <20261104130118.2507513-16-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261104130118.2507513-1-kas@kernel.org>
 References: <20261104130118.2507513-1-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m3uk5n4pz64ead5wjqpams4hrcm4s6of
-X-Rspamd-Queue-Id: 2DE0540002
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam06
+X-Stat-Signature: g1ixtjniw48bquo5c9zommpitazmkzc5
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793797375-281653
-X-HE-Meta: U2FsdGVkX1/9/9lxD2F/Nlpfv4urEUBda6XaZ0ICCXkwg67j/yPez8sRXU/D+EsgxijmlIxS+VhlAcRjXjPOWuxVlinEstGQlBZv1DlrvMoCok2+fd+fIVeperUtuhYB4DIpgjVbXVUNxTkCUfI33T8vHgSGrLoTgQdFRGHatb3HsmZyIZLRot0wNX3eXdoOq7mqxMFSOsM4IrfcjIGEFOmIBaiCLaDtUl/9M+dsV3xHuN1Q1eUTyLyR10wwbpzQfsKrJy3Dy0sDq4Rx9TwjanzZaTytfL2ak6R5rNvgufi0sRkGlP7x1/tfjsJ2lps8qRLrHHe+x2xbHjkTTjFG5OsWbHnX2/EK+5FKjlswTweNwBDLbyA3yE9Y0/C+wWy5aZ/anesece2QfJxJSXqTgqWCFbq8XGpPVaXqOnA1y2Mwp4U2Nl19TWsl53LccuyCScJR3AzmkxguR3CyugMUk9wsDvntugPGR807d/+dLv8JHm/88bioxLhpjFAQzu6TwHxLpSyVNXZyhXI3TkIfoFgQVRucTj2a1CQY1tf+R80dZXX7fWLV/oz031u4WTRjq/w3hW/jLs5NcZvbmq075liQD7OJT70cwjCripOvxJ6KFQ+Y/944mYOOT9vE6soCCVnzHTOp7TiUKJeLAgTw2QQYWOJAwnI5bcaC+8Y4BsnbNIXRzMHLgVwSccP02nbNGkkpBbjhqXACbZUt98LvwkS1sxQbdyzjtvmveYdady2IbC6leRv3bG3A7I7PhwyS8TqmIKahnHwH/xHbCQmbqQmBCfC0/zDTSFryB4dpSrrk7j8pzVVtpP3H/NtCqOwq7bJFiMR2XY+9APMfsRIZboL63pUU4hGv+ah2pMGiY0dst6xpGZd+oI6zUpV99mizhnMfFuiAIgy+U1tHG3RIumUrJKQsnheDSk1MwvZDSksRcxAClkpneOEENLsDLMdFWqHMxpXUNwp9rzAtPUy
- HHPV6DZ/
- kD47VUwClxJSQBtHwCrcHpwTrBkAxEIaVpCGhNp805Kg/XbujG9CKyN3bBjV7qgH0DeGX+eVsdQvK7aTdy1M7vltHfzz2RINEwK2AZ3NFw5unEsddfQlDtt7weehptR+mGSG+Ofgcu19iCrqH+SR6oRIIxdBKhJ0JMyh70yOpaye9BIEXk+CH+UaIUK5fFzbZQh1yk48FMFNJtj8pO+cWFn5Py6Iba7DB3wpTmthKXcFKODV1ruCfAYxtfx/Vifb8s/OOQsNAMYN24rUA3lnE1L3Br7UC18p39afPrrWbBvS7eecbTfB6Rn7+uRrRS6U9y6v1lSzjCFmn9PsGH2LCarp5rQ==
+X-Rspamd-Queue-Id: 160C82001A
+X-Rspam-User: 
+X-HE-Tag: 1793797381-121200
+X-HE-Meta: U2FsdGVkX1+uiKm6iAaYxUGtbNnxxsGyU7rH9MnzrDDwTcfgAh8eqlJ8+OfgEdjxTFjlDtwXpasYBB2SdiTPbEuGTqVOF1cT8NqFk4r3lisA5W/k1VFe/PiiV/1pF7dpLnPGvY2vXJOnDfMy7/SMvyeDzKNBIgYM/zIMXpSA/ejPfUBzareaC97KpcTiTNEOzsAFZnCABYqgk8r89qChnNhJ84Gn8K+RYTPr8YVrlVwFcjItTwfgQwwXC3+DJ1R0haT7sZjDItproTr+kXYcHFdFfK+2SaWV3qn22Zxq/k4SoeWC4mRnHjijD5fei9WHqfBRrKBqBfD0/W73w0RN0oaQIzD518g5KVyIVunYoYmlNpkpLwCEnlBssQN1pTlg11DV5hvV/hZ9W9hNx1d7mUNNeHvmowyLvvsAwYPI4h+kwEy5gtdNYSUZLvkBwndD6iNAgX9GnOz7SkKhKvVSEPfSr1hD48eFpTe8RXRpiYbH8ADiPMy8w4v/qUKv+CTi3NHS9+LHED/WSXikLBmYTHRs5MUeHIa2zxtiq7FWLeoCToPHjeIGbdAmP/WtVqyHHkzO2aZpqI4S8dmORpQxlJ2ZNia+TgMbyvSj2ne2aNzPIZrEfxCbTFsOGRxV8eZl6N9S7Scy5T3aNgVQ94fWFMMf/BLjrIpqABb+RTMyH0nC3nSHuIjxoucX7AxpiczpGYRoReMW/VkfXm6rrwYn8CIwyi/jKJvQ44WbtOWU/ECIIfnt3ukuRuvnMaIYDxiXIIafNgHbudhWGxrpSG2dcTjkhH57lfecX/jExpkXLwYfY3Ame1O+Sm3bla31qwQGijoovF1G85DQFA9HCO2cpnIfktpht9vnmZVJjeL8NUxZdglpiLqCiCDqlVxAqP8KQV50XZE/cKHhpJSbJKT0S4bCYt7keMpDwyjYfjIOyH9OFHHPLc2sYdt0A+Ur4IQHjIRT3pR0n5bAEy9waV2
+ cfB3YRnV
+ au+FjosGMqSfw4Wt8Wy34gEkErg00h8Q+DbH61eXfNfs4N0XfD10Yepmt9gwRuwJaBKsmJCysH9o4lIbOI713AdKo8OTFUrpSmpRFHimTpEmVma2QXNRg2voHB+DJOyOoXWGXMuQfIrNop9QbyR0fik8E35t7eD7h64i2NDCX13gHi3Xb30/oOBLzgi9T0IzjvZQIdjRf4J466cJAM8fSVdCupkobFjIQ4DNFqAe/4Sonnbj2siipnIRQ3pNsITf1TuElIgcd6RSEpUW0q5D99RkjuUNb6p7KvK39+Dvci8MU6ekUmwysInO0u/OZayvZydgcrh+uGSF16ud0DmPZXDyPx6n/GYF3zn3t0oCnmATeWjKexBMi7pl4LCUvtbiPujZj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,125 +164,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A large folio is in all the slots of its range or in none.  Once the
-slot of the last page to copy holds it too, the pages in between are
-this folio's: copy them after one lookup.  The folio's size is read
-without a reference and only picks the page to check; a split after the
-check copies PG_rcu_free to the new folios.  A split can also change the
-order and PG_head under the reader: clamp the order, and read
-PG_has_hwpoisoned without folio_test_has_hwpoisoned(), which asserts
-PG_head.
+filemap_read() writes the end of every read to file->f_ra.prev_pos, in
+the cache line that fdget() and fdput() write when threads share the
+file table.
 
-Copy page by page with _copy_to_iter(): the hardened usercopy check of
-copy_to_iter() reads the folio's order, which a split can change.
+Applications that read a file at random offsets from many threads, such
+as RocksDB, set POSIX_FADV_RANDOM on it.  Readahead then never reads
+prev_pos: page_cache_sync_ra() forces the read first.
+
+Skip the store for such files after a read that filemap_read_rcu() did
+in full: without folio references, the file's line is what the threads
+contend on.  Keep it on the slow path, which takes folio references:
+skipping it there made reads slower in my testing.
+
+filemap_read() compares the start of a read with prev_pos, to tell a
+read that goes on in the same folio from another access to it.  On an
+FMODE_RANDOM file it can now be stale; with many threads on one file it
+was another thread's read already.
 
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- mm/filemap.c | 72 ++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 64 insertions(+), 8 deletions(-)
+ mm/filemap.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
 diff --git a/mm/filemap.c b/mm/filemap.c
-index e99705a66c1d..182ae7d5db56 100644
+index 182ae7d5db56..5998de3d6697 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -2834,15 +2834,16 @@ static bool filemap_read_rcu_can_copy(struct folio *folio, pgoff_t index,
- 		return false;
- 	if (folio_test_readahead(folio) || folio_test_dropbehind(folio))
- 		return false;
--	/* One reference covers all of a large folio's pages */
--	if (folio_test_large(folio))
--		return false;
- 	/* A split clears PG_head before it puts the new folios in their slots */
--	if (folio->index != index)
-+	if (!folio_test_large(folio) && folio->index != index)
- 		return false;
- 	/* memory_failure() waits only for readers that got past this */
- 	if (folio_test_hwpoison(folio))
- 		return false;
-+	/* Not folio_test_has_hwpoisoned(): it asserts PG_head, a split clears it */
-+	if (folio_test_large(folio) &&
-+	    test_bit(PG_has_hwpoisoned, &folio->_flags_1))
-+		return false;
+@@ -3078,8 +3078,13 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 	if (fast_read) {
+ 		already_read += fast_read;
+ 		last_pos = iocb->ki_pos;
+-		if (!iov_iter_count(iter))
+-			goto out;
++		if (!iov_iter_count(iter)) {
++			file_accessed(filp);
++			/* Readahead of a random file ignores it: skip the shared store */
++			if (!(filp->f_mode & FMODE_RANDOM))
++				ra->prev_pos = last_pos;
++			return already_read;
++		}
+ 	}
  
- 	/*
- 	 * The slow path does not call folio_mark_accessed() on the folio that
-@@ -2896,6 +2897,62 @@ static struct folio *filemap_read_rcu_lookup(struct xa_state *xas,
- 	return folio;
- }
+ 	do {
+@@ -3161,7 +3166,6 @@ ssize_t filemap_read(struct kiocb *iocb, struct iov_iter *iter,
+ 		}
+ 	} while (iov_iter_count(iter) && iocb->ki_pos < isize && !error);
  
-+/*
-+ * How much of @bytes, starting @offset into page @index, can be copied from
-+ * @folio.  A folio is in all the slots of its range or in none: when the slot
-+ * of the last page holds it too, so do the slots in between, and the pages
-+ * are this folio's.
-+ */
-+static size_t filemap_read_rcu_size(struct xa_state *xas, struct folio *folio,
-+		pgoff_t index, size_t offset, size_t bytes)
-+{
-+	pgoff_t end = index + DIV_ROUND_UP(offset + bytes, PAGE_SIZE);
-+	unsigned int order;
-+	pgoff_t next;
-+
-+	if (end - index > 1 && folio_test_large(folio)) {
-+		/* A split can change it under us: it only picks the page to check */
-+		order = min(folio_large_order(folio), MAX_PAGECACHE_ORDER);
-+		next = folio->index + (1UL << order);
-+		if (next > index && next < end)
-+			end = next;
-+		xas_set(xas, end - 1);
-+		/* A split after this copies PG_rcu_free to the new folios */
-+		if (xas_load(xas) == folio)
-+			return min(bytes, (end - index) * PAGE_SIZE - offset);
-+	}
-+	return min(bytes, PAGE_SIZE - offset);
-+}
-+
-+/*
-+ * Copy @bytes from @folio, starting @offset into its page at @index.  Page
-+ * by page, as copy_page_to_iter() does, without its checks for each call.
-+ * Not copy_to_iter(): its usercopy check reads the folio's order, which a
-+ * split can change.
-+ */
-+static size_t filemap_read_rcu_copy(struct folio *folio, pgoff_t index,
-+		size_t offset, size_t bytes, struct iov_iter *iter)
-+{
-+	struct page *page = folio_page(folio, index - folio->index);
-+	size_t n = 0;
-+
-+	while (n < bytes) {
-+		size_t len = min(bytes - n, PAGE_SIZE - offset);
-+		size_t done;
-+		void *kaddr;
-+
-+		kaddr = kmap_local_page(page);
-+		done = _copy_to_iter(kaddr + offset, len, iter);
-+		kunmap_local(kaddr);
-+		n += done;
-+		if (done < len)
-+			break;
-+		offset = 0;
-+		page++;
-+	}
-+	return n;
-+}
-+
- /* Bytes one RCU read section copies at most: it holds up grace periods */
- #define FILEMAP_RCU_READ_MAX	SZ_512K
- 
-@@ -2941,10 +2998,9 @@ static bool filemap_read_rcu_batch(struct kiocb *iocb, struct iov_iter *iter,
- 			break;
- 
- 		bytes = min_t(loff_t, isize - pos, iov_iter_count(iter));
--		bytes = min3(bytes, budget, PAGE_SIZE - offset);
--		/* Not _nofault(): its usercopy check reads the folio's order */
--		n = copy_page_to_iter(folio_page(folio, index - folio->index),
--				      offset, bytes, iter);
-+		bytes = filemap_read_rcu_size(&xas, folio, index, offset,
-+					      min(bytes, budget));
-+		n = filemap_read_rcu_copy(folio, index, offset, bytes, iter);
- 		*copied += n;
- 		iocb->ki_pos += n;
- 		budget -= n;
+-out:
+ 	file_accessed(filp);
+ 	ra->prev_pos = last_pos;
+ 	return already_read ? already_read : error;
 -- 
 2.54.0
 
