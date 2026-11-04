@@ -1,139 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29807606A337
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 06:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744B4606A326
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 06:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=Y6rBL/cd
+	dkim=pass (2048-bit key, unprotected) header.d=gourry.net header.i=@gourry.net header.a=rsa-sha256 header.s=google header.b=vRqDJbAD
 Received: by kanga.kvack.org (Postfix)
-	id E7CA66B05C2; Wed,  4 Nov 2026 01:26:02 -0500 (EST)
+	id 85E1F6B00EF; Wed,  4 Nov 2026 01:42:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2EF36B05C3; Wed,  4 Nov 2026 01:26:02 -0500 (EST)
+	id 835FC6B05B1; Wed,  4 Nov 2026 01:42:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1DE36B05C4; Wed,  4 Nov 2026 01:26:02 -0500 (EST)
+	id 74C4F6B05B2; Wed,  4 Nov 2026 01:42:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AE6CC6B05C2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:26:02 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2F6F41403DC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:26:02 +0000 (UTC)
-X-FDA: 85396451364.28.A56DECB
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 57A9620003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:25:59 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Y6rBL/cd";
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 46FB46B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:42:46 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C2E7016065C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:42:45 +0000 (UTC)
+X-FDA: 85396493490.23.FFC42D3
+Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
+	by imf21.hostedemail.com (Postfix) with ESMTP id D8B0E1C0008
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:42:43 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=vRqDJbAD;
 	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.216.47 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 74.125.82.175 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793773559;
+	s=arc-20220608; t=1793774564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Eed9z5suww4/zRV4jVvjzbO04jNWYIPB5y+W3yGdy9E=;
-	b=yPvohBXHCmKHrB9+3wE1YS0QFw5NhnYLUAwpQh4kuyXZIRx9qKzT8Xj60HC0IUgA9r45uE
-	mRP8UuBHjt4mtW7YOCaVfkrNz/fcn/k3xTgoHn9TZbPsabGTfQeIvZY9ztoaZksF08hSG1
-	6vxUViqKJnzrDf8XHLp7C3foOQwOGg4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793773559;
-	b=58IhmdbPjXHR3jFTgOPv+ZQcRFE5UnIb7xc285WD01ldpAMGmjwdCQBLx1YOwwDrU1inLk
-	qMLG1rPZL5TezikMHyGIKb3ntNe/8cLo+iY9INRCnhWhLBbI88TlJ+B6qfrs+eRcvAfDr6
-	kGGZQ6lVz079lsOBaMA8MdZqfzQqsPU=
+	bh=CaIA/Sr2kiTxJs6D9LfjF0iFIQjHh5ZBby7zBRLnjyI=;
+	b=CkfTitU02b/ohMXrwQOCYLACkNhlXAEv5qlwDcOynJru/kqwHlRFoKuoS1Ghiaalpw4Qdw
+	e+fMH90d6/FN74eaUx65sKPq3oBHk3Y6NKehbzURSr2WYsgaHN3P3tqPI95mjuAcFfHs77
+	c07GrSV77prsHcuNrbGlBHmALWgYFfY=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b="Y6rBL/cd";
+	imf21.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=vRqDJbAD;
 	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.216.47 as permitted sender) smtp.mailfrom=gourry@gourry.net
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3b08a162d4bso292820a91.3
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 22:25:59 -0800 (PST)
+	spf=pass (imf21.hostedemail.com: domain of gourry@gourry.net designates 74.125.82.175 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793774564;
+	b=SEAtS22AIwkIsH7zovRBV0/qi+VYjfPIAiv/fQa3b/g1hoSKF66rCllPx2kul7GP3PGgkU
+	H72gdWtNQswcVwDZsH9MTyPrtuxnre+xefRQrk4QwpNmjJReE9p/n/0QsEJvG/eTwpzTOR
+	Cmvw5QwTRh5PcZ3ZzHAIQcQdS1uT02k=
+Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-36a0f27c9f4so627796eec.1
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 22:42:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1793773558; x=1794378358; darn=kvack.org;
+        d=gourry.net; s=google; t=1793774563; x=1794379363; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Eed9z5suww4/zRV4jVvjzbO04jNWYIPB5y+W3yGdy9E=;
-        b=Y6rBL/cdsVWG8ZM/AFoLfHjjPAQFf66PjXwCSLaKvL15H6usb/a8rqaeVEHxzlXbdA
-         HKjewOMzH3nqAR5cdurCMTUWoQV4hrn5LYsmVrUN3tZkSkF9EIWZ+gTBACkCrJd33k7K
-         Zxykr2QgoTrl9PfdPCoaOW8DlZAmCHbxSbhxKYHZyU2efQLNAyq6UCLT5YnjBXsIDu3K
-         7q2G7RgZqGHroJX54HWWkIjCDhd1WPfWU1uTyY5YPjsRglIuKwCNLMQu0Os/emhomf+w
-         kBSkGBiLoAwtAOzmMzO6n0oDVCsDkHzr93d7M0peZq78E+KTOMOo0sykSPHnhOpGDOEU
-         sQcg==
+        bh=CaIA/Sr2kiTxJs6D9LfjF0iFIQjHh5ZBby7zBRLnjyI=;
+        b=vRqDJbADR31kRX8WXd88JunWykkVf11iDbSErEW+q3nT1xQ+5h7nl88QPEctB+n16m
+         FEtiUyU7bCbpnqaUW7N0OUCD7s47fLLNZXWx014neEsfLoQ7lQBn2kEaD610WWEnGeUO
+         nj8Sw9pWfVwMPBiPApIjewjOH+X2Cd1XPkHJwe4czY14enPpuogDQAY3z49L9lTfYeP8
+         tgAG6qrGQicQSA+cySL8lWg4n2SqFwkj5Yb9lgmofOiWRn2ySrydRT8WkluBJfjXcPMC
+         9m+8hIOvFPp4sytkeBycLGLig816lMGuAsAIuqP983ES7PcKt68IF4/bYpWrjYmhGUql
+         TiCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793773558; x=1794378358;
+        d=1e100.net; s=20260707; t=1793774563; x=1794379363;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Eed9z5suww4/zRV4jVvjzbO04jNWYIPB5y+W3yGdy9E=;
-        b=cpdK45nqhANKjthaFwSnKsR3MLrOzJV1ubuS9QoBLs33e6qAL+AZ3luyO83FVfwa2v
-         M18lR59d7dZWcXEfmpcRujZ/5x+4lN5inhsPfl48ko2z+Q5XLDiyuR7klRtafJhpPaBX
-         1YH4JEW0x8f55abfsmRdS36lamx5ci/bt931XtuJfXScsanT3qIBkX08pFSaSVtAAwOA
-         qnKDU74/ZLQVZjWF+S9hNs6Qed7chrcH19vFQQU599mkkJUsywc2byXqJmRKBm/E/iqg
-         9oz2kDlAHgNIeYEwR6uaw/z7oLlaMsTPdXHbs/dQs9N/JhtZ/ZolaoN/lUfVv/F6uYZm
-         p1zg==
-X-Forwarded-Encrypted: i=1; AKwUvBy+wAFovjLCnGIPjh+E3WhCpvSf4qppcjBl3zsnpYacv4Mz4KK2cTUI+4uq1dYRmF1U4aFjGr2oLA==@kvack.org
-X-Gm-Message-State: APuU4Z8TX3xLbeVVA1TTkMp+PQF61V1veB6Atx8c+f7nzzui0S/FTz5N
-	NJp37b16oc746dD9WUprZKXPPZnFRKKzzlBYi1wLRJZ+bIntPx4WuZyX2lDUhC94eaw=
-X-Gm-Gg: AYBFou1H8xOteumyHq0s3/D3cwACD7QKtzcPXfw+k7+G9oMj+oAVRTB27umDZtHam5O
-	kFte9VDTF/oc+n2aZtS6ocXjxc7LuoJlqqRImoNbwovck3zL2FrAsd/iIpP03sB4lkWyVXzLRCh
-	Nhl8UdR89d8lD6fcCrMvxBdP1kK+Ik14pOsNZvHCZDUTVJFIv/BvUg0Ig2cXiN4Uv3Q94yIYEEH
-	gEoXu0OsT4TpeU2hcEQl4h1iN9jkc07vIjNlTWwBaxCFXgsVhycaOCgVlVw0HfcUBHb+lBYJxqB
-	SUGMI1iJxbEvUDozNm6FrLU+DvAqrZwAS6sEXmmX2bpw4cX3eu5hE+VCxokDRn0E6eurHCe7YkN
-	MgOcyYW/IAtM7tVzECriYi7fmOQ83zfnV4cP5df2bc+4z9XaLN7U1KpTOa4wT0nMCcC3JY72GvJ
-	DsmXAftZ/EvItEVhyKZbR85b9kTG5UmMEmY/IKJI+FUiv+Rb9patHrxD0XNQqT2hefJPx6akFcR
-	Ha/jBdhO1b8kHS0Njs6IsD1jPUQ/LCSul4p2i+8/MURftcTWASq1ISABM1JnT1D4XrMjY22OLHq
-	lY+dDRGn8r8ag4DMDugAum3BBTJh7eWRZUX/4A==
-X-Received: by 2002:a17:90a:c886:b0:3ac:80dc:f407 with SMTP id 98e67ed59e1d1-3ae89865dcfmr11962403a91.60.1793773558155;
-        Tue, 03 Nov 2026 22:25:58 -0800 (PST)
+        bh=CaIA/Sr2kiTxJs6D9LfjF0iFIQjHh5ZBby7zBRLnjyI=;
+        b=M2YZOJU6DZnlQl8wlB9hFO8uYzfWLA4FLXL03kWo4oxgPPaOQtMzTt5VQvufBBSt02
+         fj9XX4wJRTnyrsdylno67dftBJLFjniXOrijj2za+uNGsNj1ggGNz6kQcrtPFGl9oivd
+         BmirqmKMjjvKXZXohvd3PwRLYS55Vb4tBYQ+PnuYGI8VcZZmdmtUhuGh0N05eNNBcbxT
+         IfploYs93p79QW0DQ9EzL2DiUAVBrlX+13fdwuiV83aMWEzhRqohNoXD4pY1++90tvvw
+         aJJ81w253p/mFHg/nBx6tuKlNVE0/cNYt6j/HAUn5uL0QT141gbwdfnlUBnWsabpv4+n
+         Edzg==
+X-Forwarded-Encrypted: i=1; AKwUvBxrWDftpNO4mEM3X5V6i42Z/J5OX7JCMEUq16+0kLOkHRLHzAjTx01JyeJkdDwNopNcSM+FlYsyxg==@kvack.org
+X-Gm-Message-State: APuU4Z9xxbXHpAOAY0yTx8FzNP6TXIxJG9jrcHhxfGNViX8gkhu8rv8y
+	VAEBaP5cnhMsvH7HXwnr2QiWq877dioX3f9XNsqsVll/miQBDrn26y+EPEit8V/HAgA=
+X-Gm-Gg: AYBFou2n9xejxhYrUcTuLlSM1qTTT3uBN21lQRrlptEylPOcjZESPQA5wMatl77dhbm
+	/FGCqbv0KKG7uTsJb22C97/wiT40uTTTnohjxBrl6sXB2g5+aedANar3fSpZ0Mrrh7Y+nalZZW5
+	3K56wnmSlbltmqpldsk1s2KhBzhJLNSbEwL6KWVwBiqvoyREbLzGKrKLVF+6yvteIJCeI/+bAfN
+	xip+NnqIGKV9yajZCq4VN7CZ8woSh8lBoFkcUrxCPLs5PhelPH0TaqEwWxEe17vjWhoRU45eJ/L
+	/7C1Gm2EXzKZa7IqfHMBRmqCQsKthEtIgE4f7zsh1KCbPdDlCz4ENfcVK5zfiw/aKyiS0Xz9JAE
+	JzJHIOfvxGyCeYJlzaLj2oHucnhfzWMxvHT/4Kdloe7lxvgen+zDaHha4M3SIMgR/XT6w7pwPKI
+	k0bMMWmutQfUfprxg549m8E4co3VeXaLbNeSnHwZ51dJwT1HLMC/05Uxyc8uxDsgknLp0W+jjH5
+	Qyjuxn5HxdqCUt9gXviqoGU6zdqLsx8AI9fVVD9T3uTMftoutO7FYIUU4PfGt3lINkswCeWiMtB
+	4a1YPvVOpUPa50xcs84AHenKD+HLNl7XnE/Qlg==
+X-Received: by 2002:a05:7022:1711:b0:1ae:59d6:91d7 with SMTP id a92af1059eb24-1ae59d6945fmr17559078c88.40.1793774562347;
+        Tue, 03 Nov 2026 22:42:42 -0800 (PST)
 Received: from gourry-fedora-PF4VCD3F ([61.251.99.240])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b093c499a5sm2672357a91.2.2026.11.03.22.25.34
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c57430sm5905073c88.18.2026.11.03.22.42.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 22:25:57 -0800 (PST)
-Date: Wed, 4 Nov 2026 01:25:24 -0500
+        Tue, 03 Nov 2026 22:42:41 -0800 (PST)
+Date: Wed, 4 Nov 2026 01:42:23 -0500
 From: Gregory Price <gourry@gourry.net>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com, akpm@linux-foundation.org, david@kernel.org,
+To: Li Zhe <lizhe.67@bytedance.com>
+Cc: Tejun Heo <tj@kernel.org>, hannes@cmpxchg.org, mkoutny@suse.com,
+	akpm@linux-foundation.org, david@kernel.org, ziy@nvidia.com,
+	joshua.hahnjy@gmail.com, ying.huang@linux.alibaba.com,
 	ljs@kernel.org, liam@infradead.org, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, kasong@tencent.com,
-	qi.zheng@linux.dev, shakeel.butt@linux.dev, baohua@kernel.org,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	baoquan.he@linux.dev, baolin.wang@linux.alibaba.com,
-	rientjes@google.com, rostedt@goodmis.org, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, muchun.song@linux.dev,
-	osalvador@suse.de, joshua.hahnjy@gmail.com, rakie.kim@sk.com,
-	ying.huang@linux.alibaba.com, brendan.jackman@linux.dev,
-	hannes@cmpxchg.org, bigeasy@linutronix.de, clrkwllms@kernel.org,
-	nathan@kernel.org, ndesaulniers@google.com, morbo@google.com,
-	justinstitt@google.com, Bessel.Wang@huawei.com,
-	jiang.liu@huawei.com, mgorman@techsingularity.net,
-	anshuman.khandual@arm.com, stable@vger.kernel.org
-Subject: Re: [PATCH v5 07/12] mm/mmzone: read each zoneref slot once when
- filtering by nodemask
-Message-ID: <aurP1MUp8HhhjV75@gourry-fedora-PF4VCD3F>
-References: <20261101021340.2251928-1-gourry@gourry.net>
- <20261101021340.2251928-8-gourry@gourry.net>
- <DML8OO28WT5O.3U6NG100XWKZP@nvidia.com>
- <a5270059-e5a7-4c8a-9f04-96135f79ea72@kernel.org>
+	surenb@google.com, mhocko@suse.com, cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH 0/3] mm/mempolicy: add per-cgroup weighted interleave
+ controls
+Message-ID: <aurTz8SiB-nQ22lJ@gourry-fedora-PF4VCD3F>
+References: <20261103122816.48037-1-lizhe.67@bytedance.com>
+ <0efbf4db1decd8e6bb6a5fcdcf897314@kernel.org>
+ <03bceb67-d362-47a6-b555-ed5aa1f9bd3e@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a5270059-e5a7-4c8a-9f04-96135f79ea72@kernel.org>
-X-Stat-Signature: 9ijrhzdtpu713s5yj5whwp46mno49scw
+In-Reply-To: <03bceb67-d362-47a6-b555-ed5aa1f9bd3e@bytedance.com>
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D8B0E1C0008
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 57A9620003
-X-HE-Tag: 1793773559-98526
-X-HE-Meta: U2FsdGVkX1+KXIw6dqufJt5Rw5IgQmsajpzNHE/Rcs2hnoeXUtWc33GXxqOyen8dPa0JGaXibL43shFbUiOeB/6txiORepGGxb65Igg2JbUR2k1VLbrl6UBod0QVqijNF9AZXBXqmnTudiPSzGX85938MAw/7ikVegFrC/cvwwgOh9AVsF8ZLXy4PSGetdKt2niBr9k7Frx2a79HGg6e96w/gbzxpwlj8oNsLc7zMMnBKXD/IByQ78w7Y2IdU83bg/4QYGzZZKhDbILl3hFgJBE3s7ydae1R4KF4D/PdUcuazEnVvBTnk/nQo0c0rpOOo3R1UnmwD78pM+2QZ57nlmX3dlhGvWbQN02+PR8Fnx+qlu51DMgbXe79In7fMzKR9DAc63T49jhrauN2sVIeA2A464Xp27Ht8xfdh40DCOt8XrtYAm97xZsS7PWrDBb+zIydEEyRvKAxLVHFwfW+9THxUO/RdNsmrulKlhs+jV6wN6oZovVqHzv0wQ/CfySOydYCJ8uBzv+ZpEDx5g06k0EkRJYbmo+PYbjAaNRE37bnQjZSyiKbKlMsCymQpOUy8qnobf0ATIUTTsKMBM2kuTayqfaGmUSM85kVJPDVxEfqjXsm75q4C2v8G4lR6eZj6bva/Sw/BLXw1kIGdJCuTOoI0VrotyDeKtwBi41OqlgjzWvlrItS2Q7Vp+U4dXqU+PJ4twEm4Wf3fGzO1s+jWGxizCDOgGr2VPZXQE4LdNDDhMIRLXA+/9nUcNdfb1BHm333zo01tcAoOyXQ2cE8aZ3GlR+Lujicjod14JyKiyc7oZuCTD/DVOONIFCJwpguMwudl4e+4fLwbZ797Nj/IoFz5MqVCF+6hFlYYn9zIuzpH/IgUHer7VWhGhgTNPIlYXGanuj9zw2qC38Ox1nk9UKf33/f2Yxy7XdKqi2w3NhcSVbdgMtyANanJ5FoKoAQzlT1CGAgXy7OpZOsIIV
- 3+86z/0e
- VDot6To28FYKrjp89ZpDh0Cfmb91QSS0HR+v+LBNit/rQ1lYvydji1C38rihbwF5NOZxHdwEY2ani7rvY+Ku89yNCoHWc3JQhUVd4rJ0LkCKjXKL0nJg/JSyPTm2kAJcXMLuZZebxg4btA0tB2wWA6wmlOn2X3FcgkIb8Kgs2jHusrn1bWiN+ay6F4HcGMu9Gtf1UwFJ4mGH4WNZ+tpy921YEwOwWO/OgAEmt4ftKDHhi+fXpzuRe7OtyxsyGfHM5VOM0xTciAS697nG/f3m3hqjN2vLJ94pZr3kU5mFtR/nSxJMDAM6ntjjcvyoXH/oqG56D5ujoKssTCh/Lg7ax0QH/2yx4hI0S67bk06XHBKgCWWkL0dgStFkS82FAv/054lkF/8n2xRi/4cv/Y6YtzTvQLg==
+X-Stat-Signature: jzrkyhw81x6zzu1ni6yy5z3q3subzdfp
+X-HE-Tag: 1793774563-560780
+X-HE-Meta: U2FsdGVkX18clSwSKx8ZZWxaBsVVzaQP7Xbc9dl+mM6XQ8kreLNQc0owhAdfgQyYA6daFWQP2/PiNWremmLnBdOs+4uaO5OqLHh2Uef82+8dALyowiOyv0H5po+gg4xg3pcfx2WmN7mVxO0ypt9iH3abh51moTrrZ0SGts7nPLOSmmewp/Q38oyzOxoas17pq4vOhYw9lBvXWzJp849Wn2ka+1qrfj7SjQX1tvjc24xaPWqqBGRNWcG9zr5VuR9DjPF/CPK/t8kudFHjjxhZmIiwWqCJr/EO/v340FO4yUDteQWZRrHVGRoxl9PrOVMQHAhn7J3sTv2vpGlsnId+5OZjdu8FY8YzB87B8Mc4YvBnoWZSBP9BSYPxxMnmrgI+4ESoVUr3hssFIz3XEi6EMs5w82rC5UjQ1yqlu6XoC1VnEHtojgnUa6kA40xRqAoXQv2+/kYEOA2zFISBoj5oChGA9BRC5p0A9dmSel1GCcQSdI5H3BOxk+pSyKLtTU/gNkgw9qWi7AvVls1LgUxEtuMQKgazhBW1hm+LSCpNfq+R+Ctyz8GH6X7VnhTDNjcNsPF1CpNgeOjGG4IbvdWPEmoNblmKBLPW69xrG/WRr6U0H/nN34Ef6PZZoC5tfMmjRh+ZisPogOyavcnWStrI90siRQU86BhCEk0XpUTrSFtKl9AxMDswwoy0dWTDUjeTCG7pv4wOim2V6XQI6gXeBc7orp07ssqJTF9cgdts20Q+mNNKhMqYII9JMdCfL3xm/7nHCHSYK+o38nwE7ddM9SGf5lQtGBMqWB4BS1tWI2SVvIJOL2a5ovTSlZDPhejDXNw0jYaG5UR64xn2OCrWmtF6nu4G/xGXSXQXfXuX5pYfMf/RK1+SXXv3j79NNVDoj+0rGGlyy0sCd6GD7RuLn3ECYpsviSTEdojnLLMN18gLkSw5nm4Cbpp6SYpshHVq7mqR59NaHQdNLbQLKRc
+ T39pY9AZ
+ oOc9qhIm1P6RFatK8wDfQYTVLgOPvlkllKuEqkyjpbMREVxP0GPIg69Ah6LaaKaIl+U/GNUVSSUA7Mxeaxv4VxmKbSWq9Xozod5u6Op8r1HBjk67SRv5a0GXXG5umFDAXiTOwFQKtM4E/oQP8UtOyz1EB7XbSwtM5J2L68N4W5tlKJrYCxr5KfIXAsllx8Xz1JiAKZbVMm9J6qaRkC3yAi0/IKkwc+DthMH4WxFGsbYK0kniROLYjrwbrTvJAHqJ7oGLzVlybvVEXovjifaO8LhMCdJnLjb/T5z6DDuughynk9g7ll56z2x1xsJ+NjnC+vmr4f/jFY8iHCsiFXcZM0ldypOMax5qz4ELSC2uLIGEoSmVYJM9Fwg1XrGDHFM2x3M2snIKsz6TNa6wCM3khQkEZWA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,18 +131,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 04:00:45PM +0100, Vlastimil Babka (SUSE) wrote:
-> > 
-> > It is better to spell out the rename from zref_in_nodemask() to
-> > zone_in_nodemask().
+On Wed, Nov 04, 2026 at 10:44:46AM +0800, Li Zhe wrote:
 > 
-> Added:
-> 
-> To achieve that, rename zref_in_nodemask() to zone_in_nodemask() and
-> pass a zone instead of zoneref pointer.
+> Does that distinction make the cgroup-scoped override acceptable? If not,
+> could you suggest a better way to support this kind of administrative
+> weight override without adding new mempolicy syscalls?
 >
 
-ack.  Assuming you don't need me to respin just for that.
+I'm a little confused why cgroup-anything is needed here when you could
+just override the weight table / interleave functions.
+
+I don't particularly like the idea of bpf hooks for a single mempolicy
+mode as opposed to something more generally useful - and I question
+how useful task-mempolicies are in general for tiered memory systems
+(they also affect kernel allocation placement, which is not great).
+
+You have many patch proposals recently trying to adjust the mempolicy
+components and I think it might be helpful if we could chat a bit
+about what big problems you're actually trying to solve.
+
+I get that you want better control over task/task-groups, i think that
+can be useful - but I also know that demotion immediately mucks all
+this placement logic up (and we can't check vma / task policies at
+demotion time) so I question how realisitic the value of these
+extensions will be.
 
 ~Gregory
 
