@@ -1,113 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED82606A330
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9151D606A33E
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:15:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QF98rpjB
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a2+bCu0E
 Received: by kanga.kvack.org (Postfix)
-	id 44BC16B05B8; Wed,  4 Nov 2026 04:15:38 -0500 (EST)
+	id B9D866B05BA; Wed,  4 Nov 2026 04:15:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4243E6B05B9; Wed,  4 Nov 2026 04:15:38 -0500 (EST)
+	id B76D06B05BB; Wed,  4 Nov 2026 04:15:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 361036B05BA; Wed,  4 Nov 2026 04:15:38 -0500 (EST)
+	id AB4AC6B05BC; Wed,  4 Nov 2026 04:15:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 153C16B05B8
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:15:38 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9BAE1120619
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:37 +0000 (UTC)
-X-FDA: 85396878714.19.4B6CB79
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 1008B120005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:35 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QF98rpjB;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 897986B05BA
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:15:49 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2B0AC160674
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:49 +0000 (UTC)
+X-FDA: 85396879218.27.BB0CDE3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 83B721C0004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:47 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a2+bCu0E;
+	spf=pass (imf20.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793783747;
+	b=0j5jC8HIL/U1kFCExlBK/tyIhyQolaKPtKn4lD8/tTYCGT3S7298l/MkNZ3VY1OJ5R42DM
+	OR7sVwhhL2xOMM05z3EdyqrrYuacC0MKERWNhOO0/W9ljasAfyiei/6scF5urUDEYASF8I
+	C4dnPE0G1ubnNHLmFX3xHd5N6T5G/VY=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a2+bCu0E;
+	spf=pass (imf20.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793783736;
+	s=arc-20220608; t=1793783747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tun3DxnivT6n8ykyvHDle1jgjloMyn9wMMyaVwUBJtE=;
-	b=QI2d6wktKIQH/gVvH3FtInzExWPu4D2rShu0TfQhklJDxpg6+UXfxXgQZRO1ptbN9sroIv
-	7QHt5nMw7FhhceW/ip0GNXC8zZa5jXzPUB+GOnLXwct0lV4Zcu5DUTM1Hgjucw8JjZKBL9
-	NJLOEQVzZakxb5zGBTLC5WlJHDaFmkg=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QF98rpjB;
-	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793783736;
-	b=1W03d2N5UwLAhxKHWYf2RqnssXIVAlcSlMxa6dwklOYrj1u198Y/AEUR/HCQlVLKAFjpnp
-	ASzXkONo5x4BG/9+Ty/fozHZKOfbbz4i/Fs4LOgm9/FRhEFaaoRIW0ie4sKLEwZI52poDs
-	N2jEy4tR/a9mOoMh2rgTr4wJcLqRmdo=
+	bh=R6nd2a1srhpplQhjW+m8iYpRcQ9IInw/BXmwf3MtK4M=;
+	b=UWPl6tGhWMEO3gfo266JmrK2xTzIAfFgavbnZ0gMpaQ5cTt8kR9u0cItFCd005zJ15p+nK
+	3/zJ/IdDammVhWXCRiEV1p2sH460RwqVf8UJNHOeJjjKg3FciUzf/D1Fg2HVHWLVOqKxGE
+	oFGTEq5NTGI6XcYmtdvt2tz0okV6eaE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A35A0602BE;
-	Wed,  4 Nov 2026 09:15:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786C51F000C1;
-	Wed,  4 Nov 2026 09:15:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D5DD141687;
+	Wed,  4 Nov 2026 09:15:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0953D1F00A02;
+	Wed,  4 Nov 2026 09:15:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793783735;
-	bh=tun3DxnivT6n8ykyvHDle1jgjloMyn9wMMyaVwUBJtE=;
+	s=k20260515; t=1793783746;
+	bh=R6nd2a1srhpplQhjW+m8iYpRcQ9IInw/BXmwf3MtK4M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QF98rpjBzH7nX1jmz4Zo8ykeu0WPbxz0HGt6XxCXrOQ4V4PB3P/wbn5sluIzZ3bgP
-	 woOpkCVq06Ek6V7bKkHEP2phdvrGGARxXAl1OBE0IhgkRUa/IQ935AFbXxh1YUY5bJ
-	 utfjbIjp7LtybAhtZNGHqFcIoDw2mhpfxaUaUe5IHuBCvHt5tgYAPu/YfrtEAf4jWd
-	 v5zbJS1rE1Hby/io2vM2SNwmccLVR3w7pjdFYCtf7rR4Wu4skeBeZ5GH0Q1ajKmHHR
-	 yetiYqpJqieJOdcKUSYdWCjNW5p22mqd+bHsoVYbOTO4y8Ft2ybe6f5kRc5h/hiSzc
-	 /PiiXfUYZ7Gcw==
-Date: Wed, 4 Nov 2026 10:15:18 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Florian Westphal <fw@strlen.de>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
-	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
-	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
-	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
-	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
-	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
-	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
-	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
-	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH RFC 03/38] netfilter: xt_recent: don't remove the proc
- entries under a spinlock
-Message-ID: <20261104-entgangen-nettigkeiten-intuitiv-f39521735261@brauner>
-References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
- <20261102-work-procfs-bugfixes-v1-3-59422ed3e465@kernel.org>
- <auig_zhd3L0HEis3@strlen.de>
+	b=a2+bCu0E3dVreX+haMDi/ZewO8sUAUoyk9PY7Y8/kbjxsI51VBMLyQgICDlHW0uGY
+	 eyXBkOGWDa0HVEf13W+vQGrBHgIDiYBRLAoxWunTWxNdQGReeR1HGocTVjWklapusa
+	 CfyxA+WHtGQSp5EfsMOgglQpSDxez2Nmh5Sxgj6pdV5pR6uwi367hlmAWg40I5kszC
+	 ngLrHN1uqE7AM5Vh7opmHNrBRO+VuYCk6q90B8G7D07R2hbuuj7uf4AT6NDATzX3Wy
+	 LVZdGnXfqG2Kc24QxBDTveEL6EXuT+wT8pE23PzbsfShpY4Wc23c7dO3md8sTEUSOz
+	 7Hmvlk6cje9Ow==
+Date: Wed, 4 Nov 2026 10:15:41 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Muchun Song <songmuchun@bytedance.com>
+Cc: Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+	Lance Yang <lance.yang@linux.dev>,
+	James Houghton <jthoughton@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 01/12] mm: hugetlb_vmemmap: remove HugeTLB-specific
+ vmemmap optimization macros
+Message-ID: <aur3vUvlWCTAxA4F@localhost.localdomain>
+References: <20261104023510.260766-1-songmuchun@bytedance.com>
+ <20261104023510.260766-2-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auig_zhd3L0HEis3@strlen.de>
-X-Stat-Signature: c8txuu7qpw388zwsbea3juwtgbdn1b8c
-X-Rspamd-Server: rspam01
+In-Reply-To: <20261104023510.260766-2-songmuchun@bytedance.com>
+X-Stat-Signature: pdabcbta155i7qjcmaf1zmn83bsbui8r
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 83B721C0004
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 1008B120005
-X-HE-Tag: 1793783735-855960
-X-HE-Meta: U2FsdGVkX1+v1pKOd90KFJwHtdKi+0+WRspAMU2ubiakFTz+d++ZzmRMbiYTRLj5IdgVX/DrYPS1PRzvbuhu/Irqj5GpF/Pe9/B2e6FH9iGNlZFu4wrXmmtc3L3krDo6uOAuzfsDdAGF3G8ZJ112vp/3eIs/q4ojx8JeNsY8mithEE7Xf1nMOytqv0N+tnZibnY6PQClIgozPVE7eG+6t3Uafofn8PuGwoIJaikpo3I4Zhp0fqzHurPVem5e7QgE0vEqiJxkDYAj5E0OtP7woA0ClFoSypVyCVAxWql67LjOqZx4tyoQA0TDCbwNrl8yfPfUHgXtOtxpzA2hLlMGPDMcTr7rCmKeqN6MpniPg1LfKGuL4FuOR96r5PRvd/6cERTdsMUzt4KxMoq9VIYDrH0S179Xd0SUDRPG1U1oEDGBVL2bNAvmcON+H8M5CplPo5FRm3Xcs3Iri/R2wOQfRr/wKPkXEyNCH+stf73BmWBOiXLwzyLpzl9B6lzItnCyynF3OVOFWOyTOQDJ5pH79mMWuoO1742/a6hR+hpm0tlSatn7QysBIDW+qLUPwOGM3GYkr2JGLcgyWjcwAgNKy/KFtU1KhbTDNOxgDvI73Wd0VPjUl44RWYJ7vBq/w4r86s2ww/uieXpRprtZiVHHrgPCXOolZEI2lU/yqUeAxSZbNJskrN9gSClgu+g+WC5k2bAneUrfp6V4fOnXlgucauVBwyKonOaYO1W5UJdH7axXdxfzOatLSwWAg1+DiTyYKvfTJrmDRHbMw3hN8VClDflDUrnEZdTxcHJHiCSV08XfjhOaAnbK5fdG1W7WYjm6WolwpMU5zMWatSXoVqeCYhcnsOHPB2AjFEBmruDWdGtOs5eqdlOdzGOoUFZfB/cQRM6VOaIbJeOAwiuee0vB+Kd+qG1mvzkKG9VKsO3I2ZXd8GHGmCObvtWFdcZpZf1DoxJCy9fj3DwsWZUVt9k
- vMhRtHRh
- PEntRgSJgKjDNnSWxNVIeJRGcwoTKF1JKd6KjdjF0UrXbcvFOxogkRCOqyZ7JLR1Ra5L3E2b5sWcGIzwY5Y07pIqoOstgEuopWP/XFhaFqiRpq3BuFsvxjOcZUCEk7lO93dHsyFtKWMIdzMKN38JTZDU4hayGvh+k7omDvYyoujBhytRsLQJBoV90sp3xQEv0E7xaUB4fJSbO+8N8uC1PJ6QrWdRPaasII1gpM6JxEdQGe9Av7vNKp58aSChko+oymdQP4/KQ/lg1SiZfzDLWIEpBfRwyIZPiTjyUIrYk1ViI9rLNA/771q5d9IOofjUpHVxafK1oDq+1Ln8+uWx3ePNi80jKSNMG5gziIxKEuHsQ2RaioqmfFc4Xj5TuoyCBcQzv
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793783747-249338
+X-HE-Meta: U2FsdGVkX1/WDTzj69JPJ5/jbyz/dglc5C80vckrsi7NvdNX70YUIcBNwFCl/BqZ6peZhogOLnkelXabOMmHktv+xaw2p5fgXo0ffYkrPtF06CMEiDfmriDHvT/nQKoaYEEbA/RWdpCHIpvSvv/+yFKfC4vYOEtHjPhKxEG9AcoxDFGIgjA4geMnhKzWC5PXYN9rBE4WZdIcgxJ1kCvi7vq/bRRRLL/EGIMoBv0xlRAb2nvWCahMe7U6zcgSelWDy7hM92KteiZYe07NRiae1D4pPRZzm0nVall/Ajv+1AkTg1ADiqwRcOp71UodBGc/nd2J2qzh4Ro7irkjoLAIazSmp1jjs+kIVug9vDMBRyPNvdzyEtem0NtXm7+weUN0MfR9VWfyUhveyaXfToLb1j3vNy7D/SMvdaxF1lXZp5SI/+NbVq2zTyjtpH8xYXglM3Ok3wZMLsJBRdTXcUHD4Mtx83DlKag9UKGtPmvF/iLnMMiYDprpyLXWWgaG8vjHnoDDtdjvksUdIyeRxw+NtnQnfrXoM8TJ2G2fDGLU21Uv5v9JIcG78/RXCsk9dct431p+M/H7+e9ffBH6lfgZzsC4W+TKNwpNzp1cHjQY0UY0Zb4QpG13L+lnZajX2zBedS8J6MkoglAh3+/t9QKc1eHWXeeNJtIAmcafILBMlYI4Mdq5kxXcteKKOLB+ta3g5yqovvtbZhkMavWEQaz8d0PBxfbOx9xiucd6hnLfhg1NW72MZBLpiCGDgSdFY3rffgZA7FEjOH4RG6YM2YTeodHxSqkaGq+Py9BrD6m83qutcZKQeekUKfo2Sf1oA90Ovmdr2zapQgZHwFiylJCMdWwOyy+vv8TacjYKvan9OdkTKpKuLxpzIE+8rE1V0FGfL4YDPzoZT1oYt4U2qgbgH+jDfdpcWb9G/is1WG1MOLSi1EpoGAGRiqyf8RrUg0St6891OwfwOaXx+82X0QK
+ hKhmKPcU
+ fCt/5uAl+ToQzvGf+aO21XBkYqynrZ7qh7pQisTWPsWmG3sRrH32BJ4Th3ApI5RTTyTMH5yyE/zvvT2Zj0oZoI3KsgfmMz6MMxs3YvhOOxIW3LBE1n5ySFz3zM7E03TcpFaha4DQn9FkUgSxFuX9uBzI/VKsKhv+AnNPvSR7M5WRS7oRMjfZPdOeDQI65A7MwQXKEdEZPQAq+wumccAE6W5XxmZUO39jMMawLmeWtBjmLW4wWxdWZ9tz0Q05WH3kNQ/vPBnsMT4uYwsZFAWxGQDRV4V0JlZ9MIrXs80V3ndR96K5O4CU1seR9/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,9 +101,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 03:41:03PM +0100, Florian Westphal wrote:
-> Yes, but note that this change is already part of a pending nf -> net
-> merge request.
+On Wed, Nov 04, 2026 at 10:34:59AM +0800, Muchun Song wrote:
+> Vmemmap optimization is no longer HugeTLB-specific, so the remaining
+> HugeTLB-local reserve macros are redundant.
+> 
+> Replace them with the generic definitions to remove duplication and keep
+> the HugeTLB vmemmap code aligned with the common optimization macros.
+> 
+> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Dropped.
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+
+ 
+
+-- 
+Oscar Salvador
+SUSE Labs
 
