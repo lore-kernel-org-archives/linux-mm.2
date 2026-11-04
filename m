@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B186070337
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7698E606A864
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DJwoJhhA
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CtF7Ltpa
 Received: by kanga.kvack.org (Postfix)
-	id 460A56B05B2; Wed,  4 Nov 2026 14:18:15 -0500 (EST)
+	id 8D5E36B05BA; Wed,  4 Nov 2026 14:18:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4112E6B05BA; Wed,  4 Nov 2026 14:18:15 -0500 (EST)
+	id 87E766B05BB; Wed,  4 Nov 2026 14:18:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D9D16B05BB; Wed,  4 Nov 2026 14:18:15 -0500 (EST)
+	id 76E836B05BC; Wed,  4 Nov 2026 14:18:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BB0D6B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:18:15 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A1B2040843
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:18:14 +0000 (UTC)
-X-FDA: 85398397308.29.76ADF5B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BF056C000E
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:18:12 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DJwoJhhA;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 569836B05BA
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:18:29 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E545D160847
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:18:28 +0000 (UTC)
+X-FDA: 85398397896.19.6159377
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 393541C000E
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:18:27 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CtF7Ltpa;
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793819892;
+	s=arc-20220608; t=1793819907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gnzz2fT926tAung/y7Xzshf60AQanFXIqjFC5KSqJW4=;
-	b=xOWd+NHFoC8Mec0WcWntfmyusLCEaeAaLN7jfEs3pStCPGZq80+J/+0CbnrIhwg5hkflSP
-	dR2nzA+B7kI0Fdtr3T9V0Op2b8+RsDHthKloEiSzWYzMqNYdbJO5+2RWLOS2t+DJ93cFph
-	SY5oagrwswoEw/FhDNAt7UwJVRZ6J1U=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DJwoJhhA;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=axjAzDMxe/T5Kt/VR9558Sdu9PB/HLdF+q053OKTtnM=;
+	b=Viqa216uFnm09ffnXd+bzokUebGGMrGiBeGB3IfIyq3CieUEuL8j/aoarQdyi8AibW+CuR
+	lroM57DjFzZMjVFVolYrVBaa8W3SqLYkVMWKPQQ5+ubEEny+oVj4lVX5oje3BG2iDtUzgS
+	ylS5SQS+WUpxiZqu4J7s6Hf2J/yCoM4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793819892;
-	b=ibaHeitTetRliJ6tNhWMwjMausmYwSk5EVuS2gtmPf16Srm6/PQCCb911ZxxJ4HTTpyQ5T
-	0ybJWsbZH/nfE3TfjwCu+c0Lyp9K+6La+qS6Sk8NfAv2QLwR0kd8EDPFGurAmJ9lCLGzse
-	FdVm8A4WNWgWEc/bpa1qS7eX3HRRzH0=
+	t=1793819907;
+	b=XOdL7QPlX1wUYdchmQjaNsVfWnYhkOoTBf2BrVsDwCQEgebzI/waGPM9TH3iJ0wQz+pi8X
+	tXWW6uzdLBp5rq80imVS6w64ziGcu+65LkgHIpTvrmqqh55hAABuDo0I4zHxGCSapySjA2
+	1MY+hEi4ynMsUKSRgkG+HiNc+neqVsI=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CtF7Ltpa;
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0FA1B43827;
-	Wed,  4 Nov 2026 19:18:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A991F000C1;
-	Wed,  4 Nov 2026 19:17:59 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A84D260A7C;
+	Wed,  4 Nov 2026 19:18:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6DB61F00919;
+	Wed,  4 Nov 2026 19:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793819891;
-	bh=gnzz2fT926tAung/y7Xzshf60AQanFXIqjFC5KSqJW4=;
+	s=k20260515; t=1793819906;
+	bh=axjAzDMxe/T5Kt/VR9558Sdu9PB/HLdF+q053OKTtnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=DJwoJhhATgLL5xfXdN6OGI5pF+zFeQ4+WjDNEmYUvZTHMkMM3eFBxWoobM0WXpN6L
-	 UN1K0xLPqC6xno0sP505XFwThWfbay58UK+kSTD2vpnLdKzWFKNzP1giv5JOftlPAN
-	 Lav0lUTUsfF4QNMQKGO/ATVDWFOPORj+D8twGViNFcODYJUEtFOTbyZUtap9bjA0h2
-	 /y/zNq9k0GXM/Wcge/kDBQjMR/uKEl2vV60dRTJ8k+gOCXzwPxktA7vZC0dRvivZpp
-	 96DepXBnx1as6j7eZVnuCHwHxCErTDabWI65gJh4HFpjHVsXeCp7TMdzgalcYj5T8Y
-	 Hbm2eKKFQu5Bw==
+	b=CtF7LtpaCnKrvS5VracHtmez/lTDVmZLEAJMPsf5RyRtHK8331ZbVhu/+wfqQSNNp
+	 k5kqnIbPjR6sVpgI8dl+aRQlbCOs2pnczhaDMKEZx/ZWxJhKcA7brLV8fiEaMbiuh9
+	 MFwalEMmSkSmMudfVxnNahrVfbIp17CK1joRPuayEeMp2faKCSbZvgOaORRjZAcf99
+	 D+S/7ltnAyBBNuf+VXhjPvzz/9hi+4KRi6bMiJuG/7hKYOJ5c3GtlY1t4+Db/rkvuL
+	 jH/DdCnBKpMBBqg0/ET26Tl25sQsMCrXwsOIkyA5elhHUZdHUYVdfAatvui3m3bHkd
+	 QSod2kP355CYg==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -120,33 +120,32 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-modules@vger.kernel.org,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
-	Chuck Lever <cel@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND v2 08/51] powerpc/pseries/lparcfg: don't drop the last byte of a write
-Date: Wed,  4 Nov 2026 20:17:57 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-8-021c84d852e0@kernel.org>
+	Chuck Lever <cel@kernel.org>
+Subject: [PATCH RESEND v2 09/51] profiling: report it when /proc/profile can't be created
+Date: Wed,  4 Nov 2026 20:18:12 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-9-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1293; i=brauner@kernel.org; h=from:subject:message-id; bh=N2rHHHUzfsZsGLUBvdMxa3o2qGAAPzh8wsvUFn8S2uA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9brzSemUj37ZpfEJdHNavdhRd85506nnq/+C3P7Y+8 TFiT9g3uaOUhUGMi0FWTJHFod0kXG45T8Vmo0wNmDmsTCBDGLg4BWAiUnIM/0u5vFweH/p6+fPx 1Xd527Vmp+13uFo968XVnftb9sQmFZYxMkz6tCVlybzJutuORSfufHxkyiSRYzOO7z4d/HTf5nt 15WbMAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1225; i=brauner@kernel.org; h=from:subject:message-id; bh=tYIXM5EjsYRFpz3d9CdZ23LhMvzI2JA5U8qSrxldqzY=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9brwqovU2YO3sJayOU6SjJt6WZHyobvyDXUfg5ueIY sXw4vmmHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABPh/8rIcHlz85mzfw/yeois tZ+X+nK/Y0nbTtuVF6duv2wgyFZ5PYmR4ROf8bk1y/9m+Rgw5Xqu+ydQsSxzObvU5rn/LzCHben y4gIA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: etdfzafge3eoq4c9a6rafiotip8et7ai
-X-Rspamd-Server: rspam01
+X-Stat-Signature: xqesziy8esruzchowhr9k4g8y84mj4ts
+X-Rspamd-Queue-Id: 393541C000E
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: BF056C000E
-X-HE-Tag: 1793819892-817160
-X-HE-Meta: U2FsdGVkX1/MXVVQLKxtVxSH69q3RCLve6/C2UtYMM4X9tk0ZhavfdBLNzfknX6x+Ggsp2jq+PEH7Nirrbn5eQeqzuMsOc6Us+GLu82tZT3LmKo4Lo3hN4BsOjKp4PDTJ0i8WtR11Hhihr3ytUeMzEIXW06i2Gfh4Cv3d+se3mliYIAyAihHRj/xHPezRL8BpxQdxmL7sVpW1LfbYWRvhP82FTbRXO2E155mM4JerZ/VpvFuGxd06jiIim6GlNx7/D0T8oFGIoXoC8/sMOJxPcIVC+jjcEEYbo4SmCYq9q2RdyrsFQxhM0W+s1zZZb3cvVzilYcBWKjzl5IzRRnKgQCjR5wjjEBkbl+nJ0jqoiF0OIjoXDJbngjYuXaah89Xm+femRDCM9pteSwm16aa8ps513L4Ab5rTs1DbtP8su1GjwdufNWoXZsb3nCzWBxPzYtRCjvEyyvxHewQOveUYtVHnMiVqw1DFY/Y2k3HMznVe3fICp8U0LNYnKNw7k94wOV1FYBrD8jpxmCRB6lwhNRhFMyAEc632lhtKzZ7PPeAzHTgtAt+TBMIGJjIafWy1VdiIyA3FA5Uk34s5bdlWWRUZ7I3IJ9bFwi1BVsABzqjAS7NgpsD9Ju4x3L5PQJWOa1lojDIneB6InUxwn46K5ATzVlYpXsr4eSvbEtxKwC6VAGbo/rI8us37PLEhr0Fz1PNL8Fk4t/5RUV3H6fd/9d+9pQhUyfK/fQqsqy2E6zubAVt9Fpg6CzwCgBJcPIa/cjXImSvNtcIW3Cv+GFW4QCLyCpTvP+JK+lT4y8fNmEPlk682pH8TobhUKpag1ItG3/6M6bGMVpR8rswdAu91CxcEgvpljqc7hILT+TmBcUu6DskQNbho+4rXGGjIDcxZ0GvXnkhF8E0pa/N9E2yqvta+UGv9p3VwZxk1v5XVw3cpDFWGe3qq90sFsEMQTmfnu0fxiT2GFyMes9MZnY
- t18iCSbI
- ywrLhhT+E3LfIJOBL2pH313zjlmmkLlvgXXkdLDMo7f95us6hBf/urLHVURYrPRI1WJd2kiVHjXURh4HeBzh8mGqS8o2ZoDFqey1IclSuqmG2t1lnAdYjljH+0FREYTDYIbbBLJPXeFFXwmCuGKlP4IqXKHCD62HZiVlfVlR2vfF6wV53Ro4PdmiCJWnFyT92L6qH7mgfL2oV98td1WUBty9ifCIDzuvE3rg+KMDvQqMo52DSy7KFU5lPvzgtcX5F9nGQGpLIpxxtceJPyzHt4nqIIXybmKjV3oGXMMYnHsTUytUKAFh1PHL0lt56Jc+DqW5gC52EZtjF51vB67ltrk28ydfvWWIuKee/Q5tRys9bbek0GLYdn4jQJjCf1EetKHhX6VJ/S40BMMJs10OjndUAfODt0Ni3z22V
+X-HE-Tag: 1793819907-268581
+X-HE-Meta: U2FsdGVkX1+fP2qfOBA/Dt0zxTneW/IyH8Hadzmkq2SW+wsdBo7QTDx4BH+SJLVvOc2wWI6KlGbBdZtaqo1csU+wNWnRw/O0yf5mGqc1SfSoaqZnIRxntdhohDr3p5pOnsn9ons6HziRLpqHsgOtMPGzRbNkKSnwM6UmuhHBBQkTCgaef2nepiiR8cuINuqC5R4JLZuPJe0jLvsVwC6ql6xAfBTG91epzsKK+XXqSbT9UvXmZT6luoGpOClg69WyngDKmt3FY9LoMG/MD5qVZQ9dyP12Tqxfr+4Q5/ql2XUB+vXTCBelLf3bPsKrJ0xN4bBoGISElaq+4qw+xK6Viz1YGNOz6MjeiLaqlJ6t/TVNP4m9F+eEAoBItGwxvG/tCKZQDeTG1Wi2qNnunIVeJEjwiNeLEn0xsueWv8m7+k+l/KsmfRvujy7xkExn3S5NNjWl+gRBzFx+3QhfEe2NjcKtB/oZVZXf6MwXJPbsbUZ8gUVadPVuJGRpgnepEU1p2JN8ToYkb2dljyrj6hngvRf3EGCb2RjEGeqvUxa0tJ1oPXc0VhxB+UDy5aCk6VFmpDSn/uKgalqC5JMDBeFdh203k6cIvx+UpgPBJGl0JT7em/Odj3xdabQkGk9R3Y5Elonyg45fIXpOapGigUX2yUjFS1pl+1WriJBejWWPQMKfkuZ93Jd+5WLxfay1smyOsE2D0Y6mwT6NggYLqXXJc9Qu62BzfbqnF4dNfA1inskVOpBgUchYvp94hdgksf+SWNkSbFSHUKGkfBSavAho+uWKbUBuv4abAjnjrF5J6YgiG7lq4QahsBdMwKV1RWtsJYdziHORSQ0twuuseCwnNp8V8I/gILYN+VAWFrSD5ubV77Hk4DyEL6+iS3Lp2/fDhb9OQdy5fRl/suTQwC+fQ3zyfE8d3c4QLVqWm61So8RY0eGMP57iUudyd5LWJVWxu3vR/X2UVlPA0sXzLmz
+ d6umAOj1
+ KZ4M6nwLeHI11lg8hr2CNMyZWm0zUx4yDFweYrEkkKqG4uQsjoh+MvYlcTdYREziqzQzLmFxmhH9z0gDNOJ/DNivLlcVUQyjgQqcan8PfiqVFtC5k9QuYbGapVRqQoXB8CgnLPp4VQAWi/7F53lIV9hYDgDB1dgUZT4k9W3Ozzc08k4uraS3o50RxtjRLFHGPcQII1KED/Os0zzPlrJB79zasuXgRSF3Kgt2WHltlztDMejdVLyvabJxd0MO5JSHjjTx7oFvAacRHIRgQgvQ3Ir7zF274CVLAMV9ooKGAH3JCVJY+qlhXMbxtBhLLdw5+HeZRYG+aF8t1vnzOUzVGb5D3L76/EUEBIxEN4gXBo0Fnaioz4551m0P+rhkBk5ogGFlODrPMHbCqdGFsINc71QL0Dg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,39 +154,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-lparcfg_write() terminates its copy of the write by overwriting the
-last byte, so a write without a trailing newline loses its last
-character: "partition_entitled_capacity=5" is parsed as an empty value
-and fails with -EINVAL. Terminate behind the copy instead, and refuse a
-write that fills the whole buffer, which can't be terminated.
+create_proc_profile() returns 0 whether proc_create() worked or not, so
+a write to /sys/kernel/profiling that turned profiling on but didn't
+get the file reports success and there is no file to read the profile
+from. Return -ENOMEM like the other failures of that write do.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
+Fixes: 22b8ce94708f ("profiling: dynamically enable readprofile at runtime")
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/platforms/pseries/lparcfg.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/profile.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index 3280b7968cab..9882f98c0efb 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -699,13 +699,12 @@ static ssize_t lparcfg_write(struct file *file, const char __user * buf,
- 	if (!firmware_has_feature(FW_FEATURE_SPLPAR))
- 		return -EINVAL;
+diff --git a/kernel/profile.c b/kernel/profile.c
+index e7defa90a34c..820d5ec909d4 100644
+--- a/kernel/profile.c
++++ b/kernel/profile.c
+@@ -216,15 +216,15 @@ static const struct proc_ops profile_proc_ops = {
+ int __ref create_proc_profile(void)
+ {
+ 	struct proc_dir_entry *entry;
+-	int err = 0;
  
--	if (count == 0 || count > sizeof(kbuf))
-+	if (count == 0 || count >= sizeof(kbuf))
- 		return -EINVAL;
- 
- 	if (copy_from_user(kbuf, buf, count))
- 		return -EFAULT;
--
--	kbuf[count - 1] = '\0';
-+	kbuf[count] = '\0';
- 	tmp = strchr(kbuf, '=');
- 	if (!tmp)
- 		return -EINVAL;
+ 	if (!prof_on)
+ 		return 0;
+ 	entry = proc_create("profile", S_IWUSR | S_IRUGO,
+ 			    NULL, &profile_proc_ops);
+-	if (entry)
+-		proc_set_size(entry, (1 + prof_len) * sizeof(atomic_t));
+-	return err;
++	if (!entry)
++		return -ENOMEM;
++	proc_set_size(entry, (1 + prof_len) * sizeof(atomic_t));
++	return 0;
+ }
+ subsys_initcall(create_proc_profile);
+ #endif /* CONFIG_PROC_FS */
 
 -- 
 2.53.0
