@@ -1,135 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7647A606D824
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DC3606D833
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jqg3osV/
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qfyRP633
 Received: by kanga.kvack.org (Postfix)
-	id 63DF36B05B1; Wed,  4 Nov 2026 14:02:13 -0500 (EST)
+	id A84256B05B8; Wed,  4 Nov 2026 14:02:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C8396B05B8; Wed,  4 Nov 2026 14:02:13 -0500 (EST)
+	id A5B826B05B9; Wed,  4 Nov 2026 14:02:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B75C6B05B9; Wed,  4 Nov 2026 14:02:13 -0500 (EST)
+	id 94B306B05BA; Wed,  4 Nov 2026 14:02:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2639D6B05B1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:02:13 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9AE3C160822
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:02:12 +0000 (UTC)
-X-FDA: 85398356904.17.A9F4429
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf31.hostedemail.com (Postfix) with ESMTP id F0BAE20012
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5BCD36B05B8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:02:14 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D69734083C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:02:13 +0000 (UTC)
+X-FDA: 85398356946.30.4461093
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E8695A000F
 	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:02:11 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="jqg3osV/";
-	arc=pass ("google.com:s=arc-20260327:i=1");
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=qfyRP633;
+	spf=pass (imf15.hostedemail.com: domain of 2dgodoy01227@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=2dgodoy01227@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of 2dgodoy01227@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=2dgodoy01227@gmail.com
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793818930;
+	s=arc-20220608; t=1793818931;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=9m7RVHJoTNX9vZUelgq/zfkDObxm0i0TSOz7tgsuBTc=;
-	b=4TAuxtnSaJb3CcyhuVuRhClwjSvwdzosdh+Bc0rZEOh8B+QlohIVht/fprWnISOtN8lOVG
-	W7j3++TjWo58jnLxE3Dv9Trriq7SmBIgL6hvo1P4wipzGWq6ZibpnL2us7swywLGewX9g3
-	ijkDk0MJT2ifeAfM4c3SM75uRBx/q1c=
+	 references:dkim-signature; bh=4EYm736r+cZjS/uMo0fJRYSotCwLKibNfByv7v/nf/0=;
+	b=ACbeLlfQPhEPC11457MVzp7etRRxvdM1Hz4z8dju1Yv0aGESWhlYmoQ7uwl/bVsRFHldNZ
+	/G6CvDrPCfKEMY3iuyENPpr5DN4CfByL2Rq/9U1f/tdVI8THWEO9wlNgHecA8XCflzuKTG
+	r4kZtPF4bwpKr6duGzSO17w4RrWrhc4=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793818930;
-	b=dZekYwNHVPdLrZHeqlGE0VOwbY3Bq4GF26Y2Js3E+sGit3TBaLLG7WFVQEVRWzsAnvvszy
-	pOw3E1fEwUBYP6NzuGP4H/zzrJACAxEP31BX7hVy9iY/CQK4tOJKip6bv5jBu+QgPzx5gQ
-	8axlNpkTBCDb0R1j8oHToeKLPyWZbic=
+	t=1793818931;
+	b=nP7qkkUW/xNaVtVu0q8Ibtddly3XqFa9fU0NGl0I2M527DrtNF8inFRgqDRQbGX7QCrDcY
+	/5rcQQzrKgtOKJa0oE1HUHtgNRdLmoEeqxuN/GrduJIXf0u4jJHF6Tk+v3fHirHHCYTnvC
+	ZbjV9bxKUb+u8PnWpTPFrUOYXgNre8U=
 ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="jqg3osV/";
-	arc=pass ("google.com:s=arc-20260327:i=1");
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=qfyRP633;
+	spf=pass (imf15.hostedemail.com: domain of 2dgodoy01227@gmail.com designates 209.85.215.180 as permitted sender) smtp.mailfrom=2dgodoy01227@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf31.hostedemail.com: domain of 2dgodoy01227@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=2dgodoy01227@gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2e9eb579c0eso7033165ad.3
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 11:02:10 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793818929; cv=none;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-cd67cc518a6so708801a12.1
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 11:02:11 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793818931; cv=none;
         d=google.com; s=arc-20260327;
-        b=ebmjqJ05yaYzJuEfBH3EIhUYNSTsz9dIHeKmtHnl5BLc0mmsRCO0t1Re8QK7+9Vl3r
-         +wxzUNevDlvsxyIi0MubDTbsJ/EA8Byqi8C5nbLvkaSrgHOxl5Qei8czTsB/+1+8nTtb
-         /spSYmmf9MMESv8lhsJaRTId7d3pVluUTNig1sJU9MFi3mFjmrlp82RnL8uLik9lZ4gc
-         hVvR8/6zeGTbi4gb7p/esIOFuS+SoA8Q9pRkBMWJR0RChoYHdCzhRU9+lLZl08Nyk9RB
-         ueHDFQephHVAVDohJXhVn7913pqMtRjlEYY2qyiRTZ6so+4AijFzng7OKY9wMik1BgMs
-         ftgQ==
+        b=HNLOVDiyFiCFql4p0LH3WzlL+WhRQU9q2XM7PtW3y9S7s9OWnDvbPWLY566aK6n4Et
+         imwYwtbRXAAUqbnQ/u5RU6xQUVAAoo1CJTQeugie2N1439C1nEcvix2AymSnOrinA/eT
+         fDBncUHHtOyjhnDG2VbZc+MVaNpyWH29LGrY9kHC49SjJfSKB2Vcxu0OIf1WL3Uu8dIE
+         gZYRZM778Y5vmvuSTJbzMNKtAEbUYqwiuoH7Sera8mRydXx+bIpJVD/clOnl0OhwA8Lj
+         KEm/M/Xt4NhDmztRfvxkNiIs/mrCmNmoooBAM1HBrunemUlBoIPJ2L7oyovJLkpc8PKj
+         kp1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=cc:to:subject:message-id:date:mime-version:from:dkim-signature;
-        bh=9m7RVHJoTNX9vZUelgq/zfkDObxm0i0TSOz7tgsuBTc=;
+        bh=4EYm736r+cZjS/uMo0fJRYSotCwLKibNfByv7v/nf/0=;
         fh=YxaQX7GTjfBsN7A2Jl+A9yP6mmGOQanoqU6QROKhVaA=;
-        b=WKgBrHY9kj7B7IqY+5a1bbUSqdabX1ebvhEStKFcE+1wfBMyE65x+ol6W+wXJqzvV4
-         WmKazrGaX3H15n/zgOLL6rR+/XcmRoQzqYbVzzlhjwWZZsfFnNMWt7moXtXT/U2kyPhl
-         DqCawYR1K4+H11X8RrEG67+jF8c8zLpdtFv/gRMSDMxQTRofLrQdkilqo991vJ2lLkdi
-         jOrLUqaRpjCi0LMaSfBLOaoTQ178niIKJZ7Hal1Xhii1xFQVA+cTnzdo5sc8e7ZyhtG3
-         q50pycGljpBnrWn2ZuV+ipSdOoc3ZcF06PZYblzmd5omPUpYYcb0yySjDSmY4BzeAW4B
-         hGoQ==;
+        b=DicRnlnLhBsG1y495130usR9/63yb+v2krMu+apNn9Tw06QkGRj46Yr4FUU4KVjt8u
+         3n5CRZjOMzqa8j3AmhBYt4/rWeXXkOisz5oGGU6+tJc5yoEI6oIogdia8IpulaSLJtTI
+         59jhcxb1PX9yHhFIcn16G5kapgv4kTa02/sFL6RhDXdkhYFlFw+8PpZ9qwEeDzn0a8d3
+         QE4NhMvu4zBF4509tN4fgfVe/c63PUKQ9qnE6w45DWsyKBmP03GmKxSzG4L/q6SH8kyK
+         uJytMsqz+kauWY3RaeU+Gqi4B5TaYiX2rMXqQG+BKiZsJgsDe1iBUnjjp+Jvl3NNhoVg
+         2eAw==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793818929; x=1794423729; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793818931; x=1794423731; darn=kvack.org;
         h=content-type:cc:to:subject:message-id:date:mime-version:from:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9m7RVHJoTNX9vZUelgq/zfkDObxm0i0TSOz7tgsuBTc=;
-        b=jqg3osV/sp0R+KBwUIJPjnpdx3grTeI3kaYfC/2C36PLc9oacicj3yjialxeCwRQ4A
-         WLGuSpNfWrMWBSYngKEGwTwz1yepVfy69H4ygCKQgLwlPMiUl8In9qhQOoi/iI/s0RrB
-         tdYa/Tpu7kbmMumSpFhwvJgwPKxKJqldVWNin50GHTxYwjVo355wzINDh62gFWS0XuOD
-         L7MHutVoZvDTXBE/BZxm6Q+LuifhpVWkL7cqQNwheJ0E7xVZyJq9nZqrM3VE5s+xECvr
-         HKbdThtAeJr1WFd0E2QQQWmzyzXxI+rBR8/PW14mN79QAWIWzE33awEUiNyxfglydl0y
-         b/Gg==
+        bh=4EYm736r+cZjS/uMo0fJRYSotCwLKibNfByv7v/nf/0=;
+        b=qfyRP633rOWhladMyWNiz3/Yqr1eyQ875rCViAKRdwDBZPSKEsTQaF4IVigb7DSgSt
+         AyYkWO287A3VarBWlewGT23oBmextbb65pNC7Aem3D4lj1ccCWiPrbx1Jqo1YlPM5Aut
+         KmPYdtH9EK8JwdK7RBDOh/j/C2n8BdJK9HAKcTFaYw0YKY7RzjKe1cBJLuhYHA54VYz7
+         Lvwu3D35CoTbfCvYcNuzC4pYR/DXxoahHG/aM4m05QN+3Kca4PJn8eOVSkb6huPRTxQt
+         evb6xatHWQ5bkJTIjL6AxMDCzwMVqwrAWgs3NXYoPnUe75D+Zh2oz1Balkp8H3AiLmnZ
+         2afQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793818929; x=1794423729;
+        d=1e100.net; s=20260707; t=1793818931; x=1794423731;
         h=content-type:cc:to:subject:message-id:date:mime-version:from
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to:content-type;
-        bh=9m7RVHJoTNX9vZUelgq/zfkDObxm0i0TSOz7tgsuBTc=;
-        b=ZfOScOaA7jGB5ewWrICMmrTnu3KJ9L39iGuHhnbLMOszGb6gLetEoASHyw0PFRjdQK
-         Xjs3DpLEo/lxFX3HzIMQxF022LWJIG9rONQ0qVaohSxyibD9gVD7KWr4xboqmieMjcLW
-         ZL1/bKdOUzj/eq3hJPpbVjHbQAvu7/anORuBoe/Odso4VSiUJO8EF+u9qgfpGqeEznT9
-         e3JN0zO50SOVkKser8+ewwRwm7H+VS8iw/dz/0C1egKydNu4YSpWyq/dX7Thr51GrVel
-         9uDaF9nNg6MFk6ecITUE/E5Wfs+WxR0skOp5pnrC7QM2KkaXZppjaMMCYBnlmsVo2+tT
-         xb+Q==
-X-Gm-Message-State: APuU4Z97PFYfZLX04bzXSB8KP5CziBOlaOVeUqdHs8UmPw6R0ElYIxYv
-	ENpCl0eGue49OjUN+lUrwhshw7MidLBTwJZE5Y0X/9EF4Mf5nRUhVdlIvUIJmLrXP6sCb2C2SDv
-	WGIkFw0nCfyeJK3TEb4kbD9qqYIkT2as=
-X-Gm-Gg: AYBFou3ihDyDCzf4yvRgXAELBydtDTGP4ZF7W57pwRK3PI9Pa21EuMfAB1tDGYyZuw1
-	JIDfxXEeWBZ8maGNvy9Xt+ZKL3KGB/xDZi8Zn6t8PtcPZWSsX5HU+KRLkePoYc41jVrN87S+fSN
-	D5iT8TRkrOQys/orfQictvujNawGol+CccsHlryvE9vvh9Q9q1omF1EHRAN418J7kdrQw3Z7mmN
-	DUSZ+k/OOE5A71OU+gv+XiQmlAXfHvKmYQP3vP15CHT30eoVbcSYaPfYty8b1Pn+iGOFOIYLDfC
-	AHEWw9rYSrU6rxZlYUyPH8gauCGJ+mMylpMCVVLtmF5keoOfuKayPM0Ne4xgEJCKarKLh8wA1nN
-	NB9EUIUW5I0y5fyCo8tJJaPAhr7zFUyQjI7KfbxQdzJuAd6S10jXvyJphYCy1XvSeGIA=
-X-Received: by 2002:a17:903:2f86:b0:2e9:5c55:c472 with SMTP id
- d9443c01a7336-2eb36469217mr154061545ad.42.1793818929400; Wed, 04 Nov 2026
- 11:02:09 -0800 (PST)
+        bh=4EYm736r+cZjS/uMo0fJRYSotCwLKibNfByv7v/nf/0=;
+        b=2QpBdQNtvQQknwOLkW03t/EHDzax9UraHb4J6OpGQrvjmNfHokJvI7kMjpGQuyAIOb
+         cANTY2cuy5h5ORCIMXWSTov2f2xIMrGq500DVaJbBWnAOIljCMJT5wZfhn7T56lssENL
+         oSkSKRsflKaA65qPhICkg00G5Ft2VPBXTKJSS0grsaf9FcWY2vxeN8zoTEvlImGy8EAj
+         4rH3ZPNWJ0zcNHUtGx5E1nXCRtdqWQ6/Jw8VgaW05aFuV2+/lmEqsOfglFvKRLL0Y8fK
+         AUaT0D6VmB6YvNk6jWIDAMlesHssGI0lczmq6jpXHChwq1VqrSbWBOC3jJ5UvvuXatJI
+         bO6Q==
+X-Gm-Message-State: APuU4Z9/sZJNdoWKBdJpsha4Nn+B3sc6bwVcSLil0x4e3mysyWQAWUj5
+	DpgSM9GJEWbhqbRi9X8MqGcHauyoGEXj+O2/ARZqO4xPA2QnRpbOLEKL7oWncpsy52Bg52hwFaA
+	u/xKFxALM2iefkkOLoR4oQSa4xOBXkXgLO4Mv
+X-Gm-Gg: AYBFou3L0SA7FT+cHJ2FCMneKV/M6hl+5TTVzziVpW006hC61dWHSB2trNGEFd/2isI
+	TMxXcLdGfnYIZiJF9TGbIl+YeQEqydKhvDJh9llimGIjRxUm6J2Pis9XThDxUaEIZs4L51/NLpV
+	CG9k+2fmXgO1Dklxavy9AsE4tSsvTwlWqSHJ05lRDrOHJPgwgIvC3CjA4NFDIrLnGluMR5DWYgz
+	s9Ycn5FU5qsl3J87BWHPE7wJ8OmT6YQtNyrKgHPWEbpSI/0MMOE89s2h3vIj10HGoFX0SzYhrFD
+	ftLOFosjV+qFHNFT3aO1Rou9KVpSWX+vOCzqIFuijleozU/JxliBbgRRF8ua5ZEJEpVG92cOj7o
+	XRvQjvylzEsgGUwtXTXksw9OCBcL6fLqe3lwBDLbSphH2PF32bnqmL/+DPFcHlSs3TKM=
+X-Received: by 2002:a17:90a:d887:b0:3a8:6045:5a19 with SMTP id
+ 98e67ed59e1d1-3ae89777139mr15621477a91.37.1793818930670; Wed, 04 Nov 2026
+ 11:02:10 -0800 (PST)
 Received: from 511566560828 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 4 Nov 2026 11:02:08 -0800
+ HTTPREST; Wed, 4 Nov 2026 11:02:09 -0800
 Received: from 511566560828 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 4 Nov 2026 11:02:08 -0800
+ HTTPREST; Wed, 4 Nov 2026 11:02:09 -0800
 From: Henrique Godoy <2dgodoy01227@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 4 Nov 2026 11:02:08 -0800
-X-Gm-Features: AclHuK-NDBxEamBMdtik-7ORLe61ClxkfZSsfBGeZD2zKGsDfiKjHCul0scWrVQ
-Message-ID: <CAL1HEBCsVKooMLqYUDc=cgNxzguUeTZa6ALqHrxe=kbC5xwYEw@mail.gmail.com>
-Subject: [PATCH 1/3] tools/mm: keep the last record of a dump
+Date: Wed, 4 Nov 2026 11:02:09 -0800
+X-Gm-Features: AclHuK9dvjndj19qJaKgS5zpxYZrJsHXRwZ30MwEI0RDNBGZUI0hkPo86QxSkJw
+Message-ID: <CAL1HEBCp9VnGJRiuJ2xkFk7jgjeJpaicS8ZkxR=577U7hKt58Q@mail.gmail.com>
+Subject: [PATCH 2/3] tools/mm: do not mistake a full buffer for the end of the file
 To: akpm@linux-foundation.org
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 9g7e1igrn59gkjxb8raiahccbeczpqyr
-X-Rspam-User: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E8695A000F
 X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: F0BAE20012
-X-HE-Tag: 1793818931-567191
-X-HE-Meta: U2FsdGVkX19WNVEIge3PP3H8DJsnn+7r3Pg+6dO8N82PjmIN/cPB/x2/G7kYA/hkSuZphPMufMs1kzclxaQQ/XMw+vrOtGxOQbJkyKKyLVtZsECnN2IvGOceDBP1wSxQDZhz2ZMK2bYru71/RVNvs5RTng2KrS/AWVlRAP8UwHmEy2/3CsN1D+3P4x0Ml+q7b+cowlOfYKBZgqvJbvkKHqOB5Kk7IrK1aJ0ZlJ9XhLA+DKbsjr6us9bNGzTniNkNtQEFwOtikD2c2t3QkKdaKSNzQ+SSpU/jYNblMteD4K15aMIs0PDziw8pCR73To6kb9vLIbHU6ahkFzdN0RBfAUq2sreuAdJb2vT5SjCDIJ98bO2ARvFJTZxoEKgmKz5SottdIQAb0LrtorHHsi89Le5GvDgi/c13JEY+ONphxXiDui7+U/Tb2l89HM6dPrvT5jae1HJmnv2RrKCHrrsWN8VUvMBONdUaYoIaW6oy32+lNunAQ4iycbXg+ZGFUTpPBRDL2RtWCW2V/eeKrGh3lD/PWkMDWe52c30cRXCAQWM52LrOTiP96qWjzxg6jP+wXXFP1VSU5FInc+yl9J+SlxsQVSjiHh5DPkeVdRbYMayGHwNYEYkGgZQjOXgKba0C9AJY36vPTlR1tqvxnFwrUnXA+qXMmpFousbr9jAAMAfA7DuKCGLDeElShiOspY0J4A/PtyutUk/iydVLoemu0IoTf68lc3/AEmTWqV5SLhZg7vR+BhJ+HnHddlWWg52KxxyCNoSdGPvtYl2JnCiDAudjIeo4WNzcFOATEMGPlGVa4v0HhN/JbLiM4LJGwtsWhrUQSKUdXZ9zZd3WNOzrwPTKakgxlo3xxX4IbuvXXLVRMyBQ1dhHA0Mv4sH/OJr73GAsKRrtgJAOnUgEBrxfOSLHTV27ODeEA/H8tb9+9S5rncbBuubMKWSwA1oXA3r2tlDrpzJL0IVeDiXnu5t
- FC1lTdBA
- eB8iTWq06Q24ePAlhiZY3kOWq1u4NL++zUOA5cqith709Afri9Ue+2Yot+j+b9sf25lghS7D/EPEDVAZppsX5knUrdXcrouYxZQXOIgrM2QqGWFee5wtJtM9en5z8KhkIKZDxv2015EesfzFtBvfUk7QhI5kT+e8vJc/PdiD+NOKMm++bsGE+SDaPa//p7bOQBT/6zDZ0IdokvNmglkSBmcHMvJSgzKbF12O4aRFdrw5mWYkQT5Br9fbXFc1tJfczRQNmHYanaw0nKs+7TqwTVL9l9Fef7Jknikw62LZ4sH8NFo3O7u/1Y48zdJRtzZgBBb1XZ2LWKzkXebnEfyqvq/IuWZDzxD8P3mrTADRE4TpbCJ59MnNLEUUeEMyjs6aAP8u8hXRxjCJMMEQW0KiOascdFfTCcU4zDgWy2vEIGBEI0/3UoQesXbstDeRQSN/BgbkbFUGhthJFSE4YKb2O20+KHQ==
+X-Stat-Signature: qhjxie6jnrohydgjfg5uuxnod9rbd8fx
+X-Rspam-User: 
+X-HE-Tag: 1793818931-819515
+X-HE-Meta: U2FsdGVkX1+L5IsDq1dPiKedbCcnqM+DMlcsv4hyZlUYKUghxLeyENyFr3Yw4XK0Nu5s9Et6gvBtKIlvBqzwABSvP9yyTImRUMvDBdB0h3/JSrQk9OWVOKxftPV6w6BTy4ZWU349qC6Qtb4FlAbsDBaGT2epvsOIsMcxLFJwBOPbiNPnj5hhSJIUUC5E7Z0soUEc0i0+mhjwtu/lWaJYsbLpB6VcEkF7+VYNJu2GyEEsKbUQmx+k0/nH7F34gPDUlbg1+N2EAuNmvt2z/yBfpBAtxC1aFuBPXvj8vr6E1fSgzfA5PN+ptV4Ce9pMvOWPO1aOWmkPlj2okt/kvs1XgrEpwVOEfZBf3XzL36ArlVSDCU5r6HRbBnOuAJkaqh2xnsErxTT/qLeLXc8uCqGL7ww22EQLDBppaNGj/tgFe0Uic+3MsoqR4eSdVlv+xSkI01xBr0iPqIro5AxZ0KWpDQThtt5drLP3sWTTUN+HSK05XmeGt5tbAN1QtmcdJmclWk6KJp0dLziDxu1/YleRiqpSg0KFE7irXvm1BPO+qnIGz6cLCsNmB3vQF6IOCX2aowa3eIvi44G7kslBLlSYxDFeOtESO0gKlwfCR4zqL8T2xa/AUM473qUHIqOKB/vw/cMBAh9Axr9+w31L3frhzqfBdbQsTh8XaNX3Xphdqr3/T4l5cq6IDSwSQXhKEOX9YgGZhuY2BNaIdBbmxEtl8TibrW3GQV966Px0X5rEQo1tIqcBXPCj4CC7YEZrPJaiwovj36oM6CsPxwNsu4piE7JidnRkbnThS2mwyhbc3zdW8FW7jmmWa2KH4YcpaAeTopji6f5YnTMPQcrrpMytkkGeAiSiQDviqanJ/tUUGRX9uofzEaDqyLnqONtnWd9x1TN1pVSihoQ3in2XlBLiaBAxp6mPU4NFiELLENX6WtNPpe1jC2v0eko7L+iHRiJoEkyx51soGYeZhOETdPL
+ 5ces8wSM
+ JxBYvvn7oubOQoGwNrJZ549ixeeu6XrHom/Zz89FcEN/QNZfLCskxA3Y7pLFo4T4pfH7nfgXc74SHsxdqRz79moAcSFJGgcwNGjnRO31nHAT+TmwCRUeyVy8mIZSKLDlZiWUoDtfc5R06Msd1zZEZ5Pq52TV4eQZDp7Q8d0HgzyZTBVpypNCVO2AUVAxjyd3iHpGLtHEFE2I9bdDrnoxXSqL9pfqmCLNu4StPr/ffTkTvFHuy7X8ryiEIKEokh2qS8ctVTiA9LT3l0Je1sqkzPsfshh21zFnpAJ592qtb0PL3K3NaU7IqVCC33efgkl/80Klr7u+mUUfmjS/ozFdRGxDLYp2EmF4MrwC4sNLqioiDsOi0D8zw70wRa3g4NVGTpyeKg1+oR9XsPwcX3OnFaQBwEbxr18IEIanOEq9oNEfnwu5rGTfsPlJgs1sdzFdGRlQPY4mtDjdKQEz8YKZNmXpaz7mECZ3NakJCIX2UQG3L86c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,42 +138,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-read_block() returns -1 to the caller when it reaches the end of the file,
-and main() reads that as "no more records".  A record followed by the end
-of the file, instead of by an empty line, is read into the buffer and then
-dropped: a dump of ten records without the final empty line loads nine,
-and the tenth disappears without a word.
+read_block() returns -1 both at the end of the file and when a single
+record does not fit in BUF_SIZE.  main() reads the second case as "no more
+records", so a dump carrying a long record is sorted as if the file ended
+there and the result is empty:
 
-Return what was accumulated when the end of the file arrives in the middle
-of a record.
+  $ ./page_owner_sort dump.txt out.txt
+  loaded 0
+
+Tell the two cases apart and report the record that does not fit, with the
+name of the file, instead of silently returning an empty result.
 
 Co-developed-by: Pierre <pierre@cloudwalk.io>
 Signed-off-by: Pierre <pierre@cloudwalk.io>
 Signed-off-by: Henrique Godoy <henrique.godoy@cloudwalk.io>
 ---
- tools/mm/page_owner_sort.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/mm/page_owner_sort.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
 diff --git a/tools/mm/page_owner_sort.c b/tools/mm/page_owner_sort.c
-index 6c2ac5d..4c2a4e4 100644
+index 4c2a4e4..a042bf1 100644
 --- a/tools/mm/page_owner_sort.c
 +++ b/tools/mm/page_owner_sort.c
-@@ -134,7 +134,13 @@ int read_block(char *buf, char *ext_buf, int
+@@ -140,7 +140,7 @@ int read_block(char *buf, char *ext_buf, int
 buf_size, FILE *fin)
- 		curr += strlen(curr);
+ 		return -1;
  	}
 
--	return -1; /* EOF or no space left in buf. */
-+	if (feof(fin)) {
-+		if (curr > buf)
-+			return curr - buf; /* record without the trailing empty line */
-+		return -1;
-+	}
-+
-+	return -1; /* no space left in buf. */
+-	return -1; /* no space left in buf. */
++	return -2; /* no space left in buf */
  }
 
  static int compare_txt(const void *p1, const void *p2)
+@@ -794,7 +794,7 @@ int main(int argc, char **argv)
+ {
+ 	FILE *fin, *fout;
+ 	char *buf, *ext_buf;
+-	int i, count, compare_flag;
++	int i, count, compare_flag, ret = 0;
+ 	struct stat st;
+ 	int opt;
+ 	struct option longopts[] = {
+@@ -965,6 +965,12 @@ int main(int argc, char **argv)
+ 	for ( ; ; ) {
+ 		int buf_len = read_block(buf, ext_buf, BUF_SIZE, fin);
+
++		if (buf_len < -1) {
++			fprintf(stderr, "record longer than %d bytes in %s\n",
++				BUF_SIZE, argv[optind]);
++			ret = 1;
++			goto out_free;
++		}
+ 		if (buf_len < 0)
+ 			break;
+ 		if (!add_list(buf, buf_len, ext_buf))
+@@ -1050,5 +1056,5 @@ out_pid:
+ out_order:
+ 	regfree(&order_pattern);
+
+-	return 0;
++	return ret;
+ }
 -- 
 2.39.5
 
