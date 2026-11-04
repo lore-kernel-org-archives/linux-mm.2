@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69369606B22A
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61389606BDFE
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TjKPb5Zz
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IGhyitu5
 Received: by kanga.kvack.org (Postfix)
-	id 51A246B05BE; Wed,  4 Nov 2026 12:50:01 -0500 (EST)
+	id 78C476B05BF; Wed,  4 Nov 2026 12:50:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CABA6B05BF; Wed,  4 Nov 2026 12:50:01 -0500 (EST)
+	id 73D326B05C0; Wed,  4 Nov 2026 12:50:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 392DD6B05C0; Wed,  4 Nov 2026 12:50:01 -0500 (EST)
+	id 6047A6B05C1; Wed,  4 Nov 2026 12:50:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 105536B05BE
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:50:01 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95175160777
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:50:00 +0000 (UTC)
-X-FDA: 85398174960.10.77EFBE5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id C2E8580003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:49:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TjKPb5Zz;
-	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AFCB6B05BF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:50:19 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D5044A8547
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:50:18 +0000 (UTC)
+X-FDA: 85398175716.02.13A1D10
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1C13E4000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:50:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGhyitu5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793814599;
+	s=arc-20220608; t=1793814617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=weMUCFn2uihXk/tOxGBDEw27Pws++kgwJ6Tcia3ltcw=;
-	b=EyFsXkUKzUZhxbs5ZrqGd/FbSGfBWs7USwMFH1Bo1rK60d+5fB7bpqlq072iCwW3W65uV0
-	8JPrhX5gvg1bNhCTgZMytTmGBvZugBj2EMwfReIFLLo9OecWMj2PJvgHIuoPNwCiZD7zuP
-	4ydnjxFOM/iiKnGMVmCZtiyEXb1ZtE0=
+	bh=Ayyh3GSY9IX8l/NxmtUwOJrSt8ohKQ1xsnTJeKuAZFg=;
+	b=i2nVwTgmdva3MH2TIFvERaTPMEONbg4IN2aJKHpSmYtJTXl+2gqJ98tUJIU2xP/xzLg2To
+	FUcHsAd3bl0X/CUI2scS8vkCJjtr5kRlIPdNePW3I6XhGTiZXUKGq26f5svbJjEtVVKib+
+	XIsLBmlcu1H/PWf+8C4Ro4PB2yywMgI=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TjKPb5Zz;
-	spf=pass (imf30.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IGhyitu5;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793814599;
-	b=spg8iHRX+Q0/vQX3wTkfFTqrgl1BEky/L66C3C95VlwJhZiHknSS6RhylNM1A81V4nafgx
-	bDGEpIwnBokCKiC55uHvgDQKLGQPdH205v61odtFQu1rVBe0UtWjqlObh4++YzT407Gi7o
-	rXUv329jS+rV4eW29/kiRf9lKZheI2o=
+	t=1793814617;
+	b=b1ahv/rtKoWjF5s5KrJ/fqeQQMg3ORw1abXhJvuDYvB98JYV5n8xdMGR21johkg5AQ+Jiw
+	J9sYCeUIY/RbxcYzpcTXowAdaLA1zgXbvAl++LyW977rPFo4KpfGdBBpl9rUwgSr17v9Z5
+	UKfDdyp1Vsn2jUdalN+q6usZaaN/8RM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1227341F95;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9CC9E609EC;
+	Wed,  4 Nov 2026 17:50:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC531F00919;
 	Wed,  4 Nov 2026 17:49:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A9F1F000C1;
-	Wed,  4 Nov 2026 17:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793814597;
-	bh=weMUCFn2uihXk/tOxGBDEw27Pws++kgwJ6Tcia3ltcw=;
+	s=k20260515; t=1793814616;
+	bh=Ayyh3GSY9IX8l/NxmtUwOJrSt8ohKQ1xsnTJeKuAZFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TjKPb5ZzIiyiPgvuQdFoHuUkVx/a9GRzTloH+KR4l/JxBBb+Ol/moI3iP+vc7jhxh
-	 Ps/jhLkGJWT4b45mLDzTmXs0Nq6ur+emr3Mnae7d+PkH9J0ghZeeOzUERLhCb/2x/I
-	 Bwr8JHwweuJMSvPLSvB9rFxVcNiRrk8Nku+fNgyLtGVeEaDxUpEY6iJFDv9syz/nxS
-	 a2j63GShxcJSlKeqquyWTJ1SJRA6a75PgRtqXfY4thvlg42TMO3Ay+5b5+IY0bEO1l
-	 k3RvIz3DDBF5vn8/zalT+H7o+LqH0DwmSQZgpn2Tax7AQIoVLkHn44OG3fzujjSSY4
-	 17TkLkudUusDA==
+	b=IGhyitu5c+TLBGkN2ZGwDU5Rsh1w/dzPMJRviHA5R0mqU+LsoYuTVg18Jscu2+6e9
+	 Bde/aMBOPoYzdl/OGhbYhq2RMksr0qSkO6OBBKfsIB2QpTbcfD5O1d7DOOn6y0WboD
+	 luv6dPR8E2zuVmQwRu6+4E313LCJ0DI7VA+RNwygcTxJ2P+0Zxk4UQl+ViD8uLTSyj
+	 0Bj56pQlnnoENGhH5tM4j+e/k88FvtR06w4zxZ0OD2mDGN5+rEvzwyzh17+R2wIXby
+	 my99TU5Vz2jDt+TrjxUCacOsyHguhDC7NltTczyRHXx91ZO5qtVY+n6qU6a+sO5L4R
+	 ZOW5mHfdcdKFg==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -122,31 +122,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 19/51] xtensa: simdisk: don't read the file name without the lock
-Date: Wed,  4 Nov 2026 18:47:05 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-19-bbf7d5546809@kernel.org>
+Subject: [PATCH v2 20/51] powerpc/rtas_flash: don't read past the validate message
+Date: Wed,  4 Nov 2026 18:47:06 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-20-bbf7d5546809@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1811; i=brauner@kernel.org; h=from:subject:message-id; bh=wpJfI2N0Y4TYbGny8B/EWcsaN47/8hdz2WKuRaZg6Os=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zrtmmihY93BLSLDu9Ie5rjb2qRU3I+zPe+3cqF86e 5KJ7eaZHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABNZeo6R4WJUn/qcs7t1vaJm L5zZ9iJOJiprB/f/Sr7aQnnr1cdmdDIy7M/18T9/7EByzmbvb0u/Gdlr8edumNMXNW0bh1H7s7O CzAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1303; i=brauner@kernel.org; h=from:subject:message-id; bh=7JHU1Fe1PUKfNakrIeb+3f7MU5rT/9SRwlQjBFg57NM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zru+45fmhHOmCTv0/xXyljhu8Ir9cn6xZ2brsiN/Z jmlm2+821HKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRKEaG//GPri/6rCTy5+J8 1kMXe3b3xt9+LRAy/bux8ZXk+aLWoroM//OvT312ZfeyeUVOzxsmOu8P7DVL+ub/7E+HuUjwFae yubwA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ezp8hmq9jm1zp75ftq75mae9r813eje1
-X-Rspamd-Server: rspam01
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1C13E4000A
+X-Stat-Signature: uy13z5yauxwp53gjp61q4eecpc3bh1bn
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: C2E8580003
-X-HE-Tag: 1793814598-677119
-X-HE-Meta: U2FsdGVkX19yGeVrMKR9TdVQUZ/L733emw9I0e2dJkVyatY8xAacvJslYi6geP0jniw0dexYIm02KCJ+3uB/gxsyv947sae22ftx45h1pNCSRzMBjtK3ZseRZhVK3Cmmy36YZJolOXkXOfCBG3jcjbM3UsrvNvI+jvYMvtwN12NNNhkrnzp91qTB6Dn3Xf7bCknM5jJAIGU5Imz0HteWOicY4omdrTwDp4TL1tzUOOHJtfOZzQMWmTy+dj+aDuXb9sDlL+ES7FL4BQbEF5hSE34xzL9mzHNKv4XBbleagLrXcfnnLMWat9tUBLOmQjaMOORsU3W67+NHaoAZfgW87XRSlaZSoPlCuus72ZAB24znIKEL/JpJ0DZF6toQX5Mho6q9emOaLSYQY3aF3UvQT3uUJDTzGIftFhjkAtx/cW8hItcKeLjyEr09FmUgtgE8Y9DByrIo6F1/JHVf3m7QIEdG2w6f5fNA2I2EVyHawk4C5YKOzi2oBvfJOaJ56FsBoObBC5LQ+uwf1x9zdWuAmQBIzh4ggZkpJQBdRDc06Yd/+DH7TPhrVoGphqCfFgg1gokCTx7YG036BKEhjTVToC2Slq/LPvdPPEr3tLmfDzsr/PovoFeRzEYGqa02ui6bb8QzsWX0KdbQ8IZeWATlS/ZlqxQYr5lUw0q8AzxjAVWeaiNcmjWOIU4avMU2xlNkJ1bQuygQ0y9om9io5fYG0Lm0egkoZxOydfCjzBRBBbWQULnDGbjfk5f5YVcYYstmT6RvhPhV+XN+lAKi0NxDdWj7CoGCiK9E3KdCZ7oRjOAfcMMggcAJOn/rVW1Yg3+URFxBJ6woOLVVVM69vZccE3uMwAJXAxar9MQI3R3sH9dX8P1fWMRyCJUmSaxpghEjLuQJGZMHh5MZy5icYHLJlTdWN82r+K3vicdi3jPhN58iVxruRVnOCsGPCtbVbPo9mmblILBnn1DCDbqvs2d
- k5wdqxaM
- dQevpJSrsf0irmtoFnQklevk81DYOnNIZNxT67cIDgUNpC77Y4i9QFnA2pZD5q59FDaOeyNId8b5ffuoD8rChPlQTZvrP7nSxVtQcrkrjv/GlndRL57j4v3/B6sVjeLgu87GwkyGbl+2bDXoSqD4P55E8YTYuXLiMzPYp0oLDI78HXQDbDR3R3tkx3FsoeTPwQpHCAM9Jz5Kp/F498Kyg4Q2514eKwFD8Us1Z6pJYQQ8Y2O8ocLk1h1U1yhqiCofEQmYFwxi+0WTxE+ppxQeUEr0ZpXPyGyQOimbxksQkc6qJhGNpgF4eTwJgr5HFoArP45ZcFia9PovORsg9e+qZUNQmBNIacmJ1C7CuFEfvhgihjr9pgKfXR4zpXfJlH4XjgRrwAEJsnONurhaF/BGwDjH1lA==
+X-HE-Tag: 1793814616-476510
+X-HE-Meta: U2FsdGVkX1+HMXOMy/4vCGH4AjTwj5kr8tW+BVWNO+LhSRBgCzcDf9MGqUUM+dmfFXzG6lKGIui1pynQVfke8KwD3JIIEOpaTCn1n46OqrP7B5JD6q0l8XuFO4GqyBhn3+dXaJzZR8zOV9ZDLmEGFdYJ4+VglvBR2PePFaQPPS9p3Rp0ChiRvPHnug2DOe9bNpI7wM+WnImYpK05UhZqOYLx6fZrASMmgz3Ehd33BOTHYiRCkIfgvIHcMSA/cpVWJS3mrFxkOKUm6UO8thYSD4LxzUb9YzNOSQIHMhNo/4L303v6Bo9Jd9KE22GEJd9Nu06xGlV1API/aa8Q12CIJVOv7oK2ip8pZopmHD6RJosXeiPNgU61pdumGGKaujiUG/jNxGZY5StqAxOb3JF+Q11BntUj4NgvjeDBefMnFNuoiiMIQL0beikldMeHDobKwzc5tB3XuskLVbMSbZZjQ5meHF/MOtGyFonX5nHfvLiVi4K+R1rJu+LfASRSTWmbD8mTLbOk7DyVNBjC4yQDUtPQSGRPogWhQEE4uHfgjSRqCp3p1vqBHM0FJHicJ/7AcN0rOHjbCxpo+6R82WDRa7QzwFqe0jKyAuGU2+moCbv8lyv3hq1E16Q8rC5rSZ/AXFkhijxWqKqOTrP1I4s/dZZ+rUxPEbguhlSMncpeROF1dLJoE0Iv7r++8pfb2wq5AUrSsz2qk68kMJYXlUO4wjwbB3wpBHmd/RV1mUMNqP1ejLuBYFEqoXNeOn/gLcYNiJejna0zNw8r8Jun8zBsp9Qz/GfhoUpEsS7Tcp+DSuWj5WbJrWplbjLjT0snE1QA9ZQzP9YVyiCcPdmHFtCNtqqeSD4oGaWzbhpUoFPo66OpDHOpxL/pRVr6VbTlcVZSnbGI7fiGlzJaHQcjEqhWbdadgM1qnhBlWYaZnNuel2ucIEgQ9p7H0eajB87xYpMJRwj3WaNJJyClzTEw6Qc
+ qP/qSW0O
+ M9s6sAKYSTPrMmHH1Hf/7JjW2Bu8PkQioXCvvi48HMFyb3s/ESG9SQyDujXidCCLpWZYKAeojgrz6sn63mRphbOO7qOmn9LWEZMKfXMLnXkneHxrYo6O4/JlswlP/d5V7vf/thAeYyNEP0t6oENZUUZJmw7PgLrjMeYzA4tARaZSDQNSfA6YkcwCaJvi3Un9jDN4Lvaza+yhTdkVlGKozfBzpkFpDAfXDvypctpBPuHycwMo4rlIGa5IOat+ojf8VKzD3VRTVaEuBGRI3fXVd9TLh8mdmhMj5ZENENkk3RnPCus+kSzEZn+vOg7GlAOWN5Wf7jQ4Wp3rN1aA6V2b3DN+w8+uIFJg32lAwP6a1k+7mxeGRjMGyx33hEVKoYCpjZ1FSPhr2kM/G1JfMhp9dYWrnqGiKRAvHfoAAel5da2ePx5rJyoI7E1F7JioAOaH4KB9L
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -155,57 +155,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_read_simdisk() looks at dev->filename without holding dev->lock. A
-write to the same file detaches the disk and frees the name under the
-lock, so a concurrent reader can copy out freed memory. Copy the name
-with the lock held.
+get_validate_flash_msg() adds up what snprintf() returns, which is the
+length of the whole string and not what fit into msg. If the update
+results the firmware hands back don't fit into what is left of the 256
+bytes, the length ends up larger than msg and validate_flash_read()
+copies whatever follows it on the stack to userspace. Use scnprintf().
 
-Fixes: b6c7e873daf7 ("xtensa: ISS: add host file-based simulated disk")
+Fixes: a94a14720eaf ("powerpc/rtas_flash: Fix validate_flash buffer overflow issue")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/xtensa/platforms/iss/simdisk.c | 25 ++++++++++++-------------
- 1 file changed, 12 insertions(+), 13 deletions(-)
+ arch/powerpc/kernel/rtas_flash.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/xtensa/platforms/iss/simdisk.c b/arch/xtensa/platforms/iss/simdisk.c
-index e51edb8cf872..1248d960e5d3 100644
---- a/arch/xtensa/platforms/iss/simdisk.c
-+++ b/arch/xtensa/platforms/iss/simdisk.c
-@@ -238,22 +238,21 @@ static ssize_t proc_read_simdisk(struct file *file, char __user *buf,
- 			size_t size, loff_t *ppos)
- {
- 	struct simdisk *dev = pde_data(file_inode(file));
--	const char *s = dev->filename;
--	if (s) {
--		ssize_t len = strlen(s);
--		char *temp = kmalloc(len + 2, GFP_KERNEL);
-+	ssize_t len;
-+	char *temp;
- 
--		if (!temp)
--			return -ENOMEM;
-+	/* a write sets at most a page, see proc_write_simdisk() */
-+	temp = kmalloc(PAGE_SIZE + 2, GFP_KERNEL);
-+	if (!temp)
-+		return -ENOMEM;
- 
--		len = scnprintf(temp, len + 2, "%s\n", s);
--		len = simple_read_from_buffer(buf, size, ppos,
--					      temp, len);
-+	spin_lock(&dev->lock);
-+	len = scnprintf(temp, PAGE_SIZE + 2, "%s\n", dev->filename ?: "");
-+	spin_unlock(&dev->lock);
- 
--		kfree(temp);
--		return len;
--	}
--	return simple_read_from_buffer(buf, size, ppos, "\n", 1);
-+	len = simple_read_from_buffer(buf, size, ppos, temp, len);
-+	kfree(temp);
-+	return len;
- }
- 
- static ssize_t proc_write_simdisk(struct file *file, const char __user *buf,
+diff --git a/arch/powerpc/kernel/rtas_flash.c b/arch/powerpc/kernel/rtas_flash.c
+index 722dbfb6fbf8..f1cd105f7426 100644
+--- a/arch/powerpc/kernel/rtas_flash.c
++++ b/arch/powerpc/kernel/rtas_flash.c
+@@ -448,7 +448,7 @@ static int get_validate_flash_msg(struct rtas_validate_flash_t *args_buf,
+ 		n = sprintf(msg, "%d\n", args_buf->update_results);
+ 		if ((args_buf->update_results >= VALIDATE_CUR_UNKNOWN) ||
+ 		    (args_buf->update_results == VALIDATE_TMP_UPDATE))
+-			n += snprintf(msg + n, msglen - n, "%s\n",
++			n += scnprintf(msg + n, msglen - n, "%s\n",
+ 					args_buf->buf);
+ 	} else {
+ 		n = sprintf(msg, "%d\n", args_buf->status);
 
 -- 
 2.53.0
