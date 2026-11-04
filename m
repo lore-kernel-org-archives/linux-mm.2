@@ -1,126 +1,151 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3EC608209C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534A56071ADF
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 21:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=plT89bHn
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V7uflGoo
 Received: by kanga.kvack.org (Postfix)
-	id 4ECE66B05B5; Wed,  4 Nov 2026 16:12:15 -0500 (EST)
+	id 761966B05B6; Wed,  4 Nov 2026 16:13:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C4656B05B6; Wed,  4 Nov 2026 16:12:15 -0500 (EST)
+	id 7397D6B05B7; Wed,  4 Nov 2026 16:13:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B37D6B05B7; Wed,  4 Nov 2026 16:12:15 -0500 (EST)
+	id 64EB26B05B8; Wed,  4 Nov 2026 16:13:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E16B6B05B5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:12:15 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 28FCC1207CA
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:12:14 +0000 (UTC)
-X-FDA: 85398684588.27.08783E2
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 44C64C000D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:12:12 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=plT89bHn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=olsajiri@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 361776B05B6
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:13:43 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9CA2AA07F4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:13:39 +0000 (UTC)
+X-FDA: 85398688158.29.83EAEBB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E8575160003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:13:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V7uflGoo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793826732;
+	s=arc-20220608; t=1793826817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zJCUPJzDGMi7/m5Ob7nLHW2RF/EysBxW/BZZah9AN+I=;
-	b=RkeXTj2NVnKlNI/86yIk8Q10kRKQggqML3vFr9zUTlU4zFY7gjhLkvI9KhVUxVMjCdbtN6
-	V3IoC0mhrwwSa27Ba6Ho+LE/iVs0nx9Mr/PvRGwGTmUYyQjyVFSNSPn0jN6iTTmIykEzCm
-	pOsGBMvLP87azGdPzlvk6pckzL3hlTE=
+	bh=jcn7jVvcEygiBPhKNySOIoE9F539N91xJ4TgqDQUCP0=;
+	b=xpBVe+RPnCPZF9n8JYf4Gv1QUdcXsUkjnzzWIMVUUNqWM/J6iDs7RFollBRFUqW+sDaLmy
+	RVIMTDMD0mKCkCdNmbuG2iZ57YB25WD9Loe40gDARAvOvoAjjDdJ0j6j4oGRPb0qEZTou/
+	fLZP6xgKj3RLDpLAGRd0HqZlTRH4DcU=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=plT89bHn;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=olsajiri@gmail.com
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V7uflGoo;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793826732;
-	b=QljT7X8wrscyNNEeKo2tintvZuJeQs6xv9YioOa5s/1ed/XlAyYe8xgZa4O89XbZ7n96dd
-	9P8NO1923PFk7h6ToWb8cRqkLfIG8iSXwYMwgrTXPFdWHx5omlcSi2rWUIO6cHhID6zeeG
-	SGRdVC8goSkr3WFsTJEcfkjnS4Ojoro=
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-49134c8509fso99380f8f.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 13:12:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793826731; x=1794431531; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=zJCUPJzDGMi7/m5Ob7nLHW2RF/EysBxW/BZZah9AN+I=;
-        b=plT89bHn0pqxQ9T2AqDFT0c1tN7/zD79FkdLmnAodU5XbYq4mxIIAswLwvzawSenI2
-         /kqtiZW7L4DN0j1OhTPy2FbFLOM4yoOEDOFKkAoyYPuLHWRbWLYsB91ScjgHz0jtNNwU
-         dJG1GZiS0RniwMgxtLAyDOwcsgW5dZgZudJnc9MTWDmpNwOyfxhNSdQ2Dc5IviHCqWq6
-         diiiUuVx+Hf/VHaGh+FmvVN6dHvYnzgLV89TyarC5zkCkSrshExXqYaRa+mefY7GCu4z
-         iFIU/XrvYXasDQtMNr6VzBhyElXb7goGTzwA12UjZPg4zTB4LtDdemiQHghCHyigMIiR
-         VTRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793826731; x=1794431531;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=zJCUPJzDGMi7/m5Ob7nLHW2RF/EysBxW/BZZah9AN+I=;
-        b=GUEOHma0x6+Cz7c4uOjFy1JimkfuvWZmFjz66COdPQ4eS3iZmmSY9RgTUqzUaVt806
-         nuXA1T+6SWAmsnqE8RHX0lx8+eavxVFz5prw8Q+xB7fIfGhMQLuJwzoNWq8Eq/xJ1a41
-         8HNi0yZ4wHlP/UtlS1VBJlgU7Bp4ULt0dEU6iNeje2+sYFwQg1xuHDRPfhJAexehMyRd
-         PWiDsae4Lqb/I8rFVSQrozg+m58Dw/ON0lVsjUfXtmLFbTrsRMc0je4tUNP1bodoR8PO
-         J44GCL18Zbt+1KCRAAaH6T1wv8cA6uebLtFWAUzPYkWUPkXwxpGisHx15yjkawygNVW2
-         ZSUQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzWQuilqrEmGKWcFZYlhp6dMXCDjxnv/9EmUzUSdvNEq/8Wu4+s5/D3gDox4re016OboVQz+mLnAA==@kvack.org
-X-Gm-Message-State: APuU4Z8j6UyxkPXogx46Qb5e1sKJF8NuDnakNNXS0ywZusDq/fMEseAH
-	zMuYchOdgme+e6J7h0d0lpkzY+u20Fk81kSIeae+tsVd204D1bwoYVsJ
-X-Gm-Gg: AYBFou2d+l8ShbxxUscgc6gNgqGBPeZm9Ld/0LrhVyuPTpq6XXs7DRJrdJZsz0g5TYB
-	k+7ACyKSxzfoDkwG9rUEo7+LIBxsrgn7rNHtzgJpKCWxR83xf7zLIkeOGlBCxZX4WWCDjS2sryo
-	Gtqk5IkUsjt2Qq+tzZiWbLQ84KvBi4A/B7RQyZMku7EHlJFaya26pSukAVyHvkFlBK+2voyEtD+
-	0vTMQurd8MMfQbqrffV0nAFoVDBNoueXll8bMjGKPkBXdNjhYA92GJXJrx0G7WDkkh5n19Hko4G
-	1Zb+CScdIp1+uhXQG8yB/IOWJbgdYTag7lMNyNeZfNfAATQ5WUMctYb/g9IOZy8aFltRAj8xvqJ
-	0wehvn5ukN55WarhIcp8/jXv6R6EOz1czMRjONNZ5siEofLkpsPYGdou9YJTJYTxAK6300FW7C3
-	LRgrEPVv7TNCXQBimA3VLnf03I1YjL2dw0wi5uPsO/QOy7uPEyEUXU7Pu8cZcEqZXs1ZE3Wl38d
-	N1yX4oCNHPpIn7rwuZVTqCNXQXVtFHmNklM9dOSvORBFsRllzTs+uC77+HyjR0+JGkXC/czDhy+
-	aJUxFycPUGhsTsE=
-X-Received: by 2002:a5d:5d13:0:b0:48e:47e6:fdfb with SMTP id ffacd0b85a97d-48e6e302699mr32449578f8f.13.1793826730893;
-        Wed, 04 Nov 2026 13:12:10 -0800 (PST)
-Received: from krava ([176.74.159.170])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fea18104bsm6173320f8f.6.2026.11.04.13.12.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 13:12:10 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Wed, 4 Nov 2026 22:12:08 +0100
-To: bot+bpf-ci@kernel.org
-Cc: ast@kernel.org, daniel@iogearbox.net, bpf@vger.kernel.org,
-	linux-mm@kvack.org, andrii@kernel.org, eddyz87@gmail.com,
-	memxor@gmail.com, ljs@kernel.org, john.fastabend@gmail.com,
-	nierro92@gmail.com, martin.lau@kernel.org, yonghong.song@linux.dev,
-	mason@kernel.org, ihor.solodrai@linux.dev
-Subject: Re: [PATCHv2 bpf-next 6/8] selftests/bpf: Test user memory page exec
-Message-ID: <auufqLgICAPhcHrj@krava>
-References: <20261103075916.100050-7-jolsa@kernel.org>
- <f140cba1c8d3bbefc759df505554da49c4ffea61ed0684ddb9f1d3c6effa529e@mail.kernel.org>
+	t=1793826817;
+	b=3iXEmS6suLwGUr1QWV1m1KEYcSFgkgihIHdcxDurRQM+PQed1VGkk3ysc7BDMqxGB6CRJU
+	5bk/EalG0UhWVGLLoRh9ij+NkVz0IAKyOId0vhM9oe5uHsdgMHjarvztR+6a3Ee5HeDK6I
+	w6M4DFGUmOcxiXmPxsWrw95LveyBOGk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 783E2601F6;
+	Wed,  4 Nov 2026 21:13:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890731F000C1;
+	Wed,  4 Nov 2026 21:13:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793826817;
+	bh=jcn7jVvcEygiBPhKNySOIoE9F539N91xJ4TgqDQUCP0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=V7uflGoo2J6W0Pkam2p2NQ2ygDWILS85YrEGrtDhRX9LSpjax7FTdN9yNxg/1nr/F
+	 V+6mFIzh3/JJOAXY6DVlJDG4EpV1IqKbiDMaZqe2+mP/VD4uYvDHSHZdC+YPnvDk4p
+	 B+fx/mBspdALJuO5S6++QQQg+yaKZfyhFe96p7DkhDOmjrSDCUkzL7D2l6jIRx9hog
+	 t02UJbdl2o8LcfstRp/uZbtHAIBJlVxjfK6tVrDPho366mZ6VCIHILqfMZVkkl7EFn
+	 VcPqHyjXoZJ1/HnO4R2TW6BDouO7Vr2s8cHixo92YGxXCqi5rLrqQLQrblFCpmhTUC
+	 1HY2L3LLxnrag==
+From: Christian Brauner <brauner@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+	Jann Horn <jannh@google.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Chris Mason <mason@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Christoph Hellwig <hch@lst.de>,
+	Greg Kroah-Hartman <gregkh@suse.de>,
+	Joel Granados <joel.granados@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Jan Kara <jack@suse.com>,
+	linux-kernel@vger.kernel.org,
+	linux-nfs@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	linux-wireless@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	netdev@vger.kernel.org,
+	ntfs3@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org,
+	coreteam@netfilter.org,
+	kexec@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	netfilter-devel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	ibm-acpi-devel@lists.sourceforge.net,
+	jfs-discussion@lists.sourceforge.net,
+	linux-alpha@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-cifs@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-sh@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	samba-technical@lists.samba.org,
+	sparclinux@vger.kernel.org,
+	linux-m68k@lists.linux-m68k.org,
+	linux-doc@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	linux-atm-general@lists.sourceforge.net,
+	Takashi Iwai <tiwai@suse.de>,
+	linux-input@vger.kernel.org,
+	linux-raid@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-modules@vger.kernel.org,
+	linux-debuggers@vger.kernel.org,
+	"Christian Brauner (Amutable)" <brauner@kernel.org>,
+	Chuck Lever <cel@kernel.org>
+Subject: [PATCH RESEND v2 09/13] SUNRPC: drop the ioctl of the procfs channel files
+Date: Wed,  4 Nov 2026 22:13:23 +0100
+Message-ID: <20261104-work-procfs-net-v2-9-221e2437fed1@kernel.org>
+In-Reply-To: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
+References: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f140cba1c8d3bbefc759df505554da49c4ffea61ed0684ddb9f1d3c6effa529e@mail.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1562; i=brauner@kernel.org; h=from:subject:message-id; bh=I+ev37oI2qOnQB50E4hs4C0vKquyHn0mn+uzhhuE9es=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97tO7MzO6bl7rnYiJS+98LnRI2rB8SW+2zhcm6VmdL mnzZE2COkpZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACaimsHIsCL/pkeQ2tMV86Sm GCnwci6xzri2a8OqYh1BgwP67+/djmP4Z6MoeGKi/4+z3/fFeyZzP/p6Min5j4995fEbyvr+l0+ ZMwEA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 44C64C000D
-X-Stat-Signature: cgh8wa1tyxmgwgzeh5gxozzouc7y46ob
+X-Rspamd-Queue-Id: E8575160003
+X-Stat-Signature: 9chb45k7xesuwk4s5r5th4az6ejgmicq
 X-Rspam-User: 
-X-Spam-Status: No, score=-11.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793826732-927373
-X-HE-Meta: U2FsdGVkX1/tT7vMnQndBNqOuVJkcurC442mgOuH3Auluhv7slo4rZoBcE7DXqbn5UCCp86ZfCGt3oGgBF801AkfS10vBkukZUrC0feim5BJ2JKAywPZfYtfBjNYAqy8mqexxuljEWRKrBmHHC0rVN3PtRBDQBjnFMqkSvQMRYkHZOhvQv5ZkCaNOR0yD1KDnLW9bqoAqyAK8/L8OwXQI7PxuwzpVHkwMcNJkqiYv6JomQO536VeXaSgWJKu/MV8SXkUjC3U3OH2C7lRNi7GKAZGfilPSoAvm/L2YBV7PzNKiZddfG4/Mg/cEqvGAnljobjNoqpNWXWZCJXwyDRPEYICMkGcowpaLTgfYuR7byKPt/9n89krPch0PC661pyAobfBZr2X4MC48bpqTfLuSZofPqCQN5xiqH2uKcYMu/0s6MMeD2+5DSV03QBSuPw8ybWRO/p+rka+OEnezEU32pAwyI3n4NWbzeVukX4sGsxYi4WiRORV+7jmg8rI7Rw4z6kn3ClpnPurlwt9aK1JjCGI7qsg4MSiW/MR3mzve15d/3KukqUS4zCeW4E5OsZ3ndKRfovXIchQ5Wv2SOhi7Dgs1/BmhYjjHxMAxyROr/TbJFrlww7cTrfoh5RpdnELUm6qKi4PoAOrPgCZKHCaSmT+YAnwiiXnk6unT8i+o4BdIY7pOWb+gSnTQhUP9vmTIXYAJfOjVJLDeMwasMhGjgwadelSeFegrVfNv5hBx6x5Mm9z+xxxmD7cnXw5UBeJeaQsorxUo5krSCubGIx8EyQZWBMFewjn6M7vbzzQPgifiDftI7d69P/8tlVP5fU4D5otFu84Tw8md5ycLx9a/fAZlqUj7VtAoRncb5xqPe75liPvuxwfDdkEMdnTDuKDjHe4m5OGEDZQjjpyq8Hoqip7D4kMhJ7qos4Y4DaO2vX6k/nYlQExIlahizaG8dpKwI6jQA6eDHuKudEDNJd
- zCR/48JO
- NLgosfEGOVqe2leBvDX/tef2JelGKkCVG+zf0Uu4WYnj+3NlimxbFnITDpVPwECUhwP5Lu2811EU6PdGPWwKayzCDnQyRvFFqFW7R6FeyjbbuIfBgCviIpO4z3sHiFP0LoUtdQXDBdXtSZpG3JKj3BgPM0I9IxObccSlt/GJjT8gQoRsojoEOtmlVaNPx0E1hB9JLh9KVNdI59IDYv+KiImWuTGuHu800hvHAkFqMTXbXOgdfxOiYDaKpISP1HwVXnH27jsQ7PvzwoIwDy1gpR7qPOkR8T/zj8Jxixv200tYhhISdjWaarQ9+2KiE7DKqjhT369xDZBUFIM0CzbMnThKDZpzEbJ68DoDyfDQlZ31Xj2p3+fxTYxMcvOTS7gorma2scXbIXLNB9S+XO4l6FwOpAsAfy9C8QqKSh+8PUkq6LjETfo8p9MvpjC/vbejoyh+4ZoZtJTJR6Z3adrq9b9nou/WMvo3LG4Eri3naW0vQBEAasBrSnmLwcdfgY44l6qYzY1yYZ2GHVBRDn+I0hgHui9tTjFJh1zv0y8jA3YMJno0/JaUvyErBH+FodImml7HZqW/OuSaSPmlEAhjb1zMEIUzMxoVdk0KTG+/4Q8IO/ycwl++F8geHiybF/ZE79uVRyfiPg5kMLEPBqNzAosJskg==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793826817-578446
+X-HE-Meta: U2FsdGVkX1+DpIlvGya7FDlZ+dv/XMymbbhztOC+c/mcIs75k45x/2IcRorN9tlcVVxFDT06slPNtPTP8gxtyX3NRcyKJDLwhkQvS6xjhvpoOW2pXKQ32TJNlh+BmZONJoG1aOCEB4894kq5JW6OppEu4kBTX+9CpiA6OYAr1lN9hOln2BSlBg+e32bEjhvw2D0kryLx99sfHunBq3tJFAjSu4HkCak7qgvFBE/fWWjo5+8+TrwqHuvU9jnyriVuMoKg5/Hj7vVCThp0LiCv2ycNf9nu8PqFkjPtDMpHbxlG7DIYJQ2sdU2b7TU5f3GYKWVai3akFu/ndBnLJDn6BQH6T3G2AvL2sGGqetP3GtdcG+1lJLddIBtyhKxHkCnpjogzeL2u/ZD3/joM3hPYtBPKymr5vK0BDlmoYKLuDnxDepu86qAwaqmeospTRz5lJwwo5XSNsxlhCgnhqrtx27h6mI3rUTSYCmrw+Sf1l+rEiAPkULAloSZWHx81Ren+ktOIDdtwoc4YLgyS9Rfn6jaI24Gr1uiN7LO/uRlQ5ce2RSn/q1MUpgTvyXwqR3XFBYbS0TA1hPIRGail0kTKwGALpH168WiqmHybB9UirjFzWImL7eYjJCKCbdgOVNKPg7zgOlzofDixsj996257AoJQ+x9LZ4oPJCEHLfi6E9Ib7bRpQtllTXZkxMV3XKBa3zJkHs3eqC6ZbWqdE7fjJEMnRIceUlwkicRi01SfnNqwsVi5/PFzKa68oD3/4tZYZeG0kZ8Y/S6GZCfXCUcrCZ5RhINi0aw4eZMB7RCO0q7UwSy/NUKao9cHAW6jKd6Wss3DEYKs0Is6tYrJMcWZSuy/i6Y04rbu8/A+2ryO+ZuvcLtqRjtzua/dVomDpjbU2ERs0wyVvv/hSP5/bICxrfdVwFQwAT+G1B/MH9/2cCgB3Z7mDnKMg87b7AS7u0jSxaiBYW+KIiuSYBFd2hb
+ +/wDu75g
+ yakwTG3V7czNVSmGEcWzAan+lf5mn1bNWXBLy3gW2Wzzx9mC2PgeRflr1eCQ2VmbjiRzke0b7R3/RjkvE8TB8/yGjqYE1uDb+3doOa70WdbdUb3+kTXjIpsY9RKL6887lIcDIXd+xANSCxzOUokJ5aSgsKkTdp2sfClS/DTebS14399srlDI+snhcZMe9XyEYLxFuOhwiDQhXCmYwFXtaeSokaSyMAIGinck5pdzv2Vqad8a3UeNW0ZRK/7VzPfRzi9MTYukZMJhvCamI3E9wEey4ZAgI9oNRnvAKVUH2HhDXp9LpcsO45p3MVRIpU9NctYYUPUjAb6lHHtqSEF9G+Qv2hI/gnBlPtdWRS+8kE7iy5KdrZGDGEwiDJ2AWbXIZMHq67+NXnc0RiMzI0nF0vQYHGQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,43 +154,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 08:39:47AM +0000, bot+bpf-ci@kernel.org wrote:
-> > selftests/bpf: Test user memory page exec
-> 
-> TL;DR: Nit only: in user_mem.c selftest, the bpf_copy_to_user() ksym
-> declaration names its second parameter src__srcptr, which may not match the
-> kernel prototype's src and isn't a recognised verifier suffix.
-> 
-> > diff --git a/tools/testing/selftests/bpf/progs/user_mem.c b/tools/testing/selftests/bpf/progs/user_mem.c
-> > --- a/tools/testing/selftests/bpf/progs/user_mem.c
-> > +++ b/tools/testing/selftests/bpf/progs/user_mem.c
-> 
-> [ ... ]
-> 
-> > @@ -10,10 +10,13 @@ char _license[] SEC("license") = "GPL";
-> >  
-> >  extern unsigned long bpf_user_anon_mmap(unsigned long len, unsigned long prot) __ksym;
-> >  extern int bpf_user_munmap(unsigned long addr, unsigned long len) __ksym;
-> > +extern int bpf_copy_to_user(void *unsafe_ptr__ign, const void *src__srcptr,
-> > +			    u32 src__sz, u64 flags) __ksym;
-> 
-> This isn't a bug, but should the second parameter be named src, as in the
-> kernel prototype of bpf_copy_to_user()?
-> 
-> The __srcptr suffix looks like a verifier annotation, but the verifier does
-> not recognise it, and it sits between unsafe_ptr__ign and src__sz, which are
-> real suffixes.
+do_vfs_ioctl() answers FIONREAD for regular files with i_size - f_pos
+before it gets to the file's ->unlocked_ioctl(). The channel files are
+regular files, so cache_ioctl_procfs() has never seen FIONREAD and only
+ever failed other commands with -EINVAL. Drop it. Other commands fail
+with -ENOTTY now.
 
-yep, leftover from previous change, will remove
+The rpc_pipefs channel files are regular files as well.
 
-jirka
+Acked-by: Chuck Lever <cel@kernel.org>
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ net/sunrpc/cache.c | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-> 
-> 
-> ---
-> AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-> See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-> 
-> CI run summary: https://github.com/kernel-patches/bpf/actions/runs/41602296728
+diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
+index 81a3f0068f36..d242b6f33cbc 100644
+--- a/net/sunrpc/cache.c
++++ b/net/sunrpc/cache.c
+@@ -1596,15 +1596,6 @@ static __poll_t cache_poll_procfs(struct file *filp, poll_table *wait)
+ 	return cache_poll(filp, wait, cd);
+ }
+ 
+-static long cache_ioctl_procfs(struct file *filp,
+-			       unsigned int cmd, unsigned long arg)
+-{
+-	struct inode *inode = file_inode(filp);
+-	struct cache_detail *cd = pde_data(inode);
+-
+-	return cache_ioctl(inode, filp, cmd, arg, cd);
+-}
+-
+ static int cache_open_procfs(struct inode *inode, struct file *filp)
+ {
+ 	struct cache_detail *cd = pde_data(inode);
+@@ -1624,7 +1615,6 @@ static const struct proc_ops cache_channel_proc_ops = {
+ 	.proc_write_buf	= cache_write_procfs,
+ 	.proc_write_size = CACHE_DOWNCALL_MAX,
+ 	.proc_poll	= cache_poll_procfs,
+-	.proc_ioctl	= cache_ioctl_procfs, /* for FIONREAD */
+ 	.proc_open	= cache_open_procfs,
+ 	.proc_release	= cache_release_procfs,
+ };
+
+-- 
+2.53.0
 
 
