@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA31606CA5F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FC3606D61B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bKrAUcOe
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BpyBwaL0
 Received: by kanga.kvack.org (Postfix)
-	id 03BC96B05C5; Wed,  4 Nov 2026 12:30:33 -0500 (EST)
+	id 9B18D6B05C7; Wed,  4 Nov 2026 12:30:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F2FCF6B05C6; Wed,  4 Nov 2026 12:30:32 -0500 (EST)
+	id 961D46B05C8; Wed,  4 Nov 2026 12:30:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1DA66B05C7; Wed,  4 Nov 2026 12:30:32 -0500 (EST)
+	id 850D56B05C9; Wed,  4 Nov 2026 12:30:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE2916B05C5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:30:32 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6014C1C41D4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:30:32 +0000 (UTC)
-X-FDA: 85398125904.26.B7403E6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 754554000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:30:30 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bKrAUcOe;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 628DE6B05C7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:30:46 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C22771207A2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:30:45 +0000 (UTC)
+X-FDA: 85398126450.11.43C538A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F25BF120004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:30:43 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BpyBwaL0;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793813430;
+	s=arc-20220608; t=1793813444;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gnzz2fT926tAung/y7Xzshf60AQanFXIqjFC5KSqJW4=;
-	b=bNqxAJYAQGl50lDWrJI64FvBSCENm0Z0qqFKIjWNLKJSHLdXczqpUL2wn6u+C5H9ShmHDH
-	tB1jvbZMxtYWQGPgpHF1RKCI+3mAJAdCWalXFnpAZktzGM8jcxG/tFj6XwHOxX6cqKG8gr
-	ijtZHI50WP7wWaZ5/92lGRGWjybGcDA=
+	bh=axjAzDMxe/T5Kt/VR9558Sdu9PB/HLdF+q053OKTtnM=;
+	b=krsuke4qnBljm6SM5KXo40X6+V9f8wZyqL13SUK/74hHARYiWCpRNmM7TibB9JDHv0AZA6
+	ffNAxeoaNfTSAP28QZm+VVnlTKdYeL58y5MJe19g3NLuhiObKXgaLkhQt0yozxNqgNG/rD
+	wcsjy8L9TCyqZwfyV8eS5JcGdr3f6HY=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bKrAUcOe;
-	spf=pass (imf07.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BpyBwaL0;
+	spf=pass (imf29.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793813430;
-	b=A7+YgPIlTLTRdUeJyfREKbTpu8PB518o/bgeFoW1kxNcI8DgIsnUD0zyAVAfAgIH7bO+ud
-	+cM9IOabmYZUoRcgRDPc8YLdn7BI/s5ywO2+7mzEMSEcjevC/gywsyy9wtLghTXYOxD/Q7
-	wSP5H0rkTHH747osM7XVKOwHVeO6TiU=
+	t=1793813444;
+	b=dK7Zc+HQiub12/XeetIlv3QL0Wx726d+fkY/UdhSTuKuHYYBYJRRky4F0BLRRizmhd7QLw
+	PzRNU3X8BhyVa/Hevl63pFctlmvPrIrfZQyITwwNkE7Nlia9PP7xSZDigsjQiY1sznjIFd
+	ldJP/TG1T3VSKkfF7Xn3w655nG82MWM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00A7260A9D;
-	Wed,  4 Nov 2026 17:30:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D051B1F00A20;
-	Wed,  4 Nov 2026 17:30:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3BA3040BCA;
+	Wed,  4 Nov 2026 17:30:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 318C11F0093A;
+	Wed,  4 Nov 2026 17:30:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793813429;
-	bh=gnzz2fT926tAung/y7Xzshf60AQanFXIqjFC5KSqJW4=;
+	s=k20260515; t=1793813443;
+	bh=axjAzDMxe/T5Kt/VR9558Sdu9PB/HLdF+q053OKTtnM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=bKrAUcOeVzlg83/euOIHnVFterm+vHdMFNuNi2Dt0LF9VzWRfSHdWlR7H5c2KTzRF
-	 naRK5w+k54/QDDCRMfWgLxdTPqv4FCwBsr1kXOzQqhEOlC8vy1IWJ41ODhEZLno2LS
-	 jjGH8/XSd1jADyBL1p3Hc3Qgb7ui9/GDGzwbwzjY67qrbN3GQL5NP2Jybx4qUpUZX3
-	 CQMNjfOnMG5qtjvL2qoA6KmgJggxXjaC2t2PuKCscK2/RkukWsmgaXtZ0l6oKz5iz+
-	 P64zZ0Jt2cdani8OUoo4/+XjtpVm+osPlwpgz43htAz/C7aUhFTjPEXATp/jT4GDYM
-	 7OqOzge6sGwYQ==
+	b=BpyBwaL0/aYVXoHwq05IXwkJfbiN+sH/NMlrIciQjG65t4BqcyIJFg2nSk8XDCCkV
+	 c7rAC5Gwt0eJ+/2lGcpbp0ALBTDjeOzJXNQqmnuVDle4iduB5dvN2rzhDckY+qtIzb
+	 gs1CNuM6mGLr4omD5X5lb2yIJHjoEFVFY17i90YDIqHEiBZHsPoN/pZZJkVTJ0KPFp
+	 EUeGwANAMrg4AicMXKhoLnEodEFkU0cutq7m4urrRAjYhUQUJ5q8o2+x5TkfWHjCPD
+	 i91uDDI+3s3/ZTdD9a7P2TXIzuGYqpzF7L202zVk0SuzYL1uXQEo7tJ52MN1ssXopq
+	 kuzwiBlPYX93w==
 From: Christian Brauner <brauner@kernel.org>
-Date: Wed, 04 Nov 2026 18:27:25 +0100
-Subject: [PATCH v2 08/51] powerpc/pseries/lparcfg: don't drop the last byte
- of a write
+Date: Wed, 04 Nov 2026 18:27:26 +0100
+Subject: [PATCH v2 09/51] profiling: report it when /proc/profile can't be
+ created
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-work-procfs-bugfixes-v2-8-bbf7d5546809@kernel.org>
+Message-Id: <20261104-work-procfs-bugfixes-v2-9-bbf7d5546809@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -103,17 +103,17 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
  linux-debuggers@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
- Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+ Chuck Lever <cel@kernel.org>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1293; i=brauner@kernel.org;
- h=from:subject:message-id; bh=N2rHHHUzfsZsGLUBvdMxa3o2qGAAPzh8wsvUFn8S2uA=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zmYqts+f6c771jBc691PB/aNiq5rYmuWq7o9SdKKM
- Ga7qdvUUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJFb8gz/a+f8MlT+0SWxMsTk
- QerGWIU8g/w227Ptd+ManyhO269pzsgwb7VmgtgD7UuXjjF+CvlTU3NkGv8+HhW+PC2DOSyTg2v
- 5AQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1225; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=tYIXM5EjsYRFpz3d9CdZ23LhMvzI2JA5U8qSrxldqzY=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zmb5c+HYnPYns6fufFrw5b7Y3/kPP5ytKnep0a7Jn
+ RU85ZS3VkcpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBEDoUzMjw1q1TdWGx2OGny
+ nwfxD9yf9a1xbZhUXGz4leXXTAWLvycZ/tmE5T+0eFcqb8S9dXuWRJTqOn+e0/UWz2+d/yn/trX
+ 0PxsA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 8bnbka3wpzow8yxkw4i5hhgte7566m8f
+X-Stat-Signature: k338dwttd6nzx3osryxnz1w8nygqijex
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -121,11 +121,11 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: 754554000B
-X-HE-Tag: 1793813430-982930
-X-HE-Meta: U2FsdGVkX18amC2oOp6bUydMRwVmuqei1giYLwxX1Fb2+GCCJxtE8jiQuOvIkng3SmQTJPiMUxS/YFK1ZR9EJPjNfXAJn2v3f4AgDLOM+wtH7tQR6WuiP9blIYhgWsWWDueADzPnMBYRE8t35Fl/DPPu85XcR/eTVWGNH4sCBmxVakgzMBY7921rLfdptRa88z42iE9lx3RCsvZ+R5Il9e/BObYdx1BHhWg12AfBMKMVPHl4+TjwWunYeqjqZVYWYG0MmwL4cGWeE60aHa+B81SSQ3BId1eJoNAkH7l6CLghPDc7VIq/8oJzaQXGrtsEyCKGV1OLHkS0Dd38pGwTAGU9T+2Pb16G6e3r1WPzGxLm3wQOGWV1kB0yDdP6/FNTzXT+Nu+V8v0rt/ajlh8Yvg3xmJKo8QfDYz0u0FM+ibdT/6cESnRpd3KCrxHz9K89loOxwfOm7eVdcf5JZBTO0v7dS/cwsQ0WtEp2/INwt4Lb3R524AW0TsRjEQet0xZG7Esl2a/UXyysPOMEAhLGqb5uk4V+SdmvMMW63i/kfEG+qjq+Dhzbtmgq7bW0AVBEgmaOZB+ysYyPWFnIcwP2Sw4AAWmg8f5FA9UscpBH1uWjWsBv2c99QF9vnFA3w+w6Qfy1YVtl67Xsm7eX/NG2qj/Y32OCOIx7AKhcftGnZInkDE5Afetd2pNJ1jvvJAbUsPUpkpL0BqBj9RXGkVeVzMrZW4RVPJ6vqztPz+EZ7UYw4k+yUNlrkuh78QcNUf7Vi5v2Ae66SWeAgEqRc5vFGkztC9fyokr3+/SnzpgoqtcVS2PQSxdTfzGVxFqLiAX3gSmQPOmgs/8PyRa35h3YGpWk2eYLcamE8VIrtZsEveTqhOyWTA1D8+VN6533oFKzXIdI6NGi+MQM+03Ug/C2gap6ZmqB5f440lx7m0CAARFNcM05lAuP2JclvICUVD0uKHuJ6DwutBBVgC01Ebz
- OzgPXAGP
- gwH2NKkI4uVaYsaVsajSmDdcHdy01iGuV9bCDItaLCb9wirsRiGhvz5k/+DD9cEjv/XrsBJyFFLHWrswe2UgcriNqloU1y5etf4dCWrU2FgVjHMr5l6UjZhAi2i8Tx+hWBtHd0MZJblFS7WsFO5CpcyTUzt+KCm7Kif8gAET/KBt+n+GPSwBLTgCdkc1p0aIfHupJhKIq4WMmeYjzaLJQDnEo09oDyzlBeSmok+0A1vPOqlVFSQJJ8Hh7zPPsZUeQ7WCka6f/Th+whkXljTwbzg0DjQ==
+X-Rspamd-Queue-Id: F25BF120004
+X-HE-Tag: 1793813443-833204
+X-HE-Meta: U2FsdGVkX1+un4MfihWcjLma2Xoi2uXeUJ7LBPWYGADQUpjeAuvLnuhkoRmziq/DbpTLnpXVJcXU1DQWjNSvB13cakbzg6x9fIS/E2vh/nHNpwe1VvG3r+VVgWawQck6SZGNXU6ar1rcLopOChHwVhDmqNig8/SAQCGEy9eAeuSbNhXH2EY4kL7+BuztIJPNIHpmnkqoBanKn6yFChd2TDp4/EWx94v0GJcyE20Yw9aDJWTCekfJAOMTbCu2LN1KLjKeX/+AI6htSCVg5YyzEAntGVTdXZYKN0GeIWlKTcWFMq2myaeN6U5TQTCclExy1fIfYnzOUXjzTGe+H8Ap2c5H0EabCojzsXcbjgpcNwil0JlQ9J/KWgMqQ9m2joOwGJJdO4vkhq2rTZBcJSgZ2IrzJJ8DqmAnFEK3168IT8HNHX2yYn4Hz6joTXPoqYfn81j+ejnYI+mnVt6v190edI88jsHCQA2/96XtUyjPU38Py7iCAp59tXjUM+wCkdyNb22AIfCbcQDQQbQb8LecSDWx2VSRk4rXft2kIQI/JD6/6I89kXnp9B8NJntOvfEF9O9K1LNBtSBINlWQaRtDlCiVW8IGIZQ9vA8LyUQ/JFXcxfiNSmbiHVdkJdJuaXd5J050yksMTHj6zowidEiEWr6RCGTvegsQCVkZcfqoumtkcQ/+yWojNa1Z7zMF2f9/qear9ltzmYAFwJzMmN2nrx8agB6QiqUe19Ic2a2W/tRBxCkWK/I14iZR4nIbkapZmNXY7ey/N1jDjwrSdZ0/6AzK4YMYK3ccPTaSOF/kf855VSV7QXfMyMs8s/C39K8xcybB5+A2v8PRToSgb5zFuhij52hlnVx+s2u8m+mPTuZRugQhEQRIhgVFs7A+YwtilJ0GqmDClvld01Pho/+p039S+pQBq21moXSABo8yY8c2EH7yEohvcWyL9Nhy+CT7IcqOOtY/HjqXprgfyrs
+ DzBfDaRd
+ 8UiuNaxzU1C27/iZhswE7aKUIfpghhUHf998dbsPguquH2MGo1t8ukZto0RNRUUlRMOXFr0iCh2tupN2rxGnKd+wsLgyMQ7Nfh5eQ1RoI7SaWSpSFecNkDE+bNjnzxa+w6jV0iOTI+s3EliuryobB1fpu6inSGLibxPLf/LboC2FMGiEosXUQ6DpclYojtjIRpGnzmMkWG1KTpV9LWUZ3ezF52l/z/MUclimQhR6e6R1dBNG+SvO4EwAMmIGdE2aqhBGExIQyQqyVqb9YH8Uq7zq+AXfTqPqv1Iro
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,39 +134,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-lparcfg_write() terminates its copy of the write by overwriting the
-last byte, so a write without a trailing newline loses its last
-character: "partition_entitled_capacity=5" is parsed as an empty value
-and fails with -EINVAL. Terminate behind the copy instead, and refuse a
-write that fills the whole buffer, which can't be terminated.
+create_proc_profile() returns 0 whether proc_create() worked or not, so
+a write to /sys/kernel/profiling that turned profiling on but didn't
+get the file reports success and there is no file to read the profile
+from. Return -ENOMEM like the other failures of that write do.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
+Fixes: 22b8ce94708f ("profiling: dynamically enable readprofile at runtime")
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- arch/powerpc/platforms/pseries/lparcfg.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/profile.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/lparcfg.c b/arch/powerpc/platforms/pseries/lparcfg.c
-index 3280b7968cab..9882f98c0efb 100644
---- a/arch/powerpc/platforms/pseries/lparcfg.c
-+++ b/arch/powerpc/platforms/pseries/lparcfg.c
-@@ -699,13 +699,12 @@ static ssize_t lparcfg_write(struct file *file, const char __user * buf,
- 	if (!firmware_has_feature(FW_FEATURE_SPLPAR))
- 		return -EINVAL;
+diff --git a/kernel/profile.c b/kernel/profile.c
+index e7defa90a34c..820d5ec909d4 100644
+--- a/kernel/profile.c
++++ b/kernel/profile.c
+@@ -216,15 +216,15 @@ static const struct proc_ops profile_proc_ops = {
+ int __ref create_proc_profile(void)
+ {
+ 	struct proc_dir_entry *entry;
+-	int err = 0;
  
--	if (count == 0 || count > sizeof(kbuf))
-+	if (count == 0 || count >= sizeof(kbuf))
- 		return -EINVAL;
- 
- 	if (copy_from_user(kbuf, buf, count))
- 		return -EFAULT;
--
--	kbuf[count - 1] = '\0';
-+	kbuf[count] = '\0';
- 	tmp = strchr(kbuf, '=');
- 	if (!tmp)
- 		return -EINVAL;
+ 	if (!prof_on)
+ 		return 0;
+ 	entry = proc_create("profile", S_IWUSR | S_IRUGO,
+ 			    NULL, &profile_proc_ops);
+-	if (entry)
+-		proc_set_size(entry, (1 + prof_len) * sizeof(atomic_t));
+-	return err;
++	if (!entry)
++		return -ENOMEM;
++	proc_set_size(entry, (1 + prof_len) * sizeof(atomic_t));
++	return 0;
+ }
+ subsys_initcall(create_proc_profile);
+ #endif /* CONFIG_PROC_FS */
 
 -- 
 2.53.0
