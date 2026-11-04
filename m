@@ -1,96 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FD65606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 00:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A51606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 00:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=n5kpqQeB
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hEpf3vZh
 Received: by kanga.kvack.org (Postfix)
-	id 405FC6B05B2; Tue,  3 Nov 2026 19:49:55 -0500 (EST)
+	id 3747C6B00EF; Tue,  3 Nov 2026 19:55:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3B7366B05B8; Tue,  3 Nov 2026 19:49:55 -0500 (EST)
+	id 3256A6B05B1; Tue,  3 Nov 2026 19:55:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A5E06B05B9; Tue,  3 Nov 2026 19:49:55 -0500 (EST)
+	id 214D06B05B3; Tue,  3 Nov 2026 19:55:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 04F036B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:49:54 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8B156A8245
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:49:54 +0000 (UTC)
-X-FDA: 85395604308.12.B5E17FE
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0070020005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:49:53 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=n5kpqQeB;
-	spf=pass (imf31.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 066876B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 19:55:37 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E04AE1604D1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:55:36 +0000 (UTC)
+X-FDA: 85395618672.18.7BAC29C
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 19A1020002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 00:55:34 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=hEpf3vZh;
+	spf=pass (imf03.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793753392;
+	s=arc-20220608; t=1793753735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/bumM81nPiENiLh9PH/Fm40C+VENRMD3A/OuAfI8Z4s=;
-	b=QwjS70hWV5oZ2ez/K8K+WoCmDe058PZi9VXNJusxaDr5U+9ZcdV4+9DlzWBav6pONRxqG5
-	Y3a5SY1oQPJcN4QYymw9VuAx8s0RRVRLX7PrQRkEI1oDdsYhTolotRH2JUj0j/srbzUdOb
-	xwtpGAHmXkWtEtpqqIRhv8/S0cmAYRs=
+	bh=xG5t3xikeZrgWEXDIQ9E66WF0APj2TRUKkrk3j8LkpE=;
+	b=L3AIWxe9O13lOW1DJG+kqQP6JpL9tqXYgVFrP9CdyP09bKsmSzlrdzmbc+wOoLIfjoxW4S
+	RrIhQF5rrp4G/r9LZrKs+Viihd3w53LGCMoELw2qWdDfjA4g+PayRcxgydYXeMYkAhvmJa
+	1dIubIbYfsovsPR3ZWGPxrUMn9C4Zso=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793753392;
-	b=KK2cD0V7TZNOi+MBQhPD/njBAQdiKv//9aOGVevga0QA9WkLnnXBkaMezax8CMIN5igEaa
-	dQbTIDKq7Mfi/TW3WUu1dDDvt4m9By5Kco4PcMLgE4Ysi7MVONugohsPPUHIjhfys/r9x1
-	W5McdT+bG9eioIFs9BfReKBcVYwvIYA=
+	t=1793753735;
+	b=MGxErOo+8hWsjE8+kJ9cYPwecxKX3EtfEGsRCJyfNgzfeFYtnMLDulZ95cBu5WG7vAzGlV
+	Pvp/fEXuRT7ufXNcL4Q+itgawh47Ybo8YFykkEOqS4239MW3R0ZoPryCUBvbM9E2vceK3a
+	Bbx7PSZCswYimzihWmdLkmb3gcQ1XD0=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=n5kpqQeB;
-	spf=pass (imf31.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.210.172 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=hEpf3vZh;
+	spf=pass (imf03.hostedemail.com: domain of hyc.lee@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=hyc.lee@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8a06e79e152so124919b3a.0
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 16:49:52 -0800 (PST)
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-cdac6d19ddaso75103a12.2
+        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 16:55:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793753391; x=1794358191; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793753734; x=1794358534; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=/bumM81nPiENiLh9PH/Fm40C+VENRMD3A/OuAfI8Z4s=;
-        b=n5kpqQeBdBgh8YZbIXl6V/7GrNDXd4Arj1e7n1zJA+7fmsHZIG3UNnQzH3ywdftBb4
-         ZenTFhWyo0ET99DNJ8jhhX7KSX9WGP7x/1ks5v03yMcCFO7yiKzNIOfA5CYAFnKN1gfP
-         98y8AEMpFfxqDQDK6jyzPydy0L/5vnFuNjFLr6Xhw0YjL1G3kjFvRyrRZoLVZ3hCcPkZ
-         Q86WtFWCEzjcmYKgJGt+Y6O0syjq84mWq6FT+v1co1/gq5C7eRIPBgIGO5ly9LZeOeCx
-         M92QNyaDxuu7Yl5cOCCwluy604Mg20r+Ow4rmqR/uGQwT+rcWY1yRerpUCyIJ3rVBeLJ
-         BJZA==
+        bh=xG5t3xikeZrgWEXDIQ9E66WF0APj2TRUKkrk3j8LkpE=;
+        b=hEpf3vZhHohFOIXdKZapTfIEzNKDi6nIAiEvFOfI0sg6W1Of/13PodsHSIKf2gPKUH
+         ox3V4eNHF0gniqTkw2IsFsS3oP00iVMvc1uN9gpkV/cOr3ITrp72h8rSit7zdrArQyov
+         uPCUrGti4cgpxQtiP1mz6J+AHOt4o0s6paTDrFZVmz50B/NT2H+5IpKyHrTh3QsAo+Az
+         L5Y/h0au5Z2EfPYPugCG6oE9rWbCYC6eOV+GeFYVhapf3ZYZ+tX1BMEkFX4HlK0R+Hze
+         lA1PwNcumq51cQS0/Cfo7V6HvnSEeGsIr7MPSq9o4vgbVYFqB2JqdqOIgqRpPtchIotq
+         0MsQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793753391; x=1794358191;
+        d=1e100.net; s=20260707; t=1793753734; x=1794358534;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=/bumM81nPiENiLh9PH/Fm40C+VENRMD3A/OuAfI8Z4s=;
-        b=W8qCgGUG77x+ARua5n++funB1oZUV7biv3RIp+hPPkUwgQw1gKpWRhR43JWkRq4bfs
-         OF+VxMVf8QVEZgvF9+S/H3HkU56HSA3BbCjgJGI/xxvKevTKEUGlb0ss0QmJ5yDoc0iV
-         VzryYdpALXjveK9ZUZUvc0pCwy6hwn8liJA+8yyP2JP2yEoIz4EK2hqEMYvwhQH2l27I
-         Hyl05FNygEEdqVD+Bfw4dQf/BOZkJ70Cs8LkmWiUf6n+5t5gSja79ggXJorO981rwu6V
-         0his/fgtoTIr+hMkp8JZq6NFX4JW83Ft/vDpmJEN85ym1IOXra1SExEN6jw0WmlGZEK4
-         QNpg==
-X-Forwarded-Encrypted: i=1; AKwUvByPYEL0oWCExz9QETvsKZ4PAbJlGXooqCbPCdTqjmRFTrXNrpSCpaFQ2e9hKCS45YyQbD1oUkyh6g==@kvack.org
-X-Gm-Message-State: APuU4Z+Jq+ax6Nxky3XxiQc626QMl824ziRxqTyRWF6lXozwOdxo1FqA
-	/2oTHVJsIEjaFWv52VskoeigeOskNwtPomiPRu4WNVwwbb5C3ICJK9b0
-X-Gm-Gg: AYBFou3Z1+6WUR6pmHk/6Sivlvy7bHTPpiHG4UiVNcJwDm3m9kFkNLkznBAPCc0jfp7
-	xC90mDvXZ9fUB+9fB5EnuZMKDE7Xhz/gH+pIqxQBcYHm18zXvJHjHKw01+ouQge8gKXQGoQ9Zaw
-	gj4/SgeoLE3ulI02KcJV/KlH+eHoUYFOWXTwfsmluGaP+MhPadhIV1iHLek/zrzgfgeUyFicBq6
-	S54ZVMNAw4oAazxvVzZNz7qAVypaTB9toKDq+g4GUvWGcLqWB+SbuEet5obg5ikOIPv9F2xbofv
-	z79mrqe1Glq1ln2yqj/xmxFAueYzRDoQnFbwtYQai89ugaxEEbgCjPeYckEc7zgU9JimBevH69z
-	0j5H6tkztafS7J+pjz3E/AnU3yKbXBCA8tBVzQn57xeB+r+PAwF/cVW6ymUIrAhlo/vG+JxQwB0
-	02SADfDBOn1YykeUQM8p+ZzW4Dy5poo4+2tY9VJqTox1WaxnFp5Cn+H3AebVAwR6sVErVjghVbF
-	77NdO5Ucd2hzMT4GqeBQP3yl+7x5E2TAPFhuva0trUa9wnkTNg5Jk4LFb3WQP1Qms1DB+Fb1z6i
-	sj21aiqMYBBdt1l3/Uy1N+Vmf5Gvge/O2RDmO5I=
-X-Received: by 2002:a05:6a20:914b:b0:3e2:9470:5303 with SMTP id adf61e73a8af0-3e928953948mr11828504637.15.1793753391239;
-        Tue, 03 Nov 2026 16:49:51 -0800 (PST)
+        bh=xG5t3xikeZrgWEXDIQ9E66WF0APj2TRUKkrk3j8LkpE=;
+        b=FUylFGn1l/KeTsfEx8K5cLfWGqeyAQixcEQYQcbTS2dVncStE+faLhOVD5gFncuUPQ
+         w/Xrbhn7FsdvAdbHhf3hzfJOzv9HrBCyzj6AmYvS3rUDw24uTmlZojWQmEHqxU3BmTSg
+         Yr6JBEjzER4Y7lrNU+rWb33xDhVo/qGFzBA5q0YHNwmzLkmd1nywJct/+Hp1y1mJvIuQ
+         kwq8ZLpdkF9a+RaTf4ZxW9bZLA2EunSLzHj1TbUme/onBTYcU0HkXPOKgnCeX0UDyvcT
+         eplvSzMF71Rst1Xuq7FDU6n6GY+qyKSujKgkIL7FsM6ndT/xIFUn76g/QEcsc9lLUQRB
+         G6Pw==
+X-Forwarded-Encrypted: i=1; AKwUvBxwVznGZQCHys8SOy6OkM+hMcFn+04N+Okog7WdFvfPQkCHwIwCUr+C20YkzKzVHeHpXNnSs6WXgA==@kvack.org
+X-Gm-Message-State: APuU4Z+4LOmRJrH3lWfv+o2oabKtyPsynyYj5ioVvB0x1L+15ADkJEqG
+	cbIe5JqlbFlke5qdm46tYylF4s8UKnXSSNfEpfVJq4o6jwhNsJ8KJxd1
+X-Gm-Gg: AYBFou239L8SV/tHf/g2kJrJD7ToKhZvVoCfOWdBNFGEYBSL9GWSMrrxjNod9yBv8AE
+	Q9JBxSxjy2YNNYzzbgE++cEiN0u9QTDJN1boKpcNVmtK2kczXA4klIY69j8yHgTYHd0AGLydWiG
+	OIRFcPChUy07K9WnkYGk8Pa/P/7ISAnGH/y7Y2KzQ1EtHzlNb/RMsFpxmq+ZQVGc+ebzqriUwcy
+	A+y8FmZ7UBdFbCQCK5S92qc/POI0yineuz6WE/SKxeRp3kCj9TD+JguOlD6mbPx7S+xsN9Y7NTq
+	QBbzoRDsIWhkEOFnbwYgg6MpnF1H348t933BGkaiSb32GafVw2R5UvniQy6yYIE1JXvOlpsoFr5
+	qnsMgjPf945wQEy8RQUTFT5Qu8uLd8kURb6JSDf8qxOBZAPc1TLXBVT8znYuCIYwqZ05iiSwdw/
+	PfnTOWwD0ePVOMU20EqLDzHfnpYMQOSbrrbhEagckpeYJoY+IZ+u6bUauXLRczng7eIsGO1Nxao
+	UsZoiA/J4AsFgEIUff8/Nj4rTSJN45xVzUu0Lq4HLkf21vRhxJ09O4aFYtfA9uuVVHuAN/6O8P0
+	sZePhKyYmXtgCst3zQ==
+X-Received: by 2002:a17:90b:184f:b0:3ac:83c1:2c0 with SMTP id 98e67ed59e1d1-3ae897e06efmr11479861a91.64.1793753733906;
+        Tue, 03 Nov 2026 16:55:33 -0800 (PST)
 Received: from localhost ([27.122.242.71])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb46440cc7sm329325a12.3.2026.11.03.16.49.50
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b09445f7b3sm1222403a91.5.2026.11.03.16.55.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 16:49:50 -0800 (PST)
-Date: Wed, 4 Nov 2026 09:49:48 +0900
+        Tue, 03 Nov 2026 16:55:33 -0800 (PST)
+Date: Wed, 4 Nov 2026 09:55:30 +0900
 From: Hyunchul Lee <hyc.lee@gmail.com>
 To: Christian Brauner <brauner@kernel.org>
 Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>,
@@ -100,30 +100,28 @@ Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>,
 	linux-mm@kvack.org, ntfs@lists.linux.dev,
 	ocfs2-devel@lists.linux.dev, linux-btrfs@vger.kernel.org,
 	gfs2@lists.linux.dev, linux-efi@vger.kernel.org,
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 17/34] ntfs: don't set SB_RDONLY after filesystem
- errors
-Message-ID: <auqBLEvcurRZfGj6@hyunchul-PC02>
+	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v2 18/34] ntfs: use the generic emergency read-only state
+Message-ID: <auqCgguXEsKCq9p2@hyunchul-PC02>
 References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-17-2f44f64f0b66@kernel.org>
+ <20261029-work-fs-sb_rdonly-v2-18-2f44f64f0b66@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20261029-work-fs-sb_rdonly-v2-17-2f44f64f0b66@kernel.org>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0070020005
+In-Reply-To: <20261029-work-fs-sb_rdonly-v2-18-2f44f64f0b66@kernel.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 8kwdwgq5kbf86ua39h45iat36u8t4za6
 X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
 	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: ob4fgukif4zof7tquwqgc1wfuph8ksko
+X-Rspamd-Queue-Id: 19A1020002
 X-Rspam-User: 
-X-HE-Tag: 1793753393-250231
-X-HE-Meta: U2FsdGVkX19HpuUcY+FCcunRrch5paDq0B9TyYJkzy5Ds5EO9H3FcbCQIAI0kIOHUqUXJTjUrm1o92mJRr9NGUfELowvQ7yn8fp+F3xrnJvGm9gM0sahG3ysSy+zTaiQXVajGF4TUtVwuoq7+gCylel3LwgEgkt2K0pma9Hx60dVO89lhGLpa28JrmGGokLcpE0oAkCnGT4v5S9wKm14ob9u+OIE3SoGkezC40Xjc0iQIfXr1eIZIGQpKMco/C5nSfRWe3/HayST5u6MFdLS8jTmiKMVkabIvC8hhtMSby5n8AlEdARfce/HYLq4pee+GFd+T6/dg6iWzhb3NVx7+uLmP0SiQ4xW0uByY0T8tUE1BrlZcRwMi0qmH+z4X/XLjX0S/zwuqC+NOTXdPt3KXIdBGjsfwDHPGqIl95JVhNJp5aW4sMiVUu1FpXdgLunQkpDdSvcxtgtyVcaE6jjhf45ROzStwnN6h9G9BiXH7TtABA6hYiWVOieYhECEaANA5LZU1gBcR2n4m1kxfZV9SXxwn6AkTGdS5nmbFTtQsViDYlqBSxvga9heACPCJ5G9mY481j6zsqGDoA5ioW/B1/VlizPqDTogDoArJ9ip70uvlpmoaNcJg5JYtXT+f0Iikn8P+VxHIQpE0ac/9wW4sFD/fhOuC+/TpverGB+ftChXDGGpDVort0pVAp9gnUOGrLDECXHml4i74Ngoi3zKzYrizjlyWBO3xcmn11D/34V0dcpGf26i9CzvH6/1fchvJSns/DAEja5bvHgyxj21ZWuZ8I2zf5ew54ivirqBUH6hGzGPrK75GVzGKBzJ9YWthJRs6VmXbRbcz0ftP1jz8nxpDfmrMYjlZNTZhgzXoZxzDAkOX90E8yJmMlRhn6Hs68DVTiqwmka90v3cHeOE8aGu76HBtjaeTsMK54UQZSr1rH3CoduIf+sdRa0jDi9Pi9xfDUqiyZ5TcbJfgp8
- 8TwkiRfR
- O+TTd/7WRtCkaM+N3Bt8TD4f4jWQoLrFEWxox+wAs9IPA347/bVLNwtJVL+wxTYsbWXDm2oW94gslG+ZNzsOKvb2owjwZ6mgNZuaFTnf/pIJ/TRMbqFIgCyNtphYRWHu4RPLUJ+NddFKyVxpnqyKNX0G4FDamP8ZQM00uOjDYb3TH89fXBPIuhPlsPmuiNMyFe8+EAgPk1p9HQe5VrYWzfF6a8C+S7OFCJRAMVtEqqtbK9bDkLPhTrcTSXFa985TyXcJhbXmqKmz3y7ZHVpXdOTjQWH4daHi00IWtaYzcOG1VVEgQCg89asLjgT1GQhdOE9byQz0AMLrK+TSl1F8YGxFW7KZ7RtHMmIMmYtRXcFtP/6PCROUnPK3rUswcoc2MzkJ4Nhl3h25FfeD8CnlYAZB5Inh6ufdSBvCKKbpfYr5HVou3qUMGusiVa09IRbzFUSqRo35CUH7vskK+4hLz4q2w51jklEagR9y0poS6aGPfR/3fMD5dPfBUufJfBNhC5RbEFgoGq6/1gRakPvRoFRbPzfUEA2AJjcxQJeKbgqiWsLtloZnuNWhZfR2ntFTP/5N8l8y6BKPBBhCaGYFpLieQQ01ar3/c9ANaGbdz15CZpKbXHSGAKb9A+ZYE7LynxBAcFX0VThbjuQP5gW6dE559kj+e9czBTyG2lid0733bh1HROXxdHGn/cQ==
+X-HE-Tag: 1793753734-187772
+X-HE-Meta: U2FsdGVkX1/9QgEImhFSiU/CVhoBdYb7CJ/OAV7H9uGS08C5pop7DNwPUp5p4oetHBS2T3F/aasM60O8b5Nk1MuHI7gONyz0vb0PdfEVDSeSVeFFvqMybYBi9neIvDk091F70uh5OYYCx3/c3FTKAtg8SME5TsPeQ2XQtBsfgBvY/kbT8FiARoFTcsxzRHtkKBXHzskGVQoitJjVoTFOp7RvOsebinQpqcsel4GxzlqKmXzvC0j4xkbpYQypsJcKKZQK2OtOdYiXY3IrBC1bbuRePliUsJ9xtchx+36fg4Mq7Pe2fXTbrt6QrXKeoPdZ4mbwaLDw+UnHulr3JrFae4nT2lzNN00KtnhHADr1F3lnwYuFYMqS1bqc8OyXVFPJevyxXBTMroY2558j+IdrjO2imxFaDYDutiYXzhH5iSNAJTsvL2FDu6GS3VqOs7EdzpunoT13ScPll73vwCDVDphGEyN2OXgfgGX5p5zExz/4JcBjChIQpTo+HKytMLe+8d5HqhatxktEFswuzOzoxuONVw8agKfsESdSY1SKMJxe7i9DcSNqCVQtSYaVOlXeszSzpBZ0LXN853DmBjXAjMH/JQsQfGtM1HcO0fR8X9j2tuEPg9MH8ndVW4XyoIOOJDUV+/jG9RkOQTybgYv3xT7J2uUwo8cJjNmp1GDIGsIAx/f6Ae2DOFBKk/5UyLGk2GKjx05sEaFsIZEVfIfBtY2va5jhvO0VUArvrhScAyLEHlkyydtH1Rm0onelZWd4BjoG/JD2X/rjtmC4hdejnoM/dpZWct1f/SkgP+bKL933RoChCS7lbPMyupIkasyE0Phr371UQGrn1OhrvjLio+A6K7wz0nLiT/gx/15i7d0fQxs++9216/kLI6IpvzEqeHkFpBNESVRCXJJSAH4cI6h2L+PYTYX4iUEQgo+ygG27ftj4jm4GyF8RRSSNpXoLQKJj/RTHLPg4mh+10ZE
+ GjiptDxK
+ Bnh/thmC2DOye2JFO7LXdy1PR3aKzKWKi5CVcs7S9Au45WTeWKofCq0PQ7ZxwCFZMZsjqBdC45X9GYsK75fdTySxhvrtFYhSxNApylpo30s8KBtGtVdKudmXxORVF15zpTzuAT+hjAQdxGN/HqXBwV6/CpJ45WsFUJViRggUwnt/XHYJiOwitU8QoKM/C/mXIQY7kdoTN8WS/JkcmtBmvZjGuqxAraglCok/ZCipdL3MIKPSY4WJZdjB3b1ASE0cPs75hNNfeQtijO+oNfngg3tm86XUIW03/VbOvQjWIE8z6la0rNDQsywNPIMAmIErSRgS1BFdilQ/fHp0LM0rjTd35Hnth2u28VnUCGkFjwVtdupuQgoKQ1IH9DCBKOE6uSCxey35hE/oDqUQUhTBEzEMx1cnIj/uHZQ4/8MIvDS8y9K6YicUFSeOogwG6kz7pcXWxYRPVusQpCYhwuGe5TXoru1p3ljZKEg2oAQys1ftb0mAhrTfEukrw44Zq6pOF24wuz/IGyzyCq2MaZ6pNXAtkmKhV93irVk5P8z54fq0mGA/FXEAHL0X3JuT9sv2K67TnlQtA3niMfXbnrRw06V7tQStuao+WFdD3pCsuP/ECMp4/AVBMq+++33zLriTU7uCKOndRrLDcChg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,38 +130,13 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Oct 29, 2026 at 05:07:08PM +0100, Christian Brauner wrote:
-> With errors=remount-ro every ntfs_error() ends up in ntfs_handle_error()
-> which sets SB_RDONLY without holding s_umount. If that happens while the
-> volume is frozen through bdev_freeze() thaw_super() sees a read-only
-> superblock and leaves the s_writers rwsems locked so every writer hangs.
+On Thu, Oct 29, 2026 at 05:07:09PM +0100, Christian Brauner wrote:
+> Set SB_STATE_EMERGENCY_RO instead of the NV_EmergencyRO volume flag when
+> an error makes the volume read-only. ntfs_emergency_state() keeps
+> telling a shutdown (EIO) and the emergency state (EROFS) apart so all of
+> its callers stay as they are. /proc/mounts shows the volume read-only
+> again.
 > 
-> So set NV_Errors and a new NV_EmergencyRO flag instead like ext4 does.
-> ntfs_emergency_state() returns EIO after a shutdown and EROFS after an
-> error and the write side shutdown checks use it now. fallocate,
-> ->set_acl(), FS_IOC_SETFSLABEL, FITRIM and ntfs_mft_record_free() get a
-> check as well. Errors while mounting still set SB_RDONLY, nothing can
-> freeze the superblock before SB_BORN.
-> 
-> NV_Errors already refuses a remount to read-write and since
-> commit 521978c4f444 ("ntfs: sync the volume dirty bit with the recorded
-> error state") the volume stays marked dirty once errors were recorded.
-> But the dirty bit may not be on disk yet when the error hits and
-> writeback is refused from then on. So a work item writes it right away
-> because ntfs_error() can be called with mft records locked, and umount
-> lets a pending one run first.
-> 
-> Unlinked inodes are left to chkdsk in that state. Their mft records are
-> freed with direct bios while the index and bitmap updates of the
-> deletion can't be written back anymore. And writing to an encrypted file
-> only warns now. It called ntfs_error() which let anyone put the volume
-> into the emergency state.
-> 
-> /proc/mounts keeps showing the volume read-write. Writes through file
-> descriptors opened before the error fail with EROFS.
-> 
-> Fixes: 6251f0b0de7d ("ntfs: update super block operations")
-> Cc: stable@vger.kernel.org
 > Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
 Looks good to me.
