@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC807606D833
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C34606A336
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hKMrkOmt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X1jgy3lG
 Received: by kanga.kvack.org (Postfix)
-	id EC0166B05BB; Wed,  4 Nov 2026 04:27:23 -0500 (EST)
+	id 831D56B05BE; Wed,  4 Nov 2026 04:28:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E49EF6B05BD; Wed,  4 Nov 2026 04:27:23 -0500 (EST)
+	id 7E3116B05C1; Wed,  4 Nov 2026 04:28:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D11446B05BE; Wed,  4 Nov 2026 04:27:23 -0500 (EST)
+	id 6AB0B6B05C7; Wed,  4 Nov 2026 04:28:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A6C216B05BB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:27:23 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4245E160670
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:27:23 +0000 (UTC)
-X-FDA: 85396908366.20.B8408C0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8FC8710000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:27:21 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hKMrkOmt;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 454926B05BE
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:28:10 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D70EB140661
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:28:09 +0000 (UTC)
+X-FDA: 85396910298.24.30D9691
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 4876D40009
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:28:08 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1jgy3lG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793784441;
+	s=arc-20220608; t=1793784488;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pha1RY94GjOtnqXrQOQE3qKs4iPAcIL8wQlgIsnD1VI=;
-	b=RWahRaFM8f68X3UCdGB5VS7+Xvc0Yk9xPF7/VVxESh5tmjGSUjZJAcQpLvQlay9Dl/s2Yo
-	1QEs29u+3GqSDCnvu1EyM4tesOG8IRiUdeh2os6ay02i7srwun7YavP42/WTxAHBZnYE07
-	cpW57RmTBYC6kGZEaVyAEg2dkFh2hRU=
+	bh=Gr7svhS/YSc9d7laFr7PXJQ2SsJ994DEnu6A9NyzDrI=;
+	b=tpVjiajP7TT2EZWDioxGSnWCCNkQDpFKjv8YbRmtlC7ExbELqVoqlwB419KNHNNmp2utR6
+	s0RQXO9aUD3PTTr4FJThoz3A/yvYE9ycU4o5KdhDjF+5/sEnvZ2BSLFDDJypPYkZesuX41
+	4s8BAkqUZJO5tcmGDpoE1/JoFWzyiGk=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hKMrkOmt;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X1jgy3lG;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793784441;
-	b=M2wTeanHe2y1fZ2xRUr/n4Zw0Z6rTfYLSFo+3ysqw88ueUsiRKjvjQBsmK3Uz6ySidy3Es
-	VuD9khQsO+f9arEvs4iUi9bzdqAw18jt3zXOWDhH1QUFNm+12xITWp8Cb8XJN3UFH1uGni
-	ocbvqIezLLd+0cKfZ1DjRQsTRtIB8UI=
+	t=1793784488;
+	b=jxcCGBqmY62X2S1F9UQfpdxyeEI2xRNy3KU0SNaQSfLenfZVq7A9zsLa+M/0EC450NiaCN
+	hr2ZLp53hY0rFbLBa4hD+cYaz9Teou5MmO+m4Nzq2N1LyU9zgkfak40uezX276mp7kR4kC
+	vaLx69N4WcnzCjGSglkx2aYyA3iDhVE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD9FC43E30;
-	Wed,  4 Nov 2026 09:27:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48201F000C1;
-	Wed,  4 Nov 2026 09:27:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C108060098;
+	Wed,  4 Nov 2026 09:28:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4001F00A17;
+	Wed,  4 Nov 2026 09:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793784440;
-	bh=pha1RY94GjOtnqXrQOQE3qKs4iPAcIL8wQlgIsnD1VI=;
+	s=k20260515; t=1793784487;
+	bh=Gr7svhS/YSc9d7laFr7PXJQ2SsJ994DEnu6A9NyzDrI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hKMrkOmtm3B2gZiQeO5JvnZ9p2ma/4Ab4QoV2RY1r26cux4zCCLh9wEH2c33BbHXK
-	 fbNgj5kWSSvaYoEB4LaR958tQgbKkBQGFEq4mxLA85jgB1KOgLoszMSGVrY9Ha931r
-	 D0hMpbsmsCVo3Bmo207nmKQT+W9saDNTG/2QCtQUHOWdxFm2doY6iFV0wGD7GNxdFv
-	 FmgbHDeh91BIDzv96YPjHlswJc8awRukjfsVnSPjYTrsCRqLuc7lscOjkrPunvesMJ
-	 Tjwc/nSfJXhQ01Nzv2q6cSJ99acGT39x8EGT/eIVENZ4EHlmNUtg6FDEG8FGp/Kj5W
-	 DRZXkXKQhuqlg==
-Date: Wed, 4 Nov 2026 10:27:08 +0100
+	b=X1jgy3lGK+B8wHnMJmPUlW00+DythG+u8ZdEslw9l+mYGsCluF0yALGaeLj7ksrDg
+	 EcNjCUMoKMdxcyD0WsxPb4Cp4iKUAxNR9okqjQhF+09x5q+3kuYpexwXQlXsHIw+os
+	 TkFeMF2FhQ5UjzAqNfBp6xMNGmn825VDWt1gtK+nxiDDItHSDAD0XUEkYDsawNyiA7
+	 /4Xh7LGcOgeD7u3hApqggi+GDOh8nhBNcBO0pFhjuZykmUExXJEtisP76hRDnMqyNT
+	 NxfQEUBzADkSfaq0PsDOx4woXNhrClwQtQmsRawkfviLN+SXF+cZMarB1vamQDxvXp
+	 LI66cNBmM2ktw==
+Date: Wed, 4 Nov 2026 10:27:55 +0100
 From: Christian Brauner <brauner@kernel.org>
 To: sashiko-reviews@lists.linux.dev
 Cc: Linus Torvalds <torvalds@linux-foundation.org>, 
@@ -81,29 +81,29 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	Anna Schumaker <anna@kernel.org>, yukuai@fygo.io, Heiko Carstens <hca@linux.ibm.com>, 
 	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
 	Christian Borntraeger <borntraeger@linux.ibm.com>
-Subject: Re: [PATCH RFC 13/16] proc: let procfs copy out reads that don't go
- through seq_file
-Message-ID: <20261104-weswegen-magen-gezaubert-373ca765d28c@brauner>
+Subject: Re: [PATCH RFC 15/16] proc: let procfs copy ioctl arguments in and
+ out
+Message-ID: <20261104-muskel-filmabend-parklandschaft-f02c910a4fb4@brauner>
 References: <20261102-work-procfs-core-v1-0-75df35e4f8b8@kernel.org>
- <20261102-work-procfs-core-v1-13-75df35e4f8b8@kernel.org>
- <sashiko-outbox-195540@kernel.org>
+ <20261102-work-procfs-core-v1-15-75df35e4f8b8@kernel.org>
+ <sashiko-outbox-195542@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-195540@kernel.org>
+In-Reply-To: <sashiko-outbox-195542@kernel.org>
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8FC8710000B
-X-Stat-Signature: 1c78sed3bww3nabzwoy49q7z5xd1btun
+X-Rspamd-Queue-Id: 4876D40009
+X-Stat-Signature: eoh1ecbyztf16bqia197papdrhqccwtg
 X-Rspam-User: 
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793784441-734783
-X-HE-Meta: U2FsdGVkX1969em1PX5lsv1EG0D/kQ8kV2FOrmulU6KSOl9xY3sYPQmVLLdjimRvpJdCOL/QqdSX9QWaIJoQryPHsiib9Ndz76uYrYdZgGaGjlu3+CQK68ZE2QWScaypnT3lgPY109DdLPEH6GxhwGSK2d7B5c/ahc3hI5i+DaOYOfnCjnhzOoF6KgQnp5b0Dy80k4Ui7Iv8WDSHXf+ivrVkgvqggw3H6z6p7x26KczkxHOxLqj2L+d/vzmtr/uI8XsU/aWR/uHwpBYrzOOhy+rP1dKv3MX3YcZPFf1fDpub7Enhucfq3PkmQhif5Hp5cuS+GGhYQYJpQf0X5fFnpIMnFY136pPqXXb+tcAwTuJMl6D5ufoxZAW6Rhg2nOcuBvKb42wqegvmFySMAGogpISsjzaoRpMUKNu5qe48M43eei//Mmb4QX7Nf3GluCp262Lr8f0cnZ1pls9O7QpseyIxqunnvGEYfqUaemh6Qe0hMyRobcMIgQ0lSEdKjJ+B9a7FB8yJERb1HlLqHsmNerc7ILOcflPwYHXO3BVpbIQzlAlIROt/WJXba99g3HayOC994LmO71Z2lqtQA4VkCxA0aI8CYJVafb3cRuwpDff2f8FOF623zqztv7o/pTR7FZsFnNWpEqs3zllUTKa7fEVDYBwItFxsdDjEq3gyMrr2X1I3yaz5ge3G3oyh/fslKZP+EXWaAJsJrs90przlqMH4rYLf2PIktvaEKE75Tiwylr/2iMpcY4dhMjxtD53iiC+42fWq29GlI7mn5QKNKHcbRc5Z2bc0IXvwUnRizdTlx/q/LcdD91yXEye4b9oBWyIlbkthgvu6+MuVD9FxxvarfxCKHrNWycA3h6QD5Jt5cmWbOTwjt9i2VvNFj/L5EMkF50ci1buCF58wQGUmq1kKawUlpHxXP42O0Vz6IRk58G2B4DUWqWqSYiFfyOiUcCJeH333Nz+t2MtBZn6
- aHp7oOVm
- XNADF1j4AE/kXiLimSt9DCvOYq1nkVzhua0mLp5F0KO9Ky3PubvPuDqGpHpDpVUfolMJPpbmrfk2dUEr/peo9LEpzCf8/kA34RmRbc8ulPnGY2X6TCj59pHnZn/VoSurNvBjabJINllpEHpFnXoushsW8Y4zmtF1mrdAU1tz6C6UXFSLDkHQKYIeUjLcTUULSk4ZqS5eNio7YsLvslxmymflVjPF36cTlVfWsNCV0IURMjMLQufUGprzR3eRWyBXMU3rxud9pr4oSSpiB3saP2Tfp+pMUBgfSVaWUDLsge6T2b3R/g71JwmetgPOc1siuPk6uAIY5IdkYkYg6+qiuGrsKj1Q70fzvxO44mMsEDtgfMZnG2t2BxUoouCG0/Ulsqz8aAe1PzryZMWMfnWP3wu/XUbxM/RWObWZs/IYg20TsKNqRZRaB7B4R4ujCoTrZCiKn+hThkeTQx24dtQ1DScuHRQ==
+X-HE-Tag: 1793784488-75420
+X-HE-Meta: U2FsdGVkX1+XIwGKoSCk4+dN3FB7cYJE3U0uIYclGL1SUiKoNk5icH58HSQ4Yi3kYc95OTZu5phJFsn5mLu7SRK9EoGLRJiBYRdiHDDUr8rHeEGZSvwwNeRfo4uJl3cmHMZyTuptYqeG9n/9rIybEVA51S4DrD7irY5iJNfxmNkn3tNaXmmZi2SF/rRX4NlNohf8cMK8/AaleppMNgcpKJ7F19tKqQyvMT3ecWY4jpbmlPCaYvaNLL3lbHkYPoU6tZtHdp1MWDw3Pys0kchbDNGwNP6W+CnFQ955V4//cZSKRRnS9cjo7TKsbbxQhI0QhEfhRx+n2MHOtHZyThDRPdVyWm4bFSVEsiBfGzrOVehFLsv5kOk31vpee0g+LuuI9QrVCDicL3f4NEXRLHqLjbkr1qhBQnUMWzK/3/STeUBpCrD49P08Pymzobl6AzbgqF8iWm5Fm3TvpVKb0kz8cWBis9R55aeIZSbrGh5bpyxX63VIi4KdlUNaPwcPPkKdBOoodzX8Eu9Ou/t/HjmuHjIcpwbvheSBNl4ltXzmmc8e15VvbvXiHBknQ700utxM3sv7cKIUeq//Y0+S1X+86o1fETcaQ4nNbJIjT0FDaDS7kNn2Gp22OCELtyUaQ8OGt8MBGJ8GfPsXZXB8cPUjte65yi9nszKMLwwTVkdkJW+c1Yh+6QnzbzssM7a0RoWn7Q9+rErHuQwuEE/lErJEXWGhLtwChiiY4BtsDdkl9czLa2ncaqspT7rNwokPplQyyVq+u4AvFtPKsl4NnfOwPgsSHGghHYj4xvFImndy7Ts41ugPEHuCSULSDuyXOMmQInutjksQKsJzD62R4n2RI/5b4Y94dYEr7yYTV4xIiEvk0DgNBZOAp9qDFuLHvFXx7aGL1jgO2jLVib/7dBaiJtEOf73hikF55H/eLoqxBiPja92pw5y8CWD9SnyYjKoO/mEyrUNBOYtGOJ+gFsB
+ JZwtpMY5
+ 9Pyea7B72fmjVV3aJTDMrwnaQW/zTBRpOJHMR79hzJlN+c+1zz6xWQZ+Dsmp8UnpN3JBBmO5FGxvqt9z+OldHSg5qgm+10XNmR4oCO19y/SncB8zJNZrQ32ThaUgPoM+wSf/jYcJBvXrPP5UPiXRUCkK4mfldGuAubhfZ1c0KJrrZl0QeK7btUhs744ksfNt2KLiee1e8rzgMeGH5Jvj/nNY3xbLNRBG4VjyuXyfjGjB/+AyDOMUOAHo5wl85NHsVSJX0lmPNuKaA+zNWoNEkMwzkmrOqWCiU/FIx0snr/+vh5Z7LOLgD6J1tNxyCve4MHzIs2C1lHueWdrigNseMM+WjZOUyOC/0oC7Znn7OSrQfUCvzoi9RBmbqX94myjrD8yvW5TVyOvbjqoA6pwyqNfElxQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,8 +112,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 03:01:30PM +0000, sashiko-bot@kernel.org wrote:
-> - [Low] proc: define and initialize __free(kvfree) variable buf in one statement in pde_read_buf()
+On Tue, Nov 03, 2026 at 03:01:36PM +0000, sashiko-bot@kernel.org wrote:
+> - [Medium] proc: unguarded zero-length user copies in pde_ioctl_buf()
+
+Hm, a zero-length copy isn't a nop on every arch. Adventurous. It's
+skipped now.
+
+> - [Low] proc: split declaration and initialization of __free() variable in pde_ioctl_buf()
 
 Intentional.
+
+-- 
 
