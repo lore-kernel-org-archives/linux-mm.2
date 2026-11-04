@@ -1,128 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0614D606A32E
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=xt8dPoZP
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3738606A328
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:39:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 206E66B05B1; Wed,  4 Nov 2026 04:36:40 -0500 (EST)
+	id 07CD56B00EF; Wed,  4 Nov 2026 04:39:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D5896B05B2; Wed,  4 Nov 2026 04:36:40 -0500 (EST)
+	id 02E496B05B3; Wed,  4 Nov 2026 04:39:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0C7E46B05B3; Wed,  4 Nov 2026 04:36:40 -0500 (EST)
+	id E860D6B05B4; Wed,  4 Nov 2026 04:39:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D65EC6B05B1
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:36:39 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id C3BB96B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:39:42 -0500 (EST)
 Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D3B2A0557
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:36:39 +0000 (UTC)
-X-FDA: 85396931718.10.30B1628
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf01.hostedemail.com (Postfix) with ESMTP id BA46F40007
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:36:37 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=xt8dPoZP;
-	spf=pass (imf01.hostedemail.com: domain of umangpokhriyall@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=umangpokhriyall@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793784997;
-	b=yGjfzM2BCm1jq4pqRoIwJ2T3sZxKInqcB3tnWDPOfB/ofORp0ZPxtQ4R9+ON0mIOj+NkGk
-	85yq36lO8JDrVW6Suyoe5kDUzvyg5EAvKkZOIrrv0MN9v7CQ3t/O/DwHXpWwpPKPCnyDis
-	tYhyeZQUrD3MdMUgRsWmK6RR94k1nKM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=xt8dPoZP;
-	spf=pass (imf01.hostedemail.com: domain of umangpokhriyall@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=umangpokhriyall@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 51760C04BD
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:39:42 +0000 (UTC)
+X-FDA: 85396939404.10.60C83FD
+Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 7747E10000B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:39:39 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793784997;
+	s=arc-20220608; t=1793785180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=JsLxVuR1g1JSvibC9g9YzUf7PO6/MZgJEB3OXBOD4y4=;
-	b=tPZqIrFcWPBiyCe9Qdg4UAbh1KfT3z//l+1rHrqoBuuQvPNsTGI7/dqTIWBnVPXmamEy9f
-	NqRXvcH4OaSa2psP9mr5DuBLLiOOmhvcYATs6zGdyFYGUODHq0Ru/cbAvrcaSSKoNccM6X
-	XOaBpcVVQIGVS3SJtDRLmzF0+acoF9k=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-3ae1d0caaedso287555a91.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 01:36:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793784996; x=1794389796; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=JsLxVuR1g1JSvibC9g9YzUf7PO6/MZgJEB3OXBOD4y4=;
-        b=xt8dPoZPy1Dml9QJntHUhfVe28eYu48ZcH7El3YSEGVKA1iOY+XAVxdZwN8JSyOkoi
-         89ChSSO7JZJcGCTyWeHH8/Y8lti/PLzPDthND7+/R0tbHR5JdVO5Qmp8KtX655BF/DFA
-         dRnUipO5RelsMu4QgtYK4B4D3z5oDaShxRc6mr3HLa+7uhDZhJjPjBLy4xC1Dz5j6neO
-         syQBbx8Tn9941i1les18Xo1rMi9aNB18ajjP134L2s7pZHuiyFZ1ONI2RKgKTIdghIE2
-         e1mD9koWycJlCtqRm08v9a8h8GN1OIHy/Va5YdZSUyteVNVZR9P3BUiLphWsoGslzOln
-         1b/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793784996; x=1794389796;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=JsLxVuR1g1JSvibC9g9YzUf7PO6/MZgJEB3OXBOD4y4=;
-        b=1pCU500sttyGmVNP4wmJKXiUCT8gMzD6l/AJQNN7vBB8RJaZR0gGAR9F+stAl/Rh4T
-         OYtHfypophLcxpBK0wpCXhnmBqLBdQ1g9vjFQzJyk1+K2fV89hnx3xFLr70dcc22BJxc
-         QYln5SViKQsOUEa5E6RwXHopv3dfREJnlGXJsbdoSga3J4xDUdsqe5I6fcjBjGIj2bKz
-         dmKez8OMHDGoHIUGCIpQP6bPHBGbcurs7avQcslHR/pFVVvNpPV6n7EVAxCj3uWm/Z03
-         tvIkIt/8PMHt+qy6YrVl8ABWJBnsuPLxn3dBmkcBb++NlwLSdGhAwmzMPmfQTCzJ3di1
-         CZjQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwkuYZbw9RsojfSPsXNAHH7UHgoftPu6IKy5Z0sMkaWTV8OWyMXK8xAmHEBtZ9BP51LNiGLIe0elA==@kvack.org
-X-Gm-Message-State: APuU4Z82Z210o0CNfg88EoGS0guGvd2fSSMCwCvuCBF5A/r4fQ4EnmLA
-	96+GwZAon1sbxDMHvBY3w50ib4dJqqc1VrHj7Gmb+uDAtRApK9Py4zpu
-X-Gm-Gg: AYBFou2YbzLouXs04lziHTBk66KQa1Go8cWpvWbBlCxTjc6CasERilCBxLeMEfMsG5d
-	SWEZCmuoBI77n0IQHD9AJdcW3VkPMAoQDsht1rGas4n9louzw9IlzCcKMdT2MkHukpt7hrvgub2
-	BZg8Xc/5TPbyrtsLnFpMKgL+ajEIyJ9WWZ2PG9jp6PqOsl2DDh/2AQ8n9OGAxU9oaYZ1BpT5loZ
-	aZCQeWYM8ZN+LGTwXQIplFbMh9PpeCEujSjbdcaoqs7fxganwvF50P3+I9JjrAKYdvUeDO5rTd/
-	PxOeJ/cpCsKaxYZ7d8mrqZKxzXF/LKedS0n3mRFYF55d5ufYbiOsfwmM7GKUgdSD3ps0IsGBolt
-	c3mMSZP4Cp6WJm76Hnu5+H1zFxNvzNz+othqLAHSfyi4Hj35BvsgbHR5aKa5FzYqTwHX8Z8wuHn
-	+VXGDN6lq0JtN1rxt0PODT4z7pSVAIj/ECNYAOHv6avtXgQ9M1ETwn5LrUaADowJg3DMwWkmBqI
-	zor5uRuUxaC2us3lzgrlbIUKcWegkBV60LdxQoy8M+gFvS954W/A6NtKhKO4B5acf3schWBbCGe
-	BZ2TrIBnUMLXd8j5qnZhoMxVEgT0l0LBp2IbL0+rFPWAuN5gAUD8C8adP0ChvytMPo+A3ukm9Q=
-	=
-X-Received: by 2002:a17:90b:4f8a:b0:3a4:ca46:840f with SMTP id 98e67ed59e1d1-3ae896f8655mr12708132a91.8.1793784996534;
-        Wed, 04 Nov 2026 01:36:36 -0800 (PST)
-Received: from umang-Inspiron-3501 ([2401:4900:1c60:e7b2:951d:848a:7f25:3900])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b07c7e087csm8569454a91.4.2026.11.04.01.36.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 01:36:36 -0800 (PST)
-From: Umang Pokhriyal <umangpokhriyall@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Peter Xu <peterx@redhat.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
+	 in-reply-to:references; bh=GKas3peospknksB0vSRc5IU2FW9D1srUiUjTUhHUOGk=;
+	b=qHixZ/ywZiQyrDEE9t6BNfyfOBw2djMytsfnZXnB55ldeRmkJJvs1VdDZs1UN+Btxsl8a8
+	g5zJYNnmn25niPl0Y4aWJqSSkhJaz73v/v/rV3YhO05m+7y9a031RaJAvcYjkq2QVFk/W0
+	Kbmp8ECiRDN1Rww+Ut+mJDq2CboNqYo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793785180;
+	b=XJSMn5ht8NKwrKloLk0nCNgG+IrUpYtJbbcnHDAgxCwPny29jzd2GrAq2Odp/Ir3mVB/bF
+	jOsAakU96zW6TYUVr9m3B2SB7hCoBLzkutNPQEs8y9+Bs4klud/e+x6qMO+sx/Gk0kUx93
+	iO+6YzAaOJOejpnQxypTAojL0Wq8wVE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of husong@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=husong@kylinos.cn;
+	dmarc=none
+X-UUID: a086d4fad83311f19a56ed5b684f684d-20261104
+X-CTIC-Tags:
+	HR_CC_COUNT, HR_CC_DOMAIN_COUNT, HR_CC_NAME, HR_CC_NO_NAME, HR_CTE_8B
+	HR_CTT_MISS, HR_DATE_H, HR_DATE_WKD, HR_DATE_ZONE, HR_FROM_NAME
+	HR_SJ_LANG, HR_SJ_LEN, HR_SJ_LETTER, HR_SJ_NOR_SYM, HR_SJ_PHRASE
+	HR_SJ_PHRASE_LEN, HR_SJ_WS, HR_TO_COUNT, HR_TO_DOMAIN_COUNT, HR_TO_NO_NAME
+	SA_TRUSTED, SA_EXISTED, SN_TRUSTED, SN_EXISTED, SPF_NOPASS
+	DKIM_NOPASS, DMARC_NOPASS, CIE_BAD, CIE_GOOD, CIE_GOOD_SPF
+	GTI_FG_BS, GTI_RG_INFO, GTI_C_BU, AMN_GOOD, ABX_MISS_RDNS
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.3.19,REQID:eb28db4d-434b-490d-8aba-b9882b379760,IP:10,
+	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:10
+X-CID-INFO: VERSION:1.3.19,REQID:eb28db4d-434b-490d-8aba-b9882b379760,IP:10,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:10
+X-CID-META: VersionHash:7db8b62,CLOUDID:c3887dee93015b2c45488bae4be79267,BulkI
+	D:261104173930I66NRZ8C,BulkQuantity:0,SF:17|19|38|66|78|102|127|153|865|89
+	8,TC:nil,Content:0|15|50|99,EDM:-3,IP:-2,URL:0,File:nil,RT:nil,Bulk:nil,QS
+	:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,A
+	RC:0
+X-CID-BVR: 2,SSN|SDN
+X-CID-BAS: 2,SSN|SDN,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_FAS,TF_CID_SPAM_FSD
+X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
+X-UUID: a086d4fad83311f19a56ed5b684f684d-20261104
+X-User: husong@kylinos.cn
+Received: from ctao-book [(114.244.3.119)] by mailgw.kylinos.cn
+	(envelope-from <husong@kylinos.cn>)
+	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
+	with ESMTP id 1667460396; Wed, 04 Nov 2026 17:39:27 +0800
+From: Song Hu <husong@kylinos.cn>
+To: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org
+Cc: david@kernel.org,
+	tj@kernel.org,
+	cgroups@vger.kernel.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	Umang Pokhriyal <umangpokhriyall@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] userfaultfd: validate the whole range before changing write protection
-Date: Wed,  4 Nov 2026 15:04:57 +0530
-Message-ID: <20261104093457.152245-1-umangpokhriyall@gmail.com>
+	Song Hu <husong@kylinos.cn>
+Subject: [PATCH] mm: memcontrol: serialize concurrent memory.min/low writes
+Date: Wed,  4 Nov 2026 17:39:20 +0800
+Message-ID: <20261104093920.2279191-1-husong@kylinos.cn>
 X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fjkdc6oeipfogxy5xcwt54w468ii7aim
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BA46F40007
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793784997-254075
-X-HE-Meta: U2FsdGVkX1/LnWi1YhTDfcfBb/lxTayAVMEboSEgDrhHaviQb+RwrGyWyDByDSTWEMmsdj+4GG6N3ZNsLEzopC+O19OgHItqZGSnvgWL2Ri7thTnd7cIZFm6RmtEsmOenPdNNSJmd2UyT94JAKRh0MP0peGhf/PntikdYWp1wknGYTlGSA1HolbAzpyriumtQzhwchnNJjbgDF+UsqIAS0FGw1czonh5UBzzympgd18MlxO/IABqzEdgJeLa0CxnAEDbtAqF6yyiqaBYDSNw3h+naYXhQ+mlQG/qPnRP3QJ39b22S6DGKc/SxBxlpxsQGYQ/53WGjSj1f6PcOSFxluYtB3RLT/MH94YNrllyFIMrcUkD9gwGA4tAuvb5eAWpKm8PrfySCaiedl4L6W/yL9R1kQMkvXla7XWcRMdRIioJ30aTxrv2x10rKREev2kbD0hnpR+TcFF1iwwg2TC1xDCm9RL3V89I9Sn6GjnBumeZim6J70Larx6rnIZa7yzb0GNpj61dglWym16rVL1BNPugxuz1VZXZdZEYZLnGtJpSASg2eMnGWLRTy3TG32QdGTbkghE0yhc0RNUTrA0fskYy8lhxFUPH7ltnztgkV7vIMa0P8/lyh5mQJa0knw34eWOLY0/xzcvixj8xoQRHbN+H1EIMy6rztoy7X61gXkq7hGO3pNoQ8dhQNhUsshy8rxJAoxnd6+XGNLIiSOCJwl2GomJHeUMMUOPZriMmJgzT+FrsNUS4oeQ4+QbiPl26fgpYL1n8zOWMFwyQtCWJKEmKGIhFty4r2KTb3Q7TPdA/jrHAVwSmcbwsjf2+uTXIYsTdWpiYCphl7rC3+pvnbhKeim4R6aAgFIYDc3A8GaHWTt4ju48t2buSKH7F4c1Wg81hfsiisgxuT25TiVNoPcBAkQHw8pG/Va2NNrsTLwjszkTE9+yFXxVGK/XCcDXOw0nExfDwE6NchexS2G0
- 5iutwBCF
- sCXpqI7GXbv6rs/A3dsnjYdR342yMMh148xyno5egiSFy9FqcaTrkdwx6JWNFttfHj/E7zRV6EBgrH2r2xs/4Bb9/v8LsT5CQhiR4rLsUdNp2lR1H3yZk/5Iq6lkxygC2nUS2icusqrifU/H1wQA5acCyEUAvJ8TPYozVmnfGx5JsAIElxDRy3HlJTbxj3I9YtA8435KbVGpfluoHg4QyMoHRzj9JnDeDv5CGMtx4EpF3gH04lVR9ozXbeyG5Gmbvvl0q6qGaxsnsY+odOUeRXvz6gbmR6JoeH9BFR7Vxrscw82oAgyjwVe7W3O8MQeNh6OQ/AhxRBf+TUJrZxPiaSOVOQvo8QmKqBhKP0/gwMyOKeeQOqXdJq5viLauTdiEs6Nq8lbaktTiZ4RHKshEqO/fQgOroRhNZH7lKEACIrCPwTZLbKkhghG4rhTtyMsQfX2xC
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: zhe95wwra3p68tubis6bqa4uz77jfgpw
+X-Rspamd-Queue-Id: 7747E10000B
+X-Rspam-User: 
+X-HE-Tag: 1793785179-894946
+X-HE-Meta: U2FsdGVkX1/1F51Fv8uRZkC4ZQOBzfrJDaP1qiCFAfumTIBJBFnzSW8XCio2G3X2FSv26FCrDiS7iO+eKDrqAtLt3SU7ewnIxbbEb0eTlD9ssLOda9TGej3bpxLLHqYptxA5m7iETg+VhtJMAs3u5MJZ22AzSE4PtrpA5vyqBCy2Q8du4eR4F8w5i1pK702FQiKA6/KAEubGYcIFRQa9v1xCgy7H+1G6AFPXNY27wB7cOFKLRPoaOzuXSNSFSy5qCA4YGd9bagHrT4ekPe1APIQ/slcoB87YOrUXmiY4OGydKkj3xQzTIatFGoaTvSY5mtzZ8ne92elEZeEjftDM2LMUq+OxcYLPqhAx8Xg2o5dc/iOgp9jbMcAhCd11ndqsCw93/thICZP/AeJaOtB2SAM1Z1QSacwQNHEri5uLWKurUxtTvNaP83jzbuYP/2ueQMLPlHtuTxXTkUpo19/mhr9nd299BMUfymPLqmbYBbKlOQt2d07qadBL3SxZGePcWcqZ1fBw9C5nF0xX9mPiiBQVfVN2X42DkAKc2Cz9BPpeU0P66+TtsVzPm6y6zB2uC6IzMzgInxWZg+ANZg4xaP5T/SlFqD5g0rnS+MbsbX32WAhtdUtjTJKERtysGWyChqkY9Q2YSCeJv4PP/Ceso22PrzDtoaQthBCdec92izOKFA0mkNf28oVUxQ0DsxKfD3jWkWhHHeilR39simnscyHnsgb9ii8bX/i3/CDeWeu6QeBcbLGMUBHYNVWY7ziC1i1wyBWxO+wc7AIkwQTTEYODnjNBQ8thWGTLDBc9NKbbpXzAgaBQwm4kOh66jfCg9t0ZhSUo6nVh+mY3H3LxJnroyM3FdH8xUdtNQOlA5UYhgmbezQoTk9po+Nu03yjbebmxy0YU6VtNyjha2QVjfNj96WMWWusMa1OYRhyuSUUQk//33cP/QnQmBG7+ii3S2J0RwtRxGmhdV/BbDwY
+ VO6Ytt/Z
+ NWQXS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,73 +111,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-mwriteprotect_range() checks each VMA as it walks the range.  When a later
-VMA is not registered for write protection, or is a hugetlb VMA the range
-is not aligned to, the call fails after the earlier VMAs were already
-changed.  When unprotecting, userfaultfd_writeprotect() then skips
-wake_userfault(), so threads blocked on those pages are not woken although
-the pages are writable again.
+page_counter_set_min() and page_counter_set_low() require callers to
+serialize updates to the same counter.
 
-An unprivileged process can trigger this with a range that spans an
-unregistered VMA.  It hasn't been seen in practice; it was found while
-reviewing the userfaultfd range ioctls with an LLM.
+The v2 write path does not provide that guarantee: kernfs serializes
+only writes through the same struct file, while each echo opens the
+file independently, and cgroup_file_write() invokes the handler
+directly, so concurrent updates run in parallel.
 
-Validate the whole range first, as mrwprotect_range() already does.
+The store and the subsequent propagation replay are not atomic, and
+propagate_protected_usage() recomputes protection accounting from the
+current page_counter limits instead of a value captured when the
+write started.  Two concurrent updates can therefore interleave such
+that the replay associated with an older limit overwrites accounting
+computed from the newer one: writer A stores 100, writer B stores 200
+and replays, then A's replay runs last and leaves min_usage and the
+ancestors' children_min_usage computed from the stale 100 while
+counter->min is 200.  The wrong accounting
+persists until the next charge or uncharge re-runs the propagation;
+an idle group with resident pages never self-heals, and reclaim
+meanwhile distributes sibling protection by the wrong numbers.  No
+corruption beyond mispriced protection.
 
-Fixes: a1b92a3f1498 ("mm/userfaultfd: support WP on multiple VMAs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Umang Pokhriyal <umangpokhriyall@gmail.com>
+Serialize the write handlers with a shared mutex, the same shape the
+v1 controller already uses for its limit writes (memcg_max_mutex in
+memcontrol-v1.c).  The offline and reset paths, which clear the
+limits under cgroup_mutex, take the same mutex, so every memcg
+writer of page_counter_set_min()/set_low() ends up serialized.  The
+mutex is only ever taken as a leaf in process context, so there is
+no ordering hazard.  memory.high and memory.max need no lock:
+neither propagates protection, and their setters are already atomic
+(a plain store and an xchg respectively).
+
+Fixes: bf8d5d52ffe8 ("memcg: introduce memory.min")
+Fixes: 230671533d64 ("mm: memory.low hierarchical behavior")
+Signed-off-by: Song Hu <husong@kylinos.cn>
 ---
-v2:
-- drop the redundant error assignments in the validation loop (Mike)
-- drop the selftest (Mike)
+ mm/memcontrol.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-v1: https://lore.kernel.org/all/20261102103621.156928-1-umangpokhriyall@gmail.com/
-
- mm/userfaultfd.c | 21 +++++++++++++--------
- 1 file changed, 13 insertions(+), 8 deletions(-)
-
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 87da92526..1b7320d0a 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -1105,21 +1105,26 @@ static int mwriteprotect_range(struct userfaultfd_ctx *ctx, unsigned long start,
- 	if (atomic_read(&ctx->mmap_changing))
- 		goto out_unlock;
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 84f4a8fd4d16..87ca7bc1aef1 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4458,14 +4458,27 @@ static int mem_cgroup_css_online(struct cgroup_subsys_state *css)
+ 	return -ENOMEM;
+ }
  
-+	/*
-+	 * Validate every spanned VMA before changing any of them, so an
-+	 * invalid range is rejected without changing part of it.
-+	 */
- 	err = -ENOENT;
- 	for_each_vma_range(vmi, dst_vma, end) {
--
--		if (!userfaultfd_wp(dst_vma)) {
--			err = -ENOENT;
--			break;
--		}
-+		if (!userfaultfd_wp(dst_vma))
-+			goto out_unlock;
++/*
++ * The store-plus-replay sequences of page_counter_set_min() and
++ * page_counter_set_low() must not interleave across writers: a stale
++ * replay can overwrite a newer one and protection accounting stays
++ * wrong until the next charge or uncharge re-runs it.  The walk in
++ * those helpers crosses counters, so this lock has to stay global --
++ * per-cgroup locking would still let a descendant writer and an
++ * ancestor writer race.
++ */
++static DEFINE_MUTEX(memcg_protected_mutex);
++
+ static void mem_cgroup_css_offline(struct cgroup_subsys_state *css)
+ {
+ 	struct mem_cgroup *memcg = mem_cgroup_from_css(css);
  
- 		if (vma_is_hugetlb(dst_vma)) {
--			err = -EINVAL;
- 			page_mask = vma_kernel_pagesize(dst_vma) - 1;
--			if ((start & page_mask) || (len & page_mask))
--				break;
-+			if ((start & page_mask) || (len & page_mask)) {
-+				err = -EINVAL;
-+				goto out_unlock;
-+			}
- 		}
-+	}
+ 	memcg1_css_offline(memcg);
  
-+	vma_iter_set(&vmi, start);
-+	for_each_vma_range(vmi, dst_vma, end) {
- 		_start = max(dst_vma->vm_start, start);
- 		_end = min(dst_vma->vm_end, end);
++	mutex_lock(&memcg_protected_mutex);
+ 	page_counter_set_min(&memcg->memory, 0);
+ 	page_counter_set_low(&memcg->memory, 0);
++	mutex_unlock(&memcg_protected_mutex);
+ 	page_counter_set_high(&memcg->memory, PAGE_COUNTER_MAX);
+ 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
  
-
-base-commit: 74d73ffcffe03804f97e9fb82301dadf75671282
+@@ -4548,8 +4561,10 @@ static void mem_cgroup_css_reset(struct cgroup_subsys_state *css)
+ 	page_counter_set_max(&memcg->kmem, PAGE_COUNTER_MAX);
+ 	page_counter_set_max(&memcg->tcpmem, PAGE_COUNTER_MAX);
+ #endif
++	mutex_lock(&memcg_protected_mutex);
+ 	page_counter_set_min(&memcg->memory, 0);
+ 	page_counter_set_low(&memcg->memory, 0);
++	mutex_unlock(&memcg_protected_mutex);
+ 	page_counter_set_high(&memcg->memory, PAGE_COUNTER_MAX);
+ 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
+ 	memcg_wb_domain_size_changed(memcg);
+@@ -4924,7 +4939,9 @@ static ssize_t memory_min_write(struct kernfs_open_file *of,
+ 	if (err)
+ 		return err;
+ 
++	mutex_lock(&memcg_protected_mutex);
+ 	page_counter_set_min(&memcg->memory, min);
++	mutex_unlock(&memcg_protected_mutex);
+ 
+ 	return nbytes;
+ }
+@@ -4947,7 +4964,9 @@ static ssize_t memory_low_write(struct kernfs_open_file *of,
+ 	if (err)
+ 		return err;
+ 
++	mutex_lock(&memcg_protected_mutex);
+ 	page_counter_set_low(&memcg->memory, low);
++	mutex_unlock(&memcg_protected_mutex);
+ 
+ 	return nbytes;
+ }
 -- 
 2.53.0
 
