@@ -1,149 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91A83606D824
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1970606EEA4
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BcsFgHaW
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=NwOugIzB
 Received: by kanga.kvack.org (Postfix)
-	id 9688A6B05D9; Wed,  4 Nov 2026 11:50:48 -0500 (EST)
+	id B66066B05B2; Wed,  4 Nov 2026 11:51:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 919A86B05DA; Wed,  4 Nov 2026 11:50:48 -0500 (EST)
+	id B19486B05DC; Wed,  4 Nov 2026 11:51:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 794EF6B05DB; Wed,  4 Nov 2026 11:50:48 -0500 (EST)
+	id A0F3B6B05DD; Wed,  4 Nov 2026 11:51:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 475016B05D9
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:50:48 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C12DEA83FB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:50:47 +0000 (UTC)
-X-FDA: 85398025734.18.164C185
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1F878C0004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:50:45 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BcsFgHaW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793811046;
+	by kanga.kvack.org (Postfix) with ESMTP id 71DE56B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:51:51 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 00E768078B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:51:50 +0000 (UTC)
+X-FDA: 85398028422.07.5067478
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 14F1BA0007
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:51:48 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=NwOugIzB;
+	spf=pass (imf25.hostedemail.com: domain of bobby.prani@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=bobby.prani@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793811109;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=53b3k88V+4YK0ed/aB3GyjvJWSCMRtAC7pioPudzavQ=;
-	b=kqzFaEmIhe11qHXsbyPAG71NHHuWSc3drzVzew916uZMbHWETbhLDJ5xE/kKRxaP1XZGA8
-	CtXeQ9LYy9nuwQrliQTF6JHmtGviph+Gf43kRG4xfkwV82PDHhW92hUrq7M8AC09269VKE
-	inG+EZU1d07Xj1QWPGAkbO2rhVN4IjA=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BcsFgHaW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793811046;
-	b=FC8d7+4RumTx5j0820mQQn4gXtemIQfO0WT1JEq6yNMVBSyqivKOw/VSctDvjVH//a7Qho
-	32sK1fUkk/eCKzNegNRVZ4g/JSU6rn2zKtjJhQSsSKdXPGcXKi5o1HTvR6vdeJGu61Py6L
-	VKvC0nt5DoxsOwN+OsUxkkPb+55nex8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4ACE7403CB;
-	Wed,  4 Nov 2026 16:50:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553961F00A18;
-	Wed,  4 Nov 2026 16:50:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793811045;
-	bh=53b3k88V+4YK0ed/aB3GyjvJWSCMRtAC7pioPudzavQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BcsFgHaW1+L6ZOqLsUsBV/0SNC6c27pt1H8wuHFTZYRwY+Npcj8vX8AHk2+RwM4he
-	 IS68mA7oiYFmU4q/jH/zlhvI6iqWncENlQm9nL+sN0Nj5miLIkzFMM+GSH6yWwyAvp
-	 P/cdQeiBvMa9awL0mUf9eWY3ht5/SijTs11Bm19gmS3WmQsE1I27NXL9nuaos1chnF
-	 gq4hzsXRHrkUo5oAaWg/7sxRvDiRI3FbSnOOGHZWFTHdrzLX9XAAMJBN6KD0GUaxnu
-	 WPlg/mBZugkZXfPbGCtgKw/PKvTYU5Q71r/NA5QJQmqVR4jH2Drepi7QLC0unyN/KD
-	 JT2knJku1Qi9w==
-From: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>
-To: linux-coco@lists.linux.dev
-Cc: "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org,
-	iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org,
-	linux-mm@kvack.org,
-	kvmarm@lists.linux.dev,
-	patches@lists.linux.dev
-Subject: [PATCH v9 14/14] irqchip/gic-v3-its: Preallocate VPE L1 tables
-Date: Wed,  4 Nov 2026 22:15:55 +0530
-Message-ID: <20261104164555.3555725-15-aneesh.kumar@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
-References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+	bh=RolwxRoQLA4mJin9vBdQpf3oG/PEdLsxtoKEj0r9vc8=;
+	b=aPuVDdfvd7mhY5YdYAaQdyO5y6GPsvfqPEf5qP4ZFqPsC4vIh1LlSdC0iyLONQSgjcRBx8
+	cKKEns2OFJATlGaZQoJCXNIlMd2BjvDDOqFpjL2w5vKzlGUogMJBMjpuK3PQcVRu3HhUwx
+	zUp72XlS5WaPfwX5Bbqr1nNjWh43ROY=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793811109;
+	b=I6cuU1v5QHhazHyM2Haw8I0frBcttnMCciV60grXyKEhcdpCZmPc4mOZNBiy4s31NUpulN
+	P48fWmSif282zowE/rT/Q3hEibKwCEHuZM/xtoSNfsISXtKySsnN9AqvOmuNWbcWAc5NXJ
+	xAd4yilom+8utLvpPf7fVVgpuHZZbMQ=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=NwOugIzB;
+	spf=pass (imf25.hostedemail.com: domain of bobby.prani@gmail.com designates 209.85.208.180 as permitted sender) smtp.mailfrom=bobby.prani@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-3ace2e3a2acso378941fa.1
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 08:51:48 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793811107; cv=none;
+        d=google.com; s=arc-20260327;
+        b=BRV4t3wiHwX/1MaD14fMQlX4xmUTqd26EAX0d/+xNHezQq6SEELWUUVclP4tnnttd2
+         HGFL0LX4ExrYQgEzmxIflptgbvTDw4HyBJIL1w5SP7GxBD5B51mw5NwtTycOFfKY+aNt
+         z3viD1dETE13sa4thNAUGBZajxo2xuCbUilIkPEycSMe/cCzl+HK4qtqstcSdShh0kTS
+         VvGq+CoOsQcM4ByT+5uKdamrP7lC1Ybwzx/ntw9N0unKgxNVgvKebfbudzvx3mVI5zfe
+         DCoLR+72lBs6zoL4m27GfvOQZRqn5a8XzKuHDN7stltxd4WfkJ/9LKdEzWM7bQbVBL/Y
+         JTZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=RolwxRoQLA4mJin9vBdQpf3oG/PEdLsxtoKEj0r9vc8=;
+        fh=8fC9afwu006fHKFYqpp3XHUZkoyP1ymIccsxO/UEOz8=;
+        b=ZfxXbfM/huSmDBWyaI7vC81EdP4fJJ75LOpX5PqNlLN+Vs9RPuW94jSFxxuP/xEJEu
+         HEtWh76hak8fqy0ITUAGrCHeAOh+7bNymcNS5+Ywk7hyCMrsm+WNvLw+dqelQ5ma+W4Z
+         BGg1dhbBCs7SefJG0ykU09Wk63ibaFc2+9Fhhzv2GMuNxESJDatT822AZGuyS87jAw/0
+         SjFSS7DyQW6cAu2rZ6VnrBowcfNhpl+su7AQfjQvhrM/NafVyZ5tgMcyzhXnvugJOyr/
+         irxXMYHcqLCsM5cVYAAnBPQkDonEnd0z8Vn00VI4AB8JqsGv/g4kbnN3zVRGSv4Vivyj
+         hMXA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793811107; x=1794415907; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=RolwxRoQLA4mJin9vBdQpf3oG/PEdLsxtoKEj0r9vc8=;
+        b=NwOugIzB08+Swuldb7fjkYj1tZeFyJER5WRDbbFSd16xCwoZ9p9ibmhHLt4VkDOvKe
+         uTNTB24UfYVLXcO/226NgqMwr39sEdbzpjRdQ95x/YaWW9uoHu5OwZmM8dA7gGxqa1mz
+         53O0GWS+TzjBsxFwPQOdmHhdbfQqnwOVq3o6ZguI+SJ99Nze/Y3kpMRKs0jtljwj7dGU
+         MedNsjp/dp/tljSCEpTYBzgnrTVTQQ5MfUVQ9ek2fZX/WVe7gOEP/fS6m+ohnD7in1LM
+         hmmx9ESdIyaUKBqwZ+lPz/AVSjzHHlTNbeUQFThpmlDGAQ7Kap0NIWlxf2qKLxNg2UKi
+         Wy/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793811107; x=1794415907;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=RolwxRoQLA4mJin9vBdQpf3oG/PEdLsxtoKEj0r9vc8=;
+        b=DvLDrbvVjlXHi4u31bSrTgiHepAFKbB83/BNRMbHJ8T6Fhf9FTshGcHp+DpK+0z/cE
+         XXpQdnFHUsCbgjIQpOmCRPZkdslB1PIQrWUt2V0+Qo3ArdQ4cBtfzOvNJ/HfTwv4Yopy
+         c6bUkixqYOlE8lFAU21Ve6Mml1ucDB3rJEdPHg64rsVZA0wNVNZkx9YNmWy8MhHWyi7o
+         FbWx/XSMJob3JBOB/ODZRMKRRy5ripA9jvY7YPgm4AcQ3fpP9sDIDBYbWndQJO3jjdwC
+         YOW1XtoTqcSBry2lcXGk7uQFkj4rsddSgoTFW5vm8m+E0KSXpMBiMJH5vFo62koeYcDB
+         9gnw==
+X-Forwarded-Encrypted: i=1; AKwUvBwrXg30mvb3ta55VA6t2J6tfW48RC2XTbVOdzCJr9A2JHaSOqcJsmMctDmsJSNDSUQYkXuMEYDvVg==@kvack.org
+X-Gm-Message-State: APuU4Z8eXCP53mFFSik8xyd//nd888H1+NhyQoWBI67mMaewbEOphyWO
+	r2tLAtsX8Ph14YRH/zB1wQAAUOplTCkf8LueAdUBobtpPtvsLwWNrc91ehN3OzrAlKGA/McY+8P
+	ZzABOSLcwUSbYF0rHiUxoTe28YvUWsXA=
+X-Gm-Gg: AYBFou02vl+KS7665kOZ6iYUYg971pZICKYuS8dqM5TyhbHFmQH1ZNaGtMqYpsVVDv4
+	qMDz/FEpVQDQOjtY7KO5cqrbkEiLZtlvSH35kiyUmHgv8azfIgLqEXvGNsnO1677HdQbJoKzSrM
+	NZu7zw0Yqp4kEQ0T4juTkgp8k1vyHxPD4QgpL5Bd6+3QNYGwLAGs/usUk7WBzTSc6V13EXhPTWX
+	1fQdG7k+h1V745rZfUriXt3qDW+LxTu3KZHD5gdoO6PjAlWZxgqkylkjOX8QtwJR1+hvv9nfSdA
+	J/goB15i3oCHWYxUEurfBPQLOoEhiztbxV/eE1ZIrGElRLfVRLTAmUMrGV0jCkPzfxh1K1QKoEb
+	ql+2sybH9k62gUs3rYumBgsKpFebKq4o5VsX6v4fFcs7lG5qZZcUbtQrjud9q
+X-Received: by 2002:a2e:8a88:0:b0:3ab:4014:885f with SMTP id
+ 38308e7fff4ca-3acb7ad2de7mr37137611fa.23.1793811106978; Wed, 04 Nov 2026
+ 08:51:46 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261104013139.1341582-1-bobby.prani@gmail.com>
+ <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org> <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
+ <287698ab-76dc-4aee-8e6c-db1f5d18974c@kernel.org> <aus4ag1KxpuBNSP1@gremlin>
+In-Reply-To: <aus4ag1KxpuBNSP1@gremlin>
+From: Pranith Kumar <bobby.prani@gmail.com>
+Date: Wed, 4 Nov 2026 08:51:20 -0800
+X-Gm-Features: AclHuK8lUkRtT9DIM2v6hdb2JEoHz8N8QglBfCOcEbvQSbdRZXUQbv2xSsHG0dQ
+Message-ID: <CAJhHMCChBTH3QWBFS1Hp17zj5HepN6KFucvG_5tVdpaB4fjCYg@mail.gmail.com>
+Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
+ mapcount removal
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Richard Cochran <richardcochran@gmail.com>, 
+	"open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, open list <linux-kernel@vger.kernel.org>, 
+	"open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)" <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: kfazz9n39n8gd5kwdzxxwu6fbi8otrh7
+X-Rspamd-Queue-Id: 14F1BA0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1F878C0004
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: re6dursku1ka5sohgibaqtndbnb5fa94
-X-HE-Tag: 1793811045-111111
-X-HE-Meta: U2FsdGVkX19zWDXGpQ850GCdge+ft25dmvnVWiUNJ232zwhDR+VhhaApMV/4isKXZ5XvBven5yoZ0I9ll5suMVCbhEICcui1A+I/EwflBtdLcn5z5siExqOSnrTgVOr/YC+mUTSf2HICEq3RgyZ1dqGNnCAxJVRb4TI8kSDjRj99li0obGCwA518r+5dwowsv8H9n1DHQsHVtbk6afhs/2hSqQYVi2+3e5P52M7lmZZgjgYxtmKxRMvgVIzgy0XRuTLq4FrJmT2yeil83mbcEMhmErGoD+5CALyfNExgx3efhv2uqJ9aySnBGukjrC/syxScZmG79IsckBnQKVywpyIpWKM6fUIrpK5PDdHH0m5kVNiOMrqHP9uAyJ7+QmKlTbCuqoafW4yYQc1wB7jXvIEFXYikTF/Vmj52cYhwbQFYrqjTPKwoazC4/w8A6HJ/9m1n1k+2a0bXropNQO7vSpcqSDP66tKQXlzfyHzIn4BHp1ulxu/U3pGe0EU5rR/fTnJCT4BO8bnj+NRFunws45gtjhzq69volK4kUm6QI5QFEDITDiGSU3TSLdCrT7887QdZbGRZQnod1egkSvOnGfEA99KqUNdBjwZUQw8ESkb7R5y43T78KXotNa1wTdKCFt+F7XGFCfVwOmM/LRRk6RBwTd/9pQnFTLIVzXik+WgeofF6jKCi4640m1pu/tnzpOf6rvTq/Vg70TR35pfxbw2p1ZEQyYRjyHOo93sdVrB+cZP/wEN0IDLvMOP7rtVLJIFzR6Qk1KZa2BFlENnBboiRnVDH/YpxfwTwGjuQ2mL+inUc1D8ybs/HJlPYPcjc7fJ0aiSAlCtKgyog3IuOz2b8fi0jYOit3xI9PkWcA67n6BIILtdWvkVMvNrezpCMMFuJjx2eMBqYRqy9rWK2GCqTXBHNdYaMWjiGLpC+ETzAItRKDR+WSnux3jgVWjeOFYoRb8r0T/zz/IHMTkd
- SivmNge+
- jgJGbPI09n6ClMFW7cdpKKaasiSxWqSa0YuQnRibJPSrhJEl2vEvrnbsK0THoyJ+DENTf87yMM/fjCuyGyMnTXCvYSEqnwMp/g7gDwB14MGAXSk5LhsDSTKBjxGbbfbUF4AYQpBPULXL+SaZaMcUBfkcvn/eAZP2VZdfso/pQl+hap57jNiNDi2yh6HHbXQXfsHkxUwT/Vu8RzAbv/vzYWbofDcFsT8Te2+dWrJ78sBjYqu5BXUeSYQPKa0rtMN82IbqZeA+7DQ2RWMs2gas85AQ/6xWHrSky9yN68bA133EtWCE4nTSybrThXmVkuUXxNOR8QR6zc4/0rtrqga9f3/iRm0Ecq8w3r+MXbAM/ORJfkjBzMGPr/a+yOA==
+X-HE-Tag: 1793811108-820318
+X-HE-Meta: U2FsdGVkX18kbJNSxbTDtaFWimNlDJ4WUyW5iq4nbVHI6CGiNkp/OC39FxxXZzyUTGgS5r4Vw8ewmZROmjkIef0X3OtERjrLRY3izjaIVxx6Nc4XGwE5gG+Thac+s1vkH+2KkP4HQ0OkTQ6IDfvlbl0RA4iduDmzL31PTaOxDlBiH9jdMJN7wRHIFlvys8fFQSjif7NMNzaHwxnxH/P7AO4bVdtdEN3wkPEOdx+/pk2Ey690u1B3aqEkf3s15RZgTs4gY2gmpKeQHDmKVDRiO5QyDwPmzij2an4fvAe9YFnyiZAsBsQZQHzmau//oSbtTqaMfxMfhSWZlvMNIIs8AhSsV911emrTS2CSKmA4KeTu6Q2fE3Cr0C5G/wsDoSn2kManI/zY8rwN/BjErJVgOv7M418FoqN4EwzMgLxpOLZm4OhBRn+bnCzqlPpnjl3r7ienH4pDwgoEbANeHtnWWoT61kvXY1IOaFE2eDowaZ90RGHL8FcMrbgDTHFnSRZ2M4zMOpu0IyNdAxWqIjmZQWjJJkXhIeHRwyFPR2pfMlDB9Bg9xEU/MXZMSMSGdiKmAgb3LUxN+XtdZkhKeQc47fFwibQaZTyCbJYBrydL24HwOfSKZFQEfCbPdCj+G8EDl4VrnqTWf25JcHSm32x85CcuxX2HvlCydmgFnqykq6GMQFuoCKd6NnnR8dSCXjBonldw0tPJNsWGrtZyh9+xTWB9sjYKMxH9lwO9lLRfiaL6s/cvjE1EG5//WaEvTuGd8avk7cKoNyaxFaB1G4j+zv2neUA1/smq2Luwho4BAGIXdThoEDOECAoJ+h8ui0DB+l5UA9bmhLRgNHVQRiXR/ICR3gvlpd8id+KJRjU+DggczBZTnOgM8eWT5ft68z3c64Z2zL9VUG6ELNTNLs37D6UYhBWIR+B6kwmLpxtshhTR04fKF/25/JjBXGbZqRiY6S3GfmRINx4I2x9chxs
+ bTLiPjHS
+ lwiFBVlAVk6UEpkuf8t375dof8EwgEsstfBZmgoD+HHnpiMr58RM68aSgpkcy4MHY7lDgk8xVryQuUwc1fc6WZdj/2r9VDwaLRE/tYxkxGdbL7vXz42hxHhbnjDEmhvxv1PtAmv5iI2zKLYZBT87V6YZwj02M6QCUTr98sUB22h4BS+n8YkWzIajLKahHF1HlnuCNJcWDn8XoyiSzLzaxqw/fQWjQXk5lhwT8q3s6iMj+Ewyva//oy1xpalkiVaXUzn9EFj6f66TUhWRJ2103ORd2Y9J2W9o6hsdv5QVNkESAjPmLxEJWoOlSN0ImlxTeq61unbcVQOGrQeiNeyIZF/6gyG2vLeXrWEQ4oLcPURj9OIa5LzlUUudbJwnI4nVvKGmBiRsv9+UB0rq/ujrzpaQVOLEMC40pPM09rgQCtR4EjVmzfhDVnVOH7clZZt/UAWGojo0gdSsbX4w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,259 +151,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-VPE L1 tables are allocated from the CPU-starting callback, where sleeping is
-not allowed.  Remove the page allocation from this atomic path.
+Hi Lorenzo,
 
-Use a blocking allocation for the boot CPU and record the resulting table
-order.  Allocate a page of that order from the sleepable CPU hotplug prepare
-stage for each secondary CPU.  Consume the preallocated page only when the CPU
-cannot inherit an existing redistributor or ITS table.
+On Wed, Nov 4, 2026 at 5:55=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
+>
+> On Wed, Nov 04, 2026 at 02:37:39PM +0100, David Hildenbrand (Arm) wrote:
+>
+> I mean 1.54%, theoretically is even less convincing for me :)
 
-Reclaim unused preallocations after the CPU reaches the online state, and from
-the prepare-state teardown when CPU bring-up aborts.
+With reducing the strength of one barrier, I think this is a non-trivial ga=
+in.
 
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Thomas Gleixner <tglx@kernel.org>
-Cc: Radu Rendec <radu@rendec.net>
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
----
- drivers/irqchip/irq-gic-v3-its.c   | 110 +++++++++++++++++++++++++++--
- drivers/irqchip/irq-gic-v3.c       |   4 +-
- include/linux/irqchip/arm-gic-v3.h |   3 +-
- 3 files changed, 108 insertions(+), 9 deletions(-)
+>
+>
+> In any case for something touching a sensitive memory barrier operation t=
+o have
+> a stronger argument put forward for release ordering being suitable than =
+simply
+> stating it's fine in the commit message and updating a comment.
+>
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 9ad66253ab16..5628f497d389 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -197,6 +197,7 @@ static DEFINE_PER_CPU(struct cpu_lpi_count, cpu_lpi_count);
- static LIST_HEAD(its_nodes);
- static DEFINE_RAW_SPINLOCK(its_lock);
- static struct rdists *gic_rdists;
-+static unsigned int vpe_l1_prealloc_order = UINT_MAX;
- static struct irq_domain *its_parent;
- 
- static unsigned long its_list_map;
-@@ -2892,12 +2893,35 @@ static bool allocate_vpe_l2_table(int cpu, u32 id)
- 	return true;
- }
- 
--static int allocate_vpe_l1_table(void)
-+static unsigned int vpe_l1_table_order(u64 val)
-+{
-+	unsigned int psz;
-+	u64 npg;
-+
-+	switch (FIELD_GET(GICR_VPROPBASER_4_1_PAGE_SIZE, val)) {
-+	default:
-+	case GIC_PAGE_SIZE_4K:
-+		psz = SZ_4K;
-+		break;
-+	case GIC_PAGE_SIZE_16K:
-+		psz = SZ_16K;
-+		break;
-+	case GIC_PAGE_SIZE_64K:
-+		psz = SZ_64K;
-+		break;
-+	}
-+
-+	npg = FIELD_GET(GICR_VPROPBASER_4_1_SIZE, val) + 1;
-+	return get_order(npg * psz);
-+}
-+
-+static int allocate_vpe_l1_table(bool use_prealloc)
- {
- 	void __iomem *vlpi_base = gic_data_rdist_vlpi_base();
- 	u64 val, gpsz, npg, pa;
- 	unsigned int psz = SZ_64K;
- 	unsigned int np, epp, esz;
-+	unsigned int order;
- 	struct page *page;
- 
- 	if (!gic_rdists->has_rvpeid)
-@@ -2990,7 +3014,16 @@ static int allocate_vpe_l1_table(void)
- 
- 	pr_debug("np = %d, npg = %lld, psz = %d, epp = %d, esz = %d\n",
- 		 np, npg, psz, epp, esz);
--	page = its_alloc_pages(GFP_ATOMIC | __GFP_ZERO, get_order(np * PAGE_SIZE));
-+	order = get_order(np * PAGE_SIZE);
-+	if (use_prealloc) {
-+		if (WARN_ON_ONCE(order != vpe_l1_prealloc_order))
-+			return -EINVAL;
-+
-+		page = gic_data_rdist()->vpe_l1_prealloc;
-+		gic_data_rdist()->vpe_l1_prealloc = NULL;
-+	} else {
-+		page = its_alloc_pages(GFP_KERNEL | __GFP_ZERO, order);
-+	}
- 	if (!page)
- 		return -ENOMEM;
- 
-@@ -3007,6 +3040,9 @@ static int allocate_vpe_l1_table(void)
- 	val |= GICR_VPROPBASER_4_1_VALID;
- 
- out:
-+	if (!use_prealloc)
-+		vpe_l1_prealloc_order = vpe_l1_table_order(val);
-+
- 	gicr_write_vpropbaser(val, vlpi_base + GICR_VPROPBASER);
- 	cpumask_set_cpu(smp_processor_id(), gic_data_rdist()->vpe_table_mask);
- 
-@@ -3146,7 +3182,7 @@ static u64 its_clear_vpend_valid(void __iomem *vlpi_base, u64 clr, u64 set)
- 	return val;
- }
- 
--static void its_cpu_init_lpis(void)
-+static void its_cpu_init_lpis(bool use_prealloc)
- {
- 	void __iomem *rbase = gic_data_rdist_rd_base();
- 	struct page *pend_page;
-@@ -3259,7 +3295,7 @@ static void its_cpu_init_lpis(void)
- 		val = its_clear_vpend_valid(vlpi_base, 0, 0);
- 	}
- 
--	if (allocate_vpe_l1_table()) {
-+	if (allocate_vpe_l1_table(use_prealloc)) {
- 		/*
- 		 * If the allocation has failed, we're in massive trouble.
- 		 * Disable direct injection, and pray that no VM was
-@@ -5436,7 +5472,7 @@ static int redist_disable_lpis(void)
- 	return 0;
- }
- 
--int its_cpu_init(void)
-+int its_cpu_init(bool use_prealloc)
- {
- 	if (!list_empty(&its_nodes)) {
- 		int ret;
-@@ -5445,13 +5481,66 @@ int its_cpu_init(void)
- 		if (ret)
- 			return ret;
- 
--		its_cpu_init_lpis();
-+		its_cpu_init_lpis(use_prealloc);
- 		its_cpu_init_collections();
- 	}
- 
- 	return 0;
- }
- 
-+static int its_vpe_l1_prepare(unsigned int cpu)
-+{
-+	struct page **prealloc;
-+
-+	if (!gic_rdists->has_rvpeid ||
-+	    vpe_l1_prealloc_order == UINT_MAX ||
-+	    (gic_data_rdist_cpu(cpu)->flags & RD_LOCAL_LPI_ENABLED))
-+		return 0;
-+
-+	prealloc = &gic_data_rdist_cpu(cpu)->vpe_l1_prealloc;
-+	if (*prealloc)
-+		return 0;
-+
-+	*prealloc = its_alloc_pages_node(cpu_to_node(cpu),
-+					 GFP_KERNEL | __GFP_ZERO,
-+					 vpe_l1_prealloc_order);
-+	return *prealloc ? 0 : -ENOMEM;
-+}
-+
-+static int its_vpe_l1_cleanup(unsigned int cpu)
-+{
-+	struct page *page;
-+
-+	page = xchg(&gic_data_rdist_cpu(cpu)->vpe_l1_prealloc, NULL);
-+	if (page)
-+		its_free_pages(page_address(page), vpe_l1_prealloc_order);
-+
-+	return 0;
-+}
-+
-+static int __init its_vpe_l1_cpuhp_init(void)
-+{
-+	int prepare_state, state;
-+
-+	state = cpuhp_setup_state_nocalls(CPUHP_BP_PREPARE_DYN,
-+					  "irqchip/arm/gicv3-vpe:prepare",
-+					  its_vpe_l1_prepare,
-+					  its_vpe_l1_cleanup);
-+	if (state < 0)
-+		return state;
-+	prepare_state = state;
-+
-+	state = cpuhp_setup_state_nocalls(CPUHP_AP_ONLINE_DYN,
-+					  "irqchip/arm/gicv3-vpe:online",
-+					  its_vpe_l1_cleanup, NULL);
-+	if (state < 0) {
-+		cpuhp_remove_state_nocalls(prepare_state);
-+		return state;
-+	}
-+
-+	return 0;
-+}
-+
- static void rdist_memreserve_cpuhp_cleanup_workfn(struct work_struct *work)
- {
- 	cpuhp_remove_state_nocalls(gic_rdists->cpuhp_memreserve_state);
-@@ -5876,6 +5965,15 @@ int __init its_init(struct fwnode_handle *handle, struct rdists *rdists,
- 	if (WARN_ON(!has_v4_1 && rdists->has_rvpeid))
- 		rdists->has_rvpeid = false;
- 
-+	if (rdists->has_rvpeid) {
-+		err = its_vpe_l1_cpuhp_init();
-+		if (err) {
-+			rdists->has_rvpeid = false;
-+			rdists->has_vlpis = false;
-+			pr_err("ITS: Failed to prepare VPE tables, disabling GICv4 support\n");
-+		}
-+	}
-+
- 	if (has_v4 & rdists->has_vlpis) {
- 		const struct irq_domain_ops *sgi_ops;
- 
-diff --git a/drivers/irqchip/irq-gic-v3.c b/drivers/irqchip/irq-gic-v3.c
-index 94873646d46f..361ab07d7d66 100644
---- a/drivers/irqchip/irq-gic-v3.c
-+++ b/drivers/irqchip/irq-gic-v3.c
-@@ -1322,7 +1322,7 @@ static int gic_starting_cpu(unsigned int cpu)
- 	gic_cpu_init();
- 
- 	if (gic_dist_supports_lpis())
--		its_cpu_init();
-+		its_cpu_init(true);
- 
- 	return 0;
- }
-@@ -2056,7 +2056,7 @@ static int __init gic_init_bases(phys_addr_t dist_phys_base,
- 
- 	if (gic_dist_supports_lpis()) {
- 		its_init(handle, &gic_data.rdists, gic_data.domain, dist_prio_irq);
--		its_cpu_init();
-+		its_cpu_init(false);
- 		its_lpi_memreserve_init();
- 	} else {
- 		if (IS_ENABLED(CONFIG_ARM_GIC_V2M))
-diff --git a/include/linux/irqchip/arm-gic-v3.h b/include/linux/irqchip/arm-gic-v3.h
-index ea5fd2374ebe..a5565a745100 100644
---- a/include/linux/irqchip/arm-gic-v3.h
-+++ b/include/linux/irqchip/arm-gic-v3.h
-@@ -621,6 +621,7 @@ struct rdists {
- 		u64             flags;
- 		cpumask_t	*vpe_table_mask;
- 		void		*vpe_l1_base;
-+		struct page	*vpe_l1_prealloc;
- 	} __percpu		*rdist;
- 	phys_addr_t		prop_table_pa;
- 	void			*prop_table_va;
-@@ -637,7 +638,7 @@ struct rdists {
- struct irq_domain;
- struct fwnode_handle;
- int __init its_lpi_memreserve_init(void);
--int its_cpu_init(void);
-+int its_cpu_init(bool use_prealloc);
- int its_init(struct fwnode_handle *handle, struct rdists *rdists,
- 	     struct irq_domain *domain, u8 irq_prio);
- int mbi_init(struct fwnode_handle *fwnode, struct irq_domain *parent);
--- 
-2.43.0
+Can you please explain what information is missing? I think the commit
+message has all the details of why release is sufficient instead of
+full barrier.
 
+Thanks,
+--
+Pranith
 
