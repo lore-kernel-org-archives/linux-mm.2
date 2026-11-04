@@ -1,96 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B528606A326
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 11:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812C1606A33A
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 11:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PzQFw0Fc
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=jgdm78Gz
 Received: by kanga.kvack.org (Postfix)
-	id 7228A6B05B2; Wed,  4 Nov 2026 06:22:35 -0500 (EST)
+	id 9AE2C6B00EF; Wed,  4 Nov 2026 06:28:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6BABF6B05B3; Wed,  4 Nov 2026 06:22:35 -0500 (EST)
+	id 984F76B05B1; Wed,  4 Nov 2026 06:28:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D0C56B05B4; Wed,  4 Nov 2026 06:22:35 -0500 (EST)
+	id 8942B6B05B5; Wed,  4 Nov 2026 06:28:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 39DBA6B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:22:35 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2BAE812067C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:22:33 +0000 (UTC)
-X-FDA: 85397198586.29.98AEAF6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7C98EC0002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:22:31 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PzQFw0Fc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5CF056B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:28:57 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9129E8066B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:28:56 +0000 (UTC)
+X-FDA: 85397214672.16.1FBAEF1
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B8BED100003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:28:54 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jgdm78Gz;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf14.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793791351;
+	s=arc-20220608; t=1793791734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PhlIWW6g3N+AFu1LsfAztQ3Wt3gvl8nW98AXZASgM/A=;
-	b=x2LRYgqHIcgdqbBvUA/QAGZ+4Pow4KH/Ee4RnWDKygH4+/pmCtKdDk+tyRGKngZRhOA/FA
-	VlTsb1j1mkPO0/acDbTNFCwZ/VwbLgWKqLz5wYtbPtXoCYCiIe75FQHglpVG0W86k5lmFq
-	1PShLzMuyW7tamZq2h/DBuJjwmaWF80=
+	bh=9is/N8s+P77nIizr4iOPWVN8ElLFZtGDMyfkjPVV7ok=;
+	b=xA0bTowTZy7QfTOJ4gvxlyyw38aP29Gx/uD5ri/hp41882wnweqJCU/5RehqVCrj2+7dt2
+	7+K2vZLDJbYPgrSiLVnggF+1FJv4bi0SyTyddfkDyhPRvAd77DQxLqFC72PVkPUijtcagD
+	y4O0xC0uGDna/lhUEpdqJRWJLx/vcOI=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PzQFw0Fc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=jgdm78Gz;
+	dmarc=pass (policy=none) header.from=debian.org;
+	spf=pass (imf14.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793791351;
-	b=byXYRISm+X7J/AAfQVWPo7thqDi4cNIhZdq3kNApgjkassvx7Q6A+Au+QDDzS7yW7xJFdH
-	7OoR1NfGw1mRtfJODkXORCdbaW+dmBURtSU4XyqF70ITByGotKC3U+KObmoOr6gTtapzIc
-	ZtVOxDEH1PaY8Dstr5VZ6hBvqUm31zM=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AF6FB43558;
-	Wed,  4 Nov 2026 11:22:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC30B1F00A16;
-	Wed,  4 Nov 2026 11:22:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793791350;
-	bh=PhlIWW6g3N+AFu1LsfAztQ3Wt3gvl8nW98AXZASgM/A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PzQFw0FctCGUG1qHhQ27pa7aqyd7BxJUFvbnrW/uv19RT1NEp+QBsPx9tWUT0MRKZ
-	 EP/IgnjNU2qQXaN6ydBSAjnVmbibh1JigkN4pF0k4b4TVFlN6vXgsHaMIv4OLWjbtW
-	 9JZAxCVdX8vntYR8F2GsWdf0v+5nIZntQeHoeycoXS6Lh2ud8VSmqn3XOp3F5vl6Gk
-	 1UEiBKOXa+yKIeI0dmRVCCjCuoSXB1eQLxtei9hnz4GTO95SjGcSospGRBVSQlJ3qW
-	 ekL/wjVM9kPF4GBBy0057j6cy9SYv1Kl52peqE0i5VtsYdAP5nRfejwHQD75bTPkD2
-	 5zQx0FPWv/hpg==
-Date: Wed, 4 Nov 2026 13:22:22 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chen Pei <cp0613@linux.alibaba.com>,
-	George Guo <guodongtai@kylinos.cn>, Kexin Liu <liukexin@kylinos.cn>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/2] kho: skip zero-sized lowmem and global bootmem areas
-Message-ID: <ausVbqZd9qgZf4zc@kernel.org>
-References: <20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org>
- <20261103-kho-bootmem-sizing-v1-1-45aa74098f34@kernel.org>
- <auo3PzmisfK3br1l@google.com>
+	t=1793791734;
+	b=QPi9FEjsErZjvISHQj73/cm+OE45ILmSB0UCYpCsaIN6tAlPaT14K1dJi5mdhD6VcVIw+C
+	xgo+vkZ2m31kfdT0ccBs7Mlh/Dn5Gz0eD4Cz5SMHJDJeg3Ex++O0OoOoP3qt4ug3wnGsgD
+	3sdBAdCsAlRUaZHo1bekh/H2G8lh9xk=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=9is/N8s+P77nIizr4iOPWVN8ElLFZtGDMyfkjPVV7ok=; b=jgdm78Gz9UGB9lEHqxYvlou0CF
+	KutGa9kqLufeOHXyPksfalr8TGDd7Qjd3tQH2L7oBQHupX+kTlaaKzW1afMCyCYUaiJJ2iGGB70oX
+	yUwrmnE7OVoMMYHZNTAmgbJKDUS5vKef2pVnD0LoEXB9jvIDd7ptVKguMRqbrtt0cXmhCr/XvjZAb
+	7Gy6NMigdFntWPLB7BRi98TVcjr6fDcS6ocN6VGuh0+C8sJnMrobb1gCe0+zouonWA3lnpu1nkE8h
+	RQ+Voe4lQl/aCzyPhyOrVaick563cL76U22efAn/kPb650EoOY0iEXzUm6cLk6F9GHhuBZQp4RtUI
+	ZHYjfeYQ==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xOZA6-007g5u-2T;
+	Wed, 04 Nov 2026 11:28:15 +0000
+Date: Wed, 4 Nov 2026 03:28:06 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Ard Biesheuvel <ardb@kernel.org>, 
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+	Naoya Horiguchi <nao.horiguchi@gmail.com>, Oscar Salvador <osalvador@suse.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Danilo Krummrich <dakr@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, kas@kernel.org, 
+	kexec@lists.infradead.org, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, shakeel.butt@linux.dev, 
+	linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-cxl@vger.kernel.org, driver-core@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, rmikey@meta.com, riel@surriel.com, harry@kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v6 3/7] mm/memory-failure: add hwpoison_boot_page() to
+ flag an inherited frame
+Message-ID: <ausWvcPv20yznl_8@gmail.com>
+References: <20261016-hwpoison-kho-v6-0-f304255147da@debian.org>
+ <20261016-hwpoison-kho-v6-3-f304255147da@debian.org>
+ <aumt-4kfGGtoXuh-@kernel.org>
+ <aumvVjoHo4KeuyEp@gmail.com>
+ <auovL7i1rEcXCeGS@kernel.org>
+ <auo3ScXy6dk0Gr3-@gmail.com>
+ <ausLkNhb8ZPz0ra_@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auo3PzmisfK3br1l@google.com>
+In-Reply-To: <ausLkNhb8ZPz0ra_@kernel.org>
+X-Debian-User: leitao
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 7C98EC0002
-X-Stat-Signature: m78gdjxsdautgw7hjxb8kts3xa8gsm8m
+X-Rspamd-Queue-Id: B8BED100003
+X-Stat-Signature: p51en3yeksc8o1tj34qn19nm75f8weqd
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793791351-212373
-X-HE-Meta: U2FsdGVkX1/GBB++RdFw/CXe+dYBhbB6H7jDIQN8dOXRjT8VdRpngKg1FOtDqQDK5i4OtEIbLJjh128DCIwFyBfTfwIyyI3Sx+5pcnVBW5c+OdQpQVk5NHeXCNsr3GjrggNnThLZcJK2PGhYnmEDaihisnkM1I/PZWBHCaJk2JTFX2k71RJ6oW1yqRJuqofPbbZYt8Dc4U5A2yGFXopgC11HluqdrBzH1H+UsVjXx+/Op91i4VfdVUxAfM5vx/Rg6RBkBVuowtgwKqMsJpp5RDFmC00WsiQerqPJ/ZsU1rzCrGqBqX0y/zZMXEvLEQoMnNg0wFUguj7wFqzne5yucWLZI0cjKlNCv4Glivut9H7Uuyqlf1yzcDd3Gke+coGcneh65xCvZFZDzUHFy94VnxcczKZRx4TcIr/sVl5EKTZDUf8dqO5LkIeKrtka0Xq/x1G7uIUr2UjY3jfqdSbdYq9rk+eCGeYhuxD1VaZYVgzO7skeYmhhh2HNgSpypKf4huGPDWuKGZpBFgmISKd2JZRk7M8znbYQQnDSGJxisT0YR50iXFSSwCay5rTrl5i1KVM+tF5JYY7xWRWq6MIiHrDpKUi9VtJwHGU37CPfR8OKcCAlTNW6HdvJWKvvsoP40EcbILIE+kdvW8emqj/8PS8/uOhz+UmN6yFvTjajiOcp6Mk+eOassT/YvibCovDGJPXlgFTP/NQqSwq4pw74htZ5dwugcFkApxBuU0d7nk06luX9avPelCpZuQv9oV/JMJzenPiJPdSTx5/5RM1LkTvHNnt/CDaXjr6IKASqjILWDexz9zi5JG7k29FbFERBFBx2ATZwyaR2yzQlQByxDH/zg/rkPsohBRwWH/qSTsKlsso0MlHW1+mIrSWt6uJZzjYrP1CNv2nwxTv4rIv73cRSDkbPUMIa5f4lqE111D97ZcjVCLNfl0dyrIY9dLC0Nwm/T7SWERZcGSn3F1X
- LLH3zHRX
- qALhIVLL0BzsAm/tkIH2qkUmjOy2KPxmOCcGDO302oDwmoZ0BjMi4NQlcJSBgqdulqZ0ID7cVUre2QQ+vLgFM9pA+fuIOdNl1o44xSI82WtSCyCrhd3FubHQaLlHpNWO1jbuFB/KCueGTWy8W0S0LK7UY9reEbVCpS6zzj/tukHTDoR68gJ/PNxGps5JZPU/71U6oG/WlGWRTX13rDCS4Pv2oTdFo4M0piDNF86Zz4AZ3dGKN9fA282BkMmdtzD5+yYEfPoaIo/Z74+SMu2PyD+0D2LUfDHndkIksTklGF5Tpi3Q=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793791734-966192
+X-HE-Meta: U2FsdGVkX19GnbbhzJnMflET60vTdaYbsgEM13bn0Rw/16009c/xxcP4FwGeaRaYSa+sa7WP3derPk5vfFw1s5s8df5ErdE6XdnYcbLQBwDtczfKIcsI1qKxrxcgbfrRwnrb7dNxocmRi9OR5U0ZLxQwvIM0TagP/kF9IG/e0HLDMQJRLykc0bs3CaM6br1t9r93qWGfr3WDTaEcN0+R91BCGXV4Ba6x54vtRI3FGrXh86D6JzemjKpgKMwN7YN1tGlFYJgkQpyhy6Rrl1gd92zRjOsC6X4fD3u7HqJ4KZTgjZeIvSBmNGbZxwABhWH+FHOpcLCala1Ek9FWtNQfaVjSTZ7YJyZOad9itFnumEBWH7VThkGQcsQxTwoNaz0iOfEQzojk9mQKM1hy7UKy8kXaP0WvKMTGvukSv5M7Em2KGrjjssktjAGmsOSzoqW7tX3SVNKE2OGvO+1E3ZoXS6WycpZ+/3iRqmOV23wSqkeGvEsC6EiyoTEm3u+w/8VjMD7Z0gm2pGs2ZS/J/TCZlBe7mt9FExSC879KfX1VHSXZSyXsCJcykokZ6z7JWTSEiAANzsa0uCfrsvtCp2MMfVUo0B1S2vJCQ9uswcfw5HydTRd3bF6A8HHJ2nYLZsQoSZFrCXq208m2GOu5+8XYXFmEq6fmf0UhPEB7Ykx+D8iXmYQ8w6NrTXO4cqokfMT4cbsVWJZ4ke9o7mHEzahyaxvEuJ5NzmWWiA6FEfY8JDztGDp6aEnsairNm5gJ/T6ezbb+ufzhk++VfmpDrM91Twnh8BuBOhEqD/we8EsK9IkMuaiwzIEhTZYUQKKVUAzNBzjgCg0CuAdj3yDKvkIZxOg81PESEa3/A789wzY1N0h2SDw3QiNYZyBiF/b+oWF+iRXU7v17jjqfF+hiPPz/45ZdYrUN2Tiew+oJvjON3h+U1izDBPOd1WeB1tvq7A31Qb6t/QXkoDBWI4t6XeY
+ mc1xFUyC
+ AIghpAzewS3fCY/fLGmfdPqm7iAQTa+1XMrRlmtunPT6QTKCzi7fstZ41589A9LWe77D8eOypHvRS0uBJ9dsOgUF511Wunye1SIV2QQoBYU3nkL0eetKjKe5mmVdGCV2iMeod7247hwQWpY4SKhm7i4FSF1VNTXtu0s6B7BrEjR3VkmlG+Vyt74fQU5gGwL4AeKabxzXHBCSqX0kvAgXouZrlEQBLamHW7iRk3KAGNXorble/9CRngF/ZmqLBQjfchppNx+7tVNZyJwSk0o9eWK4/Wjm6E7TEQI2sT8jlLWulg5xvr0qmMQnCgmhzJ/1bukJAZQnetWPSjt9ZfSV0acw1ux4a2qMCwp/Zdi9LJA+EcVW28lwYmNK9ti2wMntG5sqp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,94 +118,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 02:48:36PM -0500, Pasha Tatashin wrote:
-> On 11-03 13:49, Mike Rapoport (Microsoft) wrote:
-> > The lowmem and the global bootmem areas can have zero size, for example
-> > when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
-> > either of those areas is explicitly set to zero with kho_bootmem=.
+On Wed, Nov 04, 2026 at 12:40:16PM +0200, Mike Rapoport wrote:
+> On Tue, Nov 03, 2026 at 11:49:44AM -0800, Breno Leitao wrote:
+> > On Tue, Nov 03, 2026 at 08:59:59PM +0200, Mike Rapoport wrote:
+> > > On Tue, Nov 03, 2026 at 02:06:17AM -0800, Breno Leitao wrote:
+> > > > On Tue, Nov 03, 2026 at 11:48:43AM +0200, Mike Rapoport wrote:
+> > > > > > --- a/mm/internal.h
+> > > > > > +++ b/mm/internal.h
+> > > > > 
+> > > > > We've been splitting internal.h to smaller headers, maybe it's time to add
+> > > > > "memory-faulure.h"?
+> > > > 
+> > > > Ack. I'm happy to move the "mm/memory-failure.c" section out of
+> > > > mm/internal.h into a new mm/memory-failure.h, as preparation for this
+> > > > patch.
+> > > > 
+> > > > Since this patchset is moving slowly, I'll start the header split in
+> > > > parallel as a separate series, and rebase this patchset on top of it
+> > > > when I respin. Is it this ok?
+> > > 
+> > > Sounds good to me.
+> > > 
+> > > Just be aware that MM folks are knee deep into fixes this cycle, so both
+> > > sets could be moving slowly :)
 > > 
-> > For a zero-sized allocation memblock returns an address without reserving
-> > anything, and that empty area is recorded in kho_bootmem. If there is no
-> > memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
-> > fails and KHO gets disabled.
-> > 
-> > Extract a helper that checks for zero size and allocates memory from
-> > memblock, and use it to skip empty areas the same way as empty per-node
-> > areas are skipped.
-> > 
-> > Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> > Reported-by: Chen Pei <cp0613@linux.alibaba.com>
-> > Closes: https://lore.kernel.org/all/20261026131851.9942-1-cp0613@linux.alibaba.com
-> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> > ---
-> >  kernel/liveupdate/kexec_handover.c | 61 ++++++++++++++++++--------------------
-> >  1 file changed, 29 insertions(+), 32 deletions(-)
-> > 
-> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> > index 6f1f55fe31819..f268c57413a7e 100644
-> > --- a/kernel/liveupdate/kexec_handover.c
-> > +++ b/kernel/liveupdate/kexec_handover.c
-> > @@ -820,6 +820,27 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
-> >  	return false;
-> >  }
-> >  
-> > +static int __init kho_reserve_bootmem_area(int *idx, phys_addr_t size,
-> > +					   phys_addr_t end, int nid)
-> > +{
-> > +	phys_addr_t addr;
-> > +	int i = *idx;
-> > +
-> > +	if (!size)
-> > +		return 0;
-> > +
-> > +	addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES, 0, end,
-> > +					nid, true);
-> > +	if (!addr)
-> > +		return -ENOMEM;
-> > +
-> > +	kho_bootmem[i].addr = addr;
-> > +	kho_bootmem[i].size = size;
-> > +	*idx = i + 1;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  /**
-> >   * kho_reserve_bootmem - Reserve a contiguous chunk of memory for kexec
-> >   *
-> > @@ -832,7 +853,7 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
-> >  static void __init kho_reserve_bootmem(void)
-> >  {
-> >  	int nid, i = 0, max_nr_bootmem;
-> > -	phys_addr_t addr, size;
-> > +	phys_addr_t size;
-> >  
-> >  	if (!kho_enable)
-> >  		return;
-> > @@ -852,56 +873,32 @@ static void __init kho_reserve_bootmem(void)
-> >  	 * reserve bootmem area in low memory for lowmem allocations in the
-> >  	 * next kernel
-> >  	 */
-> > -	size = bootmem_size_lowmem;
-> > -	addr = memblock_phys_alloc_range(size, BOOTMEM_ALIGNMENT_BYTES, 0,
-> > -					 ARCH_LOW_ADDRESS_LIMIT);
-> > -	if (!addr) {
-> > +	if (kho_reserve_bootmem_area(&i, bootmem_size_lowmem,
-> > +				     ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NODE)) {
-> >  		pr_err("Failed to reserve lowmem bootmem\n");
+> > Appreciate the heads up. In that case, should I hold off on the header
+> > split until the next cycle instead of starting it now?
 > 
-> You are adding a helper that returns an error code and then ignoring it 
-> at all call sites. Even though it can only return -ENOMEM right now, 
-> dropping the return value is not good practice.
+> I believe one header split patch is small enough and not controversial to
+> have it this cycle.
 
-I don't think error code is important here.
-Even if some theoretical future update will change
-kho_reserve_bootmem_area() to return anything but -ENOMEM I don't see why
-the error code should be printed at all.
+Ack, on it!
 
-And anyway, that would be the part of that change.
-
--- 
-Sincerely yours,
-Mike.
+Thanks,
+--breno
 
