@@ -1,117 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336DC606A326
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441C3606EE93
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GDFpf3YA
 Received: by kanga.kvack.org (Postfix)
-	id 558186B05B4; Wed,  4 Nov 2026 11:36:13 -0500 (EST)
+	id 5CFC16B05B9; Wed,  4 Nov 2026 11:37:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 531BA6B05B9; Wed,  4 Nov 2026 11:36:13 -0500 (EST)
+	id 5804D6B05BA; Wed,  4 Nov 2026 11:37:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41E5C6B05BA; Wed,  4 Nov 2026 11:36:13 -0500 (EST)
+	id 495CA6B05BB; Wed,  4 Nov 2026 11:37:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 146FD6B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:36:13 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 098441C415D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:36:09 +0000 (UTC)
-X-FDA: 85397988858.30.D67EF97
-Received: from mta0.migadu.com (out-142.mta0.migadu.com [91.218.175.142])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5EC2E2000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:36:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wCjGeI6Z;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.142 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793810167;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 233F76B05B9
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:37:26 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66F1840114
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:37:25 +0000 (UTC)
+X-FDA: 85397992050.02.4C09053
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf31.hostedemail.com (Postfix) with ESMTP id AF40320003
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:37:24 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=GDFpf3YA;
+	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793810243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0eWbBWnFJl+uiLzhbPXd3D9E7kgIone5xiQRAQoBq94=;
-	b=ynbe1IR6McKxy9cHVji+HMibEoyDeJ0LBQNbrIt94KvZVgbDsGVYwGYfAzyyw2ZGSt6Xeu
-	qizmkBKCrz1bpnB5z9aAWe+p5STXbgWgLi4csoWTZCr+p44mEJh7Bjik1YLfJE5YwFrBco
-	eu3j2nncv8UYojcQSGdjXozCIl7b32E=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793810167;
-	b=BIhUL22Eu3790tJXV3D7cE5cWtMBu3ftcrVqBqfdsM/h6/jYezr4/kTmBhenvLKnvOV8Qf
-	HwqToW1VNbORYIIZvfZuqmNGXsQNO4adABxPZg2bqLIZYL4XEQY7fU1fsgrJAfKo8Y41k0
-	PJa3mRlGPmmSnnyRDaMtH/EtuwIdYoQ=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wCjGeI6Z;
-	spf=pass (imf03.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.142 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ck0BKnLiDu5kTQsaHCMIpLW/PX9Nr/jcRPf51hdq1dU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793810160; v=1; x=1794414960;
- b=wCjGeI6ZTYzB72AcZahHsWTRJQDfQ36wYmXE6dn6RY/CNegdZvHiHLy5aX3D+8suz/prsxcN
- MeCycpuBQ5Ih7AY5m2HvwZUQlJg+dS+eX8U8tv61bbOrcjLywOZOqXhnpQTYX8YdWl2Y0XlYEEE
- lBDKO6ENQHHuRhXTwdxWyXNA=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 86022f17ab87f471;
-	Wed, 04 Nov 2026 16:36:00 +0000
-X-Mizu-Trace-ID: 86022f17ab87f471
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	david@kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	ljs@kernel.org,
-	ziy@nvidia.com,
-	linux-mm@kvack.org,
-	ying.huang@linux.alibaba.com,
-	Baoquan He <baoquan.he@linux.dev>,
-	willy@infradead.org,
-	youngjun.park@lge.com,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	alex@ghiti.fr,
-	kas@kernel.org,
-	baohua@kernel.org,
-	dev.jain@arm.com,
-	baolin.wang@linux.alibaba.com,
-	Nico Pache <nico.pache@linux.dev>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	ryan.roberts@arm.com,
-	Vlastimil Babka <vbabka@kernel.org>,
-	lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org,
-	nphamcs@gmail.com,
-	shikemeng@huaweicloud.com,
-	qi.zheng@linux.dev,
-	luizcap@redhat.com,
-	kernel-team@meta.com
-Subject: Re: [PATCH v8 14/30] mm: zswap: reject high-order swap cache allocations backed by zswap
-Date: Wed,  4 Nov 2026 08:35:51 -0800
-Message-ID: <20261104163554.3508359-1-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <CAO9r8zN+9F0yh0bTDsysumziGc=zgs7vZMLvt-nWPhxq36wT0Q@mail.gmail.com>
-References: 
+	bh=kOH9xJas8+AahnE/juo87CvpZQxHzo4/Iy//5/OPJsU=;
+	b=QICiXyItG/xLtHCFsoAKhRhhtlCUZ5hFEsQthFv5W+EsdBJZGeqAw9PCYxyh6C5FdpzxZ+
+	8B0M41VGvf/A+cMzYzBgILQXrKfqUKwdB7D1kb7AP5HznTy2v3kdQM2hF9DuiAdF1kHZlx
+	cl9bcmIvCMtoA7en9Ui58Zazc/tpukQ=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793810243;
+	b=qGRh9a8tFMD1EZ+uIrKKx1yP1/BRxtSRbRd7uOWaxX42rxUa1skaahxHpYf0Kd1gOXhOHb
+	ZGeBe7zVKmu646lubaGyAqLRwe2KdaTVb5gyFfUnoeRQRxzJEx+RWeL3pvIjHOZ17G5gS5
+	edNRQe6U5E1lJhyHHpayvYHHeXNNXZQ=
+ARC-Authentication-Results: i=2;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=GDFpf3YA;
+	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a2167bd087so7890875e9.3
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 08:37:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793810242; cv=none;
+        d=google.com; s=arc-20260327;
+        b=d3jENt3EBy5kdkReH+hqQb46DRGfpttO6fH3nORpaq4nEuvaszuyJU6B4iOWUfQbfj
+         4ZgttD6D9b4lBoLEcO1nNBcDtAA2qGvbkrNoUwwOaPGqc3WDGkO5CD7EHCBFgvO+pMzH
+         6fpCuXwodwlCIyrHIydYAPLnPd/g3PKMbhqyjBkoxBQgILnUMUAey1NMs84Qhj2W7KCC
+         sFZZqQDGsOqI597HGxWpCgVIfwDF99bYOz+VfHUwmLp6WME81VPMc2YKi0CWZh/+8Mcw
+         UGB0CW4qTlMnlV0HTpFKRL4fynkXpZR9qaONDyz7xwdeXHsBj75AM4a+EiZfWFU7iFXs
+         7PSQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=kOH9xJas8+AahnE/juo87CvpZQxHzo4/Iy//5/OPJsU=;
+        fh=KzM5OLLOx16Xlm3RuNqoRIhIfIaVM7kEZmYhn/AhuU8=;
+        b=FCg8Cxgv2hX+x8yHuooXsHgVCMyq/5CHy8cAXlDzdPrX5XsEKmjrmT5f5mCPP0rbB3
+         PHTWXFJ5Gr/iJu0zdWmSnc6V6POtwFeDhRlS/RGo5wHdW4tpC1YRkzkVKRXgySi2E0SQ
+         p9DSaR9qke3J03CskhqgAbq3BoxqxDQtXZbiuzLAQ02TscvGNH0M8QUupFSR6bLGOqCU
+         XXh+y2LVyE3uIay53B5tDX0OiBgBZWSdPbePDwRr0fV7nBP0QRU9HPKAi3GCYs+4m3iH
+         1UOe99a4kn6rWTCfkL3/ItV7d4zG/qC1+shZnjtoQV+Ql5JDgg0zc8tmNWznnj/aVFXC
+         /B9Q==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793810242; x=1794415042; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=kOH9xJas8+AahnE/juo87CvpZQxHzo4/Iy//5/OPJsU=;
+        b=GDFpf3YA88wHpowGys2FkB5GcxtqIJXoGtI7UJiXJDLEArdRwpFvAMfT8razocf+Ut
+         eDQfGrU4Uj+6G0DC+UhMUizlNes0eMvqmkxq13FsuXpsbkM8s+nLeoCCGFT72h3L5h4Q
+         d0opiJ75DXFU1g65h0hBXS6Ovr8jRvLPHyiCz7sr3KxeLtpObXlHb3IlifCduNFbgySB
+         G2OdrPdqYxq/mMbZItJC65qamNc3Mb15a1BEBLYJPLb8iZKWQDJaGRkobTGbN30jCrxL
+         1W7xncTKdyvwXDewEtKx35auoM7y5oa25O9j0nepFs33CdSTo855hkdJplC8VS30goS+
+         uzqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793810242; x=1794415042;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=kOH9xJas8+AahnE/juo87CvpZQxHzo4/Iy//5/OPJsU=;
+        b=xAvduiScp2h658VX0Fl9nYOOxhceQ27dgn+QbzkqdUhTTwPQ9zCvGCOJuvdutTVeU1
+         b6NqWZ2QtyGeVtaWztiAQiTI1vNUgu1D8nfHR/u/MaxX8UAEKhLQAa4/h2Q2uprtI6Dd
+         FNhLGBooSkZnrKdm3YQzA0PV2MTdUj0K2XFz0MH7fAvMELSuk4qAivwyxoFjtToAeNFZ
+         lr9eQsY3D30FWFT0vilBqSuZvrqjBR7CN6iieswqtPzRXNiCsEsIJYov2ShIT7MUIwSs
+         AMiYg4qiVq53R8vy16piNgN6LvduboWxg/gWGFKRtESnOo0br2MkfO1t66yrWUOWEVTD
+         07Mw==
+X-Gm-Message-State: APuU4Z8SYReRIkV+A3Hac6e9S/gTGDctwfTiePXi/LRhI2KD5+VKRtnA
+	HMxLgXTbNvjs9SayL+MAEGg8pkpFKu2DIZDxLwFOi02NuxpQaasBKAWzLcWhnukzd21C9lzNt7g
+	oMOpQaM3nUJT9oJl1SANMp+Qnb9iSN8M=
+X-Gm-Gg: AYBFou3Tlj8oNLDIMHm4ZOJSbDYg3qytOXjpFgaaWw4qcpPhPMZJqFfQgoc3BrsX3l1
+	Y9cy1XZ8p4CD9B5biQcFOdkpd1SkNiEQqobaAd8zSG0GAHC+yNGZ9zU4NiYmsGwQSNOppUQjjnm
+	4DIwRl7zSE7BJOK4U+hy6JMres9ded90XqsGcN0J69Y/KtCXNGG3J7YPm5qRC6xm97UwDtN+g6U
+	qmnCrqY8/AeJpMvSpyy3bpDmS6dcFIvQyIFXNc+wmjzGKhoo3uWH3xdRWU5Tge6l3i+EuTmnRB3
+	elVlJHHfFilPt5BB+AIhEcWDVwv6KLP0hwBBHabz4qWdTb046D92lsz+2SKV+K5BpDSts/tzEdb
+	5XEytwe0BvI9Njv6oBrN7RSewPfRp1/ZOGOAPKCxqzeMAbdDt7tZ9ky70wiL6FvT/r5HVAehj2Q
+	BmbsMLaNj605YkGJDwmcXGNFIHbmC5JbJS0kWKtLZuFp3bYHqF4vLLNIzP3E8YUBArKaxijZTGY
+	g==
+X-Received: by 2002:a05:600c:4454:b0:4a5:1cf1:b7bd with SMTP id
+ 5b1f17b1804b1-4ac1794032cmr383478795e9.16.1793810242092; Wed, 04 Nov 2026
+ 08:37:22 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5EC2E2000A
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: yaww1qzdxzjn9sda3m5youezdodn6u8a
+References: <20261104-swap-hibernation-slots-v4-0-0ba9393609e1@tencent.com> <20261104-swap-hibernation-slots-v4-1-0ba9393609e1@tencent.com>
+In-Reply-To: <20261104-swap-hibernation-slots-v4-1-0ba9393609e1@tencent.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Wed, 4 Nov 2026 09:37:10 -0700
+X-Gm-Features: AclHuK-ITyynx-LQrFm_lWP_ZygTvkXkWXKJmodVXCRLU9qFllIRAK9LXJR_isA
+Message-ID: <CAKEwX=NyfTtr_6uM1cVcpQB=1tOFtcWb4Vdya=VD0v7XCSE2ug@mail.gmail.com>
+Subject: Re: [PATCH v4 1/3] mm, swap: only allow swapped-out slots into the
+ swap cache
+To: kasong@tencent.com
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Jianyue Wu <wujianyue000@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: j54mzbhxufruxp7khhowsj3m974zzy6r
+X-Rspamd-Queue-Id: AF40320003
 X-Rspam-User: 
-X-HE-Tag: 1793810165-354459
-X-HE-Meta: U2FsdGVkX1+Ma9gCHVuMWHw/oqwbaJBGnl/FsKqgcL+Rwf32AvIw9k1dI+40kDAYpu//apEfULP/O5UtyT2+Vt7hyLz8IsPrGp517DSS5B8/rXE4B2nTth8Gq34BKRd3uCV1APYSAdrGnuaVH+7Lqdi5M8Rn0v7zwFbK+vhE/EjjtZpdVQza/Ao6qF9tIgTkfhlULdRdl2AvwB9aDAXkHGjGtANlJ5PLh/HzGGu9GRzh+AOUTx13tYfsbpUNTsjDbpYmTCsAwB1mcKvfS36DC+0D2YkqsP3/XU1D/lnAbothF+eHJij4g++JCEHRY0lx1QmUBy6E2zCHzSG2qG18w4qGmZKnGtB8AdpNqpABTOG3xoeO+7jZW8hF7O7AhNaqKeJON7Gtzn91OheJvwZdMYT8AsjMnH4nWZOMcPpqaClX38i8zDk8UFJGzVbybxxp7r8A/WnqUWR89rSVM4jpDew28jqY99KMw4fkLQSK/T8fkshhoH9LlL9erENUBhpnUa4vvxtBvdhHHeIcm5VxMZ0B57GVoXK4PHETJoj/4V/wPvm1SpZlLe2NDLXG81ZDCyybEbKbsR5Cx653FbCdsUKJotC5Tx71S3vPi0NleJrd/rpQQetalsbtPomNm6b5kThTyOVsDkH6WmRnj1LYmFsO4OTuKkpqL75UzlkaMQ8bjypRTYXk2PCAdnDm7M98iCFwYzQtdFd2Dvs4ie0hLQqE0atQj/FAJndSdIRIPkP2mPCclznCv9nbiUDQT/2vI947tXV8pAnAgCv8mXXyv+2nw/IZvF5Z3xI1ijfYiU6vUbGqXSgsOfU5MYEXnkPbkEUEFmhogL9+a50l39m7Ra293wFPIii4WjDyhYZTXYcJmteMmu+ooHac+vcQXq0G0ijqfq910kMHCNpsvNZC3p9VKYH9XvZ5C5B3LtWciAXzX8CsQXutMeH93yYcJoNwrOL4xV/haXzE2pPHtX8
- TeTCUvAJ
- /6+uNmCNoFy98IrcWlQSI6n8w+Tuitb+PG41sjjUts2F9jVCJcOSBtKcREbkxdcOozG+Ha0mva1MZZXW5V/FmTuM5hke6+Uf0Sa/w3fxty4VTKdVtMnC9fn5+28k+AFA/I7HrMRiRHN7n5rK6ufjtXcGhnuQnNGYlu77UhNBtbMUCPDG2iusmw6x+CFjSmVUYAMqJqwtYLcU6ZH1Iadfj4axyHSnFSlkiJIVOJKTP2g0kdhY3madonhbjyIGgdHj5HAgUP6uqHeJEjvR9S2cIFe8VLyjRL+7RZUxY
+X-HE-Tag: 1793810244-793719
+X-HE-Meta: U2FsdGVkX1+NkYZrN+9URZg2T4Py4raHjbhri1vo8ohyewIMeQCmR3FDPKxYMWYXPkgAOYJAf82qtRqFgFR0cL0ZTATTkNfL6EL6l5R7dl1ahkRSBkdEdFWR+kmVfd9o21RwEdd9awU/HQfZicMCPqCgOezZAr+8bIAlJNqx9IcMbfdGDfNG/h11WI67MsfSM8h8B19kyGa1XgHkLf83CQJQaoYOa1/xe1UtntgsygsWtHVouafFvmXO4XfcrtpQ+fwQ9gy6ZoSvch8xZMPNtbYbYomDGoyDGZHwf/C8+lhtCewRby9a1dawx67EXEPwoNTxi9wqSKyF32n/qFb1K/fXnyurW7Xic+UHndTHANohYVcm+jjLXwxdma3WWRzFltP579lcaANvVvPsuTPHuBtjuXF2sv8Yx1t0ugaWIO7o7G3I+zJEMyAdPazKpsBzXM7L+9528ePqAScXdbcu016fOfFiSAOKYtLV9zS3PVGrdY3Etrt+VsyOQmn8SGYn2Xe98nYKWCkioXbXxbyfqgyRpVR37/ftmE/+pmQsS3Hn9txw+4OkZWmQL0zWYheTtbfiCpvJ8uAg79FqHEL997x1+bbuEOZ+uAlXVD0zBMLpJUYgA4odq8LENM4GlkZULTVoSyUVoFlO+MxRhP8W3ZYbWwoLhKYJvRNzLYIJt8hCIouNVcPf6mhXmpQLoB7C5d0XNMDm8PDs18j/AHNBqm7HycF38YkAkEqPAsYkw8nAP8AhLohpVsfmWbI44iELbDULzQnEMc5nlWxk/h5gHp43zpZ8j+OG9Ia9DHwvl60gHrw86Mo7luvE6fhdvA895VPJhloaXVcQ6VTkFAidsOE11Y+mnMLDCeU9aDTkBgm2h9Xl/C/5nPDa0sbn4OvytSd5Vp/8utwWqsFz6cHQbx0+8InmSq5/+T9p1f3EiXyg70p8upFejPCY4BNWZ042x92f0lcqlDQeSH7NyYp
+ MkXX9jcQ
+ kmDohFq4b79yWQD6E9wZZn/CBWV3M7xMvXA+tXfTC+ntZsGrazyIGyUoTfnl4gexb0QL7PI05hW7v9tko24jojkn73vuv8vLpl+CAV8bn4VBROjU0ZjZ1nxWNmQ+c10AmlPXnvOOOye+tahPDkAr/7VSJ3BTsjaaoNYgSfXVacUVaO2Pa9KtIu9K8MIgEqhvrVdpnLD6IVKNDyPTpCqBeg9ufcW/uInwDf/Hdm+aWJMgXReQ7BUwalogUZiMENDvSdKqGN+K5CLnA3Cm8TC72KN6QkSIxhhXu8ZbG66QzJhP+Np4YjMiUlVTnxUMzsN7VASpNG+E06A2AhU3pn3e1KYISpsO1tPC2kX5GTvAwpqbtJBW9EVMoTp3vVbUXiSGMGKnBvm+M13sjSe/cOoZk1ymMpctwqX2w9y8JcPO1WJv28p/u9onukWDpio/quhZVtg8paAt1QHkZ8/w3kzqTgOtRSJjC4Dv3mjqbwT54Ca6ApYFDOhkJ5Ey0MA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,182 +148,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 5 Oct 2026 13:18:24 -0700 Yosry Ahmed <yosry@kernel.org> wrote:
+On Tue, Nov 3, 2026 at 9:25=E2=80=AFAM Kairui Song via B4 Relay
+<devnull+kasong.tencent.com@kernel.org> wrote:
+>
+> From: Youngjun Park <youngjun.park@lge.com>
+>
+> __swap_cache_add_check() turns away folio entries and slots with no count
+> and lets everything else in.  That is safe only when the caller owns the
+> slot.  Cluster readahead owns nothing, it walks a raw page_cluster sized
+> window of offsets around the faulting entry, so it can land on any slot.
+>
+> A bad slot gets in.  The check reads the count with __swp_tb_get_count(),
+> which shifts the count bits out without looking at the type, and
+> SWP_TB_BAD has all of them set, so the slot reads as SWP_TB_COUNT_MAX.
+> Readahead then allocates a folio and reads the offset off the device for =
+a
+> slot nothing will ever swap in, and the folio entry that replaces it drop=
+s
+> the bad marker.
+>
+> Readahead used to be guarded by swap_entry_swapped(), which goes through
+> swp_tb_get_count() and gets -EINVAL for a bad slot.  That call went away
+> when the swap cache checks moved into __swap_cache_add_check(), and the
+> raw accessor there does not do the same type test.
+>
+> Require a shadow entry instead.  A slot dropped from the swap cache alway=
+s
+> gets one, empty if there is no workingset value.  The type test runs firs=
+t,
+> so the count is only read off a countable entry, and the check as a whole
+> runs before the folio allocation in __swap_cache_alloc().
+>
+> The large folio walk in the same function does the same raw reads.  A bad
+> slot cannot be in its range, but the range is not pinned, so a slot freed
+> and then taken by hibernation still trips the countable assertion there.
+> Give the walk the same shadow test, the folio check folds into it.
+>
+> Reproduced with a badpages list written into the swap header by hand.
+> Readahead took over four bad slots before this patch and none after.  It
+> needs a crafted header, so a normal setup will not hit it.
+>
+> Fixes: e1e6750df3b4 ("mm, swap: add support for stable large allocation i=
+n swap cache directly")
+> Acked-by: Kairui Song <kasong@tencent.com>
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-> On Fri, Oct 2, 2026 at 2:56 AM Usama Arif <usama.arif@linux.dev> wrote:
-> >
-> > zswap stores swapped-out pages one at a time, so a range of swap slots can
-> > be split between zswap entries and the backing device. A high-order
-> > swap-cache folio over such a range cannot be read back in one go: the disk
-> > read would return stale or zero data for every slot zswap owns.
-> >
-> > Reject that in __swap_cache_alloc(). Do the check after the folio is in the
-> > swap cache: from that point zswap can neither start storing nor start
-> > writing back any slot in the range, so the answer is stable. Callers
-> > already fall back to order-0, which zswap_load() handles per page.
-> >
-> > Export zswap_is_present() for the PMD-order swap-in users added later.
-> >
-> > Co-developed-by: Alexandre Ghiti <alex@ghiti.fr>
-> > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> 
-> Overall looks good, but I think it can be split into 3 patches (one of
-> which doesn't have to be part of this series), see below.
-
-Thanks for the review! I have followed your suggestion and split it into
-3 patches now.
-
-> 
-> 
-> 
-> > ---
-> >  include/linux/zswap.h |  6 ++++++
-> >  mm/swap_state.c       | 39 +++++++++++++++++++++++++--------------
-> >  mm/zswap.c            | 12 +++++++++---
-> >  3 files changed, 40 insertions(+), 17 deletions(-)
-> >
-> > diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-> > index df6cafbe95dc0..94746fb71bb65 100644
-> > --- a/include/linux/zswap.h
-> > +++ b/include/linux/zswap.h
-> > @@ -35,6 +35,7 @@ void zswap_lruvec_state_init(struct lruvec *lruvec);
-> >  void zswap_folio_swapin(struct folio *folio);
-> >  bool zswap_is_enabled(void);
-> >  bool zswap_never_enabled(void);
-> > +bool zswap_is_present(swp_entry_t entry, unsigned int nr);
-> >  #else
-> >
-> >  struct zswap_lruvec_state {};
-> > @@ -73,6 +74,11 @@ static inline bool zswap_never_enabled(void)
-> >         return true;
-> >  }
-> >
-> > +static inline bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-> > +{
-> > +       return false;
-> > +}
-> > +
-> >  #endif
-> >
-> >  #endif /* _LINUX_ZSWAP_H */
-> > diff --git a/mm/swap_state.c b/mm/swap_state.c
-> > index 625c185a1ca4d..251b48b2c60e1 100644
-> > --- a/mm/swap_state.c
-> > +++ b/mm/swap_state.c
-> > @@ -12,6 +12,7 @@
-> >  #include <linux/kernel_stat.h>
-> >  #include <linux/mempolicy.h>
-> >  #include <linux/swap.h>
-> > +#include <linux/zswap.h>
-> >  #include <linux/leafops.h>
-> >  #include <linux/init.h>
-> >  #include <linux/pagemap.h>
-> > @@ -466,26 +467,27 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
-> >         __swap_cache_do_add_folio(ci, folio, entry);
-> >         spin_unlock(&ci->lock);
-> >
-> > +       /*
-> > +        * Now that the folio is in the swap cache, zswap can no longer start
-> > +        * storing or writing back any slot in the range, so this is a stable
-> > +        * answer. Reject a high-order allocation over a range that already
-> > +        * has per-page zswap entries.
-> > +        */
-> > +       if (order && zswap_is_present(entry, nr_pages)) {
-> > +               err = -EBUSY;
-> > +               goto delete_folio;
-> > +       }
-> > +
-> >         if (mem_cgroup_swapin_charge_folio(folio, memcg_id,
-> >                                            vmf ? vmf->vma->vm_mm : NULL, gfp)) {
-> > -               spin_lock(&ci->lock);
-> > -               __swap_cache_do_del_folio(ci, folio, entry, shadow);
-> > -               spin_unlock(&ci->lock);
-> > -               folio_unlock(folio);
-> > -               /* nr_pages refs from swap cache, 1 from allocation */
-> > -               folio_put_refs(folio, nr_pages + 1);
-> > +               err = -ENOMEM;
-> >                 count_mthp_stat(order, MTHP_STAT_SWPIN_FALLBACK_CHARGE);
-> > -               return ERR_PTR(-ENOMEM);
-> > +               goto delete_folio;
-> >         }
-> >
-> >         if (order > 1 && folio_memcg_alloc_deferred(folio)) {
-> > -               spin_lock(&ci->lock);
-> > -               __swap_cache_do_del_folio(ci, folio, entry, shadow);
-> > -               spin_unlock(&ci->lock);
-> > -               folio_unlock(folio);
-> > -               /* nr_pages refs from swap cache, 1 from allocation */
-> > -               folio_put_refs(folio, nr_pages + 1);
-> > -               return ERR_PTR(-ENOMEM);
-> > +               err = -ENOMEM;
-> > +               goto delete_folio;
-> >         }
-> >
-> >         /* memsw uncharges swap when folio is added to swap cache */
-> > @@ -499,6 +501,15 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
-> >         /* Caller will initiate read into locked new_folio */
-> >         folio_add_lru(folio);
-> >         return folio;
-> > +
-> > +delete_folio:
-> > +       spin_lock(&ci->lock);
-> > +       __swap_cache_do_del_folio(ci, folio, entry, shadow);
-> > +       spin_unlock(&ci->lock);
-> > +       folio_unlock(folio);
-> > +       /* nr_pages refs from swap cache, 1 from allocation */
-> > +       folio_put_refs(folio, nr_pages + 1);
-> > +       return ERR_PTR(err);
-> 
-> Nit: You can pull the refactoring into a separate patch (as well as
-> most zswap changes, see below), so that this patch only has the
-> logical change to bail for higher orders if any entry is in zswap.
-> 
-> >  }
-> >
-> >  /**
-> > diff --git a/mm/zswap.c b/mm/zswap.c
-> > index 507f2d19fd2a4..f5b5827d30084 100644
-> > --- a/mm/zswap.c
-> > +++ b/mm/zswap.c
-> > @@ -1587,11 +1587,14 @@ bool zswap_store(struct folio *folio)
-> >   * @entry: base swap entry of the range
-> >   * @nr: number of contiguous slots to check
-> >   *
-> > - * Context: The caller must keep the range pinned, otherwise the answer can
-> > - * change under it.
-> > + * Context: Unless the caller keeps the range pinned, the answer is only a
-> > + * hint: zswap can store or write back a slot right after this returns. A
-> > + * caller that needs a stable answer must pin the range first, as
-> > + * __swap_cache_alloc() does by inserting the folio into the swap cache before
-> > + * asking.
-> 
-> I would rather avoid naming specific functions as it will go stale
-> quickly, and instead list the ways of "pinning" a range.
-> 
-> Also, generally, the changes to mm/zswap.c seem orthogonal to this
-> patch and can be a separate patch (which would be clearer if
-> __swap_cache_alloc() isn't named here).
-> 
-> >   * Return: true if at least one slot in the range is in zswap.
-> >   */
-> > -static bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-> > +bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-> >  {
-> >         pgoff_t offset = swp_offset(entry);
-> >         struct xarray *tree = swap_zswap_tree(entry);
-> > @@ -1605,6 +1608,9 @@ static bool zswap_is_present(swp_entry_t entry, unsigned int nr)
-> >          */
-> >         BUILD_BUG_ON(SWAPFILE_CLUSTER > ZSWAP_ADDRESS_SPACE_PAGES);
-> >
-> > +       if (zswap_never_enabled())
-> > +               return false;
-> > +
-> >         return xa_find(tree, &index, offset + nr - 1, XA_PRESENT);
-> >  }
-> >
-> > --
-> > 2.53.0-Meta
-> >
-> 
+LGTM!
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
