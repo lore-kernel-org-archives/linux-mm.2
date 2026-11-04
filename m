@@ -1,147 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E976070B27
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD68A6074A6B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 18:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=hZs8O4RU
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=fsl1FZP3
 Received: by kanga.kvack.org (Postfix)
-	id CCA8C6B05E0; Wed,  4 Nov 2026 12:57:59 -0500 (EST)
+	id A5EBA6B05B2; Wed,  4 Nov 2026 13:00:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA2B26B05E1; Wed,  4 Nov 2026 12:57:59 -0500 (EST)
+	id A0F726B05B3; Wed,  4 Nov 2026 13:00:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBB816B05E2; Wed,  4 Nov 2026 12:57:59 -0500 (EST)
+	id 8D7416B05C5; Wed,  4 Nov 2026 13:00:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 90F6D6B05E0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:57:59 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 29E0CA07B0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:57:59 +0000 (UTC)
-X-FDA: 85398195078.12.F40C387
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 37A19140005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:57:57 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=hZs8O4RU;
-	spf=pass (imf23.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793815077;
-	b=juom9vHEbrMW9JQ03fKhg+vcIkQCoo2T4reEE4QbGK7mf9jTGR80Tl5GOYPHU3ixARYjst
-	waCkpIbE7ytu7Tbj9pomQF2TmGdLcP3Qzq/3wnduN5cApc8DYFST1qb8yNS4Ao6AkJAhxw
-	d9m7e0oIuztl/ZjJ+Li2Mu66/Uk7BtA=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=hZs8O4RU;
-	spf=pass (imf23.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793815077;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 533CB6B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:00:28 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3CB5160810
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:00:27 +0000 (UTC)
+X-FDA: 85398201294.25.B392D9D
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8494618000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:00:25 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=fsl1FZP3;
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793815225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Al6NZB4gmP1JmqmmdhYkvzPU5+LiqrhgjgjQTKaGngQ=;
-	b=1tgql/AzAwUHo3T45ZR4xVQRH9QTRT64KRZRBK/yDhVCI6IaW6B0sHkB0H0Z7bRJittzq3
-	u1geAtGQ/f7LA/C4J9w7keaoSods70dxZbOn257oW4UaIRJYREE50PyEKL6x7t2+veys/G
-	GvgevNU+Q/ta3FoMEoSDPqB3QXZIwFE=
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4a140e7405dso9139255e9.3
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 09:57:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793815076; cv=none;
-        d=google.com; s=arc-20260327;
-        b=exk48yDw2lQzkg9dVImcuUGcmrJ0RagwceF+jSRp06ti5a1+e3KK/YDace8jDX00px
-         2+W8TeNj2j4Sz0OC1ORvhajwu3xVaqUBHRQkxZ7FS4CFggrs2hqQ1sWY67yOuWzcWlTW
-         eLneTZSrxaFcTAzDIcCPpjVuPl+gLRnctegB8oajJxNZcKb3OSAlW9M6Imu7YCUska9K
-         21fBzWNlswQ5//RFel/8uju8i45Jhz+nHDevGwvWwjHAJCOGMjR9lM3IaKRNuXTD9R9P
-         iXA7RchiTHgvtnJ1Vx86F3tjcFOSssrpjwAQH9435x7kj8HqLV1uYC354Kb7VgxmSJ6A
-         mzrQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Al6NZB4gmP1JmqmmdhYkvzPU5+LiqrhgjgjQTKaGngQ=;
-        fh=NLz2N8X0628xrUSVuHTZ7cX5S4K4ndWicYl6NBODsO8=;
-        b=V9xHlxLG+9sK6kPIm2G79d93dC0EYz0RKGTiyrn9aJ6ItLr+pDg+MtN0XfR3tF2R3D
-         urbmMBPEqmxm6YRxwBwZjIYMLL74VVX2sFgxbODcNS48KsC8MfaonpqUVAptGhabjs5Z
-         FtVxR0DmJVujiqpDo3IZ777wLl7wFb60e2vYOI25i58qMhSBBkwxUi5QJyEKm4HHzIcm
-         k0YZ2Fvga1wOxct6HyLzQc0muhktTY6fo9p1/DUUCD8k/d46sA6aWX4hYGGT4ged9QAO
-         KnclFOVYPgzcT4RgiiLeZBQXHWP7AUkS6CnXUk5Sh+1GUrPRLhf1IINA+o8a35TeqCgv
-         pjJw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=JAX2rOFX3ps0z7E54cgly2XJNYqW8YfGnVzidzlyKN4=;
+	b=llJZCwTG7W2qoNqNHAtJjjDTYEbexZNGoV3zWI+Dv+FMWcpievgeXIekz8RcpLO2Qj8Mom
+	wcu8WpS3Wjbnd/EKKd1g/laXbrRH4FrFF6Tato1zSN3KZMD8BItUkiCwmvIn1B9wIo7STJ
+	Z5D2v+8TabsTHuVkNsVQ9eCnK0SjAQs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793815225;
+	b=txSmFT0rJoWbXWprle1L0yqhG2/sBA4B04jAtp6DCWQQD9KWzLBkIegByHlcxzwj8jPLye
+	tuZBxzdeuN9lMEj5/q+XGlvMZBgFJEX0ZEJX5w336oGKsr/epfxy0V8oERTBbadsTdAUSv
+	9FQqLgDNIqgWDMoJ+28h1TESmwMzCXA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=fsl1FZP3;
+	spf=pass (imf24.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-7a6e560f580so689872137.1
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 10:00:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793815076; x=1794419876; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=soleen.com; s=google; t=1793815224; x=1794420024; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=Al6NZB4gmP1JmqmmdhYkvzPU5+LiqrhgjgjQTKaGngQ=;
-        b=hZs8O4RUDyz135bFy0xhjh0YYQ85iRouL52VAFdaRkNt0OgmxOYgihSYDJovzghCT6
-         ihQldMHVYjdqrp9nVV7NrQrvqVQ9sAkSZAecEkWbuCSxVnNUFhOXqifp+MWCApzcVLHR
-         lZvASqCqHlyw7okdSYYZX4CvT3qXKbmVzO4bMQfRpwnh6LnzPqwlnm39Owf6sOOmM27g
-         93Zi5MlYlgdV09aqyWA4b06cgKyW/RiCcffLZnYjm1u1a5P+2QBfUeKaw5cpauw78AUR
-         KE/2yGWS8cFbCKBg+Sys2eSZvCp+9fL7nta1av1IYjRHh+ka45+YT+5SITdoUbZdimTH
-         rCiA==
+        bh=JAX2rOFX3ps0z7E54cgly2XJNYqW8YfGnVzidzlyKN4=;
+        b=fsl1FZP3qIClu3aJmYAbmvu6S56jDVfjWiW1HR+5Ch6CXWyX1Kcay8k2+QqjtBIRP2
+         bQVURg6N4/e3wjhXOpQenCm7hMa5VoZwBw7pDUAvswV+Ae1o3SG3o1BklbhnLq6dYggC
+         rh6fAoKAiNFr2+PIjGZCn0mRfSiXZu9Vl9xyUcu/j2jN06Tf4/IluR5pk1nmVsAg6JJY
+         pEWeZr2m5yL70f0CFt7yiWQ+7wzNJTUvU/ABdL/aWe/M7QkSBeZizfPS80FtaNgyQ5Mo
+         WMkMI1B/a2Cd6VjTxTbRkrrau2J3Ea3TTs6eCf3U7Ca7yqyo+MrZi4mfn5zjMfF9SiZz
+         SwAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793815076; x=1794419876;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793815224; x=1794420024;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Al6NZB4gmP1JmqmmdhYkvzPU5+LiqrhgjgjQTKaGngQ=;
-        b=Xr8JcG0uMqqTD0M77MH1lnzPI4pib0mfZ4I6it0ur3KbvM01oLW+Tuk3A0GPnxIO0R
-         MvsJ47akOiuHnJKvRSFPWn1kQWgWK/SIt258cZ5Soj79H1dXxuKoC7J/J09VV0sb7mfb
-         mCnOW27rYmyrRlae4+w7mwn5KtKCaWAOK9sUFNNg1uc4fWj8vxuz9BQLrcSd3njoO9qb
-         Pj/Gs0Dg9ujv1gH+7mx9Tl5+hf2obKs3yOsb8aQF/0M9Qr3e52PKZ+z7VxMgcI3oxE1T
-         gl4PT1aKeV4Piq10uz7uh1lXMsqP6bMxm+HrJw2kNZAmF0e6qwfnJ06c1dCev2aVokNP
-         uRbw==
-X-Forwarded-Encrypted: i=1; AKwUvByvdHCcOZR+BbiQ5gP0nC86Ln3I+4dK0Dnv/Q/Z6diD38xENQ2aigEFMYi9GMJWapGXGHKoLYsYmA==@kvack.org
-X-Gm-Message-State: APuU4Z8wVgUubK6MYXgHnyE7TlzP9wMktkScdi0q6l9v92XC4pmR4Wpf
-	Q5nwl8JuZ8vqS4Az0ylcJ6YdAo9RLjJur8jT2YsKpuhHwm+n1gegN1oyz2d+AGVf5ZzycurllMO
-	Tp2AUOFjk87Cputk9oqpzQn0Jk4YL0Rs=
-X-Gm-Gg: AYBFou1Y9lIHXUSCRb3dxZ1hh7/qq6YjzWQbOst/UKq6tUZUDpOomsnUjQT85OHYV+n
-	QIbPoYIi6NpLRPwwqqChw5HKjHd6uCyoj34RYP/98CA+TqdKlGd3+arPQVqL7sq1j3f5rUG2jfC
-	B8dDSRmT6dM76fs0yejrFsPW+8PvLFz5YJsyMj3wvepLcHLa3Pqq3lez8R1cZbNWsZ2RS3r/ZAj
-	M5fMi2apJ7Os0JozvbU7jC58fgPt8IM8CTrMEhbJj0XGsot0XLCYChaahgepMK+cmk7nRVki6FY
-	Nu+ck3yTGgtSY9tlaR9EWiR1v3394SX+PveiWsnMvT3Q+VDofBiwfzyfxJXU4s/fTla5A5OePcX
-	u2w7vx6DinhduS29Kj4rJ3IW3kRMko3yuNUVAe50DtoUnA9GUtPRw8tAizr5tRfN3reujINgO7n
-	b6QNPBdIngolsyFAJCruqwIv67a0qdVNh4+Xobmqgkbh9Iwv01Oefj
-X-Received: by 2002:a05:600d:a:b0:4ac:aae6:6401 with SMTP id
- 5b1f17b1804b1-4acaae665d8mr265138875e9.12.1793815074599; Wed, 04 Nov 2026
- 09:57:54 -0800 (PST)
+        bh=JAX2rOFX3ps0z7E54cgly2XJNYqW8YfGnVzidzlyKN4=;
+        b=Bow1bxd9SlpWiBE0jTBPrlqdGrYX0tg/g7CGE29ePYMR+3zpQqFPKwVHKBu31mx9zh
+         DU2XSDkClw0+DuSS1uPRUrK12GV3vLt4ShEaaJdPfh/r9r0bIBr+wrSlt6n05MyMXJD6
+         zmifc+n785FzEXsJBZA0cTBAkrcSuJeTCpWitl9I3KybToIBDe7t+HKir3iaoyDy2i3h
+         LJNV7YFsm+MiRd+qIanYJFcQv2OfuVlr3i0fZyfr11IAagg3HIzMjsiSF0F5AgRe8ByU
+         xCe3LzbKnUghFNIXJx0nleJY8zSbH3wbTNk+YDabQFOPrWAfRHTd+nKJqKrpM3/mb1dP
+         Kl+w==
+X-Forwarded-Encrypted: i=1; AKwUvBxi5XcyOTBThFHReJbJE+z9+9CxP3IDTKVZmDBKFCIPePRhVXAUuFNtzsD/2vC3XZcXVn0iJ0Opsg==@kvack.org
+X-Gm-Message-State: APuU4Z+PjRrNNC2lRwtaBsRkr4LdfnsoqOfMVzP7+N8/0HiD/vD0PP+3
+	jAn4Qv8dbPzDn7uXSM4M/Sb0EmoSpjiAE8OP6eL+utpdgpPo7U9YDATe8MQrVbYW7aM=
+X-Gm-Gg: AYBFou2h7VT1e4CXBJo2Guvl/ii4a/r1P10wlqpDfUIWtfnbqz4EuQLxx1J6imfS5SS
+	ZZIiFoDhRlMdxR2UoVL39qWgFQBPfiYCk8FYAzTlCWNtTISewbvOwHUp83wgvIzO0aZ/5l5R2w1
+	vaeMp9uYSaQxyNivyNQFYC1TTYDEurJHgLufM90s97RDrgjbsbFGR3u7a5sgZkylYv56gl7lxC+
+	ptSv4KElaGA/qgcWzWFXMUmHvy17l6ERlMZ0IENaqm3KZpZmIXRIze1xTzdJ1d4G5vTV7ZF5kTp
+	wEOHiNozZGr0jbVsFUfLJmndFsVXkpNAPoSgcKTGEXU6TnlCyafVBruG1D24fHQpOZms3Q2YmuH
+	3UI7RA66LofNh5R1+lc2YvuozscicZo7qAyFrhI7lEr1OU16DcXdAtb5qYIk5LjH1v+EXZpXZde
+	H3YJdkckijHO/CJg+MnwE3Il2tq0GfbWhZD2/HCER8xUn7K3YMQQSB8XuLF24RAWhoN1GMbWXwO
+	pij/7w0vwFIAw0StrdtpMbYhqbYSSew9kSHKDIwRuIHpLiJUdRlFJU4BwpEXOQX9Cjo13dDhaK6
+	WQ319PVHn2JKvRUQAsDppULsjrYr9icikctgFneOkZ9pTXZNNqFNId0sFc+G0HdG8um3JRB4rEn
+	BEaQZU+ckDk/XYFidD/5g+gfxzrsK
+X-Received: by 2002:a05:6102:fa0:b0:7c3:9982:67d7 with SMTP id ada2fe7eead31-7d072670942mr7469213137.16.1793815224323;
+        Wed, 04 Nov 2026 10:00:24 -0800 (PST)
+Received: from google.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-998d91d2a3asm2383636241.8.2026.11.04.10.00.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 10:00:23 -0800 (PST)
+Date: Wed, 4 Nov 2026 13:00:22 -0500
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: David Matlack <dmatlack@google.com>, 
+	Bjorn Helgaas <bhelgaas@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Alexander Graf <graf@amazon.com>, 
+	Alex Williamson <alex@shazbot.org>, Chris Li <chrisl@kernel.org>, 
+	David Rientjes <rientjes@google.com>, Jacob Pan <jacob.pan@linux.microsoft.com>, 
+	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Josh Hilke <jrhilke@google.com>, Leon Romanovsky <leonro@nvidia.com>, 
+	Lukas Wunner <lukas@wunner.de>, Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, Pranjal Shrivastava <praan@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>, 
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: [PATCH v10 00/13] PCI: liveupdate: PCI core support for Live
+ Update
+Message-ID: <autxCZPJ9yiE2ucq@google.com>
+References: <20261013162529.1928093-1-dmatlack@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <cover.1786003779.git.xueyuan.chen@vivo.com> <anVWZVOt-xeD0dMH@google.com>
- <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com> <anXJ-5_vO7-toSe1@google.com>
- <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
- <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com> <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
-In-Reply-To: <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 4 Nov 2026 10:57:43 -0700
-X-Gm-Features: AclHuK_Jo2-e0XBl0SeJKjVGW4UNTrMrsSqvnyX3EFS-6wHyvSchpJgGvWFz9n4
-Message-ID: <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
-To: Chris Wiseman <chriswiseman@google.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
-	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 37A19140005
-X-Stat-Signature: hpdbimkk8aixqpy3hfikb7ufa485tkgn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261013162529.1928093-1-dmatlack@google.com>
+X-Stat-Signature: 8j61ommydnu8jtk5ze1xkue1ecu7r86i
+X-Rspamd-Queue-Id: 8494618000A
 X-Rspam-User: 
-X-HE-Tag: 1793815077-630945
-X-HE-Meta: U2FsdGVkX18DsiAWYl4ZzG3TA1uQwBolkYh+Y1YmilAylGEaKKBQANDHMT+pajTcvxkd8b3y9TKrorLkqAU9OpMx5USctRnfTEtYTqFedKVQfJpxezkKoC42+lGTNJJ87KrxlY9bPmkVvpHvmfBO80glzm8fS2C3bQIdZjloKTqhkSSGWJwOiRCl6tj40/GrDu68RYjXqp4oNTo61KgW9BupNPStg3IJ8/wkQ7y+24nz43UmHm2Glb7E+8r89fw8YXn9gt1cELddO70uMPo6e8q2CUvOsu9w354NojlL1zTKTO6Y+HAOuqwokwcJSimW4GfiwnB34qIg2qCw/hfLAvYrAVi04SSCFUY66GGXWO904tam7UwJKkYkQOtapWevxQ520LtFEd3orsDhMzklvxJ+HbgAgL6ZW40lZ862DY8K4w8hmcSdUNSZ9/Hws/tYDNY6dnrgHhv4wB0tBEK1QINieCHK79H+4onomYH6FbpCE2jIMB+GkVTELdCg81Yhd2SOGqkWAAKIIbxYAae1DH3//zba91M5csJdCzkpCjUEmtgrrBvqE6030GQrjvSNdEBH9hJfurRjvdPuXl+N7Qat2XhqIbNl1WvDND8U8ug/W+YnSIW0Jm9GmzqJrpyvWBo5PyxDHHD8izNxsSS+i1Bw80bVrO/QNkHmdgbNFzja6cPPFQgwyDONTlfQ2FS3hpfpXpCO0SE/JuyUPpvferSaRYB1nt0bme4Ewy8x8cUnk6NbAa62XXLFyOvp6oReFHkNvhlJLPWuPkcGL08WRz/CY9gKkiAOC3GEoyr8cUMfqtaoPVWTPykjfZq1ROrellg0zFZQJ9KxeH6q50G/jXWDIE8h2jimYaXTqSHtorr8Ya4YS6h8Y3XXka9z9DXVZvVYtfyPvgBp8/7iaRIH7fjrZCtd3nCQ+bs1LliwYbbXZfxP2PDayO/VBA9aKBicnxW82ctT/vjimFUQrgC
- F7uG5CU9
- w9SFCN5csy1/3DkadmA7ksQpCtL2ttykSmIiIkdpnfLgKfL8TYWrrgPwllbPCyB3E1YdRu/2828ZgmheM4mLfBJTwgEWLz7H4d0Yqv1TzXYex7VoXBtIKhG7nHJRXBw0kYhCYoHJv7Xt7hUJ7EBWAHhTZ9DD6YCY+DVuEGqgiWXEX88ougRKJ3Dtg72d5bpSpAC+ur0dN1ao056K5iWy2HpHvRZ4gpkecWzZB6Q4M6TikGsCOhiwopkUCnHB7Ir6s9eYPmWz8aK7wX0HOwH6rOfR2W44CehMSng1iRHJjQOIYGbvOuZ38D3tvpWwJfLoBJUKmNV1BD80NWmBPH+C+ScltlrKqqXWmzbA1LhIx15w7liTTx0a3m4rGlmiDWCgwwtvA7AqgbAGhnnNLeT8fGiSZmkYBUFnTHhNJNNH8k/0oavIbj9hP3Hp2/iKFFOTplu2UQu48feQgcFskUgjUs+khQqvq12w/5OvFNWScYtphD9JiUHDAqLkDzA==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1793815225-847757
+X-HE-Meta: U2FsdGVkX18WGu0gTqWLUd9drqH2a2FC1Rc9vb/2BziQgtUq90ZKwzjcxc7P1bftZoj6INDIhJTYegDWLDJHqxLWTHABAmAvLwmH5Gqk1Z+YaV847PolN2SvGqmsMk4l4GbwWRlEyeqaQWq2aU31kHwfau/XJR3p73udr/HkxpYmCksnf2QQoc94m4UhWgnx35bsHJc/K2lLmMHb6wa5sL6uxhxL6vakh6ikSL2QnIfefxbfH4oWNUMLaTmKKSNzyQGkCD36usj+DosQe2HyrUPi0JZHEYhMfoQY/bR6oCcjJP5Oz/PtIab14lv558makuWU+T5BqPmnGOX92u3MFmWW7/Y8wBfUZR7ZXzZlC+4rpGBg6HlUdScrqozqGIgoTX6P6YmCXdjIwcirY2F3JMdBWOPwyz42BlENuJFxKS0VoLRC+8FuxMZ+y7ZgFOl5vpD1OQOG0DyDogJUWy8ekskmwRIjtIu3dhcI+ZqJ43F6cRQY5g0HJrP39snSX6kjCiX4NpqUXyirwimG+bmeJ+FZQxDRb8C14VaGtkT9jnNaTtEGw3Sj9LR+Q8qdtUbRoDA99FgJWtQ1hW91Ids7+7h0wVShm94haQheT72MSp3STYvavgH9MB7sWPtjd+G+DREhBBfzPBjxnLm25Hph3iQEDkHY69dXiiNLxgAYTnmYXfKIT1s5gbuI88/JKrQZApmiEjfMGBoCaOTQAypiQWUuUmUTyLFN1+l2AFz1T1TdIomTkR77Q+mvHS6U2gFbTemAcbs1DUXXifRi5E2zrGPIulXsY4LtTLtVFEwQEPw7KFjV1l0C1Akp7DJ2CEeDrfFO6D1ITBtl31jFyM+mzGLucivDuNoLBJ3W9YrDogZKS+fUePuS2a58X7wx30db+j3OvQXkO4uqeZnKD74ptD/fwNVmA6y6SoPnLNhukDMMpPb6P0u7LAeln6klQu/RkMHP376ztBTL+7E1jbo
+ RC2gIDAB
+ UfUi8I5ZaAyqt64wjfj541vGMyQMm/I3PcQIfJAiHPAfFbbOgXwTlBlpc6uhhNXMSzG6obN5agLJ1bR+xx8Mv2AxtPYAHLQolqa7wtJ0JcDYqQY1E25HFmqJ3Fy8yElNBR4q8sAJ7EAJPJScAdKvaFXrV9gW6RaYcvEHM+GYlnXtv/4xQt844WUOWNqlALXHMkrOc4phYqa5k4niyY3rnnOk3CFv1Dhn9w70DhMgkMh74YbpJUIGbV+Lzyk+C/5a9JfORlSzIYQp3UEyz7fxSoB5DEfFf0cVq0A2nz2kN+VL2/z5u6Kk8c/MxZB8ovBvvGX1zqJkq0zJpQki5WIwOOmSDyjduAV81sdezn2W6Z7ebCCgN90JVgzThbzqj3CZ/2d6UzQM7gK/VXR2ihCCsyCmTvgitxH50XUrMaOu/GHfU5iE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,79 +137,128 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 2, 2026 at 1:24=E2=80=AFPM Chris Wiseman <chriswiseman@google.c=
-om> wrote:
->
-> On (26/11/02 08:47), Sergey Senozhatsky wrote:
-> > Adding Chris for visibility
->
-> Thanks for looping me in, Sergey.
->
-> I tested your CONFIG_ZSMALLOC_SHRINKER=3Dn patch in ARM64 QEMU (7.3.0+, 1=
-6
-> boots per arm) by fragmenting zram0, triggering a manual compaction pass
-> at pressure onset via /sys/block/zram0/compact, driving ~240 MB of
-> swap-outs under memory pressure, and running a post-swap manual
-> compaction pass.
->
-> Your theory holds up: with the shrinker enabled, the kernel compacted
-> 2,218 pages (~9 MB) in the middle of the swap-out, only for incoming
-> swap-outs to immediately reuse those pages.  With
-> CONFIG_ZSMALLOC_SHRINKER=3Dn, mid-swap compaction dropped to 0 and zram
-> pool memory was identical both during the swap-out (120.9 MB vs
-> 121.0 MB) and after manual compaction (110.9 MB vs 111.2 MB).
->
-> I also tested adding the unlocked zs_can_compact() pre-check in
-> __zs_compact() on top of CONFIG_ZSMALLOC_SHRINKER=3Dn, which cuts each
-> userspace /sys/block/zram0/compact scan from 97 us to 27 us:
+On 10-13 16:25, David Matlack wrote:
+> This series can be found on GitHub:
+> 
+>   https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v10
+> 
+> This series introduces support in the PCI core for Live Update, enabling
+> drivers to preserve PCI devices across a kexec-based kernel update
+> without interrupting the device. This functionality is critical for
+> minimizing downtime in environments where PCI devices (e.g., those
+> assigned to VMs via VFIO) must continue operating or maintain state
+> across a host kernel upgrade.
+> 
+> Specifically, this series allows preserved PCI devices to perform
+> uninterrupted memory transactions (DMA) targeting system memory
+> (specifically, preserved memfds) across a Live Update. These devices can
+> be behind a bridge but must not be VFs. Support for P2P and VF
+> preservation will be addressed in future series.
+> 
+> Series Overview
+> ---------------
+> 
+> This series implements the following to support PCI device preservation
+> across Live Update:
+> 
+>   1. Set up a File-Lifecycle-Bound (FLB) handler to track and preserve
+>      PCI-specific state (struct pci_ser) across Live Update using Kexec
+>      Handover (KHO).
+> 
+>   2. Add APIs for drivers to register devices for preservation
+>      (outgoing) and for the PCI core to identify preserved devices
+>      during enumeration (incoming)
+> 
+>   3. Automatically preserve all upstream bridges for any preserved
+>      endpoint. Use reference counting to ensure bridges remain preserved
+>      as long as any downstream device is preserved.
+> 
+>   4. Guarantee that preserved devices retain the same RequesterID (bus,
+>      device, function) for the duration of their preservation by
+>      inheriting secondary bus numbers, subordinate bus numbers, and ARI
+>      Forwarding Enable on preserved bridges.
+> 
+>   5. Guarantee that memory transactions to/from preserved devices are
+>      routed consistently by inheriting Access Control Services (ACS)
+>      flags across a Live Update, from the endpoint up to the root port.
+> 
+>   6. Modify the PCI shutdown path to avoid disabling bus mastering on
+>      preserved devices, thereby allowing preserved devices to perform
+>      uninterrupted during kexec for Live Update.
+> 
+>   7. Provide comprehensive documentation for the FLB API, device
+>      tracking mechanisms, and the division of responsibilities between
+>      the PCI core, drivers, and userspace.
+> 
+> Merge Plan
+> ----------
+> 
+> This series will be merged through liveupdate.git, matching the
+> agreed-upon tree in the MAINTAINERS entry for PCI LIVE UPDATE.
+> 
+> Testing
+> -------
+> 
+> This series was tested in conjunction with v5 of the VFIO PCI driver
+> series:
+> 
+>   https://lore.kernel.org/kvm/20260714151505.3466855-1-vipinsh@google.com/
+> 
+> The full set of patches used for testing can be found on GitHub.
+> 
+>   https://github.com/dmatlack/linux/tree/liveupdate/pci/base/v10-with-vfio
+> 
+> Testing was performed using the new VFIO selftests:
+> 
+>   - vfio_pci_liveupdate_uapi_test
+>   - vfio_pci_liveupdate_kexec_test
+> 
+> Both tests were run in a QEMU-based VM environment (using a single
+> virtio-net PCIe device connected to a root port to exercise bridge
+> support) and on bare metal using an Intel EMR server with 8x Intel DSA
+> PCIe devices and 1x NVMe device.
+> 
+> Future Work
+> -----------
+> 
+> Please see the PCI core Live Update Roadmap:
+> 
+>   https://lore.kernel.org/linux-pci/20261001232133.560284-1-dmatlack@google.com/
+> 
+> Changelog
+> ---------
+> 
+> v10:
+>  - Save and restore the ACS Egress Control Vector along with the ACS
+>    Control register, sizing the save buffer from the HwInit Egress
+>    Control Vector Size field (Alex) and drop Bjorn's R-b tag
+>  - Make CONFIG_PCI_LIVEUPDATE depend on 64BIT from the first patch
+>    rather than adding the dependency later in the series (Pratyush,
+>    Mike)
+>  - Reword kernel-doc comments to read better in the HTML docs and
+>    spell out "reference count" (Mike)
+>  - Replace the version number at the start of struct pci_ser with
+>    required_flags and optional_flags, and record the size of struct
+>    pci_dev_ser, so that the PCI FLB ABI can be extended (LPC BoF)
 
-Is this precheck basically checking if we can free at least one zspage
-of the size class before proceeding? Yeah the number looks good -
-let's add that, in parallel!
+Hi Bjorn,
 
->
->                                   Shrinker ON   Shrinker OFF   Shrinker O=
-FF + pre-check
->   -----------------------------------------------------------------------=
---------------
->   Pages compacted mid-swap              2,218              0             =
-             0
->   zram mem_used_total (mid-swap)     121.0 MB       120.9 MB             =
-      121.1 MB
->   zram mem_used_total (post-compact) 111.2 MB       110.9 MB             =
-      111.1 MB
->   /sys/block/zram0/compact scan time    96 us          97 us             =
-         27 us
->
-> Representative /sys/block/zram0/mm_stat snapshots:
->
-> BASE (CONFIG_ZSMALLOC_SHRINKER=3Dy)
->   pre_onset:         184553472  58747279   82350080  0   82374656  0     =
- 0   0   0
->   onset_compact:     184553472  58747279   60456960  0   82374656  0   53=
-45   0   0
->   after_swap_out:    334196736 107289761  120946688  0  120946688  0   75=
-70  29  29
->   post_compact:      334749696 107472834  110907392  0  120946688  0  100=
-16  29  29
->
-> PATCHED (CONFIG_ZSMALLOC_SHRINKER=3Dn)
->   pre_onset:         184553472  58747279   82350080  0   82374656  0     =
- 0   0   0
->   onset_compact:     184553472  58747279   60456960  0   82374656  0   53=
-45   0   0
->   after_swap_out:    334372864 107347183  120922112  0  120922112  0   53=
-45  29  29
->   post_compact:      334995456 107550158  111009792  0  120922112  0   77=
-67  29  29
+I am planning to target this series for the 7.5 merge window through the 
+liveupdate tree, as we previously agreed. However, there are still 6 
+patches that lack an Acked-by from you. I believe you might have 
+reviewed some of them before, but the tags were lost during subsequent 
+refactoring. Could you please take another look at the following to make 
+sure everything is in order for us to merge the series:
 
+PCI: liveupdate: Set up FLB handler for the PCI core
+PCI: liveupdate: Track incoming preserved PCI devices
+PCI: liveupdate: Document driver binding responsibilities
+PCI: liveupdate: Auto-preserve upstream bridges across Live Update
+PCI: Save and restore the ACS Control register and Egress Control Vector
+PCI: liveupdate: Adopt ACS controls in incoming preserved devices
 
-Ah ok hmm. Sounds like internal compaction isn't that helpful, i.e
-zsmalloc already does a pretty decent job at packing objects that
-there aren't a terrible amount of internal fragmentation in the first
-place...?
+Thanks!
 
-Should we do CONFIG_ZSMALLOC_SHRINKER (default to N or to
-CONFIG_ZSWAP) for now, and remove it in a couple of releases if users
-in the wild do not complain?
+-- 
+Pasha
 
