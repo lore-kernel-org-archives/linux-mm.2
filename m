@@ -1,132 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC1F606A31B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 01:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03648606A326
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 01:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=CI+VxDJ3
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=A2WVZoGt
 Received: by kanga.kvack.org (Postfix)
-	id D46606B05B2; Tue,  3 Nov 2026 20:39:53 -0500 (EST)
+	id 0BA4A6B00EF; Tue,  3 Nov 2026 20:59:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEF016B05B3; Tue,  3 Nov 2026 20:39:53 -0500 (EST)
+	id 06B586B05B1; Tue,  3 Nov 2026 20:59:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB7EA6B05B4; Tue,  3 Nov 2026 20:39:53 -0500 (EST)
+	id E77576B05B2; Tue,  3 Nov 2026 20:59:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 96E646B05B2
-	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:39:53 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 34B341405E3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:39:53 +0000 (UTC)
-X-FDA: 85395730266.26.4943B39
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 89FB24000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:39:51 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=CI+VxDJ3;
-	spf=pass (imf27.hostedemail.com: domain of bobby.prani@gmail.com designates 209.85.222.45 as permitted sender) smtp.mailfrom=bobby.prani@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id C1DEB6B00EF
+	for <linux-mm@kvack.org>; Tue,  3 Nov 2026 20:59:31 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B775CA81DA
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:59:29 +0000 (UTC)
+X-FDA: 85395779658.03.44FAD51
+Received: from mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 4589480004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:59:27 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=A2WVZoGt;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793756391;
+	s=arc-20220608; t=1793757567;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=kSc7WJfr/T2uxVIbPPCpTk8TyN99fu6QCnpTLbLAcUA=;
-	b=zOjC2kP0E3EyWUPoolkVF7FznvGnUiQD6r56uLMfsMmFTUPMDhmdZ0hrTqCGXdKv1j705L
-	IaeNa/TJkQdmZjkIy9Z1clWOjtjVU8ortFfbVceRX4gYKcsHhZXT6E4WyP28F/SSf0Ivc1
-	sinW3qi4c+WdvL4GvkJnD5m7UAvbGW8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793756391;
-	b=3F7hw6YxGYq5/owefBPgDYOKk3J+2Xrvoo5Ozl36R7WFwSV7fH9IyMre/v9iHmFd8xCwnq
-	bRz9MG6VSsao96wY88BxcB6bUWfUhAItX/PC8OIerlfZqL2BxlXhLl3gDVF2P+12GSdc3q
-	5nrfBMrtFpcyJVmL+z+n/KxUmE5vrP4=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=vtQc/hP3UAI76zkIv9UdY4+7Ue+hQnIdUcRDPGnwDYI=;
+	b=AYXoCSX47klVRE3OW3WIVowB4tR+ehmlH4EmFusszr5qX9EHnXuSfoIqJCotFfzUA20185
+	6Gwoq1uQXju3jc++JMAjsQXAykgSXGVlzNQP6WYBHP14r3wBca2A0y9848X0sV65tKo0A5
+	rcNM0UXC1NjZ8qXJe/caV7QjIWQg07Y=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=CI+VxDJ3;
-	spf=pass (imf27.hostedemail.com: domain of bobby.prani@gmail.com designates 209.85.222.45 as permitted sender) smtp.mailfrom=bobby.prani@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-98c78660542so125733241.1
-        for <linux-mm@kvack.org>; Tue, 03 Nov 2026 17:39:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793756391; x=1794361191; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=kSc7WJfr/T2uxVIbPPCpTk8TyN99fu6QCnpTLbLAcUA=;
-        b=CI+VxDJ3tiAMTqKCvxq2ckg+SAlGwPXXO5U5zoFtE8t8rSq8E08xWJ/aey/VqzXddg
-         Ujj1PeGJMDNspkL8ZwnR8mKvTC4r4fnX/sm0433tFIbEWMtZ11d0WiqgXlqLiHBo7wZY
-         bsnvCGBFMU70QPjluQDjzotl8tY57/OWDTswKrXblW0rOsgbVULGjOEjbklceU1HfxrW
-         IScrQibggT+534E7Mw1GO2zIr3KEQMkjaB2f2/ybaanFao8c3PvKUnBi9lfiyoi5Ol4s
-         a9u4u6bzRWuXeX0BgHwK8K3vZ9/6aTy9Gs0TH3aGXNFScbq8WXvLZh7EK7LpuzQ7k2Ye
-         rJNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793756391; x=1794361191;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=kSc7WJfr/T2uxVIbPPCpTk8TyN99fu6QCnpTLbLAcUA=;
-        b=F18GjijzrwkJgDJEVawEJZTPpSfpUJnQsI39KQtjJd+JTD/GKibCw8GrpjSaB14pHG
-         /42y80C0aMdaJXn04l91463N721HIymVTC6E+bcY9bFBmMHkl2NEcnpC2IzIIVUvijAN
-         Td9mMtqs3NdbHmHvJcepuN9qmeAiGrUDaQaSCdCyHYttZO6GyZK/LcLU7YxfmWjratRP
-         wzRvJi7Zb7mr4XduKSD+B1SkbB41QWPkdMJH/HHLi/bnyobMQRIBT+788jN+o7ci2yaY
-         AxjOw5xCxEXMU3QA+Gak91cFnb/VQ5jcfJqU7GWoBWy09Nncqg7sgDZAifQoCeFneVUW
-         5g6Q==
-X-Gm-Message-State: APuU4Z9Rx5xGnd6ynjeTzyDZqfk8w3RChwirKe9HH6yTxw8l/jl+89Bp
-	jkZ1Jl+xkz+iB/G8OiR+naJR0PefNLxARoS+mKOjnB2iAA8f/9zHzevUfcvk8WrSeKg=
-X-Gm-Gg: AYBFou1hYyLAZiYtmfTkB2E9sI8Bd780JsABo/wmvxcsLWl4u6fMx2srRf6AKbXDf5F
-	i/c96PJivxYaJv0bbBM2vSFgN2SY7B0lNXdA0HPFElt2BoNIZcO+JA7d0a21dmDY/Otted8/nZB
-	uDTFq6qRnCuP75LIICpnZn1b/qp6IE12o9mFaWaoc3vDb1Mmo3Y3udPoIyjk0b8CPV11VodxSat
-	/4kZGja4Y7dxckiAP98fMbs9/qWgBUsCCmvgcDHbFdxg4ZIfoV1qFN/rtCio67VBh1b3GqbQ6X8
-	0tM+0QOLMubwn7OuI5ZQEXnhUi0EHJTxB+R8LHw3dRzpS1WGFCa1Qb/TRirrnpRy5ut3MN1S1yv
-	bZndZGMq2fTxhkDxvfshPGO5fYeNj/j9a7Il07JJFNpc1aM/6vE6gaz0OAekVW2mscLTE+CbTNZ
-	Z9w4vFr2fDHO48lgeKssmBLYmtj2Fof7pyZf+oTidFQSirplBBMQ6sWrCr2QwZ69ixOwJehard9
-	Y4XErfHQ9ilOTdrX/MAI6Ak6rIeywz2z1glNRPoEuZ8nXsL1w1Uv5NZM4Pm81A+JOzH+32ZKEOU
-	jeqezMeZJkefPCs7Ps9zMhQRb74owKXCddylt06aFS0vqNXnwf09k3pXjPgrAVcKVw==
-X-Received: by 2002:a05:7301:db8a:b0:36a:279:c93f with SMTP id 5a478bee46e88-36a423fda77mr21589967eec.33.1793755902092;
-        Tue, 03 Nov 2026 17:31:42 -0800 (PST)
-Received: from pranith.org (c-67-164-4-239.hsd1.ca.comcast.net. [67.164.4.239])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca394c2a3sm2149230eec.20.2026.11.03.17.31.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Nov 2026 17:31:41 -0800 (PST)
-From: Pranith Kumar <bobby.prani@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Richard Cochran <richardcochran@gmail.com>,
-	linux-mm@kvack.org (open list:MEMORY MANAGEMENT - CORE),
-	linux-kernel@vger.kernel.org (open list),
-	netdev@vger.kernel.org (open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:\b|_)ptp(?:\b|_))
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [RFC PATCH] mm/rmap: use release ordering for small-folio mapcount removal
-Date: Tue,  3 Nov 2026 17:31:38 -0800
-Message-ID: <20261104013139.1341582-1-bobby.prani@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=A2WVZoGt;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793757567;
+	b=vYLnLKyUKQhgY0pqCfeX8HOXtX4q6ALnowiUELz0tHZgav5w0OZEz0HWECV5aTwDy3E50a
+	yKdICezYDB8wXlyeNuPErDpRepG9P0n70p6Z/sQuChaJiJZiRLMRCJsf4YU2zv0bLicfDP
+	7YdGtSsM+KGC4FwHDCXLmAV2q8NqDrE=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=dEfpVcqaKwJtgCHoqizd1/ayWuwTWWIsmQKh7kUEEfQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793757562; v=1; x=1794362362;
+ b=A2WVZoGt2KIuU7thWtNqyKE2fIOPMC62rT+8J8Gm3hHFG3vmJoFY1YeHXImUuFBMuCtu3/D1
+ EyhSjAeXA9lNiVQplWoHixIJqTmQE1ogAvL0MndHeR8MWo+bHYggWHkj/YI+Ow9rVGv4KnKuz8l
+ KE8pcze3J6rMj9d/2DD4ekPQ=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 8f7e9dda1911563a;
+	Wed, 04 Nov 2026 01:59:22 +0000
+X-Mizu-Trace-ID: 8f7e9dda1911563a
+X-Migadu-Flow: FLOW_OUT
+Date: Tue, 3 Nov 2026 17:59:11 -0800
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Ababneh, Ehab" <ehab.ababneh@intel.com>, 
+	Barry Song <baohua@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	"ziy@nvidia.com" <ziy@nvidia.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "buddy.lumpkin@oracle.com" <buddy.lumpkin@oracle.com>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "kasong@tencent.com" <kasong@tencent.com>, 
+	"qi.zheng@linux.dev" <qi.zheng@linux.dev>, "axelrasmussen@google.com" <axelrasmussen@google.com>, 
+	"yuanchu@google.com" <yuanchu@google.com>, "weixugc@google.com" <weixugc@google.com>, 
+	"david@kernel.org" <david@kernel.org>, "ljs@kernel.org" <ljs@kernel.org>, 
+	"liam@infradead.org" <liam@infradead.org>, "vbabka@kernel.org" <vbabka@kernel.org>, 
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, 
+	"mhocko@suse.com" <mhocko@suse.com>, "jackmanb@google.com" <jackmanb@google.com>, 
+	"baoquan.he@linux.dev" <baoquan.he@linux.dev>, "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>
+Subject: Re: [RFC PATCH v2 0/5] mm/vmscan: adaptive multi-threaded kswapd for
+ NUMA-aware reclaim
+Message-ID: <20261104015214.GA1088663@shakeel.butt@linux.dev>
+References: <SJ1PR11MB6105E073723CFEEE8C8EDBF48C832@SJ1PR11MB6105.namprd11.prod.outlook.com>
+ <cover.1791577417.git.ehab.ababneh@intel.com>
+ <CAGsJ_4wmSL7i4EPLWLKhDD6J=1TywBi5EYYDxp=SvOuXdmLGjg@mail.gmail.com>
+ <SJ1PR11MB6105E839E55E9B0BDE183E9D8C9D2@SJ1PR11MB6105.namprd11.prod.outlook.com>
+ <SJ1PR11MB6105A05870574FF39B449CE28C692@SJ1PR11MB6105.namprd11.prod.outlook.com>
+ <ee9d317a-9829-47c1-81c7-1145304ea484@intel.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: yuo4uiyd4oiqrmxbxbsswd835gru7w5t
-X-Rspamd-Queue-Id: 89FB24000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ee9d317a-9829-47c1-81c7-1145304ea484@intel.com>
 X-Rspam-User: 
-X-HE-Tag: 1793756391-532612
-X-HE-Meta: U2FsdGVkX1+L3Gc37hND8ZoebteyV74DQhzkpIGIj7l0ukzGdfLCwLOZ+pobbt+2qDFWC636M1lK/XMESiJC70rxeb1sn3LlW53pqdzEH+GlBvOUzxGZ0HApB8Tk3qTC+egopiyzRjFaS8sSbMNFZWMTtyV0Zsead+YI0yFLYn+amqfj3Iww3XR16TOsl5ACCA5c3jFR95LunmUYYn1Wn2OpyN1zWswEU5zD/aJzr5FMDmMoXBYSp5QzDwv6j9LX0NWTC0AV++ev+SQYnb0B8fKVKPp6xS56ijFxxZcpjmLFx3r0rIX0iPN9oYURpYTFlNvV4bwthxxzAbnjixmZ1MFR69BlZ4lXhSg54XR8qCkfhGQmK93JOLI75D4uqk4OwQ4zwlYGHlEwyMTf/CNuoKB+6mmAYniWSDOalvHmVCtnBiEqTGsSGABXJYVnCy1ZtAZnkjEHfuHUgcrz5ncLuev40imz0MoFGPORKeEOi2QnrG2Dtk+dEdUH0gGaJ7KclkBZzpZp/ExfefCus9SM15qj3axaMCTYw04irIWpV+oiR+1tP9NJvLVlU/BeIi6kTwWlde1H0Mnw0KlZ7iRpboJHyVuWKfo+kMi6LcqXQOJ55yKHiKDH204ZCOtxN/DbB5UOmex9AGljyP8xPdTyvEjsTfBqGrImaMcgmrCW3o779s5XY7d1eI170cuyNivX00z3R9a8RM20FLXjgZhcqzHtSVE96/gOmXZqQY+11kdDiYrLp5H1/JhDXfQxLJ38G3YkB6VZYIHM3ddoQ+J4C/A1B+G+hhSDGHJ+zLjRMF1Gfd4XPU8/AlY4BfA7ny5hxBEtFaUWw20k5IfqT91Ftly066iOaJNTrEMc8Er/laMZgWAaatp33OYXDSmJF0itWfZf+eAFuBE23KQf8Tx/B/zq8ax7/yc7oDiuJRmXhNBmzVPcFW65/lJOmakqNUmF45Nuof78m8VSXrUjqqd
- N/XGU4lj
- PGY0fi2PBWrUuDIdJb/bJBbzOiKw1YTnzBkvTHWsReQRa+c0p1JPqPjp+6/Bj+Bxlx62FKLUtGAhYp87HlkXXWwp/HaEC92C/s1qrcXWHKqcYG7kxD4rXcd8oFZEZqW61RYYsMg4d1dqU2WHD+Trq22ggriqqir81EcGLgS30z7b8KLyxBbDeHt7qDXFD0c6lrcOSrS5krR60wmgW222HnvjHRC2ZUVMlHm5+27zrFqFYvW5P8wnUTZv/rIYV97/3E2xzq3TcvNzIjRgIGpvmDuSRElFVLzJ9OKIIgWkCr0C0I0peJ55DuEAroHEpkV89hK457gxwmbKJI8XewqCG9IgtuDA8lgoKok37U5UY9TK7UMYY5hQXnETkIHMw3e7xdtFmQ5Z2YvZmRaUA6hZeuCa+FVbiR2s6ZQlyK07R0EIjSFp1JZtJY/Ovs14UY1hw3mG1
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 4589480004
+X-Spam-Status: No, score=-4.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MSGID_MULTIPLE_AT,SPF_HELO_PASS,SPF_PASS
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: dk1ourncyabfo9q9oyespht5mij8zsmj
+X-HE-Tag: 1793757567-117272
+X-HE-Meta: U2FsdGVkX181c1aMrS+1Zm4UruE+rhHIOryyJ9A8PYyV16aQmyC5FLXMLFCVSDJO2tKOHaCKfTjQORSk5ZqCnw8Pq+Vof1ywxKWOlt06ezDp5N7QthMbiKjSx9Y53bXK4o0CXKklcgXm2oX1siTvVKXS6rrvW7Drhi88/JJv/bmNP4g4VfrTfeejYEw2aFR7ZpXDgi/nxAcrNeL0PmnDfYIPXcrF7xsx+r0zxiyMLHEwrUmPnAHR90IG17PB6+qfDAGUHUm2u6WzbYKdB+EiZtQgIhSN5k18x34iqqTVwFC1GPS//vnfX7UwAgxzrTGi1675r+7gf1lzgyyXMMy3WIBQLYDOGGIatLKSpA1XHRiFD6lbWEGdEPHVWZMSOAKbeCWL/NSmBFWHiSP1qP/aE81MEcWAt4iu8O6U5Gl1I/8UQG8CN7xPk9Q/aX9iqFfz8P46988jdTC5eaQcZmJ9/VAsfP+N4ifCPNs+vAx+d+4gKij0jhdL8HqSpluh/Z3b1v4SIkQjW4uB5PeOCkpq/GV6TVJ+HdSIBeCO3rQLmr+/XjxzIXLfGE5GXl7qmm/G3Z/7DLrVfhiPyq9gh1KQuoA3ch5ZInx+Hwa9B2O/LkxWB0T5iS8kYYVVfkjq5ytx4VbdcKSqJYLopyur5ETAIQWC3OJ34/SL+LxLF5dlOrAEJVTI83YskxiZig1MeaDn1R7eTJ3Ex89nUTfxR0inS3ni7zlcUlLoak8rXnAH+WrBMeQeeMFdWCGi3f8BB1l1kREmJzvrXXlD0ketK3a20hB3WpQLQ7recKh2n8LhmwpqjqXaFJ4BnIJdgcjf4Uy9+vVSQT9o4E25Li2ZdmnvOdddsEzVPv3tREcqZ4BVu6GDlYduK8t2KWnO9F6Cs8enGUwDjfKyDd73mNExQZb4ilA3hsybj/0ov2lBUaJBrdFporEdr5HfSgxxBG3ILZV65vPMzRVOzg/GK1031Ox
+ 5MDIOkaj
+ tC69HcFrgWt4Tm0oGD4hN1nxmHtOZVpzfFz0Sn9m8jE5h64UdxZuNgFOxxucR3OjAw6uZHz4sffzHSA6p4USZNSYGcOLXYpsUR066f8r7qf78nbkH/i/4VDGnsxamVTm8tezs7WxUtxflon6OttbZodce0+8SKbcKc/qBRuxQIzCwgTRhK6zGSWj+AAizdbRpm8cL3WqkQMvOwXTxXhgxvk1Dl9SsA57j1vE2q7LCIX2yoLtsf7Giu8ylgBWxH/W/m9iH1ysFXjKKcwix1vy+IOWnpuVQv2zfkI9SwAJTNgZy+GSCwqHKfT+nzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,57 +107,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Removing a PTE mapping must precede lowering its folio's mapcount.
-The COW path relies on this order to keep the old page from being
-reused while a stale translation can still access it. The mapcount
-update needs release ordering for that edge, rather than the full
-ordering of atomic_add_negative().
+On Tue, Nov 03, 2026 at 04:15:44PM -0800, Dave Hansen wrote:
+> On 11/3/26 15:41, Ababneh, Ehab wrote:
+> > I would appreciate your thoughts on how we might achieve a similar
+> > performance improvement without increasing the number of kswapd
+> > threads.
+> 
+> It also just plain doesn't seem like folks are very interested in
+> optimizations in this area at the moment. Feedback that's basically, "go
+> optimize something else" would also be very welcome.
 
-Use atomic_add_negative_release() for non-large folios removed at PTE
-level. Leave large-folio operations fully ordered; their path can
-queue a partially mapped folio for deferred splitting. Update the
-COW ordering comment to describe the required guarantee.
+Hi Ehab and Dave,
 
-In an arm64 page map/unmap microbenchmark with 20,480 minor
-faults, simulated cycles fell by 1.54%.
+My appologies for late response. I have not gotten the chance to look
+deeper into the series as I am stuck in something else but I am very
+much interested in this (line of) work.
 
-Signed-off-by: Pranith Kumar <bobby.prani@gmail.com>
----
- mm/memory.c | 4 ++--
- mm/rmap.c   | 3 ++-
- 2 files changed, 4 insertions(+), 3 deletions(-)
+I have discussed with Johannes about multithreaded kswapds but the
+motivation is more about scaling kswapd threads corresponding to the
+number of cores on the node. We are getting CPU with hundred of cores per
+numa code and kswapd is already too late or slow to keep up with
+allocations happening on all of those cores. So, I definitely think we
+need multiple workers doing the background reclaim.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index b65b56fe9714..9e23c64bc743 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4158,9 +4158,9 @@ static vm_fault_t wp_page_copy(struct vm_fault *vmf)
- 			 * threads.
- 			 *
- 			 * The critical issue is to order this
--			 * folio_remove_rmap_pte() with the ptp_clear_flush
-+			 * folio_remove_rmap_pte() with the ptep_clear_flush
- 			 * above. Those stores are ordered by (if nothing else,)
--			 * the barrier present in the atomic_add_negative
-+			 * the release ordering of the mapcount decrement
- 			 * in folio_remove_rmap_pte();
- 			 *
- 			 * Then the TLB flush in ptep_clear_flush ensures that
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 1131b76bbbc2..62e623d7563b 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1794,7 +1794,8 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 	switch (level) {
- 	case PGTABLE_LEVEL_PTE:
- 		if (!folio_test_large(folio)) {
--			nr = atomic_add_negative(-1, &folio->_mapcount);
-+			/* Publish the PTE removal before lowering mapcount. */
-+			nr = atomic_add_negative_release(-1, &folio->_mapcount);
- 			break;
- 		}
- 
--- 
-2.47.3
+Please give me sometime, I will organize my thoughts on how we should
+aim to tackle this challenge. I will also ask Johannes to provide his
+take on the issue.
 
+Thanks for pushing this work.
+Shakeel
 
