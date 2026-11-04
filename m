@@ -1,102 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF65606A329
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 11:15:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B528606A326
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 11:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hnnV/ht7
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PzQFw0Fc
 Received: by kanga.kvack.org (Postfix)
-	id 7231E6B00EF; Wed,  4 Nov 2026 06:15:23 -0500 (EST)
+	id 7228A6B05B2; Wed,  4 Nov 2026 06:22:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6D4706B05CD; Wed,  4 Nov 2026 06:15:23 -0500 (EST)
+	id 6BABF6B05B3; Wed,  4 Nov 2026 06:22:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C59C6B05CE; Wed,  4 Nov 2026 06:15:23 -0500 (EST)
+	id 5D0C56B05B4; Wed,  4 Nov 2026 06:22:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 333496B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:15:23 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A52F4A8346
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:22 +0000 (UTC)
-X-FDA: 85397180484.05.AEEBA1F
-Received: from mta0.migadu.com (out-253.mta0.migadu.com [91.218.175.253])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 0D242C0006
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:15:19 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 39DBA6B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:22:35 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2BAE812067C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:22:33 +0000 (UTC)
+X-FDA: 85397198586.29.98AEAF6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7C98EC0002
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:22:31 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="hnnV/ht7";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.253 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PzQFw0Fc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793790920;
+	s=arc-20220608; t=1793791351;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qpEDw5hjXj7841PRbs5dGID3L5ntxvD9VVbE0nNrrAA=;
-	b=EOhL/7HGGbVEswQbLIetQPFVSz4XaUweak+gReLxe3EPgjSZ+nHAv3SPU6GR0dbB55H9kv
-	GvnvoUgQiUX6YedI4CwdEtz4sjnsu3TlYBCQAPIndxfGpw1UvC6a3JkxAJlb07sOu7GaJ8
-	JcwxtQlj7NfMeUyNnGoPZY5/rRhK5Vg=
+	bh=PhlIWW6g3N+AFu1LsfAztQ3Wt3gvl8nW98AXZASgM/A=;
+	b=x2LRYgqHIcgdqbBvUA/QAGZ+4Pow4KH/Ee4RnWDKygH4+/pmCtKdDk+tyRGKngZRhOA/FA
+	VlTsb1j1mkPO0/acDbTNFCwZ/VwbLgWKqLz5wYtbPtXoCYCiIe75FQHglpVG0W86k5lmFq
+	1PShLzMuyW7tamZq2h/DBuJjwmaWF80=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="hnnV/ht7";
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.253 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PzQFw0Fc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793790920;
-	b=sfU3XVZXh/EEsQvWt9eOFxvvMcyOygq389kQvSS4iBeLmcjbXYLmt0YnCB/zGn1NY4yc0e
-	Ctjkj1SIW3KpYzI7FVjIGbNxJxpZLssNfmtY/W0teQIxlC8Pq7IJpttqAVVteTqDm/QGag
-	ce+XA6cuag5SetPqUH+wncBosaoq1hg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=sk+qxKHeyasIiOhy5LS3K94shR3FnmgUqi2mNGl6j6U=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793790915; v=1; x=1794395715;
- b=hnnV/ht7MPpfuPiYc5OnoYdShepbOj+OHpIWxHZNm38ZqyIjR7Y7uoRJDw2p0V1pyrYPis2U
- sij1bZavn34aUgginERHwZr3snM7PgIfBThHazlAQ22Koa9sO3YOUcSfCWmL9FiRGHQUG0HWPQn
- DOpWSjYWQQaS+MQXaPyFoHjg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 170b41dc14da184d;
-	Wed, 04 Nov 2026 11:15:13 +0000
-X-Mizu-Trace-ID: 170b41dc14da184d
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=utf-8
+	t=1793791351;
+	b=byXYRISm+X7J/AAfQVWPo7thqDi4cNIhZdq3kNApgjkassvx7Q6A+Au+QDDzS7yW7xJFdH
+	7OoR1NfGw1mRtfJODkXORCdbaW+dmBURtSU4XyqF70ITByGotKC3U+KObmoOr6gTtapzIc
+	ZtVOxDEH1PaY8Dstr5VZ6hBvqUm31zM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id AF6FB43558;
+	Wed,  4 Nov 2026 11:22:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC30B1F00A16;
+	Wed,  4 Nov 2026 11:22:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793791350;
+	bh=PhlIWW6g3N+AFu1LsfAztQ3Wt3gvl8nW98AXZASgM/A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PzQFw0FctCGUG1qHhQ27pa7aqyd7BxJUFvbnrW/uv19RT1NEp+QBsPx9tWUT0MRKZ
+	 EP/IgnjNU2qQXaN6ydBSAjnVmbibh1JigkN4pF0k4b4TVFlN6vXgsHaMIv4OLWjbtW
+	 9JZAxCVdX8vntYR8F2GsWdf0v+5nIZntQeHoeycoXS6Lh2ud8VSmqn3XOp3F5vl6Gk
+	 1UEiBKOXa+yKIeI0dmRVCCjCuoSXB1eQLxtei9hnz4GTO95SjGcSospGRBVSQlJ3qW
+	 ekL/wjVM9kPF4GBBy0057j6cy9SYv1Kl52peqE0i5VtsYdAP5nRfejwHQD75bTPkD2
+	 5zQx0FPWv/hpg==
+Date: Wed, 4 Nov 2026 13:22:22 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chen Pei <cp0613@linux.alibaba.com>,
+	George Guo <guodongtai@kylinos.cn>, Kexin Liu <liukexin@kylinos.cn>,
+	Sourabh Jain <sourabhjain@linux.ibm.com>, kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] kho: skip zero-sized lowmem and global bootmem areas
+Message-ID: <ausVbqZd9qgZf4zc@kernel.org>
+References: <20261103-kho-bootmem-sizing-v1-0-45aa74098f34@kernel.org>
+ <20261103-kho-bootmem-sizing-v1-1-45aa74098f34@kernel.org>
+ <auo3PzmisfK3br1l@google.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v3 04/12] mm: hugetlb_vmemmap: generalize vmemmap page
- allocation
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <ausBsbaw9DNVh4KA@localhost.localdomain>
-Date: Wed, 4 Nov 2026 19:14:48 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>,
- Lance Yang <lance.yang@linux.dev>,
- James Houghton <jthoughton@google.com>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <650347FF-8445-45FD-B1F8-085ED6F997B3@linux.dev>
-References: <20261104023510.260766-1-songmuchun@bytedance.com>
- <20261104023510.260766-5-songmuchun@bytedance.com>
- <ausBsbaw9DNVh4KA@localhost.localdomain>
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auo3PzmisfK3br1l@google.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7C98EC0002
+X-Stat-Signature: m78gdjxsdautgw7hjxb8kts3xa8gsm8m
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 0D242C0006
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: a1dusuf15unwt16hbxppcmw8iq1moyfp
-X-HE-Tag: 1793790919-981121
-X-HE-Meta: U2FsdGVkX19vbSvYioWju/HRRFx0T2k3OfGiQT9RGgu7ND7vm5VCV4cb9wsx9auoVllxHecPUXCLosG7BICz0jUMKb/WrLdhDjYkFWpBvi8afRTxCflF7PlPuLoB4mBXk/5qkaQZOmxox7RvL4A/ZtxQebLdoQsSda1IZtSLuKh+VZkHqgbLNLC9jPoVWPnwpXh0OhLydY9qcXLz33AKxmbNe2A0853CtOYUq846JfiuAPIQb5Fmo7weVWxfXluvUdyOyhHi8nCWaRe/6UTl3Fsj35W4DNTauc/GJqCpGnLY5VpGUMgoYonFgMxuRKKBKmnX3sLUEriNWF3gJcWrvjqBWvWCtAn8cYLdqSH045ABZhcwFbBBmvHBMwbRd/4ikMLfbxOUGkNBt4Ei3SKOUl1IoOUZDRbbXJyVwDwXIiywo/s6VPJjmRgvyFLAebuoCup6FyDY8+SU3vcMxx/FTVT2CqScxmM7PZvznNDGKDzDx43rP6tpqnjzCsTZxPFYcccgbR8j2VzSXROrKv+Zp8Asp/HgwJMMtdkmgpdkx5xs16+HRMd/pY1AXP7LL7L2aQ38XrsjlOcRtuPiLW/Aon3tZPEcA0sPwdUrfOR4ve+iTKpsk9BthKh+5XGKbvU5utQz8m7dy/VChPrL1p1kPr9jxy0tzAexmy0950gqyCuuO3uanSmNL6/O9jZK4tSS/7GlxIRHw4we8Ur0C9ZZ8rqdIi7LtIjRCazpX1VCU1h1TfcKK+YZZeh0ITA0gy9oyYvSkBsxQ74jHMlN39AlOPrgISM8C/LKG75sQu7vnM/8+4PmnTrTQtWXnEf6/SHohVqt8I4B2OkOxvYk3mPzoJ+7KB9FhhE1W0kAf3WOLQy/AkBwzVH0K1UjvP4ubJtntRpA3Q77i7XVHEX/Ohy6284zCUwa4MF0Z/xOjQNsI0Jw+LeCgZu4pw7ARBB5P2ej/qpAJQXP2n9wJZlM95g
- gYXJSiqp
- N51vLRf1SkHvt3fAgq3fwmQd6tm3g3Zy5xY1HPG0w6Qe2Yr6MWcsyJ1Fx3Z9Czg34WA3cHgwonW8aXGtevojbyj4u0/Ye1QZEJ1RA1Zfm2VVNJZgoIUpsrPT9GLbvKdd1b8W+L/rMrnB1LKHNKxfTdhaWmqzWl+d/4p4Lx+li/oRtvpcIOLlzsVO4pEXG+ELJ2YyTzbYDPVwxBBqY77FSrr0qlX40R9dl/QG1LjT0KNs9fA7SCxcIZwV2A2GETp5aRZq/2UP7kamxzokutXqZwO85aFM8pgW3hGCRkWwIOVVYaP1KVGGeVg64GSOjpHjNOKVJDi+Wa0B2IAGj+rE03LhDzR+NIPJBu1TFmpyZUb3FEUE=
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1793791351-212373
+X-HE-Meta: U2FsdGVkX1/GBB++RdFw/CXe+dYBhbB6H7jDIQN8dOXRjT8VdRpngKg1FOtDqQDK5i4OtEIbLJjh128DCIwFyBfTfwIyyI3Sx+5pcnVBW5c+OdQpQVk5NHeXCNsr3GjrggNnThLZcJK2PGhYnmEDaihisnkM1I/PZWBHCaJk2JTFX2k71RJ6oW1yqRJuqofPbbZYt8Dc4U5A2yGFXopgC11HluqdrBzH1H+UsVjXx+/Op91i4VfdVUxAfM5vx/Rg6RBkBVuowtgwKqMsJpp5RDFmC00WsiQerqPJ/ZsU1rzCrGqBqX0y/zZMXEvLEQoMnNg0wFUguj7wFqzne5yucWLZI0cjKlNCv4Glivut9H7Uuyqlf1yzcDd3Gke+coGcneh65xCvZFZDzUHFy94VnxcczKZRx4TcIr/sVl5EKTZDUf8dqO5LkIeKrtka0Xq/x1G7uIUr2UjY3jfqdSbdYq9rk+eCGeYhuxD1VaZYVgzO7skeYmhhh2HNgSpypKf4huGPDWuKGZpBFgmISKd2JZRk7M8znbYQQnDSGJxisT0YR50iXFSSwCay5rTrl5i1KVM+tF5JYY7xWRWq6MIiHrDpKUi9VtJwHGU37CPfR8OKcCAlTNW6HdvJWKvvsoP40EcbILIE+kdvW8emqj/8PS8/uOhz+UmN6yFvTjajiOcp6Mk+eOassT/YvibCovDGJPXlgFTP/NQqSwq4pw74htZ5dwugcFkApxBuU0d7nk06luX9avPelCpZuQv9oV/JMJzenPiJPdSTx5/5RM1LkTvHNnt/CDaXjr6IKASqjILWDexz9zi5JG7k29FbFERBFBx2ATZwyaR2yzQlQByxDH/zg/rkPsohBRwWH/qSTsKlsso0MlHW1+mIrSWt6uJZzjYrP1CNv2nwxTv4rIv73cRSDkbPUMIa5f4lqE111D97ZcjVCLNfl0dyrIY9dLC0Nwm/T7SWERZcGSn3F1X
+ LLH3zHRX
+ qALhIVLL0BzsAm/tkIH2qkUmjOy2KPxmOCcGDO302oDwmoZ0BjMi4NQlcJSBgqdulqZ0ID7cVUre2QQ+vLgFM9pA+fuIOdNl1o44xSI82WtSCyCrhd3FubHQaLlHpNWO1jbuFB/KCueGTWy8W0S0LK7UY9reEbVCpS6zzj/tukHTDoR68gJ/PNxGps5JZPU/71U6oG/WlGWRTX13rDCS4Pv2oTdFo4M0piDNF86Zz4AZ3dGKN9fA282BkMmdtzD5+yYEfPoaIo/Z74+SMu2PyD+0D2LUfDHndkIksTklGF5Tpi3Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,112 +99,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Tue, Nov 03, 2026 at 02:48:36PM -0500, Pasha Tatashin wrote:
+> On 11-03 13:49, Mike Rapoport (Microsoft) wrote:
+> > The lowmem and the global bootmem areas can have zero size, for example
+> > when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
+> > either of those areas is explicitly set to zero with kho_bootmem=.
+> > 
+> > For a zero-sized allocation memblock returns an address without reserving
+> > anything, and that empty area is recorded in kho_bootmem. If there is no
+> > memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
+> > fails and KHO gets disabled.
+> > 
+> > Extract a helper that checks for zero size and allocates memory from
+> > memblock, and use it to skip empty areas the same way as empty per-node
+> > areas are skipped.
+> > 
+> > Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
+> > Reported-by: Chen Pei <cp0613@linux.alibaba.com>
+> > Closes: https://lore.kernel.org/all/20261026131851.9942-1-cp0613@linux.alibaba.com
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > ---
+> >  kernel/liveupdate/kexec_handover.c | 61 ++++++++++++++++++--------------------
+> >  1 file changed, 29 insertions(+), 32 deletions(-)
+> > 
+> > diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> > index 6f1f55fe31819..f268c57413a7e 100644
+> > --- a/kernel/liveupdate/kexec_handover.c
+> > +++ b/kernel/liveupdate/kexec_handover.c
+> > @@ -820,6 +820,27 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+> >  	return false;
+> >  }
+> >  
+> > +static int __init kho_reserve_bootmem_area(int *idx, phys_addr_t size,
+> > +					   phys_addr_t end, int nid)
+> > +{
+> > +	phys_addr_t addr;
+> > +	int i = *idx;
+> > +
+> > +	if (!size)
+> > +		return 0;
+> > +
+> > +	addr = memblock_alloc_range_nid(size, BOOTMEM_ALIGNMENT_BYTES, 0, end,
+> > +					nid, true);
+> > +	if (!addr)
+> > +		return -ENOMEM;
+> > +
+> > +	kho_bootmem[i].addr = addr;
+> > +	kho_bootmem[i].size = size;
+> > +	*idx = i + 1;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  /**
+> >   * kho_reserve_bootmem - Reserve a contiguous chunk of memory for kexec
+> >   *
+> > @@ -832,7 +853,7 @@ bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+> >  static void __init kho_reserve_bootmem(void)
+> >  {
+> >  	int nid, i = 0, max_nr_bootmem;
+> > -	phys_addr_t addr, size;
+> > +	phys_addr_t size;
+> >  
+> >  	if (!kho_enable)
+> >  		return;
+> > @@ -852,56 +873,32 @@ static void __init kho_reserve_bootmem(void)
+> >  	 * reserve bootmem area in low memory for lowmem allocations in the
+> >  	 * next kernel
+> >  	 */
+> > -	size = bootmem_size_lowmem;
+> > -	addr = memblock_phys_alloc_range(size, BOOTMEM_ALIGNMENT_BYTES, 0,
+> > -					 ARCH_LOW_ADDRESS_LIMIT);
+> > -	if (!addr) {
+> > +	if (kho_reserve_bootmem_area(&i, bootmem_size_lowmem,
+> > +				     ARCH_LOW_ADDRESS_LIMIT, NUMA_NO_NODE)) {
+> >  		pr_err("Failed to reserve lowmem bootmem\n");
+> 
+> You are adding a helper that returns an error code and then ignoring it 
+> at all call sites. Even though it can only return -ENOMEM right now, 
+> dropping the return value is not good practice.
 
+I don't think error code is important here.
+Even if some theoretical future update will change
+kho_reserve_bootmem_area() to return anything but -ENOMEM I don't see why
+the error code should be printed at all.
 
-> On Nov 4, 2026, at 17:58, Oscar Salvador (SUSE) <osalvador@kernel.org> =
-wrote:
->=20
-> On Wed, Nov 04, 2026 at 10:35:02AM +0800, Muchun Song wrote:
->> Vmemmap page allocation is currently tied to restoring a virtual =
-range
->> and assumes an empty destination list.  These constraints prevent it =
-from
->> being reused when pages are requested independently of a vmemmap =
-range or
->> appended to an existing list.
->>=20
->> Generalize the allocator and give it an all-or-nothing list contract =
-so
->> the restore and optimization paths can share the same allocation =
-policy.
->> This also allows HVO head-page allocation to fail gracefully under =
-memory
->> pressure without triggering the OOM killer.
->>=20
->> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
->> Reviewed-by: Lance Yang <lance.yang@linux.dev>
->> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
->=20
-> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+And anyway, that would be the part of that change.
 
-Thanks for your review.
-
->=20
-> A small nit below:
->=20
->> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
->> index 0e5b2b182d1b..d3058e106795 100644
->> --- a/mm/hugetlb_vmemmap.c
->> +++ b/mm/hugetlb_vmemmap.c
-> ...
->> +static int alloc_vmemmap_page_list(struct list_head *head,
->> +		unsigned int nr_pages, int nid)
->> {
->> -	gfp_t gfp_mask =3D GFP_KERNEL | __GFP_RETRY_MAYFAIL;
->> -	unsigned long nr_pages =3D (end - start) >> PAGE_SHIFT;
->> -	int nid =3D page_to_nid((struct page *)start);
->> +	LIST_HEAD(new_pages);
->> 	struct page *page, *next;
->> -	int i;
->>=20
->> -	for (i =3D 0; i < nr_pages; i++) {
->> -		page =3D alloc_pages_node(nid, gfp_mask, 0);
->> +	for (unsigned int i =3D 0; i < nr_pages; i++) {
->> +		page =3D alloc_pages_node(nid, GFP_KERNEL | =
-__GFP_RETRY_MAYFAIL, 0);
->> 		if (!page)
->> -			goto out;
->> -		list_add(&page->lru, list);
->> +		goto free_pages;
->> +		list_add(&page->lru, &new_pages);
->> }
->> +	list_splice(&new_pages, head);
->> 	memmap_pages_add(nr_pages);
->>=20
->> 	return 0;
->> -out:
->> -	list_for_each_entry_safe(page, next, list, lru)
->> +free_pages:
->> +	list_for_each_entry_safe(page, next, &new_pages, lru)
->> 		__free_page(page);
->> 	return -ENOMEM;
->> }
-> ...
->> @@ -527,15 +526,13 @@ static int =
-__hugetlb_vmemmap_optimize_folio(const struct hstate *h,
->>  */
->> folio_set_hugetlb_vmemmap_optimized(folio);
->>=20
->> -	vmemmap_head =3D alloc_pages_node(nid, GFP_KERNEL, 0);
->> -	if (!vmemmap_head) {
->> +	if (alloc_vmemmap_page_list(vmemmap_pages, =
-VMEMMAP_OPTIMIZATION_PAGES, nid)) {
->> 		ret =3D -ENOMEM;
->> 		goto out;
->=20
-> alloc_vmemmap_page_list() already gives you the error code (ENOMEM), =
-so
-> it would look more natural to me to use that already and not =
-"overwrite"
-> it.
-> e.g:=20
->=20
-> ret =3D alloc_vmemmap_page_list
-> if (ret)
->     goto out;
-
-Agreed, thanks =E2=80=94 I'll just propagate the return value next =
-version.
-
-Muchun
-
->=20
-> but as I said, just a nit :-)
->=20
->=20
-> --=20
-> Oscar Salvador
-> SUSE Labs
-
-
+-- 
+Sincerely yours,
+Mike.
 
