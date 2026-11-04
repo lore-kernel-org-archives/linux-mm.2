@@ -1,140 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFEC5606A329
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 23:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA27606D814
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 23:30:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WiTq1lLc
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fkHLGzSk
 Received: by kanga.kvack.org (Postfix)
-	id B21D36B00EF; Wed,  4 Nov 2026 18:15:44 -0500 (EST)
+	id 4AD246B00EF; Wed,  4 Nov 2026 18:30:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD3596B05B0; Wed,  4 Nov 2026 18:15:44 -0500 (EST)
+	id 437E46B05B0; Wed,  4 Nov 2026 18:30:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C1BF6B05B1; Wed,  4 Nov 2026 18:15:44 -0500 (EST)
+	id 2FF696B05B1; Wed,  4 Nov 2026 18:30:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD156B00EF
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:15:44 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E5327A8624
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:15:43 +0000 (UTC)
-X-FDA: 85398995766.21.E480296
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 050EF2000E
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:15:41 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=WiTq1lLc;
-	spf=pass (imf03.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F10E06B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 18:30:33 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 65DCD1A085C
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:30:33 +0000 (UTC)
+X-FDA: 85399033146.20.0F7B8CB
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 886A54000F
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:30:31 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=fkHLGzSk;
+	spf=pass (imf04.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793834142;
+	s=arc-20220608; t=1793835031;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jw1A1CrCQXufCGBVmtCdk6Ioy3GBOtyXllOzk3wnD2c=;
-	b=aScIjTLPsqVMKR+uKJDqtSVMaY9CTrqf0M6bWgHM/u3fVyVKpcgxBCe6eN3nudCP66fD6k
-	tDgX36uf2pGqp4+9PEE8mQ2ThAhtVydUfT9symTrlCqTrxJdZ87pO2atSN4NHbWqM8uK+c
-	k46WHjP8JUnmpnnwMYnHyxbbsJzhy4Y=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=WiTq1lLc;
-	spf=pass (imf03.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=S8O6n4wkP+hVSces6SjRurqbVke5VUdfxmmLz5pPN8Y=;
+	b=nKsBb9kay4Engs3k8uRqQdwDfo1R9hUQ/DiFpyvIiuQZVCyp+B3wawrqZAE/z3+sG3vBDL
+	reVBTK8lOD7hd0cuKrn+2w3sJak/ir9TRR6T1Lvak6SpwTdfwyCdbfRNn/zXppJDFdscAC
+	o2Kgcs+Tu0w2g4n0r0Qyrc7SP9mMNis=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793834142;
-	b=3LbDtUk7E8uGc4ja13v4KHPKYJtuW9mqDWBnlD28Xuv8j+8WxTv8PZ9YhoCTBwQG5jzHsV
-	AlTMTbe1c6sptzHHdbaySlEquprc1WiBDOkxKIWBtbh+Zyk2qW8dOX5BADGaL+p+xw9fER
-	uuuCyfow8VgcsPTl9mVu+HDRVmde+Uo=
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a2069b9710so11494145e9.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 15:15:41 -0800 (PST)
+	t=1793835031;
+	b=B/HVTPxaHLUPTvuPgNfNlWzu0hh9NmgcJokirGgnhpw17s/TyeAStomHQTrk5zDwMjuQcW
+	7TcCfVpdApM2NVi+1oOSojdPLoKyxSr67aOcHLJh6EBc8oge6fAx7j1rW71tj1KRoKOTs6
+	2gJgSZEjgAsYbMHcEt5cp9gThKDOPd0=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=fkHLGzSk;
+	spf=pass (imf04.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-8b0a921ee46so12847937b3.2
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 15:30:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793834140; x=1794438940; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Jw1A1CrCQXufCGBVmtCdk6Ioy3GBOtyXllOzk3wnD2c=;
-        b=WiTq1lLcPSdIOCKnnj5X/O0S4moH3tvzFJfqoevfiAYf+CVwKAcLsNB0Kxuphp9lK4
-         +2NLkdmOc5MJcyiJ44+clkDN6fXxo/uZo0ZY6Ekd2JBj1fYA0WDAhMrpaOY6S68wqO+9
-         iTephhjGgBt6B5/6lTgj4uB9Gug2MrXP8iMlQotsyN2/1rXddmPzIm30xJp90RwlyLnB
-         DbgibRFvOQL+EQs5uBvofZGwXu1sWG/HQ2+BThi683X59KvBIvBTX/pS2d287NDHYcuh
-         YRhnehMFMmAs8JhEKu64VzWHthfNtFLVZjqJwBki4I3z/qmOVhpAeLu+Ty+UUGIeT/C1
-         gD+w==
+        d=gmail.com; s=20260707; t=1793835031; x=1794439831; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=S8O6n4wkP+hVSces6SjRurqbVke5VUdfxmmLz5pPN8Y=;
+        b=fkHLGzSkNscuY+Ny5QdTaWLwitzqJbyXb3LjeC9CXB3b5es6qUKi/iRse+ZC6aL9WR
+         GzBxgC+6rY5QPVpl0N/7YQDG+VyDZuG00zh9wg4W+v9NLg9uN/Rt0SqbRHMFsjLyrRKL
+         pm7301wMU4qVeCT9JScA6LUjROzdcSBZewtfnpEamLIx4ncttG2/Wybxfkyq9/9D6yjb
+         IeQYi74LTWKP6ZCg7PhL2w/N43aYuBGkXz3kk/pAuHe9v9nAJXdDlUOXHC4B7dq2DV6U
+         Fy1emM+7ndj6VDNk3yAQyiW9rwCgbrzXY5CFe1eT1S1VMF/XlQBAGeTmHvqK76CHxTiU
+         dgiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793834140; x=1794438940;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20260707; t=1793835031; x=1794439831;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Jw1A1CrCQXufCGBVmtCdk6Ioy3GBOtyXllOzk3wnD2c=;
-        b=ITHbkoqXtBYiTITLQqMpHdy9xU/zOdodIllp0bFtWFQNhhdWgzkdpAo24v6clGfL8E
-         vlpc1jtDnT3mcGQFodYAjNAUqCWQfXtEuG7WiNYyivYpLe4h7AOevqngncF1/cGXqyqM
-         PDtOhljRifvlaRSJBGbdXJ29or+8paULomPDuQjOLXn/shvAd3qAJ076JSVezhGptay1
-         yDK/a/oUUjvgC260Yn3mOXrziYecGOOOmrtMSINEQw0ZyTkE0buK5lnlRefAzD6BCu6C
-         +8nErZ67Ar+QQ5Hto1kGvQtCEO6+3ByieOhWjLsol7/dxjMvxMB5yQxFDr6q6K5HO/Mb
-         PvcQ==
-X-Forwarded-Encrypted: i=1; AKwUvBwWD4idIi2eu5eAyI8Jc5BZ62Le/dc9GLhC2HKlbHhdkJmy/bJ1wcF0h/If8K7ywMIWMDOvXkEKAQ==@kvack.org
-X-Gm-Message-State: APuU4Z/09fGLRUWXmtILlkGl+0hb2izre7gbkBn3fEC0uW3X6AV6gFdA
-	aAKuFCzU4vbMDsw+Ul3vyeBm9gMGgAHO1ITgnAs9RHTEgM23xKcbgCuY
-X-Gm-Gg: AYBFou1TOZwIZXaKUfdbKBNbiyKKesnKHxPfv9LuE50DVQm7T0LNt1WI+GQDyqwcNxB
-	lkpJIjZNGFtzA8uMMLfqaKhaeiWMDuDeXYhgsjV6LIdSloPHGlT6iwPWsYjCl5sjGrouiDcs+KC
-	0oR4BFSX88KbD3FgmTC4JPdeznQK87lAFnzXn3FYCFyBMCnCtxzrFCDqZ62qgUFuXT8Sz8maAik
-	8fao3xX1GoNjeXH2hN6lJTriPAB3UFgvao63o5Tqd7wSfjghCUNnbNvCwpBJvA/SPvy0A7otvts
-	AZ+YVsbXxc3GmMsnnSeQIjh+K6H+7+5TEmVQKISmwFmHbeJHP27BTIq5W07AQ1jGbp0eDXuowj4
-	HJChd3bsbx8HKpqz+oPO34AXgp8rtpg9n8s6q0v1QAonB/lPRgT0Wq7vZvpa85fauPDcepj1T5r
-	hDKFq9AnD8flj8kdUZ/MB959jbjqMCJuHehov61PC/ShKzmNxo/XK1TmGGxnRobpgdlPfe8U4n4
-	1KF39DPVxtvWox+RVdvtVyDQIrM+AW6etMqbq2iDITB9xelLNQxjhHiKuQRU2+GQHex6hRu4sHi
-	37PT3iaLilHnNJAfh9EGQ0M=
-X-Received: by 2002:a05:600c:3f0a:b0:4a1:d8fc:8165 with SMTP id 5b1f17b1804b1-4b3c3545341mr83410955e9.20.1793834140542;
-        Wed, 04 Nov 2026 15:15:40 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48feda20567sm6769827f8f.51.2026.11.04.15.15.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 15:15:40 -0800 (PST)
-Message-ID: <ad6e93c7-203e-470f-804b-fbf7ac9890f2@gmail.com>
-Date: Thu, 5 Nov 2026 00:15:38 +0100
+        bh=S8O6n4wkP+hVSces6SjRurqbVke5VUdfxmmLz5pPN8Y=;
+        b=dF7GXiab9PvNeFmCclv0c2VPKGhU2ucqvcnIdsKYPyfQnXuPR7GfQNDArOPlo0RwFp
+         cYiiMqBtIQigSZg3qxlEO3rgUiH6+GZxGrPtSelKKL+l7+AtZ95awJxtr8u5bNzSPZ9b
+         xYO5gE6Gjq8+9h4GMydyWfTUJp1vMUnDAF2iWC5ezvWtFxkxCyYCzrcuQ7zY/rzVDxb2
+         PEY1zUspvPLSPeLKId/uE8RcmXjDIOf+6cOQdnKVesM0xkXWlyhC2qMej/6D9WWGeKRo
+         lN2zXrgaY620A2IBRl/vOCN/CozK2cPS8YiXf3MPvudPkZn1WgDTzx7VF6DpCO9C3rEZ
+         POIw==
+X-Forwarded-Encrypted: i=1; AKwUvBwhgC9Hq1wPgdCu5wFUlvQZfSQY2K9liCSjd5CqgcW6gF7OARLozQ5oAR+Ye2dSYne0X2LhS4r6GA==@kvack.org
+X-Gm-Message-State: APuU4Z9Bv1viRzlKGn2emUf1CgfGHgNUXZWg21OcayLTbdVXdusy+dIO
+	+a+I53kNDi44yAFKtwGIN8AKhIryS+A1P+PoW2lmhhyPLt85KLSVS6YH
+X-Gm-Gg: AYBFou2frKb972ku+wj2pRV64liZ3hf0X796Id2obTHN9Gvah3Vfo28uNA8uneF+7EM
+	64QYI8lTuKULVeca7T66X+/aSrz9J5I9bT5BvZQhZ5B090QHSSzgJ0qzEjvffICR3GLO29bXhU+
+	IwZPhOo9Q8+oRVLNNXPKRrUSUV5BHOdyJbavmrxPpk6n8Ix4brKd1Itn23Ss4nl10xB7E2PF20L
+	Pd/K2hN9rVG2nZVv7J0e+QhxE227aemd5RD0Hv3RJpVEaklX2A8c7vmgKmWGcBPipCk9b3OuxbH
+	5Tf3DN/s7X8If+ZGEBsusi/M7swuL7V/DAbmCmQsVD3qhXeIdSNq0hLJIY5m0Y6l7rNt84A3s1l
+	hMSE8K8sOGcPfy7vBgRvOe9bKWTS5SqUR534l88WBYH/V0PX/7rT6GBxqKEwPbS32c1DaRy2Sqd
+	oHuO4UbVOMEfMTKEnXrifPkdFVGXQrJFtkqucWzKx1DdMq20w6IM8b1FetcfPw738Kw0upVttsT
+	gpA+YZWveixuBrCuOswLJ/Jupixf10lm65lmGW2b1ifWVtEf+81lDFNwAoTKns1uSD1H4Y4TIyD
+	V5Gbvq71Wez9Ma4jpNqMdG2d1ZkCfd0rJnTuWJmxr3OWCPALrHW+lkQO9gfC
+X-Received: by 2002:a05:690c:e210:10b0:8b0:a30a:7f05 with SMTP id 00721157ae682-8b2b6774969mr71427577b3.84.1793835030478;
+        Wed, 04 Nov 2026 15:30:30 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:73::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b30997aa84sm29045837b3.29.2026.11.04.15.30.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 15:30:29 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Harry Yoo <harry@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Maxime Ripard <mripard@kernel.org>,
+	Natalie Vock <nat@pixelcluster.dev>,
+	Tejun Heo <tj@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v8 0/7] mm/page_counter: move stock from mem_cgroup to page_counter
+Date: Wed,  4 Nov 2026 15:30:21 -0800
+Message-ID: <20261104233029.3282438-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/4] selftests/mm: test fork of PMD-mapped shmem THPs
-To: Konstantin Khorenko <khorenko@virtuozzo.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
- =?UTF-8?Q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
-References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
- <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-4-c56d0d26f970@virtuozzo.com>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-4-c56d0d26f970@virtuozzo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1z35wppgneskgarbi3pwgnrhfdki6px6
-X-Rspamd-Server: rspam01
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hkeczzkpsi9wkgtzzsciz175jxn14fsb
+X-Rspamd-Queue-Id: 886A54000F
 X-Rspam-User: 
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: 050EF2000E
-X-HE-Tag: 1793834141-416996
-X-HE-Meta: U2FsdGVkX1+GAOfAa7bRkyovaz4h9ZMNgnLzHV0JwtlGaNvSZXsHsGcr/zIrLqjbfsyBMruygwWfXmLc9FDnVT2bewE//8KTQaODfxq7lVEB5c2JRh1yGUaXbSoAaOoKzU65BaS5KxP2f+ZQnbkR8XtKgQG2LASEt+YVjoaQh51XhOPBhAEUgZ0ksnD+YyI8M4Xiy5mVFtl9OJgbtoG1cSNRcmc0xQsBhrSWJwupygyd7imzGeFkdUyCH82f3G1gFjaL44yNx3DLiQVQs/5R16aTCNOxazHesf1AlbMVTvLIU189BUP6yD1Y5x4tDOqqrQDdurNqz8pbCGg7bkxPazOAHMh0rh4m0l9uzvLhO5YNYMj0VSWUKroT2S7zWXx6akLh1hazEH1KEKBKx3ZWam6DcxGHKeuUrh2C4N52MjfdEXnYos5I+T7F7IeFgszDQYuAfN6jjRceRZmFzxcgfOK0QXI7Dn3VjTCo1A2SsvT0TQk82rp+/gm2In9QoiqqPLjR6NtyRcARHPJhdVv4a7nYceQYZpnDL6zWQjdC1obKJPmYVolbJn+bKxB4eJtVofGOURNHlpmYserTOFcmrnjEiFI1ljZc2vyBJrdMaBVj8OaSGlvhMRKfISgMhX1uHBMMeql2k2VuO9QlLsaNmDeQ4TocU8MknAphF89z9ImNIBEm/trZ3SdAvTvMS0ppMvcTm2aO1ETypNvIsfC2AO6QAFTKtIikt/rQXHzQaZTRO/n1LA1f9xWsmJdCkAL8jYBPkopYjRs1yGPTf31R5DlHwNBWhl19qcr90XWGe4ZFLdARXOm+qFFbTAI9pEBAK2zvsURlSzKwPAxQ/Yet5LD8uJffaH7oql96IIo/qBxutO0blA7vhg2lVrPBttiu1BsmNSbos7arRdh3dSuJ6M9DveSqzqLOoYd7OIUPqKgW07jQe8inrXlYrDNzhdvPZc3ejJBlGqq6H4Zjd98
- /47ECM10
- HS5yUqjgaYyCFTxQ1mkyDZ9P0btHHaTzOkBeWtXrvLJtqB0gBpMAzqSmtrK55ykF+qiurfzYjpIssSySAHfrYCnAc82YlgAVas4vGi/JpjF6pzw2qUnzwaGlNzonPgO4Y5ZdKR+c7b2YXOc7e9B3L1JPXwhJvkaJsBIq2wPxIHb0NGq5IODThVxr1gzoHSI1o4NV9FjtnVPTPdVOlYZU+7Bck3Zqp2jyNquKDC00VfI421iZwSe5NmaKiHERG965skwhckFBp+9A5IqzV2Kj9PH8x66zt10C+AW5FLHZE4s/gzgXPsCshGg+Wk+C17i1X1E2F8cUsqeY1O9mVAfABUVlFXotCyadvKCKjt2yhy/Oq7gkh+hVP00mb6sZ4S5yOo2zFjIBeWJ7E5X5K97MT4rGYg5VhvjTkXXigUEqvgKMn3u/ua9lu2I6MDkYQhmUPBMYOPUMPDAF/0Kox2QHzAJNj0ZN21oQ3rlrHyoFbPU5CVlh+IcVK+MqublKga+OPP/2MG8oY2gj3HzM=
+X-HE-Tag: 1793835031-451025
+X-HE-Meta: U2FsdGVkX1/MHdBDIYzPCj+t2afb8rCMBhqj6R9bgF7dVeMLFyaNbWHJxkEbv+oxggBzm33m4O/90JkVW7tzgBJXe1F8uGNGICcSo/Le5nT5ynaWZX7+Lx1JIOndU3wwki4S/WMt5irFeG9l3vhUjsVDnzYpC6mKOAS/jqTWTfEUjyj7VjYnMBdtWTsLMyU2YlXEjROK+9tMiRSfn7HRLH4RFh8fr4SSKAc1hAjwv53/wMzs7rHJHpfDPV6+uXsv8/MdxHFJ3jtjpbLHnNRd6cYPP6kRkpbAreQ/jqD4bly/lKtIINyeLtE9udpFOR/sjgUwtSCnAzLEZ7hm4UfKExP+HOA40DV7EH+d5IJsERm3UjHp4BddxGlXkf8Ve04+i4Q3tFZ7i2Bqkramy+Qf4iNZ0PoO6Brl7k6LTsOhdLvGGlgw2s/z9HN/eedpLe7FoRdGsfq7Q6m/WGvg7WVSr4pSqMI9MCFpgrEYnuReBowRqhRGxlqJVCzQTtVPfJmza/nQu4N5i+6IIVyGzw+m3OgqkiaMYpOVPHHjdtcD0wNZnfLC6O0LYOVH9gYlEaOT/UrPqaecEqRfh7dSrxOkq7kCUKLqMjXrMAH/KZfdYtJN/lnK4qrSlUplL9srqqmtHFivWAIIPtv28FdnYufqPDZBKcz8T/vSzUt1E58BRgM8DGybXJIecrQy/USIZIqpbqefeSnEuuHiBL86yHMBvDP3453mums1UU+zQ59V9wY9SOwA5A++lm5Mewerkyqb1gxdlhzY6sEgu+wCXF9PQHhIKFXbQMgSjmjRJlxUXzVPhAJJbCRBPHuius4jrulxPGJpreHfcgCxXhmkDE/HVm3XXr6RRzdkYJ+y+Y8b9CuE+aqpFYLHQPraIuSXLgiBUaxhXlKs49iylVCuLLRoflOOViSyjbZ/tw6O/UozvpIpCwmAdxsvvc2QJSldKBZJXdt2oHpXJO/8YUu7ZV0
+ oNlvrQS3
+ BDDeZCCW7KeZ0mkKt9uV+UnpxgPQM6E9SpiskyxQGpj+zUhMeCM4T5B2mzRvist9yPMTg/52600jQsWH6P/aobtuupXxTk60oyTgIWF2KEbsqPKM8vSXeYbP7EIG6ufMekbdiN2MxkJCSFTbJlc1fQjUacNq+ZUA6SPDDbVXY9Y6Dt7Z1uYsrEMJOqgx3Wb5cpFOxA1CF6nwgj84m7sA1YaUSXnZQAeWxkZBtj5rKkavnAfNUubgIgAgXlZuPOzKIrCzQvNkbfcR8XAHBQhGRiSyRrahSgNeec375v9PmpIraDuchQVFUxa4dbic3nPUjWvTCOhy8/8Ba1PJXP5YfcN24vjLSsF7Zw9gZjkblh5XddTlgPAete5PitWQ8CgaJxIl7qVPiGitlRIXpELz5uDgRaxD6tFyLHFCjWjwguVqJJXPgxjEwl4z2gGnfDtnyGsFjulaW048uRj9EgFFADUU0qn5wMLdBFTu9x0RqRVt0cFDBH8uw30AwuCj0yclkPtXFVJAeIZoTE7ErhGowP0gdBi6rakbYz9rkk+u0L9dnEOaxiibFQui1IGrzQZ2dbHMu
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,14 +141,120 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/4/26 9:40 PM, Konstantin Khorenko wrote:
-> +	pmdsize = read_pmd_pagesize();
+v7 --> v8
+=========
+- Rebase onto mm-new as of 11/03/2026. This picks up two memcg series
+  that required some rework:
+  - Kuniyuki Iwashima's memcg stock cleanups were worked into the
+    series, so the changes now live in page_counter code instead.
+  - Shakeel Butt's memory.high rework. Commit 4/7 folds in his
+    PF_MEMALLOC change into the page_counter checks. This change was
+    suggested by Shakeel.
+- Commit 7/7 is new. It brings back an optimization from an earlier
+  version of the series to let stock charge only accumulate on leaf
+  cgroups.
+  - To accommodate this change, sprinkle in READ_ONCE() for
+    counter->stock reads since the pointer can change at runtime now.
+- Cover letter rework as suggested by Michal Hocko.
 
-read_pmd_pagesize() is pmd_psize() in mm-new since 5d123bb07b18
-("kselftest: mm: rename read_pmd_pagesize() to pmd_psize()"), so this
-won't build there, will it?
+INTRODUCTION
+============
+Memcg keeps a per-CPU stock of precharged pages so that small and
+frequent allocations do not walk the page_counter hierarchy every time.
+Today, the stock implementation lives in memcontrol code, even though
+the operation it caches is a page_counter charge. This makes it
+difficult to add new page_counters to a memcg and preserve the fast path
+behavior.
+
+This series moves the stock into the page_counter layer.
+page_counter_try_charge() consumes the stock, charges a batch to the
+hierarchy on a miss, and refills the stock with the surplus. Memcg no
+longer manages the stock in try_charge_memcg.
+
+So the stock keeps the existing layout, which is still a per-CPU bank
+of 7 slots, each holding a count of precharged pages that it hands out.
+It maintains exclusion using local locks on each CPU, and for remote
+drains we schedule on the memcg workqueue.
+
+This change gives us the following benefits:
+- Separate charge caching (page_counter) from charge policy (memcg).
+- Makes it simple to keep stock out of interior cgroups on cgroup v2.
+- Prepares for future work for stock improvement, which can now be
+  isolated from memcg changes.
+
+With this change, make sure to preserve:
+- All locking behavior is unchanged from before.
+- Non-leaf cgroups do not hold stock. Specifically, their stock is
+  drained when they become a parent, and remaining stock (isolated CPUs,
+  concurrent refills, etc.) gets drained lazily on future stock misses.
+- Exact charging for non-spinning callers.
+- Stocks only exist for the memory and memsw page_counters as before.
+  Other page_counters (swap, v1 kmem, v1 tcpmem, hugetlb_cgroup, dmem)
+  don't stock as before.
+
+EFFECT ON CGROUP V2 USERS
+=========================
+Currently when a cgroup becomes a parent, it doesn't drain the stock.
+Rather, it just prevents new charges from accumulating by nature of
+parent cgroups not having processes. Here, we can do a little better.
+When a cgroup becomes a parent, schedule drains right away, in addition
+to making sure parents don't accumulate new charges.
+
+Everything else is preserved. We preserve all draining, refilling,
+and (un)charging behavior, including the uncharge path's refills
+and direct uncharges.
+
+EFFECT ON CGROUP V1 USERS
+=========================
+The memory and memsw counters now have separate stocks, which can hit,
+evict, and drain independently. Their raw values can therefore drift
+apart by the stocked amounts, even though every charge is applied to
+both.
+
+To preserve the user-visible property that
+memory.usage_in_bytes <= memory.memsw.usage_in_bytes, the memory
+value reports the smaller of the two values. Both raw values are already
+upper bounds on real usage, so this stays within the fuzz that
+usage_in_bytes always had (and this is also already documented, see
+section 5.5 usage_in_bytes in Documentation/admin-guide/cgroup-v1/
+memory.rst).
+
+TESTING
+=======
+This series should not have big changes to performance, so I ran some
+benchmarks to verify that. I did testing on a 16-CPU, 32G machine VM.
+I ran repeated anonymous memory faults and MADV_DONTNEED to measure the
+CPU time spent per page. So + number is worse. I ran each experiment
+5 times, with 4 workers.
+
++-----------+-----------+--------------+-------+
+|           | base (ns) | patched (ns) | delta |
++-----------+-----------+--------------+-------+
+| cgroup v1 |     890.6 |        901.8 | +1.2% |
+| cgroup v2 |     893.5 |        902.2 | +1.0% |
++-----------+-----------+--------------+-------+
+
+Based on mm-new as of 11/03/26:
+74d73ffcffe03 "riscv: mm: fix concurrency in mark_new_valid_map()"
+
+Joshua Hahn (7):
+  mm/memcontrol: flatten try_charge_memcg control flow
+  mm/page_counter: introduce per-CPU stock
+  mm/page_counter: make page_counter_try_charge() stock-aware
+  mm/memcontrol: check PF_MEMALLOC after trying the limits
+  mm/memcontrol: move memory stock to page counters
+  mm/memcontrol: add stock to the memsw page counter
+  mm/memcontrol: restrict memory stock to leaf cgroups on v2
+
+ include/linux/page_counter.h |  35 ++-
+ kernel/cgroup/dmem.c         |   2 +-
+ mm/hugetlb_cgroup.c          |   2 +-
+ mm/memcontrol-v1.c           |  17 +-
+ mm/memcontrol.c              | 430 +++++++++++++----------------------
+ mm/page_counter.c            | 233 ++++++++++++++++++-
+ 6 files changed, 430 insertions(+), 289 deletions(-)
 
 -- 
-cheers,
-jose a. p-a
+2.53.0-Meta
+
 
