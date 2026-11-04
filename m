@@ -1,93 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3710B606A32C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44879606A31B
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZO+bMQM2
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h/WBm7u6
 Received: by kanga.kvack.org (Postfix)
-	id 45B4A6B05B4; Wed,  4 Nov 2026 12:09:28 -0500 (EST)
+	id 4DB1D6B05B3; Wed,  4 Nov 2026 12:15:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 40AA56B05B5; Wed,  4 Nov 2026 12:09:28 -0500 (EST)
+	id 4B46C6B05B7; Wed,  4 Nov 2026 12:15:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D3A46B05B7; Wed,  4 Nov 2026 12:09:28 -0500 (EST)
+	id 3CFA46B05B3; Wed,  4 Nov 2026 12:15:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ECF996B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:09:27 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 712C7A0258
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:09:27 +0000 (UTC)
-X-FDA: 85398072774.15.E3FC7AC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id DBFAC2000A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:09:26 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZO+bMQM2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B2236B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:15:21 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A585AA8453
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:15:20 +0000 (UTC)
+X-FDA: 85398087600.29.68B83CC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id DDE4420013
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:15:18 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="h/WBm7u6";
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793812165;
+	s=arc-20220608; t=1793812518;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rKSitA4GhO3iXo6/sM1DqbwM0oZP8831TgqTTx7U8Yw=;
-	b=fMvz13KbxFA6YMl6W3ReEzpTZy7G2WYJuANct0w/yrWEJ3yveAPbYWKb77jMCppKDs/ZJv
-	L5KXfN2ubHcQ94w5qDVqyK0Rk/iR7uhHu5HbuEGMweKKiL0UgAdDp4lo3tCR1EPqc614Sl
-	dBb3vO46W8JAOz3GabC+SJ+ZY9pcis8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793812165;
-	b=JUTSPKd6LimqdNfsQHlga6FQQp72S/MEl/VVDVb1mMcVjIfag1EnZ178Ae3rvhb1fOxPJV
-	0aCQmNA8hNCyOvqCpFjLKKTfyF3+GqQTIc0advNxCSIAG/q5hJtN/mowNFeTtrdIdW5/8w
-	33YJbYMZlXO7pVkczFj6iSfRApvy94I=
+	bh=SYq9+BBr0q0gADHtUh7wcOV25vq3s2GgCZsPxG2VA6Q=;
+	b=MSyL2bpaeThg/Sm35/qx93kWDKU7ueeHWXZDgXP5yjRJm2Rpp7Sthx8EWZhXjbzxw14npv
+	dWVcmwX/a9hM8+6t4U183OJmV26o196SJmxkR787Oczi0hO1nx4eMHmk+zdayBewS8MGRY
+	OK0HFdytWAkDNyhTAj5ySQEd2+eZmyU=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZO+bMQM2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="h/WBm7u6";
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793812518;
+	b=iM8IgXUBz2+/mhgALYb+9bQ25SJ4RFHwXsSBD5AfSvDVRlLnP9vBx8peqAQnftGVRrDcB6
+	0DHK8OyWXte0K5fhHU4ocyp3SwBMlegyokQiBx+pg03dWLXIyZI+JVtGDENAYi3dNpRPZ4
+	2oFamKWS4LcvYmYZKV8xIrDl/Zcg4bk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D785441452;
-	Wed,  4 Nov 2026 17:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9DF1F000C1;
-	Wed,  4 Nov 2026 17:09:22 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 22F016021C;
+	Wed,  4 Nov 2026 17:15:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B3671F00919;
+	Wed,  4 Nov 2026 17:15:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793812164;
-	bh=rKSitA4GhO3iXo6/sM1DqbwM0oZP8831TgqTTx7U8Yw=;
-	h=Subject:From:To:Cc:In-Reply-To:References:Date;
-	b=ZO+bMQM2HPlq92f7QNDpBuxeZ+BfI0Cg9C4IcKYdsvwAtqDeicKjU0j+Ex7z2Ug2h
-	 iAcK43Oug7C/9Yhilc8KJ6DqyN0QyOdXsYtzGLcUyj4e9vkx2b/rsY1gr6+ksOMcx7
-	 R2ije2b9dYDCOqNznuUrfA0mjC5b0j5tjyS2Gg3D+DFZKV3ToMsR9Jo36cIJ/j3Vn0
-	 y3OAx6kwWKkr3as4pmXDWQTz+E6TfSb3Zu7/Um8YRfxPPXR0sQgQgnZDBiqzZwlSVX
-	 AIbFqs9vx5gIwa2J4XAesfziIs2wiZPh6lNYEmv2NcW20tLhNcdqYtNcp0BLbyJELh
-	 zBZ8xrMULVd8Q==
+	s=k20260515; t=1793812517;
+	bh=SYq9+BBr0q0gADHtUh7wcOV25vq3s2GgCZsPxG2VA6Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=h/WBm7u6jgGnIGCnazSx+mTpGGIdY44Edu9dfObP1hyHC87oXtWB0MMAm4MFUJJ/u
+	 lBTy/MMP0imnbuTtYVYfUthcWkCCJps5xV7IEhakoied3Y/YAYJ2LCW19zBAqJx4pH
+	 sESid7Gte1+yneVlzgi9FxomuyS5X741ccgnYFFmh/GqG+xRbGnDTzIU15SABc9zUT
+	 En1QWKFCENGlbrm4Vqm2JURpdLhBKzYNmXQLpTfEcInf5v26cvGepdDB33FjMahU29
+	 zYFvvfTS0M08OkXL5giLs6Lh5R2qjGs5WvxH+v452VLnqRD8w0FarnxUqHIsZr2Eln
+	 lZUSab8BSMMHg==
+Date: Wed, 4 Nov 2026 17:15:10 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Pranith Kumar <bobby.prani@gmail.com>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Richard Cochran <richardcochran@gmail.com>, "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>, 
+	open list <linux-kernel@vger.kernel.org>, 
+	"open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)" <netdev@vger.kernel.org>
+Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
+ mapcount removal
+Message-ID: <autmnQwhDvMzqY5E@gremlin>
+References: <20261104013139.1341582-1-bobby.prani@gmail.com>
+ <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org>
+ <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
+ <287698ab-76dc-4aee-8e6c-db1f5d18974c@kernel.org>
+ <aus4ag1KxpuBNSP1@gremlin>
+ <CAJhHMCChBTH3QWBFS1Hp17zj5HepN6KFucvG_5tVdpaB4fjCYg@mail.gmail.com>
+ <autkT1eNM7-oSM4F@pedro-suse.tail5790ac.ts.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] mm/memfd_luo: don't use memfd_pin_folios()
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, 
- Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261103172251.2348370-1-pratyush@kernel.org>
-References: <20261103172251.2348370-1-pratyush@kernel.org>
-Date: Wed, 04 Nov 2026 19:09:19 +0200
-Message-Id: <179381215936.28814.9050829645096838793.b4-review@b4>
-X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: swkgqnooedy8fg5wp1i61ufwoqw9ckbe
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <autkT1eNM7-oSM4F@pedro-suse.tail5790ac.ts.net>
+X-Stat-Signature: fzo11dsrzy58ijkf8mmn84ghux7nr1wm
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DBFAC2000A
-X-HE-Tag: 1793812166-851977
-X-HE-Meta: U2FsdGVkX194+PDotC2SdoeJHgVnh9kiLm67ypxhtVN8fKEnIW9Ptha1O3IcqFQ9R9nl8WSmfPqdv1Y8Oz+todAUbNtphviEEaTg+/OQt5dV77hZg/2nWeAl8jrCszYHpHGBgofWI1V15qLgoBWx0pESN3sz3BKu8Rj3vHaDqjjQ+jA5vPVJU2vJK7AbUWWXctVd6UnSg8FF4WYElTI0fJeMBcAHZMtD0yeYS//ctIDv5AYhjptWW5WVQA2DrOFFzIgEz2+ZssxUb4vUpu3VrxyUIPSSZ79l3K8q3V7drzOG8c6lPmOLlEyuBSOMtB+E0zPqM+HQ6K6v5DBkKA7AA4OMobDmGiTG4MnauAC8bvO8UIHXVdGzyDaEy1H9td4XYjnEfoxoLm9HOg8nnt27BiYmVehHFGt898B4kF+aGOPQfPCJ4GxojcXUSyCANvf1qlBMNSqePwaCT4jscH6rPKvi6gth7F8HjijJzQpBzWcNMKLElXkg3fPsMZVWqEEsBCcwcPAtMMELufbCJ6pWFe7oNwiQjRldl57kOWAQ0bYBqfVgBPwyVn3Vs29Ua/p7W9xYk3kglBvZ25NU4MlIE0gen68RRyrf0AY0THKLoHbf+newuUa4UDJRNwPfoAscX6gsmsT1L+QsasYOOPVvySiiTaFFvhPS+HzlVRQ09c9KzDnJ5xnxIDsiVfnOsJ3qforoQSN0KYR4JhSTCArKjhrNHBm7iZpYvyJhZWs01313ztgmS2UGunAP3VmXQn4lMAsvmhw31XvLyh084HBxQ8N7DswCxo0mflH39S5FYRj5Vl+ysnoLZmM/90Gc16HjjEQDSI+TfBsZXOYXZ8JuUdM0xZb5V8s3zSg4aBm6v2AwTZ8+NTvm5lxcvjG/hBMSzJvgwLWxzyFPh969BYXM2dsL0nzur9kVtCjLrnmD4+fP8xY8mVcUNjfg8udXO6NI88ZbKnzWUxy1/rzNL/n
- bSReLznn
- /1s/5W1FNkRV70mU/xvXKCw8UJwcqhebsvJdejaEZ1lzJCFSMs9V8nVVgICNPV5Ea2f+aDk1L7+i9WFVH547jhQVrjJsEQv82mgl0zwiC7CGAY1JZOtObluTJcNounspL1NsXbwMOxDd1IhQvC9ohcMTv0JV39PvD2MZwDE5bMf9LjirzjHiKe19cOqbpr0YMEwK50AZCVibkgcRMkGUob+OTtKFCHRFp1TE7Z0Ngpoow3JgXDJxnp4wK6OGBVAxsMt3oDyoit3B6BGp9ruPBAmLfUkW+P0tZNNQWmaRvcu8ixb67fHb8dnWzRLsVRHJMDvlsmVWCl7IQ9OHHAhanYB8qwWQU0g8MSWB/
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: DDE4420013
+X-HE-Tag: 1793812518-961616
+X-HE-Meta: U2FsdGVkX19vP6RypFLzJKbnzYuKShRE8z+87PqzGucJGG33rhnt6gDowFAfRgdQPOyY9rYKipxG9uccQ4E+7xyldjPh8+4Z3XeMKKedXVncTleMiJsnrJy3LBX4tb4lUv2G0oFYkSp4ay/3HM9ObIDXr948WE4sddSmaQm76VTQi1Yo8GTch5Zw9Ob9XvG3AJC+2FhDm8f8wOW0msBd0KQKC3qQk23OMBVaXkzSI05eodD7kTh+5C/dexErx2b4Jp/uoxrCQ52XYA4RBRaCZzSbWtdIh80s1mCJMxQ9vuu5LAnExV77BoHRKviB8S5MIMtuglK+dLvlhm7M5H7K1Tcig7BcJQdzBiGK9MEkmODFzHywK2rYe8z8DdCAOY2s5dFMPl5asnYVUO3zG1DZqJU4x025MlyuxSPq3SmycBRNMMLpFzKcCowuDZUV+aOKeOLkcoJk8jI+lknK8AEjdb0BqHWV9OlbBoV23rQRPEeZMUA/NWjGyJxlczUCn7oXfRw6spIf5Cp2W3F5C8Fz95kcALm2zY/UCCjTSAbjV98O5+HQRQF0R9GiNFCQVZj/AFVPmMb8tBsmpO3QZ7IZfEBtgbYFHfG7qGpxKkgM2AtKQv6GbPKjhzQIFyPMasgIoT52s7T5dsiBMDU7z3qUewyzscU9b2Th7XkLcoIrgJcoFbP6H6CZUee/TnVU4Ez8fgDtwSvJ2noBygJ3rpXS21Xeg6U/4TsqjPW6oQOMVig3+5DkvkkvGTMQC8y82D6R6Ln31g6wQY9OKiH1k0ZoeM2PLn3ECKOMbpw3ATmt6dlKppEwhcyqf2HNbGSdmQNIw/R8eez56ySaxtuQWp8tXpq+6uxxB4WrWlGvNgKdi0sbAbFPgNDfDjf6siyiNEOGAQOzNBftpxYrl4GAQ8ZAlZRCv5x3z8xIGZivJBfN3fm5NJe8rwxbBCqo93E4o27RheI1MYZGVYF9WI9z/MF
+ v/W9fsbq
+ dpLptSoW30PSZGhyCyqCd8t3OsoTlOnbPmhRh6dpmTX9nvfMhrLRWq6ZXZD7rjDrvz1C/8aGYV4jhPQS8gVMofZb+SLLE7fqz2xIpucIssXXfbK64C8CXSB4WpRGGFZqAjXW+lSDfsDorXqE0nGmnS1vCCthnRY5ZqOoP4zud3AjYhTCVk0GELMWIWaKqlBlRAZQ/b1xhXDDtFnbbZrRdBXTwNsGS7W2WL30kNfrB+DKRArJxHgi/R3I/D9yDOXtdwQeM87cQD/qr//KSD50lU8mcvIC42/TWQ4mkXzmllrY0P0443qE9ZP4KzgGv6iRof8kb2PujAHYQkkomdrE3f5XpkPt6sS+DXrGZOAOJRz3YYm8+fnb5YX37Vg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,120 +109,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> memfd_luo takes a snapshot of the folios in the file's mapping. To make
-> sure the snapshot does not go out of sync, it pins the folios in the
-> file via memfd_pin_folios(). The pinning also migrates the folios out of
-> MIGRATE_MOVABLE to make sure doesn't land in KHO boot memory or in a CMA
-> region.
-> 
-> memfd_pin_folios() does not lock the folios. So it can race with
-> shmem_writeout(). A folio returned by memfd_pin_folios() might already
-> be in swap cache. This happens to work but is fragile. memfd_luo looks
-> at folio flags and index on a folio that isn't in the memfd's page
-> cache.
-> 
-> In addition, memfd_pin_folios() needs the caller to allocate an array of
-> folios. memfd_luo does not really need that since it will vmalloc
-> folios_ser and store the information there anyway. The folios array is
-> unnecessary overhead.
-> 
-> Finally, memfd_pin_folios() fills in holes in the memfd. This makes
-> preserving sparse memfds very expensive in both compute and memory.
-> While this patch doesn't yet stop filling in the holes, it sets up the
-> infrastructure to make it simpler.
-> 
-> Fix all this by walking the page cache directly using shmem_get_folio()
-> with SGP_CACHE. This returns a locked folio with an elevated refcount.
-> memfd_luo holds that reference until the memfd is unpreserved. This
-> blocks compaction, migration, etc.
-> 
-> There is still a need to migrate folios out of MIGRATE_MOVABLE page
-> blocks. This is because those might be CMA or KHO scratch. memfd_luo
-> will hold a longterm reference to the folios so it will block migration
-> in that pageblock. Introduce memfd_luo_migrate_folio() to do this.
-> 
-> Also factor out folio unpreservation logic into memfd_luo_put_folios()
-> and use it from memfd_luo_unpreserve_folios() and from error paths in
-> memfd_luo_preserve_folios().
-> 
-> Since shmem_get_folio() always returns uptodate folios, drop the folio
-> zeroing logic.
-> 
-> This change also improves preservation performance, shown in the table
-> below.
-> 
-> |------------------+----------+------------+-------|
-> | memfd            | baseline | this patch | delta |
-> |------------------+----------+------------+-------|
-> | 4K pages, 32 GiB | 748 ms   | 600 ms     |  -20% |
-> | THP, 4 GiB       | 0.59 ms  | 0.59 ms    |    0% |
-> | THP, 16 GiB      | 2.99 ms  | 2.61 ms    |  -13% |
-> | THP, 32 GiB      | 4.83 ms  | 5.21 ms    |   +8% |
-> | sparse, 32 GiB   | 8695 ms  | 7269 ms    |  -16% |
-> |------------------+----------+------------+-------|
-> 
-> Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+On Wed, Nov 04, 2026 at 05:08:10PM +0000, Pedro Falcato wrote:
+> On Wed, Nov 04, 2026 at 08:51:20AM -0800, Pranith Kumar wrote:
+> > Hi Lorenzo,
+> >
+> > On Wed, Nov 4, 2026 at 5:55 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> > >
+> > > On Wed, Nov 04, 2026 at 02:37:39PM +0100, David Hildenbrand (Arm) wrote:
+> > >
+> > > I mean 1.54%, theoretically is even less convincing for me :)
+> >
+> > With reducing the strength of one barrier, I think this is a non-trivial gain.
+>
+> Counting cycles on an arm64 simulator for a microbenchmark is completely
+> unconvincing.
 
-With a few nits below
+Exactly.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+>
+> > >
+> > > In any case for something touching a sensitive memory barrier operation to have
+> > > a stronger argument put forward for release ordering being suitable than simply
+> > > stating it's fine in the commit message and updating a comment.
+> > >
+> >
+> > Can you please explain what information is missing? I think the commit
 
-> +/*
-> + * Move a folio out of ZONE_MOVABLE or CMA, so it can be held until the next
+All of it? Your commit message simply asserts that this is true.
 
-"held until next kernel" - here and below - I feel that something is off
-here, but can't pinpoint what exactly.
+> > message has all the details of why release is sufficient instead of
+> > full barrier.
+>
+> rmap is gnarly code and I'm not sure people have an appetite towards weakening
+> random atomic ordering semantics for a virtual 1.54% cycles gain in some
+> microbenchmark, without actually explaining why it is safe. __folio_remove_rmap()
+> has (indirectly) a lot of callers which may subtly expect different semantics.
 
-> + * kernel. Called with a reference on the unlocked folio, which is always
-> + * dropped. The caller must look up the folio again afterwards.
+Exactly. And this patch boldly decides to CHANGE the invariant here without
+evidence for a theorised perf gain.
 
-I'm having hard time parsing "called with a reference" sentence :)
+Sorry we don't have time for this. NAK.
 
-> +/*
-> + * Look up the folio at @index, allocating it if needed, and make sure it can be
-> + * held until the next kernel. Folios that are not longterm pinnable are migrated
-> + * out first, retrying a few times if someone else has them isolated.
-> + *
-> + * On success, returns 0 with *@foliop locked and holding a reference.
-> + */
-> +static int memfd_luo_get_folio(struct inode *inode, pgoff_t index,
-> +			       struct folio **foliop)
-> +{
-> +	int err, busy_retries = 0;
-> +	struct folio *folio;
-> +
-> +	for (;;) {
-
-Won't
-	for (retry = 0; retry < MEMFD_LUO_MIGRATE_RETRIES; retry++) {
-
-look better and the body simpler?
-
-> +		err = shmem_get_folio(inode, index, 0, &folio, SGP_CACHE);
-> +		if (err)
-> +			return err;
-> +
-> +		if (likely(folio_is_longterm_pinnable(folio)))
-> +			break;
-> +
-> +		folio_unlock(folio);
-> +		err = memfd_luo_migrate_folio(folio);
-> +		/* Someone else might have it isolated, retry a bit. */
-> +		if (err == -EBUSY && ++busy_retries < MEMFD_LUO_MIGRATE_RETRIES)
-> +			continue;
-> +		if (err)
-> +			return err;
-> +	}
-> +
-> +	*foliop = folio;
-> +	return 0;
-> +}
-
-.
-
--- 
-Sincerely yours,
-Mike.
-
+--
+Cheers, Lorenzo
 
