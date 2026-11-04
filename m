@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90206606A332
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6ACA606A32D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 17:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MEOj2YVa
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z7eNSc/k
 Received: by kanga.kvack.org (Postfix)
-	id B35066B05BA; Wed,  4 Nov 2026 12:29:10 -0500 (EST)
+	id 0D64E6B05BC; Wed,  4 Nov 2026 12:29:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE5796B05BB; Wed,  4 Nov 2026 12:29:10 -0500 (EST)
+	id 0863B6B05BD; Wed,  4 Nov 2026 12:29:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D4AC6B05BC; Wed,  4 Nov 2026 12:29:10 -0500 (EST)
+	id EB6FB6B05BE; Wed,  4 Nov 2026 12:29:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CB1B6B05BA
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:29:10 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 20480806A4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:29:10 +0000 (UTC)
-X-FDA: 85398122460.19.6DC1585
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 4AA8A14000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:29:08 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MEOj2YVa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C75026B05BC
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 12:29:23 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 56D01A07FB
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:29:23 +0000 (UTC)
+X-FDA: 85398123006.10.DDF39CE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A1F6FC000A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:29:21 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z7eNSc/k";
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793813361;
+	b=lHQXunKirYw0fKpDoBQMGnjvXkNWTboBvO2PLqQqG2u0nzhyMe1zJKybbEI9mB15DCx2mq
+	ZUwOd/CjXEg9DnDSjaRP14LYUiBTCvx0Tb0APLjfQZleMZqE0iJg/urdPJiCwHPiSmM6Xn
+	17hv58sCvWLwdALuj61dPRZiVuN9ROM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Z7eNSc/k";
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793813348;
+	s=arc-20220608; t=1793813361;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iSk3nsArFOOtW91DExIIvIg+E3fTnIkI1uYFn4dT7G8=;
-	b=ambv1fiX+nw90r7xmXVKBhoEsmER+1kS9AD22dSaiWBjjm/en01kxSp64+WporTh5j5KV5
-	nj8kLEnJbsoIG5b03FoxEzVUlw8MTtTbbQBgCZzb/i1JD6r+jAYc0+8O8YspxUxJbvoQoZ
-	VzjDruANEkdvbJuVD0mY3ZozGLsbKng=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MEOj2YVa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793813348;
-	b=RaM1Uxy0Uao5dBwVOEWHi4NC712v+Cb2jiJVlHHPJ2f2HzIBpARPZ9Uh0QjRzbOl7aKBqn
-	KXTBvq7h/DGdoC8Fhha0CMwyM39VICdEw//codsA9aKmygQLVt/6t69tYBSFLws4NODc88
-	A+4mBZUMC27vTmrGkxx1pLEOs3EEa+o=
+	bh=Cbujoj2vf5W42joV5o7W0AvKkij9cCOpaGGghku9+G8=;
+	b=hBGadZeJbkn3RQRWope/OVhW2Mk3sDGlFXiE9cZ+/TkRcOVT+rT7+3VIvM76oLmMEHxB21
+	cdvDBCcikXt+Bo742ozpsW8Q7HvaL+RKRTtz1MV5zGvHZ3x4Ls8cHstAwe0pn5cWLO9Rjr
+	XSRwKbQRyT+EggYbaRQ1vl2cfmGRnZc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8C80C43EF4;
+	by tor.source.kernel.org (Postfix) with ESMTP id 3353560A70;
+	Wed,  4 Nov 2026 17:29:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB89C1F00A02;
 	Wed,  4 Nov 2026 17:29:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A14F1F00A17;
-	Wed,  4 Nov 2026 17:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793813347;
-	bh=iSk3nsArFOOtW91DExIIvIg+E3fTnIkI1uYFn4dT7G8=;
+	s=k20260515; t=1793813360;
+	bh=Cbujoj2vf5W42joV5o7W0AvKkij9cCOpaGGghku9+G8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=MEOj2YVa2iIdpw5z2/NDh/nS5/9YiUTydJpsuXgkbKBwIG8vtJQvRf2LpeGPo4QZ5
-	 w29MCiVMYZK7VIp0BshBq/zfoff8EDzOUsrS5HBn5xxq3ltk0oB2hX5ygXPEZjrVf1
-	 854j45f/iRAVKq/djckCLygA7FB8p1Zjx7psO38vVVq4bUsY5bxXVg/eXgiknxxWqI
-	 hhIFdc2uOWPB7MwA+0cdYVBWRsQi/CpTqM6ZnNZzgzc1bKeu5HnQD/VzYrhxCaOFwx
-	 QQbgQRnwMpXNmlsB9GdCiLATFPIHwQAd48vJlnM6Cja1L8MMtttR8X5ndAXXSShUjS
-	 FxpuymjfsN7fg==
+	b=Z7eNSc/k4A3ciQiMKYVuHgvIuitZuUBG1LsDDKn2PGqkyeTI60C2aGeIX/gOrwywh
+	 xtfTPVHdVi6oqn1gTkn9QtwCdpb9vO92jUAd8quwbbgGzLCmHr2yCQVt+CNwsUokAf
+	 3PdNxsqj0EooTVaHTwU9Byq22F9nTmWr9AhaMKmjfOIuszcJH2mYIrP4Rr4AnPpZkH
+	 h+7C63tA9sMWXTQV0Do399ArkxTfLMrSAloe1ryjs6twcaS2ODw+QTAKVaUx5fGvQN
+	 pG82LTMb3cdXiyyhejWUAX1q+C1HwuXnFf38S34Yh0i88ZGrZX053f2X4mX3pSqwVw
+	 kTy4TQ+sMGDOw==
 From: Christian Brauner <brauner@kernel.org>
-Date: Wed, 04 Nov 2026 18:27:19 +0100
-Subject: [PATCH v2 02/51] scsi: esas2r: don't copy kernel pointers out in
- EXPRESS_IOCTL_GET_MOD_INFO
+Date: Wed, 04 Nov 2026 18:27:20 +0100
+Subject: [PATCH v2 03/51] ALSA: cs46xx: hand the region to the region proc
+ files
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261104-work-procfs-bugfixes-v2-2-bbf7d5546809@kernel.org>
+Message-Id: <20261104-work-procfs-bugfixes-v2-3-bbf7d5546809@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-bbf7d5546809@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -105,27 +105,27 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
  "Christian Brauner (Amutable)" <brauner@kernel.org>, 
  Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1380; i=brauner@kernel.org;
- h=from:subject:message-id; bh=dmwAod4+27NCncmw2oz8APM07k66EUOhHcJdusbTjjg=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zvot03G954L932VP36TuXeTVkvctkvdOUEqnB1ulu
- qr1gnT9jlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIlsecPwz3hDeHERzzPPdYxN
- RjfC3XXUD1tofTqbtTjgpUSw4qvK64wM82LMu/+u3bKn+1TBxf0qvr9PTk2YlzJFZyPv1Nw/lcX
- L+AE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1215; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=Z6ZRkJrhuCU4H5MdQ4cObdjJffW/paOotMbfYVXoKlo=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9zvpj7yWamixwZtfSkBurLcoYw1rMGKfuu3YuiV09R
+ c7uw2HtjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImc3c3wT+Hkjp3MZso6HVei
+ D0VKbZS5oKGx7I6p6Yuo7iatL+17dRkZfi8SqbU+57c5383JSH9+xYYuliMbRHb8cOA9JBYQHeL
+ GDQA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4AA8A14000B
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: sit4jyibtwtkoadchrubxb6a891ktwxc
-X-HE-Tag: 1793813348-702204
-X-HE-Meta: U2FsdGVkX19QEBDdiI0yLVw0sEEDzMEBshcrY0YoVRWAJ7fn6M9CMAWmXwy5A+q1XI5ZXfZX6ReNy2RWv2lD/mK4bryQFRoOVO8i0wJSFriAoykbrww+bV7RN3dsW8qwopWOm5wTGAiCeQrw1pX2Le0DButsRvDf3CRvUkMXz4ipPPoj8C2qWfojM/KlSSnNmLSyOBnTMskgFp02Gl1hxSOg/mTRYRNLu8QBPYYtJRrNQbi6SNDjyh626pC3Us97sqXtarY+1XWNRzoOhlZmegOE6YI7htrP/BTgKik1EWvjWV+0z7NjkQ/iqapDM8sRacjvSbNMN6d+i5tNvSRfgD22qUciNv9eIjnNfbMOXI3PfW6A0/0ACHW+ahVeMdctQCaSbXwg7jPuTb/U9VIh3OuTSKVjbrj7P68+609fPzlVD7pEt/3cAvMpFhiFu+6RfTYtTCpNVFkR9pxH0jsSBQUDQo6P0juZOSXcMQ2Oo6cMvC+RDiHgtpirU2OM4O3m6bwH1oyW/ZGXI6USecD5UpjcTG9/b/rPRWmqwJiZIArESP/QPpcBeH0L5Itd/egWG07N7UX2lvcEDYO6Z0oiGOeVzJ5UDgUmmA/XR2lgLVKwdxlgheJRCb/QETbSwPzluz/qCzQO+JGtjD5aLsaCWJdkV5G5HBVjnBN0IPreYhD52KEz4hJqrXtmAmYtXlvd8LHMQTh6gw6lr5CSjqRG7P9pBJ+g33VfqvFDWgCKZQReg2NSLW26Ji8T3UW8tjZJy/xsyUA+7w38vzBjUeoGvWf1HxKREU+4H5PtmsEX4GM2Fg9v/rg7UQr05ihUL1h80z3pTOEe/UE3BRucM4/fj4lGIdqgcVwI2C+rIYBCzUQZTW89S9+TQDv7BqvD5D5NcCKaVD9qZ0YPd5qA0A39NxrgnfUaL8c30F/Vi8SSvMmJWi7i6bOt4WcSEBUq4L66PsxQIpe9KZAK5WMsuP4
- o+nqnYav
- pSKwd4jNZpNlDMBq3W68WJLwxz5gnOMvVkAklnJi01ptBtMI4E3/PSrD7b8OaQP3zjlzyW/XHScOY3w9x+dxaj1ynh8dAkOTTHjFVqoNVEJn0e1eecblyClM1rjVquPIdHBlQkc9YQx9VGkY6yt1V0Qe+LqwpgT+HlK5AxqFsFW51ZYR9GpHLb1AhvtHSGES7yF62uly66itM0jnH+r3f1v3lZZKd64nUz9xkRLjqu9Zw7gN2HH9d+WeyH/6X0XEDZu3C8nxJxhfIxsW7F/psFYLHkFwJsDCBbwY1M6xYJZ7pToOJRgmLs0Z5S54B0/zC/lOVsBtKP46NFSg=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: A1F6FC000A
+X-Stat-Signature: ixgo6f7k1is6ijgzxp1tmiwijzqj9pfg
+X-Rspam-User: 
+X-HE-Tag: 1793813361-119807
+X-HE-Meta: U2FsdGVkX19eMpLeiWW4dul0d2cG0xVrJ1+daux6IAVlamsd6rhJCcetYyT6yJJVVpscGxGW4XlXJBB8wG2IQz3EytiG8hkLzuXBpWlkm4g2vtj9mlUo7hakVL0K9Al9qTb31HaRw33uK7Hod+khwSCEmXX9BBVF4+8Kl1AhNfXY/OeGd/Lo6mqAd3eKQs8jc0avtOODcbr1ZEFNnCjtWhQ1c4BtS2vI46avtUw3GFuh5WrBOXvNgFVeKYOGZJHLJERSSb9d0iko4aw31HA4ob0VKdVrBzowoJDKBtjykoZ7pZGyZBQPjtDvVTtH/EkrX+7iu7KjFpdN+n6PFt70BNx/zMnW2OGbbY+mFGgAmB3W9Db/Eeb2TeXGzJgO07RUsq9hynzLPOa1wKVZdYWNWrYyhsYMtkFv5JpvFy1tVwdYhycqbDHd0kzPAx4xcIT81kpKZKSEoG/Vq0YCXlpnHoNWp9IlKkMxOOs0SOzZNFIGlpjb+xD3p8SUaTvHojE+knl77+NLaxB2g2SYvIO5b8wgsLS17k1MFjxWuFw09VVSROACtC5Nq3lE4mQ3RYFTx8z3svA+ykYt4WnXaPUQ85OAgazosx+QJCefyui8vqwoNuP5FjUNNJPpQoSMjFbJJkgyAgmTTy2KOFYMRBWiEavseJ30D/T9RuB3G24yyXuU7Rm/U5D8LcveWITHVtrQroDoxzQ1U3TTdxKGE7b6yZIbKDz0+dxTBfrRTomd2MoRr/CgGkF86Yo5EsYTStx4dfupJ7Ni4Dbrmbk3n7InKVc6C+WDFp3hDXc3RAUVH5WFLkCwBOr4gl5JKoMnXdGO9Pt46x21U/gaTlzIHPAODwbf6/H7ArW+gfAT5QfmBtx+A8fltbb5s7F4zRKaygAYmUQtfzZ1KIdON9neg3n46mpskEu0/4sKR2XYyD6x1z8DNzHf6oCOeZ459QZMBWh57spN3UAHv0th9XeY/Ay
+ 0Vke/+V8
+ wELtGMBeNA8/tw1T4xhhodb8hJqv9fbRdyBayJLr+o3oNM54iDYXzrWBlNfj74/7Wmt9x11eALpOKBUd2iUO9m/+pDjfJwprkktElHX2jJZ/SeoKkVKZ6ReNJcd3pqb0MCBMg35BdcxQTkX5g5pIh/WqAW6Mx04ouzNL7taKTUpI7Dv1byHzc3rJSrtNnC9h6d3EIkz7xMeGz7hQkdeOx3BFlY0UfVt0u/s+iIR58LUT9uWNwzJJPctnQ/lXuVCIfmkKciNgxyMqJEB1rWynGe1bBGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,37 +134,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-EXPRESS_IOCTL_GET_MOD_INFO fills in the addresses of the adapter, its
-pci_dev and its Scsi_Host and copies the whole struct back to userspace.
-Nothing in userspace can do anything with those addresses, and the
-ioctl is reachable through /proc/scsi/esas2r/ATTONode, which is created
-with mode 0444. Only pass the host number.
+snd_cs46xx_proc_init() stores the chip in the private data of the five
+region entries, but snd_cs46xx_io_read() reads that back as the region,
+so a read of /proc/asound/cardN/CS46xx_BA0 and friends copies from
+whatever sits at the region's offset in struct snd_cs46xx instead of
+the mapped registers. Store the region.
 
-Fixes: 26780d9e12ed ("[SCSI] esas2r: ATTO Technology ExpressSAS 6G SAS/SATA RAID Adapter Driver")
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/scsi/esas2r/esas2r_ioctl.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/pci/cs46xx/cs46xx_lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/esas2r/esas2r_ioctl.c b/drivers/scsi/esas2r/esas2r_ioctl.c
-index 3f7c1d131ec3..c93d9265e100 100644
---- a/drivers/scsi/esas2r/esas2r_ioctl.c
-+++ b/drivers/scsi/esas2r/esas2r_ioctl.c
-@@ -1468,9 +1468,10 @@ int esas2r_ioctl_handler(void *hostdata, unsigned int cmd, void __user *arg)
- 
- 	case EXPRESS_IOCTL_GET_MOD_INFO:
- 
--		ioctl->data.modinfo.adapter = a;
--		ioctl->data.modinfo.pci_dev = a->pcid;
--		ioctl->data.modinfo.scsi_host = a->host;
-+		/* these are kernel pointers, userspace has no use for them */
-+		ioctl->data.modinfo.adapter = NULL;
-+		ioctl->data.modinfo.pci_dev = NULL;
-+		ioctl->data.modinfo.scsi_host = NULL;
- 		ioctl->data.modinfo.host_no = a->host->host_no;
- 
- 		break;
+diff --git a/sound/pci/cs46xx/cs46xx_lib.c b/sound/pci/cs46xx/cs46xx_lib.c
+index 797a5f09cade..efc7df444cb5 100644
+--- a/sound/pci/cs46xx/cs46xx_lib.c
++++ b/sound/pci/cs46xx/cs46xx_lib.c
+@@ -2764,7 +2764,7 @@ static int snd_cs46xx_proc_init(struct snd_card *card, struct snd_cs46xx *chip)
+ 		struct snd_cs46xx_region *region = &chip->region.idx[idx];
+ 		if (! snd_card_proc_new(card, region->name, &entry)) {
+ 			entry->content = SNDRV_INFO_CONTENT_DATA;
+-			entry->private_data = chip;
++			entry->private_data = region;
+ 			entry->c.ops = &snd_cs46xx_proc_io_ops;
+ 			entry->size = region->size;
+ 			entry->mode = S_IFREG | 0400;
 
 -- 
 2.53.0
