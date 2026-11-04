@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04724606C927
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18452606C92C
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n6uNIEN8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WciFxQke
 Received: by kanga.kvack.org (Postfix)
-	id 237B66B05DE; Wed,  4 Nov 2026 14:56:06 -0500 (EST)
+	id 3BE186B05E0; Wed,  4 Nov 2026 14:56:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E76C6B05DF; Wed,  4 Nov 2026 14:56:06 -0500 (EST)
+	id 347E66B05E1; Wed,  4 Nov 2026 14:56:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B02C6B05E0; Wed,  4 Nov 2026 14:56:06 -0500 (EST)
+	id 20FF66B05E2; Wed,  4 Nov 2026 14:56:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id DCC146B05DE
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:56:05 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 856D31A0856
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:56:05 +0000 (UTC)
-X-FDA: 85398492690.24.485E76C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E7D146B05E0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:56:20 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7E966C085B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:56:20 +0000 (UTC)
+X-FDA: 85398493320.05.CE19BAE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id B812F14000D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:56:03 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n6uNIEN8;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793822163;
-	b=JqcwZhMh5kGWET18noyuTfYlYHxRQJaLky1AEf8wRd9/R7NmZlYF+vjR06eUzAGD09a2FC
-	DITIl69D1cSD318jUh8p9Ugt98YlMvBMDrUq5LZRRWxwDUpC+l6OhkO6pfV2yHSgglHJ33
-	JJwgAZ+FNAbSeLmfzDcn0qz180K6KKQ=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=n6uNIEN8;
-	spf=pass (imf09.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id A1A14C000B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:56:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WciFxQke;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793822163;
+	s=arc-20220608; t=1793822178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bCEpJCXGgk21zgMyVrJnsb9d3IAiyaFEBDru2XgYb4M=;
-	b=rO3WXxo8099YTNw8wRgtFCSLSxkYsr8SaV2xyWI8vTXWRpnVDi7zECmAUQzPzoWjjztTf+
-	ZQZgXkvQrP9vzELECweeP2Q2vwBsVNJkulu0ezcHTLb8dBK7IEUWYXgUf7R13RbPHinMb4
-	mUNEeDSUuay8mNe2H4x044DM0spZTp4=
+	bh=dVjHuUMxxd8FqQa8K43Wpa6+M00cK9gADu+rBdGhG5Q=;
+	b=W9L1FUhB8N5Fz77xc9IYAdvEkf85zTHSyjG7ddjh1Fj8qZu24a4rQsmvcuSs5EtSTatV/F
+	G988XWVTyDUymkgSOpigdEVtrvvx5sAxaUiN+DczUPkdvsCM0OBnLngAqMPy+JtrJ+moUO
+	ghd89LW479Cn4luRfzoRGZjLPaL98zE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793822178;
+	b=TVr5TvF89M0EOq6tDICckVKzUqqAaS5vguEc4mbX5Tj1+i8aO0u8B2ylhRlVYWj6K2/G7C
+	/ooKrTqjUY+RUl41Bt30lMNj9qIaxnKmNJ+Liry3W4BAL9DD7BIG7g8vt1KepwdR1Xn4nr
+	TomL5F+ztW7bqtQyDTG+yyxXfEu5Z14=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WciFxQke;
+	spf=pass (imf10.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1015F40196;
-	Wed,  4 Nov 2026 19:56:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9F61F00919;
-	Wed,  4 Nov 2026 19:55:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EB06643975;
+	Wed,  4 Nov 2026 19:56:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 842BD1F000C1;
+	Wed,  4 Nov 2026 19:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793822162;
-	bh=bCEpJCXGgk21zgMyVrJnsb9d3IAiyaFEBDru2XgYb4M=;
+	s=k20260515; t=1793822177;
+	bh=dVjHuUMxxd8FqQa8K43Wpa6+M00cK9gADu+rBdGhG5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=n6uNIEN8UtFFIaiDpvbvTTBdWrfLopeDookEM+XOfGJBmQaBLBud7PW4ZywRa4UqY
-	 sj9lKf00u87t0rYyILLdTAzUShhG08ZdGf/Lzb6uT5y+NXjXXOrpjMTCCufRj/+vUf
-	 qn2Hm5dCkKTQ/5xyNTYylulY92AYSZ+tzxPbaFXkvFnu/q327E+8W9jss69XVk/qWl
-	 RFW6EwVAfNKvgEJ3eedNnGhh4txPJEwh75Q839TLwgEzuVUSv49ucfVtBinxI3hk3b
-	 fb0M7feqk7mkAAGLRXxYscDizmCBmFG4sFYYV3OBo/qiimcnQoXdcT6kySNh1lRNIF
-	 bhwX+vUqpJ/hg==
+	b=WciFxQke7WU+TqGOiLHJFFvz51sxAv/rXDuJ65d7uc/uzhqt05C4NlVN6GEsTUCUu
+	 31fkRA/xip2bhOq8TqDrQhDe5z0BPJYsvkSt1ZtjXi0UWf4TITY4A9UV1Jj74iUycG
+	 lDsCZ5Dv6DN9dQs5WHRrbLlWLWWmKs07ZIwnLQxTmPhOa7InPJfbe0D8IVp3OjClGc
+	 ZmGH+yeDVq+4v+cg8g4xIPmzrh+E3sC00xuiXzIgXt8btDsGhRR0CoJ8fDZPxoEm+E
+	 OBg77f3DkM4ZaSWy1R28T5gZm41vTK6+WYOPbNiJOEt0Tph54u6+2Ht87F0UbPAKoU
+	 ENh1KteE9DOew==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 25/30] alloc_tag: let procfs own the seq_file of /proc/allocinfo
-Date: Wed,  4 Nov 2026 20:55:48 +0100
-Message-ID: <20261104-work-procfs-fs-v2-25-319e0f9a8aae@kernel.org>
+Subject: [PATCH RESEND v2 26/30] alloc_tag: let procfs copy the ioctl arguments of /proc/allocinfo
+Date: Wed,  4 Nov 2026 20:56:03 +0100
+Message-ID: <20261104-work-procfs-fs-v2-26-319e0f9a8aae@kernel.org>
 In-Reply-To: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
 References: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2428; i=brauner@kernel.org; h=from:subject:message-id; bh=w2e219TOPzYhqaNEYdOja/Iy2kqKR7KfDC/oRUWRjFA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97vFcddfCmyOAVbf9SsDD2QKqjkaTBOc97Z200n3GL K1V/52WdJSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExEm5mR4fL8sPeSEVKLCxs1 t6daZRx/N59v9c2uBvbciVVGFpzdXxj+itqIaCekhc3YHW/sfpNlJ0++MIP1I9HZqYuF7+sHn5n NCgA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5002; i=brauner@kernel.org; h=from:subject:message-id; bh=qvFStIPYOo+XQCz7NGrfedfPC5AiqcBr63oE+4d+7KE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97vE65vl9w02l+nm/3k8td487Mlf95K8LO9Yw6x35z bF1Qqund0cpC4MYF4OsmCKLQ7tJuNxynorNRpkaMHNYmUCGMHBxCsBE6roZ/sfzLc1cc19g8UpG p9ScMA2ZG2mxxusMN/5mfHVJ4JFJ0UmGvxIPbppe0fTgXiEh//pB3cedQhve/fx4peeqfYB+jj/ rQzYA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A1A14C000B
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B812F14000D
-X-Stat-Signature: sen5dnn6r1ks9a9ajdsxwydnza777ye5
+X-Stat-Signature: h5uzzyh1wcddgf6mwmia6oquix1ausax
 X-Rspam-User: 
-X-HE-Tag: 1793822163-173884
-X-HE-Meta: U2FsdGVkX1/2TkZ0Z6wmP60byS05JrSwKEh+w3dhxdPpZ98oI6LXALpwsf3piJG5mgpB62l/hiToznHqz59tWLrWCADvz33L71QeyszQKertCgPFA0AyaQbE7MV/nd0G/GTISCEDQA0Q5Jp0nlmxWxZOGscwSoGYv63v/9+s6jTmkk5RTNJKneZuPf26FmjkoiOzc5M4vEyLw1m1gydc5WEtnliOIyRgG3jdI3TNpKn3EorHL8Vbll65VsNoTdZ66uhrinuXR9HDnLqUZwtaRjBbKibc0EyQ7eI09U8Fnq3V9g7CjXzke5etEREuXKrYMTRI+ag0VjfJ38Wf7uQh541dXOpDyvfoB0Hs5v2+Hk+3GTG7Tqi8Q3xRBFAwnntrBmJrtnD1dLtjz3lxJxO4cnG5AWYtjR9g0/hJOu2nEJFDzJRJuEwmEDJJ/+I5kjsCsOb9EUJOb+LJpj6bDMHfS+i1dURD1U0WASr9YBzYdm9ltxNxCk1UGOKV04G690hz+JHE3siYTk7U/oPpKtf42LVNI4ewIyidaLH3zCBxSD1n8fMUdLrlUBV07pN6odcQ1L2xYNeS1GHEueob/oMr4+nAJyLWs3PqOjRT/Qp8uuYF5QFRmHAysyWNmK7o5H2NWVqofHscWHNI9M1H8XbpHg7Iakq6g37+F2fUuR8QZhJu7VoieBrJq/Hytb7VVpJFIfEo6X5mK67HjNmApLFje4CixJ6ofLucQVD1pmn+V7hoaqV1YOYZgprkEb2nJSagsWuYSCVNORzMmFdZ2ODTXSi2ixWTQLjn69zZRXw+/RT7U3kiMZZs9sNGjt+7bU2iVfPG3inx8x47pO3x/p038uNGOM9CSYQ2bcJEhsynG0wO4yw+k3A0dltYvMXJcgiwWgDvTNAnHDgFXaUD71oGQdL+cx08Mg/y6o7lAPJMjYK3UksSpCtiq1it/r9wjguwaVpTc5TuNGL3wOEQP8X
- s8Dt4ell
- wHCGAVeqG0XaxVras3Dii1nkzSqtVZlSg9w6aetjRifah/Xv1/mY1f1UpkifGITljEtEckrKaU7I5AB98SOEv34pCMXRo2q1ToDvYy564HJ9P3iwzLVWDe6aMl5A69MlwZgwkOntJNJLwXdZ4QXji5vpi+FKZNveGAPSfTVz4VT9PCIyAxUI7GQZkBHWQa1Fx5ZOMqCp6jwykPE44L/9vX4zoAXPi659F8M+9rXoyRuYwLB2uK2WE9wbs6KtnPwdi+2+4V8aA9Uqp+jX8fp6OlHqSIIMVlNnX3qwnfuN9gcwO/f9VHGXvsjAvOslNxwJNv1TcdwzgJD8CMBe7njAvBdFA0RSxxDVioZKJRbv94pG3RaoMVt15U47ncBJ/vhCDT5rMSX4XiBxEfeeTlte1gSitnwEQrVoOBg117tB/BFakK8vTzRWH2YnesIUH/cDDHPtA
+X-HE-Tag: 1793822178-846531
+X-HE-Meta: U2FsdGVkX19zGVvdecLdqQpBbr+rJGLnAyiLsq1WkYrH0BwV7nOGhdRlbwL7u3IaoiydFbWaNMx1S6gCzch7tWkgYRC91Sa9TjSoiRxWl96CmbDhzCG58yuEfS3gsWc8Y7zT7owWTq6E/ajs7mjmj8MXBAPdJKpO4NVZMOzzH0sLNQKdJ9T4aR1fezMG2kN4Yet3BHHGCCl3JmkFPKjGsM7sZZglShzrOa4K8hOdIatxlemjf40KYVzuJCQtPHOSsbaXrBngYW+k4F7crRcgjRkgptwO3pVSTeHmXjkYqqrzxOr9S6zVRgFxE8BjifIFNXeeflBGSF8LOGF6X6lV1PmlwIChoSwdyUZvkirz479b7iyNvaHYuaTQSb4BBBey/GWittGbHbn3UTH0Tczohsqt8hyvVBCxtrdvsrkvAnmBAZ8TNPkCAA4nNEBSLv0nZ9ipyXNiyg9Qp02G5ZokUD2aonsTNgU6q1cmHSpOiUbawKHlhOWfmaUmGMjTsAgRlFwO9kODuf+Y7yWKtDLNz8wFkC6OjF3a3F6ZQsgH5IKkaigQaEIHYMfX1WIIhi4BmjrBPBLEqC2mlQit5Xiddaob8DRn16hqUfZxQl3D6S1qF41z7yAcN2DUSqIEUrZm0LDXPPTdrnXlTqNTyp7mkYPxB3SCq4ZR+HdZQPqiiZupbLiJkrQ+kaytd0VSt900t851Bs/itW+mXVjmXFCgcAki1v3MiJvM/Kppaw+yiXf9rI9KrlS5GMilXByLc7fgVMG0Z7V14pzeGFncV46IXqAs7gPZwXOexs1uOE0S5vBjGZz/zEOvv6wm2aTqkgjvGPcWy1HRDVdkw3K9wOG+9z7UPWikLKS+G6F4ZeuVKO/q78ibnsRbo3ZD9n/Ao2WizFlySqWX122KyPQWKKC36mFboySbNynBBfW1FoGlGgqt6pDUb8PfavgzkTb9juGIUJZbKZoNFuIh5KgW7a6
+ ZkPBn0/A
+ 2byunDFbEPMMkNhiyQpJcnmaoyc+DgOYr53Jnea/sS5sntvT7i1YyVkiVczZ3KOZdi85gFe7C58PktEXUp4tYbZd4cJBthQ4ssqS7wZXuTP0oU/5D6pULL8GfPFxPjnrOoMyu7bMnJCgJFjfZ+HA9vrHZUP9T6d6oBNDQEPZu7sNrzi8VN+DLqJx8qO1Kqe3NL84W85qkRTfgUNd9YS/FxNUjO1bYCq1g34uBw6icgMr52O9rK947ZsiyGgq+46yeJ6hoM6fsoBY5bXpnMCWpls7WQRA4reZd1skne89nKkFjzdetuCBU8I0L/eGPk6AdGDYSwghHXdG6OX+lmJ3hQDPcTXhVUv+uvTA4oP4kDXhmINcS4VcUE1xOKIoW2hbhssKwAU8LcLYpTYMmZyVuigu+tWF+tD68RhZqL71lidP6QJqvWkKCDfk8Oz0miEVDmDvBZTDOLwfGLxE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,76 +154,143 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Declare the seq_operations and the size of the private state and let
-procfs open and free the seq_file. ->proc_open() and ->proc_release()
-only set up and destroy the ioctl lock now.
+Implement ->proc_ioctl_buf() so procfs copies the arguments in before
+it pins the entry and back out after unpinning it. The commands encode
+their arguments. procfs converts the pointers of 32-bit tasks, so
+allocinfo_compat_ioctl() goes away.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- mm/alloc_tag.c | 28 +++++++++++-----------------
- 1 file changed, 11 insertions(+), 17 deletions(-)
+ mm/alloc_tag.c | 47 +++++++++++++++++------------------------------
+ 1 file changed, 17 insertions(+), 30 deletions(-)
 
 diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-index 7d7ad6704953..697e44468ebc 100644
+index 697e44468ebc..b17457c8fb02 100644
 --- a/mm/alloc_tag.c
 +++ b/mm/alloc_tag.c
-@@ -152,27 +152,21 @@ static const struct seq_operations allocinfo_seq_op = {
- };
- 
- /*
-- * Initializes seq_file operations and allocates private state when opening
-- * the /proc/allocinfo procfs entry.
-+ * Initializes the private state when opening the /proc/allocinfo procfs
-+ * entry. procfs opened the seq_file and allocated the state.
+@@ -6,7 +6,6 @@
+ #include <linux/kallsyms.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+-#include <linux/compat.h>
+ #include <linux/page_ext.h>
+ #include <linux/pgalloc_tag.h>
+ #include <linux/proc_fs.h>
+@@ -236,16 +235,14 @@ static void allocinfo_to_params(struct codetag *ct,
+  * Retrieves the unique content ID representing the current allocation tag module
+  * layout, allowing userspace to detect if modules were loaded / unloaded.
   */
- static int allocinfo_open(struct inode *inode, struct file *file)
+-static int allocinfo_ioctl_get_content_id(struct seq_file *m, void __user *arg)
++static int allocinfo_ioctl_get_content_id(struct seq_file *m, void *arg)
  {
--	int ret;
+ 	struct allocinfo_content_id params;
+ 
+ 	codetag_lock_module_list(alloc_tag_cttype);
+ 	params.id = codetag_get_content_id(alloc_tag_cttype);
+ 	codetag_unlock_module_list(alloc_tag_cttype);
+-	if (copy_to_user(arg, &params, sizeof(params)))
+-		return -EFAULT;
 -
--	ret = seq_open_private(file, &allocinfo_seq_op,
--			       sizeof(struct allocinfo_private));
--	if (!ret) {
--		struct seq_file *m = file->private_data;
--		struct allocinfo_private *priv = m->private;
-+	struct seq_file *m = file->private_data;
-+	struct allocinfo_private *priv = m->private;
- 
--		mutex_init(&priv->ioctl_lock);
--	}
--	return ret;
-+	mutex_init(&priv->ioctl_lock);
-+	return 0;
++	memcpy(arg, &params, sizeof(params));
+ 	return 0;
  }
  
- /*
-- * Cleans up the seq_file state and frees up the private state allocated in
-- * allocinfo_open() when closing the /proc/allocinfo file descriptor.
-+ * Undoes allocinfo_open() when closing the /proc/allocinfo file descriptor.
-+ * procfs frees the seq_file and the private state.
+@@ -310,7 +307,7 @@ static bool matches_filter(struct codetag *ct, struct allocinfo_filter *filter,
+  * Seeks the ioctl iterator to the specified 0-indexed tag position, reads its
+  * profiling data and returns it to userspace.
   */
- static int allocinfo_release(struct inode *inode, struct file *file)
+-static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
++static int allocinfo_ioctl_get_at(struct seq_file *m, void *arg)
  {
-@@ -180,7 +174,7 @@ static int allocinfo_release(struct inode *inode, struct file *file)
- 	struct allocinfo_private *priv = m->private;
+ 	struct allocinfo_private *priv;
+ 	struct codetag *ct;
+@@ -319,8 +316,7 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+ 	struct alloc_tag_counters counters;
+ 	bool fetched_counters;
  
- 	mutex_destroy(&priv->ioctl_lock);
--	return seq_release_private(inode, file);
-+	return 0;
+-	if (copy_from_user(&params, arg, sizeof(params)))
+-		return -EFAULT;
++	memcpy(&params, arg, sizeof(params));
+ 
+ 	if (params.filter.mask & ~ALLOCINFO_FILTER_MASKS)
+ 		return -EINVAL;
+@@ -375,9 +371,7 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+ 	if (!ct)
+ 		return -ENOENT;
+ 
+-	if (copy_to_user(arg, &params, sizeof(params)))
+-		return -EFAULT;
+-
++	memcpy(arg, &params, sizeof(params));
+ 	return 0;
  }
  
- /*
-@@ -475,9 +469,9 @@ static long allocinfo_compat_ioctl(struct file *file, unsigned int cmd,
- #endif
+@@ -385,7 +379,7 @@ static int allocinfo_ioctl_get_at(struct seq_file *m, void __user *arg)
+  * Advances the ioctl iterator to the next allocation tag in the sequence and
+  * returns its profiling data to userspace.
+  */
+-static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
++static int allocinfo_ioctl_get_next(struct seq_file *m, void *arg)
+ {
+ 	struct allocinfo_private *priv;
+ 	struct codetag *ct;
+@@ -425,10 +419,8 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
+ 	codetag_unlock_module_list(alloc_tag_cttype);
+ 	mutex_unlock(&priv->ioctl_lock);
+ 
+-	if (ret == 0) {
+-		if (copy_to_user(arg, &params, sizeof(params)))
+-			return -EFAULT;
+-	}
++	if (ret == 0)
++		memcpy(arg, &params, sizeof(params));
+ 	return ret;
+ }
+ 
+@@ -436,10 +428,8 @@ static int allocinfo_ioctl_get_next(struct seq_file *m, void __user *arg)
+  * Entry point ioctl function for /proc/allocinfo routing requests to fetch the
+  * layout content ID, seek to a specific tag, or read sequential tags.
+  */
+-static long allocinfo_ioctl(struct file *file, unsigned int cmd,
+-			    unsigned long __arg)
++static long allocinfo_ioctl(struct file *file, unsigned int cmd, void *arg)
+ {
+-	void __user *arg = (void __user *)__arg;
+ 	int ret;
+ 
+ 	switch (cmd) {
+@@ -460,23 +450,20 @@ static long allocinfo_ioctl(struct file *file, unsigned int cmd,
+ 	return ret;
+ }
+ 
+-#ifdef CONFIG_COMPAT
+-static long allocinfo_compat_ioctl(struct file *file, unsigned int cmd,
+-				   unsigned long arg)
+-{
+-	return allocinfo_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
+-}
+-#endif
++static const struct proc_ioctl_arg allocinfo_ioctl_args[] = {
++	PROC_IOCTL_IOC(ALLOCINFO_IOC_CONTENT_ID),
++	PROC_IOCTL_IOC(ALLOCINFO_IOC_GET_AT),
++	PROC_IOCTL_IOC(ALLOCINFO_IOC_GET_NEXT),
++};
  
  static const struct proc_ops allocinfo_proc_ops = {
-+	.proc_seq_ops		= &allocinfo_seq_op,
-+	.proc_state_size	= sizeof(struct allocinfo_private),
+ 	.proc_seq_ops		= &allocinfo_seq_op,
+ 	.proc_state_size	= sizeof(struct allocinfo_private),
  	.proc_open		= allocinfo_open,
--	.proc_read_iter		= seq_read_iter,
--	.proc_lseek		= seq_lseek,
  	.proc_release		= allocinfo_release,
- 	.proc_ioctl		= allocinfo_ioctl,
- #ifdef CONFIG_COMPAT
+-	.proc_ioctl		= allocinfo_ioctl,
+-#ifdef CONFIG_COMPAT
+-	.proc_compat_ioctl	= allocinfo_compat_ioctl,
+-#endif
++	.proc_ioctl_buf		= allocinfo_ioctl,
++	.proc_ioctl_args	= allocinfo_ioctl_args,
++	.proc_nr_ioctl_args	= ARRAY_SIZE(allocinfo_ioctl_args),
+ };
+ 
+ size_t alloc_tag_top_users(struct codetag_bytes *tags, size_t count, bool can_sleep)
 
 -- 
 2.53.0
