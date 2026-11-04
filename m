@@ -1,145 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441C3606EE93
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F4D606A337
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GDFpf3YA
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Tv+MUOQH
 Received: by kanga.kvack.org (Postfix)
-	id 5CFC16B05B9; Wed,  4 Nov 2026 11:37:26 -0500 (EST)
+	id E84406B05B8; Wed,  4 Nov 2026 11:38:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5804D6B05BA; Wed,  4 Nov 2026 11:37:26 -0500 (EST)
+	id E5BD96B05BB; Wed,  4 Nov 2026 11:38:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 495CA6B05BB; Wed,  4 Nov 2026 11:37:26 -0500 (EST)
+	id D98C56B05BC; Wed,  4 Nov 2026 11:38:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 233F76B05B9
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:37:26 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66F1840114
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:37:25 +0000 (UTC)
-X-FDA: 85397992050.02.4C09053
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf31.hostedemail.com (Postfix) with ESMTP id AF40320003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:37:24 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=GDFpf3YA;
-	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793810243;
+	by kanga.kvack.org (Postfix) with ESMTP id B14866B05B8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:38:38 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3B7D01A07E7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:38:38 +0000 (UTC)
+X-FDA: 85397995116.13.348371C
+Received: from mta1.migadu.com (out-40.mta1.migadu.com [95.215.58.40])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 11848120004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:38:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Tv+MUOQH;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.40 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793810316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kOH9xJas8+AahnE/juo87CvpZQxHzo4/Iy//5/OPJsU=;
-	b=QICiXyItG/xLtHCFsoAKhRhhtlCUZ5hFEsQthFv5W+EsdBJZGeqAw9PCYxyh6C5FdpzxZ+
-	8B0M41VGvf/A+cMzYzBgILQXrKfqUKwdB7D1kb7AP5HznTy2v3kdQM2hF9DuiAdF1kHZlx
-	cl9bcmIvCMtoA7en9Ui58Zazc/tpukQ=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793810243;
-	b=qGRh9a8tFMD1EZ+uIrKKx1yP1/BRxtSRbRd7uOWaxX42rxUa1skaahxHpYf0Kd1gOXhOHb
-	ZGeBe7zVKmu646lubaGyAqLRwe2KdaTVb5gyFfUnoeRQRxzJEx+RWeL3pvIjHOZ17G5gS5
-	edNRQe6U5E1lJhyHHpayvYHHeXNNXZQ=
-ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=GDFpf3YA;
-	spf=pass (imf31.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a2167bd087so7890875e9.3
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 08:37:23 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793810242; cv=none;
-        d=google.com; s=arc-20260327;
-        b=d3jENt3EBy5kdkReH+hqQb46DRGfpttO6fH3nORpaq4nEuvaszuyJU6B4iOWUfQbfj
-         4ZgttD6D9b4lBoLEcO1nNBcDtAA2qGvbkrNoUwwOaPGqc3WDGkO5CD7EHCBFgvO+pMzH
-         6fpCuXwodwlCIyrHIydYAPLnPd/g3PKMbhqyjBkoxBQgILnUMUAey1NMs84Qhj2W7KCC
-         sFZZqQDGsOqI597HGxWpCgVIfwDF99bYOz+VfHUwmLp6WME81VPMc2YKi0CWZh/+8Mcw
-         UGB0CW4qTlMnlV0HTpFKRL4fynkXpZR9qaONDyz7xwdeXHsBj75AM4a+EiZfWFU7iFXs
-         7PSQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=kOH9xJas8+AahnE/juo87CvpZQxHzo4/Iy//5/OPJsU=;
-        fh=KzM5OLLOx16Xlm3RuNqoRIhIfIaVM7kEZmYhn/AhuU8=;
-        b=FCg8Cxgv2hX+x8yHuooXsHgVCMyq/5CHy8cAXlDzdPrX5XsEKmjrmT5f5mCPP0rbB3
-         PHTWXFJ5Gr/iJu0zdWmSnc6V6POtwFeDhRlS/RGo5wHdW4tpC1YRkzkVKRXgySi2E0SQ
-         p9DSaR9qke3J03CskhqgAbq3BoxqxDQtXZbiuzLAQ02TscvGNH0M8QUupFSR6bLGOqCU
-         XXh+y2LVyE3uIay53B5tDX0OiBgBZWSdPbePDwRr0fV7nBP0QRU9HPKAi3GCYs+4m3iH
-         1UOe99a4kn6rWTCfkL3/ItV7d4zG/qC1+shZnjtoQV+Ql5JDgg0zc8tmNWznnj/aVFXC
-         /B9Q==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793810242; x=1794415042; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=kOH9xJas8+AahnE/juo87CvpZQxHzo4/Iy//5/OPJsU=;
-        b=GDFpf3YA88wHpowGys2FkB5GcxtqIJXoGtI7UJiXJDLEArdRwpFvAMfT8razocf+Ut
-         eDQfGrU4Uj+6G0DC+UhMUizlNes0eMvqmkxq13FsuXpsbkM8s+nLeoCCGFT72h3L5h4Q
-         d0opiJ75DXFU1g65h0hBXS6Ovr8jRvLPHyiCz7sr3KxeLtpObXlHb3IlifCduNFbgySB
-         G2OdrPdqYxq/mMbZItJC65qamNc3Mb15a1BEBLYJPLb8iZKWQDJaGRkobTGbN30jCrxL
-         1W7xncTKdyvwXDewEtKx35auoM7y5oa25O9j0nepFs33CdSTo855hkdJplC8VS30goS+
-         uzqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793810242; x=1794415042;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=kOH9xJas8+AahnE/juo87CvpZQxHzo4/Iy//5/OPJsU=;
-        b=xAvduiScp2h658VX0Fl9nYOOxhceQ27dgn+QbzkqdUhTTwPQ9zCvGCOJuvdutTVeU1
-         b6NqWZ2QtyGeVtaWztiAQiTI1vNUgu1D8nfHR/u/MaxX8UAEKhLQAa4/h2Q2uprtI6Dd
-         FNhLGBooSkZnrKdm3YQzA0PV2MTdUj0K2XFz0MH7fAvMELSuk4qAivwyxoFjtToAeNFZ
-         lr9eQsY3D30FWFT0vilBqSuZvrqjBR7CN6iieswqtPzRXNiCsEsIJYov2ShIT7MUIwSs
-         AMiYg4qiVq53R8vy16piNgN6LvduboWxg/gWGFKRtESnOo0br2MkfO1t66yrWUOWEVTD
-         07Mw==
-X-Gm-Message-State: APuU4Z8SYReRIkV+A3Hac6e9S/gTGDctwfTiePXi/LRhI2KD5+VKRtnA
-	HMxLgXTbNvjs9SayL+MAEGg8pkpFKu2DIZDxLwFOi02NuxpQaasBKAWzLcWhnukzd21C9lzNt7g
-	oMOpQaM3nUJT9oJl1SANMp+Qnb9iSN8M=
-X-Gm-Gg: AYBFou3Tlj8oNLDIMHm4ZOJSbDYg3qytOXjpFgaaWw4qcpPhPMZJqFfQgoc3BrsX3l1
-	Y9cy1XZ8p4CD9B5biQcFOdkpd1SkNiEQqobaAd8zSG0GAHC+yNGZ9zU4NiYmsGwQSNOppUQjjnm
-	4DIwRl7zSE7BJOK4U+hy6JMres9ded90XqsGcN0J69Y/KtCXNGG3J7YPm5qRC6xm97UwDtN+g6U
-	qmnCrqY8/AeJpMvSpyy3bpDmS6dcFIvQyIFXNc+wmjzGKhoo3uWH3xdRWU5Tge6l3i+EuTmnRB3
-	elVlJHHfFilPt5BB+AIhEcWDVwv6KLP0hwBBHabz4qWdTb046D92lsz+2SKV+K5BpDSts/tzEdb
-	5XEytwe0BvI9Njv6oBrN7RSewPfRp1/ZOGOAPKCxqzeMAbdDt7tZ9ky70wiL6FvT/r5HVAehj2Q
-	BmbsMLaNj605YkGJDwmcXGNFIHbmC5JbJS0kWKtLZuFp3bYHqF4vLLNIzP3E8YUBArKaxijZTGY
-	g==
-X-Received: by 2002:a05:600c:4454:b0:4a5:1cf1:b7bd with SMTP id
- 5b1f17b1804b1-4ac1794032cmr383478795e9.16.1793810242092; Wed, 04 Nov 2026
- 08:37:22 -0800 (PST)
+	bh=hG3RiTzW4rOzvFwLuSqxJwT5QWl3KAEwMYSeXlW3oLQ=;
+	b=IAv+5kXYJqpm7MSj251RMDqlMw485UVaMxYcRpH0DMrQpaZ3LJv0whKUwodbt9hAP6i/Et
+	xRrf9kOf7LXeB4vKQhE1EEiLpB/d10iWp0y4JJH/39ZnyJTs23dRBhgu9337PX2m4fea+E
+	kTOnXNLoU/+bE/s/67IoyCr63vDegGQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Tv+MUOQH;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.40 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793810316;
+	b=Bu1PT2BF7h/oFkQPgMlsYY3gHIgVDbD1rNwg8tSPMyYOnNtdWn79wEUWnREN+5MpOy5/Ue
+	J/QYNlPBHiP864sokMfEwo8C/qLZPrZydP6DyIHLWZb11xilxDFSZXY98ExlJEwxBUPHae
+	AwpkLQzlVyc93lnBhywpC6tZSekwa5M=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=7Cg4Ez7Vn04vdChf0EIzG0v+x6mvneURKcF64tPZr+A=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793810314; v=1; x=1794415114;
+ b=Tv+MUOQHV4qew5/g4754f80AI5tU5/F1HTu/I+UxwKUvIKTyKSznhMAiU9ubR/mAAdOaazwx
+ mRORZzzzUpCwUKHy28o7VLQl7PDEgcXl7Olmk8sos7gXF2SCrtt7fsHFlUa2lKQvdgn5xwv3Wj0
+ YZrzGotU/vdQoECcW9izQCoY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 8ed0b4cf6e12cb23;
+	Wed, 04 Nov 2026 16:38:34 +0000
+X-Mizu-Trace-ID: 8ed0b4cf6e12cb23
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: "Zi Yan" <ziy@nvidia.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	"Andrew Morton" <akpm@linux-foundation.org>,
+	david@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	ljs@kernel.org,
+	linux-mm@kvack.org,
+	ying.huang@linux.alibaba.com,
+	"Baoquan He" <baoquan.he@linux.dev>,
+	willy@infradead.org,
+	youngjun.park@lge.com,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	alex@ghiti.fr,
+	kas@kernel.org,
+	baohua@kernel.org,
+	dev.jain@arm.com,
+	baolin.wang@linux.alibaba.com,
+	"Nico Pache" <nico.pache@linux.dev>,
+	"Liam R.Howlett" <liam@infradead.org>,
+	ryan.roberts@arm.com,
+	"Vlastimil Babka" <vbabka@kernel.org>,
+	lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org,
+	nphamcs@gmail.com,
+	shikemeng@huaweicloud.com,
+	yosry@kernel.org,
+	qi.zheng@linux.dev,
+	luizcap@redhat.com,
+	kernel-team@meta.com
+Subject: Re: [PATCH v8 08/30] mm: recognize PMD swap entries in the softleaf layer
+Date: Wed,  4 Nov 2026 08:38:29 -0800
+Message-ID: <20261104163830.3586103-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <DLZ38NR21UU6.QIKBG8SO7189@nvidia.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261104-swap-hibernation-slots-v4-0-0ba9393609e1@tencent.com> <20261104-swap-hibernation-slots-v4-1-0ba9393609e1@tencent.com>
-In-Reply-To: <20261104-swap-hibernation-slots-v4-1-0ba9393609e1@tencent.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Wed, 4 Nov 2026 09:37:10 -0700
-X-Gm-Features: AclHuK-ITyynx-LQrFm_lWP_ZygTvkXkWXKJmodVXCRLU9qFllIRAK9LXJR_isA
-Message-ID: <CAKEwX=NyfTtr_6uM1cVcpQB=1tOFtcWb4Vdya=VD0v7XCSE2ug@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] mm, swap: only allow swapped-out slots into the
- swap cache
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>, 
-	Jianyue Wu <wujianyue000@gmail.com>, Youngjun Park <youngjun.park@lge.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Kairui Song <ryncsn@gmail.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: j54mzbhxufruxp7khhowsj3m974zzy6r
-X-Rspamd-Queue-Id: AF40320003
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 3mmw7q8ajafomau5ooxd6zt3cnrwu9ea
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793810244-793719
-X-HE-Meta: U2FsdGVkX1+NkYZrN+9URZg2T4Py4raHjbhri1vo8ohyewIMeQCmR3FDPKxYMWYXPkgAOYJAf82qtRqFgFR0cL0ZTATTkNfL6EL6l5R7dl1ahkRSBkdEdFWR+kmVfd9o21RwEdd9awU/HQfZicMCPqCgOezZAr+8bIAlJNqx9IcMbfdGDfNG/h11WI67MsfSM8h8B19kyGa1XgHkLf83CQJQaoYOa1/xe1UtntgsygsWtHVouafFvmXO4XfcrtpQ+fwQ9gy6ZoSvch8xZMPNtbYbYomDGoyDGZHwf/C8+lhtCewRby9a1dawx67EXEPwoNTxi9wqSKyF32n/qFb1K/fXnyurW7Xic+UHndTHANohYVcm+jjLXwxdma3WWRzFltP579lcaANvVvPsuTPHuBtjuXF2sv8Yx1t0ugaWIO7o7G3I+zJEMyAdPazKpsBzXM7L+9528ePqAScXdbcu016fOfFiSAOKYtLV9zS3PVGrdY3Etrt+VsyOQmn8SGYn2Xe98nYKWCkioXbXxbyfqgyRpVR37/ftmE/+pmQsS3Hn9txw+4OkZWmQL0zWYheTtbfiCpvJ8uAg79FqHEL997x1+bbuEOZ+uAlXVD0zBMLpJUYgA4odq8LENM4GlkZULTVoSyUVoFlO+MxRhP8W3ZYbWwoLhKYJvRNzLYIJt8hCIouNVcPf6mhXmpQLoB7C5d0XNMDm8PDs18j/AHNBqm7HycF38YkAkEqPAsYkw8nAP8AhLohpVsfmWbI44iELbDULzQnEMc5nlWxk/h5gHp43zpZ8j+OG9Ia9DHwvl60gHrw86Mo7luvE6fhdvA895VPJhloaXVcQ6VTkFAidsOE11Y+mnMLDCeU9aDTkBgm2h9Xl/C/5nPDa0sbn4OvytSd5Vp/8utwWqsFz6cHQbx0+8InmSq5/+T9p1f3EiXyg70p8upFejPCY4BNWZ042x92f0lcqlDQeSH7NyYp
- MkXX9jcQ
- kmDohFq4b79yWQD6E9wZZn/CBWV3M7xMvXA+tXfTC+ntZsGrazyIGyUoTfnl4gexb0QL7PI05hW7v9tko24jojkn73vuv8vLpl+CAV8bn4VBROjU0ZjZ1nxWNmQ+c10AmlPXnvOOOye+tahPDkAr/7VSJ3BTsjaaoNYgSfXVacUVaO2Pa9KtIu9K8MIgEqhvrVdpnLD6IVKNDyPTpCqBeg9ufcW/uInwDf/Hdm+aWJMgXReQ7BUwalogUZiMENDvSdKqGN+K5CLnA3Cm8TC72KN6QkSIxhhXu8ZbG66QzJhP+Np4YjMiUlVTnxUMzsN7VASpNG+E06A2AhU3pn3e1KYISpsO1tPC2kX5GTvAwpqbtJBW9EVMoTp3vVbUXiSGMGKnBvm+M13sjSe/cOoZk1ymMpctwqX2w9y8JcPO1WJv28p/u9onukWDpio/quhZVtg8paAt1QHkZ8/w3kzqTgOtRSJjC4Dv3mjqbwT54Ca6ApYFDOhkJ5Ey0MA==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 11848120004
+X-HE-Tag: 1793810315-574416
+X-HE-Meta: U2FsdGVkX1/ipdCht9ixJEHWHiHvrtvr1F7OCB9aZfRyz6O6iNXZGHT8AaNdSD8vE6yE4s4v1Rjpqq5mi0vKryfsYNAGLLKqPYnA3ycdDbRUuvxkNHheDeDUN5wWFxwBgryfH7lfti1Q/2fZ0XKIhPDDVsFERrrH4GOgvEml45bfEmzkUnmeJB1rID1T4lZXCiV5dAbiPrg11GjaIgsQMPPYqM3jXFNfqILthgOSlxVbGOQcWrNi9BBP7Zidrr4wG0OmhF8v5MXAhUgHBMS47Px2/NlmXmo1+klI7zICWG9zzju1BVqowh6mQr/xJRRJdXega/YdVj9XWQYeH5Gcgqg9AVinGHBlSZQMT8b+e6rrTYEWmy4SX0+Xr/CS65byQks8CuM3+hSh4+3uLo4IUr2thxhBKkRDjdv/tI56QYvKUkKe5HNakQdgrO/WjOXD9TVqs/MUSpHVa4/K15G/njq3QZ5U4FIE1nf+gYYH4uEXWYTKMbH3lA5Z0Q+Z/y2J0U5Lkq7MT8z+tIuOaqySrTo4Vsqt4faErh/HC+saOe5Wt1N/wbDs46D5DrsrgzhYOfYyKYi5HlpwYsxxMa6TNrYJVAm6BOlxAP4rNVwSaAJamHduMImm5vHR+5GHLLrdrJCTZa1pvTLvfloiB9E+2fSD6vOSM+BIKcrbCkwepaL2Sf9BU9hOu+vZQwEuQgfG6TzY6JmctNzPZ1t5vKlxXA05VYLLGen0JLteGEUfeldn70I6AIvtnhSPPRMvYvO8ounmjJW7N4xeqL8CBXI+6NeMD7C9YExyB2YVltB2yFS2SMpX1P/7o6A0ht6Lf+jBBP+Lf/YE6zXzFTb+O2wkAe9XG8cKahqfhIVNShzlMUXhmDI02GSqFlZ4GSWA+HJAKrMce8t3VX+HdRjnsBfUEPSLDKmtmpC6vK0z+0Cau96gVUUqOUW7FE1oSHdenBU/SKtNXFweg/Rw98H0cOn
+ CsuuKfFT
+ bP9bCAfb5iLy+J78YSsrSWomtDt0EuihS9XYKDj1NcL/uj8Kq8c53Dzdrv2vFMeDODMDzD15UxV25aPLrSSjDd78o9LTP3JcN5EILZXxgxvWwt4ilwu+UMRQ6kuVnB4EOPiTITPoJUIUHwMg5dZUp6mpziN69rA351WR6GkFyA/U72AV9SB05g7kCLmBBIA6icNGijdCAwQ7Mxo1Atzrdfl75zl+YTWXBMrcHTCVFyYNKCKIDktS6Opg5wJZp1FuEuV9q9OabepS8+jEhMe7EpKf7Aw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,52 +120,89 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 3, 2026 at 9:25=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Youngjun Park <youngjun.park@lge.com>
->
-> __swap_cache_add_check() turns away folio entries and slots with no count
-> and lets everything else in.  That is safe only when the caller owns the
-> slot.  Cluster readahead owns nothing, it walks a raw page_cluster sized
-> window of offsets around the faulting entry, so it can land on any slot.
->
-> A bad slot gets in.  The check reads the count with __swp_tb_get_count(),
-> which shifts the count bits out without looking at the type, and
-> SWP_TB_BAD has all of them set, so the slot reads as SWP_TB_COUNT_MAX.
-> Readahead then allocates a folio and reads the offset off the device for =
-a
-> slot nothing will ever swap in, and the folio entry that replaces it drop=
-s
-> the bad marker.
->
-> Readahead used to be guarded by swap_entry_swapped(), which goes through
-> swp_tb_get_count() and gets -EINVAL for a bad slot.  That call went away
-> when the swap cache checks moved into __swap_cache_add_check(), and the
-> raw accessor there does not do the same type test.
->
-> Require a shadow entry instead.  A slot dropped from the swap cache alway=
-s
-> gets one, empty if there is no workingset value.  The type test runs firs=
-t,
-> so the count is only read off a countable entry, and the check as a whole
-> runs before the folio allocation in __swap_cache_alloc().
->
-> The large folio walk in the same function does the same raw reads.  A bad
-> slot cannot be in its range, but the range is not pinned, so a slot freed
-> and then taken by hibernation still trips the countable assertion there.
-> Give the walk the same shadow test, the folio check folds into it.
->
-> Reproduced with a badpages list written into the swap header by hand.
-> Readahead took over four bad slots before this patch and none after.  It
-> needs a crafted header, so a normal setup will not hit it.
->
-> Fixes: e1e6750df3b4 ("mm, swap: add support for stable large allocation i=
-n swap cache directly")
-> Acked-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+On Wed, 07 Oct 2026 22:06:57 -0400 "Zi Yan" <ziy@nvidia.com> wrote:
 
-LGTM!
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+> On Fri Oct 2, 2026 at 5:52 AM EDT, Usama Arif wrote:
+> > Reclaim splits a PMD-mapped anonymous THP into PTE-level swap entries
+> > before unmapping it, so an ordinary swap entry has never had to appear in a
+> > PMD. Prepare for installing one there instead: the softleaf layer is where
+> > every consumer decodes non-present PMDs.
+> >
+> > Accept swap entries as valid PMD softleaves and add pmd_is_swap_entry().
+> > A swap entry carries no PFN, so make pmd_softleaf_to_folio() warn and
+> > return NULL rather than interpret a swap offset as a page frame number.
+> >
+> > Unlike migration and device-private entries, a PMD swap entry can also
+> > carry the swap-exclusive marker, which softleaf_from_pmd() has to strip
+> > before decoding. Strip all three overlays unconditionally while we are
+> > here: each clear is a plain bit clear, so testing first only buys a branch.
+> >
+> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> > Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > ---
+> >  include/linux/leafops.h | 40 ++++++++++++++++++++++++++++------------
+> >  include/linux/pgtable.h | 17 +++++++++++++++++
+> >  2 files changed, 45 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+> > index 7c13c58a5e218..ce176c78cefd4 100644
+> > --- a/include/linux/leafops.h
+> > +++ b/include/linux/leafops.h
+> > @@ -98,10 +98,9 @@ static inline softleaf_t softleaf_from_pmd(pmd_t pmd)
+> >  	if (pmd_present(pmd) || pmd_none(pmd))
+> >  		return softleaf_mk_none();
+> >  
+> > -	if (pmd_swp_soft_dirty(pmd))
+> > -		pmd = pmd_swp_clear_soft_dirty(pmd);
+> > -	if (pmd_swp_uffd(pmd))
+> > -		pmd = pmd_swp_clear_uffd(pmd);
+> > +	pmd = pmd_swp_clear_soft_dirty(pmd);
+> > +	pmd = pmd_swp_clear_uffd(pmd);
+> > +	pmd = pmd_swp_clear_exclusive(pmd);
+> 
+> I notice there is pte_swp_clear_flags() and wonder if we want
+> pmd_swp_clear_flags() to match it.
+
+Added pmd_swp_clear_flags() alongside pte_swp_clear_flags() and used
+it in softleaf_from_pmd() for the next revision.
+
+> 
+> >  	arch_entry = __pmd_to_swp_entry(pmd);
+> >  
+> >  	/* Temporary until swp_entry_t eliminated. */
+> > @@ -634,18 +633,29 @@ static inline bool pmd_is_migration_entry(pmd_t pmd)
+> >   */
+> >  static inline bool softleaf_is_valid_pmd_entry(softleaf_t entry)
+> >  {
+> > -	/* Only device private, migration entries valid for PMD. */
+> >  	return softleaf_is_device_private(entry) ||
+> > -		softleaf_is_migration(entry);
+> > +		softleaf_is_migration(entry) ||
+> > +		softleaf_is_swap(entry);
+> 
+> Using softleaf_is_swap() here makes softleaf_is_valid_pmd_entry() return
+> false positive when pmd swap entry is not possible at the moment. Adding
+> it only after pmd swap entry is possible can close the gap. But the
+> whole series should be applied together, so it should be fine.
+> 
+> Otherwise, LGTM.
+> 
+
+The predicate accepts the new encoding before the producer is enabled,
+but no PMD swap entry can be installed at that point. Reclaim still
+uses TTU_SPLIT_HUGE_PMD until the final swap-out patch. I kept the
+ordering so each consumer is ready before entries can be produced.
+As you said, there is no reachable intermediate PMD swap entry to mishandle.
+
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
+> 
+
+Thanks for the reviews!
+
+> -- 
+> Best Regards,
+> Yan, Zi
+> 
+> 
 
