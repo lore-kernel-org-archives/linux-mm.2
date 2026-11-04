@@ -1,98 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7A0606A331
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD165606A339
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 09:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=P2VyHUmX
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UjA2xqeY
 Received: by kanga.kvack.org (Postfix)
-	id 29C966B05B6; Wed,  4 Nov 2026 04:15:07 -0500 (EST)
+	id C61026B05B7; Wed,  4 Nov 2026 04:15:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 274B76B05B7; Wed,  4 Nov 2026 04:15:07 -0500 (EST)
+	id C11656B05B8; Wed,  4 Nov 2026 04:15:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B3A26B05B8; Wed,  4 Nov 2026 04:15:07 -0500 (EST)
+	id B27566B05B9; Wed,  4 Nov 2026 04:15:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E8E426B05B6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:15:06 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 89DB216066B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:06 +0000 (UTC)
-X-FDA: 85396877412.08.D2ACD3B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id DF302180010
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:04 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P2VyHUmX;
-	spf=pass (imf24.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 97AC76B05B7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 04:15:16 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 121F91C3D2A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:16 +0000 (UTC)
+X-FDA: 85396877832.13.9F08CF5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 6951F100009
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 09:15:14 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UjA2xqeY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793783704;
+	s=arc-20220608; t=1793783714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zCFfm843u8/elBaIEdb8AzgdS0+hlymbLUHyiHn895g=;
-	b=fJpRLHR0VBTCamfDMX1uRyswfyhpl/ncUDbluhTv9voODaBR7O+XvWMMYvMgJqhmVSzVyS
-	i/2j93wsvINjCFGKNMnAVevjXOjg6gvI9RQ1zC94zSdRv57rQHsNw0XtTiJ9mzYqcy2kGs
-	uXHO03ehc2ZAFACE3WZKvI5lM6ud+wg=
+	bh=wozQOH0rL+df2ESKnkoR9U756io00+MftNixJAyhy9s=;
+	b=3j0gQ1P55ErRKdhQElg690lO03szQp16ZIaYZMGRglkPoGNPrOMmcN70ZtfWEIrhgprVeO
+	H4Oau3545ThgcRmq8LfbltICC6iTccHPqg4PGWP1xGd2udFMA7DvNs+6r0vK9mChhr1jYv
+	8HLtoChihxn2RfnvgK1hmXZWs57G43U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793783704;
-	b=g8VyaOya80bFGLoDXbugZKmWehyFH1hxdHhEtQWgcidQBV7DOEBElzdnMisYtLb45HHbC+
-	Og+g8n6XGYvH6mggn3vmtWxnxRbZB6t4rKoHGNsrxrxzpvqNlK2ldEnPcapYylbwdSdsz6
-	VJxvVtmiDcFFYalnOF/TDqkgCPefJ14=
+	t=1793783714;
+	b=0ulBOQrz1ovSZL9Luk+0HEBcADaEPc8Gmy82rC8lMaTl8Vu+kj9TdZu3v+rvPjakOAnR1W
+	tiH52yEnhq95Obbe2fEG9yif5VFpQXh+jATOCyG1MUk5HaEPwaXP5nO81u0z+qR7AFnKbV
+	6ar/YgVgZo82JCTJrhUtYHMkZ6Avdm0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=P2VyHUmX;
-	spf=pass (imf24.hostedemail.com: domain of osalvador@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UjA2xqeY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6FE65602BE;
-	Wed,  4 Nov 2026 09:15:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072401F0093A;
-	Wed,  4 Nov 2026 09:15:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 8F3EF43490;
+	Wed,  4 Nov 2026 09:15:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53D41F00919;
+	Wed,  4 Nov 2026 09:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793783704;
-	bh=zCFfm843u8/elBaIEdb8AzgdS0+hlymbLUHyiHn895g=;
+	s=k20260515; t=1793783713;
+	bh=wozQOH0rL+df2ESKnkoR9U756io00+MftNixJAyhy9s=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=P2VyHUmXOTKNccAWnsWQzGG4kjE2tHG11Fb3k5VTve3RIeyUyrwUL6y/DUqe2KhQ/
-	 qrdaEjdMIbUev3XrFs+Ls+dcv7bDqqET0CWUGdq/PmXijGJQq5eGEBsqUFp7f4O3FF
-	 zkyaL6jGtaLRL1x1xmXnnAxmpV30wJdXL4j2Wf6q6nw3Y6o5RWboW6zeaQVeNsJpnE
-	 Au61t1i1IcpHhkQnpCSZ7l++U97L6h/DZiEvqExZdwhTGZk5z6xJoYaMNmSXL0FeUK
-	 QxXsgpg9iBETtbilcbZd5els7i48g2auyc00OUb6m5WFc0k0/IJbg2ClCjAlasEjB+
-	 jMKZz7T9gjomA==
-Date: Wed, 4 Nov 2026 10:14:57 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Sashiko <sashiko-bot@kernel.org>,
-	linux-mm@kvack.org, loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/hugetlb: fix validation of unsupported HugeTLB
- orders
-Message-ID: <aur3kWpnFAOaX8nE@localhost.localdomain>
-References: <20261104071858.757793-1-songmuchun@bytedance.com>
+	b=UjA2xqeYEK80i7Ppq03lQvL9aj7w7aCpnwjVlKlY4qACwWrO1xNZH7fqcg0/XQYXd
+	 0XIL1G57zMHPcLqouikUAlFkvwGNnm8TEe+24IPTE2jQRZRI+rAZV8LmaK1RNpS6CY
+	 VgMsB/z+HEkEgNNiR4S3FJ+IcrvX5Lhj9lHuDF3O1rEdd9gcSgRk2fkShoJcQeaK1R
+	 G8h5IWb1O1KAkMem6coEO1PTX2M3tQxZGkQyvjwPTBLfv46F0G9+q8RqQrcNpjeHNM
+	 I2ikync2oN5s0Hu/SoQvjlVGu0ChAoqqCFzQdaQFzUwb8DVF/4rYw9Mm9jkHtbz6Ug
+	 g1OvXpMbmC3ow==
+Date: Wed, 4 Nov 2026 09:15:06 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Rheinsberg <david@readahead.eu>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, stable@vger.kernel.org, 
+	Chris Mason <mason@kernel.org>
+Subject: Re: [PATCH 1/2] mm/memfd: handle GUP pins more reliably when
+ write-sealing
+Message-ID: <aur3R_3_oz4Isjr4@gremlin>
+References: <20261103-fixes_core_2-v1-0-f332954f1df4@kernel.org>
+ <20261103-fixes_core_2-v1-1-f332954f1df4@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104071858.757793-1-songmuchun@bytedance.com>
-X-Stat-Signature: w73qteyjhwnf1gtbrnb54wtcm1g76bt1
-X-Rspamd-Queue-Id: DF302180010
+In-Reply-To: <20261103-fixes_core_2-v1-1-f332954f1df4@kernel.org>
+X-Stat-Signature: 8dnaoji5mqxgtu4gx67ctafeubyz38bm
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793783704-195737
-X-HE-Meta: U2FsdGVkX1/9UEl30hXwcMCr74yRNaWbxpvaRrrWCoVYzRpP42Nxl8EGT4Ms8dWCI2tEmk2+cwX0DYpExVNQ3RINh/QNAlwyuIxYWEKkp2oJCwm9UPRnKmbHtPaskGrXag0CKe0ymWtALWBvUCEZJSI8+kn0TelDCALcsYKVJxp096Wh/m21EKMGPub04FIerkFyy329OwzYl0gtkl1rrNB97RZ62hEwRb7sgmYmlO8MNY8vlfcg2Tjq80ysaDHl3JhiT/ZaeCfPrGqCrBH3abpmMmx+vuI6GsxS3nGjrnsbG8Th+nH9z3kll069u/8J5+r6GcTn1GTEXXr1M8YbWt9re28OqCOA8Q2PN9qWOxvqj5QwwGyUX+RsTvv65Yr5N4BFQLettvVQPzPCkKLsYgm0YxWh/XknwrbqmXR9eBNLu9w4wlR+oABx7Ji1JIihDGWrlvvkmvNKgYegepAHXvlAis9Xt2tDGicTrYQFDlNbDDxp2q1zoHHebFYavGBFO/6IFFe5OQSf2axAlbzAuQ3VVPAo06uVNvEEAL8Qu1wZxKIVu7HnOmuM5/+p0cjjlMYSw1ShS2jI1nAfMnigH+9DU8GIhWcOlSrXF0dEHZEhfOWOUy9p4MpL1l4RYzc81fSG4OQm2tc376dxkmk5W0g0+J6grpTHwJSJznGy3Bb/JnD0vQRoALze5tKc7XYKnVibvdTjUPTRBMWFRn0nG1zIRNBdf0zO2LGUz5YHt5rNnv7x+lYSE3gaAd4bujslprSlH6UwTGEfarghy8GVgZR/73b4xfpVHzE47B0HlMQFCm2RxdYJpcF1VAbOKv/neUGiZkc0IGaZrC1IkJiEpyXaGT4n9vXK3RFwVOtU1F6sOSnNFRtGD4lyxWkJsKdK75aoa0vs8vL2WOGYQLHlI7YIW9ixv/lXHue4zn9LgC8iECDNKTmm5UiDHubADdsYNkhENb/yKmFeR9hxjy8
- NaERD2SN
- qlWOhA3p7wQf92ObJC4otnRFJVqNp7bFJNKsXzdXnxoBoFVhp0FMxsN1OduByM8adsPKkJUoI1V1siHlcdgecioQNhU4v0oqqLP8Kc+YJxm40wU+z5KhiTmRXM3YXpjDuB7IJrMePLqdrjdvEXRS+es6AIJTHRBS40QzMr1Ymif2SS7ZaA5pdJRXr4sXZd4foOBVhuzZT93fZousBjRkdRpzeKWSZG4xADapvHcBtaZfQUpJEkuicjQwZhvGFtuuzhnqU
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6951F100009
+X-HE-Tag: 1793783714-989806
+X-HE-Meta: U2FsdGVkX18Sso5Ay8aRDVzH/YaJOrHfO3EjxakTrJSJBfwj+NTEiBRExLKn+8AC3CAcVIBUlLH+CmJSgobhU2mNNQNqQUDDTFPSNndi7wtZEMehej1NHJCHn4p0v/w0m3HJXm6ax1V+vgvAMZDC3mYWPY3cjx2zlFFX7Bp2WdmQl3qnY4FKwJsdK0bb4UwQoAHE26h/xhCXCsjcBGMvXSJBZAq2FNzoEhV+tix4/y0/ku9xb4FNgyi3ds9moiVcW9+JLxjOHMCTWH+3uSsJbaBG9X6Jbfmos5zh+SPpumcK8OIt2qbViBtw3Er6BlYhlPIp1pgd4LoDs4LpXl3hTnPETikO8XH1sR6bs8+O8bmyXk1Le5nanX6Mt03HfgDs8AqVUzC4rspFtP9QHKh/cr5QIe8oGILvMqtSNCzl8+jPHp6JdWgbCRyidmRgRIneuPAq9wjWETSwUg4/WxavjDdA+T2zT8pN04bwME/KxTIhGbToMbYLR5r4cI2TAUTFZsaxQZLWWl3DaVrJdTuDfcJWAbNxFS5qVpZsDShZTZF57YU204MC02ocVK7oCXLLbKv1WdyWmANFb3R5sdhfLIX6yjAe47zuQN/udIgAg0UM6jjUTG39PdJoOtoVz6ocIirZPtT6vEviQ/WbYzaHt3zv8oraJTjT/OiBhxJIgZ9Al9fKqXEX4UvC9Vdui5X0/SqJ/X2/7wMOmhdwPXgUNcvT2aej9jXeuBFa5GY9t10zmwyYOKzkDgZdraOa5a/Y901CPJQiqEeQxLFM967R+1TlKdv3WjI4HXO123JvSGpa+FN2EVcBBjrhHYhjZQoH5Kja7UlDXwmPJFq000hW/u6h2lfRjE4XW+BQ0eC/G/JuJ6HjL8qLrTwoKScASHAzzRLhL/bPXYjmGJ6htkwL9AyMG/1+3Se825cyBxSszc7wPSJpMQmmmdWnV91A5mHCbqotOIaM1hm6nUtqxRW
+ eEOW/hO1
+ 1yeQsDW4+0FOuEj7WKcsaFF5XYVZlQC20lEGDnJFqVVDwiDIM9RlhLLK2tD9R2SArV+AyKHJdJ73gWuHt4neKx1O/KHcD68wW5KTF6kdBesMW+mIQlrZ0cNJ/x0AeZNOI5FTxNnx0UpuB/gZutwwY4Ym3iNX5MWT5u9awghudmFII3ot6q0jm3iSrUIwPF/TDLopy4/oHIjg+2uXR3GWUCYmRHcuRVzw+mbuHDpR4lGCYKnOydw6bk55I+tezF4ow2av0QqNipVoZ+/WaglseW6nKBQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,73 +101,67 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 03:18:57PM +0800, Muchun Song wrote:
-> Commit 7ce6048d3a7d ("loongarch: drop ranges for definition of
-> ARCH_FORCE_MAX_ORDER") removed the ARCH_FORCE_MAX_ORDER ranges for
-> LoongArch. Besides dropping unreasonable upper limits, this allowed
-> values below the architecture defaults.
-> 
-> With 16KB pages, LoongArch defaults ARCH_FORCE_MAX_ORDER to 11,
-> matching HUGETLB_PAGE_ORDER. Forcing it to 10 while enabling HugeTLB
-> permits order-11 HugeTLB folios even though MAX_FOLIO_ORDER is 10.
-> LoongArch does not select ARCH_HAS_GIGANTIC_PAGE, so this violates the
-> generic MM assumption that folios cannot exceed MAX_PAGE_ORDER.
-> 
-> This invalid configuration is accepted by Kconfig.
-> BUILD_BUG_ON_INVALID() does not reject it either because it only checks
-> whether the expression is valid and never evaluates the comparison.
-> Detection is left to the runtime warning in hugetlb_add_hstate(), after
-> earlier boot paths may already have used the invalid configuration.
-> 
-> When an invalid HugeTLB order can be identified at build time, reject it
-> there. Otherwise, reject it at runtime before the mismatch propagates
-> further. Use MAYBE_BUILD_BUG_ON() so constant violations fail the build
-> while dynamically determined orders are checked at runtime.
-> 
-> Fixes: 7ce6048d3a7d ("loongarch: drop ranges for definition of ARCH_FORCE_MAX_ORDER")
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://lore.kernel.org/sashiko-outbox-192874@kernel.org/
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Suggested-by: Huacai Chen <chenhuacai@kernel.org>
+On Tue, Nov 03, 2026 at 07:31:44PM +0100, David Hildenbrand (Arm) wrote:
+> memfd_wait_for_pins() detects GUP references by comparing a folio's
+> actual refcount with its expected refcount. As spelled out by
+> folio_expected_ref_count(), obtaining the expected refcount when there
+> can be concurrent folio (un)mapping is racy.
+>
+> So it is possible that a changing folio mapcount can race with our
+> check for GUP references, and F_SEAL_WRITE might succeed even if there
+> are some, allowing file contents to be modified after sealing.
+>
+> For folios with a reliable pincount, detect FOLL_PIN references using
+> folio_maybe_dma_pinned() before falling back to the refcount comparison.
+> For small folios without that, the 1024 pinning BIAS makes it very hard
+> (although not impossible) to misguide the refcount comparison.
+>
+> This improves FOLL_PIN detection for folios with a pincount. Handling
+> FOLL_GET and small folios requires a more fundamental change.
+>
+> Fortunately, most interfaces that allow for GUP'ing such pages use
+> FOLL_PIN, in particular interfaces using FOLL_LONGTERM. However, we
+> still have some FOLL_GET leftovers ...
+>
+> Fixes: 05f65b5c7090 ("shm: wait for pins to be released when sealing")
+> Cc: stable@vger.kernel.org
+> Cc: Chris Mason <mason@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
+All very delicate stuff, I wonder if we could somehow make the logic here
+generalised in a follow-up?
+
+Anyway seems reasonable to me so:
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
-> v2:
-> - Move the order check after hugepages_supported() to avoid a false
->   PowerPC BUG_ON() (suggested by Sashiko)
-> ---
->  mm/hugetlb.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 779b1de33c78..b49130eb7ad8 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -4197,7 +4197,6 @@ static int __init hugetlb_init(void)
->  
->  	BUILD_BUG_ON(sizeof_field(struct page, private) * BITS_PER_BYTE <
->  			__NR_HPAGEFLAGS);
-> -	BUILD_BUG_ON_INVALID(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
->  
->  	if (!hugepages_supported()) {
->  		if (hugetlb_max_hstate || default_hstate_max_huge_pages)
-> @@ -4205,6 +4204,8 @@ static int __init hugetlb_init(void)
->  		return 0;
->  	}
->  
-> +	MAYBE_BUILD_BUG_ON(HUGETLB_PAGE_ORDER > MAX_FOLIO_ORDER);
+>  mm/memfd.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index 0f6fff004f5e4..9eda4c3eeaca5 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -32,6 +32,13 @@
+>
+>  static bool memfd_folio_has_extra_refs(struct folio *folio)
+>  {
+> +	/*
+> +	 * Use the precise pincount where available to avoid racy refcount
+> +	 * comparisons.
+> +	 */
+> +	if (folio_has_pincount(folio) && folio_maybe_dma_pinned(folio))
+> +		return true;
 > +
->  	/*
->  	 * Make sure HPAGE_SIZE (HUGETLB_PAGE_ORDER) hstate exists.  Some
->  	 * architectures depend on setup being done here.
-> 
-> base-commit: 74d73ffcffe03804f97e9fb82301dadf75671282
-> -- 
-> 2.54.0
-> 
+>  	return folio_ref_count(folio) != folio_expected_ref_count(folio);
+>  }
+>
+>
+> --
+> 2.43.0
+>
 
--- 
-Oscar Salvador
-SUSE Labs
+--
+Cheers, Lorenzo
 
