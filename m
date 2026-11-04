@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72B7A606BA1E
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D042A606C58D
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QAJQ3+WL
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZMyRA3zI
 Received: by kanga.kvack.org (Postfix)
-	id 934266B05CC; Wed,  4 Nov 2026 14:51:53 -0500 (EST)
+	id E8BCD6B05CD; Wed,  4 Nov 2026 14:52:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90C176B05CD; Wed,  4 Nov 2026 14:51:53 -0500 (EST)
+	id E62906B05CE; Wed,  4 Nov 2026 14:52:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8212E6B05CE; Wed,  4 Nov 2026 14:51:53 -0500 (EST)
+	id D52BB6B05D0; Wed,  4 Nov 2026 14:52:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 62FEA6B05CC
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:51:53 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0FA178084E
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:51:53 +0000 (UTC)
-X-FDA: 85398482106.22.65819DC
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B3EB96B05CD
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:52:08 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5904B1A0854
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:52:08 +0000 (UTC)
+X-FDA: 85398482736.29.3DD99E5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 49DC74000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:51:51 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QAJQ3+WL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	by imf27.hostedemail.com (Postfix) with ESMTP id 9005A4000D
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:52:06 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMyRA3zI;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821911;
+	s=arc-20220608; t=1793821926;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lzw2p1lwQVTXGjOVK+O2fRllw6EWFGiyVpP4wwnyOh0=;
-	b=PTpUxw3W4r3nbAwIjRV43SdvrO2PAOAOUil7WUKQJz3SQQbqmZRGMVa4aUFJ3zsR9+Ji15
-	tx6+6YEEyBCKvmIww6JfpFZGYsA5vrjUUxnhnBoG7KiB1zRf2AUDy3EUyN7P+cHDKqOkN9
-	KjwjkpRcyFeBlT2NWxMFk5lizb0Wd0A=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QAJQ3+WL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+	bh=nlVd2d+i8P+1hcARtfAVoMomzYlKlzmY39R4NNuEpHM=;
+	b=aqprFaJ991lL9jKSwwexov+ztg3vhb28uMdaONWx9szap6spQi7jmAPXrBmpSYGfVtaexd
+	GXd4IKSqU/BE0Obhx/33ELuCkscCaaoEwu+imN0R1mIML2KNaD/DJ6g4P7L8AyhzUXHl52
+	ZsyVjea9efjNYBmJPkXsBQFvxcCvQ9g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821911;
-	b=u6Tj918pACdqOKRUI46wO4L+OSnohTNZEjOjdQ+Apb4zmLtFeAD5yVxLLfXI9N6/hI3GYs
-	sii0Yy4F7t6aV6fli9+7QlOT6R75aG7MwVMs6leIAG9JNAVbU0PgpyA7+X/+lwXxZTBTA8
-	0j/PRYvVQ49rsw6LYFIsSIF629pu2RA=
+	t=1793821926;
+	b=qZOSwc63savNebcK5QjkJ6tv2KhEd0wNaRCjzi1jH9NlF0kYkKj5xoIqr0HKpH2Gigyeh9
+	6kw61t3eyQ4YEcbajjwnsPPDxAI5/vD+scQX0yI+1ca7Ykrufd9HGNoCSEnlZp1fSsYD07
+	caTInVvJmCmUN+KuCoCTt+TUn1yUJNA=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZMyRA3zI;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 84484417A1;
-	Wed,  4 Nov 2026 19:51:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 515511F0093A;
-	Wed,  4 Nov 2026 19:51:38 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E2F2240B94;
+	Wed,  4 Nov 2026 19:52:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3105C1F00919;
+	Wed,  4 Nov 2026 19:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821910;
-	bh=lzw2p1lwQVTXGjOVK+O2fRllw6EWFGiyVpP4wwnyOh0=;
+	s=k20260515; t=1793821925;
+	bh=nlVd2d+i8P+1hcARtfAVoMomzYlKlzmY39R4NNuEpHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=QAJQ3+WLDUkYLImp3HYyJ9xNQzT5ktofk3vTOb5CY1yyjGgMiMLV84eXcv7Ngn9pO
-	 0R1aIfFok0raVnzXU9Vxsqv/+8svHg8UrA6VN+qDutbG0MoaDiCzmWdmWTuVYeXa/I
-	 N2GChnCG6weK3daO3o2GHaFO3/dOVqhIMLzDjlCpOjj7c7+2YrdYYhUy9NCshP6wdl
-	 Lk+TkGZGwLWFEFiLx/wufa/ZxQYuvNY4PHonWIRM9HX3gymQ16OIyPKKYKRaJNOE5j
-	 ooOiwYlFZWYxO07ewx8hUYCero4307WQRVTKLVnFylG/X2Vx0yOkMhn63aRL8xUxMW
-	 sonQvq7YDKhvw==
+	b=ZMyRA3zI8Sln08MR1364NjeQVCVRFsuzSmwSp1G0bn2FQX+vESuzWgEaagXi1nFm9
+	 wO2pwXUpvNE3J83NqE6nCFBa8S/9S7uQfRzT/fsI9tB5t4tvZcszF80i1iW6qtF69s
+	 p3wE/rXCYmtUN6YEu+BikSxByO3X1p8xpJBr6GzvBUx5MGhVG3BHKesr8l0VKeWho2
+	 A/w3YhDS3XG+I0lTWJUsNnQgYIC1zKjTXfIokwn6Yj/StyoZCWEZtzCvWpUljW4ifo
+	 51LQ0M0VaH4DFJ/z4SMU3GYIHgTo1WYTVP15wFMaukaQVy3NMN99EFlxlQj0lpOcmp
+	 FcrH8k4MnhzUQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 08/30] smb: client: let procfs own the seq_file of the smbdirect files
-Date: Wed,  4 Nov 2026 20:51:35 +0100
-Message-ID: <20261104-work-procfs-fs-v2-8-319e0f9a8aae@kernel.org>
+Subject: [PATCH RESEND v2 09/30] smb: client: let procfs copy in writes
+Date: Wed,  4 Nov 2026 20:51:50 +0100
+Message-ID: <20261104-work-procfs-fs-v2-9-319e0f9a8aae@kernel.org>
 In-Reply-To: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
 References: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1034; i=brauner@kernel.org; h=from:subject:message-id; bh=RIZYcDqYt7NhFvt2L4C6pTMn3DylkXBLCyRwuGHjm7I=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97jG5tPWrw/cVrCsb765In/OBvcn09R7LsHQ9/q6+O V1HHE9ndpSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAExkz01Ghl3rSlga96Rmhvie 3JVu2vHMZ1KgvNQ2f7ZfM06avi3c5s3wv8ZDfv2t3meZR3nKlGZN/Jj7Lukpr3r48QVnD/23mvz tIT8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8830; i=brauner@kernel.org; h=from:subject:message-id; bh=FT7LQYM7T+jx4y6th5QoquEbwgmi4EXWnyiLf7yiyR0=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97jFVfavUps2ra/YmWm9tb5r4CdX5kxS/Ly291SwZ2 hbHv2dvRykLgxgXg6yYIotDu0m43HKeis1GmRowc1iZQIYwcHEKwETe9zAyrHj3VVFgg82mR0sX M/b/9f47a6GmkfGMv+rFGu6PQ2/tnsjwT/Hxin4jLiPX99dvsa0/tuvUr+IZe0zCJFOn/ir/Ucg 4gRsA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 49DC74000B
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: ryzozdzug5rgyg4xh5soukj53nqtnhf1
-X-HE-Tag: 1793821911-149562
-X-HE-Meta: U2FsdGVkX19S0aSKyekDeZHcQvZNg0FA+ZuEz/k0KvgEqlXPIoimuVeOiVgEiSTQdi0Iru4Ej5qNlhZsvTcUKN3hJwA6gUlr89G6Pz03wz4bMgi0CgN+GIzgPcxh6icjTWGDwVEt979xTFfT63tcaMHU+lumRJTPcY4xC2lkiczKcytCo3GgCoOuaUXQw7zwlN3mkSmL1UiF2MfFyoijdvQjxxOt7r4QhmrRdOLNRBeUnQqmfWpks7wohxB0y/LaH193VDQqH5u0GHaPnM/mF9/pX0XhMZbDTMoBVVd9O4xpOf+9D0UQqWWHyJCbG5p/7q0c5Z8mGcoou3wVMGx46RKkTojlLCFZLgLJK3aAqW846R6ODfZAN2p7lFNOLuUX/+NFn4Uek32MHrsehJsA0a5/oeaxJabJtPU811p9KPSempdw4kuEPpaIfIU7woePWV9Ndh4ABF5+JukgNvCKtdb+1wP4TV15tZJ6DTEKy/tO79VG+tIetVff/NGYJTZ2f1X5Wzl84BA0r5ijcPURlAOOG5hbzt9CZK0NTFsLx5zkyEjbVOfFGDtKW1H7+ptc/Vzolb4T1j3tNFKL7SBlLd6+R1MtuGowzHIUnAJYn5fCJsgJ7seG59FCjwmzeVUfF3LF1K6T9e0RsEP6OqCZ5LfNezfNr380XWi3gIKovqIE8ithSi2Xh/RKOfy71fXQ93vBTXbhGwAmITqeAuSybQG8YRZVC6cqHZk0koVvfytuxHtJRjjPs8VB3KcSX1x92jr7W7OwsiTS8ahqldGZDnNXQnwoMvFJQUR/ZwhtN8ly9S6lY7IuC3B18Ma3HShm4UDCqIbBzRyMnRq/2xGQLYDDKPF860X9wO/trQYLwKdLTwpei+6/vO0E2tSYBHscQ/4e2+YDVrTaB9H11wRp/BApgKgSBCrSyYl22pMXVej4GU+eVAUpX00QB0KpcoB7okAjjF/kD5Td14T2sa5
- 77zMzPpb
- KMZRNTTZiyh06hYRoO0a1jrbqtDJhPhNLPPnpxwMIwKeklQzZ0NowDzhkcpJHK9B0ZfmKbr1QEpFqlAzXn3OMnpr+ITomQtMa0LP/zDAm0E5RPvrPX6mFfmZ6Hb2CUBKdH5yt1P2yAbYvwItbae1W8gG/Lgw+sl8aqX/SfMQPZwh5QjAWOwEtmGwbrOODftKxvkTvd4TaPgaPaXnWg6VRcJWRAs3FE1cK3+tB8G8fIz4c9gvCsiXSxHJHLFv+VHkbPNEaor0NdIlylILPmG6lXpSFGEgl9oByRLXNWzoraAeRrCdXl2Xuwv+kFOg3ovww0iCAiR3vdA47KJBVPKb7gP7LidPT/4tR7zB+Nf+q2ls/fCmlxu0xaIhzrB9rcyZ1rNlErNIR6a0f8RNv30wUXZTB2tg4443czWrz7DYVFA6QqBgsaVs7jt0j9fCXDTXA7UumFiudJ/sxzwA=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: srqddp6fsotn8659r1tit1o3zzgdk63a
+X-Rspamd-Queue-Id: 9005A4000D
+X-Rspam-User: 
+X-HE-Tag: 1793821926-748254
+X-HE-Meta: U2FsdGVkX1/h+2INHFeBivKLBA2QarV07qqhUKZB9Um/GMcVM0KF38zsUYBbeCUyx4DqZQYiLlGFKpFa723v3TVCi2Po8GY4N3c2skK6bqnb6us1wv6OwowXbepuy5SKNmaUFUsDl69hBME8ycOjhNejdJWabfME065nedbyH++nYPPgvKkZWz1lLg3l9hZ0J/9buyqamVeZNYrVNyo+LTUF3Cw5vbJ5m87QR+FCuNE1+KbDXMEkEoubpWsddB9O/hoCpsvJN9uzKp1kKq45LnRpmNQXp+OSfygaOOPuAyq6u3/yh3spZ+5pT4y925tIe8iSMar1G0SAb99/zRIuXtgpFJ2xGPWTW5NDIE+/H53AQUwnHYI/2bPwi+yZXKkABIRo5iH49kNF95YrX+324cV+Ky7uJZO7K0CXvHvfrCW4mK4sqiPoCcenJeyfXlW0rXulAqxX4nGmr2BOyGIUGSugB0ZI2zFMPdRP/3gCwHyHubuAWvwsjkcXH7hkmJZMJjBAKLhSQJVlhiwb7waeDKgvN0m9wMLOXLc47ZV/mUzKYwHq0drn1eIe0yiwAuKfZwS8uillDAL2/6tzOYllJcDS+lG2k1vtYmgFkGBsg0s3gtwIswS02z8q625HgmRijbtwEbdnlY7VYaTOCXwC3Wp33Pfq33YWaWRtj7cDBPs/eNzpoIslJ5H0Jn509NmmBU9VhcSVsax0PCtJODGSjWS4UNTwsXkOzSx0nIUABTwWCYXwx6+g/lmvTJj648peun3hfjEEBxwUgfZkxudEpzjmpvJ8CIanGjSaNN5xYfNgCM28t2Z25NSk+heq0ctYzF5c7MC7BrjTBblKM0lAal66r9jzQdvH3Brn4WtBUwDr1pAuFnUeWBXjMK4raYHztnHtoUzrVhaeIMItTnfFG6GM/qjinXCLLKLnzYloBa9un0xaCJ1t8X2SLrT2GUrigeiYAgCqmO9e9QpwKwg
+ BR+T7pTs
+ 1PBdk/w1Nd0triLojajPEchBPA6DqwsWmM4HcYOGb0J5B3mCUSHQVN6sPxxbiStQhHwP0oOIhrsQjqjQ11/Re00MQr6hIN0EFPqw60Hdh86BsVo4lCR69FAoliKPAXol5wkq506ER1AOiwB0mQe3R9c08a2OaxCnpqc5YakEvAqcw1mbxVCMmabF4Fqb5w8OjYo2+tIJ7aSHRCfgRE5XLwJmKdvaniDlSqrJ0Lmj7wHB6aqdu5vHjRqgXFnOhE2MDqDOT89Ego09lm639u4yuONxzkZur1wAhUKUXfuD2+stWSmni1d5JC+nLA0rlKpbEC9yvhDPO2mE2+ZMALuWxESi1UWmApaQQOBNlWRIEc6FwZB7WAT46Wvs+gvCegqR+iAGMuPojixWjVB2r3P3ASf2/1g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,36 +154,265 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Declare the show function in PROC_FILE_DEFINE() and let procfs open and
-free the seq_file. That makes the open functions unnecessary.
+Implement ->proc_write_buf() for the files in /proc/fs/cifs so procfs
+copies in what is written before it pins the entry, and parse what was
+written from that copy. Writes larger than PAGE_SIZE - 1 bytes fail with
+-EINVAL now, SecurityFlags never took more than 11 bytes. Empty writes
+to cifsFYI and dfscache fail with -EINVAL too, they looked at a byte
+that wasn't written before. kstrtoint_from_user() looked at the first
+34 bytes of a write to cifs_debug_dirs and the smbdirect files, now the
+whole write is parsed.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/smb/client/cifs_debug.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ fs/smb/client/cifs_debug.c | 62 +++++++++++++++++++---------------------------
+ fs/smb/client/dfs_cache.c  | 13 +++-------
+ 2 files changed, 29 insertions(+), 46 deletions(-)
 
 diff --git a/fs/smb/client/cifs_debug.c b/fs/smb/client/cifs_debug.c
-index dfcd2cdbb2a8..664072ab3342 100644
+index 664072ab3342..fb1323bf44c7 100644
 --- a/fs/smb/client/cifs_debug.c
 +++ b/fs/smb/client/cifs_debug.c
-@@ -873,16 +873,9 @@ static int name##_proc_show(struct seq_file *m, void *v) \
- 	seq_printf(m, "%d\n", name); \
- 	return 0; \
- } \
--static int name##_open(struct inode *inode, struct file *file) \
--{ \
--	return single_open(file, name##_proc_show, NULL); \
--} \
- \
- static const struct proc_ops cifs_##name##_proc_fops = { \
--	.proc_open	= name##_open, \
--	.proc_read	= seq_read, \
--	.proc_lseek	= seq_lseek, \
--	.proc_release	= single_release, \
-+	.proc_show	= name##_proc_show, \
- 	.proc_write	= name##_write, \
+@@ -359,12 +359,12 @@ static int cifs_debug_dirs_proc_show(struct seq_file *m, void *v)
+ #ifdef CONFIG_CIFS_DEBUG
+ 
+ /* Drop all cached directory entries across all CIFS mounts. */
+-static ssize_t cifs_debug_dirs_proc_write(struct file *file, const char __user *buffer,
++static ssize_t cifs_debug_dirs_proc_write(struct file *file, char *buffer,
+ 					  size_t count, loff_t *ppos)
+ {
+ 	int rc, v;
+ 
+-	rc = kstrtoint_from_user(buffer, count, 10, &v);
++	rc = kstrtoint(buffer, 10, &v);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -390,7 +390,7 @@ static ssize_t cifs_debug_dirs_proc_write(struct file *file, const char __user *
+ 
+ static const struct proc_ops cifs_debug_dirs_proc_ops = {
+ 	.proc_show	= cifs_debug_dirs_proc_show,
+-	.proc_write	= cifs_debug_dirs_proc_write,
++	.proc_write_buf	= cifs_debug_dirs_proc_write,
+ };
+ #endif /* CONFIG_CIFS_DEBUG */
+ 
+@@ -713,8 +713,8 @@ static int cifs_debug_data_proc_show(struct seq_file *m, void *v)
+ 	return 0;
  }
  
+-static ssize_t cifs_stats_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *ppos)
++static ssize_t cifs_stats_proc_write(struct file *file, char *buffer,
++		size_t count, loff_t *ppos)
+ {
+ 	bool bv;
+ 	int rc;
+@@ -722,7 +722,7 @@ static ssize_t cifs_stats_proc_write(struct file *file,
+ 	struct cifs_ses *ses;
+ 	struct cifs_tcon *tcon;
+ 
+-	rc = kstrtobool_from_user(buffer, count, &bv);
++	rc = kstrtobool(buffer, &bv);
+ 	if (rc == 0) {
+ #ifdef CONFIG_CIFS_STATS2
+ 		int i;
+@@ -854,16 +854,16 @@ static int cifs_stats_proc_show(struct seq_file *m, void *v)
+ 
+ static const struct proc_ops cifs_stats_proc_ops = {
+ 	.proc_show	= cifs_stats_proc_show,
+-	.proc_write	= cifs_stats_proc_write,
++	.proc_write_buf	= cifs_stats_proc_write,
+ };
+ 
+ #ifdef CONFIG_CIFS_SMB_DIRECT
+ #define PROC_FILE_DEFINE(name) \
+-static ssize_t name##_write(struct file *file, const char __user *buffer, \
++static ssize_t name##_write(struct file *file, char *buffer, \
+ 	size_t count, loff_t *ppos) \
+ { \
+ 	int rc; \
+-	rc = kstrtoint_from_user(buffer, count, 10, &name); \
++	rc = kstrtoint(buffer, 10, &name); \
+ 	if (rc) \
+ 		return rc; \
+ 	return count; \
+@@ -876,7 +876,7 @@ static int name##_proc_show(struct seq_file *m, void *v) \
+ \
+ static const struct proc_ops cifs_##name##_proc_fops = { \
+ 	.proc_show	= name##_proc_show, \
+-	.proc_write	= name##_write, \
++	.proc_write_buf	= name##_write, \
+ }
+ 
+ PROC_FILE_DEFINE(rdma_readwrite_threshold);
+@@ -990,16 +990,12 @@ static int cifsFYI_proc_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static ssize_t cifsFYI_proc_write(struct file *file, const char __user *buffer,
++static ssize_t cifsFYI_proc_write(struct file *file, char *buffer,
+ 		size_t count, loff_t *ppos)
+ {
+-	char c[2] = { '\0' };
++	char c[2] = { buffer[0] };
+ 	bool bv;
+-	int rc;
+ 
+-	rc = get_user(c[0], buffer);
+-	if (rc)
+-		return rc;
+ 	if (kstrtobool(c, &bv) == 0)
+ 		cifsFYI = bv;
+ 	else if ((c[0] > '1') && (c[0] <= '9'))
+@@ -1012,7 +1008,7 @@ static ssize_t cifsFYI_proc_write(struct file *file, const char __user *buffer,
+ 
+ static const struct proc_ops cifsFYI_proc_ops = {
+ 	.proc_show	= cifsFYI_proc_show,
+-	.proc_write	= cifsFYI_proc_write,
++	.proc_write_buf	= cifsFYI_proc_write,
+ };
+ 
+ static int cifs_linux_ext_proc_show(struct seq_file *m, void *v)
+@@ -1021,12 +1017,12 @@ static int cifs_linux_ext_proc_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static ssize_t cifs_linux_ext_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *ppos)
++static ssize_t cifs_linux_ext_proc_write(struct file *file, char *buffer,
++		size_t count, loff_t *ppos)
+ {
+ 	int rc;
+ 
+-	rc = kstrtobool_from_user(buffer, count, &linuxExtEnabled);
++	rc = kstrtobool(buffer, &linuxExtEnabled);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -1035,7 +1031,7 @@ static ssize_t cifs_linux_ext_proc_write(struct file *file,
+ 
+ static const struct proc_ops cifs_linux_ext_proc_ops = {
+ 	.proc_show	= cifs_linux_ext_proc_show,
+-	.proc_write	= cifs_linux_ext_proc_write,
++	.proc_write_buf	= cifs_linux_ext_proc_write,
+ };
+ 
+ static int cifs_lookup_cache_proc_show(struct seq_file *m, void *v)
+@@ -1044,12 +1040,12 @@ static int cifs_lookup_cache_proc_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static ssize_t cifs_lookup_cache_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *ppos)
++static ssize_t cifs_lookup_cache_proc_write(struct file *file, char *buffer,
++		size_t count, loff_t *ppos)
+ {
+ 	int rc;
+ 
+-	rc = kstrtobool_from_user(buffer, count, &lookupCacheEnabled);
++	rc = kstrtobool(buffer, &lookupCacheEnabled);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -1058,7 +1054,7 @@ static ssize_t cifs_lookup_cache_proc_write(struct file *file,
+ 
+ static const struct proc_ops cifs_lookup_cache_proc_ops = {
+ 	.proc_show	= cifs_lookup_cache_proc_show,
+-	.proc_write	= cifs_lookup_cache_proc_write,
++	.proc_write_buf	= cifs_lookup_cache_proc_write,
+ };
+ 
+ static int traceSMB_proc_show(struct seq_file *m, void *v)
+@@ -1067,12 +1063,12 @@ static int traceSMB_proc_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static ssize_t traceSMB_proc_write(struct file *file, const char __user *buffer,
++static ssize_t traceSMB_proc_write(struct file *file, char *buffer,
+ 		size_t count, loff_t *ppos)
+ {
+ 	int rc;
+ 
+-	rc = kstrtobool_from_user(buffer, count, &traceSMB);
++	rc = kstrtobool(buffer, &traceSMB);
+ 	if (rc)
+ 		return rc;
+ 
+@@ -1081,7 +1077,7 @@ static ssize_t traceSMB_proc_write(struct file *file, const char __user *buffer,
+ 
+ static const struct proc_ops traceSMB_proc_ops = {
+ 	.proc_show	= traceSMB_proc_show,
+-	.proc_write	= traceSMB_proc_write,
++	.proc_write_buf	= traceSMB_proc_write,
+ };
+ 
+ static int cifs_security_flags_proc_show(struct seq_file *m, void *v)
+@@ -1111,21 +1107,15 @@ cifs_security_flags_handle_must_flags(unsigned int *flags)
+ }
+ 
+ static ssize_t cifs_security_flags_proc_write(struct file *file,
+-		const char __user *buffer, size_t count, loff_t *ppos)
++		char *flags_string, size_t count, loff_t *ppos)
+ {
+ 	int rc;
+ 	unsigned int flags;
+-	char flags_string[12];
+ 	bool bv;
+ 
+ 	if ((count < 1) || (count > 11))
+ 		return -EINVAL;
+ 
+-	memset(flags_string, 0, sizeof(flags_string));
+-
+-	if (copy_from_user(flags_string, buffer, count))
+-		return -EFAULT;
+-
+ 	if (count < 3) {
+ 		/* single char or single char followed by null */
+ 		if (kstrtobool(flags_string, &bv) == 0) {
+@@ -1176,7 +1166,7 @@ static ssize_t cifs_security_flags_proc_write(struct file *file,
+ 
+ static const struct proc_ops cifs_security_flags_proc_ops = {
+ 	.proc_show	= cifs_security_flags_proc_show,
+-	.proc_write	= cifs_security_flags_proc_write,
++	.proc_write_buf	= cifs_security_flags_proc_write,
+ };
+ 
+ /* To make it easier to debug, can help to show mount params */
+diff --git a/fs/smb/client/dfs_cache.c b/fs/smb/client/dfs_cache.c
+index 58f16cf83d36..a6aa05430b15 100644
+--- a/fs/smb/client/dfs_cache.c
++++ b/fs/smb/client/dfs_cache.c
+@@ -191,17 +191,10 @@ static int dfscache_proc_show(struct seq_file *m, void *v)
+ 	return 0;
+ }
+ 
+-static ssize_t dfscache_proc_write(struct file *file, const char __user *buffer,
++static ssize_t dfscache_proc_write(struct file *file, char *buffer,
+ 				   size_t count, loff_t *ppos)
+ {
+-	char c;
+-	int rc;
+-
+-	rc = get_user(c, buffer);
+-	if (rc)
+-		return rc;
+-
+-	if (c != '0')
++	if (buffer[0] != '0')
+ 		return -EINVAL;
+ 
+ 	cifs_dbg(FYI, "clearing dfs cache\n");
+@@ -215,7 +208,7 @@ static ssize_t dfscache_proc_write(struct file *file, const char __user *buffer,
+ 
+ const struct proc_ops dfscache_proc_ops = {
+ 	.proc_show	= dfscache_proc_show,
+-	.proc_write	= dfscache_proc_write,
++	.proc_write_buf	= dfscache_proc_write,
+ };
+ 
+ #ifdef CONFIG_CIFS_DEBUG2
 
 -- 
 2.53.0
