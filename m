@@ -1,101 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E69D9606A32C
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BB5606A326
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 16:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XGBnkNLX
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lbPC9u+W
 Received: by kanga.kvack.org (Postfix)
-	id 064C26B05B2; Wed,  4 Nov 2026 11:05:54 -0500 (EST)
+	id 438846B00EF; Wed,  4 Nov 2026 11:07:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0148D6B05B3; Wed,  4 Nov 2026 11:05:53 -0500 (EST)
+	id 3E9236B05B1; Wed,  4 Nov 2026 11:07:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E21CA6B05B4; Wed,  4 Nov 2026 11:05:53 -0500 (EST)
+	id 2D75B6B05B4; Wed,  4 Nov 2026 11:07:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BDC6F6B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:05:53 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 56613C07DB
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:05:53 +0000 (UTC)
-X-FDA: 85397912586.16.7828AAC
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 890E52001A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:05:51 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XGBnkNLX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0528B6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 11:07:51 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 48CA8407BE
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:07:51 +0000 (UTC)
+X-FDA: 85397917542.11.48F0838
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 57874C0008
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 16:07:49 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lbPC9u+W;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793808469;
+	b=uQMqmC/4YRrglgteiKYOua0Nyeuyz5zTQMkgTqADUnHAmz2dPjKh+WfzfM2pLZGi7wdtX2
+	uwy+6wLRITf9PkI9cybUsm3BfDh+ppOqc8V17uemUMkR5YQiBujqaFu0yCKadPWfhS8Sti
+	Uc2qNLt/1EzjHjsRf2FMA7GLV0h0e/I=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lbPC9u+W;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793808351;
+	s=arc-20220608; t=1793808469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KQOlEBXPj3aUpi/4be1OgcxwZwKCG7z2LEPq88kuQWI=;
-	b=vLBHSOrtHy8ILWRHxgheL71Vg338WzmigtOIjya8+ri/1OKXDECWFwrjQAZr/kGklbF2h5
-	Eo33qtWeCIEZ+1zeZ/aHFMea9lzPryG5II2bzeCQVQfGgBfX5GaTDKBBswEa93PmL6ARfM
-	oK7vg1WWihJ40RLfdNUroQwBtbNdfF0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XGBnkNLX;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793808351;
-	b=2ZVqKz5R+BIDVXSIsEHOsPnktmlvSDfKHWqTpp7PESjbUJAJjatrpY0Glgp2qUxvgS+X6H
-	aeifwrqx6gl2Q7TUO6hnfMvbV9zYEvNeKODYOVTxWP1Y1dnmSYHR7zcQTRYAmF0rkgj5Lt
-	QJo5exRNpZv5klUVAq4908eaRCz2W/M=
+	bh=flMXNxiWEHoQiHXSBFrkZmNU7RGBVxxqF50tkqZe2B4=;
+	b=VUJ/TotnvuVc8/83znfly9eY18zEeV5XPdA5/S5+sdkM+vyRgmRt99FEUwLexoOqZrNocS
+	etT3Z+H058lszKKekK4ziWnVbpj4YxUIonGIoHYNiLYlU5ZA7xU2Ptbjd3HBSiTBQAqd4s
+	M+bmECUX1zmVPlhrAIzASETqVavNnNs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E6D160609;
-	Wed,  4 Nov 2026 16:05:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED3D11F00919;
-	Wed,  4 Nov 2026 16:05:35 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2009D43F14;
+	Wed,  4 Nov 2026 16:07:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D060B1F00919;
+	Wed,  4 Nov 2026 16:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793808350;
-	bh=KQOlEBXPj3aUpi/4be1OgcxwZwKCG7z2LEPq88kuQWI=;
+	s=k20260515; t=1793808468;
+	bh=flMXNxiWEHoQiHXSBFrkZmNU7RGBVxxqF50tkqZe2B4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=XGBnkNLXs0XuijqK3zM9ttmSgU1UTQ/rg+h8cBP8P4uqXYo4giEahBxrcuY3adchR
-	 Fzz7Kxc72wqhaVNQqSU9qwgaKTHR4jiazsTntiru7aBN8SpcxaCtNCfMoRM0qLRbM6
-	 FW6Ty/z8Pf+pWUCFsvGkMcVTffrWDJ+342v4yosfovPQ/IFAhRGraZqwVzgNsmhgIJ
-	 mSCwhQsqcG5n/DtSo/ELArgdQn8d62OS2gFbWIwmDsUMzNcEsKBCKIhxbVyWz0I/Yt
-	 x2jdFxCv0RjOk8EQ3HmNynII7gOiS5tnlHRd5mkZ/nBVMeSeLm5puPCpWiUBvL2fOk
-	 RJnav2hHIjLXw==
-Message-ID: <af2102a2-206d-4c5e-ba1d-1ef42b2b6338@kernel.org>
-Date: Wed, 4 Nov 2026 17:05:29 +0100
+	b=lbPC9u+WqYTYnkkFYDRtOoONdVem35rdhn1WaS6YkI8WISarsntkV4jhI5q2fjK9+
+	 zspoBxzyTUkVHUYhcWT+UZhrrzs06Ytq2pzC5iTmI2HNz1qFMVfT/9i4abcyJ65Tki
+	 oEmwxGDSQC4cp9XWKAjS2WiCXIuTzH2lGkKajODaW77el/K7fQrd9jIp8mR2vqwPXV
+	 w18nv7QajlOZt3UEKAZm5dlTzI5S6awAYFSiiZEX9loTMWocH5GahmjM3U+Wfo4DEP
+	 YmlN9NpzVlydvVlh91CES/Dgm0Jom6aqg6OBuQ+IL2qClJ3+H5VDMcS4mmLRNU9zyZ
+	 6gxO/iPPf1cvA==
+Message-ID: <92e52f59-e096-4cb1-bce8-8081f489002c@kernel.org>
+Date: Wed, 4 Nov 2026 17:07:34 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 02/18] splice: don't steal page cache folios
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>,
- Hugh Dickins <hughd@google.com>, Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Harry Yoo <harry@kernel.org>
-Cc: Miklos Szeredi <miklos@szeredi.hu>, Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>, Oscar Salvador
- <osalvador@suse.de>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- "Paul E. McKenney" <paulmck@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
- Luis Chamberlain <mcgrof@kernel.org>,
- Ilya Gladyshev <ilya.gladyshev@linux.dev>, Jaegeuk Kim <jaegeuk@kernel.org>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- kernel-team@meta.com
-References: <20261104130118.2507513-1-kas@kernel.org>
- <20261104130118.2507513-3-kas@kernel.org>
+Subject: Re: [PATCH] mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory
+To: Kiryl Shutsemau <kas@kernel.org>, Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, baoquan.he@linux.dev,
+ rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org,
+ ruirui.yang@linux.dev, corbet@lwn.net, skhan@linuxfoundation.org,
+ rdunlap@infradead.org, muchun.song@linux.dev, osalvador@suse.de,
+ jbohac@suse.cz, sourabhjain@linux.ibm.com, ruanjinjie@huawei.com,
+ leitao@debian.org, linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-doc@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org,
+ riel@surriel.com, shakeel.butt@linux.dev, kernel-team@meta.com
+References: <20261104142727.2894800-1-usama.arif@linux.dev>
+ <autMHwldMudQOO3j@thinkstation>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -142,22 +124,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261104130118.2507513-3-kas@kernel.org>
+In-Reply-To: <autMHwldMudQOO3j@thinkstation>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 890E52001A
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: pfdawppay43o1scqwxc14yue9tsfs6f3
-X-HE-Tag: 1793808351-998227
-X-HE-Meta: U2FsdGVkX1/VUHOW9oxSR+UaoLQOZ0t+SzFtXAmGUXR0LWjnwR/dGf++j4irBnSJsdUMJc/Vi4OEEItKw9EFFHYiIcrZ/5Ci75sd+y/BbVSvccOWVZjjD6YkkfEwPOFQDEdZyNuPZovfSlc9LsfruiZTM6MDeiBx8EWQvFubfr8nMxsk6ZebIwLXe6+YlnqHUCHr7pr5J3ISoXK68jnZHPErGVvMUCA0Zbt+fy990z++jCrRjkG+oaNS/glktJOpRQeLp/kJZXR8gsgFbB/PgqRqRbBh8l7ouAQYOKbqyhrjp0nbX0UL+2zp26sksAeiszN9uxW3NEwgf/A4Cy9UiksY5hQkj0xz2rENf1SzDP3XfJSijTn25e2gxu5iRx7/KeomZJzCiggYJX+4ZBPQ3Tu2iAHKjqEd1IUbpR3c7SX7HGUnZxiKwAZAmXKunNjAR4CeNDahsh7/a6cc+XCIm0RfElq1+9eGNZZWTjrT0u6knZJ5WtVG9GSF55tSf25m+tLeYNx+bYino7Gr4N/ZPGMhCF2KFLXkqwWhj7pYsDM4F3aL9BA1XI+fsVRQ3fKjwm4AAQeyXhJL+pJR4kwVhrsf9Hb8THNhXazIHyrDnHKQl1GTmajn8KT49u+rqAc6oZqIRlWqM8r+3X+Ii4yVHR04kS/FQtVwJvjm98ZMvK22zcdN2ASEYQGwvDBwZTrVOZJxqqww/DMGfV7UDl7QROx0mXgMeKHOaS39m/5xTwrJpRWWw3avr6AyCoRNfBq2r+M1ZAyPYhBKcDqVwuzz/bzX71JG/iL5WE81DudWwz8/qSs6tsvMVaqg5ep36+bALttOLNEcojUuoZ4PedVOFqOZc+Bjmh1EhDRkIIR8V439yziHCu77hppxLpoKzyg8dcD7jw9P0dFeAKd6/fWnwb1/SWdfkqDtZAsc2ceMZ0GL6U13cILKFBASliUHQCXycbwCqAqdoS72pe9yv59
- hEVfa9cc
- jjCdoJSVQq95T/NGelb2wofNN+0BXtlqHXUrCtdhWtkpYuGBY/xXqK2azTUA/RskF6IKD6VslodCUTqyRa1bcbHMVn5z4cj9rYY13DhrJKPryzsM4NABHC2sTjf7RGdfl3DUMparQc2JeVH7TE9VM+KDW8aGowg5c10DHVRGUn7vNut49oh/LnAhm5hi1YKIy5yfU6LNdu4b3Se1A86GQoqbL55ZfG9kkaT8I1o9EUppoUpeh//V8WtZsek2VBBfg52Tf8IMG8MV25PDPr1HGwnSgFQznevpY7I+jzG7aCI09/AqSJDF1fIVsTEyEMCnwTMDx7mFEsXwGfqp6rHmwSWqaZXRiH0D4IAwVd/K2I4f02bkMav+X2bFYDj/ISMIk5Fb+WxOAUH9Ky+YbEON/ScNjgujFSwzoKV6k
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 57874C0008
+X-Stat-Signature: 3is3tofnzkjfpgb6b1iosk1fc5f48ceb
+X-Rspam-User: 
+X-HE-Tag: 1793808469-752334
+X-HE-Meta: U2FsdGVkX19BmAzMg+4Gty5Ane7/Kdp35TlVIXBaKhAxlLNsASV9Vy/cZxbJ1h8+6ILM29amtDi3iTts1g32ZAF+jZOOQPawN/ZO4dbqKy8JoN4e+I3oTNZnHoI8xlzM6Mzr9CrSj5ZDbD/u839SKk/HdI/GB49gQtdaQlfp64ppgM9vh1ej6dzPhgSypz20mPdgTOvGmbYWnh+HAtAdLMgH04eF368OaMDxUbxpIZ2jHsJUMyE5rzNAiFoEajcKWzx+xav1FJgtTVmuBUEfUEG3dW1DyHWFIKazGyVM7UajNX0gBreamNcdry0/yMB3U2q+GQh+fZZO1LD9iteUkrW8yvSEYBPIDEi01N9onlOLQErKmOxTzRTLrssbK6dVuk3RW0qlNMxr2s/7P/s9/ggDKbIjYRn2WbQFV1VrqPzn66NYvnIPkDVSAvW9De+w37GugywcBrWcFzz64AYZ5U0NKdSWu/e7zYn6YQ9iD8wNotUL+1pr8k4yGfekOLGUUSILP42zYatJ2bNVsZrzoLQG5dXQaqGFMivLNbQzp6iRg1RGR8Uaheuf6YYlc+Bkkn8hmp8QRSnmup+nlk+UfMoyahSkvWFQI30yV8c+/9ZuGvkFLtTI97h1JqYrzvmkub1Cpu6yZvLjkceMtpB2BsLzsNZ32TcwR6WkWgQp4QczyrFZPy+WJM+rR4+c3Gx8H8zSk11Ojo+2rAfCBBqGKkO7NpTH0bv8lEPc0CarWr2pmy999Z7PWJnmjEZTKDyfPY4AZEVFlFnzBoc3efk1DVpCQIKdJyBfCcjtiEZmyW2t/ujMifIqfe8XjxqEGnKTJL1Sd0g7IPA6vH4cTX6x2FBGQEGKPJi8KULkg23P/zy5q+H7NAxT8n18qRFFXJetyKdSdt8kUJW+vA840Bt1hZyjSRIb6r9JyGdZ+woC1WPHScO3JS2ZhCd6h5QhneaMUhKYamkdCrFK+cPbSOa
+ 5Iyms2zj
+ alzyp2VZ/Cw5DxSgccE+WY1to12k3iPLoedveNBgyMGoCo5f9E0JWFG2hhLDp00jHKwmDpjZJAaNx/FlAICvHH8rThuxiwTq3L2ZxD8XWoDlNyhcbDI5gjR5TUnJHafkccWTVjZwg83RosN4gqpzQoGGUPQqbHPv0YocRyxsnmZ0ARhruQ1fT9o3TH9enYyR2sC2/ytnd0F9D4+3mmWMaqEZ+Snzkt5tG/MduIqSfo4pUwaVrrKi0JlAwrV02/EUGFv6p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,35 +147,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/4/26 14:00, Kiryl Shutsemau (Meta) wrote:
-> From: Linus Torvalds <torvalds@linux-foundation.org>
+On 11/4/26 16:20, Kiryl Shutsemau wrote:
+> On Wed, Nov 04, 2026 at 06:27:27AM -0800, Usama Arif wrote:
+>> Use a separate suffix to make the exclusion of existing HugeTLB
+>> allocations from the vmcore an explicit choice.
 > 
-> PG_rcu_free holds back the reuse of a folio's memory until a grace
-> period after the folio is freed.  A stolen page cache pipe buffer is
-> reused without being freed: remove_mapping() takes the folio out of the
-> page cache and the caller keeps it.  fuse_try_move_folio() puts it into
-> a fuse file, where writes change it under a reader that found it before
-> the steal.
+> The crashkernel=size,cma documentation already says that pages allocated
+> from the range are not in the vmcore and that it should not be used if
+> dumping of userspace memory is intended. HugeTLB pages are userspace
+> memory. I don't see what a new suffix makes explicit that ",cma" does
+> not already.
 > 
-> Drop ->try_steal from page_cache_pipe_buf_ops.  fuse_try_move_folio()
-> and virtio_console's pipe_to_sg() then copy, as they already do when
-> stealing fails.  SPLICE_F_MOVE from the page cache into a fuse file or
-> a virtio console now copies.
-> 
-> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-> [kas: rewrote the changelog]
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->  fs/splice.c | 51 ---------------------------------------------------
+> Why not let crashkernel=size,cma take hugetlb CMA first and reserve a
+> dedicated area only for what hugetlb CMA does not cover? With
+> hugetlb_cma=6G crashkernel=2G,cma there would be no extra CMA at all.
 
-Removing code is always nice, even independent of the other changes :)
-
-The description doesn't really describe the impact of this change. I assume a
-slowdown of certain workloads (does anybody really care?), and temporary
-increased memory consumption (as we keep the pagecache page).
-
-No idea how often stealing actually succeeds ... a bit of history why it was
-added in the first place and why we no longer care now would be nice.
+Hiding that complexity from the user would indeed be nice.
 
 -- 
 Cheers,
