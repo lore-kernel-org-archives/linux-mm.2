@@ -1,140 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DCE4606AB2D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816CD606A32C
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 22:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Z3xTc5QN
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jz1Caecd
 Received: by kanga.kvack.org (Postfix)
-	id 30F8E6B05B3; Wed,  4 Nov 2026 17:35:30 -0500 (EST)
+	id 9F8916B00EF; Wed,  4 Nov 2026 17:42:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C0A26B05B6; Wed,  4 Nov 2026 17:35:30 -0500 (EST)
+	id 9D0026B05B0; Wed,  4 Nov 2026 17:42:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AFD16B05B7; Wed,  4 Nov 2026 17:35:30 -0500 (EST)
+	id 8BEC96B05B1; Wed,  4 Nov 2026 17:42:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EBA566B05B3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:35:29 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 73149806F5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:35:29 +0000 (UTC)
-X-FDA: 85398894378.26.3F5ABE5
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A146740009
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:35:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Z3xTc5QN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=dmatlack@google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F39E6B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 17:42:01 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 05C4340866
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:42:00 +0000 (UTC)
+X-FDA: 85398910842.23.A994E22
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5F8482000B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:42:00 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=jz1Caecd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793831727;
+	s=arc-20220608; t=1793832119;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Osoc1/zc3WCPxn/uivsVACevUkiPfuARX2+mZ1FpT3s=;
-	b=LGGBPJ+p+Gq+b33TtVpDj9ji8H9MJ4IsdD2dtnVlkfvEiRFuX2zGgORJfSfNIZVktgXKQ5
-	LUGDNrpx/pTrpT0jXFaqvFRRTFYjv4E+eFXdGemX64SWg16+LsyvIOK2Ao9J/SMzt1uaV+
-	uQzbR6shbWiOJgZ8IvSTGbw9+7rXhNM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793831727;
-	b=4/L61TkIhzsbg79/peJbEEGgWRed9oYdVcjGrtA2kT/gVGbPQTkzewUTyismrElCEA57YA
-	3G+3BeJ1Zja7UWEcm9dSicVwwMqWk6WG4dS/Mjbe0UZxvJ63GXeVdfrwtu27aNZxBFYAbO
-	MoKVQW3zIVmrAzqzkei/H4LpnClPq1o=
+	bh=7JJZFX7GjlSxlyM1xt2ZPMCBId8gHLPODjL1RlXKQBc=;
+	b=lZ+eMjw6cHb6vvCl5Qyj3rCqiEMTaGSahU0F3F0XsWL/h8/RHV7HcZuvxleMnT4begXz9F
+	C4fxZfuNn/pDfpPuJUt3LD7L8rxqqICJ/JKDsn7IwFBkYiV0Sh8GIS0xQrL7M06lo+lDzm
+	9xqVgidvYDjPg+6bINwqcxwtqBmVJDU=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Z3xTc5QN;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=dmatlack@google.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8a06cc097c7so948066b3a.0
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:35:27 -0800 (PST)
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=jz1Caecd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf31.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793832119;
+	b=Dv+MiG6EB1rS+JfE+cG8KHYibbjOIPYnIIsk5QRp74/se2sDf2NCC6TKAASOBdwMJ/wPZH
+	zWp2QVlQq2z3VCfaYnspYF6BQBG8BpkH1Wbp3GHC9iKuBh77b1Xb8lVjslZ5rAwsnFb6t1
+	cCB4dCl7h36Q96pkqcptgZ1YgUWm4iI=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a60f9474c4so9990265e9.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 14:41:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793831726; x=1794436526; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Osoc1/zc3WCPxn/uivsVACevUkiPfuARX2+mZ1FpT3s=;
-        b=Z3xTc5QNO1MMscrqXpjoruP1GmkscmH02zX5qIUEGGbuafSIp3MRmWetzaRhpsVMYq
-         pUfm218vOe9KFzaioCqIQDyrpZmiHwuQr4NxAxDfQOEA3Ktn5GtcWvM/Hj7Ei6DqNVnB
-         SqA+h3lkdbmc0Xr0C1ti7XYQCd4dVmNcb08DAnghizXO0ctVi4owrUiubQ/aNfBHhRF8
-         CAkfTi8VV5uD77L6DDUOCkdmH9dMIycGMDuwrD8P97dhtf9DYZ5wONLf3xKwOOU26X9c
-         V/QuBR4Ejw7VZcnNgzQ56L3gTVVj6c8qTCjovkZGbIcbJGHitBK77zkvSWPfxgbcFPnj
-         btLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793831726; x=1794436526;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+        d=gmail.com; s=20260707; t=1793832118; x=1794436918; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Osoc1/zc3WCPxn/uivsVACevUkiPfuARX2+mZ1FpT3s=;
-        b=e8iawOPnOluOLCn4UkzJnttokiB5BtuV8FqHh1q5IoIv/p/h2hSSv45iAF5E011AEJ
-         RlwAvKLYp32wma/QXwIGxPxoehR4RJq9tG+JU6dsY82vam0OHHrmEN/6NotpxCmg9RGp
-         4RNAvo5d8/wVaujVB94XAIQVLBi5tzjezX5QA7mB2JwknKvGZ+sSeIFeVpFZXu5xIFE4
-         P9e6SWKwdWtz7ixNl+Ut+H9sqmnzoNkv8CZtR7OEaSXQmSxgpuYpzoMh1T2BSVlg4/SH
-         2JgeRl5m5+nUqH69GX4Y3S40K3zug3vVX1plgeAQReu0HTfFkhw6eVUltiOMcp7TaiMt
-         eATA==
-X-Forwarded-Encrypted: i=1; AKwUvBxqDaJXLR+SPIeGljGP91WfFAV2utOiylw4yZFcbAH1bsDamTVl/Ty8ICiXIn1aJxIaE7/Qbu26/Q==@kvack.org
-X-Gm-Message-State: APuU4Z83kyUEV1pyFvq+bstGQISlq32eTx/8oek0N4d90YyHoYbTnynz
-	xIJnur7D8z3yH6Xwp7iEy+loi46vn2jNai5Iig3jRygXpfOqSL5xX/D8fCeRPzlUQA==
-X-Gm-Gg: AYBFou1vpaWgBgSOW++gdnxxaFP3gPuQ3O+vyJSMZmiiLerzAunZBIqtgmloVvt2HOF
-	7vxA6l7Q4pJpeH9PbAzxueObGiwJ6C7n/i8vDhb7mw/+yzhnRzQMnRSJqL9Bn9wgfvuq33xO8rw
-	YXD+JDr0koXz+pmZSWkgDAFm9UaWn9ofCKWfy9ZOecEMJ9x6SH0YTJBgW3Ke6dm/K5z3EXyGCBk
-	BfTf8qFUq6L/3P/cHN9nsl5HuFuhXB5teZ44aYLKHiprmIDDtIl0mgdvSkQdE+59eAwNnVI5DU2
-	AVy1DxH0kYG6td1Bxh5iIZr5Xy6c/akeuKl4Qy49RMmMnMMUN/tMofb0z5H9XkqniT1NOS3UP6v
-	dp8oK+1ZA0bF5g7dRhCGjIjb52eFsGY0jRznPtAHvKnZbvvEppfhJLjr7rSZ1qreeN++G/8+rQ5
-	sGNpwDRA/KUFmW4gh6/Mh93y6e1AqRsB/ADp57H4jky1rVlVIA0JpB3uGvV/uMPEGHs6znm9nzZ
-	Jifg5Y0vumGqG9z9f5NeGrVQuWZy2FQ9TUfAyWebTH8aTOr7TbfPlqdiINP0u+1RAfuwt1dyqzD
-	e7EzAKNVt5MJqWb6TAwnFb0n33ER/IptovFBjkd0H9R1yn71gi8cVzs0VRPoSiN2FPNXztEsoJI
-	CxhaAiKSlKg==
-X-Received: by 2002:a05:6a00:1f0b:b0:899:67fe:3c52 with SMTP id d2e1a72fcca58-8a9be1a4461mr15308534b3a.15.1793831725909;
-        Wed, 04 Nov 2026 14:35:25 -0800 (PST)
-Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8b09b569495sm1376244b3a.37.2026.11.04.14.35.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 14:35:25 -0800 (PST)
-Date: Wed, 4 Nov 2026 22:35:20 +0000
-From: David Matlack <dmatlack@google.com>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Christian Brauner <brauner@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>, Jonathan Corbet <corbet@lwn.net>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v3 09/10] mm/shmem_luo: Allow retrieving tmpfs files with
- O_RDONLY
-Message-ID: <auuzKNZsPD10XM4q@google.com>
-References: <20261103010216.3447716-1-dmatlack@google.com>
- <20261103010216.3447716-10-dmatlack@google.com>
- <2vxz5wyck08d.fsf@kernel.org>
- <auuJ4msatqzoOrjN@google.com>
+        bh=7JJZFX7GjlSxlyM1xt2ZPMCBId8gHLPODjL1RlXKQBc=;
+        b=jz1CaecdudQ/DRcy/vaKp6a4Nt3CL6Y2Ld/DdJFj/d3mr2npfkWaSA/6yGGS3xBqOE
+         rkGPJZ0cpOAlGjbPG2nBmMmRhun2wvvkA2iSvbuHvFkENCbDpPUiGQyRCCmmn3/agWh6
+         asBGeMLVQwmz+MTEDSajpr1S0PXFEWDGo3Gn/r73IubsSvdC+HCU3x/6CDSns8ifiL0S
+         QcuL8ahh98w3qbkG9fjDyVgTYELv4v4EBD6VgEleJPXwpL0hFsbhXZD2iEXZ3gfn1odG
+         MNCr5LUikTrsnYzOgBgS5eBWQSHryfguhsynw2hqdemsg3XuC2mPpFVE06AzIGHzhY0Y
+         6p5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793832118; x=1794436918;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7JJZFX7GjlSxlyM1xt2ZPMCBId8gHLPODjL1RlXKQBc=;
+        b=nNbeS+Of1V42IVCkYeqQxu0iwoPhPCDx7zxox2TgPro1bScTLFL//SkOZph76Y1ydG
+         TIToZD5PpLgoivGUcr8LMoLUiKVoTths523fgrKbb+LhB2IwdAdbHar8RPNkBi7rEagn
+         ryMNYKjXRVJbvuG+GxmMS8Fbm0iOWMrzKkyoh/clqsXcxnQliq1hsV5GWmVbqJqtrT+D
+         Gr/SEkux50aIOz0IxBh/5wciTrnooqr8s40m7oFmMDxKxOFzyRRhS1FzyB3VFY1NBHZa
+         PIm2+AYO4cXwLU+1e93SR5SphHKjqKkUlvZoTLwi1gyWJYiWvMaSyjWalz/q/R3kUXsb
+         KvZw==
+X-Forwarded-Encrypted: i=1; AKwUvBxJnzAH/wWcfiC8NhnCD/BTIZNszMivdkGC9h5NBRJpTqh3in82IR5Z/0uxpU9/GsD1YzNqSx6EoA==@kvack.org
+X-Gm-Message-State: APuU4Z+M9de37bs7f4w8BVaGw0m5TDnnbpoVlwTjRizyTWA7WDXwDKm9
+	0rmLDS+jdXTK9DqLOPuQtq+wBgznC4pkVZgtJHyPlFiNmE0IlTh83yXe
+X-Gm-Gg: AYBFou0+2DhnWJ8F2hFP8cZivF7djxJ2AKfCgVqsJ3mxgm9fpYI63kglnQqRP1VqSct
+	8xm0U83mm4hOKwJwHGkAIRSwu5eu8YRaX+iZQXWSfNGjHWjIJhNY3YcrpHHlAp1k5AQNyCzXv5I
+	FQf7bDnTfRYbj6BBzSGCF7/9Z9DBb8uAEIR5ZoW3OXPvT+McVkIq4KO8PZeFaDKtdrS0xu26mXI
+	PSNX0SV9RZKub7V3j+AWre2Hc6HbEegKcGHr2ZfX3V/vmZ8MuPwbd6EWH3K2/S3zea3DG3Q797L
+	H3SzXjOxfpc6Obj23dll8ePrbDhDoB0MHnknW/MYTrB0l8YE0nwlhbl3mZF/exwLQC9mukKglut
+	u58ueHganneKLIPweC2JuJhr9wqtoK04LV8EuyZIXLquRFi2mkcLTEoHk29RBDIKocByWM7QdIg
+	YvsEshMNdY3gaCFrajJzPrClktIBBJZUGxKKLgroE6Qa7sh25ASWmryXzmpPOA7wwdeRMoJL3Sn
+	IfsUDtaRdSgNWvNioMFOCmfbTH5MRttbvCzb3XpLEPmN6odpte07MoxJO+2lFCPF48SfhL7TZee
+	lxLZ/zfhmYVktnTdolbOVH4=
+X-Received: by 2002:a05:600c:4e50:b0:4a9:2a92:231f with SMTP id 5b1f17b1804b1-4ac16bc461emr393154585e9.7.1793832117676;
+        Wed, 04 Nov 2026 14:41:57 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed551dbasm6018773f8f.37.2026.11.04.14.41.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 14:41:57 -0800 (PST)
+Message-ID: <d4b5e996-e718-452c-afa9-e9d9e08712c2@gmail.com>
+Date: Wed, 4 Nov 2026 23:41:55 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auuJ4msatqzoOrjN@google.com>
-X-Stat-Signature: 8mo3eenwz86ds686bxauykdc7yeab789
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: split out memory-failure declarations from internal.h
+To: Breno Leitao <leitao@debian.org>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin@linux.dev>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Oscar Salvador
+ <osalvador@suse.de>, Johannes Weiner <hannes@cmpxchg.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org, kernel-team@meta.com
+References: <20261104-memory-failure-split-v1-1-3b0a85f0b7e7@debian.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261104-memory-failure-split-v1-1-3b0a85f0b7e7@debian.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A146740009
-X-HE-Tag: 1793831727-317870
-X-HE-Meta: U2FsdGVkX18HXf6WlH0Z5Ygy18Jeza/bp5tD/gGCzfaRlnelRlnOlIFwxG/k2Wc0jJkj4dovSdMvyLGpCrnFtWKdRMU9C+es9846uS/RtKDSx/q9L/BHyykZKrCnpAjGjGgMEoRFxD8FhE5tlybfEvvhX5VRagZBHF8drpYXO9W84cWjeLoDFr7FN9J5fphYI1/VHzDvozObZqCyk8276PyGUaSmhkZ+HynmTL1soNzbvIuf1PNnM0AgW8yQJDMD260GhBs7nzKES0VvMEUHqLGJeNAIkqtsZqGhJIDaFd2qHUA5AjogDLW2w3RbHu2lRHxJHYwRcb/toNyISi0V4MdMq3p1NNMwTpg5OfV+bhWiBcO/tFMxcNQ68LKThdLM19CxNN9V+44RNSaYcDhuzPmjT3Nhik2VG0UJaYAUBN76Oiv8Mt5XvNbZAJgO/eMsdxITK7mdhV1SddS8g/khWmoImnLpdIKM773LLUnI+pp+N7i1ozw8p0oOtTg9ryv/L8qplxRSt4Vt1yjUJvWYp53Z3oIVrtgmbuu0I8+SJcJwiC7GiQPcO3IJU5q8rsSnqci3jiBiFR+s+UD7H3vH7xb6VfXOtDkqA99eXn37Q5Wh9m3JwIctAE8UIqEdzXvpVBjebhcqaXe18/yMydOXcSQJ2lrOKjnWGYw7nw/IdV1RNvtPytydcMlYWLpNZJIZ058wHe9xU6DZq+6NZugzCChrCc9wUfQ/vK/s5UIX1bOS+yVRsAhlGiY5OphbPW085rroQg2Pjlfz8Me5iP9NUlGUdORRDT27qVnvafBcRrmaaKKLsUW1HVeVQvs732vTXE+1mLp6VyiomHP1VMsXtCr40/aIMdW2RRTQGZanOmcsD//7pMQx3MYfopXRF7thSoM5y81gcsTMdo1WgSSnAkoPscjiy+Aulzx/3oBh/QE8B63evL/olXK2wAVVcQoYTNEcscc2S3vZ5uFsNmj
- eOfYdXdI
- V/Ul74Zs68YSGHcz/ndetst3PmhjCjunmiEWwAt9Dns8XrQJ355uoqNVFyweQfXvNgiM4QM41tCJ8EtB6qaPzXsogmmNdRSFJcHtt13GsRGxgqcnM3ntGr8QRzW4CHIrVM2109KzrgCYyoBjrb4184x5a3hzv0llqFTNvU5Rka3+je6HnJKOmFhydYNKmquQkswFVSEm4I5ngy3048pe6TFZ0pAW+tgq2FOYYiqAb0DC4KLK575kmmHNKBJFhMhwcehJR/VySMVa/MJXGfYFtQbd68wEr8huSQoQoK41XiW/4ra2th2GlmefJKNhR2yZgL93z0MiFQ6fZ6fFIBKKZFp44y9XkXe4BSGGMd0I3bKzvMmJFJF9V6gXGvZJrjWQXq56H6NduzpQRXLNgsaidiCmL+T5GwpZmGGNt
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 5F8482000B
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: nckrqmnbz7ejfo8fe6f1r9u1hd85zpn6
+X-HE-Tag: 1793832120-75483
+X-HE-Meta: U2FsdGVkX19uuVXZdKWNiGoqTD+yzDm5ojoiv5OovRV7DvhZdr9VIkh+HuJjjcnyIwNe/BSbYYAle7R4FqR9n0u4Au4PAVE35FuKAf1KkX4VVDXpYyC2AjvwoyfGhfOAq1GV0kPiFhtVm30GGtbzSuxj4hbA6MIfh2u/+5jGEHHNzOKasUQhMEFEARhp8HlGgSjOdnvdnjEx8DKhAmLDehpf7P1Qh0SCff0t0StV61BLejQaWiqEYLE4i7qjrbbelnZtE9CwEEpZvciolCEIg6/9d6vTLnM8/EVQS/FYt3FN+UWzsAnYTKpI3IvWNm+1TXhEruHUmCaKBF2MRuKr0h2wi8PkZthESHCSa+B5Bz+1mv6gS4mtUmCSmczy7WywGP7LC4dXSySx0glvQie4Izi8kcg/soq+bcPa48uMW32/TvVflqRWLEeWsMK6FtBRSsflXo81/89qHMJMCs2Sj1OWElvz65bnPIjNgGVcsB6G9STo3vu1o/L+MQuU2+5o2R1X59Koo+0Jf56OmjA4+AatDCX5Agvebnag85RZMQY/3TMK+mPO+WzOdyckgk+EahaXU3qNFSy230opJlY3XMSh/wtH9JcLVlz9QlUybJkMzRVsx08vsCMlh4w7otGRN47b+Ceu6kk9aMSqEUiz2x4DXW14vpoAZ5Crp156YzFrIgSHBLbKKaB3WI/IyoqqJRnkSDE/QBdYYIzfAHqvhWKG7BnKZbQX9eTzjNyAOtmvtlmzwXSVWMnU6xrb06Mg3SsKkHmKJzmeA2b+LE89Dvf2HAkhzH1wK+NGwo7HM85pt32gHXG/mIznXd2FYMqUxiin3OuHvf/KvGzC+LjOBphQx1dY4cZEQuG/to1Hgjc89iCDg2BikrEjeZrKd32ScoYttbULubR9D89aAbnjv85kR2coPRM6ap3Zi1Wu9dHCuXkiyU30TkUb5pVPPqNM8Sfos4D/r6Q+wV7BMzD
+ cdbekeFU
+ 1pQpsGZbfEYFUBazMeE57/Vp6us8mvmam6utYMK9iTcxf1sgzfLsvROB1QKoEkBk4/BkLadN0dWhqj6DzZxj+Z1/cmSYkRYOzj6syDBqtseDDzigg9k0QpOkrunxoKfIduTTxxkC7dCQqRUbKsS1k80VBZxjE4BnfF3+X5nGNlHrbYqUm38ZNWYI2mIOB03SQBmWggAJAEs0eovVOQ33n5v6LecEG/qtrcqAng1BUNc5d4U/ewp4950LzXORZQ3XRE0lKUmt5SPAVQOODsIh2Su/luwA8UFmmRVHsjj3B0OoHeKuUclkkBa+JAKZyzv035Qb8zWwRXGDK0k3ZhHjTDXPdWBU9CYl7PAxWw/nodwAyGMHceXS7h8wMlg6pn4JbZuOeubGi6Kv4ygKQnFQaxms+skBw1tGvw2RuT24bMJxwaSrEmN+ROOtYZbBeRvdERjh2oQafnzgT/n86kzoaemoxnlVzIx5O1vBJqGgen+Sj8Uvyo2GcP7ehHZ7bifZwLlo5er0aoaZyAkRCg3nxA2isDV/vDKvQRlYwhlhw2ek1SxLpmKM1DTRT3v4JENthj+Daqo20tKN5KMA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,41 +144,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-04 02:45 PM, Pasha Tatashin wrote:
-> On 11-04 17:52, Pratyush Yadav wrote:
-> > On Tue, Nov 03 2026, David Matlack wrote:
-> > [...]
-> > 
-> > Can't you put all your binaries in a separate session, retrieve it as
-> > the very first thing, and then finish the session? Then you can execute
-> > those and retrieve all the other sessions.
+On 11/4/26 5:45 PM, Breno Leitao wrote:
+> mm/internal.h carries the memory failure declarations, but only seven
+> of the 81 .c files that include it use them.
 > 
-> This is a good workaround. I am not opposed to this patch for 
-> completeness of functionality, but if we decide to keep it, perhaps it 
-> should simply be squashed into an earlier patch. The current diffstat
-> looks bad, as it mostly deletes code that was introduced earlier in this 
-> series.
+> Move memory failure declarations to a new mm/memory-failure.h and
+> include that from those seven files that need them.
 > 
-> In any case, given Pratyush's suggestion, we could also drop it.
+> Move the block as is, including take_page_off_buddy(),
+> put_page_back_buddy() and page_mapped_in_vma(): they live in
+> page_alloc.c and page_vma_mapped.c, but are built only for
+> CONFIG_MEMORY_FAILURE and called only from memory-failure.c.
 > 
-> > 
-> > Why do we need to support this in the kernel?
+> Keep the declarations private to mm/.
+> 
+> No functional change.
+> 
+> Suggested-by: Mike Rapoport <rppt@kernel.org>
+> Link: https://lore.kernel.org/all/aumt-4kfGGtoXuh-@kernel.org/
+> Signed-off-by: Breno Leitao <leitao@debian.org>
 
-That would work for binaries, and I agree that use case alone doesn't
-justify this. But I see O_RDONLY as part of the retrieve interface, not
-a feature for one use case. The retrieve argument is modeled on
-openat(), and openat() lets you open an existing file read-only.
+LGTM:
 
-open(O_TMPFILE) only requires write access because it creates an empty
-file, and an empty read-only file is useless. A retrieved file isn't
-empty, it has the preserved contents, so O_RDONLY makes as much sense as
-it does for any other existing file. Without it, every retrieved file is
-writable, even when userspace only needs to read it.
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-Preserve already works the same way: a file can be preserved through a
-read-only fd, as long as the caller has permission to write to it.
-
-If we keep it, I'll squash it into patch 7 in v4, so retrieve supports
-O_RDONLY from the start. The commit message will lead with the openat()
-reasoning and keep binaries as just an example.
+-- 
+cheers,
+jose a. p-a
 
