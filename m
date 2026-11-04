@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC4D606FAD1
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30FD7606EEA6
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KK/S1W4+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OWOls/Qa
 Received: by kanga.kvack.org (Postfix)
-	id 7EF536B05C9; Wed,  4 Nov 2026 14:24:21 -0500 (EST)
+	id 4BBCB6B05D8; Wed,  4 Nov 2026 14:24:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C62B6B05D8; Wed,  4 Nov 2026 14:24:21 -0500 (EST)
+	id 4923E6B05D9; Wed,  4 Nov 2026 14:24:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B5C16B05D9; Wed,  4 Nov 2026 14:24:21 -0500 (EST)
+	id 381CB6B05DA; Wed,  4 Nov 2026 14:24:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 473726B05C9
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:24:21 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CF8CAA858E
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:24:20 +0000 (UTC)
-X-FDA: 85398412680.01.3678552
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 15F276B05D8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:24:36 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAE8516070A
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:24:35 +0000 (UTC)
+X-FDA: 85398413310.16.73E0FB2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 220CF1C0005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:24:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KK/S1W4+";
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id 00677140007
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:24:33 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OWOls/Qa";
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793820274;
+	b=qsQQZhejzif+kFMobDKnDaXRIp+l0smWqlVuHnuS700EItAJamDD4j+cpI7IQWn7VEuLC8
+	ko0oKsvRIJcdgoj7ZEsTxCyEJSnGJGERtT13vFjnlAudjQ8lmWCxQh+JoORMiWIIbR0GYJ
+	I2aJubDeCEzQPFFBHIXCnnijMEskWJQ=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OWOls/Qa";
+	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820259;
+	s=arc-20220608; t=1793820274;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/kkSM5euWaBmFK3xxQcLv4mgEkXFSNdIObYnznwfIo0=;
-	b=xWVekgWcLYwNJG2YePG3TL8spL1VgoJk9zjU8khNpLK+IxSWQeLsj2Cwp7AooHIN6Zjk/w
-	Z0CRTDhThLUBqV5M3/MBqa9umXokdJTDWdKcywKnd1YnWEKEINRH0HuXt5WCoI9cbXnjot
-	0sTxjNL5JwL+1MJxgfwZz6AuUE4YoVY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820259;
-	b=LEmO5yyRsf9Xa26Gi8FLcwIDaO91+YTd8QnrxSGVCSF78WSYGcrubIhLinKl/ovK7/Q3az
-	jTP6FcTZvec+jVWANy2jShQcreHwRVslbFeCv07KKN6JcFZCoSUhnze1yIEwyVES8LxZVk
-	5VKuaL7+KgsjZaISUjrqrnU2app2iSM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KK/S1W4+";
-	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=iZnPQiZm1xh8fsSdf/bokwm1XgR51VX0qi8vvYA3hwA=;
+	b=ZcPCbNFBBytuHY+sR6wmZ+jyEiZQxuChcwxehb/uMIU1MLqNIqnwHZSqxAWUiTk69NjC5X
+	UPpCat0ZuhUR1ZQiL1sJXLvgxgBvOmOc++fCSTUa0GHWk6crINRG6Ej2iCsspViO/rsz4g
+	Ze9M3w7GqEd56D1SzOeBXVf3bmRJA7U=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A99D160D9E;
-	Wed,  4 Nov 2026 19:24:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5414F1F00919;
-	Wed,  4 Nov 2026 19:24:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8933B60D7D;
+	Wed,  4 Nov 2026 19:24:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A6D91F00919;
+	Wed,  4 Nov 2026 19:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820258;
-	bh=/kkSM5euWaBmFK3xxQcLv4mgEkXFSNdIObYnznwfIo0=;
+	s=k20260515; t=1793820273;
+	bh=iZnPQiZm1xh8fsSdf/bokwm1XgR51VX0qi8vvYA3hwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=KK/S1W4+1JOhdVLLDY/Ggqo1McTTdYY/6Celugi3dcUxYYm82wTooBQ69mmxJXU/Z
-	 +FWgcSKp0NOpnUG03+5YSxbRG81J0PKPy3pac02CZBfRVPIKuHGE+PgMhMGEi3h/cd
-	 xV4BkgxlrvILZlBYxkyW1aJhTMFU0iT72udBRj+zKnihSyQn//arscjli7GcA1jgxu
-	 5Nv4UBFf10Oh/6QhRa9NT9QBeikduKESN/RnGTV9soRpwLp+C2BKoHho5QK0IpG1x8
-	 eFcjTjFJiTk6inzwtgEgMgYCl4fBB2CqjO8YXD/NtoHCY7OBwL/v1/aNPSVWPG3lIS
-	 sff9wdO5ljxMQ==
+	b=OWOls/Qat2i8BrXb5K71S2uLB9tj4kjTJEbo9UFvy20m8JsJIw6rlM5z7ZgXmAhhg
+	 DX3SJAZObSbZ0q10m0cO34TgAflLOcPAP+hEY5fVaKi7i6rKXFInKLNWloaYRSC+Ks
+	 ljGOlefMkwlxlumGHgHWbLc97n+0vZptHyvo04WmKfXqk+oQZSwiVP5UbhoSw45CC9
+	 o7GTWTT7YXcs5JwSCwntnLmjdKmMt8KgGm4sAZYEtS+zlJv61izpcMBFUi+CEbW/Cc
+	 xRBz49tKkDksLfYIDDAGshWSF63L9oy+SRRSZVZWhxGUtwnTpG3FVQOlOfqrJXfy1c
+	 nLtmp96X09lUw==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,16 +121,16 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 33/51] selftests/proc: check a /proc listing while entries come and go
-Date: Wed,  4 Nov 2026 20:24:04 +0100
-Message-ID: <20261104-work-procfs-bugfixes-v2-33-021c84d852e0@kernel.org>
+Subject: [PATCH RESEND v2 34/51] proc: let proc_remove() remove the entry it was given
+Date: Wed,  4 Nov 2026 20:24:18 +0100
+Message-ID: <20261104-work-procfs-bugfixes-v2-34-021c84d852e0@kernel.org>
 In-Reply-To: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9018; i=brauner@kernel.org; h=from:subject:message-id; bh=NzSqjSqcJKKkJ7jf3TwnqEZW3Bg2Bj/+2ncCZpJHWz8=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bvwS6nEj6fE7g5y5U5x9fzkc6tK/WqXy2CVqssPr+ uft+lavO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDKEgYtTACbi48vI8PbC82Wbtx65L3Is b9/U3rZb+blqm6IXmhqIHXe9sDQr9wQjw9yWfZVuvQrOASdy1f8nVdW+XVFQqfltkdftTbbHrcu WcAMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4142; i=brauner@kernel.org; h=from:subject:message-id; bh=TWEC0A9DF1l/jNuw2UHiBUJ2nMkOgHxIGSf9WilEatA=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bvyaox39LcDtqOvRJ4ZbOT4aq194fNEiYOO6+EM7j 5os/VhY1lHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjARG32GP1wXpkhH8H/asV76 WPuPyH/OaVaTHH7dNBF8c4GtfEmftRfD//g/MT/EQt8lq2eISbw5HcGTbfBAPPZ1g/kbd1/h09/ keAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -138,14 +138,14 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: qbp6wwh3nndtjgxs8qkmtwmrxphi17xe
-X-Rspamd-Queue-Id: 220CF1C0005
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 00677140007
+X-Stat-Signature: 1ytgwkqaxrosmtw9i1kec88g4xj6fuo5
 X-Rspam-User: 
-X-HE-Tag: 1793820258-301485
-X-HE-Meta: U2FsdGVkX19FM6q7aKjjz+uXuJtE4ttaLmXp8OFYKq0zoo1fFRSQfMT4ZEqJe482N5iNkw1rOct3dbO5xucWozKMQ9S5HzQEz0GjM63dn1bfUO6dqx8Dfe7mrFvpaZEU4aa6+p8GqClZinIMLZQGG4evGQMwuRj8PVFuN94X6cnUJhsae1RQgKl3v5xk2KxGtNCKRn0vP24aDXhW+uNrhrCrg6aX4JQQLO+jjX8oDiUyBcGUJhnBYdnJ9nXenjZ6VoqM+vSo89IIXFREUYG+Oqpf9ij/b+r2w06UhVmfzaZmXAxryjxJBICEMrO2N3zfxMTARJ25G3c5jojls96nPIehGDMIHQLv3p9WMORHwbCWf1jT9emmJWae/ap/IWqY35IEVF+FYvcAk1kdHmd/vKAVApyL3ayir2WjWhft/ysha7qsEG5DR5biRst477X278NgQglrwsy9gmvfH85CK/q1/fzJT4QmUAvnlj+C/vUZWO52z3GIV/8KzabzzEi7T1tkpbaj0B4sqIN+5ezg7rDYtozgSbNAXZ1p5afPSi8/qzSunDspup7HKSSM94At7eYcffU6uzLCuSgPP+HbcBtXV/u/qm98XGZMbHlRi9uJBRwMLWq8OiCTHnvoiNip6IShmB+AMsn2o/uNLPzChMjgx08J4TkvDHMynwlU+VS3+ttWejC36Gk5Q01LRFzIfXP/sQEcWvT0vFYFtJzuM49G3tTbGnMcLzoDGz8kgxLk46J9BrNrE8qhEV6Q9BkpHqVwVk+/cl5ca9NERmkKFzjKvkxEmg2zuaCxMxOv3QPrFUzQ6llqQKQU5HURUyu3xhfyYlxeOGk5SoeXWQK7IK3uKHFqF5GMKtyvp9SblxoLDuBC5dsI/ArP2SmhSMIIdoA5iPRKf8YVIPM2ciI6ZK3P33BDpjIQAs43mBV5tToobqjvsD7W8re1/tBrNCVhKmcHHhBE+sDQIZTba61
- 3p4TyBrW
- /vLloB2H+ZY1T1+0NaxxU0DYZF90PgLWFIaql42vDdmi2bGUEfHBHS5dOrd88nffuwvbzewJhnVexYgix0JhgoLymC3IeXKMY8eabfSeZG7A1+zm/vHrd62sSROJCGIHRYzag4w96Trwo+/Gmd7hZ7Xo3WZakkSnprvyOmjjmcUOU69hxY8MzeE5YdTYHUzAQwfWflLttj2oHR4z+RPbDkr+iYVLn1drafxmgD7dy5091WV+ICLVOahTj8fAaajPIVHOif6WE3sJ6McwtXWqxRqJGFbwQzDBgOde/jxK7KKtmsufumy1XX+UzKkYtfmMolObd/Xt3Y2CW10zk2rgxuj9vN5gAXtJV/EDVJYXxTXEhKXYKRI4qSO/ogRamCB5a98GZzMzr7u9YA54RufA9BeIRY4WGzxHMKfB2
+X-HE-Tag: 1793820273-789535
+X-HE-Meta: U2FsdGVkX1+vPG5gPxNJ/79DZUUKcj5/FyhsyEhRXV3XO4K4nV2nvIhF/NUqp7UXyscjqzWWjvtPcaRFDyivUR7KhuHkekQaKNVneE0KMSNo4m3rJ0YiPBcL9vh0ZDPfiU41vGfHLhTFdptwRIOiCox056XbL+urQ5KJ1kTAvAt0/rGGqYSh7FuHtTWLDfgzQHJG2c9/zXUxLJKZYd8KV0kgf0QM5cXpRNNgArHL8M89GbM2TwtpEiTwD7I7oG1Fz0o30D9hoGcqL/FI7IhayR2HW54HXATiohaizRQbFkHUaUCtQCL5a6xj7bsGqgJMTiRCosD7PNwURv/137b46hLXBPP+uf0fHe2lB1adGCNLhWVcqU6SU/uiRRNXgOCGDIdQzy2t8ZR9bFZDF6+ek3dy7qo+8QyT3RxxaCEH1Kj/gFkYoq1AAmu35F3gb34K2ulKFA660oW0ECRjrjScYuZv3i2uu9QK26w1IxkvXWnxeMQ+XHRXN8AtmtikDud4di8WporutB08D2eenmXlYirrJNWllIVqvIQVwqAWdIV5OwqIX+XNq8eYi1GwNzaDjrpIyVxnKOVaBksRGRcjeuxm/KFxfNWfdkn+p6a+wEnHuSANSsksKpH8IOOryEuMinUR/z87uSDw2uL3ylt0vpOojdVPnnHiPSqewfi1IZ1DN3+A4l6D/F7xgpmw0i+yc6He8yiS2WWeX1NrizXSxwSQn585q0W9eJWct6fWO/68KWYpRCe0r3Zu+2woqvOE+f1fI7eBC7Vr+v2jjB1S6/T+yeSTM844ZiVtzRwGTw6WiK3K0acDqHuq5JgBgQfSNr2ZsKkAwOBS1d6Zf+Mcjb/bojpqd6/J9pcRhhbKhVQ9oDo1dvLTEkHyxpHMacRXdS8FXai1o0WqfM41MRIp2xBHsuH7r1WgDoi6W21jijMTlpPMt6OfPy6e4NOR+ytufu4Fpp2HMDxbqRKLSyX
+ gxgyXnhl
+ WJ0v0gR7qCDnzVtXpNS1SgroVFeK6C7LrPzA8+b3v8ScYMNzoZ4FWppZjUZcsRlIjXZn7D6CWCDBQ+ixNWX3DLMJLLiHQBbORo3PLGDTsxJt+NHVFluCf3amRoKrOwlgz6Q3qVqcx01mjaGJr93VkGzn/rNMGhUthPUIFfT2s5YxSuCfoWES9SvsQsFwXix0/SKp6DdPIywMD8+0oigJMreOaMIM1eqpGZs96hmo5z37VNPfXXi8QrLli56ehWdBCANnyfmdlh8ekyHUK6Ra3AtwxWJPOZWDDC2xYSyOouwA8/WyGpl7uYospS+i3MRDWwK+I+MMlQyHAN7nqQbtmvN0ZA/sLgRR4as2Ee2pMIpCjXzbNyR5tqqgHWyYw5HN+Wk9p1dcsgPcKoZrOBa71U0wLiQc40wrsIGu4OOl8gWVZMiINWFkrHPFPUM8dGM9xP3TzN5gMiJJtsdk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,310 +154,136 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-List /proc/net/dev_snmp6 of a new network namespace while a tun device
-comes and goes:
+proc_remove() looks the entry up by its name in its parent and removes
+whatever it finds there:
 
-- with a buffer that holds the dots and "lo", add a device whose name
-  sorts first, finish the listing: "lo" is listed once
+  remove_proc_subtree(de->name, de->parent);
 
-- with that device added and a buffer that holds the dots and it,
-  remove it, finish the listing: "lo" is still listed
+If the entry was removed already, say along with its parent, that is
+either nothing or a different entry that got the same name in the
+meantime, and de->parent may well be gone. Two removals of the same
+entry are a bug in the caller, but going by the name turns it into
+removing an entry that belongs to somebody else.
 
-- with that device added, stall getdents64() on a userfaultfd page
-  while it writes the device's entry, remove the device, finish the
-  listing: "lo" is still listed
+Since commit 895b4c0c79b0 ("fs/proc: fix uaf in proc_readdir_de()")
+an entry that was unlinked has an empty rb node. So check for that
+under proc_subdir_lock and otherwise remove the entry itself, with the
+loop of remove_proc_subtree() moved into a helper both of them use.
+Nothing can help a caller that passes an entry that has been freed
+already.
 
-All three fail without the fix, the first lists "lo" twice, the other
-two not at all.
-
+Reported-by: Chris Mason <mason@kernel.org>
+Fixes: a8ca16ea7b0a ("proc: Supply a function to remove a proc entry by PDE")
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- tools/testing/selftests/proc/.gitignore           |   1 +
- tools/testing/selftests/proc/Makefile             |   1 +
- tools/testing/selftests/proc/config               |   4 +
- tools/testing/selftests/proc/proc-readdir-churn.c | 240 ++++++++++++++++++++++
- 4 files changed, 246 insertions(+)
+ fs/proc/generic.c | 78 ++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 51 insertions(+), 27 deletions(-)
 
-diff --git a/tools/testing/selftests/proc/.gitignore b/tools/testing/selftests/proc/.gitignore
-index 9c9735570abf..8520c7878ea2 100644
---- a/tools/testing/selftests/proc/.gitignore
-+++ b/tools/testing/selftests/proc/.gitignore
-@@ -8,6 +8,7 @@
- /proc-maps-race
- /proc-multiple-procfs
- /proc-net-dev-lseek
-+/proc-readdir-churn
- /proc-empty-vm
- /proc-pid-vm
- /proc-self-map-files-001
-diff --git a/tools/testing/selftests/proc/Makefile b/tools/testing/selftests/proc/Makefile
-index a7de2bb6d8be..e0c0d313f4d0 100644
---- a/tools/testing/selftests/proc/Makefile
-+++ b/tools/testing/selftests/proc/Makefile
-@@ -11,6 +11,7 @@ TEST_GEN_PROGS += proc-2-is-kthread
- TEST_GEN_PROGS += proc-loadavg-001
- TEST_GEN_PROGS += proc-maps-race
- TEST_GEN_PROGS += proc-net-dev-lseek
-+TEST_GEN_PROGS += proc-readdir-churn
- TEST_GEN_PROGS += proc-empty-vm
- TEST_GEN_PROGS += proc-pid-vm
- TEST_GEN_PROGS += proc-self-map-files-001
-diff --git a/tools/testing/selftests/proc/config b/tools/testing/selftests/proc/config
-index 68fbd2b35884..052e365af5a9 100644
---- a/tools/testing/selftests/proc/config
-+++ b/tools/testing/selftests/proc/config
-@@ -1 +1,5 @@
- CONFIG_PROC_FS=y
-+CONFIG_NET_NS=y
-+CONFIG_IPV6=y
-+CONFIG_TUN=y
-+CONFIG_USERFAULTFD=y
-diff --git a/tools/testing/selftests/proc/proc-readdir-churn.c b/tools/testing/selftests/proc/proc-readdir-churn.c
-new file mode 100644
-index 000000000000..fd9b504b60f5
---- /dev/null
-+++ b/tools/testing/selftests/proc/proc-readdir-churn.c
-@@ -0,0 +1,240 @@
-+// SPDX-License-Identifier: GPL-2.0
+diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+index 588999058e66..9a0a2fcac7c7 100644
+--- a/fs/proc/generic.c
++++ b/fs/proc/generic.c
+@@ -818,33 +818,14 @@ void remove_proc_entry(const char *name, struct proc_dir_entry *parent)
+ }
+ EXPORT_SYMBOL(remove_proc_entry);
+ 
+-int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
 +/*
-+ * A listing of a /proc directory that takes more than one getdents64()
-+ * must not show an entry twice or skip one when an entry is added or
-+ * removed in between, and a listing must go on after an entry that is
-+ * removed while it is being emitted. /proc/net/dev_snmp6/<dev> of a tun
-+ * device comes and goes with the device.
++ * Remove @root, already erased from its parent, and everything below it.
++ * Called with proc_subdir_lock held for writing, returns with it dropped.
 + */
-+#define _GNU_SOURCE
-+#include <dirent.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <linux/if.h>
-+#include <linux/if_tun.h>
-+#include <linux/userfaultfd.h>
-+#include <poll.h>
-+#include <pthread.h>
-+#include <sched.h>
-+#include <string.h>
-+#include <sys/ioctl.h>
-+#include <sys/mman.h>
-+#include <sys/syscall.h>
-+#include <unistd.h>
++static int __remove_proc_subtree(struct proc_dir_entry *root)
+ {
+-	struct proc_dir_entry *root = NULL, *de, *next;
+-	const char *fn = name;
+-	unsigned int len;
+-
+-	write_lock(&proc_subdir_lock);
+-	if (__xlate_proc_name(name, &parent, &fn) != 0) {
+-		write_unlock(&proc_subdir_lock);
+-		return -ENOENT;
+-	}
+-	len = strlen(fn);
++	struct proc_dir_entry *de = root, *next;
+ 
+-	root = pde_subdir_find(parent, fn, len);
+-	if (!root) {
+-		write_unlock(&proc_subdir_lock);
+-		return -ENOENT;
+-	}
+-	if (unlikely(pde_is_permanent(root))) {
+-		write_unlock(&proc_subdir_lock);
+-		WARN(1, "removing permanent /proc entry '%s/%s'",
+-			root->parent->name, root->name);
+-		return -EINVAL;
+-	}
+-	pde_erase(root, parent);
+-
+-	de = root;
+ 	while (1) {
+ 		next = pde_subdir_first(de);
+ 		if (next) {
+@@ -872,6 +853,34 @@ int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
+ 	pde_put(root);
+ 	return 0;
+ }
 +
-+#include "../kselftest_harness.h"
-+
-+#define SNMP6_DIR	"/proc/net/dev_snmp6"
-+#define TUN_NAME	"a0"		/* sorts before "lo" */
-+#define TUN_PATH	SNMP6_DIR "/" TUN_NAME
-+#define SMALL_BUF	80		/* ".", ".." and one short name */
-+#define NAMES		64
-+
-+static int tun_open(const char *name)
++int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
 +{
-+	struct ifreq ifr = {};
-+	int fd;
++	struct proc_dir_entry *root = NULL;
++	const char *fn = name;
++	unsigned int len;
 +
-+	fd = open("/dev/net/tun", O_RDWR | O_CLOEXEC);
-+	if (fd < 0)
-+		return -1;
-+	strncpy(ifr.ifr_name, name, IFNAMSIZ - 1);
-+	ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
-+	if (ioctl(fd, TUNSETIFF, &ifr)) {
-+		close(fd);
-+		return -1;
++	write_lock(&proc_subdir_lock);
++	if (__xlate_proc_name(name, &parent, &fn) != 0) {
++		write_unlock(&proc_subdir_lock);
++		return -ENOENT;
 +	}
-+	return fd;
-+}
++	len = strlen(fn);
 +
-+/* one getdents64() into @buf, the names appended to @names */
-+static int list(int fd, char *buf, size_t size, char names[][NAME_MAX + 1],
-+		int *n)
-+{
-+	long ret, off;
-+	int got = 0;
-+
-+	ret = syscall(__NR_getdents64, fd, buf, size);
-+	if (ret < 0)
-+		return -errno;
-+	for (off = 0; off < ret;) {
-+		struct dirent64 *d = (void *)(buf + off);
-+
-+		if (*n < NAMES)
-+			strcpy(names[(*n)++], d->d_name);
-+		got++;
-+		off += d->d_reclen;
++	root = pde_subdir_find(parent, fn, len);
++	if (!root) {
++		write_unlock(&proc_subdir_lock);
++		return -ENOENT;
 +	}
-+	return got;
-+}
-+
-+static int count(char names[][NAME_MAX + 1], int n, const char *name)
-+{
-+	int i, c = 0;
-+
-+	for (i = 0; i < n; i++)
-+		if (!strcmp(names[i], name))
-+			c++;
-+	return c;
-+}
-+
-+/* removes the device once getdents64() faults on its entry, then resolves */
-+struct stall {
-+	int uffd;
-+	int tun;
-+	unsigned long addr;
-+	unsigned long len;
-+	int removed;
-+};
-+
-+static void *stall_resolve(void *arg)
-+{
-+	struct stall *s = arg;
-+	struct pollfd pfd = { .fd = s->uffd, .events = POLLIN };
-+	struct uffdio_zeropage zero = {
-+		.range = { .start = s->addr, .len = s->len },
-+	};
-+	struct uffd_msg msg;
-+
-+	if (poll(&pfd, 1, 10000) != 1)
-+		return NULL;
-+	if (read(s->uffd, &msg, sizeof(msg)) != sizeof(msg) ||
-+	    msg.event != UFFD_EVENT_PAGEFAULT)
-+		return NULL;
-+	close(s->tun);
-+	s->removed = access(TUN_PATH, F_OK) == -1;
-+	ioctl(s->uffd, UFFDIO_ZEROPAGE, &zero);
-+	return NULL;
-+}
-+
-+FIXTURE(proc_readdir) {
-+	int dir;
-+	int n;
-+	char names[NAMES][NAME_MAX + 1];
-+	char buf[65536];
-+};
-+
-+FIXTURE_SETUP(proc_readdir)
-+{
-+	int tun;
-+
-+	if (unshare(CLONE_NEWNET))
-+		SKIP(return, "unshare(CLONE_NEWNET): %s", strerror(errno));
-+	tun = open("/dev/net/tun", O_RDWR | O_CLOEXEC);
-+	if (tun < 0)
-+		SKIP(return, "/dev/net/tun: %s", strerror(errno));
-+	close(tun);
-+	self->dir = open(SNMP6_DIR, O_RDONLY | O_DIRECTORY | O_CLOEXEC);
-+	if (self->dir < 0)
-+		SKIP(return, SNMP6_DIR ": %s", strerror(errno));
-+	self->n = 0;
-+}
-+
-+FIXTURE_TEARDOWN(proc_readdir)
-+{
-+	close(self->dir);
-+}
-+
-+/* a device added in front of the position doesn't repeat an entry */
-+TEST_F(proc_readdir, add_in_front)
-+{
-+	int tun;
-+
-+	/* ".", ".." and "lo" */
-+	ASSERT_EQ(list(self->dir, self->buf, SMALL_BUF, self->names, &self->n), 3);
-+	ASSERT_EQ(count(self->names, self->n, "lo"), 1);
-+
-+	tun = tun_open(TUN_NAME);
-+	ASSERT_GE(tun, 0);
-+	ASSERT_EQ(access(TUN_PATH, F_OK), 0);
-+
-+	while (list(self->dir, self->buf, sizeof(self->buf), self->names,
-+		    &self->n) > 0)
-+		;
-+	EXPECT_EQ(count(self->names, self->n, "lo"), 1);
-+	close(tun);
-+}
-+
-+/* a device removed in front of the position doesn't skip an entry */
-+TEST_F(proc_readdir, remove_in_front)
-+{
-+	int tun;
-+
-+	tun = tun_open(TUN_NAME);
-+	ASSERT_GE(tun, 0);
-+	ASSERT_EQ(access(TUN_PATH, F_OK), 0);
-+
-+	/* ".", ".." and the device, "lo" doesn't fit */
-+	ASSERT_EQ(list(self->dir, self->buf, SMALL_BUF, self->names, &self->n), 3);
-+	ASSERT_EQ(count(self->names, self->n, TUN_NAME), 1);
-+
-+	/* closing the device unregisters it and removes its entry */
-+	close(tun);
-+	ASSERT_EQ(access(TUN_PATH, F_OK), -1);
-+
-+	while (list(self->dir, self->buf, sizeof(self->buf), self->names,
-+		    &self->n) > 0)
-+		;
-+	EXPECT_EQ(count(self->names, self->n, "lo"), 1);
-+}
-+
-+/* the entry being emitted is removed meanwhile, the listing goes on */
-+TEST_F(proc_readdir, remove_current)
-+{
-+	struct uffdio_api api = { .api = UFFD_API };
-+	struct uffdio_register reg = {};
-+	long page = sysconf(_SC_PAGESIZE);
-+	struct stall s = {};
-+	pthread_t thread;
-+	char *map;
-+	long ret, off;
-+
-+	s.uffd = syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-+	if (s.uffd < 0)
-+		SKIP(return, "userfaultfd: %s", strerror(errno));
-+	ASSERT_EQ(ioctl(s.uffd, UFFDIO_API, &api), 0);
-+
-+	/* the first page is there, the second one faults */
-+	map = mmap(NULL, 2 * page, PROT_READ | PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-+	ASSERT_NE(map, MAP_FAILED);
-+	map[0] = 0;
-+	s.addr = (unsigned long)map + page;
-+	s.len = page;
-+	reg.range.start = s.addr;
-+	reg.range.len = s.len;
-+	reg.mode = UFFDIO_REGISTER_MODE_MISSING;
-+	ASSERT_EQ(ioctl(s.uffd, UFFDIO_REGISTER, &reg), 0);
-+
-+	s.tun = tun_open(TUN_NAME);
-+	ASSERT_GE(s.tun, 0);
-+	ASSERT_EQ(access(TUN_PATH, F_OK), 0);
-+	ASSERT_EQ(pthread_create(&thread, NULL, stall_resolve, &s), 0);
-+
-+	/*
-+	 * ".." ends right before the second page, so writing the record of
-+	 * the device stalls until it has been removed.
-+	 */
-+	ret = syscall(__NR_getdents64, self->dir, map + page - 48, 48 + page);
-+	ASSERT_EQ(pthread_join(thread, NULL), 0);
-+	ASSERT_TRUE(s.removed);
-+	ASSERT_GT(ret, 0);
-+	for (off = 0; off < ret;) {
-+		struct dirent64 *d = (void *)(map + page - 48 + off);
-+
-+		if (self->n < NAMES)
-+			strcpy(self->names[self->n++], d->d_name);
-+		off += d->d_reclen;
++	if (unlikely(pde_is_permanent(root))) {
++		write_unlock(&proc_subdir_lock);
++		WARN(1, "removing permanent /proc entry '%s/%s'",
++			root->parent->name, root->name);
++		return -EINVAL;
 +	}
-+	ASSERT_EQ(count(self->names, self->n, TUN_NAME), 1);
-+
-+	while (list(self->dir, self->buf, sizeof(self->buf), self->names,
-+		    &self->n) > 0)
-+		;
-+	EXPECT_EQ(count(self->names, self->n, "lo"), 1);
-+	munmap(map, 2 * page);
-+	close(s.uffd);
++	pde_erase(root, parent);
++	return __remove_proc_subtree(root);
 +}
+ EXPORT_SYMBOL(remove_proc_subtree);
+ 
+ void *proc_get_parent_data(const struct inode *inode)
+@@ -883,8 +892,23 @@ EXPORT_SYMBOL_GPL(proc_get_parent_data);
+ 
+ void proc_remove(struct proc_dir_entry *de)
+ {
+-	if (de)
+-		remove_proc_subtree(de->name, de->parent);
++	if (!de)
++		return;
 +
-+TEST_HARNESS_MAIN
++	write_lock(&proc_subdir_lock);
++	/* Removed already, maybe along with its parent. */
++	if (RB_EMPTY_NODE(&de->subdir_node)) {
++		write_unlock(&proc_subdir_lock);
++		return;
++	}
++	if (unlikely(pde_is_permanent(de))) {
++		write_unlock(&proc_subdir_lock);
++		WARN(1, "removing permanent /proc entry '%s/%s'",
++		     de->parent->name, de->name);
++		return;
++	}
++	pde_erase(de, de->parent);
++	__remove_proc_subtree(de);
+ }
+ EXPORT_SYMBOL(proc_remove);
+ 
 
 -- 
 2.53.0
