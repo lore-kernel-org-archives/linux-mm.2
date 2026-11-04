@@ -1,131 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEF1606A328
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 10:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9B7606A328
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 10:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Eg9bKqpf
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E5JLGxhF
 Received: by kanga.kvack.org (Postfix)
-	id 548C96B05B3; Wed,  4 Nov 2026 05:50:10 -0500 (EST)
+	id BDDD66B00EF; Wed,  4 Nov 2026 05:54:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F9406B05B4; Wed,  4 Nov 2026 05:50:10 -0500 (EST)
+	id BB8576B05B4; Wed,  4 Nov 2026 05:54:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C2336B05B5; Wed,  4 Nov 2026 05:50:10 -0500 (EST)
+	id AF4746B05B5; Wed,  4 Nov 2026 05:54:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 120D36B05B3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:50:10 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7D507A7F6A
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:50:09 +0000 (UTC)
-X-FDA: 85397116938.06.F2F4A6B
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 89DBAC0004
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:50:07 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Eg9bKqpf;
-	spf=pass (imf10.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793789407;
-	b=OwPpg41qlj/bfNg/nFXzj7IERLqriI5CYxTQQ10Xef/ffx48/S03PDezCHS1q+tXSjBaIP
-	egkithTyaZLdXFGNDTsRkXE08QnRIUP5hVIPgO8U3PCXxHbgJbKqVl+DziMiYcA9ld7XmJ
-	o1jPRWePX2vQUp1sONBy+kzuPOSFBXo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Eg9bKqpf;
-	spf=pass (imf10.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BBB66B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 05:54:22 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 12B99C06A8
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:54:22 +0000 (UTC)
+X-FDA: 85397127564.30.3DDC7D9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 72D3A100004
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 10:54:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E5JLGxhF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793789407;
+	s=arc-20220608; t=1793789660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w50lkh7YHn9snryw9lhNLJWggY8UYLvhDaLVNDzLe0c=;
-	b=KldzLaRw9zKHPCAB+Rg2vpCNaGF0/jL/04CMnpXKeEuudsrgUjOB71fzoUPfrGn3plRvpi
-	s6pdj0t4FZV95Yvr6WfUreSJ4dPxaZjstE/0rkkBokGJIEhILwURZOJPsXw+I8WmDPdi8/
-	9WW7kH4iOivxzC3OTd6MqNz5Xe0ht24=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4a5087a5348so4180795e9.0
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 02:50:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793789406; x=1794394206; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=w50lkh7YHn9snryw9lhNLJWggY8UYLvhDaLVNDzLe0c=;
-        b=Eg9bKqpfB72JQC4UZdH0kfQi9iCb7BRqZiDm/VPxXzVATaB6txeMPtUjMqvLKzigwu
-         Mso92E+ldF1L/cuUzyrW4tCowZS6CEYXtNXqy89JfLxoQ/4MAJebLoQXmOttpOdbU8aU
-         wm2F8BfdlD2LUfX8S4zQfgYsFToOd6p6PutdZrb11MlE/Axh801zETdgpDG8TmGrZvsT
-         BAMVnr4L4NYSRWmxhbd+BcLv+NvPSPu681uC0yuY2+23M8GYU2x9CehvxmjI7sXtNZ8o
-         VwrlrZ8P70SnNoE7PvRdeBbC191BNHJ0yYX327rzjJaOesOHlWiyENKjNlRiVv5uJ+9N
-         neZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793789406; x=1794394206;
-        h=content-transfer-encoding:content-type:in-reply-to:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=w50lkh7YHn9snryw9lhNLJWggY8UYLvhDaLVNDzLe0c=;
-        b=e+EJxkmjML0PpzxMq/LGpjeJZbfJ1dp0x09BcCAjea/jr4/gEFAF1vUMDIAaOmRKo6
-         et60ZV9dewYmKmU0vzUAy//MMr09AOkPcJFjE8mJ3J+Ed/1fmbeV8nb5OhRCNDjJ0C4s
-         1k9yjtDnlniewvFx1e11J6BxDMYqnKOdGjxzj/lN+2xQE6eXPcDfLyyQv2qvLriY/qsS
-         GzShkyHoQe0U5zAdINW4zYL0A2gXKd7Cb+VUlANDyMNgIrVFbk/ShrBTeO2E34nQzts7
-         jqTLftD05QbYlonuAR1f5iLevedLRu4whyyYSqz/swlnTxqEAWoYMN4w1P7kihKlX+IU
-         y9oA==
-X-Forwarded-Encrypted: i=1; AKwUvBz2Q/TAYWO+Tt1b4kmhCke8w0AyiFC2cse4iy3fMytp+huWyZeGzEaipXTojvVdfiY554k0vhReow==@kvack.org
-X-Gm-Message-State: APuU4Z92YLGtmca2DzJI+JCIBoJDZRTXHIoC2laVqK3QlHp4hEfT7/HP
-	0hyGur+kTmdH1OBzN0v1chNpzGmwwXEyy4xuAP6h9ChPF6iN1emG1Fux
-X-Gm-Gg: AYBFou0Ip092fJR2gClcXJ6VsnRyt4WD/IY+ccQIuCHWpmtawETyz/N2qXtko9ne4tP
-	OzyG0pz96h7nJ3Kf5AVfgn4DoNY09quj7gjvwpx6m0aXz86E4AVavZeVQLXFSQLrWxBuQbS57sT
-	dLi8JezN5/d2VQ2x0+jsX5nRV0NUvl2+1AAEvNMj8XRHlhETFt1Ku5K3aFLGEoKx0uIYertAP37
-	tuZOghwTeMRQvbQ0YrHBJ9WptcRj9BT8v6cj3q78WlxoQSZgVnWsaCIgWA+4K/TZop/GBvw0FJI
-	BvacMAeSt7QkkyhRNUOoSiqw51Zmy6lZY+BVV6pFNZJVH1NMuSVqHKSkbK9lfiAyw9MuMgYRyhQ
-	nT9ALmWYJtUSAQz8TJNnJUemymB2HS8wa0Ox82tPJqicTrOnSBscDBXbHJyKanX5h5ix0iMRdGn
-	voD7ojiL4qjvZOgiZ63iNAVrdRLUC7jY9PDXJS4w3DgwauKchEjJa4JzcKmv5OntdtbjBpsZFA3
-	ujH6vCv8djHDOcnrWBpMB879bF+vl4hs31PrMYFIes+/g2Gt2yxsPHqKktHvtnLDhw7m6PKnzql
-	zMTD7LQJH/Y5kafJmYPr8tZdlLLEszE/7VjPOgacUjyJ
-X-Received: by 2002:a05:600c:1909:b0:4a5:26b8:4507 with SMTP id 5b1f17b1804b1-4ac18b7dff9mr356197145e9.21.1793789405877;
-        Wed, 04 Nov 2026 02:50:05 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b2a555e59dsm145066805e9.0.2026.11.04.02.50.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Nov 2026 02:50:04 -0800 (PST)
-Message-ID: <70686061-787c-4c99-ba5b-ff982c8cc2ad@gmail.com>
-Date: Wed, 4 Nov 2026 11:50:02 +0100
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=q1WatbcgkUw8K3+oMM+B9PLqn14NjJO7D6DOhhw+67c=;
+	b=cbKYk9y6c+FAzAU7lsnAkaUrMZndbuD/7VVOKI9d50vWGvHSvX7/tgVTrCxu61tpFNLvDQ
+	lf4llZYMRv9WGdQqfTMScvpmX76G4a2BmJJnJoM2QGIbQpjyrFaefQEImdM7uELR8dTnrq
+	tkwMqFE98O73d8Rl/GEfZaEYDQbd8yo=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E5JLGxhF;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of kaloz@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kaloz@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793789660;
+	b=VAkOyALgiuBgrpe5VcSI7Y2aB+amlNrh5/9wsgYUyeUquo4Lfdsq3gmkyivxfohGHp5K+X
+	H6hJeYyDIts2GUAM7VfiPxOt3PKm0wwOZVNRqkGob5f31P7OWK23UudKm9iTeHWiRSIUpb
+	RVmuPB8Tr5vW1HUGjVvizt2itW9ZKNo=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B48EB42B8F;
+	Wed,  4 Nov 2026 10:54:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD2D1F000C1;
+	Wed,  4 Nov 2026 10:54:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793789659;
+	bh=q1WatbcgkUw8K3+oMM+B9PLqn14NjJO7D6DOhhw+67c=;
+	h=From:To:Cc:Subject:Date;
+	b=E5JLGxhFshDJsH7jtdhBf7Q09tJ70fjxu/TJdoeOyy47tA+x92PQGVxmIWH013sTg
+	 K4Tj+bJ87bdXAh2fC3PLPk1xYaMn/7EJ+0oP6HxdADwTV7ZVIM0teDQTVUomziuLkT
+	 KjfJCP+Uq781fJA1IXxmPmG5Jx4SS54y8MB//p7fwdnomhKVQzc3AZYRIMH/URFBMv
+	 vYocFAj8rj/qgko9XtavbvYgo3+5W/5IIv9luH4h35b8bwyEBl6Xz0YHMwj7ihIBMm
+	 JR3ff4Gn7d0kaLjhL6uIwtlfnwYOQ6nHGJ0ulNiiJHg1Rwk7z+Mj9UILA4//67HSB7
+	 nOJ1v1cI4pB0g==
+From: Imre Kaloz <kaloz@kernel.org>
+To: "David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH] sparc64: replace move_pte() with a D-cache flush in flush_cache_range()
+Date: Wed,  4 Nov 2026 11:52:58 +0100
+Message-ID: <20261104105300.16260-1-kaloz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 0/2] memblock: keep reserve_mem regions out of KHO
- bootmem
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>,
- Alexander Graf <graf@amazon.com>, Changyuan Lyu <changyuanl@google.com>,
- Tony Luck <tony.luck@intel.com>, "Guilherme G. Piccoli"
- <gpiccoli@igalia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Pasha Tatashin <pasha.tatashin@soleen.com>, kexec@lists.infradead.org
-References: <20261021211058.83483-1-azpijr@gmail.com>
- <2vxzqzhhg8l3.fsf@kernel.org>
- <32dd1f28-db55-4674-99bc-74d9d3ab25db@gmail.com>
-Content-Language: en-US
-In-Reply-To: <32dd1f28-db55-4674-99bc-74d9d3ab25db@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ee4tbpsr6mtpcea5irrzpexc984ak66r
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 72D3A100004
+X-Stat-Signature: hz8un4ehp7faqo8cxxefzwtq8ntztjcj
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 89DBAC0004
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793789407-453540
-X-HE-Meta: U2FsdGVkX1/5ws5/OTHddTCQ0JylbvkXeOP8h0484FMrPaobsZEx1b/zJ7P7WcFIt3e5/OcunItK0X6Wg2/UnmpJ8Zj6GOCGb0ax/gIeu0bWlrnWn91ehCpSS1AQFrTJA86PAogGJFX8aAmNR3hQn1H1GfJbX3kGvDaPpclG1IM0x8VPu7/M8qbDqSABKunAof6kFi7P0miWNPjvIObMGfTGjyGtdKibjLTQ3DWz2WikpFVbxkDd9q5wTBcbmhv0hSkx4TYoPpKLgJy2II9KzXL4r6ga16KvOMAAav7Tm7wbeIuK2jcs6n41rKkPFU++YCEPaiQep88tcQz3+YEyPbowczTa5CoponcTG/jXVDlK9eJ9/4S2oNsSJgZ7fpc0xUMhKgr81zzFYOwSeWkU6GUbCO8u1cfwi4gngaKpYukgUcp2rlVj22mHTiNZz4SmGtIGaYaDZKrGm4iMokvezTMPqbG2n3eh+pgQjhCm6w+MSRmEmH8/ufKY3PHAs5sA3UJfbMhIixNMT4pHYYHjEB1lRnR7Ap71YIKBtsUljtUBngExGuxrlcjaedxdOZN+kwJBoPgD58W/naxeRhpsPm+S5uXr5ZjmiDS1WmAvptr8u/dJRoZDU9+t4PQPyzJFGYo5E6cUTMJuu2o4hOgFutWdf0eXy5nelDL4Bqmh7XmKzQv+2o6JZ0zxIoTpw276425qF20binVmkhVcYlAZZWAqrK9HhQQ59MSgVycPTqdBXSRzDUYq97oNoEpFOVKsS3RbGiBl7B7zbs5lN5+r06JrnY4Apai0pl7eDxK5zbtIcvv/odan8Yge/uMWTUwEZFzWZtOSP7xNaQEjIQGeEPbHKtOXWo4YBwf3qeHAnKS6jcW4MMmyQM4nBSAAct2Bb/NOx4W5cocREf5adAtc3GIKdPoBY8dIUK9lffP5j99PN0N6xwlfKqnviEsZLWwdhQymYacTxZhemY9r6hl
- UuSTIqCs
- IfG56gFEI+aDNxri0llAn49k9jpOo1E55NjQrszxXvensuyWzSIr0H5/Kd3pqcLb/RbuusX5eW5hnNX+PyMDj3EaIq9iRWhi/Q1RdRQ54FrT68uPDODUFkqevsjGo/5nLuWRdxQUK82oN1FIGVNrtva/u4ukcqw0K7+3COGrTgwwf8Feedt99KOvlseYPvfYNYV9On+cRxMJBJ10FPQIPXKnmedNLGgieNavNMUrGbLzD8zR0Nchv5Gg9Q0kcH+lmbLQRckXUD2HxzW1Gi4sD2mekZykxooX1tIMr0BvAFx98A6mEIaUAQBA8rB4wFmZvDw93SPyF1lBELjPTO/+ecqaQbFTRP7XL7TdazgcJpGS9WetLI+t2ONQKHcxFi/+/9x2mgfA/4rQC+AxGtzmb5I1GxlM4cbr8f1/DhuMi4izoJnSV7RvM9UX9O1742p/cvsGeyg6YDWx3+wSuaRuNPbitDylvRiMLRmv9Q92B5cDjQclH/EkNAd6Zmw4/zAbclsvI
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793789660-792703
+X-HE-Meta: U2FsdGVkX1/QQB4/xYloGe3de6GHuHyV9imryEK2VLTRpZ4ZtBMVsyW+1QSVlVygMmGCws+op3kWK3ZDiOhbmkkvt4SBTFsDCBN+1i5YIehIFHP0LGHcoT5cAan8C6jHYdn9gVu0cVWdt0IOvEz1vmVOerxdJnVl1AyJDya898qrpmCqPJKa/b5bot+HqkEWXzy/Js71dsOFk+Ett2MXXyxUBZ/q0pj1LKl8fABqqPoJ3kwKYG+C9DvgMZbWCbaTaJZppxZPge90CFdqh2LvBAMP1KNvPQvPRWcnB+Nq/xafn0pIi8YWUgcES1kOViOp2ZX1Ptk+8dupP/Yu3zV5k/p4OAofnQK0vLST6XQKn3h/SBUeW166Af5npDCldboUx1eHZmh+IWiVyjXg4d94F5ctVO1Ll7Ouv30LSKHMpoMfELD94mjfRQnGI3VZg+zb32mfUKYAjR/zsVdrU+FkbEF3hHvBv/iULgIQ0Ha3g9MNqd+IhxRQ5A8aAeybXQLWFFFdXqUm6CrXuwL5To7J5k5O7tWyCsLVW/SQ0Drnzs1n21FfVgptDu0KfjMFrMSxlg+wMVUFKPxYpQbuhbQ3z4jczx3A0r/snmPDftPbeausFeMAJKBSMaHD11hLqtsULToEIaKpK+6iumlTzZFrt+XzTtQPv7fRq/kmp2LehyvuDyf8CtDkK5k5+SCS/GMHivGG8U/IT+xaUqDRE8jHCUmq306ktmtuI+8lC65HCJDSl4w23PMsKOWLf4ZYLOgYVPfUYf7SU1+txvow/ivy7RnXNc6Yi/f9kWDn1r/cQYnjpzmHnR1nCEKNo182G4ELSPER9yhhKeO8d9NClH3Bu75ghW5hHcWoJmxRoGXitMqQFAds5aUYp6D+DVfCeXZ4OTvMzAO0LG4LMI54l2CPoPNjuhaMXXihksknGBgKGDJ4bNfMpuxdnKrqOsa6O7W8p2jd4vjnTQwCra0hFTf
+ IE/9Lyaa
+ 0kAuexO+kl7wBGyWGCvL0fhZ1kk0+lqZ1hK60BZNWh7jk/opirYB0MSd67S6iJFLUcL2psatY8rqrtLiAPLw69HpCCg8DxeapyFjytAJURAmkPkSTb8ZOC3//ZtkW9cgf7GiDnwh7ftxItHEx81n7aon7Z1RJlGv8nhR/PTaXKvoCTU0wzmwZ+1pMuFbm1utrUa8/fmRHfa0FTqUpAI9T8LLzkHFzGhjmyiaYg0puqR1pCDc2664NedPKnMxbKqa7MQNcBSq9YTE9x1vZW5GjXEP5KS4gUC7JUiiDz9MQBYSP40OMc/TjV9KKj7RE+G4vf6SfjrN6bF+skhw1zZ8qMWdvhQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,27 +103,139 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/22/26 10:16 PM, Jose A. Perez de Azpillaga wrote:
-> On 10/22/26 3:37 PM, Pratyush Yadav wrote:
->> On Wed, Oct 21 2026, Jose A. Perez de Azpillaga wrote:
->>
->>> On a KHO boot, a reserve_mem= region that can't be revived (new name,
->>> size or alignment) can be allocated from KHO bootmem, which the next
->>> kernel boots out of. With CONFIG_KEXEC_HANDOVER_DEBUG preserving it
->>> fails; without it, the next kernel's memmap ends up on top of it.
->> What's your use-case? Why are you adding new reserve_mem regions after
->> cold boot? I'd rather avoid making purely theoretical fixes.
-> 
-> I don't have one, I found it through the TODO. a different reserve_mem=
-> in the cmdline passed to kexec is enough to hit it.
-> 
-> if it isn't meant to work across a live update, would you rather have
-> reserve_mem() fail on KHO boot when it can't revive the region?
-> 
+mremap() can move a page to an address of the other D-cache color,
+leaving lines of the old color in the virtually indexed D-cache of
+Spitfire and Cheetah CPUs.  move_pte() flushed the page for each PTE
+moved, which is only correct while move_ptes() handles one PTE at a
+time.
 
-ping, I can send a v2 either way.
+Drop move_pte(), which no other architecture defines, and flush the
+whole D-cache in flush_cache_range(), which mremap() calls on the old
+range before moving the PTEs.  This keeps the fix in sparc64 without
+a page table walk.
 
+Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+Link: https://lore.kernel.org/all/409079fe-ab52-4389-9fe0-d7246eb27bad@kernel.org/
+Signed-off-by: Imre Kaloz <kaloz@kernel.org>
+---
+Andreas asked for this as a separate patch once the merge window was
+over [1]. It applies on top of sparc for-next.
+
+[1] https://lore.kernel.org/all/4fba060e-c4f4-4d73-8efe-dbed0b5a7bc3@gaisler.com/
+
+ arch/sparc/include/asm/cacheflush_64.h |  4 ++--
+ arch/sparc/include/asm/pgtable_64.h    | 21 ---------------------
+ arch/sparc/mm/init_64.c                | 18 ++++++++++++++++++
+ include/linux/pgtable.h                |  4 ----
+ mm/mremap.c                            |  1 -
+ 5 files changed, 20 insertions(+), 28 deletions(-)
+
+diff --git a/arch/sparc/include/asm/cacheflush_64.h b/arch/sparc/include/asm/cacheflush_64.h
+index 54a2d37008e6..1a116b288816 100644
+--- a/arch/sparc/include/asm/cacheflush_64.h
++++ b/arch/sparc/include/asm/cacheflush_64.h
+@@ -21,8 +21,8 @@ void __flushw_user(void);
+ #define flush_cache_mm(__mm) \
+ 	do { if ((__mm) == current->mm) flushw_user(); } while(0)
+ #define flush_cache_dup_mm(mm) flush_cache_mm(mm)
+-#define flush_cache_range(vma, start, end) \
+-	flush_cache_mm((vma)->vm_mm)
++void flush_cache_range(struct vm_area_struct *vma, unsigned long start,
++		       unsigned long end);
+ #define flush_cache_page(vma, page, pfn) \
+ 	flush_cache_mm((vma)->vm_mm)
+ 
+diff --git a/arch/sparc/include/asm/pgtable_64.h b/arch/sparc/include/asm/pgtable_64.h
+index c26f2888aa18..310b66459521 100644
+--- a/arch/sparc/include/asm/pgtable_64.h
++++ b/arch/sparc/include/asm/pgtable_64.h
+@@ -935,27 +935,6 @@ static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+ #define pte_clear(mm,addr,ptep)		\
+ 	set_pte_at((mm), (addr), (ptep), __pte(0UL))
+ 
+-#ifdef DCACHE_ALIASING_POSSIBLE
+-/* This flushes only the page the PTE maps, so it relies on move_ptes()
+- * calling it for one PTE at a time, which the default pte_batch_hint()
+- * guarantees.
+- */
+-#define __HAVE_ARCH_MOVE_PTE
+-#define move_pte(pte, old_addr, new_addr)				\
+-({									\
+-	pte_t newpte = (pte);						\
+-	if (tlb_type != hypervisor && pte_present(pte)) {		\
+-		unsigned long this_pfn = pte_pfn(pte);			\
+-									\
+-		if (pfn_valid(this_pfn) &&				\
+-		    (((old_addr) ^ (new_addr)) & (1 << 13)))		\
+-			flush_dcache_page_all(current->mm,		\
+-					      pfn_to_page(this_pfn));	\
+-	}								\
+-	newpte;								\
+-})
+-#endif
+-
+ extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
+ 
+ void paging_init(void);
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index 6a0ba9a01a21..a1ab1eacbf33 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -3115,6 +3115,24 @@ void flush_cache_vmap(unsigned long start, unsigned long end)
+ #endif
+ }
+ 
++/*
++ * mremap() moves the PTEs of [start, end) to addresses that may have the
++ * other color, and calls this on the old range first.  Flush the whole
++ * D-cache so no line of the old color outlives the move.
++ */
++void flush_cache_range(struct vm_area_struct *vma, unsigned long start,
++		       unsigned long end)
++{
++	/* flush_cache_mm() spills the user register windows. */
++	flush_cache_mm(vma->vm_mm);
++#ifdef DCACHE_ALIASING_POSSIBLE
++	/* The D-cache is virtually indexed on Spitfire and Cheetah. */
++	if (tlb_type == spitfire || tlb_type == cheetah ||
++	    tlb_type == cheetah_plus)
++		flush_dcache_all();
++#endif
++}
++
+ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
+ {
+ 	if (start < HI_OBP_ADDRESS && end > LOW_OBP_ADDRESS) {
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 780fe849ff8b..c729c3cc8bda 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -1470,10 +1470,6 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
+ }
+ #endif
+ 
+-#ifndef __HAVE_ARCH_MOVE_PTE
+-#define move_pte(pte, old_addr, new_addr)	(pte)
+-#endif
+-
+ #ifndef pte_accessible
+ # define pte_accessible(mm, pte)	((void)(pte), 1)
+ #endif
+diff --git a/mm/mremap.c b/mm/mremap.c
+index 0d06d7f37f19..87cb15027bfd 100644
+--- a/mm/mremap.c
++++ b/mm/mremap.c
+@@ -289,7 +289,6 @@ static int move_ptes(struct pagetable_move_control *pmc,
+ 			force_flush = true;
+ 		}
+ 		pte = get_and_clear_ptes(mm, old_addr, old_ptep, nr_ptes);
+-		pte = move_pte(pte, old_addr, new_addr);
+ 		pte = move_soft_dirty_pte(pte);
+ 
+ 		if (need_clear_uffd_wp && pte_is_uffd_wp_marker(pte))
+
+base-commit: c95443b98771a74c6689f5e7bbc56794fe95f550
 -- 
-cheers,
-jose a. p-a
+2.47.3
+
 
