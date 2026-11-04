@@ -1,100 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88B04606A32D
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 06:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F55606A329
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 07:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VhDzF2tx
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=t/rnVYY3
 Received: by kanga.kvack.org (Postfix)
-	id 89EE36B05B2; Wed,  4 Nov 2026 01:55:53 -0500 (EST)
+	id 0285C6B00EF; Wed,  4 Nov 2026 02:07:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8287F6B05B5; Wed,  4 Nov 2026 01:55:53 -0500 (EST)
+	id F20856B05B1; Wed,  4 Nov 2026 02:07:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F0CA6B05B6; Wed,  4 Nov 2026 01:55:53 -0500 (EST)
+	id E31826B05B2; Wed,  4 Nov 2026 02:07:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 304A26B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 01:55:53 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 902804068B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:55:52 +0000 (UTC)
-X-FDA: 85396526544.10.4F121A0
-Received: from mta0.migadu.com (out-191.mta0.migadu.com [91.218.175.191])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3181380002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 06:55:48 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VhDzF2tx;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.191 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C38E96B00EF
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 02:07:54 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2FB24140634
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:07:54 +0000 (UTC)
+X-FDA: 85396556868.06.5D9838C
+Received: from mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0516B20005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 07:07:51 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="t/rnVYY3";
+	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.176 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793775349;
+	s=arc-20220608; t=1793776072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3LHrHKnVlKPTmz+tK/rlTG3Ul+MFMIEMsJZjre2ndI4=;
-	b=l3OndlUSjRwqBig5bZpYkaKjUOAwjHKXeMOD+N+T2sZ+xAWhwQ6DDaGvq34GL/1oHd5ldK
-	kvojaGtb70rO3dghIEhACXuiArWH8NEimOf2h8l072k4jORHTxLIxrxhB8WrvvQHgg82r+
-	BcE9nKRm/8r5qYKLdaqfWWt8FcJJzFw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=VhDzF2tx;
-	spf=pass (imf30.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.191 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=LgFroUGFKpdEpsdgtkKaDpgGtTJdhJhgl9e77IsbomE=;
+	b=sO9lOLORvgszB7kDYkebPbgQPqs8KIbu8GtpZiPrKFaXlqJU6qafWLvZip4cCSGXtvQUxV
+	wQiWs+id37dsfVG61ne2xEg9S733IefyZl/naLydPwOd6Nzd2OFTUdwZeW2iS5VkaW2mZ8
+	Ljh+MYtymhR64J+N99u12NtUiCUcj5E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793775349;
-	b=ubyAybuMVoeokTZbGv0PUdVKjcHjvPwn6jGq1RwN/sgrlMzuzltceZtLCM/vgaozNCxVOw
-	rsNFECitmZr6+m/ND7+5vXwdbGzpM5RLo3iIKjbm0oI7OPB4uNcfDlhFfWCRYxNnh7sgV6
-	4rqKTQ1u7hd4+0rxAInd3xKtV+zKQ3k=
+	t=1793776072;
+	b=ieFNsxenr40CDMgroTYbDZQaJffDM9GpRMdgTvjbevysI0t6zBx0Uc21OXnnhASH6w6rKz
+	DslGYgN5d9g9I5WB2IkRWZ6Nxy4StR8luBXWAsW2lTl4uao/y0V5VJwnLzpBy8oQPFDpat
+	EUNCMYlLL+jeBngaMENcIp2FRHHPS10=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="t/rnVYY3";
+	spf=pass (imf13.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.176 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=CIBZ6swiNtC8Tf94i/4oegXgVh55H6AYv54uJEyrGDw=;
+DKIM-Signature: a=rsa-sha256; bh=2flBiNkjPpyfuO38KJqLh8zZK1p8JBEOfsDzZidYjyA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793775343; v=1; x=1794380143;
- b=VhDzF2txmtaDN87fTQ3DgA/GYwVVb9/JkN2zy6qxnNSFw/+i904MfEkliJ4p97N4liQihbFo
- Q4Vxc0eGPYL/zvzTqDgnCprz6Gc6cLf0X/tYQfNDS34Wdcb6+gr05CyYVQRXyB1o2LBUZ463jLX
- tu/vrgMsBqoWPcB1MCgaU8d0=
+ t=1793776070; v=1; x=1794380870;
+ b=t/rnVYY3owlF9B/6NtFckGgyA19CWUTTyL3pLVIOvGqUnGJ7tCi4XaPVtlcwIyaMDW+FPOjN
+ pbPizGmJMRRX7D15+nJszteY5KsCV/DKFJvFaLVh97yAEU0fAycrNFIIbq4ikhJpcNZ8CUQ93h+
+ gLcCCIEDi8GKMqxs4WsHoIvk=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 355c044cea9cc491;
-	Wed, 04 Nov 2026 06:55:42 +0000
-X-Mizu-Trace-ID: 355c044cea9cc491
+Received: by mta11.migadu.com with ESMTPS id e13f75cac8a9b814;
+	Wed, 04 Nov 2026 07:07:50 +0000
+X-Mizu-Trace-ID: e13f75cac8a9b814
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v3 00/12] mm: Decouple folio-based vmemmap optimization
- from HugeTLB
+Subject: Re: [PATCH 2/4] mm: hugetlb: skip CMA allocations under
+ PF_MEMALLOC_PIN
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261103224659.2865b9ff27d09994949edd78@linux-foundation.org>
-Date: Wed, 4 Nov 2026 14:55:14 +0800
-Cc: Muchun Song <songmuchun@bytedance.com>,
- Oscar Salvador <osalvador@suse.de>,
- Mike Rapoport <rppt@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>,
- Lance Yang <lance.yang@linux.dev>,
- James Houghton <jthoughton@google.com>,
+In-Reply-To: <8b7f6573-ed12-494f-9210-d6f6dbf01567@linux.dev>
+Date: Wed, 4 Nov 2026 15:07:23 +0800
+Cc: osalvador@suse.de,
  David Hildenbrand <david@kernel.org>,
+ akpm@linux-foundation.org,
+ azpijr@gmail.com,
+ linux-kernel@vger.kernel.org,
  linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
+ stable@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <77ECD6F3-6A6B-4743-B47E-7C97335FAA79@linux.dev>
-References: <20261104023510.260766-1-songmuchun@bytedance.com>
- <20261103224659.2865b9ff27d09994949edd78@linux-foundation.org>
-To: Andrew Morton <akpm@linux-foundation.org>
+Message-Id: <2DE679F1-C87F-4222-A710-C87CDE86D333@linux.dev>
+References: <cover.1793692578.git.zhengqi.arch@bytedance.com>
+ <5bc00742fe249cf09a3095abccf8889d5fa71116.1793692578.git.zhengqi.arch@bytedance.com>
+ <4EC5E593-7537-4659-879C-95ECC2224D2F@linux.dev>
+ <8b7f6573-ed12-494f-9210-d6f6dbf01567@linux.dev>
+To: Qi Zheng <qi.zheng@linux.dev>
 X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: d6mmt3cwrcibpqcnnrcgbtyhyn35is3s
-X-Rspamd-Server: rspam01
+X-Stat-Signature: 56594pectj3grr6zmkaiph1hyk1frdju
+X-Rspamd-Queue-Id: 0516B20005
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 3181380002
-X-HE-Tag: 1793775348-711950
-X-HE-Meta: U2FsdGVkX1+LcX3e7o2+q6mY++AjXkBlq0qICEFvdM2Ahb/QGsQar0mVDtVtyAkfuhW4DfxjK9adgnleoUQdA4qf0fZro0K2b7mB+NsSluc3SrXqj0BjP+AgacG9MzLaHDVVhoqT6huIdMIy2rXpdEgHKcb8KOrLDBwMNVIxFnhcR5icimm9RJi9/GOKTj9MvnomuUCsmkF52iqMlMJQ+BwhDFRSHcCnudus676dsQdtvZJa185pQHC6BL1/JG3xgmy4nGG/yRKJcxMiYLSQ+VjwF7ZXmfDx66bDBpVQ8ElFyqmbPFlSHivJdCGmAWN1D2wJG84ohtuibkVVNdt41K082xMq+soPM8lYLUUV7CwblJyjhEoaXQKZMiml6eB8OFDV2sPuHOh8LaFVGptTpvyGbKYv6H1+bjbLtE6qMroJVn2FmWtxzpVe8XF4APcMpIdKB4kG5JKFpPfwtFS9EgtrtvDVL9Dr4KPwFvM994HF+TfMzEXTDLDvL7bIrCqO94AoZLwp5d2nKr6VUltnJN2jwIIO++aAgHcBFi+SGFal63nchQIT1EAD/Ry804iGJl/WKvym/auWWeDj35yIopoDfydiLm1N60xtjbLCKqSH1UACL6LWhxdz8ilBYghuavGIKuxTFxlrj/Ix0eOsq9PLGFKhMqtkgJIyWxJMgaucxpRTLB9KnSRU8nAtx4+YEym0jGfzPuo8glQtLJ9HTlDrogLp/TwD1lnzYSivhTtb8IkRlWTG9cxlaUlMz3r+ZvSq9yh5eAt410DezQWuIILx+qk/u1Avd2H33UI5mEg3/mJuURCKa0E927YU1b+ixrWkXj2R2UIb+IoTVsZpSM8Hmfn9IIOnWQw8VcYUsh/z/MfGiug8UCMy1J/M6wxh+6zNaDyGTIDpP4Kw6WSP8KJHfHm4T1AQ8SSgkJmzNefyuNGRrBhbu+keFMqBoFh8kzz3H7WdaXDlGtPN9Zn
- Y94SAIyc
- NYekNImfBsxpRdk6++faXHp08DU4AtHaXEbQyefYenDVpq4YPb1tMBs0xoQ5NNfLPdAs25U7RQzgoMcEdACJ1Y1JkuYmEEsUJkeRxmtnWbR/LoPAxb7Jirt65pNM6mJe64br6kkIJjU8kJrJNtmU1KXgyq2n7fnQcOl9muYwMsCc6EEn939Os3BLSRtM5o+ANE6qorabHRavZozwB70sn0bgZ0WhtJJNk92f+CraJeVQka9vmcIim+wR9WywLKcepkpjCV1YZLgItGx6Zay0wyljpHtA1H5sFMvlvg0OHUcjCsRYHIB4C3ggUIdSlpVpNETXoFmml94HCLlha4NrYFs/yUZIrRMTp5OEF
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793776071-323658
+X-HE-Meta: U2FsdGVkX1+KteXq8j0to+Z8md4sbGNlTvQuHYAtVmB0GW/mluug16hDKhzSHhHBC625Q//WyWhyf4XGlu1Th3GoGkkdLJ3f2Q1oshGHyMLyCsxh2lwhLhegBOeE1MzoXhktZ1Oo+3asS/2GoRu7wOu4r2irTBwbilJDaz6k4c11ghxTldgQLmmZOR7xvnoqEKqhWyhOPwABycgbMovG9pZLiG53qNTIYx8jfcpPaVo6YrrEQhRjBe7LHsku12WvTdkKa9HURKe1ETBAFRfSPuXy66api3qeueyAxItvgshi7OwTgZEWQW74pPj6RlK9CDyj+2Fm/96J6bbXwGi4eoKBAyFmjHmGUdpZRQ1cQSk9z6bZjOyEcO6yHWm2hZ8UUsXSL5Fb6io0dL+VsD4c1T148h88sJT6LQ8b286U2hJ7zrb0MVcrUD3LXIPzNAWAbH+1pamXgwaXYQ5tr0d+AOEcZCjyZxwLXFvpKU1X83EKSavFTXEQejHZnVWjiuB6gBXo44HU2aJksUBi35fMyXPTg1TWuqzeHFKDqSZYIqGHS8eRQYV4d/OcFJm7dktJhCUabcdvZxQ3Jl13n+0YYht82tNehQqV+7BWexI5FuCfOBit4fEEp5XE5PS+wjLXSKt2lB6AW9Fcult4yryRV7S/0ExmiAxoub/29ltEFnAhnDifqhKuYX6aILwCu/1yxO9BFT19GsAEhDL3Xdg6CDAc5PZWRcsS28F1DyZt70pKOs2Ytr6FORokQBnXOrI+sGzz727Fq3k8jzWnbrzlpfIaUTHsD26LrJcTI/w/UR9kQL4pnkkXvzkKDnaQv4uiEkcqHtNatT3f+pr+riif0p8D0H2jEkl1BHNLDZEmxsF58QwJw8QBNgPO0PTBh4XkM4aI1cwlcz1VHHMD2I/FhmbxY9BC1pjM2JDkpt43uCtncLRauWjLH6UKhvSenbILQyP9NBe5Ul4UobNiSaY
+ /zYz+xR3
+ fUVG3czbHHX+lc7tOdVfPH5ZqAi0jU2mkoMNkIWCN+XS7huzjVs1cVHVke0drKTb51PBYR3AXrjrrSwqIU6fysxeSE6JgiLbV6heymoXbcOB/zdVxbsXOWaSmtV3wS0pvNzyqoCa99b3RCcJyouUhLmms3kX4YU9QR36MG5jKisvUmybt+oiFAcjV5N1ITT5jPR4jlitU2plxPVmr5ytZ7WawZF2S5/D3H0yHwxTZBCOiQ1z1GyHbG9b8bE3p3QyoxJYxDqFk74k83LSpb5G3CzZOS1Rrvmfa4SYu2ZFXAT/oCFwL1xBUfrCCWQlk8qNn6pMPoECGUEyiPr1ZdUVwsBafCUQAvYHde0lTXUDqTN2kc2E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,117 +106,242 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-> On Nov 4, 2026, at 14:46, Andrew Morton <akpm@linux-foundation.org> =
-wrote:
+> On Nov 4, 2026, at 11:27, Qi Zheng <qi.zheng@linux.dev> wrote:
 >=20
-> On Wed,  4 Nov 2026 10:34:58 +0800 Muchun Song =
-<songmuchun@bytedance.com> wrote:
+> Hi Muchun,
+
+Hi,
+
 >=20
->> Hi,
->>=20
->> Section-based vmemmap optimization is implemented in =
-sparse-vmemmap.c,
->> while folio-based optimization currently lives in hugetlb_vmemmap.c.
->> The latter is tightly coupled to HugeTLB-specific state even though =
+> On 11/3/26 6:56 PM, Muchun Song wrote:
+>>> On Nov 3, 2026, at 16:01, Qi Zheng <qi.zheng@linux.dev> wrote:
+>>>=20
+>>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>>=20
+>>> With gigantic overcommit enabled, a fault during long-term pinning
+>>> can allocate a fresh HugeTLB folio from CMA despite PF_MEMALLOC_PIN.
+>>>=20
+>>> The folio must then be migrated before it can be pinned. However,
+>>> fresh gigantic migration targets are not supported, so pinning fails
+>>> when the HugeTLB pool has no suitable target, even if the original
+>>> fault could have allocated pinnable memory outside CMA.
+>>>=20
+>>> Honor PF_MEMALLOC_PIN in the HugeTLB CMA allocator so the fault can
+>>> try the non-CMA fallback, or fail when allocation is restricted to =
+CMA.
+>> Wait... I think my Acked-by got ahead of me here. :)
+>> There seems to be a rather odd distinction that GUP is missing.
+>> The usual reason long-term GUP must migrate a page out of a
+>> MIGRATE_CMA pageblock is that the page was only borrowed from CMA by =
 the
->> underlying page-table remapping operates on one folio at a time.
->>=20
->> To make these interfaces easier to maintain, the folio-based =
-remapping
->> mechanics first need a boundary that is independent of =
-HugeTLB-specific
->> state and raw address ranges. This will allow the mechanics to be =
-moved
->> into a common vmemmap optimization layer alongside the section-based
->> interface.
->>=20
->> This series establishes that boundary through three folio-oriented
->> operations, each with a distinct role:
->>=20
->>  - vmemmap_optimize_folio() optimizes the vmemmap backing of a folio;
->>  - vmemmap_restore_folio() restores the vmemmap backing of a folio; =
-and
->>  - vmemmap_pteify_folio() converts the vmemmap backing of a folio to
->>    PTE mappings.
->>=20
->> Together, these operations encapsulate the address-range calculation =
-and
->> remapping mechanics for a folio. HugeTLB wrappers retain policy =
-decisions
->> such as eligibility, optimized state, batching and TLB flush =
-handling.
->>=20
->> Patches 1-8 generalize the underlying vmemmap remapping =
-infrastructure by
->> removing HugeTLB-specific assumptions and simplifying remap control =
-and
->> resource handling. Patches 9-12 then establish folio-oriented =
-operations
->> for optimization, restoration and PTE conversion.
->>=20
->> The implementation remains in hugetlb_vmemmap.c for now. A follow-up =
-can
->> move the folio-based operations into the common vmemmap optimization =
-layer
->> once the interface boundary is in place.
->>=20
+>> normal page allocator.  The corresponding CMA bitmap range is still
+>> available, so a future CMA allocation relies on being able to migrate
+>> that page away.  A long-term pin would prevent that.
+>> However, a HugeTLB folio returned by
+>> hugetlb_cma_alloc_frozen_folio() is different.  It is the actual CMA
+>> allocation, not merely a movable page that happens to reside in a
+>> MIGRATE_CMA pageblock.  Its range has already been marked allocated =
+in
+>> the hugetlb CMA bitmap.
+>> Therefore, CMA cannot allocate that range again until the HugeTLB =
+folio
+>> is freed anyway.  Long-term pinning the folio does not seem to make =
+the
+>> CMA area any less available than keeping the HugeTLB folio mapped for
+>> the same amount of time.
+>> folio_is_longterm_pinnable() currently only sees MIGRATE_CMA and does
+>> not distinguish these two cases.  In that light, rejecting
+>> PF_MEMALLOC_PIN in hugetlb_cma_alloc_frozen_folio() looks like =
+working
+>> around an overly broad GUP classification.  It also means that
+>> hugetlb_cma_only users will fail the fault, while other users may =
+consume
+>> a gigantic contiguous range outside the dedicated hugetlb CMA area =
+even
+>> when that area has free space.
+>> Would it make more sense to fix the long-term GUP check instead, so =
+that
+>> an explicitly CMA-allocated HugeTLB folio is considered pinnable, =
+while
+>> ordinary pages merely borrowed from MIGRATE_CMA pageblocks remain =
+unpinnable?
 >=20
-> Thanks.  I fed this into my evolving LLM-controlled testing setup and =
-it
-> said
+> Make sense!
 >=20
-> : I tested all twelve patches together in an x86-64 Debian VM under
-> : QEMU/KVM, with 4 KiB base pages and KASAN enabled.
-> :
-> : I grew the pool by 64 two-MiB huge pages and drained it again. With
-> : vmemmap optimization enabled, the kernel released 448 vmemmap pages
-> : on growth and restored all 448 on shrink, in each of three cycles.
-> : With optimization disabled, the vmemmap count stayed constant. I =
-also
-> : faulted in a single surplus huge page. It released seven vmemmap =
-pages
-> : and restored all seven when I unmapped it.
-> :
-> : I tested both boot-reserved and runtime-allocated 1 GiB huge pages.
-> : For the runtime case, I grew the pool from zero to one, drained it,
-> : and allocated again. I mapped the page and wrote and verified a byte
-> : in every 4 KiB base page. After unmapping it, I demoted it to 512
-> : two-MiB huge pages and drained the resulting pool.
-> :
-> : All twelve programs in the HugeTLB selftest group passed, including
-> : the cgroup reservation, fault-charge and reparenting tests. Both
-> : soft-offline cases passed, as did all twelve poisoned-page read test
-> : cases. I saw no HugeTLB warnings or KASAN reports.
-> :
-> : On a diagnostic build, I failed the head-page allocation and, in a
-> : separate run, interrupted optimization after three PTEs had changed.
-> : The trace showed rollback restoring the two tail entries to distinct
-> : backing pages. The folio remained usable in both runs. I also failed
-> : restoration after three of seven replacement pages had been =
-allocated.
-> : All three were freed, the retry succeeded, and the metadata count
-> : returned to its starting value.
-> :
-> : I configured QEMU with two virtual NUMA nodes, each with two vCPUs
-> : and 4 GiB of RAM. On each node, I forced the batched pre-split to
-> : fail. The trace showed the remap splitting the same PMD and =
-completing
-> : a range flush before replacing its first PTE. Folios on each node
-> : shared a tail backing page distinct from the other node's. I drained
-> : each node's pool in turn and verified data in a live folio on the =
-other.
-> :
-> : Finally, on the kernel without diagnostic hooks, I grew and drained
-> : both pools during active page-cache reclaim. Over 40 cycles all 640
-> : folios optimized and restored, and the OOM-kill count stayed flat.
+> I'll replace this patch with an exception for HPG_cma folios in the
+> MIGRATE_CMA check. This also lets the HugeTLB allocator select =
+preallocated
+> CMA folios during long-term pinning. MIGRATE_ISOLATE and ZONE_MOVABLE
+> remain restricted.
+>=20
+> Fresh CMA allocations under PF_MEMALLOC_PIN also need to skip ranges
+> in ZONE_MOVABLE. Returning -EBUSY here lets CMA try its remaining =
+ranges.
+>=20
+> The incremental diff against this patch is below.
+>=20
+> diff --git a/include/linux/cma.h b/include/linux/cma.h
+> index 8555d38a97b1..7fd1b6e65b58 100644
+> --- a/include/linux/cma.h
+> +++ b/include/linux/cma.h
+> @@ -21,11 +21,13 @@
+> #define CMA_MIN_ALIGNMENT_BYTES (PAGE_SIZE * CMA_MIN_ALIGNMENT_PAGES)
+>=20
+> struct cma;
+> +struct folio;
+>=20
+> extern unsigned long totalcma_pages;
+> extern phys_addr_t cma_get_base(const struct cma *cma);
+> extern unsigned long cma_get_size(const struct cma *cma);
+> extern const char *cma_get_name(const struct cma *cma);
+> +bool cma_folio_is_pinnable(struct folio *folio);
+>=20
+> extern int __init cma_declare_contiguous_nid(phys_addr_t base,
+> 			phys_addr_t size, phys_addr_t limit,
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index cb993a1d0728..d15810be7d96 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3,6 +3,7 @@
+> #define _LINUX_MM_H
+>=20
+> #include <linux/args.h>
+> +#include <linux/cma.h>
+> #include <linux/errno.h>
+> #include <linux/mmdebug.h>
+> #include <linux/gfp.h>
+> @@ -2975,14 +2976,16 @@ static inline bool is_zero_folio(const struct =
+folio *folio)
+> 	return is_zero_page(&folio->page);
+> }
+>=20
+> -/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
+> +/* Borrowed CMA pages and ZONE_MOVABLE folios cannot be pinned long =
+term. */
+> #ifdef CONFIG_MIGRATION
+> static inline bool folio_is_longterm_pinnable(struct folio *folio)
+> {
+> #ifdef CONFIG_CMA
+> 	int mt =3D folio_migratetype(folio);
+>=20
+> -	if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
+> +	if (mt =3D=3D MIGRATE_ISOLATE)
+> +		return false;
+> +	if (mt =3D=3D MIGRATE_CMA && !cma_folio_is_pinnable(folio))
+> 		return false;
 
-Really a thorough set of tests.
+Actually, we do not need cma_folio_is_pinnable(), does the following =
+work for you?
 
-> :
-> : Tested-by: Andrew Morton <akpm@linux-foundation.org>
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2982,6 +2982,9 @@ static inline bool =
+folio_is_longterm_pinnable(struct folio *folio)
+ #ifdef CONFIG_CMA
+        int mt =3D folio_migratetype(folio);
 
-Thanks for testing.
++       if (folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio))
++               return true;
++
+        if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
+                return false;
+ #endif
 
+> #endif
+> /* The zero page can be "pinned" but gets special handling. */
+> diff --git a/mm/cma.c b/mm/cma.c
+> index a10ea37a261d..c2814f54f86a 100644
+> --- a/mm/cma.c
+> +++ b/mm/cma.c
+> @@ -27,6 +27,7 @@
+> #include <linux/log2.h>
+> #include <linux/cma.h>
+> #include <linux/highmem.h>
+> +#include <linux/hugetlb.h>
+> #include <linux/io.h>
+> #include <linux/kmemleak.h>
+> #include <trace/events/cma.h>
+> @@ -55,6 +56,12 @@ const char *cma_get_name(const struct cma *cma)
+> }
+> EXPORT_SYMBOL_GPL(cma_get_name);
+>=20
+> +bool cma_folio_is_pinnable(struct folio *folio)
+> +{
+> +	/* Explicit HugeTLB CMA allocations own their bitmap ranges. */
+> +	return folio_test_hugetlb(folio) && =
+folio_test_hugetlb_cma(folio);
+> +}
+> +
+> static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
+> 					     unsigned int align_order)
+> {
+> @@ -792,6 +799,11 @@ static int cma_range_alloc(struct cma *cma, =
+struct cma_memrange *cmr,
+> 	int ret =3D -EBUSY;
+> 	struct page *page =3D NULL;
+>=20
+> + 	/* Each range lies within one zone; try other ranges if needed. =
+*/
+> +	if ((current->flags & PF_MEMALLOC_PIN) &&
+> + 	    is_zone_movable_page(pfn_to_page(cmr->base_pfn)))
+> +		return -EBUSY;
+
+I don't know why we need this.
+
+Thanks,
 Muchun
+
+> +
+> 	mask =3D cma_bitmap_aligned_mask(cma, align);
+> 	offset =3D cma_bitmap_aligned_offset(cma, cmr, align);
+> 	bitmap_maxno =3D cma_bitmap_maxno(cma, cmr);
+> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> index dde1c866406f..95fd2d190f0d 100644
+> --- a/mm/hugetlb_cma.c
+> +++ b/mm/hugetlb_cma.c
+> @@ -62,9 +62,6 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
+order, gfp_t gfp_mask,
+> 	if (!hugetlb_cma_size)
+> 		return NULL;
+>=20
+> -	if (current->flags & PF_MEMALLOC_PIN)
+> -		return NULL;
+> -
+> retry_cpuset:
+> 	if (!nodemask) {
+> 		cpuset_mems_cookie =3D read_mems_allowed_begin();
+>=20
+> Thanks,
+> Qi
+>=20
+>> Thanks,
+>> Muchun
+>>>=20
+>>> Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic =
+hugepages")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>>> ---
+>>> mm/hugetlb_cma.c | 3 +++
+>>> 1 file changed, 3 insertions(+)
+>>>=20
+>>> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+>>> index 95fd2d190f0d2..dde1c866406fb 100644
+>>> --- a/mm/hugetlb_cma.c
+>>> +++ b/mm/hugetlb_cma.c
+>>> @@ -62,6 +62,9 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int =
+order, gfp_t gfp_mask,
+>>> 	if (!hugetlb_cma_size)
+>>> 		return NULL;
+>>>=20
+>>> +	if (current->flags & PF_MEMALLOC_PIN)
+>>> +		return NULL;
+>>> +
+>>> retry_cpuset:
+>>> 	if (!nodemask) {
+>>> 		cpuset_mems_cookie =3D read_mems_allowed_begin();
+>>> --=20
+>>> 2.54.0
+
 
 
