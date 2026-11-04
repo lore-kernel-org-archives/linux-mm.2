@@ -1,149 +1,87 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B51606A333
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:37:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cwqHozyI
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C502606A339
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 13:40:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C6F716B05B2; Wed,  4 Nov 2026 08:37:54 -0500 (EST)
+	id B3A3C6B05B4; Wed,  4 Nov 2026 08:40:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF9A16B05B3; Wed,  4 Nov 2026 08:37:54 -0500 (EST)
+	id AEB376B05B5; Wed,  4 Nov 2026 08:40:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A99436B05B4; Wed,  4 Nov 2026 08:37:54 -0500 (EST)
+	id A02FC6B05B6; Wed,  4 Nov 2026 08:40:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A0BC6B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:37:54 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7D27DC074C
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:37:52 +0000 (UTC)
-X-FDA: 85397539584.06.311BAF3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BECD51C000B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:37:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cwqHozyI;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AB506B05B4
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 08:40:00 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 60A591206E0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:39:59 +0000 (UTC)
+X-FDA: 85397544918.17.1CD9F7C
+Received: from outbound.baidu.com (outbound.baidu.com [180.76.5.236])
+	by imf15.hostedemail.com (Postfix) with SMTP id 78758A000B
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 13:39:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=DEGrKpZp;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=md1762835C5C=zhangyili01@baidu.com" designates 180.76.5.236 as permitted sender) smtp.mailfrom="prvs=md1762835C5C=zhangyili01@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793799470;
+	s=arc-20220608; t=1793799597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QIRwlWq1POK80nPhJP4wZpDMtEESF+NRtsJgzdhVq2Q=;
-	b=BQiYAiMej05BKJn2VlJlEl/SbTfwqqRwMmMfPe+Ik+xdZMqagoY0g8+UYskzlHr3clcHHP
-	3F2RsWjgypH4ux/3DMpSyFpMKJbIEi22/O7zbqOZwe7sSUNMFxWORxo3r2mbdlmuPf4z9g
-	ZLm+vjK2pCjadkegjzuRNgaNPX+TgOU=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=IkhbWLUwIsHVA5qbkZd1FvDfizz0mbHSzrjJWS7856E=;
+	b=O+kXxZ9XrfSF2O4mTeFwQ+Sd1ZC97JK+XYIK2FRIZmIIGDL9u8RGsRMQoGqhyaYGs+OO1M
+	9dghGRhzq1sglUbNQqhlT5MDg38cFjRY37Uddt3zyxGgQw9YvG6MeIJP3zJ6MgKIi+0Arx
+	/vdC4EnNzreFg3vq3+f+ZxTc893xBh0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793799470;
-	b=jXw5Bo3Rpsfq53EdKw/IN2NzForFkhDerKOczF76AwfRzd/szus7QV0icplZ7OVEk9u+6q
-	L6SuGHwH6vSspbE4BPHoqagktHra9DtFL+2ySMJi27snl/2/5iBxAZzkcy2WL4GXsaqZTu
-	5ZdlFFeOYxSTjw4PAOPAU1kXip4MF+4=
+	t=1793799597;
+	b=PDqmVQaUTAL/Ukw+XnHfw107PsaoFP7pGRsostVMage+XI4iTKib+BMLPRCva+0hnGlI3k
+	0w8FCS57Mwghr5XvNdef9/xl584O9tU5gElb0SGZcwsDnvM7N3Dxso2wyFr4G3O1LgPo9/
+	6bOGoJxmh7MhvbF40xMRvdw+w/Pm3F4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cwqHozyI;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4BBE460DEE;
-	Wed,  4 Nov 2026 13:37:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C9751F000C1;
-	Wed,  4 Nov 2026 13:37:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793799470;
-	bh=QIRwlWq1POK80nPhJP4wZpDMtEESF+NRtsJgzdhVq2Q=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=cwqHozyI+ycDGjqocXr3v7WBJevddi1Lm+mvjsW4ZILeiZFcOYgijmp3MZGE4bA7w
-	 mQzS3/yVPBzmu5AotQVz4CKV6CUpIpSE+gU0tDzS93Am231SM9Qgr0eUwqpaqunlhX
-	 SA3Z5OfMOWVo7ICFutTgALLBphPSNbZjPFeZBqpCX5tGlrkLW7+zyyGEjl/jaGFNC/
-	 ilywGHugTe77QeQUPBE0unTEsNcljWGsqcKgPv0sJ2gXZUkJDitaRDKL1S/u/Ckrge
-	 r97Ci+PXClHHhoby5wgFqej4yypQ9CR0Iov1FgLSmPzVeJ5j8IniLSI0Km9XEZrXvn
-	 YmI95RfThFacw==
-Message-ID: <287698ab-76dc-4aee-8e6c-db1f5d18974c@kernel.org>
-Date: Wed, 4 Nov 2026 14:37:39 +0100
+	imf15.hostedemail.com;
+	dkim=pass header.d=baidu.com header.s=selector1 header.b=DEGrKpZp;
+	spf=pass (imf15.hostedemail.com: domain of "prvs=md1762835C5C=zhangyili01@baidu.com" designates 180.76.5.236 as permitted sender) smtp.mailfrom="prvs=md1762835C5C=zhangyili01@baidu.com";
+	dmarc=pass (policy=quarantine) header.from=baidu.com
+X-MD-Sfrom: zhangyili01@baidu.com
+X-MD-SrcIP: 172.31.51.15
+From: Yili Zhang <zhangyili01@baidu.com>
+To: <muchun.song@linux.dev>, <osalvador@suse.de>, <akpm@linux-foundation.org>
+CC: <david@kernel.org>, <kas@kernel.org>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>, <rppt@kernel.org>, Yili Zhang
+	<zhangyili01@baidu.com>
+Subject: [PATCH] mm/hugetlb: do not invoke the OOM killer when optimizing vmemmap
+Date: Wed, 4 Nov 2026 21:39:38 +0800
+Message-ID: <20261104133938.50974-1-zhangyili01@baidu.com>
+X-Mailer: git-send-email 2.55.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm/rmap: use release ordering for small-folio
- mapcount removal
-To: Pranith Kumar <bobby.prani@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
- Richard Cochran <richardcochran@gmail.com>,
- "open list:MEMORY MANAGEMENT - CORE" <linux-mm@kvack.org>,
- open list <linux-kernel@vger.kernel.org>,
- "open list:PTP HARDWARE CLOCK SUPPORT:Keyword:(?:b|_)ptp(?:b|_)"
- <netdev@vger.kernel.org>
-References: <20261104013139.1341582-1-bobby.prani@gmail.com>
- <750560f3-4c5a-44fe-b72a-0611be383f32@kernel.org>
- <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <CAJhHMCCu8ehOU37_4UpExNO3U8YPygjnht+2S+axkxTwY8bx2w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 5xjchkt61uf69mxui3uwuy5pm5x465wk
-X-Rspamd-Queue-Id: BECD51C000B
+Content-Type: text/plain
+X-ClientProxiedBy: bjkjy-exc12.internal.baidu.com (172.31.51.12) To
+ BJKJY-Exc19.internal.baidu.com (172.31.51.15)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=baidu.com;
+	s=selector1; t=1793799589;
+	bh=IkhbWLUwIsHVA5qbkZd1FvDfizz0mbHSzrjJWS7856E=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type;
+	b=DEGrKpZpvg+dC+n6PNW5iuA3y2vQTBc2UI/ca3IWigfKjgN6kEOaypSOh2vAfkb95
+	 IlKnFbauvomSKB3e7iSq9xTg/En2KSi/Hw4tJYkCxmcoc+O4ndhpj6io8dT/aav2eK
+	 9hxuMMAdLvbrj25g6/8uwEV59uIM5a8XujpN3Vjg1MFYeuR8jN5TK36EJ7g3vx7VRx
+	 tzPsI2urySU2AKgzVhQh60nXCWdft7M89zQb+LmYmOqAoqT+g04iUkm8KmlfWB+eq0
+	 QB4v5ziuWaFR9JBf4b8kh550dto7exx3qUiVc8GYMy/TuaMh1visMBS0ayeoGTlEMz
+	 TOXb1ff+Je2DA==
+X-Stat-Signature: m4d7sce1ybdxbbayftgmwzwwg7ebf4j4
+X-Rspamd-Queue-Id: 78758A000B
 X-Rspam-User: 
-X-HE-Tag: 1793799470-137058
-X-HE-Meta: U2FsdGVkX1/E+gcgzsVf3PHVdITIRQddu5P/3eGP5+stbqiM+GXYMu+fA7JmYDc9flufdaJt84d9fl6L0AvysgediPp81KQcRfPGEepK+Jq4Cf0KqqkzmvY/V5EgibTsXFZOix6ajMeQUrS8/wHYM23bAzfI+k+k59PmYAJiBlkh2k5bC3UjrwtG5qpRNNKkCoWZs51nCcKXFOrL1/tMYjvYhIuAdGanYUWwJ0cENC2n/B9GjRHT3D8fHK4/iww6Vjny54ZmCZ/pPVVUAhYKOnCPnbDx0/LhGc4nDSXu7TSJnB0jw6qATrPvdWze/cLyxzOivMtCMX88+cZEm1h6hfG+qY3XcnkTaFY3qCmCJL6jJX5i3njzdCtM+BodypBNZ1I2O5fUMq1yHZTG3Qsdi79/bzMLC0s53u/q/uTFzs7GKBGrPxvrwNNWyPklvzY0VhvyERQD24Gxo9bTcZyKzVvBRmcKSSI75gUKfpgNytXGcnfwrT/gsegEC4gDgTFv9icVc4MjGHFMAcsqtPUJbkToh/v22VZcfuXUdpqbNheoQsRmkZ5knoKPlNEjcpoSfgBNu0iN9N1+yL4cyPmK57Ua2jXUjriaHP1aBPFXCsaDRlkTxCpsjQF7DNH2nXR1/+lAdUst3maT0TwWn+SMm0HPKnoYT10mlXrwM62ElD05TpivxrrkS4D4NRYs91tDdgiUn1VXyOU3h4y5L12VCgm7aYYRBf5b3c1UQD8YsrTyDZyVTNp/Bk6vVbGHKjlPJ3D/elE3w54+juw0UYCbTtmpFEqqdhBXfyDzjtsTM0aFAHsYVCEa8VPCgRRSfLN5Ivn5WWD0Kk7/b8LK0gbZD/a+vox0fIqyik7NhcRyxq0mwYPyruHP8LyZEG8iofTiWD1YVszFD6AgLPlI3LKpb1vNj9hAjcuFzNxNJzuuCtLqlqXhmRBnMyJcCsEmEIyUrvNDXWtuKXyLXSD3TT0
- VQGwV/9C
- 9Bm1ku2l4RJ4JhqWBHkGrsXCaVOKKxuGbJutlDEbZTr4ngE6tYN6a9Jd0rKqdNlDQONSIgyVLidxxL+OHJVfLlSWxWCO15k2+zY1gTnnPHl1Afg8WKOOrIWxW/fxQq5cBPwmuv53rIrM34P74akbo82lXafdQyHt72V1CANWdnEjzH72mfU6k1/HgHuDONtnR9aBGB163dRcXnzh2kpiVT0klVnDwBGMx1Wgs+Bsulvhfi3oAuzZEDnQ07NXwYqU9ZBU1IPKD/sBeZky/yJYUNU5UUEiA3XjaQqISq1w+Fne268EaY5rYNE3dEoalm/63HaNGXus//O4H8QQh1bj3s6t83014p+04h1AheGct5w1h2iZfySrZyYNF31xYVXDf2oNO
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793799594-409731
+X-HE-Meta: U2FsdGVkX187x7l1gxppGpBtIgjwNbmzZKJ8oLgxp6JTYFt1agela1guskxZ6pCb8kxVxavndhCf4n0WeFTakjkC3A7y5Sj/9nDJGEJqZzuTybD4+9VpaXvGQPPOjS6He7vGEeeiWn/D0fZkbrVB8qc2R56cXb6vgbnWhCOd02BPIz3m65U46QPM7vrSq0oi46RvtuTc1AwnCP9boAqGzGfOCMi9YRGLTRUlRDsjcPOVOH+7ZN1Ru2UfWKgQm30iijlShE1VACk0HJCfCbXyQNWhHk2jowNLMFD8KSX2eH/vfqJiqqbq7FChfNviw/b7adijumANTP5Q/vcibEAVeczhPCalZHMtAOoN+UeBGKswYHZJepBwdcVtQfumVJkWQC7bHGfc2chI3716QQv6IymL3JF0CkgNN2sRzwWr05mE1dyR4AbQT8DIGomusKfDCnuMHR/kPsWb5KmCQLo94LqLMxdXfLloxbvEopsC8o21gWWUgbMpwPmbioc9J1b32cN3D0L9kjZJDm451KXXFn7sS0Wz1czJyoGnPqIlXe+QT42ZB/enTRMmbZEvCE32vjEZjI/Vbglo7Vz5giVxcfYv0QekH8rrDlcO/e+NJ7vuiIDzDyZ5WthxwTMHtvzWiCmCkRGmUkpns3Lapqbv9suDSC52hpnExjA3/llMtAAJZCG1SllsElf1vYNyE1ShKIrVyavaFc5wVjzY4qGJKNRdXzV3ekzfkNkZMK3DVmlQKt8yd8G2RJCbOvRl1aYUr9enoRsbOkVP9fQygPXNA0cIe79ArKbAfNKK9fw9YW3LHi38zOpEBnOcHHPR4m/yConzzPHjPxz/m76bWJDtrKKHeAnvxYeCFog/iQIBFnGF2IhwFGI65J59X00+5xQ2uDCXHBV4P890O6v1jwUPoY/hT107HJKZevCajLvU88JuFG92FV3urxHxvPYtiNre97zOEYpu9gqHgZ1mXvs
+ EVLO5YZB
+ oOOwOUYyBjHbZu8sBG9/Ru/aoqhiT3HX8MBsNMSgZ1t0dlYwoVP/kwdiVMtvlNTuUIahjO60S5o2GqGdyPCkGXiI95YDjuozTmxiGrHfnqD5bAa/VUHx6LCcGaBhzVp7COLCo7GCh7qQk568+wKneqOG+SLZ1WRcQYrsvCe6a/bWqd/snXaq5h8sjyMZtjRFJfGUNpKBg1bQhn6VYaAsmqPCuiqkciF/6eOLEka2J5RXl0m/E7BhZFP5jKNIYVfbXRir6chfsMsbA1zL+aaPuDN8xEyGQkOYsHBz9w1aH1kq+GLYMTSBvFoKPT3FsQpOa9+zvYlB9rH8OzxpulpZuAuH5PolUrnGX5CTVaTMs93UOun/1hiGzkeJ81FIx6EajVwmXK+hh4kDVsvn+h4l43J5uxEbG//zItHBP0pDHQGDbAyI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,36 +90,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/4/26 10:46, Pranith Kumar wrote:
-> Hi David,
-> 
-> Thank you for looking at the patch.
-> 
-> On Wed, Nov 4, 2026 at 1:16 AM David Hildenbrand (Arm) <david@kernel.org> wrote:
->>
->>
->>> In an arm64 page map/unmap microbenchmark with 20,480 minor
->>> faults, simulated cycles fell by 1.54%.
->>
->> Thanks for the patch.
->>
->> While I see value, I am not convinced this is the right time for this
->> micro-optimization while we are busy with other things.
->>
->> This needs a better evaluation: 1.54% in a micro-benchmark without knowing the
->> stddev isn't particularly helpful.
->>
-> 
-> This result is from a deterministic simulation, hence no stddev.
+Boot-time hugepage allocation is designed to drain all free memory and
+let the vmemmap optimization reclaim vmemmap pages, so that more
+hugepages can be allocated afterwards:
+hugetlb_pages_alloc_boot_node() flushes the folios accumulated so far
+once si_mem_available() drops to zero, and hugetlb_pages_alloc_boot()
+keeps retrying as long as progress is being made.  The allocation is
+parallelized with padata and runs on many threads at once.
 
-Ah, I'd assume even a deterministic simulator would have some variance due to
-preemption, TLB flushes etc.
+The page that will back the new head struct page of a folio being
+optimized is allocated with a bare GFP_KERNEL mask in
+__hugetlb_vmemmap_optimize_folio():
 
-But the bigger question is: which arm64 variant is simulated? I'd assume it
-might vary heavily no?
+	vmemmap_head = alloc_pages_node(nid, GFP_KERNEL, 0);
 
+Once the workers have consumed all free memory, this allocation enters
+the OOM path.  During boot-time allocation, at the do_one_initcall()
+stage, there are no user processes yet, so out_of_memory() finds
+nothing to kill and panics:
+
+  Out of memory and no killable processes...
+  Kernel panic - not syncing: System is deadlocked on memory
+  CPU: 74 UID: 0 PID: 1 Comm: swapper/0
+  Call Trace:
+    vpanic+0x32f/0x360
+    panic+0x57/0x60
+    out_of_memory+0x581/0x590
+    __alloc_pages_slowpath.constprop.115+0x97d/0xed0
+    __alloc_frozen_pages_noprof+0x303/0x330
+    __alloc_pages_noprof+0xa/0x20
+    __hugetlb_vmemmap_optimize_folio+0xa3/0x210
+    __hugetlb_vmemmap_optimize_folios+0x190/0x230
+    prep_and_add_allocated_folios+0x16/0x90
+    hugetlb_pages_alloc_boot_node+0x152/0x180
+    padata_mt_helper+0x5b/0xb0
+    padata_do_multithreaded+0x294/0x3a0
+    hugetlb_hstate_alloc_pages+0x2e1/0x3b0
+    hugetlb_init+0x3b5/0x640
+    do_one_initcall+0x49/0x200
+
+Optimizing the vmemmap is best-effort by design: on allocation failure,
+__hugetlb_vmemmap_optimize_folios() frees the vmemmap pages reclaimed
+from the folios it has processed so far and retries once, and folios
+that still cannot be optimized are put into the pool unoptimized by
+prep_and_add_allocated_folios().  The worst outcome of a failure is a
+higher vmemmap overhead and, as a consequence, fewer hugepages being
+allocated (along with a warning) - waking up the OOM killer is never
+the right thing to do here.  Note that the same code also runs for
+runtime hugepage allocations, where an OOM invocation may kill an
+unrelated process instead of failing the optimization gracefully.
+
+The head page is a vmemmap page, and every other vmemmap page
+allocation involved is prepared to fail gracefully:
+vmemmap_alloc_block() - which vmemmap_shared_tail_page() also uses
+to allocate the shared tail vmemmap pages - uses
+GFP_KERNEL|__GFP_RETRY_MAYFAIL|__GFP_NOWARN, and
+alloc_vmemmap_page_list() uses GFP_KERNEL|__GFP_RETRY_MAYFAIL.
+
+Align it with the other vmemmap page allocations by using the same mask
+that vmemmap_alloc_block() uses for vmemmap pages, so that a failure
+returns -ENOMEM to the caller instead of going through the OOM path.
+
+This was observed on a 384-CPU machine with ~1.5TiB of RAM booting
+with a hugepages= reservation close to the total memory size and
+CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON=y, where the boot
+panicked intermittently, depending on how the parallel allocation
+workers interleaved.
+
+Fixes: c0b495b91a47b ("mm/hugetlb: refactor code around vmemmap_walk")
+Signed-off-by: Yili Zhang <zhangyili01@baidu.com>
+---
+ mm/hugetlb_vmemmap.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+index 0057fa2a16a8..3a759b930ed9 100644
+--- a/mm/hugetlb_vmemmap.c
++++ b/mm/hugetlb_vmemmap.c
+@@ -499,6 +499,7 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+ {
+ 	unsigned long vmemmap_start, vmemmap_end;
+ 	struct page *vmemmap_head, *vmemmap_tail;
++	gfp_t gfp_mask = GFP_KERNEL | __GFP_NOWARN | __GFP_RETRY_MAYFAIL;
+ 	int nid, ret = 0;
+ 
+ 	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(folio), folio);
+@@ -525,7 +526,7 @@ static int __hugetlb_vmemmap_optimize_folio(const struct hstate *h,
+ 	 */
+ 	folio_set_hugetlb_vmemmap_optimized(folio);
+ 
+-	vmemmap_head = alloc_pages_node(nid, GFP_KERNEL, 0);
++	vmemmap_head = alloc_pages_node(nid, gfp_mask, 0);
+ 	if (!vmemmap_head) {
+ 		ret = -ENOMEM;
+ 		goto out;
 -- 
-Cheers,
+2.27.0
 
-David
 
