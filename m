@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02676073D3F
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3000760C41B1
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:45:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fNbNglso
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HQZZk22I
 Received: by kanga.kvack.org (Postfix)
-	id CA9586B05D8; Wed,  4 Nov 2026 14:44:57 -0500 (EST)
+	id 494126B05CB; Wed,  4 Nov 2026 14:45:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C809A6B05DA; Wed,  4 Nov 2026 14:44:57 -0500 (EST)
+	id 472336B05DA; Wed,  4 Nov 2026 14:45:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B97C26B05DC; Wed,  4 Nov 2026 14:44:57 -0500 (EST)
+	id 381216B05DC; Wed,  4 Nov 2026 14:45:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B8A46B05D8
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:44:57 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 12E396B05CB
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:45:11 -0500 (EST)
 Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3EB211A0865
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:44:57 +0000 (UTC)
-X-FDA: 85398464634.17.FD71C15
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 717C2100005
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:44:55 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fNbNglso;
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793821495;
-	b=VwIqg+0KAk46KTyZW3RwBojOV+KqErhcFyLTOcVT/blrU6XIx3yf4+VHrAs9AhE6fPVI+L
-	FLuUJGmDlhpv2SQk7N59Hi5seQOowKHjFN1ILD0kg3m0EGW/eYH2IDtVVYaio6WtsAS71s
-	fcy9iTQ1LEb2dj02mwBtkkbM8wijQ2c=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fNbNglso;
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 81C701207FC
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:45:11 +0000 (UTC)
+X-FDA: 85398465222.17.F93CCA5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id CE8B7A0005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:45:09 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HQZZk22I;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793821495;
+	s=arc-20220608; t=1793821509;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BWMrcMxphM3j3KhJxvOCR+KbGizC6kQdxxuLzJskxVk=;
-	b=imOOgqE4QpH4jz0VZXQ2vYYNcXdtUeVeLHxNpSllQkgkJO88pF/gcQk6mm38nCXu/78XC0
-	g+BtDxAIgYLCl7ZJo6m54JywH3ioNz1zSRzAh1mRBbh0v+UF+arZsvptfCbLpdIULb13zS
-	uRhe6NXWHJQdh69J4XPEOwPTUpnGYKU=
+	bh=Rp3cBypvlPCLWQcsEgZutivLH7EPpJBFO75qhCW/oJM=;
+	b=r5uOV+wOWOexuXWC492qcA2FRdoo4Ikku6Ka/yarD3aBKiCsw44Q33y4p4eZ6lfR08C53p
+	tyYpsz5BB5JG6gRqQbCC8gI2HgQD/30IzLrQe7enKWQWQ1qOTTajfSd2la3Uwt8j15zpKP
+	7CJKmIkeVtvIU/8ctTn/gkjdOeRiUBo=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HQZZk22I;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793821509;
+	b=ByysL3pR05zNjkW50A9MJNOpfdDaEGQTfFUdcFSJ6Rpz9YWjfvBrlnJyfKGtouoO7IvLE1
+	ofcnPBPEdRfQ8TwufranoYC/9H0RT8Y/mkwO1hxSO3hj4v/gd89FTXIx7pVlWV45H3YhLc
+	ORrYYGThWZMyK6x8sITHAq8gIQQP9y8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A555E43884;
-	Wed,  4 Nov 2026 19:44:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7662A1F00919;
-	Wed,  4 Nov 2026 19:44:42 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7818060A9F;
+	Wed,  4 Nov 2026 19:45:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25F041F000C1;
+	Wed,  4 Nov 2026 19:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793821494;
-	bh=BWMrcMxphM3j3KhJxvOCR+KbGizC6kQdxxuLzJskxVk=;
+	s=k20260515; t=1793821509;
+	bh=Rp3cBypvlPCLWQcsEgZutivLH7EPpJBFO75qhCW/oJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=fNbNglsoaWY3MivB4Krb9ygur7tWm8mUs0cHqsxMJlnZL4hmvUj4NpZPpgqhoir+9
-	 r6P5HeFpIBHXJbSEB1+ztv1etbY3xwg/WTpoGehsLz8jmkAj1RB2DsjnvTrPDDAQR1
-	 sJxSC21gvDIE7uTnl/T371mLEerBpkg/OZ92Zb/0+EEpN1sW+zMoMBLVEVPXdcExqD
-	 GqdrJq5fzzTLTFc7aowd/VBqLgscxEBi2alM3GjBK6H0BCw6YwXohUUphzup2egq9W
-	 Pmz19wJ6NZuK6lPrdMcy2P/XXD4nxOm/SXvk5581ENxcjbB9FyVMTHMEjr9pYUVAlp
-	 GcZdUK6ukGA+w==
+	b=HQZZk22IBDSdlRg9+GChLXhspu7iunkZLLfTPZExTpVWSZ10XMRGmnTYlf4TG3XAH
+	 1cwjSXYkmlC+l/hnbMTY6YP/Kzl3udvQ65e0OecgcsLuWkW0rAc2mS+7lsMTsFJwex
+	 5Mm7xmU/jLtpvu5WcV/D7gF7UYlkqWEYw175OcfKq5UOR7IVWPNSq4SA6IFaxtf5na
+	 9paORCG9sxlWn9HEykiPNg6mhlzTVo5kiuDStPCb0diMzwScMmB/UEKOmuTvYKKKer
+	 rmzoLKe6KegT6EasDc6fEzLXRRh89qOwFDegOrU9dPoQb3yaDpwnk6UqQg5okye4vV
+	 YLTrXAZzXjLgw==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 10/26] scsi: let procfs own the seq_file of the host files
-Date: Wed,  4 Nov 2026 20:44:40 +0100
-Message-ID: <20261104-work-procfs-drivers-v2-10-245e54e87116@kernel.org>
+Subject: [PATCH RESEND v2 11/26] scsi: core: let procfs copy in writes
+Date: Wed,  4 Nov 2026 20:44:54 +0100
+Message-ID: <20261104-work-procfs-drivers-v2-11-245e54e87116@kernel.org>
 In-Reply-To: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 References: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1394; i=brauner@kernel.org; h=from:subject:message-id; bh=l1PqfsIz+cqTipGWNtI2ZFkSTs3hYfw6G0B1mtmwjUo=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97qqfsY95+37HSwsWhLI3/eIN/LJB4/DUJtffcYbse 4MOv6/v6ihlYRDjYpAVU2RxaDcJl1vOU7HZKFMDZg4rE8gQBi5OAZiInzojw0dt25WLcirjIi9n xDf8Nz3LU+uhej0insNI9taHalfRDQz/0+/+X7Hnzkupq83x31NuGk1YKW9296S/iazikQuTstu 7+AA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5090; i=brauner@kernel.org; h=from:subject:message-id; bh=vGFrM/mDJbel5Ek/YnwRAY7y8jtd20EKftAALqu9TzI=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS97mpQbTp/83Hlrc1+rz/OurT8HMOG96arD+w4Gdd2K pr9ek/Lho5SFgYxLgZZMUUWh3aTcLnlPBWbjTI1YOawMoEMYeDiFICJBMUz/E+Jqow63i4ukh/z NaPAjPXzm42+O7RrV1sb6zj3n/W84cXwV7CJ58e5Hsv5XGU5lw4fTp7zeKbnjYq6WmGe/zMumlX 84gQA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: yi39rh1czdi3f4fa7ywt4bozszjttukf
-X-Rspamd-Queue-Id: 717C2100005
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: CE8B7A0005
+X-Stat-Signature: bc84otzcq7r4gyc7tmodq87gh4meyhef
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793821495-736563
-X-HE-Meta: U2FsdGVkX1/x9Mi2b550KHwqy+IdeB3u1aNFhMPA0V+KXY2eUzQrlM2/OxnR2hC5f2IdKUQ7Ag7wkiuGOWYR5pTlBYqcMpCIpOQcsfM0ceACqqg8yTxupN2RkYXhTNC2EZJf/Uh+vmHaAg6VOzxTSJZ6vYBaraTM31l+HyorbY5G/UUQDFJNkGc9BORWKwIPIb1p8Fz1jzlzsa/tH9kriVtZhlQjPTsA5/fHFZ2AJuX5riVvFlgDqMoxA1FMEG2Xz8o58Qgqq5iokq9r8gHzFHwphXdOEEm5hP4uMyP+4iAdE0C/lTbUU0jPQas6/4W4tgIXZgc2lqRGpiDsBvUtMpVuAvrwit/85Jja9dObhX0/KHIrXT/MeD4SJRIRksWEMEz4e5ScRjRMtiQ7qH6GUw9XTJ62aWq3JT/PzH3c+cVV42qBI/A3BeLlAfajZ7VKwmtI8of3x05oGCUtKp5kYo15pV2JmAR0Psuu7OCdb8lWYcGj/CSh3V2rx9SLEv38TG0ksy2Ddin/a2IE34+YMdfvN/5T9EgYi/UZMDZ4ptbqaH1JDchSUSFh0NkTslaJx/anPAx7/0xqcYIKbcVcN9RvOxk8k03VzVRHfv3q1fAyIEZmvrrjw4maDATbb2hvFQ/sSV+pmGxUuwklol0mYkYqWPJpiG3L4te5R0kSgWbphWBNNyJaR21IiX9idManNG4Z8L+UsBhBekM4upoLxwPeLa0WiodimbTGdf0irAWeVS2yqGYnHC78by4EktR4xAKOPWvj/RxFR64bQgUJo3w2Qc1OXDksn4h6b+EoQ8nWZ/pb6spHoosDe+WTIqpS+kh69e6lR61D9RRcmDHxyqxWl+iGfQMzS+iB+HBlchzAMuNzZBlgnaHNh8Mto/NdQhYlPFiPW5HACk8xSagcXUeXkm0zSxaKQn74ksau4wJ+LwkFoh9mV4dCWhFqLQAQZzlIbplGauoiyFXYIcY
- Icg08Ij0
- r4MIqFa4uIVMKwKzdqjPH1y670ToWSLpB3jft9I3FzNiMQR3UHfW1TY6xnVhElVq4dA2lNSBN4vejJxupwmsBtYB/2s2hCkijvMF//yIguqtc1VgRJqPZBAUsOT1ld4eJlqo01Iko1DjQJn0Spo3PXFxaT60+mxMoUQP3fIg+Ls18psy88+9D861VfsDo1PfTI089pUKiFMPPmvD97ne/yKiehzMifDdKYDlUDr2ZyyLdIPd5R9Xm8hJMv8BquxDVPDCzsQRhzBzZgQ4QS+v6pdEPC8QjhMdyscPxzrQFuHkxkfXJwOkTV0bhDIw0PLlVPGUTxTYSoDIaXf4w3nqlcbRF02GpcyLf+5Ui6KLQtZ7mB2B9eu/UxKcMtZOQzN+cUCidvoI2/dtQydWXEZ8HNIOC7WBjBDAHHeTpbNFibFYdeQu+BzcrzDWIfm3Bov0IuxVi
+X-HE-Tag: 1793821509-57438
+X-HE-Meta: U2FsdGVkX18o7kgpDqmtbUzOeCv8K+knaupHlwmUXdy7q5tvBLzCuMMNFPQsf+03SqfJ2JHJTCxk0RSqlUgGVBFhE0VLK9WgP66DOT3oCnyqOWE7HEBBICDonQYRziQyNtyD9g881+YFQTH50Ap5YQm5OvFZmdpSkdSxAd3w0FC/qtGGJ4cCyPACN99jEMft8S/nStBIV4/Trn3rAhaDCE4u3WEocHNPh7DnhLzHvWXK8/vAgLTTJHR28kKvSTWTvVzzkn8VJJvGGoT3/JaMuZvYA8uw9Tuq0U5VxOlxEAGBjx/UMZEduZkgPT0b7dvDAhITFHouGBmimiaz0xEcE9qUnmrc/t6OAz11vpsZioBSduwTD8Ghsfxxjt0qBSXzYHDL9NlIaOxTEkl/I3EQAlfVy1rk4PymXEVO0NYYhlGKW1zROp+6mt09o7+n2/+X83eVx193tTgVjYJKIoweEiCDBQiwnrZ6+8JAT9yKFxyJGgSyKAXngO8jsT6COLa9T7fJxdjmbTTqocGnHrBZOZTkDMQxD/zc/3tlY/npRg5qWVXXM1bbH+c2WUffXMPJeAFV/DNHx+iSxaRJZCdAcXdmVKq0tyU/jvjSfdPaZcVMvMjnToeQBDR1FprUbvRvbhXizTkm1Ydmj1GE8VIB/ZcKgjxyqo95mOKZ/GfUGJ0W+4NzJpY07exjlM/8UdOJAPQ6vVy4gxek8aIA3sNlMwtgQakO/4agGFvbbVSTjHjf0Sos8WnJ+QzR5bF+EpqlO0lL/1YRfqJ2KMBNZcvBcE3+RudH3EYIZozTcEd5eO+RL3nUBwothaOcARVLuiYzLYAsx2LTaVOjUmqK61lnwKTep0u0jbksu/2nuv3vXsjGMbWoT+pLI9BX2h13R9gOSggsu22HVNCB0LPgPlyVAUGJS2VtuFaSTlHrautEEKMf3uJLHmQoWCr54/LjTp6CtaPrZ2nrSA3fjDesVcY
+ hEUNyzWl
+ BpwkJKrMNMnYrv4ABQzzyNM1tI2s2kueVpJQ8LjXB3cUTuzyvEAu0OZ5YOwSgJHeh3MyJBunpcRnKcSsHVf41/bH/69FIBcXMRbbQyCivSF9dZjZZPz1utZkjTQVGn7wqHi7haDRLxdqSmI3KmEodRBCiro/G23K1/7nZvPKbaQz4euWOsRUfVeYoVWzwl/sfErT65velKnP8rwr96jWdIALuOEP5oSifS06xEkIt8SyFblDfZuDM1eJNGssnEpc4cb8TwsKwr9guZoAyr32kq9c5RLGEK7HxGIEUbePmdvrMErOa/WDbkm8dk3N5ph3su0e1/+XaNkTqjIhNbWpkKV1si0EAo/MzQ2gV1WJ09OT/V/mO68tLEuGTovw/zyH6NyFjIijfPCngMmylv5X1r2KddQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,45 +154,181 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Declare the show function and let procfs open and free the seq_file of
-/proc/scsi/<driver>/<host>. ->proc_open() only preallocates the buffer
-now. Reading the file then no longer holds up its removal when the host
-goes away.
+Implement ->proc_write_buf() for /proc/scsi/scsi, /proc/scsi/device_info
+and the host files so procfs copies in what is written before it pins
+the entry, and parse what was written from that copy. /proc/scsi/scsi
+and device_info take up to PAGE_SIZE bytes like before. The host files
+pass the copy to ->write_info(), writes to them that are larger than
+PAGE_SIZE - 1 bytes fail with -EINVAL from procfs instead of -EOVERFLOW.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/scsi/scsi_proc.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/scsi/scsi_devinfo.c | 29 +++++-----------------------
+ drivers/scsi/scsi_proc.c    | 47 +++++++++++----------------------------------
+ 2 files changed, 16 insertions(+), 60 deletions(-)
 
+diff --git a/drivers/scsi/scsi_devinfo.c b/drivers/scsi/scsi_devinfo.c
+index 0b8f5ff40543..d9093851b23e 100644
+--- a/drivers/scsi/scsi_devinfo.c
++++ b/drivers/scsi/scsi_devinfo.c
+@@ -678,39 +678,20 @@ static const struct seq_operations scsi_devinfo_seq_ops = {
+  * To use, echo "vendor:model:flag" > /proc/scsi/device_info
+  */
+ static ssize_t proc_scsi_devinfo_write(struct file *file,
+-				       const char __user *buf,
++				       char *buffer,
+ 				       size_t length, loff_t *ppos)
+ {
+-	char *buffer;
+-	ssize_t err = length;
+-
+-	if (!buf || length>PAGE_SIZE)
++	if (length == PAGE_SIZE && buffer[PAGE_SIZE-1])
+ 		return -EINVAL;
+-	buffer = kmalloc(PAGE_SIZE, GFP_KERNEL);
+-	if (!buffer)
+-		return -ENOMEM;
+-	if (copy_from_user(buffer, buf, length)) {
+-		err =-EFAULT;
+-		goto out;
+-	}
+-
+-	if (length < PAGE_SIZE)
+-		buffer[length] = '\0';
+-	else if (buffer[PAGE_SIZE-1]) {
+-		err = -EINVAL;
+-		goto out;
+-	}
+ 
+ 	scsi_dev_info_list_add_str(buffer);
+-
+-out:
+-	kfree(buffer);
+-	return err;
++	return length;
+ }
+ 
+ static const struct proc_ops scsi_devinfo_proc_ops = {
+ 	.proc_seq_ops	= &scsi_devinfo_seq_ops,
+-	.proc_write	= proc_scsi_devinfo_write,
++	.proc_write_buf	= proc_scsi_devinfo_write,
++	.proc_write_size = PAGE_SIZE,
+ };
+ #endif /* CONFIG_SCSI_PROC_FS */
+ 
 diff --git a/drivers/scsi/scsi_proc.c b/drivers/scsi/scsi_proc.c
-index 3e49c4c8704f..59229bf9938e 100644
+index 59229bf9938e..5962e671cc83 100644
 --- a/drivers/scsi/scsi_proc.c
 +++ b/drivers/scsi/scsi_proc.c
-@@ -94,10 +94,10 @@ static int proc_scsi_show(struct seq_file *m, void *v)
- 	return shost->hostt->show_info(m, shost);
- }
- 
-+/* procfs opens the seq_file */
- static int proc_scsi_host_open(struct inode *inode, struct file *file)
- {
--	return single_open_size(file, proc_scsi_show, pde_data(inode),
--				4 * PAGE_SIZE);
-+	return seq_preallocate(file->private_data, 4 * PAGE_SIZE);
- }
- 
- static struct scsi_proc_entry *
-@@ -140,10 +140,8 @@ scsi_template_proc_dir(const struct scsi_host_template *sht)
- EXPORT_SYMBOL_GPL(scsi_template_proc_dir);
- 
- static const struct proc_ops proc_scsi_ops = {
-+	.proc_show	= proc_scsi_show,
- 	.proc_open	= proc_scsi_host_open,
--	.proc_release	= single_release,
--	.proc_read	= seq_read,
--	.proc_lseek	= seq_lseek,
- 	.proc_write	= proc_scsi_host_write
+@@ -62,30 +62,18 @@ struct scsi_proc_entry {
+ 	unsigned int		present;
  };
  
+-static ssize_t proc_scsi_host_write(struct file *file, const char __user *buf,
++static ssize_t proc_scsi_host_write(struct file *file, char *buf,
+                            size_t count, loff_t *ppos)
+ {
+ 	struct Scsi_Host *shost = pde_data(file_inode(file));
+-	ssize_t ret = -ENOMEM;
+-	char *page;
+-    
++
+ 	if (count > PROC_BLOCK_SIZE)
+ 		return -EOVERFLOW;
+ 
+ 	if (!shost->hostt->write_info)
+ 		return -EINVAL;
+ 
+-	page = kmalloc(PAGE_SIZE, GFP_KERNEL);
+-	if (page) {
+-		ret = -EFAULT;
+-		if (copy_from_user(page, buf, count))
+-			goto out;
+-		page[count] = '\0';
+-		ret = shost->hostt->write_info(shost, page, count);
+-	}
+-out:
+-	kfree(page);
+-	return ret;
++	return shost->hostt->write_info(shost, buf, count);
+ }
+ 
+ static int proc_scsi_show(struct seq_file *m, void *v)
+@@ -142,7 +130,7 @@ EXPORT_SYMBOL_GPL(scsi_template_proc_dir);
+ static const struct proc_ops proc_scsi_ops = {
+ 	.proc_show	= proc_scsi_show,
+ 	.proc_open	= proc_scsi_host_open,
+-	.proc_write	= proc_scsi_host_write
++	.proc_write_buf	= proc_scsi_host_write
+ };
+ 
+ /**
+@@ -386,8 +374,8 @@ static int scsi_remove_single_device(uint host, uint channel, uint id, uint lun)
+ /**
+  * proc_scsi_write - handle writes to /proc/scsi/scsi
+  * @file: not used
+- * @buf: buffer to write
+- * @length: length of buf, at most PAGE_SIZE
++ * @buffer: buffer to write
++ * @length: length of buffer, at most PAGE_SIZE
+  * @ppos: not used
+  *
+  * Description: this provides a legacy mechanism to add or remove devices by
+@@ -402,32 +390,20 @@ static int scsi_remove_single_device(uint host, uint channel, uint id, uint lun)
+  */
+ 
+ 
+-static ssize_t proc_scsi_write(struct file *file, const char __user *buf,
++static ssize_t proc_scsi_write(struct file *file, char *buffer,
+ 			       size_t length, loff_t *ppos)
+ {
+ 	int host, channel, id, lun;
+-	char *buffer, *end, *p;
++	char *end, *p;
+ 	int err;
+ 
+-	if (!buf || length > PAGE_SIZE)
+-		return -EINVAL;
+-
+-	buffer = kmalloc(PAGE_SIZE, GFP_KERNEL);
+-	if (!buffer)
+-		return -ENOMEM;
+-
+-	err = -EFAULT;
+-	if (copy_from_user(buffer, buf, length))
+-		goto out;
+-
+ 	err = -EINVAL;
+ 	if (length < PAGE_SIZE) {
+ 		end = buffer + length;
+-		*end = '\0';
+ 	} else {
+ 		end = buffer + PAGE_SIZE - 1;
+ 		if (*end)
+-			goto out;
++			return err;
+ 	}
+ 
+ 	/*
+@@ -466,8 +442,6 @@ static ssize_t proc_scsi_write(struct file *file, const char __user *buf,
+ 	if (!err)
+ 		err = length;
+ 
+- out:
+-	kfree(buffer);
+ 	return err;
+ }
+ 
+@@ -521,7 +495,8 @@ static const struct seq_operations scsi_seq_ops = {
+ 
+ static const struct proc_ops scsi_scsi_proc_ops = {
+ 	.proc_seq_ops	= &scsi_seq_ops,
+-	.proc_write	= proc_scsi_write,
++	.proc_write_buf	= proc_scsi_write,
++	.proc_write_size = PAGE_SIZE,
+ };
+ 
+ /**
 
 -- 
 2.53.0
