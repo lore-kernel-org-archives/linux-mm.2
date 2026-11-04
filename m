@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C143606D4C8
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6E9606D4C5
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LQh9dOUg
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=j7j0ZanL
 Received: by kanga.kvack.org (Postfix)
-	id 234F66B05D8; Wed,  4 Nov 2026 14:33:25 -0500 (EST)
+	id 651FB6B05B3; Wed,  4 Nov 2026 14:33:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20C7E6B05DC; Wed,  4 Nov 2026 14:33:25 -0500 (EST)
+	id 62B4E6B05B6; Wed,  4 Nov 2026 14:33:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 121B96B05DF; Wed,  4 Nov 2026 14:33:25 -0500 (EST)
+	id 543236B05BE; Wed,  4 Nov 2026 14:33:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E0EC06B05D8
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:33:24 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 726B81C415D
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:33:24 +0000 (UTC)
-X-FDA: 85398435528.25.BE88195
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 31C756B05B3
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:33:39 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B329C80846
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:33:38 +0000 (UTC)
+X-FDA: 85398436116.23.25D26CA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 90A8C140003
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:33:22 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQh9dOUg;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 23D8820006
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:33:38 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j7j0ZanL;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793820817;
+	b=1aunjL3iAXu6mtw8zyeNMpmy0UOzuk3V1imnTPF4B0VvpueVWrpm6vou52yMCxGbxpU3bk
+	8OcCK9D2OQ/xhYt6o5rTuFojSErklyUYRmbx5ER/YcIMKQqpwrEK+rgmCJqcsiS4nZSKaV
+	atfZp7KI2m5zxogqmgJKjZtW1r6PeM0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=j7j0ZanL;
+	spf=pass (imf31.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820802;
+	s=arc-20220608; t=1793820817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m5fnOjZPCdCthpmqWOs3L34lGoL1k3Cz80cer2f5luU=;
-	b=cNEmWzfaeGC8gQToCS/E/u1VFvy14ydT2mM1gHFOB6RObtGbNPrbC14KdgQ8MgPu2uH4B7
-	Fh5GVkaSsYZGSGTjSQziPMgTvw4Y6Rm5fmzECwYa98A+7ltuJ5/6B6PA1wCKWTl5pQb7Xp
-	p9gVAQiU9EmldI5lWOxg5vJ3pPhbwmk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820802;
-	b=R78O0XC8rvIEL7XdhX56mRwP9RAOu4rIQZziQOKW7NE2AEK+BcC4Ru1ABdvW75YT9tY7Am
-	GAZ2XLQAt1jdufXDtBqQ/H5aLvrfAA98xiltk4tZp6RjzbgD/9EfZGIbjeYOUtiBYZQoVl
-	2SxMWLF1jv6T0bAoCxDB+kqaVgy8hFE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LQh9dOUg;
-	spf=pass (imf26.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=DA4U0m1CHtqk19BjQpd8o6fqolui3N68b+LzMS0kHTM=;
+	b=Xex676u2z0QKWhefOfc5pHNmv86eQ5VwkWxaWbPH+ybdHPgVblcm/Q8EYlu2C2NCUh2IxA
+	TtjNfHU/fESXKITMZhj/m4drAJtJivQpOf5/AyUWicFLxrSdr7i68656Q3HFO4jApI3D6V
+	GKYzuTGZa9R6d5Qf7PEtn0S82U87c/Y=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CEE5442DEB;
-	Wed,  4 Nov 2026 19:33:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9FA1F00A15;
-	Wed,  4 Nov 2026 19:33:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 43AD840842;
+	Wed,  4 Nov 2026 19:33:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469811F000C1;
+	Wed,  4 Nov 2026 19:33:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820801;
-	bh=m5fnOjZPCdCthpmqWOs3L34lGoL1k3Cz80cer2f5luU=;
+	s=k20260515; t=1793820816;
+	bh=DA4U0m1CHtqk19BjQpd8o6fqolui3N68b+LzMS0kHTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=LQh9dOUguZczFeerwVOxndMwGa9cSfoH+fhP8/3Rxa3DPH1G+HM/+za7WadZQAZ/D
-	 fq4TopM7uKGJZXNziRVvG3QJUkhqI5gLMgvkcBqdsoumv4l8nfzfDshfSBVOxZxBHm
-	 d3c7LWZdB2HKGoSI+d7ZlkEpANj3csWagleMS01d/UP0PQ1iNhncl7yqrSrJLx+/3X
-	 K5bN2l+amW6lxaeZ7FtF3rJYpe6HpiLOriOGELF4SvKo0lvOUsGtT4wc+u8RElFRu9
-	 B5D2UX6yl1GFTMAVHUTcM0UCtPI2Y3OIiqUgVz2B95tPby/8tvIjbVoFCZGBoCwbdo
-	 cioCcciQ8nukA==
+	b=j7j0ZanLPklc+rmEtTC9tqa+2dSI7D6dXyu+DrqtYaDUdnd/LUj9Nl96xu78fe9Bo
+	 ONceYKUXd7LLhykczcAo+XYQQdU9VnrXajvQp3bn0Dx2obQg2y/zyeUEJ6MGrrd+wb
+	 VFFMAfxyna6jHA221MxfRrjIXNI6FL+oxmibL6KxIcoNWzorQNT0Y26Aft3Ya4mbr3
+	 nEmiL8AySa8xnCAjT+Cv2punHBoTSIUYIamvaW3tloiPYrIvszTdT7r1QGguINjG6f
+	 bcI8iyL36J/mqPEgKJA4dznZGpZUrnKnHaFZ18d22HlBAx+3YRJXUlVnXMqpcyi0q5
+	 yU4xE/E1WQohQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 16/23] proc: let procfs copy out reads that don't go through seq_file
-Date: Wed,  4 Nov 2026 20:33:07 +0100
-Message-ID: <20261104-work-procfs-core-v2-16-76ace653a773@kernel.org>
+Subject: [PATCH RESEND v2 17/23] fs/proc/vmcore: let procfs copy out reads
+Date: Wed,  4 Nov 2026 20:33:22 +0100
+Message-ID: <20261104-work-procfs-core-v2-17-76ace653a773@kernel.org>
 In-Reply-To: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7836; i=brauner@kernel.org; h=from:subject:message-id; bh=mbWG9ixnvuYkETLZWF9m7UYU/9GwiQQdqKoWR6bF7rs=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bm+ZfOxA288E569R1y9t+CIcLDHr2pknf3oS29uN4 nNU1oV1dZSyMIhxMciKKbI4tJuEyy3nqdhslKkBM4eVCWQIAxenAEzEhJ+R4dbcljMZoU9+7toU vvWYhMZ39lupMcF71bRLvu9YvfX2eQuG/0WCu2Y9ft04V/et0hmXjW48qu/X3j1hMT8kT+xU7OR oLi4A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2514; i=brauner@kernel.org; h=from:subject:message-id; bh=4DsZPmVa7FbNwblf9/47/FvU9tv8FcehxAI70fSkduE=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bm8tNg9c6qctsMOowaPB8dhVZm5nNklTraOzXbl+K qxoZzXqKGVhEONikBVTZHFoNwmXW85TsdkoUwNmDisTyBAGLk4BmAjbPYZ/pqcffG5u2ZjJWLlK bcnXA3+MpivM3Mhaxf3f+9SDHRe4pjIy3HaafDysJch9dWB2tJTnbNlTQdMUvf8XW3KJ126efym NFwA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: jwzq3tyky4ao4xyscod4hbjq6kdna8xq
-X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 90A8C140003
+X-Stat-Signature: 9k8drd6izpmoite83t8x74gz3ox1wbgu
 X-Rspam-User: 
-X-HE-Tag: 1793820802-716107
-X-HE-Meta: U2FsdGVkX1+A8f0ZDnUMc1dTtKjUqCjKnk570rug32S9AocTgk36Gkqf15h+VMsCss72WBEbTlxIlv1XhANTqjfZu2zsLvxDUzTg1t+HkdZ7GVgpsEBhPFGtmdD3qicfL3sz8pnbhhoMkhjM0A4YD2+vT4tUGOdMcW4msXR86F8t45/nJYHJG+b0uq2q6wkf5tN49mYE36IOumWamhv/nPq6p0ECukqQepqxflU+gQdIgESfEukwQIgS0iRKEcNmIwZ+oN2ruxnk/QJjTW+I7g/ONlgUs/s9eNOjC8pR0fhcaUCr2iB0m+TR9xvTqSsU4hSy8IFg3zyLIpHiKpJEIq+iCvXSKFInkqt2x5EA/N+HDgOH6g+q6mi/nASXUZERi2880OhlftMfsdteiyrHvT3Cx5olV26xwtOTLDn7LsdzYGErZi37n+SushWbj9VM0Bmp4bD1ljp4Hr30jOvrLNFqrrCovrwwIEdtMCdhRtYaLbmn0JkVRKktx+HICXI3jJ+u+QBzSUP7AU65qZZ+K8govbRvN7I8FydVNJaBo3MPy7YKyEzrxFM6DXxpjG1sCjdoJlgPjqqhl31Ofr1JBmvqJFhIIskf7Iku67VXeMEjQSss6+9Skd39pqV4i3z8955ULlPy7ilTwgSSwY1hHFX3Zyp3v/obHQLkXEYyNZcXE1ioqkIdG7MxSAGmHVv3vAr6HKo0t0yC5S/PcuY0adgDSRjFm13zB0ucj4VQjYkzvX00XQ2bzwLbomxjJozQ/l2fpEafwITDBfCamzQ6f2jte8mB4qmHP68WBVzmNxSjn3+pJgFOoqG9hyjQXk6NVFLBMGb0cbSVTug0ivI3cg78pclg7vn1w7Z8HIJMuho2V0IkVw/jHxg2C5CiOHL8SiMfvLtQ66ICx5KEBul+wbYs8xIWHjuWZMdktBr86Pw2JwHf5oxmuzmqvBBQZULoy8YSEyOHJdPuAPbMP03
- ipu1B+L8
- 78rCbnbxoTRc/zdY53c2zqFf/JpRbBYXCZKgzjEl/EyHG2kCXwp/ftUN+er7kPZ55w68AsDrCg9Ire/jZX7KRm6X7QBZ6QEc1bdf3SQoafxf64oBoS1CZNRLbN7/q89lxRyc3LS1CGgjq9fQ8lUMrGHP4KDGZghXcxSC0MkwQ0AZS9fMH+25eEFQABwuaf1cF9NtMSuxy8YRRsgGKNj7auKXvejN3TkvjPh68F0XPWaG4X912dByQC0uVsDj4P2izHXM5RpKJP+CQf2ZlgurY0SuD/4zjBCnDKCHNiUh/wVE507MHPgXdEzkotpofhsox0VdVs1ayr6G2Xl485GN0o/yd8Sj2dDvt/MhGhMtjoX0p3EnqcNisM6LOKrnSc7KF4KfgFIsbAsfXwb5PMkkl0095JeT6fLC37Cjui9w/XKzyjor0TZYtfzaA15AeP8hPtMmczxjKeEe4Skg=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 23D8820006
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793820818-816552
+X-HE-Meta: U2FsdGVkX1+o1sEbuq+w2SgbZiDR0udi/DoIoqdJho2IOdSKtfp3C7xY4I8eS55tWGOMv580EyHsNv0lRxMDe1fIjkvt55k9UNngF9ozPtPknkXtDXxIE7zP+1XTN3LLpzaDSVaiYKJIJtmsVZGKotGELRSgutPDmeOOrY9ehiDEObipoPsDx2/WVV7BW3Geq2uzpcqTDoQF5eepq1/xJ59KCTTl9lXrdri3X+W2kIx+XhRFjrKNV1qIj2kKcSSVay4DfKHuyln5+HlekeIKYPcDx1ZdYnivo0+90NkJ1S+zOkRUQvOI3iGgABdv8z8WBZ5Umxp+W2xSHzgEw0HvyIfbL6Yo2p0tITooUcbxfOwe/VeEiqkA9apHb9UtDGH9zku5c/FlS+4vwbpoW+2yBW7DljLC/KbJrmqrG5xjpd+vvRuL7jCr6mvGeOaW7OB2gqL7z6FlUIegbXoGS6T18khu1k2atk8VL4goLCXQDspbJMni+RWEJDmGDTHQmD2qXTtBkX1B3wU4E3wacMfzarCmbDLz7xuUEFfAVVdM/Qb7F4HMeJvv2u/qn39hDuoYzMYuah/sbYSpzLuvBKKkBjV3AyAtLoDaZEWm03q99Q/PENmsaOoCwpdYG3PVaWMtDQnhbi+hj1g9+xkjccKs+xo1xq30J99E3dt46o+VHZVowMHbZnLOVQsFHGf2bnHbYnfhV3PtEmaeKFqE48o1UjTFuSO28TmWvM/18/ohGv9TmyxrTAplM3jcbot+E7SrUZOz0gPshbq+LFmhNFn3MKe/Lkkd1dQ2/BAq0fXpIVl3T00Y8nzzNdrIbgb+pR7MIm/OGS0GPmHrIPdC9G0bCD4vU8k4thL9p54xBO6GHZFovNqCg/d0FM1OxSh3Wkt3/Ni4f2l/8ptMBtPE2AJPXV/r183Ezk+nRL+zkT0RKBSGVQawycRb4thIdeRI9EoRjYO7yp4pY+flYeBBkhn
+ 0K0XMeGv
+ wAFozsAL2bEnc9SUxr02JuJZzBmeVS1HtqekNtFU6FM3JhH3EFMt54LYF/V1uMXve3wODxn2+4bAqWzDmikpQVJXGtxqxnPfW2gpKc8b9KRB9tlnOGzOjDFDupxR1AcyRaGby2l+KvT9FTnrUQcPWsJKLfjhaM0TgE/DMoust+HtVOvvfeLZ0czclsK/5gHaVSUyg9vYrc2rP1t2qE7vgA4Jw3C0D60b5jY5o1ejQOt7ET9xUbkx7uI9pOGZt6FbXaeFBXFuD9qBy1YbMnW6z5XmeR5r2RjeqDV4wOmyBBF7uEMDhNeTtumsPkf3DsYfjvX9KPVBD1R/O+k8NQtL2QSS3HjvQ9aZgdBg4Geur9mxDbgs41wtlYZFgczSh4vMLoviksamGukc9KiYwv04G/UTZYGCG2BDCUc9l09TVwJK3ws4cVydidHkvHQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,225 +154,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-proc_reg_read() and proc_reg_read_iter() pin the entry and call
-->proc_read() or ->proc_read_iter() which copy to userspace
-themselves. Like for seq_file reads and for writes, a reader can make
-a page fault in that copy take as long as it wants and
-remove_proc_entry() waits for it.
+Implement ->proc_read_buf() so procfs copies what is read to userspace
+after it unpinned the entry. __read_vmcore() fills procfs' buffer
+through a kvec iov_iter. So a read goes through that buffer now instead
+of straight from the old memory into the reader's, which is what
+splice() did already. mmap() isn't affected. On ppc64 a machine check
+while reading the old memory used to be recovered through the exception
+table of copy_to_user(), by accident. copy_oldmem_page() copies with
+_copy_mc_to_iter() now, so a read through procfs' buffer recovers from
+it as well.
 
-So do what kernfs does for these reads as well. An entry that implements
-->proc_read_buf() fills a kernel buffer of at most ->proc_read_size
-bytes, a page if the entry doesn't care, and procfs copies it to
-userspace after unpinning the entry. The entry moves the position like
-it did for ->proc_read() but that only sticks if the copy to userspace
-worked, like in kernfs_file_read_iter(). If the copy fails halfway the
-read fails with -EFAULT and the position stays, where
-simple_read_from_buffer() returned what it had copied until then.
-procfs remembers ->proc_read_size in the entry like ->proc_write_size.
-
-Larger reads come up short, like with kernfs. An entry whose readers
-want all of a large file in one read asks for PROC_ENTRY_FULL_READS and
-procfs fills the read in pieces of ->proc_read_size, unpinning the entry
-in between. A piece whose copy fails ends the read with what the pieces
-before it returned. kexec-tools treats any short read of /proc/vmcore
-as fatal for example (cf. [1]).
-
-These entries are read through ->read_iter() so readv(), splice(), aio,
-the RWF flags, kernel_read() and io_uring work for them like for the
-->proc_read_iter() ones. io_uring's nonblocking attempt gets -EAGAIN
-though, like loop_rw_iter() gave it for ->proc_read() entries. Neither
-the allocation nor the entry can honor IOCB_NOWAIT, and io_uring would
-take a short read of a record file for an unfinished one and glue the
-next record to it. So it retries from a worker like before.
-
-An entry that implements ->proc_read_buf() and also declares a seq_file
-or one of the other read methods fails to register.
-
-No users yet.
-
-[1]: https://git.kernel.org/pub/scm/utils/kernel/kexec/kexec-tools.git/tree/util_lib/elf_info.c
+The buffer is 128k, which keeps the entry pinned for one such piece at
+a time, and /proc/vmcore asks for PROC_ENTRY_FULL_READS so that a
+larger read is filled in pieces. kexec-tools treats a short read of it
+as fatal. A read that faults on its buffer in a later piece returns the
+pieces before it now instead of failing with -EFAULT. fadump removes
+/proc/vmcore when its memory is released and that no longer waits for a
+reader that faults on its buffer.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/generic.c       |  9 ++++++++
- fs/proc/inode.c         | 60 ++++++++++++++++++++++++++++++++++++++++++++++++-
- fs/proc/internal.h      | 11 +++++++++
- include/linux/proc_fs.h | 16 +++++++++++++
- 4 files changed, 95 insertions(+), 1 deletion(-)
+ fs/proc/vmcore.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index 5e2ed5a04ec9..2d503250de75 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -474,6 +474,15 @@ static int pde_set_flags(struct proc_dir_entry *pde)
- 		if (proc_ops->proc_flags & PROC_ENTRY_SHORT_WRITES)
- 			pde->flags |= PROC_ENTRY_SHORT_WRITES;
- 	}
-+	if (proc_ops->proc_read_buf) {
-+		if (WARN_ON_ONCE(pde_is_seq_file(pde) || proc_ops->proc_read ||
-+				 proc_ops->proc_read_iter))
-+			return -EINVAL;
-+		pde->flags |= PROC_ENTRY_proc_read_buf;
-+		pde->read_size = proc_ops->proc_read_size ?: PAGE_SIZE;
-+		if (proc_ops->proc_flags & PROC_ENTRY_FULL_READS)
-+			pde->flags |= PROC_ENTRY_FULL_READS;
-+	}
- 	return 0;
+diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
+index ccb795b85509..1c1e71231f4e 100644
+--- a/fs/proc/vmcore.c
++++ b/fs/proc/vmcore.c
+@@ -27,6 +27,7 @@
+ #include <linux/mutex.h>
+ #include <linux/vmalloc.h>
+ #include <linux/pagemap.h>
++#include <linux/sizes.h>
+ #include <linux/uio.h>
+ #include <linux/cc_platform.h>
+ #include <asm/io.h>
+@@ -427,9 +428,14 @@ static ssize_t __read_vmcore(struct iov_iter *iter, loff_t *fpos)
+ 	return acc;
  }
  
-diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index df1caa0f238d..caa47933c233 100644
---- a/fs/proc/inode.c
-+++ b/fs/proc/inode.c
-@@ -23,6 +23,8 @@
- #include <linux/sysctl.h>
- #include <linux/seq_file.h>
- #include <linux/slab.h>
-+#include <linux/sched/signal.h>
-+#include <linux/uio.h>
- #include <linux/mount.h>
- #include <linux/bug.h>
- #include <linux/wait_bit.h>
-@@ -377,11 +379,67 @@ static loff_t proc_reg_llseek(struct file *file, loff_t offset, int whence)
- 	return rv;
- }
- 
-+/*
-+ * The entry fills a kernel buffer and procfs copies that to userspace after
-+ * unpinning the entry. A reader that faults on its buffer then doesn't hold
-+ * up remove_proc_entry().
-+ */
-+static ssize_t pde_read_buf(struct proc_dir_entry *pde, struct kiocb *iocb,
-+			    struct iov_iter *iter)
-+{
-+	struct file *file = iocb->ki_filp;
-+	char *buf __free(kvfree) = NULL;
-+	ssize_t rv, done = 0;
-+	size_t len, count;
-+	loff_t pos;
-+
-+	if (!iov_iter_count(iter))
-+		return 0;
-+	/* neither the allocation nor the entry can honor IOCB_NOWAIT */
-+	if ((iocb->ki_flags & IOCB_NOWAIT) && !(file->f_flags & O_NONBLOCK))
-+		return -EAGAIN;
-+	len = min_t(size_t, iov_iter_count(iter), pde->read_size);
-+	buf = kvmalloc(len, GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	/* PROC_ENTRY_FULL_READS fills the read in pieces */
-+	do {
-+		count = min_t(size_t, iov_iter_count(iter), len);
-+		pos = iocb->ki_pos;
-+		if (!pde_pin(pde)) {
-+			rv = -EIO;
-+			break;
-+		}
-+		rv = pde->proc_ops->proc_read_buf(file, buf, count, &pos);
-+		pde_unpin(pde);
-+		if (rv <= 0)
-+			break;
-+		if (WARN_ON_ONCE(rv > count)) {
-+			rv = -EIO;
-+			break;
-+		}
-+		if (copy_to_iter(buf, rv, iter) != rv) {
-+			rv = -EFAULT;
-+			break;
-+		}
-+		iocb->ki_pos = pos;
-+		done += rv;
-+		if (!pde_has_full_reads(pde) || rv < count)
-+			break;
-+		cond_resched();
-+	} while (iov_iter_count(iter) && !fatal_signal_pending(current));
-+
-+	return done ?: rv;
-+}
-+
- static ssize_t proc_reg_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+-static ssize_t read_vmcore(struct kiocb *iocb, struct iov_iter *iter)
++static ssize_t read_vmcore(struct file *file, char *buf, size_t count,
++			   loff_t *ppos)
  {
- 	struct proc_dir_entry *pde = PDE(file_inode(iocb->ki_filp));
- 	ssize_t ret;
- 
-+	if (pde_has_proc_read_buf(pde))
-+		return pde_read_buf(pde, iocb, iter);
- 	if (!pde_pin(pde))
- 		return -EIO;
- 	ret = pde->proc_ops->proc_read_iter(iocb, iter);
-@@ -793,7 +851,7 @@ struct inode *proc_get_inode(struct super_block *sb, struct proc_dir_entry *de)
- 		inode->i_op = de->proc_iops;
- 		if (pde_is_seq_file(de))
- 			inode->i_fop = &proc_seq_file_ops;
--		else if (pde_has_proc_read_iter(de))
-+		else if (pde_has_proc_read_iter(de) || pde_has_proc_read_buf(de))
- 			inode->i_fop = &proc_iter_file_ops;
- 		else
- 			inode->i_fop = &proc_reg_file_ops;
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index 1d36fe4b1af5..b5c78f4f392c 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -52,6 +52,7 @@ struct proc_dir_entry {
- 	void *data;
- 	unsigned int state_size;
- 	unsigned int write_size;
-+	unsigned int read_size;
- 	unsigned int low_ino;
- 	nlink_t nlink;
- 	kuid_t uid;
-@@ -120,6 +121,16 @@ static inline bool pde_has_short_writes(const struct proc_dir_entry *pde)
- 	return pde->flags & PROC_ENTRY_SHORT_WRITES;
+-	return __read_vmcore(iter, &iocb->ki_pos);
++	struct kvec kvec = { .iov_base = buf, .iov_len = count };
++	struct iov_iter iter;
++
++	iov_iter_kvec(&iter, ITER_DEST, &kvec, 1, count);
++	return __read_vmcore(&iter, ppos);
  }
  
-+static inline bool pde_has_proc_read_buf(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_proc_read_buf;
-+}
-+
-+static inline bool pde_has_full_reads(const struct proc_dir_entry *pde)
-+{
-+	return pde->flags & PROC_ENTRY_FULL_READS;
-+}
-+
- /* procfs owns the seq_file, see pde_seq_start() */
- static inline bool pde_is_seq_file(const struct proc_dir_entry *pde)
- {
-diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index c81c93325044..0f0997898ba3 100644
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -38,6 +38,13 @@ enum {
- 	 * failing with -EINVAL.
- 	 */
- 	PROC_ENTRY_SHORT_WRITES		= 1U << 9,
-+	PROC_ENTRY_proc_read_buf	= 1U << 10,
-+
-+	/*
-+	 * Reads larger than ->proc_read_size are filled in pieces instead of
-+	 * coming up short.
-+	 */
-+	PROC_ENTRY_FULL_READS		= 1U << 11,
+ /**
+@@ -709,9 +715,11 @@ static int mmap_vmcore(struct file *file, struct vm_area_struct *vma)
+ #endif
+ 
+ static const struct proc_ops vmcore_proc_ops = {
++	.proc_flags	= PROC_ENTRY_FULL_READS,
+ 	.proc_open	= open_vmcore,
+ 	.proc_release	= release_vmcore,
+-	.proc_read_iter	= read_vmcore,
++	.proc_read_buf	= read_vmcore,
++	.proc_read_size	= SZ_128K,
+ 	.proc_lseek	= default_llseek,
+ 	.proc_mmap	= mmap_vmcore,
  };
- 
- struct proc_ops {
-@@ -84,6 +91,15 @@ struct proc_ops {
- 	 */
- 	ssize_t	(*proc_write_buf)(struct file *, char *, size_t, loff_t *);
- 	unsigned int proc_write_size;
-+	/*
-+	 * procfs calls ->proc_read_buf() to fill a kernel buffer of at most
-+	 * ->proc_read_size bytes, PAGE_SIZE if that's 0, and copies it to
-+	 * userspace afterwards. Larger reads come up short unless the entry
-+	 * asks for PROC_ENTRY_FULL_READS. The position the entry moves to only
-+	 * sticks if the copy works.
-+	 */
-+	ssize_t	(*proc_read_buf)(struct file *, char *, size_t, loff_t *);
-+	unsigned int proc_read_size;
- } __randomize_layout;
- 
- /* definitions for hide_pid field */
 
 -- 
 2.53.0
