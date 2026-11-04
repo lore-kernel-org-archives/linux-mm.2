@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284DF609175B
-	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7C2606AC19
+	for <linux-mm@archiver.kernel.org>; Wed,  4 Nov 2026 19:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BjZ/Zf08
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SAfHNNjx
 Received: by kanga.kvack.org (Postfix)
-	id 316B56B05E4; Wed,  4 Nov 2026 14:29:50 -0500 (EST)
+	id 477866B05C5; Wed,  4 Nov 2026 14:30:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EEC46B05E5; Wed,  4 Nov 2026 14:29:50 -0500 (EST)
+	id 4280D6B05C6; Wed,  4 Nov 2026 14:30:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 205DD6B05E6; Wed,  4 Nov 2026 14:29:50 -0500 (EST)
+	id 33EA66B05DF; Wed,  4 Nov 2026 14:30:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E841A6B05E4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:29:49 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 84018C077B
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:29:49 +0000 (UTC)
-X-FDA: 85398426498.13.0F7C4FC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B09E7180002
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:29:47 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BjZ/Zf08";
-	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1803D6B05C5
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 14:30:04 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 952321207F5
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:30:03 +0000 (UTC)
+X-FDA: 85398427086.19.3E41415
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D144020005
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:30:01 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAfHNNjx;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793820587;
+	s=arc-20220608; t=1793820601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jJveCArfJ4dJAlkDsE+PsTgPNAew1JtEqbKqeEtjh0c=;
-	b=IC8LXlCEv/NyOS4whywk2QW216JR1XM/LRKLFODZ1472WzbHu3fxp49gwGNivp3of7wLbs
-	t2XE7inIN3FUXH8f2z4f3N5y9cqAN2ASl4ubMqap9m8iChwE1rJUbAzaZqmVokMV+RL/e6
-	6MIH6/Qi26lT8Fsj1JIivTEY5+oJQw0=
+	bh=KbfF7FDKuD8IgpxmK4NN79tddC7YrY9Y/+M606VrXfI=;
+	b=T5HVEaU2d+l2hc3HCGvbvZ7Ep6X2H/d+VzJYt7UzXCRp4IJE6pCAgABuuhF7TzHql0g1GE
+	6uoi+TjysDvLvhdfSAgoCA/OECwLf35/rURFYaCVgiPnXG+6BYyRnKac/dEtV3M/grjKrl
+	RtV0N9GJQgytoh8L6vP0NIfno8WeQGo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793820587;
-	b=NLoE965hD3z36wNTJKsHuSxxhPlomZaxaj3h7aYiCf0i24Tt7FvuM1AwVDUeV83+GhRXgy
-	s5R+z8vqqUzjtFwk0O/QS4QssposjhaqNcECAqG0baukWMaTYEwGQ7WKGtxBXAzFcqcglx
-	W45lCGu+eG/v1L34iIQ+VvXpJpEEt9A=
+	t=1793820601;
+	b=vviHZo8Ry8Xfua17cSUZP6iyluD5gtgEO/eMDWmegbdCAE5j94q1zxEu4kQYFhjkNHThLy
+	Aq5CykbHBQoXnQhWhbDql55GoWG2/M3Het0Jc82agsoH6CF6JL2D97VpuM8KCKw9WBaIqa
+	TQUBcyEieuZ4XarM7gP4Zc63R243SPE=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BjZ/Zf08";
-	spf=pass (imf16.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SAfHNNjx;
+	spf=pass (imf13.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id DED9143578;
-	Wed,  4 Nov 2026 19:29:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F0A1F00A17;
-	Wed,  4 Nov 2026 19:29:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6179F60A8D;
+	Wed,  4 Nov 2026 19:30:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36BD01F000C1;
+	Wed,  4 Nov 2026 19:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793820586;
-	bh=jJveCArfJ4dJAlkDsE+PsTgPNAew1JtEqbKqeEtjh0c=;
+	s=k20260515; t=1793820601;
+	bh=KbfF7FDKuD8IgpxmK4NN79tddC7YrY9Y/+M606VrXfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=BjZ/Zf08BvWFVtiPIjuPZ7YyWoio1bwIZMMZVBF20DzzjnxA22jWzFxc9KjKjaDvT
-	 rViB/7feQqOjmIju1fIMJ4a+1vVMheCQ/Lrk5pNSdEe7937GT4q7VYJRDRZ2FTv2lh
-	 C/KvEqXWJmv76siosW+mEyiwP42cccALGsX6OmqEmfv7sn7fyyyEhW4DwY1lepXGap
-	 VVEvKtdm//l0UV8A5yXcOdbtJeVrpe0JA8pTZmD3AlPnJBCkqJoqHuJZtDgqSt3khc
-	 88vcSfprY+zWqxmh00X2TKAsyOgox1rWtHhY7hk8VIBQVGLti3lb08ZLZo2VrV985S
-	 v/G8P54ivmf+A==
+	b=SAfHNNjxvTql4E+z1yQcRoEm/3CalSsruYEaDFEAwD2MR1+O3Ye99A+nthRvUfnOh
+	 sNn+nv5DU4hxg8sd8IUitV774fqcqp2VIOWX8POpirUeoVFOvqQmSu0pEFGlLAHGYD
+	 U87bWU9TJDKpUyRG2Fvt11MmjA/bvZTaV8Xtwfl1DJLnDy1EfMx2ldZqvi8wS8l7pU
+	 z8u/IwnNqmGhZUVhezOwwUvQynv27Lczh9RmSaROx62H78AJOuM6lf9qnQZTrXgOYI
+	 GjXIYIMTlREUsQuzCmK2Ia6wH6NcuAlyzHfRrgkTdGYoEXU8eOGVb8ZJpacNOliGBs
+	 x5gOzg3clGATQ==
 From: Christian Brauner <brauner@kernel.org>
 To: linux-fsdevel@vger.kernel.org
 Cc: Linus Torvalds <torvalds@linux-foundation.org>,
@@ -121,31 +121,31 @@ Cc: Linus Torvalds <torvalds@linux-foundation.org>,
 	linux-debuggers@vger.kernel.org,
 	"Christian Brauner (Amutable)" <brauner@kernel.org>,
 	Chuck Lever <cel@kernel.org>
-Subject: [PATCH RESEND v2 01/23] proc: drop the compat file operations
-Date: Wed,  4 Nov 2026 20:29:32 +0100
-Message-ID: <20261104-work-procfs-core-v2-1-76ace653a773@kernel.org>
+Subject: [PATCH RESEND v2 02/23] proc: add pde_pin() and pde_unpin()
+Date: Wed,  4 Nov 2026 20:29:47 +0100
+Message-ID: <20261104-work-procfs-core-v2-2-76ace653a773@kernel.org>
 In-Reply-To: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5437; i=brauner@kernel.org; h=from:subject:message-id; bh=2wrGueNUlsSX/cB6QD56PXJI32dZ2evqLoQHTbyNmak=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bi80rwldk9xsNCM88cQWmaL5ejXnqpvnZdyZxcf3a JOaS+/cjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgImkRjEyHDk9+33iyk/3v0l/ Pvmv4kDpyx/CU2XYgk81tbCteMR3V57hv3fbzJj2eNeqs4lze0saDYXOKnhp666eWf7l+JJnopF f+QE=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6493; i=brauner@kernel.org; h=from:subject:message-id; bh=WCaLeEgGoNbtr6H3vvQuwG4filJLGelQOjwPMQ9yV2w=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWS9bi/ebdDe0XTixBOHxbcsFINz3ObkSvH8+eO/6mfq0 8n+EQkaHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABMJCmdkmLjyc2loYnKPx58S sfPOs8+JCT3z1bl78s6yrbfys18/W8/IcOrbba3Kb0tMyr/aFPrY3mpm+ScfpZKvcvT5Zh+Tzv7 bTAA=
 X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B09E7180002
+X-Rspamd-Server: rspam06
+X-Stat-Signature: nyr6zbfgarjdx9uf4g3qtuoa1ofipcas
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: wf7fz1whc3eh47b6yepdmdmi58nwf3yz
+X-Rspamd-Queue-Id: D144020005
 X-Rspam-User: 
-X-HE-Tag: 1793820587-183208
-X-HE-Meta: U2FsdGVkX1+8Vu+tqkm4VlzLdc1zqwzsY4Klb1LqrrF9IdDGVgCz+2lgzlYhblSupPHBJtr858VRUonqhKID1wn/e/KZ7UO/TWltm9KflW9k5NNWNbcY//BXqnbzDUTCJM+5cqw3Ukq6RfvjozHiI45/fnHrpC4101jOYEfG5sJubeXcLrw25KMchFnv/o+zlcaYtLltXASxD9rYmoNls4oskQRGGovEWkQdcAkEUMZDtrBGzKzMo+uYKh4lHwxU1YMf0tYc28wAKzP6P/AF4ExWFWiOolc/pTTnFzBDb24lcA2WwSFYsLiV/Xl1xbGsfrcr+rXUop1t8J16XAXSCqQ5uViJmsz20gY/vL1X0EWpOvgNVgtZWp6erB8qd1N8PPtYKvxxEYFaUhtoIsmkCwAhHs2SOZBqYTR/t4K0AdVkTkow5vHjTP3DN8biEmT54WAa9hrwNd2Xu8adbkks3TyPpEx5z77lsSkEY4/4LStIXlVCFGQezx47OFZrLLYNCWBunHbC0eoU4AsZ0OHlelA/1Jmiw+215wWE/WodbIxlY2C7VCik7KihTNsqL2EBR3qLRrNugcLbr5r3AFu2GiaUtjeUuQnxvntBZd2tdLMFTiyjFK27Fk6j7GCzHtSMWE3hLrj8omjN3Vv+INgaHx2ohtQekWRrIaqgy9A4cfGAP/v37QLSzZ/wgO4GIsgDLicEr4mPfAS7DKpiFoI4uzAIQPDErDCHBKvysl1dmiSoE49oAZORKM+Qn8YaxD/Vz0g3/UkTMM2snH3FbrE/BQgtCQdZ6XZwWobl33+0oUsRMr0JGY+CTsrD8FxzD3AXIn3ebqxurIM2wKJxXd7dV8z6wuedP6+L6suDldI0gkIgp00qApVVls2qr7nlUgydkbZqZ8fb25Oxn6JcGHpH51hTWGyh8jH+9vJ/KHbCLGCUbeW7rF7TdSe32Zb+2WYgjtkn8sfQcZg+o/2UT46
- yNreKjRG
- zXp9E/ciUx7cRl3k0hXSms87uGTyxGM0bkM2RFKToqFrtGxTxx2DxEha1qtnM5V2FVx9O/rvRy1JkQrrj4R0Dd/k5/99+OSU6YEuKl1sLtCWVvu0204UUFyFjeiqOzuWVDxfRRZEwhZEpZTGJr+BOgC0I/qflBrOGbbvDeqfZcHOmgr3Ke2l92TjByeqZ91PS8dptS5PBxIRyHvU2V8yrzFpNbtTQ0SOQ/zl+nJi+PpNUBvn2uFH3PgR6rs9c8eTbnboyXo2swL/RtcqaRbD0jlsGRx3B71oeHyCcV0UXYcAJK2TguS72nKtZ/LjUnCnBAxtV+LpCEKQ4LSNNrrzSLZKspLWLg6F9N2JjrkWdFEtxa7Em/V2Ag5j6gkSK3wz88XpGPf4N5kjYa7U8wWoJXH/DNw==
+X-HE-Tag: 1793820601-374245
+X-HE-Meta: U2FsdGVkX1/FfwlbW62kQXcgFrK41kxdWscjkQJIW2a/bcOEAygVZV0Fx3CyN7WzoZGGRT9rXbFSmpNqVrgqYsuoaM+qrpk17xsjfEeJpkW7FKEyhjCEBdWNQj+bElJzHxMCvmfkHOrhIRr4lJg73EubFCFhvY42njX7R0TjDAp2MAIbJ3oQuxDZT916J48UwNydg8CCv40/2tcP1PI+LfAQgxlUAODxmxgXH1Jf4hfpo6FMACkteZQ1uv0zm++i70Svw34by4UMdZdYxetOfOmueSnVEqd/YbhBnvtQZZNeGqqeG4cUCe+T18fjl5J50JSaOW7q4PHikhcGmwSjxraQHFKG7DZU/xCp/ZV6dZaIM2bJeRX6490mUNwpWm0nDfZS0zit+xeBTljVMttfHUpnCJhr9lcQyBgfO4aOFxb+ysFeaSNqKylWE8nh89rUKHvpZT9ML6cIVL5QWFor5j35en+tsyADwl8Xaj2sHUfHFx6hLi+FYa6o7atsduCiUPO5JxtDBEfeEQKvVaTEgwjxVnxbSx8JAK+0R0BGcIwUxguKl4b6rTbARKY02b+HwsnDiQ6Pxnlxw81JyOCv+YzfaQepntK/+bHLhVlOyOl7kM2bKOETt1Tos1C9ohfQKhVrLNyb2bik0AMCTLQVJpO0kUeiXnHjsBXqj6twtTkKrk6Pkqk8MeEb9K95wN+GDecdDk0IxSdeVANO1eYFH6jsSUOTUUcpYrg8cBI7ktnCxTm+tDELO5hRssnt4VJTnu733E+5VEDsCUzOzTnrecjtL6wj6IV/xDc2r2lV3O2zjeoWuHH1qE04VadMwQHgHAchZsI+1CEquz82Ei2eoxIZ62ZRxBXD9cFvGQszL7TJ61ZCrZ4inS2qlHl2L18shqVBiHyHQWyu77Bgp54jQIWyTLfR0+YlMXpaMit40v0O8Q9jF1YAYId7WnZcBsZ+UMb0N+NIKAOfDeAG0TR
+ g0eW/pAI
+ 3ySPTRumasoLtXwaYWPqftuh6D/kWz6wVLWvtCU0zJsrY1QY3G4+V0w4Fiv3EaJEs5yy3NFPlFsXiRw/dTnccbVrjGqe8ZAO6DRv9s6hNhbDLf7nPAj+JioTP5dgsk0cWUHLClZmMBFNo1lItDwH4Pr7oBZUYPqPkrD6haxj+fMGCHSBhF0JCspJM9ldvTQYdrNeJnaCl7cSInCy26fvC+XqzfmqsjG3eJn8Fh4S0BBE8kF/KKdrlCyEI/18AQUVzaXSzhO4s05gYTwZdSDA1Il3+tv886gozotxcWrfLoYMJcSGy5vNUZURrny8cJSGrVBikd8La6rSAYPRf8U5X2+16rItYfHE3JmWt5ORgxqTUgET1lyUzCVBrEWQNVTEhCHy35DeWKZGfLivO0XohCBX66rc97rUwOz164LXfCt1YjthURUmr0CHEp382e9Q5qfuT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,161 +154,218 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-procfs has both sets of file operations twice, with and without
-->compat_ioctl(), and picks the one with it for entries that have
-->proc_compat_ioctl(). That's from commit 778f3dd5a13c ("Fix procfs
-compat_ioctl regression") when a file without ->compat_ioctl() went
-through the translation tables in fs/compat_ioctl.c and one with it
-didn't. Those tables are gone since commit 77b9040195de ("compat_ioctl:
-simplify the implementation"). compat_sys_ioctl() answers -ENOTTY for a
-file without ->compat_ioctl() now, which is what
-proc_reg_compat_ioctl() answers for an entry without
-->proc_compat_ioctl().
-
-So always set ->compat_ioctl() and drop the second set of file
-operations and the flag that picked it.
+Every call into an entry that can go away is wrapped in use_pde() and
+unuse_pde(), and a permanent entry is called straight away. The read,
+write, poll, ioctl, mmap and lseek methods all spell that out as the
+same if-else. The next patches add a few more callers. So put it into
+pde_pin() and pde_unpin() and use them everywhere.
 
 No functional changes.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- fs/proc/generic.c       |  4 ----
- fs/proc/inode.c         | 45 +++------------------------------------------
- fs/proc/internal.h      |  9 ---------
- include/linux/proc_fs.h |  1 -
- 4 files changed, 3 insertions(+), 56 deletions(-)
+ fs/proc/inode.c | 116 +++++++++++++++++++++++++++-----------------------------
+ 1 file changed, 55 insertions(+), 61 deletions(-)
 
-diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-index 9a0a2fcac7c7..e7264f0cf5ab 100644
---- a/fs/proc/generic.c
-+++ b/fs/proc/generic.c
-@@ -446,10 +446,6 @@ static void pde_set_flags(struct proc_dir_entry *pde)
- 		pde->flags |= PROC_ENTRY_PERMANENT;
- 	if (proc_ops->proc_read_iter)
- 		pde->flags |= PROC_ENTRY_proc_read_iter;
--#ifdef CONFIG_COMPAT
--	if (proc_ops->proc_compat_ioctl)
--		pde->flags |= PROC_ENTRY_proc_compat_ioctl;
--#endif
- 	if (proc_ops->proc_lseek)
- 		pde->flags |= PROC_ENTRY_proc_lseek;
- }
 diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-index 2d65f3c8ec03..18f6490bfe77 100644
+index 18f6490bfe77..66a3688757dd 100644
 --- a/fs/proc/inode.c
 +++ b/fs/proc/inode.c
-@@ -410,6 +410,8 @@ static long proc_reg_compat_ioctl(struct file *file, unsigned int cmd, unsigned
- 	}
+@@ -206,6 +206,18 @@ static void unuse_pde(struct proc_dir_entry *pde)
+ 		complete(pde->pde_unload_completion);
+ }
+ 
++/* Pin an entry that can go away around a call into it, see use_pde(). */
++static bool pde_pin(struct proc_dir_entry *pde)
++{
++	return pde_is_permanent(pde) || use_pde(pde);
++}
++
++static void pde_unpin(struct proc_dir_entry *pde)
++{
++	if (!pde_is_permanent(pde))
++		unuse_pde(pde);
++}
++
+ /*
+  * At most 2 contexts can enter this function: the one doing the last
+  * close on the descriptor and whoever is deleting PDE itself.
+@@ -275,14 +287,12 @@ void proc_entry_rundown(struct proc_dir_entry *de)
+ static loff_t proc_reg_llseek(struct file *file, loff_t offset, int whence)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	loff_t rv = -EINVAL;
++	loff_t rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde->proc_ops->proc_lseek(file, offset, whence);
+-	} else if (use_pde(pde)) {
+-		rv = pde->proc_ops->proc_lseek(file, offset, whence);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -EINVAL;
++	rv = pde->proc_ops->proc_lseek(file, offset, whence);
++	pde_unpin(pde);
  	return rv;
  }
-+#else
-+#define proc_reg_compat_ioctl NULL
- #endif
  
- static int pde_mmap(struct proc_dir_entry *pde, struct file *file, struct vm_area_struct *vma)
-@@ -569,6 +571,7 @@ static const struct file_operations proc_reg_file_ops = {
- 	.write		= proc_reg_write,
- 	.poll		= proc_reg_poll,
- 	.unlocked_ioctl	= proc_reg_unlocked_ioctl,
-+	.compat_ioctl	= proc_reg_compat_ioctl,
- 	.mmap		= proc_reg_mmap,
- 	.get_unmapped_area = proc_reg_get_unmapped_area,
- #ifndef CONFIG_MMU
-@@ -585,39 +588,6 @@ static const struct file_operations proc_iter_file_ops = {
- 	.splice_read	= copy_splice_read,
- 	.poll		= proc_reg_poll,
- 	.unlocked_ioctl	= proc_reg_unlocked_ioctl,
--	.mmap		= proc_reg_mmap,
--	.get_unmapped_area = proc_reg_get_unmapped_area,
--#ifndef CONFIG_MMU
--	.mmap_capabilities = proc_reg_mmap_capabilities,
--#endif
--	.open		= proc_reg_open,
--	.release	= proc_reg_release,
--};
--
--#ifdef CONFIG_COMPAT
--static const struct file_operations proc_reg_file_ops_compat = {
--	.llseek		= proc_reg_llseek,
--	.read		= proc_reg_read,
--	.write		= proc_reg_write,
--	.poll		= proc_reg_poll,
--	.unlocked_ioctl	= proc_reg_unlocked_ioctl,
--	.compat_ioctl	= proc_reg_compat_ioctl,
--	.mmap		= proc_reg_mmap,
--	.get_unmapped_area = proc_reg_get_unmapped_area,
--#ifndef CONFIG_MMU
--	.mmap_capabilities = proc_reg_mmap_capabilities,
--#endif
--	.open		= proc_reg_open,
--	.release	= proc_reg_release,
--};
--
--static const struct file_operations proc_iter_file_ops_compat = {
--	.llseek		= proc_reg_llseek,
--	.read_iter	= proc_reg_read_iter,
--	.splice_read	= copy_splice_read,
--	.write		= proc_reg_write,
--	.poll		= proc_reg_poll,
--	.unlocked_ioctl	= proc_reg_unlocked_ioctl,
- 	.compat_ioctl	= proc_reg_compat_ioctl,
- 	.mmap		= proc_reg_mmap,
- 	.get_unmapped_area = proc_reg_get_unmapped_area,
-@@ -627,7 +597,6 @@ static const struct file_operations proc_iter_file_ops_compat = {
- 	.open		= proc_reg_open,
- 	.release	= proc_reg_release,
- };
--#endif
+@@ -291,13 +301,10 @@ static ssize_t proc_reg_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 	struct proc_dir_entry *pde = PDE(file_inode(iocb->ki_filp));
+ 	ssize_t ret;
  
- static const char *proc_get_link(struct dentry *dentry,
- 				 struct inode *inode,
-@@ -683,14 +652,6 @@ struct inode *proc_get_inode(struct super_block *sb, struct proc_dir_entry *de)
- 			inode->i_fop = &proc_iter_file_ops;
- 		else
- 			inode->i_fop = &proc_reg_file_ops;
--#ifdef CONFIG_COMPAT
--		if (pde_has_proc_compat_ioctl(de)) {
--			if (pde_has_proc_read_iter(de))
--				inode->i_fop = &proc_iter_file_ops_compat;
--			else
--				inode->i_fop = &proc_reg_file_ops_compat;
--		}
--#endif
- 	} else if (S_ISDIR(inode->i_mode)) {
- 		inode->i_op = de->proc_iops;
- 		inode->i_fop = de->proc_dir_ops;
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index 04f7ce2b24ed..268a0523be12 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -92,15 +92,6 @@ static inline bool pde_has_proc_read_iter(const struct proc_dir_entry *pde)
- 	return pde->flags & PROC_ENTRY_proc_read_iter;
+-	if (pde_is_permanent(pde))
+-		return pde->proc_ops->proc_read_iter(iocb, iter);
+-
+-	if (!use_pde(pde))
++	if (!pde_pin(pde))
+ 		return -EIO;
+ 	ret = pde->proc_ops->proc_read_iter(iocb, iter);
+-	unuse_pde(pde);
++	pde_unpin(pde);
+ 	return ret;
  }
  
--static inline bool pde_has_proc_compat_ioctl(const struct proc_dir_entry *pde)
--{
--#ifdef CONFIG_COMPAT
--	return pde->flags & PROC_ENTRY_proc_compat_ioctl;
--#else
--	return false;
--#endif
--}
--
- static inline bool pde_has_proc_lseek(const struct proc_dir_entry *pde)
+@@ -312,14 +319,12 @@ static ssize_t pde_read(struct proc_dir_entry *pde, struct file *file, char __us
+ static ssize_t proc_reg_read(struct file *file, char __user *buf, size_t count, loff_t *ppos)
  {
- 	return pde->flags & PROC_ENTRY_proc_lseek;
-diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index 47d7deaeed8f..6ad5150020bf 100644
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -26,7 +26,6 @@ enum {
- #endif
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	ssize_t rv = -EIO;
++	ssize_t rv;
  
- 	PROC_ENTRY_proc_read_iter	= 1U << 1,
--	PROC_ENTRY_proc_compat_ioctl	= 1U << 2,
- 	PROC_ENTRY_proc_lseek		= 1U << 3,
+-	if (pde_is_permanent(pde)) {
+-		return pde_read(pde, file, buf, count, ppos);
+-	} else if (use_pde(pde)) {
+-		rv = pde_read(pde, file, buf, count, ppos);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -EIO;
++	rv = pde_read(pde, file, buf, count, ppos);
++	pde_unpin(pde);
+ 	return rv;
+ }
  
- 	PROC_ENTRY_FORCE_LOOKUP		= 1U << 7,
+@@ -334,14 +339,12 @@ static ssize_t pde_write(struct proc_dir_entry *pde, struct file *file, const ch
+ static ssize_t proc_reg_write(struct file *file, const char __user *buf, size_t count, loff_t *ppos)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	ssize_t rv = -EIO;
++	ssize_t rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_write(pde, file, buf, count, ppos);
+-	} else if (use_pde(pde)) {
+-		rv = pde_write(pde, file, buf, count, ppos);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -EIO;
++	rv = pde_write(pde, file, buf, count, ppos);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
+@@ -356,14 +359,12 @@ static __poll_t pde_poll(struct proc_dir_entry *pde, struct file *file, struct p
+ static __poll_t proc_reg_poll(struct file *file, struct poll_table_struct *pts)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	__poll_t rv = DEFAULT_POLLMASK;
++	__poll_t rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_poll(pde, file, pts);
+-	} else if (use_pde(pde)) {
+-		rv = pde_poll(pde, file, pts);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return DEFAULT_POLLMASK;
++	rv = pde_poll(pde, file, pts);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
+@@ -378,14 +379,12 @@ static long pde_ioctl(struct proc_dir_entry *pde, struct file *file, unsigned in
+ static long proc_reg_unlocked_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	long rv = -ENOTTY;
++	long rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_ioctl(pde, file, cmd, arg);
+-	} else if (use_pde(pde)) {
+-		rv = pde_ioctl(pde, file, cmd, arg);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -ENOTTY;
++	rv = pde_ioctl(pde, file, cmd, arg);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
+@@ -401,13 +400,12 @@ static long pde_compat_ioctl(struct proc_dir_entry *pde, struct file *file, unsi
+ static long proc_reg_compat_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	long rv = -ENOTTY;
+-	if (pde_is_permanent(pde)) {
+-		return pde_compat_ioctl(pde, file, cmd, arg);
+-	} else if (use_pde(pde)) {
+-		rv = pde_compat_ioctl(pde, file, cmd, arg);
+-		unuse_pde(pde);
+-	}
++	long rv;
++
++	if (!pde_pin(pde))
++		return -ENOTTY;
++	rv = pde_compat_ioctl(pde, file, cmd, arg);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ #else
+@@ -425,14 +423,12 @@ static int pde_mmap(struct proc_dir_entry *pde, struct file *file, struct vm_are
+ static int proc_reg_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	int rv = -EIO;
++	int rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_mmap(pde, file, vma);
+-	} else if (use_pde(pde)) {
+-		rv = pde_mmap(pde, file, vma);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -EIO;
++	rv = pde_mmap(pde, file, vma);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
+@@ -457,14 +453,12 @@ proc_reg_get_unmapped_area(struct file *file, unsigned long orig_addr,
+ 			   unsigned long flags)
+ {
+ 	struct proc_dir_entry *pde = PDE(file_inode(file));
+-	unsigned long rv = -EIO;
++	unsigned long rv;
+ 
+-	if (pde_is_permanent(pde)) {
+-		return pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
+-	} else if (use_pde(pde)) {
+-		rv = pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
+-		unuse_pde(pde);
+-	}
++	if (!pde_pin(pde))
++		return -EIO;
++	rv = pde_get_unmapped_area(pde, file, orig_addr, len, pgoff, flags);
++	pde_unpin(pde);
+ 	return rv;
+ }
+ 
 
 -- 
 2.53.0
