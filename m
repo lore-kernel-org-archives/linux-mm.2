@@ -1,100 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3495606A335
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 05:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC25606D812
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 05:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Jv2JoSDW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hpVNx9kv
 Received: by kanga.kvack.org (Postfix)
-	id 8C87D6B05B3; Thu,  5 Nov 2026 00:14:18 -0500 (EST)
+	id 82EED6B05B9; Thu,  5 Nov 2026 00:15:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87AC86B05B7; Thu,  5 Nov 2026 00:14:18 -0500 (EST)
+	id 7DECA6B05BB; Thu,  5 Nov 2026 00:15:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 790226B05B8; Thu,  5 Nov 2026 00:14:18 -0500 (EST)
+	id 6F49C6B05BC; Thu,  5 Nov 2026 00:15:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 512BB6B05B3
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:14:18 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D761F402AD
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:14:17 +0000 (UTC)
-X-FDA: 85399899354.17.1FE4628
-Received: from mta1.migadu.com (out-124.mta1.migadu.com [95.215.58.124])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1A5B440007
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:14:13 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Jv2JoSDW;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.124 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 4EF416B05B9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:15:06 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4096340950
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:15:05 +0000 (UTC)
+X-FDA: 85399901370.06.858561B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 9F8AF180005
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:15:03 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hpVNx9kv;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793855656;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793855703;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XEqA3W+i3V3yHQk0EklCgzFHb8brEsF0K0ZpN1y8TEQ=;
-	b=E/vnAyv4GNJWNBorCcRR5WTCVgpoqGwNMvFW9KDSPqBjJX8vLFXvfJH40ja7X1KAe1zYv6
-	9fpC7GO2aRSgu1Jw8+wKY8KKUOn1feiAgd6O/SQtFYUpxeNo7y8VxCDTJQk5yioE1i3OBy
-	M2M8cXxJc0rnWPdsfMA95bGSE45V8Cg=
+	bh=Ft12QEMagMn+rZpBJa3KHCLLuh49jFW/Xx5Q/JtWOfY=;
+	b=NwgldB40QDRX6N+fsfoFfwSrS9lA1JcUBfnWfNbkrUqGEL5IdRKUPqZKvxgklCplBTeQgs
+	pIsNi1JwE0tkAMYxFY1WQLhxqvPmud2wktCF7I3Sx6Fpn5EpxRs8rUGuAV0qvHnTi4dV9f
+	Uj1bCV5X5K/M+mqnne8jW+1p1sazsjw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793855656;
-	b=y85FGZqP19rx9kZEsvU/gyIKNunHAOW/jJAie7QV1XcnMK7Q8XvAf/4xfII3jKd7cv7CwN
-	NhmyWx9ESoAaRnEq9MbOoI7azdQuthWakvhpEYqa5sW7gU6if5rntXxFhU5AHIPOfR7O88
-	KhYD4abT/EYLYKPIUKQbHj8jcVP+trw=
+	t=1793855703;
+	b=On7X+o3OvCmiFdPWq9y1vT4hL1gvB9410Ouv83dKFxnBqKgaNC5ISsDXaRi9LHDC5n/rCQ
+	ID+jSs/TrnQe0RzVB6YJeX7dTIPVUyIIRXSBEytQLLiTDKKhdosC9ESUlbTAGIIsiA17Aq
+	jxcf7EuCqQ2VBN9LoTGHF7f0yfFI5UQ=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Jv2JoSDW;
-	spf=pass (imf27.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.124 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=xnhL49rU8Si9Gh8RiV1Fb+XbOATfd6SeIOCBPYd10uQ=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793855650; v=1; x=1794460450;
- b=Jv2JoSDWT8rRWOQPcqzFEkz0+ZUPr1snGqvUef4+jCsKVoJHOTVZo2HCYgK/Zy8xaFT4GN/i
- /cB/738Q14uaxOMvSUEIDrroWkDHCDcWwFyjDGJqNZZtdoTUnY8L2MjZwbUymCqjA6nXNXt9+Qk
- pAktt9j85Nu4FhP17wVMQfhQ=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id f77242cba51ecc71;
-	Thu, 05 Nov 2026 05:14:10 +0000
-X-Mizu-Trace-ID: f77242cba51ecc71
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 2/4] mm: gup: allow long-term pins of CMA-allocated
- HugeTLB folios
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <818fb0b4bbb234e4a2bd0552d61634f1a8431616.1793850539.git.zhengqi.arch@bytedance.com>
-Date: Thu, 5 Nov 2026 13:13:57 +0800
-Cc: osalvador@suse.de,
- David Hildenbrand <david@kernel.org>,
- akpm@linux-foundation.org,
- azpijr@gmail.com,
- Lance Yang <lance.yang@linux.dev>,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- Qi Zheng <zhengqi.arch@bytedance.com>,
- stable@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8F5F930D-A05E-4255-8E70-2567921A92A0@linux.dev>
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hpVNx9kv;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2154F601DE;
+	Thu,  5 Nov 2026 05:15:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460571F00A16;
+	Thu,  5 Nov 2026 05:15:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793855702;
+	bh=Ft12QEMagMn+rZpBJa3KHCLLuh49jFW/Xx5Q/JtWOfY=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=hpVNx9kvgpLJ/6O7ZIQKs8bK+nmZqpFJWhWRDM/EYSDP6qvDrn2JAOgvxFb5Xxttv
+	 4/0ThvzGMM8Oecx3TBK/9A6shM3LpBw6hdccTMVfcP7U74RdCmWVq9Yes1tBW/coSn
+	 OAN9+N2/83dNQEMLLiQiKURs+SXucu069Am3M4vkFVvtegOb+XN4ddHo0gmkiTNG8k
+	 sYvryEMT7de7Y+icY3PB9qhjR+ioNzH/VPzPuuqZPNdbj1XyXBTdWmvhx7d8H+j8xJ
+	 uyNH8HrRV9Jg/emcdoFRs0kO01YY1pj4FG73oMW3Tjm8JyVm3S8bdTQhOguaJe8q3H
+	 WDgb9TPdSc3vQ==
+Message-ID: <sashiko-outbox-198588@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 4/4] mm: hugetlb: fix cpuset violations in gigantic
+ surplus allocations
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Qi Zheng" <qi.zheng@linux.dev>, muchun.song@linux.dev, osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org, azpijr@gmail.com, lance.yang@linux.dev
+Cc: linux-mm@kvack.org, "Qi Zheng" <zhengqi.arch@bytedance.com>
+In-Reply-To: <046fd77e49ee8bb35e3bcc4104b9275d2e72ea5e.1793850539.git.zhengqi.arch@bytedance.com>
 References: <cover.1793850539.git.zhengqi.arch@bytedance.com>
- <818fb0b4bbb234e4a2bd0552d61634f1a8431616.1793850539.git.zhengqi.arch@bytedance.com>
-To: Qi Zheng <qi.zheng@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: w4bkce5aajswcbxfafms3cwwbkzkuntu
-X-Rspamd-Queue-Id: 1A5B440007
+ <046fd77e49ee8bb35e3bcc4104b9275d2e72ea5e.1793850539.git.zhengqi.arch@bytedance.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 05:15:01 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: gzabuxn6dtudaqd9dam4xes5m64yutra
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 9F8AF180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793855653-846606
-X-HE-Meta: U2FsdGVkX1+TIXzeq5lGM/wQVUiBLmO/yZ2GBHORGcDDGQ1ACNlyIC0M6BqKdUlg1El3jR8tAm8elTrAkLuV61pmUcCN6sZ7rcZTWgU3qjBJXgSEy/GMcGux3dF8sU/xfY7sTeampZJvM/wG9smy6jmyLFtVUI2l8i6eEQUApTCCs22XvUNzwcPG3XdR1PNsVj76SikNPhTjcB6FrgIwv+1BTcVOr6ue7qjuwx5TAIoVSi3ZxSDsUPNKN4Tn2v6LG/wh4iDXU9QxFkGvGtYuMMQRbnCACafnExJPFcDyHiMY02ZjaTl3CZ431Bm343o/cPdQsod0nArDQdB50fK/xkTHp1jqC5TczQBRFKygeatFVkMyEv/8Y9bDQBqJzXo7Uh9u96Akjrp3KdVTL0BI7DGXBye+NmYVrJ/Ne0xiBIQ5Lno4pQW9O4YOgOv2/xRAuwQ2YF1MjFpTwC+U76/T2vtGtIrE8uQGl+TvRIIXHvOzhSu+EQn6SHo6MU35ONO3ykK/z1dypt6+nyv2DSsFn7sIcR9e/HJrUDIKEmhfafD6lPOmVTxyzcxP1gE6QQpg9boPCOMdiv/PVu1wfyaqRdBidaT7hJiS1ChUJFZ6FmKtnnUcWaXX8FjbgUZyhfG0FXQHXL9qdcEJNj+GL4D0uM6VFKAtC4aBunOSx6bEwPh7jZmhVZ9INkuF4l80BFExoNphP8W97xPTZw42S1MRp2t9IR0DM3I28zgh2qS85mepfO9vQwNjiTidQv9/x+KJayM8TOcrfv/PrzLrxkYbImu9AlQPucFk65ZJpWtTHKIiVbwn+BTMOjiAOJQ/IXvcmTI6AwQLM/atCjSvZSWwX5PFcObilQcBYkAurXHdNucI9RjdeqZvHgzKTbjBpBrkFqje37Rq7HTkZeR05I5Xx2ZVaQ9Zu2M9Wmvs05RzV1DZd5IVT068DgtJ5QpCMKW0x5jivrDO5+g4NdAt0MA
- YaQ6wBVi
- zEhQb7QXtaMU7tIotiloprc5FfyGtQPKMrVY1efNGYAYtGRVJK404sIBTsCjfAabuS1E7TLnMDEkHMEhaNdIHevIHGUNXV46Qi7/AtO4EBv2a4f3TzDi4Tqkyz5JHTL004vIMxBL2+nsAtbSBmBQjulw+lIymLP2imw0IJh5u3SXntocTsJngN9qu3+L7LHT5CEQDnvfUdjmeX3/v9nr3pNrDVIMtwIiE23EBKHhkkXfU5JLexpxwiE/iLxR8SjmeKpoibZrSQeUIN0RaOfmahNcX+h5yT4uWXZLg3OCJMyG32HP0zR3HLi/hLQ==
+X-HE-Tag: 1793855703-404538
+X-HE-Meta: U2FsdGVkX1/PkDHqqNvZ3rQ4s/oyTG5dHtceRU45nt+rLPrRCo3hk+e/n5HlSK5kDJpeqL9aFge3rnVGEtv1NLnXbXFYZkWpC2lTe6S7jD+F0sxBvL7JHiV8PD6ZBc2d/r9dXnxq1drKlgCE7RRVleGw6VCvdZSLtfkHhp16gmfsClfz5mlY6rg+8BzTyTxtDJC2WuoLwanguu8i4Bkxd9Vgddx0Za9z1LbHbLASxX68QolHqwEHR7mDjK2inC4ber/bSOJR7CMv7Zoht4DgyM+HZM/v6mRvtN7Ei7MOrwC1jsrsgjUymuULqfsO3KKRQnvivY0Mp3s/kmzxjLhjFhJhEMFHjdlWyRFRKLMIGOFc1019N4qHzcOe6CV2nPRRDA6OVVjkydzn+DuhLYNWhXkMv+2zchG8jXnaO+mBm9gvRTMgMp0zNwyoC7P2HMJWihrpVr/WLusMOnMwqNDI2KNYUNosjbLn1eZVizFp5n7r9ZYUe4SiF3cbcHY9bvunCtK3wUXAfxQZ+bSd9Ndxo0F8LZJH+hnuyRlq/PeNKYBK4f76XTsVlxw8EhFXXnamE/ZuApmXgGDGC5kcGWQ05dXzDS1tUULt2VPwHtfgQ+WM60eRIgBfe7sgoCQgQlCNUdbbQjCuIznIj4I2o71fyv/OlC1b0sX5sMQGZ+/35mxIYiXS97fuv/cD862kQbtIPrjIff7RdOVgi8F8LAD4FjlLHw/jV1KkwEbVmw7xU0FLk5ivUROuMCEmMHzVEwNsu0x0y/HasBzxBCuVdkksk10IXJiyp2diDs4O8cUh+TKatRcXsZvDOjV06kQqzGt1oP8OJkGaCDqXPDzOTW7PvBA2ZZG76V20KiT4/MlrY/+4XixZsMnt8o8Bm9FEO1absieEzSXfSdfzx1sVNMy6JTVHCth2PcHoUzgcT6+xoTa8TqHtqqr3cirS2RajameX6WI32/inlWqNdKnSI9B
+ tiECV2me
+ 7AEgf7r6+JtsAtfkhWy7+TFD+TsSx7PEyssixRgzmc3zk6eOmDMig0uzCIUnMIKahE5psvQFT3rfHywu6b+jXFKj9fWo8wjPIquUp2W1uh6GDz+oaU00YAJbkX77Q4lYIZD2v0BPcUDus5MHafulBEqQ+T4/sHxS5t2refxVpWGFOVL2i0vj+gccY/ySnDlU211qLhhhjdDnmmuh2GV7SBoIfd7hWClqrp/VhrPJwjGNhijNFhfW7lKJpXIbwGkXPWqImJBGIx6ql+OQX/Qe7lSV3oJMhxItpHM3tN9OuZMLfnH2HTIJ6hPOEkf/OF8I3KwH+9i1m3GX8ZJMnqX+N0OhoJgtyt0IPYhCkcZvcXNUO5m0Dl0ycfsSrmP6j5EFTMKBLJplt6pCvfgoair+opnjRwAGzYkovLy/T1NTMpnnQ9q7cYdh5YGHiYJWqNXEz3DGaeeaBp8Iv/knHKfYi63a6Tkl/RlZI5fOFwfbzOF17piTaX4kGKixBFM4IfEoZ64Kev1yuZ4c+3kweMBLM+STEY7taFzw139dVbG5eOCj76ylesZMofxITsT1b8wjW6ZQ82GI1QtErOVcOxRN0v9ZT4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,131 +92,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] mm: hugetlb: empty nodemask passed in alloc_buddy_hugetlb_folio()
+- [Medium] mm: hugetlb: MPOL_BIND violation in alloc_buddy_hugetlb_folio() =
+on cpuset race
+--
 
+commit 6e27dfcfc4f6238bea6b6e8639c15188d8d94295
+Author: Qi Zheng <qi.zheng@linux.dev>
 
-> On Nov 5, 2026, at 12:07, Qi Zheng <qi.zheng@linux.dev> wrote:
->=20
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
->=20
-> Long-term pinning treats explicitly CMA-allocated HugeTLB folios as
-> unpinnable, causing unnecessary migration or pinning failures.
->=20
-> These folios already own their CMA bitmap ranges, and memory blocks
-> overlapping CMA areas cannot be offlined. Allow HugeTLB folios with
-> HPG_cma to be pinned directly, including in ZONE_MOVABLE.
->=20
-> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic =
-hugepages using cma")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Muchun Song <muchun.song@linux.dev>
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+mm: hugetlb: fix cpuset violations in gigantic surplus allocations
 
-Acked-by: Muchun Song <muchun.song@linux.dev>
+This commit intersects the allocation nodemask in alloc_buddy_hugetlb_folio=
+()
+with cpuset_current_mems_allowed so gigantic surplus hugepage allocations do
+not allocate from nodes outside the current task's cpuset. It also retries
+failed allocations if cpuset_current_mems_allowed changes during the attemp=
+t.
 
-But a nit bellow.
-
-> ---
-> include/linux/mm.h | 29 +----------------------------
-> mm/gup.c           | 31 +++++++++++++++++++++++++++++++
-> 2 files changed, 32 insertions(+), 28 deletions(-)
->=20
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 2d0b8a4c9974f..75dd40265d3f4 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2975,35 +2975,8 @@ static inline bool is_zero_folio(const struct =
-folio *folio)
-> 	return is_zero_page(&folio->page);
-> }
->=20
-> -/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
-> #ifdef CONFIG_MIGRATION
-> -static inline bool folio_is_longterm_pinnable(struct folio *folio)
-> -{
-> -#ifdef CONFIG_CMA
-> -	int mt =3D folio_migratetype(folio);
-> -
-> -	if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
-> -		return false;
-> -#endif
-> -	/* The zero page can be "pinned" but gets special handling. */
-> -	if (is_zero_folio(folio))
-> -		return true;
-> -
-> -	/* Coherent device memory must always allow eviction. */
-> -	if (folio_is_device_coherent(folio))
-> -		return false;
-> -
-> -	/*
-> -	 * Filesystems can only tolerate transient delays to truncate =
-and
-> -	 * hole-punch operations
-> -	 */
-> -	if (folio_is_fsdax(folio))
-> -		return false;
-> -
-> -	/* Otherwise, non-movable zone folios can be pinned. */
-> -	return !folio_is_zone_movable(folio);
-> -
-> -}
-> +bool folio_is_longterm_pinnable(struct folio *folio);
-> #else
-> static inline bool folio_is_longterm_pinnable(struct folio *folio)
-> {
-> diff --git a/mm/gup.c b/mm/gup.c
-> index 2b405cce2ca5c..e8503141bb275 100644
-> --- a/mm/gup.c
-> +++ b/mm/gup.c
-> @@ -2216,6 +2216,37 @@ struct page *get_dump_page(unsigned long addr, =
-int *locked)
->=20
-> #ifdef CONFIG_MIGRATION
->=20
-> +bool folio_is_longterm_pinnable(struct folio *folio)
-> +{
-> +#ifdef CONFIG_CMA
-> +	int mt =3D folio_migratetype(folio);
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 6fba92b0f6749..09b64f7c11dd2 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -2181,22 +2181,33 @@ struct folio *alloc_buddy_hugetlb_folio(struct hs=
+tate *h,
+>  		gfp_t gfp_mask, struct mempolicy_interpreted *mpoli)
+>  {
+>  	struct folio *folio =3D NULL;
+> -	nodemask_t *nodemask =3D mpoli->nodemask;
+> +	nodemask_t alloc_nodemask;
+> +	unsigned int cpuset_mems_cookie;
 > +
-> +	/* Explicit HugeTLB CMA allocations own their bitmap ranges. */
+> +retry:
+> +	cpuset_mems_cookie =3D read_mems_allowed_begin();
+> +	alloc_nodemask =3D cpuset_current_mems_allowed;
+> +	if (mpoli->mode =3D=3D MPOL_BIND && mpoli->nodemask &&
+> +	    nodes_intersects(*mpoli->nodemask, alloc_nodemask))
+> +		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
+> =20
+>  	if (mpoli->mode =3D=3D MPOL_PREFERRED_MANY) {
+>  		gfp_t gfp =3D gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
+> =20
+> +		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
+>  		folio =3D alloc_surplus_hugetlb_folio(h, gfp, mpoli->nid,
+> -						    nodemask);
+> +						    &alloc_nodemask);
 
-The description of "bitmap ranges" is weird, making me think what's the =
-meaning of
-bitmap. Please use more generic description here.
+[Severity: Medium]
+What happens here when an MPOL_PREFERRED_MANY policy's nodemask is disjoint
+from cpuset_current_mems_allowed (for example, after moving a task or
+non-leader thread to a cpuset on different NUMA nodes, since
+mpol_rebind_preferred() does not remap pol->nodes)?
 
-> +	if (folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio))
-> +		return true;
-> +
-> +	if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
-> +		return false;
-> +#endif
-> +	/* The zero page can be "pinned" but gets special handling. */
-> +	if (is_zero_folio(folio))
-> +		return true;
-> +
-> +	/* Coherent device memory must always allow eviction. */
-> +	if (folio_is_device_coherent(folio))
-> +		return false;
-> +
-> +	/*
-> +	 * Filesystems can only tolerate transient delays to truncate =
-and
-> +	 * hole-punch operations
-> +	 */
-> +	if (folio_is_fsdax(folio))
-> +		return false;
-> +
-> +	/* Otherwise, non-movable zone folios can be pinned. */
-> +	return !folio_is_zone_movable(folio);
-> +}
-> +
-> /*
->  * An array of either pages or folios ("pofs"). Although it may seem =
-tempting to
->  * avoid this complication, by simply interpreting a list of folios as =
-a list of
-> --=20
-> 2.54.0
->=20
+Unlike the MPOL_BIND branch above, this path does not check whether the
+intersection is non-empty before calling alloc_surplus_hugetlb_folio() with
+&alloc_nodemask. When alloc_nodemask is empty:
 
+1. For gigantic hugepages, alloc_surplus_hugetlb_folio() performs a wasted
+   pass through CMA and alloc_contig_frozen_pages() with an empty nodemask.
+
+2. For non-gigantic hugepages, alloc_surplus_hugetlb_folio() ->
+   alloc_fresh_hugetlb_folio() -> only_alloc_fresh_hugetlb_folio() ->
+   alloc_buddy_frozen_folio() -> __alloc_frozen_pages_noprof() fails the fa=
+st
+   path and enters __alloc_pages_slowpath(). In check_retry_cpuset():
+
+   mm/page_alloc.c:check_retry_cpuset() {
+   	if (cpusets_enabled() && ac->nodemask &&
+   			!cpuset_nodemask_valid_mems_allowed(ac->nodemask)) {
+   		ac->nodemask =3D NULL;
+   		return true;
+   	}
+   }
+
+   Because cpuset_nodemask_valid_mems_allowed() returns false for an empty
+   nodemask, check_retry_cpuset() treats it as a raced MPOL_BIND nodemask,
+   resets ac->nodemask to NULL, and restarts __alloc_pages_slowpath() with
+   __GFP_DIRECT_RECLAIM masked off. That wakes kswapd across all nodes via
+   wake_all_kswapds() with ac->nodemask =3D=3D NULL, attempts an allocation=
+ on
+   non-preferred fallback cpuset nodes at ALLOC_WMARK_MIN before the normal
+   fallback pass at ALLOC_WMARK_LOW with reclaim/compaction runs, and
+   increments HTLB_BUDDY_PGALLOC_FAIL in alloc_buddy_frozen_folio() if that
+   first pass fails.
+
+Should the first-pass alloc_surplus_hugetlb_folio() call be guarded by
+if (nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask)) so that an
+empty intersection skips straight to the cpuset fallback pass?
+
+> =20
+> -		/* Fallback to all nodes if page=3D=3DNULL */
+> -		nodemask =3D NULL;
+> +		/* Fallback to all nodes allowed by the current cpuset */
+> +		alloc_nodemask =3D cpuset_current_mems_allowed;
+>  	}
+> =20
+> -	if (!folio) {
+> +	if (!folio)
+>  		folio =3D alloc_surplus_hugetlb_folio(h, gfp_mask, mpoli->nid,
+> -						    nodemask);
+> -	}
+> +						    &alloc_nodemask);
+> +
+> +	if (!folio && unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
+> +		goto retry;
+
+[Severity: Medium]
+Can pre-intersecting alloc_nodemask with cpuset_current_mems_allowed cause
+non-gigantic surplus allocations to violate MPOL_BIND or use a stale nodema=
+sk
+when cpuset_current_mems_allowed changes concurrently?
+
+alloc_buddy_hugetlb_folio() is used for both gigantic and non-gigantic
+surplus hugepage allocations. For non-gigantic hugepages,
+alloc_surplus_hugetlb_folio() calls into __alloc_frozen_pages_noprof() ->
+__alloc_pages_slowpath() -> check_retry_cpuset(), which expects ac->nodemask
+to be the raw policy nodemask rather than a nodemask pre-intersected with an
+earlier snapshot of cpuset_current_mems_allowed:
+
+1. Suppose a VMA MPOL_BIND policy has *mpoli->nodemask =3D {0, 2} and
+   current->mems_allowed is initially {0}, so alloc_nodemask is computed as
+   {0}. If current->mems_allowed changes to {1, 2} while the thread enters
+   __alloc_pages_slowpath(), check_retry_cpuset() sees that ac->nodemask ({=
+0})
+   no longer intersects current->mems_allowed ({1, 2}), even though the raw
+   MPOL_BIND mask ({0, 2}) still intersects {1, 2} on node 2.
+   check_retry_cpuset() then clears ac->nodemask =3D NULL and restarts the
+   slowpath, which can allocate a folio on node 1 (allowed by the new cpuset
+   {1, 2}, but forbidden by MPOL_BIND {0, 2}). Because folio is non-NULL,
+   !folio && unlikely(read_mems_allowed_retry(cpuset_mems_cookie)) does not
+   trigger a retry, and the folio from node 1 is returned.
+
+2. In the MPOL_BIND check at the top of alloc_buddy_hugetlb_folio():
+
+   	if (mpoli->mode =3D=3D MPOL_BIND && mpoli->nodemask &&
+   	    nodes_intersects(*mpoli->nodemask, alloc_nodemask))
+   		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
+
+   *mpoli->nodemask is read twice. If mpoli->nodemask points to a task
+   mempolicy (current->mempolicy->nodes), a concurrent
+   cpuset_change_task_nodemask() -> mpol_rebind_task() ->
+   mpol_rebind_nodemask() can update pol->nodes between nodes_intersects()
+   and nodes_and(), leaving alloc_nodemask empty.
+
+3. For MPOL_DEFAULT (where nodemask was previously NULL), passing
+   &alloc_nodemask (for example {0, 1}) into __alloc_frozen_pages_noprof()
+   means that if current->mems_allowed changes to {1, 2} during
+   __alloc_pages_slowpath(), check_retry_cpuset() sees a non-empty
+   intersection on node 1 and loops in the slowpath with ac->nodemask still
+   restricted to {0, 1}, preventing slowpath retries from considering newly
+   allowed node 2.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1793850539.gi=
+t.zhengqi.arch@bytedance.com?part=3D4
 
