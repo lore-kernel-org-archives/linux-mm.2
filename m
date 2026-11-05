@@ -1,84 +1,86 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5743606EE85
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B06E6606D833
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=E8PRhFRF
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=cwt/ENdp
 Received: by kanga.kvack.org (Postfix)
-	id 0C31D6B05B8; Thu,  5 Nov 2026 04:53:11 -0500 (EST)
+	id 6B4F56B05B9; Thu,  5 Nov 2026 04:53:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09AB86B05B9; Thu,  5 Nov 2026 04:53:11 -0500 (EST)
+	id 63E476B05BA; Thu,  5 Nov 2026 04:53:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EFA226B05BA; Thu,  5 Nov 2026 04:53:10 -0500 (EST)
+	id 553F36B05BB; Thu,  5 Nov 2026 04:53:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CF8E76B05B8
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:53:10 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E5D3FA09B4
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:53:09 +0000 (UTC)
-X-FDA: 85400602098.22.9DC1757
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 56A4314000B
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:53:06 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=E8PRhFRF;
-	spf=pass (imf09.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3565F6B05B9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:53:11 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B46E012047A
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:53:10 +0000 (UTC)
+X-FDA: 85400602140.08.4765C1C
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D63C7180003
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:53:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="cwt/ENdp";
+	spf=pass (imf24.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793872388;
+	s=arc-20220608; t=1793872389;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=aFffXURD64Y45svN0+A+/kAHMGgDt4bDmohfFFHf6vQ=;
-	b=adpXwCqA/FmJdpraG5NVDmzfakLrEcv+9zW3mqo+Yb/WyuuT4ncfbM/uKb7k9CljGHVZPD
-	OVUpjX0231sGz8BxY7l23rUP/iigoschY2bbSLBL+Ae6ytBkeIq/4IBHCnO8P1KWVkPN+8
-	GQQgnTO+QdHwwh+HuvuxWQPYM0Shmp4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793872388;
-	b=Uoy3HLt61j/NZ31cX/WmT+syX6Y5itKBaob+xNSOuEWSf4Gb+OdESl40VUrkC64XE6qjEa
-	KDytbEjGJvawlXUyDhRkN0uzrjzwmF4G6rZ3IPCgkimH1cfJfwk3/SPTC/PSfqNyzr+DeO
-	BMlg8z15zcjjVa3tEwoMyhITGfh9odk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Idn+SmsO2M3f0YI+n9T3ryw9MvtjbedDGjimEeioACw=;
+	b=5BoDjZfgHlVaEAQPSwOrqT4U3b09ll6OHHGk8LYGaOJFw6FwIEl3s59+T+Xd8iyVN5DnB5
+	1vr8BnKTK0j3+zmnDnSb14y/gdcNjbh2hmf/JfQdMaMtphSXAPv4jPbUXwYcH/sE9I9lhB
+	CO8dHZadXDtsWcTeOrQwRwYzhNbbgo0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=E8PRhFRF;
-	spf=pass (imf09.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b="cwt/ENdp";
+	spf=pass (imf24.hostedemail.com: domain of tongweilin@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=tongweilin@linux.alibaba.com;
 	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793872389;
+	b=hY4QfSFoN4Cnjoh2tWhUgJGjDjiLcqVT+GVfkNK2wxTfYvXv1EDWEW2tYgcWSe6pJ853gd
+	pDTXBycv0Puo/f9cILwChHHTU4+SikeoaZVjcl04I3kdyyFS3ff/txuO4H8VV1D7cPwDIn
+	Tmj81oqOH4yUQxkbRuv8iSpglH+SjBg=
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1793872384; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=aFffXURD64Y45svN0+A+/kAHMGgDt4bDmohfFFHf6vQ=;
-	b=E8PRhFRF5CfhT37+GXGLMWy/5jJMjPyirI0g9+3WQ5xxbQ27gO3boNtGGXQTrqR9TTJY6lf0pAmNWi2P+nAKQBdfi+QGV45SFbiN/3cWfJKzrBSOqgZid3MOLMKVfMG7bWWhFCHFlpwifG+e/0jg+fr2IgNJ20U/nfNG3dL2iDQ=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0XE8JNoa_1793872372;
-Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XE8JNoa_1793872372 cluster:ay36)
+	t=1793872385; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=Idn+SmsO2M3f0YI+n9T3ryw9MvtjbedDGjimEeioACw=;
+	b=cwt/ENdpsNSpqxL/yIjsjtB/jVOB5EEk9RidqDu2Va6s+SyPjDnnVASOuIaW/NhlENCx8FRZ/XURN4Xi1x8E8IC6RuiYyE2S3AMBXMJzrKMCfh/TOYAhM90JJ9+RsqertZnemTRZXM8aIWJ4AT/GDOqUwZ14Ls7oMsKN1V9G0j0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=tongweilin@linux.alibaba.com;NM=1;PH=DS;RN=4;SR=0;TI=SMTPD_---0XE8JNsH_1793872384;
+Received: from x31l07246.sqa.na131.tbsite.net(mailfrom:tongweilin@linux.alibaba.com fp:SMTPD_---0XE8JNsH_1793872384 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 05 Nov 2026 17:53:03 +0800
+          Thu, 05 Nov 2026 17:53:04 +0800
 From: Weilin Tong <tongweilin@linux.alibaba.com>
 To: catalin.marinas@arm.com,
 	akpm@linux-foundation.org
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] mm: kmemleak: avoid long RCU read-side sections in reports
-Date: Thu,  5 Nov 2026 17:52:48 +0800
-Message-ID: <cover.1793871596.git.tongweilin@linux.alibaba.com>
+Subject: [PATCH 2/2] mm: kmemleak: reschedule while reading reports
+Date: Thu,  5 Nov 2026 17:52:50 +0800
+Message-ID: <70139bdb8c7a61913d5081671fcc2af37348fffd.1793871596.git.tongweilin@linux.alibaba.com>
 X-Mailer: git-send-email 2.43.7
+In-Reply-To: <cover.1793871596.git.tongweilin@linux.alibaba.com>
+References: <cover.1793871596.git.tongweilin@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: i9jfsjwee83x1rejx8idywotwmceimum
-X-Rspamd-Queue-Id: 56A4314000B
+X-Stat-Signature: wkbj8ifdn3jxnuip4eppdfz66imgtbua
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793872386-462855
-X-HE-Meta: U2FsdGVkX1/CyDbssXGY8ZDaU001m/CtREj6ZQ8EEbA+bjFD0UdN/VXNWOeHEsK4PPeEbGFsK0Kd+PJlNQ5fsNUNQ0fUudIHlpqYT3lTrGfy52yZfQCQl/vF+oDKVuYo4UuIvAte8pVWMkfKOz5/LpmqIu4egyQrT4O00E8G8IC8pkIrFqpKOR8ltzLZ0gxFFj3rKm7MqZXyhNsHCOcfTWhOzVPtHEzUsXEPe3P+aN7vETgAUqFRZAO7s6BjFDaR/Z8EeqDmFIsmu1WIucuwL/VTek7D6mG4pxdMzkzrDIijTgG2rMQ0t/BvmiaECYdUa3GvuzEGfQOAaNuy5AEqyP3A78RBPj4GSbr4vDgFan290SDQjouBbQsIJrqTjTuqmimRwEocHN3a23EcXs67hVTTAWeACbeom9Bgv7ic28sHL601LXWKxUmSHj98yKDxwME0kJBSU+8aa5T4C8MgjVn+cZmj9S2bxVZt/LWcAJLPt0c311V9pBE3tXwniyV9CVeOYhri9OeSkGOiY3NnvDLVjMmab3w+OVANgy1J7+4KzmIB0J7y1PZJ/S5cC+OXgbcfBH4THbPEdClX1mgzZDEvB8XW7+qiAn1fYLKTd4RLPZzf875Vt76OHa4zeB6XHqOhgtWrwr6tY7wZdKzO1qHRBU3ZHUQIkVZBfa2Ac/64uUtrpkhVoXFeKY+J0gLR0or6k0OYWJeI78tj48RcX7ie9S7pN3w0QJ5lay63cNyB7nZxAibIfJcjq6Lq5r5Bgjc+tJilJp5FD7qrCZJOGvhfVbkVnXn2IMOb0NoIwT57nnaSvB6btk9WsyCVbhSDpNeiZ24dDC7wHOhAMArAGPlJYzJ7g4nMiDpg29SPScx1vJApT3lTJsR8IXoZpBVAiukq+Lg27tJaWYl2pv5sdgt4ozHjOovXcluhZOXVWXGqxsUlPq7sfjDQISZY/WLgowtVoP4BLl7n2jh+TnP
- aze34FoO
- qJOZriqOvDeqAoV8ICuFpJi36C1WD46Y3W0sObJlZkg3TawQRcR/O6XQ9VdpSyYayh4XAlKRSatiXmCRufdRFs6PWmGqCgDQHdRlnPpj11g4YfeKarR4kYxxsJfXjuhG3M7UCehOzX+LPkmb8qGfHj9rYlhlRLZ9XukchkB7mjOSC4Oh7A89H7TV+mf3puyUm5p9wJ8WCwmQDuy1SSc/PhCVSy3a3KN0ksZCvBlzj43ahP5jeJtKO6ovYcvWRNLoZ/sVn4mxISCbqU7E=
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D63C7180003
+X-HE-Tag: 1793872387-965161
+X-HE-Meta: U2FsdGVkX1/vw5F9YyHxI5D1qaZVyognxjB/Vgil4+n5KLX+XvB+pEO/G3F3gCVKkSSsaEkEpeJkM3BM18UIKPmeY+PwhzLoIAqDGvsj6EDtjTP7nSo50Xt69MZ+p4MsDuhs9iLck0lw+Ko09fg8PpqTqH2l1xdyI6FQ65VN6CEwYDd7dGtFpS/lBAhzzOYg7Ylk7k/0scgN+LBxHKnIbHBYlCNyq5PzDqaxNFyxupGnL+u0wJFEIMIqZFlGzzUUjaefN2VmhNtoHKVmoqCL8sNfXfuXp+1PxAY6lmNwN+vkrbydfrgDdDLBz05JRL0njr+e1Iw0MC6ercdIaSDyxTveKI4xLC0eRimb+6mz9qxS6ptjqTQpsmoYirf8XIVkVK/ALF2fcKfofsJHYiBKDrnmbSwTgnHNhdaFXPtk0fXpjdfJZr47TQh7a2RsmJKu8/cYwSNNv2CWBFs5D/AZ7SCd3SFivFYCsk//+UfuzubdfDrcMIA4o2TAvb/gcZBFPpwsXPTcxm6yVKUAh/7CMAKArls4uxysKIg+AkNqdJuEvX1eh6Rchx85PHY0BkY80ZUgkQw5preWMbBJ6gwb0J30SaqWXXxsVKLP1j49S2wT9hmr3pTukl7Rpw8gU5+aLo3y4T8Zx1vDBZUpp7BmM8LjSTJA+SBEbrAERBEmLp4wFg0ym/DGCzsMRR4ICOBHz9q3b0puQauhULRBA0wBmkpo2jQ6+nB/gV93exp1vUIIHncVTJV3zONInQQs1AGPBNtQZCLrfMMF1f43IJ3qoZ+Yjh8q9+RtMKw5J5ltAvt9hmpIGJS1uvR6hMlXXACAPwM5Ktf8NfrkL5FWhuQh5W/P9wIniebxsrrMxXRN3FlI0LKn2AmkJAU4EQ7oJYqWuwniki7MX2m9TJNw0YNxnU9/EJf4YaXVpifLKGCL5U8+edgZiIi59FXgT1CEztswCFa6ZIq7cbRNCVdlcHP
+ OU1Kc5+7
+ YevGvSVMKoSptImKDKdpq6z9kodLpHw4uHMbVmQ3amhoCf2TAOCIb1O2DP6j9SWM6zkWeBTPzrPPlbVto0xnpLLz5r/UoTHcighl7fwLmjaZ2nLWCxReSx9K14f1ueuSh5GbkyWamXo0OdulhNUrsl2pcq6eqQG86TKSmBYBRBg4WO1LUULZtx1iZWuRc97gX5ySoAdUILCRF6kDD3kGPZSFMSETG+Y8eTWF2cdhFGjzuPXizyysIhLUYWA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -87,29 +89,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Reading a kmemleak report can traverse all tracked objects in one
-RCU read-side section and cause a stall.
+Reading a kmemleak report walks all tracked objects under RCU, even
+when the report is empty. On large debug kernels this can stall RCU.
 
-Serialize disable-time cleanup with clear operations and report readers,
-then use kmemleak_cond_resched() in both report traversal loops to let RCU
-progress safely during long reads.
+Use kmemleak_cond_resched() in both seq traversal loops. Request a break
+when need_resched() is set and periodically every 256 positions, since
+preemption can clear need_resched() without ending the RCU read-side
+critical section.
 
-QEMU/KVM tests on mm-stable 6628e7d4c6b25:
-* With 134 million real allocations and no injected delay, continuous
-  RCU sections fell from 23.11-23.38 s to 126-972 us. Total reading took
-  23.11-23.38 s before and 23.67-24.09 s after. Neither kernel stalled.
-* With identical 300 us per-node delays, only kernels without patch 2
-  stalled. Patch 1 eliminated overlapping cleanup entry.
-* Under lazy/full preemption, 560 concurrent-removal cases, 20 deleted-chain
-  cases and debugfs read checks passed with KASAN, lockdep and DEBUG_LIST.
+The helper pins a linked cursor and defers its removal across RCU breaks.
+Already removed cursors remain under RCU to protect their forward links.
+This allows RCU grace periods to progress during long report reads.
 
-Weilin Tong (2):
-  mm: kmemleak: serialize disable-time cleanup
-  mm: kmemleak: reschedule while reading reports
+Fixes: f5886c7f96f2 ("kmemleak: Protect the seq start/next/stop sequence by rcu_read_lock()")
+Assisted-by: LLM
+Signed-off-by: Weilin Tong <tongweilin@linux.alibaba.com>
+---
+ mm/kmemleak.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
- mm/kmemleak.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index d959d11f6..0fe7d336c 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -2216,6 +2216,9 @@ static void stop_scan_thread(void)
+ 	}
+ }
+ 
++/* Also break RCU periodically when preemption clears need_resched(). */
++#define KMEMLEAK_SEQ_RESCHED_INTERVAL 256
++
+ /*
+  * Iterate over the object_list and return the first valid object at or after
+  * the required position with its use_count incremented. The function triggers
+@@ -2233,6 +2236,9 @@ static void *kmemleak_seq_start(struct seq_file *seq, loff_t *pos)
+ 
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(object, &object_list, object_list) {
++		if (need_resched() || !(n % KMEMLEAK_SEQ_RESCHED_INTERVAL))
++			kmemleak_cond_resched(object);
++
+ 		if (n-- > 0)
+ 			continue;
+ 		if (get_object(object))
+@@ -2256,6 +2262,9 @@ static void *kmemleak_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ 	++(*pos);
+ 
+ 	list_for_each_entry_continue_rcu(obj, &object_list, object_list) {
++		if (need_resched() || !(*pos % KMEMLEAK_SEQ_RESCHED_INTERVAL))
++			kmemleak_cond_resched(obj);
++
+ 		if (get_object(obj)) {
+ 			next_obj = obj;
+ 			break;
 
