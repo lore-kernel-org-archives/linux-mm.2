@@ -1,108 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B848E606A326
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3FF7606D807
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=do+M1GPA
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=U1Lfix0H
 Received: by kanga.kvack.org (Postfix)
-	id CEEAF6B05B3; Thu,  5 Nov 2026 14:15:39 -0500 (EST)
+	id D9CE56B05B2; Thu,  5 Nov 2026 14:25:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9F426B05B4; Thu,  5 Nov 2026 14:15:39 -0500 (EST)
+	id D4D486B05B5; Thu,  5 Nov 2026 14:25:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8F1F6B05B5; Thu,  5 Nov 2026 14:15:39 -0500 (EST)
+	id C3C606B05B6; Thu,  5 Nov 2026 14:25:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 980FE6B05B3
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:15:39 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 32C5D120B86
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:15:39 +0000 (UTC)
-X-FDA: 85402019598.29.44B6C3D
-Received: from pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com [34.218.115.239])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E0E81C0011
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:15:36 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=do+M1GPA;
-	spf=pass (imf10.hostedemail.com: domain of "prvs=762187284=mkbund@amazon.com" designates 34.218.115.239 as permitted sender) smtp.mailfrom="prvs=762187284=mkbund@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793906137;
-	b=fOlDcxVkOUoRKnznQZJvRV0q+sF+XYipMVNkIDxRFDywqLS5QRDtpt4SnQAZez+tYVhRU2
-	WG+hvieaPJaj8lNIg76jQb0NvuVuA7LbPRPSBMRNjofusQMwF7M+cbynGtkOBnxLi6rzL8
-	ij2X5XCJPoE/gPidIid0o8QtKvSo3Yw=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=do+M1GPA;
-	spf=pass (imf10.hostedemail.com: domain of "prvs=762187284=mkbund@amazon.com" designates 34.218.115.239 as permitted sender) smtp.mailfrom="prvs=762187284=mkbund@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 97DFE6B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:25:27 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 204C480795
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:25:27 +0000 (UTC)
+X-FDA: 85402044294.28.A28520A
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 67DF240006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:25:25 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=U1Lfix0H;
+	spf=pass (imf17.hostedemail.com: domain of tracekotae@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=tracekotae@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793906137;
+	s=arc-20220608; t=1793906725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=SmXGLtwdL6+xdqj7AXF13PSOAqPEIyOh4wlNcIxilCA=;
-	b=VeMe+U7tN9KOGwspaCS6Bc21aQyuzBaO6KQrOkP+oMc4ETQDzR+pGLwa6Hv0MS5nkp38Fx
-	oFjfIP+WnSiTzc9rwgyS4gtnyVUNIqZSjRH8FBNt1rRBvHNzLB12HJFn0Pnb/X9uOyvVtp
-	yw3m0YgAtN1vSnxVNTQT36GRq8s44Ew=
+	 references:dkim-signature; bh=s4FZg8DsfWmRP296oRW8/FWLLuk54fxztQ3Y/s+Qjl4=;
+	b=5hIKI3kDLIxjJAx2eOJ8E4nd1phUIOgTHjadlaEyeAIf0AxIpbTTV4ws53kMdt4x3Yc7VK
+	qAounTRPKmHpUjnZEtLPaY0zCZmAOS8HnqNPbRNuQHoG078ivsR9V89BihLAl2q8ph8Mo/
+	m1ELZDiUCWKhr1XXFTHe36DvFJi5WrA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=U1Lfix0H;
+	spf=pass (imf17.hostedemail.com: domain of tracekotae@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=tracekotae@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793906725;
+	b=lzMqdtI5qdUylXH1Ps8HwRnGAfY74xqibxa1JjFXWz2Ry56BamYUx4PKv60h7GFIu1XJvZ
+	rfekVTh2VsLhb1+vHMyFSGkGvE4ltdQOnya+9pimQNoV560EzpoSL2BXxDIA0g4PkcX8fJ
+	Eshn+i29+sJ5QJ3DW+gp0TSwseSuyT0=
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5bccecba199so1992345e87.1
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 11:25:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1793906137; x=1825442137;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=SmXGLtwdL6+xdqj7AXF13PSOAqPEIyOh4wlNcIxilCA=;
-  b=do+M1GPAvjdEYa91e9Mt9ipPQ2Rezb3/VLGubLf/zXcJQYffSa8YbIlJ
-   1Sg68ThctZR+3Gr2kPO7ZVpUYMfqt38Q6qAbCDKPiMW6wOHEOgWlzGAgL
-   mwRf1r+xdoP2xCH4EgNY/g2SN8i5Z1wUeQAKqqzGSg7QrK9n8obguVGb7
-   kqXoHqJ7e7Wr7A9sLfRuJmig8H8I6xLRCF0KTEOP1kTjYskjDJIlXIVO8
-   VRk4h13xhKZsJxkD58QZajwD2yHPMzYGbCUN4nl4OPBlelGDe/W2GuOOj
-   1GN1j9UyhmUdyMx8AutpB0xUthxs6xWCvh8mbSb18dkdhyWSLy4QzS26b
-   Q==;
-X-CSE-ConnectionGUID: A9nJ3FyTRwKTVLb6rXkvPQ==
-X-CSE-MsgGUID: iG9TnQSaTA610vgUlcmtWw==
-X-IronPort-AV: E=Sophos;i="6.27,197,1787011200"; 
-   d="scan'208";a="33012070"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-013.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 19:15:35 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:19730]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.22.238:2525] with esmtp (Farcaster)
- id 40b2d56e-bfa4-4cd9-86df-f52e0a0d2fa6; Thu, 5 Nov 2026 19:15:35 +0000 (UTC)
-X-Farcaster-Flow-ID: 40b2d56e-bfa4-4cd9-86df-f52e0a0d2fa6
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 5 Nov 2026 19:15:35 +0000
-Received: from dev-dsk-mkbund-2b-9ea2efba.us-west-2.amazon.com (10.2.100.138)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 5 Nov 2026 19:15:34 +0000
-From: Mark Bundschuh <mkbund@amazon.com>
-To: <akpm@linux-foundation.org>, <muchun.song@linux.dev>, <osalvador@suse.de>
-CC: <david@kernel.org>, <jiaqiyan@google.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, Mark Bundschuh <mkbund@amazon.com>
-Subject: [PATCH v2] mm/hugetlb: add htlb_dissolve vmstat event
-Date: Thu, 5 Nov 2026 19:15:08 +0000
-Message-ID: <20261105191508.1021974-1-mkbund@amazon.com>
-X-Mailer: git-send-email 2.50.1
+        d=gmail.com; s=20260707; t=1793906724; x=1794511524; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=s4FZg8DsfWmRP296oRW8/FWLLuk54fxztQ3Y/s+Qjl4=;
+        b=U1Lfix0HEXTHJs+K/xOj3JtvKP9sY4BfBEzoFteMs/LUVDwYlrVdtKsFM3T6uGiinm
+         WoUCsIqu6Ok+ZsYFdj8raGitZk/UyIFTPErky1TP21zOtOAouJ3k3AQqACrtROA6ZdGP
+         MTGpD2kZlAH6u8JMMrxX6WfPfn1sdfrHvrMVW1GQhHkS8QGxPh7+CDrUPvck9Kel0YLR
+         rGVZyvAkmt+mKzTEZhHS9fRnUiLY3WC2821miFUx31NLdNlZWZsWr7tMvcdlcsrz4BQq
+         87wXT4thvjLXh7PcjqxR1eq6mIzkFB3NKBSTGUF0fEmT3cxzaSG3DDq0n3kvWqNb9EAt
+         +Qhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793906724; x=1794511524;
+        h=content-transfer-encoding:content-type:mime-version:message-id:date
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=s4FZg8DsfWmRP296oRW8/FWLLuk54fxztQ3Y/s+Qjl4=;
+        b=O2oKlfpaC6/AQwbM4QoAt135k2XVq7kNJ4P5m3pCuOpBvvDYELu4CQ6Y39iFVHEeeT
+         QjXzECczFP9IelBIpPHZsj2kU7L81z2kMs+xrdLnRSRus1xwSBlDpYXEfNM4ULEuYfkK
+         B6tkU4ROywpeJhhSQR81I1TeHOPE9P9LzQqWHON7TXNbmf7h4mMpQuAfxgm4XaWDhgk3
+         RVvDlyC2gdAIQbGYuwLaJWSE6bYi/ePNXHyFa9YHsRDRfXXypll/Np314X9F8pRigpJj
+         ohacpU8wuVV/uGefa3coPFMB97PgJ49JkY9WMXqDceVIkuEGvZ9MZHQgK7kdIQrTwbn6
+         jUQw==
+X-Gm-Message-State: APuU4Z+/l3GViouggSib7KH5RkHgfDfC72IYl5uxtJmC176s5nVwhVSF
+	pPZJ6F73Ki/+Q0icXprI9pAs2RwoMBQrKMdHrxgmgAgeKI8J79AKV5Xhm5/CLtXuqOh2XQ==
+X-Gm-Gg: AYBFou3ppeRccAlZVNgDF9sRq+hVl7t0QLstIYpunzQqJRYPLC/vURyTuuh9UwbkqEz
+	EuzDMUVjM+W5itZDKf8Be/Cx2BXMq8YYQaG7gDmyzjandJECtL2rIldZ7DWTr80dkCch+OdyiZ+
+	PX1r/fsANGTcGIzPSESG/mSStfRxpwylHXsAr1a6u4A5h2FpmApWXQ2uFjs2b5Y0aybQwRfoi9y
+	IXzuEAa762P7xmE3ogn7ov8SzMjEYQe+MsZBrn7JMJVnaELsFD430FHIHVLNfzMEkLbpC+068ch
+	I7WIT0dycC7dmFWUfeRW2ImzI71/tyjep12njj2LDsTLVxN7C8wANB22T2uiL1tpnN6lHe3hG9w
+	SkCWyZ5Kfw7FnPrVp/27JFkf2VUfWgo+SMqzCEvmd/Cflyv4+uwpZbxCmCri6qV16GpALHWPyJl
+	yvj/huQW8JrrI0+Ai6N+Z9eR6cQliSHrEsMxDgTBlj8YeSoG2ceTWY28yvf5NyOSaXNK0y/8/Jt
+	jmXROoCAzFWy0lgMd+uUqcJP2QnZXna0LGr20GLPbEa5mJqE66G9yN7ZqRFzlHOim0t4gdR2pbh
+	s5AsJUrFQtGSW8qcRJkXim+CxheItsP/C3JOFrA8Ngc=
+X-Received: by 2002:a05:6512:104d:b0:5ba:356b:5a85 with SMTP id 2adb3069b0e04-5c003ae0858mr15497e87.43.1793906723445;
+        Thu, 05 Nov 2026 11:25:23 -0800 (PST)
+Received: from localhost.localdomain ([185.65.135.248])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5c0030a3b50sm25897e87.79.2026.11.05.11.25.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 11:25:23 -0800 (PST)
+From: Trace <tracekotae@gmail.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	fujunjie <fujunjie1@qq.com>,
+	Jan Kara <jack@suse.cz>,
+	Matthew Wilcox <willy@infradead.org>,
+	Vishal Moola <vishal.moola@gmail.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [REGRESSION] mm/filemap: mmap read-around stays off for an open file after sparse faults, since 7.2
+Date: Thu,  5 Nov 2026 20:25:17 +0100
+Message-ID: <20261105192517.228523-1-tracekotae@gmail.com>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Stat-Signature: po58x8y1kjomtocu6wg7oooec3isnids
-X-Rspamd-Queue-Id: E0E81C0011
+X-Stat-Signature: 9317ospoge675s8y7zmc5n4grz8csjy1
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793906136-466233
-X-HE-Meta: U2FsdGVkX1+EAfSuIOK5EoTV8SZGsS5vVaHburQTBhHfC60jSsSsDEwFPUcgPBjrt6hWoG7VzSVN8As1iTZgSgStjTN30y3vmHOGazGQp/K60pnP/n2rM0jpBbJezygY5yYliujpMS4fwjTwaVaimpAV2WJM/muzz/h0tCcrIgKzb5pg3QL+KAHP1VXetHTUfPOxRoJHcx4/8ahAb7QiwA2nsDe7wCVJYJmC+WXLL1UJibgczYHaUXjk3KfT9RNq+EzjErn7sptPKjtt4Hnz43VubOdww0V1CQlX8LXxNyLK6Iwjm5BcgbHuzx7ZpJg/2SDxrOg6sBsx+S4xYzSJEXnzLRkxmUWDc8FNxcZCf7ZkWMH+GdlVjIBKDJnU5BEVg/mpwWnnzIwuFArdUr/ejcLH870RLUzIw3tYUUtBP7v8N8Wib3TBy9PoyneAGvP/3EKWel/+s+278t+2XfSnnp5ugaIx9EE19LgP5GS14dQorHTIYATY54LOpCz5lOMSr5Q+MO5EEEHpvM5oufj2RKHLW4edDJFmMPdVmk9OaITeGlp2bP2LdGT2u3T1oWUH+4j/JnCKso7cxV4HqiQm3TncTZ3nqPH3aDSV03iHbvf+87aeaFCEZXeSTk6kq5LFg+sHIxywKWdawA07adsyfVjQr2riwRGGwy9i5hK+tMP23ep0+oj/5O3S8MjZ0A59rIeUDAI1JAOCSm4/3d83rAcFiHQ+o/zVTnEXH0NPvH8MIi6TVcWZiYTQF0B/PcvV/hjMcuxmDQuaMwMNoQN7NcUQgaThcatHHCXP8OCqIWonu7rinifL8slp3JM6cOrLbB2g/lgPMS4uZueUq2rKKLL1XqaEuiEBJZlwXZZG73awSjZAmOyflZCVNvZ8s9G8P8YUhxNDAQ3WAwQAdJo+WT1OA/VsliopgEBYKvKW1Nus6WdkIcqEV01MrM7xbycaINxmedZxfjoiOuU+tJt
- WO28QF57
- p38WqZHRo8h8i7Jh9GtPCmCq98Yaa9CdKc80YbnM+fbCq9uv0nJfP+3Zt8Z6BdOg4mNzmjn7dESSqCvjOUnCdna27RjxhqgxyMCSbKomwBNC0KPEXkGCOVb20wh/MrS3ePO20+NX5lAptbGASqEGbZY3gZ+w04s2JwWnjhN7jSfygG/ScFBlEv4GRvKbWlpUDHFhOUbihLO1wG04OR2cRxfhLO9l2vCJae7U7XqPXMhgnCwWz9MNw/zDZWV8TkET5fbtmpZouOPv2cr/HJBkzY/2GX0l7KYJPX0zYji1oWFchkSd8ymtDMPlf6ZXXr5unhVWKLvYxi1wqt8kYG+lKqctZEIl/qLlHeE57m91D1oDfLvDz676OtoiW31R5ECdKKPvCfzHvOHLNzIz9B8HDAabHqIeNpv70jVS52GiuB2pOiUMtZOi5Uuii9slsrDoZWH58Y5q4w3/xX/05lT9NqS4Q9JfrHMPgYxUexbo1TVI1Ybv1W5KllwFDL1EhLvSsivUiNx0UlHQrUtrzQFWLus5JHguN0VEawNstqm2e8oGHAhzZ5ROxJF7m/ND5+9SvPTYj4phb2N/ruVdNI+wggSgKVPgIJ3KnSEQga+nynZdRriEpR0iSbIKnXFZdBsxcENuvsWRxe0e5RsU3tzxFWKVS2av/4Y29MI5tBR9QYcXuFcazED53xM7sqhQ8UCnLR0fAgNLkw6NdJjxrwB1ANRv0YaZCgm+vjAzglxJbtETuO51p/g5W9SdswbK7OuVu6f2RNs8nKHy7Yyk=
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 67DF240006
+X-HE-Tag: 1793906725-670307
+X-HE-Meta: U2FsdGVkX1/nOG7sDULlRpBdvdQXAEL+tkZko7igfuAUJlowP/ffAuS/xP8EX8hiLoitnMBRDwtPFKUTi9IvfHLhbHJukUX6/uEvTKwKMvqz9Dtnwu6ZnmRS7zgjT9mRZ753ruZ1+zaEu6jtnxm88nj/mz/jw97B6w5CFrzRnJReyLRUdZT7uzV5tXxXDJIa4oyVlXO4HgKOq/OWEZvBZcpoOXpnrtAygbN1iXMSCmYvHS/6lUpypPlowSpr/nY+3p2Jk7LWYlHgLS4c1D4e82CUzme86TwOZJEu5PXNVwGmIbk/+1ID2AsjspJZ6jFG3qCJy3BcwoRsLGfHyaB8RA09wUAbWHopbzHNmVgFPsSEI3oMbbXDkLZ+hNqBmlfLGYWrBaQGfgRwy9ifg1ax+vhMuXSTQcWdQ8+MOylSgLV9l2S1cfKre53jOhqDLrBxjC+i6GjGmsOLKr2jDuLnNZBuV1KDxHEG6D3Q8XJLLM8rIR5dpnaOKU62mM3NzKAwMyT/kFYpiqYqJZctj6f1MdV4Z3IrjgF6s08Jb7EiFu+1Hwij3Tlh9jonNp+ILTuBUAqzPUMBX7CSWRewN+qRdJlQqe0axd2jt3tyxbGaFciDR+rDqCDoC8ge175/69UOnt2ebSEQXEvflTj9lYThrqtxrfyzlG5cbkXISDf1qloQsyvmXnA0gD5FPvXYW+WOp4+hc1Mz0ig4SkDYl/VRhkgSNM2fn479MemDRJKWlYPxvtfXzCG2LuZvgM9KKOyltQcZcgdHfwPNSqbUANaW2c2TeZ6CTqq7ISXPZEA9IbokhVEroaw4SsRmaumKuZ0+NfropcfeRlTTEOIykXTBNxcCFLh7dLY0TcjOLzsgJhBiDMSIHxgQX0+TIascQ0LrJqX8bXCn9qAypTSop3kBRNvio5yanw1h/7svAirJBLGtKSPMpuht2trNpI4TmcrxSwMjRrhRGBqp/+32kmD
+ x6SWAeyG
+ CILKLcKfskMvdKh+lgncR7hV1T56YU0BtYgG1+9BbnduPZif0NWvTKm03U892/EwZf8uXPb1Atel+czXG324h88SaOg8bONBEK5zJfV7YzcXZE5gyq80Wi4QW6BwiOJVTtXqN+Ps3i+mEQvWm+UNa3WcbMuGXARG7BDlY93/N9Tsm902ttHEz9zvb2Ri5h237moDLwXfZesvWfXCmUMtTH+uBPzof5E0CAWsx+KBJs1KiilzLpxuePJbGunTbg0F8M+n6Dq6VvxdlEUOn+vcf1Krm6/AmDovOEhfyzoaZWa3co7b57psaHjGjSr5wQczo5yQ5a1rjiIRorcwYaoo3Fy/10L7kZH2uQWVOYGBO/b+8mTJKvwnyTWoKuKX/iVZFfOSZwznRTUXn3EQDA0P3f+bPX8l8GCCWWY9aEjCeY4vVhRnQweEhfl5meT5RiO0MMSyVL0QIoqiMt3+0XEFB9OKn9YJO1w8Tqiff
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,63 +127,205 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Memory offline and memory failure handling dissolve free hugetlb folios
-and lower nr_hugepages. Nothing records this, so when the pool shrinks
-it is hard to tell whether that or a write to nr_hugepages caused it.
+Hello,
 
-Add an htlb_dissolve event, counted for each free folio that
-dissolve_free_hugetlb_folio() takes out of the pool.
+since 7.2, once an open file has taken more than MMAP_LOTSAMISS mmap
+misses, it gets no more mmap read-around, even if the access then turns
+sequential. For a reader that does not run into pages an earlier
+read-around brought in, it stays that way until the file is opened
+again. Each later page is a synchronous 4 KiB read, which on NFS is a
+round trip.
 
-Signed-off-by: Mark Bundschuh <mkbund@amazon.com>
----
-v2: say "takes out of the pool" instead of "frees" (Jiaqi)
+I think it comes from this series:
 
-v1: https://lore.kernel.org/all/20261105020324.2011790-1-mkbund@amazon.com/
+  0b9c0aeba938 ("mm/filemap: count only the faulting address as a mmap hit")
+  9b0fcac3cfe7 ("mm/filemap: do not count FAULT_FLAG_TRIED retries as mmap hits")
 
- include/linux/vm_event_item.h | 1 +
- mm/hugetlb.c                  | 1 +
- mm/vmstat.c                   | 1 +
- 3 files changed, 3 insertions(+)
+I have not bisected or built a revert. By reading mm/filemap.c, v7.1
+and the current 6.18.y have the old accounting and v7.2 onwards the new.
+I measured 7.3.1 and 6.18.60, and the program below also gives 16384
+on 7.2.14 (with the zen patches) on a SATA SSD. do_sync_mmap_readahead()
+and do_async_mmap_readahead() are unchanged from v7.3 in next-20261103
+and in mm-unstable, mm-hotfixes-unstable and mm-new of 2026-11-03.
 
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 2628ccda076a..822fe862e5b3 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -71,6 +71,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- #endif
- #ifdef CONFIG_HUGETLB_PAGE
- 		HTLB_BUDDY_PGALLOC, HTLB_BUDDY_PGALLOC_FAIL,
-+		HTLB_DISSOLVE,
- #endif
- #ifdef CONFIG_CMA
- 		CMA_ALLOC_SUCCESS,
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index da5d04edf7c1..7c79523b2a3c 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2047,6 +2047,7 @@ int dissolve_free_hugetlb_folio(struct folio *folio)
- 		}
- 
- 		update_and_free_hugetlb_folio(h, folio, false);
-+		count_vm_event(HTLB_DISSOLVE);
- 		return rc;
- 	}
- out:
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index a3e809c57f29..6282eef7074a 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1397,6 +1397,7 @@ const char * const vmstat_text[] = {
- #ifdef CONFIG_HUGETLB_PAGE
- 	[I(HTLB_BUDDY_PGALLOC)]			= "htlb_buddy_alloc_success",
- 	[I(HTLB_BUDDY_PGALLOC_FAIL)]		= "htlb_buddy_alloc_fail",
-+	[I(HTLB_DISSOLVE)]			= "htlb_dissolve",
- #endif
- #ifdef CONFIG_CMA
- 	[I(CMA_ALLOC_SUCCESS)]			= "cma_alloc_success",
+As I read it: above MMAP_LOTSAMISS, do_sync_mmap_readahead() returns
+without reading, and mmap_miss only goes down on a hit. With no
+read-around the next page is not in the cache, so the next fault is
+another miss, and nothing lowers the counter again. Before the series,
+the retry after each read-around counted the pages it had just brought
+in, so a sparse reader did not reach the limit. The series' tests run
+random, stride and sequential access each on its own, not one after
+another on the same open file.
 
-base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
--- 
-2.50.1
+The program below writes a 2600 MiB file, drops it with
+POSIX_FADV_DONTNEED, touches 2000 pages 1 MiB apart through a private
+mapping, then reads 64 MiB sequentially and counts major faults. x86_64,
+4 KiB pages, read_ahead_kb 128, ext4, plenty of free memory (7.3.1 on
+NVMe, 6.18.60 on a SATA SSD):
 
+                                          7.3.1   6.18.60
+  sequential only                             1         1
+  sparse pass, then sequential            16384         1
+  sparse, MADV_SEQUENTIAL, sequential       512       512
+  sparse, close and reopen, sequential        1         1
+
+The same pattern in a Python version, on 7.3.1, on NFS v4.2 over 1 GbE
+through WireGuard: 80-90 MiB/s with no sparse pass, 5.7 MiB/s after it.
+
+How I met it: PyTorch loading a model from safetensors on NFS, on a
+Radeon AI PRO R9700 with ROCm, where the driver faults in the mapping:
+
+  folio_wait_bit_common
+  nfs_do_read_folio
+  nfs_read_folio
+  filemap_read_folio
+  filemap_fault
+  __do_fault
+  do_fault
+  __handle_mm_fault
+  handle_mm_fault
+  hmm_range_fault_locked
+  amdgpu_hmm_range_get_pages
+  svm_range_validate_and_map
+  svm_range_set_attr
+  kfd_ioctl
+
+safetensors maps the whole file (torch.UntypedStorage.from_file,
+MAP_PRIVATE) and builds one tensor view per entry, which takes one
+read fault per tensor, mostly on its last page. A model file holds
+hundreds of tensors spread over the file, so mmap_miss passes
+MMAP_LOTSAMISS within a few seconds of the mmap, before any weight is
+read (bpftrace on filemap_fault, reading file->f_ra.mmap_miss). The
+GPU driver then faults the weights in through the same mapping, every
+page a synchronous 4 KiB nfs_read_folio, about 1800 a second.
+Read-around came back only when the GPU's walk happened to continue
+through a window that one of the first hundred faults had read around:
+async readahead restarted there, and about 900 hits later mmap_miss was
+under the limit again. With the page cache cold, one model's first
+picture took 700 s on 7.3.1, 512 s of it below 10 MB/s, against 239 s
+on 6.18; a larger model's first run took 54 minutes against 13.
+
+Is read-around meant to stay off for the life of the open file once the
+limit is passed? I have no patch to offer.
+
+#regzbot introduced: v7.1..v7.2
+
+Thanks,
+Trace
+
+---8<--- mmap-ra.c
+/*
+ * mmap-ra.c: does a sparse first pass turn off mmap read-around for the
+ * rest of an open file?
+ *
+ *   gcc -O2 -o mmap-ra mmap-ra.c && ./mmap-ra /path/on/a/disk/testfile
+ *
+ * Writes a 2600 MiB file (removed at the end), drops it from the page
+ * cache with POSIX_FADV_DONTNEED, and counts major faults for a 64 MiB
+ * sequential read through a private mapping.
+ */
+#define _GNU_SOURCE
+#include <err.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/mman.h>
+#include <sys/resource.h>
+#include <unistd.h>
+
+#define MIB	(1UL << 20)
+#define SIZE	(2600 * MIB)
+#define SPARSE	2000		/* single pages, 1 MiB apart */
+#define SEQ_OFF	(2100 * MIB)
+#define SEQ_LEN	(64 * MIB)
+
+static long majflt(void)
+{
+	struct rusage ru;
+
+	getrusage(RUSAGE_SELF, &ru);
+	return ru.ru_majflt;
+}
+
+static char *open_map(const char *path, int *fd)
+{
+	char *m;
+
+	*fd = open(path, O_RDONLY);
+	if (*fd < 0)
+		err(1, "open");
+	m = mmap(NULL, SIZE, PROT_READ, MAP_PRIVATE, *fd, 0);
+	if (m == MAP_FAILED)
+		err(1, "mmap");
+	return m;
+}
+
+static void run(const char *path, const char *name, int sparse, int advice,
+		int reopen)
+{
+	long page = sysconf(_SC_PAGESIZE), before;
+	volatile char sink;
+	unsigned long off;
+	char *m;
+	int fd;
+
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
+		err(1, "open");
+	if (posix_fadvise(fd, 0, 0, POSIX_FADV_DONTNEED))
+		errx(1, "posix_fadvise");
+	close(fd);
+
+	m = open_map(path, &fd);
+	if (sparse)
+		for (off = 0; off < SPARSE; off++)
+			sink = m[off * MIB + 37 * page];
+	if (advice && madvise(m, SIZE, advice))
+		err(1, "madvise");
+	if (reopen) {
+		munmap(m, SIZE);
+		close(fd);
+		m = open_map(path, &fd);
+	}
+
+	before = majflt();
+	for (off = SEQ_OFF; off < SEQ_OFF + SEQ_LEN; off += page)
+		sink = m[off];
+	printf("%-40s %6ld major faults\n", name, majflt() - before);
+
+	(void)sink;
+	munmap(m, SIZE);
+	close(fd);
+}
+
+int main(int argc, char **argv)
+{
+	static char buf[MIB];
+	unsigned long i;
+	int fd;
+
+	if (argc != 2)
+		errx(2, "usage: %s FILE", argv[0]);
+
+	fd = open(argv[1], O_WRONLY | O_CREAT | O_EXCL, 0600);
+	if (fd < 0)
+		err(1, "create");
+	memset(buf, 0x5a, sizeof(buf));
+	for (i = 0; i < SIZE / MIB; i++)
+		if (write(fd, buf, MIB) != (ssize_t)MIB)
+			err(1, "write");
+	if (fsync(fd))
+		err(1, "fsync");
+	close(fd);
+
+	setvbuf(stdout, NULL, _IOLBF, 0);
+	run(argv[1], "sequential only", 0, 0, 0);
+	run(argv[1], "sparse pass, then sequential", 1, 0, 0);
+	run(argv[1], "sparse, MADV_SEQUENTIAL, sequential", 1, MADV_SEQUENTIAL, 0);
+	run(argv[1], "sparse, close and reopen, sequential", 1, 0, 1);
+
+	unlink(argv[1]);
+	return 0;
+}
 
