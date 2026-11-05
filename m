@@ -1,122 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C6B606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=cmTUOKTO
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F0B606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:10:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EE52E6B05B0; Thu,  5 Nov 2026 06:09:42 -0500 (EST)
+	id 4880C6B05B2; Thu,  5 Nov 2026 06:10:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E96E86B05B1; Thu,  5 Nov 2026 06:09:42 -0500 (EST)
+	id 45F1F6B05B3; Thu,  5 Nov 2026 06:10:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D85796B05B2; Thu,  5 Nov 2026 06:09:42 -0500 (EST)
+	id 39E2B6B05B4; Thu,  5 Nov 2026 06:10:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A32846B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:09:42 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F166C6B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:10:45 -0500 (EST)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 41774409DD
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:09:42 +0000 (UTC)
-X-FDA: 85400795004.01.9A7D63C
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 5A5F2A0005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:09:40 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=cmTUOKTO;
-	spf=pass (imf25.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.44 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9585F1609BE
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:10:45 +0000 (UTC)
+X-FDA: 85400797650.01.CE63014
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 02D91140007
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:10:43 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf09.hostedemail.com: domain of 3M2TsagkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3M2TsagkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793876980;
+	s=arc-20220608; t=1793877044;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NLxUrhb+i0y7kx7MWfP3g7AgEu7tvuVh8LKyS1nXFQo=;
-	b=0NXY738VW6UBrqhFXDrSnQx2uOIPV+hDOQkhp3FkTsa+nMTMg/Tipq0vQJ2/ng6lkQs/1/
-	O8qHPjEi9D17eeh6CBkgAuSjkOWwAX/Xk/o7mwl7Spff9qxb7OUuhdr1TbVOgrACsyMKJa
-	BTGTGrPbCdXh3PmNBPOBLikEfGakJyA=
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=+L1oAYLc4izPsxQ3ZlEqD/dH2fKKby+GXjbBwuzoShs=;
+	b=REXEy0Av8JilGO5/L06etOVOvJsA0jJV5n/oIZEk0wN/u8cn7WyoM0roQflMPUycraWBBo
+	j7BCrVWals70lLMMhNFUJQ6PKzJXMRIjPBQ8wLC24uLT3PDWtQftmBfs1SAXLOGziMnPoK
+	lW3Szj4GaNMFjmUzMFNRWBwWU/B3KK4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793876980;
-	b=CYblTqPrnfl/QcXmufHZx2a2sqpOIGd2nVrGPFfuR01Zq3DqkSGTBBS+zsSqw9bX5aBAQq
-	9ioe17m/0Zg8BdGjHx/n3gAcF4Bs33jmw5ORPM7/MfjfZV2gkIkNprycS9VUYkbB++ulhL
-	Bm3bbVOU4UKF1vU9Z9emghMaED3EyRU=
+	t=1793877044;
+	b=VCf5mOmwPF+RD9GnHvhOMIMX/IIRwrHEuiFAEug+t0bZBLzjHpi3T4FjM9dqMo4bqHUxec
+	nOnIvpzhMiVgv9u6JtZpVvm+9/+U6yTqjp4M4Ejz4ufwSho65FrQqG2rooLTrKQeBXOTYl
+	xjEeZdQQJYei2Lsq0/YEIXTHnARDNBU=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=cmTUOKTO;
-	spf=pass (imf25.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.44 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1438d9363fbso459076c88.0
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 03:09:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793876979; x=1794481779; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=NLxUrhb+i0y7kx7MWfP3g7AgEu7tvuVh8LKyS1nXFQo=;
-        b=cmTUOKTOiEyvF/P/1Nt/iMZs6itgc3/aXvv2a0HddwmHtLnI2D6vp2tx3/yNWRv25W
-         oX40t2ZJXGPRQXKZhFjMm5rw22JdeXZqMFcgke5QDEjmHo+WAiSk5xGKk70rqCiCd4Yc
-         +BRBpK8JtMSMe2hY9lufUHn86Gn1ySf7GWCIs=
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf09.hostedemail.com: domain of 3M2TsagkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3M2TsagkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4dc57e2a3f2so2632012b6e.0
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 03:10:43 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793876979; x=1794481779;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20260707; t=1793877043; x=1794481843;
+        h=content-type:to:from:subject:message-id:date:mime-version
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=NLxUrhb+i0y7kx7MWfP3g7AgEu7tvuVh8LKyS1nXFQo=;
-        b=UaJM04dTmB0AK2z6Fg8427r/0jxBPJc0EZIS5CdMg3HmaFPYl4u4qgnyZhB8ys1saT
-         /Y5z6Dix+7+URZvBmhEAky6PTUdCzKIBVLrIennyK15pNFSQh5ClbySRAquS9QhOdCUu
-         yKx0w0sC5UhObmpaaV+Lt9NB9aGm0vHMR/l6IXGXCYiwhct2QJqla0vtDc+n05odm9e4
-         mhaVWIX9e8QX+Tb8DHSYOLXmaLaaOj3jK/S8r77E86lGFMGFFUQ2fYU00THxXqEHCZ+B
-         IGZrbr5cJ89+4VP7Htodjx4ExmABkT9bERL2SXS9WgWTHfWsBp2ylXsbF4IPXJ9cK1HY
-         MDww==
-X-Forwarded-Encrypted: i=1; AKwUvByt65eCbINFFmA9FY2c8eDaQ+C9V0JzfrWIlygF+c0NcYTU9wxS98bEeV7ULvg90SWS1TuRGfQTwA==@kvack.org
-X-Gm-Message-State: APuU4Z/2y6aer3jaer8QILl9ssr/lZoTm3r5xXE20iMWXAQb8fR9dtcd
-	juyR6vOIKCI7XiPRl+c2pSL316A15cLilG+Fe4aBPUHMFKhGb0tx+v1HTct/iYEkEoc7ZyIKXu6
-	605Q=
-X-Gm-Gg: AYBFou0ZnlvRwhbJCa5LA7szmDVAUo1PgWroi+fS12rXmKFUVrpb/t1XuYxtZ1Z0ANN
-	iQkFCKzSNBZzHQX9BSdcb7cyPcw8S2LDRukkRjG95wbXivyU5cTa21Wwu4MVfSVtAu/0Y2kpRz4
-	ZfCYGO3KVCOhe9a5rb8noSDtrFfcl6FZLPsVuIgmwV//+/c3Qe83OW2IMNjqnfDgmhwCBPeENVE
-	/IxqKdbj1wSeUYxEUUZ4igLBwzu0zXS8q+pdmGpOtzohnerR6N5oIAGu+xd0fkfAsNhREKLGcnN
-	g/UGR92qE59kJVjFW1WyWF92RJLfg1ssCwidglDpiVLAFkSdYv3GNXbk/P+IrwGWbusRShaBFpz
-	mcGo0pTlP8uppBUS1NtgRJkn511SdIse8b6Z73Jjgq7ZdVolhtzXeTeiwuqy95GdqS5H01aN/SV
-	YubHPQIZeu3n1o3aRi/o4NY1f3TOwLQsZgdY8PoEUIROEfbUiEHfhtk2NfLs/dQU6MZzuD3zQp8
-	0SFsvTHVOIhEQ7zG3EahJstymwBcckjZK33ylKCxa8LbjOmzbczkExtofDf8tIK8YeqsZcjyac3
-	BabSL8mIe/lwneANKxE0Lt8ElR/sn+ZdH/1Zx9zmE49rcZe8GWFgT5tshlV100UlCjg=
-X-Received: by 2002:a05:7022:5e08:b0:1b2:42db:8a5d with SMTP id a92af1059eb24-1b24f42dcf9mr2938410c88.3.1793876978922;
-        Thu, 05 Nov 2026 03:09:38 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:8bc:6b25:484c:8975])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245b8822fsm18931590c88.2.2026.11.05.03.09.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 03:09:38 -0800 (PST)
-Date: Thu, 5 Nov 2026 20:09:34 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Jenhao Chen <jenhaochen@google.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, minchan@google.com, liumartin@google.com, 
-	benwei@google.com
-Subject: Re: [PATCH] mm/zsmalloc: inline obj_malloc() and obj_free()
-Message-ID: <auxjJapQ4j8518aH@google.com>
-References: <20261030121700.260975-1-jenhaochen@google.com>
- <auwR7gnuLsF0lpmG@google.com>
- <20261105103947.7521-1-jenhaochen@google.com>
+        bh=+L1oAYLc4izPsxQ3ZlEqD/dH2fKKby+GXjbBwuzoShs=;
+        b=eAXyQlQ2M2IgPyDRGLdxzrT+vgbbl4/DDDQZm+somtQI7hi2oc7heYsOadISAONX+3
+         3RtfMSG5BB3L8+N3NhHzvDp79EnVXnmLSsBtTN/F6PGTsf+i2wz1BukwxShbkmqyviud
+         4OKbNRm5pXiGjm79VJI0td8+Nps2HdIp8v/V6qCbmBVePFIvD64Uja/DYqKUTbt+RazQ
+         fVyHphQCKCOoLUx5FLXgt8dR/EYZU/UXl4YTaMVc6sR/afDi7FRJ4R/3rbGmNhTaXT1S
+         BdDYDPY44MPpfUwvsiZiphzAkHR/+u/NH5T3kk9aGr6pQIVSBo17WhM5Rhn+8empCvX4
+         F8NA==
+X-Forwarded-Encrypted: i=1; AKwUvByrqTSWZ5zONFKsOj+l6OqoDicPeVyD0dZZYWrcWPEP0vV36hw9vDEAtXD8DVua4QQru3rnebtP+A==@kvack.org
+X-Gm-Message-State: APuU4Z+oK0HtaVb68reFzyFxcgnAlrp9hcQU705TeW5R0WSDdAzxX6w0
+	zT9WGFYRVQb0fFcLUWqy/QIylD6HbXRLg6XgYltR5a/ksWJiSWT0LI6lhP5xxBF7rIcsbkGAaKs
+	BSJ33gRq56Rtgs7pRsVIyskXgTuLKm7ZPqn1szH/OuPFLem4UIhEQb615DzI=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105103947.7521-1-jenhaochen@google.com>
-X-Stat-Signature: xzmhrxujpp6onhze63kmn6e1g5fbin31
-X-Rspamd-Queue-Id: 5A5F2A0005
+X-Received: by 2002:a05:6808:148c:b0:4b9:e65b:8c36 with SMTP id
+ 5614622812f47-5640dddd764mr13267830b6e.36.1793877043177; Thu, 05 Nov 2026
+ 03:10:43 -0800 (PST)
+Date: Thu, 05 Nov 2026 03:10:43 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aec6433.0ce67c00.35143.0001.GAE@google.com>
+Subject: [syzbot] [mm?] [fuse?] WARNING in shmem_initxattrs
+From: syzbot <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, 
+	fuse-devel@lists.linux.dev, hughd@google.com, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: jse85w4y8brxc9x14wu7o3odn8wah6iy
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793876980-144824
-X-HE-Meta: U2FsdGVkX1+jtxb//gFfxnQ+na8r5f4IHpgmLMNzKJzv52+d1jOMLKec6BudIeJrpqBRlRehGSgKRQ5KMWSrehVB9SNA78K+IZaa3/zokO1gafY4uN39IP289z2NpXP8lZHVG0ZNQn56KE7q3YrYiHqQHruQwvovrWUcI+FvAQ4ymVAr4rxEuhl0cH9EVphTCDIh86TRgM25/li+8BNu5w0I3akpl/uRYATGgI2bYdwVmNbJfF+6LfH9PAUria2lEkYnOdkh8yUvb68R27sMjRdiIei3+tfzBp/B9+TD99OG6AY94wO4/DuThjpnRVvQSUUlhiGqDxbWa89byJ7S4R7LmeRgNODhjRnBFwgGI2Jw8WHm5xPs11BJYHecV8VqO28jL/qndXE7eeRbeGXfZbYMzRG50cEj79EWE8DvqFOJh+QhCUWOEnYFuMufDaPt5wkvkGsZjTn7GgOQYRPYxcf990n2lzvrdQA/vasnqD9JxVuZDniEQpNTwo2hPgUJZ1NZ3FCEtWHlSxM/Y3iTCP4f16JCC5yTcyLXOHv9T0Jem2H7Elbv3izm16CBn3HHH+uM2zdGkUGswVHHTKonG9zfAQwzzpNkQnq77YywGEMSUj24K8101pJV7MMjBRaQ8pnYKSk5EOTVbA2U3+evfuYjKyvcMLrr0iC0EVDeRjdDDefyQsgihrtGBePVbKak8SeUVE5Su240daf9f970Cgg+9W9M3x6yVmVNoQNvbbLPaQ+OFbUsiB61DpL1P/+bZRE7AUIvCg3aPEGjfW/2n9CU0+cl4Ux5DAW0kNfZtz0PzWtmyZOk79+GlwmQYS5MXt9MXqOpcoL/bz0M5S9z9XDtU+eXK7zdiEUQa+md7sVmysIFiPqErDneF0qGB/uDg6UDjeKrpoB0n90YMi6WmCcdBls+nNONs8jz5XMYPd2LHoAA+cUNOZMbo+AFUhimzC50c6zWBboir4LX7oA
- v4M2N9e2
- xm74zy2Xs3DdLWK9kuSZCg+ZT2ss2wFmUMT58TbYTVlB7wALJpiDE47L2S7Mqny89OKMZai6MTh/iBVsN3Lfh2gXMMkXZOqEbHxgsRFHdlHsyOZRFXUa7BiZX5bmqZ8+1znmWS7MNM4DpB+84WWXzPbPzbsnZxZR84t7XhkQ95AQIwQdQtUdP7QzXIrX7e4MsQU+V8Dfrxjg42DOBJKS0i+zvlTptO1RQ+Q7PegOlmxi/qbuPfeunRcRLXoQUmJ8TaNBgGotEk2s2aGZdz2x8d9PVzzEINtQRoN0LbEp9gp9JDbSpZMt3QHggr3bsU32tzzAoFHbxt7f8/KmUgYA8f9oZ999uDKg2HxIAXNMuc/iHXm17obukk0kDoWToi2zX8FgIeNp20M1R/FPwGDimHPj+9xL7BuDVeyYBusb/8Tgv0wRrxyhM90JvnObpt+hEuu53qTUEpvm/jWI=
+X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 02D91140007
+X-HE-Tag: 1793877043-506702
+X-HE-Meta: U2FsdGVkX19LAEsQ1b5qxRv2GT5UJWacdYtbgKi+omkvJCHlkkfT0Hz8KmkCBJzf0GKI5yydRHqZSiGJpNCzTC6J78j7vlOCSe/cars30t4COwWrI29ZWDJZkr2BBVa/9tNkt5YFaQIgLKPTrqEwZzLxWd/HedvVcw277JhGzZK2EhKq9R2K0XAA78+7oyCyb88c5lgqv/r7ytvr4g8U7zE/wd+pY+yaYFXPush3KKMl/Iy2/ybMb38pjsSR8C/trZodApzu5bl2GL7knvAa1upE8QIEtv3tMqsmvTUUKJhKJ03dVjkkwxlcnkPGZOqzdDP04lu+z9pE208IQbFlWhTDtyc78UDDAYYp9fNQ8AuN6jkgGK/ILL56VC9EA+GHauCdmEPirg7mKWv0Cal2TjQ0xTsMd9G9GkIouWfqzcjr1n1d2sMTogyG2QWZG9NhXK8zc0R/XsZhQDuQi9vwTbApUKY5GeSozi4tN2Syx1CBmJqxzjS6nDgXi9/N+5oDDmvMI7In2G1rdzqQiPqWUrS4uWa4oHF9muMY6toi4UxbdyLGr579kizNBHkcv5TnsXNGXTdlEQjZYn2tqjYU3bliPxlgZLo1VrwYycIHAzClVo8s9gSUX5+6gjpxCApgga1zByrZ/eQS3+AwniRUuA2CdeUCbH2aqnu32pEZIrz53kDfam/T1t5xKiI3oCW985nFGyw0L+VtoGp60MFZ4yys4Fwg9bbCQf5AZxnpjnuodLnFyHNp6UcLAy2U2B5Lvx6YZ90F8UkdMncgHWjcffN1QBVZve546xkkcPsLzdg0OzABz/Fn20LOCf1MBGEuq+cl/LH6Uu6gwzTZYMCtwHDFRrvRBDbS1E22tO3sWgbCgxQKDFSd7mA0Le4aRq7vPSUhdihhE5HPWzd3kQcbA7sUm8bhjynXOxFLF7sYwSVtDKmAQcXCLb1E0DumpeYtdeWlQmuYZCAyuKOgVsj
+ SosYk8+i
+ n8CpkcD+osmBtonPu7XQztMEc2MhrtC+n7CWwV5agedr0KqRq9INLxUlXWros0lt4Cc5tcMmJRbwWo0dkzXLI6ZPpyt/voXZhAyoI8V1+021Uoev8t1w0nrfDIMGxPrxpuparA9fJnosyv+LCITgFTQzuQtU5CjzzlbhdHhM0lVg6IHy1SB+RJ9ydIrgPxxyGFRB5WcyEpa1cbMZLCDFJh/yvDwkVftg4V2pgCgYEksUxk+vDv2DgPP9Z5UqItzPFsPcIr7xZNiCDyhSxtCZrQKp2I1VSBGbibMcHJHoY2Eh7y3W124uRADE9CbCktouZ25Cpyhu7aQiTeAtfg0OZVgf8bCpl21tYQ7CcSeF9fTYtnaYDvqU7WrSS2qZQnxuqcxixcUj1rqa8uns+oM8Qp6sotHYDV02qffgDhqSU0UVULVITQTcAQf/Irooo2aE/zi2eCvW+4jKAihiNYZW/QHhfp2xXaUa12LGE4+zw5CJi1mxNu5oknU7jPfwUHqWyfRLySkJL3AfvZgS5kGXcjYlPXJmAqmKDISxVtEdrauzsl2WqfFnwPug50k3HrluLcWblE+QM1Ydvh0kw78fJ6cwLJSzicKxqae9+3dLYwGJ7UdY2s3SiLAbaFrB2Vw+KcMXpGpY3M7wCatXhSk5vpE75Xk0By0vXfCgzm03OG+GAISw8pge82Ue0iAp2yAZqPlcyJUfi23MK2uEPiyc9F9KkqNEb8l96AtM2GmgSZQGRFR8uLkUSpWzOTKBwqZtH+PXBoHLvkUZ58F98zoEMsYCWVf2ip2vlBxzK+kOcJWjzU6NgyyIX6xR+D/YZdQddcJuA5p5sY9NpYjU0/9CT2OAnlkkT6xKu9KKfd9I4ZedmtLklPSmvha5wchlgWuioOb8V4acY0wImNDqeE8qqAjfl7XG7N9TyQmdxwnad88b0DqsnMZbfNoAsX6ie0f0e4qkUCEmytdZeUwdxHcF0fvV0BDy+
+ 69LatN9Q
+ 51oN0rV779eNxiJ/k09Dz3ZRP7oA+d0Kw58LtFFdfB/nilZiADWPLWJP2NnDLz0bfSTRx9fK0gzOGIYAhm+e39jScbgBqnTW01Qd8S3eh1V4FN6w6yskaFSv3s6eiUyei88qqb6X5JMve2cQTEgEsW0vePhdClb/AB9JqS3lvmrJZ9Douk32qiSDKploCSUPXlqwdIQJ9rTNjO/HfP3BW4uUmAQgdEhn353/XnwQrzp41GCUG1HAqQAbK8wfMLAwh4h7gWB967q7gvru5WQGG0+Ak4J61MsqIChZK6VJ90CBBKVMgIkUYGQQGTjnWTN9ZjIhjmMA0rF3CYj8n/45FzKih5G4g0FoplRA/t2XK4ciMTNc4dktnNUb+CUaAU2+CXf49y/ooXOszPHuLdbS+y9y0nqvnwnJICTtZWUQLSnfW7zlGEkwJ+raD0DxlaNZVatuTf/po18=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,66 +96,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/11/05 10:39), Jenhao Chen wrote:
-> On (26/11/05 14:23), Sergey Senozhatsky wrote:
-> > I suppose there is performance benefit?
-> > 
-> > I guess I don't mind in principle, one thing to note is that this conflicts
-> > with [1].
-> > 
-> > [1] https://lore.kernel.org/linux-kernel/20261105044752.1997895-1-senozhatsky@chromium.org
-> 
-> Hi Sergey,
-
 Hello,
 
-> Yes -- in a steady-state microbenchmark of paired alloc+write and free
-> operations across 8 compressed object size classes (384..3136 B):
-> 
-> 1. On current mm-new (zs_malloc + zs_obj_write + zs_free):
->    - Clang 22 -O2: -7.7 (arm64) / -11.8 (x86_64) retired instructions
->      per pair (-3.2% cycles on x86_64).
->    - Clang 22 -O2 + CONFIG_AUTOFDO_CLANG: -13.0 (arm64) / -17.5 (x86_64)
->      retired instructions per pair (-4.8% cycles on x86_64), while
->      shrinking zs_malloc() from 2,872 B to 1,828 B on arm64 (-36%) and
->      2,088 B to 1,474 B on x86_64 (-29%).
->    - GCC 15 -O2 (x86_64, without AutoFDO): GCC leaves both obj_malloc()
->      (306 B) and obj_free() (120 B) out-of-line while inlining the
->      single-caller slow path alloc_zspage() into zs_malloc(); the patch
->      saves -23.7 retired instructions per pair and shrinks zs_malloc()
->      from 1,738 B to 1,441 B (-17%).
+syzbot found the following issue on:
 
-Cool.
+HEAD commit:    05441d697f7f Merge tag 'cocci-7.4-rc1' of git://git.kernel..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=17bcaca1580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1cf189394a856f11
+dashboard link: https://syzkaller.appspot.com/bug?extid=4324f771847cecb27c54
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14423cbe580000
 
-> 2. Rebased on top of [1] (zs_store + zs_free):
->    In [PATCH 6/7], the new static obj_write() helper has two call sites
->    in zs_store(), so both Clang 22 -O2 (360 B on arm64, 219 B on x86_64)
->    and GCC 15 -O2 (obj_write.isra.0, 229 B on x86_64) leave obj_write()
->    out-of-line as well. In the zs_store() fast path, obj_malloc() packs
->    (m_zpdesc, obj, zspage->class) via location_to_obj(), and the
->    out-of-line obj_write() immediately unpacks obj_to_location(),
->    recomputes offset_in_page(class->size * obj_idx), and re-checks
->    !ZsHugePage(zspage).
-> 
->    If we also mark obj_write() __always_inline alongside obj_malloc()
->    and obj_free() (with noinline on alloc_zspage()), the compiler CSEs
->    those redundant operations across the fast path:
->    - arm64 (Clang 22): -31.3 (-O2, -4.0%) / -34.7 (-O2 + AUTOFDO, -4.5%)
->      retired instructions per zs_store() + zs_free() pair (vs. -8.4 for
->      obj_malloc() alone), shrinking zs_store() under AUTOFDO from
->      3,144 B to 2,448 B (-22%).
->    - x86_64 (Clang 22): -26.6 (-O2) / -31.8 (-O2 + AUTOFDO) retired
->      instructions per pair (~4.0-4.5% latency reduction).
->    - x86_64 (GCC 15 -O2): -37.1 retired instructions (-5.1%) and -5.3%
->      latency (-5.5% cycles) per pair, while keeping zs_store() slightly
->      smaller (1,997 B -> 1,943 B).
+Downloadable assets:
+disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-05441d69.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/0edd3964be19/vmlinux-05441d69.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/84d6d8dd5648/bzImage-05441d69.xz
 
-Great, I'd love to see that in v2 commit message.
+AI-generated root cause summary:
+In mm/shmem.c:shmem_initxattrs(), the initial reservation of inode xattr space
+(ispace) from sbinfo->free_ispace is gated by 'if (sbinfo->max_inodes)', and
+subsequent per-xattr subtraction from ispace is also gated by 'if
+(sbinfo->max_inodes)'. Because sbinfo->max_inodes is accessed locklessly and can
+be concurrently modified to 0 during a remount (shmem_reconfigure() with
+nr_inodes=0), ispace can be reserved when max_inodes is non-zero, but fail to be
+decremented when max_inodes becomes 0. Consequently, after all security xattrs
+are successfully allocated and added, ispace remains non-zero, tripping the
+WARN_ON(ispace) assertion.
 
-> Would you prefer that I send v2 rebased on top of [1] (including
-> __always_inline on obj_write()), or send v2 against current mm-new
-> first?
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=4324f771847cecb27c54
 
-If it doesn't trouble you too much, can we finalize [1] first so then
-you can send your patch atop of it?  I can ping you when [1] is done.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+ispace
+WARNING: mm/shmem.c:4451 at shmem_initxattrs+0x3f5/0x650 mm/shmem.c:4451, CPU#3: syz.1.18954/2882
+Modules linked in:
+CPU: 3 UID: 0 PID: 2882 Comm: syz.1.18954 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:shmem_initxattrs+0x3f5/0x650 mm/shmem.c:4451
+Code: 03 80 3c 02 00 0f 85 5d 02 00 00 48 83 3b 00 0f 85 fd fc ff ff e8 6b 3b ae ff 4c 89 ee 31 ff e8 01 36 ae ff e8 5c 3b ae ff 90 <0f> 0b 90 e9 dd fe ff ff e8 4e 3b ae ff 4d 8d 7e 78 4c 89 ff e8 52
+RSP: 0018:ffffc90007eefbb0 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888032b8d818 RCX: 0000000000000000
+RDX: ffff888030c3cb00 RSI: ffffffff82602984 RDI: 0000000000000007
+RBP: ffff888023be9000 R08: 0000000000000000 R09: 0000000000000053
+R10: ffff888037378973 R11: 0000000000000000 R12: dffffc0000000000
+R13: 0000000000000053 R14: ffff888054123400 R15: ffff888023be9030
+FS:  00007f7a3de3d6c0(0000) GS:ffff8880d477c000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f7a3ddfaff8 CR3: 000000004e80f000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ security_inode_init_security+0x242/0x370 security/security.c:1384
+ shmem_mknod+0x2ce/0x480 mm/shmem.c:4039
+ shmem_mkdir+0x31/0x80 mm/shmem.c:4094
+ vfs_mkdir+0x36d/0x8a0 fs/namei.c:5428
+ filename_mkdirat+0x4c4/0x630 fs/namei.c:5461
+ __do_sys_mkdirat fs/namei.c:5482 [inline]
+ __se_sys_mkdirat fs/namei.c:5479 [inline]
+ __x64_sys_mkdirat+0x89/0xc0 fs/namei.c:5479
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f7a3cf9fb19
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f7a3de3d028 EFLAGS: 00000246 ORIG_RAX: 0000000000000102
+RAX: ffffffffffffffda RBX: 00007f7a3d226270 RCX: 00007f7a3cf9fb19
+RDX: 00000000000001ff RSI: 0000200000000800 RDI: ffffffffffffff9c
+RBP: 00007f7a3d037b70 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f7a3d226308 R14: 00007f7a3d226270 R15: 00007ffe3809a618
+ </TASK>
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
