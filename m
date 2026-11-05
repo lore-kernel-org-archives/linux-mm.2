@@ -1,137 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C2E606D807
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 14:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E756606A33A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 14:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=P739lgGt
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PBGMmnjh
 Received: by kanga.kvack.org (Postfix)
-	id 611EC6B05B6; Thu,  5 Nov 2026 09:02:28 -0500 (EST)
+	id 3A2A36B05B8; Thu,  5 Nov 2026 09:02:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C32C6B05B7; Thu,  5 Nov 2026 09:02:28 -0500 (EST)
+	id 354E36B05B9; Thu,  5 Nov 2026 09:02:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D90D6B05B8; Thu,  5 Nov 2026 09:02:28 -0500 (EST)
+	id 28FDD6B05BA; Thu,  5 Nov 2026 09:02:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CF856B05B6
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:02:27 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DAF9E1C4456
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:02:26 +0000 (UTC)
-X-FDA: 85401230292.29.C4F5C6D
-Received: from mail-yx1-f51.google.com (mail-yx1-f51.google.com [74.125.224.51])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C717A4000D
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:02:24 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=P739lgGt;
-	spf=pass (imf12.hostedemail.com: domain of josef@toxicpanda.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 052FC6B05B8
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:02:55 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E713BA0A4C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:02:54 +0000 (UTC)
+X-FDA: 85401231468.25.18EEC42
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 5AD4D40014
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:02:53 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBGMmnjh;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793887344;
+	s=arc-20220608; t=1793887373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rsuh1trntORa2Bnh/nKHx3QFpJDgmdnm57YWbiv0xFs=;
-	b=79VC7AZmqrGSVDQSEh0TrrehV4hFJeHBX4m5ItNZzzEIg2PvbPbrDox6xNaGLDP5d4ARic
-	iD2YSbBh10FWhNMovamOTvKfh7HSBdWX5sOoe0/2UKnutQm09AMw60u/wh3PCmPLBVQrnB
-	q/SkUiQzz+MDNnhj2hj+C0VCKUNH0q0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793887344;
-	b=2nuLsIkVC6iQIMF9q5goOpx1B3HHLXWS6A1glJSj0igBfVampVH7vDiT2U2idI2q0aI8Xb
-	0cB6dIVg7ekldLIuuOYqmBF4pdw8H7JCfjGog2+Z6Tw+QbZk3JyUKQaNseF594ZY18O2X5
-	OcODpKX5155Ympi3q7BZG2Am0o8NjpE=
+	bh=Zn4FGyqcpXuDOI4yAR+P0rUnqH2M0CuU1TGwYX3rR+o=;
+	b=AXd3+iY743jYnX9eUlrhP3F0k9spI3tDiyssSVQJn7hMVZ+WXO2fSsKNu1G1tQ/QDfcCLP
+	eYxdm7XoVRW26kFFhDfmdxM7ho2I1SRcnNrctfCrOV+d8ryCIslpCtbKELfY3/87G+RPfK
+	G9Wz1D++eJAhF/drZr+m3OUvPDZl8Wc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=toxicpanda.com header.s=google header.b=P739lgGt;
-	spf=pass (imf12.hostedemail.com: domain of josef@toxicpanda.com designates 74.125.224.51 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
-	dmarc=none
-Received: by mail-yx1-f51.google.com with SMTP id 956f58d0204a3-679a2297c55so2522079d50.1
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 06:02:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda.com; s=google; t=1793887344; x=1794492144; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=Rsuh1trntORa2Bnh/nKHx3QFpJDgmdnm57YWbiv0xFs=;
-        b=P739lgGtrDED1a7FRfGWMrXnyYSd+6jilJuxtftW9nXoGKIAxirtITSMX7u1xOaMFh
-         OWXXWMzCeRR6Tly2kukP6vxZmWYqBpPoUOCFDOntAwGnCQ0Y9as2ESy5kOgb1uVvDbOl
-         x/H1QXSTS9/Grvv/xUp4F5QCiAWE587+U2xbmsy9vQOB+Ata1BcSQhKoPCI8n5kTy4op
-         7E6Aimv4ssGmF5991zFf/55cjGwhwwh291y7nYSDbTQz5D9oG/GEf/6OI6MC7xjBFT+f
-         UerQ3QYeh2taxpJFNZHFjSw5EpeabSmLPwcgWDLTDMyA5oj3rdeWGRz5Qafuxz5q/l4M
-         1gBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793887344; x=1794492144;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :content-type:mime-version:subject:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Rsuh1trntORa2Bnh/nKHx3QFpJDgmdnm57YWbiv0xFs=;
-        b=J8ug2jzKiDzWAULB0NXOh5Nm7E1djsnRn6s5SKpDbShtybo3GJxKPjk8ogyR/2yeDz
-         A5y3WUGhoO7xs5GDvLjZYGNYz2/SX+NLY1N5mh7r8NbIEt9d1zVzAVvbkSekoLEQDkie
-         hb4D7jlTKvcPw0CyGoBz8QGP4bSq2arT13uXXnSovVdBOsKPrnCcNh6BgHd28CnOUcko
-         wv+/T48rFE5NyDjMdB4gV4ZorVRGdYTxF7N2jGfgJ5x/Q0CRIP7Vocd0Gkl6rhDREwkN
-         +cfwDuoEcOlgyzruB6isuNwt1ffreEnyB77sl4zUlOmAANw/cDRwmZZG54/XD18+3LC8
-         POXQ==
-X-Forwarded-Encrypted: i=1; AKwUvByZCNL1NWumNleP7dhtX2lXnTirkQkoeUISUzH/g60LNtBss4m0kQfy3snc1y2mhTb6dykA7KtfOQ==@kvack.org
-X-Gm-Message-State: APuU4Z9ct7K+px1c8b5CzZ2Obq1+BTIjtcGLIy8I6okCNHH+A75CkOBm
-	bgtSUt5CA596jmt+5T9icg3sZpGx2+SpPVlXPENzsojOHvnlRkk8m2zPbRoXVuhPGFU=
-X-Gm-Gg: AYBFou2tw3ms7bbNjaJeHGaFhHNoCKxO7k9em3eHL4N+h95sEpPUIQC5+vWX6+WYMv9
-	IMTQxHpKvE6bqZfFyruZPFKeEN+vtuKxvgBXfOLu+YatY741Pky9VE9td0jZeC3fbAhEwU0OtvC
-	kCSDIb2jJD68zn5tS9ZsnCywdguRFVvIrT19UeYfgb+7saxhMUiQ+7s/b6775NNDNW82kwzAAV8
-	sPawXixLnX90p5R6IB+mTDaT3x3b7OolDd31WHdds1ON+tPmBGuXEK21IhhVqQicmssJmgULAmC
-	goGpZgKgmHbJlDtx1BhwHWRy7cPbX/Eny6q6eTYRynO/W/qNDRdpsNp8WFY7NS4bcZZBvqvaQQc
-	wTv9tVdqwHOcMyGxXhkYLiWd6rVExz6QuEOHxuonkv/A8h9p9V3WS4F8NGsAu66jsvNLs54FiWH
-	A9FC+1S/CzERBZQmXoZJxcqm6YPLF16QVHWuKUvIZA1TtsN2ls0uFHKpS0sG5IhuogUrGF+OYMn
-	UrV94yghlpeYqlqYHO12NwLhsrL2hK0Qca4FQta/9s+ciDxCnKg7l4CvTT5y6B8oGlFNauh8xC2
-	aJD02pb2QQC7dhv6PbXcW+V6fFGLWfyfmMGQ53wVJPHpng==
-X-Received: by 2002:a05:690e:809:20b0:677:d9a1:f055 with SMTP id 956f58d0204a3-67ba4fbbc6amr9317901d50.16.1793887343879;
-        Thu, 05 Nov 2026 06:02:23 -0800 (PST)
-Received: from toxicpanda.com ([153.61.196.249])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67bee273e69sm3588786d50.14.2026.11.05.06.02.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 06:02:22 -0800 (PST)
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Thu, 05 Nov 2026 14:02:07 +0000
-Subject: [PATCH v3 5/5] selftests/mm: test mremap() with an old size of 0
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBGMmnjh;
+	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793887373;
+	b=S3qGFXJhS2plN1HBTcCalkh2TiCkVgpWhIsPdGNiC1r0SLFek1jrbzKSh6cFUJ4Qt8wvfT
+	7U1t+qSYrulZWXdJaDatRtaTICZwTtnOTiAMOJ6ekIQ8rmtlLLl0F7oIavy67Co5A9CSVt
+	XFs9C92bQLe8QDoHLbx85Fenp6yjOlc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id D2F9160A97;
+	Thu,  5 Nov 2026 14:02:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A31E1F00919;
+	Thu,  5 Nov 2026 14:02:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793887372;
+	bh=Zn4FGyqcpXuDOI4yAR+P0rUnqH2M0CuU1TGwYX3rR+o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=PBGMmnjhDZ38hOgzwbJkh3sIHEnlSGL9uYp2wngdD276txrDfZ30SbBzuawEV1nnq
+	 Rv0xUXVLJMiY178nhfx2khC2t9XI1dRXm6G5TlAoNS7YPerunjz7djsPlvLVZ0/C/k
+	 26g4h1VjB/HlAFQV1zmssZ7NwOIYzsSSZb0yhkM1tOMG25faR5/ai3+x+Y/3RVOPDj
+	 gdYrprathq27egizqYSvwVuvU1wkKGxUxFpKE7ymPIMPn6A9ky5MdawMzjXl4/mefd
+	 pI0UAGhaO/oyhaxueCevuZ2zkOe8TTbhuwEgihtJKqK+ADu/Zx5bMOsVPAt+1bETdu
+	 NZoZqyIdegmtQ==
+Date: Thu, 5 Nov 2026 14:02:45 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
+	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Yonghong Song <yonghong.song@linux.dev>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Song Liu <song@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH 4/5] mm: add and use mmap_read_lock[_killable]_nosteal()
+ on contention
+Message-ID: <auyMat25VPKwzSuL@gremlin>
+References: <20261103-khugepaged-latency-fix-v1-0-a07ab16ac860@kernel.org>
+ <20261103-khugepaged-latency-fix-v1-4-a07ab16ac860@kernel.org>
+ <3a77219e-39e5-4e98-8f88-6f90bccf69f0@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-b4-mremap-pre-split-v3-5-f8789de76849@toxicpanda.com>
-References: <20261105-b4-mremap-pre-split-v3-0-f8789de76849@toxicpanda.com>
-In-Reply-To: <20261105-b4-mremap-pre-split-v3-0-f8789de76849@toxicpanda.com>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
- David Hildenbrand <david@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>, 
- "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
- Sarthak Sharma <sarthak.sharma@arm.com>, linux-mm@kvack.org, 
- Josef Bacik <josef@toxicpanda.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=openssh-sha256; t=1793887333; l=3141;
- i=josef@toxicpanda.com; h=from:subject:message-id;
- bh=UPSVlZkvuk+wQVjnYokFon8pgCczm0XVk+5aTGfVono=;
- b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgUBr36M/n0nWN0DNbnxwzIiCZez6MG
- JiruuNaSCI/zXsAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
- QCN7B7RAl0gdH0bQSZgnJDEnZX+puHImRc1Y1J+CsmzCbc0k4yErvMUf3K7EoMGmNp0Q86ZHno6
- L32tytLO10gg=
-X-Developer-Key: i=josef@toxicpanda.com; a=openssh;
- fpr=SHA256:C8kOX2QUJCMqnCX+KEeoqRAjLo9L+ELOSH2NSAJHqGA
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C717A4000D
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 6zcsjyojp8isgb5xnbgdutgnij6xqhbm
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3a77219e-39e5-4e98-8f88-6f90bccf69f0@kernel.org>
+X-Stat-Signature: dtb6d63ukr8agyq1ggrrmn35etmr9rbz
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793887344-48458
-X-HE-Meta: U2FsdGVkX1/uTscaRoig0//jrP4UC9k8kX0ZR6GwB1QCdiLljB8NQ1txo7FXH+UgE/XFEOiTsMyfiW9dgq2PocOSnayz/HBD/iJxXfqi/fbSwVCsfnn+993Djg9oEDVGdT+y2FQJZxMd7BLDW3sq22Cnql6cpk0Oy2417+ig3UESaqmxgHiqp0NeI0GE2tXxMGInfkuhwWkMFVKAcFRmeLqpKpS4tVaAjnm/1GtKPwtTQ2Sw/IghAIf5wyljsotANAzOOH86RGS+w04gFc0H431I586fwmEg2KGfsaSJGabh50LVN1kGm+xv8wZ6FfKFeMT1K0Np5KE+FrMTbdadJ/xSbx7E5e2lgna+jLzlIzk2II6me/OAJKdfht2ygvGtBSQ570SNwWpFOgFRqW26yzfhzuGmZU79GgmDtShwe8GuBQSqPmtuUTQY3CYEDmbo95pVki9NT7n43cNdvlBsmtOuW8Mp4VmELxCnYXN1egBw4Z1d3Vqd+Sc9ZNb+lSjiCENzYLRu+50aOdW+T35uFaymY4geJ5ZeQmGeqrRPyIG9qsa8Id8XvL3yTyITHdKoraOSzNLlMOdQLW816ZuhB0AzSYOQYc74QL+WKVQWFQ+sobWYzADto8c/CAQWsA5xFQBN2y67XinZggr7mRDlq2GPygFTNr04CntMwNElUGB9sATToAJrb/VhCO7jIbzmpBFtCnPd3Il7K34kqcULOkb9zAwSv17LnKPDa69RLGbF+7rVQ4NtXIExfC2FtFbkgYx1f7ECFSkg0e8xhLv7eE0RwWs5IufAG3qXwJq2wvyqgHahOH/LreS2BWGMl5jXCRqPmrV5MlsiWc7X+GnBPqiUeHb0jtR0sKk/xYqQk4G0XkgnNJBBDSJfl+aQQ5MG0qTyBHttzMO57kltWAoQpLDdFD6yWfJ+Yyir7215Cuu1bZOh9MdIADQTVchlKhZTv5jrJAgxfOfP+Daqz9f
- MLSp2WZx
- ACTsd+jNjVBQP7WkDCnByMghNhXJQ6WrzhgCwvbzonJenao4/XyeHLQ0e0dxAtBzzHDctdZ+fUvWwkE2YIJZT0gAqVbxMHbpBFBpnOFWC5WhkU5WWymomjGIsZuRw9iy74f7aLy41THzo2nHg/X/ntEJD9gHXfTK70UftgTN2QPSMmmhzFM9z69pbNNrcXoUhhhYdzWyiHkKyN0oZnJLUaOI0JWI+PvplnA1ZR1kx4Z4iY2XfCpr3vSpCi9nz0v+eRc0oMs2b3LHFpGzGXIPj8DSBXyerJNzMFsRrB/JoZbrfNOzfkYwF5gBPcvJCa4PWFID2+OaDJJQpzLDPvLGAhmXFdGq+r8pdU80tDQPlH8vsNt8fJjDP/372DdEEfd77jkeZ
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 5AD4D40014
+X-HE-Tag: 1793887373-798922
+X-HE-Meta: U2FsdGVkX1+LBJuh71VuJsmJ3Dr7uRdyL2v+RF4kxwvrmMWpPShRKtn956P5UUGEOBMz6vn3QC6JKr1DEftv+i3SSSUHciCj8dnsemeeW77bjx0GBIZ2dU0d/JbteMWTa42ZijPngxWA/X6VfuhxFxKzDOR/6uJytqqkVxuRR9N/4zPxb3nBlQOAZw/3fNOdOvdBvOpMGa5TChkxgBX3I11xld4cdBjK7TuIL0BrtDSejips9DHgjDEZ6DeE6I6p4eQ3wzs3vpkTMHIGy5JIHu7BaoPJvCsMbAWVIQV5qWoKG5tg+WBx7nuR9r9T9WQDqMxO2InJ9yRCaNRbHpabbmqdmXNpAPE/KccdzIMQP3qlZpW1Z6KfHaDPbfD6dtQdEesGPKTss004sTM4APIg6sLGGBbd6NTwmZxg3/AqhC5udKcPVuY1GKobO/KJeU50yg1Zm22ctVFR39uEUCLuURwJuJsJPOc4yyLSBSPUfoqIYS9GbGnlkqJcWhnmTNDirdML+NB4CUVOMadOCEq4pmIsxKlhtQg/6VuLQyoxoZxopukIM7qhx76NPEhIMFYgPzmcd9ff7FDVx+Q6D+5CWvddK7pICOiislD8oXHCkkkFMP2IBBnF2pcYhvMQcGo5CYdzCDdoAWlubn1fnhWgn30uL8gbHLrqRapZkt+V+dTgD6Pc41fK8OA0rzBXhxF5IAROGEgUXdNueSKmBBTe9v8pv8whu0YjPvtWMArVSQ/Ub3+JuVrBRqllqGx0HkJj8bnrJWbKa8n3A3pY7vKwxgg98ZWJLgfznQZfUKMZ+w74Sg11iAdxQm83DCiYyauiq2TyzrCGa3ZxZUYpW94o9z6OQ55u6RZae+z1cPLZuehLNdRwZj3FYlu0bHPhgvvk6SrJ+J2UPZu3+bTJpH5NBK2KOXoISIeqxJymzDSBbnCeh6fOxPgnoKBRjYVxIWOrpQzVIfMKcGOW4Jq1BZr
+ zWcpk3fA
+ ZymCAV8fDbZ8DFXp+w/TPspfsk64ItVNOtakHBFYzsKJeEOOInKNjviEozqDg6XE9w4rUePB7fATYtpFDN6pb4XtMdM4Vr9Lv8K74Fh5dq5XN3IVP0IM0HYaSAR3Ez9302Vtd00mkDh6U+pZ6At4prUAg8954Q3cyi2lVIbQIT1vQ348op8vCbUaPruo35mxTUMTU50969CCtQ8OeZ8W/j2IXueKBjQ57VUm85/hnPs7XdTkVwQHds6X3PFdrRIsUVwE3PTBR4Z+eq9IUT1CicTNRJhPeJHafLCU2jlRob/NCd/Y1Dym/Vm7sIYSuWEI4d5wb
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,98 +109,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-mremap() with an old size of 0 duplicates a shared mapping, and mremap_test
-has no case for it.
+On Thu, Nov 05, 2026 at 11:16:23AM +0100, David Hildenbrand (Arm) wrote:
+> On 11/3/26 09:27, Lorenzo Stoakes (ARM) wrote:
+> > With down_read[_killable]_nosteal() available, it becomes possible to
+> > release the mmap read lock in such a way that a queued write lock always
+> > takes precedence.
+> >
+> > Expose this to mm through two new wrappers - mmap_read_lock_nosteal() and
+> > mmap_read_lock_killable_nosteal().
+> >
+> > Make use of this in scenarios where the mmap read lock is dropped
+> > explicitly for the purposes of relieving mmap_lock contention - the BPF
+> > task VMA iterator, and lock_next_vma_under_mmap_lock(), which is where
+> > /proc/$pid/smaps_rollup re-acquires the mmap lock after dropping it on
+> > contention and falling back from per-VMA locking.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+> >  include/linux/mmap_lock.h | 44 ++++++++++++++++++++++++++++++++++++++++++++
+> >  kernel/bpf/task_iter.c    |  2 +-
+>
+>
+> I'd appreciate an ack from BPF folks and a confirmation that I could take this
+> through my tree :)
 
-Duplicate a shared anonymous mapping, once from its start and once from the
-middle. Check that the source and the duplicate are mapped by one VMA each
-and that they show the same pages.
+With the rwsem thing as a separate patch this patch will be dropped in any case,
+which simplifies things :)
 
-Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
- tools/testing/selftests/mm/mremap_test.c | 51 +++++++++++++++++++++++++++++++-
- 1 file changed, 50 insertions(+), 1 deletion(-)
-
-diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index 31b484517bda..df030409488b 100644
---- a/tools/testing/selftests/mm/mremap_test.c
-+++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -603,6 +603,53 @@ static void mremap_shrink_multiple_vmas(unsigned long page_size,
- 				      inplace ? " [inplace]" : "");
- }
- 
-+/*
-+ * An old size of 0 duplicates a shared mapping: the pages show up at a second
-+ * address, and the mapping they were taken from stays as it is.
-+ */
-+static void mremap_duplicate_shared(FILE *maps_fp, unsigned long page_size,
-+				    unsigned long offset)
-+{
-+	char *test_name = "mremap duplicate shared mapping";
-+	const size_t size = 3 * page_size;
-+	const size_t dup_size = size - offset;
-+	char *dup = MAP_FAILED;
-+	bool success = false;
-+	char *ptr;
-+
-+	ptr = mmap(NULL, size, PROT_READ | PROT_WRITE,
-+		   MAP_SHARED | MAP_ANON, -1, 0);
-+	if (ptr == MAP_FAILED) {
-+		ksft_perror("mmap");
-+		goto out;
-+	}
-+	memset(ptr, 'a', size);
-+
-+	dup = mremap(ptr + offset, 0, dup_size, MREMAP_MAYMOVE);
-+	if (dup == MAP_FAILED) {
-+		ksft_perror("mremap");
-+		goto out_unmap;
-+	}
-+
-+	/* Both are mapped, each by a single VMA. */
-+	if (!is_ptr_mapped(maps_fp, ptr, size) ||
-+	    !is_ptr_mapped(maps_fp, dup, dup_size))
-+		goto out_unmap;
-+
-+	/* They show the same pages. */
-+	ptr[offset] = 'b';
-+	dup[dup_size - 1] = 'c';
-+	success = dup[0] == 'b' && ptr[size - 1] == 'c' && ptr[0] != 'c';
-+
-+out_unmap:
-+	if (dup != MAP_FAILED)
-+		munmap(dup, dup_size);
-+	munmap(ptr, size);
-+out:
-+	ksft_test_result(success, "%s%s\n", test_name,
-+			 offset ? " [from the middle]" : "");
-+}
-+
- static void mremap_move_multiple_vmas_split(unsigned int pattern_seed,
- 					    unsigned long page_size,
- 					    bool dont_unmap)
-@@ -1248,7 +1295,7 @@ int main(int argc, char **argv)
- 	char *rand_addr;
- 	size_t rand_size;
- 	int num_expand_tests = 2;
--	int num_misc_tests = 9;
-+	int num_misc_tests = 11;
- 	struct test test_cases[MAX_TEST] = {};
- 	struct test perf_test_cases[MAX_PERF_TEST];
- 	int page_size;
-@@ -1385,6 +1432,8 @@ int main(int argc, char **argv)
- 	mremap_move_multiple_vmas_split(pattern_seed, page_size, /* dontunmap= */ false);
- 	mremap_move_multiple_vmas_split(pattern_seed, page_size, /* dontunmap= */ true);
- 	mremap_move_multi_invalid_vmas(maps_fp, page_size);
-+	mremap_duplicate_shared(maps_fp, page_size, 0);
-+	mremap_duplicate_shared(maps_fp, page_size, page_size);
- 
- 	fclose(maps_fp);
- 
-
--- 
-2.55.0
-
+--
+Cheers, Lorenzo
 
