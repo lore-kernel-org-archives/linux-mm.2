@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F170B606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AEA606A326
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TiGCrbcz
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KjbRlMzY
 Received: by kanga.kvack.org (Postfix)
-	id E93916B05BA; Thu,  5 Nov 2026 05:24:50 -0500 (EST)
+	id 914ED6B05BB; Thu,  5 Nov 2026 05:25:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6A406B05BB; Thu,  5 Nov 2026 05:24:50 -0500 (EST)
+	id 8EC1D6B05BC; Thu,  5 Nov 2026 05:25:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5A8E6B05BC; Thu,  5 Nov 2026 05:24:50 -0500 (EST)
+	id 7DB406B05BD; Thu,  5 Nov 2026 05:25:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B0EC66B05BA
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:24:50 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4523B1608F5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:24:50 +0000 (UTC)
-X-FDA: 85400681940.24.2C812A2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9BC0D100005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:24:48 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TiGCrbcz;
-	spf=pass (imf05.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793874288;
-	b=rSQ3jgeq/0sZoF4zmgWuSZNbgnnWO1aeoN/ufZnU6GlZacasNISPM8mkSiGb7CNEyd+EWt
-	eyTvBEN00nPjvfing7xACCu/rytw5wrXfzjwduVZjKIzhXKuzBl+oVI9ok6/UJ7NZHB5oe
-	m5K1GgUVv7EijHp/h+jqvJ4baDB8eys=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TiGCrbcz;
-	spf=pass (imf05.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 521376B05BB
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:25:00 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E3D3880954
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:24:59 +0000 (UTC)
+X-FDA: 85400682318.20.E5AA469
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 5A9411C0004
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:24:58 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KjbRlMzY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793874288;
+	s=arc-20220608; t=1793874298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zmdWsLeDOwil7ZrDTJNt3Mwh5fQ18CiuyFvC+u7BoL0=;
-	b=291lV/bBPzFA8ZPPANdJhG6F3BxE03SlFzYndtzQG0JoJVTpi19O+1dPlde7cDm4Q0d+x9
-	DZ8MtWDlQiGn7tOZ47vifFzdQmZSQULywiTfxNDe4d/LFv1IFkc2orU+LUaIKd83Yv2iN/
-	IEOJ7P+KQxLSxI0SF43wTOD2OUJzgdE=
+	bh=23ng1jtXqbPnFi3StrOSufGDp6iqJUyj1xh//wWDQPo=;
+	b=KZKXgChMogy6FDjOISrs9DFW8izOxfPcR+klJmzE7dV+krw/WGCqdV/8ElL2NtNcElWhzb
+	p6o5e4RORSvFmObkp/SZGvIbRBNKGTVCWjRV3HoXM4zzUlH84nqM5vSShisGM1xGtrfdYs
+	IrrcQpkpaef990sQtuA0KE7OXXW0nSM=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793874298;
+	b=D09jjbISztfTeK2qIj8L0BzPsdkljv84Se1qXxsVkRwQiP/kTDn8q88oNNxM1G2OZEzrxp
+	sNz0lGmZliAnH+CXO9wzKHHpqnLfOSN7MkjM0Na/Xazm20tmMWBiznDd+874wXJfx7pFcB
+	uamE+NtcP+5EdAmpsHU571f/cklQmic=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KjbRlMzY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 04F5341976;
-	Thu,  5 Nov 2026 10:24:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46EFC1F000C1;
-	Thu,  5 Nov 2026 10:24:45 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id DB413601DE;
+	Thu,  5 Nov 2026 10:24:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 047B21F000C1;
+	Thu,  5 Nov 2026 10:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793874287;
-	bh=zmdWsLeDOwil7ZrDTJNt3Mwh5fQ18CiuyFvC+u7BoL0=;
+	s=k20260515; t=1793874297;
+	bh=23ng1jtXqbPnFi3StrOSufGDp6iqJUyj1xh//wWDQPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=TiGCrbczGsGJs34yk5Ncj74By2pa+sJUxXs/vcpT3y76BnbA63mfaeNnerAwBcTNJ
-	 QJoJYdsWnAoyZ5ponPmjQ22qrep+ZyZeYT+06ZcUiHP6IoSqVi+z1ggL3AzYFXG/9v
-	 A7FNsBm7DQLmgJ2Pb29Iq1fFgzYRfx3eAXiERZ60P0QV4YPJbtjWTTPKnSV3WiEVj6
-	 LYzIEb3lOtxw0Y+xt6NSo6ZzaK0F2u+EnaDVyrAnj4RoaIZkhYXGUs6fnRhAeO4BV4
-	 0rdLAVUpBqhUl2aHcOMAstmbc8ULGUDCE+gUjfOSOODK+rwKvia5jAZdv7B9S9/bGT
-	 YJERp95yTRayw==
+	b=KjbRlMzYFvcHjALOFoeiCTDzuUdWwc9I7rztJZwQGTI9YKTrxzwgirkVazUlE1pZf
+	 1gMM/KUkWEUHyOL/oTDopv8zCeBXbpZNgj2AwYUV6SoSzwLk3xvT+wWkHrZ58pom3S
+	 e/XuXig5TCA+WHbK0Zv8ylo+q5y6QzGLxaqZj//35/R5nboVBn+TJQv19Cno6DDa6W
+	 HTxYSgWmuTVJ7svsot+J2dkvDnHklUdtbSRBHnnvLi6ljuNk5nKdev0kLGLjk5FCnz
+	 aQ8nRyl/ejaTF82A9pvzFFkvj5d7NmhTlO2uJl7bxjLf2g6uJ5Q6cAWXN/TCF0JTYC
+	 uQp0kK+rjBygQ==
 From: Jiri Olsa <jolsa@kernel.org>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>
@@ -71,27 +71,27 @@ Cc: bpf@vger.kernel.org,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>,
 	Federico Di Pierro <nierro92@gmail.com>
-Subject: [PATCHv3 bpf-next 6/8] selftests/bpf: Test user memory page exec
-Date: Thu,  5 Nov 2026 11:23:40 +0100
-Message-ID: <20261105102343.311331-7-jolsa@kernel.org>
+Subject: [PATCHv3 bpf-next 7/8] selftests/bpf: Test bpf_copy_to_user kfunc
+Date: Thu,  5 Nov 2026 11:23:41 +0100
+Message-ID: <20261105102343.311331-8-jolsa@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261105102343.311331-1-jolsa@kernel.org>
 References: <20261105102343.311331-1-jolsa@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: o9ugc6s8ffqdmzd1yg3dbmpizy5nr6m1
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9BC0D100005
-X-Stat-Signature: zrwc1c1im9dtti1i6i8m6nkzjsofcuis
-X-Rspam-User: 
-X-HE-Tag: 1793874288-871876
-X-HE-Meta: U2FsdGVkX19xa6YSU23rQ9tIZoHuLyY2s1iLVwdnVmWIUF9nrHR4Lj1oRtCW1ADrv02RUFSq82+iUpTCuFGayGs2Iq9bv67jQyjJbWteq4VtgBk4VO2giatYcy+p9WxBo/0y+4AE+q72VpsURSpKOOI+jVGg1FpB4XfcDqO3buJSmg2QhyX3cp1y4lEcDGXM8k/Pa/EjELqVd0f4cEiFxe3zOFPZ8FzO+C99iMHHPLN2fWUgsmZxoPrtFleb7Q1A59U6LXDIazOvkYeTw4z1/OS42iz5+aO//VUCnnLHNoPQt2yYqLC44qhHhya6U01yDyXxtoAhUf5YGoGPLKYqNpKOHFxdXveyVUywyMUYC7GNnpbFfEfwvGoIte0fcVFWdwlWVqSINLQTNcP58QguvYpSnHXLfd07ENO5K3sz36O2Q4l6E9nxNO4O2XACkhYf8c/3K9gKnKyLjgZUToB/tzpZNWOzjGQmxa0DJsALD3CWLjnPrx74H1SXtiUzEEy7tnt2HzQUX2IO+VrtQ18kDAqHMKfa4aLEINO2/8S3Jf435fKm9tVqn6/TFXDtAG6LkkRkJPBq1+oAkPLjjQGzhj4+kdvL78mnNhlda4SJzeq2PhJUTj77hbQuRxZHAfGvRcyp/JheusQlI8VKcaOTTAu3Ecf3j8q0UXS5NMBdKfvDxWqEHjb0z307KkiGiV5/Zn+YYT5GA3206IQlEjhpD5TuOuW+UbzGM9R/1xl4uLu4Ac7qpI057UAhuawiHQ21HxqdIwFSv9ERB6zgqfVMsynH4vOfn0tnxO3r4bN5RDRTsosKRVNIKdXJ6BPtt8tVkFCqhAZS3ITsxtp1xPCQh+17ixvxGGZhgjUQH2XkLLqPxQrgiRTjjxHFnr8dsSpJAOC5MUK+jk6KP6yCLmLcjV6cienTtUszn12m8L7WHsg14uIhWmQognwllebAoHf2I8nPpTOIJ1GvfcO/22Y
- F8W1YiF2
- dzf31nfjS6RBR0KwQnMOqTcrPmDPKfHjsb/7jIV3iKh7bXJj5vjGYZlF1lAKDIx6K0eSbK/l2MPJGMiyjVVp/068cEN3000+pZAhEZYtpDr8GGLB8Jxy6hU20mLMsF+eBg20u1jzMF9iIAJXeP/ulSRLOgFNStmI5yRX5z7vP5kFUJgfmg/pzNchOW3y00qOIUBLOsx5MpAXuQluiSQwrcXi+IvtHtuA/DVc0t2qG/NEhez0JFzIzm/dr5gXDjwuAIQzzxJZGTq3BgzTs7A4SfZmONgq5Q3VxG70fDM69d/gnKRpre94JHKp5Q3HcbdpLxq/869qOb0JtGWE=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5A9411C0004
+X-HE-Tag: 1793874298-952717
+X-HE-Meta: U2FsdGVkX1+HASjrvgTUOs0HzioxyvoBFRsrsd3e8nEJnwallmKmt5/KVVVuhaEQl34OJiOR92d/JWRzolurD+XbdV2eSO8r/zD0HTo2QNqzGoBXx6litjT4UYwSc/ZDpWzhaYeczd89y8SQXqWvijRzV6YpWqK21LpsU/CkKH+8r/qspLROpOoE7fZJDfvZ2S3jxTlJPWfCoWfT8WCyPlkP6QPt+/+VbMuHPG9H7zNY+AgOpZDOlJiYFs/w+TY8cSlhcFZmH6wqOx9PJIkFaRpRNEi6WowWoNBb+bhs7591pcT2G2UgBvGjkVJcrptqxq5IRiiQMKWE+VZSc73kjO7G+Eq7OIwDZlm/NInolaNgB7TFAE26hKvTO2WFVjuMRDEDXb9RbdnVl4zF+LakeO7yj4jUGxLMkxkEr1dc3vkxGeK45y0gpp2Z/xm+jO9CDYnJtEkoiwEb+p6rmkjBOWCg9YfTnMGQHT9n4agJOKVCw+am+ugdEH3i84grF8q0vsLMsSS7zi2VLMzp+GHBeSSUxfhRu1CGvgy8D5eFfzbM2gDTcNuxEGoT7QD5fZNTBShVATfY/FLExN117H9XtEG2+4Swabebmi3mKBDnSDwW2jsxFHqPWPXV8s6ba6QOZVWcAS5/hVoiiw6gYXvvhruIf7US+pMeVxAsdguZR4ntWTjNJmyufuJtghGX4ENBGckURa3eGKwWa2z/F2R3CaX/+44uYR+3X4y2QpI+Pp1Fbu5aRQgGwp2kRCOnUXVeBp2XT+7dw0aPI4x9+ADskylL/+7WiEEUnPth/cxsqlhEqQX14GCCwVDR2EObNAbhFceD2vxWTRtihyWbalYeT6ihdFjZ9iFOVJKszcMoqbh96KR+qiP/UlxIV2WvioFuKuYGyGPmF5zeSM5FsYM/ZZYT+SQkOU2UKTysh3loorl7jdaym26JFIYV0ryyUZvACRq9KfLA10KmsuPTeNX
+ S68sUodu
+ nrkuxaeWRJDpKFLN0EF40/80x+fweZtyPLrTD63HpRBibEPMuO+1AA+u6MzrKS/XJSgygpUjXXDAi/rCTEeSmh40KaNi2fS5H7+gxpmbIeDggQpzHIJ2UX1+0LUC3rd6crGPB7e6f9G+aPbXiwSDi9rxLgyd8R7vrxar8gaebK3oWlWdvgvHAdbL49ZCaz+rP/Sdp5gvvVm7wQRAlZP19Hgz1D6tm7vCfMUusRvxd7FthFDXYPIP+HXHKcjZaDtjwlCzWBenCPOtwYqk/gbyO8WdiEMGekS/l1XRMsgcdHLtpBSxCmYIlyHOOI+R0MsZrHqc/saaEKx+73j+3sYfk52nkStGtqyAiJTPrIEHZU1fu4H0F9+7cP+4CvX1z6hgMN51/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,166 +100,205 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Use bpf_copy_to_user from a uprobe to write architecture-specific
-instructions into user memory, then execute them on x86-64 and arm64.
-
-Test execution from a mapping created with read and execute permissions,
-and from individual pages made executable with mprotect.
+Test that bpf_copy_to_user can fault in a paged-out page and write to a
+read-only mapping. Also verify that a partial copy crossing into an unmapped
+page returns -EFAULT while leaving the copied byte in place.
 
 Assisted-by: Codex:GPT-6
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 ---
- .../selftests/bpf/prog_tests/user_mem.c       | 75 +++++++++++++++++++
- tools/testing/selftests/bpf/progs/user_mem.c  | 22 ++++++
- 2 files changed, 97 insertions(+)
+ .../selftests/bpf/prog_tests/user_mem.c       | 106 ++++++++++++++++++
+ tools/testing/selftests/bpf/progs/user_mem.c  |  17 +++
+ 2 files changed, 123 insertions(+)
 
 diff --git a/tools/testing/selftests/bpf/prog_tests/user_mem.c b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-index eadf668f7056..e1748ffb1edf 100644
+index e1748ffb1edf..f13aff73c9bf 100644
 --- a/tools/testing/selftests/bpf/prog_tests/user_mem.c
 +++ b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-@@ -10,6 +10,7 @@
- enum {
+@@ -11,8 +11,11 @@ enum {
  	USER_MEM_MMAP = 1,
  	USER_MEM_UNMAP,
-+	USER_MEM_COPY_INSNS,
+ 	USER_MEM_COPY_INSNS,
++	USER_MEM_COPY,
  };
  
++static const char data[] = "fault-enabled BPF write";
++
  static noinline void user_mem_trigger(void)
-@@ -91,6 +92,76 @@ static void test_mapping(struct user_mem *skel)
- 		munmap((void *)addr, len);
+ {
+ 	asm volatile ("" ::: "memory");
+@@ -101,6 +104,18 @@ static bool user_mem_copy_insns(struct user_mem *skel, unsigned long addr)
+ 	return ASSERT_OK(skel->bss->ret, "user_write");
  }
  
-+static bool user_mem_copy_insns(struct user_mem *skel, unsigned long addr)
++static int user_mem_copy(struct user_mem *skel, unsigned long addr,
++			u32 size, u64 flags)
 +{
 +	skel->bss->user_addr = addr;
-+	skel->bss->action = USER_MEM_COPY_INSNS;
++	skel->bss->copy_size = size;
++	skel->bss->copy_flags = flags;
++	skel->bss->action = USER_MEM_COPY;
 +	user_mem_trigger();
 +
-+	return ASSERT_OK(skel->bss->ret, "user_write");
++	return skel->bss->ret;
 +}
 +
-+static void test_execute_user_page(struct user_mem *skel)
+ static void test_execute_user_page(struct user_mem *skel)
+ {
+ 	long page_size = sysconf(_SC_PAGESIZE);
+@@ -162,6 +177,91 @@ static void test_partial_exec(struct user_mem *skel)
+ 		munmap((void *)addr, page_size * 3);
+ }
+ 
++static void test_faultable_write(struct user_mem *skel)
 +{
 +	long page_size = sysconf(_SC_PAGESIZE);
 +	unsigned long addr = ~0UL;
++	unsigned char vec;
++	int i;
 +
-+#if !defined(__x86_64__) && !defined(__aarch64__)
-+	test__skip();
-+	return;
-+#endif
-+
-+	if (!user_mem_mmap(skel, page_size, PROT_READ | PROT_EXEC, &addr))
++	if (!user_mem_mmap(skel, page_size, PROT_READ | PROT_WRITE, &addr))
 +		return;
-+	if (!check_user_mem_vma((void *)addr, page_size, "r-xp"))
++
++	/* Make sure there is a private resident page to page out. */
++	memset((void *)addr, 0, page_size);
++
++	/* Retry pageout until mincore confirms that the page is no longer resident. */
++	for (i = 0; i < 500; i++) {
++		if (madvise((void *)addr, page_size, MADV_PAGEOUT)) {
++			test__skip();
++			goto out;
++		}
++		if (!ASSERT_OK(mincore((void *)addr, page_size, &vec), "mincore"))
++			goto out;
++		if (!(vec & 1))
++			break;
++		usleep(100);
++	}
++	if (i == 500) {
++		test__skip();
 +		goto out;
-+	if (!user_mem_copy_insns(skel, addr))
++	}
++
++	/* ..and do the copy to it. */
++	if (!ASSERT_OK(user_mem_copy(skel, addr, sizeof(data), 0), "user_write_data"))
 +		goto out;
 +
-+	/* Execute user page. */
-+	ASSERT_EQ(((int (*)(void))addr)(), 42, "execute_user_page");
++	ASSERT_EQ(memcmp((void *)addr, data, sizeof(data)), 0, "written_data");
 +
 +out:
 +	if (addr != ~0UL)
 +		munmap((void *)addr, page_size);
 +}
 +
-+static void test_partial_exec(struct user_mem *skel)
++static void test_copy_to_readonly_mapping(struct user_mem *skel)
 +{
 +	long page_size = sysconf(_SC_PAGESIZE);
 +	unsigned long addr = ~0UL;
 +
-+#if !defined(__x86_64__) && !defined(__aarch64__)
-+	test__skip();
-+	return;
-+#endif
-+
-+	if (!user_mem_mmap(skel, page_size * 3, PROT_READ | PROT_WRITE, &addr))
++	if (!user_mem_mmap(skel, page_size, PROT_READ, &addr))
 +		return;
 +
-+	/* Copy instructions to middle page. */
-+	if (!user_mem_copy_insns(skel, addr + page_size))
++	/* Assert we can copy to read-only mapping. */
++	if (!ASSERT_OK(user_mem_copy(skel, addr, sizeof(data), 0), "readonly_copy"))
 +		goto out;
 +
-+	/* Set +x to middle page. */
-+	if (!ASSERT_OK(mprotect((void *)(addr + page_size), page_size,
-+				PROT_READ | PROT_EXEC), "middle_page_mprotect"))
-+		goto out;
-+
-+	if (!check_user_mem_vma((void *)addr, page_size, "rw-p") ||
-+	    !check_user_mem_vma((void *)(addr + page_size), page_size, "r-xp") ||
-+	    !check_user_mem_vma((void *)(addr + 2 * page_size), page_size, "rw-p"))
-+		goto out;
-+
-+	/* Execute middle page. */
-+	if (!ASSERT_EQ(((int (*)(void))(addr + page_size))(), 42, "execute_middle_page"))
-+		goto out;
++	ASSERT_EQ(memcmp((void *)addr, data, sizeof(data)), 0, "readonly_copy_data");
 +
 +out:
 +	if (addr != ~0UL)
-+		munmap((void *)addr, page_size * 3);
++		munmap((void *)addr, page_size);
++}
++
++static void test_partial_copy_fault(struct user_mem *skel)
++{
++	long page_size = sysconf(_SC_PAGESIZE);
++	bool second_page_unmapped = false;
++	unsigned long addr = ~0UL;
++
++	if (!user_mem_mmap(skel, page_size * 2, PROT_READ | PROT_WRITE, &addr))
++		return;
++
++	if (!user_mem_munmap(skel, addr + page_size, page_size))
++		goto out;
++
++	second_page_unmapped = true;
++
++	ASSERT_EQ(user_mem_copy(skel, addr + page_size - 1, sizeof(data), 0),
++		  -EFAULT, "partial_copy");
++
++	/* The byte before the fault stays written. */
++	ASSERT_EQ(((char *)addr)[page_size - 1], 'f', "partial_copy_data");
++
++out:
++	if (addr != ~0UL)
++		munmap((void *)addr, second_page_unmapped ? page_size : page_size * 2);
 +}
 +
  void test_user_mem(void)
  {
  	struct user_mem *skel;
-@@ -105,6 +176,10 @@ void test_user_mem(void)
- 
- 	if (test__start_subtest("mapping"))
- 		test_mapping(skel);
-+	if (test__start_subtest("execute_user_page"))
-+		test_execute_user_page(skel);
-+	if (test__start_subtest("partial_exec"))
-+		test_partial_exec(skel);
+@@ -180,6 +280,12 @@ void test_user_mem(void)
+ 		test_execute_user_page(skel);
+ 	if (test__start_subtest("partial_exec"))
+ 		test_partial_exec(skel);
++	if (test__start_subtest("faultable_write"))
++		test_faultable_write(skel);
++	if (test__start_subtest("copy_to_readonly_mapping"))
++		test_copy_to_readonly_mapping(skel);
++	if (test__start_subtest("partial_copy_fault"))
++		test_partial_copy_fault(skel);
  
  out:
  	user_mem__destroy(skel);
 diff --git a/tools/testing/selftests/bpf/progs/user_mem.c b/tools/testing/selftests/bpf/progs/user_mem.c
-index e3b0689f5f2a..3bbd5d2f02d6 100644
+index 3bbd5d2f02d6..e12a19fc8784 100644
 --- a/tools/testing/selftests/bpf/progs/user_mem.c
 +++ b/tools/testing/selftests/bpf/progs/user_mem.c
-@@ -10,10 +10,13 @@ char _license[] SEC("license") = "GPL";
- 
- extern unsigned long bpf_user_anon_mmap(unsigned long len, unsigned long prot) __ksym;
- extern int bpf_user_munmap(unsigned long addr, unsigned long len) __ksym;
-+extern int bpf_copy_to_user(void *unsafe_ptr__ign, const void *src,
-+			    u32 src__sz, u64 flags) __ksym;
- 
- enum {
+@@ -17,6 +17,7 @@ enum {
  	USER_MEM_MMAP = 1,
  	USER_MEM_UNMAP,
-+	USER_MEM_COPY_INSNS,
+ 	USER_MEM_COPY_INSNS,
++	USER_MEM_COPY,
  };
  
  int monitored_pid;
-@@ -24,6 +27,22 @@ unsigned long user_addr;
+@@ -27,6 +28,9 @@ unsigned long user_addr;
  unsigned long map_len;
  unsigned long map_prot;
  
-+#if defined(__TARGET_ARCH_x86)
-+static const unsigned char insns[] = {
-+	0xf3, 0x0f, 0x1e, 0xfa, /* endbr64 */
-+	0xb8, 42, 0, 0, 0, 0xc3, /* mov $42, %eax; ret */
-+};
-+#elif defined(__TARGET_ARCH_arm64)
-+static const unsigned char insns[] = {
-+	0x5f, 0x24, 0x03, 0xd5, /* bti c */
-+	0x40, 0x05, 0x80, 0x52, /* mov w0, #42 */
-+	0xc0, 0x03, 0x5f, 0xd6, /* ret */
-+};
-+#else
-+/* The execute tests are skipped on other architectures. */
-+static const unsigned char insns[] = { 0 };
-+#endif
++u64 copy_flags;
++u32 copy_size;
++
+ #if defined(__TARGET_ARCH_x86)
+ static const unsigned char insns[] = {
+ 	0xf3, 0x0f, 0x1e, 0xfa, /* endbr64 */
+@@ -43,9 +47,13 @@ static const unsigned char insns[] = {
+ static const unsigned char insns[] = { 0 };
+ #endif
+ 
++static const char data[] = "fault-enabled BPF write";
 +
  SEC("uprobe.s//proc/self/exe:user_mem_trigger")
  int user_mem_test(struct pt_regs *ctx)
  {
-@@ -37,6 +56,9 @@ int user_mem_test(struct pt_regs *ctx)
- 	case USER_MEM_UNMAP:
- 		ret = bpf_user_munmap(user_addr, map_len);
++	u32 size;
++
+ 	if ((bpf_get_current_pid_tgid() >> 32) != monitored_pid)
+ 		return 0;
+ 
+@@ -59,6 +67,15 @@ int user_mem_test(struct pt_regs *ctx)
+ 	case USER_MEM_COPY_INSNS:
+ 		ret = bpf_copy_to_user((void *)user_addr, insns, sizeof(insns), 0);
  		break;
-+	case USER_MEM_COPY_INSNS:
-+		ret = bpf_copy_to_user((void *)user_addr, insns, sizeof(insns), 0);
++	case USER_MEM_COPY:
++		/* Bound the kfunc length using a local copy of copy_size. */
++		size = copy_size;
++		if (size > sizeof(data)) {
++			ret = -22; /* -EINVAL */
++			break;
++		}
++		ret = bpf_copy_to_user((void *)user_addr, data, size, copy_flags);
 +		break;
  	}
  
