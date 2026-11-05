@@ -1,102 +1,178 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40335606A329
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 22:58:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68248606A32F
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 23:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TgHZ7LH2
+	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=Fg4TyERn
 Received: by kanga.kvack.org (Postfix)
-	id E67BB6B05B2; Thu,  5 Nov 2026 17:58:39 -0500 (EST)
+	id 69AAD6B05B0; Thu,  5 Nov 2026 18:18:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3D6C6B05B3; Thu,  5 Nov 2026 17:58:39 -0500 (EST)
+	id 64CFB6B05B1; Thu,  5 Nov 2026 18:18:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7A786B05B4; Thu,  5 Nov 2026 17:58:39 -0500 (EST)
+	id 513B16B05B2; Thu,  5 Nov 2026 18:18:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE9306B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:58:39 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9EB391A0A31
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:58:37 +0000 (UTC)
-X-FDA: 85402581474.03.C7944D7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EAC7A100005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:58:35 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TgHZ7LH2;
-	spf=pass (imf05.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793919516;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 18D226B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:18:03 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 909DAC0C60
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:18:02 +0000 (UTC)
+X-FDA: 85402630404.24.FCA9862
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9E14540009
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:18:00 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=Fg4TyERn;
+	spf=pass (imf01.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793920680;
+	b=IQkU0IkNJskX8Y9l6un6LyjEuUHNBMZb/HW3/8eZ7Q2EPiiWo4y2xHuPQI0aJRyhSnsaw/
+	9S6hbpfvxe/RrhmxlPnPx7zskJ2A5pNvRtMqDJ2AAeggeaZqwHpUna9oXjrGdgSf5L5KdB
+	3lxFZ8GoqkoBw+e+bEjHpMlhOquo5ng=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=Fg4TyERn;
+	spf=pass (imf01.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	dmarc=pass (policy=none) header.from=paul-moore.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793920680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S+nYe4I8JfGZ8iq7Bvfptw+3SVmUNoB+MIDzTrsXpZc=;
-	b=w5yZBihX7jaEI01z28vdButIaotZ8WVApcNh7cLpE6HecKb8x+Dg+RQsQ/aqhmJWQkHnvI
-	ZwKSk43x+BQlJ6SPdkTFktmI4xqpmY70I5OhIAzoTN/Gutic9osqmYwtyp2RHAYMDI0jcU
-	mJDJkfLwLzDqMau0iZ27Z7zPolE9chI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793919516;
-	b=0AfnNNGyz4hvfFuFRySToOGI0ivaA8wli9YBIOluOo9Ucr5/F/i2dT3LjEkVydku8UBE+6
-	FHOKApKR3Im0Mpnql119gJk0QPg2pnK301xzF3Qro6h/KVoVuhY8484hsNoYm3OGnzAkWt
-	xwsqNTPr79QL+E68w7d2IhIc9vCKJV8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TgHZ7LH2;
-	spf=pass (imf05.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2EA1640F0B;
-	Thu,  5 Nov 2026 22:49:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D243F1F0089F;
-	Thu,  5 Nov 2026 22:49:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793918975;
-	bh=S+nYe4I8JfGZ8iq7Bvfptw+3SVmUNoB+MIDzTrsXpZc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TgHZ7LH2yAs2qyGTAyNNtl8frCxxpwAJZEf6PU2DcWnxnWy8Gwr2rY4WWscjskyEm
-	 piib1sPyrp16ZX0SGTmaIsDb7pvL5paKi/uBo8avrLOrUUi1aOj/A7Z5bjfMQBMSjN
-	 j4Eq9xsHFuM2pB920goI6zViijasUSIFu7KXGqFRJvCPeVMdAzEHY6fyhJDfuKuq+E
-	 J58K9DIZLC3V7zC732nScfU/zhzvvw1oMRaZTKz8cZFFqEXg9rdDKXASjqjxeSqrtZ
-	 ELHH8o3eXZWSf+wF68UCbIny6kkYndjaeDR7pwKDeuguD1MRYu20E2srlmlgMetBGp
-	 cv4tnszSs4FrQ==
-Date: Thu, 5 Nov 2026 17:49:33 -0500
-From: Mike Snitzer <snitzer@kernel.org>
-To: Chuck Lever <cel@kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>,
-	linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-	Jens Axboe <axboe@kernel.dk>, Jonathan Corbet <corbet@lwn.net>,
-	Jonathan Flynn <jonathan.flynn@hammerspace.com>
-Subject: Re: [PATCH v10 7/7] NFSD: drop a shared boundary page only once both
- WRITEs have written it
-Message-ID: <au0H_TZCp1Snf_5U@kernel.org>
-References: <20261103211754.35352-1-snitzer@kernel.org>
- <20261103211754.35352-8-snitzer@kernel.org>
- <20261104091543.GA31130@lst.de>
- <autk-osSQ8l2LKz1@kernel.org>
- <20261105075935.GA18069@lst.de>
- <29851456-2e7c-48a7-bf00-11a1f1a35024@app.fastmail.com>
+	bh=fuCDmSI9zu6AYuOwJkaSaRyngdfgRozjSLztTOAphqk=;
+	b=ur7J2oaSwejGzdsyXmHrHUZ5EoiB+BRblBUs31OqZ9hl+p8L3GE7q7y+CNs6hjf3x4IPCo
+	JblhiYIrtxDfC3o8mbNfofbkQMNj09VmSaFo6323AwG5Nixa1TLr99NTN6MSZGbNikEvHE
+	GK5OhxS81McUEzKZW8tgkgNtWuM22hA=
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3ae1d0caaedso31366a91.2
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 15:18:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793920679; cv=none;
+        d=google.com; s=arc-20260327;
+        b=o93oaPOuAQHqpFtFKuBH8+zs7yWTw2NPT6apWZPTl4CGa0KrQY9eVLp9Wpb524kJE+
+         7K3X9lt9A9ZVMG5L9BkNOS4hiXCxitQz1dqP5aLmv4AWaSdwwG2T6AN6e7x5+MrBTlWS
+         XSmU4937/qvh+XzbMclMkh5UpDcIVZRD8qgUP9JxW4j/BdYaY3LrGa/kRERkRWnvJzg2
+         fX1009AD00GTIh/KAvL2eb7iRmlMpmckRvFV4tq+UnsGXO1RW2U90QwjRy4MAWcDdcsv
+         U2A95ORrxp5rXcpnyOnsasBi0fzh/Y4IkUQTqdHJ9GTNoGzg5QJGBu63O9zKwbksQ/vR
+         DtoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=fuCDmSI9zu6AYuOwJkaSaRyngdfgRozjSLztTOAphqk=;
+        fh=ssbyvNVk1ssWPJHovhVri8FODGIpdkneHYwFcPlZvK4=;
+        b=slbgERm2tMaVExwkwb2DdIxg8qws6i1tp9Y8vfJWXGfSaZCIOB66IrbGLNJ/P3DClk
+         g7QueG310/YePdoT/AxK36wX6FLQiNB4SSztCBHF+6bPOAfCno2SR9mECAh9dpLQfWME
+         WTxM1upDmxjihytXxomxEkuY+jKnKEVEj9FwaERcMrXqXJPH8dR/r2s1hbTEN0yBxHrR
+         yzFSCba+e4FShKspRtCt9SC1Lc0AoJq4bbDCJbY69E3cT4k706ETDUYlswWv5iydyBkL
+         D3d1CNiQd7SzVlFTodnsan5aSQ3GNS49YmWDcSr4hCzm9v8qnLMDTy/izdIXXmkftm0p
+         k/0g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1793920679; x=1794525479; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=fuCDmSI9zu6AYuOwJkaSaRyngdfgRozjSLztTOAphqk=;
+        b=Fg4TyERnoucbXPk4SlbyWfE3FUWxm8/t1m3Gk/acduGyQo68IbuevPzCgqokgiEI4t
+         JbcOnpoIOKMB+LwaMZDHCfnSJvvZcbSJaT8V77KQyiS02YoMB7Gl0pyksJFYnJ6IAbsH
+         BuseRMIxFThuJzOVXI9mRxJ+YvD6xctrYqML94XS9Jf4+1j6OV8D9PWXe3gg3mIhbzS5
+         GCGgeWbfH7xz1yLNiCyCyyP4J9vG+pzjemAeNGJz8umHqk1bLtslV5SM4K2v5UgwAra4
+         c8a0iCJi0g3AppAuA1NLWLCmLjC9SVHfzN4jeb+z6e3TbsDHfJE6Q/ykDE2t3mgdRLiF
+         l7eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793920679; x=1794525479;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fuCDmSI9zu6AYuOwJkaSaRyngdfgRozjSLztTOAphqk=;
+        b=vsm8kabfeue/P2SuxPWfj/6AYJuK8UDFLn94k49nUTG5XA3c2OLtt3xir7nKrseKxn
+         fYTDMbbLOqzcN4sszTd56iIvCtUdwksHi+VvtpZWuaCmEmWgwVOYRxd7h0nIowJMWE4I
+         49W1tNO7g+uaZmh4Fp7Z90AU4HOWZwpsuulrOrYNqy+a/jmpWrRMiyrxRaWELXRGSxz6
+         TjRY5KxRHZqnRt4qJIrgFVnTzAhrONCugcmJ7uT1dtwUsjmWwW+wu9mqudknqATyoIyw
+         upEs0LbRJipoZDdPoYjUnKsLGe4evqdHWxZZQeGqh7f87piG247KiLg+vzXM2kNe1O9B
+         e7kQ==
+X-Forwarded-Encrypted: i=1; AKwUvBxFPXPozMjmC9DnOSme1zvEvN3caov/c2w9aUJ34m2LuixJFSx+hSqPVkMy8XNjeNh5IbhgclVl/g==@kvack.org
+X-Gm-Message-State: APuU4Z/kDPgTgI12iNgf7G4WJgUTF6PcqfeAI0ojD1NoDGTgRfTH/5Nb
+	/ZR1MCIXYSZ8ROOSzTB1DYJnJXepRe5wqM2QThICghRn83NDDsRkw4islqx/YJmSmU/n110nvrb
+	+y8QbwhApUuTSkop9hD0YGeQJpVUq2mZbfzGun1eD
+X-Gm-Gg: AYBFou2OWM4UuXCfU1vDifoZ6bU+D+0SKA0dm3qXZIAC9LdC2TPqUDB5CgQKEV5spJh
+	2nQE23bagrJhCPmgOB3S2GV/E3rpv4i5Z8YxugfY3shaYFZJ5ZY3Quv7NW17mky3iyyF88tRbe8
+	+LqpvjeQz+4ucEiPhkN/SeNue1a0GGE4dTnM8e5DOUdbtvvbcOMxlVdB22FxDi320dpHkVMMESn
+	n02JP0yDFI39EWkh59A1a26ZpdCit00qhmvYtgok/SwFuHzOD2ywLGTRXIIArltz5hETOHiYT40
+	tLY8Z2k0ou3SPcnzh0y1XyS8Xh8TgUfnZdE0Fb8c9FB+WUI4GQXADELwgrppz97AufHQ61HQbb8
+	2hstpvEzjlyLwl8SevO45QPJSwQdA/Je9WeCthI8qoIVTB3Se3l8wOz0Ib8a6wqkhM+QC
+X-Received: by 2002:a17:90b:1dcd:b0:3ab:f38:2b43 with SMTP id
+ 98e67ed59e1d1-3b0db703e39mr535625a91.34.1793920679319; Thu, 05 Nov 2026
+ 15:17:59 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <29851456-2e7c-48a7-bf00-11a1f1a35024@app.fastmail.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: EAC7A100005
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: azzmf371xwwrdordyejwk7weqhxey95m
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org> <20261105-late-2026-vma-flags-v1-13-0d3cd15ab75f@kernel.org>
+In-Reply-To: <20261105-late-2026-vma-flags-v1-13-0d3cd15ab75f@kernel.org>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 5 Nov 2026 18:17:47 -0500
+X-Gm-Features: AclHuK_gkg-Hspii6U5_01_jGLQO23B7F4YXuvzvsb53ImE19wnChR3DgLruv6g
+Message-ID: <CAHC9VhSR=9YNhBxeFBcTR8wgG2yDP1fW590QKjzuc4Kq9ohaiQ@mail.gmail.com>
+Subject: Re: [PATCH 13/13] security: convert VMA flag tests to use vma_flags_t
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
+	SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, John Johansen <john.johansen@canonical.com>, 
+	Georgia Garcia <georgia.garcia@canonical.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, damon@lists.linux.dev, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 9E14540009
+X-Stat-Signature: fwcbouuu1qoa63phuadzaoktf13rb4ue
 X-Rspam-User: 
-X-HE-Tag: 1793919515-982520
-X-HE-Meta: U2FsdGVkX180qwQUg6cZxS+9p/daufCfNSYskyyaZeJLz4BxYx5npa1eZsQwo0MMc8JIOD9iak0aOLwPGgxRgtaA5hsgRWj8mw/L2UBEc4rO0OUSjLiimLpqYmZZPCpX49g7Spjb+mk50zTvgOKNxM0cgcHWSe4DcIBbKPXnGmadJwDMRbv9GFgBZjWZUV79IGi+K2IChl7K2DOT3FG+ZJKnpudE9xhEN017gSHVymq8ZfVtOtCLX0biHog61k92mT5dVnaFWrgTQyy6REWDOqp2zr/kgsJWPIP3TJC3LBbVQe8kiqwGvLE/jPRGiCkPBf76apqhfOIY4+redkgd9w9nR2VFuWzRK7RRbxmbOF5Y1YlAmtPyqb7ysEWzGKcoXJ5T1G/5btITFrDQEGNae138gecumpieLLDslnzdo9EJpP/X44BXPiq1Gcq+d9yYlea92grSCQ88kP9bh/v2naYSll/b/5oMg+oez8cp+07rZXY7DdsEvJMx0mTjhJbLqhNhT70kmf4PUxg25/LQrR/Z1EZVsXd4FK97MmQJbuJvhIxPUGDX6OXuKEIaLVT/jZhZzluWuLwZ0q6H9Gg0WSx/8MbIzBukP3dxUVv8q0yQBlj6TZcOhjy/qstgDHFQu9J2O+OixZ1t12GtVKDGaSbU070e90Ffwj1MYgc4TvVNa60UwIGcWEUFCVtPi/GITZyK5BIIZTEalCpltaq81Ty6T2oSIfYdk6ymmrE6CDH1fjYz8oKMZeVKbGjmOE/211q0Tb7WDrffRqX1wJAjfCFEbvg4fBW0rab0ZKE2HzwvuM8TkuMbgG34omNh8YowdFe/ppOFPtqq1p1s6IdaRR+w59BOvq8gF6Z3tWdJdXkWpTkHq4IQ/XPuTRiyjofX78lxcZUx4cMT9QI9jkJAABBvDRvpi9YpilA1aQ669ErmASH0CTPrzk7QNVonNQM5TC6B7DhwooVEu8hB8p8
- UX+onp3x
- y5/9NJ/cs+EMcrQY6DZCA0nLlXwxGcWr7IM/4vH2ciFXKT0zdT7L8ewmEiofl/BXRDsxCAzCaNAOwgZPUePnuqs28Upev4ahfchn37VSD7vAne3J5ItdUZUMMnE1BRSUBVrS1KrMtRRuClbEcfWmQ+XLboHETLQAeqJ0auRSLSPlOfG9oVJ5aBwBAVNTFrxNqI3NxVmTc7Gkqb+ESDFcSRIXYkVm/+deFGq5UDHP/F9eepxVfPFiEdUAx+K5o48cMVmX5QQjMwS5bjq2FN1I2narDLCfSbJc2WgjFUQ4Q17bKBDDJmpbZZPZJHw5YS/Ps8Cf0Op2ukJWNGawEnIU3pNbMp45930XDkjVd
+X-HE-Tag: 1793920680-767983
+X-HE-Meta: U2FsdGVkX1+izIswjXnIpxFrS+otaDC+bi9FECVSnbnhm4aBzO8tWaM6ZiD/yWYDdtMvGArtUdK12vv/DYCgP1M7+QBb+yvWopKQLhqgL1hg9VmNoQYPG6B5OYlVsMrt0r6yLQ1iR/37jHmEDUuSF9MeDLaZfOSvTzvJYPAwFRJeJCoQAAX7TXjxIQGhU8PYHXPy9nQQjbUOGKj3to+akvqKfUsypSBudhdRsbJe8AlUoWfnPvWUf+TQjfeB5z29w+4ti8eUTXMkN4tGz2aPwfStDA/DqN9mDbt8fnKpdaEofmAyJaXuL8JnB5pQojQ7ekVwuN+eMUmXEiYPxvF8fP016VLLAWk46l29ZVl674xCtpo1ozZjtYo87QYKDPTjACUaGSi2iAFFh2mSSNWhBe6gC6QRvRi8/wrwr4msjVd2x7ixJcXFRWiI89Z4GtRcC0zzioK10jCBKpanot8MGUKWmbW+6U7Yxnb+2XbMPnOhQW8qQloWYMqlRmRY2PUu/Od4t0F2yn31Zzu57vL9iwDulWfLgmlrnQ8RE8OkteMKKUemjVsc8pAH5T5iKxGUIruGeO7ONidHU+XOgmIokGRZblxxvjkYfXvwbBKBTddKwyr1SF5cJsc3g7m61eHYspM5L+MuXSjEMzs7YfjRegPpn/tM1VPi6T+ADuloJhWQnlgeQ9sGP3RPaqVzIAHmstbQcBT7TZvYmVH0tV0t3ePAdwNNlwi6hxK00nZc3cSpj5l+bqJBRrsQHBFJwCuD9IyRRdqL9SfZG5SQYoV4MVRj+rLO+Ol+2jKI/WAEQTBLFXl8MUk8H0roOcfyFnAr+BAHYq5fDpqWmKZkWVUcPsciRvLC/8OKrOH25pRvJr3zpCRinkgJOuAdtMFa+1k2HXaM1962DtwRGNjs6k51mOuZ79BfIIJcbdp7zL/pwPRpH84HtE5aLsMy8TeTvW1P1AIIzQLkVf7zq/b9drU
+ ipSO4CY4
+ Ex2lSm3OHCXKtm/2sDw6+QmELUuZqIitBDQ66s33TJCEIScd7YDTgAj2wBwIZ5HDkYr7MwB0oGHoYcvzPd9noltwpg9ALTb4ZBs/laae1nNtfEwswFW94ZUirVs2swUJXUPFVy5uT6TNl16ECxx62ndkNVXBSkLPUUTolRhbae2meb8YqR4/tsji9Idu9kRrvj1iACPPy48wHfCU2IbBMywKmxvTaXHtjcyROASnMyWQ/Nr3v0NYrnrFGDs52eGjD4POdkY1y5cbsFzG3EGq49P/DiQ8q9JsUxmvjhplemLyp8VCInyI1LgXyCR3yrKuZQdVt/E47LBPRZuuf/7jpgC2hZnq2plNeFa6uw0Rohw7wQkHL/rfdkg+uCCu94tuSJYLObVoeVrrGYoiT+ehLSPuK2PvJ1ZvIr4xAz5iOVeV/L1RhTgQPv8VVEHd/fCDzl1Ctk9z0upFxM4GvDdwvc227WzF4+kIEzdoq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,82 +181,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 08:33:34AM -0500, Chuck Lever wrote:
-> 
-> 
-> On Thu, Nov 5, 2026, at 2:59 AM, Christoph Hellwig wrote:
-> > On Wed, Nov 04, 2026 at 12:01:46PM -0500, Mike Snitzer wrote:
-> >> It is the transfer size of IO500's ior-hard: every rank writes
-> >> 47008-byte records, interleaved with the other ranks, into one shared
-> >> file, with O_DIRECT.  It is meant as a hard case, and it is the
-> >> workload that showed the problem on our servers.  The same happens
-> >> with any record size that is not a multiple of the page size.  The
-> >> cover letter also has 6000-byte records.
-> >
-> > So based on a bit googling your totally optimize this for an intentionally
-> > stupid benchmarking workload.  And that's not been disclosed anywhere.
-
-Why we're even debating this, like "IO500" is taboo or something, is
-what's stupid.  Not a surprise: handling misaligned IO is "hard".
-
-Public service announcement: Don't let Christoph taint others' work
-with trivialities and needlessly hostile strawman arguments.
-
-For would-be MM reviewers (and you too Jens), my previous reply to
-Christoph in this thread [0] delivered a lot of useful context that
-made this patchset instantly approachable and yet rather than
-acknowledge that fact he attacked a misaligned IO benchmark as
-irrelevant.
-[0]: https://lore.kernel.org/linux-nfs/autk-osSQ8l2LKz1@kernel.org/
-
-But anyone who is active in HPC filesystems development _knows_ that
-"47008 bytes" is IOR-hard (part of IO500's benchmark suite).  And yes,
-its aptly named as a "hard" workload to handle efficiently.
-
-I have named "47008 bytes" and "IOR-hard" and "IO500" _to_ Christoph
-and others multiple times before:
-11 Jun 2025 https://lore.kernel.org/linux-nfs/aEl1RhqybSCAzv3H@kernel.org/
-12 Jun 2025 https://lore.kernel.org/linux-nfs/aEs6gmTXzhzuDZOI@kernel.org/
-29 Oct 2025 https://lore.kernel.org/linux-nfs/aQJG2LIuui08Bx3H@kernel.org/
-
-Even in the context of this MM DONTCACHE patchset (now on v10)
-Christoph's "not been disclosed anywhere" doesn't hold. IOR-hard was
-named, with its 47008-byte record, on 22 October in a v7 reply he was
-copied on, two weeks before v10:
-https://lore.kernel.org/linux-nfs/atqCTLf42kkGZmSd@kernel.org/
-But it was only in replies, never in a cover letter or commit message.
-
-> > I guess everyone else was right and just ignored this bordline malicious
-> > submission.
+On Thu, Nov 5, 2026 at 4:35=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
 >
-> It's not fair to ascribe that kind of intent. I think it's fairly
-> well known that Mike and Jon are using IO500, and not mentioning it
-> in the documentation for this series was a simple oversight.
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
+> mmap and mprotect LSM hooks of SELinux, AppArmor, IMA and IPE.
+>
+> No functional change intended.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> ---
+>  security/apparmor/lsm.c           |  2 +-
+>  security/integrity/ima/ima_main.c |  2 +-
+>  security/ipe/hooks.c              |  2 +-
+>  security/selinux/hooks.c          | 14 +++++++-------
+>  4 files changed, 10 insertions(+), 10 deletions(-)
 
-Thanks Chuck.  If there is a need for v11 I will explicitly mention
-IO500's ior-hard benchmark's use of misaligned IO of 47008 bytes.
+Similar to the other patchset you just posted, is there any reason why
+individual subsystem maintainers can't pick these patches up, or is
+there some reason I'm missing and they need to go through a single
+tree?
 
-Jeff Layton reviewed and provided his Reviewed-by.
+If they can go through multiple trees, can you split this patch up?
+AppArmor, Integrity/IMA, IPE, and SELinux are all maintained by
+different groups/people.
 
-I suspect MM engineers have just been busy with the merge window.
-Hopefully Willy and/or Jens will give v10 the courtesy of fair review?
-
-But as I mentioned in [0] any misaligned IO has this issue:
-"The same happens with any record size that is not a multiple of the
-page size.  The cover letter also has 6000-byte records."
-
-> But IMO we do need a broader variety of benchmark results to
-> understand the impact of these changes. IO500 on big hardware is
-> an uncommon workload for NFSD.
-
-IO500's IOR-hard reflects worst case, I understand the reluctance to
-care about it BUT the reality is that not all IO is sized optimally.
-So if steps can be taken to avoid pathological inefficiency during
-worst case (misaligned IO) _without_ hurting the fast path (when IO is
-sized properly) then why not take them?
-
-This patchset doesn't hurt fast path at all.  But happy to take
-direction for benchmarks others would like to see results for.
-
-Mike
+--=20
+paul-moore.com
 
