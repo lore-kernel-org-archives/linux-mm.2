@@ -1,85 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09C0606AA4C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC943606D802
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Op6BjMZv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SckyjmOk
 Received: by kanga.kvack.org (Postfix)
-	id B24A76B05B2; Thu,  5 Nov 2026 05:14:29 -0500 (EST)
+	id E836A6B05B1; Thu,  5 Nov 2026 05:16:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFC826B05B6; Thu,  5 Nov 2026 05:14:29 -0500 (EST)
+	id E5AEA6B05B4; Thu,  5 Nov 2026 05:16:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A13926B05BA; Thu,  5 Nov 2026 05:14:29 -0500 (EST)
+	id D70DE6B05B5; Thu,  5 Nov 2026 05:16:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7719B6B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:14:29 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DC1011A09D5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:14:28 +0000 (UTC)
-X-FDA: 85400655816.24.8E05781
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AFB506B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:16:36 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CF49D120951
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:16:35 +0000 (UTC)
+X-FDA: 85400661150.29.7C21CFE
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 1C91F40003
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:14:26 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Op6BjMZv;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4D70F20009
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:16:35 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SckyjmOk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793873667;
+	s=arc-20220608; t=1793873794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cJgR5aeVC9lcVT/bd47FaWkr+JwpenNCqv7QqD2q5Bs=;
-	b=lDA3X3Fi8KPIC+NXkyv/viLAAdO+tk75+oJ46EWV8ykcwiFgi+7HOipFzj7N3eVCxMYZX2
-	rY+77QlNSgDnJ+yululsvacgzR15M7ujw4qj+vvmxLErz7telMl68QZMJpCnmmYipStdGP
-	ZtkSc1QUrbSZLX638bXXVLnY72xdWbI=
+	bh=LbDaZ3sw5+rDHF9XCX1pA/1HXOf4/tGA8FHG4g881lI=;
+	b=KHY/urRjHpCfBVtws3qExpgJdD/E2mLOT8UOHhpIWamPKEc6oE0Ut0mgA7F6zEv1aMxajL
+	MRQdHJfP3s/1TzebD51tkrrbTX2iAzDocXT3S8aKseA1ZxtfxSTPaXKi3+hocJAFNG1x9R
+	9zsoDurYkydJT1305A7s5PWV+jYMU/U=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Op6BjMZv;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SckyjmOk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793873667;
-	b=8IDY01ULgszhspkYPbqCVNUL7zbdng9g+yJysXDMwjiyaD6OaXU7Bz9xGFRqEgw+Q3NbVf
-	TvkXz0xXNLq8VqeRxHNkhvyUVz0hPg+/EoaPgDZ/k+PLVrCAs3FyEVgGKK9B4dunCe9LdH
-	wYHPrbxxOml6J675iNt+esl0e/qd1dU=
+	t=1793873794;
+	b=Pl3W3pYSEHJQC6wsMkgh5MTqywEW/KOjkdLBhe5mNmo0PoDklUsLOjc6Mf7GCxjcq6AYw2
+	vvnPxKuUF/SSb/1S3SyYW43AV3PzCXxiqwDV5BahC2bHUOYptw2JHFqafkBlQ9QOvMNoOA
+	71Ffhek5ydgqSDRfrHaLAdlsFsuWHFA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3D76643C6B;
-	Thu,  5 Nov 2026 10:14:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1671F000C1;
-	Thu,  5 Nov 2026 10:14:21 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4BC3643700;
+	Thu,  5 Nov 2026 10:16:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32FE1F000C1;
+	Thu,  5 Nov 2026 10:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793873666;
-	bh=cJgR5aeVC9lcVT/bd47FaWkr+JwpenNCqv7QqD2q5Bs=;
+	s=k20260515; t=1793873793;
+	bh=LbDaZ3sw5+rDHF9XCX1pA/1HXOf4/tGA8FHG4g881lI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Op6BjMZvEwsjuxoAUkC8Ls8ldus0yPgt/yQbWwZwQRMcFlVeybfv/RTgIihY90P0o
-	 6hwtujh/xZC3KmXw8CKUVrH9CgBmz87hYk08c0RXE0JnYvLXt0neFtGpI3S1z9ihsG
-	 tzfUumbxad+dX5WnRj5f9R1oN3EshlfEIH7griODZMkD0lhOWJTKO5QoQW3rbHExTi
-	 7Y5Qe2uzFx4yjZmy+DYdTLx+ZWG1Hgk2KelHad79uAVveo8dALagy/j5GnNTUM+SKy
-	 8J/nk4KICNKN3ZUxYzliP+GCsZaZ3nUW6vJ3vTG8JfWfH4DjMnnK3+i+QoLVHbSFz/
-	 aWp+hd3ruMhdw==
-Message-ID: <fc197480-ef57-4279-a48d-101f5f41f8d3@kernel.org>
-Date: Thu, 5 Nov 2026 11:14:19 +0100
+	b=SckyjmOk9+NrqAky5ti5dc0q+Evu8Jve+xxi3zsVHpIMk3zuNtbKVINXZOH0yMVlE
+	 8wtyIlwsVzvujrpA9ymvq9O+f9Tf1/x2kF/2UJzi4PBCivqGnO4PomtugYl+fPZCCV
+	 Xk9HDEH1QntitHj6u/vdJ6Jb5a3KhcL9O5CVXS5j/0QY0MY09xVixddIv7qngShN47
+	 aylVHUu2aifxYlQ3vb4hBwLqCoYKeaA9Z1BVtT+bAByM5TMgJs4U+8p+z4pysuhNso
+	 hxCrkOvMr32jSlR9i995wbOucyJmQx+2A0aBhGSsy26MHBaxGQuz5ksSCGny76IZCC
+	 XVm+mvyr6tiug==
+Message-ID: <3a77219e-39e5-4e98-8f88-6f90bccf69f0@kernel.org>
+Date: Thu, 5 Nov 2026 11:16:23 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] mm/memfd: handle GUP references reliably when
- write-sealing
-To: Hugh Dickins <hughd@google.com>,
+Subject: Re: [PATCH 4/5] mm: add and use mmap_read_lock[_killable]_nosteal()
+ on contention
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- David Rheinsberg <david@readahead.eu>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, stable@vger.kernel.org,
- Chris Mason <mason@kernel.org>
-References: <20261103-fixes_core_2-v1-0-f332954f1df4@kernel.org>
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Waiman Long <longman@redhat.com>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Yonghong Song <yonghong.song@linux.dev>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20261103-khugepaged-latency-fix-v1-0-a07ab16ac860@kernel.org>
+ <20261103-khugepaged-latency-fix-v1-4-a07ab16ac860@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,22 +135,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261103-fixes_core_2-v1-0-f332954f1df4@kernel.org>
+In-Reply-To: <20261103-khugepaged-latency-fix-v1-4-a07ab16ac860@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cbx8ktdz4cxx18xuybxwxffniiwzsqnh
-X-Rspamd-Server: rspam01
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4D70F20009
+X-Stat-Signature: qk4tppmdhoiyens3ip78o99a5y5jnd7p
 X-Rspam-User: 
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: 1C91F40003
-X-HE-Tag: 1793873666-802021
-X-HE-Meta: U2FsdGVkX18uR040Art+OdWDUzUPmOQv1twldoTeT1CMiFIZRl46PPFT+HxWLLfmm9Ue3mCGuNWF0MsIagpt8E1S41SqLxt+cR1JQC/7brT/cNapRhpTl6qPl+Pw2PXpGCFcyJi/24x/AX8t6vDIfyFeeE+YRNX02j4AfPkxXJ28EJC0FcbLB2U1XTvQzkibH9g66DYjouJ2VjWTgfzoLzgVnBWSKtsqmhSp7ukrC655IUKW+6ZsWxOzw5rH7MKdIfeqeMyqgauFYFj1lyfbzAMsYNuZtDT+tw657mpYSNENTy4khJOlroxuCpuT65sB/j0rQ26Qct94Z0R+c6+Xy3sCWXqsdubMoZx25h/fHe6Z4f7e3FRiv0+eIO1kIWeLsrdakyfV0BbPo0pTezRlUl8yrIQr1ElKWCJaVhk5Fh994txo03AC4/yprDwBXx9buHYg3spHOegV11B0JgFJAdMzVJJ9yhV4Hk8Ayjv1SwahMiMuiKi1m5bmP3yQCMACDpjlBqnip5pVZIlaS9IXBHo5vKfR71+VjtZHP7oj1YKPQNDMQU0W/97IIlmrBxkM8fcXPoWt+XTzMfLnqkJAeNVhF6cAH8SC+WSOt/C7Dm5ZNlXaKXq/U0ifIBM/nPdIKHQ5du9A1ZwaMob2M6/dTTTlrG1xgFIhO+9TxzTpxnifyz+O0izdSbNKqGgUoj6hG/0fw/SVEfNXZdx9vvNYi1uq8pVzObpJAIEgGl5MjuO6ZttbHAnY3OnvOXi0KNCLkLJzcxwakG/nPa+mUxwXEi/BHrk6vqpIto8eJqjLTyjM+zZePfgp5fnfiMw5v2XOdixjN+YKmiqLJB9rLCRDWqgBk+Jxa+av6TA52f/qFxUlUNXaLUIjaa/9T1pnLgN2vqGAIW1rnL5uYeM9F2JT5T4EcfoqBusjZP44tv9z3X8UzoVUpQ9pqDV32+k++tyPtCFWJbJ96VN4GcVAjTA
- pM4ORvi+
- zr7jJmEAFEBfWetBEXHWqV7YYMGUwK9YsXNblZe7pWx4O2GB510l9YOvZgIWbM+zC14dv9TSzjr/HuzYjac7vderYf/vn/9lGYeBTpFFinbcmuAGUXm8BXtXMUPRDp7VbF/AyyEJxIt8CIyRGxazpr2uKrpokxVfHSluLJRc5l2o/q75eU9cziRtD0TiUbKepGRphS3fTW1nX/sV7rVnzvATvPw7o08eCX5myv7yS3h6ghzAvOFDy49K88y3zNLkIYGC+CPKIVjCmyWXqz6nyk5BsavMENbwxKY6E
+X-HE-Tag: 1793873795-834192
+X-HE-Meta: U2FsdGVkX18ymMJr+bXplgta/pS7CoH4Yfbw/Y5AI+T9xu2DsIkFzZ52odXI3NxigsnehYP5odtci2WK9w0ttLmhmFJcyI8eWEdOAcsnfXxH18Y/Oc5suIhQcsY0cSLSFaPQYd+TrDuFcvW/TFzZrI1UgG9KfsZKcZApaf/nLrhkGrMs4OSCUM9MmpT6HNrEyUUUMwFHkL/lBR4MIIcyEXkQtH/KhTwY2PRNLBRIhsPrcE+Gd+lBN9HrzfIndkSpzIIA6Thu8q3cavnpZ5ix/VmxQ7neXuQf3ZXCZ4X7UwMT6xU3l81IlxaeDjnwxc+4DahWuS3xKGXV9xdr/pMk1hA5YpV5sVEMKSUFDVKGIkTNiTr25C21t7NmEEFXLIsfr6kNqGosWzblPrxnSfSDH2Y77BBvVXT9+BBe+thNYjI9Cnfm7A1shQ8cwhpcOMZAT/uzWY3X0SLJ1IuMnvdlkuZl4C1n7s5nInvVYcIntDx+NHCvLoZTmqTbY9+Zw300jIGPH1Tcl26bC1DaAYkvw7ewxf8H4j2HxHjCZCR29P/U+FAjSggYnk7d8I2FK0EJzhohy0dJgmke45iGmdOurzSsQ8hDoUvNV9XCHkbINpkO3aoE4B4pII3rnjIwQDnA3eJUP2TP5JfpOl4mf8osbNQ829LPR5Pk6510SL0GvjHWG/t9YsXJnXt08pQfRqEgx3kSPWUTLnaB6BpUJ4HMHDlFudAq9VPXTfqqudp4yhVi4JpoKRS9OpnpSO9PBcz7wsc8UAwuk1I9uzm1aPWRvPF250b2KrCCrARvGN2605jmGcK5rTNaYSwZJcer+mi1vZIrbRd4Ux51UP5CLWjWmUAqMYNDKIJ93J2uoqL0naLfki3opqLe4DHBxvBVg7c9e6f/+Q9halt1glZB3oImheZmCyeTEI8Yygfh4eBtwmnI/O2zZT75urx6uRYwRZyjy6molzKzAjwjUM2UGdY
+ mp4nETUM
+ 9XcxpnYMzfBT+HQ9LZWp0boRGbtC+9rmVHG1pshs6deM77LsTiHGqHFDlcCksj3v+sEDnSkrWpgrBBSHwwkdbBcujUmeQHNQM4Pz5jhbVGqns29/YC/EVZB9eirho7d3EK87hbxofVJ70mclpnFJ/P1BA8ajAcx9beW3TJv1pBZKAo0HJ/A9+cEUIXY/9bBHjDSqGnmxycyztbgI4fQ7tYPIqbIYIC3ErvYfnQemxzvtEQSMA94R50udUwMqLnxxhclDnWEn97GNQtNZHakKkV7OR9w8iMqCuTWJSGSeLmdIgsu/BCp00/X9NEP8uoxo7fdRvl8JS2VblJ0w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,42 +159,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 19:31, David Hildenbrand (Arm) wrote:
-> I spent way too much time on this, looking for better options. I think
-> patch #1 fixes the most immediate issues but something like patch #2 is
-> needed.
+On 11/3/26 09:27, Lorenzo Stoakes (ARM) wrote:
+> With down_read[_killable]_nosteal() available, it becomes possible to
+> release the mmap read lock in such a way that a queued write lock always
+> takes precedence.
 > 
-> Long story short: someone can trigger a race such that we don't detect
-> GUP references when write-sealing, allowing to modify content later.
+> Expose this to mm through two new wrappers - mmap_read_lock_nosteal() and
+> mmap_read_lock_killable_nosteal().
 > 
-> Patch #1 handles pins reliably for folios with a pincount. Patch #2
-> handles the remaining references, but can reject write-sealing with
-> populated file mappings. vm.memfd_write_seal_mapped allows restoring the
-> legacy behavior if needed.
+> Make use of this in scenarios where the mmap read lock is dropped
+> explicitly for the purposes of relieving mmap_lock contention - the BPF
+> task VMA iterator, and lock_next_vma_under_mmap_lock(), which is where
+> /proc/$pid/smaps_rollup re-acquires the mmap lock after dropping it on
+> contention and falling back from per-VMA locking.
 > 
-> All alternatives to patch #2 I tried ended up too complicated and nasty
-> in corner cases. We should never have allowed write-sealing with
-> existing file mappings.
-> 
-> Plenty of details in patch #2.
-> 
-> Did some testing on x86-64 without any surprises.
-> 
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
-> David Hildenbrand (Arm) (2):
->       mm/memfd: handle GUP pins more reliably when write-sealing
->       mm/memfd: handle GUP references reliably when write-sealing
-> 
->  Documentation/admin-guide/sysctl/vm.rst | 21 +++++++++++++++
->  mm/memfd.c                              | 45 ++++++++++++++++++++++++++++++++-
->  2 files changed, 65 insertions(+), 1 deletion(-)
+>  include/linux/mmap_lock.h | 44 ++++++++++++++++++++++++++++++++++++++++++++
+>  kernel/bpf/task_iter.c    |  2 +-
 
-I think patch #1 is uncontroversial. It would be good to get some options on #2.
-With the current infrastructure we have, I don't really see a good way to tackle
-this differently.
 
-I'd assume CRIU+write-sealed-memfd+mlock is rather the corner case ... :)
+I'd appreciate an ack from BPF folks and a confirmation that I could take this
+through my tree :)
+
 
 -- 
 Cheers,
