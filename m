@@ -1,101 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B023606A6E9
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3BC606A6C0
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PS7EuTM4
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=g3aspVQT
 Received: by kanga.kvack.org (Postfix)
-	id A7E656B05B5; Thu,  5 Nov 2026 14:58:20 -0500 (EST)
+	id CA3806B05B6; Thu,  5 Nov 2026 14:58:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A55E36B05B6; Thu,  5 Nov 2026 14:58:20 -0500 (EST)
+	id C7AC76B05B7; Thu,  5 Nov 2026 14:58:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96C5D6B05B7; Thu,  5 Nov 2026 14:58:20 -0500 (EST)
+	id B6B7A6B05B8; Thu,  5 Nov 2026 14:58:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 758B76B05B5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:58:20 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05B5A80B81
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:58:20 +0000 (UTC)
-X-FDA: 85402127160.23.E1AA4F2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6164420005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:58:18 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PS7EuTM4;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 851DD6B05B6
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:58:58 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 00E2640C56
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:58:57 +0000 (UTC)
+X-FDA: 85402128756.04.D8A6D60
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 24DC28000B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:58:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=g3aspVQT;
+	spf=pass (imf02.hostedemail.com: domain of hughd@google.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793908698;
-	b=A4Jk+aHHPL/55hXic3i3dS17Cx0GJLc0GvqvOVgKv3c9E7pd+rTssfY2EtsBNReSVIRw5q
-	RwoU5s2Auna1RgnWRtBPwLuw1HL1BiiunVKnGIRdMIL2CfI/wwBWbk/ujvbVVGREFPkqrC
-	7SihuChs34iA1QK03ZfB1745gLEwy9A=
+	t=1793908736;
+	b=dPlGQ2x7ytr9s0cXOQVv04NDyxRSvq1WOV/mLwFT4PBOJGQ1aepuDnM97HYwMXlS1eHwLy
+	u7Iu/66nmOfRByiZpgMYTcNNIrndK7z9FrXmO8q6el0PeBJizRLKUQvjUWznBOV8RZlhTo
+	+jer05O0KK0y5KyIddwEumiPu+FQK0E=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PS7EuTM4;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=g3aspVQT;
+	spf=pass (imf02.hostedemail.com: domain of hughd@google.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793908698;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793908736;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Di4Zv2+bgkX+HhZmCpdKbhvfGlZoAaFGwpTTtNZDf1w=;
-	b=47IGgsPM40R1OuwW9BoXxvsRHmUHLAtvKH8oCwIAff2kasQnZfzrIS/VQ7VEaanvb5TXA7
-	/6U8HyGoACW4u0XSKz/HvhvCVNt7Yp61ep4GqXTIe16KTJQUruy+RYCBYWoLeeSLxCq8KK
-	LOckIjD6bC6DAuSXrQxAgFfI30UFdwI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9F0D142B67;
-	Thu,  5 Nov 2026 19:58:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4B01F008A2;
-	Thu,  5 Nov 2026 19:58:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793908697;
-	bh=Di4Zv2+bgkX+HhZmCpdKbhvfGlZoAaFGwpTTtNZDf1w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PS7EuTM4dqldTrwdAR0onQbkCjogqgjpUy8oBN5Oi/jsHPd1HPHlgSGbxScX7TULM
-	 hRB6vR+pRSsaVGMqkA0T2yAO/9EP8dfTHiI3smO+XSdOQTs0WaU0CSspRWwNIygWmH
-	 xxyaJ/jl5nVv4oGCeueAnyoM+i/SNOz1yePgzX6SBUyU7ID4QMKKDqnCau9Fzxv22l
-	 9yUUQnAUlAQfxJYnkuFIsPSnTWbDHjOSLzPYjAQnKTCY8vnyzOnX2r4MnJUC80Xsxq
-	 9G6Oxyszcx5C+PQB+DFxzoyTPD+CIGBL43AvNqSOHfSpIHjw0LBt6ISDjfycxH6Ryo
-	 K9q3hUiMFf+cA==
-Message-ID: <sashiko-outbox-200057@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v2 23/30] dyndbg: let procfs copy in writes to
- /proc/dynamic_debug/control
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Brauner" <brauner@kernel.org>
-Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
- Bacik" <josef@toxicpanda.com>, "Chris Mason" <mason@kernel.org>, "Jeff
- Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>, "Thomas
- Gleixner" <tglx@kernel.org>, "Al Viro" <viro@zeniv.linux.org.uk>, "Jonathan
- Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>, "Greg
- Kroah-Hartman" <gregkh@suse.de>, "Joel Granados" <joel.granados@kernel.org>, "Kees
- Cook" <kees@kernel.org>, "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-serial@vger.kernel.org, "Takashi
- Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, "Chuck
- Lever" <cel@kernel.org>, tytso@mit.edu, dmitry.torokhov@gmail.com, "Petr
- Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261104-work-procfs-fs-v2-23-319e0f9a8aae@kernel.org>
-References: <20261104-work-procfs-fs-v2-0-319e0f9a8aae@kernel.org>
- <20261104-work-procfs-fs-v2-23-319e0f9a8aae@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 19:58:14 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6164420005
-X-Stat-Signature: 51wst9betny3iae8z6f8c511ugoatigo
+	bh=km0LURr6P7Lx8jR5JYqDxaUcl9rwTeeAgZu6u5Eug1Q=;
+	b=3YYI7HYpWPvp8ocIZCVwA9GmYoD0hUKis+I6J7a1ztz583/ly8XWOVw9xfMpPqQj7cRSHz
+	fkroOrUDf5m7iSsxGVOydBqhaiePoYPsVNGIm63stMeF7laqxVWl2RVkG+stgZflJQRA/5
+	0yGurHJR83MfK8/YtUkLCDa1Jciu/ws=
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-8b305d38bafso23676547b3.3
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 11:58:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793908735; x=1794513535; darn=kvack.org;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=km0LURr6P7Lx8jR5JYqDxaUcl9rwTeeAgZu6u5Eug1Q=;
+        b=g3aspVQTqu3amGzKet0a8+mX0CjegaMW4RydEsWBx/+2ZzPxbeaXBfksIc45ZVEfQV
+         jeUhlgKEzzkQREow5Z7xog8Zex2Spf3DLnGZkh+aCW2ImUHyj1+39Nr5h4hbTwjZzSjS
+         6i4HgC0ejh6s5vFgqG7LVYN+UZi+yptQbtgqh74fyA+XBTuay2TlQwEkPl9SSEP0fk+h
+         fPJW//kkFsnFzZ4QqK7CKmHvpQyDNerJj0oYuUSBtNNgQtAZpx7KMrOBp/94vRUsWtDC
+         krrL961l0H6D/+Xdvfvij0pdqf9sHXCB6OnZxXcGdjAsg5PNqXs/7xMb68aMgowZy3ZI
+         Z99w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793908735; x=1794513535;
+        h=content-type:mime-version:references:message-id:in-reply-to:subject
+         :cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=km0LURr6P7Lx8jR5JYqDxaUcl9rwTeeAgZu6u5Eug1Q=;
+        b=a8hiQ9mzHVDy+NPb68TWXwANpqkPsVwKIBzPNybIE3071rpL+wdwUDYj8iG2ZK2wf1
+         JDxkeGBxYkughqV0cYE86slUkp9dXccvaqBk+3pScDuL+zjGexU1s3YMVZdQKEQDRjW3
+         B4dvK4b0cdcnWyo3VYYZMHWleZDSevTFERkdR96gQzySPT9nAJaYhlgUKWzODqcHmJUU
+         qk7esmWiOmdPclkIzbMiF/V3ivCgXjQ7NZhqs90fbSWqwYTmeeDbzslC3l6ISxLYKrcQ
+         V09MRc5h6sl7JiJVJUYE7NKndfvbS1+Babe5gtxUtAh+y1okSOCP9XT41XwmaYYUMdyB
+         HNSA==
+X-Forwarded-Encrypted: i=1; AL+hErHsIlS6ynWDN3V4UMi/n48eWTv1A/x36WBDSqvHo0TQHV11kOlx3J7Cr3XolwCv9xN+033SkSJG6Q==@kvack.org
+X-Gm-Message-State: APuU4Z/tNHXMNsRNaWkwvEEHesHLE6YmcQ4vXZED31nxxlEL2q1XxPPr
+	0amGbR7mfzV0G2bONNIRfnmfVyLHjVsRpERgL58/AkVx1rYAFU1Y0SF0B+USsvVISw==
+X-Gm-Gg: AYBFou1n98kJHNdEUQsW7VujcRYiakbZnqJ+6UWwsQZIXrVkW8oQn/Krf8bVDpskSrf
+	BvUS5B8qc7AoBxvuS6RkMkTBiZ3WokyrnJWRrjf9nNYF5hUKRSWJMtgn+r0pOG80myIS3zxZO/P
+	jiWcY4+pz1d/KId2gJl6AZ+z0USrnynhh3h4oudHKU4817/deLMA+BG+1sU1MmCywQRttdlXDAn
+	PNTY6PsDy1cbnDxJ5oQRa4toe8rJB+U0xun4Ggd995cxsOfEwV51OixJjBleMZhY0zMtnXtewFh
+	tCgp2cSm4yj+ttQz3jjsE15tOjajbLHyxVSWYvr2Ybs3sPzGq31hYDz+nHhMw6iXZsGGiKYHLyL
+	lzchR6ZG/b1kI6GJhbXSSeBFMKfUR0WN4E31Egb6U3xCeriQWlAwCUvcqKkLSUXyYf+YDsIIADe
+	Pl5SpldrQoM+yqA790Owz2gU8f+EtAnTKjRxro7Vm0a6GSrPP1j8KAtRM6dYc4zaN/0nGlOWjge
+	STbAujWe+he9myVu5FcjHgnYXf4+4sCH+DJIof9lgyt9ZwlB637xTo3YNpJb5MT56lVpu2P5bOR
+	zpdB9VUuDV5YaVqnOlh38Q4sUfuFtCN3hd3rxAvG0jNBCsceqME4dVpwD4NsdgbpcWp2mPo2jPD
+	thl0744KoWZlEY/HqUuQ=
+X-Received: by 2002:a05:690c:e1ce:10b0:8b0:acc6:8e5c with SMTP id 00721157ae682-8b3417dd26fmr509307b3.9.1793908734656;
+        Thu, 05 Nov 2026 11:58:54 -0800 (PST)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f76dba8sm3113237b3.13.2026.11.05.11.58.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 11:58:54 -0800 (PST)
+Date: Thu, 5 Nov 2026 11:58:41 -0800 (PST)
+From: Hugh Dickins <hughd@google.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    Hugh Dickins <hughd@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+    Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+    Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+    Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+    Kiryl Shutsemau <kas@kernel.org>, Zach O'Keefe <zokeefe@google.com>, 
+    linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+    Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: don't map folios that are not uptodate
+ in MADV_COLLAPSE
+In-Reply-To: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
+Message-ID: <1f69d159-4a59-535a-c24f-a26188698862@google.com>
+References: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: wuahabdi4e9ixyzj85zabcjgqgcdnx9f
 X-Rspam-User: 
-X-HE-Tag: 1793908698-17621
-X-HE-Meta: U2FsdGVkX1+Tl1bIyGshR5uVPKye0cWjrSK33GEi1gQHTm01Ob9O9yWXQuVH4YP6k2R4/jRf6ihQlTD1zNY/WWS2b8Dz8D8fOL0lx6lTvvLEVhVAzOQqsEopnvTIHMWQ4gxvOI6mLNrLUMYhSHYaT3U4IAIosoKROTtd2z3uCdDuXSlG96sVeceH9ct0BTG5Ix/umY4h/oxJomWogz3g8jy7NCqidqzJzIc5gdHQssZUwvkheKJGiI9fZ/yZMTz8LBobXUWRnuWNaihayAAfShUqbybH246jFF+48bk3HV4zy7cf2llV1X7PxUrJYz2RAP/htw3uyUkq8KpCIsijznulWgA4aru+NuUsPiT9DKI8yIRBDFL695yRqNNKR6dhDzs4i1grMmzV1JWEUhdrCNW2oKA44PsuOFs5GEWRmhRZom/jlPhcMuBBQXM8lhhbWNLh0T53LBwXUQcy128uT//jTBHP/K7e4/23YUVTCfyBFXNEFRuM0NYz8zJ/FzzLbBz041GDJYXao6E2hClVs/juRllAm4p3NwL5OxMz7gzjEjTFC9+B+b2JlF0/42/LGRmS7Y/ZddMyBVcob8Rg6AznE6Df4AMpeo7WHOQZPa9KpYU/oYL2YAN4RknEXhKOdRhAkcnu9TZrnT6CgUyUIW37Rfyd0XIBby8COC4jQ+qDd2/F0Vv6yRPMIxBfG5o4fVlRZA2LRee/CgzaC5iijccJ4DXsUtujs5Pexu/3GR8CxnWW92FBidI0yLgqcZfcypPF4LwlqproyjRORYNHE00AYp2I0K+NepoOCKnds3aT08muhbbDyFicQjMM/SEonJBT1BozWAv9wbJJVkhfUGEBfoaHL2YMIitWCm1XiTUIafJkmbH2EB9OV59Oag6dQ93eQ6Dr6lZxACuu9gDw2dScbKDMqzmxT6Gqs+kRt0N69CkG1jJAkgiV1QnmIbSs42eUXtR1JnLIQ+E0/OH
- 4HslXfCl
- EMsRyTQ2US8a+rLh+oUpqtw+mL34mRDN3Io+usSNJxjHx2D+vETRL5DiwPHELfxYLMdm+nHx1wLKcOICrWUBWqiQgkPL90QdvGH0WkU2V2V3zWmbGFBbVhYmf/x0PXtuTHQem8F5uaJXWApqcQ11pZZ09FjcQnPih+szk4dluLb+X5JtgUowpso+zE1gtL1E0F/YhUKJGIepNv2RA2iSlPn4kNjJslUBFdl0m2NV2zP4/WEA6PdXz6knLxAGvaWNRbwTM9W8a6QndlLNiL20biJ2hLIaXm2earCbJVgk2JD3lczmVFoToW3MzvLlqsvMUTky7Obo/9ophxDxU+jCD4Ho+eXOslN5lxH7oThh/KNZYcn7Z2lWCESUwpnLEBhZGPfzxUKrawUAVKB5hmhOJwT+4Hxm4WQ7teqMYHZ0tHlsdAhaCCznP4wyoolj+uPvqegqZoiZFArfaBEdqO3kkrniBZWiCUPyV+Wzc5OMhXo0wMaN59YtH4MSON4PAHzAW+pWU1WC87x4EHljYsKMFD9LNbsLU6pFelD6XL3ZBmrQuPDV80QE2wTw1hKDXEfNgAa4jtgZprbOZwNJ+ojqhvMavZ/5H3qvBT3VGcIbUlS0V0LZ5KmWwWbItv5ryte7pLy2GTih974MWVAUduYlDaXN3h/cvDq3zmTYuNmjxtnL59J4NwZsE9vd6k6L2TVp7k4IIImO5DtVsBX0P4dFIlYMbQg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 24DC28000B
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793908735-510481
+X-HE-Meta: U2FsdGVkX1+8EHjv30R5YD0DVH27UdTeGa3W6hdynvSUBW9tqFB+2Wb3DGIdDDgtIoRpPrnLlrF0Eg5idTlwcenZYJ320Nj9h0Gni1fYwInIafH9UtOwGAI5MXPw5iegMrxDeVkfQEuzPnqg0Sbxg28YdGs7f+32hdygB4nh8fTT8AaS36oqCOoP8OSHW9ZUK0GLalpQ18to8s3L95ne2BCPBTYRpPM2q+Wfu1WYy88UTV7OaJiTs8zP+AkG3DvtsUoribgGN6oO4s5UnYBlEkREjXQqBV1H/ym6SMwDK6nBLsHQKVDQxCa9ZYypbExaYDHzq1AxnOBQyqKDjbcJdJY7VEpM35Sw9ogVV4oq0FkFLK+L7pq4R/mZbLc+gT1u/6iiQkoI+Hh/I6QwPhh+ek1HHRJEMnsKUdKGcbszTBm7m4YmJ6Xy84zdgkubD6w7rZp3n/BAakNliVa+z2N8cUlBLHOSY0PsCieZjWquN3ysPHixunMkfgj1of7PPZx9F39/U07hqggtBHLJorpjAjFHCkSpYVcf+dWopXbGeY2cpVr5Xf5rb4G0NJ4Vfdn+ca31XQss9UbXpYdUvnu8hRJH6ZJmg1oj1NcliAlujQP5PX6SrC3a3tl38UBgY6pjfZOQH0i8kpHstgCHjf+p/XqvDBkQospqVA3HScr+7l4syDMQjniE4HflkHHAuYMKQMiDw5smp0ee7kBNVMvjHVS8a4nZ7ox6CnFIAZT/nWtHj1P1X7/ic+1JKmvE8crkzGKgBFGOp4c7+F7OmghNYl7T9bqsul/hDFewO4RHSvTNJSiHkdMnlPzm2k+yF98hdgDpROGCo4sWDz92PTvrM6n/8ur/09X1qXSQI38xFTQi+NiVpU9+pdLJ7fNXenBKti60SMJVm7PTDMrRVtzy2cEaZjs5BSnuNmw/tEqAh93tltCkS9fA0bnT3s2mqa87FPLksCPoYWRqDRe58Z6
+ KWITUAdq
+ G1rlgmyjeMjO2YmT3W2mh04/+MbB+Bu1vdbylQzMGobuRHTLIRd1IiIiO/Hl9K69Q6JGD6FDaTSyk+IGYWyPPmczJPbp4Ubdji/rToWN74eVY9aP7egidRdA48mH7kdl/syYrg08rqRYTgtal7Ci6O1ARBRaiKAnzLUzjra7aqVBNipP1GywfKI65iPpMf5gR+1B6eGYsE2/LkqcP645IeEsNfVDa6gY9AUQ4E/8zcATBeOMDVi0Pcu5zlRbiUCaRIZuXsCp1fTvw53Exl94I2xmYeV+s7qbY888tRUQyx5fVwdfnDxKRdzPoOAWEb88mx+uI7g/nfaXnEf5A4pZkmk+5u9eV7irFjOIlMmYg4LjMKiUi8Gty/CKC+605FOcpY+0MINjZlznjEi8HTGSITYF0idtZQmoLqSuHM6mqv8n5JR0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,73 +130,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] dyndbg: split declaration and assignment of __free() in ddebug_proc=
-_write()
---
+On Thu, 5 Nov 2026, David Hildenbrand (Arm) wrote:
 
-commit 1bfaabab91de2989a4d10ae03eef349ab77809d6
-Author: Christian Brauner <brauner@kernel.org>
+> madvise(MADV_COLLAPSE) can map PMD-sized pagecache folios that are not
+> uptodate. For example, shmem fallocate() can put such folios into the
+> page cache.
+> 
+> collapse_file() already refuses to proceed with folios that are not
+> uptodate. Let's just do the same in try_collapse_pte_mapped_thp() and skip
+> such folios, leaving handling to the page faults.
+> 
+> Note that collapse_file() effectively clears shmem folios through
+> shmem_get_folio(); let's keep this fix simple and simply let the page
+> fault path deal with that.
+> 
+> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
+> Reported-by: Chris Mason <mason@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-dyndbg: let procfs copy in writes to /proc/dynamic_debug/control
+Acked-by: Hugh Dickins <hughd@google.com>
 
-This commit factors the query execution logic out of ddebug_proc_write() in=
-to
-ddebug_proc_write_buf() and switches proc_fops to use .proc_write_buf and
-.proc_write_size so procfs copies in the user buffer before pinning the ent=
-ry.
+Valuable catch, thanks. I was worried that "try_collapse_pte_mapped_thp"
+implies there's already a PTE mapping the non-uptodate folio, which
+would already be wrong. But we've been a little too free with the
+SCAN_PTE_MAPPED_HUGEPAGE result code, so there's no such implication
+(and even if there had been a good PTE, I doubt there's enough locking
+to stop racing fallocates putting a non-uptodate folio there meanwhile).
 
-> diff --git a/lib/dynamic_debug.c b/lib/dynamic_debug.c
-> index 64a2112908725..1d6012c9eb41f 100644
-> --- a/lib/dynamic_debug.c
-> +++ b/lib/dynamic_debug.c
-> @@ -1002,11 +1002,28 @@ __setup("dyndbg=3D", dyndbg_setup);
+I was going to quibble with the Fixes, thinking the problem was there
+earlier: but no, I agree with you, that's when install_pmd came in.
 
-[ ... ]
-
->  static ssize_t ddebug_proc_write(struct file *file, const char __user *u=
-buf,
->  				  size_t len, loff_t *offp)
->  {
-> -	char *tmpbuf;
-> -	int ret;
-> +	char *tmpbuf __free(kfree) =3D NULL;
-> =20
->  	if (len =3D=3D 0)
->  		return 0;
-> @@ -1017,15 +1034,7 @@ static ssize_t ddebug_proc_write(struct file *file=
-, const char __user *ubuf,
->  	tmpbuf =3D memdup_user_nul(ubuf, len);
->  	if (IS_ERR(tmpbuf))
->  		return PTR_ERR(tmpbuf);
-> -	v2pr_info("read %zu bytes from userspace\n", len);
-> -
-> -	ret =3D ddebug_exec_queries(tmpbuf, NULL);
-> -	kfree(tmpbuf);
-> -	if (ret < 0)
-> -		return ret;
-> -
-> -	*offp +=3D len;
-> -	return len;
-> +	return ddebug_proc_write_buf(file, tmpbuf, len, offp);
->  }
-
-[Severity: Low]
-In ddebug_proc_write(), tmpbuf is declared with __free(kfree) =3D NULL at t=
-he
-top of the function before the early length checks and then assigned later =
-via
-memdup_user_nul().
-
-Per the cleanup.h guidelines, could tmpbuf be defined and initialized in a
-single statement at the allocation site instead:
-
-	char *tmpbuf __free(kfree) =3D memdup_user_nul(ubuf, len);
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-work-procf=
-s-fs-v2-0-319e0f9a8aae@kernel.org?part=3D23
+> ---
+> Once reviewed, I will pick this up in a timely manner.
+> ---
+>  mm/khugepaged.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 8d9f05a39afb3..db135b3c44ef1 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1900,6 +1900,12 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+>  		goto drop_folio;
+>  	}
+>  
+> +	/* Leave any uninitialized folios to the page fault path. */
+> +	if (!folio_test_uptodate(folio)) {
+> +		result = SCAN_FAIL;
+> +		goto drop_folio;
+> +	}
+> +
+>  	result = find_pmd_or_thp_or_none(mm, haddr, &pmd);
+>  	switch (result) {
+>  	case SCAN_SUCCEED:
+> 
+> ---
+> 
+> base-commit: f44fd601f72e09e44c667b9234c9cd469856679c
+> 
+> change-id: 20261105-set_huge_pmd_uptodate-9b9820307f30
+> 
+> --
+> 
+> Cheers,
+> 
+> David
 
