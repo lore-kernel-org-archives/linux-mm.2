@@ -1,101 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9111E606EE94
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53B0B606A33E
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BS3XZKDa
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NNDOELm4
 Received: by kanga.kvack.org (Postfix)
-	id AE6936B05B6; Thu,  5 Nov 2026 14:29:03 -0500 (EST)
+	id 7B0486B05B7; Thu,  5 Nov 2026 14:29:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABBAA6B05B7; Thu,  5 Nov 2026 14:29:03 -0500 (EST)
+	id 7877A6B05B8; Thu,  5 Nov 2026 14:29:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AB906B05B8; Thu,  5 Nov 2026 14:29:03 -0500 (EST)
+	id 6766D6B05B9; Thu,  5 Nov 2026 14:29:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AB5F6B05B6
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:29:03 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A1FB1C4588
+	by kanga.kvack.org (Postfix) with ESMTP id 393C76B05B7
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:29:06 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A6098160A8E
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:29:05 +0000 (UTC)
+X-FDA: 85402053450.29.DF1FBF5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id E173612000B
 	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:29:03 +0000 (UTC)
-X-FDA: 85402053366.21.7DD5E48
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 47451C0008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:29:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BS3XZKDa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NNDOELm4;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793906941;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793906944;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bwgr0VzVaD2N9H/j3vgcXycx8H7hODk9Lndt/rv7J/s=;
-	b=uycEF0y+iXB+ar69uNGaWO4V4yOTi9rAQ0zDxe+MEaODObsYRWTVZjlk1bCT4tUKGLopkg
-	CRv+Q37iogL7OVEzh+ylWSSwikVuSWrhxNGKAVJQ5cWXeZOQxG0G8B4WGM/HtybQU9gXRX
-	5hn7Dez3g72b+y7r9/HpV52tIGJ0NfU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793906941;
-	b=Jd/RLQcojLSA0GhKbo6xUMuKfF0Vkm2+ScWmrVUOq4zxsY24j37EYNMZsXgFUcOkk7B11h
-	X/e9OSXbY3eslxbX5XQ/8m6st/8T8QLE4xAI/NslMgo0MmYLzHzVR4ejD4qAgJibhhYtnG
-	N3m0QyXFc6NHFscBQVdRoFc1aj/nzQQ=
+	bh=UknNxIDX0xm3f3sWMXk0B1mzbk0SggFrNXwmrmf6Ci4=;
+	b=w02NAbZrvtQS3Nnp8PFOyOVKJ2aVXBuaahZC7bgZtIBCadlBL5BTHjOpJB5nlRonvbDMJD
+	yD6TQnhickrBSo+tNLe75F4NaBTeERhbugkWd7SPOWa/3oo9NvEDDrQXvvfaFpEHuvvXHM
+	Gp862z6uoYGL0s97PFCsrAiDoREIbmY=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BS3XZKDa;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NNDOELm4;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793906944;
+	b=ckA17rK9B0QHaOrso9SzFYhktkSvSCPnk/70N9+MvIbLa2ld6Lj5aEyM0ge0wiwXIkRh4X
+	fbcwqxO8xTU/N/eeN5ZV5dCa+Ya/I/beosrAYOdYlFMJZgJSlV/aDMYAJ5LLe6ZqPIEXb3
+	tXx0fPvSba5V3R5BVjSFW2BXGk2tfYk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9619643BEE;
+	by tor.source.kernel.org (Postfix) with ESMTP id 2DAA2601C2;
+	Thu,  5 Nov 2026 19:29:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F771F000C1;
 	Thu,  5 Nov 2026 19:29:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BECE1F00A02;
-	Thu,  5 Nov 2026 19:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793906940;
-	bh=bwgr0VzVaD2N9H/j3vgcXycx8H7hODk9Lndt/rv7J/s=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BS3XZKDaZFqTzEkNK9cZ527vT05nQuRqIDjUKiUIf9jx85/EdPLYb0Z0y2P1F/dSr
-	 cLz8PVwZTDq2+LckdmqgyJzYBdcLi6vbD+TgraxVJ/TKav0Apjdcte0M2LitavcWXu
-	 31sb0JElkWITsGXKzYHHXBcox2SfnEE32gjOr2QsFbRND4hlqQRt2MMTyGa/6k8cHB
-	 YEmqHkJb3KndD7l0LYWjOi4ddQ9wbEk5wPLHn/WamkFT57rjTzOkA05yE70xCSrR5q
-	 981HyR3mf5h9r4lxyP6tj4pIri36VruMAV5ujmeRAKVrr3ZhUPLCXFzWwc1wxgznlM
-	 PAXiCJ1oQKLsQ==
-Message-ID: <sashiko-outbox-199869@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v2 06/51] powerpc/pseries: put the node that the
- ofdt property commands look up
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Brauner" <brauner@kernel.org>
-Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
- Bacik" <josef@toxicpanda.com>, "Chris Mason" <mason@kernel.org>, "Jeff
- Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>, "Thomas
- Gleixner" <tglx@kernel.org>, "Al Viro" <viro@zeniv.linux.org.uk>, "Jonathan
- Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>, "Greg
- Kroah-Hartman" <gregkh@suse.de>, "Joel Granados" <joel.granados@kernel.org>, "Kees
- Cook" <kees@kernel.org>, "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-serial@vger.kernel.org, "Takashi
- Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, "Chuck
- Lever" <cel@kernel.org>, tytso@mit.edu, dmitry.torokhov@gmail.com, "Petr
- Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261104-work-procfs-bugfixes-v2-6-021c84d852e0@kernel.org>
-References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
- <20261104-work-procfs-bugfixes-v2-6-021c84d852e0@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 19:28:58 +0000
-X-Stat-Signature: fu9ihtco69jqjpkoy3pyzbes7xbyr13d
+	s=k20260515; t=1793906942;
+	bh=UknNxIDX0xm3f3sWMXk0B1mzbk0SggFrNXwmrmf6Ci4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=NNDOELm4Hz4N7CmdMhpohkpVr08q/PWYgov7+1gVAQr7+hSjjyLzwt+gc5JDB9zG5
+	 EhQmvVv8/sV5hwSbQvW0eWj5i/tlTCKYhTXrjtBL9j/Pfg3nNa/7kieX07YgfOp0Oo
+	 LZzp3hshTb3g3POqFSESr/VE7XC+DpFbf9BW/5f4rsslUVmQ2N4aoyOtnIPOE+OzAq
+	 VfV0DVzFkIDjNw333I4qs6PsuH9SoLTSVH3+4+EwX5G6mLFMcvcj6S0xziDqU02Awk
+	 4NoEyPx8h0+b1TBbewzfPHjJ1UavJLvFlKiB3/T2Uo0tSH0Clevgj2BnKuR8WUuKaQ
+	 r6DiIWtj4SmIg==
+Message-ID: <8a3827cb-187d-4c4f-84aa-5ad811abef20@kernel.org>
+Date: Thu, 5 Nov 2026 20:28:57 +0100
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] mm/huge_memory: take a reference on a folio PUD
+ copied by fork
+To: Konstantin Khorenko <khorenko@virtuozzo.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, Alistair Popple <apopple@nvidia.com>,
+ Dan Williams <djbw@kernel.org>
+Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-0-2828fe5a51ed@virtuozzo.com>
+ <20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-1-2828fe5a51ed@virtuozzo.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-1-2828fe5a51ed@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 5h6ukk8w9hodj1xc6fw3kgfuktke4r6q
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 47451C0008
-X-HE-Tag: 1793906941-555360
-X-HE-Meta: U2FsdGVkX1+dBS1rp0XLeakB4Xq3/Tdd/iaXYsMzMmvBGfvgK1zpMpy1wRxcqk0TCav6yfN/LANXUf2Bt4O7v/9kHX52MZGzFk1fe4gnhHPC3FNvmg6mpOYE7Luc3mgU+b7wQJ6+fgB8FT+KWaGSAlqXxaVSU2FuV9+s+QFHXeCGk2/rcHO/6AfYWRpwUt1xqj/24gVEtkkcymxDaTT/6IMOcbrZRaRCd+B8hkcyeO2F9cUDdBM7RTQWq4+C/SNKxM1M7ROEGYoINzmumTzjR8liSDMYzHhj/7vBGQ89g09T8jSwGVUlxMBnl0Cobw3eXqn8oytnRT7Wq+FMoQ7P/61hcPDw75ukSX7L1tW0iSzHw1rknM1xrHq0u+hssIZ6NPKxQdIop5q/Fza3eoQtKYgv+acTjnVajuT9aUxGHZaeKCBXo6Y/QjnuoheoOSVwOKeMjzxv9dpMN4HMOk7DdKNSEqyNDY/KR5wYa8t0/LX1VN6VK9zRdF+aNYZ25zeVjLft4aE1emXrgT9RHkLdRzIMTMvPee0i0bv+QQUtMGU5vAZpk2mQBpLfC/FabMczp8fnatjVWNOcTI3SOQE7lyJADAm/NPWRzCuh4c2+b/5zCHa8VqyDeZaLUhIOJEVmf5+Mi/MXDysZqVT5qZWqGSQ4BjMgt8rSf1ORwgnSPxyOCfAGJAhvY4u2qMrXm1Evr99GoxxIHfrSAOMG9QwxRLyZWDhL85F5Air20sjk15xEtb+sxKd664Wq/K9UT7157rR4QbMZT3nYeIcBkdwZxAjRj/Aezb2X0mbaXuVhBme0DWlww1Y5fbfMZ9T8jbm0a1G9bjlwq17z8b0bjMdyFONfIa0aaHCkxUgdHm5+l6JTNNqD7hg0JQ+/92dYxaP7uTPLQlmuYnSdwchicvNj6Z4tlchZmOxbkCx3GbkTde1KchC0RO7Fgk2jdFraxgxTo/1+CMVxNtnd+2r5mxY
- arPxy8v1
- jPRar7iflvS0jQ8119Yw1fiQXDwh5l4b1QqWQT023UWXsRKVDQ6HHxfiEi1KZLA43pRgJEOshmYmaaaj0pV08z19ojmSYjhk5u3+s7lLB4EEDEF6hnd7aPuv3fIoMRAOXujWAGdajJ8kKr2F2vy74/dWgomzTTmtHlOshOGcqMOiDo9Zpy+IMrg+sdVzVN3ShOOJIpS8ZgOPxx1lFfyuAM9sdQEWTPALdzrQnRDRhmpU6xY/t5bdgPPmBDRt/ctccCsGnP4cPOOjdiyVGMqL3R6gzRnw3HxgA2+7UeH9j00SwmVKSjPfjV5w+w0EUXubsbflft7oRzgdW+6wuUrDx6bjN1K/ZMfYHKZd9NugTOnfvZrvvQlRLf6/ohumA4YA3rtlPJumpEGe7hpIOwLGiaY2x2N1a2Di0osDsZftSTbvTaTgg1Lr3SHaknB6hHRhU1RcgpP1xXpxP5ooHav5hn9A36ZvMh3PnOlHy8tegBq8Fm8er52RqXSYIE07LvOvYI6yImWsM2uES2aexAyfQMKISCXRNhkt30wORfiCgDPgt4Y+Sfc4QsN9GtUvDnmmb+X79hle9AUnWNhTqaR//uaqtIApitlrvmKFChtYghN7UOFGN0RcwLlFsuKjCG0BEUgahuTWq1eijdtUHoJY1AOqnwsuJhCQ8iQCXwUapntMnK0rWF2Z+hR7Ug0xwLZbxSqif
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E173612000B
+X-HE-Tag: 1793906943-100317
+X-HE-Meta: U2FsdGVkX1/pJAHJsHM26uZJFE4PCjV4e8CCB8+Ck3tElvRjC5BZRVG66pli4EGTn5bpUUfqAP9HXYBj7taJDpZ0V2qTc3i2ymjcJHPpdwk2j5f7TBbT/XKqgrYzVMk4qCQyIM9FhDz8BvbmnrTyFgpdLTeuKmo+J+gdpPhQk5J/UI9PrxCLe9OOW4w/r/VqlEU6LfOm9ZIt2Bb1r/nP1grgcY8bw+lhjY2epKnPOT3sBQN6vGP8Pp39XERU1JFbduckupkoAjvXyVAjAyyAgqBHHuoDvQMLo0mz11YrVAvPgewkuV7Ik55Fwzsvk7TaEwFBOXKfTU/e99msbITlmQrAjeJr5nhOB+R36jWy9L8nHY4A7jJuRTAzgFFERoHsHMkPdizBTC+4y2ds9SUAvCiMfuCnjc3RRtzrRzNTKob1VFRUZEfWqfKfyGrzfGSOSTJnueeQGUb3bj2bHbpKycdAyc88wDoM22oPSwipk7KNFgrBcYeFA0Yb8GQX6dDWoLxt9YmuCl0R18QbMiPeG+R0biVOdQX1NhcFztzYYNhzIlS3p44n7vEx59ccGnyKOq3xaL7P4l3fqEIdDE0j+5r5UsFOciegv9gDd/bU0szY1q7+XIucce0u/fWV1uWQZxHNLAq7Q6FvYnvJTzGTdBa9JCyNzHVr1YNHmW0VJcLwg1duM+AqIwolWbJ3mL+AaGrQthDnHh8YI3iVXUv1N7vJeetNFjmr9lkWv0GaCCD5T6/Zr+ROYcGdGvHjrINV435ZqabWotHEvI6QGRO5KtDLz/HT1EfMLy3xQ+i7DQoxuYMjNswATwzcNgRbIT0QCOYHKNoJQEa+yA1Di09mwAQ0MjCO4v091yq+mY+7m97NU1vIrxSoKmFhXPPE4vxa/oObxYeBEPU74JmF+P7qgqfyOBKb9bjLSv9+A/Vk+AdOlxsGmC92SBo1FGq3667NnpQG32btHnNWZtkiEvS
+ 1uaX3sYS
+ 9ZGoTBZyImafEdPLWIjl32vMxcMp1MGaPtCVWKu2xnLOPjtxcll1hXZyZbzjTDvFTkRy0JUYGAs0E5i6wGjTaLWlekFjmBbU/FEK4yMkHZkso75L1ugouHVtLQrwObw2VRsV+kpnxzARiiY6jYCM1aKe+oALYk5+LRKyUB5Lv80BxTt83ujlZiEUqa0ZozdvYrjVB73o5VKVvjX0XOIqwWmKOopTegc5/xsjC0dKC25x9Z9+BmPG5GKP9TZb3siVw6h4Ys2lYUXFI+KeT5CHGY5LhExq9HM6OwBZZPWbQ/7nr9tDle4GoXGS0M4rV2hHZXGgMlDhKb4WvPPXy9TM8SIniRgxEITqirbdKtYBYMizC0IzZzMyrsm44X5TQrq1zPc52ctANUfFaEaI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,81 +145,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] powerpc/pseries: __free(device_node) declared =3D NULL at top of fu=
-nctions
---
+On 11/5/26 18:00, Konstantin Khorenko wrote:
+> Device DAX maps its memory with vmf_insert_folio_pud(), which takes a
+> folio reference, adds a PUD rmap and accounts the pages to the mm.
+> zap_huge_pud() drops all three, but copy_huge_pud() copies the PUD into
+> the child without taking any of them. Each child's unmap then drops
+> what the parent took:
+> 
+> - the folio is a reference short, so with two children its refcount
+>   drops to zero and free_zone_device_folio() runs while the parent
+>   still maps it;
+> - the child's file counter goes negative, "Bad rss-counter state" when
+>   its mm is freed;
+> - the parent's unmap drives the entire mapcount below zero.
+> 
+> fork copies the page tables of a device DAX mapping that has a guard
+> region, and commit f807123d578d ("mm: allow guard regions in file-backed
+> and read-only mappings") allowed MADV_GUARD_INSTALL there.
+> 
+> Take the reference, the rmap and the counter for a PUD that
+> vm_normal_page_pud() resolves to a page, as copy_present_ptes() does for
+> a PTE, with a new folio_dup_file_rmap_pud() helper. copy_huge_pud() now
+> needs both VMAs, so pass only them and take the mms from them.
+> 
+> Fixes: aed877c2b425 ("device/dax: properly refcount device dax pages when mapping")
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+> ---
 
-commit 3c337546ce05e068449f95031255af375235286d
-Author: Christian Brauner <brauner@kernel.org>
+Thanks, I'll wait a couple of days and then queue this.
 
-powerpc/pseries: put the node that the ofdt property commands look up
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
-This commit uses __free(device_node) in do_add_property(),
-do_remove_property(), and do_update_property() to release the device_node
-reference obtained by parse_node() via of_find_node_by_phandle().
+-- 
+Cheers,
 
-> diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/pla=
-tforms/pseries/reconfig.c
-> index 18e3f1a036e35..5a0c9c0b6253f 100644
-> --- a/arch/powerpc/platforms/pseries/reconfig.c
-> +++ b/arch/powerpc/platforms/pseries/reconfig.c
-> @@ -271,8 +271,8 @@ static char *parse_node(char *buf, size_t bufsize, st=
-ruct device_node **npp)
-> =20
->  static int do_add_property(char *buf, size_t bufsize)
->  {
-> +	struct device_node *np __free(device_node) =3D NULL;
->  	struct property *prop =3D NULL;
-> -	struct device_node *np;
->  	unsigned char *value;
->  	char *name, *end;
->  	int length;
-> @@ -296,7 +296,7 @@ static int do_add_property(char *buf, size_t bufsize)
-> =20
->  static int do_remove_property(char *buf, size_t bufsize)
->  {
-> -	struct device_node *np;
-> +	struct device_node *np __free(device_node) =3D NULL;
->  	char *tmp;
->  	buf =3D parse_node(buf, bufsize, &np);
-> =20
-> @@ -315,7 +315,7 @@ static int do_remove_property(char *buf, size_t bufsi=
-ze)
-> =20
->  static int do_update_property(char *buf, size_t bufsize)
->  {
-> -	struct device_node *np;
-> +	struct device_node *np __free(device_node) =3D NULL;
-
-[Severity: Low]
-This isn't a bug, but in do_add_property(), do_remove_property(), and
-do_update_property() in arch/powerpc/platforms/pseries/reconfig.c, np is
-declared with __free(device_node) =3D NULL at the top of each function and
-assigned later via parse_node(buf, bufsize, &np), whereas cleanup.h
-conventions require defining and initializing __free() variables in a single
-statement.
-
-Since parse_node() is a static helper only called by these three functions:
-
-static char *parse_node(char *buf, size_t bufsize, struct device_node **npp)
-{
-	char *handle_str;
-	phandle handle;
-	*npp =3D NULL;
-	...
-	*npp =3D of_find_node_by_phandle(handle);
-	return buf;
-}
-
-could parse_node() return struct device_node * directly (and advance char
-**buf) so that struct device_node *np __free(device_node) can be defined and
-initialized in one statement in each caller?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-work-procf=
-s-bugfixes-v2-0-021c84d852e0@kernel.org?part=3D6
+David
 
