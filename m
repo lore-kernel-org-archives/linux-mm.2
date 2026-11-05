@@ -1,101 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C69B606B9E6
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C7A606EEA8
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cC58zNRz
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qj3MxEnr
 Received: by kanga.kvack.org (Postfix)
-	id 47E456B05BE; Thu,  5 Nov 2026 14:30:26 -0500 (EST)
+	id B3F5A6B05C1; Thu,  5 Nov 2026 14:31:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42E6F6B05BF; Thu,  5 Nov 2026 14:30:26 -0500 (EST)
+	id AE81C6B05C2; Thu,  5 Nov 2026 14:31:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31DA66B05C0; Thu,  5 Nov 2026 14:30:26 -0500 (EST)
+	id 9DA646B05C3; Thu,  5 Nov 2026 14:31:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C4736B05BE
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:30:26 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8BB6A80984
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:30:25 +0000 (UTC)
-X-FDA: 85402056810.11.B0E1DAF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C396E40014
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:30:23 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cC58zNRz;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 75B966B05C1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:31:35 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 246821C4690
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:31:35 +0000 (UTC)
+X-FDA: 85402059750.24.943BE05
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 601061A0007
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:31:33 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qj3MxEnr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907023;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793907093;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fWBORYPn6/i1UGDhFg9BaDP0viM8Zy1xYrqG6aqMLCs=;
-	b=YhHz8JHI0UcNASKYyDTAWh3+C+RuVGKLSb4ZrD99Pn6PvdXLvv+UerFs7oluXfC1q1z+15
-	u74H1fN+V9ggsxOvjDWTNz6JFtZay3Ou9LggZnFECc6Nm69Bd7WMySGQd6vkCUPER1EDQp
-	TolCI7hExbi2PwNLm+Vbtl+iTKTLpac=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907023;
-	b=uUpixDQRTD/cgSJkmVOiriWyWTHtkJvkCkd1QDRj1yRv6Mm4bZ3BaHTowt/sc1Kn7UREAT
-	+kpnG4TFkp1Q1iYT794JVN0sP1EoCH5id8YnCgz3yjrgCRVlLnGETWuhGbrTDjprq2m01H
-	tf9HjQZzwLxStiAksRSw+jpGn9IdqDA=
+	bh=HbYwxsff3zwmd12NfwO1WlkOU+zbs7lqClhdSOh1kUY=;
+	b=QExwNyAaDckvQiwuckJsIeRDkuWZ8DxCz0rIxCPsICvc/yOQH4cLqQXsYr0r0QNixx6pC9
+	ILr6/lIeXmQpFwt6RRE5+EcIVP0ztlCZSsPE+ijDQG/7zuiiKPmCNquppOqB25GNk6xG0E
+	HtZFxhI4CQu6v1lIlIp+R9FLey/dbfQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cC58zNRz;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qj3MxEnr;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793907093;
+	b=esqJeQZfkvO+kDCsccCrlhIzZmopMWnGqpMPAv192wn7kLfoRJw7LMU5X8sN44VeXwxEEb
+	r0FaEcnD3hjIEYFv9hlinDRD1Ghp5UG+qzBz2NlhFYMIAJKPRj7UaZlF1H5MXcjw5gLwd7
+	WCOSz14F7xnUUdfgMuM47tsQVpouarI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 153244108C;
-	Thu,  5 Nov 2026 19:30:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F20631F000C1;
-	Thu,  5 Nov 2026 19:30:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C8BBF60148;
+	Thu,  5 Nov 2026 19:31:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A361F00919;
+	Thu,  5 Nov 2026 19:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793907023;
-	bh=fWBORYPn6/i1UGDhFg9BaDP0viM8Zy1xYrqG6aqMLCs=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=cC58zNRzclL+bqWmFXm5jJss9grSFRNwu88igA3PKBCqEyRDhY2ITvGQVUDEPAijP
-	 jc6EoImewJYAZeqNGxexTBcbXnIYrSP7cSjUbXV1pz/HzU27Iu4eyLpGA/mmB75GEJ
-	 Mn/pLMLT3OA10M3sQou5NayTSnUUzk77VngzaE9sBLAsEd3IdtCBVhgIPLYs3hgSxI
-	 s4cHJ5Csz2wq2CZzuXzn0ag28Cn7YJO/RX2qYjDwC/dec6cnK4P2MZKghUHrp1JdY2
-	 VH7rOBjE/sAe72AY4GXbLOvjFtttoNkBV+HgMrjt5Pyq1LLAAfjEG7EQr2rtiIdsRA
-	 yRfo09CVnuQmQ==
-Message-ID: <sashiko-outbox-199908@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v2 45/51] selftests/proc: check a sysctl listing
- while entries come and go
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Christian Brauner" <brauner@kernel.org>
-Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
- Bacik" <josef@toxicpanda.com>, "Chris Mason" <mason@kernel.org>, "Jeff
- Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>, "Thomas
- Gleixner" <tglx@kernel.org>, "Al Viro" <viro@zeniv.linux.org.uk>, "Jonathan
- Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>, "Greg
- Kroah-Hartman" <gregkh@suse.de>, "Joel Granados" <joel.granados@kernel.org>, "Kees
- Cook" <kees@kernel.org>, "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-serial@vger.kernel.org, "Takashi
- Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, "Chuck
- Lever" <cel@kernel.org>, tytso@mit.edu, dmitry.torokhov@gmail.com, "Petr
- Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261104-work-procfs-bugfixes-v2-45-021c84d852e0@kernel.org>
-References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
- <20261104-work-procfs-bugfixes-v2-45-021c84d852e0@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 19:30:20 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C396E40014
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 41hb9jz1s68xcj4hce1udzu5esx9zgoa
+	s=k20260515; t=1793907092;
+	bh=HbYwxsff3zwmd12NfwO1WlkOU+zbs7lqClhdSOh1kUY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Qj3MxEnr6FZYNwGTA5OmT2naokiXBMoHwDE6Lj8EUey3p+vrrO+B7NR7pnKV1X4Zv
+	 qqIeSuiUuOlHHWmQati8GlB2VskV8ND0tGhzjfhPW6kr/SBz7F7Ksc5uoplrPAkTXs
+	 nwy4juookyx2inwkQQcPq7sIBbI4Eb6zyNYvHH/fQmeejdV8Cxd5VYuzpUShTk59Gi
+	 YeZ+/gnyn8aF5z8wFi+1OVRHwLwoCazMPcWmivOpHrtoCzd2V5e9Wm9qmpzEVsqkS2
+	 Ub7iAPCVTOVFtrTRKKcaKClHWOHjDer09tg317cjYDXHOX5ZLSlG3YUEptkgtAZRHU
+	 Wm+aYhRsS9jKQ==
+Message-ID: <1d89aaf1-6c91-4f87-a5c8-15c4fa93503e@kernel.org>
+Date: Thu, 5 Nov 2026 20:31:26 +0100
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/shmem: remove truncated folios from the page cache
+ in batches
+To: Qiliang Yuan <odys.yuan@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+References: <20261105-bug-mm-shmem-undo-batch-v2-1-ae5f89ced044@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261105-bug-mm-shmem-undo-batch-v2-1-ae5f89ced044@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 601061A0007
+X-Stat-Signature: g3orxmctrehi4xciq93ouzms9ysnxc9u
 X-Rspam-User: 
-X-HE-Tag: 1793907023-328434
-X-HE-Meta: U2FsdGVkX1+k4pFDlJvpAa+b5x1CYVEy2Hrgq9GRbIq/n03Cavw813DXrkghQEcecUrdlDeKgRdQnXCZ05vrt97XCQgzvBWxT1946baH+Gl/ZfAYkkdIMUFFo33rjMme5zvo/4/ioU6fQusv7jS15kfV+oAcut+ocErco4lVy7p9W7CJ0nm8rJr+CrHUtYm8q6E7mW5IeK6q0ZO8wBPkYHgdXr1pRADgckxaOZAOlKLp5FPSr3HK6U4LtGqtpzFxgP87yyouZt+mz8Xs8rDW+O00m87DiYt5vxCD3UTbivKHjeJNHp0tn+04LIQ4ZE4UnUKOUf1RQEM4SzE/p4476EY9SJGocdRrDHH1UnFioriPrF4DwPwZOz1mNJ1bbFjwTs/BSbulTjpuMOMoS0fQQnVVp5/wzjMiJ5TSLIqxdr82Afmrci1EKLjaiTTSShl4EXslBRp5Vj1rPPcQnCewIsfKNx/K+tFwrapMFmajBV8J+sgBOEPFENgKpqmUrewdorpnNGISIyQ+RnTPIq2Wwvwdzk5hrzlhfrU79EXbWh/3ZXnrmIHOVL0euIghmilUr9H0wSku6GDda1exLge3alOEP1UIZqtq02p7vRtY2sJT1h1crm5wqYKKa9EVtA8pueQf7MZeolGzXG/7RoCQcfUvDxX7cUM1smIgY66m1BoYL/tM+HHe9+bwCY+0KtK8dyTZMhaQ7UENT56J1m4L7GYwQKCozt+LKceIyrfgiU93vzFkvFaID6kW7HiJA3S1uRhujuRNRzkSsMLVqAVI6f4FNUXwXr3CJ/2R1AYIsWDAstXL1Uq5T4i3FSNUqfEm0jamaGXAR6CkVTZp9IBWJSBe/T/UorzdDPjUhOZ7+eLO513Mu4dh/fpaFglv9OkSqK5jMlDfvHQfT+KbCVI2+9Nb2dVBL1bwZ7fP+QxwNd3/tIb47ygZQrT7SsSBgr4vX0iqbGGt06pMUknBOQI
- dx76zhSU
- GqEUYuptqzd9MRjnCtM50KQM1iBSc/YUqaR7CKtVHfc0A7j+Czrw58gSlmKIlHI/Ggd+W34O/Lj4gyB+a1zqlIyhOWaVMONA2gcfOXkGrwKHLIReWerMdjJvhXiLRXCwfyCh4IE2SiXEUyqB6uPpD5ykO8snTUBOJaKXMhdvZhPKbKmief3Udguu4aoYWmpGLX3xxfexNr3ED96V2JhgaA/2z+xfBxwNjBrvo3/Av9f+k3smBUi4nwS36ZuVUrMP+i0Ix8/SIkDy6tnwDyBFX7LVJpm+DrQHNQx4fksJeiDARW73ujoiRpsdnE6ZvM5FhSREu3ZYvoJevrY3/MRifCb1szu0dc81LuB51ZSmyku1jrah6epL9I5sT6HtMM4ubZJu27toP4p0RdsA3MbSM/bSEo28PGyYCpDJXydfqf0J/fPHHH+jJ69OEqpIjk6mZfPcgodyVrFSEd8AdPTmYYBGigrw3PKPwdlLlDg/mh3NTVxcTrSsTQ4pcyVWKf5mZh0kGMnElLKCNmpElRIqtkAYBgh0qlx3230u3wBObwmkFm2L4c91X0pLh57lJvffCWDtaC7us+VTzWxFRx5fsl8vCx6awoUne+ZyXYjiXKv+ETCWwRSvJCkk580FpmUsqNiCUTxkOiIbkwcKUn4ry1oB8cC5uIAt9on2e
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793907093-477767
+X-HE-Meta: U2FsdGVkX199fvv/0pW2x0x/Ynqemj+ruxplt099OegodTQDhEcXZ5Iel92hiLzeSGh+ZoygEjABnMaZzthFAtH60lDiORtZRs9wvEY0WEbyfOkkjA7+fvHcZlQyVJxhmbzTP4seEitn+ovsoqTbyGBhFmtenF7WCkJLxhLltEFqMRyytcNOupzxxbRNXchO4pEPmmDQIJSUDB8vn1K9ckC9j71FCEPBbMDifRgTg2As5ii84y6Hn7w5L9qRGR98WqqDyHO3KsxTEa+tlBCWeaVDdmkBjOFt2gHp44kFMhoIbQqmsWWHN6T7s5iK/2PGRYE9cVmXdIKjl56yTlrksKhZl+GZbTIBcbov2aLI5cNlTBlUtFEMBwkqSk2kJ6cuJE+ytu8EU6ATPTVBvFniLThnlk0ktLTaQhKfOKpU9dQAtuwLe/F/9bDi1pNJkH6CTBadSjDPb8VreTXJgo6CZUjaEwR5prGPOdHhXFzjKxpudILWDd0SdJeZDwTRilRnKei30ChJtUDwDwiMwDypUn/OMWXLZMdyMitGhQKslWK2KgejgiKdE7aM1fjYxfm8AdeZ+38B1ZWVnwu0Yt/gUgJ16ofIyXQb7n9f+Cok8mh10u7ZS0uDP5m+4Pndrie0h8iG9wru3ia9b+gAL4XLbpI6GxZpmPhmLlz0iw+A3jdlULxOtqoisfcFhgF+g/cNuGYEVWsbI4NFHmqi2iMZwKSBEAZvku/jm7+fV7Rg2GOP7rus//Zzqn6fx2O4XRcxcmRnFafRbkXPB8OVhrtTcTygOinEaJPBmmlf2Saqn7+eH2TUl8gKRPrZG4BfMA94DPjcFpfA07v9+inWwHbV/5NiUcVH47Xk93JrzWoQVpQYkqtsTNp81b/2d+Iwb5QdM5nm/y9/jZcDPbPe4grCmPP0Qtk7soRh/nJjbTfN7MygKJENZRCvYYvCeQzEVIf6aXP2dZZWif89auwBsrY
+ bUON7FBh
+ mgp/5llm4g+2kJs3hUcml+lktzQJFqcAZxAXTPxxtTIAX7SYgztagYKv9S2RyhuNkCT5Ac33gTSlDIw6n2kR4km3WJbMl7k3WFvnkuIatdSKiE9XAnoz2cU0DMNyVJ4h63iE+kiYNMGODEu3QhoIi+22scjVfT/L8cvx9fT92W9FGBJnu4KjY9QCPABHXRxqEBktraYPP3YgITEya7lBYZ9dR2RHLlf5J98xOes1XwHQ8wsqDgbjZyqpHWeKrAR4+FgdhNjae8HSnLnaQQH7fUOY2ll/Hza25uf5+eflVC6CYEsz06fefrldv23+NvGkrmflWITR4/CFZ65TbbpLSYIpciAnbjbSECT4VTuXfjiZSVAEzQddtLD6IX+Fq8Ftfgo5t
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,186 +146,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] selftests/proc: duplicate readdir churn test in proc-sysctl-readdir=
--churn.c
---
+On 11/5/26 13:32, Qiliang Yuan wrote:
+> truncate_inode_pages_range() takes the folios it finds out of the page
+> cache with delete_from_page_cache_batch(), which takes the inode's
+> i_lock and the i_pages lock once for each batch of up to
+> FOLIO_BATCH_SIZE folios.
+> 
+> shmem_undo_range() calls truncate_inode_folio() on each folio instead,
+> so filemap_remove_folio() takes and drops both locks once per folio.
+> Truncating, punching or freeing a tmpfs file or memfd made of small
+> folios, such as a large /dev/shm segment, pays for that on every page.
+> 
+> Clean each folio up as truncate_inode_folio() does, collect the ones to
+> remove and take them out with delete_from_page_cache_batch(), which
+> needs truncate_cleanup_folio() outside mm/truncate.c. Swap entries, and
+> the folios kept when undoing a failed fallocate(), stay out of the
+> batch. Dropping an 8 GiB file of 4K folios, median of five runs,
+> averaged over two boots of each kernel, in a 32 vCPU VM:
+> 
+>                         before    after
+>   ftruncate() to 0     1150 ms   917 ms
+>   hole punch           1165 ms   919 ms
+>   close() of a memfd   1153 ms   921 ms
+>   unlink()             1152 ms   921 ms
+> 
+> Files of PMD-sized folios take 18-27 ms with or without this change.
+> 
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+> Reviewed-by: Jan Kara <jack@suse.cz>
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> ---
 
-commit 89d111e3f559a343f6b04af3c2c0857d3d1f5a29
-Author: Christian Brauner <brauner@kernel.org>
+Thanks, I'll wait a couple of days and will then queue this.
 
-selftests/proc: check a sysctl listing while entries come and go
+-- 
+Cheers,
 
-This commit adds a selftest in proc-sysctl-readdir-churn.c to verify that a
-multi-call getdents64() listing of /proc/sys/net/ipv4/conf does not repeat =
-or
-skip entries when a network device is registered or unregistered in between
-calls.
-
-> diff --git a/tools/testing/selftests/proc/proc-sysctl-readdir-churn.c b/t=
-ools/testing/selftests/proc/proc-sysctl-readdir-churn.c
-> new file mode 100644
-> index 0000000000000..b2ad097b464aa
-> --- /dev/null
-> +++ b/tools/testing/selftests/proc/proc-sysctl-readdir-churn.c
-> @@ -0,0 +1,152 @@
-[ ... ]
-> +#define CONF_DIR	"/proc/sys/net/ipv4/conf"
-> +#define TUN_NAME	"a0"		/* sorts before "all" */
-> +#define TUN_PATH	CONF_DIR "/" TUN_NAME
-> +#define SMALL_BUF	80		/* ".", ".." and one short name */
-> +#define NAMES		64
-> +
-> +static int tun_open(const char *name)
-> +{
-> +	struct ifreq ifr =3D {};
-> +	int fd;
-> +
-> +	fd =3D open("/dev/net/tun", O_RDWR | O_CLOEXEC);
-> +	if (fd < 0)
-> +		return -1;
-> +	strncpy(ifr.ifr_name, name, IFNAMSIZ - 1);
-> +	ifr.ifr_flags =3D IFF_TUN | IFF_NO_PI;
-> +	if (ioctl(fd, TUNSETIFF, &ifr)) {
-> +		close(fd);
-> +		return -1;
-> +	}
-> +	return fd;
-> +}
-> +
-> +/* one getdents64() into @buf, the names appended to @names */
-> +static int list(int fd, char *buf, size_t size, char names[][NAME_MAX + =
-1],
-> +		int *n)
-> +{
-> +	long ret, off;
-> +	int got =3D 0;
-> +
-> +	ret =3D syscall(__NR_getdents64, fd, buf, size);
-> +	if (ret < 0)
-> +		return -errno;
-> +	for (off =3D 0; off < ret;) {
-> +		struct dirent64 *d =3D (void *)(buf + off);
-> +
-> +		if (*n < NAMES)
-> +			strcpy(names[(*n)++], d->d_name);
-> +		got++;
-> +		off +=3D d->d_reclen;
-> +	}
-> +	return got;
-> +}
-> +
-> +static int count(char names[][NAME_MAX + 1], int n, const char *name)
-> +{
-> +	int i, c =3D 0;
-> +
-> +	for (i =3D 0; i < n; i++)
-> +		if (!strcmp(names[i], name))
-> +			c++;
-> +	return c;
-> +}
-> +
-> +FIXTURE(sysctl_readdir) {
-> +	int dir;
-> +	int n;
-> +	char names[NAMES][NAME_MAX + 1];
-> +	char buf[65536];
-> +};
-> +
-> +FIXTURE_SETUP(sysctl_readdir)
-> +{
-> +	int tun;
-> +
-> +	if (unshare(CLONE_NEWNET))
-> +		SKIP(return, "unshare(CLONE_NEWNET): %s", strerror(errno));
-> +	tun =3D open("/dev/net/tun", O_RDWR | O_CLOEXEC);
-> +	if (tun < 0)
-> +		SKIP(return, "/dev/net/tun: %s", strerror(errno));
-> +	close(tun);
-> +	self->dir =3D open(CONF_DIR, O_RDONLY | O_DIRECTORY | O_CLOEXEC);
-> +	if (self->dir < 0)
-> +		SKIP(return, CONF_DIR ": %s", strerror(errno));
-> +	self->n =3D 0;
-> +}
-> +
-> +FIXTURE_TEARDOWN(sysctl_readdir)
-> +{
-> +	close(self->dir);
-> +}
-> +
-> +/* a device registered in front of the position doesn't repeat an entry =
-*/
-> +TEST_F(sysctl_readdir, register_in_front)
-> +{
-> +	int tun;
-> +
-> +	/* ".", ".." and "all", "default" doesn't fit */
-> +	ASSERT_EQ(list(self->dir, self->buf, SMALL_BUF, self->names, &self->n),=
- 3);
-> +	ASSERT_EQ(count(self->names, self->n, "all"), 1);
-> +
-> +	tun =3D tun_open(TUN_NAME);
-> +	ASSERT_GE(tun, 0);
-> +	ASSERT_EQ(access(TUN_PATH, F_OK), 0);
-> +
-> +	while (list(self->dir, self->buf, sizeof(self->buf), self->names,
-> +		    &self->n) > 0)
-> +		;
-> +	EXPECT_EQ(count(self->names, self->n, "all"), 1);
-> +	EXPECT_EQ(count(self->names, self->n, "default"), 1);
-> +	EXPECT_EQ(count(self->names, self->n, "lo"), 1);
-> +	close(tun);
-> +}
-> +
-> +/* a device unregistered in front of the position doesn't skip an entry =
-*/
-> +TEST_F(sysctl_readdir, unregister_in_front)
-> +{
-> +	int tun;
-> +
-> +	tun =3D tun_open(TUN_NAME);
-> +	ASSERT_GE(tun, 0);
-> +	ASSERT_EQ(access(TUN_PATH, F_OK), 0);
-> +
-> +	/* ".", ".." and the device, "all" doesn't fit */
-> +	ASSERT_EQ(list(self->dir, self->buf, SMALL_BUF, self->names, &self->n),=
- 3);
-> +	ASSERT_EQ(count(self->names, self->n, TUN_NAME), 1);
-> +
-> +	/* closing the device unregisters its sysctls under RTNL */
-> +	close(tun);
-> +	ASSERT_EQ(access(TUN_PATH, F_OK), -1);
-> +
-> +	while (list(self->dir, self->buf, sizeof(self->buf), self->names,
-> +		    &self->n) > 0)
-> +		;
-> +	EXPECT_EQ(count(self->names, self->n, "all"), 1);
-> +	EXPECT_EQ(count(self->names, self->n, "default"), 1);
-> +	EXPECT_EQ(count(self->names, self->n, "lo"), 1);
-> +}
-
-[Severity: Low]
-As reported by Sashiko on RFC [1], this isn't a bug, but tun_open(),
-list(), count(), the fixture state in FIXTURE(sysctl_readdir),
-FIXTURE_SETUP(sysctl_readdir), FIXTURE_TEARDOWN(sysctl_readdir), and the
-register_in_front and unregister_in_front test cases in
-tools/testing/selftests/proc/proc-sysctl-readdir-churn.c duplicate the
-helpers, FIXTURE(proc_readdir), and the add_in_front and remove_in_front
-test cases in tools/testing/selftests/proc/proc-readdir-churn.c, differing
-only in the target directory (/proc/sys/net/ipv4/conf vs
-/proc/net/dev_snmp6) and expected entries.
-
-Should these sysctl cases be added to
-tools/testing/selftests/proc/proc-readdir-churn.c (for example using
-FIXTURE_VARIANT() and FIXTURE_VARIANT_ADD()) rather than introducing a
-separate standalone test file?
-
-[1] https://lore.kernel.org/r/sashiko-outbox-195504@kernel.org
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-work-procf=
-s-bugfixes-v2-0-021c84d852e0@kernel.org?part=3D45
+David
 
