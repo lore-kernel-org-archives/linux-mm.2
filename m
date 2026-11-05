@@ -1,89 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D29606A32E
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 04:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9456B606D80A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 05:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U9KjKHYk
+	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Vx35EpeA
 Received: by kanga.kvack.org (Postfix)
-	id C4FC76B05C0; Wed,  4 Nov 2026 23:55:21 -0500 (EST)
+	id 97A056B05B1; Thu,  5 Nov 2026 00:01:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C007A6B05CA; Wed,  4 Nov 2026 23:55:21 -0500 (EST)
+	id 9247F6B05B2; Thu,  5 Nov 2026 00:01:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B189A6B05CB; Wed,  4 Nov 2026 23:55:21 -0500 (EST)
+	id 8393E6B05B6; Thu,  5 Nov 2026 00:01:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 87A936B05C0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:55:21 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9A74B1208EC
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:55:20 +0000 (UTC)
-X-FDA: 85399851600.18.FA61413
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E3FB91C0006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:55:18 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U9KjKHYk;
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793854519;
-	b=0HuZf8nO6gB7D3fZIPxyAArRadjjN3WrZ8pE+sFV1ODggT7wMKTFDIXN0G8/8QDH/tnUYj
-	4mFg77IpnhigHdOyEvZnVr6hJKSCRAN9zoySjAex1+QVpsMwYrysEhiseBXCF5IEVA9SA2
-	n3SaP4WZmfbrHcrKuiuiHgt8BAzVDn0=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U9KjKHYk;
-	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 5958C6B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:01:00 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id E6B65160948
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:00:59 +0000 (UTC)
+X-FDA: 85399865838.24.834B05D
+Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 3D84714000A
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:00:58 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Vx35EpeA;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793854519;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MqA1v6U9I7VtulcS+AOn9l6cfVQac8Bgf0Fd+CPq7D8=;
-	b=6Rs3c51YbOCuFh8UuzO0ZqFsSKW0S2Lai6Pj8SNOsLu6S1MzNOmSrifNTj/B7RCZ6fEdXv
-	2A2xvOV4EKDcbT2swelr8FajerLaP7cb+4rUEzRtbawfEVc9sMdpdcMv7svMa33QRvj10t
-	h0VuHsW44iJksg4N39p4ErcTa7SrxNA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E9AED43E5F;
-	Thu,  5 Nov 2026 04:55:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 907821F000C1;
-	Thu,  5 Nov 2026 04:55:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793854517;
-	bh=MqA1v6U9I7VtulcS+AOn9l6cfVQac8Bgf0Fd+CPq7D8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=U9KjKHYkLFtNg94b3bFsLOzRkcieNXJ3km+2Uh5pRlyHHDi2BjkqzuEkf8uf60GJp
-	 puJntGXpoVnSTV749phc6j/wSpVuJdY2ZnKuTSmD7Kojj0MbSG7hH2OZNiLNa2jorM
-	 QGALskc4xjgWvHs5MQT6YZt2miKq8DiCus4KxMkeqBuDQAbj1hdv0fTJLdkGa+INRM
-	 5dBrimHzj9+jHg3ZcssZPZIYCH6juuk708yjwPIMx6mHsl9BuF23J9W48o2EM98MiN
-	 3nRu9wBMjMIJC+KEBtuj/gxbJeR6mDSfd9GfjRrjIJ3JWSKLfDE7EalA1ZQeawP6mC
-	 a6Lkrc/UlbXrg==
-Message-ID: <sashiko-outbox-198571@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 1/4] mm/damon/core: add DAMOS_FILTER_TYPE_AGE_MS
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "SJ Park" <sj@kernel.org>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, damon@lists.linux.dev, linux-mm@kvack.org
-In-Reply-To: <20261105044425.87142-2-sj@kernel.org>
-References: <20261105044425.87142-1-sj@kernel.org>
- <20261105044425.87142-2-sj@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 04:55:17 +0000
-X-Stat-Signature: 1ea4tzgb5un45e8ez4xwm5krbzq9ggp5
+	s=arc-20220608; t=1793854858;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ehAwqn1JpFtE8NSK2eGRtzEx7P6AYMWxr9u3z+M2YhY=;
+	b=OckJYGN8MXxsbLlGGxcAcmB3sscJFXa2xzlSSU5ukns3e6rxUEspxMpyb+FPL/OKfztZ3W
+	+hqKWxVWfiAjJor0GM41wNAKdV4Jh1ndQnn5MmO+6GO2aLomkDYpxIihSvpKhrHiLmh4vi
+	Tyyvhx3PK8AGkkw67H+5ugn4GteDMAA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793854858;
+	b=kzs4R6M/BczUNUOFCh5mp0++mPVyqLaUhI/RjOjVbMSsl8ljEC1Zf5HqjXuEaBTEYPlCEF
+	UM+ksTToKjdALO4scm6YBGMZTsPnmBrDCi/qvzh4Su8JzYIQNoLhfpo7+ZkbjMKBWSIDaO
+	jDIX0/SmW0U+r+CZXOnRWxe3Fj1GkuU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=Vx35EpeA;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-5eafb65e163so998519e0c.2
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 21:00:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1793854857; x=1794459657; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=ehAwqn1JpFtE8NSK2eGRtzEx7P6AYMWxr9u3z+M2YhY=;
+        b=Vx35EpeAz0R/UuLleFx41S7PFZ1z5M4P1OcvksCv80ZYdGbmnb1vHZO6tZMzFcE3iT
+         QNhUmT8/wzrOnlQUjrTlRpw6T5086pF7xwO66hZLFOa24c4+XxfAjK15b6VE+wdZNKeI
+         WOXv2qmkjYEfDQX14i+IJHLg3P/U1dn05eOGeSIKQTkj/GUC+w0WQ0OZusFsKTegTe1m
+         ZRUP5QBbWioRFO7bpc76wBsDpQNVRTHrtfAwTPvvgWiOTefERaPNFQlJQVBqMkuOWcJC
+         jfatRVmI3T/edIA2p6jGk9AcYXGRZhjadDiX4GUmmcnLC5hyrWLxeHi7+y9U8Ms8mDfc
+         g1ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793854857; x=1794459657;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=ehAwqn1JpFtE8NSK2eGRtzEx7P6AYMWxr9u3z+M2YhY=;
+        b=l1TomKulyxwLeF1I2YOazc7iN11NVWZpsw6FztwKHOJShiPZKpihWawG6/m9LJGLnM
+         Ny2e8zeVf0c/FqmZqu9fc/p1Q88BQmNQBqVD4/oEhaTRXojDCwY3DZiasU1nhOqPr9Yn
+         NjsI6u+2zwXNpR1W61EqUd9PFjRb3xOYwyXsdYLY43XQi+GDiRKycGpyZn9S5oq/0/26
+         YYGos2WVRH1IKH77oYxoqWtZm+FLQTbu/vSNEIKcYDydxFYFeGvTo43ixn6MbDjL5+92
+         O22hDdA0d6KwXm8/W7YQX37+urgbiYMJ2l6vWOPR7mG3cOrgTN22yXhNfD62GriR6XiI
+         a5qw==
+X-Forwarded-Encrypted: i=1; AKwUvBz5gVn52uWE771A8qDIamdj1dh+oYHNs1Tx/KSfG2nayMOcJeYJxRMEHWE2Uc2idaMIBE/P/sp5Lw==@kvack.org
+X-Gm-Message-State: APuU4Z8o5DJcspXc1zXYIUGsIl1+fVhHn0HejsRbe4sYsLW5Ynke/uHH
+	aeavqQU4jBcL7kLaLRFzSTJ6RLFBuBE8GnCZ/WzUwfsqQC9mVHQCdacbmo2c8pPb9WE=
+X-Gm-Gg: AYBFou1yt/xGGlpCIsmFnJYha+ihEdTNYYL1fOp3pTyTKwWrWJ1AGoApEqRaRf5lOx8
+	Q51m+Ik0xB+HLVP7DefuHrLXIjvQmx1n8GfPmTCWCB9bFjOTFXQjSEn/zx3ugnrnC2c5lXKYxtW
+	oVQRxAZh4AnqOvuBQdnCrRKwQgT26O3CIwn/IXZ2qbYtK816CTkWUlhjBdYeXF94jYW/gQ9hse5
+	ZmlSg1b1BQhz8YCTwM+B1pEMImb3fa4C5DUEDu6AsJjc624FxbsRQ4X5Gjk3U1UU+qyknUiXoUl
+	ZPm3N+/RUM7onDc8uo4PDkgnzpVtnaLosQbNFXQHuVZX0QFPlQMlPECg++3+iuKn2gpkrXy3UwX
+	JmkH9TBIKpJM5GjckbePY3/EFBEfDCyFNPIp7OBJERT97o3C7DiduBvIZOHxWQDO0YlvnNolrv2
+	n8enZb6TmxjRNGu7GTG3qbKi5N9S0drzEXKNxTIhoGbGK6D17HcNC2z50GUQlSsN12epd5YdyhZ
+	v6IfYTS7+oZMI70LVPL6HocB1sFgijBI6yWH0N8oLtr7kSILLD58D8s+fqtwK+2ocEaWIFUT/mJ
+	uegvMcTQwW1XouMIXLzft15HHC6Mxjj5mWB2Jle7Oayv/w0lVqSVbAaQzebp/mmcnGpHXze5+VN
+	l7iQ1fKiFrDKDID+jPrm0BE3g+J2FhA4UIa1C8b8OfCs8/6MgYg==
+X-Received: by 2002:a05:6122:6984:b0:5c9:a60b:e5a6 with SMTP id 71dfb90a1353d-5ec689bbc49mr8844831e0c.17.1793854857202;
+        Wed, 04 Nov 2026 21:00:57 -0800 (PST)
+Received: from soleen.c.googlers.com.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8d9d62bsm3305282e0c.8.2026.11.04.21.00.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 21:00:56 -0800 (PST)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: linux-kselftest@vger.kernel.org,
+	rppt@kernel.org,
+	shuah@kernel.org,
+	linux-mm@kvack.org,
+	skhan@linuxfoundation.org,
+	linux-doc@vger.kernel.org,
+	vipinsh@google.com,
+	linux-kernel@vger.kernel.org,
+	corbet@lwn.net,
+	pasha.tatashin@soleen.com,
+	dmatlack@google.com,
+	kexec@lists.infradead.org,
+	pratyush@kernel.org,
+	rdunlap@infradead.org,
+	graf@amazon.com
+Subject: [PATCH v5 0/6] liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl
+Date: Thu,  5 Nov 2026 00:00:46 -0500
+Message-ID: <20261105050053.3063001-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.56.0.398.g882cbad275-goog
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: kejon5ae4f6p7j3yddpa1nbac9zhg19t
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E3FB91C0006
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793854518-262947
-X-HE-Meta: U2FsdGVkX1/Wlo3zvvpa6FnGasWFGN0j1tC5vDogx0yhvX+S8bTELOS0gkBpzjQbByWbj1X83yZp+YS92Tep9YoxCRURRZGLfVf0uKoYGCrVy+Osvj3X5K/am8EsgUJR08VlNCWcmfAYL6UwCS+bwU+Z2wRwccphzXD5Yb5wSwiisYXGGNtXLzyeyAXj6eU8JgohTDtf1V6qxoKUXqtTmECnqDOdqhjtsFaYLgSWYgew9t97Bl0lwfhAvlaUMc05PXf9AuAELnS0i8Rn3PYVnRpFAllofeOQP0BSFgozoFo/DQBZVIib3kr/M7QGL3pwELLX1JMa+H5saZMB1nJ9AdduGhr2z/fpOr5iZAB7m6V8L5/hx0gbx77eVRiW7wCh1UiBjIdBknhetNTDqptiNnfRWGCvWs0wtyIeWFbWUX5XJI0S//bwJk6u6dyKHqoQ+4IEOY2EGEvfLlJ4PBxrLrouFdRyFwfiDJcYJlwFltCPY5MJW85pdUB16fWnbiVoLT5SWA/HgMCJpU/Si+D3+TzEd4KaRm+yLgJibujjgLxRgr24Av2Muq9w8UqfbursD7LJEOHeGS13CH8Hy5E9Gr1S25OWxCDzTAwhKxktWY8tWh9OG/UOsvUlHOpEkr0r8srROwBENZzjNpqIwvRyqMTqH4m5y4PHPKMRE8U2b5ynfTQ2vq7Iphq56BLpyLu+0ogYAEGvG2MeR/TGC7qTDX/ztq4pgkLJoihkQ02UdLOTqyjfq/dO7/9lu3UZTghFnZx212xCFKkfHm6Q/2Le7Z5kRh94B9tcw8ke+LjCPsZpLGTS+KI6sy50W0o2ZT6PC5iPWDjPCLZTOPgEcYmNIdFtZrkbkxyYlwdWCywrW+ktukWM9qrU2/vUZjjCpzzyYupudqYi9D8+jGnWVsWMbb6AZgVo+84xJpvQeZzdQZvOaIlpCPPDSj+fEe0eKNakej29uBNE9WSL1tsT3yl
- pr3U9yEi
- hbhnj7mPuuuqqeCb98ybjcOtBIduio0TZbb83CG7yaGSs4RAZzTGrmnbj5PoFUYhX/gbViemoWaoNARuECmCfFuJxMEvC8GBKR3tD6R2CGY0ymymPuEKDDw9+ptxqBJISXj/UcPGFmu/pSqwynBvc+8uDTNv7uqYa8KlLll/HR+sl1jKOsYE92aEvwXz91Az/E3MsAJYLHuaissiQVtaXmkpjVxpL67K6dB3vGB+buj/q91iKL2nNqlAkvVpzqYz+wFE/cbQAGgUzKQ28slqYdqDXueG7yzfiryDokkoFvLyMilkoUZx/eOIqK1CKB8cXG3T9zMjDvx7CQGgXIYIgPAiiWOpW9l63/vHd8Qnr48r3i8IOvv2GxYcchmxDCzsRRNI4EwTPzirrJf0eUL+wnX1oMV5GrbqvaYmOtZkg2ZOvqiN4eRmHqY8ruFi4yfPIhOdDVFkdkafZjZKen8M30ER1C/eiX68DxBNrXcv1BnKgu/qXdcDw1uPQdU0TBS8P+2Esr3oYOPqVkJkucaepr4gdS13/4ODmDHY86ig8WcIBL5YYdnA901HIz8+CQT9S9yF0cl7EMD0sRS3dHq3mMBgCLHlGZZCjOvccYB9yuGSVT0Pc5sQd5U2vjI8bQMp9cBjR
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3D84714000A
+X-HE-Tag: 1793854858-140591
+X-HE-Meta: U2FsdGVkX18Wlu+2qulEgW0QEiC7twBS64l0k3ULW41Qqkv9jNMLMTwMw/oubXpXT+LioAVjbsba+O63IKZq2PitCqNre8Ll7op6/pls9LzZRKD33+In+P/GajHnjVgsvyDTPsCienuA7uoQDW83O8fwFyRpSW4LAfyHItnPeMhRcZXBaqFc1ih8HEO2Io3rZLSAiS1YKYCNpbDoZYV6/R0ZAhAxqiG/9EEZUrbbd9rIaO8bC+DAUCFrnz31siqFzMSC/38cBoJSBqchANq3DHFq2x5NlYXxogNRQK1KoaOu92kGGX1RmkeZ4tbpmvSdYrhGPIJV+i9pWFuF4xv28gxFB4x8WFED9miz1zTGOYjHtOAlfBj1sMENQaOll8IdJpgPQAlYqycpIUAegudVMEC9YrCZ02B8UtMMu7khTsjHgyj5W5PZmL4s09HDzJBHQcLDxtyN4HKzktUbdQx6ZiGNfzWdIExZgajpMraBAwxg23nuG1pwYwylqRFBI1fS8KJaIAyPqSD2np8Uoc0g0JnmHpP7xyeAQxHV58S2yFjfobkDukqco15UBvGysPvdkQqxiHPlV4UeHqYKdlK7VeWwy4kBDM9jyOrJARhazJcaXMz6BbwB9HrlylOl/Rc8eOUp+LmjM1neMqyg1Pol+OnkAJ8gawpnms49hqsM7JTLQQOmA4JEdIsUiQAq8KY7FjrKmepuDIvv5duKmQojdRTj/+mNKaUCguzhoIs0rgb3lZ5Iw+cr2UdE4GWkgDbQMDCKnDw3zs5Z1jtMXNkTBaiBVU1zkhMWBjNhhsKf95/QlYj4GxFEGjMQirSBnmF70/q1KrAZpA88HByJnhvsRffKjQKJKca4hZUngwgH+3/ib/lHSCYXd32hxJizeVqGwF2FIwhurk8TSy9AwgZdhCPfhzhorBcb+LMb0+u2FefMPCurOgPyb52E0K69ZRGVwbrTEHR7dQqXlVZVShB
+ IYjs1uXx
+ mQmFBP5/s9IO5KoZBdYmud8ZsPKntWvQsXEO4XHc7lKxhmjB04ugnpukF+cdCKhFbkzHM4wOm1PPR5U1dfrekzm/qDNEHbuE5MKxlgSylHhbc5ETrljW8C5yIHtF5Aypf6QxDOgJW6E002Ujdhykl1SqC/qLbgfQ0wwTM0VdrhrA7/m0GMiX1/YUrSj08Eqh7xnEjI3oyCY8J0gCVNCyMPQQg6JwW4r5qwvHkQQuajgVXoDOR84LYRHEeKUtFw3uMUfW3CJhhA+iYEAYSyEMIkfxXQ7CeL9QV1h8oAN9oHnmoIEWUU2gJCTeBcQmfJMt3sHfpD+/Wjd6FOot7x+KMBg1nxi1INdB0DNGDdYShHCrPxgz9wkX5ItXxFqbhrS64w4XF3rQK5Oe1iI6U5nzI7ICEQw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -91,85 +130,135 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm/damon: 64-to-32-bit truncation of age_ms in damos_filter_matc=
-h()
---
+Currently, LUO freezes outgoing sessions only inside the
+reboot(LINUX_REBOOT_CMD_KEXEC) syscall path, serially under global write
+locks, and binds every outgoing session's lifetime strictly to an open
+session FD until reboot.
 
-commit 2459402d4dc794f740b6a5720a69fe4a1a61ae62
-Author: SJ Park <sj@kernel.org>
+On hosts running many workloads (such as VMs or stateful daemons),
+workloads do not all pause simultaneously inside reboot(): they quiesce
+one by one ahead of the host kexec. Userspace needs an explicit
+per-session freeze point to snapshot final file state (.freeze()) as
+each workload pauses -- concurrently across sessions under per-session
+locks -- along with a way to commit a frozen session into KHO so it
+survives closing the session FD.
 
-mm/damon/core: add DAMOS_FILTER_TYPE_AGE_MS
+This series introduces LIVEUPDATE_SESSION_FREEZE on session FDs:
 
-This commit introduces DAMOS_FILTER_TYPE_AGE_MS in the DAMON API and core
-layer to allow filtering DAMOS target regions by age in milliseconds. It
-converts the region age from aggregation intervals to milliseconds using
-div_u64() and compares the result against damos_filter->range_{min,max}.
+1. Freeze (flags == 0):
+   Freezes all preserved files in the session under the per-session
+   mutex while keeping session lifetime tied to the session FD. The
+   session stays frozen as long as the FD remains open; closing the
+   session FD before reboot (for example, to abort the session or on
+   process exit/crash) runs .unfreeze() and .unpreserve() and reclaims
+   all resources. At kexec time, already-frozen sessions skip the late
+   auto-freeze step and are published into the outgoing KHO subtree.
 
-> diff --git a/mm/damon/core.c b/mm/damon/core.c
-> index d36823f4d0928..0a056949604f9 100644
-> --- a/mm/damon/core.c
-> +++ b/mm/damon/core.c
-[ ... ]
-> @@ -2552,7 +2554,7 @@ static bool damos_filter_match(struct damon_ctx *ct=
-x, struct damon_target *t,
->  	bool matched =3D false;
->  	struct damon_target *ti;
->  	int target_idx =3D 0;
-> -	unsigned long start, end, wsum;
-> +	unsigned long start, end, wsum, age_ms;
-> =20
->  	*err =3D 0;
->  	switch (filter->type) {
-> @@ -2594,6 +2596,12 @@ static bool damos_filter_match(struct damon_ctx *c=
-tx, struct damon_target *t,
->  		matched =3D filter->range_min <=3D wsum &&
->  			wsum <=3D filter->range_max;
->  		break;
-> +	case DAMOS_FILTER_TYPE_AGE_MS:
-> +		age_ms =3D div_u64((u64)r->age * ctx->attrs.aggr_interval,
-> +				USEC_PER_MSEC);
-> +		matched =3D filter->range_min <=3D age_ms &&
-> +			age_ms <=3D filter->range_max;
-> +		break;
+2. Freeze and commit (LIVEUPDATE_SESSION_FREEZE_COMMIT):
+   Freezes preserved files, immediately inserts the session and its FLB
+   dependencies into the outgoing KHO subtree in O(1), and commits the
+   session so it survives close() with full ownership retained by LUO
+   until reboot. Once committed, closing the session FD (or another
+   session failing to freeze during reboot) never unfreezes or
+   unpreserves it. This allows processes to hand off preserved state to
+   LUO and exit prior to kexec, and makes committed sessions immediately
+   visible in the outgoing KHO subtree before the host reboots.
 
-[Severity: Medium]
-In damos_filter_match(), age_ms is declared as unsigned long. On 32-bit
-architectures, unsigned long is 32 bits wide, so storing the u64 return val=
-ue
-of div_u64() into age_ms truncates the upper 32 bits whenever the region age
-in milliseconds exceeds ULONG_MAX (about 49.7 days, or for example
-r->age >=3D 42,949,673 at the default 100,000 us aggr_interval, and
-proportionally earlier when aggr_interval is larger).
+Overview of the series:
+- Patch 1 decouples luo_file_freeze()/unfreeze() from
+  struct luo_file_set_ser.
+- Patches 2-4 add incremental KHO publication helpers for kho_block
+  (kho_block_set_it_append()), LUO sessions (luo_session_publish_one()),
+  and outgoing FLBs (luo_flb_ser_publish_one(), replacing the late
+  luo_flb_serialize() reboot pass).
+- Patch 5 introduces LIVEUPDATE_SESSION_FREEZE and
+  LIVEUPDATE_SESSION_FREEZE_COMMIT and updates the LUO core and uAPI
+  documentation.
+- Patch 6 adds selftests covering both uncommitted and committed session
+  freezes across unit and multi-session kexec tests.
 
-When that happens during kdamond_apply_schemes() -> damon_do_apply_schemes()
--> damos_apply_scheme() -> damos_filter_out() -> damos_core_filter_out() ->
-damos_filter_match(), age_ms wraps modulo 2^32 and can misclassify old
-regions as young regions or fail to match old-region filters.
+This series is based on liveupdate/next commit d80a5528df4c ("Merge
+branch 'lu-pci-preservation' into next").
 
-By comparison, damon_hot_score() in mm/damon/ops-common.c stores the result
-of div_u64() in a u64 variable (as fixed in commit 0284dff76e87 ("mm/damon/
-ops-common: fix 64-bit division in damon_hot_score()")):
+Changelog:
+v5:
+- Rebase onto latest liveupdate/next.
+- Replace reserved field in struct liveupdate_session_freeze with flags
+  and add LIVEUPDATE_SESSION_FREEZE_COMMIT so userspace can either
+  freeze a session while keeping it bound to its FD (rolled back on
+  close()) or commit the frozen session (inserted immediately into KHO
+  and retained by LUO across close() until reboot).
+- Add incremental KHO publication helpers in kho_block, luo_session, and
+  luo_flb so committed sessions and their FLB dependencies are inserted
+  into the outgoing KHO subtree immediately on freeze, dropping the
+  separate luo_flb_serialize() pass at reboot.
+- Keep luo_session_freeze_one() / luo_session_unfreeze_one() in Patch 1
+  rather than renaming them to luo_session_serialize_one() /
+  luo_session_unserialize_one() and back once luo_session_publish_one()
+  is introduced.
+- Update Documentation/userspace-api/liveupdate.rst and kernel-doc
+  across kho_block, luo_flb, luo_file, and luo_session.
+- Drop v4 Reviewed-by tag on the modified freeze and selftest patches,
+  and expand selftests to cover both uncommitted and committed freezes.
+v4:
+- Split out a preparatory patch that drops struct luo_file_set_ser *
+  from luo_file_freeze() / luo_file_unfreeze() and moves file_set_ser
+  handling into luo_session_serialize_one() /
+  luo_session_unserialize_one() (Suggested by Mike Rapoport).
+- Few more nits from Mike.
+v3:
+- Renamed session->frozen to session->user_frozen, - Pratyush
+- Added Reviewed-by's
+v2:
+- Rebased onto liveupdate/next (commit 27be83a12b24 ("Merge branch
+  'lu-pci-preservation' into next")) and split out early session freeze
+  into a standalone series (tmpfs preservation and its per-file user
+  argument plumbing were spun out into a separate series).
+- Patch 1:
+  - Drop struct luo_file_set_ser * from luo_file_freeze() and
+    luo_file_unfreeze(), and rename the session helpers to
+    luo_session_serialize_one() / luo_session_unserialize_one() so all
+    of struct luo_session_ser is populated and cleared in one place
+    (Suggested by Pratyush Yadav).
+  - Unfreeze the session's files if luo_ucmd_respond() fails in
+    luo_session_freeze().
+  - Update remaining reboot-only wording in luo_file.c kernel-doc
+    comments.
+- Patch 2:
+  - Add checks verifying that non-zero reserved bits and freezing an
+    incoming post-kexec session fail with -EINVAL.
+Link: https://lore.kernel.org/all/20261015093816.2438942-1-pasha.tatashin@soleen.com/ # v1
 
-mm/damon/ops-common.c:damon_hot_score() {
-	...
-	u64 age_in_sec;
-	...
-	age_in_sec =3D div_u64((u64)r->age * c->attrs.aggr_interval,
-			     USEC_PER_SEC);
-	...
-}
+Pasha Tatashin (6):
+  liveupdate: Move file_set_ser handling to luo_session_serialize()
+  kho: support incremental entry publication in kho_block
+  liveupdate: luo: serialize sessions via per-session publish helper
+  liveupdate: luo_flb: support incremental outgoing FLB publication
+  liveupdate: Add LIVEUPDATE_SESSION_FREEZE ioctl to freeze sessions
+    early
+  selftests: liveupdate: Add tests for LIVEUPDATE_SESSION_FREEZE
 
-Should age_ms be declared as u64 (or saturated to ULONG_MAX before storing =
-into
-age_ms so filters with range_max =3D=3D ULONG_MAX on 32-bit continue to mat=
-ch) to
-avoid truncating the quotient on 32-bit systems?
+ Documentation/userspace-api/liveupdate.rst    |  30 +++
+ include/linux/kho_block.h                     |   1 +
+ include/linux/liveupdate.h                    |   3 +-
+ include/uapi/linux/liveupdate.h               |  46 +++++
+ kernel/liveupdate/kho_block.c                 |  86 ++++++++-
+ kernel/liveupdate/luo_core.c                  |  10 +-
+ kernel/liveupdate/luo_file.c                  |  94 ++++-----
+ kernel/liveupdate/luo_flb.c                   | 111 +++++++----
+ kernel/liveupdate/luo_internal.h              |  16 +-
+ kernel/liveupdate/luo_session.c               | 178 ++++++++++++++----
+ .../liveupdate/lib/include/libliveupdate.h    |   5 +-
+ .../selftests/liveupdate/lib/lu_utils.c       |  21 ++-
+ .../testing/selftests/liveupdate/liveupdate.c | 107 +++++++++++
+ .../selftests/liveupdate/luo_kexec_simple.c   |  22 ++-
+ .../selftests/liveupdate/luo_multi_session.c  |  33 +++-
+ 15 files changed, 612 insertions(+), 151 deletions(-)
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105044425.8714=
-2-1-sj@kernel.org?part=3D1
+
+base-commit: d80a5528df4cdee5871243e392da08c2d5c92e43
+-- 
+2.56.0.398.g882cbad275-goog
+
 
