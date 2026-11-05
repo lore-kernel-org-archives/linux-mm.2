@@ -1,138 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398D0606A329
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3FC606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=f/GH5j6W;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=wEysVB6j;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=KToIDbJJ;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=AiZtdrn0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RPTXPSFP
 Received: by kanga.kvack.org (Postfix)
-	id 4B9796B05B0; Thu,  5 Nov 2026 05:54:56 -0500 (EST)
+	id 906CB6B05B1; Thu,  5 Nov 2026 05:59:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 490CF6B05B1; Thu,  5 Nov 2026 05:54:56 -0500 (EST)
+	id 8B7916B05B2; Thu,  5 Nov 2026 05:59:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37F776B05B2; Thu,  5 Nov 2026 05:54:56 -0500 (EST)
+	id 7CD346B05B3; Thu,  5 Nov 2026 05:59:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 12D806B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:54:56 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A3D6C12086B
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:54:55 +0000 (UTC)
-X-FDA: 85400757750.19.FF60ADA
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 4013640005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:54:53 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="f/GH5j6W";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wEysVB6j;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KToIDbJJ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AiZtdrn0;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 62ED36B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:59:57 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D6ABC40920
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:59:56 +0000 (UTC)
+X-FDA: 85400770392.10.305D19D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 5C529100004
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:59:55 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RPTXPSFP;
+	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793876395;
+	b=dtNDQ51PojNqiB5AoPZHGlTqNnDgmTjRw3gyT7XMc3yO/H8aROu8mpobhOCf+FdZEXGHF+
+	aTx5IubbBFRxfQEDxa3uMTe/6Uwyi6sqoKwxCcg0CHzCT9EbnftRfhUlTBWBmyqomp98UE
+	ea3KrlBQFyk/l8Oed2O4eaf9yzsfZZk=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RPTXPSFP;
+	spf=pass (imf14.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793876093;
+	s=arc-20220608; t=1793876395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pmrvnZ/EMvEeuZnlTBD+xVIwz9BGrfQBmhgJ0E/6Uns=;
-	b=KmTcxvhgYy19F9GyPYicy3UpRR8hWqQQG/4tW+cVI0v0WPxW8Si5qLY0orpbeZjxs/26sg
-	16u5wGTyuKe/y2WEI14VVz1Zh/8SmYu0AA3DLxXgT1tagGiDG1JL5EmoWiy5eb2K4BRbKZ
-	0J1R0uwwfPa3DsHFi08o10hWXnKz2kk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="f/GH5j6W";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=wEysVB6j;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KToIDbJJ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AiZtdrn0;
-	spf=pass (imf11.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793876093;
-	b=0hKwBf13ymELvLL6qhbzvFLyMNp2x1wcZ7B2ONnNqBr2BUIgczPLOdrqkt77D7VFAU5nti
-	50i9Da5rxmEd4BitgCQEXohrU78ImahHvUXqYfhKHAwICFMw29bH4hR37l4VZ5+Y4dpix9
-	qVc+erkgAVyIvYi1SuK/hVsqNzrouXU=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B5F4021F8A;
-	Thu,  5 Nov 2026 10:54:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793876091; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pmrvnZ/EMvEeuZnlTBD+xVIwz9BGrfQBmhgJ0E/6Uns=;
-	b=f/GH5j6WLHXTIosA4Q9IKyULurUFpMv9+/BYPMq6Rxw8ueFWXCFeDTrfUzIUrNFgf4Nikw
-	zEznvo73bLV4awjLYpO5ViCgpog1U9OOxYxg/cgadjr80VvtftyGtFZxuXyPbpNx7wRnrF
-	4lkRWlALdbhXbjO0Y+WIwrmBHDbsIlY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793876091;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pmrvnZ/EMvEeuZnlTBD+xVIwz9BGrfQBmhgJ0E/6Uns=;
-	b=wEysVB6j2qa61Ws0d3fZhxFRmIXhbmGBCpLlV1PmVRLkJJMbfNnVDQiquBJS3mnGdehk7T
-	emuToUGERLyxupDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793876090; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pmrvnZ/EMvEeuZnlTBD+xVIwz9BGrfQBmhgJ0E/6Uns=;
-	b=KToIDbJJpYXPRUTNGAM2BUdWs/VNL0vlpFaGyCPhhS9L76pGtBfIozD+Zt24m5s+0pmVy1
-	htASFuWBej54OhiKCG5b/84k2DxzdPdND7l17pd/K+LA8HnZKioAJB0qOZg6QW5PfqbDCh
-	KA4aGY8pIljZ+5C9+GS2ZjMuhEAFDNg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793876090;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pmrvnZ/EMvEeuZnlTBD+xVIwz9BGrfQBmhgJ0E/6Uns=;
-	b=AiZtdrn0oKOknRHwHN42UnOic78MCRHrzJCUS5U8LNVNY4/RdzEqzCcxDOD4GJd8UYJg5V
-	syK3fQ1BNdBXYOCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7FD2B133F6;
-	Thu,  5 Nov 2026 10:54:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id lICiFHpg7GoWRQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 10:54:50 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id E6C96B696; Thu, 05 Nov 2026 11:54:49 +0100 (CET)
-Date: Thu, 5 Nov 2026 11:54:49 +0100
-From: Jan Kara <jack@suse.cz>
-To: Avi Weiss <thnkslprpt@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/page-writeback: avoid unnecessary strictlimit
- background wakeups
-Message-ID: <fojzqutv5x2umdn44xly7pkgkvesz7lwriah36sq2t3cuuw4ui@ywgowfpmaz34>
-References: <20261031070515.3042848-2-thnkslprpt@gmail.com>
+	bh=t5+p9iJMZToojqhmNYvXQKxqNfYJdePkWIrp9noGGxI=;
+	b=hcDPn6vJKOgDxgx8qcvfLk1zt17H0xYnJtzbf/2PfhNFAafW+M6ZfVAMlaTD1dC/8nMpWT
+	ayalEcpahDBnvpzyGrcL8Ap/WhrpaYlR0Bz/P9flyr0D4fCImt3pxWC78HsYKmkIX7reYw
+	uhxJT7SHss8WBErUUQo5FlZrKP5yuzc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E26F360DA0;
+	Thu,  5 Nov 2026 10:59:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 548441F00A21;
+	Thu,  5 Nov 2026 10:59:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793876394;
+	bh=t5+p9iJMZToojqhmNYvXQKxqNfYJdePkWIrp9noGGxI=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date;
+	b=RPTXPSFP3n3eMASPTaI4hLhz92MWMEtMXudCs/gnnjTAmDaB8e3BMo1b2HL2knJrf
+	 Dq8X9TPDzKdfMkmwt1UZ71wMAJbL5Vqz9gvGNyJma9a+GFeGFh0klsknVpjhYVjgxf
+	 STDn0fINtxWjjDKacW7I7d6+MvHMfzo5DQRvJJFSgQYp80+pPBcBFtceoDtxRG8AO6
+	 dfpfbKGs7/CO+a1Eqib1SIiUQhUFlmrhYX/gG1PDAzG3TvBqtvtUoC7gbgMOxA62sB
+	 vivOkxBnWiJdeN4nhvk0T9qrIsRYgVuToH3MIF30qYPuZTGPtMnGN+5HRLm524hbp6
+	 /hFuaC0v8zhig==
+Content-Type: multipart/mixed; boundary="===============5606202118295207002=="
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261031070515.3042848-2-thnkslprpt@gmail.com>
-X-Spam-Score: -12.80
-X-Spam-Level: 
-X-Stat-Signature: 7jxdcf6f4akjsn9r38scqbskgw6ur8ex
-X-Rspamd-Server: rspam01
+Message-Id: <feb942065da5a4dce372fc631d390e52b381ef87f223f83d51cd350d92822066@mail.kernel.org>
+In-Reply-To: <20261105102343.311331-2-jolsa@kernel.org>
+References: <20261105102343.311331-2-jolsa@kernel.org>
+Subject: Re: [PATCHv3 bpf-next 1/8] bpf: Honor const on generic kfunc memory arguments
+From: bot+bpf-ci@kernel.org
+To: jolsa@kernel.org,ast@kernel.org,daniel@iogearbox.net
+Cc: bpf@vger.kernel.org,linux-mm@kvack.org,andrii@kernel.org,eddyz87@gmail.com,memxor@gmail.com,ljs@kernel.org,john.fastabend@gmail.com,nierro92@gmail.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,mason@kernel.org,ihor.solodrai@linux.dev
+Date: Thu,  5 Nov 2026 10:59:54 +0000 (UTC)
+X-Stat-Signature: z3ukzkbr6xza7er4et13x4hiesiky7cd
+X-Rspamd-Queue-Id: 5C529100004
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 4013640005
-X-HE-Tag: 1793876093-701087
-X-HE-Meta: U2FsdGVkX19Pg0/yyg8ITf2Tr5dPD2893D9D0Qi5yiGVf+bGtXaCMz3tlT5IKBf5lq/Ppt5NrBH3gDYNNIMb/PrbKxPSN2HX+Nmk6tu0IkcovSGtVrpP3v01y0P/FSmgvnSxC8fyvEWPnGY+k2QfqsvAjhlshMEyHKumOZ76KFjl3ZCYX67pVbvgTnMIPac4xAmfF1i1dnHB60LfQZNzGkSsL0tRwuEr+vpe5fYbt/qAn6BUjOmJ/t8r0pC0DeFN9Y+BBzR9mtccRiax4SirosG9KcauxlX2UgvqBNdx8PnO581AQeDckcB52lKW5R498REeQQbz0RcNa8hGdDibcAdbiSN1h6kdRQw0x1sJyAebgzH5xqqk6GagIGzemDfl80OAzn2STVNotXmBMnt2kpEINL8ZtTnXYKKba9cMh7Tw2TqrgV8rYAEoHQfwIqRdLEsGoWY0hqb8dQ9U0D+HL8p1rC1QYzpv+BeLCEOIbMOSVYoacEg2itA0Yg/woN7ndGiOxq5XStFaoKMu1E0l+BJ1Eogu8dz43iNUAdNAgZ0iwQxsqOR7XCswk6x+4HQwLE76VUqlvjNLfCDpfqT981C+c1YkUFWXJEPy/45sJDWUrRCMy34E4L0f0/c8EcOpoA94VbVzQ4/oY5eGtNO3KnAJFqLjJA5chm0XjcxVzfSG/wIQO8PMGaMeCjE4KvJeslX2u061jZjdHLKhpWD33z1TfB5GXHyjRdwnpAnlBdl10XpvHr1KiT63u0JHVDJJwWqtI/2JPZ4jZ1zZYCxJwn804c9dQ9clU4rlzKCNGjjNtcUchTU0KcNctVrnZnYQPUKYVng1kDZM4mD4RLhQEqqdvfdH/BflcYL8GpjbWifYZ7zUcSj2Nvk/mLqhztj8fJRxzsAeh4VGoglhrlG/B5/12/OI8ZaPXqvJe849ssDYo6A+jL7kbbUAO3l93IN79uiQycctERXH/u2WAZH
- Ef8+2bK0
- 001UTjAJRQ0IUyQM9JERFJwmD8JyflnJmCNyhuONhkDqBBlZEHNnuZAyjhVuVoP1e1H0xeo721Wp44xTxkl20N5owLb0ATh3Zr/DRMBWvjvIENwq8iFYssYXbX3z5OCpbky+ejjZBHXzOlbZS2jNY7K/a4GIYStKOQltRqed9sozIVzsTdgU5dQYTXPVfNMeI9qFWWV3TdHuc59ON8ODE0rhuT9rrufLVFBh3kslS1QBQgdy8J8OyCKJ8vwlxV8BSdgYa0dub+IltFqXlkdU5dIrox1g+gg6dUuqYU/jMt0C4XYicg5e6Qe0SeFKPpTWDDrzUF1hcSC1ru4Lkh5DKDtPL5MJxmeEql2CP7UL3OxLzOg4=
+X-HE-Tag: 1793876395-51196
+X-HE-Meta: U2FsdGVkX180DzCGNA0stq5+qLE4h/6JV9kv3agPlAcfGH8fK40bFw7wEksUE6ExUqg4XUhO3o0/JjkbFRcQuOA2lplcJS5R8UiU+YHdac9bwYxKea16kxzGmhCRjvZEZYP9EqqusT0ArP0jnLcycN2dBycAEhUgHh4vZBmPxzmWDHESDSvsdL3iMInJlcxLuVppDRLO0eRJ7eqbam2Vub6BkGVwgus1jHD1KVMMnjSVwhNgUxBJab/7XgExDrd/M+dDO+d8r8E/uDdsYEwEKl2lZ8lTSDK19hmLLGxrsWiGYgdE6QwPLKnLhsdnDVR8w2FPM9nbg8d8xwf9ie8IKxap4/sEQ2JJGTG8DbNImTJ3bTutQW2JdKfb5YyzFaHPZb3Jv2CYVDx1XDvVRHD5MBCf+SQ42vLOwR5OXM30ZCjJhrH29y3g6HfHfgV6EAfiYEVO/BgDcdn2B7Q9bc0QN5w/IimxrzPmLHmPgoVB0BCBMQDwL3e15uTNHZJLc9y0K44JBklQDuH7DeHDF/LvHEwDe11J5PdGHaPSNll9iXrdu/HqD0PO9dnQuwGbJ4jIwUzDT4souoOvw5u68RIRXhEPoZpmgzVqqYUIRrjBevpv4H83Z+DikTCVUvinB/CU//saF2bI050VxOsRm+5Q1Hkp0cwKxivxzgN3nT48wlR6V46sf/WsQt0gF/faDrHDcvb88o1KOmtRW4DV2MS+bbv2O4gQfZ/nqwlIuzVlvREAy23w1yl6A2T4ydjYvrT/gL6QtVBZs8rYyyGn19gaVfj2fxSxbzgRBsyB6TdVd0L7DW8mlfuNZALFDvf2Bxa/SO1UGfLZGZTrBoYjn380OVemtfyBpkPsX+58xOJclH/gjmEmaPqKoWUOA9jdgphWSsCLzQiB4yAlHf1HRYE984PERidQ8LrG4F5VQ5JH+brN8jT3BimHNW1FAb3RETNySlR8+uoy8w3L7kvP4on
+ oVSA6td8
+ w2LDeqAu+dMJBmuzBQLpgxAwmLmJVIZuUR7rCxh85Nze7Fr3eXgtHa0k8LD7A5YD3fLbRiJsXuSM0yrSL+0kOVMR0apr6bg7lNQ1yvONJOW9i/W/PcyuTzaLx55YYv84lUe1MgkP9lr0oZmJWfzV3CpRuL/HLzIC6JoI+tscQzNInyzJoK3m8Dh6prfB4pbrZFehSy0kuh1OCm7nPxtub6BpHfpBB0zt3fWf++ByuEDW3r5p67oMGHvkHb3gI1o8rjvmym1Ba1sprKD0791l3I1c5wICBs69X62iIkXOcpcXZi5x+P44H6aZ7hE2hs5xSL7GDdEGap1vNB5x4XltIAI3h2ATPDR+QG7x13GcZ5SeE9r/5CUOhYZJ8ekkVkNmjD9tCMe5aQMwkrrclpbUj09jubyU+otP+jWMr3uMpeKK4xVzLRBELSdzGHcHkN/p6VR7XpTYY8y6X0oiyJeZURpTLPUgyp2XEwR9LxrG79XlqaIOyT0WvSY71mA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,66 +91,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sat 31-10-26 09:05:15, Avi Weiss wrote:
-> balance_dirty_pages() includes pages under writeback in
-> gdtc->wb_dirty when checking the per-wb background threshold for
-> strictlimit BDIs. However, wb_over_bg_thresh() only considers
-> reclaimable dirty pages when deciding whether to start more
-> background writeback.
-> 
-> This can repeatedly wake the background worker even when there are
-> too few dirty pages to write. In a 15-second FUSE writeback test,
-> background wakeup requests dropped from 2657 to 682 (74% drop),
-> while writeback_start events remained nearly unchanged at 99 and 98.
-> 
-> Check wb_over_bg_thresh() before starting background writeback through
-> the strictlimit condition. Leave the global background threshold
-> check and the wakeup required for dirty throttling unchanged.
+--===============5606202118295207002==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I assume you've left the gdtc->wb_dirty > gdtc->wb_bg_thresh check in to
-reduce times when wb_over_bg_thresh() is called (because it is relatively
-costly and this condition is evaluated relatively often)? Maybe it would be
-good to add there a comment with explanation like:
+> bpf: Honor const on generic kfunc memory arguments
 
-/*
- * gdtc->wb_dirty includes pages under writeback so it serves only as a
- * quick check and we use wb_over_bg_thresh() for exact evaluation whether
- * a wakeup is needed
- */
+TL;DR: Comment and kfuncs.rst claim the compiler enforces const, but casts
+drop it; a kfunc writing through a const memory arg could corrupt verifier
+state. No in-tree case found; docs should state the contract.
 
-> Fixes: 0437906841d0 ("mm: start background writeback based on per-wb threshold for strictlimit BDIs")
-> Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
+> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+> --- a/kernel/bpf/verifier.c
+> +++ b/kernel/bpf/verifier.c
 
-Otherwise the patch looks good so feel free to add:
+[ ... ]
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  mm/page-writeback.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-> index 499a35473e4f..cb0c58715b93 100644
-> --- a/mm/page-writeback.c
-> +++ b/mm/page-writeback.c
-> @@ -1826,7 +1826,8 @@ static int balance_dirty_pages(struct bdi_writeback *wb,
+> @@ -13448,6 +13448,22 @@ static bool is_kfunc_arg_const_mem_size(const struct btf *btf,
+>  	return btf_param_match_suffix(btf, arg, "__szk");
+>  }
 >  
->  		if (!writeback_in_progress(wb) &&
->  		    (nr_dirty > gdtc->bg_thresh ||
-> -		     (strictlimit && gdtc->wb_dirty > gdtc->wb_bg_thresh)))
-> +		     (strictlimit && gdtc->wb_dirty > gdtc->wb_bg_thresh &&
-> +		      wb_over_bg_thresh(wb))))
->  			wb_start_background_writeback(wb);
->  
->  		/*
-> 
-> base-commit: 36aad21d50d1af3f6954bb0c988257a908202477
-> -- 
-> 2.43.0
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> +/* A kfunc only reads through 'const T *arg'. The compiler enforces it. */
+> +static enum bpf_type_flag kfunc_arg_mem_flag(const struct btf *btf,
+> +					     const struct btf_param *arg)
+> +{
+> +	const struct btf_type *t = btf_type_skip_modifiers(btf, arg->type, NULL);
+> +	u32 id, ref_id;
+> +
+> +	btf_type_skip_modifiers(btf, t->type, &ref_id);
+> +	for (id = t->type; id != ref_id; id = t->type) {
+> +		t = btf_type_by_id(btf, id);
+> +		if (btf_kind(t) == BTF_KIND_CONST)
+> +			return MEM_RDONLY;
+> +	}
+> +	return MEM_WRITE;
+> +}
+
+This isn't a bug, but is the comment "The compiler enforces it" accurate?
+In C a cast silently drops const, and one registered kfunc already does
+this:
+
+    __bpf_kfunc int bpf_ct_set_status(const struct nf_conn___init *nfct,
+                                      u32 status)
+    {
+            return nf_ct_change_status_common((struct nf_conn *)nfct, status);
+    }
+
+That argument is ARG_PTR_TO_BTF_ID today, so this patch does not reach it.
+
+With MEM_RDONLY returned from kfunc_arg_mem_flag(), func_arg_access_type()
+yields BPF_READ only, so the BPF_WRITE handling is skipped:
+
+- check_stack_range_initialized() does not clobber the stack, so spilled
+  pointers and known constants survive the call.
+- check_map_access_type() accepts BPF_F_RDONLY_PROG map values, whose
+  contents the verifier constant-folds.
+- check_reg_type() accepts PTR_TO_MEM|MEM_RDONLY and PTR_TO_BUF|MEM_RDONLY.
+- may_access_direct_pkt_data() no longer sets seen_direct_write for packet
+  pointers.
+
+A kfunc taking a pointer to const scalar, void or scalar-only struct memory
+that writes through it after a cast would corrupt state the verifier
+believes is intact.  I did not find an in-tree kfunc that does this, so it
+is not a live problem.
+
+Could the comment, and the new kfuncs.rst paragraph that only says the
+verifier checks such memory for read access, state the actual contract,
+for example that a kfunc must not write through a const memory argument
+because the verifier relies on it?
+
+[ ... ]
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/42012074982
+--===============5606202118295207002==--
 
