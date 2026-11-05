@@ -1,96 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0913A606D80B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 15:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DC7E606CFA3
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 15:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kuAc3Ioi
 Received: by kanga.kvack.org (Postfix)
-	id CCFEF6B05B5; Thu,  5 Nov 2026 10:51:48 -0500 (EST)
+	id 599AB6B05B2; Thu,  5 Nov 2026 10:54:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA74A6B05B6; Thu,  5 Nov 2026 10:51:48 -0500 (EST)
+	id 533F96B05B4; Thu,  5 Nov 2026 10:54:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBE906B05B9; Thu,  5 Nov 2026 10:51:48 -0500 (EST)
+	id 422216B05B7; Thu,  5 Nov 2026 10:54:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 97B116B05B5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:51:48 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 291F8160A81
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:51:48 +0000 (UTC)
-X-FDA: 85401505896.19.2502388
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 31D5D80017
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:51:45 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A0696B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:54:50 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B8010C0A77
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:54:49 +0000 (UTC)
+X-FDA: 85401513498.13.6268011
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 044EF120008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:54:47 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kuAc3Ioi;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793893906;
+	s=arc-20220608; t=1793894088;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EIK49Tcg3pu8WRBXo8Mfb4XG8bVZ55wdfLeeW4Ym45I=;
-	b=pu7eWfSFXaLYZSzJGRxlWCIAJEUtz0XK+jTE6XybYFHG9IJta7Bd1RjqOA7SkeHmCFyc8D
-	BAlY6YcZAbiTZ63ZMVBdrxw4nGtI4rHdSUNb3BCYkSQG4KnE9HqHOa+hSokE0oCF2CMcsY
-	PdQI0295q5Ssh1PO/KYX+MPhaTR10uA=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ylOj/sHLM/J8LsUi+7lfY/iGOYIA2kXtXExHrYGKdI0=;
+	b=muWOyh4ndcNN4RWf/guST41+CPX7kcTuguDSI8oRGVYDNOOKspsIt5lE/5PUx9k4vonGNo
+	WJS0j902lkKYhXD68F0L89Tz2wALsncWkF1lDJARu8mfECWmjwB85N/G1C6C9Vjjts46cB
+	ySHdC0ymQZinPjocNjD7U0l0zOQD9oQ=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of alex@ghiti.fr designates 217.70.183.196 as permitted sender) smtp.mailfrom=alex@ghiti.fr;
-	dmarc=none
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kuAc3Ioi;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793893906;
-	b=JkHk+UpDCJAs/Q+SUM8y5bWnBwtYiGrxGMOAzY+nW/QzC8/JpHR6qKHYNHEoHBKYXbxVvS
-	Le4gDx85prnLY3/SXK8Gf07uo+P7M+qBOJK/ahwrl+m1S+WVxS11QppjHWG5zXmfbYyxNy
-	RKSi8lRFe2SuCJFPFDpru8j3rPh+p2E=
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D7CD13EDD7;
-	Thu,  5 Nov 2026 15:51:40 +0000 (UTC)
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Kairui Song <kasong@tencent.com>,
-	Barry Song <baohua@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Youngjun Park <youngjun.park@lge.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Alexandre Ghiti <alex@ghiti.fr>
-Subject: [PATCH v2 1/1] mm, swap: only prefer nonfull clusters on synchronous devices
-Date: Thu,  5 Nov 2026 16:50:17 +0100
-Message-ID: <20261105155032.240457-2-alex@ghiti.fr>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261105155032.240457-1-alex@ghiti.fr>
-References: <20261105155032.240457-1-alex@ghiti.fr>
+	t=1793894088;
+	b=gLWEycTPnFhJeLC82WoS3HXfd5pz5XabhsxpVAMQC3QZ+vPmiP0FWmT6m8MV9x2SypgYVV
+	XCfurDzYS6cFpnuoxU4l83vMYy3Jr6TcJ3vY2qr52VJU9Pr/N/pDMTEWgRdFbhZbMQ3aVN
+	LDnwfNUiujITcJXPqksAWZD1FBsqcgs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8F8456020A;
+	Thu,  5 Nov 2026 15:54:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BE21F00A1A;
+	Thu,  5 Nov 2026 15:54:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793894087;
+	bh=ylOj/sHLM/J8LsUi+7lfY/iGOYIA2kXtXExHrYGKdI0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kuAc3Ioi/qwDnV15Z9C4aP62dVQFe+TuOpqiRxJnyC2rmCo8+4hvpGzigjEUGeqhk
+	 6Eh3nbCcJ7Emyc/isrygR+z6bKIlNdRis4XZL+B1xH+CDudtI85iXDi0oS3JNC4LHx
+	 IMAav9xQFTEPeAqSXBCDu2pYUOXk3lZNIhaMtTX85QMSn/exiSdUJqWmTXkMSFMJQK
+	 vBGT+NotVD+sufMIYZwu+fxhaUXXO8Y1+A6Q+JAANLI6boLtY9IYKV7kiliy8G3757
+	 ZZzfsyn1nJgUops01v1xFiARUCYU6dGtbAACrHrSrsjrS1EvgLgX5dQveajOdg9EZK
+	 w0M6+vFfb3/tQ==
+Message-ID: <bc91b6e5-ae31-4403-aee9-34b60ac83631@kernel.org>
+Date: Thu, 5 Nov 2026 16:54:41 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
-X-GND-Score: -100
-X-GND-Cause: dmFkZTE+woJDVoV0nQAdmju6GXPQzp/37WRGqRlscp+7unek+1nQNJTbvmeTlTd0ZpBK4WOforKxfGb9LZ+Ebki3ZTxLhTP2DkVqpWuUqkuMma22Pq3kWAdenYRiH/OB/oNr+X9LZjsiyptfHUdeuqMNYlPNonH82ECvysafYuTYEheuBQwDfnUuX3Ke+p6SrbAiZtE3gj391nmjpp6K2OwnrClynn4/9TK+ADwy1brBNcyTPAKRRe0o6mQN9X9LB+4Rl3VxjHOqCaEaD8OsyMsg9A6ZENWf6x6JPlMtd5ZZhDJGOcDNERaePHThGJqB6HmyKlCHwAwM62K9AATHCrb14vrLXtPQ59imH+DNJKnRz53f4kcVGtktkkWc0Ur+oVDUdARQKwX1ETe/qFU+1fvu+OMcRDLadNb3dOq6uNpuSZIH4B7lza8uIlF41USk7ZoLjRUsp6ec9+87ZnCfzn9pOkagalwwxyabncFmL06v4qxQya4WOmTYyKAh/Ow/LtIpSwqnGCORCdcGiiPBsEUNXVPHJnjdNjub/6goq4HkNQRXspoOT/KiieGnOpoxglicIEQnb0McGG4LVt8f1nLbhYqSAX4FH1wCKJO1yrIxPd+6jMa/G+gvbjr7NYZfxf3WtzIpOt+l9qIa2nXYKjQTI70eGt4NwdWeiYKvH5ZSjao0/w
-X-GND-State: clean
-X-Stat-Signature: 6rxc87tuns7pprs5rfa9m41xp1fsbrbn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/huge_memory: take a reference on a folio PUD
+ copied by fork
+To: Konstantin Khorenko <khorenko@virtuozzo.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Alistair Popple <apopple@nvidia.com>, Dan Williams <djbw@kernel.org>
+Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20261021-vstor-150143-copy_huge_pud-folio-refcount-v1-0-8bd88551f9be@virtuozzo.com>
+ <20261021-vstor-150143-copy_huge_pud-folio-refcount-v1-1-8bd88551f9be@virtuozzo.com>
+ <26862633-c3d1-4b82-8ca2-346cb78570d7@kernel.org>
+ <cfd786eb-4ae5-4dcc-a9f2-3eb4b7e7962c@virtuozzo.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <cfd786eb-4ae5-4dcc-a9f2-3eb4b7e7962c@virtuozzo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: rj4dfzpikgi4csr4b1bg8u3uod8hgjc9
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 31D5D80017
-X-HE-Tag: 1793893905-726306
-X-HE-Meta: U2FsdGVkX18HrmERr0IXd9xPvDdmqDVDgBkoFTYEbmNlVV0x/tAgy+egqLQjz7xC906o3dNd9E+lZKZdjQnnTaSWEUlqc7XkR2YD6/+Ji+5PdKt5Y8z2c3O0hAF1qw+3nP9udTUApHGscjS295j9YEsCp+1IDhMaSiL6dk9XxOAs77YE9EHbExNj7A0kJABM2uuq8zevtq56guvKZSIcfgNlI7klz3HPoKzNKJAomiaWsMqBMi4tLLCWeTyHSK1PFJmqA1vQFSnuSzQnAZIRWPs4LwNbSK28ZPzVrxWNfDvyeloaP/REiUhthb46LpvObvCYrNbWgTXOjotkYaL1EwRZwYV/QRNEhydJx2ATzKy7aOYT8asbWJSwj10Sk3+1C+Vd9KuX31I49ypUMAfb2P+jej6bJy8HAZ9awNS+p2blXz9XMCsIHTsqDppGarCLQeALclPdeNYk9tIk4yazijEU+O/KDuuNJesEFqgMWca4Dqxx4LRhAqAvYG9G13fzsNWu6YLbNkZnUHxJQQJaeIOaoYJnATp5xJoulrGd7tTMKek60+tNCuKJ5wR8e/4XdZNLER7DRVyX2GQxn1O0vjVMr1/ugJS83umPX1nnBapOJ7nsM4mHLTP2S4jHe0+rBzm5Bt2W8Qbv2BpDnDUMBkxmY7HvK3n6rsY2gSEu4sIp7h/S+nkn+XbCrukCflRlp4IX4nCTRXrylh4FTSl8A/WqTTCzwEFNlkeujJs2OC0EsLnsuwh3JxdQVzds35xuoOyb+clUFLFxIj+3KNNL0rbtfrp4Xpzc7aNt2nujGDMMV6PR8oizcHnfzI+798xNQRKdIw6WUJS+cvTA71hkV83jHQxMtdxw8/axYtS0TonhotW3hws4ax9RYX9kymsCdannpqpi8Rr0+Fe9JAOf7ITjYqOqRyRPQMQIjy+ZlaxWhaxa4OxfBIZgCvlKDwWj9i6wl9YON4P7J7Tz1js
- rMUZW66o
- IgFiyOjGwg2Wg3n9LmkGrxwdqWBQWqaJswzHq
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 044EF120008
+X-HE-Tag: 1793894087-868484
+X-HE-Meta: U2FsdGVkX1/6kqaQka9jMwETameT2E4t7JV0nlEhOH7cbu2lFtkzyKt95QcIXWA5gIdx5vkiwK0mGXSBgHCBzgytAcvCEYvFjKGEggds5q4tGNct70sv/WdWjH/yHW+/lrstkEacX7zQrEMcW8iPq0ICvsLuAu+9bq2OgWzfOSxdqKw6yeqb0F6DR/o4oDQUrfa9ZQx6t1fzkn1Vfg2/svGHOfB8tB7nXtiggh3n+tNg4QSjPlRRf6p/+/oaLrXvZlcoxsifST7mCWDEHFCIYpBAyYTHlS4vvti/NwrIPvw/DqpfxtvdQo8BSBv3Tjv8c9RE6nv66RcboJjGcPn9itG5U6MDQ1kdYPXvjU8LEzKLbkuaNTxQf700/TvpJ846o/6oEH0MaDEQ4Y1wH9Qd014lwW1FijCyqYzslHfVibK6BGmJrztV/vQXhXKZgj6OmD0Ntpk70zDLtdl+blQEJ06U1cSqwIkjFZ6g8pVianOR92xudSSKTralIXIfSDYjzDpOkd6nL1ODCZ/0wRkDZUpCqFV6rB+e8w9kw2jFuRKw3lLrfRfw0dlYx/8x2qQSvbJJF/IWfl+1ePND5QI1bQZFeb1f57Ayt6+D28T3k2wMlIr3WGv6q4XPpb+ZpAXqfBHGsXL3sHVAPNE5IR5hfHm4tWc0BiyUR+Yd9GWTG/yaL9pAAE9tLoCS2nX4G7zoqv7YmgmT5beFaNOv+26IBOZ6ua/v2vKnbLpmO8Mcagh2IarOcLA6F9Qw9pIAvayJflrMG3qAd0Va/KwL0Mt8NTY9jgtw7q/O1LpY1UPOohNXPk3jPjF5U/m1agRJZvl3nfTUDEXZqz4hxET9jsweiDX2w/erl2ITUwRmEa4GRhej+MpsBOuiWTqm9WkaiBcmjOw0J8DKdHPkqY173GVfqu9UJT8+GJuo6cigNLXZx+yIooaXhCAkYw9RV8JqFBPLXMM5mTHMAgPdXgvVvB9
+ klqhxKjp
+ ujE1H0DZ2mjz+OWWojVs0UyKP8Yr1/Crmbgds5ajpZ0LlRaDPtG804hve/Bbm4Hmv7h0ZFYq3rgG/mueL+2+UOdOO8J3z2/2BcHmdwQK30QpSLJYdS4ZSCUWEZU5vnydbaVAzRu55bbB5FPwsvKveseYFNQIoeAWJs7ZWqtO5Y520H6n+ASPQqrQ5YikRFVYoXcfL+DZ2+CLPdOw62X8O1wTKoALsHa1FtXREJrzvd5KXxVtsl4ScVcg/HKRtG5/uld6xFcqAxRF91GwcusGtXXKdH/kzUa9XfWasMkKKxxcuXy1Zwy8oiw3m8g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,74 +147,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Commit 9a42aed48421 ("mm, swap: prefer nonfull over free clusters") made
-allocations fill the nonfull clusters of their order before taking a
-free one, on every device without discard. Since commit 3cedb745d354
-("mm: clarify the folio_free_swap() for do_swap_page()"), an exclusive
-write fault frees the swap slot, so a workload that rewrites swapped out
-memory leaves holes in full clusters, which then go back on the nonfull
-list. Reclaim allocates slots one folio at a time, so a batch of folios
-gets scattered over those holes, its writes can't be merged and it is
-written with many small requests.
+On 11/5/26 15:19, Konstantin Khorenko wrote:
+>> Introducing folio_dup_file_rmap_pud() is better. But please see how I move
+>> the comment and how passing mm+vma to the helper is not really reasonable.
+> 
+> Thanks, agreed on both. v2 will pass only the VMAs, with the mms taken
+> from them as in your patch, drop src_mm from copy_pud_range() and move
+> the TODO next to the rmap duplication. folio_dup_file_rmap_pud() stays.
+> 
+> Could v2 then replace your 01/36, so you can drop it from your series?
 
-So partially revert commit 9a42aed48421 ("mm, swap: prefer nonfull over
-free clusters") and prefer free clusters again, except on synchronous
-devices like zram: they don't merge I/O, so the contiguity of the slots
-doesn't matter to them, and filling the holes first keeps the free
-clusters for large folios.
+I dropped my version already, so please resend and I'll queue that one.
 
-Fixes: 9a42aed48421 ("mm, swap: prefer nonfull over free clusters")
-Suggested-by: Kairui Song <kasong@tencent.com>
-Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
----
- mm/swapfile.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 189f04d8838f..1c1b5d0b724a 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -973,6 +973,17 @@ static bool __swap_cluster_alloc_entries(struct swap_info_struct *si,
- 	return true;
- }
- 
-+/*
-+ * Prefer a new cluster over a nonfull one if the device needs discard, to
-+ * spread out the writes, or if it is not synchronous, to keep the slots
-+ * of a swapout batch contiguous so that its writes can be merged.
-+ */
-+static bool swap_prefer_free_cluster(struct swap_info_struct *si)
-+{
-+	return (si->flags & SWP_PAGE_DISCARD) ||
-+	       !(si->flags & SWP_SYNCHRONOUS_IO);
-+}
-+
- /* Try use a new cluster for current CPU and allocate from it. */
- static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
- 					    struct swap_cluster_info *ci,
-@@ -1143,11 +1154,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
- 	}
- 
- new_cluster:
--	/*
--	 * If the device need discard, prefer new cluster over nonfull
--	 * to spread out the writes.
--	 */
--	if (si->flags & SWP_PAGE_DISCARD) {
-+	if (swap_prefer_free_cluster(si)) {
- 		found = alloc_swap_scan_list(si, &si->free_clusters, folio, false);
- 		if (found)
- 			goto done;
-@@ -1159,7 +1166,7 @@ static unsigned long cluster_alloc_swap_entry(struct swap_info_struct *si,
- 			goto done;
- 	}
- 
--	if (!(si->flags & SWP_PAGE_DISCARD)) {
-+	if (!swap_prefer_free_cluster(si)) {
- 		found = alloc_swap_scan_list(si, &si->free_clusters, folio, false);
- 		if (found)
- 			goto done;
 -- 
-2.53.0-Meta
+Cheers,
 
+David
 
