@@ -1,111 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85926606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 08:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1615B606A330
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gondor.apana.org.au header.i=@gondor.apana.org.au header.a=rsa-sha256 header.s=h01 header.b=hQiyX4SZ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=XF8uB9LR
 Received: by kanga.kvack.org (Postfix)
-	id AD4776B05B0; Thu,  5 Nov 2026 03:51:58 -0500 (EST)
+	id 1E29E6B05B0; Thu,  5 Nov 2026 04:00:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A85756B05C7; Thu,  5 Nov 2026 03:51:58 -0500 (EST)
+	id 172FA6B05B1; Thu,  5 Nov 2026 04:00:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 973AF6B05C8; Thu,  5 Nov 2026 03:51:58 -0500 (EST)
+	id 083046B05B3; Thu,  5 Nov 2026 04:00:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7D19C6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 03:51:58 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 176058098D
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:51:58 +0000 (UTC)
-X-FDA: 85400447916.15.9D5ABDB
-Received: from abb.hmeau.com (abb.hmeau.com [180.181.231.80])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 85ADC180006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:51:55 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=hQiyX4SZ;
-	spf=pass (imf06.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C90716B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:00:12 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 51E334099D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:00:12 +0000 (UTC)
+X-FDA: 85400468664.12.6AE183C
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf04.hostedemail.com (Postfix) with ESMTP id EBD0E40011
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:00:08 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XF8uB9LR;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793868716;
+	s=arc-20220608; t=1793869210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y4soA1wbGGkJusNMsltnTjlcCbzxXwWGOb9aK3q0azE=;
-	b=PaZNXKxK4waHiRoX7hccPXiPbEs/gFRZRweoSHQiQcJ0ZSh+NuVCkOlnXHVF/t8cqeB2wB
-	guGTwH123vcGxXAbTKxGHnjmwUCuktwcky5GNXaNWrcICbmgLP9YKEJad3qpM6xc0ajbIG
-	CqD16ONM0K5OQqabtDNrm/zdCryfqyA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793868716;
-	b=5RA6niAJIjCD47L9XCCu05rjeOeH22/+srPpc/+iEFi3t6kZW5XVSJA5ZjskkqwCqNobq4
-	kI0szSvTvA4kG030WlvdRPDxq6xM7sQ+ww4g6EgUQx+qL/EPf2xk6tKxMabDfUTYbI1vyY
-	tS1RX+3jZ/YIQlGaUlcFejKZ3uIX2Hc=
+	bh=Qpa3NEcxqfBmlG+KsMNpjxHv3Qlvd6eoPxtMyefULAQ=;
+	b=gOldaUccLNLB4pb82G1+hlbwLQFg47owdyM3gORZB3dQgc3vHvj84uweIBcuh40iq7lXyk
+	8a5PZKknc9/bnaH0LLcI9mbueRctUTbuR7vs7CDNHRNLem7JFVX+z0qI8J4VdRHT33TDkd
+	P/eDjT9AkpIU1FkT1IbL1TuHDPAs9ew=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gondor.apana.org.au header.s=h01 header.b=hQiyX4SZ;
-	spf=pass (imf06.hostedemail.com: domain of herbert@gondor.apana.org.au designates 180.181.231.80 as permitted sender) smtp.mailfrom=herbert@gondor.apana.org.au;
-	dmarc=pass (policy=quarantine) header.from=apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=gondor.apana.org.au; s=h01; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:cc:to:subject:message-id:date:
-	from:content-type:reply-to; bh=Y4soA1wbGGkJusNMsltnTjlcCbzxXwWGOb9aK3q0azE=; 
-	b=hQiyX4SZA2tS4OXtKu5IuvLWAXyaLoxbQnJcqusLNlkaedE6ATQ+A26fMjA+DYRDUg87uGUyiou
-	lRoULOF943cIw6tI3K5Gc22hTeG/Ng9v6UlF2mFw11tbJk30wbOJrfqNpzIDiRCPr/CITaVGpo2mu
-	poZo3XOSqfuhiG1btoJU0qjEBRk56rx7Asf3gHcsABOhPh1m1gKk3R9k5NGYbHUEvCMMHcL69Q2+B
-	W3GWTdl/jvFmVLDSrI0uBXfF6h1TC0alZsj+uGooCwXHrg5dbLH2huVft4OF2ZZd/GOlnzvExmkns
-	T6iqHL02WTG56M/nMw7sLkSlzw6ZKMYHcyoQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.98.2 #2 (Debian))
-	id 1xOtC7-0000000BJbr-3JtE;
-	Thu, 05 Nov 2026 16:51:40 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 05 Nov 2026 16:51:39 +0800
-Date: Thu, 5 Nov 2026 16:51:39 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>,
-	"Liam R. Howlett (Google)" <liam@infradead.org>,
-	Davidlohr Bueso <dave@stgolabs.net>, Michal Hocko <mhocko@suse.com>,
-	Baoquan He <bhe@redhat.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Marco Elver <elver@google.com>, Michal Hocko <mhocko@kernel.org>,
-	Linux Crypto Mailing List <linux-crypto@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Thomas Graf <tgraf@suug.ch>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, maple-tree@lists.infradead.org,
-	Lorenzo Stoakes <ljs@kernel.org>, Chris Mason <mason@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andrew Ballance <andrewjballance@gmail.com>, stable@vger.kernel.org,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Subject: Re: [PATCH 4/4] rhashtable: fix vmalloc() deadlock in atomic rehash
-Message-ID: <auxDm_YO4oACA_d2@gondor.apana.org.au>
-References: <jfvq7vkx73vzp2ukq6nwnb3v3g2ezdcyppba4oa5lpzmz6ls6t@akc46gonndgy>
- <urkgmijyytg3rrislm5fdzmfggqavzpiry23f6lpkqonvy2tqx@d56stj3eixfa>
- <auaFhOa5EBz4gJwK@gondor.apana.org.au>
- <xdzcyoou73blpfdlgy47i2ktrcsffnclerzojpgrxphid54gjc@nicdcvzqx447>
- <auqtTjXhD8is-y9f@gondor.apana.org.au>
- <CAHk-=wiE0KG+jkhmJWifXuAVivtB63WCWtdEpGAex7-T0SHd2g@mail.gmail.com>
- <aurAxRpCwzeyXeVj@gondor.apana.org.au>
- <CAHk-=wgPvbYRcKpQ8WTH-EYZRgMG0KSH+cZxY5-Hyf+X7JjWsw@mail.gmail.com>
- <aurJZ81qnbiHH_P1@gondor.apana.org.au>
- <ausS3LQNkdc6lBy3@milan>
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=XF8uB9LR;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf04.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793869210;
+	b=Eoyc2SVA4VZqPmWvWL6Vai010zEZXzPoohyUhHZUHTLOnbgmvvYsMaDDd35k6qroLmF1z2
+	eREyqFectpMAc96Rww3jauGZ8f73SjdU2rmWs1UzDvKiBP67QISM5NjMjCPmH6XG+jRNvW
+	xB1w6iXmJje0B6rZXLSOgurRsQ1mzPE=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793869206; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=Qpa3NEcxqfBmlG+KsMNpjxHv3Qlvd6eoPxtMyefULAQ=;
+	b=XF8uB9LRlwoMOTZanlZAsRNFt0RLs62YIFn67isvl2HuWPJEeRXfZg5lmWiHkhM+kD+KHTSC5d+khAlLEtTHth1yBkzuEkXwyeT13WSiwPzK4cY6+UntS4TDoI+YSgiErTgOpZy7h3AvMLpFZux4Rkv9hN/MmEtCma/LyvlIfVo=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0XE8DxBe_1793869204;
+Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XE8DxBe_1793869204 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 05 Nov 2026 17:00:05 +0800
+Message-ID: <f7bd740e-1328-473e-96f5-89658a08d514@linux.alibaba.com>
+Date: Thu, 5 Nov 2026 17:00:03 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ausS3LQNkdc6lBy3@milan>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: zkbrqjbxio758uzedaxiissfi53xws4w
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 85ADC180006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio
+ sizes
+To: Lance Yang <lance.yang@linux.dev>, Barry Song <baohua@kernel.org>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
+ riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
+ jannh@google.com, qi.zheng@linux.dev, pfalcato@suse.de, ayushr@modal.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
+ <20261105045406.39871-1-lance.yang@linux.dev>
+ <0ddaf336-7cb7-4e83-af2c-f60d23f7aafd@linux.dev>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <0ddaf336-7cb7-4e83-af2c-f60d23f7aafd@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1793868715-311261
-X-HE-Meta: U2FsdGVkX1+hyshgLT0lHhfFH6JZshKMhIyDnHXD4VtJ1syFR5xnnR0AJhxKLYh7T9/q92gqolEX6wMHZDXtlKcYNcK0gfeNnpXLYbW7EkUMfY3j7+c8VHInERLPri88dIrNSaPq6yD06wY4ITNJWReknWFyplQx+/noZKRxsrV2f9fJXs3Te66grVtKQXCc3rmNlqpCGhChNoXz5otpbT716m1gEmB5C8v7xQrFRLQmAuSitrfZsDh005FcSM/LYYyIY1N009ZIRuM8jHdKv9Sy4odcST8745Xw9ggqwErnh01o12MkBb/AQz6vEXokSHIstrkvmzdN6JDED99t17dtazGg4f4IBGaiVBiaSBRG6w9PtnYMcVXE8Xq5Wai+uA3h/3Qm0MfeYzhgqj6rJfwHWO/iuY6LhGej4OWsatnA2lBciaQHaaTAcGsiibES4gxi7im3CCZPRvFdpUsKpvMLhOPbKllR0pK/8cU6CIVcxXg6SLl/0pE949f9TicEWytXz5CPN9BRI9Hqlk1/sVJHq2yH2xWMbk3DckJe33ASK7ERhOXdq6LUgm5nBRUeZ0MWqdK2uApXaxgoBoyvOaIEzFPGbRUc5CcVSo1YN01DyxXM8il7vuhXh0quV+4Gi5uY3MIO/O+EM+Chm/vszgf9NWJDQ/k3N4ICJu3kwdKfXzcbdWHQqba0P6NhH2x+738s64OqL0pgnw9ERY+X8P4f70hmowfFGiZ8dWImb2Q5M2Kb100uzhXBoSjneghbVKxpI/5iGDqpJ7fQg0+mLGfWQvuEDWI2CcinO9//7uCwDNMF3eEwHovOgzwra9bUGwP6rbFpP/GF563uLF7fEbW4HClKVPAU4Tgyp65a7i3YY/CXkslF3ZIbVD6378XS/+IRFtnGAG4TyCbMKpJnWb1vdtEEZRVN09YdhmLX7JYYnu/UW5q1Mjz9bfsUq0bZjShY3yDQWlulH3BfAje
- bs6dVFdO
- MI9xWzgPnRCw/aAmTx9MknL1gkCnL55w1aFra/7F4C8L5im791/2ldt4JU8TO2MMyUf1x5kFVo7gb/i0s8trlFhXR7yLf9rt/SFzZCAXeUXB6kIEzHXCdUgc3l6jnU5M8oh8HPYIqj6eAewK5/9ATX9AZ4yBExhKiVV/HzOKzWz2uo7aVosB0/G3eoVBlOKSMAnzdk0WVB5aoju6nSnAK5x0ArBbdQHLFr2pnmCrJtfuW7UpicJkL4LOhATsEa/noNkGWwgqke6wJoCVY69Y7NZ8994zqMxHyw8DaerM9En3XpwxvMp92mwJftiCnNQruQE9SIoyC5SLN/ZzWLVea8Y5aLbynZOaN/kkDxAZKxd2CtXQ=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: EBD0E40011
+X-Spam-Status: No, score=-24.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: mbchot3c5bir7zabfpg8yue6tgujg3ej
+X-HE-Tag: 1793869208-501980
+X-HE-Meta: U2FsdGVkX18r8/DrpsTtwFAGjkdhIY6zpJgt9d9tl6qjnRnTyVgN/+/DTwafrSfdzEn7Lx+b3Ggc/P6MqNjms29cIrf02+Sc5XtPVOFAOQUTxsLCGKBNlnHnfRa0EIAGGMNw/tSkpQnBEkJu9uzXJ60GeN+iLcbY610MP5FjQ3BCmj2xKMYOsnr2N2r/11ti0yTVoHFNA0arVNZqBvenevT7CqiPfYCGrY8q9cqhsNrYeR3Hq+WpLUAGtC3b0R7qw/54knHt2QmYSIBR2i91u8rTKacRtRYYT7FtqUSsEa/YBt29uha9D5EP2EjKVs4Hisj44lV59bEm9wGJGFeQdIo8TGbM9Qmsh6V874du7psNjHSqTSVsoJ+HFRjTFCIN1GLHYGhotOvpwZa9X8LF1I+gaKDEocFDa1yYSQCih1j22YIChx0beySjIoW517/34R9qO5fwZzk4BMtoCseHbIGjjhmPxX3ZrZw93O5T2ZFu+lKkx7VaTHlYWygVccxDpsbgZzoqN5HSF1OnjAlWZ2tcJVMPYPrApQj9hstXYLUyp/qgEa/Zh4mF8e11e0E8tN4fn5H6dnVxL21Bd1/+RXKRCwkBY7/czxcyKEVMHoi+Rit3LVwuAMVElyH4DKIvJ8ZkRaTjDOOkFJMCNjd/5zNElVSteSzMTlJ2RsYT839WmK4wR6nStqNw4JrV/2+ZPxDYlhi4FaQUXfuK/HGXS+QYdonT5N6KK+gL1N3h8CUabTGRdM6xZ3ICkqARw4Y174tNxP/K/Y6BWRdw9giguyw36/L4GdgtIGOdh5L71fCid//KaqxT2mV5hgB8mDrZbVwA+JQVcwTyJ4FbWsmD/D8Ke7pYdOEBMH+clOipBa1CyhUmS97ArECLFcofY2NkLG2TjCdmRV2o6QpXzmzVd1iOHd1f+uyH0GICMO0xesmydFxceYET4tQ6B5b7KfGrKIbqVEF2LhdkItw6hpl
+ aFkVELcg
+ BEl1yzacHROnKkCr5v0H4rnGgbXz2V3CNoVqjDR5OGqI3Tmxqd8w9S5td0TYeXlHfMhaW6fFquhVvmotnkBM6H9cEkcbSQIOQ0lGTO1sd/KL4zfU1KLuC1kJKmv4CHjlUBoUIItCP1/N+CTa3DN9+5R7YvFwVoJePTQbNA8s+T/aeuD85tYd3bBX5y3dOELw0rRocwyzSe77av4UVuGW0Znbuuwe9ny9HwbKD5SjcHX6I0/0W/9yaNB4WsMr1xR8f0rHy2AGkRauUFMK/sJ41l96IiySS+N7cjVSveysGTSxamHuUABGMwTwavLu5f9xBT5IZWWpGq191O5A4u2IGEXbHbA+YvoJhFSOL
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,43 +95,108 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 12:11:24PM +0100, Uladzislau Rezki wrote:
->
-> There are users in kernel. For example:
+CC Barry, who added the TTU_SYNC in shrink_folio_list().
 
-Thanks for the list.
-
-> drivers/GPU
->     /* Allocate the file in vmalloc memory, it's likely to be big */
->     iter.start = __vmalloc(file_size, GFP_NOWAIT);
+On 11/5/26 1:48 PM, Lance Yang wrote:
 > 
-> AMD-GPU:
->     kvzalloc(size, GFP_NOWAIT);
->     kvzalloc_objs(struct amdgpu_coredump_ring, GFP_NOWAIT);
->     kvzalloc(ring->ring_size, GFP_NOWAIT);
+> 
+> On 2026/11/5 12:54, Lance Yang wrote:
+>>
+>> On Thu, Nov 05, 2026 at 10:56:28AM +0800, Baolin Wang wrote:
+>>> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing 
+>>> mapped
+>>> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can 
+>>> also race
+>>> with concurrent page table reclamation via zap_empty_pte_table().
+>>
+>> Good catch!
+>>
+>>> page_vma_mapped_walk() is used by many functions including 
+>>> try_to_unmap(),
+>>> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), 
+>>> remove_migration_ptes(),
+>>> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for 
+>>> try_to_unmap()
+>>> and try_to_migrate(), the other callers do not perform post-walk 
+>>> accounting
+>>> checks, so the race has no observable impact on them.
+>>>
+>>> For migration, the race can cause unnecessary retries. For reclaim via
+>>> try_to_unmap(), the race can cause failure to reclaim a folio that is in
+>>> fact already unmapped (as shown below), which may lead to unexpected OOM
+>>> or increased refaults.
+>>>
+>>> CPU 0 (reclaim)                      CPU 1 (MADV_DONTNEED)
+>>> --------------------------------    --------------------------------
+>>> folio_lock(F)
+>>> try_to_unmap(F, TTU_SYNC)
+>>>                                     zap_pte_range(full PMD range)
+>>>                                       spin_lock(ptl)
+>>>                                       clear PTEs
+>>>                                       zap_empty_pte_table()
+>>>                                         spin_trylock(pml)
+>>>                                         pmd_clear()
+>>>                                         spin_unlock(pml)
+>>>
+>>>   page_vma_mapped_walk()
+>>>     observe !pmd_present(pmde)
+>>>     nr_pages < HPAGE_PMD_NR
+>>>     skip synchronization
+>>>     return false
+>>>
+>>> try_to_unmap() returns
+>>> folio_mapped(F) == true
+>>> nr_unmap_fail += folio_nr_pages(F)
+>>>                                     tlb_flush_mmu_tlbonly()
+>>>                                     tlb_flush_rmaps()
+>>>                                       remove F's rmaps
+>>>                                     spin_unlock(ptl)
+>>>
+>>> Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped 
+>>> folios")
+>>> has already moved the PMD clear operation (via zap_empty_pte_table()) to
+>>> after tlb_flush_rmaps(). Similarly, page_vma_mapped_walk() also needs to
+>>> use sync_with_folio_pmd_zap() to synchronize and avoid memory ordering
+>>> issues on weakly ordered CPUs.
+>>>
+>>> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in 
+>>> madvise(MADV_DONTNEED)")
+>>> Cc: stable@vger.kernel.org
+>>> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>>> ---
+>>> mm/page_vma_mapped.c | 5 +----
+>>> 1 file changed, 1 insertion(+), 4 deletions(-)
+>>>
+>>> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+>>> index e6b6170c2f4f..8797467b6f0c 100644
+>>> --- a/mm/page_vma_mapped.c
+>>> +++ b/mm/page_vma_mapped.c
+>>> @@ -293,10 +293,7 @@ bool page_vma_mapped_walk(struct 
+>>> page_vma_mapped_walk *pvmw)
+>>>             spin_unlock(pvmw->ptl);
+>>>             pvmw->ptl = NULL;
+>>>         } else if (!pmd_present(pmde)) {
+>>> -            if ((pvmw->flags & PVMW_SYNC) &&
+>>> -                thp_vma_suitable_order(vma, pvmw->address,
+>>> -                           PMD_ORDER) &&
+>>> -                (pvmw->nr_pages >= HPAGE_PMD_NR))
+>>> +            if (pvmw->flags & PVMW_SYNC)
+>>
+>> Right. Whether the folio can be PMD-mapped doesn't tell us whether its
+>> PTE table can be reclaimed, so those extra checks can skip 
+>> synchronization
+>> that the caller explicitly asked for ;)
+> 
+> Ouch ... one thing I missed ... what about order-0 reclaim?
+> 
+> shrink_folio_list() only sets TTU_SYNC for large folio, so can't we still
+> hit the same race there?
 
-These appear to be executing out of process context without spin
-locks so they're not really GFP_ATOMIC.
+Thanks Lance. But this matches the purpose of the TTU_SYNC flag, which 
+is used to avoid racy checks with PVMW_SYNC. If no TTU_SYNC flag is set, 
+it means the caller can tolerate some racy checks.
 
-> Virtio ring-testing:
->     (alloc_ring(0)), gfpflags_allow_blocking(0) does not allow blocking.
-
-I didn't really look into this as it's just test code.
-
-> net/ipv4/udp.c:
->     err = bpf_iter_udp_realloc_batch(iter, batch_sks, GFP_NOWAIT);
-
-This looks buggy in exactly the same way as rhashtable.  It's
-called under spin_lock_bh, and the same lock can be taken on
-the softirq path on another CPU.
-
-So are there any safe users of kvmalloc with GFP_ATOMIC? If not
-I suggest that we change kvmalloc to disallow vmalloc when called
-with GFP_ATOMIC.
-
-Thanks,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+For this case, I think we should set TTU_SYNC unconditionally in 
+shrink_folio_list(). Barry, what do you think?
 
