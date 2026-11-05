@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F31D606D829
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B70606A332
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:52:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F0ECtycT
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e+FQOIfN
 Received: by kanga.kvack.org (Postfix)
-	id 726486B05B5; Thu,  5 Nov 2026 11:52:51 -0500 (EST)
+	id B6D966B05B7; Thu,  5 Nov 2026 11:52:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FDFF6B05B6; Thu,  5 Nov 2026 11:52:51 -0500 (EST)
+	id B43AB6B05B8; Thu,  5 Nov 2026 11:52:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C5BC6B05B7; Thu,  5 Nov 2026 11:52:51 -0500 (EST)
+	id A81BE6B05B9; Thu,  5 Nov 2026 11:52:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 33D4B6B05B5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:51 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BCA9FA0B7D
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:50 +0000 (UTC)
-X-FDA: 85401659700.08.4995E82
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 832426B05B7
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:56 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 13A2F80B61
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:56 +0000 (UTC)
+X-FDA: 85401659952.10.C295C8F
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 234B840003
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:48 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F0ECtycT;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793897569;
-	b=nXch8x8GVqafMifujtK9INnNDgbyASsOZVhGoZtigLAB1AzOcS+NkzYgTwhtN2z+Zx5sLI
-	39NvKfqV0ztVeZAgZbZ+yFuKMBpfuYTJo2qVpQgLIOGr8gOatjYzwtrMSRduChcR8GvyQ+
-	SiFg9TGmDLrbLZVnOru3UYONelJ15Ec=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F0ECtycT;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 778A1120008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:54 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e+FQOIfN;
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793897569;
+	s=arc-20220608; t=1793897574;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=93Jjsh5uP1bJuXaCFxDECc/bZWbVcYpxvdFTfNjDZUY=;
-	b=EDPISzpnKTNG22d+BzhpVAfzRUd1d4jjHFwZp6ZcEERHsMAAzxSQzjBzPEIkeie/Wvoe3G
-	tbMHX7+sLNzY9Anyr8GPC+ZzW6Qvv2Eh+Ywq3kvulgDKi6LSkkkzbBo3XgCwgMbffoqq2S
-	VQzcohakrsHnw4AYwOmhYWEN1XRdsGY=
+	bh=w/YTY8Qo0Zgoo2NfvapWx8uwEG48gJ3/0t1KofHUSvY=;
+	b=W6AR7dE+IuGoWs+LWTA2y0ekt5UN7oV57qpvhhFJnB2jFh+dXWBVWg5FuDEAuQb7IR3h1J
+	+sN8lOm6wTAIrVvtbDDOiToboDM5PiJNoYdJyum6I/MeBq82mpPrLBsFoFUPUJLKYvIZjb
+	d9TsLXj3aQXr3pj6z+y1RiAjjeZnCAg=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e+FQOIfN;
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793897574;
+	b=8FCtZvZslVVWkNQm5+JUVmRcHtcRqvSnUKIgvixjVblRxror9l8FaJudw0WZfSUwJhbvLl
+	Iq1ajBkUdhBwMNSeqlNJXm+hSirhlOufjNqQK6XSY5rUFrdAKc2Wmg7/mCpToPqFpBzA+Z
+	KJnqvPnivNuaBre/LiBr/9e+zon0DSE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A37DC6020A;
+	by tor.source.kernel.org (Postfix) with ESMTP id EC905609F5;
+	Thu,  5 Nov 2026 16:52:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78131F000C1;
 	Thu,  5 Nov 2026 16:52:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AA51F000C1;
-	Thu,  5 Nov 2026 16:52:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793897568;
-	bh=93Jjsh5uP1bJuXaCFxDECc/bZWbVcYpxvdFTfNjDZUY=;
+	s=k20260515; t=1793897573;
+	bh=w/YTY8Qo0Zgoo2NfvapWx8uwEG48gJ3/0t1KofHUSvY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F0ECtycT0ID6uIHdj/OpmBK2gU3FHjDn3/gApTFyDgc91RQtJ4WgWm+RL2HwAhVdt
-	 nWsuBuZYAr0GwetQrft6qOL+ZG0OfKdSu4K1WmEtRjthoSmuVPdG98l1Kpwf6aQG0W
-	 TxNu9lDTAXW6iF8+9OnH1JOR16vW2uC3ZObWq9SKfkU8PZEFIoJyiVJFzz4xz4fKVG
-	 zzPcRa9glxwjIFDFcSrYw1yFqUAO0Hkna49kQLb0fVCLIYNVQjfbRuGEiahNsBkEYN
-	 wkqeuLitvZXCR+Sp14k3ZHYCWxqNnyon64Q4EWpYZKeW/u8085i4PiD3HSrj4uKiaF
-	 h72LTbmmT/bkA==
-Message-ID: <sashiko-outbox-199544@kernel.org>
+	b=e+FQOIfNYc9wA2g3UCHvH9NgrcOuRcaEGDzbgAv1EgOtmrRJPSTLBvFWZ4/FpJD9W
+	 15AaYXrjwrrIpdWszwLaHSgP0IXU4dOJPmQRRLugdqcsOFH2GeRuDWFj4MjhUnBoFp
+	 4Rzs/MfQKLEVOfF4GjK9p5j1nvikqWdTzXny56BY2WP5ZbDBEjhwGWJKh1x+rGL6ds
+	 KziVI0OEAA3uFY2MyCXCxryvNf3Xye1hcZiGd3E6GHX/hxDJr6irTkKG3bcd3HJMf/
+	 asEvxYDhlE469H/oqIzFUy8r+vtIfVfmwvIbI2SxLRDvqAkwSW/6x23nYBVWbcgDlf
+	 sFVJw80vCBp+w==
+Message-ID: <sashiko-outbox-199546@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 06/14] dma-pool: Allocate CoCo atomic pools using
- CoCo shared memory allocator
+Subject: Re: [PATCH v9 08/14] swiotlb: Align shared IO TLB pools to the
+ shared granule size
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?QW5lZXNoIEt1bWFyIEsuViAoQXJtKQ==?= <aneesh.kumar@kernel.org>
 Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Baoquan He" <baoquan.he@linux.dev>, "Mike
@@ -92,24 +92,24 @@ Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Baoquan He" <baoquan.he@linux.
  Bonzini" <pbonzini@redhat.com>, "Vitaly Kuznetsov" <vkuznets@redhat.com>, "Andy
  Lutomirski" <luto@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, "Oliver
  Upton" <oupton@kernel.org>, media-ci@linuxtv.org
-In-Reply-To: <20261104164555.3555725-7-aneesh.kumar@kernel.org>
+In-Reply-To: <20261104164555.3555725-9-aneesh.kumar@kernel.org>
 References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
- <20261104164555.3555725-7-aneesh.kumar@kernel.org>
+ <20261104164555.3555725-9-aneesh.kumar@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 16:52:45 +0000
-X-Stat-Signature: woccd6wwrs74uoh71pskhjexrwr95r7f
-X-Rspamd-Queue-Id: 234B840003
+Date: Thu, 05 Nov 2026 16:52:48 +0000
+X-Stat-Signature: bqz7ts3f3mdca4bwuehhpn1oauxrpraw
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793897568-784685
-X-HE-Meta: U2FsdGVkX187Eo7V8EdBn8aPi/YFa3+OJybjaRuVQmWnR27ZFLpH6BtElKemS2CeiTB4GyElR1Ex4OqWueGxdNwQed+oxc8L+xDxEsLkZP9i7ODeBKDC/aT6mPh8A9t1rScuUJmz5AUWjXn/m2+gGm322Ap8rvmIg45gMwf817mX7T90NO4MdPQhCpSZd1YrdKx+H9dwWyPsM+sxa8r/83QkuOvlF0euqcN14tRhY4RVl7K3gaUUWzDck67dvgAjR1F8y/I49y9JzPefrdPwevBbaImrDA8+ddsu27yaMPFEGa3/SUzgx8cQWFhtyilwrMN34yigOsifc17ITFZ7VVFmMWpyFe6b1yeS9T7Rs6/T8KHbNXMEdagsDeL8Qw+5ku3sl4BqDRRKIHmF/M8HsoUhGvwiPqMBWHevlBiXx+qRpysKOt81UhLhXFx12xTs6KuCQdPRxygY78hw6yMnqVHbmVg7X2Q4oDtgm4KZu6CuwjB+lZKga4wqmhbAcqu1xzffYnQFo8dawtFgaKEZc/1w9vigpkHR4qoeqYTYsuDBnGiHMFFCd7neFod4baFLcLOs8S7g02IxfMMM/RiT3KZDCsBzUhoC8jFL7meDuRrlHWqKAxivVJLzcs+hCRN28bg9CjVTPH4g3zekJyEgP4bN7WgFipmY7irFYdKMyj0Dym278f4mqOmqVsv5KVmvD31UvaltfXZOuTUi1XL+F65yMEb2/rnxRxMrrOci3oKrtyJWljaRejp+ktu3/eLEm9xjKSMcb6p5uE0pbOkw6ggAOwtemDqsi6o7BOz1KciZLoKdAqJ3vLGfM/lQZsET/vnCoLqMwEUi3ylY8usp8kEXU480/15kRjOanLzubyDu7mVzl5DVL/UNGi1h/mzphNUVXXa319nXAaUg9RnHd06Cip/L6k4V+8zQVBig1Fv6rB3s/KC7y2NgiJ/myq2/XynaanhVaYocED178m8
- SemSgran
- TvaEbVpJOknwpi519+KAznnDoMb22ZXi3yKRCEXeVwf5DPswb+pEMjkjLR1GuNNSE07h+M5VyeoDL/J3W44Gsmq8YiJ2vg+VvpJE7+IHV0LIm5r6NnT7OYzU+DXIXgfaslZOOiCWPsOCEFwc/gCVvt9h5co6f0taBew7cN7VZyYgOMq3tAwFkKN6AKgL9qSjIjDLqopFkxsltN5li/c83m0Jz3jg3MFh9DF16CM0wNl95VCZ7teqdOLj8+menfZ9YKK88oHs2yFzK65MXtH/iYyDAtsRtHg34soKArAu+ybQdUsbqJ+oO6DCfSzMJ9MbqEGzX0Yh381s/35oq7ZijPUE/sW92NyFWwo0pnc1M9tKtKruW2HaQGYdBhwPSU2jQzh/49moU1s+cmy4PvtEVYSfzDTAHGU9jLxxba41iMGyq8bUDuP6ZDkxhC9KAZvxKm/9pEA50cPfEZvfiKF3HYLHGJnEe1UYYf0cWY7nP55SruSgtLvQeUbDvdinBQIRZk3Z0S8KAv++ds8hh+T/NB2yUa2y17BtY2WRJWjXNrI0v6BvMVTzknGVddVvGJkTdzeJy2EB0tIaUil9qvKzd0YQPkr6nBu5pjVp9mlW99fJXrADj7j4VTGhyffMSAPdvCp5npv+4lYispi2/q6WwNT84PIZGeOaNbJF7p6c7Le65dGAF+kB16nhw78tZqe36jvxxtFOHLP1UeCg=
+X-Rspamd-Queue-Id: 778A1120008
+X-HE-Tag: 1793897574-281833
+X-HE-Meta: U2FsdGVkX1/C93dJOormtTLQVg645qEl/d8agqfmcBhLxFWNrX9tSqS7XYgV9uyU7AI9Gjpk5ctOcKJD6Bsz11/QStY0mR7Hz9LOaL9RKWNH+XubIkgn8+O0Sy7Kusj+Uh/o+Tj0HMkDrEe5yZf9KP/34SGVJezVv7NKTLjTCoIM4aLdYu7TCwQpJ2TMinFt0/uaAEw8lIyADRvwyvJFORkZr7kIBcMDWQna2DhbqOpV2X0z9tnh/oitC342sKuC7LHHxCEZpYb44zhVRoPWbES2oD4Hb5JprZU1a4d+v1FeZuEVeYqHH9m2LzWo3S2Q90or7FrdR0eoL7YfWh+6NwImE+KWRtWEgTJfDRthUyKip21BgUwep9jX57C8oNWK9HpTJRg8ycs4lBqm+MGFEywpwYbd0+9zZZJMHoWVBC1P89URmNDcv3iI+dTii14p4f5KAtAFNMOV0tgUuOZZQC/Jnl/KEIibJ4TxJLSWT3fFAtt8S2z/blDfGSlHLIhUQzH8TsRt0oJk/v0C3TVmOazd4/nOCyBvYuOgzU2/USr6OfIwwQyQRAvc8ykKvCJRvmPkdJJ9+hiaxSpWCXXwUHhds05xoOqfxQtXjMhtcMVs/I1X82FDJZd+6CI7ZUqhBV8G/AOXvW9UKYgZq5ffzvfdIgdw6rH8IHBTWxjzTTXe1DIR6kd9k6cDAz4ZDaY1mYv0MFJ67w9bBQypOzYcE+IfOX/9G8u/PxxYX5TIjDrxe1OZC9wZP9RrE8QkglbaPWK/zptfU+5F0NAm2+q+gOHxQaV8fJ0GIRfd1DvwqFIpNg3+LNpLA4h8NGqgNe056pcVD6+J1kLzN/E4xxSlYAGpLxB3CAaIcBWzFc198bXTAJHXXLIJVZBAbAIOQQKS1QFuw+qRqcDAdHNkAoiJNacqriPJYhx9woBXIPuFyRVGoyv1JXC/ttPbfRMrgHYkrECHzAPZt7DjR/Uw0E6
+ L2i7UAa9
+ mwWsg4HDffaaHXYzTlY8yIgXn5PObCnpYUqjDwQZGbx77dyKHwUIf4Xe5F2m1riIYpgQYAVZG4pfHPmUqtoh21A64wy35bP/2lIjozdaALACajATuUQ7VQjxC2uw5QRhpRjPq3N1JacwacUO6GoqNazOwUUGoe+Q70/XsZuzeJ9ACzU5/ftVIOP0V8aY1ZVGVCXCgZIjNb+bKWcgUBbavK2/8ovepGenjQ0rWioWIfiDl2nSqDr6iVsvVTMbhV/PtjrQVqYiH//MMpzvT22cnYGA6JwoGDmVkx4zk6/Yupx3i5u9C6Lx7Il6PpSe2GLc2zZEg61AsLagIg1Lj/EwtZ+XMRWhw88cBWDcJrHDlP+FVWo6Q3lqCZQSCbpP53CK/d9pfeTVVA8f4aDnOjz+zy+yl5Ubz0JTDr8ANYwYCB2fJyMcmNQo3Tp1CICrhavMBSLBETX2zGCvM0q6H5NIrrL3lCbadl03eV/NlqVKaOvQxDBtohTk05d13aPhcl9fFe/hp308hu5Sam4qe1jYXYex5UQXwZgB9HfSpxA81qXaP6X9wT6j1uZOUh8sSB/xpELOFBTa1dvpT9j1SmOJjrjB60gHBq7LJtXcK+wKh1MVWQ04z7igROJGfQXJhd/IXqzImPTlIrcbhTgS585SoccqLSz32xzRur3i8ifXJ7/7LvfC7gHJIjaZsDS8+Uq8lZ9kKbbI4qOri9Wg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,92 +121,72 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] dma-pool: cc_make_shared() runs after arch_dma_prep_coherent()
+- [Low] swiotlb: premature linux/set_memory.h removal breaks restricted poo=
+l build
 --
 
-commit daae4fcc15a00bc83c4081ef4b27786a7f224537
+commit 604798053e9de98cc147fbbd212cc3b2c9896b0e
 Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-dma-pool: Allocate CoCo atomic pools using CoCo shared memory allocator
+swiotlb: Align shared IO TLB pools to the shared granule size
 
-This commit updates atomic_pool_expand() to allocate confidential computing
-shared atomic DMA pools using the cc_shared layout and transition helpers
-(cc_shared_calc_layout(), cc_make_shared(), and cc_make_private()), enforci=
-ng
-shared granule size alignment and minimum allocation order.
+This commit aligns and sizes the SWIOTLB pool allocations to the common CoCo
+shared granule size and replaces the default and dynamic pool set_memory_*()
+calls with cc_make_shared() and cc_make_private().
 
-> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-> index 70b7f64b17ab5..da487c3f9dc61 100644
-> --- a/kernel/dma/pool.c
-> +++ b/kernel/dma/pool.c
+> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
+> index 2c57b49ac7c06..36fbec2241e4d 100644
+> --- a/kernel/dma/swiotlb.c
+> +++ b/kernel/dma/swiotlb.c
+> @@ -22,6 +22,7 @@
+> =20
+>  #include <linux/cache.h>
+>  #include <linux/cc_platform.h>
+> +#include <linux/cc_shared.h>
+>  #include <linux/ctype.h>
+>  #include <linux/debugfs.h>
+>  #include <linux/dma-direct.h>
+> @@ -38,7 +39,6 @@
+>  #include <linux/pfn.h>
+>  #include <linux/rculist.h>
+>  #include <linux/scatterlist.h>
+> -#include <linux/set_memory.h>
 
-[ ... ]
+[Severity: Low]
+Does removing linux/set_memory.h in this commit break the build when
+CONFIG_DMA_RESTRICTED_POOL is enabled?
 
-> @@ -126,8 +142,7 @@ static int atomic_pool_expand(struct dma_gen_pool *dm=
-a_pool, size_t pool_size,
->  	 * shrink so no re-encryption occurs in dma_direct_free().
->  	 */
->  	if (dma_pool->cc_shared) {
-> -		ret =3D set_memory_decrypted((unsigned long)page_to_virt(page),
-> -					   1 << order);
-> +		ret =3D cc_make_shared(page_to_virt(page), pool_size);
+At this commit, rmem_swiotlb_device_init() in kernel/dma/swiotlb.c still
+calls set_memory_decrypted() directly:
 
-[Severity: High]
-Does calling cc_make_shared(page_to_virt(page), pool_size) after
-arch_dma_prep_coherent() and dma_common_contiguous_remap() leave dirty cache
-lines on the cacheable linear mapping alias when CONFIG_DMA_DIRECT_REMAP is
-enabled?
-
-In atomic_pool_expand(), arch_dma_prep_coherent() and the vmap remapping run
-first:
-
-kernel/dma/pool.c:atomic_pool_expand() {
+kernel/dma/swiotlb.c:rmem_swiotlb_device_init() {
 	...
-	arch_dma_prep_coherent(page, pool_size);
+		if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
+			int ret;
 
-#ifdef CONFIG_DMA_DIRECT_REMAP
-	if (dma_pool->cc_shared)
-		prot =3D pgprot_decrypted(pgprot_dmacoherent(PAGE_KERNEL));
-	else
-		prot =3D pgprot_dmacoherent(PAGE_KERNEL);
-
-	addr =3D dma_common_contiguous_remap(page, pool_size, prot,
-			__builtin_return_address(0));
-	if (!addr)
-		goto free_page;
-#else
-	addr =3D page_to_virt(page);
-#endif
-	if (dma_pool->cc_shared) {
-		ret =3D cc_make_shared(page_to_virt(page), pool_size);
+			mem->cc_shared =3D true;
+			ret =3D set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
+						   rmem->size >> PAGE_SHIFT);
 	...
 }
 
-Because set_memory_decrypted() (in commit 0a47431deefc ("mm: Zero memory
-during shared memory transitions")) zeroes the range through the cacheable
-linear map address passed to it:
+That caller is not converted to cc_make_shared() until the subsequent commit
+("swiotlb: Reject misaligned restricted DMA pools for CoCo guests").
 
-cc_make_shared()
-  -> set_memory_decrypted()
-       -> realm_set_memory_decrypted() / pkvm_set_memory_decrypted()
-            -> memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
+Because none of the remaining headers included in kernel/dma/swiotlb.c pull=
+ in
+linux/set_memory.h, architectures without CONFIG_ARCH_HAS_MEM_ENCRYPT lose =
+the
+static inline stub for set_memory_decrypted() from include/linux/set_memory=
+.h,
+and x86 with CONFIG_ARCH_HAS_MEM_ENCRYPT=3Dy loses its declaration from
+arch/x86/include/asm/set_memory.h, resulting in an implicit function
+declaration error during git bisect.
 
-performing this transition after arch_dma_prep_coherent() has already clean=
-ed
-the linear map alias dirties the CPU data cache for page_to_virt(page) with
-zeros without a subsequent cache clean (and on Arm CCA, cleans the protected
-physical address alias before the RIPAS transition rather than the shared
-physical address alias after zeroing). Those dirty cache lines on the linear
-mapping can later be evicted to the Point of Coherency and overwrite live D=
-MA
-buffers accessed via the non-cacheable vmap alias at addr.
-
-In contrast, dma_direct_alloc() transitions the pages before calling
-arch_dma_prep_coherent() and dma_common_contiguous_remap(). Should
-atomic_pool_expand() similarly call cc_make_shared() before
-arch_dma_prep_coherent() and dma_common_contiguous_remap()?
+Should the removal of linux/set_memory.h be deferred to the next patch where
+rmem_swiotlb_device_init() is converted to cc_make_shared()?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104164555.3555=
-725-1-aneesh.kumar@kernel.org?part=3D6
+725-1-aneesh.kumar@kernel.org?part=3D8
 
