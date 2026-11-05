@@ -1,68 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84419606EA66
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AAB2606EA7E
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iMGngCoO
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EbrLF/GI
 Received: by kanga.kvack.org (Postfix)
-	id C2CA66B05CD; Thu,  5 Nov 2026 14:36:02 -0500 (EST)
+	id 6AC606B05CE; Thu,  5 Nov 2026 14:36:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB4906B05CE; Thu,  5 Nov 2026 14:36:02 -0500 (EST)
+	id 683396B05CF; Thu,  5 Nov 2026 14:36:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC9B46B05CF; Thu,  5 Nov 2026 14:36:02 -0500 (EST)
+	id 54B3D6B05D0; Thu,  5 Nov 2026 14:36:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8673C6B05CD
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:36:02 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10E59A0C19
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 257A56B05CE
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:36:05 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AB66040B03
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:36:04 +0000 (UTC)
+X-FDA: 85402071048.20.001A841
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0E32B1A0002
 	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:36:02 +0000 (UTC)
-X-FDA: 85402070964.22.57E3028
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B2C2F20008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:36:01 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iMGngCoO;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EbrLF/GI";
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907360;
+	s=arc-20220608; t=1793907363;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f7pbLgB+bOANV7ZH7bSfet1egKll+CXGNKYzJQU3Yrk=;
-	b=s0vGIypb6SLjSskCZf3W5lNrkAEqXSTF+2hT0ADcjQuMtuPPcLPwjwHeBHVVNOHerdH/LC
-	8y010hpyjTIrVxnfdNOjitaK7ILBd8y3BRZT5sE25aCXfhhcsmxamJgp3Q5IxcRJi6Qz8x
-	lsP72pGvPloNUZg/jc/foemMW5gwg1U=
+	bh=u3XH2HUDxRINO6oY1nDOxszi+5d2U3ZN+LfBIkkJykc=;
+	b=nmk2rxSw643yylUSgDpDiBJTmQ3+COHtjhP1CjQdOyRuJULSgunSuXFLIMJxvix7DJwH1q
+	ayIcybbZhr1zyyYlRaR/6MJ/gRw1YugBy4dGUCjBY9uPrRQfeY1Jlh+cz0kQQ0chu/kZZZ
+	CkDRBsSDXWO0Fm6QPuJm8pNrivyyCQc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907360;
-	b=A4OWaQNYizWbFHmbIQTpfKmToNZLkrGfgoM9YW6KrTES5DwErMvC034W5qpwpzimYkgxku
-	FnNK2XlwLs+Xb9AcmoIYiPvR6FfMIHSNJn8msqsN8nrkfTcZe5lnoEhMmvlQA0d8gj509p
-	7Y3CGGR6IT+PRQnJCVTm9cwJ8RlpQ8Q=
+	t=1793907363;
+	b=qpZhauP9Y05g6CoCgl0z9VSw7yjuDRb19LD1Q4fr6ok+23tYp9tZ/sAw33LApDQ8BOo8yy
+	YR69Rr46CZ+0SPtfhpgrBL5kUN2zLNFlexsDJjQY4278BpPfHljcV/5MooPWaDVJH9BwEm
+	7HywSAawt+bGJnuczUiXLNyp0k9w+5E=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iMGngCoO;
-	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EbrLF/GI";
+	spf=pass (imf19.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0B0E3601EC;
+	by sea.source.kernel.org (Postfix) with ESMTP id 64D2C4190A;
+	Thu,  5 Nov 2026 19:36:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE711F0089E;
 	Thu,  5 Nov 2026 19:36:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E9A1F008A3;
-	Thu,  5 Nov 2026 19:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793907359;
-	bh=f7pbLgB+bOANV7ZH7bSfet1egKll+CXGNKYzJQU3Yrk=;
+	s=k20260515; t=1793907362;
+	bh=u3XH2HUDxRINO6oY1nDOxszi+5d2U3ZN+LfBIkkJykc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iMGngCoOl/U4CYIB1rTzS3RguQRqLRp2sKfBp3odJCcMgrP4Y2V8PmtfZZo1x5Xkv
-	 FLC9VNWmdujwFQtrFCf8Mg1QUR9V0cBoPIZOnqaamHivU1nhWiKlmj37JQBwx8Nw4V
-	 gnJGb6AJHKNc0HghHI9fJU1uQS16q3fA1JPSybQgU9VxlezkJg9W+I3Lt4LPHuBS+G
-	 M91zjKny9mmSeWhknnqhOUNYocrnIZ20lXgBv1WbhSSK7LtbVS4MpUGhBLakgtch3v
-	 NiR+5uPctDAbSjOlOz7BSSMrEU1NCpxJBHKCCILKG0ymIlPQ81348+1c7a3Gat7yd+
-	 kdKHITt2fXI3g==
-Message-ID: <sashiko-outbox-199951@kernel.org>
+	b=EbrLF/GI9zveLxnzZ8uxZ7LXZBqUJdqjZ/hKoCeJ+z1yLwXWHsb2qxVPJQ8BLsPOE
+	 K/NM8kOHLdOX413B6qu4BxuoBVdDuZNIDosQo3lfsNG21BWE641KvfyeVALDLSFtDe
+	 ESPTTOTW65bJL496sXvpAbFlSD7S31p5rbp2uYOnMbdF46/hUBlGYvOTz/9riUzRjK
+	 p3f2B9HZLlYz+fkIAktgBcJKJZDL0Yykv/zheSRbg1STyFrvMiDZro6fwOyZTiGupJ
+	 cJfQ/mrW1aSt0fhZWKbtOyHFZ50PXoXdNZ2u1li9/TrUnZma8Zf3atQs17wXbvbwaB
+	 b0ELZzT+OQZ5w==
+Message-ID: <sashiko-outbox-199952@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v2 21/23] proc: let lockdep check the pin
+Subject: Re: [PATCH RESEND v2 22/23] proc: own the wait queue of an entry
+ with a ->proc_poll()
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>
 Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
@@ -77,24 +78,24 @@ Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.
  Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
  Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
  Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261104-work-procfs-core-v2-21-76ace653a773@kernel.org>
+In-Reply-To: <20261104-work-procfs-core-v2-22-76ace653a773@kernel.org>
 References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
- <20261104-work-procfs-core-v2-21-76ace653a773@kernel.org>
+ <20261104-work-procfs-core-v2-22-76ace653a773@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 19:35:57 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B2C2F20008
+Date: Thu, 05 Nov 2026 19:35:59 +0000
+X-Stat-Signature: qokehidibu7axf6ib5t36hctgqziw5s5
+X-Rspamd-Queue-Id: 0E32B1A0002
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: ebo5nkje1pwfyychukny9n5cts756roc
-X-Rspam-User: 
-X-HE-Tag: 1793907361-854343
-X-HE-Meta: U2FsdGVkX1+czFWTpyZo/jKBSS9Ta94EmTOc+xwmDSzMFZz3/An8GE1IrHAhHfyeqamyPpv7QBoDoyH6637cuD4Dzfma7d2SMZydkeOHdKEPlo6C6dK5HaZKsEiHoggKd9TDr/UkT4r1CbM9R09v0rFB5s7bi1z47bQOq5pf5925HRYkGddzvI5tDUfquriK3+ouvryk8+TR5gPvRfZCFWargwRyJExGnkAOutBtsesZzLaXixkKh+kOKP0mvrPI3lZSViL6X3ExgY7mGi/UvufDm1G0pz1S2axI6Khl0whyPo/AL7TgIW9iL11GOvZFuJQetfOv+o4/9uY4Rt5ksdDLpCnmRPNhgi1zoR5f4RlmgCiyatMVf23hXIulBW4HsI4GFNsPb//yeV1sUVuw6U/m57WQEOsDQ6XCMzbF9jaP2mpF5VEXymARVfduiqBKKAzS8dFK2Dt5sJvIBifrW9p7jxG1floXB2bTdKI4Dtk0KD3KMQk5gZn8Z5hlqZdk4vC1gTzOO3GkJl46WMvgS9NO71RJVn7ev8X7zc2wYbjoVCgv602qA3i6RotWKUMZ6o63YA5tknCqfMyIGSyb1YuXHD+RQvG1L1vJMTka2oA3suARUH+uCojInmbw0Lyblh4tLvknlGX+jdSE+phGT0n2nF2zLgWIrOtXFTcfNYZQcMUO8cValhrmQo+wooFyf7I94MZtSYnSZj4eWbBvQE3HVhwg84u6X0r0NYBPEdfEC6YO+iTi8c6ccyrr2l80NWMx8vG0W5x/igrJq/2py9wYdaxvba4SsgD1GNBrhSm5LB9/wKzAlB5FeT3rJJTnTrH5WTBVqKFwreasNcX+NS9YyNAaiX4Ky8I0Z+1XbEImMFLe9BzRGk94xtR7i8CQvqUPy98MH8gdE741pEVJthQ6CRPfCbMzfLqxAE2xTvArzzC1I1KdeaR1ME6Jcuw7rmp+eJIqEtxJoIi8xgs
- 90my9nv2
- 6qgPKb2H56Ii+zhSRwZNO1zX2o8qLQ+0/yoBZXecDa6m8Hmdf8zf6rNqvwgA80Clh2Jmkp/HDcV77yruwtRGzFeYvw4iaX0AwQDKqXdfwPm2D1htqT1sjF/u95KxHeNep8nIDioCPcmKSI4pND+Dri5xllYTidDUWisBo3YwWijybeeowDOexcWOlua/UEmvoPlUtKVmQjhVjdxye5scwWr7czr5zQygZ7Blk5rPzOlRiVQL20a/4yZjjZNVFCbnsB60KCIOCgklk2gyAJWgzqkbCTyLtcgR/BvLM/9lAkuw3lv4APSWPGGDGtAyNIaSA5gF9eBbk9OpcyzOcE+D0phVwbG/AyWY8K4eqD7dyAEfSd1MuaQ+zGH15efhKZX6a/lMMQxL5HFhXml0wNIh+fNYrRl5FX5JOx8UNOOpdYUtOmPMlgMGCK0EV/Z1wwekdUt7fbj/ZdcAr7h0dB7gImp5+GQZacKDVjUNGgznECrRvT11JGYTmdyvxeHAfk8Bg+P7PV34UBKfnkIJ3gWasuYt8ulleVIw8RTixmkmdDKN7UFsD3NdNp8XPFKqrMcYQ4VNU5N8jo7a7gscd8cXXnkzNcHVYY+SNK/0uI9tFT3bvZr59JJxwqc268mNzIcN28tAI4lV5wZ+BEFUSUOnJrcBR/cR/U2GnqyvS
+X-HE-Tag: 1793907362-349207
+X-HE-Meta: U2FsdGVkX1/hgfSxqakraOc3YVdq4/CBlesDC9yNuVE2TFGCvFplEmdTJUzTaUayOT5nYU+0/Wx8nWm2QxHMkWMgTqWncibAgdoT5xfNQHSnMD9IQj4uFI/njOWfwGAkIHLfJZ2tZceDTw1eM4nbck5s2u0XsirKlXBoj/l9nylBdahK2Q0AynG+VSGti+5b09QPTSvO9vz9fYGLeuImljFk4UufYUsa75ppER3ddJMPG1GvZnlvK8aduQlTuNg22ZKpX2OJyBt3YB+f6LMbi9GikDaP+K836kTQtwocnleXMCTUYdsbZlXq4I2tfolewFewQ7ohQtyuA/0XTPjcgOUMO1K0wqhg40Y+YTQGRdl/6VHRH3foAvwrrZ7p+lL6U8QZbJQZpFPdkvfOHmxa/55tzExRH8FrwjWQVA7hu5BMqbBCAP3lQj8hs+/UQBBRLErI46TojTvCaUXrJZ9+WDFVQ0bdOLc93jbvTqIL54l7xDR4mR5UptX2smmORZA7Tw1jFahOEqrcm6ABjAxJypgmMKAb4ekTA9W07oKzufUZJA4iaN5CuYBcT23WpKazzMBULTF+VGiExxckAb1WnAaucz9XX3+MMncQkSwwxt6vHDM1ZNAVBDQFCrOVKamp1rdd8Z8mYM1DO5tilinEzqLp+t7kPZcYWGMzHy1wKgyC2N2AYmto6wrxk484+gdnc91RHaoxxhcfj46g36dsmkw+2pBqzOh6eu/BT29idIKs6Ul0ak+xA2OSAmFFgos3NBPd97FYm4ATi4eDrNXhaUyoiCFhnfxLywXNN9sBzlNSBf0CXwObDe0fEgesn4wSkCaA/yhU3Kxk9bdJ8FNM/+pv79snG29tD9KX0jKZTt14/RHnPokb31vp58M+y7l+09kD51Sa9GDYcq2q1H3TrA5QWlcj97koSkoR9ahhlnKusXGYnGKrF2M/9BR38xY0rF74hZz6czxNuy57Zm4
+ Wy15hdiG
+ 0gxYjH/MwDpgzS/jrwu8SLE9HicdaM76FxMwHwlcbcwU32owttyW33ESip1w7GaHCD7KRehmSCY39ABAwaZlMBBL9tST9HL1PkrvgAnipAkAgoLRRLJsnQYlaVoZZayLibb3WiGWPHZ4rHHVInyZFUKXszi0wqKcDd06Xgi9q19yK/58F2WLhB+1qDog5MejEi+U/tDVyMokQhlN8c0Ht4kn7vauYe+WKFzLbXcgEEekcYH/484QyEyN0erQ4kVal1qmp8zzxvRVdiWpf2EVFCVASooDLmaV+foET4/uUh6YLPBqwUU09nZsMZRvFU4h4Tsg1/2PLl6Kv0XOwytaPIChxGJJVLFJTs0CKZP4FybBnivlItFQYjgjDXm3slxI3AI2udxwbS+c5W+zgCZsNiDNqxZNZCIs+PRjabLqd20ftVxSk/LkirY34cXPjK6U8Vd5CaoHCSFBHPibw3sSHU4p1e1un7q2uyEG8k91rDSZxDIo1nm7123Rngrrf6Jke90pwlr4zgQPu16RB15er/kD0vLLaZF7aC0wWRDkQa9sUWOEbvuN71fVOlQuBbH+o00DX00kDalS80m5ZKMAHUnrnws4ik9C9H5aVBEYxusoYL2yr9id1M7rx3+TvGmf/Wr//zB3hDAfzNuU/YbEnw64OzGvzf+XCaWaMSc//zyU0p/z0a6J0ez2QrYoXiGcYz057jU8a45IVdMMg/UbgXq1hCMgZHQUHcbsTC3INoZapZ38=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,66 +107,100 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] proc: kernel-doc mismatch on __proc_create_net_single_write()
+- [Medium] proc: dual poll_wait() calls in proc_reg_poll() break AIO poll
 --
 
-commit 095fce4c95ecbe25e644f1a3fe90061f695e9271
+commit 443c1e3f3b75bcf766632cccb5651e0034423048
 Author: Christian Brauner <brauner@kernel.org>
 
-proc: let lockdep check the pin
+proc: own the wait queue of an entry with a ->proc_poll()
 
-This commit adds lockdep tracking to proc_dir_entry pinning so lockdep can
-detect deadlocks between proc entry methods and removal under held locks.
-Entries created via proc_create_single() and related helpers receive a
-per-registration-site lock_class_key via wrapper macros.
+This commit gives procfs entries that implement ->proc_poll() a procfs-owned
+wait queue in struct pde_open_node and adds proc_poll_notify() to wake poll=
+ers
+on that queue. proc_reg_poll() calls poll_wait() on the procfs wait queue
+before invoking the entry's ->proc_poll() callback with the same poll_table.
 
-> diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
-> index b78d627b024f8..9ddd7c323dfcd 100644
-> --- a/fs/proc/proc_net.c
-> +++ b/fs/proc/proc_net.c
-
+> diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+> index 59de4681d8452..ab30a58879d51 100644
+> --- a/fs/proc/inode.c
+> +++ b/fs/proc/inode.c
 [ ... ]
+> @@ -555,26 +561,46 @@ static ssize_t proc_reg_write(struct file *file, co=
+nst char __user *buf, size_t
+>  	return rv;
+>  }
+> =20
+> -static __poll_t pde_poll(struct proc_dir_entry *pde, struct file *file, =
+struct poll_table_struct *pts)
+> -{
+> -	const auto poll =3D pde->proc_ops->proc_poll;
+> -	if (poll)
+> -		return poll(file, pts);
+> -	return DEFAULT_POLLMASK;
+> -}
+> -
+> +/*
+> + * The pollers of an entry sleep on a wait queue procfs owns, which is t=
+here
+> + * for as long as the entry's inode is, however the entry's owner goes a=
+way.
+> + * The owner wakes them through proc_poll_notify(), and procfs does when=
+ the
+> + * entry is removed: a poll of a removed entry reports EPOLLERR | EPOLLP=
+RI,
+> + * like kernfs_fop_poll().
+> + */
+>  static __poll_t proc_reg_poll(struct file *file, struct poll_table_struc=
+t *pts)
+>  {
+>  	struct proc_dir_entry *pde =3D PDE(file_inode(file));
+>  	__poll_t rv;
+> =20
+> -	if (!pde_pin(pde))
+> +	if (!pde_has_proc_poll(pde))
+>  		return DEFAULT_POLLMASK;
+> -	rv =3D pde_poll(pde, file, pts);
+> +	poll_wait(file, &pde->open->poll, pts);
+> +	if (!pde_pin(pde))
+> +		return DEFAULT_POLLMASK | EPOLLERR | EPOLLPRI;
+> +	rv =3D pde->proc_ops->proc_poll(file, pts);
 
-> @@ -232,11 +233,12 @@ EXPORT_SYMBOL_GPL(proc_create_net_single);
->   * pde_data() on the file inode.  The network namespace must be accessed=
- by
->   * calling seq_file_single_net() on the seq_file struct.
->   */
-> -struct proc_dir_entry *proc_create_net_single_write(const char *name, um=
-ode_t mode,
-> -						    struct proc_dir_entry *parent,
-> -						    int (*show)(struct seq_file *, void *),
-> -						    proc_write_t write,
-> -						    void *data)
-> +struct proc_dir_entry *__proc_create_net_single_write(const char *name, =
-umode_t mode,
-> +						      struct proc_dir_entry *parent,
-> +						      int (*show)(struct seq_file *, void *),
-> +						      proc_write_t write,
-> +						      void *data,
-> +						      struct lock_class_key *key)
+[Severity: Medium]
+Does calling poll_wait() on pde->open->poll in proc_reg_poll() before passi=
+ng
+pts to pde->proc_ops->proc_poll() break Linux AIO polling (IOCB_CMD_POLL via
+io_submit()) for unconverted procfs entries?
 
-[Severity: Low]
-When proc_create_net_single_write() in fs/proc/proc_net.c is renamed to
-__proc_create_net_single_write() and given the new key parameter, the
-preceding kernel-doc block still documents the old name and omits @key:
+While ->proc_poll() implementations still receive pts and call poll_wait() =
+on
+their own wait queues, vfs_poll() -> proc_reg_poll() ends up calling
+poll_wait() twice on the same poll_table_struct: first on &pde->open->poll =
+and
+then on the subsystem's wait queue inside ->proc_poll().
 
-/**
- * proc_create_net_single_write - Create a writable net_ns-specific proc fi=
+When userspace submits an IOCB_CMD_POLL request via io_submit() on a pollab=
 le
- * @name: The name of the file.
- * @mode: The file's access mode.
- * @parent: The parent directory in which to create.
- * @show: The seqfile show method with which to read the file.
- * @write: The write method with which to 'modify' the file.
- * @data: Data for retrieval by pde_data().
+procfs file (such as /proc/pressure/*, /proc/mdstat, /proc/swaps, or
+/proc/kmsg), aio_poll() sets apt.pt._qproc =3D aio_poll_queue_proc. The fir=
+st
+poll_wait() queues the request on &pde->open->poll and sets pt->queued =3D =
+true,
+and the second poll_wait() inside ->proc_poll() hits the single-waitqueue
+check in fs/aio.c:aio_poll_queue_proc():
 
-Should this kernel-doc comment be updated to match
-__proc_create_net_single_write() and document @key (or moved to the
-proc_create_net_single_write() macro in include/linux/proc_fs.h) to avoid
-scripts/kernel-doc warnings when building with W=3D1?
+	/* multiple wait queues per file are not supported */
+	if (unlikely(pt->queued)) {
+		pt->error =3D -EINVAL;
+		return;
+	}
+
+If the polled event is not immediately ready, aio_poll() sees apt.error =3D=
+=3D
+-EINVAL, removes the wait entry from &pde->open->poll, and fails the
+io_submit() request with -EINVAL.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-work-procf=
-s-core-v2-0-76ace653a773@kernel.org?part=3D21
+s-core-v2-0-76ace653a773@kernel.org?part=3D22
 
