@@ -1,69 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9FF606A326
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486E5606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AErUo+gX
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n/jzHDHu
 Received: by kanga.kvack.org (Postfix)
-	id 903316B05BA; Thu,  5 Nov 2026 08:26:42 -0500 (EST)
+	id AB1646B05BB; Thu,  5 Nov 2026 08:26:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DAED6B05BB; Thu,  5 Nov 2026 08:26:42 -0500 (EST)
+	id A627D6B05BE; Thu,  5 Nov 2026 08:26:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F0666B05BE; Thu,  5 Nov 2026 08:26:42 -0500 (EST)
+	id 950D16B05BF; Thu,  5 Nov 2026 08:26:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 624AD6B05BA
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:26:42 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB5BAC0991
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:26:41 +0000 (UTC)
-X-FDA: 85401140202.21.2A1BFF4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E56E6B05BB
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:26:43 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0381A40549
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:26:42 +0000 (UTC)
+X-FDA: 85401140286.06.76A28C4
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 5F962C0005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:26:40 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AErUo+gX;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793885200;
-	b=JJoJdaItbOpAdAWwqocAVkHhqWjCSXT3nLi5W+iY5JtW45jcPenwHh6b6lj9pemKmO3y0i
-	eJ2Z3arwfLQEjoqN8ClecjfsvjCxNILMCxLVZzwLmp0C36rC0eKtE9HhrKM5d5lB/b8HzV
-	6QejW3IJna2oYU97YFU9pkalowcEgPo=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AErUo+gX;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 63FC7180003
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:26:41 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n/jzHDHu";
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793885200;
+	s=arc-20220608; t=1793885201;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CaZuapltOls0ICv2ewjQnLeAoypGsXpSxX88e5fOByA=;
-	b=Pr6cWotPh4IVG8z/BD3fB9eWj1B5VKDG0FUDR3DlJCq3wRFVEZMDVJXap9qVI6GUkA+ck1
-	NUt8MLTymdVV7WwxHXp3Pjpnch2IafWOGTsjBV+dpW8SATZeZWdTSNbTudIQnoOXE84GUO
-	VFp97VR12IFZKi77VF54A3duN4LnoLQ=
+	bh=mMfXt/HxPK2Swk1MlzkRGpDW9W5AhDiWyNa7hMLpkX4=;
+	b=mffu8C2U6war1h5vSQ+2+55MyWEDCpRqnwCTWJMDv3EFJw42dgbUo7E++6mgVmhNo4AJ0Q
+	NubjJUBsGMOwhrMz1A8MDJN++X3IpUHLKn1bdy8ZSNqnD8gYmMGPqSTrHJz9QlnWxBHjwd
+	UoT0Iu4MZ+ktTuK/Oyna3AfPNWMcE7s=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793885201;
+	b=H7k1p2Lix2hB3kPZ7cyqMZGioa0QirTSe0SSAv0u0yNi1yMPemwHeHCO7flkbOT7T6wX5Z
+	c80DZckGePttzOJ9WH4nPesBBnDf/1HfAztuzVG6s6DBiJ/3/UlEFG7i0wFg8VXxp6BDjr
+	0fchR7HfzKVChm751kZMyrsGkn91Dqw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n/jzHDHu";
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CFE5C60267;
+	by tor.source.kernel.org (Postfix) with ESMTP id F07AD60D93;
+	Thu,  5 Nov 2026 13:26:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067271F000C1;
 	Thu,  5 Nov 2026 13:26:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3197B1F000C1;
-	Thu,  5 Nov 2026 13:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793885199;
-	bh=CaZuapltOls0ICv2ewjQnLeAoypGsXpSxX88e5fOByA=;
+	s=k20260515; t=1793885200;
+	bh=mMfXt/HxPK2Swk1MlzkRGpDW9W5AhDiWyNa7hMLpkX4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=AErUo+gXFv3No0OFHUJl/qbfS+KaX667h1kJttMGqwMBsRPL+53J5wRBHty0+Jo29
-	 hqc3kwDDR+E45oSwdrW4mqIU52abYVU1sI2Qqge55+UyxPGyC/emBU3SKxBOl4hZD7
-	 lt9AcO0bZ7TqD7hxmtu9Aaf+TARDv1BdRJKYXf5orm+Zg0Rn69l0Z3pkLLS/BJky95
-	 a1xdZ+ABMGvPCbpP81/46ixuj7Irk97c9Kf/RJQ3jV7ACP0S6L0HejsC68Z8xBEMSP
-	 2P9PUw2h1HoGHRD2OE1K9H7irNvoiPc8yab3kPe1X8W7FuOCTJADF7WRLUu3Tl0jEB
-	 l8O8bR5oSH42w==
-Message-ID: <sashiko-outbox-199142@kernel.org>
+	b=n/jzHDHu4jj+BZjH/MZStwwB+L1cEl/DyaQ1vCqlsJcbidWE7vAaNciDgcF5mc6Gb
+	 mnh8a/0wzXJJzfEhxqy8aGwKrtWpd9P6F3k/4VKPzDYRyOnSeOSDA/9pDPc+7EyWx6
+	 wopBwG98F7v0CCu/yCFk5kq1kDLIxgiOTPP0VGMCIlqmvsnfKTes/li27zukqqIY3y
+	 t6lJQOIAwBsNwckXngd2AFcd5nYRD7Si3npMvUYiehvZTYHoge/enZRQRw/yfThFIr
+	 IVSTEPdWUEMm3vt6qj5SijCHm37SGfXP5Se2GOcNrSAFCA9+O+AdBRKW0V1b99CQ6k
+	 73U1TWrC53DPg==
+Message-ID: <sashiko-outbox-199144@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 02/10] kasan, kunit: pin test slabs by an extra
- allocation
+Subject: Re: [PATCH v3 04/10] mm, slab: introduce slab_debug=N
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?Vmxhc3RpbWlsIEJhYmthIChTVVNFKQ==?= <vbabka@kernel.org>, "Harry
  Yoo" <harry@kernel.org>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>
@@ -73,24 +72,24 @@ Cc: "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
  Le Moal" <dlemoal@kernel.org>, linux-mm@kvack.org, "Alexander Potapenko" <glider@google.com>, "Andrey
  Konovalov" <andreyknvl@gmail.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo
  Frascino" <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com
-In-Reply-To: <20261105-slub_tiny_rework-v3-2-0484ce59eabb@kernel.org>
+In-Reply-To: <20261105-slub_tiny_rework-v3-4-0484ce59eabb@kernel.org>
 References: <20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org>
- <20261105-slub_tiny_rework-v3-2-0484ce59eabb@kernel.org>
+ <20261105-slub_tiny_rework-v3-4-0484ce59eabb@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 13:26:36 +0000
+Date: Thu, 05 Nov 2026 13:26:39 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: sawxzijodz8cdb3ftny99kp6799unx6f
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5F962C0005
-X-Stat-Signature: uyzjq7h4unfc4cmbpskstfabusix9ks5
+X-Rspamd-Queue-Id: 63FC7180003
 X-Rspam-User: 
-X-HE-Tag: 1793885200-990470
-X-HE-Meta: U2FsdGVkX18m8eolrjG781ZUGRveLI7U2ENP4ceLUH1Q0u9BgFA29Els+6lGG9KTHEwuQzjZrQNnqQilYc9y1fetmC8RBNc+8iA5ouzn/lIBrKIWfM/KJoBsSDLUuHX0R6uznMeBEtesc+V8fQSCOAeN7gT4mpJ0tv41eD5l2HSdqwl8lpS32bfB7BxvQJkyn+rI0pNSJTaQSNXDR1wJunuhqugrznhkzZA0PjNiAzXjdWdjQSAB4kDeyh7D0VSHl548g8yIkLO0i142PkWeTg3GZAtk2Fi8T2I/rYduGUCjV+LLPEnU54390FrHNAqZgNlumxT+Fa4YuUQVzyMd06KafFwGPtWIIaRzEa+dFxyLCllZqa7yrJfCyzGObL4cckROG3eiaghlBXI5FM8aowENDYhtY9/uTM1K9y7htjyPT20OV4CXxcXXMZ6w98S69q6VdrCym/AUG8WtLxFKyQ0JcmObumyc8AdHqZdWzUaavIGlYPoNVmBTEm8cU7jZ3KBlLbkLcu1quiE0tbXW8Kal0u9glqSlhGROv7C48ldjf53P6PGrt6VQR2elQ06lSBGhi3tsDNxrxamb9ydutXt+pJk6h6C9mv3Cma0Spd3W0JZYkKSdJjcFb7WsygqcMy00HFKH4JBoGC355OHZWzRgsN882kIilpLrMNOOFsp9iMM+P4auL9fpRczt5dSF95Q8i4w2ZFuuuGgayYQrL9ZzI58Tzg4iD9pApGmoZ/F2k+m4fbI6159gxRD2vwz4XAT6aIGo56AHbQHpBNj3wGdx06NJdKVoGd0+IAbr1cUKDFGuvm169r5Kq0Fo6TMFEIhuLBwFjxOL1jQk4/2oVRAY+cq20TRUL4xb1bLqT+oIAJa8Po3AwbGpviyNFMUhmtGvQMSJSxKwfXFJzNObACNian0SgTtzAchTywkmefDS+8xfGSG1bKryzxLR9A0cMY8UOPM+5NZv5sPnL7U
- jPZ8R9Wi
- +O7zRVN149/uzN6UnDyNuq0MA+WWLGQWql9Y2mSyhmUFXblFYSiX/OQNKAp3HttvY7Z69etGnOYeB0w9cF7JYp7VxF7CgwDcodwoVSA/RmrzPUe0OBtQLpmuPte3rl5BN4pfagMXBhnzfUuQwg5D4nQzZn0g0OcV/OBr5bSId4R2mpwcCrDihJ4432Op42CF6CrCRiEikK7Y2rDM/xkQNFjjVMJ9fi38Hl45PCQqBCKM1oDJwc1CH0mfAAxY8Ugmx9cXRY+5TPfUykcR5JbKWqPvniR/LBchECFV6sJD7lzDMZmBYvUCW20+6FEQMgVNScsBlSGuVm4pGSbj0j368pMmHvqAVMYx6WA2a2pYkJ4LPGXCA33DK/v8yUM5dHnV/8P/678s/O8+W/EIsUKpynhDY/SVGyt2zEngfY/LvMwGukgpwS6tWPHpE+rFdM3wkH+Vy9FMSjyJ0C+5lRoWyLDXHR/Z0JyzpAyq+XCpS5AJc6GW/rA46qAy4wg7OBjnnkv2gtbwy/wXfK713+mqosPSbWGK3j4Jo0UU2aMdxPqGXTo4npug05A40qospAIRb0e/Srs0W2KqL6kSfHM3tyXsvCeKDuWaFtBCkAWLiMazNAlDodc8rpcyDxOPH39YySK/RtKMEPD+TIc4O5biEvOM7M8d+igi5XM+pCv2Ns1/1j0LC0VrVjENTYz6m2lkggE3sLalKui5+8gs=
+X-HE-Tag: 1793885201-57518
+X-HE-Meta: U2FsdGVkX199CoMX69Fut8aVBxKE7D0UD6DOsQayKwILup846d+P/5W+9uV2nV1KCngNcszWWm2WRMLHFSpC+ByVuMAn4SpKxIimNpmI78O7oMTroksn4DO8cRciY3OCmpo71wAkYT6K0cs+ajZ6Tcr/4k/wFqKFIYdiPsKLiSeZxeEo4lnySEWCbNsSEiV+jOxrJI45n4pwKUChoQcfsynUmrzoCLC8d9FygfG1xAHFZkxi1pfuX1NxU9q4ZBBDI895LKQvsi/o5S8XAoNRIUmDk0NmWcJiqAKMdpOf8QbAgZbSdJel53ugep7lJEL6/o21xiGUs90m9sDoIodDv65vQBzgr9cPu9hqtpItvEOhuMz6nvg7yG25IUwAG5s7yTFDW1vwgIDwvc8zxEtq+Rkw4L/sNBcC56hcssfCoElP/W+uJdpfegohr9v0ys8ZfA4SIQQ4LFUoAl2sVc6oYBgQndpIwX0GdcG9d8FwNcYdttgyV+phpxERY3PQGnYvH1UkqqDap09cV324vBe6QjW5JpPYWyn0uF2yh+fzjdZUxtsP6MSISCH+mwi+RvdBB39p7TuRAp1pAQxqIMfCSmUr/JdeMFaXCSu1mEkPbDKG6vNXCGYl59OlJuPA5MvRup2dCk/f3UVBhPzdZybKsfh+DUT/lO12jokcZvOpjVmzcualjECLdDE6luSmwIsiWoq0w16dvBjpFNeexJpf6N0pZHSLz51nh7EaZraqgVsA2Y5yHFou7L0fut5a++5+lM0hkJHAZxp/9Cn1OYih+J5ByzSnGRzWifGnDk1lnXfmQMO75X6HGz1H/f7nQN82wXZTDo94pX9B90jjoXR9n7WIMaJd3eW7yHgrDuK/7UP0+TbeghHVV/SLNK7aZOWnJr5PvMNN7mSCXB+CLMuVuOjkiUfhP8yrGFm7q5QIxmGlUBLMozSEOoA4OA7MO4e6jGqaz34GkLVUlQ/e+YI
+ 9HtuOQQo
+ OAb9Z05ZAQusBNHsjb0Tjyo/1eghs/cCk9AsMmyDBs1QaGEVlCTr4Q98zzyO+p+gqLgeE51tHP3TZINOmf3OrbKsSdcEfZ2XgVL/tUXTxEgoYLUefxRJuJM0NbBh2dH5+rLdfvCGQIen0rmIOMbi7g9mk3/yGBymGVj/0CSmTuyF3B9RpuEDgE/0PrtKAd5brwGWQvqSb9NdMerfP4zzsE7/XVte4T0RjMWqvov2FtgIJHGeP5wlOKt0WBCfqaS2gNCD8ybAW/Atoakyca8OHFIheD92GApjLdg0l+FWNR1IUKKzYQ+fV7IIbQ10MSzMeonpf/16FAPDkMfKBz0Yw4rlSiYxoFU/J0QRbRdjBYAeKX103hEnebJW5/mTmAAAhWtbosabrs2xYo+QTeq9cgu3ildapWMBztR0UcTaVdL/NcBXGuJ6GpUgRohhOzBaG3qbMVmsIfEtVWGBGbmUb6xXj4GBSJP2voicVGARRm+VI/0xUn3djH6XvxSCQi0iqJh6mRoEvZgSPXbn/Wt0nr/xeohzKxu2xYuSBWS8EiRiX8CG6fUIYEckniuVCZjJ8H8RKSvD1WzBq9JC+BfHJyfIoDUBMltpRKEP3D6ZAnOnUwUYinmXA5gWdKncbOi8D/bDxJDsDm9Hpll5L3G3N1yjvpmHos8fzo/BWQUhICXUAnvXltP45wlRZEiREnZFzafgnZ5En4OrJ4n5QLFgVCLA9Pqe7JDLwzxuzOQZngTsQ3evoZ7jiGhb9GQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,72 +101,86 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] kasan: kunit: unbalanced migrate_disable() in kmem_cache_rcu_reu=
-se()
+- [Medium] mm, slab: missing SLAB_DEBUG_NOOP in create_unique_id() causes s=
+ysfs collision
 --
 
-commit 9889dce92c4935230b2785629413456302c4d31c
+commit 72eeb0d7d0de3c870ebf6a85a45b89ab817bcdff
 Author: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-kasan, kunit: pin test slabs by an extra allocation
+mm, slab: introduce slab_debug=3DN
 
-This commit adds an extra object allocation to kmem_cache_double_free() and
-kmem_cache_rcu_reuse() in mm/kasan/kasan_test_c.c to keep the test slab from
-being freed when s->min_partial is zero.
+This commit introduces a new slab_debug=3DN (SLAB_DEBUG_NOOP) option that f=
+orces
+slab debugging slowpaths and zero sheaf capacity without enabling actual de=
+bug
+checks, while keeping caches mergeable among caches with the same flag and
+avoiding disabling printk pointer hashing.
 
-> diff --git a/mm/kasan/kasan_test_c.c b/mm/kasan/kasan_test_c.c
-> index b9e167ed5be32..580a9bf007ec4 100644
-> --- a/mm/kasan/kasan_test_c.c
-> +++ b/mm/kasan/kasan_test_c.c
-
-[ ... ]
-
-> @@ -1152,7 +1160,7 @@ static void kmem_cache_rcu_uaf(struct kunit *test)
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 01c64ef661e7f..6036ce1ac333b 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -47,12 +47,13 @@ struct kmem_cache *kmem_cache;
+>   * Any flag that adds per-object metadata should be included,
+>   * since slab merging can update s->inuse that affects the metadata layo=
+ut.
 >   */
->  static void kmem_cache_rcu_reuse(struct kunit *test)
->  {
-> -	char *p, *p2;
-> +	char *p, *p2, *pin;
->  	struct kmem_cache *cache;
+> -#define SLAB_NEVER_MERGE (SLAB_DEBUG_FLAGS | SLAB_TYPESAFE_BY_RCU | \
+> -		SLAB_NOLEAKTRACE | SLAB_FAILSLAB | SLAB_NO_MERGE | \
+> -		SLAB_OBJ_EXT_IN_OBJ)
+> +#define SLAB_NEVER_MERGE ((SLAB_DEBUG_FLAGS & ~SLAB_DEBUG_NOOP) | \
+> +		SLAB_TYPESAFE_BY_RCU | SLAB_NOLEAKTRACE | SLAB_FAILSLAB | \
+> +		SLAB_NO_MERGE | SLAB_OBJ_EXT_IN_OBJ)
 > =20
->  	KASAN_TEST_NEEDS_CONFIG_OFF(test, CONFIG_SLUB_RCU_DEBUG);
-> @@ -1162,6 +1170,12 @@ static void kmem_cache_rcu_reuse(struct kunit *tes=
-t)
->  	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, cache);
-> =20
->  	migrate_disable();
-> +	pin =3D kmem_cache_alloc(cache, GFP_KERNEL);
-> +	if (!pin) {
-> +		kunit_err(test, "Allocation failed: %s\n", __func__);
-> +		goto destroy;
-> +	}
-> +
->  	p =3D kmem_cache_alloc(cache, GFP_KERNEL);
->  	if (!p) {
->  		kunit_err(test, "Allocation failed: %s\n", __func__);
-> @@ -1178,8 +1192,12 @@ static void kmem_cache_rcu_reuse(struct kunit *tes=
-t)
-> =20
->  	kmem_cache_free(cache, p2);
-> =20
-> +
->  out:
->  	migrate_enable();
-> +	kmem_cache_free(cache, pin);
-> +
-> +destroy:
->  	kmem_cache_destroy(cache);
->  }
+>  #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
+> -			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT)
+> +			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT | \
+> +			 SLAB_DEBUG_NOOP)
 
 [Severity: Medium]
-If kmem_cache_alloc() for pin fails in kmem_cache_rcu_reuse(), jumping to t=
-he
-destroy label skips migrate_enable(), leaving migration disabled when
-kmem_cache_destroy() is called and after the function returns. Should
-migrate_enable() be called under the destroy label, or before jumping to
-destroy?
+As reported by Sashiko on RFC v2 [1], when SLAB_DEBUG_NOOP is excluded from
+SLAB_NEVER_MERGE and added to SLAB_MERGE_SAME, does create_unique_id() in
+mm/slub.c also need to encode SLAB_DEBUG_NOOP into the generated sysfs cache
+name?
+
+When SLAB_DEBUG_NOOP is enabled on a subset of mergeable caches (for example
+via per-cache slab_debug=3DN,<cache> boot parameters), find_mergeable() kee=
+ps
+mergeable caches with SLAB_DEBUG_NOOP separate from otherwise identical
+mergeable caches of the same size without SLAB_DEBUG_NOOP.
+
+Because slab_unmergeable() returns 0 for both caches, sysfs_slab_add() calls
+create_unique_id() to generate their /sys/kernel/slab/ directory names:
+
+mm/slub.c:create_unique_id() {
+	...
+	if (s->flags & SLAB_CACHE_DMA)
+		*p++ =3D 'd';
+	if (s->flags & SLAB_CACHE_DMA32)
+		*p++ =3D 'D';
+	if (s->flags & SLAB_RECLAIM_ACCOUNT)
+		*p++ =3D 'a';
+	if (s->flags & SLAB_CONSISTENCY_CHECKS)
+		*p++ =3D 'F';
+	if (s->flags & SLAB_ACCOUNT)
+		*p++ =3D 'A';
+	if (p !=3D name + 1)
+		*p++ =3D '-';
+	p +=3D snprintf(p, ID_STR_LENGTH - (p - name), "%07u", s->size);
+	...
+}
+
+Since create_unique_id() does not append a character for SLAB_DEBUG_NOOP, b=
+oth
+caches receive the exact same sysfs name, causing kobject_init_and_add() in
+sysfs_slab_add() to fail with -EEXIST and trigger a duplicate sysfs filename
+warning.
+
+[1] https://lore.kernel.org/r/20261024-slub_tiny_rework-v2-2-bf1419ab5ffd@k=
+ernel.org
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105-slub_tiny_=
-rework-v3-0-0484ce59eabb@kernel.org?part=3D2
+rework-v3-0-0484ce59eabb@kernel.org?part=3D4
 
