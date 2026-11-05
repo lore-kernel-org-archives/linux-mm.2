@@ -1,154 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E050606A33E
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA16606A32F
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=e08A3FoR
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jEGgnV3t
 Received: by kanga.kvack.org (Postfix)
-	id 5A3166B05B6; Thu,  5 Nov 2026 16:06:48 -0500 (EST)
+	id 562336B05B2; Thu,  5 Nov 2026 16:14:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57AD76B05B9; Thu,  5 Nov 2026 16:06:48 -0500 (EST)
+	id 512CC6B05B3; Thu,  5 Nov 2026 16:14:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48FF06B05BA; Thu,  5 Nov 2026 16:06:48 -0500 (EST)
+	id 4016F6B05B4; Thu,  5 Nov 2026 16:14:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 225C76B05B6
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:06:48 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9280AC0C21
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:06:47 +0000 (UTC)
-X-FDA: 85402299654.10.AFF587B
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B6FE214000D
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:06:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=e08A3FoR;
-	spf=pass (imf23.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793912805;
+	by kanga.kvack.org (Postfix) with ESMTP id 1D36C6B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:14:09 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 97727C0C10
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:14:08 +0000 (UTC)
+X-FDA: 85402318176.22.A5E6361
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B521B1C0008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:14:06 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jEGgnV3t;
+	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793913246;
+	b=HnsaHsGN9cIc4YBbRAP7vbDqU7/gLOrRtMcYsfgF6el+k1c6iX5HtQtzs4YE7bmp3vK/lj
+	6jsdBj0fPgfORgkAQRi4+NTjSDsHB3vnv0+0BJ+XVsTeDNYZdpPdQIEutYDJwdEVJ3nlbT
+	NNR6dL7wLdAk3e2tkbtQZo7fZk2+8Z8=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jEGgnV3t;
+	spf=pass (imf18.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793913246;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=PQ5xrz6/5W9B/AU5YTZ4/YsX+i9J+WP+jzQ06aUOz0I=;
-	b=iAgK6QkmA43M0+Y6S5jI5afxePl10ovovopyKdb1AmD3TfNUxINTAYCTQZypd2hl1WQakx
-	xOzH4nUaUcWh+rEoDz25gAtM02wXsLIVdjcRJQGh6PIirmAjkV9o6wZ4pN3EG2itD3Z2V4
-	sj4gXAcXe618uLOzebfjPL26XD4Omlc=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793912805;
-	b=t/1THgDP0hcaYO2LfpRnY3ihqPvOesvT1RZfpiIdDzF7p5ODZqpLcdRX8wdq2Gt4Sjuv6X
-	bU/8ZMR1Y5l+jAWJLD5DYWvm9/0UleJoSMZNKb1GwzAeKju45uumOwskcjWnhTXObjPBmb
-	jYuTOiDfrDSmFb/WLahYeR4TLM0XN4Y=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=e08A3FoR;
-	spf=pass (imf23.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-49134c8509fso7851f8f.1
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 13:06:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793912804; cv=none;
-        d=google.com; s=arc-20260327;
-        b=IgZmCapcTDjQS3Jt7/OSwFOUfZva9BWRJkwwOA8ur0GlYTtXEsblZjnthLfzMFfOj8
-         rRspGuFb+XjwqTsmQSsi8VuNezaq5ARVKUH39vhYJXUjiDKdecU+ncT4XsrXTkLy8uBX
-         0mwVBI+oW8gllO88XMEadIArDOEQU7lLzdUEhY/R1PnndVKOsAVgIShGwd9I4tMclzBf
-         0J7avJU8zsAOGEvq9JJ5/QM0Y7De4PmS+knqTBkhB9XZqtQBAIpHPGTVRiWGCqhqpOdl
-         06/FhiBqG6yReckLwz0Xbygp7dsb0FCoLYZyqLyX+7xV9WljKt73mih1l4atE4VNVgG8
-         cXDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :mime-version:dkim-signature;
-        bh=PQ5xrz6/5W9B/AU5YTZ4/YsX+i9J+WP+jzQ06aUOz0I=;
-        fh=nG3wj9vygmdo/+AbxqoOAZTQV4FnuRAOb8M7YqNfZU4=;
-        b=pD8e2wfMqaVUJR3mxIReCuV/46C/Gnyevsp3iJQigJ1V+wJsGSSrUmi6SaneeYoFCo
-         vArQh2HcCkM4GqUcUyd/0BdA1abNrUY7Aw0xrlLkMKxXNnhZpb2fXteC48VQ4ox3t+g1
-         WmxB2Y+Pwf2HvTUBxsC7BhQOOnSbcKXQajLos8UF4NHmkCXhgJ6+tRqzBODQ6QktDuul
-         lLki5Ksn9sTDPdPIo4uYcsSZUQ4Y/5nNYOmpdC/apddksEXhX0vft6n+kp2v3gk24pFH
-         YU6Am5MfsLJ8VJ0ma+sFklNy+59IcLSCqoP6H+KlOF5MOZSY7fnUenLHp5e1z8KL4vwr
-         6Irw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793912804; x=1794517604; darn=kvack.org;
-        h=content-transfer-encoding:content-type:to:subject:message-id:date
-         :from:mime-version:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PQ5xrz6/5W9B/AU5YTZ4/YsX+i9J+WP+jzQ06aUOz0I=;
-        b=e08A3FoRCZG4CBhqvtj1hBR0IZrZdMCD8JiLdZ955dOW/kSaXmk5yopmflztjLz47C
-         dgaTHsDNSJLGinKsFC5W60tcRvVrFBQQVzZ9v2X59c+aryCfJ5qjBJEys0K9byKAgtaQ
-         Mvt+g9F8b1y6NA5hXjYETlGNXXSK1pdqpvZX80hHJ5O8t8fs9qsFsWbR1CsrSod/QC9+
-         3TSXeTsDxyW7K6GDa5/w9c+Omc2LUbgOPen98lW4hyf7ExiwPuL6BvERk95UgFm4ZSGN
-         EMVqFp6JtCcTOqXcsNNrivTs85t5Tk4ojD7wTa4AML9ayQjEoYYz0z7f7z+H3ccw+dkV
-         hehQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793912804; x=1794517604;
-        h=content-transfer-encoding:content-type:to:subject:message-id:date
-         :from:mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PQ5xrz6/5W9B/AU5YTZ4/YsX+i9J+WP+jzQ06aUOz0I=;
-        b=YyTxABT87hQ6kIcfAG4bkgSMbmmOryrpyGet4IgENleds5oXQ85dkVSPU2qo4Fsm/A
-         wyMwf8VDCr8woHjqMpk/i7FXzKbmDJg4jO+8VKXBdxXcxv5Hxpnt2muMDpvEuX/swsO2
-         QmXQBwCE0g14ALNnLAqOKfNWbwLz21oFRKi1VgvEarDK466wG2f1w2tVKgAFtTQz6UmQ
-         L0kLpts323OWtwqFMm4qPCfXnYWHlOJJbGEC7frYo5NMItTZPY7CZ48HMEDwpbTjZbNs
-         gd9GYNHVoSvFEhUxWJe37HOUpH3sYrWu2yI8mhc2J0oRi630oSGJ26EGLFomYd2cMysM
-         99Og==
-X-Forwarded-Encrypted: i=1; AKwUvBxWE3xgwdhAoLv2Dav3eiAQXQSurnvfDMDb/E5zkv8m5OLe1nuxcIe5HB3UOl6mwvDro56IXxY7kQ==@kvack.org
-X-Gm-Message-State: APuU4Z/yceYRcmc7ewtVK72nrkHUvaUtajVBcB2WkUsCU/rbkDDBM12u
-	v3aZh+FXGBN+Y0M9/D6uHwuDhF/u0cvpEPPovFOZhCdK9NkjzaH4n8KY87Nc4M919F+i0jJy6c+
-	/4zuiDszY2IBl5+aU8kYQw/OzFqCE0lk=
-X-Gm-Gg: AYBFou1EK5v+/R4QBxnJBOgDVYdDKN/zBTLdJs+XKnjm4FWrZh+QzfShipyQm3XVVod
-	OzPtg5xRvY8VnaUJ9sDHTu6LVJKsM2BGaO3i4/wOiTl+BjlFIOpc6aKTsUBEI10i3fRdthe2jR+
-	lbH5ohK9Cl6++/5o5mHyD0Am3nwolnaRzeJkFIBqUfZYOocOV/LgfYVHWvTv/VPJnRpA8uoiLx+
-	/pdTKqw8jE0U4hVvpS9bqNmInRZQDkSJuD04dVlsJwWw/wA+y4Xrl22JXG7e8cI3FMwS/MU0uAi
-	JNShym6lmTtF80EeNstQhjdc+aTDw7yIAxh0kGCzd91mKJBosSutjrAeAbIF5qc7ICiwJUi82qx
-	AunPQkZbXdPFVdWrHRdHkEhBLh+F0Yn7X0cLUrCRBSDg0rDNtGQObcDkvWWQl8AxGOUVUWxL0Ez
-	7BXluurUdwGR3vS9i2wObkfMWMyWqyH9yeoSMRT79N0malUlaKFGY1
-X-Received: by 2002:a05:6000:2510:b0:48d:f488:f32a with SMTP id
- ffacd0b85a97d-492775f23a9mr1599167f8f.56.1793912803834; Thu, 05 Nov 2026
- 13:06:43 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=y+Jf9HlpMjkJ/6ix4ew1upvfuwcFL6cNOjjo/sfG/Rw=;
+	b=NbpF3F/s5HiWI0ssc+8jMzc3a0KQanMVViDswri0VGt3u8EWeuGXDZU/EJvGfuvRdg/ryQ
+	ZG74sstWANZlT4/iH/x+yAnjlCDQxO19DVB6rz3zXAYJrKGYKWLRvxuuWz93dR66PdU4+M
+	sYs4o75P+jhK/Wx67jkMv0sO2fUYm5k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 340FE605F9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:14:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E01841F008A7
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:14:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793913245;
+	bh=y+Jf9HlpMjkJ/6ix4ew1upvfuwcFL6cNOjjo/sfG/Rw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=jEGgnV3t5PzKSQ8TikIytSkfbH6GjCYtswDDlXqn5J0Otuddr7NPu3NDUrWlHYb9F
+	 wP4bwTNiIUIV6uZ1swyYXldSCut1FcqDSozHOwFtHh2aFovXvDNDvkNi+VT72fUt2e
+	 OMAPOnQ9eRAsM4rd0sNy6FRT8ObKgqBqMZH9YDMtXv4oli3JL9FZMM97NY8MDYBHou
+	 xZuhRenhEr2fSyPRQiSWonqnZiEqoBdQ4toaiI2LkXL4CWmSK0JleysKh6bbtX6caE
+	 RV/zjdP1GpnM19U0Wp2mawSZEZpZNmsxc8LMBqitH1pWRwzYvUapib0VUL9lnIgtbD
+	 VEvsbaJoBgwCA==
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-93e7ad9f78dso281441085a.1
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 13:14:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBx3F9kJmLw9QU7CSvIfl5PEQH1hsAFVmzOD0rvEK/YUICdMQPMHEHAaGmKnI2Y/PKoC8J0rqab50A==@kvack.org
+X-Gm-Message-State: APuU4Z/Z+Xx0+O6t+8OCVfbTwSFkXf8AsPwdyZp/WY9EenPKLL1KOCgd
+	n7yDxkRnMDeML1cfxWXD3VENgubvfq9TAbE2e9A6aokRBHSS63ABwYZnFESTTJymNHYSp1TAEd8
+	oWhbFZBfe6phsgSFBucEKb+rRj6oZHLE=
+X-Received: by 2002:a05:620a:4385:b0:93f:2ae1:ea06 with SMTP id
+ af79cd13be357-945f34ac2f8mr61467985a.44.1793913245103; Thu, 05 Nov 2026
+ 13:14:05 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 5 Nov 2026 14:06:32 -0700
-X-Gm-Features: AclHuK8Cjd9cUW2LR9znWEJxOp10JF8kDZifUXejaVPmbKzhx3QybC-mp6UtYl8
-Message-ID: <CAKEwX=NXSwSiuY65EV5nqFocMLd6-afsiJfgy_ahB2v_MDmcng@mail.gmail.com>
-Subject: Virtual Swap Sync
-To: "David Hildenbrand (Arm)" <david@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Kairui Song <ryncsn@gmail.com>, 
-	Michal Hocko <mhocko@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Barry Song <baohua@kernel.org>, 
-	YoungJun Park <youngjun.park@lge.com>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	"Vlastimil Babka (SUSE)" <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	=?UTF-8?Q?Suren_Baghdasaryan=EF=BF=BC?= <surenb@google.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Gregory Price <gourry@gourry.net>, 
-	Wenchao Hao <haowenchao22@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Hugh Dickins <hughd@google.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Tejun Heo <tj@kernel.org>, 
-	=?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Kunwu Chan <kunwu.chan@linux.dev>, 
-	Meta kernel team <kernel-team@meta.com>, Linux Memory Management List <linux-mm@kvack.org>, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, 
-	"open list:CONTROL GROUP - MEMORY RESOURCE CONTROLLER (MEMCG)" <cgroups@vger.kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rik van Riel <riel@surriel.com>, Wei Xu <weixugc@google.com>, 
-	Yosry Ahmed <yosry@kernel.org>
+References: <20261026084035.535989-1-hui.zhu@linux.dev> <CAMgjq7AJSU9jUBTHGcm05mtGBH4EMQ_ua9YNwuLOGVzhkdLKkA@mail.gmail.com>
+ <CAGsJ_4zPZg6pCuhDtTpSkueS2EDSfWeYa23h7kC9hEU0iGB-+w@mail.gmail.com>
+ <CAMgjq7DvmrwTu0vz7oHx7y7w1B9uA0AbS3YJ5CcrDVg9VwKqpw@mail.gmail.com> <CAMgjq7A6jJQ_Ncp0BCqjQJ8pJXrjr1PoOu0rdj0NJOivKp6e+A@mail.gmail.com>
+In-Reply-To: <CAMgjq7A6jJQ_Ncp0BCqjQJ8pJXrjr1PoOu0rdj0NJOivKp6e+A@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 6 Nov 2026 05:13:54 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zO5S5XFc6dd70wKEs_mzqu_QW2bGOPyhKo4w2cjZrWUQ@mail.gmail.com>
+X-Gm-Features: AclHuK_B_VZ3qcNpr2dPS2dUlAbGVZX7TPvdgSf43uHODhJbux5jfw9zMDTWt5Y
+Message-ID: <CAGsJ_4zO5S5XFc6dd70wKEs_mzqu_QW2bGOPyhKo4w2cjZrWUQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/mglru: fix a no-op lru_gen_clear_refs() call in lru_lazyfree()
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Hui Zhu <hui.zhu@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: pzgkw1tye9ycg8h8z6x7937a1cwxpy8t
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: B6FE214000D
+X-Stat-Signature: coqdw983zp8b6b7j6zh4f7ou7chdwpf1
 X-Rspam-User: 
-X-HE-Tag: 1793912805-558849
-X-HE-Meta: U2FsdGVkX18Py5MwFTBqOZMW9+0keX+LpVsnLgsGgxAOyWbHHNyyFSTgWyCasyJ0h/yL+BMHM4Sj7d1f65NVp4yuqbWh5euvqDlkILJ4odetMwDT0QYokT+PsjVUstiHGuvwUngjj9Q6Mf/lx+yi6svConIDe/8J7M8bYCBsSuGH3xUkKMmWHJSnFokiNM+dEIL735H/m/akzTyWCkIPk6oxRbzsC86qEhGwmqpH588tTbDhjHTjIThlDy9fbTQTU9rw2ifo4EQUviX0+J/TsCWrNPJHZP8G6MvO5zs3hZ5phdQae/Jm9+IKC5PyhEbLdxAwWiApm5KnIp75445xuQ2Z9dzdXZ39/xd4c72FBrSwTNJpv8Qvdc+aRZqA2yvpTPgRth8saAJlHGkghU0kAeqJRCpZgG+bQAklNise5zstt4TqvSYeu/yCfJf/URt9iNs7WzHd6cMMcaZ7MxcZ5FRkaJUXgqlya+zGSsPSqROAb7jruO7kuK/Sm0jiU4b2xIRujKc4fE7iZ2RD2PMTv3GBEfe23VbVtSbo3mSicjA3sG6cpXcwt8Tu/a3kj4B92cdh/3VazjPlpcUfmLUREVBBLKuvxoW7gpAbksqsMxXpM2dYeyO+weVwYXVYDk6X3+vuEUvZU7pVD13eVUPDvBcZCeuOkWmJ3v8JcGThEHWmkeIUSUlX2Sy4ZmvxBW1qJJlKVoOAsP3lUqIfnb9QFc+TbyvArwbzYMWbC4Fz7c1SfdsaOqXpKtz65ZUz4g7msCt56QRQiD7UR4lWsHlOLV2Vm86cgutpdccKOOTudEgJns+b316MvjVwllu47E4Tk+uwiCNO1GkMLWbG9LzTXssJl0+QMHbt0NAJMwGZjGJ+BGvtGD01DY7c6CSP2QStn+fB/ivD0nX9DsoQXq/+rnXu56OSTz4IGiBOWevCeMGAF/kiXV+oBV7F6i3/tKNYDutH+SfghV8/ipHDhRO
- giL3tBPK
- 5efiJgwW/jFMkNjMLfv2IRXBh5x8AH5uMyV1nKnanbyKUE6NHByluc8kDQ8q0qU99YvDb7Ixsss/BsAoJeweCFu27RMUHc3aXCQV8F9rW/beHoD1XoBc/GLbZsWIA/OBt/alAi+adGQh2T8yWjdySi0BlijyjNz3QD0jEGsZjxV7sCuszrwEDFrcEBUFndUcBetzx8uiiIICMBr1LSfpqZccpg6JWSdt6RagL+QwVZv+wo5CyD/akkj+0ZibvS5nMqfdbhg13XEPPnDto2Zj1KWX07qBlwidYBmzZ590uILEmqmVToXXKCeKXachMO6MhDZaixBsra2l5Bgqk0sVQQM7Aa9PS3IGlWUIJtLN4UBEwcem7jzIZo67GIi/FF05WpBvOPBcBntE98y5jgOXdgr8WpByx4g9UrhwBiB3airMgnK7qUlTZKDf22jA/b4ZlWTgaudDwJ8VRc/JlUTLPbUwnZewJ6nEADwGi
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B521B1C0008
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793913246-138018
+X-HE-Meta: U2FsdGVkX1+C3U6forInEbm6VL8oPcWKb+2JBSmgMBTThgJWqEK1wYnH/wqx9Y3XwmPiObDwfQUFe9V1EQe5AJ26OR0Kbmkcso1vfBos7ZIgJ+8xkmbkkDLdswX8rPbFQ/jF+ykxuZIudjx+bZF90wUrmNDKu9rSOr1uzjsayuudgiea19yD6H7P/suHmPRZINRXQK6sc2Z56ebayCchxlTJ19bLBgp2olGrDaGXx00gSrzvj5Ef2GPqe/Fi1W6fekQAkCl6GU2mXd9ESb9bpnZ1+rl1MvK4OSlBKMs8TOYZBLAh2GHmNAomPhDBOvemYsF8KmnN8DavOoNIP2YvoIcOMtL9YJjp9TTLevh4GdewwQ6aq8QrRGiDOx7W4V2Z3vZQIyWIF8UB3GPZAY8gotDwH4eoQ3Ss6lobLdN62Z4xfQYptwSY7bu0DiKDwfIpkXt15PxykY746wDtABAJUsQmOC/Ee/4CSVGF4xpwVL8jgKg4/OzjYyUjbzRyUrbeqlPxySlPXOE+GmT9K3u7jIfn54N+LpPwKbwnzLv+JK5+Fu1cIvfRrEWf71OYL+XAMGQQ9dQLsHLMqvoC83wtkR7zx9FgALcLiIOLxE6b7Eaj6fjcJ9kcaASxd2Q6ZAW98m852/cY16cvquAr09NAHfSSSS7rHScfTi4MLELO9spodX2Redb67hP2jyzRSkcMCMIJMj1SyQUmU0qnu1EJ8Bgp/NGRzmaKAEQJurAtbjq5BiENGTksCqEnRC49sID+M2pQ6J9cWo+pjTSc08vpnqod2JvclIyS0imdtcTx5AI41v8/tVPHLz8FZJTsIh3r3AzV34kEAkPTia/dMc8DK1e5esmL8fw1qrW4dD/dJWQzZP4HamX+DNF++DAIKkNl5n78aj85LUmw6eB3G63AEo0/vcD6h/EXH5TlJoqZm1HAcWHIn9AlZL7eGN0BBCmKuHcXKoaO06e/rsVJhjO
+ soMrHYg+
+ X9Rva8zkyI7FmhtF7F59x6oBZVvpxU1LXGAqHOzyTExbtHXBfpcQwqcXbZ8RCNRBgj6RFyVGm4nsh+rJsX7cSrvr8+CFAzcGfNCSf7gPsaqUxbYfyRF449ciIfPtugkZBS81o01a7fxkygoHWGMAgzXnJ78o76d4ah6rAJP95v5fNjt1ykKwiaZzVMmHJJ56HyyqI6e1JGdeT2KaH0p9zpxNA71hE09p+UTi/tELcowidhH8GED1nAqb9GN4j3TICSkIE+DRMmYk4M3LV8SQowiRgcuvME9cfkJrUkl9foAidF8becIwcX41KNZeI929UJqoviPJSsSmz2lYUgn63IN2SQ0to+TrFQAxg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,29 +110,150 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi folks,
+On Sat, Oct 31, 2026 at 3:27=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrot=
+e:
+[...]
+> > > > >
+> > > > >  mm/folio.c | 6 ++----
+> > > > >  1 file changed, 2 insertions(+), 4 deletions(-)
+> > > > >
+> > > > > diff --git a/mm/folio.c b/mm/folio.c
+> > > > > index 35e242b48870..ea3adb6a89d7 100644
+> > > > > --- a/mm/folio.c
+> > > > > +++ b/mm/folio.c
+> > > > > @@ -597,12 +597,10 @@ static void lru_lazyfree(struct lruvec *lru=
+vec, struct folio *folio)
+> > > > >             folio_test_swapcache(folio) || folio_test_unevictable=
+(folio))
+> > > > >                 return;
+> > > > >
+> > > > > +       lru_gen_clear_refs(folio);
+> > > > >         lruvec_del_folio(lruvec, folio);
+> > > > >         folio_clear_active(folio);
+> > > > > -       if (lru_gen_enabled())
+> > > > > -               lru_gen_clear_refs(folio);
+> > > > > -       else
+> > > > > -               folio_clear_referenced(folio);
+> > > > > +       folio_clear_referenced(folio);
+> > > >
+> > > > Why can't we just call folio_set_lru_refs(.., 0), and should we cle=
+ar
+> > > > PG_workingset? Keeping it helps PSI on refualt / redirty tracking (=
+not
+> > > > sure if meaningful but CLRU does this), clearing it makes eviction
+> > > > better, but the eviction issue is MGLRU-only, CLRU keeps it.
+> > >
+> > > I recall that in v1 [1], Hui mentioned:
+> > >
+> > > "Use folio_clear_referenced() rather than
+> > > folio_set_lru_refs(), which is not defined without
+> > > CONFIG_LRU_GEN."
+> > >
+> >
+> > Or prehaps we can have a folio_clear_lru_refs() do in a unified way
+> > for For both CLRU / MGLRU? (Just like folio_migrate_lru_refs).
+>
+> And it will be better if we can keep this operation off-list just like
+> right now :), some later works could benefit from it.
 
-Sorry for the delay in scheduling. I also figured it was not a good
-time with all the merge activity + the big list of issues that needs
-urgent attention :)
+lru_gen_clear_refs() is currently multifunctional. It clears
+refs/workingset, but also returns true to skip
+folio_batch_add_and_move() in both deactivate_file_folio()
+and folio_deactivate().
 
-Since no one responded to the last email, I took the liberty to do
-some timezone math and create the meeting myself :) How does this
-sound?
+This actually looks a bit weird. However, following the current
+logic, I've drafted a version that we can use as a starting point
+for discussion:
 
-Thursday Nov 12, 2026 =E2=8B=85 5pm - 6pm (Pacific Time (Canada))
+diff --git a/mm/folio.c b/mm/folio.c
+index dc2c796a4ea7..bc17cd3b6b6c 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -444,12 +444,12 @@ static bool lru_gen_clear_refs(struct folio *folio)
+        int type =3D folio_is_file_lru(folio);
+        unsigned long seq;
 
-which translates to:
+-       if (gen < 0)
+-               return true;
+-
+        folio_set_lru_refs(folio, 0);
+        folio_clear_workingset(folio);
 
-Vancouver: Thursday November 12, 5PM PT
-US west coast: Thursday November 12 4:00pm PST
-US east coast: Thursday November 12 7:00pm EST
-Europe: 1:00am Friday November 13 CET
-Beijing: 8:00am Friday November 13 CST
++       if (gen < 0)
++               return true;
++
+        rcu_read_lock();
+        seq =3D READ_ONCE(folio_lruvec(folio)->lrugen.min_seq[type]);
+        rcu_read_unlock();
+@@ -465,6 +465,8 @@ static void lru_gen_inc_refs(struct folio *folio)
 
-Folks, can you double check the invitation, and please let me know if
-I missed you in the invite :)
+ static bool lru_gen_clear_refs(struct folio *folio)
+ {
++       folio_clear_referenced(folio);
++       folio_clear_workingset(folio);
+        return false;
+ }
+
+The another option is:
+
+diff --git a/mm/folio.c b/mm/folio.c
+index dc2c796a4ea7..8d1fd788188c 100644
+--- a/mm/folio.c
++++ b/mm/folio.c
+@@ -438,6 +438,12 @@ static void lru_gen_inc_refs(struct folio *folio)
+        } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags)=
+);
+ }
+
++static inline void __lru_gen_clear_refs(struct folio *folio)
++{
++       folio_set_lru_refs(folio, 0);
++       folio_clear_workingset(folio);
++}
++
+ static bool lru_gen_clear_refs(struct folio *folio)
+ {
+        int gen =3D folio_lru_gen(folio);
+@@ -447,8 +453,7 @@ static bool lru_gen_clear_refs(struct folio *folio)
+        if (gen < 0)
+                return true;
+
+-       folio_set_lru_refs(folio, 0);
+-       folio_clear_workingset(folio);
++       __lru_gen_clear_refs(folio);
+
+        rcu_read_lock();
+        seq =3D READ_ONCE(folio_lruvec(folio)->lrugen.min_seq[type]);
+@@ -463,9 +468,10 @@ static void lru_gen_inc_refs(struct folio *folio)
+ {
+ }
+
+-static bool lru_gen_clear_refs(struct folio *folio)
++static inline void __lru_gen_clear_refs(struct folio *folio)
+ {
+-       return false;
++       folio_clear_referenced(folio);
++       folio_clear_workingset(folio);
+ }
+
+ #endif /* CONFIG_LRU_GEN */
+@@ -659,10 +665,7 @@ static void lru_lazyfree(struct lruvec *lruvec,
+struct folio *folio)
+
+        lruvec_del_folio(lruvec, folio);
+        folio_clear_active(folio);
+-       if (lru_gen_enabled())
+-               lru_gen_clear_refs(folio);
+-       else
+-               folio_clear_referenced(folio);
++       __lru_gen_clear_refs(folio);
+        /*
+         * Lazyfree folios are clean anonymous folios.  They have
+         * the swapbacked flag cleared, to distinguish them from normal
+
+
+I would personally prefer the latter. What do you think, Hui and Kairui?
 
 Best,
-Nhat
+Barry
 
