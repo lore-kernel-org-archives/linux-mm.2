@@ -1,114 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C2E606A32C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C200D606A326
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=lWOC+ru8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U/zzQhn9
 Received: by kanga.kvack.org (Postfix)
-	id 97F4E6B05B0; Thu,  5 Nov 2026 12:01:13 -0500 (EST)
+	id E17736B05D4; Thu,  5 Nov 2026 12:03:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 956EF6B05CC; Thu,  5 Nov 2026 12:01:13 -0500 (EST)
+	id DC83A6B05D5; Thu,  5 Nov 2026 12:03:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81EBE6B05CD; Thu,  5 Nov 2026 12:01:13 -0500 (EST)
+	id C8F386B05D6; Thu,  5 Nov 2026 12:03:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D71B6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:01:13 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD4CB160B67
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:01:12 +0000 (UTC)
-X-FDA: 85401680784.05.50F8376
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C1B7B18000A
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:01:10 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=lWOC+ru8;
-	spf=pass (imf06.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9F2ED6B05D4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:03:08 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 31558160B5F
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:03:08 +0000 (UTC)
+X-FDA: 85401685656.09.1C97120
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id B7ACD20011
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:03:07 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U/zzQhn9";
+	spf=pass (imf31.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793898186;
+	b=3mUhfY9xGS0KK5JfkJpetEzCRlYnhpAcuW62Yt35wUB8IJ2ThMhuJ85HDP5npJmtxaalCR
+	uLLY82qK2tDT8RRMEWXqXzUL18tkFaoqrdSSZTeB78IjMIMtFi6Xg+DgBtBMtZMtEyhq14
+	eGjhkdqck+fFAj27046GGdjtPPeN23k=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U/zzQhn9";
+	spf=pass (imf31.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793898070;
+	s=arc-20220608; t=1793898186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=imn662agbdX5zP5xBLIUgWlwgaext2h6zc6JhEY5gWY=;
-	b=5PnqL1YD6gvdzmgcguUqO5zBSm9GWgE6R0G+tnEcQ0f9UxZtnqZ7gJpcvwm0H257ar0Cmw
-	hCGXBJiVFpbIU7E+4fk/KtCZE+BzseXOqXpk+035+OmS29X+sG11lXyYCJFD4oLMNB/h36
-	VxxTZZUrILA1f/igI8zfhI8IEZel+AQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793898070;
-	b=oy4j2KWNV7Y33kBC72riN1zkwwfEqAAS8PY5DqvQe6OfBP6DebHuyH1dKDYGWYVUbrWHBm
-	csdc6LJfWZej8dtnuvQg8PiZmQQbFVZxm6Q9IQNLfSGyOoMHSjiUEXZw7vmfAjib4iVQh6
-	wTeozJNL4fuGZ0F9Un1wK5ZM5wxTCEE=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=lWOC+ru8;
-	spf=pass (imf06.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Content-Type:MIME-Version:Message-Id:Date:Subject
-	:From; bh=imn662agbdX5zP5xBLIUgWlwgaext2h6zc6JhEY5gWY=; b=lWOC+ru8GzAs4Oeudsz
-	C/hktTnNK4iW1AiktlGT4mPASk69DX1djvErs/V4C+AjCGcJQvNuQHPpYGbvs1pbzLzE8Lt0spjrJ
-	Ar5tiI42W2PxRQIr7pgJbobKxB8m1jGtceCk2KxoAXA0ziCNFRgEi+jmaNNrm/rXn115XLMj2uOkl
-	AOKWkoGDUgzxlL1aUc6yYlNpt3tMhzYapthmCXioRAg8qqQ9LpEWTKVqeUJXdHOj7KBxzNkk2ipGy
-	mPTRvH/KcJz8PSccRVu+WvbM/hyrGTwclutvLzerbQg2vDECIsQdJZPCvFiSx6zvou1n1wJFbclCi
-	ZMqHkpDXCJs37/Q==;
-Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xP0li-005CiT-0E;
-	Thu, 05 Nov 2026 18:00:58 +0100
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Subject: [PATCH v2 0/2] mm/huge_memory: take a reference on a device DAX
- PUD copied by fork
-Date: Thu, 05 Nov 2026 18:00:54 +0100
-Message-Id: <20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-0-2828fe5a51ed@virtuozzo.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+GDK5SHSY6SA93NwCdlZTl+b20QDETC0OdxKh5BTja4=;
+	b=kRvfZ2ZdF6RbfFuXb1lSH/b9Q//NP8JjRRdTix3Q0C52KK5HHJu7uTcjVkMJmRvlB/udem
+	rf5qo0qb/vNsZ4J8H5Ab9v2lWwqUzof5SoDFqTlAQYIN/KXwigLn42KsGC8nlcbzDKHTkV
+	5prYA13ZOHs5rll6uZJRc9bz2g6RLvs=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C1A9643BD8;
+	Thu,  5 Nov 2026 17:03:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4329B1F00A15;
+	Thu,  5 Nov 2026 17:03:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793898185;
+	bh=+GDK5SHSY6SA93NwCdlZTl+b20QDETC0OdxKh5BTja4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=U/zzQhn9F9RkCJilk4OZI/QAAx01gxRgJL5gzdN1eBbPe+uIGkyUIY/eHuti0URuV
+	 PC7SUDFqmuz2hgDMK1d01qt6xjAyjtPUFHYy28KJ/ecJVH9fN82lpkhN/4yVV1XlRO
+	 J+g/tpgZlN6y1WvV3NayHklvEYOpvWYENJlITQYLg5XptBrIk+g6mtTGVFojNMYH0f
+	 k08K2sSlJ0/J3aq6my/f7r4uDwhlW8g15clSQ4VvKR/0ZgfPRWwuC2F48xkjZIw6dX
+	 57HFiVyxHavVE/PKepqny3sH4DJ91vEiRpr6mCqisqmj08Gc+2CBOd1Z/MKUn0p7F3
+	 5Eai81R5zHBiQ==
+Date: Thu, 5 Nov 2026 17:03:03 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 3/7] zsmalloc: switch handle type to struct zs_handle
+Message-ID: <auy19VvYgb25vnFc@google.com>
+References: <20261105044752.1997895-1-senozhatsky@chromium.org>
+ <20261105044752.1997895-4-senozhatsky@chromium.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAEa27GoC/52OQQ6CMBREr2K69pu2ChZX3sMQAuUDNconLW0Ew
- t2leAOXLzOZNwtzaA06djsszGIwzlC/gTwemO7KvkUw9cZMcpkKLgUEN5IFkXBxOYOmYSo632I
- x+BoaehkCi40m34+ApUwzTFMlr5xte8OWmM/ueuQ/dr56oh6jIDY6E8en/UwQsfePNwjgoKpaq
- SQRTVbhPRg7eppnOml6s3xd1y//lHuB+AAAAA==
-X-Change-ID: 20261021-vstor-150143-copy_huge_pud-folio-refcount-ea269e668270
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Lorenzo Stoakes <ljs@kernel.org>, Alistair Popple <apopple@nvidia.com>, 
- Dan Williams <djbw@kernel.org>
-Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Konstantin Khorenko <khorenko@virtuozzo.com>, stable@vger.kernel.org
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3904;
- i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=hqQriZN4cRnxi6WxgUqzU1/jjFn9IHmUhJ5AFoUsixc=;
- b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq7LZLdsf/zRRI4qD3Olsg7Qy3mRGp8u4UGzafb
- xnv0bqOryGJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCauy2SwAKCRBRlgpH+WFc
- KmIEEAC3HeGbT/5CXaKDpF9nFXNwlWDV0OSm7UtzheK5642SvASEByaFcqWTFtUCT0V+q+ldtdb
- MPKMsqSm/m+O73Y+zdNrKG14t4qWmK6FUPSKJT0qqRegz88xdOJD7RIFORpT7LxYCsTsZIWpcxl
- V8hwMEI82rNY9tGEM6vSYfKRAWshb9vMd00vU60Gcn6HCF9AcISvbnQfCHF7qntlFT1o1+kvSSS
- cfAsvJslcehDJ3ZfuoSwTB1N33L2uI2D2ZR9FufknEOx5v/cK6g98PxrShIAPWXPhBABJHZL4Iw
- BjB6U9V3VuQG2ZG9bl8LGgP6V3qd2/Ka6XYr+hA4lvPrhgiGJIwaq0yuVWXx+dwCcqmWPPQJSqk
- 2bxwvsivb9k9A+Y5DCJIIrH6zGXuMxYVHQscBI9VTquNQrKYrz1BWfHrP6qTWHI0u/WoR7oLrWk
- Pu/EPVGbn75OjNVHw8U91HDlPMRskwRkvlcBvxa1VUUyeTAfsTbxotHfq3UWMFjzIic24G0ul71
- gQh+YQV5pGp8xsU3+zUOU8GuHUoMAM+UtcMKND07e6+Qobrj+5ME6fjsSRVDlbbOLIj9dcTNye9
- oSeiHQbmq3uxYtXmNumJgCgWh0ZKb7Ld3s9fdz1ju2K9BtaMuMje7o9fr+TPRABW1nkcSTCSBXK
- IL76YdHSFA3Y4Fw==
-X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
- fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 6fgj1rrhedp9hac4xb5ifmh6gs1rhbip
-X-Rspamd-Queue-Id: C1B7B18000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105044752.1997895-4-senozhatsky@chromium.org>
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B7ACD20011
+X-Stat-Signature: jpjroobs7bzpu9qu5mj6qjasab15ijb9
 X-Rspam-User: 
-X-HE-Tag: 1793898070-166021
-X-HE-Meta: U2FsdGVkX18JnKSq/ton4VRc9vtcxpILnjo8o9LF7HO0wpZCQ1y1vWRHKquywLnKjJtKnHJxgNXz5zf8bFZ/q38whHmj8jeUi0VCPGqTP8WqYeVwN8Vb95T42HMeW2e+9LgzwjVpT6HUhBsiau3HrqUueM9W4eXJ8baELhYutXzLmm/P0ayvdSWNx0c8zAcNtFpiA6ycmMSrEeh84G4mTpwj1c9XiagUVK7AT4UYo4jjrJ0izBwpu2v+HS8ShbEpWWpKvy/8pje1WWuwRHKQqZ8GgLz73oYsbbzdnGhEwfQ60MBBfp4KVSfem0wTXyyRKu6v7+rm8/E8XmHFnSwoOfTCgC//ECgjWaWKmsUgTJ5XEVjgRIbAcDlR8hJ3JdGpc46kJIqB12fr2Vq76CqcGTtWX6tqHF7aJBRFbbrsYrx2tMSXyPUgZbpGFlenofxjL5V+8vIB21aNZAFFg+A2v1UY238Tl+AuAm26Qu8W5GpdWX2CH+fDkSIU/gJdNjEstfzgMBeJGtrja+SSYD8zcFI6EB490t20puPhqPmn5WYxwLuEy5Td+ymxqTaV8ZGjsClO5HCg3Q6qaXwvaVQxWIPnf/TllMprjVrqwBEeXYNevbcDsZwfCngD6eYS1a8MldBuSZ8B4GZt0OBm4BdlxbukC3elgep9FYy8+VMg0Ac9dkvuJqn413T84opKeAZ4kui/XIb1pUG4kkpSGnGVb+rokWF8ghDkZhrb+NFTcBzpTD7u/L2PJf2fISfmNp9ZkV1K1T3/lqyvgtpCkkvCOGPvnQmjk7soZC3AY8OL3GLDdL8WGNYy89BaiJegO/WGk6Q52/TgqiXK3nmqJDX+QWBQZx/M8pDE0urU6R0SG0dxrUMs6lCk3ic0cOpYBNlUlTBkFbxYhBfGPZXUjW2PTLAEmp+v6jVZV8VjWUNCQICGUeRQZ8Ze9nEzOCtKJtkTsh7SuWuCqPkVQ/Z71UR
- KYEVMwA6
- p9jf6Jj3a3G3Q3KU873fh8wRuA8nSTo3ZREJy5gY5PlMCd+p+C0wm8YStWZoWnCR3/7FO5W6j4wjjM9R0pUMjNAg/gDisdEZiSSMA+LyH3cm0Jaxd5TjuqTMPXuxZnK6YYlj9JerKMU2yA4qkCmunAMcIR5/7SAizG9Nl+DSBMViGXgSFT7eF+XcS3pocqTWLetadJL9/Obo9Vy6sUIwIUPShFFiqZKaR8PqOJ2P1k0lcIvl9QEjogDx9dAJjRli152z1Fzfi5pCrNc7903r36XjLO3tEwwMwgL5aSMM4l08CavaAXQ/3Dhfr5O8IamWwY6/AA1LLZxjF9fq/WwVCp6M/fZZ1j9ewfo6tQ05KX2+H1yFWLv/a6YwrtQX0hoh18CJ+XTIPQZqQkQM+vk64SWFGB8uZFcaPVj3blkWUtLbsj6VK4nutJ4ea9z/fymd9lujj
+X-HE-Tag: 1793898187-424237
+X-HE-Meta: U2FsdGVkX18gpqwFqHvVd+GH/w+ff6JeSwvryWnFD6S/GxM+voUTBTsz1uBYXkv4HVm1e7OytkoJQYmtDH67ErMIpEskXBa1c6s+yTA+vv9KbHlDl6Z4RO/0Xk5cpG2pV8PjIV5/NwLNYa/zwulHmkUzX22k4kf8AvkYqHz/SeRLzwt7BVZwWUGUt2VBnaQYlhfbFAZPgA5dIzH72aXKb5mtNaBksa2xD3Ik6PGU0iwuzFc5/p92wl5ST8D+5vuikv83QKOt/XOR6SoJ7jfkkJMFe17/ro4e/TXc8XZ+0xd8D4FSzgNlu5YkuzjAgCZhqBPYYeOTFeV7qbRNKJt8lkhSTSTMIYw3hP9xyBDhvcpgJ75iZW+D7bP6bMHKJmoMrlFhOxJe+SHnlGP/Kq44O+30EFsjYRt/wSaKNXvZoWW2yjtP8qEti99qvGTc/yokCj3X9tzUGuGLk9eNhsK2aVNqLZwLFbpQ347Z14D/uHrIATAfQj5Bdc28jnTvQqN6HdaURFE+Huzo7/za6L8KeoHS2uV1iVp+32AGxbqQ4UZxfOriDetKw3vPKqXcwWCRppGidANnrPoMn0ASoG0qqg/z928wZVBUlCy/mTLoTrzv1A79GShUBLkpwmR8/j4OJvfW2HQNQ29BmQplyHEUOKDFjetohoCPLBpEqgZmMIurDGkAjFfE/BO9JIDDnJg5ODcmIKeIHsfUwrtR6ZtwNxBIv9Z3/VOUas64bQnRWQw5kn+uTuLXbKdDwQ8X/ULpNxxO8J7QY/Fve9VrpKZ04SkRBFznsrBFkPs3lx2T+5RFrwMwB6YSW7KU4Zi5fO1j1hSVvxVBhquR+pcU7+I/D1ug2WtoBTEsez13fjN4H5Y2Gbiiw4U8liscAoI3HaV70sx1BE6JgHHbimnhDDE70HK6328sXzjuJWIg8sAtQwJV+u3ust0o52+yGLdjJ49N4m0nGUyrgPVk8c39//m
+ 5B7NeLQi
+ rJupm+V/sEhNuEXYphHksBChFHCd8bpZK3OUCPckwRCCmJHt6cSIl9fR1vbJRGmQkM40xpScm/Sai3g83xeUqHUFoPrufwwYWiifk1UyVdXAUb/DSkjOWPUm5dX/cnjcKnp9Lxm1qZOnPvIo1MXI+gv5//KwTAOiZVwzgbRszaqzeJr+7wLsdqHvU32+u9DpjiGVwGOWmmgP3VBjV03vo/S3IuxEEmw7yrBy/qZuCAbeahY25n3FqW2bAUJ5BbIAu95wr3GBbSQ2B6DqPBsnF0/kJeElssdr/Wlcj/P1TjJL9gN60Qm7ykXxxIBLlzEQfbaPLpRZViFrxPG0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,93 +97,122 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-copy_huge_pud() copies a device DAX PUD into the child without the
-reference, rmap and counter that vmf_insert_folio_pud() took, so the
-child's unmap takes them from the parent. fork copies a device DAX VMA
-once it has a guard region, so it takes no more than:
+[..]
+> diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
+> index 5b7298a5026b..693c9484b638 100644
+> --- a/include/linux/zsmalloc.h
+> +++ b/include/linux/zsmalloc.h
+> @@ -22,14 +22,15 @@ struct zs_pool_stats {
+>  };
+>  
+>  struct zs_pool;
+> +struct zs_handle;
+>  struct scatterlist;
+>  
+>  struct zs_pool *zs_create_pool(const char *name);
+>  void zs_destroy_pool(struct zs_pool *pool);
+>  
+> -unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t flags,
+> -			const int nid);
+> -void zs_free(struct zs_pool *pool, unsigned long obj);
+> +struct zs_handle *zs_malloc(struct zs_pool *pool, size_t size, gfp_t flags,
+> +			    const int nid);
+> +void zs_free(struct zs_pool *pool, struct zs_handle *handle);
+>  
+>  size_t zs_huge_class_size(struct zs_pool *pool);
+>  
+> @@ -40,10 +41,10 @@ unsigned int zs_lookup_class_index(struct zs_pool *pool, unsigned int size);
+>  
+>  void zs_pool_stats(struct zs_pool *pool, struct zs_pool_stats *stats);
+>  
+> -void zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
+> +void zs_obj_read_sg_begin(struct zs_pool *pool, struct zs_handle *handle,
+>  			  struct scatterlist *sg, size_t mem_len);
+> -void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle);
+> -void zs_obj_write(struct zs_pool *pool, unsigned long handle,
+> +void zs_obj_read_sg_end(struct zs_pool *pool, struct zs_handle *handle);
+> +void zs_obj_write(struct zs_pool *pool, struct zs_handle *handle,
+>  		  void *handle_mem, size_t mem_len);
 
-1. map a devdax instance with 1 GiB alignment and fault in a PUD;
-2. MADV_GUARD_INSTALL a page elsewhere in the VMA;
-3. fork, and let the child exit.
+I would squash patch 7's constification here.
 
-Patch 1 is the fix, patch 2 a selftest for it. I found it while
-reworking copy_huge_pmd() for fork after David's review [1]; it is
-independent of that series.
+>  
+>  extern const struct movable_operations zsmalloc_mops;
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 7ef80e0da626..7d8aab56f5cd 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -264,6 +264,10 @@ struct link_free {
+>  	};
+>  };
+>  
+> +struct zs_handle {
+> +	unsigned long __private obj;
+> +};
+> +
+>  static struct kmem_cache *handle_cachep;
+>  static struct kmem_cache *zspage_cachep;
+>  
+> @@ -438,16 +442,16 @@ static void init_deferred_free(struct zs_pool *pool) {}
+>  static void SetZsPageMovable(struct zs_pool *pool, struct zspage *zspage) {}
+>  #endif
+>  
+> -static unsigned long cache_alloc_handle(gfp_t gfp)
+> +static struct zs_handle *cache_alloc_handle(gfp_t gfp)
+>  {
+>  	gfp = gfp & ~(__GFP_HIGHMEM | __GFP_MOVABLE);
+>  
+> -	return (unsigned long)kmem_cache_alloc(handle_cachep, gfp);
+> +	return kmem_cache_alloc(handle_cachep, gfp);
+>  }
+>  
+> -static void cache_free_handle(unsigned long handle)
+> +static void cache_free_handle(struct zs_handle *handle)
+>  {
+> -	kmem_cache_free(handle_cachep, (void *)handle);
+> +	kmem_cache_free(handle_cachep, handle);
+>  }
+>  
+>  static struct zspage *cache_alloc_zspage(gfp_t gfp)
+> @@ -466,9 +470,9 @@ static void cache_free_zspage(struct zspage *zspage)
+>   * Pairs with READ_ONCE() in handle_to_obj(): zs_free() may read the
+>   * handle locklessly, so prevent store tearing here.
+>   */
+> -static void record_obj(unsigned long handle, unsigned long obj)
+> +static void record_obj(struct zs_handle *handle, unsigned long obj)
+>  {
+> -	WRITE_ONCE(*(unsigned long *)handle, obj);
+> +	WRITE_ONCE(ACCESS_PRIVATE(handle, obj), obj);
+>  }
+>  
+>  /* Protected by class->lock */
+> @@ -817,13 +821,13 @@ static unsigned long location_to_obj(struct zpdesc *zpdesc, unsigned int obj_idx
+>  	return obj;
+>  }
+>  
+> -static unsigned long handle_to_obj(unsigned long handle)
+> +static unsigned long handle_to_obj(struct zs_handle *handle)
+>  {
+> -	return READ_ONCE(*(unsigned long *)handle);
+> +	return READ_ONCE(ACCESS_PRIVATE(handle, obj));
+>  }
+>  
+>  static inline bool obj_allocated(struct zpdesc *zpdesc, void *obj,
+> -				 unsigned long *phandle)
+> +				 struct zs_handle **phandle)
+>  {
+>  	unsigned long handle;
+>  	struct zspage *zspage = get_zspage(zpdesc);
+> @@ -839,7 +843,7 @@ static inline bool obj_allocated(struct zpdesc *zpdesc, void *obj,
+>  		return false;
+>  
+>  	/* Clear all tags before returning the handle */
+> -	*phandle = handle & ~OBJ_TAG_MASK;
+> +	*phandle = (struct zs_handle *)(handle & ~OBJ_TAG_MASK);
+>  	return true;
+>  }
 
-v2 is based on mm-hotfixes-unstable, as patch 1 is a fix for stable.
-
-Testing
-=======
-
- * mm-hotfixes-unstable x86_64 KVM guest with CONFIG_DEBUG_VM
- * pmem from memmap=3G!4G
- * devdax made with "ndctl create-namespace -m devdax -a 1G":
-
-  +----------------------+--------------+------------------------------+
-  | kernel               | fork_dax_pud | log                          |
-  +----------------------+--------------+------------------------------+
-  | mm-hotfixes-unstable | not ok       | BUG: Bad rss-counter state   |
-  |                      |              | mm:... type:MM_FILEPAGES     |
-  |                      |              | val:-262144                  |
-  +----------------------+--------------+------------------------------+
-  | + this series        | ok           | clean                        |
-  +----------------------+--------------+------------------------------+
-
-A variant that writes to the device and forks three times also hit,
-on mm-hotfixes-unstable:
-
-  WARNING: ./include/linux/rmap.h:159 at
-  __folio_large_mapcount_sanity_checks+0x90/0x150
-
-With the series it is clean, and the guard-regions selftest passes.
-
-The selftest only runs on a device given in FORK_DAX_PUD_DEVICE or
-argv[1], as on an unfixed kernel it leaves that device's folio with a
-mapcount below zero. On pmem emulated in RAM, with
-CONFIG_X86_PMEM_LEGACY and CONFIG_DEV_DAX_PMEM:
-
-  boot with memmap=3G!4G
-  ndctl create-namespace -f -e namespace0.0 -m devdax -a 1G
-  FORK_DAX_PUD_DEVICE=/dev/dax0.0 ./fork_dax_pud
-
-[1] https://lore.kernel.org/linux-mm/20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v3-0-85eaec8417f6@virtuozzo.com/
-
-Assisted-by: LLM
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
----
-Changes in v2:
-- Patch 1: copy_huge_pud() takes only the VMAs, and the TODO moves next
-  to the rmap duplication, as in David's fix for the same bug:
-  https://lore.kernel.org/all/26862633-c3d1-4b82-8ca2-346cb78570d7@kernel.org/
-- Patch 2: read_sysfs() and a new rss_file() in vm_util instead of local
-  helpers (Sashiko).
-- Assisted-by moved from the patches to this cover letter.
-- Rebased onto mm-hotfixes-unstable.
-- Link to v1: https://patch.msgid.link/20261021-vstor-150143-copy_huge_pud-folio-refcount-v1-0-8bd88551f9be@virtuozzo.com
-
----
-Konstantin Khorenko (2):
-      mm/huge_memory: take a reference on a folio PUD copied by fork
-      selftests/mm: test fork of a device DAX PUD
-
- MAINTAINERS                               |   1 +
- include/linux/huge_mm.h                   |   5 +-
- include/linux/rmap.h                      |  22 ++++++
- mm/huge_memory.c                          |  27 ++++---
- mm/memory.c                               |   4 +-
- tools/testing/selftests/mm/Makefile       |   1 +
- tools/testing/selftests/mm/fork_dax_pud.c | 114 ++++++++++++++++++++++++++++++
- tools/testing/selftests/mm/run_vmtests.sh |   1 +
- tools/testing/selftests/mm/vm_util.c      |  21 ++++++
- tools/testing/selftests/mm/vm_util.h      |   1 +
- 10 files changed, 183 insertions(+), 14 deletions(-)
----
-base-commit: af05d765a4476d2e48099148c80f9b13f462e309
-change-id: 20261021-vstor-150143-copy_huge_pud-folio-refcount-ea269e668270
-
-Best regards,
---  
-Konstantin Khorenko,
-Virtuozzo Linux Kernel Team
+Would it be cleaerer if obj_allocated() just returned the handle here? I
+believe this can be done separately in a prep patch.
 
 
