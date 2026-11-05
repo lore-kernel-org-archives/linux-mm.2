@@ -1,113 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90FA606A33B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 08:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E54606A32F
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 08:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=YEc9uOwK
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cejgT5a3
 Received: by kanga.kvack.org (Postfix)
-	id 0846F6B05B0; Thu,  5 Nov 2026 03:19:09 -0500 (EST)
+	id D0E2D6B05B1; Thu,  5 Nov 2026 03:44:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 034FE6B05B3; Thu,  5 Nov 2026 03:19:08 -0500 (EST)
+	id C70BD6B05B2; Thu,  5 Nov 2026 03:44:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E66186B05B4; Thu,  5 Nov 2026 03:19:08 -0500 (EST)
+	id BAD396B05B3; Thu,  5 Nov 2026 03:44:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C2D8A6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 03:19:08 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C26B2807A0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:19:07 +0000 (UTC)
-X-FDA: 85400365134.15.A14A66D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A7B7A180005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:19:05 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YEc9uOwK;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 9559B6B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 03:44:02 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 307A414095B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:44:02 +0000 (UTC)
+X-FDA: 85400427924.13.E7823FB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6EF90C0004
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:44:00 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cejgT5a3;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793866746;
-	b=BR2EP6sVcJ2GcfOS0gqRnNv4FGjNn4OiD0kwMjvCJ0a83NHWONxNJu1mJzj0m0NTrKH/7p
-	PMwmZpNM6GlrPr3P3KP0ELVuuB4DKmjOJVV7Zx7MEBoYHhXmp8X02f1U3W6n4z6cnKKgVh
-	DT2IqBzoA/aNiYNb+kOuqHoW/XmTnvc=
+	t=1793868240;
+	b=Xm+mApg39tPCklImbkRbc7o2YHszlRqB1lJ+7fMIitDD1h/HcOIB/XTvVNNNPwVKbxAxBn
+	DEhT0nkHX77Tdg2f0MQor2eixxoGK9yPsuHessw3ws5EadgMvjhlY3lGdw+QnK+k9nx/5G
+	zPuLdi+iahYDl7kYhUHA0FBz8dqnprc=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=YEc9uOwK;
-	spf=pass (imf24.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cejgT5a3;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793866746;
+	s=arc-20220608; t=1793868240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=voXWE43TKZzjj6nJV8gFDultxRVrBwVOyi5RshFaUXQ=;
-	b=OW3rVBP2olBDZIHwiCVerV0tuW+2xaIaDVrys+Z8FFa7rloxD+uHQ/SKCoGlAkT7orE4Tr
-	TJ/7IADNJGKEmz7WN1c4gWGMBU8klvrROpWyL4EkRJ+hpH9ulmNH5j5Yb833f+2fiHQ06V
-	PsShUus3GW4IEIxHPF/oXvxBBOR4qMI=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 63EAF15A1;
-	Thu,  5 Nov 2026 00:19:01 -0800 (PST)
-Received: from [10.57.17.66] (unknown [10.57.17.66])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D64D83F673;
-	Thu,  5 Nov 2026 00:18:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793866744; bh=bTT01ldQJro64DbDN3GZnqw1GrxcI2GgeVkpWVQKF/w=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=YEc9uOwKpkG3VIo8BNC1Jc7JWkHGwFeOGrZAhgcSe9JSpicwMRNHh7/SpXxFugEKd
-	 E/6WcZEpwSmKf6a6pwXYQ7KDsDvx2WH4QQu0QPTrI2+4h5in1ky6m7xvJKypoPzaYn
-	 wAB7G83GeLBT0zBXUpBtBuY78ekPLBN/1DQrDT3s=
-Message-ID: <d0e63c8c-ac81-4daa-b359-622f16e91d67@arm.com>
-Date: Thu, 5 Nov 2026 09:18:38 +0100
+	bh=dm7hinjZ2Hv+FWkKpGdKWF8U9Pzj/MHQHGGecTaoJOg=;
+	b=1chFRxg/oU1+oz45n3REl7ubgLKQY7/HYraoUrE1FMtavfiPQl1EmkJUuOJKDtUl9xJNjB
+	GnQU5iYY9N8a1Uvnju8EfGyEuKI2uoBrh1T/0Qqa0tPzCVatHcg32ZKzULfakPs4wJHC5W
+	j23lPTSba9fNJ96WelMyLH+Hdzgy3IQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 62EB440C40;
+	Thu,  5 Nov 2026 08:43:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7161F00A16;
+	Thu,  5 Nov 2026 08:43:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793868239;
+	bh=dm7hinjZ2Hv+FWkKpGdKWF8U9Pzj/MHQHGGecTaoJOg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=cejgT5a3IGcZ7drU+mnxmAA0JdW+j4iFA8tEz2xpYm+bBKiuBIuQ0K7RKlwvUOYPY
+	 sZrI+CbasH1q5A/qudt2JA4jENjECGpcW7XC39O3D5GiWQQxfIIdLg/FZ7S9INv6cT
+	 owd3RXPAMbUUea6PDY8nPlgnS14ohetgj7AkTLhfxEMtXOsUjyo+x/Olvz6PAK6pcy
+	 ae0uOUofbN4UoBMUVE3BPlzjdxT/PCtVxcyySaikhYXN4lMWJfQgD1Qa3faPLj495E
+	 TzQYA07ncTOgCjByaGuQ9Dv3LXMj87NV83PEJEKRwXJbzTj8JZwmurMnMxAPIig19Z
+	 lAMpcuu3BBCrw==
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Date: Thu, 05 Nov 2026 09:43:50 +0100
+Subject: [PATCH v3 01/10] slab, kunit: pin test slabs by an extra
+ allocation
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v9 08/25] arm64: Initialize POR_EL1 register on
- cpu_resume()
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-To: Linu Cherian <linu.cherian@arm.com>
-Cc: linux-hardening@vger.kernel.org, Andrew Morton
- <akpm@linux-foundation.org>, Andy Lutomirski <luto@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>, Jann Horn <jannh@google.com>,
- Jeff Xu <jeffxu@chromium.org>, Joey Gouly <joey.gouly@arm.com>,
- Kees Cook <kees@kernel.org>, Linus Walleij <linusw@kernel.org>,
- Marc Zyngier <maz@kernel.org>, Mark Brown <broonie@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Maxwell Bland <mbland@motorola.com>,
- "Mike Rapoport (IBM)" <rppt@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>,
- Pierre Langlois <pierre.langlois@arm.com>,
- =?UTF-8?Q?Pierre-Cl=C3=A9ment_Tosi?= <ptosi@google.com>,
- Quentin Perret <qperret@google.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Vlastimil Babka <vbabka@kernel.org>,
- Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
- Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org, x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
-References: <20260818-kpkeys-v9-0-743ad31b2c8f@arm.com>
- <20260818-kpkeys-v9-8-743ad31b2c8f@arm.com>
- <apkMDaRKqX3TTINV@a079125.arm.com>
- <139b273a-d868-4d82-92b6-cccfb0048c44@arm.com>
-Content-Language: en-GB
-In-Reply-To: <139b273a-d868-4d82-92b6-cccfb0048c44@arm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A7B7A180005
-X-Stat-Signature: xn11sggyf3fuprto1oxf8eyir5niexqp
+Message-Id: <20261105-slub_tiny_rework-v3-1-0484ce59eabb@kernel.org>
+References: <20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org>
+In-Reply-To: <20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org>
+To: Harry Yoo <harry@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+ David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, 
+ Geert Uytterhoeven <geert@linux-m68k.org>, Conor Dooley <conor@kernel.org>, 
+ Damien Le Moal <dlemoal@kernel.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>, 
+ Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com, 
+ "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+X-Mailer: b4 0.16.0
+X-Stat-Signature: dim1qrfb1ofh7hoikbyfpadff4i681jp
 X-Rspam-User: 
-X-HE-Tag: 1793866745-979175
-X-HE-Meta: U2FsdGVkX1+Jn2rnBr0d1bbmoarKNXCEcS5fzkVpt6lyWynGlXtng8LxUiBmytoh79yrEXvneDET5dgeM+C6TmehoSvc7cLJ1ofJQX85uHIsL6QfvO7cg45yHbSYjuOVKLDfKVSSky21vyceQIir/Z0akNXgQgYyLIaOhzHmqq+ZntEEooreAjk+YM8RTUcRfWbTd2m0ZOa8fX8bwBhFUU9EYMyp+7MhxQCbC9OUkO586W6YptKnApZHL4aZ321NjRH/4TNIn8jnw/AYgwYhNFQrNXwIe8VO3IDeFGaLzWtGkM2WquaUbp4bxu4s3iE5e9P5ygfsDXahnAdX9NNj+Nug4+mbNDFgN3GzOflPIC5lSf5w2hwTGhtOI9vj/Zo2oeYrtvxV1kT2zW5KoNWO0hw5qT8kQv4W1fnYYUsMr5yNZmA6jl3gxGUzJaqDKZQD40BJdcKlfaLCy2zbWW3bq259rexdbXsEC52Mrc3SBQ5sUDbNc6XF2fIxqkRxAasFN+3eOImcSMetyWS9f9684G043NLow90wFeX6obFOGHwMnVl/EcH55Og1o6yRY/BaBOrC1w8u0RjyFXYahDjZifZ/emd4Lb2G/+po+M12lnxKbClTuSFGBlFt5YO7KiM3HMkp0Xnau9uf6GOt8z3BZ+5Ik1Y7TgeNk0JL/vmjkzpk5QtpMhrY8epctIqJvu+bpK4cAGlzORgnrmStkhC8tHvxgyb6yK3L9kti1Xd5Bx+a9gOaP4M+EmbtaoW0gnn3B4OuDGHRrh96WRkqvwl3poGmMGZUKYoii1N9QUWFoa60fVYOJyTPYlllokaGu50TO9yFjYgsnFCIBqwz1sVQVCtWqyunxFDjGj4JALbBxHxDN3LBpDgdkIalWqQrGeTDg1Bl1VzvLWYF4xJCH35VxC9ewIVWkMWsoJuN/yKjIEKv27sYgknKR3Gch6xcrSIZZsd+3I4bGNuW6UsJkBG
- GxC5gfR3
- Ffpy+sA+c09NQsnw8hN8UgZeNm+A7XdmuerlcSkGidfr5rB0RE/UuNIE3sBr8rnnpSqD3Zof9TIPk0V7qmMipeowyWD9rTX7XA1iy4zxksioYN6//ekrWdZ8FaIhTUxbqNnHgV79zSoibZmUWLL13G7/1lk6MJh9INxqSZld/4QsdwYP/KMfndZsYAObWWYaltrCK6u5NeUreZXnffufIG6pBFz2UPh46FTfQfPOJTZl1ZSe9raL1Cet40Eav3ZjOHhORd8/sja6z8GUEt6lCbJ8rpwRJnR5I8ZOcWZdMEbZqDumLiFDAhkVgKJn+DrEVsboxq98XvGJ+Wk7Sjf+aTlKzPrzz+7mOndYlTFI/7UlEAcPbYsLV2Qo4n07zc8E8RX7a
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6EF90C0004
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793868240-182337
+X-HE-Meta: U2FsdGVkX1/pD0D/PoxXWqKMuf8kbLzLuXXxbbXPhkhAj6svAZ3B65kV/mYLZQHW0QsON37F7mDTIublLHelTYvxH6VzIAj2UOFXHNZaYEqd90p1zsELHPsFjrNxgcQlwy+cnG8VvTgqTYe5Y2MnwNcoH6tUO2YMP5FYiggVYr3aN7Djz/OB/2s6brh0vcmiEmoyOo+EL0huRxvvdS9Po595W2wRzXH2MmgyW0QHNeG1ZFF7kTevXZvUMWo98laGKR0MUHep5wDlnGB/0ErZZtI+qOTqy3Rog89ysgfAFWnXgLjfnjTI4Zv66jBcS6ziTALsVouhkbjkwq2sFu1W3bRJmP3eMls3BCg1sfxetPWsq3EewdzjwZRwaVPiYqxOkVTNT92ki0gM4CmVn24RMRDP4B1n1WdyT92QyZmjO8uRTmX3WFruAJUJnVpBhpG9/ETwq/qdnr4NlviMPVoaBs/MvRiJVB1An/a0z/GsU0kBeAgqY/p1kwirrr6JjLTs+EkCwmPT3yPebSpr/CN/3j7u6okSFDFYtaUQWXmFyXlUe6l8emXsHdbwb1DaRS/7FMZ/tMQBxRVIVq6kkx7f0WerTXl14iU4jwNK6PYpY7iV75xPtvOw4qqrVzBODkItgWsT+imWflGXYipCIT0d8vED/jGBeIPQPexL1bmS+vYJxBHn2bsu6N8MktmHSgXGCkPZPOd8xjr6eV4I6MQC4DBECfs7ymvBfwAqNJfFbmr992D8tvLfuoBGtuoAdu+96FIn3MlL3NwZ1Zv6+h7tpZ2PruPXcWL2rNGrGbHGu4WghGXJwDB9MD5HIuj4j0wh/j0wtYA0dG7OkHTU0uBYKpy1tcNKmhFAoa3OnSwKdnM0akM13Ns6p8WxykC9y5AfPR9gMKJ/U6UZQYH4Dna3DjiPRX38BA1ZGennlzAeqelR88r7SL/ON8ZNusXeogPBHrJPLSLmschpsee30VJ
+ MpewmMcg
+ x2JR2gTPDdE41dyJVntLfR9sNKtqp202OPcI3j7ga2lZaMXV76Z6fNbDwB7AdpGtr1WI3ad3xRpVJCZVUAgk/xWaE8N71Fq/QBD/Jf0dnvXr7jrlqEOtGWhWf1g2ORc15H7zY6txkkjsQppJyN2MlQ1pndO9p2VQnEMLAOVaz6Szk7eg7Xcm3853E+zaaC3GkWNL4i2FATO6DU9eJZU1patPEpZEqvPpcLmdfzE1Ct4NIJ/9j2iIyon9VYA80oPO6dSYjxf/i7nXl/8ODIg8lUbdwgXYyxHm53vBM3pWcEV5XKwwePYZLK87u4gy9/cYCjYaSd1c4pcjg6R4tTOu4uFKlERTo4yBZPhKZuBiJkp5869MH5LNN9zO4A+bQlhPvGz1r
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,62 +103,131 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 03/09/2026 18:45, Kevin Brodsky wrote:
-> On 03/09/2026 07:56, Linu Cherian wrote:
->> Kevin,
->>
->> On Tue, Aug 18, 2026 at 03:08:50PM +0100, Kevin Brodsky wrote:
->>> From: Yeoreum Yun <yeoreum.yun@arm.com>
->>>
->>> The POR_EL1 register is reset to an unknown value after cpu_suspend().
->>> Since POR_EL1 always holds POR_EL1_INIT when entering cpu_suspend(),
->>> initialize POR_EL1 with POR_EL1_INIT before cpu_do_resume().
->>>
->>> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
->>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->>> ---
->>>  arch/arm64/kernel/sleep.S | 12 ++++++++++++
->>>  1 file changed, 12 insertions(+)
->>>
->>> diff --git a/arch/arm64/kernel/sleep.S b/arch/arm64/kernel/sleep.S
->>> index f093cdf71be1..e0a6ad85cd24 100644
->>> --- a/arch/arm64/kernel/sleep.S
->>> +++ b/arch/arm64/kernel/sleep.S
->>> @@ -3,6 +3,7 @@
->>>  #include <linux/linkage.h>
->>>  #include <asm/asm-offsets.h>
->>>  #include <asm/assembler.h>
->>> +#include <asm/kpkeys.h>
->>>  #include <asm/smp.h>
->>>  
->>>  	.text
->>> @@ -134,6 +135,17 @@ SYM_FUNC_START(_cpu_resume)
->>>  	/* load sp from context */
->>>  	ldr	x2, [x0, #CPU_CTX_SP]
->>>  	mov	sp, x2
->>> +
->>> +#ifdef CONFIG_ARM64_POE
->>> +alternative_if_not ARM64_HAS_S1POE
->>> +	b	.Lskip_por_set
->>> +alternative_else_nop_endif
->>> +	mov_q	x2, POR_EL1_INIT
->>> +	msr_s	SYS_POR_EL1, x2
->>> +	/* isb can be skipped since cpu_do_resume() will do it. */
->>> +.Lskip_por_set:
->>> +#endif /* CONFIG_ARM64_POE */
->> Would it be better to move this under__cpu_setup ?
-> I didn't think about that, that's quite neat as it avoids having to take
-> care of the resume path separately. It also feels fairly logical as
-> POR_EL1 should be configured very early (since it impacts all accesses
-> once enabled). Will do in the next version, thanks!
+Several of slab kunit tests allocate and free a single object from the
+test cache, perform intentional UAF actions and validation, while
+expecting the empty slab to stay on the partial list.
 
-Turns out there's a complication here: __cpu_setup() always runs at EL1,
-even when we will run with VHE at EL2. To make that case work, we would
-also need to amend __finalise_el2 to transfer POR_EL1 into POR_EL2.
+This subtly relies on non-zero s->min_partial. It currently compile-time
+defaults to a non-zero value, but in theory a sysfs write racing with
+the kunit test could change it. More importantly, the upcoming
+CONFIG_SLUB_TINY changes will make it possible to run the kunit tests
+with s->min_partial being a compile-time zero, which means the tests
+will now do unintended UAF writes on the page allocator level, and also
+report failures, as flagged by sashiko [1].
 
-Overall it doesn't seem to be easier, and my impression is that we avoid
-handling registers in __cpu_setup/__finalise_el2 if it can be done at a
-later stage. I'll leave the approach unchanged in RFC v10.
+To prevent this in a robust way, add an extra object allocation to the
+tests, that will prevent the slab being freed. Use migrate_disable() to
+prevent migration to a different NUMA node, which would place the
+allocation to a different slab.
 
-- Kevin
+[1] https://sashiko.dev/#/patchset/20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org?part=8
+
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+---
+ lib/tests/slub_kunit.c | 36 ++++++++++++++++++++++++++++++++----
+ 1 file changed, 32 insertions(+), 4 deletions(-)
+
+diff --git a/lib/tests/slub_kunit.c b/lib/tests/slub_kunit.c
+index e3b63f0338d5..40427f7edf4c 100644
+--- a/lib/tests/slub_kunit.c
++++ b/lib/tests/slub_kunit.c
+@@ -51,10 +51,16 @@ static void test_next_pointer(struct kunit *test)
+ {
+ 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_next_ptr_free",
+ 							64, SLAB_POISON);
+-	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
++	void *pin;
++	u8 *p;
+ 	unsigned long tmp;
+ 	unsigned long *ptr_addr;
+ 
++	migrate_disable();
++	pin = kmem_cache_alloc(s, GFP_KERNEL);
++	p = kmem_cache_alloc(s, GFP_KERNEL);
++	migrate_enable();
++
+ 	kmem_cache_free(s, p);
+ 
+ 	ptr_addr = (unsigned long *)(p + s->offset);
+@@ -89,6 +95,7 @@ static void test_next_pointer(struct kunit *test)
+ 	validate_slab_cache(s);
+ 	KUNIT_EXPECT_EQ(test, 0, slab_errors);
+ 
++	kmem_cache_free(s, pin);
+ 	kmem_cache_destroy(s);
+ }
+ 
+@@ -96,7 +103,13 @@ static void test_first_word(struct kunit *test)
+ {
+ 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_1th_word_free",
+ 							64, SLAB_POISON);
+-	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
++	void *pin;
++	u8 *p;
++
++	migrate_disable();
++	pin = kmem_cache_alloc(s, GFP_KERNEL);
++	p = kmem_cache_alloc(s, GFP_KERNEL);
++	migrate_enable();
+ 
+ 	kmem_cache_free(s, p);
+ 	*p = 0x78;
+@@ -104,6 +117,7 @@ static void test_first_word(struct kunit *test)
+ 	validate_slab_cache(s);
+ 	KUNIT_EXPECT_EQ(test, 2, slab_errors);
+ 
++	kmem_cache_free(s, pin);
+ 	kmem_cache_destroy(s);
+ }
+ 
+@@ -111,7 +125,13 @@ static void test_clobber_50th_byte(struct kunit *test)
+ {
+ 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_50th_word_free",
+ 							64, SLAB_POISON);
+-	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
++	void *pin;
++	u8 *p;
++
++	migrate_disable();
++	pin = kmem_cache_alloc(s, GFP_KERNEL);
++	p = kmem_cache_alloc(s, GFP_KERNEL);
++	migrate_enable();
+ 
+ 	kmem_cache_free(s, p);
+ 	p[50] = 0x9a;
+@@ -119,6 +139,7 @@ static void test_clobber_50th_byte(struct kunit *test)
+ 	validate_slab_cache(s);
+ 	KUNIT_EXPECT_EQ(test, 2, slab_errors);
+ 
++	kmem_cache_free(s, pin);
+ 	kmem_cache_destroy(s);
+ }
+ #endif
+@@ -127,7 +148,13 @@ static void test_clobber_redzone_free(struct kunit *test)
+ {
+ 	struct kmem_cache *s = test_kmem_cache_create("TestSlub_RZ_free", 64,
+ 							SLAB_RED_ZONE);
+-	u8 *p = kmem_cache_alloc(s, GFP_KERNEL);
++	void *pin;
++	u8 *p;
++
++	migrate_disable();
++	pin = kmem_cache_alloc(s, GFP_KERNEL);
++	p = kmem_cache_alloc(s, GFP_KERNEL);
++	migrate_enable();
+ 
+ 	kasan_disable_current();
+ 	kmem_cache_free(s, p);
+@@ -137,6 +164,7 @@ static void test_clobber_redzone_free(struct kunit *test)
+ 	KUNIT_EXPECT_EQ(test, 2, slab_errors);
+ 
+ 	kasan_enable_current();
++	kmem_cache_free(s, pin);
+ 	kmem_cache_destroy(s);
+ }
+ 
+
+-- 
+2.56.0
+
 
