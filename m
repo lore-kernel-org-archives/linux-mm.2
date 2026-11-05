@@ -1,97 +1,156 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD86606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A5C606A32E
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iWZlZVUj
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AWA5EUum
 Received: by kanga.kvack.org (Postfix)
-	id 19BF46B05BC; Thu,  5 Nov 2026 05:25:10 -0500 (EST)
+	id 4D19F6B05BE; Thu,  5 Nov 2026 05:25:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14C196B05BD; Thu,  5 Nov 2026 05:25:10 -0500 (EST)
+	id 480ED6B05BF; Thu,  5 Nov 2026 05:25:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03C376B05BE; Thu,  5 Nov 2026 05:25:09 -0500 (EST)
+	id 388AD6B05C0; Thu,  5 Nov 2026 05:25:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D20AF6B05BC
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:25:09 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6F8B4140637
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:25:09 +0000 (UTC)
-X-FDA: 85400682738.16.54C793E
+	by kanga.kvack.org (Postfix) with ESMTP id 092706B05BE
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:25:38 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5056A8758
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:25:37 +0000 (UTC)
+X-FDA: 85400683914.07.1CE8353
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DF11F2000A
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:25:07 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iWZlZVUj;
-	spf=pass (imf03.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793874307;
-	b=i4VxSHd9cy/ESqoc5HBdAEzKT36qnoZYmVc/yxtlBem9mqL9RaxmeNqzGKqlGlFFNBDYj2
-	i4GVpwdHrGLvDNijeEJX5vUvg68qDvmJT6obXpT+zlP6wJ3lGlEU6hyJq8t26CjuY9lRNG
-	AxDblbx6tGSv4INafxW5SupRoIHl4jg=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iWZlZVUj;
-	spf=pass (imf03.hostedemail.com: domain of jolsa@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id EE27F40005
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:25:35 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AWA5EUum;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793874307;
+	s=arc-20220608; t=1793874335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NgYSfYwyN7oBQyMujaH2GQXta4jctPstkZ2Nv//4TlA=;
-	b=zqq5IRKQIFOI7NMXneLoqQ/Stu0f6amZKjxENj373xPV1EubmbsChdKzSXVKgZtlAanlAp
-	CdKRrtbOLeMOH4aEh4ytyF+5hzpxwgY5oExdgbOEQfqKXSMu/5i7AbEWqgbMfHMSxptK26
-	BqXvCLiQyTMVZuUBEdDEQUUaxwLqcJw=
+	bh=CTZjVvkIUqA1hYxbAMBN5D0S+bQTUaargjdOqGhgIgw=;
+	b=o7v7Jc+SuPsb6T2S/Zjf/nU0GuT7/aSkbRbzvWGykQOqhbRXsbD5dbcL9Br4TZImku6geQ
+	hR69iPYleiebLQeXWLczt/BaW3kPEqTEZ+cqHTRi5GmVKogsytBHvMq5VPY2AgHZwo5iAn
+	C7/EF8ePuvBesm9nNhc2mC32WO4saHE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793874335;
+	b=GoHAzOkyUTDBQvAWvGTXFTW/SgA01y/oahu4dQL8UdKWFX/cKTOxM9bUa7Yfpi3PSjMm1c
+	5Nsfd0ZLnAe0jVsN5QY2j3hRvFrJWHu1E9DIlsgmP494TYt21UIsHe7N/49aoZuoBw/Qit
+	HN1xUL1WdhKM9w6hOSwWJbBYLaZ/YK0=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AWA5EUum;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7FB0060601;
-	Thu,  5 Nov 2026 10:25:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9875F1F000C1;
-	Thu,  5 Nov 2026 10:25:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C3A260267;
+	Thu,  5 Nov 2026 10:25:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3DA1F000C1;
+	Thu,  5 Nov 2026 10:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793874307;
-	bh=NgYSfYwyN7oBQyMujaH2GQXta4jctPstkZ2Nv//4TlA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iWZlZVUjlbdXUn4O6ZApFvutDcMLk+Vw2a3rL1UINfwi2FKVJoJ87RATxgyOdDrog
-	 RUT7eiRJ+B/IY2nJ85oBk6IJV3mniphp1QKwI+gl2v31dz6A9yQ06V2xiR/1SAw3vi
-	 x/vOnsqXkcrZiyonohHvsNKLKx+1tk2FX9zOhlxejMVWWZoq7C2A79KFYthp6dz4ky
-	 DL1qUY2md7wkCELRJMAmIrcdYISh9DYwd2WJCKPMbLk77g8IZN/FzcTQTjJ9L+x2Xv
-	 HLnxu1+NCuyBy0D7B+6OmghHPTWm/IdBcWXxgufJkRocdMJpaafhKLjb3Uc1npFlhj
-	 hpyHRc46QCICw==
-From: Jiri Olsa <jolsa@kernel.org>
-To: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Cc: bpf@vger.kernel.org,
-	linux-mm@kvack.org,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Federico Di Pierro <nierro92@gmail.com>
-Subject: [PATCHv3 bpf-next 8/8] selftests/bpf: Test user memory kfunc errors
-Date: Thu,  5 Nov 2026 11:23:42 +0100
-Message-ID: <20261105102343.311331-9-jolsa@kernel.org>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261105102343.311331-1-jolsa@kernel.org>
-References: <20261105102343.311331-1-jolsa@kernel.org>
+	s=k20260515; t=1793874335;
+	bh=CTZjVvkIUqA1hYxbAMBN5D0S+bQTUaargjdOqGhgIgw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=AWA5EUumNdwSBWn4g6tCydb8yT3P9NIpU1AhnI/l68ypPPQQjsmlpmZcmjqP0LN7w
+	 N27be4rfuMZiWwBCq7her7lB+sc11HSH4D/It973/gw2n+J+yJdXPUKAwXRjqOXG6y
+	 +3pvrnmk/IkTbMiVT+f7swrdRCPqMW2Hvq2OBNpXeaZjFaLDXFyS2ZLfADRs+mUY4L
+	 zAGr34i+l3CSk3NcxiMWRysp3rMsXyT3OAyIDd0GQElcCJpX8c7qsNkVzOhFqRdS82
+	 7Ro2+vUiGHSoWSeJ0BfSs4RidofOfhFtdjMtqubRz5QJeJjYyTeuR/NxOeDYB3wbBP
+	 DHBSE9YQBSBJQ==
+Message-ID: <9c367177-1822-4b6d-8bee-d283eef7b895@kernel.org>
+Date: Thu, 5 Nov 2026 11:25:25 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qon65xdhz7ujd7w9x4oyda9d5aazqs8g
-X-Rspamd-Queue-Id: DF11F2000A
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/5] locking/rwsem: add down_read[_killable]_nosteal()
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>
+Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
+ Waiman Long <longman@redhat.com>, Suren Baghdasaryan <surenb@google.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Yonghong Song <yonghong.song@linux.dev>, Alexei Starovoitov
+ <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+ Jiri Olsa <jolsa@kernel.org>, Emil Tsalapatis <emil@etsalapatis.com>,
+ Ihor Solodrai <ihor.solodrai@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, bpf@vger.kernel.org
+References: <20261103-khugepaged-latency-fix-v1-0-a07ab16ac860@kernel.org>
+ <20261103-khugepaged-latency-fix-v1-3-a07ab16ac860@kernel.org>
+ <20261103115159.GK1813469@noisy.programming.kicks-ass.net>
+ <aunLcWto870swo38@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aunLcWto870swo38@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793874307-651484
-X-HE-Meta: U2FsdGVkX1+PzgeXkMdfNDVaiNftmuW7CLj+zbD2OGxdSohM6h3b3p3m8+4T1lqRBcMc1Y5bOeJLxMeqgu/t53MENQDqh4E75pTO7Cu+qVilJpcHtQVJZd+WCe9EAozuavQfi6w60nbMYvLrG29suLtZUQpb94Dq1VAbHs4NCSU6CDSuQHHom9HEg69LAINXNZDXSEvuVABqBayRDmCVCBvc4ulVN0JbTp4AAQZdmkTykmsYxbB4s37qxIsbugtso4Q6w7a6KNLjxjnsskBCh8Tbl45AIAyiBL19AijL30rnVKmUQPZNsoVSjc7n5bahRp6IZVkHiUpXd1Iz8m8FfL6MFvYtH2jcAQM2QpD1rV+ZeagLrKw6+IsImobqb5OMbSheL/l2pmAdtntRBSw7lWaCjd5+sn3TsU/agmYoWiRKzgV5rAJv75QBgaAoG0A+2npfy62krBOuAQgmlYHPk2dElqw4cOCvKTj6ZJ9O743ZjZss6f5/ViQyrTlCSjZWcg98kositBl/mkntCblMaTBsGeIwMyaUqxc4PNIV1Md8v3WqADTlrvthk2ktn5E+fbzPVG/eqYxA8chAgPgfdUFeyI87Gbpb4s1nQuzShizPK99wELuN6+2WBNogz+ioyIfYjQ/wXx/9kpnYWwGocgjvlB9XGdwcuUUs+w8FpEFHrjxsk5mEPO+tbX7UmkXyuOlMX3luBwmGMOl3VaAm1rieDNX+TOTvrsMdHWSYWnWWWQ2hzRYc6HXU4ErS6b1pGgT4zffZ1DGBkczh0tstlK+VxpJR626UDNwZYbcaRrbHdRRNN+k5ojJfbxYXh3PC2X0rsXOTPusyN+pQXYi4RX/ccgicf83hgFRI7Wa9gfhvCENi4Tjr5OcYckbWxj3K2u/sZDgRuhMXSZY6oU7crqfTC3UMpI/1iIroMGc5azoK4sc+q/wxHSSu2Rp+3qT73Pt3uFZQlpcvRyvULqa
- vTbRqrYz
- 6cW5FDvPQrQVxV0gw/YjNO1yGgKvUaDlyOxM2tch5sklFqyTJAAQUVd3P8V8OXzhW7KzDIyTIpLzp1JX8tTHPHtYDwJW4ujVGHHr2dROrXiXvBd55mHNs+u+dUetvrKTEd/gVyMeYzRl5bQLCglgSi7893BHD6NDxicYJzTmCHls30laY8dNn7l5JqNOwaoP6rhUYbbPLfBT5LemfaJzuLrvyGIbe30TIcpA5gEKh4LuDIFTx/Krd7OT2bvdV0MianafPqh/xyx5KqxED+dxEnReTYT2S9OOzdGdShYOmSg/mwCWM+r+ucoojfA==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 58cdrxfesuapfnfafgxxhu6owdowpwrq
+X-Rspamd-Queue-Id: EE27F40005
+X-Rspam-User: 
+X-HE-Tag: 1793874335-417548
+X-HE-Meta: U2FsdGVkX19HbGpv2p6zqWsIa3NiDZlVfBLQcaLuRTXvhGg5OAibv9XxcQLdPWaUWg+obKmctXndfTKS7NMnXHZIndRg9qFsH0ukWWthef9QrwWUl8XMGMsMoF/WixSUakEcE3/yq3/M0DiedmmIXOuF3FVZ4h0eId+Bm/L8CCFHK+HPs8f8HyjkbACdX8c7LZIMF1YY7atD7b/rIcLcqJ6TGFfzvzilwIP7VF3dnl+/3kFMEZGLpi8DGt7Xkb4+WvsM35+ps24DfScaUQJvcUIz2aD0lztZhO7EWyltr6ZcpqIGtILaIckyj2eK7caEW3PiDyvT8TVj/xC0bP8Da7Kgdh6a4UkBeVxsHM+ssNAOjkFr5+U0+lOP+Y8oJwHPGJ+qzcmV3nLuAyZj0uxedF0vQlAe28xh6slvKgAhNK+erinLZgi4M4Zq5nELteV4JUnBvk9qRK/OvGc2KreoEiB8L6q6bP4PAmQ6CJwNUQ8ymFSsojOxBIdj+cF5Fo+6BMTrP6+9zmt8nm0xVdU+1lu8Ssnt8HQsMBfWRSVH31pldKePUrx5Bn9Dg6QzzQi37kyBMNm2SLQ79riTw83Wktgv2WBWvz5ZptQ+mMj7H5C88rzx+oucfAma+1kRwZKDa3EU2GCTFQ0JRoIYK/u1S55rtYvO89AWFrRefNYIT/272GEAh3B4r+SISg9cMhZdowDnQi8ZBhVGgLcV7cGHBBot7roZHmB3W+/dk5N77nEixFo6MqqP8xDGIkZue9mGitj4GEpyrc/qQit81grFoaEJSfNaNWEEtWvadJiIGvbwYSIuWaHin/XnqQdviIy1bh7aBd3bVqYSr3N0DguplebBtn46Ov217zMFIug5MgK7mAvxwTesiJv2RaW4LMYIk3rcBl6d1kI+ZArdEX2kxekQGHdqKoO5kibMz9aClNuckEucen03B7EfB2vJ2jEuE8I8pp0NtqRRr98jPIx
+ JrxEWD10
+ Quca2Qqrzyiv2tzWzwNFrjDQ/+okBjm6t8xtIzDorLigiFqLRN9covHqOGuDmN5Ljxcu6GYiL8tw5tebmFMELTeSIo18yGWB1bdzvKUjtVTsj68PLCXKif9kC+pxAosoiuejv5Zzk2UBHTBbGjQWafmd1Bze9/tUluZz5jRQzrgWndQylCo4CYCOALSeWT69Yv55RCZ/6ncACc/4swZn0o31B0AKJ8PsEimI768jkDsRDIDp2pYXpFOEVFAPpj9EELgTHKgyIwhdGJqbVb8ZyLZYuecn+U9GOB+I0GzPoanRhJI5KjnvwIC+R8Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,125 +159,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Test invalid copy arguments, zero-length mapping operations, partial copy
-faults, and copying to read-only mappings. Verify that a failed unmap
-leaves the mapping intact, and that non-sleepable programs and programs
-without CAP_SYS_ADMIN cannot call bpf_user_anon_mmap.
+On 11/3/26 13:24, Lorenzo Stoakes (ARM) wrote:
+> On Tue, Nov 03, 2026 at 12:51:59PM +0100, Peter Zijlstra wrote:
+>> On Tue, Nov 03, 2026 at 08:27:44AM +0000, Lorenzo Stoakes (ARM) wrote:
+>>> Since commit 1a728dff855a ("locking/rwsem: Enable reader optimistic lock
+>>> stealing") a sleeping, queued writer whose handoff timeout hasn't expired
+>>> can have its lock stolen by a read lock issued before a woken queued writer
+>>> was able to acquire a lock.
+>>>
+>>> To avoid write lock starvation, this is only permitted if no other read
+>>> locks are held.
+>>>
+>>> However, this behaviour defeats the purpose of a reader periodically
+>>> dropping the lock to allow writers in, as doing so only works if the write
+>>> lock is acquired first, another read lock is held, or a queued writer's
+>>> handoff timeout has expired.
+>>>
+>>> Provide a means of indicating this intent via down_read_nosteal() and
+>>> down_read_killable_nosteal().
+>>>
+>>> Implement it by exposing a steal parameter to rwsem_down_read_slowpath(),
+>>> update the starvation logic to modify this parameter and modify the steal
+>>> branch to check it first.
+>>>
+>>> Also drop the duplicated RWSEM_WRITER_LOCKED check and remove the
+>>> goto as the steal condition makes this redundant.
+>>>
+>>> Exposing this function is safe as it only makes the lock more pessimistic,
+>>> so does not impact lock contention.
+>>
+>> Not generally a fan of this -- can't we tweak the steal thing to never
+>> steal if there are pending writers?
+> 
+> Oh, well, I had assumed I couldn't fiddle with that behaviour across
+> rwsem's in general, so if I can yeah that's preferable!
+> 
+> I could send that change separately then and drop it out of this series.
 
-Assisted-by: Codex:GPT-6
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
----
- .../selftests/bpf/prog_tests/user_mem.c       | 57 +++++++++++++++++++
- tools/testing/selftests/bpf/progs/user_mem.c  | 19 +++++++
- 2 files changed, 76 insertions(+)
+Just so I understand correctly, this patch here would be gone entirely?
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/user_mem.c b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-index f13aff73c9bf..f1b88bba71c9 100644
---- a/tools/testing/selftests/bpf/prog_tests/user_mem.c
-+++ b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-@@ -262,10 +262,59 @@ static void test_partial_copy_fault(struct user_mem *skel)
- 		munmap((void *)addr, second_page_unmapped ? page_size : page_size * 2);
- }
- 
-+static void test_zero_length_mapping(struct user_mem *skel)
-+{
-+	skel->bss->map_len = 0;
-+	skel->bss->map_prot = PROT_READ | PROT_WRITE;
-+	skel->bss->action = USER_MEM_MMAP;
-+	user_mem_trigger();
-+
-+	ASSERT_EQ(skel->bss->user_addr, (unsigned long)-EINVAL, "zero_length_mapping");
-+}
-+
-+static void test_failed_unmap(struct user_mem *skel)
-+{
-+	long page_size = sysconf(_SC_PAGESIZE);
-+	unsigned long addr = ~0UL;
-+
-+	if (!user_mem_mmap(skel, page_size, PROT_READ | PROT_WRITE, &addr))
-+		return;
-+
-+	skel->bss->user_addr = addr;
-+	skel->bss->map_len = 0;
-+	skel->bss->action = USER_MEM_UNMAP;
-+	user_mem_trigger();
-+
-+	if (ASSERT_EQ(skel->bss->ret, -EINVAL, "zero_length_unmap"))
-+		check_user_mem_vma((void *)addr, page_size, "rw-p");
-+
-+	munmap((void *)addr, page_size);
-+}
-+
-+static void test_invalid_copy(struct user_mem *skel)
-+{
-+	ASSERT_EQ(user_mem_copy(skel, 1, sizeof(data), 0), -EFAULT, "bad_copy");
-+	ASSERT_EQ(user_mem_copy(skel, 1, sizeof(data), 1), -EINVAL, "bad_copy_flags");
-+	ASSERT_EQ(user_mem_copy(skel, 1, 0, 0), 0, "zero_length_copy");
-+	ASSERT_EQ(user_mem_copy(skel, 1, 0, 1), -EINVAL, "zero_length_copy_bad_flags");
-+}
-+
-+static void test_invalid_prot(struct user_mem *skel)
-+{
-+	skel->bss->map_len = sysconf(_SC_PAGESIZE);
-+	skel->bss->map_prot = 0x80000000;
-+	skel->bss->action = USER_MEM_MMAP;
-+	user_mem_trigger();
-+
-+	ASSERT_EQ(skel->bss->user_addr, -EINVAL, "invalid_prot");
-+}
-+
- void test_user_mem(void)
- {
- 	struct user_mem *skel;
- 
-+	RUN_TESTS(user_mem);
-+
- 	skel = user_mem__open_and_load();
- 	if (!ASSERT_OK_PTR(skel, "open_and_load"))
- 		return;
-@@ -286,6 +335,14 @@ void test_user_mem(void)
- 		test_copy_to_readonly_mapping(skel);
- 	if (test__start_subtest("partial_copy_fault"))
- 		test_partial_copy_fault(skel);
-+	if (test__start_subtest("failed_unmap"))
-+		test_failed_unmap(skel);
-+	if (test__start_subtest("invalid_copy"))
-+		test_invalid_copy(skel);
-+	if (test__start_subtest("invalid_prot"))
-+		test_invalid_prot(skel);
-+	if (test__start_subtest("zero_length_mapping"))
-+		test_zero_length_mapping(skel);
- 
- out:
- 	user_mem__destroy(skel);
-diff --git a/tools/testing/selftests/bpf/progs/user_mem.c b/tools/testing/selftests/bpf/progs/user_mem.c
-index e12a19fc8784..6d397fe1b3a9 100644
---- a/tools/testing/selftests/bpf/progs/user_mem.c
-+++ b/tools/testing/selftests/bpf/progs/user_mem.c
-@@ -80,3 +80,22 @@ int user_mem_test(struct pt_regs *ctx)
- 
- 	return 0;
- }
-+
-+SEC("?uprobe//proc/self/exe:user_mem_trigger")
-+__failure
-+__msg("program must be sleepable to call sleepable kfunc bpf_user_anon_mmap")
-+__msg("cannot be used in non-sleepable program")
-+int user_mem_nonsleepable(struct pt_regs *ctx)
-+{
-+	bpf_user_anon_mmap(4096, 1);
-+	return 0;
-+}
-+
-+SEC("?uprobe.s//proc/self/exe:user_mem_trigger")
-+__failure_unpriv __caps_unpriv(CAP_BPF | CAP_PERFMON)
-+__msg_unpriv("calling kernel function bpf_user_anon_mmap is not allowed")
-+int user_mem_no_sysadmin(struct pt_regs *ctx)
-+{
-+	bpf_user_anon_mmap(4096, 1);
-+	return 0;
-+}
+But #4 depends on it, so now I'm confused :)
+
 -- 
-2.43.0
+Cheers,
 
+David
 
