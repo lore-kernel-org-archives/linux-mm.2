@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3E3606A33C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608B0606A32C
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZkIx7WqT
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cgRHR6qi
 Received: by kanga.kvack.org (Postfix)
-	id A8D786B05B9; Thu,  5 Nov 2026 16:32:34 -0500 (EST)
+	id 81D506B05BA; Thu,  5 Nov 2026 16:32:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A64B76B05BA; Thu,  5 Nov 2026 16:32:34 -0500 (EST)
+	id 7F49C6B05BB; Thu,  5 Nov 2026 16:32:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97C146B05BB; Thu,  5 Nov 2026 16:32:34 -0500 (EST)
+	id 70AFF6B05BC; Thu,  5 Nov 2026 16:32:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C12C6B05B9
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:32:34 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 10689C0601
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:32:34 +0000 (UTC)
-X-FDA: 85402364628.21.E8C4342
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D82F6B05BA
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:32:52 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D9B4B160C2A
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:32:51 +0000 (UTC)
+X-FDA: 85402365342.01.F001C4F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 41E121C0006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:32:32 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZkIx7WqT;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id E875020004
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:32:49 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cgRHR6qi;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793914352;
+	s=arc-20220608; t=1793914370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R9gbDgDsUJAtxTTttS67Zy6QBKff1k+BGmZ9q8ms4as=;
-	b=8rtJWURYUdWDYjs5ZGIsaXcIDhxcZvRdzadZi1jOMYLG9A4mL6OKPLPlAY7oVU82c3xCzF
-	gY2JnhYqwmPiKfnu+Hq5t1sda8SqTQjFXYnQFn7HvBSlStwT0j9ZPtU7BB8+Hzd5bW+hie
-	XWImJYSvb0lixDkVfiLXVLG1HsTKWmQ=
+	bh=yc+BOM9zISLu8R7CpRSVrLcnosv916on5x7GIVL+p5Q=;
+	b=RD6xOZZ+geg2YqgrEUU8W73525xLAOAtfe1+1PIfD3OGEjPAJt14Ix9Zgm9khBIdwGDEG4
+	u3Q49f9EwXE/8MvEa6rNZ0Cs/Q7lDuJmFCMVj3Y2vR6QPFd6yHUFjpinRAeLfSjEMdgAqO
+	MpJVG20N/ORC9KiVW5J7QSux4u6BfFg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793914352;
-	b=TgORWXclcT+Y5paq2U5zP4JLeNY6bb/IAPne30YShUNgI1Ebgl7nng6t1pOHtWHBgXQMJY
-	GYwx+IstIzyv5iUcmq1h3KSdpKK2ETdeD5QN0LWgMI+CEKwPUb2V1wOfitjQqVOtNQ8C8a
-	7c3HPVTOh14e7c2i9EwOsA41VsYl7Lg=
+	t=1793914370;
+	b=tIQbAJJEcaYt8DMwG2KZIDJ4FmG9wt1Ol1hnRy5h+PjV+l6lVPqAXx3YdVxXswNSfpb2/4
+	K4MCZkKQYoW8hQu+YT1FOqhlXlcaGIWFF/HF4zKOcfk1lRfkRPFecRVsJz+Hkws6Qm28Np
+	zaUkA3A1ff4kbs9cRKMGJJfW0BDwing=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZkIx7WqT;
-	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cgRHR6qi;
+	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 80D4E41402;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2CDF343261;
+	Thu,  5 Nov 2026 21:32:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DDB1F008A2;
 	Thu,  5 Nov 2026 21:32:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34CD71F008A1;
-	Thu,  5 Nov 2026 21:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793914351;
-	bh=R9gbDgDsUJAtxTTttS67Zy6QBKff1k+BGmZ9q8ms4as=;
+	s=k20260515; t=1793914369;
+	bh=yc+BOM9zISLu8R7CpRSVrLcnosv916on5x7GIVL+p5Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZkIx7WqTlWLTCBt9NpIoUSUzWdaGj1sZTB/NJl369icVHSJO1jDaGZYx9ZI0V3ngf
-	 NS/Z25C5Vs19d6ihk3w8C7/oUqqe7K1X+FB3u7R9B4uFGPgsZ4o0NBNDpRc2THUVb3
-	 YkarJXljffQrrFjkCSeJk3R7eEWO27dzmcz7apYY0Nmwm6IP1anOsY1CUhI73l3eJ4
-	 CRpGJYjjhMGN2rrNn3vNOs2zqyDLTDI5G6ndMz8NUUszR2XbiFwVcW4PxtfSNJPcO7
-	 RIKm77NsGvQDigbGTMtdIKn8KwNNkqm7Sk4pc7DPIzfEkdFiNAbLMI/R2RkXQqgwh8
-	 3vRlOOITx0Kiw==
+	b=cgRHR6qiWJTrG30pEeN7dxFVPc+dTV1adcqdwTD1LQxIFf5q0zcztQOCCuE0x3GV/
+	 ZHgtlgNGSJS5GC6W3KxZ7f9IElfYH0FZjXVvUUKyz/AwCDgYx7heVhhqCSWhadN6KY
+	 NEe92t8q/M/dK08zY/mQ1oV/ARSsEUIjFqVUPdsV2ROGQwui5lY7ZDcsJKHtaSdJ3d
+	 +WiQAkG2/onWikpfbIj0XH1v/D+Qu5Q6DAMBppohnCrh2RINbMagM+nu5758asG2nt
+	 zz8cJNisRYFgTY2Km3b1fascO6J0EfwRQOYbwweJYORpFsW+8e1RDtMk/fPELHEOvT
+	 7xHp1SPTL/kLw==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 05 Nov 2026 21:30:54 +0000
-Subject: [PATCH 03/13] mm/rmap: convert remaining VMA flag tests to use
+Date: Thu, 05 Nov 2026 21:30:55 +0000
+Subject: [PATCH 04/13] mm/migrate: convert VMA flag tests to use
  vma_flags_t
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-late-2026-vma-flags-v1-3-0d3cd15ab75f@kernel.org>
+Message-Id: <20261105-late-2026-vma-flags-v1-4-0d3cd15ab75f@kernel.org>
 References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
 In-Reply-To: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -129,27 +129,27 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1522; i=ljs@kernel.org;
- h=from:subject:message-id; bh=eZl8Nv0dTN3HlhfbDsqgjylQKfweYHLkfOK2djhDL8M=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLefF1mJfT2QdPRhoV88qcu77rHLbdvR7JH9HZHWcvUt
- Zb/rtkxdpSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAin+8wMvSLM4R/t0nQTnVV
- f612NLDw5tS57Hc6+SZ6ftJWcE8sW8rwT2vzspehQh9PXindsm3+zgqliazNBicUtrCbn1vpy7J
- 0OgsA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2848; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=0EzQPbq92vrt8Ov6q38P67V1mQozPkbuYDmCmE/yfh8=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLefF32c9syHc3fJkcF57xf8CR5xnp+l7jg2seq6ywdJ
+ bY++ef0v6OUhUGMi0FWTJHl+Rfx/UEiYfM6L/i7wcxhZQIZwsDFKQATmT6HkeF/3qE3W0Um7RYt
+ /JsZ9l9HPWDqM8NnLeyiKcvM8087tlcyMlyYHn1t31Zdi9mvF8qt4pe4Z3x1tcCqoI47r8te8AV
+ ks/IAAA==
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 41E121C0006
+X-Stat-Signature: xum9izptys8diadzgnexxci1abnemz53
+X-Rspamd-Queue-Id: E875020004
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: 4cndjwskaoi4omfycq6wxogpkbmsqsgt
-X-Rspam-User: 
-X-HE-Tag: 1793914352-587402
-X-HE-Meta: U2FsdGVkX19JbyCB3icuW2ranu42hJDPPaLWOWhcc/wLksa4h3oFvDcqNCgT5zJ9hyWiZgHZ/dq8D5+FuWDdgdqZL5YzO01RX0mfLXb1b8iuc7QE6ECkaJQwkVvMLlSH+Y1sObQaajlXdND3XocxrTxxLy4r9DTW4YvpMA7kbHdJoDXUVuth8ZPXEUHQpaBkTPsyLfvA4tXizQPKf/6eBZl1w0sVJBLkprW4MjkpYphyxfDzblI4En/8Oq6amxNPhvNZqpO/nv5vmuSnhdQHASeh665anh11TreGRS0UeY+uGAU4g/Q1f3LPoFzwBCvlvZ42egtF7v4JKQFZ1dKpM5nsMu/y0NA8ZO8ffyqiJMihKImH6VsD+QXUibGNUYvZC4Uk7qO0kKFBw3tRfIm44W/qr/h1CB8JVb09I7v6f+drzGY3eUT1rTRvnwtM60nTMTNy9u/ctttxbWOA+iKFmlJqNoVaP77QunKhevFr/u7Tev/5r6As3pL03BQmCbkiZwYaEyuCp9DVPo3d0968WjYeQIKcG/GXV2NvmEYPEgdDWDWndUcN82A4HK+rzh8co/r3/QbrWYhHLvOSZvZX5y//fT3gle6DVKC6/schzuGVtyLd77BeLnuh2QTEGjl5q4GcgonnJpKNxUrKAMXtiBj/sGErNCEvepDLC2NEatB7Xzt6RSKJpP+Ac3cKccDIMxpcPHHKJMSDpwZr6rFAQD6OWv1f5UKzBrWA0Ddjivi0BhJ5ilUl4plfLQuUgDJpUKxucFwx6hTiMwZ9MQkEVCmKeTM37xCVoWUiAOstm00DBxkWTGVX2y1unyi1HnhhRy43lWtRY+pab7ohKA7VzMcnojqhNGKHQh4UPykwDNzPkhJ88SsFCDSMgtGA6N3le+FuM30oEod4bSpkaalqOx0DFJxPGYzq/Hy8Afo9WvcZTeLCDms5O7+5y+KZnNRKm7oDGlDEINpk3118g0p
- ogmxqNhN
- OmH2j0du6p2E05YJq4ZERcxg0AdEglSV2R18w1WQME2599hS6Q+GIeNpm7dK5rvq9qymA8e5setWqjT/ln8Uv8kSUQvtedE5HpRfVO/Q+Mlq5jUAJgjZ7H4+g9LpKSA70hNpWPI7uGwUvw9waqZLL5wwxQLjFWLJv4FCwuH/Fwt1tsw6ldF5tvwisrIsVmVcM/WzLDo/J7oOhkgOAI/mg1DchgaHZoa436PaT/6vbxGr8BWEogFJPYXgiWzm9od06HKqY/rVPXKF2KUwIRXUj/zISkZitheFH4t4yOdbvke1yKcvjGtLrPMp3Dwm1lRZ2Cx7EXEd3k1FdpAlCW1HnGr7hYvy48BKz0mcJkN6pL0XCrwg=
+X-HE-Tag: 1793914369-71665
+X-HE-Meta: U2FsdGVkX1+yb9q2W5bTFTxvK6MWx5ogkiHlZEaXlZ5adF/EdWo1RIO4lIrMzdCziTkcNUQMXSqTWxMlNLzSKY7i01W4t06VHjJEzF64KYDhIe+dn9VWJBogMQWqnbcc0pKQbyHgFPNdRrB7HEm1mADK+Hfir/ZGd9vM7TfXlzK/uj503bHCws2C/3U8RyfJ0doAJUNsqZByQZrFQc+0sqJ9Y4Z/d4fQCYiNKDaCwFCpFOLluF2ttz16R2gudI6pmu+n5s2H/BzL2wD28/2oh63PzHPdLIRA+e5GfIMBLU7pGpN5SvEt0JkOTiec5TdJUL6AqX63Odor6wzXqVgsl6JvHoYclmJABINY0Zqzfl5zAoiDFqLduL2IsSgEsJm7KYtn3s9oTW/eSipBBqENLSxjYx/mIBf3YVOgAkdq3pa07l+JQ4mp/HkN10iOUDxIa+TLSU+jACWo79dualLQb+VflCbpzyWwXw8UGXhik83ISn9/AmNZBcUhwfl6DIJX1iymi3ExZsQ4LY8I7JP0hcnLzRDk1lt9gyThNtW9+5BSCHjVLjQavSuy9LTj3K4FDTIQjE6z4vENGZBgWO1QOamV5/wrON0QNb9hIquujuYKYAPhFkcDlE462bNSAOeeXoXuiZjS8kA/9j9B2XnKrSS5t/p7yGbY5V2q1UAa50y5uLtQznHlmU3ie+MK02TvKjZcmCYlVTDIC2x8yHwG4gdWpwSSGnOxY2v/eWkAh+CzSoppaoQFWpYbL+7cpMd3T3j+D6TtrWU5nlPcTwcaCZgh7AMRAdA11iEzN2fAUWeAukAR+geKsSNvF6J0MQ5jRLtx/UAz6GSDBat6uR6UZ09iwMb3uXePFc1RZZPVziMzQd6S219/z3orUTDEy272dfLwPeSXTfD8vI4OetgyEhmzNlYqivr9VA6ihI4TE0SsgFMUonT/lLojf+exs/BBE470Mpgm5ebJgmdML9Q
+ FD8Cs5DK
+ uGuloCEXTxQAocZQY4YeyN3HlRUgLZhws0SR1Bbq+Vi0QNlTltdpNu7NpVwNQOD9s6ty9JReZbU1/vXmN3mUeYN86dm8wPFJR9E9u3D1OvnfZVbbnlAQzTS09n3XwL3n15zVjcWnoa8llBa87Eyut/MPyscr0iMaiFSgGFG+gH5YEWOotwyacuKNkx76cv4nb8lThu7oGboJR/0YXx7lgvFJe5epDiP7HnpYgibAE58FcibKo6xzCk0W9l5ykxvoUusslSAKC48Vzi+pVA/vHBoP6roiZY/DyL4eFBItf9V6UecI+ovaf0tJARXpZ53rXbGgrmOj2GwPE/OlElWLJ1zskjl48L0lnRmmqvCcrJ0XSawU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,49 +158,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Replace the remaining uses of the legacy vm_flags_t flags in the rmap logic
-with vma_flags_t values.
+Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
+migration logic.
+
+We retain the READ_ONCE() of vma->vm_flags in remove_migration_pte(), as
+there is no vma_flags_t equivalent, and arch_make_huge_pte() continues to
+take legacy flags for the time being.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/rmap.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ mm/migrate.c        | 5 +++--
+ mm/migrate_device.c | 8 ++++----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 1131b76bbbc2..cdc97fec8586 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1196,7 +1196,7 @@ static bool page_mkclean_one(struct folio *folio, struct vm_area_struct *vma,
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 28a8d7734735..94033c222e04 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -310,7 +310,7 @@ static bool try_to_map_unused_to_zeropage(struct page_vma_mapped_walk *pvmw,
+ 	VM_BUG_ON_PAGE(pte_present(old_pte), page);
+ 	VM_WARN_ON_ONCE_FOLIO(folio_is_device_private(folio), folio);
  
- static bool invalid_mkclean_vma(struct vm_area_struct *vma, void *arg)
- {
--	if (vma->vm_flags & VM_SHARED)
-+	if (vma_test(vma, VMA_SHARED_BIT))
+-	if (folio_test_mlocked(folio) || (pvmw->vma->vm_flags & VM_LOCKED) ||
++	if (folio_test_mlocked(folio) || vma_test(pvmw->vma, VMA_LOCKED_BIT) ||
+ 	    mm_forbids_zeropage(pvmw->vma->vm_mm))
  		return false;
  
- 	return true;
-@@ -1660,7 +1660,8 @@ void folio_add_new_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
- 	 * VM_DROPPABLE mappings don't swap; instead they're just dropped when
- 	 * under memory pressure.
- 	 */
--	if (!folio_test_swapbacked(folio) && !(vma->vm_flags & VM_DROPPABLE))
-+	if (!folio_test_swapbacked(folio) &&
-+	    !vma_test_single_mask(vma, VMA_DROPPABLE))
- 		__folio_set_swapbacked(folio);
- 	__folio_set_anon(folio, vma, address, exclusive);
+@@ -2711,7 +2711,8 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
+ 		 * See folio_maybe_mapped_shared() on possible imprecision
+ 		 * when we cannot easily detect if a folio is shared.
+ 		 */
+-		if ((vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio))
++		if (vma_test(vma, VMA_EXEC_BIT) &&
++		    folio_maybe_mapped_shared(folio))
+ 			return -EACCES;
  
-@@ -2094,7 +2095,8 @@ static bool ttu_anon_lazyfree_folio(struct vm_area_struct *vma,
- 	 */
- 	smp_rmb();
- 
--	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
-+	if (folio_test_dirty(folio) &&
-+	    !vma_test_single_mask(vma, VMA_DROPPABLE)) {
  		/*
- 		 * redirtied either using the page table or a previously
- 		 * obtained GUP reference.
+diff --git a/mm/migrate_device.c b/mm/migrate_device.c
+index 9e19fadfa65c..c26acbbd2e31 100644
+--- a/mm/migrate_device.c
++++ b/mm/migrate_device.c
+@@ -842,7 +842,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 	if (folio_is_device_private(folio)) {
+ 		swp_entry_t swp_entry;
+ 
+-		if (vma->vm_flags & VM_WRITE)
++		if (vma_test(vma, VMA_WRITE_BIT))
+ 			swp_entry = make_writable_device_private_entry(
+ 						page_to_pfn(page));
+ 		else
+@@ -855,7 +855,7 @@ static int migrate_vma_insert_huge_pmd_page(struct migrate_vma *migrate,
+ 			goto free_abort;
+ 		}
+ 		entry = folio_mk_pmd(folio, vma->vm_page_prot);
+-		if (vma->vm_flags & VM_WRITE)
++		if (vma_test(vma, VMA_WRITE_BIT))
+ 			entry = pmd_mkwrite(pmd_mkdirty(entry), vma);
+ 	}
+ 
+@@ -1043,7 +1043,7 @@ static void migrate_vma_insert_page(struct migrate_vma *migrate,
+ 	if (folio_is_device_private(folio)) {
+ 		swp_entry_t swp_entry;
+ 
+-		if (vma->vm_flags & VM_WRITE)
++		if (vma_test(vma, VMA_WRITE_BIT))
+ 			swp_entry = make_writable_device_private_entry(
+ 						page_to_pfn(page));
+ 		else
+@@ -1057,7 +1057,7 @@ static void migrate_vma_insert_page(struct migrate_vma *migrate,
+ 			goto abort;
+ 		}
+ 		entry = mk_pte(page, vma->vm_page_prot);
+-		if (vma->vm_flags & VM_WRITE)
++		if (vma_test(vma, VMA_WRITE_BIT))
+ 			entry = pte_mkwrite(pte_mkdirty(entry), vma);
+ 	}
+ 
 
 -- 
 2.56.0
