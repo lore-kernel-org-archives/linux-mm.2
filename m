@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 236AF606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521B4606A326
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OR2s2vHe
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TD3Ho5vA
 Received: by kanga.kvack.org (Postfix)
-	id E91DF6B05B3; Thu,  5 Nov 2026 05:24:01 -0500 (EST)
+	id 5DF3E6B05B5; Thu,  5 Nov 2026 05:24:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E42986B05B5; Thu,  5 Nov 2026 05:24:01 -0500 (EST)
+	id 590D26B05B6; Thu,  5 Nov 2026 05:24:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D0C6C6B05B6; Thu,  5 Nov 2026 05:24:01 -0500 (EST)
+	id 459226B05B7; Thu,  5 Nov 2026 05:24:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A24BB6B05B3
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:24:01 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0C4FEC06A1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:24:01 +0000 (UTC)
-X-FDA: 85400679882.08.98FF45F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 16D266B05B5
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:24:11 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9ED364098B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:24:10 +0000 (UTC)
+X-FDA: 85400680260.03.18AE616
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5BD64100005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:23:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OR2s2vHe;
-	spf=pass (imf05.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
+	by imf19.hostedemail.com (Postfix) with ESMTP id F16741A000B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:24:08 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TD3Ho5vA;
+	spf=pass (imf19.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793874239;
+	s=arc-20220608; t=1793874249;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PYhUmCcAZz8D4rH/ZuLGB4Wi87kHi8TGQCw2xjNzenQ=;
-	b=nI2CqLP43BK16SYyut356WyWijjs/RTtypx6vQv/ySJ19AdnnBC7FsNCQKBIt6YCljpqV/
-	UQTL0b/Z9AhSp8CuCxhlV6o9Frf54y6nZn/sFHq/idqaoUgIS1+ciLdt4Jzwv19qDsMuss
-	k9ar4qEpzRVaUiknW51zVJhGd+VdQnE=
+	bh=ukfAuOjvggf2x46fnM5SSPXxPa35OmUkK54EQRFxays=;
+	b=fbr+pBNcm15G7nXvvi9xain9X7p7Ay8Jf63JU14irX8HHP9b3znUVMBHVAaOKSGvekwvPe
+	bBcd5jYKLhrP1TrXPYvad12gCg1Ao4dZrfjfGMcrDDiSgk5szi1XwnMZEJMTIj+fFkl1KI
+	CY5lsYRNcm1cFQhPaVrOa2EtoLTON+Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793874239;
-	b=JQEs8V/RtQkOc8jhVHL4FEbLijEdstuJHtav5YyBiJSG5Wd34Ci3SxlfWQQZvm6u1/QNt0
-	LjuFy2epBOCP1yGFpb0Xkvs4/QdENXtYoTJ1B/4162EHjHczSR1mZakzblBWC1s1ozZA9M
-	q+2FYUeMhMoGB3LEJJDvSQH7JZOY7Vs=
+	t=1793874249;
+	b=4W3MpMgARptAcDZ8BAfJEMI16UMhnm9h+MTeEvfsB376NUwZszkIYD3RII9+RgbtEvYcff
+	qRr/wThKjGSuv/MYqRaqJWSro69yJNGAmr6lr3QG6qgz50zSZT6vQ+F10msS3rjvxKoqLY
+	X66gr0+rCbxpjBp+vzBXq1qtzNjrXMs=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OR2s2vHe;
-	spf=pass (imf05.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TD3Ho5vA;
+	spf=pass (imf19.hostedemail.com: domain of jolsa@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jolsa@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A2E2A43D57;
-	Thu,  5 Nov 2026 10:23:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40431F00919;
-	Thu,  5 Nov 2026 10:23:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 47262403B7;
+	Thu,  5 Nov 2026 10:24:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A861F0093A;
+	Thu,  5 Nov 2026 10:24:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793874238;
-	bh=PYhUmCcAZz8D4rH/ZuLGB4Wi87kHi8TGQCw2xjNzenQ=;
+	s=k20260515; t=1793874248;
+	bh=ukfAuOjvggf2x46fnM5SSPXxPa35OmUkK54EQRFxays=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OR2s2vHeD3dD8muCdAuzzN7A+BZOD8oCRQ+Qv9FC0ClcDR8K0DALQpwUkSiKm+SDC
-	 30ZDS+iViSRJVTpBz3ZJB9OZjQGdmVqvZxwhgbf4JBSn93sQLHGGL4o6qw7r8a1hSb
-	 rG7a/Dn8Xpip6zD/MlCZ/Z6HKorb6yXrbb/D0wInMTrfSQfSqYlscXCf46sM5cETfV
-	 TUP/H7WyFPSBNRmka9rG1B6JQshp1eyjQJS94MY8zSMEkhekX9uOuroj2cIWmXAcr7
-	 g7huGG7qZ8h/gWDfKgotAsG2MX4r9/D+fMfl2IQWE31Zxc1P8Vz62lZw27p5Gbk+mX
-	 1cXJ1NIMkfQmA==
+	b=TD3Ho5vAdZTm3OwPTMs1WIGa51yfZn6wuA6V6bsU2pwqHAeHaUyjDN1jVGPsza/bx
+	 80YBY+97YdHXEHEi5971iUANIyN50uFTbzU2w/+3O5wiu8QGbU6qhE+pR0/QwMt1oM
+	 aa3FBoHYg0NcTfevLUUwAb6z6cetaDtoNQJGfb6ueY3fG31rAr4KlfIhce4aVFrVLX
+	 15h65pNOjLLf91XlJ+8pgEbGAVaZBZr1Fwc3vk0ILMmoCSVLqO+AeuHnwgoPMtFJ6P
+	 l2H+QlUL5f72t21yqXBM1t0phfanNVajy8ENBtb/E1Wr7296HjFpGA0+hsZUo+d+JO
+	 eJnwtsjhv8uGQ==
 From: Jiri Olsa <jolsa@kernel.org>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>
@@ -71,9 +71,9 @@ Cc: bpf@vger.kernel.org,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>,
 	Federico Di Pierro <nierro92@gmail.com>
-Subject: [PATCHv3 bpf-next 1/8] bpf: Honor const on generic kfunc memory arguments
-Date: Thu,  5 Nov 2026 11:23:35 +0100
-Message-ID: <20261105102343.311331-2-jolsa@kernel.org>
+Subject: [PATCHv3 bpf-next 2/8] bpf: Add user memory kfuncs
+Date: Thu,  5 Nov 2026 11:23:36 +0100
+Message-ID: <20261105102343.311331-3-jolsa@kernel.org>
 X-Mailer: git-send-email 2.56.0
 In-Reply-To: <20261105102343.311331-1-jolsa@kernel.org>
 References: <20261105102343.311331-1-jolsa@kernel.org>
@@ -85,13 +85,13 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam09
-X-Stat-Signature: 5y6tum8ybp8zghyhtu3pd8f89khumgfw
-X-Rspamd-Queue-Id: 5BD64100005
+X-Stat-Signature: ocd1h5iyi639b45888syrcj5buu5tuu3
+X-Rspamd-Queue-Id: F16741A000B
 X-Rspam-User: 
-X-HE-Tag: 1793874239-462832
-X-HE-Meta: U2FsdGVkX1/92N+XXVIyrhzS2t7KxJ9iMXuJRCxz75WqHD6KHdylj8N5ja4t+02itXRyW7uUNJUbXrXJWYU7OZilyyJ1IJqyuLW/fdDsUFEACz2oIm1boMirCGBC7u7QggeboXoh8yzwX3D8+smYayjmpTtMwuBObYA6zt2GsEVUOnHJLxiT0SD+iz45kG9KjVYpUhRRQgWXR0RiCUAsnR7223XKRMDmNko3Nb+8jPNnM0ftUCKZvqZx5XG/ZFHBVG/8OJbpZGiscscvUBKKXsv8T5q/2g2Ty3RQZiqTtWRCZ3Ht3b6ro20zpvoOkxjsolhkn7l2dJf5o9ILEp9nas2N9uIwi5jImJaWe+6I/q5WwBb/uEdzFVMvU6+j5OcOei+CdhOp1Z3gO+sfbj3Urs5pgv9KGsOpITdmFRtLxb68DuPEMIumWS1pFIf/08iKXKRCBVdNJg7oXyl85kii2b2Qmpk1cxQHHou32OFnHK2ddz71ZBdm0C6MXCQhGol0r4EqEWtu8TzY6cZGv25lapWh8ydzP313/iMCpYi/bRvelw98gO550R3t+sULJiHZLQ56b7ofYO6gadfgb+IhV2Sj5oUnmjkdlf0lmbvOZxF8t81vL5d3gVNuJ/8ddSNJK3KJ8Rf/CDwWeNGwvwk4bhfgqc7ll1se6HaxgGgIMXlovlMISbSXXAjJVZ8s/YmwJkzAvdPXRzx2nc4Rpfp8SS1jCORLmm79ZKyZ9N74lRVi/ymLaUDUcU/XLXQ4comLSlOOqv23s6n00ki/3HZzuzTr81fVeooMdtmYhyN45d0mZg5ZOIumT1cSFP8AfIlLLo5JL26mnZlOlk1HWAfFCO3i4uQm4BukdM5dMx4zbiOWB6Qe4VtchSEyuTgqmzVnzJgFxj577rHXGs4npWjj1lKfO7m5Ww4J4bpLY0cOoDGGkO3L5Q3+NorQ1gbqV8UBMc3v0VdEwv2Mlca1zXU
- iQXECKey
- bsQH/WE8CJJ8MN7TEwLIXLrm61Zu652vfb7Nr0gcjfXrAAicBVh0fgoKqbiBcivkKArX0fwgB6C6ogidk+KWxEpGyGsDQHCKvCcMBO+6YFV2/6y+Hzbn6pbUP8xtGLiyFlPz4uA/Tu5g74ZeUZoXEffxHx1ANzDX1OobDqJxz0xBhGnqPnBC5uCPkU/Uq5pvn63hVNkUPNX45FPsumCqRNO8EOsTKaZwMwMqjz6IzFnbK6CLSnBhzlOUAH9FeZPYLpD5iqELZLjwKpmcj4Lwheg+eftxiZrZKNFYC+sx7X2qWuG7soofSKaBh2w==
+X-HE-Tag: 1793874248-872791
+X-HE-Meta: U2FsdGVkX18rhFiaEkQOKqCbDEaOhEGm7/fowrpsMZ2NnN5QtzMfCe8tzTvIrj0J1NJ6rzMKf0/SeESzaCngTMAM1BqDg5WfwzVOKM0zJHLH1MGj7Y7HssxLJYXGDx8V23IvIQTWcdedXX9v9MCShBQ+SUTh/uFdLxsoNKWdhGGketXxFfR7k4FM5rTQOQULuYxpOQ5n64IZE1wo2cj+KNKeOPbuozVu7bzkgpWhU63Q32WYJP+Giw1XzXiLvFQ1TiOJLyvTOYMqDq3SJUlCrGbKn+aSTKns9yreUAeZaz1F7mkeaN/b/CDsIrrBPH4oK136q0o/VgAnBC1iakUxUqMyuDIDlaEYAQSnMjnyRqF68fo32A65v/VyqgpULswtQRY+i6QRZvzkC2oOISUf0ioRh9dKaGAdkTAPisHmtHLmQ9hp4Q2Z9KeDQFK9n4tGAhN2zz9fB86vKB1TkL8otZaXPVIfdmtiJLCDbcRuUAeCMg8kRH60Uhp+5+CsYJeJkIOysty1ycFj4jB/FtmgF7nE9yRyXnuE5jaZIAt+s3Rm1lfzJ+G9gqe0ChgHY0DcKGiuJPjOvKMaThyPrb1P4N0XW90YQcVc3YD3VyOgcwv+CaL5phTr0USzG1Y6HbbpsDbRjjNiMQ8LKlKzi3uP2tbkr1yYpPqVwlZrCXbiL//2wZAbAe7vgeT0BUPk6CBkYyAybvvd3ggKW0w0FYrEl4Vyz0wZkloUkFam2sYXLSIHLMDyaIqjy5tnS4UrBzZF6Q9ESi2sCdkmi1X+NPMkCn+dTzYqdiZ4+niUVxf3tGPI3S009YSxCsjjT3Jx0GDKyLhWxiwZ19675TSuYWov65dIfsvGPq5yIVmB8fnCwhdiUBYzR/hHdSQPr7lS9Wu874eSKkOuy4COSPpDrjNaeGN+wFwNy3qEd+UYOQ6aUqHfRn3ax8Jz+DrwTNFlpHegE7TNEFBgXSs6Kxn4FKz
+ DdlU3v4C
+ U7BMfY7aEHZ9i3depwv9joW4zl8+cI7rtnsVR+n3m520z/dUcwQ2GnLeuHzxHAnusTYHWX6O3fXXWgoa0s/OoJ1ISIC9G/P7Ji9UBIxJ//YKFhgtnXvEpn18OCmMrY5EFoMUMSfD2OUB5+X2n3T0roMvHim6HuQTrRjl3QtT4sCLOc/GvStDioM9ioYo1FJfjHhZeXHi1BGsFLWlYKkh12dvUUjfK/j2gH6Pp8sdTwREskP3Vzecp9arTrZDZSP5miShsAGPJVMQfrEqAm4trDqs4EWYu47UCVPclUDh9is1Hap+Rk3ozmwje4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,92 +100,233 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Mark generic kfunc memory arguments as read-only when their BTF pointer
-type points to const data. Preserve that access mode when resolving
-scalar structs to fixed-size memory.
+Add sleepable kfuncs to copy data into a task's address space and to map
+or unmap private anonymous memory in the current process.
 
-Derive the memory access flag from the pointer's BTF type, and preserve it
-when resolving scalar structs to fixed-size memory. Document that const
-memory arguments require read access only.
+Require a usable user mm for mmap and munmap. Register the kfuncs for
+KPROBE programs and gate them on CAP_SYS_ADMIN BPF token capability and
+the BPF_WRITE_USER lockdown check.
+
+Use FOLL_FORCE | FOLL_WRITE for task memory copies and return -EFAULT
+when a copy is incomplete.
+
+Rename the syscall info-copy helper to bpf_copy_to_user_buf to avoid
+the name collision.
 
 Assisted-by: Codex:GPT-6
 Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 ---
- Documentation/bpf/kfuncs.rst |  4 ++++
- kernel/bpf/verifier.c        | 24 +++++++++++++++++++++---
- 2 files changed, 25 insertions(+), 3 deletions(-)
+ Documentation/bpf/kfuncs.rst |  17 ++++++
+ kernel/bpf/helpers.c         | 107 +++++++++++++++++++++++++++++++++++
+ kernel/bpf/syscall.c         |  10 ++--
+ 3 files changed, 129 insertions(+), 5 deletions(-)
 
 diff --git a/Documentation/bpf/kfuncs.rst b/Documentation/bpf/kfuncs.rst
-index 901c37504217..4f8dd7c1d785 100644
+index 4f8dd7c1d785..81686d556f58 100644
 --- a/Documentation/bpf/kfuncs.rst
 +++ b/Documentation/bpf/kfuncs.rst
-@@ -137,6 +137,10 @@ argument as its size. By default, without __sz annotation, the size of the type
- of the pointer is used. Without __sz annotation, a kfunc cannot accept a void
- pointer.
- 
-+The verifier checks such memory for read and write access. When the argument
-+is a pointer to const, like ``const void *mem``, the verifier checks it for
-+read access only, and read-only memory (e.g. ``.rodata``) can be passed.
+@@ -976,3 +976,20 @@ the verifier. bpf_cgroup_ancestor() can be used as follows:
+ BPF provides a set of kfuncs that can be used to query, allocate, mutate, and
+ destroy struct cpumask * objects. Please refer to :ref:`cpumasks-header-label`
+ for more details.
 +
- 2.3.2 __k Annotation
- --------------------
++4.4 User memory kfuncs
++----------------------
++
++The user memory kfuncs operate on the current process's address space.
++``bpf_copy_to_user()`` writes to this address space, including private mappings
++that are not writable. A partial copy is not rolled back if it faults.
++
++``bpf_user_anon_mmap()`` and ``bpf_user_munmap()`` create and remove mappings
++by calling the kernel's mapping functions directly rather than issuing
++``mmap(2)`` or ``munmap(2)`` syscalls. As a result, seccomp filters do not
++mediate these mapping operations. A seccomp filter can still allow or deny the
++syscall that triggers a BPF program, but it cannot separately filter the
++mapping performed by these kfuncs.
++
++.. kernel-doc:: kernel/bpf/helpers.c
++   :identifiers: bpf_copy_to_user bpf_user_anon_mmap bpf_user_munmap
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 6788489a2608..937a0d7d6839 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -29,6 +29,9 @@
+ #include <linux/task_work.h>
+ #include <linux/irq_work.h>
+ #include <linux/buildid.h>
++#include <linux/mm.h>
++#include <linux/mman.h>
++#include <linux/limits.h>
  
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 6c93437f8db0..8f885d3acaa9 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -13237,6 +13237,22 @@ static bool is_kfunc_arg_const_mem_size(const struct btf *btf,
- 	return btf_param_match_suffix(btf, arg, "__szk");
+ #include "../../lib/kstrtox.h"
+ 
+@@ -3768,6 +3771,88 @@ __bpf_kfunc int bpf_copy_from_user_mm(void *dst, u32 dst__sz,
+ 	return ret;
  }
  
-+/* A kfunc only reads through 'const T *arg'. The compiler enforces it. */
-+static enum bpf_type_flag kfunc_arg_mem_flag(const struct btf *btf,
-+					     const struct btf_param *arg)
++/**
++ * bpf_copy_to_user() - Copy data to the current task's address space
++ * @unsafe_ptr__ign: Destination address in the current task's address space
++ * @src:     Source address, in kernel space
++ * @src__sz: Number of bytes to copy
++ * @flags:   Reserved for future use; must be zero
++ *
++ * Faults in the destination and writes the way ptrace(PTRACE_POKETEXT) does:
++ * a private mapping doesn't have to be writable. A partial copy is not undone,
++ * the bytes before the fault stay written.
++ *
++ * The caller must coordinate with other threads so they do not execute the
++ * destination range while it is being modified, and ensure execution begins
++ * only after the copy completes.
++ *
++ * Return: 0 on success, -EINVAL if @flags is non-zero, or -EFAULT if the copy
++ * fails or is partial.
++ */
++__bpf_kfunc int bpf_copy_to_user(void __user *unsafe_ptr__ign, const void *src,
++				 u32 src__sz, u64 flags)
 +{
-+	const struct btf_type *t = btf_type_skip_modifiers(btf, arg->type, NULL);
-+	u32 id, ref_id;
++	int ret;
 +
-+	btf_type_skip_modifiers(btf, t->type, &ref_id);
-+	for (id = t->type; id != ref_id; id = t->type) {
-+		t = btf_type_by_id(btf, id);
-+		if (btf_kind(t) == BTF_KIND_CONST)
-+			return MEM_RDONLY;
-+	}
-+	return MEM_WRITE;
++	if (unlikely(flags))
++		return -EINVAL;
++	if (unlikely(src__sz > S32_MAX))
++		return -EINVAL;
++	if (unlikely(!src__sz))
++		return 0;
++	ret = access_process_vm(current, (unsigned long)unsafe_ptr__ign, (void *)src,
++				src__sz, FOLL_FORCE | FOLL_WRITE);
++	return ret == src__sz ? 0 : -EFAULT;
 +}
 +
- static bool is_kfunc_arg_constant(const struct btf *btf, const struct btf_param *arg)
++/* bpf_wq and bpf_task_work callbacks can run without a usable mm. */
++static bool bpf_user_mm_ok(void)
++{
++	return current->mm && !(current->flags & (PF_KTHREAD | PF_EXITING));
++}
++
++/**
++ * bpf_user_anon_mmap() - Map private anonymous memory into the current process
++ * @len:  Length of the mapping
++ * @prot: PROT_* flags of mmap(2), including PROT_EXEC
++ *
++ * This maps memory by calling vm_mmap() directly. It does not invoke the
++ * mmap(2) syscall, so seccomp filters do not mediate this mapping.
++ *
++ * Note that ia32 tasks are unsupported. This calls vm_mmap() directly and
++ * bypasses the compat mmap syscall wrapper.
++ *
++ * Return: The address of the mapping on success, -EPERM if the caller has no
++ * user mm, or an unsigned-long encoded negative error code, as returned by
++ * vm_mmap().
++ */
++__bpf_kfunc unsigned long bpf_user_anon_mmap(unsigned long len, unsigned long prot)
++{
++	if (!bpf_user_mm_ok())
++		return -EPERM;
++	if (!arch_validate_prot(prot, 0))
++		return -EINVAL;
++	return vm_mmap(NULL, 0, len, prot, MAP_PRIVATE | MAP_ANONYMOUS, 0);
++}
++
++/**
++ * bpf_user_munmap() - Unmap a range of addresses of the current process
++ * @addr: Start of the range
++ * @len:  Length of the range
++ *
++ * This unmaps memory by calling vm_munmap() directly. It does not invoke the
++ * munmap(2) syscall, so seccomp filters do not mediate this unmapping.
++ *
++ * Return: 0 on success, -EPERM if the caller has no user mm, or a negative
++ * error code.
++ */
++__bpf_kfunc int bpf_user_munmap(unsigned long addr, unsigned long len)
++{
++	if (!bpf_user_mm_ok())
++		return -EPERM;
++	return vm_munmap(addr, len);
++}
++
+ /**
+  * bpf_copy_from_user_mm_str() - Copy a string from an address space
+  * @dst:             Destination address, in kernel space. This buffer must be
+@@ -5175,6 +5260,27 @@ static const struct btf_kfunc_id_set generic_kfunc_set = {
+ 	.set   = &generic_btf_ids,
+ };
+ 
++BTF_KFUNCS_START(user_mem_btf_ids)
++BTF_ID_FLAGS(func, bpf_copy_to_user, KF_SLEEPABLE | KF_PERFMON)
++BTF_ID_FLAGS(func, bpf_user_anon_mmap, KF_SLEEPABLE | KF_PERFMON)
++BTF_ID_FLAGS(func, bpf_user_munmap, KF_SLEEPABLE | KF_PERFMON)
++BTF_KFUNCS_END(user_mem_btf_ids)
++
++static int user_mem_kfunc_filter(const struct bpf_prog *prog, u32 kfunc_id)
++{
++	if (!btf_id_set8_contains(&user_mem_btf_ids, kfunc_id))
++		return 0;
++	if (!bpf_token_capable(prog->aux->token, CAP_SYS_ADMIN))
++		return -EPERM;
++	return security_locked_down(LOCKDOWN_BPF_WRITE_USER);
++}
++
++static const struct btf_kfunc_id_set user_mem_kfunc_set = {
++	.owner  = THIS_MODULE,
++	.set    = &user_mem_btf_ids,
++	.filter = user_mem_kfunc_filter,
++};
++
+ BTF_ID_LIST(generic_dtor_ids)
+ BTF_ID(struct, task_struct)
+ BTF_ID(func, bpf_task_release_dtor)
+@@ -5302,6 +5408,7 @@ static int __init kfunc_init(void)
+ 	};
+ 
+ 	ret = register_btf_kfunc_id_set(BPF_PROG_TYPE_TRACING, &generic_kfunc_set);
++	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_KPROBE, &user_mem_kfunc_set);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_SCHED_CLS, &generic_kfunc_set);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_XDP, &generic_kfunc_set);
+ 	ret = ret ?: register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS, &generic_kfunc_set);
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 02ed5368f056..9004f2673ccf 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -3932,8 +3932,8 @@ static void bpf_raw_tp_link_show_fdinfo(const struct bpf_link *link,
+ 		   raw_tp_link->cookie);
+ }
+ 
+-static int bpf_copy_to_user(char __user *ubuf, const char *buf, u32 ulen,
+-			    u32 len)
++static int bpf_copy_to_user_buf(char __user *ubuf, const char *buf, u32 ulen,
++			       u32 len)
  {
- 	return btf_param_match_suffix(btf, arg, "__k");
-@@ -13618,7 +13634,8 @@ static int resolve_func_arg_type(struct bpf_verifier_env *env,
- 			PTR_ERR(resolve_ret));
- 		return -EINVAL;
- 	}
--	*arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE |
-+	*arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE |
-+		    kfunc_arg_mem_flag(meta->btf, &args[arg]) |
- 		    (*arg_type & (PTR_MAYBE_NULL | MEM_UNINIT));
+ 	if (ulen >= len + 1) {
+ 		if (copy_to_user(ubuf, buf, len + 1))
+@@ -3970,7 +3970,7 @@ static int bpf_raw_tp_link_fill_link_info(const struct bpf_link *link,
+ 	if (!ubuf)
+ 		return 0;
  
- 	return 0;
-@@ -14170,7 +14187,7 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
- 				reg_arg_name(env, argno), btf_type_str(ref_t), ref_tname);
- 			return -EINVAL;
- 		}
--		arg_type = ARG_PTR_TO_MEM | MEM_WRITE;
-+		arg_type = ARG_PTR_TO_MEM | kfunc_arg_mem_flag(meta->btf, &args[arg]);
- 	} else if (btf_type_is_struct(ref_t))
- 		/* A pointer to a struct without a size argument is classified as ARG_PTR_TO_BTF_ID */
- 		arg_type = ARG_PTR_TO_BTF_ID;
-@@ -14195,7 +14212,8 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
- 			return -EINVAL;
- 		}
- 		proto->arg_size[arg] = type_size;
--		arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE;
-+		arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE |
-+			   kfunc_arg_mem_flag(meta->btf, &args[arg]);
- 	}
+-	return bpf_copy_to_user(ubuf, tp_name, ulen, tp_len);
++	return bpf_copy_to_user_buf(ubuf, tp_name, ulen, tp_len);
+ }
  
- 	if (is_kfunc_arg_uninit(meta->btf, &args[arg]))
+ static const struct bpf_link_ops bpf_raw_tp_link_lops = {
+@@ -4031,7 +4031,7 @@ static int bpf_perf_link_fill_common(const struct perf_event *event,
+ 		goto out;
+ 
+ 	if (buf) {
+-		err = bpf_copy_to_user(uname, buf, ulen, len);
++		err = bpf_copy_to_user_buf(uname, buf, ulen, len);
+ 	} else {
+ 		char zero = '\0';
+ 
+@@ -5710,7 +5710,7 @@ static int bpf_task_fd_query_copy(const union bpf_attr *attr,
+ 			if (put_user(zero, ubuf))
+ 				return -EFAULT;
+ 		} else {
+-			err = bpf_copy_to_user(ubuf, buf, input_len, len);
++			err = bpf_copy_to_user_buf(ubuf, buf, input_len, len);
+ 			if (err == -EFAULT)
+ 				return err;
+ 		}
 -- 
 2.43.0
 
