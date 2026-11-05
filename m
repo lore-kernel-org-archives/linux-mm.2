@@ -1,69 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98B70606A332
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A1E606A326
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e+FQOIfN
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IsAXF6eo
 Received: by kanga.kvack.org (Postfix)
-	id B6D966B05B7; Thu,  5 Nov 2026 11:52:56 -0500 (EST)
+	id 6B1F46B05B9; Thu,  5 Nov 2026 11:53:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B43AB6B05B8; Thu,  5 Nov 2026 11:52:56 -0500 (EST)
+	id 689AD6B05BA; Thu,  5 Nov 2026 11:53:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A81BE6B05B9; Thu,  5 Nov 2026 11:52:56 -0500 (EST)
+	id 59F346B05BB; Thu,  5 Nov 2026 11:53:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 832426B05B7
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:56 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 13A2F80B61
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:56 +0000 (UTC)
-X-FDA: 85401659952.10.C295C8F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 778A1120008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:54 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e+FQOIfN;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D9406B05B9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:53:00 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C878160B57
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:59 +0000 (UTC)
+X-FDA: 85401660078.14.8DEEF71
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 57ECF40005
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsAXF6eo;
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793897574;
+	s=arc-20220608; t=1793897577;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w/YTY8Qo0Zgoo2NfvapWx8uwEG48gJ3/0t1KofHUSvY=;
-	b=W6AR7dE+IuGoWs+LWTA2y0ekt5UN7oV57qpvhhFJnB2jFh+dXWBVWg5FuDEAuQb7IR3h1J
-	+sN8lOm6wTAIrVvtbDDOiToboDM5PiJNoYdJyum6I/MeBq82mpPrLBsFoFUPUJLKYvIZjb
-	d9TsLXj3aQXr3pj6z+y1RiAjjeZnCAg=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e+FQOIfN;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=fRI/DkZV6dbTTbjQAyrbGlNtpsebatRCDLQei6fHCk4=;
+	b=jAhbCKd/vAC8mObUTnPmwfHF/N3KXI4XLl86DA1HTBA+cYuCf+0Dlk2waXfmPp+D7lPn6X
+	8VpTJxB8847Joh9M0NvS4/GhUHn6ck8LreBoKk+snpy+bzzT4AAQFFtKt575NaDt1k1auf
+	qyWPayUlUfAD2b/0eZl9pyvxrJ9Bp4s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793897574;
-	b=8FCtZvZslVVWkNQm5+JUVmRcHtcRqvSnUKIgvixjVblRxror9l8FaJudw0WZfSUwJhbvLl
-	Iq1ajBkUdhBwMNSeqlNJXm+hSirhlOufjNqQK6XSY5rUFrdAKc2Wmg7/mCpToPqFpBzA+Z
-	KJnqvPnivNuaBre/LiBr/9e+zon0DSE=
+	t=1793897577;
+	b=b9bvB6pXlEDSlhTYKFuu9+8L1JK1UwWwKRb2XzD+fMOnqNWWHe+UOFUJYYFzLcl1tCFhIp
+	aQVR4R4xcJ5ZZPL9YQPt4YUFzobXDphuOnVwnnD4NpFzU3OFUaywS1wGVmGoiqS0xuQKp1
+	NUiVFWnKiczwUOcigYZkGCl1WmpuUEs=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsAXF6eo;
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EC905609F5;
-	Thu,  5 Nov 2026 16:52:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E78131F000C1;
-	Thu,  5 Nov 2026 16:52:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 909D44146C;
+	Thu,  5 Nov 2026 16:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256CF1F00A1A;
+	Thu,  5 Nov 2026 16:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793897573;
-	bh=w/YTY8Qo0Zgoo2NfvapWx8uwEG48gJ3/0t1KofHUSvY=;
+	s=k20260515; t=1793897576;
+	bh=fRI/DkZV6dbTTbjQAyrbGlNtpsebatRCDLQei6fHCk4=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=e+FQOIfNYc9wA2g3UCHvH9NgrcOuRcaEGDzbgAv1EgOtmrRJPSTLBvFWZ4/FpJD9W
-	 15AaYXrjwrrIpdWszwLaHSgP0IXU4dOJPmQRRLugdqcsOFH2GeRuDWFj4MjhUnBoFp
-	 4Rzs/MfQKLEVOfF4GjK9p5j1nvikqWdTzXny56BY2WP5ZbDBEjhwGWJKh1x+rGL6ds
-	 KziVI0OEAA3uFY2MyCXCxryvNf3Xye1hcZiGd3E6GHX/hxDJr6irTkKG3bcd3HJMf/
-	 asEvxYDhlE469H/oqIzFUy8r+vtIfVfmwvIbI2SxLRDvqAkwSW/6x23nYBVWbcgDlf
-	 sFVJw80vCBp+w==
-Message-ID: <sashiko-outbox-199546@kernel.org>
+	b=IsAXF6eoe4byQi/jxkSLQ8vVNL3PhxAWWzz4O5zLWDSKw/jIGom0f4FJ9ghfsvvwC
+	 WL+5W+X59istuuNxTponFzlP3Yx1ptNXMdoSBfYLkdUBNcrz1ch8zYXc2kRQSuS4Up
+	 UfAsHSvbKGR+llQ5roqFl9UI3++mGNcsq76NctSJT3wP+J57nrttbAy04v96epctyn
+	 rjj/Gamt0UErYYNYxKokOdi2ms9BxSgsiUDzVcNmhaxsFkxkT9p2EWLp79THqqpF8/
+	 c892/8Q9SDNr1X80xCLN3R7w8ePLGxaz+8vBRz5oL+QJlRryLSjD7vhGKToilEH7Ug
+	 vLJuJ1VLhIiLA==
+Message-ID: <sashiko-outbox-199552@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 08/14] swiotlb: Align shared IO TLB pools to the
- shared granule size
+Subject: Re: [PATCH v9 14/14] irqchip/gic-v3-its: Preallocate VPE L1 tables
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?QW5lZXNoIEt1bWFyIEsuViAoQXJtKQ==?= <aneesh.kumar@kernel.org>
 Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Baoquan He" <baoquan.he@linux.dev>, "Mike
@@ -92,24 +91,24 @@ Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Baoquan He" <baoquan.he@linux.
  Bonzini" <pbonzini@redhat.com>, "Vitaly Kuznetsov" <vkuznets@redhat.com>, "Andy
  Lutomirski" <luto@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, "Oliver
  Upton" <oupton@kernel.org>, media-ci@linuxtv.org
-In-Reply-To: <20261104164555.3555725-9-aneesh.kumar@kernel.org>
+In-Reply-To: <20261104164555.3555725-15-aneesh.kumar@kernel.org>
 References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
- <20261104164555.3555725-9-aneesh.kumar@kernel.org>
+ <20261104164555.3555725-15-aneesh.kumar@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 16:52:48 +0000
-X-Stat-Signature: bqz7ts3f3mdca4bwuehhpn1oauxrpraw
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
+Date: Thu, 05 Nov 2026 16:52:53 +0000
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 57ECF40005
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 778A1120008
-X-HE-Tag: 1793897574-281833
-X-HE-Meta: U2FsdGVkX1/C93dJOormtTLQVg645qEl/d8agqfmcBhLxFWNrX9tSqS7XYgV9uyU7AI9Gjpk5ctOcKJD6Bsz11/QStY0mR7Hz9LOaL9RKWNH+XubIkgn8+O0Sy7Kusj+Uh/o+Tj0HMkDrEe5yZf9KP/34SGVJezVv7NKTLjTCoIM4aLdYu7TCwQpJ2TMinFt0/uaAEw8lIyADRvwyvJFORkZr7kIBcMDWQna2DhbqOpV2X0z9tnh/oitC342sKuC7LHHxCEZpYb44zhVRoPWbES2oD4Hb5JprZU1a4d+v1FeZuEVeYqHH9m2LzWo3S2Q90or7FrdR0eoL7YfWh+6NwImE+KWRtWEgTJfDRthUyKip21BgUwep9jX57C8oNWK9HpTJRg8ycs4lBqm+MGFEywpwYbd0+9zZZJMHoWVBC1P89URmNDcv3iI+dTii14p4f5KAtAFNMOV0tgUuOZZQC/Jnl/KEIibJ4TxJLSWT3fFAtt8S2z/blDfGSlHLIhUQzH8TsRt0oJk/v0C3TVmOazd4/nOCyBvYuOgzU2/USr6OfIwwQyQRAvc8ykKvCJRvmPkdJJ9+hiaxSpWCXXwUHhds05xoOqfxQtXjMhtcMVs/I1X82FDJZd+6CI7ZUqhBV8G/AOXvW9UKYgZq5ffzvfdIgdw6rH8IHBTWxjzTTXe1DIR6kd9k6cDAz4ZDaY1mYv0MFJ67w9bBQypOzYcE+IfOX/9G8u/PxxYX5TIjDrxe1OZC9wZP9RrE8QkglbaPWK/zptfU+5F0NAm2+q+gOHxQaV8fJ0GIRfd1DvwqFIpNg3+LNpLA4h8NGqgNe056pcVD6+J1kLzN/E4xxSlYAGpLxB3CAaIcBWzFc198bXTAJHXXLIJVZBAbAIOQQKS1QFuw+qRqcDAdHNkAoiJNacqriPJYhx9woBXIPuFyRVGoyv1JXC/ttPbfRMrgHYkrECHzAPZt7DjR/Uw0E6
- L2i7UAa9
- mwWsg4HDffaaHXYzTlY8yIgXn5PObCnpYUqjDwQZGbx77dyKHwUIf4Xe5F2m1riIYpgQYAVZG4pfHPmUqtoh21A64wy35bP/2lIjozdaALACajATuUQ7VQjxC2uw5QRhpRjPq3N1JacwacUO6GoqNazOwUUGoe+Q70/XsZuzeJ9ACzU5/ftVIOP0V8aY1ZVGVCXCgZIjNb+bKWcgUBbavK2/8ovepGenjQ0rWioWIfiDl2nSqDr6iVsvVTMbhV/PtjrQVqYiH//MMpzvT22cnYGA6JwoGDmVkx4zk6/Yupx3i5u9C6Lx7Il6PpSe2GLc2zZEg61AsLagIg1Lj/EwtZ+XMRWhw88cBWDcJrHDlP+FVWo6Q3lqCZQSCbpP53CK/d9pfeTVVA8f4aDnOjz+zy+yl5Ubz0JTDr8ANYwYCB2fJyMcmNQo3Tp1CICrhavMBSLBETX2zGCvM0q6H5NIrrL3lCbadl03eV/NlqVKaOvQxDBtohTk05d13aPhcl9fFe/hp308hu5Sam4qe1jYXYex5UQXwZgB9HfSpxA81qXaP6X9wT6j1uZOUh8sSB/xpELOFBTa1dvpT9j1SmOJjrjB60gHBq7LJtXcK+wKh1MVWQ04z7igROJGfQXJhd/IXqzImPTlIrcbhTgS585SoccqLSz32xzRur3i8ifXJ7/7LvfC7gHJIjaZsDS8+Uq8lZ9kKbbI4qOri9Wg=
+X-Stat-Signature: huw6mr8pc4xe4jwbouconw6ike8p64rh
+X-Rspam-User: 
+X-HE-Tag: 1793897577-907328
+X-HE-Meta: U2FsdGVkX19RxpEvYowQ/Fi8CVU6lUivEdcFAL5tZ4mdMIO5/kBH35v6jGvi6MoePLa4JJOdmaOA5EVTn/ClpYPn9J0IAlZemcWGOw8I0EbV2Hs/YjZONx4bwqQm1Qn7f4oAVc0UbAlOQAG5BQNp+neePQTwN0jmVYe+n07gprkOPGhCqNPEVwFIb+zJFn33DUzicl+qGQBQuTLzDjrFU5Vm1J0HkAFO+G8St2/740ALgHCBL2IsSVL6s6iJAdJwvdczWGrqvQrNztVaFlLwS4TSQXSeYAoLWo5iwr03UFRx+aqAXJjeh4hdlGvH25q1q+Yxcqc6YXhqavpQGcnCCs/cV1YNYiLQ62p58bL8IU2tHXmhY7tFO93S+SkhoNPJIEmtrTnmg7K8xb6tZBp2jdmxPWq2xQi231//anpYlKt5Ssihq0uBw89dHPXF2suCY/7ayodTWqiJChhGv6/68czv7UaZumziSxV3FoIoeR4UD6wktEBQEJ4Xnb7FuBEdUAS3+G7N6r2PAECtMd47bNgDSKQ1HALcAENC3PWLiqIn7rlB6CsgGk1iT+5JGTJ00yd1tzlqqe4fTAmkv9hYllxeLHd7zN0/KyQ9H9EIgY3/baR6ghbjGfh/eteJEERzA6tvHur1p0SlGhFkiDySrNRHIo0ZnFO3PHedG6f8lJmVn9F41uVUtmF+vzZsx92OdTqyTgfwGpsIsGJIP4fE+bBUSgvBMBkFe7XlmfNGRjZ/MVYhCU2nmYDbMXsCPxfHcn8NRFNkPxZ4d4omUdycu19dCzNXlMLOCdroqOjTCbO2zjU1ccApvODW2+/PVTamVbNq5BPLabVGEcolnesakDgTj73kUg5Y0BfrsNlORMKr8URJgGaA0b9npRT6fa6jOEw/om51A/YCDVMDThwYllRwueeqqo/MUTDr2hWBE50/9gwW6mhLLVoTXKHezWVN2To/t+Lkw0SHQ2c9wKj
+ mcF7EMYu
+ 2PUMwBUkK5ke9aocqdir88MQ5K3ERGOo6LqJWfUDKCJG99a31IB7DtVZskevPhmUkZKJo6r7RJ+GbYFSEbjDLGmG0HY+X5Dh2ugMvyYbhC3r+17ZciLnUFOAZa3tMk/JpTh3yrzbdK8eEPFDqw6KdwZsSvLdFnea+VH6EhfB9UDfwrSpI8VaBJ1fmJ3PtYybnJ/LoChxlYbGMloJrWzj3YyOL3c012amt7OqtoEetP7oq8m50FrwyG7xAdhYe+i8qY670mVKJENpZStvj+gKr28qpAIxlBgo1r8d3YCgrl12x5QZflZPt1bXi485q/eT8X7sudmPDe+rvEQy4vRJH6GLQsaKZTXlS0MBDO0hphMn11SWeIaObNom4v3rn7PCna+fslrlOQ5ZiYZjHtmGVQ4f/2bXaCUcyybGFgj7hcwsmrG/n9I+Vio4jV3slCw7C1VYUCCGwkaCR9Rfq3ohA/9Rs002DsTQ2iL+1XfLlPbDMOqMRoAitPoVQr5C/m0S1iM+5dNF7AYaLDBfz9kUcmxFRHABY+UEp6cGdB09mbwUiyCbBuqzhUz+CnADPNjO/gpRkpITIEYZN3p9dZd+c0CMUC44uq6RBPokeFC3+JkudqRYCNayQEreOkXdgdBlxqrt/g5+L9JlbUY+TIkBX6+4EB8UJXG6a5Debk/2wVqFIcXdIW3IEZECNiJiU+ggDrpyFEr45BnHYFV0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,74 +118,123 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Low] swiotlb: premature linux/set_memory.h removal breaks restricted poo=
-l build
+- [High] irqchip/gic-v3-its: order mismatch in allocate_vpe_l1_table() on I=
+TS inherit
+- [Medium] irqchip/gic-v3-its: memory leak of vpe_table_mask in allocate_vp=
+e_l1_table()
 --
 
-commit 604798053e9de98cc147fbbd212cc3b2c9896b0e
+commit d29e0b57c45efd854666ff7af1f84a27011e992c
 Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-swiotlb: Align shared IO TLB pools to the shared granule size
+irqchip/gic-v3-its: Preallocate VPE L1 tables
 
-This commit aligns and sizes the SWIOTLB pool allocations to the common CoCo
-shared granule size and replaces the default and dynamic pool set_memory_*()
-calls with cc_make_shared() and cc_make_private().
+This commit removes the GFP_ATOMIC VPE L1 table page allocation from the
+CPU-starting callback by using a blocking allocation on the boot CPU,
+recording the table order, and preallocating pages for secondary CPUs in the
+sleepable CPU hotplug prepare stage.
 
-> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index 2c57b49ac7c06..36fbec2241e4d 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -22,6 +22,7 @@
+> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v=
+3-its.c
+> index 9ad66253ab166..5628f497d389d 100644
+> --- a/drivers/irqchip/irq-gic-v3-its.c
+> +++ b/drivers/irqchip/irq-gic-v3-its.c
+
+[ ... ]
+
+> @@ -2990,7 +3014,16 @@ static int allocate_vpe_l1_table(void)
 > =20
->  #include <linux/cache.h>
->  #include <linux/cc_platform.h>
-> +#include <linux/cc_shared.h>
->  #include <linux/ctype.h>
->  #include <linux/debugfs.h>
->  #include <linux/dma-direct.h>
-> @@ -38,7 +39,6 @@
->  #include <linux/pfn.h>
->  #include <linux/rculist.h>
->  #include <linux/scatterlist.h>
-> -#include <linux/set_memory.h>
+>  	pr_debug("np =3D %d, npg =3D %lld, psz =3D %d, epp =3D %d, esz =3D %d\n=
+",
+>  		 np, npg, psz, epp, esz);
+> -	page =3D its_alloc_pages(GFP_ATOMIC | __GFP_ZERO, get_order(np * PAGE_S=
+IZE));
+> +	order =3D get_order(np * PAGE_SIZE);
+> +	if (use_prealloc) {
+> +		if (WARN_ON_ONCE(order !=3D vpe_l1_prealloc_order))
+> +			return -EINVAL;
+> +
+> +		page =3D gic_data_rdist()->vpe_l1_prealloc;
+> +		gic_data_rdist()->vpe_l1_prealloc =3D NULL;
+> +	} else {
+> +		page =3D its_alloc_pages(GFP_KERNEL | __GFP_ZERO, order);
+> +	}
+>  	if (!page)
+>  		return -ENOMEM;
 
-[Severity: Low]
-Does removing linux/set_memory.h in this commit break the build when
-CONFIG_DMA_RESTRICTED_POOL is enabled?
+[Severity: Medium]
+Does this leak gic_data_rdist()->vpe_table_mask on these error returns?
 
-At this commit, rmem_swiotlb_device_init() in kernel/dma/swiotlb.c still
-calls set_memory_decrypted() directly:
+Earlier in allocate_vpe_l1_table(), when inherit_vpe_l1_table_from_rd() does
+not find an existing table to inherit, vpe_table_mask is allocated:
 
-kernel/dma/swiotlb.c:rmem_swiotlb_device_init() {
-	...
-		if (cc_platform_has(CC_ATTR_MEM_ENCRYPT)) {
-			int ret;
+	gic_data_rdist()->vpe_table_mask =3D kzalloc_obj(cpumask_t, GFP_ATOMIC);
+	if (!gic_data_rdist()->vpe_table_mask)
+		return -ENOMEM;
 
-			mem->cc_shared =3D true;
-			ret =3D set_memory_decrypted((unsigned long)phys_to_virt(rmem->base),
-						   rmem->size >> PAGE_SHIFT);
-	...
-}
+If inherit_vpe_l1_table_from_its() also does not find a table to inherit and
+allocate_vpe_l1_table() subsequently fails because order !=3D
+vpe_l1_prealloc_order or page is NULL, it returns -EINVAL or -ENOMEM without
+freeing gic_data_rdist()->vpe_table_mask or clearing the pointer.
 
-That caller is not converted to cc_make_shared() until the subsequent commit
-("swiotlb: Reject misaligned restricted DMA pools for CoCo guests").
+> @@ -3007,6 +3040,9 @@ static int allocate_vpe_l1_table(void)
+>  	val |=3D GICR_VPROPBASER_4_1_VALID;
+> =20
+>  out:
+> +	if (!use_prealloc)
+> +		vpe_l1_prealloc_order =3D vpe_l1_table_order(val);
 
-Because none of the remaining headers included in kernel/dma/swiotlb.c pull=
- in
-linux/set_memory.h, architectures without CONFIG_ARCH_HAS_MEM_ENCRYPT lose =
-the
-static inline stub for set_memory_decrypted() from include/linux/set_memory=
-.h,
-and x86 with CONFIG_ARCH_HAS_MEM_ENCRYPT=3Dy loses its declaration from
-arch/x86/include/asm/set_memory.h, resulting in an implicit function
-declaration error during git bisect.
+[Severity: High]
+Can vpe_l1_prealloc_order mismatch the order computed for a secondary CPU w=
+hen
+the boot CPU inherits its VPE table from an ITS?
 
-Should the removal of linux/set_memory.h be deferred to the next patch where
-rmem_swiotlb_device_init() is converted to cc_make_shared()?
+On the boot CPU, gic_init_bases() -> its_cpu_init(false) ->
+its_cpu_init_lpis(false) -> allocate_vpe_l1_table(false) calls
+inherit_vpe_l1_table_from_its():
+
+	val =3D inherit_vpe_l1_table_from_its();
+	if (val & GICR_VPROPBASER_4_1_VALID)
+		goto out;
+
+When the boot CPU redistributor shares a VPE table with an ITS in its affin=
+ity
+domain, this jumps to out: without probing GICR_VPROPBASER, and
+vpe_l1_prealloc_order is computed from the inherited GITS_BASER2 value.
+
+However, the ITS VPE table is sized by its_parse_indirect_baser(), which on=
+ly
+switches to a two-level indirect table when the flat table exceeds two GIC
+pages and GITS_BASER_INDIRECT is supported:
+
+	/* No need to enable Indirection if memory requirement < (psz*2)bytes */
+	if ((esz << ids) > (psz * 2)) {
+
+By contrast, when a secondary CPU in another affinity domain cannot inherit
+from a redistributor or an ITS, allocate_vpe_l1_table(true) probes
+GICR_VPROPBASER on the redistributor and enables indirection whenever the f=
+lat
+table exceeds a single GIC page:
+
+	if (epp < ITS_MAX_VPEID) {
+		int nl2;
+
+		val |=3D GICR_VPROPBASER_4_1_INDIRECT;
+
+For example, when the flat table is 2 * psz (or when GITS_BASER2 uses a flat
+table or a different probed page size than GICR_VPROPBASER), the inherited =
+ITS
+table order is get_order(2 * psz) while the secondary redistributor L1 table
+order is get_order(psz).
+
+When that secondary CPU comes online, wouldn't allocate_vpe_l1_table(true) =
+hit
+WARN_ON_ONCE(order !=3D vpe_l1_prealloc_order), return -EINVAL, and cause
+its_cpu_init_lpis() to disable GICv4 support?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104164555.3555=
-725-1-aneesh.kumar@kernel.org?part=3D8
+725-1-aneesh.kumar@kernel.org?part=3D14
 
