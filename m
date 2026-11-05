@@ -1,94 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE426606A33E
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F150E606D811
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lL+rueNl
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=ewru8Vxm
 Received: by kanga.kvack.org (Postfix)
-	id E55BA6B05C7; Thu,  5 Nov 2026 05:33:25 -0500 (EST)
+	id 0CC706B05B1; Thu,  5 Nov 2026 05:39:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E07666B05C8; Thu,  5 Nov 2026 05:33:25 -0500 (EST)
+	id 0A41B6B05BC; Thu,  5 Nov 2026 05:39:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D44CA6B05C9; Thu,  5 Nov 2026 05:33:25 -0500 (EST)
+	id F23266B05BD; Thu,  5 Nov 2026 05:39:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AA1AE6B05C7
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:33:25 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 44FCA14094F
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:33:25 +0000 (UTC)
-X-FDA: 85400703570.15.1050CAA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 99626180002
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:33:23 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lL+rueNl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D03876B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:39:52 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6D8B6160971
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:39:52 +0000 (UTC)
+X-FDA: 85400719824.07.F1C918C
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com [209.85.214.198])
+	by imf28.hostedemail.com (Postfix) with ESMTP id AE7E7C0009
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:39:50 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ewru8Vxm;
+	spf=pass (imf28.hostedemail.com: domain of 39FzsagoKCL0mhqkdrfkhqjrrjoh.frpolqx0-ppnydfn.ruj@flex--jenhaochen.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=39FzsagoKCL0mhqkdrfkhqjrrjoh.frpolqx0-ppnydfn.ruj@flex--jenhaochen.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793874803;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793875190;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3VKtMFUcvKjJEe9s8szWWukUuDsVUDxIJTJiZTdgl9o=;
-	b=3HkvMc4WB8KQ/2IIz9OpUgo2xPC0V3w+AaQfgeykWwpfbQDho13X13CVk2OYlAdfpXsV37
-	FsM+FO1g7vgPeYe3g2KWtWuQ4bq8awOyaFLzwcrnj3zfWc2TuGXbxUNbWeB30uwm730oW7
-	4iBtehDI7k5H0w//rN0Zv4chGjNryAU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lL+rueNl;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=uFIhQY+79JG5rknzOWA6767gSvTCQmC5gGZYO/Mt64s=;
+	b=dvYunnilU5wXIYevD3QwB564GqqyhQvpqPgLiA5unFcErR8g2JT4A4W906DsdFdwR/Dfcs
+	2BtqFRlKThJ3CsdyVSmegl0/SSGNzIFDUEEFtqLdHwKYFhWKhdYomWA/nzjivJWoooMIds
+	t9YHN32/8b3WG5DPHivDNhMU6QD6V6U=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793874803;
-	b=aDIcUqb6+FlGXfkWFJBYVRRLgtMcHW9N6f/fdL3F15MEX82BZM+GVsrwvmFbrUCnVZzaqC
-	oeb9t0XwJHqrYP7HNtfmGbfvQbxYWoECaezMF+Gnnm4a4bDjtipjUcoeS25q5C3/X8gSza
-	cY0CKBWGD5IEhFs/fdcaZrd+EtixU+k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E6C0F40877;
-	Thu,  5 Nov 2026 10:33:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6F01F000C1;
-	Thu,  5 Nov 2026 10:33:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793874802;
-	bh=3VKtMFUcvKjJEe9s8szWWukUuDsVUDxIJTJiZTdgl9o=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lL+rueNlOuxwK6jMOoLgjD/3XR9iJOsgyqXAYHVNDlMY36sku3+yybFGvu68+2lKp
-	 m9bVwHfTDNPJgUSUvfgKgJPX92CsxzcztSDkf5i5yOdo2g89q/Rp2j0bLId8MLWGI/
-	 m4LmLhmR7KRj58uoaKOJP4ib8Hn6INUOxuYJE+64dw2EdysFARAiwa6XxuVunCG5sx
-	 CGPx0b1DK82ARoqHebswt9PL1+/CU5EIc8xrt08YHYCoNxiNw2z0fVNx+fem/6ghgF
-	 qkOUBRpESfJPEztHylmqVmmwfASlWjxd3r923XlyjcYhrC7YvmsQCkb3TvmkkVrvgb
-	 W+ZhWUnpSXymA==
-Message-ID: <sashiko-outbox-198860@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCHv3 bpf-next 5/8] selftests/bpf: Test user memory mmap
- kfuncs
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jiri Olsa" <jolsa@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>, "Daniel
- Borkmann" <daniel@iogearbox.net>
-Cc: bpf@vger.kernel.org, linux-mm@kvack.org, "Andrii Nakryiko" <andrii@kernel.org>, "Eduard
- Zingerman" <eddyz87@gmail.com>, "Kumar Kartikeya Dwivedi" <memxor@gmail.com>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "John Fastabend" <john.fastabend@gmail.com>, "Federico
- Di Pierro" <nierro92@gmail.com>
-In-Reply-To: <20261105102343.311331-6-jolsa@kernel.org>
-References: <20261105102343.311331-1-jolsa@kernel.org>
- <20261105102343.311331-6-jolsa@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 10:33:21 +0000
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 99626180002
-X-Stat-Signature: dfqqfqdsrjn6nhtky5oyfzmhd6w8eit4
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	t=1793875190;
+	b=YGYFsESpCmEWorlTLxLOfSg7rsQBm5w1xYmsejce3awiR8M1s2DJMGaWL9rm0a2T/XxVrc
+	dK6b8xoMUVWBV6Co7jb8TPElLwwMi80NwrjMkq4hjhOlUniMOGN7+tFUefJoUo96JTWlu5
+	hywORTvgA02NwN7Xe6qRSrJxVMFo/Bc=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=ewru8Vxm;
+	spf=pass (imf28.hostedemail.com: domain of 39FzsagoKCL0mhqkdrfkhqjrrjoh.frpolqx0-ppnydfn.ruj@flex--jenhaochen.bounces.google.com designates 209.85.214.198 as permitted sender) smtp.mailfrom=39FzsagoKCL0mhqkdrfkhqjrrjoh.frpolqx0-ppnydfn.ruj@flex--jenhaochen.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-2e9d52f684fso16983765ad.2
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 02:39:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793875189; x=1794479989; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=uFIhQY+79JG5rknzOWA6767gSvTCQmC5gGZYO/Mt64s=;
+        b=ewru8VxmD1t3GWz4rPRHxs11SIwt0kn3AnPMYzmaXIS9Kq4dJ1FP0E5EwzsHd08aYy
+         paDPLgc3zdJ2pjxStRk9mJU4kUWKDefnY1nrygFpM30IZkpMnuMBOTxSKOVDpQBEsr3C
+         vCUW10ZtSLq0wnAcsbt6L/7fUNbk2fvQw6MCn+qBhrXJBzrtjyKvTM4xDFe/ropEm4IK
+         Dans5wV3RqRbbTzuWqO8v7A1YM15vi/vT5EpEeo/ptWOko2cdFmrKLLUGnOJ/F8Nuhl5
+         8fK4J7pOpGIZguAvQudPvTPwzkHywzOprbVEkAFlBBXbYrf4+zS4iKrAQVZStXyOhge9
+         Cyig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793875189; x=1794479989;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=uFIhQY+79JG5rknzOWA6767gSvTCQmC5gGZYO/Mt64s=;
+        b=Gj+BkPch7+UMW37/b0E9R13x3ChPbtpovnq96p5hXX22uMX3rrSbvfqZiygAQbS/VU
+         SwJkk4XK3USQs0kupKEUycpG+v9uJ3924Fg4+hj3unmwjPNK83JJUSeG9xvZWjjQDOgz
+         EyGztAzywBh0VGn/oFMAGnhEjHkeVxS2L/N4sWo7mCEqupdo47FXuBn2iRJjDr97zQdy
+         7admSenysJpZDLSc+sgsQR3cHihraGpUCfkm2GMt2PCkjqnsCOO1JlTxNKde+sjgZkAf
+         FdIbx7Lkv6vn8udRRJ+emjYdXCRK8+QnlNbG7CSNeGd5bnL0BUBmEmbEumve6577qBVH
+         UH/Q==
+X-Forwarded-Encrypted: i=1; AKwUvBxd0ojZuPmI4L8bxMtCBzLuFFQ3iAcrpyPJn8NhyRVGLRPdkrFwys+lwVqay/YLBnzlLO4eE1El7Q==@kvack.org
+X-Gm-Message-State: APuU4Z/lJ7mGduBG3K0R++IX+1VZh4pWe8fAeE8RoeCqCBl3A+v+3XF0
+	1ZEEXAHHCXXR3Yq/pakLsGKmsy9D0t9ZhZ88FnIwUYACSs74VUEhJscmMGciVHAZ48VTb9QSXJs
+	ri7gzKsJrpG3u4vj5iBVcKQ==
+X-Received: from plao13.prod.google.com ([2002:a17:903:300d:b0:2ea:775d:de30])
+ (user=jenhaochen job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:2ec3:b0:2d9:464f:d45f with SMTP id d9443c01a7336-2eb364025a8mr173003765ad.5.1793875188940;
+ Thu, 05 Nov 2026 02:39:48 -0800 (PST)
+Date: Thu,  5 Nov 2026 10:39:47 +0000
+In-Reply-To: <auwR7gnuLsF0lpmG@google.com>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+References: <20261030121700.260975-1-jenhaochen@google.com> <auwR7gnuLsF0lpmG@google.com>
+X-Mailer: git-send-email 2.56.0.398.g882cbad275-goog
+Message-ID: <20261105103947.7521-1-jenhaochen@google.com>
+Subject: Re: [PATCH] mm/zsmalloc: inline obj_malloc() and obj_free()
+From: Jenhao Chen <jenhaochen@google.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev, minchan@google.com, 
+	liumartin@google.com, benwei@google.com, Jenhao Chen <jenhaochen@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AE7E7C0009
+X-Spam-Status: No, score=-16.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793874803-388830
-X-HE-Meta: U2FsdGVkX19FcjA3sHeWU2fhWHXQbqp51TAoe324wjiMRXIHHL8GCreVosdUwVMudzfn0jBFnOqFG0YTIS5ZZgdLFXaz6hUSrYjB3vDQsIB9+zRH+wjM16V0m2CTD6zDNd/NcvnibiYBRXknVJNMCG/AgKEcGEvTblPljSONZVeUpsGZVvRrxn2k+jPPwx0iRPckXp1O387JdqKM0fwecc+tzxEfJ0PJYsI4Wcezf7BMjVwTFWprbRjztdOcHv94aPvPgRz7W2n0OsTlxbsm7QNRUPaZ4NQy6jfEOE9zeaS3wk9lDwFmW7jLJJVGHOL7d7O0Hzq3eMz9P3bnsv4gBZE0yuN3O2hUcjNlGn1QbMamft4Z4MYxoILVs8vsqzDBMYWqRMnDiAj+1Q2gEbS4V3EG/QhXB747jYq+Ac+ma+4jxeRHdiuUDgo2fmoFe1+x3YzrsF73gm/VwFrIgEPeL0EdwvxVSluf/CAa8Ce/+TSP/7UPPSQBuufBYHSrm5mwZmtOLFkCBpSEe9j/o6Ge8aWRgMtvVXgMXOrhxvso6ADlkb88lK64Q9nyOFpe7rhpFtPisk7u0TruE/bajE1IrbUTxRQ7M5TUunk/T/NCSBcffVsLLzRzcfgrnW9lJ+UtHVLO4jBLsQLwd8+lfM1+/MpQSoYzjYy5vY3g81eyLZ2Lz1Bq/z3KP7O8tJ1D3OfOSxkFNGwoJFCfMUZBfeR2y0t6EvDJ1tqaMpbUG/1V3hHyZaKO4uzirnG92T8gGv0sIEvTPfLdy78gIZAiwI5qPmw5F1tCPq2DwTTrbKGwwEL60JcZQ/sHM4u1EYddtt7e/pA86a1w/cb0aFcWv2NLQpFqlTWx2UCN7N9/nMWN8r3ujQSEYrNA3WDCbZcpQ5dq3z3sadYCph2YI61ucxInScaJQMokAdVkFFQ0s4ultbq+P2IuXIzPzG8Okv2I/0vja0a3jcSogxnL+9rCEGl
- g1y6mw29
- mIyd8SUnWa5RGw1t4kIK45bIAz7H2T63zyei3Ecb6yYIFGw4aJkRCE5/+MsKWlkJsOBWgDnhPD77wwzvVkQZ0/FlxgwTNe3hbPs3bWovXH6L9CMWPwTbVG9ZM2BWKREp4DHpMcw1ouIQWlpPxKcjtXf50OcQkrvpGmdc8Yub2QgOc1bvLQtQODTkc+r0BonoyrsqMbyPn0k7nq9CQSmL/iD8x0yaH8hiMoj/jJD8mLMJtD3gzpABQAnBwG+FPoeHcLumbeYoWOYzz1p/q12qMJ7tviImYG0It2GI8KtTJwjp/AMRY614+M2/dMX97xvxL0WEqbh8PQYSA6AxkVj6UKcv25Gu2uCZtXRQ/OucPL80QZgaVsaVJV1PFerE+LqMrK+wMTDw7c8zqgTa8ELuqZ0CkxB/OUJ/m505hezt3mPh7UP/KEjSE6DBgN960IlQVeL9TU7j758oNHK0ronGP0oYmMgpqa4A0p2XoReKCetGp1aIGYzQqcJFS1QO4UVnFrmOG2fmWwCIR0Ct/tyNYOS2feLgVziZgPX2eKCoHkkBwyke6VMW2jpjmhfPIoHfWRibd6QNwoTVF6eVVHNw8NtebSkXRchjAhajf49Ar0Qkoqamvjni32xNNhzwihB9v+xmUuOajYW2NzEuuYgs3Tvs+n+0SYqTkTTuZ
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT,
+	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: mekxtpocz77k4ueeji1gzt5397okn1a6
+X-Rspam-User: 
+X-HE-Tag: 1793875190-873947
+X-HE-Meta: U2FsdGVkX1/6aEYGa/jeO9YkW+YOk4T6obBzQVF9GqriByUAaVUaENnyQ0CTGmRY2QojAeptS512aVCv2b+tz+17EVMrz+LqnhMZ15YXWMYet3CfixeG/CwSuP7ZOX1QAOcdAbYzbcS65+egfwNgNVCAVOb/0VOwneyEGJFAF7iLoZblvDef4cZYSc2vOIX0mxHtzdccUd9rGqdPBWmQdKR30CwRCdMZYP5n1iMwLtdBumLNuCCEF7qiJuDKyBmrEuipibOaVBGYH1yJ1R1tAthZacZRbNRD17GeLHU8FPzpx9tHlnLqrBRrbCVRnHCHd90sp9fzd1IKvNMWHFJympa5mapUA3inXfjlRmEHprM4zlLf5vHNtmCS5HD/jQFKtNx8/5+wmklFl8sxmafY7OGqrK7JS8rhrWMPue7cTz8Kee8DfSrbvkkG1KSm0h1flOCk/ittrER0XvARpnE/iAMAW5qY7ILsVwLRAHqfWs5XbgQyCyaYsQ/o8wuaicosDyDc4TAiRWElvZnS2TPod4Qc+rGsWvjzSiAMRDwofDNdj2eOBth3E49Yg/yseHJdCUETSZQNeSQPwEPhQ4M7EF47IXVuxJCJVvIxRNYG1zTNIMHbAgx+otkgVyBr1akAmJFSKMF9lA84IFCQPInAhjQOqygoyrNXCvneuADu1iCNmFyZxLuPXMs/7QRB66zAWAYHSDjaz1I+AawVhqgad2r4XTgNp5L1YCXt15tOC0+clMi14AAn8fCpOff7BZcviBCVxj2gshLmOuDE2bjGuw1vb+4FdMrPJE5fsDDmQYNUm/inPiUmaZmmnQHm4QhHig3mXFpjo5ad6D2MzEWBtvOE8sexO+DIz7cQtiBXDj3P1OnOFOhPOkNEak9Ce7FOjV3mWBYy/7N4vpsqXK/qUhLooVM92jMklvj2oFi/S25sYppfCbhKwTluiwPq0ABQt3w7aWV2ZLqiqkRx/ih
+ HwJ1mB4I
+ jNK8XIezb/Km9lriD0I7dtZQl9fE5qbMQ3HoTlaNY3CuuDF2WU8Fo7aHjUCt+u6tkrJsPbeQhyp02bPbD5dIbWdEbz1Yp8xOJZLpdnFDlbZfpGzyk6sRlHgoBkLet2vAnSX7/QhpdjDJcU6EmzdRFyQONU9mBh/1N8hD4rAqUqLRZIHwUQ9Ta+E81jSAfUZ66X5dztay49mrRxc7TNqo40rgxCQb1q6E7lxVaF5+j4L0ifNZ3QG2lnQ4kgLfJ+XhKdbPmgxTxAa0Lp5xmENXoa3lRe1FhJfs6b+U78O72QpGpb55j31oy+bVPqklb1OpEx1hgGcoShKa0pVwYwHBHn7YAkmjrO01JwWv7XOAv5fuF9VLtFZLTlaAGkL10gEXjDe7q4Wa6a885YiaQzbpPamLTQ7k0if5TH/9QRU/qVNXEthjenccLapT4qm5wjsLFZJSM6m7MAdLNiuMTMHcgk2NWdLD8zWsN6XJP0B5IZRhPpmdHFcu1RfEDXNuOnQEUN80QFGmrjuD9KVUsgRPBhg7j4bHUcYlvHvgm6nRXDZT1FYom8gGThOm9kbwb0pVDZE1q2CqyGy4/Ov/BqH1yg52KJdsvxa5rW4Ipku2LovxR6eMQBFdge/yS8XzkkKgrvVqI6R9oaj+xlqFsWT9cbNipLedykhomxHwNzQ7ThHuB6+YQsp/gvTb4PEn3tFsmxoTuWW4DPx2VOkOIA22Uf4rSKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,147 +112,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] selftests/bpf: call to undefined get_procmap_info() breaks build
-- [Medium] selftests/bpf: user_mem_test() calls non-existent user mmap kfun=
-cs
---
+On (26/11/05 14:23), Sergey Senozhatsky wrote:
+> I suppose there is performance benefit?
+> 
+> I guess I don't mind in principle, one thing to note is that this conflicts
+> with [1].
+> 
+> [1] https://lore.kernel.org/linux-kernel/20261105044752.1997895-1-senozhatsky@chromium.org
 
-commit 602c938f4e2233efed73c162a7e2295814283b95
-Author: Jiri Olsa <jolsa@kernel.org>
+Hi Sergey,
 
-selftests/bpf: Test user memory mmap kfuncs
+Yes -- in a steady-state microbenchmark of paired alloc+write and free
+operations across 8 compressed object size classes (384..3136 B):
 
-This commit adds BPF selftests for bpf_user_anon_mmap() and bpf_user_munmap=
-()
-invoked from a sleepable uprobe, checking that created mappings have the
-expected permissions and that unmapped addresses are removed.
+1. On current mm-new (zs_malloc + zs_obj_write + zs_free):
+   - Clang 22 -O2: -7.7 (arm64) / -11.8 (x86_64) retired instructions
+     per pair (-3.2% cycles on x86_64).
+   - Clang 22 -O2 + CONFIG_AUTOFDO_CLANG: -13.0 (arm64) / -17.5 (x86_64)
+     retired instructions per pair (-4.8% cycles on x86_64), while
+     shrinking zs_malloc() from 2,872 B to 1,828 B on arm64 (-36%) and
+     2,088 B to 1,474 B on x86_64 (-29%).
+   - GCC 15 -O2 (x86_64, without AutoFDO): GCC leaves both obj_malloc()
+     (306 B) and obj_free() (120 B) out-of-line while inlining the
+     single-caller slow path alloc_zspage() into zs_malloc(); the patch
+     saves -23.7 retired instructions per pair and shrinks zs_malloc()
+     from 1,738 B to 1,441 B (-17%).
 
-> diff --git a/tools/testing/selftests/bpf/prog_tests/user_mem.c b/tools/te=
-sting/selftests/bpf/prog_tests/user_mem.c
-> new file mode 100644
-> index 0000000000000..eadf668f7056b
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/prog_tests/user_mem.c
-> @@ -0,0 +1,111 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <test_progs.h>
-> +#include <sys/mman.h>
-> +#include <unistd.h>
-> +
-> +#include "user_mem.skel.h"
-> +#include "trace_helpers.h"
+2. Rebased on top of [1] (zs_store + zs_free):
+   In [PATCH 6/7], the new static obj_write() helper has two call sites
+   in zs_store(), so both Clang 22 -O2 (360 B on arm64, 219 B on x86_64)
+   and GCC 15 -O2 (obj_write.isra.0, 229 B on x86_64) leave obj_write()
+   out-of-line as well. In the zs_store() fast path, obj_malloc() packs
+   (m_zpdesc, obj, zspage->class) via location_to_obj(), and the
+   out-of-line obj_write() immediately unpacks obj_to_location(),
+   recomputes offset_in_page(class->size * obj_idx), and re-checks
+   !ZsHugePage(zspage).
 
-[ ... ]
+   If we also mark obj_write() __always_inline alongside obj_malloc()
+   and obj_free() (with noinline on alloc_zspage()), the compiler CSEs
+   those redundant operations across the fast path:
+   - arm64 (Clang 22): -31.3 (-O2, -4.0%) / -34.7 (-O2 + AUTOFDO, -4.5%)
+     retired instructions per zs_store() + zs_free() pair (vs. -8.4 for
+     obj_malloc() alone), shrinking zs_store() under AUTOFDO from
+     3,144 B to 2,448 B (-22%).
+   - x86_64 (Clang 22): -26.6 (-O2) / -31.8 (-O2 + AUTOFDO) retired
+     instructions per pair (~4.0-4.5% latency reduction).
+   - x86_64 (GCC 15 -O2): -37.1 retired instructions (-5.1%) and -5.3%
+     latency (-5.5% cycles) per pair, while keeping zs_store() slightly
+     smaller (1,997 B -> 1,943 B).
 
-> +static bool check_user_mem_vma(void *addr, unsigned long size, const cha=
-r *perms)
-> +{
-> +	size_t start, end;
-> +	char vma_perms[5];
-> +	int err;
-> +
-> +	err =3D get_procmap_info(addr, &start, &end, vma_perms);
-> +	if (!ASSERT_OK(err, "user_mem_vma"))
-> +		return false;
-> +
-> +	/* VMA can be merged, so ensure it covers at least the requested range.=
- */
-> +	if (!ASSERT_GE(end - (size_t)addr, size, "vma_size"))
-> +		return false;
-> +
-> +	return ASSERT_STREQ(vma_perms, perms, "vma_perms");
-> +}
-> +
-> +static bool check_user_mem_unmapped(void *addr)
-> +{
-> +	size_t start, end;
-> +	int err;
-> +
-> +	err =3D get_procmap_info(addr, &start, &end, NULL);
-> +	return ASSERT_EQ(err, -ESRCH, "user_mem_unmapped");
-> +}
+Would you prefer that I send v2 rebased on top of [1] (including
+__always_inline on obj_write()), or send v2 against current mm-new
+first?
 
-[Severity: Medium]
-Was a prerequisite patch adding get_procmap_info() omitted from this series?
-
-Both check_user_mem_vma() and check_user_mem_unmapped() call
-get_procmap_info(), and tools/testing/selftests/bpf/prog_tests/user_mem.c
-includes trace_helpers.h, but neither tools/testing/selftests/bpf/trace_hel=
-pers.h
-nor tools/testing/selftests/bpf/trace_helpers.c declares or defines
-get_procmap_info().
-
-Because the BPF selftests are compiled with -Werror, does this cause buildi=
-ng
-test_progs to fail with an implicit function declaration error and an
-undefined reference at link time?
-
-[ ... ]
-
-> diff --git a/tools/testing/selftests/bpf/progs/user_mem.c b/tools/testing=
-/selftests/bpf/progs/user_mem.c
-> new file mode 100644
-> index 0000000000000..e3b0689f5f2a5
-> --- /dev/null
-> +++ b/tools/testing/selftests/bpf/progs/user_mem.c
-> @@ -0,0 +1,43 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <vmlinux.h>
-> +#include <bpf/bpf_helpers.h>
-> +#include <bpf/bpf_tracing.h>
-> +
-> +#include "bpf_misc.h"
-> +
-> +char _license[] SEC("license") =3D "GPL";
-> +
-> +extern unsigned long bpf_user_anon_mmap(unsigned long len, unsigned long=
- prot) __ksym;
-> +extern int bpf_user_munmap(unsigned long addr, unsigned long len) __ksym;
-
-[ ... ]
-
-> +SEC("uprobe.s//proc/self/exe:user_mem_trigger")
-> +int user_mem_test(struct pt_regs *ctx)
-> +{
-> +	if ((bpf_get_current_pid_tgid() >> 32) !=3D monitored_pid)
-> +		return 0;
-> +
-> +	switch (action) {
-> +	case USER_MEM_MMAP:
-> +		user_addr =3D bpf_user_anon_mmap(map_len, map_prot);
-> +		break;
-> +	case USER_MEM_UNMAP:
-> +		ret =3D bpf_user_munmap(user_addr, map_len);
-> +		break;
-> +	}
-
-[Severity: Medium]
-Are the kernel definitions for bpf_user_anon_mmap() and bpf_user_munmap()
-missing from the tree?
-
-In tools/testing/selftests/bpf/progs/user_mem.c, user_mem_test() invokes
-bpf_user_anon_mmap() and bpf_user_munmap() declared as strong __ksym extern=
-s,
-and test_user_mem() in tools/testing/selftests/bpf/prog_tests/user_mem.c
-loads the program via user_mem__open_and_load():
-
-    skel =3D user_mem__open_and_load();
-    if (!ASSERT_OK_PTR(skel, "open_and_load"))
-        return;
-
-Since neither bpf_user_anon_mmap nor bpf_user_munmap is defined or register=
-ed
-in any BTF kfunc set in the kernel or selftest kernel modules, won't
-user_mem__open_and_load() fail unconditionally when libbpf tries to resolve
-their BTF IDs?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105102343.3113=
-31-6-jolsa@kernel.org?part=3D1
+Thanks,
+Jenhao
 
