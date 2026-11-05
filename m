@@ -1,92 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B741C606A326
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 20:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A3A606A329
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 20:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ks04bzIY
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m92f5nis
 Received: by kanga.kvack.org (Postfix)
-	id A37E86B05B0; Thu,  5 Nov 2026 15:44:10 -0500 (EST)
+	id E11CD6B05B3; Thu,  5 Nov 2026 15:50:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E6B46B05B1; Thu,  5 Nov 2026 15:44:10 -0500 (EST)
+	id DE9A46B05B5; Thu,  5 Nov 2026 15:50:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FE246B05C9; Thu,  5 Nov 2026 15:44:10 -0500 (EST)
+	id CFECB6B05B6; Thu,  5 Nov 2026 15:50:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E42C6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:44:10 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 80CF2A09C9
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:44:09 +0000 (UTC)
-X-FDA: 85402242618.16.FE438E5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DC1694000F
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:44:07 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ks04bzIY;
-	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793911448;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A2CEE6B05B3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:50:48 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3D7761A0C67
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:50:48 +0000 (UTC)
+X-FDA: 85402259376.18.3495063
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 21EC6C0006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:50:46 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m92f5nis;
+	spf=pass (imf22.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793911846;
+	b=dR+yF2LYAhpH9+h7fV1xEEt1SHlQCHmYfc3QEsnTjKAK+hac80oLCXtigW49xlTe6XlQqw
+	1TzMkuGm/oGWFBiiRi1BP3QWwsZ8821jOQUd6yu/nB/ztVM6ZWgK9ODon+Gfm6VMqWSmoi
+	TfuLsiD/ypgCL5gLYVTbnoqNdjsvm9g=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m92f5nis;
+	spf=pass (imf22.hostedemail.com: domain of devnull+mt4022.columbia.edu@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+mt4022.columbia.edu@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793911846;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cajAByUeZEfXA46wL2DP0e8bMTdgT7qZWKnAlu0+L/s=;
-	b=RgZRFtPCoZHJTlz5792mCzxWJgiWj1vfo463+6pr+BuSfedQv46XXbgGlc1IAs4+7lHDQa
-	2EQrdaJHlvGXPad9aK7FHUiBQDK/rempOx2DBXV5/l63gt3DzuVLedlq6sTIRD8vnAwUYY
-	S9OR02T8EvRTDTLhdwr5NNBwZDKMAs0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793911448;
-	b=1AStVK7wr9Yktxstob8pam1vYuBmr7Yob9tPUR6uJU8fRcuURwrafZJchGmY52BsVKSQm6
-	EqaWcpR8LG86A4FpTWFIwcQy1whkyzxd6Gqx7/pIv3N8Rw3YXGnrJd/dJlLSu9z/4Wqwio
-	QqKga7RgSD4VvInXiMQsFNmIKUmRNkg=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ks04bzIY;
-	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=n+pRwyM6jtw/t99MRAyQwbNSY1kY6+Y063USIMO4Eek=;
+	b=G0iRlGbmYC8ALpDgN+Zq9SosD2v8mwxeHcK81w6QPCXME0L752TTEDP4TGQBONNxKpMw0J
+	rf1dOUdEAYj+4DObd+g+8AMTzytPOIbprhZ/BwTetHKs8letj1B4F3k8DZ2XJMn+XXWjwX
+	1mTAf7TU+hTvFZdHoBK1r4Yq21MvmgM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5F997602D4;
-	Thu,  5 Nov 2026 20:44:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD3B1F0089F;
-	Thu,  5 Nov 2026 20:44:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 057DB4070A;
+	Thu,  5 Nov 2026 20:50:44 +0000 (UTC)
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1793911843;
+	b=ow09mkwMzDhHxhVGEwyG3VLSwsx8axmbdvMwjYPv/jzLlAu930xRaG+QEq0cNaowWEHB
+	 1D3ilriiDMKr99ekeo/4/1s5dZCPxsgAW8hRTusT12qGOkX2qrQXB0J7qCnQqJ3UL+Yo2
+	 LjkKdpGB5FfT0AvMP+xY6Pjx5NXomJ3zNsjCff1EaxaKweTj6FPD8AIw6b1d/HXFX3H3N
+	 yslzvQVcnBqsYaR5ge3pWUmbbM1NL/6QCiPREQBNq9rs01usCWef1QJUzw/IPOPArfVtM
+	 gpAuPQTYNqQjgc9wZJZXN1I2Iftl6Hd+01VrHXN3WFWT0UR5yJfv9vyBXWbVAo9toKw==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1793911843;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:X-B4-Tracking:X-Change-ID:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=n+pRwyM6jtw/t99MRAyQwbNSY1kY6+Y063USIMO4Eek=;
+	b=LWeN8HUWDyG5bIcbqiW0qPFT9XaZI+1lCCWvOCPAw3nDQpxx+ADK2ojgbYFPuZUsDlpZ
+	 9tE27G2/JZ55ZrWjEMrwv+tB4M6d3RXjiWyKlys5vUi/TJp/GKa91a26vNsRkIljcn3Kl
+	 9BfQu+ZWyHNV4iDoJzQL3VxMTVaXvfAuM9hiN2cqeTtEd1ZLCSIpxOei3yKAR7jDFax5r
+	 XDC+aaS5uJeScblanvxR3mx5Nho8QfhuTYKcSnAIDSUV/C3xHNn0XzH9YQRsSPOt9nRBH
+	 IZCK/+OS6iJ2OkwFgNp5ul0BozTNLloIo+02WBaTqzM/aS7x6QH34ybfbhhlgsAjFqQ==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 0F3921F0089F;
+	Thu,  5 Nov 2026 20:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793911447;
-	bh=cajAByUeZEfXA46wL2DP0e8bMTdgT7qZWKnAlu0+L/s=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ks04bzIYP6YRtJvKU9ftPmzODeSu7My0kic3OATKm6VhntC0VtavJQ3HMcEFGE/9F
-	 SpZKoJezE0BGBR8g1vnZqUNcnnARDQ10AfpXGiBdX5aAv8OEwBxbq5luUMbM7YuJeJ
-	 caEqF/UBjGgcM4o+IJ5M2L1VVUIQT5/Bw/PS1ufM1Dg+BRW0OLZAKzLU788n1yOHYo
-	 oEeoYGiHtrOPq0Vfu3Egc8G0rmrKgY3VK+2GLKMNXYIjPIZ9b/RsJgQ17ov95J/0B7
-	 TdsNGb8g0o0LkVWTLEuoQQ7ZHdrlk9LaU1FXuPJG9za71KkPG0yHD61lcTCKxCPqu+
-	 z8CF4TnQirVVQ==
-Message-ID: <sashiko-outbox-200129@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2] memblock: don't allocate new reserve_mem regions on
- a KHO boot
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, "Mike Rapoport" <rppt@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Kees Cook" <kees@kernel.org>, "Changyuan
- Lyu" <changyuanl@google.com>, "Alexander Graf" <graf@amazon.com>
-Cc: "Tony Luck" <tony.luck@intel.com>, "Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-mm@kvack.org, "Pratyush
- Yadav" <pratyush@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, kexec@lists.infradead.org
-In-Reply-To: <20261104204235.9066-1-azpijr@gmail.com>
-References: <20261104204235.9066-1-azpijr@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 20:44:06 +0000
-X-Stat-Signature: kaap6zgianmw18e16xhkspitd4sa9scr
-X-Rspamd-Queue-Id: DC1694000F
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1793911843;
+	bh=n+pRwyM6jtw/t99MRAyQwbNSY1kY6+Y063USIMO4Eek=;
+	h=From:Date:Subject:To:Cc:Reply-To;
+	b=m92f5nis4R5MrfdYJx3SaQAv9iq/Q0lQnchFK/s8iYOWbqXMEl8mlITHNGnylGb+M
+	 7EHFDoGg+fhYFkIO5IE3AJtMPpcUICBaEy7sTCy9t8NQs7mSr2gH9xtHne7i6BNoT/
+	 2GFyaWw7zyoL35031gdemiDXo8ugpUOr5OKk05HqxFL7yJ3vuAYhUf98tuPWzhej6h
+	 u2zC8kr1bl8PXeqkyZ8RX9cZLZemXIx47uZRlvM1v3INMzF0sXkT+LrYUIJ77dwA9l
+	 bQwn8XCiZypd8kxkIaT+Nc+vjiRg7GRVYzXwvBEsjxKOscHWgtHf3nD96wE8+az/00
+	 F3LTKydaH4uHA==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id 614C640753;
+	Thu,  5 Nov 2026 20:50:42 +0000 (UTC)
+From: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>
+Date: Thu, 05 Nov 2026 15:50:42 -0500
+Subject: [PATCH v2] mm/memory_hotplug: don't offline a hwpoisoned page
+ still in the page cache
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261105-memhp-hwpoison-pagecache-v2-1-029d35634d42@columbia.edu>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3WNyw6CMBBFf4V0bU1bnrryPwyLoYx0jLRNC6gh/
+ Ls81i5Pcu85M4sYCCO7JjMLOFEkZ1dQp4RpA7ZDTu3KTAlVSKEuvMfeeG7e3lF0lnvoUIM2yKH
+ AFHKVQVoKtt59wAd9dvW9PjiOzRP1sPm2haE4uPDd25PcdkdGCvk/M0kuObZVWeUasgybm3avs
+ W8IztiOrF6W5QcbMN/m1QAAAA==
+X-Change-ID: 20261029-memhp-hwpoison-pagecache-a6e3a524a370
+To: David Hildenbrand <david@kernel.org>, 
+ Oscar Salvador <osalvador@suse.de>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>, 
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+ Vlastimil Babka <vbabka@kernel.org>, Gregory Price <gourry@gourry.net>, 
+ linux-mm@kvack.org, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ tz2294@columbia.edu, stable@vger.kernel.org, 
+ Mani Tofigh <mt4022@columbia.edu>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793911842; l=6645;
+ i=mt4022@columbia.edu; s=20261026; h=from:subject:message-id;
+ bh=LcESJSofCaj5hhsA+wo/1wUjY9ar4+NtuF2td4wtlmY=;
+ b=L6SShOaykmI6dCci4Iy1FG7sziKGM25QC0E0mxJNfwPNCYkScmr7PKCl2ukaPWDTZ8RA8L9fU
+ czAA+IwmvnrB3pXpqIFkAfhsj5sEa///R1+XfVVYQNXRgEsXOnfQb96
+X-Developer-Key: i=mt4022@columbia.edu; a=ed25519;
+ pk=gljCMQDuxyKPmd5y37CRpEJGSPXDV1MyAnHBhCgXl0I=
+X-Endpoint-Received: by B4 Relay for mt4022@columbia.edu/20261026 with
+ auth_id=1322
+X-Original-From: Mani Tofigh <mt4022@columbia.edu>
+Reply-To: mt4022@columbia.edu
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-23.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793911447-912871
-X-HE-Meta: U2FsdGVkX19F0Oe+T8HRLjwdTAxfeJ7m+ect239EzYBg7Ct52m7jCpu7X9YMjaDSQKGq2fHWV25VWbCEp5KueiuQZCVl2RwsdZRY4y3edwHChU2zNbLtujUpKdHXJLiCxZl4aIY6JCdbjyAA3FZu8zh2ZiyGc314fKla0m9VYsyImWRDsYhIW36/ctp9R26tzFiKaB8ODnU/hE8r/t1HdkXC4azooybNnb+oKjHOcKnQQGjSAIQ/a4RJMXDaq03OtNZxOemMr2ewLwRH3Z8pCHH2cURGhO1QIapERovCxZQPbSvB4Qzov3fRmjuzlmY7GN3pUidHKZ3dBXSs3DaLCMfV4fUnLHZ7M1/jV1cBJODwhKDKbvvO+PuvxQtjeDY2BSg4BGZOcwQca2sbL88qduenhdDR1TvkRD7WIjk1jVk2Shtaz/2aAzQ8QOrwlBHII4B4QC9OdpQAndZgxvV8QmXfW6adwhYPuL5NIH0tdHlDe08W3Hac+KBlv8oErBUMecL1q7isPKnVjboa95hTDQils9D4SSOX8qSA0BKMga3RXcmFxrUv+mk+97wpyJaqyGvD5TajwOSN+Vh0rD6cKOm3+JBWRrGO+gjiK08uk/TGztHJ56CJQ39g6i4hf3Gj4XvgCIqEstcoW6fd45Ex1KKNtVpH9oV2vdAHXo5qUifokriPvkUNCrg2gpjN3BvcCLmJKtw+GKu0swsw9a+YYvQIuKJEFxNgW+DywVD/9pLMoZnjw2+i2dnWLTrI4GJ8eLSORsSwZsguXdevA47d26iS+mzplmI7ZF0P/2Biq+hSctVQ4H7cZyTnVuxjqNtWg+8um6zbKm0mKxt5jGqzYhoe8BawEhf6HHlVuFRIPxa5YJscJsLlI0x2hokJDMfcM//Ck0sXiRb9Q+gLi7f9rd/DHqOJQWrKFSTYsuKDgEPCRikAnwmbI0svyupDWuP387bHxmEO6JMCguCZDWg
- MC8V/TIH
- C8Q8T3DXq5FPrz/LTJg4dolgr3hicLMxdk6TDBvRPMSSUjETglN1cj9AJhB/Xaxng5x9nupd91E8AgjkaQiSdWzueLz5kits7C+WMldgZ+yEu4E+FhhLfC/y4AEPWxk862YdKckwW3rj4a45PwTZsslAuX071mFPS5JKfP06dCOKDhW36Gv5eoHrU+wyNAyJh6tti9UniFuwcnBB49/ZwoMhhofNZcmW/UV5fnHkCZ45ceYALJbatU90ejsouasLrYYdMBEXH75M79tYeNj1qsRxVBbar0zCeQ5YvD+12SEXWxxcyatGqBdG3vIF+j3+k2gOr98xT/u/P1LDnSpmiTKFOnOvUSgop2iwE3f8sGJjWNkm1wVUHMXg/5rJOQlwTcZaDB2VjGn6fpa8LG2WBNPUV0CXuVsMz2YTw+7u4Ayi9QDS7dctRQSBEB4HkCZ+4D8QPmi1KYnQ8/zWOpMXNafYwtKLiBq8HKLcfU3Mi0Vp774Ch0K47xVhVzYu6dkwR3l2k/OrD359OXyj0eIdkEoolZPnYSxX0+lh3+USCWDOCEUfOrZmUIDuhN4yQDQ0Sozk/wZnsZNUb4DLCxwiTfidgW1C2vCSGZ055k/hF57cHAkgJpLowL9+BLYC7J/6oQhuM
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 21EC6C0006
+X-Stat-Signature: 1g4urs6wjofoduqp8rqx5xr3e61n8bgw
+X-Rspam-User: 
+X-HE-Tag: 1793911846-963996
+X-HE-Meta: U2FsdGVkX1+lnmJvfV4IRVqN3qraYcfAmMoo8gOdhQEDZyPYdt8BV93kS9iz+f6tC70fkojcI2sliJARdIuT5eJjn0+2WkALV44/tMQD7R0r54CohvS/tDkgkQ5lhGEr5hxTi3zWKH1JI3qAUNfb8wxqsVfxIeYj9uLtkYYtbrvjViJWPdHlm8k4NDj6wcvhTtZTA0FSmwrWVHwWYeJkC8P2m7s0CG6z9jMLXjgq3jZtqiPlVWKQsyGe9RKrNb8s4CnXB27if9efWZPOC4tH5P9V9JZuSJUdpdCCCMoj5l23L1Rf//y/IblUWbSdrqEvnTYHrhQNNQ9IDJyIJXTW+VM54L8Os7aTl7HqlvxfT9Nnt1NpGEatDPuvjX7Xs+E24WR+iQnVZBcqpVpzMqccvGoWa1SLcXzLpgXtnjifgBF0p+g+gJtMJppLn9ZCf+aCEPu8mno4AVWb5V6czo0LimVkXCmaK6hoVPaFfxRd+Dd9SoSi6hlFStO7qcwno/hm01e+apdHlQz7RqNUAftIINtl7qPI9MfLJC6iN8KNTbAeNYII37wU3jgpzv2UyU/NCYFK6Mr6mjAk2/mW3+/3Hy607dngISbJmDqddnwVt0qy752vXkuwwhhw1zeXbz/jUICHd7oUpdaDDb9JZII9ecHcV99Z2D4tu0fcEja2J8xt4KUD6E7hMO69runPiRaa3nlkaPf6WvyX5lKs35XgnKbwQjyxEJ+US25IJZd3LPkmstaG/PoRPZKNIoZSBRnNFxoaODfQpqde9hoEWQK7I/21hBoiAWe2+M94B8nF/lcBH/GQftg3a6gNDNupMIOWk+FJITCVKIl2HNOfsoSEqwX5Z9pQrAyPl0p1CyjhfmCm6FiRmM0NtPP2T8NCUphRpce3qr9PIkcGV7ChfLWNhPvcpu70XlSUX1qPcwwnpBNGpUM+3N1bSsXLJm0R9YKywadB1/aHd0Z5erCmv3x
+ Ehe+Qkrn
+ bKN134Xw1wLZ9xmQt7za01OdO4c6rG/BLMPyF49/mRP9mSpBEhydIJVpEdm5GSzQks61MZTtDrvinB6dQL6dP+/unCA0+y3GJdQSrAFjnWUUS6rYkh/pEcDEPL8LP57pTCVgnHsj4D/crtZag3OUo/JpravClftHyOVZtKJfEdMt8GfAPysN/H9sYL/uLCo8KyigvcY0NOIPvqiHs7xEMIbUSimXR360QMjwQFw2HTfxAKYFJzhDNrI2QJ0hiDzIYHrHpaHgXf8Hz+RtlRDNYlvVPFvHTUZk1TOqBNJnvd4hJtoYvu5p9dPYROjSaISnllrvfyJzj2YADhOF6yt5hggNpPViK41zs/IKDuCdm1F8ZYCKwTH3iPtFov/n6AOwtImRGo1d/Z19bREncZJhWVlURGnk+qac3hoC8PGwqdQNGdsiGyFT+INI07fLNzz1KTbA4wdNfiYFXuJFxsZJFD70oYCDreMCUbpk9ElYZe7tAlzIAtnEZ+TGG9WSfaztlBZv1yw73VM6hqJpulW+/3MMreXV+YjrxQVc27ate/wgS57bNxRipTNRAbYFX8cqe1NVZeSK3GvjbSdcLrpLi/2tQoJBg8osPNAHZdEvksxSmTkj7pL5+Kqv2NTVIvwdN+F/BEhiX0IBQOBbZO3hEl3D787NTX9Dp5SjIMeGY+YmU6F1Ert7XFOLK1UyF86lYxZEVaT/W6Rj41rY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,75 +145,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] memblock: missing is_kho_boot() stub breaks tools/testing/memblock =
-build
---
+From: Mani Tofigh <mt4022@columbia.edu>
 
-commit 19549caf363a437d6178ec835c2f8f9d0ecc7f1d
-Author: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Memory offline skips hwpoisoned pages, assuming nobody uses them
+anymore.  memory_failure() however sets PG_hwpoison before it takes the
+page, and taking it waits on pcp_batch_high_lock, which offline_pages()
+holds for the whole offline.  A memory error during the offline thus
+marks the page and then waits while the offline skips it:
 
-memblock: don't allocate new reserve_mem regions on a KHO boot
+  Task A (offline_pages)               Task B (memory_failure)
+  zone_pcp_disable()
+                                       TestSetPageHWPoison(P)
+                                       get_hwpoison_page()
+                                         /* waits for Task A */
+  do_migrate_range()
+    /* P is poisoned (not migrated) */
+  test_pages_isolated()
+    /* P is poisoned (accepted) */
+  zone_pcp_enable()
+                                       /* P is off the LRU (Ignored) */
 
-This patch rejects allocating new reserve_mem regions during a KHO boot
-when the region cannot be revived from the previous kernel, returning
--EOPNOTSUPP instead of allocating from KHO_NOPRSRV memory.
+The block goes offline while the file still points to P, and the next
+walk of the file's pages (here drop_caches on ext4) crashes on a struct
+page of offlined memory:
 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index a450092a80fb5..e325e0542c9a8 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -2827,7 +2827,16 @@ static int __init reserve_mem(char *p)
->  	if (reserve_mem_kho_revive(name, size, align))
->  		return 1;
-> =20
-> -	/* TODO: Allocation must be outside of KHO_NOPRSRV region */
-> +	/*
-> +	 * On a KHO boot memblock only allocates from KHO_NOPRSRV memory here,
-> +	 * which includes the bootmem the next kernel boots out of. Only regions
-> +	 * handed over by the previous kernel are supported.
-> +	 */
-> +	if (is_kho_boot()) {
-> +		pr_err("reserve_mem: can't allocate \"%s\" on a KHO boot\n", name);
-> +		return -EOPNOTSUPP;
-> +	}
+  [   11.710348] Memory failure: 0x24224: unhandlable page.
+  [   11.710372] Memory failure: 0x24224: recovery action for get hwpoison page: Ignored
+  [   11.765371] page:000000008c304eee is uninitialized and poisoned
+  [   11.765389] page dumped because: VM_BUG_ON_PAGE(page_ref_count(page) == 0)
+  [   11.765440] kernel BUG at include/linux/mm.h:1990!
+  [   11.765458] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+  [   11.772284] CPU: 3 UID: 0 PID: 85 Comm: mfoffline Tainted: G        W            7.3.0-17087-gd865f2677c44 #1 PREEMPT
+  [   11.777970] RIP: 0010:find_lock_entries+0x8ee/0xad0
+  [   11.798761] Call Trace:
+  [   11.799297]  <TASK>
+  [   11.803284]  mapping_try_invalidate+0xfd/0x2c0
+  [   11.810571]  drop_pagecache_sb+0x111/0x330
+  [   11.811572]  __iterate_supers+0x2e2/0x370
+  [   11.815863]  drop_caches_sysctl_handler+0x74/0xb0
+  [   11.816994]  proc_sys_call_handler+0x2ec/0x440
+  [   11.821360]  vfs_write+0x545/0x1250
+  [   11.825220]  ksys_write+0xfa/0x200
+  [   11.830202]  do_syscall_64+0xfb/0x590
+  [   11.832084]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+  [   11.848423]  </TASK>
 
-[Severity: Low]
-Does calling is_kho_boot() in reserve_mem() break the user-space memblock
-test suite build in tools/testing/memblock?
+Once the memory is also removed it's a use-after-free of the memory map.
+tmpfs and the swap cache can end up the same way without the race.
+Since commit a76054266661 ("mm: shmem: don't truncate page if memory
+failure happens"), memory_failure() leaves a poisoned tmpfs folio in the
+page cache on purpose, and it does the same for a dirty folio in the
+swap cache.
 
-When building tools/testing/memblock, mm/memblock.c is compiled with -I.
-before -I../../include and without CONFIG_KEXEC_HANDOVER defined. As a
-result, #include <linux/kexec_handover.h> resolves to the empty stub header
-in tools/testing/memblock/linux/kexec_handover.h rather than
-include/linux/kexec_handover.h:
+Treat a hwpoisoned page whose folio is still in a page cache or swap
+cache as busy in scan_movable_pages() and
+__test_page_isolated_in_pageblock() so that the offline fails and a
+waiting memory_failure() can go on.  Also have do_migrate_range() leave
+such a folio alone instead of taking it off the LRU, so that
+memory_failure() can still remove it from the cache.  A later offline
+succeeds once the page is out of the cache.  With the fix, the offline
+fails with -EBUSY and the file doesn't point to offlined memory anymore.
 
-tools/testing/memblock/linux/kexec_handover.h:
-    #ifndef LINUX_KEXEC_HANDOVER_H
-    #define LINUX_KEXEC_HANDOVER_H
+This bug was identified and confirmed with the help of a deterministic
+hypervisor currently under development.  The C reproducer below however
+hits it within about 10s.
 
-    /*
-     * Header stub to avoid test build breakage; we don't need to actually =
-implement
-     * any KHO functions as they are not used in the tests.
-     */
-    #endif /* LINUX_KEXEC_HANDOVER_H */
+Fixes: b023f46813cd ("memory-hotplug: skip HWPoisoned page when offlining pages")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
+---
+Changes in v2:
+- Leave a hwpoisoned folio that is still in a page cache or swap cache
+  alone in do_migrate_range(), so that a waiting memory_failure() can
+  still remove it from the cache (Sashiko)
+- Rebase onto current mm-new
+- Link to v1: https://lore.kernel.org/all/20261101-memhp-hwpoison-pagecache-v1-1-ed8785ca44eb@columbia.edu/
 
-Other KHO helpers called unconditionally from mm/memblock.c, such as
-kho_bootmem_overlap(), have stubs in tools/testing/memblock/internal.h:
+A pinned hwpoisoned page still isn't covered.  I'll send the refcount
+check David suggested as a follow-up.
 
-tools/testing/memblock/internal.h:
-    static inline bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
-    {
-            return false;
-    }
+Taking get_online_mems() in memory_failure(), as in Gregory's series
+[1], would close only the race and not the tmpfs or swap cache case.
 
-Should a stub for is_kho_boot() be added to tools/testing/memblock as well?
+[1] https://lore.kernel.org/all/20261027042204.3741307-4-gourry@gourry.net/
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104204235.9066=
--1-azpijr@gmail.com?part=3D1
+Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/mfoffline.c
+---
+ mm/internal.h       | 9 +++++++++
+ mm/memory_hotplug.c | 5 +++++
+ mm/page_isolation.c | 2 +-
+ 3 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/mm/internal.h b/mm/internal.h
+index 78a7f17b9934..35c6d30537f0 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1168,6 +1168,15 @@ static inline bool node_reclaim_enabled(void)
+ 	return node_reclaim_mode & (RECLAIM_ZONE|RECLAIM_WRITE|RECLAIM_UNMAP);
+ }
+ 
++/*
++ * A hwpoisoned page can be skipped by memory offline only once no page
++ * cache or swap cache can find it anymore.
++ */
++static inline bool hwpoison_page_offlineable(const struct page *page)
++{
++	return !folio_mapping(page_folio(page));
++}
++
+ extern unsigned long  __must_check vm_mmap_pgoff(struct file *, unsigned long,
+         unsigned long, unsigned long,
+         unsigned long, unsigned long);
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 1bfd1f4daeb2..c5cfaa24b41b 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1821,6 +1821,8 @@ static int scan_movable_pages(unsigned long start, unsigned long end,
+ 		struct folio *folio;
+ 
+ 		page = pfn_to_page(pfn);
++		if (PageHWPoison(page) && !hwpoison_page_offlineable(page))
++			return -EBUSY;
+ 		if (PageLRU(page) || page_has_movable_ops(page))
+ 			goto found;
+ 
+@@ -1887,6 +1889,9 @@ static void do_migrate_range(unsigned long start_pfn, unsigned long end_pfn)
+ 			 */
+ 			if (folio_test_large(folio) && !folio_test_hugetlb(folio))
+ 				goto put_folio;
++			/* The offline fails on it anyway, leave it to memory_failure() */
++			if (!hwpoison_page_offlineable(page))
++				goto put_folio;
+ 			if (folio_test_lru(folio) && !folio_isolate_lru(folio))
+ 				goto put_folio;
+ 			if (folio_mapped(folio)) {
+diff --git a/mm/page_isolation.c b/mm/page_isolation.c
+index 5aaad037384e..beb09ef345ee 100644
+--- a/mm/page_isolation.c
++++ b/mm/page_isolation.c
+@@ -593,7 +593,7 @@ __test_page_isolated_in_pageblock(unsigned long pfn, unsigned long end_pfn,
+ 			 */
+ 			pfn += 1 << buddy_order(page);
+ 		else if ((mode == PB_ISOLATE_MODE_MEM_OFFLINE) &&
+-			 PageHWPoison(page))
++			 PageHWPoison(page) && hwpoison_page_offlineable(page))
+ 			/* A HWPoisoned page cannot be also PageBuddy */
+ 			pfn++;
+ 		else if ((mode == PB_ISOLATE_MODE_MEM_OFFLINE) &&
+
+---
+base-commit: dba8aba0a9a00ff781c03d82ae534fc6f8c2e263
+change-id: 20261029-memhp-hwpoison-pagecache-a6e3a524a370
+
+Best regards,
+--  
+Mani Tofigh <mt4022@columbia.edu>
+
+
 
