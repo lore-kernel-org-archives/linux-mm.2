@@ -1,140 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64466606D806
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FE7606A332
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=gwOrADE0;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Hqy7mCyS;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=2QGf1cFd;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=2i2QQIsM
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MngWktor
 Received: by kanga.kvack.org (Postfix)
-	id 837AB6B05B0; Thu,  5 Nov 2026 07:19:20 -0500 (EST)
+	id 554366B05BD; Thu,  5 Nov 2026 07:21:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E8446B05B7; Thu,  5 Nov 2026 07:19:20 -0500 (EST)
+	id 505646B05BF; Thu,  5 Nov 2026 07:21:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D7956B05C2; Thu,  5 Nov 2026 07:19:20 -0500 (EST)
+	id 41A8F6B05C0; Thu,  5 Nov 2026 07:21:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 425956B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:19:20 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5386AA09F0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:19:19 +0000 (UTC)
-X-FDA: 85400970438.13.92BD7A2
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 26A25120008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:19:17 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gwOrADE0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Hqy7mCyS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=2QGf1cFd;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2i2QQIsM;
-	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id 221026B05BD
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:21:04 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADB8FA09E1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:21:03 +0000 (UTC)
+X-FDA: 85400974806.25.0233487
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BA5842000F
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:21:01 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MngWktor;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793881157;
+	s=arc-20220608; t=1793881261;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VqpWQ/H56gC40ALaqhyZMF3XlYC2+ROVooz7JGVgA9M=;
-	b=aDh5EjC/4YKN2bDK2d9FZTwO/rcNyNii70CehXN1IT2mODIkirRgCKTryTj2QXDPZ65XoX
-	5dqRHR3UlajJIk5kJ+DOcSEwSQRujueMBwJKDySfa8yUO2q330ajJLRIA+xLaAR4yRQELZ
-	o0TuGyjALP7IiIbG3Qpp7R4WwVqSwHE=
+	bh=0Ap+BVBtSv6IjQ4LBYxkeU2D8YAVNkXJJZJb8NWf8hc=;
+	b=FKYpcZurna8Jg6t9wxuS4vMxk9ETE6XCo7pFNtFPNf/gmUakQHoPAWG2EK2mGSiSc/aLYF
+	Ui/4HZvh2xyVUrJHZ9rR9bY7XHtnwZLIfe/2e0M3/84PuhG+SNqgApCEuSb2JthCQOHS6/
+	raJr8wRVouOywRvZOHi7COFzQKn/9tA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=gwOrADE0;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Hqy7mCyS;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=2QGf1cFd;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2i2QQIsM;
-	spf=pass (imf29.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MngWktor;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793881157;
-	b=pLLYvqgIC+Av9p6c/Ncn8l2vaI/ksWUvYgltbq2UCJgKVhPV/uzuNUvh/xkD6gxpSB/I9n
-	fXviMHR9pxDp9U3yQFT/L/g/IcL9snFzn7XZqNYrIDO2dcZpSdXrl6W6Iq7wugYoEgZV+I
-	vvtQJ/W7FGnB1mE5JfvY+/ZSj3y9L2k=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E01831F458;
-	Thu,  5 Nov 2026 12:19:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793881156; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VqpWQ/H56gC40ALaqhyZMF3XlYC2+ROVooz7JGVgA9M=;
-	b=gwOrADE0Qod4PVwDfNsd6RKN3cB+sGE4cNvv4wbkyzZCV0V1foN+caBz5Hskcp4NF8tF26
-	w1nbcHD5aFeef44QG95h9KpqD4JsxU4qHmCJqtxAwp9DS3oQ3LnpbJhU1tBBz2DqOsd9ZF
-	uVZLQax3NHgAnPgrND7VAX4D1zeCtNs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793881156;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VqpWQ/H56gC40ALaqhyZMF3XlYC2+ROVooz7JGVgA9M=;
-	b=Hqy7mCySg0o+D767jvmxe6zGPvs4rTxKWmK+ZRuz1ctNWbsc51XXPoLH1HMo8nDf5H7/20
-	Pz0DjigL/jYbgZBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793881155; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VqpWQ/H56gC40ALaqhyZMF3XlYC2+ROVooz7JGVgA9M=;
-	b=2QGf1cFd8g+b2CTSCS0uxz7GbK5LPqBWmMPKf4TvU5AQH5Dg1HRUE9HTNITO5QmYusd8Gv
-	YsOgOMJWElI+5g4u6nec3o3Xm7Mzt5Wj6kZrNRmsVHewMKcUp+ANSWJTPATn3eydPsmqzk
-	AMabRSzYjzezo1rQKBR1OSv5TTNBcug=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793881155;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VqpWQ/H56gC40ALaqhyZMF3XlYC2+ROVooz7JGVgA9M=;
-	b=2i2QQIsMAWELvaPa0IejbpFt4bdvx6dVBY2kuOnzugjipXn4e7MRfHQXH1YwSMYg5HDZIq
-	/r8/1foBG6ruJUBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 19864133F6;
-	Thu,  5 Nov 2026 12:19:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3z2mNUJ07GqdHgAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 05 Nov 2026 12:19:15 +0000
-Date: Thu, 5 Nov 2026 12:19:13 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Krystian Kaniewski <krystianmkaniewski@gmail.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/filemap: stop fault-around when the walk steps back
-Message-ID: <auxvLCiljPhy0n_q@pedro-suse.tail5790ac.ts.net>
-References: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
- <aunPI5eOUOAEUa8d@pedro-suse.tail5790ac.ts.net>
- <20261104-jf-filemap-v2-pedro-reply-r2-74c87c6fbcf@linux.dev>
+	t=1793881261;
+	b=TRAKYkwdwPfwSCFLtEr4EHZH9rCN/LmLOhzSfptvPe2ND3YZGH2desEf9vM1+gZHrnlYgM
+	TguEjNnZB4Y2879ov1s4s/mvyf7XdaIZzWUYd8R3KCQSflQncYtrNXAMCok+tvjfCtdaN6
+	YLRWCau/e6YCqyGYub6/Oz43RW8xXag=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 35AEA60F28;
+	Thu,  5 Nov 2026 12:21:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A3C1F00A02;
+	Thu,  5 Nov 2026 12:20:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793881260;
+	bh=0Ap+BVBtSv6IjQ4LBYxkeU2D8YAVNkXJJZJb8NWf8hc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MngWktorsLb+QpwiinftfEsFnkYcDIj8O9IjrW1Kns45zoUxewuGS9ZqcYcRyVvZ/
+	 9oApPH7sEZCDzjKypcvMOsdmNoY7QA4VHWvMqFmopuBr4XX0a3W7qyidhrZQBgADf+
+	 UJtqN8tFvaaG4BooSvryfr5ZpvwscuLtmQBEIsfa/m4tPsz+oLN8zCZ5z+P807f9ev
+	 n5rJQJyRYKp+EPl4vcGCEVia/tPPZBLolfGTul84OAj8/imBMKkQR6O4Q97DbtpQxz
+	 48YoBGLP1c8VJKfFk7VpWZmKBA2gSilfUBVPjEaM0hmuBxa44ZYKsdmQJ+WJhy0qBt
+	 5zjSz0ISji9MA==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 457D41980047;
+	Thu,  5 Nov 2026 07:20:55 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-10.internal (MEProxy); Thu, 05 Nov 2026 07:20:58 -0500
+X-ME-Sender: <xms:pnTsanpdN5G7OBk3gv4JSvcAikjKs_OFAqOeaduPbKoglydPA58Qjg>
+    <xme:pnTsanxMkYgcx3EZtln_9aI47VHYL_YdZEiLAcJ7tNfWA_9eIP02P9nKxhnAc5bik
+    ZRRt2cKLWDwqn7SxjVDNTBTYlMSfguWcw2_0ZUvbW5gsIxAdR4q1B0>
+X-ME-Received: <xmr:pnTsaquqFoWSACz9EF4p5vP4wMWgChClI-ajkZNADGtSqllsr636WR5F5oA>
+X-ME-Proxy-Cause: dmFkZTEcri1lzlfl8U2qBExbf5ho7o2bHZLgRS5Mxug9N2VpILPSf/c7htGMDthkiHP29s
+    DtTRUBfN+tiWbQHxqmi03twY1nZokTPSlfgnkicCCcQQ54h/5WVrUVHbhNkoNFLECPaOL2
+    bdAIb1Wfbl8czydW/efgpINPxDz/TTIxlfBq7e4DRz5dLjf1GVDtaoQbLZIJt7/UHWzm/5
+    7IBPMQq828rNaRqTsd3FvACZv/adMmPp6iPtNSbQnNir6Gr/+rWYfnrVJLvI/6fnm7/e6z
+    pPqRIZ22rYJuIfi6lAimiXKwo9bkORyT9VqHcYV74NikmF7yXiieFSoc78OOVsi0pM5uAP
+    oCB8WBsoZhC0jthL1mshMU67o6qbuKZqtcsr0qz7IYpM1wg8sKsytENaOXPQXJ3fBRzofl
+    5gqsdIkmugciX1e0LYbV2BQ8ffG2D+p9JviRHs3YLnZwAJmGFFca9QfuA+z+qwH1fxsUBj
+    t+F7T+0NYvMbgs6xcCJJgaQ+zMQIT8IHdKyPuwpEdGu8w9SfNBya1xVYeoQZ/axtStt1Pw
+    TkeOU/uIMncWYYyMKrtpEA4Rd/XK3NvP1R/T+rLWgbhocDBulC0+fvhP3ZrMGAeg0AKTwT
+    dscZUWFn1WjGhS4Lctg+NF1Xoec0Rr87sBQUXaPfOnzT04RQZuUdPciSSC7w
+X-ME-Proxy: <xmx:pnTsak7iOHgz2nFKF9lhowUWk_KaVb7l2PzBzALx1FodhJAA2Y-1eA>
+    <xmx:pnTsaqiOeWKSnxFj486Kae_feVMSPM591KvVTlVtwTDobjqBE0mCIw>
+    <xmx:pnTsamIWQJv9Mqrjggo3TJtFmQkG8pepjyLtDFgvFvGK_choOaBGMQ>
+    <xmx:pnTsaoc6a9_xz0ZJNUb08YItXfGToT6QrEbh-DhxkI1cgQMs7JOy4g>
+    <xmx:pnTsauMlRMDdsUUlo9mQRnuXKrGYb86YuBnGfXvH-JzSiZyaiDXJFoaM>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Nov 2026 07:20:54 -0500 (EST)
+Date: Thu, 5 Nov 2026 12:20:53 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
+	baohua@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org, alex@ghiti.fr, 
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, 
+	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	willy@infradead.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 1/4] mm/huge_memory: scale thp_underused() to the
+ folio size
+Message-ID: <aux0jQpRttwcSz6u@thinkstation>
+References: <20261103212004.1356327-1-joannelkoong@gmail.com>
+ <20261103212004.1356327-2-joannelkoong@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104-jf-filemap-v2-pedro-reply-r2-74c87c6fbcf@linux.dev>
-X-Rspamd-Action: no action
-X-Spam-Score: -13.51
-X-Spam-Level: 
-X-Stat-Signature: 3chhdd6z7h5ebmfo9b8tq9zucisch3fe
-X-Rspamd-Server: rspam01
+In-Reply-To: <20261103212004.1356327-2-joannelkoong@gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: BA5842000F
+X-Stat-Signature: fa4mwq7jog589hwd1jqhb4w45is64kzh
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 26A25120008
-X-HE-Tag: 1793881157-642978
-X-HE-Meta: U2FsdGVkX19bjOn1ikkwNYA4JZzjU1MLx6P1bSl9itSbRhSZsoPm6Dk2Hy4e11BR8qFPUfUU/m9SFRMPad8teSLIJ8cJyzQiemyl8fY55sRFO5S/nkFI8oVGLln9XFSZzOS/HGmnOvFAsRdKdYVKALo5ndcQC7ZmtWIUCh3XTXnkTS7EgSEga/80RHoce/YlZbFCTLkPr9iFgtu1hf/jMuua3RD/4cb6zpxO6mr0lJAwtnesGQ3eTlhba+DXaeF9vs7TVqA+8fs4pWQYdD6KTlnFTAQE1Ep6md2xXH1T+THRID6df/mALSQi2wH4/0H8RsWvzo+6P9KO+xQ3QFYEEgHSi6bofubWrI/1LKlOHLG2iRTkYo3QHx0DbGlgUmGs7Q9t2lhZbZSUDGssVKjrnr4FqRssLcqfUeyCBDSuBEg81s/5zvwxHKNRRqHJPx9YylINGjPunfLq/vYCIrVOZerMIqRdTKnBzXm6NzuXfOFm0JCsXpuIDzrabHxadOpHT/RYiz9hQb7VP/EKpA//uq+P7gZAJTFuHEjx2RejneCVWftTk/WUfRZyIsGqEZH1XTiaAo7ITx5DciohK1oK3MHFzvhklkgJgLNxsCewbNwe44UGbAfuwbEoreMKnsRp9LjdenRj756pkssE7fjyFpSc/F/Nva4POlAf99XodvR2ABWX0Iv0hnbHyq824H+3UwlGspAwzxM5WtwPRR9ZRe0ERsKKEWOKUHFtWbQUs748IzY42owHF/UiyxcyAmkWDj+XbVtRFxcfalRav9M2cHlDYRFfYQhS2zk10QChi1vuQ5hJtJcF9wGrLOm7WMMLoyJTFgsInHRglF2RHJwAq+bR5U1rHI7r+vEiLXncrKSkleGFqjnocEgZtjHGYmMGAFrggPLXWX1EQLvMK+J1BWnkgIX/xqSbMR7RNGNJNfifuXA71txwBNQi54ytM9fA0qXkujLc8Bk91Ab1wLQ
- skKVf588
- MsfL+kg/hCh3ocPX24HcOhm32jp0HoMPnsQOScPJCFYPxW1AcTpCcIG36wIdHEwfomiHGKvMOCubtEKEQMUi6qoHmetVLffsh5UFCHhaBqPrR164o8J1R9SAyR95F8gpFtvCose7mlDZjHmLPGehEQCHJR/nnuVtIASYqz/l+ZBdxsQEH/XlXAXwz7Nuw4pyKPrg81oIUjOcf2MsuRpM2tSjNR37aLYOFuZ6ulYSVyZ0TxLgdBi8wiR2koZaaMTf3G6D8GKHyMds/HWg=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793881261-454871
+X-HE-Meta: U2FsdGVkX18cNpJXfpzLIRxSFjaGklBXPMYV7pFtRJNUn2/Vchh9AJeKyvFPmNNalIvm0XpO0TlVTwbIaYA70xH6Amg11P488c1RT3hP9q/3guAuL5NNQr5MFeaw7zmdwXKC02Mxgkd64hYvM9e9k5Jb5eDVBCiIRjnYoNGCBABY0VxW4D1f3ZLcO5bnnADYOJ+drFnIEqc4J7qII/pBg2Bsn1gs9Tbe0gLa/ZUgy9YV1mX2qSz9pGsT3D2DHx4BbXjdrkF/F+bpBb0Xdndl8kfvR00y14f2gO3qHnyKwTAkH3Vy+ppH0dQ5b33uDl18WdiImt64MVeH353nWEcFrM2Az6pypUmU0dj0hg/BDCvVqq6OWgsyV3+Gy/zKIQYjfLroUDgxEZBIjJu6BSwL6XCzDKn3eN8R4mNwEaYHFI+Y7ntXORvTnp+7LZk7hsYO9DMSc7MpAiITpmiuGC2QR7aj3+iwO72Uw2h1jGUn86HoS1a5EuJO00mq95LpHK3dfZkYJ0uUbrlAk7rBrQzuL45PcH8RMRTN/hgcq0mqe0dmFgd5/g0IMMAphe+qaaGvG7LByfZwBYmF0V2zWLKB/ORXF333mU34AGZSqGL+c7bIf87zMfSTx/5jz9c19GgcCyqIaR9JTaSEx7ERHY2h4UaacM+GTeBUFlbS7E1TiH6vu/tOeZGNHxg7UywckQdSbVePWC3+KNUi7LVLuK+UUKRgwzRzXrEqpcCw/ORtlEivlG9Hah6czZBYwv5QZm4uckyrXDRwos7EwJGo6BqXORbZ1c30sQ80zRa/NnzqObZNGeZRDR8a7falVDCyzIDXnLehkChvvyZGH2RPoQz/d3if5PvhrAYB6FI+1EqDxwA7+AgYCFZkpfb6N8lKif4tXRtncNLU1PcRDbyX1D4fmpw3lQ0Wc0+06pPfK9nStfZhCRKcoCNRDCn4034u23Rt7WmRlaG4t4V814Ln2RU
+ DcYnWY5b
+ w4jX6JiBVqiztOOK5s3KkU/WmXG1kS6Gmpjh0DkWyvAkn/eCT+DVJ5EhiLiqtTVq2c7IB36YzNngySq6+UiVEa8DCePfANdBXBFWQyfBT70MbtTs76SkceSrXPC0Af0tYUFyAGCxfbXm6OiYJQG6m+1ONNP9v+IzC/t/9h8njKP4J29iF9EBjZu6BDb7X/BzMOugBBpYCDzR7qWWwspJ2fRCNfZhvVWfUIXcMQD6ybFy344M092wXycZ3B3yyaNIJh1Cy8/3gfEuuCfbdXL0UJOWKVeEUFa/+Nkuqq/gGqwaahi/Yb5ZRVeLcoqyxuroxMAUhfMyb96vNFMsfVUVUJ3UHZuXTZg/TA+nZVmZ3pSwNZx3QiWhKcrK3hQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,32 +126,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 11:12:41PM +0000, Jose Fernandez (Anthropic) wrote:
-> On Tue, Nov 03, 2026 at 12:12:58PM +0000, Pedro Falcato wrote:
-> > I'm not sure I understand. xas_find() was fixed. Is there any other case where
-> > this loop can step backwards?
-> >
-> > If not, I don't think this should be Cc: stable, and should probably be a WARN_ON().
-> > As it's a hardening patch and not an actual bugfix.
+On Tue, Nov 03, 2026 at 01:20:01PM -0800, Joanne Koong wrote:
+> thp_underused() decides whether a large folio on the deferred split list
+> is underused and should be split so that its zero-filled subpages can be
+> reclaimed.
 > 
-> Yes, there is at least one more case. It triggers when a read fault
-> starts a lookup inside a large folio while a hole punch removes that
-> folio and a write puts part of it back. A stress test I wrote for the
+> Today it only ever runs on PMD-sized folios, so it assumes that the
+> folio has HPAGE_PMD_NR pages and compares the zero-filled page count
+> directly against khugepaged_max_ptes_none. A later patch will queue
+> anonymous mTHP folios onto the deferred split list as well, at which
+> point that assumption will no longer hold.
+> 
+> Make thp_underused() folio-size-aware, and scale
+> khugepaged_max_ptes_none proportionally to the number of pages in the
+> folio (eg every folio tolerates the same fraction of zero-filled pages
+> the user configured for a PMD-sized folio).
+> 
+> khugepaged deliberately doesn't scale intermediate values when
+> collapsing to mTHP orders (to avoid the memory footprint creeping up
+> through repeated collapses), but if/when collapse later gains support
+> for intermediate values, a folio that khugepaged collapses won't then be
+> split right back by the shrinker (and vice versa) since both collapse
+> and split would use the same threshold for a given folio size.
+> 
+> There is no functional change for PMD-sized folios, as for those,
+> nr_pages is HPAGE_PMD_NR.
+> 
+> Suggested-by: Usama Arif <usama.arif@linux.dev>
+> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
 
-Thank you. So, if I'm not mistaken, this is the race:
-First, you map/see this:
-	[folio pgoff 4, length 4]
-Then, at some point in time, someone punches the hole:
-	[no folios here]
-Then, at some point in time, someone faults another folio in the range:
-	[folio pgoff 0, length 8]
-so you step backwards. Is this correct? Or am I misunderstanding this?
-
-If so, how can this happen while we hold the PTE lock? That itself should
-block truncation.
-
-Can you share the reproducer?
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
-Pedro
+  Kiryl Shutsemau / Kirill A. Shutemov
 
