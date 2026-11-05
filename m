@@ -1,158 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBD4606A333
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01F2606D831
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=duEJD6LP;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nEuQ44sk;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=muH5tH8X;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Twh/XSEi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aAAW3W8z
 Received: by kanga.kvack.org (Postfix)
-	id 391A66B05BE; Thu,  5 Nov 2026 07:08:25 -0500 (EST)
+	id 25B7B6B05B4; Thu,  5 Nov 2026 07:09:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3418E6B05BF; Thu,  5 Nov 2026 07:08:25 -0500 (EST)
+	id 20BDB6B05B5; Thu,  5 Nov 2026 07:09:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 209FF6B05C0; Thu,  5 Nov 2026 07:08:25 -0500 (EST)
+	id 0FA416B05B9; Thu,  5 Nov 2026 07:09:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E82B16B05BE
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:08:24 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DD89409A9
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:08:23 +0000 (UTC)
-X-FDA: 85400942886.19.CC86523
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 515EBA000C
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:08:21 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=duEJD6LP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nEuQ44sk;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=muH5tH8X;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Twh/XSEi";
-	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E16816B05B4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:09:52 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 78B191409B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:09:52 +0000 (UTC)
+X-FDA: 85400946624.30.33F2919
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id D5F0AC0004
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:09:50 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAAW3W8z;
+	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793880590;
+	b=l2Jr9juo9l/z/MTPBrEERRnsy0t7zSNRS4ShnF5oQkxXrhtv1uso+43Va2DpGNZcSf7D3V
+	rHw9/tJ+AKDJr8+a1y5xkF05XkGywg+sk7x3U8+JgrSVbBnMPtSG+S6CjPCDBvhazfVvsL
+	Q8ENfTTxa3MXQ+kiNWolWYRWStvmmww=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAAW3W8z;
+	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793880501;
+	s=arc-20220608; t=1793880590;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+AscXsLOMvfsFvCViguJi+L1fCFKAfWK/UhUpwog254=;
-	b=QQrGbjDe6cS4wN+O7W1/tsXHdHPhOYHAddTP5teEdK4f7Y+YkleNfHmaloVmkyOtd3/0L2
-	VnCreKORJvcXkRRMcKfzTFKbyHfrB7J/bgfD+f3ZBw65hCS8ekwQfLsiSy08m29bc0Kqaj
-	OYeI0DHls3dPMWlHk1sGqpaVtAYPeTw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793880501;
-	b=AwfGOC/6RkIsQHAp9mZF6LUUvBj3szzIlLWbhluSr5Ijlj+YHOQibryEEA1i5JSKkVo6Xm
-	OpoA3FmK3H+HqF4o0cr+vn3HaWELHFp4LFauOKh5akDbRmYTMO49Upb5j/xBSFSIE0j2rf
-	z9gb0DIRT4HUdIWvdYgS6+HCOjObHRU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=duEJD6LP;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nEuQ44sk;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=muH5tH8X;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Twh/XSEi";
-	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E09301F7A8;
-	Thu,  5 Nov 2026 12:08:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793880500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+AscXsLOMvfsFvCViguJi+L1fCFKAfWK/UhUpwog254=;
-	b=duEJD6LPekOEhn61R53kKb81GPHaXPGJIngKUTQX9WEfL8ykFAMPfmr3OERdgYmnfr5bEr
-	no/QUoCTwr2IM6pfVyWZvbGB+kH7jg6VMI0t/BL5piRkhHqFijSOo3qTB/uJ7xYzQrEyBs
-	gOFq7XIKvrhTvOnsUSKrNoDYiDAIbok=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793880500;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+AscXsLOMvfsFvCViguJi+L1fCFKAfWK/UhUpwog254=;
-	b=nEuQ44skKENyJxG2nI0WEya/Z6UeAf8j7o1gUA14jvXxD5ttTBDmJR+hSpD3AjkE27erIs
-	22RVTyoAXPvvBVDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793880499; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+AscXsLOMvfsFvCViguJi+L1fCFKAfWK/UhUpwog254=;
-	b=muH5tH8XGabU7XsT+4HLUn0YWyclJMbdrP8YC6jbblzcOUCNg6bIn+AZUHE8jVHVN8jliF
-	hdBtv4Gwr4LOd7CEkfIcFH+Z/XWj4sxlIWVLYY8yjERT78lqpfyk0ziLE47S7PXtNzHXyJ
-	8uq8NljKVjD/sxwntTPUE8trLhX/m8Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793880499;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+AscXsLOMvfsFvCViguJi+L1fCFKAfWK/UhUpwog254=;
-	b=Twh/XSEinlJ2UHBYu888sP3yxbsAvwQL1/rVLh+t/1fyMiI6SbhSYK2ev17aVQ6HLXKdNo
-	dDP1A3DjZ6h02FAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC4C6134F4;
-	Thu,  5 Nov 2026 12:08:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id LbztIbNx7GrJEgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 12:08:19 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 3E083B6CC; Thu, 05 Nov 2026 13:08:15 +0100 (CET)
-Date: Thu, 5 Nov 2026 13:08:15 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
-	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
-	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
-	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
-	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
-	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
-	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
-	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
-	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
-	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
-	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
-	Chuck Lever <cel@kernel.org>
-Subject: Re: [PATCH RFC 21/38] proc: let proc_remove() remove the entry it
- was given
-Message-ID: <4woxjrofo67qve236jz54znbp74hk34ouesbpgh46g5lfb7bwn@v7dnw5ixlgff>
-References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
- <20261102-work-procfs-bugfixes-v1-21-59422ed3e465@kernel.org>
+	bh=gukOYmvYDHX2QKSOGio7z+vsfvmKRfuVGQNVt9yzjww=;
+	b=zLdpSiKvDgftqfAVaqcTNrK84H7FtQ5rL2DT+OqjBqCDyGQLo7itncYvbTcf4vSz9b4zSH
+	c/ZMHGahhCtyrBS+9l9Wf0q3+0fwKo+9J+A4HXrSa3ILoEF3nZYthrY2cdvfsl7HGYhI6X
+	aIFUPTLEWwOj9XmTso9/wvskQ6/AuLA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B128360F42;
+	Thu,  5 Nov 2026 12:09:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38CE1F0093A;
+	Thu,  5 Nov 2026 12:09:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793880589;
+	bh=gukOYmvYDHX2QKSOGio7z+vsfvmKRfuVGQNVt9yzjww=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=aAAW3W8zrqhI1GlZKqclxuzopsOsI5eRflWVb+u4vb5PXFTYkgJ0rp9Kj8p5k/PnJ
+	 dz9x5vflTBj+DeSq6KDVaKKWH4IO1ANMazHhA8U7XpsUFlwUQv3pPtBE5apiquXHF8
+	 VIijSfbzJWIZ0u8nFhus81QZCpCdrEIkdEEVT9qcVLTnlF9X7DDYJUpALeqULAdBUk
+	 gG3qH+UW1A7HkPJle0v+Ro9VJBDQIiBephkzM1sYS8P/gd5M72p1JtRoV4TPOtMTPm
+	 lTV9zl9RBf9VsgqSb5pKIdsUflUPUNRZjRUAYJW6CA56tI1pSDaFNGwOyrBwhQLiSh
+	 TJOgN9lfoSL8g==
+Date: Thu, 5 Nov 2026 12:09:47 +0000
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, kernel-team@meta.com, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH for-next-fixes v2 2/5] mm/slab: handle allow_spin in
+ slab_free_hook() instead of open coding
+Message-ID: <auxxnr3iVYNOOoci@thinkstation>
+References: <20261103-kmalloc-nolock-fixes-v2-0-19167cfe4779@kernel.org>
+ <20261103-kmalloc-nolock-fixes-v2-2-19167cfe4779@kernel.org>
+ <f31885cd-57c2-428d-9760-a76a0137f989@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261102-work-procfs-bugfixes-v1-21-59422ed3e465@kernel.org>
-X-Spam-Score: -11.30
-X-Spam-Level: 
-X-Stat-Signature: 4zokf44aitichbcns1kp3dyzirz4b445
-X-Rspamd-Queue-Id: 515EBA000C
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+In-Reply-To: <f31885cd-57c2-428d-9760-a76a0137f989@kernel.org>
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1793880501-19382
-X-HE-Meta: U2FsdGVkX19ESIrTxMctFYJ/HYgUlDW+lNbfmg9FpLMV6mY982ND71ZkxsKOvXt86eu7UFx14Ux/i8i+Fm6qpcvLvHQXwXE8n4a019HddsTU/7DfNPZdC+VH+eOJAWHf0eUu2wi22I0ur1tZK2Lg9FIkOYZhOxc2RjoRtG6rz9Tcn1VhsyjoXrJEATYO30tSHSpNqj4UzRbXVypquQL8VZ/9S2l7s9sh4Fti3UMyWD3BrOJyEEgVZ6AfX2icuq7a8wJxQcDRNUw7wfUSTj3m1C/X7pPhdwcSgshIsn+kyHZnS51vGEnVjGadg6mRiwyLYGPnVC+xkD7ji5Kju/HBPQR3bN1Hpn05B7iBnogRsT5FRWoHnmijdpd9xMvlnVozBBh9E9yjg0iGDOQWoFTEXrxFy7yHxIIF+dfxMI+IsVVXdwiXRu1bZn05Sup9PyOZdojkj1U/hu2UXH7rJw1hf1Yr9Ts9QZU0GYq2agQSIyNr3BO0pK/ecGPcTSHBIYlf+FoSc0uFJebQkcmygQlw+y0v1DLiqFIQ6Fk+/0SiyCVmxev7YTJgVH0iMRvNNn3C2W02jf06QUdetKhV5KZ+qJAhdPyj50qUaXU9VdugKmOoro8kq5kdkY5qWPaxAHcJKBvEhht/BtDkyNNUyvpLQv4piJF64Rc/iAVuYH9cifnJqGu41BAinaztDyxZMAMnvK9vOEV+EvDJhddF6wMe+EbS70POTEuqQanMhasorkhVM0fj4Pg2fRsMVsZ2MkJbJr2q8uxopqAyKW37/NZJoPHdOfNjfGvezEhARs7SRVJeLudpZ/psOW1fMwseCcNKhxrRHXRCEM4NByqBo48cc9TGPsvgBky1cCgNl3pY7Wq3oYsYdC9+dbDfuKJekc2fFLO0q3zvw1CF6pvTBmq+ypcbJY1NzmCXr79boNe06jlhqYtG5v/LOk8E/qMmfhYrZBBHzZ6z7oixtPoSSIa
- 5GvSjVr/
- qXEhcTwhnju2yaZXIBpk5LC7t5JfyKJfOCRfA6KFYjqF/ctMdpJYK3PgrMaFcwT8BbFAB5Q41Q3LHMm6+P4cYPy9P8hJch+bu1/+dsW2bhgqNn9+EAPKPOHQfuda2dDHT0zviIVP9PFwGXK3d+tcskgKm5MX6oSK8VbGhTZmPemzBS4vg1vfQhBCyT9El3T3dp7TEovJNJYyh4/hUuI9K92I7v1lWIb5JkBhf2fNV4aSihOisapV/9b27hVMrY8pLWVvixheyrgqmJiu0DiKoum9CrznNt4xpTdk4w5HUepWj3l1KOsUukVvsOx7JlXOYOzaSxTQRV1GUFz20a+VelLJKIiGaaidf5F6LQti3CvHwBjn9NWvk8GvffCJ0d5G+RgrUbEYJoozAYQXl0+zHog3nnDmFCysqcFpG5QsNkat7A9dyobF85voe6qZMfSQiA3ZOMSxhr1DahrI=
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D5F0AC0004
+X-Stat-Signature: f4jgutn9iyfisy5t1r44x93s8afuzj9r
+X-Rspam-User: 
+X-HE-Tag: 1793880590-857582
+X-HE-Meta: U2FsdGVkX18nqbgJH69qSwaO37MXkETJmMSfNdy3lgqckx0NglDaTdEzMRqd8eGWcwvYt5hXArb/yk/qSuDtgRnzA4GIVZgoC+bRiWVgBg7ppgli67nqQBXE2gmuxE+nFXfiwk/nyiox1zd7lhOAejpzPZTffWQ6ZL6MufYluEVORMht38zBqF78iM98mdNE6SDUSeCAjV/YcTdTxlUafqLTJoABMpAIX29WeanVQXUv1WyZtYIOnYK9SYt4DQwa4h9xMaVhAuffv4JRWX2xBVIvYkTXNrUBsYpnhRrkBgbPEid/Bxpbh7OLwiX1gy86GW2JnvCQ9hJmt4aurJNJYamcfiX0Hc3WHJY6ZBUrpdHWepmZOlCsF5NSDrqTH1fj1AWGgBX8yv7bZN0Vq5WR+gUZg5D12146Hn5qt8I6p7xtkDhCYEt1o26oi5UnCn00JT+72kD5uKuLeFSjRuZY0OcK4MBapWEmIVw0qThbK1UTq5AthfE9EpdgpbfkV236pSWYh8gZ6jfdjNFjZ9ncCgrJaumyiUnLTGF5Ru09YNZ6hGpELR4CHIbJqzB6OuVMZnhT7Fj97nv/GOunTj382gfDWA69zaBuy7Is8aHg5mqtRWo6sJw1iqwzhrHLb8JQTqcGH/EX768ehtL5sifQOoZw+foGJ5kKTyUcL4X6S4A4OfFb+Q3DvsrS3CuIjslmxhFw8Vw1KTGn7iDhKPIw3on3czBT7RXJWVu9xEOD5/FjEG8vOYUufU2CQRMkllIcyijIW5IVwHpVkxsoEoQa0hEYPZcs+T1yQqsA4yxZUyJEOFvzN3duvUp9zOhIiufVGzTby8r6IUrxMTcnXFb2yglnkqsk93lDH5e5M/M7Skg7faQ2QRzoixbeqDneZpSY+GtIWWrMf9b/9k0QMbd9U8qjuUISDXFIfuMTXijTj/7PbWfk6LdtR/1ZkgWPUnDfzYYLaSmyRbJYIGE3GHM
+ +eyG/QWg
+ h1oI9LGg7NJ7OUxT95gSBs7zvDp0YconW+9/yjZ8+CRzADlBzgJwEhVjPe4xyxe5diYe5H75mzCmM/qWvdvEsjvUGUhlEW/G94Bqb+tMI0gfE7bTNKiVuyXwQG6RJllfGZ7O2FpULxqvdI7XLR5ngz9rZPOCktlExaQ3xE3v2jslCzy8XMuls3EX9YFnk+xYvOj/FptvmcBJeAudSKtbjnabAihudHxPZXnlBCu7dpKDPiEcOUcGTN8JNIagYTfs1dmjvIYq9RZfTQg+9f8zV0ZG06207NHruL+GyDYhfBGjT0YXEIH7G0RJAYsRAFJtVvCMF0T3HOdbHKA2ZG0OsasPwuFMksW0VQYZz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,134 +102,94 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon 02-11-26 15:21:36, Christian Brauner wrote:
-> proc_remove() looks the entry up by its name in its parent and removes
-> whatever it finds there:
+On Wed, Nov 04, 2026 at 02:54:13PM +0100, Vlastimil Babka (SUSE) wrote:
+> On 11/3/26 15:47, Harry Yoo (Meta) wrote:
+> > kfree_nolock() deliberately skips slab free hooks that should not be
+> > called in unknown context. However, there is one more place that
+> > needs the same thing: memcg_alloc_abort_single().
+> > 
+> > Instead of open coding slab_free_hook(), let it handle the allow_spin
+> > parameter. This is required to correctly handle allocation failures due
+> > to memcg charging.
+> > 
+> > There are two functional changes from this.
+> > 
+> > First, memcg_alloc_abort_single() -> slab_free_hook() path no longer
+> > calls free hooks that acquire spinlocks if !allow_spin.
 > 
->   remove_proc_subtree(de->name, de->parent);
+> Hm, since this is only changed by patch 4, I don't think it needs mentioning
+> here, as it's not any functional change yet.
+
+Good point, will adjust.
+
+> > Second, kfree_nolock() now follows init_on_free which has been ignored.
+> > 
+> > Besides that, no functional change intended.
+> > 
+> > Closes: https://lore.kernel.org/asiSUpAYYU8Od4HM@gmail.com
+> > Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+> > Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+> > ---
+> >  mm/slub.c | 104 +++++++++++++++++++++++++++++++++-----------------------------
+> >  1 file changed, 56 insertions(+), 48 deletions(-)
+> > 
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index 45e077c7526c..36e7bb93418a 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -2686,41 +2686,54 @@ struct rcu_delayed_free {
+> >   * - memcg_slab_post_alloc_hook()
+> >   * - alloc_tagging_slab_alloc_hook()
+> >   *
+> > + * slab_free_hook() assumes that memcg_slab_free_hook() and
+> > + * alloc_tagging_slab_free_hook() are already invoked.
+> > + *
+> >   * Free hooks that must handle missing corresponding alloc hooks:
+> >   * - kmemleak_free_recursive()
+> >   * - kfence_free()
+> >   *
+> > - * Free hooks that have no alloc hook counterpart, and thus safe to call:
+> > + * Free hooks that have no alloc hook counterpart:
+> >   * - debug_check_no_locks_freed()
+> >   * - debug_check_no_obj_freed()
+> >   * - __kcsan_check_access()
+> >   */
+> >  static __always_inline
+> >  bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
+> > -		    bool after_rcu_delay)
+> > +		    bool after_rcu_delay, bool allow_spin)
 > 
-> If the entry was removed already, say along with its parent, that is
-> either nothing or a different entry that got the same name in the
-> meantime, and de->parent may well be gone. Two removals of the same
-> entry are a bug in the caller, but going by the name turns it into
-> removing an entry that belongs to somebody else.
+> Hm 3 bools. Could we bite the bullet and try doing free_flags (extended to
+> cover init and after_rcu_delay) here already? :) Given it's not intended for
+> a stable backport.
+
+Ack, will try to bite the bullet.
+
+> > @@ -2776,8 +2790,11 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
+> >  		set_orig_size(s, x, orig_size);
+> >  
+> >  	}
+> > -	/* KASAN might put x into memory quarantine, delaying its reuse. */
+> > -	return !kasan_slab_free(s, x, init, still_accessible, false);
+> > +	/*
+> > +	 * KASAN might put x into memory quarantine, delaying its reuse.
+> > +	 * Skip quarantine when spinning is not allowed as it uses a spinlock.
+> > +	 */
+> > +	return !kasan_slab_free(s, x, init, still_accessible, !allow_spin);
+> >  }
+> >  
+> >  static __fastpath_inline
+> > @@ -2789,9 +2806,10 @@ bool slab_free_freelist_hook(struct kmem_cache *s, void **head, void **tail,
+> >  	void *next = *head;
+> >  	void *old_tail = *tail;
+> >  	bool init;
+> > +	bool allow_spin = true;
 > 
-> Since commit 895b4c0c79b0 ("fs/proc: fix uaf in proc_readdir_de()")
-> an entry that was unlinked has an empty rb node. So check for that
-> under proc_subdir_lock and otherwise remove the entry itself, with the
-> loop of remove_proc_subtree() moved into a helper both of them use.
-> Nothing can help a caller that passes an entry that has been freed
-> already.
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: a8ca16ea7b0a ("proc: Supply a function to remove a proc entry by PDE")
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+> Then we wouldn't need tricks like this I guess?
 
-One nitpick below. Otherwise feel free to add:
+Right.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-> -int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
-> +/*
-> + * Remove @root, already erased from its parent, and everything below it.
-> + * Called with proc_subdir_lock held for writing, returns with it dropped.
-> + */
-> +static int __remove_proc_subtree(struct proc_dir_entry *root)
->  {
-> -	struct proc_dir_entry *root = NULL, *de, *next;
-> -	const char *fn = name;
-> -	unsigned int len;
-> -
-> -	write_lock(&proc_subdir_lock);
-> -	if (__xlate_proc_name(name, &parent, &fn) != 0) {
-> -		write_unlock(&proc_subdir_lock);
-> -		return -ENOENT;
-> -	}
-> -	len = strlen(fn);
-> +	struct proc_dir_entry *de = root, *next;
->  
-> -	root = pde_subdir_find(parent, fn, len);
-> -	if (!root) {
-> -		write_unlock(&proc_subdir_lock);
-> -		return -ENOENT;
-> -	}
-> -	if (unlikely(pde_is_permanent(root))) {
-> -		write_unlock(&proc_subdir_lock);
-> -		WARN(1, "removing permanent /proc entry '%s/%s'",
-> -			root->parent->name, root->name);
-> -		return -EINVAL;
-> -	}
-> -	pde_erase(root, parent);
-> -
-> -	de = root;
->  	while (1) {
->  		next = pde_subdir_first(de);
->  		if (next) {
-> @@ -871,6 +852,34 @@ int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
->  	pde_put(root);
->  	return 0;
->  }
-> +
-> +int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
-> +{
-> +	struct proc_dir_entry *root = NULL;
-> +	const char *fn = name;
-> +	unsigned int len;
-> +
-> +	write_lock(&proc_subdir_lock);
-> +	if (__xlate_proc_name(name, &parent, &fn) != 0) {
-> +		write_unlock(&proc_subdir_lock);
-> +		return -ENOENT;
-> +	}
-> +	len = strlen(fn);
-> +
-> +	root = pde_subdir_find(parent, fn, len);
-> +	if (!root) {
-> +		write_unlock(&proc_subdir_lock);
-> +		return -ENOENT;
-> +	}
-> +	if (unlikely(pde_is_permanent(root))) {
-> +		write_unlock(&proc_subdir_lock);
-> +		WARN(1, "removing permanent /proc entry '%s/%s'",
-> +			root->parent->name, root->name);
-> +		return -EINVAL;
-> +	}
-> +	pde_erase(root, parent);
-> +	return __remove_proc_subtree(root);
-> +}
->  EXPORT_SYMBOL(remove_proc_subtree);
->  
->  void *proc_get_parent_data(const struct inode *inode)
-> @@ -882,8 +891,23 @@ EXPORT_SYMBOL_GPL(proc_get_parent_data);
->  
->  void proc_remove(struct proc_dir_entry *de)
->  {
-> -	if (de)
-> -		remove_proc_subtree(de->name, de->parent);
-> +	if (!de)
-> +		return;
-> +
-> +	write_lock(&proc_subdir_lock);
-> +	/* Removed already, maybe along with its parent. */
-> +	if (RB_EMPTY_NODE(&de->subdir_node)) {
-> +		write_unlock(&proc_subdir_lock);
-> +		return;
-> +	}
-> +	if (unlikely(pde_is_permanent(de))) {
-> +		write_unlock(&proc_subdir_lock);
-> +		WARN(1, "removing permanent /proc entry '%s/%s'",
-> +		     de->parent->name, de->name);
-> +		return;
-> +	}
-> +	pde_erase(de, de->parent);
-> +	__remove_proc_subtree(de);
-
-I'd move the RB_EMPTY_NODE() and pde_is_permanent() along with pde_erase()
-call back to __remove_proc_subtree(). Both callers need them (so it is
-unnecessary duplication) and also logically it makes sense there.
-
-								Honza
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Cheers,
+Harry / Hyeonggon
 
