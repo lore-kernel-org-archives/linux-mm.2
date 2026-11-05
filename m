@@ -1,108 +1,176 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50490606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 23:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF888606A326
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 23:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZUqpmg8t
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=ik54Pdhl
 Received: by kanga.kvack.org (Postfix)
-	id 2EDE76B05B0; Thu,  5 Nov 2026 18:58:56 -0500 (EST)
+	id 009136B05B2; Thu,  5 Nov 2026 18:59:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2A04E6B05B1; Thu,  5 Nov 2026 18:58:56 -0500 (EST)
+	id EFD506B05B3; Thu,  5 Nov 2026 18:59:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B63E6B05B2; Thu,  5 Nov 2026 18:58:56 -0500 (EST)
+	id DEB616B05B4; Thu,  5 Nov 2026 18:59:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E70686B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:58:55 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6CAE280AD3
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:58:55 +0000 (UTC)
-X-FDA: 85402733430.02.CE42EE0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 6DA19100002
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:58:53 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZUqpmg8t;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B66526B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:59:30 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 528D91A0CB9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:59:30 +0000 (UTC)
+X-FDA: 85402734900.03.2FD2EFC
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 6A99940005
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:59:28 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ik54Pdhl;
+	spf=pass (imf11.hostedemail.com: domain of demiobenour@gmail.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=demiobenour@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793923168;
+	b=bu2Thd5q/kIP2+gVRy41wvsw0mmi5QaqG+1ztwHErEyxMIzDCAZbzW0Rg0X/yCrH5RbNC+
+	4Lj8bmjVLDF6nL4uBB6TFrhFcBqOeMRjvxzUOAghAM9B3FSCP5Gs9t+h3m/ggLo2oNalAM
+	LTSWODUS23BOviLvN2JgVMvh9rlVrMY=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=ik54Pdhl;
+	spf=pass (imf11.hostedemail.com: domain of demiobenour@gmail.com designates 209.85.222.41 as permitted sender) smtp.mailfrom=demiobenour@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793923133;
+	s=arc-20220608; t=1793923168;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9RxcEVLntdlNyWLzPXyKVC17NRSyE5s4TlFMufLDfE0=;
-	b=ZbkW0j8yHSAX+iMz80XRTLsTToC7A1KNbr9r7pmAOqHkD3HGKfYUBs8YQPyyl/YrqR7Xdf
-	s/covXv5K7G3PY0loqGPeksg4rgL/oQGrwUPYMLV76W96QopD3An+juLJE/9868gSSGNgG
-	ZbDBKgwB5qBEdD83ByBvZtOnLk6pp9w=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZUqpmg8t;
-	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793923133;
-	b=UayTO6IhCE7MhlzQh/I5PPzR48WxYgoyJsIXbVVJlsx10KeNQrAHOZo0met/jL+IoFcgYM
-	si6rVFkD8PXO8n3qVTxjNFvOKF6qFplrHdm1ev75LuqccwnqaP32ls6pcFY0k+pUdvGJJY
-	+SEQ1c7AUpvvvXxUlaGtRCPSEWul7Ks=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DB7066020F
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:58:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4D11F008BE
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:58:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793923132;
-	bh=9RxcEVLntdlNyWLzPXyKVC17NRSyE5s4TlFMufLDfE0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ZUqpmg8t9LbQT7HdUz5nRHob2gBTphGClUqS7uklQpMPXBAvr6tUJnXHDagXn+X++
-	 sqV6d88O1P160SGW+GEq+Jd+ZgJZqAeI4C51Hc17dWUbz8uiDtalK5BiA1iszVz71x
-	 qSRZUKoR00Ba1VZ/f03CahzTY/AnHaoPC9BaNsIHumxRIN3rtJuErI8y7JonWbvDyl
-	 Fvb6jGa8cNG3Vl4ccJuC6ukRKZxjnCHb+HwgMjfBGZwtBw8jbecAcW5G9Dus0Rf93S
-	 nT4nuthW5sdHUoXubgYnNoH9MUw4qo3f0jemeZWJhgcPm4Texl0YxzNd00OSo/YYr7
-	 xL9tWOMZb7Tgg==
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-5ecbfea5f51so50716e0c.2
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 15:58:52 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxp4mv+m6QUP+xG1tKeOIccgvYqYmgV7DVs4LI2AS/ijXqEEjKZUQUyZg8K0Kvp2BBVaTQrRtIwlg==@kvack.org
-X-Gm-Message-State: APuU4Z8LwkyJELmWnI8m4HdmQMXZ5aqGMrYcZYVIWIWGlBmah/tlKRHH
-	urYqg4TnOwHLVqhyiM2mkclbFIPkndvix3mjYee2fNy6pnf7Q5ymaRFl4Hj/TbBVtUnKZ4487DD
-	2q/0Y/ojeQXdZvlZ4ZlU3NHqx4bTP7h8=
-X-Received: by 2002:a05:6102:3c91:b0:7cc:2cd0:e74f with SMTP id
- ada2fe7eead31-7d2a16661f2mr819233137.30.1793923131659; Thu, 05 Nov 2026
- 15:58:51 -0800 (PST)
+	bh=T28C9sQ8FiCIuaarqzvmePMhVsvyoXKLzlM0HPzQJ7c=;
+	b=jkhLf9C5GyhzxNmgDh8qM/PojWXCrs8pxmXKqAV+M5QUoWdY7jzZrGF70FzSq+d1IDGGZX
+	3UYjkEJP1ilZ8TRb1DaM4jD4BPKwgRp6Fxt8PMIcVPv7iGaM5R8U3vI5FgV9/MMLQ4exZi
+	RaDtwkPhIcW/iMsWkYUb4C+1NI/U0QI=
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-9912c47367cso60633241.1
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 15:59:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793923167; x=1794527967; darn=kvack.org;
+        h=content-type:in-reply-to:autocrypt:from:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=T28C9sQ8FiCIuaarqzvmePMhVsvyoXKLzlM0HPzQJ7c=;
+        b=ik54PdhlEhuyNEbgHCNpPprf2Ia1z3zEfkZtXpuhBMVCdCrygZNfOWCvshqk8M1n34
+         E9UfxrFXQSdew9ad5Epmobqf3f4Fbe5RQPg1CzbuNxxboqpTA1NlZjshfa9rbG7sf8x9
+         om7KRG03ivw9BXu/Ehuj7dtaUxfoZV7KJNZG2+kU4tKE3qFmcZR3miRbTBbQiYcWYmjD
+         x6iPiX0dBLu4pWGvTA9ladnrMb6UPx0Ik7+bMFTtDxPgOz3jKxdsnlEr0d1XVSYtIpWV
+         tZx3H1kQCwdbFCljEfPAtCeZHMf1fP2OpU+g/B1J42h9BMIMTsXi+/ae4Fwqq/H4hIKB
+         9EsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793923167; x=1794527967;
+        h=content-type:in-reply-to:autocrypt:from:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=T28C9sQ8FiCIuaarqzvmePMhVsvyoXKLzlM0HPzQJ7c=;
+        b=jdHu1jUzqSzOAiS+bXLr4EgCUldEZME02Jf+K5mFQcMlkDAlqygdrNnwBHAZKRf9n9
+         WYFOmS0gkc34LjpGGfvpdj5oD/O8RrkkpMyo/PrD13ukJWxtYvKDnITS3EiGGJOlredk
+         lXP5La29J3mC1vXUNltPsIILE387MxV1Wa0R/Eu/WqPyH/p+09sg4al5dlyLcEsSx4PJ
+         w4zDnD0a5smju5HHkkIzIxIDbUJwyXUssa199qm1j1SePSVsOqLawBxcWT605JCXQBq9
+         d4WRP1ql8xlrdX7qypjCbaTTdAIwGya7zr9Bdzd9HbICJO/NBGYz+tj2NmS5hbi3CpvY
+         bflw==
+X-Forwarded-Encrypted: i=1; AKwUvBwtf4mh9r4Avj9zxrWoWJ6OlYH2h7ab/6WvS9hLKoFdpfc7N8lqFqPfM9UacGMc5aVDoUE71ooq+g==@kvack.org
+X-Gm-Message-State: APuU4Z+h9lqCEsYhJaWASd/M2IOmB6aWOcZK5jSRw5AKjFfK5zvqjFMv
+	95TFdK5xG1SmMz6JOjSohHezL6p9yjYAXS5vs58OP2DWjyr81+iOzWqG
+X-Gm-Gg: AYBFou2SKHlq/xWFCWlU5rbLkrg9VrjNIoqXKmWpo2rFY91Mh+kdzi7fl+/d/DRbGHw
+	UH4xuSMAiofyd5kITP5ScRrqg/hWHgcgzgrCNxMkW7NOLzRIB/PockFn/l1DpbWJtV5n4v+1N/H
+	UQsRZXuoiAN9ZdC4dwQedDnXYdHiFWN32evO5c3O9sje2X4KoyCrshwOa6LMf/jeMnUbbG5fxQY
+	6L3PLk8a8Wk+1GOhg1dktjH/B0D2hHZZililpBgh/Z2dienXX8cv33JWie6eybZ1g1cyBVwQMV/
+	LFP0kscjvl7KgkeJEz3Ubt5kTAmAPHNl1v7lHDOIOwH+nJVd6gxkyGkUiLN+qxGsYquJ5UprgeK
+	ILdb4m9OB0orZ3lqVVucVdTBF+xxGoHsesHyeLJYyQDJri5buUf+D8rQLGv7Wnx8gX9UwI8aFeE
+	NtMVmjo5CoOcZwMlOFxkF6rHxLhqiQ0/F8ab8ySUpElDC5BhZGrcH+6GqZc4Z2mBlbaFFJb9w+k
+	rSZ4Byk/nD66RzQZFULOK8u3J7g7FobxyAvFecl09TDbkiBl0AahdzaVlVE4wHP9N47m/IK4snz
+	xpWBcAHBaUGkjmJgyk3dspuvXaIASQOH
+X-Received: by 2002:a05:6102:a199:20b0:7d2:9ed1:3773 with SMTP id ada2fe7eead31-7d29ed13a45mr743172137.27.1793923167308;
+        Thu, 05 Nov 2026 15:59:27 -0800 (PST)
+Received: from [10.138.10.6] ([149.102.242.31])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ecc650fc3dsm176157e0c.15.2026.11.05.15.59.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Nov 2026 15:59:25 -0800 (PST)
+Message-ID: <310aec2d-3a83-4544-870a-ccd5abd78f48@gmail.com>
+Date: Thu, 5 Nov 2026 18:59:03 -0500
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261007153915.53429-1-alex@ghiti.fr> <20261023211629.16227-1-baohua@kernel.org>
- <CAEmasaVgBV+tYg7xDV96qBQ1oEVgUL3F_BnCLJW3LRjZ7ai+Yg@mail.gmail.com>
-In-Reply-To: <CAEmasaVgBV+tYg7xDV96qBQ1oEVgUL3F_BnCLJW3LRjZ7ai+Yg@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 6 Nov 2026 07:58:40 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4xBtKGqXFP4zvp+Qn+tb4X7aCvXn+wqDqot_cXR92DjhQ@mail.gmail.com>
-X-Gm-Features: AclHuK94wL6URx0P-0wNVaWC8-E-wn_W5XHvI8H9jBiKlNUyiYq8M39JGoNSU9o
-Message-ID: <CAGsJ_4xBtKGqXFP4zvp+Qn+tb4X7aCvXn+wqDqot_cXR92DjhQ@mail.gmail.com>
-Subject: Re: [PATCH v3] mm: bypass swap readahead for zswap
-To: Alexandre Ghiti <alexghiti@meta.com>
-Cc: alex@ghiti.fr, akpm@linux-foundation.org, baoquan.he@linux.dev, 
-	chengming.zhou@linux.dev, chrisl@kernel.org, david@kernel.org, 
-	hannes@cmpxchg.org, kasong@tencent.com, liam@infradead.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org, 
-	mhocko@suse.com, nphamcs@gmail.com, rppt@kernel.org, ryncsn@gmail.com, 
-	shikemeng@huaweicloud.com, surenb@google.com, usama.arif@linux.dev, 
-	vbabka@kernel.org, yosry@kernel.org, youngjun.park@lge.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: sitpwm6u68ki8w1f3gy5cyhwe7fie5dp
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+Subject: Re: MAP_FIXED leaving holes on failure is very difficult to recover
+ from and can even be a security hole
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Bert Karwatzki <spasswolf@web.de>,
+ Jiri Olsa <olsajiri@gmail.com>, Kees Cook <kees@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>
+References: <8b45a161-101f-4f28-9b7a-c7c8b8a29f90@gmail.com>
+ <auyXeApQlV_CMQDm@gremlin>
+Content-Language: en-US
+From: Demi Marie Obenour <demiobenour@gmail.com>
+Autocrypt: addr=demiobenour@gmail.com; keydata=
+ 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
+ +MYSfkEjBz0E8CLOcAw7JIwAaeBT
+In-Reply-To: <auyXeApQlV_CMQDm@gremlin>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------v3Fk1rd1TVAVxiYTaToqVCZE"
+X-Stat-Signature: czo3b616ph6hcknumrjyapa67u5uegd6
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 6DA19100002
-X-HE-Tag: 1793923133-2308
-X-HE-Meta: U2FsdGVkX1/wHf7NLOtxBH87YMumHIOrb30TIYD/K862s/MdtuhXNa2JYEqGddxBkYgfHGzybFB+dTMvNP/8kwmR8XgWCz8TFY9lh95eCVpmp6hm3rpOapTWeoqd4n0bkS51mUxHHDbogvBaXYvFdg76BufGlzfQMlN5NTJsjR4JT4NZUzH201m+S5leF4E8nu6vkg5OAe6PnUEupYr7AGes7v2XXnT/sFDyldqqcF9T+Sk5crvaRUtGo9q065NU+qpycUfpEIMydSOzclgRoQlOkv7HBUBMQYhokRYvbGEbm0hQ4KXMlPMwX+NFeSEcXA2MTi21MZiRBDKIfGas1knWSXa+jaJaZ5LyiWuEA2lK1doh8WraZQ5HTlVfmpmXRQaBljK+XfXSSWZV7WmMgfxuY7nkA/8iJNnp0HEJRIyLOFCXH1fzdYJBMHe6jcVw5t2+DafPCKEaPYL7A70N1d/mV+8VnDY2CPj9xgpkrys6WST61/1Ztsaw/DwmVIPYYvrmXH400F0IJxhICYUt6/ngtHeXdeFC9HHNFamqrPTgPmwSibnUQuqsByGryqCPe3aUoiaAXCNg2TvwjymfYzpWSG48bikupPEI8yMW/uuCzNF2lqUEEOUmhAIWaquZdmxG9gIuY/Lu2keQRQSNgJpq2rV32Vea0LQJGPbx2sam8gqhYF1ioAU0mpK2WYNDyqrTuEY62vVGqnEHi+wdnP/PY8djJwAhfZv4Ip2gzpQ5bExtKyHTnQNvc3BXFYnilTVZbdvkZCzXyurtcEK8t3hVpN2tx7TBnEj9lH+U1B/Yxp/GUzQoLXmfKk8nD9WD+716kNaZvC3qg2+V3D263NBaK+fEiUlkNBdDeaRjHZgKtcIN56OH4wP0t/opkBiSKDmX5qBowzjKXlIaaDkH/USEss055caL6HU8QDJ1wYl6cU0XfePwY/9q5o7JQu2cacZIyMM4AXtrtKIMBZN
- e+ZurxJy
- 3xLv5zVJwg452+nUtkotANZQYnyYVW6RnkUizh6ntt/OggIJ3u4aiR/+ae33Wjp+TgxDJiYLPfei1aAEGyM4djKfstqOzYedVtMoI3D03Ll+n2mtLGYUQLPuvYAK5gaFtxwR+9j2bvotgN9Waw7WvvoUAYsuB7LFVrAoSNBCmT+1P1OZ0K+HPNkofHpXScoGwg3dj3PBY3lPrJQscenr1hpdSyhvIWD+A7RGg5Ny5mTcoRT0CpJRIqQ12fRWt157jCw8Pi8uK3SKunj40gTgOecN6ixhpjFBuVkK/YyVQAmblKnD5WO4lSnDNUjZFQk+GEnZ5BOvVCHjQ+tw4RmuaCZXbxBHz6q1g4TT28uMsXD8lfQZpt0gmRdJMxg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6A99940005
+X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793923168-199071
+X-HE-Meta: U2FsdGVkX18ZaZ96jixTkkc4hpJG8mvXpF3qYjVUxK1y/k5FYpUbfzQyaG4Yy6AuI23qkm3V1ZZYhk5OLMERBsTRSYx4pNBwc1YKjXNEy6m30piExrq/A3Yr+7AlBWyurgziJMSZB1cVzPEKfVItRYTG2P9o830XLrfJQT+a+M4F9YqWq2OE9iJVoO4GMLaD8T+J6ry7jmZYEBToIjAg5t3a/uVzwF5kCzhVI5ImM5BIhddP5IhnAgaq/UL4epUGPv2menzAaJbrhVq2l+ac++yxVjF7G8dk6hgkPPrFTsCsF/8JDeZr40iS/ewtqJ9/hW94cbD09CqwH6V4ZCO4a6q4OEFB7D7fpmg5Cc2DtIChqsFOcsRVE3Ikzkm7+CHU/RvOMK+cYsHlbDTd56AnDsWjNug6QilVbS4ZxHLpt6OugtaImpiIrORDIFJXos9OpEfqddnBRaEpXO3KVnuWUOyRAnCaoB24sVUhKhrbMEgWsrO5a2/HL8Yw4wFXFNZwNQoOwcmqrfFlAvWikSQZRK75I8c7Qg6W5W2oyvR0g0WktKly/LWl3NzKDDNX3cq9gukoFLffXRMGU3JY7MvzUdYnvLQc4SzYRqA3/KhWpODHzhGfABeNcDpbxb497Xb8Wy1GRjOGp7dX6A+Xy8gByXX6JznLqWnS+39dE6hYODS6JCPyZIkAeJ8LzXH29c1liw95H9vmu7x7QHwtLie07pZDlkvbzEO5FFanvQaFXaxCJcETVHq/dypBXJYQLLxfhDhXVEqy2dCTkTwcK62rEs72NS+aLhkYIjKvjBhqssHgDHu8udlqX6R3jmcxD/fcbRJEZOg28IrTqqBVNr/0w++W0UiLbaImeWRNJdS6jy5xhy4RrxYq5KjK3UNXqN2/C6+s7w0EHQaU1MqaLGapRYvTQOc1xy2xBvT8heVsg1hxaoOlwGDi7iaE7Qzu1TPHiNcBDFjzDSFhFXFwSCM
+ 0QXR0lMt
+ vAb3oxB2PLWb/L166S+CaZXd2EuktBi6bbuQV64qIy6JvU1amAbEgieB/NhOYaqSzqx78pY82lPMYfFFdeeJwMUdMX8cWa3xgKKJQgnecs/c1xfaN60NnAcjxGoBXzGBJu80PvCBOsWVyZhs1r/7k4/Tlqmg3vy2eMbMGNfEq0IUZDH3GW41Kcd7SVMz/UwPRIzG6Cc3M4mADUft06Hn1Tq1jRbbWH0agEjBDau0KdnwWKDO3FxvOifIvDgKLtUg8rRO+KUJtpG+oScLRcff6Qn9OraFNXADfVq/RTLKnBbvkJqKsb4h+Lpd+q8uNt/6d8xnHE1fGdD5TYKfr+fox+jQenBpaGpgzuCNSQ2NJpVR8RHlZdHqySP10C0y3LdyEluS/+XOqrMzHVYnixLhFuC3Yw0bUrJ+ix0bigTWX4vy9E8rR7kDfMmeV93EoOrI9esv2ybrRP11xgqrUJ/Cf98xn5u3Ulq2Muhd/PU3kDayIOgrNjvD7NkywBZE6jeNDQ+BRlbYSdpVmZFPkv3w1vuTZ0itJcO6fo45DW8qKdqnirIcZVOmrr028Mv0+dXsc7wbw1J6hiRAy2XPG9xYZHYuz6j14GU8hqGzYqTq0552Dk89x4+M1CA7KRzRptrsgPRkYXcOw7vQd+80byK5PU/hoPJ5hKylVjalcz9wMMpQaumv4nqLkA8xT+dik7tya2KUnorpmY0awiOzvwl0AcztNIO5HQ3WbTC50AxWrF2GvW5R99KNjkwygzajrrYJ6EmxySRTNR9cN3logaoxeefJsQ/BngxTbTZ8/aAS0By57Oq0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,226 +179,149 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 2, 2026 at 3:55=E2=80=AFPM Alexandre Ghiti <alexghiti@meta.com>=
- wrote:
->
-> Hi Barry,
->
-> I'm back from holidays, sorry for the late answer.
->
-> On Fri, Oct 23, 2026 at 11:16=E2=80=AFPM Barry Song (Xiaomi) <baohua@kern=
-el.org> wrote:
-> >
-> > >
-> > On Wed, Oct 7, 2026 at 11:39=E2=80=AFPM Alexandre Ghiti <alex@ghiti.fr>=
- wrote:
-> > >
-> > > Commit 0bcac06f27d7 ("mm, swap: skip swapcache for swapin of synchron=
-ous
-> > > device") made SWP_SYNCHRONOUS_IO devices (e.g. zram) skip swap readah=
-ead.
-> > >
-> > > zswap is the same kind of in-memory, synchronous backend as zram, not=
- a
-> > > swap device flagged SWP_SYNCHRONOUS_IO so it still goes through
-> > > swapin_readahead().
-> > >
-> > > Here are the results from bypassing readahead for zswap too: it was
-> > > measured with a kernel build (make -j16) in a memcg, zswap=3Dzstd, sh=
-rinker
-> > > off, on Sapphire Rapids and 3 iterations.
-> > >
-> > >   768M memcg (sustained swap thrash):
-> > >     metric                 mm-new    + bypass    delta
-> > >     build time (s)          405.0       341.7    -15.6%
-> > >     zswap-in (GB)            79.5        53.0     -33%
-> > >     zswap-out (GB)          144.8       115.6     -20%
-> > >     swap readahead (pages)  6.79M       0.45M     -93%
-> > >     swap_ra hit (%)          72.1        89.9     +18pp
-> > >
-> > >   1G memcg (light pressure, build not memory-bound):
-> > >     metric                 mm-new    + bypass    delta
-> > >     build time (s)          177.7       176.0    ~same (no regression=
-)
-> > >     zswap-in (GB)            10.2         7.5     -26%
-> > >     zswap-out (GB)           27.7        25.1      -9%
-> > >     swap readahead (pages)  1.07M       0.08M     -93%
-> > >     swap_ra hit (%)          68.6        87.2     +19pp
-> > >
-> > > Similar gains were observed on an AMD EPYC 7D13 host.
-> > >
-> > > The gain is from no longer prefetching pages that are pointless for a=
-n
-> > > in-memory backend: readahead inflates anon residency and thrashes the
-> > > page cache (file pages get evicted and re-read), lengthens each fault=
- by
-> > > synchronously (de)compressing a cluster of neighbours, and adds
-> > > compression traffic when those extra pages are reclaimed.
-> > >
-> > > Bypassing swap readahead for zswap therefore makes sense.
-> > >
-> > > Suggested-by: Usama Arif <usama.arif@linux.dev>
-> > > Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
-> > > ---
-> >
-> > Hi Alexandre,
-> >
-> > One thing on my mind is that for synchronous devices, we always free
-> > the swapcache during swap-in, thus releasing the compressed copy and
-> > metadata as well. We could do something similar when a zswap entry
-> > is found.
-> >
-> > I wonder if we should do that as well. I don't have time to
-> > investigate this further myself, but I wonder if you'd be interested
-> > in looking into it.
-> >
-> >     mm: free swapcache on zswap hits in do_swap_page()
-> >
-> >     We already do this for zram and other synchronous devices. The same
-> >     should apply to zswap hits. Freeing the swapcache will allow the
-> >     compressed copy and metadata to be released earlier.
-> >
-> >     Suggested-by: Barry Song (Xiaomi) <baohua@kernel.org>
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index 55b5a84d1016..d22c779fda93 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -4711,17 +4711,18 @@ static inline bool should_try_to_free_swap(stru=
-ct swap_info_struct *si,
-> >                                            struct folio *folio,
-> >                                            struct vm_area_struct *vma,
-> >                                            bool exclusive,
-> > -                                          unsigned int fault_flags)
-> > +                                          unsigned int fault_flags,
-> > +                                          bool sync_swap)
-> >  {
-> >         if (!folio_test_swapcache(folio))
-> >                 return false;
-> >         /*
-> > -        * Always try to free swap cache for SWP_SYNCHRONOUS_IO devices=
-. Swap
-> > +        * Always try to free swap cache for synchronize swap entries. =
-Swap
-> >          * cache can help save some IO or memory overhead, but these de=
-vices
-> >          * are fast, and meanwhile, swap cache pinning the slot deferri=
-ng the
-> >          * release of metadata or fragmentation is a more critical issu=
-e.
-> >          */
-> > -       if (data_race(si->flags & SWP_SYNCHRONOUS_IO))
-> > +       if (sync_swap)
-> >                 return true;
-> >         if (mem_cgroup_swap_full(folio) || (vma->vm_flags & VM_LOCKED) =
-||
-> >             folio_test_mlocked(folio))
-> > @@ -4977,6 +4978,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >         rmap_t rmap_flags =3D RMAP_NONE;
-> >         bool exclusive =3D false;
-> >         bool rwp_restore =3D false;
-> > +       bool sync_swap =3D false;
-> >         softleaf_t entry;
-> >         pte_t pte;
-> >         vm_fault_t ret =3D 0;
-> > @@ -5059,7 +5061,8 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >                 swap_update_readahead(folio, vma, vmf->address);
-> >         if (!folio) {
-> >                 /* Swapin bypasses readahead for SWP_SYNCHRONOUS_IO dev=
-ices and zswap */
-> > -               if (swap_entry_synchronous(si, entry))
-> > +               sync_swap =3D swap_entry_synchronous(si, entry);
-> > +               if (sync_swap)
-> >                         folio =3D swapin_sync(entry, GFP_HIGHUSER_MOVAB=
-LE,
-> >                                             thp_swapin_suitable_orders(=
-vmf) | BIT(0),
-> >                                             vmf, NULL, 0);
-> > @@ -5325,7 +5328,7 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
-> >          * Do it after mapping, so raced page faults will likely see th=
-e folio
-> >          * in swap cache and wait on the folio lock.
-> >          */
-> > -       if (should_try_to_free_swap(si, folio, vma, exclusive, vmf->fla=
-gs))
-> > +       if (should_try_to_free_swap(si, folio, vma, exclusive, vmf->fla=
-gs, sync_swap))
-> >                 folio_free_swap(folio);
-> >
-> >         folio_unlock(folio);
-> >
->
-> zswap already gets rid of the compressed data but indeed keeps the
-> metadata on swapin, we discussed that with Nhat 2 weeks ago :)
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------v3Fk1rd1TVAVxiYTaToqVCZE
+Content-Type: multipart/mixed; boundary="------------83icaf8RpTmC0OcPxXVMnRa7";
+ protected-headers="v1"; hp="clear"
+Message-ID: <310aec2d-3a83-4544-870a-ccd5abd78f48@gmail.com>
+Date: Thu, 5 Nov 2026 18:59:03 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: MAP_FIXED leaving holes on failure is very difficult to recover
+ from and can even be a security hole
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Bert Karwatzki <spasswolf@web.de>,
+ Jiri Olsa <olsajiri@gmail.com>, Kees Cook <kees@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>
+References: <8b45a161-101f-4f28-9b7a-c7c8b8a29f90@gmail.com>
+ <auyXeApQlV_CMQDm@gremlin>
+Content-Language: en-US
+From: Demi Marie Obenour <demiobenour@gmail.com>
+Autocrypt: addr=demiobenour@gmail.com; keydata=
+ xsFNBFp+A0oBEADffj6anl9/BHhUSxGTICeVl2tob7hPDdhHNgPR4C8xlYt5q49yB+l2nipd
+ aq+4Gk6FZfqC825TKl7eRpUjMriwle4r3R0ydSIGcy4M6eb0IcxmuPYfbWpr/si88QKgyGSV
+ Z7GeNW1UnzTdhYHuFlk8dBSmB1fzhEYEk0RcJqg4AKoq6/3/UorR+FaSuVwT7rqzGrTlscnT
+ DlPWgRzrQ3jssesI7sZLm82E3pJSgaUoCdCOlL7MMPCJwI8JpPlBedRpe9tfVyfu3euTPLPx
+ wcV3L/cfWPGSL4PofBtB8NUU6QwYiQ9Hzx4xOyn67zW73/G0Q2vPPRst8LBDqlxLjbtx/WLR
+ 6h3nBc3eyuZ+q62HS1pJ5EvUT1vjyJ1ySrqtUXWQ4XlZyoEFUfpJxJoN0A9HCxmHGVckzTRl
+ 5FMWo8TCniHynNXsBtDQbabt7aNEOaAJdE7to0AH3T/Bvwzcp0ZJtBk0EM6YeMLtotUut7h2
+ Bkg1b//r6bTBswMBXVJ5H44Qf0+eKeUg7whSC9qpYOzzrm7+0r9F5u3qF8ZTx55TJc2g656C
+ 9a1P1MYVysLvkLvS4H+crmxA/i08Tc1h+x9RRvqba4lSzZ6/Tmt60DPM5Sc4R0nSm9BBff0N
+ m0bSNRS8InXdO1Aq3362QKX2NOwcL5YaStwODNyZUqF7izjK4QARAQABzTxEZW1pIE1hcmll
+ IE9iZW5vdXIgKGxvdmVyIG9mIGNvZGluZykgPGRlbWlvYmVub3VyQGdtYWlsLmNvbT7CwXgE
+ EwECACIFAlp+A0oCGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJELKItV//nCLBhr8Q
+ AK/xrb4wyi71xII2hkFBpT59ObLN+32FQT7R3lbZRjVFjc6yMUjOb1H/hJVxx+yo5gsSj5LS
+ 9AwggioUSrcUKldfA/PKKai2mzTlUDxTcF3vKx6iMXKA6AqwAw4B57ZEJoMM6egm57TV19kz
+ PMc879NV2nc6+elaKl+/kbVeD3qvBuEwsTe2Do3HAAdrfUG/j9erwIk6gha/Hp9yZlCnPTX+
+ VK+xifQqt8RtMqS5R/S8z0msJMI/ajNU03kFjOpqrYziv6OZLJ5cuKb3bZU5aoaRQRDzkFIR
+ 6aqtFLTohTo20QywXwRa39uFaOT/0YMpNyel0kdOszFOykTEGI2u+kja35g9TkH90kkBTG+a
+ EWttIht0Hy6YFmwjcAxisSakBuHnHuMSOiyRQLu43ej2+mDWgItLZ48Mu0C3IG1seeQDjEYP
+ tqvyZ6bGkf2Vj+L6wLoLLIhRZxQOedqArIk/Sb2SzQYuxN44IDRt+3ZcDqsPppoKcxSyd1Ny
+ 2tpvjYJXlfKmOYLhTWs8nwlAlSHX/c/jz/ywwf7eSvGknToo1Y0VpRtoxMaKW1nvH0OeCSVJ
+ itfRP7YbiRVc2aNqWPCSgtqHAuVraBRbAFLKh9d2rKFB3BmynTUpc1BQLJP8+D5oNyb8Ts4x
+ Xd3iV/uD8JLGJfYZIR7oGWFLP4uZ3tkneDfYzsFNBFp+A0oBEAC9ynZI9LU+uJkMeEJeJyQ/
+ 8VFkCJQPQZEsIGzOTlPnwvVna0AS86n2Z+rK7R/usYs5iJCZ55/JISWd8xD57ue0eB47bcJv
+ VqGlObI2DEG8TwaW0O0duRhDgzMEL4t1KdRAepIESBEA/iPpI4gfUbVEIEQuqdqQyO4GAe+M
+ kD0Hy5JH/0qgFmbaSegNTdQg5iqYjRZ3ttiswalql1/iSyv1WYeC1OAs+2BLOAT2NEggSiVO
+ txEfgewsQtCWi8H1SoirakIfo45Hz0tk/Ad9ZWh2PvOGt97Ka85o4TLJxgJJqGEnqcFUZnJJ
+ riwoaRIS8N2C8/nEM53jb1sH0gYddMU3QxY7dYNLIUrRKQeNkF30dK7V6JRH7pleRlf+wQcN
+ fRAIUrNlatj9TxwivQrKnC9aIFFHEy/0mAgtrQShcMRmMgVlRoOA5B8RTulRLCmkafvwuhs6
+ dCxN0GNAORIVVFxjx9Vn7OqYPgwiofZ6SbEl0hgPyWBQvE85klFLZLoj7p+joDY1XNQztmfA
+ rnJ9x+YV4igjWImINAZSlmEcYtd+xy3Li/8oeYDAqrsnrOjb+WvGhCykJk4urBog2LNtcyCj
+ kTs7F+WeXGUo0NDhbd3Z6AyFfqeF7uJ3D5hlpX2nI9no/ugPrrTVoVZAgrrnNz0iZG2DVx46
+ x913pVKHl5mlYQARAQABwsFfBBgBAgAJBQJafgNKAhsMAAoJELKItV//nCLBwNIP/AiIHE8b
+ oIqReFQyaMzxq6lE4YZCZNj65B/nkDOvodSiwfwjjVVE2V3iEzxMHbgyTCGA67+Bo/d5aQGj
+ gn0TPtsGzelyQHipaUzEyrsceUGWYoKXYyVWKEfyh0cDfnd9diAm3VeNqchtcMpoehETH8fr
+ RHnJdBcjf112PzQSdKC6kqU0Q196c4Vp5HDOQfNiDnTf7gZSj0BraHOByy9LEDCLhQiCmr+2
+ E0rW4tBtDAn2HkT9uf32ZGqJCn1O+2uVfFhGu6vPE5qkqrbSE8TG+03H8ecU2q50zgHWPdHM
+ OBvy3EhzfAh2VmOSTcRK+tSUe/u3wdLRDPwv/DTzGI36Kgky9MsDC5gpIwNbOJP2G/q1wT1o
+ Gkw4IXfWv2ufWiXqJ+k7HEi2N1sree7Dy9KBCqb+ca1vFhYPDJfhP75I/VnzHVssZ/rYZ9+5
+ 1yDoUABoNdJNSGUYl+Yh9Pw9pE3Kt4EFzUlFZWbE4xKL/NPno+z4J9aWemLLszcYz/u3XnbO
+ vUSQHSrmfOzX3cV4yfmjM5lewgSstoxGyTx2M8enslgdXhPthZlDnTnOT+C+OTsh8+m5tos8
+ HQjaPM01MKBiAqdPgksm1wu2DrrwUi6ChRVTUBcj6+/9IJ81H2P2gJk3Ls3AVIxIffLoY34E
+ +MYSfkEjBz0E8CLOcAw7JIwAaeBT
+In-Reply-To: <auyXeApQlV_CMQDm@gremlin>
 
-Oh, yes, I missed this.
-        /*
-         * We are reading into the swapcache, invalidate zswap entry.
-         * The swapcache is the authoritative owner of the page and
-         * its mappings, and the pressure that results from having two
-         * in-memory copies outweighs any benefits of caching the
-         * compression work.
-         */
-        folio_mark_dirty(folio);
-        xa_erase(tree, offset);
-        zswap_entry_free(entry);
+--------------83icaf8RpTmC0OcPxXVMnRa7
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-For zram, it's a different story. It depends on
-the final swapcache release and
-swap_slot_free_notify().
+On 11/5/26 10:11, Lorenzo Stoakes (ARM) wrote:
+> [ please check kernel mails in MAINTAINERS - my and Liam's at least wer=
+e
+>   incorrect, which makes it easy to miss. Fixed those up. ]
 
-I suspect we could also do this by freeing the compressed
-copy immediately while the zram read is in progress. However,
-since zram is a block device and can also be accessed
-directly through its block device node, this might somehow
-break the expected semantics, although it could benefit
-performance.
+I thought I did that, but obviously I didn't do it properly.
 
->
-> I have a different patch for that: zswap marks a swapped-in entry as
-> dirty (so it gets swapped-out again) so I was thinking we could use
-> this property to free swapcache metadata in that case. I'm pasting the
-> diff here so you can tell me what you think. Anyway, to answer your
-> question, yes I'm taking this over but before I send that upstream, I
-> need to test/benchmark this approach. It relates to
-> https://lore.kernel.org/linux-mm/20261022145615.2184343-1-alex@ghiti.fr/
-> where poking holes in the swap table currently results in inefficient
-> IO grouping.
+> Thanks for the report.
+>=20
+> In general linux system calls do not guarantee compound operation
+> atomicity, and any assumption based on that is incorrect. If you see an=
 
-I'm not quite sure we want to free the swapcache metadata, as
-it could also be useful, for example, by avoiding the cost
-of allocating a swap slot and adding the folio to the
-swapcache when it is swapped out again.
+> error - the operation failed, perhaps partially.
+>=20
+> Further, a failed MAP_FIXED leaving gaps was the case for most of the> =
+history of linux. Avoiding that is infeasible.
+>=20
+> I advise you to review the NOTES section
+> https://man7.org/linux/man-pages/man2/mmap.2.html on MAP_FIXED - your
+> suggested use of it is not recommended.
 
-So I am really not sure if it is correct though.
+Does that mean that MAP_FIXED should be deprecated?  It seems that the
+safe use-cases can all use MAP_FIXED_NOREPLACE, and that the use-cases
+that cannot be served by MAP_FIXED_NOREPLACE cannot be served by current
+Linux.
 
->
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 2112576a70a2..0c4598326d2f 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -626,10 +626,13 @@ static inline bool
-> should_try_to_free_swap(struct swap_info_struct *si,
->                 return true;
->
->         /*
-> -        * Free the swapcache only if we are the exclusive user and
-> -        * this is a write fault.
-> +        * Free the swapcache only if we are the exclusive user and this =
-is a
-> +        * write fault, or the folio is dirty: its copy in the swap slot =
-is
-> +        * stale then (zswap loads are exclusive and dirty the folio), so=
- the
-> +        * slot only holds swap space.
->          */
-> -       return (fault_flags & FAULT_FLAG_WRITE) && exclusive;
-> +       return exclusive && ((fault_flags & FAULT_FLAG_WRITE) ||
-> +                            folio_test_dirty(folio));
->  }
->
->  void folio_rotate_reclaimable(struct folio *folio);
+Specifically, if a MAP_FIXED mmap() fails,  the mapping might either
+still be there (in which case one _must_ call munmap() to cleanup)
+or it might not be there (in which case one _must not_ call munmap()).
+There's no race-free way to tell which is the case.  This means that
+MAP_FIXED is unusable in multithreaded programs, unless one is okay
+with leaking address space.
 
-Best,
-Barry
+Are there cases, such as anonymous mappings, that cannot leave holes?
+I believe there are some programs that depend on this to handle
+SIGBUS faults from truncated mapped files.  If even that can leave
+a hole, the only thread-safe alternative would be longjmp() out of
+the SIGBUS handler.
+
+An alternative behavior would be to unmap the pages, but keep the
+address space reserved, as if the mapping was a PROT_NONE anonymous one.
+That would avoid the "it may or may not have been freed" situation,
+as it would be safe to retry the mapping or call munmap().
+--=20
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+
+--------------83icaf8RpTmC0OcPxXVMnRa7--
+
+--------------v3Fk1rd1TVAVxiYTaToqVCZE
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEopQtqVJW1aeuo9/sszaHOrMp8lMFAmrtGFYACgkQszaHOrMp
+8lP62Q/7BcuZTzNzDjqSulu1PZ3/tUbs2jPgRtVT5LhsEf2oiGxL2EdiAWkv3BjC
+H+8rqHEku3aP58uLRffqPi9kZY9Xa+V8OfD65coQFYoAjjNwUw9FunF3xlkz16Qb
+uo4J0RpFHdJ28SIJI3soCLpyIblsRrsVngml34smiRZ45cpiN7E2D0w3/gxe5hkm
+WCkZTlLEzIwTVHNp9ersihO/42l9fgwCoTg0mYhwRb6cBtQVe/dnzX43GuSbXXb6
+nXmS3olDR2vkdIejl6WHwLgspT4nRcZMotr27kspanPKfy9CXF/bvNjyTdIbnmcO
+duL3/Giw+FiFDWo3NreNgcviFYA0xwitOvyzUhkab+Hc0V6H8ihx1C59E8+cUPgu
+juZZg+Vm90eCIx7UkSvIEVEsXi1wcnLBvAJiLOT8Io2kqQOs4RaelRkTRosawY8u
+SVzdnkSpHNcd9bQ/KTKRZ6LaT1//M8TO9zIQj0RW3v67J4nApgEh02LK+zQSO9z7
+BnryJdGTann2cQkth8VNyTLYN2VCo5UW8gYh1fvQFjU0Cp3aP87tKxwRC59Et+kq
+LEaNGRSNYAb65WN6s+SYq/+OxAA60qB68jTIHMbfYbL8mXmlEf+lPctmihxE96YG
+vOIZB3vR6DsPbjyl/ZlPhQptzUt6nwuMMTmX85RgNSHwICvq3To=
+=aUcF
+-----END PGP SIGNATURE-----
+
+--------------v3Fk1rd1TVAVxiYTaToqVCZE--
 
