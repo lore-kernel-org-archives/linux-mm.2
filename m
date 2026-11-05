@@ -1,97 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF924606A32D
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59577606A32C
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dxKzc6mj
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RYGzJ9/p
 Received: by kanga.kvack.org (Postfix)
-	id 0B4F06B05B5; Thu,  5 Nov 2026 07:57:15 -0500 (EST)
+	id 770016B05B2; Thu,  5 Nov 2026 07:59:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08D7D6B05B7; Thu,  5 Nov 2026 07:57:15 -0500 (EST)
+	id 748596B05B7; Thu,  5 Nov 2026 07:59:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F0C5F6B05B8; Thu,  5 Nov 2026 07:57:14 -0500 (EST)
+	id 63A226B05B8; Thu,  5 Nov 2026 07:59:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CF2866B05B5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:57:14 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78DF3A0A0E
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:57:14 +0000 (UTC)
-X-FDA: 85401065988.16.F3F4F9E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id DBD4440007
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:57:12 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dxKzc6mj;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 44E966B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:59:43 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB0ED140594
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:59:42 +0000 (UTC)
+X-FDA: 85401072204.29.AD5386C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 413FE40005
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:59:41 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RYGzJ9/p";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793883432;
+	s=arc-20220608; t=1793883581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ReGNOaOBCMvIg7gK/G7qltHWui+c1mv7BQpRUdRVU2o=;
-	b=LvNobnSjTorMc86DnBOWnlE1a6nwFYLU0BqbIOUhesIf3WPpZLfGgT+aOXKUnsDxSWdK0p
-	eP/TRzNubJSem+130tXbaeFNOjL0zuaXLBBVSHxFK1liVOR88SnB3WMAb7KZujsaI77Iqu
-	ftH0EOo3OBV/0DTWNOy1oizIEw2N5hY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793883432;
-	b=U5shRobRTBOZQ+ZPuuqZpIcanDTk4383BfBN6Sh3bulFP1w72lXIVt0iLH/7tMqVp7Kvwj
-	9RRn0TbMlkEKfhUlY5cOfvitYyLoFOw3TRfgEOQFdLsMcNGSqedKVCzED6mjoAM+pFDdsj
-	+XAyC4kc041ske5PLRzp5WvuujAoxIc=
+	bh=z/gziC0JLIrvCdp4GmTMosiOJuTAZ2fDyAiYOPUD65U=;
+	b=L0VtkrXk1MDRKsesuLYcew1sA0xgSpckYOC2oDryVVqFM8LsU0X4oGeC8OzW863u2VtAur
+	bOQYOmyz1ZKfeJkiQqPYsU1fEqcLotqOlAs1u7LKyIu/bSy+JrL+5AvNOCDNFMy/htf8s6
+	HaBtzMN+9ykv+4LZzl1i8aOkoQR3ZFs=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dxKzc6mj;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RYGzJ9/p";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793883581;
+	b=cauPwM6fv9z/4XtVSx78wLGdMNaOhCGoDU5zAJ7h7BeJZ6qYEBliZ/bZM/23arhQi0FCSc
+	fWBRRascd2EbdA/G/DPJJlKYgYbRCKeSP4sXVveqYXQdhXKMSI5QFpipZHUmbHZ4evMTJ1
+	Jr0LWkGHT/Twp7hGHyOFz/IJ4Y87tpE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5D882605F4;
-	Thu,  5 Nov 2026 12:57:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 010D61F00A1C;
-	Thu,  5 Nov 2026 12:57:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CDDC40572;
+	Thu,  5 Nov 2026 12:59:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19611F000C1;
+	Thu,  5 Nov 2026 12:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793883432;
-	bh=ReGNOaOBCMvIg7gK/G7qltHWui+c1mv7BQpRUdRVU2o=;
+	s=k20260515; t=1793883580;
+	bh=z/gziC0JLIrvCdp4GmTMosiOJuTAZ2fDyAiYOPUD65U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=dxKzc6mjgpEI/gtpOZyuQeLjQvddHurnQsGDoMpXnjknrfY2hKAiYfqUmgA557koH
-	 e7jmaCP+YJaAZRcy5orhOkgHcEFid9SLfIXq5prOVlqYQVEZZwtmz9vUtd5273iQxI
-	 UKxAfeO0bjeO9WLaog9V0U61zMaIpiIZ7UeSyqBH9eym1B0XA4KlbnQtdJ0bW7qW6B
-	 Z1EHYFW28+7LtXyj9olREmKA7WH/g4bDfXZqlXZTqiELFDFk2194EltzQCAk3l7bUi
-	 BrmfDnlOnDQgNxM40UatpYAMCFdANbrAM6XbiFTbSkp5ZSQsr91noJlmtNvMpPf0XO
-	 IQZ1KqUo2KWEA==
-Date: Thu, 5 Nov 2026 14:57:02 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: George Guo <dongtai.guo@linux.dev>
-Cc: pasha.tatashin@soleen.com, pratyush@kernel.org, chenhuacai@kernel.org,
-	ardb@kernel.org, shuah@kernel.org, ilias.apalodimas@linaro.org,
-	akpm@linux-foundation.org, baoquan.he@linux.dev,
-	ruirui.yang@linux.dev, guodongtai@kylinos.cn, kernel@xen0n.name,
-	graf@amazon.com, liukexin@kylinos.cn, loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	linux-efi@vger.kernel.org
-Subject: Re: [PATCH v6 5/8] LoongArch: Allow memblock arrays to resize
-Message-ID: <aux9Hm0QFJLUDPWv@kernel.org>
-References: <20261029172956.20791-1-dongtai.guo@linux.dev>
- <20261029172956.20791-6-dongtai.guo@linux.dev>
+	b=RYGzJ9/p0iFShU47y10rrIgFqPZdTiGgb9DmbgiqklepkrzDPFw2kBC9/2zqeWEUW
+	 viaCxlogpvwX+3aCC0Sd8lUceLDljigJa9iLlCb9F10Yjlhj3iUQLny2d4YgsfoDa3
+	 9/gwNyB3H1+V9zLO+cNJVvrzMZehr/KQStMXx3w7NBURr+o996im+MYc36G4g+NxEN
+	 se/C/q0CTuMLefGDtpMkVF12OHR0TuBO1Ct6i9ir8QX5vXEXIKFI4HlBRW8n78msRp
+	 hj62W4vFhO49wxFNmhDB+OVuLmD4BbTZ7PH5QxouxT1NQe2LKzMLX+QeyIgefcxJfB
+	 DoRApwQsIJc5A==
+Date: Thu, 5 Nov 2026 12:59:38 +0000
+From: Harry Yoo <harry@kernel.org>
+To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Hao Li <hao.li@linux.dev>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Conor Dooley <conor@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>, 
+	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
+	Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com
+Subject: Re: [PATCH v3 01/10] slab, kunit: pin test slabs by an extra
+ allocation
+Message-ID: <auxzbxa40B6uLAyN@thinkstation>
+References: <20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org>
+ <20261105-slub_tiny_rework-v3-1-0484ce59eabb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261029172956.20791-6-dongtai.guo@linux.dev>
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 8zsi46hufrfgbkdr16gwqfifsxbxjcmg
-X-Rspamd-Queue-Id: DBD4440007
+In-Reply-To: <20261105-slub_tiny_rework-v3-1-0484ce59eabb@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 413FE40005
+X-Stat-Signature: bkzj55pa6h89bwmd79xqebj9f9q4nece
 X-Rspam-User: 
-X-HE-Tag: 1793883432-10735
-X-HE-Meta: U2FsdGVkX1/z4x1oNVkSgP6bkI5lqTFMD0r8SNRkigXCRlRfXjAkXlrad1yQlmdWyj8pjB7yDEim824k08CJbuWrch7tSfZ5yhXww228OxbvcJZYZIKu1Qv7OfUT6GF037TKR/DPJdNj2blWYxRCrtm5O8vS0dh+zPCHPpaPkHjs5hjlJcRgXS9aIFsK1U2l/toTDsnUGMD0Tjqwe9rozYnTcZTGdHFt8jNnbvT8sIgd+4MLkYxVTprsuizwrhb66YpA9LqDMiDS66PgiU02XF3D7V30/8qqCPNFzFmjrjyc9LpWoeLtXAr2crt9lrMTRNsJYtelPlEABBiP7Wn9qTyWfwIWcu3KDWeGsAwAVVqAk/sye1Ipx9bnjnwc28RYl/NzUy+XNPW4m3sbvBrN0iSCftUZ8uamReT1W+ckYlCqvC7ULdIgDTQ9p5iU35ExBBBUnVfaf3LTe6QDnwekU9D+I8ILlDaGUMGw0Vug+lcZi3fNnHbm+HLNa6dXBC7NZf0I750n4K76oGuqJR2OCsjDsIRaFbjk1XlZG/gr3H60YO0JkfSjtnZYfN/o7Gq5quXEM7XY3r15yqtz+TfdKFBHQz0QaMKfPCLUatc0XfdEq09oISQcJm+KEpV2VNjqEb2GByFS3v3ZCmVUDXXUlKjg1VyDI34FEGCWtGOwTUS3fnDcRT9KTmqwtbKvBa+79bo8Hpg8Etkk5u8YhSKfOF9hzqbWOj2AhLAR/mM+CCOTB7tdU3r3EPr0MRoiKimwNH+8l9qF0bdOz2ag4Tkj21ZwD01x0q1MUKUZ7ADJA5Z4MeL038pY6a9jbbOhaITnfMo0g2adD6dgxLoiOUPkNjf0JsWdFWGJ8sGTAEYKq9DCBtYbRQdXFfEQDNUGz214Y6ZAp6ZgYbkFXsC/P/UtUMNLvmZ0MJ8ummT56HmRz/Pgf0IQRjDuhpqQrCoWhD5vqvm8y9W1Pmj9WdgAbkl
- +82sz6AO
- agBjthAWh05n8Az95rrpXVQAJeliVRCkX591WoayZ38PTw9DL1xUV4PhBxKOBJjydkHXyQyRBooGG1T+GX2ynxCSd7b19wYs+lQ825gtNKjNyxuz2WETQagCdUkR/MR/jom2V0V2rz9m8yoGkLov13QhjOgCoprQ2LaKhXDfMTonv+J2I5NO74yGTEsb4OSiGlIsAK6/H04iDQZBE8ztmUE1ckIilQ2fcmpsPUr1GKc6bFkSw6TnB4e5m3DRYTA9Ww0yr
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793883581-354356
+X-HE-Meta: U2FsdGVkX19hVJC0LSA5p+BRLC7IaLilZD+G22cMyQwll5X1ZsTD4uvGdEYbc9++SxwIfIYwRW6AXKL92VlpEUQYeK0UhGJhL4whLixZsqvP2ZJzdqyzbcfUj+L96fLjUheLY/6MqH8I7TsH+002WN+0uHa81Pkpqy4VJTR8w3qc0jinjyaUOuiz6ye+O4i2TcJ+ECV3rYpn4PQdL5PeLpTYHXRiUB4bZT7n+UgdbQughCFW4DhpWSSa/GdU8vCh6pLtP067MyHN9AIULQUx0TXMD4gr26nELqxFCKAyHULJ3ge9NZ2oijGkgtCiReC9TcWuDewq38O33JNLKSp+R5tMLXGjqW0QHkBlFUB1beiZkCmxlz8ecHnHxHrnykR9+gg9Aetot2lB91p38mPHlBWoiXRbj4Tw4yxfctihoM2x7H8EwQxNPV1saiEfn1NhqrG2AD5WmJi+FOAv7wU9RlZ5IXljDEZmHaDkia3q0X/zqTE914SPe4ZnO4LpRs5FG3b6YIcJ2uAz1M2U4NHdqDiVivAsKtLAoJaMmSw2ZsOFgsp1PtO6PAk3TfscStt16A8Ragm/FN0N+FwwFuwtahRXn/zCCqWUX5Fzl1TAHXZHjIyeTMMqi1vrDLEZujOBd2E2eFNbORPZ8YE1nHt15BLuECGrOxlF0oaO78L0MBDvylcub3TFSYCnie9rNOFEI75fLa74AZ0EQr3DiCu3+RTF5Y0PVoRcFh0G3ynaTjskh6JEoLIS0Vw+S4SvpC0iixCaSPqXAhjuSld3Kbhtv4RNVONzoUaqutjK+tnNCyB0gcfKMZ3fSJJVU7AH9uVRcm+ztysZd9hx9XmXh7Evbv29welFddeqmE7xgwDuDqBtAtqIuSXb21GLBQwEqhK4zzppUCKr7KNkUDUfS53MvRVWbtSEm16AuRBiR25tVR/IDQkydxgouSeDTngmfcVS+IwnHXiua9k/xb5Kw2S
+ 1XY3hpgf
+ azAjXCRxMKvBYLc1QD1LY/LMrwoS0AAV990M3655Olf1zfuawcgQ+Tz9J7NHJMr+2xt7f84z/w+WOHrSZvCN5Aae6SMExh8VBjdviqcYqVe3iS+WJJ1d/JPlf1VbqIJ62f+fatH3HXnsKjJKlrwGp69LWDlMM73TpsE2VeA1H+LzMUGyEeL0Oxk1zV/GwaA9Hj98C2umKioR2fUzhPU7zNNdLmEk7ecirWEAkSnLleTmrNblexZhNtIg1nLZt9cHD2YJAIH9Lkm3ZUypR+btO3PL5ykZH1niGXLAafjq+IW0XSZ+uCh7LUiM0fz0sPY7DfTMIlSuDildNR+TZBdKwzulqdWaKhRV1qqhG+G2PjQU6u1vwZmBYFWlanUVSy2Gv3ioh/smYAFNP4vMPp0QZb5SIONipbj/Dr5rf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,21 +100,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 02:29:52AM +0900, George Guo wrote:
-> From: George Guo <guodongtai@kylinos.cn>
+On Thu, Nov 05, 2026 at 09:43:50AM +0100, Vlastimil Babka (SUSE) wrote:
+> Several of slab kunit tests allocate and free a single object from the
+> test cache, perform intentional UAF actions and validation, while
+> expecting the empty slab to stay on the partial list.
 > 
-> LoongArch never calls memblock_allow_resize(), so the reserved region
-> array cannot grow beyond INIT_MEMBLOCK_RESERVED_REGIONS entries
-> (INIT_MEMBLOCK_REGIONS + NR_CPUS).
+> This subtly relies on non-zero s->min_partial. It currently compile-time
+> defaults to a non-zero value, but in theory a sysfs write racing with
+> the kunit test could change it.
 
-This might be something to fix independent of KHO.
+> More importantly, the upcoming
+> CONFIG_SLUB_TINY changes will make it possible to run the kunit tests
+> with s->min_partial being a compile-time zero, which means the tests
+> will now do unintended UAF writes on the page allocator level, and also
+> report failures, as flagged by sashiko [1].
 
-Huacai,
+Makes sense.
+ 
+> To prevent this in a robust way, add an extra object allocation to the
+> tests, that will prevent the slab being freed. Use migrate_disable() to
+> prevent migration to a different NUMA node, which would place the
+> allocation to a different slab.
+>
+> [1] https://sashiko.dev/#/patchset/20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org?part=8
+> 
+> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> ---
 
-What's the reason LoongArch never enables memblock resizing and why it
-defines INIT_MEMBLOCK_RESERVED_REGIONS to include NR_CPUS?
+Looks good to me,
+Acked-by: Harry Yoo (Meta) <harry@kernel.org>
 
 -- 
-Sincerely yours,
-Mike.
+Cheers,
+Harry / Hyeonggon
 
