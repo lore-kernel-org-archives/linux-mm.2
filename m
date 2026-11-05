@@ -1,153 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D97606A336
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97ED606A32F
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YlMc4Yav
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=qDOE9W2E
 Received: by kanga.kvack.org (Postfix)
-	id 81BA16B05B5; Thu,  5 Nov 2026 16:31:59 -0500 (EST)
+	id E0EDC6B05B6; Thu,  5 Nov 2026 16:32:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F2EE6B05B6; Thu,  5 Nov 2026 16:31:59 -0500 (EST)
+	id DE6BE6B05B7; Thu,  5 Nov 2026 16:32:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 708E46B05B7; Thu,  5 Nov 2026 16:31:59 -0500 (EST)
+	id CAE0C6B05B8; Thu,  5 Nov 2026 16:32:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C0B96B05B5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:31:59 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id D00DB40C6F
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:31:58 +0000 (UTC)
-X-FDA: 85402363116.24.4E94EBE
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 112491A000D
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:31:56 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YlMc4Yav;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793914317;
-	b=MPMZ0fKvhkYMI7zcrhiNIut+liD8I/XoZw+d5b4XgbGGBDO7gLM0c1P/Efmn/gJKjbKaIu
-	QSW/8JAFoCw4yhWWPe7dZTeKm4rfT6z8eI3lcAN90MWAyKdZ14c+wNV77K2BSsg6z/DsX5
-	yzYRTUIaavJMnF903kQwwapXPkQ+PY8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YlMc4Yav;
-	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 929006B05B6
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:32:01 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 116921C468D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:32:01 +0000 (UTC)
+X-FDA: 85402363242.01.94C0D8F
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 54AFEC0005
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:31:59 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=qDOE9W2E;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793914317;
+	s=arc-20220608; t=1793914319;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HChmTqD3l76D4xTwaDId89Adh4XK1U9R7SwaL6QQSiA=;
-	b=TsvLllKeqVohzHLaEUZAafHpRwcqRvlY6FCJsFS6LEwQ4XL6c/QUIz3oFpOncpBlH+4DDh
-	uvdKmtLSWcvdH2DUgggESG+70eEhywAGqufbUBZmmL8+xu+MUMqw/J+roc3WwE99Xzfftt
-	9GD1MMSPquslpr+oiOIGYFxQ7glFhYc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5215D601D5;
-	Thu,  5 Nov 2026 21:31:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C30E1F008A2;
-	Thu,  5 Nov 2026 21:31:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793914316;
-	bh=HChmTqD3l76D4xTwaDId89Adh4XK1U9R7SwaL6QQSiA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YlMc4YavmcnzgGqbTg8xy48BhuWYv3UOv9e7rnmekOka0vxC7n1uK3Z1d/ertyht4
-	 gCAvHw7gGAQQROPopfRHJgoy8erMLDNpeAUwUkkbW6t0RvoH48kScoLYMbrr7WpxNt
-	 HxBkoPoow43LyAF0PNefCHawtW6nY6W2vaF8YTFGm+K0GzQYI3z4CQ4GKTge3YbMig
-	 n/jqvmxLm3mfdHdHzkKty6LwIjif+xouTG85uifDRCDzkMDa71N4mrbtT8dOCeT1yr
-	 +VCS8ipUCMfQC4Pu2gDJhnDr04M5LDYAZziTDD57o3hVj3oObrutNSWPu8zZA/B6Z1
-	 iHElNiOHvDCnA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 05 Nov 2026 21:30:52 +0000
-Subject: [PATCH 01/13] mm/gup: convert GUP code to use vma_flags_t
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=v4J18lKuKOIC+R1cR1tFexi0oiMBhzyNL127DHXVUEY=;
+	b=ll443atFoCXwEgIrCpqJwoXC5EKe5uqZWK7Gl8YEKS0UiVz39ZtBP4LeKBFTwSuLliOmEE
+	J5gTgmy3GMKdm9zbWvqvS19YvtKACjs/P/UsJcyFaBzUh/4GljmkgbFZKzwHErjMQIJF/K
+	fVBif4L5DIVCL48zFiFtBulWDtOQOWo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793914319;
+	b=wuFiKb6dXKvD/fbiNGBIxfJHrDi+GA8YRIAaRACCG62LGVVVeh4hX3V/R/VBViGhWsj38H
+	YfhDMO9UmxwecGxqgzpzVul0i6x6T3HfenoZZYShQCYT1BwUDFD42M9j+XKib92uDf9wQd
+	UwEJSe9FLUZZ3L80y+OPOUV1g0A5UHY=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=qDOE9W2E;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a3517554f7so54365e9.2
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 13:31:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793914318; x=1794519118; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=v4J18lKuKOIC+R1cR1tFexi0oiMBhzyNL127DHXVUEY=;
+        b=qDOE9W2EpuANiaav9B6xnlBY5NBxuJhu6ufJnFo34iet1hIZ8gKy24Ag/BdHi8Gm3/
+         GF46ot0215PpnCwnDJtzazKp1rf6gpba3uzrDW35RFYZ8S8NNW8p01ReVndTkXdMeTTL
+         RDgI1eLpNhn8BUXerRV/z1OqmjDg5CHLVm2J8QbzRIB1owkC6Ei9xctoG4PxdXJosa9x
+         nRIZsR3L7vDb7KOx+AvuOJq/m4X2QFguhSnb+lcElYid6GhnipsIrcmzwzf03d1dhkCn
+         0IRB6XakX3AR9XmmlbBtBaJEFZhVdwjPgrGsaHRneruRi0790a11/3UL9zAlctY4ZZlc
+         o+hQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793914318; x=1794519118;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=v4J18lKuKOIC+R1cR1tFexi0oiMBhzyNL127DHXVUEY=;
+        b=2fSS08LreV8DeJezDtk7CXUAwAC9lby7kOgMfnH6INC0hCtniI65vrHz/nWdln5zga
+         d2pkQ+XCGdqI3CsazmcapqiTh3sYZ052us2+fv0OvTD7e5agpgVsaum4WpXpdIFunncw
+         NtM1y+SZt+rMPiaB7qXiaE9CQffLS2wih4fpyLL+MpvBRs1pJV33nwsGs5gBqHYkzxMr
+         SDcoM2tIy+CKBbRdDaS0slBwrOxBs+8rSZAvR1NXLBPxKvXze8ns+NuEsgoVArvkK2nX
+         DvxEwJSARy/k6jYdJgtmv2bNmfh5Mz3BIH6F1ijOX/l3UszvvUHXfGzg2+B66lhF19Ch
+         OmYg==
+X-Forwarded-Encrypted: i=1; AKwUvBxn75cixbDFn5V4TTEjELGfJPf3Ix2UmttPRgTsDJie5HofZwxIkRQnjedcZtNqLpBMgfR7AT3aaQ==@kvack.org
+X-Gm-Message-State: APuU4Z+2pKBoaEdCQdZX14FB0mq4F7bMPmXDEmoAcqn6jhJj5eaN3Ds5
+	hkNkJ6DsG1RaCv8+8WtufNRE4qG6BvqLzsjEKbvU403RcW1IXJX1ieAF
+X-Gm-Gg: AYBFou3vEotMsuyod1TkMf90si7C6ocAtLh3zkZ7By+Yi+/1T2r+fwjJmdFz7D+Pym9
+	xedgtV9x+Shkl++QIB4Vgsm5jJqI6Wo0bjQMRNA/YkJWl4iubq3mnvNUAy01eHac8R4E1JYaxoS
+	zXCRxEDstuzrrZ/JW52H4EDrbWHIS9ie0TIfMUqzhE82KEKGl25vk4Dj2sweknB+iZ0Bo472ZOr
+	A5FDjrjeU9EfeusnNUBXlDqgloVRRykOdEatuH0NKcdzbf+FfcqE153SkS1ZQSAeJO2nIQAeyNy
+	augc53dK6VZhB5kvU0TZB6Rw98RF4s+rRzETQ2fH4Khv4IXKQc3LbE7zDfMzNrhMPNSmkYscn85
+	C2x1ty35SYZyNZrQSBg+xC1p4ejVSxkGyg4LPuYp0srLFX9idKmH8DSQD6hGADWwV6QMX2KJDUe
+	DwfJA4fbv52ISXrzl22dJ3fDAAmdygjQ73I0iPhnLJa9osm5/wJbGJZ46bMK9NveuKYV2kxW8mK
+	lcE3n7RvSWx7OXqP5tLOeMH+xzbtJjJqJNW89Uw62H/AyYMSPPtLxMJpkJXVZun577x02AS5mnK
+	c4sRDVKnFggrpQ==
+X-Received: by 2002:a05:600c:46d1:b0:4a1:df52:3e36 with SMTP id 5b1f17b1804b1-4b6dfe8f4dfmr6379295e9.27.1793914317723;
+        Thu, 05 Nov 2026 13:31:57 -0800 (PST)
+Received: from nobara ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b6e28cce1fsm7654035e9.15.2026.11.05.13.31.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 13:31:57 -0800 (PST)
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+To: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <kees@kernel.org>,
+	Changyuan Lyu <changyuanl@google.com>,
+	Alexander Graf <graf@amazon.com>
+Cc: Tony Luck <tony.luck@intel.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	kexec@lists.infradead.org,
+	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+Subject: [PATCH v3] memblock: don't allocate new reserve_mem regions on a KHO boot
+Date: Thu,  5 Nov 2026 22:31:49 +0100
+Message-ID: <20261105213153.9572-1-azpijr@gmail.com>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-late-2026-vma-flags-v1-1-0d3cd15ab75f@kernel.org>
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
-In-Reply-To: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
- SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
- David Rientjes <rientjes@google.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- James Clark <james.clark@linaro.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
- John Johansen <john.johansen@canonical.com>, 
- Georgia Garcia <georgia.garcia@canonical.com>, 
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
- "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
- Roberto Sassu <roberto.sassu@huawei.com>, 
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- kvm@vger.kernel.org, damon@lists.linux.dev, 
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
- apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
- linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5850; i=ljs@kernel.org;
- h=from:subject:message-id; bh=bW54hq6rUX5mn84GnflVBnxa46MVVq7so69BlwTkM0U=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLefF16/eGzghS9c2a+/VuKG9T/c/1zfuM/o+P/mkbeg
- LgD/3/e6ihlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEmi8wMpyRDTLtTTnO0LZo
- /YpNb7yb13n0pyWu8LqqtjaoqkWbwZmR4d3GRbvaD8eunFR2tC1T5du5REvjsF4+70n2No+9xV2
- 6mAE=
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: ui5gkdjjoxmxqmc5ra4t47m1b5o1bdk5
-X-Rspamd-Queue-Id: 112491A000D
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: d9djhhjdtczrkfmi6j4o48trhbb9fgn9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793914316-10705
-X-HE-Meta: U2FsdGVkX18boBJh0BfYxH3vnaLWJ2laSk0XjRfe/zC27GgCzc1bcvEVso94c/w4gCYAo6FZP0usY0U3qaJWvl5gTcWeUtHuPtbYPeKu9qH+IMhxQtOYyJCmCpKCdZj2gjeIu8gRbrtiEm4z6QMLZVItDp+ZZSntqH4jsqhdNsv5nxS79FzMXsBpzjtI2x5vkJrUsI1o13EtJfI/DAGty5ZyTmltOA5rn5j6OH1OpcOjMdwahLaqNiGd6SrAuwfNHrVvL6IQowu9DB0ZmoW0z5S4QyQoQfbXsPDAoeEOU9DI0MDmG8P/uLCttv7SXRHCAkOeMn6AdVpyRSRB7Y4ZRHT48tcJLu+XWrdmji64apNJGTQF+wDBIGTtwMObnq2RWZkdd2AL9YN/hIQNqPIioa97ahGmu6N52MafUqznNjR4Ly7dwIjfSkOKliQRis+OykEwvVwZ2gLDNLIBBCJzZYvbVS1eq/Z2SHmN2LT+dDiIhVMHYkH4kJRNDmJoPto+xxfLOp51pukR3uwg3NzES1WBhvVS/mvXH0k1f1mvz+yOz0AhqJTabXEaqfrjx8LOogsyEB9l11IlvEp0PyyBhXjiWpkCW+X1n2xs9g7thXR+8d7/ouylU1bphbPyYomjBDosO7XGCgtR038gPJFS8vvs5Rzwm0eVwcCqESF8f4WD5OuXS6wFki5fDWNyddVoy1mzDZWUudVFSdv0aHy+Gvk2J2/lkAUQtxiqVbP/dOtDfaZdVJ5BhFmWFwAaTdRyQghaoPmK4aaQKwF5wLagFmPa2LlbtktuanmP0Yh89DtFpiYLGfTMj6Vm064JVOtog+V9LoJ/m8EIng183z1712pcYvWjOIYW1fFTiA7gAGaQuM2bXZRTDqzh3ij7S9+JdsV9EHfPaGAce5nhsOWbc9tMCO2pKRuEObeS8dtVLwBFERXhDzlmTHZZwr1jDIxeg4vbFRcBoXJT9RQswk5
- 1OO6qTU9
- ufCTDLmU5fRE3BCndHEmUOBMH8BA8EXqkz4Dao6ggymGxgi8cYfxgmw2Y2UjB1GjFpvS19M550osDs1lhzDZRUKIRdkgeYAV02v8B9U4bfKKT5AKHyLb0doc/1J4ccpdw4BPXqRacA4ffcU/EnhZkGHPKi/8ljY26CX7eQs7m7uOawzLJfQDL3ub/ZZ8iPFiEo0hoIfCLADSK4LOE0vr6PA5lnBkjdRxaXxRtfjBob0K9peYcl1yT+Ex4iLsfMDhU6epFiz/ziAv3MVPgGhEDN2sdHlXf1GsDO4VgVC9gMg6BsgN59VwhDKN/e/NYF60DBYXjgdOH3X+T5+1pb/wkD+dMY06jWGowpYWz3Jc3lYdMQmY=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 54AFEC0005
+X-HE-Tag: 1793914319-12773
+X-HE-Meta: U2FsdGVkX1/fsVb+V5xkQPfrSPNDxGuJ3aSSE33K8qP3es2CpuX7X+06OWkiHhQkKCVsPaS2C84ZHw6RUFjCwEPBuWCZ4qPAJQr0ZRaTGdNUWvrnrMjzK+BI82lKYN1qzlKzBbCXhbwLgXAttbIwBtPNB5qyjLZ0nX7HJeJXjDru/GSiI9yqkgcrlCNgLmSROuOzapa5SW2qXOcUzJ603ak9yeI2p+gBTvrY60CJJTzSe0wVxlYWHNflsuATP/FfIO1i+pk24AemLLGWYRr/2uCMrSxgm85/lUDmtx7gMYrAmHIN7DkvaOMLr/78FhBl/ZqjjBy8K4PRIXvQbw1K/BY7XAVZ8WjDOioOPti2/p7i4Km6vTaJP1TWnG1//qaWdn02iJs2xhujxsIova3ZQH9yFeQbV2GmyYlGKWW3KZ8fGdbB6VMqT4zcFsFKICIs+pKTAyyuu/ziNkRV04itetWbu+RXvTkCZ08btv2+jdZ0ojy0YzX2iuIn/emHRcMjFl+udsbkLV/ba0cp5PALMAFSEYuseWGat5XxaWmzRCio9+T8wQDpn1R4Kbz5fF9BU1MQ+P5V9Stfsq7D61DVSIf75E8nj1tL6LfnniYNKrfqkACZa2e/dsWe2T3iru/o2SKcX8MqYi1C5ABUZ37rPNYdczxJJqEc7qd4WpQbAfLHnOZ6NBQ9a09HjOhlYOGUq8qzdKbjfibL5TGWg2h3XNNCIJ3nOMBW922cxoUWZGvNIX3N4xXev6MtyxmKEeBHK0yVkW29Dx5Sa4OF7SkycadhM/9VMOs6fY1QR3qliWT7GphpxNxqeaP7i5uzJP9Fc3Uw8uvLMuXHxFlpEjPyAbY853WG4T4BU2X+kt83UtZ2QcYezOYBk/upCLPTQXlMwz48w1yzOTfQA6l4YL5OeFKjmHw7cSzzZJ4lxnZ/Dh+/waFDYR9wln2yegox1uUDdl0mpf6wGTJfwas0zWP
+ Gh+LL1L1
+ hz8xoDJf8fTwaoSGZPXFbfATgkMvlxJP7S24MZ+yDL5/7IX0aXBbYluPg0ecsTFikU/O4apVIatU8QET+j9CMeeLOK7x2KTT71El03N6rYoqfL0bJhBHRHf/Zrd19iDBGeBj9g32sMt0Sw4H1BEbC75+wMxWeWzpV0GEPGlmJQ2wirg6R4qNzVQkX0FvlmpH9QdG5n+AmO2U+MlFCDkQdJHx9JhFywdctmZv9Irc5f+ThkKuC79OmEzukX2tVEypXIHiDIJungPZj0Sk1LXYXZ737VtDlhiq4FskPRuHnI7x1EZPT7qN4ujiaHVzzSbpV/X6EUX8K1HjrnJzhsOaudu6cJMKgOjfcnEJ1THyHPter6Uyp4PVN8LSTM9KSCfnhUQvd5nwAJjuqvE1rG2kakJIaQeNVZrOYaCZ1qW+RN/sMb1NIlgqu6h7vpNAdgipFqxD5sYV6oHzsOmBlRt6g3vM3f/Wirz18YfsTXcxkEfLTFwOEwMph2czJfWITJmsgAZtWfZrVYyk7J2QB31U9ZwiO3eiQbsD5HB56
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,167 +130,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Replace use of the legacy vm_flags_t flags with vma_flags_t values
-throughout the GUP logic, both for the MMU and nommu variants.
+On a KHO boot, a reserve_mem region that can't be revived is allocated
+from KHO_NOPRSRV memory, which includes the bootmem the next kernel
+boots out of. With CONFIG_KEXEC_HANDOVER_DEBUG, preserving the region
+then fails:
 
-No functional change intended.
+  WARNING: kernel/liveupdate/kexec_handover.c:1245 at kho_preserve_pages+0x168/0x180
+  failed to prepare memblock FDT for KHO: -22
 
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+Without it, the next kernel puts its memmap on top of the region and
+the ramoops records in it are lost.
+
+There is no use case for adding regions across a live update, so fail
+instead of allocating, and drop the TODO.
+
+Add an is_kho_boot() stub so the memblock tests still build.
+
+Fixes: f99230780211 ("memblock: add KHO support for reserve_mem")
+Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 ---
- mm/gup.c | 45 ++++++++++++++++++++++++---------------------
- 1 file changed, 24 insertions(+), 21 deletions(-)
+Changes in v3:
+- add an is_kho_boot() stub to the memblock tests (Mike).
+- add Pasha's Reviewed-by.
 
-diff --git a/mm/gup.c b/mm/gup.c
-index 7d43ce717b24..dc232117b1ce 100644
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -590,15 +590,15 @@ static inline bool can_follow_write_common(struct page *page,
- 		return false;
- 
- 	/* But FOLL_FORCE has no effect on shared mappings */
--	if (vma->vm_flags & (VM_MAYSHARE | VM_SHARED))
-+	if (vma_test_any(vma, VMA_MAYSHARE_BIT, VMA_SHARED_BIT))
- 		return false;
- 
- 	/* ... or read-only private ones */
--	if (!(vma->vm_flags & VM_MAYWRITE))
-+	if (!vma_test(vma, VMA_MAYWRITE_BIT))
- 		return false;
- 
- 	/* ... or already writable ones that just need to take a write fault */
--	if (vma->vm_flags & VM_WRITE)
-+	if (vma_test(vma, VMA_WRITE_BIT))
- 		return false;
- 
- 	/*
-@@ -1199,12 +1199,11 @@ static bool writable_file_mapping_allowed(struct vm_area_struct *vma,
- 
- static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
- {
--	vm_flags_t vm_flags = vma->vm_flags;
- 	int write = (gup_flags & FOLL_WRITE);
- 	int foreign = (gup_flags & FOLL_REMOTE);
- 	bool vma_anon = vma_is_anonymous(vma);
- 
--	if (vm_flags & (VM_IO | VM_PFNMAP))
-+	if (vma_test_any(vma, VMA_IO_BIT, VMA_PFNMAP_BIT))
- 		return -EFAULT;
- 
- 	if ((gup_flags & FOLL_ANON) && !vma_anon)
-@@ -1224,7 +1223,8 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
- 		    !writable_file_mapping_allowed(vma, gup_flags))
- 			return -EFAULT;
- 
--		if (!(vm_flags & VM_WRITE) || (vm_flags & VM_SHADOW_STACK)) {
-+		if (!vma_test(vma, VMA_WRITE_BIT) ||
-+		    vma_test_single_mask(vma, VMA_SHADOW_STACK)) {
- 			if (!(gup_flags & FOLL_FORCE))
- 				return -EFAULT;
- 			/*
-@@ -1239,14 +1239,14 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
- 			if (!vma_is_cow_mapping(vma))
- 				return -EFAULT;
- 		}
--	} else if (!(vm_flags & VM_READ)) {
-+	} else if (!vma_test(vma, VMA_READ_BIT)) {
- 		if (!(gup_flags & FOLL_FORCE))
- 			return -EFAULT;
- 		/*
- 		 * Is there actually any vma we can reach here which does not
- 		 * have VM_MAYREAD set?
- 		 */
--		if (!(vm_flags & VM_MAYREAD))
-+		if (!vma_test(vma, VMA_MAYREAD_BIT))
- 			return -EFAULT;
- 	}
- 	/*
-@@ -1277,7 +1277,7 @@ static struct vm_area_struct *gup_vma_lookup(struct mm_struct *mm,
- 		return vma;
- 
- 	/* Only warn for half-way relevant accesses */
--	if (!(vma->vm_flags & VM_GROWSDOWN))
-+	if (!vma_test(vma, VMA_GROWSDOWN_BIT))
- 		return NULL;
- 	if (vma->vm_start - addr > 65536)
- 		return NULL;
-@@ -1514,9 +1514,8 @@ static bool vma_permits_fault(struct vm_area_struct *vma,
- {
- 	bool write   = !!(fault_flags & FAULT_FLAG_WRITE);
- 	bool foreign = !!(fault_flags & FAULT_FLAG_REMOTE);
--	vm_flags_t vm_flags = write ? VM_WRITE : VM_READ;
- 
--	if (!(vm_flags & vma->vm_flags))
-+	if (!vma_test(vma, write ? VMA_WRITE_BIT : VMA_READ_BIT))
- 		return false;
- 
- 	/*
-@@ -1829,7 +1828,7 @@ long populate_vma_page_range(struct vm_area_struct *vma,
- 	 * Rightly or wrongly, the VM_LOCKONFAULT case has never used
- 	 * faultin_page() to break COW, so it has no work to do here.
- 	 */
--	if (vma->vm_flags & VM_LOCKONFAULT)
-+	if (vma_test(vma, VMA_LOCKONFAULT_BIT))
- 		return nr_pages;
- 
- 	/* ... similarly, we've never faulted in PROT_NONE pages */
-@@ -1849,7 +1848,7 @@ long populate_vma_page_range(struct vm_area_struct *vma,
- 	 * Otherwise, do a read fault, and use FOLL_FORCE in case it's not
- 	 * readable (ie write-only or executable).
- 	 */
--	if ((vma->vm_flags & (VM_WRITE | VM_SHARED)) == VM_WRITE)
-+	if (vma_test(vma, VMA_WRITE_BIT) && !vma_test(vma, VMA_SHARED_BIT))
- 		gup_flags |= FOLL_WRITE;
- 	else
- 		gup_flags |= FOLL_FORCE;
-@@ -1955,7 +1954,7 @@ int __mm_populate(unsigned long start, unsigned long len, int ignore_errors)
- 		 * range with the first VMA. Also, skip undesirable VMA types.
- 		 */
- 		nend = min(end, vma->vm_end);
--		if (vma->vm_flags & (VM_IO | VM_PFNMAP))
-+		if (vma_test_any(vma, VMA_IO_BIT, VMA_PFNMAP_BIT))
- 			continue;
- 		if (nstart < vma->vm_start)
- 			nstart = vma->vm_start;
-@@ -1986,7 +1985,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
- {
- 	struct vm_area_struct *vma;
- 	bool must_unlock = false;
--	vm_flags_t vm_flags;
-+	vma_flags_t vma_flags;
- 	int ret, err = -EFAULT;
- 	long i;
- 
-@@ -2011,10 +2010,14 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
- 	/* calculate required read or write permissions.
- 	 * If FOLL_FORCE is set, we only require the "MAY" flags.
- 	 */
--	vm_flags  = (foll_flags & FOLL_WRITE) ?
--			(VM_WRITE | VM_MAYWRITE) : (VM_READ | VM_MAYREAD);
--	vm_flags &= (foll_flags & FOLL_FORCE) ?
--			(VM_MAYREAD | VM_MAYWRITE) : (VM_READ | VM_WRITE);
-+	if (foll_flags & FOLL_WRITE)
-+		vma_flags = mk_vma_flags(VMA_WRITE_BIT, VMA_MAYWRITE_BIT);
-+	else
-+		vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_MAYREAD_BIT);
-+	if (foll_flags & FOLL_FORCE)
-+		vma_flags_clear(&vma_flags, VMA_READ_BIT, VMA_WRITE_BIT);
-+	else
-+		vma_flags_clear(&vma_flags, VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT);
- 
- 	for (i = 0; i < nr_pages; i++) {
- 		vma = find_vma(mm, start);
-@@ -2022,8 +2025,8 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
- 			break;
- 
- 		/* protect what we can, including chardevs */
--		if ((vma->vm_flags & (VM_IO | VM_PFNMAP)) ||
--		    !(vm_flags & vma->vm_flags))
-+		if (vma_test_any(vma, VMA_IO_BIT, VMA_PFNMAP_BIT) ||
-+		    !vma_test_any_mask(vma, vma_flags))
- 			break;
- 
- 		if (pages) {
+Changes in v2:
+- fail on a KHO boot instead of allocating outside bootmem, as agreed
+  with Pratyush [1]. this drops v1's patch 1.
+- not an RFC anymore.
+- based on v7.4-rc1.
 
+v2: https://lore.kernel.org/all/20261104204235.9066-1-azpijr@gmail.com/
+v1: https://lore.kernel.org/all/20261021211058.83483-3-azpijr@gmail.com/
+
+[1] https://lore.kernel.org/all/2vxzfqxglrg6.fsf@kernel.org/
+
+ mm/memblock.c                     | 11 ++++++++++-
+ tools/testing/memblock/internal.h |  5 +++++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/mm/memblock.c b/mm/memblock.c
+index a450092a80fb..e325e0542c9a 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2827,7 +2827,16 @@ static int __init reserve_mem(char *p)
+ 	if (reserve_mem_kho_revive(name, size, align))
+ 		return 1;
+ 
+-	/* TODO: Allocation must be outside of KHO_NOPRSRV region */
++	/*
++	 * On a KHO boot memblock only allocates from KHO_NOPRSRV memory here,
++	 * which includes the bootmem the next kernel boots out of. Only regions
++	 * handed over by the previous kernel are supported.
++	 */
++	if (is_kho_boot()) {
++		pr_err("reserve_mem: can't allocate \"%s\" on a KHO boot\n", name);
++		return -EOPNOTSUPP;
++	}
++
+ 	start = memblock_phys_alloc(size, align);
+ 	if (!start) {
+ 		pr_err("reserve_mem: memblock allocation failed\n");
+diff --git a/tools/testing/memblock/internal.h b/tools/testing/memblock/internal.h
+index ba4d1c02fde5..84f22a964510 100644
+--- a/tools/testing/memblock/internal.h
++++ b/tools/testing/memblock/internal.h
+@@ -51,4 +51,9 @@ static inline bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
+ 	return false;
+ }
+ 
++static inline bool is_kho_boot(void)
++{
++	return false;
++}
++
+ #endif
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 -- 
 2.56.0
 
