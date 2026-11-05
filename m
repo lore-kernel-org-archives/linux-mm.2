@@ -1,29 +1,29 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C58606EE84
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 20:37:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6060606EE87
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 20:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=LohdS9Pu
+	dkim=pass (2048-bit key, unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=HWPOoBAO
 Received: by kanga.kvack.org (Postfix)
-	id D0E946B05B8; Thu,  5 Nov 2026 15:36:52 -0500 (EST)
+	id 2AD6B6B05B9; Thu,  5 Nov 2026 15:36:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4ACD6B05B9; Thu,  5 Nov 2026 15:36:52 -0500 (EST)
+	id 238716B05BB; Thu,  5 Nov 2026 15:36:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B3ECA6B05BC; Thu,  5 Nov 2026 15:36:52 -0500 (EST)
+	id 0D8A26B05BA; Thu,  5 Nov 2026 15:36:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 701D06B05B8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AF8CC6B05BB
 	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:36:52 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DAFD11A0359
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:36:51 +0000 (UTC)
-X-FDA: 85402224222.26.CD62115
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 381C5A0C21
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:36:52 +0000 (UTC)
+X-FDA: 85402224264.02.F2688FF
 Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4AA20C000C
+	by imf22.hostedemail.com (Postfix) with ESMTP id A66C1C000E
 	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:36:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=LohdS9Pu;
-	spf=pass (imf10.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=HWPOoBAO;
+	spf=pass (imf22.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
 	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793911010;
@@ -31,32 +31,32 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Aksn1xaVgHle35uS+1fBiwvzomWYK3pQA4w7I7bCnB0=;
-	b=a6SWNt+5LVx9E9mCWQftyAnqzVxgiLwXsi9xJjJHcSAFrp93LAth2HZnn0KqhgbsXJNNBf
-	nAcLt4NyU/+dGwzBu3bd2saK65XM106cjZbPD1GSMCuHIjMf67qMqyEOZFq6mrSqCok+c/
-	jDz1bG6a1qKaUnQvLuu6W8KOrzvWMfM=
+	bh=u4szUUbd/kkYsYLlulDhD6NrSpjR5pa/uSMGvjF+Y58=;
+	b=VegSpDjGmC+J/56Rbk1Khf/7nMmpqfWNp68Kk9C6QMSQb5gqG40Sok1mvK559bgxEwH5Na
+	CKx33GsZSBDuVAOhS/uKyllq7UdtcruX5M1t8ykbAsTzVreWhkGs239KvWno6+WQunfpCf
+	34uKQpibVDqVXQ0TD2a5NDv1LSO+N7I=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=HWPOoBAO;
+	spf=pass (imf22.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793911010;
-	b=RBiU2CfqdzkE3Q+Wfai8t3t2N2j50ESynLoi9Yi5Tjm4YwSoWlIGdvqL91PZImzwZ24uXl
-	O7nLeJDnZZ5cmTpjC1568QqKhJphDaG1X6WC2aRmsdCjxsVMgHS4URhIpQxfSqgq3+Vfmi
-	FHvrbCXtNgvudymDQR0NQb9Bj0uVSmc=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=LohdS9Pu;
-	spf=pass (imf10.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
+	b=4fy6/+N9MR93LNoX7sJfVdJosumPd60v35zKEXeU1bzGWTierHaxwMUca6Wvpv/GUMmx/x
+	MhSl0vbtMIZD3pH0d30MR0d8YMzqd3mTcBL1zBecHdcUbm1HhaEVXu2RknvPilEpBELrY3
+	n3jDmJIYUJXa9TEWZiAIGT9yfn1KRzE=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1793911008;
-	bh=Aksn1xaVgHle35uS+1fBiwvzomWYK3pQA4w7I7bCnB0=;
+	s=smtpout1; t=1793911009;
+	bh=u4szUUbd/kkYsYLlulDhD6NrSpjR5pa/uSMGvjF+Y58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LohdS9Pu3jJnWKSs1batg9FmWx//06UG+D5K53D1BHyPRTSddCMjcKFYORnmwXYg5
-	 wb/j+Yx8pqMvevUIPnaBTdJIOD2Hw66ZWWgJbeMnhYwTUzAjqo61fRv/1LIZoKrDWE
-	 XuzTIQxA1BDtjIGhUw9kZfy7NvVV/24Tvhg8U+/DiG8oqxSzuAPkdEZxIOBjBVmOeU
-	 S2t29DDEvbxp1gwu6Aw+/d5gUx5cBePq3JapbjO/TmKUZfJyBraX2V0zb0xi2J5YMJ
-	 pNl0+v4YuMysMn5rCzEsvh/6vG1/0tX+Khrw/9nxxwkYOK4YnPj1PKrhpH3DAQfqu+
-	 ggaTqcipL2ETQ==
+	b=HWPOoBAONOHGoH9GlpHdY9hLYCkK4t4XE1dFbOmYvnY8GEN9HOqN6uLhc+GcR744R
+	 yASYBTzLPMSfUi1kkwHhGDm1prCWTZhC5uafR5EtIYdFlKv0oR/oA5rwZl+ISsrrm0
+	 30tOpuVmZ6ULFMa1hhr7bzjUMFCsWXWVFy+qxhHLCj5erzOCBDHTT7rtmlwCpyjKEA
+	 xxQGhPB1b4kRzTgNciLVXY76L6xxnJQjUZSyVWuc/C6ihTBqkSF0Z2L4XnPrmey6G4
+	 Fr7vqrVBFylVc9tDyFoxxHfCx9YDT9V6YFZnNqdJ0WTyTuD3WhoAYRYyywgB47SQ6d
+	 8vXPiZd9oT/PA==
 Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4jLDcc4zKfzLrP;
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4jLDcc6bz1zLcy;
 	Thu, 05 Nov 2026 15:36:48 -0500 (EST)
 From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 To: David Hildenbrand <david@kernel.org>
@@ -112,27 +112,27 @@ Cc: linux-kernel@vger.kernel.org,
 	Jan Kara <jack@suse.cz>,
 	linux-fsdevel@vger.kernel.org,
 	Oleg Nesterov <oleg@redhat.com>
-Subject: [RFC PATCH v24 07/10] mm: keep the RSS counters of single-threaded processes exact
-Date: Thu,  5 Nov 2026 15:36:36 -0500
-Message-Id: <20261105203639.1459524-8-mathieu.desnoyers@efficios.com>
+Subject: [RFC PATCH v24 08/10] lib: percpu_counter_tree: add the arity boot parameter
+Date: Thu,  5 Nov 2026 15:36:37 -0500
+Message-Id: <20261105203639.1459524-9-mathieu.desnoyers@efficios.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20261105203639.1459524-1-mathieu.desnoyers@efficios.com>
 References: <20261105203639.1459524-1-mathieu.desnoyers@efficios.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 4AA20C000C
+X-Stat-Signature: a97z8ppnfotmeu4txg3mig6joso5b55a
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: r95uj81f9k1kth6jjs5sdkd89dxyracd
-X-Rspam-User: 
-X-HE-Tag: 1793911010-256779
-X-HE-Meta: U2FsdGVkX18KulpIreIC6PJT4bzfjo34N2D+79iofRAyzsidIE3TmEhmF1O4Viii/e7wV/ftm2/7x2AnWquPstfViaq5hllqxd+jeKEoOY8ai3FPcWxxXffyauJYga5ABl2+zrGM/ttfy9PevCFsi8EnuIy1gSvogCT2CBpsW7LNTuldVQZpmRAIEoWmhOyi1PgiMlGM5NMrEELkH2eXwPNx7zZQcRMXHLDGyWxPL5Ffa1FQTGxttD4Xyf+hTgJrDcerSCJ+Adai7wFN9jeJKcHG8CHcgUmEFhbZifLDN2h9sbmJMg0G7fVuTTYfCZ8Vgt8KRQmPh0f3Ialz2WAAyqRv8qZr3kb2sDPJ7hypTSVVVTUR4Tsb7NdmiPkjCyqe88uMHHP0IoVbfeqcT1njW/rNYl2PeUFEHZChefqj06lMzxeVcVX3jjnUT2jLaZdMWsZVibDimzLiHaE7byB6FMPLAu4HAxXpq0ZdfGRtBjfA3bvg8+tG8DKUldLO42+nQxkcPlG3el/ogmV4U5T6AhccrolBtywOiHn2fhm7kEEfNSSOUL47TyuArhayzRaqN0CqcnQJC99YmTQ1NW7euoHlsMR/e0iXi4L7g2aLXW7Xzv2XlXxLv65IsKUTptEcmVj36vNTbGmhcLGNClGl4ktHW8aP/2a01mDG+0sr0sLdSKlmXQCD3vRIzTD/TdhHBvIHz3W9UfjMP5zgJOit+HfjZjDrOtXL5VN9UpR+KG8fb3/Mv6u7eBVI1NuR7YVyKT5C1R8V7AyUWfN8zVcLE++lK54KIyHvX5XMwFW+vvcpWvATqTe3s2WnNrputpysz4dN4fuLLq6NQKxfdZKLPqaTyk5TFDmX+CpNPAIaZYNHblc5nKjtUpCm6l9N/rzoWck7v1kuIUkIMeIUeHbhczDLt9JqVkQ8wTvcxjNdEjCZkixep+OWM14D8RA5zuasWJr0eF/uHJ+Yv106jrY
- +mNcJ2L7
- nyNHkV2MgeIWlAth44p+wR1pdfYF/bloXoqQo2HmqdSFM7RxncfHUmZ837zX0ACITD1+fb2/9FxEgQ6uIiMmHGzEbWDHd6GXocVvRP20Vt2+8hBnfLMzpbBEmtAn6okvWyqQfgwRqtCO9af01AmMFGNHe7T8a1Ot2QeOLuzqBrdU1rtq5EajGeGNeemYNauYuRDDpnHAO0O83tY90Qi4ykZNJKB87rb0XpLDTtMxxjUc3CCcQDURwN2spUD85kT0Z2ADDXag7Mwm/WcO76KBoDKJ5Jvah7+fxkJ3JxQPfkvy+PwR6FvTzPDQ3wuWAUTbI8YFKZkMxzhrPR0Xto/hA+mGMPqHgMsN/A11H4G46xeDlYhTvX7tko0XMIm+ddv1DriM2VCWrtgduzeMx50GsnNLS9g==
+X-Rspamd-Queue-Id: A66C1C000E
+X-HE-Tag: 1793911010-130829
+X-HE-Meta: U2FsdGVkX1/mxc5tN5ojgzvTNteG7Eo0t/JMZFivMRG9t8ffPClalTMgmNlRyGgOuJU08tJuh+ckdNz3a4MEZHXMUgWAW26GxWnMxTi6G9W0Fbzqlny9w+xKkHdg/SV6BOq4D8LXdahDJPaNjtKisus6+e/y10pJPd4xFj5vb9775rP4BnTnny4HEOP3Twq/7wEkHtbsqM26xGdujY/mIOuQYskD5GODY8jaS2h3ZQNP2x5KfzcNT4D+DSNCkxfGH14B1cfSETm7APGZzW5X+cRQc+PwL9x8IVCOELAcDB0SsoJrl7+BQ9J3EiuKwcvbcaes3SqMANNaYOKxPtfVyRumii6FXQKuUfv5hvsoqbpcriPOL5rLaD0UURsIihoAd0/0T48qxxONOvQxAejws/Zwc2QkWZnsa1vICrQ4nt2sFPrLIbJbgflHZboc2YISI7ja0koesELFDbCcP4/cTJ+F4qHpgorz1PyliNyjFQ21JOSowPIrH5xJY4zimN0WGstg/XLxXwEXybuoAQF+CVMoxL7tcNyhFnrI7zuPiZ3dDHgfh6HDqpBgSXhUiGQvKLghua8u81eC+X4D3iwMNaPiRFFqCYYUta9JpS/vWfdyYvIkwZ6cA8ewsjTc+DbaEgdVr3X4H50HIWWyviWTmxyH9MM4PGV/ltecIMg9WvbzuZKcd29QcNJzvTQN6QZ974TIQemPBDO6BdwNXgvO2HX9uizScABt+6Sh59ybPDMg/dKFTROi+pauhdvzBV+LFbGcNCZDDpqDbaCoMf3AroX8BhU+dtFiGYZAuLQBIXdYPoZm8aRENPYlF/F+L9AjFWafkfzgzYCyWuTp6/nfWsUXw5oVM8m3I54g8LnBpkAoK6MDObc9QKa41H54j2uvneOB45jpjxoF4DX0AORs96U6gBy883L6rpZpwsRgB2RxR6/r01rDvjPXvC9WF24WxRufyBQSAavE9LTp8oa
+ WZIm8Qcf
+ KmyHUiOFEW8p2hLGV8eYPeIKMkTR3v5h9yvbpzCaChFVcbA3xg4JE1b0mkCdAVnTNL5gAz7XPWyzwmsj3nfrljPAlmf9mO9Y2iQwQ0Xb6qSzWmYVURgCsmJySXFM7fknE7wDhOINJ2V/LKxGYL11qWT4jqADL5QHvZdPdSwF9NCiWNsuk3ISjrPV2hE2gYXbRKOEUdXvzhwviitkzrUEHtH+BJbXc3Z8Vabeo+7fDLpkOrKuCGuUpvXf959ZCBnQO/CPa72f5+Fq+GTsqk6SDrlPh+QnXfMHXYlPl2bDpqRNvaa3bTSWAxJQS86WaVnZcQ7xBEpYfv6eBvi6TUDWFlE7VBPxDv0r0eWm4f5c6DCZmrgx+nOAaVYt/fc+gSTXDNBspRR+JRO/mG1o8OVXxomlDxCMIIosRyra+mSC1+XLt17s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,325 +141,377 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Until a second thread shares the mm, initialize the RSS counters lazily,
-without their counter tree: the task owning the mm adds to a plain
-counter, and other tasks, such as reclaim, khugepaged, the OOM reaper or
-remote GUP, add atomically.  The RSS counters of single-threaded
-processes are therefore exact, their precise sums for /proc/PID/status,
-/proc/PID/statm and the OOM killer take O(1), and they use no per-cpu
-memory.  The readers of the approximation, such as /proc/PID/stat, the
-RSS high watermark and the rss_stat tracepoint, get the exact value for
-these processes.
+The fan-out of each tree level is selected at boot from nr_cpu_ids, the
+highest possible CPU number plus one, using a table tuned for the RSS
+counters on one machine, a 2-socket AMD EPYC 9654 with 192 cores and 384
+logical CPUs.  The best shape depends on the cost of cache line
+transfers on a given machine, which varies with the number of sockets,
+the cache topology and SMT, so it may differ on other hardware.
 
-The owner, mm->rss_owner, is the task running on the mm: the child in
-dup_mm(), or the task in exec_mmap(), which also clears it from the mm
-it leaves, as exit_mm() does.  It stays NULL, which matches no task, in
-the mm of exec() until exec_mmap() and in those of the other users of
-mm_alloc(): all their updates are atomic.  It is only compared with
-current, never dereferenced, so a single task writes the plain counter,
-including while a vfork() child shares the mm.  mm->owner (CONFIG_MEMCG)
-is not used, because mm_update_next_owner() hands it over to another
-task while a vfork() child may still update the counters.
+Add the percpu_counter_tree.arity= boot parameter, which overrides the
+tree shape with the fan-out of each level, from the per-cpu counters to
+the root, so the shapes can be compared on other machines, to improve
+the default table.  For example, when nr_cpu_ids is 16, "16" is a flat
+tree and "4,4" a tree with 4 intermediate counters.  Each fan-out is a
+power of 2, and their product must be nr_cpu_ids rounded up to a power
+of 2.  An invalid shape is ignored with a warning.
 
-copy_mm() activates the counter tree when a thread is created with
-CLONE_VM, except for vfork(), whose parent waits while the child shares
-the mm.  mm->rss_stat_mutex serializes the activations, as
-mm->mm_cid.mutex serializes the mode changes of mm_cid at fork and exit,
-without relying on which tasks can create threads.  Once the tree is
-active, thread creation no longer takes the mutex.  This moves the
-allocation of the per-cpu counters and tree items of the RSS counters
-from fork() to the creation of the second thread of a process, which
-returns -ENOMEM if it fails, as fork() could before.  The tasks the
-kernel creates with CLONE_VM for a process, such as the io_uring workers
-and the vhost tasks, also share its mm: a single-threaded process using
-them gets the counter tree.  The updates made before the activation stay
-in the single counters, which the sums keep reading, so updates racing
-with the activation are not lost.  Once the tree is active,
-__add_mm_counter() no longer reads rss_owner, so the updates of the
-threads of a process do not pull in its cache line, which other
-mm_struct fields share.
+The shape in use is printed at boot, and can be read from
+/sys/module/percpu_counter_tree/parameters/arity.
 
-The tree stays active when the process returns to a single thread:
-going back to the single counters would need a grace period for the
-remote updaters, and a process alternating between one and two threads
-would pay for each switch.
-
-Before the activation, the updates of tasks other than the owner are
-atomic additions to one word per counter: concurrent remote updates
-of the same single-threaded process from many CPUs, such as direct
-reclaim unmapping its pages, contend on it.
-
-* Testing results:
-
-Test hardware: 2 sockets AMD EPYC 9654 96-Core Processor (384 logical
-CPUs).
-
-With the test program and the instrumentation described in the patch
-switching the RSS counters to hierarchical counters, in a KVM guest with
-384 vCPUs, each pinned to its own CPU of the host, with the NUMA topology
-of the host, the approximation of the RSS counters of the single-threaded
-program is exact, compared to an 841MB delta for the upstream counters.
-With an idle second thread, which activates the counter tree, the
-hierarchical counters reach a 96MB delta, compared to 845MB for the
-upstream counters.
-
-On bare metal, with 1000 to 16000 single-threaded processes alive, a
-read of /proc/PID/statm, which computes 3 precise sums, takes 5.3 to
-6.5us, compared to 16.5 to 19.0us with the upstream counters, and a read
-of /proc/PID/status, which computes 4 precise sums, takes 11.4 to
-13.1us, compared to 26.6 to 28.6us.  A fork + exit of a child touching
-no pages takes 116us, compared to 139us (219us compared to 247us when it
-touches 64 pages): its counters are destroyed without 4 precise sums
-over 384 logical CPUs in check_mm(), and neither per-cpu memory nor tree
-items are allocated or freed.
-
-On bare metal with SMT disabled at runtime, where the upstream batch
-size is 384, will-it-scale page_fault2 with one process is 5.1% faster
-than with the upstream counters, and page_fault3 1.3% faster (one boot
-each, the upstream one on the previous day; the boot-to-boot spread
-reaches 3%, so neither is claimed as a gain).
-
-* Memory Use
-
-Per mm, on a 64-bit arch with 64-byte cache lines, including the
-rss_owner pointer and the 24-byte activation mutex, for a
-single-threaded and a multi-threaded process, compared to the upstream
-percpu counters:
-
-                    Bytes per mm
-  nr_cpus fan-out  1 thread  threads  upstream
-        2 2             192      264       192
-       16 16            192      320       416
-       64 16,4          192      768      1184
-      384 8,8,8         192     6400      6304
-     1024 8,8,16        192    13568     16544
-
-A single-threaded process uses 192 bytes for its RSS counters whatever
-the number of CPUs: the 4 counter structures, rss_owner and the mutex in
-mm_struct, compared to the 4 upstream counter structures (160 bytes) and
-their per-cpu memory.  On x86_64 with 16, 384 and 1024 possible CPUs,
-the mm_struct slab object keeps its upstream size (1752, 1872 and 2112
-bytes in /proc/slabinfo).  A multi-threaded process adds nr_cpus bytes
-of per-cpu memory per counter (1536 per mm at 384 logical CPUs),
-compared to 4 * nr_cpus bytes per counter (6144 per mm) for the upstream
-counters, and the tree items, without the rounding of their slab cache.
-fork() no longer allocates memory for the RSS counters.
+Cover the parsing of the parameter in the userspace test, with valid and
+invalid shapes, and run the counter tests on the valid ones.
 
 Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 ---
- .../core-api/percpu-counter-tree.rst          |  7 ++++
- fs/exec.c                                     |  5 +++
- include/linux/mm.h                            | 24 +++++++++++--
- include/linux/mm_types.h                      | 16 +++++++++
- kernel/exit.c                                 |  3 ++
- kernel/fork.c                                 | 35 +++++++++++++++++--
- 6 files changed, 85 insertions(+), 5 deletions(-)
+ .../admin-guide/kernel-parameters.txt         | 14 +++
+ .../core-api/percpu-counter-tree.rst          |  3 +-
+ lib/percpu_counter_tree.c                     | 96 ++++++++++++++++++-
+ tools/testing/hpcc/include/hpcc_shim.h        |  4 +
+ .../testing/hpcc/include/linux/moduleparam.h  | 12 +++
+ tools/testing/hpcc/main.c                     | 78 ++++++++++++++-
+ 6 files changed, 201 insertions(+), 6 deletions(-)
+ create mode 100644 tools/testing/hpcc/include/linux/moduleparam.h
 
+diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+index 0b3c140babd9..c368affa2115 100644
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5342,6 +5342,20 @@ Kernel parameters
+ 			allocator.  This parameter is primarily	for debugging
+ 			and performance comparison.
+ 
++	percpu_counter_tree.arity=	[KNL,SMP]
++			Format: <fan-out>[,<fan-out>...]
++			Override the shape of the hierarchical per-cpu
++			counter trees (used for the RSS counters), listing
++			the fan-out of each tree level from the per-cpu
++			counters to the root. Each fan-out is a power of 2
++			and their product must be nr_cpu_ids (the highest
++			possible CPU number plus one) rounded up to a power
++			of 2, e.g. "16" (flat) or "4,4" when nr_cpu_ids
++			is 16. An invalid shape is ignored with a warning.
++			The shape in use is shown in
++			/sys/module/percpu_counter_tree/parameters/arity.
++			This parameter is meant for performance comparison.
++
+ 	pirq=		[SMP,APIC] Manual mp-table setup
+ 			See Documentation/arch/x86/i386/IO-APIC.rst.
+ 
 diff --git a/Documentation/core-api/percpu-counter-tree.rst b/Documentation/core-api/percpu-counter-tree.rst
-index 138e9b74b0c8..87babe2276c4 100644
+index 87babe2276c4..8aebf91aa133 100644
 --- a/Documentation/core-api/percpu-counter-tree.rst
 +++ b/Documentation/core-api/percpu-counter-tree.rst
-@@ -102,6 +102,13 @@ The activations of the same counters must be serialized by the caller:
- a concurrent activation would publish a second tree and lose the
- updates made to the first.
+@@ -63,7 +63,8 @@ possible CPU, and the tree items, whose number depends on nr_cpu_ids, so
+ struct percpu_counter_tree has a fixed size.
  
-+The RSS counters of an mm use this: the task owning the mm updates the
-+plain counter, and other tasks, such as reclaim, update the atomic
-+counter. The tree is activated when a second thread shares the mm,
-+under mm->rss_stat_mutex, which serializes the activations.
-+A single-threaded process therefore has exact RSS counters, cheap
-+precise sums, and neither per-cpu memory nor tree items for them.
+ The fan-out of each tree level is selected at boot from nr_cpu_ids, the
+-highest possible CPU number plus one.
++highest possible CPU number plus one. It can be overridden with the
++percpu_counter_tree.arity= boot parameter for performance comparison.
+ 
+ The bounded accuracy is a property of the settled tree. While updates are
+ in flight the transient error can exceed it, bounded by the number of
+diff --git a/lib/percpu_counter_tree.c b/lib/percpu_counter_tree.c
+index 32c4f05d7d7d..491675897e41 100644
+--- a/lib/percpu_counter_tree.c
++++ b/lib/percpu_counter_tree.c
+@@ -151,6 +151,7 @@
+ #define pr_fmt(fmt) "percpu_counter_tree: " fmt
+ 
+ #include <linux/percpu_counter_tree.h>
++#include <linux/moduleparam.h>
+ #include <linux/align.h>
+ #include <linux/cache.h>
+ #include <linux/cpumask.h>
+@@ -162,6 +163,7 @@
+ #include <linux/math.h>
+ #include <linux/log2.h>
+ #include <linux/args.h>
++#include <linux/string.h>
+ #include <kunit/visibility.h>
+ 
+ #define MAX_NR_LEVELS 7
+@@ -254,6 +256,8 @@ static_assert(ARRAY_SIZE(per_nr_cpu_order_config) == MAX_NR_CPUS_ORDER + 1);
+ static struct {
+ 	/* Hierarchical counter configuration for the hardware topology. */
+ 	const struct counter_config *config;
++	/* Tree shape selected with the "arity" boot parameter. */
++	struct counter_config boot_config;
+ 	/* Order of nr_cpu_ids. */
+ 	unsigned int nr_cpus_order;
+ 	/*
+@@ -272,6 +276,9 @@ static struct {
+ 	.nr_items = UINT_MAX,
+ };
+ 
++/* Value of the "arity" boot parameter, parsed at subsystem initialization. */
++static const char *arity_param;
 +
- Use Cases
- =========
- 
-diff --git a/fs/exec.c b/fs/exec.c
-index 8d2b14e1d455..7a6f07a6d482 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -875,6 +875,8 @@ static int exec_mmap(struct linux_binprm *bprm)
- 		}
- 	}
- 
-+	/* This task owns the RSS counters of the new mm, see __add_mm_counter(). */
-+	WRITE_ONCE(mm->rss_owner, tsk);
- 	task_lock(tsk);
- 	membarrier_exec_mmap(mm);
- 
-@@ -903,6 +905,9 @@ static int exec_mmap(struct linux_binprm *bprm)
- 	if (old_mm) {
- 		mmap_read_unlock(old_mm);
- 		BUG_ON(active_mm != old_mm);
-+		/* Updates of the old mm by this task are now atomic. */
-+		if (READ_ONCE(old_mm->rss_owner) == tsk)
-+			WRITE_ONCE(old_mm->rss_owner, NULL);
- 		/* Defer teardown to setup_new_exec(), outside the exec locks. */
- 		bprm->old_mm = old_mm;
- 	} else {
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 36242c7ff84f..4d740c0c5f54 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3617,23 +3617,41 @@ static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
- 
- void mm_trace_rss_stat(struct mm_struct *mm, int member);
- 
-+/*
-+ * Until a second thread shares the mm, the RSS counters are exact single
-+ * counters: the task which owns the mm updates a plain counter, and other
-+ * tasks (reclaim, khugepaged, the OOM reaper, remote GUP, ...) an atomic
-+ * one. See copy_mm(). Once the tree is active, all updates go to it:
-+ * rss_owner is not read, so the updates of the threads of a process do not
-+ * touch its cache line.
-+ */
-+static inline void __add_mm_counter(struct mm_struct *mm, int member, long value)
-+{
-+	struct percpu_counter_tree *counter = &mm->rss_stat[member];
-+
-+	if (!percpu_counter_tree_active(counter) && current == READ_ONCE(mm->rss_owner))
-+		percpu_counter_tree_add_owner(counter, value);
-+	else
-+		percpu_counter_tree_add(counter, value);
-+}
-+
- static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
- {
--	percpu_counter_tree_add(&mm->rss_stat[member], value);
-+	__add_mm_counter(mm, member, value);
- 
- 	mm_trace_rss_stat(mm, member);
- }
- 
- static inline void inc_mm_counter(struct mm_struct *mm, int member)
- {
--	percpu_counter_tree_add(&mm->rss_stat[member], 1);
-+	__add_mm_counter(mm, member, 1);
- 
- 	mm_trace_rss_stat(mm, member);
- }
- 
- static inline void dec_mm_counter(struct mm_struct *mm, int member)
- {
--	percpu_counter_tree_add(&mm->rss_stat[member], -1);
-+	__add_mm_counter(mm, member, -1);
- 
- 	mm_trace_rss_stat(mm, member);
- }
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 20b4517b7329..f0d315d72adb 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1352,6 +1352,22 @@ struct mm_struct {
+ /*
+  * Size of the items of one tree position for the counters initialized
+  * together by percpu_counter_tree_init_many(), packed in cache lines which
+@@ -1326,7 +1333,10 @@ void percpu_counter_tree_copy_state(struct percpu_counter_tree *dst,
+ EXPORT_SYMBOL_IF_KUNIT(percpu_counter_tree_copy_state);
  #endif
  
- 		struct percpu_counter_tree rss_stat[NR_MM_COUNTERS];
-+		/*
-+		 * Task updating rss_stat with percpu_counter_tree_add_owner()
-+		 * until the counter tree is activated by a second thread: the
-+		 * task running on this mm, set by dup_mm() and exec_mmap(),
-+		 * cleared when that task exits or execs, NULL for the other
-+		 * users of mm_alloc(). Only compared with current, never
-+		 * dereferenced. Not mm->owner, which depends on CONFIG_MEMCG
-+		 * and which mm_update_next_owner() hands over to another task
-+		 * while a vfork() child may still update the counters.
-+		 */
-+		struct task_struct *rss_owner;
-+		/*
-+		 * Serializes the activations of the rss_stat counter tree,
-+		 * until the tree is active. See mm_activate_rss_stat().
-+		 */
-+		struct mutex rss_stat_mutex;
- 
- 		struct linux_binfmt *binfmt;
- 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index d5e7bc2af804..c153cd064987 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -582,6 +582,9 @@ static void exit_mm(void)
- 	local_irq_enable();
- 	task_unlock(current);
- 	mmap_read_unlock(mm);
-+	/* From now on, this task updates the RSS counters of @mm atomically. */
-+	if (READ_ONCE(mm->rss_owner) == current)
-+		WRITE_ONCE(mm->rss_owner, NULL);
- 	mm_update_next_owner(mm);
- 	mmput(mm);
- 	if (test_thread_flag(TIF_MEMDIE))
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 02e25115ff85..ac4eb1370e62 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -1108,6 +1108,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p)
- 	memset(&mm->rss_stat, 0, sizeof(mm->rss_stat));
- 	spin_lock_init(&mm->page_table_lock);
- 	spin_lock_init(&mm->arg_lock);
-+	mutex_init(&mm->rss_stat_mutex);
- 	mm_init_cpumask(mm);
- 	mm_init_aio(mm);
- 	mm_init_owner(mm, p);
-@@ -1148,8 +1149,7 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p)
- 	if (mm_alloc_sched(mm))
- 		goto fail_sched;
- 
--	if (percpu_counter_tree_init_many(mm->rss_stat, NR_MM_COUNTERS, RSS_STAT_BATCH_SIZE,
--					  GFP_KERNEL_ACCOUNT))
-+	if (percpu_counter_tree_init_many_lazy(mm->rss_stat, NR_MM_COUNTERS, RSS_STAT_BATCH_SIZE))
- 		goto fail_pcpu;
- 
- 	lru_gen_init_mm(mm);
-@@ -1542,6 +1542,8 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
- 
- 	if (!mm_init(mm, tsk))
- 		goto fail_nomem;
-+	/* The child owns its RSS counters, see __add_mm_counter(). */
-+	mm->rss_owner = tsk;
- 
- 	uprobe_start_dup_mmap();
- 	err = dup_mmap(mm, oldmm);
-@@ -1569,6 +1571,23 @@ static struct mm_struct *dup_mm(struct task_struct *tsk,
- 	return NULL;
+-/* Format the fan-out of each level, from level 0 to the root, e.g. "8,2,8". */
++/* Room for the fan-out of each level, up to 7 digits and a comma, and a NUL. */
++#define SHAPE_BUF_SIZE	(8 * MAX_NR_LEVELS + 1)
++
++/* Format the fan-out of each level, from level 0 to the root, e.g. "8,4,8". */
+ static
+ int format_shape(char *buf, size_t size, const struct counter_config *config)
+ {
+@@ -1339,9 +1349,78 @@ int format_shape(char *buf, size_t size, const struct counter_config *config)
+ 	return len;
  }
  
-+/*
-+ * Serialize the activations of the RSS counter tree, whichever tasks create
-+ * threads. Once the last counter is active, the activation is complete and
-+ * thread creation skips the mutex. That check needs no acquire: the updates
-+ * and the sums of the counters order their own accesses to the tree. Not
-+ * observing the other counters active yet only delays their updates going
-+ * to the tree.
-+ */
-+static int mm_activate_rss_stat(struct mm_struct *mm)
++static
++int arity_param_set(const char *val, const struct kernel_param *kp)
 +{
-+	if (percpu_counter_tree_active(&mm->rss_stat[NR_MM_COUNTERS - 1]))
-+		return 0;
-+	guard(mutex)(&mm->rss_stat_mutex);
-+	return percpu_counter_tree_activate_many(mm->rss_stat, NR_MM_COUNTERS,
-+						 GFP_KERNEL_ACCOUNT);
++	/* Applied once by percpu_counter_tree_subsystem_init(). */
++	if (tree_topology.config)
++		return -EBUSY;
++	arity_param = val;
++	return 0;
 +}
 +
- static int copy_mm(u64 clone_flags, struct task_struct *tsk)
- {
- 	struct mm_struct *mm, *oldmm;
-@@ -1593,6 +1612,18 @@ static int copy_mm(u64 clone_flags, struct task_struct *tsk)
- 		return 0;
- 
- 	if (clone_flags & CLONE_VM) {
-+		int err = 0;
++static
++int arity_param_get(char *buffer, const struct kernel_param *kp)
++{
++	int len;
 +
-+		/*
-+		 * A second thread shares the mm: activate the RSS counter
-+		 * tree. A vfork child shares the mm while the parent waits,
-+		 * so the single counters still fit. The tree stays active if
-+		 * the clone fails later, which is harmless.
-+		 */
-+		if (!(clone_flags & CLONE_VFORK))
-+			err = mm_activate_rss_stat(oldmm);
-+		if (err)
-+			return err;
- 		mmget(oldmm);
- 		mm = oldmm;
- 	} else {
++	if (!tree_topology.config)
++		return sprintf(buffer, "%s\n", arity_param ? : "");
++	/* The buffer is a page, larger than any shape and its newline. */
++	len = format_shape(buffer, SHAPE_BUF_SIZE, tree_topology.config);
++	buffer[len++] = '\n';
++	return len;
++}
++
++static const struct kernel_param_ops arity_param_ops = {
++	.set = arity_param_set,
++	.get = arity_param_get,
++};
++
++/*
++ * percpu_counter_tree.arity=<fan-out>[,<fan-out>...] overrides the tree
++ * shape chosen for nr_cpu_ids, to compare shapes on a given machine.
++ * Reading the parameter shows the shape in use.
++ */
++module_param_cb(arity, &arity_param_ops, NULL, 0444);
++MODULE_PARM_DESC(arity, "Fan-out of each tree level from level 0 to the root, e.g. 8,4,8");
++
++/*
++ * Parse a list of fan-outs, from level 0 to the root, into @config. Each
++ * fan-out is a power of 2 of at least 2, and their product is nr_cpu_ids
++ * rounded up to a power of 2.
++ *
++ * Return: 0 on success, -EINVAL if the list does not describe a tree
++ * covering the CPU numbers below nr_cpu_ids.
++ */
++static
++int __init parse_arity(const char *str, struct counter_config *config)
++{
++	int ints[MAX_NR_LEVELS + 2];	/* Count, levels, and one extra to detect overflow. */
++	unsigned int level, order = 0;
++
++	if (*get_options(str, ARRAY_SIZE(ints), ints) || ints[0] > MAX_NR_LEVELS)
++		return -EINVAL;
++	config->nr_levels = ints[0];
++	for (level = 0; level < config->nr_levels; level++) {
++		int fan_out = ints[level + 1];
++
++		if (fan_out < 2 || !is_power_of_2(fan_out))
++			return -EINVAL;
++		config->n_arity_order[level] = ilog2(fan_out);
++		order += config->n_arity_order[level];
++		if (order > tree_topology.nr_cpus_order)
++			return -EINVAL;
++	}
++	if (order != tree_topology.nr_cpus_order)
++		return -EINVAL;
++	return 0;
++}
++
+ int __init percpu_counter_tree_subsystem_init(void)
+ {
+-	char shape[8 * MAX_NR_LEVELS + 1] = "";
++	const char *origin = "default";
++	char shape[SHAPE_BUF_SIZE] = "";
+ 
+ 	tree_topology.nr_cpus_order = get_count_order(nr_cpu_ids);
+ 	if (tree_topology.nr_cpus_order >= ARRAY_SIZE(per_nr_cpu_order_config)) {
+@@ -1349,14 +1428,23 @@ int __init percpu_counter_tree_subsystem_init(void)
+ 		return -EINVAL;
+ 	}
+ 	tree_topology.config = &per_nr_cpu_order_config[tree_topology.nr_cpus_order];
++	if (arity_param && *arity_param) {
++		if (parse_arity(arity_param, &tree_topology.boot_config)) {
++			pr_warn("Invalid arity \"%s\" for %u CPUs, using the default\n",
++				arity_param, nr_cpu_ids);
++		} else {
++			tree_topology.config = &tree_topology.boot_config;
++			origin = "boot parameter";
++		}
++	}
+ 	calculate_topology();
+ 	tree_topology.items_cachep =
+ 		kmem_cache_create("percpu_counter_tree_items",
+ 				  tree_topology.nr_items * SMP_CACHE_BYTES,
+ 				  SMP_CACHE_BYTES, SLAB_PANIC, NULL);
+ 	format_shape(shape, sizeof(shape), tree_topology.config);
+-	pr_info("%u CPUs, fan-out %s, %u tree items\n",
+-		nr_cpu_ids, tree_topology.nr_cpus_order ? shape : "none",
++	pr_info("%u CPUs, fan-out %s (%s), %u tree items\n",
++		nr_cpu_ids, tree_topology.nr_cpus_order ? shape : "none", origin,
+ 		tree_topology.nr_items);
+ 	return 0;
+ }
+diff --git a/tools/testing/hpcc/include/hpcc_shim.h b/tools/testing/hpcc/include/hpcc_shim.h
+index d321c8363b0b..eaac72eab2d1 100644
+--- a/tools/testing/hpcc/include/hpcc_shim.h
++++ b/tools/testing/hpcc/include/hpcc_shim.h
+@@ -34,8 +34,12 @@
+ #define abs(x) ({ typeof(x) __x = (x); __x < 0 ? -__x : __x; })
+ 
+ #define pr_err(...)		fprintf(stderr, __VA_ARGS__)
++#define pr_warn(...)		fprintf(stderr, __VA_ARGS__)
+ #define pr_info(...)		do { if (0) printf(__VA_ARGS__); } while (0)
+ 
++/* Implemented in main.c. */
++char *get_options(const char *str, int nints, int *ints);
++
+ extern unsigned long hpcc_nr_warnings;
+ 
+ #define WARN(cond, ...) ({						\
+diff --git a/tools/testing/hpcc/include/linux/moduleparam.h b/tools/testing/hpcc/include/linux/moduleparam.h
+new file mode 100644
+index 000000000000..7e40df4295b2
+--- /dev/null
++++ b/tools/testing/hpcc/include/linux/moduleparam.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0+ OR MIT */
++#include "../hpcc_shim.h"
++
++struct kernel_param;
++
++struct kernel_param_ops {
++	int (*set)(const char *val, const struct kernel_param *kp);
++	int (*get)(char *buffer, const struct kernel_param *kp);
++};
++
++#define module_param_cb(name, ops, arg, perm)
++#define MODULE_PARM_DESC(parm, desc)
+diff --git a/tools/testing/hpcc/main.c b/tools/testing/hpcc/main.c
+index 1b86fea543e5..e263a932c30f 100644
+--- a/tools/testing/hpcc/main.c
++++ b/tools/testing/hpcc/main.c
+@@ -81,6 +81,27 @@ int scnprintf(char *buf, size_t size, const char *fmt, ...)
+ 	return len < (int)size ? len : (int)size - 1;
+ }
+ 
++/* Comma-separated integers, without the ranges of lib/cmdline.c. */
++char *get_options(const char *str, int nints, int *ints)
++{
++	char *end;
++	int i = 0;
++
++	while (i < nints - 1 && *str) {
++		long v = strtol(str, &end, 0);
++
++		if (end == str)
++			break;
++		ints[++i] = v;
++		str = end;
++		if (*str != ',')
++			break;
++		str++;
++	}
++	ints[0] = i;
++	return (char *)str;
++}
++
+ static void hpcc_init_topology(unsigned int nr_cpus)
+ {
+ 	nr_cpu_ids = nr_cpus;
+@@ -428,6 +449,58 @@ static int run_case(unsigned int nr_cpus, unsigned long batch_size)
+ 	return nr_case_failures ? 1 : 0;
+ }
+ 
++/* Tree shapes given with the arity boot parameter. */
++static const struct {
++	unsigned int nr_cpus;
++	const char *arity;
++	const char *shape;	/* Shape in use, NULL if the arity is invalid. */
++} test_arity[] = {
++	{ 16, "16", "16" },
++	{ 16, "4,4", "4,4" },
++	{ 16, "2,2,2,2", "2,2,2,2" },
++	{ 16, "4,2", NULL },		/* Covers 8 CPUs. */
++	{ 16, "4,8", NULL },		/* Covers 32 CPUs. */
++	{ 16, "4,4,1", NULL },		/* Fan-out of 1. */
++	{ 16, "4,3", NULL },		/* Not a power of 2. */
++	{ 16, "4,4x", NULL },		/* Trailing characters. */
++	{ 16, "-4,-4", NULL },
++	{ 17, "8,4", "8,4" },
++	{ 100, "128", "128" },
++	{ 192, "8,4,8", "8,4,8" },
++	{ 192, "2,2,2,2,2,2,2,2", NULL },	/* More than MAX_NR_LEVELS. */
++	{ 1024, "32,32", "32,32" },
++	{ 1, "2", NULL },
++};
++
++static int run_arity_case(unsigned int i)
++{
++	const char *expect = test_arity[i].shape;
++	char buf[SHAPE_BUF_SIZE];
++	int len;
++
++	nr_case_failures = 0;
++	hpcc_nr_warnings = 0;
++	tree_topology.config = NULL;
++	CHECK(!arity_param_set(test_arity[i].arity, NULL));
++	hpcc_init_topology(test_arity[i].nr_cpus);
++	arity_param = NULL;
++	CHECK(arity_param_set("16", NULL) == -EBUSY);
++	CHECK((tree_topology.config == &tree_topology.boot_config) == !!expect);
++	len = arity_param_get(buf, NULL);
++	CHECK(len > 0 && buf[len - 1] == '\n');
++	buf[len - 1] = '\0';
++	if (expect) {
++		CHECK(!strcmp(buf, expect));
++		test_saturated(2, 1);
++		test_saturated(32, -1);
++		test_random_walk(32, 20000);
++	}
++	CHECK(!hpcc_nr_warnings);
++	printf("%sok %d - arity nr_cpus=%u \"%s\" -> \"%s\"\n", nr_case_failures ? "not " : "",
++	       ++test_num, test_arity[i].nr_cpus, test_arity[i].arity, buf);
++	return nr_case_failures ? 1 : 0;
++}
++
+ static int run_check_config(void)
+ {
+ 	unsigned int nr_errors = percpu_counter_tree_check_config();
+@@ -455,12 +528,15 @@ int main(int argc, char **argv)
+ 	if (argc == 2)
+ 		large = true;
+ 
+-	nr_tests = 1 + ARRAY_SIZE(test_nr_cpus) * ARRAY_SIZE(test_batch_sizes);
++	nr_tests = 1 + ARRAY_SIZE(test_arity) +
++		   ARRAY_SIZE(test_nr_cpus) * ARRAY_SIZE(test_batch_sizes);
+ 	if (large)
+ 		nr_tests += ARRAY_SIZE(test_nr_cpus_large) * ARRAY_SIZE(test_batch_sizes);
+ 	printf("1..%u\n", nr_tests);
+ 
+ 	failed += run_check_config();
++	for (i = 0; i < ARRAY_SIZE(test_arity); i++)
++		failed += run_arity_case(i);
+ 	for (i = 0; i < ARRAY_SIZE(test_nr_cpus); i++)
+ 		for (j = 0; j < ARRAY_SIZE(test_batch_sizes); j++)
+ 			failed += run_case(test_nr_cpus[i], test_batch_sizes[j]);
 -- 
 2.47.3
 
