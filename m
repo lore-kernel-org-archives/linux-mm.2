@@ -1,84 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEF36082BCC
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F31660705C3
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gYelhsNC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SjyN9Fuf
 Received: by kanga.kvack.org (Postfix)
-	id 0BB826B05B0; Thu,  5 Nov 2026 14:37:58 -0500 (EST)
+	id 467076B05B4; Thu,  5 Nov 2026 14:38:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0944F6B05B1; Thu,  5 Nov 2026 14:37:58 -0500 (EST)
+	id 43EAD6B05BC; Thu,  5 Nov 2026 14:38:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEB706B05BC; Thu,  5 Nov 2026 14:37:57 -0500 (EST)
+	id 337C66B05D1; Thu,  5 Nov 2026 14:38:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CBF876B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:37:57 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 69BE0A0BEC
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:37:57 +0000 (UTC)
-X-FDA: 85402075794.10.95EC33D
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 131CD6B05B4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:38:57 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 94288C0C06
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:38:56 +0000 (UTC)
+X-FDA: 85402078272.06.6C24F2C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8FDAC120008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:37:55 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gYelhsNC;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id C092CA0004
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:38:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SjyN9Fuf;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907475;
+	s=arc-20220608; t=1793907534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0kaAxOY/SSspRWpSrBfn0a4T5P5meoIx1W2LCkWKZd4=;
-	b=necnHOsks5Mw8ljwzSxSH6U2nCzg6526DT9aqS4F55ro3HLuP58QU0ojEpk7cDeIvegH0u
-	rvh/iHnloZaBAn+vENYe+Ao5hBEG7ZOD+9/jd3WBh+v8SjLPXxbDiVLcexz+12j5EF8ryS
-	zFrzfFcXRqytFKPa3KCe7nEpc553hdY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gYelhsNC;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=9oidt3W9iu8GAyDMM4ltoZqLGvtpDsP22WY6CZR8UYo=;
+	b=M4ycqy3hd5mzdXY9NuvW2e0IzaMTvg5TXq1q6NRuvyQMMxU53/voFsqKdqRTV3WAYviWjw
+	kw5QIVE/+eqRagPlhErMelOoNYBNtQoL6AEaI3OdT5OkWIEq96FgtCl6P7frH8j4YKsKDM
+	UrcRNZqCiUPooss2sRPhzjGWHEygyhc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907475;
-	b=5q5G8chYmTSCDf63LDnKmnRY+rdRpdOUTlnvlVs5hCoNFlWqYYWSQQx2rLvw01hgQjDypB
-	4fth8sESCiVdzbF2cP1ivlKwJVdkOvfi96OK/dGY71uEc699XQwhNdMbUJ5UOa3qsy05f1
-	3ZeAXpUyeW++kDXSALeCAUW+UDngXE8=
+	t=1793907534;
+	b=cDUNH0s++ReuYmLdwDew0GEcWIuZ1U28FuhSe0VwzPRVB8mZUN/6G3Qo0LbTqGewRxbtYx
+	jR5k4GQqPCrP9zwEpVKGpr0aDS2ASaMXHC83Z2+IO7EdxIRY4xfcFM5tu/tF/o1N/kvVE7
+	iIhcuH6+wd9tpku6KLMGn7VUWbtOnOM=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SjyN9Fuf;
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C7C3440339;
-	Thu,  5 Nov 2026 19:37:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3CB41F0089F;
-	Thu,  5 Nov 2026 19:37:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 14768409E9;
+	Thu,  5 Nov 2026 19:38:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24C961F0089F;
+	Thu,  5 Nov 2026 19:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793907474;
-	bh=0kaAxOY/SSspRWpSrBfn0a4T5P5meoIx1W2LCkWKZd4=;
+	s=k20260515; t=1793907534;
+	bh=9oidt3W9iu8GAyDMM4ltoZqLGvtpDsP22WY6CZR8UYo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gYelhsNCbbHH6tgq4KIVZIkbdg848ntOab8f0VTwd75TgOhQg/VsXZrEc7NBXE+Hz
-	 K9ArsxWRAadIeQXosxCRFVS5z/MGdhLHDXT+kGM7ZkcLijABInxRc0GFaJBXTIYkUb
-	 9ntEf/NibOTdjSEfSTcQs5oKRFEANZjbBc8cEKZwyZJlQN0yZ0+36fPKuhEiH3EMRt
-	 p9uzL2Ydg6CxWVIiOich5Im3z2U4fBMdl7AZheB840DZrHK8vDkcKRnzwpZ7KbF+Oy
-	 zBzOK4tusC/B9KutOZ1GQLIqzylHfqcRNfdNTcYEflUr5px/EMULgKQNLYU4PFdGl7
-	 gzrtYbsPGNysQ==
-Message-ID: <6849a9c7-0e11-42f2-bd99-d7ae3d5b944a@kernel.org>
-Date: Thu, 5 Nov 2026 20:37:46 +0100
+	b=SjyN9Fuf/+rCKMLpNKRgJnjQV8FQ3r5/qOTVKUkTxVJvouyVGPiDzw0OkHzFqxgKG
+	 laFZ92O779WGlYoHtt4x7OgAaT6CLe9ONxfm9G5yqpI7ZNZlmvkQnOu5q4ByamZRdm
+	 L9Fa4DI7ZHkI+eICgdV/7RW89hxHvH7iuJCJYbYxpp92efjX/m+VCymss6/ixHmrDN
+	 12kChIvAWV9AtsUij8vMhjPj9MhltujZlW0mx570IIOXk1pCWs3IL8H/kofvglWjjS
+	 2xu6VTI9YLzsjeqvrW+thUXrvpq+6fKQ2fB67NXiVUDcKL4toIdtYOoiBNWAzH1PIB
+	 ODUgYMm7viDDA==
+Message-ID: <6099bcde-15be-4197-905e-13dfa4c83bfe@kernel.org>
+Date: Thu, 5 Nov 2026 20:38:48 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm: move LRU size stat updates out of lru_lock in
- folio batches
-To: Shakeel Butt <shakeel.butt@linux.dev>,
- Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, yosry@kernel.org, hannes@cmpxchg.org,
- mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev,
- ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, rppt@kernel.org,
- surenb@google.com, kasong@tencent.com, qi.zheng@linux.dev,
- baohua@kernel.org, baolin.wang@linux.alibaba.com, axelrasmussen@google.com,
- yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev,
- cgroups@vger.kernel.org, linux-mm@kvack.org
-References: <20261029204157.117879-1-joannelkoong@gmail.com>
- <auPhT70GU-Zqe9Qy@linux.dev>
+Subject: Re: [PATCH v2 0/2] mm/cma: fix range selection in
+ cma_declare_contiguous_multi()
+To: Mike Rapoport <rppt@kernel.org>, Ivy Lopez <skunkolee@gmail.com>
+Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
+ vbabka@kernel.org, surenb@google.com, mhocko@suse.com, fvdl@google.com,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <cover.1792032699.git.skunkolee@gmail.com>
+ <auM6nqlB9FusAr4B@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,21 +120,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <auPhT70GU-Zqe9Qy@linux.dev>
+In-Reply-To: <auM6nqlB9FusAr4B@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 1khaeh6jp3e15s3344nrok3w64tp8oxy
-X-Rspamd-Server: rspam01
+X-Stat-Signature: d6cx3rqok955gfpyanof1mtssr8ar73w
+X-Rspamd-Queue-Id: C092CA0004
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 8FDAC120008
-X-HE-Tag: 1793907475-471882
-X-HE-Meta: U2FsdGVkX196ANPnuuOzilP/Az7R8wSZLCeSAOs8eYAdFoTjGU+qn13SS7XC+dfx/yeLoIW7uls+8UzUSdUUfSQ6mvQmYhWGKA6IQJqVffqnlsY39VbHG9T8zcxrOSJex2mWj+yr6TDxeNiArfjN6P71dcGJGHgX4nRHGLDgu3XzF3Mu32jYrfQ4wPM20A0OUNddVX6n7INA6g9qSxzvqbUjgoziyQrCJ1jOYJe4JJKGLt+f7qPVhH3h18709PChNFbaGFiMf/UshqL+KpHn/ZLXgCh1v2PCVsvpcoNlGzeTmkj3Dc6qUqwT5wtPn4TvsosAvWZXdo2D5ic8JPmtnMi5EBF3jVyVbkdVyQ3BBgsKq/q1+elG9na7m8E6FFtWMKTc8zO9/VqGwt5tnNsK5mirTAWqv5us/CFfUIwLeg+vjb5OiRPmF+OMrkcfdlRt06Fdz9mcsBKVvvjTsUFnV7C4ad+ZhZ/u+IUcMP2WJUjStEIY1iWIWLyUshmQKcF76uQ7w+uWyMATpOLDYVxsrCZk6Voh/Ki/O06N5OJcX1cLMdzFieijNS3zid+jKYPvooau9zSCuGP8j+dT6oVc2S6I35x4JukCsW9eBd3qdeN5vT4aIbhoxrdS2+W9/JRCVl/x+ZdmHjg+mPtustj9evaV96OgQhpcquzEDIv3lcJ8pVNtgE19Jd0lWLpyPDoA7epr0jvofatbbVMpQSGMhomIvrOa5ubpSDvQT1olvG9xNTO/EsIER+vXohtAkUcUpPmJeZ6vvGQbdQiXMgvKfDQEE1FczaKxUVM+c/nm5l3yFU2mx3kiYz9R0QySvzRGOS+KS4pan/MSDC7KyaovBHOD0xNkE3TLSY6vtJneKkE8z4bl4fcbuLO593V71CLrA+vfHF4vlu3xDfRnO8Z9Ue0PgVV4vxXPw45R2yNqlGjEZbWEAGL86kD0KJT2Fo1JVG9e2Z/50vDdu1Bo19N
- CFiUg7+I
- WEC4s0Q2lqxla+FJ9h55X0iA/Cq+Ne1fj71qy3MiN1aMb/6f6JovOzT8Grx89Ol6QEQUGIThhZ5u+bbQESRxD8C6VPGOAsikmrcV3HrDE48ywZ0KUlifHWYvBFl11M7I11Vo2rxbiOafOhmtEHo85b37N49TUcgY1vdZdpNl6G5hwpmFfl9Ntxkd2+/hTCSS5W7HMeRX59bD0zoPzl640wWgHB2DQzDfnM1OW0G221bRJm+eluewRIELuN1a6eM6LgLwTae08wYV++ZHKwnoy4yoKnp8ktvbcxO2bgC+QuYnLHhf/JKLBMWxJfIEauhLwWh8ZAM8pyz2CKpzjZL2+ErGaP1jXQ9ukaaDv
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793907534-713255
+X-HE-Meta: U2FsdGVkX1/mCO4zikgAVnETs5kvSGAtmBzhykOumE94PYndbTGMe6rwMUuUIRM7sZ6xqSTsvfgUrHkuSP1TWAYHgXl9EIg9EknsMhC3sKn8fyIMKekSR77Z3cS9vOOdSKW4a3Fvbfoa3B3UaIzkcz+r+z19WvyEjnOtvaWdL4dHm+HPE4RY9Lh0JQy37KhylKPD4pF/Qcmh/ogkEhTjQJ8Elk8ebpJ/Y+AylRzH2uIKpMZ1EPHREI/5nyMCMMkZFLTVoGSpDr/fOIuKar/iiSnNnGzMlZlZUcGbQL/rTxL7IG6AO1zVixlo3l3UGWNf32ztqB7sK9cI2KwA9nCiSq/KvhSlr6Rcu+B1ARQX4V2MMpG8KfnykJK1j9Lg/qeMfvi1oIcSgURizljDLuylXB8ybIc+v+IV8glxn7Vv/1Qu1Oa5rw9O0YrpMci1CD1G5RxEQHeGAiuwdqFvdrHSCqwMtPu2igD/py+e1Y8R3a1naLrcv5ZqUhzn9aTJoUhL+35FViiDUpt5PZVGPjfCcMDXxbDp7D+6/vuhe6082Ei9NtlCv9BhS0qQKIo1Ca9zb1VM2KRA6LyAfjnulOmm6GRVSxiPnGKZq/jYPP9hJznzDV3H5slR1J0BEA8kVcNr8lTWwidFq2ZnNTRyJm2YS1DjxsZutKT+Atw9YSd+A8MltYyctLwhWca9y03PzsUxLagi3rFI52+vFW/FY8M3J3uC66QXQRXEnY/a1ieFDpeASuppVXZGS3UYKKxvOTLhfa9Jth8G7bpDoOymLwbHuhNIRbzLLqk8dGpUtpB2t8FZ0+pyTEUFmPxzMqIZC8/CYM0nTjGumzyLrj7BoSTV1Mu0+wj+WUIyYP1wC6ZfhlhuD5+ZqJXMqaqgsYT9Y+9QSHbtbHLID75NrQOmrDC6geV5L+x1Z5Zo3a5zFcDjti4ro46pTtEtFhUJLTclXMz3ulVg+Dk+E41cGKGt4tI
+ IKF+4kK4
+ OMbU18RHDbsJHjZyoXn7uvM+5gzYknTv6EJxrYL+fQuKu4GuC6gM/CondnbF/6eThnOoSKg8C5iLzxOSSd3VviS595dHt6mMIyqkSFWRjfJ7qFA19O8DWjZ1NZ+qaWlCSXEWMRMhG1jloBQaMwWBaKYVuUsDhpNLYCkGRpqgAIbIQqhDTdr3D/HzUQ1P0Ow78Bj/Pv5HyrG6Fp8DNegQD0H484q3AQPcn1CQnTvZc2qn0I2DRT6zdkHk3BmqK9L7KlKcIVTdt537XgYOqhlTsnT09FYZTKjkTHTZMuE0nWPpKAgfWqtaP/A2LiA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,66 +143,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 10/30/26 01:19, Shakeel Butt wrote:
-> On Thu, Oct 29, 2026 at 01:41:57PM -0700, Joanne Koong wrote:
->> folio_batch_move_lru() and folios_put_refs() take the lruvec's lru_lock
->> once per batch, but they update the node and memcg lruvec stats for
->> every folio in the batch while holding the lock. Only the LRU lists and
->> the memcg lru_zone_size need lru_lock. Updating the stats while holding
->> the lru_lock is unnecessary, and they make up a large part of the
->> critical section, as seen in [1] where a change that added just a few
->> instructions to the memcg stat update path cost about 2% throughput
->> because the LRU stat updates run under lru_lock, and the overhead went
->> away once they were moved outside of the lock.
->>
->> With many threads faulting and freeing memory in a single memcg, about
->> half of all cycles are spent waiting for lru_lock, and the hold time of
->> the lru_lock directly limits throughput. A perf profile with 80 threads
->> faulting in and freeing shmem in a single memcg shows 52.8% of all
->> cycles spent spinning on lru_lock, split evenly between
->> folio_batch_move_lru() and folios_put_refs(). About 25% of the time
->> spent holding lru_lock in those two paths goes to the LRU stat updates,
->> mostly cache misses loading pn->memcg, pn->lruvec_stats_percpu and the
->> per-cpu counters. The stat updates are only 0.7% of all cycles, but they
->> lengthen the critical section that the other threads are waiting on.
->>
->> Accumulate the stat changes per LRU list while holding the lock instead,
->> and only apply them after dropping the lock (while still inside
->> the RCU read section that keeps the lruvec's memcg alive). This moves
->> the stat updates out of the lru_lock critical section and turns the
->> per-folio updates into at most one update per LRU list per batch.
+On 10/29/26 13:22, Mike Rapoport wrote:
+> On Wed, Oct 14, 2026 at 08:53:39PM -0600, Ivy Lopez wrote:
+>> These two patches fix two independent bugs in the multi-range selection
+>> of cma_declare_contiguous_multi(), found by code inspection with the
+>> help of an LLM (both patches carry Assisted-by: LLM).
 > 
-> This updating of stats after dropping the lru lock does introduce one behavior
-> change i.e. race between reparenting on offlining and stats update. I think it
-> is safe and correct though. Better to document it.
-> 
->>
->> The batch is attached to the lruvec while lru_lock is held so that the
->> LRU add/del helpers don't need to pass it down. To keep struct lruvec
->> from growing, cost_lock is moved into the hole after lru_lock, which
->> leaves room for the batch pointer in the same cacheline as lru_lock.
->>
->> The stats can now lag behind the LRU lists by one batch, which is well
->> within the per-cpu batching they already have.
->>
->> On a 2-socket Skylake (80 CPUs, 2 NUMA nodes), with threads pinned to
->> CPUs repeatedly faulting in and freeing memory in a single memcg,
->> average pages per second over 7 freshly created memcgs per run, 2 boots
->> each:
->>
->>                      before    after
->>   shmem, 20 threads  4.74M     5.47M   (+15%)
->>   shmem, 80 threads  7.94M    10.33M   (+30%)
->>   anon,  20 threads  3.04M     3.35M   (+10%)
->>   anon,  80 threads  3.23M     3.41M   (+5%)
->>
->> Link: https://lore.kernel.org/linux-fsdevel/CAJnrk1ZezmmzrYdf8KP6re_a76izMS=qGPeC8ZZXiteHyZZC-Q@mail.gmail.com/ [1]
->> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> 
-> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> 
+> cma_declare_contiguous_multi() seems broken in many ways.
+> I'm working on a patch to rewrite it.
+>  
 
-Thanks, I'm planning on queue this.
+Do these two fixes still apply?
 
 -- 
 Cheers,
