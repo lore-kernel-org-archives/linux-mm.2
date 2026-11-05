@@ -1,99 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79978606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 23:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE75606A326
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 23:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=df5V8P0J
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=bl0/J+OI
 Received: by kanga.kvack.org (Postfix)
-	id 617816B05B0; Thu,  5 Nov 2026 18:31:12 -0500 (EST)
+	id E3E4F6B05B0; Thu,  5 Nov 2026 18:39:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C90A6B05B1; Thu,  5 Nov 2026 18:31:12 -0500 (EST)
+	id E143B6B05B1; Thu,  5 Nov 2026 18:39:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E6736B05B2; Thu,  5 Nov 2026 18:31:12 -0500 (EST)
+	id D50FB6B05B2; Thu,  5 Nov 2026 18:39:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 209836B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:31:12 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A08F4095C
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:31:11 +0000 (UTC)
-X-FDA: 85402663542.01.5AEFB1A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B5E286B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:39:49 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1495B80C24
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:39:49 +0000 (UTC)
+X-FDA: 85402685298.12.43572B5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id BA34C1C000B
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:31:09 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=df5V8P0J;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5716A20002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:39:47 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="bl0/J+OI";
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793921469;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793921987;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D9MkJEZF+tfBcw5o3Zip2FagoDoxTunna3gdku9LHgc=;
-	b=S6X03ZmosiGSKqTVRkIZNmuciFbZUKCEBzMsw74P3DIEEU7BEMpuJe02ATdRSbuuW6XAIq
-	GRUq2KGuI6eE86ZqY+HlvDnRfLMSPqGOvdx1feFSNoflOfI2m4VvbfP6sTts6r5RG1KpAW
-	LyaArwGqTI3uGqCRZQXUYOynZCxvWUg=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=df5V8P0J;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=rCoKdv5eyx8+bEKQ/D7gBxIEUDff2HqusNXsd9z3Zfw=;
+	b=i7vDSs3/iDoKls6RcYh78k1tmg9fAm199mph8g3PkSvzOANtRxD27nK672ADMQ8NkxOD25
+	xpEJ0TsXr1Tych28e5szUOmTONyzATKcWPMioeuhD4suTy2qQTfef5pBMGEFkNrOi5xxjb
+	JpZPSdrx0OrDlm9YauwNymzyjgnawT8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793921469;
-	b=oeyV/ppc9gst/iEvr7hBoYZxMlJLV29oL2khVkKNe9eWixNxuWFE/iLISJMDZ7GhnhpxAh
-	mSCsaa09tnTbizzJkOMCpUKAM8QiHYLImFpNAlvteyFaP3CEVlpsNcrbZ0iZ2BSjbSNKwk
-	ial+C3FEve5mYIdsEbwyDwANmorOmt8=
+	t=1793921987;
+	b=tnGSL4v+5BbRrD2kdjS/zKb53GOgpvv5DFfZH0gjGpefHNw7qAWhi5tDCvY/2dFIAkqpVk
+	KHtOeOzihbM9CgJebUt3rUtBNR8doW03jtgp7nTXeKtMQ5a0LbqE8eJiKOUmVoFSLyms+Y
+	2R2qDHSeJ/4bM6opA6V/aXDwhgYoMnU=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="bl0/J+OI";
+	spf=pass (imf31.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00695600C8;
-	Thu,  5 Nov 2026 23:31:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D061F0089F;
-	Thu,  5 Nov 2026 23:31:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793921468;
-	bh=D9MkJEZF+tfBcw5o3Zip2FagoDoxTunna3gdku9LHgc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=df5V8P0JG9bl1U+vO7BhcUYwiLQN1PW3+gFIQGmLVno5f7mQ1NJ06OK3ysGkJjOkF
-	 +Vl9DWE/nX2bnXJypuS0UP7qQlVDnISmXxTUU9kbAuNJPtfSWgVCuCXCZQ/0+CIFaT
-	 lvrlO/sFhrFxJUcDHG0zli/5y8cDrt9YP3t4coRecA+MUcGdv1rtWj1Gv7TK/hzAW/
-	 I4xlFouBxpvHUviSYiM+qeZrLZP/pLwlhLb+RDLFmOamatCnoEtXx4gLzhL24tyX9G
-	 U+N4//RAIFqsZSvUz2esir3VBvy0FwFYUkZa8HMytNplznHfLD2SIB/rTcM43aRtMa
-	 Ko+O3TUsFW1fQ==
-Message-ID: <sashiko-outbox-200379@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 7/7] mm/memcontrol: restrict memory stock to leaf
- cgroups on v2
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Johannes Weiner" <hannes@cmpxchg.org>, "Shakeel
- Butt" <shakeel.butt@linux.dev>, "Michal Hocko" <mhocko@kernel.org>,
- =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>
-Cc: "Roman Gushchin" <roman.gushchin@linux.dev>, "Muchun Song" <muchun.song@linux.dev>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Harry
- Yoo" <harry@kernel.org>, "David Hildenbrand" <david@kernel.org>, "Lorenzo
- Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Maarten Lankhorst" <dev@lankhorst.se>, "Maxime
- Ripard" <mripard@kernel.org>, "Natalie Vock" <nat@pixelcluster.dev>, "Tejun
- Heo" <tj@kernel.org>, "Oscar Salvador" <osalvador@suse.de>, linux-mm@kvack.org, kernel-team@meta.com
-In-Reply-To: <20261104233029.3282438-8-joshua.hahnjy@gmail.com>
-References: <20261104233029.3282438-1-joshua.hahnjy@gmail.com>
- <20261104233029.3282438-8-joshua.hahnjy@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 23:31:05 +0000
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BA34C1C000B
-X-Stat-Signature: kmyqnytt1gzuafubs9erzpswjrj5tm4n
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	by tor.source.kernel.org (Postfix) with ESMTP id 98AEC60147;
+	Thu,  5 Nov 2026 23:39:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8051F0089F;
+	Thu,  5 Nov 2026 23:39:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793921986;
+	bh=rCoKdv5eyx8+bEKQ/D7gBxIEUDff2HqusNXsd9z3Zfw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bl0/J+OI4ezSk/4AHOsUzY1DM5c6/1998yEWg2PnGHys9rxGEnN38LLVedu7ca1zc
+	 m6OFdKe/0gVYUJRUyjaUR2owSy8o7wVgnLtbtYUhrjTy7HpXtGg8GchEbNxi3iGtZW
+	 Tcf6rC/GUxnX3T5NkJK/ivmLT4CxHW/7tVxqBL7g=
+Date: Thu, 5 Nov 2026 15:39:45 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Mark Bundschuh <mkbund@amazon.com>
+Cc: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
+ <jiaqiyan@google.com>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] mm/hugetlb: add htlb_dissolve vmstat event
+Message-Id: <20261105153945.e4a6415d8d0e8742887e9a86@linux-foundation.org>
+In-Reply-To: <20261105191508.1021974-1-mkbund@amazon.com>
+References: <20261105191508.1021974-1-mkbund@amazon.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5716A20002
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793921469-389552
-X-HE-Meta: U2FsdGVkX1/Hf02MxTNWQVPUlizCqU6HqhmbbYuWmYUoqV4+CF2ehJZkHK62e8rSdcfJIQ1zq8GmgiWzGUjqRH4PGMoHaINnCVfSGT4K1I3jXBHZmy3AKzLWwY92cTQcD6Fj0rdrRK4rgmiB/Rf1OR0xjmz6HJhiqIB2L/JcYwowV1Vi3KBfs0oSEdXsuWwQBCfZxUhrn3FaZYH/h2utCXokNnZbYgXdqeUlzpApNHAlKbnf0NM2905heZTi1BTWwpu+rnrp17QlqAzRELpcu4H9T1NTdUoPOBlkN7zStBJ6KqyccT2vZ7lA1Md/kchxrl4K3Y1woKRX9lXKNtSF5Rc8ux7dQBXwu3OCGjlQIEyDENkXB/bI2U6aePzNp4RTJB6PqpCM1ZB5X1dzAbUaYIFu94gJAzlF4NnCnhqflOckhbvNOghnEJUCp302ilKAcig3pwTrv03DF+4x1njZBL0TOBMQBK7q6SkH4yTtSgN0SiEq9Tt4Tdz50iFm0p4iIH8pDuHymfbh5UmueSeFm6usafZJeDaCChdIuiL2YQbHt96TK5031RLimOxXOWqBeB5pgQbGDHhcioJzNiQKFnI5YzUq0Jzz3JRvqRwxiyonMU9xdFJKSuEkXd2S1rowaJwjt7HTcGbcrc6qtlWcodBAgiRj0DgtaqwVouD6gQwPWt9taJIzcpklCDPb+kWq7IY12UXhm7jBZaG9rIYWhZqe/8mdi8dhFuXV8FqMszgBmaFweq+hhR65M0tVSpQZkOj7M74iUBbVkx1gGqHyiARg3LsTkisvpKdOLZvGXaPw99AEmHCAuaC5DkaecNIFnh3Nrq9VREhbMAlCTu8RDzdBXJiJaboEplbpQNwjjdRkPAbtE+PM/XKWwWFkuWoxRMZOpDG+lw863twmtW2gCuLviXLuZX797sZElTAl/Ayg+C3zGOa2CpxQ3f/wsumPNAW8FptUFrb9BVseyiN
- d5ioEj+7
- WaebA2gDXC4PHFwLz0SaHdmB+thmlPiolT9DgTpZOLtIaF+krH4lbzyRsIYJuzzC4MCKFrUsA+Qu0+5ygHC1gis0ZMPne686pdySGpeyesQyB6bNXM3zoMRP4mkZhcZktVm0xluU22a7Gn2LVYVVnBKgczttUPbMPLRbL7mfdFMAjaJQwy6IvZvITFtlPwjl8Ce5tCzXiyI+eblyxQQ78hYj0WCjwaazhNQ/IywiOf2vCl3cyp7ZK8edZQcy87my7wssawY91lepbBKZG8a+YR1nlV+/OlkcDmI1P6cCKH15MaxLFuKzev/7BZGmw5OVJxm1Y0TmzCIRzuVb4eZ3IjCeT8cXo4mec41zpiZjn8lnV2Pq4LEoXGQQJzwx5ErtDd6vrxJLBWOB3gtPYEODvqs515VmUQk4PrLkxWa60bKkWmo4e+MmiP+IyhKrHgnBtfya9uQPbUM96d9VMFJocZtbXwZSgdhI7zNJ66xTuH+HAUobjHpo3WKSgBvFNZpTOs60mnRB6GX/It91twoYgKg96St1gE1AmXQS/jbtEeLNnLtwFk/zysMeVR6MPGhf1hE9z/l1h2CLdkVxzygNXsWtRo/1EbtyJnBslNS2lSao/HgRGG9DJctbU8Tft8Nz0Vy/VrUsySIqQ4EfWItg6ZPIcr7Y/3by4Ld6h
+X-Stat-Signature: m8ny37b9h8o7nkjy86c4nn9jouybjj4z
+X-Rspam-User: 
+X-HE-Tag: 1793921987-631455
+X-HE-Meta: U2FsdGVkX18MwT6clbnb/zck6UBqz5tgFyFIXpxg1alBEVjWUv41QzlkRBOPxz35fKHf4r3u3UK1lwS3lHk5SKckFDJ9qsH1nvTG3hOtfa+i5lnCFn4H+7Zgm1z5rAV+YqOsZJC5bbyZWhssa/FSjjvwV2rz/IARbxNQYb0lOc2cHxXV56jfT4k4ULKYszvTfvA6FwHWKMlGRW8qYPE/2ygkDAbqdDLu6x/iKlC3n2TkZ+95tTL5VnU47eFpQ/pKUR7Pv1L2w/uOC1wPcXtFfahWgnHEaSamMVgUcVuX3os22nSi9XYX2QvWgD8bGQF9oP4LQgv8XgEF9Q4xt2VIZMy00xqybbnMJikzbU8IglrwDGBaef+LSgL0Qh3PCd3pLgNwOVVEfUl2Cd3A9D040R+yDMrdFgIgwn4CdbDehyIsmdU/665DjGphQOqNeU+ieO1/oZ66cpYB5xDqkcAJaAfhyyY/UGfTNP4R7JIX5ByzQYDg23rIKkRR25XlGl0wdUg768LR/ImUvH1SVQhjFuK+uJg/E2c5PfcpOAeRw/8WBXwxAhuR3c3T9uqbRxFMq44OpywQp+jhPu3l10L3WZHHrhEzCG1e5BeIVyQ7tF6MFetQC8rON65R460FhzZpmewCoHiWtFt0UUqaziFi4aiKlSmOUzC70jOEDdw8pA9M1fQ3rUS5/fWxXiAGmZ6IJmkd1YQ27HIFdt3DWtcXxMCOS+NI0pBoakY5xSlGTk2wYwwrjh8lFG4Yyjn1RRARkOhn+LS2qGwoEBxWeLzMQwCqP4fZvj+959lvSYSlwr1C4iWbNJ59EoS9W8LZOd0BwdkqtbAkyYJgvoffP+rnVhWzKbxJTApNn3/5ttyigM0e4jYUcwKsg0qZ84Pq97huYzMhycxnrT3gWvUoguyIY4k5CogpeCkuaI82ByC5wY6OcwCY+HdiikAoZ9tQaH+4Fch+f/Uvylx3eH3TKHf
+ 0yDNqP4T
+ j/P2HhaNrOJRY4a2cRBrEb4lcaHwvxpW131A69PqEi4Q3MR+vAy5mMEhugU27nshvNrzB0i5BT/Uwn/UEARE/4OgogkpVXu8BqMy0SXYY4jqPVn/pXbjvu7GygIy5EWKqxMfJxFgYfY8qeOit9kQVKwBOGSxfmclUcNmQSPxg8/3PRFL0TfigQ7wbMqdNHuH/YbOd5JAwpHyyvz7wSc6UueEKr4PbdPdnPt9KlbYhJHRSxRWh9/qAZAd5Qln6/Qv4VVooSLiEu5BSXZT7S+Ow5VUEi4DxKwYSRQcFCCS/FKTKZ/r9uNYI+TZJYRvZpPct4AGQWlkwvBxMt33x7MVAs+Vbzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,133 +91,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] mm: foreign slot drain on fast path in page_counter_consume_stock()
---
+On Thu, 5 Nov 2026 19:15:08 +0000 Mark Bundschuh <mkbund@amazon.com> wrote:
 
-commit 4a3e7ea8b6bee1d8310dd3c42d8ad7c15aae3cf4
-Author: Joshua Hahn <joshua.hahnjy@gmail.com>
+> Memory offline and memory failure handling dissolve free hugetlb folios
+> and lower nr_hugepages. Nothing records this, so when the pool shrinks
+> it is hard to tell whether that or a write to nr_hugepages caused it.
 
-mm/memcontrol: restrict memory stock to leaf cgroups on v2
+Can we please have a much more detailed explanation of the motivation
+for this?  I assume it's for the benefit of ops people, but why do they
+want this and how will it be used, etc?  y'know, that old use-case
+thing.
 
-This commit disables memory page_counter stock on cgroup v2 non-leaf cgroups
-when they gain a child, schedules per-CPU stock drains for online CPUs, and
-lazily drains any remaining disabled cached counters during stock consumpti=
-on.
-When a parent cgroup becomes a leaf again on child offlining, its memory st=
-ock
-is re-enabled.
+> Add an htlb_dissolve event, counted for each free folio that
+> dissolve_free_hugetlb_folio() takes out of the pool.
 
-> diff --git a/mm/page_counter.c b/mm/page_counter.c
-> index e1feb2bd1e225..7a3b7cea0ff94 100644
-> --- a/mm/page_counter.c
-> +++ b/mm/page_counter.c
-> @@ -158,6 +158,7 @@ static void page_counter_drain_stock(struct page_coun=
-ter_stock_pcp *stock,
->   * Consume the cached charge if enough nr_pages are present, otherwise r=
-eturn
->   * failure. Also return failure for charge requests larger than
->   * PAGE_COUNTER_STOCK_BATCH or if the local lock is already taken.
-> + * Drain disabled cached counters while looking up the requested counter.
->   */
->  static bool page_counter_consume_stock(struct page_counter *counter,
->  				       unsigned long nr_pages)
-> @@ -176,12 +177,17 @@ static bool page_counter_consume_stock(struct page_=
-counter *counter,
->  	for (i =3D 0; i < NR_PAGE_COUNTER_STOCK; i++) {
->  		struct page_counter *cached =3D pcp_stock->cached[i];
-> =20
-> +		/* Drain any stock that is disabled but hasn't drained yet */
-> +		if (cached && !READ_ONCE(cached->stock)) {
-> +			page_counter_drain_stock(pcp_stock, i);
-> +			continue;
-> +		}
->  		if (counter !=3D cached)
->  			continue;
+I'm wondering why it doesn't account offline and memory-failure
+separately but without the above info I'm at a loss!
 
-[Severity: High]
-Can draining an unrelated disabled slot in page_counter_consume_stock()
-acquire spinning locks from an NMI or alloc_pages_nolock() context, and also
-add foreign cacheline loads to every fast-path stock hit?
-
-In mm/memcontrol.c:try_charge_memcg(), may_batch is set to false when
-!gfpflags_allow_spinning(gfp_mask) so that charges from non-spinning contex=
-ts
-such as alloc_pages_nolock(__GFP_ACCOUNT, ...) do not evict other stock slo=
-ts
-or take spinning locks:
-
-mm/memcontrol.c:try_charge_memcg() {
-	bool allow_spinning =3D gfpflags_allow_spinning(gfp_mask);
-	/* Charges from reclaim or non-spinning contexts don't batch. */
-	bool may_batch =3D allow_spinning && !(current->flags & PF_MEMALLOC);
-}
-
-However, mm/page_counter.c:page_counter_try_charge() calls
-page_counter_consume_stock() unconditionally before checking may_batch:
-
-mm/page_counter.c:page_counter_try_charge() {
-retry:
-	if (page_counter_consume_stock(counter, nr_pages)) {
-		if (nr_charged)
-			*nr_charged =3D 0;
-		return true;
-	}
-}
-
-For the counter being charged (counter =3D=3D cached), the caller holds an =
-active
-CSS reference, so css_put(counter->stock_css) when depleting the matching s=
-lot
-cannot drop the final CSS reference.
-
-For an unrelated counter in pcp_stock->cached[i] (cached !=3D counter) whose
-stock was disabled via mem_cgroup_disable_stock(), the charging caller holds
-no reference to cached->stock_css. If that cgroup and its child were
-subsequently removed while its per-CPU stock slot remained populated (for
-example on an isolated CPU where schedule_drain_work() returns false, or
-after a racing refill or contended mutex_trylock(&percpu_charge_mutex) in
-drain_all_stock()), pcp_stock->cached[i] can hold the final reference to a
-dying CSS after css_killed_work_fn() completes.
-
-If an NMI or non-spinning caller on that CPU then runs:
-
-  alloc_pages_nolock(__GFP_ACCOUNT, ...)
-    -> __memcg_kmem_charge_page()
-      -> obj_cgroup_charge_pages()
-        -> try_charge_memcg()
-          -> page_counter_try_charge()
-            -> page_counter_consume_stock()
-              -> page_counter_drain_stock()
-                -> css_put(counter->stock_css)
-                  -> css_release()
-                    -> queue_work(cgroup_release_wq, &css->destroy_work)
-
-wouldn't queue_work() spin on workqueue pool and scheduler locks in a conte=
-xt
-where spinning is forbidden?
-
-In addition, the commit message notes that lazy cleanup happens on the next
-local stock miss ("The next local stock miss on that CPU scans for any stock
-that has been disabled, and will drain its stock"). Because the
-!READ_ONCE(cached->stock) check is placed before the counter !=3D cached ch=
-eck
-inside page_counter_consume_stock(), every fast-path stock hit at index i w=
-ill
-also dereference cached->stock across foreign struct page_counter cachelines
-for slots 0..i and drain any disabled slots before i while holding
-stock->lock.
-
-Should the lazy cleanup of disabled slots be moved to
-page_counter_refill_stock() (which only runs on a stock miss when may_batch=
- is
-true and gfpflags_allow_spinning(gfp_mask) holds), while
-page_counter_consume_stock() only checks counter =3D=3D cached?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104233029.3282=
-438-1-joshua.hahnjy@gmail.com?part=3D7
+Thanks.
 
