@@ -1,83 +1,76 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6C7A606EEA8
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47F2606B9FA
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qj3MxEnr
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eDtVrelY
 Received: by kanga.kvack.org (Postfix)
-	id B3F5A6B05C1; Thu,  5 Nov 2026 14:31:35 -0500 (EST)
+	id C4B196B05C3; Thu,  5 Nov 2026 14:32:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE81C6B05C2; Thu,  5 Nov 2026 14:31:35 -0500 (EST)
+	id C227B6B05C4; Thu,  5 Nov 2026 14:32:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DA646B05C3; Thu,  5 Nov 2026 14:31:35 -0500 (EST)
+	id AEB866B05C5; Thu,  5 Nov 2026 14:32:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 75B966B05C1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:31:35 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 246821C4690
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:31:35 +0000 (UTC)
-X-FDA: 85402059750.24.943BE05
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 601061A0007
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:31:33 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qj3MxEnr;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DF696B05C3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:32:44 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 016EEA0C1B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:32:43 +0000 (UTC)
+X-FDA: 85402062648.03.BC3DCA1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 32408A0008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:32:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDtVrelY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907093;
+	s=arc-20220608; t=1793907162;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HbYwxsff3zwmd12NfwO1WlkOU+zbs7lqClhdSOh1kUY=;
-	b=QExwNyAaDckvQiwuckJsIeRDkuWZ8DxCz0rIxCPsICvc/yOQH4cLqQXsYr0r0QNixx6pC9
-	ILr6/lIeXmQpFwt6RRE5+EcIVP0ztlCZSsPE+ijDQG/7zuiiKPmCNquppOqB25GNk6xG0E
-	HtZFxhI4CQu6v1lIlIp+R9FLey/dbfQ=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Qj3MxEnr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=Rb2ofXzgJBc5fIuQP0w05xjk/81sHfOWEL8zO3J0XUA=;
+	b=HCcPDqG31tfbYghsPdXK7/diMXF9wTBVv6xHyOX3UpaY79FrhIg5085VgQa+DezW9cgWtg
+	9W2tU9Ag/fxo8U9mVrCGCiRWccN2baKQ6b7DH+qMryJWIiKMcNo6Tv0BdG962vNxOvG3NU
+	jNVzsv7hAKqmf5zo73fZhFXSQYqYx7I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907093;
-	b=esqJeQZfkvO+kDCsccCrlhIzZmopMWnGqpMPAv192wn7kLfoRJw7LMU5X8sN44VeXwxEEb
-	r0FaEcnD3hjIEYFv9hlinDRD1Ghp5UG+qzBz2NlhFYMIAJKPRj7UaZlF1H5MXcjw5gLwd7
-	WCOSz14F7xnUUdfgMuM47tsQVpouarI=
+	t=1793907162;
+	b=QGZV95E3GJw32Dosrtfx/flYpfYiZ8rDJ7mxx+ACv9GTFe0+vlBxdziyJvMkqiZmmnEUTh
+	w2iPjiFEU7tLSw5r5UgwYcwqJghVRKIewbbNpaytY7saTaoQrRhfZbqH4yKN94AI/c+yDd
+	OHDBSHFmRTAt4J27B3sjJrDjyVkuokM=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDtVrelY;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C8BBF60148;
-	Thu,  5 Nov 2026 19:31:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A361F00919;
-	Thu,  5 Nov 2026 19:31:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 752B4403F9;
+	Thu,  5 Nov 2026 19:32:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C1A1F00893;
+	Thu,  5 Nov 2026 19:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793907092;
-	bh=HbYwxsff3zwmd12NfwO1WlkOU+zbs7lqClhdSOh1kUY=;
+	s=k20260515; t=1793907161;
+	bh=Rb2ofXzgJBc5fIuQP0w05xjk/81sHfOWEL8zO3J0XUA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Qj3MxEnr6FZYNwGTA5OmT2naokiXBMoHwDE6Lj8EUey3p+vrrO+B7NR7pnKV1X4Zv
-	 qqIeSuiUuOlHHWmQati8GlB2VskV8ND0tGhzjfhPW6kr/SBz7F7Ksc5uoplrPAkTXs
-	 nwy4juookyx2inwkQQcPq7sIBbI4Eb6zyNYvHH/fQmeejdV8Cxd5VYuzpUShTk59Gi
-	 YeZ+/gnyn8aF5z8wFi+1OVRHwLwoCazMPcWmivOpHrtoCzd2V5e9Wm9qmpzEVsqkS2
-	 Ub7iAPCVTOVFtrTRKKcaKClHWOHjDer09tg317cjYDXHOX5ZLSlG3YUEptkgtAZRHU
-	 Wm+aYhRsS9jKQ==
-Message-ID: <1d89aaf1-6c91-4f87-a5c8-15c4fa93503e@kernel.org>
-Date: Thu, 5 Nov 2026 20:31:26 +0100
+	b=eDtVrelYYt9il2577q40L8EJ4XtDnLbe9oqPCZ5DVXPhy2CZ8RykrXLqcT8lNJ9fo
+	 iVvdOiFyVuQs7f9uc0KWN9MENqV2XhI4rRvK3+VjAyx04aExFaeskqW93dB8KnV1I7
+	 jXPC/Dq+sLpMiFkrvl1FXVJfY5SmBtdGcpXVpAosWwzVpgGOAtgpDNtkSivs3sMb0S
+	 idxJlASIgnR6P/pT9DmadA3pyNe/7F5fBJgEg6bIU8TZ5JFBDrGQZ6Q/e/u9IVIB7y
+	 yZXuho1Kj6QIDbZlEjN5wDAh5ZVw8ddXkVoI6kVGhOjvfJ+tc5dncmBzIgU7aioe/k
+	 V1zZhbj+ZI/kg==
+Message-ID: <7dc47941-0c84-4260-bf9c-1a9bbe4d4f08@kernel.org>
+Date: Thu, 5 Nov 2026 20:32:37 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/shmem: remove truncated folios from the page cache
- in batches
-To: Qiliang Yuan <odys.yuan@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-References: <20261105-bug-mm-shmem-undo-batch-v2-1-ae5f89ced044@gmail.com>
+Subject: Re: [PATCH v2] shmem: skip empty unmap ranges when punching holes
+To: Hungyu Lin <dennylin0707@gmail.com>, hughd@google.com
+Cc: baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261105055619.58289-1-dennylin0707@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +117,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261105-bug-mm-shmem-undo-batch-v2-1-ae5f89ced044@gmail.com>
+In-Reply-To: <20261105055619.58289-1-dennylin0707@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 601061A0007
-X-Stat-Signature: g3orxmctrehi4xciq93ouzms9ysnxc9u
+X-Stat-Signature: mracykdu5ocxcxzydnceug5xiap8woqs
 X-Rspam-User: 
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793907093-477767
-X-HE-Meta: U2FsdGVkX199fvv/0pW2x0x/Ynqemj+ruxplt099OegodTQDhEcXZ5Iel92hiLzeSGh+ZoygEjABnMaZzthFAtH60lDiORtZRs9wvEY0WEbyfOkkjA7+fvHcZlQyVJxhmbzTP4seEitn+ovsoqTbyGBhFmtenF7WCkJLxhLltEFqMRyytcNOupzxxbRNXchO4pEPmmDQIJSUDB8vn1K9ckC9j71FCEPBbMDifRgTg2As5ii84y6Hn7w5L9qRGR98WqqDyHO3KsxTEa+tlBCWeaVDdmkBjOFt2gHp44kFMhoIbQqmsWWHN6T7s5iK/2PGRYE9cVmXdIKjl56yTlrksKhZl+GZbTIBcbov2aLI5cNlTBlUtFEMBwkqSk2kJ6cuJE+ytu8EU6ATPTVBvFniLThnlk0ktLTaQhKfOKpU9dQAtuwLe/F/9bDi1pNJkH6CTBadSjDPb8VreTXJgo6CZUjaEwR5prGPOdHhXFzjKxpudILWDd0SdJeZDwTRilRnKei30ChJtUDwDwiMwDypUn/OMWXLZMdyMitGhQKslWK2KgejgiKdE7aM1fjYxfm8AdeZ+38B1ZWVnwu0Yt/gUgJ16ofIyXQb7n9f+Cok8mh10u7ZS0uDP5m+4Pndrie0h8iG9wru3ia9b+gAL4XLbpI6GxZpmPhmLlz0iw+A3jdlULxOtqoisfcFhgF+g/cNuGYEVWsbI4NFHmqi2iMZwKSBEAZvku/jm7+fV7Rg2GOP7rus//Zzqn6fx2O4XRcxcmRnFafRbkXPB8OVhrtTcTygOinEaJPBmmlf2Saqn7+eH2TUl8gKRPrZG4BfMA94DPjcFpfA07v9+inWwHbV/5NiUcVH47Xk93JrzWoQVpQYkqtsTNp81b/2d+Iwb5QdM5nm/y9/jZcDPbPe4grCmPP0Qtk7soRh/nJjbTfN7MygKJENZRCvYYvCeQzEVIf6aXP2dZZWif89auwBsrY
- bUON7FBh
- mgp/5llm4g+2kJs3hUcml+lktzQJFqcAZxAXTPxxtTIAX7SYgztagYKv9S2RyhuNkCT5Ac33gTSlDIw6n2kR4km3WJbMl7k3WFvnkuIatdSKiE9XAnoz2cU0DMNyVJ4h63iE+kiYNMGODEu3QhoIi+22scjVfT/L8cvx9fT92W9FGBJnu4KjY9QCPABHXRxqEBktraYPP3YgITEya7lBYZ9dR2RHLlf5J98xOes1XwHQ8wsqDgbjZyqpHWeKrAR4+FgdhNjae8HSnLnaQQH7fUOY2ll/Hza25uf5+eflVC6CYEsz06fefrldv23+NvGkrmflWITR4/CFZ65TbbpLSYIpciAnbjbSECT4VTuXfjiZSVAEzQddtLD6IX+Fq8Ftfgo5t
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 32408A0008
+X-HE-Tag: 1793907162-777022
+X-HE-Meta: U2FsdGVkX19qgthan4Lj4SZ7zXM3dgVt47Ep5vV9MXaynRfezjqotTpKcLLcD8LW7+dROkDz7tFWbYTnduXT0N5z+b/f4EwuFbfCuTHJK8AvLGlVGxKPVNd8Hr9mo4wrseMcB8l6ppaC4gaI8uXpz5T2n+tj10QqLpsedEZ/3WdB64uvIt7qQM7JtU7D3XgYqGEn2u+0EVFWQYJDjQwFdzpaETgGDHVb5h+qJYehDTix82n2yHLK30mcFLEMViEqG3haMqJb3D3rx7KaasSlb/FtBkJLZcCBpoR0GsqfSVY/gToyvpvcWsgggvvNkSp5nHVwk3BqKLKj/y8Inxrx2xypDPjQiyU+DtbbeU0VOdLbLgo4mGosvAW9EEdcLlFXxsAOTQLv2tk8CdVMZcvoDbHda30ytYp92gA7SsMbqxhOd0gvbIUm4XlWbfd45EkaR03AKiVGd2MKIZwd9KGHTqK/wAyW12BRRaYAK8zloT1pgLasJNPnrPRLm9uX/XMcPT6KbYWrY6ZbhS+W9tp9Ng9jtWSk7rfUxv4Ue/GXue8nS6Fu9xljdBZ200NUhWqjZJYdr2uB9Nn8jI9usSzYuLCePQ20z34VOUyKKokmuqigTN4a/Qd2r5k2vkBhMab04K1K7K4lspZFHPeBXvXsLNXRzTwUR28AdK3Kxhokalu72hmp002ZVy/j1EQTgcD67uhRnzkRSM1x02JTWemiWLeIQf1b+OHhj4Bsx22fBzGrocWUbadS4iNqOeytxCbhMOGp2lpotljm+FmjtQ6tbosFDwWFodsscCO7vX1NFC8+spOdy31m/6T3Nm/lUH0E9ZKfvT0QKHEMtShsI65GXfH7TwbVkrdaaqLttwSDCe3dCKVfLu4ZXoCm1KnjkRmxynvLBwyFps/Ub0c2/6MVfw27W4FnTMkq1VOshpb5u7ggWyzkjQdZP07u+TxWHmG99vavEyzkDtaF6hslL9S
+ gulXpgdv
+ MfiTSCYfBUM9+7SNaEyG4AyXtsuq3Nzk8zY0GW6ac1mqmn99pHWMX0NaXgJgvaGOQEJTREduB9+MzyJsgUigNJ69XeJ/feRAdTaL9ehylV/w2Xq2bdw3RIGkSjpjxvJOC8DdvtreKtnAZ/+nJjlp0vz44Ab3hW5LS8YxQCGBpHqY4FBGZlKYJCHzOMuLOJHy9/bXbPm9YVyn845pZPfLKcgAfeOEE8wdZkjohNL+eOetkM8ud6cbpHKj6GMETRbhSSjOkpF8J4S+6YbVfgOoMfc+yw+nvCJ7g0SlK2DDWvsP3W7s=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,38 +140,31 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 13:32, Qiliang Yuan wrote:
-> truncate_inode_pages_range() takes the folios it finds out of the page
-> cache with delete_from_page_cache_batch(), which takes the inode's
-> i_lock and the i_pages lock once for each batch of up to
-> FOLIO_BATCH_SIZE folios.
+On 11/5/26 06:56, Hungyu Lin wrote:
+> When a hole ends before the first page boundary, shmem_fallocate()
+> calculates unmap_end as -1. Casting it to u64 makes the range check
+> succeed even though the hole contains no complete pages.
 > 
-> shmem_undo_range() calls truncate_inode_folio() on each folio instead,
-> so filemap_remove_folio() takes and drops both locks once per folio.
-> Truncating, punching or freeing a tmpfs file or memfd made of small
-> folios, such as a large /dev/shm segment, pays for that on every page.
+> For example, punching one byte at offset zero calls unmap_mapping_range()
+> with a zero length, which means unmap to the end of the file. The file
+> contents are preserved outside the hole, but unrelated mappings are
+> removed and must fault back in. This can be reproduced with fallocate -p
+> -o 0 -l 1 on a mapped tmpfs file.
 > 
-> Clean each folio up as truncate_inode_folio() does, collect the ones to
-> remove and take them out with delete_from_page_cache_batch(), which
-> needs truncate_cleanup_folio() outside mm/truncate.c. Swap entries, and
-> the folios kept when undoing a failed fallocate(), stay out of the
-> batch. Dropping an 8 GiB file of 4K folios, median of five runs,
-> averaged over two boots of each kernel, in a 32 vCPU VM:
+> Keep unmap_end as the exclusive rounded end instead of subtracting one,
+> and adjust shmem_falloc.next and the unmap length accordingly. A hole
+> ending before the first page boundary then has an end of zero, so the
+> unsigned range check skips the empty range. Retain the unsigned
+> comparison so rounding the start near the maximum file offset continues
+> to be handled correctly.
 > 
->                         before    after
->   ftruncate() to 0     1150 ms   917 ms
->   hole punch           1165 ms   919 ms
->   close() of a memfd   1153 ms   921 ms
->   unlink()             1152 ms   921 ms
-> 
-> Files of PMD-sized folios take 18-27 ms with or without this change.
-> 
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-> Reviewed-by: Jan Kara <jack@suse.cz>
+> Fixes: 83e4fa9c16e4 ("tmpfs: support fallocate FALLOC_FL_PUNCH_HOLE")
 > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
 > ---
+> Changes in v2:
 
-Thanks, I'll wait a couple of days and will then queue this.
+Thanks, I'll wait a couple of days and then queue this for the next merge window.
 
 -- 
 Cheers,
