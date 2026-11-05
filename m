@@ -1,98 +1,179 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528FA606D80C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE020606B3C2
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kBi5aVin
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PpT8/D5z
 Received: by kanga.kvack.org (Postfix)
-	id 6B73A6B05BF; Thu,  5 Nov 2026 11:34:44 -0500 (EST)
+	id 1FEFE6B05B3; Thu,  5 Nov 2026 11:36:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68FC16B05C0; Thu,  5 Nov 2026 11:34:44 -0500 (EST)
+	id 1D6636B05B4; Thu,  5 Nov 2026 11:36:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A5CB6B05C1; Thu,  5 Nov 2026 11:34:44 -0500 (EST)
+	id 0C6286B05B5; Thu,  5 Nov 2026 11:36:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 34EC16B05BF
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:34:44 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8D8E71209C7
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:34:43 +0000 (UTC)
-X-FDA: 85401614046.17.C0668B4
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D98F16B05B3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:36:02 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50AF4C0AE8
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:36:02 +0000 (UTC)
+X-FDA: 85401617364.08.D4750F1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id EACCE140002
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:34:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kBi5aVin;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id D396D2000A
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:36:01 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PpT8/D5z";
+	spf=pass (imf31.hostedemail.com: domain of hawk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=hawk@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793896481;
-	b=3ScHvSXb2hUZbzV3pgvH94672U/x0vDwKPyKqra+p7L+Tj2FvmiMAHAbWdUuZPCXtmz5X7
-	7VL1n7J700MDjMmykwevdXcQ3VMP7D5m3nTfcLh10ThmzA9eUUZvDkB3JRXlB4oCmKMTbG
-	LSbiO5T2iauF7Iv+FkQsDhhKlKfo82U=
+	t=1793896560;
+	b=QNQnAseqaHSXvkGGl8CL3/3j8U2tH5jaBMo4drsNWy8cYGCmBktNQL/PYXs+tiSan7Te5h
+	Tfb4V5LujC64EOkzeB53lfAxY2U6CqIMH/fx2PeHCS7Lhx4UX1NcBs6ZrAXoi1pt1ceYFL
+	IPOY0qsr0EjP7RBJyZ/it5P36BBhkWc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kBi5aVin;
-	spf=pass (imf23.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="PpT8/D5z";
+	spf=pass (imf31.hostedemail.com: domain of hawk@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=hawk@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793896481;
+	s=arc-20220608; t=1793896560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TBv924hgucUDgTSkptAFinyCftVnMUELhrGg/YfjC20=;
-	b=rImIkV5mm1HvuxU2VTV72ShEBniO6Kq+bmJJJiSZBDZ2WQUBFmSZZGoGVMkJmLexWvJZdo
-	m7lmSReH8HodfBE3PzbipBsmuPXxDjiPcnfTxIlhzB8lEY0yFG/Zt3eFCJhuqAJF57kNr5
-	RIbtAz43U6FkVfuV5PcjoAmzMcFhf6E=
+	bh=oaFEybmB3/LpRlTwU2ESXZoM0QOYsoH22CakPe6LiW0=;
+	b=qPd6b23V1dGESqKwmqHUqnsxNh89SvO5pL88DInYu1nMSM4Nqk7xJx62SM3nsJKHU5lmt4
+	L6KcgEsCQMyAsBPHxO+4UlpFL2yLrz/X1ZNpzYCJ2YvZ0qDKGMbYbfff79lPQtofXDdBmV
+	pNgVME8+diFKOgwn06qzzrx1AvaGCHg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2B1C4609FF;
-	Thu,  5 Nov 2026 16:34:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CC081F000C1;
-	Thu,  5 Nov 2026 16:34:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F152360A7E;
+	Thu,  5 Nov 2026 16:35:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A1A1F000C1;
+	Thu,  5 Nov 2026 16:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793896480;
-	bh=TBv924hgucUDgTSkptAFinyCftVnMUELhrGg/YfjC20=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=kBi5aVinozWdr30SvlvWrbdI+oxqrfg3wYreCZsip56P/UpCA483hwMdhKZsZz7mj
-	 KjuO/qua4lm1T1mf88OAbvrP/gBxXSPQVsLvkQnRrFoRWZpaF7S1WlGP6GhfVMesz7
-	 2V7ZNv/cQ4Ob8gsjHpKE47v9oHbp30d1zMVdi1J2YQJSrYu0jiQY4yVmh8c4SUZ3uT
-	 3o/dU6wNdMjidrvPNWkPVzuRpPBSsk67u2Y5jDdYv8Li012xdmn/q8HMLeknUWTI4p
-	 /gffZiGoufno26Ei7fpsRfB5GlREuJZJgJchn/9BssPnAtTfT2ILPKTuaBFNuVeREH
-	 dmWVx4tsdojMg==
-Date: Thu, 5 Nov 2026 17:34:34 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, 
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Joel Granados <joel.granados@kernel.org>, 
-	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Takashi Iwai <tiwai@suse.de>, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-raid@vger.kernel.org, 
-	linux-sound@vger.kernel.org, linux-rtc@vger.kernel.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RESEND v2 0/7] proc: move procfs to what kernfs does
-Message-ID: <20261105-chauffieren-zertifikat-weinanbau-685bf4373da7@brauner>
-References: <20261104-work-procfs-v2-0-b45cd5789ac5@brauner>
- <499ba73b1a72a30c6118a4f693f8fc5b.josef@toxicpanda.com>
+	s=k20260515; t=1793896559;
+	bh=oaFEybmB3/LpRlTwU2ESXZoM0QOYsoH22CakPe6LiW0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PpT8/D5zeLlfhjXRHDS9Xn7yTDCLEhyyWpMkM0/IfblI9PMLXcKedSOlnoASybHch
+	 QMV8ab3TA2uSLtQsY231ygXHLK4E1dZjZWYTUyaq5EG+U+7SRxv/SC5EV5zIEGfbl+
+	 Anl6FvxIWk2bzbUyorgGwbK7QtWE0eneo9Vkb0oEtRPqNHIcsTwj/H9gaUxgdyQRKl
+	 9la8Ee4KQAzAUk3BDbj8WwQQ1UKgW36gLtWALpg8W7Mm455sUJQJK7b75HwOTlAxFH
+	 tWWXsXG7Et2NnPPdGnHQoyRFRfRXjPc/WvDrWcLkNmwuDZMfzvcAqJShtCN7KTNjC+
+	 ltbn1tD2mVL7w==
+Message-ID: <cf2e3292-d591-42a4-bf6e-76f4567604c6@kernel.org>
+Date: Thu, 5 Nov 2026 17:35:34 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <499ba73b1a72a30c6118a4f693f8fc5b.josef@toxicpanda.com>
-X-Stat-Signature: i8j6uqris457zpx31mjdmaro6wjqjyta
-X-Rspamd-Queue-Id: EACCE140002
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v1 0/5] net: deprecate skb->pp_recycle and
+ skb_mark_for_recycle()
+To: Mina Almasry <almasrymina@google.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, virtualization@lists.linux.dev,
+ linux-mm@kvack.org, bpf@vger.kernel.org, linux-wireless@vger.kernel.org,
+ linux-doc@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ imx@lists.linux.dev, linux-rdma@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ linux-omap@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Willem de Bruijn <willemb@google.com>, Stanislav Fomichev <sdf@fomichev.me>,
+ Pavel Begunkov <asml.silence@gmail.com>,
+ Bobby Eshleman <bobbyeshleman@meta.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowangio@gmail.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+ Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Sabrina Dubroca <sd@queasysnail.net>,
+ Johannes Berg <johannes@sipsolutions.net>, Byungchul Park
+ <byungchul@sk.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Lorenzo Bianconi <lorenzo@kernel.org>,
+ Wen Gu <guwen@linux.alibaba.com>, Philo Lu <lulie@linux.alibaba.com>,
+ Justin Chen <justin.chen@broadcom.com>,
+ Florian Fainelli <florian.fainelli@broadcom.com>,
+ Vikas Gupta <vikas.gupta@broadcom.com>,
+ Michael Chan <michael.chan@broadcom.com>,
+ Pavan Chebbi <pavan.chebbi@broadcom.com>, Doug Berger <opendmb@gmail.com>,
+ Nicolai Buchwitz <nb@tipi-net.de>, Satish Kharat <satishkh@cisco.com>,
+ Wei Fang <wei.fang@nxp.com>, Frank Li <frank.li@nxp.com>,
+ Shenwei Wang <shenwei.wang@nxp.com>, Joshua Washington
+ <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>,
+ Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>,
+ Fan Gong <gongfan1@huawei.com>, Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, Sunil Goutham <sgoutham@marvell.com>,
+ Geetha sowjanya <gakula@marvell.com>, Ratheesh Kannoth
+ <rkannoth@marvell.com>, Subbaraya Sundeep <sbhatta@marvell.com>,
+ Bharat Bhushan <bbhushan2@marvell.com>, Felix Fietkau <nbd@nbd.name>,
+ Matthias Brugger <matthias.bgg@gmail.com>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Saeed Mahameed <saeedm@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com,
+ Daniel Machon <daniel.machon@microchip.com>,
+ Steen Hegelund <Steen.Hegelund@microchip.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Yibo Dong <dong100@mucse.com>,
+ Brett Creeley <brett.creeley@amd.com>, Justin Lai
+ <justinlai0215@realtek.com>, Larry Chiu <larry.chiu@realtek.com>,
+ =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+ Paul Barker <paul@pbarker.dev>,
+ Masahisa Kojima <kojima.masahisa@socionext.com>,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>,
+ MD Danish Anwar <danishanwar@ti.com>, Jiawen Wu <jiawenwu@trustnetic.com>,
+ Mengyuan Lou <mengyuanlou@net-swift.com>,
+ Ronak Doshi <ronak.doshi@broadcom.com>, Ryder Lee <ryder.lee@mediatek.com>,
+ Shayne Chen <shayne.chen@mediatek.com>, Sean Wang <sean.wang@mediatek.com>,
+ Juergen Gross <jgross@suse.com>, Stefano Stabellini
+ <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>,
+ Jordan Rhee <jordanrhee@google.com>, Ankit Garg <nktgrg@google.com>,
+ Tim Hostetler <thostet@google.com>,
+ Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+ Eric Joyner <eric.joyner@amd.com>, Mohammad Heib <mheib@redhat.com>,
+ Prabu Thayalan <prabu.ponrajthayalan@amd.com>,
+ Chintan Vankar <c-vankar@ti.com>,
+ Nora Schiffer <nora.schiffer@ew.tq-group.com>,
+ Alexander Sverdlin <alex@sverdlin.org>, Kevin Hao <haokexin@gmail.com>,
+ Karl Mehltretter <kmehltretter@gmail.com>,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Meghana Malladi <m-malladi@ti.com>, Jacob Keller <jacob.e.keller@intel.com>,
+ StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+References: <20261103211424.127627-1-almasrymina@google.com>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <20261103211424.127627-1-almasrymina@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793896481-263825
-X-HE-Meta: U2FsdGVkX19D/JMoEJZ8cknYH1kzGaPwTB9Isj1+1ji5haX0JziD94Y11heci3Pm75622gFUNx30ub1p1gN2oEZUb9D/RrEv6i4mZ5QK31ztXdw8Twwcsy53OhFKehHoU7eT8KfwMqzogLxvTLHxL2jZ0FVdrBNhSBKcPJgFPttf5LuQ2DU2HLUoPuwn8O1mqWBB3Jz0cW8aOZhiFkkxGQUTQS+PgbZyFh/SdkVYn6Byj1NLUzqc+hOlst/Od/21RcsSbz4aUiJhLR6NIzksg8GKbw/jNhEUtt1YEgpOTmoReyg+a8GuW8y8If4lAD0093t7UFI4PN5UxhPww/QtP+merQe4iqzsBhqdAAMKYHd1Gy16xYzg0hDvZCv4eDlhQdvBWR5jvrcbOaGgNaL8xaLECdIOVbVN1S5ymIlcrkXJQcsRUJH1dy1yqpnPiRB8xahJQaGeEC7GQF7JtlGnB8RbBGjCo39904wsJIdo0vpY8erxGSfuObQNjvm7bn+Z8B1Kt5PWjNr9SKgj6fjqC7RiYbGNPUYknZwXJJEX0aXEgnYPNU+Y/qPRBI1+TjbVWTtUnVrKn/PXjHKdZfhuk9bhgJ1wPZ1gIQYrvr/hgOFcuGvIjx+OzarNNxoEnXI6KIb1r5MF35MW1JAlPTPU2WJUGS6YpBxYgH/ZvNzNylK7Lc+Ztkw3aAxYY70SA96MK0RQk24A+cwAMnosKAfJlJDLzXOtfSQ+scCV+1a3wL5mvk0nfjR4V9PHaBOepFUib1AvR8mLDERW6BTP7cawQZ9s3ZBjJ0onlQJ/IV82qYWFKZr4GIbrX/dxi6BnziPY7Z7x8F2Ws7R/cjCrec3j72Hspbly0t16yXFR69/XEUicFUNZGDVrA7ifXeXr0BfEp9/PmymOqbLBGBF9byYy8VqQyIVD7eeu0Z9MUOduYm5AASAbgmkip4ghyv9MjnRO8cW/b5BMmhtGr2rQYm3
- UtynA465
- hdaXoc1Kw8NPREAA6PCb5aI760wHVK3WWON+YjhaJcVB0uzgSP4LnAdLHHNTOW97dSaThoHNoTtsHGR2sI+Ly3lDTdvCJ63oavv7zD/Egkuso1paEvfSkKDiMd7R5Tq0Pb6rksXbmWGUAssU1snGtgH7xAv4V9l3/kiALtua9YxiNJXVRL2Ip0Xdh6tsKXNps24cZxCFA6Zx4iBtvU+Un0ITZuWAEfr7DjPzMbn9OWlDiU7UeDtpn2Yrf3ckNjMc+ZzP/Bj2vrgRddmDAtKbKKG103TIYdsa+y312wEclN98h4FtDA7vzPzhwiA==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D396D2000A
+X-Stat-Signature: e8nyrby9at1r1a4y6dk6k67rmawk1cks
+X-Rspam-User: 
+X-HE-Tag: 1793896561-68000
+X-HE-Meta: U2FsdGVkX1/VupJiD1vDCyx1RsDzU++NEkbXJ5FMMM2gfgSDXgUM7rH++yEaWgzP/S5ryFiu/yZYzzkzi3Rbr815neMS35vrFUrIpRe5KZlRLog3loIgFcXrgYuTkhC6fYMKoObPl71B5/z3Cpdhr70+1oXWUP2jJ3hqNsanDhrcAKTN5LjPEvhBZ5wwTAUSX1VC3BF7Jd/V4oR4O5Myyr6Cstw3RkPHqgWFwlQzI4ixlC0a6D7flfxXg/6TXrUEaikracCEETbu3NH1H5HMTKOUqej80W2SkyEH7TBDSh2VCIB3jsI7NGwtu/VVJcSdNT7uJ/koaCo7hwjy/JE6oRcP28Tz8R6l1AdbK3klVWvXSdB3KBLouRUd8n7rmBI+nb61gExhNYQOvawDEA54YT5z0Niv1ReAw/8MSpdfi2K/laYKMHpKcYj3au09wSwGfFpmOpX2BDOyY3rH7O6/mPF/29qnNbdDR1oT+97GstZ6VdkEXl7Pp2TAfulKcr9yIdxUXVyM9hJbGwWlzYlOTGh95UQT14sTiXKwEeFh6V3I0mMN+vcWSsW9hVnLJQsdga1u8mBKxvz60GR1Ctlx39JX0SDF2G146LeSV0daYj5/bqRzXBTNWGqSn3Lu2wTHYe+2OBdi2KQAwsDSAqkbcJ3OOqjjEVI3idO2LNqyLFHa3U9WhVTo71qJFv6u2Gwqjxqlmv11Tp9U4KP/sB54NL8tiZrLyQsZHdIpYFg2DcCsOjcSRwq44NxHKHSfC54CK+OVZsWBk2IjJ1niMnEcKIEU1ZJ07tkT2w5Q4ek3gNQqJCWw7nKNxGXj88Yil5OPGTKO/Yc0PD2po57mdjHeryzBPAJYSxkfUZqaRcZIOdwVr4tXGrCeDKB6K3eD0gDSdIX4ejGC6hZNkAS4bcv/R2lE0c+RiqZZgLgot3eLgS+uRr2HNt2kxpHxmvK1W0MxqBdpd/2JNjY3PnaJRaU
+ was8G3J8
+ +BU6oZCnUiiLxfwemVfcXdLFZE/WbmLr9tN5dVZSwM5GHVfKq26Vr1kpKxv3PsUw19qGkkUdxydl+abVH0BuEdKA88OgWhyKp6BISI32ELc7w1Q3kSoXdVzlZBATbMAb0zztFmjBdMF5yDDn1/WOHFy2jI61WMvuoyzy+I1fgKWwt1AaZkqlhpEVTYb97KOJMyARt8bf1NiorNho6WjMQ4PAVn0FNHx4ql1xL1cJC0ICSbinspeFYh46o03Hvdeibs4QlIPwB5IHq3dTt+vUc3t0q+0s2MimttO7uhsI0fBhRNgiXxp46Ht2ZBNvDwpnOLCBqjAtWKqUaHwXt9Eu0VoMdc3dz7u5zXXiw4vZENV8D0Yxw5Y/Zup9mM4i43ZUgYV0WEe/FZ/8YiLq9lvfI9GNJ+Vey1ip+Qnf+peflLlRXGaY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,136 +182,109 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 05 Nov 2026 15:59:44 +0000, Josef Bacik wrote:
-> This is a summary of my Claude review of v2.  v2 went out before my mail
-> on the RFC [1] did, so the first part is what's left of that one with
-> the new patch numbers and the second part is what's new in v2.  What
-> says "run" was run in a VM on top of v2, the rest is from reading the
-> code.
 
-Thanks for running it again. Everything from the RFC mail is already
-folded into the tree.
 
-> - 1 is bugfixes 32/51 ("proc: resume readdir after the last name it
->   returned") now and the patch is unchanged.  Run again, readdir(2)
->   still returns 1 without a dirent at the end of /proc/fs, bus, driver,
->   irq, tty, net and self/net, for all of the 100000 calls.
+On 11/3/26 22:14, Mina Almasry wrote:
+> Remove the per-SKB skb->pp_recycle bitfield and skb_mark_for_recycle()
+> helper, and reference-count netmems directly by their underlying type
+> via netmem_is_pp() inside netmem_inc_ref() and netmem_dec_ref().
+> 
+> This series simplifies SKB and netmem reference counting:
+> - Reclaims 1 bit from struct sk_buff (skb->pp_recycle).
+> - Unifies reference counting of SKB fragment netmems and regular netmems
+>    under netmem_inc_ref() and netmem_dec_ref(), eliminating the separate
+>    skb_netmem_ref(), skb_netmem_unref(), and skb_mark_for_recycle() APIs.
 
-That's fixed.
+Part of the performance gain from page_pool was to completely avoid the
+atomic refcnt operation, when we can see that page refcnt==1.
+Are you removing this?
 
-> - 2 is cleanup 5/6 ("proc: drop the _buf suffix from the new methods")
->   now.  Run again, the module with .proc_read = seq_read builds without
->   a warning with W=1, loads without a warning, and every read() fails
->   with -EFAULT.  There's still nothing in porting.rst.
 
-That's fixed. I'm keeping the proc_{read,write}_buf() variants.
-All methods are documented in porting.rst now.
+> - Removes 110 net lines of non-test/doc code across 63 files (196
+>    insertions, 306 deletions).
+> 
+> 1/5: net: skbuff: skip managed zerocopy frags in skb_frag_ref()
+> 2/5: net: skbuff: refcount spliced page_pool frags via skb_pipe_buf_ops
+> 3/5: net: datagram: refcount page_pool frags in zerocopy_fill_skb_from_iter()
+> 4/5: net: remove skb->pp_recycle and consolidate netmem refcounting
+> 5/5: net: remove skb_mark_for_recycle()
+> 
+> Mina Almasry (5):
+>    net: skbuff: skip managed zerocopy frags in skb_frag_ref()
+>    net: skbuff: refcount spliced page_pool frags via skb_pipe_buf_ops
+>    net: datagram: refcount page_pool frags in
+>      zerocopy_fill_skb_from_iter()
+>    net: remove skb->pp_recycle and consolidate netmem refcounting
+>    net: remove skb_mark_for_recycle()
+> 
+>   Documentation/networking/page_pool.rst        |   1 -
+>   drivers/net/ethernet/airoha/airoha_eth.c      |   1 -
+>   drivers/net/ethernet/alibaba/eea/eea_rx.c     |   3 -
+>   .../net/ethernet/broadcom/asp2/bcmasp_intf.c  |   1 -
+>   .../net/ethernet/broadcom/bnge/bnge_txrx.c    |   5 -
+>   drivers/net/ethernet/broadcom/bnxt/bnxt.c     |   8 -
+>   .../net/ethernet/broadcom/genet/bcmgenet.c    |   2 -
+>   drivers/net/ethernet/cisco/enic/enic_rq.c     |   1 -
+>   drivers/net/ethernet/engleder/tsnep_main.c    |   2 -
+>   drivers/net/ethernet/freescale/fec_main.c     |   1 -
+>   drivers/net/ethernet/google/gve/gve_rx_dqo.c  |   9 -
+>   .../net/ethernet/hisilicon/hibmcge/hbg_txrx.c |   1 -
+>   .../net/ethernet/hisilicon/hns3/hns3_enet.c   |   6 -
+>   .../net/ethernet/huawei/hinic3/hinic3_rx.c    |   1 -
+>   drivers/net/ethernet/intel/iavf/iavf_txrx.c   |   2 -
+>   drivers/net/ethernet/marvell/mvneta.c         |   2 -
+>   .../net/ethernet/marvell/mvpp2/mvpp2_main.c   |   2 -
+>   .../marvell/octeontx2/nic/otx2_txrx.c         |   1 -
+>   drivers/net/ethernet/mediatek/mtk_eth_soc.c   |   1 -
+>   drivers/net/ethernet/mellanox/mlx4/en_rx.c    |   1 -
+>   .../net/ethernet/mellanox/mlx5/core/en_rx.c   |   8 -
+>   drivers/net/ethernet/mellanox/mlxsw/pci.c     |   2 -
+>   .../ethernet/microchip/lan966x/lan966x_fdma.c |   2 -
+>   .../microchip/sparx5/lan969x/lan969x_fdma.c   |   1 -
+>   drivers/net/ethernet/microsoft/mana/mana_en.c |   3 -
+>   .../net/ethernet/mucse/rnpgbe/rnpgbe_lib.c    |   1 -
+>   .../net/ethernet/pensando/ionic/ionic_txrx.c  |   2 -
+>   .../net/ethernet/realtek/rtase/rtase_main.c   |   1 -
+>   drivers/net/ethernet/renesas/ravb_main.c      |   2 -
+>   drivers/net/ethernet/socionext/netsec.c       |   1 -
+>   .../net/ethernet/stmicro/stmmac/stmmac_main.c |   1 -
+>   drivers/net/ethernet/tehuti/tn40.c            |   1 -
+>   drivers/net/ethernet/ti/am65-cpsw-nuss.c      |   1 -
+>   drivers/net/ethernet/ti/cpsw.c                |   2 -
+>   drivers/net/ethernet/ti/cpsw_new.c            |   2 -
+>   drivers/net/ethernet/ti/icssg/icssg_common.c  |   1 -
+>   drivers/net/ethernet/wangxun/libwx/wx_lib.c   |   2 -
+>   drivers/net/veth.c                            |   3 +-
+>   drivers/net/virtio_net.c                      |  16 +-
+>   drivers/net/vmxnet3/vmxnet3_xdp.c             |   1 -
+>   drivers/net/wireless/mediatek/mt76/dma.c      |   1 -
+>   .../net/wireless/mediatek/mt76/mt7996/mac.c   |   1 -
+>   drivers/net/wireless/mediatek/mt76/npu.c      |   1 -
+>   drivers/net/wireless/mediatek/mt76/usb.c      |   1 -
+>   drivers/net/xen-netfront.c                    |   1 -
+>   include/linux/mm.h                            |   2 +-
+>   include/linux/skbuff.h                        |  12 +-
+>   include/linux/skbuff_ref.h                    |  60 +--
+>   include/net/netmem.h                          |  39 +-
+>   include/net/page_pool/helpers.h               |  46 ++-
+>   net/core/datagram.c                           |   5 +
+>   net/core/gro.c                                |   9 -
+>   net/core/net_test.c                           | 369 +++++++++++-------
+>   net/core/netmem_priv.h                        |  23 +-
+>   net/core/page_pool.c                          |   8 +-
+>   net/core/skbuff.c                             |  78 ++--
+>   net/core/xdp.c                                |  13 +-
+>   net/ipv4/esp4.c                               |  11 +-
+>   net/ipv6/esp6.c                               |  11 +-
+>   net/tls/tls_device.c                          |  14 +-
+>   net/tls/tls_device_fallback.c                 |   6 +-
+>   net/tls/tls_main.c                            |   4 +-
+>   net/wireless/util.c                           |  31 +-
+>   net/xfrm/trace_iptfs.h                        |   6 +-
+>   net/xfrm/xfrm_iptfs.c                         |  16 +-
+>   65 files changed, 418 insertions(+), 454 deletions(-)
+> 
+> 
+> base-commit: 7b6ab4dbc156e2f96419715130b3d5738a306c93
 
-> - 6 is bugfixes 47/51, 48/51 and 50/51 now.  47/51 has no Fixes: or
->   stable tag, 48/51 is tagged for stable and git apply takes it on top
->   of 46/51 with two hunks offset by 6 lines.  50/51 has the same Fixes:
->   7e0e953bb0cf.
-
-Fixed.
-
-> - All of the smaller stuff.  The cursor is allocated in one place since
->   core 03/23 and it's still GFP_KERNEL, copy_to_user_fromio() loses its
->   last caller in drivers 24/26, the sentence about ntfs_set_label() is
->   in fs 07/30, and snd_info_text_entry_write() still drops what was
->   written before it grows the buffer.
-
-Fixed.
-
-> 1) bugfixes 01/51 ("alloc_tag: don't remove /proc/allocinfo under the
->    codetag module lock")
-> [...]
-> This one is tagged for stable.
-
-Dropped because Hao Ge sent the same fix in August that I hadn't seen.
-
-> 2) drivers 07/26 ("md: let procfs own the wait queue of /proc/mdstat")
-> [...]
-> The two orders each fix one side.  If proc_poll_notify() was safe to
-> call on an entry that's been removed the removal could stay where it
-> was.
-
-Good catch. We can simply move removal to the front and md_new_event()
-takes the entry pointer under RCU that then gets cleared/synchronized
-before the removal. So no side can reach a freed entry or the destroyed
-workqueue. Looks like input and sunrpc have the same problem.
-
-> 3) core 21/23 ("proc: let lockdep check the pin")
-> [...]
-> snd_pcm_proc_read() is the only proc callback that takes register_mutex
-> and it only serves /proc/asound/pcm.  What snd_pcm_dev_disconnect()
-> removes under the mutex is pcmNp and pcmNc, and nothing below those
-> takes it.  So it's a false positive, and it turns lockdep off for
-> whoever unplugs a sound card.  The removal under register_mutex is
-> already there at your base, only the annotation is new.
->
-> proc_create_single_data() gets a key per registration site, but there's
-> no way for a proc_create_data() user that multiplexes callbacks behind
-> one proc_ops to say so.  sysfs has the per attribute key and
-> ignore_lockdep for this.
-
-Hm, I think that's fixable like sysfs does by allowing to specify a key
-per entry.
-
-> 4) core 20/23 ("selftests/proc: check that a mapped entry can be
->    removed")
-> [...]
-> entry.  These kernels had neither KASAN nor lockdep, so if what fails
-> for you is a splat then that's the difference, but the test itself
-> doesn't notice.
-
-Dropped.
-
-> 5) core 18/23 ("proc: let procfs copy ioctl arguments in and out")
-> No Signed-off-by in the mail.  It's the only one of the 172, and the RFC
-> version had it.
-
-Yeah, dropped it when I folded the patch in, I guess.
-
-> - The 0/7 mail still says "the xt_recent deadlock fixed in (1) below".
->   The part 1 cover letter has it right, it goes through netfilter now.
-
-Fixed.
-
-> - cleanup 03/06 says mmap() and write() are all that changes for kcore,
->   kmsg and the kpage files.  proc_reg_poll() answered for every regular
->   file, and kcore_fops and the three kpage ones have no ->poll(), so
->   EPOLL_CTL_ADD on them goes from working to -EPERM.  I doubt anybody
->   cares, it's only the changelog.
-
-Added to the changelog.
-
-> One more old one for part 1, and this is the lockdep patch doing its
-> job.  devm_rtc_unregister_device() holds rtc->ops_lock over
-> rtc_proc_del_device(), and rtc_proc_show() -> rtc_read_time() takes
-> ops_lock while it's pinned.  Run with PROVE_LOCKING and rtc-test as
-> rtc0, cat /proc/driver/rtc and then unbind rtc-test.0:
->
-> 	WARNING: possible circular locking dependency detected
-> 	init/1 is trying to acquire lock:
-> 	 (pde->in_use){++++}-{0:0}, at: remove_proc_entry
-> 	but task is already holding lock:
-> 	 (&rtc->ops_lock){+.+.}-{4:4}, at: devm_rtc_unregister_device
->
-> 	-> #1 (&rtc->ops_lock){+.+.}-{4:4}:
-> 	       rtc_read_time
-> 	       rtc_proc_show
-> 	       seq_read_iter
->
-> That one is the same entry on both sides, so it's real.
-> rtc_read_time() uses mutex_lock_interruptible(), so a signal to the
-> reader gets both of them out of it.
-
-JOSEF! I already got yelled because of the amount of patches. :)
-
-> The end state still checks out.  Every proc_ops initializer matches the
-> final struct, nothing copies to or from userspace while pinned, and it
-> didn't find anything wrong with the new seq_file, open node, poll or
-> vm_ops code itself.
-
-Thanks!
 
