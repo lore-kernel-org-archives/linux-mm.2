@@ -1,107 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A077606A336
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:04:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A92606A33B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A5CP6fgb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=De8H26+1
 Received: by kanga.kvack.org (Postfix)
-	id 5CAB46B05BD; Thu,  5 Nov 2026 08:03:52 -0500 (EST)
+	id 35A746B05B5; Thu,  5 Nov 2026 08:04:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A18C6B05BE; Thu,  5 Nov 2026 08:03:52 -0500 (EST)
+	id 3328D6B05BF; Thu,  5 Nov 2026 08:04:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DF766B05BF; Thu,  5 Nov 2026 08:03:52 -0500 (EST)
+	id 249036B05C0; Thu,  5 Nov 2026 08:04:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 232396B05BD
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:03:52 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id AA59DA879C
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:03:51 +0000 (UTC)
-X-FDA: 85401082662.27.AFD3280
+	by kanga.kvack.org (Postfix) with ESMTP id 057A06B05B5
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:04:22 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9817C140993
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:04:22 +0000 (UTC)
+X-FDA: 85401083964.18.0679C9D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id F0A5A180019
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:03:49 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A5CP6fgb;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf04.hostedemail.com (Postfix) with ESMTP id 8E1DA4000B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:04:20 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=De8H26+1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793883830;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793883860;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1nXomHp8g6NOTHg/QgSNHjkuqe1l9o8KbOReVmA2Zcw=;
-	b=z4zFeIcY/H8uiICVOIP+3YGPjsujzEFA+qA6N/4BgEWbgbFTExP++1sxU4JrHsZ4peadWV
-	wCJp5wqE75dP7mJfnnZzpaI4O8nRJXRrPyvH4C+UpKzURnwctZuscoRV4k/ld8nj7n2ZfF
-	BfhcwDpZGjtVJPQnP8nvUVirs7CatC4=
+	bh=VGtXYc1r1fEEKTL7Yj84vITN0MZ0IiuZ0W73SGkuDDY=;
+	b=wEGfz9RcVaf/6x2o/qZZ8gLAd90hlHj0Nq1L7Di2Ytw4bK51iPO3vHkaBQ3ztgEabBeevx
+	GcFHj852oWZyETDTqiiVNdnsSWV8O2lU2PftQhNusEJWmPU2id/bGChcgQzF8DULkvE3DP
+	HhfKwcKpJhTF9XY3W0YITcwM8spHBKo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793883830;
-	b=L5Mq0DA5HTLv8gUx2mwENrYa/CAjqykUgKxMnPOQU8/k0Ox2z2H7bqoCOt+HGUAaaUkCya
-	8ZGVAsBdgkYOxQxdQsXcIC+3UysvzZmDjZd6iLWyE96F8QNXFaJ48gDSdAtPeEYdpB07Hl
-	7R92JKyD3O7r3DJ4hPgMv0XSAcUzFUY=
+	t=1793883860;
+	b=dZ0khfyNks3GdJnUaFx+8xuVH+EpisZ/mjgN8Q5F+QVb/HN1LqMX+H/BPFbztchr7OZ2zW
+	00IJgRZrDuTSNQL8subxpQOa6KfyL2LLntU77xBTtnpZ3rsmwYItaXpXqy1X7QzpNhEX5/
+	7+zJ6zp+2bho5ui5Uq2Mpvvh2ekjE6E=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A5CP6fgb;
-	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=De8H26+1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4CBAE4397B;
-	Thu,  5 Nov 2026 13:03:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5851F00A02;
-	Thu,  5 Nov 2026 13:03:47 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E1DB043AC7;
+	Thu,  5 Nov 2026 13:04:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398FD1F00A02;
+	Thu,  5 Nov 2026 13:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793883829;
-	bh=1nXomHp8g6NOTHg/QgSNHjkuqe1l9o8KbOReVmA2Zcw=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=A5CP6fgbzYak42H/XofVh2YaU13ZqCrDhVWyCj0P/O1WBbSS95XHrhPBGlYyl9NSy
-	 vq3LHyydH2vEUMz2WD6nH5QqVGb1qxU/gTCA7w9ODlqiu6BXHDaGos7vYCRRCi2Vho
-	 lk8FIjYoMO1hUZwp8jgrj0tACa8/fTR5qaXvuWOo48YPo6Xuc/XpP0O/ecO9mLnL+L
-	 Vn0aHmFyp6SFAkzEkYteMsK28O4zWpMu3lUazUs0vvVo3NUuMs518k7KbyO20isXgJ
-	 F7meVJCb2N5cIrI2bqzKT7DDjtFPNSPdiZBishyly4vOX6FaiReVxMShyDnT3f3JGC
-	 sqXuSarbOhLww==
-Message-ID: <sashiko-outbox-199110@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 17/18] mm/shmem: read without folio references
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?S2lyeWwgU2h1dHNlbWF1IChNZXRhKQ==?= <kas@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Linus Torvalds" <torvalds@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Matthew Wilcox" <willy@infradead.org>, "Vlastimil
- Babka" <vbabka@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Jan Kara" <jack@suse.cz>, "Hugh
- Dickins" <hughd@google.com>, "Christian Brauner" <brauner@kernel.org>, "Alexander
- Viro" <viro@zeniv.linux.org.uk>, "Harry Yoo" <harry@kernel.org>
-Cc: "Miklos Szeredi" <miklos@szeredi.hu>, "Miaohe Lin" <linmiaohe@huawei.com>, "Naoya
- Horiguchi" <nao.horiguchi@gmail.com>, "Oscar Salvador" <osalvador@suse.de>, "Liam
- R. Howlett" <liam@infradead.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
- Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>, "Brendan
- Jackman" <brendan.jackman@linux.dev>, "Johannes Weiner" <hannes@cmpxchg.org>, "Zi
- Yan" <ziy@nvidia.com>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Nico
- Pache" <nico.pache@linux.dev>, "Ryan Roberts" <ryan.roberts@arm.com>, "Dev
- Jain" <dev.jain@arm.com>, "Barry Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
- Arif" <usama.arif@linux.dev>, "Kairui Song" <kasong@tencent.com>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel
- Butt" <shakeel.butt@linux.dev>, "Axel Rasmussen" <axelrasmussen@google.com>, "Yuanchu
- Xie" <yuanchu@google.com>, "Wei Xu" <weixugc@google.com>, "Baoquan He" <baoquan.he@linux.dev>, "Paul
- E. McKenney" <paulmck@kernel.org>, "Pedro Falcato" <pfalcato@suse.de>, "Luis
- Chamberlain" <mcgrof@kernel.org>, "Ilya Gladyshev" <ilya.gladyshev@linux.dev>, "Jaegeuk
- Kim" <jaegeuk@kernel.org>, linux-mm@kvack.org, kernel-team@meta.com
-In-Reply-To: <20261104130118.2507513-18-kas@kernel.org>
-References: <20261104130118.2507513-1-kas@kernel.org>
- <20261104130118.2507513-18-kas@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 13:03:46 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: fcjdbgxwgdr7wiugycc3qqk77coutwko
-X-Rspamd-Queue-Id: F0A5A180019
+	s=k20260515; t=1793883859;
+	bh=VGtXYc1r1fEEKTL7Yj84vITN0MZ0IiuZ0W73SGkuDDY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=De8H26+1gDbucw54r/u2YPNm1SP4KKNmMksc0qAHccscII4QCkaoyAETI152TklJH
+	 Tet+X/3BsKz/dioEysdHlU5cIUnhLGKZ/LNjFXX6PpCp5VGnQqDXnloAn5hkE9PXfR
+	 ndeKZGIKuGE+bR5EyoZ/dsUIW2d7Alk8Gyc+NxNVkpz92UKCJLF+zZS8Uk4B1YOCI5
+	 P74dJov7LFjIZ4aGZXPmL56kTOvvS51CXVtcIPnwOVNiH2+KXkFq58mThJlA7RH05k
+	 pgqy4CV7+y/c0xjcYV4jX7Xd8DQVeMeuB7G7TpdwaVmIPDxUE624m4DafEA25arfyE
+	 ZccQTwAMKDXvw==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 5580C198003A;
+	Thu,  5 Nov 2026 08:04:15 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 05 Nov 2026 08:04:17 -0500
+X-ME-Sender: <xms:zn7sagX0bHbqO4A4TRBYez_QTejKPgkzRwAViqmY3Q2vjo9CY_2mzw>
+    <xme:zn7sam4INjcHnQFcJfTI6uG9mIag1kAX4vNpX_O9rfCMLv4fmPKeAju4Jcs99CriE
+    DQa_mrCnjFsm5GYJWuJFzfMlquu0F1CVwljJtc3OnDCdL6WuZaDTHDc>
+X-ME-Received: <xmr:zn7sajHIz1M1ojP4JndE-bnH5Lboc5LvmijY9MxwNCATfeQhkUyt2mKr1Ng>
+X-ME-Proxy-Cause: dmFkZTGWioZ5UsUZvGXjaow1BsUGadLs8aZQdTF4UnV/07NAN/af8tN6pM/FfLXYfyZLfb
+    xRpT19JopPsgAFGYsm8FzaqvOcRv05DtuUalhGCfVBg5TYHs9JXv+Q47gmOf937P2Gi3S+
+    U2sfvRv8HM/m1nYX6eGi2a4miDiVYyQMuuHiidk1Rop6z5ppK7guJf5jvUfTyMXleQeyL+
+    YFG9WYCksR8P+f/IoUx4Wo08VB8Mvto3/EHOpPBXbwb98JXOAs0bmRST4eO1cbxBPUkzyb
+    YU+NZSxhcSt0KRFVrgpydwZFv0ufeT4P8d+qRyppjSLMzQpNREs19lQwYqTs8BowLu6Nf0
+    PR/JbnTjTlqcoe9z9eXCxtppE/iBqN4lxahyvqAWND3wSza41vyy/g8b8tJb119KbVZ8CZ
+    MuRhok4swEs4IKe4vdUOtIKHZ5plH23vTgaYw6PfyI344YttADPGpvH6z1snl9sRY/w6tT
+    BrCIVHE4Cs5mpSXa/717IOVH1XtBwbuOkBGFH1n9JQAOTVfvpnco/Iz5sDs/mRgagaVrey
+    cq6c90syhHHUbEfhX1t/E8+JdiHng3sYYvf5nhsjkohkNfCEDaVAHGUsNyVx8+QglNqqXK
+    ulKWha96KxsFQer7kolLJlTQQ/AiVpLrSfhPXbnzPLT0MJ4ciPeh+uKeOiLg
+X-ME-Proxy: <xmx:zn7sasRYreFG1B12dgaWNLJaMTnvJum9gmqOKA_t2ZzUrKeUn33c3Q>
+    <xmx:zn7saoMA0D4Uv985DwquZetStTw113Ib0q1_tpUBZ9ajeeEzbsBWxQ>
+    <xmx:zn7saseZmeGUWPdwDHpB1Rp0nFyftZwCqUaODIf3SBWPBFb_Kb9U9w>
+    <xmx:zn7sarVZeG7-wD1HvalF6WI07O4X-rs7VxKwjsOGPZyZuRFNzx6Y1w>
+    <xmx:zn7sat-3I3FOwm9xcmy-LlgXxJQcXUcQS1qD5nrBScIbL-4eJN9kZEQj>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Nov 2026 08:04:14 -0500 (EST)
+Date: Thu, 5 Nov 2026 13:04:13 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: free unused page table when setting a
+ huge PMD fails
+Message-ID: <aux-ZdKu97JHLY96@thinkstation>
+References: <20261105-khugepaged_set_pmd-v1-1-cb79ab117199@kernel.org>
+ <aux9liPvdZgpKCpa@thinkstation>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aux9liPvdZgpKCpa@thinkstation>
+X-Stat-Signature: kp15t1bk8coqewpk6cpuagqozdbhyaeh
 X-Rspam-User: 
-X-HE-Tag: 1793883829-88860
-X-HE-Meta: U2FsdGVkX1+3GFd57vLho2a96SqIANiLHHHrOnGIM0lVnTXMreHbQvebgWRZInSJEMyBtUPsjF9TLUnmXGHkAIPzvcVvQfVtiH0zMXQ/Fh64A+xP3bKxqMOxaO/GvFxoAAZsHQ5scr9QIrvmL8Da0fEw+4ea5BNHRaQ+kJVaElS3PViQM6hiXKJCRLlqfjSS1qV0lCanGoiJlHM3vhA+5tvMVqWjKOwyHWxTfRo/F/goffpcjnYoKB9WpSBbjYedb7JUPc0U+ZZ30LAlO+lW6ZtujvNW7srOjDTnXAcfp9AYA8NZmxd1NONnsVO1byweuNxB0kq+haT+fzOgfJohon8FVKbAWGjb4q3TcrXNs1cr2LjS9fHnHAnshmFyvantPSdT3ABMLUJY0M+t8iaEXUg096q/GZrgqXeXrzukpo2Wyl6n/1iaXUxyVwIDTHNwSH685TvAkmodIobF/CAGAW8cvLNT1dt2i1Bb6rGEI6HNZyrmHZoNmWmZ3vFafBHluSmagIq/NIZfO1aRGvB6YM+aEbhBbB7oCEk7x7jEq58uaka5YcPsL3befT52/t1ySsTAFXWAau/tWB2KMF85fmle5nBJeFNVoavTndOBhs5d3kbyy+FD3ofWc8YKMCWxMnEh21D7UbLvezYEC8bs4VXp00apNw8wLzKZWy5wD3ovaB3MFDLR8Ipn8cjAKnwGr4YDX4pV2qc6Sj9vtg1d8MQPYEICOpbVgoJ7PNI+wInttu+GD2xkgJXm533lRwf2fTWmKZdMlm8Taq/JBPhbljdXNLMG6CS3KRaVff30YtNq4jKPGxuDCohDCYU3rja4amssuuHbB7GDO6XESu+nV7CvwHFHZQ3oQn3oP8XNJLLbFoyJlI+7EDdOC7gjZJ5SZF3gMMeMkNSlFM5KLUVwglcjh4zpC1t8iZk/JXXCFQc4a3R5MZ7ee1b/SNVweCVqInMrUCfVmg61gs/WDAL
- ywe4tcCr
- gTrVdhpA8fbeIFoogUPuUAZUYOu4cGRWpHZ0IxJCno2gMqq9ikiW/S7+O7doomlORvfELhaVQITYMya8egyUG7NkJs7puFCtog7Ac6rAOU2JCfgS56iXcugtHv00shG9h2jE/uVfBHamRJeEfWOi4i2TbC/famP521+axS8I9yTMGkTyaRZSBBjZQXvup7HiDiMq+ERtARE78bOHv08M5bf1p+5MdVyjD7hz7tkaFEeBob8xx4y7dNQc4rxDE9APQb+vsHoCv3hEFaSsH5G4cb7rNP8MFgxZ24N6hA1oDciekqIB4Axi3Jm1Wy35YiN68Bi2KvgF6pkR/NRCnElhg9LRlgziCc1N0SolcNZqT6PPHzEz+BjF6/uuUAdG1sJzD7ia94o2k52HzzZ0/1ZW2vyKzgos0WjJc9sJ0NGHXHIC90LqfAfCCtzPZyfX8VZL7irxC+aaNQSYzR2m3X2cCipVfsBJ61gfOffpyr7T+hBgIic6KZovo6rSgXKI1myytJfXomH3A6gA3ro4XU0CVu+/KGBbRA1nxK4kbCmRfxIWe4OMf4EeoSWGJYzy4QeMChGMQCGB+/YSQ2rWjL7/+I4Bwa+kXEmqcbuAyAXaUjeFRHji1DgrIhF6OJGf/ywkygHLGqPaNDaor3CFJ1Y1SirFdHgLl25MQAKIJJprpzGQDTrKLmJXapmqFFwpa/wbz0VIaeNvuAVQX8wU=
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8E1DA4000B
+X-HE-Tag: 1793883860-770902
+X-HE-Meta: U2FsdGVkX1+pxfQX5ZbasRoQc9PJWdq8jHwIZDGRTdVLNJ3ramI3CNnnPsBTP2KS7BnVbPuTpuKUxnEXpDahBIOsB+N2NOmDBRMFRzFo8/vee3phG+hEMBkIBiJFTkGbBj1lLI8Iw1A93EMB5174UbRS/K/D9bkqthJHLi5oUp75vGAR0CP6awbU905ZVjvVGGQig+FxRyCBL3boDHyppW6OdtJvLXZt+qmdwHoMJBWBbrsZ+QZGNgGrRxNDjVws9O8lTWpll1JUIRTkG0XGMH+t5DW4MeV2B1QJQHWHI8yUgIbZ7OLz6ukdnUBDxUuC9HGXD4AeaxCxNsT5/Ef6eN2rN4hLNIMBGsjnKGjcsiUXW9gfBdPOE1KsUV6OWpdNLsjdJUKWYwcV/VUIRXjrQJKnwnH9ucgirhJkhogBAYUDYPsRhdN5oHAKJVAVb1bBQ74l78PvrWZadAEno5tIfrk5ubQT/0FNZe1bNQzG7tDmSKvyBSakuSzOcGhNuLzf3mO7TceFjLe364DQMEUZntt+ea1UEDXOplBzP21Um4St9Kr/Iw8GoTOffCbGsV9zHLgIvSk0N+1JtlGbcA4RRdU6P1DEwBgiGcah9IvMdkn8rrsysAg9vyKvTcEAWa7dl3dSez3gz6hFHauW7gr/2bZPWv+cZRmFWiL2BR0B+zAoS8PpqiEedhDZOQ0o7ux8wewQBr4uBC/d1Vl7JpYG7zqlYxr/HMoqtm0KHwGquK/GpAPmFrjiy/97oPi41yohQoYEljwrhRsw7neHJy7BIHmdOVvk6UAx17+HFs2rjb517rC5jLr+KoGiK811IhOdAfelez27LZDJmjq3+5UocURiAHM8Cv8EslfAAnsWhNwuTuV6luSkix9ZVhWWjv/qP7qYeIhaei7oAs68uTlnqU5oBlqcmLerYBbJLZ9xtjhBPFqBaptOAxVIFaNpP5K0pkik0B4p+aYYYYWHWZ8
+ qcF9ljyE
+ tb5wCY1xcWfYb68txwbvV4M0pFAUTPOqGqrcDPdKTYcvSCqpmnVeMmYAL7bwm8ZAgLSF6PKwgsZ7qzVf7IEGgqBo3wJsFE9I4AaUzBllXK+PBzyemfguRodOWtcO/r7JPLXle8UkJkuV3AJCzaR6K9D928AcbsDBeNBnb7ztN2WgptVT72x+gLfSoIcdd62/ynoWQ9vEDgvS1XqPF9UUcmJa+McXuEc791UMfCtK3Y/2ba1GHgHMPzjeFyl4dOLDLBMw2UrFh3WqN7UrCvxQL37gn0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,135 +125,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] mm: race in filemap_read_rcu_can_copy() copies hwpoisoned tail pag=
-es on split
---
+On Thu, Nov 05, 2026 at 01:02:08PM +0000, Kiryl Shutsemau wrote:
+> On Thu, Nov 05, 2026 at 01:16:05PM +0100, David Hildenbrand (Arm) wrote:
+> > do_set_pmd() can allocate vmf.prealloc_pte on architectures that need a
+> > deposited page table, such as PowerPC with the hash MMU. If the PMD is
+> > no longer empty when it takes the PMD lock, it returns VM_FAULT_FALLBACK
+> > without consuming that table.
+> > 
+> > Since collapse_pte_mapped_thp() uses mmap_read_lock(), a concurrent
+> > userfaultfd operation can install a PTE table before taking the folio
+> > lock. If that races with set_huge_pmd(), the unused preallocated table
+> > is lost when its local vm_fault goes out of scope.
+> > 
+> > Free vmf.prealloc_pte on failure, as do_fault() already does. Successful
+> > PMD installation consumes the table and clears the pointer.
+> > 
+> > Having to do this cleanup outside of do_set_pmd() is rather nasty, but
+> > other callers depend on it already having been allocated. This needs a
+> > cleanup at some point.
+> 
+> I hate this being outside of do_set_pmd().
+> 
+> What about making do_set_pmd() freeing ->prealloc_pte if it was
+> allocated inside? Nothing changes for caller.
+ 
+Or if we want to keep in set_huge_pmd() then set_huge_pmd() has to
+allocate it too. At least, it makes some sense.
 
-commit 6b69ad4da5a3278d80ff53e3999062ede8b8a468
-Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
-mm/shmem: read without folio references
-
-This commit updates shmem_file_read_iter() to copy from the page cache
-without taking folio references or locks via filemap_read_rcu() before
-falling back to the slow path. It also updates filemap_read_rcu_can_copy()
-to ignore PG_readahead on swapbacked folios where that bit is PG_reclaim.
-
-> diff --git a/mm/shmem.c b/mm/shmem.c
-> index 1c700fa9666d0..8700b03a8a5ee 100644
-> --- a/mm/shmem.c
-> +++ b/mm/shmem.c
-> @@ -3313,7 +3313,14 @@ static ssize_t shmem_file_read_iter(struct kiocb *=
-iocb, struct iov_iter *to)
->  	pgoff_t index;
->  	unsigned long offset;
->  	int error =3D 0;
-> -	ssize_t retval =3D 0;
-> +	ssize_t retval;
-> +
-> +	retval =3D filemap_read_rcu(iocb, to, last_pos);
-> +	if (retval) {
-> +		last_pos =3D iocb->ki_pos;
-> +		if (!iov_iter_count(to))
-> +			goto out;
-> +	}
-
-[Severity: High]
-Can calling filemap_read_rcu() from shmem_file_read_iter() copy from a
-hwpoisoned tail page instead of returning -EIO when a large shmem folio is
-concurrently split?
-
-Unlike regular filesystems, shmem_error_remove_folio() keeps hwpoisoned
-folios in the page cache. When a large folio has a hwpoisoned tail page
-(index > folio->index), PG_hwpoison is set on that tail subpage and
-PG_has_hwpoisoned is set on the folio. If the folio is later split (for
-example via truncate_inode_partial_folio(), shmem_unused_huge_shrink(), or
-shmem_writeout(), or during memory_failure()), a concurrent reader in
-shmem_file_read_iter() -> filemap_read_rcu() -> filemap_read_rcu_batch() can
-bypass the hwpoison checks in three ways:
-
-1. In mm/huge_memory.c:__split_folio_to_order(), PG_has_hwpoisoned is clear=
-ed
-on the folio at the beginning of the split, before the loop over the subpag=
-es,
-before ClearPageCompound() clears PG_head, and before
-__folio_freeze_and_split_unmapped() updates the XArray slots:
-
-mm/huge_memory.c:__split_folio_to_order() {
-	...
-	folio_clear_has_hwpoisoned(folio);
-
-	/* Check first new_nr_pages since the loop below skips them */
-	if (handle_hwpoison &&
-	    page_range_has_hwpoisoned(folio_page(folio, 0), new_nr_pages))
-		folio_set_has_hwpoisoned(folio);
-	...
-	if (new_order)
-		folio_set_order(folio, new_order);
-	else
-		ClearPageCompound(&folio->page);
-}
-
-During this window (or after a non-uniform split where new_order > 0 leaves
-PG_head set on the first half while the poisoned subpage is in the second
-half, before the XArray slots are updated), xas_load() still returns the
-original folio with PG_head set and PG_has_hwpoisoned clear. In
-filemap_read_rcu_can_copy(), folio_test_hwpoison(folio) only checks the head
-page, so it returns true for the poisoned tail page, and
-filemap_read_rcu_size() also sees xas_load(xas) =3D=3D folio at end - 1, al=
-lowing
-filemap_read_rcu_copy() to copy across the poisoned subpage.
-
-2. In mm/filemap.c:filemap_read_rcu_can_copy(), folio_test_large(folio) is
-tested twice without synchronization:
-
-mm/filemap.c:filemap_read_rcu_can_copy() {
-	...
-	/* A split clears PG_head before it puts the new folios in their slots */
-	if (!folio_test_large(folio) && folio->index !=3D index)
-		return false;
-	/* memory_failure() waits only for readers that got past this */
-	if (folio_test_hwpoison(folio))
-		return false;
-	/* Not folio_test_has_hwpoisoned(): it asserts PG_head, a split clears it =
-*/
-	if (folio_test_large(folio) &&
-	    test_bit(PG_has_hwpoisoned, &folio->_flags_1))
-		return false;
-	...
-}
-
-If ClearPageCompound(&folio->page) runs between those two checks, the first
-folio_test_large(folio) sees true (allowing folio->index !=3D index) and the
-second sees false (skipping the PG_has_hwpoisoned check).
-
-3. Neither filemap_read_rcu_can_copy() nor filemap_read_rcu_copy() checks
-PageHWPoison(page) on the individual subpages being copied:
-
-mm/filemap.c:filemap_read_rcu_copy() {
-	struct page *page =3D folio_page(folio, index - folio->index);
-	size_t n =3D 0;
-
-	while (n < bytes) {
-		size_t len =3D min(bytes - n, PAGE_SIZE - offset);
-		size_t done;
-		void *kaddr;
-
-		kaddr =3D kmap_local_page(page);
-		done =3D _copy_to_iter(kaddr + offset, len, iter);
-		...
-}
-
-Could this copy corrupted data to userspace or trigger an unhandled kernel
-machine check or page fault if the poisoned page was unmapped from the dire=
-ct
-map?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104130118.2507=
-513-1-kas@kernel.org?part=3D17
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
