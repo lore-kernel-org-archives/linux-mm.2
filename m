@@ -1,108 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D17CF606A33C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 02:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDCCC606EE8A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 02:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=dzFsabU3
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=j2sTp789
 Received: by kanga.kvack.org (Postfix)
-	id E873F6B05B3; Wed,  4 Nov 2026 21:03:41 -0500 (EST)
+	id E00626B05B1; Wed,  4 Nov 2026 21:14:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E387B6B05B4; Wed,  4 Nov 2026 21:03:41 -0500 (EST)
+	id DD8556B05B2; Wed,  4 Nov 2026 21:14:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4E866B05B5; Wed,  4 Nov 2026 21:03:41 -0500 (EST)
+	id D16916B05B4; Wed,  4 Nov 2026 21:14:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B041D6B05B3
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:03:41 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4887A40896
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:03:41 +0000 (UTC)
-X-FDA: 85399419042.26.2FE9D1B
-Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 15CB7C0003
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:03:38 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=dzFsabU3;
-	spf=pass (imf10.hostedemail.com: domain of "prvs=762187284=mkbund@amazon.com" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=762187284=mkbund@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9EF1C6B05B1
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:14:08 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 09DA51408E3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:14:07 +0000 (UTC)
+X-FDA: 85399445376.13.9871DBE
+Received: from mta1.migadu.com (out-118.mta1.migadu.com [95.215.58.118])
+	by imf05.hostedemail.com (Postfix) with ESMTP id B4174100005
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:14:05 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j2sTp789;
+	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.118 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793844219;
+	s=arc-20220608; t=1793844846;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eflx9XqhEV3/ZTNgjoPHerK4VPtqVw/r97L+i6RFMns=;
-	b=irQHYBbglE9cAMlM2KI4Azz/TxR/mgxBjkEvWS8sRcZPsH1I75ZcTZwUiPJabzpb2LKVM6
-	wlyodmezuUZFmOHKsvsGFnpe1rpS/cfkMAKaesBbEVpbEK4sKPCR3O8IiKXNY81tKc1fEp
-	et3Vu3LGgkmJNPLNqIpSkQBkTjx8HYo=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tXeq94tKXH8bHOz1amsH5XRU51n2PYOOTkgxfF1PjyI=;
+	b=zA2JMHIwhTHcWCmwJExyHaZUfFsMsOE4UOEEAnR0NcQ4Iyumf+nGyk2azSUlt5KnFu0qM8
+	i6WjOt6ZLFR2/V+yXg07S3le/VkR371kIefZEy44JXHin5eHKKhUNT9WsRnTzDEao8sruQ
+	3yUasQpvVibh5/c02mBQpam3J3K0LGw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793844219;
-	b=SwAbsO2qolb/oFaa+Mmj7lNK5Q0TgsjQphdn6p9wBYahIx8SMJQ2l8fKtR+MoQiIIgjP5T
-	LZhzocCD1arPJDoOJTAb/X+tb0+pZARBqBLu8u+NWAgGOdfiMcPFyAU98Oomz3HqJ/ipSl
-	3Mv9pWt/85onl2n2ZtBJRsY49vW2HX4=
+	t=1793844846;
+	b=caMS79eWf/9CixbJbKdxd0Vk6iIerKUezRKCze0mQ+E9MpLPIl4qRLp/c4o38JNVzwFGfr
+	YpEHqM1NQCwuteRph5AtEt2MnDru03n3pyu/6TTV+hICUABd8kHYABaswKxTsiZNVTAbyU
+	vp4LN7oU8Xer4AEUPQHXZ/rHDElaS5k=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=dzFsabU3;
-	spf=pass (imf10.hostedemail.com: domain of "prvs=762187284=mkbund@amazon.com" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=762187284=mkbund@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1793844219; x=1825380219;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=eflx9XqhEV3/ZTNgjoPHerK4VPtqVw/r97L+i6RFMns=;
-  b=dzFsabU3SPIjVuzOUaX4z8IIjsliLethCi73A5Ya8ZQG6ihWBdC9V/AL
-   ZQpBKMATBjuO6OFyECpAyQCxMTMYAwkcAL7o/oPPeyd+lDaWRPudHYqzp
-   VGWv4vj90+chwGSLmqx8KcklVpshvPYwNl3j79cUho81T37a62E3k8Csi
-   9BEhJZ1FRmnuNur8uDt2G9z1e1eKonJsrg68lqVI3yzHn8VHrab6/x9fm
-   x0MgihJLuVAmdCsb8h/cFhMcoTpq31Rd2wCMVuZjvh79GjF1pRDuWsjmg
-   qDCNZ2cPo3iknrqJAtixhrYb5pCGiEdLecBtcpIZYHDi+4+BqnKRVa2CI
-   A==;
-X-CSE-ConnectionGUID: S6rO9Zl3Sbm5H5aI4IU+0A==
-X-CSE-MsgGUID: tRYFQKC+TSqbxuzvWRnbuQ==
-X-IronPort-AV: E=Sophos;i="6.27,196,1787011200"; 
-   d="scan'208";a="33148998"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 02:03:37 +0000
-Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:29615]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.44.23:2525] with esmtp (Farcaster)
- id 14ed1291-e131-4989-ac80-723dbe224752; Thu, 5 Nov 2026 02:03:37 +0000 (UTC)
-X-Farcaster-Flow-ID: 14ed1291-e131-4989-ac80-723dbe224752
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 5 Nov 2026 02:03:37 +0000
-Received: from dev-dsk-mkbund-2b-9ea2efba.us-west-2.amazon.com (10.2.100.138)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 5 Nov 2026 02:03:37 +0000
-From: Mark Bundschuh <mkbund@amazon.com>
-To: <akpm@linux-foundation.org>, <muchun.song@linux.dev>, <osalvador@suse.de>
-CC: <david@kernel.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	Mark Bundschuh <mkbund@amazon.com>
-Subject: [PATCH] mm/hugetlb: add htlb_dissolve vmstat event
-Date: Thu, 5 Nov 2026 02:03:24 +0000
-Message-ID: <20261105020324.2011790-1-mkbund@amazon.com>
-X-Mailer: git-send-email 2.50.1
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=j2sTp789;
+	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.118 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=l5hRS8qgzR0WOCPLF0tQbQ+of37lp1oZsgw+XUQqwhg=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793844844; v=1; x=1794449644;
+ b=j2sTp789TAzH4+lGZ7lYWfaDwj4tzc9cwnz9VymVYz+93eIx1j2P1wIewQP0NcIfVbJQKLyf
+ 0DO8NIIghKzDouBSBnDym1wAnQyGpqJsD9irj2dQSZrGObeDZJB96QtjMGxheDIwPErfv1cfpzT
+ zdnAQ3fG/Xx2Ge3hDWonFfXo=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7ce234fbb2517b84;
+	Thu, 05 Nov 2026 02:14:03 +0000
+X-Mizu-Trace-ID: 7ce234fbb2517b84
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fc4939cc-84ec-4c5c-88a7-658ca800377d@linux.dev>
+Date: Thu, 5 Nov 2026 10:15:13 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWC003.ant.amazon.com (10.13.139.252) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Rspamd-Server: rspam06
-X-Stat-Signature: q76k6i11yjt3hzep13udtpofjzf9sozk
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v2 01/51] alloc_tag: don't remove /proc/allocinfo
+ under the codetag module lock
+To: Christian Brauner <brauner@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>,
+ Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>,
+ Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+ NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+ Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>,
+ Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados
+ <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>,
+ Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>,
+ linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
+ linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
+ ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org,
+ coreteam@netfilter.org, kexec@lists.infradead.org,
+ linux-pci@vger.kernel.org, linux-sound@vger.kernel.org,
+ netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net,
+ linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-cifs@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-sh@vger.kernel.org,
+ linux-usb@vger.kernel.org, samba-technical@lists.samba.org,
+ sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-doc@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-atm-general@lists.sourceforge.net, Takashi Iwai <tiwai@suse.de>,
+ linux-input@vger.kernel.org, linux-raid@vger.kernel.org,
+ linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org,
+ linux-debuggers@vger.kernel.org, Chuck Lever <cel@kernel.org>,
+ stable@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ Suren Baghdasaryan <surenb@google.com>
+References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
+ <20261104-work-procfs-bugfixes-v2-1-021c84d852e0@kernel.org>
+Content-Language: en-US
+From: Hao Ge <hao.ge@linux.dev>
+In-Reply-To: <20261104-work-procfs-bugfixes-v2-1-021c84d852e0@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 15CB7C0003
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: q8uxx939chphq64syss6or1kmhkgbq9r
+X-Rspamd-Queue-Id: B4174100005
 X-Rspam-User: 
-X-HE-Tag: 1793844218-749794
-X-HE-Meta: U2FsdGVkX1+FR/ELeMiBevuX9qHJpNl0cXqkeqFyBClg5xA8r3lot1Wo1ZhBD5n0SCuOnJ1hl9jyCOiaJq8m6UZlt+7W1tvkwHzKROs8ILAJKIVib5CnAcQPgyq9oWD6Ih/oEwqgUCxsLpiESxe0+/Vh7zRimOvzdgpPjcynjmup8QYatfzYMpi03Jvkb54dQMy5Aj5Mqgwz7YlOLeYjevCAHwjzI3fm3hKO0SRIwIsIyTDjslu6N0JFrlHLTT6iNukdPpXtt9l8mRvJ40a/dc3oOUmJe5hLJ8XqBkdkMPMcDGTnrTtnW8SPTYs6lXEhkJUbjC99c0npQI9eJ5G1963qh08j5kDD/gdWe6mRSTdbGowg8neLkGNy8Pw+p2uuOM7I9EdYCbFCDidJ0PBqexs+jZH2qMyF4c1qYaoYrWfH3FEsvUyWCX8xugBlYDpKkUix6E3Br1aODTxVgYp1QCen8/goaDreaIfyxuJ4ExNy2/32VXmZeYcWE3pqP+xlynlF0qc1Mn25t2gRmB83wLIMO64CoMVoFE3xnQ6CI59P772Lrvf4/mZ+CUse3uETVfBsqo60uWlyQvxZm+QjBldVE4nbmFxJtkXK3mSS6gzpNup58Tx8HFxLfAvL4UtXuG8iNqOUtPViiFiIwXO4oRYNwinr9A97MUodWeSwBKlAfOywNCykcocFJn6lEA2bZfFoE+DNB07EjLS2dEPd7LikGufA9NkgVAcqaO0pDBIx/3hg/CgnoCjRB3C1ErMa7hmtUWmNd1sv1GN7Dc8bpLZI/syVEMGRHGZIHWJooHuSCZNIyCd49fbVLLZHZ5PP++zevaPcrSh6lHATvl0dBBuBViUT5wfDlkLbb3GNVo1GeU5TejVWKUnXX3j9i+KUEzFC7nHnatq97459K0EDg7R/JJ06TP1egg+ocigRm2tZTgKziKxb8OsY3bs5YzdR0EgsYtwtWDa4F+KRo+3
- RayPoorM
- WZ5uFCDsoME+AiwtJg8e73V8+wzEr3NrQkU9TXB8A0pTKs2YsV/eUNBIIzyNhGP8bVOaHjI39IhKPeeXzYd9y/vsp2IXAI0qo15mR6d2zdJywbo+NwHCsUvCkcDrOHUEhEyMNnZo95NAhh+p5Nwd/g/o/wv5W+2hNV5X6om0nfO9VKFf3OuK1EnPoCjN6Oy2v8rpyjdDE4iTRSoy/NANQYzIO0TwnJ8r83UvuL9caPggNcDAG4tNBR/PxxRc74FyYp7lg69rfGJdPApvqqki1uY6fIECy9A3+AhphdL+CxVV2DgmsrXA/DbihuqqW/r+hmYCQB+ggJcG3Nq8LriCQ1zjVIpzUGvZfwNJ/fvU3v+xYtzaYDAgbbOrDTmgdnhw1whWOWx1H36inNYPdpCmD/r3HTt6CHmDdF1GdL4Vq5SCvRVfkwvdvsZbeY8ppZovpY9BOWK6NVfVXaL/XlVNcbyh0jXCBtKcjF+AuVIiFruqFEJjbNtn/MO49vVFT0ZRkf2GJ1G63iNELfFbniiK+gQ0QmF4wAlWMIo/Ps1C2bRnmPEU+PcnJTYxxZNrVx645KhwnSax3MSmbecdR0E5XQbuSJaTRVPESD42tyBLhTgvfbkzQHdsAfrZDgf+WQpOL7/JHGJ5b03LSetFbWJddl70OxKtkQfkY8GDPWJEItr78kqEs3D1aIv/qUQ5fW7zCFGDp5OnPgf2GYak8DihYxsao5cD9yZ1qQWVtW47DdqIsWJ274gPTtdGmUg==
+X-HE-Tag: 1793844845-269127
+X-HE-Meta: U2FsdGVkX1/yry6S8+ig6u01oDhaqJ9pCnXYL6lzSvF9vuVAzoLqY6NFnMoU1Qa28WE3J4UBe9vmd15Cf44md7ZwhhiQJ7WcoHFvt58Ccids7nTV3iug4XMnGm5aAlqSPSTStjbaiRQDbszhruFWKAwiqt9/tHiZ6jKFYann7teYHin/Zy2Ilo/Oc3DC5NVnmd6tI6gXcil+DOVixN6q+6Zz5CUkom1K2ONKr/FpdT8aNbRr20ZT/NwOdAJf2KKFUPUIAD6J2iqqA0DD1Q2ADp8XGKpI9sYa6521KjGZAdAVfKQGPeMSpCfY5JiqlbenMpI52LaCsZNiO+o7v+I7IHNmi5YIsNa3nAkI05hvU3wSgKsXtUw08r6NxGuYks8A3xNnx/9hpGwyoctOHHnQW85yUTc3aSTtVHfnjCyxJX70fXZckGCwt48ct5PkgYtzyx6W8QqpTFx+9jYyS4HhU/LjVV41/N87L/slPtGWa8DarV397+zcCsMAlc6hWSimCanlmcHyLxeMMM//yJYC4LrWkKn9HMfmHqyuEAG4MBAB8D4xvoVkynwYZ3A3ILImxENVunCWjLY2MPJX6CDNaB8zIlt+AYl7/gF8EsNddF9wnFwbqkBAt0fFLMXwYwcY5yjgPFlHENhR4aeB0hImmcDXvYSA1GOTzhx24pvjLfCVulShLiahLhmvS4/ePYTOZksis/C8g0AwcbKkGPT9xUc/jYg79rEnM3PdjtDqsqsmjWgcau2EQGI16aTPyEOLSda8QmM+C1MO2h7Adc8NRkqpe4Bvo1wqrOng9Cv8U+AIxpZ/Bj6OgQXdW1jLxXzs/tPhJQgGJyg0GXPF/lZ4HNpMVuua9sZCry5z1XEEIMJg9lwPkGLLSJrwzl/OyWa0X0Y07WJNuZRJgeIVe1VajUWsRXtg8gexVUZ57c9qwR2Hg1C9NU3NrPk8aBjjWd0p1cy9LJ8exdZwlQKu/gr
+ xuR2FvBL
+ odN8Iy975C6Szem08gO4j+pre8XjVTebbRhRSKBqYrWuoShmeR4R3vTnCzqz/XhK6nD0STDUOmiwwf47QbnPp+r8auY6W5CY0MtPznI7ZynRclusBGidl965+LfpKvlFFUDpNMTIrqERJbY5Nur9LKpNCgyKswPUzBFlCZBpYw9TgfpZppFnPXxWp3Doj+cW3KI44h1fFxjupIY74TwqYWWot/d2JfY4kfGFV2O7BL6wB9Pc1woymyglika3hxBntoT3OSSFARhwalq+vjZsOkNNwuiXB/GaGCwIErl7LUfhiKEhbW5s8WVi3a3pNxkoLiK0CRKX9VvRX1nOEcgWMMQhX52dmY4a0abbPiDPoJFerGWBA8mqtabpf0Z/0Nil61klrxmqnU9pFGoOcbCBw9e3206c4mKvdkMsbefMM7mIozWNvcRB/AQDtqeh90h8Pnxbd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,59 +126,147 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Memory offline and memory failure handling dissolve free hugetlb folios
-and lower nr_hugepages. Nothing records this, so when the pool shrinks
-it is hard to tell whether that or a write to nr_hugepages caused it.
+Cc Suren
 
-Add an htlb_dissolve event, counted for each folio that
-dissolve_free_hugetlb_folio() frees.
+Hi Christian
 
-Signed-off-by: Mark Bundschuh <mkbund@amazon.com>
----
- include/linux/vm_event_item.h | 1 +
- mm/hugetlb.c                  | 1 +
- mm/vmstat.c                   | 1 +
- 3 files changed, 3 insertions(+)
+On 2026/11/5 03:06, Christian Brauner wrote:
+> codetag_alloc_module_section() takes the codetag type's mod_lock for
+> writing and calls reserve_module_tags() with it held. When that can't
+> reserve the tags, because the section's alignment doesn't fit, because
+> there are too many tags for the page flag bits or because the memory
+> for them can't be allocated, it shuts memory allocation profiling down
+> and removes /proc/allocinfo, still with mod_lock held.
+> 
+> remove_proc_entry() waits until every reader of the entry has let go of
+> it, and a reader of /proc/allocinfo takes mod_lock for reading in
+> allocinfo_start() while it holds the entry. So a module load that hits
+> one of those paths while /proc/allocinfo is being read waits for the
+> reader and the reader waits for the module load, for good.
+> 
+> Let a work item remove the entry in that case. The profiling is shut
+> down right away like before, the file just goes a moment later.
+> 
+> Fixes: 4835f747d3ed ("alloc_tag: support for page allocation tag compression")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-diff --git a/include/linux/vm_event_item.h b/include/linux/vm_event_item.h
-index 2628ccda076a..822fe862e5b3 100644
---- a/include/linux/vm_event_item.h
-+++ b/include/linux/vm_event_item.h
-@@ -71,6 +71,7 @@ enum vm_event_item { PGPGIN, PGPGOUT, PSWPIN, PSWPOUT,
- #endif
- #ifdef CONFIG_HUGETLB_PAGE
- 		HTLB_BUDDY_PGALLOC, HTLB_BUDDY_PGALLOC_FAIL,
-+		HTLB_DISSOLVE,
- #endif
- #ifdef CONFIG_CMA
- 		CMA_ALLOC_SUCCESS,
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index da5d04edf7c1..7c79523b2a3c 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -2047,6 +2047,7 @@ int dissolve_free_hugetlb_folio(struct folio *folio)
- 		}
- 
- 		update_and_free_hugetlb_folio(h, folio, false);
-+		count_vm_event(HTLB_DISSOLVE);
- 		return rc;
- 	}
- out:
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index a3e809c57f29..6282eef7074a 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -1397,6 +1397,7 @@ const char * const vmstat_text[] = {
- #ifdef CONFIG_HUGETLB_PAGE
- 	[I(HTLB_BUDDY_PGALLOC)]			= "htlb_buddy_alloc_success",
- 	[I(HTLB_BUDDY_PGALLOC_FAIL)]		= "htlb_buddy_alloc_fail",
-+	[I(HTLB_DISSOLVE)]			= "htlb_dissolve",
- #endif
- #ifdef CONFIG_CMA
- 	[I(CMA_ALLOC_SUCCESS)]			= "cma_alloc_success",
+Thanks.
 
-base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
--- 
-2.50.1
+is this a problem you have hit in practice?
+Sashiko discovered this issue earlier and reported it as follows:
 
+> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> index 2070e682fe106..112a014d4b890 100644
+> --- a/mm/alloc_tag.c
+> +++ b/mm/alloc_tag.c
+> @@ -950,10 +950,12 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+>  		int grow_res;
+>  
+>  		module_tags.size = offset + size;
+> -		if (mem_alloc_profiling_enabled() && !tags_addressable()) {
+> +		if (!tags_addressable()) {
+>  			shutdown_mem_profiling(true);
+This is a pre-existing issue, but does this shutdown_mem_profiling(true) call
+introduce an AB-BA deadlock between /proc/allocinfo file readers (pde->in_use)
+and module loading (cttype->mod_lock)?
+A user reading /proc/allocinfo acquires the procfs in_use reference in
+use_pde(), then blocks on down_read(&alloc_tag_cttype->mod_lock) in
+allocinfo_start().
+Concurrently, if a module loads and tags_addressable() fails,
+codetag_alloc_module_section() holds down_write(&cttype->mod_lock) and calls
+shutdown_mem_profiling(true), which removes the proc entry. This removal waits
+indefinitely for the in_use reference to drop to zero, hanging both procfs
+reads and module loading.
+> -			pr_warn("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
+> -				mod->name, NR_UNUSED_PAGEFLAG_BITS);
+> +			pr_warn_once("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
+> +				     mod->name, NR_UNUSED_PAGEFLAG_BITS);
+> +			release_module_tags(mod, false);
+> +			return ERR_PTR(-EAGAIN);
+>  		}
+>  
+>  		grow_res = vm_module_tags_populate();
+
+I previously sent a patch with a comparable idea, though Sashiko remained unconvinced.
+
+[patch]: https://lore.kernel.org/all/20260817062726.106511-3-hao.ge@linux.dev/
+
+[Sashiko's objections]: https://sashiko.dev/#/patchset/20260817062726.106511-1-hao.ge@linux.dev
+
+Could this patch perhaps wait for mine? No worries if this is inconvenient.
+
+Best regards                                                                                                                                                                                                                                                                  
+Hao
+
+> ---
+>  mm/alloc_tag.c | 27 ++++++++++++++++++++++++---
+>  1 file changed, 24 insertions(+), 3 deletions(-)
+> 
+> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
+> index 82e2c3448dcf..7d7ad6704953 100644
+> --- a/mm/alloc_tag.c
+> +++ b/mm/alloc_tag.c
+> @@ -15,6 +15,7 @@
+>  #include <linux/seq_file.h>
+>  #include <linux/string_choices.h>
+>  #include <linux/vmalloc.h>
+> +#include <linux/workqueue.h>
+>  #include <linux/kmemleak.h>
+>  #include <uapi/linux/alloc_tag.h>
+>  
+> @@ -604,6 +605,26 @@ static void shutdown_mem_profiling(bool remove_file)
+>  	mem_profiling_support = false;
+>  }
+>  
+> +static void remove_allocinfo_file(struct work_struct *work)
+> +{
+> +	remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
+> +}
+> +static DECLARE_WORK(remove_allocinfo_work, remove_allocinfo_file);
+> +
+> +/*
+> + * A module's tags are reserved with the codetag module lock held for
+> + * writing, and a reader of /proc/allocinfo takes that lock with the entry
+> + * pinned. Removing the entry there would wait for that reader for good, so
+> + * let a work item do it.
+> + */
+> +static void shutdown_mem_profiling_async(void)
+> +{
+> +	if (!mem_profiling_support)
+> +		return;
+> +	shutdown_mem_profiling(false);
+> +	schedule_work(&remove_allocinfo_work);
+> +}
+> +
+>  void __init alloc_tag_sec_init(void)
+>  {
+>  	struct alloc_tag *last_codetag;
+> @@ -855,7 +876,7 @@ static void *reserve_module_tags(struct module *mod, unsigned long size,
+>  		align = 1;
+>  
+>  	if (!ensure_alignment(align, &prepend)) {
+> -		shutdown_mem_profiling(true);
+> +		shutdown_mem_profiling_async();
+>  		pr_err("%s: alignment %lu is incompatible with allocation tag indexing. Memory allocation profiling is disabled!\n",
+>  			mod->name, align);
+>  		return ERR_PTR(-EINVAL);
+> @@ -905,14 +926,14 @@ unlock:
+>  
+>  		module_tags.size = offset + size;
+>  		if (mem_alloc_profiling_enabled() && !tags_addressable()) {
+> -			shutdown_mem_profiling(true);
+> +			shutdown_mem_profiling_async();
+>  			pr_warn("With module %s there are too many tags to fit in %d page flag bits. Memory allocation profiling is disabled!\n",
+>  				mod->name, NR_UNUSED_PAGEFLAG_BITS);
+>  		}
+>  
+>  		grow_res = vm_module_tags_populate();
+>  		if (grow_res) {
+> -			shutdown_mem_profiling(true);
+> +			shutdown_mem_profiling_async();
+>  			pr_err("Failed to allocate memory for allocation tags in the module %s. Memory allocation profiling is disabled!\n",
+>  			       mod->name);
+>  			return ERR_PTR(grow_res);
+> 
 
