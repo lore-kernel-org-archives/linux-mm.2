@@ -1,90 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F08FF606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 07:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408F6606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 07:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=Y73vzWKY
+	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=t4ae7a2k
 Received: by kanga.kvack.org (Postfix)
-	id 1345D6B05B2; Thu,  5 Nov 2026 02:04:47 -0500 (EST)
+	id 0E8FB6B05C1; Thu,  5 Nov 2026 02:04:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10C026B05BF; Thu,  5 Nov 2026 02:04:47 -0500 (EST)
+	id 0C0BE6B05C2; Thu,  5 Nov 2026 02:04:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 049B96B05C0; Thu,  5 Nov 2026 02:04:47 -0500 (EST)
+	id F3F886B05C3; Thu,  5 Nov 2026 02:04:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D6AB96B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:04:46 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 66ECB140929
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:04:46 +0000 (UTC)
-X-FDA: 85400177772.21.C0CDAAE
-Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 415CE20004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:04:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Y73vzWKY;
-	spf=pass (imf13.hostedemail.com: domain of "prvs=762187284=mkbund@amazon.com" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=762187284=mkbund@amazon.com";
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C8F396B05C1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:04:58 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 648321C4332
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:04:58 +0000 (UTC)
+X-FDA: 85400178276.12.5831834
+Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 46087180002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:04:56 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=t4ae7a2k;
+	spf=pass (imf24.hostedemail.com: domain of "prvs=762187284=mkbund@amazon.com" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=762187284=mkbund@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793862284;
+	s=arc-20220608; t=1793862296;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=0LYlvKnBuyOgTFhE6ZXvSHnkMEzStXd16IsR93SDLcc=;
-	b=cRkTeeEuU4H9wv24HgtwA4OEptTfm6PYbL6K+GkmZEAiK4l9OvLBi+W3C6TcHpgmCrg94D
-	ZlVKho97hZiXXSYy+d3uwXg3v8UZ0X3pedPPOvbxfijdoIYTu4Yq+d182rfTffdFd4e0Y+
-	SLqPhXdRwq0/O+mNCgo4NfvXbsgMlT8=
+	 references:dkim-signature; bh=4l44b+AwhAEl7Y2yYU1zn4HtQwsLDMpz34p1PtYCmP8=;
+	b=f5a+uYDnAFeidYkASjTfh3+/jLJV432WXXYr2K4c1Frf5UN2ayQPumU+wlBHrkmwEH/gDa
+	fiAuKo0mI3Z1C+eoVoY0AqDGwoyfWkuyFu1LVt/nhIgVGM0fXkyOU9NeSsWtlB0dXH7S6e
+	pRWWih+MEgfc4l4102JgGKiugFOFK2M=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Y73vzWKY;
-	spf=pass (imf13.hostedemail.com: domain of "prvs=762187284=mkbund@amazon.com" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=762187284=mkbund@amazon.com";
+	imf24.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=t4ae7a2k;
+	spf=pass (imf24.hostedemail.com: domain of "prvs=762187284=mkbund@amazon.com" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=762187284=mkbund@amazon.com";
 	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793862284;
-	b=ipOU9KvsS5L9ywk1Y2y8bPma9q8xANXcvMmOnCtu1kpCAnC9F6rJrcDDLN6BW7SgDBoM37
-	WKx6NClGwB4fY6Fg9FvA0QJYPiOhRATvxdX/VOHPUa/32DQHsCitkwRUioQ9YOmUAcrACF
-	FflFtmm3dnJpOr6pGyfE7WbEroS9K2c=
+	t=1793862296;
+	b=nEuidKv8ho/DWz8oLmtfcDCfZtNYg9fe6a2D0xCwypgFnhkGaxzxhMHTySUJpxOlBA91tr
+	IqQa/UpBGSsKOyiOsZzfcYl1vdXirej30g4GHh+3AJrCpXnIXt65b1o/JsALt5wLC7cASK
+	lH7sgLURU8n5mHdqZzFjxTaCplvopmI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1793862284; x=1825398284;
+  t=1793862296; x=1825398296;
   h=from:to:cc:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=0LYlvKnBuyOgTFhE6ZXvSHnkMEzStXd16IsR93SDLcc=;
-  b=Y73vzWKYhFkVAnb1ESfrVNZYngk2stZk7dS+dNcMZQcu5oXsbCGxYScg
-   XNnQI1/dtTk7hv7XGTz2AwN1UFVYaKBeWnUdRHWzpZGM3w9IuuQvLO6W1
-   f918r+YDW4tIciL1HBZPuMNfYngdgQiA2nykEOZ3ZVh1jwxjOOdmFvach
-   kml6p8bBKRoupS8NmyWQ+BUqDiNUxU5QQM9j+qgtUiEn/Njt63kALpLrs
-   WnBsTZ8rQnOJM0gZBVcwjBnTopES0F0fy2a6QVQ5nj1inAdAHDhApTYH1
-   JiSY+N3Cihfg6ayCY2rRNjMcQH6L1c7kvUcKwK/s8gL+broqXN78LtVf4
-   w==;
-X-CSE-ConnectionGUID: LpbQ2qwrT/6iqIU4KMf9vw==
-X-CSE-MsgGUID: E0dwvs0oQwitmljC1IpvKA==
+  bh=4l44b+AwhAEl7Y2yYU1zn4HtQwsLDMpz34p1PtYCmP8=;
+  b=t4ae7a2kHV/RgZ7zzdxyF55LlSiLM+oMQ3ajW9YgbaXYufhUP7Rvu25Z
+   Sf+vucnijdDrn//brjwh5azIw/5dSC8HCHKSSSJsHV9zZEh+Prqn9IGXc
+   MZuXVzhTqw3WnnD3H+sUvjNoFROwqgSMo83MOCEU1GPQ1I+RSs0TsO8cj
+   3qsA9m6EShWbAgRsbetG3bWm8x+tq0h/Q6QktAUjT6YNYNZpXOUGKNp0m
+   X5ICrkmHVbo04FobaTRD8zIRT1j0k/O/TdMEjymPMG0PkxrDwXDp/d7JG
+   8UBr6fAaCJS0vwUloCcDtgtpBSb7HnTaOV03lMmEFq8JHt15a0u1bdvw+
+   Q==;
+X-CSE-ConnectionGUID: JwTQVVBvTEuV0LKc2KPDLw==
+X-CSE-MsgGUID: SXXMfe1cQbW+BPEL5CX4oA==
 X-IronPort-AV: E=Sophos;i="6.27,196,1787011200"; 
-   d="scan'208";a="33083042"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 07:04:42 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:12999]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.44.80:2525] with esmtp (Farcaster)
- id 8a7e2f0f-1081-470b-bd38-44d3ccc99dc6; Thu, 5 Nov 2026 07:04:42 +0000 (UTC)
-X-Farcaster-Flow-ID: 8a7e2f0f-1081-470b-bd38-44d3ccc99dc6
+   d="scan'208";a="33172376"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 07:04:54 +0000
+Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:23408]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.15.208:2525] with esmtp (Farcaster)
+ id e60c700b-b0ba-4d1a-b314-1637a485e3b6; Thu, 5 Nov 2026 07:04:54 +0000 (UTC)
+X-Farcaster-Flow-ID: e60c700b-b0ba-4d1a-b314-1637a485e3b6
 Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 5 Nov 2026 07:04:42 +0000
+ Thu, 5 Nov 2026 07:04:54 +0000
 Received: from dev-dsk-mkbund-2b-9ea2efba.us-west-2.amazon.com (10.2.100.138)
  by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 5 Nov 2026 07:04:42 +0000
+ Thu, 5 Nov 2026 07:04:54 +0000
 From: Mark Bundschuh <mkbund@amazon.com>
 To: <stable@vger.kernel.org>
 CC: <linux-mm@kvack.org>, <david@kernel.org>, yangge <yangge1116@126.com>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <21cnbao@gmail.com>,
 	David Hildenbrand <david@redhat.com>, SeongJae Park <sj@kernel.org>, "Andrew
  Morton" <akpm@linux-foundation.org>, Mark Bundschuh <mkbund@amazon.com>
-Subject: [PATCH 6.6] mm: replace free hugepage folios after migration
-Date: Thu, 5 Nov 2026 07:04:31 +0000
-Message-ID: <20261105070431.3100950-1-mkbund@amazon.com>
+Subject: [PATCH 6.12] mm: replace free hugepage folios after migration
+Date: Thu, 5 Nov 2026 07:04:42 +0000
+Message-ID: <20261105070442.3101877-1-mkbund@amazon.com>
 X-Mailer: git-send-email 2.50.1
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
@@ -92,7 +92,7 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: EX19D031UWA003.ant.amazon.com (10.13.139.47) To
  EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Stat-Signature: shsg4ea4kaf1knzdb1frictcu7ybrj9b
+X-Stat-Signature: cygjyo5kmdj7sdshsz7h7myd8r99u6u9
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -100,11 +100,11 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 415CE20004
-X-HE-Tag: 1793862284-710132
-X-HE-Meta: U2FsdGVkX1/lOVAHKyZ5M/dgJiS6+S3CzCvNRzE2mMMo0/oVvQ9psEsO8B4+xMgmt81RSetyu/S77z+CN4pdR4BlqokwxVRw7mK3eLj2WC8ycDR0FOrh9zsB5ZqiVEe1ZOVV+CHtFoCzfSIm/tHtT01T6u4H0sgtBUm9cspgXr4uhG+stSfgriCFF5I+RE7+XIDnHDQY2kn0dlgSqJjdlY54mOomXWA9OcLxzC7Qf9xx7PK9u5Al0yu3X6N2HjwJI5EWLMpiOgO7Bfp3UOvQF4/v2DtEHk5KvbfIKvU1xjAWljRP3fmcWBJSRViLQmfI2xeqSaF6Xt+LXNbmCgvKE+RDUNCofDv5Ak6ln9TWqIU2bpxbTkqWL1tIAC/HI4VAJQuVezd2WYyALIDbDSJTyv/rcFpsPKqhJDanRFcT6PdgmzdCR2HeY67Yi2Im3kNnbQ24D0U//5ZqfRg2YAvpu9kOQFhZQvlFQ5ZtBr+0K3GRECGUF8G1NWrEEZ3ppzU5pUXYyCxpozFVsGsO6CMwAfiB+GC5zA6gfuqF01o1zLBQAMkKUay03CdLy6L+DJyIlqZCYbxPj+CYDn5So8WubCXaOtf4yBckMb1mI9rChYotglNc8DX+xgGRmzCaPsxfq3zVQ1aG25lDXQrjRK3yWHHmlJyCTI9AiaQvcvWnbBVmd2tUQnbf0/5B8f+zgBYRfLnRkO0g9P7XMCDZM83ccakmodowMkMVRMxIaVZbudqsI03ctEe8YEEW52of7obGaQeOCELtwCdGwZWq5TlfIIDjiZf/OUXJqok17xH5NNU8DHfvxR8FZS6OawxpL4yb1HxbJnrMpBooYP2adQeUOPjCfxp/44yuYyRFTjcQG2pQmgC+ieeP9FE4ZS2j1T7vrER+fnQlmL6wrAg0RMtmY3lG7JFFqwy84MYwDgBpBrWW4AOGfYAyy+6z7EdGkRsy8mVRFgrHj/iu8j/Uy3F
- Q5xmeNu7
- BIAIWBVnVLCc9gL3nki3s1YOc9nrzXvzl/X1KXaTE3Ijdz8K+00Z1dCVu3FrRJkEwNRPGAOfcUzgKXQUh9ENL208OnPSSVqN+PokERw7250NJs9fLJwY4snLYsENWtTsCN3Xoh+V2NRGa9Ev9Q/woC4bhYss2wdBaubgXVfIqea4KymN5CgmJ+Li2j8JHTk3zSZz9w8snUE4/dlR34mrowLh7kAdU5io1vjyWsRCcn/56aFy93MyELOMCIB0BL6Bb+nMpyEF8VW4JZk54lDPeSG5QGF0wyRVNs1cg1PZIugyYB5CKhEHSJqoALN4JdSr6Zr1iyzFTU1pwJ3dAmlHLP831ziJ7QgQwF+zFO3Dfe0iMLbx7KDA33x1XSDsopoSp5Ljpkwyeclod41DsncTvk/Ih+tqyaffGEIrg1pOeC+Af1mQ6eDgEyA0dECf3UwJHugfzuxXBaipO0NuVT+tJ/r9ZRo8+GFZM/bMHTVgdU7gWFjMREMJ5WNKsmnMxI/pZpmWFfny6btVOeVtvNhLqH5qNnbHLbsk1CMt7R4eavasVOqfqD97DkEQaeCrKYhscKujv+LetBmQIEgMBMwrFWrARVSlBnlBv/Zo9cHDU8lLzzzpabJigDxJKdWxFpk32CLkY7ltlsXSWOktPsk7uf6FjUSExLezNZsNuoLrIsa76GdVANdP5vA7daEFbKQP6xVm/U2VtDPSjYzIHElqpsQf4EUOYp8CTpsysdcEbfM+ba54Di4xJJn5xZqhLPWgI6hEHCwmqtM4P7FUsIFXy5M19qXx5zX53/TujAP5qGqhY6G/SVdYHF6KIfpr8zngUzOZd4TPwf+PTv7zJawXWF8fsVIEuja+RnI2a6ECw/rryTjvAcFSgmmFkaYTyhPOPGVvi8Dvm2BxzOQwj4GRwkOHmZXo9hCwZfREa
+X-Rspamd-Queue-Id: 46087180002
+X-HE-Tag: 1793862296-805784
+X-HE-Meta: U2FsdGVkX1/FevHyUdOvwaMYHxMB7hMqL3BZJlVIVPKUHHQ/qmPGjynZrSNWgbhYxxP9ZgKn5uFShNDSNkoGg6LrMkK/QkQ6/+jc7uri4sHWmoLF0nT+skwfbyvWODWZNTxTGDTCD6Wyxbdf6k/UEkQzdzmjfuyVcWYPgsAz/MoPaeF40qeQoXLbchtFRrTDo+D+pVsx3CE4SHotyFygZiEMg64XZ+yFnLobjDeulzl83LVcRP9silLOowD8cdsQUhqFnnYznjvtLWPAnfVQ5vuSNP77VhdphsvQyniPiKbGD4VT96fPXZkLYGQYq8tMUCBrqPujPkUOfC7mqjQcJt9oLOF82e646uia9NTHHrj4EHBnJtgV/e4wzrIDVNQz0qjWrmlEupxOEL2DbpwxY/lNKqQBRelAIvpr6OErInKgUtoLAk57HFy0me5PgUWU4L0StuHcYjNx0+CXsZOuIDFLtsWhK/eGwtC/8If/yrSjHWGH3vzkeutv1NQx8+BbnXmBgyCLv8vx6SHdrFb6vyv3eWyoGp3oL3MaonE4fznJ268W5ob9BKNyV5D3ZTJCTern2v9tFIwU+gWmy12fh6taJpEWgITX2eKcsrckhL2QYvWTIHHhL4aGC4JxCQDiir/dYtmd0iMD7BPeMd9/x5TkaK21lhZOjN7t1wv8XvS4YPdNyOZC3H/8I4bhyd+LYoPfGSDVh/rF/dXF3zYmVp5TwqOxZU5jBBif/DRXP/3/0LhMyxP7xjaCA58MzYnDT/Ljcs1QkyiaqW7TXlLq8dYWDNMr0qWkOTO/06HSKOjMl4tXA/3DRQIjn3jBG9iWfFxiTtfj5hR/YohQSsfalTnbesVd0t2a1+oJruz78z93XKXYcNQVu+zHt7LV4U/1jmGNmS4lgrJ+UfMG0UI9AHRN6gqH+0NIuznWdqZ8RZs+JvPFkF7Gls8StfuFj2tma7iHI/1zKOHgRo0LI+j
+ HztrT3J6
+ KY73vL9xbKyWx9EcqMehg9uUvprbz2KfjSpx+DeAYKUqbU4tU84aHwSsV3islauemWsqfEIUAXDFI5yUveYjJoFSD+3ETjFOOhCxkJHCs1R2IKYcP+OXQZ29Avmom6ccdNHigEvytavmRdQJMphWW4bS/aEUT420ncZobzJI6btLb++xDlZh4si/u0ZqV4etSVZyGOjv+oN5/nefsxXeOft9TWtXbiMy8/fRyD3JjJysrlKmFaKYhfyjvOjAseH56APYFH7pnaXlnP/ngwf8zJuBZ6+JXR/Zt3m1QWlSox35eSsEabVTSErQBvGH1pbHz3+7Q2Q5mSo8+AoFABKIqA34R1z2iPXWOiPJqBsYFF+PotZaDoKxn+4FoO62wHqYYDvp7O5p2e/3ajq/pyUdnnhqho+rbjfY4PSMhon72r/EPFMVqas6IH3Vz/nx26ydIzrTFYV6wmDmHPOB3N5IuaqC9qIr/hq14I+oUCtezMm16lgkBk6z+uVZWpoaQxq4Wz014U58oOKBMuwhX+xmPOSH17na1WqrWWFsexHzC/Svza31llM80+1SLSse9nc9qcQ6qQq55PI+Bdg6yiu1PMy7btazSpmTqdf48tDfILCnK+y9VNKi3tWrcuFKksM5BXu9E0n3XS9s/YJczXey2G0Gm2U4b+r8JJ+nMvl4Py/uV9WL/6e6KcF0dKfLn17blOuEoH9XwvwTk41ePW96pEYb30hTOUrir3zN0WNeFkNkgCerwd/RJZqwtTOJilNcdQvaPy574vobxb+OGigUgksZNDn969+AfjFnlmRjiTOraM76XSwZAv6XLQjqCtBuqnX0DerdGwpZLTI2BBw4slbOZR0bWXJjP2QMej5a5fYaV3dUL+20jixT+WeDiIZLipSNCJ5U10kRQJ3yQ3X7IMZQR5rVCpDWbO8zW
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -169,7 +169,7 @@ Cc: Barry Song <21cnbao@gmail.com>
 Cc: David Hildenbrand <david@redhat.com>
 Cc: SeongJae Park <sj@kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ 6.6: Take only the dequeue_hugetlb_folio_node_exact() hunk, so memory
+[ 6.12: Take only the dequeue_hugetlb_folio_node_exact() hunk, so memory
   offline stops migrating huge pages back into the isolated range. ]
 Signed-off-by: Mark Bundschuh <mkbund@amazon.com>
 ---
@@ -183,10 +183,10 @@ was still migrating after 60 s. With this patch on 5.10 it completes in
  1 file changed, 4 insertions(+)
 
 diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 8bfaaa84bb3f..8c1a032a6f53 100644
+index 68e0cc0748ca..b4c6c926a71e 100644
 --- a/mm/hugetlb.c
 +++ b/mm/hugetlb.c
-@@ -47,6 +47,7 @@
+@@ -48,6 +48,7 @@
  #include <linux/page_owner.h>
  #include "internal.h"
  #include "hugetlb_vmemmap.h"
@@ -194,7 +194,7 @@ index 8bfaaa84bb3f..8c1a032a6f53 100644
  
  int hugetlb_max_hstate __read_mostly;
  unsigned int default_hstate_idx;
-@@ -1344,6 +1345,9 @@ static struct folio *dequeue_hugetlb_folio_node_exact(struct hstate *h,
+@@ -1350,6 +1351,9 @@ static struct folio *dequeue_hugetlb_folio_node_exact(struct hstate *h,
  		if (folio_test_hwpoison(folio))
  			continue;
  
