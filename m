@@ -1,115 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4733606A329
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2DD606A330
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 18:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Kuou0bnu
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Zce8u9kf
 Received: by kanga.kvack.org (Postfix)
-	id DB8216B05B3; Thu,  5 Nov 2026 12:54:35 -0500 (EST)
+	id 15FC16B05B0; Thu,  5 Nov 2026 13:16:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8F2E6B05B4; Thu,  5 Nov 2026 12:54:35 -0500 (EST)
+	id 110DD6B05B1; Thu,  5 Nov 2026 13:16:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA6946B05B5; Thu,  5 Nov 2026 12:54:35 -0500 (EST)
+	id 0264A6B05B2; Thu,  5 Nov 2026 13:16:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AB20A6B05B3
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:54:35 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C34C12079D
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:54:35 +0000 (UTC)
-X-FDA: 85401815310.20.61BB87D
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 289DF1C0008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:54:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kuou0bnu;
-	spf=pass (imf21.hostedemail.com: domain of jocolema@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=jocolema@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4BE46B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:16:58 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5A90F80BC6
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:16:58 +0000 (UTC)
+X-FDA: 85401871716.25.93ABAD1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 88603C000A
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:16:56 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zce8u9kf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793901273;
+	s=arc-20220608; t=1793902616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eNswTHRkAB3xpLhJNb2j9JZGG582cPl1mfH65MgD+RA=;
-	b=2L91F1lnfUxMgJjBaRt9sR5rqECF4NldmsQlRblU8oCMg292cJn6w07GOQzyozzWkkPJKY
-	3UmeI7F6XdFBOA+YYK29efFTnxtDQVB8LXE4MoYa3Z29riIL3zxmYQKAkauxXOOfrVeLe0
-	2zZatdJuSbhuwCnSxKerRFjAuRWKAPA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793901273;
-	b=GcAwCaRi4/RCPFas5zHC5ypjmxgKRqyjZiPjXYkcvSCe/WK72so0IivvmPX51K/Sf1rIap
-	2TpNjh0rVhRqd63PoZ8bTHt6lJI6OEqJYaqzggxaUagM3KHKAzuisosuIQ+v62E4Xp5zAd
-	4t34dnsl0nEX+8uk2Hh/LC+mPHLM7kA=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=vMpWvkjgwpvMMa7+syhmsy3PKYx+lNXAcu0o7qMwcLg=;
+	b=aDD1Y/EfM0phAqFkei1LrLVgXdSMBq6n+oKRdurx2Jk7XnhW9Xlg4zseaNZGGKD6k8xMo/
+	/CTZeWvRZqoGK5224TbwolqPbWXLjxvOGntdCyNFtak1lA3yCWTjCj+GIvfN1IRIGB0MfQ
+	+d7LkOD9cL1vmuzsKJUgTAn6p/76pGs=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kuou0bnu;
-	spf=pass (imf21.hostedemail.com: domain of jocolema@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=jocolema@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793901272;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eNswTHRkAB3xpLhJNb2j9JZGG582cPl1mfH65MgD+RA=;
-	b=Kuou0bnu6ZusO1qZpXPnVLn7sQIXDJYpVWfU8DEEPDs8XY/uNjtvIuZ0nS7fYuA7v636eg
-	fKOaRuefAYhkQl6VnVOaw21EzvxWbrZsz5XtHBpHYOLs4VInL242BelZqgiDPrPA7FR3E5
-	NsYwTlAYQtPeHnNYlzIl4hW+wLhCsYE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-whESyizYMTKoAN_7Vbzs-A-1; Thu,
- 05 Nov 2026 12:54:29 -0500
-X-MC-Unique: whESyizYMTKoAN_7Vbzs-A-1
-X-Mimecast-MFC-AGG-ID: whESyizYMTKoAN_7Vbzs-A_1793901267
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 21F9319560B5;
-	Thu,  5 Nov 2026 17:54:26 +0000 (UTC)
-Received: from jocolema-thinkpadp1gen4i.rmtusco.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5366418004FC;
-	Thu,  5 Nov 2026 17:54:22 +0000 (UTC)
-From: "John J. Coleman" <jocolema@redhat.com>
-To: zenghui.yu@linux.dev
-Cc: akpm@linux-foundation.org,
-	david@kernel.org,
-	liam@infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	mhocko@suse.com,
-	peterx@redhat.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	audra@redhat.com
-Subject: [PATCH v2] selftests/mm: scale uffd memory region contingent upon base page size
-Date: Thu,  5 Nov 2026 10:54:07 -0700
-Message-ID: <20261105175407.638242-1-jocolema@redhat.com>
-In-Reply-To: <20261011163527.95988-1-zenghui.yu@linux.dev>
-References: <20261011163527.95988-1-zenghui.yu@linux.dev>
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Zce8u9kf;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793902616;
+	b=YWBXkCek7VRTareBKrafYHJD0hunhiB1Fd/3LeEwwRVDM+xIg1JDkP0ix9NFtaw/SjmVnk
+	SSHBiNkIqB9xid4+Y7JgxWTvRsMrYyuK4/PSURa/IyQBWZ/4Vo1kArkCmSCGKerkAx5I4N
+	7EB/7Y9HM6KKjo7MrVT6wVpN9T/iArI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id B9AAC60147;
+	Thu,  5 Nov 2026 18:16:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6775A1F000C1;
+	Thu,  5 Nov 2026 18:16:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793902615;
+	bh=vMpWvkjgwpvMMa7+syhmsy3PKYx+lNXAcu0o7qMwcLg=;
+	h=From:Date:Subject:To:Cc;
+	b=Zce8u9kfBUlYo6KPIi/Kk8ohVlE7iAqICTrnuxM4OKaYJT8CbiOb+lNyAvDEfG1zo
+	 hjnQd9+iJlRqJieiLQaQ8FHaRzreH1IYeiVkIVs/7L0vdncoo4akHf/VCrGyWyqevH
+	 uafdMf2itzKtADBAlzNGtQzKM0R6rbKZyDFUT49/eltsfUq/viuVCDVsyET7gxubUB
+	 ifLonotA7eXw+8MFA0l25QnuqbtDVG5ixTQGTCJP7MYDAhPH5a+lnMKUqChCn+6mnx
+	 FvJ2lGsBuTLNTSbMLHV4slSs6uJWnTRppiyrPmZQ47NdPAwVivq79Dc6LkUzAWWb6I
+	 FUP4nD4UrGwyA==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Date: Thu, 05 Nov 2026 19:16:44 +0100
+Subject: [PATCH] mm/khugepaged: don't map folios that are not uptodate in
+ MADV_COLLAPSE
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-MFC-PROC-ID: t6sHsed39c0BFHYZeclg2qOTKimMtmTqFfxV6ia3324_1793901267
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-content-type: text/plain; charset="US-ASCII"; x-default=true
-X-Stat-Signature: ectj5w8yc4hs589488rtmqa1upyhkssu
-X-Rspamd-Queue-Id: 289DF1C0008
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAAvI7GoC/yXMQQqDMBBA0avIrBuYRGqrVyklqBl1CmrIJKUg3
+ t1Ul2/x/wZCgUmgKTYI9GXhdcnQtwL6qV1GUuyywaCptMa7Eop2SiNZPzubfFxdG0nVXf00WOJ
+ jKBFy6wMN/Du/r/dlSd2H+vifwb4f8usBZ3kAAAA=
+X-Change-ID: 20261105-set_huge_pmd_uptodate-9b9820307f30
+To: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Hugh Dickins <hughd@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Zach O'Keefe <zokeefe@google.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Chris Mason <mason@kernel.org>, stable@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1539; i=david@kernel.org;
+ h=from:subject:message-id; bh=4vPRQgFKZMvkn+yRb7hUHK9P1W7c8xgEacmzWiDG098=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLenBDYF6dT1ebwouDdmfDrT5l/yqdorLYTb9qf9uJBx
+ M5Pz6ovdJSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjAR/WqGP7y3LZzkeI4/rtvC
+ c09x08cjapfurVeL8DBW9bzbrLBWeAkjw23meu0ZiwLt81acetgfvmEH11qxjII83SPfTLrdD6b
+ uYQMA
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 88603C000A
+X-Stat-Signature: zsa3ma7fge6xd3e4m3gxd5zkq9rcgrje
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793901272-547100
-X-HE-Meta: U2FsdGVkX19zy70aGY5Mpoh9vTKP/VvfuyCWNa8N1nC+kjustXHRqAufhRqmG2X1zD82tU9vx1fi+ehs9eScodUkjNp2SXWNe7vKL/uuPjwwBv5GKsyOYjBDW0WOih8vcvtc+jAJVWLDDtxbDiczoXZ247o8Mf+8JiEnHwLvA8YskmGRjMLUeitLRCKMXr5fbLBEzJCQtmafzXZpXuch11mo/I0aE3jivOnFOYDRdiDXvIXYgTYZlsBmxsbbCHUDd56nPNIZ54gbtdZGVEPys9IXS+zFQsNEip+GFz319JdlDHGToxW+yruuhMCGFtNEYcRoX1nKQUPgm0e5aDXgqHpDIwEsfy3fLF7Al2Jvzz2tjpTcmNNIOmB+sslNZy/0+EAyM4LHu+B2CPA0WysDxUqaErd3qFWdEmmjKJMQQLjQzLgelhYBRQNUrm/AIUWPqoePQVdo8VBPxoFXIao4RcuxBYgjT7Cy4Mv3xYx8/XnE5CxaWo4eDjv/bjuNCAN3qLpGm+23j4AxKx2GJQTJntgbpdOA9fxjHbQpBc+Inwtvwjqg+SRfTMK7EB1Ut+xVLfvvUJotCBH6opSFT3Syni14LwRtglDDc7bAXtUwHjHFrr0RgLiASY/HvVApIUGo6MS19Vbgxatl1tUkG8Vf+yqlhjRRdS5MTf8vs6Q0hMdPbk+g34msPCXUAwv4gyLjM3MIzqa8FEIqM4un1DW9sh0MlvgILz8bH6gashyqnDt4eYbuctMrAAjb20j0wqN1nKqRUf6UBgwFmTgyfdzq58oYKE1sOal7/ij3BjkWSzNigJNdGwoMY6mKqPe3P835/tf3LW+Vu64gSkZ6yXz+bP5YR52PlUpP9ioC/vVHXbw0z7EVxVfSQ79yfaWo4qiU4ahwcYaDBsEfmi145HLhT6GM1i1ezYF9vZi/3bGgFTMd2N0iDtj+DZgcqfTtfjlkqFuvsXLjQzNJY1vIPF/
- 3Jg0Uxcx
- 6MhLWXrVOvv1aLpOCUJTB9AZ/9kAgkQtDy/HY6ucg+tuY+sxgKRTNnrKlA7hjUL0Ome6GExRABA4lSdebUT2CZ8M4ivjbh+e9OM6U59KTu4qlh6PgItrC6vO9VzxUCrxGh8BUPtdO5TZ2+mGALvwF9X/6ZCK7gApPC0tSACTzgWDHk2niKTiDhasCkrKyGKFcninmosbOS5Et68ZwDJtXrb23FnpxGakZkjLhK91CtJt3ZqmWB77+uRRNhHmQrrGoccNm2uEDoegDymKNspThCTvho+RT5Tp3RZ2SHcn820D2grq9j9H9g2Q1Oo5uTPgJwa+BwSlj+C4DkF1R1zADBJPC4w==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793902616-116179
+X-HE-Meta: U2FsdGVkX19hcthjp5x1m6E4JXxw9+owzHs5FpmeIAo2VHgKdnrg0kgwmVO5bVDQzi0Yoix+l1P9yHxknZdhcfoQ0KeyYQpCSF2mVzXoPf1dTZ0pARU4L7jAx/nRcg3XYcMcfRAkwyYwa3TvCRTRwT5fLmL2RlRGQWufkUb0PpNMwUulj3FsTNbo1U05Y0wKKEf3RByWypaXYLKbiuExsxDLKGnUUrqDKs+8GkEK6JypR6Jwt0k0aV8ZcDiJM7/Bu1PKZDBJ+HSDwvkNNA4FnDJ3L7z8DMFEGRMOZQ3Lha8R97DpdjPSzk+UDnxOtwFgTS7gWxMob11HG3JHffRIpugukPp+cExed3VxKeVYi+sViJGqLKZ7WB6RORqY9/rWZq0ZLFLGVrRIK3s19RJ+sEWdCMPSpVXgagulwiLWi3jVz0Z0rdkUV32Mn1FV7Hlm5pAoHXK3ODF4jXKc0nJD9Zb13bTNVfhZw8c1lWQy8uLbqZIUsVXKA3zn3YlXG/G4qqfkLx84R/iX82l/t4PxsJppZZvRc0jLKZwT1s7YkKa36i9eOwr3+dn48SHfRbmtRWyt/ZM7+v00Z9cUg2bLxKjP6DKoqBTi06jzmzhvZ9JyJu2uvvQn1ZhbXEj+o1fXs/9LODRWyyFX60gPu7M8kys/2SEyZGijqO/R/BvZ0OzOi3OJmWl2pOaVvYkktIaenCDp/JvK7Y2p2RLxkkmzoksXH2QAZ54gJoDby5hNUrVwCTFfhWcWAJCpvfHoCdk07FPZw/pyajPwCVHeKdnEPP4mKmw83XoWW1M29pOlVC4iO+xvvJ+cvwibi+8pSzj+XxZWZics4eAlOs3bu8OSrdpK/yjLzmK5yPFN0IK8CbafBW0swdwTT0pPAn1sCCaqbxDWsK5iOnAkmpGV7XQvIoSnPsldBFmf7B1aAFW0u263Ioc3uWlqZkc/BUru7LEnegckhWxDuuzsV3woMKL
+ do9DcknY
+ tW7YF01iNDYzrwfKcNHpavwhAL5gYBYJ6+aUifMWA2K8VlmnSaalw55A9+qnlS46eA7ohJVwqoodEmfLuindVNGK0mHVp/yKtUV8ydH48kFU6YdtMWWwW7Ffz6V0TuISPQIUQZJHlC5RpqTgbEinP/eN4fJK6JAKzM8ox5W34b9QN/C4/PIfYNchoyf/sWlOC1J1Vy6nUHrH3kPOKW6OYeBAEe+b/V9yUhE8fk0mrxzvUCW4kMelfrO+9fqGsni/U+3pcYa7VT/KkwDOIvmhgyYzDKCf5AlZr4nBt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,58 +112,56 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When executing the uffd-unit-test, the "move-pmd on anon" test will fail 
-on aarch64+64k with a segmentation fault because the initial allocated 
-memory region is too small.  This only happens with the move-pmd* tests 
-because the architecture base page size is still utilized even though the 
-memory region is specific to the size indicated by the pmd.
+madvise(MADV_COLLAPSE) can map PMD-sized pagecache folios that are not
+uptodate. For example, shmem fallocate() can put such folios into the
+page cache.
 
-Patch 9f5c2aec3388 ("selftests/mm: fix uffd move-pmd test crash on 64K 
-base page systems") implements an initial fix to the segmentation fault 
-by skipping the test if the allocated memory region is not large enough 
-for the number of pages x page size requested.  But as this will skip 
-over the aarch64+64k pmd tests, this patch is intended to resolve the 
-problem with 64k pages by scaling up the initial allocated memory region 
-subject to base page size of the architecture.
+collapse_file() already refuses to proceed with folios that are not
+uptodate. Let's just do the same in try_collapse_pte_mapped_thp() and skip
+such folios, leaving handling to the page faults.
 
-Fixes: a2bf6a9ca805 ("selftests/mm: add UFFDIO_MOVE ioctl test")
+Note that collapse_file() effectively clears shmem folios through
+shmem_get_folio(); let's keep this fix simple and simply let the page
+fault path deal with that.
 
-Signed-off-by: John J. Coleman <jocolema@redhat.com>
+Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
+Reported-by: Chris Mason <mason@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+Once reviewed, I will pick this up in a timely manner.
+---
+ mm/khugepaged.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index 8d9f05a39afb3..db135b3c44ef1 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -1900,6 +1900,12 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+ 		goto drop_folio;
+ 	}
+ 
++	/* Leave any uninitialized folios to the page fault path. */
++	if (!folio_test_uptodate(folio)) {
++		result = SCAN_FAIL;
++		goto drop_folio;
++	}
++
+ 	result = find_pmd_or_thp_or_none(mm, haddr, &pmd);
+ 	switch (result) {
+ 	case SCAN_SUCCEED:
+
 ---
 
-I made some basic revisions, but as I am looking to gauge opinions on 
-this email chain I am replying to the chain, I apologize if this is an
-inconvenience.
+base-commit: f44fd601f72e09e44c667b9234c9cd469856679c
 
-Changes in v2:
- * Since psize() is included from vm_util.h through uffd-common.h, 
-   PAGE_SIZE macro removed.
- * Added UL suffix to ensure integer is treated as unsigned long.
+change-id: 20261105-set_huge_pmd_uptodate-9b9820307f30
 
- tools/testing/selftests/mm/uffd-unit-tests.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+--
 
-diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
-index 2a97ba1d6feb1b35d6281449fd1917793a64fab1..3be227ed8d413f6e67e475862aba10ce13221446 100644
---- a/tools/testing/selftests/mm/uffd-unit-tests.c
-+++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-@@ -13,8 +13,13 @@
- 
- #ifdef __NR_userfaultfd
- 
--/* The unit test doesn't need a large or random size, make it 32MB for now */
--#define  UFFD_TEST_MEM_SIZE               (32UL << 20)
-+/*
-+ * The unit test does not need a large or random size, but the allocation size
-+ * needs to scale with base page size per architecture otherwise pmd alignment
-+ * tests will fail for architectures like aarch64+64k.  For standard 4k pages, 
-+ * this will allocate 64MiB, while allocating 1GiB for 64k page sizes.
-+ */
-+#define  UFFD_TEST_MEM_SIZE               (psize() * (16UL << 10))
- 
- #define  MEM_ANON                         BIT_ULL(0)
- #define  MEM_SHMEM                        BIT_ULL(1)
--- 
-2.56.0
+Cheers,
+
+David
 
 
