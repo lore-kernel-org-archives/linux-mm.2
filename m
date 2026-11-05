@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29BDA606A32C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 08:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE916606D80B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 08:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SyJ9C7b1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Xl6rJmUN
 Received: by kanga.kvack.org (Postfix)
-	id 2AEA06B05B7; Thu,  5 Nov 2026 03:44:18 -0500 (EST)
+	id 8F01E6B05B9; Thu,  5 Nov 2026 03:44:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2600D6B05B8; Thu,  5 Nov 2026 03:44:18 -0500 (EST)
+	id 8C8246B05BA; Thu,  5 Nov 2026 03:44:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 126BD6B05B9; Thu,  5 Nov 2026 03:44:18 -0500 (EST)
+	id 7B67A6B05BB; Thu,  5 Nov 2026 03:44:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DA9D76B05B7
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 03:44:17 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7FA44C0985
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:44:16 +0000 (UTC)
-X-FDA: 85400428512.06.002E0C8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 54D3F6B05B9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 03:44:21 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 50902120925
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:44:20 +0000 (UTC)
+X-FDA: 85400428680.23.7FD31DD
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BC59016000B
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:44:14 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SyJ9C7b1;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 811F6180008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:44:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xl6rJmUN;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793868254;
+	s=arc-20220608; t=1793868258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QcwWyu992adRNRov8at/qT9yIPityd08l/5rPv4jP5c=;
-	b=uq7hpvsN6JG7UJbqGpdd1ad5s3wFGCZmqf9kXwc0B3pXJfc4Y49iz3KY2nh+A8MIYcIH7o
-	sRA/tOpV75aJ3FIeHZ7r2NgRxuR+yCSBaUIdqTCzVbMABMM/coYprKAxS6MefUU7sFO3zT
-	PRl6CwtsKPGq6KIwzY+OhuHukiYlAnY=
+	bh=ZaNkuK+CuZCH16Zfn9adKcMMnVfFDERJiwr1XCFoM7M=;
+	b=hSRxUGiUuf9NIE8QlCOPdNNyiQ+zDCRKJWXAZMr9TkZJQ7Qrpep5Q0fZ0JHWPQVVNXht7w
+	e4l0wCv+YlAS7kOApmIr2KKsSr7iBz/H8nzsccrCcYAAOaiVIlsubzeP1+SzOKh1PWBw1G
+	XBkJtnF4iogO4jF3vov/JeuUyNnkHPA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793868254;
-	b=sZFV9nlb/kmanNE8cIRTRQWSUplbQ+nXZT5smyIA5e5wbJWrxIOHx5yn14G1yZ6CGjFmx4
-	wlYfgh1jKzorxI8CsLUBk6/+XqEgCV7m8Mf4CG/CakflcA+5pNbQoe8UaJavQU6iGdpnpO
-	r9X9seDGVWlBzzLX9ToDg9lARAaHwmA=
+	t=1793868258;
+	b=iDyM50pZSfg0mU0lZzx7SwiBtqCOggfXzzZ3YjqvWW7kI9/M6nX/sfLSsannQbdSbtk3Us
+	reP0EMkBQbWOsGMM5ejxu4lAZM3ZJQX3pe25H/Y8S4kV7FWd+TSx4l10EPhdoCZurj+0EZ
+	u5/VJhHvdXQ1FnG5PzNN6u+4xA0ka44=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SyJ9C7b1;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Xl6rJmUN;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1BD68433D9;
+	by sea.source.kernel.org (Postfix) with ESMTP id C23D2436F2;
+	Thu,  5 Nov 2026 08:44:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709831F00A15;
 	Thu,  5 Nov 2026 08:44:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8EB1F00919;
-	Thu,  5 Nov 2026 08:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793868254;
-	bh=QcwWyu992adRNRov8at/qT9yIPityd08l/5rPv4jP5c=;
+	s=k20260515; t=1793868257;
+	bh=ZaNkuK+CuZCH16Zfn9adKcMMnVfFDERJiwr1XCFoM7M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=SyJ9C7b1l3U73nQZClRGK9zBmL1sF5CWoGhfFhSSl+lKyRetzKE1PW29I66jfia99
-	 5d/dp7f/9g72dI5q3lOooXb+PUZTfDQEo25fPrQGjMYSJtHbE5zV0Uf6MkXb48MdLV
-	 cCO6P23MJrokKAe98Dyy1CH1OZjL6Uiym3qojlUFBv4ZK9R989pQA8fMzo1JTWTeip
-	 SG58nRI+GlbiEJuGe1ClxZGWmAEmI+i8baDgzX0qTt2CtRVvyPWNki5YBqPHxrfX/f
-	 hY5fgBJd78NHNKdYEHf2Gv+kbAjNyrhlQe9Fuc3wRjT8IlvrA6PcKkkE6a4MOcLcoU
-	 51IRH/1bskBxQ==
+	b=Xl6rJmUN/DWrJon99nZtxTbfk5UDamIX8Eq/y4HE94KYkSeXgDheIx+53+ZQXd1Mu
+	 0k/BcEHNgJQsE7TMa0C3mD1aclFY0HQgwxmwGUdYvkPy5Y5QXplmW0GjNqokKIbklS
+	 9iz0MpLl7bh6vPvauR9kFF/es4F1pI94mOdmOXv7NqAZ/GtvlVvyfM5Bn1RYdz2mjy
+	 omCm9bRJ67oFRb4w6BgXx9sow/DiQOP3Yt/y+fmktLRG05HRq/QLdnXVmrOpx7iPiZ
+	 G3Fuw4HJgbR2Lf/LgqGjojP4OkERYm/vSAr8k8gXDTmWnvSaeeC3oqHV4mq/T8zR1z
+	 YLOG9Herkid2w==
 From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Date: Thu, 05 Nov 2026 09:43:54 +0100
-Subject: [PATCH v3 05/10] mm, slab: rework KMALLOC_RECLAIM handling of
- SLUB_TINY
+Date: Thu, 05 Nov 2026 09:43:55 +0100
+Subject: [PATCH v3 06/10] mm, slab: make SLUB_TINY handling dynamic for
+ sizing decisions
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-slub_tiny_rework-v3-5-0484ce59eabb@kernel.org>
+Message-Id: <20261105-slub_tiny_rework-v3-6-0484ce59eabb@kernel.org>
 References: <20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org>
 In-Reply-To: <20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org>
 To: Harry Yoo <harry@kernel.org>, Andrey Ryabinin <ryabinin.a.a@gmail.com>
@@ -84,17 +84,17 @@ Cc: Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>,
  "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
 X-Mailer: b4 0.16.0
 X-Rspamd-Server: rspam06
-X-Stat-Signature: 57bt78dozc88t6r5e6i3eegh1oyxz6kt
+X-Stat-Signature: s169gn5ahtbc9wsa3fypfik8ysbybcrp
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: BC59016000B
+X-Rspamd-Queue-Id: 811F6180008
 X-Rspam-User: 
-X-HE-Tag: 1793868254-495834
-X-HE-Meta: U2FsdGVkX19jWEK58KlXxOiydEkEX+zBOlQ5yWTZbyzsuVyRTMyKmOx71GmcJX7EXDtWj7I3t+SYu6cBWIsNvs2Dw7KuzHuwIiRrQvGSZBT3EZzbbfCg5G6mHTURbulvHfWR7fUPejWNgJT725y/86sZx3BX0UlhUFXt10l2DSrDkw67X5PRf7Xirt9GHe024BizYIbo8/EVawW324OF5Q/qso+/o+NJBZdwpM1wyhj2ObIT7Y2cNOViVs0WSx48o0D1LegL7FjWkyojMP9GzUsE6Trhci2FKW2af4jrnHMgZREpkpqNoS16YGVCf0didQ+Rzvy0FSpm3vP2rgnUa17IsfZWg7zZImLIr0e5ylQSlr5ASOrDJMoKMj2ARDFd2/qRM0CmAye7Q6lI1GlvRldmVx/FGE1Zm1oZxmW1zKKLmrZKbqm2p4DUFsxcj1Pw12ucyEf9QpHb+630T+XGTAlP78sQsgz+QcF1wOmHJ3KTtBzwcoY+9E9a8e+pfpuebAG89uOtOxlamp9nYu9vdR+4PBJ0s/MxUbmUExEX0FCqBqA4FKUQNcpWUfBvL2S/vy0G7KNZjTijKyqIzoxmfmzll8kxcyyMYI24xjOJyk9+8JWO4DvVykaatN77hL4DozJeWyuVBOCspB+718vYm4oesYxsXrecQuHjRfASAFucm00qkD+HGEe56jmHxRv5m97lsVolX9DnMb2fCQXSJWE1hlS/ouckdOvPuqhfcVYcqm58tcf27p7vNwHQQTbU0JbDZdHgrJVLlFpQB2A/M+31Ywn1V8rfQiu4UgRNFUStzBIw/EsQt/RJWOK2W0s9S+HvzqzB5Qhbxfsf9XvpoMXRoyYGLoei5pafncMlEXwJAuM2+n2r+nYPsqik/yoDTLmHIZpPwByzk+NxQMUYQIO+cLYjPJSKh+9qnc0eAD5HHrakExMhBieKcDit97JUUgbhw/IUkT4DGt9uAqS
- t2QZZ2IV
- oHgwIpn/4OHV85uLHDAoc95bM72FK+nF3azHUGtJ/sz6tGCDNAlD0ssFrX8ZvoxJL9I8EPo0NOSaGhkXGZopX++hihdpfcREwuV6kOyHSM3+Sk2PqTkmvyhAlcSu32bEIL+GoQPoAZ3xbwfdkTxkCEJzfYJX0CLnKOEQrRVJEdwMgI9WwG4DZqSId9ckIReqyv9aVXukow3WosAIUA+MvlrSWPBHxggGwVbxbemC5D603C4nNEh0MDcTrefiQtKBTCQZnDzgiB4YsgzCMVwvjrHLUEWpUf5I5b8MU0WxJAGMlYtFU0w7HlxcUIRyQeCnJfTSTfDdjZEZy2nW4KVOE8sc9Z/0jCMGEJfiAXybHhEYwXVcwO3Gp/eD5kg==
+X-HE-Tag: 1793868258-341889
+X-HE-Meta: U2FsdGVkX1/wN+j94RFhW2NNt5tHewQYjQmj1Dyd+M6eFJOaNXYKNefoOLwJh8Wjj8+AHdcOjkcAtLezZxLfQrMlT6dEdyTPD6jrSCLGz4vHcBA2tzn2qQxM8ao+bhiNHT5wRpNi/Z9Enb5guyuSyyVV+AvJpt5gPmZsWGun+rltmWxLP8/SdAYkU4bUxSbPTP/IyayoALyoyaQFTSQae/V7SUrDNwIxe4t6FavHr6Sfw1h7Fhg9FCIeqtBvkuVLBg15mdBv1fqBWmYZGdpydxYufatVauODSZFDhXrGw+sT0fHaakKZynX+wh1RkvuytULnfOdZx+G4HS53yOO1wi9aHLOUIqZmZFxqRQYVyJO4Gyw13uqXPdpMAltlEw0qmViuZMNa36pRpTibND46nh1MCY7ARJryA2KKlh5ergEjgQ6fZpNtQB03Ad9/p8BQqVsVftWE3EVHiTgqeC6+OeH5tezNmkO358NNMJIJ/cFQBDy7tsQHXfPLNoZN2VZc1V9y8B06UyEf8KMfafCNY/xTT2oZFklDkB0/vkPfN3YWh/PkluXV3p8K7ftuiFbccioO9S8Qu24B3d4GLES1KNkSWNOpb5Y/wRgmdk/ezqZV7kAPle/06ZxFxiNNVjgpnY8qFhYSnaN5oTswXo5T2p/CNsYWwCWCIy7CGnSotafmVCi8kRL0XBr6A3PquP3mh6pr4z4hS17h1WzuWKFFd0AqI74s6OPAGEyIJ4rxGAqx/6xHJ0TyrxmjyFP1+4Y5WYXsp0KO/it4tYKYynVX92Njm2l9OnlFnTyQAh42XoAyPOiHRMGXqZT4kFCzLHoE8SWFZYnfeZFfG7O+Vu1hsU1FAxbgXcB4hwLiUp3nQDj/gHk/zqX338wHVn8pwF6gYIoAFSj860RLj34gRB1aa9ajU3hOxgDV2YeDu1gdUk3lOh3k1I2pIfustPDK6k5qmSF5Ol08e5EOVFQ4hng
+ MFMdewk4
+ qjdDHotHkyLH82jDWC6IqNlb+VEnhcxUkd58HWk0yKphquEZRCUiOERqR21ST3RntgntjcDX5jqRLugmtERUQNsQqKGl9bXb5sbJAcIK2UVHALBw4uSAMmqyJb1ElEOIEbFNQ1xxQVPcSQHk6Rqb9DnZX73ubjK5xbd0M4Odkatkhf/xhIM36HcALyqgOU+7+Rzq+Hgv5l5TcTeTApfSdkLnVeA/VEOsPQMAcHPKr5YBVYWSKSy4nuJlWvNgBdgkBWI+a2yzzFEKD9o8oc/tqPDK/Oc9dxN3cMvaJmpzoYKAe/r2gpfg0pGpHWaV9AxHV8ywP5reP+Uc+YZvydBCO/mAqKlte2G2aik++U8NF7Kx1ap2l0vnWF61wYhPyuhR4dtslgApJPPnQQ8uY4ys6xatVKQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,153 +103,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-One (relatively minor) aspect of CONFIG_SLUB_TINY is the assumption that
-letting reclaimable and non-reclaimable caches merge will save more
-memory, which is more important on small systems than the page allocator
-level fragmentation (where distinguishing reclaimable slabs should
-help).
+Enabling CONFIG_SLUB_TINY results in the caches' min partial slabs
+threshold to be zero, thus every slab where all objects become free is
+freed immediately. It also sets the default slab_max_order to 1, with
+the goal of reducing the potential of internal slab fragmentation.
 
-For now that has been achieved by #ifdefs that result in making the
-SLAB_RECLAIM_ACCOUNT no-op and aliasing KMALLOC_RECLAIM to
-KMALLOC_NORMAL on the enum values level.
-
-With the goal of converting CONFIG_SLUB_TINY to a boot-time decision,
-rework this so that SLAB_RECLAIM_ACCOUNT and KMALLOC_RECLAIM are
-distinctly defined always. Now, creation of kmalloc-rcl caches is
-avoided by assigning a pointer to the normal kmalloc cache on the
-kmalloc_caches array level.
-
-To prepare disconnecting of this boot-time decision (and the evaluation
-of the need for kmalloc_no_objext) from CONFIG_SLUB_TINY, introduce a
-slub_tiny_enabled variable that's initialized to the CONFIG_SLUB_TINY
-state.
-
-There is one minor functional change for CONFIG_SLUB_TINY=y. Since
-SLAB_RECLAIM_ACCOUNT is not 0 anymore, caches that differ only in that
-flag will stop being mergeable. If that turns out to have a noticeable
-impact on memory footprint, we can adjust the merging decisions to
-ignore SLAB_RECLAIM_ACCOUNT when slub_tiny_enabled is true.
+Rework both of these decisions to be based on the newly introduced
+slab_tiny_enabled flag instead of #ifdefs. It's still possible to
+override the reduced slab_max_order with the boot parameter, as before.
 
 Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 ---
- include/linux/slab.h | 10 ----------
- mm/slab.h            |  5 +++--
- mm/slab_common.c     | 12 ++++++------
- mm/slub.c            |  2 ++
- 4 files changed, 11 insertions(+), 18 deletions(-)
+ mm/slub.c | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index ed949e8522be..930dd64b9ad6 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -55,9 +55,7 @@ enum _slab_flag_bits {
- #ifdef CONFIG_KFENCE
- 	_SLAB_SKIP_KFENCE,
- #endif
--#ifndef CONFIG_SLUB_TINY
- 	_SLAB_RECLAIM_ACCOUNT,
--#endif
- 	_SLAB_OBJECT_POISON,
- 	_SLAB_CMPXCHG_DOUBLE,
- #ifdef CONFIG_SLAB_OBJ_EXT
-@@ -241,11 +239,7 @@ enum _slab_flag_bits {
-  * pages are allocated with __GFP_RECLAIMABLE, which affects grouping pages by
-  * mobility, and are accounted in SReclaimable counter in /proc/meminfo
-  */
--#ifndef CONFIG_SLUB_TINY
- #define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_BIT(_SLAB_RECLAIM_ACCOUNT)
--#else
--#define SLAB_RECLAIM_ACCOUNT	__SLAB_FLAG_UNUSED
--#endif
- #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
- 
- /* Slab caches without obj_exts array */
-@@ -724,11 +718,7 @@ enum kmalloc_cache_type {
- #endif
- 	KMALLOC_PARTITION_START = KMALLOC_NORMAL,
- 	KMALLOC_PARTITION_END = KMALLOC_PARTITION_START + KMALLOC_PARTITION_CACHES_NR,
--#ifdef CONFIG_SLUB_TINY
--	KMALLOC_RECLAIM = KMALLOC_NORMAL,
--#else
- 	KMALLOC_RECLAIM,
--#endif
- #ifdef CONFIG_ZONE_DMA
- 	KMALLOC_DMA,
- #endif
-diff --git a/mm/slab.h b/mm/slab.h
-index 79774e2be3bb..835d977634ec 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -396,6 +396,8 @@ extern const struct kmalloc_info_struct {
- 	unsigned int size;
- } kmalloc_info[];
- 
-+extern bool slab_tiny_enabled;
-+
- /* Kmalloc array related functions */
- void setup_kmalloc_cache_index_table(void);
- void create_kmalloc_caches(void);
-@@ -576,8 +578,7 @@ static inline bool need_kmalloc_no_objext(void)
- 	if (!mem_alloc_profiling_permanently_disabled())
- 		return true;
- 
--	if (!mem_cgroup_kmem_disabled() &&
--			(KMALLOC_NORMAL == KMALLOC_RECLAIM))
-+	if (!mem_cgroup_kmem_disabled() && slab_tiny_enabled)
- 		return true;
- 
- 	return false;
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 6036ce1ac333..b7a4e32c7a11 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -836,11 +836,7 @@ EXPORT_SYMBOL(kmalloc_size_roundup);
- #define KMALLOC_CGROUP_NAME(sz)
- #endif
- 
--#ifndef CONFIG_SLUB_TINY
- #define KMALLOC_RCL_NAME(sz)	.name[KMALLOC_RECLAIM] = "kmalloc-rcl-" #sz,
--#else
--#define KMALLOC_RCL_NAME(sz)
--#endif
- 
- #ifdef CONFIG_KMALLOC_PARTITION_CACHES
- #define __KMALLOC_PARTITION_CONCAT(a, b) a ## b
-@@ -977,7 +973,11 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
- 	unsigned int aligned_size = kmalloc_info[idx].size;
- 	int aligned_idx = idx;
- 
--	if ((KMALLOC_RECLAIM != KMALLOC_NORMAL) && (type == KMALLOC_RECLAIM)) {
-+	if (type == KMALLOC_RECLAIM) {
-+		if (slab_tiny_enabled) {
-+			kmalloc_caches[type][idx] = kmalloc_caches[KMALLOC_NORMAL][idx];
-+			return;
-+		}
- 		flags |= SLAB_RECLAIM_ACCOUNT;
- 	} else if (IS_ENABLED(CONFIG_MEMCG) && (type == KMALLOC_CGROUP)) {
- 		if (mem_cgroup_kmem_disabled()) {
-@@ -1010,7 +1010,7 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
- 	 * KMALLOC_NO_OBJ_EXT cache.
- 	 */
- 	if (!mem_cgroup_kmem_disabled()) {
--		if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
-+		if (type == KMALLOC_NORMAL && !slab_tiny_enabled)
- 			flags |= SLAB_NO_MERGE;
- 		else if (!(flags & SLAB_NO_OBJ_EXT))
- 			flags |= SLAB_MAY_ACCOUNT;
 diff --git a/mm/slub.c b/mm/slub.c
-index 51daf361c601..a3ee1bdf0eb3 100644
+index a3ee1bdf0eb3..be4e1f193295 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -219,6 +219,8 @@ DEFINE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
- 			slab_obj_ext_has_codetag_key);
- #endif
+@@ -272,7 +272,6 @@ void *fixup_red_left(struct kmem_cache *s, void *p)
+ /* Enable to log cmpxchg failures */
+ #undef SLUB_DEBUG_CMPXCHG
  
-+bool slab_tiny_enabled __read_mostly = IS_ENABLED(CONFIG_SLUB_TINY);
+-#ifndef CONFIG_SLUB_TINY
+ /*
+  * Minimum number of partial slabs. These will be left on the partial
+  * lists even if they are empty. kmem_cache_shrink may reclaim them.
+@@ -285,10 +284,6 @@ void *fixup_red_left(struct kmem_cache *s, void *p)
+  * sort the partial list by the number of objects in use.
+  */
+ #define MAX_PARTIAL 10
+-#else
+-#define MIN_PARTIAL 0
+-#define MAX_PARTIAL 0
+-#endif
+ 
+ #define DEBUG_DEFAULT_FLAGS (SLAB_CONSISTENCY_CHECKS | SLAB_RED_ZONE | \
+ 				SLAB_POISON | SLAB_STORE_USER)
+@@ -7706,8 +7701,7 @@ EXPORT_SYMBOL(kmem_cache_alloc_bulk_noprof);
+  * take the list_lock.
+  */
+ static unsigned int slab_min_order;
+-static unsigned int slab_max_order =
+-	IS_ENABLED(CONFIG_SLUB_TINY) ? 1 : PAGE_ALLOC_COSTLY_ORDER;
++static unsigned int slab_max_order = PAGE_ALLOC_COSTLY_ORDER;
+ static unsigned int slab_min_objects;
+ 
+ /*
+@@ -8027,7 +8021,7 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
+ 	size_t size;
+ 
+ 
+-	if (IS_ENABLED(CONFIG_SLUB_TINY) || s->flags & SLAB_DEBUG_FLAGS)
++	if (slab_tiny_enabled || s->flags & SLAB_DEBUG_FLAGS)
+ 		return 0;
+ 
+ 	/*
+@@ -8763,6 +8757,9 @@ void __init kmem_cache_init(void)
+ 
+ 	slab_obj_ext_has_codetag_init();
+ 
++	if (slab_tiny_enabled)
++		slab_max_order = 1;
 +
- /* Structure holding extra parameters for slab allocations */
- struct slab_alloc_context {
- 	unsigned long caller_addr;
+ 	if (slab_max_order_param <= MAX_PAGE_ORDER)
+ 		slab_max_order = slab_max_order_param;
+ 
+@@ -8886,6 +8883,8 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
+ 	 */
+ 	s->min_partial = min_t(unsigned long, MAX_PARTIAL, ilog2(s->size) / 2);
+ 	s->min_partial = max_t(unsigned long, MIN_PARTIAL, s->min_partial);
++	if (slab_tiny_enabled)
++		s->min_partial = 0;
+ 
+ 	s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
+ 	if (!s->cpu_sheaves) {
 
 -- 
 2.56.0
