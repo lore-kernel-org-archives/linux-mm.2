@@ -1,94 +1,121 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108C6606A331
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 05:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743E6606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 05:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cFNgwft/
 Received: by kanga.kvack.org (Postfix)
-	id 2543A6B05B0; Thu,  5 Nov 2026 00:49:00 -0500 (EST)
+	id 3C0E46B05B0; Thu,  5 Nov 2026 00:56:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1DE166B05B1; Thu,  5 Nov 2026 00:49:00 -0500 (EST)
+	id 3724E6B05B1; Thu,  5 Nov 2026 00:56:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A6656B05B2; Thu,  5 Nov 2026 00:49:00 -0500 (EST)
+	id 261E36B05B2; Thu,  5 Nov 2026 00:56:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CF54C6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:48:59 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BD58BA8649
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:48:58 +0000 (UTC)
-X-FDA: 85399986756.02.9E35F8F
-Received: from mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 798B6C0006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:48:56 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JpMvdsIx;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E48236B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:56:44 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7274940960
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:56:44 +0000 (UTC)
+X-FDA: 85400006328.30.E21D1C4
+Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
+	by imf25.hostedemail.com (Postfix) with ESMTP id BB29BA0006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:56:42 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="cFNgwft/";
+	spf=pass (imf25.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.8 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793857736;
+	s=arc-20220608; t=1793858202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/l6O9V7fMoYs7ihQIlg7jRbOXL/S2bFnQjGLeMo1S78=;
-	b=FOQ5GM8rQaRLBtbMGWOSr3aSm34i805MsVIrACjqeiPIaIsJSghNlEEeWtKnm9aIPUffsP
-	j9Mts0v8/0lpnC77k9RQL18ixBbfnRo6RF79lhDYohm4Lo9dOzV4f6oArPWmnE+SRgTtNc
-	6SfQVkTt2J8W/3scb2pWD6rgHKPzu8s=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=dOC5LHS2AgqTFCevtv/eDNStKtT/WCl/fk0wy/PN8GY=;
+	b=JIyGxgHTy62xWQB9LSRtUBa4ApT2QPvoYOQqTJ0uVh9hqC0f9RSqBQgwCTZAKNoZRqO1BW
+	Gt3hFAtuUB7P6EU30kX8qt+cqxTCmoQzKvuOKH1TmcWPKT1awXgOuOkIGsFLhVdZ0aCTNS
+	ZWGq4khqEShP8eunlDuESyjz4tcVFvs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793857736;
-	b=ozXvOyCQb0JrBcPLhr9HUI5R6ANSbVDjVf2p+VwgXjST82BrSjfzGLr5KT5arjEHxDdhVA
-	miIxN1hZFw7CClAsDh7r+reYGI0tizFu0bu20lwBneKlN/oHAX9OMqW/OAJHQV+3twyAZL
-	nbxDj6p1Qfp5PyNdCkeBh34vjt2vZoE=
+	t=1793858202;
+	b=1triekSWMTINQD9cUMpvM6kq+zYPXnhQosZjS7up8Iv1OA4+jfsFLx93LRXKmNksIfYxex
+	kiKh78N5Q0zI8soxQhHxhvS6d35KogrIPdh7mAyOE/DV7+LQwQXlSRAvQH1CD3Or+g0wAb
+	SQE+LHZfmbj8EmO2BKsNxG50k2RKPo0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JpMvdsIx;
-	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=l/klO32YzidFN2v1G4JzAIJs9vATWMhL2+jw9rYo5BY=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793857735; v=1; x=1794462535;
- b=JpMvdsIxUYKjtKIiudsiyW9Sq9GKK1KU4Zx9S9a6W3ZxxzfjNmy/uAkswDpc/2CnYHA6KnI7
- rDnABgQXVr1PgaVyvm5LudW0X6ui3shigSzStXvnUFAyMUzIO4y9veyCYQzX25M3yJGZcvOfMS6
- 5nTGhjYDggi2xM9o/B7q1fCg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 3f45584444935ba1;
-	Thu, 05 Nov 2026 05:48:54 +0000
-X-Mizu-Trace-ID: 3f45584444935ba1
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <0ddaf336-7cb7-4e83-af2c-f60d23f7aafd@linux.dev>
-Date: Thu, 5 Nov 2026 13:48:42 +0800
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="cFNgwft/";
+	spf=pass (imf25.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.8 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-36a1e794908so342337eec.1
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 21:56:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793858201; x=1794463001; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=dOC5LHS2AgqTFCevtv/eDNStKtT/WCl/fk0wy/PN8GY=;
+        b=cFNgwft/LYAg85xmiAr61e8/7SLv+tclcxUKyVJayeJc83oDAL0CS/Y+5VGuk58VCy
+         pRo5LuoUmFu0r4T0nj/UaZknxbno8aDfNyMXuzYxMoWMb2HfO1JvM8KdTEeo8SNdVnZd
+         +QJfVr/V6qDjKkkhYLzan1HkXIuzxOmIH46PUxhQijxy7diG7Z+uu2BbIKgKsiDuMFHb
+         okPGN/bfZ6BmjK9zsFbf5FY411VfNVCWKz6KKmMp77CHjAMUeZZq1Gy9RWkG8KGY5PDs
+         tiMs0yZhmSWorGetj+nKm8P5oWVzNcnLW86+X2uEme43oqxNpvEgs3dLmB/ChJ94S+2s
+         3IPQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793858201; x=1794463001;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=dOC5LHS2AgqTFCevtv/eDNStKtT/WCl/fk0wy/PN8GY=;
+        b=WbSJeXiOHvHs++9OqSfFDEGwWmn4bym4yhs+nbuFqQfFxfMKImKY0l7zIWpm10G8qP
+         m86qp+wwWRSPrTHdMK+dbYwe0cJRTl7EgJGW2KVZsdgIzFPheDO93U/46DIshRQnGKTE
+         F/CiYicH4X+fZr0w46fDUim/T53FSaa6GkLXc7dt8HAFvpp8IyRu++0lsawGNpAehDJq
+         8p5lBnJz2f8t2rV2vC8qhkmRtluP32mO5Vc6ZRo24soFoFUQGFNrAwxhWTuLuNz5x+RC
+         KUcCGmMYkv0xz0ncIbWGN1vNeMczOl12JzZCbOT75B+Hlt375uVOY9Lox5w/NjejmzT/
+         NyeQ==
+X-Forwarded-Encrypted: i=1; AKwUvBweeXQZxd4SgEvpoJw1b+B8xwgohlSWruL7hwoy8dXUwuV7w6bSXzsPs7+OGwPZ6TGYz/XTF4SkKQ==@kvack.org
+X-Gm-Message-State: APuU4Z9cC1wl+ERV3mKxZ2WABuawYkSFuq/ffob9YfisVz/S9R2DSF+0
+	DQke4DSD5ohmVA5hJy6kYhZXuhapSVJza3Pb89hQfRl4WcOvlbTLG+r3
+X-Gm-Gg: AYBFou0pt3B0u8FqeDaIr5s60Nn8IgWNQvZRJjeuRmfGE5c8M1miMijWjvJNFSjrNMH
+	OckZM3kwyqh0NWLT2xVDK+RZ4YLHMfEIhd9BC3bThr1z2qeNyHMFbXi23vFtUiWZwaQ5sJ/0+6q
+	FqSulbYYrXxI+/DQH8/RhzY0Ew9yCequd9F5WpJ4C/OSu0rhjHBxyor+McCIXEX89Uj2ce1/JYF
+	QQbiyx81kwxRcVU4l+v1xouLiJlHujmTBB+3qASYg1Smla3qgVlgmNLABiLbGTsQghQXUFDKQwn
+	gCwzDGxKABOSIkLBxUzpRto/FTmKS9BAoke7vSETAH0NtgryIg4Sk2oyIlZ0OY5Rp7+JVo1e2Lc
+	d0zFosWcSG7r2Efrjy/0zJwUfQpR3Sk7SiMscd2Ri9S5TTHGQfC0p8DwQFPe09V4t9iEQmWnU6u
+	lslQyRvCEEw5lMZjuey/Oj6TrYVEZm8nFhnc/jxhua1Oh4JdNcIUgD/ssTY2OWKtBgYjeogYLv+
+	1MEu2/9HMFmVszU2GEGFZeaBCbKQVhk1MxtBeOy+AOvgN6+mgLEz2ocM98X+2+zn9ApCRMHnNVM
+	l7YXR7Sv/H1OGHXlEK5xHoI4oKU6pvsTeljHCscvzGv8JGCiLPjsRMy08342s63cBNeaEIBhBJi
+	/qW6t1U0dp3Yksr0tYP1Pm6DbJA3Z7WYegq5hUA==
+X-Received: by 2002:a05:7300:5626:b0:36d:3c0f:cc85 with SMTP id 5a478bee46e88-36d3c0fd4ddmr3962427eec.5.1793858201254;
+        Wed, 04 Nov 2026 21:56:41 -0800 (PST)
+Received: from localhost.localdomain ([98.148.34.5])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca3784f78sm15780167eec.2.2026.11.04.21.56.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2026 21:56:40 -0800 (PST)
+From: Hungyu Lin <dennylin0707@gmail.com>
+To: hughd@google.com
+Cc: david@kernel.org,
+	baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] shmem: skip empty unmap ranges when punching holes
+Date: Thu,  5 Nov 2026 05:56:19 +0000
+Message-ID: <20261105055619.58289-1-dennylin0707@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio
- sizes
-To: baolin.wang@linux.alibaba.com
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org,
- riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
- jannh@google.com, qi.zheng@linux.dev, pfalcato@suse.de, ayushr@modal.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
- <20261105045406.39871-1-lance.yang@linux.dev>
-Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <20261105045406.39871-1-lance.yang@linux.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: ptx8hczcguqfkqcgoej17d71ipdmrj9m
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 798B6C0006
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 4a9q9ohithcpsuequ3fn4tdxfd41a79p
+X-Rspamd-Queue-Id: BB29BA0006
 X-Rspam-User: 
-X-HE-Tag: 1793857736-694432
-X-HE-Meta: U2FsdGVkX1/gDIwJD+hxE+KlsCkUAqPslLwjhxLHlRmtdl2zJOBCGDGysF0e3qoihUib6TXYyCDHzJZI4J8zDI506T+c3zOPF87Mu3M6T62O3KdIQbuVXhsWogC1+H/UxjJ1lCYNmBXPgrHJg94w6qrphY3ZViPOTHWMeyGbBkuuPfuuXNDha+YbHh+vuFiIgiwB52iccu9raGw8Nz2r1v+oGtvOdcWLsjNHLUoXDCE2YNSFv1prqCiUEBhBS9B7vvH8Fb81vgIc2cTvAcTiL/UyuIEUBzW6GcRUaKWrmp82jYV/dli1DS9xKW0GKMD0rDxRr564Ly2SV653vVWJatY1osPbVeq8Z05k2FY+42z5DbMoMJUq3+r/STkRpIUmDJad9zT1N0Qjq5cGA+ylzJ7j329G1frgCj3tx2XckZGtMBhjy4drnrMXDR0pUgDy8q6yxJYIwax3uG4GyPQk01HslPmjUF0JNsQ46TFaUQjVGRQyv4spAIIoQULjUZvCjaRizHBe3CaXV7gY2ZtDwfn3QuzyM4yOaKyYRb3SSxdLLe0TBqFZLS3zCrV5KWBkbXSjaX+2HaXyUREssvcn8pV9oXnjbgLP0G4NH7Y8yhGlJbPOuzGHUgfQ+eHurQQ+l2dM4sKS2htPAIWPr7OicNo2OBx7awkX21UAxgoPhFTiBGZT92XgS9Zx+OWEo1dabcGa9eWx16/rcJk+uksZ4+m3ae+TNIQY3CEDSN4Jotkftj0DbSmbbP2GhsyFUpD+Q2nEAZ+K16VHKv/O2I5oiF9YBr6w4wf8XkPAL14O8XfBn/+sWoyzC0A1JNh3P0NKHgHi2EO30WV5EntdPczIrJcklgXi0/XDd9eTyKyIsvdwdnWhARnnaROvaPZLpyAIv0LZA2Ez6SmYoprlDB16lRAi8W9uSiTBjYkLLWB8IOkXdwtA050LUn4PIpHH1F/Wbsea58ncXgK9r0T9ASl
- DMnWsgXe
- 8ulmYxJWZvDOm+LwrrkRtfBV6CTNYVPFk07dic8U0ePgDyVT78f/l5GuLFLAWylOw9aqDZqp100q8iApwO42Eh8OOe7LVTz9Ow+2kgnaKt8Sta1WsOk/JvDuShQDLxC4Gfi/5+7Yr6Ua8kxn9xhnV0C8S7QCFaV7KyO5k1gP907cZkjkweZz1niZudpfLzJQyJBisHEaABzb6QuMqJtrA2Hs6xdiLiCgJ9L32dnAvgeI0rs06/P+RIyu6EZVyv1Xsg+5VDu27c6CX7AlvZ9SIOjPbqhvpIwo07PymEBPBqJ1to/DeSBLDPReibnFlJkbKc4nV
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793858202-738548
+X-HE-Meta: U2FsdGVkX1/wpRfoOM2gnhSCuM04AADA2BgixsZ1TbsN8vGhsSLkQuQg6sEDDTBG45q9gLnY/8SqnipnA7a95S7svdj2hGe/8c/Lb4clRubYfBi+LKir9V2Bpgtx+Piz/8K1XtAKQbr+3F0z9Glj4s2K2H8uvemge5rg9yP9xxo/XqnWCBxD3LI7CXU21qvdcALypQboVQCwZccSKuF5XUz2NNeI5FhyqwGSvDMOtUPhvOQbVkcXravynO2kPKAjfGtFQCCWuV8/i5u2VBKPaO6txzvKBSCiim9+RIJZWxXlGV+ldTYlXkkuIj7k7pPh7dMHORUdNK94TKd/s5uLPxreoGM9zkBQTtfMtUA8A32WLtpk1hWfhJ+q5QxeWZKEEPuwcXzssWFCrazcYQ3cJJbsIpEoX50drsVJRjrem24UoOY76xI4I/EXyyRnNOXvirxTk1Zgktr96mtbCW4A+h7pmnG2aaf7JVElsv1Q2WMA/MKisDDuCTFvDkDZ3LfOEdfYI7qMrdZn7ztFOzfMpDRk+c17sVYvrC6uHzlM7h21Pgio5tUPMSHOMebCThLzt3QQIAbbTz8KqNpWKaAjxKYcszsfa+ihwXjyBQcy5ifsSAmmkKqn9kYvMU5OegNRe3n2nIfjqUkqFasNPpgATk3XKQ4djjHeut2pwRP0cM38fTRb2suSwbmw9lPHncmnXrQSKmpi2pIRkUrzbawX18jPov7NUXlC/fH9hDlkUbvEVKy3Kv4QUYdNTCmewfc7QLPz5WEJ6xrShemgt5dIbsTUvUEOz7Kvm3x+VdEnEc49uSWuIO367sg5Lt6CjIiWyxsZ6OYOWNyIM30y6LJ94NcKKH01NktcVgxD+77UfVYPI7ckqc7BfOqTwLPwGYtwOg7dCv0MPDIiGcMuLk8BHmW+U5T097bHtPhAVXfZlJwCM2B9IveYYeqBnEH07cIDzYti9fbm6uODKUe+NHz
+ 5o5bkyI4
+ l57fYBVdXvbLz5swIW8fR5SE3EuZBAtHwqUHzaLl+3NjCn+oZ4knd+0SHMNYuG8rJD4oGvFXlxNWmJPRu4seWWByMaK0+YrF7k4Qvpv00iIou5Y8Ogu0FF0P9DKKNc6X1H5IB+KzYrT5u0scEHaKHgn0YuH8dRwC9o43iZ4hBxSZEyZg+O2ZQID1UcmdHNzWiDxHeBwcJkiGrCaz/O0oCFh5YcV7ZO6V5cr1pQxx/EHd2uUUerfi6KFHXoi2uaqzjHACcvu8cCvF21ED/epYorcrHMF7wdZvy2wHk+3spotprxuopxvDKbDjBm/E5hEl9hCx6QaSEZQUt68soxdIwj/rHP1adhAN/VrUn3kCnaRCw8nSO4TkWPhJQrdaGQkcc+ughro+TETXZk3GafJzmdPGTSXKvDtJd/whV8JayqPcVjhW5x/w+p/JEDfbmq8H7FFbzfzxuWjS9mYI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,103 +124,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+When a hole ends before the first page boundary, shmem_fallocate()
+calculates unmap_end as -1. Casting it to u64 makes the range check
+succeed even though the hole contains no complete pages.
 
+For example, punching one byte at offset zero calls unmap_mapping_range()
+with a zero length, which means unmap to the end of the file. The file
+contents are preserved outside the hole, but unrelated mappings are
+removed and must fault back in. This can be reproduced with fallocate -p
+-o 0 -l 1 on a mapped tmpfs file.
 
-On 2026/11/5 12:54, Lance Yang wrote:
-> 
-> On Thu, Nov 05, 2026 at 10:56:28AM +0800, Baolin Wang wrote:
->> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
->> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
->> with concurrent page table reclamation via zap_empty_pte_table().
-> 
-> Good catch!
-> 
->> page_vma_mapped_walk() is used by many functions including try_to_unmap(),
->> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
->> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
->> and try_to_migrate(), the other callers do not perform post-walk accounting
->> checks, so the race has no observable impact on them.
->>
->> For migration, the race can cause unnecessary retries. For reclaim via
->> try_to_unmap(), the race can cause failure to reclaim a folio that is in
->> fact already unmapped (as shown below), which may lead to unexpected OOM
->> or increased refaults.
->>
->> CPU 0 (reclaim)                      CPU 1 (MADV_DONTNEED)
->> --------------------------------    --------------------------------
->> folio_lock(F)
->> try_to_unmap(F, TTU_SYNC)
->>                                     zap_pte_range(full PMD range)
->>                                       spin_lock(ptl)
->>                                       clear PTEs
->>                                       zap_empty_pte_table()
->>                                         spin_trylock(pml)
->>                                         pmd_clear()
->>                                         spin_unlock(pml)
->>
->>   page_vma_mapped_walk()
->>     observe !pmd_present(pmde)
->>     nr_pages < HPAGE_PMD_NR
->>     skip synchronization
->>     return false
->>
->> try_to_unmap() returns
->> folio_mapped(F) == true
->> nr_unmap_fail += folio_nr_pages(F)
->>                                     tlb_flush_mmu_tlbonly()
->>                                     tlb_flush_rmaps()
->>                                       remove F's rmaps
->>                                     spin_unlock(ptl)
->>
->> Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
->> has already moved the PMD clear operation (via zap_empty_pte_table()) to
->> after tlb_flush_rmaps(). Similarly, page_vma_mapped_walk() also needs to
->> use sync_with_folio_pmd_zap() to synchronize and avoid memory ordering
->> issues on weakly ordered CPUs.
->>
->> Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
->> Cc: stable@vger.kernel.org
->> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->> ---
->> mm/page_vma_mapped.c | 5 +----
->> 1 file changed, 1 insertion(+), 4 deletions(-)
->>
->> diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
->> index e6b6170c2f4f..8797467b6f0c 100644
->> --- a/mm/page_vma_mapped.c
->> +++ b/mm/page_vma_mapped.c
->> @@ -293,10 +293,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
->> 			spin_unlock(pvmw->ptl);
->> 			pvmw->ptl = NULL;
->> 		} else if (!pmd_present(pmde)) {
->> -			if ((pvmw->flags & PVMW_SYNC) &&
->> -			    thp_vma_suitable_order(vma, pvmw->address,
->> -						   PMD_ORDER) &&
->> -			    (pvmw->nr_pages >= HPAGE_PMD_NR))
->> +			if (pvmw->flags & PVMW_SYNC)
-> 
-> Right. Whether the folio can be PMD-mapped doesn't tell us whether its
-> PTE table can be reclaimed, so those extra checks can skip synchronization
-> that the caller explicitly asked for ;)
+Keep unmap_end as the exclusive rounded end instead of subtracting one,
+and adjust shmem_falloc.next and the unmap length accordingly. A hole
+ending before the first page boundary then has an end of zero, so the
+unsigned range check skips the empty range. Retain the unsigned
+comparison so rounding the start near the maximum file offset continues
+to be handled correctly.
 
-Ouch ... one thing I missed ... what about order-0 reclaim?
+Fixes: 83e4fa9c16e4 ("tmpfs: support fallocate FALLOC_FL_PUNCH_HOLE")
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
+---
+Changes in v2:
+- Use an exclusive unmap_end throughout, following David's suggestion.
+- Add Baolin's Reviewed-by.
 
-shrink_folio_list() only sets TTU_SYNC for large folio, so can't we still
-hit the same race there?
+v1: https://lore.kernel.org/linux-mm/20261027171753.1485-1-dennylin0707@gmail.com/
 
-Cheers, Lance
+ mm/shmem.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> LGTM, thanks!
-> 
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> 
->> 				sync_with_folio_pmd_zap(mm, pvmw->pmd);
->>
->> 			goto next_pmd;
->> -- 
->> 2.47.3
->>
->>
+diff --git a/mm/shmem.c b/mm/shmem.c
+index af21a89abb0f..ce92e74baeb7 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3845,7 +3845,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 	if (mode & FALLOC_FL_PUNCH_HOLE) {
+ 		struct address_space *mapping = file->f_mapping;
+ 		loff_t unmap_start = round_up(offset, PAGE_SIZE);
+-		loff_t unmap_end = round_down(offset + len, PAGE_SIZE) - 1;
++		loff_t unmap_end = round_down(offset + len, PAGE_SIZE);
+ 		DECLARE_WAIT_QUEUE_HEAD_ONSTACK(shmem_falloc_waitq);
+ 
+ 		/* protected by i_rwsem */
+@@ -3856,14 +3856,14 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
+ 
+ 		shmem_falloc.waitq = &shmem_falloc_waitq;
+ 		shmem_falloc.start = (u64)unmap_start >> PAGE_SHIFT;
+-		shmem_falloc.next = (unmap_end + 1) >> PAGE_SHIFT;
++		shmem_falloc.next = unmap_end >> PAGE_SHIFT;
+ 		spin_lock(&inode->i_lock);
+ 		WRITE_ONCE(inode->i_private, &shmem_falloc);
+ 		spin_unlock(&inode->i_lock);
+ 
+ 		if ((u64)unmap_end > (u64)unmap_start)
+ 			unmap_mapping_range(mapping, unmap_start,
+-					    1 + unmap_end - unmap_start, 0);
++					    unmap_end - unmap_start, 0);
+ 		shmem_truncate_range(inode, offset, offset + len - 1);
+ 		/* No need to unmap again: hole-punching leaves COWed pages */
+ 
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+-- 
+2.43.0
 
 
