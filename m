@@ -1,111 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E36A606A335
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 15:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1FF606EEA1
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 15:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Mzk93Mp9
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IlwcYR8B
 Received: by kanga.kvack.org (Postfix)
-	id 3B6C36B05B1; Thu,  5 Nov 2026 10:16:25 -0500 (EST)
+	id 93B7A6B05B0; Thu,  5 Nov 2026 10:19:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 341316B05B2; Thu,  5 Nov 2026 10:16:25 -0500 (EST)
+	id 8EAC56B05B3; Thu,  5 Nov 2026 10:19:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 230186B05B3; Thu,  5 Nov 2026 10:16:25 -0500 (EST)
+	id 7DA8C6B05B4; Thu,  5 Nov 2026 10:19:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F15256B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:16:24 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 76F87160A58
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:16:24 +0000 (UTC)
-X-FDA: 85401416688.15.70C3CA7
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 991FE120016
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:16:21 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Mzk93Mp9;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 520036B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:19:07 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id DBE4F160A52
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:19:06 +0000 (UTC)
+X-FDA: 85401423492.14.E999CF0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 464924000D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:19:05 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlwcYR8B;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793891782;
+	s=arc-20220608; t=1793891945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fMjn8XjiAzeUPvVw/+o83TJlFUPnqRfLNFAmNRdAxMk=;
-	b=l6Ju1mSGV4HeWekVBty8vKq/KyhbDKZWVFE2WTxHRxscZVDQWe0f7btKU7r26N05u4ELdQ
-	Gf9UHJRgMBGee7RQYOF3LJYh3duNsajoUQB2Tk7cvnQ3SxPrbFQOwVv8jb3JkSC2ZJmEqg
-	N08GnpZTPmfh1Np+RuWwAyMjuu0oqIE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=Mzk93Mp9;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	bh=pKiZ/1xYg1mZQ+x77zJSdGqKILLfHb0uloTlfc1un2E=;
+	b=JRpurGmiyQWzvFf5B1oshwKadRi1RFtfrh9/JFKwaHeXW8+a8HPMEDsJbEf/RkLMiEQXUn
+	gzmcl6KB0n08isdxgA4hCdzHJDUDcLrnpxVk4oTioMAy2q2D86vxcmN7pXhUGqWugjgmEk
+	gMd0x36sVTC6eIUcMYP8Lbhz3uJcoK4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793891782;
-	b=MlWZ0jg3Uus1Bwtsskx4EF5Eqk2mrQNdvicgkjKnzEe9EKt3BxDUuc94FKBNETe73LVcc6
-	2XfNlYNxKYCg3tatPujeKjk137lSLGL6XtVhWQcpHCYi5ARDUqJZqYk582UYcYk83I5hMD
-	lh4INRlBicm8sEyaQRzVEWerULJfvvI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1793891782; x=1825427782;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=rU8SrDDryY+CYHj9KsFi4pCuuYIXMwEz4SCd8TjDdnI=;
-  b=Mzk93Mp9uA999Dh33t8o56BFh+wU4C122WMfOOb17dlls2t1QVpayzCZ
-   KoZhMBoD1ZXJ8U8ziciorVCzGNv46GcSS4dWiekO8KLVQ2/7N/6xa9eAR
-   8oclFFd1Dq9nuozK9gnCa1LFTeD3QXUwwfVhJrBQi8sdBGgCiNguwSB1t
-   Cy/D05RETkh9T34W/Gtw8GDoi4BxIAzSoJru+dGht3IXKP4xeeObP7w05
-   dsvK33GKzw/1PDsjPryQEml4mIfXYdqPO4pDz5l6XpTBq/G+UrsnmTkfC
-   Q8XRVnHEh/g8Cm6Xw36p94xCX4sSWDZ3beGQ6hMiqNHYtpFLNSRGm6Ls6
-   A==;
-X-CSE-ConnectionGUID: QCqFzJ9YRZ+dvsu1ltoVrQ==
-X-CSE-MsgGUID: /izhY6T9TTiMIOEOtl6+5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11957"; a="2593747"
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="2593747"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 07:16:21 -0800
-X-CSE-ConnectionGUID: bm+wbRSvRO2M5N2cjZGNDQ==
-X-CSE-MsgGUID: UJYW7TIAQwe2gmUnKJ9jBA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,197,1787036400"; 
-   d="scan'208";a="7193564"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 05 Nov 2026 07:16:19 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xOzCJ-00000000mOh-3sHN;
-	Thu, 05 Nov 2026 15:16:15 +0000
-Date: Thu, 5 Nov 2026 23:15:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Abhishek Bapat <abhishekbapat@google.com>,
-	Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	Abhishek Bapat <abhishekbapat@google.com>
-Subject: Re: [PATCH v5 2/5] alloc_tag: Introduce IOCTLs to toggle allocation
- tracepoints
-Message-ID: <202611052344.mDV2DB89-lkp@intel.com>
-References: <37ae7dca766994d3872fcc65b623a80d5d506369.1793818636.git.abhishekbapat@google.com>
+	t=1793891945;
+	b=ZoL+C4ndZK+k0cE9s4ZfPAEqO9rI57sndCXMPg6NizBQgjlzRLtSobeBDsvlqtd6OK/LZ8
+	4N7RmWB6qr151eoEYHxB/nae3+y3DEVIA4uKH3vLjLheAIg+dBfCypIobmGf1cK8TxGecr
+	s+XPwcnkGmtgH7hyx4ZCecArtpGF6NI=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IlwcYR8B;
+	spf=pass (imf12.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id CCD13609EE;
+	Thu,  5 Nov 2026 15:19:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15AA61F0093A;
+	Thu,  5 Nov 2026 15:19:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793891943;
+	bh=pKiZ/1xYg1mZQ+x77zJSdGqKILLfHb0uloTlfc1un2E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=IlwcYR8Bp6ILBV55zCVNHC4X/M5nI648eWO+3aRqrOSYFZr2gIkhNnVHlHDmX0vmh
+	 KvK8m4Vsdu0VvAux0EyoBKYYLMG53jKFuue3+i2tkx0XYh5VNG9B8slKvR2K38dErT
+	 NBThJe9I2fNLqwONdQr+Kmgb2ArT93XFw1z9nJySjDgbTluiZjInIkVw4n+2dgkDL9
+	 /NGGP42LZhHDVy+4l2iTNB+Q8hId/+/Tb3Fml7Kb4kPRKbcqB3ouXvRCELSiV64GDg
+	 P1zw+LAFWWg2z0uvcgU1CG9ALbOpLczIit/+8zd1xv5Sm0euiGP69ey1r+xrHZAq60
+	 b4bxLpZwmQyYg==
+Date: Thu, 5 Nov 2026 15:19:01 +0000
+From: Harry Yoo <harry@kernel.org>
+To: Hao Li <hao.li@linux.dev>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Conor Dooley <conor@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC v2 3/8] mm, slab: rework KMALLOC_RECLAIM handling of
+ SLUB_TINY
+Message-ID: <auycUvCC2mL_EQ1r@thinkstation>
+References: <20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org>
+ <20261024-slub_tiny_rework-v2-3-bf1419ab5ffd@kernel.org>
+ <auHcj2G78VkXy-Vz@fedora>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <37ae7dca766994d3872fcc65b623a80d5d506369.1793818636.git.abhishekbapat@google.com>
-X-Stat-Signature: tfuj49jyuqz3ib14ng3oam76um1p9t5w
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+In-Reply-To: <auHcj2G78VkXy-Vz@fedora>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 464924000D
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 991FE120016
-X-HE-Tag: 1793891781-871549
-X-HE-Meta: U2FsdGVkX18aitFuI7P/XP2pHlW+TlaqJi7cz4wGV4HefrIXEiD0kSvQ9XBNTYKGlHvskoGWWJTktcmTL397hJOZBBxp4oe1jasZ4wFAAZkF/GFG9RwMdc4nJH2hx57u/M/jezj5r5C6jG3fxn2zB0rN0uOmqRltNM+Kt0QRYTRAlWuEuxjiNzi/+2X+l5H4IvXC7CkxbdUhxWgSusXOEUh1+XHodvAOVLKMz8g8rWHsngex3La87BJdb+cn1XHwmUtIl2kZylKR+0FLslWawmqvwLXvYk7AxwYrao8WvnyFRqt+NECqyXA1g9hhBIk0+Frq/JmCM00ym4N611Mghn0mru/lWuT76YbWgkuXNQ3AFjy+QIOprBsCWfbFHToJd+Yua3A3goK14AcWTIhInjfCWHDx1CpzoONC2xefpUtlPuUgpw5ITMZZtpqgIGvoId3qVceA9NsQLpbTgRO7sJdRyqSVlYRamXJCNq8BNoayTrezhZP0Iv8XmCXd64D9PAbuQJNr0EWLyBTMKRdCpEQvunrP3EVHAXfIOZL5hYY53q9RRPO//TviroKr3/xh1XwriCudv74LI1PpMiIzMVuLbJdfN9xI9yvVXmqsbl6gKcrIkswChB4fIDaXunWo7LJw7/xOdk6kSqSiVhgLykuW7xEr+Vr6YkSdG2js3p18zDhTJ8/ELE+w71YefY74Fnr63wAOepwys+X4xKwgmkUOo8o32S2oq5giZnEqHsGp3Ks3U90reduevaehQBWf1EhbmlBekNUxhIa+jQjs8GsOEfJg5MdlU24WndkBjAUKEhxpzRz0JzsFqdaTQKeNRXA2wS/1FENJBx5v7H3YVngs8mapXKIEX2wGfWmBvME6Qv4zjnqhJN6J9Br+EezUOdJNcP0WbmscQ1j04fmS8Esip6z2SG6MXJTmClvhA4rerzuFGo7ViyqcpaxI0ZA9Sh4ZB3WJpMDda0lJYe6
- eZzvTHxJ
- Yl1h2aJArHppX9vCX8vKcDLpTmfYRDWM2zliLCf4ePHJBo8SsKK88P7BG+wtOG3BxEUwSHzXzB939gZ6NuulKTX2JsBq2CkjSN85lRe169g2UXrTCY/D04ngykzXClrXuGB47jahHGt+IyJWHhgOcYDOEc8z9PlHs79f6ON4wLGH10XDRtzTtVp2Vd5EgbIGcwGC08mg07MM7hF0QMspp1yIPuvMvb/HvAadfK0M1fmlSn3UeEglrRv8eIL+Fb8+RTyQiN+bt1Rqf0aV34pwgQpcyU63zpQ1d9sYs+NwYCbFHw2e8m2rEVD8Xfa+cx9s6Hj2oyifExtCMoVwZ9qyYqeTEMNEYS4+w6GYy2Jpcjs1G8YDZOsjJW7SqvijgDm5AxeTZ64XHTjZEL2g=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: p8uqot9m64yhz9mxpijc3hu4ywsj4g4z
+X-Rspam-User: 
+X-HE-Tag: 1793891945-970621
+X-HE-Meta: U2FsdGVkX1/0DETCqGBeTF5vWewAZVHPg4gYVQQfCZa5SHXrDhoSOf9JErHPWIMwnc8fBBvnJS+7PMziHNbV2uT9GofcVLeM3/NcyZu/90oDyRJmZtukSyTihNd09PYP8qwV35Mxy4VV6eDTz9w4odL/1JPgLmdOLJ7ROztmCoGt6/LWB0HYqAA6QKp/0xK6xtXYhzS+TMfWA7Twtt4e8iM8mDkjfhv4RtNRyuIihQgWgE1ucshQwfs8r9KOvrpjMAwSw1uGo+XNFV0jDy3HqRx1TABJc8rObFEuQmG77zyddLjtO7e7kAzQZbmju3kAoRP7e701H7NV0+7zPNNYgMA/G3RHFUYzXhKvSiKROtWyT4Ztq3lt8MKanEiugu5uqbIpxoLFH1EGj8nkB2dQTEavACpHcPOqQyxN2i5MFO/P7TyO+3DrrWsDZWcQEL5lzI+4E+OtBxo1sUAVVtUFI+B88WfPNLfVEJkGCaSqOubdhN3kZuqz+Eh4c/dZbN80ZLZaEZYlJQCMKgtJOXoyqfY1STmFRJrjvDXU4+RYp43rCzNvPC3l6v56l0avAYiFCh4GYdY+ITJTOPvCN+HDF9zDmOof+zj9m2sqIKtu+Mv1AKQt9kSvxKrfDPfmanYFwTy5CQw0Lcg6dPMFQfpNxYxd4xBxPWCqylMDB70L945AJpekbKqKNQP0hQDnTItBiP5HZNYEo2xN1nwvxDJjhcWrN9qXUpSgNMsXLVjZuFWEdl6Ady3OiRjZ/TIED0OXzEKFcQnP2koZ2lkR3P31YvCN9DpSTsmgLUwfkHq2pLA5AY/n0dDLrH48DpcrMLtsQcC4UR/eq5zHEmDFeVKLejGIqFws4AmkpuVkL5B5Jjh4UR2LY4WBLxSwLpgyxFiVGFFcdQAseZccM61Z5RuCi85Zrjw3ShbcgN1EKpJXiX81Ox18jNhj7zUtcQpkvMMTmKcN+SB7xL9082/dBlF
+ Y4+kGvq2
+ hX31F8/CIUTu+4UO+LoUXA9mrc+Ke5A0ZpNz/eXS50/azNXhk3iKrfNVphpStPajFMvtUfIAcW8j8/hoDvUKjZv1vB1JPPvb06TsBGNmybgSW+R0LWx//gm/Wbl8EDq819CdJmT3AhWf2d9t7AKQ9xTe5zY0FGfruwQCnN9nCvF9kpWihfbp8RPmxJO20wBzbYvosyPsH4D7dT7kr1tpyQdVrTKtANj/oRxfG4OiPapcZHPCr9PabKqZzcaVgG1RUh/lJOqKl7aBprBOh3oO00gZeACaEz/SX4zkqnY9yC8oW8+vKVn8cAaOA9J6Ft31crcRy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,30 +99,87 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Abhishek,
+On Wed, Oct 28, 2026 at 07:43:14PM +0800, Hao Li wrote:
+> On Sat, Oct 24, 2026 at 09:07:25PM +0200, Vlastimil Babka (SUSE) wrote:
+> > One (relatively minor) aspect of CONFIG_SLUB_TINY is the assumption that
+> > letting reclaimable and non-reclaimable caches merge will save more
+> > memory, which is more important on small systems than the page allocator
+> > level fragmentation (where distinguishing reclaimable slabs should
+> > help).
+> > 
+> > For now that has been achieved by #ifdefs that result in making the
+> > SLAB_RECLAIM_ACCOUNT no-op and aliasing KMALLOC_RECLAIM to
+> > KMALLOC_NORMAL on the enum values level.
+> > 
+> > With the goal of converting CONFIG_SLUB_TINY to a boot-time decision,
+> > rework this so that SLAB_RECLAIM_ACCOUNT and KMALLOC_RECLAIM are
+> > distinctly defined always. Now, creation of kmalloc-rcl caches is
+> > avoided by assigning a pointer to the normal kmalloc cache on the
+> > kmalloc_caches array level.
+> > 
+> > To prepare disconnecting of this boot-time decision (and the evaluation
+> > of the need for kmalloc_no_objext) from CONFIG_SLUB_TINY, introduce a
+> > slub_tiny_enabled variable that's initialized to the CONFIG_SLUB_TINY
+> > state.
+> > 
+> > There is one minor functional change for CONFIG_SLUB_TINY=y. Since
+> > SLAB_RECLAIM_ACCOUNT is not 0 anymore, caches that differ only in that
+> > flag will stop being mergeable. If that turns out to have a noticeable
+> > impact on memory footprint, we can adjust the merging decisions to
+> > ignore SLAB_RECLAIM_ACCOUNT when slub_tiny_enabled is true.
+> > 
+> > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > ---
+> >  include/linux/slab.h | 10 ----------
+> >  mm/slab.h            |  5 +++--
+> >  mm/slab_common.c     | 12 ++++++------
+> >  mm/slub.c            |  2 ++
+> 
+> [...]
+> 
+> > diff --git a/mm/slab_common.c b/mm/slab_common.c
+> > index 02dfe4351e8b..33e76a0c3084 100644
+> > --- a/mm/slab_common.c
+> > +++ b/mm/slab_common.c
+> > @@ -1009,7 +1009,7 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+> >  	 * KMALLOC_NO_OBJ_EXT cache.
+> >  	 */
+> >  	if (!mem_cgroup_kmem_disabled()) {
+> > -		if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
+> > +		if (type == KMALLOC_NORMAL && !slab_tiny_enabled)
+> 
+> (While reviewing Harry's patch [1], I happened to notice a small inconsistency
+> in the current code. Since these lines are being touched in this series, I
+> figured I'd bring it up here, even though I haven't properly started reviewing
+> this series yet :D)
+> 
+> IIUC, for both KMALLOC_NORMAL and KMALLOC_PARTITION_START + n, if gfp has
+> __GFP_ACCOUNT set (and without __GFP_DMA/__GFP_RECLAIMABLE), the allocation is
+> redirected to KMALLOC_CGROUP.
 
-kernel test robot noticed the following build warnings:
+Right.
 
-[auto build test WARNING on bcc036cfa1670a64500f6d857eaa71908b79e3fb]
+> This seems to mean that neither KMALLOC_NORMAL
+> nor KMALLOC_PARTITION_START + n actually needs an objcg slot in obj_exts.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Abhishek-Bapat/alloc_tag-Add-trace-events-for-tracing-allocations/20261104-190336
-base:   bcc036cfa1670a64500f6d857eaa71908b79e3fb
-patch link:    https://lore.kernel.org/r/37ae7dca766994d3872fcc65b623a80d5d506369.1793818636.git.abhishekbapat%40google.com
-patch subject: [PATCH v5 2/5] alloc_tag: Introduce IOCTLs to toggle allocation tracepoints
-config: xtensa-randconfig-1001-20261105 (https://download.01.org/0day-ci/archive/20261105/202611052344.mDV2DB89-lkp@intel.com/config)
-compiler: xtensa-linux-gcc (GCC) 8.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261105/202611052344.mDV2DB89-lkp@intel.com/reproduce)
+Right.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611052344.mDV2DB89-lkp@intel.com/
+> Right now, KMALLOC_NORMAL already doesn't carry SLAB_MAY_ACCOUNT, but
+> KMALLOC_PARTITION_START + n still does.
 
-All warnings (new ones prefixed by >>, old ones prefixed by <<):
+Ouch, good catch!
 
->> WARNING: modpost: vmlinux: section mismatch in reference: alloc_tag_trace_enabled+0x2c (section: .text.unlikely) -> initcall_level_names (section: .init.data)
+> Given that, would it make sense to
+> change this line to something like:
+> 
+> if (type >= KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END &&
+> 	!slab_tiny_enabled)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Maybe you could send a patch as it's a separate issue from the patchset?
+
+> [1] https://lore.kernel.org/linux-mm/20261021-memalloc-prof-dont-waste-slabobj-ext-metadata-v1-0-096800aa3330@kernel.org/
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
