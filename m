@@ -1,91 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C587E606A336
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBD4606A333
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=gmOcblTI
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=duEJD6LP;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=nEuQ44sk;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=muH5tH8X;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Twh/XSEi
 Received: by kanga.kvack.org (Postfix)
-	id EE30D6B05BC; Thu,  5 Nov 2026 07:07:18 -0500 (EST)
+	id 391A66B05BE; Thu,  5 Nov 2026 07:08:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8B826B05BD; Thu,  5 Nov 2026 07:07:18 -0500 (EST)
+	id 3418E6B05BF; Thu,  5 Nov 2026 07:08:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA18B6B05BE; Thu,  5 Nov 2026 07:07:18 -0500 (EST)
+	id 209FF6B05C0; Thu,  5 Nov 2026 07:08:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B92656B05BC
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:07:18 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5122EC09C7
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:07:18 +0000 (UTC)
-X-FDA: 85400940156.26.06F93AD
-Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 630331C0007
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:07:15 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=gmOcblTI;
-	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E82B16B05BE
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:08:24 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8DD89409A9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:08:23 +0000 (UTC)
+X-FDA: 85400942886.19.CC86523
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 515EBA000C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:08:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=duEJD6LP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nEuQ44sk;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=muH5tH8X;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Twh/XSEi";
+	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793880435;
+	s=arc-20220608; t=1793880501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8OcxAA2gqpojmN7yaA8Tg1JRGUaJg5iMD5QS2qC5vIs=;
-	b=AfvaONJtZwB9KmZkx7nDOGc2FgMZjLhdKi0luoAhxVftbaPP0zeu7IMJZJ3PsLTeRCG12X
-	e1Xmg71/Kkyqtiyq3IcCYSLtT/+1TwiDCn5XtzngfL7njAHRfuj92ziCMIpDCj/g9Mw5iX
-	zIQyw2OxJW3XQJaOXrEM2BhONCgXZVs=
+	bh=+AscXsLOMvfsFvCViguJi+L1fCFKAfWK/UhUpwog254=;
+	b=QQrGbjDe6cS4wN+O7W1/tsXHdHPhOYHAddTP5teEdK4f7Y+YkleNfHmaloVmkyOtd3/0L2
+	VnCreKORJvcXkRRMcKfzTFKbyHfrB7J/bgfD+f3ZBw65hCS8ekwQfLsiSy08m29bc0Kqaj
+	OYeI0DHls3dPMWlHk1sGqpaVtAYPeTw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793880435;
-	b=o6tLUay9DTNCoxkDYniHS4MOExYQPsd7K4X2ZY6snlAsfvy1+UhjJ8hDQztfY5m35ray/k
-	icPJPLVM5alwfO99Xf3KDbEPjgktYNGDFDVytdhvEIhDmtRH3eh/0k/XKEQFnE8x1Zyf/e
-	Stn9fckc6SwaUKytXkKqdvclDLyTFmE=
+	t=1793880501;
+	b=AwfGOC/6RkIsQHAp9mZF6LUUvBj3szzIlLWbhluSr5Ijlj+YHOQibryEEA1i5JSKkVo6Xm
+	OpoA3FmK3H+HqF4o0cr+vn3HaWELHFp4LFauOKh5akDbRmYTMO49Upb5j/xBSFSIE0j2rf
+	z9gb0DIRT4HUdIWvdYgS6+HCOjObHRU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=gmOcblTI;
-	spf=pass (imf21.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1793880428; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=8OcxAA2gqpojmN7yaA8Tg1JRGUaJg5iMD5QS2qC5vIs=;
- b=gmOcblTI5AxbE0CuFcvKs+dd4SIfzxfAesNL+B+0KMim6UQC7VN2OEDy1mGiA6j4Bu5MN1
- 21ekqNR8+J3JVC6nuCFJ+H8Ytb/qtI4aXRuyEgytSqIeanb3ZqWCBO/gx0MnG/xVh+WiD+
- LqUCrJGci7ukbt5nhHtyCPLLxl5iCRR3S5iNp27JugJrIKcItMaWE31K5rTTtfwT988qNx
- Udxnn3GN5OVlzTsDjdeVowRnK8fDBmiNbXY0aEcFYOCJ5+1M77ki70s6W/RSdaQpWBF2GB
- v2YnMvpfvYOiYCZhXYkzDtFoPJ9RcORQjhzW53aYlpi0iGau2ChYvo+4eKFC9Q==
-Subject: [PATCH 2/2] mm/hugetlb: optimize bootmem hugepage tail vmemmap init
-From: "Li Zhe" <lizhe.67@bytedance.com>
+	imf15.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=duEJD6LP;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=nEuQ44sk;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=muH5tH8X;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="Twh/XSEi";
+	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E09301F7A8;
+	Thu,  5 Nov 2026 12:08:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793880500; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+AscXsLOMvfsFvCViguJi+L1fCFKAfWK/UhUpwog254=;
+	b=duEJD6LPekOEhn61R53kKb81GPHaXPGJIngKUTQX9WEfL8ykFAMPfmr3OERdgYmnfr5bEr
+	no/QUoCTwr2IM6pfVyWZvbGB+kH7jg6VMI0t/BL5piRkhHqFijSOo3qTB/uJ7xYzQrEyBs
+	gOFq7XIKvrhTvOnsUSKrNoDYiDAIbok=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793880500;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+AscXsLOMvfsFvCViguJi+L1fCFKAfWK/UhUpwog254=;
+	b=nEuQ44skKENyJxG2nI0WEya/Z6UeAf8j7o1gUA14jvXxD5ttTBDmJR+hSpD3AjkE27erIs
+	22RVTyoAXPvvBVDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793880499; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+AscXsLOMvfsFvCViguJi+L1fCFKAfWK/UhUpwog254=;
+	b=muH5tH8XGabU7XsT+4HLUn0YWyclJMbdrP8YC6jbblzcOUCNg6bIn+AZUHE8jVHVN8jliF
+	hdBtv4Gwr4LOd7CEkfIcFH+Z/XWj4sxlIWVLYY8yjERT78lqpfyk0ziLE47S7PXtNzHXyJ
+	8uq8NljKVjD/sxwntTPUE8trLhX/m8Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793880499;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+AscXsLOMvfsFvCViguJi+L1fCFKAfWK/UhUpwog254=;
+	b=Twh/XSEinlJ2UHBYu888sP3yxbsAvwQL1/rVLh+t/1fyMiI6SbhSYK2ev17aVQ6HLXKdNo
+	dDP1A3DjZ6h02FAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AC4C6134F4;
+	Thu,  5 Nov 2026 12:08:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id LbztIbNx7GrJEgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 12:08:19 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 3E083B6CC; Thu, 05 Nov 2026 13:08:15 +0100 (CET)
+Date: Thu, 5 Nov 2026 13:08:15 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>
+Subject: Re: [PATCH RFC 21/38] proc: let proc_remove() remove the entry it
+ was given
+Message-ID: <4woxjrofo67qve236jz54znbp74hk34ouesbpgh46g5lfb7bwn@v7dnw5ixlgff>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-21-59422ed3e465@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.45.2
-X-Lms-Return-Path: <lba+26aec716b+7a1bcc+kvack.org+lizhe.67@bytedance.com>
-To: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>, 
-	<akpm@linux-foundation.org>, <rppt@kernel.org>, <apopple@nvidia.com>, 
-	<balbirs@nvidia.com>
-Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, 
-	"Li Zhe" <lizhe.67@bytedance.com>
-Message-Id: <20261105120615.16817-3-lizhe.67@bytedance.com>
-References: <20261105120615.16817-1-lizhe.67@bytedance.com>
-In-Reply-To: <20261105120615.16817-1-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Date: Thu,  5 Nov 2026 20:06:15 +0800
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: cxoj5nbyobd3iukqr9y6xgjqtm4y1i3c
-X-Rspamd-Queue-Id: 630331C0007
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102-work-procfs-bugfixes-v1-21-59422ed3e465@kernel.org>
+X-Spam-Score: -11.30
+X-Spam-Level: 
+X-Stat-Signature: 4zokf44aitichbcns1kp3dyzirz4b445
+X-Rspamd-Queue-Id: 515EBA000C
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793880435-391091
-X-HE-Meta: U2FsdGVkX19zGfnbSnMndIPLCC8mqBRKBNKuEmNNl1APuArwFEVgJqX8BCSoSF1KLjA9gLNlfby+GKPNgtu/oe4xs/G6lSv/FiICQ5qgwYKlSWcrp6V025YWioOTzfGu1k3rqJOk+nYmJlvtkvYbzbLcnYL+SN0MqddaeCfdcDLE1YsyEwccxOx5v5Fkqw5JE/zJx7OXASAU8RRmOyb2rYRVMaqdILydeeX9MF6d39paCLJ9g5L8Qb2hY7Lp8slTYWtSmJozGFhTAlHdhZr3oQtIGCEHmfkP4Pxr11LBt5a87LrsM+8NNQLZp7DDWmV39bnrYqZrdjvH129LPZjo8/mhhu1asLg1QGjyDyUl9aHYJfHWRkol5s7gIx8Ot0C8RsqtqbwCbyMHZ8gzX1G8kW6mgtCEknW1afFLmPv/W3eMQ7AJtKG3c4NJhM02+Wov+lzxnLq1sKubKkE8CqsrzKZtKY9Qtp1xCG3S2IPiTde8Wxe9OV40NE7oNaQUPQUkLRnBhPJGrGmDLKvqBVYf2PPZdPjXppSDIFUeZMP6IDckeKEc8MEl0J3fQIM77zWpsUGBiwOfzV82tvGTAFTo9MeyNhDIUJRCSKmq+sF8ObZKtr6irRkhEE7BtjgFgtzLMsS9xbDE5g8U6yOBzNL2jSMYWa1P1rjEHRWblNRjTsDCOsKgTSqBvrmuugAxisgsHu4A/IpnKR33ZY+7T/igO1VSIB9crhaEKIJNZYSDUEgvdu6DDoj4Z01ZYqzqX3/28NjDxA+6NNvsdlY3sznPJ07AWg3CVte47xjrU5QZQqqy1qG1qr/5N/kiOBkISDqZI/nXQVMr0UGKBmNdRVq6Q5AqI0x66u35nBKyEESw3v3qV/IgoXRmleYvjPcl+xsc7uBZhqzoUE+JlPhdKdv9lvMJ0eDYP714EcKS6+RfqiYynGYXra2P4mPo+6uY+IRUsfYgLj0z83UUp4Nv5Y1
- u648rxW0
- LDbgFiIwLqaElICmn8rEowpYOpOUmZo261bwaxRqBZx+RmmgX6OFQ8ZEDdMTq+/UGzfCPm0OWTX/ajBxQQ7zLebo1++avs7iTVN3FO2zfHFcuKgefY5ngWwopjOn5JapJngj2aTKQql+Xg5Xz4MKlJgDC7EHy9s79FoFhTIzCKPhxlIoarbi5U9rj4BfR6D8IpwQpvm0QonuqRJ13CZAU0ZmX75wRkhlTsW29Ed1ky6XB+/LOvMkP1n8QXr2/IUZGkTBK
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1793880501-19382
+X-HE-Meta: U2FsdGVkX19ESIrTxMctFYJ/HYgUlDW+lNbfmg9FpLMV6mY982ND71ZkxsKOvXt86eu7UFx14Ux/i8i+Fm6qpcvLvHQXwXE8n4a019HddsTU/7DfNPZdC+VH+eOJAWHf0eUu2wi22I0ur1tZK2Lg9FIkOYZhOxc2RjoRtG6rz9Tcn1VhsyjoXrJEATYO30tSHSpNqj4UzRbXVypquQL8VZ/9S2l7s9sh4Fti3UMyWD3BrOJyEEgVZ6AfX2icuq7a8wJxQcDRNUw7wfUSTj3m1C/X7pPhdwcSgshIsn+kyHZnS51vGEnVjGadg6mRiwyLYGPnVC+xkD7ji5Kju/HBPQR3bN1Hpn05B7iBnogRsT5FRWoHnmijdpd9xMvlnVozBBh9E9yjg0iGDOQWoFTEXrxFy7yHxIIF+dfxMI+IsVVXdwiXRu1bZn05Sup9PyOZdojkj1U/hu2UXH7rJw1hf1Yr9Ts9QZU0GYq2agQSIyNr3BO0pK/ecGPcTSHBIYlf+FoSc0uFJebQkcmygQlw+y0v1DLiqFIQ6Fk+/0SiyCVmxev7YTJgVH0iMRvNNn3C2W02jf06QUdetKhV5KZ+qJAhdPyj50qUaXU9VdugKmOoro8kq5kdkY5qWPaxAHcJKBvEhht/BtDkyNNUyvpLQv4piJF64Rc/iAVuYH9cifnJqGu41BAinaztDyxZMAMnvK9vOEV+EvDJhddF6wMe+EbS70POTEuqQanMhasorkhVM0fj4Pg2fRsMVsZ2MkJbJr2q8uxopqAyKW37/NZJoPHdOfNjfGvezEhARs7SRVJeLudpZ/psOW1fMwseCcNKhxrRHXRCEM4NByqBo48cc9TGPsvgBky1cCgNl3pY7Wq3oYsYdC9+dbDfuKJekc2fFLO0q3zvw1CF6pvTBmq+ypcbJY1NzmCXr79boNe06jlhqYtG5v/LOk8E/qMmfhYrZBBHzZ6z7oixtPoSSIa
+ 5GvSjVr/
+ qXEhcTwhnju2yaZXIBpk5LC7t5JfyKJfOCRfA6KFYjqF/ctMdpJYK3PgrMaFcwT8BbFAB5Q41Q3LHMm6+P4cYPy9P8hJch+bu1/+dsW2bhgqNn9+EAPKPOHQfuda2dDHT0zviIVP9PFwGXK3d+tcskgKm5MX6oSK8VbGhTZmPemzBS4vg1vfQhBCyT9El3T3dp7TEovJNJYyh4/hUuI9K92I7v1lWIb5JkBhf2fNV4aSihOisapV/9b27hVMrY8pLWVvixheyrgqmJiu0DiKoum9CrznNt4xpTdk4w5HUepWj3l1KOsUukVvsOx7JlXOYOzaSxTQRV1GUFz20a+VelLJKIiGaaidf5F6LQti3CvHwBjn9NWvk8GvffCJ0d5G+RgrUbEYJoozAYQXl0+zHog3nnDmFCysqcFpG5QsNkat7A9dyobF85voe6qZMfSQiA3ZOMSxhr1DahrI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,75 +161,134 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Boot-time HugeTLB allocation has to initialize tail struct pages itself
-when HugeTLB vmemmap optimization (HVO) is unavailable or fails.  For
-gigantic pages, this can cover a large number of tail pages.  Most state
-installed by __init_single_page() and prep_compound_tail() is identical
-for every tail page in the same huge page; only PFN-dependent fields
-need refreshing.
+On Mon 02-11-26 15:21:36, Christian Brauner wrote:
+> proc_remove() looks the entry up by its name in its parent and removes
+> whatever it finds there:
+> 
+>   remove_proc_subtree(de->name, de->parent);
+> 
+> If the entry was removed already, say along with its parent, that is
+> either nothing or a different entry that got the same name in the
+> meantime, and de->parent may well be gone. Two removals of the same
+> entry are a bug in the caller, but going by the name turns it into
+> removing an entry that belongs to somebody else.
+> 
+> Since commit 895b4c0c79b0 ("fs/proc: fix uaf in proc_readdir_de()")
+> an entry that was unlinked has an empty rb node. So check for that
+> under proc_subdir_lock and otherwise remove the entry itself, with the
+> loop of remove_proc_subtree() moved into a helper both of them use.
+> Nothing can help a caller that passes an entry that has been freed
+> already.
+> 
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: a8ca16ea7b0a ("proc: Supply a function to remove a proc entry by PDE")
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Initialize the first tail page normally, copy it into a local template,
-then initialize the remaining tails from that template with
-memmap_init_page_from_template().  This avoids repeatedly doing the full
-__init_single_page() and prep_compound_tail() sequence for state that is
-identical across tail pages in the same huge page.
+One nitpick below. Otherwise feel free to add:
 
-On an arm64 QEMU/KVM guest using 4K pages and 64 boot-time 1G hugepages
-(HVO unavailable on arm64 in v7.4-rc1), the measured fallback tail
-initialization time improved by 36.43%, measured with a temporary
-jiffies-based printk modeled after the existing timing in
-memmap_init_zone_device():
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-  base:             318.4 ms
-  with this patch:  202.4 ms
+> -int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
+> +/*
+> + * Remove @root, already erased from its parent, and everything below it.
+> + * Called with proc_subdir_lock held for writing, returns with it dropped.
+> + */
+> +static int __remove_proc_subtree(struct proc_dir_entry *root)
+>  {
+> -	struct proc_dir_entry *root = NULL, *de, *next;
+> -	const char *fn = name;
+> -	unsigned int len;
+> -
+> -	write_lock(&proc_subdir_lock);
+> -	if (__xlate_proc_name(name, &parent, &fn) != 0) {
+> -		write_unlock(&proc_subdir_lock);
+> -		return -ENOENT;
+> -	}
+> -	len = strlen(fn);
+> +	struct proc_dir_entry *de = root, *next;
+>  
+> -	root = pde_subdir_find(parent, fn, len);
+> -	if (!root) {
+> -		write_unlock(&proc_subdir_lock);
+> -		return -ENOENT;
+> -	}
+> -	if (unlikely(pde_is_permanent(root))) {
+> -		write_unlock(&proc_subdir_lock);
+> -		WARN(1, "removing permanent /proc entry '%s/%s'",
+> -			root->parent->name, root->name);
+> -		return -EINVAL;
+> -	}
+> -	pde_erase(root, parent);
+> -
+> -	de = root;
+>  	while (1) {
+>  		next = pde_subdir_first(de);
+>  		if (next) {
+> @@ -871,6 +852,34 @@ int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
+>  	pde_put(root);
+>  	return 0;
+>  }
+> +
+> +int remove_proc_subtree(const char *name, struct proc_dir_entry *parent)
+> +{
+> +	struct proc_dir_entry *root = NULL;
+> +	const char *fn = name;
+> +	unsigned int len;
+> +
+> +	write_lock(&proc_subdir_lock);
+> +	if (__xlate_proc_name(name, &parent, &fn) != 0) {
+> +		write_unlock(&proc_subdir_lock);
+> +		return -ENOENT;
+> +	}
+> +	len = strlen(fn);
+> +
+> +	root = pde_subdir_find(parent, fn, len);
+> +	if (!root) {
+> +		write_unlock(&proc_subdir_lock);
+> +		return -ENOENT;
+> +	}
+> +	if (unlikely(pde_is_permanent(root))) {
+> +		write_unlock(&proc_subdir_lock);
+> +		WARN(1, "removing permanent /proc entry '%s/%s'",
+> +			root->parent->name, root->name);
+> +		return -EINVAL;
+> +	}
+> +	pde_erase(root, parent);
+> +	return __remove_proc_subtree(root);
+> +}
+>  EXPORT_SYMBOL(remove_proc_subtree);
+>  
+>  void *proc_get_parent_data(const struct inode *inode)
+> @@ -882,8 +891,23 @@ EXPORT_SYMBOL_GPL(proc_get_parent_data);
+>  
+>  void proc_remove(struct proc_dir_entry *de)
+>  {
+> -	if (de)
+> -		remove_proc_subtree(de->name, de->parent);
+> +	if (!de)
+> +		return;
+> +
+> +	write_lock(&proc_subdir_lock);
+> +	/* Removed already, maybe along with its parent. */
+> +	if (RB_EMPTY_NODE(&de->subdir_node)) {
+> +		write_unlock(&proc_subdir_lock);
+> +		return;
+> +	}
+> +	if (unlikely(pde_is_permanent(de))) {
+> +		write_unlock(&proc_subdir_lock);
+> +		WARN(1, "removing permanent /proc entry '%s/%s'",
+> +		     de->parent->name, de->name);
+> +		return;
+> +	}
+> +	pde_erase(de, de->parent);
+> +	__remove_proc_subtree(de);
 
-Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
----
- mm/hugetlb.c | 23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+I'd move the RB_EMPTY_NODE() and pde_is_permanent() along with pde_erase()
+call back to __remove_proc_subtree(). Both callers need them (so it is
+unnecessary duplication) and also logically it makes sense there.
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index da5d04edf7c1..987f16a5ea27 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3219,19 +3219,32 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
- 	enum zone_type zone = folio_zonenum(folio);
- 	int nid = folio_nid(folio);
- 	struct page *page = folio_page(folio, start_page_number);
-+	struct page template;
- 	unsigned long head_pfn = folio_pfn(folio);
- 	unsigned long pfn, end_pfn = head_pfn + end_page_number;
- 	unsigned int order = huge_page_order(h);
- 
-+	if (start_page_number >= end_page_number)
-+		return;
-+
- 	/*
- 	 * As we marked all tail pages with memblock_reserved_mark_noinit(),
- 	 * we must initialize them ourselves here.
- 	 */
--	for (pfn = head_pfn + start_page_number; pfn < end_pfn; page++, pfn++) {
--		__init_single_page(page, pfn, zone, nid);
--		prep_compound_tail(page, &folio->page, order);
--		set_page_count(page, 0);
--	}
-+	pfn = head_pfn + start_page_number;
-+
-+	/*
-+	 * Seed a template from the first real tail page and refresh only
-+	 * PFN-dependent fields before copying it.
-+	 */
-+	__init_single_page(page, pfn, zone, nid);
-+	prep_compound_tail(page, &folio->page, order);
-+	set_page_count(page, 0);
-+	memcpy(&template, page, sizeof(template));
-+
-+	for (pfn++; pfn < end_pfn; pfn++)
-+		memmap_init_page_from_template(pfn_to_page(pfn), pfn, zone,
-+					       &template);
- }
- 
- static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
+								Honza
 -- 
-2.20.1
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
