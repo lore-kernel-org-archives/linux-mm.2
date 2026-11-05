@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6976360A3833
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1252606A6F9
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WjJEPh8p
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ej+uoOdy
 Received: by kanga.kvack.org (Postfix)
-	id 84DEF6B05BA; Thu,  5 Nov 2026 14:29:57 -0500 (EST)
+	id 1BF496B05BC; Thu,  5 Nov 2026 14:30:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7FE816B05BB; Thu,  5 Nov 2026 14:29:57 -0500 (EST)
+	id 177976B05BD; Thu,  5 Nov 2026 14:30:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EDAC6B05BC; Thu,  5 Nov 2026 14:29:57 -0500 (EST)
+	id 062196B05BE; Thu,  5 Nov 2026 14:30:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E7DA6B05BA
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:29:57 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A0E0BC0BF2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:29:56 +0000 (UTC)
-X-FDA: 85402055592.16.E9165E3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DB9B8A000E
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:29:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WjJEPh8p;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CFEF66B05BC
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:30:17 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6D888A0C16
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:30:17 +0000 (UTC)
+X-FDA: 85402056474.02.C937DD9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id B0D10180008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:30:15 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ej+uoOdy;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793907015;
+	b=5lEvlhOFpnPlDtYuIiX0G0Tk9UkuRWXHltM0qWJLKUKw0VhYWlyRaMeLyMtBodbWyIa2VO
+	U5xAuAbJDRELidw4lFiVn3PS4dnKIXYA9RshStJduMmVpgZsF5KxKoAqILBba8Y+o5pjJv
+	7SwiG3JHlvOsXTKiHS5gu9EihtD5fgI=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ej+uoOdy;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793906994;
+	s=arc-20220608; t=1793907015;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mq2TZRho3g/6dJEkd3aM2nJWP3IUjUSQ0d76Sv96NJo=;
-	b=ZgeG2MaJXstqcL7cx3qGMkDvRtnLfObnKJ1ioOLertoqq0tRHLEDQAB6OQi4Z17oHOOJhv
-	A0qIBVlfWi+XjCqDX7vGjn7xCyeiw42bnQD6bFEJ2BzkG3/Rdr0C5O3clsiC/0iicKUCcq
-	5UQ8QoQNXBedGDpBWS6pw1oEln4BwxM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793906994;
-	b=1onr4V9/oTjPFDoYGi9nRLxRGoIgaAff8NOpczv50HhRh/2DAdAu+6Yposb/Zfikm8ec2O
-	ZBLjOLZub7msGUpB/AoRA81Q1Fzd+QZIm/OzBobasuAPA2ft3wAyyZ1lVj6nDqmoDWU3Wd
-	GgWZDD6ZjYn9VUL39SYqM6RIGQ6jrpw=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WjJEPh8p;
-	spf=pass (imf15.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=7NQAKY8HY4DbdjDd6x8DZF/XgVJse33xFSaScTuQDsM=;
+	b=GPBc2uBdGVHGzyDttRZXgwPRCIboOoTHcFDthqKeQU3s2CTqQAFK1zwWUxpqju4NE3CfWR
+	zY0zSaX1y0uz7spVoj1Xx0tdFWEuyWJMnYsXmcZZ8Nnsg9CVbOCOUUQKf7dzRlHbO7jRFj
+	1mcRKwD5kesaIWa3nuqkPuolTDuEK08=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 81189601CF;
-	Thu,  5 Nov 2026 19:29:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBACC1F000C1;
-	Thu,  5 Nov 2026 19:29:51 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BD698414C3;
+	Thu,  5 Nov 2026 19:30:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F3A1F0093A;
+	Thu,  5 Nov 2026 19:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793906994;
-	bh=Mq2TZRho3g/6dJEkd3aM2nJWP3IUjUSQ0d76Sv96NJo=;
+	s=k20260515; t=1793907014;
+	bh=7NQAKY8HY4DbdjDd6x8DZF/XgVJse33xFSaScTuQDsM=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WjJEPh8pDtseuVUQk4qwZA9aci3gac063ZokyebNlvHp2beWZHvvSUeYQeiXMVXvr
-	 gorR7o8d0SaoLeOi9bKNyUy3h6vHu09hw27HReSQrpP5tbdq5gCz3B6gixX9La77ez
-	 A3GDPdSDz2e83FWBMhFysd0uKqafdxTW2wlSO3wrIC47SZJJWU00KVW3tU8R/XZoDc
-	 l2HWNRW/SEC3nlzdu96mPwurJuhISd5di7F3WA+6g/riaXNTCLrXNXhDRDwZUn89Ok
-	 0Dcu6L25OUIAO131EMpgW4+6XspNy4+EDu3YAgYrAOfY0ko3kC83F2cPBr48QIfDJY
-	 xKWD9ZPaIbjkw==
-Message-ID: <sashiko-outbox-199895@kernel.org>
+	b=ej+uoOdyy0zraix1fQ7r25PJRrh/4Y9jENiNfRHcNQYKQbamB19zOZWAIYTZP936k
+	 525AiogVEAMXoo8f3U/2wtiLHom345+woamQXZG812Wqw1iTBWxzB4lfrEhY0L2dNa
+	 EJvLiN1GfSZ7KXDdLY1rJb97KQOIpQcpSkmrSySn132O264dcPg7eLs6XEwEHRR2Jx
+	 kAAmy8CviFoouXet9NS4WJJqFN+2BooXsbNYrMheRfZVdZNv+l80ODw7nu/l90jVkJ
+	 HWjhC78V1gjM0l/DaNa2Rbj7gbXnQcngNdr12ijFwDhs3Ny03+eY9pKEJ0LhfAJkZh
+	 SgFF9W+xXiDtw==
+Message-ID: <sashiko-outbox-199904@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v2 32/51] proc: resume readdir after the last
- name it returned
+Subject: Re: [PATCH RESEND v2 41/51] scsi: esas2r: bound the lengths of the
+ HBA, SMP and firmware ioctls
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>
 Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
@@ -78,24 +78,24 @@ Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.
  Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
  Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
  Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261104-work-procfs-bugfixes-v2-32-021c84d852e0@kernel.org>
+In-Reply-To: <20261104-work-procfs-bugfixes-v2-41-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
- <20261104-work-procfs-bugfixes-v2-32-021c84d852e0@kernel.org>
+ <20261104-work-procfs-bugfixes-v2-41-021c84d852e0@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 19:29:51 +0000
-X-Stat-Signature: 3m8bqmfzhd8noead45rwai9ab6wf8y8j
-X-Rspamd-Queue-Id: DB9B8A000E
+Date: Thu, 05 Nov 2026 19:30:12 +0000
+X-Stat-Signature: r3mr8cmuxkicrhk8inus7rog8m5d9ksr
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B0D10180008
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793906994-681748
-X-HE-Meta: U2FsdGVkX1+9f8ghkNmZ8M39B40HO5CBPNWsQ+LMwQlWC+zcU+zmfeAjvuYgyU4sZXRuL0lR+2Oh50DW9XhSZjCJzyv6r3dHJK9EhWyn049xVkdICNX6Cxfp4po4tnKX6MXcmNs2IcklxWoGmbNFdx/OiEtM1097wQwhFH4ItygoqMJZoihTacq530Fn7V9B9zFnZte7KRsNJb9T1IV+YbOsJ28TU/XonCn8dQNW6Aqe61NTomYnMYNcFpTDBNbwP4cKjeRYPamTekpQlkfrNUuqBXwET05Z23Gz4/qsWpPykG6ft0tDT/k4Uxyw5IRQqi0Dwswk4s4vrovgThJe9AxDXwRVpKXQ27h0r0OGSHKf4ip4bNZxLatROYOnYbhx3l0Ff5hQ7lNx4T0rqbDDGeYiusAX4rr3gt3Jxanmzq1wj4V3NphbWWyHm9UGD0ETwZ5yASe8V4h7XdXdZc+XxWo8AiIYhSBr653OZVxSpdA/NABiikylJlwyHm6VRude3Z4PCOtaujm1VdY5ONkscdvlu72jgSImZ9q3Mq/Bd64Y3vWMsg1/51TWXX5qINHXaMjGN6xt7zy9jziX/LP5sdw43xzm4xqXoCaDMTV5vkmC1yIeM5RknDASMsOmbBpxsBE4+7R61XdtCz+876z6bP12ODJxk0JhlKe1Y07zGyyV76doi+eV1Bs5Z4AsOVMK0E9QvFLAUTBNTSdFusveDn6lKSR/vZRNCzPN5xjSZIxAGy1zmDz5hdqrL7+NKyNuoEkZftIYBchlIuNWIIQj5IZ2Mz/1uwJRay82idtT63eAyvuvPLiMQvZJ6zG0zoKTsLfeCWxXEn44k1/IwZNJXJa6yPEnHlvYOAaXlngD1UTyXyLimUjTpMZWAHU8noLFha4plRsJYnwZh8nd8C4RFUSeNS/1i8wvtBGk2OFYQqBxe7+BaTtcS/OL6m1jqXdksaEkrsYH8fbs0qnZjGC
- 2OUpOHHT
- HzPcvhSSayrUGbrbzFQPvVdx1rJ+Fp5z9lRxSS8S5RaL+T9Fo7SncYr7QdMOnX6jTaO/iBT636m8ENCi1k3vMYsXAFHu1CWwtc+PY/+xWfSmZMCtbbW1+enDnLDoJWiBoxKcuM95NBR46F7FEbEeDUe2RbDhupLbs6gY3llXt3cbboweHVOaZM/wNJfoYogF+q4SHxB3kgZ5eUHlmgmDhz4VhI9LcdDCPClt+Ql8eGNf+lVYWJc33N03YE8Eqd7VJjXpv5mHC411zOUbGwz33vRCPCKyjUVkGGY/ydiBqKsVb4NUj/4RwXkI+5aB9wtSIECFTPBxITvy0Dq5EAkwGNwrvoMAlJ6tkjCpE/xn7C0UyPKSX0ucEub0qjrWKL+p9gbAM5teHaL/g41fp5tzrzcLPdDjPc3hdgYRL+PY7REAjp15Yjn0mEeNbxHOhmol1rcApnnK35YboNrmeSkdTxta7//xkmMi37pCX48FhKudAY7xVXKZYJf4dM4XKz2W9LwjWCpL6ZaJ4FQKYidIPeTc8bD+oG9T2RqWs9hL2GsUJtjfB8lllZ9j/hlORNXm8juEv+ZoB6BkDW/58rytltBm0ZmoGftUzY+LfdRR6LLxFTgnn7y5/zm/HH7tjDrdAmwSsus26oh0DnxBOU7ZC9RcOjxAK2Kcl4fTY
+X-HE-Tag: 1793907015-830073
+X-HE-Meta: U2FsdGVkX1/iRsAdflfWFUVvTVt8NKUB0H3KizHGDWs8TaOTsWanz/U5axCylu1naj8GMY7IRaAGe0QXPwBHLn0TTrYK8LA0IkU7ETBpEMDhuxI5qX8kMsATmNuZSgHUQWV+kc1PW9+ZG+uwsgedCL0PMnidWyit693QryvedSdbZ2JNAsa9IEek57iffHe6Cu1vszpEw4qRN80ffsdHD4fSYxqIF/PWM+h/4vwsoAzzbRtCoZ1tpVViL2K3QCSBWUHVHdEj7L2wI0c2vbWNHF+ATKHa70w2l3rHJO2lS4+VO+PcLw64/Ye3G5NKLdKQibjYX7Ykygp3yseCp2ULhlQQhfXgf2H9IfKgT+nfvgslxtt4/AWk6WsDWzFIe8Xx2mUEPRSuYH70ZLe0j9+Tm9FHi2ct0OdsvKmBUuWxq3Wx2AEoB3vqZLXiEshQ9fj42VhhoC0PlTyX8x+KN99kUWeBs1Zw/jrHXuR30SSb6AjwoUyYO12MEK+3vwbINBQs9v8R9rGstDWZ7j/OfqG1GNwN9d7Igr0pYyrwCaKpZAqvJK1nH1JNKV6NsMVDTH+zgMo5ucKVOE+8fTkEuJsGOcI62BTpqcIjo6ZYt8nT0z2LAwXLtt0NWxOQ5UCh42/9QV7bLCYAhkdf1j/vfI/NJD46YO+414G6G8ekHEDfN8pRHYteaGRjVXocbGA0oM+51IzG+VNT23tCoqESllY7opCV2KQe2TiSJMQXU03LBKy1x2J5phAzHF3PvguW7693RjwLhcwrh2Q8a3zqetgQjJGGApJNupB64J/pqqtYcEnCAK8BLoqM9VhwAh667PspeUeHjIto0mS/uy1vTh1vbWreKdKpFfbG31EOPu5JmmLzk0qcq7gq7GQIhFJNiP3GLV5G+jELV05/kdfUkG34t2d5slQlLf7APx0vkcUVgW7DeZkTQu+Dw7bSTI0ylpXC46ohk/K214Ko/ILA/Gw
+ fibGUxF7
+ Voo7o6d2ob8SvIdq8rZmAw5Dz3pCQRU5l5H81l+rvwDrlQN4yKwCjVRBcvGkUhe9PoSfA6B0N36q9fOjs9ZlokaTT6deS3XpC593Vw3OEeAJ3oTss3V69jyIZvWcrWccAvkSBF05swFHr9Yomz5YRjcFEn2fB+90I+Z+L88Yw1l103q3g1FcS+C3r8Q2pKcVzpzIR+gf1GBLVLERydoDfR3Jm9ZFzk/UWzMMsKHOPyzxj17IzBrxFk99uEsTynwz53XUt10y1GUhwx5zF73LZt1oJuuhQxYZXIsxCAkQl0X+v60hBRSatXdW2uKVml/am4x3f2zf9+BqeQcMejfdelpDDE9O0DHJKMZqEpkrGuEEViQFjpo5OCYLZ0S4G5ETzL8IufnzWHso9kWleYogWLgJaUGzLA94Ks93XMwgeQW7AIxoMUs7krCcUUyREKlO6tPASMizNAxWdefxJZCZdV06RS53iB5JEzy8WuBZ7FyjELe/lDtupKa6gMRh5jhysThTotNm/BXTWJGvuOcplmCSehg5vWu6cMXJzyH6FFgia41eETZL1X3B72nK9yrckYVHGAVG58kEd5xNcsaO5GugA+gmshdPfP0rfOlLW7KaixFuFwYw3mUFZxVmE8hVJv/mSlbbgNVDOenfbThYFsxREcDXix1W1OGY9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,108 +107,84 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] proc: proc_readdir_de() returns 1 at EOF, breaking old_readdir()
+- [High] scsi: esas2r: double fetch of data_length in handle_hba_ioctl()
 --
 
-commit 6510b1c4f87c45306294a13ba8447b50990db356
+commit a2397b86d116881b0f288e71fe8885d678578a5f
 Author: Christian Brauner <brauner@kernel.org>
 
-proc: resume readdir after the last name it returned
+scsi: esas2r: bound the lengths of the HBA, SMP and firmware ioctls
 
-This commit records the name of the last emitted directory entry in a
-cursor stored in file->private_data so that subsequent readdir calls can
-resume after that entry by name rather than by numeric index. It also
-continues after an entry's name if the entry is removed while being
-emitted, and returns 1 when no entries remain at the start of
-proc_readdir_de().
+This commit bounds the lengths of the HBA, SMP, and firmware ioctls in
+esas2r against the remaining room in struct atto_express_ioctl (or
+sizeof(struct atto_ioctl) for read_hw()) to prevent out-of-bounds DMA buffer
+reads and writes.
 
-> diff --git a/fs/proc/generic.c b/fs/proc/generic.c
-> index 9e59796349e15..588999058e66d 100644
-> --- a/fs/proc/generic.c
-> +++ b/fs/proc/generic.c
+> diff --git a/drivers/scsi/esas2r/esas2r_ioctl.c b/drivers/scsi/esas2r/esa=
+s2r_ioctl.c
+> index c93d9265e1008..80ae5b9d45db1 100644
+> --- a/drivers/scsi/esas2r/esas2r_ioctl.c
+> +++ b/drivers/scsi/esas2r/esas2r_ioctl.c
 
 [ ... ]
 
-> @@ -290,23 +346,26 @@ struct dentry *proc_lookup(struct inode *dir, struc=
-t dentry *dentry,
->  int proc_readdir_de(struct file *file, struct dir_context *ctx,
->  		    struct proc_dir_entry *de)
->  {
-> +	struct proc_dir_cursor *cursor =3D file->private_data;
-> +	struct proc_dir_entry *dir =3D de;
->  	int i;
-> =20
->  	if (!dir_emit_dots(file, ctx))
->  		return 0;
-> =20
-> -	i =3D ctx->pos - 2;
->  	read_lock(&proc_subdir_lock);
-> -	de =3D pde_subdir_first(de);
-> -	for (;;) {
-> -		if (!de) {
-> -			read_unlock(&proc_subdir_lock);
-> -			return 0;
-> -		}
-> -		if (!i)
-> -			break;
-> -		de =3D pde_subdir_next(de);
-> -		i--;
-> +	if (cursor && cursor->pos =3D=3D ctx->pos) {
-> +		/* Resume after the last entry emitted, wherever it is now. */
-> +		de =3D pde_subdir_after(dir, cursor->name, cursor->len);
-> +	} else {
-> +		/* Moved by a seek, count from the start like always. */
-> +		de =3D pde_subdir_first(dir);
-> +		for (i =3D ctx->pos - 2; de && i; i--)
-> +			de =3D pde_subdir_next(de);
-> +	}
-> +	if (!de) {
-> +		read_unlock(&proc_subdir_lock);
-> +		return 1;
+> @@ -1221,11 +1231,16 @@ static void hba_ioctl_done_callback(struct esas2r=
+_adapter *a,
 >  	}
+>  }
+> =20
+> +/* @room is the size of the buffer that starts with @ioctl_hba. */
+>  u8 handle_hba_ioctl(struct esas2r_adapter *a,
+> -		    struct atto_ioctl *ioctl_hba)
+> +		    struct atto_ioctl *ioctl_hba, size_t room)
+>  {
+>  	struct esas2r_buffered_ioctl bi;
+> =20
+> +	/* The data follows @ioctl_hba in the same buffer. */
+> +	if (ioctl_hba->data_length > room - sizeof(struct atto_ioctl))
+> +		return IOCTL_INVALID_PARAM;
+> +
+>  	memset(&bi, 0, sizeof(bi));
+> =20
+>  	bi.a =3D a;
+>  	bi.ioctl =3D ioctl_hba;
+>  	bi.length =3D sizeof(struct atto_ioctl) + ioctl_hba->data_length;
 
 [Severity: High]
-Does returning 1 here when !de cause old_readdir() and compat_old_readdir()
-to return 1 instead of 0 at end-of-directory on non-root /proc directories?
+As reported by Sashiko on RFC [1], in drivers/scsi/esas2r/esas2r_main.c,
+read_hw() and write_hw() access the shared a->local_atto_ioctl buffer
+(allocated as sizeof(struct atto_ioctl)) without any driver lock:
 
-While proc_root_readdir() checks for a positive return value from
-proc_readdir_de() to advance to the PID entries, proc_readdir() (for
-proc_dir_operations) and proc_tgid_net_readdir() (for proc_net_operations)
-return the result of proc_readdir_de() directly as their .iterate_shared
-return value:
-
-fs/proc/generic.c:proc_readdir() {
+drivers/scsi/esas2r/esas2r_main.c:read_hw() {
 	...
-	return proc_readdir_de(file, ctx, PDE(inode));
+	if (handle_hba_ioctl(a, a->local_atto_ioctl,
+			     sizeof(struct atto_ioctl)) !=3D IOCTL_SUCCESS)
+		return -ENOMEM;
+	...
 }
 
-fs/proc/proc_net.c:proc_tgid_net_readdir() {
+drivers/scsi/esas2r/esas2r_main.c:write_hw() {
 	...
-	ret =3D proc_readdir_de(file, ctx, net->proc_net);
-	put_net(net);
-	return ret;
+	memset(a->local_atto_ioctl, 0, sizeof(struct atto_ioctl));
+	memcpy(a->local_atto_ioctl, buf, length);
+	...
 }
 
-Previously, proc_readdir_de() only returned 1 after completing the do-while
-loop (where dir_emit() had succeeded at least once and set buf.result =3D 1
-in fillonedir()), and returned 0 when !de at the start of the call.
+Because kernfs only serializes sysfs bin_attribute operations per open file
+description, concurrent read_hw() and write_hw() calls on two separate open
+file descriptors for the sysfs hw attribute can race on a->local_atto_ioctl.
 
-In fs/readdir.c, old_readdir() and compat_old_readdir() do:
+In handle_hba_ioctl(), ioctl_hba->data_length is read once for the bounds
+check against room - sizeof(struct atto_ioctl) and read a second time when
+computing bi.length. If a concurrent write_hw() overwrites
+a->local_atto_ioctl->data_length from 0 to a non-zero value between those t=
+wo
+reads, wouldn't handle_buffered_ioctl() still read and write bi.length bytes
+past the end of a->local_atto_ioctl?
 
-	error =3D iterate_dir(fd_file(f), &buf.ctx);
-	if (buf.result)
-		error =3D buf.result;
-
-	return error;
-
-When old_readdir() or compat_old_readdir() is called at EOF (ctx->pos >=3D 2
-and !de), dir_emit_dots() returns true without invoking ctx->actor, so
-buf.result remains 0 and iterate_dir() returns 1 from proc_readdir_de().
-Wouldn't old_readdir() and compat_old_readdir() then return 1 to userspace
-without writing to the dirent buffer or advancing file->f_pos, causing
-callers to read uninitialized or stale dirent memory in an infinite loop?
+[1] https://lore.kernel.org/r/sashiko-outbox-195500@kernel.org
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-work-procf=
-s-bugfixes-v2-0-021c84d852e0@kernel.org?part=3D32
+s-bugfixes-v2-0-021c84d852e0@kernel.org?part=3D41
 
