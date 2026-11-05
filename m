@@ -1,149 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E25606A328
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 14:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991CF606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 14:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Np0FC7wl
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HnMpGD3e
 Received: by kanga.kvack.org (Postfix)
-	id 7A89E6B05B2; Thu,  5 Nov 2026 09:50:59 -0500 (EST)
+	id 938E26B05B4; Thu,  5 Nov 2026 09:55:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 759966B05B3; Thu,  5 Nov 2026 09:50:59 -0500 (EST)
+	id 8E8916B05B5; Thu,  5 Nov 2026 09:55:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6498A6B05B4; Thu,  5 Nov 2026 09:50:59 -0500 (EST)
+	id 7D8386B05B6; Thu,  5 Nov 2026 09:55:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 35F8A6B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:50:59 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C0B8D1209F6
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:50:58 +0000 (UTC)
-X-FDA: 85401352596.28.A545665
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
-	by imf18.hostedemail.com (Postfix) with ESMTP id C093F1C000B
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:50:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Np0FC7wl;
-	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.222.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793890256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E80DD6B05B4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:55:26 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 725CF40A60
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:55:26 +0000 (UTC)
+X-FDA: 85401363852.27.E64818C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7A710120009
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:55:24 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HnMpGD3e;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793890524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=x6AYBRDQlDAqtDeCOrRnb86KC7Ggop6ssABCp4bzpWk=;
-	b=wxSkBDnQkCXN+NjLylJ4bmmkxk012VaQOTjphRC6BuvUfwVaigKIXv2LEKV+zLi/XjfkBI
-	DABDm/GVnirkF31nckbR9jyceUxa0rFdmuyul1pwtYQLg6nnSygNRrQ3kmfoYdItGD8kSu
-	YuxdKqlUSpZKGwnTkNAX0N/JAO292y8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793890256;
-	b=pHuVm6mb2WKtQ//s1rErxaET+mjYcHYEGGaaxJ0PzIG0gM+gFtm5n8NyKDMJx7qlcDUwgB
-	ykZHiTZLQCZOnZs9+jIo3LVYCMFgKa49VVC6wlQh3TuLTOEIzT0QpBKjM+1ssHlVGvjkNE
-	wZdGFNfzcx11gnuuvmAra48Csr7eo44=
-ARC-Authentication-Results: i=2;
-	imf18.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Np0FC7wl;
-	spf=pass (imf18.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.222.46 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-990835cec4bso1099467241.1
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 06:50:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793890256; cv=none;
-        d=google.com; s=arc-20260327;
-        b=iZQpnPTOr0u3jxuEHdkSJPX5+F8u1qdAw1oljXYLPGcJC6aIQHIuzdJu+QtW+Aq76W
-         x5IXleQAbwEUUrpjdZR3X4wQRGJdN51SKlYm1Og7273sggDbhyuVTjFTaWcvvIOAe9at
-         B4RfSb6HPAYUNuNxNxCxHCelYQ2mdlppwbB3ecKdzxHQ9F/+8ySQOxpIrHQwvmfyn/VE
-         bo8CWavEml1oHV48HlndmgHilc1HHoYu4tdyZ2mSUBvLM8QzTdCYN21f63fskegfgxFN
-         5zY7M41UvRhqucrFViChPlPCkRXFgAvro5CNozMB8qPV6tDpn8n+/g+uV3d5P2DvwJDS
-         p1Cw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=x6AYBRDQlDAqtDeCOrRnb86KC7Ggop6ssABCp4bzpWk=;
-        fh=b5kJDo13zZh92IFCXmk5cx2N3hJnFpjhJ1O/mDr4k7Y=;
-        b=U4ctjjmpB8FjlmA5XTpdoerje3XZlGWFV0bBYusuNYZEkV6UPdJ/xvmgNtEdLggk0i
-         BgF2XMvJtSRO9H+hPOJ1eKO70zwA+TAL2u2ZZdsjuC9O56Hb9a4aexHsyEmfQlsZFHLC
-         nOk59g1BciYR1nWzfUlNSdCl9c8g8IA6Uy7N4QOzRacLJ6tQqrfnhGlU+WC6IjQ2OEzh
-         4iF7XpSPtImnEmVepgoZc5Ebhzk2Kk3cM7eQxwQMLxMnj/g4ayL4/uG1l0HAqmrILyWe
-         sGYbo0iRtPHiBWofhaNqkMCySBGo+J2rLOYVOqLCobs9TahpRSumDZC3rJbd5Q2GQPJD
-         dFwQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793890256; x=1794495056; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=x6AYBRDQlDAqtDeCOrRnb86KC7Ggop6ssABCp4bzpWk=;
-        b=Np0FC7wllijPGdyBl3mZgjVktE1Xlcx34HEuJzHpHRpIN1fH5dkj+LC6ag4ltDIpX0
-         Ux31BtpIaLRJmS33O6+dLVBupBXId2QU72oIpUt0SejYDuYILurwkkQgyqMsyk47ybNM
-         G7RrbyKDWz54+pe7fJWmwod3Y7uYlDJiE8rRBbYAdIoKBdTV+q7+5W/Xauv1Sg89N7ON
-         L02fAAz7PMcct9R3egjHlL65bO+xPJ7OABSunH1C8J/eip8jJaOHsZdyfFzpnvlHMQh7
-         /2VyGwHpwb04XsbWAinVRUEo2u8MxztlvfpEEOng+pcXo1bYfwP2/UTGmEl5mw9OdFeo
-         F/fQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793890256; x=1794495056;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=x6AYBRDQlDAqtDeCOrRnb86KC7Ggop6ssABCp4bzpWk=;
-        b=0GY9U1urHy2FOCp7LXQPkLfDaT5I5YnzA5zLDFl6GR7crKdQHorLJg/HnO67yNaDCk
-         EoxhlExqKvHJjR8XD2hv+cpSVIpZtc5jZCwlXURbXhbp4knJIqwU3qmpeSP2PCWDxozI
-         8TZtsyAmSGYGTnP5MvZS62G5LkRVpR2AUHu5Pe2qWmpbFFz8NTzr0nXWuOiQWlYVyLBW
-         JrNDsZhEd9EEkg2OmsFsuUKhZylGXO3pQIb94orNtcmNb+P4YnamZRLG7S86odI/wFTj
-         G3xBdKP/y9porpcQrpomcG6kENr9rjW0eKZoPNoKve0V2pOAVL8S4WGBr/RIblsUIlWv
-         ESNw==
-X-Forwarded-Encrypted: i=1; AKwUvByY+K+HyuRqimFkKMU/eknhk6sH/xlLFhnl+POhAjh0ldyl5iDjvY4L8+WsOTZjP12HV8Nl1kvBbw==@kvack.org
-X-Gm-Message-State: APuU4Z+5wCKS+qQI/Sx27ZtcKtoorzs0g7//25y+Z1U3YplEbRlFUex7
-	EvGa+ls8fdMpCXFNkzxTESb5SbPrKlgHzwJqeGhVbOahZJHQxX61nCYCAFjbEEku0jQ+XFubEeX
-	7OYWohdukriDWXX11qmZ9unvKDNgJb78=
-X-Gm-Gg: AYBFou07BZpVwMjw7w9KByGt4PrOoUa+g9I3lC5aGNerRJicfwh3QxJPppZz04XfJ6z
-	eTJaTO4ROOFh9YvXYJgLhfInW5MyT82JZw+JFsqp2hxTt/qt2AWayXBMui91y99KgxvRHmkq/TA
-	RecSEORw2p+Kg8SHfHnlZR3cUFFXIJcoV+jayKvpj2jSogQCX20XW6AJCD1Xl4ZkZ81TaVV95cx
-	q1dqS0C5gzQgT0JWFLWwHgDOasifSdpDInzEKoq5mZQbz8Iph/PDTmP/Pu7Z8gmlYCU5ObeyllF
-	KcA4OS/W7iEQKtQX4OWCjy8QspCDgNfeKPUgk+ok822TGGl1wXWwfYa0D6CXUAQiHV1029oOgvC
-	+PSBr80J0HAeAmaUgjAI/bJeme+YogbYgsvcBWep7H1Fkrvp4A9QQ0tiBT1wN7dM1VjOKYOkTWg
-	DT6R7YGUiP
-X-Received: by 2002:a05:6102:5243:b0:7cc:115:ddf4 with SMTP id
- ada2fe7eead31-7d072cafbdamr9042312137.25.1793890254113; Thu, 05 Nov 2026
- 06:50:54 -0800 (PST)
+	bh=nrSUhArM/zHEjchVrw9NyJq5VRSjmNtY2/0KcQpTHjQ=;
+	b=lC2sYj5HXAAidAm9aVnxep2ISssGc5deiQemlBmwjjdTtj10Saegt0Vct/doF4AglXW68t
+	tlspY7HQSidf1xxpuzbCn7Sbp5X/8ns+rX4vRVSfuW7MjTuZVnDSmeDHu8cJlBOmZJp2IQ
+	RZavmXu3Q8KXK4EGFn6od6QTBRZZxTo=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HnMpGD3e;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793890524;
+	b=GuZ2EvolIiYIC21Y5j7fxYiA4b6DI+rCdiAjI2GXrjGhqWI0/tdNCWI85Qu0x2jb/MNfh0
+	uW0QWW5XeUzKcxORdsGM5BmWnRUskO8LrmByYlVBM8/Zt+JRPTcvpvTx5AWs9mXm6WajSv
+	NhUD6/y6NU4Odm1KAo4DlQfFaXe/gbE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9DCB4437A0;
+	Thu,  5 Nov 2026 14:55:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D781F000C1;
+	Thu,  5 Nov 2026 14:55:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793890523;
+	bh=nrSUhArM/zHEjchVrw9NyJq5VRSjmNtY2/0KcQpTHjQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=HnMpGD3enRBqaeLM0xOBVlGPC6ENy8qFZ/LxACoukGORjw+noHpWsUVwyyt3vKXEH
+	 By0v72rigo8lVnWymIOfs1QOwKv50FFAIAKxyKJL17MfWiPJ/Vy35JK8Ql+YfjL0FB
+	 Shg9UmeEPJMHdtI2ECL96FpIDq5r0/GDPdFdqFaSCnztQ9iQ3lkOtn8iY2Wd3JIT47
+	 P/h/C2EK3IVX+2AEWzGbxi4NkIV4TVRz/zEY+bQit8tS39LnBhFHwQ2XW3GWonJTDs
+	 rFfg66mdXs9uPiwJiexv+DKfyi6kHfQoAngU7MxqY8/lWUeV7xZVykWfFm0p22nuYI
+	 2i6PlwsonzI3Q==
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfauth.ams.internal (Postfix) with ESMTP id EF5311980047;
+	Thu,  5 Nov 2026 09:55:11 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 05 Nov 2026 09:55:19 -0500
+X-ME-Sender: <xms:z5jsatHDs0jNWwmLwh1eHUQzs5ENE53hTkhR5YncedsWz6WN4SAU4A>
+    <xme:z5jsarQxquV60pzGc1qwR66ozvTxn76QXXpZ1UCUQJCNDYR0LEzaq1GL3Nf2vFLUp
+    SaSst8kp_FQ5FecIOtJUchklOadeTPlvOY54HDB4x_i9c07O-FVGbJZBQ>
+X-ME-Received: <xmr:z5jsajixFkwCb1otqZx09UkN074IrZFBOKGXtb3saIoCTNKx9B1LRS9yeqM>
+X-ME-Proxy-Cause: dmFkZTEfNv8KAoa9rNZKyCWbiBmL2n4Bk7MXZQMFpHT3IZCghURgydMkmL8v4sTbbWh2OF
+    o7xxu2zDC7APT+fDNYq70qrN3HlCZ8JAIeVGogmdUAHgru+GtiC1OI8114Wu3Rk+xIjxxh
+    cVsRuecuAGBuzau6soxBesvdI5sFcias6CB1X9p6F/vSuFPNFtDwf4qra3lHUbKPTkqDGO
+    Y6rwt0KLp5W30A7QcwUEn/6koJCm0irKqEBq5nWqV+9FLrPejZigfr6eDzWWE5ydeQHXTY
+    ffqQhUaRv2p1f6YTvdhmsalDlTQXPfgvekWlclWqq/6/5rek0k1/utIJ/reiUQWczHw9HO
+    YRc2uvruhJNUSyM9Jnh/abZo9DaZ4YO/dkhnTu25kCEN7rKnZQM4/pxmgUBgZkmr0G0RIX
+    RzitBrGcFgbWWmosvzONvgf8fSQvmyfiio8a8d1SHYX+LnMt6U+l/HcrCHkGherw1UqYze
+    EK2r7hSXcoGoaNm09DFgsNz1kProsKnBQALlANmKd60rwQNrd0JH5doX8LtR9QFnLFGo7k
+    Jke/VX4B/ZNV/d8AV0kg2YcfIy5bA8sONZAh2Ng8L9iXuTvrQvtuh1xW1x45BCkWBiYNf2
+    5awshSKvvMDEj+81wsaHWQsdSlOzUEC74y/g8yhE8YC4nChbmdqe1XOfBt3w
+X-ME-Proxy: <xmx:z5jsaoUeU4tGCAFg7BPREqNNQC5ETkzv5QV364lTKDEA8dejX3C30g>
+    <xmx:z5jsapMgTuMdmmt4_iDbWJHZB_c6xMSRJwlrUGMQUj_x9SYjlsIAMA>
+    <xmx:z5jsatYaXFzeoCbneowS0FNTZxRKMHCwI9CwYmBB6ERrvqLmNBVxqA>
+    <xmx:z5jsajT4DjSW9tnGMYeVh0JMi1w9Ez918dF3gtLKD9CkX6rFIbu4mA>
+    <xmx:z5jsaqOr-VgrFiM_ZBe50Pjq3oUd5Oi436kgCg5c0wLu3EcL7Qv9Jpkq>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Nov 2026 09:55:10 -0500 (EST)
+Date: Thu, 5 Nov 2026 14:55:09 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Hugh Dickins <hughd@google.com>, Christian Brauner <brauner@kernel.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Harry Yoo <harry@kernel.org>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Oscar Salvador <osalvador@suse.de>, "Liam R. Howlett" <liam@infradead.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Ilya Gladyshev <ilya.gladyshev@linux.dev>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev, kernel-team@meta.com
+Subject: Re: [RFC PATCH v2 02/18] splice: don't steal page cache folios
+Message-ID: <auyYdqQBxdnBuM0N@thinkstation>
+References: <20261104130118.2507513-1-kas@kernel.org>
+ <20261104130118.2507513-3-kas@kernel.org>
+ <af2102a2-206d-4c5e-ba1d-1ef42b2b6338@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261104233029.3282438-1-joshua.hahnjy@gmail.com> <auwfZj6QTwQqFIZb@parvat>
-In-Reply-To: <auwfZj6QTwQqFIZb@parvat>
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-Date: Thu, 5 Nov 2026 09:50:43 -0500
-X-Gm-Features: AclHuK8f94VBTeNgSM335yz-5hAFVlY2uvlhDStBMta91PSr4DplroD4jKbuQCM
-Message-ID: <CAN+CAwPNsSWyqbKRGEL_rtrz9CWTdFvhKFvZpbUNoJJONXxuZA@mail.gmail.com>
-Subject: Re: [PATCH v8 0/7] mm/page_counter: move stock from mem_cgroup to page_counter
-To: Balbir Singh <balbirs@nvidia.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Michal Hocko <mhocko@kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Harry Yoo <harry@kernel.org>, David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Maarten Lankhorst <dev@lankhorst.se>, Maxime Ripard <mripard@kernel.org>, 
-	Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>, Oscar Salvador <osalvador@suse.de>, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	kernel-team@meta.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: kjcoisn7kks57e39oa5aa715ajtcrqnq
-X-Rspamd-Queue-Id: C093F1C000B
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af2102a2-206d-4c5e-ba1d-1ef42b2b6338@kernel.org>
+X-Stat-Signature: 3wmwemnx7ae3wirkeywk7qdnzw1je164
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793890256-903253
-X-HE-Meta: U2FsdGVkX1/wEoofPRdGYZ6qolSSSsRGZ23KAHKU8zMc9grCglVVYcV1ajZFHrIwHuOdzaLxTOqkDC76dZwWXMJUFUvMfiQ99HdTaAM0Hj+nfuTGPMb1Q2MVRfOzE51eXXwlPYnDGF9ETgAmgW5Z/P2yS7lLlVxJotK+Re1DqMOSdzElzJSv86X+bbDIiFXQB275BDA9XawGZdH7AYBQYVluY1ZR5kQQ3unZTFKXXXMliQsEY6G1QjNxM1rrGcmcLwr2w86k8k+I06yOBtrYc5eBuYtkYDM2FJlUsguhGmOsel134Tv/IXAE0xuSlTqy76tI8BcbHk0WgyngyfeMO2DmsMDfz0LrlD9NW+LJ4pBk1Juv477z2soiBlZUbnm6Up+X/lA+jWD82S3medvyRoS2+HzpHjDpduZr3OrP1QQDaH5lRf4T3+4s2B3fzLeudQQqvrwcNnwEKBBzcLJ9r8GVLaH4lwl9HCVHB53KOWshdNxr6c/xpBwCd/f0FMY4B6uMWaFcG1pTyMLrKKe420/UnlBgAPyMd4a5vTfHZ8koJVe8C5HoRmQgYk3aGdCumij31UPBHT+vudgZWx16VIYqD3H4HOFEjPMhz+GQMy1xgdMYJtBmtlo/OXz2dNnx6VZ6eCgILazOyTGoq/eDhdvduJIctPd02wEw3OvU8YgqWOZ8E5+Qo0TqPl/qmdsvJ3UWCOK7kOChcplMwIhGhMzXiFS7QUpV9u+hWDZLr/XVNnmL85wZRD96ICnXbKDZn9421Tjo8NoEPXzMtzdU1Lc6cOdiuRVt0iZJDfloEcCwoV0b/4o1EAWAn0a8Ej2s/+ML+hbZ4ASi+gaDRD3AFdPcz1/hcZmpHVfPq6PY9PXqCjkJpxikwm3aiL/vhhq7htjslBJDd4ZUQwLikOXGR1fNbBeylz8ZhiL6DHB44lzF535RCxLYJzYNb5l+F1fTxRiexgfi9t0JyPqSc/5
- y6azY5nY
- smgE47vbYqjLGXH/qygdZ+Nueybwik4GRnBJNQBGIR35gHIOjWocsXLDUaaLZdPzyYY6UtuMmh074iY2mw2/TZLMZ4M5Uj8C98NjOn5ntcFu6XkpQhb6mTNct9bVFCbVnTQ5B/lpg5Kkm1R1jKAAoJvm5z1EFhJeVWeMdNV7LrBB+Tms1xr+PANmVhhQRaLtF11Btv+MqM5iYJqhgB3jTo/Nk+QS03CMoWRz73UZdg6MG5h6GE7u7lv8mGmTKDHAP5jOAKQMqvE/Ae9yzvssy7U446tw0bOMqQ8u4VfMSb5JE5If8CAFhoIQ3EuX607H5xdBk98pAiXC0ebe/6wDb1Yhb3IWcMfzy61Es61FIhY9F8klSL08RtLjEzDnAMdCt21AKL3J+jClXDT9r1bBhChAWKidfQX0HxntD2FsADlsyrCtL/zr2pEmiSnhdbQI5D6wHnILlJdKzgQOlRwAk8E5L7QnIsh/mxSJ8GO0eNHy1kyPwKsjTRmuk/Frj+37pyAtTbddesjgCcCWd6Dn8YHcgZYCm/W803/EPPRBcvBSvAgc=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 7A710120009
+X-HE-Tag: 1793890524-85054
+X-HE-Meta: U2FsdGVkX1+xxWY8KyTspEFgCwNJT1P9BtyJGeN+fRQfJXi0pCc4MZ1qwJQJddn3//U5GJxVipDqrVuQNp9BgE+SaiWyOtHfgr4l4gibJo4VQ17SvblQT3ah67WgSA6UQdHQlnx8jweN9ssUgAIfZxeePo63lHKs/8mRSy+SCYWzoCqijMUVNPHKw7rDDYHEkZM/4QGdS9Bb5Y/7wt47m/Qu8RD9OdI/GiAGp/+Zf1+r5GuzfE0s8fuMfa+A7SgO9IJUWxcDqPwwdxt4YXkfOTUiBnVj+AYRu+UM4GojQB5PxKW39wn0sKs1Cx2owQxAczrVZIrBs/vDjQslZXRPsUZNZel81ZCURvMP7L+jKlm/0uFKQ8GzPwwqf7vo2YcyMK8wrTI+iB2FP57pR4GZd7n8LHX8eEzARqJyNIT07xyK1BgX1bRVOzj01PBf+VCvcQuMk8E6rZMSd4zD0VAdPSK6m35/kj19GYmJZ5bqtKuDJUPgPRKd2F7nqXOdSdyEnmdIoykgii3o0/gAJH40sOgjEy7M0R7CyTpVHuS5LHqVRPZ+YqdcLxAxEjHNnJ9K6wUh5N2DQ3fMR8jj43QcFFe09gPMpsm4eYNAORfJnSTRtdKyICqp4IlrE1IlNXfkycIoDE8XvhU23NjoG9vd4sMpqFzgEN136e5/c9Sz6tgZndM/PZ9dbBOThUgRgnRI0gg8UtOSg99Dak0+/Cwp/t2t9DaUYybt5lxUUqZ740s/jzyWJMxQX5/Pqh2mPvjYp2ln46tkgGKC4RYTXriuMRDBS4/4VHSAO80GdxcAGI5ibRIC/n8sDXkXCB6xSha+sKxQqqUkKNlQTJTqktq3yfWG0xZjcAo1pYYNmEzXF05OfXubAKnOf1p6NJu6Ps2zzk2MuIKQ+0+g8loBq/ZqXQMyvxdDl/pzog8J33KY9qZjiO8NNANfuJDLSQ2i2ntuc0z8j6PoUk22OQC1IxL
+ 1JcdTUw7
+ N8okv85u1bhsALCr1NswI+KEFlH+hWe9GIoVpYEHO0aKcHzIU/fYD9toZ763gGRvDEPoWh+KN8wSm0+OKSIA7Rgpk+ZPDwWd/p4l9Sw9jGgLtJABDsl4K/LvJoRjQBv4HWaG5iRlK8sqx9MmuvnYPbXMFY6QssJ8obu/5dIkOReNdA/1CLl0dvCecQNsnBtYunIRkXjrd5rOH05AElT6JbVO0+HmoBmBkPB237TkERyNyjX7aXy1KhCb3lIUbT3VQQE69r5EaLv0TbWKqjVisaAz+kU5AoqNxRO5ZindxKFh0gq5ar+4Fwxlcas0LU4aPhZa9UqbENvnRz6aY2Uj1v7BJMbfID7a77vrOWfF2VStxM3ZqYOcoruTdJjL1JaXiDCY9EqE8S6qAjL403/wZkg6ARlB/JTdzjKUKQaIjpq7iDoGvkNsPkVMFEw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,58 +140,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 5, 2026 at 1:17=E2=80=AFAM Balbir Singh <balbirs@nvidia.com> wr=
-ote:
->
-> On Wed, Nov 04, 2026 at 03:30:21PM -0800, Joshua Hahn wrote:
-> > INTRODUCTION
-> > =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> > Memcg keeps a per-CPU stock of precharged pages so that small and
-> > frequent allocations do not walk the page_counter hierarchy every time.
-> > Today, the stock implementation lives in memcontrol code, even though
-> > the operation it caches is a page_counter charge. This makes it
-> > difficult to add new page_counters to a memcg and preserve the fast pat=
-h
-> > behavior.
-> >
-> > This series moves the stock into the page_counter layer.
-> > page_counter_try_charge() consumes the stock, charges a batch to the
-> > hierarchy on a miss, and refills the stock with the surplus. Memcg no
-> > longer manages the stock in try_charge_memcg.
-> >
-> > So the stock keeps the existing layout, which is still a per-CPU bank
-> > of 7 slots, each holding a count of precharged pages that it hands out.
-> > It maintains exclusion using local locks on each CPU, and for remote
-> > drains we schedule on the memcg workqueue.
-> >
-> > This change gives us the following benefits:
-> > - Separate charge caching (page_counter) from charge policy (memcg).
-> > - Makes it simple to keep stock out of interior cgroups on cgroup v2.
-> > - Prepares for future work for stock improvement, which can now be
-> >   isolated from memcg changes.
+On Wed, Nov 04, 2026 at 05:05:29PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/4/26 14:00, Kiryl Shutsemau (Meta) wrote:
+> > From: Linus Torvalds <torvalds@linux-foundation.org>
+> > 
+> > PG_rcu_free holds back the reuse of a folio's memory until a grace
+> > period after the folio is freed.  A stolen page cache pipe buffer is
+> > reused without being freed: remove_mapping() takes the folio out of the
+> > page cache and the caller keeps it.  fuse_try_move_folio() puts it into
+> > a fuse file, where writes change it under a reader that found it before
+> > the steal.
+> > 
+> > Drop ->try_steal from page_cache_pipe_buf_ops.  fuse_try_move_folio()
+> > and virtio_console's pipe_to_sg() then copy, as they already do when
+> > stealing fails.  SPLICE_F_MOVE from the page cache into a fuse file or
+> > a virtio console now copies.
+> > 
+> > Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> > [kas: rewrote the changelog]
+> > Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> > ---
+> >  fs/splice.c | 51 ---------------------------------------------------
+> 
+> Removing code is always nice, even independent of the other changes :)
+> 
+> The description doesn't really describe the impact of this change. I assume a
+> slowdown of certain workloads (does anybody really care?), and temporary
+> increased memory consumption (as we keep the pagecache page).
+> 
+> No idea how often stealing actually succeeds ... a bit of history why it was
+> added in the first place and why we no longer care now would be nice.
 
-[...snip...]
+SPLICE_F_MOVE has not moved page cache folios between files since 2007.
+See 485ddb4b9741 ("1/2 splice: dont steal").  The only users that still
+steal from a pipe are fuse, when a server splices into /dev/fuse with
+SPLICE_F_MOVE, and virtio_console's splice_write().  With this patch
+both copy, and the source file keeps its folio cached.
 
-> Is the main motivation ease of addition of page_counters to a memcg?
-> What would those counters be, why not add them here?
+Miklos, Bernd, Amit: do you know of users that depend on the move?  Would
+the copy hurt them?
 
-Hi Balbir,
-
-Thank you for your interest in the series! So yes, that is the main
-motivation but this series offers standalone benefits as well (which
-are right above).
-
-The new page_counters that I want to add track per-tier per-memcg
-residence. Those are used for enforcement (and not necessarily for
-visibility), so I think they wouldn't make too much sense to add on
-their own now, without the actual enforcement parts.
-
-What do you think? I've also linked my tiered memcg series [1] if you
-wanted additional context.
-
-Thank you, I hope you have a great day!
-Joshua
-
-[1] https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmai=
-l.com/
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
