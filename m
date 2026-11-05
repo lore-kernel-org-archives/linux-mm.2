@@ -1,150 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B87606A335
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F2F606D82B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:27:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=H4+8yHtY
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=bCWtbtkE
 Received: by kanga.kvack.org (Postfix)
-	id F25356B05B0; Thu,  5 Nov 2026 11:27:01 -0500 (EST)
+	id B3D256B05B8; Thu,  5 Nov 2026 11:27:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EBE746B05B7; Thu,  5 Nov 2026 11:27:01 -0500 (EST)
+	id AEE2C6B05B9; Thu,  5 Nov 2026 11:27:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DAD166B05B8; Thu,  5 Nov 2026 11:27:01 -0500 (EST)
+	id A062B6B05BA; Thu,  5 Nov 2026 11:27:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C43D6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:27:01 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 61D4F40B4A
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:26:59 +0000 (UTC)
-X-FDA: 85401594558.14.92FDA56
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 59E80180002
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:26:57 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=H4+8yHtY;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793896017;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A6E96B05B8
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:27:21 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0C4391C4574
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:27:21 +0000 (UTC)
+X-FDA: 85401595482.24.7DD3D88
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 15D6C4000D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:27:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bCWtbtkE;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793896039;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RXKLkTKvc7+/XeyXcf3gWRNGXsSdWTTIZy4YnfMAbSg=;
-	b=rXJCfgN8NBry/dIOPmD0twqAGTBfl1z28MSV8FA28pgiqsAQEGYcZ1Ck2JnaOF0k1PN/KB
-	LCuRGn4PLkjcCYW4TOOJ0IzUV3UJVEIFBZjo1jfWFYarpRdqKf65479faKSeccYDps4idH
-	wP/gxW7+3jnGsAqpIH33j2EZuwSsRFw=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793896017;
-	b=x7IPaCtzhB8cNZx0zZdoQv5/tNEyvluKmljAi4kMHNJ1zDX1m5U+539QHRK3fFwZ/cj+kb
-	A3oEOS/gZD8xu7Q8quXCjruEOE9cElWmTNZXhWDw5COfwey1cABjt27ggycPwrvUhHy+UZ
-	pBsdjj28yhh9ETYeFZneSxnrhAyhgeE=
-ARC-Authentication-Results: i=2;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=H4+8yHtY;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-48e00eee27dso1264560f8f.0
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 08:26:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793896016; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ZAXJk2mvM108D+zfRSdfyLnrYgqhMWp+An9LkMqn0vl4Vh03WpjCtm1Or6QlCLjh62
-         AD8v6z6ZeuC1K1ZistK2VkB4JGI3XTDMpt+2lAkGk+KvcEwD0j3FfPfOS+mXLHx1ulOZ
-         n44CwgpAKsiJUhyeeV43XbALna0m0ISmHTnDBm8X+hdkBphg712AAKz/9aLtViQcoMdk
-         BfJqy3TcF6KSoCjQHdYUEbCfezRhas1Hov5w3R2UqvrawDFoPeuE4DwPP+Abm+Nmz1Xh
-         FunOzD3dAwoX9ukzd5impw05+Fmp8KsDphzB96dKcvH+egceO4TM9A5jmGahXwuYDlFy
-         LMTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RXKLkTKvc7+/XeyXcf3gWRNGXsSdWTTIZy4YnfMAbSg=;
-        fh=I0LqeFeucV6HMMup5PF0G7uNwPcyDqDjWjCinu+C+Tk=;
-        b=GQonwuWGkQWusVS4akBgqBZVrcezoO7oEKJJ089JTdwOrXdHAiaBaaXQKtxcuGL+Si
-         0XlYmkqZaUqmGXxRclcjdQ8+1kXqNUDewyicmiD7YYhfuKt/yVKvVEykbPqMVxcBTW60
-         uQiq3IhGQe15nkXi8yrUxiHQWyMrBGulkOiJC/lLbhTL4G5wcuEMRHzf5BHr4ItGWlZq
-         TBb2fCvDBlDxdRop++W6/zD6tvuUBYyfSS2TxKAGgBv9n8enT2+lD2ztY+CAnmh5R7sK
-         vd9LenhO+F5MksXyxo9zUVKEQJqPA0BqNrHRBNM/isTGxNKFQ3NmcCnOAwwmsMw4J22h
-         vlKA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=yNEceuVF4+1dEHMso5FiTKoIIlIwJZWRYcUiC/JkgOo=;
+	b=qVuhukgood4baFQHHKZfIDxFFVlUlbjjJ/Ajwr0TSkH7u5j+BXy0dpmEOskH5ZhhFAAuL7
+	nmFR8OVLT1feLFz0V4dgzFcT9kqw2z6VRhtOP0PLr5LGhqEP0R+UQZ9LIr/C+POhb56htn
+	VLLXzIVg0TjuQB26rVTc/TMpBDGuc+I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793896039;
+	b=1uUN/bmQCIqUVLsntoqvrr5KOUSr2YCA5cU/TklXiBQlEaxarCYQFacHOfBRZaUgF1oFDG
+	K3D3HCfFPW5l+m3pJ6Hetz95DVA8RNP6pyDmsx5J+iyyJbel8DASxMPPEGHN3YyvgA/Wme
+	At8hS4wsDFHRDZpsy1Q6t8RrE3KCFXU=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=bCWtbtkE;
+	dmarc=none;
+	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8FF07600AA;
+	Thu,  5 Nov 2026 16:27:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0156D1F000C1;
+	Thu,  5 Nov 2026 16:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793896016; x=1794500816; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=RXKLkTKvc7+/XeyXcf3gWRNGXsSdWTTIZy4YnfMAbSg=;
-        b=H4+8yHtY+RfZcUBJ3pLSb9hY4AMKCW4mwoMFxapT2D+YybcumMTZ+sXIXXd7jUrf1G
-         wV9CWkVElpuPPufn4MYwXGBa+ZdeespQKY38m4RoZrVWgQ5fZR0iA4+CJooizvflRwvt
-         aqIBwdJ3ve1blGUbeMO4YAGTzx4EePgpmJ70o0mys69ZwgH3Y8qZkZcmNb+w+8JqUKpf
-         TGb/YvBrf2yZOhbmUTf3KBwrtoiKCQDyKZRFfiu7aFzyhJzadAHkfMx5uxysE9vP+PHW
-         JJlcwYSREK4M2ydjemM5YHMCaNHG1Mb8IC2vkSpuFcfAfsgg2ejjk7ilPC+ymbsBxA1y
-         3Zfg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793896016; x=1794500816;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=RXKLkTKvc7+/XeyXcf3gWRNGXsSdWTTIZy4YnfMAbSg=;
-        b=jDB8moHfbCet3bGXIlkfk3IpQ3IBr/gXFuXs5UpRVBHr89/FB7Kq80dVaeyEwbSbMD
-         2+HTE9zahf8k1U6CaBhYgnx7a4JlAYm/S3NJP9PBwXp9C1G3SPG0jNKrzLyl3MKHJbv/
-         5QngbQa1mrLzA2q9RytGy0tbD9wrXNCyJiydYH1ECU1N+Hraz09ak+yHohboL3jmtGob
-         cj9TDu5UU6LECeGc6LNO9uzYDRKTJoiUfr//TZX+fENmlDAJ5cJJ5KwjLPYPqQR82DpD
-         RpXGQd83p4o+nxn/JcMEpEJrk+WcPpBh+C017iXfe8INSz28K3+BZY127HBt//0ma6sh
-         ilGw==
-X-Forwarded-Encrypted: i=1; AKwUvBwiC5h8CGg0FeigEWo4P0WKwZx84NwOjo6SnKsN7rlwgrorWQOITIGykB6njAPxMqXl4LyDX56jnQ==@kvack.org
-X-Gm-Message-State: APuU4Z/VcoMu5+DrDnvgJj9gRAMHXujrXa9a1+ig1YaZlFDjsEUWV0pO
-	3CfkCbW7RT8ZRFBfNETAWJLQ47EptkBjJI3qFpeyueMpBJ34WSPaRoWPMLrm9zDS5T0cFa+kOIV
-	L1GdA68rwyE+szq+3OF7uWDJwTAhd2zA=
-X-Gm-Gg: AYBFou1/38qvuT2rReDCrVzuCgvlqagjjuKpj7Y+/35h07tPPbgTk7o/rnvZ/7TTvWu
-	cxyXTfZNwzqJecGeHUcRrn4YwLhsDewpFjsve9isRAcyNET+BGfUC5u4sTy2Q+TbRoRStMEgzjt
-	AWfVAp0/jLpn5NzioMNw0/D7UXNyFihs+1tCCobNvHPXCT2WmDSoXMryOh2YRqI4ehTx9mGtXOW
-	tPjRr/gmBtnw+mvPQFPP5Z2vYVE+mtgjM533jqfM9hXRCUivwgarpB2aCRxGc3jln59So5h2Z9u
-	zu3sJOhkWO09yTO6oQ+TozN+1pQfTuqydC9KagvaYCiUwiaA7S4ofwNK2N54fJk7ZUNHK9vFpUu
-	/mxNZUbPOgpjBG/UYRSb6c/jHq9CxustbtAhUZFxut0a1k08qeTYbDJsfxB3aw5iybwYd5n5wN1
-	lNttGZCHXUCkmaPe8jAs2a3t4ojGRd9W7vHQrjYsDldkSA+fKz9J1O
-X-Received: by 2002:a05:6000:400a:b0:48d:cda6:4dd7 with SMTP id
- ffacd0b85a97d-4927f78fe8cmr3795f8f.44.1793896015686; Thu, 05 Nov 2026
- 08:26:55 -0800 (PST)
+	d=linux-foundation.org; s=korg; t=1793896038;
+	bh=yNEceuVF4+1dEHMso5FiTKoIIlIwJZWRYcUiC/JkgOo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bCWtbtkEDpyTUbwzvxe6MGZwVSKfAqoj503Jn568t34yc39Fe9sgjWVscGfykg1r0
+	 j1PwfEeAdKwqlS5XJPr/3Z8clpnlSYMJz97Zk4kZGpJ2xqQINseX9gnXJTMqQfLg2J
+	 MK+hifwQuNYe+Rc/y0DKuB01mvfolNPPjiLxAmr4=
+Date: Thu, 5 Nov 2026 08:27:17 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
+Cc: baolin.wang@linux.alibaba.com, fuse-devel@lists.linux.dev,
+ hughd@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ syzkaller-bugs@googlegroups.com, syzkaller@googlegroups.com, Miklos Szeredi
+ <mszeredi@redhat.com>, Christian Brauner <brauner@kernel.org>
+Subject: Re: [syzbot] [mm?] [fuse?] WARNING in shmem_initxattrs
+Message-Id: <20261105082717.c459bb33778fcf27e5675082@linux-foundation.org>
+In-Reply-To: <6aec6433.0ce67c00.35143.0001.GAE@google.com>
+References: <6aec6433.0ce67c00.35143.0001.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261105155032.240457-1-alex@ghiti.fr> <20261105155032.240457-2-alex@ghiti.fr>
-In-Reply-To: <20261105155032.240457-2-alex@ghiti.fr>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 5 Nov 2026 09:26:43 -0700
-X-Gm-Features: AclHuK8sRHnPT3t5LKUKIDgVvInf7cfuedQZ01ChQHUhD1OG9l446H6tMb9bWpQ
-Message-ID: <CAKEwX=ML2oK4+8aaz89GFNgq=AwmEdXusG_EtkDNY8cbLbGtAw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] mm, swap: only prefer nonfull clusters on
- synchronous devices
-To: Alexandre Ghiti <alex@ghiti.fr>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Kairui Song <kasong@tencent.com>, 
-	Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Baoquan He <baoquan.he@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Michal Hocko <mhocko@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mnin73mn9zkyncoqgxkwb198q37ukxar
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 5wuckypi49r98kp5dshm4jzom743pt7r
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-22.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	MENTIONS_GIT_HOSTING,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 59E80180002
-X-HE-Tag: 1793896017-210430
-X-HE-Meta: U2FsdGVkX18EhNTDrKZPkhNGWL3HoaaSBVPcjnpEA09Kmt7/39hUyBOZhEEwQHMlLauCso2cBSIsr2RFiJ4mYu4k4mldrUQtt9HmN5l5RNZQzTdNt/ZSaKIgJc8pNFIaGjJqvmi4t98ZAUYmzn6GOm45RjCPClKuGpiBW/vM7p9ci+NXhd/HtxbpXbVBBqTPn7fpmDhEr0UT83yW7jvcBxwjWVuCSqjijgX6wJWQvoj0pMhVHZrJj9yreX91tsrbVlzkeJx/QvJEl9K+U+fq8Wcezr8EQ+yBge45/3sot9VWYEwfK+BEqKK5UNHkTB3FoleEw1AONIvTQwBRKuKaZqkSeT72ytaovlZN92Hww2asre9uqk4kW6LOGwnWXxZLTUjD7piWMqUq0oPb5aa7coArSqsmoPpJxqdOZH+DZFthxlw7+549tUfSkVw/zJRJj4hVPfSlyljlhxoHk4RXllHn/ayAuIK9iRVKiTcRgldLrxaP28XunXJOHBY1/MZ8ab3Unj7hrpOc7felpr5tfy/4oi31ggwqr7VyCTy6pQWVG8WBy7m4FsrypkQg316XnVUK8f0Niw/aNOyhIrW48GJ00A+GBl7JAYg/I8rPIYGw4pwi6yicilpb1p3XufoMq4LiYuvtZbOQk8OTWlzwz3aLrCpBY4e9Y2Q1Vid9neSX3z1tCpIRxsCNFAHODc3uTjjVjXs/X31RSjXvklBaMnt6muI4TjE3kvidW3dEUC8VfW1C5pQOThzZqLaSiQxpsLIC9q+49THisD+u8Fa6OxRa1HwkiyWxED8qdOnTvl2rUUyO8a8d1wLC/ScAfPrR6MzKIzARzi5Smq0aLA3MpXghLjKBgPALsmWq7EZRD5N/KxZKJHJ9Xue+RS2s8RkAujJ0P3OjX2slaIRNxrIYlV3fuho///hsQlmcDHTYFgXxoRyVr5vGOD/cV/nZtycdryDG++x5r++RFMx9NYw
- 6qTl9M/T
- of3nrRGYc30rFNuA/5HQHsaa3Enmwcv2NMiXP+6zpZb4S6Ms11qonEpFoUvZPhHDnQnUu5kgQ4QF7RTqDWSRMfN1miH7c1Gcnzmr4l4biu+RPUaVam3e/IVbso9kwd1vomqON8zS/unNz0UbihWpnKG0v5OqfpnESEhm0IR5xloOmtr/cp2ZL3F4GVX1LuRe6vvwFs6kYDK5uF5SQhSZmNtVKEKlIvC6nmvgoaUpRgbOLrqDFDY2wPuR6gZwAvQ44JyMBxKkuMzVvK2J7uK09JP2H2mnGWxhsrWnhwcws14LGb2g/LIWWsDT+3FzoPtNQwwXzk69j5WcKiP0iLjA1CFYUhHlwuW3YyI92rVpVG6PSkW2fJ3B0+wRNN1ewddCCW5W45Xwm45VFi6DGzn3RVMg1GpXWYYEarr0gHKBBuUfMESwxbEF+XxNrxSPCLJvxpi3J
+X-Rspamd-Queue-Id: 15D6C4000D
+X-HE-Tag: 1793896038-887861
+X-HE-Meta: U2FsdGVkX1+awtsQKuZb61AGEngQgJCoLQZrqhU/rq5uDtP+F3Jr5NKFgQASH01XeLEPXqA50TQRP7F/Dmf7nZ/ZGFo0Wn/6R3C11oWLRfb5qfu+kkb7k2GbSFFnkxui8Z7R4i72gHWQ9c68DlMygHa2zyL9hP6Il5X8xb8S9FFy+uSQ3sq2Gsdq27xTd2w6iYcT6LzVLJjrsqosEWqSXf8dBxC+yMBFuWFQVkaFzckjXL6mKbJXhViFvAXwcVB/fgiR4fNgZchegTKGo5ZAoIhDmq6RGY9HE4BPEqh1Wjbm77ZOUZGR+21t0VRuTt1UHMAdDj4HTcV0aRKxQjpIOAeU5EPHe5If6qnZG3l0V483GcA3dXmPf/LTAPr9jf2fYQOwGyYDDN9ZRX+foGpkwaV7eD8AUBLaidUNlSMj7gBRRdLsC4CrsiQN3F2Z1g5QF9tA3dpFGTeiMo1udqU50tY/VaRYpmOY1Yz6vTuCocQtvKo6q7gGNUljOZLNDFgjX5NOWJbQrxYGCl6JBHfLpBYQnERwhtuI0I09BZmFaaMgtvMuWd4exnqPqlLgfQlyzdgMtlaEzG3ONQkeJFWXjgoyRGfJKvQw4amYJH8BukCU0AsVxeUuYc5feTVcgpQAIW+afzGrEBCHrEi+rAIOcGObdsyLuO3SzdSkkXwtH4Rk97F2rCKYZD8z6orKeyIe6d5adOTCVmOJzYnTGs3HVrzfcXXQK20a0SXyZUoAR2OaAw6234qNOBJip5I6XfwHwTpBCSioiOyGTFypkMPkWBr7Z4Ga5ClsACsTOHzlV/Q9fwmXwz6fO0vde5fkYGQ/qVaPtJ2XAR7Z15/x5wcjq6SzYyPYnIbcu4w+I8kKXXfUb4UmSKDjBv3ImAwCMHPrtGgeT3PEMbNYndblT1vFwSn3EBuB0JTZDFB6WIf02P5r9nsOBppjJkzMhBniku4ar8z+GOlamUJ+0UCR1cW
+ szDzN7h7
+ xjNeL6khxjaZg1PKmVSGQJ0bwZ+9dVfyNwomFWGwuJ9OXY9MZupsX7jMtHYSYLOF6GP91FkOgd4LXCcFR0P9u4nG2Uhlj3qEylc4epdCV3muAmehq5djbCR704OZIpPTnLJmYLE1wk/wZNhi4BMY2W1d3mHZmgEH/bd1tMEwy6KnwPuhcnfyP4I5Nv345R8xuRWXxhnWPFGxaUXi9rmFO/KoyO/ibE8hvo3q3OxNdA837xO643O6fonOz9nGrGItK5BgY0C19AVfrXXnWUENJYQFsOZnyMePe/rl+UstjrMZEZT3+Y4IwdF6CM6zHu8fVgaluJXeKBA1WAUmJNPZjEAaSNLMYGtXz16nJ/t8odAPWFxPCt7Mh/KGwTehy3qiZ6cs99XDOVoNMVmt3EBgnp0ZwKF3/5i7pHGuYHmlLsXW6KcpJh0a5Ws8mEIDPRu6SFskZDmFh0ey6Gbhuk+7q5sH4lmWBmItDcPxTsQgISv6iEAzY/dZwwy0quARYc+eTPcyzelS2zw1Xi5xAtBWM1E15CjevbrZuWkclQG0HONlMRRNmjx8LLCuTJzmwX2B12p68hN/TMmtWPUYL31zAmg/fOlvJy4dz7TN2pYF/MMIV0M3gccM4UutuVhe83oiJhw99+YcZGoNaStT8lmH9JMcN1uLhRkRSjJbapTBsPoqy7gmf/JbCH5vcJJ0DhXQqizbytaKd6GYhoiSI5936admaCP8lO/03aE1/nytOJU/j80VQiOJZvHqpErErkwKLihdnQZh6vf0RwjZxY2z8FlP7hFL6cxUJIxwPBWvbQa6kalXMzUWi2oicmquYKGtEN9y/fODkMqWggzx0AjtwD8s2zej0KKDFOfUNG68c5eVF1n5bGA00zJjXDfN8p4In2BNqL+lzH6NCxXUdg/Pb46Tg6R8w5VPqtl1tOmlhx0M8vunk2rm+kboprKyZMRzXqBZofipLMA0csNff3VGSs/x+QtJO
+ a1Z4dtVO
+ NJK2TGRBiuojGbxdGzjecypV70fzBnNSjgGIfwv54aT+hmW8gOMxXHgOXOhZ2Lj1LkgJmAPEkcIaCEFUn10lxggdyp8Lg+kGJxmV3XniuD38isvlzi843oQDQ5cY18Kw5IwGGALO/sJ/SbwWxNqMrVnd9cmLbkw4uMfsMPD4D4kU57SBdRsHaXuDDaO5GUUsGLoRqbVl09kbEi3ebVU/WQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,63 +97,131 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 5, 2026 at 8:51=E2=80=AFAM Alexandre Ghiti <alex@ghiti.fr> wrot=
-e:
->
-> Commit 9a42aed48421 ("mm, swap: prefer nonfull over free clusters") made
-> allocations fill the nonfull clusters of their order before taking a
-> free one, on every device without discard. Since commit 3cedb745d354
-> ("mm: clarify the folio_free_swap() for do_swap_page()"), an exclusive
-> write fault frees the swap slot, so a workload that rewrites swapped out
-> memory leaves holes in full clusters, which then go back on the nonfull
-> list. Reclaim allocates slots one folio at a time, so a batch of folios
-> gets scattered over those holes, its writes can't be merged and it is
-> written with many small requests.
->
-> So partially revert commit 9a42aed48421 ("mm, swap: prefer nonfull over
-> free clusters") and prefer free clusters again, except on synchronous
-> devices like zram: they don't merge I/O, so the contiguity of the slots
-> doesn't matter to them, and filling the holes first keeps the free
-> clusters for large folios.
->
-> Fixes: 9a42aed48421 ("mm, swap: prefer nonfull over free clusters")
-> Suggested-by: Kairui Song <kasong@tencent.com>
-> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+On Thu, 05 Nov 2026 03:10:43 -0800 syzbot <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com> wrote:
 
-LGTM for the most part:
+> syzbot found the following issue on:
+> 
+> HEAD commit:    05441d697f7f Merge tag 'cocci-7.4-rc1' of git://git.kernel..
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=17bcaca1580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=1cf189394a856f11
+> dashboard link: https://syzkaller.appspot.com/bug?extid=4324f771847cecb27c54
+> compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14423cbe580000
+> 
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-05441d69.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/0edd3964be19/vmlinux-05441d69.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/84d6d8dd5648/bzImage-05441d69.xz
+> 
+> AI-generated root cause summary:
+> In mm/shmem.c:shmem_initxattrs(), the initial reservation of inode xattr space
+> (ispace) from sbinfo->free_ispace is gated by 'if (sbinfo->max_inodes)', and
+> subsequent per-xattr subtraction from ispace is also gated by 'if
+> (sbinfo->max_inodes)'. Because sbinfo->max_inodes is accessed locklessly and can
+> be concurrently modified to 0 during a remount (shmem_reconfigure() with
+> nr_inodes=0), ispace can be reserved when max_inodes is non-zero, but fail to be
+> decremented when max_inodes becomes 0. Consequently, after all security xattrs
+> are successfully allocated and added, ispace remains non-zero, tripping the
+> WARN_ON(ispace) assertion.
+> 
+> full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=4324f771847cecb27c54
 
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Well that's convenient, thanks!  Two additional suggestions:
 
-Quick comment below:
 
-> ---
->  mm/swapfile.c | 19 +++++++++++++------
->  1 file changed, 13 insertions(+), 6 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 189f04d8838f..1c1b5d0b724a 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -973,6 +973,17 @@ static bool __swap_cluster_alloc_entries(struct swap=
-_info_struct *si,
->         return true;
->  }
->
-> +/*
-> + * Prefer a new cluster over a nonfull one if the device needs discard, =
-to
-> + * spread out the writes, or if it is not synchronous, to keep the slots
-> + * of a swapout batch contiguous so that its writes can be merged.
-> + */
-> +static bool swap_prefer_free_cluster(struct swap_info_struct *si)
-> +{
-> +       return (si->flags & SWP_PAGE_DISCARD) ||
-> +              !(si->flags & SWP_SYNCHRONOUS_IO);
-> +}
+- The Subject "[mm?] [fuse?]" can be tightened.  I told my thing
 
-Side note - I wonder if it's worth it to also prefer non-full clusters
-for zswap as well?
+      figure out a Subject for this bug report - identify
+      the kernel subsystem which is primarily affected
 
-It's a bit tricky, but I suppose you can do a best-effort check of the
-folio's cgroup's zswappability?
+  and it responded
+
+      Subject: [BUG] shmem: xattr accounting warning when remount disables inode limits
+
+
+- Use your LLM to figure out who to cc on the report:
+
+      figure out who should be cc'ed on this.  Use the
+      MAINTAINERS entries for the affected files.  Also use git to
+      figure out who has recently worked on the affected code.  Prefer
+      to choose developers who have recently shown significant
+      involvement in kernel work.
+
+   and it replied
+
+      Cc: Hugh Dickins <hughd@google.com>
+      Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+      Cc: Miklos Szeredi <mszeredi@redhat.com>
+      Cc: Christian Brauner <brauner@kernel.org>
+      Cc: linux-mm@kvack.org
+      Cc: linux-fsdevel@vger.kernel.org
+      Cc: linux-kernel@vger.kernel.org
+      Cc: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
+
+      Hugh and Baolin: the maintainer and reviewer listed under
+      TMPFS (SHMEM FILESYSTEM), which explicitly covers mm/shmem.c. 
+      Baolin also has recent shmem fixes and substantial review
+      activity.  
+
+      Miklos: the most directly relevant developer.  Git
+      identifies him as author of 076e5cef28e27, "simple_xattr: change
+      interface to pass struct simple_xattrs", from June 2026.
+
+      Christian: committed that change and authored the preceding
+      rhashtable-based shmem xattr conversion.  His involvement is
+      directly in this code, rather than merely elsewhere in
+      mm/shmem.c.  
+
+
+and, of course "fix the dang bug",  I'll test this later.
+
+
+#syz test
+
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: shmem: consume the reserved xattr space despite remount
+Date: Thu, 05 Nov 2026 08:08:06 -0800
+
+Creating a tmpfs inode can trigger WARN_ON(ispace) in shmem_initxattrs()
+when a concurrent remount sets nr_inodes=0.  With panic_on_warn enabled,
+this warning can panic the machine.
+
+shmem_initxattrs() reserves space for the security xattrs while inode
+limits are enabled.  It later tests max_inodes again before consuming that
+reservation for each installed xattr.  If remount disables the limit
+between those steps, successfully installed xattrs leave a nonzero
+reservation behind.
+
+Use the remaining reservation, rather than the current mount policy, to
+decide whether to subtract the installed xattr's space.  This also leaves
+the failure path with only the unconsumed reservation to refund.
+
+An initially unlimited filesystem cannot acquire an inode limit through
+remount: shmem_reconfigure() rejects that transition.
+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=4324f771847cecb27c54
+---
+Test candidate against 05441d697f7f9a927264f4058cbbc6a03dfcac9d.
+Application checked; no kernel build or runtime reproduction performed.
+Fixes attribution and stable-backport scope have not yet been verified.
+
+ mm/shmem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/shmem.c~shmem-consume-the-reserved-xattr-space-despite-remount
++++ a/mm/shmem.c
+@@ -4451,7 +4451,7 @@ static int shmem_initxattrs(struct inode
+ 		if (simple_xattr_add(&sbinfo->xa_cache, &info->xattrs, new_xattr))
+ 			break;
+ 
+-		if (sbinfo->max_inodes)
++		if (ispace)
+ 			ispace -= simple_xattr_space(new_xattr->name, new_xattr->size);
+ 		retain_and_null_ptr(new_xattr);
+ 	}
+_
+
 
