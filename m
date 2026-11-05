@@ -1,121 +1,179 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743E6606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 05:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE57A606A32F
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 06:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=cFNgwft/
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=PnR1tcQx
 Received: by kanga.kvack.org (Postfix)
-	id 3C0E46B05B0; Thu,  5 Nov 2026 00:56:45 -0500 (EST)
+	id C17286B05B0; Thu,  5 Nov 2026 01:08:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3724E6B05B1; Thu,  5 Nov 2026 00:56:45 -0500 (EST)
+	id BC7ED6B05B1; Thu,  5 Nov 2026 01:08:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 261E36B05B2; Thu,  5 Nov 2026 00:56:45 -0500 (EST)
+	id A8DDB6B05B2; Thu,  5 Nov 2026 01:08:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E48236B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:56:44 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7274940960
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:56:44 +0000 (UTC)
-X-FDA: 85400006328.30.E21D1C4
-Received: from mail-dy2-f8.google.com (mail-dy2-f8.google.com [74.125.229.8])
-	by imf25.hostedemail.com (Postfix) with ESMTP id BB29BA0006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:56:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="cFNgwft/";
-	spf=pass (imf25.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.8 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793858202;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 66BF16B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 01:08:59 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id B9C42A86D8
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:08:58 +0000 (UTC)
+X-FDA: 85400037156.13.E83BFEE
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012028.outbound.protection.outlook.com [52.101.53.28])
+	by imf23.hostedemail.com (Postfix) with ESMTP id EC705140002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:08:55 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PnR1tcQx;
+	spf=pass (imf23.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.53.28 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793858936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=dOC5LHS2AgqTFCevtv/eDNStKtT/WCl/fk0wy/PN8GY=;
-	b=JIyGxgHTy62xWQB9LSRtUBa4ApT2QPvoYOQqTJ0uVh9hqC0f9RSqBQgwCTZAKNoZRqO1BW
-	Gt3hFAtuUB7P6EU30kX8qt+cqxTCmoQzKvuOKH1TmcWPKT1awXgOuOkIGsFLhVdZ0aCTNS
-	ZWGq4khqEShP8eunlDuESyjz4tcVFvs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793858202;
-	b=1triekSWMTINQD9cUMpvM6kq+zYPXnhQosZjS7up8Iv1OA4+jfsFLx93LRXKmNksIfYxex
-	kiKh78N5Q0zI8soxQhHxhvS6d35KogrIPdh7mAyOE/DV7+LQwQXlSRAvQH1CD3Or+g0wAb
-	SQE+LHZfmbj8EmO2BKsNxG50k2RKPo0=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="cFNgwft/";
-	spf=pass (imf25.hostedemail.com: domain of dennylin0707@gmail.com designates 74.125.229.8 as permitted sender) smtp.mailfrom=dennylin0707@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy2-f8.google.com with SMTP id 5a478bee46e88-36a1e794908so342337eec.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 21:56:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793858201; x=1794463001; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=dOC5LHS2AgqTFCevtv/eDNStKtT/WCl/fk0wy/PN8GY=;
-        b=cFNgwft/LYAg85xmiAr61e8/7SLv+tclcxUKyVJayeJc83oDAL0CS/Y+5VGuk58VCy
-         pRo5LuoUmFu0r4T0nj/UaZknxbno8aDfNyMXuzYxMoWMb2HfO1JvM8KdTEeo8SNdVnZd
-         +QJfVr/V6qDjKkkhYLzan1HkXIuzxOmIH46PUxhQijxy7diG7Z+uu2BbIKgKsiDuMFHb
-         okPGN/bfZ6BmjK9zsFbf5FY411VfNVCWKz6KKmMp77CHjAMUeZZq1Gy9RWkG8KGY5PDs
-         tiMs0yZhmSWorGetj+nKm8P5oWVzNcnLW86+X2uEme43oqxNpvEgs3dLmB/ChJ94S+2s
-         3IPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793858201; x=1794463001;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dOC5LHS2AgqTFCevtv/eDNStKtT/WCl/fk0wy/PN8GY=;
-        b=WbSJeXiOHvHs++9OqSfFDEGwWmn4bym4yhs+nbuFqQfFxfMKImKY0l7zIWpm10G8qP
-         m86qp+wwWRSPrTHdMK+dbYwe0cJRTl7EgJGW2KVZsdgIzFPheDO93U/46DIshRQnGKTE
-         F/CiYicH4X+fZr0w46fDUim/T53FSaa6GkLXc7dt8HAFvpp8IyRu++0lsawGNpAehDJq
-         8p5lBnJz2f8t2rV2vC8qhkmRtluP32mO5Vc6ZRo24soFoFUQGFNrAwxhWTuLuNz5x+RC
-         KUcCGmMYkv0xz0ncIbWGN1vNeMczOl12JzZCbOT75B+Hlt375uVOY9Lox5w/NjejmzT/
-         NyeQ==
-X-Forwarded-Encrypted: i=1; AKwUvBweeXQZxd4SgEvpoJw1b+B8xwgohlSWruL7hwoy8dXUwuV7w6bSXzsPs7+OGwPZ6TGYz/XTF4SkKQ==@kvack.org
-X-Gm-Message-State: APuU4Z9cC1wl+ERV3mKxZ2WABuawYkSFuq/ffob9YfisVz/S9R2DSF+0
-	DQke4DSD5ohmVA5hJy6kYhZXuhapSVJza3Pb89hQfRl4WcOvlbTLG+r3
-X-Gm-Gg: AYBFou0pt3B0u8FqeDaIr5s60Nn8IgWNQvZRJjeuRmfGE5c8M1miMijWjvJNFSjrNMH
-	OckZM3kwyqh0NWLT2xVDK+RZ4YLHMfEIhd9BC3bThr1z2qeNyHMFbXi23vFtUiWZwaQ5sJ/0+6q
-	FqSulbYYrXxI+/DQH8/RhzY0Ew9yCequd9F5WpJ4C/OSu0rhjHBxyor+McCIXEX89Uj2ce1/JYF
-	QQbiyx81kwxRcVU4l+v1xouLiJlHujmTBB+3qASYg1Smla3qgVlgmNLABiLbGTsQghQXUFDKQwn
-	gCwzDGxKABOSIkLBxUzpRto/FTmKS9BAoke7vSETAH0NtgryIg4Sk2oyIlZ0OY5Rp7+JVo1e2Lc
-	d0zFosWcSG7r2Efrjy/0zJwUfQpR3Sk7SiMscd2Ri9S5TTHGQfC0p8DwQFPe09V4t9iEQmWnU6u
-	lslQyRvCEEw5lMZjuey/Oj6TrYVEZm8nFhnc/jxhua1Oh4JdNcIUgD/ssTY2OWKtBgYjeogYLv+
-	1MEu2/9HMFmVszU2GEGFZeaBCbKQVhk1MxtBeOy+AOvgN6+mgLEz2ocM98X+2+zn9ApCRMHnNVM
-	l7YXR7Sv/H1OGHXlEK5xHoI4oKU6pvsTeljHCscvzGv8JGCiLPjsRMy08342s63cBNeaEIBhBJi
-	/qW6t1U0dp3Yksr0tYP1Pm6DbJA3Z7WYegq5hUA==
-X-Received: by 2002:a05:7300:5626:b0:36d:3c0f:cc85 with SMTP id 5a478bee46e88-36d3c0fd4ddmr3962427eec.5.1793858201254;
-        Wed, 04 Nov 2026 21:56:41 -0800 (PST)
-Received: from localhost.localdomain ([98.148.34.5])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca3784f78sm15780167eec.2.2026.11.04.21.56.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 21:56:40 -0800 (PST)
-From: Hungyu Lin <dennylin0707@gmail.com>
-To: hughd@google.com
-Cc: david@kernel.org,
-	baolin.wang@linux.alibaba.com,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] shmem: skip empty unmap ranges when punching holes
-Date: Thu,  5 Nov 2026 05:56:19 +0000
-Message-ID: <20261105055619.58289-1-dennylin0707@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=M3DrYTcpWup/5cuuiAlGMoyyyySpp9VpFcQP4dOMZyI=;
+	b=iohTHAM6RsBXQFmtQnl1J7NYXCZJ1UVkPG3Ym5rj7asg6Lmnqkudb1N6MDQxWGd3IwhrFx
+	tCBGkEgR0PV9vWdhO6GWRH6fEXRh/0LJiTPPBMWqiJYg2oCpDswePpsXZ0Ooin9t+GPYCt
+	aE0t1X2LTmL2SSqa6OJZLutBiAUCqqU=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793858936;
+	b=0hD02lq1sXN7Q8fTZpSzPx/W1wfGEltiO5egaH1Gxh2yLf2cPzxJP7byvIAhvzX71Jh6oz
+	1WXzI/LwMTJKFDfml4MHqmYDDvvIcIEipg8DdrEbWCViw9zYbwQCg/WL8GSCQm9ZC2p4jb
+	bDFMTZBbyb8zKPvkrgX90ZlNN1oYcmA=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=PnR1tcQx;
+	spf=pass (imf23.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.53.28 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fRTsL7pm6uKe9+vhJ2LySJYSJQgLpES3PrwGqkcwsYjQf0G2L/pNj3LucgIx7A5RTWI8a9YXVvZZsTYnrJADRN8HK3yauQYOnFDZCuOge44i+ZR/7hguGTe/0sIt+CQ9jF4tUUl6/jNE9lFtr678pxS6wtYNnAsGsYGvjTCD2F9VxHKtcQQ2z0pthrncYXwXUCha+dvgy5SjkXeK3w5KYXQSWmd4SWukb0JC4m9BQShkkfusLtbgtwT8K6RWctA58si+jnsHeYzy4qq0XTNCJSiafEuegc17+PXvbFuS9vgBhihLolPcsTu9TrmPCl3GqsBMEoIFD2ENS+0u9IHu+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M3DrYTcpWup/5cuuiAlGMoyyyySpp9VpFcQP4dOMZyI=;
+ b=J5Z7zUfpRQ/FV/ACQLm7zKc15O4J2/87xQMslZItBMudSkwey3BpV4tyOiPww5Vzvs6TrQPZDg4wPJRjXxek23yYtYZ+Sqayu9USxdnWHwruJCMc6rBMZ2tv++VF9fxXMJV+WHUWEduIJl7Gz+G1QGFHrZkP57vuLdDGlszIqisP0d4V6AVEFZ2OXs9M0k44J0ngsr4pgzbid3ZJ16lJIPG7omty3/3E1A95R6+fUeghHLSGZpgxk+DUrhZo5ROp3sIUBDGJ1tQpf+lDvkJszjn11vi+r83CBAQe34i6bJYQXFKTSja+/NhCFaRCrBgI8KJBnw2bP6h8vs7du6uHbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M3DrYTcpWup/5cuuiAlGMoyyyySpp9VpFcQP4dOMZyI=;
+ b=PnR1tcQxubFDqOvcrrkw2D5sPktkKqogpGMvWnjK+3R8puPCPIsi5WmB9HV6mSqa3p17NNxhojTwmYJpqw5vPqBsMSN02YAKN3u3FTW9zmLoTjatl8/NKj27grN2rg9O2UwVfePfkVyV6rNUdIQuGZBl5J1aIwOAILz6L07HzChj3NOi17CkmIky4ywoV/zm5iDDaOBkURqYK+Ih9qIe3vP72BkmxYY0uVHn2StGX3pinZRM2yJQzc1NC9E/bpDTZ61V4teJLPiyas3a6zjU55po7ysWWF4zgxh5v94MVTdZy/g6tcvxKp0SK2XuXdPVXxy58QUkuyidfhMXgvEHKg==
+Received: from CH3PR12MB9730.namprd12.prod.outlook.com (2603:10b6:610:253::9)
+ by BL1PR12MB5875.namprd12.prod.outlook.com (2603:10b6:208:397::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Thu, 5 Nov
+ 2026 06:08:51 +0000
+Received: from CH3PR12MB9730.namprd12.prod.outlook.com
+ ([fe80::843d:c1f0:b2ed:4128]) by CH3PR12MB9730.namprd12.prod.outlook.com
+ ([fe80::843d:c1f0:b2ed:4128%4]) with mapi id 15.21.0592.009; Thu, 5 Nov 2026
+ 06:08:50 +0000
+Date: Thu, 5 Nov 2026 17:08:45 +1100
+From: Balbir Singh <balbirs@nvidia.com>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Michal Hocko <mhocko@kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>, Harry Yoo <harry@kernel.org>,
+	David Hildenbrand <david@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	Maxime Ripard <mripard@kernel.org>,
+	Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v8 1/7] mm/memcontrol: flatten try_charge_memcg control
+ flow
+Message-ID: <auwdbYi9sLaNd1G6@parvat>
+References: <20261104233029.3282438-1-joshua.hahnjy@gmail.com>
+ <20261104233029.3282438-2-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104233029.3282438-2-joshua.hahnjy@gmail.com>
+X-ClientProxiedBy: MEWPR01CA0292.ausprd01.prod.outlook.com
+ (2603:10c6:220:1f0::7) To CH3PR12MB9730.namprd12.prod.outlook.com
+ (2603:10b6:610:253::9)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 4a9q9ohithcpsuequ3fn4tdxfd41a79p
-X-Rspamd-Queue-Id: BB29BA0006
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9730:EE_|BL1PR12MB5875:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5a4bee68-b31f-43ec-4840-08df3b034302
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|10070799003|366016|376014|7416014|1800799024|261028144727099003|261021121427099003|261021123027099003|261022105027099003|261026121527099003|261026140227099003|11063799006|4143699003|10067099003|56012099006|18002099003|22082099003|261102123227099003;
+X-Microsoft-Antispam-Message-Info:
+	ir+zadc/kNAQTP0sTd36li/XYAtECMdU1HG1ejijY27usFcrVi1TQuVhGXUlCPepY75B+BUgG5eRfAt1p/ZbZpQGGhLXByf9ghxpt+NvhMmsaKrSMB47Q+gw7SCSCwPl7f7VP8lie67O2foZAxwCVjP3Ji/EZHjAQzJ5k3KXSVG/P7aCZhbxmwz3BkDYQRTMhg5aTbTX4UzOf8bgz/Md2vuulVm0uGfu5eTAdvtZtXqPmjhiOOZ4iDmHryMM2hNANN/tzh3jEFB/Y2sZXhi2TiEKv1gInZOqIN2Op1Oe1ztMso24R38OmNJ2qEfOt9TeFr/netV5RxMjPuwhomcntiKCd+fxq3xWtXueKYIPMAGZuMOcSGbUNCqPVbz2wPtEmhJYsGRsPNSeOCOm9YeQ/5fTi6pcDxSvG6dvr3VydNrkb1LuciZYXqvBd/MysPNZlBRCU6OzFI2F/FsQavYnzYSjjs7Ce7Q+1GJxpUtfmbXTujnx5Rdp/PESYVAEuj5ikHKQPqJCcVjlnLh+LBdJS7FAziFZrR1tYR0m4gmvmnwq3SpjLVYHbBvcN7RDhxU2EcJVw9lLhjJQRkVgFVYvvnbMhnV+bM8PH0928/s9AsNhDj3no95uMPhytV/zOL0ePjfY3/bNdCVkgGWEvVIUVRzQb5Tu0xl8ScOlieI/udY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9730.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(10070799003)(366016)(376014)(7416014)(1800799024)(261028144727099003)(261021121427099003)(261021123027099003)(261022105027099003)(261026121527099003)(261026140227099003)(11063799006)(4143699003)(10067099003)(56012099006)(18002099003)(22082099003)(261102123227099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+Der5HW/4IBWhAq6NDPXIuVIh2Qpu/cfe/ptZpJV8uIDH9tsKcs1FkSCa5dE?=
+ =?us-ascii?Q?vdhvByMHp/ylHEtxxJNtPbOEh54OdfOfnN60xRtoHnOSlL4ArG5zaolz1dFa?=
+ =?us-ascii?Q?xY8HAiBdMDvTcy9oJ6kjeN1Na2xZvtMM2yai/gxBUpIPLQv4kLm60PgK+Mzw?=
+ =?us-ascii?Q?6dVkw+pG7gsZ9jGWvJxFyK+SPxermsbiFw8Dw0ZzHlHfw1NJT2v9k2bgXvmS?=
+ =?us-ascii?Q?vLnQVXbagL8aT9qCbDCnNE7jA+gSrBs70JXPgvHMdFTgtITX59yHhJQnwUdQ?=
+ =?us-ascii?Q?mxwVgA+bU+kOkUBX2YhxyJUfn5x+rAJWn9b4cB7T6FWNkaPZBjSA7UE6aEhk?=
+ =?us-ascii?Q?rquKS4h2uZ7EUzbOQDVpSgl91AZtUGfWEahzB7y1R7j4GbSvMrP7PeoA5bGK?=
+ =?us-ascii?Q?R8U6uPa5i0yDRc/Y0BZ/HPI+B7iR0nBqOoTI9ZiAR2vgewktvTFgcHQc2Rnq?=
+ =?us-ascii?Q?iL/MzdRWbygyXAzakGyxXkHoprP7TuEQUIZVeF8uNo0ShuytyZbABBRuvyld?=
+ =?us-ascii?Q?ifwLcxShAMvMquzwJ38XxO0L7I9Pe5gTdC9n18grMK+amvZ4w0NRJhb+0vVt?=
+ =?us-ascii?Q?DXj/QE1B6rrlabRbTNNmbgNDo+oh821Zzj7E0c1cNpPmVYFrtorJZWXFHy+c?=
+ =?us-ascii?Q?jZCRox2aDIk/0XZ2fQP9+TcxKi+Uv0bEHYUwqAxagRauS5+ngR37zTTEDKQm?=
+ =?us-ascii?Q?ymQemAy/szfP1TGipd3nAcqZTeSDc+bq6AMNghtXukLfZE22uKhu1ikgT+av?=
+ =?us-ascii?Q?K0nffWsbnxOJrdDr9s7tWbdQJGosEeEHizY+pV2XOlkpzkm07QIVBlFXrPQi?=
+ =?us-ascii?Q?6G92nh7dZoJW/iywH2iVKJJnfI/LyhBJMnY4sN32Gy2feEGxnTs6J+Cx02MY?=
+ =?us-ascii?Q?lIGx0hOG2kk4x3aB4Xk+Q7w/9L7rtt9//J8Lkb3fuhbBvkV/tnYDE/qnPSdl?=
+ =?us-ascii?Q?pmbTyMC5yGryUV0iT9OnXCda6C9D6HTne8NoAxuDc4C7v4AIGpz5WNPOmaA2?=
+ =?us-ascii?Q?wzhSwlNCkdV+AuiCjSlsqhLT8wZEs9gQL1zv0cnEAA1Ml9F0CXcIxeZDcFVw?=
+ =?us-ascii?Q?ZmVxtz990HlkgSFrr9NAxqShxJOiynRsZNylrFtxGcbncCWkPZCxo5EGsFqD?=
+ =?us-ascii?Q?cEhLKCWkhfvboEeSqDqTOfWY92IbdrvHQ0deyaHC3OIS/dkQiivFsOTfHrM/?=
+ =?us-ascii?Q?tKJJ6dTob3SHLYBwYbiCicN4oPNJWZ31dEFN7W4weQ/iprOYAyixL6fbl/Kf?=
+ =?us-ascii?Q?CnmL6OOZuqbyuYznNlvvMSR58faEinHlW40/X5pZbYqyu36gPwuQdFPFLO/y?=
+ =?us-ascii?Q?0SgHSVnzOoStgr82aXQYd10aN1l5x+x9ZK5rkC33mEPOdWg09AO81zKdWN2N?=
+ =?us-ascii?Q?pvoPOXcR5eyIjBLuUqpAhz+5anHxKY5a+Qgb8TZuaiqwEVDdEPpGxDgZYkP9?=
+ =?us-ascii?Q?R0kQLys7rykQxUevoHAYxUXjoH3J/YPlL46NHpjy8UOoMkToeSl5DLdan7d9?=
+ =?us-ascii?Q?o+mh15JQSnXzLMWPnj5Nnraw57y2wyLql7miy5VVwnvcNzRkUWP5dXUMaZu/?=
+ =?us-ascii?Q?CyZoJzVPQjaCJ4IJpaVPcT6Y3B7jnalH1U5B5OtFsXGb+hxe+3Fy6B0vIaE2?=
+ =?us-ascii?Q?zAe0iT+Qa38iXsAAZMRZCC36mgbfkF4MSmfVLFBHFizYCdsnhGK82e0O2O+H?=
+ =?us-ascii?Q?4//vb22fBZFpbhxoc3n0JEs0Bd0z+c7pShdDFEEraEB9hNcJ68fIUCiCNXPK?=
+ =?us-ascii?Q?aWdMP54e75Jx1raSJ0RO6y5VhAm8MkGLBI9EOd+m3r9rfmBYXtcnW5DhT+T/?=
+X-MS-Exchange-AntiSpam-MessageData-1: 4yd5noAtRnNLFg==
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5a4bee68-b31f-43ec-4840-08df3b034302
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9730.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 06:08:50.6226
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ab1IsVeIOdf2z7S6hDtQXxqX6ikh+IXLurjseHlIyz7N76BRL/67WYHHJQ/YLNPqprRG2fRC+qd6Kvd+gBgBdA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5875
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EC705140002
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: ntgjui87sq6gw1sjtqh51xzktx8outyx
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793858202-738548
-X-HE-Meta: U2FsdGVkX1/wpRfoOM2gnhSCuM04AADA2BgixsZ1TbsN8vGhsSLkQuQg6sEDDTBG45q9gLnY/8SqnipnA7a95S7svdj2hGe/8c/Lb4clRubYfBi+LKir9V2Bpgtx+Piz/8K1XtAKQbr+3F0z9Glj4s2K2H8uvemge5rg9yP9xxo/XqnWCBxD3LI7CXU21qvdcALypQboVQCwZccSKuF5XUz2NNeI5FhyqwGSvDMOtUPhvOQbVkcXravynO2kPKAjfGtFQCCWuV8/i5u2VBKPaO6txzvKBSCiim9+RIJZWxXlGV+ldTYlXkkuIj7k7pPh7dMHORUdNK94TKd/s5uLPxreoGM9zkBQTtfMtUA8A32WLtpk1hWfhJ+q5QxeWZKEEPuwcXzssWFCrazcYQ3cJJbsIpEoX50drsVJRjrem24UoOY76xI4I/EXyyRnNOXvirxTk1Zgktr96mtbCW4A+h7pmnG2aaf7JVElsv1Q2WMA/MKisDDuCTFvDkDZ3LfOEdfYI7qMrdZn7ztFOzfMpDRk+c17sVYvrC6uHzlM7h21Pgio5tUPMSHOMebCThLzt3QQIAbbTz8KqNpWKaAjxKYcszsfa+ihwXjyBQcy5ifsSAmmkKqn9kYvMU5OegNRe3n2nIfjqUkqFasNPpgATk3XKQ4djjHeut2pwRP0cM38fTRb2suSwbmw9lPHncmnXrQSKmpi2pIRkUrzbawX18jPov7NUXlC/fH9hDlkUbvEVKy3Kv4QUYdNTCmewfc7QLPz5WEJ6xrShemgt5dIbsTUvUEOz7Kvm3x+VdEnEc49uSWuIO367sg5Lt6CjIiWyxsZ6OYOWNyIM30y6LJ94NcKKH01NktcVgxD+77UfVYPI7ckqc7BfOqTwLPwGYtwOg7dCv0MPDIiGcMuLk8BHmW+U5T097bHtPhAVXfZlJwCM2B9IveYYeqBnEH07cIDzYti9fbm6uODKUe+NHz
- 5o5bkyI4
- l57fYBVdXvbLz5swIW8fR5SE3EuZBAtHwqUHzaLl+3NjCn+oZ4knd+0SHMNYuG8rJD4oGvFXlxNWmJPRu4seWWByMaK0+YrF7k4Qvpv00iIou5Y8Ogu0FF0P9DKKNc6X1H5IB+KzYrT5u0scEHaKHgn0YuH8dRwC9o43iZ4hBxSZEyZg+O2ZQID1UcmdHNzWiDxHeBwcJkiGrCaz/O0oCFh5YcV7ZO6V5cr1pQxx/EHd2uUUerfi6KFHXoi2uaqzjHACcvu8cCvF21ED/epYorcrHMF7wdZvy2wHk+3spotprxuopxvDKbDjBm/E5hEl9hCx6QaSEZQUt68soxdIwj/rHP1adhAN/VrUn3kCnaRCw8nSO4TkWPhJQrdaGQkcc+ughro+TETXZk3GafJzmdPGTSXKvDtJd/whV8JayqPcVjhW5x/w+p/JEDfbmq8H7FFbzfzxuWjS9mYI=
+X-HE-Tag: 1793858935-369639
+X-HE-Meta: U2FsdGVkX19Gy+P3OfcFl0RoAQyYDdWs5i/8qI1WnlFVGiYpJ0dpnsHDYEcAgO7qNWTMx35a5vyOyh9b2/ui8TiinUdYrN42Kb90ZbMi/W+7o/WsxAo8wjlBRGMybsMl9bCJkp75gNTUs/1G0lhcvuzztCgt2+40hV6DkvhXPdMQjnEfBoIl9bOzA8XVc5sZMxLJxXZczmOWGN3ktLM2jWCaSeJbJ7qGFzLSoL4eL4TOzqevh+0VSSrrNnj7USaxKeUM3brKty5cyHAgXPkBS3EU0VReJM8ygZ6BvD53GP/ig9drhzAo01hoeVa2hIhgMMlmiHIGudC9BnVJ6jKY3BfNSpaPV9c7vQ5u/Q4iM0bpCwnx3k7vSTc7BL8SNHv+vd0bxuP/bdNWb4RC6xAnacCkxddDoRUCeHti6WDPw04OHiX9VhQU8PN2Btow1oTDvlbYAQoryOL4gA4jh4Z/wusdOdcNoQMabfnChZ3NGqqWAGzaX6MBPizMpB9fjSfYltBLtzCiuT6n2LVAuZnIdTPbMXixpu2w/Nl74al/8hBcdYylkqCarIiyicEXJkEkFYTog6vJZyJv55r/pHUGkrYa79UGww4h6TaME7lROpES5e9hmlrXHOsVxdu8KRSDDqgafMHQ/QhVTMLLOWj0YcBTNsT8yVgepcrZ9o+TaMhzKCziRO8NIzLcz2Aq6s3ZLj2lABr1Iy50s9DcM2PcsiWh0jVQJo1pwfmainOrKwENa9JIMNFhZ9pAUyUn5fIAXn3K/BeQbvIUViBNm4H+mKgrnUTSsfuvuMjsKjPkPfTIGlv7zfiTB9NuFkN4yKd7Zkw0CThVxSJp6Pw6GZ9igNiaK6xuzYWwrz1kuynwaVbGtZQAgDRkO3bN/xkb9Y4h/O/sSqVFMVICJSofRCB9K6Q02ZBXVzB8UVlZ61V9bujX8nIYwLR1N4WRhGTwb3pVSV7YAGTjKAVzs4PC78W
+ TNcK8uK9
+ x6xlwhytE6DFopCevttbvHj/ju9asqWkIDJ5ulXBiHecUv/EEvMnfkIq36qlc3m1/COYDmr6j/kzvS5P6o/lUSZ+ITiFDx9JreGE13FND/hqLyoYNZroi8wwfC0Tb4Mh8go6rtRU3fsuI48TMUsH4DG8G5YupOKIc8Etrujaj0kgRi9/3+R+XUwbkpr5sR2Ab8UPk89PTZV4MNynlAxICGCdcIVgORS9gBHp/sFxZq2JQHKukh/5vGo0PvV1t6+XdNEbVHn7cYByZbHjFzLIC4uFzjLXhx0Q5fqv709H3DhzV2zpq/YO1JNaW72OllXHpp3/EDPj/gYesYQuCzXLOyAiM4XbHzmF8HBq1E4Bw23z0RVa1VtAb1r7Czxge3JuL/IhnCaFrrMswOd/tGu5oakzUEfg4+vzDW6ESAnyawsi6/fZ9q0ZLSTiYc/HNL837L5yxSEN7P9TD0mLx0Q15oK8lkp40tot0UQ+2qBzxM0DTKywlQWVexquqb8iAmWDAu1e0uwudD4tqzb9wIogdtFHloCdw9/BSD5ItlVr/Fyyfyq1CTR/REuMfjxMQWeEPWnMdlnb60EJRDnvJOGFzioVlbesAa5aCVlqg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,69 +182,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When a hole ends before the first page boundary, shmem_fallocate()
-calculates unmap_end as -1. Casting it to u64 makes the range check
-succeed even though the hole contains no complete pages.
+On Wed, Nov 04, 2026 at 03:30:22PM -0800, Joshua Hahn wrote:
+> Refactor try_charge_memcg by flattening the nested memsw/memory
+> page_counter operations to separate the logic between the two.
+> 
+> When page_counter_try_charge is made stock-aware, this flattening makes
+> the control flow easier to follow since each page counter now has its
+> own success/failure paths.
+> 
+> No functional changes intended.
+> 
+> Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+>  mm/memcontrol.c | 19 +++++++++++--------
+>  1 file changed, 11 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index ffbcea28a608c..66f38efb800ab 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2811,18 +2811,21 @@ static int try_charge_memcg(struct mem_cgroup *memcg, gfp_t gfp_mask,
+>  		batch = nr_pages;
+>  
+>  	reclaim_options = MEMCG_RECLAIM_MAY_SWAP;
+> -	if (!do_memsw_account() ||
+> -	    page_counter_try_charge(&memcg->memsw, batch, &counter)) {
+> -		if (page_counter_try_charge(&memcg->memory, batch, &counter))
+> -			goto done_restock;
+> -		if (do_memsw_account())
+> -			page_counter_uncharge(&memcg->memsw, batch);
+> -		mem_over_limit = mem_cgroup_from_counter(counter, memory);
+> -	} else {
+> +	if (do_memsw_account() &&
+> +	    !page_counter_try_charge(&memcg->memsw, batch, &counter)) {
+>  		mem_over_limit = mem_cgroup_from_counter(counter, memsw);
+>  		reclaim_options &= ~MEMCG_RECLAIM_MAY_SWAP;
+> +		goto reclaim;
+>  	}
+>  
+> +	if (page_counter_try_charge(&memcg->memory, batch, &counter))
+> +		goto done_restock;
+> +
+> +	if (do_memsw_account())
+> +		page_counter_uncharge(&memcg->memsw, batch);
+> +	mem_over_limit = mem_cgroup_from_counter(counter, memory);
+> +
+> +reclaim:
+>  	if (batch > nr_pages) {
+>  		batch = nr_pages;
+>  		goto retry;
+> 
 
-For example, punching one byte at offset zero calls unmap_mapping_range()
-with a zero length, which means unmap to the end of the file. The file
-contents are preserved outside the hole, but unrelated mappings are
-removed and must fault back in. This can be reproduced with fallocate -p
--o 0 -l 1 on a mapped tmpfs file.
-
-Keep unmap_end as the exclusive rounded end instead of subtracting one,
-and adjust shmem_falloc.next and the unmap length accordingly. A hole
-ending before the first page boundary then has an end of zero, so the
-unsigned range check skips the empty range. Retain the unsigned
-comparison so rounding the start near the maximum file offset continues
-to be handled correctly.
-
-Fixes: 83e4fa9c16e4 ("tmpfs: support fallocate FALLOC_FL_PUNCH_HOLE")
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
----
-Changes in v2:
-- Use an exclusive unmap_end throughout, following David's suggestion.
-- Add Baolin's Reviewed-by.
-
-v1: https://lore.kernel.org/linux-mm/20261027171753.1485-1-dennylin0707@gmail.com/
-
- mm/shmem.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index af21a89abb0f..ce92e74baeb7 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3845,7 +3845,7 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
- 	if (mode & FALLOC_FL_PUNCH_HOLE) {
- 		struct address_space *mapping = file->f_mapping;
- 		loff_t unmap_start = round_up(offset, PAGE_SIZE);
--		loff_t unmap_end = round_down(offset + len, PAGE_SIZE) - 1;
-+		loff_t unmap_end = round_down(offset + len, PAGE_SIZE);
- 		DECLARE_WAIT_QUEUE_HEAD_ONSTACK(shmem_falloc_waitq);
- 
- 		/* protected by i_rwsem */
-@@ -3856,14 +3856,14 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
- 
- 		shmem_falloc.waitq = &shmem_falloc_waitq;
- 		shmem_falloc.start = (u64)unmap_start >> PAGE_SHIFT;
--		shmem_falloc.next = (unmap_end + 1) >> PAGE_SHIFT;
-+		shmem_falloc.next = unmap_end >> PAGE_SHIFT;
- 		spin_lock(&inode->i_lock);
- 		WRITE_ONCE(inode->i_private, &shmem_falloc);
- 		spin_unlock(&inode->i_lock);
- 
- 		if ((u64)unmap_end > (u64)unmap_start)
- 			unmap_mapping_range(mapping, unmap_start,
--					    1 + unmap_end - unmap_start, 0);
-+					    unmap_end - unmap_start, 0);
- 		shmem_truncate_range(inode, offset, offset + len - 1);
- 		/* No need to unmap again: hole-punching leaves COWed pages */
- 
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
--- 
-2.43.0
-
+Acked-by: Balbir Singh <balbirs@nvidia.com>
 
