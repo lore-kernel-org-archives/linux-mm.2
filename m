@@ -1,127 +1,119 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894BC606D807
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:34:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68ED1606A330
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W6fvU5e4
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hm08WR4M
 Received: by kanga.kvack.org (Postfix)
-	id B0CF96B05B1; Thu,  5 Nov 2026 08:33:59 -0500 (EST)
+	id 853196B05B6; Thu,  5 Nov 2026 08:37:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A96E56B05B2; Thu,  5 Nov 2026 08:33:59 -0500 (EST)
+	id 8043A6B05B7; Thu,  5 Nov 2026 08:37:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95DDD6B05B3; Thu,  5 Nov 2026 08:33:59 -0500 (EST)
+	id 6F33B6B05B8; Thu,  5 Nov 2026 08:37:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 744186B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:33:59 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 16D881A09FF
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:33:59 +0000 (UTC)
-X-FDA: 85401158598.19.AA839D2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 06C1640005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:33:56 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W6fvU5e4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 426206B05B6
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:37:02 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC6D71609C6
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:37:01 +0000 (UTC)
+X-FDA: 85401166242.24.398E04C
+Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 07B15A000C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:36:59 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=hm08WR4M;
+	spf=pass (imf15.hostedemail.com: domain of 3eobsagwKCJc38I9JN9J5D1E7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--chriswiseman.bounces.google.com designates 74.125.82.72 as permitted sender) smtp.mailfrom=3eobsagwKCJc38I9JN9J5D1E7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--chriswiseman.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793885637;
+	s=arc-20220608; t=1793885820;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Mzxnox2ZqcSOtlYhZiL4hy8PJ7Qt6MthNjRC53Mvu8I=;
-	b=skF/qWvb4DeOsPd8wbrrAFzW3cjIRs/HD2Y5Jdh1dphXy5iOko3S7x1n4DiYFr0qlHLWy9
-	KAlOzVYMhsyScgDr+51bYgrm+lSChiOLvchV8JIT0O5fW1MT/UHgv26jzddLRp3ENy0Ljz
-	OxMJvbR/CIMsZVE133VdQoYW+V4qa08=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W6fvU5e4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
+	bh=WBQ4YMiVBBvbebUf4Eh89Rb7fq5fgRCv2V9oWSzYxO8=;
+	b=W0SX05YLoXY7fq4DjmM6/1iNYjx2W20Qi3ztlV6eXYq75KhS81kmW/0p5XGV7gD8FmUvdd
+	eM4Ea0GK5b9rVBkKLwpfYFnfK8SDe9Rx4nJlwkhW5+HKddr61HkVhsMiiyIxbXxu2eYNMl
+	cdEyziUSVZvwA3NIidh8sc/5MtsXn/E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793885637;
-	b=ANrp3qs7Wq6nTG7dZ5Y891xGSB1584rGhII/+B5K/nFBDU2Lg4/4o7Wof3sFg/fZsKnkFA
-	P19PG6TWE+p9+QcnMK9RxXDh7SMJ78RAAYTBitZkhRtzbic3yN/mU1JiZWh40+or+F0ZTV
-	CuslyUsAl6gGQwwZ5hn3xoK3AFwcp3k=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 86D9B60267;
-	Thu,  5 Nov 2026 13:33:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E967E1F00919;
-	Thu,  5 Nov 2026 13:33:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793885636;
-	bh=Mzxnox2ZqcSOtlYhZiL4hy8PJ7Qt6MthNjRC53Mvu8I=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=W6fvU5e4v9VXByYxToyGfUblVQFNT5WuWLgquynT0RDF8kyI1X8tPIXHjCOMM8QKi
-	 TB36uNlZnJvDpPmcr84r9evk4qeRURYKcquEJnZZTgrSafak9JljZ5qKQIoUGre7wN
-	 F/hompvGtt9N53QUQGuqUv3dCi/2jGp8a9h+gUNk4aOMpyJxRVDUCGbPpIyxbjzxoe
-	 mGVOhUP2BwdYxoZAZZlzs580AfwUJfcnN+1PAB4j3WtHbGtwbZOmtMpZbD+YudzfO/
-	 uGqllzTSWK8GJe2MHIDMiNnX++9xx8AFZSwOcw/6rq4jgxoM3pI0yhV1EQZ9Y9qyNb
-	 1hHFGhuEaqxKA==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id D3B3AF4006A;
-	Thu,  5 Nov 2026 08:33:54 -0500 (EST)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Thu, 05 Nov 2026 08:33:54 -0500
-X-ME-Sender: <xms:woXsammtkXhLPWsH42dXHpryBkz2i7c0bnU2Lcbos2kHCzmRAoeEug>
-    <xme:woXsaor_Lf6RBoLVpMG21bH7KQd6BCfSMtpIgKxnDqWGFSMh2mOC5kj2tLxnE5dqW
-    H3b_SOiT14cMJSc3cQ95dDArJw6ObEb1IjwO_cBMZrtSQozzrKMBpE>
-X-ME-Proxy-Cause: dmFkZTFXNwLxjr3E6RMaivkkQUj61yNTw+BeXqt/FKvD1Sb1j4JPfn+xjgqZl+4+DRKQRe
-    3mlUJxce3RaawYdhvit1fIjwgkMuyA1cwwiYj5q0wQM+s3WToqXmiY5vNpMll/QHUocAOC
-    dD4HRRG16qL0UNSXwrZRMXRfVo32pPW0neF4XEVJL2OEBtaBwT3L75kDhKsls5Z/VanAkw
-    tZfBpQqh0VZ+mNEhUO2zST/Zp/Gj1vmtZKNtHKLQ1Nm0saygMTnCj/dWL0sGne7hCFXKnO
-    RbDgZkxQWMDPb4W7D/wEccbEOZ+G8dxVSGwFtLcVup9a9kQxnr5bjO0atIXGEGb7WQE/pC
-    kSq+aSjtpNpnd+Qi4U4YmxyBC9sA/6SbSr/MsKzB7wW1UL74y2Ss5C3UyujLzPMP8WG/yq
-    r5zXMy0L6GNlxaT0A85WUiDRf4rpKD81/qtDDqVYALIKaaRRfGq17B1px/08Xr6oj9zLVA
-    vgIh9uz2Xw3lCh5P+gDmOG0ZbNFnx52PHaFyFhM33DCW8wyuD9EQeMPye2sVW+8/UJ9yh1
-    5M7+/BZ5JKAIhsDBrkPvJcgQsNxLgC/zaMMs8WdeGQBY2LZh4bGUPeXGZf9EBxdXaZNpAG
-    PhH37UyZ3FWsKQSYeD1Os+dAe0Pf99Zu+CkAskN4X9vT4qniejRYN2FT2gNA
-X-ME-Proxy: <xmx:woXsamf3tSjXzZQ4haIv784kpFLWCTAM9kXovrsnrA4MMfNwdf8DlA>
-    <xmx:woXsavwf09Tzn6BzjM5c27OkVXfDz7aCUlZGKI2CXjDH3tq4VxIrkg>
-    <xmx:woXsar2ZbDMM6LSy8mEm32b3EAu9iB1LuRtbEms2pPVQh1dO9ekZwg>
-    <xmx:woXsamfDeVghD6zLhqEou3KbzqeijRKw2q0-uup0Ncf5qUs84TZLog>
-    <xmx:woXsagVOFsksHKpQ0-srOIDYQGqnZ3mSF3W7Gs_3Uul5koTzNWOjUTcY>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id B0DA8782738; Thu,  5 Nov 2026 08:33:54 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	t=1793885820;
+	b=Q2Br8DQO2oDmi9thxTnNonqYxow8ZLXS78NQsTRcR5RtfwijslNV3gyDQk39DiOYZ8tcDV
+	AF9GHAD2TpKgCmZDG9fLBSkzyQeM/vucQyZCO2RYd0XtEEagSIMvmzAa6hsD7o5++3iylY
+	R2wVPSe1LjauWUOh06dERp19CIEcD4Y=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=hm08WR4M;
+	spf=pass (imf15.hostedemail.com: domain of 3eobsagwKCJc38I9JN9J5D1E7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--chriswiseman.bounces.google.com designates 74.125.82.72 as permitted sender) smtp.mailfrom=3eobsagwKCJc38I9JN9J5D1E7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--chriswiseman.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-1383723dfddso3280929c88.0
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 05:36:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793885819; x=1794490619; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WBQ4YMiVBBvbebUf4Eh89Rb7fq5fgRCv2V9oWSzYxO8=;
+        b=hm08WR4MmZqOAU56AlKdLkjW0WiCeer0qYuoyDQgo6NiSbB/EYC+s9S4JOL4afWamN
+         tMu131ynyoTc1OpMyy11yeXh3mypl2mQCYaFnjh+gFQtIbBBTS2zJ+7FxUiOtmnOkNc9
+         HVX7R0bV4lMCj2rRi9uTLetsbQzFNJ1H+1IH7epypyixnWJlU2u1ZRQJ4FnBauK8oi9w
+         Wo5wywrwtcIIwz5nUnKaSsBf/5GBhxbOY0INU5XA1Adrydrm2etVgUvfXKQiCT4EGCDD
+         9KZ3WjguK4xsM8JoSyJPvttG5y5+VRE37WWYQKMZ2dw5fupzsDH2ZtA1NkcNXzM5pGFR
+         a6Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793885819; x=1794490619;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WBQ4YMiVBBvbebUf4Eh89Rb7fq5fgRCv2V9oWSzYxO8=;
+        b=DTzD39HMsfTlmMnxyyJqpLZ9LncK9EaghwsE+vZsYfARqQavpAon3z+OQG94O7TAZs
+         TZFBfnQ1SB3BEPKcs1qLqrWgDC8C5WefHfr4PZICbwZbKFACd5lDs9Ty1ypePv8XhWEO
+         Q/IMxgKlq7KewKARG1Ty0EXbrdZSs+/dT9FFy4yaYIvYJf5l+S2li2WWsWxV83V3DxPi
+         jXaywLzuK0piJA/Hlp03nmPaepmaU/LWf/D+w9A02e8V5ltcyPxPIya8Xwbso96q3vf4
+         3JHE64gLaeMFjpI+XMHL9BACTze0MvepaxLoUoRryyCDavC/49pUpe45I5v2XUKYomfS
+         ZvhA==
+X-Forwarded-Encrypted: i=1; AKwUvByFYrQFD6lClIWVtqA+yoDhAfgga9X2mddpMJ2fm6pM0xS311Ti77hzYfeYJXYxNh7LJk+ITtuSsg==@kvack.org
+X-Gm-Message-State: APuU4Z8GckG8QJPCpTmnggxeEGVDrWIbVehiA6WZgKrl2yxmkVhyUuF3
+	5GMtwj4etck2L9KXnKBwMdHpCIYFkB4jdI3WQ1RRfLOeDP2ftkXjs9MXVqR6Q4gMeyTSFnnjfNo
+	8ZX5mQ3gbpqQH8W4ayNHS8K5Ccs/xkg==
+X-Received: from dlbvv4.prod.google.com ([2002:a05:7022:5f04:b0:1b2:41fa:646b])
+ (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:701b:455a:10b0:1b2:42ae:94fb with SMTP id a92af1059eb24-1b242ae963dmr9575010c88.37.1793885818098;
+ Thu, 05 Nov 2026 05:36:58 -0800 (PST)
+Date: Thu, 05 Nov 2026 13:36:57 GMT
+In-Reply-To: <auwOBaRtM9p_Wxfx@google.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-ThreadId: A-1cIfNAHW1c
-Date: Thu, 05 Nov 2026 08:33:34 -0500
-From: "Chuck Lever" <cel@kernel.org>
-To: "Christoph Hellwig" <hch@lst.de>, "Mike Snitzer" <snitzer@kernel.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
- linux-fsdevel@vger.kernel.org, "Jeff Layton" <jlayton@kernel.org>,
- linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
- "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
- "Tom Talpey" <tom@talpey.com>, "Jens Axboe" <axboe@kernel.dk>,
- "Jonathan Corbet" <corbet@lwn.net>,
- "Jonathan Flynn" <jonathan.flynn@hammerspace.com>
-Message-Id: <29851456-2e7c-48a7-bf00-11a1f1a35024@app.fastmail.com>
-In-Reply-To: <20261105075935.GA18069@lst.de>
-References: <20261103211754.35352-1-snitzer@kernel.org>
- <20261103211754.35352-8-snitzer@kernel.org> <20261104091543.GA31130@lst.de>
- <autk-osSQ8l2LKz1@kernel.org> <20261105075935.GA18069@lst.de>
-Subject: Re: [PATCH v10 7/7] NFSD: drop a shared boundary page only once both WRITEs
- have written it
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 06C1640005
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Mime-Version: 1.0
+References: <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
+ <anXJ-5_vO7-toSe1@google.com> <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
+ <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com>
+ <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
+ <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
+ <18e4ebf806e937ec.3137322e32332e3235332e313736.1bf52a.0000sendgmr@google.com>
+ <CAKEwX=PFdgEbba+H3fEnJFDnfkxCTsvuHEb4numVwJRaiMgwKQ@mail.gmail.com>
+ <179384102494.19062.12740032892044628762.b4-reply@b4> <auwOBaRtM9p_Wxfx@google.com>
+Message-ID: <18e529a5ab0738f7.3137322e32332e3235332e313736.873cb.0000sendgmr@google.com>
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
+From: Chris Wiseman <chriswiseman@google.com>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Xueyuan Chen <xueyuan.chen21@gmail.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Xueyuan Chen <xueyuan.chen@vivo.com>, Barry Song <baohua@kernel.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Chris Wiseman <chriswiseman@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 8fdi14kpgjjoj3urbcixcxhc8r4zzf95
-X-HE-Tag: 1793885636-939530
-X-HE-Meta: U2FsdGVkX18bQiIGxOCZYj9bXbqidOa4xrGJEYrRY6pPhfuo2Tn9sjzRvq00BlJi2+5vVLcSj2WxxUOhx6uuNUih/LNv8HeqW3mqx+u/7I69CzNJV47GKWFk6mU6cIDP5MEr18YvT114GJuI31MatZqmtvmH5hA+WVyShxNlodhnu5jI/dWDnDt4JC6KxYAOCWrxwIEttJom5Zzc8d2eMWx2fXsVtLGYJJLo58xiX8V4EQKRbL7lz6ypjCFsvlnMbCEEEKQaifm1LRCkUzG8gw4A0JzdeupAPkMlOj81Nvt9qXcDx9UXCS9nL1MlK+UnU50mv5QjOFOxXLsLHzXRKsBZ3kkpLkjOo/IlOztwkcDhXd3cKL9SSG4BswcYjZkyBeFn2derjUXSN/vj+aaNhbsDDO+icCtUmwsIi5x1K+86l5tv5uUPiYFf3fMisT8VeUoFqQfJW/ByTD8VTjIl/bQRh1k4KZsLf9t5nPSZ70o0pWFwL7Fhck4f1W9gfIP5oTNYpltSCyno5Fr38svOP/367PWx42Ae5XfeYV5CIJkSYV2FdI9ZJF4+y867BuQM3NvWOfkLifBjnwcnDvBpduaht/Pssuy0wwRMr+oqvqcsh6g0ZpgfXlJxT1UnTbKMPMRcfB7rXoQ96xK0ayIRY7O22JsUV5scgzwvw9xqplZQ348WQ6JZt1n3wL3WzqTwTWJ2OSHGeN4LDYZQoO43Pv0XHSgjK/2wHrLc3IHIoyD7TfY6SbKmimoj13UogS+UNfut5HTY//r3pnYaWrTl8S4vqchyK/yqqUh/ZHAIcyL/Jsq6pfE/Y+KuT/klFw7B7O/IM4MOqTa9cubet1ZQ1m4KMDTi3iZkJmPuwaudxRglU7ks+u3eZciMwJaWBxZBdRdvGsR6KUZ6B+KaQH3YBFbU10+YZDaLdqwiuoaf9Pv/Vr9yrN+h4MIEk8GdvDOMzL8wmTuhvv1Qy/IKlcc
- wkUtrAxA
- 24SeOI9RQGObR5cYRIosSuUR8BZFCcc5GrWY4NIyCbiaYj5o/jTtXJqLSqQiJTJ76FofzzkIyPcEylmz3BY+sBVTJ3A6E6rDzi+HNNqk5KESE3QUkucA7H9R88bvBzlKoIcbJNVT6ET7HAZOEGmtWuWpwIw7Kw8XN0S02UAfJlqFH4bYIN/JE/0TCX06IY9VgRKXC76TiIKawQ0sAb0yvjasbzeLriBaoqqDhVHNTvAl+o2xsprLs+C9jTvdtFMc5fFxPtC+/fcCrGXZgbrhsj77ZdHXASGK5Xj/KdgdncURXUDmVbzwCLYH72dOZK0aRCTez7U5ml/LuLr0=
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ti18zj1yxyswrdgmiyowe6b1fz3ugpk7
+X-Rspamd-Queue-Id: 07B15A000C
+X-Rspam-User: 
+X-HE-Tag: 1793885819-5681
+X-HE-Meta: U2FsdGVkX1/Yog2i9JbwT9tLuaOtel0lF2VmuZz2X0ZukLhjU6g0x9kNG4ZjvZxFA2gDCtrkF1mOpQVT9HDgCN/bSRlmiysqUSPF0vqGySH/wi6m3WDEaFRzy0JnE07CJAkQqZyh33ke08oN2vNg9ryzIRK7Lnbo69W2+KTYuTGRXVYPuRMEmZtJr7Z735ztQb5KCNFLpZ4XFd9jFyKvsTjOLjVoW7SvUczwvGBoQG1lkKCj8DzjNEgl22AXiJWytJN5o8uFF63NixnXskQqSSf0pLJYMMnwHOqF0QfPoFN7nRHgOZlLkdKA58+tpP9q4zI4nwVrEAxDFL/64xQkjOb/9gOF4+GnbUwPw+j8M6KfSX69Xggf35WDFY30+MsyClsylafDSC95AVIDyS6TqIAkdh+uXfkafPAmpT0q1ClPYs3K8VjEf5p/77ktDJMOGmR6EnuTojg7p9RUU9Il9piUYkUf/6UaIweTgy3ashcRCJp0JAH11UpbREccIvi7hv/rlUcsA21bcJ/i6BrXHnoFb2pMOSUzHJ7A5J0Me+JbGiJeT9RznQ3Vy8vwrK3wSclZg+U9etlbes8jiZJYGPwyymkE+hWiA4rke/rkNTFg9YT8AQeNWhnwQHMK/AgQurtwsTnXmugSuhpqIU8Xq7Y6uMnG+dsbqe15ywJ4Erjw1Y20fzBYuPKm/c5z5XQVtZGb5KCrefz5rlXjSglQHF6xikt91RljPtuTfdsNlQLHox7ioBvDqQSb/N1EtB+l8/PTo9d7hecD8L09ojOatjAlrcL5T0qxd4h/VjhI4Pl/N8plHQJEDBNQods5v+4CbohdUNnNqS4b/9WUcJ1ir8DJhbSaMoJ5lKYeKl/LkjFxcqEqwH67VAqdutnjonPwpYiXJAp0JFcLoRMp1DF/fNCPgZGRbTUTdGVhh3HacLD4A405TaCqFaTpC2wDzA1KXUDMzMTpqbDl+i/BTsk
+ BUVSRxSR
+ 3uF2hgrj42zsSK4F3Gv9z9A7eFUSCEhq57oxuPys95fOgui006j6BjM8ymQFLAnUFrgzO1LUcKsOnimupQJyXtxmYqMgZxyMeezeQ+KnLb+sL2j0wCbTYC4kiA+0jmjUqj1OvLabmOC1H116/zHJ1r2/s672T27rAiEfU7ygySShAjPy8PmSwbDA57MC7hdI9AZhAexLjUCeom+yhnVYQdCI6fNZ+u7STkB7iBWpGgjDP4m5f57omXacj3/zZHDA5hCi3vwTiGdiXtoaVnn2YCs3sXRrhwkKKYGoHr4QrAQgPQEnfcT1IgK8I+Wq7Pv4Azkp5dNfKQoDrTyKrvmtFFmVcND+FJ5Sxx6vk5AROqRyaajMSpmpnDo8RaLMmv9hE23Szf2DFACS/hahmbneYlFuPD1iXjdRrJeD04eYGAzakceNtrbTQHcrdLIpA+qioGqTaXbP/2RzS7FbQ3vfz25fYEEEMHKNDp2pXcbJai9qTGTykc0+5Soia8R5xPkRW2V3rIVtCT2m1R0vukXu1h228glWobovRx5f+YMCQkFrNXBmAnsozGkRAaEwy4axL559EsjcKWraFoDGuCvgvZ5vwWBX2Hn0E7OWqApXyL0SgnHcUwXX+WWtxy8sSW1qX5vxK50mqW8pj84I+IoWl/XDQS2tjiMXyf/G0A8XrMY2yXBZLSpTu1TwPlvCd8mO2OBcHu0cd6HGJ/oO/rszSBebFkJWGnuvHTAUkVm5e2Eaj6e8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,32 +122,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On Thu, Nov 5, 2026, at 2:59 AM, Christoph Hellwig wrote:
-> On Wed, Nov 04, 2026 at 12:01:46PM -0500, Mike Snitzer wrote:
->> It is the transfer size of IO500's ior-hard: every rank writes
->> 47008-byte records, interleaved with the other ranks, into one shared
->> file, with O_DIRECT.  It is meant as a hard case, and it is the
->> workload that showed the problem on our servers.  The same happens
->> with any record size that is not a multiple of the page size.  The
->> cover letter also has 6000-byte records.
+On Wed, Nov 4, 2026 at 9:05 PM Sergey Senozhatsky <senozhatsky@chromium.org> wrote:
 >
-> So based on a bit googling your totally optimize this for an intentionally
-> stupid benchmarking workload.  And that's not been disclosed anywhere.
+> On (26/11/05 09:10), Xueyuan Chen wrote:
+> [..]
+> > > SGTM, but I'll let Sergey chime in!
+> >
+> > Thanks, Nhat and Chris, for the discussion.
+> >
+> > If Sergey has no objections, I'd be happy to send a follow-up series
+> > to make the shrinker configurable and add the unlocked pre-check as
+> > Nhat suggested.
 >
-> I guess everyone else was right and just ignored this bordline malicious
-> submission.
+> Thanks.  Sounds like you and Chris will to have "Rock-Paper-Scissors"
+> to determine who sends a oatch ;)  Just joking, let's first figure
+> out how exactly we want that zsmalloc-shrinker thing to behave wrt
+> zswap expectations.
 
-It's not fair to ascribe that kind of intent. I think it's fairly
-well known that Mike and Jon are using IO500, and not mentioning it
-in the documentation for this series was a simple oversight.
+Haha, Xueyuan is welcome to send the patches!
 
-But IMO we do need a broader variety of benchmark results to
-understand the impact of these changes. IO500 on big hardware is
-an uncommon workload for NFSD.
-
-
--- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+Dumb question on the zswap side - aren't the zswap shrinker and the
+zsmalloc shrinker independent?  Even if zswap's shrinker is turned off
+at runtime, normal swap-ins still free slots and leave fragmentation
+behind, and unlike zram, zswap doesn't have a manual sysfs compact knob.
+Would it be simpler to just keep CONFIG_ZSMALLOC_SHRINKER as its own
+standalone config rather than tying it to zswap's runtime knob?
 
