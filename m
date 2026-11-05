@@ -1,143 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40619606A329
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4904C606A337
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=n50o8Nho;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=vEObjVwj;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=2cOYoXtK;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=xNpdsHrD
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=IqaeHVKx
 Received: by kanga.kvack.org (Postfix)
-	id 4CF7E6B05B0; Thu,  5 Nov 2026 04:22:13 -0500 (EST)
+	id 395686B05B1; Thu,  5 Nov 2026 04:22:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 458F36B05B1; Thu,  5 Nov 2026 04:22:13 -0500 (EST)
+	id 346636B05B2; Thu,  5 Nov 2026 04:22:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31FAC6B05B2; Thu,  5 Nov 2026 04:22:13 -0500 (EST)
+	id 236276B05B3; Thu,  5 Nov 2026 04:22:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 01F6D6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:22:12 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8AA634099F
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:22:12 +0000 (UTC)
-X-FDA: 85400524104.24.C15CFF6
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4F396100008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:22:10 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n50o8Nho;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vEObjVwj;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2cOYoXtK;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xNpdsHrD;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E9A956B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:22:46 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6D79C1C4338
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:22:46 +0000 (UTC)
+X-FDA: 85400525532.20.51063FA
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf11.hostedemail.com (Postfix) with ESMTP id A31B940009
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:22:41 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=IqaeHVKx;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793870530;
+	s=arc-20220608; t=1793870564;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9ORTIcajMvJ+OWgJyNOSohDPENY0WS7vKpG0J7UU3y4=;
-	b=xuYmDKlBxoffGC6MW6oJVgJrN7Xw4Dlqo5jp1SyZ+LKpBATDNs0pUdfj6cHM3tigbF7yii
-	6wqXRRlk9F5QRu2HTPeZXeG1qMecjID3tLhWmfpQReSqpU+J2qo+rTX6s5LrWhacut3Q8D
-	mhOARvMuMU1H/dF7O0AKKTGjytyBMHQ=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=UWmb9HUpIQPQz6k2PGeMG/U7KreRlMRXLm0OBejdgFU=;
+	b=Yew6l2JodmP8+9RQtxNbZgwe2T6ZooXXbpdoIUp/51/wJuUg8vEuGpeXprnDka6WoO9VbV
+	L3pCCG7v07mowWFWUm+4H+hm56gefDzdMsSq+Q2E5Sm/oHeb91FNO641/bVwDXjvxfWJJR
+	DB1ZLpE1tx4V4DhwuuhauTNCCDfUpWI=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=n50o8Nho;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vEObjVwj;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2cOYoXtK;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=xNpdsHrD;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=IqaeHVKx;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf11.hostedemail.com: domain of qinyuntan@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=qinyuntan@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793870530;
-	b=Xf/msFeqPh+EBL7/zk5sGHl9EfEb9LEiF2i0d4q1uJnfoJqYNE0P7soy5ei7uBMKszeX/R
-	gjRKaOWKZUfg4W4PrKhyVKSPdLKKXrr4jxbDjtvMJJRH3RitXRMfcIecIN7QX6w1xbt7vF
-	tsoMs2D0HdQvmD2sum63XiuP7FODmQc=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id F1BB621E6B;
-	Thu,  5 Nov 2026 09:22:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793870529; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9ORTIcajMvJ+OWgJyNOSohDPENY0WS7vKpG0J7UU3y4=;
-	b=n50o8NhoUcr4RCi/B4rIsia/X2BPL0xvAZqFp6JcVaXbZfzT/RTxiBntW4h00kVQGa6Adw
-	BoZgFvLF8XedTFomzkc3T1PyMdrQx7jS1R9+mgt1K6CyVCzEcEHQMaqYV1coIn8BosvIE6
-	1mdP0qlalo/s/vwRKzpCaU5hyRKm15E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793870529;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9ORTIcajMvJ+OWgJyNOSohDPENY0WS7vKpG0J7UU3y4=;
-	b=vEObjVwj9IoYCWGtblG300EgQss9NlqG2oQadAEYX85TWpmXLFO3Kp4hDBJ5PF1rLfqJsZ
-	UQBKm7Amz6f/XsBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793870528; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9ORTIcajMvJ+OWgJyNOSohDPENY0WS7vKpG0J7UU3y4=;
-	b=2cOYoXtKQsnGxKetXHmlYmsgdtzx4dKmzc4TKkHro1fVmuXVkT6aeMOQnia12G6yDV2PP8
-	3d1d5nW7OM8023OYjhcxzn4r5MBadUUW/5fKMphJggjyFhvt6zOxv0YmYZBEEwDfWpx6eG
-	o2RmagT5J5MIADePkoerRdmpGGEJ0aw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793870528;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9ORTIcajMvJ+OWgJyNOSohDPENY0WS7vKpG0J7UU3y4=;
-	b=xNpdsHrD+svQDtDWU8bkw0RsFYdBqvO0lz4aSu1a0Q9BoRVeC++GKGYW8dvo9pxsLw8pv9
-	oK8gPfGxFQDXWCDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C188F134F4;
-	Thu,  5 Nov 2026 09:22:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0RUpJ79K7GoMZQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 09:22:07 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 52E39B65F; Thu, 05 Nov 2026 10:22:07 +0100 (CET)
-Date: Thu, 5 Nov 2026 10:22:07 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
-	linux-mm@kvack.org, ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
-	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org, 
-	Karl Mehltretter <kmehltretter@gmail.com>
-Subject: Re: [PATCH v2 04/34] ext2: don't set SB_RDONLY after filesystem
- errors
-Message-ID: <5qefa4mracb3x2z4vsdejmkyyfrhdcrixmmnooz4rzwcdfoejm@mqkvixj6afwp>
-References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-4-2f44f64f0b66@kernel.org>
+	t=1793870564;
+	b=IQmWXkIkqQeLdX8EQ0px0ETAlXs0wlgto6nGEYt2vF53sU4sdtpYEnH9mWlgU2H1lhChgC
+	f8gpSJ1OHhxcyL88bxt4GL/WEu731zKECmfTZbxFeNm940huZnoWlXOez/aJkR+w7HIh9W
+	uKkV650k0z0JThW5PPOwaTB97RcQLqs=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793870558; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=UWmb9HUpIQPQz6k2PGeMG/U7KreRlMRXLm0OBejdgFU=;
+	b=IqaeHVKxHvpLL99rItKp1iCRQkXSIVs1/nXDz8iQOMUiZbYT3IgGv7lY7IoaX7qXLdKKbriHTO60SK/Sffy0qruVNbPiAe/keIidCiRJUJEzk7ufb3qLY7IgA9jYIW/QiADAQtUk2kmFktTYfdRjhDydCqZDvRrPW3uss0b+I40=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R521e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=qinyuntan@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XE8K-.B_1793870554;
+Received: from banye.tbsite.net(mailfrom:qinyuntan@linux.alibaba.com fp:SMTPD_---0XE8K-.B_1793870554 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 05 Nov 2026 17:22:36 +0800
+From: Qinyun Tan <qinyuntan@linux.alibaba.com>
+To: akpm@linux-foundation.org
+Cc: hannes@cmpxchg.org,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	mkoutny@suse.com,
+	david@kernel.org,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	usama.arif@linux.dev,
+	david@fromorbit.com,
+	qi.zheng@linux.dev,
+	yosry@kernel.org,
+	nphamcs@gmail.com,
+	chengming.zhou@linux.dev,
+	xlpang@linux.alibaba.com,
+	ryncsn@gmail.com,
+	gourry@gourry.net,
+	cgroups@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Qinyun Tan <qinyuntan@linux.alibaba.com>
+Subject: [PATCH v4 RESEND 0/5] mm: restore per-memcg reclaim for NONSLAB shrinkers under nokmem
+Date: Thu,  5 Nov 2026 17:22:28 +0800
+Message-ID: <20261105092233.3558950-1-qinyuntan@linux.alibaba.com>
+X-Mailer: git-send-email 2.43.7
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261029-work-fs-sb_rdonly-v2-4-2f44f64f0b66@kernel.org>
-X-Spam-Score: -11.30
-X-Spam-Level: 
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: A31B940009
+X-Stat-Signature: pg1bn4x7ks3fp3zj69rtgds6qjnedznj
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4F396100008
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: c8b36468jhm649eiafqbqrszy87dbj6c
-X-HE-Tag: 1793870530-228844
-X-HE-Meta: U2FsdGVkX18VIzXJfZ4eB0rcQBiNLnZ1XeW0VBKVMYIozeFOQaIGlLTM4P7Od/WIwBomrH+FhqSb/cpDaSxpRLWRtT2EDp2zzz01bLbMB5qxlo8OAzssNupKmqc9za0QqVQBSz95JfM8HiqpODRTB19MNHp0Vi7Ziqkk91PmKfzePEPsCffKaKFtwhZpw2flcrhGqsviGqFEbf+7TUCdkb+3WarXnrwOtLZpfwDEbDid6vvs1TK/HgxDwV09hXxMbBADUjLc/uE3dgpZRQGnjuX3Hzygg2CPpr+9bAEncVwsNcWYVLim5uq08qGkg/F1+WwI4YlOxWgwuPbTyBSS2R2NSfL4x8uIyDZKcxu1IPZfFnMBV1j4ZBOVY0MGKuRTlOt9QXnDSdS2Tu/dVhFA9HoZfqgOGppTA7/inXly0QyLR/Yelcf2Jol0SS0d8uAr+FAgLDEaPdJjjsUvEFyrzovoEoWB9uq7Jj7ghRbKxhdDTVP8J+xUbiH8NWisZp/6hbjPYDhO+TiLd4N719wwc7klPmewLewDeKNCutosy4nw5UPsoawqlpe9P3SFJUwr7mhDcQeHHSZZDBivk1mx7vsVsnZjBXoEh/OFMAMEV1kHnS3SxIGb62scXB3Vlpn4+G6/t98nxnp1OWKjUheo7hwjN22V2IG6nICbnmC/z7jvBp/oMIooaZfkKMLrjFzpliwYfl2wBT2r10UaEhlrEKuBQTDAx88NqkpAG5B8lUJM+8IBJ70nMVh8SMU0FjVCsw32yf9d69wgnXFYSmqTd7Sw5rd93DIQvv8E+cuqURc6f6NauqlXjVz58M8ztIaA/10EM2LTWPwHaIB70JyRHTeWN+wUjdSV3w8OzFG6kQguNuKQ/cJmq2d5RWgCa46RWmJcAb/99iOL3XmCxflOXxvEJTr/T3EQ+zt50iWDhaMT4M8Pj5JNw8NVR7nuOerm9LdoLiSMjHy1f41yBZ0
- LJe5X/32
- r34T+PZRYCPK9irg78IMHHUsVpz7rv05KnUAzKaBLeNQYrDfgoB9/YVn1W9+Kwp1tB3aQImkhQ4hlq2r9z1itcg/vDTix6BTXCyoAvdCsciUdNcRCZ28hQp0fDoStJHVBjiOTwIh85OXk9dXXgtoIq8vV4EPF8Cng+lxv1LXb/z3n+1qCkrgKWji930vqhdh2KzPkm4IpBl/6DcFUjp9RyxwxxU9o0qEb4Iy4RtbWYz3wrGHcD5PnP8gEBULC3zLGHymmc/SsMBXO6fQL/GXu2FYAnFiDXXGiayKKEPA95DPN0j91c6BKDUDJ3787/6HPW+Svo15aGVn+L0iHuLyxhp3OXTmbOpvwFgV3jNkhqC62LtaU5zSa/1jABM+QlXbkYMtySOgqWkgeffF/J5Yqq7lUWpDvMYH3OJp6U+brMb/7s2gz4FBGWFqaNSKyZLCoax/mMj+mwYh8RjSMn3j27N4ifGGIMvXFrq5G
+X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793870561-799019
+X-HE-Meta: U2FsdGVkX1/bJKsYbDwTnMSSy5LEmjkFWfwynVXOBxbc2mnKOmAvNpVNZ5GCsHrq9yaMs0Hbbcd2l6uWivsbCFYWpBVae+nFPuhcr7cItiXh5vAW/RKOC0NsLbeHPlkVUagUs8IlEmPkw2GnMY9bhpeQc4YIFBwbH1+q7y9QhAmlbg+dnEFO2pW+oVxdeEL6cRyH9aNYXfW7V5TnrdoBWvc6TjawcBPW0DSQyotyyosDSOLnSPdj1qbPPLf16zV+u2SykkGVQnxSJltexlPljRzkg57PCtTtVGXlKzyODi+mFkXR6msOkornPmC37Vb+NBcIPyzhb06xTUtiWwUHyzG4k2q1zjSwaUwxasQG7LmU1tuadco8WcnKsIL50w+jzChehG3qAyj0BbkEazYjZm8v5eYkojjDxM4/donvnFRSzM8l4UEq3lwGb/KaUqR2rqHBUbTNRqMgWI6MR5+6JqJn3NgVgTjPW4sYi2/RPONG9cX8HRKj9/9nPoTqEK+rH053t5OQgmpULpkmjeurTyciqWK3izr6RpEOry4HbBJjORgsIVSdKFtQCNvFHt0F3qeAOWkS20OjdD/9FGQyJXCFARUvqT0WYFJwBj9ODEIIJuiNY3927eTG9zJMN0etgV13XaOFTZ6gKZLotOawX2czUJPU1KcOsrdjPUZklmk4lsd9TDbYDenl49QoIZqpvKL7pwDAZcFmWD0fbkeA2WXbxiSPbhr7aV1rHaC0KpW4QOXzOtx1ixZsiEoL7d4q1EYf4FWDZCHCbmIvPoJ/T509ja0zLiFPMrjP0QljTImoDxP/qfbk/9X8EMAxmRAGDaGgeylRvwGnd8ZEjpnHwM1EezLKWZ7OVIavfnPCmW/gkJMvPB5nCduGJ04VG2cSVM/rfqXfB81Gmy/lvZFUQIX6YZqEzcjSEyJcFsGcsG6ilJAEkDHb60NjY8ZJjBW64stqEhZQwynydOkwoig
+ YW0L1Rcs
+ 8dNR8wSzpmWEyvXD3HppAcfNMzG84WZXa7oD9VElsBNUmKJCWVcGHnkRnrh8Qww+aXD2wd3eVPQZCfHxo9whl4o+W4mVeHzVF9Htzjdvixzm/a+KN/KlOODe0u7onaWcq7lFiwPyjpAJc9WeuNQ2+0jnCZXsFFVZsdhHk/l9168UkcdbEGBiS96L8hF1SDZt0SHHYnxgEMDPDbmlr5ssr+Q8ZTBHrGdanVXdV+VT6/qpcw1uAVF7noHSEDzsfGaO3LA5XZdbBaC0AbkwCCbT8TC3oFn0aNLGApHReN4oADHtHSvp/mNMCDDlnZoLEsxzueis1MoGtUOTSNdwlTqMGzfM6TA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,89 +107,115 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu 29-10-26 17:06:55, Christian Brauner wrote:
-> With errors=remount-ro ext2_error() sets SB_RDONLY from whatever context
-> hit the error and without holding s_umount. That races with everyone
-> else changing sb->s_flags and it breaks freezing. If it happens while
-> the filesystem is frozen thaw_super() sees a read-only superblock and
-> leaves the s_writers rwsems locked so every writer hangs. A lookup in a
-> corrupted directory is enough. Karl proposed teaching thaw_super() about
-> it but Jan preferred fixing the filesystems (cf. [1]) like ext4 and f2fs
-> already did.
-> 
-> So call sb_set_emergency_ro() instead and let the VFS refuse
-> modifications. ext2 still refuses allocations, ext2_write_inode(),
-> ext2_sync_fs() and ext2_xattr_set() itself. The superblock isn't written
-> after the error is recorded and unlinked inodes are left to e2fsck.
-> ext2_handle_dirsync() treats EROFS as success in that state because the
-> entry was already changed.
-> 
-> A remount to read-write fails until umount and writes through file
-> descriptors opened before the error fail with EROFS.
-> 
-> [1]: https://lore.kernel.org/r/hyhuckyohsabx2suvq3z7uy3pbgmihva6wgzxr3op7pzcrlu33@p7zzlgp2ehjf
-> 
-> Reported-by: Karl Mehltretter <kmehltretter@gmail.com>
-> Link: https://lore.kernel.org/r/20260903060855.4610-1-kmehltretter@gmail.com
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+Resend: the original v4 went unanswered while reviewers were busy
+with merge-window fixes, and Andrew suggested sending it again now
+that the window has closed.  No changes of any kind since v4.
 
-Nothing critical but couple of points for discussion:
+With cgroup.memory=nokmem, the THP deferred split shrinker and the
+zswap shrinker are degraded in two ways.
 
-> @@ -1287,6 +1287,10 @@ static int ext2_sync_fs(struct super_block *sb, int wait)
->  	struct ext2_sb_info *sbi = EXT2_SB(sb);
->  	struct ext2_super_block *es = EXT2_SB(sb)->s_es;
->  
-> +	/* Nothing may be written after an error made us read-only. */
-> +	if (sb_emergency_ro(sb))
-> +		return 0;
-> +
+First, both shrinkers are missing the SHRINKER_NONSLAB flag, so
+shrinker_memcg_alloc() demotes them to non-memcg-aware shrinkers:
+limit-induced reclaim of a cgroup neither splits its partially
+unmapped THPs nor writes back its zswapped pages.  v1 of this series
+[1] restored the flag to fix that.
 
-So shouldn't we just modify the sb_rdonly() check in sync_filesystem() to
-use also sb_emergency_ro() and don't bother with modifying individual
-filesystems?
+However, as Sashiko's review of v1 pointed out [2], the flag alone
+is not enough.  __list_lru_init() also collapses every list_lru into
+per-node lists under nokmem, so even with the flag restored, the
+objects of all cgroups share one list per node: the per-memcg
+shrinker bit is only set for whichever memcg happens to repopulate
+the empty list, so pressure in other cgroups may not even trigger
+the scan, and when it does, the scan walks everyone's objects.
 
-> @@ -1307,6 +1311,9 @@ static int ext2_freeze(struct super_block *sb)
->  {
->  	struct ext2_sb_info *sbi = EXT2_SB(sb);
->  
-> +	if (sb_emergency_ro(sb))
-> +		return 0;
-> +
+Before commit fafaeceb89a5 ("mm: switch deferred split shrinker to
+list_lru"), THP had fully per-memcg deferred split queues embedded
+in struct mem_cgroup, working independently of kmem accounting.
+nokmem only opts out of kernel slab accounting; THPs and zswapped
+pages are user memory and remain charged to their cgroups, so
+per-memcg reclaim is still what these shrinkers want.
 
-Also if we have the check in sync_filesystem(), then freeze_super() is
-generally going to fail so this check could trigger only if
-sb_emergency_ro() was set after sync_filesystem() ran and before we called
-->freeze_fs(). Since sb_emergency_ro() checking is pretty much guaranteed
-to be racy (it is just a best effort framework to limit damage), we
-probably don't have to bother with checking in ->freeze_fs() handlers.
+This series keeps list_lrus backed by SHRINKER_NONSLAB shrinkers
+memcg aware under nokmem:
 
-> @@ -1349,7 +1356,9 @@ static int ext2_reconfigure(struct fs_context *fc)
->  	int flags = fc->sb_flags;
->  	int err;
->  
-> -	sync_filesystem(sb);
-> +	/* Nothing may be written after an error made us read-only. */
-> +	if (!sb_emergency_ro(sb))
-> +		sync_filesystem(sb);
+Patch 1 passes the xarray index directly to the list_lru walker and
+drops the reverse memcg lookup that v3 still performed between the
+xarray iteration and the walk.  That lookup was the cause of the
+boot hang reported against v3 [3]: after the keys were switched to
+cgroup IDs, the walker kept resolving them as private memcg IDs, so
+the global drain kept skipping non-empty per-memcg sublists and
+shrink_dcache_sb() could loop forever.  Passing the index directly
+also removes the temporary css reference from the walk.
 
-If there's a check in sync_filesystem(), this change can go away.
+Patch 2 drops the kmemcg_id copy, which is only assigned when kmem
+accounting is enabled, and indexes the list_lru xarray with
+mem_cgroup_id() instead, so the index works independently of kmem
+accounting.  The list_lru plumbing passes memcg pointers now, and
+memcg_online_kmem()/memcg_offline_kmem() are inlined into the css
+online/offline hooks.  It also drops the nokmem early return from
+the offline path so these lrus are reparented on offline.
 
-> diff --git a/fs/ext2/xattr.c b/fs/ext2/xattr.c
-> index 8f608930a48c..12dfffff189c 100644
-> --- a/fs/ext2/xattr.c
-> +++ b/fs/ext2/xattr.c
-> @@ -429,6 +429,8 @@ ext2_xattr_set(struct inode *inode, int name_index, const char *name,
->  	ea_idebug(inode, "name=%d.%s, value=%p, value_len=%ld",
->  		  name_index, name, value, (long)value_len);
->  
-> +	if (sb_emergency_ro(sb))
-> +		return -EROFS;
+Patch 3 keeps a list_lru memcg aware under nokmem when its backing
+shrinker is registered SHRINKER_NONSLAB.
 
-Is this really needed? All the xattr operations go through mnt_want_write()
-/ mnt_want_write_file() so this should be caught in VFS...
+Patches 4 and 5 restore/add SHRINKER_NONSLAB on the THP deferred
+split shrinker and the zswap shrinker.
 
-								Honza
+The savings of nokmem are preserved: slab-backed lrus (e.g. the
+superblock dentry/inode lrus) still fall back to per-node lists, and
+the per-memcg lists are only allocated when a memcg actually holds
+such objects.
+
+Changes in v4:
+ - Fix the boot hang reported by Kairui against v3 [3]: the walker
+   no longer reverse-resolves the xarray keys; the index is passed
+   directly through the internal walk path (new patch 1, split out
+   as a preparation so patch 2 remains a pure key switch).
+ - Drop the kmemcg_id member from memcg_struct_check() along with
+   the field removal, as pointed out by Gregory Price [4].
+ - Otherwise unchanged from v3.
+
+Changes in v3:
+ - Index the list_lru xarray with mem_cgroup_id() (the cgroup ID)
+   instead of the private memcg ID, whose lifetime only covers
+   online groups, and pass memcg pointers through the list_lru
+   plumbing; inline memcg_online_kmem()/memcg_offline_kmem() into
+   the css online/offline hooks (patch 1 as numbered in v3, per
+   Johannes's review of v2 [5]).
+ - Describe in the THP patch's changelog why the list_lru conversion
+   dropped SHRINKER_NONSLAB knowingly, per Johannes's pointer to the
+   original discussion [5].
+ - Collected review tags: Johannes's Reviewed-by on patches 2-4,
+   Nhat's and Yosry's Acked-by on patch 4 (numbering as in v3).
+
+Changes in v2:
+ - Keep the list_lrus behind the two shrinkers per-memcg under
+   nokmem, so the shrinker bits are set for the right memcgs and
+   scans stay scoped to the target cgroup's objects (patches 1-2
+   as numbered in v2, new; addresses Sashiko's review of v1 [2]).
+ - Patches 3-4 unchanged from v1; collected the review tags.
+
+[1] https://lore.kernel.org/lkml/20260904033503.4067283-1-qinyuntan@linux.alibaba.com/
+[2] https://sashiko.dev/#/patchset/20260904033503.4067283-1-qinyuntan@linux.alibaba.com
+[3] https://lore.kernel.org/lkml/20260910080722.3961351-1-qinyuntan@linux.alibaba.com/
+[4] https://lore.kernel.org/lkml/arNK64PxTXbVEhis@gourry-fedora-PF4VCD3F/
+[5] https://lore.kernel.org/lkml/20260907110111.2286932-1-qinyuntan@linux.alibaba.com/
+
+Qinyun Tan (5):
+  mm: list_lru: pass the memcg index directly to the walker
+  mm: memcontrol: drop kmemcg_id and use mem_cgroup_id() for list_lru
+    indexing
+  mm: list_lru: keep per-memcg lists with nokmem for NONSLAB-backed lrus
+  mm: thp: restore SHRINKER_NONSLAB on the deferred split shrinker
+  mm: zswap: mark the zswap shrinker SHRINKER_NONSLAB
+
+ include/linux/memcontrol.h |  16 ------
+ mm/huge_memory.c           |   3 +-
+ mm/list_lru.c             | 114 +++++++++++++++++++++----------------
+ mm/memcontrol.c            |  45 +++------------
+ mm/zswap.c                 |   4 +-
+ 5 files changed, 77 insertions(+), 105 deletions(-)
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.43.7
 
