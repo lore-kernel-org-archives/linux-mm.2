@@ -1,99 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09620606A328
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 04:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40EB1606A32F
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 04:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=mXr+2q0k
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SLA7DNSp
 Received: by kanga.kvack.org (Postfix)
-	id 9B63F6B05B5; Wed,  4 Nov 2026 23:34:28 -0500 (EST)
+	id 5AC336B05B0; Wed,  4 Nov 2026 23:44:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 967A76B05B6; Wed,  4 Nov 2026 23:34:28 -0500 (EST)
+	id 535456B05B1; Wed,  4 Nov 2026 23:44:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A4206B05B7; Wed,  4 Nov 2026 23:34:28 -0500 (EST)
+	id 3FCE06B05B3; Wed,  4 Nov 2026 23:44:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CF836B05B5
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:34:28 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D4FA71A095C
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:34:27 +0000 (UTC)
-X-FDA: 85399798974.16.83E97E7
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 13A851C0004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:34:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mXr+2q0k;
-	spf=pass (imf18.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793853266;
-	b=OwQ87NyXwYNBcM1Ymj+tSCYLIHj88rx0ebVPY8s1Ny1RaQriZTdQIajWKSShhgY3PuwK7x
-	h+Xcg5rJK6SLfsRGAw49e/OkAKYEShMsrHnZuUpuieMjAmcPEHv9RGYg5RlbpdRrgNZjYD
-	m6tK0/dlE0DJCrj8HGy/iH6SgLlOSoU=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=mXr+2q0k;
-	spf=pass (imf18.hostedemail.com: domain of anshuman.khandual@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=anshuman.khandual@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 19F0F6B05B0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:44:46 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9BC3FA86B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:44:45 +0000 (UTC)
+X-FDA: 85399824930.22.4361E3C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0F8B0180006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:44:43 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLA7DNSp;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793853266;
+	s=arc-20220608; t=1793853884;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/gDPj65v4kU4IoOQgkvIJRh3qMYya8c6ta2Q1iTNIEM=;
-	b=5Yd0LG+R5MIaVMlmfYE7+zNoUFnGieUjn/5El/GMe5hPHxnZIoqkKYauuRj8WNtSC+GInk
-	8G23lNV6lq1/l263S7LD11pdUIb/X/7gu3DrDzvlrt6WMMHCkR0U5vaPSSGJn6EhnFNB58
-	fwTB7eVQC5uDtu+Ebep0ULCe+arC3nA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 39AFE19F6;
-	Wed,  4 Nov 2026 20:34:21 -0800 (PST)
-Received: from localhost (a085714.arm.com [10.164.19.28])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8E6733F673;
-	Wed,  4 Nov 2026 20:34:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793853264; bh=YMvyhBBWtwmuxhWT7mouYJfWEoDx0fz5M8Us5l0el7c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mXr+2q0kLwlFvxodJ1lH29upT6NrCnrtZ6SE5usG/1+6VbJ0D+uxxOKSyFAb4GKuy
-	 aWQZszzdI1FgJZWALDPvjKW53MC9oPL3u0DxSo8O8jWwkOT7+K3Fk5lwoWWvN+HlBP
-	 LROVLc7PBvdRSJz1JxNLH+TQRi9+sv0TG1IdAbQs=
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-arm-kernel@lists.infradead.org,
-	catalin.marinas@arm.com,
-	will@kernel.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
+	bh=0E1yY97q/pydVP7NezmXD+YUjsSoHVSYEsMffIc/xZM=;
+	b=VAlAzw/je002LmHiCr8NBpsd4Y7j/gt/eR8wFwGArZGNhDk7Sd2qdu4zRHfOPAspqF55Sy
+	wNSe+e8gvRiBkAkz/5ziDvqQmtO99N8lB/WPiQxvNCQGUedE82e6wEkOlt6qJ0sRpNn4RD
+	3/b4ngOiFNP8UWv7Z57v/ajSBQEuzHg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793853884;
+	b=UMRysVUwir/dIb2OHqsTBmtdVbbgLQPy0T4WbC8oAvhCRqa2xGAdYtR1i7wNuksELIy5pN
+	NHavjeze29P1csK61TbjlNG6xw+yyS8Y8r5GrPU+8VvILyWokHAadA3a9GXEEvR4MWChjV
+	xaDqTATya1K1Zt86kMwGBtOpWaPNQfI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SLA7DNSp;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8945660267;
+	Thu,  5 Nov 2026 04:44:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9CA1F0093A;
+	Thu,  5 Nov 2026 04:44:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793853883;
+	bh=0E1yY97q/pydVP7NezmXD+YUjsSoHVSYEsMffIc/xZM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=SLA7DNSpQtaLkg6G/4UXy4ihZNO1i84EybNVBIO3rvMBbbx2XTwHwflUN49ZgIUbr
+	 13GwnTmSTD1yn7U7qDg8NUULnqTJ+MrtyqyA7X8HZlWE+SwhH6wIpNu52uQ9A9W/N0
+	 AYp/XrQ9Ndza/H2F85YWVoKYRGCYa+5ttpniRmJGUHDBkfqTHBmKWFN93PyW1Acphq
+	 o9WmgspkQeFKzF4SkWdTf0BXQkPk9nT0hXQECwRB17qCGTH6TwqIlDC5eSqU2Zgqfe
+	 UmYO+cYSIZ63iIcdFtgy1g08ypYEB8L2pQ+2Ol1SmwSit3qMriKafdTB49d3IzPO1H
+	 WS/zywksWuT5w==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Linu Cherian <linu.cherian@arm.com>,
+	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	kasan-dev@googlegroups.com
-Subject: [PATCH V4 4/4] arm64/mm: Use pgdp_get() for PGD accesses
-Date: Thu,  5 Nov 2026 10:04:03 +0530
-Message-ID: <20261105043403.3326445-5-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261105043403.3326445-1-anshuman.khandual@arm.com>
-References: <20261105043403.3326445-1-anshuman.khandual@arm.com>
+	linux-mm@kvack.org
+Subject: [RFC PATCH v2 1/4] mm/damon/core: add DAMOS_FILTER_TYPE_AGE_MS
+Date: Wed,  4 Nov 2026 20:44:21 -0800
+Message-ID: <20261105044425.87142-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261105044425.87142-1-sj@kernel.org>
+References: <20261105044425.87142-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 13A851C0004
-X-Stat-Signature: 6reb1t93iiy47b7rmopgcfsyfgck7c1b
+X-Stat-Signature: tznem1xn1n68kncz1oqto5b5ju9d3sgd
+X-Rspamd-Queue-Id: 0F8B0180006
 X-Rspam-User: 
-X-HE-Tag: 1793853265-805697
-X-HE-Meta: U2FsdGVkX1+d2MWOftyTNT4Kl9uNfFaOtNiAjia/IWknGZY2ia4GIOlEM9WsKpHsFCHxP5QeWhsS+Vik7pHHLtF5ZQRW0EEcR/b2/d5s1THcQP+y8WNBf2s+xsrbIU1T9JeDqEsPOcNVG2As8X00DRljMndPS3+1gBEIESfOpPVYn0t2G5wt1RoRo5xE22hGjxovNGcOsRd7zopXDGUuAmMl94NdWefDkk2ee2dxKLRD+A4yXfvLAhORdqZ6Fy8jAqALnlaA73GhGnhVgXu8u2CUeoAC9TrqX9BkGHudI5nhBqb+E69RzN7xik8Zvl4+eSjBigdSihdu0y9eZ37IaDGV9G+q61cMUeGFrTlcLkExevmXnh7NxvQKC6X9ed9tjDkUABz4AIhDaB8yl0SQWSk8Q8d+YoWPn8kJq2D4EiaqeEx3u15LLvrHu8P0Le2wG87duHJUxB4KdAa3TCTwC6HT6lbbWg3mouYE8unQRWMdZWJsBgOKkN+dmvQ5GaRxEPEot/G5cokRbHH1a1lo7w4pLNO4qRtysXEohjm+zqLAZOduBgG5P8LBiquzP4YV3SQgJbUsZEsUOtohzFQVwpK/mbxuUeRuo37Uod3iR+GH/gXXKuTBFbDtEHMTxdpLNCWAy38ERkwWqhEXvtaO6MKrCtDRbFHm9bM83E35QSkvGKtONZzhhBZlt2YAEFmek0Lw+OIZHx2A8/M/4mYMZSIWLrhm47hCUPf14gMSKiOO3dmDzhgLwO+qCArqjc9A6QFk7Fq4Nxk6Ny8jX7bR/LXqmXXPTMovYXFBqiNjPQVhkXKTNxjjONDuqz7SVtpiebGPYqXKZ/YazPfMLXn/B/igBktdY21e7C8J6pcBqmicPmdAGybXKaECnDiRLIIuxaIVwFagOghajRD+6sWSYjHL9VuOSLS94MFIGTabAQs9lQq34zWnjRUHUr5WHicJjIVpsNPx2HBzKCB8yz5
- wiFu9iL8
- zeziI40B1igX22XvLEmnfW2xJXOdribw8tnavk5AzB+lJlbMdyARknSBqho2wwIDjwYRMch52wDTFThXMzvQZOzG596ONu69XjBPycFZsXfkZ21YeeLLxpfRMczbyBoilEqagTZw585e6x/shOQo35vL/wRArcYKhXtJabXnUMDrCeVn8vg8b2DOmGvmCV7VhJu5iKTuIxCEILfP5jdHwNoNYM7baiJb7cWaDVnJF7JEiy5su9n9nPIPy03PmUxORyCccntQdDF7TJjto9cmleH1d7exft2ny75zmLd1J4zWYdWL0QmTnn1DLCJKL2I8cUpAXw4PJWKIMF+E7BrEwCogvqz5qdquRT8q5AnJNugA3BI0a9jzTqBD6ErNBEu/IeY30JT4DMUPjmRn00OU0LuFL7xoc/m5peoBuQwQtfWxJ8eUMrDcK3CV1f2fyNYRSeW9djv/zmnaBYaMUnBHyIer16EtpYT9SnhWfmsjxJqhJaMg=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793853883-699833
+X-HE-Meta: U2FsdGVkX18j5GdN22g4sE5NyrPGw2Puh6Gz16laqnycLA2ssNAcLl71qeeglr+axgFuyPKATW99GIbjnosKGWrpsSvGjNjFizDv6v+sbOq4THcL6taJG6Jo23lbzbGQTTaHLtxpFWK79PtIJOCsCJMX9xCUVciCUi5Ha9mpNgVCdpWdSmQWxkn/Bv83jpbgJaShzaoJK4QJQWWpT7CoeVgOciAExL/AYEJEtPi/Vfu2SD65jaqTA367FX3w7k+JMgwAxWVUtWjznX/gyr+thuWFg0NLFlciCjvEj2oqKnME/cseLPbvu+FR87z6rUJwjTt2RufW/kR7Ie/VEXqL1Myi90oTEw07bLihzxjuB9+1pA9Og7+dC7JYETa2w0LVz9Fpcz5bXfTnxIoG/49ZYrqs+hiryLpIE8Uiwd9y7RfFz86p7M0ECYkvs6wTIOVJcUFbTSpj/QKordltzryXjqCGreDhSXiFkuIjUz0eq7L/r3lZkX4ZrFr4biaW6Ur4JNsHTZyW5zp6tnI+kuTNH7nT4QtLM7pzwgnkn19jLAv4/Xt/VjMsz79IUD2EdTeYWQ3y12gVqb0GaVaAWyKw8wibPprotfU6pyhwKCxCXk3wIN3RBKtYO9jY3XX37SCfjuQL2/+UXzi2m/UmvZ6KHbC3DeHGeFI9VgUEZnzfrMdYo0jlWD6UffVq3oMSJAvO0OxxhxEgcXhip+4Otlg6KFGjdX9MD/ISCqSzFIBmMYzqLLFws3CxO0202bP2VQOXflqnKJw5dXdVWmHq9jL4BruVLB4+bESdFC/bWTGQ2vt1bOdo09bppA7+wFPbvUGyTbh5EJ9VXyWZjEP34FY+5k9sMzifUYnD7l/WiGTacdzGaSLaZQ8nF8TEvM8CT1YVyGnqldI9lHSfcDs2ZPKhQz6A0tzM1wUFSGJ5GB0qn1cUtG5a9+h5EKu44ooXL/0rh6uiNAjzSKfyT8g/te7
+ 3B+0hs5B
+ obuxT3GRDsQs3Xym1/GiIUpe0EqSuqRS0Gg1WWNawrxpUdp1g2npcoix/86JRc0sZjb1tFPGxcRUKY2LlovXUUk2nK4IJAeRSu8gtHXrDJfvc6mmd1f8KLaKGuwgkeAlxCHOQH6vyrgs7j2jR6hEFdUKqYLsd4HKEeGea6Rum80X9Oqt1iKrDzJb/Nv0eOPG7OtzcBHRObISfmecKrwHYcQ3OudUdonKGbULsI/WNUykONLZxgDVn5pBn0o5lUPFqkd4YcanxcvhqJ6KwFIkro3zj9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,228 +96,99 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Replace READ_ONCE() with pgdp_get() for PGD accesses in preparation for
-supporting both D64 and D128 translation table formats.
+There is no way to specify DAMOS target regions with a deterministic
+time based age range.  Extend DAMOS core filter to specify target
+regions with age in milliseconds.  Introduce new damos_filter_type,
+DAMOS_FILTER_TYPE_AGE_MS in DAMON API, and implement support of the type
+in the core layer.
 
-READ_ONCE() cannot currently be used for 128-bit page table entries on
-arm64 because it does not provide the required 128-bit single-copy
-atomicity, causing builds to fail for accesses wider than 64 bits.
+Convert the age in aggregation intervals to milliseconds and use it when
+the filter is evaluated.  Reuse damos_filter->range_{min,max} to save
+the age range.
 
-Although LDP/STP provide the required atomicity when FEAT_LSE is
-available (as required by FEAT_D128), extending READ_ONCE() to support
-128-bit accesses is undesirable. READ_ONCE() is a general-purpose API,
-so doing so could encourage other 128-bit users that would either fail
-to build in configurations without D128 support or, if D128 becomes a
-runtime option, silently permit tearing on systems without the required
-hardware support.
-
-Instead, standardize PGD accesses on the existing page-table helpers.
-These can be overridden on arm64 to provide 128-bit single-copy
-atomicity when required.
-
-Both READ_ONCE() instances in p4d_offset_[phys]() could not be converted
-into pgpd_get() because of cyclic dependency between <linux/pgtable.h> and
-<asm/pgtable.h>. Move the function inside <arch/arm64/mm/mmu.c> instead to
-workaround the problem.
-
-No functional change intended.
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: kasan-dev@googlegroups.com
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: SJ Park <sj@kernel.org>
 ---
-Changes in V4:
+ include/linux/damon.h | 16 ++++++++++------
+ mm/damon/core.c       | 10 +++++++++-
+ 2 files changed, 19 insertions(+), 7 deletions(-)
 
-- Dropped pgdp_get() platform override
-- Moved both p4d_offset[_phys]() inside arch/arm64/mm/mmu.c
-
- arch/arm64/include/asm/pgtable.h | 12 ++----------
- arch/arm64/mm/fault.c            |  2 +-
- arch/arm64/mm/hugetlbpage.c      |  2 +-
- arch/arm64/mm/kasan_init.c       |  6 +++---
- arch/arm64/mm/mmu.c              | 20 +++++++++++++++++---
- arch/arm64/mm/pageattr.c         |  2 +-
- arch/arm64/mm/trans_pgd.c        |  4 ++--
- 7 files changed, 27 insertions(+), 21 deletions(-)
-
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index 8dffa7f787ac..6a38de07e599 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -1072,12 +1072,7 @@ static inline p4d_t *pgd_to_folded_p4d(pgd_t *pgdp, unsigned long addr)
- 	return (p4d_t *)PTR_ALIGN_DOWN(pgdp, PAGE_SIZE) + p4d_index(addr);
- }
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 380f9cf6ddd82..1302ffb6f0bcb 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -394,13 +394,16 @@ struct damos_stat {
+  * @DAMOS_FILTER_TYPE_ADDR:	Address range.
+  * @DAMOS_FILTER_TYPE_TARGET:	Data Access Monitoring target.
+  * @DAMOS_FILTER_TYPE_PROBE_HITS_WSUM:	probe_hits weighted sum range.
++ * @DAMOS_FILTER_TYPE_AGE_MS:	Region age range in milliseconds.
+  *
+- * All types except &DAMOS_FILTER_TYPE_ADDR, &DAMOS_FILTER_TYPE_TARGET and
+- * &DAMOS_FILTER_TYPE_PROBE_HITS_WSUM are handled by the underlying &struct
+- * damon_operations as a part of scheme action trying, and therefore accounted
+- * as 'tried'.  In contrast, &DAMOS_FILTER_TYPE_ADDR, &DAMOS_FILTER_TYPE_TARGET
+- * and &DAMOS_FILTER_TYPE_PROBE_HITS_WSUM filters are handled by the core layer
+- * before trying of the action, and therefore not accounted as 'tried'.
++ * All types except &DAMOS_FILTER_TYPE_ADDR, &DAMOS_FILTER_TYPE_TARGET,
++ * &DAMOS_FILTER_TYPE_PROBE_HITS_WSUM and &DAMOS_FILTER_TYPE_AGE_MS are handled
++ * by the underlying &struct damon_operations as a part of scheme action
++ * trying, and therefore accounted as 'tried'.  In contrast,
++ * &DAMOS_FILTER_TYPE_ADDR, &DAMOS_FILTER_TYPE_TARGET,
++ * &DAMOS_FILTER_TYPE_PROBE_HITS_WSUM and &DAMOS_FILTER_TYPE_AGE_MS filters are
++ * handled by the core layer before trying of the action, and therefore not
++ * accounted as 'tried'.
+  *
+  * Support for the operations-handled filters depends on the running
+  * &struct damon_operations.
+@@ -415,6 +418,7 @@ enum damos_filter_type {
+ 	DAMOS_FILTER_TYPE_ADDR,
+ 	DAMOS_FILTER_TYPE_TARGET,
+ 	DAMOS_FILTER_TYPE_PROBE_HITS_WSUM,
++	DAMOS_FILTER_TYPE_AGE_MS,
+ };
  
--static inline phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
--{
--	VM_WARN_ON_ONCE(!pgtable_l5_enabled());
--
--	return pgd_page_paddr(READ_ONCE(*pgdp)) + p4d_index(addr) * sizeof(p4d_t);
--}
-+phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr);
- 
- static inline
- p4d_t *p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd, unsigned long addr)
-@@ -1088,10 +1083,7 @@ p4d_t *p4d_offset_lockless(pgd_t *pgdp, pgd_t pgd, unsigned long addr)
- }
- #define p4d_offset_lockless p4d_offset_lockless
- 
--static inline p4d_t *p4d_offset(pgd_t *pgdp, unsigned long addr)
--{
--	return p4d_offset_lockless(pgdp, READ_ONCE(*pgdp), addr);
--}
-+p4d_t *p4d_offset(pgd_t *pgdp, unsigned long addr);
- 
- static inline p4d_t *p4d_set_fixmap(unsigned long addr)
- {
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index 934b534c5b89..0b489fbeeb07 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -160,7 +160,7 @@ static void show_pte(unsigned long addr)
- 	guard(irqsave)();
- 
- 	pgdp = pgd_offset(mm, addr);
--	pgd = READ_ONCE(*pgdp);
-+	pgd = pgdp_get(pgdp);
- 	ptval_to_str(pxd_str, pgd_val(pgd));
- 	pr_alert("[%016lx] pgd=%s", addr, pxd_str);
- 
-diff --git a/arch/arm64/mm/hugetlbpage.c b/arch/arm64/mm/hugetlbpage.c
-index 5771bf49e1fe..e05e5b41ae50 100644
---- a/arch/arm64/mm/hugetlbpage.c
-+++ b/arch/arm64/mm/hugetlbpage.c
-@@ -284,7 +284,7 @@ pte_t *huge_pte_offset(struct mm_struct *mm,
- 	pmd_t *pmdp, pmd;
- 
- 	pgdp = pgd_offset(mm, addr);
--	if (!pgd_present(READ_ONCE(*pgdp)))
-+	if (!pgd_present(pgdp_get(pgdp)))
- 		return NULL;
- 
- 	p4dp = p4d_offset(pgdp, addr);
-diff --git a/arch/arm64/mm/kasan_init.c b/arch/arm64/mm/kasan_init.c
-index 4dd8c1186471..f61f5bc09467 100644
---- a/arch/arm64/mm/kasan_init.c
-+++ b/arch/arm64/mm/kasan_init.c
-@@ -102,7 +102,7 @@ static pud_t *__init kasan_pud_offset(p4d_t *p4dp, unsigned long addr, int node,
- static p4d_t *__init kasan_p4d_offset(pgd_t *pgdp, unsigned long addr, int node,
- 				      bool early)
- {
--	if (pgd_none(READ_ONCE(*pgdp))) {
-+	if (pgd_none(pgdp_get(pgdp))) {
- 		phys_addr_t p4d_phys = early ?
- 				__pa_symbol(kasan_early_shadow_p4d)
- 					: kasan_alloc_zeroed_page(node);
-@@ -256,7 +256,7 @@ static int __init root_level_idx(u64 addr)
- static void __init clone_next_level(u64 addr, pgd_t *tmp_pg_dir, pud_t *pud)
- {
- 	int idx = root_level_idx(addr);
--	pgd_t pgd = READ_ONCE(swapper_pg_dir[idx]);
-+	pgd_t pgd = pgdp_get(swapper_pg_dir + idx);
- 	pud_t *pudp = (pud_t *)__phys_to_kimg(__pgd_to_phys(pgd));
- 
- 	memcpy(pud, pudp, PAGE_SIZE);
-@@ -280,7 +280,7 @@ static int __init next_level_idx(u64 addr)
-  */
- static void __init clear_next_level(int pgd_idx, int start, int end)
- {
--	pgd_t pgd = READ_ONCE(swapper_pg_dir[pgd_idx]);
-+	pgd_t pgd = pgdp_get(swapper_pg_dir + pgd_idx);
- 	pud_t *pudp = (pud_t *)__phys_to_kimg(__pgd_to_phys(pgd));
- 
- 	memset(&pudp[start], 0, (end - start) * sizeof(pud_t));
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 711d734a63f7..1f56db9a946c 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -434,7 +434,7 @@ static int alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
- {
- 	int ret;
- 	unsigned long next;
--	pgd_t pgd = READ_ONCE(*pgdp);
-+	pgd_t pgd = pgdp_get(pgdp);
- 	p4d_t *p4dp;
- 
- 	if (pgd_none(pgd)) {
-@@ -1649,7 +1649,7 @@ static void unmap_hotplug_range(unsigned long addr, unsigned long end,
- 	do {
- 		next = pgd_addr_end(addr, end);
- 		pgdp = pgd_offset_k(addr);
--		pgd = READ_ONCE(*pgdp);
-+		pgd = pgdp_get(pgdp);
- 		if (pgd_none(pgd))
- 			continue;
- 
-@@ -1827,7 +1827,7 @@ static void free_empty_tables(unsigned long addr, unsigned long end,
- 	do {
- 		next = pgd_addr_end(addr, end);
- 		pgdp = pgd_offset_k(addr);
--		pgd = READ_ONCE(*pgdp);
-+		pgd = pgdp_get(pgdp);
- 		if (pgd_none(pgd))
- 			continue;
- 
-@@ -2464,3 +2464,17 @@ pud_t *pud_offset(p4d_t *p4dp, unsigned long addr)
- 	return pud_offset_lockless(p4dp, p4dp_get(p4dp), addr);
- }
- #endif /* CONFIG_PGTABLE_LEVELS > 3 */
-+
-+#if CONFIG_PGTABLE_LEVELS > 4
-+phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
-+{
-+	VM_WARN_ON_ONCE(!pgtable_l5_enabled());
-+
-+	return pgd_page_paddr(pgdp_get(pgdp)) + p4d_index(addr) * sizeof(p4d_t);
-+}
-+
-+p4d_t *p4d_offset(pgd_t *pgdp, unsigned long addr)
-+{
-+	return p4d_offset_lockless(pgdp, pgdp_get(pgdp), addr);
-+}
-+#endif /* CONFIG_PGTABLE_LEVELS > 4 */
-diff --git a/arch/arm64/mm/pageattr.c b/arch/arm64/mm/pageattr.c
-index 172bc516164c..b3b7c508564f 100644
---- a/arch/arm64/mm/pageattr.c
-+++ b/arch/arm64/mm/pageattr.c
-@@ -347,7 +347,7 @@ bool kernel_page_present(struct page *page)
- 	unsigned long addr = (unsigned long)page_address(page);
- 
- 	pgdp = pgd_offset_k(addr);
--	if (pgd_none(READ_ONCE(*pgdp)))
-+	if (pgd_none(pgdp_get(pgdp)))
+ /**
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index d36823f4d0928..0a056949604f9 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -659,6 +659,7 @@ bool damos_filter_for_ops(enum damos_filter_type type)
+ 	case DAMOS_FILTER_TYPE_ADDR:
+ 	case DAMOS_FILTER_TYPE_TARGET:
+ 	case DAMOS_FILTER_TYPE_PROBE_HITS_WSUM:
++	case DAMOS_FILTER_TYPE_AGE_MS:
  		return false;
+ 	default:
+ 		break;
+@@ -1336,6 +1337,7 @@ static int damos_commit_filter_arg(
+ 		dst->sz_range = src->sz_range;
+ 		break;
+ 	case DAMOS_FILTER_TYPE_PROBE_HITS_WSUM:
++	case DAMOS_FILTER_TYPE_AGE_MS:
+ 		if (src->range_max < src->range_min)
+ 			return -EINVAL;
+ 		dst->range_min = src->range_min;
+@@ -2552,7 +2554,7 @@ static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
+ 	bool matched = false;
+ 	struct damon_target *ti;
+ 	int target_idx = 0;
+-	unsigned long start, end, wsum;
++	unsigned long start, end, wsum, age_ms;
  
- 	p4dp = p4d_offset(pgdp, addr);
-diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
-index 7afe2beca4ba..06470d690f9f 100644
---- a/arch/arm64/mm/trans_pgd.c
-+++ b/arch/arm64/mm/trans_pgd.c
-@@ -134,7 +134,7 @@ static int copy_p4d(struct trans_pgd_info *info, pgd_t *dst_pgdp,
- 	unsigned long next;
- 	unsigned long addr = start;
- 
--	if (pgd_none(READ_ONCE(*dst_pgdp))) {
-+	if (pgd_none(pgdp_get(dst_pgdp))) {
- 		dst_p4dp = trans_alloc(info);
- 		if (!dst_p4dp)
- 			return -ENOMEM;
-@@ -164,7 +164,7 @@ static int copy_page_tables(struct trans_pgd_info *info, pgd_t *dst_pgdp,
- 	dst_pgdp = pgd_offset_pgd(dst_pgdp, start);
- 	do {
- 		next = pgd_addr_end(addr, end);
--		if (pgd_none(READ_ONCE(*src_pgdp)))
-+		if (pgd_none(pgdp_get(src_pgdp)))
- 			continue;
- 		if (copy_p4d(info, dst_pgdp, src_pgdp, addr, next))
- 			return -ENOMEM;
+ 	*err = 0;
+ 	switch (filter->type) {
+@@ -2594,6 +2596,12 @@ static bool damos_filter_match(struct damon_ctx *ctx, struct damon_target *t,
+ 		matched = filter->range_min <= wsum &&
+ 			wsum <= filter->range_max;
+ 		break;
++	case DAMOS_FILTER_TYPE_AGE_MS:
++		age_ms = div_u64((u64)r->age * ctx->attrs.aggr_interval,
++				USEC_PER_MSEC);
++		matched = filter->range_min <= age_ms &&
++			age_ms <= filter->range_max;
++		break;
+ 	default:
+ 		return false;
+ 	}
 -- 
-2.43.0
-
+2.47.3
 
