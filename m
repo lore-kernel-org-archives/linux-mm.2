@@ -1,144 +1,136 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC81606A32C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 20:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6702E606D815
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 20:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a4iMyxMc
+	dkim=pass (2048-bit key, unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=iUGBWdlH
 Received: by kanga.kvack.org (Postfix)
-	id A6C836B05B0; Thu,  5 Nov 2026 15:31:21 -0500 (EST)
+	id 6581D6B05B2; Thu,  5 Nov 2026 15:36:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1C8B6B05B1; Thu,  5 Nov 2026 15:31:21 -0500 (EST)
+	id 5E1326B05B3; Thu,  5 Nov 2026 15:36:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 932416B05B2; Thu,  5 Nov 2026 15:31:21 -0500 (EST)
+	id 45A506B05B4; Thu,  5 Nov 2026 15:36:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 61C8A6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:31:21 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 924C3160C17
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:31:20 +0000 (UTC)
-X-FDA: 85402210320.29.8CE068C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A77BB40016
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:31:18 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a4iMyxMc;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E11E6B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:36:50 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 93335A8AC1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:36:49 +0000 (UTC)
+X-FDA: 85402224138.12.D60159F
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf27.hostedemail.com (Postfix) with ESMTP id EFBD740009
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:36:47 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=iUGBWdlH;
+	spf=pass (imf27.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793910678;
+	s=arc-20220608; t=1793911008;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TdhuTks2opBXvdhTmIB8yv80bnVd5dlxad76wxXRLWI=;
-	b=yQ6YqcY2eFAGkZk9l2AMs6AKL/hVyBwxMmSguMoDLQWMvHH0gS6t4zREmqpBNSOrzCHhax
-	7c5Mv9VDPTIxkbdEmpCwNZUosOc8BCs7xrRVPqzjReIEj/2HIbTBVIV4zkFPk3iyrVxJyr
-	1dK/GoJNiwwCTUey9fjIyOuTiWoibYw=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ZQPXM1FTewVZS/83sB0Ec0VTDBGQfcoM690LbZEKVQU=;
+	b=v26OOszxiNTkoPxOpvnkwDG6ZqNML3JRmFkmKBXSVnd6c1qakjCkDapeykDeVds2FGCSbb
+	j1HP/G1bdIN85GSFp0CciRW+v00Cqhc3JDvx7x8ZVWVVfvllHzc31f9Pn/d4wrFkzcTX10
+	IBFqXObhpQwOMYr7waxWZo7Q4izIqJA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793910678;
-	b=p4pHyroxurC11EvLTEqiSG0Cc98kCSGum2ayba/8oLFB6bgzFnuTSvC0LL4ZfmVAWbdM41
-	RJ71rL1N5tOr86TU9I1bFesy5PAckCQOLjezTV5vI0q7shZU/l8CKJc3VMWdThWPhUmif6
-	uVzH9mdS+YssbXYIrupnJ7a9Fft0KD8=
+	t=1793911008;
+	b=phHPzbRzQrsyyvoB7f+RDDJsDM9iJ/jNC1tKp3pXdSdGW0fwfcOwmdsIXqFjyhwOkV6/nO
+	qY8Yp3UzxZDRPAQZf91Lo1EQUN+YNfciTu/MUzxkwCGURZ8rAHQ5OtFP40ZbiBNfkQXHH2
+	cwpyyOoispGgG2zWRNt3acNhn+oUqfc=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a4iMyxMc;
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D76DD43E1C;
-	Thu,  5 Nov 2026 20:31:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53BFE1F008A2;
-	Thu,  5 Nov 2026 20:31:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793910677;
-	bh=TdhuTks2opBXvdhTmIB8yv80bnVd5dlxad76wxXRLWI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=a4iMyxMcWpMfFTfJfNIxFDxA2rvaiekwJvEwJVsD9AgMRJYdXpBXRleMgAFa6IxCh
-	 FxiqU8rJv64UEvYRZ/6gYYVbzscWelg+mWv6Rxml44hPWU7nbHgAHW+v4VYvIkPkV/
-	 jrzS2BWYyBBEhdTGjYy+JSwh3g9ayrWo75JJNUfN3IjmNpC5TetPa3YBI7J/+aCUtz
-	 nuds2tJ1nAwIwPSzDtyMCHzmRlVcDD71BoLwOLZUrwm7nw+6xozQ0y395XW5qmFo/Q
-	 xefxjYblhwNI3XBSZj8pucJn0jKefeiSb46zGHMzeR/nBVDl3ee61bD0gtDrlU+qrF
-	 qUHeYhx3uhbZQ==
-Message-ID: <6f035f97-8b55-47ad-bd52-833b86b8ae8f@kernel.org>
-Date: Thu, 5 Nov 2026 21:31:09 +0100
+	imf27.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=iUGBWdlH;
+	spf=pass (imf27.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
+	dmarc=pass (policy=none) header.from=efficios.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1793911007;
+	bh=ZQPXM1FTewVZS/83sB0Ec0VTDBGQfcoM690LbZEKVQU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=iUGBWdlHAlSbnHErEYzQi/NKQzj3wzm4ZGAYXiJ/pqNbSSfAORxBgHl39fnZWJptC
+	 gTBMGXigq1JLi/koCN8m82rr0PeQuXVNF89mMEuivq9LI1t9cuOPcs9ELjJhtZfWNu
+	 gEBxC6SeY0/f/fX3SLh9xVFPFMKoMsxB7CiJtaSWI7An6apscDOxgVtwrcFI5kAKFy
+	 l0bQ/oNSJc2TZnRjUAnBl+PFcc8919kK8uvw7sKJKjYp1j8t2hYxFyc2cCbPld4mw5
+	 1lri7IBw0vGln3ud+CEFqgBAHEHGnAtmyK3iRozJKbp+uRQBpwFYaLJvqPYB41/1QN
+	 GHurq29h8shgw==
+Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4jLDcZ6rbLzLfK;
+	Thu, 05 Nov 2026 15:36:46 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: David Hildenbrand <david@kernel.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>,
+	christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
+	David Carlier <devnexen@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	linux-doc@vger.kernel.org,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	linux-trace-kernel@vger.kernel.org,
+	Jan Kara <jack@suse.cz>,
+	linux-fsdevel@vger.kernel.org,
+	Oleg Nesterov <oleg@redhat.com>
+Subject: [RFC PATCH v24 00/10] Hierarchical Percpu Counters for RSS
+Date: Thu,  5 Nov 2026 15:36:29 -0500
+Message-Id: <20261105203639.1459524-1-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.5
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm/huge_memory: take a reference on a folio PUD
- copied by fork
-To: Zi Yan <ziy@nvidia.com>, Konstantin Khorenko <khorenko@virtuozzo.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- Alistair Popple <apopple@nvidia.com>, Dan Williams <djbw@kernel.org>
-Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-0-2828fe5a51ed@virtuozzo.com>
- <20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-1-2828fe5a51ed@virtuozzo.com>
- <DMNK05HCXYUJ.578OO1NG15LZ@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <DMNK05HCXYUJ.578OO1NG15LZ@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A77BB40016
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: 9s1gy7bmaa6uij54drfd7t4qsiyezfi6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 3iprkf81ace1r1yqf6qcayquhcd45yff
+X-Rspamd-Queue-Id: EFBD740009
 X-Rspam-User: 
-X-HE-Tag: 1793910678-445081
-X-HE-Meta: U2FsdGVkX18OOFmlUohhwImQJX4+m1KheaG0BrvO47r6oFHqKSsFXI38Caff4zetbEOSDKNRkXZxMb0ANU55fW+PoPZLLT7jQff3OKPaIfopLY4XyvQA+3TFsgoYIUM6qp/UDkrrLyihWpKcAALcqrMjPL7hf+Ehq0kucp02zAFBkLHBHARcsR8M5VfDhHJiRgxS//sk+c616MCKTYPf7+9dxAV9Y7IVkWMZXZyAeSvFFqEzs7ch5MUMBWI8Co+vURYlPtDHBXv/uJWvkWXbGM+XAduEBa3PHpjGETmNrWUwNbV4SlA6wlPqdw7WLRdtGJiQ6wZVwPqkm9vTCFao8vYG0Nyq7AZ7mHH2dOym9gbIDnuCI+BEAY62FICLJXHyW0VvrdTclwuEWNoSJ0MVQ4gZaTRlpnVBS9NVkD9pUK2Dz9XQcQPIkh4euNB1D5UeoKV7r2df/E0BsqsexvGOvZ/0TNK4XR57d3EC1/szniWKIA1EqVSSbLx7L2cWPRwpVl2P6mL1OadSSqDraiMOW5zEvDLRRtqmg0kdOEp4x+E2/9AN+50UamIIx+1u3rrUpv9goIiaBLRg/xGn06QB343+LwmVCZxTbKsfwsgPq626wIM0/jPPUXt2Vq059eXx4aSF0vgsYX2rThTIRWAoSplCo5qmwvm6VgxPorpQ4EX1kj4g8z/QyyVIDnVbFw/GkJM/1tOWu+73LA/hFjxhN/WqxRQjxj1DAsUsyvtTVpmdLqB15z+APl0Zi0KwuXXIZ4QGhj4GlSC+m9joO7XkZn8ZBEXWQp2o7JdDOo8r3J9coTprb1eACE73a9Gx3UdOsMdbeNhwRFbpCm/0im1vGtLRqnL5UZFT7Ti29nx/drcHodEp1yRetUVgH5jOtoUP0zVGOjHH0dzYUNEkSXPc9pYnNbyzorKZi9lOuinScZm2yfEcRVJ2ZmJC25FPBK7nnrvjweIHXNfjh1bZ/SK
- wLA893ue
- 8QPXVeIE0TPUWANs2abq98UUH06IXUNY5843kZmaM5aROdXm0OXMuvS1mCdFjfmGapRyTOuDNDfbmwNRgWbdPgiZRiO5kX2BBtOgYFqM63IXFfoBVW3fR53d2ybAlwKtDcq9IojO5aJBBWnJa7udyw3IBOQBbDQJPT+SM4edeCvfXdKuII/sK9QcFKezrgdQ40zIAUGbDCBerRAZ1BJcf9OzahUMrOQppfVWFZz4l4fi61zwXw4QRuO+g2EVt4ic/+hh1mn5RhC5aUBsl+fCTHUiMlIkfYbDJLb0gcEzjBNgfUTfqiCtrdM/P/EPtzKr6HhzQV1WjmwD7HaFT2FHjneWw0H6BfHx4G/5+RMeAQq3ppXUOgc/vD0yKJNusdj2NaXr+r+Zt7HN6nmo=
+X-HE-Tag: 1793911007-454316
+X-HE-Meta: U2FsdGVkX190qW8vonyY37xrawWEC56PvKsQVa8z5Th2xRK5yn0Ax2zUzFIkzpIpWR1Mral3IsOXBRpo0SfTKnhU38o3+ApIRsDEv/+5NptSe1FbKLCEVyP9UxbHcMBQrcFn8gk1tF1DQW2g/O+iidlFQ40jmxVS7lr+9SrUPjH9qClVOLoeKHfdjKCRYM4qvw2mulTd8qmcaLnVBC2TgrmkDGjCe200ByzLxraad9/nDdH1an9C8/pGO7UySP0XKDM530FZXgAicu/+D9E1Qt4PY0gXvHYFRiuY4T+wA+mYbCHOyX7clcj9i5lWLun8pQJdTG0szlnkxcNRXwR2ssbjttN/JhROCsBOKtitXcfyVtf+ngig+LNlPnB+MLe8+qqSg7je9rchw2tecV06EknoPEhNVhbZIdyTYife3CKgtqSvcLajqAb8NhCoZHdfJvA/Wsp15ooUefklysafeQQG2vewpHqWaKb95D55XtkM6ZdvLgJ3G4UR1dm7JDqjFb9xupjxxSjreuebXmI8lRTFJ+C2LrvZQuh6mmpWpUSstFRt8R3CmWfRD9Za3p68ian4mG6AIfzccQkPs0oBBVzsqJnJsU8YH95QvMyQhCMRja53Z9H/D47/3mxEBsWguvX8plz5f+ypG91eaAGBWDtySkz9haX/7U5BNNbqO6N9Yyykk6IadUAlZSwFqmVxFZzrAyTHq5m4Oq5dMwMbXNKQA39VrB6g5HidQCre2UU9KhVXv1U/ZnbxPEsftbW6sZJB3bI+PtzyOjaH4g9niu/ECC6If4p6qGRfqaMBX5txsFlrxoHj3vpKvwIQ+8g+MH0UjMhPhbJw8rtv/aKasI0EW3a/ALFfPy0A+OYZ8WuO4wNcgikB1ldl41m50JwHXSIKcchL56MKYSb8/fRBRpUdyZ+Yaa3vtRo37vabAJX9tnTh6jfK4BtDdddKP0OArp0K+1feEQMJ/k23Pfp
+ 3xg7kgZU
+ Wj7EVsRtatiFRaExNaun92ib9Ff5n5Z3Y7+LLAwxyniF1LeOcGzsMyJwhCgwkH8jmJkIdE+EsACxxrBauqnFrsT5i1eOy6hQf9U7uPwPR0YMFewoiu6oqDJ6t9XBFaBNp2yyqCRzso31iGHR9/hMZYHFWq0bONnJdQdHUK8oS/rIhNlBHeD14DIsxOEQCJdHt0GsbALRDTjje6KdjfgfRd6cMr5F8T17Vxj+9CqtjDIvdIiNgI9ct7DVcb4XLjaBZWabb8AhgoC7foi2GwtiSSxjmF7Zo3x37VdDB21FhuoD9Rs6F21jASFkMGZ9rFgAJjbvYybC81Z3jOzyT/azHRyMAjOQlA+07/+eAjZPNd3H4Q2CqPLKO9utGkiQeDCQprGaJ8dUWjP/8qsz5t7PJLHoSbA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,58 +139,321 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 21:19, Zi Yan wrote:
-> On Thu Nov 5, 2026 at 12:00 PM EST, Konstantin Khorenko wrote:
->> Device DAX maps its memory with vmf_insert_folio_pud(), which takes a
->> folio reference, adds a PUD rmap and accounts the pages to the mm.
->> zap_huge_pud() drops all three, but copy_huge_pud() copies the PUD into
->> the child without taking any of them. Each child's unmap then drops
->> what the parent took:
->>
->> - the folio is a reference short, so with two children its refcount
->>   drops to zero and free_zone_device_folio() runs while the parent
->>   still maps it;
->> - the child's file counter goes negative, "Bad rss-counter state" when
->>   its mm is freed;
->> - the parent's unmap drives the entire mapcount below zero.
->>
->> fork copies the page tables of a device DAX mapping that has a guard
->> region, and commit f807123d578d ("mm: allow guard regions in file-backed
->> and read-only mappings") allowed MADV_GUARD_INSTALL there.
->>
->> Take the reference, the rmap and the counter for a PUD that
->> vm_normal_page_pud() resolves to a page, as copy_present_ptes() does for
->> a PTE, with a new folio_dup_file_rmap_pud() helper. copy_huge_pud() now
->> needs both VMAs, so pass only them and take the mms from them.
->>
->> Fixes: aed877c2b425 ("device/dax: properly refcount device dax pages when mapping")
->> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
->> ---
->>  include/linux/huge_mm.h |  5 ++---
->>  include/linux/rmap.h    | 22 ++++++++++++++++++++++
->>  mm/huge_memory.c        | 27 +++++++++++++++++++--------
->>  mm/memory.c             |  4 +---
->>  4 files changed, 44 insertions(+), 14 deletions(-)
->>
-> 
-> I assume this supersedes David's version[1], which uses
-> folio_add_file_rmap_pud().
-> 
-> [1] https://lore.kernel.org/all/20261031-fixes_core-v3-11-d6437171ecc3@kernel.org/
+Hi David,
 
-Ugh, I thought I dropped it to wait for this one here. But turns out the flood
-of patches confused me :( (hoping I didn't drop another one by mistake)
+Here is the hierarchical per-cpu counters series for the RSS counters,
+based on v7.4-rc1.  It is an RFC because of the questions at the end,
+and because of the significant changes since v22 [1], notably the
+per-cpu counter size (long -> byte), the configuration heuristics, and
+the lazy activation introduced by patches 6 and 7.  v24 fixes the bugs
+found by the Sashiko review of v23 [2], including a NULL pointer
+dereference in patches 3 to 5 on sparc64.
 
-It's already part of the fixes PULL request:
+The problem
+-----------
 
-https://lore.kernel.org/linux-mm/20261105084704.5703-1-david@kernel.org/
+Since commit f1a7941243c1 ("mm: convert mm's rss stats into
+percpu_counter"), the RSS counters are struct percpu_counter with a
+batch size of max(32, 2 * nr_cpus): their approximation error grows with
+O(nr_cpus^2), up to 1.1GB per counter at 384 logical CPUs.
+/proc/PID/status, /proc/PID/statm and the OOM killer moved to precise
+sums (commits 82241a83cd15 and 5898aa8f9a0b), but the other readers
+still use the approximation: the RSS high watermark (VmHWM, the
+ru_maxrss reported as "Maximum resident set size" by /usr/bin/time -v,
+taskstats), /proc/PID/stat (ps, top, monitoring agents), the taskstats
+RSS-time integral (coremem, sampled at each tick), NUMA balancing and
+the mark_victim tracepoint.  On the test machine below, the
+/proc/PID/stat RSS of a test process was off by 17MB while
+single-threaded, and by up to 134MB with 64 threads.
 
-Konstantin, sorry! Can you send a follow up to introduce+use the dup variant?
+Precise sums cannot fix the high watermark or the RSS-time integral:
+update_hiwater_rss() samples the RSS on every unmap path, and the
+integral at each tick, while a precise sum reads every possible CPU,
+about 4us per counter at 384 logical CPUs.  A smaller struct
+percpu_counter batch takes the counter spinlock on every carry: at batch
+32, an update of the counters of a shared mm costs 4.4 to 69us with one
+thread per CPU, compared to 26ns to 1.2us with this series.
 
+The series
+----------
+
+Patches 1 to 5 replace struct percpu_counter for the RSS counters with
+hierarchical per-cpu counters: per-cpu bytes carry into a tree of atomic
+counters shaped at boot from nr_cpu_ids, with a fixed batch of 32, an
+error bound in O(n*log(n)) and no global lock.  Each level carries only
+once its residual reaches the batch in either direction, so updates
+going back and forth around a boundary do not climb the tree.  The
+comparison functions have no user in this series; a follow-up will use
+them for a faster OOM killer task selection.
+
+Patches 6 and 7 keep the RSS counters of single-threaded processes exact
+and without per-cpu memory: until a second thread shares the mm, the
+task running on the mm adds to the bias of each counter without atomic
+instructions, and other tasks add to its atomic bias, both read in O(1).
+Creating the second thread allocates the per-cpu counters and tree
+items, and activates the tree.  struct percpu_counter cannot do this as
+is: its count is an s64 under a raw spinlock, which the remote updates
+(reclaim, khugepaged, remote GUP) would then take.
+
+Patches 8 to 10 are the tools to tune the tree shape on other hardware:
+the percpu_counter_tree.arity= and rss_stat_batch= boot parameters, and
+a KUnit benchmark.  The default shapes were measured on one machine,
+with up to 384 logical CPUs, so results from other hardware are welcome.
+
+Results
+-------
+
+2-socket AMD EPYC 9654, 192 cores, 384 logical CPUs with SMT (the CPU
+counts in this letter are logical CPUs, as in nr_cpu_ids), tree 8,8,8,
+batch 32, whole series; details in patches 3 and 7.  The bare-metal
+results were measured on v7.3: the rebase onto v7.4-rc1 had no conflict,
+and the hpcc update costs of the series as sent, measured in a pinned
+384-vCPU guest, match the bare-metal ones within 2%.
+
+  Accuracy per counter: bound, and largest |approximate - precise| seen
+  by get_mm_counter() while a process hops across all CPUs doing
+  mmap/munmap of 1 to 16 pages (384-vCPU KVM guest pinned to the host):
+
+                                        hpcc   upstream
+    bound                            158.5MB      1.1GB
+    measured, single-threaded      0 (exact)      841MB
+    measured, with a second thread      96MB      845MB
+
+  Update cost, ns per update per thread, one thread per CPU, bare metal
+  (mm: the 4 counters of one mm; private: one counter per thread; batch
+  32: local change of the benchmark, bound 46.5MB):
+
+                                              upstream   upstream
+                                       hpcc  batch 768   batch 32
+    mm, +1                               26        288       4370
+    mm, random +-32                     135        385      69171
+    mm, random +-512                   1174      20229      69186
+    private, random +-32                 31         20          -
+
+  /proc/PID/statm read with 1000 to 16000 processes, bare metal:
+  5.3-6.5us vs 16.5-19.0us for single-threaded processes, on par for
+  multi-threaded ones (14.4-16.0us vs 14.5-17.1us, guest).  fork + exit
+  of a single-threaded child: 116us vs 139us.  will-it-scale
+  page_fault1, 2 and 3: no regression (-0.6% to +5.1%, one boot each,
+  the upstream one on the previous day).
+
+  Memory per mm, counting the slab objects of mm_struct and of the tree
+  items, and the per-cpu memory of the RSS counters, in bytes (guest,
+  v7.4-rc1):
+
+                  single-threaded   threaded   upstream
+    16 CPUs                  1820       1948       2076
+    384 CPUs                 1928       8145       8072
+    1024 CPUs                2185      17204      18569
+
+  The tree items are allocated with the per-cpu counters when the second
+  thread is created, and the mm_struct slab object keeps its upstream
+  size.
+
+Behavior changes
+----------------
+
+- The allocation of the per-cpu counters and tree items moves from
+  fork() to the second thread (clone() with CLONE_VM, without
+  CLONE_VFORK), which can then fail with -ENOMEM.
+- mm_struct gains rss_owner, the task running on the mm, compared with
+  current and never dereferenced, and rss_stat_mutex, which serializes
+  the activations of the tree, as mm_cid.mutex serializes the mode
+  changes of mm_cid at fork and exit.
+- The precise sums (/proc/PID/status, /proc/PID/statm, the OOM killer)
+  take no lock: under concurrent updates of a multi-threaded process,
+  they can miss a carry on its way up the tree, where upstream counts
+  each concurrent update either whole or not at all.  They are exact for
+  a process at rest.
+- The rss_stat tracepoint reports the approximation (patch 5): exact for
+  single-threaded processes, within the bound otherwise.
+- Like struct percpu_counter, the tree is sized at boot and not
+  reshaped on hotplug; its shape and bound depend on nr_cpu_ids, while
+  the default upstream batch follows the online CPUs.
+
+Caveats
+-------
+
+- From 33 to 39 CPUs, up to 1.37 times less accurate than upstream.
+- The tree is shaped for the number of CPUs rounded up to a power of 2:
+  just above a power of 2, the RSS counters of a threaded process, with
+  rss_owner and the mutex, use up to 1.50 times the memory of upstream
+  (129 CPUs, 1.28 times at 65 and 1.38 times at 257), compared to at
+  most 0.90 times at a power of 2, and 1.02 times at 384 logical CPUs.
+- Private counters with random +-32 updates: 31ns vs 20ns, the price of
+  a 7 times tighter bound.
+- A multi-threaded process which ran on few CPUs can hold more error
+  than upstream: 2047 pages per CPU path vs 767 at 384 logical CPUs.  A
+  follow-up could index the counters by concurrency ID (mm_cid) instead
+  of CPU, so the accuracy bound and the precise sums would scale with
+  the concurrency the process uses.
+- Before activation, concurrent remote updates of a single-threaded
+  process contend on one atomic per counter.
+- The second thread allocates per-cpu memory, which the per-cpu
+  allocator serializes, as it does upstream at every fork: with 384
+  threads at once, init + destroy of 4 counters takes 874us per
+  operation (1004us upstream, 6.0us alone).  Tree item slab objects
+  owning their per-cpu counters, with slab destructors, could avoid it.
+- The accuracy was measured in a guest, with a debug patch and a test
+  program which are not part of the series.  The bound is analytic and
+  tested in both directions.
+
+Changes since v23 [2]
+---------------------
+
+- Patch 1: percpu_counter_tree_approximate_sum() reads a zeroed counter
+  as 0, like a zeroed struct percpu_counter, as its kerneldoc now says.
+  sparc64 init_new_context() reads the RSS counters after mm_init()
+  zeroes them, before their initialization: patches 3 to 5 dereferenced
+  a NULL pointer there on sparc64 SMP (noted in Sashiko's review data,
+  not in its report). The KUnit test checks it.
+- Patch 2 (Sashiko): the single-threaded tests select the first online
+  CPU with the CPU hotplug lock held; the contended carries test
+  publishes its start flag with release/acquire; the saturated compare
+  test checks that every possible CPU is online with the CPU hotplug
+  lock held.
+- Patch 4 (Sashiko): no counter leak when an initialization fails.
+- Patch 10 (Sashiko): the lifecycle and churn sets of counters are no
+  longer on the stack, where debugobjects warns about a struct
+  percpu_counter.
+- Not changed (Sashiko, patch 10): percpu_counter_tree_bench.batch is
+  not listed in kernel-parameters.txt, like the parameters of other test
+  modules (test_vmalloc, test_lockup); MODULE_PARM_DESC and the Kconfig
+  help document it.
+
+Changes since v22 [1]
+---------------------
+
+- Per-cpu byte counters with hysteresis, updated with
+  this_cpu_try_cmpxchg(); the tree items of counters initialized
+  together share cache lines; the library allocates the per-cpu
+  counters and tree items, so struct percpu_counter_tree has a fixed
+  size of 40 bytes, like struct percpu_counter, and mm_struct no longer
+  embeds tree items.
+- Flat tree up to 32 CPUs, 16,4 up to 64, fan-out 8 beyond, with a root
+  fan-out of 16 when one order remains (8,16 at 128 CPUs, 8,8,16 at
+  1024).
+- New patches 6 and 7, for single-threaded processes.
+- Fixed approximation margins in the comparison functions; hysteresis
+  on the intermediate levels, so the accuracy range is exact and
+  symmetric.
+- Userspace test of every tree configuration, KUnit tests on per-CPU
+  workqueues, Sashiko review comments, MAINTAINERS entry.
+
+Testing: every commit builds without warnings on x86_64 (SMP and UP),
+arm64, ppc64le, 32-bit powerpc and sparc64, sparse adds no warnings,
+KUnit passes on bare metal (v7.3), in guests with 1, 16 and 384 vCPUs,
+and on big-endian sparc64 in qemu (1 CPU), the userspace test passes on
+simulated topologies up to 65536 CPUs, and the RSS counters match a page
+table walk from 1 to 64 threads.  KUnit and the RSS check also pass with
+lockdep (PROVE_LOCKING) in guests with 16 and 64 vCPUs, without report.
+
+Starting from v22, which I wrote, an LLM coding assistant drove the
+implementation of this revision from my design decisions: it wrote the
+code, the tests, the benchmark and the measurement scripts, ran the
+measurements in guests and prepared the bare-metal ones, and drafted the
+comments, the changelogs and this letter.  I made the design decisions,
+reviewed every change and directed the rework through my review
+comments.
+
+Questions
+---------
+
+1. Is mm->rss_owner acceptable, or would you prefer current->mm == mm
+   (without PF_KTHREAD) and an "activated" flag?
+2. Is moving the -ENOMEM from fork() to the second thread acceptable?
+3. Would you rather take the single-threaded mode first, on its own?
+4. Should the rss_stat tracepoint report the approximation, stay
+   precise, or report both?
+5. Should the tuning tools be merged, built only with the benchmark
+   config, or dropped later?  Who could run them on non-AMD, 4-socket,
+   arm64 or POWER machines?
+6. Is tools/testing/hpcc the right home for the topology test?
+
+Thanks,
+
+Mathieu
+
+[1] https://lore.kernel.org/lkml/20260227153730.1556542-1-mathieu.desnoyers@efficios.com/
+[2] https://lore.kernel.org/lkml/20261102190708.1287100-1-mathieu.desnoyers@efficios.com/
+
+Mathieu Desnoyers (10):
+  lib: introduce hierarchical per-cpu counters
+  lib: test hierarchical per-cpu counters
+  mm: use hierarchical per-cpu counters for the RSS counters
+  tools/testing/hpcc: add userspace test of hierarchical per-CPU
+    counters
+  mm: report the approximate RSS in the rss_stat tracepoint
+  lib: percpu_counter_tree: add lazy tree activation
+  mm: keep the RSS counters of single-threaded processes exact
+  lib: percpu_counter_tree: add the arity boot parameter
+  mm: add the rss_stat_batch boot parameter
+  lib: add a benchmark of hierarchical per-cpu counters
+
+ .../admin-guide/kernel-parameters.txt         |   24 +
+ Documentation/core-api/index.rst              |    1 +
+ .../core-api/percpu-counter-tree.rst          |  145 ++
+ MAINTAINERS                                   |   12 +
+ fs/exec.c                                     |    5 +
+ include/linux/mm.h                            |   28 +-
+ include/linux/mm_types.h                      |   19 +-
+ include/linux/percpu_counter_tree.h           |  372 +++++
+ include/trace/events/kmem.h                   |    3 +-
+ init/main.c                                   |    3 +
+ kernel/exit.c                                 |    3 +
+ kernel/fork.c                                 |   61 +-
+ lib/Kconfig                                   |   27 +
+ lib/Makefile                                  |    1 +
+ lib/percpu_counter_tree.c                     | 1450 +++++++++++++++++
+ lib/tests/Makefile                            |    3 +
+ lib/tests/percpu_counter_tree_bench.c         |  610 +++++++
+ lib/tests/percpu_counter_tree_kunit.c         | 1063 ++++++++++++
+ tools/testing/hpcc/.gitignore                 |    2 +
+ tools/testing/hpcc/Makefile                   |   18 +
+ tools/testing/hpcc/include/hpcc_shim.h        |  203 +++
+ tools/testing/hpcc/include/kunit/visibility.h |    2 +
+ tools/testing/hpcc/include/linux/args.h       |    4 +
+ tools/testing/hpcc/include/linux/atomic.h     |    2 +
+ tools/testing/hpcc/include/linux/bug.h        |    2 +
+ tools/testing/hpcc/include/linux/cache.h      |    2 +
+ tools/testing/hpcc/include/linux/cpumask.h    |    2 +
+ tools/testing/hpcc/include/linux/errno.h      |    3 +
+ tools/testing/hpcc/include/linux/limits.h     |    2 +
+ tools/testing/hpcc/include/linux/math.h       |    2 +
+ .../testing/hpcc/include/linux/moduleparam.h  |   12 +
+ tools/testing/hpcc/include/linux/percpu.h     |    2 +
+ .../hpcc/include/linux/percpu_counter_tree.h  |    2 +
+ tools/testing/hpcc/include/linux/preempt.h    |    2 +
+ tools/testing/hpcc/include/linux/slab.h       |    2 +
+ tools/testing/hpcc/main.c                     |  550 +++++++
+ 36 files changed, 4632 insertions(+), 12 deletions(-)
+ create mode 100644 Documentation/core-api/percpu-counter-tree.rst
+ create mode 100644 include/linux/percpu_counter_tree.h
+ create mode 100644 lib/percpu_counter_tree.c
+ create mode 100644 lib/tests/percpu_counter_tree_bench.c
+ create mode 100644 lib/tests/percpu_counter_tree_kunit.c
+ create mode 100644 tools/testing/hpcc/.gitignore
+ create mode 100644 tools/testing/hpcc/Makefile
+ create mode 100644 tools/testing/hpcc/include/hpcc_shim.h
+ create mode 100644 tools/testing/hpcc/include/kunit/visibility.h
+ create mode 100644 tools/testing/hpcc/include/linux/args.h
+ create mode 100644 tools/testing/hpcc/include/linux/atomic.h
+ create mode 100644 tools/testing/hpcc/include/linux/bug.h
+ create mode 100644 tools/testing/hpcc/include/linux/cache.h
+ create mode 100644 tools/testing/hpcc/include/linux/cpumask.h
+ create mode 100644 tools/testing/hpcc/include/linux/errno.h
+ create mode 100644 tools/testing/hpcc/include/linux/limits.h
+ create mode 100644 tools/testing/hpcc/include/linux/math.h
+ create mode 100644 tools/testing/hpcc/include/linux/moduleparam.h
+ create mode 100644 tools/testing/hpcc/include/linux/percpu.h
+ create mode 100644 tools/testing/hpcc/include/linux/percpu_counter_tree.h
+ create mode 100644 tools/testing/hpcc/include/linux/preempt.h
+ create mode 100644 tools/testing/hpcc/include/linux/slab.h
+ create mode 100644 tools/testing/hpcc/main.c
+
+
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
 -- 
-Cheers,
+2.47.3
 
-David
 
