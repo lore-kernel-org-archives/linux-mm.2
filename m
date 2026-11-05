@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD9E606A334
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 04:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FD7606A332
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 04:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hzFCTF9W
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=RUDGX5v7
 Received: by kanga.kvack.org (Postfix)
-	id CB87A6B05B6; Wed,  4 Nov 2026 23:08:24 -0500 (EST)
+	id BF52B6B05B7; Wed,  4 Nov 2026 23:08:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C8FFC6B05B7; Wed,  4 Nov 2026 23:08:24 -0500 (EST)
+	id BCD626B05B8; Wed,  4 Nov 2026 23:08:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B57B06B05B8; Wed,  4 Nov 2026 23:08:24 -0500 (EST)
+	id AE2E16B05B9; Wed,  4 Nov 2026 23:08:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 86F406B05B6
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:08:24 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 05580808DE
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:08:23 +0000 (UTC)
-X-FDA: 85399733328.02.69EA9C3
-Received: from mta0.migadu.com (out-24.mta0.migadu.com [91.218.175.24])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 06868140003
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:08:21 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hzFCTF9W;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.24 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 863D66B05B7
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:08:32 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F279040909
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:08:31 +0000 (UTC)
+X-FDA: 85399733622.08.FB39D91
+Received: from mta0.migadu.com (out-28.mta0.migadu.com [91.218.175.28])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 05DF4A0006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:08:29 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RUDGX5v7;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.28 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793851702;
+	s=arc-20220608; t=1793851710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jhoY+jpmWMSdYwp//JSUuvTndwwXluhkSDeys0thRCY=;
-	b=q8bIspkEKFuR+1vcTjHjOCv4+uvAohX5hbs3Bh+u6dU1ECdgNptiu4x7itjh7CjH4F9qyX
-	acfsH7Jlhr+2Bxo2tPteYnepZeBKamYeIrCGYdQ7UFW82JFeYkI06rnAK1bs0HIvKo5cbr
-	O7fxPdsr6bhsTbShe9v33qMmeK/d5cg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hzFCTF9W;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.24 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	bh=hxAdYOiZMDWVnhrVJerUgUeo3FuklgjtpnZJkBnaqj0=;
+	b=xiFtbOZ81vMtInhlyL2++NooVvpGQ4GbX5rxXYB1unmSigUpqw0gtuEnN88o+sVQRyXKVz
+	ESKvn7BnWgL9HPR45l0PGnBYnWirbPUpJTVigne+tUSb1QiVuxPqFvzDho5rxaNoM/Pg5i
+	WhdUW5JZvJaROJol1rCnPSfiFc/73WE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793851702;
-	b=l37N/UFL7eE7BN6SebjWy6VyAiYETA1YoF0/lA7VuP/W8NPZuUmJttnYoRTaAWHTkFno/q
-	wFUZItcQLTh23dQ16ciek4xUYIhranUuS54+fW9hRtrWlaOXoCeUPlYyreocC6wbBzeCo8
-	tjNg71Y+51BGYyfnb1s5ls8ChFRDfDw=
+	t=1793851710;
+	b=kVnE/r4PhW3L6tPyelLGzauobQg5tG3XcYU2pKyuJicMd5Ui8WUSiHWM3HfTS0M/5XhUDg
+	UL5waAwYxsioMgFR7DuDLQ5lp1cTvJoJzbegQinYw+ap29CVfD1P5WkEB89GyiLQbTR70a
+	LNw82O36jDmvrWPYGDW9hCrQY4KYBTo=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RUDGX5v7;
+	spf=pass (imf25.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.28 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=WEbewz6b9wHYALxehhglrOgrV5IZCtm+DbbZBJ1BU2Q=;
+DKIM-Signature: a=rsa-sha256; bh=4zR6GuXHlYIEiJeN1rNCRlmHY2SNfG3wyJTdYXq1hOg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793851700; v=1; x=1794456500;
- b=hzFCTF9Wu/qi6Z9WvmibqufnABpILnjdHG3/YE5KtTgLG6adx+diqiWJ8XyitEl4HUGroll6
- UiQL/vbleqH6dO9huCP7B1n+ExiFzwUHFcjZ+AjS9SbQOA0/ntzl6mXYmSjeu0+k/VQaJk0/oyB
- f7XJ7769JlLHeR1laPissX9s=
+ t=1793851708; v=1; x=1794456508;
+ b=RUDGX5v78X1j40xqFE1muXfgcFojzyNxW8vviBxIFY9jVQ7/B74hJWUZKU0PPNicHuBmqF1W
+ hkn0V+3VAdchOTtdJ2RAT3njv5eed/swXVGlb58FHPqIzibbAAvXZ/As297LqhZIxHTgcfk13eD
+ q5o0pTXAf6TYvlPSm9lkfgis=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 03a3cfa50fb27246;
-	Thu, 05 Nov 2026 04:08:20 +0000
-X-Mizu-Trace-ID: 03a3cfa50fb27246
+Received: by smtp.migadu.com with ESMTPS id 39f390051dfdd29d;
+	Thu, 05 Nov 2026 04:08:28 +0000
+X-Mizu-Trace-ID: 39f390051dfdd29d
 X-Migadu-Flow: FLOW_OUT
 From: Qi Zheng <qi.zheng@linux.dev>
 To: muchun.song@linux.dev,
@@ -69,27 +69,27 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2 3/4] mm: hugetlb: fix GFP mask propagation to CMA
-Date: Thu,  5 Nov 2026 12:07:45 +0800
-Message-ID: <ac2de9b321f68c1025333e92e3ce94beadcb0b6c.1793850539.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v2 4/4] mm: hugetlb: fix cpuset violations in gigantic surplus allocations
+Date: Thu,  5 Nov 2026 12:07:46 +0800
+Message-ID: <046fd77e49ee8bb35e3bcc4104b9275d2e72ea5e.1793850539.git.zhengqi.arch@bytedance.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1793850539.git.zhengqi.arch@bytedance.com>
 References: <cover.1793850539.git.zhengqi.arch@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 06868140003
-X-Stat-Signature: g3zc7b44d56djo4xh3surzkaw18wsggc
-X-Rspam-User: 
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 1uyo5faq6chwbi1gnaii68wmjhx6bdbk
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793851701-173535
-X-HE-Meta: U2FsdGVkX1/ZUXM9a4MXPtCbtc5PbNgtyQ5y6Pt4Ut23tFtn+8oNi6Eq0kQk61G70psZfcX/3iVvarC1YpJRbsDq2CQz52Y0q1FXsZjs+OiAnai8/Vnu8DKOgOrApXj9cY+83o2qQ6G/OIKaA+u6pu4zPgo8kw1sd+R4vHplHZfTV6d+Ww7F1s98/Nml43d2Y6SwIjFaTkD+nXJT0XGM1b7rYTI2b/0EUY28aZAcFJjSA0h3A3ruW31Ryx/Ryz+hkvFKm1NzWYrreXBa7yl0wsu/YeCsP6cm/w9zGNT2iXKVNP30qi/mr9kf6BL9oT7ikmoblXeWtJky5c2KuNiLTL20XsxoUpShkJBz83MiMt+hhGmTar9Gtyws/4/iZqxfr63RWTN/zBNC55trYm8DnV839MA9Wn/MR31GtW2wQUCQui95QDDVSUtK9PVolYAFJcpfW/ckPfcPZqME4uBSgh6NBvJsLEDCcMshQ6Sww/gju4tbLg9pRfXxprwk8k5bS/5WCqoICW0WvbgIyiInNFuNLKT7nkQ6f/Q/r1PsPlbtZViMeiyKs6EQQ5AsLZfIHRKVkc2a5XOx8O2bx/ZuXPfCV2e5AIo34HCt+j298PWUm62LtRnOv5vFTEZz/b5zzNqRkvPOuJpAopsFRDD/24mlBCyPynJTuCM6v3A0m5SekxwI0jqv7H2fg14EipiLyjDwgIGfnc4tJoi+BeYMnIEJZIN8H9V8mDGFCubnqB9VTu1w+DH45tSUZ4+Flfboz65Lu8D9lFnr4dC63v2Be3Ue/8ktWPs7BKbJz0Y6MzNBWaUMDrCKUGgWnOCt8/u3vTxSHyo0BHk1YWK6QizJ+cP+Q4xsWTgDBP61lHVfZIvFOtCt7ijpBtHdJDA6uKNfmui/DhlRdsPAQW2IosPG1pTVwVKmX0E/QgfDq+pe8FFHk5cHQuzQ22LO+F65Yt7ZrMA/dH04pNopHeg3nJX
- DteXaezg
- yau1AsglCbD0WOqRqbhSFFSHshUAduPGXCCLGv0r0s5Xv4CMcl/YCJZbGGeokM4xyItCIkkX/90RYAt1t07yMH570IS5qjXxFSD8iF8E6AzeKvdXnk3s3KvckRiRUQ8pqqoLraL6Sk1ltA1/wzAqsiJkEiDtGqCa8nRmYlvFdONC8qvhyx14FvUN/besKPYQk0CDecat+j9Aj9kxU7aNbUNHO+nIK+i65qsXFYUbJrlu8bsA=
+X-Rspamd-Queue-Id: 05DF4A0006
+X-Rspam-User: 
+X-HE-Tag: 1793851709-106853
+X-HE-Meta: U2FsdGVkX18z2jNrveoqTXcppjFMQk2f7+YhUk3lhXtEhlv/AE9FpVjDWrQ4QfFhL6sixYZMxHS2/3CqGXo6zrEdV9crXkJhjQUZm/4GhVlMa9ukDyN9iSo4URgC8iSICGpeCjRcPNSMLJhfE39J9J0KtO61r5+vGsXzgm/15aVRhaq3/E+2OwP48ER6G79QurFfYLb2bhcNn0JIQg3QKQpqia0sFUNANLVDS28bwkilLt8K8vXJUZwU0ehBaYkHVJbxtmRRQHbP1SuA6Oby1J7zU8mBvLC7eV9+Iwlwi9yuda/2cVWfGYEaVVYUzEljwvMSu3/+SfTD/8z2ZqrLI5Z6Ru0p/UdbmK2bHBwCI7aKIvxyHN+aXFoPbZrXEndOpVmD+sPqTRGHOkY/SWF5pNBXezR3jqZvJGoK40eZ1Kw8h1N33IQcSPSerN9wB8mxllzTg4mkqOXl91XgEzP38/aSEyXmI8NABhc4Ig9iWvJDilcHu+H38vcCqyE0fGNf20YNdeA3pGJB7cFQiyFC7vKIEcD7mWh4tfeXS50TFMISvYHcPEBucWMzKYwCqIJZ9hrDjg58VBxiHvT6mhBpGLrBk8J6cuuAmAfKTbijfMCHmL8oY80ueB9VsLDcaH8GzJRBLLqrOP1kKuopkSFmjBc2SH1DfpoiM6b5j0JGLJgWQ9lLo+Ar5R/Ml+KVhZechLNJuM6p8hR6XYyFcEPqUJpdczX4MPQSEGcl+j1hu3QPhzm3XXIWCxSgA2s0ZVqHnUxacsvzi8A/qFoAfccC2Fp8VIlgzAZ97d5eTXm2MKN6mxKGAFnCyQeUHj5NraWg7MslG37uua0wti1wXOk9MKmSxsIyvlcMHsKnN/lm41qtRrMC+OpGJtd6H6qL04f2Kkomm57jW4IvcWFGEZzwQkSQP0hZfQcJamP0U/hxVoElqd6i49Y+mYriKDmqoLede8igOYBh7kdfwhGaDeg
+ 3CVHYO1b
+ T5DzWYUF2ctstf8zuCFBfcwiWF+1QBaNvjo/6bGbCkEDJX0JaTvLbit4oJ5TQ68/g/A/DerCedA3bdNIpJ9Lex5N/hJvCusQumUapu3Py0j+1EW05p26DnCAveq3wXmGJtK+PjhS5xp4J5JTLuOppJjSiDTvZ0+OCPLuSejvnu0d2cVoyieYl6vg9WCI96edHvK9KqxGr7Ci5bPoTlS+AUoT3U1jf7xNXfTwe4z/fXvKpvxg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,72 +100,79 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-cma_alloc_frozen_compound() uses GFP_KERNEL, allowing direct reclaim
-during the first MPOL_PREFERRED_MANY allocation attempt even though
-the caller clears __GFP_DIRECT_RECLAIM.
+CMA and the contiguous allocator trust a supplied nodemask without
+checking the current cpuset. Gigantic surplus allocations can therefore
+use nodes forbidden to the faulting thread.
 
-Pass the caller's GFP mask through the helper so CMA respects its
-reclaim constraints when trying the preferred nodes.
+For example, moving a non-leader thread to another cgroup v1 cpuset
+updates its mems_allowed without rebinding the shared VMA policy:
 
-Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
+  CPU0 (cpuset attach)             CPU1 (thread T)
+  -------------------             ---------------
+  T->mems_allowed = {0}
+  /* Skip mpol_rebind_mm()
+     for a non-leader. */
+                                  /* VMA MPOL_BIND remains {0,1}. */
+                                  hugetlb_cma_alloc_frozen_folio()
+                                    /* node0 fails; node1 succeeds. */
+
+Intersect the allocation mask with the current cpuset, preserving
+MPOL_BIND and MPOL_PREFERRED_MANY fallback rules. Retry only failed
+allocations when the cpuset changes.
+
+Fixes: eb02f14c4a2b ("mm/hugetlb: allow overcommitting gigantic hugepages")
 Cc: stable@vger.kernel.org
+Reported-by: Lance Yang <lance.yang@linux.dev>
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 ---
- include/linux/cma.h | 2 +-
- mm/cma.c            | 4 ++--
- mm/hugetlb_cma.c    | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ mm/hugetlb.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/cma.h b/include/linux/cma.h
-index 8555d38a97b1a..4539ea5f2c4e8 100644
---- a/include/linux/cma.h
-+++ b/include/linux/cma.h
-@@ -53,7 +53,7 @@ extern bool cma_release(struct cma *cma, const struct page *pages, unsigned long
- 
- struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
- 		unsigned int align, bool no_warn);
--struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order);
-+struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order, gfp_t gfp);
- bool cma_release_frozen(struct cma *cma, const struct page *pages,
- 		unsigned long count);
- 
-diff --git a/mm/cma.c b/mm/cma.c
-index 9ec1d1fd5dff5..876635a56180e 100644
---- a/mm/cma.c
-+++ b/mm/cma.c
-@@ -933,9 +933,9 @@ struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
- 	return __cma_alloc_frozen(cma, count, align, gfp);
- }
- 
--struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order)
-+struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order, gfp_t gfp)
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 6fba92b0f6749..09b64f7c11dd2 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2181,22 +2181,33 @@ struct folio *alloc_buddy_hugetlb_folio(struct hstate *h,
+ 		gfp_t gfp_mask, struct mempolicy_interpreted *mpoli)
  {
--	gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN;
-+	gfp |= __GFP_COMP | __GFP_NOWARN;
+ 	struct folio *folio = NULL;
+-	nodemask_t *nodemask = mpoli->nodemask;
++	nodemask_t alloc_nodemask;
++	unsigned int cpuset_mems_cookie;
++
++retry:
++	cpuset_mems_cookie = read_mems_allowed_begin();
++	alloc_nodemask = cpuset_current_mems_allowed;
++	if (mpoli->mode == MPOL_BIND && mpoli->nodemask &&
++	    nodes_intersects(*mpoli->nodemask, alloc_nodemask))
++		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
  
- 	return __cma_alloc_frozen(cma, 1 << order, order, gfp);
- }
-diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
-index 80b2407e9f077..307e5736ecdbe 100644
---- a/mm/hugetlb_cma.c
-+++ b/mm/hugetlb_cma.c
-@@ -69,14 +69,14 @@ struct folio *hugetlb_cma_alloc_frozen_folio(int order, gfp_t gfp_mask,
+ 	if (mpoli->mode == MPOL_PREFERRED_MANY) {
+ 		gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
+ 
++		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
+ 		folio = alloc_surplus_hugetlb_folio(h, gfp, mpoli->nid,
+-						    nodemask);
++						    &alloc_nodemask);
+ 
+-		/* Fallback to all nodes if page==NULL */
+-		nodemask = NULL;
++		/* Fallback to all nodes allowed by the current cpuset */
++		alloc_nodemask = cpuset_current_mems_allowed;
  	}
  
- 	if (hugetlb_cma[nid] && node_isset(nid, *nmask))
--		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order);
-+		page = cma_alloc_frozen_compound(hugetlb_cma[nid], order, gfp_mask);
+-	if (!folio) {
++	if (!folio)
+ 		folio = alloc_surplus_hugetlb_folio(h, gfp_mask, mpoli->nid,
+-						    nodemask);
+-	}
++						    &alloc_nodemask);
++
++	if (!folio && unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
++		goto retry;
  
- 	if (!page && !(gfp_mask & __GFP_THISNODE)) {
- 		for_each_node_mask(node, *nmask) {
- 			if (node == nid || !hugetlb_cma[node])
- 				continue;
- 
--			page = cma_alloc_frozen_compound(hugetlb_cma[node], order);
-+			page = cma_alloc_frozen_compound(hugetlb_cma[node], order, gfp_mask);
- 			if (page)
- 				break;
- 		}
+ 	return folio;
+ }
 -- 
 2.54.0
 
