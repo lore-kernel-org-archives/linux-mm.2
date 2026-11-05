@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2E5606F58F
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DDC607A645
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JxUDwRLS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QRVwl1Yw
 Received: by kanga.kvack.org (Postfix)
-	id 860496B05C9; Thu,  5 Nov 2026 14:35:51 -0500 (EST)
+	id B8D5D6B05CB; Thu,  5 Nov 2026 14:35:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 809B16B05CA; Thu,  5 Nov 2026 14:35:51 -0500 (EST)
+	id B3E856B05CC; Thu,  5 Nov 2026 14:35:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D18B6B05CB; Thu,  5 Nov 2026 14:35:51 -0500 (EST)
+	id A33A26B05CD; Thu,  5 Nov 2026 14:35:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 48BD46B05C9
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:35:51 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B7A42160BFC
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:50 +0000 (UTC)
-X-FDA: 85402070460.28.0073060
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E93061C0008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:48 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxUDwRLS;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 80BD86B05CB
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:35:55 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1F05CA0C1C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:55 +0000 (UTC)
+X-FDA: 85402070670.11.4B1D8D3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 7BF6314000C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:53 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QRVwl1Yw;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793907353;
+	b=BeUE1mJVbO1/+1oIggdbU+4ZP+j4j7DW24n+hzP4LZ9FxnA2rjy8LkPCi4F1Ly5CYzk0fk
+	awDJ4URO1WT7guCyzNfPvOLmrG/drHeqXU6ZxjUPI3nbE3whRY/oSAmjucoO584J2AFO9w
+	zQM0JgjeS7Wc2+h80JUFqfEiS4vaNo0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QRVwl1Yw;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907349;
+	s=arc-20220608; t=1793907353;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1MugNV8TCf3DcwhciMioHkCDdfBEvJqmJegZE7T3Anc=;
-	b=dz6Shqzqh2QPxgGUm6hDvzGfPPpiRuWw0ZxhObE9TVDYANIsRNkIYO2K2FjsSxeQSCAgbV
-	lcmAnSxD8QaZm96M7YOvtvtG12WeX0SWUtw3Y+djslk5qbhNkkRnlfEI7exAfrPFyXvqdb
-	JPDlEPBbeFvE/9dJcHAL5Gbf4G42lTc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907349;
-	b=wbz289SOlUQBHbaUtkxQ49BAEG1dvkbHh0uQbt18QpjgoBCTJm+wNmP5r+2NjihuvpaSYT
-	xCW5JxTEzJKWdgAavs1fe0C81mEW7h98P0l7JQS/xNAzWqE5gDOPaye7bbnofeV/90xt7p
-	o3xCgHBQ3Nj0A7YISnbv7uJevKsmogM=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JxUDwRLS;
-	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=eiSLs4tpW5+ooQETfUAsv7SD2u+8vxBZSNTA/E9JPSA=;
+	b=zXxx3r5sodVMJqv2g+oI2GWtbHqkKjJkELvzVP7Ew2CO/M7EMYVojaTQg/Ky4J5CI2k3uQ
+	nTLeb0fpWSex6XDPTVTCTD98TjJhAqE7OOGXTww2MB1rp57u+fGYECxRs4AIG25HlQoNKW
+	4Xque8Wzj1THku10+iV7E6pVfV6CuEo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3BFE843CC2;
-	Thu,  5 Nov 2026 19:35:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6371F0089E;
-	Thu,  5 Nov 2026 19:35:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 17EF56014B;
+	Thu,  5 Nov 2026 19:35:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A24731F008A1;
+	Thu,  5 Nov 2026 19:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793907348;
-	bh=1MugNV8TCf3DcwhciMioHkCDdfBEvJqmJegZE7T3Anc=;
+	s=k20260515; t=1793907352;
+	bh=eiSLs4tpW5+ooQETfUAsv7SD2u+8vxBZSNTA/E9JPSA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=JxUDwRLS659AKy9L6EF/sMAUNJPV9IWLdEGgYT37J3Q3xoM9Rgl+/f5tJog9D28GT
-	 YMaZHCMQxAz8Q/YhL7D2HkKgLdWMS13ODeIvOVS2cO3Xyt1UiWgXthVq8iKNCfiwYC
-	 CBZKMuWNvUYO3GRSHNobx37W6/E4wT6vFZKwM2U+b9rd+Q0o+xU/Q/0vCpfhxieJT7
-	 F6OAqSTAk8K2MFcN+drjgRiXeceRcYXDu/MhOHTrRoTOf/Jcy6qlsQJs6CLNabmhUG
-	 q0HrKvIx+/XHSn3ssmSRL1+tCAkBs5GI7/FQwPFk1on24fvEEyzBWmsp3oEib+CbCf
-	 nnIC8BG7tI46Q==
-Message-ID: <sashiko-outbox-199946@kernel.org>
+	b=QRVwl1Ywon7MS2C+OemnpnnRZyhhY3OqsfkA0hDxdTc+rduK6mkVEdlJDGNIGqSYy
+	 a1NLTQZZqowxlMpgmKyOfh8BBgOzgFAHydYWKlFfry5yNMxiI/UD8ldqZYx8WMm7ez
+	 QNVP0ICID7Qj8TKSjz1zNuhOdyu+/wENB2Pe+KXsAcn/SDnE1f4VadXGr2TU1yn/I4
+	 kSqEUN6UAmPa8USnYhqhq+djAtPsBeI0nhvEXQeRMsO17pEiCgKx17axw4dL2BiiBh
+	 F88Gi+dRDEKECFbv6g4fiHem3PZPjp3QB2HUifdGFOqWgr8pWyiCoUmeRakhBgXvWb
+	 R9lZgeMwuUEfw==
+Message-ID: <sashiko-outbox-199948@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v2 16/23] proc: let procfs copy out reads that
- don't go through seq_file
+Subject: Re: [PATCH RESEND v2 18/23] proc: let procfs copy ioctl arguments
+ in and out
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>
 Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
@@ -78,24 +78,24 @@ Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.
  Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
  Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
  Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261104-work-procfs-core-v2-16-76ace653a773@kernel.org>
+In-Reply-To: <20261104-work-procfs-core-v2-18-76ace653a773@kernel.org>
 References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
- <20261104-work-procfs-core-v2-16-76ace653a773@kernel.org>
+ <20261104-work-procfs-core-v2-18-76ace653a773@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 19:35:45 +0000
+Date: Thu, 05 Nov 2026 19:35:50 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: bfx6uupgkbem13hau467gf8kxjiroexf
-X-Rspamd-Queue-Id: E93061C0008
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7BF6314000C
+X-Stat-Signature: 84yzm1sfy8acaigxgjzyjry8hz3u6czn
 X-Rspam-User: 
-X-HE-Tag: 1793907348-329608
-X-HE-Meta: U2FsdGVkX1+8TaZHwDNmFZRyjxXfyAICfScOkEUIn+szxXhWUtKHt5YXncHQpNs24cqVWytXFXU5cTClXAXpi/LC5kSAtTXXiJSiryqiXZb1R69VzJN7R3Y5/1bz2gp34ryc3QSbvem1MlzzLLDJnrU4wK0JxEKXpmeLrvP/DCWFHshfMP2F+OKOx9iVUvey5thVzFlVgMMVGm1Wmq0I7XPnjWXXCvzpxb04sXD+GcWoIrRGZE0Ymb47f6mRdG2/StRp733X8tJCNfDMqSfpQt/BDo+rAZ+b3FHrbesY32Hvj327Ox/5w7XZxKmZh32D0DUTSwVDa2/MET5jjdfYo1AKoejzx2Sve0sToGQMc8DNM8lXrTmM7KNdwAeNOFBN4MZfiheI2L0DQwBUhnDWne7NzvTohfK9eZ1mACGMyjb6o5qwIaXIND7xfJUp8RHhrMyEdFv3B/+IQAMq5egucMp5zUD0ZwidaeI3DZUMJT8UIDzwkY9puQUGE5L0B8jqO++/ZQus1kpFibBwPdJtr7J5fDC4XfEtmZSmitpFhevWe4NtsU8kti+htnOL0ali8CcaTqRBjtD5XwZgdIHdoX5Sp85I8nrHrB7lq+bz7S986vvxL0a+/7JAkGmRaReMCe596hazBvIiebNzegvB1azP7VnFPBq4hJZdtJY4t4DOV2PTiDJEJU0xJhePodqPeseuK6kcFeKlW9OHeCL/cXqNHL/T+o5ppW/wWkV3A0sNVhWRKStwlk+2ntbdPkKwCfsPxIVhv3OXmYpYLnqina7xfWiIfycw6+7WGaHNdoGMtdIwUL2x1ouasYBM8p8EIab31dzGae1DjZvXbJ5JILz6Ai2ahgMaCm03NmzjQ2UFxH7vpv9MBh6L0EAO2/q225ku7/Pz5S5UO0MhjV2EdNtfcJ8ywigR00foEoRo2EBMIQMGxcZxb9vCJbt7665L1EZqUJUlwVeYzbv+Ou5
- 1uHfBSsY
- rebRLbWygSu+LYPZ99oYNSyw1F98UarCiqpoXv/EDWFltoRyjiP3MhrxgmOqdr6op+guuoFdDcAd+bQWNubYrO3FDGRBuk3CsH4gaIAemUIZO+HK2D0r0T0H99lJtPrDf1ID4x76dsCftb1UCZbSuV0RncjuqKz39OnydArRtQECsS5v7BlcWZd0+nSHEPcbXpdvVzZ/eTH/SLdr09NWXkP16PdfwA2wZ2qWqJ6lKtgx86NFaOPwV5fBZusKVlML3Mhq56XUKymoTAprNB7HJ6s7L9y/zuvfagDgPJlkJrY6VWPS4ufMYu39wNOB6uRZmlcg3QroCG3iETGgqm8GhRwA6uqekM6lwEV9RgoGsharNkZuEjj+Fdd6RcmUDH2OaFCrQdWLN3Y6eVOVtG/AqT37QrYL63/28+chO6MtsoUvrf4L16QyhK9syoZy0CIbSnWFZkfk6DaM+7B44DPCr1zqs+PJK8c387bGQ/7eYWy5wUeGNs+eGz8q1S8kI4EeBjlrOuYBUnQXA3R/qvRhm4aARTPd3pgdNqiFG+3RAZphn7L/jX6p0btL5L7s5W07IdpTPMZd/dhK8qhGd63uvo8c3pBf2S6naB3HlvzoI1ywUJTlcZ4bE/UNmaXmMP+I/mHzlfghPLKTg9YzO7jV+Yn6nygFgEx+s4PJw22kYnoawotVjAmgU+ZgR8I3xvpRS7cP3W+iCnuhztEVE/HL0zvqRRw==
+X-HE-Tag: 1793907353-173177
+X-HE-Meta: U2FsdGVkX18+MCUbAfhXKUzYWoizPGn38F+ghX2PIH0+jUWjyNvxYzP3KfSVBWRmKF6QQfpfeFvjzy+HFFitzAz9OVTrricpaCb64ZnAepMR6JLkO1Tq7VmdCl+djcBccDEcHxDJpy+ScbGGio9sgm6mHYpfoaa2yIo6EvPlJTOH5E7afkz+Wmuv3hJpn4J+AYyv6hpvRvhQStIb84VcPm2IfiQdv0bm9G9XICYKLeRCXfBN+ThsnZs9vKNB8XljLqMqYDwuQw5HQRWZP6vggiBGb0/FmVIW95S0ioFTVwcCgB6LOZWXTmr1u7DZnAXjHNxQjurIFOXxbXB5cp9c6UOMKs8GVhwI/kFHPMX5eX0zWKSKz8GGfpWrWaMZU8Kt31WyDk+799VDStuAv16zpGDIcev1COadXjdnLgjwQNVObGfSDTU9fSvMgVtUcN9kDN+pLkShhwXq7n27x1iY9xN9HW1A40LIwjJt+SKxUQONoYRX19eSw/C3nI76T+4+lD7m3BCS5cHMcCuLJ7sXijyLGWvXn1PsrAyNea+VIFdNcUGxbo42ipTKOZWgVm+h4OPPgKCOb1QYgcHP5N4D7PpAu81UIe6kxcQj3j8nxcwSVVz6ZenWgCPl8OdCEjexvCqsoxW2JFQlJcuQYDBO5rGlwqgvv2imWc6gS3KML64LJEJU1Yv4e7lStxWtZ0Xl4FZ3OjuvDq9GFGp/nPdTcVQM0MgOIOHEQnUDDUAcw8prKl9Gg7yvqdcDG/eI8iAhlm2UiWETSEu5lBmraoCR+nlixZ1PAed6InwVrHr148k6+vkDBJiUGqwguebL33Qo2knTunBd6E63jvM6y34CWQG5sgbrSqP2zo1tjpS9k9iqVxhWCX6T+47XnJJaVqQkidOeFxYD7FQrOqWRREhUGiq5aV4Bjf9s13sjL5USOLHzRy7FXqmTQ0vj7+VZ2Kg4BDnVk1jrM4EGyZ6Pz2C
+ j82+3tgf
+ AJklc48r1EMYD20tfWyA6Zsq13jBpi6oS/ftu/+TmMUj3mBDCyQN1Mvpo/BVkMQrTFdP8YX5V3b3zKz9ntZvCOM0P/tEa2akPCE9UeOFbIc/Sdeu7+HNp9hCn2zTeYmTlKQ8EmkIJCrodgJz4ZP+xM/m1T6yqVSTaPcq28xAMEr7tvbkgoUY/yyA8FT9jjZ0clENye2Utiekjuo9P6sahFegBwPaJv+5HzWziXcsFZ8HBS8TwKamMt+c0H5FmvL3LXxAQjIMHSchChymavpEi6Ip0nWXZ0khZkkUinAsoqbYq1SfBYukO+OlJjRtM8TDtALXvbgaSqSVkhhIJW9n/OylYej3pYgMB6yVBdG+l/PRUcOkUyQpRpA3Rt0bErZ+NnFnxGkSdl+xIusU3Q3pwxxNQHYhMM7/i+aiXsinpJjMAI1W3tsrFklCQ1AVm7txm4XAQgLSw31h1omrrHhkALhi+4Hb7OYOfYov2/TToRbqiw+njl9BIWi6XMSssAXXoQgcg0r46Xhciz8zLnEya8JWiICg4ugFjG6qi+D3tfXixGmlMIEq6OF2593AmcLkiRKmDqAQv6UbG1oiT93kArnJ13DVtdcjxvHi8ak4re2f+ILBsBvMX+y3Xo9IaX7K9qwpcF/B2RaTqRskdJ2tY0KBJNCfRvcPEgPf9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,68 +107,62 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] proc: define and initialize __free(kvfree) variable buf in pde_read=
-_buf()
+- [Low] proc: __free() variable buf declared at top of pde_ioctl_buf()
 --
 
-commit 19cf278eb9fee57b90ee19764f6b076d9cab553d
+commit 56830294f9ddc9f5679014810e7198455a39f42c
 Author: Christian Brauner <brauner@kernel.org>
 
-proc: let procfs copy out reads that don't go through seq_file
+proc: let procfs copy ioctl arguments in and out
 
-This commit adds ->proc_read_buf() and PROC_ENTRY_FULL_READS to proc_ops so
-that non-seq_file procfs entries can fill a kernel buffer while pinned and
-let procfs copy it to userspace after unpinning the entry.
+This commit adds support for ->proc_ioctl_buf() and ->proc_ioctl_args in
+struct proc_ops so that procfs can copy ioctl arguments from and to
+userspace without holding the proc_dir_entry pinned across user copies.
 
 > diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-> index df1caa0f238df..caa47933c233d 100644
+> index caa47933c233d..717cbaad65df2 100644
 > --- a/fs/proc/inode.c
 > +++ b/fs/proc/inode.c
+
 [ ... ]
-> @@ -377,11 +379,67 @@ static loff_t proc_reg_llseek(struct file *file, lo=
-ff_t offset, int whence)
->  	return rv;
+
+> @@ -548,11 +549,66 @@ static long pde_ioctl(struct proc_dir_entry *pde, s=
+truct file *file, unsigned in
+>  	return -ENOTTY;
 >  }
 > =20
-> +/*
-> + * The entry fills a kernel buffer and procfs copies that to userspace a=
-fter
-> + * unpinning the entry. A reader that faults on its buffer then doesn't =
-hold
-> + * up remove_proc_entry().
-> + */
-> +static ssize_t pde_read_buf(struct proc_dir_entry *pde, struct kiocb *io=
-cb,
-> +			    struct iov_iter *iter)
+
+[ ... ]
+
+> +static long pde_ioctl_buf(struct proc_dir_entry *pde, struct file *file,
+> +			  unsigned int cmd, void __user *uarg, unsigned long arg)
 > +{
-> +	struct file *file =3D iocb->ki_filp;
-> +	char *buf __free(kvfree) =3D NULL;
-> +	ssize_t rv, done =3D 0;
-> +	size_t len, count;
-> +	loff_t pos;
+> +	void *buf __free(kvfree) =3D NULL;
+> +	struct proc_ioctl_arg a;
+> +	size_t size;
+> +	long rv;
 > +
-> +	if (!iov_iter_count(iter))
-> +		return 0;
-> +	/* neither the allocation nor the entry can honor IOCB_NOWAIT */
-> +	if ((iocb->ki_flags & IOCB_NOWAIT) && !(file->f_flags & O_NONBLOCK))
-> +		return -EAGAIN;
-> +	len =3D min_t(size_t, iov_iter_count(iter), pde->read_size);
-> +	buf =3D kvmalloc(len, GFP_KERNEL);
+> +	if (!pde_ioctl_arg(pde, cmd, &a))
+> +		return -ENOTTY;
+> +	size =3D max(a.in, a.out);
+> +	if (size) {
+> +		buf =3D kvzalloc(size, GFP_KERNEL);
 
 [Severity: Low]
-As reported by Sashiko on RFC [1], this isn't a bug, but in pde_read_buf()
-in fs/proc/inode.c, buf is declared with __free(kvfree) =3D NULL at the top
-of the function before the early returns and then assigned later at the
-kvmalloc() call. Could buf be defined and initialized in a single statement
-at the allocation site:
+As reported by Sashiko on RFC [1], this isn't a bug, but in
+pde_ioctl_buf() in fs/proc/inode.c, buf is declared with
+__free(kvfree) =3D NULL at the top of the function and assigned later when
+size is non-zero.
 
-	char *buf __free(kvfree) =3D kvmalloc(len, GFP_KERNEL);
+Since the cleanup API convention prefers defining and initializing __free()
+variables in a single statement rather than initializing them to NULL at
+the top of the function and assigning them later, could buf be defined and
+initialized once size is known (for example via size ? kvzalloc(size,
+GFP_KERNEL) : NULL)?
 
-to follow the cleanup.h conventions?
-
-[1] https://lore.kernel.org/r/sashiko-outbox-195540@kernel.org
+[1] https://lore.kernel.org/r/sashiko-outbox-195542@kernel.org
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-work-procf=
-s-core-v2-0-76ace653a773@kernel.org?part=3D16
+s-core-v2-0-76ace653a773@kernel.org?part=3D18
 
