@@ -1,62 +1,53 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D441606D80C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 18:40:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=xiFtTF+U
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34FC606A331
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 18:40:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 116946B05BD; Thu,  5 Nov 2026 13:40:42 -0500 (EST)
+	id BEE196B05BF; Thu,  5 Nov 2026 13:40:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EE736B05BE; Thu,  5 Nov 2026 13:40:42 -0500 (EST)
+	id BC36F6B05C0; Thu,  5 Nov 2026 13:40:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 004466B05BF; Thu,  5 Nov 2026 13:40:41 -0500 (EST)
+	id ADB956B05C1; Thu,  5 Nov 2026 13:40:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CDF5B6B05BD
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:40:41 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3BC1380BA2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:40:41 +0000 (UTC)
-X-FDA: 85401931482.08.413007A
-Received: from mta1.migadu.com (out-29.mta1.migadu.com [95.215.58.29])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4489D1A0006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:40:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xiFtTF+U;
-	spf=pass (imf19.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.29 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 860D36B05BF
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:40:53 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 275D5160B5C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:40:53 +0000 (UTC)
+X-FDA: 85401931986.25.E239570
+Received: from mta1.migadu.com (out-69.mta1.migadu.com [95.215.58.69])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 433DA10000D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:40:51 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.69 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793904051;
+	b=Dyn3IvTT8PKne+dlzcI05GeNEDkz5WNU1R0fSpGggnGAw6NMYMIPoOzs9mi/lcrqAStboR
+	iuiLZOmZRRQEBDjcgY4xPFeR537ouWyI5rWoopovS5Cc/WRGUgMyJVgMnbi995U7bjqpiY
+	pgt2aOKrccHvIcSO5HTQsBPLzLYP2r8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.69 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793904039;
+	s=arc-20220608; t=1793904051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BW1nQsutnrZitd0IEzC284qt4pUoWTmeWnhpOQZQ17M=;
-	b=IbKqSVzw3sY1aI9YQgNBgMiNRHH7U01Ic+EzoNTTw/8QshNVJtJtDn7hVEkTaaY8SSM91S
-	viDwab5xuMCJx3xyBJop1XJHwy2ehG0YIR7c77GrUOgN9lMW1x9/4U5PN9fIRxYtybNf4h
-	8kyei+GEF0clsEmM6wiPHGCTGMClP20=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793904039;
-	b=JCeC6wqxJa4T/3HI/Cy4bjmD/2DX2gva8G1kyP6eVt6kQe+FVHBKGSLmgaJK2CgBoTiS8A
-	U7zeJYCRti0AropCIrJrF/zPwIw7h0ZJxQ3mZsMYelTeGtszxFOTzIrCdguMfU8JiW6z6L
-	jSZAADKomIbBG3iB6jHkEywe5A+ohTs=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=xiFtTF+U;
-	spf=pass (imf19.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.29 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	 in-reply-to:in-reply-to:references:references;
+	bh=Nc3YPnJRwzfEYdDYZsDx/eGvT25xHUbuaxqftb/2MH8=;
+	b=nLHL7Nr546hrOGepPRh1ChBWvV/N+1A4Wcv8IQyzqnLylLRyKW50LvC1wM6ygx9ZzQVHto
+	ZjBGroVKJMLSPyhMInI0XRPp7MT1ug/eb3nFWx0cq08F0vy68g7DqwChBNgiYm+mEwnseJ
+	litgMk3sUrrzgv4TVPYJ0F3JA3x5fXg=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=wz3IjU8MmdepamXobqBOtTMChOSj7PBIYvSm39xyfBE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793904038; v=1; x=1794508838;
- b=xiFtTF+Ui1yW1hheZjC/GYAEq7qkv2Pn/Ap+dIotL/UKmFuuwNaxgA3PGhI3gWuvk1j+kRDt
- 7UaK0xTSrhxeGop6VjjFG822+hZlOJmPTT9Jwf+C8kYCgXbyourH4IYuvppWPO35RAeLBzxJTf+
- ZN25/Xwwi/rO8Y9VuKrFZ0w0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 50c412d95539fb94;
-	Thu, 05 Nov 2026 18:40:37 +0000
-X-Mizu-Trace-ID: 50c412d95539fb94
+Received: by mta10.migadu.com with ESMTPS id 054e15d9c411ead7;
+	Thu, 05 Nov 2026 18:40:44 +0000
+X-Mizu-Trace-ID: 054e15d9c411ead7
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -92,32 +83,32 @@ Cc: chenhuacai@kernel.org,
 	luizcap@redhat.com,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	linux-s390@vger.kernel.org
-Subject: [PATCH v9 06/32] s390: mm: add PMD swap-exclusive helpers
-Date: Thu,  5 Nov 2026 10:38:50 -0800
-Message-ID: <20261105183940.2236717-7-usama.arif@linux.dev>
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org
+Subject: [PATCH v9 07/32] x86: mm: add PMD swap-exclusive helpers
+Date: Thu,  5 Nov 2026 10:38:51 -0800
+Message-ID: <20261105183940.2236717-8-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261105183940.2236717-1-usama.arif@linux.dev>
 References: <20261105183940.2236717-1-usama.arif@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 7fm19p8wtu51eyn8oo159gdbjhy48wce
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 4489D1A0006
+X-Stat-Signature: yahf4e6au9jwn664yxjzto56poh9mmdr
 X-Rspam-User: 
-X-HE-Tag: 1793904039-182673
-X-HE-Meta: U2FsdGVkX1+w6DR5Ds5pamBDthWSOts6DMVjqpu06X9b9dryOQcMwwMw+tXMfhmA+KPkWRnJk8z/Wn8DXuqYzmHsUAfD0YvFnWrEth5MVUbMIJ2gRc7r/d60YmwqL7A0C4GfNUVMOrFBsqsfmOZMx5eIV5LwLsqaWm54DQQxmnOM0uxN82oefDyy6/27lkl+4GiOz4RDQaHrA/mdnjt1TNkMacQqV8M2I3ddg4tZpOby/YjVul8NCIbY9mLd7WlCEe4565s1B08yJjP8iqIL2JGViN7lADX6l9LZnqO7hWVqTs5zXxW66eMkTlQ7fQiN84HXrNeGcuhuXLJxAMAB6+MdFMlY10pbncir4paApXF87w9oKU1BisUKQqUXdQfD7m1fb2DzxcLuV9Po0M7kwQqJenUjkFRSypGRqB4vTip9Rlb/sQyBN4YiXSMJYSSwEw7P0ghiJkaYriZr+WGqxmBHtZB8Zow2go+mxhICoTxFHR0HArWYbSLBzNMubV58/69zZSNya2Vwjqub729pcgM8XF8bo5Zg1V0itTlngwZF0JNYrkqPeGGba9xNAXt5EquvYhc+oaGAMSuvsldxkQ5zPKbyHOY7tgK4V4IIMvWxzT8ZK8QaOe66uLHzu5sZSJy0I8IXztirUehyhJ6awt4Vp6CwWRfiln33aXz/G4/IGQAjOlUEdlVPe7LkW6TEPkELxDgVjnkRyn8JbjxKMXv+mfY0KLVC4EGB/gAiJXi7GXy5tXaQgkTacrP+YDdDltZKhnjcAfAeHwHrNzg+JKMkenBb9IjufKgB0F6kug/2gx5qDixmGTTUZj5JQezY+vSBT3LA8XYeEllRhwHbShhZvj4l9LNlh3XipiT1d2SrlvslQIdaZtMn/KmeCqe4XS7su1irFCFW9cqK7Tg9QUqYF3xMH0MkflbdMiDK4G3zdZArcW27+92CKBToROm0lddUQ2e+6ZjaYebHE7O
- ZZxtMe8w
- XtkbmjwfWow1qcaQ5I5PLufdN4PSxil1b6L77yBH3dxACY+4etAzC6le/g7YI2ooIPws7eOEpQms4DYorEapG70qQJt9vVIBBO6ulUYWC4kHcsbFhW0ykZ6E9G04lq4frkolCOlcqpPzvOObxpBHAeOl48cKmR7RplA241l/KYbJZFQ39+n2LWhHL84abZD8oea+07V+GhA+bq3rBedgzfgyV1MmoFe8Ua5aHhXxJAo6YOKVdxp57fWt8nZ/Y0pcrvhH+6CncAhQcfu5Woc7Py0sDmQ==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 433DA10000D
+X-Spam-Status: No, score=-16.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793904051-415004
+X-HE-Meta: U2FsdGVkX1++J28RQX/6hYdARvbvc1yGh61YDPLSB+Tbjs+0T2K2LaZ2Tfo/x4C+pdKpjJ2oTKvhtduHOW/fgN86ztmJwTYsefDt2U5bzwiu48AkygraXT1aHKJsttnOL9eHI5JgyuT6oYgMSP4Givo9oksUi5sEsBpjOvV6FVr49gn0znUfBr+VFdxyecaqBVkidCRN8YxWXVBBBp0Weu2eOVk4b2TdX2ZbDRG4NFZ9ua89GJayep3XpZkHUhWjhg9AVRkospW0ERhuissWoO6OVKFUer/MGKO57DhVS1qKZPC0c0gnLnkY40oLdQu+gY5z8hbOXH2G4wvbgf3liKnDDeymuqXCMAo91g+n+eTfWEwle1DGCE7e/0k3igMXLsIZzy4+V8P6h7Vx1KYXua3/gpRkY/Klb6WihCny0AEltSEPFMV6Q2ebjivlgKCvnx/PVBMmKnShd+7bP/NOtCUe5egHl2h/chGC5V56NoXNIJbtt7uCTrm8iUC8BNlTdEBjn1hbBqmFnMh+kdtG3wn/X1d3VF8e0YKDtEswUB1GbNZCKLj478EyJY6K/eo9l3APSd4FXT5uL1J/TZ4A6/OUZtqX6nd05NXUUiqEdVYz+GOXkGlxHmN4BZUXs4F7ox6v5m/AbuP5Gp0Z1+zzwuYEfaLvBIaQKpJwY4LQ+5/VQ3DM5XNXVXS8Q0q3GgyI+LRmmKKAlUeCdwuLza3h1MsXtRk9sIf/dt2jOUKe8pKd0pYPQbOHfu0ZOxjHY4Hvq6lsSTrNv+SIdrzE5gTC6FeM1HXND3CUSTKokgULkp+873jJFyC6InAeM2LFAbBlOoi1dMtbtB+0jMwk54qE5z33mbdolznluqA9dZxtup9WiuDHz1KvuZrXjHCLB/h/qk/mEZVm7HoZjtH3CiWSE0mBYMltRrUOhOHgoq+cx76KVo5WZEZok9g0rH6SNgHfACy+OV7qYBZZlF/QMji
+ 3xpjN8uj
+ XIwaeGklMb6brfq7DaeQxNJrfd9uG27/k+sXASai1iCo5EM3vU2mY19YDs8c9PqPnqnSrmm54iXGq2b7qQWgPXGB25Not4G3PlGLY7jmBFJR4GcvrPNBgPuss3ZOtRq8wTTWCb0qtNixbkoqqhW4bfIlbBkLh8naJbppSIni9plypTsJWJarhQyWnplHxnw+Dl6VB33NGVEvZ5TSSCTwB5lKbRiNd8NRs3Wcg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,74 +121,59 @@ Prepare for keeping a PMD-mapped anonymous THP mapped by a PMD across the
 swap round-trip, which makes PG_anon_exclusive have to survive in a swap
 PMD and not just in a swap PTE.
 
-s390 is the one architecture where a swap PMD is not a swap PTE in
-disguise: it is an RSTE with its own layout, converted to a fake PTE swap
-entry for the common code. Give it its own exclusive bit rather than
-borrowing the PTE-format macro, and document it in the RSTE swap layout,
-where bit 52 was listed as unused.
+x86-64 encodes a swap PMD exactly like a swap PTE, so the new helpers reuse
+_PAGE_SWP_EXCLUSIVE, bit 3, which the swap-entry layout already reserves
+for PG_anon_exclusive. 32-bit x86 aliases that bit to _PAGE_PSE and does
+not select ARCH_HAS_PMD_SOFTLEAVES; assert that, because an exclusive swap
+PMD would otherwise be pmd_present().
 
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org
+Cc: Thomas Gleixner <tglx@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: x86@kernel.org
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 ---
- arch/s390/include/asm/pgtable.h | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/pgtable.h | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index 2d5c2ab06de98..2c6b5205ee3bc 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -333,6 +333,7 @@ void setup_protection_map(void);
- /* Common bits in region and segment table entries, for swap entries */
- #define _RST_ENTRY_COMM		0x0010	/* Common-Region/Segment, marks swap entry */
- #define _RST_ENTRY_INVALID	0x0020	/* invalid region/segment table entry */
-+#define _RST_ENTRY_SWP_EXCLUSIVE 0x0800	/* SW exclusive swap bit, see mk_swap_rste() */
- 
- #define _CRST_ENTRIES	2048	/* number of region/segment table entries */
- #define _PAGE_ENTRIES	256	/* number of page table entries	*/
-@@ -893,6 +894,21 @@ static inline pmd_t pmd_clear_soft_dirty(pmd_t pmd)
+diff --git a/arch/x86/include/asm/pgtable.h b/arch/x86/include/asm/pgtable.h
+index 000fc6c1ca37c..22cf9b57a135b 100644
+--- a/arch/x86/include/asm/pgtable.h
++++ b/arch/x86/include/asm/pgtable.h
+@@ -1529,6 +1529,29 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+ 	return pte_clear_flags(pte, _PAGE_SWP_EXCLUSIVE);
  }
  
- #ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
-+static inline bool pmd_swp_exclusive(pmd_t pmd)
-+{
-+	return pmd_val(pmd) & _RST_ENTRY_SWP_EXCLUSIVE;
-+}
++#ifdef CONFIG_ARCH_HAS_PMD_SOFTLEAVES
++/*
++ * _PAGE_SWP_EXCLUSIVE must not alias _PAGE_PSE, which would make an
++ * exclusive swap PMD present.
++ */
++static_assert(_PAGE_SWP_EXCLUSIVE != _PAGE_PSE);
 +
 +static inline pmd_t pmd_swp_mkexclusive(pmd_t pmd)
 +{
-+	return set_pmd_bit(pmd, __pgprot(_RST_ENTRY_SWP_EXCLUSIVE));
++	return pmd_set_flags(pmd, _PAGE_SWP_EXCLUSIVE);
++}
++
++static inline bool pmd_swp_exclusive(pmd_t pmd)
++{
++	return pmd_flags(pmd) & _PAGE_SWP_EXCLUSIVE;
 +}
 +
 +static inline pmd_t pmd_swp_clear_exclusive(pmd_t pmd)
 +{
-+	return clear_pmd_bit(pmd, __pgprot(_RST_ENTRY_SWP_EXCLUSIVE));
++	return pmd_clear_flags(pmd, _PAGE_SWP_EXCLUSIVE);
 +}
++#endif
 +
- #define pmd_swp_soft_dirty(pmd)		pmd_soft_dirty(pmd)
- #define pmd_swp_mksoft_dirty(pmd)	pmd_mksoft_dirty(pmd)
- #define pmd_swp_clear_soft_dirty(pmd)	pmd_clear_soft_dirty(pmd)
-@@ -1900,15 +1916,15 @@ static inline swp_entry_t __swp_entry(unsigned long type, unsigned long offset)
-  * Bits 59 and 63 are used to indicate the swap entry. Bit 58 marks the rste
-  * as invalid.
-  * A swap entry is indicated by bit pattern (rste & 0x011) == 0x010
-- * |			  offset			|Xtype |11TT|S0|
-+ * |			  offset			|Etype |11TT|S0|
-  * |0000000000111111111122222222223333333333444444444455|555555|5566|66|
-  * |0123456789012345678901234567890123456789012345678901|234567|8901|23|
-  *
-  * Bits 0-51 store the offset.
-+ * Bit 52 (E) is used to remember PG_anon_exclusive (_RST_ENTRY_SWP_EXCLUSIVE).
-  * Bits 53-57 store the type.
-  * Bit 62 (S) is used for softdirty tracking.
-  * Bits 60-61 (TT) indicate the table type: 0x01 for REGION3 and 0x00 for SEGMENT.
-- * Bit 52 (X) is unused.
-  */
- 
- #define __SWP_OFFSET_MASK_RSTE	((1UL << 52) - 1)
+ #ifdef CONFIG_HAVE_ARCH_SOFT_DIRTY
+ static inline pte_t pte_swp_mksoft_dirty(pte_t pte)
+ {
 -- 
 2.53.0-Meta
 
