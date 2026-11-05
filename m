@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE89606A328
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A26606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ghr+oUom
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ijpSbvht
 Received: by kanga.kvack.org (Postfix)
-	id 024566B05B8; Thu,  5 Nov 2026 08:03:45 -0500 (EST)
+	id 99A3A6B05BB; Thu,  5 Nov 2026 08:03:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3EFA6B05B9; Thu,  5 Nov 2026 08:03:44 -0500 (EST)
+	id 972916B05BC; Thu,  5 Nov 2026 08:03:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E06B86B05BA; Thu,  5 Nov 2026 08:03:44 -0500 (EST)
+	id 839F46B05BD; Thu,  5 Nov 2026 08:03:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B5AB96B05B8
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:03:44 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3D311C0A09
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:03:44 +0000 (UTC)
-X-FDA: 85401082368.04.09B12C2
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 8FEEF4000D
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:03:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ghr+oUom;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EDFA6B05BB
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:03:47 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F01BBA0510
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:03:46 +0000 (UTC)
+X-FDA: 85401082452.26.4BCCFF1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3D6CC40010
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:03:45 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ijpSbvht;
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793883822;
+	s=arc-20220608; t=1793883825;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=loGDDyFhxZewKwqoGmuq38grwFtQ0vjKaAg1qgaeLVQ=;
-	b=1H1yNKZdpU8FVW93BlKPVoyKiiNVBe8ZbEl3Hrz8aTUK0fM+w/IJjX8pNwpEbeYF0ybzFM
-	HokdqWfrnXQ0336r0FtET2NPrmg34P+LlLISlg0x1OSCvS/3ZWdstEQDEEoGiAcHVlZDre
-	CL51hF5JWMRLtU54+IPt7LJRplKBKxc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793883822;
-	b=MZJ5BfDrmeZwTkSHV+RqmgD7qWxllZCNv6K5Lb8VQ9/1DO2Tn3O/+LN9LJmyz2/Teyui+S
-	k+nbui3KV0rSGqia8u+YqEG0XoTNPiGFwPqinPtdtgcolESLJnaYb763aNjfMayckW2EUa
-	V0iazq8EX+zS2+POCr/huv+C+9tCDis=
+	bh=H9/4G4rHqVIXx3LY1K8j+CTZrQBydD0mJpcfFmB3SXg=;
+	b=Ju9KPyqxefh3QPpWWUicncbbFk/46jtsb6AWQ79Q/67QUEz0REvSvjVx1owQV5nc0CcL9m
+	/JvF62bwKkhbQB2WhrHA6xCByQFW/0oSmKekifHYyeYw45SEMHRAqaGjkgiJmJSklwA28d
+	yVzFznBvPNvjbyzUxz6xR5wwK5cpBrE=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ghr+oUom;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ijpSbvht;
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793883825;
+	b=l40/Qaln977dIE/zr4EohvYtZIiuml7Q0WdpJfX+d8l/TCRPTLqg48U6wLUAapLJjDx5Nk
+	pxSvNZTHkthPeAQlm4+999Wa1HqGiqxnquvvcxPGzsgOi53OHq4ADvfFdtWer/Z8o6XSRV
+	kumTKHwrIR1pSl67xhIgDDA0+mv4JWs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2095E6110B;
+	by sea.source.kernel.org (Postfix) with ESMTP id 841EA40442;
+	Thu,  5 Nov 2026 13:03:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529AF1F00A02;
 	Thu,  5 Nov 2026 13:03:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA9841F000C1;
-	Thu,  5 Nov 2026 13:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793883821;
-	bh=loGDDyFhxZewKwqoGmuq38grwFtQ0vjKaAg1qgaeLVQ=;
+	s=k20260515; t=1793883824;
+	bh=H9/4G4rHqVIXx3LY1K8j+CTZrQBydD0mJpcfFmB3SXg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ghr+oUomn+R2SXGfH0sHIsGjSwMXeHeRPrQeeZO/6FzPpLxG7lVUYEIuf4c1ZioP9
-	 xoiaYhDTcvZg0ef4eVc5c+PgP49eZ0t/wCyhaQv84R+A3mFAiuXbDMG/+RZ9l7sJfO
-	 4HsYXuOAVoBWBIITxvjwC+9vbE5LRr0D8RBi3N1n7GUZd+mzSSAY7Vs09w1hRl2ciz
-	 2zetTQLYI8E/+FtmxCn1gEdaWLiDLZGuxjxqP2wbpj+/cISemhxfc+6kaKW1jnDjCg
-	 nG4kzYv2oX8Lcv4z7j5T0kr1SKdffnB6FWp0hCteIhYqlL5c5r5Tqgk3A6sy1UShtd
-	 XlVfRIr908KCQ==
-Message-ID: <sashiko-outbox-199101@kernel.org>
+	b=ijpSbvhtMrTIIAUjSq3N1kmfxVXBMYQfJbo+6ajUrtbkioV/NBbtXNFqnDZeN+1+C
+	 lQ0NSF0Vwa6o9SP7rx5Tlub5RVDzTdNNCya6th5+XwIHYI9JkvKj1R+3wdYD9LN8T3
+	 XBqUudZq+iorbC+JehpqSZBqD7JAmhWQs6idU3jEMAObgaM+aCGP6B5e5qu34Fa4/R
+	 7x/kkCZbiag2pBfGd0kzRd0Ln9dWE8DI7lvvAJYfdsB12t/OJgjNVVHWiq4USCJ3aa
+	 Ebz97AcDuys988wJvAUz9S4mRH6mX7s2s1CuXMWfGHTxZ2MGsSASx540RgJjlwQZ1q
+	 v5u/C1tb5duhQ==
+Message-ID: <sashiko-outbox-199102@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 08/18] mm/compaction: free the migrated folios
- that wait for a grace period
+Subject: Re: [RFC PATCH v2 09/18] mm/memory-failure: handle folios with
+ PG_rcu_free
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?S2lyeWwgU2h1dHNlbWF1IChNZXRhKQ==?= <kas@kernel.org>, "Andrew
  Morton" <akpm@linux-foundation.org>, "Linus Torvalds" <torvalds@linux-foundation.org>, "David
@@ -85,24 +85,24 @@ Cc: "Miklos Szeredi" <miklos@szeredi.hu>, "Miaohe Lin" <linmiaohe@huawei.com>, "
  E. McKenney" <paulmck@kernel.org>, "Pedro Falcato" <pfalcato@suse.de>, "Luis
  Chamberlain" <mcgrof@kernel.org>, "Ilya Gladyshev" <ilya.gladyshev@linux.dev>, "Jaegeuk
  Kim" <jaegeuk@kernel.org>, linux-mm@kvack.org, kernel-team@meta.com
-In-Reply-To: <20261104130118.2507513-9-kas@kernel.org>
+In-Reply-To: <20261104130118.2507513-10-kas@kernel.org>
 References: <20261104130118.2507513-1-kas@kernel.org>
- <20261104130118.2507513-9-kas@kernel.org>
+ <20261104130118.2507513-10-kas@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 13:03:39 +0000
-X-Stat-Signature: 7xfe33sprwfxg3nzsaw3jodn4gkf6jq6
+Date: Thu, 05 Nov 2026 13:03:41 +0000
+X-Stat-Signature: 5nxnfx8rxdwnnehi987gyxkykqmycgto
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8FEEF4000D
-X-HE-Tag: 1793883822-467306
-X-HE-Meta: U2FsdGVkX1+sepwuEvVvJF5YpD2YP/1om2OQLNJ1bCvDuYCN0OZxa3GiMUB6TOm5vCr56ACjuKZxOTvGT+L+sz79eJFoi0kiDFEXABHQx4rJUi4BSaRYtsxJwVfOQB7dtkqlwXwDSW06P2+HrzByzwLd1rvzCgnnVZ16KQgz01uhNAsMMpD/YlhgBGWKdfmorgDGbXRjx0jGQAeJvoNOam1SO3MEl7XgXZY2I4alkPG73vBAu9ZOn+htwyzeurCTfMlrmJNmz6gWPlxMvTnX3hYw7cDxKcvoF/nHnnel0Sj1sq+SipCE361+E4fq2MVWYujbzRA2G3VLg3kaMquLPNX5c9x1ULEyiLt4yIZ0UB5cFe4ZV9P5r6LpIChv0IPVXlnDRD1LgJ9peEg1+CqVHEWuA9O3BcvVPD0hYFDngKNFpV2ti2Kniq/Qku2KSSMdWC8QYC+KcCeag8smQBX/vPre48UAWgUN5nkys2uy9e8LaDoqPO/ccSk9FWWw6NYKj3eCOOKqrbi3Hs6RfFo4TdIBj5Qp3HqzlARrVVbkw5VunGzxTEMa19M/e4QL+Nmb4IxQhWMZJFrhF+LuWfVhGjQ2qJK9zCE3xXyfqOgK5qHZpWS0S/SiEKHgBGAVw85+OSn7clLoidDAaQFBLb6GPHKM24N74jX0Kugmmrg9vX2OCYt1XAruClsInrZYwL77VsTta8ixW2pQIidqvJYSekUtqhR9ES3cIwOOMdT2KAJM0MNZhA0F4hiQHwrPNKC9ylEkQ4rmieaIoGtqTrEJlInDg8H3KSiCrEqOV7nip8Xw9enprzttoTB6GZPE1g1/u/RVnHhmuZe3dsXvJjyFmPyqO9kVXfcJyfTI+liB9FVGqvTOjYUKcpJByNpuJrT8tlLTp4y8RhEg01FzQ18uhZqMY23zeaH79JUMYW9v1KwKXpvVHDq3Kw9cHNH5sgPHJ6FmTItis8LZMHrc0pv
- NDTgxk4C
- 65CENu9aosRq7aksZjPu4sxuI2Q0B64P0fYZD1XZ7EB3VxZA5d0jdDxPzGQrB4sBg3QjaWAGv1qCBzrtKeg6UV6QKLqkVNwc50j8bx8Oo9ejN260UQ5ia6tJSENbQa6tnq8aAyKpEYrvx0u/xbPA4d4uLhAa/vPYlTfacxugRtNVxyjxb7JZ7tuSFbNA6Y0WWTlvq25CbZdzJyg8uB0lEEw3IbDzV3Un+WiMDb0vi+52Ggq1AvZ+OgS8kBu0w3/Iy0YZZ34XlOsMnYdiR8xQieDx7R7SY7n/QJ/m97GT62Pv6Y3v3c4eiRH+QYgB7iDSAJH1ZXea+fD+jcXh785sRnYroFndtbf8VZn2oF3G1K6gyN1cgO2GPLlCvxFQxvQ9bS5o+0hyO6oZuM+ypRlFl+P9jZFPNXloZ3SMVnsN28YBk7BpNP/uu3jyeAIEHpXDgkbYqJ2bEzwOcirpP4Mz7T2Ge2/T4hFT8ji8MviX2ryKO+rC2pBeoVcdY13IV5wuwI5ESh8Jqo6S24LmyCX0msaFoE76wL5qGlJRjS/LmVSv3yP9I1zmpjgHTjW3vYleobucIdWCRh7+UhPl95JUnkZujZ5xdNkUC7sTGIzsW7zsDlMUoIjfyq6rIQO/UpSe+/8lRQ7KQJj3lUWAWY3Xsjz77TrIf58m3CfIcUrl7pYYvtqL8P+VpcBtP3PHK53M5ZrQ/zxqn0D01BSY=
+X-Rspamd-Queue-Id: 3D6CC40010
+X-HE-Tag: 1793883825-13266
+X-HE-Meta: U2FsdGVkX19xzOI7/J2wgFY1K7b0BdsseY8r9uRtvrD6gnk+s7erbRWkoJpOfR1+xoYsEF5TrCPB4GhkB39MYK4w1n41uQVQy9jMx8snXTaNfulLMdvUPIuGvsoCpxy1fFnD1EcwK2djXWdlBOCWDvrO41ZdID0yO+ZNxMJYNXzvaOdnwi/vq5BsgBTTqsd0VhZqDitKLHLuiLsre0zCmA30b/hBvLsgCPa9h8m3ZeEktX0dnXbBGk1OQE7UUvoGi5qzg7xpsI70KWw4dZLsnX4lkCQL9PEcdKPjhx8rPYGrzGv/SDb6/EM/Cu+O4QV6Q0E0iCFGLrrpzR+pt1yFVtt0YQQU7tfXQ+LTdDV0b2O8s9D1zXsqHWA4jHCaIs0kceCS0DKxm5eDZIczxtv4blZH59HDPOXAH3cztYMH3ZJ0iKTAvoNEdbxRAQzKF5pQ/Q77El9kz4oMHrLbOW07QxAS71ZGL4xXleDKVXe6wWwCTxXitZSzPk436lozPOIs67FfatxOGD+i3LuHb3NJvxPMx/+ZYIdvbXeVYR3vY0A+uQOTGYZf+a4QhYrkRP80VtNtMFDtNsZ3Lh9UClSfXHDJrVBTBWZ5Jrj/bMJ2BnLu1jhPBx3mceuqmgtjJ+h2sV3j/x2AGAe+meElHW2TnB5+a26RSz/vWcZ2NOBkLbL0aUuO0Ag1KXmH64QvqUjqFnXTeXbPtVlU58dHiQ89X/X3nGGn92FZtSyS6cyUWLRs7rkTkX+VStz1tP0koRGI4g9Jbpj4saJsXFOW0IPd/2X3ppM1wS/xwJyDYR0d2AT+Cie7b94wyiSWNckiHauBX0ku2w9iIlI7AsYo9RprJsax00OqOyNVakFbUh+WZAsdOOwF2PjC9MPFEvVwQB797hKThmPZD6uOGfgjsMuCwuhqW43Om5fKKqFqO3B93fq46/dzzGhgW6ZoUqE1p77E9vWSw0N4ZNXc/uTniIf
+ afTc7ZZj
+ XA7sY6i/g922wBPhPhNeafHOaiT04xaQ9EgA7YDrdsZ70XmXanoCeaqeT1+MTxcjhNMLR2OdSiChBgom3GNZDhMnpbdMueodh7ThtN8uzZNQ1uQPEuWwskD+vgRMFadIJPAhE2Vxq6aLsiU0v/OdDU0hJKuaCNLpX12Ox2WOvq5WPmewxEQAOnECbqJDjJsUCWDNbOIXViiJhB8cJcZTSOkZuuNy9FNR+sG6njmC6baf1hkUTcTx2F1LFNJv2j3Ib96Gj5n8+Bfjix0JRZE7F1HTZhRurcGE1Vt+qs9LzUirJRnLGyx5NsTjD286NajUcPpt6C+bTwwuZFvxydos+hgC/Ac6VK8OISLXN4cn/aDQomL5yWNI9EgpVX1qV1oeAnThOQ/hr2HiEOmrl/cvD+mqgRhQ6chYS35+wlcSxgxmioLKO+wYX35D96V3TZquUO3/S48e0zujD2cLK3YIDcUAVttTR7ZmiIYbAkGIKLumdE91G4276C3CH8NTKqMldqvLFaKdYpbxqsjbtouijK1/950kwb4AHTNqgrRuQ8QziL3p32d8kVNiWiLfAGBpVPJm7fcxHbGQ0D2IoyWCroODXAmRc2Y693eKNuoyIsZ4TPhFQIe8Jj/xtdnPudbNAPqqh3rKfZT9Yznfp4KecjMUdlgol/sYvE+BOK2P8MdoHzjATOBEh+DaIbsmDGPe8skU83Q+Y9f8TXcnuHwupFLuc7Ankzwxb2Q/GvDJywGzsi9sYADx02leUqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,96 +112,245 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [Medium] mm/compaction: compact_zone() misses pages captured in rcu_free_=
-drain()
+- [High] mm/memory-failure: unsafe RCU wait in memory_failure() already-poi=
+soned path
+- [High] mm/memory-failure: mf_free_rcu_pages() skips sync while rcu_free_p=
+ages() runs
+- [Medium] mm/memory-failure: order-0 PG_rcu_free page dropped after settin=
+g PG_hwpoison
 --
 
-commit 0e470d35ade0bceb30271d7e57f7ca44bff99bf7
+commit 3d8069abfad786882a48d6ce85e757674239a9ca
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-mm/compaction: free the migrated folios that wait for a grace period
+mm/memory-failure: handle folios with PG_rcu_free
 
-This commit drains deferred RCU-freed folios in compact_zone() when non-asy=
-nc
-compaction moves past a block it migrated from and the zone has pages waiti=
-ng
-for a grace period.
+This commit updates memory_failure() and get_any_page() to drain pages
+waiting for an RCU grace period via rcu_free_sync() and waits for a
+grace period via synchronize_rcu() before returning success on a
+PG_rcu_free folio.
 
-> diff --git a/mm/compaction.c b/mm/compaction.c
-> index a049415512c67..2acb87a3446df 100644
-> --- a/mm/compaction.c
-> +++ b/mm/compaction.c
-> @@ -2760,6 +2760,14 @@ compact_zone(struct compact_control *cc, struct ca=
-pture_control *capc)
->  				block_start_pfn(cc->migrate_pfn, cc->order);
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 7dde7c3c9a0c5..398463b2e82d5 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -1419,6 +1419,19 @@ static int __get_hwpoison_page(struct page *page, =
+unsigned long flags)
+>  	return 0;
+>  }
 > =20
->  			if (last_migrated_pfn < current_block_start) {
-> +				/*
-> +				 * Folios migrated away from lockless readers
-> +				 * are freed after a grace period.  Async
-> +				 * compaction does not wait for it.
-> +				 */
-> +				if (cc->mode !=3D MIGRATE_ASYNC &&
-> +				    zone_rcu_free_waiting(cc->zone))
-> +					rcu_free_drain();
->  				lru_add_drain_cpu_zone(cc->zone);
->  				/* No more flushing until we migrate again */
->  				last_migrated_pfn =3D 0;
+> +/* A page waiting for a grace period is not in the buddy yet: free it */
+> +static void mf_free_rcu_pages(struct page *p)
+> +{
+> +	if (!zone_rcu_free_waiting(page_zone(p)))
+> +		return;
+> +	if (page_count(p))
+> +		return;
+> +	if (is_free_buddy_page(p))
+> +		return;
+> +
+> +	rcu_free_sync();
+> +}
+
+[Severity: High]
+As reported by Sashiko on RFC [1], can mf_free_rcu_pages() return early
+without calling rcu_free_sync() while rcu_free_pages() is still freeing
+the target folio?
+
+In mm/page_alloc.c:rcu_free_pages(), NR_FREE_RCU_PAGES is decremented
+before the folios are actually freed to the buddy allocator:
+
+mm/page_alloc.c:rcu_free_pages() {
+	list_for_each_entry_safe(folio, next, list, lru) {
+		nr +=3D folio_nr_pages(folio);
+		mod_zone_page_state(folio_zone(folio), NR_FREE_RCU_PAGES,
+				    -folio_nr_pages(folio));
+		if (direct) {
+			__free_pages_ok(&folio->page, folio_order(folio),
+					FPI_NONE);
+			cond_resched();
+		} else if (!folio_batch_add(&fbatch, folio)) {
+			free_unref_folios(&fbatch);
+			cond_resched_tasks_rcu_qs();
+		}
+	}
+	if (folio_batch_count(&fbatch))
+		free_unref_folios(&fbatch);
+}
+
+Similarly, during folio release, folio_put_testzero() drops _refcount to
+0 before __free_pages_prepare() -> rcu_free_defer() increments
+NR_FREE_RCU_PAGES.
+
+When the last waiting folios in a zone are in either window,
+page_count(p) is 0, is_free_buddy_page(p) is false, and
+zone_rcu_free_waiting(page_zone(p)) evaluates to false.
+
+If memory_failure() calls mf_free_rcu_pages(p) during this window, it
+skips rcu_free_sync() and proceeds to TestSetPageHWPoison(p) before
+__free_pages_prepare() runs. For an order-0 page, __free_pages_prepare()
+then sees PageHWPoison(page) && !order and drops the page instead of
+placing it in the buddy allocator, causing get_hwpoison_page() to fail
+with -EIO and leaving the hardware error ignored as MF_IGNORED.
+
+In addition, because memory_failure() calls mf_free_rcu_pages(p) before
+get_hwpoison_page() calls zone_pcp_disable(), if rcu_free_workfn() or
+rcu_free_expedite_workfn() already spliced p off the per-CPU list,
+rcu_free_pages(..., false) -> free_unref_folios() will free p onto a
+per-CPU pageset (PCP) list rather than the buddy allocator before
+TestSetPageHWPoison(p) runs.
+
+> +
+>  #define GET_PAGE_MAX_RETRY_NUM 3
+> =20
+>  static int get_any_page(struct page *p, unsigned long flags)
+> @@ -1443,6 +1456,7 @@ static int get_any_page(struct page *p, unsigned lo=
+ng flags)
+>  	}
+> =20
+>  try_again:
+> +	mf_free_rcu_pages(p);
+>  	if (!count_increased) {
 
 [Severity: Medium]
-Can compact_zone() miss a page that gets captured into capc->page during
-rcu_free_drain() or lru_add_drain_cpu_zone()?
+As reported by Sashiko on RFC [2], what happens in memory_failure() if an
+in-use order-0 folio with PG_rcu_free is freed on another CPU after the
+initial mf_free_rcu_pages(p) call?
 
-During direct compaction, current->capture_control points to capc. When a
-migrated block contains a folio with PG_rcu_free set, migrate_folio_done() =
-->
-folio_put() -> __free_pages_prepare() defers freeing it via rcu_free_defer(=
-).
-Because the block has not coalesced yet, capc->page is still NULL when
-compact_zone() checks it before the check_drain label:
+In memory_failure(), the initial mf_free_rcu_pages(p) call returns
+immediately when page_count(p) > 0:
 
-mm/compaction.c:compact_zone() {
-	...
-		/* Stop if a page has been captured */
-		if (capc && capc->page) {
-			ret =3D COMPACT_SUCCESS;
-			break;
-		}
-check_drain:
-	...
+mm/memory-failure.c:memory_failure() {
+	mf_free_rcu_pages(p);
+	if (TestSetPageHWPoison(p)) {
+		...
+	}
+	res =3D get_hwpoison_page(p, flags);
 }
 
-When check_drain then runs rcu_free_drain() and lru_add_drain_cpu_zone(), t=
-he
-deferred pages are freed in current's context through __free_one_page(). On=
-ce
-the block coalesces to capc->order, compaction_capture() stores the page in
-capc->page and __free_one_page() returns early without adding the page to
-zone->free_area[order]:
+If another CPU drops the last reference on that order-0 folio just before
+TestSetPageHWPoison(p), __free_pages_prepare() queues the folio via
+rcu_free_defer(folio), and TestSetPageHWPoison(p) then sets PG_hwpoison on
+p while it is on the RCU free list. When get_hwpoison_page() ->
+get_any_page() then calls mf_free_rcu_pages(p) at try_again,
+rcu_free_sync() drains p through __free_pages_ok() ->
+__free_pages_prepare():
 
-mm/page_alloc.c:__free_one_page() {
+mm/page_alloc.c:__free_pages_prepare() {
+	if (unlikely(folio_test_rcu_free(folio)) &&
+	    !(PageHWPoison(page) && !order)) {
+		...
+		rcu_free_defer(folio);
+		return false;
+	}
 	...
-		if (compaction_capture(capc, page, order, migratetype)) {
-			account_freepages(zone, -(1 << order), migratetype);
-			return;
-		}
-	...
+	if (unlikely(PageHWPoison(page)) && !order) {
+		/* Do not let hwpoison pages hit pcplists/buddy */
+		...
+		return false;
+	}
 }
 
-After check_drain finishes, the while loop condition calls
-compact_finished() -> __compact_finished(), which only checks whether
-cc->zone->free_area[order] is non-empty and does not check capc->page. Since
-the captured page was not placed on the free list, compact_finished() retur=
-ns
-COMPACT_CONTINUE and compact_zone() proceeds to isolate and migrate another
-block even though the allocation has already been captured.
+Because PageHWPoison(p) is already set and order is 0,
+__free_pages_prepare() drops the page instead of placing it in the buddy
+allocator. And if the last reference is dropped after
+TestSetPageHWPoison(p) while get_any_page() is retrying,
+__free_pages_prepare() sees PageHWPoison(page) && !order, skips
+rcu_free_defer(folio) without waiting for an RCU grace period, and also
+drops the page.
 
-Should compact_zone() recheck capc && capc->page after draining (or check it
-in __compact_finished())?
+In both cases, is_free_buddy_page(p) remains false, get_any_page() fails
+with -EIO after retrying, and memory_failure() reports MF_IGNORED without
+waiting for lockless RCU readers or accounting the page as recovered.
+
+[ ... ]
+
+> @@ -2440,6 +2454,7 @@ int memory_failure(unsigned long pfn, int flags)
+>  	if (res !=3D -ENOENT)
+>  		goto unlock_mutex;
+> =20
+> +	mf_free_rcu_pages(p);
+>  	if (TestSetPageHWPoison(p)) {
+>  		res =3D -EHWPOISON;
+>  		if (flags & MF_ACTION_REQUIRED)
+> @@ -2447,6 +2462,13 @@ int memory_failure(unsigned long pfn, int flags)
+>  		if (flags & MF_COUNT_INCREASED)
+>  			put_page(p);
+>  		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+> +		/*
+> +		 * The memory_failure() that set PG_hwpoison may have failed
+> +		 * without waiting for lockless readers, and the caller may
+> +		 * unmap the page once this returns 0.
+> +		 */
+> +		if (!res && folio_test_rcu_free(page_folio(p)))
+> +			synchronize_rcu();
+>  		goto unlock_mutex;
+>  	}
+
+[Severity: High]
+As reported by Sashiko on RFC [3], can this already-poisoned path in
+memory_failure() return 0 and allow the caller (such as kill_me_maybe() ->
+set_mce_nospec()) to unmap pfn from the kernel direct map while lockless
+RCU page-cache readers can still access p?
+
+There appear to be two issues when a previous memory_failure() call set
+PG_hwpoison on p and then failed before isolating the page (for example,
+in get_hwpoison_page() or try_to_split_thp_page()), and a second
+memory_failure(pfn, MF_ACTION_REQUIRED) call enters the
+TestSetPageHWPoison(p) branch with kill_accessing_process() returning 0:
+
+1. In the TestSetPageHWPoison(p) branch, put_page(p) drops the
+MF_COUNT_INCREASED reference before folio_test_rcu_free(page_folio(p)) is
+checked, and no reference is held on p during kill_accessing_process() if
+MF_COUNT_INCREASED was not set. If the folio's last reference is dropped
+after mf_free_rcu_pages(p) (either by put_page(p) or concurrently on
+another CPU), __free_pages_prepare() immediately clears PG_rcu_free before
+deferring the free:
+
+mm/page_alloc.c:__free_pages_prepare() {
+	if (unlikely(folio_test_rcu_free(folio)) &&
+	    !(PageHWPoison(page) && !order)) {
+		VM_WARN_ON_ONCE(fpi_flags & FPI_NOLOCK);
+		__folio_clear_rcu_free(folio);
+		count_vm_events(PGFREE_RCU, 1 << order);
+		rcu_free_defer(folio);
+		return false;
+	}
+}
+
+When that happens, folio_test_rcu_free(page_folio(p)) evaluates to false
+and skips synchronize_rcu() while the folio is still waiting for its RCU
+grace period and lockless readers that looked up the folio before it was
+freed are still copying from p.
+
+2. If p is part of a large folio and the first memory_failure() failed in
+get_hwpoison_page() (before folio_set_has_hwpoisoned(folio)) or in
+try_to_split_thp_page():
+
+mm/memory-failure.c:memory_failure() {
+		if (err || new_order) {
+			/* get folio again in case the original one is split */
+			folio =3D page_folio(p);
+			res =3D -EHWPOISON;
+			kill_procs_now(p, pfn, flags, folio);
+			put_page(p);
+			action_result(pfn, MF_MSG_UNSPLIT_THP, MF_FAILED);
+			goto unlock_mutex;
+		}
+}
+
+the unsplit large folio remains in the page cache with PG_hwpoison only
+set on subpage p. Even after synchronize_rcu() completes, new lockless
+page-cache readers can still copy the poisoned subpage as part of the
+large folio while the caller unmaps p from the direct map.
+
+[1] https://lore.kernel.org/r/20261019154913.1765974-9-kas@kernel.org
+[2] https://lore.kernel.org/r/20261019154913.1765974-9-kas@kernel.org
+[3] https://lore.kernel.org/r/20261019154913.1765974-9-kas@kernel.org
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104130118.2507=
-513-1-kas@kernel.org?part=3D8
+513-1-kas@kernel.org?part=3D9
 
