@@ -1,98 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330A9606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61822606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D3Ff3mLR
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TpbPfdgW
 Received: by kanga.kvack.org (Postfix)
-	id 599BB6B05BB; Thu,  5 Nov 2026 04:26:55 -0500 (EST)
+	id 6D52B6B05B0; Thu,  5 Nov 2026 04:29:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 572396B05BC; Thu,  5 Nov 2026 04:26:55 -0500 (EST)
+	id 687AC6B05B1; Thu,  5 Nov 2026 04:29:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B0206B05BD; Thu,  5 Nov 2026 04:26:55 -0500 (EST)
+	id 59F3D6B05BD; Thu,  5 Nov 2026 04:29:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2660C6B05BB
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:26:55 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A62571609A0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:26:54 +0000 (UTC)
-X-FDA: 85400535948.25.D80ED38
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EDF96B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:29:30 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B464F140980
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:29:29 +0000 (UTC)
+X-FDA: 85400542458.21.6491D45
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0B694160009
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:26:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D3Ff3mLR;
-	spf=pass (imf08.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1EB0920002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:29:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TpbPfdgW;
+	spf=pass (imf13.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793870813;
+	s=arc-20220608; t=1793870968;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uRkdO17Voxl0dXI2uG8wshwdNsr0g145kxXlot39KlA=;
-	b=yo+DsZ3YL2SLZM0sro4vGggsIUQwQekNiFp4J6/5mM21vd2mmt+ZvZUxStII8omoRFfqID
-	55NfS5Az24gOYi7BQpHntD5K77hHl1dkBGhtjdMtdyzi+wGpuJCH0W2N7IWYBYXhC5oioc
-	qo7bm/OMEgJBGtsg9g3a/l5IAMUbnFk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793870813;
-	b=VSYYhY3kcSxju7I4CUTRYrdKWtLCBld+FDmhJpJaElv+ari4ASmovMxqFAeH+RABLICvv2
-	sHzUsIMx5Y2a/mLEHEBnqZxIO7VBpQZBF2zYJwEcMNX6MXKXySwwrHvUW8iUnKFejW1Ejk
-	QD1vswQ0uwHuqjf2q9lI7XOPRUkbOEQ=
+	bh=JFCU0FbtSuC2D7iPyi82SNxybv9/1CahXus+XyLTnc4=;
+	b=sDZyCErt7luq8j4ZOHk8boAQSw52PocxK2wv8a1RPUTae3pCSBK83/XPx10pJNyrIcrCax
+	Wejb/bNUq8zckdPb8Ror/lvgklSLjJoh50eXIuhdmli24rapahTQxuYQGo0absKYj4yqHC
+	eps3Fv/9HgyzGnIiAZqROjWmffJC7V4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D3Ff3mLR;
-	spf=pass (imf08.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TpbPfdgW;
+	spf=pass (imf13.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793870968;
+	b=Vot35VunD5BpI5u/UpxWwJs+f2ClID2pQWZyjUQTsvvpXVbMIe2ahfCEkn/y92L/na9NqH
+	wlMerO0Xz5gfij1Sf/ZPkZMLev/OQaRG6pMN4SeOl5z9avF3Oiu6MmC7b0gnXMh7zcpNsd
+	8aw9v0GhGBoSXpOWz5GLQYr0OYXnLNQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 039AF4167E;
-	Thu,  5 Nov 2026 09:26:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D9A1F000C1;
-	Thu,  5 Nov 2026 09:26:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5587841FFA;
+	Thu,  5 Nov 2026 09:29:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A6C1F000C1;
+	Thu,  5 Nov 2026 09:29:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793870811;
-	bh=uRkdO17Voxl0dXI2uG8wshwdNsr0g145kxXlot39KlA=;
+	s=k20260515; t=1793870967;
+	bh=JFCU0FbtSuC2D7iPyi82SNxybv9/1CahXus+XyLTnc4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D3Ff3mLRu4OChP2iUFU4kKDEzNr1W2PkRr2N3WCoIANfV8eYMHtr1p+zNArTikMKv
-	 sIeNox3CK7OeKmR0k/aKUCimJ0pteSN4s1zni++glIrXGPwO7cvGWhSq552JhrNX49
-	 bGfQHQ8ydG09LI0e/Oql3VJY9nT9unfJeUw515TqftXpdlpc5ppVtOGIBv39kZS+zf
-	 ZCQFDxCNDKlsk22SXXDV5wi8rC9W2zjgj4O37W5RZvhthRVV52dbEIhMn+XJlTPFqo
-	 vQ6t0k65Vj7JsbJSQBIuTKGNtVNTBX2BYaNwnjSubsYvM+7XdWyIRrdNOPBSU+c56Z
-	 3ghh+boYYNBdw==
-Date: Thu, 5 Nov 2026 10:26:45 +0100
+	b=TpbPfdgWbH6gGD1XVstA3oJT7b5CDkZRmfmPvVlwNVz4gi1txWb4MKNvOd82hHgzx
+	 M5n8Hmb/YE7vOWlwMKHpqWHPpRRa9p7m0CXdDzdArFmMwW8329BlYcDhHpVfpkbf9t
+	 XsDszlEngFjzmH/tsneOFgvuRQ0B4NUL7WOT0fTxGOXmR0Y8sateaDFB1Uvp7/riDW
+	 cpyHu51t9NjfjbOmkgb/P/0Cj+GSqjjP+yqXVo0GINez7r4zd34ot8676o2QweXQhB
+	 O/isZNK0GboRZ8H9gaLSOhM8H/HMh1YB+Eyum/mnnJ6C5UeIf/aN47XVz+8g59wzdS
+	 YcSuMUyFfZUIQ==
+Date: Thu, 5 Nov 2026 10:29:22 +0100
 From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: Oscar Salvador <osalvador@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
-	Lance Yang <lance.yang@linux.dev>,
-	James Houghton <jthoughton@google.com>,
-	David Hildenbrand <david@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 12/12] mm: hugetlb_vmemmap: make vmemmap PTE
- conversion folio-oriented
-Message-ID: <auxL1Q4S9wllEn6B@localhost.localdomain>
-References: <20261104023510.260766-1-songmuchun@bytedance.com>
- <20261104023510.260766-13-songmuchun@bytedance.com>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+	akpm@linux-foundation.org, azpijr@gmail.com, lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] x86: hugetlb: disable default CMA reservations on
+ 32-bit kernel
+Message-ID: <auxMctmYZTTwtRRJ@localhost.localdomain>
+References: <cover.1793850539.git.zhengqi.arch@bytedance.com>
+ <ece5aebe95f6565046d17ffb738670feb3202943.1793850539.git.zhengqi.arch@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104023510.260766-13-songmuchun@bytedance.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 9ck17mq1aysnritxfownbw9nd7qs9799
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0B694160009
+In-Reply-To: <ece5aebe95f6565046d17ffb738670feb3202943.1793850539.git.zhengqi.arch@bytedance.com>
+X-Stat-Signature: szfdhia3sza851qezgugdii65x1s3xeq
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793870812-348302
-X-HE-Meta: U2FsdGVkX1/jSOlrl9Et1SjXSlOO6IjNG3E7cnHicpgLXdEc2pjmqwB8Dt83XopvfUuTr2e2hQV1DPyCSDepKUffdgwDpnUIkaWZerhpSmXst4HVH2qqiFJ8OnpXKI5orhkmAYGesx0N7kk6tNiw1sliQtxdV2x3n1P66Y9xlTPSp0+cl4xWpcby37v7+z64GUk1rxe6XNfHiSVO0XF2Sm4sVV7Y5yi22tfhCRX8zEoruAe4NGGLk53UQs2XQH3BTSuu1Jkqee0i/O5/3syrgsHYFmzc3cFcMKWA9nShKiwMotkzhOh1veQ2+0dVivoCnOlHIzEHC/5gO7PY1bxfO05v85WM/PvYGuRKO4dTUsMBQY5vE/XJYni8rxqWAeh8t+3ph6GGGBYNwq0FjS5N6ij5CiI0d9+PdgjpuMATT7xTD35XWYwNaIEvbeimnr/3FzYxFDXFlU1T4afyttMwc4ZmYC9K7DjtpK0093tuCdLg3JBPIRuskNSrXGOeqbJI25/ITvEcwCzb/vsdx/7oABkNx/O4Au4WJAsDwDwyTLS0WLVDZRNSuNBR/AavTVquT/gkwA1N1fQUY2cUUqulCUc4k5Q6zIaLCXyU5YOHQhN3aekL88NH95ASXjRvWngWnbKyc7WmC5ge0hl130wcB+0s2KcyCqQWJbn3c+piS/6ORxkM3J2xic+C3C160UMQZtLD4Mz6Nmr4/E5Uz+2LimM16f6BwuQC4hTICAFayGebdEWsXu1K0hwLiHbuyx8ApyvdSg13HwbTDKRkwyDeVvY8YGXbz6s1+XrcUNkjp14ZUpXfHGZplor6lDp8Yl5ziXR4eWdJ+Ms3TTODv76wnwL2W861h2ymmUHEIiagjfy5/URuEUg6xkfd+1uBysxeSqt2D7vBJhkWdeTKtSUJZg7+8XWdUNzsvlWvcgnfM7Fdmxn/CKTQ5SQSA+mGMBSYMiQTFmCfEEexovUCcyG
- oS/doVV2
- q/FGT/cKfIv6/E8u2Ay66xX8x4YzQ1PBf4OjEwQcgXf4F+pvc/WrEtTx3QuBs+wmMxkPxBv07arUfcQpTj2tDdMqdqIQXvceXQM7nd2DKzmCMPX9VLY8I1+pUPlE7O6Pmgab1/w4dzKIITjcIELrJAJHYF4irmAZHW8/wLX7KuET95uLkipEeQXsx84dDxlhWUxzIlyBIqFXy6H1FtkDs4DVJZH7nFD2WulDAhAZR+Gqzuv/79bROvEiwr8wdQlHuNaMv8f/VNNvaN2OCTO+z+MnaIm28iDMjQt6dlcUcGmWt+OOn20NZc4BpKQ==
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 1EB0920002
+X-HE-Tag: 1793870967-602062
+X-HE-Meta: U2FsdGVkX1/Frfp6KjxvRD4EfkYATvT/hBzvOtXsZPxQzTBpHCoefTD+y9Q770z3jQwFmWlI/y5D1yuatPEOzgqJyKprFjTtqtGpwL5vnYfOhOHzdx+B17IznIQL15jCKh1e3gl/BvW9FMGQxspkntaGNF7GVJIZt3iyUh5GNAfgb88H/osx2JCIqkxJr7famhvq+1mK3e0XLI6mFlHbXTfKBtSatJ/LXWFxgcC+K6HDlBlLZE/usAaU7NYtHO3Q1uxh1erSaeRMlJL7uoiWF+q8oFOnw78ceUpExrM4jSHFoV2we52KkQS0hBMeeF2wEZ3zEe3ZiGoeRJKVEvnssQWXxLL1sppmx5pqryk3rUBdqRCaMEa+NJEHXxLz2gktR2H5U41BVnTKPl5IPCuB1JyJQu+LDSjVlvb4+3uPOCBguimkaNRamvr29FuQBgzaTC8tSx9vCU3xlZNqne85nuWy8DbqEBVv9DJN4vw1hBUfhycCUE4aCKcaP/f+xzbW2WcLYp8XpR4t3UsV/y2kJB7MpA8yAo8Xt7cNNY/h2e1W88lg87l4wSnayphzUPukmdzFJArNGe+bpFZah3PQZRsUOnu+h/2qVB/030PXcejpucWB84/iYJFOJDUh1vW1fUF7lHZVdNynlK6o07XbVy6QzFrNqO8vhXHokHDKD3g36DjSa+rQ0EtolH9lT5IgWCIAZ/GBKK6CcxIS2hxCkKM9isVog/MeVAll/0qGrKnUN1o5tJIXV5ICvksvvGH2MY+fVis1gr3PMBfNNxxmrf0Wwv3UcxSigojCaN4ganGgIcIuXW4WdjoguLr/O4+pBwOXwyDsCmbqE69XAir3ah1mebtZJh/tn3nbc6gsJScN27cUkkLo7cWMXjym0e8yjyzH8RHPyoTOlU5DSSHXfVTrAduPODeivJpgKZM0HChL4vZfkgCmC21HhPblDbEpS7solQ1671uNlX81Gzy
+ bqiYERex
+ /YiniMMONipN8pN/owvRVPYHa7tZRAOWbmeViJAfkjy9+titqrpZWUp/WvJXM5D9ib48tbGTXgToEDMUPkieZ9bfIBx3Vyp6knZ+dX6+ELWAmoaXVGaeklEFF6IuYDUkQP3Dn6H3jpXEpy4HKnMwhv+W6mKfw7fwzP1hscHLXAF6D17HhyZzrkbgczSq0HXLImUG7a8oYkvAUTqj5RRiMpDyj3bE9dYCzI9V/iyxaVhILbY7apPcMAssFEHwghG0jLbSENjxW0sBm4FCXnZmPaWZbZ6wMq5irOE20
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,30 +97,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 10:35:10AM +0800, Muchun Song wrote:
-> Converting a folio's vmemmap mappings from PMDs to PTEs is a per-folio
-> operation, but the current interface exposes a raw address range and
-> hardcodes deferred TLB flushing.  This splits the common mechanism
-> across layers and couples it to the HugeTLB batching policy.
+On Thu, Nov 05, 2026 at 12:07:43PM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> Make the folio the unit of PTE conversion and let callers select the TLB
-> flush policy through the folio-oriented interface.  This keeps
-> HugeTLB-specific eligibility and batching outside the common operation.
+> A 32-bit x86 kernel can run on a 64-bit-capable CPU advertising GBPAGES.
+> arch_hugetlb_cma_order() checks only this feature and returns a nonzero
+> order, although gigantic HugeTLB support on x86 requires CONFIG_X86_64.
+> Specifying hugetlb_cma= can therefore reserve a CMA area that cannot
+> serve the intended gigantic HugeTLB allocations.
 > 
-> No functional change intended.
+> On non-PAE kernels, the folded PUD_SHIFT yields a 4 MiB order, which is
+> equal to MAX_PAGE_ORDER. With CONFIG_DEBUG_VM enabled, this triggers the
+> VM_WARN_ON(order <= MAX_PAGE_ORDER) check in hugetlb_cma_reserve(),
+> warning that hugetlb_cma is attempting to reserve a non-gigantic order.
 > 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Qi Zheng <qi.zheng@linux.dev>
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Require CONFIG_X86_64 as well as GBPAGES when selecting the default CMA
+> order to avoid these ineffective reservations.
+> 
+> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Acked-by: Muchun Song <muchun.song@linux.dev>
+> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Acked-by: Oscar Salvador <osalvador@suse.de>
 
-But I have to say that I would put the vmemmap_optimizable_order() check
-upfront in the caller, so by the time we call vmemmap_pteify_folio()
-we now we can proceed.
-
-
+> ---
+>  arch/x86/mm/hugetlbpage.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/mm/hugetlbpage.c b/arch/x86/mm/hugetlbpage.c
+> index 3b26621c91286..70726a99ede7b 100644
+> --- a/arch/x86/mm/hugetlbpage.c
+> +++ b/arch/x86/mm/hugetlbpage.c
+> @@ -45,7 +45,7 @@ arch_initcall(gigantic_pages_init);
+>  
+>  unsigned int __init arch_hugetlb_cma_order(void)
+>  {
+> -	if (boot_cpu_has(X86_FEATURE_GBPAGES))
+> +	if (IS_ENABLED(CONFIG_X86_64) && boot_cpu_has(X86_FEATURE_GBPAGES))
+>  		return PUD_SHIFT - PAGE_SHIFT;
+>  
+>  	return 0;
+> -- 
+> 2.54.0
+> 
 
 -- 
 Oscar Salvador
