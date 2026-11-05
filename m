@@ -1,140 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7FA26079555
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBD16071FA2
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aFwEUG2M
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cZhHfqlp
 Received: by kanga.kvack.org (Postfix)
-	id 0540B6B05C0; Thu,  5 Nov 2026 14:45:12 -0500 (EST)
+	id 11F566B05B5; Thu,  5 Nov 2026 14:49:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02B776B05C1; Thu,  5 Nov 2026 14:45:11 -0500 (EST)
+	id 0F7376B05B6; Thu,  5 Nov 2026 14:49:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E839D6B05C2; Thu,  5 Nov 2026 14:45:11 -0500 (EST)
+	id 034E56B05B7; Thu,  5 Nov 2026 14:49:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C6D116B05C0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:45:11 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68284140962
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:45:11 +0000 (UTC)
-X-FDA: 85402094022.22.F0C4D83
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9096F1C0008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:45:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aFwEUG2M;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BC65B6B05B5
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:49:26 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 319B71A0C64
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:49:24 +0000 (UTC)
+X-FDA: 85402104648.24.2981EE2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8C95C180005
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:49:22 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cZhHfqlp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907909;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1793908162;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SwwRFdOw4oikJB0l/UHgh6k09vdq8uhcaONY4VtARHI=;
-	b=EWgcZshHb1+HxhRtVWcI48HeO4ItnYOkUApZZ3OBafy3q4dxkvOMfBO8PnMTWTSP+WMJFp
-	LoaCc+TSpJGbu403BHgd34rSiU/w+wKGO51FEeX1tkk6JywdsvaGv9ZnBI2dOn3F23WBtU
-	DhM9YsZqEkXGE04uZf7x2q2TIE5ZOMg=
+	bh=SQGcFgpv842CZc+i4ADTXEHohf225g6/ddUxNX/0YAI=;
+	b=D+sbY3Gecu8izYrp4VSuBNXDMqZB6az29RJpJRGbBCXanuJCKl5YQ37ycU5gZffFDvewav
+	ax5we4hJEC0zFXVDCuhqYKEYAfTo1vth33AVxqG4B5Y8+HZLYRb6dtJx4qpGlKG75fJw8r
+	1ZcGBN8Re554GlFVbxzTjC9IovAoZP0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aFwEUG2M;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cZhHfqlp;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907909;
-	b=MY0SMGX3Il18F8ue7Yn/5/Auiyg26EU3w5JaaArZz9HHyemNPl/p5DxHQvcT5xsOmnEhjG
-	I1/Ty4iRnBTMW2eyocKvhonFm4a7XzTWTXRPpzp+xx2PocJ4Ato9sJvZogMAznkYlM0TPI
-	9tYSyeCQQBIFJ6PDGSxaIDycnBMCFs0=
+	t=1793908162;
+	b=k5ooJkX95BqWZpFY9YEhkFvdjFH1nVpQO4/s0KC/tbM7/LzuOHGerx7nCr9q1GynEwsf4Y
+	2+heeBJESdLnfacYm0VWDD8BEQJI3Ru/qjALTJUSMd9RzdNe7gxI2FW2jc2TZkKA9BKRUM
+	IOdb7Pvdkc2zpCbSTmnnCsp/YbqI2Nk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BD0644090A;
-	Thu,  5 Nov 2026 19:45:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873C91F0089F;
-	Thu,  5 Nov 2026 19:45:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C01A60223;
+	Thu,  5 Nov 2026 19:49:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189221F008A3;
+	Thu,  5 Nov 2026 19:49:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793907908;
-	bh=SwwRFdOw4oikJB0l/UHgh6k09vdq8uhcaONY4VtARHI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=aFwEUG2MRn1cnJpuFDp/RuKE9w9V7lQIsGOnP+6tTnyE/o+7hi44rof4K7A+A3/Me
-	 LmB3NQaaHG6Fw2IrsEZpWvYrsQBeciPKqPKDDvMLdqAHh9VXKDxH+XfG1LPLQmeRmj
-	 no7/Zzpy/GXlRZUJlEW5ZkBLjhGd8f06ItJIzyvVBwK6w95Dz84AIIc1C8XuceM6qX
-	 rTKNcm1C+hQTK/1QoRjbmbi6KHnumMPsIKiRb3/lONH2lBIXPu+3e6QCMoERTTzkyW
-	 B8zlJp5LEpjW8FeIL8f6UVFUDO84dKju21/n+JzAdWWTt6R/kgW6epXpVOpCWcJ5vi
-	 1n+OA1XrQzQEg==
-Message-ID: <ac54a9f6-e21d-4f03-88dc-6562afd59cf6@kernel.org>
-Date: Thu, 5 Nov 2026 20:45:04 +0100
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10] mm: replace free hugepage folios after migration
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-Cc: linux-mm@kvack.org, yangge <yangge1116@126.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <21cnbao@gmail.com>,
- SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Mark Bundschuh <mkbund@amazon.com>
-References: <20261105070150.3093908-1-mkbund@amazon.com>
- <2026-11-05-1-daily-reply-0010-mm-hugepage-folios@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <2026-11-05-1-daily-reply-0010-mm-hugepage-folios@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9smqa1oz6fhpd8n51stzzw3cg6eikbjh
-X-Rspamd-Server: rspam01
+	s=k20260515; t=1793908161;
+	bh=SQGcFgpv842CZc+i4ADTXEHohf225g6/ddUxNX/0YAI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=cZhHfqlpVCMazdNLMYZou11HSNj+bC6q9k18GNJM/OWusa7I3cE38ZSDuLk7G2DA1
+	 Jl3LWLfce8r1+I7/kaXnW4DM1El/rS4EDvcWvFSU9gRYnhweCDoHGXs46gI+xBDByX
+	 bgwM+wgE3oMtnlEF7gWtZvRxJuCjnhN3KkQNB8x40+mSR/kNNPCHzW3fXCtyFHFFLX
+	 FHCIUG4SqoA/t9wvId31tRsBFDoxQSd/YXuLLYEqclnuoDPsXk/7YqV8Md9LhmYBjk
+	 /UvD2lsmagU5/J9f/mcGTlhm7gntE6pKkE9kjzxwlbL4fMuUu9RbvUKnSlvFWCI5Yp
+	 a0z1KaHv2TqyQ==
+Message-ID: <sashiko-outbox-199993@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH RESEND v2 07/26] md: let procfs own the wait queue of
+ /proc/mdstat
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Christian Brauner" <brauner@kernel.org>
+Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
+ Bacik" <josef@toxicpanda.com>, "Chris Mason" <mason@kernel.org>, "Jeff
+ Layton" <jlayton@kernel.org>, NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>, "Thomas
+ Gleixner" <tglx@kernel.org>, "Al Viro" <viro@zeniv.linux.org.uk>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>, "Greg
+ Kroah-Hartman" <gregkh@suse.de>, "Joel Granados" <joel.granados@kernel.org>, "Kees
+ Cook" <kees@kernel.org>, "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, dri-devel@lists.freedesktop.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-serial@vger.kernel.org, "Takashi
+ Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, "Chuck
+ Lever" <cel@kernel.org>, tytso@mit.edu, dmitry.torokhov@gmail.com, "Petr
+ Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261104-work-procfs-drivers-v2-7-245e54e87116@kernel.org>
+References: <20261104-work-procfs-drivers-v2-0-245e54e87116@kernel.org>
+ <20261104-work-procfs-drivers-v2-7-245e54e87116@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 19:49:18 +0000
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8C95C180005
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9096F1C0008
-X-HE-Tag: 1793907909-507858
-X-HE-Meta: U2FsdGVkX19C6BhGaE97kC0fzeopMVGd4gErtvPijCz8+EHXvMDlrZhbtNG5HzDc0vHi0G1MLD5puOcgjGh+ScG5XM8dsQ96Bk6hl+XFc4BgQujDnD4uefmzJcKVlU1lpeW36T4OK2nSpfXRDhBFbvog5k+Ge4rOLBpQKE83suAH8m3T2JdLGLElYP3Kc1XHMqG/bZQY5J/tFyEk6sigS+rBUDefnJoynbF7crNFUEexAvrZZs9MAtpxzmARrKrII2oZc+55RLb3FYY161hIL7lca99Az0CGrWXYNtz4ktw1ck6hrKp3LToTENpeQFlD+7hASdlWHne7joJzo5TMl9FEJC+rJl6xjYYm/JKhUJ7PKBOFevLZbTQnKHs/tDb9Ur48JfsP/jqNnSEjvqrMa2QRw20ut9wp/bJKYkQP5xuElvKFllOXEapeAgJYUfgifU6UhZyPfN4wwA9T2OZrDOnOu5Ak0aJ+EALq5OfgW/5ey8u5SxcAmmltVhRiPqJTothqLvakIb3awjOEj2ZRMf/KhKIQwNiHNDFrZkAkfoq/rkfEPMojYWvPQLWrCJN8Rjh/VrmiaB/oiYXHOtDpNN/V9eDw9J71mWFxvCONAtA38voU1NjAvr7Gz3nrmAdnLQipwVTIhoSiMBP0xInEfkMFH0noR0sLQ0fMg4YFBttk7d+dbfwVDRjk67rgYszM6lzSPVvhRtQtE+etlGYcxGIFZBWo0IhzbKhDFy5PlBc7nLxL31UMOVn7MsJeodJsGZjaptkl1oIA9R0AQhnwuu8VH2KsktudHc2wIpJG2Dec23J0JrOIa3qg1hlTYSGEKmybf84GAhVPsb7GX8tOyKEIwhGwhxstCsLZybErrAeGlgUxj/dWwTb0p2nJdx+l+LGDykeRUsq4kR0ZQCLzxDq9i/s+4t53eOg8Bba2xF+h3R7mwXCZ12SmmXyVvOea2G/yRdnz+1PPAVX6dts
- bbAQoLNc
- 1mk3f1eM0znmMbeiClSrdNmFhBsroHNEzSRtlLD7Sl4wBV3oqEmiImMxjocOukZfk7BHrJP+pd22pgVN9dqmXvQ2BanJHKhWXmCFKsU+KyvDfAv6HQKWI6ZIDdbc+k//fSaFYPyApol6KesFbv12QxKA6m8e/9YRJncNe2UU4V3IC2g5aqGpq5DGPSAspVeztGrBMN/+nAqw9jlPuU6l3Ujcsl0SNS+WPtnAIu+IkOufsTJUDGG+WwCYIpJzRBY/CWWjYvqBCvDFCnLbbaLe/KVRdzg==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: uxf86jkskozf7q3q6tq8oztbqr4zityy
+X-HE-Tag: 1793908162-417215
+X-HE-Meta: U2FsdGVkX1/A2PGbWk6NhMkeFqahWfXW9c2lijRrPOTYexcfBrLYqck/VsXe382gJAuFz/sZKufHxcw80hjrNvVv2OliWMjFbO+hsxv4YSrRaCCj+BPTfd1DSa7DFiT48XoZ56sPRf6nLejvCNE8Gj8uWR6bpZAPB4CSioLOdRWhUGjnWgkcNWLvYt8Ub+RgWdVZigqr/d6XBXTB8XsYJkVxq7uJVnxUQc6R1iTHmxiJvzmv5bRuUhURstbXycDNxOAdTSPVFiFMiukg9czfLlYjk1GAIcCfRjBPCOZ1cNrUYuFqDXz7nCwk3O7+m5TqezC3K4yLpS+qFtZFeBsApav9NMO4lzHpM88prsixbGAToReWmJEjSd2zF0ZUWeIW2bbXAbYnOhhvNFDXLyK4W5xOntU8Nac1IlHjE8783w/b+BBD+Qmp1z9rmxMKjkWEIwfR6EPWBPbdg5xAF+cdLjHvhZ9J9qxKRrF5y1nSCTlz4S6Lhs1a4Y7bgcSeuWhVgHLkzQ+afMuaeabYRPdbtDMn936TRTgk+ZJiDypYdhOTP73VHvGTyt7do0u2KVChU9BEIZjiWh6dXDKT+YQvBuuvEveIVIzCSJ4sRZJ9ghTSgr0xcuhmaU4FK0KvmjCJmmlEDnH0i5IxYSKWbH3Eu4JskQpToPqYaW1glDerYbGNtjbfLU0IiC3sG/WgN2qIiUDN3VRI9RDxpZipd0FbZdksfzRgnRTDXcbptSdJyQK81r43Z7WWfCd2Z6gvhoEBHUAr21WLbogHOWUsNzFatrJeLYE+nhllKs7LjPqGGKZhDWoixrByQzImudxA5p8W0dlYTX16CnLNf9KvAkiOVfvPh/8pWTs0BU/h4Xz3hJHkLv6C1V2yAeHMmGwWYE5wVzS/4fBViuj9BquLGWM5UeJgOwpCqga8JbgOaOLFq+p2X8/XyOjsI9WkokseJe2qmmKRGlxBYazr3HVcfve
+ toXf96zP
+ P+fuxEUoG/z6G7HoteGgUASpJLa5JbtK5DAI7yXKX3kp00mPYWjaSpIcsG1KTqIud7P0dWlooI21coAl7bxlXcR2nZqWIV8r0cJZj0YqiLWwAP14Y2HyNSABEw2NnCloro6dLE9MgOaWGW3kaxlx2cBlTvNWdRHZgJ8AyvIYh62pip1TiVbupKkecKookrdba7vVXIQ90J84viRN0kOHKgcN0rRb2PhR9o5cG70ZDJ50SA7CdowN5i3drYiTaUDKHYXHWeKQEKzsCWkXl+MfwlOvcBqMY+bO2NvHNn9eGsiaUV60trloocUpMf1yRgtoWyRmzEYoeBsc492/FpQPqfCjDsGL9PanHASWAbpklzhwzrRShfkZ8uiQvzHIUC+C0bavvhBQ5hyUmOmSnJ0KuGpyCBcluFfjh/YksNxWT45geJzXYkf3oCQ91CqLAZpBzY+/VSAvn6hIRNuauehFdBbmEnNB4Qyr7EnL8ouOS/jJvjpyYG/sjlNMohqHtanrANHHuagz3kPnv2CtcuqC2cyhBEoTcmoupJm6JyVbOg8RuidQTds4X+jDu/wcgtG7sqZs0vmAGfUxae7S1OaW14lRK+9GcioG4rGzGc/xo1gyoLvjSamMQsdrz8quKChUxZSx03xxmKqXq7FDqft2VKQ6JrMrMqnITzg2h
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,25 +103,169 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/5/26 19:39, Sasha Levin wrote:
->> [ Upstream commit 04f13d241b8b146b23038bffd907cb8278391d07 ]
-> 
-> These carry only the is_migrate_isolate_page() hunk of 04f13d241b8b ("mm:
-> replace free hugepage folios after migration"), which has no Cc: stable or
-> Fixes: tag upstream.
-> 
-> I need an ack from an mm maintainer (David or Andrew) on the reduced backport
-> before queueing it for 5.10, 5.15, 6.1, 6.6 and 6.12.
-> 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] md: use-after-free on md_misc_wq in md_seq_show() during md_exit()
+- [High] md: use-after-free on mdstat_entry in md_new_event() during md_exi=
+t()
+--
 
-Looks alright, the other hunks are only relevant for migration support of
-hugetlb folios in alloc_contig_range(), which we didn't have in 5.10 IIUC.
+commit d5381c9dd419c5377924fd70f1baf55ca30c4844
+Author: Christian Brauner <brauner@kernel.org>
 
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+md: let procfs own the wait queue of /proc/mdstat
 
--- 
-Cheers,
+This commit replaces the module-owned md_event_waiters wait queue with
+proc_poll_notify() on the /proc/mdstat proc_dir_entry, removing the
+md_unloading flag and wait loop on module exit. It also moves the removal
+of /proc/mdstat in md_exit() to after destroy_workqueue(md_misc_wq) so
+that late md_new_event() calls do not dereference a removed proc entry.
 
-David
+> diff --git a/drivers/md/md.c b/drivers/md/md.c
+> index 64abf1743e41d..7560dcf0f5c87 100644
+> --- a/drivers/md/md.c
+> +++ b/drivers/md/md.c
+
+[ ... ]
+
+> @@ -11074,25 +11069,12 @@ void md_autostart_arrays(int part)
+>  static __exit void md_exit(void)
+>  {
+>  	struct mddev *mddev;
+> -	int delay =3D 1;
+> =20
+>  	unregister_blkdev(MD_MAJOR,"md");
+>  	unregister_blkdev(mdp_major, "mdp");
+>  	unregister_reboot_notifier(&md_notifier);
+>  	unregister_sysctl_table(raid_table_header);
+> =20
+> -	/* We cannot unload the modules while some process is
+> -	 * waiting for us in select() or poll() - wake them up
+> -	 */
+> -	md_unloading =3D 1;
+> -	while (waitqueue_active(&md_event_waiters)) {
+> -		/* not safe to leave yet */
+> -		wake_up(&md_event_waiters);
+> -		msleep(delay);
+> -		delay +=3D delay;
+> -	}
+> -	remove_proc_entry("mdstat", NULL);
+
+[Severity: High]
+If remove_proc_entry("mdstat", NULL) is moved after the all_mddevs
+teardown loop and destroy_workqueue(md_misc_wq), can a concurrent reader
+of /proc/mdstat trigger a use-after-free on md_misc_wq and leak the mddev?
+
+Previously, calling remove_proc_entry("mdstat", NULL) before iterating
+over all_mddevs waited in proc_entry_rundown() for all active seq_file
+readers in md_seq_show() to complete before mddev teardown started.
+Reading /proc/mdstat pins the proc_dir_entry rather than holding a module
+reference on md_mod.
+
+In drivers/md/md.c:md_seq_show(), a reader takes a reference on
+mddev->active and drops all_mddevs_lock while formatting output:
+
+drivers/md/md.c:md_seq_show() {
+	...
+	mddev =3D list_entry(v, struct mddev, all_mddevs);
+	if (!mddev_get(mddev))
+		return 0;
+
+	spin_unlock(&all_mddevs_lock);
+	...
+	spin_lock(&all_mddevs_lock);
+	mddev_put_locked(mddev);
+	return 0;
+}
+
+If md_exit() runs while md_seq_show() is between mddev_get() and
+mddev_put_locked() on an inactive array:
+
+1. md_exit() calls mddev_get(mddev) (incrementing mddev->active from 1 to
+   2), drops all_mddevs_lock, calls export_array(mddev) (which also
+   mutates mddev->disks, mddev->raid_disks, and mddev->major_version
+   without holding mddev->lock while md_seq_show() reads them), clears
+   mddev->ctime =3D 0 and mddev->hold_active =3D 0, and calls
+   mddev_put_locked(mddev).
+
+2. Because md_seq_show() still holds its reference,
+   atomic_dec_and_test(&mddev->active) in md_exit() drops mddev->active
+   from 2 to 1 and returns false, so __mddev_put() is not called and
+   mddev->del_work is not queued on md_misc_wq.
+
+3. md_exit() then calls destroy_workqueue(md_misc_wq) and blocks in
+   remove_proc_entry("mdstat", NULL) waiting for md_seq_show() to finish.
+
+4. When md_seq_show() finishes and calls mddev_put_locked(mddev),
+   mddev->active drops from 1 to 0 and __mddev_put() queues
+   mddev->del_work onto the already-destroyed md_misc_wq workqueue:
+
+drivers/md/md.c:__mddev_put() {
+	...
+	set_bit(MD_DELETED, &mddev->flags);
+	queue_work(md_misc_wq, &mddev->del_work);
+}
+
+> @@ -11112,6 +11094,11 @@ static __exit void md_exit(void)
+>  	spin_unlock(&all_mddevs_lock);
+> =20
+>  	destroy_workqueue(md_misc_wq);
+> +	/*
+> +	 * Only now can nothing reach md_new_event() anymore, which wakes the
+> +	 * pollers of /proc/mdstat through its entry.
+> +	 */
+> +	remove_proc_entry("mdstat", NULL);
+
+[Severity: High]
+Does destroy_workqueue(md_misc_wq) guarantee that an in-flight sysfs store
+on an inactive array has finished before remove_proc_entry("mdstat", NULL)
+frees mdstat_entry?
+
+In drivers/md/md.c:md_attr_store(), the caller holds a reference on
+mddev->active across entry->store() (where md_new_event() is called) and
+only drops it afterward:
+
+drivers/md/md.c:md_attr_store() {
+	...
+	spin_lock(&all_mddevs_lock);
+	if (!mddev_get(mddev)) {
+		spin_unlock(&all_mddevs_lock);
+		if (kn)
+			sysfs_unbreak_active_protection(kn);
+		return -EBUSY;
+	}
+	spin_unlock(&all_mddevs_lock);
+	rv =3D entry->store(mddev, page, length);
+
+	if (kn)
+		sysfs_unbreak_active_protection(kn);
+	mddev_put(mddev);
+	return rv;
+}
+
+If md_attr_store() acquires mddev->active before md_exit() reaches
+mddev_put_locked(mddev) (for example, while md_exit() drops
+all_mddevs_lock around export_array(mddev)), md_exit()'s call to
+mddev_put_locked(mddev) only decrements mddev->active from 2 to 1 and does
+not queue mddev->del_work onto md_misc_wq.
+
+Similarly, if the inactive array had bound rdevs, export_array() moves
+them to mddev->deleting via md_kick_rdev_from_array() without draining
+mddev->deleting or dropping rdev->kobj, which holds a parent reference on
+mddev->kobj; if rdev_attr_store() is in flight, kobject_put(&mddev->kobj)
+in mddev_delayed_delete() returns without waiting for rdev_attr_store() to
+finish.
+
+In either case, destroy_workqueue(md_misc_wq) returns while the sysfs
+store is still running, remove_proc_entry("mdstat", NULL) frees
+mdstat_entry, and the in-flight store can then call
+md_new_event()->proc_poll_notify(mdstat_entry) on the freed mdstat_entry
+(followed by md_attr_store() calling mddev_put(mddev) and queuing
+mddev->del_work onto the destroyed md_misc_wq).
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-work-procf=
+s-drivers-v2-0-245e54e87116@kernel.org?part=3D7
 
