@@ -1,69 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A716606A33C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C562606A333
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iJWzhgAC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=c2uN/Ng5
 Received: by kanga.kvack.org (Postfix)
-	id E781C6B05B6; Thu,  5 Nov 2026 06:12:03 -0500 (EST)
+	id C2ABE6B05B9; Thu,  5 Nov 2026 06:12:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4E9B6B05B8; Thu,  5 Nov 2026 06:12:03 -0500 (EST)
+	id BDC5F6B05BA; Thu,  5 Nov 2026 06:12:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D689E6B05B6; Thu,  5 Nov 2026 06:12:03 -0500 (EST)
+	id B18E86B05BB; Thu,  5 Nov 2026 06:12:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B12FE6B05B6
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:12:03 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 434931409B3
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:12:03 +0000 (UTC)
-X-FDA: 85400800926.12.65995EA
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B4016B05B9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:12:07 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8880AA098B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:12:06 +0000 (UTC)
+X-FDA: 85400801052.06.57AA8A5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 8F095C0009
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:12:01 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iJWzhgAC;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2111620008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:12:05 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c2uN/Ng5";
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793877121;
-	b=YiRAvk1auTfmHZucGj33BhhnEBGgcDHZtI8i4qPfdbAeXXUX4LKmnBkks8asRMFTK120vG
-	Mc2smV3qAtrZ2re6jTPO2nBQnndYMCZD7eqeyXz+yJin5xC7nHWHYT2ismEeWqbqiiAGDG
-	r5E+9Rc9nZ385ZZ1tSLhLyyOy7uR7ds=
+	t=1793877125;
+	b=N6xGgJtUDZIjTsE8MGMgme+Z0WZez7PbEfu6c1u6CVOC2T+05iEwLEA4825E4PhdBRNavA
+	BcSTKDkbeXpfiRBBaXlD/bY0obxQ84b6WVyi0sCvqiZEJmv6m8tO90YEOXLAYzaddsDJZA
+	E00b08LuUKadR5+2zAqBvE+WK1RBRkk=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iJWzhgAC;
-	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="c2uN/Ng5";
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793877121;
+	s=arc-20220608; t=1793877125;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XYfDIMn9RzkoOerCRsuzNDWKhLeLvHeL9jAZyhrpQ1o=;
-	b=RRMvfdQ94elUbyJr4/i7hdNrN/rm7OR1fTyBVXBUwLM4a4rcOospUNiPqzADfaZc2hOpkX
-	Am8viA7yf95V1CwFfJh5XjjdOUcXFee3um/9KqDMdUfqjOy7vUZhMIJp9QLTHetRKih9hm
-	uT5rnxFZhv26Jir4l0GQI9C4zkRH8xM=
+	bh=u4OwYANC6wqKDyPgO6eDc7wNQ6edH7rpigotQa7/OCk=;
+	b=uSOVIHWJsmrpRLp+K1n2uEEWbs7kSsWNZWPgB/4cZEB15YJdCUHKAw4IHmp++cPY3/5qLc
+	TLgvCW4ig6p82jdBRdbCG8YoVvD6aACsf1yyFLyPa/o31O1zcA29j0N47JPaF7WAWJvDpL
+	c2v7pgOMDJsXz51LZqI6J+RoNTy6U/c=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AEC4840431;
-	Thu,  5 Nov 2026 11:12:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12A91F00919;
-	Thu,  5 Nov 2026 11:11:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 7CE3B42E3F;
+	Thu,  5 Nov 2026 11:12:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FBF1F00A18;
+	Thu,  5 Nov 2026 11:12:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793877120;
-	bh=XYfDIMn9RzkoOerCRsuzNDWKhLeLvHeL9jAZyhrpQ1o=;
+	s=k20260515; t=1793877123;
+	bh=u4OwYANC6wqKDyPgO6eDc7wNQ6edH7rpigotQa7/OCk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iJWzhgACqO8Oh3sg03HVyCjyDRqS/0Kt880riTR9yqMxOzYkEHCrqPSIFOkv9f/hh
-	 msR1KBHibiTLGBB9lFfczXDQTQIg7siuiS/H9s7ZO4h1RCevWVb/AkbQLYdz339fZ+
-	 5TOS+Z2LCW+KisR0sqsGOL8BDOM3Y3KdTqb2nOSAznmJYsxiGkPcnbh2Bw5HBAWtYy
-	 XP5SqcwLl3zSMCE7Y1FY9GWV9QwsTuYBPfhFQhYSuwSQSIgYrdqLB5w5SgLmMyxeK/
-	 Mmjt52tv1l3Fg3yrRpcmpOMg9/ijrNbxtM7os5PorcJoiY10Lhz9Md+kpBwrSpxkYH
-	 aZg86Vo2dk+nA==
-Message-ID: <sashiko-outbox-198919@kernel.org>
+	b=c2uN/Ng5l1zRBU1f6aKBEfZtQoOnizQ0rrFd9kCVSSHUE4EkaG4YPu0DVrXFd/sYf
+	 WQRytoL/bcOM1tMwGTUhoxMGZjd7nrw9Op3dgk7LlqQMSjRvDJDTBSXagtU5aDYa4F
+	 iloIC0z1XqsAvA+wuzjNVVxTNcK1vJS2YM72nD09YWg7Y+1F+DhJmXRU8T8Gy/xhN6
+	 KiQgtSFJ6rsFJt5ladVLcE0huTLON36jq97Rw9RRIPx/9cUI0YxCWADXC+FyRY98yA
+	 EIszDEoo4+ImNGcD/JzSRE7yMABOCWcp+srnamdEnAnuamz3kghzyKLk86XsIYtlff
+	 pshldAJJUYr3g==
+Message-ID: <sashiko-outbox-198921@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 4/8] security: dma-buf: Add dma_buf_charge_task LSM
- hook
+Subject: Re: [PATCH v4 6/8] selinux: Restrict cross-cgroup dma-buf charging
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
  Weiner" <hannes@cmpxchg.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Jonathan
@@ -80,24 +79,24 @@ To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
  =?utf-8?b?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, "Jens Wiklander" <jenswi@kernel.org>, "Sumit
  Garg" <sumit.garg@kernel.org>
 Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, op-tee@lists.trustedfirmware.org, media-ci@linuxtv.org
-In-Reply-To: <20261104-v2_20230123_tjmercier_google_com-v4-4-1819a017000b@redhat.com>
+In-Reply-To: <20261104-v2_20230123_tjmercier_google_com-v4-6-1819a017000b@redhat.com>
 References: <20261104-v2_20230123_tjmercier_google_com-v4-0-1819a017000b@redhat.com>
- <20261104-v2_20230123_tjmercier_google_com-v4-4-1819a017000b@redhat.com>
+ <20261104-v2_20230123_tjmercier_google_com-v4-6-1819a017000b@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 11:11:58 +0000
-X-Stat-Signature: ybostjk1a7bh7zhet418yowthcz839ku
-X-Rspamd-Queue-Id: 8F095C0009
+Date: Thu, 05 Nov 2026 11:12:01 +0000
+X-Stat-Signature: j4zh8qus9r4oh4xbu1t9kcwrajdedebp
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2111620008
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793877121-785035
-X-HE-Meta: U2FsdGVkX18FNlZJAYevsTMQpMsIMLM1ucaNwFyHjD3G1GZ5oQHATLoSzK0na890fdL5EoZPVai3KqTb41yoPBAH4rJoQ8Ok1jR1FgaQw+i0LqOZWaO8zBz/ZXObVWcTQgZ5UJKsqu61Ks1AqtVq14Ew4A9LHcPw8LRQ8FysdrzOHXVrI28zVGYkFOclMRYuEaHLqlbPqHWExtQp7A2eeDjntfOOkIryvZtU0YnybwsopUHyX/bYoMahW7ElvmKv+8yf9UsFNFY4AGHenMVVdqhoiiQMaAo/2iKPEuezj+5oU4jAK7+SXYd+KTeyrAHT7SjoRnpWjifnWtN5Ckr354IbeP7falymD92NrpbZ15GGkZBdMHJEcxTUCghmwGAcwk7T/JzD4lVsYzOgYvQg8qhvczEh1Ye87wJqwK9Ko3WUiSf/jglLuxbr0u7UfctsaoX6l1d2d4p9n9+swuK1AhdmSvKhPHKrOyfpImy3ZXrCu41xQt7fc87sLoov3gv28SqGpUvC0EIvGMxYGveOPumyr3XXeaZeL0AoA8BSghvScJ/e90mWjEmQv0A/VyPfAq+JqJsODq2+prH5avoLRamtgp6run7ZG/hTw3TCS96dn6liqQ51ZSuh1CoAF27sxlW0KksBDhKSDeqWfWSE41aBZFfSXpSEnU79RLWffQeVKISldSfuYZvMuFWh8sqH6fzKL2zVLckpxiPJlSsOZ4gDjQnfQlWNp8I6qUxyTjcaeebpfRqACDrVMbxzW/x37yJ3/RziMSyOqTIqatT024JzExPsF9pJ5mh90XZC25tcrrf2TaVYvHmiWWegaNwThQtHj6zL0gVLOy89ISMZCtmE/rnZDl/M9p/bPhNINDpV6SMMHuzT8lApSf8O0EPw2nwTFw0tgJrGQe00xuZCZTc6ciAqeYpUJwnaodYiinAXcpeJnCSfmr2BXtSxUPr1Y/qATs7t3yczDr+j3/Y
- lUw4HlTx
- defsZK3C/ynKHckJedw/GRN5FppPe5a4MXdQry7AVYpDrlxFw6Y/tFTJKSFomc3ArZDCn6AFKojz1VYtBG3ZskxGyZBcYLMHJGFb4zZFX374zFz9537fLVzu+47W1sax/obXZNUZcCIviz2Jm1Wtbc0HVj4CTYAvYAj823TTQymTr5sSm+R268ZjKfja4j65QQLaNYTe/ktrTuJTF0zwqOhjv5iPnCPMNflyer0KFEcg5lxwMEMQo8njNPkafn5hDKHiFuR09NYmWPNTJsWQ5gx3Hvv5y1/dmc+GHnEsOvwlnZ0XcwrAF07dQFm4478ZL5MAMud/u5CNHkLdZNKjpSjqgmJtMUuHE1oN2/Azg5zR4MGa6MOuMihgRbeHAL0rO0OizMwiIF7KOUdvO60vNHG7eqdjdU9AeVxrVPgTbXc0dhHF+fplGh1tEmEI2sRDwQ5KUJfRJFcPdKARnyWYcNIm8naPjYdP6K+UDPeaud+2HaofS5uv1c5QKJiieE6d9AW4rAqV0NhkKK+qTY4U4Opal7q7gO2H/dlmg65XREh99hNZI7V8orMhKzffeiZGMvXMO0ohNTn+n67M9kdYuki4nKd1+Y9SvcEFlUC2IDk5f2FXjupJIJ4J4ZwVmDGPr2nb+yEuDW9hFGnkE4ftyQgh4FNQZE4g9WDgllh8cpFDKf0xl+BLg77D/IJBDsqkaC0sx40Q4HdWKhB2FVwvVhsiakW8VkZnnjvMfgTMkw7jd4oo=
+X-HE-Tag: 1793877125-996242
+X-HE-Meta: U2FsdGVkX1/iNKxJ4ki9U8clIQV5UWKc/t3DOw8AsTYRos4iGx6pdE+lV/ixASA9S/pw7fU2UViVaaAmpqUlFf4h3LAHSsJOUyel4PaY3LQh1uG+EWOcMdynG3b5cZw2YhuKvcv3XDON15A6aEmY6lQpiudyIRfDKB6FXAdTRrF3Jihdu9huHXis0F3MEuDLq2yEVKRXY3YLSvIPLSUvnj4Og0EBKeVb5rjmkTa+9gvmg9/02+5Zy2uv7L11e8rW8uWcIEFFaVsGPER7W2cCQh2ahvAatLoKHNIiksevmNOxfpPIggZd8/5e9ZoyoH4cTUnwcrD9p0y+5nvnYhwSdZK5RSVACTzx9CF5Cq6ut+BceFbolqvmMK6z28wSu92J5f33lzxt7YC90bse3kxU0UAH0DOJKMIClxTqj0zcriWoLleTqtctDeHqGCu+/Qrg31U5AOaqMRiAwjy4wq4hVHLaPPICbR7DxnGq5F5VfzY4yQhRlU7hzuN+jLAsWrAJq1Q3nk8xxq+2voxbTV4EiMLW/kIPHiSeAtBQd3QpUf1SiFg8IXyJwHOZy2RzozQqexOLp/sunkt8z4B7pKnEpR0gZncReXpoUneFBHFRQxezaM/+NEhXuw/TxPlXvIJjIFaBtYldDSjVT+vRNu1ANeLSujJGC/Ny1EZ0YrmEkAYg3FWXyZ89BRKCZVvJZ4WhP4zxnCs5UA+tgeI+YY8K6cMwiEHi3sVluwPxZPPmV+1I3xB/PK/5VxcpErQZCRz9VhTp9geuaMPuLbSJ6US2uGI8iDFf3OZKY7FiMNOSSO4X9grfo7Nhsj5K6Ef39s6cRHD/51hEM6uz58ApVQlDH6xNFeEfFjA4LK+vwTGr8t+omfszfWuPrIt8SaYJikqUG5pbpqVdPb8TPxvZF/SPjz5DaKO9gcJHd1N30X/jaxFNQOfvHGT2wLfhwzNfN+m00N8BDAA9mlyc1D5mxSQ
+ VLKywOaC
+ wJc507dX+ZBUcT7VUmqPTeYqZiA3am1rrpVI9ip3hm5nsWr9eYDL+IXijjlUFqDk48zTdm/+Av9NRf6Fsm4LiqVexTBCMMdGY50FE2exbBZPYWlEMlAp0K45UKWVSMEp6Od+YixE1FwiE+MxVqq5fJ+ESUD7OAakbPD648YFUw4GILbP85bLXNbc2QTwIh2Ma1LPGBSo9SBvG5CBUT3v1V44VurVCbyd8Iltz9a711CRH8bXDLGf7kfuhQSvjeGdHPE6v+NMrsOcoerIjArurvfGmB/Njfo4UzkOxfEzgETBvZv71FcPnXaftTmeVuaUW4gm7vWcLJ8zzZa1jolh4I0g+UbIpUfpFUn8MSztycTvNr3MycSbGEEU4cKHbBXYxq9GCHql9uPk8IxkyQFt3JZVDkPXxc8mKV0IxHTeJjgHWhSAl9zMRO+WoluRzcn2JzmoMlQ9yXMyPAevDRj6tnMixI4YrRxQb1RrLetpsV7X741Ky+LdUptA7yN/YMzoH1gF8wkiSZrXdsWROBbJjUB64dWdRr+TASYAoMDHbJ+rkLaDnhvp9xvweBEw8zst3WgmO9cT+pWJoU9YyjzwLFKVzfXV/8ic6UNQOAr/MJDhIZ5xJCwjB1JJTdj2YcWxOcJxRVv/rn55/6N5xSdefteVpdXa85MPOdIUPzwOldw0ZBzpeZxVO8PUjzI7skuwSK8OroXJrC8ldhcGFLvefraK+KdnIWfFIInsi9H1aD748Q6zA80vnx3LZXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,85 +108,75 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] mm: memcontrol: task cred and mm->owner mismatch in mem_cgroup_get=
-_from_fd()
+- [Medium] selinux: one-off dma_buf class instead of general cgroup access =
+control model
 --
 
-commit 8654d1fa67f56b32794f6b84163f6fcd4bd83d11
+commit 675e985fff50ea6716b8c00023a75c07ff345a6f
 Author: Albert Esteve <aesteve@redhat.com>
 
-security: dma-buf: Add dma_buf_charge_task LSM hook
+selinux: Restrict cross-cgroup dma-buf charging
 
-This commit introduces the security_dma_buf_charge_task() LSM hook and calls
-it in mem_cgroup_get_from_fd() when resolving a target cgroup from a pidfd.
+This commit implements the selinux_dma_buf_charge_task() hook and adds a
+new dma_buf object class with a charge_task permission in SELinux to
+restrict cross-cgroup dma-buf memory charging.
 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 3e717b5663c82..dd276e1230cc4 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 30776b0107f29..8f39d91eabc97 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -2204,6 +2204,12 @@ static int selinux_capable(const struct cred *cred=
+, struct user_namespace *ns,
+>  	return cred_has_capability(cred, cap, opts, ns =3D=3D &init_user_ns);
+>  }
+> =20
+> +static int selinux_dma_buf_charge_task(const struct cred *from, const st=
+ruct cred *to)
+> +{
+> +	return avc_has_perm(cred_sid(from), cred_sid(to),
+> +			    SECCLASS_DMA_BUF, DMA_BUF__CHARGE_TASK, NULL);
+> +}
+> +
+>  static int selinux_quotactl(int cmds, int type, int id, const struct sup=
+er_block *sb)
+>  {
+>  	const struct cred *cred =3D current_cred();
 
 [ ... ]
 
-> @@ -5698,6 +5701,14 @@ struct mem_cgroup *mem_cgroup_get_from_fd(int fd)
->  	if (IS_ERR(task))
->  		return ERR_CAST(task);
-> =20
-> +	tcred =3D get_task_cred(task);
-> +	ret =3D security_dma_buf_charge_task(current_cred(), tcred);
-> +	put_cred(tcred);
-> +	if (ret) {
-> +		put_task_struct(task);
-> +		return ERR_PTR(ret);
-> +	}
-> +
->  	mm =3D get_task_mm(task);
->  	put_task_struct(task);
->  	if (!mm)
+> diff --git a/security/selinux/include/classmap.h b/security/selinux/inclu=
+de/classmap.h
+> index 90cb61b164256..b4ebedc6e4240 100644
+> --- a/security/selinux/include/classmap.h
+> +++ b/security/selinux/include/classmap.h
+> @@ -181,6 +181,7 @@ const struct security_class_mapping secclass_map[] =
+=3D {
+>  	{ "user_namespace", { "create", NULL } },
+>  	{ "memfd_file",
+>  	  { COMMON_FILE_PERMS, "execute_no_trans", "entrypoint", NULL } },
+> +	{ "dma_buf", { "charge_task", NULL } },
 
-[Severity: High]
-As reported by Sashiko on v3 [1], in mem_cgroup_get_from_fd(),
-security_dma_buf_charge_task(current_cred(), tcred) checks the credentials =
-of
-task obtained via get_task_cred(task), while the charged mem_cgroup is then
-resolved indirectly via get_task_mm(task) and get_mem_cgroup_from_mm(mm):
+[Severity: Medium]
+As reported by Paul Moore on RFC [1], adding a one-off SELinux object class
+and permission for a specific subsystem's cgroup charging (previously
+dma_heap with charge_to, now dma_buf with charge_task in secclass_map[]
+and selinux_dma_buf_charge_task(), along with charge_cgroup in a later
+patch in this series) introduces a narrow, subsystem-specific policy class
+rather than a general cgroup and resource access control model for SELinux.
 
-mm/memcontrol.c:get_mem_cgroup_from_mm() {
-	rcu_read_lock();
-	do {
-		memcg =3D mem_cgroup_from_task(rcu_dereference(mm->owner));
-		if (unlikely(!memcg))
-			memcg =3D root_mem_cgroup;
-	} while (!css_tryget(&memcg->css));
-	rcu_read_unlock();
-	return memcg;
-}
+Although resolving the target memcg from charge_fd moved into generic
+memcontrol code in mem_cgroup_get_from_fd(), the SELinux hook in
+selinux_dma_buf_charge_task() and class definition in secclass_map[] still
+define a dma-buf-specific class instead of a broader cgroup access control
+abstraction.
 
-If task exits between get_task_mm(task) and get_mem_cgroup_from_mm(mm),
-exit_mm() clears task->mm and calls mm_update_next_owner(mm), which sees
-mm_users > 1 with no live task using mm and sets mm->owner to NULL:
+Should this permission check be designed around a general cgroup or resource
+SELinux object class rather than a one-off dma_buf class?
 
-kernel/exit.c:mm_update_next_owner() {
-	...
-	WRITE_ONCE(mm->owner, NULL);
-	...
-}
-
-In that case, get_mem_cgroup_from_mm(mm) falls back to returning
-root_mem_cgroup, where try_charge() skips accounting because
-mem_cgroup_is_root(memcg) is true. Could a confined process fork a
-short-lived helper child with matching credentials to pass
-security_dma_buf_charge_task() and race its exit to charge or transfer
-dma-buf allocations to root_mem_cgroup, escaping its cgroup memory limit?
-
-Similarly, if task shares an mm_struct with another task via clone(CLONE_VM)
-that has different credentials or cgroup membership, mm->owner may not be
-task. Could security_dma_buf_charge_task() validate task's credentials while
-get_mem_cgroup_from_mm(mm) charges the cgroup of a different mm->owner task?
-
-[1] https://lore.kernel.org/r/20261027-v2_20230123_tjmercier_google_com-v3-=
-3-78d2c4cb8647@redhat.com
+[1] https://lore.kernel.org/r/16093a0278a6d7d1a0a8bc055c228bed@paul-moore.c=
+om
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-v2_2023012=
-3_tjmercier_google_com-v4-0-1819a017000b@redhat.com?part=3D4
+3_tjmercier_google_com-v4-0-1819a017000b@redhat.com?part=3D6
 
