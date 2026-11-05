@@ -1,154 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EA3606D814
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D98606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R7WzdCq4
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fnE9PzFv
 Received: by kanga.kvack.org (Postfix)
-	id C1A576B05C9; Thu,  5 Nov 2026 16:35:37 -0500 (EST)
+	id 9AD6F6B05B0; Thu,  5 Nov 2026 16:37:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCA6E6B05CA; Thu,  5 Nov 2026 16:35:37 -0500 (EST)
+	id 936376B05B1; Thu,  5 Nov 2026 16:37:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABA1D6B05CB; Thu,  5 Nov 2026 16:35:37 -0500 (EST)
+	id 84C436B05B2; Thu,  5 Nov 2026 16:37:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 830A36B05C9
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:35:37 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 09874160C08
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:35:37 +0000 (UTC)
-X-FDA: 85402372314.12.998BFF0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 32C324000D
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:35:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R7WzdCq4;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D6856B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:37:38 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BAFB2120BC8
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:37:37 +0000 (UTC)
+X-FDA: 85402377354.28.D246506
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id DF6B72000C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:37:35 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fnE9PzFv;
+	spf=pass (imf31.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793914656;
+	b=uSfk4FuAcB6HUgF3iHD9vwbjHQnXudLzmgoLFbJyZs4DoiTe5yogMc87QW515MDHvDEv0B
+	Uvp5KDSfo8PhPCTzDE0K4C+EI6R3jUF0dLiesiDuFDQLnVL7/mn2ARNduhxnqqShddvWzF
+	rza1b5e47iHs+fIA0v0ZdK8yr8VOBg0=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fnE9PzFv;
+	spf=pass (imf31.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793914535;
+	s=arc-20220608; t=1793914656;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y5JuvNnNeOh9oIZYUQiD2mrwwH6GN2Nh0rxsj2kJwUo=;
-	b=Vy2xd61NyyFtUWYO5gh9zKXygVprQyKCFFScBcBW1lo/CgyB50tAcjndmTmvMVZ63O3XTc
-	w4gnTQWXXmai2PdN7Na9T0w4STAgikmphUNMHJWZWCd/vd8hzMPpexGH6EWSjDRGo+svGM
-	E1GqFDD/8G5VVim8mkRu31beh+HqmV8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793914535;
-	b=AX39Y2kQOtc8PKTiy2msD/K5kH5tdsLxZJHUET4JqwtDVKfnUem65EqtnVCuhDU/jZ3jbz
-	ArUdQW49fsKXn5xZeTaSOPoyHxVWcEJCKg72WWZ3m93DQYwFVC8mYM+jrRLHf5iFmcyRTm
-	1kUBDccjbaKM1CnJax7y1bKyIliGmDg=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R7WzdCq4;
-	spf=pass (imf27.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=WTXHhh5pRi82QXsGsIZV+AuAH7A6K1EJ0oWTh4/aW+U=;
+	b=5g6L+RB5/cWmm+CMy8EbYwUSlYZRvi5JwTFB8Ii8VKYab6y+VMK9vcoDuv29wUHS1yKTlP
+	yS64vuAgXkG0XalK6VSOP8GKKtOI5yOBSIxDwPvFZCXNsCMJfmhgasPS65KVvn1YR2Wnwi
+	/mgTk6BVhVpz/wS24anHyD7CT23js5I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 602C44379B;
-	Thu,  5 Nov 2026 21:35:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89E21F008A1;
-	Thu,  5 Nov 2026 21:35:16 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7158B601BF;
+	Thu,  5 Nov 2026 21:37:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AEF01F008A1;
+	Thu,  5 Nov 2026 21:37:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793914534;
-	bh=y5JuvNnNeOh9oIZYUQiD2mrwwH6GN2Nh0rxsj2kJwUo=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=R7WzdCq4szIDwvRrpAHhITrD0LMGL2Ayr/ooKvmMdyGasXQKDcBboripakmO01VxQ
-	 YV6gWg3WzYXJGaP9RBXms9q1o/TSZwVLLaVEZfqLw0xiVgCNumabu3VK3l05YjGAQ2
-	 46aaByM/B5ZaXGXlsVEhPqLim2HZXmKUrYtuwr1dNrHF5yB482YZP9OW2Jtvu422ao
-	 6Tt1yTUQ1HqeI4mlyuzXFRXgFr1sp/lZYoZRhG5yDHjZjw0XlC4zm1FOELcAb2B6lS
-	 fn9rEaS0KIp/p1dGwSwtWV76kVBTvwe1On76u9GWkFrWldtHLna5zrVfRdVYH5SYVu
-	 GuO5/2y1sU0NA==
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 05 Nov 2026 21:31:04 +0000
-Subject: [PATCH 13/13] security: convert VMA flag tests to use vma_flags_t
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-late-2026-vma-flags-v1-13-0d3cd15ab75f@kernel.org>
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
-In-Reply-To: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
- Gregory Price <gourry@gourry.net>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
- Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
- SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
- David Rientjes <rientjes@google.com>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, 
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- James Clark <james.clark@linaro.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
- John Johansen <john.johansen@canonical.com>, 
- Georgia Garcia <georgia.garcia@canonical.com>, 
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
- "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
- Roberto Sassu <roberto.sassu@huawei.com>, 
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- kvm@vger.kernel.org, damon@lists.linux.dev, 
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
- apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
- linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
- "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3517; i=ljs@kernel.org;
- h=from:subject:message-id; bh=mMkVa3Aus9iq3GDDk7CXNqU7B+d35DdB8d1OJciXJ/o=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLefF0x/4mS2NVe3nd/9p3ZfnzOaYGJvjo5O8+kJ13ud
- 1ZPNlAr7ChlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBE5Ccz/PeSFiq94GRiJT4r
- cM9y7UAJQ5np05894OaeezEhc0k9mwIjw9qZtm6zPV99FD/eVGBjuExiZXPoVpMpufynsmSe/N6
- dxwEA
-X-Developer-Key: i=ljs@kernel.org; a=openpgp;
- fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 32C324000D
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: rppq43h3ymrisnkmb3o113puqamae8rh
+	s=k20260515; t=1793914655;
+	bh=WTXHhh5pRi82QXsGsIZV+AuAH7A6K1EJ0oWTh4/aW+U=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc;
+	b=fnE9PzFvKPEqVaT6U0gwy5UbhH+YB3BFZ3YDcM3KD1A/YXemCHodsIsjW6OnR4fZV
+	 uSFROpUduvxagL1qMhv0EiuLGxwir2SefVD/maMJd/uuBPuuqbhCd5wR/OmfT4O43W
+	 wv8KOWaQOtUCholVL5lsQqP6QwNwYcfmiPoTX0r+SKGj/IYhLRzPgrC4T/nHlhccdN
+	 Ih1OTvy4C1p9CI4qBiwAnDZgKgt+O8ygVkfzdViBbs0asgF0d5hWCupdFt5paGADEx
+	 V9T4Oze+82m8QKtByuaMyBtVNqxU1VrHj4GGzqr6OnSG40sApZAHDFrdpxLASqHmnh
+	 g3yqpZ5aO/ZIA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 211E1391B19C;
+	Thu,  5 Nov 2026 21:37:35 +0000 (UTC)
+Subject: Re: [GIT PULL] MM hotfixes for 7.4-rc2
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20261104201408.90579e9988fe725faf3ad859@linux-foundation.org>
+References: <20261104201408.90579e9988fe725faf3ad859@linux-foundation.org>
+X-PR-Tracked-List-Id: <mm-commits.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20261104201408.90579e9988fe725faf3ad859@linux-foundation.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-11-04-20-02
+X-PR-Tracked-Commit-Id: 19eab4cf787c917bfb7615460933e4ae894af65b
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: afd661f6a26438c407bd9928ea16e80c14b121d9
+Message-Id: <179391465378.190890.6119698743174134267.pr-tracker-bot@kernel.org>
+Date: Thu, 05 Nov 2026 21:37:33 +0000
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, mm-commits@vger.kernel.org, David Hildenbrand <david@kernel.org>
+X-Stat-Signature: k19kqqo5r1qdumhc94pe4posdasmw167
 X-Rspam-User: 
-X-HE-Tag: 1793914535-950180
-X-HE-Meta: U2FsdGVkX1/JVLKSJPr29gPDYNtttnZNYj51omdF4tZHlWM2Rw7kZ+0ToztgiWm2/SMJ60F+wA0r42MEtue5tUe6tfcJQv7cMqAUsBCUcJQJN+qCSRShuyQ2nzK8mx2gtHJfe7YORNcbUwyDjKImhr9Qh0tqGDJkNC0FpnBSnopat0HhWyg6va4BusPXvOU6kMFaQu9XEACvaVYjh3iraJy8hHQ1ooTu3mqcfGRs7nnkvLVPrcfLMnvmMDt+/CQeL3PcKkVR57RbKN+8G8v2ZUspr/09XKv4qfW43jGXHNhrTtUQxBchrKk18eRBnoOf1wdwSPjuIR/iWdpyS+JJXzG3/EWlkw+Fms+Onr4xg2l0JGBR6uPTpXZ7STQL7aHqcDzIZC6BCbhonSer/IulqwYCv84zep7SGZ2K0wWoQK/MHUNUc6HGUDLUVEJKPkId/BkNazPLYjOP9yP7Eow+LSI9UiXubK55PHqiSOEUd7pMqS4T/8GbfHrGsN1sFR0YTq3OgwRoMtgrozrHc/9olykWrhEI+R6qIeBicCSN+PeilrZZFONYyrsEaQwgtvctN4r5HH+vQVFEF2XZb/5vPN9wgB7Lws3jD7OWuDwpAe33HapOZldvTZyI83YkPlIgSnMEcr8cispuzFlDkcFQ9YNQsTo1G3he1gkht1KDEW7FG9tBqmQvdvEtA0ZohSHucA4Qm37myUNtky9KWW2IdAfO/jFqWeO43viyRGTOfoAEhPYU0TXAMJMarJ8wm/mYs8TSjsv9ejhrKQL2q5hivnUHuOszPv7fyn6teW6Eblrj3d8UBfBuxYGRcE9Ng7OJo7qUBvEhcVZUEEh2gVgDgcpITGBhBeUd3MFpm4bfFtfxXnoPGu5QU0bbyr28IKc45AKouez1dZ2OoPJzz6PLL0sIw5tpKv57WKU0E4vGJ3pMrT9oVxofdOouD3xOdSg8lxDp0wX4e2KNxTvLvWL
- Rt2LYWKd
- E2LMutz9RtxDRFBD5m526dxH+lJfDzbdXxf00G6xa0nL6y6KLJqRtNnaLBL+SJXtrtd/q6GJZH0j+zcBRkB7PAgCF0s3yxVBfq15kAhOf0rs5ZsOSEFyZJaY1yjBkz4XfHpPAcI2paitdH7a0dJyMQ4Sqgyo6UxbIZ5e3zvsigvCmmBYtg1eZ0i4cqbvgtSEu7Pg0zsw4XQladKkWwEgDwWuH19nsix6U8jFwzJ8thuBFoTDXeg6mTAmYFYN2wlcly7Hs0hag0DzgWCoK1OT+tUzjWF/n/KadzXeCtXzfjuRUHFatPnRRu5et77QRCLWdrt1VhAc4RlPieOK+I2Pogir36XVUcYbArSXq16j7GUJJc2+26KVOGp9ezg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: DF6B72000C
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793914655-240818
+X-HE-Meta: U2FsdGVkX1+rjtTdEwy/PkrCnQhfqt6ed9zly8b7hKNayxf/wYgO2j26vKXETI1dorwM8uYChgcVLo/lSsSGHQEbwbNTPRrTDYnt3c4dRk25iTUgte+CTqo0udYEcSvWdNNYUYpmhCG/5YNzDYhpDuHSh9k1f6vAWuEBiO83sd2vEeI3VZahtR/SMG4ezGnD3P5ca1aore2XI7nVI3yMJ9V7j6bW5N5ISeAqepfAE3AgONeCn6ImUkF6Z0HAMWP2sZKpW8HNe0dXvLWsNUmP+ds0QwnLIlGQ4STyZCnwX8mJW7e6w5s/EshTbaI4VK5dXhYl9sE6ZDEIrsZ66khiL+8FouQlVkfnQLdUCOW/REU04hD419cEsjrvy2c0p6WyHZ563P2qRXa3+Xj4JYWJwzPmsXbV3B+gNG9J/Cn1duPHSb0pKONZJpC8dSuz9msQkrW8CU1yFTPotjV8aAXh6t2vfx8G0eOa/iyt0Sz5QeJetHsWpPKgnCZMT37heAyuhw/QnrQXGBN/C4NVO/hNIyZ4nkex7Keo9UYfFXoZbVS8ZqNJvhU2+/8GIL/rmxUXroPq0F90v/H8LYHQ2jKYssmqfT6r7vyjTnSjvwL3ezaJ9GKFf0kGFT+mnlFA2rvkJM0Pqyxai5WQrVCxtnzZfksRy5F+Tw+QzooSpMaZJy435+DWnMkyJC6E+OiePF6juALljWQ2Xb0gICxr78uU5MeLZGH4UZn9/l5WrUY0SQr0II/dgSMH9P4iENsombtmH3PEUswY2Ofj0QjHEVFu2rIsjZ8puts4xxEvu/5lqn9zJ6YnN4Q3f8vjCrcahG5hZqCi2jQhZCSuzPKDK3kZf0LCvt3kPaED5myyEsQ4sWPibdubU+jMORBzmFtbGtNLdeEaeL5CjlzYk7isAltsvrkYZpjcwIqiX08thskoH3xly0J4pUQrck+Tsx9Iv0UPq4RbzvJaYCUdJqFkugv
+ ddJ2SKvz
+ fsrryfawEib7QQMlWdYu7xSEEp/MAoMGLoc9o921WG63DkFMQbmxKC/xNSMTSrTKwo2Y02NhSv5wup7OPM2kS/5LA7pWlKDkCKsmKbQKl6mjpxrFQTR0kC9bj1+ZdGy2NIp08fcT83f8rgKLb7r1xt7m/L6VRWBApADWc9T3IQaHDGXNxSSoe/gMFccU1wstsrWCOc+6TNWm4OEsZpmGS6u4Fd1PDTj0QeHAamtsZuowzccZrp2lfCXfLlV8PWJv2EyBYbKJ9GiZ37CKm06NLw4N4Mjgq5vk/7H2KCpdY4yCrb6ou7JUajpMnwfSHaKQuugHO1OahOQIkvzVHa47+AFY8Ljy4I1/1N1xqN39tMGrpsXMdg0Yw2D6zrHs7UgHXQ3mYq7fCUoTA6tvEYWfkt6Uvv0juhVpXcpPONPFz90ozvoO8yfxhOffFIQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,103 +97,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
-mmap and mprotect LSM hooks of SELinux, AppArmor, IMA and IPE.
+The pull request you sent on Wed, 4 Nov 2026 20:14:08 -0800:
 
-No functional change intended.
+> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2026-11-04-20-02
 
-Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
----
- security/apparmor/lsm.c           |  2 +-
- security/integrity/ima/ima_main.c |  2 +-
- security/ipe/hooks.c              |  2 +-
- security/selinux/hooks.c          | 14 +++++++-------
- 4 files changed, 10 insertions(+), 10 deletions(-)
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/afd661f6a26438c407bd9928ea16e80c14b121d9
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index c73681d820a0..00099a32b3f6 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -590,7 +590,7 @@ static int apparmor_file_mprotect(struct vm_area_struct *vma,
- 				  unsigned long reqprot, unsigned long prot)
- {
- 	return common_mmap(OP_FMPROT, vma->vm_file, prot,
--			   !(vma->vm_flags & VM_SHARED) ? MAP_PRIVATE : 0);
-+			   !vma_test(vma, VMA_SHARED_BIT) ? MAP_PRIVATE : 0);
- }
- 
- #ifdef CONFIG_IO_URING
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index fed80da3ee09..92032afe4cd1 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -556,7 +556,7 @@ static int ima_file_mprotect(struct vm_area_struct *vma, unsigned long reqprot,
- 
- 	/* Is mprotect making an mmap'ed file executable? */
- 	if (!(ima_policy_flag & IMA_APPRAISE) || !vma->vm_file ||
--	    !(prot & PROT_EXEC) || (vma->vm_flags & VM_EXEC))
-+	    !(prot & PROT_EXEC) || vma_test(vma, VMA_EXEC_BIT))
- 		return 0;
- 
- 	security_current_getlsmprop_subj(&prop);
-diff --git a/security/ipe/hooks.c b/security/ipe/hooks.c
-index d878b52ceec8..247b07748b1d 100644
---- a/security/ipe/hooks.c
-+++ b/security/ipe/hooks.c
-@@ -112,7 +112,7 @@ int ipe_file_mprotect(struct vm_area_struct *vma,
- 	struct ipe_eval_ctx ctx = IPE_EVAL_CTX_INIT;
- 
- 	/* Already Executable */
--	if (vma->vm_flags & VM_EXEC)
-+	if (vma_test(vma, VMA_EXEC_BIT))
- 		return 0;
- 
- 	if (prot & PROT_EXEC) {
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 6168dd5f91c2..1bf78c2a6aba 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -4206,16 +4206,16 @@ static int selinux_mmap_backing_file(struct vm_area_struct *vma,
- {
- 	unsigned long prot = 0;
- 
--	/* translate vma->vm_flags perms into PROT perms */
--	if (vma->vm_flags & VM_READ)
-+	/* translate VMA flag perms into PROT perms */
-+	if (vma_test(vma, VMA_READ_BIT))
- 		prot |= PROT_READ;
--	if (vma->vm_flags & VM_WRITE)
-+	if (vma_test(vma, VMA_WRITE_BIT))
- 		prot |= PROT_WRITE;
--	if (vma->vm_flags & VM_EXEC)
-+	if (vma_test(vma, VMA_EXEC_BIT))
- 		prot |= PROT_EXEC;
- 
- 	return selinux_mmap_file_common(backing_file, prot,
--					vma->vm_flags & VM_SHARED,
-+					vma_test(vma, VMA_SHARED_BIT),
- 					true);
- }
- 
-@@ -4229,13 +4229,13 @@ static int selinux_file_mprotect(struct vm_area_struct *vma,
- 	u32 av;
- 	const struct file *file = vma->vm_file;
- 	bool backing_file;
--	bool shared = vma->vm_flags & VM_SHARED;
-+	bool shared = vma_test(vma, VMA_SHARED_BIT);
- 
- 	/* check if we need to trigger the "backing files are awful" mode */
- 	backing_file = file && (file->f_mode & FMODE_BACKING);
- 
- 	if (default_noexec &&
--	    (prot & PROT_EXEC) && !(vma->vm_flags & VM_EXEC)) {
-+	    (prot & PROT_EXEC) && !vma_test(vma, VMA_EXEC_BIT)) {
- 		/*
- 		 * We don't use the vma_is_initial_heap() helper as it has
- 		 * a history of problems and is currently broken on systems
+Thank you!
 
 -- 
-2.56.0
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
