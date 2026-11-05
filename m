@@ -1,146 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC7F606A326
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 02:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E6E606A32D
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 02:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=i0O0rP6L
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cmViAYd5
 Received: by kanga.kvack.org (Postfix)
-	id 1BF9B6B05B2; Wed,  4 Nov 2026 21:28:39 -0500 (EST)
+	id CAA426B05B0; Wed,  4 Nov 2026 21:39:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 171926B05B3; Wed,  4 Nov 2026 21:28:39 -0500 (EST)
+	id C5AEF6B05B1; Wed,  4 Nov 2026 21:39:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 088E06B05B4; Wed,  4 Nov 2026 21:28:39 -0500 (EST)
+	id B230A6B05B2; Wed,  4 Nov 2026 21:39:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CEABD6B05B2
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:28:38 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E888C1A08DE
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:28:36 +0000 (UTC)
-X-FDA: 85399481832.01.7C663FF
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
-	by imf17.hostedemail.com (Postfix) with ESMTP id F27BD40004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:28:34 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=i0O0rP6L;
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 86B8B6B05B0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:39:00 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 44E4A1408CC
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:38:59 +0000 (UTC)
+X-FDA: 85399507998.04.2FA3A85
+Received: from mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 30A0340002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:38:56 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cmViAYd5;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793845715;
+	s=arc-20220608; t=1793846337;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qgPn1TU8Qzde4rDA9hSBS0Cx8PK07vtzri2WT/d9DTk=;
-	b=1qc3Z/6S2VA3FfoWTQXMO6H6BcdM+yDElIUWxnqjFEWhToOO+zqNh9+K5lqscV4hGeGcgQ
-	Iwj5svvEyIo1NkmsGpFjtQIoluWPmYbd75n2lkna2qEMua1gA2+Tky7pzaj/9DRgwZtpNv
-	NBj5HNXP+cuC60ejydGZEFVSYAE1CwI=
+	bh=3l03Jx6ES0n3NXuG9mumrJ8xYBQNgZrk193Mf6WF3Q0=;
+	b=fihMQom0TdfrAMbBGELO5VRUV59TdJWUiENCNz1fLW2OUHLa93/mpxoJ8kbAEV4coyV94S
+	azi5Eu9Fj2bygko3g8o80SsEaWvR9F7GeAuRIRrpVNR8zN9qNRjS5qxnVtrM39ZlB1SCqP
+	s4oVvUqCDubcdAadyxyQdjKQupIVyNE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793845715;
-	b=3DIVOUuaxI639L1WNSyUMnmo51xwljE2NLtTOAVqyevqSz4iRfN9GL2Pg/8esMwgSBma7k
-	/dyODi9GT1fHIqqDKprlZNwg3FgNmWdcR1n34PLC8bAc1nXtKrjG6r9/9JZIv8k6Fxrmjz
-	627Fv/wPYtaaDasgV9h41q/l1Ol1SYY=
+	t=1793846337;
+	b=DxLUZkQXES2bZADYmgXSYItI9SkC9+WDudst1W7EYgcfrP9WG4izY6Les8hZk7L2+VKMKt
+	bXOJCvTRQlDLOyMzP8LVevw12Rr6KnDerLaVG/9Y8wrZzhllO4kB3d7WzNbQQrVqwRTGL7
+	cRr3ptNWHKhh3ua6tRPpNRSPo/q0z94=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=i0O0rP6L;
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.182 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-5eaabf28c06so1010017e0c.2
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 18:28:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1793845714; x=1794450514; darn=kvack.org;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=qgPn1TU8Qzde4rDA9hSBS0Cx8PK07vtzri2WT/d9DTk=;
-        b=i0O0rP6LwYpukiBwB/VF/RQKkvTrDG8Ax14dAtJFLR0Ao+PyuvnCjqDExhvTrjVAF8
-         2CYk8XMdVCRZa5iHwyjTY6NpJupVnMMrPImwIvFNADfFLoYoqACE5/Y0yORmmTX+fNI3
-         GVHzTSRHw1rBfPmdTJR6Ey3qlOEBHQskWJlm/NTxD5TPb7SiXUrC7nT1DLHdhTzJcQ2v
-         B6OoVYrDUY5RuNkW2piT3wNZbKRe+M08ooxZQLCHan4uSBiTp9tdQlXsuJU6tb7/jFpm
-         kYKm7AaGc33Y7VuAVjhny9yeSvKkEq1HaSUyIDtoyHBZMX6rwddJjEl74SEPqRb2s8az
-         5aag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793845714; x=1794450514;
-        h=message-id:date:references:in-reply-to:cc:to:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=qgPn1TU8Qzde4rDA9hSBS0Cx8PK07vtzri2WT/d9DTk=;
-        b=BJw8dwefQ9E6/eDUPBKIlWDPZdf7Vfc8y+oBv4QjmqKyXVWYCo+7tOkfitwUx/bV+F
-         5/fqyVRKtlzLIidz7mfydz5mt/UNLIQblytOMDtR+WbEpnh0Y5O1ZskO/3ZijcxSLJTF
-         gKjXtv5AsAmlAJZUQUCVuWPx5/gcPK7IVWD7DyW0oGlPkc38MnaJkS4A7f4V5FL29vAQ
-         VdHJjb7RdS7gLWCGsbhicVkKRBTR4HAD5Mk96otG7IEoIXTuxTYQDq3Rgt1obbxN/IG0
-         8U73/dZrMr8yuHO6YkM9CUPCWOxGMeV+13ZasFrM4ans76P45CYqtaz62LlDNTvn4Nl7
-         ZF+w==
-X-Forwarded-Encrypted: i=1; AKwUvBy5j8OyBmYu8LXTyvxbvi/JnuZ/MxqfIPozLq9oaDoVPBUEbuCv6XHY0uGFFQYWBRhSZZo+jsEZjw==@kvack.org
-X-Gm-Message-State: APuU4Z/uIYP/eZPslyKCwm0Mzl6kEiMWnfnG6Y+YNih/7lYWjmMZNh9P
-	0oLzfEhN8Xd+wh9PkzctZ/m8gtpD6aG57pk/BU/o8jDOn+bCXx1BMyoW3hmx02l21z4=
-X-Gm-Gg: AYBFou2hLRvjQpc2Pr2CZgbW4hI7v207RgcGVKXv57tG9c3VQifu2zAKdriI5EHCmqY
-	GgIVgGU5Ap8O/XufoUSlnlFf58gkKQ58Dhdo4pbVacEzn9kTvsmE7yDa1iFcEERBk9CZ3ZsVql7
-	J9R8517DCXRqd7+qBG4Q7YUpq3U7QpNdQN2+WaUadBKW/YRM+dpgVWC/PDt+d+WHzvMc//VvC82
-	iQzZXJyfZYTLeqmW27+KpRIJdGwEPfO6zS1UDp6W3KmKmh+iPkBgEfkoCmiP1N7l+poIG8d/xX/
-	HFQjLvL3Z5gLkVdqdNutpXSw1MYAieb6/CbQAZG1c+r8fEWV6FalaGbkZraQlVj9n72wAM6Cm+z
-	SL2F80jV+wXC0lg+ksAL6dgEGsYGZGJk+BOvirJX0GnsGOkgN96qsrEUM/9bFg7ErgNiuFwLfc4
-	Q5CfGPm5Da1exq0fE3Nu/qGKsb6lXXck5TwXvs1NJPsNzAlbDsucG4iM9PMtl4d8pnD2OUabdyv
-	bJX80WKcbV6mCnHPgac0HTht0eUUcvC5GGumWqFOJbrJ+uVbPEb4TvOaoa+uhKSOAfjtkK6569r
-	FKUshY/9Ht/dpLFzu/u1uWjyuSMTvTsMWw9rLTfDcKeHr5ETYKxGfugi8+hn/MfUu25xAu8oLDY
-	WJfZD5M2Q+rMukrUx4x45pTh4vYZ+vWu5k6EB9RJlnnwf
-X-Received: by 2002:a05:6122:1c8b:b0:5ea:c98d:768 with SMTP id 71dfb90a1353d-5ec6871c27bmr7768958e0c.6.1793845714044;
-        Wed, 04 Nov 2026 18:28:34 -0800 (PST)
-Received: from soleen.c.googlers.com (16.49.199.35.bc.googleusercontent.com. [35.199.49.16])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca8dbb17bsm3170924e0c.11.2026.11.04.18.28.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 18:28:33 -0800 (PST)
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cmViAYd5;
+	spf=pass (imf11.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=v45CDog2JRm1weUQFkof7B9qIVd7KYdFBRCOVPz0R4M=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793846334; v=1; x=1794451134;
+ b=cmViAYd5fxtad0Psx17cMQM6ajV0lFYY/g5Cq1u1OYYEh52bUkynG+0Ob+2EDMDgjLKz7iY2
+ OvHu6645ritYLx9Rnoq3XM46f23r9t831zBugtWnJK4z8YdOezBW5kL+otkGYWGof2qiaMX+8AG
+ xqmFe7BnoAa3p1rLgcIkbu3o=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id 2a7c54c2f09cafbe;
+	Thu, 05 Nov 2026 02:38:54 +0000
+X-Mizu-Trace-ID: 2a7c54c2f09cafbe
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH v2] memblock: don't allocate new reserve_mem regions on
- a KHO boot
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Cc: Mike Rapoport <rppt@kernel.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, 
- Changyuan Lyu <changyuanl@google.com>, Alexander Graf <graf@amazon.com>, 
- Tony Luck <tony.luck@intel.com>, 
- "Guilherme G. Piccoli" <gpiccoli@igalia.com>, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Pratyush Yadav <pratyush@kernel.org>, 
- Pasha Tatashin <pasha.tatashin@soleen.com>, kexec@lists.infradead.org
-In-Reply-To: <20261104204235.9066-1-azpijr@gmail.com>
-References: <20261104204235.9066-1-azpijr@gmail.com>
-Date: Wed, 04 Nov 2026 21:28:28 -0500
-Message-Id: <179384570854.2089669.6686464803021518602.b4-review@b4>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=550;
- i=pasha.tatashin@soleen.com; h=from:subject:message-id;
- bh=lzEbddKUD5GuDcxbx6NPlhQyO90bGHNaEl0mNdN224M=;
- b=owEBbQKS/ZANAwAKAbt3KEzbc3reAcsmYgBq6+nQbIa4wl9/OA85TgIcp6GUjRJ97N7P3RS65
- w/dH+wLy06JAjMEAAEKAB0WIQRBMaqT7LRvGvB/NmK7dyhM23N63gUCauvp0AAKCRC7dyhM23N6
- 3r6cD/4i+eGggrI9gSbQoKNbHehmvZ3DGILZLB/nlShN88F1/s3BSkAExC6VVWEMcC3UB2prAMe
- 1qmdaaZsjv2/Uvifq86Kv9CWUVWlkHnoyJWKozJ7iEKfgbYRb9O6MVVGqZvt6gcDBGLapVOQORL
- N2BYhTtYvIj9j6N8vOfDgQSWnqCaU3LdOzeeMplOf3k0nRefNd4DRINPicEkKSvuJt6kgxlx5nw
- RBg/eYb1k2ki3/fW0/aQqPsWnF8xdmBf+sIDShF8msbkLqOGRC/Pbpl1ys/JZIQ2EFGm7xERkEJ
- SsFlo0Ul3MF/AKLUNZLeVwQguvXQzHFjoGV6XcEyKnkbyU82ZjGVzXVjsUxUtUTGwxgp0bGAOwE
- rMur4xHR1Un1klVmeUB7SP3LdXyUmPfNaltPEaBRVTTjoYBqi8kOlVT+quLTa8jeil3KQNhYCa4
- u1tTYYUFrP1KBfugXgtvFDpHpS0VdGexNS7KJd2Taq4bRde18lsMUvluxoPd2CjsEdxffVnwR2F
- V+aLewuq2DY7Tq/2il3FeVW2Ki4X4JCYddH9lK9F/upkQWS/TMzWhm6p9tIzT4pRlUScGIq2JHi
- +FQwVCuO7RxpxBnAZMUlg/S83bjlOVBPGxkmYFqM4Rlux4v6iJzz1MnWMt2Zbzz7+naB2qeTeaU
- JOlIW4F4aF9s9Fg==
-X-Developer-Key: i=pasha.tatashin@soleen.com; a=openpgp;
- fpr=CAAAB722DD22A081F0D49F35633A6A993D43B569
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH] mm/hugetlb: do not invoke the OOM killer when optimizing
+ vmemmap
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261104133938.50974-1-zhangyili01@baidu.com>
+Date: Thu, 5 Nov 2026 10:38:37 +0800
+Cc: osalvador@suse.de,
+ akpm@linux-foundation.org,
+ David Hildenbrand <david@kernel.org>,
+ kas@kernel.org,
+ linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Mike Rapoport <rppt@kernel.org>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <6773CA2D-35EF-441D-A736-BBEA4A07B074@linux.dev>
+References: <20261104133938.50974-1-zhangyili01@baidu.com>
+To: Yili Zhang <zhangyili01@baidu.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F27BD40004
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 30A0340002
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: prgfw8diewwkof3igk64o5jhwsco9if9
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: a18x85xzgihx8u9n3oigixhem3iwe5zz
 X-Rspam-User: 
-X-HE-Tag: 1793845714-54341
-X-HE-Meta: U2FsdGVkX19UT/c90P6NTawuuYjdUkI5ZJpEM+rlIHlEmhtka5jLK9sKROb5t2tsIKGX9lnpeAsKKV0UtZLPIbbg4ChlPmfeLJ7IUFRCUe35kvfXwCEisKMmBHk+VGs5jsDPLx3bdGWduESONQU5I/0dAZDHNBfzKL33A1QeiDF5JcMe01IZQB+rT5Z0X0GFW561qan/Lz1HasnFnpmAbD2KlahqHvi0QqM8DDJ4DWUIgVJWEwJNkQoNrQm1ncLDDwmv42N1WiVkJIVe69N3K9eXewBoZ8zPon8b4rwll6hsOv1kzmK9NYBe7zIg6RtbLqcrBauxuONrXw2GKZdMlWFK4e4nK5toXrSArWC7H3eQNJkWoSZ9C7hDG4bSnOx2IPBfzHWzRZzHQApBi5wem9lYH22vxciqCWTK+KF1RQi7T9NK9p8jK0gD3QMAC2yRe9oGEAgY+n+JDFAxW1jqanxB1QCUxrg3inn5qkgvrXCnn6t1HIt3IuP7QdYr23NEvQ8L9/+3ODbtw0GX4pw1yRFwtJi7JZdODt1w49B0vGyk8dhpUUvyFBKzOX0/HqZVLbJdzeW2AmXWBPBWCLyVwUtBoBnaltT7aNZmAROFCy5taFjOdQBGz79dEKhP/olI/KcFPG+Zta+rXbyQBGKchEtSZ9g7T3SMVTsw1gbjU0ZH+SOuffwSwgZDNnO2X7d19BAMJihIxfF5DIOUvwVh3THd8RwHzrFehxMxXpFqb8eVAwJYHTVQPCU9QO3KH+rwDhLwQVpumUTGaOWeuZnF6l+i2UC9B5R7kUNskznA3OvFha3p854t3FRx5w8OTmE+PJLgUH4N0P8jgRfxYV991EHUlxjf+hQXDTGrP5As89tFRkkwsXBwF6tlgU3wqOoWbUJCsiGQbZ8aWiryCzHd+no/hSIx9MJ3iUgHV1spn/iyzwSZh3HpDG+efK+AV7H2o6ezgsZX1EldMlcGQxG
- ZU0PNWC8
- kkqRiv0oE8icYFblZf9lbE6S73PaBcMXjqcM9G5J7qf9KvTjqs0pwVCsg8SUJpgknd2yvtMmRvF+yOYOWdrb3NjUG11P3nYYXvaDVf3DB66IsVr9sSFNbLTz9ActbLnF/A7a7tSyJvUXqJT61pkO+BbGYIHSZn1Xzmmd/8VjY+oeYJbVPEf3LLJd0QmAavXm+ZvasPknzdb3cw0FUBdcVGuL2Sw5bU1+cLYuBDh0Yc7QTceDr4KfrjE84V3lMXdMyiUxKYCgVlmqgPBZGFQnIk4lZrS1UOVE4cJt1vEWctSmyk7/GIxBDAlZwT0edJn0dit6wMe8Tlqb4gSDRZbNqsRRbLpWu35gNLPyZgJhlTryG8dHiz3ZtVdQPN2ymTqg1WoEnnZsG8/+fjnZaKhXnAwTeGiY5RHl9nP4p
+X-HE-Tag: 1793846336-546159
+X-HE-Meta: U2FsdGVkX1+zSszsaLIfVhvk6xvSgDPNwek2LoMMHKowwwnUCGYPRayaPqdkg9Z1UYqKT7nW7g7+5myPB/NOIzf6wdK7atQvXXB93/K2Oh0x7nQej/ht+DfJsk3ATJFM2ly0fuR53HMftxYW+7L5bPuJ6DVnJOx883lKcGCkY70LRzDvF0VTiFU3HP0oR0BRchv0JYuDfCtaQAAz+HhyrtxWl2DFdDYGTnrKiObN9167Uqlm8HNR/0j738ujuFUVm1EzIrT23ezahVffbhn5HVpcnREk3Mmwh/I+NgYX72wxNUw1qsfKpyctU8pHl6NRaohDu0ycR2u1Vbo0cdvz1bxggZ+MbJzzsz+yEzF24CuDtkK3tBxp603ZZg+z/U4L9CfQhEiSKfXdVmpnh6fXT+NhbPE8ROnm4J5UDGOAqyHvujhP/ur+4MJhh8fSE0DXECZJKdo8J9MgsjwifTYApLbz5foqBr3ylhtaFsa1dkXF3xrm4kouyMI5rUUV3SQ2uNqqNRjwgQMYOJ7dHcFZWFcbfiLtYDYthmCq+SDKw6xfvPdIrxoyL4uP7bkDfD4DdP/j47pcgrJ2sshP4ktzyTIbkaTSh1pxsX6f4bAzIYD2BiSmX99JbKvdS32Uhllgz8c6AYODCP9MdBFwpfS7B3qid52uMSOqmEYRh72jfogZRf5vOWaxH33rmhG7lVpfugFBJUocCQafW6OqiTccsvPkmW9LxI+iTj1Dim17GOFRlCpS6tQyC/5NhwBZXIeeyXMlsT7dth7UWdgK1C3KKKc+/85tvcvowYghFVDTmEXgeCs4usu7XHPauAIwaLVgLufs11WUebClIO7qPey4A1zrJsgfxXcMD5FpphoRFxY/ioM5DkKcAK/zVM/7tnYk1qrp4zIp2tHIvFkjuzODbUylveYBIHu4dMzbESW+BHtmIYpFX1CYTgYLSoyfTX7CGxngoL3iBflXfTMfTSV
+ kYmTBv2L
+ 5XhBBlTzy9YKqgQr3tkyeSR8Tm7p6/YssBmhvyrEpZVvr+yIm2c3UA5G+tcSAfho4aj0/NvTXDbVR2P/FGkhhAMaN9OmrW09ZFLioSW4B1CF3GxjfoUndIDrKplXHGlsmO3y25bluRVS/Kaw3SYJS50TgqAhZS9ygVYduGyYMhe6QSe9/oVXfBa8V5OY/caG23NhAkCbiRNLm9HXmkXXo9cMezwscyDk4JUO5iPwaJ5t7ULFnqR2CJCp7blQ5nf1rt89ihhKLK52+bez9zaHNLRVFyC1MUhsulbDqe8JjLMYUgh+fj9IEd36/2t/fAe7V8WRHBDS9zV4XVtU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,20 +100,132 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 04 Nov 2026 21:42:17 +0100, Jose A. Perez de Azpillaga <azpijr@gmail.com> wrote:
-> On a KHO boot, a reserve_mem region that can't be revived is allocated
-> from KHO_NOPRSRV memory, which includes the bootmem the next kernel
-> boots out of. With CONFIG_KEXEC_HANDOVER_DEBUG, preserving the region
-> then fails:
-> 
->   WARNING: kernel/liveupdate/kexec_handover.c:1245 at kho_preserve_pages+0x168/0x180
->   failed to prepare memblock FDT for KHO: -22
-> 
-> [...]
 
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
--- 
-Pasha
+> On Nov 4, 2026, at 21:39, Yili Zhang <zhangyili01@baidu.com> wrote:
+>=20
+> Boot-time hugepage allocation is designed to drain all free memory and
+> let the vmemmap optimization reclaim vmemmap pages, so that more
+> hugepages can be allocated afterwards:
+> hugetlb_pages_alloc_boot_node() flushes the folios accumulated so far
+> once si_mem_available() drops to zero, and hugetlb_pages_alloc_boot()
+> keeps retrying as long as progress is being made.  The allocation is
+> parallelized with padata and runs on many threads at once.
+>=20
+> The page that will back the new head struct page of a folio being
+> optimized is allocated with a bare GFP_KERNEL mask in
+> __hugetlb_vmemmap_optimize_folio():
+>=20
+> vmemmap_head =3D alloc_pages_node(nid, GFP_KERNEL, 0);
+>=20
+> Once the workers have consumed all free memory, this allocation enters
+> the OOM path.  During boot-time allocation, at the do_one_initcall()
+> stage, there are no user processes yet, so out_of_memory() finds
+> nothing to kill and panics:
+>=20
+>  Out of memory and no killable processes...
+>  Kernel panic - not syncing: System is deadlocked on memory
+>  CPU: 74 UID: 0 PID: 1 Comm: swapper/0
+>  Call Trace:
+>    vpanic+0x32f/0x360
+>    panic+0x57/0x60
+>    out_of_memory+0x581/0x590
+>    __alloc_pages_slowpath.constprop.115+0x97d/0xed0
+>    __alloc_frozen_pages_noprof+0x303/0x330
+>    __alloc_pages_noprof+0xa/0x20
+>    __hugetlb_vmemmap_optimize_folio+0xa3/0x210
+>    __hugetlb_vmemmap_optimize_folios+0x190/0x230
+>    prep_and_add_allocated_folios+0x16/0x90
+>    hugetlb_pages_alloc_boot_node+0x152/0x180
+>    padata_mt_helper+0x5b/0xb0
+>    padata_do_multithreaded+0x294/0x3a0
+>    hugetlb_hstate_alloc_pages+0x2e1/0x3b0
+>    hugetlb_init+0x3b5/0x640
+>    do_one_initcall+0x49/0x200
+>=20
+> Optimizing the vmemmap is best-effort by design: on allocation =
+failure,
+> __hugetlb_vmemmap_optimize_folios() frees the vmemmap pages reclaimed
+> from the folios it has processed so far and retries once, and folios
+> that still cannot be optimized are put into the pool unoptimized by
+> prep_and_add_allocated_folios().  The worst outcome of a failure is a
+> higher vmemmap overhead and, as a consequence, fewer hugepages being
+> allocated (along with a warning) - waking up the OOM killer is never
+> the right thing to do here.  Note that the same code also runs for
+> runtime hugepage allocations, where an OOM invocation may kill an
+> unrelated process instead of failing the optimization gracefully.
+>=20
+> The head page is a vmemmap page, and every other vmemmap page
+> allocation involved is prepared to fail gracefully:
+> vmemmap_alloc_block() - which vmemmap_shared_tail_page() also uses
+> to allocate the shared tail vmemmap pages - uses
+> GFP_KERNEL|__GFP_RETRY_MAYFAIL|__GFP_NOWARN, and
+> alloc_vmemmap_page_list() uses GFP_KERNEL|__GFP_RETRY_MAYFAIL.
+>=20
+> Align it with the other vmemmap page allocations by using the same =
+mask
+> that vmemmap_alloc_block() uses for vmemmap pages, so that a failure
+> returns -ENOMEM to the caller instead of going through the OOM path.
+>=20
+> This was observed on a 384-CPU machine with ~1.5TiB of RAM booting
+> with a hugepages=3D reservation close to the total memory size and
+> CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON=3Dy, where the boot
+> panicked intermittently, depending on how the parallel allocation
+> workers interleaved.
+
+A really detailed analysis, but also lengthy (I think it's generated =
+from
+AI, It really should be trimmed before sending because the issue is very
+obvious and easy to understand).
+
+>=20
+> Fixes: c0b495b91a47b ("mm/hugetlb: refactor code around vmemmap_walk")
+> Signed-off-by: Yili Zhang <zhangyili01@baidu.com>
+> ---
+> mm/hugetlb_vmemmap.c | 3 ++-
+> 1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+> index 0057fa2a16a8..3a759b930ed9 100644
+> --- a/mm/hugetlb_vmemmap.c
+> +++ b/mm/hugetlb_vmemmap.c
+> @@ -499,6 +499,7 @@ static int __hugetlb_vmemmap_optimize_folio(const =
+struct hstate *h,
+> {
+> 	unsigned long vmemmap_start, vmemmap_end;
+> 	struct page *vmemmap_head, *vmemmap_tail;
+> +	gfp_t gfp_mask =3D GFP_KERNEL | __GFP_NOWARN | =
+__GFP_RETRY_MAYFAIL;
+
+Thanks for fixing, but I realized that I've already fix it here [1], and =
+I didn't
+realize it's a real production issue. If you don't mind, I could add =
+your Reported-by,
+and make it a very small fix patch so that it can be backported more =
+easily.
+
+[1] =
+https://lore.kernel.org/all/20261104023510.260766-5-songmuchun@bytedance.c=
+om/
+
+Thanks,
+Muchun
+
+> 	int nid, ret =3D 0;
+>=20
+> 	VM_WARN_ON_ONCE_FOLIO(!folio_test_hugetlb(folio), folio);
+> @@ -525,7 +526,7 @@ static int __hugetlb_vmemmap_optimize_folio(const =
+struct hstate *h,
+> */
+> 	folio_set_hugetlb_vmemmap_optimized(folio);
+>=20
+> -	vmemmap_head =3D alloc_pages_node(nid, GFP_KERNEL, 0);
+> +	vmemmap_head =3D alloc_pages_node(nid, gfp_mask, 0);
+> 	if (!vmemmap_head) {
+> 		ret =3D -ENOMEM;
+> 		goto out;
+> --=20
+> 2.27.0
+>=20
 
 
