@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFFC606A32C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 06:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74204606A330
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 06:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=URJ69ifo
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QaWf9wb7
 Received: by kanga.kvack.org (Postfix)
-	id E99836B05B2; Thu,  5 Nov 2026 01:59:30 -0500 (EST)
+	id 942686B05B3; Thu,  5 Nov 2026 01:59:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E71E36B05B3; Thu,  5 Nov 2026 01:59:30 -0500 (EST)
+	id 9191E6B05B4; Thu,  5 Nov 2026 01:59:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D88656B05B4; Thu,  5 Nov 2026 01:59:30 -0500 (EST)
+	id 859166B05B5; Thu,  5 Nov 2026 01:59:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BB5F76B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 01:59:30 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C5BAA1C4304
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:59:28 +0000 (UTC)
-X-FDA: 85400164416.19.EBE5006
-Received: from mta1.migadu.com (out-206.mta1.migadu.com [95.215.58.206])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BF49620005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:59:26 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 606BA6B05B3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 01:59:42 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DF39C1A0990
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:59:41 +0000 (UTC)
+X-FDA: 85400164962.22.466D6A5
+Received: from mta0.migadu.com (out-167.mta0.migadu.com [91.218.175.167])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0A1F420006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:59:39 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=URJ69ifo;
-	spf=pass (imf03.hostedemail.com: domain of mengmeng.zhao@linux.dev designates 95.215.58.206 as permitted sender) smtp.mailfrom=mengmeng.zhao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793861967;
-	b=5GK21D4nIDOGW/uvvow1jWB/NEasZ6hgRypWXfwSSGv3KTFd1u9edKanUHncBOnMco4tej
-	IhTF6pG3F+Khe7IByORZ4RXuYxv0m7CKefrJPc39YUJbqJLhx4rtnkhBOLWWdSnphhXeUq
-	bNEjdqG+hsZE79Pq5M0GMwiTaAumylU=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=URJ69ifo;
-	spf=pass (imf03.hostedemail.com: domain of mengmeng.zhao@linux.dev designates 95.215.58.206 as permitted sender) smtp.mailfrom=mengmeng.zhao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QaWf9wb7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of mengmeng.zhao@linux.dev designates 91.218.175.167 as permitted sender) smtp.mailfrom=mengmeng.zhao@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793861967;
+	s=arc-20220608; t=1793861980;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nIzPxp67nycIcgpn1aR+9cX2c2A9Fk/9SrE7eGQSDVI=;
-	b=N6ECCXLZ3XOrnbAvPtLLnynsTTVfgzslG8mMELhxU+qvayzW16KBg1RMe0UTwi+Dl0Xjj8
-	1DXCQ/SFupZj9Lm1PcqxHGlUCofxnJ5vL2nUVgnvT02l3eL4QNVuz5+1sQMJldfmrfJcCu
-	BtofZqzGw5kjd+/phU1ZXJIexEt0w98=
+	bh=V6jXYvV9dka+3jN4FlL/QeRxDjLIKwLo+qsWJ9KiY6Q=;
+	b=unyoQRLiivg6MtlxecAMUgVAkItF97oFpodF2GnbdTHoxgZgFABqgpFsLK88ce4vjNtcUQ
+	nLm84l5iW+3+wq0c9iJ3YyH5bbqwrA9yTwHLnO+Y4Ep0dmKLth44G0+K0+CskAwdQYEeTB
+	1yCokbggcWOphldtZJ4znQo8YLckzV0=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793861980;
+	b=3BiShC1OVdQ6NX+xxvmYyyqyDto+bgjOSDbYGOOj8eAsmY89kQA7Z4vJJUpFeh9JF7sYA7
+	tLcrPAh/MW+lRhZ7vi5mgYOUMWND7r7Bz4J6dkEP7Intssu5ny0y9ipkP+5Qb64cFvMvvT
+	5CxqUHQcpNoMvXHdtJtCJHhVqlr/xH0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QaWf9wb7;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf03.hostedemail.com: domain of mengmeng.zhao@linux.dev designates 91.218.175.167 as permitted sender) smtp.mailfrom=mengmeng.zhao@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=xVc3emtqQK3gdjiaDH2/ozjRn5r+zA/0E88efrFuawg=;
+DKIM-Signature: a=rsa-sha256; bh=BRMlNTa2IFz117u+LpOsOZxcnQTogf6s+dFMFzcP0xM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793861965; v=1; x=1794466765;
- b=URJ69ifo97ROruZ6pmwjXf0aKmSur7mh2uvlDandRG7mz4fCmrISF3oG8QPrDgE6EtbpnoLX
- DDOkrLFAjlHrjyterio5ErE9cY4DTjD2rrmzaqCHaS/HCXbs+pcE5kLsyhLVR0lxf7DWy2zDiJH
- ybQo4+FLjg9nVwpWWXkCsyjQ=
+ t=1793861978; v=1; x=1794466778;
+ b=QaWf9wb7wFivbY4mUbRehlCWWKN3tB0cW4ajPirSzhAocmjyx9TuV37CtcFab/80djMAdLFe
+ jRYRmmPTKw1NfQidftHLvJl0yYWgWkAWXm2oWhCr421bGdGGf0wTAUxeGgQ/rZbnokP26pzIvY7
+ ddWpsDXwlLWg655twgRVJAOQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 7015cdc676c618de;
-	Thu, 05 Nov 2026 06:59:25 +0000
-X-Mizu-Trace-ID: 7015cdc676c618de
+Received: by smtp.migadu.com with ESMTPS id 724bcf4c5e474fe1;
+	Thu, 05 Nov 2026 06:59:38 +0000
+X-Mizu-Trace-ID: 724bcf4c5e474fe1
 X-Migadu-Flow: FLOW_OUT
 From: Mengmeng Zhao <mengmeng.zhao@linux.dev>
 To: Jens Axboe <axboe@kernel.dk>,
@@ -84,27 +84,27 @@ Cc: linux-block@vger.kernel.org,
 	linux-xfs@vger.kernel.org,
 	linux-mm@kvack.org,
 	Li Wang <liwang@kylinos.cn>
-Subject: [RFC 1/6] block: refuse a dma-buf bio that carries a crypto context
-Date: Thu,  5 Nov 2026 14:58:42 +0800
-Message-ID: <20261105065847.196540-2-mengmeng.zhao@linux.dev>
+Subject: [RFC 2/6] mm/filemap: refuse dmabuf iterators in the generic read/write copy paths
+Date: Thu,  5 Nov 2026 14:58:43 +0800
+Message-ID: <20261105065847.196540-3-mengmeng.zhao@linux.dev>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261105065847.196540-1-mengmeng.zhao@linux.dev>
 References: <20261105065847.196540-1-mengmeng.zhao@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: grcyfyy5nbr3pwe4h9iyhiicpdpmn4oo
+X-Stat-Signature: auu6n6ntyh6tdjruaczd3ns9srai4xhh
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: BF49620005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793861966-617050
-X-HE-Meta: U2FsdGVkX19CPubn+69FY2rfZQYW74cMaCOdFjQNo2eWM4Yf26onAns0BpUhQMy23rtksiTxyDJggiTQzlowKFERSel5PW+zUUHsQ42Gz2wA1FxCBpeYB1MFQGkYUUtfkClPT0Oe6Mz0kykuEY30c3Kdati/l0wRrQpSPqGTzpo+3TLi5y4F4DM82DUI35BdnEPIwy0A8v5EtxqSq1/Dgxcz/vtRxdi5PwfQLZkOBy2CWbBdJZU/gb1m9lsDbS+azBJve/t1GTHt+pUAWomlM+QQlgMHvOabmqkP+E07prL8u2pYELWjSH2fs18US+se191+s6QQSOZqvK3YetkiHc2202aE5zHjIRzNpGXXftdSWmqIpZGPD5xx8C7v89NVuqqjvFlVdhl+hBz34XXUuQp9xRMkLx1Rj6qU+5cLG5P1/DTOn26WP+IM1MoiMi8/57NcMqvjd0SdHHXszuLsx6hytdwiQe2oUzZLugrLg0NT8CkYetSrQQ7sc/lsAtUPpL38BwKKfK4uY1NO7VCZkwO0N+UguvNsJtHGyibU5/iu5bVBLII0go4rqcexu1sXlMD2UcaUVHHPxyvLn9F5FHS8ML7zDh/HEiXYKHDL6lCx+CK7SwBRTn1LxVPq9O6kIE5joUsw/bhuPPRtVUovb1hAdS0R6xp7Yq4hg4N5m8Z47HnB8yz+spg4ACEXRcbXSFYE/yjHRzRGNPtzBywtyRGMJ7lY55pFcNLqkiLYqVA8ozTZ4DYUTftFiiEnQ3U6m4u2RX2gOxRO2Fwpsfp49eLy8uVBk1CIGdp37SBvxlsjoZhDZ8tfnT8hBYYRqgTw6fcjCQvqg/4fVURfaSwRkebd64U5knECaqfMzvwysWe6KIt3ZBAV8UfMQ2P/YMxFhP3zrPvJ5vnDs1vUwR2Wd+DoghYJjSmn1RWtQid5i4KyEUwCXCXz8TSyeT4vgBwFEezB9whJyqLtB4IXYud
- RQ3MozpR
- mOC3N2sjtdTqnodo3WGLv/kyzKcD61XMnM2E1+cCxEfGX5LWW06vZS2ccuIaHLj1/35VRw9eBBcJOMugNZfenKCpOThdS58jxD8Am67jZ25lVswrj1i1isfdrUGjjgfe/fA8lezuYxsF+s9AxRPUpxILa2qwb8eSsAzfk7FJ63Z1kfTVmXJ9sppzGkKyOmoh8vZmKcLvIls3oRmspzdxdaxhHBpw27HJwgFH/WQozLlaFKuGeXOqWuYXh5z0fWDM+bdFAOIlknoVqif5Pyb3ukj6g5adkKKJ3m4AgWUaX7aqQaLY=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0A1F420006
+X-HE-Tag: 1793861979-123098
+X-HE-Meta: U2FsdGVkX1+pc+WmeCiFekBFhDhoxBEce89yNw/kwzSYiCKeYJOh1lhHeg+QxMFC5XXMdDe9gPfLdQvWLDaCmPM58fqrUiqU3rxbz20XOWpvdkg+1z2XstmmLz7LA4OMnV1NG9NAzrrFUBWDhASWbGU7/5ujVWD4eKjPRp9qABfHH6q1u1Qlp16PcgqiczspoITXJtG/pxqwnuAZ6q118wImP8r0AURxlh95Bo/YEdmEKX/g0xTl5HagKj8f73bhSmZ5KCZhmiUT/Tp7CrFaYTrLUyWH1MgNC/9jnZ6fQmOSu1/bnZOh4zmeJf6WB7ApkVbL3dn/fsYekJsTJ7IzOqgXQHWMzadAs9sSGBsGGF5ChkEIRG8i2+BFFT/xZPZyqVcjvKGUErilPlKIcK/2fz5U8+vmO7FunIEh0O04iBXV/SrE/F82JBvOIZZqiEdT91jw4vExLe0hB7FN5g3EQ50yd9XXquQkNWXKGLZXdxqkTcgBS675KUzFMi83Cg9Csfs4n7khUvrCIgcakafBB/PzXHTWdwLHvcAFnNprZjNyEWO1RKu8ISrEm6aNLydHgEB+7bie7okKtVpj8y5l+EJJL2yU8x7oUKnEJWspqlXRQCOim4BBKz+M8LYQ+b1YaqchUwOnhpivrpxL8WihOhXrt5zdmNfPa3or6+BJc1atk3kZ19EzWznz9qTQ5EeiLiT7X5LJ4jG+c3s8W/F7zPfBY92omUtDB7aPk3SHlUqAegQc8CYrNe57UDsM1AdqliOql7C7mQgGhNpLcYJReNhsi6DijaBqOfrK6R0h+MHTfgbXFgSCfVdx3Jf453oRggnvxu/H0mnl197ruXoSJ2ePWXCDXvm4P9oN4smzyqCwc+1oNYzLHCntbY+weT1qbSbSCbzY3VqH9Q+A2Oz8qDVYTh94DhbCtjB+Jzd0DWJIr12g+nJMlEVpRx8jk7axnThx8XMRoabexx25bYs
+ aYj0Tekg
+ plr8bqedUfkYyaUnevEaJGm48ZqyWfRGJDIXuYL3w4iWIMcI7Ltk6Dz1bps8iJ0eIkzTq+WLBBXTPHIH15lxiFqAFDvV5HhxwzaP28xIty0vP/mf0dEJ1SjVgHjWV89F7R/HnJ/4ozianPGPbrm0AMrsczyjzaPLpoitUoA1QMuxxgcIqewn7vkypuz2s/q0tiwuqmCu3f3zvlswDSJdwbf5Kqs7v+68Ay9RUsbaMk+aat3d+G3yUS6zPXEHGrEWoAg7fQhnUOas80rd82cCuS8ZTpxEftFreUIKElvSlvkmal+lnT3NGMyxYFQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,32 +115,66 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Mengmeng Zhao <zhaomengmeng@kylinos.cn>
 
-A dma-buf bio has no pages for the crypto layer to walk: the
-software fallback would read the map as bio_vecs.  Refuse it in
-blk_mq_submit_bio() before it can reach that path.
+The generic copy helpers cannot touch device memory.  Refuse a
+dmabuf iterator in generic_perform_write() and the filemap_read()
+fallback while keeping any direct-I/O progress, and report a busy
+folio from generic_file_direct_write() as -EAGAIN instead of asking
+for the buffered fallback such an iterator cannot take.
 
 Signed-off-by: Mengmeng Zhao <zhaomengmeng@kylinos.cn>
 Signed-off-by: Li Wang <liwang@kylinos.cn>
 ---
- block/blk-mq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/filemap.c | 22 +++++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index be5671966787..f0d978b1724f 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -3138,8 +3138,10 @@ void blk_mq_submit_bio(struct bio *bio)
- 		goto queue_exit;
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 6afec636881f..ab8a5391a699 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3013,6 +3013,14 @@ generic_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 			return retval;
  	}
  
-+	/* a dma-buf bio has no pages for integrity work or contents crypto */
- 	if (unlikely(op_is_dmabuf(bio->bi_opf) &&
--		bdev_has_integrity_csum(bio->bi_bdev))) {
-+	    (bdev_has_integrity_csum(bio->bi_bdev) ||
-+	     bio_has_crypt_ctx(bio)))) {
- 		bio_endio_status(bio, BLK_STS_NOTSUPP);
- 		goto queue_exit;
++	/*
++	 * Buffered I/O read is not supported for dmabuf; a short direct
++	 * read before this point stands on its own, as in
++	 * direct_write_fallback().
++	 */
++	if (iov_iter_is_dmabuf_map(iter))
++		return retval > 0 ? retval : -EOPNOTSUPP;
++
+ 	return filemap_read(iocb, iter, retval);
+ }
+ EXPORT_SYMBOL(generic_file_read_iter);
+@@ -4300,8 +4308,14 @@ generic_file_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ 	 */
+ 	written = kiocb_invalidate_pages(iocb, write_len);
+ 	if (written) {
+-		if (written == -EBUSY)
++		if (written == -EBUSY) {
++			/*
++			 * Avoid fallback to buffered write for dmabuf.
++			 */
++			if (iov_iter_is_dmabuf_map(from))
++				return -EAGAIN;
+ 			return 0;
++		}
+ 		return written;
  	}
+ 
+@@ -4353,6 +4367,12 @@ ssize_t generic_perform_write(struct kiocb *iocb, struct iov_iter *i)
+ 	long status = 0;
+ 	ssize_t written = 0;
+ 
++	/*
++	 * Buffered write is not supported for dmabuf.
++	 */
++	if (iov_iter_is_dmabuf_map(i))
++		return -EOPNOTSUPP;
++
+ 	do {
+ 		struct folio *folio;
+ 		size_t offset;		/* Offset into folio */
 -- 
 2.43.0
 
