@@ -1,138 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 164C460A2611
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F66606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:50:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=wTx5tVhB
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hOhJJ17f
 Received: by kanga.kvack.org (Postfix)
-	id 394CD6B05B1; Thu,  5 Nov 2026 06:43:07 -0500 (EST)
+	id 56EA36B05B0; Thu,  5 Nov 2026 06:50:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 364856B05B5; Thu,  5 Nov 2026 06:43:07 -0500 (EST)
+	id 50A296B05B2; Thu,  5 Nov 2026 06:50:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A5266B05B6; Thu,  5 Nov 2026 06:43:07 -0500 (EST)
+	id 40E786B05B4; Thu,  5 Nov 2026 06:50:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0BCA26B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:43:07 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9503540989
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:43:06 +0000 (UTC)
-X-FDA: 85400879172.30.DBED201
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A7609120004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:43:04 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 185B56B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:50:00 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A28C8160723
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:49:59 +0000 (UTC)
+X-FDA: 85400896518.06.E6230D2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 9B3B112000C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:49:57 +0000 (UTC)
 Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=wTx5tVhB;
-	spf=pass (imf29.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hOhJJ17f;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793878984;
+	s=arc-20220608; t=1793879397;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=E1YKZbg8+xkzFjxNfBYmTVfbfxOb/7eggQBZwag+I5A=;
-	b=YXY2NTT3/F7EXBfWakApDIRrDTbnARMv3b06CacVVWmw35M9mPmBxQ5dAzA31lsEb3BwJ3
-	sElZN/voVt/kdumnKb+A2x8BqNcCqNjjANVC7HxGxJqqf3FzTtBRUAlCo9xTXDaBPJj/ps
-	ny8c31H/gHZ7Urr8hClIeYXasSBx2rk=
+	bh=VImrv8FOkQBPZjLUsdaZmiq4Cy9sbelPnrfcMNk1WI0=;
+	b=Qg5XmFJPhHlkxvq2nf0Z+OrhHTMNlykh+gxVLDPsLjWMI+CJX0H0ajxPlNdfAaGFtWTo5/
+	+7dL2Qrk0Lt9g6i5aFapBvz4Ofz6ANxmfD8TwEveSZa9U46PBSRaOiqcbcyvt+t+4L6j/s
+	vVsX7608v/TP7tlNXkkvTQ+b5FEA2SY=
 ARC-Authentication-Results: i=1;
 	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=wTx5tVhB;
-	spf=pass (imf29.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hOhJJ17f;
+	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793878984;
-	b=QFAF+ZZMRiZxNxdN91gkoB3G87C3VujGjik3ZmipR43nv/y0QGINg7ad0Ma58AqdZQtC0L
-	oIzubhrn5t+9x6D2xUTwlDGfhql5GkHCz+skbEvDRpd4Ef06HFcTR6DnR6I5GnCWNIHhdH
-	YthITGOYoM4bab2UIozRh7Adi4tarfU=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4a140e7405dso16267205e9.3
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 03:43:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793878983; x=1794483783; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=E1YKZbg8+xkzFjxNfBYmTVfbfxOb/7eggQBZwag+I5A=;
-        b=wTx5tVhBjpWUdl7KUVfMSlqrauHSC6WBOHHL1tN7Lt/CRonGgPUkhRc7Kx+m1AT08O
-         1wYII1Fh1NbFz48cPdkQ/m6X5Hy4bODF33gbuQO8paG68s2G1/ca7aoNw9VEI6hL9g2F
-         rr+PVhaUcxo8ded6eFu5SoaK2XEilxP1l8QjM5zu9VC+d1hdtuxeHKaaObX4fFTKbGUc
-         XJj461okcbxg2xTlVqMp102UycolYp8O0P9/wAc5fRkT13H1n+lWozq1X4DjAylqi7Uq
-         eKnXamVdh4lWObieHH9lhNH00iMZMLQaGKRAvrgnJRNLc7DeLgsbPA/ZGeAZyPqjbERp
-         qJJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793878983; x=1794483783;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=E1YKZbg8+xkzFjxNfBYmTVfbfxOb/7eggQBZwag+I5A=;
-        b=CnzTWrCZdSxubg8roh5i9DGgOttPaCye7BgkkC0THqPBxXv+Ve1+QHDHBgxkukNp/U
-         VNNdg1o4Noi4t3zgoTf2GMCuF4naL6Ex87bTsruVZn9by5BdDMBjXx0HlTtj321JkIdN
-         nrxNA9seMHSFMurYsqSRHc+8NJlisBiATK7XgP0XMZvMuiB1XJ4IzHCiYec2kmASY/KT
-         h2B+2U9+HT5AkGgsEJbBiAvmnBeKia3EdKD1ndzfdvksJRJbslEiU8xlbt+y3yaXcLCt
-         otvE0DaMciSwviqVOEIy/sYjBO3manCUQKx2+A3KJCeNCRM6+hDwr35rBIqPbwdiRTEL
-         bzIw==
-X-Forwarded-Encrypted: i=1; AKwUvBysXCP7L/luH1I2Dd5EaDNl4lOK6elOS2h2RoIL44Hf8SnBSuHEZCz/EqZ5RvkpUmJoD7kZfGwIFQ==@kvack.org
-X-Gm-Message-State: APuU4Z+lYMgHFnNf5SXa8pUqAoCUEUInFnBA68iEbysig+tQKVpuLmyo
-	QiiOuMLLHrql1K863ialKr+dFmb/zqrjifR7iH06wFqF2x7NqtiWcYtK
-X-Gm-Gg: AYBFou3zrXuqgOAHPt1cwuat8b7s6ohkIuvlF5WZP3He/sp8tEC4+7DdKwOSnLheaa2
-	fkFYm9ED+m4C20DtPaTFNK25vusCGXf4YXpep4N95WI9ypOCWMy/myeJLhk0fOtXh62SvYX9m+C
-	piOzUEFberGUludwMsT/FCICvjfrKyxVJfmVNU3f35oQYI1PjkFAuwnYQE6nU3DGnBcNGmV0eJ2
-	tbilnUuokalCFz8BJmuoW7myKhRK16LyZovjw38lWP5RLHMxsbH/MYYfudETErlR6O32tcQ4RrM
-	n9D2vuEdLo0cm5shrQVwPNaFjYmb6jrsEuByug3vvfXtb/xwj8lUxbYycZIf0oGoFZ45BzgOnTA
-	Gr3WHoRx9neVkUFCtBIfbymmBzEP2MFRWBkcwkYPnMpnSEK5kHn1FYNAwvTyCkzCe/MfhJaAC2t
-	TEuUy6rlCtDfxbUVYkIt/9eJPknf+JinMv6N4jmGosYlkbso7G6yhe9m/xRIuaal7t6s8Sd8xOm
-	UCeB8jvrAJdrGoXJ7DHB1L9rmNVzghseavZi8jzkvl7GCvW5bAg2QttwOXeRbFvRv2lVlDo5hrG
-	KCc0CyruShNGBA428IBAZdA=
-X-Received: by 2002:a05:600c:46ce:b0:4a1:f625:2108 with SMTP id 5b1f17b1804b1-4ac18a88820mr418201725e9.33.1793878983138;
-        Thu, 05 Nov 2026 03:43:03 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b413312a4fsm60741345e9.1.2026.11.05.03.43.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 03:43:02 -0800 (PST)
-Message-ID: <e5865932-ccd9-4f7b-bb64-e05a6f7a60ce@gmail.com>
-Date: Thu, 5 Nov 2026 12:43:00 +0100
+	t=1793879397;
+	b=jVZwKHFzPw5LKi0Mt/9Lg2lyzZxHpXvicezj9q8049xxxRzRqkFkcxtg03/0Qtk8EOu6o/
+	ZTPWVyzU2wfXcOdayZoiSObuDmXg/GLItgTbVTP96k1hdPN1kF5vgarxHAZN7zn5OzYeP2
+	Wt03klPYBDGjhcv5PupLkjWcqQT3NHA=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id CA22443702;
+	Thu,  5 Nov 2026 11:49:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9E71F00919;
+	Thu,  5 Nov 2026 11:49:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793879396;
+	bh=VImrv8FOkQBPZjLUsdaZmiq4Cy9sbelPnrfcMNk1WI0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hOhJJ17fnaoVYndtIuekxR8R6KO9FBbg6IMn7mFLdmS1AHggfitt7+Nvrcw1ZoLS4
+	 Q65DYL5m5guEYklW1MnM8sShCjbOu/AVXCRkeAq0oWJzYgdSjMYQSoPJ96z4njASSx
+	 g0B6PgBhVRGiD/wpmrvUwA1kR0egiK6rTVJvWHCbIph7lJVlgjaYza1OLGN6+QLjV7
+	 eB+WAtu5GOmRtEtNDB3x5vun45DMPw9GgdaKtuLzUTNEVCYpObK5jCJwkxgaleD938
+	 anISYi/vi9jKckwLJA6u6BOWD2I3Hy1tpQyEN3C1GYWIOm7+okR8USjxmUUyIzI++d
+	 OX/zTf+vcj9eQ==
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 8419B198003A;
+	Thu,  5 Nov 2026 06:49:51 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Thu, 05 Nov 2026 06:49:54 -0500
+X-ME-Sender: <xms:Xm3saiAdn_cZh3JtSZrh99WhVttXV31FNCr4PBP-ecHfjESLFAyeLw>
+    <xme:Xm3saopxSAetXRYpzwVNDP-QRy3P_jPcWB7JsYsS16lNph1qMbflVqH7SrgNofevG
+    o9yA6mIHliJgXjQtkKKvElnY8KcnuLkCCcGHC9u_cgftVDxmYe4qQw>
+X-ME-Received: <xmr:Xm3sau1vZ0S9_M5aNLCqdNT5Lq-NPQ05c7vA75rSiwVOkLoUv75Ra_nvijk>
+X-ME-Proxy-Cause: dmFkZTFaQBfUFVPMP8xrPqBpPtUnYXtbN3LRpp/oxJl/b1RmZnSSZHsU20CPxF1I64DXUJ
+    SNLa91ZNNqfrtHA9eDebWdeJ3pYuxgu/qVSEnCct1TlKIRlJn3GcjTHnnT+sn/oHMnbGM1
+    92CZwyL88cWl12ru+oFk3aGPCVOPyvG/BBaSa3nzQ0qnYXC+EDwfMTbKFpKaz7lB8mwBSr
+    tjdeBaZoIb3fDCkky6tsMipkpHqSdW7Zzs1aYBXDycZrYrz694hViPMgw3pBshbYyrko2L
+    Ohq3WEDa90dSPdCt1Zj6L7kr+Qhl/jG4fQDMc8x/v4q4YqTy9IFSVobK5sWmdPu2MF5qpt
+    EjNpg3PBFTo3XO9RRKHjGaWEQXb5hxpkiWD5hurwcftjcBKJ3dF7hkJYtdSdF1MXJTQGtI
+    U1DxCDZulyaz+XBHLq20bFdQhQbcfFjWNS+nuDxFo8TUM/HN7akP5A3EdHg18A8AJQwdQv
+    PWAvcY13nCclZdQ9XC+ee25WbgDrMiKU8N3e64SqzkgOYAmYJbKJAAlcOZK0GXdOgKQBNC
+    ul1laNs1D8hTZTkx8NJuJzTLRCqehRluIahZmS7tTps7YtiVuhHvREip5GILZ3mwcCpJtr
+    UaCfBsMS72oJMuFm65lhi0wXsXbtCojAj7PUM7Q/sN338f1Y+5/vcc2kDuzQ
+X-ME-Proxy: <xmx:X23sav36-BZf_GdwZf1t908PDlsbnfG7hQS6Im0OKWe1m08mb8IFBA>
+    <xmx:X23sarciPpe7lJ_W_T8XXfpsZ5Dz4Nickzk89PD9OSK30i_0X_RguQ>
+    <xmx:X23sar4mO8DRWKgjo6flEr1hmYHrDo14rxHdRIiC1TMqq78q9bRNlA>
+    <xmx:X23saoi18BpZHjKIwprPReemBZ9lHVBBrXRlSF6c1dUmGIYVXOylvQ>
+    <xmx:X23satrGkUFjjpRHQtDWiikpbfIcGWhCKBGjUS-v73FO4Hw4LlhPATus>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Nov 2026 06:49:50 -0500 (EST)
+Date: Thu, 5 Nov 2026 11:49:49 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Sasha Levin <sashal@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Shuah Khan <shuah@kernel.org>, 
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests/mm: skip split_huge_page_test without the
+ split_huge_pages file
+Message-ID: <auxtQQ7KsQJK0wkH@thinkstation>
+References: <20261105030242.1241448-1-sashal@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm, vmscan: make kswapd unreserve highatomic pageblocks
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, JP Kobryn
- <jp.kobryn@linux.dev>, Frank van der Linden <fvdl@google.com>,
- Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261104-kswapd-highatomic-unreserve-v1-1-38be5106adf5@kernel.org>
- <75540cfc-0577-4d91-9369-d1c4fe9c3096@gmail.com>
- <76431b4e-27b4-4922-bc59-bf97516b40fc@kernel.org>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <76431b4e-27b4-4922-bc59-bf97516b40fc@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zesutxe7qoyd771w6zmdo73tgfpu7ogf
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105030242.1241448-1-sashal@kernel.org>
+X-Stat-Signature: swke7fhjau5mhywp3z4ai1jpf1k4o6yo
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: A7609120004
-X-HE-Tag: 1793878984-41707
-X-HE-Meta: U2FsdGVkX1+qUI1OsX06fT/QjsO20acqQ46mgtKYs25m/oyXMTQ+eMXtKw/9WbNBdfiV4FtHPWEZBBNgOu8UY3hFvlir6RBkjBB/F54h7pDfTjDe9+k1JaZrme4GlhEJoBsVz54E+XvAbZwdjLi/cEsXI4/cDyEL++4SX+04oJYVEZ+Ki3xhX73wujE9GjxrIIvTrIWZaN8/ew17wBXDAA6Ovyuc5V2WBvwUuysVKDH7oFtJsG+4IjkVj/yPTZ/Fxj9g1OkCs9FKfGewrrdrljPBxwwW8+jn+b+z2W/QC3uD+PM8EeiACbFsYTJVHDOg6p6a9/+e1IsFV0O2poTZS5WOlZYzSWebKuCzhu3EIxg+1G2K1qCuLm8agx5MyaZtEOukct162dbkE/QrIuEd63VoT+7s/wyRwOfzsjPhKHtDKgB3nNnzhVJF3qOrvIzFQbQ5ZUFFdiaDupZL9Kctl/VXYjiHVhTUzsEpOtoqNfVqRPApV6/tz5YU8ZAZbxy79QABWaHuEQ/Cwb9NaBQlQwaO98O9bOkWhbDX8TFlPlUtPu/bz0xxnjGQMBO8Hvb5wapFPlXv11mQFCBEDJIHZemuwnSmMwIDdvaKZUIusMKugFvegFHI0QqVQgp2ourBshe9LkigSmEPkCOqlDv9ThGkdc/LtcTvs5lghNPQAz1rFANB/QYg6odhXLebmZNGJtgwnwUb5iCX/JxFf8glzG6b6Ub9Bv/BKtq+Db9ymoG5sk5PTbHfbK167H1OIVO7pIpAIo1dQfYThqyrTTZOCBoq35rjpJnrcGqSbWRTCPvuT5UcvpSx5pkljYfwqoyXIngozYusFOFQIPYAEFmw6SI6vbqReE/7+dHwVhZCcg0TOALH68xGZ9z6PdfpnfOnomBqVQLVrKVLj3NyKhpuWNjOCYWCmESYWfDCle8RitRYg9wx+A5WwuO6Qtm3QanilnD7tSYn4AzkK/0cqYK
- JVhYvR+h
- R6RSl58XndXMW4uzWbyXWg0P/aQ2/mFkbZGLkbIv8waV0fj8KNirY1w0RaabtPp4vMhi8+qbLvAt8PbWn9VISp2S6jVCGbMVTl7dxHvYwd2mhGVJiEZdzQZkX5j0uQWhd7GwDROsbL6HDz9qxCAabYIhYYx431ZQDJHjua9TGI5cO2Moii1xy1Nio+wJPKcQKW8Ab2Rya/bUKZV+/T/VpYx6YNXRmKFCwQ1GXXTQpb0uiM8fXPOdYYSrNjEhycz+VGNo1FvzgLyUYxwjP27vMknHlW9k/r4qmssM7pmp94O/PjLOrcFP95W2fbIkW6eItAejDRqifGZdSmkm/RhSz10WHvRStBG3uTGzC7yo/jejZRrgkI4pp8U5kHxK6Vqm9xfcClPaa9YcphVFFfctD9/x4flh7aNcCzy1liVgp1Y3J5ahE5o06bts6Ua5CPp2wYE6P
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 9B3B112000C
+X-HE-Tag: 1793879397-187403
+X-HE-Meta: U2FsdGVkX18KLzkYoyzGHIpSq6ah7PoueQ74lIviQJiqqR/kl/qWELVZpQRfixxaKN9phrr+gCj+Y7AGeuAxRKMeSZ6aB9+KTiWWWsmADCVutKjCi/pKUPHirD2XmjarjQxipYmfL0jy/yj6oCnlLZtIuJW9Fz99iJY3Fnb/XncKvmI4RaquEBSdjTaVapGYXZ47yyp4I6LsR1/hTREGCYamlKvL22eEE0avIPoMUPnLcV+GiMeqQZMAfXJbPI8qLyvB3XZwolSEjSI95EiwJtAJcaIL4RB3uCKgIiwniVf+KLOa53/d4t5GzY1viGHh50mt2wPU4jVATvWQeAPUS6bt80s6WVR4ihVYYuzyaCo8LkH9I0qSgsGQsaw2KEAg86bGF8qXIrOL86cz8ipwx+xGhPHJDZ32ZaFPw3zr3EO54LAXNIzV7pvTolccSljvjVd5pZq8xUUq/Vo4c2+uvPNUCQS4gM2UQgO+FtmjZ1t7N66X0NkZhJ0W5V5X0HaZywi6xoJYhUKES2JU/sFxn1X1gQ/uDbDZL/KjgGVB/yf9Jl93lHZSVci2DpCulGOWXqhRM4trwQWfdudZHxwlBJSvIKWGSxZ1OsDeNHQbC7gXMG18DwGOn6G4LR3AG8ftff4s5h2c/qsBOuMTwfs/VBIXEdQi+VfR+vibWmErlQNrdNdCTEkkY3oamZ51M4LCpP4UfVGM2Y5gxV0syybcoiTa5jj7waEAkCk0TiOQ9V7n4RVBX9TekTnAe26cUmHj9ONDOOJFQ/Zysdl0CrPRw5aZmVY7iHI0X5FRyGFL16hy/mVrmLG8bfAAmWquQDgCZEIzef8m8PYzpYpphne4Y+6n8ScTo/Gv2ZAZRquFPm6Myxz1AlAky+ErxFcqkfMo9/eH91YWOiz5MpVd18bk8PAWDLXPdL7ysz5gTMLDwm+aEDTeDVGASEtqED0TLMYXg90mRhcPZIQ0LC4T3sa
+ KLIkBtFy
+ nLIaaPNXog95Of7qJKxXO6JC790Q27Ogc4UIgz5c6VG4cL9zQk0LxZH65tOZ3wTtTpq5eon0vBCG6vKvcWjVmj0cs7R9N7/QsIcYMPkUbP2D0T1UIVP4IK49Xx32iT9LgZynyMj/lgMYqmJkj1zffJHs27cxcG9RsVEfNGfwak8Tl+rSpXPzffPjcVNmRNtx/YvpcsBZxAIXccH61PZLHCynM4rguhGxGMEi0p5jwDDv4ZDvPA39RCRD9VQlhxLHVzp7s6R38ibCTyb1597Ef/GH+AHsMGE009aZsSwQE+LmOZLFcdlOCXzDJNqTpJl4bFuQPhKzGgltLJlK0sdKobzpBFOnOlKY2j98H
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,34 +126,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 9:02 AM, Vlastimil Babka (SUSE) wrote:
-> On 11/4/26 22:56, Jose A. Perez de Azpillaga wrote:
->> On 11/4/26 7:38 PM, Vlastimil Babka (SUSE) wrote:
->>> Hook this highatomic unreserve to the moment we are increasing kswapd
->>> reclaim priority, as that is when kswapd is struggling to make progress
->>> and it should roughly match the case of direct reclaim failure.
->>>
->>
->> isn't raise_priority true after almost every pass at DEF_PRIORITY, stuck
->> or not?
+On Wed, Nov 04, 2026 at 10:02:42PM -0500, Sasha Levin wrote:
+> Every case in split_huge_page_test goes through
+> /sys/kernel/debug/split_huge_pages. When that file does not exist,
+> because debugfs is not mounted or the kernel has no CONFIG_DEBUG_FS, the
+> first write bails out of the whole test and it is reported as a failure:
 > 
-> Can you elaborate why? At least at first glance, kswapd_shrink_node() should
-> return true if it scans the requested amount of pages. So I would assume
-> that although balance_pgdat() will do multiple iterations to reach high
-> watermarks (because every round of kswapd_shrink_node() will limit itself to
-> SWAP_CLUSTER_MAX per zone for sc->nr_to_reclaim) this should not be raising
-> priority if the rounds are successful?
+>   Bail out! write_file(/sys/kernel/debug/split_huge_pages): No such file or directory
 > 
+> Skip the test in that case.
+> 
+> Fixes: fa6c02315f74 ("mm: huge_memory: a new debugfs interface for splitting THP tests")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-
-it's max(high_wmark_pages(zone), SWAP_CLUSTER_MAX) per zone, so the sum
-of the high watermarks. by default that's at least managed/500, while
-DEF_PRIORITY scans lru >> 12, so it can't return true above priority 8
-even when every round is successful. and sc.priority-- runs before
-pgdat_balanced() is rechecked, so a wakeup that balances the node in one
-pass still unreserves a pageblock per zone.
+Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
 -- 
-cheers,
-jose a. p-a
+  Kiryl Shutsemau / Kirill A. Shutemov
 
