@@ -1,77 +1,76 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3876606A328
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D97606A336
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aE+anxcK
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YlMc4Yav
 Received: by kanga.kvack.org (Postfix)
-	id D72516B05B4; Thu,  5 Nov 2026 16:31:42 -0500 (EST)
+	id 81BA16B05B5; Thu,  5 Nov 2026 16:31:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D497F6B05B5; Thu,  5 Nov 2026 16:31:42 -0500 (EST)
+	id 7F2EE6B05B6; Thu,  5 Nov 2026 16:31:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C60AF6B05B6; Thu,  5 Nov 2026 16:31:42 -0500 (EST)
+	id 708E46B05B7; Thu,  5 Nov 2026 16:31:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9DA496B05B4
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:31:42 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17E92C0C15
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:31:42 +0000 (UTC)
-X-FDA: 85402362444.27.A30877C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 3616D100002
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:31:40 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aE+anxcK;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4C0B96B05B5
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:31:59 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D00DB40C6F
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:31:58 +0000 (UTC)
+X-FDA: 85402363116.24.4E94EBE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 112491A000D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:31:56 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YlMc4Yav;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793914317;
+	b=MPMZ0fKvhkYMI7zcrhiNIut+liD8I/XoZw+d5b4XgbGGBDO7gLM0c1P/Efmn/gJKjbKaIu
+	QSW/8JAFoCw4yhWWPe7dZTeKm4rfT6z8eI3lcAN90MWAyKdZ14c+wNV77K2BSsg6z/DsX5
+	yzYRTUIaavJMnF903kQwwapXPkQ+PY8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YlMc4Yav;
+	spf=pass (imf19.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793914300;
+	s=arc-20220608; t=1793914317;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=l/XBPzIruKyaT68fHsJTL6/0Y1whGy5OpPSy6WgTELw=;
-	b=cug9Dyy4PfKuPwbb7J+ea6ay6U19tQ9204jZdfPaqvmacl45HYZ96FHtPnwzvxHdAzQBI/
-	+rgMl7HJURAevxIci+IK8ZABp/skIfAXb3i0txF32dKudUW0OcKOnMJXNbmtTy3khXuVgi
-	OHLei3cc/W0wJpyIGtPzK144nhXL3f0=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aE+anxcK;
-	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793914300;
-	b=RTHc6M+YjSypd70dYzKCOYJ+fWc4t7RHzyl/QSSf9vq9zMBD8lVIy3LGyc3BW9forVAjsa
-	F7m6oK4T0PEpfjfnp+CP5AUiCDmMUbBCO0jqlaPx76NuVjiWI3dgmkaBBmmhUHrGmyVYUK
-	jji3+uCUz7tXfy7V8x0K649U85QRia8=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HChmTqD3l76D4xTwaDId89Adh4XK1U9R7SwaL6QQSiA=;
+	b=TsvLllKeqVohzHLaEUZAafHpRwcqRvlY6FCJsFS6LEwQ4XL6c/QUIz3oFpOncpBlH+4DDh
+	uvdKmtLSWcvdH2DUgggESG+70eEhywAGqufbUBZmmL8+xu+MUMqw/J+roc3WwE99Xzfftt
+	9GD1MMSPquslpr+oiOIGYFxQ7glFhYc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4864140649;
+	by tor.source.kernel.org (Postfix) with ESMTP id 5215D601D5;
+	Thu,  5 Nov 2026 21:31:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C30E1F008A2;
 	Thu,  5 Nov 2026 21:31:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747CB1F0089F;
-	Thu,  5 Nov 2026 21:31:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793914298;
-	bh=l/XBPzIruKyaT68fHsJTL6/0Y1whGy5OpPSy6WgTELw=;
-	h=From:Subject:Date:To:Cc;
-	b=aE+anxcK5DVd4PxfaPeug+8Go7oXIkkyd0cr7QF/UCjgq9jQl+bNK0q+4BhKrFU6l
-	 nH9TpbM/0AmUyIRXZfMR7+ZGUYkgq1BDmA0gMwCZlN+dq+z3ta162TfttOjx4fBrgt
-	 5jqDEBSY60zS13wAtaGgurmcThNfq1GYkCiTlr6kkqTQkdSz/nP1SkszH09Zyo8Vxs
-	 gkd/MAkUnyzsOIfsT4YNgixR1lw3gB/K4VRz5l4xVnYXGhfODUOU8wO+APAcsQd4VM
-	 pobOy+eE76XoFeivYZrQgxoRdn9FhNGDUTwlg2/ulGNDaKNWkzGWtu8Q8T+PXTf1Xg
-	 PFYf3vnSp0ZNg==
+	s=k20260515; t=1793914316;
+	bh=HChmTqD3l76D4xTwaDId89Adh4XK1U9R7SwaL6QQSiA=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=YlMc4YavmcnzgGqbTg8xy48BhuWYv3UOv9e7rnmekOka0vxC7n1uK3Z1d/ertyht4
+	 gCAvHw7gGAQQROPopfRHJgoy8erMLDNpeAUwUkkbW6t0RvoH48kScoLYMbrr7WpxNt
+	 HxBkoPoow43LyAF0PNefCHawtW6nY6W2vaF8YTFGm+K0GzQYI3z4CQ4GKTge3YbMig
+	 n/jqvmxLm3mfdHdHzkKty6LwIjif+xouTG85uifDRCDzkMDa71N4mrbtT8dOCeT1yr
+	 +VCS8ipUCMfQC4Pu2gDJhnDr04M5LDYAZziTDD57o3hVj3oObrutNSWPu8zZA/B6Z1
+	 iHElNiOHvDCnA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Subject: [PATCH 00/13] mm: continue vma_flags_t conversion
-Date: Thu, 05 Nov 2026 21:30:51 +0000
-Message-Id: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+Date: Thu, 05 Nov 2026 21:30:52 +0000
+Subject: [PATCH 01/13] mm/gup: convert GUP code to use vma_flags_t
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSwqAMAwA0atI1gaMlQpeRVyEmtaAP1oRQby71
- eVbzNyQJKok6IobopyadFszqCzATbwGQR2zoa5qS1QRznwIfsJzYfQzh4SNpdYQW2OdgVzuUbx
- e/7UfnucF8MbcSGUAAAA=
-X-Change-ID: 20261101-late-2026-vma-flags-461731a636c3
+Message-Id: <20261105-late-2026-vma-flags-v1-1-0d3cd15ab75f@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+In-Reply-To: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
  John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
@@ -129,27 +128,26 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3442; i=ljs@kernel.org;
- h=from:subject:message-id; bh=dw144I8hKInR8Qv8iKnjrU9/3cK4949dnMwWVIcVGbg=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLefF0a6K1vw5BxVPUqn46M6rZ32+yPLM/K3OK58Z/1t
- UlJ376qdZSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiQn8Y/scXBihtmHE7PkF4
- 5fTvjHX5lf8yagzLot8b3ry68ZZUJgcjw8Jnxy6ELVt+JnMKc9vFq+wXXtq4lq3/3aB8muuMQpi
- TOR8A
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5850; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=bW54hq6rUX5mn84GnflVBnxa46MVVq7so69BlwTkM0U=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLefF16/eGzghS9c2a+/VuKG9T/c/1zfuM/o+P/mkbeg
+ LgD/3/e6ihlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBEmi8wMpyRDTLtTTnO0LZo
+ /YpNb7yb13n0pyWu8LqqtjaoqkWbwZmR4d3GRbvaD8eunFR2tC1T5du5REvjsF4+70n2No+9xV2
+ 6mAE=
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: 8fa41f1tyjgzg7ot8aw9ffcfdehttpif
-X-Rspamd-Server: rspam01
+X-Stat-Signature: ui5gkdjjoxmxqmc5ra4t47m1b5o1bdk5
+X-Rspamd-Queue-Id: 112491A000D
 X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 3616D100002
-X-HE-Tag: 1793914300-63427
-X-HE-Meta: U2FsdGVkX1+WDzLAC3c1Wl/J9rai48KjjccjtdEaZkMJebwMpfyfBBMGNjLmL88AQlM/0cImrlUtp0+Q7o7uObZp6EuJ/SQy4MjCJ3nYBJzppThm47d17Silln1fH/TJp1y5Q5L6Wr9axrboQQg8xqVB94yQemYuGs+Plhxhq5TPwmn0gt0y4bx1sUz10C76MKrRwtIexycUirigcQ+qZmALDtlaWrN1k+HyJB6YbLZas793LfaVt/vE5j//ymrliBGQDOICl++f6Rv9nbyI4C3RQ5TkgbUlLqrmT64ZNZatVG35t9AwtSXWhOdzebq574p4CJHryc7lsMkRojkRnMyLSRZqRPMuZqrySQ4cnIBgoFYh5Bij20KeNOjsgMpCNgtZoP6UDiwEz71dYC0gJIO7as+0uH9dpu00O0pzlcGuah7NKZS0ThDXUyA2bHYRDwIsxOPer5CSHpe7x9veW5+oiRjKv73jU5XHA94R1ynWj4cuAmLuV4vhLLLQgFSRFjav1h5sPJwZtHTQt3OqwnXCOVMHZMIDC54NpoY6AhxAQexGTvwt+wTptFBAwdLxJRIMQ5Ca4VxTW74bhzvreQFfmEvC88TPTV9SO8/WQC+BtJisEqsvWkUBR2Kp0ATLxXP0zjipOk2OFAVZ0H8vV7/m42mWe1riV5L+yV73JBlxf2E4pke5HHYTZvbRTuVwvSKfMRENO7sPBOtMuScfpBbJxhrHKCst+yoNwH7KpuY9Msirx49dWkttTECeUrvm4FpAzoGHPRXhsM2bpOK0FDTKkoP874Qm7RIVMFDElNK4cVja4ZaXxpUQUUYCPOE9p/npTSzFGoj7KPZ9wGKuw9/tNTm/kep2e8WPmyM17QOjQiB4DMeH6ZOY8SBTvbt6LJSNHa9Wf9ShZUxR03jM02skyBVQpmv2Qb6LcUufwWY6+uGEmizMFEMTFFJayYvj/DcTR3FkWp5woWUj+lZ
- jm/KwaU6
- 4FGsWD9Wgr9lGBVtkrzDQB2zHvrfGL6hglQKvyGZF47AKtARo7+eL1xVYnbUoUQtNIfHC5usibfLTLuBIyKVnnPi3S/iCtHa0lV0Iz27gisPZ253AxoBp1IWzOVT2f/rhJh5hxyDYqN36XsyzxtYsVnT6OghrbAH2e0SVYmYwRZdfvhzUyKLhjIJFLfSn1JKqV1BgQP2EaePwEXfJkPFCOtQxrzib+nvYgre4FCc3WDljJuDC2kBU8V4UlMNoXnbElO+4Taig83e6/rY7XxPTuxyMp2hTkk11NlhzjzC6Om2Nre2JtLcR/LULG4OcDEql6C9VxJKG5g3NCNzpEaEzLXz0uBur1WFBa7USpVd3QFt77s02VgBlkRSA0A==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793914316-10705
+X-HE-Meta: U2FsdGVkX18boBJh0BfYxH3vnaLWJ2laSk0XjRfe/zC27GgCzc1bcvEVso94c/w4gCYAo6FZP0usY0U3qaJWvl5gTcWeUtHuPtbYPeKu9qH+IMhxQtOYyJCmCpKCdZj2gjeIu8gRbrtiEm4z6QMLZVItDp+ZZSntqH4jsqhdNsv5nxS79FzMXsBpzjtI2x5vkJrUsI1o13EtJfI/DAGty5ZyTmltOA5rn5j6OH1OpcOjMdwahLaqNiGd6SrAuwfNHrVvL6IQowu9DB0ZmoW0z5S4QyQoQfbXsPDAoeEOU9DI0MDmG8P/uLCttv7SXRHCAkOeMn6AdVpyRSRB7Y4ZRHT48tcJLu+XWrdmji64apNJGTQF+wDBIGTtwMObnq2RWZkdd2AL9YN/hIQNqPIioa97ahGmu6N52MafUqznNjR4Ly7dwIjfSkOKliQRis+OykEwvVwZ2gLDNLIBBCJzZYvbVS1eq/Z2SHmN2LT+dDiIhVMHYkH4kJRNDmJoPto+xxfLOp51pukR3uwg3NzES1WBhvVS/mvXH0k1f1mvz+yOz0AhqJTabXEaqfrjx8LOogsyEB9l11IlvEp0PyyBhXjiWpkCW+X1n2xs9g7thXR+8d7/ouylU1bphbPyYomjBDosO7XGCgtR038gPJFS8vvs5Rzwm0eVwcCqESF8f4WD5OuXS6wFki5fDWNyddVoy1mzDZWUudVFSdv0aHy+Gvk2J2/lkAUQtxiqVbP/dOtDfaZdVJ5BhFmWFwAaTdRyQghaoPmK4aaQKwF5wLagFmPa2LlbtktuanmP0Yh89DtFpiYLGfTMj6Vm064JVOtog+V9LoJ/m8EIng183z1712pcYvWjOIYW1fFTiA7gAGaQuM2bXZRTDqzh3ij7S9+JdsV9EHfPaGAce5nhsOWbc9tMCO2pKRuEObeS8dtVLwBFERXhDzlmTHZZwr1jDIxeg4vbFRcBoXJT9RQswk5
+ 1OO6qTU9
+ ufCTDLmU5fRE3BCndHEmUOBMH8BA8EXqkz4Dao6ggymGxgi8cYfxgmw2Y2UjB1GjFpvS19M550osDs1lhzDZRUKIRdkgeYAV02v8B9U4bfKKT5AKHyLb0doc/1J4ccpdw4BPXqRacA4ffcU/EnhZkGHPKi/8ljY26CX7eQs7m7uOawzLJfQDL3ub/ZZ8iPFiEo0hoIfCLADSK4LOE0vr6PA5lnBkjdRxaXxRtfjBob0K9peYcl1yT+Ex4iLsfMDhU6epFiz/ziAv3MVPgGhEDN2sdHlXf1GsDO4VgVC9gMg6BsgN59VwhDKN/e/NYF60DBYXjgdOH3X+T5+1pb/wkD+dMY06jWGowpYWz3Jc3lYdMQmY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,78 +156,168 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Continue the conversion of legacy vm_flags_t flags to the new vma_flags_t
-bitmap type.
-
-Do some more core mm conversion (we really should be the first to
-completely move to the new scheme :), but also update some mm-adjacent and
-otherwise straightforward cases - /proc/$pid/maps and friends, the coredump
-VMA dump size logic, uprobes, perf and LSM mmap/mprotect hooks.
-
-This series only makes strictly mechanical changes to keep things gentle
-during this very busy cycle.
+Replace use of the legacy vm_flags_t flags with vma_flags_t values
+throughout the GUP logic, both for the MMU and nommu variants.
 
 No functional change intended.
 
-Build tested on x86-64 (allmodconfig, each patch individually), i386,
-arm64, riscv nommu and ppc64le.
-
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
-Lorenzo Stoakes (ARM) (13):
-      mm/gup: convert GUP code to use vma_flags_t
-      mm/filemap: convert fault and readahead logic to use vma_flags_t
-      mm/rmap: convert remaining VMA flag tests to use vma_flags_t
-      mm/migrate: convert VMA flag tests to use vma_flags_t
-      mm: convert THP VMA flag tests to use vma_flags_t
-      mm/ksm: convert VMA flag tests to use vma_flags_t
-      mm/madvise: convert madvise_vma_behavior() to use vma_flags_t
-      mm: convert miscellaneous VMA flag tests to use vma_flags_t
-      fs/proc/task_mmu: convert VMA flag tests to use vma_flags_t
-      fs/coredump: convert vma_dump_size() to use vma_flags_t
-      uprobes: convert VMA flag tests to use vma_flags_t
-      perf: convert VMA flag tests to use vma_flags_t
-      security: convert VMA flag tests to use vma_flags_t
+ mm/gup.c | 45 ++++++++++++++++++++++++---------------------
+ 1 file changed, 24 insertions(+), 21 deletions(-)
 
- arch/powerpc/kvm/book3s_hv_uvmem.c | 10 ++++----
- fs/coredump.c                      | 16 ++++++-------
- fs/proc/task_mmu.c                 | 43 +++++++++++++++++-----------------
- include/linux/huge_mm.h            |  4 ++--
- include/linux/ksm.h                |  4 ++--
- include/linux/mm_inline.h          |  2 +-
- kernel/events/core.c               | 26 +++++++++++----------
- kernel/events/uprobes.c            | 12 ++++++----
- lib/test_hmm.c                     |  4 ++--
- mm/damon/vaddr.c                   |  2 +-
- mm/filemap.c                       | 24 ++++++++++---------
- mm/gup.c                           | 45 +++++++++++++++++++-----------------
- mm/hmm.c                           |  6 ++---
- mm/huge_memory.c                   | 32 +++++++++++++-------------
- mm/internal.h                      |  2 +-
- mm/khugepaged.c                    | 18 ++++++++-------
- mm/ksm.c                           | 22 ++++++++++--------
- mm/madvise.c                       | 47 ++++++++++++++++++++------------------
- mm/mempolicy.c                     |  4 ++--
- mm/migrate.c                       |  5 ++--
- mm/migrate_device.c                |  8 +++----
- mm/mmap_lock.c                     |  4 ++--
- mm/mremap.c                        |  2 +-
- mm/msync.c                         |  4 ++--
- mm/oom_kill.c                      |  4 ++--
- mm/pagewalk.c                      |  2 +-
- mm/rmap.c                          |  8 ++++---
- mm/vma.h                           |  4 ++--
- security/apparmor/lsm.c            |  2 +-
- security/integrity/ima/ima_main.c  |  2 +-
- security/ipe/hooks.c               |  2 +-
- security/selinux/hooks.c           | 14 ++++++------
- 32 files changed, 202 insertions(+), 182 deletions(-)
----
-base-commit: b61fa14ce6bcbba2cb9a96feea31b760226d6b43
-change-id: 20261101-late-2026-vma-flags-461731a636c3
+diff --git a/mm/gup.c b/mm/gup.c
+index 7d43ce717b24..dc232117b1ce 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -590,15 +590,15 @@ static inline bool can_follow_write_common(struct page *page,
+ 		return false;
+ 
+ 	/* But FOLL_FORCE has no effect on shared mappings */
+-	if (vma->vm_flags & (VM_MAYSHARE | VM_SHARED))
++	if (vma_test_any(vma, VMA_MAYSHARE_BIT, VMA_SHARED_BIT))
+ 		return false;
+ 
+ 	/* ... or read-only private ones */
+-	if (!(vma->vm_flags & VM_MAYWRITE))
++	if (!vma_test(vma, VMA_MAYWRITE_BIT))
+ 		return false;
+ 
+ 	/* ... or already writable ones that just need to take a write fault */
+-	if (vma->vm_flags & VM_WRITE)
++	if (vma_test(vma, VMA_WRITE_BIT))
+ 		return false;
+ 
+ 	/*
+@@ -1199,12 +1199,11 @@ static bool writable_file_mapping_allowed(struct vm_area_struct *vma,
+ 
+ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
+ {
+-	vm_flags_t vm_flags = vma->vm_flags;
+ 	int write = (gup_flags & FOLL_WRITE);
+ 	int foreign = (gup_flags & FOLL_REMOTE);
+ 	bool vma_anon = vma_is_anonymous(vma);
+ 
+-	if (vm_flags & (VM_IO | VM_PFNMAP))
++	if (vma_test_any(vma, VMA_IO_BIT, VMA_PFNMAP_BIT))
+ 		return -EFAULT;
+ 
+ 	if ((gup_flags & FOLL_ANON) && !vma_anon)
+@@ -1224,7 +1223,8 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
+ 		    !writable_file_mapping_allowed(vma, gup_flags))
+ 			return -EFAULT;
+ 
+-		if (!(vm_flags & VM_WRITE) || (vm_flags & VM_SHADOW_STACK)) {
++		if (!vma_test(vma, VMA_WRITE_BIT) ||
++		    vma_test_single_mask(vma, VMA_SHADOW_STACK)) {
+ 			if (!(gup_flags & FOLL_FORCE))
+ 				return -EFAULT;
+ 			/*
+@@ -1239,14 +1239,14 @@ static int check_vma_flags(struct vm_area_struct *vma, unsigned long gup_flags)
+ 			if (!vma_is_cow_mapping(vma))
+ 				return -EFAULT;
+ 		}
+-	} else if (!(vm_flags & VM_READ)) {
++	} else if (!vma_test(vma, VMA_READ_BIT)) {
+ 		if (!(gup_flags & FOLL_FORCE))
+ 			return -EFAULT;
+ 		/*
+ 		 * Is there actually any vma we can reach here which does not
+ 		 * have VM_MAYREAD set?
+ 		 */
+-		if (!(vm_flags & VM_MAYREAD))
++		if (!vma_test(vma, VMA_MAYREAD_BIT))
+ 			return -EFAULT;
+ 	}
+ 	/*
+@@ -1277,7 +1277,7 @@ static struct vm_area_struct *gup_vma_lookup(struct mm_struct *mm,
+ 		return vma;
+ 
+ 	/* Only warn for half-way relevant accesses */
+-	if (!(vma->vm_flags & VM_GROWSDOWN))
++	if (!vma_test(vma, VMA_GROWSDOWN_BIT))
+ 		return NULL;
+ 	if (vma->vm_start - addr > 65536)
+ 		return NULL;
+@@ -1514,9 +1514,8 @@ static bool vma_permits_fault(struct vm_area_struct *vma,
+ {
+ 	bool write   = !!(fault_flags & FAULT_FLAG_WRITE);
+ 	bool foreign = !!(fault_flags & FAULT_FLAG_REMOTE);
+-	vm_flags_t vm_flags = write ? VM_WRITE : VM_READ;
+ 
+-	if (!(vm_flags & vma->vm_flags))
++	if (!vma_test(vma, write ? VMA_WRITE_BIT : VMA_READ_BIT))
+ 		return false;
+ 
+ 	/*
+@@ -1829,7 +1828,7 @@ long populate_vma_page_range(struct vm_area_struct *vma,
+ 	 * Rightly or wrongly, the VM_LOCKONFAULT case has never used
+ 	 * faultin_page() to break COW, so it has no work to do here.
+ 	 */
+-	if (vma->vm_flags & VM_LOCKONFAULT)
++	if (vma_test(vma, VMA_LOCKONFAULT_BIT))
+ 		return nr_pages;
+ 
+ 	/* ... similarly, we've never faulted in PROT_NONE pages */
+@@ -1849,7 +1848,7 @@ long populate_vma_page_range(struct vm_area_struct *vma,
+ 	 * Otherwise, do a read fault, and use FOLL_FORCE in case it's not
+ 	 * readable (ie write-only or executable).
+ 	 */
+-	if ((vma->vm_flags & (VM_WRITE | VM_SHARED)) == VM_WRITE)
++	if (vma_test(vma, VMA_WRITE_BIT) && !vma_test(vma, VMA_SHARED_BIT))
+ 		gup_flags |= FOLL_WRITE;
+ 	else
+ 		gup_flags |= FOLL_FORCE;
+@@ -1955,7 +1954,7 @@ int __mm_populate(unsigned long start, unsigned long len, int ignore_errors)
+ 		 * range with the first VMA. Also, skip undesirable VMA types.
+ 		 */
+ 		nend = min(end, vma->vm_end);
+-		if (vma->vm_flags & (VM_IO | VM_PFNMAP))
++		if (vma_test_any(vma, VMA_IO_BIT, VMA_PFNMAP_BIT))
+ 			continue;
+ 		if (nstart < vma->vm_start)
+ 			nstart = vma->vm_start;
+@@ -1986,7 +1985,7 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ {
+ 	struct vm_area_struct *vma;
+ 	bool must_unlock = false;
+-	vm_flags_t vm_flags;
++	vma_flags_t vma_flags;
+ 	int ret, err = -EFAULT;
+ 	long i;
+ 
+@@ -2011,10 +2010,14 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ 	/* calculate required read or write permissions.
+ 	 * If FOLL_FORCE is set, we only require the "MAY" flags.
+ 	 */
+-	vm_flags  = (foll_flags & FOLL_WRITE) ?
+-			(VM_WRITE | VM_MAYWRITE) : (VM_READ | VM_MAYREAD);
+-	vm_flags &= (foll_flags & FOLL_FORCE) ?
+-			(VM_MAYREAD | VM_MAYWRITE) : (VM_READ | VM_WRITE);
++	if (foll_flags & FOLL_WRITE)
++		vma_flags = mk_vma_flags(VMA_WRITE_BIT, VMA_MAYWRITE_BIT);
++	else
++		vma_flags = mk_vma_flags(VMA_READ_BIT, VMA_MAYREAD_BIT);
++	if (foll_flags & FOLL_FORCE)
++		vma_flags_clear(&vma_flags, VMA_READ_BIT, VMA_WRITE_BIT);
++	else
++		vma_flags_clear(&vma_flags, VMA_MAYREAD_BIT, VMA_MAYWRITE_BIT);
+ 
+ 	for (i = 0; i < nr_pages; i++) {
+ 		vma = find_vma(mm, start);
+@@ -2022,8 +2025,8 @@ static long __get_user_pages_locked(struct mm_struct *mm, unsigned long start,
+ 			break;
+ 
+ 		/* protect what we can, including chardevs */
+-		if ((vma->vm_flags & (VM_IO | VM_PFNMAP)) ||
+-		    !(vm_flags & vma->vm_flags))
++		if (vma_test_any(vma, VMA_IO_BIT, VMA_PFNMAP_BIT) ||
++		    !vma_test_any_mask(vma, vma_flags))
+ 			break;
+ 
+ 		if (pages) {
 
-Cheers,
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+2.56.0
 
 
