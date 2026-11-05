@@ -1,93 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F0B606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD55606D83B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:11:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LqwrdTgO
 Received: by kanga.kvack.org (Postfix)
-	id 4880C6B05B2; Thu,  5 Nov 2026 06:10:46 -0500 (EST)
+	id B41116B05B3; Thu,  5 Nov 2026 06:11:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 45F1F6B05B3; Thu,  5 Nov 2026 06:10:46 -0500 (EST)
+	id B18AF6B05B4; Thu,  5 Nov 2026 06:11:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39E2B6B05B4; Thu,  5 Nov 2026 06:10:46 -0500 (EST)
+	id A55FA6B05B5; Thu,  5 Nov 2026 06:11:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F166C6B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:10:45 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9585F1609BE
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:10:45 +0000 (UTC)
-X-FDA: 85400797650.01.CE63014
-Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com [209.85.167.199])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 02D91140007
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:10:43 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 3M2TsagkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3M2TsagkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7E3E76B05B3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:11:58 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 958B01C43F6
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:11:57 +0000 (UTC)
+X-FDA: 85400800674.17.F68029C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf16.hostedemail.com (Postfix) with ESMTP id E3575180006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:11:55 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LqwrdTgO;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793877044;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=+L1oAYLc4izPsxQ3ZlEqD/dH2fKKby+GXjbBwuzoShs=;
-	b=REXEy0Av8JilGO5/L06etOVOvJsA0jJV5n/oIZEk0wN/u8cn7WyoM0roQflMPUycraWBBo
-	j7BCrVWals70lLMMhNFUJQ6PKzJXMRIjPBQ8wLC24uLT3PDWtQftmBfs1SAXLOGziMnPoK
-	lW3Szj4GaNMFjmUzMFNRWBwWU/B3KK4=
+	s=arc-20220608; t=1793877115;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=enixJkjvt/NjGzx2vZdqFTkXKPfd4qcXQu8lRjKJNZg=;
+	b=wRHJma8OFveTWdWm4NwQfoC+mDxBckCtw77Ozk9ByXc1CwlF4T6WBUi0xrQBAtSmujaVyL
+	W6TWAYaCmC0/yJKbzAlRC82zN6lkHmwHqjO+zxe5hfvU8QbIlGulkfypK0rsTOmtbgP2dW
+	LE/+khc0sq2pvLZYdarqSi2hMxBq7Pw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793877044;
-	b=VCf5mOmwPF+RD9GnHvhOMIMX/IIRwrHEuiFAEug+t0bZBLzjHpi3T4FjM9dqMo4bqHUxec
-	nOnIvpzhMiVgv9u6JtZpVvm+9/+U6yTqjp4M4Ejz4ufwSho65FrQqG2rooLTrKQeBXOTYl
-	xjEeZdQQJYei2Lsq0/YEIXTHnARDNBU=
+	t=1793877115;
+	b=qnkarpvkOIp0Iz4l/VSD1XscjkRh4ceBrMAyRd9b+8U1YD+0Mh1yClNWG0YbmzLQz0fV7z
+	sUjyJqfXjHzzd47t2rfLimcvOC1BxIEUoDk1/HoY5wfOhqhFscuRCSlqwkIGI2oRUiz7e4
+	c49mufJ2g/EFI9o3O04AyI1vj0RsMu0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf09.hostedemail.com: domain of 3M2TsagkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.167.199 as permitted sender) smtp.mailfrom=3M2TsagkbAAw4ABwmxxq3m11up.s00sxq64q3o0z5qz5.o0y@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oi1-f199.google.com with SMTP id 5614622812f47-4dc57e2a3f2so2632012b6e.0
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 03:10:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793877043; x=1794481843;
-        h=content-type:to:from:subject:message-id:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=+L1oAYLc4izPsxQ3ZlEqD/dH2fKKby+GXjbBwuzoShs=;
-        b=eAXyQlQ2M2IgPyDRGLdxzrT+vgbbl4/DDDQZm+somtQI7hi2oc7heYsOadISAONX+3
-         3RtfMSG5BB3L8+N3NhHzvDp79EnVXnmLSsBtTN/F6PGTsf+i2wz1BukwxShbkmqyviud
-         4OKbNRm5pXiGjm79VJI0td8+Nps2HdIp8v/V6qCbmBVePFIvD64Uja/DYqKUTbt+RazQ
-         fVyHphQCKCOoLUx5FLXgt8dR/EYZU/UXl4YTaMVc6sR/afDi7FRJ4R/3rbGmNhTaXT1S
-         BdDYDPY44MPpfUwvsiZiphzAkHR/+u/NH5T3kk9aGr6pQIVSBo17WhM5Rhn+8empCvX4
-         F8NA==
-X-Forwarded-Encrypted: i=1; AKwUvByrqTSWZ5zONFKsOj+l6OqoDicPeVyD0dZZYWrcWPEP0vV36hw9vDEAtXD8DVua4QQru3rnebtP+A==@kvack.org
-X-Gm-Message-State: APuU4Z+oK0HtaVb68reFzyFxcgnAlrp9hcQU705TeW5R0WSDdAzxX6w0
-	zT9WGFYRVQb0fFcLUWqy/QIylD6HbXRLg6XgYltR5a/ksWJiSWT0LI6lhP5xxBF7rIcsbkGAaKs
-	BSJ33gRq56Rtgs7pRsVIyskXgTuLKm7ZPqn1szH/OuPFLem4UIhEQb615DzI=
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6808:148c:b0:4b9:e65b:8c36 with SMTP id
- 5614622812f47-5640dddd764mr13267830b6e.36.1793877043177; Thu, 05 Nov 2026
- 03:10:43 -0800 (PST)
-Date: Thu, 05 Nov 2026 03:10:43 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <6aec6433.0ce67c00.35143.0001.GAE@google.com>
-Subject: [syzbot] [mm?] [fuse?] WARNING in shmem_initxattrs
-From: syzbot <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, 
-	fuse-devel@lists.linux.dev, hughd@google.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: jse85w4y8brxc9x14wu7o3odn8wah6iy
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LqwrdTgO;
+	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 99C5460D91;
+	Thu,  5 Nov 2026 11:11:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99511F00919;
+	Thu,  5 Nov 2026 11:11:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793877114;
+	bh=enixJkjvt/NjGzx2vZdqFTkXKPfd4qcXQu8lRjKJNZg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=LqwrdTgOAHYSfUZcCn0vb7egFoGlnn/N25DberiwXI2r9Nuan10LzGhj9TOTvc4hq
+	 aRLKo586J9Jj71jjdo2VlOkAT/orK4gAlgaFE4P6O7VKEi6hdnj25pKLDWL9myPx+U
+	 jWZWyOtctKFaf8lmRnasULc7fMQVuW1Wzcl2/EaENoVrDU9TS2O8CPwNdxqIvJFcAy
+	 ZQ+MfX6a6r4jgl4wL0Xq+/umegY7ix5rxuuPx9Fhqe0plwgj6xjoQLP1S+mbkJuNoG
+	 YcnBsyy9XWslw0oR9Jozyi+3QwJVuOhSFTMdXCQoHhIi3Gn/3uBKejCot25qhdoOJn
+	 bqwniPkRTAQfg==
+Message-ID: <sashiko-outbox-198916@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 1/8] memcg: Add MEMCG_DMABUF accounting
+ infrastructure
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
+ Weiner" <hannes@cmpxchg.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Jonathan
+ Corbet" <corbet@lwn.net>, "Shuah Khan" <skhan@linuxfoundation.org>, "Sumit
+ Semwal" <sumit.semwal@linaro.org>, =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, "Michal
+ Hocko" <mhocko@kernel.org>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Shakeel
+ Butt" <shakeel.butt@linux.dev>, "Muchun Song" <muchun.song@linux.dev>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Benjamin Gaignard" <benjamin.gaignard@collabora.com>, "Brian
+ Starkey" <Brian.Starkey@arm.com>, "John Stultz" <jstultz@google.com>, "T.J.
+ Mercier" <tjmercier@google.com>, "Christian Brauner" <brauner@kernel.org>, "Paul
+ Moore" <paul@paul-moore.com>, "James Morris" <jmorris@namei.org>, "Serge E.
+ Hallyn" <serge@hallyn.com>, "Stephen Smalley" <stephen.smalley.work@gmail.com>, "Shuah
+ Khan" <shuah@kernel.org>, "Randy Dunlap" <rdunlap@infradead.org>,
+ =?utf-8?b?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, "Jens Wiklander" <jenswi@kernel.org>, "Sumit
+ Garg" <sumit.garg@kernel.org>
+Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, op-tee@lists.trustedfirmware.org, media-ci@linuxtv.org
+In-Reply-To: <20261104-v2_20230123_tjmercier_google_com-v4-1-1819a017000b@redhat.com>
+References: <20261104-v2_20230123_tjmercier_google_com-v4-0-1819a017000b@redhat.com>
+ <20261104-v2_20230123_tjmercier_google_com-v4-1-1819a017000b@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 11:11:52 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: dw6sqbqtax9mz9g4iu4kt1gwt4rqxfc5
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E3575180006
 X-Rspam-User: 
-X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 02D91140007
-X-HE-Tag: 1793877043-506702
-X-HE-Meta: U2FsdGVkX19LAEsQ1b5qxRv2GT5UJWacdYtbgKi+omkvJCHlkkfT0Hz8KmkCBJzf0GKI5yydRHqZSiGJpNCzTC6J78j7vlOCSe/cars30t4COwWrI29ZWDJZkr2BBVa/9tNkt5YFaQIgLKPTrqEwZzLxWd/HedvVcw277JhGzZK2EhKq9R2K0XAA78+7oyCyb88c5lgqv/r7ytvr4g8U7zE/wd+pY+yaYFXPush3KKMl/Iy2/ybMb38pjsSR8C/trZodApzu5bl2GL7knvAa1upE8QIEtv3tMqsmvTUUKJhKJ03dVjkkwxlcnkPGZOqzdDP04lu+z9pE208IQbFlWhTDtyc78UDDAYYp9fNQ8AuN6jkgGK/ILL56VC9EA+GHauCdmEPirg7mKWv0Cal2TjQ0xTsMd9G9GkIouWfqzcjr1n1d2sMTogyG2QWZG9NhXK8zc0R/XsZhQDuQi9vwTbApUKY5GeSozi4tN2Syx1CBmJqxzjS6nDgXi9/N+5oDDmvMI7In2G1rdzqQiPqWUrS4uWa4oHF9muMY6toi4UxbdyLGr579kizNBHkcv5TnsXNGXTdlEQjZYn2tqjYU3bliPxlgZLo1VrwYycIHAzClVo8s9gSUX5+6gjpxCApgga1zByrZ/eQS3+AwniRUuA2CdeUCbH2aqnu32pEZIrz53kDfam/T1t5xKiI3oCW985nFGyw0L+VtoGp60MFZ4yys4Fwg9bbCQf5AZxnpjnuodLnFyHNp6UcLAy2U2B5Lvx6YZ90F8UkdMncgHWjcffN1QBVZve546xkkcPsLzdg0OzABz/Fn20LOCf1MBGEuq+cl/LH6Uu6gwzTZYMCtwHDFRrvRBDbS1E22tO3sWgbCgxQKDFSd7mA0Le4aRq7vPSUhdihhE5HPWzd3kQcbA7sUm8bhjynXOxFLF7sYwSVtDKmAQcXCLb1E0DumpeYtdeWlQmuYZCAyuKOgVsj
- SosYk8+i
- n8CpkcD+osmBtonPu7XQztMEc2MhrtC+n7CWwV5agedr0KqRq9INLxUlXWros0lt4Cc5tcMmJRbwWo0dkzXLI6ZPpyt/voXZhAyoI8V1+021Uoev8t1w0nrfDIMGxPrxpuparA9fJnosyv+LCITgFTQzuQtU5CjzzlbhdHhM0lVg6IHy1SB+RJ9ydIrgPxxyGFRB5WcyEpa1cbMZLCDFJh/yvDwkVftg4V2pgCgYEksUxk+vDv2DgPP9Z5UqItzPFsPcIr7xZNiCDyhSxtCZrQKp2I1VSBGbibMcHJHoY2Eh7y3W124uRADE9CbCktouZ25Cpyhu7aQiTeAtfg0OZVgf8bCpl21tYQ7CcSeF9fTYtnaYDvqU7WrSS2qZQnxuqcxixcUj1rqa8uns+oM8Qp6sotHYDV02qffgDhqSU0UVULVITQTcAQf/Irooo2aE/zi2eCvW+4jKAihiNYZW/QHhfp2xXaUa12LGE4+zw5CJi1mxNu5oknU7jPfwUHqWyfRLySkJL3AfvZgS5kGXcjYlPXJmAqmKDISxVtEdrauzsl2WqfFnwPug50k3HrluLcWblE+QM1Ydvh0kw78fJ6cwLJSzicKxqae9+3dLYwGJ7UdY2s3SiLAbaFrB2Vw+KcMXpGpY3M7wCatXhSk5vpE75Xk0By0vXfCgzm03OG+GAISw8pge82Ue0iAp2yAZqPlcyJUfi23MK2uEPiyc9F9KkqNEb8l96AtM2GmgSZQGRFR8uLkUSpWzOTKBwqZtH+PXBoHLvkUZ58F98zoEMsYCWVf2ip2vlBxzK+kOcJWjzU6NgyyIX6xR+D/YZdQddcJuA5p5sY9NpYjU0/9CT2OAnlkkT6xKu9KKfd9I4ZedmtLklPSmvha5wchlgWuioOb8V4acY0wImNDqeE8qqAjfl7XG7N9TyQmdxwnad88b0DqsnMZbfNoAsX6ie0f0e4qkUCEmytdZeUwdxHcF0fvV0BDy+
- 69LatN9Q
- 51oN0rV779eNxiJ/k09Dz3ZRP7oA+d0Kw58LtFFdfB/nilZiADWPLWJP2NnDLz0bfSTRx9fK0gzOGIYAhm+e39jScbgBqnTW01Qd8S3eh1V4FN6w6yskaFSv3s6eiUyei88qqb6X5JMve2cQTEgEsW0vePhdClb/AB9JqS3lvmrJZ9Douk32qiSDKploCSUPXlqwdIQJ9rTNjO/HfP3BW4uUmAQgdEhn353/XnwQrzp41GCUG1HAqQAbK8wfMLAwh4h7gWB967q7gvru5WQGG0+Ak4J61MsqIChZK6VJ90CBBKVMgIkUYGQQGTjnWTN9ZjIhjmMA0rF3CYj8n/45FzKih5G4g0FoplRA/t2XK4ciMTNc4dktnNUb+CUaAU2+CXf49y/ooXOszPHuLdbS+y9y0nqvnwnJICTtZWUQLSnfW7zlGEkwJ+raD0DxlaNZVatuTf/po18=
+X-HE-Tag: 1793877115-716175
+X-HE-Meta: U2FsdGVkX19tXbwZPZV37QiIeLCzv98Q6Wt1wKpybLBLOz8n2AtUWc42LtZ/KkXMWh02N4Y4K/J+/6NK8huOCo+TSXS3iQdFIPL1a8CR1tr/Gn64j7F0YL46SVZMSAbDpgFHAFh/gHATO4175rxifun2YQoZraOx5I7Jm3d1l1dnkOLKgs16/5Eb6E6xJN/6l6FtEAx3b1AyA7FBAj0encavHJEkGpL/JOFqYS27fOEI9UahZ/Hp0iHe04QHCkxlBo4Akj0OFSBOWut+3drmHLa4bqBZBq+9OjtY22vrcr0GAW3lgCNeYzoMwUUIpG+FfrXOzdK1pfZj1Qi0XjPcs0Zym6H1B1AYcB8DvQBeZmLe1hQK4oRkLFerYrxwXS8ynOVDgtWiK8n07u3qdKu/zEvyxsrxo1P8QkRU251z5CvMXVWbkAZcLxMqlkhLyYyGILgDTHi1q/oK92FYnf3tbcl7HIXJB97RnLkN85xsduY5W74EexV3TCOHzWLHjVAqqbMRpOZcirb6PgSBJAioZBPi08G4t+e9o0hN0hxzewCd/W03LEcFsXeVSqDy7ftR10/08bJVNXI2Bz6eLmFKUH+Ve5o0elMMEzhIU7ewiEcUw0KzXibTFCpBsaRKuZszwWRlCoYkcey14yP7ALZrhEBA8eO2kBMOJss/5k6Rpft05S/vlISl7xEK9KLg7fQDgxp07cEhnQIxgtdjd7ahW9uU6ZkEOrA3/hm23jmntY8Tq8IFIqm1nJDJgpltttIvNNNKDdZOD5Ya7SUyEhb1CkmBHK8rSKDNvePFW0dLz4VKj0dvWp0XEdjaP+HvyT9uKGr2sKdc+/cVpq3EVn/mk9YLOYKM/XcXpCVPifsj9t6cCkDDH5iGXaJ9JTzpLSqjgd3ztaqwvY3FRRvCJ4cJ/yP0T17Y6WNuguuPxVOuHCTWj8naIvFn8DgzcsOAxwcvPKPTd3vOwWbq2MQvzGI
+ D0cwlELd
+ stccgBbD71Io7AH+iJClpa9vH6IhV+iNdDZvyYOB47JyhZTW4Ra239mSJZf7s0iTTk1+MWeNM9bORbKEUAuV34UUFKLsBbeyL5oMVVoDOdEZ90Xm389D6JU56j0nMjXOwYv9qI1lUFnXiZz/LMCos0ZILhpQV5HXkazlyHMIBeIpUwsCHWuu0uM1lDxglBKd8N/exCJsg0j/h7ru6LXV7hNm3nDDJUfLEGW4z82COtkus8qkGIhShSCWy9PC2EU3aOcXQq0u1yOy/XOxvW64nWIH5N8l6LAYEpVKZ1Hm/9l7zxEuLMeDZiX1Mf0YQ6QhQmnPT1H8TrqsUYtvc6xUJhB00YTk8daw2h8Or+E6CVBH301OJ0zlTeglaimfC07PUX1aqQLLMQvD+JgwyI//LXjFRXW/5SLGHlYTVMm5zj8NC8hihuhrIeuwU92ah+QcwpX8rE8lBnVyT0l5EIeoGTn/Qdlwfn1o2VkEVmWjCsrXkBirPYEhnfDaUpEyoNinUH+HPzB0jpxBVyYPay6xeh/8x1eZ3t8omMO0XAIz35wqkp5XSwK/IZnlbK/17svxvG0r+2DbjN+68y1b0P+t7TbhSUAqhK2NUeB0SoBkt0OpsOmNkPOV99WzIU/5w520MjSIm9znr7Tvcyd80Wgye2v/dmSErH2QKW/7KTgNiJlQLpnnIhzPxBnoc4T5pVzUHPQQxMW15xokWmWrhF6p+YYmG0A0d/ZFRHLT/3b+bs3AH0EQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,103 +105,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-Hello,
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] mm: memcontrol: 32-bit nr_pages truncation in dmabuf charge help=
+ers
+--
 
-syzbot found the following issue on:
+commit a5e6165b3e0444a33f57a14736c2174d7c009944
+Author: T.J. Mercier <tjmercier@google.com>
 
-HEAD commit:    05441d697f7f Merge tag 'cocci-7.4-rc1' of git://git.kernel..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=17bcaca1580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=1cf189394a856f11
-dashboard link: https://syzkaller.appspot.com/bug?extid=4324f771847cecb27c54
-compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=14423cbe580000
+memcg: Add MEMCG_DMABUF accounting infrastructure
 
-Downloadable assets:
-disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-05441d69.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/0edd3964be19/vmlinux-05441d69.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/84d6d8dd5648/bzImage-05441d69.xz
+This commit introduces the MEMCG_DMABUF stat counter and helper functions
+to reserve, cancel, and uncharge dma-buf memory against a memory cgroup,
+tracking the active charge via a memcg pointer on struct dma_buf.
 
-AI-generated root cause summary:
-In mm/shmem.c:shmem_initxattrs(), the initial reservation of inode xattr space
-(ispace) from sbinfo->free_ispace is gated by 'if (sbinfo->max_inodes)', and
-subsequent per-xattr subtraction from ispace is also gated by 'if
-(sbinfo->max_inodes)'. Because sbinfo->max_inodes is accessed locklessly and can
-be concurrently modified to 0 during a remount (shmem_reconfigure() with
-nr_inodes=0), ispace can be reserved when max_inodes is non-zero, but fail to be
-decremented when max_inodes becomes 0. Consequently, after all security xattrs
-are successfully allocated and added, ispace remains non-zero, tripping the
-WARN_ON(ispace) assertion.
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 856a7d07586cc..e53dd7eebc3b5 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
 
-full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=4324f771847cecb27c54
+[ ... ]
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
+> @@ -5658,6 +5661,73 @@ void mem_cgroup_flush_workqueue(void)
+>  	flush_workqueue(memcg_wq);
+>  }
+> =20
+> +/**
+> + * mem_cgroup_reserve_dmabuf - charge a memcg for a dma-buf allocation
+> + * @memcg: memcg to charge (may be %NULL)
+> + * @gfp_mask: reclaim mode
+> + * @nr_pages: number of pages to charge
+> + *
+> + * Charges @nr_pages against @memcg. Call this before allocating pages so
+> + * the cgroup limit is enforced up front. On success the caller must
+> + * finalize the charge with the MEMCG_DMABUF stat update, or call
+> + * mem_cgroup_cancel_dmabuf() to undo it.
+> + *
+> + * Returns %true on success, %false if the charge would exceed the limit.
+> + */
+> +bool mem_cgroup_reserve_dmabuf(struct mem_cgroup *memcg, gfp_t gfp_mask,
+> +			       unsigned int nr_pages)
+> +{
+> +	if (!memcg || mem_cgroup_disabled())
+> +		return true;
+> +
+> +	if (try_charge(memcg, gfp_mask, nr_pages))
+> +		return false;
+> +
+> +	return true;
+> +}
+> +EXPORT_SYMBOL_GPL(mem_cgroup_reserve_dmabuf);
+> +
+> +/**
+> + * mem_cgroup_cancel_dmabuf - undo a dma-buf charge
+> + * @memcg: memcg to uncharge (may be %NULL)
+> + * @nr_pages: same value passed to mem_cgroup_reserve_dmabuf()
+> + *
+> + * Returns @nr_pages of charge to @memcg. Use when the allocation fails
+> + * after mem_cgroup_reserve_dmabuf().
+> + */
+> +void mem_cgroup_cancel_dmabuf(struct mem_cgroup *memcg, unsigned int nr_=
+pages)
+> +{
+> +	if (!memcg)
+> +		return;
+> +
+> +	if (!mem_cgroup_is_root(memcg))
+> +		refill_stock(memcg, nr_pages);
+> +}
+> +EXPORT_SYMBOL_GPL(mem_cgroup_cancel_dmabuf);
+> +
+> +/**
+> + * mem_cgroup_uncharge_dmabuf - uncharge a dma-buf from its memcg
+> + * @dmabuf: buffer to uncharge
+> + *
+> + * Reverses a finalized dma-buf charge. Drops the memcg
+> + * reference stored in @dmabuf->memcg and clears the pointer.
+> + * Safe to call when @dmabuf->memcg is %NULL.
+> + */
+> +void mem_cgroup_uncharge_dmabuf(struct dma_buf *dmabuf)
+> +{
+> +	unsigned int nr_pages;
+> +	struct mem_cgroup *memcg =3D dmabuf->memcg;
+> +
+> +	if (!memcg)
+> +		return;
+> +
+> +	nr_pages =3D PAGE_ALIGN(dmabuf->size) >> PAGE_SHIFT;
+> +	mod_memcg_state(memcg, MEMCG_DMABUF, -nr_pages);
+> +	mem_cgroup_cancel_dmabuf(memcg, nr_pages);
+> +	mem_cgroup_put(memcg);
+> +	dmabuf->memcg =3D NULL;
+> +}
 
-------------[ cut here ]------------
-ispace
-WARNING: mm/shmem.c:4451 at shmem_initxattrs+0x3f5/0x650 mm/shmem.c:4451, CPU#3: syz.1.18954/2882
-Modules linked in:
-CPU: 3 UID: 0 PID: 2882 Comm: syz.1.18954 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:shmem_initxattrs+0x3f5/0x650 mm/shmem.c:4451
-Code: 03 80 3c 02 00 0f 85 5d 02 00 00 48 83 3b 00 0f 85 fd fc ff ff e8 6b 3b ae ff 4c 89 ee 31 ff e8 01 36 ae ff e8 5c 3b ae ff 90 <0f> 0b 90 e9 dd fe ff ff e8 4e 3b ae ff 4d 8d 7e 78 4c 89 ff e8 52
-RSP: 0018:ffffc90007eefbb0 EFLAGS: 00010293
-RAX: 0000000000000000 RBX: ffff888032b8d818 RCX: 0000000000000000
-RDX: ffff888030c3cb00 RSI: ffffffff82602984 RDI: 0000000000000007
-RBP: ffff888023be9000 R08: 0000000000000000 R09: 0000000000000053
-R10: ffff888037378973 R11: 0000000000000000 R12: dffffc0000000000
-R13: 0000000000000053 R14: ffff888054123400 R15: ffff888023be9030
-FS:  00007f7a3de3d6c0(0000) GS:ffff8880d477c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f7a3ddfaff8 CR3: 000000004e80f000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- security_inode_init_security+0x242/0x370 security/security.c:1384
- shmem_mknod+0x2ce/0x480 mm/shmem.c:4039
- shmem_mkdir+0x31/0x80 mm/shmem.c:4094
- vfs_mkdir+0x36d/0x8a0 fs/namei.c:5428
- filename_mkdirat+0x4c4/0x630 fs/namei.c:5461
- __do_sys_mkdirat fs/namei.c:5482 [inline]
- __se_sys_mkdirat fs/namei.c:5479 [inline]
- __x64_sys_mkdirat+0x89/0xc0 fs/namei.c:5479
- do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
- do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f7a3cf9fb19
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f7a3de3d028 EFLAGS: 00000246 ORIG_RAX: 0000000000000102
-RAX: ffffffffffffffda RBX: 00007f7a3d226270 RCX: 00007f7a3cf9fb19
-RDX: 00000000000001ff RSI: 0000200000000800 RDI: ffffffffffffff9c
-RBP: 00007f7a3d037b70 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f7a3d226308 R14: 00007f7a3d226270 R15: 00007ffe3809a618
- </TASK>
+[Severity: Medium]
+Can passing a 32-bit unsigned int for nr_pages in
+mem_cgroup_reserve_dmabuf(), mem_cgroup_cancel_dmabuf(), and
+mem_cgroup_uncharge_dmabuf() in mm/memcontrol.c (and include/linux/memcontr=
+ol.h)
+truncate 64-bit dma-buf sizes?
 
+struct dma_buf stores size as a 64-bit size_t, and in the following commit
+("dma-heap: charge dma-buf memory via explicit memcg"),
+dma_heap_ioctl_allocate() -> system_heap_allocate() passes a 64-bit
+PAGE_ALIGN(len) >> PAGE_SHIFT to mem_cgroup_reserve_dmabuf() before
+entering its while (size_remaining > 0) page allocation loop without
+__GFP_ACCOUNT.
 
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
+If a userspace caller requests an allocation where len >=3D (1ULL << (32 +
+PAGE_SHIFT)) (for example, (1ULL << 44) + PAGE_SIZE on a 4 KiB page
+system), PAGE_ALIGN(len) >> PAGE_SHIFT wraps to 1 page when converted to
+unsigned int nr_pages. try_charge() will then succeed against a small
+memory.max limit while system_heap_allocate() proceeds to allocate
+unaccounted pages using the full 64-bit size_remaining.
 
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+Additionally, in mem_cgroup_uncharge_dmabuf(), passing -nr_pages to
+mod_memcg_state(memcg, MEMCG_DMABUF, -nr_pages) (which takes a signed int
+val) will overflow when nr_pages exceeds INT_MAX. Should nr_pages use
+unsigned long (or size_t) across these helpers?
 
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-v2_2023012=
+3_tjmercier_google_com-v4-0-1819a017000b@redhat.com?part=3D1
 
