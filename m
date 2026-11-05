@@ -1,146 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9589A606A901
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782F4606B551
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZezyzzF7
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=IlDc2Fvh;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=vvDSWJYG;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=IlDc2Fvh;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=vvDSWJYG
 Received: by kanga.kvack.org (Postfix)
-	id A07826B05B4; Thu,  5 Nov 2026 06:52:13 -0500 (EST)
+	id 8A8EC6B05B7; Thu,  5 Nov 2026 06:52:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B7866B05B6; Thu,  5 Nov 2026 06:52:13 -0500 (EST)
+	id 880886B05B8; Thu,  5 Nov 2026 06:52:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A6F76B05B7; Thu,  5 Nov 2026 06:52:13 -0500 (EST)
+	id 770136B05B9; Thu,  5 Nov 2026 06:52:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5840D6B05B4
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:52:13 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE0B3A8583
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:12 +0000 (UTC)
-X-FDA: 85400902104.17.4DF2900
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1D976140008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:10 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZezyzzF7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 47D026B05B7
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:52:54 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DAAE91A09FF
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:53 +0000 (UTC)
+X-FDA: 85400903826.14.9298BDF
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 963A040008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:51 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IlDc2Fvh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vvDSWJYG;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IlDc2Fvh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vvDSWJYG;
+	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793879531;
+	s=arc-20220608; t=1793879571;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iw61JVpfIKVjEhkIHEUqUjEP2S+EN2i3Q4HRmPwDDaA=;
-	b=nCpW1YrJtbolPsql5QL6h5rkTntzu+souBaGbJO2erBaQpLfk5q11hMazC/E2wa3/UshUi
-	YGba08W7/lcKQlHlRXAn3gHCNed2Xi3QBrx06pJTon0iuMEU7sWjUaFs8KZLLEG1e/Abvm
-	rdri4iOzPLak0mcLwMyY8SQfg5B0n6s=
+	bh=XTBVvV1llMrY8oPUgGAOljMGttnFmdc1n4iSvCofGvk=;
+	b=wOxb1sXtyXKyFBDrtGBxVbN43jondLEYtCYe71+PxfMtuwu2cEe1DsvYQuyDuJp+Sj6kXk
+	0rVdOOzqg3w+j0r2vpWVQ0HeT7eF1IM0LihG28ZZq0XkBl+R3I5ycyWgvld2OWRjk9eDj0
+	cm0Z0lHMTRjMJLaZ/HDGJRAlBuUkA2Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793879531;
-	b=Ut5sTkKoFnumGrbNpeq6cqTVbWa+NpBZUYREw0l4wcWGJbNE9kmZvjvpP3ypRdud/giO3z
-	iNpxEt27Xbb7IeBlQBtnqYG1JpXS490U2DTNkktTn8HTSecow5XCSEVww0gt0j7j7Z6P+m
-	nse4fO/AqH/7hTZiOuhqGruqPeFsi4g=
+	t=1793879571;
+	b=Outue1FtaNlnni6h6Sd3+2pL6hk/CNpAZkW1jDCUkrNvfCcAxfTjORxDLXwfyOllNp16qM
+	4f5U8s5klaVwnKJLRPweqt2TaWZUv4EpZluaGEl4RAMZq0AZKrYxAnm1X0iwZW4UKmERzi
+	u+62LAIsmWFRh25FYNyhPX8HZBAB79I=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZezyzzF7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 486D041FF9;
-	Thu,  5 Nov 2026 11:52:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4F71F000C1;
-	Thu,  5 Nov 2026 11:52:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793879530;
-	bh=iw61JVpfIKVjEhkIHEUqUjEP2S+EN2i3Q4HRmPwDDaA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZezyzzF79xxs58ivikY6ldetzXBC/dypds00DxgP/L7ZF1hVsuYELq9LX0gF+4+vE
-	 MT7+PFkpNgafCMv82vJCf/3SIAiQucZUl2DBLvuXIkc9REvx8a0+/n/ooS2bq9+BwM
-	 3Jythe0bz8SKxemB0D4I8HnaLLlvOFWv2+6N9kD6vO0ppXP3gfxkFOuEpTXLhlSmTh
-	 DuZ/B0lVDQ1DPw5eFroVAjdQvYknBxF26J6fnD++4sxGneiqekTUVl4elkX1UbHFdU
-	 iaZ6urAVlo0fiYNNQjXWtufSkNWTYfA/6/p0Xms/MkikCP17CquHeQNujhnc1X9Drh
-	 rX+GbVI1X26kQ==
-Message-ID: <b45f79bc-5a3a-430d-8a64-5a1ac6097d25@kernel.org>
-Date: Thu, 5 Nov 2026 12:52:04 +0100
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IlDc2Fvh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vvDSWJYG;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IlDc2Fvh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vvDSWJYG;
+	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 090681F785;
+	Thu,  5 Nov 2026 11:52:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793879570; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XTBVvV1llMrY8oPUgGAOljMGttnFmdc1n4iSvCofGvk=;
+	b=IlDc2FvhESlDd8QXX4z/a9lq2dVMhaxW+HuiTJo6x+4vVVqrVz8k3f/Wr+Mze0vHlceBFP
+	JaL/+k/+YFdhkL/6vCq7Bg2Jyl3kffnaUQoNLw7CYQNpyydj2pmW97ukL1Mouho+skqqWs
+	9mNCq/qpRDGAphiHFTSprMwCLm6e0Vk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793879570;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XTBVvV1llMrY8oPUgGAOljMGttnFmdc1n4iSvCofGvk=;
+	b=vvDSWJYGu2lVXhJVWrbpDbn5nEUGh3VUqLxrYRbdmdLlIIqOha94poMzPs0o88aMpXXTQC
+	GveF9mKsY1fCOgBQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793879570; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XTBVvV1llMrY8oPUgGAOljMGttnFmdc1n4iSvCofGvk=;
+	b=IlDc2FvhESlDd8QXX4z/a9lq2dVMhaxW+HuiTJo6x+4vVVqrVz8k3f/Wr+Mze0vHlceBFP
+	JaL/+k/+YFdhkL/6vCq7Bg2Jyl3kffnaUQoNLw7CYQNpyydj2pmW97ukL1Mouho+skqqWs
+	9mNCq/qpRDGAphiHFTSprMwCLm6e0Vk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793879570;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XTBVvV1llMrY8oPUgGAOljMGttnFmdc1n4iSvCofGvk=;
+	b=vvDSWJYGu2lVXhJVWrbpDbn5nEUGh3VUqLxrYRbdmdLlIIqOha94poMzPs0o88aMpXXTQC
+	GveF9mKsY1fCOgBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CB5FC134F4;
+	Thu,  5 Nov 2026 11:52:49 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FWlQIxFu7GoAAwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 11:52:49 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 45F61B6C1; Thu, 05 Nov 2026 12:52:41 +0100 (CET)
+Date: Thu, 5 Nov 2026 12:52:41 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 18/38] proc: don't WARN about a name that is already
+ registered
+Message-ID: <qaqawx4ajooiiqzu3ngxc46khpnq74u6sl5tz6az4uyssxzly4@346lsx342het>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-18-59422ed3e465@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm, vmscan: make kswapd unreserve highatomic pageblocks
-Content-Language: en-US
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
- Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, JP Kobryn
- <jp.kobryn@linux.dev>, Frank van der Linden <fvdl@google.com>,
- Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
- Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261104-kswapd-highatomic-unreserve-v1-1-38be5106adf5@kernel.org>
- <75540cfc-0577-4d91-9369-d1c4fe9c3096@gmail.com>
- <76431b4e-27b4-4922-bc59-bf97516b40fc@kernel.org>
- <e5865932-ccd9-4f7b-bb64-e05a6f7a60ce@gmail.com>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <e5865932-ccd9-4f7b-bb64-e05a6f7a60ce@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 8zuzmxeywb7nxmom53as8h36j65uj976
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102-work-procfs-bugfixes-v1-18-59422ed3e465@kernel.org>
+X-Rspamd-Action: no action
+X-Spam-Score: -11.51
+X-Spam-Level: 
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 9zgisfdzpj74nauhjfehmr4meoz68nzt
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 963A040008
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1D976140008
-X-HE-Tag: 1793879530-510817
-X-HE-Meta: U2FsdGVkX19sEHC8EKd8FQwbaZi1UP3MQNIYeOX3wwwTRR8LOIZWj02E1C53g99lUr2XdpceW8vmaAXD11nu1Vz0y0owPTSTOyKx4yhzdPRBf1lrTdibpDpPt+oaTXQfSMsC1EZsMUVuql3XBe7wTsTyFuvzR60B4spUeLLSBt0tn6yyb7Cxys8PC6DEd0/3wG5LpL+Vk5Aomeq7j6x0EPiXP4+0WjOvMVhPAglOW1uvgag6N7rJ1ieEkMDjPsCukQwHxw8EkJ1sZt8nPaTTyOAw4QBypCvNbhYyRUG9ryVD484ZliGccPiP2I6KdV6JtbCcFaKPaiu1ezk2lC0GK0IK7YCF/Z/rJGmR4pwsrMI1uS38s4AwNq5L52yJ6T/78QXAGCIIu+pmi0ezpRcnu0nYEafALPsDWlzUoqNV/VEkHusSmX5yO4WnzaJW1P35XtCq50yIbK/XbZXS4ft0xoU9rn3Bt7FIrG58OB4s9olO4jjkNqHps/AC7YVD/V9omsYqTQY2pv+IRKHRMW9prlBiYVC9taiCOg5ITa8euYSfaZR1Crb+UVorMKMqxloCViioPSrrN8XLodxbIJw+zCMbqBxEIALLxtNT++V7K4sBzZMe0EIy1g968O8PO+BaicnDhCK9jcd+hE6iNEfKkjpJhHhnhISq0ogJ6EjHmO0PifIP4vGTpsAYj0mI4YXy4X8NYyMr6568Ary6LebxbxElp7C3sYX68aL1LJ+9eFAv6XEn8FzocfRdg0fIS6zvdmanNR+k4B59I7b7F5Uj65H717M67uaT0zIVkeexNEca+ug9US3KeBxE+cNnuPn/m0JXGZNFuqbM/ltap0VZplxTXpS1If+s2ISOnoBT05PW0GXSkPuSXFupqsW1h/jwXyFAG7+j2Z2wAxTu5nwaJmxtuWaaQsKwTpldUPxBUDIr5B4dD8awsbL6rGO9PusGspTDqmp51vZL/g5vWQ6
- q3Q+v0cO
- 91k5fZVXrrJAXPg+nLjsqPeoXw5mLPHxj+7XDTa8G8bwUCyiuKWcJ8FLzWMRAz9/fDu88LTsecPAJ8haiDKaMGzhle7D9MovBzo/oAP8q/1ujTP/9UMpTH812NNdDxGiYU61gh32ScGczmDWQBaMGFZ3X9l4LvlgoGeeOKNK/EjArlVUHetlKhEqv0Zz+YJLwL6cKGG0+wHLjwCrSoomcDbznVuJIdmHLTuq5B25OGrXCdNplk9HDDE4hgsoHKZtV6zpq
+X-HE-Tag: 1793879571-778827
+X-HE-Meta: U2FsdGVkX1986i1aa/4j5eJW09TwCJrD9Cv1kE8p9fdby7DhEUbsAkLbperyfrUQybkIfDm3aVG5JwcwSCuGO+vF4UKmgS3jvb4Pdfe5J3+Fko3XkzQEi+QG7Tup4JRfWUmfwj67VUZr2beJDFFA2t3/mFLgaCLslnK/xAIZgKYt3Mmyw58FlfS0m0LBur/h1+0L+W9m+2T0A0MDl8CghfulYooAjGSvGbAkqVAZEl/JLTiW/G3gvg388h/uGGXKc/cYdCg+a1Lwdorors+U56+HgxPuoLEZr/F4HaENgdrRWhKYw/EQ8DsnNZzHWrqlFLG8DB+6ZoGeFeoV4gnYMrBwgBLzpok5pOL0X4SHAgXdlyGNPdCCkUEUCRPPCbHjUJELx6U79ARAthh+P64lGmITelyhYXVBF5pSrr+tB7SgItF81hHHQToM3PYPpjIbhT7mBNYLqIkI3eDUH9wITakw83NMNHjKelSOcrTsVfcPAfQURM6xzfrKImzETiDtXIxpw9rPOP6cqMRkW7JN52wYGnp4y31SsQwpL0lDDwzKHU2cLiIkpm9QK36L98nFH5nUu2kk/LOpvzMLgMZ92SzAcogK+XBMGaMU7+3oV/h1HddJGdrH7eCfhvqduibrAaZ/R+lUMcU10qEiBlMm/dwgELg4cG0je5li3NMkTaRPbk4mboDR5Td1rkzHDVkg1UZNDbQpUGLfs2PR1B2rH4/6gfJElJ4HLnbb93QMWgPkBS8o/6S7/DGo9FLPbNjLUZj8R8VnEui+LU9F1y5NIekpI8P94aKS2JYMVJCd1funXfsXg9ijU9EWxwX+aO0hFBzrjZcRT1tk3USFXhrsNJgO1MX+hSAjdp4A5ifyAI0IOt2fumDPtizl1M3XnUAmoofA1QHPia0n57W+SoftsF+DnswNLQDNJxdLKLPisf5W7SlGBhhJZ7MDy4aP0MS6k2clg+3ABr4aZLh5Lj0
+ zw50wN0y
+ 6HR4nBSm2gFYz1o1HajVgAe97AUctX+SI9D8HlELO1WbXgflF4ABlK+qDKw3lsRbSLT1J2Di6+ljDurH8y56Ss0H5pFDSSaJG+vsLqOsuw1yxcCwhVV/WkrwGdK2Uc0s9MECIq59H/TihHgqezwkBsH2Xbq1dSMn970ChO1HN7fIt95K+S6tLTV5rKsGQ+vgNWgO48GL0CtsVy9aN9ik7x9n+BixxWkUZ4nMZu/EWfHoqLYPeSq9jDQ8BIuD8Bm635YDanJIDvtcO5P+BCx+E9Ge91ZYHLi+Z7vFGUhdmwrz4H2jPeTY4LKUsBQrA9hXmkx1fraSkyNn+/HpM6MGAaPF73gun639KFNHQwXwjWF7qasu8wLUMmr1Cks56WUmBNBt6zhi5nTNJh8DOKfm67u78SF6KDWFy1j0SJA8tBGGpsE5mUf2X8fZYYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,39 +162,76 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 12:43, Jose A. Perez de Azpillaga wrote:
-> On 11/5/26 9:02 AM, Vlastimil Babka (SUSE) wrote:
->> On 11/4/26 22:56, Jose A. Perez de Azpillaga wrote:
->>> On 11/4/26 7:38 PM, Vlastimil Babka (SUSE) wrote:
->>>> Hook this highatomic unreserve to the moment we are increasing kswapd
->>>> reclaim priority, as that is when kswapd is struggling to make progress
->>>> and it should roughly match the case of direct reclaim failure.
->>>>
->>>
->>> isn't raise_priority true after almost every pass at DEF_PRIORITY, stuck
->>> or not?
->> 
->> Can you elaborate why? At least at first glance, kswapd_shrink_node() should
->> return true if it scans the requested amount of pages. So I would assume
->> that although balance_pgdat() will do multiple iterations to reach high
->> watermarks (because every round of kswapd_shrink_node() will limit itself to
->> SWAP_CLUSTER_MAX per zone for sc->nr_to_reclaim) this should not be raising
->> priority if the rounds are successful?
->> 
+On Mon 02-11-26 15:21:33, Christian Brauner wrote:
+> proc_register() WARNs when the directory already has an entry of the
+> same name and fails the registration. Callers that pick their names
+> themselves should never get there but some take names from userspace.
+> pktgen creates a file for each device a writer of "add_device" adds,
+> named after the device. A device can have any name, including "pgctrl"
+> or "kpktgend_0", the names of pktgen's own files:
 > 
+>   ip link set lo name pgctrl
+>   ip link set pgctrl up
+>   echo "add_device pgctrl" > /proc/net/pktgen/kpktgend_0
 > 
-> it's max(high_wmark_pages(zone), SWAP_CLUSTER_MAX) per zone, so the sum
-> of the high watermarks. by default that's at least managed/500, while
+>   proc_dir_entry 'pktgen/pgctrl' already registered
+>   WARNING: fs/proc/generic.c:404 at proc_register+0x555/0x8b0, CPU#0: bash/241
+>   Call Trace:
+>    proc_create_data+0x9f/0xf0
+>    pktgen_thread_write+0xd9b/0x1780
+>    proc_reg_write+0x1c2/0x3c0
+>    vfs_write+0x1cd/0xfa0
+> 
+> The files of a network namespace belong to the root of its user
+> namespace and none of this requires a capability. So once pktgen is
+> loaded an unprivileged user can taint the kernel, or crash it with
+> panic_on_warn, from namespaces of its own. pktgen itself copes with
+> the failed registration just fine.
+> 
+> So go back to what proc_register() did before commit 6c2f91e077f1
+> ("proc: use WARN() rather than printk+backtrace") and what
+> sysfs_warn_dup() does for sysfs: report the name with pr_warn() and
+> dump the stack. While at it, do that after dropping proc_subdir_lock
+> instead of printing a backtrace while holding the lock that every
+> lookup and readdir in procfs needs.
+> 
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: 6c2f91e077f1 ("proc: use WARN() rather than printk+backtrace")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Ah thanks, as usual I got the min/max logic wrong, hehe.
+Makes sense. Feel free to add:
 
-> DEF_PRIORITY scans lru >> 12, so it can't return true above priority 8
-> even when every round is successful. and sc.priority-- runs before
-> pgdat_balanced() is rechecked, so a wakeup that balances the node in one
-> pass still unreserves a pageblock per zone.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Yeah in that case it would probably be safer to perform the unreserve only
-after reaching the highest (lowest numerically) priority and still failing?
-I think it should still be enough to recover from the pathological scenario,
-which should be rare (but not impossible) in the first place.
+								Honza
+
+> ---
+>  fs/proc/generic.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+> index c560c96a64eb..ef804cd3ec45 100644
+> --- a/fs/proc/generic.c
+> +++ b/fs/proc/generic.c
+> @@ -401,9 +401,10 @@ struct proc_dir_entry *proc_register(struct proc_dir_entry *dir,
+>  	write_lock(&proc_subdir_lock);
+>  	dp->parent = dir;
+>  	if (pde_subdir_insert(dir, dp) == false) {
+> -		WARN(1, "proc_dir_entry '%s/%s' already registered\n",
+> -		     dir->name, dp->name);
+>  		write_unlock(&proc_subdir_lock);
+> +		pr_warn("proc_dir_entry '%s/%s' already registered\n",
+> +			dir->name, dp->name);
+> +		dump_stack();
+>  		goto out_free_inum;
+>  	}
+>  	write_unlock(&proc_subdir_lock);
+> 
+> -- 
+> 2.53.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
