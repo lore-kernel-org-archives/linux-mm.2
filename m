@@ -1,114 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A1E606A326
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4647A606A326
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IsAXF6eo
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=SI3iPrAe
 Received: by kanga.kvack.org (Postfix)
-	id 6B1F46B05B9; Thu,  5 Nov 2026 11:53:00 -0500 (EST)
+	id 68B296B05BB; Thu,  5 Nov 2026 11:53:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 689AD6B05BA; Thu,  5 Nov 2026 11:53:00 -0500 (EST)
+	id 662676B05BC; Thu,  5 Nov 2026 11:53:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59F346B05BB; Thu,  5 Nov 2026 11:53:00 -0500 (EST)
+	id 578146B05BD; Thu,  5 Nov 2026 11:53:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D9406B05B9
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:53:00 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0C878160B57
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:59 +0000 (UTC)
-X-FDA: 85401660078.14.8DEEF71
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 57ECF40005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsAXF6eo;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 33EAC6B05BB
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:53:10 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C53C740BB4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:53:09 +0000 (UTC)
+X-FDA: 85401660498.27.45664D5
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 1F304A000B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:53:07 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=SI3iPrAe;
+	spf=pass (imf15.hostedemail.com: domain of 3crTsagwKCOsPUeVfjVfRZNaTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--chriswiseman.bounces.google.com designates 74.125.82.199 as permitted sender) smtp.mailfrom=3crTsagwKCOsPUeVfjVfRZNaTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--chriswiseman.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793897577;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1793897588;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fRI/DkZV6dbTTbjQAyrbGlNtpsebatRCDLQei6fHCk4=;
-	b=jAhbCKd/vAC8mObUTnPmwfHF/N3KXI4XLl86DA1HTBA+cYuCf+0Dlk2waXfmPp+D7lPn6X
-	8VpTJxB8847Joh9M0NvS4/GhUHn6ck8LreBoKk+snpy+bzzT4AAQFFtKt575NaDt1k1auf
-	qyWPayUlUfAD2b/0eZl9pyvxrJ9Bp4s=
+	bh=WUR1yw/NzCt/ibiVDN/9/OoN1Hg4UhV1CJmzmryBLQU=;
+	b=tvxx/LVEDNeRn7HJ6sd0FEMyg2CgiK9IDZDgQ/8zpTXRW8UQU3NrjisU9GhsCflr9ltcCb
+	uCBwR5HYVxEH6CmgFsmKmFgrwB7LADK4JRSLs4l+qo0Pxzrbmcs0fYV2dhpOgIf/0GsQUf
+	EhvurSYwh9CzCy5gf6rUUE5gOl/SbSA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793897577;
-	b=b9bvB6pXlEDSlhTYKFuu9+8L1JK1UwWwKRb2XzD+fMOnqNWWHe+UOFUJYYFzLcl1tCFhIp
-	aQVR4R4xcJ5ZZPL9YQPt4YUFzobXDphuOnVwnnD4NpFzU3OFUaywS1wGVmGoiqS0xuQKp1
-	NUiVFWnKiczwUOcigYZkGCl1WmpuUEs=
+	t=1793897588;
+	b=VxVdEPiLaH91KfzZ83XLq3gma5YC9gW9l9NQALvsNYfgC3TOdVWPtsZNpjuZ1Dd1xEnAla
+	Fg5OivSYneSwIgseN3o8421bBQW6TlKZC88G6bctwQAMAAsKD9h/mbrj0PRSak10pEj+Z1
+	U0Gz/QSt1APWj1DYG9EaZlg7q7B9Rgw=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IsAXF6eo;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 909D44146C;
-	Thu,  5 Nov 2026 16:52:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256CF1F00A1A;
-	Thu,  5 Nov 2026 16:52:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793897576;
-	bh=fRI/DkZV6dbTTbjQAyrbGlNtpsebatRCDLQei6fHCk4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IsAXF6eoe4byQi/jxkSLQ8vVNL3PhxAWWzz4O5zLWDSKw/jIGom0f4FJ9ghfsvvwC
-	 WL+5W+X59istuuNxTponFzlP3Yx1ptNXMdoSBfYLkdUBNcrz1ch8zYXc2kRQSuS4Up
-	 UfAsHSvbKGR+llQ5roqFl9UI3++mGNcsq76NctSJT3wP+J57nrttbAy04v96epctyn
-	 rjj/Gamt0UErYYNYxKokOdi2ms9BxSgsiUDzVcNmhaxsFkxkT9p2EWLp79THqqpF8/
-	 c892/8Q9SDNr1X80xCLN3R7w8ePLGxaz+8vBRz5oL+QJlRryLSjD7vhGKToilEH7Ug
-	 vLJuJ1VLhIiLA==
-Message-ID: <sashiko-outbox-199552@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 14/14] irqchip/gic-v3-its: Preallocate VPE L1 tables
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QW5lZXNoIEt1bWFyIEsuViAoQXJtKQ==?= <aneesh.kumar@kernel.org>
-Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Baoquan He" <baoquan.he@linux.dev>, "Mike
- Rapoport" <rppt@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pratyush
- Yadav" <pratyush@kernel.org>, "Catalin Marinas" <catalin.marinas@arm.com>,
- =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, "Joerg Roedel" <joro@8bytes.org>, "Marc Zyngier" <maz@kernel.org>, "Marek
- Szyprowski" <m.szyprowski@samsung.com>, "Robin Murphy" <robin.murphy@arm.com>, "Steven
- Price" <steven.price@arm.com>, "Sumit Semwal" <sumit.semwal@linaro.org>, "Suzuki
- K Poulose" <suzuki.poulose@arm.com>, "Thomas Gleixner" <tglx@kernel.org>, "Will
- Deacon" <will@kernel.org>, "Russell King" <linux@armlinux.org.uk>, "Benjamin
- Gaignard" <benjamin.gaignard@collabora.com>, "Brian Starkey" <Brian.Starkey@arm.com>, "John
- Stultz" <jstultz@google.com>, "Mark Rutland" <mark.rutland@arm.com>, "Radu
- Rendec" <radu@rendec.net>, "T.J. Mercier" <tjmercier@google.com>, "Madhavan
- Srinivasan" <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>, "Nicholas
- Piggin" <npiggin@gmail.com>, "Christophe Leroy" <chleroy@kernel.org>, "Ritesh
- Harjani" <ritesh.list@gmail.com>, "Shrikanth Hegde" <sshegde@linux.ibm.com>, "Alexander
- Gordeev" <agordeev@linux.ibm.com>, "Gerald Schaefer" <gerald.schaefer@linux.ibm.com>, "Heiko
- Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Christian
- Borntraeger" <borntraeger@linux.ibm.com>, "Sven Schnelle" <svens@linux.ibm.com>, "Ingo
- Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org, "H
- . Peter Anvin" <hpa@zytor.com>, "Kiryl Shutsemau" <kas@kernel.org>, "Rick
- Edgecombe" <rick.p.edgecombe@intel.com>, "K . Y . Srinivasan" <kys@microsoft.com>, "Haiyang
- Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>, "Dexuan
- Cui" <decui@microsoft.com>, "Long Li" <longli@microsoft.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, "Vitaly Kuznetsov" <vkuznets@redhat.com>, "Andy
- Lutomirski" <luto@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, "Oliver
- Upton" <oupton@kernel.org>, media-ci@linuxtv.org
-In-Reply-To: <20261104164555.3555725-15-aneesh.kumar@kernel.org>
-References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
- <20261104164555.3555725-15-aneesh.kumar@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 16:52:53 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 57ECF40005
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: huw6mr8pc4xe4jwbouconw6ike8p64rh
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=SI3iPrAe;
+	spf=pass (imf15.hostedemail.com: domain of 3crTsagwKCOsPUeVfjVfRZNaTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--chriswiseman.bounces.google.com designates 74.125.82.199 as permitted sender) smtp.mailfrom=3crTsagwKCOsPUeVfjVfRZNaTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--chriswiseman.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-36ecd5db581so240189eec.0
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 08:53:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793897587; x=1794502387; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=WUR1yw/NzCt/ibiVDN/9/OoN1Hg4UhV1CJmzmryBLQU=;
+        b=SI3iPrAeYOLgWWbK9sRXA82MddU+N8957ynad/AvIC6qf6Ae7fLoIpBI7KzPbBUUJP
+         1T274KDVfqezlI3rRNr3FEMh2Dw2hYvF64PRBUyNIO0HqIuYo+8E4ygGpiUtArcbIT/g
+         HniI5sN40oM71L8LdxPWjtPT27ZL9jg9SWi/DMOcQchg79BudEN5kYt+C1IlnU7T8sen
+         L4VhO81ybAarLbJkjn/WHHkoeDh0vWCyVUSGioydQR25GUfbjlcTHw3wkFRYoRZBJYGB
+         PVzmjpFXXn9E+OBnQT15jI5L/T1nyh7acLxmurrMTCvFqiX4mxbVE7KOEYzUyRoapOua
+         CSvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793897587; x=1794502387;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=WUR1yw/NzCt/ibiVDN/9/OoN1Hg4UhV1CJmzmryBLQU=;
+        b=xSvVXYfm2l98B3a9VZX5HCrrzN1iGTLmpYVlvLocSBLPYHNIqusgcad64iIiLs/5Eb
+         T6DnkxmViXT1nnU0NXhUC0vgDF9iYVeB6zkCKHOFxPTXaH4/wrRwYqLifrGH2ITMtKon
+         Fz6RvtCKhbZN6DE2ZpLY9Bqp8TxAIu9zmOu5nFNpdGLSoCSJGjT9BZBc+LQF6jWt71XB
+         JlCkH5pT3+p28mCS1AcTIFfP++jKl3symhiH0krG7imm2CfBulezBOTX7o5SD4AX/3Gk
+         ETb+l5IK+g2d0BQYk1auh/aMr8Dop/26THVz/+AvWY3zxNS2cs9Tlynrc86b6rA4Q3yF
+         8KOA==
+X-Forwarded-Encrypted: i=1; AKwUvByIuqpB+8xK81xHbt9ux6K9RXMSH+NQAk5Km1MSUAsmY0FcQ57+BKC6kwZXRHJrDALiUYQ3moQOZg==@kvack.org
+X-Gm-Message-State: APuU4Z/8EQAHe4dvk4SHMyJd2afMmK8gcgRBtleSupHjjssMCMbH4f/7
+	p4fDL9dD46rwfQKuDiLLvXBb56o+Rts/CWcMax4Kn53AY0FnbQ+4vkGn+atb3udK494nu0k9M0u
+	e1XIm7xbD3QvhbHJ2/wLbEtKzn2gkiQ==
+X-Received: from dyad26.prod.google.com ([2002:a05:693c:835a:b0:36a:de0:d28a])
+ (user=chriswiseman job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:7301:fd14:b0:36c:cd7a:dd8d with SMTP id 5a478bee46e88-36ccd7ae336mr7157275eec.20.1793897586257;
+ Thu, 05 Nov 2026 08:53:06 -0800 (PST)
+Date: Thu, 05 Nov 2026 16:53:05 +0000
+In-Reply-To: <CAO9r8zOY1E7gCYnJZAfKvyHcbj8e2WVuXMqsaPGPsKR4-9itsg@mail.gmail.com>
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+References: <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
+ <anXJ-5_vO7-toSe1@google.com> <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
+ <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com>
+ <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
+ <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
+ <18e4ebf806e937ec.3137322e32332e3235332e313736.1bf52a.0000sendgmr@google.com>
+ <CAKEwX=PFdgEbba+H3fEnJFDnfkxCTsvuHEb4numVwJRaiMgwKQ@mail.gmail.com>
+ <179384102494.19062.12740032892044628762.b4-reply@b4> <auwOBaRtM9p_Wxfx@google.com>
+ <18e529a5ab0738f7.3137322e32332e3235332e313736.873cb.0000sendgmr@google.com>
+ <CAKEwX=OUt4=wqDLiPvYuiTnkpuZYnszkuNQScNR93hHhVPRRGA@mail.gmail.com>
+ <CAO9r8zMMGem-LTJQseT5xSSBjfr3UX2gzG_ftpw6+KF8m9v5yw@mail.gmail.com> <CAO9r8zOY1E7gCYnJZAfKvyHcbj8e2WVuXMqsaPGPsKR4-9itsg@mail.gmail.com>
+Message-ID: <18e53459a8013078.3137322e32332e3235332e313736.12c7b6.0000sendgmr@google.com>
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
+From: Chris Wiseman <chriswiseman@google.com>
+To: Yosry Ahmed <yosry@kernel.org>, Nhat Pham <nphamcs@gmail.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, Xueyuan Chen <xueyuan.chen21@gmail.com>, 
+	Xueyuan Chen <xueyuan.chen@vivo.com>, Barry Song <baohua@kernel.org>, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Chris Wiseman <chriswiseman@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: c4znu5ja7awqurdp895xdj9ktx9qi1g1
+X-Rspamd-Queue-Id: 1F304A000B
 X-Rspam-User: 
-X-HE-Tag: 1793897577-907328
-X-HE-Meta: U2FsdGVkX19RxpEvYowQ/Fi8CVU6lUivEdcFAL5tZ4mdMIO5/kBH35v6jGvi6MoePLa4JJOdmaOA5EVTn/ClpYPn9J0IAlZemcWGOw8I0EbV2Hs/YjZONx4bwqQm1Qn7f4oAVc0UbAlOQAG5BQNp+neePQTwN0jmVYe+n07gprkOPGhCqNPEVwFIb+zJFn33DUzicl+qGQBQuTLzDjrFU5Vm1J0HkAFO+G8St2/740ALgHCBL2IsSVL6s6iJAdJwvdczWGrqvQrNztVaFlLwS4TSQXSeYAoLWo5iwr03UFRx+aqAXJjeh4hdlGvH25q1q+Yxcqc6YXhqavpQGcnCCs/cV1YNYiLQ62p58bL8IU2tHXmhY7tFO93S+SkhoNPJIEmtrTnmg7K8xb6tZBp2jdmxPWq2xQi231//anpYlKt5Ssihq0uBw89dHPXF2suCY/7ayodTWqiJChhGv6/68czv7UaZumziSxV3FoIoeR4UD6wktEBQEJ4Xnb7FuBEdUAS3+G7N6r2PAECtMd47bNgDSKQ1HALcAENC3PWLiqIn7rlB6CsgGk1iT+5JGTJ00yd1tzlqqe4fTAmkv9hYllxeLHd7zN0/KyQ9H9EIgY3/baR6ghbjGfh/eteJEERzA6tvHur1p0SlGhFkiDySrNRHIo0ZnFO3PHedG6f8lJmVn9F41uVUtmF+vzZsx92OdTqyTgfwGpsIsGJIP4fE+bBUSgvBMBkFe7XlmfNGRjZ/MVYhCU2nmYDbMXsCPxfHcn8NRFNkPxZ4d4omUdycu19dCzNXlMLOCdroqOjTCbO2zjU1ccApvODW2+/PVTamVbNq5BPLabVGEcolnesakDgTj73kUg5Y0BfrsNlORMKr8URJgGaA0b9npRT6fa6jOEw/om51A/YCDVMDThwYllRwueeqqo/MUTDr2hWBE50/9gwW6mhLLVoTXKHezWVN2To/t+Lkw0SHQ2c9wKj
- mcF7EMYu
- 2PUMwBUkK5ke9aocqdir88MQ5K3ERGOo6LqJWfUDKCJG99a31IB7DtVZskevPhmUkZKJo6r7RJ+GbYFSEbjDLGmG0HY+X5Dh2ugMvyYbhC3r+17ZciLnUFOAZa3tMk/JpTh3yrzbdK8eEPFDqw6KdwZsSvLdFnea+VH6EhfB9UDfwrSpI8VaBJ1fmJ3PtYybnJ/LoChxlYbGMloJrWzj3YyOL3c012amt7OqtoEetP7oq8m50FrwyG7xAdhYe+i8qY670mVKJENpZStvj+gKr28qpAIxlBgo1r8d3YCgrl12x5QZflZPt1bXi485q/eT8X7sudmPDe+rvEQy4vRJH6GLQsaKZTXlS0MBDO0hphMn11SWeIaObNom4v3rn7PCna+fslrlOQ5ZiYZjHtmGVQ4f/2bXaCUcyybGFgj7hcwsmrG/n9I+Vio4jV3slCw7C1VYUCCGwkaCR9Rfq3ohA/9Rs002DsTQ2iL+1XfLlPbDMOqMRoAitPoVQr5C/m0S1iM+5dNF7AYaLDBfz9kUcmxFRHABY+UEp6cGdB09mbwUiyCbBuqzhUz+CnADPNjO/gpRkpITIEYZN3p9dZd+c0CMUC44uq6RBPokeFC3+JkudqRYCNayQEreOkXdgdBlxqrt/g5+L9JlbUY+TIkBX6+4EB8UJXG6a5Debk/2wVqFIcXdIW3IEZECNiJiU+ggDrpyFEr45BnHYFV0=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793897587-79994
+X-HE-Meta: U2FsdGVkX18F+RodVHdnSdiJ8KdAe/R6roCHMP7GTvQrS/9aaxHZSRVOB+4UJATZkMzWEAsCcyxNs/Ay9hzCPEzRveMrKPl3qDRzp+PDPFbUD50Y7muqMyd6ncwFWanxxHI9QL1chP4dEGvJFbUeZF/qAf2WAtQOu0Xn/cr1mMVeXh0bosSuNTKsOZVuNZ7OySMzeIAoElP9n2Gy46IRq7oFuyfMoveeezsWg441MZdjdiaznf3jIBdNHcX0tNHPMQ+gsbCyYe14P3Lx9tzZxaFf82YaFXqBigooWQqOR30Ff7V0r8XWIowMuwcId/TlSjlQT7fHG25473353DDcefa9xOZYmmY8nMMYrGKZKotksvgoAz6QfIy3igr/bgOmiHRp6wQp1zzjeMjFJ71FbkFjFMDEfXLLQNEWDWv0wxkQDWHsoJI9HZAP14VJRJXglbYETE72OXv1OI+xA4QObL3zL5pnjmY7877r/0BQSk7KelCeftC3kSXftHNTb0QyEMchbSTyMnThMvOJrrBj9kefBZCE9N58DKqrPYQ6cPOjoB5p/TEK4AEY9BytlEaMB/YQ+x+EcdFjtivOLYSLENIjFlSDAzfYct7THlmIKl7AQGFeBzfV5VKxrxht6NazhD+fKxn8Sijms2N5YCvDRaH2JjCJc4/I+kmwMQpQw+JXU2CiXcy7ZzrnpuANduY6SL1d+NKnf6FQ2x9cV5mUZL2lD63g56jLI/RSFeZlJ/rcRM6EFf7d+fsBXlmfkvR/DwtPDsEm3F6b6Ginp8jhtLbDO/fQgjKdi7zl5vPXpkBJyt9tFkCkK4iqHj5u6Z5si1lBpxtyuZozpaTcVm5FLT7EAbx5Y2Bls4ipwKQdR/gNdVWQPHkjws2NpQw+yioHXyZTAhxr4RWFdy/Rjq5A1jicfeuhbW4qj8yI2QnCD4sOHJYz5vtUreRF6D3xfw+/B/j6tS5pyrbHbcnCf0K
+ Aq8/KXqG
+ ga06J0DdzjsBiu2cq0U0EHZiNRRStHKQyFUzDn8q2VDW8hnFZJA+r28fT6Eo2jLJfWxXF2cRtyNPtE1IAjIUVQD25J+xghnF2aypr8FE+yOzr88YRusy/P+A1s/posrJz4we6vBq+4zgRWI32k5WQtHaYNfvTjfZW3ixQocPD3pD6Z77t+oozjwrpf6oH1oLqlWlO2sZCmfZ+GVmoaXggisOYzyDnnJHddZwC8AVvRTgaXASBAk70zdgJRqjHwDFPunInIBqSlc5D3Ha8C0rntCLQ8c2jQE6Q+b9oKGo7M77eJpR3ndlkvyMXgGJMUG8BVw/xDy87VkWKUYkncaxjxhz2R7Kv3kVU/8nA+a3TcFWbE9sAYl5CE+xhLmokpB6ANLs0WlbDsVU6B3kxAt0fVEWt3ZUmkO2iGkWgiYuE1TlJzejHXsXJWzwbSsgozWklAmg9M/Na71wP7kW2LTosKvSEqz49WKVP8ZjeXu7HLLJsLpr9sNro6kGJYjAkeTQVS89+tAGpTIJJB3wdxCbCQi1TxDIWVaP5kMBWmUOkyWpgPWVscdOxER2FAvSdrsUYRQq+JfQqSeyB/9zXJTKrlomWXSp+e0oMC/VKPjVrhHXWF/lM7+XLfjmGGoz/fex/B22hNfO+u7wiLl5O6nREzqIKl92NB1qq5y/lKWZgASacdH8GIfoYar2t6vSHZYu528fUy57XSzrqVypgxbSROTQEEJ++q8miiUlzsbsJAZVmhiU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,125 +124,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] irqchip/gic-v3-its: order mismatch in allocate_vpe_l1_table() on I=
-TS inherit
-- [Medium] irqchip/gic-v3-its: memory leak of vpe_table_mask in allocate_vp=
-e_l1_table()
---
+On Thu, Nov 5, 2026 at 7:40 AM Yosry Ahmed <yosry@kernel.org> wrote:
+>
+> Never mind the compaction argument, this is just to move zsmalloc
+> pages around, it doesn't help with internal fragmentation. -ENOCOFFEE.
+>
+> I still think we should check if the zsmalloc shrinker actually helps
+> zswap or not tho!
 
-commit d29e0b57c45efd854666ff7af1f84a27011e992c
-Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+I ran a quick test with zswap turned on to check.
 
-irqchip/gic-v3-its: Preallocate VPE L1 tables
+Yosry is right - as long as new pages are swapping out, zswap naturally
+refills the freed slots on its own.  Both runs ended up at the exact
+same 95 MB pool size, and turning the zsmalloc shrinker off cut page
+fault latency by 26% because reclaim isn't fighting itself for the same
+locks.
 
-This commit removes the GFP_ATOMIC VPE L1 table page allocation from the
-CPU-starting callback by using a blocking allocation on the boot CPU,
-recording the table order, and preallocating pages for secondary CPUs in the
-sleepable CPU hotplug prepare stage.
+The only time the shrinker actually saved memory in zswap (~20.8 MB) was
+when I blocked new swap-outs completely after punching holes, since
+zswap doesn't have a manual sysfs compact knob like zram.
 
-> diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v=
-3-its.c
-> index 9ad66253ab166..5628f497d389d 100644
-> --- a/drivers/irqchip/irq-gic-v3-its.c
-> +++ b/drivers/irqchip/irq-gic-v3-its.c
+ARM64 QEMU (Linux 7.3.0+, 4 vCPUs, zswap lz4):
+                             Shrinker ON    Shrinker OFF
+Active swap-out pool size:      95.9 MB         95.1 MB
+Active swap-out p50 fault:     3,262 us        2,414 us  (-26%)
+Idle pool (swap-out blocked):   44.2 MB         65.1 MB  (+20.8 MB)
 
-[ ... ]
-
-> @@ -2990,7 +3014,16 @@ static int allocate_vpe_l1_table(void)
-> =20
->  	pr_debug("np =3D %d, npg =3D %lld, psz =3D %d, epp =3D %d, esz =3D %d\n=
-",
->  		 np, npg, psz, epp, esz);
-> -	page =3D its_alloc_pages(GFP_ATOMIC | __GFP_ZERO, get_order(np * PAGE_S=
-IZE));
-> +	order =3D get_order(np * PAGE_SIZE);
-> +	if (use_prealloc) {
-> +		if (WARN_ON_ONCE(order !=3D vpe_l1_prealloc_order))
-> +			return -EINVAL;
-> +
-> +		page =3D gic_data_rdist()->vpe_l1_prealloc;
-> +		gic_data_rdist()->vpe_l1_prealloc =3D NULL;
-> +	} else {
-> +		page =3D its_alloc_pages(GFP_KERNEL | __GFP_ZERO, order);
-> +	}
->  	if (!page)
->  		return -ENOMEM;
-
-[Severity: Medium]
-Does this leak gic_data_rdist()->vpe_table_mask on these error returns?
-
-Earlier in allocate_vpe_l1_table(), when inherit_vpe_l1_table_from_rd() does
-not find an existing table to inherit, vpe_table_mask is allocated:
-
-	gic_data_rdist()->vpe_table_mask =3D kzalloc_obj(cpumask_t, GFP_ATOMIC);
-	if (!gic_data_rdist()->vpe_table_mask)
-		return -ENOMEM;
-
-If inherit_vpe_l1_table_from_its() also does not find a table to inherit and
-allocate_vpe_l1_table() subsequently fails because order !=3D
-vpe_l1_prealloc_order or page is NULL, it returns -EINVAL or -ENOMEM without
-freeing gic_data_rdist()->vpe_table_mask or clearing the pointer.
-
-> @@ -3007,6 +3040,9 @@ static int allocate_vpe_l1_table(void)
->  	val |=3D GICR_VPROPBASER_4_1_VALID;
-> =20
->  out:
-> +	if (!use_prealloc)
-> +		vpe_l1_prealloc_order =3D vpe_l1_table_order(val);
-
-[Severity: High]
-Can vpe_l1_prealloc_order mismatch the order computed for a secondary CPU w=
-hen
-the boot CPU inherits its VPE table from an ITS?
-
-On the boot CPU, gic_init_bases() -> its_cpu_init(false) ->
-its_cpu_init_lpis(false) -> allocate_vpe_l1_table(false) calls
-inherit_vpe_l1_table_from_its():
-
-	val =3D inherit_vpe_l1_table_from_its();
-	if (val & GICR_VPROPBASER_4_1_VALID)
-		goto out;
-
-When the boot CPU redistributor shares a VPE table with an ITS in its affin=
-ity
-domain, this jumps to out: without probing GICR_VPROPBASER, and
-vpe_l1_prealloc_order is computed from the inherited GITS_BASER2 value.
-
-However, the ITS VPE table is sized by its_parse_indirect_baser(), which on=
-ly
-switches to a two-level indirect table when the flat table exceeds two GIC
-pages and GITS_BASER_INDIRECT is supported:
-
-	/* No need to enable Indirection if memory requirement < (psz*2)bytes */
-	if ((esz << ids) > (psz * 2)) {
-
-By contrast, when a secondary CPU in another affinity domain cannot inherit
-from a redistributor or an ITS, allocate_vpe_l1_table(true) probes
-GICR_VPROPBASER on the redistributor and enables indirection whenever the f=
-lat
-table exceeds a single GIC page:
-
-	if (epp < ITS_MAX_VPEID) {
-		int nl2;
-
-		val |=3D GICR_VPROPBASER_4_1_INDIRECT;
-
-For example, when the flat table is 2 * psz (or when GITS_BASER2 uses a flat
-table or a different probed page size than GICR_VPROPBASER), the inherited =
-ITS
-table order is get_order(2 * psz) while the secondary redistributor L1 table
-order is get_order(psz).
-
-When that secondary CPU comes online, wouldn't allocate_vpe_l1_table(true) =
-hit
-WARN_ON_ONCE(order !=3D vpe_l1_prealloc_order), return -EINVAL, and cause
-its_cpu_init_lpis() to disable GICv4 support?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104164555.3555=
-725-1-aneesh.kumar@kernel.org?part=3D14
+Maybe we go with Nhat's idea (CONFIG_ZSMALLOC_SHRINKER defaulting to
+ZSWAP_DEFAULT_ON) for now, and if zswap adds a proactive compact knob
+later we can just kill the shrinker?
 
