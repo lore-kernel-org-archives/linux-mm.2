@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD55606D83B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696766082BCD
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:12:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LqwrdTgO
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VmI46hVd
 Received: by kanga.kvack.org (Postfix)
-	id B41116B05B3; Thu,  5 Nov 2026 06:11:58 -0500 (EST)
+	id 944B66B05B4; Thu,  5 Nov 2026 06:12:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B18AF6B05B4; Thu,  5 Nov 2026 06:11:58 -0500 (EST)
+	id 91C886B05B5; Thu,  5 Nov 2026 06:12:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A55FA6B05B5; Thu,  5 Nov 2026 06:11:58 -0500 (EST)
+	id 7E45C6B05B6; Thu,  5 Nov 2026 06:12:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E3E76B05B3
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:11:58 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 958B01C43F6
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:11:57 +0000 (UTC)
-X-FDA: 85400800674.17.F68029C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 565F86B05B4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:12:00 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EA691A09E1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:11:59 +0000 (UTC)
+X-FDA: 85400800758.19.389C030
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E3575180006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:11:55 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LqwrdTgO;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 604A74000E
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:11:58 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VmI46hVd;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793877115;
+	s=arc-20220608; t=1793877118;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=enixJkjvt/NjGzx2vZdqFTkXKPfd4qcXQu8lRjKJNZg=;
-	b=wRHJma8OFveTWdWm4NwQfoC+mDxBckCtw77Ozk9ByXc1CwlF4T6WBUi0xrQBAtSmujaVyL
-	W6TWAYaCmC0/yJKbzAlRC82zN6lkHmwHqjO+zxe5hfvU8QbIlGulkfypK0rsTOmtbgP2dW
-	LE/+khc0sq2pvLZYdarqSi2hMxBq7Pw=
+	bh=5wL9H11c52K74bWFIToeD2nwJm/S5kppGqdHpQpDG0I=;
+	b=E9iaGzjW1zm+YAhgJg56BxbCmcw5rbKiJDTdJjB/krHI9KeOaOHp0E0MuMg/ANnBBHIpax
+	S2m8ia+NdWnyfFt0KDIKpDXoA1/Fnt4wcFMUid11MJZo4QvCHmjytMSpMM92wknsgsE5dn
+	ZqvlwIkHnAo3uhCD5H8rgCHxcHPjBtQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793877115;
-	b=qnkarpvkOIp0Iz4l/VSD1XscjkRh4ceBrMAyRd9b+8U1YD+0Mh1yClNWG0YbmzLQz0fV7z
-	sUjyJqfXjHzzd47t2rfLimcvOC1BxIEUoDk1/HoY5wfOhqhFscuRCSlqwkIGI2oRUiz7e4
-	c49mufJ2g/EFI9o3O04AyI1vj0RsMu0=
+	t=1793877118;
+	b=TP+VmUyQONXFlPIk3nvqT16h9SPO1Q49FojPW6CxpkgtZdsYLEXmwEquq14eKsO8qzjfah
+	ZPDQXEiz1A/c0C6Xz/J4XbQ5wkBjdmL1Tq7IEk0JZG/ihucEQf4qimHCZQz7GsWQgvteTi
+	APAHRfdQclrb1wAfCS79ou8Xpkbueuo=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LqwrdTgO;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VmI46hVd;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 99C5460D91;
+	by tor.source.kernel.org (Postfix) with ESMTP id A812760F35;
+	Thu,  5 Nov 2026 11:11:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31781F00A1F;
 	Thu,  5 Nov 2026 11:11:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C99511F00919;
-	Thu,  5 Nov 2026 11:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793877114;
-	bh=enixJkjvt/NjGzx2vZdqFTkXKPfd4qcXQu8lRjKJNZg=;
+	s=k20260515; t=1793877116;
+	bh=5wL9H11c52K74bWFIToeD2nwJm/S5kppGqdHpQpDG0I=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LqwrdTgOAHYSfUZcCn0vb7egFoGlnn/N25DberiwXI2r9Nuan10LzGhj9TOTvc4hq
-	 aRLKo586J9Jj71jjdo2VlOkAT/orK4gAlgaFE4P6O7VKEi6hdnj25pKLDWL9myPx+U
-	 jWZWyOtctKFaf8lmRnasULc7fMQVuW1Wzcl2/EaENoVrDU9TS2O8CPwNdxqIvJFcAy
-	 ZQ+MfX6a6r4jgl4wL0Xq+/umegY7ix5rxuuPx9Fhqe0plwgj6xjoQLP1S+mbkJuNoG
-	 YcnBsyy9XWslw0oR9Jozyi+3QwJVuOhSFTMdXCQoHhIi3Gn/3uBKejCot25qhdoOJn
-	 bqwniPkRTAQfg==
-Message-ID: <sashiko-outbox-198916@kernel.org>
+	b=VmI46hVd9YGz27GAlicu7eRmyRYfUiMYWwHh8vat5Po17sPb+MebtSuE73p/uef9a
+	 bi82HORDD5FyjgH0up20UJCTFGGkKmJSiIJhj1CpUAlQZjPYR3a0JFTdFfHLHtp5Ji
+	 4bT/sByYe8c8teDcHOBP1GCeUTXHVP7j4P9dcS2nbGz/XDlXp9/Zj5D7VWr15cDXmj
+	 yu9Scz4G1TzD11Ho+lIbkedRD3ay0Ky0uQvMD22YMX5w+PJs51+dLSm3NpKwVT4Ya6
+	 JRisBkfamAp9lvl9fIB8ZUz/qYK+JvjgN4PhmpnAMGnpq2pFYipDPdVtYp8hAAcMAM
+	 9+N/0uqdac1dA==
+Message-ID: <sashiko-outbox-198917@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 1/8] memcg: Add MEMCG_DMABUF accounting
- infrastructure
+Subject: Re: [PATCH v4 2/8] dma-heap: charge dma-buf memory via explicit
+ memcg
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
  Weiner" <hannes@cmpxchg.org>, =?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>, "Jonathan
@@ -80,24 +80,24 @@ To: "Albert Esteve" <aesteve@redhat.com>, "Tejun Heo" <tj@kernel.org>, "Johannes
  =?utf-8?b?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, "Jens Wiklander" <jenswi@kernel.org>, "Sumit
  Garg" <sumit.garg@kernel.org>
 Cc: dri-devel@lists.freedesktop.org, linux-mm@kvack.org, linux-security-module@vger.kernel.org, selinux@vger.kernel.org, op-tee@lists.trustedfirmware.org, media-ci@linuxtv.org
-In-Reply-To: <20261104-v2_20230123_tjmercier_google_com-v4-1-1819a017000b@redhat.com>
+In-Reply-To: <20261104-v2_20230123_tjmercier_google_com-v4-2-1819a017000b@redhat.com>
 References: <20261104-v2_20230123_tjmercier_google_com-v4-0-1819a017000b@redhat.com>
- <20261104-v2_20230123_tjmercier_google_com-v4-1-1819a017000b@redhat.com>
+ <20261104-v2_20230123_tjmercier_google_com-v4-2-1819a017000b@redhat.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 11:11:52 +0000
+Date: Thu, 05 Nov 2026 11:11:54 +0000
 X-Rspamd-Server: rspam06
-X-Stat-Signature: dw6sqbqtax9mz9g4iu4kt1gwt4rqxfc5
+X-Stat-Signature: wnfheuxi7yphxs1bgoe4qyejfk7a1wc7
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: E3575180006
+X-Rspamd-Queue-Id: 604A74000E
 X-Rspam-User: 
-X-HE-Tag: 1793877115-716175
-X-HE-Meta: U2FsdGVkX19tXbwZPZV37QiIeLCzv98Q6Wt1wKpybLBLOz8n2AtUWc42LtZ/KkXMWh02N4Y4K/J+/6NK8huOCo+TSXS3iQdFIPL1a8CR1tr/Gn64j7F0YL46SVZMSAbDpgFHAFh/gHATO4175rxifun2YQoZraOx5I7Jm3d1l1dnkOLKgs16/5Eb6E6xJN/6l6FtEAx3b1AyA7FBAj0encavHJEkGpL/JOFqYS27fOEI9UahZ/Hp0iHe04QHCkxlBo4Akj0OFSBOWut+3drmHLa4bqBZBq+9OjtY22vrcr0GAW3lgCNeYzoMwUUIpG+FfrXOzdK1pfZj1Qi0XjPcs0Zym6H1B1AYcB8DvQBeZmLe1hQK4oRkLFerYrxwXS8ynOVDgtWiK8n07u3qdKu/zEvyxsrxo1P8QkRU251z5CvMXVWbkAZcLxMqlkhLyYyGILgDTHi1q/oK92FYnf3tbcl7HIXJB97RnLkN85xsduY5W74EexV3TCOHzWLHjVAqqbMRpOZcirb6PgSBJAioZBPi08G4t+e9o0hN0hxzewCd/W03LEcFsXeVSqDy7ftR10/08bJVNXI2Bz6eLmFKUH+Ve5o0elMMEzhIU7ewiEcUw0KzXibTFCpBsaRKuZszwWRlCoYkcey14yP7ALZrhEBA8eO2kBMOJss/5k6Rpft05S/vlISl7xEK9KLg7fQDgxp07cEhnQIxgtdjd7ahW9uU6ZkEOrA3/hm23jmntY8Tq8IFIqm1nJDJgpltttIvNNNKDdZOD5Ya7SUyEhb1CkmBHK8rSKDNvePFW0dLz4VKj0dvWp0XEdjaP+HvyT9uKGr2sKdc+/cVpq3EVn/mk9YLOYKM/XcXpCVPifsj9t6cCkDDH5iGXaJ9JTzpLSqjgd3ztaqwvY3FRRvCJ4cJ/yP0T17Y6WNuguuPxVOuHCTWj8naIvFn8DgzcsOAxwcvPKPTd3vOwWbq2MQvzGI
- D0cwlELd
- stccgBbD71Io7AH+iJClpa9vH6IhV+iNdDZvyYOB47JyhZTW4Ra239mSJZf7s0iTTk1+MWeNM9bORbKEUAuV34UUFKLsBbeyL5oMVVoDOdEZ90Xm389D6JU56j0nMjXOwYv9qI1lUFnXiZz/LMCos0ZILhpQV5HXkazlyHMIBeIpUwsCHWuu0uM1lDxglBKd8N/exCJsg0j/h7ru6LXV7hNm3nDDJUfLEGW4z82COtkus8qkGIhShSCWy9PC2EU3aOcXQq0u1yOy/XOxvW64nWIH5N8l6LAYEpVKZ1Hm/9l7zxEuLMeDZiX1Mf0YQ6QhQmnPT1H8TrqsUYtvc6xUJhB00YTk8daw2h8Or+E6CVBH301OJ0zlTeglaimfC07PUX1aqQLLMQvD+JgwyI//LXjFRXW/5SLGHlYTVMm5zj8NC8hihuhrIeuwU92ah+QcwpX8rE8lBnVyT0l5EIeoGTn/Qdlwfn1o2VkEVmWjCsrXkBirPYEhnfDaUpEyoNinUH+HPzB0jpxBVyYPay6xeh/8x1eZ3t8omMO0XAIz35wqkp5XSwK/IZnlbK/17svxvG0r+2DbjN+68y1b0P+t7TbhSUAqhK2NUeB0SoBkt0OpsOmNkPOV99WzIU/5w520MjSIm9znr7Tvcyd80Wgye2v/dmSErH2QKW/7KTgNiJlQLpnnIhzPxBnoc4T5pVzUHPQQxMW15xokWmWrhF6p+YYmG0A0d/ZFRHLT/3b+bs3AH0EQ=
+X-HE-Tag: 1793877118-949117
+X-HE-Meta: U2FsdGVkX1+OQ8Yl6UW6ZwRopYEHp1TBoLsEuuBene8R88h/EvsH0qzXOOGiB14Ub17k99Tevub0to9MAeHLMMJOghsSCB4tkif048SeweGB5eqmCb/VXVtRRprOycQ7im0kUthLy5nOJShNTHC2p7RzzIfW4tHETmUakKw5Mv3f/9mWHx/jpyi5GGCkRbJi7eGMR7X727SY0LZjYeUbNGu7hiy87Z72e6bBvv1lAVxDPlWjX1AvpYjr7RLU/EiBRiLwGgTpOgBHi8vebLBCRVHeNLkZrkO84v9NBcZq6LSpl65xNDeAzJbWe4JtiWOYr8/zccD/g1L4ZflmdlDREr7YHtTicm0suo4Qrh+dZz82YbnLedLOzIKTPju73s909bX9gt+atW3bVtODFSzInyF4IQ0+Fb338S94pPoTjF41WoUfbLqYA+uI/n9jHJOF9oT6TxNkerStPXX+OrkVBctDvbkAr2GFRLHhiY30n8hXu7B/AKuOosQFk2PyHAdAqTp3pBDNDS1k8cSKijVnThRWj+lRHSlVAEWIJ5VhPD0k8jstBISpMeEYtwiCdSO9JyueGqh+guXtSkVOq0rQq7led5Ar3Gxmc+tzT3H/BGA9BboSyX37gozTX3bI7X2rNk/INXvvx5lotLW8ib1GtNu+7XVnnhDPPYWP10nccCkAyDibkEK6RWkXK+WqmuGZVDFhxX36ENEo5lZ5rSBlJX2a8ohwKeLBIUlgBDo8+Rv6WXDdOLZqLhF5mTnl0NNefYwjCHDwQCCkBcjR/9hp789ibmkzH0Yzdq5udUJYv2xiTXYdGvDtfEl8hbg+/ov8zt+5eNJPEfcicPAsu2hbx8cQbhBp5xl4cwixpGSZH99BDlt7MU77zw4l2VjIkJPa7grk0V8K71ZIQpPWeq9gyBgWClafkKkZmmSxehVsUj5NJr+SMzU7W5FWEDGV+WIq0qXgtRZsETq80VmUDig
+ dfPf/BaT
+ 2cB0zZTTn/SvAKKX5ba0/vA3v77y9mcHLgqwIxdjs0L2WmzcUxtvcB64nnkKAzGEMzu548aBtx//uPNVUCIMvElAAS4l6bvJKMWv+SZhhsD6Nkwo6XGcc3YMLxuh4Q0fAnfy/iIWWiSROIyZjafC+uc64jeRpimePEZqDkjQ+8Rij4VpvqN0WsACwy/3gSMGQw/rDXzjkwtABEiDS15P45Kd4EZ2ZN8J5dDL56FSzJUe0e36pTGp6Ska9qjexUux2ui3cYyeX6GVr+8Cer9iRfW0+ZUmeprfXGH45N64hr0obuJwpa2Uxnkbfd4s3XVZWBnkzOAsjsDhC/v9Sbm2BUi+7fWrOM3RGMEeyNdDMFgeADe6c9tboaeBbWT7TygoZ2Gk0fp+3Jzrw1EvgKIpls5v3ZIl/hJWVe5fR/+wlh8wwLaEsFcIRbOwjs4UvKti5vMUF2Lef7P4RuqhTxOhl1WM4IAsd8k1j83U80CzLlOa8CftZoGcZeC439EvwmLv32Ic+e7EcBoY7q7kMids8p9ZBoLBnibzMogWqjdRKi6YtFZIXKtL8qWxctBMTLF2+CtoF9PRQuv4Fs+d/IKYa2g3zaxIAFHW+URkSF6nYTlJUIR40Mw2lQbefHOt6KXHODU465t0Tk4FcNVzMUyR9okIyf5mWvggItNjMT5NYbqyQaL7ORUo4SVa6+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,127 +107,209 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-- [Medium] mm: memcontrol: 32-bit nr_pages truncation in dmabuf charge help=
-ers
+- [Critical] mm: memcontrol: missing permission checks in mem_cgroup_get_fr=
+om_fd()
+- [High] dma-buf: system_heap: 32-bit nr_pages truncation in system_heap_al=
+locate()
 --
 
-commit a5e6165b3e0444a33f57a14736c2174d7c009944
-Author: T.J. Mercier <tjmercier@google.com>
+commit e390a33c5307a75778a81c2ca5beff0530617904
+Author: Albert Esteve <aesteve@redhat.com>
 
-memcg: Add MEMCG_DMABUF accounting infrastructure
+dma-heap: charge dma-buf memory via explicit memcg
 
-This commit introduces the MEMCG_DMABUF stat counter and helper functions
-to reserve, cancel, and uncharge dma-buf memory against a memory cgroup,
-tracking the active charge via a memcg pointer on struct dma_buf.
+This commit adds a charge_fd field to struct dma_heap_allocation_data so
+that DMA_HEAP_IOCTL_ALLOC can resolve a target pidfd or cgroupfd and charge
+the exported dma-buf memory to that memcg via mem_cgroup_reserve_dmabuf().
+It also removes __GFP_ACCOUNT from system heap page allocations to avoid
+double counting.
 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 856a7d07586cc..e53dd7eebc3b5 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
+> diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/=
+system_heap.c
+> index c8959eadc71d1..2bd245e1eab8f 100644
+> --- a/drivers/dma-buf/heaps/system_heap.c
+> +++ b/drivers/dma-buf/heaps/system_heap.c
+[ ... ]
+> @@ -388,8 +389,6 @@ static struct page *alloc_largest_available(unsigned =
+long size,
+>  		if (max_order < orders[i])
+>  			continue;
+>  		flags =3D order_flags[i];
+> -		if (mem_accounting)
+> -			flags |=3D __GFP_ACCOUNT;
+>  		page =3D alloc_pages(flags, orders[i]);
+>  		if (!page)
+>  			continue;
+> @@ -401,11 +400,13 @@ static struct page *alloc_largest_available(unsigne=
+d long size,
+>  static struct dma_buf *system_heap_allocate(struct dma_heap *heap,
+>  					    unsigned long len,
+>  					    u32 fd_flags,
+> -					    u64 heap_flags)
+> +					    u64 heap_flags,
+> +					    struct mem_cgroup *memcg)
+>  {
+>  	struct system_heap_buffer *buffer;
+>  	DEFINE_DMA_BUF_EXPORT_INFO(exp_info);
+>  	unsigned long size_remaining =3D len;
+> +	unsigned int nr_pages =3D PAGE_ALIGN(len) >> PAGE_SHIFT;
+>  	unsigned int max_order =3D orders[0];
+>  	struct system_heap_priv *priv =3D dma_heap_get_drvdata(heap);
+>  	bool cc_shared =3D priv->cc_shared;
+> @@ -416,10 +417,15 @@ static struct dma_buf *system_heap_allocate(struct =
+dma_heap *heap,
+>  	struct page *page, *tmp_page;
+>  	int i, ret =3D -ENOMEM;
+> =20
+> -	buffer =3D kzalloc_obj(*buffer);
+> -	if (!buffer)
+> +	if (!mem_cgroup_reserve_dmabuf(memcg, GFP_KERNEL, nr_pages))
+>  		return ERR_PTR(-ENOMEM);
+
+[Severity: High]
+As reported by Sashiko on v3 [1], can truncating nr_pages to a 32-bit
+unsigned int in system_heap_allocate() allow a 64-bit allocation length to
+bypass memcg memory.max limits?
+
+In dma_heap_ioctl_allocate(), heap_allocation->len (__u64) is page-aligned
+into a 64-bit size_t len and only checked for wrap-around to zero before
+being passed as an unsigned long len to system_heap_allocate():
+
+drivers/dma-buf/dma-heap.c:dma_heap_ioctl_allocate() {
+	len =3D PAGE_ALIGN(heap_allocation->len);
+	if (!len) {
+		mem_cgroup_put(memcg);
+		return ERR_PTR(-EINVAL);
+	}
+
+	dmabuf =3D heap->ops->allocate(heap, len, heap_allocation->fd_flags,
+				     heap_allocation->heap_flags, memcg);
+}
+
+In system_heap_allocate(), size_remaining retains the full 64-bit len while
+nr_pages is truncated to unsigned int. Because __GFP_ACCOUNT is removed from
+alloc_largest_available(), mem_cgroup_reserve_dmabuf() becomes the only
+memcg limit check.
+
+On a 64-bit system with 4 KiB pages (PAGE_SHIFT =3D=3D 12), if a user passes
+len =3D (1ULL << 44) (or (1ULL << 44) + PAGE_SIZE), PAGE_ALIGN(len) >>
+PAGE_SHIFT truncates in 32-bit unsigned int nr_pages to 0 (or 1).
+mem_cgroup_reserve_dmabuf() then charges 0 (or 1) pages and succeeds inside
+a restricted cgroup, while the while (size_remaining > 0) loop allocates
+uncharged physical pages for the full 64-bit size_remaining until host RAM
+is exhausted and the global OOM killer is triggered.
+
+Similarly, in dma_buf_export() and mem_cgroup_uncharge_dmabuf(),
+PAGE_ALIGN(size) >> PAGE_SHIFT is stored in an unsigned int nr_pages and
+passed to mod_memcg_state(), which takes a signed int val and can overflow
+to a negative delta when bit 31 of nr_pages is set. Should nr_pages be
+unsigned long (or should len be bounds-checked before converting to page
+counts)?
 
 [ ... ]
-
-> @@ -5658,6 +5661,73 @@ void mem_cgroup_flush_workqueue(void)
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index e53dd7eebc3b5..17fdefc56b97f 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -5661,6 +5661,53 @@ void mem_cgroup_flush_workqueue(void)
 >  	flush_workqueue(memcg_wq);
 >  }
 > =20
 > +/**
-> + * mem_cgroup_reserve_dmabuf - charge a memcg for a dma-buf allocation
-> + * @memcg: memcg to charge (may be %NULL)
-> + * @gfp_mask: reclaim mode
-> + * @nr_pages: number of pages to charge
+> + * mem_cgroup_get_from_fd - resolve a memcg from a cgroupfd or pidfd
+> + * @fd: file descriptor (cgroupfd or pidfd)
 > + *
-> + * Charges @nr_pages against @memcg. Call this before allocating pages so
-> + * the cgroup limit is enforced up front. On success the caller must
-> + * finalize the charge with the MEMCG_DMABUF stat update, or call
-> + * mem_cgroup_cancel_dmabuf() to undo it.
-> + *
-> + * Returns %true on success, %false if the charge would exceed the limit.
+> + * Tries @fd as a cgroupfd first; if that fails, tries it as a pidfd.
+> + * On success returns a referenced memcg pointer. On failure returns
+> + * an ERR_PTR.
 > + */
-> +bool mem_cgroup_reserve_dmabuf(struct mem_cgroup *memcg, gfp_t gfp_mask,
-> +			       unsigned int nr_pages)
+> +struct mem_cgroup *mem_cgroup_get_from_fd(int fd)
 > +{
-> +	if (!memcg || mem_cgroup_disabled())
-> +		return true;
+> +	struct cgroup_subsys_state *css;
+> +	struct mem_cgroup *memcg;
+> +	struct cgroup *cgrp;
+> +	struct task_struct *task;
+> +	struct mm_struct *mm;
+> +	unsigned int pidfd_flags;
 > +
-> +	if (try_charge(memcg, gfp_mask, nr_pages))
-> +		return false;
+> +	cgrp =3D cgroup_get_from_fd(fd);
+> +	if (!IS_ERR(cgrp)) {
+> +		rcu_read_lock();
+> +		css =3D cgroup_css(cgrp, &memory_cgrp_subsys);
+> +		if (!css || !css_tryget_online(css)) {
+> +			rcu_read_unlock();
+> +			cgroup_put(cgrp);
+> +			return ERR_PTR(-ENOENT);
+> +		}
 > +
-> +	return true;
-> +}
-> +EXPORT_SYMBOL_GPL(mem_cgroup_reserve_dmabuf);
+> +		memcg =3D mem_cgroup_from_css(css);
+> +		rcu_read_unlock();
+> +		cgroup_put(cgrp);
+> +		return memcg;
+> +	}
 > +
-> +/**
-> + * mem_cgroup_cancel_dmabuf - undo a dma-buf charge
-> + * @memcg: memcg to uncharge (may be %NULL)
-> + * @nr_pages: same value passed to mem_cgroup_reserve_dmabuf()
-> + *
-> + * Returns @nr_pages of charge to @memcg. Use when the allocation fails
-> + * after mem_cgroup_reserve_dmabuf().
-> + */
-> +void mem_cgroup_cancel_dmabuf(struct mem_cgroup *memcg, unsigned int nr_=
-pages)
-> +{
-> +	if (!memcg)
-> +		return;
+> +	task =3D pidfd_get_task(fd, &pidfd_flags);
+> +	if (IS_ERR(task))
+> +		return ERR_CAST(task);
 > +
-> +	if (!mem_cgroup_is_root(memcg))
-> +		refill_stock(memcg, nr_pages);
-> +}
-> +EXPORT_SYMBOL_GPL(mem_cgroup_cancel_dmabuf);
+> +	mm =3D get_task_mm(task);
+> +	put_task_struct(task);
+> +	if (!mm)
+> +		return ERR_PTR(-ESRCH);
 > +
-> +/**
-> + * mem_cgroup_uncharge_dmabuf - uncharge a dma-buf from its memcg
-> + * @dmabuf: buffer to uncharge
-> + *
-> + * Reverses a finalized dma-buf charge. Drops the memcg
-> + * reference stored in @dmabuf->memcg and clears the pointer.
-> + * Safe to call when @dmabuf->memcg is %NULL.
-> + */
-> +void mem_cgroup_uncharge_dmabuf(struct dma_buf *dmabuf)
-> +{
-> +	unsigned int nr_pages;
-> +	struct mem_cgroup *memcg =3D dmabuf->memcg;
-> +
-> +	if (!memcg)
-> +		return;
-> +
-> +	nr_pages =3D PAGE_ALIGN(dmabuf->size) >> PAGE_SHIFT;
-> +	mod_memcg_state(memcg, MEMCG_DMABUF, -nr_pages);
-> +	mem_cgroup_cancel_dmabuf(memcg, nr_pages);
-> +	mem_cgroup_put(memcg);
-> +	dmabuf->memcg =3D NULL;
+> +	memcg =3D get_mem_cgroup_from_mm(mm);
+> +	mmput(mm);
+> +	return memcg ?: ERR_PTR(-ENOENT);
 > +}
 
-[Severity: Medium]
-Can passing a 32-bit unsigned int for nr_pages in
-mem_cgroup_reserve_dmabuf(), mem_cgroup_cancel_dmabuf(), and
-mem_cgroup_uncharge_dmabuf() in mm/memcontrol.c (and include/linux/memcontr=
-ol.h)
-truncate 64-bit dma-buf sizes?
+[Severity: Critical]
+As reported by Sashiko on v3 [2], does mem_cgroup_get_from_fd() allow an
+unprivileged caller to charge dma-buf allocations to arbitrary cgroups
+without permission checks?
 
-struct dma_buf stores size as a 64-bit size_t, and in the following commit
-("dma-heap: charge dma-buf memory via explicit memcg"),
-dma_heap_ioctl_allocate() -> system_heap_allocate() passes a 64-bit
-PAGE_ALIGN(len) >> PAGE_SHIFT to mem_cgroup_reserve_dmabuf() before
-entering its while (size_remaining > 0) page allocation loop without
-__GFP_ACCOUNT.
+When dma_heap_ioctl_allocate() calls mem_cgroup_get_from_fd() with a
+user-supplied charge_fd, the target mem_cgroup is resolved either from a
+cgroup v2 directory fd (which can be opened with O_RDONLY | O_DIRECTORY or
+O_PATH on any world-readable /sys/fs/cgroup directory, including the root
+cgroup) or from a pidfd obtained via pidfd_open() for any visible process
+such as PID 1.
 
-If a userspace caller requests an allocation where len >=3D (1ULL << (32 +
-PAGE_SHIFT)) (for example, (1ULL << 44) + PAGE_SIZE on a 4 KiB page
-system), PAGE_ALIGN(len) >> PAGE_SHIFT wraps to 1 page when converted to
-unsigned int nr_pages. try_charge() will then succeed against a small
-memory.max limit while system_heap_allocate() proceeds to allocate
-unaccounted pages using the full 64-bit size_remaining.
+Neither path verifies DAC permissions, cgroup write access (such as
+cgroup_may_write() or cgroup_attach_permissions() used by CLONE_INTO_CGROUP
+in cgroup_css_set_fork()), ptrace_may_access(), or capabilities such as
+CAP_SYS_ADMIN / CAP_SYS_RESOURCE.
 
-Additionally, in mem_cgroup_uncharge_dmabuf(), passing -nr_pages to
-mod_memcg_state(memcg, MEMCG_DMABUF, -nr_pages) (which takes a signed int
-val) will overflow when nr_pages exceeds INT_MAX. Should nr_pages use
-unsigned long (or size_t) across these helpers?
+When system_heap_allocate() then calls mem_cgroup_reserve_dmabuf(memcg,
+GFP_KERNEL, nr_pages) -> try_charge(), targeting root_mem_cgroup returns 0
+immediately and bypasses the caller's memory.max and memory.high limits,
+while targeting another cgroup can trigger reclaim and OOM kills in that
+victim cgroup. In addition, when a remote target memcg exceeds memory.high
+during try_charge_memcg(), the over-high penalty and reclaim in
+__mem_cgroup_handle_over_high() are applied against current->mm's memcg
+rather than the remotely charged memcg.
+
+Later commits in the series ("security: dma-buf: Add dma_buf_charge_task LSM
+hook", "security: dma-buf: Add dma_buf_charge_cgroup LSM hook", "selinux:
+Restrict cross-cgroup dma-buf charging", and "selinux: Restrict dma-buf
+direct cgroup charging") add LSM hooks and SELinux policy checks, but still
+leave no baseline DAC, capability, cgroup write permission, or
+ptrace_may_access() checks when CONFIG_SECURITY is disabled, when SELinux is
+not the active LSM, or when a cgroup v2 directory uses default genfscon
+labeling without an explicit security.selinux kernfs xattr (where
+selinux_dma_buf_charge_cgroup() sees kernfs_xattr_get() =3D=3D -ENODATA and
+returns 0).
+
+Should baseline permission checks be enforced before allowing a process to
+charge memory to another task's or cgroup's memcg?
+
+[1] https://lore.kernel.org/r/20261027-v2_20230123_tjmercier_google_com-v3-=
+2-78d2c4cb8647@redhat.com
+[2] https://lore.kernel.org/r/20261027-v2_20230123_tjmercier_google_com-v3-=
+2-78d2c4cb8647@redhat.com
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-v2_2023012=
-3_tjmercier_google_com-v4-0-1819a017000b@redhat.com?part=3D1
+3_tjmercier_google_com-v4-0-1819a017000b@redhat.com?part=3D2
 
