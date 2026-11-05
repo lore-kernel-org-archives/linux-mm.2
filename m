@@ -1,170 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA93160A261B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03CEE606A328
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=iMm4qeok
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MLB8QlI4
 Received: by kanga.kvack.org (Postfix)
-	id EFC896B05B0; Thu,  5 Nov 2026 12:21:17 -0500 (EST)
+	id 1ED1D6B05B0; Thu,  5 Nov 2026 12:29:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAD806B05B4; Thu,  5 Nov 2026 12:21:17 -0500 (EST)
+	id 19D616B05B1; Thu,  5 Nov 2026 12:29:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9B786B05B5; Thu,  5 Nov 2026 12:21:17 -0500 (EST)
+	id 0B3316B05B2; Thu,  5 Nov 2026 12:29:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AA5A46B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:21:17 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2EEB0A0BBE
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:21:17 +0000 (UTC)
-X-FDA: 85401731394.29.9A15B96
-Received: from CY3PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11013031.outbound.protection.outlook.com [40.93.201.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 7404920014
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:21:14 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iMm4qeok;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf13.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793899274;
-	b=SpjRmPt1XHS7FQf/1m8meyGwzqlWMyuT3sf7A+9sYohfcINXj4Swa6P1u/vmcNStjQbje7
-	SWXBKg9gJWoO7WNty101y16IxTsYIBxoy5W/kahIGzeWTwVR1q7Sfb7M2LlQVflUco5+W3
-	3M+S9SzURNcYZueSmLQJQhwi66j9lag=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=iMm4qeok;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf13.hostedemail.com: domain of ziy@nvidia.com designates 40.93.201.31 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793899274;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D6F276B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:29:12 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 74CA340BE7
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:29:12 +0000 (UTC)
+X-FDA: 85401751344.16.577E05C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id BFC30140003
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:29:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MLB8QlI4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793899750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dcqcYW3CqDcVHuMmYkigWSka/w4md+kOGUL0W7bhkjs=;
-	b=hbMlvfeZ0ur8h33UjhTYWCLfb0dzF4a4wOOeKMULn7kR4iOd7DFypj+hYJmq2EBQYoQONd
-	2wg3aDAQoL8kDkvqqbhf6uW9tuZD6PZmXDUOrgSTffjA34VF7iG//PVkg9PVJbRqabRwxy
-	/gOotdltSWVYJoJbPB9UqbLyDWvrWao=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lS/KM6TeI/tD7ndQKS6sWJSaMv5q24wzLkUqX1qf3qWGnW/kcXSMc00ljDUJHwX1eks9AND48yKoUWHFmOFrMVWhOtSjZGbtGGnc5QtnSIznWHG+SgtMZD9C8bV0RnS2MY4Nf81V2G09z6KGqnbyjoyee/mRshWO4t/y4Ps5KLP405furTx3Lp+Pjhco5yV01/sPgZ2Y6z1AK/onH4kfOGw51zIcyB640JJinvJYYH/oK+MF9737PFpSOCOnXJ4wkYh0WzH0VgJQ3uHW2e/GijZgYOxdD3MnWNPteYxUKpknGs919Y59VLdVVE3eNjkQotyhKTqlTaMVrEBeUA1JVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dcqcYW3CqDcVHuMmYkigWSka/w4md+kOGUL0W7bhkjs=;
- b=JghLCq561eulCU/V8eSehbrzkCg43fwvPzLxh1IxfgL06kZr5sGfIb0Z74HNTlniQFalkcJl3f9tFUuC9VWrXstqmea1Tn4Yb1RxLIJlOBUHATe33137jvFref7PRyMwcvX10tVjnqS0XxDB3khh/FqEP7q8G761+39twPYBbLmeVU+RYOMp7rB8ysT6hECyDAtDI2VUML4HicdhQz/zQtvu1stlZc6EZ5GmzsAjtJ+zTawJ0XQnXES5VL1dk1oH6n/0kewG+42tJcuJ1X2UQhTQD+yfjn9T/WqkwMKgPxsetIaR1jUFn4IUDJHvR2cFHycvzE5u/1isq+Q0/GAMZg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dcqcYW3CqDcVHuMmYkigWSka/w4md+kOGUL0W7bhkjs=;
- b=iMm4qeokznQTe1ZV28cI+EoIx6wVcWXrTJ4eZLlLPK7csNLApeQc5k6amknkBmVr9YypPG6tR7CSTkgCoU87yk/AVNdzYJepThCXpfR/M1kW6/x6Rj96RWvZCbY1ggBLpJyXcMtfdE8HKy/3Ea5BzQ6F1d2e0+a39WxeITDI5J0OT+udA6ZvgDk/iK20YyuSWD5luSirB2BB9iiGj72qIoHLJtR2BWH9+8f3a7XGnESBwyPLXQgDjKkzobnURdv+OHnoxcl/KbrL1RGknaTsck8oWJL+tHFU0B1/NpAKSnlU/IeP30bbp85lTjnucRFoJ3yyJlUCIUwLigoMBXiTxQ==
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
- by DS2PR12MB320397.namprd12.prod.outlook.com (2603:10b6:8:70d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Thu, 5 Nov
- 2026 17:21:10 +0000
-Received: from IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
- ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0592.007; Thu, 5 Nov 2026
- 17:21:10 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: add CONFIG_DEBUG_FS to the config fragment
-Date: Thu, 05 Nov 2026 12:21:08 -0500
-X-Mailer: MailMate (3.0r7038)
-Message-ID: <3BC61F94-0385-4603-B12E-BEA458BB307A@nvidia.com>
-In-Reply-To: <20261105171801.2189772-1-sashal@kernel.org>
-References: <20261105030242.1241448-1-sashal@kernel.org>
- <4B926B36-D797-4861-B6D6-27E8D7870287@nvidia.com>
- <20261105171801.2189772-1-sashal@kernel.org>
-Content-Type: text/plain
-X-MS-Reactions: disallow
-X-ClientProxiedBy: BL1PR13CA0179.namprd13.prod.outlook.com
- (2603:10b6:208:2bd::34) To IA0PR12MB8374.namprd12.prod.outlook.com
- (2603:10b6:208:40e::7)
+	bh=OI82NC+VtO6XCg1b7sL9Mba+LLUc0Oyq52Xd0koXNtA=;
+	b=d2qDJppT+uqAjOuLEEpoE3f+HDmpBXaq5gcKcXIxNg+Ry3KP6LCck2ulqv7ZPMZfcrO54M
+	kvRu54RyoNLbTfCGmKRkU/7noCjGnRLImNQdx0MTmCqqdN/dAfKOpUPsmIOtxdtXD+k2hf
+	2RWvrT6D2Eo7magmgtaRo7y+B2VFl7M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793899750;
+	b=38sPwuAA+Lc+bsjG0Goovhdxk0ilE9vscXeVG07F3QQvKaCsZPpVO4OQZAizBnlyBghQCh
+	oWe6x+xT/EWMQ8whGz0O8uiiIuqXXet1R8nca10NGgqE3fyTjQ7Fw7UbEWmJAz6Fj3onpw
+	yLxfB08T8rUVQXMAoPCt13EL/bhKa9A=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MLB8QlI4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EDF8142E71;
+	Thu,  5 Nov 2026 17:29:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4601F000C1;
+	Thu,  5 Nov 2026 17:29:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793899749;
+	bh=OI82NC+VtO6XCg1b7sL9Mba+LLUc0Oyq52Xd0koXNtA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=MLB8QlI4b9Zj96xuu1gX2RDKKLpHjWgsbP+lWZ/jXYJAgMJaQP0yow/NhM2eVaerw
+	 RUl1gWByjCzr+FPSbtEBObL1y9PjsQTmtTwmlt3C1G0K03nDpp9ICWHkhGOPVfaqHB
+	 PooUz4IiQUp6OymGCzzlwIav3h+XQsZ9dBMQaLfT0OQ5gleCT87KAcKDSJENdGj+6v
+	 YICepRUZDih8ob8KMzawL3S2K4uLzieLoJa5pMxSuWZ4D4TeQBxlIBrBRhPZfZtIr6
+	 BamFIJDtq1UNS7fLmn3sr4TxMwc/Bcs8xFc4lHnswt1r7NTA2cohCcWKoJDVZ/iP0e
+	 Muxsn+zeGo5Iw==
+Date: Thu, 5 Nov 2026 17:29:08 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 6/7] zsmalloc: fold zs_obj_write() into zs_store()
+Message-ID: <auy6wQIz89NxpskT@google.com>
+References: <20261105044752.1997895-1-senozhatsky@chromium.org>
+ <20261105044752.1997895-7-senozhatsky@chromium.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|DS2PR12MB320397:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6dbe5fb8-d6af-4462-fee6-08df3b612f37
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|23010399003|1800799024|18002099003|10067099003|22082099003|56012099006|11063799006|4143699003;
-X-Microsoft-Antispam-Message-Info:
-	Y2Wy0zoChY35iiDxQPNGmL36chYAnPVsod+CGZDeqk+9z6mw/52Ik9n/ufwmH232llzXNFu83QRWrQk1iuTfOTIq14oClzk6ww4LCaxVnnyzB7Sqpi++w3XOlxnbAKfZ/NtHzZOvN8ir9BcsR3CMw9irfc9OSMaz4f5axEJdu04lKR2tWJHVjbbfoo7thYTvH9rjs8jORJOfIlfLurrWzUFc0fh6oN+u5CatL+7wPV4jd5RwR4oUrhRo+RB6EbxlOm7b/LW306+T6+4vU8hl2v6QYhjvFWfJCfekcZKLPulYpdBXx/6fXQMZfsX0JebptGtGgIm6ZNAUZbD+VA3T1mbonVvbAqWLXmo3hKV6lRSeKIQLE2Cg0XdwUKSiEyDoja8FQwDf6Hdw+kyQwe4SgC/bdngVveiICVaZc8nbxYfj53r1xNGAascu5uOjHAATx7O0n9jI0D92GjPmiz9JBn+k3GNvl+uc5eJX1SeBgaaXF79IlQ1P4OrDC//ufN41pesunccRqaWg74I/cvw6lO6VKcUQJppre6sz88DqsPOaJc8opzuShBwqbK1W8OiJc4ohItce9R9LrSGjytbgabBbcq2F7kCSuXcBV7SzZKN7v3a1NQeinFzA7dGV7Wri07iHYhH5EfT1alEb5yFoE9BKOFZza3NJ6LqYdtJNMqg=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(23010399003)(1800799024)(18002099003)(10067099003)(22082099003)(56012099006)(11063799006)(4143699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4eGZplk78v6xwr22DbpLXAwr+OvOI1LERdpuKmh0JyxYvELutK6pE1Pz67A9?=
- =?us-ascii?Q?dGy8CfTZVc1Z82SaWd37Tj7SnwePrUyu6opbItLN/dtpYXUDDhHIsC4sVAIo?=
- =?us-ascii?Q?rWF4T2aNBnZ+jrqOEczjzzRVKgsHmJQ4rPy2KoyAnwMjvtsYQl4iHGShvFku?=
- =?us-ascii?Q?jrv4/6L2VSnFdpluuWuSFEV5YAolbXAJB1nbI7CbX2bG04jIVW8wgKFNdbIl?=
- =?us-ascii?Q?PowsmYPn83q1taIJaWeEySpCruo21q9ZIEYFHypllxkXs1KJS9QCjkqehxrr?=
- =?us-ascii?Q?GP5EMPlJE9llgnHQigHw8kpJdjBf7j90WbussL/h4flVzyebLgMS3xCYeEqS?=
- =?us-ascii?Q?382Q/mDpFxM2SEVgvMRUaYLMamkUGMf+L/F2QtFlhoefE3FWW+uY/+4DITC7?=
- =?us-ascii?Q?qHcBUZ/ICI+Aby+qHVEBYl/fcdSbB/f9p+t9ZR4t3gumMJZ4n3WWkGTJdXxm?=
- =?us-ascii?Q?F8Qk7+hoJjeiJppoHx79YKPH+XtGc6SP1x1m7+UA5Ik67fnJh0JLcX3uuSJ5?=
- =?us-ascii?Q?Y224dE2/zWSmoxKMB3q2NODhtCnrOOyMW152fpFnMQbVbUmq3Cm2Nnty4/hs?=
- =?us-ascii?Q?GhuyJ3Q5qzHpL5w2QqAT3yTTvtFohCU+ZTIZN+cwCW77YhsQsfTIYfdu7GK5?=
- =?us-ascii?Q?m3W5Xgy8s5YtYQF7OpUV6O329jglZoTUIELW6WUvKv1B1DyNouVfp9rjU39J?=
- =?us-ascii?Q?DuJLxSLG5z7SuYlRXpL5pcKoO8FhdUCn5Z3kRXk2frJ4QkKON9PSxhVyJNXm?=
- =?us-ascii?Q?9kMHxnm4d0O5kulw3NaRQz3RKkFi8vmBRPVdAVI24VNV8frba5wXwI4iQevS?=
- =?us-ascii?Q?daalEsnDLTyLftTgBdWETE35faIdwzchox7fMAs3RlpJLgaJfMc2eefiXTMF?=
- =?us-ascii?Q?fYJtWiQTlW90Zu5Kj81oYO1bA7z7ggIdctPOSZClNclW5VObl2FQ3OBak7C3?=
- =?us-ascii?Q?4itOtl6oTUChO+Tk9F+4QvoIvrnxH0NcZW3qo2dUA0TkA3TktWtv38DFadg4?=
- =?us-ascii?Q?C3qRUvfCxhz9d5IDE9oh4GueYAHVBdNHUzs24bJa29Hjxg5XpUGGcAB9w2MZ?=
- =?us-ascii?Q?UuModgjVvma4XtTL09LzPYrmYfHl3FKM7DUKCvuCzW4+Yo3Vk/EJsaQ7jrPo?=
- =?us-ascii?Q?B2IjjQqXy5AqfZ5kK6FXvB2vnR3LXE1E9VBSOWKHZl9SJbpI6gnbRLcD2wec?=
- =?us-ascii?Q?o1gsdNwdsT/OK/2Mhb91Szqrwzbvk1EPZLQ4git9U1wj/q4IKZ0NDDnKbcOk?=
- =?us-ascii?Q?11GamhQTDRk42NyMRfx7L7bPoOw5592VeFSbDFaF59BQC4BZYQmzeP8Bt4Md?=
- =?us-ascii?Q?LjYPwGUAEgX2ll6F0etnjVFVwcnJn7/ENEMXdQz9FdA/Fdid8ZROYCLzdExz?=
- =?us-ascii?Q?9vhhyTegdlG70ujugKurQ63oc+6HEf8thkCXpiBaj2TYCnL3dV3xtXpcfEiG?=
- =?us-ascii?Q?7hURkCrKdD66iyRG/ACreDtvFNUuMpQWDiIRq+L75sIUXOBPlguGLgeCYjPh?=
- =?us-ascii?Q?U61hMQP7PWElObFt62rxLKfOiM5/jteQbGH0cT4KSm+1ZrgizSrDwgj+RBmk?=
- =?us-ascii?Q?2J+vE09M89a9X2YbbWsVtm9UztNqGbux/v11rNlNMdn27dRtsW35d73VucVr?=
- =?us-ascii?Q?u2Fe9tAFjaKWC8qhSxS21tDLWkh5WY7MEXMcYJLU+0nsVWfpLR9+gnpj4iaV?=
- =?us-ascii?Q?h6KTk9oLRhjvB34CNBc7USYf5TENcFRIFeJMOltr4vjH+PP5?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6dbe5fb8-d6af-4462-fee6-08df3b612f37
-X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2026 17:21:10.1470
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YXDyTG/McI/qKkUp5O/ariTbVfqDwNXHfrIdAmr/Ysq1gNj943Z8ydfjwh7OEPBQ
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB320397
-X-Stat-Signature: 57iqwsb1yegoojg8tgrzsi1w4gbdhoha
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105044752.1997895-7-senozhatsky@chromium.org>
+X-Stat-Signature: qepnfhe9w393dq18buawod6bkw8fg1tt
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 7404920014
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793899274-346376
-X-HE-Meta: U2FsdGVkX19qhqz/hREF8nrJt935E2JIpa0G4WUD8xsRnGaBVU5el046Y4lCx0TuNFT6ya2F/qNP79M5hNUmOyCnDrP2X1aZ+/5UYPq/lwRmP9PIilX2VLPH+pORuHB+1G9eCDe9yJtk5SccOZhrvkcf6hRTHr2wlCfzcUJ0AKmS6cEiYbMC6OgDq4KtDhLduEEllyMGorSkXgh2wsRaUaXXnsMKBimiIP3nXa5JSmm6J5TH1E2wQLQ6sxWZ6Kr4zNAGqvVUPze2DU6BLwU1LWnFsVa4mtGFg4U0OYvoHaLKQQ7tc32dWL/1HZS6sDit/U6gGcX+A4iUu1705Gn38zmApYjo7/JVUF5HjAzcl+Igr26BiFyJIHS5rEMYas0+ciRUeYqVrFeL69Y02zkLt7zwuzcykBLgqh80gJznRRPzmtRVSMPsylDcJ4SP9+gKqQ0MiKELH3Po89vvlCAMsJLHXUhDOUKmk2OgqZMpH5sJUrru6HeQh98uO/f/BjzRuFW4cnefPHfPNI//aWbelvc8BOR1KmqDdPOLdYEB+R+xEX0mw657a977MoOPTFm2TRtXXOjlztmfLlo3EaKJv4Hxxl1JXYGuQxLChIVivLsgQ6A7ZG1YqjQCY69Xv7GJGtLOts9nfsIM9O9Ugk1JiM3F4G/dOJsDcGaF5I89765ThdG91bKQJtfczrY6sSxYMf8S6QzV8hvYJvub1j8VXr1MqTFR0r9NEU/qeguXI54QVtiicDXEwaPyllDLxwKgDV6zAJaAbbY5nPEWbnfC0Qmti9PMumGpDXXEMZ5531/nfmJdJAQbUF2ArlDknZaS+BNS1AwgbeqZeTwHfPzZ1p7GtaSvVbY7nDURSHSVeBOu+qpsywzDUeMW23ztZx0GOq+DojZZ4i9YHQcQMycZqinKvNaPm4gkPtCwJNAyGbZOabSRKpCWL6qdPqTi+FwKreU+M7qwPnjjaJgeAaK
- uz4QC/AF
- 5z+SkagsvM/ta8b7qDDOtWBGEqGiLdURJ1EkWBgkS7A9txs0TQAPTrFs0QCwUvUXdPIuRsJCnJMoqFhFpSnF3vjxTl/AfLgVRm7lFAqOqL9NInfsl0F5f4ZUmvpQ9mzCumJ5ziluF+R9SzuPWgFPYDWjCGRrCUYgxWUpPL4DDxMYewr8mdhx3KTcA6Xy7WMH7f3NEGAem/9EBJeOZypkuv98PMhmIcbY0cN0ETh9Uv9KX0jArz9NawFYql2jXeaQbtI3Jm4obxj3BoPTJOTda+0ArCvKIi21Hmz0he/03UltowrJxI+6Lz1d+Wf3eN4w/zdXlWKOgzETUsExjYtITxTMfq/dBYFcx5H8OoThPt4Pywkx0uEU37rCsrA+d/k8eekbKCpWIU4fJC+4UvDXzAYu4i2J98fZjzr5nACsmnCPk6nJhqsslc3shDj/tXcjreDBSEol+IbM2JyI=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BFC30140003
+X-HE-Tag: 1793899750-15256
+X-HE-Meta: U2FsdGVkX1/tIe0o6Sk7cMEbcHsibi+3+P9EaO2dGueohZz1seNyUSzfoxTLzAId7BdwPPjH75vmR831rVVf1C/pa/kHXnYgt3HD/AfUMJxedlgSS59lzXRqqEexaddYTYe3jxbggl6neYKYgRG01X/sUitd0c5dKR9yeWZnbKSZp0xBnh7LXe09Zx8xsd0ON/LYL7OimpOyjj3n+lmbQ2CeF/Opnwxc0k30A/yvN38Mcw4g/0XyBiTc8aj+laO/btKo1mEX9NhikKjawD4A11AQUjSBHONcfgMH/xT6DnMVyFSJjepkStK7PaOHVz4ONCSq1za8MWeQAWYKzh/o9+JsPawc2b+3tyN91AFoNpxr5VkPNUbLR4sonX2XJQoRfJZLGfIRDlVKHOoSH8OT6x10zcpTSldUYgSCUxavTLHwZelKHOsCg7bBnG8RNvCFJZkh6rMkbF1XEDnRxT/kDxN1267YNh2yejR0pxDH+u9AcmnJKYmk8ojUzdL6NriID5SgFw8Jr3fvvixpGWwI2E8mY4WECp62wGNnJP8HPGAJwZIZwIEhxuDls0T+lAfDxJsSqIdwOt/I1zXx48HYvhg+m6P4d1TQ40d0DMm3LotVO7jqUEUzutOtAKxZU91blD8yrLjv5zOkhD42DddR98zkWovlEx+0DmtGecjZNtcSg455iXp5YoUtSjoskXpuncKa33gXNq5iKyjy5Mh1OZIaGAQ2lKl8tZZjUJj6PvUr0NyIjg4e/J6W6j14LtZY0fhc7R9wObi78LcrQ/FhSmnf/SXCycMq67hs5zaxaP9GcLpg0fYnxW0ob+jy9JaiHX4u6n5x9imKymrfP5AvL31/MYvt1mhmqZUk+hq8o2NmyPdSFZ2skpM13slrM/vi/4/sCK0s6veQWEFU5jNAief7S+ip4oGyGDt8jHDSbIjOtrPlEeMAFCqSjfzY5vsXUbisWj+BTTChNKX+e5T
+ D1u6+Ofu
+ ogaTDQAmZI4Pb6v4gu9FyAj0+8toeE/0+exByo4tKQyTHiz85T9Yt1wMOzSY9pkQaMbLhcRp4r1CYiUOASSEIZsinTJCcFbK4dDU2bvmCKm5Dt9HwPIFnAMJ23kjC2fjtkMasRt5Bxrb6X5nIt4lwUFyyseTvOvY+kU8fYjxKuch0jIHi+YRurLLrJHaID4wbtlFARNHvDmeQ7FO/zQLYyO4H2KXsm2eQFLb81rnT4tkMfpKDWRzxX8oCfEhEaavp3n5DsXAnIH/l3tG0QRM105QhmdXqL5ZH+w7fd63+ccfI/eg04b/SYLcU/SWmOxqWaLmKpJ/Q+oMDXwX+xU+QsrpcmjWF7DW7iithSlbwV4Rj1Iw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -173,23 +97,168 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 5 Nov 2026, at 12:18, Sasha Levin wrote:
-
-> The split_huge_page and gup tests need debugfs, and CONFIG_GUP_TEST
-> depends on it. Add CONFIG_DEBUG_FS=y to the fragment.
->
-> Suggested-by: Zi Yan <ziy@nvidia.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Thu, Nov 05, 2026 at 01:47:36PM +0900, Sergey Senozhatsky wrote:
+> zram and zswap always call zs_obj_write() right after zs_malloc(), and
+> zs_obj_write() has to take pool->lock and look up object location
+> again, which zs_malloc() just did.
+> 
+> Replace zs_malloc() and zs_obj_write() with one single zs_store()
+> call.
+> 
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 > ---
-> Merged into an x86_64 tinyconfig, the fragment leaves CONFIG_DEBUG_FS
-> and CONFIG_GUP_TEST unset without this change and sets both with it.
-> x86_64_defconfig already has CONFIG_DEBUG_FS=y and is unaffected.
->
+>  Documentation/core-api/memory-allocation.rst |  2 +-
+>  Documentation/mm/zsmalloc.rst                |  4 +-
+>  drivers/block/zram/zram_drv.c                | 43 ++++++-----------
+>  include/linux/zsmalloc.h                     |  6 +--
+>  mm/zsmalloc.c                                | 51 +++++++++-----------
+>  mm/zswap.c                                   |  5 +-
+>  6 files changed, 46 insertions(+), 65 deletions(-)
+> 
+> diff --git a/Documentation/core-api/memory-allocation.rst b/Documentation/core-api/memory-allocation.rst
+> index 648222b6c857..5069ac72b857 100644
+> --- a/Documentation/core-api/memory-allocation.rst
+> +++ b/Documentation/core-api/memory-allocation.rst
+> @@ -9,7 +9,7 @@ allocate small chunks using `kmalloc` or `kmem_cache_alloc` families,
+>  large virtually contiguous areas using `vmalloc` and its derivatives,
+>  or you can directly request pages from the page allocator with
+>  `alloc_pages`. It is also possible to use more specialized allocators,
+> -for instance `cma_alloc` or `zs_malloc`.
+> +for instance `cma_alloc` or `zs_store`.
+>  
+>  Most of the memory allocation APIs use GFP flags to express how that
+>  memory should be allocated. The GFP acronym stands for "get free
+> diff --git a/Documentation/mm/zsmalloc.rst b/Documentation/mm/zsmalloc.rst
+> index dbb5c1a8dcc3..52eaba8f97e9 100644
+> --- a/Documentation/mm/zsmalloc.rst
+> +++ b/Documentation/mm/zsmalloc.rst
+> @@ -20,9 +20,9 @@ For simplicity, zsmalloc can only allocate objects of size up to PAGE_SIZE
+>  since this satisfies the requirements of all its current users (in the
+>  worst case, page is incompressible and is thus stored "as-is" i.e. in
+>  uncompressed form). For allocation requests larger than this size, failure
+> -is returned (see zs_malloc).
+> +is returned (see zs_store).
+>  
+> -Additionally, zs_malloc() does not return a dereferenceable pointer.
+> +Additionally, zs_store() does not return a dereferenceable pointer.
 
-Thanks.
+Well, it doesn't return a pointer at all now.
 
-Reviewed-by: Zi Yan <ziy@nvidia.com>
+>  Instead, it stores the encoded location of the allocated object in the
+>  provided ``struct zs_handle``. The reason for this indirection is that
+>  zsmalloc does not keep zspages permanently mapped since that would cause
+[..]
 
-Best Regards,
-Yan, Zi
+> diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
+> index 6c76fd10344e..674358f39191 100644
+> --- a/include/linux/zsmalloc.h
+> +++ b/include/linux/zsmalloc.h
+> @@ -48,8 +48,8 @@ struct scatterlist;
+>  struct zs_pool *zs_create_pool(const char *name);
+>  void zs_destroy_pool(struct zs_pool *pool);
+>  
+> -int zs_malloc(struct zs_pool *pool, struct zs_handle *handle, size_t size,
+> -	      gfp_t flags, const int nid);
+> +int zs_store(struct zs_pool *pool, struct zs_handle *handle, const void *src,
+> +	     size_t size, gfp_t flags, const int nid);
+>  void zs_free(struct zs_pool *pool, struct zs_handle *handle);
+>  #ifdef CONFIG_ZSMALLOC_REBIND_HANDLE
+>  void zs_rebind_handle(struct zs_pool *pool, struct zs_handle *dst,
+> @@ -68,8 +68,6 @@ void zs_pool_stats(struct zs_pool *pool, struct zs_pool_stats *stats);
+>  void zs_obj_read_sg_begin(struct zs_pool *pool, struct zs_handle *handle,
+>  			  struct scatterlist *sg, size_t mem_len);
+>  void zs_obj_read_sg_end(struct zs_pool *pool, struct zs_handle *handle);
+> -void zs_obj_write(struct zs_pool *pool, struct zs_handle *handle,
+> -		  void *handle_mem, size_t mem_len);
+>  
+>  extern const struct movable_operations zsmalloc_mops;
+>  
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 71e6dcb1fb3f..ff1cde4c5dc2 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -1172,26 +1172,15 @@ void zs_obj_read_sg_end(struct zs_pool *pool, struct zs_handle *handle)
+>  }
+>  EXPORT_SYMBOL_GPL(zs_obj_read_sg_end);
+>  
+> -void zs_obj_write(struct zs_pool *pool, struct zs_handle *handle,
+> -		  void *handle_mem, size_t mem_len)
+> +static void obj_write(struct size_class *class, struct zspage *zspage,
+> +		      unsigned long obj, const void *handle_mem,
+> +		      size_t mem_len)
+
+Should handle_mem and mem_len be renamed now?
+
+Also, there's a comment in zs_page_migrate() referring to zs_obj_read/write().
+
+>  {
+> -	struct zspage *zspage;
+>  	struct zpdesc *zpdesc;
+> -	unsigned long obj, off;
+> +	unsigned long off;
+>  	unsigned int obj_idx;
+> -	struct size_class *class;
+>  
+> -	/* Guarantee we can get zspage from handle safely */
+> -	read_lock(&pool->lock);
+> -	obj = handle_to_obj(handle);
+>  	obj_to_location(obj, &zpdesc, &obj_idx);
+> -	zspage = get_zspage(zpdesc);
+> -
+> -	/* Make sure migration doesn't move any pages in this zspage */
+> -	zspage_read_lock(zspage);
+> -	read_unlock(&pool->lock);
+> -
+> -	class = zspage_class(pool, zspage);
+>  	off = offset_in_page(class->size * obj_idx);
+>  
+>  	if (!ZsHugePage(zspage))
+[..]
+  
+> @@ -1318,12 +1306,16 @@ int zs_malloc(struct zs_pool *pool, struct zs_handle *handle, size_t size,
+>  	spin_lock(&class->lock);
+>  	zspage = find_get_zspage(class);
+>  	if (likely(zspage)) {
+> -		obj_malloc(pool, zspage, handle);
+> +		obj = obj_malloc(pool, zspage, handle);
+>  		/* Now move the zspage to another fullness group, if required */
+>  		fix_fullness_group(class, zspage);
+>  		class_stat_add(class, ZS_OBJS_INUSE, 1);
+> +		zspage_read_lock(zspage);
+
+The zspage lock is now acquired under the class lock instead of the pool
+lock, this is probably fine but worth calling out explicitly in the
+changelog.
+
+> +		spin_unlock(&class->lock);
+>  
+> -		goto out;
+> +		obj_write(class, zspage, obj, src, size);
+> +		zspage_read_unlock(zspage);
+> +		return 0;
+>  	}
+>  
+>  	spin_unlock(&class->lock);
+> @@ -1332,8 +1324,14 @@ int zs_malloc(struct zs_pool *pool, struct zs_handle *handle, size_t size,
+>  	if (!zspage)
+>  		return -ENOMEM;
+>  
+> +	/*
+> +	 * New zspage is not in class->fullness_list or movable yet, so we
+> +	 * can allocate the object and copy data before taking class->lock.
+> +	 */
+> +	obj = obj_malloc(pool, zspage, handle);
+> +	obj_write(class, zspage, obj, src, size);
+> +
+>  	spin_lock(&class->lock);
+> -	obj_malloc(pool, zspage, handle);
+
+Should moving obj_malloc() and obj_write() outside class->lock (and
+skipping zspage_read_lock()) for new zspages be split into a separate
+patch on top? AFAICT, it's a separate change from merging the
+interfaces.
+
+>  	newfg = get_fullness_group(class, zspage);
+>  	insert_zspage(class, zspage, newfg);
+>  	atomic_long_add(class->pages_per_zspage, &pool->pages_allocated);
 
