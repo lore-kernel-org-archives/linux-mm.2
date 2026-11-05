@@ -1,138 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39FEA606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1324606A32E
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CJIYbDcl
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GwerQ7j6
 Received: by kanga.kvack.org (Postfix)
-	id 5A8396B05B0; Thu,  5 Nov 2026 11:52:39 -0500 (EST)
+	id 1817F6B05B2; Thu,  5 Nov 2026 11:52:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 550056B05B1; Thu,  5 Nov 2026 11:52:39 -0500 (EST)
+	id 158C36B05B3; Thu,  5 Nov 2026 11:52:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 43F816B05B2; Thu,  5 Nov 2026 11:52:39 -0500 (EST)
+	id 06FAD6B05B4; Thu,  5 Nov 2026 11:52:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D3426B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:39 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id AB2C2140B44
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:38 +0000 (UTC)
-X-FDA: 85401659196.05.6E5EE9A
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf26.hostedemail.com (Postfix) with ESMTP id D9F30140003
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:36 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=CJIYbDcl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=dmatlack@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id C364A6B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:45 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E0C13A8A41
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:44 +0000 (UTC)
+X-FDA: 85401659448.12.09B74F2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 39AAB40002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GwerQ7j6;
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793897556;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1793897563;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7+a5U8fHtsX3E5MaoZwCfMwFhX7Hac3DauAHwFYDfPc=;
-	b=yI9tI12j0GBQODVwomQkG8t3sW8XJ/bGJB5npbwPP/gbeIZcjBBHbX3w7uA+jjv3s9mSZJ
-	PsW6C5tV4bBB2PJylg6EhWDsNU0f4inImvg054olkV8pABb+moVbdXSfjqo1a0WwuE/JMo
-	QASU7jP9Jt+Loi+3vW6MwzL5jevuwJc=
+	bh=oan7Be93ViXW4gYEkS/gPnA8WQOj5WP16f3Bui9Wk7U=;
+	b=AuYCET6RxciHoJpU9r8RVeDR8l3YLMnBOSiOy4PHUwl9djXhONBQwZkk28sCjob1pPYLlS
+	TIWZFjDj4kScVUtooLYhQtzNXDa6Wp0yptZohJRIGmJCz66SsR9eOfSbKLj6W0wqUY297v
+	LiSY8onHJMdWXzUrv9/lu6cewhucZ3Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793897556;
-	b=aJEr2kyesKKEL97NHtJMHRf8jtD6mO0VuhLMy62joj9BtCAdzJgSc4ebHKRZeZiqXXCCtQ
-	zGOpmhA+W29fMmjibah3WJA1JQaSpzcyxCPJg9OimyAVwUWbOlEXWcfRDrmJFUutPdhzRp
-	y7R1q9Mh3emAD60y+YTo3aqVre7agTc=
+	t=1793897563;
+	b=OcEOnyQPmlcp7KMXgNX9T9sYNoH3+GlHqI/nSTH1ps0R1B2WVGkL7VflLI54s+FCfT/ZGF
+	6jFlX5cod/4Vd3CvHWMUIxvkDLyFiPtPAlmARtXRgbjgtdCAnsCnxrTxoIEPVrVVfpAjla
+	3a729nCSphGvWZIcLCZGYLySNFEAP+w=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=CJIYbDcl;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=dmatlack@google.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a06ca6e8f4so1516299b3a.1
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 08:52:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793897556; x=1794502356; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7+a5U8fHtsX3E5MaoZwCfMwFhX7Hac3DauAHwFYDfPc=;
-        b=CJIYbDcllus5jqiFyx9K1XLiHcKNRLpcxWybqeSJm6meVTlbsPPl78MtYGo4FJWFrj
-         ncEhKsISaW541GGSLaaE0qM1dEQC2R1RLCkrKBhAqgVJh5YH5obIZO4udCK6POXLRQ8e
-         9Tmnu7jmIIHKr+lVNPeq4x1YnfZxddqLIieuon3Vt0B8y6B6Ry5DP8mXtf05vxsf0RVU
-         UhYtaO9Kwzq9v9FQdfINbuvCawe3YIF/UO+V0LkoDqcvnb1xZ96PHl0AjYpr3/kzo3qn
-         ZokRwkdEnORa4vRn5wvBqezNgDEK5KcQJ2VAWDG+E9ob2FEQnyKN4p7y5SFylwVrF6UG
-         flQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793897556; x=1794502356;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7+a5U8fHtsX3E5MaoZwCfMwFhX7Hac3DauAHwFYDfPc=;
-        b=vxR7vkf1fSnvMuSWags7Jcdh4d8GhLydKx6OheLNQUUVPeeePpt15B16cynSqBrrlq
-         Nd0In4wvV0YkwPDWZV+bQAT6Udkh8iPlHRKviXj4iq+re2JFfZemplbPmEdF0WYhwDvI
-         3hM/dSlO7fk7p7JzcgXZ+12qresv1EzjPKvUs4MwYGmLQG8UK3OS2+OJtNK9Y0kcRKKO
-         L1s1B9xx+ZJNRz9VMAj6MruN4ZDbYBlLB7Xxyg7U2BmSxbkI+3PizLprvPxUJmjcvL81
-         0Xycj/Nzc1AfgrGrBfbZ9xXGRub2z6i1k5PQcyYwH4ZjVOU+UB7cbiV7sOfVcJcEclCC
-         Okrw==
-X-Forwarded-Encrypted: i=1; AKwUvBxMgvrTZOnfGw7rFF0huN++Rj7ep7xC4y5xMjLByjLuVZOCV7rMu8sScIfSXRKcrKxDOErmRLGgeg==@kvack.org
-X-Gm-Message-State: APuU4Z83UtuCtiB4SXiJXwHAgQ7fUPonwLG/C4UMQ6nbliFrBA2UZoZI
-	shhKJ09PMOclZi15ORuQRWJccD99cDz53ndvB5jjj0RbW/5xku/Iz1fu/hGHZXfXyw==
-X-Gm-Gg: AYBFou0xDRazYziRVUzrFqhKzJdm3QC1UCRdpZwR+X9bIzVHXxfuXc6k30QJFAeoG34
-	cBD6u8Bj0MJ5AL2rD4QFqYxvMW8x1v4SEA70C1dc2alrpSnWs6Q8HdFgGH1ufL+a4ihGqPBefuJ
-	T4oDpS8LK1DB8QtjMqRExsxSEoBwSZk4w5oAvD+4EybMTlwvUANLbk+Wrfd4aDzcbcJMnyuvjg6
-	y8OhGD1VDj3Aa3VFTK3wBfl8Rr6geYcQ/glBWmK1evxGeC6bE1rIFgKGF5kkg2EHvUpW6YPZvln
-	8xe/dSoZDMvYdgbYnRBC/PwBQC44ZwPyBzVqLZ7fKRJUXql3+fYv9EpqaC8MInntpeVAbcED+nX
-	eOlmpttE2tR2xhl/VoQw1CyNUIEWLo98jPDI8utpA4EYireWYIEuySavK2vy4A2eG3v4UYqO1+R
-	bdyNzHA/hL6S0+n/2FW+1BkAtPHQa4jlvw0ywEEkWtH05eeUhglfsLFB74nmeoC9CNdY91aT8yn
-	IqJvoftUN6odKYivHMKjkw/ZejZ8rCRnQSni8KUP9s7jnBUMVFZOwyC3vlwM0qVv0TT7fHT/CX0
-	EPRqcn9lDFLDfckG0RxQjDJfvZFQgDT2LFkvUEkzvCLDTBNmT+L0KOkjUJF83TpqSaoA/Ib/yfL
-	b/13gCmWMYA==
-X-Received: by 2002:a05:6a00:e11:b0:882:359f:ef17 with SMTP id d2e1a72fcca58-8a9bb7a0b64mr18260859b3a.12.1793897555111;
-        Thu, 05 Nov 2026 08:52:35 -0800 (PST)
-Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8b09bb48410sm2298197b3a.46.2026.11.05.08.52.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 08:52:33 -0800 (PST)
-Date: Thu, 5 Nov 2026 16:52:30 +0000
-From: David Matlack <dmatlack@google.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, Alexander Graf <graf@amazon.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Hugh Dickins <hughd@google.com>, Jonathan Corbet <corbet@lwn.net>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v3 00/10] liveupdate: Preserve tmpfs files across Live
- Update
-Message-ID: <auy0ThryqW5nVx20@google.com>
-References: <20261103010216.3447716-1-dmatlack@google.com>
- <20261105-sitzordnung-nahkampf-ausbleiben-6db911d0333e@brauner>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-sitzordnung-nahkampf-ausbleiben-6db911d0333e@brauner>
-X-Stat-Signature: d3gcxegsatdubygmrj777hqmwpzahr51
-X-Rspam-User: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GwerQ7j6;
+	spf=pass (imf01.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 78E736062A;
+	Thu,  5 Nov 2026 16:52:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C63A71F000C1;
+	Thu,  5 Nov 2026 16:52:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793897562;
+	bh=oan7Be93ViXW4gYEkS/gPnA8WQOj5WP16f3Bui9Wk7U=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=GwerQ7j6pasgEGyVYTDs+rpslsBSxNGeuuJCR3gfQAwxU39ruFZGQVJsU6xOe4VOb
+	 p7GyIAkYyHavX5RkJS3Lv0Ze3kMZMHdhrj9+PyqK9tc5NKk+p36KA8imu+ft2p7EA2
+	 SL+c1rpEjgec6lf+I8mbaWwMxUCVpxAjHqR6bRKm4rkj30/1FLUAZ86AgDw7gqrnM/
+	 bTm/Yu/FEOyYbtHDF/RfEJgwhD4wl+w5ijxin0UYtDmvctTAwUTCcJxZYU+mCb2qNV
+	 mpAILzbOQtMP3TTteKWWvVXKZRDHvLVWthzxmlRt8cds/qw+P0gQaHaLFGjFO6CjBg
+	 LJCqfDltxAlpQ==
+Message-ID: <sashiko-outbox-199539@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 01/14] mm: Add an allocator for CoCo shared memory
+Reply-To: sashiko-reviews@lists.linux.dev
+To: =?utf-8?b?QW5lZXNoIEt1bWFyIEsuViAoQXJtKQ==?= <aneesh.kumar@kernel.org>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Baoquan He" <baoquan.he@linux.dev>, "Mike
+ Rapoport" <rppt@kernel.org>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pratyush
+ Yadav" <pratyush@kernel.org>, "Catalin Marinas" <catalin.marinas@arm.com>,
+ =?utf-8?b?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, "Joerg Roedel" <joro@8bytes.org>, "Marc Zyngier" <maz@kernel.org>, "Marek
+ Szyprowski" <m.szyprowski@samsung.com>, "Robin Murphy" <robin.murphy@arm.com>, "Steven
+ Price" <steven.price@arm.com>, "Sumit Semwal" <sumit.semwal@linaro.org>, "Suzuki
+ K Poulose" <suzuki.poulose@arm.com>, "Thomas Gleixner" <tglx@kernel.org>, "Will
+ Deacon" <will@kernel.org>, "Russell King" <linux@armlinux.org.uk>, "Benjamin
+ Gaignard" <benjamin.gaignard@collabora.com>, "Brian Starkey" <Brian.Starkey@arm.com>, "John
+ Stultz" <jstultz@google.com>, "Mark Rutland" <mark.rutland@arm.com>, "Radu
+ Rendec" <radu@rendec.net>, "T.J. Mercier" <tjmercier@google.com>, "Madhavan
+ Srinivasan" <maddy@linux.ibm.com>, "Michael Ellerman" <mpe@ellerman.id.au>, "Nicholas
+ Piggin" <npiggin@gmail.com>, "Christophe Leroy" <chleroy@kernel.org>, "Ritesh
+ Harjani" <ritesh.list@gmail.com>, "Shrikanth Hegde" <sshegde@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Gerald Schaefer" <gerald.schaefer@linux.ibm.com>, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Christian
+ Borntraeger" <borntraeger@linux.ibm.com>, "Sven Schnelle" <svens@linux.ibm.com>, "Ingo
+ Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>, "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org, "H
+ . Peter Anvin" <hpa@zytor.com>, "Kiryl Shutsemau" <kas@kernel.org>, "Rick
+ Edgecombe" <rick.p.edgecombe@intel.com>, "K . Y . Srinivasan" <kys@microsoft.com>, "Haiyang
+ Zhang" <haiyangz@microsoft.com>, "Wei Liu" <wei.liu@kernel.org>, "Dexuan
+ Cui" <decui@microsoft.com>, "Long Li" <longli@microsoft.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, "Vitaly Kuznetsov" <vkuznets@redhat.com>, "Andy
+ Lutomirski" <luto@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, "Oliver
+ Upton" <oupton@kernel.org>, media-ci@linuxtv.org
+In-Reply-To: <20261104164555.3555725-2-aneesh.kumar@kernel.org>
+References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+ <20261104164555.3555725-2-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 16:52:38 +0000
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 39AAB40002
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D9F30140003
-X-HE-Tag: 1793897556-512671
-X-HE-Meta: U2FsdGVkX1/T5qERe2AAgRwQDesUSUTxeR2uEBO7X3zF/56+JVFfLzID51x2fqeg7BkN8SFGJnWEwRp8iijTEmfw1eObep5YbiskOX4Gnbr3rQjhCV1xmDgPZU9w0xBDmeJNn7Jd45ZRmVQgMi5MAm6GtWTyaUeIO1Y+wqhrumdNHHOadQCrdBGKVqFZ+oEJxmhL8gehiQQ8P2Om/abXd/ign/Ru5FTHvwwIRkwH0nCKXuQ/o58RBvj/TDp+S/haDCD9DWa6c8IoVcA7KYOfItFe6/4Ql3hFH4I1DTtcPVXMpFRgFgSeO1/YCkFVr/O4zt+UcyVeK3iGmUExD1OrWPk/A7kpjBUySfTQRPULHHq0wYSSL/sfYv+ui5Z5XRT2sM1o+pK2twLanv4/x3BYglNmAjkYpDWPXVkv+1jU1KC9UJ+XaRKIXrx35rX3DeohsgqF3KVFg2Wo9He8ar4H8x3ZEI0/2jukraRMK/+Osh/jF/BNk6f22oFXIPRNExyt1r1DKyemgoGoU6xeEI0ptsNoUOv1J9nlRvf4ju5hLtu/Y6WGxYEQOCBUBCe4izeywDADo/X15WJI5MJFCR2ULIFRz1aEfVuzUKklIK2NJ7hrq3gHV6oK5JDT1Y8Q3H0f9A4xObWEHrTDRt9h7v89jEhgQcuFbrkj9BdJ9MWpJQkhMrFOGYee/7e4cxx8NnMNJ+8f6l2yphAL0NEAZ8yUEgCk1mbqxYeqpZOAxB+Uv4Tw3KdbzLFGKtElwGK5DMqRBtkNd/oAuR/7qL79ViMyayB2oBqWjia6F6aYK5JsxBVDTDwlwgQy9975eXU8xiM05Jr2y2/Z6Zn7KMkXaI2livtsPJxkxFgySCFkEin4a8u1ZhPLgL3IU5QK7ViyP0WT8NuDHu9+KiHmU96iWngOMyshIKMSaMgjMU4mCy/yGDGBMdCN4XUVg9IGULWBlN80Z1Jy7Z7Ei3H8MQhQeV+
- B4iKEenw
- kY8N9XM7XZ0tMekXR5QhoPlflQ98gDbX6PgYUcC9ELwWZgIhXkbK+PUH0KfQAL0jo6p3nEKt8DVBCdJVm0ji9oGuyrKyE/vbNSFA5tspb0CeZa3W5UhKBFfwEiDH/Dg3yx6PmDPW9jgm9M17GOVANcfXt8RCBhtaqsIzubV+e7IjeNRYmpW/k/FMzN6c99VBcZkz6iNjlHUlNdzHb369aEM0DPvYygtixH9KU5nmc5HHvKwKSRMs5PqrwpDQfbLHvTM0ixKkm/rJXBYkN8O0J8S/5rKKtOt+c1Ne+I6wwcn8fPvxiit4yTK4zuCB5iKAEgqQWtlnrNfLhG/5VoeEkHx6jHK5D4LFIwOCMCJpu0YrNTYE=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: nkxtdprf7y5haex7trysg8sh99fojp6t
+X-Rspam-User: 
+X-HE-Tag: 1793897563-672492
+X-HE-Meta: U2FsdGVkX19UpcbaHKO7pMl6AzaSXMzQUKSHmI24x2kG1/T5jtgle34ytL0+JVQWMOiyNv546xvCCfi3r+bAQIUeTKHoOzAMt/BWkWeV1gITtwioZuIY0e2qMztAlwSpByx7wUiLgzTuhudn+dDnofpiEItgglD9AJ7u0OC4HLFQPvbhLQRxvyOcE4Bwy5sdRo9J2Bsg3xMw3XPfqyl41rIvbwy8nSoDeZbheMpDDPA15Cm7cAcj/0FNgVQnLw9/bOLqdEOm4PNOFt+QT6EMIGf/YFyrlwUNCibRvKlEwyiuZf5y5j/4OiwAhHXI78VlzI8occTJduozSqsYh/AbZu+qO/aSideC5UJJuYzxWm3Xja2tE/lJGhnSuB+mUlfd/uGrD76X8aDnVbRT6XIGCzG1c3Sekt3+Q9uqusWnYtDJKxBfzLGH90ER3LntdCw1etd6/y+YkUe7k3pQvYzVoeQ7XLMWX8uuFlCv8TyDqK98SfooqhLEFdKPfd+ArJdeOB+7c5PXVF9iqU27esG3cpNZUYlMKG942HjRYdjoso5UaZiRgW377pJWnemeyj+nv9y2FM4XIO1kdGz+3E0iBNL0XEabBmNzeBbkBG0C62hPg+Jfogp9RArPe8oWNEMy/0v7CVhjSNnKXhCYtBcg1J9Q+ZrbaFNaPj44ZPrpWwl+QkbRjcS54tr26e+MgcAX3E/h1vLtmBRpjwVmqeSdsGD+DpfyM6K9ySdsgEBwHJPb2JTWG6Iln+0iQfhcPqmTpWT02SjwhlXUkItMo0LDoqyDcg+Cr0P7y/D8Eq5rtTpdmMaBXqDP7SwgwsTjpgfNJtxhV66wRgvxsUwKHUlZ8Db0JRl1w9o/cnS0u5Na6gnRpdOGk8YIBNRsK4hHzfWfLUtnfquwEKKCM8/nGRtrsAjvhLtJp0jpukygCWJa6DQSclZ1dIPvpXEkDwpCsJghBpjN/etNpME85Gw6kEh
+ Yf/Q8sNN
+ cu3QIxZUowIhfD2j4gih7Bare4TAGMEnCLUiplWda9qw0awnV4hO17V0fL/dtQ6GvqDzk72bJWd57puvxeyFE+5LnXHLfqk8WkDiN5FtM4cf8F3MnPG8/3SDpoygM3SilEah3s3ofkjXxVFVpR5bOjPMGmYvd618cM9wazbtONfBjgsLSjTpwF6Wr8ptPhgCEvK5CWLTC6yWejeAgPL9PId8fB7Tjvky/RciFGRn/1KNo+nZgUR79lFbRpx5h74q7P1SQGIBciuItqCEjb6A3cGx1w3RkteUbmb2D4aIeTXBGWHBMs2qNyBQj/dr8I/qSpqaFh4a6qLDlXb++4d10hmPy+g+laudi6Sn9LGbhdt7NlQ3EG29rstbzy8S16yw+EjNYPaH+jaTdYfvOoK/TY/V1PuDrSbnKre8Ta/lLmc05gf1fFCv6UhTIYERwJLGP5k4PIjbiCsBefy+b8L1g+MWtItqXgU1xNzSgfNtTHqvpLFMGDaV7MaBwx2i1sRpzp/29rMTPwyIInFEAKp+XKQN5eyhCtUlvFhLKp446cosAUGW/BiCq59OzHT9hf5ULuAFfe0VSKCEPRZpBiyk1uQJQTmz8G80Zp/znYDOUc7tAYae5PSObkVTH5vHqer7BrOdZ/eQ8YfG+i211RpyUNocKFotHO1dusO+SaYTJn2oXXVTaYZnwrE++KY1zJ9U19qN+BHGN/P0nQ+A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,68 +116,146 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 2026-11-05 04:42 PM, Christian Brauner wrote:
-> On Tue, Nov 03, 2026 at 01:02:06AM +0000, David Matlack wrote:
-> >   4. Retrieve files that were preserved from a tmpfs mount onto a tmpfs
-> >      mount chosen by userspace, via the new struct
-> >      liveupdate_shmem_retrieve_arg. The kernel creates the file as if by
-> >      openat(dirfd, ".", O_TMPFILE | flags, mode), so the file gets the
-> >      same flags, owner, permission checks and security labels as any
-> >      other new file in that directory, and is charged to that mount.
-> >      The kernel fills the file before returning it, so nothing else can
-> >      access the file before it is complete, and userspace links it at
-> >      the path it wants with linkat() (patch 7).
->
-> No, sorry. That's not what we discussed at LPC and it's not what the RFC
-> and v1 did.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] mm: invalid cc_make_private() call on cc_make_shared() failure
+--
 
-[...]
+commit 8a434c0ee7399613dbf060530383d80bbc1ab7af
+Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-> So instead of LUO handing out a file descriptor for a file it invented,
-> let userspace create the file, O_TMPFILE, O_CREAT, whatever it likes,
-> with the owner, mode and xattrs it wants, and let LUO put the contents
-> into it. That's what the RFC did.
+mm: Add an allocator for CoCo shared memory
 
-I'm fine with going back to that in v4. The retrieve argument will just
-be a file descriptor for the target file, and LUO will only restore the
-contents and size into it. Everything else about the file is up to
-userspace.
+This commit introduces a common allocator and transition helpers for
+confidential-computing shared memory, including alloc_cc_shared_pages(),
+alloc_cc_shared_pages_node(), and free_cc_shared_pages().
 
-> The checks on the target are trivial: a writable fd to an empty shmem
-> file with the inode lock held while you fill it. A tmpfs file can't be
-> sealed, it only ever has F_SEAL_SEAL, so there's nothing to restore but
-> contents and size anyway.
+> diff --git a/mm/cc_shared.c b/mm/cc_shared.c
+> new file mode 100644
+> index 0000000000000..5c4c971cfb7b2
+> --- /dev/null
+> +++ b/mm/cc_shared.c
+> @@ -0,0 +1,233 @@
 
-Sounds good. The one other check I plan to add is rejecting a target
-that LUO is already managing, e.g. a file that is preserved in an
-outgoing session and whose size is frozen.
+[ ... ]
 
-LUO will also add the folios while i_size is still 0, and set i_size
-last. So reads, page faults and memfd_pin_folios() wouldn't see the
-folios until the file is complete, and if the retrieve fails partway
-through the target is left empty.
+> +static int __alloc_cc_shared_pages_node(int nid, gfp_t gfp,
+> +					size_t requested,
+> +					struct cc_shared_pages *mem)
+> +{
+> +	struct cc_shared_layout layout;
+> +	struct page *page;
+> +	unsigned int order;
+> +	bool zero =3D gfp & __GFP_ZERO;
+> +	int ret;
+> +
+> +	ret =3D cc_shared_calc_layout(requested, &layout);
+> +	if (ret)
+> +		return ret;
+> +
+> +	order =3D get_order(layout.shared_size);
+> +	if (order > MAX_PAGE_ORDER)
+> +		return -EINVAL;
+> +	/*
+> +	 * State transitions require a linear-map address and may modify memory.
+> +	 * Allocate from low memory and defer requested zeroing until afterward=
+s.
+> +	 * Shared allocations have no migration support, so they must not
+> +	 * be allocated with __GFP_MOVABLE.
+> +	 */
+> +	gfp &=3D ~(__GFP_HIGHMEM | __GFP_ZERO | __GFP_MOVABLE);
+> +	if (nid =3D=3D NUMA_NO_NODE)
+> +		page =3D alloc_pages(gfp, order);
+> +	else
+> +		page =3D alloc_pages_node(nid, gfp, order);
+> +	if (!page)
+> +		return -ENOMEM;
+> +
+> +	ret =3D cc_make_shared(page_address(page), layout.shared_size);
+> +	if (ret) {
+> +		if (!cc_make_private(page_address(page), layout.shared_size))
+> +			__free_pages(page, order);
+> +		else
+> +			pr_warn_ratelimited("leaking %zu bytes with uncertain shared state\n",
+> +					    layout.shared_size);
+> +		return ret;
+> +	}
 
-> I also really dislike file_open_root() for this. It's an openat()
-> emulation inside an ioctl which is completely terrible.
+[Severity: High]
+Is it safe to call cc_make_private() across the entire layout.shared_size
+range when cc_make_shared() fails in __alloc_cc_shared_pages_node()?
 
-That is fair, it is ugly. That all goes away in v4.
+When cc_make_shared() fails via set_memory_decrypted(), the pages in the
+range may not have been transitioned to shared state at all, or only a pref=
+ix
+of the range may have been transitioned.
 
-> > - Is patch 9 (retrieving tmpfs files with O_RDONLY) worth merging?
->
-> No. With userspace creating the file this doesn't exist.
+For example, on x86 TDX in arch/x86/mm/pat/set_memory.c and
+arch/x86/coco/tdx/tdx.c:
 
-Ack.
+__set_memory_enc_pgtable() {
+	ret =3D x86_platform.guest.enc_status_change_prepare(addr, numpages, enc);
+	if (ret)
+		goto vmm_fail;
 
-LUO holds a reference to every retrieved file until the session is
-finished. Since the target has to be writable, executing a restored file
-will fail with -ETXTBSY until userspace finishes the session. But as
-Pratyush pointed out, userspace can put binaries in a special session
-that can be finished immediately so that the binaries can than be
-executed.
+	ret =3D __change_page_attr_set_clr(&cpa, 1);
+	...
+	if (ret)
+		return ret;
 
-> The preserve side seems fine to me. If you freeze the size of a file
-> for everyone you better be allowed to write to it.
+	ret =3D x86_platform.guest.enc_status_change_finish(addr, numpages, enc);
+	if (ret)
+		goto vmm_fail;
+}
 
-Thanks for taking a look.
+tdx_enc_status_change_finish() {
+	if (!enc && !tdx_enc_status_changed(vaddr, numpages, enc))
+		return -EIO;
+
+	if (enc)
+		atomic_long_sub(numpages, &nr_shared);
+	else
+		atomic_long_add(numpages, &nr_shared);
+
+	return 0;
+}
+
+If set_memory_decrypted() (enc =3D false) fails with -EBUSY on mem_enc_lock=
+ or
+with -ENOMEM in __change_page_attr_set_clr() before
+tdx_enc_status_change_finish() is reached, the pages remain private and
+accepted in the TDX module, and nr_shared is not incremented. Calling
+cc_make_private() (set_memory_encrypted(), enc =3D true) then invokes
+tdx_enc_status_change_prepare() -> tdx_accept_memory() -> try_accept_one() =
+on
+already-accepted private memory, which fails and jumps to vmm_fail in
+__set_memory_enc_pgtable(), triggering a spurious WARN_ONCE and leaking mem=
+ory
+that was never shared.
+
+Conversely, if tdx_enc_status_change_finish() fails during cc_make_shared()
+before atomic_long_add(numpages, &nr_shared), and the subsequent
+cc_make_private() call succeeds, tdx_enc_status_change_finish() will execute
+atomic_long_sub(numpages, &nr_shared), underflowing nr_shared and corrupting
+the accounting checked in tdx_kexec_finish().
+
+Similarly, on arm64 pKVM in drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c,
+pkvm_set_memory_decrypted() shares pages one by one and stops at the first
+failing page, leaving the remaining pages private. Calling cc_make_private()
+across the full range then invokes KVM_MEM_UNSHARE on private pages, which
+fails with -EPERM.
+
+Other callers in the kernel (such as dma_direct_alloc_pages(),
+atomic_pool_expand(), and swiotlb_init_late()) do not call
+set_memory_encrypted() when set_memory_decrypted() fails, and instead leak =
+the
+pages directly because the transition state of the range is unknown. Should
+__alloc_cc_shared_pages_node() do the same here instead of calling
+cc_make_private()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104164555.3555=
+725-1-aneesh.kumar@kernel.org?part=3D1
 
