@@ -1,123 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A92606A33B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:04:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F510606A32D
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=De8H26+1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XFuaSYbA
 Received: by kanga.kvack.org (Postfix)
-	id 35A746B05B5; Thu,  5 Nov 2026 08:04:23 -0500 (EST)
+	id 81BE16B05B0; Thu,  5 Nov 2026 08:07:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3328D6B05BF; Thu,  5 Nov 2026 08:04:23 -0500 (EST)
+	id 7CC8B6B05B2; Thu,  5 Nov 2026 08:07:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 249036B05C0; Thu,  5 Nov 2026 08:04:23 -0500 (EST)
+	id 6BA556B05BF; Thu,  5 Nov 2026 08:07:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 057A06B05B5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:04:22 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9817C140993
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:04:22 +0000 (UTC)
-X-FDA: 85401083964.18.0679C9D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 8E1DA4000B
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:04:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=De8H26+1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 513EC6B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:07:10 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id D5B6840996
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:07:09 +0000 (UTC)
+X-FDA: 85401090978.23.F333C8A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 388BB140002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:07:08 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XFuaSYbA;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793883860;
+	s=arc-20220608; t=1793884028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VGtXYc1r1fEEKTL7Yj84vITN0MZ0IiuZ0W73SGkuDDY=;
-	b=wEGfz9RcVaf/6x2o/qZZ8gLAd90hlHj0Nq1L7Di2Ytw4bK51iPO3vHkaBQ3ztgEabBeevx
-	GcFHj852oWZyETDTqiiVNdnsSWV8O2lU2PftQhNusEJWmPU2id/bGChcgQzF8DULkvE3DP
-	HhfKwcKpJhTF9XY3W0YITcwM8spHBKo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793883860;
-	b=dZ0khfyNks3GdJnUaFx+8xuVH+EpisZ/mjgN8Q5F+QVb/HN1LqMX+H/BPFbztchr7OZ2zW
-	00IJgRZrDuTSNQL8subxpQOa6KfyL2LLntU77xBTtnpZ3rsmwYItaXpXqy1X7QzpNhEX5/
-	7+zJ6zp+2bho5ui5Uq2Mpvvh2ekjE6E=
+	bh=1jOK42kEV/R7k8n51sIGLXDORmkNj62Y+kfJMXSo5Mc=;
+	b=qoDGzgrJEzL/IS4fecOb3tCyONZYK8oSuZhNjZFsgR/5kJPisus6/V/IOuCX+ye4cysEyV
+	IDHWw56/GT/vDhNDOEzE9wSM8yzTK3X09fEbL/SCMfsZR9GuXTRR8lGyUfcNFhSHj4IodN
+	N0hLQ76beLA7k56iBPtb1o0L+UsTAGA=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=De8H26+1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XFuaSYbA;
+	spf=pass (imf23.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793884028;
+	b=bBQWLC3MBbcLRwZzLCf1irzy9zEmEDZJQnJRLHsdH+u6hvQzsDb5vsMPnh0KZD58rus/tA
+	FbIqyYg4Cb1WD3/sDpHKlXKuTfmNirRsGnKD63fAkGrB4vMpYO73AUyW8JTWHjGEikw0v9
+	aFhm0Dap7oX7D7Sy02rcgK7yDsIq7y0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E1DB043AC7;
-	Thu,  5 Nov 2026 13:04:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398FD1F00A02;
-	Thu,  5 Nov 2026 13:04:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B70C960267;
+	Thu,  5 Nov 2026 13:07:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805411F000C1;
+	Thu,  5 Nov 2026 13:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793883859;
-	bh=VGtXYc1r1fEEKTL7Yj84vITN0MZ0IiuZ0W73SGkuDDY=;
+	s=k20260515; t=1793884027;
+	bh=1jOK42kEV/R7k8n51sIGLXDORmkNj62Y+kfJMXSo5Mc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=De8H26+1gDbucw54r/u2YPNm1SP4KKNmMksc0qAHccscII4QCkaoyAETI152TklJH
-	 Tet+X/3BsKz/dioEysdHlU5cIUnhLGKZ/LNjFXX6PpCp5VGnQqDXnloAn5hkE9PXfR
-	 ndeKZGIKuGE+bR5EyoZ/dsUIW2d7Alk8Gyc+NxNVkpz92UKCJLF+zZS8Uk4B1YOCI5
-	 P74dJov7LFjIZ4aGZXPmL56kTOvvS51CXVtcIPnwOVNiH2+KXkFq58mThJlA7RH05k
-	 pgqy4CV7+y/c0xjcYV4jX7Xd8DQVeMeuB7G7TpdwaVmIPDxUE624m4DafEA25arfyE
-	 ZccQTwAMKDXvw==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 5580C198003A;
-	Thu,  5 Nov 2026 08:04:15 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Thu, 05 Nov 2026 08:04:17 -0500
-X-ME-Sender: <xms:zn7sagX0bHbqO4A4TRBYez_QTejKPgkzRwAViqmY3Q2vjo9CY_2mzw>
-    <xme:zn7sam4INjcHnQFcJfTI6uG9mIag1kAX4vNpX_O9rfCMLv4fmPKeAju4Jcs99CriE
-    DQa_mrCnjFsm5GYJWuJFzfMlquu0F1CVwljJtc3OnDCdL6WuZaDTHDc>
-X-ME-Received: <xmr:zn7sajHIz1M1ojP4JndE-bnH5Lboc5LvmijY9MxwNCATfeQhkUyt2mKr1Ng>
-X-ME-Proxy-Cause: dmFkZTGWioZ5UsUZvGXjaow1BsUGadLs8aZQdTF4UnV/07NAN/af8tN6pM/FfLXYfyZLfb
-    xRpT19JopPsgAFGYsm8FzaqvOcRv05DtuUalhGCfVBg5TYHs9JXv+Q47gmOf937P2Gi3S+
-    U2sfvRv8HM/m1nYX6eGi2a4miDiVYyQMuuHiidk1Rop6z5ppK7guJf5jvUfTyMXleQeyL+
-    YFG9WYCksR8P+f/IoUx4Wo08VB8Mvto3/EHOpPBXbwb98JXOAs0bmRST4eO1cbxBPUkzyb
-    YU+NZSxhcSt0KRFVrgpydwZFv0ufeT4P8d+qRyppjSLMzQpNREs19lQwYqTs8BowLu6Nf0
-    PR/JbnTjTlqcoe9z9eXCxtppE/iBqN4lxahyvqAWND3wSza41vyy/g8b8tJb119KbVZ8CZ
-    MuRhok4swEs4IKe4vdUOtIKHZ5plH23vTgaYw6PfyI344YttADPGpvH6z1snl9sRY/w6tT
-    BrCIVHE4Cs5mpSXa/717IOVH1XtBwbuOkBGFH1n9JQAOTVfvpnco/Iz5sDs/mRgagaVrey
-    cq6c90syhHHUbEfhX1t/E8+JdiHng3sYYvf5nhsjkohkNfCEDaVAHGUsNyVx8+QglNqqXK
-    ulKWha96KxsFQer7kolLJlTQQ/AiVpLrSfhPXbnzPLT0MJ4ciPeh+uKeOiLg
-X-ME-Proxy: <xmx:zn7sasRYreFG1B12dgaWNLJaMTnvJum9gmqOKA_t2ZzUrKeUn33c3Q>
-    <xmx:zn7saoMA0D4Uv985DwquZetStTw113Ib0q1_tpUBZ9ajeeEzbsBWxQ>
-    <xmx:zn7saseZmeGUWPdwDHpB1Rp0nFyftZwCqUaODIf3SBWPBFb_Kb9U9w>
-    <xmx:zn7sarVZeG7-wD1HvalF6WI07O4X-rs7VxKwjsOGPZyZuRFNzx6Y1w>
-    <xmx:zn7sat-3I3FOwm9xcmy-LlgXxJQcXUcQS1qD5nrBScIbL-4eJN9kZEQj>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Nov 2026 08:04:14 -0500 (EST)
-Date: Thu, 5 Nov 2026 13:04:13 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/khugepaged: free unused page table when setting a
- huge PMD fails
-Message-ID: <aux-ZdKu97JHLY96@thinkstation>
-References: <20261105-khugepaged_set_pmd-v1-1-cb79ab117199@kernel.org>
- <aux9liPvdZgpKCpa@thinkstation>
+	b=XFuaSYbAn6Wzfg2xYzR2T2rOKC0XDbDYhBWedM5J/RUQvjbBWRjzNw4K4Dn/iQ0pF
+	 dSQ+7RvtRYpBTa099A8orQ6Eoq0V5fe9WiOoUXLjtRgOgAQfU0xXOlZ0vTQXkEkXgu
+	 KhEdHwOq6KB2VVmaJviQHb2UVnhjNnwRasKvHuuLi/RCLBovWXTXG2Kzg30H2E/hBR
+	 jaktqUPHCfXxQqnxAnd3VasCNIvl5thBnv+GSakC2ip8kbNsnxNBgqP9PzvcDFP+aR
+	 ocLUpRelVHZhyx0N/goW4szRfWco2GGXiVwl+gLHV7g/U/TuyWb0AGwAN3fy0m7uJe
+	 vaUjtb8+88F9Q==
+Date: Thu, 5 Nov 2026 15:07:00 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Chen Pei <cp0613@linux.alibaba.com>
+Cc: pjw@kernel.org, palmer@dabbelt.com, alex@ghiti.fr,
+	pasha.tatashin@soleen.com, pratyush@kernel.org, graf@amazon.com,
+	shuah@kernel.org, guoren@kernel.org,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	kexec@lists.infradead.org
+Subject: Re: [PATCH v2 1/5] kho: Do not translate the handover FDT address in
+ is_kho_boot()
+Message-ID: <aux_dPnvXk3LYDxs@kernel.org>
+References: <20261103080926.2079-1-cp0613@linux.alibaba.com>
+ <20261103080926.2079-2-cp0613@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aux9liPvdZgpKCpa@thinkstation>
-X-Stat-Signature: kp15t1bk8coqewpk6cpuagqozdbhyaeh
+In-Reply-To: <20261103080926.2079-2-cp0613@linux.alibaba.com>
+X-Stat-Signature: 7udbfcgnqcqhqi4iwgt1w4qe8abfbcr8
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8E1DA4000B
-X-HE-Tag: 1793883860-770902
-X-HE-Meta: U2FsdGVkX1+pxfQX5ZbasRoQc9PJWdq8jHwIZDGRTdVLNJ3ramI3CNnnPsBTP2KS7BnVbPuTpuKUxnEXpDahBIOsB+N2NOmDBRMFRzFo8/vee3phG+hEMBkIBiJFTkGbBj1lLI8Iw1A93EMB5174UbRS/K/D9bkqthJHLi5oUp75vGAR0CP6awbU905ZVjvVGGQig+FxRyCBL3boDHyppW6OdtJvLXZt+qmdwHoMJBWBbrsZ+QZGNgGrRxNDjVws9O8lTWpll1JUIRTkG0XGMH+t5DW4MeV2B1QJQHWHI8yUgIbZ7OLz6ukdnUBDxUuC9HGXD4AeaxCxNsT5/Ef6eN2rN4hLNIMBGsjnKGjcsiUXW9gfBdPOE1KsUV6OWpdNLsjdJUKWYwcV/VUIRXjrQJKnwnH9ucgirhJkhogBAYUDYPsRhdN5oHAKJVAVb1bBQ74l78PvrWZadAEno5tIfrk5ubQT/0FNZe1bNQzG7tDmSKvyBSakuSzOcGhNuLzf3mO7TceFjLe364DQMEUZntt+ea1UEDXOplBzP21Um4St9Kr/Iw8GoTOffCbGsV9zHLgIvSk0N+1JtlGbcA4RRdU6P1DEwBgiGcah9IvMdkn8rrsysAg9vyKvTcEAWa7dl3dSez3gz6hFHauW7gr/2bZPWv+cZRmFWiL2BR0B+zAoS8PpqiEedhDZOQ0o7ux8wewQBr4uBC/d1Vl7JpYG7zqlYxr/HMoqtm0KHwGquK/GpAPmFrjiy/97oPi41yohQoYEljwrhRsw7neHJy7BIHmdOVvk6UAx17+HFs2rjb517rC5jLr+KoGiK811IhOdAfelez27LZDJmjq3+5UocURiAHM8Cv8EslfAAnsWhNwuTuV6luSkix9ZVhWWjv/qP7qYeIhaei7oAs68uTlnqU5oBlqcmLerYBbJLZ9xtjhBPFqBaptOAxVIFaNpP5K0pkik0B4p+aYYYYWHWZ8
- qcF9ljyE
- tb5wCY1xcWfYb68txwbvV4M0pFAUTPOqGqrcDPdKTYcvSCqpmnVeMmYAL7bwm8ZAgLSF6PKwgsZ7qzVf7IEGgqBo3wJsFE9I4AaUzBllXK+PBzyemfguRodOWtcO/r7JPLXle8UkJkuV3AJCzaR6K9D928AcbsDBeNBnb7ztN2WgptVT72x+gLfSoIcdd62/ynoWQ9vEDgvS1XqPF9UUcmJa+McXuEc791UMfCtK3Y/2ba1GHgHMPzjeFyl4dOLDLBMw2UrFh3WqN7UrCvxQL37gn0A==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 388BB140002
+X-HE-Tag: 1793884028-710615
+X-HE-Meta: U2FsdGVkX18bkkNlyf0bcP7xuW/Orud74z/SNNcYEL7fk9AFCJ9YkvXQuo8PNlAeVWZzEhm9Y/7hUelaYsi4Tn0sVC6fN9/34B79ceBztuLAaMbqKffDst21CrJ5EQZqayV3XySjNFs+wft7icQ84/3RDY38UhkP2vq1PH5QNuMf9ncBXESzuL9srnIiL1WbQO+knM1BBnxbsPnl2xQSRoTirjt55SbP5EFQsPxf6jvrEoDay8cWwxHJEiHlUAPm9uXLf50geykZYZMSJeFff43eSy59Pj2w3fdxvnhtMjkizODyAq5EjG40CVRpBgeZlUKJ6/HftqRAeLngtTgIgKgtzpLhTY42ZMYzsCfTj3Mjx2GqK2m3+Fvm+3/8vxPuzhsh18fIRaahQd7yVJSoTaUfSDxHv2LG6YdMCMfTjrpx7ptrORrOjGbJkld+NAn12IVf99N8apLiA345ASZiaKxn6ba9ZorkuXRt+oqni4Erq9bpOCNsw4iDIVYFNnaFFVwoaxR2K+KWWwwVBDTcvVzXmvSXgDY5WRQUH31XIHG/+GginE5gfYQSHCMl/SN+qHKt4qnvHcXZMu7V6t7TT4IrwhvxRNy6znWPKRXtJqu8026lO+AX2PB47BUACrGf7DyYqT1rXPvy/kHgP+vNZVs4kkvpNqIzR9HcbXufrLFYz1pHi0cmZqe+DJ2SauyUN1CYdr2/qfcRIXuvPuDL384k75nJ5FFIpsDvRumKYrlbPYxV/+XCmS5OigehPksbCQhtm1XkxzCmQlwRug5wHV3DbOWFKl5EKWBN0C/1XgwCXQ1gHaSs+Cq0ZkOTS8ft5CV1CG7xq9+QrUwoLUMkBAtBMhT1XQC74J9LsnVI2feuRAPemWrMECSwbIKSPGguqdyW6+IrcXPooB3VUJiUfZG9zhuT2uDupn7FKubGdZsrtyBkOJGL+hZvleAQUrZ6fMmKCq9E3sFPd7seMLN
+ 40plX3qd
+ pCp+Ag9rjBc9KZeUp/RfjOrWso+wiyRmkFEIDj4z+Ye7IHAWqM0r1xN/oyvgcc5pzlyMkzxMsOO7yqyeBF+ypTWDByqN6eZ6uhgPH9G3Zj/HOQWOJXqiQwfEmOz0maraGE9DzUgiJQt1uzI4W9mnG6c+hHPr6s4NeRKimRcjOGwuogmECI/w8Yg1v7t7jDTP8FbDMlOdLIsNpMO1CLXcZ+k0Gc+v+m1RqGn5xgrsilmdUiIP9HgVwRI9fIFiDWN1Znwpo5YAnwbPLGCVTDloBBCPrCi1oepeGhJqfCJoOTDaGsVmOYOZz/MF/0CypEPakQ1tewP3iMDxYA7mQgxvHhxGFgO2AbVlb7tNPSQmkU6j1rBrb8cmSr78Kaw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,33 +99,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 01:02:08PM +0000, Kiryl Shutsemau wrote:
-> On Thu, Nov 05, 2026 at 01:16:05PM +0100, David Hildenbrand (Arm) wrote:
-> > do_set_pmd() can allocate vmf.prealloc_pte on architectures that need a
-> > deposited page table, such as PowerPC with the hash MMU. If the PMD is
-> > no longer empty when it takes the PMD lock, it returns VM_FAULT_FALLBACK
-> > without consuming that table.
-> > 
-> > Since collapse_pte_mapped_thp() uses mmap_read_lock(), a concurrent
-> > userfaultfd operation can install a PTE table before taking the folio
-> > lock. If that races with set_huge_pmd(), the unused preallocated table
-> > is lost when its local vm_fault goes out of scope.
-> > 
-> > Free vmf.prealloc_pte on failure, as do_fault() already does. Successful
-> > PMD installation consumes the table and clears the pointer.
-> > 
-> > Having to do this cleanup outside of do_set_pmd() is rather nasty, but
-> > other callers depend on it already having been allocated. This needs a
-> > cleanup at some point.
+Hi Chen,
+
+On Tue, Nov 03, 2026 at 04:09:22PM +0800, Chen Pei wrote:
+> is_kho_boot() only has to say whether a handover FDT was recorded, but
+> it asks kho_get_fdt() for one and so converts kho_in.fdt_phys with
+> phys_to_virt() just to throw the pointer away. Both callers use it as a
+> boolean and never dereference the result.
 > 
-> I hate this being outside of do_set_pmd().
+> On riscv64 that conversion is not valid yet when efi_init() reaches it:
+> setup_vm() leaves kernel_map.va_pa_offset at 0 and setup_bootmem()
+> assigns it later, so a handover boot that came through UEFI panics in
+> linear_mapping_pa_to_va(). Only debug builds fail -- without
+> CONFIG_DEBUG_VIRTUAL __va() degenerates to "phys + 0" and the boolean
+> stays correct -- but the panic also goes unnoticed without an earlycon.
 > 
-> What about making do_set_pmd() freeing ->prealloc_pte if it was
-> allocated inside? Nothing changes for caller.
+> Check the physical address instead. Nothing needs the translation, and
+> architectures stay free to bring their linear mapping up whenever they
+> like.
+> 
+> Fixes: d6d511639185 ("kexec: introduce is_kho_boot()")
+> Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
+> ---
+
+There was very similar patch: 
+
+https://lore.kernel.org/all/20261023054518.3258350-1-gthelen@google.com
+
+and while both Greg's and your patch are correct they both have that wall
+of text with too many details commit messages that I don't like.
  
-Or if we want to keep in set_huge_pmd() then set_huge_pmd() has to
-allocate it too. At least, it makes some sense.
+> Tested on qemu-system-riscv64 (virt, -cpu max, TCG): edk2
+> RISCV_VIRT_CODE.fd/VARS.fd on pflash with OpenSBI fw_dynamic.bin below
+> it, and a GPT disk holding an ESP with grub plus the kernel and an ext4
+> partition as rootfs.  Kernel config is riscv defconfig plus
+> DEBUG_KERNEL, DEBUG_VIRTUAL, KEXEC_FILE, KEXEC_HANDOVER and the kho
+> selftest fragment; the outgoing kernel gets "kho=on" and the kho
+> selftest init does kexec_file_load() followed by reboot(RB_KEXEC).
+> 
+> Before, the first handover panics.  earlycon= is needed to see it: the
+> BUG precedes console registration, so without an earlycon the machine
+> goes silent right after kexec.
+> 
+>   KHO: found kexec handover data.
+>   efi: EFI v2.7 by EDK II
+>   kernel BUG at arch/riscv/mm/physaddr.c:47!
+>   epc : linear_mapping_pa_to_va+0x1c/0x1e
+>    ra : is_kho_boot+0x18/0x28
+> 
+> After, the same setup keeps handing over until the window closes, 29
+> consecutive boots and no BUG.
+> 
+>   KHO: found kexec handover data.
+>   KHO: exec from: 7.4.0-rc1-next-20261102-00005-gfca49e548231 (count 29)
+> 
+>  kernel/liveupdate/kexec_handover.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index 6f1f55fe3181..6ab181de345c 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1643,7 +1643,7 @@ EXPORT_SYMBOL_GPL(kho_restore_free);
+>   */
+>  bool is_kho_boot(void)
+>  {
+> -	return !!kho_get_fdt();
+> +	return kho_in.fdt_phys != 0;
+>  }
+>  EXPORT_SYMBOL_GPL(is_kho_boot);
+>  
+> -- 
+> 2.50.1
+> 
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Sincerely yours,
+Mike.
 
