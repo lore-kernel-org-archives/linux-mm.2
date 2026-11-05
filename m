@@ -1,138 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EFC606A334
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 15:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF388606A336
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 15:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=uGIYsDTD;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=A8EdLJV0;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=Kn3yERPG;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=ucOfUodT
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eHTnPPRl
 Received: by kanga.kvack.org (Postfix)
-	id 209AB6B05B3; Thu,  5 Nov 2026 10:38:04 -0500 (EST)
+	id DA3636B05B6; Thu,  5 Nov 2026 10:38:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BC196B05B5; Thu,  5 Nov 2026 10:38:04 -0500 (EST)
+	id D2D196B05B7; Thu,  5 Nov 2026 10:38:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 083FF6B05B6; Thu,  5 Nov 2026 10:38:04 -0500 (EST)
+	id C1EE96B05B8; Thu,  5 Nov 2026 10:38:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C61806B05B3
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:38:03 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52848C0A61
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:38:02 +0000 (UTC)
-X-FDA: 85401471204.16.9849A05
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C3472C0004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:37:59 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uGIYsDTD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=A8EdLJV0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Kn3yERPG;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ucOfUodT;
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8EC806B05B6
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:38:51 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 212DFA88C9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:38:51 +0000 (UTC)
+X-FDA: 85401473262.21.8D86451
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 253B11C0006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:38:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eHTnPPRl;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793893080;
+	s=arc-20220608; t=1793893129;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rn+wFvbgmGD2mi6hZAgXI17+uY+nPNgmOpv7W0MTn8k=;
-	b=R/HRouPzP6hsB/9ctdy9FZM1NLrSfYfO+dUu7EzfaRzyZruy+axRJgZP7dRa8EQOZQbehN
-	Qq40409AVWHb60pCP74a7rC436YqCFdgbysKHTSdmBlrYCR0JlxNzDX1Y2VWRdklO3YKUB
-	5ozf4hTw60bqobo6lapvJRvirUtKwCc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793893080;
-	b=iKUsQ2qY+JS4xVIeoxZiQ7Y990SUHPbd9IUpEWMTx/7dWCpnt+eXTfriAEU9r5woJ2AP1g
-	CPxag6pQN5BG2u//JI62l8pJzwGoDOqqIdNLM0z2QmHWpOyL7r53mgJQH4yn1deYx6I8gW
-	mP1a0LlppyS0vEyLMTqI8VP2t8lhn34=
+	bh=0ZRMOu7q8zj8hzZXCiqSBsOFqMESxoThKf7jqYV+cxg=;
+	b=iKDulMUbUydgWIvmjTrwDaUKW9SfAmQ1kedzfiEUBndp9RCufkHou4MzCFAga6a4YWkwBI
+	Bc5AzKEB+Sk4/J40AcQOTp6aehCZiEUued4jg4Q/lLiyBcj1qh1JjWuGdsiRuHvb946psS
+	DxkEqu52J1q9ph5JXZlNSYxZfvh/tEo=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=uGIYsDTD;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=A8EdLJV0;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Kn3yERPG;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ucOfUodT;
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1A30721F99;
-	Thu,  5 Nov 2026 15:37:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793893078; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rn+wFvbgmGD2mi6hZAgXI17+uY+nPNgmOpv7W0MTn8k=;
-	b=uGIYsDTDJwSMXQ57mFgsz9hPxEJcLbCO4ZhjAoZW62cq79kzSLivDRrVKWs35c8RI9QeI8
-	Vm+uRJg0Ut8bNXp6fTSWObSxWPQI1T3SwLdk8F7qtZu5Km2LbrPw62UOmcRYm9tlRKcBmI
-	G4Nv0rQFicHkzdTbZ07OhdaDm5HPldM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793893078;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rn+wFvbgmGD2mi6hZAgXI17+uY+nPNgmOpv7W0MTn8k=;
-	b=A8EdLJV0Yrafz/6PhZ4oua84nhZbqniplcyqOxD+ihbl7DN87/znLkq/VPyk62IApoehHV
-	PVdkHfZG4xA8n/CQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793893077; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rn+wFvbgmGD2mi6hZAgXI17+uY+nPNgmOpv7W0MTn8k=;
-	b=Kn3yERPG1TCwzY+U7d6EGCGuUK3/U7M9d+rmSg13ESY+3Nm/6uYeB1tDATs+2Di6O8fGk1
-	0IxMEOvKicr6gMWT+o2Js0rMSSNrGA6YMZ6QTVSejPQJEODdN/K736SUgJILsJW0FbsQyL
-	q2iG/TX+YpjkNr84nIMTp30QENYT85A=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793893077;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rn+wFvbgmGD2mi6hZAgXI17+uY+nPNgmOpv7W0MTn8k=;
-	b=ucOfUodTRPKzkbGc/r7LJnjonnyq4BR9/Ll/K73j5RipUtd5vajMhqU+qu8j1gm2APnd/m
-	JQXyIxTX1PLElWBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E2F1F134F4;
-	Thu,  5 Nov 2026 15:37:56 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KMWCL9Si7GrTcAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 15:37:56 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 63758B747; Thu, 05 Nov 2026 16:37:48 +0100 (CET)
-Date: Thu, 5 Nov 2026 16:37:48 +0100
-From: Jan Kara <jack@suse.cz>
-To: daejun7.park@samsung.com
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Ryan Roberts <ryan.roberts@arm.com>, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/readahead: align the async window in
- page_cache_ra_order()
-Message-ID: <cs7sng2kwgcdbuxfk56sbc3x4ku6jtxk6nzwhaaqbjvmi5fqd6@nac6orsarmta>
-References: <20261103-mm-readahead-async-align-v2-1-c3c304cbca59@samsung.com>
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eHTnPPRl;
+	spf=pass (imf20.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793893129;
+	b=SxqCW8NDdRkuXeo1ckqxrp7cbuTlC0QPGD7jYtt4QeY6M6VNzNvTzN8L4l45LVTlRlF7kC
+	3+7ZPivfsaYw1gbjPV4GiQGPSABCCt2zWZP44v4Caz3IwM6wYpRG5+GmfLNQpegUjlOIj9
+	Z0tTnQA8TdFkqm0gkAcw7EInWA+z0tU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8CB0543677
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:38:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF4B1F00A1A
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:38:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793893127;
+	bh=0ZRMOu7q8zj8hzZXCiqSBsOFqMESxoThKf7jqYV+cxg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=eHTnPPRlc0IH7Q8u3jaVpzNg12W4eRz/VwrILsZzaVscg0JSbM7yFkdkvamrOilYv
+	 PRIvX/sqpEDayj+Lk93vQDhjPTOAxYuegaE4P94ccLX3a2yR6vMwleDpCiMEZRbaq+
+	 eot6JHGw3a6ueS2ysJI8vNzq/73IwWSIndFB4A75LOh0NlWwZtnMC0cII1bMHcA/HA
+	 e2RmPVM21KYVjaZlRGD7bbnFh3EzkFwlFlXURm3gCqQkcynaax6Ya4QpYxJvMh+YJJ
+	 GCwZbt+jCS1M74E1L5AFBUcH5Noi6xZ+gp8Vk/Gqbu5WYrIkfVNbPow5hRpUT8lahV
+	 YUZWyhqKMB0Dw==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-c414e5d282eso269300666b.1
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 07:38:47 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBy7SLD5YlW7MI5Jzs1NyFBygw8jJhmPK9KK05nsZsF0hI2W6m0GnkF1PjjUKnjUoubuLNUMj4Xi/w==@kvack.org
+X-Gm-Message-State: APuU4Z+UWnHH2IykwTA3DAKmL/GtTN64tob3fBaamkrZ992dNi1N96No
+	FrH5FIO1lhBeQvGjQUnWBMX4fmPezYJ+8geUhHccQDOJaY4683tOB8buiAJi6b+XlIkDGRdpxI4
+	xoXy35JxlUUdo+5pmJhZNjN7ucGi5MLE=
+X-Received: by 2002:a17:907:5c5:b0:c49:df95:f0dc with SMTP id
+ a640c23a62f3a-c4ca7b1b763mr1566645766b.19.1793893126389; Thu, 05 Nov 2026
+ 07:38:46 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="lgcir5uumdsu3tbv"
-Content-Disposition: inline
-In-Reply-To: <20261103-mm-readahead-async-align-v2-1-c3c304cbca59@samsung.com>
-X-Spam-Score: -12.80
-X-Spam-Level: 
-X-Stat-Signature: yos55mgbxnjq9nzhetxhmmp9x4ufm9je
-X-Rspamd-Queue-Id: C3472C0004
+References: <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
+ <anXJ-5_vO7-toSe1@google.com> <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
+ <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com>
+ <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
+ <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
+ <18e4ebf806e937ec.3137322e32332e3235332e313736.1bf52a.0000sendgmr@google.com>
+ <CAKEwX=PFdgEbba+H3fEnJFDnfkxCTsvuHEb4numVwJRaiMgwKQ@mail.gmail.com>
+ <179384102494.19062.12740032892044628762.b4-reply@b4> <auwOBaRtM9p_Wxfx@google.com>
+ <18e529a5ab0738f7.3137322e32332e3235332e313736.873cb.0000sendgmr@google.com> <CAKEwX=OUt4=wqDLiPvYuiTnkpuZYnszkuNQScNR93hHhVPRRGA@mail.gmail.com>
+In-Reply-To: <CAKEwX=OUt4=wqDLiPvYuiTnkpuZYnszkuNQScNR93hHhVPRRGA@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 5 Nov 2026 07:38:35 -0800
+X-Gmail-Original-Message-ID: <CAO9r8zMMGem-LTJQseT5xSSBjfr3UX2gzG_ftpw6+KF8m9v5yw@mail.gmail.com>
+X-Gm-Features: AclHuK9v1LUqQa8y4F5WwBt7lgtm31VOg2z9IkfQynsl03ZvTXjiDfaCGV4M1pA
+Message-ID: <CAO9r8zMMGem-LTJQseT5xSSBjfr3UX2gzG_ftpw6+KF8m9v5yw@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Chris Wiseman <chriswiseman@google.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Xueyuan Chen <xueyuan.chen21@gmail.com>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
+	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ps87st17ikpdm9eq5mgpt7uz8yqbejg9
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793893079-99092
-X-HE-Meta: U2FsdGVkX1+5fZR+s+k/pvNnGRYMiDSC9SBiqA8NSYU2MSLsfcmcgj5zczphvZq/EuCQo3W4kfUO0H1OFiK41sYUqgOvBAZNXbyOXDSea5gEs0BCFJ6f0yhJIkVgc28rUD4QXTLubZaGRe3HmDNZX75sXCvCoPFax2uHEZePSmdW8jdxx3j080q57+btyLIyCHoVe+jkRJdPcFpKeGMaRLAqAQ69FSobrxAE0HYhpT3yHDN+LQQ4eSMmRi8O+IhYgT9E0xcC/AZlP4WOrFKLL8OAX0MRRvwCKHyCc8+A/QUhw/BYF07nSGJeNKTKDmAx0s2/Pue0it7ePSa9i0DTKnZ+mCeRNlX6FcuqlnJNYgtEGtEaB0jxX8Jso1Aq7kVVeP2pjUf3jMgNJQgrJV+ZHd1sHZ/BU6CCq3B1QqAaXEDZbtNhB51THYS8UqPOEeq0ZwAOLeBofI1tAqMqbXyvsimzoj1Zu9LYvxCtcQuZKKrHtLD2oJFzBZG4Q4fhVVD5y6yR3aJ9pYIHLn0s8MmlLjvRQEQwvql7CnuYFeg5mH8+TwJLnFAAGrZZN5ReDMAhrrldGdgEodnsHWTZXDeq8F3kr4kdIJpQnaDsca4z2wVW/HIeIHaC0idTfxRPYc5zFZTQ6OtsTY5dHJBZnOKODzxcpo/zE89mWvtRwzoPn6ahHvdTHtg1yrlmuHm97lwOIVF9LYPFALgeLVRg9YTegHXTd4bXDQ8ibtMgEZy9RTllnlnx7Fff/Qstj1BhGW9tHqfNr07+cwoRxcZj34cJ6LHJIRWCcdPazeJbLlj3oUXc5FwbpUgdlzYp+Ffy1f0pFE6YRlq+uvX1mOOu8XGJ/wvhnr6VeDpqUwEEmyCA5IDfe7gGQW4euzZ8TRRf5B+a/XJsf109d8IG5k/qNhDO2d5VHwsKHLu+07h2xvp90qo5qumH6qWm+/wHGa0SqRxtLfUjgk6Ck7c4S+c3+IO
- E+4l4D2y
- 7pVx5uvHxesXsByzK2LkYlDqKfPGC+KCpIGMzoCg+D4h/hE6+rUdhanvZtYW/uTXSa1YoPJthl8dWhg3oFxcb6fQbTxWeW7ONnBcw+QLetOPKLDRSKkYVk/GCwcCLAiHdRt2mBWO1dCrreN5tcNYNm+S/Dv/EPMKK6/uR5g/T9uLS7WSxKHpdloITrbARvySmtjnnxsH3TgdPP00a36iuA38BV9PzFE0ZN/mIBUVsvFxgpO1eny5GophK9Y5RHTA58QPO3TIgXgoXMF4zakY+dP6kV4z+7xVSLeJHUeuj53aESarF8o/lj/QFHbQT2Tl479rrqrRdLLxmaoYoVZuycWRR1MAzq0PYRhTBXmr2jXImhqV5hmg+bjWKK1lUx8jKRFRRdR4X+AN9etda+XWn9gFZo1nXMjKju9K5+TQ4GCtgNxF0/fRYj22DfuoQTA8vM63gjNUN4pRYho8wb31ebhciSeJEKU+F+cU7yK9/IvsVjErMEJIDVhc69/ZHrEpejG7LLFYtc9DHUPREdOPYMcxTbg==
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 253B11C0006
+X-HE-Tag: 1793893128-665825
+X-HE-Meta: U2FsdGVkX1+/yMSOhv8QAufGFO8frtcvrVI03DeECxDTVohu/m7OIDF2Xd8PERZ0HObtKsDBslz8qAAiDdS/YWYWoLyRPOfrhtCy6lk0b2FSdDDVyGVZp+5IyrICKRhJ5sxH3K/VsbkHiHDgC+A8l07mZ7xD3GRL8NGIi7NylUm3J754+I4YdsFx3869IV5hb4VD/+AXKS3crcFAIy3+d4gRYkYbL51IdDwQpt0HAwFkXV8wlVfLydc1JzXKvWqOakgPA6sTTgCPGHmKH25oxbvIN3/joxhuwufFHSQkK+Q3mHhCge/Dc0o/CrQwuxE06zT30z8eNBiD7pf4vURq4cyyK8Lw6p+xFNvNDHjuqQK/ASqas+7UbBXQxH4eVgJkDo4bEwWuZZcj0Vg+bIztm1mIFS+FAs4nUMzZF6VoibIinfcgPkka+jYBmeiNSeStOQmZUxa5A5J+1F/yA5tPBw9kxaMSeBgwyel3tkWva8WRMuSe2QKIrxJA3sA/eytqIvcNTPVMhdOZ+dnp/x0JOjPr9WEm2kFb1DI7mOWUnP92Q4T3PnE2yOR7ND6e61txkrIPDCjrafJJTjf//FEo1DVWlis/DlcOiz5ZNbsfVGDOU8sHint80pPsd6SqP8OWw60H/QV0oGJT7FYF1Av/uNpyhHyaHxIketr9n5pKzWiaRvgnzbSUoh7klSAcdtvIoNg9W159CRR9jjg4FeK/CC246ss4VXa/UQfV8RFzXR2fWYo9ylX1qFttUdEpNopDgsgJawRNeHPw0XEKdFbCHVJcbxZnptMNOZve6jTVXFUu3LJdzE67LHNuKmwsFO2ZAl7KHBwCLQUSc3jO7W5P5KNCZjCskq4nXeO4hlE9VnGBPMhSy641bgwDhJPKDhDPs0nSOsXEkdUGHje5EF+xqJ853v33RwFH5/nW+EqxGpTxNX7WyLB7wuj0uMS5Plfy9D/j5nFoS+Yx5kWA9U8
+ eL1zE0D3
+ Xa8eCTdCE+LeXA5imXNQNY7Zzrf+x0060uKt8Qj4iLZC7y+e059nHNIvYDhElDjt5Cp0JSkF8gLxbqElyvfv9f5crOt6/lAyqQMZOPl7h3QUgVlOh6PxnNDsVCRg0zifxBCywtOG6mJo+MtG2n32gxouRSQYTOBuaZ9OiLskTYv0boxEfDXioZaLI6pCKplPs+V5Q93nvd5jNCcky2/bN2C+y3JxFk+q5VIE4GBim1zTMjKHASflUobPsZ8VBcJbEZ2sCYvx84Vgbn94fR481zfTgIaGUkchsXXD6Sf6KMmdJaxS8LS00dpIdurvvY/ag8jfIWsM2qLJbBd4cKL7c5nBCJR/Tbaxsup2yqqvW6Oh1qlfqhI0wttvLNkl5kSVh3QMbVGf86iENP54/AaSO2LRP3pICDC+cNCPbyrK56Uhr29OlD060I83Zrw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,134 +117,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, Nov 5, 2026 at 7:08=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
+>
+> On Thu, Nov 5, 2026 at 6:36=E2=80=AFAM Chris Wiseman <chriswiseman@google=
+.com> wrote:
+> >
+> > On Wed, Nov 4, 2026 at 9:05 PM Sergey Senozhatsky <senozhatsky@chromium=
+.org> wrote:
+> > >
+> > > On (26/11/05 09:10), Xueyuan Chen wrote:
+> > > [..]
+> > > > > SGTM, but I'll let Sergey chime in!
+> > > >
+> > > > Thanks, Nhat and Chris, for the discussion.
+> > > >
+> > > > If Sergey has no objections, I'd be happy to send a follow-up serie=
+s
+> > > > to make the shrinker configurable and add the unlocked pre-check as
+> > > > Nhat suggested.
+> > >
+> > > Thanks.  Sounds like you and Chris will to have "Rock-Paper-Scissors"
+> > > to determine who sends a oatch ;)  Just joking, let's first figure
+> > > out how exactly we want that zsmalloc-shrinker thing to behave wrt
+> > > zswap expectations.
+> >
+> > Haha, Xueyuan is welcome to send the patches!
+> >
+> > Dumb question on the zswap side - aren't the zswap shrinker and the
+> > zsmalloc shrinker independent?  Even if zswap's shrinker is turned off
+> > at runtime, normal swap-ins still free slots and leave fragmentation
+> > behind, and unlike zram, zswap doesn't have a manual sysfs compact knob=
+.
+> > Would it be simpler to just keep CONFIG_ZSMALLOC_SHRINKER as its own
+> > standalone config rather than tying it to zswap's runtime knob?
+>
+> Yeah those 2 shrinkers are independent! I think we should just let
+> ZSMALLOC_SHRINKER default to the value of ZSWAP_DEFAULT_ON.
+> zswap_load() (i.e zswap-in) by itself is enough to create
+> fragmentation. The zswap shrinker is just another trigger (and it's
+> also irrelevant if zswap is disabled anyway).
 
---lgcir5uumdsu3tbv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+If zram doesn't benefit from zsmalloc shrinker, especially during
+reclaim, I wonder how much zswap benefits. AFAICT, it was hooked up
+before zsmalloc was hooked into compaction, and compaction seems like
+the right place to do this although it technically is freeing pages
+from the page allocator's perspective.
 
-On Tue 03-11-26 13:19:26, Daejun Park via B4 Relay wrote:
-> From: Daejun Park <daejun7.park@samsung.com>
-> 
-> page_cache_async_ra() rounds each window end down to a multiple of
-> 1 << ra->order pages before page_cache_ra_order() clamps the folio
-> order. A window starting just below a boundary shrinks to a few pages.
-> With read_ahead_kb=128 and max_sectors_kb=512, 1 MiB reads after a
-> 4 KiB read at offset 0 hit this on one window in three. On a 512 MiB
-> XFS file over QEMU NVMe (cold cache), that takes 0.251 s, 3329 device
-> reads, and 9721 folios (none of order 7).
-> 
-> Pass a flag in struct readahead_control and align the window end in
-> page_cache_ra_order(), stepping the order down to keep at least half of
-> the window. The read then takes 0.200 s, 1031 device reads, and 1039
-> folios (1021 of order 7).
-> 
-> Fixes: 18ebe55a9236 ("mm/readahead: terminate async readahead on natural boundary")
-> Suggested-by: Jan Kara <jack@suse.cz>
-> Link: https://lore.kernel.org/r/747jhqta3plrrx3bfikceoltsewshdpejdei2qjpn3onnvtu3p@cptmb4phbn54
-> Signed-off-by: Daejun Park <daejun7.park@samsung.com>
-...
+I wonder if this is something we can collect some data about, and
+maybe kill it off instead of putting off behind a config option. If
+hooking it into compaction is not enough, maybe we should add a
+similar interface in zswap to do proactive pool compaction from
+userspace, or maybe move the interface to zsmalloc itself.
 
-> diff --git a/mm/readahead.c b/mm/readahead.c
-> index 6e55632902..959c9a7b48 100644
-> --- a/mm/readahead.c
-> +++ b/mm/readahead.c
-> @@ -498,6 +498,35 @@ void page_cache_ra_order(struct readahead_control *ractl,
->  		goto fallback;
->  	}
->  
-> +	new_order = min(mapping_max_folio_order(mapping), new_order);
-> +	new_order = min_t(unsigned int, new_order, ilog2(ra->size));
-> +	new_order = max(new_order, min_order);
-> +
-> +	/*
-> +	 * The caller allows the window to shrink so that it ends on a folio
-> +	 * boundary, rather than ending in small folios. Keep at least half of
-> +	 * the window: one that starts just below a boundary would otherwise
-> +	 * shrink to a few pages. Use a smaller order instead.
-> +	 */
-> +	if (ractl->_align_end) {
-> +		pgoff_t end = start + ra->size;
-> +
-> +		while (new_order > min_order) {
-> +			pgoff_t aligned_end = round_down(end, 1UL << new_order);
-> +
-> +			if (aligned_end <= start)
-> +				break;
-> +			if (2 * (aligned_end - start) >= ra->size) {
-> +				ra->size = aligned_end - start;
-> +				ra->async_size = ra->size;
-> +				new_order = min_t(unsigned int, new_order,
-> +						  ilog2(ra->size));
-> +				break;
-> +			}
-> +			new_order--;
-> +		}
-> +	}
-
-Um, this isn't quite what I meant because this is still quite ad hoc.
-Rather something like attached change (plus the _align_end bits from this
-patch). It will also end up guaranteeing at least half of the original
-window is read but it is also implicitly taking into account alignment of
-the starting offset and other possible factors.
-
-								Honza
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
-
---lgcir5uumdsu3tbv
-Content-Type: text/x-patch; charset=us-ascii
-Content-Disposition: attachment;
-	filename="0001-readahead-Align-window-end-in-pagecache_ra_order.patch"
-
-From 51aaef0da6965d13cfa44a7ddf8e0e846af5585f Mon Sep 17 00:00:00 2001
-From: Jan Kara <jack@suse.cz>
-Date: Thu, 5 Nov 2026 16:31:59 +0100
-Subject: [PATCH] readahead: Align window end in pagecache_ra_order()
-
----
- mm/readahead.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
-diff --git a/mm/readahead.c b/mm/readahead.c
-index 6e5563290287..62e204eb3e7c 100644
---- a/mm/readahead.c
-+++ b/mm/readahead.c
-@@ -490,7 +490,7 @@ void page_cache_ra_order(struct readahead_control *ractl,
- 	unsigned int nofs;
- 	int err = 0;
- 	gfp_t gfp = readahead_gfp_mask(mapping);
--	unsigned int new_order = ra->order;
-+	unsigned int new_order = ra->order, last_order = 0;
- 
- 	trace_page_cache_ra_order(mapping->host, start, ra);
- 	if (!mapping_large_folio_support(mapping)) {
-@@ -532,10 +532,22 @@ void page_cache_ra_order(struct readahead_control *ractl,
- 		/* Don't allocate pages past EOF */
- 		while (order > min_order && index + (1UL << order) - 1 > limit)
- 			order--;
-+		/*
-+		 * If we are allowed to align the end of readahead window, stop
-+		 * the readahead as soon as we have to reduce folio order due
-+		 * to it exceeding the RA window.
-+		 */
-+		if (ractl->_align_end && order < last_order) {
-+			ra->size = index - start;
-+			if (ra->async_size > ra->size)
-+				ra->async_size = ra->size;
-+			break;
-+		}
- 		err = ra_alloc_folio(ractl, index, mark, order, gfp);
- 		if (err)
- 			break;
- 		index += 1UL << order;
-+		last_order = order;
- 	}
- 
- 	read_pages(ractl);
--- 
-2.53.0
-
-
---lgcir5uumdsu3tbv--
+>
+> How do you feel about this, folks?
 
