@@ -1,97 +1,88 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB58606A32E
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFF2606A338
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BrB1bRD/
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mkqe2n1G
 Received: by kanga.kvack.org (Postfix)
-	id BB7756B05B2; Thu,  5 Nov 2026 12:52:09 -0500 (EST)
+	id F3C7C6B05B1; Thu,  5 Nov 2026 12:54:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B67966B05B3; Thu,  5 Nov 2026 12:52:09 -0500 (EST)
+	id EEDC96B05B3; Thu,  5 Nov 2026 12:54:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A56FE6B05B4; Thu,  5 Nov 2026 12:52:09 -0500 (EST)
+	id DDD1F6B05B4; Thu,  5 Nov 2026 12:54:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DE236B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:52:09 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5238F40A85
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:52:08 +0000 (UTC)
-X-FDA: 85401809136.30.65DAF5A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 99E4F40004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:52:06 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BrB1bRD/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B777C6B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:54:02 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5600FA0BEC
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:54:02 +0000 (UTC)
+X-FDA: 85401813924.16.17850F0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id BF46920006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:54:01 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mkqe2n1G;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793901126;
+	s=arc-20220608; t=1793901240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TU2co5OHwPqZGsjHAK77lVb6RAQX9yPBM909tv534g8=;
-	b=59t1oXM1eXN2OjmRiyUYliQR40M0/JqD1Jia0tmIiXYAdMl4a/MnECQDK4iDeCJ0HsWilY
-	EsdLtV76vZhkiw0lSFXamahcKLq7EgvL2WXoKV4cNMrtni9Im0p80V3ZY/wCBaHNgUuMtC
-	J91ZFzBYEbf5plEPCN4vkSgUQdbgbr8=
+	bh=EftwWfre2aiDydKcjXOvHDcLO/ReuFB640bdDH18DBw=;
+	b=DMufQz4HXqJ0o5YQVyXbMNjVHf3v4dr5W6oA/kttNhmcpiT2IoZ2gjtSlDoMCip/Q4ENW4
+	K/JjCZ5PflvMqyQowlLjTsOXJVQX8e46SjrlbbUnhpYvmG182z99UgHugbON2R7D26AfqT
+	jk1KWO7lmrJ0XQ9khmsrmIEfM1+llHA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793901126;
-	b=Hkbrbr3WUHwelRVoQQXn5QBnzL3nmXOvtGjkXTdWXruicFWsyMB9YWyf2pDNsdURNF+GPh
-	1m3myIYqPQ79Ku6njhpjRwGGSwOTjWr9P4BO1Nf5i2mDIoPEyzys7mkYyzVWGX1myKMATy
-	IjEGtUehrCmVCPV2QVL6vOj8IQI6leM=
+	t=1793901240;
+	b=qkN7LI6LuTIBSKp09cayOprnkEtAMhx9hKSu0frjAY8GgiOb/xJQdPyfaKTw3W0/+L44Ul
+	9sa49u462l1CfAPqjwuDuuWS93b2YoY+NrhvpR//iwlTPNH9us8G7ZpVpqiKQwG619yPYY
+	rP+17M9TwDgDUPpA1E2Et70fVRW9ouM=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="BrB1bRD/";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mkqe2n1G;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 28908600B4;
-	Thu,  5 Nov 2026 17:52:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D681F000C1;
-	Thu,  5 Nov 2026 17:51:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B8E51416F8;
+	Thu,  5 Nov 2026 17:53:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47541F000C1;
+	Thu,  5 Nov 2026 17:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793901125;
-	bh=TU2co5OHwPqZGsjHAK77lVb6RAQX9yPBM909tv534g8=;
+	s=k20260515; t=1793901239;
+	bh=EftwWfre2aiDydKcjXOvHDcLO/ReuFB640bdDH18DBw=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=BrB1bRD/Soh7jF52sv//X1vQCquFJ8zymfkK/FXO3wwGJCCa1tEzIwzqm+fYvdCY2
-	 DhOXVYoY20C6gB4jzI06/aa3FJKL16cXAVTE6GEma7rI1e7g4iXKOlePRLiF288XT4
-	 VranzWw07bgVjhZQsOa83Q/zQ3MuhhyHnyb2Y6HAkPVvrS/Wn+pivLXwQqw5DGkCmY
-	 Cz1VF9gZFLMgCfghzav+g+H8FtHrcNJ/t8tgMMFQF3ADgfQtXjJ3DcjRu6FOLIlaUE
-	 W42fuX0MRzbloN/Ga6DFTl1WfqZzBIulN3KaPzlLmT4L3jFyDf4xTB+qfOgbKxHlU6
-	 KSfFjlSeP944Q==
-Message-ID: <b21a62bb-db95-48d7-8de3-e8b4d80a3a4d@kernel.org>
-Date: Thu, 5 Nov 2026 18:51:53 +0100
+	b=mkqe2n1GxIwCwQwvgdl50QCVqj2q1MbFYLkfBeiERFWUDpe4nCnIe+a/pC6Di4bYg
+	 M0Wfsf63FAXtZ0YnG0EJ/ShbJp/nJjebcHidgjwK4p3Nxrp0ichyUVEd/juN/BbNmz
+	 7lsP+Uy8J81vrCF+SonSWIW0IvJkzG0w9fqBhdF5u9970NqFk9lMwcw/gJH1gujL8t
+	 z9LgCWRt22lk9sxZ3GjxsmyCi3FhU4T1J8KK/AzxOw0ar50XQkEsbV2wNp37Ku0Vtd
+	 zlGGUIHZLduyWGqKmqAnTLCUJt+jC4zRYY9ZvPSb8h9vOFSs9YQ8ULVMKy9IwguXDp
+	 ubgTD021UX0aQ==
+Message-ID: <0514745a-872f-4027-9831-da06b7f075ba@kernel.org>
+Date: Thu, 5 Nov 2026 18:53:50 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/5] mm: limit pagecache folio refcount
-To: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+Subject: Re: [PATCH] selftests/mm: add CONFIG_DEBUG_FS to the config fragment
+To: Zi Yan <ziy@nvidia.com>, Sasha Levin <sashal@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Lorenzo Stoakes
+ <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
  Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
  Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
  Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard <jhubbard@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- iommu@lists.linux.dev, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
+ Kiryl Shutsemau <kas@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+ linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261105030242.1241448-1-sashal@kernel.org>
+ <4B926B36-D797-4861-B6D6-27E8D7870287@nvidia.com>
+ <20261105171801.2189772-1-sashal@kernel.org>
+ <3BC61F94-0385-4603-B12E-BEA458BB307A@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -138,21 +129,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
+In-Reply-To: <3BC61F94-0385-4603-B12E-BEA458BB307A@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: guwy4e5ain75n85rn9j4uqg61qmiqo8h
-X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BF46920006
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 99E4F40004
-X-HE-Tag: 1793901126-625297
-X-HE-Meta: U2FsdGVkX18B/8+Yi2XIQVkGu16nGqPTAj5HkV2HUClOHQtiO++L/desZ9ObfqOGKA43GF11xRq9kt6hAYZ7f/fm0I31kCveCi8d99TFwcQL/Ql5xaoXrIAQ744z2p9OtvRYIlCN55rZZahfC6iQ5bp+Lhhwzz1NXFwFQVMyO3nyYTxaxOzC5s8utKpeqLpuCMrUJ9gokm161T1KuM8KhEwGSYwpozpjHTh5id/DAKYtOEBKO9B1rDu5Zcuo6akaKPNkVVQxnMb4bB3gISAd7qlAcg4XtWBP9sfBo87dTtUAApzvZVOto5Czgq+jr7DRBzY2sXBihNqZQKOzesgdTjcOj1ArrD8WNpH2F1WmyB8oA7b9GnY3pAgq9MmPVn4NtNC6OCdKuPRXj7WfmF18+Aks+fJzNMXN6lYABrSsDWUStwmmSfnUzbwmTjfi/y++5Xc5FHOusIWYe3+KU1vFOFsNhRS6ET2tk3NeWSKTHkCxQ+Dv95TNBrORID6+i6Tjwg9hdjuFIGhcxrz7NUbk0DgDhpXFeRQu3rmzJkCtAZ5wKTAbwoRNtXYxIuKh5+9URSol8fgFXAM8YnBfqM3EGZ1fYQfAFgBkJXFrmyXrf/5iVoTZyf7VwzKSVlnoSrVkiMiFN6NaLkA2lshkhmwHsH3kIP98HTOx9rnVCVj+jODq8uENNyjDqWGTrUYCaTT/TJvE2F19M3cvgm6B+rZS1/g+AJ8qyIHcgMH2/jFuCCLM1dnvLBY0rUJ2nv6n6DnCQJKha3DQs5MXn/WThD6TDrrZ+t1vSJ/bs7tNKT7DAgQFZDA97n2hlZrkWmeePjoBVOXPbGR0iYVr2fe1hU93PotNAzr3NUBOTea16mfUibvN+ZEeBriuhrw8FghJLMr5HGIKFtAG6sALMtgwfHOujzv13cQ3mqTi127Px67B+14vvSxKYBKr3dLg45B4ZbfTFtRXG8p9MaYehGqT+XW
- 89QXeqIt
- zDrMtgSgO9KBHIHO5JFzXfGOP5JnuSTYZJ1BxJk6xBhy2Vka+q6oCnDLGcz7Hkh4aeNJ/qLlc7L0LhQiRIvS4CrxhF2pMO3GsPawP1F0uUb4U4Rxq93fxQAOMIQATk5Egx6U1I0IjrrA3HV7B1+yiaTiX13PjRGD3D/Vv6ghF6CHx6M6+lFDvvg+lPPhxyppJGsW6tFX1HGCVnVJd1a0ZVIcMC+KrnPpW/j5CtAXPi7ShoVrREZSsU4pyKzVTe8xw7BFdQgI+o++60GtnR5lHaZj2smouRTv2V3H5LUtsJefdyADygN0TlKgSu+PPJhGXZFufsayIB3ZO80M=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: omyfritebjkkj579ojr4ocosndhhkw84
+X-Rspam-User: 
+X-HE-Tag: 1793901241-643332
+X-HE-Meta: U2FsdGVkX19e5iAbndm9W+vsRjY14CFbUWliQHO86rZtfTw8p85oHdOztiOQawJuKvJGgTZQdZ75Zk1PZZd/heQW8vnesJbY7QAOwjCMzgt6TkkBvCVIVwjRKdz44DjrPXGRpHpfSmQZCTYAPOr3zzgtKCxgAUOfq+ar4w0crRyaSb2lsApJt7lAV2V4qQupeFxWf70cRr+LlTYvaoTfPjIAjHwDe9ZYeqPT6PJkl+zL2PLC9BSEzfLYfMlzGEdAzn2DoQBrFQ0hJVMTiyHf7NgOmQeqHDKqnP4jzUPJrfD3e0VlIHBTMY96eYLJGcLMvZPMr1M34ayOPOzCMGpGyU6K6j7N9hr3rr5R3UnoUyplSruHdp9pxKxGK39u/EpsycYlMi0pM4wR0gJvHX9aHw942syqCeV4Tpyvg74H5OLpP/4ctHp2cB8fPERjYVxPxaAFMWtfvs9gI/CVZ1HXufRpT0Q/d8ZPbYdXCU+Ih5h969K09gf/DiChYNye9n/aglF1hK01iM7bHgbzpSPnum8qOKfv8PbJjmPbjaH1FpafvjHvdm+cMIbDCYTlx/xng3pLXFBIaee2Z9XSu+Z8pZjl/zJOaXkfnQKMzg33TiUyRspG47mfHDqdobNxVdXstdW+ywVgFTrhq7wCGEowdZWPsOYqJjJvuRrEMqrB165ZNfdeP3YTmrkxLleAfCA88rEE013rK7Bj0dzb0Z26z9c2KTh3Sfsv7YPmRuX56O8s+TMWHdJ5zN0Dva7wSoWHDJQGt4tkQcal+W6A6nsejdMAABIXgUim/CuoxBYVoLGjd6CKqksJgiRVmgtPOMpx3fkZrxrlSucIsrg+le4E+5Sa/jM6nV0fYiuB0HlC6oSi8dlsAVy9rGXi/gU7P40ysi3iWYzfCvqeCjNUhtWTbLuIxIT5swD0tOkHLToCMhS33Y39jDPY1GkjrS/Fv9krYMUiPmfwrQtjmGX4ETI
+ gQiTilKP
+ AgwUBxIVR4wJcp9LRzz05sZ+fvMeCRoHxbfVOOqtz+W+AxQsnw7gGgluouEEcIJHiGQoRBNlPptOgpupJ0OND17u4m3XPm4Br2PC+MITCNAwawEJMGv2Oa6LOCE16JnZRy/e3BfUhS/rTesFmThABOzhE/vkZOrLMZY2CloNzv93cCdn48TJQS/DSu8Fwj2N7fD9oGqEFuhNMUZodvbmmQii+Qcbe7xPSWiZheEOicKlOiipEQxAQMfKDeTyI5N7v4MoqygaE1eeoyMc7JdAKSOp/9XooM/+ReqyPHdBpOy8gmp6vpsyP+BK2FrG9CmNaZ9E07HBRVHhUsCHl7r5g5dHIB4xXtb6QDrcP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -161,47 +152,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 14:10, David Hildenbrand (Arm) wrote:
-> Users can create a lot of folio references to pagecache folios, making
-> it possible to overflow the refcount of large folios.
+On 11/5/26 18:21, Zi Yan wrote:
+> On 5 Nov 2026, at 12:18, Sasha Levin wrote:
 > 
-> While we knew that one could in theory overflow a folio's refcount, we
-> mostly assumed that bad things would happen and it wouldn't go
-> unnoticed.
+>> The split_huge_page and gup tests need debugfs, and CONFIG_GUP_TEST
+>> depends on it. Add CONFIG_DEBUG_FS=y to the fragment.
+>>
+>> Suggested-by: Zi Yan <ziy@nvidia.com>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>> ---
+>> Merged into an x86_64 tinyconfig, the fragment leaves CONFIG_DEBUG_FS
+>> and CONFIG_GUP_TEST unset without this change and sets both with it.
+>> x86_64_defconfig already has CONFIG_DEBUG_FS=y and is unaffected.
+>>
 > 
-> Not so sure if that is really always the case, and leaving that problem
-> unsolved is irresponsible, so let's limit pagecache folio refcounts.
+> Thanks.
 > 
-> This is really only relevant for large folios / thps in the page cache.
-> With anon folios (including THPs), we should not be
-> able to trigger folio refcount overflows (until we get PUD-sized ones ;) ).
+> Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-Just a note that I don't think anon THP are as really relevant today, at least
-for 4k kernels, as one would usually need that so many processes (consuming so
-much memory for everything else) that this is mostly irrelevant in practice as
-an attack vector.
-
-At least with 512 pages per THP.
-
-The exception might be arm64 with 16k or 64k page size with 2k. (putting aside
-that 512M THPs are barely usable in practice).
-
-#processes to overflow the folio refcount
-
-4k kernel: 512 pages per THP: 4m processes (irrelevant in practice)
-
-16k kernel: 2048 pages per THP: 1m processes (mostly irrelevant in practice)
-
-64k kernel: 8192 pages per THP: 256k processes
-
-The 64k case might be the only relevant one, but I think even there all
-processes combined would already consume way more than 100 GiB of kernel memory.
-
-If we really care about the latter case we could throw in some cheap checks
-during fork() checks.
-
-Handling migration entry restore / swapin would be a bit more nasty, but not
-sure if that's really something to worry about in the big scheme of things.
+Thanks, I'll wait a bit and then queue both.
 
 -- 
 Cheers,
