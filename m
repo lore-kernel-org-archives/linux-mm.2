@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351C1606D823
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9111E606EE94
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N8czzOm3
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BS3XZKDa
 Received: by kanga.kvack.org (Postfix)
-	id 517876B05B0; Thu,  5 Nov 2026 14:28:53 -0500 (EST)
+	id AE6936B05B6; Thu,  5 Nov 2026 14:29:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EF8E6B05B1; Thu,  5 Nov 2026 14:28:53 -0500 (EST)
+	id ABBAA6B05B7; Thu,  5 Nov 2026 14:29:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 42CDE6B05B6; Thu,  5 Nov 2026 14:28:53 -0500 (EST)
+	id 9AB906B05B8; Thu,  5 Nov 2026 14:29:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1A4A96B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:28:53 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A2813160BF4
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:28:52 +0000 (UTC)
-X-FDA: 85402052904.16.3BE9353
+	by kanga.kvack.org (Postfix) with ESMTP id 7AB5F6B05B6
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:29:03 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1A1FB1C4588
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:29:03 +0000 (UTC)
+X-FDA: 85402053366.21.7DD5E48
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id ECD62140009
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:28:50 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N8czzOm3;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 47451C0008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:29:01 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BS3XZKDa;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793906931;
+	s=arc-20220608; t=1793906941;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t5ltLRfeO7A4ze3tr9EcZS3s3I93T55/6iRGXRatBcI=;
-	b=CYgx+cEQ7KGDZEnnyRYgw2rckQbBALIlVq6CeUnkkctWIbBIZyrRVGsrd8YbzXloCRAYtu
-	PpX9tYWRSO9J43blIsukODe+31R+6I99+WKU2FVhLuqNxdxHVjq9g0fr3rJCrz/rqmZtm4
-	5rdQmxGO8q09iC2tiL7esbopBAq0PI0=
+	bh=bwgr0VzVaD2N9H/j3vgcXycx8H7hODk9Lndt/rv7J/s=;
+	b=uycEF0y+iXB+ar69uNGaWO4V4yOTi9rAQ0zDxe+MEaODObsYRWTVZjlk1bCT4tUKGLopkg
+	CRv+Q37iogL7OVEzh+ylWSSwikVuSWrhxNGKAVJQ5cWXeZOQxG0G8B4WGM/HtybQU9gXRX
+	5hn7Dez3g72b+y7r9/HpV52tIGJ0NfU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793906931;
-	b=5JxHwefmn6U8YKyWKiQGuw5G3f6/Dm8ecu2u724Xl2NrUdR0EFlx9Z5oojlcRwfjYe38Td
-	4rYK8s/6hWHOQppP5/ccWc7G8jzoisAUwBJSUtYP8rDVma1r0qerof4YVvSI+Z90kv/8id
-	OqkHCL4AA4Ktq8tkhk8JvAsY6wb1bYc=
+	t=1793906941;
+	b=Jd/RLQcojLSA0GhKbo6xUMuKfF0Vkm2+ScWmrVUOq4zxsY24j37EYNMZsXgFUcOkk7B11h
+	X/e9OSXbY3eslxbX5XQ/8m6st/8T8QLE4xAI/NslMgo0MmYLzHzVR4ejD4qAgJibhhYtnG
+	N3m0QyXFc6NHFscBQVdRoFc1aj/nzQQ=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N8czzOm3;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BS3XZKDa;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0C4684168D;
-	Thu,  5 Nov 2026 19:28:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F791F00919;
-	Thu,  5 Nov 2026 19:28:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9619643BEE;
+	Thu,  5 Nov 2026 19:29:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BECE1F00A02;
+	Thu,  5 Nov 2026 19:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793906929;
-	bh=t5ltLRfeO7A4ze3tr9EcZS3s3I93T55/6iRGXRatBcI=;
+	s=k20260515; t=1793906940;
+	bh=bwgr0VzVaD2N9H/j3vgcXycx8H7hODk9Lndt/rv7J/s=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=N8czzOm3uss/Nev41wWI2HCgtA/JJ30J5ZI/5HvqHyryejYB/vPH/hBylXVkVGrv6
-	 OielTQZZJsAgzXMX0XY5+ywbGo0mmqbyFRwY2koxZomesAs/TJ9/gk+vP/71ryRjrz
-	 T4vkNotZqPxmBNAvJ14HURgj7iVi6JGCZi7FoFu5UsPJYhvBEXafmV8KZulQt0TLUa
-	 bnhBhsrybsI04J6qaEoTmohzhtxxwuJRWFtL3gmSrI+vhB1bjBR5l4UtjzfZC6c0lO
-	 DCD02LTUhjPPRIlhUjpD4vyOQAhRmKBCDZpyL6ta2I03KLDunRpmQHSavStcgYROjy
-	 RlifknHgKJUtA==
-Message-ID: <sashiko-outbox-199864@kernel.org>
+	b=BS3XZKDaZFqTzEkNK9cZ527vT05nQuRqIDjUKiUIf9jx85/EdPLYb0Z0y2P1F/dSr
+	 cLz8PVwZTDq2+LckdmqgyJzYBdcLi6vbD+TgraxVJ/TKav0Apjdcte0M2LitavcWXu
+	 31sb0JElkWITsGXKzYHHXBcox2SfnEE32gjOr2QsFbRND4hlqQRt2MMTyGa/6k8cHB
+	 YEmqHkJb3KndD7l0LYWjOi4ddQ9wbEk5wPLHn/WamkFT57rjTzOkA05yE70xCSrR5q
+	 981HyR3mf5h9r4lxyP6tj4pIri36VruMAV5ujmeRAKVrr3ZhUPLCXFzWwc1wxgznlM
+	 PAXiCJ1oQKLsQ==
+Message-ID: <sashiko-outbox-199869@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v2 01/51] alloc_tag: don't remove /proc/allocinfo
- under the codetag module lock
+Subject: Re: [PATCH RESEND v2 06/51] powerpc/pseries: put the node that the
+ ofdt property commands look up
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>
 Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
@@ -78,24 +78,24 @@ Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.
  Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
  Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
  Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261104-work-procfs-bugfixes-v2-1-021c84d852e0@kernel.org>
+In-Reply-To: <20261104-work-procfs-bugfixes-v2-6-021c84d852e0@kernel.org>
 References: <20261104-work-procfs-bugfixes-v2-0-021c84d852e0@kernel.org>
- <20261104-work-procfs-bugfixes-v2-1-021c84d852e0@kernel.org>
+ <20261104-work-procfs-bugfixes-v2-6-021c84d852e0@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 19:28:47 +0000
-X-Stat-Signature: wrryyhy3i3pk7ap7n9ksi3w9ibppu6tm
+Date: Thu, 05 Nov 2026 19:28:58 +0000
+X-Stat-Signature: fu9ihtco69jqjpkoy3pyzbes7xbyr13d
 X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: ECD62140009
-X-HE-Tag: 1793906930-607602
-X-HE-Meta: U2FsdGVkX1+A4RZqWAbouyhSaHG84OAaN6AiZ/DaXI9ubA09Q5nOM7yGTAOf3mv5ssE8xujUlpeNWO9d1NhYf/nKTwfTKFAftQzX1ZjQLjBn0FvC7mj//rPHsPlpJFJgre+uB/pVp4Wn2ZgWgq+vGzVc7TzrxC64TXEE2FHfObhkPAReY5D4oWzTRKIoUK1qke011kAtruN7p6Q4lk6yS5P6oABxE4BTh7E39bKNTriTgGd5ir6TAeKmZLbE+Xz12XeKTkQaUX4XSdFE2AoIRFgjbucHPLA5EB6Licf67xw5SMadrvIB9ijvV3prxCVWxIotdaYkSyYiX01BT/9cxDidCnqiadbEQcGaT5PWvTjv1h3k0nRUFuBE85OC0BVXfNaOd8WBAQMEF9W+nYid8rG+5hcoO2KDI5m5HnMqbFVqYV5p6a5ecjxk9/FbhL8pxiBFwKTZduaTK32PzolbpNP++JwargB2eUqJvpHDkeHSMTvD+lgrGTgNA80nLNPsEUtpMeeFlpW8rN7EmMQRWOzjI4roewHKzbjOr6SAwzr759JAN6rII1IABMky8CJT8zAu4HTCNZ4U7lfo+gDYGPfKgjmS0tf0Z8AJbDSR7dK9iw9KPRdQG/l02D9mQu+86z4O/tgYo9axe4NRV+NjVQDS90dAtL3LWtaSROUtIHYyACM3uj0XboPT035zfRG2sbqZ8d77WaXwkkPbZDWyViLmPU9W0h6hbUZ+HV8TwqohK/XfZopG9eNyLXzTQWYyEjsXhv+/DZJXeccftcdBXZnE3glL6Eh5bqVMc5W88FNCeii9qLOnOa3nTqRRuI9gMRGAPzQ/7/JjTdJqnoONA6r3OLDfx74nuxrqhFB45m+9qlgGcThkkqkQ7N5OwI2f8caQXOu1UAwojuFODWGUbgivDbBqLea/IpsyRyQbKVropc1hA03FyL217mrnMy1SxkPTLoEXNJk6UnG+dHG
- lhp3mFt3
- v6fsf+Ci4pqPWMmH9FJlk38UV6bb9s+I5maS4y4NSX1jWmAySCAEnKCzikZEWZp5l937BEi4KRLtJ8V8H+yHDZgRiYoWMLRSdrUJ4u528VnK8vGLjVK5OuohJxN74TjHnufkNZ5PeMeT03+w/eG0CZVlXxTEHMMOGrhWItUGIEG6A+cbyJBFjTI17BheBN8wiZ/SsKnYPLrnp1QVsU6V8aVvmuULwdwhDkcJsIlm/BnbXC8uMFyN/M2P21Bl2Jk8d0ZRuoxDdvbadivv6vznQ9Vv7367ugs7ofGi92/7ilLuu8astKuwFPfS6bhLosKiKpsKjgZMrxQ1P0vEvCAXOC5VBygvOQV38CosQ52bl6sPRv0UOdjcm8yezdvVFsQe0MEL/2pBNTamY7qVnOipAJNsLSLIQAynWhx6ZwtAGM9como2sdL+JjuFTZe8qjAjB6OmYTJm07//Mpp7ldhRnd/6T91nAj6FUXbQzKSw60FznDb2NIzXN6urNCXuHtGQEtITFqfBEWCutogExg6XkBzYDbM0mhvtxFfLxaK15PTSAJxsfW6A3XIF984T6WJu5VATbN5wlVGsUphwyZVi1eD4nX1Fs01vErDHyUL4Jolx0ZdVHKll+cpL22rhl4uWhQjmjCnnlkT1U+Jdz3RkFRG3U2G6Ri/Ru7xDngaj6z+tE22S7Hzp08UIC3Md5NSnNJl8p6jFlhNl8anNd69BLLQT38g==
+X-Rspamd-Queue-Id: 47451C0008
+X-HE-Tag: 1793906941-555360
+X-HE-Meta: U2FsdGVkX1+dBS1rp0XLeakB4Xq3/Tdd/iaXYsMzMmvBGfvgK1zpMpy1wRxcqk0TCav6yfN/LANXUf2Bt4O7v/9kHX52MZGzFk1fe4gnhHPC3FNvmg6mpOYE7Luc3mgU+b7wQJ6+fgB8FT+KWaGSAlqXxaVSU2FuV9+s+QFHXeCGk2/rcHO/6AfYWRpwUt1xqj/24gVEtkkcymxDaTT/6IMOcbrZRaRCd+B8hkcyeO2F9cUDdBM7RTQWq4+C/SNKxM1M7ROEGYoINzmumTzjR8liSDMYzHhj/7vBGQ89g09T8jSwGVUlxMBnl0Cobw3eXqn8oytnRT7Wq+FMoQ7P/61hcPDw75ukSX7L1tW0iSzHw1rknM1xrHq0u+hssIZ6NPKxQdIop5q/Fza3eoQtKYgv+acTjnVajuT9aUxGHZaeKCBXo6Y/QjnuoheoOSVwOKeMjzxv9dpMN4HMOk7DdKNSEqyNDY/KR5wYa8t0/LX1VN6VK9zRdF+aNYZ25zeVjLft4aE1emXrgT9RHkLdRzIMTMvPee0i0bv+QQUtMGU5vAZpk2mQBpLfC/FabMczp8fnatjVWNOcTI3SOQE7lyJADAm/NPWRzCuh4c2+b/5zCHa8VqyDeZaLUhIOJEVmf5+Mi/MXDysZqVT5qZWqGSQ4BjMgt8rSf1ORwgnSPxyOCfAGJAhvY4u2qMrXm1Evr99GoxxIHfrSAOMG9QwxRLyZWDhL85F5Air20sjk15xEtb+sxKd664Wq/K9UT7157rR4QbMZT3nYeIcBkdwZxAjRj/Aezb2X0mbaXuVhBme0DWlww1Y5fbfMZ9T8jbm0a1G9bjlwq17z8b0bjMdyFONfIa0aaHCkxUgdHm5+l6JTNNqD7hg0JQ+/92dYxaP7uTPLQlmuYnSdwchicvNj6Z4tlchZmOxbkCx3GbkTde1KchC0RO7Fgk2jdFraxgxTo/1+CMVxNtnd+2r5mxY
+ arPxy8v1
+ jPRar7iflvS0jQ8119Yw1fiQXDwh5l4b1QqWQT023UWXsRKVDQ6HHxfiEi1KZLA43pRgJEOshmYmaaaj0pV08z19ojmSYjhk5u3+s7lLB4EEDEF6hnd7aPuv3fIoMRAOXujWAGdajJ8kKr2F2vy74/dWgomzTTmtHlOshOGcqMOiDo9Zpy+IMrg+sdVzVN3ShOOJIpS8ZgOPxx1lFfyuAM9sdQEWTPALdzrQnRDRhmpU6xY/t5bdgPPmBDRt/ctccCsGnP4cPOOjdiyVGMqL3R6gzRnw3HxgA2+7UeH9j00SwmVKSjPfjV5w+w0EUXubsbflft7oRzgdW+6wuUrDx6bjN1K/ZMfYHKZd9NugTOnfvZrvvQlRLf6/ohumA4YA3rtlPJumpEGe7hpIOwLGiaY2x2N1a2Di0osDsZftSTbvTaTgg1Lr3SHaknB6hHRhU1RcgpP1xXpxP5ooHav5hn9A36ZvMh3PnOlHy8tegBq8Fm8er52RqXSYIE07LvOvYI6yImWsM2uES2aexAyfQMKISCXRNhkt30wORfiCgDPgt4Y+Sfc4QsN9GtUvDnmmb+X79hle9AUnWNhTqaR//uaqtIApitlrvmKFChtYghN7UOFGN0RcwLlFsuKjCG0BEUgahuTWq1eijdtUHoJY1AOqnwsuJhCQ8iQCXwUapntMnK0rWF2Z+hR7Ug0xwLZbxSqif
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,66 +107,77 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] alloc_tag: unused function shutdown_mem_profiling_async() when !CON=
-FIG_MODULES
+- [Low] powerpc/pseries: __free(device_node) declared =3D NULL at top of fu=
+nctions
 --
 
-commit ec0095b3ecdd2d01651f48bc80cc81d976e06106
+commit 3c337546ce05e068449f95031255af375235286d
 Author: Christian Brauner <brauner@kernel.org>
 
-alloc_tag: don't remove /proc/allocinfo under the codetag module lock
+powerpc/pseries: put the node that the ofdt property commands look up
 
-This commit defers removing /proc/allocinfo to a work item when
-reserve_module_tags() fails, avoiding a deadlock between remove_proc_entry()
-waiting on active procfs readers and allocinfo_start() waiting on the codet=
-ag
-module lock.
+This commit uses __free(device_node) in do_add_property(),
+do_remove_property(), and do_update_property() to release the device_node
+reference obtained by parse_node() via of_find_node_by_phandle().
 
-> diff --git a/mm/alloc_tag.c b/mm/alloc_tag.c
-> index 82e2c3448dcf2..7d7ad67049537 100644
-> --- a/mm/alloc_tag.c
-> +++ b/mm/alloc_tag.c
-
-[ ... ]
-
-> @@ -604,6 +605,26 @@ static void shutdown_mem_profiling(bool remove_file)
->  	mem_profiling_support =3D false;
->  }
+> diff --git a/arch/powerpc/platforms/pseries/reconfig.c b/arch/powerpc/pla=
+tforms/pseries/reconfig.c
+> index 18e3f1a036e35..5a0c9c0b6253f 100644
+> --- a/arch/powerpc/platforms/pseries/reconfig.c
+> +++ b/arch/powerpc/platforms/pseries/reconfig.c
+> @@ -271,8 +271,8 @@ static char *parse_node(char *buf, size_t bufsize, st=
+ruct device_node **npp)
 > =20
-> +static void remove_allocinfo_file(struct work_struct *work)
-> +{
-> +	remove_proc_entry(ALLOCINFO_FILE_NAME, NULL);
-> +}
-> +static DECLARE_WORK(remove_allocinfo_work, remove_allocinfo_file);
-> +
-> +/*
-> + * A module's tags are reserved with the codetag module lock held for
-> + * writing, and a reader of /proc/allocinfo takes that lock with the ent=
-ry
-> + * pinned. Removing the entry there would wait for that reader for good,=
- so
-> + * let a work item do it.
-> + */
-> +static void shutdown_mem_profiling_async(void)
-> +{
-> +	if (!mem_profiling_support)
-> +		return;
-> +	shutdown_mem_profiling(false);
-> +	schedule_work(&remove_allocinfo_work);
-> +}
+>  static int do_add_property(char *buf, size_t bufsize)
+>  {
+> +	struct device_node *np __free(device_node) =3D NULL;
+>  	struct property *prop =3D NULL;
+> -	struct device_node *np;
+>  	unsigned char *value;
+>  	char *name, *end;
+>  	int length;
+> @@ -296,7 +296,7 @@ static int do_add_property(char *buf, size_t bufsize)
+> =20
+>  static int do_remove_property(char *buf, size_t bufsize)
+>  {
+> -	struct device_node *np;
+> +	struct device_node *np __free(device_node) =3D NULL;
+>  	char *tmp;
+>  	buf =3D parse_node(buf, bufsize, &np);
+> =20
+> @@ -315,7 +315,7 @@ static int do_remove_property(char *buf, size_t bufsi=
+ze)
+> =20
+>  static int do_update_property(char *buf, size_t bufsize)
+>  {
+> -	struct device_node *np;
+> +	struct device_node *np __free(device_node) =3D NULL;
 
 [Severity: Low]
-All callers of shutdown_mem_profiling_async() are in reserve_module_tags(),
-which is inside the #ifdef CONFIG_MODULES block further down in
-mm/alloc_tag.c.
+This isn't a bug, but in do_add_property(), do_remove_property(), and
+do_update_property() in arch/powerpc/platforms/pseries/reconfig.c, np is
+declared with __free(device_node) =3D NULL at the top of each function and
+assigned later via parse_node(buf, bufsize, &np), whereas cleanup.h
+conventions require defining and initializing __free() variables in a single
+statement.
 
-When building with CONFIG_MEM_ALLOC_PROFILING=3Dy and CONFIG_MODULES=3Dn, w=
-ill
-defining remove_allocinfo_file(), remove_allocinfo_work, and
-shutdown_mem_profiling_async() outside #ifdef CONFIG_MODULES trigger an
-unused-function compiler warning?
+Since parse_node() is a static helper only called by these three functions:
+
+static char *parse_node(char *buf, size_t bufsize, struct device_node **npp)
+{
+	char *handle_str;
+	phandle handle;
+	*npp =3D NULL;
+	...
+	*npp =3D of_find_node_by_phandle(handle);
+	return buf;
+}
+
+could parse_node() return struct device_node * directly (and advance char
+**buf) so that struct device_node *np __free(device_node) can be defined and
+initialized in one statement in each caller?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-work-procf=
-s-bugfixes-v2-0-021c84d852e0@kernel.org?part=3D1
+s-bugfixes-v2-0-021c84d852e0@kernel.org?part=3D6
 
