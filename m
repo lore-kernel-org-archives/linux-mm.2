@@ -1,138 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14696606A337
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7BC606A332
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=nm6f7pAc;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5YjXWal6;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=YiDhcdUU;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Pw0UcpJf
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=sVeVtJRH;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=vuwkzsBE;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=sVeVtJRH;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=vuwkzsBE
 Received: by kanga.kvack.org (Postfix)
-	id 35B8A6B05B1; Thu,  5 Nov 2026 06:37:52 -0500 (EST)
+	id 70BE66B05B3; Thu,  5 Nov 2026 06:41:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30C1B6B05B3; Thu,  5 Nov 2026 06:37:52 -0500 (EST)
+	id 6E3FA6B05B4; Thu,  5 Nov 2026 06:41:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FB7C6B05B4; Thu,  5 Nov 2026 06:37:52 -0500 (EST)
+	id 5F9A56B05B5; Thu,  5 Nov 2026 06:41:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 03CD86B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:37:51 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 94AFE409CF
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:37:51 +0000 (UTC)
-X-FDA: 85400865942.29.9544256
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 30BE96B05B3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:41:29 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id AB95AC09CB
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:41:28 +0000 (UTC)
+X-FDA: 85400875056.10.7F8972F
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 4BD1DA0003
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:37:49 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nm6f7pAc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5YjXWal6;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YiDhcdUU;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Pw0UcpJf;
-	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by imf13.hostedemail.com (Postfix) with ESMTP id 58B0520009
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:41:26 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVeVtJRH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vuwkzsBE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVeVtJRH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vuwkzsBE;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793878669;
-	b=5xc/Mh2x4XwMH7cFoo4Pi12gOAT5vpk6zKWi1a8LzIhHZODbSTC1AMPJpDt4/wPuOvxgxD
-	jN27Y6pm20M84LhU4to8Pk35ru1O0cXRNV0qtaTSt0VnogMCKzx/02z+iP1Tujha8jEVAg
-	Qcb9zXJSsvPb5JjlXarNQfxTXcYeIKY=
+	t=1793878886;
+	b=bNxC6tXiXGZbo1RZskEFN4Ui8XCaau0FXG1wykdy8wK2wvnNHQdPS7g4XIolIMOckDnyUW
+	frNbcMQu1rRPvMVTBuvmR+Oj8jjmUWc99v0dPFFlZ9MQ/oDzH0vKH/nbptFEfRpu96ePsh
+	J/7b91k1BJjktKEhnT9wkXjhby4EjRw=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=nm6f7pAc;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=5YjXWal6;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=YiDhcdUU;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Pw0UcpJf;
-	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVeVtJRH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vuwkzsBE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sVeVtJRH;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=vuwkzsBE;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793878669;
+	s=arc-20220608; t=1793878886;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bjo5ToMs5cE4fDuDOvd5YxsZhokCc6fb7N8+ZiF0Jsw=;
-	b=POG9Ac63VdDIrCUcOfgNzES//ZsE6FRNaQoel/x17WLshHUgr1PKfPN9C657WuitPZ/5mz
-	qkyVpvk5GtDcqrm+U6vrfd20jURGqVoWdHzHEOAOqJmhDB0XtFvwoenAWXdFpu3eb1SKgx
-	3wM3kp0L0TJ+Xe+RB6sxJAffEuqrFBU=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=lCeU7WqtPlFL0u28tAWE4TptrCsWoJqXXac/H5Y8UUQ=;
+	b=Cx+PyqN/cYSzUTD3f7Qhf4Cojh8MP5XeOrKR7KzqF3MtWSBwep41mF2Uprqj/nUb788Mjr
+	j9lHSdcOt74WOd/C1/3OIZZHgbp1BT48FmzNvj94sCodNFHUM4YM2MPhtF2adI6bAfnu/l
+	1g/Wo/7026WoGxuQkHMgABzZsXnaQpE=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CA7C721FAE;
-	Thu,  5 Nov 2026 11:37:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793878668; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0FD6521EC6;
+	Thu,  5 Nov 2026 11:41:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793878885; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bjo5ToMs5cE4fDuDOvd5YxsZhokCc6fb7N8+ZiF0Jsw=;
-	b=nm6f7pAcewHGaA4dnrGaq6djWoIyg/KwjizKiNYEqXZDCJKhwjl9ccnGCrgUMmTavz4CL2
-	++9PEG1lccQnw4y2b5E48TmmuD7GJ94ULNAjTUUQTi60hHZ4ad5JxRgYNUyIqYwn4fNYeR
-	VPNEIM7yL59gA34/5G/eOw23VD+sixk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793878668;
+	bh=lCeU7WqtPlFL0u28tAWE4TptrCsWoJqXXac/H5Y8UUQ=;
+	b=sVeVtJRHmCez1LTgkgxlC7ymMIoqBUxHEcpbPuiTw+LbDT4oPlHADz2Nup5Y4XkVnbVoDk
+	it5vmGnaVZfno1DYDqX11TE+/cZqz+5DBii4SNDMZd47SSrwV/j/qOrqaptU0Cbv8IOz2R
+	SNKUKTm79wLZzIjQ8Z0k9Nr+vLNViV0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793878885;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bjo5ToMs5cE4fDuDOvd5YxsZhokCc6fb7N8+ZiF0Jsw=;
-	b=5YjXWal6urwbExGc3mbQkoIG/rakv493Bym/30L4bWfvdouQbXVruSqx0810KNzqqx5L2h
-	bMH2zoUdq7UB0xCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793878667; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	bh=lCeU7WqtPlFL0u28tAWE4TptrCsWoJqXXac/H5Y8UUQ=;
+	b=vuwkzsBEcCG36qlub78Ir05oWJttjLgL1QqDCsASqboi7pG0u6LKGZy4KCtzu9Qqsj7mam
+	/axyOJZeWj8zunDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793878885; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bjo5ToMs5cE4fDuDOvd5YxsZhokCc6fb7N8+ZiF0Jsw=;
-	b=YiDhcdUUA5iz/xtqvq9Swa89TtvVgQJfitWZgBc3l9YBN89EsC17t82GSu+7u4WX5XVfiA
-	mgFKD2qGvur29ZhdlXaTYNfsQVSkcsvGBG+OYLuyCvd3Rf/P40Rp4cv26QGch5KQdZRaEt
-	h+D7TQPbrJDCC3UkV/R+ksxZ2assmBQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793878667;
+	bh=lCeU7WqtPlFL0u28tAWE4TptrCsWoJqXXac/H5Y8UUQ=;
+	b=sVeVtJRHmCez1LTgkgxlC7ymMIoqBUxHEcpbPuiTw+LbDT4oPlHADz2Nup5Y4XkVnbVoDk
+	it5vmGnaVZfno1DYDqX11TE+/cZqz+5DBii4SNDMZd47SSrwV/j/qOrqaptU0Cbv8IOz2R
+	SNKUKTm79wLZzIjQ8Z0k9Nr+vLNViV0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793878885;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bjo5ToMs5cE4fDuDOvd5YxsZhokCc6fb7N8+ZiF0Jsw=;
-	b=Pw0UcpJfQddpPq+fNgyVZucgtJv8gc/9f0lV2IfTz9NO+ZsuLG+CB75082Lh43vPFub98O
-	incrKZySM2mHSFAA==
+	bh=lCeU7WqtPlFL0u28tAWE4TptrCsWoJqXXac/H5Y8UUQ=;
+	b=vuwkzsBEcCG36qlub78Ir05oWJttjLgL1QqDCsASqboi7pG0u6LKGZy4KCtzu9Qqsj7mam
+	/axyOJZeWj8zunDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C7990134F4;
-	Thu,  5 Nov 2026 11:37:46 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C5448134F4;
+	Thu,  5 Nov 2026 11:41:24 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VJcRJYpq7GrlcQAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 05 Nov 2026 11:37:46 +0000
-Date: Thu, 5 Nov 2026 11:37:45 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org, 
-	jannh@google.com, lance.yang@linux.dev, qi.zheng@linux.dev, ayushr@modal.com, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio
- sizes
-Message-ID: <auxqWxUfRVvxnk_n@pedro-suse.tail5790ac.ts.net>
-References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
+	id CwQAKmRr7Go1dQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 11:41:24 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 60CBBB6BA; Thu, 05 Nov 2026 12:41:20 +0100 (CET)
+Date: Thu, 5 Nov 2026 12:41:20 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 16/38] proc: don't walk through a non-directory when
+ resolving a name
+Message-ID: <xhnd2xzehnh35nmgphm2euuyulbwoz2fbxf7zmfn3hvdbcualr@ltehycoskzll>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-16-59422ed3e465@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261102-work-procfs-bugfixes-v1-16-59422ed3e465@kernel.org>
+X-Spam-Score: -11.30
 X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -13.51
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4BD1DA0003
-X-Stat-Signature: pkrbb17xm6ntaj4j36hiwbsi879c9hon
+X-Stat-Signature: 1niw9ho4f1bzw3tx48abjwtj4pzptr5p
+X-Rspamd-Queue-Id: 58B0520009
 X-Rspam-User: 
-X-HE-Tag: 1793878669-539284
-X-HE-Meta: U2FsdGVkX1/AdcnN+r/8BlPhh+u1sottbTASZJQRhUq2CWO+3oPArEvNFw09l9fvEf11CuUiabRx+/LGfksvQnxte/2IEscziCFuEwWk+eCajp9qSI87Mt2rrKeoSEfuejCdn+FoSMqwlroGXCLzUWvAL1NJLiamcCPH74nK2YurioTL9mpJibxqSkwUnJ6YNbBSNlKD73y4CqYshr6ppOwV5c2RYMkYAD471JZV9WcAJ8Zo3Sx/xw36pUe/Q2y4AU9MOsMaOmhPaD67H7AxJT82aLqtbHA8TEoc++jq003K0NusCxH/WeswHAd4hvdZvXR+UFO26d3VqIrRcgdUTOw1oWSs/SQduCUyZQIhS3FooVFUontBkx9+lDf+uFeY+G9Zi63rjXSerMbR3sj6+fP6G+e91x7sLnMXaV9Gx51P5p2LhVQeKbgVrJRcGef/roumrXB2DPB/yM95lTVq5RbRbiT0AamkWY0czKD0iHcKwiU4+1jmozudXdstTNcxYkIpg+bNKJ8x52yn9lX43APsXXtaItFgLW04BRHscFwMYNi/dwE5n4AikO8VoH8m1lhdIwvsUIiCN/8FG55aqsx0kgSl5QreHsTAray5BzfqRqI1gcU8UbZ2+ZBAcDqUc/Mdfhze4qp70W0DYJHhls29JXrHIdJ/qnWbCjYXJOcvNdKvqtZK1sSuBuOEuO7Plv4T86QBlcjDz/IgEXHC+Aljeng0pZtPJbU39vVELdLkELXMr+6puQJoicNvIxafP92hvRQ7qjjjAE+JBrMVZLJ8CT52+dNwoEUYmGcvhmntS1DWyxK2TEz96ETtCVYRikztMT9qiurXt1FNCR+GWzsp3m9RleTUoAflaQIXs0StUNTIUAa8CWKQ/iTFScszncApJO3gvo4y8QRp2xpIBDrwzi3ce1YNFspwljrspognfwmLuY6YiFsS6NGpGfxBqewPB7Ss8tubgzePnqI
- e8myxWK3
- JYyQcNh0X0ePHRmsWZn3TBdPtiITC4GYvmLbmWJ1mFfT0YIcPYwjibV5jB93Z8+szAyr3A3/95BUiRrEoJ8eWYs2xAzOP75vrISvwG6bevfva7x18w63j0zZ2Dwxh6uASRecDREE/fZ+yJFh0KVePNODXlG0Ibh6dWZcoq7cNtEzADccsExKtEM4/Y7q/1PNcMV5/4rEQ0ICo0+lhoU6JvmMvMAnAPGvIVufniJ6RwtFj+sE2OZpExEDelHBo3MWpT/AsNr2Flmk1mp4=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1793878886-8466
+X-HE-Meta: U2FsdGVkX1/eBIjVEYeodCzEHyxX+7HRRFZ7bcCOUZSS5hQrDCZ0y6xG3ufAWweDks5KUoi7IotYZlykbAKbRVRCNiLogx/FGU9rVBuSusRoy2R3210Qazgw3y5x2aSSQUyzJ17yDq7RjyceeyjON2OOB++X+wMoS5HMN/DkC4ennB+qcGUP3KSTtpmNDCwNhOORCwRjoCBIc2HadjUw/eonZCIlnk9meo6FE8LA/5tO5ImaKyV16xScSHSPpDLmXxWgexA9LHue+o5j297N7WHAyEMijkdkGIRQWuODrpSxdxfAo/UKWezJhz4uCXl7tNHHVkPBWzt57k6ZlIXk9IM5s+QNQYXLZV3pcIoTKPW+il/L00Px1sgDVz2ZPo1N/Qjt+LuI1UWC17s3iQs0oRGdfD4LGYB6h4DC6qcbG/OmkBD5nlfKqeybhyQpBAVSGS5yHHYhFO6RvhDkF+D4heRH+wKBodSOnMvnTP6wJLZJEQ5OuFPevo+5XpFeEWwcVcvaYwg1Wg/KZnSsvolOVnv2sTevPP+m0HAo5XX/UClrydPVbGj5rozufPGnfc4M4lkx04tsHxUzm6YGOqunnKtpPxKcavWr/rU+1miTQZBNg8zj05i7lTZaqoLeScNzwcIcOYDn5OzuLRTsWLyHQsS6v+DBv9g3j/8/RR7WpS89XlZAu1hBoeGJK5l7FcrohEulLhSiLCVjAGelSX2z6yZgBivkesG2TVJwdDBriIFlw6oscuWIbnrXGJrnV9tcM0ntEZm4Pfu8M0zU19jYdqrsH7Hg2RoQzBX7xP7hxXyxGohoBivD+uATUfaiGS7onTviYoNmRgjMTXpkqtxTxqGtQX2NRQj9vH/Ku+JaaGC5U1gPPO2Y9ulu3Nf+mpFA/i2HXoLIHIrAf1f4UDnfjnd02JxZw/JsoU+f7e33cojqNSJ+crIXZkJaFuY9X+Q5qbTk4WpXR3C2M9nvkU/
+ R/Wt1gZg
+ 25UnLgThBZAOAU26zGOVZdS14fnNje1I4LesjzOFNAYX0o9VP5kpfRc0oiwi7wuvy7CXcedFGP6ZIbFNZjwWYWFTt1qXTrOHEV08ma4T5W2dkrxT3K7hc98Eme9fw9helOtEpvrK1Pw7zlr+YY9YBMDvWaA3wGKt7obcuNucRFea+5taoC5iJQRmJsjaItf5F4wgTlMOp1mM33iV61sEEBQuhSH7dSv+NqA67I1e9qOvpk7jzTCZeLPtBAxLxQlmbXlSG3wiM9O1Uk1GuYLzjYGCShtKA7u5C/1+n6Dz4RJXkYtgi/2Tt+eI98nRyn8EDCBqKYE43jzT5mUqSCaIaBrysDK5nUtBV/UpC4qPO3VwHAHn4AxXHZVRlfTE1IQ5PNtpAuB+6d24X4/PQo5+RPIOf9k8rn7PwNsZYLv7boAVwJcCajQzVCphQ0w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,24 +161,77 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 10:56:28AM +0800, Baolin Wang wrote:
-> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
-> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
-> with concurrent page table reclamation via zap_empty_pte_table().
+On Mon 02-11-26 15:21:31, Christian Brauner wrote:
+> __xlate_proc_name() walks the components of a name like "a/b/c" and
+> takes whatever it finds for "a" and "b" as the directory to go on in.
+> It never checks that they actually are directories. So
+> proc_create("file/x") hangs x into the subdir tree of the regular file
+> "file". Nobody can look x up there, but remove_proc_subtree() on the
+> file removes and frees x along with it, behind the back of whoever
+> registered x.
 > 
-> page_vma_mapped_walk() is used by many functions including try_to_unmap(),
-> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
-> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
-> and try_to_migrate(), the other callers do not perform post-walk accounting
-> checks, so the race has no observable impact on them.
+> pktgen passes the name the writer of "add_device" picks to
+> proc_create_data(), and only the part in front of the '@' has to name
+> a network device:
 > 
-> For migration, the race can cause unnecessary retries. For reclaim via
-> try_to_unmap(), the race can cause failure to reclaim a folio that is in
-> fact already unmapped (as shown below), which may lead to unexpected OOM
-> or increased refaults.
+>   echo "add_device lo@"   > /proc/net/pktgen/kpktgend_0
+>   echo "add_device lo@/x" > /proc/net/pktgen/kpktgend_1
+>   echo "rem_device_all"   > /proc/net/pktgen/kpktgend_0
+>   echo "rem_device_all"   > /proc/net/pktgen/kpktgend_1
+> 
+> The third write frees both entries and the fourth one makes kpktgend_1
+> call proc_remove() on the freed second one:
+> 
+>   BUG: KASAN: slab-use-after-free in proc_remove+0x8f/0xa0
+>   Read of size 8 at addr ff110001134c8e70 by task kpktgend_1/243
+>   Call Trace:
+>    proc_remove+0x8f/0xa0
+>    pktgen_remove_device.isra.0+0x118/0x500
+>    pktgen_rem_all_ifs+0xeb/0x1a0
+>    pktgen_thread_worker+0x1b42/0x7280
+> 
+> The files of a network namespace belong to the root of its user
+> namespace and these writes don't require a capability. So once pktgen
+> is loaded an unprivileged user can do this in namespaces of its own.
+> 
+> Treat a component that isn't a directory like one that doesn't exist.
+> All names with a '/' that the tree passes in as literals only walk
+> through directories. pktgen is fixed separately to not pass such names
+> in the first place.
+> 
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-This is very handwavy. Do you have numbers? Does this actually make sense?
+Looks good. Feel free to add:
 
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  fs/proc/generic.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/proc/generic.c b/fs/proc/generic.c
+> index 2b1971da4a85..c560c96a64eb 100644
+> --- a/fs/proc/generic.c
+> +++ b/fs/proc/generic.c
+> @@ -170,7 +170,7 @@ static int __xlate_proc_name(const char *name, struct proc_dir_entry **ret,
+>  	de = *ret ?: &proc_root;
+>  	while ((next = strchr(cp, '/')) != NULL) {
+>  		de = pde_subdir_find(de, cp, next - cp);
+> -		if (!de) {
+> +		if (!de || !S_ISDIR(de->mode)) {
+>  			WARN(1, "name '%s'\n", name);
+>  			return -ENOENT;
+>  		}
+> 
+> -- 
+> 2.53.0
+> 
 -- 
-Pedro
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
