@@ -1,141 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A421C606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:33:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FF9606A326
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:33:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=v14WN48b;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=OvkNExNy;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=v14WN48b;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=OvkNExNy
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N4pVjiXq
 Received: by kanga.kvack.org (Postfix)
-	id 9768C6B05BD; Thu,  5 Nov 2026 04:33:03 -0500 (EST)
+	id 864A46B05B3; Thu,  5 Nov 2026 04:33:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94D4D6B05BE; Thu,  5 Nov 2026 04:33:03 -0500 (EST)
+	id 83F2D6B05B4; Thu,  5 Nov 2026 04:33:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83DA66B05BF; Thu,  5 Nov 2026 04:33:03 -0500 (EST)
+	id 77B306B05BF; Thu,  5 Nov 2026 04:33:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 57BCE6B05BD
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:33:03 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E2F45A09AD
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:33:02 +0000 (UTC)
-X-FDA: 85400551404.23.F2DC02A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 11F4D140007
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:32:59 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=v14WN48b;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OvkNExNy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=v14WN48b;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OvkNExNy;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 593336B05B3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:33:44 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D29BFC08EC
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:33:43 +0000 (UTC)
+X-FDA: 85400553126.28.931A4BB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3F78BA0002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:33:42 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N4pVjiXq;
+	spf=pass (imf15.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793871180;
+	s=arc-20220608; t=1793871222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pgu8NzTJnS2R+zD0u6Z5S8xrxcIoknrqJKi9obAmajo=;
-	b=6xrTKb+TsEUHqT+PTBa2XMUcWfXPNH5PqtFzjLPikBhfBlkFC8uBy+abfLvvVdr58ftaIx
-	NjUbzgd4Sa8Rtz3GLt3PDXlRlJAkqNnVTx0zbY1CoqFp241Ye6zyGZYhRkPhUIuwoAK/Aj
-	3R/1Dni1Y08uB2RykYzBbzkUQA3uZuI=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=v14WN48b;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OvkNExNy;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=v14WN48b;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OvkNExNy;
-	dmarc=none;
-	spf=pass (imf09.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	bh=B9M1jKc5WShsgBoTJ+bYEs7oHPuVcQGJEiYWo3gvijw=;
+	b=Wl36UwdfH82rIP2AOKYPmOjchoLme6yNFjNh7IoXH72uhTKTMZJORQm3DNHByWMdo7yxIx
+	mjuLFRl/4dxzNpc4u4pyeqmBVZnivBjsB+81oYN1s1KxqcQqHzaAtVGCdRxPziZRsrZgQb
+	SInquRoEx2lDiU85tQgljkPJcJA2Gb8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793871180;
-	b=8FVgmTpA3wnUBEFEnor6UAdbe2fd87li+Su7+Prx2lkWSiBvb18PfdZXsEjv9idD1V2N/h
-	yPUgGPQBBFNdJJrnVBmQ9S376VO1yTHj+UoIrxiUzS+/4oPoGtWINDmhHvw525h13GDERH
-	iPiHFwHU54GxDWmtFGxv+77DEFwmfEs=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 43A9421F5B;
-	Thu,  5 Nov 2026 09:32:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793871178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pgu8NzTJnS2R+zD0u6Z5S8xrxcIoknrqJKi9obAmajo=;
-	b=v14WN48bHlIql9h5HLTugaVISujZG1I/c68I+QtgBbLoIBApSEacYXXWBcqgCfJXFq6f+A
-	a04b7rV9MZ+1A7GaOjZPNsUBb09L6OB9bhWH1gZyydPZAUwPj8q85pTy4SRbmwmJ76LAqC
-	SSzXuvpaBX/SH14eaONLs8VdXTpBuaQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793871178;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pgu8NzTJnS2R+zD0u6Z5S8xrxcIoknrqJKi9obAmajo=;
-	b=OvkNExNyUPYRAlVHRPqHODS9azrcpr+2lIkcR7gaa3TaHUtdVPDuCCR60na21ee4PYtMBN
-	8FyqEylcSu5PIbBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793871178; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pgu8NzTJnS2R+zD0u6Z5S8xrxcIoknrqJKi9obAmajo=;
-	b=v14WN48bHlIql9h5HLTugaVISujZG1I/c68I+QtgBbLoIBApSEacYXXWBcqgCfJXFq6f+A
-	a04b7rV9MZ+1A7GaOjZPNsUBb09L6OB9bhWH1gZyydPZAUwPj8q85pTy4SRbmwmJ76LAqC
-	SSzXuvpaBX/SH14eaONLs8VdXTpBuaQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793871178;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pgu8NzTJnS2R+zD0u6Z5S8xrxcIoknrqJKi9obAmajo=;
-	b=OvkNExNyUPYRAlVHRPqHODS9azrcpr+2lIkcR7gaa3TaHUtdVPDuCCR60na21ee4PYtMBN
-	8FyqEylcSu5PIbBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 160DB134F4;
-	Thu,  5 Nov 2026 09:32:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id jQQAOUlN7GrMbwAAD6G6ig
-	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 09:32:58 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 9A6FBB666; Thu, 05 Nov 2026 10:32:57 +0100 (CET)
-Date: Thu, 5 Nov 2026 10:32:57 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
-	linux-mm@kvack.org, ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
-	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH v2 31/34] ext4: use the generic emergency read-only state
-Message-ID: <m2tpyczkdirf7z4pnidxf3375ykgs6mrybxz6aejffpfgptw26@vfepghgrvgdr>
-References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-31-2f44f64f0b66@kernel.org>
+	t=1793871222;
+	b=nEiHcRARIMCMkT92TpvffljUO0uvyrOtchUx2rgY2Wlku1L6nlHZrenBjhTzuGHfAK9S8K
+	VZDGqR74nxhyiGhoHpsgM7iUKikdE/6RAHf8gM/bVcxQ/iTL+i2vvrkHZMPN57qOuBDJcd
+	YnM/ePKRZJQRmfC3jj5BOR1BjO9Xb34=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N4pVjiXq;
+	spf=pass (imf15.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 63FE44345E;
+	Thu,  5 Nov 2026 09:33:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B18C11F00A15;
+	Thu,  5 Nov 2026 09:33:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793871221;
+	bh=B9M1jKc5WShsgBoTJ+bYEs7oHPuVcQGJEiYWo3gvijw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=N4pVjiXqQWR+5SFY4TKFoYUfEMsE72yuHNwRK2I41rxQuY/4LbRXQ3ko3EI+vkg/P
+	 c3t9TL6FMacOdgZ88Dqk9Pyo0kDgU5qbDRTydfg5vlzJiQf5yyt2y8OZZlFEBUct4l
+	 AVq2YNScTMavI2su3aDV36L9wqRNxRMU9H3gKoQmpG6KwCttP2eoIChKmjnjCV7GAV
+	 65LAONyGbAzgTALhT7n0xP/HOw7uhtxt6qpgiN48V4OdRIbiT5YgpKrns28GOCTs8b
+	 fRlP5n3H184cK07tK8cIDlPnF9xH88lkpuPz/LxIJ5sNSsHe6G1prAvEeM2nBx6j4e
+	 jMMOqP+++KBCA==
+Date: Thu, 5 Nov 2026 10:33:35 +0100
+From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+To: Qi Zheng <qi.zheng@linux.dev>
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+	akpm@linux-foundation.org, azpijr@gmail.com, lance.yang@linux.dev,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] mm: gup: allow long-term pins of CMA-allocated
+ HugeTLB folios
+Message-ID: <auxNbw83G5v3nvI_@localhost.localdomain>
+References: <cover.1793850539.git.zhengqi.arch@bytedance.com>
+ <818fb0b4bbb234e4a2bd0552d61634f1a8431616.1793850539.git.zhengqi.arch@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261029-work-fs-sb_rdonly-v2-31-2f44f64f0b66@kernel.org>
-X-Spam-Level: 
-X-Spam-Score: -11.30
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 11F4D140007
-X-Stat-Signature: onum8wcjrp9qcuntjcrfwt88p7it1dk1
+In-Reply-To: <818fb0b4bbb234e4a2bd0552d61634f1a8431616.1793850539.git.zhengqi.arch@bytedance.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3F78BA0002
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: qnu37cbwsf934kw75bcmkqjbick9eu6r
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793871179-147555
-X-HE-Meta: U2FsdGVkX18hlwfecXiQnM7Ntfks8IhjDKmxLE1Ta6Jdyg2bRfhDL9Admgo6QEs+kWjcbDbDsYJ6PIje5nT8+5JpQEoetuYAUIgbk0K2Q06qP4WfkJ5ZQHtIw3mwlwtdzb71K2hGzIeS/Hgcc0n0V3ScQ/9EIz0V3mT49iZjxDfEd7wh60v26h3oRDa88W1f8s/2dh5htaECK00I8+J8A+bnEgWTp+P6QB5kmuJwgjcVtlVHbNsBdDpHD9Y/uwtC8yLlaobfDq+y6YRG5+T7fiHrrbBBuXcRDZMvvPx9kXqFxEr+vGrM15bsZGbrFnIpBj9F+ZN6o7uet4a0o3b3ZJKGPE9ijlHrKnZV4yQw40s4zx27oyvJ2YAVUgVuATO43tuRCkzrEt3V4WbkQbZzAXcDEuMtBpIwUka4NRBDtLuMIvpPweL8wLsDRfcPF10a/DjFH1W2QpaIbGTcNnlN8WzLjXc5NLj2xbjXqWKkzcmBeZPAYs1fgPVqt4czubW3jYfoaAifZsCBnELcza2ramkS4sNuMe176/z1ignqtqoc2dRQxpqq9X9hTSfsSD1BASwFZSMVYzTiTo6yEV3+GGJwDQeDc9DW1TkgQSyEX+hScdRAOnpBB1mQ+IAjx8IMsg68a0NgMSnB52JpEAEkVKHqQWzTPhakbVkMJ795DbuiUc87w5zmZuNQv7vuzpKZ+y3OUR8wPlrjlyIdWY2wmauoY6cK1F3e5JRpY6hj6QKGcAvDV/d626jYZqdPgc2HJTsSUtOg9n18nygIArJbi+zjd01jNO9U28MVx0je/wamYZ7xHJ7jkeJpoWxSwXhTZzjHGDO82XomhsDbcoQNFFK5O41DBc/C/XZY2JELsZ5glxgYFg3hS/0pab805fKPpPkBPZ0TXa2MlxSgWJHsZzG/cph6o9vSOlScwkGPHr0KopCNuyGZDAQJxKrLhO7PQKzq3YkmBQyY2WSCc0H
- IV7FN6LK
- Z9o8KXi8K9aTYMgFtunQzJmZWTykT92ZRYzaaAutxwcY/e8hnV9RmWdS1rDnnsFW1s2drjroXnYpNiA7qpdA3hCuhk2j8Eq3AAjVQ1u2P6/FUtgEXKbxfIc+Gvef2YJVKpbKcLe/C77+ioZPOEua/iTU59WA8cT4ZnPyI+oEMeTtLuRTGztxCAGjYNBMkKjb4T6Nfvjdmx3AJDcGY7geS4lIcqsj2lGBjRJHul9UOD9IZ42321fo8M5lUvzo5VzfkVyfq5eCFbxhnKtHkurhSJROsJTH0ACgBfcyRmcvDaqgi76i1LiDTL/r+NKZh41gtNEiLbz2dJ+UTf33iwnB4pWjXFhASM7D52diWfA+MOleC6T5tyamfvIYHzE/b8TECSceDDkhjLujXo8vAtN2oryhxIg==
+X-HE-Tag: 1793871222-621741
+X-HE-Meta: U2FsdGVkX1+hiw9YsvJN/kdBIEUuPNQq0jldCW6l/gEV0GgO8XvkSQElawffiaJkbh0MCpGoiXxGPV9fsynoCNwBrzXHi3RLdz7Cd2+e2G0KXGchZ8JPERa9Zpv4v+OVslGSz9caV8ZWIRomRAaLsOHVkyjIMVdsJV3Qi6XYO0jZ26GT/MErXvP2eOC5tnZHCcDh4V4p3lchET763neUMXSBnPGs8PpU4/XViGcY9pJGzQI6Npe9PhEQc+Z9CE8oNh2+BISKV+ERwLLX3ekWhCzdcTF/vCc6YSORycFmcTWdhZOnfV5hY5x986ACFF9NyNB6Oq+bZ+7E7Etmpr2iM+uKR5QSb3K0RikkmQSbU2Qn3h0r750saE7R5AEMRSz2i424GQedZE/aNmw3ivqUx7HvwIyVbMHQSRKkW0wi7EonJIQULR6E5NUhOkcSlx0GtJY5PJQ3rElW5q69yNUCAA54d18UQAb6JSeGPuTtGilovhaBs67bg1mWyiyE7s4IHjCbd4tqU44yuCWV7P4XVZTK5uUCsAg4vpV04/SoZxac5b+C9FCvJ5tKULSKaNCA1OB/5Wq2qE+hEcYeRm0ugc4krDw5IxvukAEjAI3586Qu6cICX7o7yxv/JPYS2EtQuYXiQluXA+LPZUjvACZVU8tJZg5pW3n3Nqjyqn62cY7Yhf7iNbNAA/TzJ3+WU8NIlPdKW4LlN5+b0YSkgMUVSv7wYtJCkrDnhv3hb34NlhvBXB+vCfC6akI45t8X+YXsAqp3lSjrdbXD2RufHa2OzmOrzibqOfmDmzxT+bkUORE6AT7xJ9CpOODRhxFt4KETxRg14iiMi4LZTeqNe3/u0nqbTHNoFwaC3nzk1N3Zk7kaWjul2v6pfgGEbMJxU1TJrsi+a82luFqZ0sjmXm93kxObVMw41wM2rrD1CRH/QwVYxqSfzVqotg4lCnr6XAC3fUwZC08mI4a2n2aLz1c
+ ija0aTKw
+ D6TWyGi2vcWKsVlEiHZY8Z0RA7Um+wOJw0rGzHY83QlRRkqikM73Biez9SojR57YWdXvVyQ0R8PmzngPrfeX9mFTz3jr2I1VUguq/ghcDhGpMeJgAKMEG/mGrUPRopyJ9wb/LvOsK7cM1Bx+0IHO72oVknfN9mvktD+YtkPjH40/5IDRDQmDO/HpqNP6cvIcB4FPKTLywZ6lJOwXYHLcL9+mtZuy+fKyLhxv5oqIUVvV5lEzpoqXpATpKHbKKF86e3R7l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,44 +97,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu 29-10-26 17:07:22, Christian Brauner wrote:
-> Set SB_STATE_EMERGENCY_RO next to EXT4_FLAGS_EMERGENCY_RO when an error
-> makes the filesystem read-only. The VFS then refuses modifications
-> before they reach ext4 and reports the superblock as read-only like it
-> did when ext4 still set SB_RDONLY. The shutdown state stays ext4's own
-> and so do all of ext4's checks because they cover both states. ext4
-> keeps showing "emergency_ro" in its mount options.
+On Thu, Nov 05, 2026 at 12:07:44PM +0800, Qi Zheng wrote:
+> From: Qi Zheng <zhengqi.arch@bytedance.com>
 > 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-
-Looks good! Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-
-> ---
->  fs/ext4/super.c | 1 +
->  1 file changed, 1 insertion(+)
+> Long-term pinning treats explicitly CMA-allocated HugeTLB folios as
+> unpinnable, causing unnecessary migration or pinning failures.
 > 
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index ae5ba6823c01..afbdbb607b14 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -757,6 +757,7 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
->  	 * and other problems.
->  	 */
->  	set_bit(EXT4_FLAGS_EMERGENCY_RO, &EXT4_SB(sb)->s_ext4_flags);
-> +	sb_set_emergency_ro(sb);
->  }
->  
->  static void update_super_work(struct work_struct *work)
+> These folios already own their CMA bitmap ranges, and memory blocks
+> overlapping CMA areas cannot be offlined. Allow HugeTLB folios with
+> HPG_cma to be pinned directly, including in ZONE_MOVABLE.
 > 
-> -- 
-> 2.53.0
-> 
+> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Muchun Song <muchun.song@linux.dev>
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+
+With the rewording suggested by Munchun:
+
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+
+ 
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Oscar Salvador
+SUSE Labs
 
