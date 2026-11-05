@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B128C606A339
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 18:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A391606A32D
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 18:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=JeFYc1RQ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ilkeA7U1
 Received: by kanga.kvack.org (Postfix)
-	id 6BC886B05CA; Thu,  5 Nov 2026 13:41:15 -0500 (EST)
+	id 5FA0D6B05CD; Thu,  5 Nov 2026 13:41:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66DFC6B05CB; Thu,  5 Nov 2026 13:41:15 -0500 (EST)
+	id 5D20B6B05CE; Thu,  5 Nov 2026 13:41:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50DB16B05CC; Thu,  5 Nov 2026 13:41:15 -0500 (EST)
+	id 50FAE6B05CF; Thu,  5 Nov 2026 13:41:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 19D3B6B05CA
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:41:15 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 971C1A0BE9
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:41:14 +0000 (UTC)
-X-FDA: 85401932868.14.E1913EA
-Received: from mta0.migadu.com (out-164.mta0.migadu.com [91.218.175.164])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 9A927100010
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:41:12 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JeFYc1RQ;
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.164 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F1B06B05CD
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:41:35 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B89901A07EB
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:41:34 +0000 (UTC)
+X-FDA: 85401933708.20.D35D534
+Received: from mta0.migadu.com (out-198.mta0.migadu.com [91.218.175.198])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C593C140009
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 18:41:32 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ilkeA7U1;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.198 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793904072;
+	s=arc-20220608; t=1793904093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=99OaPNUALtrEo1DyIHDA5LAxQ/Si4UJO2itR3fKmwI0=;
-	b=Y2m2ZSJItZaW5NqOabZpcV20avZ2IgRYm01BrDV/pP9oiKMPszh6b+zgn5abTprm/G6HML
-	t+Bb1g8plMoNl82LAZyQxz4UD4teWpsf0RTJJAuW7dZAchKhjPX2vxYF7cv/tigWcNjM9N
-	nCgtUAOfM9tVzMSzSxFXtRIyWmceEVg=
+	bh=5IfXtGijlPQD8Q0olBFqZfgP2IyMiim3PIewkzSs/rc=;
+	b=RoSBfVS/ziib2qBVJhuT6AOMOJqrKj23+c+3Tr071htQvIRgOe4NG2IsQqP5D+gusMoini
+	VQZA0VzG8hb72TkUJ3jk31M04/zygajIUERQqzuouozA5p42IhdiOyzP/voSGkQF1xSy/9
+	/Oaykb7LemhDnOfgOVaHWlIXRVHggrI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793904072;
-	b=fs121A++VJcPsIq99GVG55B+7pKWai7YuJRv4Z3UF3FLnVxOTDJwV1IPuuyCBzEZjzLXNA
-	vvOPMMUz7+S7I0I1scUUXMRTal3jH1OTWrD7rgF9pPrLF97XYZsBuKUoNoAspbl9sBTQdY
-	HgluobZefgB0MICGMY6X/Z/nLLjxeBI=
+	t=1793904093;
+	b=zJFMPNPBaMRSbsrH6kWSvuJJAz9dlal71yaUywOuROxupMtsP61V7VGbKIfwvQLH4Rq99n
+	TDWXo0aZk2syL42NmOl/risDYDQ7BuDP4lgDakJGYyBDJ03M4svnPrMz0/nxY81fEdtvVW
+	I/kSwRbWYYo7o8z1YRU1XcntIgxibHk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=JeFYc1RQ;
-	spf=pass (imf14.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.164 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ilkeA7U1;
+	spf=pass (imf26.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.198 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=A3/111gOQUX96DxN2YJbLmOUYLhJf9za3+Chp1HLx+s=;
+DKIM-Signature: a=rsa-sha256; bh=w4pj5tbxz1eLMMGB1xD6rdBw8N4Lh5gRXiLGv2nZsEQ=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793904071; v=1; x=1794508871;
- b=JeFYc1RQnXyaNCJi/kyAaBHUekbi6bmrdzsnqK7rYDG+rMLVn4DiMXZ8DtDVzr/+Hk9EMxg1
- iLWSonkmVL34zf6pBK5xgn6z5nRo2DEsIT8nvAmfu8oDG0IqVhNPQjVe5lnTxBeiXbDhUgfXFus
- VKqHQK/lkslH7VOm0K10IA4A=
+ t=1793904091; v=1; x=1794508891;
+ b=ilkeA7U1BdPAPgyJAFZ+4tUuZL+39gVX1YgEIL9fjQ5J1DVGSALOYJb+v0HVUzWaT2rnJ0Rn
+ qUh3DTdX8ZLKFQCzi8yoT8hMr2+W9/w6LLu/aOUGbdxbpObeEwRs2v/93iSXIXdy7diihat3G09
+ OnuGlcUSLHe+YGsR6uJYkJx4=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 587db54ab7101a72;
-	Thu, 05 Nov 2026 18:41:11 +0000
-X-Mizu-Trace-ID: 587db54ab7101a72
+Received: by mta10.migadu.com with ESMTPS id a1a1b608434a8a7d;
+	Thu, 05 Nov 2026 18:41:31 +0000
+X-Mizu-Trace-ID: a1a1b608434a8a7d
 X-Migadu-Flow: FLOW_OUT
 From: Usama Arif <usama.arif@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
@@ -92,9 +92,9 @@ Cc: chenhuacai@kernel.org,
 	luizcap@redhat.com,
 	kernel-team@meta.com,
 	Usama Arif <usama.arif@linux.dev>
-Subject: [PATCH v9 13/32] mm/swap: allow duplicating a range of swap entries
-Date: Thu,  5 Nov 2026 10:38:57 -0800
-Message-ID: <20261105183940.2236717-14-usama.arif@linux.dev>
+Subject: [PATCH v9 16/32] mm: zswap: reject high-order swap cache allocations backed by zswap
+Date: Thu,  5 Nov 2026 10:39:00 -0800
+Message-ID: <20261105183940.2236717-17-usama.arif@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261105183940.2236717-1-usama.arif@linux.dev>
 References: <20261105183940.2236717-1-usama.arif@linux.dev>
@@ -106,13 +106,13 @@ X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam09
-X-Stat-Signature: 53xng4bh6ci7ee8dphny556cfgaukifw
-X-Rspamd-Queue-Id: 9A927100010
+X-Stat-Signature: axaxwg15s7dh7gsekc8q55u9kbityzzz
+X-Rspamd-Queue-Id: C593C140009
 X-Rspam-User: 
-X-HE-Tag: 1793904072-955735
-X-HE-Meta: U2FsdGVkX1887jWylHlg/F1j3rzXPRupdaPkjtKkXZdMm325r6gBFJ7lRYoJbvOp+fB41J/rlzxeq1psQ0yY8cHnErNk7LfkuWd687TwfdS9ip1IWv8AtWrqh6b4VXDOWAuFEQ+bfXCdIb7nyAn+sEHwWQswuFOHnpBVvEADdpJLdXnte08mlH+D1PIxEaZiv4XwT16rEy8fTaEUpWTBfQskMMBG0joLkJ1nF43ZWoZMQ2T6C+KxbrU2jAvPJtF1cBPPvwwphu6DH2+xphEWpO84rgpIJeDiWKQ0SAKRg2Wv3BMoVPYyy2ljdFVFMxmQGECiH/d1dpIBvbLXXMR33NuUirL9RSRfxCid7KHa6avgOgYg50lCaTGDdAWjS8DPvXAqdYWXNsEwcoWyO8J/7zMmzyrbFyzohMJ5jjlh+/WZVCNvwQHxoWc0Ykj4xlTHS9JyAYtubNFuDIf+SWuSVrRGwWUpVPaJTlk9fx90mTFGXvVyLRNSfSeyzSzpyxZnyEYiUXu8Nqrxodupws3KaxL4d6lxDKY9UDdExNG6JBtsbVjnAFjVzTQBPQjGjoW0Lds+5QZ0QhPicxLkmCLz4vNH+fC9Q+DepVaTpVllCaNwafO6BeZ9cz0Cqji1raBR9ykD0UDGrFno3QewBUMj7nnfbuOHA7AS9H7LjbVLt6547xeQcSeZIsWOjO0CW+mj377PlKxU027eAl/KFuiDehTc22PjMaAc7b+SXJQm9f6+3WhFchRNTpjcWkWaV2dZ87AFApLmVOOq1sph5SO7X3Zk2K1olGkcaXXQ8YuQW7TlKA/nsCfbBSpZoPP9kKK3Su1ffhE02vFIOEA8WJVWC4OpvqwmvJJLwboK2OrbzKLwlV0gPcvKWgpH0ONumyXyCbrEdCHqUxio+n7dQTszJl3mld/84fkh6eomlL4ZZeHcQ9hhXNvfomFvrnbWSUXVRnaaZOyahh+hc1vvKZa
- vXtIIrAq
- JJOnMkxj4xZ5/CkToJh2HlpDNAH0yhY2zTSYLTonLocp31qc3TihhG0i20Yw0ZXcfDQW6YKsUEMGsw5wzUSnFIOAej5MA5MNggY+0cv+TE+5BvLMPN6Shrm81+v3JfY2sCx7t2oHrgmKsXqh7FWKjPJ3kmTzlJw4bymQsZ2mQ/l/G2t5zeFzNeelHDUMBz2rMV0DnRopmUqZX6lF9xqWWE77Bl4YZ++tQ7D1tdzJJFaH+v20=
+X-HE-Tag: 1793904092-849463
+X-HE-Meta: U2FsdGVkX1+QLqqMXw8KgAKFbsys9u4T3ir5/62RRqFI3Pgk8T4/WCTlJI/p8XYcXh8deQ+Wd/ozUqeDDyZyV2ZPdJCECmx37WUv3xI3SShry8mOSsL2J/cV4NrE2Xs8jcO2zXc0uL2ul1KfXmJ4qFr8zWaG+qQK6uo9o9pUcRD7FsixueBF5UyOR5H3VPWdWItNiEDLnUHcW9dponINY17Bo3OtQWesajxj14idZTTVceR7lvQjXYAZ/ljm9WDFHh2mO/FWiEPv7nTYDKjt6qGZp0rVr+deNBMZENECHnprULf+lvd15H2hsnWa98Wuf7UZI8512IicAgqH+LkLRA8V6JTZ8l2gc79UvNGqJGAZe2JDscv1fc9sOOYTgYzAprdRIr4GIkgqcOG4UdzYmdL5PcvfaV4AMwXpPrS8K4LhGEWgKpiDrL6E4WR5Dx7hhUgmFIOL6HFiuJxZaBMEXeljMRwYdoZpFAb9Ga9gEwU3qC/xB9JFu+FCEa2hlq6l+sVZaVCCnAkSsbp3w9+vtBCRLaBTda8scFhJFWU8OpXKZ221Nz2DF4c6o30Y/W6OGchAalswIn9Mj89H/a7NUrhEaeUXZgR+FgkJhBwwsn9FbivI+++YqVnbQdjSYRxgSW8aOwZlC0aBuHv5WhxVBcYvFBaduXqQriiYVSK99SRLNrDjeucKXKgjEh2qIrqutA7wUd7PX9xgmZLNkFzdnXeYDNO8RznR9rMpyK4U0EDQA5YDe4vJDIHmm0gS71ReO0OrqKI/txxsOjUKN18YcMMak/z69+MtqOP3x3Jiy5rDanCKgm5CjxdTnPjSNmZ7Oqe0/I7VxOVxw38zWZBnAtdjJ1BL+DWO2sGortOypQMepSgwVRtxanJ9eM/siToJMm2Lw8XltRY8V5pa1Xhe7BQmVcBM59B41LgDKq+4Kx/r9Sz5G0jYTmRx7k2KHA+yA35VqOC8XrXA614Y8Fx
+ h5Yx/xOx
+ YVY1DruzxJ0jrnhFRPfYzGdvrBuReRGfId93DzsJmJbKEsnTNdUwJejmzzRQSVMQnq1t42ibm0pZ+W/VmoOffoPqSTFDB55AOfjRieRtQXGHzMBgXFF7AxchjIJgKXwaio7qvJQCZxpKyIyBIGZ49tfAPBwjjLNm6ThXttbtbVoO7ULQTY7/LRhBPpJjRvnL0yAPGjHfWCw09gvubbea3/VvQBguIlWXAqaHn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,251 +121,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-swap_dup_entry_direct() duplicates one slot at a time. The PMD swap entry
-fork path needs HPAGE_PMD_NR of them, and doing that one slot at a time
-would take and drop the cluster lock HPAGE_PMD_NR times.
+zswap stores swapped-out pages one at a time, so a range of swap slots can
+be split between zswap entries and the backing device. A high-order
+swap-cache folio over such a range cannot be read back in one go: the disk
+read would return stale or zero data for every slot zswap owns.
 
-Give it an @nr argument and rename it swap_dup_entries_direct(), and do the
-same for swap_retry_table_alloc(), whose GFP_KERNEL retry has to cover the
-same range - the caller does not know which slot in it overflowed. Keep the
-old single-slot names as inline wrappers so existing callers are untouched.
+Reject that in __swap_cache_alloc(). Do the check after the folio is in the
+swap cache: from that point zswap can neither start storing nor start
+writing back any slot in the range, so the answer is stable. Callers
+already fall back to order-0, which zswap_load() handles per page.
 
-Unlike the put side, @nr is handed straight to the per-cluster helper, so
-the range has to sit inside one cluster. That holds for the only caller
-passing nr > 1: a PMD swap entry only exists under CONFIG_THP_SWAP, where
-SWAPFILE_CLUSTER == HPAGE_PMD_NR, and a PMD-order folio's slots are only
-ever allocated at a cluster head (see alloc_swap_scan_cluster()), so the
-range is exactly one cluster. Reject a crossing range with -EINVAL so a
-future caller cannot walk off the end of the swap table.
-
-No functional change intended.
-
+Co-developed-by: Alexandre Ghiti <alex@ghiti.fr>
+Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 Signed-off-by: Usama Arif <usama.arif@linux.dev>
 ---
- include/linux/swap.h | 12 +++++++++-
- mm/swap.h            | 13 +++++++++-
- mm/swapfile.c        | 56 +++++++++++++++++++++++++++++++++-----------
- 3 files changed, 65 insertions(+), 16 deletions(-)
+ mm/swap_state.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 4f686709d71f0..861193d5ea109 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -417,9 +417,14 @@ sector_t swap_folio_sector(struct folio *folio);
-  * All entries must be allocated by folio_alloc_swap(). And they must have
-  * a swap count > 1. See comments of folio_*_swap helpers for more info.
-  */
--int swap_dup_entry_direct(swp_entry_t entry);
-+int swap_dup_entries_direct(swp_entry_t entry, int nr);
- void swap_put_entries_direct(swp_entry_t entry, int nr);
- 
-+static inline int swap_dup_entry_direct(swp_entry_t entry)
-+{
-+	return swap_dup_entries_direct(entry, 1);
-+}
-+
- /*
-  * folio_free_swap tries to free the swap entries pinned by a swap cache
-  * folio, it has to be here to be called by other components.
-@@ -464,6 +469,11 @@ static inline void free_swap_cache(struct folio *folio)
- {
- }
- 
-+static inline int swap_dup_entries_direct(swp_entry_t ent, int nr)
-+{
-+	return 0;
-+}
-+
- static inline int swap_dup_entry_direct(swp_entry_t ent)
- {
- 	return 0;
-diff --git a/mm/swap.h b/mm/swap.h
-index b8181bd056ee2..f028bd10c2cea 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -223,7 +223,12 @@ static inline void swap_cluster_unlock_irq(struct swap_cluster_info *ci)
- 	spin_unlock_irq(&ci->lock);
- }
- 
--extern int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp);
-+int swap_retry_table_alloc_nr(swp_entry_t entry, unsigned int nr, gfp_t gfp);
-+
-+static inline int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp)
-+{
-+	return swap_retry_table_alloc_nr(entry, 1, gfp);
-+}
- 
- /*
-  * Below are the core routines for doing swap for a folio.
-@@ -453,6 +458,12 @@ static inline int swap_writeout(struct swap_io_ctx *ctx, struct folio *folio)
- 	return 0;
- }
- 
-+static inline int swap_retry_table_alloc_nr(swp_entry_t entry, unsigned int nr,
-+					    gfp_t gfp)
-+{
-+	return -EINVAL;
-+}
-+
- static inline int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp)
- {
- 	return -EINVAL;
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 8dd2ba8254137..6b5149b88fa43 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -1473,11 +1473,16 @@ static bool swap_sync_discard(void)
- 
- static int swap_extend_table_alloc(struct swap_info_struct *si,
- 				   struct swap_cluster_info *ci,
--				   unsigned int ci_off, gfp_t gfp)
-+				   unsigned int ci_off, unsigned int nr,
-+				   gfp_t gfp)
- {
- 	int count;
-+	unsigned int i;
- 	void *table;
- 
-+	/* The range must not run past the end of @ci's swap table. */
-+	VM_WARN_ON_ONCE(ci_off + nr > SWAPFILE_CLUSTER);
-+
- 	table = kzalloc(sizeof(ci->extend_table[0]) * SWAPFILE_CLUSTER, gfp);
- 	if (!table)
- 		return -ENOMEM;
-@@ -1491,15 +1496,21 @@ static int swap_extend_table_alloc(struct swap_info_struct *si,
- 	 */
- 	if (!cluster_table_is_alloced(ci))
- 		goto out_free;
--	count = swp_tb_get_count(__swap_table_get(ci, ci_off));
--	if (count < (SWP_TB_COUNT_MAX - 1))
--		goto out_free;
- 	if (ci->extend_table)
- 		goto out_free;
--
--	ci->extend_table = table;
--	spin_unlock(&ci->lock);
--	return 0;
-+	/*
-+	 * The caller may not know which slot in [ci_off, ci_off + nr) hit
-+	 * SWP_TB_COUNT_MAX - 1. Confirm at least one slot in the range still
-+	 * needs the extend table before committing the allocation.
-+	 */
-+	for (i = 0; i < nr; i++) {
-+		count = swp_tb_get_count(__swap_table_get(ci, ci_off + i));
-+		if (count >= (SWP_TB_COUNT_MAX - 1)) {
-+			ci->extend_table = table;
-+			spin_unlock(&ci->lock);
-+			return 0;
-+		}
-+	}
- 
- out_free:
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index a8a486b0403ab..f41e740a91b87 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -12,6 +12,7 @@
+ #include <linux/kernel_stat.h>
+ #include <linux/mempolicy.h>
+ #include <linux/swap.h>
++#include <linux/zswap.h>
+ #include <linux/leafops.h>
+ #include <linux/init.h>
+ #include <linux/pagemap.h>
+@@ -482,6 +483,17 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+ 	__swap_cache_do_add_folio(ci, folio, entry);
  	spin_unlock(&ci->lock);
-@@ -1507,19 +1518,23 @@ static int swap_extend_table_alloc(struct swap_info_struct *si,
- 	return 0;
- }
  
--int swap_retry_table_alloc(swp_entry_t entry, gfp_t gfp)
-+int swap_retry_table_alloc_nr(swp_entry_t entry, unsigned int nr, gfp_t gfp)
- {
- 	int ret;
- 	struct swap_info_struct *si;
- 	struct swap_cluster_info *ci;
- 	unsigned long offset = swp_offset(entry);
- 
-+	if (WARN_ON_ONCE(swp_cluster_offset(entry) + nr > SWAPFILE_CLUSTER))
-+		return -EINVAL;
++	/*
++	 * Now that the folio is in the swap cache, zswap can no longer start
++	 * storing or writing back any slot in the range, so this is a stable
++	 * answer. Reject a high-order allocation over a range that already
++	 * has per-page zswap entries.
++	 */
++	if (order && zswap_is_present(entry, nr_pages)) {
++		err = -EBUSY;
++		goto delete_folio;
++	}
 +
- 	si = get_swap_device(entry);
- 	if (IS_ERR_OR_NULL(si))
- 		return 0;
- 
- 	ci = __swap_offset_to_cluster(si, offset);
--	ret = swap_extend_table_alloc(si, ci, swp_cluster_offset(entry), gfp);
-+	ret = swap_extend_table_alloc(si, ci, swp_cluster_offset(entry), nr,
-+				      gfp);
- 
- 	put_swap_device(si);
- 	return ret;
-@@ -1695,6 +1710,9 @@ static int __swap_cluster_dup_entry(struct swap_cluster_info *ci,
-  * @offset: start offset of slots.
-  * @nr: number of slots.
-  *
-+ * The range [offset, offset + nr) must not cross a cluster boundary; the
-+ * caller is responsible for splitting a range that can.
-+ *
-  * Context: The specified slots must be pinned by existing swap count or swap
-  * cache reference, so they won't be released until this helper returns.
-  * Return: 0 on success. -ENOMEM if the swap count maxed out (SWP_TB_COUNT_MAX)
-@@ -1709,6 +1727,7 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
- 
- 	ci_start = offset % SWAPFILE_CLUSTER;
- 	ci_end = ci_start + nr;
-+	VM_WARN_ON_ONCE(ci_end > SWAPFILE_CLUSTER);
- 	ci_off = ci_start;
- 	ci = swap_cluster_lock(si, offset);
- restart:
-@@ -1717,7 +1736,8 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
- 		if (unlikely(err)) {
- 			if (err == -ENOMEM) {
- 				spin_unlock(&ci->lock);
--				err = swap_extend_table_alloc(si, ci, ci_off, GFP_ATOMIC);
-+				err = swap_extend_table_alloc(si, ci, ci_off, 1,
-+							      GFP_ATOMIC);
- 				spin_lock(&ci->lock);
- 				if (!err)
- 					goto restart;
-@@ -1728,6 +1748,7 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
- 	swap_cluster_unlock(ci);
- 	return 0;
- failed:
-+	/* The caller's page-table or swap-cache reference pins every slot. */
- 	while (ci_off-- > ci_start)
- 		__swap_cluster_put_entry(ci, ci_off);
- 	swap_cluster_unlock(ci);
-@@ -3964,8 +3985,9 @@ void si_swapinfo(struct sysinfo *val)
- }
- 
- /*
-- * swap_dup_entry_direct() - Increase reference count of a swap entry by one.
-+ * swap_dup_entries_direct() - Increase reference count of swap entries by one.
-  * @entry: first swap entry from which we want to increase the refcount.
-+ * @nr: number of contiguous swap entries to duplicate.
-  *
-  * Returns 0 for success, or -ENOMEM if the extend table is required
-  * but could not be atomically allocated.  Returns -EINVAL if the swap
-@@ -3976,8 +3998,11 @@ void si_swapinfo(struct sysinfo *val)
-  * owner. e.g., locking the PTL of a PTE containing the entry being increased.
-  * Also the swap entry must have a count >= 1. Otherwise folio_dup_swap should
-  * be used.
-+ *
-+ * Unlike swap_put_entries_direct(), the whole range [entry, entry + nr) must
-+ * lie within one swap cluster; a crossing range is rejected with -EINVAL.
-  */
--int swap_dup_entry_direct(swp_entry_t entry)
-+int swap_dup_entries_direct(swp_entry_t entry, int nr)
- {
- 	struct swap_info_struct *si;
- 
-@@ -3987,6 +4012,9 @@ int swap_dup_entry_direct(swp_entry_t entry)
- 		return -EINVAL;
- 	}
- 
-+	if (WARN_ON_ONCE(swp_cluster_offset(entry) + nr > SWAPFILE_CLUSTER))
-+		return -EINVAL;
-+
- 	/*
- 	 * The caller must be increasing the swap count from a direct
- 	 * reference of the swap slot (e.g. a swap entry in page table).
-@@ -3994,7 +4022,7 @@ int swap_dup_entry_direct(swp_entry_t entry)
- 	 */
- 	VM_WARN_ON_ONCE(!swap_entry_swapped(si, entry));
- 
--	return swap_dup_entries_cluster(si, swp_offset(entry), 1);
-+	return swap_dup_entries_cluster(si, swp_offset(entry), nr);
- }
- 
- #if defined(CONFIG_MEMCG) && defined(CONFIG_BLK_CGROUP)
+ 	if (mem_cgroup_swapin_charge_folio(folio, memcg_id,
+ 					   vmf ? vmf->vma->vm_mm : NULL, gfp)) {
+ 		err = -ENOMEM;
 -- 
 2.53.0-Meta
 
