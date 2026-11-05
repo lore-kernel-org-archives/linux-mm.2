@@ -1,117 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79888606A329
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:56:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94090606D812
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ffoYcMjI
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AtWih/Q5;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/1ksPkT9;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=AtWih/Q5;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=/1ksPkT9
 Received: by kanga.kvack.org (Postfix)
-	id 865E86B05BD; Thu,  5 Nov 2026 11:56:53 -0500 (EST)
+	id BC9596B05BF; Thu,  5 Nov 2026 12:00:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 816A96B05BE; Thu,  5 Nov 2026 11:56:53 -0500 (EST)
+	id B79866B05C0; Thu,  5 Nov 2026 12:00:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72DC66B05BF; Thu,  5 Nov 2026 11:56:53 -0500 (EST)
+	id A67E86B05C1; Thu,  5 Nov 2026 12:00:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 46E8C6B05BD
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:56:53 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C8D6E140B3A
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:56:52 +0000 (UTC)
-X-FDA: 85401669864.19.B74BD54
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D0F0D180005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:56:50 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ffoYcMjI;
-	spf=pass (imf24.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 874346B05BF
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:00:57 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 27452140B5C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:00:57 +0000 (UTC)
+X-FDA: 85401680154.01.1D0A80A
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8D8BBA0015
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:00:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="AtWih/Q5";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/1ksPkT9";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="AtWih/Q5";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/1ksPkT9";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf25.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793897810;
+	s=arc-20220608; t=1793898055;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dElCrkpNpn3idD/utf+3yWjM7tzCk4S+t97MHfG6DCk=;
-	b=i2X/2nBN8scBp9B76bhvLL/dVteQkPovINFTYiTdps4QmcA2j9TIF9awHL+U70lsmXpGCv
-	u2xfplyL5kQhJWuuMeJOpXsW2nUMk+3/rkBQhUlBTCTpX8t1Ufn7VV2C4x1cdAS737Afj8
-	n36udE9KQFnthdlJ7xZum05QV7J8dvw=
+	bh=wLnVsJjCToHG/C28VTmqNBcIFpk1g6vauHuX2+bvyeo=;
+	b=d3Et8IC1YD/dzIM8OnjmxsPGwYmIxltP/uBc3H1aPhjy2JhDenJtSs2rqNmTtb4paq7ect
+	sblvbm2odkRdGKgPeQcR7nba5LBmx7do2hNJFptPZlIBlyXpq3AGkynksW1Nk0DUDD1J09
+	KaLLqCjRnSSSOLU6yalbL+kOsaJ8clA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793897810;
-	b=D5hEliInMHGvB/mzHiV1VUrUoEl1Cw9S4dJvIEYbXN4NDYOLpmjX3quGdAnqill62Nt3YX
-	CpZKK7gSf1OmtyBYg8kP+WpkVaF4JS9m7RFZhgJpHs8NDlZuQJZhlHUnmvJ0bzITaHu89x
-	6Qepdx74eD+4TexftsJ7WN74P5GPvwc=
+	t=1793898055;
+	b=gYcfVHAKgpHNCvSEK67XDiqvoW8FPH4B7WyZlT62FwvTs2n+PS8ZEOuVKQ5gZabjWjbtpl
+	9sGrwBA8tEeHTqdRq7p2YHojoHrcS+qA6AiCRNqi0UoX8szAKQXAdgTcnWDz6WAAmiGwhL
+	LvBI5kD3/6+8IdttmZbedLvUQx+3j2U=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ffoYcMjI;
-	spf=pass (imf24.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id EA3BA43EE1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:56:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A639D1F00A1E
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:56:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793897809;
-	bh=dElCrkpNpn3idD/utf+3yWjM7tzCk4S+t97MHfG6DCk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ffoYcMjIz8nFhQ3D68Am23XMjbjcmXRcfCVzrzp9tfsMQl1LG8P3K1E23uU5ocP9H
-	 O+jo1ShDI5yS1S53e9Pb0L+njmpe3Ryq1uDtHiZXAOeY0tNAvKYgXEX4HhMeP9dNG2
-	 0Z+MPWhfPUzGwkHiUNacn1xPXoq1xeAF0Pg8OdxVnWSG6fwiouhMs0r9dC0259rbCc
-	 MWnUMuQ6xrGTrN+YvLZya5H9jp4nkEQ0MhUPwgWw9Wo9smYHf83TU7a95kqLeqaRcs
-	 EhZq5pigq+yENSewsLdvM8N4L8DTNps3I1oLPSiTRnJ9laHA4Z97/XgSJRRQtDYmVK
-	 NMRfvqOSm2aFQ==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-c445c95d553so303313666b.1
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 08:56:49 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvByZmBPjXC+YM7UA1pZZ7hgvKGt5OBYKCdKAf3wqdet6F9PTcnaW8sW/zTB8W0fbq8a+5ZMONwMMGg==@kvack.org
-X-Gm-Message-State: APuU4Z8KNoprrFnbPK773D9llOyYewC3MJEEt6bjIIVSIiYyqW4cmzWB
-	5m2ADqTczRJeg2+IXlG7abz0aU/t4DVdzRC2k5DZXJtYxNWLpjM/PwxQakByk0IZxfC8z294Q9H
-	1MJZHTusYpW/lPQd+rajO/1Ce3lokbXo=
-X-Received: by 2002:a17:907:1611:b0:c4d:28ba:f221 with SMTP id
- a640c23a62f3a-c4d34c9fe33mr14539466b.42.1793897808473; Thu, 05 Nov 2026
- 08:56:48 -0800 (PST)
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="AtWih/Q5";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/1ksPkT9";
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="AtWih/Q5";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/1ksPkT9";
+	dmarc=pass (policy=none) header.from=suse.de;
+	spf=pass (imf25.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 32F211FB3F;
+	Thu,  5 Nov 2026 17:00:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793898053; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wLnVsJjCToHG/C28VTmqNBcIFpk1g6vauHuX2+bvyeo=;
+	b=AtWih/Q5UNeIcyR295m20gTBxLNQQlEW/6jV44r/WyqnpGBlFrxfzrmeI4eK5R/FG9mP8B
+	5UwO65a5cCQ1VzYek0nbWAcmTzFXkXz50rqaQTjIh5y0Ds3XEVC9sq3K8x0IZsLdslgQ+1
+	YvtRNvhR6Xxc9QjvOip6VNdLyvZvEFg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793898053;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wLnVsJjCToHG/C28VTmqNBcIFpk1g6vauHuX2+bvyeo=;
+	b=/1ksPkT9jyto6rEIVfPDgN8Dim3k3Ljbfr+TqqyZUZIMXx716QVdLySR0RyEa8lGTYD3/4
+	QsAvYC5IPlJGx8Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793898053; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wLnVsJjCToHG/C28VTmqNBcIFpk1g6vauHuX2+bvyeo=;
+	b=AtWih/Q5UNeIcyR295m20gTBxLNQQlEW/6jV44r/WyqnpGBlFrxfzrmeI4eK5R/FG9mP8B
+	5UwO65a5cCQ1VzYek0nbWAcmTzFXkXz50rqaQTjIh5y0Ds3XEVC9sq3K8x0IZsLdslgQ+1
+	YvtRNvhR6Xxc9QjvOip6VNdLyvZvEFg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793898053;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wLnVsJjCToHG/C28VTmqNBcIFpk1g6vauHuX2+bvyeo=;
+	b=/1ksPkT9jyto6rEIVfPDgN8Dim3k3Ljbfr+TqqyZUZIMXx716QVdLySR0RyEa8lGTYD3/4
+	QsAvYC5IPlJGx8Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C24CE134F6;
+	Thu,  5 Nov 2026 17:00:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HMEkC0K27GqWRwAAD6G6ig:T2
+	(envelope-from <clopez@suse.de>); Thu, 05 Nov 2026 17:00:51 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	akpm@linux-foundation.org,
+	david@kernel.org,
+	peterx@redhat.com,
+	ljs@kernel.org,
+	imbrenda@linux.ibm.com,
+	borntraeger@linux.ibm.com,
+	frankja@linux.ibm.com,
+	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Peter Feiner <pfeiner@google.com>
+Subject: [PATCH v2 1/9] mm: fix eager write-bit restore for write-notified shared mappings
+Date: Thu,  5 Nov 2026 17:49:58 +0100
+Message-ID: <20261105165004.2663799-5-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20261105165004.2663799-4-clopez@suse.de>
+References: <20261105165004.2663799-4-clopez@suse.de>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
- <anXJ-5_vO7-toSe1@google.com> <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
- <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com>
- <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
- <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
- <18e4ebf806e937ec.3137322e32332e3235332e313736.1bf52a.0000sendgmr@google.com>
- <CAKEwX=PFdgEbba+H3fEnJFDnfkxCTsvuHEb4numVwJRaiMgwKQ@mail.gmail.com>
- <179384102494.19062.12740032892044628762.b4-reply@b4> <auwOBaRtM9p_Wxfx@google.com>
- <18e529a5ab0738f7.3137322e32332e3235332e313736.873cb.0000sendgmr@google.com>
- <CAKEwX=OUt4=wqDLiPvYuiTnkpuZYnszkuNQScNR93hHhVPRRGA@mail.gmail.com>
- <CAO9r8zMMGem-LTJQseT5xSSBjfr3UX2gzG_ftpw6+KF8m9v5yw@mail.gmail.com>
- <CAO9r8zOY1E7gCYnJZAfKvyHcbj8e2WVuXMqsaPGPsKR4-9itsg@mail.gmail.com> <18e53459a8013078.3137322e32332e3235332e313736.12c7b6.0000sendgmr@google.com>
-In-Reply-To: <18e53459a8013078.3137322e32332e3235332e313736.12c7b6.0000sendgmr@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 5 Nov 2026 08:56:35 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zPZg9OEA4wMBV=DHb-ok4L7V7LiSiCGaqSFh9FNqtQuWg@mail.gmail.com>
-X-Gm-Features: AclHuK-u8ElA5_v51jIjDMgeHMQfaqUeU1gcTtrT823lK1r7ODS0ZMi-drUW4gk
-Message-ID: <CAO9r8zPZg9OEA4wMBV=DHb-ok4L7V7LiSiCGaqSFh9FNqtQuWg@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
-To: Chris Wiseman <chriswiseman@google.com>
-Cc: Nhat Pham <nphamcs@gmail.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Xueyuan Chen <xueyuan.chen21@gmail.com>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
-	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: xrjjajc3m5e8brs7edjun6hzytrtzufy
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D0F0D180005
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Spam-Score: -12.51
+X-Spam-Level: 
+X-Stat-Signature: 78pnjepdzc91xyh59iqs95yyzdodt6d8
 X-Rspam-User: 
-X-HE-Tag: 1793897810-713793
-X-HE-Meta: U2FsdGVkX1/Ln7BZrK+y1K/youW0pu1cWW/YkmxG6Gv3VefLgtT76YEAuIWjL5nfmAnH03KgFU31BhOMoyS3dUUEioqNlW36JatXpmsafcttBlL+Qv8fZKGQp6GNRju4xFRIwOF0CV7slfeTee/TRMrdlUDMYeqsZ4ah5A8kBLITIauEiBLK96dE+82AA+NgnL9AlA6F9m5dPZqr/I/RhfVvEM6UJipfUclEovH+k1/I1PI54drhKtDLlGW6PZ0jsuyZ9wDqroOtWE7FaICS2RpXhWWq9u3Fw6G94skaezwyT+p8ST4BmtTRleaowsb4SjhoyTumcCDKWOL9C7UNEJNxmCFqJO/XjmCBejbnbh6eOF6AtEcsgpKN+e+ixoUucD3O0J1xXaho8iyzmWcMzCI2QcgLH2w6dCkHKwRecaDYYV24kmVwIvqNqX42/HbECP7KagDbjk9o6H3Cm564koW8dkDGrXBN3GvQ/vD1bBoGWqlg2a7BFR8XjEcijouY4VS9h3Ad+SM2tLFUk8dAeGFq1ezE2Yen6WmRRbh4QyYTCb2Xq9KKv7oKzQmz2mGAWf//wiLUM2Sci8YleICTx4pOOpstLwJePdQC6e8RqYiAhMUmlDGD+anjXV0GUZiDy6+gRVwMJ69aWM+nRN5Iixbp7b1x+aYBhW25+tgDouILXOvOe1jhBMrRBE+7SG1NuaJAIFqjxKUKuoqAE4vFBXT/zz3qEvjFjYN/He1Ia6iJaILd5xrqY/dcdEhynFqZ79QfoL9xeY0pz5KHDgHcBweOwA+wiSUqzEKRGQRg6YT89N7SpJ00zOCRx2yllqqtq7cY0uXfjBm12t/yF2snfqUclz1CcZfdOGuzm9XjSx8iHyL3aBNIEwvwZIA/stGtB98SGDfLcWVslw+ZuE9sG5Ypdq/DO6V6+WxMmEBaWlHvi9GnlJ68QG9ClUtvhejGl37/zQhP5wSowiUbPDa
- lkI4iZ3j
- ctTP24V7WuAkgICwjOKSKzHGQYxEBn9KfZ8nyOcatuh5xbBT8n4YpcJq6rQ0ar0X3WbYL6U+Pi7K8azBWpn/UUcNs7hanbqnbA8fefjf9QSFdcvd4ZSEJaD+mX/X9GMPLxtxL8jKEsTICEDaTvZvuQeOxR0tJ4qUlehLVbvsY2K5GE3WAAphilR5ZHrPeXKZbhjpfygk6c77Ors74zGWey7GL4Wg9RO3txUKJ9AJMYFQcRvzLoQbUTUdLutQYkm8POh/ZLC+ssFn4IaoT4wqnxrtqf/iSVQs9VN9xdzDk/IxqHPXPEW2pie5qJRgphcqL6yev/tOrJ0L66BQal617Eb+fSvKfrqY8T1CiXHQtIqctJ7K7gVS714nZgtFuM6kKI5XFUyvqQxHM1bm2iOjSD0dDBw==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8D8BBA0015
+X-HE-Tag: 1793898054-828261
+X-HE-Meta: U2FsdGVkX1/xX5Q83UyKetzurjDSvSZRhjvP8md2Uzwxp3qq3CG4k/qJus2y8T3r998HTKB+4zPlUnFk3cb0ud9losJfRFbr5FSIaNax5UYI9CTHt/QbSJqbSrmt1uaKP1fAUWHABScLS5Jccy5LpfGiAppjw3hqNMA5Kb5vQaBTedNelmOjWJI88Ih1ha9YkCq++YX2sdU2i/UKporden0T0eq/ZFOHpFCdGLgxXoCVP2SAHSeHMLxep195aImSyx6ZjgW0Uo/z83iLUS4fjQteqXMnvYntDCxC/yKlXUHR/UOtEDTFWknDlZCQibh4XCG0wv8K9/AOf5m6QVVxQPldTw09e18vPDwWWoeLjD1VGDNoPl2UhVmLR+w4n/yWA2Au3iZGh84nnXAN8Hbe6CcDMGeqiZwWhcvmXqbx+XFq0xsIC6bOrtQce3fsO7TO1FN69k/IP+Y1f4LPy5U3Jq6qNzfoxeSFm1k321n5hSo3uqwHurz9L5LxkEGOxy/YyZ8EFw3qJ3Gp3LVoaYUCJrxlzn9qRJ92At/n82cXCaCYc9bwBE3yJ4Ck1YYSRsxYRl83HBkRiSL1RpBeT2RkJH8j6iRHRp9Mdb+J3vu0cG73q3JYUCwGT7qfWCzGuMCYXc0PlC3Dn6XTfRhgkRmpuLiiB/wsnYo7b2aBo4Is7vEaksnY5/OG/bQIo+F+NUit7PSv2Hfcc/T4LvAR8VfggPQeW7G7mPJeXvNBp8fKKNpwmnzu6FVZa9XARxgHx1cW5yyQ2a331dVdIYRcnqSE+Kxzk0J1gCrWWMPjpIIdLhdErJIgesDnuMcJQ5mDMR/fMUc3f1e1N7zPvGGB/dsBetTUvLo9AHA4OhGXgq2fmu/+kx7TnwX9Ta7BwcYYba7zvA2Pjed3CKzrFWxieC21n4YD0tCQS0oxo/9dOSq8rjXufUARU5/NSXvDGSy1aAONtpLs/Vpy8sJTJ9pi+fL
+ 5KBJDgSs
+ +mnhbQIblq790KMWdHDBvRNOMzBSw2teGx3w/KI2lbEkwFc802SYeXt0iTdTyX1FW4cgdD67JyH5Jyuq4m0A4k6BD9B3P9fB6iylPOXU/a1eHrH46zA9RUZPYc/KESHlZ6roIPkFyWtMkYX00Oj37OPP/QaFfYBIcVzLsmCBJ98TgN8xP4P+oH3+2LXGcQlEC7vTpV6E4TfMu2tyW+dG+I0bHW11ufr5q5obqxEzDQITpKLmBE4MZNTiY6SsjlfThhsqxZtc8GMZxHd2E1eqW/gGiu4kbFJ2HSkxQx+QFpESokUWQ5Dc6qwH7p7GhBiZ27lbP
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,44 +161,86 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 5, 2026 at 8:53=E2=80=AFAM Chris Wiseman <chriswiseman@google.c=
-om> wrote:
->
-> On Thu, Nov 5, 2026 at 7:40 AM Yosry Ahmed <yosry@kernel.org> wrote:
-> >
-> > Never mind the compaction argument, this is just to move zsmalloc
-> > pages around, it doesn't help with internal fragmentation. -ENOCOFFEE.
-> >
-> > I still think we should check if the zsmalloc shrinker actually helps
-> > zswap or not tho!
->
-> I ran a quick test with zswap turned on to check.
->
-> Yosry is right - as long as new pages are swapping out, zswap naturally
-> refills the freed slots on its own.  Both runs ended up at the exact
-> same 95 MB pool size, and turning the zsmalloc shrinker off cut page
-> fault latency by 26% because reclaim isn't fighting itself for the same
-> locks.
->
-> The only time the shrinker actually saved memory in zswap (~20.8 MB) was
-> when I blocked new swap-outs completely after punching holes, since
-> zswap doesn't have a manual sysfs compact knob like zram.
->
-> ARM64 QEMU (Linux 7.3.0+, 4 vCPUs, zswap lz4):
->                              Shrinker ON    Shrinker OFF
-> Active swap-out pool size:      95.9 MB         95.1 MB
-> Active swap-out p50 fault:     3,262 us        2,414 us  (-26%)
-> Idle pool (swap-out blocked):   44.2 MB         65.1 MB  (+20.8 MB)
->
-> Maybe we go with Nhat's idea (CONFIG_ZSMALLOC_SHRINKER defaulting to
-> ZSWAP_DEFAULT_ON) for now, and if zswap adds a proactive compact knob
-> later we can just kill the shrinker?
+change_protection() applies vma->vm_page_prot, which lacks
+the write bit for CoW and write-notified mappings. To avoid
+needless write faults, callers set MM_CP_TRY_CHANGE_WRITABLE when
+vma_wants_manual_pte_write_upgrade() returns true, so that entries that
+can be written without a fault, such as dirty PTEs in a shared mapping,
+are made writable right away.
 
-Unless we lose something by dropping the shrinker that we can only get
-back through proactive compaction, I would argue that adding the
-proactive compaction knob (in zswap or zsmalloc) is orthogonal. If we
-can establish that zsmalloc compaction during reclaim (via the
-shrinker) is useless/harmful, that should be enough to drop it. Adding
-a way to invoke proactive compaction should be a separate feature
-judged based on its merits.
+For shared mappings, that function passes vma->vm_page_prot to
+vma_wants_writenotify(). Once writenotify is enabled, this protection
+lacks the write bit, while the vma_pgprot_modify() result it is compared
+against adds it back. The two never match, so vma_wants_writenotify()
+returns false before checking for soft-dirty, uffd-wp and writeback.
+
+As a result, write-notified shmem mappings never get
+MM_CP_TRY_CHANGE_WRITABLE, and their dirty PTEs stay read-only after a
+protection change. For example, commit 931298e103c2 ("mm/userfaultfd:
+rely on vma->vm_page_prot in uffd_wp_range()") made uffd-wp unprotect
+set MM_CP_TRY_CHANGE_WRITABLE so that dirty shmem PTEs become writable
+again, but this never takes effect. Unprotecting N dirty shmem pages
+still leads to N faults that only set the write bit.
+
+This dates back to the commit in the Fixes tag, which moved the
+equivalent check in mprotect_fixup() before vma_set_page_prot().
+
+Fix this by passing the protection recomputed from the VMA flags, as
+vma_set_page_prot() does. Note that this is a performance-only fix, as
+the write bit is restored on the next page fault anyway.
+
+Fixes: 64e455079e1b ("mm: softdirty: enable write notifications on VMAs after VM_SOFTDIRTY cleared")
+Signed-off-by: Carlos López <clopez@suse.de>
+---
+ mm/vma.h | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/mm/vma.h b/mm/vma.h
+index 3fc3b47a954b..e83700e248e4 100644
+--- a/mm/vma.h
++++ b/mm/vma.h
+@@ -589,6 +589,14 @@ int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
+ 	      unsigned long addr, int new_below);
+ #endif
+ 
++#ifdef CONFIG_MMU
++static inline pgprot_t vma_pgprot_modify(pgprot_t oldprot, vma_flags_t vma_flags)
++{
++	const pgprot_t prot = vma_flags_to_page_prot(vma_flags);
++
++	return pgprot_modify(oldprot, prot);
++}
++
+ static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma)
+ {
+ 	/*
+@@ -596,19 +604,16 @@ static inline bool vma_wants_manual_pte_write_upgrade(struct vm_area_struct *vma
+ 	 * if we can't do that automatically for all PTEs in a mapping. For
+ 	 * private mappings, that's always the case when we have write
+ 	 * permissions as we properly have to handle COW.
++	 *
++	 * vma->vm_page_prot lacks the write bit if writenotify is already
++	 * enabled, so pass it with the bits restored, as vma_set_page_prot()
++	 * does.
+ 	 */
+ 	if (vma->vm_flags & VM_SHARED)
+-		return vma_wants_writenotify(vma, vma->vm_page_prot);
++		return vma_wants_writenotify(vma,
++		       vma_pgprot_modify(vma->vm_page_prot, vma->flags));
+ 	return !!(vma->vm_flags & VM_WRITE);
+ }
+-
+-#ifdef CONFIG_MMU
+-static inline pgprot_t vma_pgprot_modify(pgprot_t oldprot, vma_flags_t vma_flags)
+-{
+-	const pgprot_t prot = vma_flags_to_page_prot(vma_flags);
+-
+-	return pgprot_modify(oldprot, prot);
+-}
+ #endif
+ 
+ static inline struct vm_area_struct *vma_prev_limit(struct vma_iterator *vmi,
+-- 
+2.51.0
+
 
