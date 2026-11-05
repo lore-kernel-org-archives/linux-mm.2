@@ -1,104 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4972B606A326
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:16:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CE3606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:25:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g565L9wk
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=L5SondQz
 Received: by kanga.kvack.org (Postfix)
-	id 455CD6B05B0; Thu,  5 Nov 2026 16:16:57 -0500 (EST)
+	id 291016B05B2; Thu,  5 Nov 2026 16:25:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4070B6B05B1; Thu,  5 Nov 2026 16:16:57 -0500 (EST)
+	id 2417C6B05B3; Thu,  5 Nov 2026 16:25:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F6156B05B4; Thu,  5 Nov 2026 16:16:57 -0500 (EST)
+	id 131296B05B4; Thu,  5 Nov 2026 16:25:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D97716B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:16:56 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 46CB412088B
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:16:56 +0000 (UTC)
-X-FDA: 85402325232.16.DDE00CF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A278F40006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:16:54 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g565L9wk;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793913414;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E10126B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:25:23 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 494B580A27
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:25:23 +0000 (UTC)
+X-FDA: 85402346526.26.4614CD8
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5052320002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:25:21 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=L5SondQz;
+	spf=pass (imf03.hostedemail.com: domain of zokeefe@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=zokeefe@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793913921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VxizPleZhq8HwEA9+OGD1/wqtPtl9/FGqR/08An4bnA=;
-	b=X1CCP3SeC3zTj4gjMndi5z/EOexNE9JHKGmVI4qR4zC2aw6CeOC1cTS4wz0A3bqPeWevEt
-	r/QH+cd5A4vNuUf8i1IcnJsg4/SlhnlDhlDkLD4aggAUicIcJ5uLRHxnmB22p2NSV6asBe
-	tjcE5P1fE7Fa6j5G4J0pl2EEmkvl15w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793913414;
-	b=jigY+6J4yS15IDu+C35GpvZz0X37m8tPf26wIDjlw6uCV4KGjWOpH50kurYOpYMe6ypqMy
-	vpMBzAb9bmEv7oGBZTv/I2Jq3pKCSA/njUHbYh0MPK+f/+6GXc5PMuVaJYDhmPD3yLLoDj
-	/MvSzlFnewPsus7umLpuHlD58xFbl/A=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g565L9wk;
-	spf=pass (imf17.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C52E14122E;
-	Thu,  5 Nov 2026 21:16:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0229C1F0089F;
-	Thu,  5 Nov 2026 21:16:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793913413;
-	bh=VxizPleZhq8HwEA9+OGD1/wqtPtl9/FGqR/08An4bnA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=g565L9wkD5iSSuGFWKDuD3r5m/puCbGyJJCo3TJWpw9Qk1mtMlX3Vhu/zaycMuZyG
-	 8WIHVCle+3SB5Y13eRo9Q/o/7luBCPOEmo3Ccnjes64p+oDk7jULazfvcBLuq5BP8p
-	 ejZYak2vpyWx7teiB/ViaVFVVt4nGpOAS2ngNx9Jp7VKECYVgIb8o7HI8C2fDkaeJh
-	 1L+iyjnb+5rRrtkH5nQw1QSEFedeiKX/TPIZiO0SCv3OgZGZZN310wOQ9GXsMclAs+
-	 7xgKYiEZJywRJ4oAqp4kOsDiORP6ys9gNtrwp9RMPZcFAkHKvefz1LLsVqo4RSAXPT
-	 MFSEB1NF38ycg==
-Date: Thu, 5 Nov 2026 22:16:44 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Chen Linxuan <me@black-desk.cn>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Kees Cook <kees@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, K Prateek Nayak <kprateek.nayak@amd.com>, 
-	John Johansen <john.johansen@canonical.com>, Georgia Garcia <georgia.garcia@canonical.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org
-Subject: Re: [PATCH v4 3/3] pidfd: Add task path ioctls
-Message-ID: <20261105-fotokopien-essen-inbegriff-be31e4f3c8a6@brauner>
-References: <20261027-pidfd-get-paths-v4-0-e2a6a47e3c95@black-desk.cn>
- <20261027-pidfd-get-paths-v4-3-e2a6a47e3c95@black-desk.cn>
+	bh=7IgY4oSwJmunrObC+s4jlkajaBgT8VZrvasnO3k+eC0=;
+	b=gOBwQSXKVSjXd8MXJxo9B3ZsWsQsaZvekAO8pi34jQY1VBCJWXtV9RHuswiTTW/+P6Poar
+	tNzAKV1umhv6fxYot8kbC3L8h+dBwM7lD/7kT8KF3nOySooyOGx9jAcYXtHe7sDOsOxI3w
+	Z4WUdlZTHo6uOZ4+cX+pl8ZNjWfyz4w=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793913921;
+	b=uphdudDF0rED1Sqy3tThGuXIUrj05JvY/2cHd9U4GnMhoJjhH6cqt9EFTEi/CdRLwuUk4L
+	7WYLl1AwyzyNVQXRBi5iVN8BNVeFshFq+JKCjet2pTSvhZLctYhNblKQIVPU3QE3SBgmRT
+	Ytzr7jU4RnTBGJOLUdI0UluS4LAcRQ4=
+ARC-Authentication-Results: i=2;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=L5SondQz;
+	spf=pass (imf03.hostedemail.com: domain of zokeefe@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=zokeefe@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-535f598d126so16281cf.1
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 13:25:21 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793913920; cv=none;
+        d=google.com; s=arc-20260327;
+        b=fnTH1NxnOpAVs2OqKTO+ByzOO/qUU1ZRZTcvrMHiPefvqW7XH5wHprgqi+e8+enBEm
+         qkztBxHdaR1v98s3KwyowLKyMoIVpdH9QhrriprfbZUul43l8i/oncWZsj4LvIsLer3q
+         8ir9o1IQAJjzW+4tMi20qCkp0km1NvunUmnmfSP3IBxpE53JFWsO2gySw7cJzO/z3NIj
+         cnA3CR267FY4j0r+c9oOJr6FTQAVYAJCsHoIPAMPQ7bpiFNHUfkV4pqm3RbRZVADXMa7
+         65gE5I3mULL9Dunx4u1jhhoiezL7Xrji8OfQK71JDguF+eJ9yi0n78mOwBEJA6ASkN0b
+         jJQw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7IgY4oSwJmunrObC+s4jlkajaBgT8VZrvasnO3k+eC0=;
+        fh=16ysLZvWeQK/Rfk9xpPXRcgb21MaO7AzLVzyXCFLck8=;
+        b=AQjawfoF/KT6tUjmbFh4DZdJIIMJjVkXI0CzzmkxAX72a0cRU+Ss+74MpcazUvBJx7
+         Y5+G3cyCflVlvKz4msgKVuwoWINv4vpmlvEabrek4cWtiSeIsEejx9wmHptqTOOZeokV
+         iSSf1vKy0d0bOCAMT8qVmCCWU6XN92VZUkdKm7jfiy/Z9n2FxjyNIa/T2hS3SciLkJsJ
+         u4kYq/U5RnAqy4uFKCCCG9v0Qgk0YOG8fZckgWi7TWeqJiIwZntQeR/X0ORq33gszhLp
+         x4uE5aNP2quJl1+Ke3wVQyC0dhzGc8EUdmYiUMomRKQCECSVCMwZEfk7RB1uDM5XKpkF
+         HNZQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793913920; x=1794518720; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=7IgY4oSwJmunrObC+s4jlkajaBgT8VZrvasnO3k+eC0=;
+        b=L5SondQzHSQ26RrcL0IgzOxIRNm8Z/KdjLuojNK6jEDcZBmU+MfVIaf//DFEULR2uu
+         MszVBFncPPS57dH6ySCTgg1pV548DwsqliZ9/MplXVC0rU/5WlxSctvCGyC3tndecF4p
+         KQ8BoCKpGddAWu555aH6Oy1ud/bgXYaLopZ6pxVonmI23OCCTEChEWBtbcl+ZlYxmlTC
+         oKOnmvafO6BjXRteKTjfhN8LgjGQLaT6S3UfBr7aHRIskw2URaaD2y0UEQ+0hhBk2x86
+         SXqDsK/TrCW+GoxUyJ/bhb1ns67jTVHcoKROStsAv5We4TyQOz8tfSNVMw9vYJOxFhih
+         bg9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793913920; x=1794518720;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=7IgY4oSwJmunrObC+s4jlkajaBgT8VZrvasnO3k+eC0=;
+        b=rT7BGWxwTOeryhf+qSqdKwkpAZRhrfK7luqApU3ewJd4qDtfTGWbAjVWZ0nmaIt04P
+         uyAZ7w7K7BSe78gM7GHdb/+JM7OSvC2E+Rs64TEa5bVz7g0hnYKapQk+yAJqRNAuyqMp
+         YM47wMSk8UeZX3YD9S+arViZnq8tqrJnViyRFmteG66641ap1fOX5/CS5ywqn2QPrstc
+         bd2ssVEE7DC8+OAHZ3JZV5k9pyH4nS23Y6XrrW7TfsooqWc6E06N6pPk7hhirwos/I6X
+         1EUfix1hD7duw5ZbEghIAsCgmuZOA6ZzGQmL9yAt8FaKo8Fm/tftKAcCOZ3FXjXVnSsU
+         zMxw==
+X-Forwarded-Encrypted: i=1; AKwUvBy4MFFWMpJL7jh5iD2B3+WYhKNyZDv0ezTnzHoTFJCL3N1PgE7Jyn9KHyW+c8j41HsqqyfCeDyRjg==@kvack.org
+X-Gm-Message-State: APuU4Z+iLsOZZtblpZ9MMNG5copyINexuDnPHUx7CFEKQlec3ZOQW1dT
+	xPdfNqxubOYVrKBaZobQtggMuEPkPxdDqZbJAawJcTj6gqUPpzD4u+cS4Z0r0gT0QAisB4luvAp
+	+NCBGQN+3VUweYegeASAtTlY7NAaSuUooTSoOxZjH
+X-Gm-Gg: AYBFou3bezMws87Jm8HxfRZz2scYuzzulCqKxbDQXNNnmBl22FTAMC+E5H/+wJn27Pj
+	VQMlF9n/5ie9e5kjjkc4c5ZP55TQg7VE7Mrcq4ncBjB3Pb3R61dvwiLXDEoxbYJ/yBZ35sO1IFz
+	lFtgMQgMIOZczfF6HldF8tsAf42VeFDuZ8i2CjlHd++Mi66sIkBxIFzK58XIZgU1wqy8Wf8IQ1y
+	khEFAUyv1aVaECVE7hgKnGcrLz5GUqYhXumOYmm8M6RKlKiLciNo+rLeTtCuIG/KALPxfXtsXMp
+	5J0q1mrpJjGKAY07/G85xU5WYXgs+5CrffFxYBBNDxJdDt1+Vxq6ksoZyF9ciM3unvDzhDYEcQs
+	2JkSBzIxkKS9SFsDziCKJoDIHaBFglPU9O7DeLA==
+X-Received: by 2002:a05:622a:4118:b0:536:934f:7da2 with SMTP id
+ d75a77b69052e-54e18ff2e12mr4497211cf.2.1793913919805; Thu, 05 Nov 2026
+ 13:25:19 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20261027-pidfd-get-paths-v4-3-e2a6a47e3c95@black-desk.cn>
+References: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org> <DMNJSQDUACRI.HXKF5B6GSQOX@nvidia.com>
+In-Reply-To: <DMNJSQDUACRI.HXKF5B6GSQOX@nvidia.com>
+From: "Zach O'Keefe" <zokeefe@google.com>
+Date: Thu, 5 Nov 2026 13:24:42 -0800
+X-Gm-Features: AclHuK_cW9BDiSPs8h6BDqPFpxUXOylylNhDy7qGq0VHRrxqPWf2FvEDLTBnfxI
+Message-ID: <CAAa6QmSF0bkATC6kNO0B1ydFtDi=OEYJJ5eH4zEakxjJ9z7ZqA@mail.gmail.com>
+Subject: Re: [PATCH] mm/khugepaged: don't map folios that are not uptodate in MADV_COLLAPSE
+To: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam06
-X-Stat-Signature: 3bx4r1696hqwz86bcnmgtswo1n1tdmmi
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: oriqrtyqw5w64su7o3xuepgzcqtrg9rd
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A278F40006
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 5052320002
 X-Rspam-User: 
-X-HE-Tag: 1793913414-721183
-X-HE-Meta: U2FsdGVkX18Ikz4hOKmmgNHzYZVEyaqo/we48aG8jbswnKgjTaBE/Xxqw7pITRT/pa+9imjXHsJ8n8i24KlT2ZCyWypuVC+iHEBHStU8gq1vilw7jWjHyAKdITmm4hXIOpcs0itB86ejbXI4sDjjZXDJmLG5JpMq2EfrTmInz0cbv4g3e98SbXyhTqTWecujU+7fv0viNDBQOgb7le1FFJDKGFtQA3tbHi/xkdeXrsB/7TaWZZU39BuYRaPYWcjibgbkd3if9q4t90xwtpgPNjVTQPAZPOrNHTJ/BZ5fiqrOt4JTQIUyNzxz5ntyjAiGpBz9PSwJXLidhmA9eqo3Y4Llpee+0P6HCTMyR5pVgG+la4l2HqkIFLXpAcZDrNRPVTc9FB0jETEYDOEx7Z1EhiF8p7LdljhviV3Ko0AglaqZpz49c/TiAkjeWzh7aijw4K2g+U+T0Rmr0ZQfZZEmrZYPjRSdgHAENuWzQCk4b/ybqAicO3oXK2vXvve6/RGRZRnT4wo+RJ2Hhs8HiP4u5xj6EjgJw+iJ3zcbOPhFEcjXeCOnrBl67gUq96ibQ5Ab/yTqLpFyO9zDVPugZA5nAFQBupMnFfRdJuoHHVdw5vkuXEJ0sXKYObqJzKHOZrnXZc3CYFNZHp/9okGVTPp6R0Suv1LiFgIpGpeFSAW6P90eouCAultCD7R1CAaWQOcFGT03KPNp+pB/ocXj9KM12NYUigR7utUbg1PjNm4Xle2oxpZw8TCQtlEySRAFaSDoV4jtr/9DNVHnVxt4bV1EzXys9JYclbrTmsF4j4rA+5ow00rTpHrvSYhTiHzaC13+lo5BYRmCIQBVTg3tSBkCS2/fTJ9fPHGDm1cltLkKjSTN7V0e0nfQwpUetfaEojNvD68wcqUUZh9Vv3A0EgXlwDmCw0TjiNMR1aRfYrMOt8Du2w3B7l42gmiwFHAQ5weTIt9+H1A+hXLPoE4t0eK
- gFjCke3T
- Tij34cPMk2pZM2Pn5XDxDTLsLiqDywmRXyH1B0fpluT8XUiziuW0yc3/8KalZAr4zgLlFrOlTXdqJ1tX4CpYQtxsLeXcDIOdeQoZ5+hFa1/hnX7yMFpu14Jh9AWgTxMuRJltoiNJFdeJl36NqIZTvwXcrZ3wQHU4i3PqukM7Ki0rx/RC6q8dgg76HloyHq7FTZyjwhuwLTd6OxVidyBH08pSPvQxpp4ZvgfWJTmXW2J7VM/jVks2qHL/NGRvoutz3yv6bahyvDOVljqI+LC0NLdvupq6edbaPQ8HQIKBznjOPEcRjiqGpanPG7Q==
+X-HE-Tag: 1793913921-119531
+X-HE-Meta: U2FsdGVkX1/9QT7SnfdZp7eRmvtjyg4x92R7rEXQx/X5BbWucx0EVKwzDOCxD7gS3mJAk2qLN1Cfru5T+kK4E1feALyHWPKi+xmxY1pxtdz+HDgz0YjGFNBbYDo0JIXCKH9ENDgFoLH9OVzgOK+DtvcNcfLklOLAv9/lEGq6COZqTKEK9RabdTjqN6r6FEtTZd7Z8jA8ZHmkXJLJcyG5467pcAGNvRzUv6AhUC+7Ew83g0c9hz2TpOsR5cxRnQvzCoYS3UrhE2lnYELWA/8QLJ6jdJUTHDjz2grWghJXJaKZWilkILaUKTlHSxJ3geM8jEoy6bcRMCqxoCbtSBlOmJ6e4DgEEz0TqYTJHqS+ieYun2wSHFzCdqi75pSao6hYdMptEVMyuamVLxjQeD83KvtADMjQneMS1AFJs1bHZx5w3EcmY2WQI+U/IT2GJLpvxdxndu9GRCqakKDVouPjcP8sKIP6n0WYQHyaNf0Ub+fbbhRebA70KfigQi/8DO8nqVwRCKzbB98pbtIwGwBAvb+Bo6/DGQLxOBCmD5R0O3gHs3jilvDxPSaE/n5Uy/bvoBLlRO//OfHjtciOV6RiywcbaZITKemx5a6x+FA9DneyaDG+saV/xAurQsuHv65MFnc42YQl0usVpGJv69OB4VsogOAWP9N1O7JZdKKWrIlyml9/4Hs02tEWs1Yqe/jOw7Dn4WK41d2EC/Ss2OmIgCKYRuN7Pdj2CSBGw2309/wSZzpGcTuwQCpJXCdb/nhBek0kfATqnMpOFMWLGhLz9DWXvyWQT0D0p2vAZ/O+/U8+ci/ArLlV1EBmVzUJcfQp1BObb1cPjEAas//7iELIPBuxsCIZpnizl3fB+cfG2G+sAG4+r/8M0UaVUs+lEnVnKQ3Te7rW+sTpGiVBORBWGVoYULcmajpLOeNXL1dhHO1zniNT3e1wcXpYYjQSKauD8v7GPGmok93cO6/Zzw4
+ Q3lI4I7+
+ 9VsNrxZAdKA3fn7y+3TFJ/FddzgqF/4RGqMre0PL/1OUYwfGnMmLeiIOHcNQcGu5aKe0KMTSwQIC3y23UwJiX+ErTlwDm12GopXz6rD/pNfOBw1Tpg7bYIUmPtUViY3aXmtjYNvwb7rCkpSZaZ1MMQh6Bo1/0r32ZOX3Dza0aSqi8LoC8BwPKqqWPfa09u3EgKYoKjDPRMqlrfa63rXPlHOQZNi5P3e1cO0SAZicFi3TFfkGhtiZQm2zaaWAvpOOO1qDqEYar3bIOfYvsj7aZ+J7unWQjsKPZ0z583p46Pvy70Iv4hW7mOT20jTJZuumRHwNBi3t7SW9HuiPTx0rVo1PYnShBiK3dsM+k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,24 +149,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 27, 2026 at 04:46:09PM +0800, Chen Linxuan via B4 Relay wrote:
-> +	case PIDFD_GET_EXE:
-> +	case PIDFD_GET_CWD:
-> +	case PIDFD_GET_ROOT:
-> +		error = pidfd_get_task_path(pidfd_pid(file), cmd, arg, &path);
-> +		if (error)
-> +			return error;
-> +
-> +		return FD_ADD(O_CLOEXEC,
-> +			      dentry_open(&path, O_PATH, current_cred()));
+On Thu, Nov 5, 2026 at 12:09=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
+>
+> On Thu Nov 5, 2026 at 1:16 PM EST, David Hildenbrand (Arm) wrote:
+> > madvise(MADV_COLLAPSE) can map PMD-sized pagecache folios that are not
+> > uptodate. For example, shmem fallocate() can put such folios into the
+> > page cache.
+> >
+> > collapse_file() already refuses to proceed with folios that are not
+> > uptodate. Let's just do the same in try_collapse_pte_mapped_thp() and s=
+kip
+> > such folios, leaving handling to the page faults.
+> >
+> > Note that collapse_file() effectively clears shmem folios through
+> > shmem_get_folio(); let's keep this fix simple and simply let the page
+> > fault path deal with that.
+> >
+> > Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_CO=
+LLAPSE")
+> > Reported-by: Chris Mason <mason@kernel.org>
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> > ---
+> > Once reviewed, I will pick this up in a timely manner.
+> > ---
+> >  mm/khugepaged.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> Makes sense.
+>
+> Acked-by: Zi Yan <ziy@nvidia.com>
 
-So the path we take from the task is a jump target, just like
-/proc/<pid>/cwd and /proc/<pid>/root are. So complete_walk() runs
-->d_weak_revalidate() on them. Without that a stale dentry on nfs or
-overlayfs turns into a valid O_PATH fd.
+Ah, good catch..
 
-And failfs relies on ->d_weak_revalidate() to refuse pinning its root. A
-task that fchdir()ed into the failfs root can now hand it out through
-PIDFD_GET_CWD. Which would be breaking a guarantee we give. So we need
-the same check here. I'm just not yet sure how we best do this.
+Agree with Hugh that the "pte_mapped" naming is a bit of a misnomer,
+though it was how I was thinking of things at the time.
+
+Thanks David / Chris.
+
+Reviewed-by: Zach O'Keefe <zokeefe@google.com>
+
+
+> --
+> Best Regards,
+> Yan, Zi
+>
 
