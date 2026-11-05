@@ -1,146 +1,155 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CE3606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3876606A328
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=L5SondQz
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aE+anxcK
 Received: by kanga.kvack.org (Postfix)
-	id 291016B05B2; Thu,  5 Nov 2026 16:25:24 -0500 (EST)
+	id D72516B05B4; Thu,  5 Nov 2026 16:31:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2417C6B05B3; Thu,  5 Nov 2026 16:25:24 -0500 (EST)
+	id D497F6B05B5; Thu,  5 Nov 2026 16:31:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 131296B05B4; Thu,  5 Nov 2026 16:25:24 -0500 (EST)
+	id C60AF6B05B6; Thu,  5 Nov 2026 16:31:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E10126B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:25:23 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 494B580A27
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:25:23 +0000 (UTC)
-X-FDA: 85402346526.26.4614CD8
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5052320002
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:25:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=L5SondQz;
-	spf=pass (imf03.hostedemail.com: domain of zokeefe@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=zokeefe@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793913921;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DA496B05B4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:31:42 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 17E92C0C15
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:31:42 +0000 (UTC)
+X-FDA: 85402362444.27.A30877C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 3616D100002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:31:40 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aE+anxcK;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793914300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7IgY4oSwJmunrObC+s4jlkajaBgT8VZrvasnO3k+eC0=;
-	b=gOBwQSXKVSjXd8MXJxo9B3ZsWsQsaZvekAO8pi34jQY1VBCJWXtV9RHuswiTTW/+P6Poar
-	tNzAKV1umhv6fxYot8kbC3L8h+dBwM7lD/7kT8KF3nOySooyOGx9jAcYXtHe7sDOsOxI3w
-	Z4WUdlZTHo6uOZ4+cX+pl8ZNjWfyz4w=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793913921;
-	b=uphdudDF0rED1Sqy3tThGuXIUrj05JvY/2cHd9U4GnMhoJjhH6cqt9EFTEi/CdRLwuUk4L
-	7WYLl1AwyzyNVQXRBi5iVN8BNVeFshFq+JKCjet2pTSvhZLctYhNblKQIVPU3QE3SBgmRT
-	Ytzr7jU4RnTBGJOLUdI0UluS4LAcRQ4=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=L5SondQz;
-	spf=pass (imf03.hostedemail.com: domain of zokeefe@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=zokeefe@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-535f598d126so16281cf.1
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 13:25:21 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793913920; cv=none;
-        d=google.com; s=arc-20260327;
-        b=fnTH1NxnOpAVs2OqKTO+ByzOO/qUU1ZRZTcvrMHiPefvqW7XH5wHprgqi+e8+enBEm
-         qkztBxHdaR1v98s3KwyowLKyMoIVpdH9QhrriprfbZUul43l8i/oncWZsj4LvIsLer3q
-         8ir9o1IQAJjzW+4tMi20qCkp0km1NvunUmnmfSP3IBxpE53JFWsO2gySw7cJzO/z3NIj
-         cnA3CR267FY4j0r+c9oOJr6FTQAVYAJCsHoIPAMPQ7bpiFNHUfkV4pqm3RbRZVADXMa7
-         65gE5I3mULL9Dunx4u1jhhoiezL7Xrji8OfQK71JDguF+eJ9yi0n78mOwBEJA6ASkN0b
-         jJQw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7IgY4oSwJmunrObC+s4jlkajaBgT8VZrvasnO3k+eC0=;
-        fh=16ysLZvWeQK/Rfk9xpPXRcgb21MaO7AzLVzyXCFLck8=;
-        b=AQjawfoF/KT6tUjmbFh4DZdJIIMJjVkXI0CzzmkxAX72a0cRU+Ss+74MpcazUvBJx7
-         Y5+G3cyCflVlvKz4msgKVuwoWINv4vpmlvEabrek4cWtiSeIsEejx9wmHptqTOOZeokV
-         iSSf1vKy0d0bOCAMT8qVmCCWU6XN92VZUkdKm7jfiy/Z9n2FxjyNIa/T2hS3SciLkJsJ
-         u4kYq/U5RnAqy4uFKCCCG9v0Qgk0YOG8fZckgWi7TWeqJiIwZntQeR/X0ORq33gszhLp
-         x4uE5aNP2quJl1+Ke3wVQyC0dhzGc8EUdmYiUMomRKQCECSVCMwZEfk7RB1uDM5XKpkF
-         HNZQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793913920; x=1794518720; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=7IgY4oSwJmunrObC+s4jlkajaBgT8VZrvasnO3k+eC0=;
-        b=L5SondQzHSQ26RrcL0IgzOxIRNm8Z/KdjLuojNK6jEDcZBmU+MfVIaf//DFEULR2uu
-         MszVBFncPPS57dH6ySCTgg1pV548DwsqliZ9/MplXVC0rU/5WlxSctvCGyC3tndecF4p
-         KQ8BoCKpGddAWu555aH6Oy1ud/bgXYaLopZ6pxVonmI23OCCTEChEWBtbcl+ZlYxmlTC
-         oKOnmvafO6BjXRteKTjfhN8LgjGQLaT6S3UfBr7aHRIskw2URaaD2y0UEQ+0hhBk2x86
-         SXqDsK/TrCW+GoxUyJ/bhb1ns67jTVHcoKROStsAv5We4TyQOz8tfSNVMw9vYJOxFhih
-         bg9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793913920; x=1794518720;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=7IgY4oSwJmunrObC+s4jlkajaBgT8VZrvasnO3k+eC0=;
-        b=rT7BGWxwTOeryhf+qSqdKwkpAZRhrfK7luqApU3ewJd4qDtfTGWbAjVWZ0nmaIt04P
-         uyAZ7w7K7BSe78gM7GHdb/+JM7OSvC2E+Rs64TEa5bVz7g0hnYKapQk+yAJqRNAuyqMp
-         YM47wMSk8UeZX3YD9S+arViZnq8tqrJnViyRFmteG66641ap1fOX5/CS5ywqn2QPrstc
-         bd2ssVEE7DC8+OAHZ3JZV5k9pyH4nS23Y6XrrW7TfsooqWc6E06N6pPk7hhirwos/I6X
-         1EUfix1hD7duw5ZbEghIAsCgmuZOA6ZzGQmL9yAt8FaKo8Fm/tftKAcCOZ3FXjXVnSsU
-         zMxw==
-X-Forwarded-Encrypted: i=1; AKwUvBy4MFFWMpJL7jh5iD2B3+WYhKNyZDv0ezTnzHoTFJCL3N1PgE7Jyn9KHyW+c8j41HsqqyfCeDyRjg==@kvack.org
-X-Gm-Message-State: APuU4Z+iLsOZZtblpZ9MMNG5copyINexuDnPHUx7CFEKQlec3ZOQW1dT
-	xPdfNqxubOYVrKBaZobQtggMuEPkPxdDqZbJAawJcTj6gqUPpzD4u+cS4Z0r0gT0QAisB4luvAp
-	+NCBGQN+3VUweYegeASAtTlY7NAaSuUooTSoOxZjH
-X-Gm-Gg: AYBFou3bezMws87Jm8HxfRZz2scYuzzulCqKxbDQXNNnmBl22FTAMC+E5H/+wJn27Pj
-	VQMlF9n/5ie9e5kjjkc4c5ZP55TQg7VE7Mrcq4ncBjB3Pb3R61dvwiLXDEoxbYJ/yBZ35sO1IFz
-	lFtgMQgMIOZczfF6HldF8tsAf42VeFDuZ8i2CjlHd++Mi66sIkBxIFzK58XIZgU1wqy8Wf8IQ1y
-	khEFAUyv1aVaECVE7hgKnGcrLz5GUqYhXumOYmm8M6RKlKiLciNo+rLeTtCuIG/KALPxfXtsXMp
-	5J0q1mrpJjGKAY07/G85xU5WYXgs+5CrffFxYBBNDxJdDt1+Vxq6ksoZyF9ciM3unvDzhDYEcQs
-	2JkSBzIxkKS9SFsDziCKJoDIHaBFglPU9O7DeLA==
-X-Received: by 2002:a05:622a:4118:b0:536:934f:7da2 with SMTP id
- d75a77b69052e-54e18ff2e12mr4497211cf.2.1793913919805; Thu, 05 Nov 2026
- 13:25:19 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=l/XBPzIruKyaT68fHsJTL6/0Y1whGy5OpPSy6WgTELw=;
+	b=cug9Dyy4PfKuPwbb7J+ea6ay6U19tQ9204jZdfPaqvmacl45HYZ96FHtPnwzvxHdAzQBI/
+	+rgMl7HJURAevxIci+IK8ZABp/skIfAXb3i0txF32dKudUW0OcKOnMJXNbmtTy3khXuVgi
+	OHLei3cc/W0wJpyIGtPzK144nhXL3f0=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aE+anxcK;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793914300;
+	b=RTHc6M+YjSypd70dYzKCOYJ+fWc4t7RHzyl/QSSf9vq9zMBD8lVIy3LGyc3BW9forVAjsa
+	F7m6oK4T0PEpfjfnp+CP5AUiCDmMUbBCO0jqlaPx76NuVjiWI3dgmkaBBmmhUHrGmyVYUK
+	jji3+uCUz7tXfy7V8x0K649U85QRia8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 4864140649;
+	Thu,  5 Nov 2026 21:31:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747CB1F0089F;
+	Thu,  5 Nov 2026 21:31:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793914298;
+	bh=l/XBPzIruKyaT68fHsJTL6/0Y1whGy5OpPSy6WgTELw=;
+	h=From:Subject:Date:To:Cc;
+	b=aE+anxcK5DVd4PxfaPeug+8Go7oXIkkyd0cr7QF/UCjgq9jQl+bNK0q+4BhKrFU6l
+	 nH9TpbM/0AmUyIRXZfMR7+ZGUYkgq1BDmA0gMwCZlN+dq+z3ta162TfttOjx4fBrgt
+	 5jqDEBSY60zS13wAtaGgurmcThNfq1GYkCiTlr6kkqTQkdSz/nP1SkszH09Zyo8Vxs
+	 gkd/MAkUnyzsOIfsT4YNgixR1lw3gB/K4VRz5l4xVnYXGhfODUOU8wO+APAcsQd4VM
+	 pobOy+eE76XoFeivYZrQgxoRdn9FhNGDUTwlg2/ulGNDaKNWkzGWtu8Q8T+PXTf1Xg
+	 PFYf3vnSp0ZNg==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH 00/13] mm: continue vma_flags_t conversion
+Date: Thu, 05 Nov 2026 21:30:51 +0000
+Message-Id: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org> <DMNJSQDUACRI.HXKF5B6GSQOX@nvidia.com>
-In-Reply-To: <DMNJSQDUACRI.HXKF5B6GSQOX@nvidia.com>
-From: "Zach O'Keefe" <zokeefe@google.com>
-Date: Thu, 5 Nov 2026 13:24:42 -0800
-X-Gm-Features: AclHuK_cW9BDiSPs8h6BDqPFpxUXOylylNhDy7qGq0VHRrxqPWf2FvEDLTBnfxI
-Message-ID: <CAAa6QmSF0bkATC6kNO0B1ydFtDi=OEYJJ5eH4zEakxjJ9z7ZqA@mail.gmail.com>
-Subject: Re: [PATCH] mm/khugepaged: don't map folios that are not uptodate in MADV_COLLAPSE
-To: Zi Yan <ziy@nvidia.com>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: oriqrtyqw5w64su7o3xuepgzcqtrg9rd
-X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MSwqAMAwA0atI1gaMlQpeRVyEmtaAP1oRQby71
+ eVbzNyQJKok6IobopyadFszqCzATbwGQR2zoa5qS1QRznwIfsJzYfQzh4SNpdYQW2OdgVzuUbx
+ e/7UfnucF8MbcSGUAAAA=
+X-Change-ID: 20261101-late-2026-vma-flags-461731a636c3
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
+ SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
+ David Rientjes <rientjes@google.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+ John Johansen <john.johansen@canonical.com>, 
+ Georgia Garcia <georgia.garcia@canonical.com>, 
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+ Roberto Sassu <roberto.sassu@huawei.com>, 
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ kvm@vger.kernel.org, damon@lists.linux.dev, 
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+ linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3442; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=dw144I8hKInR8Qv8iKnjrU9/3cK4949dnMwWVIcVGbg=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLefF0a6K1vw5BxVPUqn46M6rZ32+yPLM/K3OK58Z/1t
+ UlJ376qdZSyMIhxMciKKbI8/yK+P0gkbF7nBX83mDmsTCBDGLg4BWAiQn8Y/scXBihtmHE7PkF4
+ 5fTvjHX5lf8yagzLot8b3ry68ZZUJgcjw8Jnxy6ELVt+JnMKc9vFq+wXXtq4lq3/3aB8muuMQpi
+ TOR8A
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Stat-Signature: 8fa41f1tyjgzg7ot8aw9ffcfdehttpif
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Queue-Id: 5052320002
-X-Rspam-User: 
-X-HE-Tag: 1793913921-119531
-X-HE-Meta: U2FsdGVkX1/9QT7SnfdZp7eRmvtjyg4x92R7rEXQx/X5BbWucx0EVKwzDOCxD7gS3mJAk2qLN1Cfru5T+kK4E1feALyHWPKi+xmxY1pxtdz+HDgz0YjGFNBbYDo0JIXCKH9ENDgFoLH9OVzgOK+DtvcNcfLklOLAv9/lEGq6COZqTKEK9RabdTjqN6r6FEtTZd7Z8jA8ZHmkXJLJcyG5467pcAGNvRzUv6AhUC+7Ew83g0c9hz2TpOsR5cxRnQvzCoYS3UrhE2lnYELWA/8QLJ6jdJUTHDjz2grWghJXJaKZWilkILaUKTlHSxJ3geM8jEoy6bcRMCqxoCbtSBlOmJ6e4DgEEz0TqYTJHqS+ieYun2wSHFzCdqi75pSao6hYdMptEVMyuamVLxjQeD83KvtADMjQneMS1AFJs1bHZx5w3EcmY2WQI+U/IT2GJLpvxdxndu9GRCqakKDVouPjcP8sKIP6n0WYQHyaNf0Ub+fbbhRebA70KfigQi/8DO8nqVwRCKzbB98pbtIwGwBAvb+Bo6/DGQLxOBCmD5R0O3gHs3jilvDxPSaE/n5Uy/bvoBLlRO//OfHjtciOV6RiywcbaZITKemx5a6x+FA9DneyaDG+saV/xAurQsuHv65MFnc42YQl0usVpGJv69OB4VsogOAWP9N1O7JZdKKWrIlyml9/4Hs02tEWs1Yqe/jOw7Dn4WK41d2EC/Ss2OmIgCKYRuN7Pdj2CSBGw2309/wSZzpGcTuwQCpJXCdb/nhBek0kfATqnMpOFMWLGhLz9DWXvyWQT0D0p2vAZ/O+/U8+ci/ArLlV1EBmVzUJcfQp1BObb1cPjEAas//7iELIPBuxsCIZpnizl3fB+cfG2G+sAG4+r/8M0UaVUs+lEnVnKQ3Te7rW+sTpGiVBORBWGVoYULcmajpLOeNXL1dhHO1zniNT3e1wcXpYYjQSKauD8v7GPGmok93cO6/Zzw4
- Q3lI4I7+
- 9VsNrxZAdKA3fn7y+3TFJ/FddzgqF/4RGqMre0PL/1OUYwfGnMmLeiIOHcNQcGu5aKe0KMTSwQIC3y23UwJiX+ErTlwDm12GopXz6rD/pNfOBw1Tpg7bYIUmPtUViY3aXmtjYNvwb7rCkpSZaZ1MMQh6Bo1/0r32ZOX3Dza0aSqi8LoC8BwPKqqWPfa09u3EgKYoKjDPRMqlrfa63rXPlHOQZNi5P3e1cO0SAZicFi3TFfkGhtiZQm2zaaWAvpOOO1qDqEYar3bIOfYvsj7aZ+J7unWQjsKPZ0z583p46Pvy70Iv4hW7mOT20jTJZuumRHwNBi3t7SW9HuiPTx0rVo1PYnShBiK3dsM+k
+X-Rspamd-Queue-Id: 3616D100002
+X-HE-Tag: 1793914300-63427
+X-HE-Meta: U2FsdGVkX1+WDzLAC3c1Wl/J9rai48KjjccjtdEaZkMJebwMpfyfBBMGNjLmL88AQlM/0cImrlUtp0+Q7o7uObZp6EuJ/SQy4MjCJ3nYBJzppThm47d17Silln1fH/TJp1y5Q5L6Wr9axrboQQg8xqVB94yQemYuGs+Plhxhq5TPwmn0gt0y4bx1sUz10C76MKrRwtIexycUirigcQ+qZmALDtlaWrN1k+HyJB6YbLZas793LfaVt/vE5j//ymrliBGQDOICl++f6Rv9nbyI4C3RQ5TkgbUlLqrmT64ZNZatVG35t9AwtSXWhOdzebq574p4CJHryc7lsMkRojkRnMyLSRZqRPMuZqrySQ4cnIBgoFYh5Bij20KeNOjsgMpCNgtZoP6UDiwEz71dYC0gJIO7as+0uH9dpu00O0pzlcGuah7NKZS0ThDXUyA2bHYRDwIsxOPer5CSHpe7x9veW5+oiRjKv73jU5XHA94R1ynWj4cuAmLuV4vhLLLQgFSRFjav1h5sPJwZtHTQt3OqwnXCOVMHZMIDC54NpoY6AhxAQexGTvwt+wTptFBAwdLxJRIMQ5Ca4VxTW74bhzvreQFfmEvC88TPTV9SO8/WQC+BtJisEqsvWkUBR2Kp0ATLxXP0zjipOk2OFAVZ0H8vV7/m42mWe1riV5L+yV73JBlxf2E4pke5HHYTZvbRTuVwvSKfMRENO7sPBOtMuScfpBbJxhrHKCst+yoNwH7KpuY9Msirx49dWkttTECeUrvm4FpAzoGHPRXhsM2bpOK0FDTKkoP874Qm7RIVMFDElNK4cVja4ZaXxpUQUUYCPOE9p/npTSzFGoj7KPZ9wGKuw9/tNTm/kep2e8WPmyM17QOjQiB4DMeH6ZOY8SBTvbt6LJSNHa9Wf9ShZUxR03jM02skyBVQpmv2Qb6LcUufwWY6+uGEmizMFEMTFFJayYvj/DcTR3FkWp5woWUj+lZ
+ jm/KwaU6
+ 4FGsWD9Wgr9lGBVtkrzDQB2zHvrfGL6hglQKvyGZF47AKtARo7+eL1xVYnbUoUQtNIfHC5usibfLTLuBIyKVnnPi3S/iCtHa0lV0Iz27gisPZ253AxoBp1IWzOVT2f/rhJh5hxyDYqN36XsyzxtYsVnT6OghrbAH2e0SVYmYwRZdfvhzUyKLhjIJFLfSn1JKqV1BgQP2EaePwEXfJkPFCOtQxrzib+nvYgre4FCc3WDljJuDC2kBU8V4UlMNoXnbElO+4Taig83e6/rY7XxPTuxyMp2hTkk11NlhzjzC6Om2Nre2JtLcR/LULG4OcDEql6C9VxJKG5g3NCNzpEaEzLXz0uBur1WFBa7USpVd3QFt77s02VgBlkRSA0A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,49 +158,78 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 5, 2026 at 12:09=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
->
-> On Thu Nov 5, 2026 at 1:16 PM EST, David Hildenbrand (Arm) wrote:
-> > madvise(MADV_COLLAPSE) can map PMD-sized pagecache folios that are not
-> > uptodate. For example, shmem fallocate() can put such folios into the
-> > page cache.
-> >
-> > collapse_file() already refuses to proceed with folios that are not
-> > uptodate. Let's just do the same in try_collapse_pte_mapped_thp() and s=
-kip
-> > such folios, leaving handling to the page faults.
-> >
-> > Note that collapse_file() effectively clears shmem folios through
-> > shmem_get_folio(); let's keep this fix simple and simply let the page
-> > fault path deal with that.
-> >
-> > Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_CO=
-LLAPSE")
-> > Reported-by: Chris Mason <mason@kernel.org>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> > ---
-> > Once reviewed, I will pick this up in a timely manner.
-> > ---
-> >  mm/khugepaged.c | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> Makes sense.
->
-> Acked-by: Zi Yan <ziy@nvidia.com>
+Continue the conversion of legacy vm_flags_t flags to the new vma_flags_t
+bitmap type.
 
-Ah, good catch..
+Do some more core mm conversion (we really should be the first to
+completely move to the new scheme :), but also update some mm-adjacent and
+otherwise straightforward cases - /proc/$pid/maps and friends, the coredump
+VMA dump size logic, uprobes, perf and LSM mmap/mprotect hooks.
 
-Agree with Hugh that the "pte_mapped" naming is a bit of a misnomer,
-though it was how I was thinking of things at the time.
+This series only makes strictly mechanical changes to keep things gentle
+during this very busy cycle.
 
-Thanks David / Chris.
+No functional change intended.
 
-Reviewed-by: Zach O'Keefe <zokeefe@google.com>
+Build tested on x86-64 (allmodconfig, each patch individually), i386,
+arm64, riscv nommu and ppc64le.
 
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+---
+Lorenzo Stoakes (ARM) (13):
+      mm/gup: convert GUP code to use vma_flags_t
+      mm/filemap: convert fault and readahead logic to use vma_flags_t
+      mm/rmap: convert remaining VMA flag tests to use vma_flags_t
+      mm/migrate: convert VMA flag tests to use vma_flags_t
+      mm: convert THP VMA flag tests to use vma_flags_t
+      mm/ksm: convert VMA flag tests to use vma_flags_t
+      mm/madvise: convert madvise_vma_behavior() to use vma_flags_t
+      mm: convert miscellaneous VMA flag tests to use vma_flags_t
+      fs/proc/task_mmu: convert VMA flag tests to use vma_flags_t
+      fs/coredump: convert vma_dump_size() to use vma_flags_t
+      uprobes: convert VMA flag tests to use vma_flags_t
+      perf: convert VMA flag tests to use vma_flags_t
+      security: convert VMA flag tests to use vma_flags_t
 
-> --
-> Best Regards,
-> Yan, Zi
->
+ arch/powerpc/kvm/book3s_hv_uvmem.c | 10 ++++----
+ fs/coredump.c                      | 16 ++++++-------
+ fs/proc/task_mmu.c                 | 43 +++++++++++++++++-----------------
+ include/linux/huge_mm.h            |  4 ++--
+ include/linux/ksm.h                |  4 ++--
+ include/linux/mm_inline.h          |  2 +-
+ kernel/events/core.c               | 26 +++++++++++----------
+ kernel/events/uprobes.c            | 12 ++++++----
+ lib/test_hmm.c                     |  4 ++--
+ mm/damon/vaddr.c                   |  2 +-
+ mm/filemap.c                       | 24 ++++++++++---------
+ mm/gup.c                           | 45 +++++++++++++++++++-----------------
+ mm/hmm.c                           |  6 ++---
+ mm/huge_memory.c                   | 32 +++++++++++++-------------
+ mm/internal.h                      |  2 +-
+ mm/khugepaged.c                    | 18 ++++++++-------
+ mm/ksm.c                           | 22 ++++++++++--------
+ mm/madvise.c                       | 47 ++++++++++++++++++++------------------
+ mm/mempolicy.c                     |  4 ++--
+ mm/migrate.c                       |  5 ++--
+ mm/migrate_device.c                |  8 +++----
+ mm/mmap_lock.c                     |  4 ++--
+ mm/mremap.c                        |  2 +-
+ mm/msync.c                         |  4 ++--
+ mm/oom_kill.c                      |  4 ++--
+ mm/pagewalk.c                      |  2 +-
+ mm/rmap.c                          |  8 ++++---
+ mm/vma.h                           |  4 ++--
+ security/apparmor/lsm.c            |  2 +-
+ security/integrity/ima/ima_main.c  |  2 +-
+ security/ipe/hooks.c               |  2 +-
+ security/selinux/hooks.c           | 14 ++++++------
+ 32 files changed, 202 insertions(+), 182 deletions(-)
+---
+base-commit: b61fa14ce6bcbba2cb9a96feea31b760226d6b43
+change-id: 20261101-late-2026-vma-flags-461731a636c3
+
+Cheers,
+-- 
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
