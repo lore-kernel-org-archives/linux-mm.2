@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF33E6078573
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62A1606B9EA
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=icO3rWLw
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dW/11WUL
 Received: by kanga.kvack.org (Postfix)
-	id C9F346B05C6; Thu,  5 Nov 2026 14:35:34 -0500 (EST)
+	id E55576B05C8; Thu,  5 Nov 2026 14:35:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C4EE86B05C7; Thu,  5 Nov 2026 14:35:34 -0500 (EST)
+	id DFC8C6B05C9; Thu,  5 Nov 2026 14:35:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B65BE6B05C8; Thu,  5 Nov 2026 14:35:34 -0500 (EST)
+	id CEC6E6B05CA; Thu,  5 Nov 2026 14:35:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FB356B05C6
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:35:34 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 185F7140BEE
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:34 +0000 (UTC)
-X-FDA: 85402069788.04.4B2F813
+	by kanga.kvack.org (Postfix) with ESMTP id 9A4FF6B05C8
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:35:46 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2785280951
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:46 +0000 (UTC)
+X-FDA: 85402070292.18.9C17CFC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 735A220004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=icO3rWLw;
+	by imf20.hostedemail.com (Postfix) with ESMTP id 81AAF1C0002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dW/11WUL";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907332;
+	s=arc-20220608; t=1793907344;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QnupmpJjcDSUenY+8iHhV2pDdP26FR+grPEd9BKN+Wg=;
-	b=HykfkojkUAZT1TC56LBXvay4/vadYBasGzyDJPFdKK33jSuwgLxuk9KjrQyxKAtXjbzp68
-	oqQ1lfQ6iNJkKA2IOCEB3/pSHWMqXhnbOWMlHdqWcmhABQ45uZnjOUtFR7rvLbqXyk80mA
-	S2/ScO2+AgZ7litltjuV1F8Tk4v2EZw=
+	bh=alsXUfuEo/F1zePFVRl45Ndme/OflhiQcp41SPItDb0=;
+	b=y263C85Hvc4xQ3/8K6k2rauAu/4SBLaMJfkcF8K1npX1ufB7Xgyt2lk7Bu8Gax57PWfxfC
+	fCHP/MKfMqDvHPB0UoFsh2qUsDTz1kdB0UT5eA3f//iHI11VDAnUe2dos5hp+z+KkF8soa
+	eAAQjecCIx4U5FjL0HFzP4GQbB40LM4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=icO3rWLw;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dW/11WUL";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907332;
-	b=jenOIUsLv+JETLvt1DkLe3tY8pRWnaR4EKztI291R76aEbgvUNcUdzTwRoUycleld9EA2P
-	NSCuRHisviZGwmgPuSXywH4mQMPJzAatfFnJ0hNSBqG6wJEx8b0B8rXpRVj+YrlLW3Xv0V
-	UqBf1/v1LYquqPbUWpG4c2x/+WAc+9s=
+	t=1793907344;
+	b=Hz7Xhtp0tKQYdxAr0974C7yCj1K2OyG3DQFx2uTz3gvihdipPm6Zc/H3SPzCjTntOiC9Sr
+	4/eOl0cGmrT/mdBYFliDFkF33DDMtQb1iPDoDgxlQIQcoMEOdsQrN+tQLfbaJwKRMVGLvw
+	yhN/gZJWb3MCiSWP7P0qwi8ecTfVaYI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B12BC43B0A;
-	Thu,  5 Nov 2026 19:35:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E09C1F008A1;
-	Thu,  5 Nov 2026 19:35:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D071C41B33;
+	Thu,  5 Nov 2026 19:35:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CEB1F0089E;
+	Thu,  5 Nov 2026 19:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793907331;
-	bh=QnupmpJjcDSUenY+8iHhV2pDdP26FR+grPEd9BKN+Wg=;
+	s=k20260515; t=1793907343;
+	bh=alsXUfuEo/F1zePFVRl45Ndme/OflhiQcp41SPItDb0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=icO3rWLw6nKGObCQJgYMxAh2P6PTRzIdDeuA404d8zGUUVnEp22awIUt/ONskepjG
-	 FQyNYgueaW+0iYJhp0FqJ+XOW2y+yurI0uUuh+dfsOclM2Nh3qdwIC3ytuTEQmNhzr
-	 MTetr7AbbAQJrQhhBXugv5fx//leXY88njWHb3TZ3743y/bVbrU4sQkjQK81piouKz
-	 MGYh6ZeJ6sFNsrOgjNWWNWno+Xud511eRRatEpGCbh1xHAr4ri1vGAQGPMtUR0YyMD
-	 sstDXtwDG9/n6Jsu5U178yWJP4hODLvoqYoWfkpM7RkF01wue3ewhl7sYNSjaz7bA6
-	 sSwHZw/oTnT7A==
-Message-ID: <sashiko-outbox-199938@kernel.org>
+	b=dW/11WULePWBsogqlKJCGC7JYPbCbnYXRV+C/X7JOVxLXj5zOAba52zQpFTgNc3SU
+	 VqxLxyGyN/7wF0BTtfNixYDyxmB3E86QX9Ux9RGZ1zXR/EzZ2ZJyrhkPfunyxJJIZl
+	 un+xpBbQSiFaF0jJ6u/VW8rXe40ajptsRa6PjrbVxC7gTAonFrr3x4gk/kvpjOE5P1
+	 HarizfUM9JcPoR6EP40r+AaFcc6yhKBRuZw/KiwaBzFcWGsYWpC0CK/E6jNjHZpgDM
+	 EXhNA7+mREaW+iD5ECYOta1cjbh7H74x/1uUayMthsMGSyY9SbGLuxXinygzr+5A4r
+	 a3NkeRuyCBiAg==
+Message-ID: <sashiko-outbox-199944@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v2 08/23] proc: let procfs own the seq_file of
- proc_create_seq() and friends
+Subject: Re: [PATCH RESEND v2 14/23] proc: let procfs copy in writes before
+ pinning the entry
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>
 Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
@@ -78,24 +78,24 @@ Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.
  Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
  Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
  Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261104-work-procfs-core-v2-8-76ace653a773@kernel.org>
+In-Reply-To: <20261104-work-procfs-core-v2-14-76ace653a773@kernel.org>
 References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
- <20261104-work-procfs-core-v2-8-76ace653a773@kernel.org>
+ <20261104-work-procfs-core-v2-14-76ace653a773@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 19:35:29 +0000
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 735A220004
-X-Stat-Signature: nappsrsoee6x6pg5argyewopm7eay9r7
+Date: Thu, 05 Nov 2026 19:35:41 +0000
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 81AAF1C0002
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793907332-641932
-X-HE-Meta: U2FsdGVkX1+PtAg+sJpC+jKxaWIasL82JjKUN/nwVGBcBz9Ab8ofRgq4EIxwgHB4zQoCcv5SfOWutwl1gi1pPfhEG1o4bilAeSj6W9XyVxHgPrQbQNUw1uICau1dyhQYqb2RqjHPt4E4BzJA5OFyPEA1GPWHRnxCnf7nQqBL/N/cpmkywPaM2K53QakD3besS1tFFdc2Kp9rrSVYEy/TU/sDU1tS/uSOJh74TnmvhKdjV/MYO8Rj2WN7/5psR8wcARAxL8rk6VsncCVcJMdfb74XUPXCCwNfOq+H8l55hCMei4TV7CmLitBRUigvlvPvTGwYxtOtZWmRkzAuye+mFhAXjFmxxt/jZrVXlJSTmHBWaPzthatvvFZ8nVyaoDy5XxdfrmWetrc7LSnC08wwBByo/6IItEq0dYaNoRAUsRctNkTgZE+QIhLI0n4tJPIKIM65P59pO14m6CZOpD/b2GB9TDwsRTmAfh2u/wlHj66Cb/L/QWs0DkCDohvdug0PTST8o8ET0tTkIRSJOxipKGhb3SdFMcpv/3G5613FERqTf++FDGYPEjSU8pTd1EQLSyknVbj7IuEbQ0njk2FzyKM3w+HwXa9ox1NHpKhkk4X5+xWUaAoC6xl/Temu/Tyd28vp6PKozHtzX4J8+zv1lnyeIXFxzycfZLExFaaziCvM5MdePJu9GJSCsLnURb+FGKiKG+d3vnfLcLjwHldq+oPVSlCB0UtUmox/DwyNR6ZR8LiJTMiR0INnLUm7bJH2DRrIoLqQltp09QZqyuLjk3JEolKKLvS3vzttKZygwZsP48BYKPfUOr9GUHDyBEk14JiZD/KAYIq6Y4zhZjHlcvOZZ/PqQLO1C7LXPfTLJNrVM/ZZmnMu3310BojshGztltE+Rc/W6AbDKH6Uc0esyq3djUnZHw6tj+fhFS5W9i6ZmzxnWydnvqMVu2i4P5z/+MU/n8fXlZpln6gPSYh
- rEdz4esG
- 1jUmDwu62kFWoYb9JJLrFo14mTAJgLszMu2ksSgkPp+Dza2Ro+VbS8hlaUp7P5j2VTwVf8r6DKoatOfPsNaKoFG58CwtujMboGoqKnTpdxA92/BEyMfRFuM/ka/leICz9g1HIsAIUURo/5Rur9eWjeGbzsdqJ33Gu1YDEa5T8TmNsUCPGty6t3GqNMqeRKSPs5Sgk1/S6ZivNjOk1uUcDgeM9aAC0d14UBZSMH9WpKD2Ad3Bkvt2WgoXVkNePo6FglNnrpjSaVkOMD1R8H3glg9rkegYIr4TXSZGKLFTmkD/A/S+g1+6SLlHnvSOe1GflAOmbiH35lYOpENLcf2e8+W94YGGA3kC0jeo2EW9vS3vIOAZ7Yn8NGgWs4Zd7cObMbhl74WR6L/Qr5gkiXv004bcuB8qcKd+Z/tmgP4jaWR4dpVzUW7CvBuUAKFS0Yo5zpM+PchF1lppZxec2IYLnR7MR8zCvrbQzY9mvd3PLyoq78SCzHkUkavKEf89+FO3gg0vYxB/oehLeRAfrkaBjXxHBkGig4mTcq2Oj9vSbvPklpobYZhO0R0rW0P0kRNATuepL6BY4fBnkn1eFw570K95dz5RXwqgoHye7N99cmLUfjG5wOJm9zHe9dXkBX6bfvCG7yRL5qcYWRZ+AqRoIMkNtMU1V+zgTmLUPfMSJ3A+65sSR6H8d+lSGGNb3/nZT5WxXvPrkdv3m88ptWbzK0n3bxg==
+X-Stat-Signature: wydri14uge9di6ytha357cosyfit41eq
+X-HE-Tag: 1793907344-162718
+X-HE-Meta: U2FsdGVkX1/gk3PyJpeDcDOji20nztiLNBBrkYViksZBrKELbgfBGU/5o/LZhO0Ft0mAzZSec7lZwFgzDWXZZL+1xbBFjYu9omCrKzSi6HB+RrKDYWsDxgLg/MYPMgQk5TJ0W4mV+ozTLlONeH07Mjlve4/LfulQeRYyoG38yzXxthGOobHI/Di/gSH4ZbjZ4OSxsXWRe21QJdXYC/RLarGUYsLKwboBHpyaKE5a4I8h07oEy6Tg7fdz5FEO9LWSacNuEpwGKQtsH8voe8xAnJDiTLBqSCubPlJEKOOill27Gs1+hde5TnXdXf2VgvQZG0eMrKR85CWd0yjwcLMY41dJelBq5lpjkutsl8NIZmKrEnaCkGfX9/09XjV1UOXuieHW7DZ6nypaHBdcu0yvtTeAQhJmap+vr2txxq8FlMwbhZczc4E8cV/POmpJv4NdqURTUFzy+DZk6XyL/W35UKKu7rXCxD+crDjYfTprr6dbrHQaqjgW/Uk38B4hesjMRvNbKrgh7mxHqa77pxi3I4FKwu+tkfg4b47O36f5MrJNOcQxZTt7oQWtF/0LLxGWiLMW6E26DZXupK0xfiMwtP7ENZ9WSjXm+9wD0IpfVBRm0V22WVzfNTJxrfiChnYbuqeE3+35Db40LZRU7hHEQBdE500zqD1RQ2pFtxyuj6g8mGuoF6bwGLdAqezXyZRi67BvGiIWtO5u4VUroURNwscUkXx8Xxh7tvbBpfnzA44QfKZVMFdq8GulG/W9Lo6APXFR9v907lr8YUXsG0/EEHDXvnWBcOEDKQ1Zk8jaNMZSfV/7rUEWAppMRVtItILe2n3WemDomrUT54cyJno2ic7hG2AxbqkJ7/A7zVyZd+QNVpp/GU7MXMKxsCindsOyCOzlXpgfliteYq9by+o8wMyiOraJjjfp78f9WiQioLN1sSHOTUG5DB3ZVktZwGjocE/Kn/EpE/2LGk1IEky
+ sWs0gPWO
+ TzDWofr1JygEc90uL7HK2EHf3ZU3aG4j8KRke3GhbSr2TdfaVVEOjxk1D7fwVDwdqN5WlnIEhjeXo3OR0SA2dxICthfg0fm2EC4BH0xyFdphZ+lLY2bJtzUpmySXu5EXeUKbLHxwQcYMSFGqBK+gouiFKND5wj9/ijIJnkNiXXc4kpy+A2Y6BOYwSKi+XQuoPFvGB6My3AdVjvive677mP3+Ykr+oQ/r3RPs5zBnKsV4PcI/6xA0iDjEs2GT0+FsD9/0S9cfXkiS7iCuKx1PMH+CRCV1y2w1EmnD+ksmklCWa6ho2jppwghS4lKKGXVHhz2paRE2iDgt5SItfvCorMDN1etxmX70rDA9/oxduGHv3zd2cZaSEvi7NVYZM2BOfSjVCOxlNlDHotxmGUAnVGO9LOs7hLf2CSS+El0ZA3+80NROhdGs207lJEuS6YgsZUzou+Zv19AxzE5nVDcpnrKgWroFNDfWeyuqVxLlNPTs96phISPJKtZeRepGHHbffo2AX+V9gT94ERUkNAp95P2o9LMW40cDvZyCJFyIHRlL6Eas9H80XtYGjsvVQ7Fbeb6o0sUcm3AakjPH8trQNCbJkOv/jSRbuwh46kPTnAkpn3Oc1VULACtaIFcfzo0NHWTGQ3gybbfJQhsYd2z9dX3jcEW81X2CPek1X
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,75 +107,66 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Low] proc: unused-but-set variable p in seq_open_net() when CONFIG_NET_N=
-S=3Dn
+- [Low] proc: split __free(kvfree) declaration and initialization in pde_wr=
+ite_buf()
 --
 
-commit 4dea51dab83a49a4131e34ad5f96bc9822052389
+commit e52627c4b4d80d32822781f143a8c1245bd64a2c
 Author: Christian Brauner <brauner@kernel.org>
 
-proc: let procfs own the seq_file of proc_create_seq() and friends
+proc: let procfs copy in writes before pinning the entry
 
-This commit updates proc_create_seq_private(), proc_create_single_data(), a=
-nd
-their network namespace variants so that procfs owns the seq_file directly =
-via
-PROC_ENTRY_proc_seq_ops and PROC_ENTRY_proc_show. For the network namespace
-variants, ->proc_open() and ->proc_release() are simplified to only manage =
-the
-network namespace reference.
+This commit introduces a ->proc_write_buf() callback in struct proc_ops so
+that procfs can copy write data from userspace into a NUL-terminated kernel
+buffer before pinning the proc_dir_entry. This prevents userspace page
+faults during write copies from blocking remove_proc_entry().
 
-> diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
-> index df5484813d5dd..9973f846c4674 100644
-> --- a/fs/proc/proc_net.c
-> +++ b/fs/proc/proc_net.c
-> @@ -37,13 +37,13 @@ static struct net *get_proc_net(const struct inode *i=
-node)
->  	return maybe_get_net(PDE_NET(PDE(inode)));
+> diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+> index d51ab7548b117..df1caa0f238df 100644
+> --- a/fs/proc/inode.c
+> +++ b/fs/proc/inode.c
+> @@ -417,11 +417,44 @@ static ssize_t pde_write(struct proc_dir_entry *pde=
+, struct file *file, const ch
+>  	return -EIO;
 >  }
 > =20
-> +/* procfs opened the seq_file and allocated its state, see pde_seq_start=
-() */
->  static int seq_open_net(struct inode *inode, struct file *file)
->  {
-> -	unsigned int state_size =3D PDE(inode)->state_size;
-> -	struct seq_net_private *p;
-> +	struct seq_net_private *p =3D ((struct seq_file *)file->private_data)->=
-private;
->  	struct net *net;
-> =20
-> -	WARN_ON_ONCE(state_size < sizeof(*p));
-> +	WARN_ON_ONCE(PDE(inode)->state_size < sizeof(*p));
-> =20
->  	if (file->f_mode & FMODE_WRITE && !PDE(inode)->write)
->  		return -EACCES;
-> @@ -51,12 +51,6 @@ static int seq_open_net(struct inode *inode, struct fi=
-le *file)
->  	net =3D get_proc_net(inode);
->  	if (!net)
->  		return -ENXIO;
-> -
-> -	p =3D __seq_open_private(file, PDE(inode)->seq_ops, state_size);
-> -	if (!p) {
-> -		put_net(net);
-> -		return -ENOMEM;
-> -	}
->  #ifdef CONFIG_NET_NS
->  	p->net =3D net;
->  	netns_tracker_alloc(net, &p->ns_tracker, GFP_KERNEL);
+> +/*
+> + * procfs copies in what is written before it pins the entry. A writer t=
+hat
+> + * faults on its buffer then doesn't hold up remove_proc_entry().
+> + */
+> +static ssize_t pde_write_buf(struct proc_dir_entry *pde, struct file *fi=
+le,
+> +			     const char __user *ubuf, size_t count, loff_t *ppos)
+> +{
+> +	char *buf __free(kvfree) =3D NULL;
+> +	size_t size;
+> +	ssize_t rv;
+> +
+> +	size =3D pde->write_size;
+> +	if (count > size) {
+> +		if (!pde_has_short_writes(pde))
+> +			return -EINVAL;
+> +		count =3D size;
+> +	}
+> +	buf =3D kvmalloc(count + 1, GFP_KERNEL);
 
 [Severity: Low]
-When CONFIG_NET_NS is disabled, does initializing p unconditionally in
-seq_open_net() trigger a -Wunused-but-set-variable warning?
+As reported by Sashiko on RFC [1], this isn't a bug, but in pde_write_buf()
+(called from proc_reg_write()), buf is declared with __free(kvfree) =3D NULL
+at the top of the function and assigned later with kvmalloc() after the
+count > size check.
 
-Previously, p was assigned via __seq_open_private() and checked with if (!p)
-outside the #ifdef CONFIG_NET_NS block. With that check removed, the only
-remaining reference outside #ifdef CONFIG_NET_NS is sizeof(*p) in
-WARN_ON_ONCE(), which is an unevaluated context and does not read the value=
- of
-p.
+Per the Cleanup API conventions in include/linux/cleanup.h, should buf be
+defined and initialized in a single statement at the allocation site:
+
+	char *buf __free(kvfree) =3D kvmalloc(count + 1, GFP_KERNEL);
+
+after validating count?
+
+[1] https://lore.kernel.org/r/sashiko-outbox-195538@kernel.org
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-work-procf=
-s-core-v2-0-76ace653a773@kernel.org?part=3D8
+s-core-v2-0-76ace653a773@kernel.org?part=3D14
 
