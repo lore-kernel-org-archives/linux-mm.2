@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC943606D802
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8985A606A32C
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:18:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SckyjmOk
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JjpWMhIm
 Received: by kanga.kvack.org (Postfix)
-	id E836A6B05B1; Thu,  5 Nov 2026 05:16:36 -0500 (EST)
+	id 956C36B05B0; Thu,  5 Nov 2026 05:18:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5AEA6B05B4; Thu,  5 Nov 2026 05:16:36 -0500 (EST)
+	id 92F086B05B4; Thu,  5 Nov 2026 05:18:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D70DE6B05B5; Thu,  5 Nov 2026 05:16:36 -0500 (EST)
+	id 845316B05B5; Thu,  5 Nov 2026 05:18:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AFB506B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:16:36 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CF49D120951
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:16:35 +0000 (UTC)
-X-FDA: 85400661150.29.7C21CFE
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 4D70F20009
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:16:35 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SckyjmOk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 67EC76B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:18:02 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC8DC140937
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:18:01 +0000 (UTC)
+X-FDA: 85400664762.07.1C216C5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2505040003
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:18:00 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JjpWMhIm;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793873880;
+	b=R9Qp8ZzYbBBMY7dl+aCOC3HocdAktqGgi2dPqgfjOJM9xbOzLeJ5e+LxkzwyL+SLjZUyuT
+	8ih/G43yAqHtp4G7vmbVIGc/M/LV9p/2NFGneWItb5+ZAwMO+lPafLYLEnqj45uopKvg0U
+	Q8UZisIG3KSPAayxnLZVjrTZiWn4rpA=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JjpWMhIm;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793873794;
+	s=arc-20220608; t=1793873880;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LbDaZ3sw5+rDHF9XCX1pA/1HXOf4/tGA8FHG4g881lI=;
-	b=KHY/urRjHpCfBVtws3qExpgJdD/E2mLOT8UOHhpIWamPKEc6oE0Ut0mgA7F6zEv1aMxajL
-	MRQdHJfP3s/1TzebD51tkrrbTX2iAzDocXT3S8aKseA1ZxtfxSTPaXKi3+hocJAFNG1x9R
-	9zsoDurYkydJT1305A7s5PWV+jYMU/U=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SckyjmOk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793873794;
-	b=Pl3W3pYSEHJQC6wsMkgh5MTqywEW/KOjkdLBhe5mNmo0PoDklUsLOjc6Mf7GCxjcq6AYw2
-	vvnPxKuUF/SSb/1S3SyYW43AV3PzCXxiqwDV5BahC2bHUOYptw2JHFqafkBlQ9QOvMNoOA
-	71Ffhek5ydgqSDRfrHaLAdlsFsuWHFA=
+	bh=ge0csq01UDr23GRywGYDdJfNDf0j4kn1jvr1l1h6C8s=;
+	b=Cw+suXeI90/0covCkLbFptJV6oSTNEC7HH5BCplSAopBo/NAdkrGCScp2CXaK0zYm030qZ
+	xYWSa3MU/tCOTvMuEpySLdNbiYe2tIxnJ2UNO+CKMfP0fB79UFnhMoh3WSQNmsyC1CQHXy
+	pgIU2j3dFopH+MNmP2imvS47r9tJGqc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4BC3643700;
-	Thu,  5 Nov 2026 10:16:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32FE1F000C1;
-	Thu,  5 Nov 2026 10:16:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id AB789605FF;
+	Thu,  5 Nov 2026 10:17:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9701F00919;
+	Thu,  5 Nov 2026 10:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793873793;
-	bh=LbDaZ3sw5+rDHF9XCX1pA/1HXOf4/tGA8FHG4g881lI=;
+	s=k20260515; t=1793873879;
+	bh=ge0csq01UDr23GRywGYDdJfNDf0j4kn1jvr1l1h6C8s=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=SckyjmOk9+NrqAky5ti5dc0q+Evu8Jve+xxi3zsVHpIMk3zuNtbKVINXZOH0yMVlE
-	 8wtyIlwsVzvujrpA9ymvq9O+f9Tf1/x2kF/2UJzi4PBCivqGnO4PomtugYl+fPZCCV
-	 Xk9HDEH1QntitHj6u/vdJ6Jb5a3KhcL9O5CVXS5j/0QY0MY09xVixddIv7qngShN47
-	 aylVHUu2aifxYlQ3vb4hBwLqCoYKeaA9Z1BVtT+bAByM5TMgJs4U+8p+z4pysuhNso
-	 hxCrkOvMr32jSlR9i995wbOucyJmQx+2A0aBhGSsy26MHBaxGQuz5ksSCGny76IZCC
-	 XVm+mvyr6tiug==
-Message-ID: <3a77219e-39e5-4e98-8f88-6f90bccf69f0@kernel.org>
-Date: Thu, 5 Nov 2026 11:16:23 +0100
+	b=JjpWMhImRu+LAmbhcVmFv2rI+GeyzSZNvjXT0r8xfZLpg331rjnt55cx0ggPww50w
+	 VXDPTlps85VpjVB00uZULQZcEnh2cw4udDrqGKTfeDTF4YLWeROIoWjdXEkimWk4Tn
+	 yTFjodeEJzt15GfJbm6XgFo3K6QcdTD9Ra2rJ7AOiUYNer7+yE8dSM5Fs+8SD2tmXw
+	 kBnJBuXCOriKvzR15xIJkefyO9T8d+PxLBK94+JuZsnNWKJGfBzp6thjdLmBqkh1pM
+	 3BnJxbvHoP5FebNWl+CUmyjdhMGN0sDhYBj/hZARkU7onHM1zCZ1BjrkFH9Sk15uLe
+	 8XnrcyvfAgAqQ==
+Message-ID: <e58309a5-1a5c-4c34-9c28-d1794400616f@kernel.org>
+Date: Thu, 5 Nov 2026 11:17:49 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/5] mm: add and use mmap_read_lock[_killable]_nosteal()
- on contention
+Subject: Re: [PATCH 1/5] Revert "mm/khugepaged: remove definition of struct
+ khugepaged_mm_slot"
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
@@ -88,7 +88,7 @@ To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
  Ihor Solodrai <ihor.solodrai@linux.dev>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org
 References: <20261103-khugepaged-latency-fix-v1-0-a07ab16ac860@kernel.org>
- <20261103-khugepaged-latency-fix-v1-4-a07ab16ac860@kernel.org>
+ <20261103-khugepaged-latency-fix-v1-1-a07ab16ac860@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -135,22 +135,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261103-khugepaged-latency-fix-v1-4-a07ab16ac860@kernel.org>
+In-Reply-To: <20261103-khugepaged-latency-fix-v1-1-a07ab16ac860@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4D70F20009
-X-Stat-Signature: qk4tppmdhoiyens3ip78o99a5y5jnd7p
+X-Stat-Signature: b7tddda9fyho8epp7mxsfpd6zgibino5
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2505040003
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793873795-834192
-X-HE-Meta: U2FsdGVkX18ymMJr+bXplgta/pS7CoH4Yfbw/Y5AI+T9xu2DsIkFzZ52odXI3NxigsnehYP5odtci2WK9w0ttLmhmFJcyI8eWEdOAcsnfXxH18Y/Oc5suIhQcsY0cSLSFaPQYd+TrDuFcvW/TFzZrI1UgG9KfsZKcZApaf/nLrhkGrMs4OSCUM9MmpT6HNrEyUUUMwFHkL/lBR4MIIcyEXkQtH/KhTwY2PRNLBRIhsPrcE+Gd+lBN9HrzfIndkSpzIIA6Thu8q3cavnpZ5ix/VmxQ7neXuQf3ZXCZ4X7UwMT6xU3l81IlxaeDjnwxc+4DahWuS3xKGXV9xdr/pMk1hA5YpV5sVEMKSUFDVKGIkTNiTr25C21t7NmEEFXLIsfr6kNqGosWzblPrxnSfSDH2Y77BBvVXT9+BBe+thNYjI9Cnfm7A1shQ8cwhpcOMZAT/uzWY3X0SLJ1IuMnvdlkuZl4C1n7s5nInvVYcIntDx+NHCvLoZTmqTbY9+Zw300jIGPH1Tcl26bC1DaAYkvw7ewxf8H4j2HxHjCZCR29P/U+FAjSggYnk7d8I2FK0EJzhohy0dJgmke45iGmdOurzSsQ8hDoUvNV9XCHkbINpkO3aoE4B4pII3rnjIwQDnA3eJUP2TP5JfpOl4mf8osbNQ829LPR5Pk6510SL0GvjHWG/t9YsXJnXt08pQfRqEgx3kSPWUTLnaB6BpUJ4HMHDlFudAq9VPXTfqqudp4yhVi4JpoKRS9OpnpSO9PBcz7wsc8UAwuk1I9uzm1aPWRvPF250b2KrCCrARvGN2605jmGcK5rTNaYSwZJcer+mi1vZIrbRd4Ux51UP5CLWjWmUAqMYNDKIJ93J2uoqL0naLfki3opqLe4DHBxvBVg7c9e6f/+Q9halt1glZB3oImheZmCyeTEI8Yygfh4eBtwmnI/O2zZT75urx6uRYwRZyjy6molzKzAjwjUM2UGdY
- mp4nETUM
- 9XcxpnYMzfBT+HQ9LZWp0boRGbtC+9rmVHG1pshs6deM77LsTiHGqHFDlcCksj3v+sEDnSkrWpgrBBSHwwkdbBcujUmeQHNQM4Pz5jhbVGqns29/YC/EVZB9eirho7d3EK87hbxofVJ70mclpnFJ/P1BA8ajAcx9beW3TJv1pBZKAo0HJ/A9+cEUIXY/9bBHjDSqGnmxycyztbgI4fQ7tYPIqbIYIC3ErvYfnQemxzvtEQSMA94R50udUwMqLnxxhclDnWEn97GNQtNZHakKkV7OR9w8iMqCuTWJSGSeLmdIgsu/BCp00/X9NEP8uoxo7fdRvl8JS2VblJ0w=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793873880-304303
+X-HE-Meta: U2FsdGVkX1/IO7fLazUkLJvC/BHlmwJ3VEP0XwRa14BNyT77bzDP/WJu0ct+RvI70gQckebk1+f6EwSKfQkEvYtvCdoo7e6OTU4kZhFzbwCH6qUOmaAR6kKJDZ+uXqUpUnl9WbcZbKALKkG/U27Vy2HTpmVf4SWDoEmFvr+iV/qhNn0RYheQhkN4ESlm9ISkUsMAIooqBDK96glMMb9wn07sF9Hfb4zhSwfRv59e57rf8hUs46nqJag4UDj9ZHiJV3XW+LkuK6n2OekMT6aQa6YeztR2xFbN0ThfImDG9ICvWPYgL9m36qB0HcGZjEyPXbT78UMWYSN/giUJ4+g3e4Sg8KnkzuyPfm5Y61QndLHRCPMhju7Hwh7mcAeYvNBYIdEH765XiHjG0OWREgQVF424Fk5er/kAHHLOsuhLEtTeFEamgPnI0inQ+R4GM7BagiHkAcrBEFJFNN/cKa7xic2GCgVMW5yzj419/iPxBIvZauAdc5JVLEoYp6MDvBn5GQ0M5511F/Wi6FJ/kzE9m/7XIiSZieU8UhEwopSOPe6IvY/sw6tY4XQhakEJsrv0E2fwgGA1KylbLagQqwQezEWGyF9hp5XJKcSIKZ34qw2K58mvAHrTzmBZuNxtD9IpKCdGQDVz4Bn8jEul0QCfu35Znh1WH+6EmemwCUEuL8KankpoQT/r+kEvJjX2w+U4Bq8ClsX2lJMfL/5fjBI3kMA9ezQRIFpDAs2PJs28HIbkgDR6a2ZZfGJkpHnc50lWQER6UYgLitk+TFWW2kzlRt6W1AGpzzcE2zw3DwJdn2Dqo6OGcQ2URMwLTiV9OxvIt7tf0zAN2LtaiP2fuTrRVhWhZ54XMAlZeeMXZOk2CXhy2IIHUrnNrozA9+J5aO+HX/pWp/a+obsPVwHhhETHolFJkkcTFnKG62vjVPla8/RUQO6aXZCKuD75/pR7ywG0HDlTFLDVLuL0najU15x
+ gh5uDg4I
+ swFRY7eA6T/8jN8oSaF2CWxFRxnF2fq/J345dB1YvFc7IV1eKRQOZYMgluWwJRYMdgToac1NRw5HxkGVntSvwLZqOczaNBzpqSdMKS4VJ3g0sMuHFGi5H3D/4euJmTg5cQ5ZPBIRV/DJJttD3BvEGnrupbSSbvUnviPIyPugglrOzBtyRzaoN1bz2AUw4JxumKjXghoWgEKOezclwCbRk1b3edzMe47uQToYPHMqTNKpdBqpXemZJNcZWq094TsX0/PYjYhDKp7tI4PTBYq/hQr/pdhEhvBBju7HwfFsj6gs5c0/QTVpEH+ZEqo8oD/BiZ4iZjg/ms5nggcY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -160,28 +159,32 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/3/26 09:27, Lorenzo Stoakes (ARM) wrote:
-> With down_read[_killable]_nosteal() available, it becomes possible to
-> release the mmap read lock in such a way that a queued write lock always
-> takes precedence.
+> This partially reverts commit b4c9ffb54b32 ("mm/khugepaged: remove
+> definition of struct khugepaged_mm_slot"), as a subsequent commit needs to
+> resurrect this type to store additional data alongside the mm_slot.
 > 
-> Expose this to mm through two new wrappers - mmap_read_lock_nosteal() and
-> mmap_read_lock_killable_nosteal().
+> The stated intent of the commit was to address a NULL check in
+> __khugepaged_exit():
 > 
-> Make use of this in scenarios where the mmap read lock is dropped
-> explicitly for the purposes of relieving mmap_lock contention - the BPF
-> task VMA iterator, and lock_next_vma_under_mmap_lock(), which is where
-> /proc/$pid/smaps_rollup re-acquires the mmap lock after dropping it on
-> contention and falling back from per-VMA locking.
+> 	mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
+> 
+> slot can be NULL and mm_slot_entry() is an alias for container_of(), so
+> this is container_of() a NULL value.
+> 
+> This was benign as there was only 1 field in khugepaged_mm_slot (offsetting
+> NULL at 0 results in NULL), however it was right to fix this, so retain the
+> fix.
+> 
+> It also unwrapped KMEM_CACHE() in khugepaged_init(). This was a mistake,
+> and was itself reverted in commit c14bdcc9f274 ("mm/khugepaged: use
+> KMEM_CACHE()"). Therefore, retain the KMEM_CACHE() form in this revert.
 > 
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
->  include/linux/mmap_lock.h | 44 ++++++++++++++++++++++++++++++++++++++++++++
->  kernel/bpf/task_iter.c    |  2 +-
 
+LGTM
 
-I'd appreciate an ack from BPF folks and a confirmation that I could take this
-through my tree :)
-
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
