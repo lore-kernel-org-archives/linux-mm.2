@@ -1,94 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC01606A32F
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 22:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40335606A329
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 22:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rp7glFqH
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TgHZ7LH2
 Received: by kanga.kvack.org (Postfix)
-	id 599FE6B05B0; Thu,  5 Nov 2026 17:44:08 -0500 (EST)
+	id E67BB6B05B2; Thu,  5 Nov 2026 17:58:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5493A6B05B1; Thu,  5 Nov 2026 17:44:08 -0500 (EST)
+	id E3D6C6B05B3; Thu,  5 Nov 2026 17:58:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 487076B05B2; Thu,  5 Nov 2026 17:44:08 -0500 (EST)
+	id D7A786B05B4; Thu,  5 Nov 2026 17:58:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E0DF6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:44:08 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AE9306B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:58:39 -0500 (EST)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9CDE312091C
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:44:07 +0000 (UTC)
-X-FDA: 85402544934.03.FCCA278
-Received: from mta1.migadu.com (out-14.mta1.migadu.com [95.215.58.14])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1E8DB40006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:44:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rp7glFqH;
-	spf=pass (imf11.hostedemail.com: domain of jose.fernandez@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=jose.fernandez@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793918645;
-	b=Cws+c8977rZqwkVLwFH188HQL4Pd+51bDUOjIND4VMz0gvE0+Ln7aCnqROjUGvjUNCuKKn
-	wam9M95JjzTPu90JwV0B4fQ6UqCWERjinPuwzuSHTgNKD3Tr9w3LnwP6q6S4jbDlLfeIug
-	ZVvDCZB+3vcpoAorbiiMsFl+pq+2QGQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rp7glFqH;
-	spf=pass (imf11.hostedemail.com: domain of jose.fernandez@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=jose.fernandez@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9EB391A0A31
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:58:37 +0000 (UTC)
+X-FDA: 85402581474.03.C7944D7
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id EAC7A100005
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:58:35 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TgHZ7LH2;
+	spf=pass (imf05.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793918645;
+	s=arc-20220608; t=1793919516;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JxLJNgnKaaDtogy9UDJ+u4IBfGkMCrx4gqopdXLbwqE=;
-	b=g2D1uTxzWt0SK9NhwHis91MXeWglqtEnn85QQJXYwvLsMdp0W4jQTgH3ajAk9jsAakD1um
-	u6yuAXi0hsY/hCqU7vCAGAOIgXBtotRcCw85Tqt2RN7PeCRb2REDRRfk7Xmtc0UUc7sNSi
-	Nbun9kuRoEZP7Q1ZOLTRrA1bJsTAgMg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=vAPWWkIFDwbgy2wHFM/rAmP8el8Mj7wGKfgTaZhtpZ4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793918642; v=1; x=1794523442;
- b=rp7glFqHvrLHbMfBSaPiYJG22IM71k3aN2mJXgKV8YPS9ZSnI0eD4CGSpjLSYsqaCbG5rVU7
- niGJGtmUA431/BKVodx+m/HkN3vVu/yDMxehWTLamDYafgLyUpZ6bt5suRnNrAgPbvce5imoIzY
- 5T3SqgXEZUkCHeEd5Y8xay/Q=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 960618cb128bac7d;
-	Thu, 05 Nov 2026 22:44:02 +0000
-X-Mizu-Trace-ID: 960618cb128bac7d
-X-Migadu-Flow: FLOW_OUT
-Date: Thu, 5 Nov 2026 22:43:58 +0000
-From: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>
-To: Pedro Falcato <pfalcato@suse.de>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Krystian Kaniewski <krystianmkaniewski@gmail.com>, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/filemap: stop fault-around when the walk steps back
-Message-ID: <au0GBdGqu6cv5PMy@linux.dev>
-References: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
- <aunPI5eOUOAEUa8d@pedro-suse.tail5790ac.ts.net>
- <20261104-jf-filemap-v2-pedro-reply-r2-74c87c6fbcf@linux.dev>
- <auxvLCiljPhy0n_q@pedro-suse.tail5790ac.ts.net>
+	bh=S+nYe4I8JfGZ8iq7Bvfptw+3SVmUNoB+MIDzTrsXpZc=;
+	b=w5yZBihX7jaEI01z28vdButIaotZ8WVApcNh7cLpE6HecKb8x+Dg+RQsQ/aqhmJWQkHnvI
+	ZwKSk43x+BQlJ6SPdkTFktmI4xqpmY70I5OhIAzoTN/Gutic9osqmYwtyp2RHAYMDI0jcU
+	mJDJkfLwLzDqMau0iZ27Z7zPolE9chI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793919516;
+	b=0AfnNNGyz4hvfFuFRySToOGI0ivaA8wli9YBIOluOo9Ucr5/F/i2dT3LjEkVydku8UBE+6
+	FHOKApKR3Im0Mpnql119gJk0QPg2pnK301xzF3Qro6h/KVoVuhY8484hsNoYm3OGnzAkWt
+	xwsqNTPr79QL+E68w7d2IhIc9vCKJV8=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TgHZ7LH2;
+	spf=pass (imf05.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 2EA1640F0B;
+	Thu,  5 Nov 2026 22:49:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D243F1F0089F;
+	Thu,  5 Nov 2026 22:49:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793918975;
+	bh=S+nYe4I8JfGZ8iq7Bvfptw+3SVmUNoB+MIDzTrsXpZc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TgHZ7LH2yAs2qyGTAyNNtl8frCxxpwAJZEf6PU2DcWnxnWy8Gwr2rY4WWscjskyEm
+	 piib1sPyrp16ZX0SGTmaIsDb7pvL5paKi/uBo8avrLOrUUi1aOj/A7Z5bjfMQBMSjN
+	 j4Eq9xsHFuM2pB920goI6zViijasUSIFu7KXGqFRJvCPeVMdAzEHY6fyhJDfuKuq+E
+	 J58K9DIZLC3V7zC732nScfU/zhzvvw1oMRaZTKz8cZFFqEXg9rdDKXASjqjxeSqrtZ
+	 ELHH8o3eXZWSf+wF68UCbIny6kkYndjaeDR7pwKDeuguD1MRYu20E2srlmlgMetBGp
+	 cv4tnszSs4FrQ==
+Date: Thu, 5 Nov 2026 17:49:33 -0500
+From: Mike Snitzer <snitzer@kernel.org>
+To: Chuck Lever <cel@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>,
+	linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Jens Axboe <axboe@kernel.dk>, Jonathan Corbet <corbet@lwn.net>,
+	Jonathan Flynn <jonathan.flynn@hammerspace.com>
+Subject: Re: [PATCH v10 7/7] NFSD: drop a shared boundary page only once both
+ WRITEs have written it
+Message-ID: <au0H_TZCp1Snf_5U@kernel.org>
+References: <20261103211754.35352-1-snitzer@kernel.org>
+ <20261103211754.35352-8-snitzer@kernel.org>
+ <20261104091543.GA31130@lst.de>
+ <autk-osSQ8l2LKz1@kernel.org>
+ <20261105075935.GA18069@lst.de>
+ <29851456-2e7c-48a7-bf00-11a1f1a35024@app.fastmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auxvLCiljPhy0n_q@pedro-suse.tail5790ac.ts.net>
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+In-Reply-To: <29851456-2e7c-48a7-bf00-11a1f1a35024@app.fastmail.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EAC7A100005
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 1E8DB40006
-X-Stat-Signature: gqid7howi5t4ufbuu65ndpk89qd1rmf4
+X-Stat-Signature: azzmf371xwwrdordyejwk7weqhxey95m
 X-Rspam-User: 
-X-HE-Tag: 1793918643-270107
-X-HE-Meta: U2FsdGVkX1+T2uYpu/BMXfzHF3ZH6ulNDaz+Gc8yfYcIqr5C1+eAOUVQ95O5HcVE2Edra97dK4wiBsNmYBKzJ2xVuq8XbnBqYJUmZ4ObtqCtWbNLhusJ/yZmJ8jBU+gaoWHNbqCxWkLtep5If62boyaV1bZq5/cuvwFPCel300yAWbSZzufKTzftGyziJDFO/IIH8SJQ8XPKSMr+Aj5Rradp1FxPRQ4J/156g7/p9gkWIaHidvcnOYc15IMnpDBGAnkwID9nckhiPz/qIA2LrP2Q7MNkaoyloQLmIw8C+azXqoMw0Nz6EJXlfC6+rZMn87TI0lgdPBHHZl0fiuHg8IpN4fbiUnUjk6q8Ghr0qo5/9N5Q0jg+y5SNdFn+9hUyL23pATWNPMcOCQARLWCGBd0KByc1WonYWBSYjaA16iTs2wEBTlYY6xLUkiKrQeqP6KGdSSrv/99tOaO2mkRSTiz2sjYc6HSZi/6OOcrQpxAZcUrUxCbGlQTIfDmSDlem89IDjMKKci829TtM35AwCXIX0Y/iJCB242TKv3mVWA2kNm1HrErptbEdB9FLXiamKVLn80/ztj/SeMfrQn5+bxkJzI+oyQvoBW9LYZRfahkNm4t22yF1rjoFCqOxB6QsD3e/MeiFz+jUuwCgfQJS3CT41nRP+AavBaSx+vHVTMu+js79HPyauEIJPPbD1y2mTk/z0FhjLAKgeIVgL7u4Ps+e8+5wcJdrWT4cFtAQBLrJF/N5DlFUtR/McEzeJqzOggQ0UVWyX807gh3znlbXoa30qSbyQRQl0sbhNcOGREJhcfCCPXitfcnDEgnhPi3vNAWSwlejdXpfxDTpslDU3JTKpI8EW8Kbt6fTAkx2auMsqlvWPdtLSS7zcEQmI6y7KNMkKj9wmDpQZi+Ho6KzSR6i9u504mf+Zftv3FAEuuirhc1WiQk/iQUgc9FjY9XrcCf5trQ+7FVrZry0pVH
- gJenUpCw
- 0VLuuB/ozZhouJn5YTL0GohTa2cwyqcgYR+8h3IlrTgAll+DeBoPG6cooLHS0CzM8M4Ib1FFCgkeuwSLkHQIdwN8Q1u7YdW0oH254ZSUiTapK30FWpOAe9aV1PA1McYR5wEv77sSzeTaQ7ti7iplU55F11cq3BUoWNMRLJoFP34Rr5aAGC0oouc6mKBaGO0pdin03QHcAUcRT8ZCxXzOoNYTWWUBEuJkKwJsLpAWbEkbl4Shr4hq1Jr9MTn9LkyBTcVLYsAWLXb4sU6Q=
+X-HE-Tag: 1793919515-982520
+X-HE-Meta: U2FsdGVkX180qwQUg6cZxS+9p/daufCfNSYskyyaZeJLz4BxYx5npa1eZsQwo0MMc8JIOD9iak0aOLwPGgxRgtaA5hsgRWj8mw/L2UBEc4rO0OUSjLiimLpqYmZZPCpX49g7Spjb+mk50zTvgOKNxM0cgcHWSe4DcIBbKPXnGmadJwDMRbv9GFgBZjWZUV79IGi+K2IChl7K2DOT3FG+ZJKnpudE9xhEN017gSHVymq8ZfVtOtCLX0biHog61k92mT5dVnaFWrgTQyy6REWDOqp2zr/kgsJWPIP3TJC3LBbVQe8kiqwGvLE/jPRGiCkPBf76apqhfOIY4+redkgd9w9nR2VFuWzRK7RRbxmbOF5Y1YlAmtPyqb7ysEWzGKcoXJ5T1G/5btITFrDQEGNae138gecumpieLLDslnzdo9EJpP/X44BXPiq1Gcq+d9yYlea92grSCQ88kP9bh/v2naYSll/b/5oMg+oez8cp+07rZXY7DdsEvJMx0mTjhJbLqhNhT70kmf4PUxg25/LQrR/Z1EZVsXd4FK97MmQJbuJvhIxPUGDX6OXuKEIaLVT/jZhZzluWuLwZ0q6H9Gg0WSx/8MbIzBukP3dxUVv8q0yQBlj6TZcOhjy/qstgDHFQu9J2O+OixZ1t12GtVKDGaSbU070e90Ffwj1MYgc4TvVNa60UwIGcWEUFCVtPi/GITZyK5BIIZTEalCpltaq81Ty6T2oSIfYdk6ymmrE6CDH1fjYz8oKMZeVKbGjmOE/211q0Tb7WDrffRqX1wJAjfCFEbvg4fBW0rab0ZKE2HzwvuM8TkuMbgG34omNh8YowdFe/ppOFPtqq1p1s6IdaRR+w59BOvq8gF6Z3tWdJdXkWpTkHq4IQ/XPuTRiyjofX78lxcZUx4cMT9QI9jkJAABBvDRvpi9YpilA1aQ669ErmASH0CTPrzk7QNVonNQM5TC6B7DhwooVEu8hB8p8
+ UX+onp3x
+ y5/9NJ/cs+EMcrQY6DZCA0nLlXwxGcWr7IM/4vH2ciFXKT0zdT7L8ewmEiofl/BXRDsxCAzCaNAOwgZPUePnuqs28Upev4ahfchn37VSD7vAne3J5ItdUZUMMnE1BRSUBVrS1KrMtRRuClbEcfWmQ+XLboHETLQAeqJ0auRSLSPlOfG9oVJ5aBwBAVNTFrxNqI3NxVmTc7Gkqb+ESDFcSRIXYkVm/+deFGq5UDHP/F9eepxVfPFiEdUAx+K5o48cMVmX5QQjMwS5bjq2FN1I2narDLCfSbJc2WgjFUQ4Q17bKBDDJmpbZZPZJHw5YS/Ps8Cf0Op2ukJWNGawEnIU3pNbMp45930XDkjVd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,40 +105,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 5 Nov 2026 12:19:13 +0000, Pedro Falcato wrote:
-> Thank you. So, if I'm not mistaken, this is the race:
-> First, you map/see this:
-> 	[folio pgoff 4, length 4]
-> Then, at some point in time, someone punches the hole:
-> 	[no folios here]
-> Then, at some point in time, someone faults another folio in the range:
-> 	[folio pgoff 0, length 8]
-> so you step backwards. Is this correct? Or am I misunderstanding this?
+On Thu, Nov 05, 2026 at 08:33:34AM -0500, Chuck Lever wrote:
+> 
+> 
+> On Thu, Nov 5, 2026, at 2:59 AM, Christoph Hellwig wrote:
+> > On Wed, Nov 04, 2026 at 12:01:46PM -0500, Mike Snitzer wrote:
+> >> It is the transfer size of IO500's ior-hard: every rank writes
+> >> 47008-byte records, interleaved with the other ranks, into one shared
+> >> file, with O_DIRECT.  It is meant as a hard case, and it is the
+> >> workload that showed the problem on our servers.  The same happens
+> >> with any record size that is not a multiple of the page size.  The
+> >> cover letter also has 6000-byte records.
+> >
+> > So based on a bit googling your totally optimize this for an intentionally
+> > stupid benchmarking workload.  And that's not been disclosed anywhere.
 
-Not quite. In my test a large folio goes away and a small one comes back
-below where the walk started. If that happens during the walk's first
-lookup, the walk can step back. Krystian's fix doesn't cover that
-lookup.
+Why we're even debating this, like "IO500" is taboo or something, is
+what's stupid.  Not a surprise: handling misaligned IO is "hard".
 
-In your order it doesn't step back. The new folio covers the place where
-the walk is, so the walk either gets it at the right index or skips its
-sibling slots.
+Public service announcement: Don't let Christoph taint others' work
+with trivialities and needlessly hostile strawman arguments.
 
-> If so, how can this happen while we hold the PTE lock? That itself should
-> block truncation.
+For would-be MM reviewers (and you too Jens), my previous reply to
+Christoph in this thread [0] delivered a lot of useful context that
+made this patchset instantly approachable and yet rather than
+acknowledge that fact he attacked a misaligned IO benchmark as
+irrelevant.
+[0]: https://lore.kernel.org/linux-nfs/autk-osSQ8l2LKz1@kernel.org/
 
-We don't hold it yet. filemap_map_pages() does the first lookup under
-RCU and takes the PTE lock after it.
+But anyone who is active in HPC filesystems development _knows_ that
+"47008 bytes" is IOR-hard (part of IO500's benchmark suite).  And yes,
+its aptly named as a "hard" workload to handle efficiently.
 
-> Can you share the reproducer?
+I have named "47008 bytes" and "IOR-hard" and "IO500" _to_ Christoph
+and others multiple times before:
+11 Jun 2025 https://lore.kernel.org/linux-nfs/aEl1RhqybSCAzv3H@kernel.org/
+12 Jun 2025 https://lore.kernel.org/linux-nfs/aEs6gmTXzhzuDZOI@kernel.org/
+29 Oct 2025 https://lore.kernel.org/linux-nfs/aQJG2LIuui08Bx3H@kernel.org/
 
-With the delays it can corrupt memory on a kernel without this patch, so
-I'd rather not post it. I can share it off-list with the maintainers if
-they want it. The 40 runs without a delay were on a debug kernel with
-the delays set to 0.
+Even in the context of this MM DONTCACHE patchset (now on v10)
+Christoph's "not been disclosed anywhere" doesn't hold. IOR-hard was
+named, with its 47008-byte record, on 22 October in a v7 reply he was
+copied on, two weeks before v10:
+https://lore.kernel.org/linux-nfs/atqCTLf42kkGZmSd@kernel.org/
+But it was only in replies, never in a cover letter or commit message.
 
-Andrew, I can send a v3 with this case in the commit message if you
-want it.
+> > I guess everyone else was right and just ignored this bordline malicious
+> > submission.
+>
+> It's not fair to ascribe that kind of intent. I think it's fairly
+> well known that Mike and Jon are using IO500, and not mentioning it
+> in the documentation for this series was a simple oversight.
 
-- Jose
+Thanks Chuck.  If there is a need for v11 I will explicitly mention
+IO500's ior-hard benchmark's use of misaligned IO of 47008 bytes.
+
+Jeff Layton reviewed and provided his Reviewed-by.
+
+I suspect MM engineers have just been busy with the merge window.
+Hopefully Willy and/or Jens will give v10 the courtesy of fair review?
+
+But as I mentioned in [0] any misaligned IO has this issue:
+"The same happens with any record size that is not a multiple of the
+page size.  The cover letter also has 6000-byte records."
+
+> But IMO we do need a broader variety of benchmark results to
+> understand the impact of these changes. IO500 on big hardware is
+> an uncommon workload for NFSD.
+
+IO500's IOR-hard reflects worst case, I understand the reluctance to
+care about it BUT the reality is that not all IO is sized optimally.
+So if steps can be taken to avoid pathological inefficiency during
+worst case (misaligned IO) _without_ hurting the fast path (when IO is
+sized properly) then why not take them?
+
+This patchset doesn't hurt fast path at all.  But happy to take
+direction for benchmarks others would like to see results for.
+
+Mike
 
