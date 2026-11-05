@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2C0D606EE80
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA9E606D821
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Dsirj94k
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ed6ednr4
 Received: by kanga.kvack.org (Postfix)
-	id 15B086B05B4; Thu,  5 Nov 2026 08:22:53 -0500 (EST)
+	id 0E6D76B05B7; Thu,  5 Nov 2026 08:23:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E5586B05B5; Thu,  5 Nov 2026 08:22:53 -0500 (EST)
+	id 0976D6B05B9; Thu,  5 Nov 2026 08:23:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3CA96B05B6; Thu,  5 Nov 2026 08:22:52 -0500 (EST)
+	id EEFB66B05BC; Thu,  5 Nov 2026 08:23:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D60006B05B4
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:22:52 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C719809FB
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:22:52 +0000 (UTC)
-X-FDA: 85401130584.28.5AF9970
-Received: from mta1.migadu.com (out-240.mta1.migadu.com [95.215.58.240])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 55738180009
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:22:50 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Dsirj94k;
-	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	by kanga.kvack.org (Postfix) with ESMTP id D17866B05B7
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:23:04 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A94D1409CF
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:23:04 +0000 (UTC)
+X-FDA: 85401131088.11.E480EAB
+Received: from mta1.migadu.com (out-3.mta1.migadu.com [95.215.58.3])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 236D920002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:23:01 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ed6ednr4;
+	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.3 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793884970;
+	s=arc-20220608; t=1793884982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fri77Ouh0dXSItKeLm+uZQQa1TNA6WNylQ1SLkvlG9s=;
-	b=ZhspJNRW4F7F9w+Qz59TBougNpOhSvqeRu8R6uIAR6t99pQ3zuF28zTRspSQbRmQK7FyJO
-	nJUiToEoimrzLzZMHWc9LOqJZ6uSVWTwXJSwTQYoUvwML7uUmcj07hWSpeGoQXpK1VbKJm
-	KW135GEGAI+qHhZy7Xzm9hz/eQ+PzkQ=
+	bh=iOupAXTYNfoednpq0XsVSpZ+gvJVRJ03mA/cqdjPBdI=;
+	b=MKmGfR/c7XRiGRmi7X6i68YmmigWw/lPEVzCYZ5K2DOQmuaZ5mVjYspznEn2lhApxqko2E
+	d+0kB/g92Tzp8oBr1UWB6+Z72s4I0kAQl0XWJ+yjWqYgNBZ+fPK5K33rnRg5q5DKw8xs3q
+	CkyTzvFUoLPGcSzrV+gGjDBBChdk9u0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793884970;
-	b=iYd+DM4b/eFVX0Bm436yARIaZZ08KyAzEfKOU8k9DB1h+MChiXhDY6hTQjgpiRym1JY81o
-	sJygE57LM+mHBg3PoRrRk31AAahzYxKeXb6KL4s3uOWVXHztGSyCUozwK2l12k9OmM/r3y
-	vcRb9ZCmzjuTrA/sBRoB8BseYuK1o5k=
+	t=1793884982;
+	b=6WZTJEo/QfbsXG2JthNxEgXp4fzymbXxTZChNvq9VGry+rO6dFb6m46fic2oZ94FQprPBS
+	SLOkI6KXTSi2oPDx2T8is/poFKuPWFzqe1uKw4RG3Kk9/eHsogxsgpZYBkF6ePVgNSeyHW
+	a4KzW715Q1zWpYVQXT6uhIFgCcNsN94=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Dsirj94k;
-	spf=pass (imf16.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ed6ednr4;
+	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.3 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=1lVizr8Ol+N2CmNjk66k3Xjp7AKzedZ36gloFs1PijY=;
+DKIM-Signature: a=rsa-sha256; bh=gedQzs9cofqnO/3Mo6G1fafF6KlRIBhBesFXSxuBcbg=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793884968; v=1; x=1794489768;
- b=Dsirj94keFK2yQPh4R0UWNiVHRW1zecTCS0O7cPhkVf/h6CCJ78VevfCc1XQe/UStzPQby0f
- 253umd9VTSnkuK7Rgh0UbvSGYFpzy44Qk/Jj2Gi9//iEE7L5xxv0BkU4XD6BjnGuk223TIwj5M8
- rzVNm8XT5MYHosCUVfpanjQc=
+ t=1793884981; v=1; x=1794489781;
+ b=Ed6ednr4nfdPMGN/KpjaFwJKHYmNrMTRbel0Q89Dd3UnLBKbi2v/fBNZYYPG0K4j1ZzG56pr
+ lV9/Op4phvY9Alu9pePz3ifHmgyJMyf65D4REoemzVAV+2QjlukOVgwangNmmYHPuV5QoEw//2M
+ 2NwL9zNJpTliTJtF0HtMDNM8=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 1c23da4eaab331e3;
-	Thu, 05 Nov 2026 13:22:48 +0000
-X-Mizu-Trace-ID: 1c23da4eaab331e3
+Received: by smtp.migadu.com with ESMTPS id cca60b9dfeddce6e;
+	Thu, 05 Nov 2026 13:23:00 +0000
+X-Mizu-Trace-ID: cca60b9dfeddce6e
 X-Migadu-Flow: FLOW_OUT
 From: Ridong Chen <ridong.chen@linux.dev>
 To: David Hildenbrand <david@kernel.org>,
@@ -82,27 +82,27 @@ Cc: Lorenzo Stoakes <ljs@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	Ridong Chen <ridong.chen@linux.dev>,
 	Ridong Chen <chenridong@xiaomi.com>
-Subject: [RFC PATCH 1/3] mm/mglru: skip redundant bitmap store in lru_gen_use_mm()
-Date: Thu,  5 Nov 2026 21:22:18 +0800
-Message-Id: <20261105132220.2233677-2-ridong.chen@linux.dev>
+Subject: [RFC PATCH 2/3] mm/mglru: skip the flags cmpxchg when nothing changes
+Date: Thu,  5 Nov 2026 21:22:19 +0800
+Message-Id: <20261105132220.2233677-3-ridong.chen@linux.dev>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261105132220.2233677-1-ridong.chen@linux.dev>
 References: <20261105132220.2233677-1-ridong.chen@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 1prj79rtmfcpqy5betzpsoabri73t8wy
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: wakx94rj54hz4yzzrtnorkpm77o5y53a
-X-Rspamd-Queue-Id: 55738180009
+X-Rspamd-Queue-Id: 236D920002
 X-Rspam-User: 
-X-HE-Tag: 1793884970-63712
-X-HE-Meta: U2FsdGVkX1+p3X6cmeZf9omqh+Mm2jLsi20lXsNJRtTLiJJ8slF6UVT1VUHY3Zt6OANuPspQNOxor4E6GqsA4DuOCpbl5LqJa9+HEeTgtOGa6jkV1uaHc9gL90t/n9Ly80V4ozs8FQ/w7J65WGAIyMNOiH2M2q8qPbOXicAFy6zAa1EkNGGPwKU7kmUz7ITMCbPp0U8y9yfxCENx82BFGZKjqHLpxznoe5NIxmqR18Jv3nDNYPIWKIMPEmE/3HC7VOf4g748T/DExrsOvIHnIBu0FjFvW1SQM3Upe1saYiarIQ8PuNaD426IbZsv0eXNWMDqS983YEf8AeKWfxgVK1c0HOcPHpVD9q9FQa4ugfiie5k11xBWAfHuXtCJjmY2xycVrBEFnnuGVbjErYwTrN7PmsHS1clfzsCz47IJG1ScvwxDKj/HY/4KD0513o3htKY8TxIyuQDWspubw9/1YK2edms8DxYL9btjMLYp2NXOORgIMLbz2SrdvOkHUOn2PeAbosa/Rmg5IaPkao5WFNX1nyfzF1zQYHJiBez18xpbtQ4ExWSRfPxKUgnBpluNAGko8/SDeyjtookZT6avnU1yW5bbsrE6hQMsVFsnIBs6Uk3RM8DCV0sofcZk8gsNyLsTu62r80nLpJxfptMjdpF6qoXc5/QfDyoqSZGK/ZuP2G4eGZpcXxC8lGghBNAZeIdVeA9Gr+feHamjuZCjStxtzWxs6fjmD0GhlrmVJQm7CplO2z/h8HAN8PEpY009/0qApFt5eK3x4AEp/eDVwGkbK4dZ045sZ7yaXC9CyGpq+4zbmO5Ux8DgENCcRsCXmdVWjZQ6NQt/eoMyYs7M0nqYfZeQ0Shhz3EasnSiVjJfNohWebg+wbb67HN9HurchywqtvYfdk07t5FYdASojPy+vQv+qUTT3vsqkU2BXjNKJk4spxMHd2gOHQPAbQtkU8j3Q38UCWZC7QKzZ0J
- 0ORqH2RW
- xnXsefaMGcWJFo+0GEcHHkFYsBaddmha8WeILbU3QYrUC4+qA1hnuW9b/gpvzecz07bALonXPvj9cvhc1ekkhGiF5ZzAK4zcNSiqLbkJ0ugdA9sbNP+WRRcQ/j5y/ygaE2rPM83OOUXVw7Y9AJuEUEZFZKRDKJGzYhMVcf8xZR1NpJh9MWtxRyIHr3NvHMjeQpNeat37mHTSfoMvsDGaMXr+fn3niT00ZLV2SoRqV+whaK/Jm6YQWeA3RT1zOjMIVEEa8oLugadHJrm41OlzAubkkudi/X7Sz4Jxh5V66oren7p0=
+X-HE-Tag: 1793884981-378831
+X-HE-Meta: U2FsdGVkX18Alsd4iWQXEbdsX/n5Cj+ojKOotO2l5AVWe05QCO/vnTtK/wbGuv9Tymj+1Ue/Pd+xfjI+b7M+UDu5KuPU0xzJbgZXjtYpZuUvlR75HkwiHgXnee5XHpVOOegGBSle7qSgotZJ9V6wTOovWqg8IWZF9rkYafi6pgas1IRy7fmbA+XeOt6W7fzpQURKd8yPHMnhntLyr6FfYA42bYDeoPfxNRrhHoZnNKll3fIzXbJh5RO4LHvZMdsuZ9hduUMDK7nSBDVnHVMGjOhWbr5j1u4h2dN+BOZkQD0nlZdEVz62KjX4KFMkGllQpybhgzR83DS3iYPx76AIaqqeI9s5o5zhMBqRj618zCA7ADqaJNXZRHqFjFc15l+wWATraPHCHCbKzNEtDSS+ooDSutY4GPGh3K8ny4D8BguobNJioMjZuGGtHoJsWlnN6bBsu6LDu7rAFcX+BsvmNdid51uujiCaZsdTbtSi5rmw1Mdkcft5E+BCPLbaUPLJysUJh9zsXm5o7hb6cq0pP6SqAQob04qfPPtARaESn/a3pk4but1CK4QmODnoolfFKEqMCcIcrEJgIrugcf8Yk99S3BeSY4np0SDtd8FnvXebVvNb1VviEuZaggaAw4R5m9tpGwgEKtePIXk/n1icPoPV0xbznrjO2YmGPo6IYBBfWDCRw5s0fOMplOBLtsP6Yt6GJrnKdFo4y+VMSHY5Ff2MNGgSrh5TAwc5aR9fWeui0qv1Omd4o7X0aSOS/q2TLvH1amr+mumEoxxiULEDdezQDVQZrF6j3KOY5tsmy3f1FlQASO//n/7WCqVAiXC5WUX/ceHa5LnYNEFGro1atO5LsCCuHt8+SM/H1K6L0lMEb01hWrdP8QsNHmTrLZREwueKf+wzAM2jSQc4qebpOzwCeV9x5bP8IPl5qQFGX8x0eAYV1TIdV0Vm0VdsFNPeWo1V50ONKMnuUf5xacp
+ 7DL6p+nE
+ g7jqUnou+NKqPsVT8cdEB704keE5FjKYFPKkL2Y+444QttcJMu7XUv2rugglMAoWGRnw1VfLrm+0/zSxiq64GC94aJ3d5kot7bDpOXQw9Sw/a0TFIwvPXBZiYb3QpUiKS5jUnPqEad6K4V7VZyx2+e36Q4rG4mPk/Uqr5tnPbVCyGvkLLHXOqbBdRxzbRnA5Unw+HJZfavtyOnoWDbUeqZn7tu3Wd1EQuRRQ443sD8JewF1QhZnwq8ZiCYg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,66 +113,77 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ridong Chen <chenridong@xiaomi.com>
 
-lru_gen_use_mm() is called from context_switch() on every switch to a
-user task and unconditionally sets mm->lru_gen.bitmap to -1. The bitmap
-is only cleared by the page table walkers in get_next_mm() during aging,
-so between aging passes it is already all ones and the store is
-redundant.
+folio_update_gen() and folio_set_lru_refs() always end with a
+try_cmpxchg() on folio->flags, even when the new value equals the old
+one. The locked instruction still takes the struct page cacheline in
+exclusive state.
 
-The store is not free when the mm_struct is shared: every CPU running a
-thread of the same process must take the cacheline in exclusive state,
-so the line bounces between CPUs on every context switch. On x86,
-switch_mm_irqs_off() returns early when switching between threads of
-the same mm, which can make this the only shared write on that path.
+That is common in practice: a folio mapped by many processes is visited
+once per mm during a page table walk, and after the first visit it is
+already in the youngest generation with refs cleared and PG_workingset
+set. isolate_folio() and the eviction paths also call
+folio_set_lru_refs(folio, 0) on folios whose refs are already zero.
 
-Read the bitmap first and only write it when it is not already set.
-The semantics are unchanged: the plain WRITE_ONCE() had no ordering
-guarantees, and a walker clearing a bit concurrently can be missed in
-either version.
+Break out of the loop when the flags would not change. The result is
+the same as a successful no-op cmpxchg. The only difference is that the
+full barrier implied by the locked instruction is gone on that path.
+No caller relies on it: the eviction and isolation callers run under
+the LRU lock, and the others (page table walks, folio_mark_accessed(),
+lru_gen_clear_refs()) only care about the resulting flags value, which
+is already in place. Note that lru_gen_inc_refs() already returns
+without any atomic when refs is at LRU_REFS_MAX and the folio is in
+the workingset.
 
-Tested on an i7-13700HX (8P+8E cores, 24 threads), with turbo disabled
-and the performance governor. On each CPU two tasks sched_yield() to
-each other, either as threads of one process (shared mm) or as one
-process per CPU (private mm, control). Context switches per second per
-CPU, median of 5 runs, averaged over 2 boots of each kernel:
+Tested on an i7-13700HX with turbo disabled and the performance
+governor. N processes map the same 2GiB tmpfs file (huge=never) and
+read every page, then one aging pass is triggered on their memcg
+through /sys/kernel/debug/lru_gen ("+ <memcg_id> 0 <max_seq> 200 1").
+Time per aging pass in ms, median of 5 runs of 10 passes each, averaged
+over 2 boots of each kernel:
 
-  CPUs   shared mm              private mm
-         base     patched       base     patched
-     1   1114766  1106870 -0.7% 1104512  1109284 +0.4%
-     2   1086513  1110204 +2.2% 1110334  1112209 +0.2%
-     4   1085872  1112258 +2.4% 1113146  1112467 -0.1%
-     8   1085945  1111371 +2.3% 1111662  1111876 +0.0%
-    16    660870   666748 +0.9%  665470   667058 +0.2%
-    24    579382   596472 +2.9%  596177   598500 +0.4%
+  processes    base   patched
+          1    32.9      31.7   -3.5%
+          8   195.1     160.2  -17.9%
+         32   755.8     592.2  -21.7%
+         64  1597.2    1260.6  -21.1%
 
-The 16 CPU case uses both SMT siblings of each P-core, which share the
-L1/L2, so less of the traffic crosses cores. With the patch, the shared
-mm case is within noise of the private mm case.
-
-will-it-scale context_switch1 and sched_yield do not show a difference
-(within 1% for both threads and processes): sched_yield runs one task
-per CPU and never switches, and context_switch1 leaves the pipe peer
-unpinned, so most switches stay on one CPU and the line does not move.
+With one process, every visit changes the generation, so there is
+nothing to skip. Before the patch, perf annotate attributes 53-58% of
+the walk_update_folio() samples to the lock cmpxchg in the inlined
+folio_update_gen() in this test.
 
 Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
 ---
- include/linux/mm_types.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/mm_inline.h | 2 ++
+ mm/vmscan.c               | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 1ed35d258d2e..3680cc0fd714 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1553,7 +1553,8 @@ static inline void lru_gen_use_mm(struct mm_struct *mm)
- 	 * used since the last time it cleared the bitmap. So it might be worth
- 	 * walking the page tables of this mm_struct to clear the accessed bit.
- 	 */
--	WRITE_ONCE(mm->lru_gen.bitmap, -1);
-+	if (READ_ONCE(mm->lru_gen.bitmap) != -1UL)
-+		WRITE_ONCE(mm->lru_gen.bitmap, -1UL);
+diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+index b3d85fe91385..4ba9079f4dc8 100644
+--- a/include/linux/mm_inline.h
++++ b/include/linux/mm_inline.h
+@@ -244,6 +244,8 @@ static inline void folio_set_lru_refs(struct folio *folio, unsigned int refs)
+ 	do {
+ 		new_flags = old_flags;
+ 		lru_set_refs_flags(&new_flags, refs);
++		if (new_flags == old_flags)
++			break;
+ 	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
  }
  
- #else /* !CONFIG_LRU_GEN_WALKS_MMU */
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 50c352e9ffef..3fa76715382d 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -3398,6 +3398,8 @@ static int folio_update_gen(struct folio *folio, int new_gen, int *type,
+ 		lru_set_gen_flags(&new_flags, new_gen);
+ 		lru_set_refs_flags(&new_flags, 0);
+ 		new_flags |= BIT(PG_workingset);
++		if (new_flags == old_flags)
++			break;
+ 	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
+ 
+ 	*type = folio_flags_is_file_lru(&old_flags);
 -- 
 2.34.1
 
