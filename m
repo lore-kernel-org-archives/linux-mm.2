@@ -1,106 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C27606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:22:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EE0606A331
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jzmklxEG
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=fr62oERh
 Received: by kanga.kvack.org (Postfix)
-	id 0BEAB6B05B0; Thu,  5 Nov 2026 08:22:43 -0500 (EST)
+	id 0975E6B05B1; Thu,  5 Nov 2026 08:22:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 06FD56B05B1; Thu,  5 Nov 2026 08:22:43 -0500 (EST)
+	id 070626B05B4; Thu,  5 Nov 2026 08:22:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC7836B05B4; Thu,  5 Nov 2026 08:22:42 -0500 (EST)
+	id E9FF46B05B5; Thu,  5 Nov 2026 08:22:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C46BC6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:22:42 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C9B8C0A0D
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:22:41 +0000 (UTC)
-X-FDA: 85401130122.23.807AF4A
-Received: from mta1.migadu.com (out-226.mta1.migadu.com [95.215.58.226])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 46E791C0006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:22:39 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jzmklxEG;
-	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.226 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BD8D26B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:22:49 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EF39CA0A09
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:22:48 +0000 (UTC)
+X-FDA: 85401130416.21.4A7612E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 3DF04A0008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:22:46 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fr62oERh;
+	spf=pass (imf25.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793884959;
+	s=arc-20220608; t=1793884966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=2FQgCJLfUQ1tOKwvKQRjuEs7njOihBYDB9ax1aCR+eo=;
-	b=E8auXZk7rNT99nDX+QdDxeMvvamdiPyVXqGW71676/gV2h9CkZFpKUCAiIbHuh+vx1sdiH
-	TvG5ZHXmnIcYWgBfX1xzav+OKqxIuc6beStjvm+kerL0PnsEGofUrTjjmUufNu9GpFwtr2
-	jrkkb6po1xw9NEkbL8xu+a+Pwy1LH3w=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ab9/FtU+evEOIDbPSbhyDZc8Br1EcYdUtbtpoFOf6ao=;
+	b=AJp8sDCGslaekd48ox//jvSz7+q3RgZgGXA8/VGEof2uh3bEfw/vso3pPaBAOjCvMBUl1L
+	dCoC2COJbTwZncA7cvzEj8ah/Gy6OlLgkfjyEel7/HmgMMV2ZPvIrPqRNgqIAR5vpeGGr9
+	kWtkTwGyMUqyaqMV84vYmPMD33KkWkg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793884959;
-	b=oWsV6lZR9C6iA+P8GeKvuMjz+I86K76pJwRxKEtpFQU+g5iqmki+j+856wwTLIjNz9YZxR
-	t/Z5/pa7DTa1oSIZmuHd0LvUC1RXHQCJi1cH/LTzO74HnY83Ed2xeq2rv3CN/EXdU/hPft
-	gJUKKWVZO6EC8awO0ni8/VemD/Ixi3g=
+	t=1793884966;
+	b=3xrI/ynlfTbnHQDq/D3iuLBXjCHNMv25izI6HYBmJsRm43MGkYQhYdK/Sc5LQui6+jU/om
+	1Cw950a3YfhJxOJtqW1g5p5r8wp0ruxgfSAKPCvK7P2XFJA7TLEXVtB/80XYlctG3Kb/WE
+	PZnfcWxfa3YKfblZeQvIHtde4EPYPsE=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jzmklxEG;
-	spf=pass (imf21.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.226 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=B5OzRACtslAN5zq5uXzJL2D9qtFaozSUjc8us2dI7zo=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793884957; v=1; x=1794489757;
- b=jzmklxEGjSMG4vpqZMVfEd/keqZO6+mmvLCky2fgy4WPykWnI+5iFyjiBiPgr7el8wg/6wpC
- WkQQIhPQ0vcKkBZUj6wQthz07FjbtwOwPqYwdp1YJ8Km3bNcl0hKUUmX+lrHR92QfiYlYaausih
- DAJ04Kldd6FNUXy4ZhYuORGM=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e01c588a92d09643;
-	Thu, 05 Nov 2026 13:22:36 +0000
-X-Mizu-Trace-ID: e01c588a92d09643
-X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [RFC PATCH 0/3] mm/mglru: cacheline follow-ups on the reclaim hot paths
-Date: Thu,  5 Nov 2026 21:22:17 +0800
-Message-Id: <20261105132220.2233677-1-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fr62oERh;
+	spf=pass (imf25.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793884965;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ab9/FtU+evEOIDbPSbhyDZc8Br1EcYdUtbtpoFOf6ao=;
+	b=fr62oERhRZPVeSo7JaFnIkZtmfc/Zuq9XjmpgIvDPILYsv5yIjaN5605CKqC6hCpRVjKb0
+	BLmFnc7skibXHi78azhmLrLk36SelglQwnJVM2+nTC4pQEi5WKD9g6+6567j/EHW3FABvp
+	Z78b8iNI72pUClRGPWiLtHnAZ6FHSng=
+Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
+ [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-583-s1tYk10jPNSU_fiHfBZiwA-1; Thu, 05 Nov 2026 08:22:41 -0500
+X-MC-Unique: s1tYk10jPNSU_fiHfBZiwA-1
+X-Mimecast-MFC-AGG-ID: s1tYk10jPNSU_fiHfBZiwA_1793884961
+Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-cc73895c7d5so2066152a12.1
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 05:22:41 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793884960; x=1794489760;
+        h=cc:to:message-id:content-transfer-encoding:content-type
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=ab9/FtU+evEOIDbPSbhyDZc8Br1EcYdUtbtpoFOf6ao=;
+        b=BfXL8Dg+I6WrIEYvi5dIS93rNnAOVPmpZVoeCUMIcivl0uaYWZgLH+A3bL2nKKVrf6
+         agtILb10svUYXEGpLFIYzRNkhTDMHh7HKcV6O1dsefpXPv2mOSCeMSfvdq5mJg2hHxF/
+         gDAYVbPM4VMxVzcmje//PZwtPxPlHF1bYw/i7tvNqDEBmhEvdG3iCG9Rb5a2JM2aBYbu
+         9qcOxYGruEoYZks8lwb5p1id1J1tZDaRctQFd3z+qgkU+4tpfUEElEA8+tyIwyRIfjk5
+         Oyh5DoWrYwfl9MDEodTGZAj5OfiWuq+5IOfan0x5DMvGDf5/3mJtG0CuRDtPS7oMS4n6
+         7eYg==
+X-Forwarded-Encrypted: i=1; AKwUvBzh6DsAmSQRzQcKw8zkVssgnlyHM2lRocOpYSJeg67wF/ZEeiJlpowS+Lhq/hk3jKURzcfcxXG35g==@kvack.org
+X-Gm-Message-State: APuU4Z/GQLkncicR6GiU3eEoXuyCh7EfBpRuEBC79HZlUVeMb8rwLnLc
+	vmu0jlOH2FvW8AWnhwYmX1+Ife/huYDG/GT063cRmDamHwWGwNLxn9ATopxJH6Vk5Sq8VUgNd+u
+	7xCsnojM2NNPiNup8tngdBSZyxv9Y85xSL61RDx/tporJ4/T//nDo
+X-Gm-Gg: AYBFou1bSZjoKXAiZsiEuiPFP4NNaUn0vvlSfMPQGO5HbvX72AnvACNkD6PVF0aBA0X
+	2JU6LMqfYlqPevHsnM01uxQYwkSGoLu7ayDnZH11JqvuM4AwYHD6KaWWLc763Zq3YEpYRfKaAb7
+	QPsgosD8wPhPTNHMQG5DY00nyw6PgiEjfsO5B+a8I2KUIPXIn/N607J7H3pqJ4xXUQ+S92X5bI1
+	weeSTrFpROeMmSkJyhuelx86SEz2VrFFy5rUwOQlnKs6Y8xwXIQVw9c7THjo+atCWwMlGhweoDZ
+	/B8NNjMJIqktVewDgT4XE0WR0IxvVdjDLkDqKcwAxaSRYXK/ONdrAJkwDT2ffrPgCTvGlCHjg3J
+	goUev7cwW/7FTRTpKsQmBfTpEL9l/HNFv8GhOTJUX4j8Dwk/1dg7Lfmy3locaXHey4ApY2N1Ty8
+	XjtDWbr4ibvBvHbao=
+X-Received: by 2002:a17:90b:3c08:b0:3a8:bd51:205b with SMTP id 98e67ed59e1d1-3ae89812f18mr17182376a91.37.1793884960402;
+        Thu, 05 Nov 2026 05:22:40 -0800 (PST)
+X-Received: by 2002:a17:90b:3c08:b0:3a8:bd51:205b with SMTP id 98e67ed59e1d1-3ae89812f18mr17182351a91.37.1793884959900;
+        Thu, 05 Nov 2026 05:22:39 -0800 (PST)
+Received: from mpilaniy-mac.redhat.corp ([2401:4900:1f28:63e0:edae:927e:c670:b679])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b31601b7sm3856804a91.5.2026.11.05.05.22.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 05:22:39 -0800 (PST)
+From: Mukesh Pilaniya <mpilaniy@redhat.com>
+Date: Thu, 05 Nov 2026 18:51:33 +0530
+Subject: [PATCH] kho: fix restore order for NUMA-split preservations
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
+Message-Id: <20261105-kho-numa-v1-1-e807879644cc@redhat.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM0QpAMBTG8VfRubbaLMKryMXMYYeMNpOSdzdc/
+ ur/fRd4dIQe6uQChwd5Wm2ESBPQRtkRGfXRkPGsEIJLNpuV2bAolmuUpZLYV7qCmG8OBzq/q6b
+ 97UM3od7fPdz3AwbzeB1sAAAA
+X-Change-ID: 20261103-kho-numa-5ce38a3ed9c9
+To: Mike Rapoport <rppt@kernel.org>, 
+ Pasha Tatashin <pasha.tatashin@soleen.com>, 
+ Pratyush Yadav <pratyush@kernel.org>, Alexander Graf <graf@amazon.com>, 
+ Samiullah Khawaja <skhawaja@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, Mukesh Pilaniya <mpilaniy@redhat.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793884955; l=3669;
+ i=mpilaniy@redhat.com; s=20261103; h=from:subject:message-id;
+ bh=2j7UXRooyvW22SzIaRB/dl4RDz1nl9MFyxNiZyzuBgw=;
+ b=vdaovpNvxbtOZRXpNitY6GqWoF6nDPZnjCousaLKgOJwI/K78h/4L2Dco1VA9V3Xcs/fKO107
+ 0UkOGgTHLK7Cw6fzuSyiGE2vzHPSQcKHjK954qch/bS6j+SUWRF3KTp
+X-Developer-Key: i=mpilaniy@redhat.com; a=ed25519;
+ pk=dOf4ctfH7dkkTYewUPOzloK8/0QFmb+uPo0tKgpSdzU=
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: DiOIxWCIH5AWdE3XLDSrun98xMNLZPaue-2RrZ3gZRo_1793884961
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
 X-Rspamd-Server: rspam09
-X-Stat-Signature: o8dok5kiafmpmsm3e1bym9g95ksjsmtf
-X-Rspamd-Queue-Id: 46E791C0006
+X-Stat-Signature: yidkb9qg1rgbyihi5718h1ofk57s5qmj
+X-Rspamd-Queue-Id: 3DF04A0008
 X-Rspam-User: 
-X-HE-Tag: 1793884959-535917
-X-HE-Meta: U2FsdGVkX1+vU1UmybLDpmo5Ki2QGcmTS/V183bqyDtO0sfi3nKrHtm3rUhCOKmJKY1BauE78m6uyWQNuA5dOo6LzY7lwjJTlVfa3KJSW9ixCM2pWmmLPWGzktjXlBHTQcEGDeJ8Pe8Q48KnjSbmzke+zawR5LzAq2liRHgZNQLbFMSbXnsVrZg9IPrFfV6wg4vdPlKE8krGF1Nf9VFrX0qHD5nrIi0Ifv7svFaOYr/WHUskKuDy0KTDUseH14W7B5/Nbt/YlSKrfupNoZ7e9+udyDQGQltPohSYzIYdxxOYjJTODb1XGWbLL7TDR2vMj6eGLoELTjpfpnxLGlt0JrhtbfCzQ1tSvIF9CQzz23uYX0/f9QraEEmmj6njF8aZIdW/MxUnSb8ddEHARj5v3sGa15tj2OtW9bmNZ4SUcVHfbPW+eCsda+LBQNH/7C+lwlrfj/f7sySuCZCIEB40qb5DucIin4El8E6nMyzVtCONUCTd8h0LxC5HA3N/LVvI7CSYQvGz3PFGjof1FGH0NzDEfGqjyalS8almrRq7zhVtsPskvYp4B3Gf6EIb5UdI7ynEihRdkt1KlKZ9nAmcthrq4AyZXyk43WYIozzNZZ3AAtXHGdMrOmWsfYzw/68ZXiLu3N9+ARm9Luz81rCAOISMCX3niQJoLffgFnGSutM3+hx/VKmlK8i+Qk+AxTUVbQcuRL89HTt2nsj1fGroBVKF5bdAmai/2q4YQ2fwRPFfW517+AZUpCR4X5qLKTdpzHjLa/ap84Xma7oMhWzNT4Bzs5kGC8UZn1Z9OKhvBEo3paJVGXsF29uSJSL3Q0r+m1H8vywKdCMeQuddFsfwHmAKym5WGHu1JvyN1cCvGbFmupiMOzlz5GQ3AWoRgaeoNZM8F88i0pdr3kyfBPBlhVtvCoOQcZtGF7pXnTunktBkegbVarpnnew3rycQsxrdHu9ad03OXj2Dsn7XD75
- hD5qHkqi
- ePeVoNDkmMWDrfUUZPsyEmVE3heyV2xjb/nbjzS8B66bwEjMKV22tAKqFNw1Bd2koMapaSp4c4BZplfJHfNuLln4YEAa6muHVTPQ/z+cutqHh3Uyq6mEE4D0c+y22M2ogzcAJeDzvQbi62A7TYyaQOrNng374J5thWJYao8AKEAypL+0Nj7/VGmb6JeZJgAYo5pF92MogsG2Ju4wQg4IIkvNTP8/iBunIkev7Dk4RX5QpxrvKA2qRsnC7dndNAtijXYTtFgiTaZ5p/0ZW/4G4UObXURI98KuNBNDHpmLVX+VIH8E=
+X-HE-Tag: 1793884966-251617
+X-HE-Meta: U2FsdGVkX1/p5sC8O2Rx+T1E3sKQChwyIaLWDT6kIlPEpWR5IUWs3hB7AxVG8zNjViWkUwJXXut81/aXGMeX9a0SF7y/O86Mthwnvc4hEH8s2AW9mlcJEqw+VR3WiQgqJ3n+ieiGVEFT+CLbqFUZ4DBsjBSP/s/duzsGBZ01JOJUmB914iWxwm5ifASH5zhIeRg5wQI0oyILCzq3IuozYKSTleV9Jv5VNgf7JO8Pi22QkAMJvI5A5idtFvUtQruYj1O/9atDpPjVke7paLXCsKOD03nFXyNC6/+6Oyx35ZOoVuFZ0yElS8UCnydtKRh5pUdIWVW2JU22Yv9PhT7B4fTI7LWGgVH4P94gmCnBcQW15Xh8uXPtIgtWOaQ3did6HRvhhPHj/wrq8nGGcStTXJckyVV7dHq7JmnSITL5nssLl7csZD/a8Idm5GF48nk5zxQuz8yhmKtm5rgcVrXdukxbR4vGwSyUG0/84YZ7T7kha0jJJfuXVVHdG7vt103WorFy9LwmcQHgmpM+GmoBlz5rppMsmk6QXfZKsYBV9OK8ZezyZ396YpXmU6Ty8cMleSWuiabpOqZdSxKLK5nEmrpS3fxip9DqFMeaD9bZ34Hf2SXBDGKshqCagMHgAxExruxNuR+d0zPjTX8DekV7/BjgnO34S8ewCYhLuJeMAEKsS7FZl8/fbAXOhBlTEftj75Ya22sNE4k9apf3+s+B4AXj0CCxpUbwh3r9xQFMp2CBP/9mfe4rtj1XHzOVAt4aeJ9rUrL8Tg2ULYwyN7LWhtxvTI9WH8KzpUi70sN/hpB29Cn3gTTIu035yaeJigHa81SQhvbp0wzS2TyFJtmvdUoxd22eois30cYkp4v3dUQswh2tLgKUUUgew4yM/MTo8h6TlvedR/UjLQFxe/UT3ArfRfOZfDSALG/tkqJZQU7KZ0SwnalScTsVyBdiv+IRQPpgA3fYRS3EQ7X0Jfc
+ KF3wX1pH
+ VMWRZ9inpJkYRgpEa8cX+oHfMrZpOM5hlt9hXsUJzvYE706+YezewmHS3S2F9qJHYEclKWn6ne3d+8UV2l3OrMgXib8G2I9l8rqvkEvW22tiXRLKiB9Jv+/jeoV2ySp7hLUmFb+oKz1p+3XjEd2xi/CzrEtEoAmgV0wuS3PDcH5QDC+UBsQV/rgZwzOlrxsGMw5Tq9PAIn5Yuouayse00ACGhUmuUx5afsw6NHM2f1jT2q7KYfhIQ9QMMlaKljMDMCzksO/ERqDQpeTy36DKj+/aNTG4k12BIcAzFWenKgsIOGxabgK/RITPTDBxbLQYrF6MPI1igAcoNMJc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,82 +144,100 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Ridong Chen <chenridong@xiaomi.com>
+kho_preserve_pages() uses __kho_preserve_pages_order() to reduce the
+order of a preservation so that it does not span multiple NUMA nodes.
+kho_restore_pages() does not use that helper; it recomputes the order
+from the pfn alignment and the remaining length only.
 
-Joanne's series to reduce cacheline contention around struct
-mem_cgroup_per_node [1], now in linux-next, made me look at the MGLRU
-side of the same structures, and at the stores MGLRU does on hot paths,
-to see whether any of them write a line for no reason. This RFC has the
-three candidates that showed a measurable difference. They are
-independent of each other.
+When a preservation was split at a NUMA boundary, restore picks a larger
+order than preserve did and jumps over the next key. Those pages never
+get restored: they stay memblock-reserved and keep the KHOP magic in
+page->private, while kho_restore_pages() returns success for the pages
+that were restored. The consumer has no way to notice that part of its
+buffer was not restored.
 
-1. lru_gen_use_mm() writes mm->lru_gen.bitmap on every context switch
-   to a user task, although the bitmap is almost always already set.
-   For threads of one process spread over several CPUs, the line
-   bounces between them. Read first and skip the store: +2-3% context
-   switches per CPU for a shared mm, no change for private mms.
+Fix this by reading the order from the key being restored. The order is
+already stored in page->private by kho_preserved_memory_reserve() and is
+validated by kho_restore_page(). Advance by that order instead of
+recomputing it. This also keeps restore independent of the incoming
+kernel's NUMA topology.
 
-2. folio_update_gen() and folio_set_lru_refs() always end with a lock
-   cmpxchg, even when the flags do not change. During aging, a folio
-   mapped by N processes is visited N times and only the first visit
-   changes anything. Skip the no-op cmpxchg: an aging pass over a 2GiB
-   file shared by 8-64 processes gets 18-22% faster.
+Example: QEMU is started with two NUMA nodes:
 
-3. lrugen->evicted[] and ->refaulted[] are updated locklessly on
-   every eviction and refault, and the file type counters share a line
-   with lrugen->enabled/gen/seg/list, which are read on every LRU add
-   and by shrink_many(). Move the read-mostly fields up and give the
-   counters their own lines: +4.3% fio IOPS with 24 jobs refaulting
-   file pages in one memcg, no change at 8 jobs or fewer. This one
-   costs a cacheline per memcg per node, and its gain needs many CPUs
-   refaulting from a fast backing store, so I am not sure it is worth
-   it on its own; feedback welcome.
+  node0: [0x40000000, 0xC0400000)   2052 MiB
+  node1: [0xC0400000, 0x1C0000000)  4092 MiB
 
-All numbers are from an i7-13700HX (8P+8E, 24 threads, one socket) with
-turbo disabled and the performance governor, on next-20261023 with the
-same config for base and patched kernels. Details are in each patch.
-The series is rebased onto next-20261104, which includes [1], without
-code changes; the struct sizes in patch 3 are updated for it.
+The module preserves [0xC0000000, 0xC0800000) (8 MiB, 2048 pages). The
+range is 8 MiB aligned and the node boundary sits exactly 4 MiB into it, so
+preserve emits two order-10 keys, the first at 0xC0000000 and the second at
+0xC0400000. Restore computes order 11 for the first page, restores the
+first key and jumps straight to the end of the range, skipping the second
+key.
 
-Limitations of the testing, where input would be welcome:
+Fixes: 91e74fa8b1bc ("kho: make sure preservations do not span multiple NUMA nodes")
+Signed-off-by: Mukesh Pilaniya <mpilaniy@redhat.com>
+---
+ kernel/liveupdate/kexec_handover.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-- Patch 1 does not show up in will-it-scale context_switch1 or
-  sched_yield (explained in the patch), and perf bench sched messaging
-  and schbench are too noisy here to resolve 2-3%. The numbers come
-  from a small test that pins two sched_yield()ing threads per CPU,
-  with a one-process-per-CPU control.
+diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+index 6f1f55fe3181..7d30ad9cc512 100644
+--- a/kernel/liveupdate/kexec_handover.c
++++ b/kernel/liveupdate/kexec_handover.c
+@@ -511,7 +511,8 @@ static void kho_init_folio(struct page *page, unsigned int order)
+ 		prep_compound_page(page, order);
+ }
+ 
+-static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
++static struct page *kho_restore_page(phys_addr_t phys, bool is_folio,
++				     unsigned int *order)
+ {
+ 	struct page *page = pfn_to_online_page(PHYS_PFN(phys));
+ 	unsigned long nr_pages;
+@@ -530,6 +531,9 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+ 		return NULL;
+ 	nr_pages = (1 << info.order);
+ 
++	if (order)
++		*order = info.order;
++
+ 	/* Clear private to make sure later restores on this page error out. */
+ 	page->private = 0;
+ 
+@@ -550,7 +554,7 @@ static struct page *kho_restore_page(phys_addr_t phys, bool is_folio)
+  */
+ struct folio *kho_restore_folio(phys_addr_t phys)
+ {
+-	struct page *page = kho_restore_page(phys, true);
++	struct page *page = kho_restore_page(phys, true, NULL);
+ 
+ 	return page ? page_folio(page) : NULL;
+ }
+@@ -573,13 +577,13 @@ struct page *kho_restore_pages(phys_addr_t phys, unsigned long nr_pages)
+ 	unsigned long pfn = start_pfn;
+ 
+ 	while (pfn < end_pfn) {
+-		const unsigned int order =
+-			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
+-		struct page *page = kho_restore_page(PFN_PHYS(pfn), false);
++		unsigned int order;
++		struct page *page;
+ 
++		page = kho_restore_page(PFN_PHYS(pfn), false, &order);
+ 		if (!page)
+ 			return NULL;
+-		pfn += 1 << order;
++		pfn += 1UL << order;
+ 	}
+ 
+ 	return pfn_to_page(start_pfn);
 
-- Patch 2 has no standard benchmark either. In fio with many mmap()
-  readers under memcg pressure, reclaim time goes to rmap walks on the
-  eviction side and aging barely runs. The numbers come from triggering
-  aging through debugfs with force_scan, which is the upper bound. On
-  real systems the gain scales with how many processes in the same
-  memcg share the hot file pages, e.g. preforked servers or Android
-  without per-app memcgs.
+---
+base-commit: 2637bdec0535a2044cd830eba9a79363651d9043
+change-id: 20261103-kho-numa-5ce38a3ed9c9
 
-- Patch 3 depends on the layout of the containing structs, which
-  depends on the config (LRU_GEN_STATS changes the array sizes). I
-  checked LRU_GEN_STATS=n only.
-
-The test programs are small C files; I can post them if that helps.
-
-[1] https://lore.kernel.org/20261023195417.1391216-1-joannelkoong@gmail.com
-
-
-Ridong Chen (3):
-  mm/mglru: skip redundant bitmap store in lru_gen_use_mm()
-  mm/mglru: skip the flags cmpxchg when nothing changes
-  mm/mglru: move lrugen atomic stats off the read-mostly lines
-
- include/linux/mm_inline.h |  2 ++
- include/linux/mm_types.h  |  3 ++-
- include/linux/mmzone.h    | 18 ++++++++++--------
- mm/vmscan.c               |  2 ++
- 4 files changed, 16 insertions(+), 9 deletions(-)
-
-
-base-commit: 8b7179210b22f8e48a82c5ceacb9d56a9c4cfec4
--- 
-2.34.1
+Best regards,
+--  
+Mukesh Pilaniya <mpilaniy@redhat.com>
 
 
