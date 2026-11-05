@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EADAE606D810
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EA7606D803
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k8hYkPZm
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B5vNiziv
 Received: by kanga.kvack.org (Postfix)
-	id 1BCF26B05BC; Thu,  5 Nov 2026 16:33:10 -0500 (EST)
+	id 427206B05BE; Thu,  5 Nov 2026 16:33:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 18D006B05BD; Thu,  5 Nov 2026 16:33:10 -0500 (EST)
+	id 3FE036B05BF; Thu,  5 Nov 2026 16:33:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0A2B96B05BE; Thu,  5 Nov 2026 16:33:10 -0500 (EST)
+	id 314D56B05C0; Thu,  5 Nov 2026 16:33:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D7B6C6B05BC
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:33:09 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F231C6B05BE
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:33:27 -0500 (EST)
 Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6F03240C4C
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:33:09 +0000 (UTC)
-X-FDA: 85402366098.18.731FACF
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6F708160C33
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:33:27 +0000 (UTC)
+X-FDA: 85402366854.18.A979D4C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9D11240006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:33:07 +0000 (UTC)
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9C8304000D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:33:25 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k8hYkPZm;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B5vNiziv;
 	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793914387;
+	s=arc-20220608; t=1793914405;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m7GxaMyT1RDDZjvYUJ0P1FPXnvCLADlxook/8V9dsi8=;
-	b=n1SZwv0FQbJEoxm517vvPzibemLSpTUBAEE2DOJ7Mmq9Aq65hiYT3QAE54dSReL3eBVUBT
-	PWxFBB64iY3u9QVGHbhVlBXqyQQHV6i4VPGekTkVy7XaLRIjUSI6p2nvCPGgZxIPXu5MYX
-	a9xBR01hE9g2LNFzyB57gqLeUO6wN10=
+	bh=M0pYf4wz8leHRtACWiiE+5QjHFuiPzSaPBJ/BygPIB8=;
+	b=nZ4pga2EvL/FFgdq5/ggz0QVM6MMzzp9QSZYMDKt05Ii63EEIvBywfja4qFzVFQ76Vq7Uk
+	0lN7b2Pa69ioL6iD8afNS8tw6DDQ7F6qVngnrKbW9JlS+d/wuRNljv6lwOR3ST65tKCeIm
+	IWdveSwz3PAj/hgWwgUyhRnfKb8LcSI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793914387;
-	b=EraWMUIZDuHl3L/ylKRwYTXGNS13XyuKkNNm6DEqJt22iTytKsSEWN2zWJbXx0zGc6d8aS
-	0cDFiPNcuop9PUCAK4/c+QUMzVtAze5kqd2XrxowOZr0dHnYSEBSeMNEgjOhOILl/K5T8w
-	htoJTIlUJMDEtpsP/HZSuDhzOpX0roE=
+	t=1793914405;
+	b=rZCNY75D7neXcGs/0XiMHrVG2ke8huU+SdelPlkgfne+43Ce2P6/Y3rnEfwjZCJ8QW3ke7
+	T9d82LLME+iq7gEaAn+lf27dJFOVlSgTPuIQ8fAPZKPIsXNh3giCyclvDc8jWiXQfc6qqs
+	DG/jF5AqDaDWz5k3oERh7pvfMLezCgM=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k8hYkPZm;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B5vNiziv;
 	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D278943A33;
-	Thu,  5 Nov 2026 21:33:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8151C1F008A1;
-	Thu,  5 Nov 2026 21:32:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E136B43630;
+	Thu,  5 Nov 2026 21:33:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308621F0089F;
+	Thu,  5 Nov 2026 21:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793914386;
-	bh=m7GxaMyT1RDDZjvYUJ0P1FPXnvCLADlxook/8V9dsi8=;
+	s=k20260515; t=1793914404;
+	bh=M0pYf4wz8leHRtACWiiE+5QjHFuiPzSaPBJ/BygPIB8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=k8hYkPZm2/pNrZ7EGT5yfX1hDqkfbsiN5BZQAc2alxhZN/lO2EIADVG1XZZszS2Mm
-	 wPm8qPwfKSjXE8ccdOrrhF/5qV9Ihrlkg6W1gXymeRMxbacxWePAzLTmTTTV7pL/yi
-	 fJMX/FMrz82+OboTjaVsB5vXJ64A96eA4XLSV/z914xzmGvQdZIPkJTL6WPxqXmqpL
-	 lfF1+qnBw3S5+53BBL+/xcxy+q+sUoZjHkaps5OG2W/QOMJBWiIDxCsBg3pAvKRrJo
-	 gUyWzSb/72LF5NGz71qtcXALC/C+7CGw8ijhXRkAUE0qP6azBge/ey+mLe0scRvKMF
-	 2v7rVxyxRR19w==
+	b=B5vNizivHZEU1KoNI86QKGoZ078bEirUQPKmYN2ZC5I+UovaOMaR7kxE0je9fMD31
+	 HaYi8+to8sOuLxjaZxifCqDxztBTi51kFe9a98XyXbRD7OtyoPxM0JS8X3xP1WR9GP
+	 DTsGwu3IST4+RHoKgTvjk6pz1hf6DxiPyCgRkccebG1AFbChb4l83vlGjhM/clWVl8
+	 RhZq/VTVtO9Df23SXK/dkkWy4uCF3qQAnYkttXvsPSoI/cqoIUuoj98/ILanad4VRj
+	 NDdELiEC2TR27LnCIdX2sXR0YgorK/Nd1hWUOmKo1MF5O1lcbC/mKHbYP+rOVPk8li
+	 2fYJIyFAm9KDA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Thu, 05 Nov 2026 21:30:56 +0000
-Subject: [PATCH 05/13] mm: convert THP VMA flag tests to use vma_flags_t
+Date: Thu, 05 Nov 2026 21:30:57 +0000
+Subject: [PATCH 06/13] mm/ksm: convert VMA flag tests to use vma_flags_t
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
+Message-Id: <20261105-late-2026-vma-flags-v1-6-0d3cd15ab75f@kernel.org>
 References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
 In-Reply-To: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -128,27 +128,27 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6667; i=ljs@kernel.org;
- h=from:subject:message-id; bh=+McSI8JCXbJ4PzexpVY3WU43TmwTyEjeJI5zg9kZGWw=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLefF0Wsdj93LoFi5b56wudeiIyh6nvw08l7tB7nce9M
- iytTp5Q7ChlYRDjYpAVU2R5/kV8f5BI2LzOC/5uMHNYmUCGMHBxCsBElsQw/A+7Gvc3UvOikrbK
- yiMsMYfmH1aP43h5dkfn/AI9EdEb7DcY/gpdm7eOZdH/ewou/jEzt1+M/mz5qILXzdOpX0tL6vy
- 99cwA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2315; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=xZlktZwJsOHuvEUJpFUKz3hiGmT/MeLFJ/LiKv6KqSo=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLLefF0WIiXRO6NsUtnEorKsaV4B8YsNutOPhpzRcjw46
+ 8z2Q9vZO0pZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjAR4R5GhlO/r1jOXb2bl9X0
+ /dHAF6kHI3p/3VSO9VAy1ryzcNKLZlOGfwpr7cIrqwPev3nt5SQX++zQYwdj5rQ3NdZbn1fZ/tw
+ oyAgA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9C8304000D
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: n5cjtw4kmakpn8m7zar19oqbuuhfyw3x
-X-Rspamd-Queue-Id: 9D11240006
+X-Stat-Signature: uqmodgc3zhatm6as81yxn91dn4aer79o
 X-Rspam-User: 
-X-HE-Tag: 1793914387-43399
-X-HE-Meta: U2FsdGVkX1/wqtGOHdNsW86XKSfy6PeqQgM4BNsBnBygr6p55ZPBV0lEcFGvo4J3f4PVsJZMs69j/m0EW1tWiczdVBSo7EbnPWtE9rjOWesQ1ZrcdX4JRJKzFERRcQkcjleYme47WILClJj/Z36ArFk+qResYa4pgpDjiDwm66vtPCJEu0LRN1P7cLxHSwTUXB70iWNCy0U7qffSr6D2gpKrwsRi8yF74bbJocvzC/a9gMdn/PJF+40UDtLCDvr7Oh6znRXubYKnyua2hjAciFECQFrig4bMf7ulo2trkpVAFKh0+rL6gZY2LI4TD5LfTUaSKPoJNZYpVd/rTD/liYn3dvXfqPv0WwERGJS3kPPXsqXRVh+AUFLM/1fZaLi+ii1qL65rd5yzAk3pbeOacoeYEHxZVc4NGNVKsk1QYjU6gopLMQ14sBlnnYCPOA90MYk1FujwvTqdeNiFCTwWj7WEAleqTKnhC5FN10iGyIM8Qq3zTRuQvHXHj2VYJVsu5grzCHayp3Pk6kpJ81IFoJjB0JhguhoyOKFKseqzn9OFa/NpAGTuS9qUKm0p9OkWuqxgaIvAK8u8EgpermOV6gOkoVcs9BXuAJS/MOAr/AlHflDG+2fsmnq32QBUxqCxefP+II6AKLQhsyCpKObbdz8Ni7HOVRTGAXAfoRx4h33Do57xSGRmb2gUm5awbXjMRhoj3Urubsc4i3nww0Zp/NSg34z/P1qoVnCpFYQt/SMXj16kVXhzaPyxQyR232UrL+9UxleA/v4YyDBthJO9/L1tg9G91UNyC+tpXYVquCpRzcPWD1CQdw7Q5VyiLKkNsfnvyUOZy7iNmDbfWA0zcokCj/wB7TdeFX3ScWMTcrVr/cNvCxaevYU9TYR9N7VurR4IFWv/2Dv8ZK9Wsx0Fzjs07JHfqa0bYsbwP9RubAzB1al49kSdiUQl4DskLmMtW2bp3blucCd/NFYrl96
- Yhqkmb4/
- 3d32VqzNmQX77TKMV0quG5HAuNY0sB6nZwa0fpZxklBowHqoCh89jOTupWxTVJEtPPH33McWnybTS0hm3yLrEDw0bvF8WUYdQNuz6QgUdLdLLduIDhq6wlt3dCsyDV+n6Onec8hnztV4mVNvFuEx+z2pcp+9obIz0p070u/n7HPwpg9uU3lJg0Ht4A9CL/SUcvjntQUzLxOPtVbolPRGjm8gaK3LrCSa8clWa44wF4ZD0H+We/EhGMtztnNY4OKTlHag2C8daHnCMdlWUTUDbS0WdcF7F/5GY73nT2iF0W+/WYg/Bz+qvdC4/VSOHNs9pLcWfnrLlvI3QB5tOii+MFwbYgsh0/nZy7DZKAn0j5ZzWVISiMek5W4ODuw==
+X-HE-Tag: 1793914405-228511
+X-HE-Meta: U2FsdGVkX1/VHoKiDoiwjyc+F9+CJWOWBZJfuyHYy9Tz9z0VGK2HnmUDnI/Jyv+MMB7lF8akNKJBWUr8RUScGdkuW+StbDvTVO/Ee8SIkLV0u0RGg2cGFf+U8nJbczGTkQm0pgOMktWJA8pwedLd+f5TYf2vgKoiN+t5h6mvrLYAAcJaGTwmMBTLxjZNBgabxiUs9EteYPRye23IwMqPW3Ck+twg7KzSPqxP11vZBJNh1rdXvJq/1RkU0tr1puD2vcbCWZhEZr4DIuZrol+sweskYA+q8ipNIr8BSfQXkrmwEYsiP+BfFli9/U0sYKCrGM+7ixIhavteRTwIxTzM1OORpnrGz4aBGfF+GVjxyrFJaZZ1YF3M7YkhY9kmBYH0WaHJgxL1kgLdu/Uydh5qrYh4BY48emX/P+mWueQQpusnud7NuPa1ZbPBEWlVcmF1im9oKjlfYbatpzTVGfRXo7PbDvYEUehw2ysJR2/z3JNdRJ9oAiPb2zsoZEFlFJuh/T5EPkFPQmFlhivKWUOKvunYCJTDWDaVlt24FJ41JtEvL7hrjkxZpiELsZBPrCzT6L6o9l/JsKKUR1Ux+L+N1kZWLFNFsdSg1naYbPShsy6j10EXOqFIVcfF173UeO1W7MkKQtEI4wNfYIwdTNaSQudegc5M2yrf3vcb708eCdq1l7i0z6zNwVObiPhjIbM36p4c1wvz6zfPaOTzRG0Ol//3efzVIHq+Sx9n2a2+dN4UfshCx+Zr//slVpfnwY/+F6gN/Mnng99cPYaDr9RWfObSp6JdRZsoDC4dU8MUArqo85ygrzDy66vWjIgCNbDmi2IGtPBhgKyNuavckQHHdxRiJaS9OllWhdnNopeL9y1mcumfH6L14KPkHjvVQlQ96z+IKxoz5NibAOCFhZ7RAzjIHsL9GRACXvoQkjaCjzClDFfeNxJCQYZXDsjq0dtAKTGW2fcTVbyuM3aauOP
+ Uc57K9op
+ tUiehct3UJSM3dLC+ZRTp9V0I8j78ogtJU/yvWD2R7fON7AagH4TADbV/T4Lf8ClHP+7NVfoxHfBmp9YdqnlF7mnfrCUeZ1l2n4H4rCE3boXPimcVD+T6yGFPQzaOoLLyHj79wSMDvRY/76TjpNW2MHLs+kZQVbLZlbAkkqNAkwTl9FclvTwUx4k2qNFIPQtHBsNrfdyw6Ici4NvVFXHb5pAb4Ysroz8gIbV+dDX7b09jmc4LQiMvGz7lgkUi1/8vSHQG1B2Rs2FK2ZiaxvEAkgVxP9Z8wQ9XYtHGngn+a21P0Nkioji/gGdwoW005XeatJzV5tx3shAH7dMEXzUXOjHs0huP0v7PSyaW9iqw/F/2mKE2GvvTfa4GmQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -158,160 +158,77 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 Replace use of the legacy vm_flags_t flags with vma_flags_t values where
-VMA flags are tested directly in the THP and khugepaged logic.
+KSM tests VMA flags directly.
 
-The thp_vma_allowable_orders() family of functions, hugepage_madvise() and
-khugepaged_enter_vma() continue to take legacy flags for the time being.
-
-Also update BUG_ON()'s to VM_WARN_ON_ONCE() while here.
+The ksm_madvise() interface continues to take legacy flags for the time
+being.
 
 No functional change intended.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- mm/huge_memory.c | 32 ++++++++++++++++----------------
- mm/khugepaged.c  |  8 +++++---
- 2 files changed, 21 insertions(+), 19 deletions(-)
+ mm/ksm.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 7e589a2fb02d..764e693b422f 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1257,7 +1257,7 @@ __setup("thp_anon=", setup_thp_anon);
- 
- pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
- {
--	if (likely(vma->vm_flags & VM_WRITE))
-+	if (likely(vma_test(vma, VMA_WRITE_BIT)))
- 		pmd = pmd_mkwrite(pmd, vma);
- 	return pmd;
+diff --git a/mm/ksm.c b/mm/ksm.c
+index d6f736a1aa2f..61b772bba229 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -779,7 +779,7 @@ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
+ 	if (ksm_test_exit(mm))
+ 		return NULL;
+ 	vma = vma_lookup(mm, addr);
+-	if (!vma || !(vma->vm_flags & VM_MERGEABLE) || !vma_has_anon_rmap(vma))
++	if (!vma || !vma_test(vma, VMA_MERGEABLE_BIT) || !vma_has_anon_rmap(vma))
+ 		return NULL;
+ 	return vma;
  }
-@@ -1517,7 +1517,7 @@ vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf)
-  */
- gfp_t vma_thp_gfp_mask(struct vm_area_struct *vma)
+@@ -1243,7 +1243,8 @@ static int unmerge_and_remove_all_rmap_items(void)
+ 			goto mm_exiting;
+ 
+ 		for_each_vma(vmi, vma) {
+-			if (!(vma->vm_flags & VM_MERGEABLE) || !vma_has_anon_rmap(vma))
++			if (!vma_test(vma, VMA_MERGEABLE_BIT) ||
++			    !vma_has_anon_rmap(vma))
+ 				continue;
+ 			err = break_ksm(vma, vma->vm_start, vma->vm_end, false);
+ 			if (err)
+@@ -2698,7 +2699,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 		goto no_vmas;
+ 
+ 	for_each_vma(vmi, vma) {
+-		if (!(vma->vm_flags & VM_MERGEABLE))
++		if (!vma_test(vma, VMA_MERGEABLE_BIT))
+ 			continue;
+ 		if (ksm_scan.address < vma->vm_start)
+ 			ksm_scan.address = vma->vm_start;
+@@ -2890,7 +2891,7 @@ static int __ksm_del_vma(struct vm_area_struct *vma)
  {
--	const bool vma_madvised = vma && (vma->vm_flags & VM_HUGEPAGE);
-+	const bool vma_madvised = vma && vma_test(vma, VMA_HUGEPAGE_BIT);
+ 	int err;
  
- 	/* Always do synchronous compaction */
- 	if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG, &transparent_hugepage_flags))
-@@ -1716,10 +1716,9 @@ vm_fault_t vmf_insert_pfn_pmd(struct vm_fault *vmf, unsigned long pfn,
- 	 * but we need to be consistent with PTEs and architectures that
- 	 * can't support a 'special' bit.
- 	 */
--	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)));
--	BUG_ON((vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) ==
--						(VM_PFNMAP|VM_MIXEDMAP));
--	BUG_ON((vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma));
-+	VM_WARN_ON_ONCE(!vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
-+	VM_WARN_ON_ONCE(vma_test_all(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
-+	VM_WARN_ON_ONCE(vma_test(vma, VMA_PFNMAP_BIT) && vma_is_cow_mapping(vma));
+-	if (!(vma->vm_flags & VM_MERGEABLE))
++	if (!vma_test(vma, VMA_MERGEABLE_BIT))
+ 		return 0;
  
- 	if (unlikely(is_huge_zero_pfn(pfn)))
- 		return VM_FAULT_SIGBUS;
-@@ -1750,7 +1749,7 @@ EXPORT_SYMBOL_GPL(vmf_insert_folio_pmd);
- #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
- static pud_t maybe_pud_mkwrite(pud_t pud, struct vm_area_struct *vma)
- {
--	if (likely(vma->vm_flags & VM_WRITE))
-+	if (likely(vma_test(vma, VMA_WRITE_BIT)))
- 		pud = pud_mkwrite(pud);
- 	return pud;
- }
-@@ -1827,10 +1826,9 @@ vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, unsigned long pfn,
- 	 * but we need to be consistent with PTEs and architectures that
- 	 * can't support a 'special' bit.
- 	 */
--	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)));
--	BUG_ON((vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) ==
--						(VM_PFNMAP|VM_MIXEDMAP));
--	BUG_ON((vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma));
-+	VM_WARN_ON_ONCE(!vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
-+	VM_WARN_ON_ONCE(vma_test_all(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
-+	VM_WARN_ON_ONCE(vma_test(vma, VMA_PFNMAP_BIT) && vma_is_cow_mapping(vma));
+ 	if (vma_has_anon_rmap(vma)) {
+@@ -3027,7 +3028,7 @@ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
  
- 	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
+ 	switch (advice) {
+ 	case MADV_MERGEABLE:
+-		if (vma->vm_flags & VM_MERGEABLE)
++		if (vma_test(vma, VMA_MERGEABLE_BIT))
+ 			return 0;
+ 		if (!vma_ksm_compatible(vma))
+ 			return 0;
+@@ -3484,7 +3485,7 @@ bool ksm_process_mergeable(struct mm_struct *mm)
+ 	mmap_assert_locked(mm);
+ 	VMA_ITERATOR(vmi, mm, 0);
+ 	for_each_vma(vmi, vma)
+-		if (vma->vm_flags & VM_MERGEABLE)
++		if (vma_test(vma, VMA_MERGEABLE_BIT))
+ 			return true;
  
-@@ -2262,7 +2260,7 @@ static inline bool can_change_pmd_writable(struct vm_area_struct *vma,
- {
- 	struct page *page;
- 
--	if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE)))
-+	if (WARN_ON_ONCE(!vma_test(vma, VMA_WRITE_BIT)))
- 		return false;
- 
- 	/* Don't touch entries that are not even readable (NUMA hinting). */
-@@ -2277,7 +2275,7 @@ static inline bool can_change_pmd_writable(struct vm_area_struct *vma,
- 	if (userfaultfd_huge_pmd_wp(vma, pmd))
- 		return false;
- 
--	if (!(vma->vm_flags & VM_SHARED)) {
-+	if (!vma_test(vma, VMA_SHARED_BIT)) {
- 		/* See can_change_pte_writable(). */
- 		page = vm_normal_page_pmd(vma, addr, pmd);
- 		return page && PageAnon(page) && PageAnonExclusive(page);
-@@ -3568,7 +3566,8 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
- 
- 	if (pmd_dirty(orig_pmd))
- 		folio_set_dirty(folio);
--	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
-+	if (folio_test_dirty(folio) &&
-+	    !vma_test_single_mask(vma, VMA_DROPPABLE)) {
- 		folio_set_swapbacked(folio);
- 		return false;
- 	}
-@@ -3600,7 +3599,8 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
- 	 */
- 	if (pmd_dirty(orig_pmd))
- 		folio_set_dirty(folio);
--	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
-+	if (folio_test_dirty(folio) &&
-+	    !vma_test_single_mask(vma, VMA_DROPPABLE)) {
- 		folio_set_swapbacked(folio);
- 		set_pmd_at(mm, addr, pmdp, orig_pmd);
- 		return false;
-@@ -3614,7 +3614,7 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
- 	folio_remove_rmap_pmd(folio, pmd_page(orig_pmd), vma);
- 	zap_deposited_table(mm, pmdp);
- 	add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
--	if (vma->vm_flags & VM_LOCKED)
-+	if (vma_test(vma, VMA_LOCKED_BIT))
- 		mlock_drain_local();
- 	folio_put(folio);
- 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 0d3bd9e23613..a2c7c6a0768d 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -640,7 +640,8 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
- 		 * If the vma has the VM_DROPPABLE flag, the collapse will
- 		 * preserve the lazyfree property without needing to skip.
- 		 */
--		if (cc->policy.anon_skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
-+		if (cc->policy.anon_skip_lazyfree &&
-+		    !vma_test_single_mask(vma, VMA_DROPPABLE) &&
- 		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
- 			result = SCAN_PAGE_LAZYFREE;
- 			goto out;
-@@ -1683,7 +1684,8 @@ static enum scan_result collapse_scan_anon(struct vm_area_struct *vma,
- 		 * If the vma has the VM_DROPPABLE flag, the collapse will
- 		 * preserve the lazyfree property without needing to skip.
- 		 */
--		if (cc->policy.anon_skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
-+		if (cc->policy.anon_skip_lazyfree &&
-+		    !vma_test_single_mask(vma, VMA_DROPPABLE) &&
- 		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
- 			result = SCAN_PAGE_LAZYFREE;
- 			failed_pfn = folio_pfn(folio);
-@@ -1948,7 +1950,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
- 	 * So page lock of folio does not protect from it, so we must not drop
- 	 * ptl before pgt_pmd is removed, so uffd private needs pml taken now.
- 	 */
--	if (userfaultfd_armed(vma) && !(vma->vm_flags & VM_SHARED))
-+	if (userfaultfd_armed(vma) && !vma_test(vma, VMA_SHARED_BIT))
- 		pml = pmd_lock(mm, pmd);
- 
- 	start_pte = pte_offset_map_rw_nolock(mm, pmd, haddr, &pgt_pmd, &ptl);
+ 	return false;
 
 -- 
 2.56.0
