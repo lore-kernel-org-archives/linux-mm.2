@@ -1,98 +1,108 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7119B606EEB9
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B27C4606A330
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 15:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I3f015KA
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GD5p0u6J
 Received: by kanga.kvack.org (Postfix)
-	id 7E5F56B05B0; Thu,  5 Nov 2026 10:02:36 -0500 (EST)
+	id D9A2E6B05B3; Thu,  5 Nov 2026 10:07:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BCDC6B05B1; Thu,  5 Nov 2026 10:02:36 -0500 (EST)
+	id D42BD6B05B5; Thu,  5 Nov 2026 10:07:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F9F76B05B2; Thu,  5 Nov 2026 10:02:36 -0500 (EST)
+	id C58E26B05B6; Thu,  5 Nov 2026 10:07:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D2AD6B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:02:36 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id C55421A0ABC
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:02:35 +0000 (UTC)
-X-FDA: 85401381870.07.07438A0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 0C4E320018
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:02:33 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I3f015KA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A49A86B05B3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:07:17 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CCC88A0438
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:07:16 +0000 (UTC)
+X-FDA: 85401393672.30.C5B279F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EA23A18000E
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:07:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GD5p0u6J;
+	spf=pass (imf06.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793891235;
+	b=MbX+IpD2V9mj5tbzRNcDWVT7B5Y84YQIspTtKEeV0Wpzh9FBFMUr41p+z2/bnkH1K0cwbn
+	1qOQFQ4i/FS3JBX2mmQtmGb74WFWcCGaV7LjmFAsT+H0XTrMx2tQuGQ8s7qYxIPAFHUS0Y
+	BkMhr+/joXayzSBW8ZitPXT4c/0LJCw=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GD5p0u6J;
+	spf=pass (imf06.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793890954;
+	s=arc-20220608; t=1793891235;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3u/QstQSJV0UAJtzHBVB+ScC/OFteWXsBLmgkvMVYeg=;
-	b=ZsccMN6daeBMIqntKOjhV+Rw/xvVMaJhfCLCNCRHKhfRooP2gfT2sJTvv3vnUAImw+Eqs/
-	rc09592/7xglcmUr7mOgDlGeGBg7YOzE4KQZelw1AdbtjsOfzpmVrgcIsRTy0WWlU8SjHn
-	PA6Ru32W4/a9SYgeeVnjIrZNWRrsn9o=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I3f015KA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793890954;
-	b=J2hooGNfCFlmBV8AU2eCz+1h118dtAP/iWMUJc24RQvU2tzqnSqHLF6dNX2p3raweSdEuN
-	hMhC7vBtUSk+b0H/2+XxcmtXeGJXhArgtmmrkIQZvyFEtxKulyuoTTQboQU1anaAyuhvPX
-	+X/c0hlt8kZKcyoQUUamqDyT/yAJo90=
+	bh=6LZ+1+Vvz+jfm5vRHAeunaTxWBAAAXS8a4MaB1JvOmw=;
+	b=6BUfM13RhSSUr/w1PVSkp12jO6x9OFZuck/z81hxYSZjmDcIydoPFIpmSb9YKveK1NHgST
+	sSvIQUeBb6SUCm2QTCFha9P1O+lRqe7JG5idnnbaxWhqT/AwXrm8kGgx7L86jtmTCDt1x5
+	HS1fu0NoKf86Agnx7VtKEXaY2qOeTS4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2F6EC600E4;
-	Thu,  5 Nov 2026 15:02:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A3151F00919;
-	Thu,  5 Nov 2026 15:02:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0352343A95
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:07:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB57E1F000C1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:07:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793890952;
-	bh=3u/QstQSJV0UAJtzHBVB+ScC/OFteWXsBLmgkvMVYeg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=I3f015KAlphpMgxVJXHJjEj6LUkRUNl0e35EHpz7Bf+r0lLG5tpJ0rhDUpJmC2vUh
-	 OgoFNWSQ23Zp3jChLiM9ItZ4AYJvFqDuPvOCQyZVIQJMi907dQsjOwuHxs6blN/ujZ
-	 kKSUx+5KOd7BRdPiKZsYPXbsy25uLTdXsYxBz4OJqQbnzT28Uh7PsFMG4EoZzVyGFx
-	 1T6CUjcRXNk/HshtQymxX/A5RgvQ+TMYsFplJO70khw5+qgx/7OmLUq50tTAhBXMuJ
-	 Il+hnBRlB0G1Viyx2soDl9tb15sFDxcjbasPKLv/XSVlKf3ABMDet0FOdhfMmHQSsU
-	 J8ttzRttzxbWA==
-Date: Thu, 5 Nov 2026 15:02:30 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Conor Dooley <conor@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v3 04/10] mm, slab: introduce slab_debug=N
-Message-ID: <auyVRU5abrWHVfgM@thinkstation>
-References: <20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org>
- <20261105-slub_tiny_rework-v3-4-0484ce59eabb@kernel.org>
- <auyFYsbsMm8qGThW@thinkstation>
- <7ac409a1-fe3e-4b37-8130-4d49ecb6106a@kernel.org>
+	s=k20260515; t=1793891233;
+	bh=6LZ+1+Vvz+jfm5vRHAeunaTxWBAAAXS8a4MaB1JvOmw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=GD5p0u6Jseapx+w+38qghF/bxRs/L8q4opQu6FB7+4aFCDyJUWDg/stoFH7v+Zuzh
+	 FwX/xd9Lw4PkbjplDNow/MwokktVQMCMD4J7OuqP+19Ou83wnaXIzD+3zwVqQHm8mB
+	 63w6mEKeV5f8UcMwHxMZSIbxSSqQp3GRKNlyhiSigCECj7HUQIvcmhxBbuQEKIFh5U
+	 QiAgL3de6CPWo7S6R9IvfyPgAgfFkwFYvNkMScBM/furgvFJPBEXHkpDFL/rY0lVTX
+	 +umoa5XA2vTXys+cOkMDbG1Kiyd2X4vVmhth7Z9PsUSQ53k/Qf1fsBNju40h7KgsT4
+	 nFxkJpbwXVe8A==
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6b56c428212so214081a12.2
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 07:07:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBykI1nW18cnJagiTTJeQ2CXo5smY/uDAX8Lk/1/jJUy9v0EsDONcSw7wBh5wBpXZM90xXrqz2Gpwg==@kvack.org
+X-Gm-Message-State: APuU4Z+cO3cq7GKuTDAOY1g4oVQVBUSrX5ur2Xu29oTnzlnxA0KdAmLd
+	RVIlj26T4lXHt50QgNQ7BCn3IxKkDTGz15KoNDIeHRLxs8LIp7d2V619Je6tAiF+kypxl/F8g9p
+	RROxHthQSR9McR3187iifgLCWPer3jZg=
+X-Received: by 2002:a05:6402:27cb:b0:6b5:685a:aa29 with SMTP id
+ 4fb4d7f45d1cf-6b5685aabaemr3342720a12.30.1793891232594; Thu, 05 Nov 2026
+ 07:07:12 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7ac409a1-fe3e-4b37-8130-4d49ecb6106a@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0C4E320018
-X-Stat-Signature: njp8tkxrrk55cw9yjq79impr3njjcwpp
+References: <20261029172956.20791-1-dongtai.guo@linux.dev> <20261029172956.20791-6-dongtai.guo@linux.dev>
+ <aux9Hm0QFJLUDPWv@kernel.org>
+In-Reply-To: <aux9Hm0QFJLUDPWv@kernel.org>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Thu, 5 Nov 2026 23:07:01 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7Dsnz03iXChzE6nYM2cs+D6fdDFiWrDxX5jM13kYL6HA@mail.gmail.com>
+X-Gm-Features: AclHuK-7ZT562FqR8Q8-CsL50vorYou5ohB9VqtWfcaV8ssgwEH9NV-xDdP2-NM
+Message-ID: <CAAhV-H7Dsnz03iXChzE6nYM2cs+D6fdDFiWrDxX5jM13kYL6HA@mail.gmail.com>
+Subject: Re: [PATCH v6 5/8] LoongArch: Allow memblock arrays to resize
+To: Mike Rapoport <rppt@kernel.org>
+Cc: George Guo <dongtai.guo@linux.dev>, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+	ardb@kernel.org, shuah@kernel.org, ilias.apalodimas@linaro.org, 
+	akpm@linux-foundation.org, baoquan.he@linux.dev, ruirui.yang@linux.dev, 
+	guodongtai@kylinos.cn, kernel@xen0n.name, graf@amazon.com, 
+	liukexin@kylinos.cn, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 6omu6acncer64o4dfnj686b9swaake8n
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: EA23A18000E
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793890953-952233
-X-HE-Meta: U2FsdGVkX18zsibOq7cLrfOeD0Aoe3INaDwRpLEc9mDKfO7fZzVNeDFdvs0u/E+OKep2yeKKmOMP/onM4JfZVfclbFIF3WqsvQK6dnKnOEGuKHGN8/yEu9gncxthL81PTZk/1w363SCFtaO1SPAVqSOcQjucEVZswKK/PzL4OML/GW0c7qVo3P9gZdYgGj1io6QA+305puy8iaajyDW+ECXAknLLk5Hv87ULLSd3lhxuZ8KQy5UwnJxALxhfT2TggmH/Q24doI6eQ2SRYJOfNLWJYfVh/KqrWNf2+vJvSu1rnhG/XIboDuOiJ/rcJkxAAl7IVeGjCIzUyDfA60FY4bn1MVARqLcgkYjxKW6QxE21OIHE+joYshzS9YiRosvgmkAoqtBB5/E+aEVWF/Z3XEQlb8ldhztcrtmsdCL5X6iIVhnTFVSYpCro5qQE3Og57Xk5kJtHywpuNJGDTdHcS9EI7JhaFtlLS5sy8cO/03qYZ8gLmBLZZ03UpMLV0Oe/pcJ6h+BvGsjpK11n486xiPDmgjhmH0iM+avhdh4I7KM1Ia16Dz/iHmhRyOqeQXh1yFsWJ6Ne7mSeAsWOhnDUWuhS0FyI3Gd7lF9rSo3AloBiAuuN2LmY8O6x3phb75QURFk4FgntKxF+IfYWZpiHqBQ5kpp2IGbZCym+whozQ9XxoXJizafDr7l/5r6Nv9XG/6BG/LzvC6XfT14TGRp8lkjQqptBuVXPwWyC9qQKWbzryU9XtC7K1YJntvW100jWh6aQdT/sKdVnDHrXvOhjLnWc0FzNfKsCLIHf6meCn+1z3BtIZVpb5Ac5MO5lxvkNywehBhYjw75Ee01UfRiKr3ANmuP2i2RcBkwBKkd5oEDKkB49K0+aq7EWtaA2vT+TMI/pTWPFoOIcrnQVSRXiaX6TzUAbclBh6scpTRUiK5bdUBeUpHPOKKGCv092vRwRKddUiGGz85ywne2/MRF
- kzGKtm+d
- lPcIl1p8K4Jrf12D1XV39Y9dOvObmJsSIsiX644E3bftwr7s7IHGg0DTOwOUt96AnjKVoCfxflC3IQTxSXp9S86i60phzdEE8dDH/1eFtUUgl2b5Ns8T3NBgRdH9jm2hyUhmlHKMczzt3QgO8gS8vuAJU1axIGB+wQ2SCdqrcYU3YzpHB8tPPJJENvc9dpgryy54k9MUVmc3lmWfuoauXY0GSRQZBFi7H5OdOel4shk6sP+L+Is3OfUtREWPYjvA33NjqelnXUthmdPx5Na3gxj2JLdYx0urzH5yTOHpTKNCw5T0w0j100QgGeruTWrXLzj/s+SsW3KwUT1HM4bCUxVpZIVqgR8dVclKBMKJIPqH8M4LK64QqQ8XywamqN1or7tvlphut9SaMZaHFeVgQkNpAQFRY/btalEWc6eC8HVMMGsCVsHsWnzOryZmelhOs+bBVpOW7RW5Z3c2e21N+2SvZpDI4KPqfDL60foWcLayNiaqfDDC22O59LFbRaIbDswW/i602ocopRUIxl/hF8aABnbLENJ1P0054dI2/v6klEOHshQHYtNaLOw==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793891234-361773
+X-HE-Meta: U2FsdGVkX1/qNmM4I2Vu5e0JgnwKkaNNbw4EfLJWn6dr/LdG1717rExrNLo9DbgPqwGZ4jEA6yEYNLHD8fWl3Am0ZT48nrYJ6zE06oanPbpf9Ugn3KKE/U80o7+fCbQg+OjCApZ0uW1SFb4I/6ykBjs2fqOSP19tlH29W3JZkwS3fGAdEIzPUYc9iJmANPV8BtmUtss+TDaJWKc4PJso9Lm/8uXpbq+Fim8nOM65ioycVVXy6gTobZPTP4a0UXWYNv62GWQTSd4yF0acKk1TytIyclnw4wt1b6shJ65bao/zS/C3HL+Hlb2yQfPXGEacNvhORrwkYxpd6cSZDMPbKdUhGxR4RShUVgSNh8RnJmfdMzvwunYbcPQrWJkkjWuT04RUV3ixCJovlgWnvLPXgD/f1hp4prombd4Yth5NUR2MLunx+p1KtT2R+mavRorNuZslZAAMYh1Zw6Tb+4du1z0wzJD6jEg7Tz/8AUo2aaM4vGKPqrZci5CJ+2k9yXYjGJBJLIK3ThesiLWoetehu667Pp0zdVNYDrAEdWL52/Z3AHLfp3AxcrSbSHvHrcXpxpiXHivpUY12Ud11+Irg2kpljeWuOMBvOd+eN3pTG2CaZzDryiTz8IxqKVcyeBk+c79oMHhKRUREQ+qlngq3B0AWkUHZ2+u0OFr9LjxGFZDjaoTcoCTHEoVZLm9HgEsH9AaFSiKpNszG7p62/fH6tjYI/fOgERdav0vM9PgVTTRPEqXReEIGYvdbIeLYFlZ1d3Nt27v3+HWQuL7yTDeEewIOMPR570kNm/kV1R8zHcVIEFeR1nuRmg/kPv8m+564PM3nHeNQtCN4YythV1BXgrEBSyc4oNOk4w2qb9nPRrWhitd8pxeFBF2BCGzI6nhW3CwBMVcGrWGdudvrlyB5Jg3Wu7+2SrdjUNS7ZSl0waMyXOwHocDcbrR2YqErUeJfYvkZH9u1zM3jLEJa8Dl
+ xs/kHlFA
+ +c7zx5phThjML4I6mXYaIckvXyJ08nP8wgIXUeoG/B+0ksdb66R66P3ugIM+shnlTLkw/FiblZ/kA5PKZX7LYWJP8CILR/09KdTqhD8uTn58yGgIsI5Q3sh3qF343HsI6Lv9ZQN8ZDBdKHJG5X9rxlfD7MWKV4bQ88sq6u/YgKcKQSzbzr0hdnZjLM+XEAh2lY6iLGzchViilzTg8tShcvQY5z/ggEnWlxwQy9Y7Ym8aKlNrm+Nb40Zrs6VQ+pZsJ4q4vL1I4E6Z27R0CMnszummkpL1jtpK9HkAzA3SMWYCsdAr/UtJctLff5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,78 +111,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 03:36:25PM +0100, Vlastimil Babka (SUSE) wrote:
-> On 11/5/26 15:30, Harry Yoo wrote:
-> > On Thu, Nov 05, 2026 at 09:43:53AM +0100, Vlastimil Babka (SUSE) wrote:
-> >> Enabling slab_debug has the side-effect of disabling all percpu caching
-> >> of objects (now via sheaves), which can be sometimes useful for saving
-> >> memory for e.g. kdump kernels. To make this possible without the
-> >> overhead (CPU or memory) of actual debugging options such as poisoning,
-> >> introduce a No-op debug option that only forces the debugging slow paths
-> >> and zero sheaf capacity. The new corresponding slab flag is
-> >> SLAB_DEBUG_NOOP.
-> >> 
-> >> This will also allow reimplementing CONFIG_SLUB_TINY as a boot-time
-> >> option.
-> >> 
-> >> Two details have to be considered, as suggested by Harry Yoo [1].
-> >> 
-> >> - While SLAB_DEBUG_NOOP is part of SLAB_DEBUG_FLAGS, it should not
-> >>   prevent cache merging as it doesn't affect object metadata, and lack
-> >>   of merging would go against the memory footprint reduction. Thus
-> >>   exclude the flag from SLAB_NEVER_MERGE.
-> >> 
-> >>   - However add the flag to SLAB_MERGE_SAME, per sashiko.
-> >> 
-> >> - SLAB_DEBUG_NOOP alone should not request disabling printk pointer
-> >>   hashing. Thus rework the call to hash_pointers_finalize() to not rely
-> >>   on the slub_debug static key state. Instead determine whether the
-> >>   global or per-cache slab_debug options include any flags that are not
-> >>   SLAB_DEBUG_NOOP. This does not change the fact that caches created
-> >>   with explicit debug flags (i.e. slub_kunit tests) later in boot have
-> >>   no effect on pointer hashing, which is determined in
-> >>   kmem_cache_init().
-> >> 
-> >> While documenting the new N option, remove obsolete SLAB references from
-> >> the F option description.
-> >> 
-> >> [1] https://lore.kernel.org/all/arUx56ee_nkxYP_f@thinkstation/
-> >> [2] https://sashiko.dev/#/patchset/20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org?part=2
-> >> 
-> >> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> >> ---
-> > 
-> > With the sashiko report to this patch fixed, this looks good to me.
-> > Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
-> > 
-> > One nit comment:
-> > 
-> > specifying SLAB_DEBUG_FLAGS depends on CONFIG_SLUB_DEBUG, and with this
-> > patchset there is no way to minimize slab memory usage w/o SLUB_DEBUG.
-> 
-> Maybe not at this point, but unless I made some mistake, later slab_tiny=1
-> stops depending on SLUB_DEBUG.
+Hi, Mike,
 
-Ah, I see. Right.
+On Thu, Nov 5, 2026 at 8:57=E2=80=AFPM Mike Rapoport <rppt@kernel.org> wrot=
+e:
+>
+> On Fri, Oct 30, 2026 at 02:29:52AM +0900, George Guo wrote:
+> > From: George Guo <guodongtai@kylinos.cn>
+> >
+> > LoongArch never calls memblock_allow_resize(), so the reserved region
+> > array cannot grow beyond INIT_MEMBLOCK_RESERVED_REGIONS entries
+> > (INIT_MEMBLOCK_REGIONS + NR_CPUS).
+>
+> This might be something to fix independent of KHO.
+>
+> Huacai,
+>
+> What's the reason LoongArch never enables memblock resizing and why it
+> defines INIT_MEMBLOCK_RESERVED_REGIONS to include NR_CPUS?
+At first we didn't define INIT_MEMBLOCK_RESERVED_REGIONS, then we got
+boot failures on a 128-cores machine, so define it, and the value is
+similar to arm64.
 
-> slab_debug=N itself does depend on it but I
-> think that's acceptable
+The reason LoongArch never enables memblock resizing is because the mm
+code is derived from MIPS, and MIPS never enables it.
 
-Yeah.
+Huacai
 
-> > Sounds like it's time to make SLUB_DEBUG unconditional. It's enabled on
-> > all distros listed in kconfigs [1].
-> 
-> Yes it's my plan to do that next, I did even discuss it with Christoph at LPC :)
-
-Sounds good!
-
-> > I built kernels w/o SLUB_DEBUG and the difference in the kernel
-> > binary was about 40 KiB.
-> > 
-> > [1] https://oracle.github.io/kconfigs/?config=UTS_RELEASE&config=SLUB_DEBUG
-
--- 
-Cheers,
-Harry / Hyeonggon
+>
+> --
+> Sincerely yours,
+> Mike.
 
