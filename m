@@ -1,91 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A7C606A339
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 04:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E8A606A335
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 04:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=GaDxO8R9
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=jEwmwUuL
 Received: by kanga.kvack.org (Postfix)
-	id 4EE386B05B4; Wed,  4 Nov 2026 23:48:04 -0500 (EST)
+	id 8E5156B05B5; Wed,  4 Nov 2026 23:48:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49E746B05B5; Wed,  4 Nov 2026 23:48:04 -0500 (EST)
+	id 8964B6B05B6; Wed,  4 Nov 2026 23:48:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B5476B05B6; Wed,  4 Nov 2026 23:48:04 -0500 (EST)
+	id 7A9B16B05BD; Wed,  4 Nov 2026 23:48:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 030D26B05B4
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:48:03 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D91DC804E7
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:48:02 +0000 (UTC)
-X-FDA: 85399833204.30.D4C2ACD
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 223A81C0008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:48:01 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=GaDxO8R9;
-	spf=pass (imf18.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793854081;
-	b=eSk8GUsHKSp+D4ZhKTUEuWqF+IYlSHIIo4v6VU9dDYi6zafjpyEI/Rncow/1LG/2ptPSN4
-	8HqmY0lDNE6FVmNiOzqc5YVMCyMSVG6gYlOTrr+Q9TnEEya5VloSmR9VLWh02SbGMYD2jX
-	vDdhhQF1iz8oANnHNR3DJDIb4fFmwCs=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=GaDxO8R9;
-	spf=pass (imf18.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.48 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 51B756B05B5
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 23:48:06 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF7291208EA
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:48:05 +0000 (UTC)
+X-FDA: 85399833330.09.361FACE
+Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E82D7160002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:48:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=jEwmwUuL;
+	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.44 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
 	dmarc=pass (policy=none) header.from=chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793854081;
+	s=arc-20220608; t=1793854084;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=lZ/laB7EjjzlJibu0SL3xlybjiUy40ADVZ8qce7qfBM=;
-	b=zCby7afY2b+pV+Bjflr8t0yu6Qsll4Znr6ycLxeCHboiFGsYIw8LT+P/q+djwpuYckbOsu
-	fa9l3bbQflCLPw0pg5+qsy8X+jmr4Fw89ySH0YUaMAmpUrpcWkT27iG7tA8PDpEzAP2BbF
-	Bg9Shz/6tlBHzWXBQOwWMPJi20s5rCc=
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-1b244fb7fffso2014615c88.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 20:48:00 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7RktNgHUwlwtWmAgMABeK3FK5t5bFNo0JMMWVYG0t8s=;
+	b=3ExpD2fOaP9UgCC3OXeRZxYkLrFaZilkDIc0078NJUylQTvukKUq+kSAoNJ1PLdM3RXaHx
+	ftD9TDlgb1ZoCF4BBETZaQ0ITeirdqUWNlsHpHy9gVQzi2/qP159E+7oT6GVqjrEletgZK
+	BZXqnQ1ZrK7mQOmQX6p65MWe9ks0s6M=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793854084;
+	b=o6XWCm2LonafyBqro1kF8pSjanCxuhDtuO9Jw4lukdctwEvHQ4N20v37BInOJKPOXmUyFV
+	n8K/FmRY7+WSxGjiCEdbxD9dnxWpWBRK1UwXatpKFIxx1q9xLxBkTWHMx6Hac0QMx56qey
+	JqSlbjKnfBGzdo66vGZqqc5xwPLwNoE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=jEwmwUuL;
+	spf=pass (imf08.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.44 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
+	dmarc=pass (policy=none) header.from=chromium.org
+Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1a2af4c8d00so3267668c88.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 20:48:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793854080; x=1794458880; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=lZ/laB7EjjzlJibu0SL3xlybjiUy40ADVZ8qce7qfBM=;
-        b=GaDxO8R9412O0QlMP0ulZP2h59gLghumC7SEc5E3ng4UYVxf9CBby3HHg2kShq2rgv
-         eRRWhYTKwveB4an3Nib+9TSb+JJm0jEy1CZXEl/cUpjrLkI17sxUYeVVYKGSBhwYXmuk
-         ys7PifV7PULJKtpgFEqsCQzOZhdeYpnwCBX/U=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793854080; x=1794458880;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=chromium.org; s=google; t=1793854083; x=1794458883; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=lZ/laB7EjjzlJibu0SL3xlybjiUy40ADVZ8qce7qfBM=;
-        b=hss9K0GGpnQo/OqA5OYiA5iCDHoq4l5L9FEXDZk6wv3ubWFvAmBWpPG9eneuwBGUQM
-         BToSqhjAal222m+S+P6rg8QL26bR/2MHNFCNA+CfK1WlrG+8w+dFW4mZD7fY6Biwnsre
-         MGTZNvci6WxLLMS3q8Fgu3xmmS6+YX+xz4okaMhPoxsjj8imwI2v5oKIFRJL/vJ0sxmS
-         TKd27UwDEbMqNx9LPRrVfPGeVeZofuJCng099E1jx5QMYTNyh+fqZYroTbH2cvTimUlk
-         +DVf63VRaX2QZyrMjG8H4Ptco/io/yIc4G+8l5TagR++SYVh0l+gGF4mvfIBt6Ht14+P
-         nWjQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzqTeire+OYT8fiSMg3QX/WmwIto5X70W3TTs4Bch5W8LdKTeKevP5/HRF693XDVzsCDIe6Hvmv/w==@kvack.org
-X-Gm-Message-State: APuU4Z8nMqql0AMXDmT7JFIH0/Yl+Bsti9v6UgLLt76RPRc2EGp5/Jnd
-	0WwcJ9pJm5+U2GwDZ1eSruzpZ0qFQN7OQR3cbAMrg6KiF2/Vtm5ICHp8v9Bidnpyrw==
-X-Gm-Gg: AYBFou20+Fa+931WHZOX0tSYetABK9BOwBCHADck9jmBHZCbXLcmGYq/n0rla2V+0k/
-	y+TWGL8FmjLdaxVqTW4K7OMii6bX2sG0Bc9WzQTRh2cXc+/AwAxe0lUoDMxLeZADHdfQ0pdtfSA
-	w+/3wGAS/FiwdanhReaPi/rcDoroXvG3v2Q3/Mku8uhqx3XvGOPxvU88Q/F4xH0AHOxzl6DTtgD
-	hqz9qiLFJcPRWzKuV7Cx6JvtFa7YhFFmJnte43bXyjIGEZQHJHT+kHYckB5KAUDu06mxHZkDOSa
-	OwGJz2ccKfxGZCJJI3moWNMxA0Zh2LZgBfFo40UyQK7lqrEjb8iVUh9JFfZGrNk7VMH30DNFwsC
-	5RwLwbvIlfyTyvkfPX/V/B2G8UcwzSVmdNHKrvJzDLFxRX1K6rXXE/fKfgCqNTG5eMfqqtvAhLy
-	zqpsqLtzNBmF7oJLa+1qvcJ+KmKO9c0O1FZm2XtpE5DKiofGC0O4z7Xvnam6z7ueA+Mmx5CQ7xw
-	nA2FjKv5HofBStYmBe/HBHLJLDDPS+Ousn447ohaSX3AvNgThlDDIOwiljihqrobn2Hw+SoF1oD
-	fNL3Kf67RvS7+FcOGKZ5UBYL7hBFs9oUWdxz7INKj7BW+xwDDVGpC3RHlBdFO18f6t1+2UZB9Zo
-	Wd4GT9TohPxOVt4y7jQ==
-X-Received: by 2002:a05:701b:4192:10b0:1a3:8d5f:6f93 with SMTP id a92af1059eb24-1ac5c8369cbmr26358050c88.17.1793854079724;
-        Wed, 04 Nov 2026 20:47:59 -0800 (PST)
+        bh=7RktNgHUwlwtWmAgMABeK3FK5t5bFNo0JMMWVYG0t8s=;
+        b=jEwmwUuLEDXiVNygW9kI4AB7moI5b5gvuoFZFV+kEP+Du8lechPEe/MXEOVUfwIhkk
+         Bc8JypPis1d747XScu6ta7xjMsYmAoBg7V+vlEwErpZ2z8+y6RdTVZpdEAA0k/8teQfy
+         e/M8F4PoZUrhidTAaJh+0pQUtcBvOdlsF6cXo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793854083; x=1794458883;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7RktNgHUwlwtWmAgMABeK3FK5t5bFNo0JMMWVYG0t8s=;
+        b=r1fzccN5ktzqnsJvgSE7CLLHPusQFpux4GWZIRs+LxY33is9Ou8WxNndG+LN+Q5aH4
+         YsiPe0zxmcrrqvhRcF+cKPMmfJID62AhY+EP42Zj8053XuGvtveb68ZcyR/xDjp6/o6p
+         ExbgmQPyw7oZ7QWFIXFHW4MERzooh4Rr5Rfzcfnf6MZeDxVK9Fxs9EUvUPxK+s3hWx1Q
+         aHtTsRFD/ulnj2IZcR/F31FUz9ZcfWPCP/xie+um/+izVNUCKEV7Tb4N9KWAAwq5S0DO
+         e0hU4TsJjt0tEae6iONzQnrauqRlZ5iF60bSprh/Y54vUgwnsiiIX0k9NpVWb7AG8VVY
+         J37A==
+X-Forwarded-Encrypted: i=1; AKwUvByAgvQo/c/dP1ekj/qsVIa3SFsnYYvxOVuL7DenB4VGbVPXwe6IstZD5aXS86NgyYiZFXEpPEgQlA==@kvack.org
+X-Gm-Message-State: APuU4Z9xFHbtsETq260Tmbi+ZcHKlZmTVed6YJC2j1Ju7uZWYwE7fsuJ
+	qTIXtl31XlXy0u9pepcPhtjSSkG+IepFVtxBwXaoSSm+q79WaNRBDj5UpT4s25GQEA==
+X-Gm-Gg: AYBFou23+mbThvi9mKtHOgena9sdyUEvqaq48phEyNc8yXu9CNl3hN193+8ZkJLeLSP
+	d/2A8mc7wvLJMjfTqTIq6LmsirpZ27Y+M7btkGPVnNPmeerpR7wQYEkJvnEnyepKV7/v7XO0453
+	XVWzZLcby2kvWI3XJLSitqyVkwG1eFkq1EgcsdJMZF86fSzwFyVe6zcu3wDJq+ap41mRnHsZcyZ
+	P8OJ+gJFw7DOPFkPtNI2EpsgqNP4WQnKMq1wzcoFGpG4m0H5lI/Q+bAOiCmcawTOT/MlAwJVbf0
+	eghCLrHb8U5UzD373POuMKTCeAPk+g4zXHbfa0x8/N7K3PpaduqkK1iSxW3B1aMpLmzwyMVv4lF
+	KlZ6AuvLgyNEcnsyhy/lKXo0AueQ+fCnYe1+SBG+TgQSfusUQrP4310ZPlnlaH1n+wkfg99rmOn
+	m0/NZQSbbWhBS8ReQb8+VEnfru37sR2KOQI7lxCHns/k/3yTDw5TMWzelpAl85Z3pxkEeynmi6Q
+	mRFzIPgzwn12sitNlIb5seUgLo1dFMKS6An+RQjPhxARCYy0rYXEJyBtXkuvdXbC/ILbkjq/kEd
+	lJ9Xfg3JXrnNrqoBpOhAJkqkGtgXJbo6rxDfIfoSRyL1V5WXyqmDEHqL7ycsLlHurd42LvBFovj
+	Stv2Tbsq6LH6RlZ05PWA=
+X-Received: by 2002:a05:7022:170c:b0:1b0:166c:6a94 with SMTP id a92af1059eb24-1b0166c6be4mr17748555c88.28.1793854082667;
+        Wed, 04 Nov 2026 20:48:02 -0800 (PST)
 Received: from tigeriii.tok.corp.google.com ([2a00:79e0:2031:6:37bc:b763:7ec7:65b4])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c6f0dcsm17142927c88.21.2026.11.04.20.47.57
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b245c6f0dcsm17142927c88.21.2026.11.04.20.48.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 20:47:59 -0800 (PST)
+        Wed, 04 Nov 2026 20:48:02 -0800 (PST)
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Nhat Pham <nphamcs@gmail.com>,
@@ -98,25 +99,27 @@ Cc: Nhat Pham <nphamcs@gmail.com>,
 	linux-block@vger.kernel.org,
 	linux-mm@kvack.org,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH 0/7] zsmalloc: redesign object alloc API
-Date: Thu,  5 Nov 2026 13:47:30 +0900
-Message-ID: <20261105044752.1997895-1-senozhatsky@chromium.org>
+Subject: [PATCH 1/7] zram: drop stale comment in write_incompressible_page()
+Date: Thu,  5 Nov 2026 13:47:31 +0900
+Message-ID: <20261105044752.1997895-2-senozhatsky@chromium.org>
 X-Mailer: git-send-email 2.56.0.398.g882cbad275-goog
+In-Reply-To: <20261105044752.1997895-1-senozhatsky@chromium.org>
+References: <20261105044752.1997895-1-senozhatsky@chromium.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: desjmpmm9ycf78bugofqpkm6m3snkebt
+X-Stat-Signature: biz9a5ianxc1crcsodpw9s8mrbdyatxp
+X-Rspamd-Queue-Id: E82D7160002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 223A81C0008
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793854081-169672
-X-HE-Meta: U2FsdGVkX191SyPwAMkRqMwHjidkhF7b0C8I0Ltm2nJwvHhKkeRmjkGgD1tWM4gKw9XPiwI9oxSelKxT807qgA/Nrrb8zTlSRe1kg7wi3J6jMoVcRnlEzyLGIyX1/pbN+OcrjPnapgniQisJ1UzDElOrx2ZixUGTaAWak2yVhMiD4VzZlIaF5jGJsIbp+HQpiUJdFv2kawA/sf4q5j/jYU30oParAFXIHpsfsuGt/hwR1qzxT74zTTj2TeXw87YcqoTvEZxlubvla4Dv4YdQRYxMIkjwBo2MsbkUG+thSrtX5glu5Ez6XalDVAj8EiMzUPcHv+Pr9fmwBqn2Gj1jysgT2UYyGuVL2+T05kmzB8RFhjDjB2C0BJcBJpVGJAE0a8/IdV8GzeBabmEpR+jlyrv8XIBUd9zZ6FNWxO621tcLA8zzgvVBns7YcMUVDFfu7Aq+8u+gCbQK5tJuR5+x0gapA0kyyjEX50cIbFQ5iPIryIPkkdXHJpzh55il2W5xkPHJEoLmdQ7sQmTPojk7aK8/l1tgp43yelfBHWhkXoanT/UZncKko3tnLTncqAGbHJzJ7DVLE6VWU6bsyWv6r5RbkDzfbMS5pC5Eh+h0wTzeee7a4pivxcehQDUH3j9FKA55MkQhj3lZNm/W/mfvUXay453Es8hfMcMSEXTkk87Z6462k7mX0xuLlRc5z86qwmmluYK8kTeqKXaEPy2j/5dXVgVEgFXFwIM9JBMZn9Yh0wemIqe96fV85OFH3EMr3/9/W0HBIdb4BKp0+FWaHpdLH9xc/e7Zvl0x3Y2n9iz4zLmmiNsPLTGh/Ti2rUnVp00tjF/msHtiRZkI3A+67S3gD5CbUfEqYlOBeKHdTGh40cqev/KiFRzOI+0rHQ/3tlNSbRcySTdRJiIXDe24LF3xEfW6Voj395btgvsLkvk4h2O0mUnPDw/oTBNke6lj/eN6+LhgXlNoA58rkTp
- PCRe6hZC
- kgvuZmrtm5FtGA+ecaaOgrNh8lVkHhZFintISytceiHGbhdKGadHDoTzvK5ecfVASg2In5oUG4q/qQmjJtY/Mlf3hRNJMWE6EYc7mW0K7jqc5vL4MbkAAEKx++LiRCkit7WhjvjHDD+3p/atmT/eyfTIZLiBIeSCotf+M0SQULeiudiY6Y0pV7H/UaC29givm3JA9j+jbAXFXzWDgJkTydyhmUclI/hZMagCBTSDi+GX5fZS8CkiEYVV7beHWVdE6f07Ir2h81ZfV+ZNBdRGU8XZuAO2DmJ7eRssDdvAdla0IEetLKxjqpkLJ40AE4e6a0JAv
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793854083-174756
+X-HE-Meta: U2FsdGVkX1/veSJEnaJZ2laPXLqb1fG7xCwyXEWnnPVsIRmQ21IEByzSx9ET4G28voHG9x1mah0AB6MrKL9ko4xER9sPwbPGhGPH5hh4l0Dw2KISg9DsSXYgNGHcqJRaTYSn4BcH2CPN13YmtEFp0Z2EboLI9SSySAPYVlOFzEVxarpWtYWFemyAOyoj6Q+qZoEnuNZuj71iqr9Rd/BON+OekHva8Y5lMESlkDcEUDcv2T7S5gueQeVjvoiYR55dh0nrQg//fY6n6v2IdQDTlY1vOyY8d8XVUW38ALyeJ3zBPMLWisYvMAelarObmVdzpUR6hi1eLDnJDissNGGX2QTyJOxxfbtC1hvm7mrw7jx0kqAVUgXDApCScFpIKJ+ACEO4Lzjb8vWkwiyXIzXkESOmc8AjksgwqCobWB/RW7FT8Iq3SdfitLVEgt3G+Mmg66bi2+1Wn6gLvYbYr3mGMjbsDxFzoILGInvSx6b/azdHOr75QF5U5WLxywqELpHo/dOSAJS4CLhkc4bWWT638ZJ+Vd9oDZMCaaUz2NC67Wc1r3ou48JF6jtM9Ye2ipTFHX83IYI8IrJHSw+RL4P6xs5U0xql8sf+dEijArxvy1jcXycWHpnlXwXD26OV5HtnwH1VGlj9Oh/f+zrkMZu64vsaBPvljYFEtJNguncT/iP5Wcf/9ocNZO0xGbVFYAoe7DcOqmOTPLo9AeChnQABKIQbm8GiIHH4cnTo4IgIviIIkoEr+XdIbb7JoOnCXOB0OUD4BNYO9PHI6X9nMWTGj0AtVs7R8Z5F3uW6395UBzL1rhCxQdYtHjWoEwN+gNEgZ/ivoai2nxG0ot3OqPxCQdsNIYx36NUFpvdAwpxeGgKcq7gPbLC2/dLN/rDFgcF0YyBaxhxrDokbqowMKRk2FEOLuG/i0T1TXCuoa5Eni+ix+vJTggt2eY54DrJ4oO1/fzPpDhcjWJgOt2/8j8x
+ wLl4cYcb
+ jp9o7aD/jZkXZ7iPQBQ/hzWgyXtVtKBwO+xBwU3flBH6ZzcHJ4LlttPddmAm7hvdMMwqb1AXMEjm5AGMMsX7Nna/roBZeyIdNLlJnLdleacOt2SGhx7ec0Rw4y0hJe7yM2407C9E54AXgfUEcL8o08rk9fOcYUvaX3xwA331kcRcSeZbwjz+nI/e3Gn4hAXUBdxPd3J/1tGtJ11zSXTdkRDpaqWI9RO9pjxA3ZHqz6D5+5M7fAP1NRjuNaGoPhZC6egbyHUkKwfRlL8iFNQSU7Gs45SBJeZ6YdCq+0dFV5oFjPzGLPFIJgt/Cn+GG8cluuaopxhqpZuhoS/YPjbWyvnSe36z/BX+9+Qqy
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,43 +128,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Both zram and zswap already have per-entry structures that store zsmalloc
-handles, so allocating a separate handle_cachep object per stored page is
-redundant.  This series embeds struct zs_handle directly into zram and
-zswap entries and drops handle_cachep, saving 8 bytes and a slab
-alloc/free per stored object (2MB per 1GB of swapped out 4K pages).
+zram doesn't do fast/slow-path handle allocation anymore, so
+the comment in write_incompressible_page() is stale.  Drop it.
 
-It also folds zs_malloc() and zs_obj_write() into zs_store() so we don't
-take pool->lock and look up object location again right after allocation.
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+---
+ drivers/block/zram/zram_drv.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-A simple zram test on a 24-vCPU VM
-==================================
-165 fewer kernel instructions and 0.7-1.8% fewer kernel cycles per write;
-lz4 single writer +2.3% IOPS / -2.6% average latency;
-24 writers +0.9-+1.0% IOPS; no regressions.
-Memory: 8 bytes less per stored page.
-
-Sergey Senozhatsky (7):
-  zram: drop stale comment in write_incompressible_page()
-  zram: drop get_slot_handle() and set_slot_handle()
-  zsmalloc: switch handle type to struct zs_handle
-  zram: allocate zsmalloc object under slot lock
-  zsmalloc: embed struct zs_handle into zram and zswap entries
-  zsmalloc: fold zs_obj_write() into zs_store()
-  zsmalloc: constify struct zs_handle pointer in read-only functions
-
- Documentation/admin-guide/mm/slab.rst        |   2 +-
- Documentation/core-api/memory-allocation.rst |   2 +-
- Documentation/mm/zsmalloc.rst                |   8 +-
- drivers/block/zram/Kconfig                   |   1 +
- drivers/block/zram/zram_drv.c                | 130 +++++-------
- drivers/block/zram/zram_drv.h                |  10 +-
- include/linux/zsmalloc.h                     |  37 +++-
- mm/Kconfig                                   |   3 +
- mm/zsmalloc.c                                | 204 +++++++++++--------
- mm/zswap.c                                   |  21 +-
- 10 files changed, 229 insertions(+), 189 deletions(-)
-
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 632045b65bdb..380615b73446 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -2271,11 +2271,6 @@ static int write_incompressible_page(struct zram *zram, struct page *page,
+ 	unsigned long handle;
+ 	void *src;
+ 
+-	/*
+-	 * This function is called from preemptible context so we don't need
+-	 * to do optimistic and fallback to pessimistic handle allocation,
+-	 * like we do for compressible pages.
+-	 */
+ 	handle = zs_malloc(zram->mem_pool, PAGE_SIZE,
+ 			   GFP_NOIO | __GFP_NOWARN |
+ 			   __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(page));
 -- 
 2.56.0.398.g882cbad275-goog
 
