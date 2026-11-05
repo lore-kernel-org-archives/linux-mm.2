@@ -1,99 +1,158 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F01F2606D831
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827C1606A339
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aAAW3W8z
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=AF0vBzVY;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=7JoiF1X7;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=AF0vBzVY;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=7JoiF1X7
 Received: by kanga.kvack.org (Postfix)
-	id 25B7B6B05B4; Thu,  5 Nov 2026 07:09:53 -0500 (EST)
+	id 766B06B05B9; Thu,  5 Nov 2026 07:11:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20BDB6B05B5; Thu,  5 Nov 2026 07:09:53 -0500 (EST)
+	id 716AB6B05C0; Thu,  5 Nov 2026 07:11:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FA416B05B9; Thu,  5 Nov 2026 07:09:53 -0500 (EST)
+	id 5B8D56B05C1; Thu,  5 Nov 2026 07:11:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E16816B05B4
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:09:52 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 78B191409B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:09:52 +0000 (UTC)
-X-FDA: 85400946624.30.33F2919
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id D5F0AC0004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:09:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAAW3W8z;
-	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793880590;
-	b=l2Jr9juo9l/z/MTPBrEERRnsy0t7zSNRS4ShnF5oQkxXrhtv1uso+43Va2DpGNZcSf7D3V
-	rHw9/tJ+AKDJr8+a1y5xkF05XkGywg+sk7x3U8+JgrSVbBnMPtSG+S6CjPCDBvhazfVvsL
-	Q8ENfTTxa3MXQ+kiNWolWYRWStvmmww=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAAW3W8z;
-	spf=pass (imf10.hostedemail.com: domain of harry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2A0606B05B9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:11:11 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id AE6BCA8205
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:11:10 +0000 (UTC)
+X-FDA: 85400949900.02.871CA6A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 562B916000A
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:11:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AF0vBzVY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7JoiF1X7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AF0vBzVY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7JoiF1X7;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793880590;
+	s=arc-20220608; t=1793880668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gukOYmvYDHX2QKSOGio7z+vsfvmKRfuVGQNVt9yzjww=;
-	b=zLdpSiKvDgftqfAVaqcTNrK84H7FtQ5rL2DT+OqjBqCDyGQLo7itncYvbTcf4vSz9b4zSH
-	c/ZMHGahhCtyrBS+9l9Wf0q3+0fwKo+9J+A4HXrSa3ILoEF3nZYthrY2cdvfsl7HGYhI6X
-	aIFUPTLEWwOj9XmTso9/wvskQ6/AuLA=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B128360F42;
-	Thu,  5 Nov 2026 12:09:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38CE1F0093A;
-	Thu,  5 Nov 2026 12:09:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793880589;
-	bh=gukOYmvYDHX2QKSOGio7z+vsfvmKRfuVGQNVt9yzjww=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=aAAW3W8zrqhI1GlZKqclxuzopsOsI5eRflWVb+u4vb5PXFTYkgJ0rp9Kj8p5k/PnJ
-	 dz9x5vflTBj+DeSq6KDVaKKWH4IO1ANMazHhA8U7XpsUFlwUQv3pPtBE5apiquXHF8
-	 VIijSfbzJWIZ0u8nFhus81QZCpCdrEIkdEEVT9qcVLTnlF9X7DDYJUpALeqULAdBUk
-	 gG3qH+UW1A7HkPJle0v+Ro9VJBDQIiBephkzM1sYS8P/gd5M72p1JtRoV4TPOtMTPm
-	 lTV9zl9RBf9VsgqSb5pKIdsUflUPUNRZjRUAYJW6CA56tI1pSDaFNGwOyrBwhQLiSh
-	 TJOgN9lfoSL8g==
-Date: Thu, 5 Nov 2026 12:09:47 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Hao Li <hao.li@linux.dev>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
-	Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, kernel-team@meta.com, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-rt-devel@lists.linux.dev
-Subject: Re: [PATCH for-next-fixes v2 2/5] mm/slab: handle allow_spin in
- slab_free_hook() instead of open coding
-Message-ID: <auxxnr3iVYNOOoci@thinkstation>
-References: <20261103-kmalloc-nolock-fixes-v2-0-19167cfe4779@kernel.org>
- <20261103-kmalloc-nolock-fixes-v2-2-19167cfe4779@kernel.org>
- <f31885cd-57c2-428d-9760-a76a0137f989@kernel.org>
+	bh=Tiu8/sTPNEplZjLK9CvT6QJBjBM6O2zkosy8TKudNwI=;
+	b=3D1zSU1LIz5GYp1BxVb1EKVjew+lnSr+Dpq7ArTtSkyZkeeTrms/kFzK1SHqq6NyTgx36s
+	pT8dDOc23oFfKJN6d+TCB/HpJNJdJECxaYQw3DgR0g9sRWd6xRK3DJZSb59RWprWLKuGlW
+	B4HDcPNAymVWBZhFFdMuHWRdw+AWNhY=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AF0vBzVY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7JoiF1X7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AF0vBzVY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=7JoiF1X7;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793880668;
+	b=gXhF3v7MOcsN0/KD+xB/4C0FRMwy4dypyul+u+IJ2HiLHykX9XAH4HQOfTEiSQRX5Lq7Vi
+	EsOJY31xu/U16oTRos0vVslVxZOMMS6/yzrrHMFG9NdwvZSZzF1Ip65Hdfe8VFd7A74GZS
+	5Lh/xpQvwgldBXLMFLjfTwbrELiOauo=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2B33A21FA1;
+	Thu,  5 Nov 2026 12:11:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793880667; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tiu8/sTPNEplZjLK9CvT6QJBjBM6O2zkosy8TKudNwI=;
+	b=AF0vBzVY3zQ6Vdtyzlnd2GX1KnIr1XJT3SFmA54tWfPHGy6ECYuTRMeTFFLnasIgVme0YZ
+	PThupxuU6qmedBWykcq8T+6m0PpaGSoqpA2H5zGIK2sKtK6eDiPUzWRwILl2WLIL1NXKQk
+	HTqj2KBB6e0dR9olXjD094Hc8YjLNc8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793880667;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tiu8/sTPNEplZjLK9CvT6QJBjBM6O2zkosy8TKudNwI=;
+	b=7JoiF1X7I2Iguu9nV9GXjnaaMmyPjs8fCUlps77JZ5omTCl+PEQZZxIADuFQG05WHYF+cK
+	CBi4Cau1ROf8pYCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793880667; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tiu8/sTPNEplZjLK9CvT6QJBjBM6O2zkosy8TKudNwI=;
+	b=AF0vBzVY3zQ6Vdtyzlnd2GX1KnIr1XJT3SFmA54tWfPHGy6ECYuTRMeTFFLnasIgVme0YZ
+	PThupxuU6qmedBWykcq8T+6m0PpaGSoqpA2H5zGIK2sKtK6eDiPUzWRwILl2WLIL1NXKQk
+	HTqj2KBB6e0dR9olXjD094Hc8YjLNc8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793880667;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tiu8/sTPNEplZjLK9CvT6QJBjBM6O2zkosy8TKudNwI=;
+	b=7JoiF1X7I2Iguu9nV9GXjnaaMmyPjs8fCUlps77JZ5omTCl+PEQZZxIADuFQG05WHYF+cK
+	CBi4Cau1ROf8pYCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F14FC133F6;
+	Thu,  5 Nov 2026 12:11:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id RrhmMVpy7GoeFgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 12:11:06 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 6CB91B6CE; Thu, 05 Nov 2026 13:11:06 +0100 (CET)
+Date: Thu, 5 Nov 2026 13:11:06 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 24/38] proc/vmcore: don't let vmcore_cleanup() run
+ twice at once
+Message-ID: <6deqqw2vjfaot34sgogukcsbdh2vngvu2ewmsjzb2h53zo7mwn@zofl4rxl2nnb>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-24-59422ed3e465@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f31885cd-57c2-428d-9760-a76a0137f989@kernel.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+In-Reply-To: <20261102-work-procfs-bugfixes-v1-24-59422ed3e465@kernel.org>
+X-Spam-Level: 
+X-Spam-Score: -11.30
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 562B916000A
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D5F0AC0004
-X-Stat-Signature: f4jgutn9iyfisy5t1r44x93s8afuzj9r
-X-Rspam-User: 
-X-HE-Tag: 1793880590-857582
-X-HE-Meta: U2FsdGVkX18nqbgJH69qSwaO37MXkETJmMSfNdy3lgqckx0NglDaTdEzMRqd8eGWcwvYt5hXArb/yk/qSuDtgRnzA4GIVZgoC+bRiWVgBg7ppgli67nqQBXE2gmuxE+nFXfiwk/nyiox1zd7lhOAejpzPZTffWQ6ZL6MufYluEVORMht38zBqF78iM98mdNE6SDUSeCAjV/YcTdTxlUafqLTJoABMpAIX29WeanVQXUv1WyZtYIOnYK9SYt4DQwa4h9xMaVhAuffv4JRWX2xBVIvYkTXNrUBsYpnhRrkBgbPEid/Bxpbh7OLwiX1gy86GW2JnvCQ9hJmt4aurJNJYamcfiX0Hc3WHJY6ZBUrpdHWepmZOlCsF5NSDrqTH1fj1AWGgBX8yv7bZN0Vq5WR+gUZg5D12146Hn5qt8I6p7xtkDhCYEt1o26oi5UnCn00JT+72kD5uKuLeFSjRuZY0OcK4MBapWEmIVw0qThbK1UTq5AthfE9EpdgpbfkV236pSWYh8gZ6jfdjNFjZ9ncCgrJaumyiUnLTGF5Ru09YNZ6hGpELR4CHIbJqzB6OuVMZnhT7Fj97nv/GOunTj382gfDWA69zaBuy7Is8aHg5mqtRWo6sJw1iqwzhrHLb8JQTqcGH/EX768ehtL5sifQOoZw+foGJ5kKTyUcL4X6S4A4OfFb+Q3DvsrS3CuIjslmxhFw8Vw1KTGn7iDhKPIw3on3czBT7RXJWVu9xEOD5/FjEG8vOYUufU2CQRMkllIcyijIW5IVwHpVkxsoEoQa0hEYPZcs+T1yQqsA4yxZUyJEOFvzN3duvUp9zOhIiufVGzTby8r6IUrxMTcnXFb2yglnkqsk93lDH5e5M/M7Skg7faQ2QRzoixbeqDneZpSY+GtIWWrMf9b/9k0QMbd9U8qjuUISDXFIfuMTXijTj/7PbWfk6LdtR/1ZkgWPUnDfzYYLaSmyRbJYIGE3GHM
- +eyG/QWg
- h1oI9LGg7NJ7OUxT95gSBs7zvDp0YconW+9/yjZ8+CRzADlBzgJwEhVjPe4xyxe5diYe5H75mzCmM/qWvdvEsjvUGUhlEW/G94Bqb+tMI0gfE7bTNKiVuyXwQG6RJllfGZ7O2FpULxqvdI7XLR5ngz9rZPOCktlExaQ3xE3v2jslCzy8XMuls3EX9YFnk+xYvOj/FptvmcBJeAudSKtbjnabAihudHxPZXnlBCu7dpKDPiEcOUcGTN8JNIagYTfs1dmjvIYq9RZfTQg+9f8zV0ZG06207NHruL+GyDYhfBGjT0YXEIH7G0RJAYsRAFJtVvCMF0T3HOdbHKA2ZG0OsasPwuFMksW0VQYZz
+X-Stat-Signature: ayd5kgcn8gjdpw4r963hi5pfpaapotft
+X-HE-Tag: 1793880668-484828
+X-HE-Meta: U2FsdGVkX18h8qvEsizkQSJPbe7wNbJCbaByR9AS+Ma1D/R5JdPtkkBNxboLW8Piy0g22Bq5BW45E/jwRVI0vQGa2hTXicmCYkZHWfgq8cjZncEy1k/PA36JYTsPm6XpxGILOMC90QW7cCj1RmhM1S4V77AqTB9gATVNHmMwSUBAR6en2Ax2GhxX+1ywaSFOF50woz5ReOA0SujYGO6ksuAKufOd+oTmW6VSOjUNytzyAXfKDoZztkP11lk94MpFoIR6FWQSoQErMmyE1RkG64woHtsFGrtcwQYhY4z65N8Xqsh9FYUzrzjmhQ+coQEe/Q2F6qsGu3KSRoNQIcA3cHI8TJeG6mLV6De2gM+Xa8DqNFpRWuhqvmgW7gUd1e5XNMObUSjNUqdPIrFxmrVVjVLeUk4lilFrLX2B/HVUImqAVsx5HgIuhlxNKCTJzYAh9FQvIhKnOrkAYRipb3kPiQGSL1qt7jx4iz29ZrBhe4uym636vR5UVfrP3onD1InqG6/12r1sC3RWM1cpsgAnUVxfTAm8xS8AbB3aqQmbL0ZRnc8OCuAmJ1ehyroUU9YB1YgU+imZmT+u6e0e1WFrE9OpcZDmvVKRH5CTD0RHj8K2/qfJbMwQcxyKwdVV4PQ6QVl4KVMer0fByhMr1A+lkFU5mMMukErf8GTfPgvwjKSkRJ9rDKAPkr12UkNIypr1+USTrus2ZAkmJe8g4Fjn4ravgIpVOyIapwfaLY+uMWvev9JQt7I9vtNhbpxFexstgRPAiQafPpI9DMy1yxR1gkJLrcT1EpQiEUDpOaHmK07H8tDLDBIiR/OLrJZLU/RLE7F/hUaKun4pQpQbWqwYlPEPBoudKkPXHazXNSE7Miub7Axze8+oXgdQcQdORMDg9hE44wfeGhQC6QiwakhKTEpm0Yxow5opfTEJsqTu3mawfYgj7Tj6VbNBYa57CbciyrZpK8hZEjTdPThI8oI
+ 7dNjeSiT
+ 6f0pIYWyClP5mbjV2CEEltVJVET+dg/1bgpYTD74Y1wGV+E/dZRveGHE4vl3wL9iTNAOzcWaPAki1lF6o2xmwEgHYERmzEcPXJqExcMNiswHRkXPTPfA4gMEsIQYJ6ZQv5HXOAmZgqrlVMLPut9q2dAkANZ0OLOiA6kas2kR9EQAxFgp8GHVmA1IpdHLU9ZKdAHTsxMe2DxiwbFfLqeoMFu0rz5+COrd/dWxBW9MEH/tdjrmcNl2J5GszBi0S2KkKijWyPbx2o50F17Lx6pKpDoV4/ROlW+rh68ao1f1JSNAEI4u1sZ7RVhS8fEGUU2L9QbaC/aZZAQTNhNWpfnIY9A1ot3f3oHYUhL9rm9JNhn3upAk6SrF22Bs87y44fRwFsUuhWkOFp5yo/WDV3IsLnUF5CRWqZEqVCJ4Xgfefzrd0kJwqVc+q5zOcpbf0e+akVRsm
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,94 +161,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 02:54:13PM +0100, Vlastimil Babka (SUSE) wrote:
-> On 11/3/26 15:47, Harry Yoo (Meta) wrote:
-> > kfree_nolock() deliberately skips slab free hooks that should not be
-> > called in unknown context. However, there is one more place that
-> > needs the same thing: memcg_alloc_abort_single().
-> > 
-> > Instead of open coding slab_free_hook(), let it handle the allow_spin
-> > parameter. This is required to correctly handle allocation failures due
-> > to memcg charging.
-> > 
-> > There are two functional changes from this.
-> > 
-> > First, memcg_alloc_abort_single() -> slab_free_hook() path no longer
-> > calls free hooks that acquire spinlocks if !allow_spin.
+On Mon 02-11-26 15:21:39, Christian Brauner wrote:
+> vmcore_cleanup() has a single caller, fadump's release_mem_store() on
+> powerpc. That checks fw_dump.dump_active without a lock and calls
+> vmcore_cleanup() without one, and kernfs only serializes the writers of
+> one open file. So two tasks that write to
+> /sys/kernel/fadump/release_mem through different files run
+> vmcore_cleanup() at the same time.
 > 
-> Hm, since this is only changed by patch 4, I don't think it needs mentioning
-> here, as it's not any functional change yet.
-
-Good point, will adjust.
-
-> > Second, kfree_nolock() now follows init_on_free which has been ignored.
-> > 
-> > Besides that, no functional change intended.
-> > 
-> > Closes: https://lore.kernel.org/asiSUpAYYU8Od4HM@gmail.com
-> > Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
-> > Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
-> > ---
-> >  mm/slub.c | 104 +++++++++++++++++++++++++++++++++-----------------------------
-> >  1 file changed, 56 insertions(+), 48 deletions(-)
-> > 
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index 45e077c7526c..36e7bb93418a 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -2686,41 +2686,54 @@ struct rcu_delayed_free {
-> >   * - memcg_slab_post_alloc_hook()
-> >   * - alloc_tagging_slab_alloc_hook()
-> >   *
-> > + * slab_free_hook() assumes that memcg_slab_free_hook() and
-> > + * alloc_tagging_slab_free_hook() are already invoked.
-> > + *
-> >   * Free hooks that must handle missing corresponding alloc hooks:
-> >   * - kmemleak_free_recursive()
-> >   * - kfence_free()
-> >   *
-> > - * Free hooks that have no alloc hook counterpart, and thus safe to call:
-> > + * Free hooks that have no alloc hook counterpart:
-> >   * - debug_check_no_locks_freed()
-> >   * - debug_check_no_obj_freed()
-> >   * - __kcsan_check_access()
-> >   */
-> >  static __always_inline
-> >  bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
-> > -		    bool after_rcu_delay)
-> > +		    bool after_rcu_delay, bool allow_spin)
+> The first one removes /proc/vmcore and waits for its readers in
+> proc_remove(). The second one finds the entry already unlinked, returns
+> from proc_remove() right away and frees vmcore_list, the ELF headers
+> and the device dumps while those readers still walk them. Or both of
+> them free the same lists at once.
 > 
-> Hm 3 bools. Could we bite the bullet and try doing free_flags (extended to
-> cover init and after_rcu_delay) here already? :) Given it's not intended for
-> a stable backport.
-
-Ack, will try to bite the bullet.
-
-> > @@ -2776,8 +2790,11 @@ bool slab_free_hook(struct kmem_cache *s, void *x, bool init,
-> >  		set_orig_size(s, x, orig_size);
-> >  
-> >  	}
-> > -	/* KASAN might put x into memory quarantine, delaying its reuse. */
-> > -	return !kasan_slab_free(s, x, init, still_accessible, false);
-> > +	/*
-> > +	 * KASAN might put x into memory quarantine, delaying its reuse.
-> > +	 * Skip quarantine when spinning is not allowed as it uses a spinlock.
-> > +	 */
-> > +	return !kasan_slab_free(s, x, init, still_accessible, !allow_spin);
-> >  }
-> >  
-> >  static __fastpath_inline
-> > @@ -2789,9 +2806,10 @@ bool slab_free_freelist_hook(struct kmem_cache *s, void **head, void **tail,
-> >  	void *next = *head;
-> >  	void *old_tail = *tail;
-> >  	bool init;
-> > +	bool allow_spin = true;
+> Serialize vmcore_cleanup() with a mutex of its own. It can't be
+> vmcore_mutex, removing /proc/vmcore calls release_vmcore() which takes
+> it. The second caller then finds nothing left to free.
 > 
-> Then we wouldn't need tricks like this I guess?
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: b500afff11f6 ("fadump: Invalidate registration and release reserved memory for general use.")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Right.
+Looks good. Feel free to add:
 
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  fs/proc/vmcore.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/fs/proc/vmcore.c b/fs/proc/vmcore.c
+> index 1fe70c4ecc54..ccb795b85509 100644
+> --- a/fs/proc/vmcore.c
+> +++ b/fs/proc/vmcore.c
+> @@ -1764,6 +1764,11 @@ fs_initcall(vmcore_init);
+>  /* Cleanup function for vmcore module. */
+>  void vmcore_cleanup(void)
+>  {
+> +	/* Not vmcore_mutex, removing /proc/vmcore calls release_vmcore(). */
+> +	static DEFINE_MUTEX(vmcore_cleanup_mutex);
+> +
+> +	/* Two writers of fadump's release_mem can get here at once. */
+> +	guard(mutex)(&vmcore_cleanup_mutex);
+>  	if (proc_vmcore) {
+>  		proc_remove(proc_vmcore);
+>  		proc_vmcore = NULL;
+> 
+> -- 
+> 2.53.0
+> 
 -- 
-Cheers,
-Harry / Hyeonggon
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
