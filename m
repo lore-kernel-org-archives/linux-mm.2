@@ -1,92 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50F0606A6C4
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E2260A3828
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Fsh4bQYq
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iHQiqgNV
 Received: by kanga.kvack.org (Postfix)
-	id 916806B05C4; Thu,  5 Nov 2026 14:32:48 -0500 (EST)
+	id 01A4F6B05B2; Thu,  5 Nov 2026 14:34:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C6EC6B05C5; Thu,  5 Nov 2026 14:32:48 -0500 (EST)
+	id F32886B05B4; Thu,  5 Nov 2026 14:34:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 768366B05C6; Thu,  5 Nov 2026 14:32:48 -0500 (EST)
+	id E53166B05B5; Thu,  5 Nov 2026 14:34:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F6F36B05C4
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:32:48 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BE5536B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:34:22 -0500 (EST)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE3AE1A0C47
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:32:47 +0000 (UTC)
-X-FDA: 85402062774.01.2B213CC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DF9FA1C0004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:32:45 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Fsh4bQYq;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 717211C4697
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:34:21 +0000 (UTC)
+X-FDA: 85402066722.01.BEEA3AF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C91A714000C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:34:19 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iHQiqgNV;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793907259;
+	b=jyqOkSSzSH0B9rEaEmBNoZNVRtg1Qvb4w1UiLMzj52o2srb0kRSq6wwcxfBXYcbVYnPfZB
+	70V0doEL+V/tL7tJaJWdMZ2/JTYbVo650erTedx9g9GmHRIpRHBLOP2/y301CTk7mSJhp4
+	+jDuSkVJ7vrHiOscbVXQKdh86j4g/E0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iHQiqgNV;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907166;
+	s=arc-20220608; t=1793907259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9JYvchWNYP7Qhse19z85hXzOJjhHmC8E+HAVLm+92M0=;
-	b=I21N2AUfHv+x+ni86YepAWmTVyb51tH8HQ8qzbVUfnukhlAxW0su+aYqOZn1j43nlHv/+Z
-	R6yOiONXTfs9B/d/jbjzKfSfFIjGHWQcbVdb+uDiqUuFm8T+Raf6cyLTaHjDGbLVuH6Boh
-	BPu+DBb9m2DJg4tA8vzcdVlpvmiqqM4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907166;
-	b=mSR1w6GFFCKLv+8W8KyK662sEXrjeo7N7f4aBwBn38JTJtXkKj2BiUk25zAyRQF7MQ7rK6
-	QaUFFxOJTtbSNT5ETU/IPRlRekcjizHUgX5Xn2Py4Ia5aR4Jy4IAvZLkgy3P7k7dYOoVAM
-	djbs5/hZljj+tKr1Oua9rTa1UFtV8OE=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Fsh4bQYq;
-	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=MDJ1ZuofLgVrpfv3I4TcFcX00mth3LkloBGTNtx3eGs=;
+	b=dDo/P0qz2ryzcFZ3kO9RtpJlvcol/BFoJbb1DdfR4HONfuXa1TVpE5XvDqt7AegPZi3PVH
+	ctEyAV1xia6pCpnvwhFn1Yt9h9v4xPpgb3gSRXJaaMc5HFeW8ZAuOkX8y0/QSjeqRXnVLC
+	yBg5/7xKGwNCxs8LNlwviDsF3uDWcv4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2580F40791;
-	Thu,  5 Nov 2026 19:32:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47911F00895;
-	Thu,  5 Nov 2026 19:32:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1793907165;
-	bh=9JYvchWNYP7Qhse19z85hXzOJjhHmC8E+HAVLm+92M0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Fsh4bQYqMWs7carasWGDuHRy4Vk/lJrPAI34OneO9HrTG2V1O8i5xUeFVX1yYbl+I
-	 ZNyZyt/Ts+sjd3gO77ODfqyUhpNY6s+mf9lDYESl+MvTxE5P8sWgQuglBvGHq1fwHT
-	 FLTCbyVVxaegRwIhVxhoszJ+XaI3i/Y2wOLcYpy0=
-Date: Thu, 5 Nov 2026 11:32:44 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
-Cc: baolin.wang@linux.alibaba.com, brauner@kernel.org,
- fuse-devel@lists.linux.dev, hughd@google.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, mszeredi@redhat.com, syzkaller-bugs@googlegroups.com,
- syzkaller@googlegroups.com
-Subject: Re: [syzbot] [mm?] [fuse?] WARNING in shmem_initxattrs
-Message-Id: <20261105113244.274cfd420b666687f37643ec@linux-foundation.org>
-In-Reply-To: <6aecb307.a24d9935.80af2.0019.GAE@google.com>
-References: <20261105082717.c459bb33778fcf27e5675082@linux-foundation.org>
-	<6aecb307.a24d9935.80af2.0019.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B01A60148;
+	Thu,  5 Nov 2026 19:34:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A051F0089E;
+	Thu,  5 Nov 2026 19:34:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793907259;
+	bh=MDJ1ZuofLgVrpfv3I4TcFcX00mth3LkloBGTNtx3eGs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iHQiqgNVDF6AO/Z9+xmHNYJq09sECOJ/V1ouMhJqojtr1X2lJdIRL1IYYXP1RAJCt
+	 Wu+CnpR0hPTdGkb3X1/WjYeL/32yOdGH+PAP/eOvqaAFSsJpD22pEg0uyGpaT6+gom
+	 gF0bg2MI/d5sHtDIiu8RRs9aHcei0IP77Zmebbu7PK4yDcZUqq6YP6mxN3lsspiek7
+	 cCK5oxm5ovZn+oyouQ4HciyjLYzwyWVRUfskUtb5rb8sGPnHSqaPbTm3z/eEl9tqsV
+	 +1672ZPVSu99Q4WD3xyK+mLzz2UsWbX7T0lij2m3pPMEEB3yFttZ/T3qPisBsl47pm
+	 1+a3ge+2jqcnQ==
+Date: Thu, 5 Nov 2026 19:34:13 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: don't map folios that are not uptodate in
+ MADV_COLLAPSE
+Message-ID: <auzZF4cGOeHH5upi@gremlin>
+References: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: n84b6p1sxtug7ihmxmriiuwkdzwi8ce1
-X-Rspamd-Queue-Id: DF9FA1C0004
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
+X-Stat-Signature: r6fw54uoo1knb1pw1b55aaihgtzfwpdn
+X-Rspamd-Queue-Id: C91A714000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
-	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793907165-614920
-X-HE-Meta: U2FsdGVkX19+h50UsmSDBZQUJrIH+wVdL1ydU9zyJY5OUiXbENQDSefnKgYjA0CFcZYG51j005cdzxItoZ26kUaMqGHZgX+8NyfKYjECtkwnimfVFyIYipRvJrr1BfNmYMgYLVd6Zcgz3SbSf9mInnj8qhUZL60N/H4beuU/lQPS1Bt+LyWqK0TGSpuNPAtvcbiAnZqwh4O5x0R4HxX87LD1mGRMvmS8TvJ0GGQy5IG6Rz9RX7LnJ7lwMgUhAq/NUiNj3HjqSXUynlccfPYWPvspVnYr4qGWLXfj29lPUsFfROrCzoTRxRlAKXIRoCE49srFs9QzOW2SLQSszrFqjibK6AYinXi7FNYbbWRCaPSXlvi50orGas4rptByicCFBmstW58p6ulYYGN9zln8f6fMCBP315Qyz1kAAqj4zBKui/LNmUP6qDcEQXB+MfT8vlHEiDnYoZOcwUUhyjafHphcyNjXjzQZTWumbCbSVZyiJHBHuUUFfy2KhFPlUSAdmpSdb+mwZHN5Pmya19Uo01PSo/fFE5gRc7VRDzvq21Qo3cLTze0ufaSIiBeAL3O/JTpSd4IV/BmHW+xhZji7MmiJvDo6XVGtcwOJFIIYFYHYyJmb0zhEbLpz49v0Hu5vJByqyT11QyU8YeSWQYSjG8mx2aAEiEQ4kJwwf/zlTkTb3hn+pwZqpQXi0geTPJ0aX+GMlRBSHmj592ACJ/NHq+ibruHwoLC+oBpo9jW5RSXCJPYGNPRTsUBwjLGI++7hNHqFoFS2+ND00vAI/LVAlw1BeCdKcQiiSgj1YgD/EDF/ED2pdea9zkiYNgVRJbZ5p02AiUivbqqV7GRTeOdrQw5iIWH1pBe7zaNEI7EtYoymUvd7uv5fzTdayRHp8nGKQ/sOoWDXWL5gif7UE6uslVz2pp4mj/K8t74Jsad2uRqjklPyUPjH77+EKhgId3lyzUqd82neE7hfCJgi5oY
- VgOE25fZ
- o+99o1nhRxVGaErp0shADmjdlNRVhK9DDcKoc8/1TA33xtcF+/KqCKF/WmSSQyvEOU6l12tD7YnfZmDAQNONL0G4yVuXmsi9HXLgCXMRdXPy/3UC2RxTSXmUsA3mulxooMwU3oM5y3FmDULXfXzyUtMGQr6Cx6FMbpHiGt/+zr6XBS2kgqmLoy6+mi0r0r/bmR9wIRSpVxQbMCfihZ6T2WOUGY84TEuDSbYAs/LaT6Eq6io9rSa+UexTNCr+0nzsiwEO3+PH5Xe3ugB++3eYoOlOx9mKJ9BmmXApzmKbwtoosZtNFtWaHufct9fWKXKyAIFh/exwdFoPzmfKywQp8iHgKhf3XvL4XQcboYoLXVOC5f+1ZnDvJBc7vWLRvmEDgySB3xdCaGCwT2uPKbbWz8/czzSef3CalOOvimPjwUse2QpydTyJ06XfCiNAit27FyKxZRJIsRVTLtLuzX70HnTZ0VjKAMQ5OIdSTD1I69EPJhVhV43opYFnskOhYKtl321PaXZ/c5UkHgOFM/QNt8B77SKf80Cbi+gHbubakr8oo21Ar6yuqIC8OwbEW8yR8TLYQVyRj9H2nYB4aCD7SN8glaH1dj+9ro3gjRRAWMnFLuhgZBKlfSOGdtNqDXTQi979uAVjYVYczaPDpYOvHDh3yBONslLqpngyPS/fyFs7xELRadoNdXqWp2RmDzDcTMPEqjxtceS8JXDrPz7xlLxCj5FizY45hf607+kHG5Lv1p9DX++D7mNystw==
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793907259-414692
+X-HE-Meta: U2FsdGVkX18yWmpHf4NPTdbHypueTDD6kDfDKYw9sTdYMTk8LD+b+onNQg62c3iI/PPj8DZlOtC4WLfsw6AuKgwVMHqFHCCw7evXJyV5Y8rXEavj7/Xx9Be0AFPgH63s3JpMsvV1ySBKFhRpYSssdVdOqgk2tEVaXyA1OeU5Pm43zcTQabCUNuFsJcElQMxT5WNhF1j68/S97y+E7+xHHAxR3tev3rnRylQmRVwGoC8da6a2sABlKPE3aTdtymAk/4lkmyrhbSfEwMuRzQNAWsihNU1eFIHGC+hHKAd8pkr4Wf8AI/X2/92VKhnMcjiTXY1foi4B6L9Zr74nlhOXDO5Z7mg7x+bJATcVVtUUPSzDQn7LZhh9+1hR7/utlbjTCBwAZpl75LqbJ5VHxnEW42Gv5jckvDsjlaCHGh6jmPVgHcwUMUxOpUkAtoXg7mvfTtE+N6mMfrdjBBmVYLZofuIqYWzODMjmawAfyyp/zcrxTKGofHNtLzVvLl5kvcKhnrI0/VuEFbl0kq3YtBpaO4Edafd3PrhiEM2z7Vut/Ng4pyVQBa2Z7w3pYmXJ1yjQcpYqF80i+G+WK7qG9WuD2wRAufZp3ix4hZm3rrlHsg9JJvleFX1Z7AVICESPFpIuK3ZWC65JudCZ0UEF+X+WCBPLkx8yFcwqHQbDdFI6JQnQ1yi9xuKIkhidfUd7tJ+iV3Z/KaJFFHa/eB0jVW7piRMGXmwg0K5Y93Mk1XUmGS6MFHNkOqhvBbP0KkJbw4FZgovUs6ox06tuDWlKDT17Mhr8wYUPgF9iB83r/2wnXqfV+Z7H6lZs3+3kcanVbpPFf0uBToXo1ykvuIH/Uorbsnwpi+p7KA+CdhKJkcsCWq6+ujg5uPWwX8gXn+3p/SXU4UBL2RX22sgUQIJXrThLDyC+s9EpCOYaiWygSdC8H9PBi2lA8Daq4Uep7ZtMg/jwelNhPdUIBxyRSbD0qIQ
+ bcrO6i6S
+ 5M5G2hxZFgbeEuTC1miz428HtBf4OqfoYjiYT684bSeBtJ4HRZl8QRI1JObzPGFUgvrksIObTxj5EVuUhDamQPMbKUQK4Qb6yiHk+IBPEciRXldSw9evGG5Nw//73okrCQMWzwaMNXM7VkJdsM7G4zHA3WHWFLq/a/rXH7/Vw7hm3PnJv9TMbiu55/jOwNzSOXpoWoj04kCjBQqCx4s6C3+nq31v89K7qIrlfcuxSbt4O2nbTdiS3/f1MAZrhynHPqptN2p9+fKfT62T1Np1T4pXVeEXVnluD6Hy4ovw5yxfZiktadZq4/S0/SksZ9dG6cyG9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,85 +99,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 05 Nov 2026 08:47:03 -0800 syzbot <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com> wrote:
+On Thu, Nov 05, 2026 at 07:16:44PM +0100, David Hildenbrand (Arm) wrote:
+> madvise(MADV_COLLAPSE) can map PMD-sized pagecache folios that are not
+> uptodate. For example, shmem fallocate() can put such folios into the
+> page cache.
+>
+> collapse_file() already refuses to proceed with folios that are not
+> uptodate. Let's just do the same in try_collapse_pte_mapped_thp() and skip
+> such folios, leaving handling to the page faults.
+>
+> Note that collapse_file() effectively clears shmem folios through
+> shmem_get_folio(); let's keep this fix simple and simply let the page
+> fault path deal with that.
+>
+> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
+> Reported-by: Chris Mason <mason@kernel.org>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-> Hello,
-> 
-> syzbot has tested the proposed patch and the reproducer did not trigger any issue:
-> 
-> Reported-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
-> Tested-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
-> 
+Looks reasonable to me, there's no reason we should be dealing with non-uptodate
+folios there.
 
-Great, thanks.  My LLM-controlled live-kernel testing setup liked it
-too.
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
-Christian, I'll send this over soon:
+> ---
+> Once reviewed, I will pick this up in a timely manner.
+> ---
+>  mm/khugepaged.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 8d9f05a39afb3..db135b3c44ef1 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -1900,6 +1900,12 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+>  		goto drop_folio;
+>  	}
+>
+> +	/* Leave any uninitialized folios to the page fault path. */
+> +	if (!folio_test_uptodate(folio)) {
+> +		result = SCAN_FAIL;
+> +		goto drop_folio;
+> +	}
+> +
+>  	result = find_pmd_or_thp_or_none(mm, haddr, &pmd);
+>  	switch (result) {
+>  	case SCAN_SUCCEED:
+>
+> ---
+>
+> base-commit: f44fd601f72e09e44c667b9234c9cd469856679c
+>
+> change-id: 20261105-set_huge_pmd_uptodate-9b9820307f30
+>
+> --
+>
+> Cheers,
+>
+> David
+>
 
-
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: shmem: consume the reserved xattr space despite remount
-Date: Thu, 05 Nov 2026 08:08:06 -0800
-
-Creating a tmpfs inode can trigger WARN_ON(ispace) in shmem_initxattrs()
-when a concurrent remount sets nr_inodes=0.  With panic_on_warn enabled,
-this warning can panic the machine.
-
-shmem_initxattrs() reserves space for the security xattrs while inode
-limits are enabled.  It later tests max_inodes again before consuming that
-reservation for each installed xattr.  If remount disables the limit
-between those steps, successfully installed xattrs leave a nonzero
-reservation behind.
-
-Use the remaining reservation, rather than the current mount policy, to
-decide whether to subtract the installed xattr's space.  This also leaves
-the failure path with only the unconsumed reservation to refund.
-
-An initially unlimited filesystem cannot acquire an inode limit through
-remount: shmem_reconfigure() rejects that transition.
-
-Link: https://lore.kernel.org/20261105082717.c459bb33778fcf27e5675082@linux-foundation.org
-Fixes: 076e5cef28e27 ("simple_xattr: change interface to pass struct simple_xattrs")
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=4324f771847cecb27c54
-Tested-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Miklos Szeredi <mszeredi@redhat.com>
-Cc: Christian Brauner <brauner@kernel.org>
----
-Reproduced the warning before the fix and verified its absence
-afterward in a Debian 13 guest with SELinux enabled (permissive).
-
-A temporary hook paused file creation after reserving security-xattr
-space. Another process completed a real nr_inodes=0 remount before
-creation resumed. The unpatched kernel left 94 bytes unconsumed and
-triggered WARN_ON(ispace); the patched kernel consumed the reservation
-completely. File contents and the security xattr were verified.
-
-Ordinary creation on limited and unlimited tmpfs mounts also passed
-on both kernels. No additional KASAN or lockdep reports occurred.
-
-Tested Linux 7.4.0-rc1 with GCC 13.3, KASAN and lockdep, using KVM:
-8 GiB RAM, four vCPUs and one virtual NUMA node, backed by a
-Threadripper PRO 3995WX. Both kernels had the same diagnostic hook;
-the ordering was forced rather than left to random stress.
-
- mm/shmem.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/shmem.c~shmem-consume-the-reserved-xattr-space-despite-remount
-+++ a/mm/shmem.c
-@@ -4451,7 +4451,7 @@ static int shmem_initxattrs(struct inode
- 		if (simple_xattr_add(&sbinfo->xa_cache, &info->xattrs, new_xattr))
- 			break;
- 
--		if (sbinfo->max_inodes)
-+		if (ispace)
- 			ispace -= simple_xattr_space(new_xattr->name, new_xattr->size);
- 		retain_and_null_ptr(new_xattr);
- 	}
-_
-
+--
+Cheers, Lorenzo
 
