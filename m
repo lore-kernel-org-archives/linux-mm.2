@@ -1,112 +1,112 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BCE6083607
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A197960A2607
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=bHtRIRuo;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MnULQVB2;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=bHtRIRuo;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=MnULQVB2
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FyiaQi6Y;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=P556lgPy;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=FyiaQi6Y;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=P556lgPy
 Received: by kanga.kvack.org (Postfix)
-	id 957CA6B05C2; Thu,  5 Nov 2026 12:01:00 -0500 (EST)
+	id 7F8126B05C3; Thu,  5 Nov 2026 12:01:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92FBD6B05C3; Thu,  5 Nov 2026 12:01:00 -0500 (EST)
+	id 7D0136B05C4; Thu,  5 Nov 2026 12:01:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81E846B05C4; Thu,  5 Nov 2026 12:01:00 -0500 (EST)
+	id 6BF086B05C5; Thu,  5 Nov 2026 12:01:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 66AB76B05C2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:01:00 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id EDE34160B63
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:00:59 +0000 (UTC)
-X-FDA: 85401680238.07.D4BFE35
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3FE1B6B05C3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:01:01 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C3F20C0B6B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:01:00 +0000 (UTC)
+X-FDA: 85401680280.27.DD7991F
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf31.hostedemail.com (Postfix) with ESMTP id A63C520020
+	by imf04.hostedemail.com (Postfix) with ESMTP id BD08640012
 	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:00:58 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bHtRIRuo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MnULQVB2;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bHtRIRuo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MnULQVB2;
-	spf=pass (imf31.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793898057;
-	b=NtBtA79USQ7iU/fQgt9VcslaCNFv/Ho3oekoR0lI4pf8H3UktM3ePadCSsqNAIpeazm4IJ
-	3MNa6uG2Bw5n9MNr1nbvo6wbUsrwkuEADmay8ibsf8YFZQxkFOiRebdx25DJvipNpwpELs
-	4gyT53lMSW1F8bwGQmWY+cvNI3utSJQ=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bHtRIRuo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MnULQVB2;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=bHtRIRuo;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=MnULQVB2;
-	spf=pass (imf31.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FyiaQi6Y;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=P556lgPy;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FyiaQi6Y;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=P556lgPy;
+	spf=pass (imf04.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
 	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793898057;
+	s=arc-20220608; t=1793898058;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZNgGJWG7rTKkwW3ylpil8PEuUBqj8yefdS7O9KEe1jw=;
-	b=JKtk3mxZpV/2KB6lPZbWT8RFuPS+BEg56ammOEIHUHIjNeqbFEjBe4xMFZdiVSBwr43WPM
-	xP0ZGbH6GrbFu9jfZtbR9WIn3SM/g4/2Zfp181a0zUiG1CfnaZKIDdp2tHUFdzAVXwmvH1
-	NvSg6scM/c7QfmDUgszgtj2T7ZSyQuI=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=JKTmXrXjtWa/G4eyzga8yYon7SkQ1CbbiYS7NLaZQSE=;
+	b=TFFlQzYataUC/+eczbb8M9oIl6ibzCqEXRTjdI3sRPVtplhDtGCoeqz+1jFZ3fYva5SK/F
+	XBfQLxquj73tMwaopts68VWVRiSSY9EzV74k2P9iRigYSQyOHDJ21PH89X5WKUTAHpsm1t
+	vT/AUURo7xNN+zS6lsPOqX6XzMuxSEY=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FyiaQi6Y;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=P556lgPy;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=FyiaQi6Y;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=P556lgPy;
+	spf=pass (imf04.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793898058;
+	b=NJD6G0ohtx3xNq1ObJA9s/xpBA2Zu61NH9c9TAHDA9B2ZVeuJY1+wN6P8WQxcGh9gQJVfS
+	pLe+SiW77kKcxyiWzoORRO1FHlwIIy055/GlxzhQg2t4SzEleD3T+DRYoN06VEg3l94LDo
+	F1nh9giT0AA8lOsiMbyjb+u5PmZWNII=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2F1461FE10;
-	Thu,  5 Nov 2026 17:00:56 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A1D701FE8F;
+	Thu,  5 Nov 2026 17:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793898056; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1793898057; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZNgGJWG7rTKkwW3ylpil8PEuUBqj8yefdS7O9KEe1jw=;
-	b=bHtRIRuonQJOyPSuvBrRcvmluyZbQFXKnkednZ74NurqqE7mD0rORk4DdY37kO9ARtje2H
-	Tfb9aw/KT25PXgNShyd0rTI+HsIdalnYzh8Y/ji+5cnsma12HMP+8MbamiIX+zd6qZM6vV
-	kk7tYABFjLG5ohPPbtspouCeIZP/sa0=
+	bh=JKTmXrXjtWa/G4eyzga8yYon7SkQ1CbbiYS7NLaZQSE=;
+	b=FyiaQi6Y22rH29a1RDsHKP1SPcP1S1oFAeAS3xeGQfgeA9N//7ADuXokQdk4OFMCztHkgr
+	ODWk2HqyRQocNMJK2K29NCzbfvzJH+R4brhwlcgKg2GP7+R0dcOWewn/PWpaDL3l95hIFQ
+	iIB3sgwsZluA/aODCeXlO3pk8d3z+8g=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793898056;
+	s=susede2_ed25519; t=1793898057;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZNgGJWG7rTKkwW3ylpil8PEuUBqj8yefdS7O9KEe1jw=;
-	b=MnULQVB2MyVRCdT8JcNvwCGhlbVrVTp9YHB8rfRO5thDdE4wCUgLw0RCFoFw+vV3I8Hzux
-	IFSTFPsVg63BKPBA==
+	bh=JKTmXrXjtWa/G4eyzga8yYon7SkQ1CbbiYS7NLaZQSE=;
+	b=P556lgPyQn3q30w9Fgf4cK2jzW9bYpuofte4VAKU44wYJhKO96WGioywB7j7jlZ23FQG8X
+	hiQJvKfqZkM6zBBA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793898056; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1793898057; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZNgGJWG7rTKkwW3ylpil8PEuUBqj8yefdS7O9KEe1jw=;
-	b=bHtRIRuonQJOyPSuvBrRcvmluyZbQFXKnkednZ74NurqqE7mD0rORk4DdY37kO9ARtje2H
-	Tfb9aw/KT25PXgNShyd0rTI+HsIdalnYzh8Y/ji+5cnsma12HMP+8MbamiIX+zd6qZM6vV
-	kk7tYABFjLG5ohPPbtspouCeIZP/sa0=
+	bh=JKTmXrXjtWa/G4eyzga8yYon7SkQ1CbbiYS7NLaZQSE=;
+	b=FyiaQi6Y22rH29a1RDsHKP1SPcP1S1oFAeAS3xeGQfgeA9N//7ADuXokQdk4OFMCztHkgr
+	ODWk2HqyRQocNMJK2K29NCzbfvzJH+R4brhwlcgKg2GP7+R0dcOWewn/PWpaDL3l95hIFQ
+	iIB3sgwsZluA/aODCeXlO3pk8d3z+8g=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793898056;
+	s=susede2_ed25519; t=1793898057;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZNgGJWG7rTKkwW3ylpil8PEuUBqj8yefdS7O9KEe1jw=;
-	b=MnULQVB2MyVRCdT8JcNvwCGhlbVrVTp9YHB8rfRO5thDdE4wCUgLw0RCFoFw+vV3I8Hzux
-	IFSTFPsVg63BKPBA==
+	bh=JKTmXrXjtWa/G4eyzga8yYon7SkQ1CbbiYS7NLaZQSE=;
+	b=P556lgPyQn3q30w9Fgf4cK2jzW9bYpuofte4VAKU44wYJhKO96WGioywB7j7jlZ23FQG8X
+	hiQJvKfqZkM6zBBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7EB46133F6;
-	Thu,  5 Nov 2026 17:00:54 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5A681133F6;
+	Thu,  5 Nov 2026 17:00:56 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id HMEkC0K27GqWRwAAD6G6ig:T4
-	(envelope-from <clopez@suse.de>); Thu, 05 Nov 2026 17:00:54 +0000
+	id HMEkC0K27GqWRwAAD6G6ig:T5
+	(envelope-from <clopez@suse.de>); Thu, 05 Nov 2026 17:00:56 +0000
 From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
 To: kvm@vger.kernel.org,
 	linux-mm@kvack.org
@@ -128,18 +128,11 @@ Cc: linux-kernel@vger.kernel.org,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>
-Subject: [PATCH v2 3/9] mm/huge_memory: honor MM_CP_TRY_CHANGE_WRITABLE in change_huge_pud()
-Date: Thu,  5 Nov 2026 17:50:00 +0100
-Message-ID: <20261105165004.2663799-7-clopez@suse.de>
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>
+Subject: [PATCH v2 4/9] mm/mprotect: add MM_CP_PERM_UPGRADE
+Date: Thu,  5 Nov 2026 17:50:01 +0100
+Message-ID: <20261105165004.2663799-8-clopez@suse.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20261105165004.2663799-4-clopez@suse.de>
 References: <20261105165004.2663799-4-clopez@suse.de>
@@ -147,21 +140,20 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Spam-Score: -12.51
+X-Spam-Score: -12.30
 X-Spam-Level: 
-X-Stat-Signature: ocretry6mzo14e9qxdsmp5hicmjfwyhr
+X-Stat-Signature: zxgdankftoc4qnwmxzczfpponcfnoh3r
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A63C520020
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793898058-109532
-X-HE-Meta: U2FsdGVkX19hoXscO2f/HmlVDesgH7zuVFc8BfKibVlWU2ZmYo5Z5/l5dfP9VnwzoxPmEbzqUhXiVQI0K4o8VE4XUGRLI8KFSExUV0PW5EsRAzC4cHFVp+oYog7cJ3NFsLJz+ikzUd4UXmepWHDv/m3Yz9N7qFWeu3atEHmuwE+/b6uCTb+Ml2fnTFYxnAd4Hm+PuFgbIcxQLfy1dUVYq7cwC2+jBOdsHX8RzAzYd5QIfeD3S3eE5kuWgQ/bSvSGm6yh4gzTnWaN/oPnPQ7W4+rG4k8NDVk5FjaH279iLqir5KQseCSif58UFuw5AlHqi/LgWwGbjy4dIwlJPrY/Qoj2YWTR267MKJjdo5eF1Ks4Bid2hWodHssWxR22aWum4GlyvCA+9Mp+wc4j/aPqRSdwx21XifwFtBzv94on36iONFK/0NdpUszEgewQsZgboJ0/nA7Z7fQGYaVbx7ApDNr7LmHeheTYWSWuuKT5KT2FwmTezFndZYvQtKWF6nNtVpM3M5DIPVv5xyRNydwIgQP/stw4QmZgVglmMN5NJ691TRO/1gYR4loEnuhoLh2hTFwEDn7bgmi6VibmoU0HDCN3BpY2hvpgCKIkh0VjEEBbZ+hEeNi+5Tu5Ryw2jHtvMOE08nX0eWM2pRvufiFsJeiphzSWIe54wQHtUeBkzDvRZZ1idsOGH+ZJDI5bUU3LSYe2sHF3MmgHko+aZ8xVRgkQBmUlYXzs0lz4Q55/8Y49eatK8kusUQPyE/1ZcPul4ZGpLMTq1v6o3ruufn8yfJV/Wjvz6TA+Alaw0xr6fsaiOvWu5q6hjzXC5lXPACQYu1KcvOLB8N/chcEYDVGy79qdidWhaDV1InefTSKutJ9fP1mLdWAtM8Bcj//Kc/smTlKpSDFnc0/FSxPjr12LpHXr/4UdyQFARBBNARU0JBkEkHSVWtlbte3YznisZyu/MqffoWfxfR+031i/yIt
- p0tZ9Gnk
- krWSCmPnz1ijlxBohMxl5IRX3hSklv0saB0A4zvYEalbhtUSe+xi7+slg2AoUv+Q78rqbY7CUZWsBwibId5FEFKI6/IoMLPlG8XrbHcgfRvh8AGGWanM0ClkFd+eheRm50HRbv3p1VrWQRHSb5ojpWtJnSrcuDMEpMQi3vu1emzM4ATRxMF4TSOndlGWOzul5wEFkHFjbBo2XuirHIG05PdWah4EkEdkMvI3RacGFzNsYAEqz/fIauJtXD/OiFYUJMwXGnb6ftyfPUpmWYAq1hC4xk9Cw03S8SM20+G+/uhigwyBScgL2oO6t9lNlGtCH6b/3LRhx86Cnjw0/N5naj8cf35HEpw4eovgRd+XHn9XbZFjUHYgxKjZ7UA==
+X-Rspamd-Queue-Id: BD08640012
+X-HE-Tag: 1793898058-341640
+X-HE-Meta: U2FsdGVkX1+VzqvP4V77xzxOaCAsldwkyhwhdX1/7A21IEffQQLHvbw6DBFqL6Ni4qaIUUJrYc1bnV3a0AjsDVW2lQo0CdKMLSzOhkqLmmjaY8FrJTkuib9CmjkjP7bGBhdY4Y5t3H15mgbATUgukyJcfQ64posyqRXAlKp9yJIWZSOMKKoH6zPUWcvlIWKBi04Oq0booWPgAXxGLq0bsQ68cYqV5OpefhYmaI/om5KYds1USc4Vj2ilVNwZiDE2G+Dq843ZAbBriEKapsG1UK/In9NTSRyLThV1/GnrPnO+upufpujXdkQO1mHkN49Ubmo/oVYcTfUlv3ASYkPxx41bWxsE3Syxj+G3FwPJ5rYlcZuJx330SKcD42wwxTeacfHU2+aPRcHULpcWLyPUdOpq5BshMlvSNm4JciUrhaqdbxmkegtrnsT4xMAP995EOrh1rsJX4gwWwy1d/eJZPLBgJLmRxVEi7qPHur9c6Yh2fQHm0Jzbu8t/v9xzl8h1uLMQ/edacboPvXf5jhY9rAmJulMXfNr5K2lTKZ2Ix6aEB5xE8mmnYM+EKCrfG3tqn5dS8WbcDQ/hh/T6by/MuIBlH1BAF6KIr4MFbKFM/yZoB9Tdf+7Ocfao06BUWEl++SBI9GvYEURPzKu1de+Og1zMMUBzIOhif2ppuHLyxucV7ACOX9n7Ctn+GCVC04RfWOkLfdOcJGlMxfS4dKaQN12uYoqBYRFR2nHx8FR8Y8946dfXu/Pfrw9Sn57BvIfMyfeXMn92qQSEm7WgVe+4EUyFY+zWlyN6GCpEl0V9kGZY84bSLfAOONDwbJy89yE3G/PaduaCu7RAXHyp6Xkfr+82OnQaQe1fgrZUeo2gKBhzfrT60JSdIqp4XE5mc6KEVBn0rbDvbRRkRnA7A8NhOp48ZYRhTqujBmJyBdavE44349f1AWRMad/9TtEX/yySpmlYrbSN30Z2wTnO5aE
+ 67CZ/+j0
+ UMUitTC3xGofD0cBfCBCOuEOc+Nveyyjy/+lxrPzYadnE2BIS+yIDCdcD5QCi5loqa7j+mrrgmV4LkHMhYebEXP5yAySVNI6S6AvewEMQTtfciOfR8nzWy7+YOLOMQr5uNoLzMJ3yWHwOupPSfolTixle+q71IViG/OCNc8hyL53TIcGQDfYZH52rMuLXMp7GaOuWbZ0mt1ANNJodMwCO6S6UcBqmqQvtroVItVjPzIYQOLcBCV4/Ry2yQG7ZRjtc7JgMzvH2LkQO8tEAr9yuVP/TyZ7LSOv745CpXLZ1V0u8lmQLR7NwxutbbCCv4T18/9tgEH7+V2J10Eyjli0cJSt706h65EImbdy9XfZD5CQDgmd9QQv1ME0MIg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,107 +162,65 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When change_protection() is called on a range whose vma->vm_page_prot
-does not contain the write bit (MAP_PRIVATE mappings, which need CoW
-handling, or MAP_SHARED mappings that want write tracking), the new
-entries are created without the write bit, letting the fault handler
-re-introduce it. In such cases, MM_CP_TRY_CHANGE_WRITABLE is set to
-eagerly restore the W bit in the page table entries when stripping the
-write protection was not needed.
+Add a change_protection() flag for changes that only add permissions,
+keeping the PFN and revoking no access. mprotect() sets it when the new
+VMA flags only add read, write or execute permissions. VM_ACCOUNT may be
+added as well, as it does not affect the page tables. Any other change,
+such as a different protection key, is not considered an upgrade.
 
-However, change_huge_pud() does not currently respect the flag. The only
-user of huge PUDs, device DAX, is never CoW and does not need write
-notifications for dirty tracking, but it does get them once soft-dirty
-tracking is armed through /proc/pid/clear_refs. vm_page_prot then lacks
-the write bit, and a protection change leaves dirty PUDs read-only, so
-the next write takes a fault only to set the write bit again.
-
-Align change_huge_pud() with change_pte_range() and change_huge_pmd() by
-making it respect MM_CP_TRY_CHANGE_WRITABLE. Besides avoiding those
-faults, this keeps huge PUDs consistent with the other levels if PUDs
-that need CoW, such as anonymous ones, are ever introduced. They would
-otherwise lose the write bit on every protection change, even where the
-write fault handler would restore it without further checks.
-
-Do this by introducing can_change_pud_writable(), which mimics
-can_change_pmd_writable(). Omit the NUMA and uffd-wp checks, which
-change_huge_pud() already rejects.
+This will allow MMU notifier users to perform optimizations, as they
+can avoid invalidating PTEs whose permissions can be faulted in.
 
 Signed-off-by: Carlos López <clopez@suse.de>
 ---
- include/linux/pgtable.h |  5 +++++
- mm/huge_memory.c        | 28 +++++++++++++++++++++++++++-
- 2 files changed, 32 insertions(+), 1 deletion(-)
+ include/linux/mm.h |  2 ++
+ mm/mprotect.c      | 13 +++++++++++++
+ 2 files changed, 15 insertions(+)
 
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 780fe849ff8b..943d7e95f426 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1866,6 +1866,11 @@ static inline int pmd_soft_dirty(pmd_t pmd)
- 	return 0;
- }
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 9f167950926a..dddbd76a2760 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3581,6 +3581,8 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+ #define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* resolve rwp */
+ #define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
+ 					    MM_CP_UFFD_RWP_RESOLVE)
++/* Whether this change only upgrades/adds permissions */
++#define  MM_CP_PERM_UPGRADE                (1UL << 6)
  
-+static inline int pud_soft_dirty(pud_t pud)
+ bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+ 			     pte_t pte);
+diff --git a/mm/mprotect.c b/mm/mprotect.c
+index 754333698c1e..683131c9c4a0 100644
+--- a/mm/mprotect.c
++++ b/mm/mprotect.c
+@@ -756,6 +756,17 @@ static const struct mm_walk_ops prot_none_walk_ops = {
+ 	.walk_lock		= PGWALK_WRLOCK,
+ };
+ 
++static bool vma_flags_is_perm_upgrade(vma_flags_t old_vma_flags,
++				      vma_flags_t new_vma_flags)
 +{
-+	return 0;
++	vm_flags_t old = vma_flags_to_legacy(old_vma_flags);
++	vm_flags_t new = vma_flags_to_legacy(new_vma_flags);
++	/* VM_ACCOUNT does not affect page tables */
++	vm_flags_t mask = VM_READ | VM_WRITE | VM_EXEC | VM_ACCOUNT;
++
++	return new == (old | (new & mask));
 +}
 +
- static inline pte_t pte_mksoft_dirty(pte_t pte)
- {
- 	return pte;
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index bd44d58e8684..506e1e61c0fd 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2824,6 +2824,29 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	return ret;
- }
+ int
+ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+ 	       struct vm_area_struct *vma, struct vm_area_struct **pprev,
+@@ -836,6 +847,8 @@ mprotect_fixup(struct vma_iterator *vmi, struct mmu_gather *tlb,
+ 	vma_flags_reset_once(vma, &new_vma_flags);
+ 	if (vma_wants_manual_pte_write_upgrade(vma))
+ 		mm_cp_flags |= MM_CP_TRY_CHANGE_WRITABLE;
++	if (vma_flags_is_perm_upgrade(old_vma_flags, new_vma_flags))
++		mm_cp_flags |= MM_CP_PERM_UPGRADE;
+ 	vma_set_page_prot(vma);
  
-+#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-+static inline bool can_change_pud_writable(struct vm_area_struct *vma,
-+					   unsigned long addr, pud_t pud)
-+{
-+	struct page *page;
-+
-+	if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE)))
-+		return false;
-+
-+	/* Do we need write faults for softdirty tracking? */
-+	if (vma_soft_dirty_enabled(vma) && !pud_soft_dirty(pud))
-+		return false;
-+
-+	if (!(vma->vm_flags & VM_SHARED)) {
-+		/* See can_change_pte_writable(). */
-+		page = vm_normal_page_pud(vma, addr, pud);
-+		return page && PageAnon(page) && PageAnonExclusive(page);
-+	}
-+
-+	/* See can_change_pte_writable(). */
-+	return pud_dirty(pud);
-+}
-+
- /*
-  * Returns:
-  *
-@@ -2831,7 +2854,6 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
-  * - 1: if pud can be skipped
-  * - HPAGE_PUD_NR: if pud was successfully processed
-  */
--#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
- int change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		    pud_t *pudp, unsigned long addr, pgprot_t newprot,
- 		    unsigned long cp_flags)
-@@ -2863,6 +2885,10 @@ int change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 	 */
- 	oldpud = pudp_invalidate(vma, addr, pudp);
- 	entry = pud_modify(oldpud, newprot);
-+	/* See change_pte_range(). */
-+	if ((cp_flags & MM_CP_TRY_CHANGE_WRITABLE) && !pud_write(entry) &&
-+	    can_change_pud_writable(vma, addr, entry))
-+		entry = pud_mkwrite(entry);
- 	set_pud_at(mm, addr, pudp, entry);
- 	tlb_flush_pud_range(tlb, addr, HPAGE_PUD_SIZE);
- 
+ 	change_protection(tlb, vma, start, end, mm_cp_flags);
 -- 
 2.51.0
 
