@@ -1,137 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47F2606B9FA
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:32:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50F0606A6C4
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eDtVrelY
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=Fsh4bQYq
 Received: by kanga.kvack.org (Postfix)
-	id C4B196B05C3; Thu,  5 Nov 2026 14:32:44 -0500 (EST)
+	id 916806B05C4; Thu,  5 Nov 2026 14:32:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C227B6B05C4; Thu,  5 Nov 2026 14:32:44 -0500 (EST)
+	id 8C6EC6B05C5; Thu,  5 Nov 2026 14:32:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AEB866B05C5; Thu,  5 Nov 2026 14:32:44 -0500 (EST)
+	id 768366B05C6; Thu,  5 Nov 2026 14:32:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DF696B05C3
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:32:44 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 016EEA0C1B
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:32:43 +0000 (UTC)
-X-FDA: 85402062648.03.BC3DCA1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F6F36B05C4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:32:48 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BE3AE1A0C47
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:32:47 +0000 (UTC)
+X-FDA: 85402062774.01.2B213CC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 32408A0008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:32:42 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDtVrelY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id DF9FA1C0004
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:32:45 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Fsh4bQYq;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907162;
+	s=arc-20220608; t=1793907166;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rb2ofXzgJBc5fIuQP0w05xjk/81sHfOWEL8zO3J0XUA=;
-	b=HCcPDqG31tfbYghsPdXK7/diMXF9wTBVv6xHyOX3UpaY79FrhIg5085VgQa+DezW9cgWtg
-	9W2tU9Ag/fxo8U9mVrCGCiRWccN2baKQ6b7DH+qMryJWIiKMcNo6Tv0BdG962vNxOvG3NU
-	jNVzsv7hAKqmf5zo73fZhFXSQYqYx7I=
+	bh=9JYvchWNYP7Qhse19z85hXzOJjhHmC8E+HAVLm+92M0=;
+	b=I21N2AUfHv+x+ni86YepAWmTVyb51tH8HQ8qzbVUfnukhlAxW0su+aYqOZn1j43nlHv/+Z
+	R6yOiONXTfs9B/d/jbjzKfSfFIjGHWQcbVdb+uDiqUuFm8T+Raf6cyLTaHjDGbLVuH6Boh
+	BPu+DBb9m2DJg4tA8vzcdVlpvmiqqM4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907162;
-	b=QGZV95E3GJw32Dosrtfx/flYpfYiZ8rDJ7mxx+ACv9GTFe0+vlBxdziyJvMkqiZmmnEUTh
-	w2iPjiFEU7tLSw5r5UgwYcwqJghVRKIewbbNpaytY7saTaoQrRhfZbqH4yKN94AI/c+yDd
-	OHDBSHFmRTAt4J27B3sjJrDjyVkuokM=
+	t=1793907166;
+	b=mSR1w6GFFCKLv+8W8KyK662sEXrjeo7N7f4aBwBn38JTJtXkKj2BiUk25zAyRQF7MQ7rK6
+	QaUFFxOJTtbSNT5ETU/IPRlRekcjizHUgX5Xn2Py4Ia5aR4Jy4IAvZLkgy3P7k7dYOoVAM
+	djbs5/hZljj+tKr1Oua9rTa1UFtV8OE=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eDtVrelY;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=Fsh4bQYq;
+	spf=pass (imf21.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 752B4403F9;
-	Thu,  5 Nov 2026 19:32:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C1A1F00893;
-	Thu,  5 Nov 2026 19:32:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793907161;
-	bh=Rb2ofXzgJBc5fIuQP0w05xjk/81sHfOWEL8zO3J0XUA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=eDtVrelYYt9il2577q40L8EJ4XtDnLbe9oqPCZ5DVXPhy2CZ8RykrXLqcT8lNJ9fo
-	 iVvdOiFyVuQs7f9uc0KWN9MENqV2XhI4rRvK3+VjAyx04aExFaeskqW93dB8KnV1I7
-	 jXPC/Dq+sLpMiFkrvl1FXVJfY5SmBtdGcpXVpAosWwzVpgGOAtgpDNtkSivs3sMb0S
-	 idxJlASIgnR6P/pT9DmadA3pyNe/7F5fBJgEg6bIU8TZ5JFBDrGQZ6Q/e/u9IVIB7y
-	 yZXuho1Kj6QIDbZlEjN5wDAh5ZVw8ddXkVoI6kVGhOjvfJ+tc5dncmBzIgU7aioe/k
-	 V1zZhbj+ZI/kg==
-Message-ID: <7dc47941-0c84-4260-bf9c-1a9bbe4d4f08@kernel.org>
-Date: Thu, 5 Nov 2026 20:32:37 +0100
+	by sea.source.kernel.org (Postfix) with ESMTP id 2580F40791;
+	Thu,  5 Nov 2026 19:32:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47911F00895;
+	Thu,  5 Nov 2026 19:32:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793907165;
+	bh=9JYvchWNYP7Qhse19z85hXzOJjhHmC8E+HAVLm+92M0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Fsh4bQYqMWs7carasWGDuHRy4Vk/lJrPAI34OneO9HrTG2V1O8i5xUeFVX1yYbl+I
+	 ZNyZyt/Ts+sjd3gO77ODfqyUhpNY6s+mf9lDYESl+MvTxE5P8sWgQuglBvGHq1fwHT
+	 FLTCbyVVxaegRwIhVxhoszJ+XaI3i/Y2wOLcYpy0=
+Date: Thu, 5 Nov 2026 11:32:44 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: syzbot <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
+Cc: baolin.wang@linux.alibaba.com, brauner@kernel.org,
+ fuse-devel@lists.linux.dev, hughd@google.com, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, mszeredi@redhat.com, syzkaller-bugs@googlegroups.com,
+ syzkaller@googlegroups.com
+Subject: Re: [syzbot] [mm?] [fuse?] WARNING in shmem_initxattrs
+Message-Id: <20261105113244.274cfd420b666687f37643ec@linux-foundation.org>
+In-Reply-To: <6aecb307.a24d9935.80af2.0019.GAE@google.com>
+References: <20261105082717.c459bb33778fcf27e5675082@linux-foundation.org>
+	<6aecb307.a24d9935.80af2.0019.GAE@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] shmem: skip empty unmap ranges when punching holes
-To: Hungyu Lin <dennylin0707@gmail.com>, hughd@google.com
-Cc: baolin.wang@linux.alibaba.com, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261105055619.58289-1-dennylin0707@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
- dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
- QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
- XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
- Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
- PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
- WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
- UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
- jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
- B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
- ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
- AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
- 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
- g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
- ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
- 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
- /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
- jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
- DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
- HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
- 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
- LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
- 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
- VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
- /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
- iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
- 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
- zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
- azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
- FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
- sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
- 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
- EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
- IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
- 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
- Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
- sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
- yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
- 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
- r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
- 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
- CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
- qIws/H2t
-In-Reply-To: <20261105055619.58289-1-dennylin0707@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: mracykdu5ocxcxzydnceug5xiap8woqs
+X-Stat-Signature: n84b6p1sxtug7ihmxmriiuwkdzwi8ce1
+X-Rspamd-Queue-Id: DF9FA1C0004
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 32408A0008
-X-HE-Tag: 1793907162-777022
-X-HE-Meta: U2FsdGVkX19qgthan4Lj4SZ7zXM3dgVt47Ep5vV9MXaynRfezjqotTpKcLLcD8LW7+dROkDz7tFWbYTnduXT0N5z+b/f4EwuFbfCuTHJK8AvLGlVGxKPVNd8Hr9mo4wrseMcB8l6ppaC4gaI8uXpz5T2n+tj10QqLpsedEZ/3WdB64uvIt7qQM7JtU7D3XgYqGEn2u+0EVFWQYJDjQwFdzpaETgGDHVb5h+qJYehDTix82n2yHLK30mcFLEMViEqG3haMqJb3D3rx7KaasSlb/FtBkJLZcCBpoR0GsqfSVY/gToyvpvcWsgggvvNkSp5nHVwk3BqKLKj/y8Inxrx2xypDPjQiyU+DtbbeU0VOdLbLgo4mGosvAW9EEdcLlFXxsAOTQLv2tk8CdVMZcvoDbHda30ytYp92gA7SsMbqxhOd0gvbIUm4XlWbfd45EkaR03AKiVGd2MKIZwd9KGHTqK/wAyW12BRRaYAK8zloT1pgLasJNPnrPRLm9uX/XMcPT6KbYWrY6ZbhS+W9tp9Ng9jtWSk7rfUxv4Ue/GXue8nS6Fu9xljdBZ200NUhWqjZJYdr2uB9Nn8jI9usSzYuLCePQ20z34VOUyKKokmuqigTN4a/Qd2r5k2vkBhMab04K1K7K4lspZFHPeBXvXsLNXRzTwUR28AdK3Kxhokalu72hmp002ZVy/j1EQTgcD67uhRnzkRSM1x02JTWemiWLeIQf1b+OHhj4Bsx22fBzGrocWUbadS4iNqOeytxCbhMOGp2lpotljm+FmjtQ6tbosFDwWFodsscCO7vX1NFC8+spOdy31m/6T3Nm/lUH0E9ZKfvT0QKHEMtShsI65GXfH7TwbVkrdaaqLttwSDCe3dCKVfLu4ZXoCm1KnjkRmxynvLBwyFps/Ub0c2/6MVfw27W4FnTMkq1VOshpb5u7ggWyzkjQdZP07u+TxWHmG99vavEyzkDtaF6hslL9S
- gulXpgdv
- MfiTSCYfBUM9+7SNaEyG4AyXtsuq3Nzk8zY0GW6ac1mqmn99pHWMX0NaXgJgvaGOQEJTREduB9+MzyJsgUigNJ69XeJ/feRAdTaL9ehylV/w2Xq2bdw3RIGkSjpjxvJOC8DdvtreKtnAZ/+nJjlp0vz44Ab3hW5LS8YxQCGBpHqY4FBGZlKYJCHzOMuLOJHy9/bXbPm9YVyn845pZPfLKcgAfeOEE8wdZkjohNL+eOetkM8ud6cbpHKj6GMETRbhSSjOkpF8J4S+6YbVfgOoMfc+yw+nvCJ7g0SlK2DDWvsP3W7s=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793907165-614920
+X-HE-Meta: U2FsdGVkX19+h50UsmSDBZQUJrIH+wVdL1ydU9zyJY5OUiXbENQDSefnKgYjA0CFcZYG51j005cdzxItoZ26kUaMqGHZgX+8NyfKYjECtkwnimfVFyIYipRvJrr1BfNmYMgYLVd6Zcgz3SbSf9mInnj8qhUZL60N/H4beuU/lQPS1Bt+LyWqK0TGSpuNPAtvcbiAnZqwh4O5x0R4HxX87LD1mGRMvmS8TvJ0GGQy5IG6Rz9RX7LnJ7lwMgUhAq/NUiNj3HjqSXUynlccfPYWPvspVnYr4qGWLXfj29lPUsFfROrCzoTRxRlAKXIRoCE49srFs9QzOW2SLQSszrFqjibK6AYinXi7FNYbbWRCaPSXlvi50orGas4rptByicCFBmstW58p6ulYYGN9zln8f6fMCBP315Qyz1kAAqj4zBKui/LNmUP6qDcEQXB+MfT8vlHEiDnYoZOcwUUhyjafHphcyNjXjzQZTWumbCbSVZyiJHBHuUUFfy2KhFPlUSAdmpSdb+mwZHN5Pmya19Uo01PSo/fFE5gRc7VRDzvq21Qo3cLTze0ufaSIiBeAL3O/JTpSd4IV/BmHW+xhZji7MmiJvDo6XVGtcwOJFIIYFYHYyJmb0zhEbLpz49v0Hu5vJByqyT11QyU8YeSWQYSjG8mx2aAEiEQ4kJwwf/zlTkTb3hn+pwZqpQXi0geTPJ0aX+GMlRBSHmj592ACJ/NHq+ibruHwoLC+oBpo9jW5RSXCJPYGNPRTsUBwjLGI++7hNHqFoFS2+ND00vAI/LVAlw1BeCdKcQiiSgj1YgD/EDF/ED2pdea9zkiYNgVRJbZ5p02AiUivbqqV7GRTeOdrQw5iIWH1pBe7zaNEI7EtYoymUvd7uv5fzTdayRHp8nGKQ/sOoWDXWL5gif7UE6uslVz2pp4mj/K8t74Jsad2uRqjklPyUPjH77+EKhgId3lyzUqd82neE7hfCJgi5oY
+ VgOE25fZ
+ o+99o1nhRxVGaErp0shADmjdlNRVhK9DDcKoc8/1TA33xtcF+/KqCKF/WmSSQyvEOU6l12tD7YnfZmDAQNONL0G4yVuXmsi9HXLgCXMRdXPy/3UC2RxTSXmUsA3mulxooMwU3oM5y3FmDULXfXzyUtMGQr6Cx6FMbpHiGt/+zr6XBS2kgqmLoy6+mi0r0r/bmR9wIRSpVxQbMCfihZ6T2WOUGY84TEuDSbYAs/LaT6Eq6io9rSa+UexTNCr+0nzsiwEO3+PH5Xe3ugB++3eYoOlOx9mKJ9BmmXApzmKbwtoosZtNFtWaHufct9fWKXKyAIFh/exwdFoPzmfKywQp8iHgKhf3XvL4XQcboYoLXVOC5f+1ZnDvJBc7vWLRvmEDgySB3xdCaGCwT2uPKbbWz8/czzSef3CalOOvimPjwUse2QpydTyJ06XfCiNAit27FyKxZRJIsRVTLtLuzX70HnTZ0VjKAMQ5OIdSTD1I69EPJhVhV43opYFnskOhYKtl321PaXZ/c5UkHgOFM/QNt8B77SKf80Cbi+gHbubakr8oo21Ar6yuqIC8OwbEW8yR8TLYQVyRj9H2nYB4aCD7SN8glaH1dj+9ro3gjRRAWMnFLuhgZBKlfSOGdtNqDXTQi979uAVjYVYczaPDpYOvHDh3yBONslLqpngyPS/fyFs7xELRadoNdXqWp2RmDzDcTMPEqjxtceS8JXDrPz7xlLxCj5FizY45hf607+kHG5Lv1p9DX++D7mNystw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -140,34 +95,85 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 06:56, Hungyu Lin wrote:
-> When a hole ends before the first page boundary, shmem_fallocate()
-> calculates unmap_end as -1. Casting it to u64 makes the range check
-> succeed even though the hole contains no complete pages.
-> 
-> For example, punching one byte at offset zero calls unmap_mapping_range()
-> with a zero length, which means unmap to the end of the file. The file
-> contents are preserved outside the hole, but unrelated mappings are
-> removed and must fault back in. This can be reproduced with fallocate -p
-> -o 0 -l 1 on a mapped tmpfs file.
-> 
-> Keep unmap_end as the exclusive rounded end instead of subtracting one,
-> and adjust shmem_falloc.next and the unmap length accordingly. A hole
-> ending before the first page boundary then has an end of zero, so the
-> unsigned range check skips the empty range. Retain the unsigned
-> comparison so rounding the start near the maximum file offset continues
-> to be handled correctly.
-> 
-> Fixes: 83e4fa9c16e4 ("tmpfs: support fallocate FALLOC_FL_PUNCH_HOLE")
-> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
-> ---
-> Changes in v2:
+On Thu, 05 Nov 2026 08:47:03 -0800 syzbot <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com> wrote:
 
-Thanks, I'll wait a couple of days and then queue this for the next merge window.
+> Hello,
+> 
+> syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+> 
+> Reported-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
+> Tested-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
+> 
 
--- 
-Cheers,
+Great, thanks.  My LLM-controlled live-kernel testing setup liked it
+too.
 
-David
+Christian, I'll send this over soon:
+
+
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: shmem: consume the reserved xattr space despite remount
+Date: Thu, 05 Nov 2026 08:08:06 -0800
+
+Creating a tmpfs inode can trigger WARN_ON(ispace) in shmem_initxattrs()
+when a concurrent remount sets nr_inodes=0.  With panic_on_warn enabled,
+this warning can panic the machine.
+
+shmem_initxattrs() reserves space for the security xattrs while inode
+limits are enabled.  It later tests max_inodes again before consuming that
+reservation for each installed xattr.  If remount disables the limit
+between those steps, successfully installed xattrs leave a nonzero
+reservation behind.
+
+Use the remaining reservation, rather than the current mount policy, to
+decide whether to subtract the installed xattr's space.  This also leaves
+the failure path with only the unconsumed reservation to refund.
+
+An initially unlimited filesystem cannot acquire an inode limit through
+remount: shmem_reconfigure() rejects that transition.
+
+Link: https://lore.kernel.org/20261105082717.c459bb33778fcf27e5675082@linux-foundation.org
+Fixes: 076e5cef28e27 ("simple_xattr: change interface to pass struct simple_xattrs")
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=4324f771847cecb27c54
+Tested-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Miklos Szeredi <mszeredi@redhat.com>
+Cc: Christian Brauner <brauner@kernel.org>
+---
+Reproduced the warning before the fix and verified its absence
+afterward in a Debian 13 guest with SELinux enabled (permissive).
+
+A temporary hook paused file creation after reserving security-xattr
+space. Another process completed a real nr_inodes=0 remount before
+creation resumed. The unpatched kernel left 94 bytes unconsumed and
+triggered WARN_ON(ispace); the patched kernel consumed the reservation
+completely. File contents and the security xattr were verified.
+
+Ordinary creation on limited and unlimited tmpfs mounts also passed
+on both kernels. No additional KASAN or lockdep reports occurred.
+
+Tested Linux 7.4.0-rc1 with GCC 13.3, KASAN and lockdep, using KVM:
+8 GiB RAM, four vCPUs and one virtual NUMA node, backed by a
+Threadripper PRO 3995WX. Both kernels had the same diagnostic hook;
+the ordering was forced rather than left to random stress.
+
+ mm/shmem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/shmem.c~shmem-consume-the-reserved-xattr-space-despite-remount
++++ a/mm/shmem.c
+@@ -4451,7 +4451,7 @@ static int shmem_initxattrs(struct inode
+ 		if (simple_xattr_add(&sbinfo->xa_cache, &info->xattrs, new_xattr))
+ 			break;
+ 
+-		if (sbinfo->max_inodes)
++		if (ispace)
+ 			ispace -= simple_xattr_space(new_xattr->name, new_xattr->size);
+ 		retain_and_null_ptr(new_xattr);
+ 	}
+_
+
 
