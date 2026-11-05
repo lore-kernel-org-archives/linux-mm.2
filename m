@@ -1,154 +1,172 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E30E606A330
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 00:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B71606A329
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 00:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0PJXDfBV
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jYXXVyVG
 Received: by kanga.kvack.org (Postfix)
-	id 188F46B05B0; Wed,  4 Nov 2026 19:38:58 -0500 (EST)
+	id 37E8F6B05B0; Wed,  4 Nov 2026 19:56:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 139096B05B1; Wed,  4 Nov 2026 19:38:58 -0500 (EST)
+	id 32F906B05B1; Wed,  4 Nov 2026 19:56:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 027EE6B05B2; Wed,  4 Nov 2026 19:38:57 -0500 (EST)
+	id 1F75D6B05B2; Wed,  4 Nov 2026 19:56:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C63DA6B05B0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:38:57 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B7D27160825
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:38:55 +0000 (UTC)
-X-FDA: 85399205430.05.5FC8EB3
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	by imf23.hostedemail.com (Postfix) with ESMTP id D04A9140005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:38:53 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=0PJXDfBV;
-	spf=pass (imf23.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id D9F626B05B0
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 19:56:21 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 517631C4295
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:56:21 +0000 (UTC)
+X-FDA: 85399249362.07.2CE4F6F
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7A0A5C0009
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:56:19 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=jYXXVyVG;
+	spf=pass (imf28.hostedemail.com: domain of demiobenour@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=demiobenour@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793840179;
+	b=X8M+ssMrdXSbmCYXWLNjNzrkNlAfS8inr9fOTeLK73yukl8kGcbiZ7B6PB2ASegThGzLBv
+	VM3YnvLs6LFeOuVCwR90ALjKvyeZ01buXSk4GYFftcCEgnyKCBowM2M7RLdi+V1aNmGVRD
+	FTnHRhKpbNl/gzFseMtE7C31t4bthVQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=jYXXVyVG;
+	spf=pass (imf28.hostedemail.com: domain of demiobenour@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=demiobenour@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793839133;
+	s=arc-20220608; t=1793840179;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5Pxa+8WmY5aWMvQp4MOIKPhDhZ93O3CM2MNQsb3Ea3w=;
-	b=1240465CoCHiquCbrpSqZAmI3yJQr8CKPTSHe1l2Fm/AWqsR1c0eVP08CmYUXynTNiwGsH
-	6KHUF/4Z+v9pAFXGm+BMGsnXEvL7Bol8VYK5SR9v/TG0v4V9YiVV2fj59FS6OIWsVa3Dbq
-	XeFVNV6YZxUvCgrMONIwwdbby2Ka0DM=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793839133;
-	b=cnx6n36sb97m+TjKsUI51LvCX0apakFSBcJgaeRrjezegnqEQAqpM43HhuOKpqB34YOJ8h
-	2O/NATjQsBLBEmu+LkQTKwCaBp+bSjhTJf9oi++wxCIyXnb6uoagONSq85BTrEfy6h2RQK
-	N5/QyGMpQMaUMo+jK0/aNOl4hyC5Q78=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=0PJXDfBV;
-	spf=pass (imf23.hostedemail.com: domain of leobras.c@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=leobras.c@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-48dee593f18so996710f8f.3
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 16:38:53 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=6eXXWi7komBSrov9nUxVTW0Dt48eZZgpagX6tasygeE=;
+	b=rBCWl6lapce3OVQTxB5ZCm3FpgNwwsmNkYxCVFxqFPjtTe4LMyg439uLTGp4HgN0qaAzMi
+	cBV3P/i+024L43mgNyIc/HiXW+o+w4nPfPXHIw3CZfV/tK4eJf8srJTwbe4gWU0EnpN0fP
+	Adnv5LLxZlbnIJzE/vt6Eiu8/zbd1ZA=
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8b3299aed39so2826587b3.1
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 16:56:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793839132; x=1794443932; darn=kvack.org;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=5Pxa+8WmY5aWMvQp4MOIKPhDhZ93O3CM2MNQsb3Ea3w=;
-        b=0PJXDfBVqhvHbyy2I67R9H/RpAiYYx5tYNjDTNLlm49s5spR/9h2xhE6odhvMIDfBA
-         K4dm4/WnC966/4i1A0KQP9dHAfS9k4gqpLYfUVd04cm0mEO5atooHCUouJ00ywga5/Zq
-         ENAbEna0iX8d+OZx4GgzKAYmpgeKLKgmvmm0ht21xFA3OIr5xT4uCkgr1FU5YUq+3Om1
-         U3GYKR09rLXsUuZw0eD97120CLDUmjMke8+B73fA5731VzchmDx/dD5rt8rOBwrwqGKB
-         aD/FsVmysaLBj1EGuvD7/mPi7zGy4XcY71k2zcxIcxmxfcaFgeEeuWhul7pI1CRXUU0U
-         pCBg==
+        d=gmail.com; s=20260707; t=1793840178; x=1794444978; darn=kvack.org;
+        h=content-type:cc:autocrypt:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=6eXXWi7komBSrov9nUxVTW0Dt48eZZgpagX6tasygeE=;
+        b=jYXXVyVGwTpIRsckt+bi/nmXvlahoIg5IvfPpYFtLv5XQ0AsfmLu9HKLLg8MM7dsTf
+         K5jnlrOXti2sr6X4OuUoR2oUsw/8Yy191O6UiWgpG+urmMzTlftqBXJb5rwSfe6oKrOg
+         csJWUOWBVSs24CcBaEKKxuAm+aYLyYkrZkahPKwDi3f9nMMSDAw1GzWmCad/9/2/h2Er
+         PVUGH5twewW8vKdF4B00vKtCkFwgRBN0QqNIGKbnWwXjaltw+E9/7/cMxQGhevLvwiYW
+         PN/u56QFJWJvTuO37y4o1x3Gq0NQI6tq5DHmHxQUXxnT/UIyLM6Mze0aJ91SRb9Vb6Cf
+         oArA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793839132; x=1794443932;
-        h=content-transfer-encoding:content-disposition:content-type
-         :mime-version:references:in-reply-to:message-id:date:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=5Pxa+8WmY5aWMvQp4MOIKPhDhZ93O3CM2MNQsb3Ea3w=;
-        b=U+a/lUWJRjMwQL0YThS9ljPyV6uFvr5JBQDlnUSai3mums0/yhK65S/dt4c4OR1wJq
-         ZLH9hUXxeBbQ+8VE6Ymvg/QDqIXow/a3qAHG9eU7ZYhVRvJlPkF6OVyhrdvuXKb+mlSJ
-         az9HLyQvxNx9n/Y2FJpy24B32UhDp7aQUX8kjoYQvWVnC0LOPTOY5bVfNE9tfo8lu+xQ
-         yRrMjmw/vxnjg7rllBSgsMBJnLouhtyp+6LH+iDANptW40wO87MXp03YVR+qB2d75Jgt
-         Qv9Y/p+oBIi8wXNEdcjf16RoRbfiVxEUEizgp0+bRiTk79HSeUQd1DgjsKkjhQ9INWz1
-         Whhw==
-X-Forwarded-Encrypted: i=1; AKwUvBwUUcWV9Cno6+nhkhrQDsdGprCYjnWF/LsM4DpufeCbZW45bafyg4bFRSGs0YSW58FHr6GVVCfOvQ==@kvack.org
-X-Gm-Message-State: APuU4Z8/3jBGYcP8VutgEgUJTXBLaU0qTduC2Stf3FaAMSQ36nwkgX2T
-	59rELYNroUv0NELkXtj62Se7fYeuNBaC4tRmYu7pZfS5u27gKQ/8FK5J
-X-Gm-Gg: AYBFou023dE2sLfiq++RmoaEOcZwmQdJ/RJrQ8oup9m0Usb9yYRjg1f7TGGPFVL7ukS
-	u0rnN8kGFvk2352a26QOhwotQW4Artf84qEambA1HSjLvN0u5GhPYG5y4BM3+HswH4sW1/0V2D/
-	L7UF8qZHIy0D6AvdFF2wD2Hy0FZSMN9bQnbPX9hE9zU3WaArhq0GIJho/sNsZuQbA2+Vf6ZmvGI
-	4cvar66oZySlwYRDFOBMROocYn1NGqibCjzRC8VTzbQZZwx2rrAkMq10/00lIK+utyezShDkxkZ
-	5P9bW9RLMotI/zaExhhn9jKQLp2lddYszRwLJpFr/vwPls9q0a85CMDQ3tTKnUHCTT3KnhfEj/2
-	1Ggy0BR6pOfrfkSMWzcZKiy1tIAYDYCXDi4b+SKHY5bLKphlHJUL/PqLRkhfBXqItfM3Q/7x8zv
-	cv2LCPPO+Zg9WXcrMNgnk3jij9MrwDhHs4Wdm5iE8nfDo+UQ7DD7vbqiabsIRhQv1cv6v124qtG
-	d/kCXhWMxozwHY5RpVU+UepfF5lifrp2qEnpQk/SbMQM9omlQ3eOLCCB7fwjzye6oB4vwC7v6YF
-	+pynACnWHhTYTrRDs8j2EMOkGIQd97hbXNJZ7Gxjiopj/5vbe4wk4PMAz5Y=
-X-Received: by 2002:a5d:5e8d:0:b0:491:49c2:3b3 with SMTP id ffacd0b85a97d-49149c2043fmr821244f8f.51.1793839132301;
-        Wed, 04 Nov 2026 16:38:52 -0800 (PST)
-Received: from WindFlash.powerhub ([2a0a:ef40:f61:3b01:d08a:833b:756:8fce])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fed553441sm5988761f8f.43.2026.11.04.16.38.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 16:38:51 -0800 (PST)
-From: Leonardo Bras <leobras.c@gmail.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: Leonardo Bras <leobras.c@gmail.com>,
-	Matthew Ruffell <matthew.ruffell@canonical.com>,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Caron Wills <caron.wills@pulsar.com>,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	K Prateek Nayak <kprateek.nayak@amd.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	linux-mm@kvack.org,
-	Jay Vosburgh <jay.vosburgh@canonical.com>
-Subject: Re: [PATCH 4/6] sched/isolation: Drain per-CPU LRU batches when CPUs become isolated
-Date: Wed,  4 Nov 2026 21:38:50 -0300
-Message-ID: <auvQGQs-2DXQ2Brf@WindFlash>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <aunrTtH00__Xi7PW@localhost.localdomain>
-References: <20261103075940.110308-1-matthew.ruffell@canonical.com> <20261103075940.110308-5-matthew.ruffell@canonical.com> <aunrTtH00__Xi7PW@localhost.localdomain>
+        d=1e100.net; s=20260707; t=1793840178; x=1794444978;
+        h=content-type:cc:autocrypt:content-language:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=6eXXWi7komBSrov9nUxVTW0Dt48eZZgpagX6tasygeE=;
+        b=WsfrhN58DmlCt8yww5D0lkUbxnzwNVbjMp+CMppW23R0P4UgwML4RkWKx8wTfbHxaL
+         LrB2Xbv6HqlSIW0iNnSsxiAe6lfJygFaM5gjeojQ9x1BTajgd9f7jUCkFG5OShvfK002
+         Dm0rBEzQLMit6b+LMAt8Eqe3euwzomnIEJSnJExrfi8HlDqoAhZTsdjSWqkp0FGMYh8x
+         XyJpDCAIUEdihGgpZ+/dbJMPHJSuNSLCBj3NM+4lzJsc2tvSLX/3ph1gYoZECwnzz/tH
+         hZYYd2CoKk3uafKN8x207IEHsUe3awsYNdVueMaFsh0xIiKJ8nkPAExA3tTZ0h2lMIUR
+         ONEg==
+X-Forwarded-Encrypted: i=1; AKwUvBweZHSZYxgiq0fMwEjVKV0RJKt8tdolUCiADyqCuXtrhRSSK8BBkZnuSJUqFNU4IndIYGj5C+S/7Q==@kvack.org
+X-Gm-Message-State: APuU4Z/MOfL1Y7ew2BOMMn6LV+Bj6ohNGVLwFrxetxlNw0eE6Z5YCBMZ
+	7HbVTgTJhRJ+0CF1Eh/B46PudRaPDb7w5VvQZaN4y0Ysj+rwdSMivf7q
+X-Gm-Gg: AYBFou18cPfkHR7B8EqE0HnP7RRStX7aGPeRJNlMww10mGIEWfPKld1GIY+aO2qMKFH
+	BWn3AGchyRVoTv+obDMnla/e85rycgWmwh/kh0TAuHSIkl+MDwtaUU+woAX3tYllrTpMz/grbYL
+	klXASxk+uYRTVjfopuH5LkZCJQ77LCDeve8HPZD9jLbksC5y2smqH/ltpGWNzX/CAzcoCl/PoaR
+	jf0n9HXHVXZiASyChgmlSfTVBTTImoQ38Bm/zm2G+Yxdt9+hhdK1VPxGzTQx7BFOjVpWnPij5S0
+	1KNOFwwkLajFE6qumWq/o92KqS4C00WVZj0lc/3uBPgwqN+opp1oTRm+yP9n4QO8qCfGB5YBY+4
+	LAbuFZ6sa28+xFwEquJBGnTMp5rZraZ7uH9Lx0mP5sNZfBUOziULYSJCcezTwD3MpkRIgcriY+/
+	oxcYDR1QDaFoK3aHSz/YyFw1SWMWVBzt6kISwjTSREHlO+m/xFa1svu/weZqQio4DSFoIcOUGvs
+	dCdioApVpWu42wWPLZwWBl+c9wwaX3pHBaWMLxrF6d+Qs90qPSRtaG2/j0gQgQ3J+QV5tSLgEdl
+	YGtxKbbPXsXimLgU3tEJ+VejqCRiG+f09Q==
+X-Received: by 2002:a05:690c:c507:b0:873:5ddf:d872 with SMTP id 00721157ae682-8b2b6749779mr102401947b3.61.1793840178492;
+        Wed, 04 Nov 2026 16:56:18 -0800 (PST)
+Received: from [10.138.10.6] ([149.102.242.31])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b309932a24sm30029057b3.19.2026.11.04.16.56.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Nov 2026 16:56:17 -0800 (PST)
+Message-ID: <8b45a161-101f-4f28-9b7a-c7c8b8a29f90@gmail.com>
+Date: Wed, 4 Nov 2026 19:56:11 -0500
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-9.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 3sqfyxzahr3epc9upq36si95bgpppem7
-X-Rspamd-Queue-Id: D04A9140005
+User-Agent: Mozilla Thunderbird
+From: Demi Marie Obenour <demiobenour@gmail.com>
+Subject: MAP_FIXED leaving holes on failure is very difficult to recover from
+ and can even be a security hole
+To: Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org
+Content-Language: en-US
+Autocrypt: addr=demiobenour@gmail.com; keydata=
+ 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
+ +MYSfkEjBz0E8CLOcAw7JIwAaeBT
+Cc: Bert Karwatzki <spasswolf@web.de>, Jeff Xu <jeffxu@chromium.org>,
+ Jiri Olsa <olsajiri@gmail.com>, Kees Cook <kees@kernel.org>,
+ Lorenzo Stoakes <lstoakes@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------xVK0XLy9X0vduJNb936CFAdr"
+X-Stat-Signature: j81e6bqcyq8e1zy9kerro6s9oqchpomh
 X-Rspam-User: 
-X-HE-Tag: 1793839133-887061
-X-HE-Meta: U2FsdGVkX1+bbyXan/mOjsg0hnuJQLK8NzJZDohjcSfAGlw0iNvT1Mq8S5mJXShBYDIpfvBEnC2OkPa5FvxiGKrOz0veIMVH3AzCCO7xTczFIEnfgSMdGlTXv2jHe722zECItHDsSGybw05KhTh5Uk6BTpSSgvxPHOAeNrhc4JhX9rNJY9hCFXzKG5qxxu28lUYxjahlOiBFRAO71USROP3gJFHHBDCZn52SpPO2cQfD80bEiGXWQseJjljWezkZiTLMO27GD6dd20hK5512cU3yBBveoSnob0HxAl4o2wFMp0ke4LCTHAq7P/lnW2qnYm4QDfHnxcEvKk+yAsHLvwvSFNNZSzfjBhLTQBJIVcIc59+ObvA42aDQczX/pvo3D8a5Vcb6HJ5xn/cTWwk36uSfMqT57k7jTbtgEHTwjnSFSXBTJJYXd0mWfAf83aLoMfpeFn5KXfHtX+koBwim/eGe996knYXH5hpKfbWFkMkkDYpSMl1ZoOBdqYzu33QVPGFF1W4ge1EdOX5wTPfjUnnAqRJa7O0q3uKnTR36q8AhibUzD+dWJ6BPGu8Z0BpSU4MHDhWohW9xnPBfzdMD7pWPt7TvRQvb46bOm7y6U3LAg07ilxrWrF7+89DENNoEX9xWqgS78l6pPSB8bkmlcsJqTd98fyu/CR0GKnFeI3yuuMKVnPzlTWSByqZi30pOWkQG5OZzW3SM+giOXZqgVSeQ9BmPxqUYcLiy0Wb1MNWBmo6foJ4XQ/IO3wdM6NVljPOT3uOHeln7DJ9cYu8aTX8BsIvmacxDl5Ju17CzKG5e6/pkMyWnYiqWddyPkaQkAbr09K156aUoIrCIKmNNRsYcF7Z7dw6CMbcwkqHZ9PzAezZMLpqYASq3Q88C4EnOQYJ8ZzIz95O+rWQW/pRUGW0R1RLXwKT/60F1qK609aON50QEm1bZ2JVdFm8KFHp7ZRnoagFhNVZXjBhBffC
- h0FBRtbi
- HX9aWpJOLvZnYYx5VmAWG81fBk0EOj0z0XTBizkJ8sppAxsbFGh17xKjYnd6Mb4+pRcnH8Muo53EvJDBUtBOUiAb2iOotSR/oh569arHFYlzzB4mcnyQ7DGt+hy6qFXIb4so0AZms0nfwz0lyrlouAmNvWFhnmvOc+pTlM/FMRBQXrBoI04xeZS82yAe5a/cmGge/y4qMBLMK83oFeBXyIhCTA431cMwHN69NMDQPVptJrSaicrxW4mRFGsrpRh+jxN7be5y1mM65+TNDPhTaGIhi3pUUXjb2fVW410QEMD8mBGUnDxt9eYzBi26xWPU1f9S4iuhcj8xNEjXlXv0KWyRI4gDkb9ctN8AKEDePDK5lHvRcAqHD8DUAqz8JS7kKPxb35RvLnz9rXzibM4Dec+4jOyu6/XKmIY30rnqyrVsheyutIS2dWj9cZOKOzBABFSjMk2nqchsaBmBMneEdqFLKIbC8hRSPGw2y/or1xceWPI+6vsNdOjX23LImoIIj/AfZdoxT5QqxqferXKHF3EFwActEfuSonFZkNNBd4SuqFIM+tSh00K41n09cnByXszwLYhYqTKXEuVmQsWvrts2DvjQiZDp0IP8vG5wt0gy/+1qm2xR0WhW2zjPmBYKtnoYrI2ghcagMKzklaZlO9dHLfIR0s9Vi2EIQ2zGjpZhIlX3NyiOoyMsbhGYgzNIsaXvi
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7A0A5C0009
+X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793840179-31799
+X-HE-Meta: U2FsdGVkX18Q94i0it4g9I6jGbG80jo93O5sFoHyLc0lug+eNLkU1TbktvFhRnADlnzoPgkSZU0Mx7Zd5jHVvTrM6u1nocvfRwOBXjGlOx7WmIgM3Yz8mEVmT+WMKXWPMxDZRQI4JoYDvMM+lgmUQxgtMPXXuz0jrxbZGZ68ze9BWLtnYdXhrBF9w6IA+ks17PeqKm8UchfLxi+OzGiUwY+yLBe/+2xp6PZo/gCV4l2XddL112TXozIpL7pibDK/Vw3MidIEw/uwL5CPXup7WCpmU58xW6bU3DP2HyMoXUpB72Yzo3bQJfJwGkxaS6/+1tFVHwBEbCNTtvjR77DUsXPb/4EA6VRSb5jt/UXhY1KyZBYrFSGcPHjhzO+TLCfQM1zGRnWjKRVa9dPKp8aupHpT5iMad5OZzRDHUyVQxOej+w7uV9vdYJoChpB/D8KooK0ZE8OjFyqLPD4QpU5078u1jd+KFPg6HbYiCJOWhzYXkUloOODH/MiV/9wDcM+Oo3NmiNpJrYmbL7ZwZGWdedUGdpaUNghrU8Oc6WocN0oDd24MRY4SpnWZZtNcFHUtK2eMyxHBKIrUr0tY4kW3vS9VNb3JfIA1Nm58GFY8JJMXNcshf2tVs34yHxaMCAgOgzi4g/2sJ+gQ7/SK0MIZJl0O5gTwh7DYle09eVwFxsVTfHug2U9TFOajy+RhKcq3bCBQZAiUAwdkKa+8tnX14Fxx8c9/20c3uVYFisw7x8Ge8pw/qCd9oF2XVIpMIzxB8T5GEXnxuHX/sDKCRlKeoAGLK7j7PF2FLlZLm9ux5G+Hh13RT8cZ9qHGkM40Tkx0Wnyzyw3Cfd7aw+NSFrID+9wiIiGWkDHit5EOzWhnb2+2eKSxFmjfTefyBmAFP2rmVmVWtbSe+s0DwWb8ONGxpNS7hQPhnpM1HvgX82zltu6VXXYhgH1DXhjomUbmpxY2cGTAW6g6b/RZLSF75ya
+ W8T4THSr
+ A6IUWz7mkBGYVeDiu0r7+Tj9C5YUjf1SarIWO5fMmCp8EyQL1DK+Yk1M56XEJzA+e/NOghTzd5qAJK75kt4wJBuVHZHGVF28TMvu3NWbA6+YQK6Eyyl/fEw8cjG0EabQ0INPzVgylcAXVetTsaKZ3+lvF95JZOWWg+mt9h5NjtjGjKGlfaCdJYEd/fYqOnbjsnZaaS1tHMzRp/6IsqBJTFmFuV0pCvjvkMfUxu++WfnBVTrjKnS2/vyBh4g+9SWyWXo68z0XUTKZfE+RwI4TMsnmPd4787HR9ZZhvYIh+UgIg2Lzowt+AKfpED2QBM2vT0tmnQQp5q3Y/fGYbbdV7PP7gIbPM3yfri9c7vywMqD3NQ6asblT8a8oGPJDIGEZWFcCVP0m9OqPdnLgtSe7QCJYEE4PIunCKL9IBZs0i4JjtfzACnQZXu0XMT1sPtSD8f/NuUYAcpfHcgl+/Mk2GOsCk5D74WNAsx/Ao2zzh0XUz6PbIEce+azsDL9xye1NzkRptfjem223aY7/fF1J4M6eXB4Lo+DFDR4HlnyRGJsxjZr6KEfUGolyH//bB4GmdVbHRH8ZAbgOXInrjft/jO2wIq80qnWQBFo0jPgml3W5XeDT7E4VAXq8bMwefwlm2S/hxhfIvB7dSRAnI5k+f3/3lkA/K5bTNbOFJ84Zb1fvi6NEhjejdHcSCtef6kk1nfU1Uq1c9vGnlDVoKgJoTN0BQjHOhcevB4CE84tuquu0VGjccgBkwGsifF1M2hVAtSu8mZd2VZ3Ls2W7o3GK0exEGEz0yw5ZfOLcMv/Iv+DGUstHLSSdDhd6KnQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -157,36 +175,140 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 03:10:22PM +0100, Frederic Weisbecker wrote:
-> Le Tue, Nov 03, 2026 at 08:59:38PM +1300, Matthew Ruffell a écrit :
-> > From: Caron Wills <caron.wills@pulsar.com>
-> > 
-> > Isolated CPUs no longer batch folios in their per-CPU LRU caches, so
-> > that __lru_add_drain_all() never has to queue work on them. Boot time
-> > isolation (isolcpus=, nohz_full=) takes effect before any folio is
-> > batched, but a cpuset isolated partition can be created at runtime and
-> > the affected CPUs may still hold folios in their batches from before.
-> > Those would linger until the CPU happens to drain locally, and the next
-> > lru_add_drain_all() would fall back to queueing work on the now isolated
-> > CPU, which is exactly what must be avoided.
-> > 
-> > Drain all batches once from housekeeping_update(), right after the
-> > HK_TYPE_DOMAIN mask has been updated and next to the vmstat and memcg
-> > workqueue flushes that exist for the same reason, so that newly isolated
-> > CPUs start out with empty batches.
-> > 
-> > Link: https://bugs.launchpad.net/bugs/2165410
-> > Signed-off-by: Caron Wills <caron.wills@pulsar.com>
-> > Signed-off-by: Matthew Ruffell <matthew.ruffell@canonical.com>
-> 
-> There was this patchset:
-> https://lore.kernel.org/lkml/20260519012754.240804-1-leobras.c@gmail.com/
-> 
-> Leonardo, do you plan a v5?
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------xVK0XLy9X0vduJNb936CFAdr
+Content-Type: multipart/mixed; boundary="------------0BQDKKn9cP29OPNRK45Ha9VW";
+ protected-headers="v1"; hp="clear"
+Message-ID: <8b45a161-101f-4f28-9b7a-c7c8b8a29f90@gmail.com>
+Date: Wed, 4 Nov 2026 19:56:11 -0500
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Demi Marie Obenour <demiobenour@gmail.com>
+Subject: MAP_FIXED leaving holes on failure is very difficult to recover from
+ and can even be a security hole
+To: Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org
+Content-Language: en-US
+Autocrypt: addr=demiobenour@gmail.com; keydata=
+ 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
+ +MYSfkEjBz0E8CLOcAw7JIwAaeBT
+Cc: Bert Karwatzki <spasswolf@web.de>, Jeff Xu <jeffxu@chromium.org>,
+ Jiri Olsa <olsajiri@gmail.com>, Kees Cook <kees@kernel.org>,
+ Lorenzo Stoakes <lstoakes@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Matthew Wilcox <willy@infradead.org>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>
 
-Yeah, working on that.
-Hopefully should be tested by the end of this month.
+--------------0BQDKKn9cP29OPNRK45Ha9VW
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Thanks!
-Leo
+Right now, a failed MAP_FIXED mmap() can leave a hole in the address
+space.  Another mmap() can then enter this hole.  This was fixed in
+the past, but the fix was undone in
+4f87153e82c4 ("mm: change failure of MAP_FIXED to restoring the gap on fa=
+ilure").
+
+This is really nasty, and can create serious problems for userspace.
+A simple example is MAP_FIXED over a part of a KVM memslot to expose
+memory to a guest.  If that leaves a hole, the result is catastrophic:
+Subsequent mmap()s (perhaps by malloc()) can get put into that address
+range.  KVM will give the guest access to whatever happens to be put
+there, and one must assume the guest can turn that into a VM escape.
+
+Other situations don't result in immediate disaster, but are still
+really hard to recover from.  One can use MAP_FIXED_NOREPLACE to
+refill the hole if nobody else has filled it, but if someone has,
+there's no hope of making the original mapping (that the MAP_FIXED had
+clobbered) contiguous again.  One must either figure out how to handle
+a non-contiguous mapping, rebuild the mapping elsewhere, or crash.
+
+In my case, I can work around the problem by using a single memslot per
+file descriptor, but I suspect there are other use-cases that aren't
+so lucky.  Yet others may simply not have realized this was possible;
+there's even a Stack Overflow answer [1] that claims that the map is
+replaced atomically.  I only found out about it from Claude Opus 5.5.
+I asked it to write a test suite, and it pointed out that a failed
+MAP_FIXED mmap() can leave a hole.  If I hadn't asked, I would have
+shipped a security vulnerability.
+
+Should the behavior be changed again, so that mmap() with MAP_FIXED
+is atomic?  That would provide a UAPI that actually makes sense and
+can be used without horribly ugly workarounds.
+
+[1]: https://stackoverflow.com/a/28576674
+--=20
+Sincerely,
+Demi Marie Obenour (she/her/hers)
+
+
+
+--------------0BQDKKn9cP29OPNRK45Ha9VW--
+
+--------------xVK0XLy9X0vduJNb936CFAdr
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEEopQtqVJW1aeuo9/sszaHOrMp8lMFAmrr1CwACgkQszaHOrMp
+8lOVcg//SKjfMVWdZ0NQUQB8SGUy1DUvasvgNKbECkMRVXoKID1J91XoXk0hW6a9
+U7CFyJjrLcIkxHBXo3i+AHcz/9R7BD3M9XwnQAk3ZcN7XdpgzjGNXDixXftPcay1
+lFuZfI3btf9V+AADMiP2EwrwseYFFciXKxaSvFlmV8it5+8xbffiCyyjbZ5RFZ/g
+s8x1bJ/XzpZCPv9NZyn4lHWBcbJ2eN1N6bgblOaKHLLN7krBDF2fQWYlFXmOieWT
+weTFXZxKnH/NpwVlJfL2jeCkYXUdkdDHOSWJm0taFbfV2Wct1mgXXewrjSrDTgyI
+1G9iWh9zr6+Qu8jtz8/XPYltG3/akStk61ncQEo4PUGg7hkEG3haP+T+fOaepot/
+mMGFdYID4j6FQHz1q9EiUclgd3B5u4CcWpbpsua/sFwbWlM9LG+vU+NcXnAArHiW
+gxR7P+3FeKGua0MD6WMcpzg4NiN0OTCfdEZgzIpyhxpJy8p020Hpwr1GQ4lMHApX
+mBmOfMVDq4jVzv539aFl/rxsgAIb99ylyRWHIBP7ARe8MoWq95W+Gh8FmWDPFK47
+SRUDXhOU8IpnAUa8YD5r+32q5dXY4M7v3scqSBh4lxni9Em47+goQTcrP5lNXqXl
+lBTECCyQP8qfytBERyiDVn+jPTlZQR8gBy8sezeTQ9CFah1jbww=
+=n77z
+-----END PGP SIGNATURE-----
+
+--------------xVK0XLy9X0vduJNb936CFAdr--
 
