@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F6B606A339
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3963606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eU0/+8ZS
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PxKs95JJ
 Received: by kanga.kvack.org (Postfix)
-	id 94C6F6B05B6; Thu,  5 Nov 2026 08:03:40 -0500 (EST)
+	id 164906B05B7; Thu,  5 Nov 2026 08:03:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 925276B05B7; Thu,  5 Nov 2026 08:03:40 -0500 (EST)
+	id 135096B05B8; Thu,  5 Nov 2026 08:03:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8622F6B05B8; Thu,  5 Nov 2026 08:03:40 -0500 (EST)
+	id 0240B6B05B9; Thu,  5 Nov 2026 08:03:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 635C16B05B6
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:03:40 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7CD311609F0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:03:39 +0000 (UTC)
-X-FDA: 85401082158.09.25837A5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D30576B05B7
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:03:42 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B2E2D1A0A1C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:03:41 +0000 (UTC)
+X-FDA: 85401082242.19.07D0726
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id BCC368000C
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:03:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eU0/+8ZS";
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf28.hostedemail.com (Postfix) with ESMTP id 0C497C000E
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:03:39 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PxKs95JJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793883817;
+	s=arc-20220608; t=1793883820;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FdqB/RGsrLA7sKG9xZRF8niksu12JMQ7l8bVShjk9+Q=;
-	b=EGOnwh95kAY8PAualdcLpIxrS/f2BGBDHrmWlzgElFF6TwRpn7sm1Aanl4jf9BX3hNql6t
-	k2tz2YmUsVrkX9LJejoeijFGlHmG+5LLFDDfhiEYksd9fyAwrIriTDE8NEOMvjIp2wa2Yz
-	si3JLz+DGauB6gHirkoL+kPvJilO+ms=
+	bh=Pn7Qbt08QHu+Q6saVf1pqiMAlX4y5iUMBgnEvqUGMbY=;
+	b=SNQ9C+Uqw2JMqD6MHNT7ZBN8pvpVpExBIS++/1r4D6Pga9xbDHj4pKHrFfw/PBrND2D23e
+	cA6f28n3XCUImiyVdn1lnTFufKHWyzJ1ruA5sUU5B7B/vOP2ThcoA1rdquv5gQSZ5HXgz6
+	gos8yXcUpiN0l6L7pkD9PkkmikNieLU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="eU0/+8ZS";
-	spf=pass (imf30.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PxKs95JJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793883817;
-	b=N4JjbOz+JeftXckofpfy0CjPQEPXFGb9+5x8BI7oDkbXAQQvhSHmkAxhmIU5jqOD24PDfY
-	z+j6Q6WJgnmUPZP8XH7A94KnPXiZ0REbLHWZOAS6VUFHSBvvlE3DCS1AgPGLiph3cOWCfx
-	llrIsDZNqgDrpBMn94vJd7xYpudAxho=
+	t=1793883820;
+	b=1xNZK06e2KWmb7UFV8Mh9rm+5NMCW7gdtmu6ojYOdcg8Rts18tqDW5dCc8vMWlXikIvbxF
+	VVKREeqNQ3Weo8sTU76h82qdRAZTb4J3F/uOyC05SmHvZr5v4BpD1euWPpKkLQ0a6VyE0V
+	GTABfGZ+x5h1aa0TpaJ30oau75/by2A=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1EA2340347;
+	by sea.source.kernel.org (Postfix) with ESMTP id 58E96436D9;
+	Thu,  5 Nov 2026 13:03:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DFD1F000C1;
 	Thu,  5 Nov 2026 13:03:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE3A1F000C1;
-	Thu,  5 Nov 2026 13:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793883817;
-	bh=FdqB/RGsrLA7sKG9xZRF8niksu12JMQ7l8bVShjk9+Q=;
+	s=k20260515; t=1793883819;
+	bh=Pn7Qbt08QHu+Q6saVf1pqiMAlX4y5iUMBgnEvqUGMbY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eU0/+8ZSYcY/4DPL/gcQcTOLIyRFFFreR6ItEJEUuQaztwFLFCz41cQi2FD3qMcHq
-	 6lBV+Y6UfVEZWsA+zlunUNDKn+BmozrYp1yPdKxviQW7cKQ6HvzxWIjkLQPsfxDa60
-	 gJG+a1GwwDWSvLyxmo/GG6nV4uBVLikWYryPPPgU2vUKDkuR9wnUja29WoNfAko5fA
-	 oeKu/RDTz/4uV8+QawCPPLcRb3iJFxQSWt9oqOd/9oM0279IUO94T1a+Bbgm42Sn3c
-	 i0G9bt9pGo+GKckmERLx5QrT+b4TZHy6K3hIXQrS9rcgZmWLg00KgYyXEkBoGW+jhf
-	 em1qF1j2wKmng==
-Message-ID: <sashiko-outbox-199099@kernel.org>
+	b=PxKs95JJDngfnJ96nmkvKiWZBvC0+9ebbZdQ/HGYdye4nbhyHveSp9SDzkGyd1GM7
+	 wvv7JNNottj63JL/XFUkP2cmC631xDTB+WtV6mGab/NmDy+15R/qp/yuTxscmQ4GkT
+	 AGCX3GPVYNbbXPqsBFYxbdg+TyITosGkaF6Juw5Ty4yBXcAfx69hy+j2bJpLAhBP4I
+	 Ja8OU8nmcsbU6ehrWXMnujpktL235W4RvuThs1UUjsgmPjZVOUrxwQ9BNEgw0WCNVd
+	 Ju8BkfsjZjD3uZcb2Uu2zcXWJqfW3aA7K1CIoQs0xx4835957QzWY8u2D2bJ9HeCfY
+	 zU6WAL4xApSJw==
+Message-ID: <sashiko-outbox-199100@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 06/18] mm: free the pages waiting for a grace
- period before OOM
+Subject: Re: [RFC PATCH v2 07/18] mm: free the pages waiting for a grace
+ period before isolation fails
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?S2lyeWwgU2h1dHNlbWF1IChNZXRhKQ==?= <kas@kernel.org>, "Andrew
  Morton" <akpm@linux-foundation.org>, "Linus Torvalds" <torvalds@linux-foundation.org>, "David
@@ -85,24 +85,24 @@ Cc: "Miklos Szeredi" <miklos@szeredi.hu>, "Miaohe Lin" <linmiaohe@huawei.com>, "
  E. McKenney" <paulmck@kernel.org>, "Pedro Falcato" <pfalcato@suse.de>, "Luis
  Chamberlain" <mcgrof@kernel.org>, "Ilya Gladyshev" <ilya.gladyshev@linux.dev>, "Jaegeuk
  Kim" <jaegeuk@kernel.org>, linux-mm@kvack.org, kernel-team@meta.com
-In-Reply-To: <20261104130118.2507513-7-kas@kernel.org>
+In-Reply-To: <20261104130118.2507513-8-kas@kernel.org>
 References: <20261104130118.2507513-1-kas@kernel.org>
- <20261104130118.2507513-7-kas@kernel.org>
+ <20261104130118.2507513-8-kas@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 13:03:34 +0000
-X-Stat-Signature: 39jqnk4wpzasfbxrjp9znpsyefu1o63s
-X-Rspamd-Server: rspam01
+Date: Thu, 05 Nov 2026 13:03:37 +0000
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 0C497C000E
+X-Spam-Status: No, score=-10.7 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: BCC368000C
-X-HE-Tag: 1793883817-928481
-X-HE-Meta: U2FsdGVkX190LDQaXgEKihZRWQpsYIZVJp41u2mrMA/cwQNTOlM5P46YlsLpHwjDjA+nafTEImImRpDrj6qteWxWxx/hh00fqH0IUgXuRQ/Z6HXAjnDppaSt3tgUXnrUIJ16iR+CXr8/B/C15dl8aO08TgKcAM07MznjrIPh50GozBb7QJbsdDBb9oERvbArjt42HNTWrbtL4yFe//QODNRDfqAm86z97//152V/Vjb49YqKRsjF1HHKgw+FrldbR1a/I5ZRVY8YYjeZf1ukReorOZjym0jnqQLM+R3r4jLTuP2C+XqpusJItBeXTJNLKmr7epsQnsgkAbEeUj6d3HYC2XI5+3lpuazn/cfLYdKeb+kAi4DpfRkUczGA5SyvzMht1bDvdh6DiVjqS/AZ6FbY7pg6eIvhJD7BkMkOQUV8/Y+uQFbfaaV9DhdK7jy4tHWm6tEQvRc2qd7eLy5Up3luZ5rgDls8VqIgMcIBOcq4hOYGtlIQApcacZRECouCoUGKsfPKtZlOc7E0qm83fed8B3paRmT1ZxniAAkle4880GEratYhuJ7EVmXQIRYBRGSMl5SL89bntpN8Ds6OmtKiRlYJGwX8CJBeoQnqSBrMxGYywjPTlq9dCLruia/yC69/5TGA56nRwXGipP6Ih/NN5OOktdVaULxkN93QH4R9prpplQHK02ugInW07kgd8HbSFMwiqY6+N1LSX27VUIU9nXxIr3gXkKtoh40Ke53GJytTGQhLNq6tr8UHH6k43vjLFM/m7yEo97Zsxtua7j7+kAWs2tWbUVrHA8ILS/l0yrQdZwiOzpZaLZHR2bpaCRItuKAuC7xtTwe4kRiM8ARbtIO3AomHbm0AqSBD5Qup+a0JIyCTstg0BPlf21hd5TvBmRnZhMRs52HoOY3fEPsOz29aFEd6Jf+DNLbGF0HcPlyIik2d+vIF3uY74opgU8ZXZj9EXieK5cxpHTo
- qHHzOob4
- uDCcBhs6iumsetjBxpX9bb+/ZOAsfduLiJAcFNeRQqXqnXAH/SfBXmKY93lqhqUzWShPbu150dv5YYIT13PPkFpZ+4m5X1NS+/xfHevN+0wO8NwFseVitNejptqiGZxhKqPrb09WX9OSKnYgGPgFvTI20q3l47mfuUf2nGFWmoeeIvd+1LoXe48Epc9AgjoDdhKercbDtBk+E9YHDZM8FNJqGq8E9+9m1PmsGh08ngPg95Jy8znuIa6XGW+7g2e8czlAw4dJLCYU7Yj0pdvmABlGCUG4im6BclRKNw27NYKn9E+cttwRHh4nvND46vjZ+u0GuIDCuCIgCLeJChw2rs3kHJCgag4Qh/7zIXDk9g4/pis8nBsoYFyYHdB/icyb0EcAc8okegT5m8IkESCeSn2bGtLifUpZXmB/pGUuDejpUpUMnGu8XHdceKFCfaimh9mqzd/bW0e0b3X9iuLrNkFuube/wB+owt3sSgrErqg8dh2uEtn/ZTeP5LZUEZLwdW5ru+MwDRTzXgZ0A5yAbH1wVAtSmUH6cs+LZWToZwCztMpE7w7kpf6TDrDdcPCJeMTw9iKsF5qKFPlJRznRZoEqvk5EiP3oxHCgUsRxkfF/w7DfeNnDrSyRKcSkaV9M4iT3R8LaRapN/brHiiuw88z9f9d35amcmQsMBqfnkrDL/4Ab/SX0/A8nSt3SgFycPqpQLYwDmGhTy1uw=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	T_PDS_OTHER_BAD_TLD autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: e1cxcx1gm6kkasi45ec43snkabzga7gr
+X-HE-Tag: 1793883819-983116
+X-HE-Meta: U2FsdGVkX1+u8SrZXT8VcnYcPllT75fWKj7FCmVQv2O5WeaOk9qZ1L4hHtuWxUWT9fryh1kR/u0Ac2cp2sq1RxZdRKyHMOJqsI9LAimUipZHko76w38b5IlbEAMeJ8Qx5ZDWUF50MA8WRjNZl5kHnJ7oTjx1PzqQPbNh1eP1QyjGnMbx9OmENTa8syvrBMr2g2F+4jd7kAWB1/kdLHOVenXxnxRaa9yuVW2oLhD3YeB7BVPuXgnpADbv8jlFc+s8FEmF+kc+32jxN9AkSXI1bo4OedfDQm5pdNMPBP9ZY5GZIxZ2Gq1NLp/g4VU8YUAU7MOc03JOU2gGftYFNyZPSkWVOgi407Fsbil+oYRi3rJL5Cu0P2XN1k4d0HxqAzwTIS9e+RVVJXMoQ623HIZGJ456EGQ66L1IU61zTT+4xS7CTHtQ+Q4C4c3eMBhBFyYsVLH+F/A7VkiWzw9Qtbli8CLa/IYxC5DXfvGIIM9PqJ2K1QC0rHpS7aluyXe1vK7XYVzuXiEcDnIvrjnep61FMQHo1K9+Lbtleq1uz9Fg1B1YJotPpU3vKUcWVa168LMzUDEsPpbDrrHXu98o2DrWBSSqdnPnF1uLoSfFiWEOFuqjhPNV/gZCllhanfPdbl/8G/NYO5TxvgsKEdxhEf4DoL3NL6xjZ9ursYarVviY7C/sgnq7wOlpjNKKlMbZaFWpGlAJ+kyRFOxyyWG6MAWVOn8WoYMY+Ubb0I6yHwr8NWDsiCQMLKUN6ys1uUC9t9ZMNsDWkzGae5naz2N2YaLFIiuzxUrHhk3liPmUhnloW+YVcR4imURz6r/FB9JMcEE+KSz1WQeyyi1Hpp3TI+qjMBC/yWKymy6mC9U/tMuJiRvZELEkGLATMmTwLYiDqzkcRSQ+rmpFfnYeUqqTax1CJDfEIvXr45eI3DpRwl3wVDMbCazzMWEZfKIUOePMNMXPPgqwS7kLfSpgadATOsk
+ G+kSHlDp
+ MBiCO0m7G3RjZUK0mV5P2qCFATnV6tIyPA/YwgY7jGoGlq44Xg2NTsRIKxapsvZGZd8w0zbpAIbClSnnGPF10GYHteKSoWKpkUY8F0IjCscv/02y5E+nQLUjL6B/HWMK3LXfxI+a6yykqsEfHHzcdXwFzibE69aKHSGf/hahHs+d3brzCx3g5cnEbS/C44pOfxl2eEQliLhN9shG/ZolataHICFFphrTElcb7N8s7eLXOovmsGPEx8gD9cePIYvJFLe3/ozG/6UEA9d7zfzdyzRlJrd5Sq+GxUVLLCx6c6yifjXnYuQGRfvYLEZHQS//6VHvUtYkJ7fbx3X8QVWADtqw0MEVyrdolji/SlW4bot8ajmE0oEUhZ0n3/aZv8IsXotBpDEunh1rVbMPMNFBfmiWSbv28VlcOjP4v4nvCPUAymyfPrLDFuDITvO6IyYmRyyYuVlJdRBcZvdMvJqD43xRbOjomLFpvWEavdXZnvQwjdopQiPGOF64bQEPZKYTsD+iHdRlwc26BG6R9moIPSJOzHAVCNDXXRrJ44O5e/spabCkchzKI7WjD6cai1IMCyQEdo0bMDe7BrxWa+/lGNsVzDAA6oaRCuduA2c/VP0uvyIgPTXBhco5QPQlLUTelzJVCLanlNIxRWp1AvoHbKJJPygsu2Xl60er8u61qGRgvCNzj+aGT41fMinDns8YZGqhN6MQ/gxfr0h8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,267 +114,279 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 3 potential issue(=
 s) to consider:
-- [High] mm: order-0 check in rcu_free_wait() starves high-order compaction
-- [High] mm: rcu_free_drain() misses rcu_free_workfn() and PCP-freed pages
-- [Medium] mm: rcu_free_wait() counts unreclaimable pages after retry limit
+- [Medium] mm: premature NR_FREE_RCU_PAGES decrement in rcu_free_pages() sk=
+ips sync
+- [Medium] mm: stale outer_start in alloc_contig_frozen_range_noprof() afte=
+r RCU free merge
+- [Medium] mm: page_is_unmovable() treats freed compound PG_rcu_free folios=
+ as unmovable
 --
 
-commit 4b538833b03e67798c223181a1b410cee9126502
+commit 01209427ff9390747e1e7bf6dbe80b5fa2e38b2b
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-mm: free the pages waiting for a grace period before OOM
+mm: free the pages waiting for a grace period before isolation fails
 
-Before should_reclaim_retry() gives up on reclaim, this commit drains
-RCU-deferred pages directly to the buddy lists and retries the allocation
-if those pages along with reclaimable memory would bring an eligible zone
-above its minimum watermark.
+This commit adds rcu_free_sync() and zone_rcu_free_waiting() so that
+alloc_contig_frozen_range_noprof() and offline_pages() can drain and flush
+folios waiting for an RCU grace period when test_pages_isolated() fails.
 
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index a9058d414f92d..9caaa57bf51d7 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-
-[ ... ]
-
-> @@ -1398,7 +1405,7 @@ static void rcu_free_workfn(struct work_struct *wor=
-k)
->  	rcu_free_start(r);
->  	spin_unlock_irq(&r->lock);
+> diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+> index 226ab9cb078ad..c23fab6529571 100644
+> --- a/mm/memory_hotplug.c
+> +++ b/mm/memory_hotplug.c
+> @@ -1967,6 +1967,7 @@ int offline_pages(unsigned long start_pfn, unsigned=
+ long nr_pages,
+>  		.nid =3D NUMA_NO_NODE,
+>  	};
+>  	unsigned long flags;
+> +	bool migrated;
+>  	char *reason;
+>  	int ret;
+>  	unsigned long normal_pages =3D 0;
+> @@ -2050,6 +2051,7 @@ int offline_pages(unsigned long start_pfn, unsigned=
+ long nr_pages,
 > =20
-> -	rcu_free_pages(&done);
-> +	rcu_free_pages(&done, false);
->  }
+>  	do {
+>  		pfn =3D start_pfn;
+> +		migrated =3D false;
+>  		do {
+>  			/*
+>  			 * Historically we always checked for any signal and
+> @@ -2071,6 +2073,7 @@ int offline_pages(unsigned long start_pfn, unsigned=
+ long nr_pages,
+>  				 * out
+>  				 */
+>  				do_migrate_range(pfn, end_pfn);
+> +				migrated =3D true;
+>  			}
+>  		} while (!ret);
 > =20
->  static void rcu_free_expedite_workfn(struct work_struct *work)
-> @@ -1411,7 +1418,7 @@ static void rcu_free_expedite_workfn(struct work_st=
-ruct *work)
->  	rcu_free_take(r, &list);
->  	spin_unlock_irq(&r->lock);
+> @@ -2092,6 +2095,9 @@ int offline_pages(unsigned long start_pfn, unsigned=
+ long nr_pages,
 > =20
-> -	if (rcu_free_flush(&list))
-> +	if (rcu_free_flush(&list, false))
->  		count_vm_event(PGFREE_RCU_EXPEDITE);
->  }
+>  		ret =3D test_pages_isolated(start_pfn, end_pfn,
+>  					  PB_ISOLATE_MODE_MEM_OFFLINE);
+> +		/* What this pass migrated can wait for a grace period */
+> +		if (ret && migrated && zone_rcu_free_waiting(zone))
+> +			rcu_free_sync();
 > =20
-> @@ -1445,6 +1452,33 @@ static void rcu_free_defer(struct folio *folio)
->  		queue_work(rcu_free_wq, &r->expedite);
->  }
+>  	} while (ret);
 > =20
-> +/*
-> + * Free what every CPU's lists hold, straight to the buddy lists: the
-> + * callers want to allocate the pages next.  A concurrent drain holds the
-> + * lock until it has freed what it took.
-> + */
-> +static void rcu_free_drain(void)
-> +{
-> +	static DEFINE_MUTEX(lock);
-> +	LIST_HEAD(list);
-> +	int cpu;
-> +
-> +	mutex_lock(&lock);
-> +	for_each_possible_cpu(cpu) {
-> +		struct rcu_free_pcpu *r =3D per_cpu_ptr(&rcu_free_pcpu, cpu);
-> +
-> +		spin_lock_irq(&r->lock);
-> +		rcu_free_take(r, &list);
-> +		spin_unlock_irq(&r->lock);
-> +	}
-> +	if (rcu_free_flush(&list, true))
-> +		count_vm_event(PGFREE_RCU_DRAIN);
-> +	/* An expedite in flight holds pages it took off the lists */
-> +	for_each_possible_cpu(cpu)
-> +		flush_work(&per_cpu_ptr(&rcu_free_pcpu, cpu)->expedite);
-> +	mutex_unlock(&lock);
-> +}
-
-[Severity: High]
-As reported by Sashiko on RFC [1], what happens if the pages counted in
-NR_FREE_RCU_PAGES were already spliced off r->batch or r->pending by an
-in-flight rcu_free_workfn() or rcu_free_expedite_workfn() when
-rcu_free_drain() runs?
-
-First, rcu_free_workfn() splices r->batch onto its stack-local done list
-under r->lock and then drops the lock before calling
-rcu_free_pages(&done, false), which decrements NR_FREE_RCU_PAGES one folio
-at a time and can sleep at cond_resched_tasks_rcu_qs(). Because
-rcu_free_drain() only calls flush_work(&r->expedite) and does not flush
-r->rwork.work, rcu_free_take() can find the per-CPU lists empty and
-rcu_free_drain() can return before rcu_free_workfn() finishes freeing its
-done list.
-
-Second, both rcu_free_workfn() and rcu_free_expedite_workfn() call
-rcu_free_pages() with direct set to false, which passes pcp_allowed_order()
-folios to free_unref_folios() and places them onto the worker CPU's per-CPU
-pageset lists rather than the buddy lists while decrementing
-NR_FREE_RCU_PAGES to 0.
-
-On the subsequent retry in __alloc_pages_slowpath(), pages sitting on PCP
-lists are not counted in NR_FREE_PAGES, and __alloc_pages_direct_reclaim()
-skips drain_all_pages(NULL) when __perform_reclaim() makes no progress. On
-the next should_reclaim_retry() call, NR_FREE_RCU_PAGES is 0 and
-NR_FREE_PAGES is still below min_wmark_pages(zone). Could this cause
-__alloc_pages_slowpath() to proceed to __alloc_pages_may_oom() while those
-freed pages remain stranded on PCP lists?
-
-[ ... ]
-
-> @@ -4792,6 +4826,58 @@ bool gfp_pfmemalloc_allowed(gfp_t gfp_mask)
->  	return !!__gfp_pfmemalloc_flags(gfp_mask);
->  }
-> =20
-> +/*
-> + * Reclaim is about to give up: if the pages waiting for a grace period,
-> + * with what reclaim can still free, would bring an eligible zone above =
-its
-> + * min watermark, free them and retry.  Not for a dying task, which frees
-> + * memory by exiting.
-> + */
-> +static bool rcu_free_wait(gfp_t gfp_mask, unsigned int order,
-> +			  struct alloc_context *ac, int alloc_flags,
-> +			  int *rcu_free_waits)
-> +{
-> +	struct zone *zone;
-> +	struct zoneref *z;
-> +
-> +	if (!IS_ENABLED(CONFIG_PAGE_RCU_FREE))
-> +		return false;
-> +	if (tsk_is_oom_victim(current) || fatal_signal_pending(current))
-> +		return false;
-> +	if (*rcu_free_waits >=3D MAX_RECLAIM_RETRIES ||
-> +	    order > PAGE_ALLOC_COSTLY_ORDER)
-> +		return false;
-> +
-> +	for_each_zone_zonelist_nodemask(zone, z, ac->zonelist,
-> +				ac->highest_zoneidx, ac->nodemask) {
-> +		unsigned long waiting, available;
-> +
-> +		if (cpusets_enabled() && (alloc_flags & ALLOC_CPUSET) &&
-> +		    !__cpuset_zone_allowed(zone, gfp_mask))
-> +			continue;
-> +
-> +		waiting =3D zone_page_state_snapshot(zone, NR_FREE_RCU_PAGES);
-> +		if (!waiting)
-> +			continue;
-> +
-> +		available =3D waiting + zone_reclaimable_pages(zone) +
-> +			    zone_page_state_snapshot(zone, NR_FREE_PAGES);
-> +		/*
-> +		 * Count pages only: for order > 0 __zone_watermark_ok() also
-> +		 * wants a free block of that order, and the waiting pages are
-> +		 * not free yet.
-> +		 */
-> +		if (__zone_watermark_ok(zone, 0, min_wmark_pages(zone),
-> +					ac->highest_zoneidx, alloc_flags,
-> +					available)) {
 
 [Severity: Medium]
-When should_reclaim_retry() reaches out: via the
-*no_progress_loops > MAX_RECLAIM_RETRIES check, direct reclaim has failed
-to make progress 16 times in a row even though
-zone_reclaimable_pages(zone) + NR_FREE_PAGES was above min_wmark_pages(zone)
-(for instance under GFP_NOFS or when remaining LRU pages are dirty, under
-writeback, or pinned).
+What happens if a large compound folio with PG_rcu_free was already freed
+before offline_pages() or alloc_contig_frozen_range_noprof() calls
+start_isolate_page_range()?
 
-In that situation, since rcu_free_wait() still includes
-zone_reclaimable_pages(zone) in available, won't
-zone_reclaimable_pages(zone) + NR_FREE_PAGES already exceed
-min_wmark_pages(zone) on its own, causing even a single waiting page
-(waiting =3D=3D 1) to trigger up to MAX_RECLAIM_RETRIES additional
-rcu_free_drain() calls and no-progress reclaim loops while also skipping
-the PF_WQ_WORKER sleep in should_reclaim_retry()?
+When __free_pages_prepare() intercepts a folio with PG_rcu_free and defers
+it via rcu_free_defer(), the folio has a reference count of zero and
+PageLRU cleared, while PageCompound remains set until rcu_free_pages()
+later completes the free:
 
-> +			(*rcu_free_waits)++;
-> +			rcu_free_drain();
-> +			return true;
-> +		}
-> +	}
+mm/page_alloc.c:__free_pages_prepare() {
+    ...
+	if (unlikely(folio_test_rcu_free(folio)) &&
+	    !(PageHWPoison(page) && !order)) {
+		VM_WARN_ON_ONCE(fpi_flags & FPI_NOLOCK);
+		__folio_clear_rcu_free(folio);
+		count_vm_events(PGFREE_RCU, 1 << order);
+		rcu_free_defer(folio);
+		return false;
+	}
+    ...
+}
+
+Before reaching test_pages_isolated() and rcu_free_sync(), both
+offline_pages() and alloc_contig_frozen_range_noprof() (as well as
+alloc_contig_frozen_pages() via pfn_range_valid_contig()) check for
+unmovable pages through:
+
+  start_isolate_page_range()
+    -> set_migratetype_isolate()
+      -> has_unmovable_pages()
+        -> page_is_unmovable()
+
+In page_is_unmovable() (outside ZONE_MOVABLE), order-0 pages with a zero
+reference count fall through to the !page_ref_count(page) check and are
+treated as movable, but compound pages are checked first and rejected when
+!PageLRU(page) without checking !folio_ref_count(folio):
+
+mm/page_isolation.c:page_is_unmovable() {
+    ...
+	if (PageCompound(page)) {
+		struct folio *folio =3D page_folio(page);
+		...
+		if (folio_test_hugetlb(folio)) {
+			...
+		} else if (!PageLRU(page)) {
+			return true;
+		}
+    ...
+}
+
+Won't start_isolate_page_range() or pfn_range_valid_contig() treat a freed
+compound folio waiting for an RCU grace period as unmovable and fail with
+-EBUSY before rcu_free_sync() is ever reached?
+
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 9caaa57bf51d7..eea287ab2a011 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -1479,6 +1479,19 @@ static void rcu_free_drain(void)
+>  	mutex_unlock(&lock);
+>  }
+> =20
+> +/* Free every waiting folio, including those a work took off the lists */
+> +void rcu_free_sync(void)
+> +{
+> +	int cpu;
 > +
-> +	return false;
+> +	if (!IS_ENABLED(CONFIG_PAGE_RCU_FREE))
+> +		return;
+> +
+> +	rcu_free_drain();
+> +	for_each_possible_cpu(cpu)
+> +		flush_work(&per_cpu_ptr(&rcu_free_pcpu, cpu)->rwork.work);
 > +}
 > +
->  /*
->   * Checks whether it makes sense to retry the reclaim to make a forward =
-progress
->   * for the given allocation request.
-> @@ -4805,7 +4891,8 @@ bool gfp_pfmemalloc_allowed(gfp_t gfp_mask)
->  static inline bool
->  should_reclaim_retry(gfp_t gfp_mask, unsigned order,
->  		     struct alloc_context *ac, int alloc_flags,
-> -		     bool did_some_progress, int *no_progress_loops)
-> +		     bool did_some_progress, int *no_progress_loops,
-> +		     int *rcu_free_waits)
+>  static void __init rcu_free_init(void)
 >  {
->  	struct zone *zone;
->  	struct zoneref *z;
-> @@ -4816,10 +4903,12 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned ord=
-er,
->  	 * their order will become available due to high fragmentation so
->  	 * always increment the no progress counter for them
->  	 */
-> -	if (did_some_progress && order <=3D PAGE_ALLOC_COSTLY_ORDER)
-> +	if (did_some_progress && order <=3D PAGE_ALLOC_COSTLY_ORDER) {
->  		*no_progress_loops =3D 0;
-> -	else
-> +		*rcu_free_waits =3D 0;
-> +	} else {
->  		(*no_progress_loops)++;
-> +	}
+>  	int cpu;
+> @@ -7649,7 +7662,16 @@ int alloc_contig_frozen_range_noprof(unsigned long=
+ start, unsigned long end,
+>  	outer_start =3D find_large_buddy(start);
 > =20
->  	if (*no_progress_loops > MAX_RECLAIM_RETRIES)
->  		goto out;
-> @@ -4872,6 +4961,10 @@ should_reclaim_retry(gfp_t gfp_mask, unsigned orde=
-r,
->  	else
->  		cond_resched();
->  out:
-> +	if (!ret && rcu_free_wait(gfp_mask, order, ac, alloc_flags,
-> +				  rcu_free_waits))
-> +		return true;
+>  	/* Make sure the range is really isolated. */
+> -	if (test_pages_isolated(outer_start, end, mode)) {
+> +	ret =3D test_pages_isolated(outer_start, end, mode);
+> +	if (ret && zone_rcu_free_waiting(cc.zone)) {
+> +		rcu_free_sync();
+> +
+> +		/* A freed folio can merge with a free buddy below start */
+> +		outer_start =3D find_large_buddy(start);
+> +		ret =3D test_pages_isolated(outer_start, end, mode);
+> +	}
+> +
+> +	if (ret) {
+>  		ret =3D -EBUSY;
+>  		goto done;
+>  	}
 
-[Severity: High]
-Can this starve compaction for non-costly high-order allocations
-(1 <=3D order <=3D PAGE_ALLOC_COSTLY_ORDER)?
+[Severity: Medium]
+Can outer_start in alloc_contig_frozen_range_noprof() still become stale if
+a background RCU free completes and merges across start or outer_start?
 
-In should_reclaim_retry(), the zone loop calls:
+First, suppose a migrated folio at start had PG_rcu_free and a free buddy
+exists immediately below start in the same isolated pageblock. When the
+initial find_large_buddy(start) runs, the folio at start is not yet freed,
+so find_large_buddy(start) returns start:
 
-    wmark =3D __zone_watermark_ok(zone, order, min_wmark,
-            ac->highest_zoneidx, alloc_flags, available);
+mm/page_alloc.c:find_large_buddy() {
+    ...
+	if (pfn + (1 << buddy_order(page)) > start_pfn)
+		return pfn;
 
-For order > 0, __zone_watermark_ok() requires a free block of at least that
-order in zone->free_area[]. When a high-order allocation fails due to
-fragmentation despite having plenty of order-0 memory
-(reclaimable + NR_FREE_PAGES > min_wmark), should_reclaim_retry() previously
-returned false so __alloc_pages_slowpath() could reach
-should_compact_retry() (to escalate compact_priority toward
-COMPACT_PRIO_SYNC_FULL) and relax ALLOC_NOFRAGMENT:
+	/* Nothing found */
+	return start_pfn;
+}
 
-    if (should_reclaim_retry(gfp_mask, order, ac, alloc_flags,
-                             did_some_progress > 0, &no_progress_loops,
-                             &rcu_free_waits))
-            goto retry;
+If rcu_free_workfn() or rcu_free_expedite_workfn() on another CPU finishes
+freeing that folio before zone_rcu_free_waiting(cc.zone) is checked,
+__free_one_page() merges the folio with the preceding buddy below start,
+clearing PageBuddy on start. Then test_pages_isolated(outer_start, end,
+mode) fails because outer_start (still equal to start) is now a tail of the
+merged buddy, and zone_rcu_free_waiting(cc.zone) returns false because
+NR_FREE_RCU_PAGES was already decremented to 0, so outer_start is never
+recomputed and alloc_contig_frozen_range_noprof() returns -EBUSY.
 
-    if (did_some_progress > 0 && can_compact &&
-        should_compact_retry(gfp_mask, ac, order, alloc_flags,
-                             compact_result, &compact_priority,
-                             &compaction_retries))
-            goto retry;
+Second, suppose all pages in [start, end) are already free in the buddy
+allocator when the initial find_large_buddy(start) and
+test_pages_isolated(outer_start, end, mode) run, so test_pages_isolated()
+returns 0 and rcu_free_sync() is not called. If a folio below outer_start
+within the same isolated pageblock was waiting for an RCU grace period and
+is freed by rcu_free_workfn() before isolate_freepages_range(&cc,
+outer_start, end) runs:
 
-With rcu_free_wait() checking __zone_watermark_ok() at order 0, any non-zero
-NR_FREE_RCU_PAGES count (including pages just evicted by direct reclaim
-itself) satisfies the order-0 watermark check whenever order-0 memory is
-already above min_wmark.
+mm/page_alloc.c:alloc_contig_frozen_range_noprof() {
+    ...
+	/* Grab isolated pages from freelists. */
+	outer_end =3D isolate_freepages_range(&cc, outer_start, end);
+	if (!outer_end) {
+		ret =3D -EBUSY;
+		goto done;
+	}
+    ...
+}
 
-Furthermore, because __alloc_pages_direct_reclaim() sets did_some_progress
-whenever it reclaims pages or sees sc->compaction_ready,
-should_reclaim_retry() resets *rcu_free_waits =3D 0 on every iteration.
-Doesn't this cause __alloc_pages_slowpath() to loop on goto retry via
-should_reclaim_retry(), repeatedly firing synchronize_rcu_expedited() in
-rcu_free_drain() and reclaiming page cache without ever reaching
-should_compact_retry()?
+__free_one_page() can merge that newly freed folio with the buddy at
+outer_start, moving the buddy head to a lower PFN and causing
+isolate_freepages_range() to fail with -EBUSY.
 
-[1] https://lore.kernel.org/r/20261019154913.1765974-7-kas@kernel.org
+> diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+> index b9259deddb59d..764e3f43b3b98 100644
+> --- a/mm/page_alloc.h
+> +++ b/mm/page_alloc.h
+> @@ -235,6 +235,14 @@ struct page *__alloc_frozen_pages_noprof(gfp_t gfp, =
+unsigned int order, int nid,
+>  	alloc_hooks(__alloc_frozen_pages_noprof(__VA_ARGS__))
+>  void free_frozen_pages(struct page *page, unsigned int order);
+>  void free_unref_folios(struct folio_batch *fbatch);
+> +void rcu_free_sync(void);
+> +
+> +/* Whether @zone has pages waiting for a grace period */
+> +static inline bool zone_rcu_free_waiting(struct zone *zone)
+> +{
+> +	return IS_ENABLED(CONFIG_PAGE_RCU_FREE) &&
+> +	       zone_page_state_snapshot(zone, NR_FREE_RCU_PAGES);
+> +}
+
+[Severity: Medium]
+As reported by Sashiko on RFC [1], doesn't gating rcu_free_sync() on
+zone_rcu_free_waiting() miss folios that are actively being freed inside
+rcu_free_pages() after NR_FREE_RCU_PAGES has already been decremented?
+
+In rcu_free_pages(), NR_FREE_RCU_PAGES is decremented for each folio before
+__free_pages_ok() or free_unref_folios(&fbatch) prepares the pages and
+returns them to the buddy freelists under zone->lock:
+
+mm/page_alloc.c:rcu_free_pages() {
+    ...
+	list_for_each_entry_safe(folio, next, list, lru) {
+		nr +=3D folio_nr_pages(folio);
+		mod_zone_page_state(folio_zone(folio), NR_FREE_RCU_PAGES,
+				    -folio_nr_pages(folio));
+		if (direct) {
+			__free_pages_ok(&folio->page, folio_order(folio),
+					FPI_NONE);
+			cond_resched();
+		} else if (!folio_batch_add(&fbatch, folio)) {
+			free_unref_folios(&fbatch);
+			cond_resched_tasks_rcu_qs();
+		}
+	}
+	if (folio_batch_count(&fbatch))
+		free_unref_folios(&fbatch);
+    ...
+}
+
+When rcu_free_workfn(), rcu_free_expedite_workfn(), or a concurrent
+rcu_free_drain() decrements NR_FREE_RCU_PAGES to 0 for the last waiting
+folios in the zone, there is a window while __free_pages_prepare() (page
+zeroing, KASAN poisoning, memcg uncharging, etc.) and free_one_page() are
+still running where the pages are not yet PageBuddy in the buddy allocator,
+but zone_rcu_free_waiting(zone) already reads 0 and returns false.
+
+Although rcu_free_sync() flushes rwork.work and expedite works to wait for
+folios taken off the per-CPU lists, both alloc_contig_frozen_range_noprof()
+and offline_pages() skip calling rcu_free_sync() when
+zone_rcu_free_waiting() returns false, causing
+alloc_contig_frozen_range_noprof() to return -EBUSY and offline_pages() to
+skip synchronizing on the pass that migrated folios.
+
+[1] https://lore.kernel.org/r/20261019154913.1765974-8-kas@kernel.org
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104130118.2507=
-513-1-kas@kernel.org?part=3D6
+513-1-kas@kernel.org?part=3D7
 
