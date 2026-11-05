@@ -1,100 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E35FD606A33C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8363606D81A
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SnaAXovy
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZEk0xcPG
 Received: by kanga.kvack.org (Postfix)
-	id 14D446B05B2; Thu,  5 Nov 2026 04:44:11 -0500 (EST)
+	id D651A6B05B1; Thu,  5 Nov 2026 04:49:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FF676B05B5; Thu,  5 Nov 2026 04:44:11 -0500 (EST)
+	id D3E106B05B4; Thu,  5 Nov 2026 04:49:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03D256B05BA; Thu,  5 Nov 2026 04:44:10 -0500 (EST)
+	id C81DC6B05B6; Thu,  5 Nov 2026 04:49:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D9AE76B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:44:10 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D0B3E1C42D8
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:44:08 +0000 (UTC)
-X-FDA: 85400579376.10.B3FD5CB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2BE26C0003
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:44:07 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SnaAXovy;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A61B26B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:49:43 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 02C90140966
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:49:41 +0000 (UTC)
+X-FDA: 85400593404.16.AC967EF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 38FB6C0006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:49:40 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZEk0xcPG;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793872180;
+	b=zTdDMF2HphzGeKIqlVLVFq+T7G9N5UyF8plq3vfGmQAZkOBmxq3OZlS/F+ZGO2egUTk/ba
+	NZY+GtXSuSsTehMGuEVrYcFyaNbd7DE99PqepM7z9ul+2K6Vz7zvO9YMbiBjrcQomRE+ZX
+	JSDJM5nauKYQIhtX7PxJMd9YhZCXX8Q=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZEk0xcPG;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793871847;
+	s=arc-20220608; t=1793872180;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cl0o/t0hLxvs36DJVBtguhBYlsrgjBilx1megG1I2r8=;
-	b=nkeg/D7SeFK1o34HiJXAO9RydlObFolkZ0+KtV9VJoLVVEqVaqInwbr8lKdhidTfqrNfTl
-	P45Asy+woSMDwEfTcS/Memgs5dBMgItsjFSCcPn2PQBaP8mMEdTewyXmIh3g39TF0NKZtc
-	Lx52D/IMiaJC9w4VwvIGNrxqweT2ZdY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793871847;
-	b=7LJnLOX77nOdI8nLCGW6ex2Gc6wiL0J39Sr0YrDszsCApowJbPW7HckGQQkYIY5knyWWJG
-	gGTOarfQPjh11xLSLL4atBDLSg35raFb84RNSxeEHq5JutgbaQI77trg+04B9YBHfuV/AZ
-	6jTBUTD2EHOQvLxVKKl2w4vdPMP+7VQ=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SnaAXovy;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=hxTX4TglBlcnwRKNy/gdxt9lj2TmNDvqrCwVL+kxWpo=;
+	b=23oCMTOoj7xxMaKn3YvAhwqf8tktiX8mJmpSuRweiJWZ/GenGJHm355u1yYxGFSibYO/tx
+	iiQdNghjb9mnlCat3qCiF8+ZhqEQNk5TXdzGoAQrGBHt8yzlcQRng26/A/fHeuevq+/lI8
+	QQG1OihEEGuSzQFUOv4616cmlcztVsI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 52705602C3;
-	Thu,  5 Nov 2026 09:44:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF9AC1F000C1;
-	Thu,  5 Nov 2026 09:44:01 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 73A0944628;
+	Thu,  5 Nov 2026 09:49:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EEC51F00A02;
+	Thu,  5 Nov 2026 09:49:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793871846;
-	bh=cl0o/t0hLxvs36DJVBtguhBYlsrgjBilx1megG1I2r8=;
+	s=k20260515; t=1793872179;
+	bh=hxTX4TglBlcnwRKNy/gdxt9lj2TmNDvqrCwVL+kxWpo=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=SnaAXovy1H8UlqhL0W41aHdl7LU+iElNq4bVxi3JEp+eYu+inX6ZifHzwmwFhurW0
-	 mZSu2awsd4OVHoDE5JwyccftaHI0wlWtuoWbjCT0UcSDxBR864H2/mTFCG+eh4a0Tx
-	 xpm1MgB9bPGbn2Uzw1toqrmxpsnVkt5Yg4gb1fvLVsr5WhS1NQpenRe0Ks1yH0jpcM
-	 rFRmv5OhAuAgH4GaAjVz45ZySGFBfTghyLX0PRQTJidSgisBZdIR1/qs8TtcDbd97v
-	 hx4NoNODBMpCFp6oCvD/jEUE64r8cvnfZqOl8HysxFO5MbWTttyLkGRdKYZJvFtGCY
-	 tnE6uNp+JF+6A==
+	b=ZEk0xcPG7OcMzIf2u14VAVOl6GpPUYHf+L3nCdkVQRLU60PAc7WRZtHHkhgxN6H9i
+	 Djsp294G/kXjLF6vHuZ16WK+JN40ZCPORmwNUt5ZIcriAJdL8nVvjBh5XSVRXL6i4m
+	 +mvByiuJmSOoigV1uFzQ4hq6HgrKva2jDRPW+19sVV7Smj9DjexTuecxJ/uDEyL32O
+	 OzvzN6nQOiWC+janptzA6iVisgRTq8hfM4vC65U8ZkSPmsU49fBKWE5auGZ46zRO0n
+	 nxo5YTL6/Hpum/GpGVNpvqqjqp6NTRGC2+b9Nr3pd5WFPQLvLvxTb+jW4sMHZO8GV6
+	 O/8WO/IU/44rQ==
 From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Qi Xi <xiqi5703@163.com>
-Cc: linux-mm@kvack.org, Zi Yan <ziy@nvidia.com>, 
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Zi Yan <ziy@nvidia.com>, 
  Matthew Brost <matthew.brost@intel.com>, 
  Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
  Gregory Price <gourry@gourry.net>, 
  Ying Huang <ying.huang@linux.alibaba.com>, 
- Alistair Popple <apopple@nvidia.com>, Qiliang Yuan <odys.yuan@gmail.com>, 
- linux-kernel@vger.kernel.org, wangkefeng.wang@huawei.com, 
- sunnanyong@huawei.com, xiqi2@huawei.com, stable@vger.kernel.org
-In-Reply-To: <20261103080557.1632382-1-xiqi5703@163.com>
-References: <20261103080557.1632382-1-xiqi5703@163.com>
-Subject: Re: [PATCH v2] mm/migrate: fix softlockup in do_pages_stat() with
- huge page arrays
-Message-Id: <179387184168.13108.151326476173298230.b4-ty@b4>
-Date: Thu, 05 Nov 2026 10:44:01 +0100
+ Alistair Popple <apopple@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Tal Zussman <tz2294@columbia.edu>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
+References: <20261102-page-wrappers-v1-0-e7280bdb31f6@columbia.edu>
+Subject: Re: [PATCH 0/8] mm: remove newly-unused page wrapper APIs
+Message-Id: <179387217134.14545.11514432570963852326.b4-ty@b4>
+Date: Thu, 05 Nov 2026 10:49:31 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
-X-Stat-Signature: 3mso8xoq4hxqdzhzwkf1fd79o7y8fu9f
-X-Rspamd-Queue-Id: 2BE26C0003
+X-Stat-Signature: fxoq9je5djwdcdyynwhrwdd6sezk5xdb
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 38FB6C0006
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793871847-599822
-X-HE-Meta: U2FsdGVkX1/XLrY4LAKmqI1oT7GTbvc2/N0Aed9qXWvWXSqO5tQPYbnxZQCkK0N8n3nW1sZbGO+u9MgHX9gUD9W4zd71b5x2S5y8mMknswlWuzWwkRCdslxa/BZVykKLMSqdnGLvi4YyK4EBjP1c/tKpzaEu3ICPNOArH6yw/w3ZV7JJDI4EslyDc0fPwY0PiACW9j0Fst3Twm2MGq9Kgdrfo1zvgAPFbL3rUgJuj/EDIjbFfnYgln6PPs7IO2KphVLKXEr+MoZoWhmjUAJ5hcpAh7P5D+ayAAGZxecFuFarN79yXmdhPieJecadB4ZMha8Z4SdWp0umHRZ+vWJjslWnoh6NSD8pLRjl5ng79aRGC4BG/IyfNgeIZDQwVnh3bd/PeCrkrt/FHDFmHqsVyixnDUHh0Yo9liGOTVaWjzeXii2wyNTOoEc3lyfWKiXSaUXZjwlaFbLPtFQ4o7CiL2Hr+jDV0JVp+iqqRhXCnNef2+nQVWZaRKUFPwq4Ds595Obr8HjCWZiF9tkxEDn5HVRvuG3+aAd4nAO+oYyreFU0qarvzK+eSLbPJRVyyKM7/5UKhCVHW1dbfaqYavB+z6AtCPNtQVnaoCh4c/Qyn9N6A8RXmOosJI5CgC837VUDQvMxbhZgkmGT6FSlfY4ndose7k4WCpVI23Z0FDHaoiMDa0R1XF3EuOKfL80WpxQjw4DE9/IoI8XRilEjtkqwQ8gkepQgtVB2gLQWsEYWjGFH2Q4m+Sc8/vy4yN/RvzpYz4lvAqp4H2S+2QBUVyxCE1s3etMPCaaKLoWz1/hYSv8xFVVFHcJ69/P12ij2931Uv9F+2Bw+donAvlefyA5GX+yZUbUiDx7qoiQLXLipgpyVbJBkW2Br7L7eThBGZxDVHFx6NvJlQnkuw+Le1XO4yiCsvL5G4/dh/p6FQSbexDXZMEq1D+JxFog1mh2eJeCBhiEpodMqOZbiiVm4+jb
- lOQHt/Zs
- NErtTYImY+a2wwPJLGvRLD9H4T4KxhI+RxhR6e3u4ncbe9YNSDWJ0CHv4nNQKnTvKfi/87xmomEPpdZJVpYCeuMb6Gl0CO6ijZSzfJb0oaFI3fJ65lJChOfywjRmr4lIZ9xWpRjSdvosy8pjs4xILPtTI6CDptiZdbIPHhkos672Ib+BB8j59rhircZwQo7iF208qznD9euTOhDHgtw+7PUeJHyAIdSoicUpBZ/GIvrb+TV44DtHwr1qavG+OyAohY3ioazigKCL1aahWKJSAaC5eOIuMeHxJKZxrOdbD0ozR99B3t91DelbHX/hkcobFoGBaPMUKT49T7LlgHMyhHmptihEfDc9MfZ9u7wX1H8nqgSc=
+X-HE-Tag: 1793872180-111748
+X-HE-Meta: U2FsdGVkX183glIOCYZ6qCijTPN6yFH7F856ennx3F8t4ASLTJH1APYPfCxwDKehSDyCErUj0UgPXfRnX3ZzTeJsglU4/GEwtVGHFpuZnWWz+6FWyBqA+7KR8y2DO+2Bykc8wE7zx7G8lkGks/hqoPboyeaPvfQpYfHRGER4+RcJPy29JkrmGTvsBswO4OXSd3HHEbmwzNqYSr/Kd1LOcZNpWaJpQ1yf8r2PouNyl/cu/dOYCJc3ZYhiWTXq6kl8FggRlWiK7z+owEMZqVWR93gQV8t/uUPXrUGQaJsLox8YCHb0uWpSeA1ggq7jderEvXY/WzXPIrnlzVtUNGwh7f6jvIDKBR7SnW21jr4bPviJdTa0D7nT3bsdLLMcCxHKUES1SFNJU1qcqhGOyn++GOHu8zAc7lud7KHpzdMTCN4bLfX1nXDIX647CPZMmtCcXKFe8ZJ6wd5q/M9Z1ocamHqL/3xZZ6M7xtizJtoNPCiiN7pfGP1sCuHSeEmlqZFkJHHrKkRXMc5HVhZvA7yRS9bBcnmR+fi9kQGZWo9F8P0y46oCesGyhBirxMZpGyGM1OYtWY5bH8XZO+KKen6EAdWKTJCgtSjzqKRQsBD8pixeK1COTkFc/CML+ZlTTlY554YB7eiXULL1zFPLP655/3sJGHSoQYIXPp6shbqYASkmVmBFt2mqO8YEhD+1wFmQfVztdqZqNcZerKEgpjs+HLvHtMZAb/X3+9Mr27xTHQJCF/CcjiqJaatriAB5uCuuG3DphMLuoxEGIWnmo6fgPUN9J3GZLJQEPTnelp77b6PQKlWQh5Oz9tdTYUVpyVUlPnJyP+BifM6Xm/cCLtTI926dP7gZGIRWjZE74lH9as1BqewRe07BvC+7gt6R+unAorixOXLa849dDVMEvfb/IMwPDggPxX4tk53t71zaUe3qcWXujQEabScAdpIoVyq+ZHpOTncfBQp0QqgWrU5
+ 9BGnXZP8
+ eD8LPdy3ISxwk9pGWK+tnpdDFy5OfyE65hk7T9ngjEkWJgKECM9TAeklmkwg77M+mg2noBuTqc2JThU4jmZ8U3MEDMOHpZ0RW3u5nW9MegMOO5PR++xUo2ArfMeiQpNN5RGtizyCBBczlPbt3+pivXtXF6aA/D5aTTOBvoOXK7V1qMF6+vhcBj0IEpvC9SMTjHM7e4jKNM5kEEl7P4EvsnMYEPPXsq3RqaOH1akKwuHK+33J+olz+NsdmmDIElojRCqLaZdTwh6zV+1WM9mkWUHhwJ/6+s3e9N4zVw1DZ/M9ioed97RD+6dn6rryPcAN95PrT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,23 +109,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 03 Nov 2026 16:05:57 +0800, Qi Xi wrote:
-> do_pages_stat() walks the user page array in 16-page chunks but never
-> reschedules, so a huge nr_pages can hold a CPU past the watchdog
-> threshold on non-preemptible kernels.  Add cond_resched() to the loop so
-> long move_pages() node-query calls yield periodically.
+On Mon, 02 Nov 2026 17:54:05 -0500, Tal Zussman wrote:
+> After some folio conversions done last cycle (namely ceph, f2fs, btrfs,
+> fuse, and page_io.c), there are a number of newly-unused page APIs.
+> Let's remove them and update comments as necessary.
 > 
-> With KASAN and function tracing enabled, a move_pages() node query
-> (nodes == NULL) over 10 million page entries (~40GB of mapped memory)
-> reproduces the softlockup on a 6.6-based arm64 kernel with
-> CONFIG_PREEMPT_NONE=y.
+> Patches 1 and 8 are taken from the ceph writeback folio series [1],
+> along with tags.
 > 
 > [...]
 
 Applied, thanks!
 
 tree: mm/core.git
-branch: migrate-7.5.misc
+branch: core-7.5.misc
 
 Applied patches will appear soon in mm-next, followed by linux-next.
 
@@ -134,8 +137,22 @@ Note that commit hashes shown below are subject to change due to rebase,
 trailer updates or similar. Further, this is not a guarantee that the
 patches will go upstream. If in doubt, please check the listed branch.
 
-[1/1] mm/migrate: fix softlockup in do_pages_stat() with huge page arrays
-      https://git.kernel.org/mm/core/c/10f2ae9f
+[1/8] mm: remove wait_on_page_writeback()
+      https://git.kernel.org/mm/core/c/88e548fd
+[2/8] mm: remove end_page_writeback()
+      https://git.kernel.org/mm/core/c/57733524
+[3/8] mm: remove clear_page_dirty_for_io()
+      https://git.kernel.org/mm/core/c/447d4798
+[4/8] mm: remove attach_page_private() and detach_page_private()
+      https://git.kernel.org/mm/core/c/555b63e1
+[5/8] mm: remove find_get_page_flags()
+      https://git.kernel.org/mm/core/c/47a09332
+[6/8] mm: remove find_lock_page()
+      https://git.kernel.org/mm/core/c/9919cb21
+[7/8] mm: remove read_cache_page_gfp()
+      https://git.kernel.org/mm/core/c/1fded4e3
+[8/8] mm: remove thp_size() and thp_order()
+      https://git.kernel.org/mm/core/c/4efd0e4a
 
 -- 
 Cheers,
