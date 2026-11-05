@@ -1,95 +1,127 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486E5606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 894BC606D807
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:34:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=n/jzHDHu
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=W6fvU5e4
 Received: by kanga.kvack.org (Postfix)
-	id AB1646B05BB; Thu,  5 Nov 2026 08:26:43 -0500 (EST)
+	id B0CF96B05B1; Thu,  5 Nov 2026 08:33:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A627D6B05BE; Thu,  5 Nov 2026 08:26:43 -0500 (EST)
+	id A96E56B05B2; Thu,  5 Nov 2026 08:33:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 950D16B05BF; Thu,  5 Nov 2026 08:26:43 -0500 (EST)
+	id 95DDD6B05B3; Thu,  5 Nov 2026 08:33:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E56E6B05BB
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:26:43 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0381A40549
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:26:42 +0000 (UTC)
-X-FDA: 85401140286.06.76A28C4
+	by kanga.kvack.org (Postfix) with ESMTP id 744186B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:33:59 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 16D881A09FF
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:33:59 +0000 (UTC)
+X-FDA: 85401158598.19.AA839D2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 63FC7180003
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:26:41 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n/jzHDHu";
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 06C1640005
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:33:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W6fvU5e4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793885201;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793885637;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mMfXt/HxPK2Swk1MlzkRGpDW9W5AhDiWyNa7hMLpkX4=;
-	b=mffu8C2U6war1h5vSQ+2+55MyWEDCpRqnwCTWJMDv3EFJw42dgbUo7E++6mgVmhNo4AJ0Q
-	NubjJUBsGMOwhrMz1A8MDJN++X3IpUHLKn1bdy8ZSNqnD8gYmMGPqSTrHJz9QlnWxBHjwd
-	UoT0Iu4MZ+ktTuK/Oyna3AfPNWMcE7s=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793885201;
-	b=H7k1p2Lix2hB3kPZ7cyqMZGioa0QirTSe0SSAv0u0yNi1yMPemwHeHCO7flkbOT7T6wX5Z
-	c80DZckGePttzOJ9WH4nPesBBnDf/1HfAztuzVG6s6DBiJ/3/UlEFG7i0wFg8VXxp6BDjr
-	0fchR7HfzKVChm751kZMyrsGkn91Dqw=
+	bh=Mzxnox2ZqcSOtlYhZiL4hy8PJ7Qt6MthNjRC53Mvu8I=;
+	b=skF/qWvb4DeOsPd8wbrrAFzW3cjIRs/HD2Y5Jdh1dphXy5iOko3S7x1n4DiYFr0qlHLWy9
+	KAlOzVYMhsyScgDr+51bYgrm+lSChiOLvchV8JIT0O5fW1MT/UHgv26jzddLRp3ENy0Ljz
+	OxMJvbR/CIMsZVE133VdQoYW+V4qa08=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="n/jzHDHu";
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=W6fvU5e4;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of cel@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=cel@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793885637;
+	b=ANrp3qs7Wq6nTG7dZ5Y891xGSB1584rGhII/+B5K/nFBDU2Lg4/4o7Wof3sFg/fZsKnkFA
+	P19PG6TWE+p9+QcnMK9RxXDh7SMJ78RAAYTBitZkhRtzbic3yN/mU1JiZWh40+or+F0ZTV
+	CuslyUsAl6gGQwwZ5hn3xoK3AFwcp3k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id F07AD60D93;
-	Thu,  5 Nov 2026 13:26:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067271F000C1;
-	Thu,  5 Nov 2026 13:26:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 86D9B60267;
+	Thu,  5 Nov 2026 13:33:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E967E1F00919;
+	Thu,  5 Nov 2026 13:33:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793885200;
-	bh=mMfXt/HxPK2Swk1MlzkRGpDW9W5AhDiWyNa7hMLpkX4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=n/jzHDHu4jj+BZjH/MZStwwB+L1cEl/DyaQ1vCqlsJcbidWE7vAaNciDgcF5mc6Gb
-	 mnh8a/0wzXJJzfEhxqy8aGwKrtWpd9P6F3k/4VKPzDYRyOnSeOSDA/9pDPc+7EyWx6
-	 wopBwG98F7v0CCu/yCFk5kq1kDLIxgiOTPP0VGMCIlqmvsnfKTes/li27zukqqIY3y
-	 t6lJQOIAwBsNwckXngd2AFcd5nYRD7Si3npMvUYiehvZTYHoge/enZRQRw/yfThFIr
-	 IVSTEPdWUEMm3vt6qj5SijCHm37SGfXP5Se2GOcNrSAFCA9+O+AdBRKW0V1b99CQ6k
-	 73U1TWrC53DPg==
-Message-ID: <sashiko-outbox-199144@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 04/10] mm, slab: introduce slab_debug=N
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?Vmxhc3RpbWlsIEJhYmthIChTVVNFKQ==?= <vbabka@kernel.org>, "Harry
- Yoo" <harry@kernel.org>, "Andrey Ryabinin" <ryabinin.a.a@gmail.com>
-Cc: "Hao Li" <hao.li@linux.dev>, "Christoph Lameter" <cl@gentwo.org>, "David
- Rientjes" <rientjes@google.com>, "Roman Gushchin" <roman.gushchin@linux.dev>, "Geert
- Uytterhoeven" <geert@linux-m68k.org>, "Conor Dooley" <conor@kernel.org>, "Damien
- Le Moal" <dlemoal@kernel.org>, linux-mm@kvack.org, "Alexander Potapenko" <glider@google.com>, "Andrey
- Konovalov" <andreyknvl@gmail.com>, "Dmitry Vyukov" <dvyukov@google.com>, "Vincenzo
- Frascino" <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com
-In-Reply-To: <20261105-slub_tiny_rework-v3-4-0484ce59eabb@kernel.org>
-References: <20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org>
- <20261105-slub_tiny_rework-v3-4-0484ce59eabb@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 13:26:39 +0000
-X-Rspamd-Server: rspam06
-X-Stat-Signature: sawxzijodz8cdb3ftny99kp6799unx6f
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 63FC7180003
+	s=k20260515; t=1793885636;
+	bh=Mzxnox2ZqcSOtlYhZiL4hy8PJ7Qt6MthNjRC53Mvu8I=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=W6fvU5e4v9VXByYxToyGfUblVQFNT5WuWLgquynT0RDF8kyI1X8tPIXHjCOMM8QKi
+	 TB36uNlZnJvDpPmcr84r9evk4qeRURYKcquEJnZZTgrSafak9JljZ5qKQIoUGre7wN
+	 F/hompvGtt9N53QUQGuqUv3dCi/2jGp8a9h+gUNk4aOMpyJxRVDUCGbPpIyxbjzxoe
+	 mGVOhUP2BwdYxoZAZZlzs580AfwUJfcnN+1PAB4j3WtHbGtwbZOmtMpZbD+YudzfO/
+	 uGqllzTSWK8GJe2MHIDMiNnX++9xx8AFZSwOcw/6rq4jgxoM3pI0yhV1EQZ9Y9qyNb
+	 1hHFGhuEaqxKA==
+Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id D3B3AF4006A;
+	Thu,  5 Nov 2026 08:33:54 -0500 (EST)
+Received: from phl-imap-15 ([10.202.2.104])
+  by phl-compute-10.internal (MEProxy); Thu, 05 Nov 2026 08:33:54 -0500
+X-ME-Sender: <xms:woXsammtkXhLPWsH42dXHpryBkz2i7c0bnU2Lcbos2kHCzmRAoeEug>
+    <xme:woXsaor_Lf6RBoLVpMG21bH7KQd6BCfSMtpIgKxnDqWGFSMh2mOC5kj2tLxnE5dqW
+    H3b_SOiT14cMJSc3cQ95dDArJw6ObEb1IjwO_cBMZrtSQozzrKMBpE>
+X-ME-Proxy-Cause: dmFkZTFXNwLxjr3E6RMaivkkQUj61yNTw+BeXqt/FKvD1Sb1j4JPfn+xjgqZl+4+DRKQRe
+    3mlUJxce3RaawYdhvit1fIjwgkMuyA1cwwiYj5q0wQM+s3WToqXmiY5vNpMll/QHUocAOC
+    dD4HRRG16qL0UNSXwrZRMXRfVo32pPW0neF4XEVJL2OEBtaBwT3L75kDhKsls5Z/VanAkw
+    tZfBpQqh0VZ+mNEhUO2zST/Zp/Gj1vmtZKNtHKLQ1Nm0saygMTnCj/dWL0sGne7hCFXKnO
+    RbDgZkxQWMDPb4W7D/wEccbEOZ+G8dxVSGwFtLcVup9a9kQxnr5bjO0atIXGEGb7WQE/pC
+    kSq+aSjtpNpnd+Qi4U4YmxyBC9sA/6SbSr/MsKzB7wW1UL74y2Ss5C3UyujLzPMP8WG/yq
+    r5zXMy0L6GNlxaT0A85WUiDRf4rpKD81/qtDDqVYALIKaaRRfGq17B1px/08Xr6oj9zLVA
+    vgIh9uz2Xw3lCh5P+gDmOG0ZbNFnx52PHaFyFhM33DCW8wyuD9EQeMPye2sVW+8/UJ9yh1
+    5M7+/BZ5JKAIhsDBrkPvJcgQsNxLgC/zaMMs8WdeGQBY2LZh4bGUPeXGZf9EBxdXaZNpAG
+    PhH37UyZ3FWsKQSYeD1Os+dAe0Pf99Zu+CkAskN4X9vT4qniejRYN2FT2gNA
+X-ME-Proxy: <xmx:woXsamf3tSjXzZQ4haIv784kpFLWCTAM9kXovrsnrA4MMfNwdf8DlA>
+    <xmx:woXsavwf09Tzn6BzjM5c27OkVXfDz7aCUlZGKI2CXjDH3tq4VxIrkg>
+    <xmx:woXsar2ZbDMM6LSy8mEm32b3EAu9iB1LuRtbEms2pPVQh1dO9ekZwg>
+    <xmx:woXsamfDeVghD6zLhqEou3KbzqeijRKw2q0-uup0Ncf5qUs84TZLog>
+    <xmx:woXsagVOFsksHKpQ0-srOIDYQGqnZ3mSF3W7Gs_3Uul5koTzNWOjUTcY>
+Feedback-ID: ifa6e4810:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id B0DA8782738; Thu,  5 Nov 2026 08:33:54 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+X-ThreadId: A-1cIfNAHW1c
+Date: Thu, 05 Nov 2026 08:33:34 -0500
+From: "Chuck Lever" <cel@kernel.org>
+To: "Christoph Hellwig" <hch@lst.de>, "Mike Snitzer" <snitzer@kernel.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-mm@kvack.org,
+ linux-fsdevel@vger.kernel.org, "Jeff Layton" <jlayton@kernel.org>,
+ linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
+ "Olga Kornievskaia" <okorniev@redhat.com>, "Dai Ngo" <Dai.Ngo@oracle.com>,
+ "Tom Talpey" <tom@talpey.com>, "Jens Axboe" <axboe@kernel.dk>,
+ "Jonathan Corbet" <corbet@lwn.net>,
+ "Jonathan Flynn" <jonathan.flynn@hammerspace.com>
+Message-Id: <29851456-2e7c-48a7-bf00-11a1f1a35024@app.fastmail.com>
+In-Reply-To: <20261105075935.GA18069@lst.de>
+References: <20261103211754.35352-1-snitzer@kernel.org>
+ <20261103211754.35352-8-snitzer@kernel.org> <20261104091543.GA31130@lst.de>
+ <autk-osSQ8l2LKz1@kernel.org> <20261105075935.GA18069@lst.de>
+Subject: Re: [PATCH v10 7/7] NFSD: drop a shared boundary page only once both WRITEs
+ have written it
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1793885201-57518
-X-HE-Meta: U2FsdGVkX199CoMX69Fut8aVBxKE7D0UD6DOsQayKwILup846d+P/5W+9uV2nV1KCngNcszWWm2WRMLHFSpC+ByVuMAn4SpKxIimNpmI78O7oMTroksn4DO8cRciY3OCmpo71wAkYT6K0cs+ajZ6Tcr/4k/wFqKFIYdiPsKLiSeZxeEo4lnySEWCbNsSEiV+jOxrJI45n4pwKUChoQcfsynUmrzoCLC8d9FygfG1xAHFZkxi1pfuX1NxU9q4ZBBDI895LKQvsi/o5S8XAoNRIUmDk0NmWcJiqAKMdpOf8QbAgZbSdJel53ugep7lJEL6/o21xiGUs90m9sDoIodDv65vQBzgr9cPu9hqtpItvEOhuMz6nvg7yG25IUwAG5s7yTFDW1vwgIDwvc8zxEtq+Rkw4L/sNBcC56hcssfCoElP/W+uJdpfegohr9v0ys8ZfA4SIQQ4LFUoAl2sVc6oYBgQndpIwX0GdcG9d8FwNcYdttgyV+phpxERY3PQGnYvH1UkqqDap09cV324vBe6QjW5JpPYWyn0uF2yh+fzjdZUxtsP6MSISCH+mwi+RvdBB39p7TuRAp1pAQxqIMfCSmUr/JdeMFaXCSu1mEkPbDKG6vNXCGYl59OlJuPA5MvRup2dCk/f3UVBhPzdZybKsfh+DUT/lO12jokcZvOpjVmzcualjECLdDE6luSmwIsiWoq0w16dvBjpFNeexJpf6N0pZHSLz51nh7EaZraqgVsA2Y5yHFou7L0fut5a++5+lM0hkJHAZxp/9Cn1OYih+J5ByzSnGRzWifGnDk1lnXfmQMO75X6HGz1H/f7nQN82wXZTDo94pX9B90jjoXR9n7WIMaJd3eW7yHgrDuK/7UP0+TbeghHVV/SLNK7aZOWnJr5PvMNN7mSCXB+CLMuVuOjkiUfhP8yrGFm7q5QIxmGlUBLMozSEOoA4OA7MO4e6jGqaz34GkLVUlQ/e+YI
- 9HtuOQQo
- OAb9Z05ZAQusBNHsjb0Tjyo/1eghs/cCk9AsMmyDBs1QaGEVlCTr4Q98zzyO+p+gqLgeE51tHP3TZINOmf3OrbKsSdcEfZ2XgVL/tUXTxEgoYLUefxRJuJM0NbBh2dH5+rLdfvCGQIen0rmIOMbi7g9mk3/yGBymGVj/0CSmTuyF3B9RpuEDgE/0PrtKAd5brwGWQvqSb9NdMerfP4zzsE7/XVte4T0RjMWqvov2FtgIJHGeP5wlOKt0WBCfqaS2gNCD8ybAW/Atoakyca8OHFIheD92GApjLdg0l+FWNR1IUKKzYQ+fV7IIbQ10MSzMeonpf/16FAPDkMfKBz0Yw4rlSiYxoFU/J0QRbRdjBYAeKX103hEnebJW5/mTmAAAhWtbosabrs2xYo+QTeq9cgu3ildapWMBztR0UcTaVdL/NcBXGuJ6GpUgRohhOzBaG3qbMVmsIfEtVWGBGbmUb6xXj4GBSJP2voicVGARRm+VI/0xUn3djH6XvxSCQi0iqJh6mRoEvZgSPXbn/Wt0nr/xeohzKxu2xYuSBWS8EiRiX8CG6fUIYEckniuVCZjJ8H8RKSvD1WzBq9JC+BfHJyfIoDUBMltpRKEP3D6ZAnOnUwUYinmXA5gWdKncbOi8D/bDxJDsDm9Hpll5L3G3N1yjvpmHos8fzo/BWQUhICXUAnvXltP45wlRZEiREnZFzafgnZ5En4OrJ4n5QLFgVCLA9Pqe7JDLwzxuzOQZngTsQ3evoZ7jiGhb9GQ==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 06C1640005
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 8fdi14kpgjjoj3urbcixcxhc8r4zzf95
+X-HE-Tag: 1793885636-939530
+X-HE-Meta: U2FsdGVkX18bQiIGxOCZYj9bXbqidOa4xrGJEYrRY6pPhfuo2Tn9sjzRvq00BlJi2+5vVLcSj2WxxUOhx6uuNUih/LNv8HeqW3mqx+u/7I69CzNJV47GKWFk6mU6cIDP5MEr18YvT114GJuI31MatZqmtvmH5hA+WVyShxNlodhnu5jI/dWDnDt4JC6KxYAOCWrxwIEttJom5Zzc8d2eMWx2fXsVtLGYJJLo58xiX8V4EQKRbL7lz6ypjCFsvlnMbCEEEKQaifm1LRCkUzG8gw4A0JzdeupAPkMlOj81Nvt9qXcDx9UXCS9nL1MlK+UnU50mv5QjOFOxXLsLHzXRKsBZ3kkpLkjOo/IlOztwkcDhXd3cKL9SSG4BswcYjZkyBeFn2derjUXSN/vj+aaNhbsDDO+icCtUmwsIi5x1K+86l5tv5uUPiYFf3fMisT8VeUoFqQfJW/ByTD8VTjIl/bQRh1k4KZsLf9t5nPSZ70o0pWFwL7Fhck4f1W9gfIP5oTNYpltSCyno5Fr38svOP/367PWx42Ae5XfeYV5CIJkSYV2FdI9ZJF4+y867BuQM3NvWOfkLifBjnwcnDvBpduaht/Pssuy0wwRMr+oqvqcsh6g0ZpgfXlJxT1UnTbKMPMRcfB7rXoQ96xK0ayIRY7O22JsUV5scgzwvw9xqplZQ348WQ6JZt1n3wL3WzqTwTWJ2OSHGeN4LDYZQoO43Pv0XHSgjK/2wHrLc3IHIoyD7TfY6SbKmimoj13UogS+UNfut5HTY//r3pnYaWrTl8S4vqchyK/yqqUh/ZHAIcyL/Jsq6pfE/Y+KuT/klFw7B7O/IM4MOqTa9cubet1ZQ1m4KMDTi3iZkJmPuwaudxRglU7ks+u3eZciMwJaWBxZBdRdvGsR6KUZ6B+KaQH3YBFbU10+YZDaLdqwiuoaf9Pv/Vr9yrN+h4MIEk8GdvDOMzL8wmTuhvv1Qy/IKlcc
+ wkUtrAxA
+ 24SeOI9RQGObR5cYRIosSuUR8BZFCcc5GrWY4NIyCbiaYj5o/jTtXJqLSqQiJTJ76FofzzkIyPcEylmz3BY+sBVTJ3A6E6rDzi+HNNqk5KESE3QUkucA7H9R88bvBzlKoIcbJNVT6ET7HAZOEGmtWuWpwIw7Kw8XN0S02UAfJlqFH4bYIN/JE/0TCX06IY9VgRKXC76TiIKawQ0sAb0yvjasbzeLriBaoqqDhVHNTvAl+o2xsprLs+C9jTvdtFMc5fFxPtC+/fcCrGXZgbrhsj77ZdHXASGK5Xj/KdgdncURXUDmVbzwCLYH72dOZK0aRCTez7U5ml/LuLr0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,90 +129,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] mm, slab: missing SLAB_DEBUG_NOOP in create_unique_id() causes s=
-ysfs collision
---
 
-commit 72eeb0d7d0de3c870ebf6a85a45b89ab817bcdff
-Author: Vlastimil Babka (SUSE) <vbabka@kernel.org>
 
-mm, slab: introduce slab_debug=3DN
+On Thu, Nov 5, 2026, at 2:59 AM, Christoph Hellwig wrote:
+> On Wed, Nov 04, 2026 at 12:01:46PM -0500, Mike Snitzer wrote:
+>> It is the transfer size of IO500's ior-hard: every rank writes
+>> 47008-byte records, interleaved with the other ranks, into one shared
+>> file, with O_DIRECT.  It is meant as a hard case, and it is the
+>> workload that showed the problem on our servers.  The same happens
+>> with any record size that is not a multiple of the page size.  The
+>> cover letter also has 6000-byte records.
+>
+> So based on a bit googling your totally optimize this for an intentionally
+> stupid benchmarking workload.  And that's not been disclosed anywhere.
+>
+> I guess everyone else was right and just ignored this bordline malicious
+> submission.
 
-This commit introduces a new slab_debug=3DN (SLAB_DEBUG_NOOP) option that f=
-orces
-slab debugging slowpaths and zero sheaf capacity without enabling actual de=
-bug
-checks, while keeping caches mergeable among caches with the same flag and
-avoiding disabling printk pointer hashing.
+It's not fair to ascribe that kind of intent. I think it's fairly
+well known that Mike and Jon are using IO500, and not mentioning it
+in the documentation for this series was a simple oversight.
 
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 01c64ef661e7f..6036ce1ac333b 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -47,12 +47,13 @@ struct kmem_cache *kmem_cache;
->   * Any flag that adds per-object metadata should be included,
->   * since slab merging can update s->inuse that affects the metadata layo=
-ut.
->   */
-> -#define SLAB_NEVER_MERGE (SLAB_DEBUG_FLAGS | SLAB_TYPESAFE_BY_RCU | \
-> -		SLAB_NOLEAKTRACE | SLAB_FAILSLAB | SLAB_NO_MERGE | \
-> -		SLAB_OBJ_EXT_IN_OBJ)
-> +#define SLAB_NEVER_MERGE ((SLAB_DEBUG_FLAGS & ~SLAB_DEBUG_NOOP) | \
-> +		SLAB_TYPESAFE_BY_RCU | SLAB_NOLEAKTRACE | SLAB_FAILSLAB | \
-> +		SLAB_NO_MERGE | SLAB_OBJ_EXT_IN_OBJ)
-> =20
->  #define SLAB_MERGE_SAME (SLAB_RECLAIM_ACCOUNT | SLAB_CACHE_DMA | \
-> -			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT)
-> +			 SLAB_CACHE_DMA32 | SLAB_ACCOUNT | SLAB_MAY_ACCOUNT | \
-> +			 SLAB_DEBUG_NOOP)
+But IMO we do need a broader variety of benchmark results to
+understand the impact of these changes. IO500 on big hardware is
+an uncommon workload for NFSD.
 
-[Severity: Medium]
-As reported by Sashiko on RFC v2 [1], when SLAB_DEBUG_NOOP is excluded from
-SLAB_NEVER_MERGE and added to SLAB_MERGE_SAME, does create_unique_id() in
-mm/slub.c also need to encode SLAB_DEBUG_NOOP into the generated sysfs cache
-name?
 
-When SLAB_DEBUG_NOOP is enabled on a subset of mergeable caches (for example
-via per-cache slab_debug=3DN,<cache> boot parameters), find_mergeable() kee=
-ps
-mergeable caches with SLAB_DEBUG_NOOP separate from otherwise identical
-mergeable caches of the same size without SLAB_DEBUG_NOOP.
-
-Because slab_unmergeable() returns 0 for both caches, sysfs_slab_add() calls
-create_unique_id() to generate their /sys/kernel/slab/ directory names:
-
-mm/slub.c:create_unique_id() {
-	...
-	if (s->flags & SLAB_CACHE_DMA)
-		*p++ =3D 'd';
-	if (s->flags & SLAB_CACHE_DMA32)
-		*p++ =3D 'D';
-	if (s->flags & SLAB_RECLAIM_ACCOUNT)
-		*p++ =3D 'a';
-	if (s->flags & SLAB_CONSISTENCY_CHECKS)
-		*p++ =3D 'F';
-	if (s->flags & SLAB_ACCOUNT)
-		*p++ =3D 'A';
-	if (p !=3D name + 1)
-		*p++ =3D '-';
-	p +=3D snprintf(p, ID_STR_LENGTH - (p - name), "%07u", s->size);
-	...
-}
-
-Since create_unique_id() does not append a character for SLAB_DEBUG_NOOP, b=
-oth
-caches receive the exact same sysfs name, causing kobject_init_and_add() in
-sysfs_slab_add() to fail with -EEXIST and trigger a duplicate sysfs filename
-warning.
-
-[1] https://lore.kernel.org/r/20261024-slub_tiny_rework-v2-2-bf1419ab5ffd@k=
-ernel.org
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105-slub_tiny_=
-rework-v3-0-0484ce59eabb@kernel.org?part=3D4
+-- 
+Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
 
