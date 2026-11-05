@@ -1,94 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C200D606A326
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09C5C606A328
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U/zzQhn9
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iC2dcB3k
 Received: by kanga.kvack.org (Postfix)
-	id E17736B05D4; Thu,  5 Nov 2026 12:03:08 -0500 (EST)
+	id 154CB6B05B6; Thu,  5 Nov 2026 12:06:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC83A6B05D5; Thu,  5 Nov 2026 12:03:08 -0500 (EST)
+	id 0D7336B05B8; Thu,  5 Nov 2026 12:06:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8F386B05D6; Thu,  5 Nov 2026 12:03:08 -0500 (EST)
+	id F2ED06B05BE; Thu,  5 Nov 2026 12:06:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F2ED6B05D4
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:03:08 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 31558160B5F
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:03:08 +0000 (UTC)
-X-FDA: 85401685656.09.1C97120
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 764526B05BC
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:06:45 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 971C680B80
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:06:44 +0000 (UTC)
+X-FDA: 85401694728.10.80BD405
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B7ACD20011
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:03:07 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U/zzQhn9";
-	spf=pass (imf31.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793898186;
-	b=3mUhfY9xGS0KK5JfkJpetEzCRlYnhpAcuW62Yt35wUB8IJ2ThMhuJ85HDP5npJmtxaalCR
-	uLLY82qK2tDT8RRMEWXqXzUL18tkFaoqrdSSZTeB78IjMIMtFi6Xg+DgBtBMtZMtEyhq14
-	eGjhkdqck+fFAj27046GGdjtPPeN23k=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U/zzQhn9";
-	spf=pass (imf31.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id D5E7216000D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:06:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iC2dcB3k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793898186;
+	s=arc-20220608; t=1793898403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+GDK5SHSY6SA93NwCdlZTl+b20QDETC0OdxKh5BTja4=;
-	b=kRvfZ2ZdF6RbfFuXb1lSH/b9Q//NP8JjRRdTix3Q0C52KK5HHJu7uTcjVkMJmRvlB/udem
-	rf5qo0qb/vNsZ4J8H5Ab9v2lWwqUzof5SoDFqTlAQYIN/KXwigLn42KsGC8nlcbzDKHTkV
-	5prYA13ZOHs5rll6uZJRc9bz2g6RLvs=
+	bh=ianTrveSK4dhFW5UqHYxXDFeTMj4FVLXLf+aTFzURnY=;
+	b=23WSLRIyTLXI5cJJYmy+MESlqCGL+BiRawkZNk/R0ZBKF4axC68ZTjkmDvsEjmYipCBN2f
+	TyG8izQt2wrFnRtcvpY6fX/NdDGGi7dzhWuAjMIGGsz0Dzm9C1Cb6QD5H2jXMVfhuWTrVy
+	IFESyvowwkBxgmUzExG+sTq82Upi598=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793898403;
+	b=m1Hkc9rnYcmkTotwhyU6lzFdZDhMBdFvHmVxicgFPSaKHhy1eBc9OolNlICLrzct1mHXSQ
+	5De89u77nNqYdI/j5mFHcyUZMDHWWsOW1uA4b2hMB8j0dk1kw0hdTa81HKsMMUM+i2qIyb
+	zZhVfTDm3fI9CuUXC3+ujRFT1DrsycU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iC2dcB3k;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C1A9643BD8;
-	Thu,  5 Nov 2026 17:03:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4329B1F00A15;
-	Thu,  5 Nov 2026 17:03:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F12AE429D1;
+	Thu,  5 Nov 2026 17:06:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6658B1F00A1C;
+	Thu,  5 Nov 2026 17:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793898185;
-	bh=+GDK5SHSY6SA93NwCdlZTl+b20QDETC0OdxKh5BTja4=;
+	s=k20260515; t=1793898401;
+	bh=ianTrveSK4dhFW5UqHYxXDFeTMj4FVLXLf+aTFzURnY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=U/zzQhn9F9RkCJilk4OZI/QAAx01gxRgJL5gzdN1eBbPe+uIGkyUIY/eHuti0URuV
-	 PC7SUDFqmuz2hgDMK1d01qt6xjAyjtPUFHYy28KJ/ecJVH9fN82lpkhN/4yVV1XlRO
-	 J+g/tpgZlN6y1WvV3NayHklvEYOpvWYENJlITQYLg5XptBrIk+g6mtTGVFojNMYH0f
-	 k08K2sSlJ0/J3aq6my/f7r4uDwhlW8g15clSQ4VvKR/0ZgfPRWwuC2F48xkjZIw6dX
-	 57HFiVyxHavVE/PKepqny3sH4DJ91vEiRpr6mCqisqmj08Gc+2CBOd1Z/MKUn0p7F3
-	 5Eai81R5zHBiQ==
-Date: Thu, 5 Nov 2026 17:03:03 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
+	b=iC2dcB3k5D083AyxQGoh0br5hmHCzcBMciwr0URm2plF6gm/0IObUPjrMo9g/exVo
+	 nwVnrdMkve4CCOMdwiEv+Sm/HRK8BL2Pyw+QBM8SqpwKyvbIipTbfOzAf9hlXZMdlM
+	 suPseaYWxWu6nkyF+SjiMXDqoFkCJrgROQM9SXiPEmfKtEylkaOXv4K597mboTvhtt
+	 mf+adjoxQv/Ml5XKISFK5ehd1wVBBDeT0r0w/SH9fvoMsA7UIRwmwNd6h+qbvd5c6k
+	 39jwlCnQA3D97nRwrey+AMeK1pk3deP5etzCSjv5YWgQh75VLzu1bv/ZDDbdqJzAPe
+	 RqfA2nWLqPfxg==
+Date: Thu, 5 Nov 2026 17:06:39 +0000
+From: Harry Yoo <harry@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 3/7] zsmalloc: switch handle type to struct zs_handle
-Message-ID: <auy19VvYgb25vnFc@google.com>
-References: <20261105044752.1997895-1-senozhatsky@chromium.org>
- <20261105044752.1997895-4-senozhatsky@chromium.org>
+	Vlastimil Babka <vbabka@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Zi Yan <ziy@nvidia.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Dev Jain <dev.jain@arm.com>, Usama Arif <usama.arif@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH v2 1/3] mm: page_alloc: add a watermark check that knows
+ the migratetype
+Message-ID: <auynaZkzdzL6Aeyo@thinkstation>
+References: <20261102093939.3340540-1-kas@kernel.org>
+ <20261102093939.3340540-2-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261105044752.1997895-4-senozhatsky@chromium.org>
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B7ACD20011
-X-Stat-Signature: jpjroobs7bzpu9qu5mj6qjasab15ijb9
+In-Reply-To: <20261102093939.3340540-2-kas@kernel.org>
+X-Stat-Signature: usu116in1os4ak4zxojon44zq91bm61a
 X-Rspam-User: 
-X-HE-Tag: 1793898187-424237
-X-HE-Meta: U2FsdGVkX18gpqwFqHvVd+GH/w+ff6JeSwvryWnFD6S/GxM+voUTBTsz1uBYXkv4HVm1e7OytkoJQYmtDH67ErMIpEskXBa1c6s+yTA+vv9KbHlDl6Z4RO/0Xk5cpG2pV8PjIV5/NwLNYa/zwulHmkUzX22k4kf8AvkYqHz/SeRLzwt7BVZwWUGUt2VBnaQYlhfbFAZPgA5dIzH72aXKb5mtNaBksa2xD3Ik6PGU0iwuzFc5/p92wl5ST8D+5vuikv83QKOt/XOR6SoJ7jfkkJMFe17/ro4e/TXc8XZ+0xd8D4FSzgNlu5YkuzjAgCZhqBPYYeOTFeV7qbRNKJt8lkhSTSTMIYw3hP9xyBDhvcpgJ75iZW+D7bP6bMHKJmoMrlFhOxJe+SHnlGP/Kq44O+30EFsjYRt/wSaKNXvZoWW2yjtP8qEti99qvGTc/yokCj3X9tzUGuGLk9eNhsK2aVNqLZwLFbpQ347Z14D/uHrIATAfQj5Bdc28jnTvQqN6HdaURFE+Huzo7/za6L8KeoHS2uV1iVp+32AGxbqQ4UZxfOriDetKw3vPKqXcwWCRppGidANnrPoMn0ASoG0qqg/z928wZVBUlCy/mTLoTrzv1A79GShUBLkpwmR8/j4OJvfW2HQNQ29BmQplyHEUOKDFjetohoCPLBpEqgZmMIurDGkAjFfE/BO9JIDDnJg5ODcmIKeIHsfUwrtR6ZtwNxBIv9Z3/VOUas64bQnRWQw5kn+uTuLXbKdDwQ8X/ULpNxxO8J7QY/Fve9VrpKZ04SkRBFznsrBFkPs3lx2T+5RFrwMwB6YSW7KU4Zi5fO1j1hSVvxVBhquR+pcU7+I/D1ug2WtoBTEsez13fjN4H5Y2Gbiiw4U8liscAoI3HaV70sx1BE6JgHHbimnhDDE70HK6328sXzjuJWIg8sAtQwJV+u3ust0o52+yGLdjJ49N4m0nGUyrgPVk8c39//m
- 5B7NeLQi
- rJupm+V/sEhNuEXYphHksBChFHCd8bpZK3OUCPckwRCCmJHt6cSIl9fR1vbJRGmQkM40xpScm/Sai3g83xeUqHUFoPrufwwYWiifk1UyVdXAUb/DSkjOWPUm5dX/cnjcKnp9Lxm1qZOnPvIo1MXI+gv5//KwTAOiZVwzgbRszaqzeJr+7wLsdqHvU32+u9DpjiGVwGOWmmgP3VBjV03vo/S3IuxEEmw7yrBy/qZuCAbeahY25n3FqW2bAUJ5BbIAu95wr3GBbSQ2B6DqPBsnF0/kJeElssdr/Wlcj/P1TjJL9gN60Qm7ykXxxIBLlzEQfbaPLpRZViFrxPG0=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D5E7216000D
+X-HE-Tag: 1793898402-189424
+X-HE-Meta: U2FsdGVkX18tN7W4a6/B3HW20mBnBpv3l/tD4Nw96/O3KnGxgUTyLKfTjrLncfYVvQfovye9dGJwKjLc/w8m1TrzJ9qcJ2opW3sFT0GJOCBamlGQ6wy7KQhz+S9zy7+y0HAgBClQhI+Yo2bUrb62Lvp9bSHtkqLsr5dTkUnnTtJT+iKkRJxOiI2XiTuMsxeTJ7rvOY4c6Rob7d/4vumb1uPMxkX9IqMYQauMX6Ie8Pqu+v2D4iY4kUIkAch4R5PDEmdE4fJmiwzW6nkPNtAU47hiIyaX+3uAi30NGJPpppuuOy23XyvwU78N7+9CpmJ9cqzY2guk65185R1AHXnj41yi7McdkaTZ181xI8OsdEfBAlxZhY5pRxvd0vpfJ/xqfDGmCmNQZj4LusonEzClrv17cgoURqQyw/R27xDYBeFw8C5GUs+m9RL+sx0ud31hlqNwOmMe0MXdaNuxSiMP6uAsTyr2baLyhpRRyA04Zi8JB/zwL/ow+zQxMpugjcsWRsHvaK0DklfYMRaM9fZLKhBCBfOl+t7cXXVofLxTZctMkv7zW+I2EdanXHs/ZLUjGCaoBBFB/KjU7IVG9TTToJ7keT0JXDRJM5igOqCEV/TJ75lDFnewri/5tDEDpoe1VbwqAkCq6m5ZyVUA4vaC1ufwM0ivUrIuHDiAVYR2d60oa55iZYQuoUXc8486gMCrdAA+6e+QeLNsJ9/BBvT/tvVYWJZu8d/6Mm6AJbEwV3dsagF/bAObRNHSMZSlj3zBLKQ0eR/RwjtgNdxA4z/tlL4IUwppAJasNVsCm8pkxmZsDuu9djKaJw+CBH6E0xhPiV9VNnrSYhlvC6pKPze2lspArvS96Sn7YZpW0m06SOxjjJK35/0GC9nqj2VmngYOIue/9WlsnfVTs5DuFtdcbxt+IP8MREdxz0GqR52XudtyC9R01Kiug6XowKu/ZC6dnrUxbSM6ufvccbVRS4c
+ N6el/8Hg
+ TKJ+UMQpYWnew5xu3+S2zMqRBYa41hy9rj5nJ0QeuYeIm+9lcS3GQd47bkuoP5VHaFEqawFmKgnyaeuU2nYzmLXn+xnSthIvUHTfVGCRm5ortUX1L60IElvHubSkGW6ZMaSPQSTPN/g/MJNju5WXnlVHzKUcV3hFPyEb/GD6ZeBulO3JlFM6OQYjg+Vq6auWGHvjIXXZhld3BnDNEjCk/6kcJTCOzCd85eG8KRkoC/+BqUXipRCDFKVk5rEvqONU5lHks0nLVvao16Tbj2we6biVhTpts9ZA9uTRLDyaptzljszCsmpg6D5UOl9rVy5nA2pj/PNISsGRJDQZRC5lL1/gfoB1P0KeREos8gUiMjqzRLRlt5pD2oOPFVnU+NLN5R+MT
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,122 +104,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-[..]
-> diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-> index 5b7298a5026b..693c9484b638 100644
-> --- a/include/linux/zsmalloc.h
-> +++ b/include/linux/zsmalloc.h
-> @@ -22,14 +22,15 @@ struct zs_pool_stats {
->  };
->  
->  struct zs_pool;
-> +struct zs_handle;
->  struct scatterlist;
->  
->  struct zs_pool *zs_create_pool(const char *name);
->  void zs_destroy_pool(struct zs_pool *pool);
->  
-> -unsigned long zs_malloc(struct zs_pool *pool, size_t size, gfp_t flags,
-> -			const int nid);
-> -void zs_free(struct zs_pool *pool, unsigned long obj);
-> +struct zs_handle *zs_malloc(struct zs_pool *pool, size_t size, gfp_t flags,
-> +			    const int nid);
-> +void zs_free(struct zs_pool *pool, struct zs_handle *handle);
->  
->  size_t zs_huge_class_size(struct zs_pool *pool);
->  
-> @@ -40,10 +41,10 @@ unsigned int zs_lookup_class_index(struct zs_pool *pool, unsigned int size);
->  
->  void zs_pool_stats(struct zs_pool *pool, struct zs_pool_stats *stats);
->  
-> -void zs_obj_read_sg_begin(struct zs_pool *pool, unsigned long handle,
-> +void zs_obj_read_sg_begin(struct zs_pool *pool, struct zs_handle *handle,
->  			  struct scatterlist *sg, size_t mem_len);
-> -void zs_obj_read_sg_end(struct zs_pool *pool, unsigned long handle);
-> -void zs_obj_write(struct zs_pool *pool, unsigned long handle,
-> +void zs_obj_read_sg_end(struct zs_pool *pool, struct zs_handle *handle);
-> +void zs_obj_write(struct zs_pool *pool, struct zs_handle *handle,
->  		  void *handle_mem, size_t mem_len);
+On Mon, Nov 02, 2026 at 09:39:34AM +0000, Kiryl Shutsemau (Meta) wrote:
+> The high-order check in __zone_watermark_ok() accepts a free page of any
+> migratetype.  Under ALLOC_NOFRAGMENT, a request below pageblock_order can
+> only take a page of its own migratetype or claim a whole free block, so
+> the check can pass when the allocation cannot succeed.
+> 
+> Telling those apart needs the request's migratetype, but not every check
+> wants them told apart.  A check whether an allocation can be served now
+> has to count only the pages it can take.
+>
+> A check whether there is enough free memory counts every migratetype:
+> kswapd and kcompactd balancing a zone, order-0 thresholds, the
+> slowpath's forecast whether reclaim and compaction can still make
+> progress.  Reclaim and compaction work across migratetypes to free whole
+> pageblocks.
 
-I would squash patch 7's constification here.
+nit: perhaps we could make the changelog above bit more concise.
 
->  
->  extern const struct movable_operations zsmalloc_mops;
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 7ef80e0da626..7d8aab56f5cd 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -264,6 +264,10 @@ struct link_free {
->  	};
->  };
->  
-> +struct zs_handle {
-> +	unsigned long __private obj;
-> +};
-> +
->  static struct kmem_cache *handle_cachep;
->  static struct kmem_cache *zspage_cachep;
->  
-> @@ -438,16 +442,16 @@ static void init_deferred_free(struct zs_pool *pool) {}
->  static void SetZsPageMovable(struct zs_pool *pool, struct zspage *zspage) {}
->  #endif
->  
-> -static unsigned long cache_alloc_handle(gfp_t gfp)
-> +static struct zs_handle *cache_alloc_handle(gfp_t gfp)
->  {
->  	gfp = gfp & ~(__GFP_HIGHMEM | __GFP_MOVABLE);
->  
-> -	return (unsigned long)kmem_cache_alloc(handle_cachep, gfp);
-> +	return kmem_cache_alloc(handle_cachep, gfp);
->  }
->  
-> -static void cache_free_handle(unsigned long handle)
-> +static void cache_free_handle(struct zs_handle *handle)
->  {
-> -	kmem_cache_free(handle_cachep, (void *)handle);
-> +	kmem_cache_free(handle_cachep, handle);
->  }
->  
->  static struct zspage *cache_alloc_zspage(gfp_t gfp)
-> @@ -466,9 +470,9 @@ static void cache_free_zspage(struct zspage *zspage)
->   * Pairs with READ_ONCE() in handle_to_obj(): zs_free() may read the
->   * handle locklessly, so prevent store tearing here.
->   */
-> -static void record_obj(unsigned long handle, unsigned long obj)
-> +static void record_obj(struct zs_handle *handle, unsigned long obj)
->  {
-> -	WRITE_ONCE(*(unsigned long *)handle, obj);
-> +	WRITE_ONCE(ACCESS_PRIVATE(handle, obj), obj);
->  }
->  
->  /* Protected by class->lock */
-> @@ -817,13 +821,13 @@ static unsigned long location_to_obj(struct zpdesc *zpdesc, unsigned int obj_idx
->  	return obj;
->  }
->  
-> -static unsigned long handle_to_obj(unsigned long handle)
-> +static unsigned long handle_to_obj(struct zs_handle *handle)
->  {
-> -	return READ_ONCE(*(unsigned long *)handle);
-> +	return READ_ONCE(ACCESS_PRIVATE(handle, obj));
->  }
->  
->  static inline bool obj_allocated(struct zpdesc *zpdesc, void *obj,
-> -				 unsigned long *phandle)
-> +				 struct zs_handle **phandle)
->  {
->  	unsigned long handle;
->  	struct zspage *zspage = get_zspage(zpdesc);
-> @@ -839,7 +843,7 @@ static inline bool obj_allocated(struct zpdesc *zpdesc, void *obj,
->  		return false;
->  
->  	/* Clear all tags before returning the handle */
-> -	*phandle = handle & ~OBJ_TAG_MASK;
-> +	*phandle = (struct zs_handle *)(handle & ~OBJ_TAG_MASK);
->  	return true;
->  }
+I think the necessary bit here is "With defrag_mode, allocations cannot
+steal a page from pageblocks of other migrate type, thus
+__zone_watermark_ok() needs to take that into account."
 
-Would it be cleaerer if obj_allocated() just returned the handle here? I
-believe this can be done separately in a prep patch.
+... and maybe
 
+- "Ignoring the allocation's migrate type leads to
+   stopping direct compaction and reclamation prematurely".
+
+- "Indirect compaction and reclamation are not affected as they do not
+   serve specific allocations"
+
+> Move the body of __zone_watermark_ok() into __zone_watermark_ok_mt(),
+> which takes the migratetype as well, and make __zone_watermark_ok() a
+> wrapper around it for the second kind of check.  These use the new
+> function:
+> 
+>   - the allocator fast path, zone_watermark_fast();
+>   - its recheck after node reclaim in get_page_from_freelist();
+>   - compaction's up-front check, compaction_suit_allocation_order().
+> 
+> Declare both in mm/internal.h: nothing outside mm uses them.
+> 
+> Nothing reads the migratetype yet: no functional change.
+> 
+> Tested-by: Dev Jain <dev.jain@arm.com>
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+
+otherwise looks good to me,
+Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+
+with a nit below.
+
+>  include/linux/mmzone.h |  3 ---
+>  mm/compaction.c        | 11 ++++++-----
+>  mm/internal.h          |  7 +++++++
+>  mm/page_alloc.c        | 37 ++++++++++++++++++++++++++++---------
+>  4 files changed, 41 insertions(+), 17 deletions(-)
+> 
+> diff --git a/mm/compaction.c b/mm/compaction.c
+> index f1b2060eb201..6c553d0e90f8 100644
+> --- a/mm/compaction.c
+> +++ b/mm/compaction.c
+> @@ -3116,7 +3117,7 @@ static void kcompactd_do_work(pg_data_t *pgdat)
+>  
+>  		ret = compaction_suit_allocation_order(zone,
+>  				cc.order, zoneid, cc.alloc_flags,
+> -				false, true);
+> +				MIGRATE_MOVABLE, false, true);
+
+nit: maybe let's set cc.migratetype and pass it?
+
+> @@ -3665,6 +3666,21 @@ bool __zone_watermark_ok(struct zone *z, unsigned int order, unsigned long mark,
+>  	return false;
+>  }
+>  
+
+-- 
+Cheers,
+Harry / Hyeonggon
 
