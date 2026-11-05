@@ -1,110 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 408F6606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 07:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F286D606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 07:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=t4ae7a2k
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nZ0sycGB
 Received: by kanga.kvack.org (Postfix)
-	id 0E8FB6B05C1; Thu,  5 Nov 2026 02:04:59 -0500 (EST)
+	id 198A96B05B0; Thu,  5 Nov 2026 02:16:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C0BE6B05C2; Thu,  5 Nov 2026 02:04:59 -0500 (EST)
+	id 14A4E6B05B1; Thu,  5 Nov 2026 02:16:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F3F886B05C3; Thu,  5 Nov 2026 02:04:58 -0500 (EST)
+	id 05FB26B05B2; Thu,  5 Nov 2026 02:16:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C8F396B05C1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:04:58 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 648321C4332
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:04:58 +0000 (UTC)
-X-FDA: 85400178276.12.5831834
-Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 46087180002
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:04:56 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=t4ae7a2k;
-	spf=pass (imf24.hostedemail.com: domain of "prvs=762187284=mkbund@amazon.com" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=762187284=mkbund@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D119E6B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:16:53 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B46E61A0983
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:16:52 +0000 (UTC)
+X-FDA: 85400208264.21.5EDCB00
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1532A40009
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:16:50 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nZ0sycGB;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793862296;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=4l44b+AwhAEl7Y2yYU1zn4HtQwsLDMpz34p1PtYCmP8=;
-	b=f5a+uYDnAFeidYkASjTfh3+/jLJV432WXXYr2K4c1Frf5UN2ayQPumU+wlBHrkmwEH/gDa
-	fiAuKo0mI3Z1C+eoVoY0AqDGwoyfWkuyFu1LVt/nhIgVGM0fXkyOU9NeSsWtlB0dXH7S6e
-	pRWWih+MEgfc4l4102JgGKiugFOFK2M=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=t4ae7a2k;
-	spf=pass (imf24.hostedemail.com: domain of "prvs=762187284=mkbund@amazon.com" designates 44.246.1.125 as permitted sender) smtp.mailfrom="prvs=762187284=mkbund@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+	s=arc-20220608; t=1793863011;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oejeWNhQX2tZnGny/UGddApTW2mUljlFgEnUYOZYHz8=;
+	b=INPlvz8HcaN4ApLrqxO4eoP2PFF2wRvFRVgzPeXDQH8CUebwXRBxxfFUNtrd1UeCG02jqu
+	0s3qXRbMx37wmSPSZiRQVO6SuI+X/vbANAYc5W1ZzKbtdkkTAGABlgAvi2qK2hSN0hE4U7
+	VShOWqv/lT++VL2Ci8PPZLD0CeTJLDA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793862296;
-	b=nEuidKv8ho/DWz8oLmtfcDCfZtNYg9fe6a2D0xCwypgFnhkGaxzxhMHTySUJpxOlBA91tr
-	IqQa/UpBGSsKOyiOsZzfcYl1vdXirej30g4GHh+3AJrCpXnIXt65b1o/JsALt5wLC7cASK
-	lH7sgLURU8n5mHdqZzFjxTaCplvopmI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1793862296; x=1825398296;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=4l44b+AwhAEl7Y2yYU1zn4HtQwsLDMpz34p1PtYCmP8=;
-  b=t4ae7a2kHV/RgZ7zzdxyF55LlSiLM+oMQ3ajW9YgbaXYufhUP7Rvu25Z
-   Sf+vucnijdDrn//brjwh5azIw/5dSC8HCHKSSSJsHV9zZEh+Prqn9IGXc
-   MZuXVzhTqw3WnnD3H+sUvjNoFROwqgSMo83MOCEU1GPQ1I+RSs0TsO8cj
-   3qsA9m6EShWbAgRsbetG3bWm8x+tq0h/Q6QktAUjT6YNYNZpXOUGKNp0m
-   X5ICrkmHVbo04FobaTRD8zIRT1j0k/O/TdMEjymPMG0PkxrDwXDp/d7JG
-   8UBr6fAaCJS0vwUloCcDtgtpBSb7HnTaOV03lMmEFq8JHt15a0u1bdvw+
-   Q==;
-X-CSE-ConnectionGUID: JwTQVVBvTEuV0LKc2KPDLw==
-X-CSE-MsgGUID: SXXMfe1cQbW+BPEL5CX4oA==
-X-IronPort-AV: E=Sophos;i="6.27,196,1787011200"; 
-   d="scan'208";a="33172376"
-Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
-  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Nov 2026 07:04:54 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:23408]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.15.208:2525] with esmtp (Farcaster)
- id e60c700b-b0ba-4d1a-b314-1637a485e3b6; Thu, 5 Nov 2026 07:04:54 +0000 (UTC)
-X-Farcaster-Flow-ID: e60c700b-b0ba-4d1a-b314-1637a485e3b6
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 5 Nov 2026 07:04:54 +0000
-Received: from dev-dsk-mkbund-2b-9ea2efba.us-west-2.amazon.com (10.2.100.138)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Thu, 5 Nov 2026 07:04:54 +0000
-From: Mark Bundschuh <mkbund@amazon.com>
-To: <stable@vger.kernel.org>
-CC: <linux-mm@kvack.org>, <david@kernel.org>, yangge <yangge1116@126.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <21cnbao@gmail.com>,
-	David Hildenbrand <david@redhat.com>, SeongJae Park <sj@kernel.org>, "Andrew
- Morton" <akpm@linux-foundation.org>, Mark Bundschuh <mkbund@amazon.com>
-Subject: [PATCH 6.12] mm: replace free hugepage folios after migration
-Date: Thu, 5 Nov 2026 07:04:42 +0000
-Message-ID: <20261105070442.3101877-1-mkbund@amazon.com>
-X-Mailer: git-send-email 2.50.1
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWA003.ant.amazon.com (10.13.139.47) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Stat-Signature: cygjyo5kmdj7sdshsz7h7myd8r99u6u9
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	t=1793863011;
+	b=H6Zg/gKg2FMiX7PMptae1h5OzbXjGlSfk31ChH15EgcBg389KndIyVUjo3IvrY71Z/+1lB
+	7rxK+DDRKYYl8c+gAZ1xZ/kEC1JEUG1oBO/OfoM/6YWUw+V+Hrie/FlUTd6jKQnAExf6Uu
+	EGW7YPUTGd/52LgxpJBJPyN38d9Yv5k=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nZ0sycGB;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5197B60213;
+	Thu,  5 Nov 2026 07:16:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A7871F00919;
+	Thu,  5 Nov 2026 07:16:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793863010;
+	bh=oejeWNhQX2tZnGny/UGddApTW2mUljlFgEnUYOZYHz8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=nZ0sycGBAxvzOQlpEE7wGvPoWFX47ogBO3TANDIIIASrSXAWHfkI03irpSQJBlT9M
+	 SRXGKWD3UGa8Qx82oEwpRONezuJHT0Jr+TchBCAVYZWQk7aRlUkWyQ17uq9prjVoHs
+	 hJIXwzhVlYTpJjbzA/cOl62UUhhgYPRgYKF3clJzAhV35amMKiSrE8i0zxE+cSq74F
+	 s4+agZEUsAPtrBTUeomgbDUYtFM4P1zMbL1H03fScBw5DIUkyS3qmO4AkMuedkxyC6
+	 9afUAsOdzMuDSVQa0bonkIsJCPD7hxJo6SX38zin9378io5fUiOI2pm1rWzsuOfKxS
+	 PnuUPH6GN5I/Q==
+Message-ID: <sashiko-outbox-198652@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/5] powerpc/mm: drop powerpc vmemmap_can_optimize()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Muchun Song" <songmuchun@bytedance.com>, "David Hildenbrand" <david@kernel.org>, "Madhavan
+ Srinivasan" <maddy@linux.ibm.com>, "Mike Rapoport" <rppt@kernel.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>
+Cc: "Lance Yang" <lance.yang@linux.dev>, "Michael Ellerman" <mpe@ellerman.id.au>, "Nicholas
+ Piggin" <npiggin@gmail.com>, "Christophe Leroy" <chleroy@kernel.org>, "Ritesh
+ Harjani" <ritesh.list@gmail.com>, "Shrikanth Hegde" <sshegde@linux.ibm.com>, "Oscar
+ Salvador" <osalvador@suse.de>, "Qi Zheng" <qi.zheng@linux.dev>, "Muchun
+ Song" <muchun.song@linux.dev>, "Huacai Chen" <chenhuacai@kernel.org>, "WANG
+ Xuerui" <kernel@xen0n.name>, linux-mm@kvack.org, x86@kernel.org, linux-s390@vger.kernel.org, "Heiko
+ Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
+ Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
+In-Reply-To: <20261105061217.13302-3-songmuchun@bytedance.com>
+References: <20261105061217.13302-1-songmuchun@bytedance.com>
+ <20261105061217.13302-3-songmuchun@bytedance.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 05 Nov 2026 07:16:48 +0000
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1532A40009
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 46087180002
-X-HE-Tag: 1793862296-805784
-X-HE-Meta: U2FsdGVkX1/FevHyUdOvwaMYHxMB7hMqL3BZJlVIVPKUHHQ/qmPGjynZrSNWgbhYxxP9ZgKn5uFShNDSNkoGg6LrMkK/QkQ6/+jc7uri4sHWmoLF0nT+skwfbyvWODWZNTxTGDTCD6Wyxbdf6k/UEkQzdzmjfuyVcWYPgsAz/MoPaeF40qeQoXLbchtFRrTDo+D+pVsx3CE4SHotyFygZiEMg64XZ+yFnLobjDeulzl83LVcRP9silLOowD8cdsQUhqFnnYznjvtLWPAnfVQ5vuSNP77VhdphsvQyniPiKbGD4VT96fPXZkLYGQYq8tMUCBrqPujPkUOfC7mqjQcJt9oLOF82e646uia9NTHHrj4EHBnJtgV/e4wzrIDVNQz0qjWrmlEupxOEL2DbpwxY/lNKqQBRelAIvpr6OErInKgUtoLAk57HFy0me5PgUWU4L0StuHcYjNx0+CXsZOuIDFLtsWhK/eGwtC/8If/yrSjHWGH3vzkeutv1NQx8+BbnXmBgyCLv8vx6SHdrFb6vyv3eWyoGp3oL3MaonE4fznJ268W5ob9BKNyV5D3ZTJCTern2v9tFIwU+gWmy12fh6taJpEWgITX2eKcsrckhL2QYvWTIHHhL4aGC4JxCQDiir/dYtmd0iMD7BPeMd9/x5TkaK21lhZOjN7t1wv8XvS4YPdNyOZC3H/8I4bhyd+LYoPfGSDVh/rF/dXF3zYmVp5TwqOxZU5jBBif/DRXP/3/0LhMyxP7xjaCA58MzYnDT/Ljcs1QkyiaqW7TXlLq8dYWDNMr0qWkOTO/06HSKOjMl4tXA/3DRQIjn3jBG9iWfFxiTtfj5hR/YohQSsfalTnbesVd0t2a1+oJruz78z93XKXYcNQVu+zHt7LV4U/1jmGNmS4lgrJ+UfMG0UI9AHRN6gqH+0NIuznWdqZ8RZs+JvPFkF7Gls8StfuFj2tma7iHI/1zKOHgRo0LI+j
- HztrT3J6
- KY73vL9xbKyWx9EcqMehg9uUvprbz2KfjSpx+DeAYKUqbU4tU84aHwSsV3islauemWsqfEIUAXDFI5yUveYjJoFSD+3ETjFOOhCxkJHCs1R2IKYcP+OXQZ29Avmom6ccdNHigEvytavmRdQJMphWW4bS/aEUT420ncZobzJI6btLb++xDlZh4si/u0ZqV4etSVZyGOjv+oN5/nefsxXeOft9TWtXbiMy8/fRyD3JjJysrlKmFaKYhfyjvOjAseH56APYFH7pnaXlnP/ngwf8zJuBZ6+JXR/Zt3m1QWlSox35eSsEabVTSErQBvGH1pbHz3+7Q2Q5mSo8+AoFABKIqA34R1z2iPXWOiPJqBsYFF+PotZaDoKxn+4FoO62wHqYYDvp7O5p2e/3ajq/pyUdnnhqho+rbjfY4PSMhon72r/EPFMVqas6IH3Vz/nx26ydIzrTFYV6wmDmHPOB3N5IuaqC9qIr/hq14I+oUCtezMm16lgkBk6z+uVZWpoaQxq4Wz014U58oOKBMuwhX+xmPOSH17na1WqrWWFsexHzC/Svza31llM80+1SLSse9nc9qcQ6qQq55PI+Bdg6yiu1PMy7btazSpmTqdf48tDfILCnK+y9VNKi3tWrcuFKksM5BXu9E0n3XS9s/YJczXey2G0Gm2U4b+r8JJ+nMvl4Py/uV9WL/6e6KcF0dKfLn17blOuEoH9XwvwTk41ePW96pEYb30hTOUrir3zN0WNeFkNkgCerwd/RJZqwtTOJilNcdQvaPy574vobxb+OGigUgksZNDn969+AfjFnlmRjiTOraM76XSwZAv6XLQjqCtBuqnX0DerdGwpZLTI2BBw4slbOZR0bWXJjP2QMej5a5fYaV3dUL+20jixT+WeDiIZLipSNCJ5U10kRQJ3yQ3X7IMZQR5rVCpDWbO8zW
+X-Stat-Signature: xkemyyt6fgucjq8rfbmtaq56mcd3dq61
+X-Rspam-User: 
+X-HE-Tag: 1793863010-494548
+X-HE-Meta: U2FsdGVkX1/79exC79gnUT64GfOUWQvBo103Tp/1LFFF2LYlSx7sP3k3qpFY6zaOTZ1TU5b8s753sUiT325Zn5TJxr2C98V75nDMuiKggAytVsrLhegpQ1z5BkkatSVsOHxXbLOL/9Eo5FVTCJPX7eFvEPRbz2FyYICwoRls6NF18oHuwuJogR7EOAn7eiiArWj8HKEb0tkvkc+ttzGlzI67KMDU17eQCNV1xpavFjry7wxn4TkxM6dnNCdlRyysSKZ2DWsiCePKVcHkuUQvFp/XP7DBXeyBCdfJHvxWGpcZ69guz/p8JnVVaZZwyomGF5Yr4v62wId1KmDVtK4bi+LXpt0iyqE664VXIcVIIsg6u4ectw9GKZh+m1VegBEk6hI+r0Haxv/tQfeV7EmIVBgNmAThtDMVAfO0b8bkI8R/hqI//lgG42lnBxP+H7X4dsNj2VD7AP0yHNQZYTi2sQqiPU0+jJye1udfWe12962JtfdKK0YyBaIHW7nnX5RzP7PgoOfT7cSfQbQAl5Rr//9xCFY6dtSE/YjGSXI/EUDWGwkumXtk+45TxuPNiF0ZNZd+WORYz8Q/85Wc7E4vwP37uY/Yf1GA6QP6Wewlys1rDEFJtKDmRJRk+3mFuVy2TL2BHGLrkOsB+wuvrRiPphd0fCzcx5s7f9fRZsLpIoOlPajkvNFf2rnQnBnvJ54Ds7A7j5DftEaJ7JPPTfnRnphbzLq1FGHJO+sP7KqvBb+sjPRisWsJoMFboi3H1NMPHzach8766gwJjSjdNykK7HyNmPaqyahjxF2LXS5PH8UFj5e8RekRN+bAoyF7N36edxrf21ZjQ+Tm4c4t6JDNkPH9u40Ejs0C+71Uvghy0mEsgC8To5ENjdDcAt5LDO9yD81A0hyC/U0jZi1YGKU3OIClGpWjAD7M+jU/PhERxq5ICxWwEsLsHTKft3RkKH+JVKJmjwpqkH/pKEfbi5L
+ Ajucil+Q
+ kVhiFNVlgP4fmxnzODO4tcNC6I+XegV8wz+xQnCx7Obuc/r0wGJkjWMjG7Lea6YcVlJZVuJ0OntublEi2TTc6Q6sHfXL4r/ekmtweuIUYeej4ekgKrNgHR24351aufwJ7cci1RhRXIu86NA31Lp0G0FYhGDJSvyK27pLkCpE8nEylKk4mFDmK4lX4MKU34MHPbsmZg2RVe8162sV+3Gmh2W2ah9QkJhQ8kW0mo1A1tvhxNOQsqE3QaWDYH4OnS5ZBzjYIEz+ynfBjEM5PbfCE0bOdm7s+dXJ2ua5bEggiX5MGG9ZucLcv5omTYWkZ7CGtKBW20sIYV1526fjtM7v6YHoP1Xjjowpqg6ed5eJ5nXRe2TuEqxVc65H/oyKc2kKESfls4uaQNgbgiewOnDWXc68tGQlQGuFXwk2Gu6dLj8t4w8wnRUmAGp6ZB3fsMod7VVqxH2MRy35mN33+7XSEbxnsDe7QsM7YPy1J3Z9e9C9+w2MviIbAwhIRGG6Ii0b08OUPZiGul5EGgBwHQRa82h0EYWlvAeha33I2506NTvTmRiCj/qLnRsITagucUdhIgXdJ7uRuM7PV14XeZqosr8BoEAIyR/hMI0eVIwkay7f6Q2F3H0J7b9aZ6ifANPwIA+kbBZWRz1iSyb1zHJgXUD9Gt3X3hI1rI1BURN8sMWfzw5NaO3wUy8EDOG1H4YBiqVkE281hPfMQeLF8MgbjLXJhHA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,99 +100,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-From: yangge <yangge1116@126.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Low] mm: undeclared vmemmap in section_vmemmap_optimization_disable()
+- [Low] mm: define vmemmap_optimizable_order() before section_vmemmap_optim=
+izable()
+--
 
-[ Upstream commit 04f13d241b8b146b23038bffd907cb8278391d07 ]
+commit e51c76b2ae2d335e25edd03780c815eb467b564b
+Author: Muchun Song <muchun.song@linux.dev>
 
-My machine has 4 NUMA nodes, each equipped with 32GB of memory.  I have
-configured each NUMA node with 16GB of CMA and 16GB of in-use hugetlb
-pages.  The allocation of contiguous memory via cma_alloc() can fail
-probabilistically.
+powerpc/mm: drop powerpc vmemmap_can_optimize()
 
-When there are free hugetlb folios in the hugetlb pool, during the
-migration of in-use hugetlb folios, new folios are allocated from the free
-hugetlb pool.  After the migration is completed, the old folios are
-released back to the free hugetlb pool instead of being returned to the
-buddy system.  This can cause test_pages_isolated() check to fail,
-ultimately leading to the failure of cma_alloc().
+This commit adds section_vmemmap_optimization_disable() to disable vmemmap
+optimization in architecture fallback paths such as PowerPC Hash MMU, and
+removes the PowerPC-specific vmemmap_can_optimize() override.
 
-Call trace:
+[ ... ]
 
-cma_alloc()
-    __alloc_contig_migrate_range() // migrate in-use hugepage
-    test_pages_isolated()
-        __test_page_isolated_in_pageblock()
-             PageBuddy(page) // check if the page is in buddy
+> diff --git a/include/linux/vmemmap-optimization.h b/include/linux/vmemmap=
+-optimization.h
+> index 858311a71b0cc..5c09da4df4d83 100644
+> --- a/include/linux/vmemmap-optimization.h
+> +++ b/include/linux/vmemmap-optimization.h
+> @@ -57,6 +57,27 @@ static inline void section_set_compound_order_range(un=
+signed long pfn,
+>  		section_set_compound_order(__nr_to_section(section_nr + i), order);
+>  }
+> =20
+> +static inline bool section_vmemmap_optimizable(const struct mem_section =
+*section)
+> +{
+> +	return vmemmap_optimizable_order(section_compound_order(section));
+> +}
 
-To address this issue, we introduce a function named
-replace_free_hugepage_folios().  This function will replace the hugepage
-in the free hugepage pool with a new one and release the old one to the
-buddy system.  After the migration of in-use hugetlb pages is completed,
-we will invoke replace_free_hugepage_folios() to ensure that these
-hugepages are properly released to the buddy system.  Following this step,
-when test_pages_isolated() is executed for inspection, it will
-successfully pass.
+[Severity: Low]
+Will moving section_vmemmap_optimizable() here break the build at this
+commit when CONFIG_VMEMMAP_OPTIMIZATION is enabled?
 
-Additionally, when alloc_contig_range() is used to migrate multiple in-use
-hugetlb pages, it can result in some in-use hugetlb pages being released
-back to the free hugetlb pool and subsequently being reallocated and used
-again.  For example:
+At this point in include/linux/vmemmap-optimization.h,
+vmemmap_optimizable_order() has not been declared yet and is only defined at
+the end of the header after the #endif for CONFIG_VMEMMAP_OPTIMIZATION:
 
-[huge 0] [huge 1]
+include/linux/vmemmap-optimization.h:
+    static inline bool vmemmap_optimizable_order(unsigned int order)
+    {
+        if (!IS_ENABLED(CONFIG_VMEMMAP_OPTIMIZATION))
+            return false;
+        ...
+    }
 
-To migrate huge 0, we obtain huge x from the pool.  After the migration is
-completed, we return the now-freed huge 0 back to the pool.  When it's
-time to migrate huge 1, we can simply reuse the now-freed huge 0 from the
-pool.  As a result, when replace_free_hugepage_folios() is executed, it
-cannot release huge 0 back to the buddy system.  To address this issue, we
-should prevent the reuse of isolated free hugepages during the migration
-process.
+Compiling translation units that include linux/vmemmap-optimization.h with
+CONFIG_VMEMMAP_OPTIMIZATION=3Dy fails with an implicit declaration of
+vmemmap_optimizable_order() followed by a static declaration following a
+non-static declaration.
 
-Link: https://lkml.kernel.org/r/1734503588-16254-1-git-send-email-yangge1116@126.com
-Link: https://lkml.kernel.org/r/1736582300-11364-1-git-send-email-yangge1116@126.com
-Signed-off-by: yangge <yangge1116@126.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Barry Song <21cnbao@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: SeongJae Park <sj@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ 6.12: Take only the dequeue_hugetlb_folio_node_exact() hunk, so memory
-  offline stops migrating huge pages back into the isolated range. ]
-Signed-off-by: Mark Bundschuh <mkbund@amazon.com>
----
-Without this, offlining a memory block holding mapped huge pages keeps
-migrating them back into the block until the offline is interrupted.
-Reproduced on arm64 on 5.10 and 6.12 (stock AL2023 6.12.113): the offline
-was still migrating after 60 s. With this patch on 5.10 it completes in
-0.15 s with the data intact. Also sent for 5.10, 5.15, 6.1, 6.6 and 6.12.
+A later commit in the series ("mm/sparse-vmemmap: drop
+vmemmap_can_optimize()") moves vmemmap_optimizable_order() above the
+#ifdef CONFIG_VMEMMAP_OPTIMIZATION block. Could that move of
+vmemmap_optimizable_order() be done in this patch instead to keep the series
+bisectable?
 
- mm/hugetlb.c | 4 ++++
- 1 file changed, 4 insertions(+)
+> +
+> +static inline void section_vmemmap_optimization_disable(unsigned long st=
+art,
+> +		unsigned long end)
+> +{
+> +	unsigned long pfn =3D page_to_pfn((struct page *)start);
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 68e0cc0748ca..b4c6c926a71e 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -48,6 +48,7 @@
- #include <linux/page_owner.h>
- #include "internal.h"
- #include "hugetlb_vmemmap.h"
-+#include <linux/page-isolation.h>
- 
- int hugetlb_max_hstate __read_mostly;
- unsigned int default_hstate_idx;
-@@ -1350,6 +1351,9 @@ static struct folio *dequeue_hugetlb_folio_node_exact(struct hstate *h,
- 		if (folio_test_hwpoison(folio))
- 			continue;
- 
-+		if (is_migrate_isolate_page(&folio->page))
-+			continue;
-+
- 		list_move(&folio->lru, &h->hugepage_activelist);
- 		folio_ref_unfreeze(folio, 1);
- 		folio_clear_hugetlb_freed(folio);
--- 
-2.50.1
+[Severity: Low]
+Could calling page_to_pfn() inside section_vmemmap_optimization_disable()
+cause a build failure on architectures such as LoongArch that include
+linux/vmemmap-optimization.h before defining vmemmap?
 
+When CONFIG_VMEMMAP_OPTIMIZATION (and therefore CONFIG_SPARSEMEM_VMEMMAP) is
+enabled, page_to_pfn() in include/asm-generic/memory_model.h expands to
+reference vmemmap:
+
+    #define __pfn_to_page(pfn)	(vmemmap + (pfn))
+    #define __page_to_pfn(page)	(unsigned long)((page) - vmemmap)
+
+However, include/linux/vmemmap-optimization.h does not include a header that
+defines vmemmap, and arch/loongarch/include/asm/pgtable.h includes
+linux/vmemmap-optimization.h to obtain MAX_FOLIO_VMEMMAP_ALIGN before it
+defines the vmemmap macro:
+
+arch/loongarch/include/asm/pgtable.h:
+    #include <linux/mm_types.h>
+    #include <linux/mmzone.h>
+    #include <linux/vmemmap-optimization.h>
+    #include <asm/fixmap.h>
+    #include <asm/sparsemem.h>
+    ...
+    #define VMEMMAP_ALIGN	max(PMD_SIZE, MAX_FOLIO_VMEMMAP_ALIGN)
+    #define vmemmap		((struct page *)(ALIGN(VMALLOC_END, VMEMMAP_ALIGN)))
+
+Because section_vmemmap_optimization_disable() is a static inline function
+parsed before the vmemmap macro is defined, doesn't vmemmap remain an
+undeclared identifier in page_to_pfn() when compiling on LoongArch with
+CONFIG_VMEMMAP_OPTIMIZATION enabled?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105061217.1330=
+2-1-songmuchun@bytedance.com?part=3D2
 
