@@ -1,149 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDFF2606A338
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4733606A329
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 17:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mkqe2n1G
+	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Kuou0bnu
 Received: by kanga.kvack.org (Postfix)
-	id F3C7C6B05B1; Thu,  5 Nov 2026 12:54:02 -0500 (EST)
+	id DB8216B05B3; Thu,  5 Nov 2026 12:54:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEDC96B05B3; Thu,  5 Nov 2026 12:54:02 -0500 (EST)
+	id D8F2E6B05B4; Thu,  5 Nov 2026 12:54:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDD1F6B05B4; Thu,  5 Nov 2026 12:54:02 -0500 (EST)
+	id CA6946B05B5; Thu,  5 Nov 2026 12:54:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B777C6B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:54:02 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5600FA0BEC
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:54:02 +0000 (UTC)
-X-FDA: 85401813924.16.17850F0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id BF46920006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:54:01 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mkqe2n1G;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AB20A6B05B3
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:54:35 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C34C12079D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:54:35 +0000 (UTC)
+X-FDA: 85401815310.20.61BB87D
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 289DF1C0008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:54:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kuou0bnu;
+	spf=pass (imf21.hostedemail.com: domain of jocolema@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=jocolema@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793901240;
+	s=arc-20220608; t=1793901273;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EftwWfre2aiDydKcjXOvHDcLO/ReuFB640bdDH18DBw=;
-	b=DMufQz4HXqJ0o5YQVyXbMNjVHf3v4dr5W6oA/kttNhmcpiT2IoZ2gjtSlDoMCip/Q4ENW4
-	K/JjCZ5PflvMqyQowlLjTsOXJVQX8e46SjrlbbUnhpYvmG182z99UgHugbON2R7D26AfqT
-	jk1KWO7lmrJ0XQ9khmsrmIEfM1+llHA=
+	bh=eNswTHRkAB3xpLhJNb2j9JZGG582cPl1mfH65MgD+RA=;
+	b=2L91F1lnfUxMgJjBaRt9sR5rqECF4NldmsQlRblU8oCMg292cJn6w07GOQzyozzWkkPJKY
+	3UmeI7F6XdFBOA+YYK29efFTnxtDQVB8LXE4MoYa3Z29riIL3zxmYQKAkauxXOOfrVeLe0
+	2zZatdJuSbhuwCnSxKerRFjAuRWKAPA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793901240;
-	b=qkN7LI6LuTIBSKp09cayOprnkEtAMhx9hKSu0frjAY8GgiOb/xJQdPyfaKTw3W0/+L44Ul
-	9sa49u462l1CfAPqjwuDuuWS93b2YoY+NrhvpR//iwlTPNH9us8G7ZpVpqiKQwG619yPYY
-	rP+17M9TwDgDUPpA1E2Et70fVRW9ouM=
+	t=1793901273;
+	b=GcAwCaRi4/RCPFas5zHC5ypjmxgKRqyjZiPjXYkcvSCe/WK72so0IivvmPX51K/Sf1rIap
+	2TpNjh0rVhRqd63PoZ8bTHt6lJI6OEqJYaqzggxaUagM3KHKAzuisosuIQ+v62E4Xp5zAd
+	4t34dnsl0nEX+8uk2Hh/LC+mPHLM7kA=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mkqe2n1G;
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B8E51416F8;
-	Thu,  5 Nov 2026 17:53:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47541F000C1;
-	Thu,  5 Nov 2026 17:53:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793901239;
-	bh=EftwWfre2aiDydKcjXOvHDcLO/ReuFB640bdDH18DBw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=mkqe2n1GxIwCwQwvgdl50QCVqj2q1MbFYLkfBeiERFWUDpe4nCnIe+a/pC6Di4bYg
-	 M0Wfsf63FAXtZ0YnG0EJ/ShbJp/nJjebcHidgjwK4p3Nxrp0ichyUVEd/juN/BbNmz
-	 7lsP+Uy8J81vrCF+SonSWIW0IvJkzG0w9fqBhdF5u9970NqFk9lMwcw/gJH1gujL8t
-	 z9LgCWRt22lk9sxZ3GjxsmyCi3FhU4T1J8KK/AzxOw0ar50XQkEsbV2wNp37Ku0Vtd
-	 zlGGUIHZLduyWGqKmqAnTLCUJt+jC4zRYY9ZvPSb8h9vOFSs9YQ8ULVMKy9IwguXDp
-	 ubgTD021UX0aQ==
-Message-ID: <0514745a-872f-4027-9831-da06b7f075ba@kernel.org>
-Date: Thu, 5 Nov 2026 18:53:50 +0100
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Kuou0bnu;
+	spf=pass (imf21.hostedemail.com: domain of jocolema@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=jocolema@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1793901272;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eNswTHRkAB3xpLhJNb2j9JZGG582cPl1mfH65MgD+RA=;
+	b=Kuou0bnu6ZusO1qZpXPnVLn7sQIXDJYpVWfU8DEEPDs8XY/uNjtvIuZ0nS7fYuA7v636eg
+	fKOaRuefAYhkQl6VnVOaw21EzvxWbrZsz5XtHBpHYOLs4VInL242BelZqgiDPrPA7FR3E5
+	NsYwTlAYQtPeHnNYlzIl4hW+wLhCsYE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-620-whESyizYMTKoAN_7Vbzs-A-1; Thu,
+ 05 Nov 2026 12:54:29 -0500
+X-MC-Unique: whESyizYMTKoAN_7Vbzs-A-1
+X-Mimecast-MFC-AGG-ID: whESyizYMTKoAN_7Vbzs-A_1793901267
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 21F9319560B5;
+	Thu,  5 Nov 2026 17:54:26 +0000 (UTC)
+Received: from jocolema-thinkpadp1gen4i.rmtusco.csb (headnet04.pony-001.prod.iad2.dc.redhat.com [10.2.32.116])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5366418004FC;
+	Thu,  5 Nov 2026 17:54:22 +0000 (UTC)
+From: "John J. Coleman" <jocolema@redhat.com>
+To: zenghui.yu@linux.dev
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	liam@infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	ljs@kernel.org,
+	mhocko@suse.com,
+	peterx@redhat.com,
+	rppt@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	audra@redhat.com
+Subject: [PATCH v2] selftests/mm: scale uffd memory region contingent upon base page size
+Date: Thu,  5 Nov 2026 10:54:07 -0700
+Message-ID: <20261105175407.638242-1-jocolema@redhat.com>
+In-Reply-To: <20261011163527.95988-1-zenghui.yu@linux.dev>
+References: <20261011163527.95988-1-zenghui.yu@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: add CONFIG_DEBUG_FS to the config fragment
-To: Zi Yan <ziy@nvidia.com>, Sasha Levin <sashal@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, Lorenzo Stoakes
- <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
- linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20261105030242.1241448-1-sashal@kernel.org>
- <4B926B36-D797-4861-B6D6-27E8D7870287@nvidia.com>
- <20261105171801.2189772-1-sashal@kernel.org>
- <3BC61F94-0385-4603-B12E-BEA458BB307A@nvidia.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <3BC61F94-0385-4603-B12E-BEA458BB307A@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BF46920006
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: omyfritebjkkj579ojr4ocosndhhkw84
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-MFC-PROC-ID: t6sHsed39c0BFHYZeclg2qOTKimMtmTqFfxV6ia3324_1793901267
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+content-type: text/plain; charset="US-ASCII"; x-default=true
+X-Stat-Signature: ectj5w8yc4hs589488rtmqa1upyhkssu
+X-Rspamd-Queue-Id: 289DF1C0008
 X-Rspam-User: 
-X-HE-Tag: 1793901241-643332
-X-HE-Meta: U2FsdGVkX19e5iAbndm9W+vsRjY14CFbUWliQHO86rZtfTw8p85oHdOztiOQawJuKvJGgTZQdZ75Zk1PZZd/heQW8vnesJbY7QAOwjCMzgt6TkkBvCVIVwjRKdz44DjrPXGRpHpfSmQZCTYAPOr3zzgtKCxgAUOfq+ar4w0crRyaSb2lsApJt7lAV2V4qQupeFxWf70cRr+LlTYvaoTfPjIAjHwDe9ZYeqPT6PJkl+zL2PLC9BSEzfLYfMlzGEdAzn2DoQBrFQ0hJVMTiyHf7NgOmQeqHDKqnP4jzUPJrfD3e0VlIHBTMY96eYLJGcLMvZPMr1M34ayOPOzCMGpGyU6K6j7N9hr3rr5R3UnoUyplSruHdp9pxKxGK39u/EpsycYlMi0pM4wR0gJvHX9aHw942syqCeV4Tpyvg74H5OLpP/4ctHp2cB8fPERjYVxPxaAFMWtfvs9gI/CVZ1HXufRpT0Q/d8ZPbYdXCU+Ih5h969K09gf/DiChYNye9n/aglF1hK01iM7bHgbzpSPnum8qOKfv8PbJjmPbjaH1FpafvjHvdm+cMIbDCYTlx/xng3pLXFBIaee2Z9XSu+Z8pZjl/zJOaXkfnQKMzg33TiUyRspG47mfHDqdobNxVdXstdW+ywVgFTrhq7wCGEowdZWPsOYqJjJvuRrEMqrB165ZNfdeP3YTmrkxLleAfCA88rEE013rK7Bj0dzb0Z26z9c2KTh3Sfsv7YPmRuX56O8s+TMWHdJ5zN0Dva7wSoWHDJQGt4tkQcal+W6A6nsejdMAABIXgUim/CuoxBYVoLGjd6CKqksJgiRVmgtPOMpx3fkZrxrlSucIsrg+le4E+5Sa/jM6nV0fYiuB0HlC6oSi8dlsAVy9rGXi/gU7P40ysi3iWYzfCvqeCjNUhtWTbLuIxIT5swD0tOkHLToCMhS33Y39jDPY1GkjrS/Fv9krYMUiPmfwrQtjmGX4ETI
- gQiTilKP
- AgwUBxIVR4wJcp9LRzz05sZ+fvMeCRoHxbfVOOqtz+W+AxQsnw7gGgluouEEcIJHiGQoRBNlPptOgpupJ0OND17u4m3XPm4Br2PC+MITCNAwawEJMGv2Oa6LOCE16JnZRy/e3BfUhS/rTesFmThABOzhE/vkZOrLMZY2CloNzv93cCdn48TJQS/DSu8Fwj2N7fD9oGqEFuhNMUZodvbmmQii+Qcbe7xPSWiZheEOicKlOiipEQxAQMfKDeTyI5N7v4MoqygaE1eeoyMc7JdAKSOp/9XooM/+ReqyPHdBpOy8gmp6vpsyP+BK2FrG9CmNaZ9E07HBRVHhUsCHl7r5g5dHIB4xXtb6QDrcP
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793901272-547100
+X-HE-Meta: U2FsdGVkX19zy70aGY5Mpoh9vTKP/VvfuyCWNa8N1nC+kjustXHRqAufhRqmG2X1zD82tU9vx1fi+ehs9eScodUkjNp2SXWNe7vKL/uuPjwwBv5GKsyOYjBDW0WOih8vcvtc+jAJVWLDDtxbDiczoXZ247o8Mf+8JiEnHwLvA8YskmGRjMLUeitLRCKMXr5fbLBEzJCQtmafzXZpXuch11mo/I0aE3jivOnFOYDRdiDXvIXYgTYZlsBmxsbbCHUDd56nPNIZ54gbtdZGVEPys9IXS+zFQsNEip+GFz319JdlDHGToxW+yruuhMCGFtNEYcRoX1nKQUPgm0e5aDXgqHpDIwEsfy3fLF7Al2Jvzz2tjpTcmNNIOmB+sslNZy/0+EAyM4LHu+B2CPA0WysDxUqaErd3qFWdEmmjKJMQQLjQzLgelhYBRQNUrm/AIUWPqoePQVdo8VBPxoFXIao4RcuxBYgjT7Cy4Mv3xYx8/XnE5CxaWo4eDjv/bjuNCAN3qLpGm+23j4AxKx2GJQTJntgbpdOA9fxjHbQpBc+Inwtvwjqg+SRfTMK7EB1Ut+xVLfvvUJotCBH6opSFT3Syni14LwRtglDDc7bAXtUwHjHFrr0RgLiASY/HvVApIUGo6MS19Vbgxatl1tUkG8Vf+yqlhjRRdS5MTf8vs6Q0hMdPbk+g34msPCXUAwv4gyLjM3MIzqa8FEIqM4un1DW9sh0MlvgILz8bH6gashyqnDt4eYbuctMrAAjb20j0wqN1nKqRUf6UBgwFmTgyfdzq58oYKE1sOal7/ij3BjkWSzNigJNdGwoMY6mKqPe3P835/tf3LW+Vu64gSkZ6yXz+bP5YR52PlUpP9ioC/vVHXbw0z7EVxVfSQ79yfaWo4qiU4ahwcYaDBsEfmi145HLhT6GM1i1ezYF9vZi/3bGgFTMd2N0iDtj+DZgcqfTtfjlkqFuvsXLjQzNJY1vIPF/
+ 3Jg0Uxcx
+ 6MhLWXrVOvv1aLpOCUJTB9AZ/9kAgkQtDy/HY6ucg+tuY+sxgKRTNnrKlA7hjUL0Ome6GExRABA4lSdebUT2CZ8M4ivjbh+e9OM6U59KTu4qlh6PgItrC6vO9VzxUCrxGh8BUPtdO5TZ2+mGALvwF9X/6ZCK7gApPC0tSACTzgWDHk2niKTiDhasCkrKyGKFcninmosbOS5Et68ZwDJtXrb23FnpxGakZkjLhK91CtJt3ZqmWB77+uRRNhHmQrrGoccNm2uEDoegDymKNspThCTvho+RT5Tp3RZ2SHcn820D2grq9j9H9g2Q1Oo5uTPgJwa+BwSlj+C4DkF1R1zADBJPC4w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,28 +118,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 18:21, Zi Yan wrote:
-> On 5 Nov 2026, at 12:18, Sasha Levin wrote:
-> 
->> The split_huge_page and gup tests need debugfs, and CONFIG_GUP_TEST
->> depends on it. Add CONFIG_DEBUG_FS=y to the fragment.
->>
->> Suggested-by: Zi Yan <ziy@nvidia.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->> Merged into an x86_64 tinyconfig, the fragment leaves CONFIG_DEBUG_FS
->> and CONFIG_GUP_TEST unset without this change and sets both with it.
->> x86_64_defconfig already has CONFIG_DEBUG_FS=y and is unaffected.
->>
-> 
-> Thanks.
-> 
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
+When executing the uffd-unit-test, the "move-pmd on anon" test will fail 
+on aarch64+64k with a segmentation fault because the initial allocated 
+memory region is too small.  This only happens with the move-pmd* tests 
+because the architecture base page size is still utilized even though the 
+memory region is specific to the size indicated by the pmd.
 
-Thanks, I'll wait a bit and then queue both.
+Patch 9f5c2aec3388 ("selftests/mm: fix uffd move-pmd test crash on 64K 
+base page systems") implements an initial fix to the segmentation fault 
+by skipping the test if the allocated memory region is not large enough 
+for the number of pages x page size requested.  But as this will skip 
+over the aarch64+64k pmd tests, this patch is intended to resolve the 
+problem with 64k pages by scaling up the initial allocated memory region 
+subject to base page size of the architecture.
 
+Fixes: a2bf6a9ca805 ("selftests/mm: add UFFDIO_MOVE ioctl test")
+
+Signed-off-by: John J. Coleman <jocolema@redhat.com>
+---
+
+I made some basic revisions, but as I am looking to gauge opinions on 
+this email chain I am replying to the chain, I apologize if this is an
+inconvenience.
+
+Changes in v2:
+ * Since psize() is included from vm_util.h through uffd-common.h, 
+   PAGE_SIZE macro removed.
+ * Added UL suffix to ensure integer is treated as unsigned long.
+
+ tools/testing/selftests/mm/uffd-unit-tests.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing/selftests/mm/uffd-unit-tests.c
+index 2a97ba1d6feb1b35d6281449fd1917793a64fab1..3be227ed8d413f6e67e475862aba10ce13221446 100644
+--- a/tools/testing/selftests/mm/uffd-unit-tests.c
++++ b/tools/testing/selftests/mm/uffd-unit-tests.c
+@@ -13,8 +13,13 @@
+ 
+ #ifdef __NR_userfaultfd
+ 
+-/* The unit test doesn't need a large or random size, make it 32MB for now */
+-#define  UFFD_TEST_MEM_SIZE               (32UL << 20)
++/*
++ * The unit test does not need a large or random size, but the allocation size
++ * needs to scale with base page size per architecture otherwise pmd alignment
++ * tests will fail for architectures like aarch64+64k.  For standard 4k pages, 
++ * this will allocate 64MiB, while allocating 1GiB for 64k page sizes.
++ */
++#define  UFFD_TEST_MEM_SIZE               (psize() * (16UL << 10))
+ 
+ #define  MEM_ANON                         BIT_ULL(0)
+ #define  MEM_SHMEM                        BIT_ULL(1)
 -- 
-Cheers,
+2.56.0
 
-David
 
