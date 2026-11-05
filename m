@@ -1,97 +1,122 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59577606A32C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D69606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RYGzJ9/p
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZQ0oCC+y
 Received: by kanga.kvack.org (Postfix)
-	id 770016B05B2; Thu,  5 Nov 2026 07:59:43 -0500 (EST)
+	id 838E66B05B0; Thu,  5 Nov 2026 08:02:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 748596B05B7; Thu,  5 Nov 2026 07:59:43 -0500 (EST)
+	id 7E92C6B05B1; Thu,  5 Nov 2026 08:02:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 63A226B05B8; Thu,  5 Nov 2026 07:59:43 -0500 (EST)
+	id 6FF596B05B6; Thu,  5 Nov 2026 08:02:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 44E966B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:59:43 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DB0ED140594
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:59:42 +0000 (UTC)
-X-FDA: 85401072204.29.AD5386C
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 470FB6B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:02:14 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B6A11209A8
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:02:13 +0000 (UTC)
+X-FDA: 85401078546.12.95D584C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 413FE40005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:59:41 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RYGzJ9/p";
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2E19F10000E
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:02:11 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQ0oCC+y;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793883581;
+	s=arc-20220608; t=1793883731;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z/gziC0JLIrvCdp4GmTMosiOJuTAZ2fDyAiYOPUD65U=;
-	b=L0VtkrXk1MDRKsesuLYcew1sA0xgSpckYOC2oDryVVqFM8LsU0X4oGeC8OzW863u2VtAur
-	bOQYOmyz1ZKfeJkiQqPYsU1fEqcLotqOlAs1u7LKyIu/bSy+JrL+5AvNOCDNFMy/htf8s6
-	HaBtzMN+9ykv+4LZzl1i8aOkoQR3ZFs=
+	bh=ODdbidwungoC4joZGqAWEdUpjvBaTXtHkaXe8rKCFAw=;
+	b=z9nnkgnyWt7ArIyIsdrvVDaXKgOwmQ90ejnComaENTn+L0cw05RCum12xWcW2gRBSUmPNU
+	xmGIDwXszrDpjInwIERdBkGmANXpuiqlxMx5V7Koa7v2q7Zp0+ni2+ZinHE0EW1cHcVsuu
+	VyepE2hD7AUIiUTZ5NRka9y79nZDXeE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="RYGzJ9/p";
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQ0oCC+y;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793883581;
-	b=cauPwM6fv9z/4XtVSx78wLGdMNaOhCGoDU5zAJ7h7BeJZ6qYEBliZ/bZM/23arhQi0FCSc
-	fWBRRascd2EbdA/G/DPJJlKYgYbRCKeSP4sXVveqYXQdhXKMSI5QFpipZHUmbHZ4evMTJ1
-	Jr0LWkGHT/Twp7hGHyOFz/IJ4Y87tpE=
+	t=1793883731;
+	b=e8X5wDUqEciyKJ/wQR4urWrJj+e8n4UEhZqiX/wjbfNQRZviUxYncc8+io5zPaUR0IFu3G
+	1UpszYb4EFudPzm7OeshhZyqmVcJN7qdFgk+wNpiZZdv74H+82O6VLu4ZM7/Mg1RsspSEa
+	O9oyRgZEmQR9MUikvibE9VEJXFNjOGQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7CDDC40572;
-	Thu,  5 Nov 2026 12:59:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19611F000C1;
-	Thu,  5 Nov 2026 12:59:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 72F9F43D9D;
+	Thu,  5 Nov 2026 13:02:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B6121F00A1B;
+	Thu,  5 Nov 2026 13:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793883580;
-	bh=z/gziC0JLIrvCdp4GmTMosiOJuTAZ2fDyAiYOPUD65U=;
+	s=k20260515; t=1793883730;
+	bh=ODdbidwungoC4joZGqAWEdUpjvBaTXtHkaXe8rKCFAw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=RYGzJ9/p0iFShU47y10rrIgFqPZdTiGgb9DmbgiqklepkrzDPFw2kBC9/2zqeWEUW
-	 viaCxlogpvwX+3aCC0Sd8lUceLDljigJa9iLlCb9F10Yjlhj3iUQLny2d4YgsfoDa3
-	 9/gwNyB3H1+V9zLO+cNJVvrzMZehr/KQStMXx3w7NBURr+o996im+MYc36G4g+NxEN
-	 se/C/q0CTuMLefGDtpMkVF12OHR0TuBO1Ct6i9ir8QX5vXEXIKFI4HlBRW8n78msRp
-	 hj62W4vFhO49wxFNmhDB+OVuLmD4BbTZ7PH5QxouxT1NQe2LKzMLX+QeyIgefcxJfB
-	 DoRApwQsIJc5A==
-Date: Thu, 5 Nov 2026 12:59:38 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Conor Dooley <conor@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v3 01/10] slab, kunit: pin test slabs by an extra
- allocation
-Message-ID: <auxzbxa40B6uLAyN@thinkstation>
-References: <20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org>
- <20261105-slub_tiny_rework-v3-1-0484ce59eabb@kernel.org>
+	b=ZQ0oCC+y9os0E1ZeMgu9e/N5WmpHjAOIrF4l3liGw27+gQmFuauUAu3QG/q9uDWTl
+	 3TKp+AU0H1wWqayQPvKZM57PaRJibPQUloG2nqac2lBeRqb0UEPX1dYD8h01AEjzDz
+	 vNGUIdx63ttmmh3zf3eIMHbzwnndB5k9MDBk4e+uow5NCSLEIH1cFyXz74Gi45tgp/
+	 Wa26Nd2c++AdKkgxRFXZAi6sa5GBBD2QE3KUoQkbJT7VI9iZhSrWybSuBgYbpQGlB8
+	 g3JErI4ZReV8vX8nOC1ZbmltupQcjstxr5TXRSSVm0c83LP1wwssH4qoIu1I1Wfl3J
+	 sDALxcReIe8CA==
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 0F3EE198003A;
+	Thu,  5 Nov 2026 08:02:04 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Thu, 05 Nov 2026 08:02:07 -0500
+X-ME-Sender: <xms:TH7saqG7wrZYgS8Mw0OKSmpa6lUlaIpWmaaxiMhNQ2_I9GE5fGmgsQ>
+    <xme:TH7satot4vh9OJnZQntbjnUpxcJanpaSDK0e6g1XrjWSdyQj5KtMNuq8mIsfVbK4R
+    O_S9txFhPKaLFT4TTMZb23wg-mNgfFZBeARZFINIWtUQTlSuusRnv8>
+X-ME-Received: <xmr:TH7sai2_SpttBsmoGsUTIFVzlHSABshtJuyvUk1T9udcIXUDJtEeThqzxuw>
+X-ME-Proxy-Cause: dmFkZTGWioZ5UsUZvGXjaow1BsUGadLs8aZQdTF4UnV/07NAN/af8tN6pM/FfLXYfyZLfb
+    xRpT19JopPsgAFGYsm8FzaqvOcRv05DtuUalhGCfVBg5TYHs9JXv+Q47gmOf937P2Gi3S+
+    U2sfvRv8HM/m1nYX6eGi2a4miDiVYyQMuuHiidk1Rop6z5ppK7guJf5jvUfTyMXleQeyL+
+    YFG9WYCksR8P+f/IoUx4Wo08VB8Mvto3/EHOpPBXbwb98JXOAs0bmRST4eO1cbxBPUkzyb
+    YU+NZSxhcSt0KRFVrgpydwZFv0ufeT4P8d+qRyppjSLMzQpNREs19lQwYqTs8BowLu6Nt2
+    5Am7l6YekVqjY83nXhyttgWii20fB0sq0/gLxPQHon5CrRkTEqrIGD//hCWFKqOgzqGCvi
+    aMcLQ7cAZew8NgHslTKKsAByAnDUby/6o7zf6t2iuxqMb/GVhW/urcyLO2AQ8SZ818X9mS
+    KvrqoB35qasVInQXx9O0IC9DWqxqX0BoD/o9yiGn5oqOKYTbGXBdOAIO4z+H9UZl5AQPCz
+    X5k1DEL86ay2iE++MFKAY52MrLVWAVVhibUP0tLtOKiw/bidGrXPVW2Da/VrEL1xMbaVji
+    gk/Rfm6DtM/to8/mnKjVPcrauVt2Z5IcYYLnNu1hKr6ktYnVJlpVoH4xcT1Q
+X-ME-Proxy: <xmx:TH7sahDqPgMnM6imR1rATIc4Ws5YrXF92NPtBNndS3RcrHPbByQR8w>
+    <xmx:TH7sat8lZSx0ZfTRSH73tiR_oEt_6GxNUq-DXVFxZ20237HLHQwtJQ>
+    <xmx:TH7savMpe0K9HyMh1PrMBNDDIaNN4W1yi749wUvB54Lc8e4xuSX9Tg>
+    <xmx:TH7sanFEmmZkFS9J_XtjodG9fU1CrzxAv4fcixThKJt6YmAuCEHgsw>
+    <xmx:TH7sauuRyf3FUbrFTX_8ORVoKejL2DOhUuj_v288Q3YNMXl9vOfBxqQs>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Nov 2026 08:02:04 -0500 (EST)
+Date: Thu, 5 Nov 2026 13:02:02 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: free unused page table when setting a
+ huge PMD fails
+Message-ID: <aux9liPvdZgpKCpa@thinkstation>
+References: <20261105-khugepaged_set_pmd-v1-1-cb79ab117199@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261105-slub_tiny_rework-v3-1-0484ce59eabb@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 413FE40005
-X-Stat-Signature: bkzj55pa6h89bwmd79xqebj9f9q4nece
+In-Reply-To: <20261105-khugepaged_set_pmd-v1-1-cb79ab117199@kernel.org>
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2E19F10000E
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793883581-354356
-X-HE-Meta: U2FsdGVkX19hVJC0LSA5p+BRLC7IaLilZD+G22cMyQwll5X1ZsTD4uvGdEYbc9++SxwIfIYwRW6AXKL92VlpEUQYeK0UhGJhL4whLixZsqvP2ZJzdqyzbcfUj+L96fLjUheLY/6MqH8I7TsH+002WN+0uHa81Pkpqy4VJTR8w3qc0jinjyaUOuiz6ye+O4i2TcJ+ECV3rYpn4PQdL5PeLpTYHXRiUB4bZT7n+UgdbQughCFW4DhpWSSa/GdU8vCh6pLtP067MyHN9AIULQUx0TXMD4gr26nELqxFCKAyHULJ3ge9NZ2oijGkgtCiReC9TcWuDewq38O33JNLKSp+R5tMLXGjqW0QHkBlFUB1beiZkCmxlz8ecHnHxHrnykR9+gg9Aetot2lB91p38mPHlBWoiXRbj4Tw4yxfctihoM2x7H8EwQxNPV1saiEfn1NhqrG2AD5WmJi+FOAv7wU9RlZ5IXljDEZmHaDkia3q0X/zqTE914SPe4ZnO4LpRs5FG3b6YIcJ2uAz1M2U4NHdqDiVivAsKtLAoJaMmSw2ZsOFgsp1PtO6PAk3TfscStt16A8Ragm/FN0N+FwwFuwtahRXn/zCCqWUX5Fzl1TAHXZHjIyeTMMqi1vrDLEZujOBd2E2eFNbORPZ8YE1nHt15BLuECGrOxlF0oaO78L0MBDvylcub3TFSYCnie9rNOFEI75fLa74AZ0EQr3DiCu3+RTF5Y0PVoRcFh0G3ynaTjskh6JEoLIS0Vw+S4SvpC0iixCaSPqXAhjuSld3Kbhtv4RNVONzoUaqutjK+tnNCyB0gcfKMZ3fSJJVU7AH9uVRcm+ztysZd9hx9XmXh7Evbv29welFddeqmE7xgwDuDqBtAtqIuSXb21GLBQwEqhK4zzppUCKr7KNkUDUfS53MvRVWbtSEm16AuRBiR25tVR/IDQkydxgouSeDTngmfcVS+IwnHXiua9k/xb5Kw2S
- 1XY3hpgf
- azAjXCRxMKvBYLc1QD1LY/LMrwoS0AAV990M3655Olf1zfuawcgQ+Tz9J7NHJMr+2xt7f84z/w+WOHrSZvCN5Aae6SMExh8VBjdviqcYqVe3iS+WJJ1d/JPlf1VbqIJ62f+fatH3HXnsKjJKlrwGp69LWDlMM73TpsE2VeA1H+LzMUGyEeL0Oxk1zV/GwaA9Hj98C2umKioR2fUzhPU7zNNdLmEk7ecirWEAkSnLleTmrNblexZhNtIg1nLZt9cHD2YJAIH9Lkm3ZUypR+btO3PL5ykZH1niGXLAafjq+IW0XSZ+uCh7LUiM0fz0sPY7DfTMIlSuDildNR+TZBdKwzulqdWaKhRV1qqhG+G2PjQU6u1vwZmBYFWlanUVSy2Gv3ioh/smYAFNP4vMPp0QZb5SIONipbj/Dr5rf
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: zk1b3dtspdmiys85wwtu6h7q5mawf33b
+X-HE-Tag: 1793883731-910744
+X-HE-Meta: U2FsdGVkX181HtBG9zKHMVwKh+eNjdEjobzclse1WRt8u4+TMEF4o9DXkFUvcDuZPc63p9VdEEhI09KOQDElZune8sM0nGCp/hVP8c5uoEjHDifp0r6WfGa9MPf6yKrAtZ4IHJ9Az3cP2OBohpNkz4wUP5IXyfpl/7XSc9ULCFT6g7YCjDGhbmbZiVO9qypg7ZxeItgMwwhSrAiN+fpvX9DuPWMME7t1Gtaz4pDLKNMztp8AO4fGH8n8qR6PYJzm5L4FtEjepwGAu8YU1Qp8h9zMOZaI3rGmvY2W+zzgU5oHc7jKKHHL2V4AeZp0tccESfFhKYsMNFk1ccSIqlNU3xUlXm00zGJWC3k7AL0RUj87lUy20JdQt9rDBNa39ThdpOTJWqnnC/4UDs0xpUMKNjVQtOI9efckDqth9tqjX8p3Rw46pGfQ5LlbSERaTBg7XoWyxSNRnFlkeyVhJ8VU8HXHyD7T94rsjE4rnAVTZXK24vi+oKlZ5Em0hCwLYgi1DVRJYOA0UA3w4b4bmy2gFSkPWauMmzGmQZg/7BQ9WWjYOHcLL4vjLGvKAwZmxvqNRFfpiZvsnY3jO5IYeO0PpzOkbBbOGBFmHik0W2/CzhFE94UvCxl703vD67ZKbYaV4E7eaEI7/hN935yeRbtbaZYHl9zykSaeWY3qn9ko/0LwHw/EdUsYkhMWanlkMsZ/d9WhbLEGnpTRY9wG00QlJpilDXYW7FexX/m6aLjAAqCmrdykxtYxq6il/s6PrapB8eUFjV1SBRP1r0QVsBZ+wWhBWMUzZOwVqjzar3+wsF1IxWlB6dQd1IwYtXE/JraOPeRx/mVenuPlatNP/wr7dpItBxge2LEfKQnNi78++obP/ejhwAm9HqdKMBIoZhFphAtqOZwNQ8XJcs/nCOWo/Y2DRh3TBxJ8mcGXkaZD7kYoR8PmtEol+BJ2A/zbMbcKMrOHKS8HyrQNvtHycV9
+ Vih2Z3Pn
+ QoC9rDlIgbTv1AHpPXNu7rP7ftJRh0QyUAbNJR1DoTFULdjBV//uZyKtveaKVgZuJiDlvN74PsjR5CEAIp5FzpLISROkm47H/kQpD4fn/c15o9clABr4Y1iwxjROkNjfuTuaBoGO6T47/blSCwaHG5jB5E66ug4pzOEVVMJ+a9Z3qBgm9a+zuLo87yegwEl+YuQBlkINTTx+pLTjGw/De3QCBG+dS92xKhZZj4+/GzlpVJPn2hcCJp4DBh72F6RoKhBeuWEGjSi+prjWxPlsIMqPBSA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,37 +125,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 09:43:50AM +0100, Vlastimil Babka (SUSE) wrote:
-> Several of slab kunit tests allocate and free a single object from the
-> test cache, perform intentional UAF actions and validation, while
-> expecting the empty slab to stay on the partial list.
+On Thu, Nov 05, 2026 at 01:16:05PM +0100, David Hildenbrand (Arm) wrote:
+> do_set_pmd() can allocate vmf.prealloc_pte on architectures that need a
+> deposited page table, such as PowerPC with the hash MMU. If the PMD is
+> no longer empty when it takes the PMD lock, it returns VM_FAULT_FALLBACK
+> without consuming that table.
 > 
-> This subtly relies on non-zero s->min_partial. It currently compile-time
-> defaults to a non-zero value, but in theory a sysfs write racing with
-> the kunit test could change it.
-
-> More importantly, the upcoming
-> CONFIG_SLUB_TINY changes will make it possible to run the kunit tests
-> with s->min_partial being a compile-time zero, which means the tests
-> will now do unintended UAF writes on the page allocator level, and also
-> report failures, as flagged by sashiko [1].
-
-Makes sense.
- 
-> To prevent this in a robust way, add an extra object allocation to the
-> tests, that will prevent the slab being freed. Use migrate_disable() to
-> prevent migration to a different NUMA node, which would place the
-> allocation to a different slab.
->
-> [1] https://sashiko.dev/#/patchset/20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org?part=8
+> Since collapse_pte_mapped_thp() uses mmap_read_lock(), a concurrent
+> userfaultfd operation can install a PTE table before taking the folio
+> lock. If that races with set_huge_pmd(), the unused preallocated table
+> is lost when its local vm_fault goes out of scope.
 > 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
+> Free vmf.prealloc_pte on failure, as do_fault() already does. Successful
+> PMD installation consumes the table and clears the pointer.
+> 
+> Having to do this cleanup outside of do_set_pmd() is rather nasty, but
+> other callers depend on it already having been allocated. This needs a
+> cleanup at some point.
 
-Looks good to me,
-Acked-by: Harry Yoo (Meta) <harry@kernel.org>
+I hate this being outside of do_set_pmd().
+
+What about making do_set_pmd() freeing ->prealloc_pte if it was
+allocated inside? Nothing changes for caller.
+
+        bool allocated = false;
+        ...
+        if (arch_needs_pgtable_deposit() && !vmf->prealloc_pte) {
+                vmf->prealloc_pte = pte_alloc_one(vma->vm_mm);
+                if (!vmf->prealloc_pte)
+                        return VM_FAULT_OOM;
+                allocated = true;
+        }
+        ...
+out:
+        spin_unlock(vmf->ptl);
+        if (ret && allocated) {
+                pte_free(vma->vm_mm, vmf->prealloc_pte);
+                vmf->prealloc_pte = NULL;
+        }
+        return ret;
 
 -- 
-Cheers,
-Harry / Hyeonggon
+  Kiryl Shutsemau / Kirill A. Shutemov
 
