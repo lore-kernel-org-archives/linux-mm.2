@@ -1,115 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A3C606A326
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 15:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FC5D606A338
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 15:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EqgbKL+C
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=l7FoqcmY
 Received: by kanga.kvack.org (Postfix)
-	id 47EC56B05B7; Thu,  5 Nov 2026 10:40:08 -0500 (EST)
+	id 71A556B05B9; Thu,  5 Nov 2026 10:42:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42E586B05B8; Thu,  5 Nov 2026 10:40:08 -0500 (EST)
+	id 6F20C6B05BA; Thu,  5 Nov 2026 10:42:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31D226B05B9; Thu,  5 Nov 2026 10:40:08 -0500 (EST)
+	id 607E46B05BB; Thu,  5 Nov 2026 10:42:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0328E6B05B7
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:40:07 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 877D01A0ADF
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:40:07 +0000 (UTC)
-X-FDA: 85401476454.22.0FF6C4C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A45F11C0004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:40:05 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EqgbKL+C;
+	by kanga.kvack.org (Postfix) with ESMTP id 364CB6B05B9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:42:49 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BA05F40A76
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:42:48 +0000 (UTC)
+X-FDA: 85401483216.12.8B95891
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id D46B3A000E
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:42:46 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l7FoqcmY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793893205;
+	s=arc-20220608; t=1793893367;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PDZV0+pjHqmTjjQUQ4uC9YSnJ7Vm1jvBfF5OI0JOMto=;
-	b=0Z+sW4e4z9mpPeUjHo5Yfw0Td2nQFWTc5R5Tgj2F+nS5qgAmTXYt7sHVnodyB9w9Gz6ZTL
-	mVqzIIvwRVK6wFRz04IHeYYXKLIvSfVwBucSQ4Y4ABrhwSKXtjmtbEOhFFZWfFDYVoodW2
-	UiRDnTCuetSg46nAeJmttpat0YGAMkI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793893205;
-	b=laDjY7bKu44QrBhSPzFc3AjzeclsPYWowxVnjn0oAWvSrVRAFTVszSKt/uXMzBNbhHq6wl
-	H96II+zETepgx1dZx6fmF2P7spInkJyBSpxWTRPOWss2vvNk8gxMHXfmV7GK4hmpQYVqXY
-	alLdJubxQgBNrSUQzN3FbB3BKINkShw=
+	bh=CTsd4K4FS1c/0QtVRFQ6L4sBWzBDsskkKVi3HBwNbgQ=;
+	b=OxLY3xJjw+PEH+Ufvrkz+4CJ4SMmpbvEeEq8MLjPK/WJm7f1jR8Z8wfXSwckIixct1kZYK
+	3JT+qNR8z4v2Ku6mBeurEUpIoMJH4DOd4w7iYUKyGm2FwLitE2CS5+uTDbFiT9TB17orBn
+	GZWymG6WB0R9wz5VTdBKEF+Js7EGTJQ=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EqgbKL+C;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=l7FoqcmY;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	spf=pass (imf15.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793893367;
+	b=mOKfPDOchjGBXiLMeAzRNIbqMnWAyoz5a9oSlvae+b1XTOw2aWOeNUXrhFjH48pIwXCegS
+	JJyMtPy4LO8F1yrqhPw0UGv4yXSszY+mqNZhLeEcpGP0o40sm8Uv+q800S2iHaXLIgZZ8Z
+	j0W+hQ1R5taN59eMikrCCmyWQJAyCsM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 38BE260A68
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:40:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E41221F00A18
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 15:40:03 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 04E9342148;
+	Thu,  5 Nov 2026 15:42:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB5BF1F000C1;
+	Thu,  5 Nov 2026 15:42:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793893203;
-	bh=PDZV0+pjHqmTjjQUQ4uC9YSnJ7Vm1jvBfF5OI0JOMto=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=EqgbKL+C5NvEF8nHOZcg7HYI6aeL/KWezyfGE9tktcf6hCt/fZBzlmpHSzhGpqKTA
-	 1Bp7+DHi1qlvjwdiLqtkslWRSj7IRkXqEU5FF4UDEqh72a5AZ9VK2IpnMJa/BqFDJQ
-	 0YyM+nmtaIqfaqc/VTFjuCGeZMoqLp9EQlC0N9kYC/2TT8uwrGpX3XmIrQ+zrzgfBT
-	 PyuHKNJ9Pz6091Y0Mz2Wv5WdjdI3yk2qWu7xU0DvRo/JQ8nBzMzTD/MF6ZYWXWUQpk
-	 JJWjtgQQxqcA1jIAW3nP4e+dnq+0gjyOOoy9S6/NmfQ3h6Oy4bUdBi3gTPQ5Dreh8J
-	 K1uOZb7LV23Mg==
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-c4697404c2bso32491966b.2
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 07:40:03 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxZ7oS16SHtofyJrarTLbquYczJbjWa302krQKpu+T8PxMMP5uy+9AZL5iNPvjkatZNQXkkF7tPRg==@kvack.org
-X-Gm-Message-State: APuU4Z+3kBBA48OEUN6D0ggWVPHknW4ot6xcQBfP1Mt9EesQ/pW7kYmi
-	ov51TPFlJHMm+b8Hyh323FJHiZ3iNJCvIzuHto9g8gySwGsmEUtkcDWYSmi1u+pljWaIzc1H6DR
-	furPODIpVv7WX8YkKN5rk3N/6bSSmNTU=
-X-Received: by 2002:a17:906:9fd0:b0:c40:80eb:c54e with SMTP id
- a640c23a62f3a-c4d3449c0c7mr1350366b.4.1793893202865; Thu, 05 Nov 2026
- 07:40:02 -0800 (PST)
+	s=k20260515; t=1793893365;
+	bh=CTsd4K4FS1c/0QtVRFQ6L4sBWzBDsskkKVi3HBwNbgQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=l7FoqcmYX/+njg5zd1k1bA+FOA+lDCfiQNMdQHITGrpFOtDmfodmQeUvlG8+8QdRY
+	 dDOSBg47/nnwS77SH1jriKunFI3Cf1YOogrSEPvaokKcDhCBbxJ51evpByksS3uR8Q
+	 jAz59rW48V/DSQ7VFwoWcUKs7VhS9lxCpN33OC0L6hW91Z0COzvnr2cl5dHN5C18SK
+	 xqs5IN75QQH3MMCyO2H21i49gUXYNT2NULY4YudARb8bmgEuX3EWn+M7+wEvTRWNWI
+	 OV/7ivC6SN+MnTQoWZ2WI8WgIXhh1udieUA8CDzRCP1Og1YArIngLLm/7fkA5e7d31
+	 SW+g94h6ECq8Q==
+Date: Thu, 5 Nov 2026 16:42:38 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+	Alexander Graf <graf@amazon.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Hugh Dickins <hughd@google.com>, Jonathan Corbet <corbet@lwn.net>, 
+	"Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, Michal Hocko <mhocko@suse.com>, 
+	Mike Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Randy Dunlap <rdunlap@infradead.org>, 
+	Samiullah Khawaja <skhawaja@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v3 00/10] liveupdate: Preserve tmpfs files across Live
+ Update
+Message-ID: <20261105-sitzordnung-nahkampf-ausbleiben-6db911d0333e@brauner>
+References: <20261103010216.3447716-1-dmatlack@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
- <anXJ-5_vO7-toSe1@google.com> <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
- <auKqt6b4AxCLziIH@google.com> <aufPMirl4cD7tz0X@google.com>
- <18e4542967ebdd10.3137322e32332e3235332e313736.1dfc41.0000sendgmr@google.com>
- <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
- <18e4ebf806e937ec.3137322e32332e3235332e313736.1bf52a.0000sendgmr@google.com>
- <CAKEwX=PFdgEbba+H3fEnJFDnfkxCTsvuHEb4numVwJRaiMgwKQ@mail.gmail.com>
- <179384102494.19062.12740032892044628762.b4-reply@b4> <auwOBaRtM9p_Wxfx@google.com>
- <18e529a5ab0738f7.3137322e32332e3235332e313736.873cb.0000sendgmr@google.com>
- <CAKEwX=OUt4=wqDLiPvYuiTnkpuZYnszkuNQScNR93hHhVPRRGA@mail.gmail.com> <CAO9r8zMMGem-LTJQseT5xSSBjfr3UX2gzG_ftpw6+KF8m9v5yw@mail.gmail.com>
-In-Reply-To: <CAO9r8zMMGem-LTJQseT5xSSBjfr3UX2gzG_ftpw6+KF8m9v5yw@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 5 Nov 2026 07:39:50 -0800
-X-Gmail-Original-Message-ID: <CAO9r8zOY1E7gCYnJZAfKvyHcbj8e2WVuXMqsaPGPsKR4-9itsg@mail.gmail.com>
-X-Gm-Features: AclHuK-nHEy3W7VEoyAO170_A3kmjjHwVOoZaVi1Y45j7hC5yeix6KXpEhEkBoE
-Message-ID: <CAO9r8zOY1E7gCYnJZAfKvyHcbj8e2WVuXMqsaPGPsKR4-9itsg@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction budget-aware
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Chris Wiseman <chriswiseman@google.com>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Xueyuan Chen <xueyuan.chen21@gmail.com>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
-	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: 5misu7n4d7r5wkuws3h3mdgcinj5tnnc
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20261103010216.3447716-1-dmatlack@google.com>
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D46B3A000E
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A45F11C0004
-X-HE-Tag: 1793893205-313278
-X-HE-Meta: U2FsdGVkX1+gpuIxY61QfgCVwkd/dKeF1ipd4g+kxoRanqLuh8QhQhRn51nG7gHQEpqWSW2HeFwcWbDTkugdYKoWyr6TrT+sPjNzB3IpRk/Z+FcE1pW3EWmzNuBvQNb9s4vyGsCs0+nILNQbRaDXPLLLP74G+O/WNGbdEZCKhy9JJi66gkX+S81tlAYDmAbIfjwYCz9JofLhPKEWQ8IecfKp0nGNTU/uHF3I6oqyHPwosIZgyCNmHnxpJs5AGn8QIO7vmP+RA0VOpmUvqntw4kmBMhA9ZI3chOHhS4OjqVVxixUyJbMmRSwdbcbyjzLw3eauDn2/jIPu44mKz+l86QI2anZeRitPDvsAs840SGTmQLpaUw3IwDzxdY3A1CYcfWkXmnR/mxrw1g5PePihW4eUFVucRwRFnxFQjQBlVSGjQxu0hvJBq8FLIU2IsP93kf4xutLO6a6Jpaatp0NScCNpdWK46Uixx1RBR9aEj1vrVHJ4/42YdHgHlZsGcFiDgBRmi25GjkvLHmfDWaRY9XgX2l41aHHzOWiBFcP4eLku1oQuhmbW3VzHOzklU9mciwMa6bh3ghYr28K44uCdy9sI+oFr7zX6QKsAm8iD8kdVlifFjqIVV1guskVRz2W1JegXb1e+17ACKCypJF5gKFR6gYBYd+u1VdYe35Lr7AGtJtTcpYFzQaFk5EkoNnu3lzcY7eijJ+HvqaE35Q1omQqnpmxHaedLYlxDbMyubnuwS6FFsch1Q5r71bxommufIHSakxAdkhnj3nf1eklNEKf6o4ABg+b6g0Z1lcPcQgeE6kL26rV5Bws5O6CyOQIskCj3U4oHqCQW3MANBswfnjFvYDuBcLJ9mu9C3oC8p+0ToipUGeMeT0NUhF4U1MhyHD5wlxmZs8oMxa3HtOvUq4xHK+8ZgfW+A1a3zCTa1eviA4wOaoVLBZBRI954lG8kJkWbDf53Y0k+n/MLF60
- 6aOQbh5K
- ayinZLEORZlRx//KWS46M9FxdDleQ5YBFaVHlqDMpX5DvGMnc0/s8Sps0y6baQX83cceEmxG+GznXdW9GqOTt6tUZLAvMIQNucbXypMoO88L3oXT6xPv7VkBsNbWQVujBLZlc1yk38DDqBH+mOq/3deEMM1lxdRWn3F2WnH2h7krpW4pcTwqDk6gjKE0KFJd5ZoEOEfi2vcBNfEbSBoDZyajIpNYQ7L9E38niiKp0Ok6Etbf6mbYt2fxlv4vGcII6eo3VALheduM8rP2FoTrMEu/EGkc1kxWngad0hTVHaCauTL3ucLIAufhnuNXAWw+2hGJX+LgBJ4Tf+7/DN9RDyBF7JGhLGK8hosGLerbCLBjohZD1ojIvvrYh83HXp2KMb2HnbNtnz4OTNfIOLkfNmJX6UQOunbYFHCBEjt2OZtkoBXi/Gxs0C5boL9AsU0QxXpgd9boO8XnMJ1c=
+X-Stat-Signature: 38bjoygaggbyqdzicbi48pip3u3c3ig5
+X-HE-Tag: 1793893366-764388
+X-HE-Meta: U2FsdGVkX18dBn62s4Fuak4ruZOoM2YNlZNWwLEFPU0k+y7EuZyaN53a8QQ4wDpPRTVqqIeSd22eK4wO4AD5lI2fwlpD9isEPL7bqKJs7RcXjV4cxao+Q++i+YGFKRkyoRx/AgW36b7HM78/iBIgeoUy0meCcSls+dXWc3OUFXJXbTmJQL/4tjUxLBoLAlFCVo91xD1cwt0NEeVT67rzBOa03JRRRa7qHhwFsoVn0ET7jDh3ZEUME15+4hvsF+5hw1fWKOvCFM08CluaayToMrH5aH7wnyLEj0Rp8UtzChW9VzOr5OG0x9ZbyRTbbo7ePzlVKOLDG6odWFOMA2THRf3uYfzoqfrw90kZh15HIlvR6Bu61+yky+1Pxc/wmEQqSbXzL26Ph8Y0F09tQcYHXufiaSZpYHI76cWBmWaXfPBudwgxGIlyYnyP2+DMAfPx6p0u1a8gHxKtyExeoEmHNhYQm1V1SmjSpP35dWFVhF1YrZaow7NUobkj8rGxccNs2fnUaSK52iFVM3RBy5MrBPaDQJ6nFXaMHusX/BODsPVpH1VI/Z50ckGUhzD8A9jhELDBb1+qCKEn+iOocmJ73sKmr4ZZeVRxcfq/vaqV2dwK7pyNjPWegI1rZyDq9KJU1fdx3RoxLYakNI+/cmBX9JxxLy3wL0gIWgwW7rT9ueWxFQOSp8ANpvUI2LjOjhvwxJvG8aBbhoDUo7H9CkbrUoE3k8WPZP5LNnPeE3H7ZwhCufhSANv3IpzLGdvuOV5QUolEC0K1HhdpY38Dftqu+FFURk97bbvsPPbbEZ1DCtoD+YLQ7gKMRgC8A1Vwt9J6mmV+Sb2lPlq8golxGYF/yuXjsW7q20eTLxYNmpDuz0ye7NTlZj+GXX6meofj+6RrH0mZg0Lwkog0xHBK19VkgUSB0m8VCWJzwRn/0qAPE36wAbcy3A+E32rM2tw2/y8jhfEx+qWqyWJl/AvE3CX
+ TQH1EVge
+ d5klC1MM7ZcjVvoFGvNGqTbNWhTnC4ExcloUvzQjpj8DQDE5iebcr+LPTHauXK3wDqiyacVFB8mW0vxgpLqWFJp0YziLzTdNqaG5zqYK3tvg427Pses1CJkA/Lkf7HpL1VpZPT1MzI7tb2bJnRphShYUla/sORMMzJYzx4zQBsnQbl73J+/lzvRqBg5ks0TXZpRPBNLkUKZ/OYYdNvd/UbEYkU25uHibQ0ReEdEO+YPam8evrs4ev0Z6Qhgpy6qX/DEc6WQgf4iatfj6cVFinCayr6Ms6evoX0wEZgzToaIjaLArbrZEeoxyDMsYeJxKVQ6gbxqLk/DTedo8P5BsSZGopGsU8a325YtKKsR0k/c/rFkY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,68 +102,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 5, 2026 at 7:38=E2=80=AFAM Yosry Ahmed <yosry@kernel.org> wrote=
-:
->
-> On Thu, Nov 5, 2026 at 7:08=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrot=
-e:
-> >
-> > On Thu, Nov 5, 2026 at 6:36=E2=80=AFAM Chris Wiseman <chriswiseman@goog=
-le.com> wrote:
-> > >
-> > > On Wed, Nov 4, 2026 at 9:05 PM Sergey Senozhatsky <senozhatsky@chromi=
-um.org> wrote:
-> > > >
-> > > > On (26/11/05 09:10), Xueyuan Chen wrote:
-> > > > [..]
-> > > > > > SGTM, but I'll let Sergey chime in!
-> > > > >
-> > > > > Thanks, Nhat and Chris, for the discussion.
-> > > > >
-> > > > > If Sergey has no objections, I'd be happy to send a follow-up ser=
-ies
-> > > > > to make the shrinker configurable and add the unlocked pre-check =
-as
-> > > > > Nhat suggested.
-> > > >
-> > > > Thanks.  Sounds like you and Chris will to have "Rock-Paper-Scissor=
-s"
-> > > > to determine who sends a oatch ;)  Just joking, let's first figure
-> > > > out how exactly we want that zsmalloc-shrinker thing to behave wrt
-> > > > zswap expectations.
-> > >
-> > > Haha, Xueyuan is welcome to send the patches!
-> > >
-> > > Dumb question on the zswap side - aren't the zswap shrinker and the
-> > > zsmalloc shrinker independent?  Even if zswap's shrinker is turned of=
-f
-> > > at runtime, normal swap-ins still free slots and leave fragmentation
-> > > behind, and unlike zram, zswap doesn't have a manual sysfs compact kn=
-ob.
-> > > Would it be simpler to just keep CONFIG_ZSMALLOC_SHRINKER as its own
-> > > standalone config rather than tying it to zswap's runtime knob?
-> >
-> > Yeah those 2 shrinkers are independent! I think we should just let
-> > ZSMALLOC_SHRINKER default to the value of ZSWAP_DEFAULT_ON.
-> > zswap_load() (i.e zswap-in) by itself is enough to create
-> > fragmentation. The zswap shrinker is just another trigger (and it's
-> > also irrelevant if zswap is disabled anyway).
->
-> If zram doesn't benefit from zsmalloc shrinker, especially during
-> reclaim, I wonder how much zswap benefits. AFAICT, it was hooked up
-> before zsmalloc was hooked into compaction, and compaction seems like
-> the right place to do this although it technically is freeing pages
-> from the page allocator's perspective.
->
-> I wonder if this is something we can collect some data about, and
-> maybe kill it off instead of putting off behind a config option. If
-> hooking it into compaction is not enough, maybe we should add a
-> similar interface in zswap to do proactive pool compaction from
-> userspace, or maybe move the interface to zsmalloc itself.
+On Tue, Nov 03, 2026 at 01:02:06AM +0000, David Matlack wrote:
+> The kernel preserves the contents, size, file position and seals of each
+> file. After the Live Update, userspace retrieves each file onto a tmpfs
+> mount of its choice and links it at the path of its choice, so userspace
+> decides the directory structure, names, owners and permissions of the
+> restored files.
 
-Never mind the compaction argument, this is just to move zsmalloc
-pages around, it doesn't help with internal fragmentation. -ENOCOFFEE.
+[...]
 
-I still think we should check if the zsmalloc shrinker actually helps
-zswap or not tho!
+>   4. Retrieve files that were preserved from a tmpfs mount onto a tmpfs
+>      mount chosen by userspace, via the new struct
+>      liveupdate_shmem_retrieve_arg. The kernel creates the file as if by
+>      openat(dirfd, ".", O_TMPFILE | flags, mode), so the file gets the
+>      same flags, owner, permission checks and security labels as any
+>      other new file in that directory, and is charged to that mount.
+>      The kernel fills the file before returning it, so nothing else can
+>      access the file before it is complete, and userspace links it at
+>      the path it wants with linkat() (patch 7).
+
+No, sorry. That's not what we discussed at LPC and it's not what the RFC
+and v1 did.
+
+There userspace created the file and LUO filled in the contents. That
+got turned around in the v1 thread and I think that was a big mistake.
+
+The kernel is now responsible for creating the file and for its
+permissions but it preserves none of that? No owner, no mode, no
+xattrs, no security labels, nothing.
+
+Instead userspace passes a struct that duplicates the open() argument
+list and the kernel runs umask, setgid inheritance, default ACLs and LSM
+labeling on it. That makes no sense whatsoever. Either the kernel owns
+the metadata as well or it stays out of it completely.
+
+Spoiler, it should stay out of it.
+
+Userspace is responsible for everything but the contents. Take systemd
+wanting to preserve a whole tmpfs. We already know how that works and
+discussed that at LPC with you.
+
+- We generate a manifest of the filesystem ith every file with its owner,
+  mode and xattrs using UAPI.17 manifests (cf. [1]).
+
+  We stash it in a memfd and reassemble the tree in userspace after the
+  live update. All it needs from the kernel are the contents. Having the
+  kernel recreate any of that is pointlessly complex.
+
+So instead of LUO handing out a file descriptor for a file it invented,
+let userspace create the file, O_TMPFILE, O_CREAT, whatever it likes,
+with the owner, mode and xattrs it wants, and let LUO put the contents
+into it. That's what the RFC did.
+
+The checks on the target are trivial: a writable fd to an empty shmem
+file with the inode lock held while you fill it. A tmpfs file can't be
+sealed, it only ever has F_SEAL_SEAL, so there's nothing to restore but
+contents and size anyway.
+
+Pasha, your argument for creating the file in the kernel was that
+nobody can reach it while it's being filled. **That's what O_TMPFILE is
+for**: Userspace creates it unlinked, LUO fills it, userspace links it.
+If userspace hands a half-filled file to iommufd that's its own problem.
+
+I also really dislike file_open_root() for this. It's an openat()
+emulation inside an ioctl which is completely terrible.
+
+It redoes the openat2() validation by hand (reject O_PATH, unknown
+flags, stray mode bits), force O_LARGEFILE, and because O_TMPFILE
+insists on write access you open the file O_RDWR, copy the normalized
+f_flags out of the first struct file, dentry_open() the same path a
+second time read-only without any permission check and drop the first
+file again.
+
+So an LSM sees an O_RDWR open for what userspace asked to be O_RDONLY.
+Whatever path_openat() happens to do for that synthesized flag
+combination becomes LUO's behavior. That's brittle as fsck. All of it
+goes away when userspace is responsible for that.
+
+Fwiw, the permission model you end up with on retrieve is write and
+search permission on the target directory, i.e. vfs_tmpfile()'s
+inode_permission(dir, MAY_WRITE | MAY_EXEC) plus mnt_want_write() on
+that mount. The new inode is owned by whoever runs the ioctl with
+whatever mode they asked for. Nothing about the original file matters.
+IOW, the kernel has nothing to contribute here that open() doesn't
+already do.
+
+Really, please make the kernel's job stupidly simple: let userspace get
+the contents and let it be responsible for the actual complex restore
+and the filesystem layout.
+
+A hybrid helps absolutely no one.
+
+>   - Is patch 9 (retrieving tmpfs files with O_RDONLY) worth merging?
+
+No. With userspace creating the file this doesn't exist.
+
+>     are created with mode 0777 (or 0666). Is this the right permission
+>     model for preserving files? Should this apply all files or just
+>     shmem files?
+
+The preserve side seems fine to me. If you freeze the size of a file
+for everyone you better be allowed to write to it.
+
+[1]: https://uapi-group.org/specifications/specs/file_manifest/
 
