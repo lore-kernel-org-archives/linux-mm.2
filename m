@@ -1,94 +1,87 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61822606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47485606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 09:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TpbPfdgW
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=j2bVp2qs
 Received: by kanga.kvack.org (Postfix)
-	id 6D52B6B05B0; Thu,  5 Nov 2026 04:29:30 -0500 (EST)
+	id 3A9F06B05B1; Thu,  5 Nov 2026 04:32:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 687AC6B05B1; Thu,  5 Nov 2026 04:29:30 -0500 (EST)
+	id 358B36B05B6; Thu,  5 Nov 2026 04:32:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 59F3D6B05BD; Thu,  5 Nov 2026 04:29:30 -0500 (EST)
+	id 270D36B05BD; Thu,  5 Nov 2026 04:32:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2EDF96B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:29:30 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B464F140980
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:29:29 +0000 (UTC)
-X-FDA: 85400542458.21.6491D45
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 1EB0920002
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:29:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TpbPfdgW;
-	spf=pass (imf13.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EFE5B6B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 04:32:55 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5AA26C08EC
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:32:55 +0000 (UTC)
+X-FDA: 85400551110.01.4BC8352
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 1466220006
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:32:52 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=j2bVp2qs;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793870968;
+	s=arc-20220608; t=1793871173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JFCU0FbtSuC2D7iPyi82SNxybv9/1CahXus+XyLTnc4=;
-	b=sDZyCErt7luq8j4ZOHk8boAQSw52PocxK2wv8a1RPUTae3pCSBK83/XPx10pJNyrIcrCax
-	Wejb/bNUq8zckdPb8Ror/lvgklSLjJoh50eXIuhdmli24rapahTQxuYQGo0absKYj4yqHC
-	eps3Fv/9HgyzGnIiAZqROjWmffJC7V4=
+	bh=ysAWuQsmXi0UpVaJ15Q1RIi/6yFzToRukQ4uvO9n3gw=;
+	b=p31ssUIgIzCJLZlH/OM5Wd+AkMQdf/6wYhb8EKwEf1USIPrtMu684sevGjhZ19FajRv7Ac
+	CZLNDe0aBbJ286askUY58KRHOQOyVc5MGTqaXEhRWBTmAfoQOeLI6iMxLXhCEb5G+5qW+z
+	8f0wrUxUgJhfg9pyzB0PNasI4xM/lDs=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TpbPfdgW;
-	spf=pass (imf13.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=j2bVp2qs;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf31.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.113 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793870968;
-	b=Vot35VunD5BpI5u/UpxWwJs+f2ClID2pQWZyjUQTsvvpXVbMIe2ahfCEkn/y92L/na9NqH
-	wlMerO0Xz5gfij1Sf/ZPkZMLev/OQaRG6pMN4SeOl5z9avF3Oiu6MmC7b0gnXMh7zcpNsd
-	8aw9v0GhGBoSXpOWz5GLQYr0OYXnLNQ=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5587841FFA;
-	Thu,  5 Nov 2026 09:29:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3A6C1F000C1;
-	Thu,  5 Nov 2026 09:29:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793870967;
-	bh=JFCU0FbtSuC2D7iPyi82SNxybv9/1CahXus+XyLTnc4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TpbPfdgWbH6gGD1XVstA3oJT7b5CDkZRmfmPvVlwNVz4gi1txWb4MKNvOd82hHgzx
-	 M5n8Hmb/YE7vOWlwMKHpqWHPpRRa9p7m0CXdDzdArFmMwW8329BlYcDhHpVfpkbf9t
-	 XsDszlEngFjzmH/tsneOFgvuRQ0B4NUL7WOT0fTxGOXmR0Y8sateaDFB1Uvp7/riDW
-	 cpyHu51t9NjfjbOmkgb/P/0Cj+GSqjjP+yqXVo0GINez7r4zd34ot8676o2QweXQhB
-	 O/isZNK0GboRZ8H9gaLSOhM8H/HMh1YB+Eyum/mnnJ6C5UeIf/aN47XVz+8g59wzdS
-	 YcSuMUyFfZUIQ==
-Date: Thu, 5 Nov 2026 10:29:22 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Qi Zheng <qi.zheng@linux.dev>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
-	akpm@linux-foundation.org, azpijr@gmail.com, lance.yang@linux.dev,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] x86: hugetlb: disable default CMA reservations on
- 32-bit kernel
-Message-ID: <auxMctmYZTTwtRRJ@localhost.localdomain>
-References: <cover.1793850539.git.zhengqi.arch@bytedance.com>
- <ece5aebe95f6565046d17ffb738670feb3202943.1793850539.git.zhengqi.arch@bytedance.com>
+	t=1793871173;
+	b=mkEDpco/K/asKYKvacXahTNzlhvhu5S8eqE+6BK+tqejpDmj7ICaShmvxmMGZDw2T/qKqQ
+	yn+1mCnTDxVFP0wwx3Xhys2kSt9p6WyZ/lUmStDtmNF/yeE2ZUFaxuCdyLpt/DNhP0qUJY
+	yjcaFKjxIjtYdQ8tYqgHyN4arVBaHu4=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793871168; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ysAWuQsmXi0UpVaJ15Q1RIi/6yFzToRukQ4uvO9n3gw=;
+	b=j2bVp2qsj9TEsbj1+QFuz6AeYmoDeEkEthqxaWc0kO5cxSD9gOzMvpKnGIeu7y7Xzj9pcG0VS4UmA8rN2kq0ldgL4W9m406xvOm6iGK/YazzkKwQ8w64mmQ/i2ogzWu4qo4KqkbGtIFp7pGqmTEWkVMpar20V8ppxSjB+ETtC6Q=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=6;SR=0;TI=SMTPD_---0XE8D.3c_1793871166;
+Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XE8D.3c_1793871166 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 05 Nov 2026 17:32:47 +0800
+Message-ID: <d07c04cb-3ee2-48fc-b289-7167a8589f38@linux.alibaba.com>
+Date: Thu, 5 Nov 2026 17:32:46 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ece5aebe95f6565046d17ffb738670feb3202943.1793850539.git.zhengqi.arch@bytedance.com>
-X-Stat-Signature: szfdhia3sza851qezgugdii65x1s3xeq
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] shmem: skip empty unmap ranges when punching holes
+To: Hungyu Lin <dennylin0707@gmail.com>, hughd@google.com
+Cc: david@kernel.org, akpm@linux-foundation.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261105055619.58289-1-dennylin0707@gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <20261105055619.58289-1-dennylin0707@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 1EB0920002
-X-HE-Tag: 1793870967-602062
-X-HE-Meta: U2FsdGVkX1/Frfp6KjxvRD4EfkYATvT/hBzvOtXsZPxQzTBpHCoefTD+y9Q770z3jQwFmWlI/y5D1yuatPEOzgqJyKprFjTtqtGpwL5vnYfOhOHzdx+B17IznIQL15jCKh1e3gl/BvW9FMGQxspkntaGNF7GVJIZt3iyUh5GNAfgb88H/osx2JCIqkxJr7famhvq+1mK3e0XLI6mFlHbXTfKBtSatJ/LXWFxgcC+K6HDlBlLZE/usAaU7NYtHO3Q1uxh1erSaeRMlJL7uoiWF+q8oFOnw78ceUpExrM4jSHFoV2we52KkQS0hBMeeF2wEZ3zEe3ZiGoeRJKVEvnssQWXxLL1sppmx5pqryk3rUBdqRCaMEa+NJEHXxLz2gktR2H5U41BVnTKPl5IPCuB1JyJQu+LDSjVlvb4+3uPOCBguimkaNRamvr29FuQBgzaTC8tSx9vCU3xlZNqne85nuWy8DbqEBVv9DJN4vw1hBUfhycCUE4aCKcaP/f+xzbW2WcLYp8XpR4t3UsV/y2kJB7MpA8yAo8Xt7cNNY/h2e1W88lg87l4wSnayphzUPukmdzFJArNGe+bpFZah3PQZRsUOnu+h/2qVB/030PXcejpucWB84/iYJFOJDUh1vW1fUF7lHZVdNynlK6o07XbVy6QzFrNqO8vhXHokHDKD3g36DjSa+rQ0EtolH9lT5IgWCIAZ/GBKK6CcxIS2hxCkKM9isVog/MeVAll/0qGrKnUN1o5tJIXV5ICvksvvGH2MY+fVis1gr3PMBfNNxxmrf0Wwv3UcxSigojCaN4ganGgIcIuXW4WdjoguLr/O4+pBwOXwyDsCmbqE69XAir3ah1mebtZJh/tn3nbc6gsJScN27cUkkLo7cWMXjym0e8yjyzH8RHPyoTOlU5DSSHXfVTrAduPODeivJpgKZM0HChL4vZfkgCmC21HhPblDbEpS7solQ1671uNlX81Gzy
- bqiYERex
- /YiniMMONipN8pN/owvRVPYHa7tZRAOWbmeViJAfkjy9+titqrpZWUp/WvJXM5D9ib48tbGTXgToEDMUPkieZ9bfIBx3Vyp6knZ+dX6+ELWAmoaXVGaeklEFF6IuYDUkQP3Dn6H3jpXEpy4HKnMwhv+W6mKfw7fwzP1hscHLXAF6D17HhyZzrkbgczSq0HXLImUG7a8oYkvAUTqj5RRiMpDyj3bE9dYCzI9V/iyxaVhILbY7apPcMAssFEHwghG0jLbSENjxW0sBm4FCXnZmPaWZbZ6wMq5irOE20
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 1466220006
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: k9pp1ig3odemwks9n5jo136xjc43t3cx
+X-HE-Tag: 1793871172-66395
+X-HE-Meta: U2FsdGVkX1/8Vv6KS1touVTE31PVMnMXiOTd//OMga1V/VF0vAWfJwxZI0nG81QzMrLq0gw4FUUoIECyZuSqhkn//pwIkaD9C8X42BI8k8AizT2hknmhzN09mr9Cx5QabR5sF8JnMXLwRAQkaS97hgnVM9yB/fEyf6oBZ4lqmNgscB0PbjtjJPtjTF041H+q1aXh5jhyFYGfaSCtppKGzLV3TSZBPrA1erjZsNW7OUmx9+g4ABpef+2s6HoJPYB0ZFGwbAcKVv6n8rvF2soxTFU21X9SO5HijExrAMulUt0yWWL2jwPIW1UHY1v7kkh//aWmkhzDNfwq9rNOg6HBo2qI5QFfJFYXhvkcEHxINK0LWug5rZuhNN9OEqG1EFMFVlLrphktLQ5Qti4L3c59YKPdR9i9zJR28Dle28oNy1mPaT4fdcC7iEwUBlCzuzJzZb+4hydLRXXoqb72pA+o2KQVsLrkXZIPPSk9k731uM1z11sz5nhoFuIAHPPHfRL8rK3TnW3pANWj8EUhAyEQDnWQAhrzshbqmK6M8btusLuRdqabEn4fHWXubqsyd/SWlxo1o3R3M1rTbjRZ3vTzRWkDZgqYn8ls6n4Vez5Jbfe+bYx69fAPejpECYrS6k1Z4riATU5LlcXYKey/+m/sKyuKpX/8no1Hg98xZPPWXhYi+XN+WK7rY1+0ceUGRJP1PiCHB3Bas1vQvVlsfH0VcSK78W9NZEB47z5eEG8Lp6ayjJrJQQyE6A47lwpWUqXDZkxaIiqahmK8aMmsbCYjuudcHJzsn9/3LRFrOjVqoNtxRvXt3/Gzy1DKYM4fwAxKnbr9W6Wi1NzWNEuuQ/HwXfV2k/s0my3odv4k+UKTyOU48/HNT4adSY6QHUMGbtUioeVT5cxnGZf00HeBBfcGeWGYaI0sGZvvPBVDNL2ihiCg6pGJnUMxcJUbhslDFDhzXs4nPJcZYM1Y7a6/TFT
+ NQWl223G
+ TFr2VVnVjJLxFEY+1ZsvM9EwLF9GuxG4hCda7KstkSrks6l5GTjtPO3dA1vYySxy4r/8PDRocw5653bHhKLxhRT/NeZ5AREdAQ+T5iyZvImjgMLb/u6tYCFPmBCkvAEj/pqBxxX+BLr195mgQPFAjfDqHZJA9SrWEt2KgajD7+ebm6wap/bRT95PmY15u/EcBqtZ5l9CjpkjN0Z2RKiMGLKhLi6QhffHfaHXwv0MSeRsJQhcfOQ+fBR65xxN8kWmjVR7ItenL3zYIAbq6C2JZr/aGv/Yy2qUQf9MXm4QUv5pXQwlGJge97jQafhJD9jFhjO0K
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,53 +90,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 12:07:43PM +0800, Qi Zheng wrote:
-> From: Qi Zheng <zhengqi.arch@bytedance.com>
-> 
-> A 32-bit x86 kernel can run on a 64-bit-capable CPU advertising GBPAGES.
-> arch_hugetlb_cma_order() checks only this feature and returns a nonzero
-> order, although gigantic HugeTLB support on x86 requires CONFIG_X86_64.
-> Specifying hugetlb_cma= can therefore reserve a CMA area that cannot
-> serve the intended gigantic HugeTLB allocations.
-> 
-> On non-PAE kernels, the folded PUD_SHIFT yields a 4 MiB order, which is
-> equal to MAX_PAGE_ORDER. With CONFIG_DEBUG_VM enabled, this triggers the
-> VM_WARN_ON(order <= MAX_PAGE_ORDER) check in hugetlb_cma_reserve(),
-> warning that hugetlb_cma is attempting to reserve a non-gigantic order.
-> 
-> Require CONFIG_X86_64 as well as GBPAGES when selecting the default CMA
-> order to avoid these ineffective reservations.
-> 
-> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Acked-by: Muchun Song <muchun.song@linux.dev>
-> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
-Acked-by: Oscar Salvador <osalvador@suse.de>
 
+On 11/5/26 1:56 PM, Hungyu Lin wrote:
+> When a hole ends before the first page boundary, shmem_fallocate()
+> calculates unmap_end as -1. Casting it to u64 makes the range check
+> succeed even though the hole contains no complete pages.
+> 
+> For example, punching one byte at offset zero calls unmap_mapping_range()
+> with a zero length, which means unmap to the end of the file. The file
+> contents are preserved outside the hole, but unrelated mappings are
+> removed and must fault back in. This can be reproduced with fallocate -p
+> -o 0 -l 1 on a mapped tmpfs file.
+> 
+> Keep unmap_end as the exclusive rounded end instead of subtracting one,
+> and adjust shmem_falloc.next and the unmap length accordingly. A hole
+> ending before the first page boundary then has an end of zero, so the
+> unsigned range check skips the empty range. Retain the unsigned
+> comparison so rounding the start near the maximum file offset continues
+> to be handled correctly.
+> 
+> Fixes: 83e4fa9c16e4 ("tmpfs: support fallocate FALLOC_FL_PUNCH_HOLE")
+> Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
 > ---
->  arch/x86/mm/hugetlbpage.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/mm/hugetlbpage.c b/arch/x86/mm/hugetlbpage.c
-> index 3b26621c91286..70726a99ede7b 100644
-> --- a/arch/x86/mm/hugetlbpage.c
-> +++ b/arch/x86/mm/hugetlbpage.c
-> @@ -45,7 +45,7 @@ arch_initcall(gigantic_pages_init);
->  
->  unsigned int __init arch_hugetlb_cma_order(void)
->  {
-> -	if (boot_cpu_has(X86_FEATURE_GBPAGES))
-> +	if (IS_ENABLED(CONFIG_X86_64) && boot_cpu_has(X86_FEATURE_GBPAGES))
->  		return PUD_SHIFT - PAGE_SHIFT;
->  
->  	return 0;
-> -- 
-> 2.54.0
-> 
+> Changes in v2:
+> - Use an exclusive unmap_end throughout, following David's suggestion.
+> - Add Baolin's Reviewed-by.
 
--- 
-Oscar Salvador
-SUSE Labs
+Thanks. This still looks good to me.
 
