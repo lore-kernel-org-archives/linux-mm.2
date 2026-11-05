@@ -1,148 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D91606B9C3
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AECC606C89B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TQ4MwyG0
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=cABB69KJ
 Received: by kanga.kvack.org (Postfix)
-	id 6A5C36B05B1; Thu,  5 Nov 2026 14:54:02 -0500 (EST)
+	id 8882A6B05B0; Thu,  5 Nov 2026 14:57:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 655F66B05B3; Thu,  5 Nov 2026 14:54:02 -0500 (EST)
+	id 833396B05B3; Thu,  5 Nov 2026 14:57:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 545016B05B4; Thu,  5 Nov 2026 14:54:02 -0500 (EST)
+	id 721136B05B4; Thu,  5 Nov 2026 14:57:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 21E806B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:54:02 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7A527160BEB
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:54:01 +0000 (UTC)
-X-FDA: 85402116282.16.7FAC0F7
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 791C440009
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:53:59 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=TQ4MwyG0;
-	spf=pass (imf01.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793908439;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 46F946B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:57:50 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D2976C0C07
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:57:49 +0000 (UTC)
+X-FDA: 85402125858.27.3C22D4D
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 070FD160002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:57:47 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=cABB69KJ;
+	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793908668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FW6tKeq353YHIRkk0OUzFf/CvCzaixbIzv+YKmAJaT4=;
-	b=fLM/qlbjReiVAP3sfjPiNyg6av5HOu89Yd0dK8WTB3ZihD2r86JIiYPAeQc00645RwcLyU
-	en3IpUAKHXfTFx+GW2xKfc+OYhUGMkDAJj/EfIpWCDY11J9aWr/cRoFl8JEU0yy8oaFhQz
-	MmWgZsN/G2N4GhxWh3Xp23OBHEB3Bhg=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793908439;
-	b=m/76V1Uj+PVgGSnsz180Dxseo25L4iCYv3imwHZ8nR8v8eDREgL++5UIJG2jqsNtEkiIEI
-	787vqWWMtrqcMtVyjC9u9DS7NIMry1k4Z7DPyjD7vVATz2NaDgkHAD+Mr3M/UVLyl6WSyx
-	JY1Xzcp6fHat2OVWZv7fpukMzHh9suY=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=TQ4MwyG0;
-	spf=pass (imf01.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4a4dc547987so13364955e9.0
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 11:53:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793908438; cv=none;
-        d=google.com; s=arc-20260327;
-        b=ERxu5ENJKRyze/jD76egUgclX4XZgxM9DTZmYl532007JzAzcro+Wxja5GIj0Bb2hv
-         tRiNzou+MAjJA/nNaOVaEwsX3YrfeVrFYGbZjQOLEGpOVRck2lMDVVlDEFmeJuCF3C7r
-         gGDMS8DhXOIuypXyiBXvtcmHhsQJIEG+mZ4Kv1LSdUm/0Xn7CDWseDkw5g+s4/lHAdcA
-         lMUvnI/UrgmzrZtY/N6ivWOsVt4EHvRtxjj/EGA7oMuO50AY0kpRNN4m8qDj8/FBH95l
-         cP66oyOfoP1Ht4rRMZ7XH7UcukOSLXqjwhCkqjuAOj9GT+BJK3k0CrIgmjZh9w0TqQJk
-         ZpMg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=FW6tKeq353YHIRkk0OUzFf/CvCzaixbIzv+YKmAJaT4=;
-        fh=F9ezsOu2gTUQQF09bzyDD7ywg62bjC2Pbuc/vzPswws=;
-        b=fWdQS8RxDV8JTrlLU5I0fyLxr6aoVYdA4fVL/tQHL1NvwZMsDWKVI/agzuZO5IkfZj
-         2sIKTq7IpXb+/bOR5aUD5QW2K1FxDsXZOq8eCKr0trzu3Qljt12ij5jBMbC/YoTaq423
-         NNcnB6LsEjrt997bNFwfOBHReN5B94C0sI4SZtekPWXcRkBB9yI1YE43xCUlydqGY/M6
-         JFh9q05iqNpuUzaL+gakJKodRkF7bPjMTqZ/KtASv6T6TX0Z/53NhI6CuXi8SW6Jnu6s
-         y48CIFURotBC2SJfeHkGbUJ+/FFJYOtvcaGACzK6HXz4alviXgVhrHJzMJdwvZFbbt22
-         IEhw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=5M1pVxSHRgoftylSS6+7dytfFVlWyjkEZ+vlzow5Ync=;
+	b=TdJEO4EMdqjT5Yj3gK2F3W2Wte+atL+rSXPkbH05GR3/FpVcEAW/S5imPUIXUG/w0U88fk
+	tlmE3mdNXMMIf04hNmG91aevqpRKDc9/PekPrIIX2K2itie6yPwAqqZ96Uropy/Hp/ta8n
+	Vqblf5ryKEC3iYcEcytnbNkg/cawIiU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793908668;
+	b=wQLgIst1EQ1T+g629bsFIXLWqMxQcYyZ5bRjz+AppDIRRzIC+Mh7WRQupZREe94MhebzJT
+	FbwV8PdS2PHWt/lLPS9dyKEQxXSuBhlQp+hCYAbdtG02xYfzChiLkcpEi9h1nGDf1jb6iG
+	lSUH7xG2ahgXycBk6d0RufU5IeaQtY4=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=cABB69KJ;
+	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.54 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-3ad2b3b1c02so1365055a91.1
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 11:57:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793908438; x=1794513238; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=google.com; s=20260707; t=1793908667; x=1794513467; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=FW6tKeq353YHIRkk0OUzFf/CvCzaixbIzv+YKmAJaT4=;
-        b=TQ4MwyG0PJHf0gT2B5S+httaVAo+gb4T7lqTAZ3TlOA5AYJdjLXvMln2q/QK8oYxpW
-         9J7uDGxeKaRh0u1HtGiMi/wpE1fWVIXzZQRA5q7QCCON4CY8xY/zw2Pqu0LzUyU6F/Rx
-         OdljyPRKjp9cdWfXVpdlXvCwQ/CmT7oBFs+FoxDYEudSpclNo5EZVZYcad+Vwg2l8mGK
-         GpO8tcDnzwcmnZaag4Ztia8+RISzrCc7iWz+mI4d5aO3RjxtetKQ6NPzqRmqOCBq58dK
-         6zL+0izyf/czmT56GBxmGXbO0ilnmCWDrbijRF0YJPzwDNDzMO6KqTEN/uQHOVZiCufA
-         Lrug==
+        bh=5M1pVxSHRgoftylSS6+7dytfFVlWyjkEZ+vlzow5Ync=;
+        b=cABB69KJdxEiUOvtrzHTDwlFSlLrgufTzWLwK1sn4b2wYhuAMWMyddjvb/F28X9/1b
+         yxGv4iDbU8gMic6D43wHRYcvtm4nl/LSmA3PL2/esYFM8p3fD4gOkRUfBvmrrDgPAjAi
+         L4cHYGP/JYvC7+rJSL5TaTpsdze67Bhc3oCSSyfECoBDdSo+jAPyqa0ML6WHX5+oIDUo
+         Dy2cDQXfaCNZZ197DP1MdsHhIzn/D9+xxY7vyMqVXML4wCIgR6uCVtktOtXeA/oQGVH6
+         wcxCAIaQcOw3FKm0wQo4r/9U/AlIPFFDT3g4MqDOygZuQr3PDlXsOCevWTxA/HgthMGT
+         1wBQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793908438; x=1794513238;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793908667; x=1794513467;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=FW6tKeq353YHIRkk0OUzFf/CvCzaixbIzv+YKmAJaT4=;
-        b=wKKyYpA5w9QLct6ZTRqnZWDYK5qqYA6f5gS1CYCsJVigKNnoGb6W12X5HWfqOqVXg8
-         ZWVVhPffHd184TdqMfg06PpbjD8h6hNjyavqT5w3r14mwUFhnmX/9f1KOU38T1hG9QnT
-         4dsF8Lv3xxYiCuWycxLwkVbtBy0+DDjDGDG2cpYnO39CK/6RFrv40yG4o39fQ07xHVUg
-         7P36uTHb9KZokkK1avKeznU6qMjHYjdSQ9FFpCPms5hmVCw1b4vKRepciConxG/tgy4C
-         rBbj7EJ3uAPLPkfKAnvytUT+HHLX4uhS1+p6Dkeqyn9Y4zpNl7qHzP5F+1bn0t0Ov/vg
-         Eb1A==
-X-Forwarded-Encrypted: i=1; AKwUvBxzpMAYZ6ThILYSVHUNGiTkhMDni0WNbvbLtiVlg0wFGt1cjVybxwZCnRmWM/uidv3oHCqdxJCseA==@kvack.org
-X-Gm-Message-State: APuU4Z9m/ioDXQfiLnBx+VZPVdjxFYXz4W3yS1/qogYUTA/KyZaki3Bd
-	dN0Z9mK/WcYImIYXqmv1LFLOvyr2DvX8B3oeBA7Q2FgcJ5uZwnRp274kCG1RrEDlOhwQHrKVT7L
-	9Q3A5tx/h+0Y2iuyEvkg4bb+13erikYs=
-X-Gm-Gg: AYBFou2FcelEvsZLu8w6VkK7aBiwl4ZzSbhCpF3ZzWpWFDc1qjZAlLT6McfhpSZgpLE
-	y2Qp7nadgWHlnHsf3dkIvAmLhxs1EinDu+0Yp8vTFmSxcO7lQWchANF85Au0X5hDDn4xPVnM2gB
-	B9ftLJI+qRhTFHb+uJnoz5LqCE0SfM91JLEfW/aLG6Zte95STQAWPUXyW7IjXWVcckjlWKwmtPN
-	ypjdwZ6VHCEaKigFjQGS/5wU/etpePRLQQFkVQ3cunVGgewYkHZCSt5g3vgQUIZ4dYOcVsrK3Ht
-	Ake8Mw3vBOlV3nsXIS3hyuDJvQ+ev25ZBDhZWF/5tArGtg/yBOrpQ4WkjRdSBzSbC+ZajiCgRFO
-	HhYKv195gGC6qa8AzZA2KoaoRpinYMht4CCNXYlcG5OWk16T36DqlJASUIfNS7RHSwDLhBFsD3r
-	oW2ANM8yBY+76RZWyeAg==
-X-Received: by 2002:a05:600c:818e:b0:4b3:9540:47a6 with SMTP id
- 5b1f17b1804b1-4b6dff86e38mr2801065e9.28.1793908437547; Thu, 05 Nov 2026
- 11:53:57 -0800 (PST)
+        bh=5M1pVxSHRgoftylSS6+7dytfFVlWyjkEZ+vlzow5Ync=;
+        b=cjGP2lwF/6az2j79ZdFenbT/4QKrRq7mBMhp+TucObzMrAToAn3A4HYDMptRIWlHZt
+         oPVtHvPJZL7OC7sm9kdaEW8BFoyZIkVg5/nwM21BArJUQYcblG7Bnf9tCyTCsaxy85VD
+         mMtkQsNp+31kw4Uqw/VpZosPG3OpCh6KapZLFBuy7jQgrJP80Ogk2nb/KxCdd5l5qNu2
+         O+vZGFOFccABAwf5R/xTp3wHmtwA/Is6yMRW7IOnGhGZgsRx4k+x2mC1NeoeJHcblWWu
+         2+2Wl77wgw/CD/s1jCzLOJv2xtCzGuNqKv9x8da/UQo+5Yqvbu+XAdt8vswf5GBLpqJE
+         gQKA==
+X-Forwarded-Encrypted: i=1; AKwUvBygiC7omHUhHqURnMLTuFSr9yIrGhsf2mnuEVrQaEarKlDohz+uDN7LB3Z/zq4fyieeVbu7z+OS6w==@kvack.org
+X-Gm-Message-State: APuU4Z8Ldp8BGlGycqB442pDVVU3Fz+kZqOBINB22hCBr96/im8Qr242
+	YkA7WhV0jz27G66tNoA8OCOgiri4SmyDs7LrIdFa7hUUmy9BW2SH/O2JKqCXL4h5wg==
+X-Gm-Gg: AYBFou3K7mKeFBadjmgN8G1OPndNpPBmX2aCly9nOByoXWbmXPF/tFeUcHLKS0i5cx0
+	8hVqrB3yi0iA/H79aUUIZzquRdrYQ/LTYeDvdq13YeFM5vzPSDLtG3pYunHk3yD9PGzppmEQqqj
+	K7wVZ/KqqAxdCGoXzoeIPdiNP4sV03uH/QY1Ml4FyBddsN0ICa4m5r7eEicmNc8DTARSwSfBdb2
+	tQTcZL8rmimAnJqwphAKdZXt3STutCWKRBxlk9lZ/tzKek349gJmepL+7nXXzGjiuJkcAZCRppJ
+	DXEQHSO6h++D+2F8JT1thJ2pO6UQSQXcb8Y8kOfUBekx7V8Ht1CZLZhxYmRVjwccKWpYJ6/Fxij
+	8ozazkezjWUn47dFa46x2TxfWj+E2FAocl9pkjxjyta0UXT7Nbr9yaPB4XwuDkpCpUDnj9dS1Vq
+	VybnyRqTezn5B5dLE6oXgnmnt6kTdoO/KypwIRkjlQ8dDhbfGQE+qQaot7vzHKcdHrqJsoZGlIm
+	mVKYoY1iz67McOLN8B+yu88dtgVapsEm5CqRYsK+YsW8ObgjiXPofNE+Wn91gWTU1m5lohuRtc5
+	NnHevu4XU4P293c4gOluVtbfPSKZ+pRvjHYqT6L0iC+9Z6IRGvf7KB1pUAtjqLsH
+X-Received: by 2002:a17:90b:3c04:b0:3b0:968f:fdee with SMTP id 98e67ed59e1d1-3b0db7190d8mr58712a91.55.1793908665982;
+        Thu, 05 Nov 2026 11:57:45 -0800 (PST)
+Received: from google.com (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b326add7sm4962363a91.8.2026.11.05.11.57.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 11:57:43 -0800 (PST)
+Date: Thu, 5 Nov 2026 19:57:41 +0000
+From: David Matlack <dmatlack@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org,
+	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com,
+	ankita@nvidia.com, apopple@nvidia.com, bhelgaas@google.com,
+	chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net,
+	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com,
+	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com,
+	kees@kernel.org, kevin.tian@intel.com, leon@kernel.org,
+	leonro@nvidia.com, lukas@wunner.de, mattev@meta.com,
+	michal.winiarski@intel.com, parav@nvidia.com,
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org,
+	rananta@google.com, rdunlap@infradead.org, rientjes@google.com,
+	rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com,
+	schnelle@linux.ibm.com, skhan@linuxfoundation.org,
+	skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com,
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <auzftbPFO_6XBYVw@google.com>
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-8-vipinsh@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261029204157.117879-1-joannelkoong@gmail.com>
- <auPhT70GU-Zqe9Qy@linux.dev> <6849a9c7-0e11-42f2-bd99-d7ae3d5b944a@kernel.org>
-In-Reply-To: <6849a9c7-0e11-42f2-bd99-d7ae3d5b944a@kernel.org>
-From: Joanne Koong <joannelkoong@gmail.com>
-Date: Thu, 5 Nov 2026 11:53:45 -0800
-X-Gm-Features: AclHuK83KbcAE74RZl_XlV2f3k85A7P5GaBmid_sbfdijpMH3WJv_bA5h7VKPGQ
-Message-ID: <CAJnrk1ZF7FminyCYORxysXW0zA=fuUtBe5YXkabsSTOmXt_vdA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: move LRU size stat updates out of lru_lock in
- folio batches
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, akpm@linux-foundation.org, yosry@kernel.org, 
-	hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, 
-	muchun.song@linux.dev, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
-	rppt@kernel.org, surenb@google.com, kasong@tencent.com, qi.zheng@linux.dev, 
-	baohua@kernel.org, baolin.wang@linux.alibaba.com, axelrasmussen@google.com, 
-	yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
-	cgroups@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: p4qcifhhwyip99dn6fbi9w3y8rdsby5g
-X-Rspamd-Queue-Id: 791C440009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102153656.1431701-8-vipinsh@google.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: xz8mm1obs315tw9diurfozreixifh5d3
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 070FD160002
 X-Rspam-User: 
-X-HE-Tag: 1793908439-68012
-X-HE-Meta: U2FsdGVkX19nqgQ7SEF33xofH60BNcSk3BJkIg8xmjxXbSEXMY1vAA8+zZwUlAF2Ln/KoyuA8fHak0m4UZkK3wflf/BMtF0QCWr341JVPlFjmpRrrWPdSCNoRjibxaHIPTVTPIdvfgIWYYwz6wDUR/V/YS6MtLu5RUiqErB3zs+ScYsYVDqQiezp4cXi3Wi26jwXqUwFD9SgOuVvEexjMyfT1jbPMN7tP1oVkEG8mREI728N6UidvjT+LjgflOtBl20UIzdZW9ivU6HVYOFZE93fJY9WmvqlReeqAAOECyq04m8Ij64Zy9MFt8g9Z5WOEVsS3cgj8Ny2IAjJpANHbyZwNduGs4MKv7nUfFk0OpKoorERaZVwogHReXWJMieHGl1+LWBFs4GEEXLLefd134Hl+WVbPjuPQehfhxW5C/e/4BHf3PXMvxefA2Gdrcy4Tnd19Jp8qiCptz2RZCNPP3VV9CsBaA9ITBCANhZ4GeKDgxvPIe7FydTzLOMUL6LD9qxL2V4lJ/M76pP9L0odzjrocpLHSKYdicnfDdgVYYLXhrBjuLDG6lDGGeWras0A2JK0js3IvAe7mIBB2Qx2+AVnuDhwbMwXJ01ZKQLsD6zKjElnscEMiZD+0qrWvAA9zQfSgUBooCEM1zls9wqIBwX9hCzK/tdZNjnxp4RGtnv0NQr5/UYaJqVJFVNO85VOCJCbP93D9C6K5K9Zfh7LCz45P9gjAxki7AULTK/k+pDvcNLHrimIriurZSIrYiTlam2oEB7yzWThSTUR3NN+aHNwGdYBKFrs5aFOnB09hLIhr/UVXETc33R2t8ZX+7IL0G0bpSm27cQeNxx2YSmb3o6toKSGvKIz9eqr/K6HCjqi+XMCPnshRfjjavYBdqT5h2t1rFVRT/U4dMCTapA+eOmZMwFYRjLLreZbHInt2BYZWG7xfl9HVN/LrxUezSBmE3RjqNDqSeUx6EdQv4m
- UH7GdJEX
- texHcJzP6IKUg8obp3g/Eed9pNIA7IaiNsUBIC/2m9QA3M+aMYJ7u1i8N060cgyziz82W13vlJU/VyYltk2ebomZRJS+e81XG/H372EeLvmcNGR22alMcAhGAYP3y7UEEqdtFrCrnqMZ724n2kmAa+rKMdAWYaZaN4vQo0VOhryaFGHaVjRk17u6O9loNblmdL/kzJTkgEcrNkXYk8BBjVIRmwspSUBbMr8OUD2+igI32n2/KYpRXqLwkGIYWxH+srwsq+A/W2bSr2bkjjWv6mmH/6lntRioDsermD9O/BNJSR/fkFH+q9IGVPuJqbjax6Zllku7n7kvPVHIWi1oZAu6SWF0DWyfCw6zn0pt+bKSHi/vOJmoTmyLcF1lippV6C6uNExAVAiHwD7aZJgN1rtZQp/TC4tkHoEQUozidIhj+JcP/DWIO60hJOjgO13DW79CrfDtyKsaXDl6gvFVN9WzrPIGh+IVkcGKxj1F5GW84GC2RSpeNrkfOZA==
+X-HE-Tag: 1793908667-920777
+X-HE-Meta: U2FsdGVkX18i3sPa3vk7lBigZIGuVo376+BmL90WXGLQ6pDqYo8DPrKU0iY7fots9S2YdGrzCY83Aw+xL/+Ll+foc5IthmDaARjNxoC8xxUMCGnJdZ9JRDtKshvUwAmi2/hHEPSbm7hSFGJm/zAe5JlVUjfTyMb+JRz2n+D9iCfgvRwDJFMt+nrS0KI6s82Fj9miqOqf0BJuggNOTbqehYq91xrqEj5zBzWhhjGt0iBShd6dGFsyA96fPzw4cGV8QrVgvY/c5UN95RpTyzK30ct86kCFHLo2UBKxLTvYWbStmVeEB21lYeDkzdM7iVZgx1oMZyOoFQdB2nlkdzofq/7PnTGMQ72FEIswak5OcaiAS7v8to/ypXI6InE4nbSvbvwiHDx2t94i/BDenJ1zApN7oe/L440vQ356jOtzpaz28RlRzIjQTBxT5Fj0UH8aLfltd1NpCPNAJXO4FHFBRT6cbbRihCFYMTNO2WkyIF1zubxpPH3GZ72fCHzi095cEA8jEMJ3x15WpgD6DInaKTOxmwaM0mC8sopqH1duYPHMrujqABGaFySXBWAOfXV8aTq27PFYBDfplKDSmuB9SUkDlcPEB7LtgN8VDFmdZdR1rAJoj0ethfzBLr0Yv93Ph+0m/gsC8TdCIm7Bhde8pbwi3uXrvs97NfsIZc3YTgxyLEO7WH523lFhOpIsGRXSw4wvQ38anIxANblL4e3u/HCQ9f3UR5it6/D/Ymt4oRkD462VQJiRh37aHCEtR1nxw7/oJq287+nlUlnCrb2E8WyTk0hM6hkOB1CU3wjJO1joVkbA4SUQ/HDm5VeW/evykGV8g/5zqz0jXXXGq6YZcM2OxBqCesP90zidF6Pf62PceqoPhTBFi1QjEBNUraa6IF6jZGQEyhhA/Wa7ZD/T/KchsobqEYPALndB8SCzrCN5sp8lrXwoeLJWSmaHxRfAnY2eVMDpgno/v/ur+Bp
+ BRGkbHy8
+ vQbNH4vQ6IOm67koLBafNzjJQsFz19JLq86hil717dT8QyKNRTeamT651u3OK1Or9C+53ypED1ubU+Cvny25OT3SVUtHvVEGX3C9V89vDDfZTtiMRjFYomhB4cKcREyor8TIVS45yyv4pYD0gO/+2OQ1zt762H/T4ACYXEekiHBmVLHfY0mqFJUuM1w3Sa/7zS1o7UB9lwiDl6pB+IgEitcOZxiFFLxccUHYIxszUb7+OLNw36MdyL7nK4Kb19i/6SHQRLYdPwqR+/mjqjGe/SEZdN2GRVOvEBqOwehpmU8rRZVdwZ1SfHlRz86M45IZNiSJsdEad8hV3Z9FFrthpR5DXE0RiSiiVG6UCSN2ByqJW24hswbtd3wJJmaMpc+pIAlsFmjhOIoAR1Tmwzgk/R9a7wuF2xgEumLtk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,86 +140,199 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 5, 2026 at 11:37=E2=80=AFAM David Hildenbrand (Arm)
-<david@kernel.org> wrote:
->
-> On 10/30/26 01:19, Shakeel Butt wrote:
-> > On Thu, Oct 29, 2026 at 01:41:57PM -0700, Joanne Koong wrote:
-> >> folio_batch_move_lru() and folios_put_refs() take the lruvec's lru_loc=
-k
-> >> once per batch, but they update the node and memcg lruvec stats for
-> >> every folio in the batch while holding the lock. Only the LRU lists an=
-d
-> >> the memcg lru_zone_size need lru_lock. Updating the stats while holdin=
-g
-> >> the lru_lock is unnecessary, and they make up a large part of the
-> >> critical section, as seen in [1] where a change that added just a few
-> >> instructions to the memcg stat update path cost about 2% throughput
-> >> because the LRU stat updates run under lru_lock, and the overhead went
-> >> away once they were moved outside of the lock.
-> >>
-> >> With many threads faulting and freeing memory in a single memcg, about
-> >> half of all cycles are spent waiting for lru_lock, and the hold time o=
-f
-> >> the lru_lock directly limits throughput. A perf profile with 80 thread=
-s
-> >> faulting in and freeing shmem in a single memcg shows 52.8% of all
-> >> cycles spent spinning on lru_lock, split evenly between
-> >> folio_batch_move_lru() and folios_put_refs(). About 25% of the time
-> >> spent holding lru_lock in those two paths goes to the LRU stat updates=
-,
-> >> mostly cache misses loading pn->memcg, pn->lruvec_stats_percpu and the
-> >> per-cpu counters. The stat updates are only 0.7% of all cycles, but th=
-ey
-> >> lengthen the critical section that the other threads are waiting on.
-> >>
-> >> Accumulate the stat changes per LRU list while holding the lock instea=
-d,
-> >> and only apply them after dropping the lock (while still inside
-> >> the RCU read section that keeps the lruvec's memcg alive). This moves
-> >> the stat updates out of the lru_lock critical section and turns the
-> >> per-folio updates into at most one update per LRU list per batch.
-> >
-> > This updating of stats after dropping the lru lock does introduce one b=
-ehavior
-> > change i.e. race between reparenting on offlining and stats update. I t=
-hink it
-> > is safe and correct though. Better to document it.
-> >
-> >>
-> >> The batch is attached to the lruvec while lru_lock is held so that the
-> >> LRU add/del helpers don't need to pass it down. To keep struct lruvec
-> >> from growing, cost_lock is moved into the hole after lru_lock, which
-> >> leaves room for the batch pointer in the same cacheline as lru_lock.
-> >>
-> >> The stats can now lag behind the LRU lists by one batch, which is well
-> >> within the per-cpu batching they already have.
-> >>
-> >> On a 2-socket Skylake (80 CPUs, 2 NUMA nodes), with threads pinned to
-> >> CPUs repeatedly faulting in and freeing memory in a single memcg,
-> >> average pages per second over 7 freshly created memcgs per run, 2 boot=
-s
-> >> each:
-> >>
-> >>                      before    after
-> >>   shmem, 20 threads  4.74M     5.47M   (+15%)
-> >>   shmem, 80 threads  7.94M    10.33M   (+30%)
-> >>   anon,  20 threads  3.04M     3.35M   (+10%)
-> >>   anon,  80 threads  3.23M     3.41M   (+5%)
-> >>
-> >> Link: https://lore.kernel.org/linux-fsdevel/CAJnrk1ZezmmzrYdf8KP6re_a7=
-6izMS=3DqGPeC8ZZXiteHyZZC-Q@mail.gmail.com/ [1]
-> >> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
-> >
-> > Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-> >
->
-> Thanks, I'm planning on queue this.
->
+On 2026-11-02 07:36 AM, Vipin Sharma wrote:
+> + * DMA Memory Ordering Contract
+> + * ============================
+> + *
+> + * Because a preserved noiommu device continues performing DMA using physical
+> + * addresses across kexec, any memory buffer targeted by device DMA must remain
+> + * at the same physical address in both kernels and must not be freed to the
+> + * page allocator while the device can still access it:
+> + *
+> + *  * When using a LUO-preserved ``memfd``, userspace **must** preserve the
+> + *    ``memfd`` in the **same** LUO session as the VFIO device and **before**
+> + *    preserving the VFIO device. LUO finishes files within a session in reverse
+> + *    preservation order (LIFO), guaranteeing that if the device is not taken
+> + *    over in the new kernel, VFIO's ``finish()`` callback stops bus mastering
+> + *    and resets the device before the ``memfd``'s ``finish()`` callback releases
+> + *    its folios. Cross-session ordering is the responsibility of userspace.
+> + *
+> + *  * After retrieving a preserved ``memfd`` in the new kernel, its folios are
+> + *    ordinary unpinned shmem page cache until pinned again; userspace must keep
+> + *    the ``memfd`` alive and re-pin/map it before finishing the session, and
+> + *    must not rely on a ``memfd`` whose ``LIVEUPDATE_SESSION_RETRIEVE_FD`` call
+> + *    failed (failed ``memfd`` retrieval frees its folios immediately).
 
-I'll send out a v3 today that adds the documentation Shakeel suggested
-about the race between reparenting on offlining and stats update.
+Most of this section documents LUO and memfd behavior (finish ordering
+within and across sessions, what happens to memfd folios after
+retrieval), which belongs in the LUO and memfd documentation rather than
+here. The VFIO documentation should just state what VFIO requires of
+userspace and what happens if userspace violates it. Something like:
 
-Thanks,
-Joanne
+  DMA Memory
+  ==========
+
+  A preserved device keeps performing DMA across kexec to the physical
+  addresses it was programmed with before kexec. VFIO does not know
+  which memory the device accesses and does not preserve it. Userspace
+  must ensure that all memory the device can access stays allocated at
+  the same physical address in both kernels until the device is stopped,
+  either by userspace after taking it over or by VFIO when the session
+  is finished. If userspace violates this, the device can corrupt memory
+  that has been freed and reused by either kernel. VFIO cannot detect
+  this.
+
+VFIO doesn't stop the device when the session is finished until
+PATCH 11, so either add this section there or drop that clause here and
+add it in PATCH 11.
+
+> +	cfg_size = pdev->cfg_size;
+> +
+> +	if (cfg_size != PCI_CFG_SPACE_SIZE && cfg_size != PCI_CFG_SPACE_EXP_SIZE)
+> +		return -EINVAL;
+
+pdev->cfg_size isn't limited to these two values. PCI quirks set other
+sizes, e.g. quirk_citrine() (0xA0) and quirk_nfp6000() (0x600), and
+vfio-pci handles those devices fine since vconfig is just pdev->cfg_size
+bytes. This check only seems to exist to bound the variable-length
+layout of struct vfio_pci_core_device_ser, which goes away with the
+changes suggested below. Please drop it.
+
+> +	total_size = size_add(sizeof(*ser),
+> +			      size_add(size_mul(2, cfg_size), saved_size));
+> +	if (total_size > U32_MAX)
+> +		return -EOVERFLOW;
+> +
+> +	ser = kho_alloc_preserve(total_size);
+> +	if (IS_ERR(ser))
+> +		return PTR_ERR(ser);
+> +
+> +	if (saved_size) {
+> +		void *dst = ser->data + 2 * (size_t)cfg_size;
+> +
+> +		err = pci_liveupdate_serialize_saved_state(vdev->pci_saved_state,
+> +							   dst, saved_size);
+> +		if (err) {
+> +			kho_unpreserve_free(ser);
+> +			return err;
+> +		}
+> +	}
+
+Please don't embed struct pci_saved_state_ser in VFIO's serialized
+struct. Variable-length serialized structs should be preserved in their
+own allocation, and VFIO should just store the physical address (0 if
+there is no saved state). That way the PCI core owns the size, flags and
+validation of its own ABI, either struct can grow without changing the
+layout of the other, and the offset math here and in PATCH 11 goes away.
+struct pci_ser already references its devices array the same way.
+
+I plan to structure the PCI core helpers for serializing and
+deserializing struct pci_saved_state to require this. The PCI core will
+do the allocation and just return a pointer to the serialized saved
+state. But I just wanted to call it out here.
+
+> +	ser->flags = vdev->reset_works ? VFIO_PCI_SER_RESET_WORKS : 0;
+
+reset_works shouldn't be serialized. Alex's series replaces
+vdev->reset_works with pci_reset_supported() [1], which only looks at
+pdev->reset_methods. Those are set up at enumeration without resetting
+the device, so the next kernel can answer the question itself. And the
+next kernel's answer is the one that matters, since it's the kernel that
+will reset the device.
+
+Please base on that series (or cherry-pick that patch) and drop
+VFIO_PCI_SER_RESET_WORKS, along with the incoming reset_works copy and
+the reset_works argument to vfio_pci_core_liveupdate_reset() in PATCH
+11, and the copy in vfio_pci_liveupdate_take_over() in PATCH 14. flags
+then has no defined bits, but please keep it (and keep rejecting unknown
+bits) for future features, see below.
+
+> +	if (!vdev->vconfig || !vdev->pci_config_map ||
+> +	    ser->cfg_size != pdev->cfg_size)
+> +		return -EINVAL;
+
+ser->cfg_size was set from pdev->cfg_size in preserve(), and
+pdev->cfg_size doesn't change after enumeration, so the cfg_size check
+can't fail.
+
+> +	memcpy(ser->data, vdev->vconfig, ser->cfg_size);
+> +	memcpy(ser->data + ser->cfg_size, vdev->pci_config_map, ser->cfg_size);
+
+pci_config_map doesn't need to be preserved. PATCH 14 already rebuilds
+it with vfio_config_init() in the next kernel and only uses the
+preserved copy to check that the two are identical.
+
+I assume the intent is to detect changes to vfio-pci's config emulation
+between the two kernels, but the map isn't a good proxy for that. It
+changes for differences that don't matter (e.g. hiding a capability or
+learning the length of a new extended capability), which would fail
+take-over and lose the Live Update on exactly the kernel upgrades Live
+Update is meant for. And it doesn't change for differences that do
+matter, like which bits are virtualized or writable within a capability.
+
+Preserving vconfig makes vfio-pci's config emulation part of the
+contract between kernels either way. I think changes to the config
+emulation that affect how a preserved vconfig is interpreted need to be
+tied to a userspace opt-in, recorded as a flag in struct
+vfio_pci_core_device_ser. A kernel that doesn't understand the flag then
+rejects the preserved device, and userspace shouldn't opt in while it
+can still roll back to a kernel without the new emulation.
+
+> +	pci_read_config_word(pdev, PCI_COMMAND, &cmd);
+> +	vdev->liveupdate_intx_disabled = !!(cmd & PCI_COMMAND_INTX_DISABLE);
+> +	if (!vdev->liveupdate_intx_disabled)
+> +		pci_intx(pdev, 0);
+
+This doesn't mask INTx on devices with pdev->broken_intx_masking set,
+either because PCI_COMMAND_INTX_DISABLE isn't writable or because a
+quirk marks INTx masking as broken. vfio-pci normally masks INTx for
+those devices at the interrupt controller, but nothing does that across
+kexec, so the device can still assert INTx in the next kernel before
+anything is ready to handle it. If the line is shared, that can get the
+line disabled as spurious and break the other device.
+
+Please reject those devices in preserve() if they have an INTx pin and
+!pci_intx_mask_supported(pdev), and add that to the Restrictions in the
+DOC. Check the PCI core flag rather than vdev->pci_2_3, since
+vfio_pci.nointxmask=1 clears pci_2_3 even when INTx masking works.
+
+> +struct vfio_pci_core_device_ser {
+> +	u32 domain;
+> +	u16 bdf;
+> +	u16 cfg_size;
+> +	u32 size;
+> +	u32 flags;
+> +	u32 saved_state_size;
+> +	u32 reserved;
+> +	u8 data[];
+> +} __packed;
+
+Once config_map and the saved state are gone, vconfig is the only
+variable-length part left. Please either make it a fixed-length array
+sized for the largest config space (PCI_CFG_SPACE_EXP_SIZE), or preserve
+it in a separate allocation like the saved state. Either way this struct
+becomes fixed-size and data[] goes away.
+
+cfg_size should stay, to record how much of vconfig is valid. The next
+kernel computes pdev->cfg_size on its own and could come up with a
+different value, so it needs to check that ser->cfg_size matches (and
+fits in the vconfig buffer) before using the preserved vconfig. Doing
+that once in retrieve() should be enough.
+
+I understand this will waste some memory today, since each KHO
+allocation must be a multiple of a PAGE_SIZE. But that is a KHO problem
+that can be fixed later.
+
+> +#ifdef CONFIG_VFIO_PCI_LIVEUPDATE
+> +	bool			liveupdate_frozen;
+> +	bool			liveupdate_intx_disabled;
+> +#endif
+
+nit: liveupdate_intx_disabled reads like "INTx is disabled for Live
+Update", but it actually records whether INTx was already disabled
+before freeze(). Inverting it to something like liveupdate_masked_intx
+(i.e. freeze() masked INTx, so unfreeze() needs to unmask it) would make
+freeze() and unfreeze() easier to follow.
+
+[1] https://lore.kernel.org/kvm/20260812045325.2733631-6-alex.williamson@nvidia.com/
 
