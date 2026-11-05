@@ -1,106 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E756606A33A
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 14:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC10606A328
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 14:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PBGMmnjh
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UhsJopj7
 Received: by kanga.kvack.org (Postfix)
-	id 3A2A36B05B8; Thu,  5 Nov 2026 09:02:56 -0500 (EST)
+	id A66936B05B0; Thu,  5 Nov 2026 09:10:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 354E36B05B9; Thu,  5 Nov 2026 09:02:56 -0500 (EST)
+	id A17646B05B1; Thu,  5 Nov 2026 09:10:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28FDD6B05BA; Thu,  5 Nov 2026 09:02:56 -0500 (EST)
+	id 92DC16B05BA; Thu,  5 Nov 2026 09:10:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 052FC6B05B8
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:02:55 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E713BA0A4C
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:02:54 +0000 (UTC)
-X-FDA: 85401231468.25.18EEC42
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 5AD4D40014
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:02:53 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBGMmnjh;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 732D06B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 09:10:11 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6AA081A0A8B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:10:10 +0000 (UTC)
+X-FDA: 85401249780.30.B78E741
+Received: from mta0.migadu.com (out-38.mta0.migadu.com [91.218.175.38])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 36AC718000E
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:10:07 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UhsJopj7;
+	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.38 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793887373;
+	s=arc-20220608; t=1793887808;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zn4FGyqcpXuDOI4yAR+P0rUnqH2M0CuU1TGwYX3rR+o=;
-	b=AXd3+iY743jYnX9eUlrhP3F0k9spI3tDiyssSVQJn7hMVZ+WXO2fSsKNu1G1tQ/QDfcCLP
-	eYxdm7XoVRW26kFFhDfmdxM7ho2I1SRcnNrctfCrOV+d8ryCIslpCtbKELfY3/87G+RPfK
-	G9Wz1D++eJAhF/drZr+m3OUvPDZl8Wc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PBGMmnjh;
-	spf=pass (imf17.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=rXYKCnFMOcWT/GHOYQM/Rfu/7o9VqnHXStFCMJH6+uU=;
+	b=78pkxWL7/pnOTwwhqjgwQSwYXIjiSAZJCAMSSiM6pt8eSZcptRuEmQHiYK/wMZQq9fXRZa
+	GpBujBgHvlsPl7v4k1NX+XYZAxi8V/jjd5asFMtK0fp6gorrIfoaAdrwbGZvgnY/T9dVUg
+	EXAIeEYeYQc3OOgTwf0xc8NCjENhXr0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793887373;
-	b=S3qGFXJhS2plN1HBTcCalkh2TiCkVgpWhIsPdGNiC1r0SLFek1jrbzKSh6cFUJ4Qt8wvfT
-	7U1t+qSYrulZWXdJaDatRtaTICZwTtnOTiAMOJ6ekIQ8rmtlLLl0F7oIavy67Co5A9CSVt
-	XFs9C92bQLe8QDoHLbx85Fenp6yjOlc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D2F9160A97;
-	Thu,  5 Nov 2026 14:02:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A31E1F00919;
-	Thu,  5 Nov 2026 14:02:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793887372;
-	bh=Zn4FGyqcpXuDOI4yAR+P0rUnqH2M0CuU1TGwYX3rR+o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=PBGMmnjhDZ38hOgzwbJkh3sIHEnlSGL9uYp2wngdD276txrDfZ30SbBzuawEV1nnq
-	 Rv0xUXVLJMiY178nhfx2khC2t9XI1dRXm6G5TlAoNS7YPerunjz7djsPlvLVZ0/C/k
-	 26g4h1VjB/HlAFQV1zmssZ7NwOIYzsSSZb0yhkM1tOMG25faR5/ai3+x+Y/3RVOPDj
-	 gdYrprathq27egizqYSvwVuvU1wkKGxUxFpKE7ymPIMPn6A9ky5MdawMzjXl4/mefd
-	 pI0UAGhaO/oyhaxueCevuZ2zkOe8TTbhuwEgihtJKqK+ADu/Zx5bMOsVPAt+1bETdu
-	 NZoZqyIdegmtQ==
-Date: Thu, 5 Nov 2026 14:02:45 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Yonghong Song <yonghong.song@linux.dev>, 
-	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Song Liu <song@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Emil Tsalapatis <emil@etsalapatis.com>, Ihor Solodrai <ihor.solodrai@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH 4/5] mm: add and use mmap_read_lock[_killable]_nosteal()
- on contention
-Message-ID: <auyMat25VPKwzSuL@gremlin>
-References: <20261103-khugepaged-latency-fix-v1-0-a07ab16ac860@kernel.org>
- <20261103-khugepaged-latency-fix-v1-4-a07ab16ac860@kernel.org>
- <3a77219e-39e5-4e98-8f88-6f90bccf69f0@kernel.org>
+	t=1793887808;
+	b=APNQtcE6eFV8RTXYWC0XTK1TrnJFt64ns+35my2WKGFfT2EJAwB1hWCkj9vwOy9AWCoNar
+	5ruObfRtQnKYV/tHX0T5zCtFx7W7eAH5onguDxuHI6URJcfXzB5f/VMbN6XEPPiRn6U9ie
+	X5UvmKVitVRzwtexljlaslSBfPhlRe4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UhsJopj7;
+	spf=pass (imf16.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.38 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=rXYKCnFMOcWT/GHOYQM/Rfu/7o9VqnHXStFCMJH6+uU=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793887806; v=1; x=1794492606;
+ b=UhsJopj7eHfVHFq050D9+MxCSJ5dHBhv8RJ2yrFPYzZTJmr+fFjQwFUL4NIeyiehkWQbe6du
+ OwMc6YjYlYxGapwGW6wa+IIA9cAAL3q2QEymLQesF7UnpiBLFL31BY1Z2zzcJ+2U4mahw4VDRVk
+ qasCYPCXLuwXvbxG4cxAdrNc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id dd249d3f7c375ee6;
+	Thu, 05 Nov 2026 14:10:05 +0000
+X-Mizu-Trace-ID: dd249d3f7c375ee6
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3a77219e-39e5-4e98-8f88-6f90bccf69f0@kernel.org>
-X-Stat-Signature: dtb6d63ukr8agyq1ggrrmn35etmr9rbz
-X-Rspamd-Server: rspam01
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 0/4] mm: Enforce read-only shared vmemmap tail mappings
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <0851db25-fef3-4f96-8d37-81ad5c51d6c8@kernel.org>
+Date: Thu, 5 Nov 2026 22:09:33 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Lance Yang <lance.yang@linux.dev>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <chleroy@kernel.org>,
+ Ritesh Harjani <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ Randy Dunlap <rdunlap@infradead.org>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ linux-mm@kvack.org,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <6492A4DD-B00E-40EA-85D6-93183E8D3ADC@linux.dev>
+References: <20261019090830.1917657-1-songmuchun@bytedance.com>
+ <0851db25-fef3-4f96-8d37-81ad5c51d6c8@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 36AC718000E
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 1cyf7gyx8am7oacys7q3q1fisayd67hh
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 5AD4D40014
-X-HE-Tag: 1793887373-798922
-X-HE-Meta: U2FsdGVkX1+LBJuh71VuJsmJ3Dr7uRdyL2v+RF4kxwvrmMWpPShRKtn956P5UUGEOBMz6vn3QC6JKr1DEftv+i3SSSUHciCj8dnsemeeW77bjx0GBIZ2dU0d/JbteMWTa42ZijPngxWA/X6VfuhxFxKzDOR/6uJytqqkVxuRR9N/4zPxb3nBlQOAZw/3fNOdOvdBvOpMGa5TChkxgBX3I11xld4cdBjK7TuIL0BrtDSejips9DHgjDEZ6DeE6I6p4eQ3wzs3vpkTMHIGy5JIHu7BaoPJvCsMbAWVIQV5qWoKG5tg+WBx7nuR9r9T9WQDqMxO2InJ9yRCaNRbHpabbmqdmXNpAPE/KccdzIMQP3qlZpW1Z6KfHaDPbfD6dtQdEesGPKTss004sTM4APIg6sLGGBbd6NTwmZxg3/AqhC5udKcPVuY1GKobO/KJeU50yg1Zm22ctVFR39uEUCLuURwJuJsJPOc4yyLSBSPUfoqIYS9GbGnlkqJcWhnmTNDirdML+NB4CUVOMadOCEq4pmIsxKlhtQg/6VuLQyoxoZxopukIM7qhx76NPEhIMFYgPzmcd9ff7FDVx+Q6D+5CWvddK7pICOiislD8oXHCkkkFMP2IBBnF2pcYhvMQcGo5CYdzCDdoAWlubn1fnhWgn30uL8gbHLrqRapZkt+V+dTgD6Pc41fK8OA0rzBXhxF5IAROGEgUXdNueSKmBBTe9v8pv8whu0YjPvtWMArVSQ/Ub3+JuVrBRqllqGx0HkJj8bnrJWbKa8n3A3pY7vKwxgg98ZWJLgfznQZfUKMZ+w74Sg11iAdxQm83DCiYyauiq2TyzrCGa3ZxZUYpW94o9z6OQ55u6RZae+z1cPLZuehLNdRwZj3FYlu0bHPhgvvk6SrJ+J2UPZu3+bTJpH5NBK2KOXoISIeqxJymzDSBbnCeh6fOxPgnoKBRjYVxIWOrpQzVIfMKcGOW4Jq1BZr
- zWcpk3fA
- ZymCAV8fDbZ8DFXp+w/TPspfsk64ItVNOtakHBFYzsKJeEOOInKNjviEozqDg6XE9w4rUePB7fATYtpFDN6pb4XtMdM4Vr9Lv8K74Fh5dq5XN3IVP0IM0HYaSAR3Ez9302Vtd00mkDh6U+pZ6At4prUAg8954Q3cyi2lVIbQIT1vQ348op8vCbUaPruo35mxTUMTU50969CCtQ8OeZ8W/j2IXueKBjQ57VUm85/hnPs7XdTkVwQHds6X3PFdrRIsUVwE3PTBR4Z+eq9IUT1CicTNRJhPeJHafLCU2jlRob/NCd/Y1Dym/Vm7sIYSuWEI4d5wb
+X-HE-Tag: 1793887807-209252
+X-HE-Meta: U2FsdGVkX19S//97Nc/IkhG5LPwVcRlLaAIjqSI+emMlj237SkNJhPPqUFY5ZITqM9qdeWBc6o75LwCefs1YTY1uko88qsAjyjAYqph6OnR8vf3KrjlEwECakg4bzY9VhBGTJWfI2a2tzCGq2HslJaqSgAbaJY9I+gHJVvkZfS4GzjJtyZSjWgOQvbj3Oxkw3tKlV54V/wUVoYQ4NpL3l3zw0mHnB7Yoy5tLiH2D1Fw0t8ikz50drxImaXiTw/oveIFID/kEiPVkO15A6BlFXKsouAfZnUh4IE2UpbEKsAix6PfdfBtyj26Wuvd3tf2J1/htku3VsDbfQol2a++Yo7cPo3C9b/Sa7j1Z5KZiMmXUxZZvj0Y6mn60em0WWQUKlzLYyWJ+DYkR/rdSmcGkaPbRWkdRFE5HnTBvHGkpqO/WuqFaTG41NQuCzf8hxKjQfBnf28SvTB7Sfo1OR4yH0GjkPj3RB2xpGZPzXDKZJ7kr2N0xKuPpVmS/u5/UW+/531DKOdsTRMs9NTlX9+Q84WHkkmITWavuHj41jG7nzh7CPnbwehB5PHGcaWUHAZT6Fz9vx8j8ZMC1L6XNN6l6EULAtqJ7yB46AOZsIWGkY5diCNA1JHuDTUwgDsg3Uc8uT4UeWSzEjxdYB8wc3o3NCTiFwYPCIkdGz7e0gquK4svYDjV/kMpJsDtBaACps+p6x7SLbC3fHUaDAuL2iPv2N2bJHOfvr7Riu8EIurlewGZNASsQDx/c5PXIDNBndbB3W9DGvVgfqiUnzHdtBtU3IFUyGn7+9465hHWPGWdYwKFkn+qBW6Ta4G2lg74U8cKLbsyhI/Orm/xjl5NIOTGHDSkcRv+m9K4c0J8ffza2FiphGDZS/cDx+AZr/I19kXrlduKz69+QYWjrGpYqeuTJS+7MTgOLXT4TUHOn05VIHarSrmJjmlKoRxuCp2pAoNIPfSQQClCxKX56noJZJrh
+ C/semcn5
+ 4murlhGcp7wufQhnV35YJVHrcnzW2MCE0Uk6r1H3gcpGqoqZSJXc7W0GI8jpOXkziCcbSqw+rHeVQwGPE3APBZE3HavZWCvnl/F9H+IjyH22YJeRC7AtTxlskCGZqZplUhwwkhvgZthFVOrRdr+U7JNXyAJUxE81gVMrTrrBhvFJMvJ59z8KXUfd8h6InDLlCnnMXv/HNxtuOW3zPgei2q3B/z0tYX2bIyVl06FVSdQrpymKoTcB3MztJ57abbfO6btkbnAhjwqKSwJN69aVzHnDUnuq2mrsN6o2WKgMtgGhOtZqwPu29m/RXHrCHUXhLlRQeg+8WIjswHlRkbCyKbUvcrpzNj2g4cCenPI1t6msiwk8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,33 +117,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 11:16:23AM +0100, David Hildenbrand (Arm) wrote:
-> On 11/3/26 09:27, Lorenzo Stoakes (ARM) wrote:
-> > With down_read[_killable]_nosteal() available, it becomes possible to
-> > release the mmap read lock in such a way that a queued write lock always
-> > takes precedence.
-> >
-> > Expose this to mm through two new wrappers - mmap_read_lock_nosteal() and
-> > mmap_read_lock_killable_nosteal().
-> >
-> > Make use of this in scenarios where the mmap read lock is dropped
-> > explicitly for the purposes of relieving mmap_lock contention - the BPF
-> > task VMA iterator, and lock_next_vma_under_mmap_lock(), which is where
-> > /proc/$pid/smaps_rollup re-acquires the mmap lock after dropping it on
-> > contention and falling back from per-VMA locking.
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  include/linux/mmap_lock.h | 44 ++++++++++++++++++++++++++++++++++++++++++++
-> >  kernel/bpf/task_iter.c    |  2 +-
->
->
-> I'd appreciate an ack from BPF folks and a confirmation that I could take this
-> through my tree :)
+Hi David,
 
-With the rwsem thing as a separate patch this patch will be dropped in any case,
-which simplifies things :)
+> On Nov 5, 2026, at 18:33, David Hildenbrand (Arm) <david@kernel.org> =
+wrote:
+>=20
+> On 10/19/26 11:08, Muchun Song wrote:
+>> This series is split out from the earlier, larger series "mm: =
+Generalize
+>> HVO for HugeTLB and device DAX" [1]. While the parent series =
+generalizes
+>> vmemmap optimization across HugeTLB and device DAX, this subset =
+addresses
+>> a single, self-contained step: mapping shared vmemmap tail pages =
+read-only
+>> at population time.
+>>=20
+>> After the previous HugeTLB and device DAX conversions, both can =
+install
+>> optimized shared-tail mappings during vmemmap population. These =
+mappings
+>> should be read-only because each shared tail vmemmap page backs =
+metadata
+>> for many tail pages. HugeTLB applies this protection in a later,
+>> subsystem-specific pass, but device DAX currently lacks it.
+>>=20
+>> This series moves the protection into the generic sparse-vmemmap and
+>> powerpc radix population paths. This protects device DAX mappings and
+>> makes the HugeTLB-specific vmemmap_wrprotect_hvo() pass redundant. =
+With
+>> that pass gone, the bootmem-only optimization wrapper has no distinct
+>> work and is removed as well.
+>>=20
+>> This is intended to be the fifth smaller step toward the broader HVO
+>> generalization. The remaining HVO naming and enablement consolidation =
+is
+>> left for follow-up series.
+>=20
+> I assume this patch series is no longer applicable after we remove the =
+RO
+> protection for HVO.
+>=20
+> Or am I missing something? :)
 
---
-Cheers, Lorenzo
+Not quite :) The runtime RO part yes, but the vmemmap population path is
+a different story =E2=80=94 struct page isn't initialized there, so =
+there are no
+concurrent accessors and setting RO is safe.
+
+So we can keep it and enjoy the protection RO gives us: if something =
+goes
+wrong, we catch it right at the first scene. So I think this series is =
+still
+needed.
+
+Thanks,
+Muchun
+
+>=20
+> --=20
+> Cheers,
+>=20
+> David
+
+
 
