@@ -1,128 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8102A606A33C
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAAF606A329
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:36:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=EZRf4hhL
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=JZx76L+g;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8/5XD6W9;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=T3Jse+8w;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=BYgAZw+U
 Received: by kanga.kvack.org (Postfix)
-	id 9FF516B05B6; Thu,  5 Nov 2026 07:34:07 -0500 (EST)
+	id 23B696B05B4; Thu,  5 Nov 2026 07:36:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D6F46B05B9; Thu,  5 Nov 2026 07:34:07 -0500 (EST)
+	id 213AD6B05B5; Thu,  5 Nov 2026 07:36:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8ED4B6B05BA; Thu,  5 Nov 2026 07:34:07 -0500 (EST)
+	id 1298E6B05BA; Thu,  5 Nov 2026 07:36:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 69BA96B05B6
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:34:07 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0A4401409C0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:34:07 +0000 (UTC)
-X-FDA: 85401007734.10.B769F5D
-Received: from mail-pj2-f4.google.com (mail-pj2-f4.google.com [74.125.227.132])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0AD9840006
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:34:04 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=EZRf4hhL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.132 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D6AC46B05B4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:36:38 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4C12C12097A
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:36:38 +0000 (UTC)
+X-FDA: 85401014076.22.DA0004A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 8C5B814000B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:36:34 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JZx76L+g;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="8/5XD6W9";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T3Jse+8w;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BYgAZw+U;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793882045;
+	s=arc-20220608; t=1793882196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xnbdQF+mYCE0wEkhXTSh32IAVnsikEgxzBr/xzLSIyY=;
-	b=CnQDvUkQ7pdIJHr27pSQlaiqsWbr+J4L0veatN0TZrV9VZOBRXVs0jup5l37jlQ0cf1Fcq
-	b/WXa6sZo7K1JBTTBtv1cW8dB9nTs5Hl47GsIrFnnC+O1bGV+CL8UFFP0Yxmgr7jI8ucdD
-	wMkLoRGsawRxMgdEE1dcnuG1ux2bZr0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793882045;
-	b=mafcLZJgN+X67dyceWtWxwcQnFXiH80HyfaMEmI9DwHGaTLKU9WqyYVDQ+S041gvfVGwCN
-	8/11Ex54zCJG+p/HJxBexKqFYkmnc7/E3hwGfTluwiaiDAu2KVAIcMluqTEEK/LRl1one+
-	Nni/MPLp3JuSY1F+X0DgJXgHAAAUkFk=
+	bh=DpjKnWhAHhajlU0N8yPm40hOORTtvriSHlYmNC33ga8=;
+	b=21SFWtNT4uvNGj8MDBy3SBfzYmAso/ONwhrp4QVpzSv1NoCk7y9Mu9RYMFZogbUDBVLOOn
+	iwGJ9SJhygStjP6Mchljm7BaORktgzxSGUMWLPbL21SWwjOldWvpGGaYQ+k+XgI5XlUHpf
+	AiKu/00JnHFBs7U1k409yAqtztH65hA=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=EZRf4hhL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf17.hostedemail.com: domain of jm5905938@gmail.com designates 74.125.227.132 as permitted sender) smtp.mailfrom=jm5905938@gmail.com
-Received: by mail-pj2-f4.google.com with SMTP id d9443c01a7336-2e96b8bfb43so6622335ad.0
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 04:34:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793882044; x=1794486844; darn=kvack.org;
-        h=references:in-reply-to:cc:to:message-id:date:from:subject
-         :content-transfer-encoding:content-type:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=xnbdQF+mYCE0wEkhXTSh32IAVnsikEgxzBr/xzLSIyY=;
-        b=EZRf4hhLfV54jDJ5Wa/DLV7IIVO12/nDK7iCBhbxfS1BwEgB8ngL9qexKEi7AKXxjY
-         boDAVPLHm4ci94u0DqPPGP6qJmtQNVwxdCdMV7ycG82rKl9b5gZYslQmiMjrpXzteXxQ
-         HM2u6Xb33Qp5qa1wH1BRYc6+HE5R9nx7crX9ejAeV1fE6VDoZNTm8rjHNWqx93T7Wu1i
-         rsWkgUIU7Fz64MRZHrvlOOl3+zRAc3vQi2fBGQqmNawPwyfMJucioC2sxleZTbRr2i1w
-         nsAdtVH6OaEIhywa9L3FTC1TYZv/UeuJEztfDYOLnPuyaQywnx7T10F23bEWXsazXkn0
-         5x6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793882044; x=1794486844;
-        h=references:in-reply-to:cc:to:message-id:date:from:subject
-         :content-transfer-encoding:content-type:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=xnbdQF+mYCE0wEkhXTSh32IAVnsikEgxzBr/xzLSIyY=;
-        b=uAu71bmKnMtE2e4Cp45a1UR2qsRprfRQiAnK7RuV0NRXSr1MRiAUuMtNGDFlc4/0Mk
-         EiWA/kbzT3T3E/wGN+OcJagXozkoNY6NNyo7hRo8rDg6p3gRl6YNXsDqk/vKBGDJKBM4
-         u5nDJPMzyuZL/kzKmiZmACqjUrnO3ZcGPc8MR1fBf0x0gQkcaM37gClHGOshDBRBnKqH
-         /ORHgHY8CuCYh8h6tAVZa48WXWLtIymN3+FyRsyC6AO/gcENAPfbdL0x5C5Xglvm73k2
-         TCcFTXhekvraD6qmJVGE5E96ofICux4p12ZyYPIlREVx12cgz0TUo0CU9+RolbuFcZL5
-         BPhA==
-X-Forwarded-Encrypted: i=1; AKwUvBxCe4vvJkfE0Fc9ZX+AMLmqJM2BAJCGqA3svdYDT47roDivXTLqfUS/aFTu1Sb2VqF8r9lUoOL3MQ==@kvack.org
-X-Gm-Message-State: APuU4Z+VFqH8jMWurgyFT6gbk3MIS3CRVIP/mMEsiyAXFMZkD0YFgg/J
-	viF++a0+1lU5CZ35V99LVK0LxxKEgNEAKWZoK+LHVp3/Sonvt2YurL+Z
-X-Gm-Gg: AYBFou21zRzS0IOLWBIsfov2cde8Pluia/NHioif/sKjV360cRq2fpQT9E+4quYV817
-	PTkRIM6hXhzZrGFRJAku6loxEtsqLmSd3VnUMnH2n1rBYEnAScg+URwpWrKys1gd4k2On90KwsV
-	xG/kcJaJnpZ3TAjxhpgq/UcxQqeFWkitWn34+Fh2j2wGTfiLIi8iRRKANQ+7MK5RN+wFJjiWckU
-	61ixbLz8XNkQhHDmy8AwFIEAIMoLrsTxezhuJww82h+WzU2OAiZOaqCg/LsFBcR/8iU2AKwPygH
-	9O7zfKwdaUTOqF1C05HUB0cj34Ida9ydXjCvk0xlNUddIotcJNp4Vn3udFoURVIXX3Of8+qnBIf
-	xBs0FYyxSgPYG5eHX6Mjk7NzxmA6Uj1UyuYrTnj1vamFkfXSLPU0q3NPQ+attdmPYA13ax9qXoN
-	vFes9K7/E6X97LhCaeBMbTRvaKYCvGqN7KIDM8zEjJCeXBZ84EGZ7AyiwmJEodg8fK9y1dQidHV
-	5SzVp7qD83SWdVPYqm5Zx5sll+z0OwMEPxkVgKlVqc5mYbgx8z/tszb+eDO6OW2L11C4YSby7Lv
-	/AcsqcCbip4nrD3/E0HO6EiBoOQ3xqWla3zcv1IFbB/DJbxyv1mSowb7FMyo75kjow821/V6ikB
-	KG3rVsCL4Vcvdw9BMr+MzPTYOWWk=
-X-Received: by 2002:a17:903:3910:b0:2e9:3dd2:a904 with SMTP id d9443c01a7336-2eb3648b6aemr182844655ad.16.1793882043510;
-        Thu, 05 Nov 2026 04:34:03 -0800 (PST)
-Received: from localhost (n106-71-19-159.sun21.vic.optusnet.com.au. [106.71.19.159])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed08fe55bdsm17043995ad.15.2026.11.05.04.33.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 04:34:03 -0800 (PST)
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JZx76L+g;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="8/5XD6W9";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T3Jse+8w;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=BYgAZw+U;
+	dmarc=none;
+	spf=pass (imf26.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793882196;
+	b=0N/+v6VVUXz3YlvnNrjCyBgbzaxNVyrHmfhW47yV3fVbAlNURP2yzQJcRRon4e+2J7F7uw
+	GThGqBAmxq8qm2ffuQHmQdN/BnnLbcNq9IC1/VCAWqWh3cXx+u8lgDxfx9sDIGt4NARPhz
+	85lTUgnQ0BSSEqhtQJrW9d+d2nXPPcw=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2C5F621E5A;
+	Thu,  5 Nov 2026 12:36:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793882193; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DpjKnWhAHhajlU0N8yPm40hOORTtvriSHlYmNC33ga8=;
+	b=JZx76L+ggOq++v50JrM+txlftOOqxJaKF/tK8uhPwld5Q9GnNQfLXM1whyLb1DsMeHXH/C
+	/uTr5WEx4MoDADem0Lt2IRl8UnJCEvNjej74YyT5VZBSM782Vk2aNTEZTgyxnuBLnPZ/fS
+	Mhf/U17g3frl5lC6gN/6C/6ftmbFF2E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793882193;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DpjKnWhAHhajlU0N8yPm40hOORTtvriSHlYmNC33ga8=;
+	b=8/5XD6W9JBZBD7IT0Gng8T7errG+mfSR55zIjyH58gQPHLQ3a+6mBXLPeQK6OumZ9O/ASJ
+	a0+wPfZoC8vZgnDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793882192; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DpjKnWhAHhajlU0N8yPm40hOORTtvriSHlYmNC33ga8=;
+	b=T3Jse+8wWvU2m0agalLdcO3u4gc4aSPygpqteqhLhNd/aBjFrhyiDCC1i0Lv+iYh3z1s6e
+	fnA2+Jf6Yg0jKvkbvYGo3ERh6eFq09U2ijwb8SlUT+DSbyddzL3tu06qm3Tz++uFh8zr+9
+	+TrYzUca/b6bladItMQ0Kk0+pK0H3fw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793882192;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DpjKnWhAHhajlU0N8yPm40hOORTtvriSHlYmNC33ga8=;
+	b=BYgAZw+Ujm4L/dnuxqWK1yrVNISlV/1cL+J702exe7XcXF17FVJLhwkbWz39x0ZpRyHhhI
+	iDaH9TFqNTx9SSCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 05AD3133F6;
+	Thu,  5 Nov 2026 12:36:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id AKP0Nk947Go1MAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 12:36:32 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 9532FB6E6; Thu, 05 Nov 2026 13:36:31 +0100 (CET)
+Date: Thu, 5 Nov 2026 13:36:31 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 37/38] proc: don't pin a symlink's entry while
+ readlink() copies it out
+Message-ID: <krgvwwpug6brspfpubssohr6cknwd2wtkrxo6uqaoalfi2ay4v@3dtbsctwca3n>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-37-59422ed3e465@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Subject: Re: [RFC PATCH v2 0/4] mm/damon: introduce age_ms damos core
- filter type
-From: Aveline Noir <jm5905938@gmail.com>
-Date: Thu, 05 Nov 2026 23:31:53 +1100
-Message-Id: <179388191315.401969.13923237674993632654.b4-reply@b4>
-To: SJ Park <sj@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Jonathan Corbet <corbet@lwn.net>, damon@lists.linux.dev, 
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
- Randy Dunlap <rdunlap@infradead.org>, sashiko-bot@kernel.org, 
- sashiko-reviews@lists.linux.dev, Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20261105044425.87142-1-sj@kernel.org>
-References: <20261105044425.87142-1-sj@kernel.org>
-X-Mailer: b4 0.16.0
-X-Stat-Signature: b45xxshh3mekd1crqro61imbmjap91k9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261102-work-procfs-bugfixes-v1-37-59422ed3e465@kernel.org>
+X-Rspamd-Action: no action
+X-Spam-Score: -11.51
+X-Spam-Level: 
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 8C5B814000B
+X-Stat-Signature: x8jpjxy7ftxexryi6b3hzs61m6pst87n
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0AD9840006
-X-HE-Tag: 1793882044-433945
-X-HE-Meta: U2FsdGVkX18rk7AgrONmgAUeieL4E3oV50VkOFM6J+gVoAJDRJoUGEZCG/I0OuP+t8bxePEFw+CS7E1hXpvHlkzUXkuYFvhZPFhwhI4EtQcaM0wNLpJuJamNV6i5QKXrRcceQdJdSibv6/IDvUlcCeZe0tZ/84sLT27sFh+iNjhK3Z8kVQL6QdQFk9J29yEVrwo8J9+F2g9rM7k2YPZqvjag+KARyYU3lmz7VpaosSrWEI7rzcDMN/g9jO+ZjU9Cn2U0YFY4XEL8OzatLKHXvTpnS3wR+plO7cTWbnX6ulURsjJpLRWHZO6ET85AbFDEBLw0Zeyxdu+2WU7EJzLLmlQOyPBwNTeJABtP2CyY1qmtP3oB2+ZwJ9NuYolts0igRg7B6ehRQg4mHH5HvGQ9kR3shUMgytBLXrCLPFwT72GnsDnHbAFxiMRDDX/wLrF8m5yQz8gQDcNBYmbPh5T9pRgkgujp0sPLdfpHHX8o11Pue7oxFRF8zhXp588/QvQ3x1yWLHrvwRX+IMXZYCLYlpZyKPHEdlwzk2ZaIiYSX1dZBGXTV+7j+DOWwtjz9BzfPRKYEQOkz07kQUMlh9uEh2rxP3NoX67Q7pG8Z+uHL5ylfE/gLXNgJih4DFd98rqUv5oKr8N5oRiGFHe6A8rK/nsJmuFMGRZXfuDozfd1NgWLymWUFd74dtScrb9mSBkie65O3vs/4fYyOjG/xiZEeP7Eh0cn6bZZLPCHNB8DmrA81Q7N5Fc7symY8lmDqb3mAwZDdArJoLCiqNGEBwxUWOwZfzQniY+X2aIKNuEBOVdNhzCp71L1zsGjWzxV/aSWObhjii+ly+HgN3s9md6rq7wywIcMUOfQjViSq6s4a/qetFXQwAc/QLxHJqQSgHyQqX+hFPfm3bxNWIiZJezK4UfZ1sM22iDutHxvtoupD9xpH/RL3uQ8fGjTBBgj4lGIqwiIAr1FdJTQqqXea7B
- 8pfz51Qb
- VfEEgKUk27uc1Yk43hYhFPAyX6SlcsHhyljYAF77YjO5ozZIJph19zgKf2MQ1/jmtJboaHoxTv6pgagILg3hGJroi/PbcfLG33VmQU54M/ytqV7i7TI3rTTFsHQOAbidsZymRV8VZu2O29CFBo2larasDCae2OJe686JenYdNakORhcfF0ufdEl1MEncuRZGJ31TnE0kNpg//lVroHlze14uUFsPOAv+mYJxmMLC2NlpI/GmV5VAACkaxfnc9cUvgXJE518a1nquVsDoGvPKw60l2CTg84v3Zld/SEr/rjKRoRu2QrjhJ1nWFpEZ46rdjLYw/exl2sUx9rpghDV9TLVVA4kf/MULeW3d/60V6yqp63ApHxQjay3KHEnUNZ84DpgNFt0sK8/HNeEXtczGTeTcZBELI0XIRLZ0Zb4GDyhh3mT3/YLz5Gv2KhbDehG0tNMIWi4VhdjPbwVzv7XtmQmaUjKZP6j50+kVsnXnq4+7a8AgUd0SGYxfrX+a7ei4NZPhSJ7/QACdSxuWf1N6kDO53vc/w3ZFBK/VY
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-HE-Tag: 1793882194-526840
+X-HE-Meta: U2FsdGVkX18f9uY31KrfFaQroE3HHcHydvOZkAy1z8kbRx0v6gh0U4Do3KuOFLw4nloyvfV3+t8hP8u0jsmdxyFKAnz435YhzRNExUMPbMIMG/a9KK6S51GMCsV59qBLVHA+GYOG94U0ugaFp/olh7yrF1Z+4sGDU26JCdQ6AtfNspa4VJhG7z81GY5W4qy6AruXcqzvcKfyt6errY7kB/BoMJQfH9tR15RvSmWqpgNt205Pe50628VZqygCmZtSkD8aPapaz48IjFvDW1TGym2wixHacjLjYzCiStYpaHi6Zej6pIzhSd/6pBbVDjgfMiGfCrt5ME95RtqBSmYtYZh2N3+Pb57AcnzbD3Pd2FJhK2w68AdNWFfaitBMYXpzuOz2mEPPh7pY5c3nKWDs3UvT1S4qg2/HKybAF/BM36DCQTrV7blyshpSMbJ2fy+9hBF3TIEMUQ442fIyP9lCiT8qaTIjIx8dWixV246fHxQHfR3EnJgmPQWiIgR3Wkj+JdpI3PUvXIDgU7fjs/cn/YXp/zA8CLC7gVowaVehqDElo4pvhbJmLcqnYmfOzZzanbQdUi3Sh4oPV5Hc7D01qkw/dccuXk+HJJDQfOLaMx58XHqjzabpvNc8WZx9HFi5wNupTunv+ctTlLqG8DYrMz3JPICJ3F7BD11mQ/vdZDXYofhLs8DqPD8LwJqjHF646Qh+Q9czbelpzoXrmv7v+kGSuTRIzXjL1xlmLbH3ZaHJNQM9gxTA06zjt7T/6OFMO7SDtKfrKbKbYYnJz1Qj3rY4KW3CCC5XQm5yZ4pVLVyO9LP1lK3/ortFNmkNphuUKdMys7MpKX7REyUgUwnGoZzCv1AIs65l8hKSMTTXBWnkvVb92NE+4HRdEW5X/kwcVLDoTfsAr1dSf9DVB69oQKowtl6fuPslnGxi8Edqt8PyUP2VmX1Px68yAqGPLz0+0EO6iIhrHQLTAfp+F01
+ FkVIQmTw
+ zKNStCC/yt5vzXJLK3Fog4nr7mKcVg9qFMAcwg8Iq7wEBQO86i18IiBHyuKoCZ4KkrnRHIJqbcnsGciJAV4BdJVgJ83wMwkZ+/V6uVoTHXT5nFD2mRDmFQpvZdjnW8wAasmE6ocrDu4X0pXS3X2xIdQwRLSKgKEedmhnYHyOsjhC5zjDRqwsIegZKIqBh8eDvSQvSKbhLCkh/XJyeILSXX37iUl1ziF92BdSBaqP6vgUubXrFAdkoCzmMjUYRznRgQkyXEBOIrW8l0lM9y9q5O7K4tyUUgXIhbRkRWw8NFPMsMro47JOb+qubLw7HOKI9/Z8qxarRBlwn5MMv3JzY9QOhDfDaJkIoXY406xUN5c0fNdZRC95pFXZqh8wwdt+cuLMY3p1C8s8/XjClyyaJfYiquA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,19 +162,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi SJ,
+On Mon 02-11-26 15:43:28, Christian Brauner wrote:
+> proc_get_link() pins the entry with use_pde() and the delayed call
+> unpins it. vfs_readlink() copies the link to userspace in between. So a
+> page fault in that copy holds up remove_proc_entry() just like the
+> copies of reads and writes do, and the callers hold locks while they
+> wait. /proc/asound/<id> is removed with snd_card_mutex and info_mutex
+> held when a card changes its id.
+> 
+> The pin doesn't keep anything alive. proc_symlink() copies the target
+> and pde_free() frees it with the entry, and the inode holds a reference
+> to the entry. What the pin does is keep a removed symlink from being
+> followed. So check ->in_use instead and drop the delayed call. That
+> also takes an atomic pair off every traversal of /proc/net and
+> /proc/mounts.
+> 
+> Fixes: 7e0e953bb0cf ("procfs: fix race between symlink removals and traversals")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-On Wed, 04 Nov 2026 20:44:20 -0800 SJ Park wrote:
+Looks good. Feel free to add:
 
-> One straightforward solution is extending the DAMOS access pattern for
-> specific deterministic time based age specification.  However, DAMOS
-> core filter is a better option.  It is playing a similar role in a more
-> flexible way.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Makes sense.
+								Honza
 
-Reviewed-by: Aveline Noir <jm5905938@gmail.com>
-
-Thanks,
-Aveline Noir
+> ---
+>  fs/proc/inode.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/fs/proc/inode.c b/fs/proc/inode.c
+> index 9933f03ab9fb..2d65f3c8ec03 100644
+> --- a/fs/proc/inode.c
+> +++ b/fs/proc/inode.c
+> @@ -629,19 +629,19 @@ static const struct file_operations proc_iter_file_ops_compat = {
+>  };
+>  #endif
+>  
+> -static void proc_put_link(void *p)
+> -{
+> -	unuse_pde(p);
+> -}
+> -
+>  static const char *proc_get_link(struct dentry *dentry,
+>  				 struct inode *inode,
+>  				 struct delayed_call *done)
+>  {
+>  	struct proc_dir_entry *pde = PDE(inode);
+> -	if (!use_pde(pde))
+> +
+> +	/*
+> +	 * No pin. The link lives with the entry, which the inode holds, and a
+> +	 * reader could fault while vfs_readlink() copies it out. Just don't
+> +	 * follow a removed one.
+> +	 */
+> +	if (unlikely(atomic_read(&pde->in_use) < 0))
+>  		return ERR_PTR(-EINVAL);
+> -	set_delayed_call(done, proc_put_link, pde);
+>  	return pde->data;
+>  }
+>  
+> 
+> -- 
+> 2.53.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
