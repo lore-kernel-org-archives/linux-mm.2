@@ -1,123 +1,159 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37FE7606A332
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5D08606A331
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 12:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MngWktor
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=KhcIIhhy;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=6n5z2yLa;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=TFuQlAZ+;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=IYRGa8XW
 Received: by kanga.kvack.org (Postfix)
-	id 554366B05BD; Thu,  5 Nov 2026 07:21:04 -0500 (EST)
+	id F3F736B05BF; Thu,  5 Nov 2026 07:21:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 505646B05BF; Thu,  5 Nov 2026 07:21:04 -0500 (EST)
+	id F17126B05C0; Thu,  5 Nov 2026 07:21:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41A8F6B05C0; Thu,  5 Nov 2026 07:21:04 -0500 (EST)
+	id E2CC66B05C1; Thu,  5 Nov 2026 07:21:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 221026B05BD
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:21:04 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADB8FA09E1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:21:03 +0000 (UTC)
-X-FDA: 85400974806.25.0233487
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BA5842000F
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:21:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MngWktor;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B89A76B05BF
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:21:13 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 461CB12034B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:21:13 +0000 (UTC)
+X-FDA: 85400975226.21.8AC8DA6
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2D48818000D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 12:21:11 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KhcIIhhy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6n5z2yLa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TFuQlAZ+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IYRGa8XW;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793881261;
+	s=arc-20220608; t=1793881271;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0Ap+BVBtSv6IjQ4LBYxkeU2D8YAVNkXJJZJb8NWf8hc=;
-	b=FKYpcZurna8Jg6t9wxuS4vMxk9ETE6XCo7pFNtFPNf/gmUakQHoPAWG2EK2mGSiSc/aLYF
-	Ui/4HZvh2xyVUrJHZ9rR9bY7XHtnwZLIfe/2e0M3/84PuhG+SNqgApCEuSb2JthCQOHS6/
-	raJr8wRVouOywRvZOHi7COFzQKn/9tA=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MngWktor;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
+	bh=qLuvYgtpasAKkOVBQjswAHWXysKN7cRsF9p74hK2S2g=;
+	b=1FpcFEwH8r2GF9F2H69BEjuraIakZcdR1EsFJVXyzGwtx+OTsjmFQFHqVjzVO9i4qgcOMW
+	b7zfSZ8LJhfUFhJ2YxQZZ+l7wXd6VJm8iFrMMLNaDA2NMez09e9gsJlkjuWN6G3i1Se87D
+	Ebv1rJjyln0TfPkQNDKHSQeIBekZ6UU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793881261;
-	b=TRAKYkwdwPfwSCFLtEr4EHZH9rCN/LmLOhzSfptvPe2ND3YZGH2desEf9vM1+gZHrnlYgM
-	TguEjNnZB4Y2879ov1s4s/mvyf7XdaIZzWUYd8R3KCQSflQncYtrNXAMCok+tvjfCtdaN6
-	YLRWCau/e6YCqyGYub6/Oz43RW8xXag=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 35AEA60F28;
-	Thu,  5 Nov 2026 12:21:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A3C1F00A02;
-	Thu,  5 Nov 2026 12:20:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793881260;
-	bh=0Ap+BVBtSv6IjQ4LBYxkeU2D8YAVNkXJJZJb8NWf8hc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=MngWktorsLb+QpwiinftfEsFnkYcDIj8O9IjrW1Kns45zoUxewuGS9ZqcYcRyVvZ/
-	 9oApPH7sEZCDzjKypcvMOsdmNoY7QA4VHWvMqFmopuBr4XX0a3W7qyidhrZQBgADf+
-	 UJtqN8tFvaaG4BooSvryfr5ZpvwscuLtmQBEIsfa/m4tPsz+oLN8zCZ5z+P807f9ev
-	 n5rJQJyRYKp+EPl4vcGCEVia/tPPZBLolfGTul84OAj8/imBMKkQR6O4Q97DbtpQxz
-	 48YoBGLP1c8VJKfFk7VpWZmKBA2gSilfUBVPjEaM0hmuBxa44ZYKsdmQJ+WJhy0qBt
-	 5zjSz0ISji9MA==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 457D41980047;
-	Thu,  5 Nov 2026 07:20:55 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Thu, 05 Nov 2026 07:20:58 -0500
-X-ME-Sender: <xms:pnTsanpdN5G7OBk3gv4JSvcAikjKs_OFAqOeaduPbKoglydPA58Qjg>
-    <xme:pnTsanxMkYgcx3EZtln_9aI47VHYL_YdZEiLAcJ7tNfWA_9eIP02P9nKxhnAc5bik
-    ZRRt2cKLWDwqn7SxjVDNTBTYlMSfguWcw2_0ZUvbW5gsIxAdR4q1B0>
-X-ME-Received: <xmr:pnTsaquqFoWSACz9EF4p5vP4wMWgChClI-ajkZNADGtSqllsr636WR5F5oA>
-X-ME-Proxy-Cause: dmFkZTEcri1lzlfl8U2qBExbf5ho7o2bHZLgRS5Mxug9N2VpILPSf/c7htGMDthkiHP29s
-    DtTRUBfN+tiWbQHxqmi03twY1nZokTPSlfgnkicCCcQQ54h/5WVrUVHbhNkoNFLECPaOL2
-    bdAIb1Wfbl8czydW/efgpINPxDz/TTIxlfBq7e4DRz5dLjf1GVDtaoQbLZIJt7/UHWzm/5
-    7IBPMQq828rNaRqTsd3FvACZv/adMmPp6iPtNSbQnNir6Gr/+rWYfnrVJLvI/6fnm7/e6z
-    pPqRIZ22rYJuIfi6lAimiXKwo9bkORyT9VqHcYV74NikmF7yXiieFSoc78OOVsi0pM5uAP
-    oCB8WBsoZhC0jthL1mshMU67o6qbuKZqtcsr0qz7IYpM1wg8sKsytENaOXPQXJ3fBRzofl
-    5gqsdIkmugciX1e0LYbV2BQ8ffG2D+p9JviRHs3YLnZwAJmGFFca9QfuA+z+qwH1fxsUBj
-    t+F7T+0NYvMbgs6xcCJJgaQ+zMQIT8IHdKyPuwpEdGu8w9SfNBya1xVYeoQZ/axtStt1Pw
-    TkeOU/uIMncWYYyMKrtpEA4Rd/XK3NvP1R/T+rLWgbhocDBulC0+fvhP3ZrMGAeg0AKTwT
-    dscZUWFn1WjGhS4Lctg+NF1Xoec0Rr87sBQUXaPfOnzT04RQZuUdPciSSC7w
-X-ME-Proxy: <xmx:pnTsak7iOHgz2nFKF9lhowUWk_KaVb7l2PzBzALx1FodhJAA2Y-1eA>
-    <xmx:pnTsaqiOeWKSnxFj486Kae_feVMSPM591KvVTlVtwTDobjqBE0mCIw>
-    <xmx:pnTsamIWQJv9Mqrjggo3TJtFmQkG8pepjyLtDFgvFvGK_choOaBGMQ>
-    <xmx:pnTsaoc6a9_xz0ZJNUb08YItXfGToT6QrEbh-DhxkI1cgQMs7JOy4g>
-    <xmx:pnTsauMlRMDdsUUlo9mQRnuXKrGYb86YuBnGfXvH-JzSiZyaiDXJFoaM>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Nov 2026 07:20:54 -0500 (EST)
-Date: Thu, 5 Nov 2026 12:20:53 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: akpm@linux-foundation.org, david@kernel.org, ljs@kernel.org, 
-	baohua@kernel.org, usama.arif@linux.dev, hannes@cmpxchg.org, alex@ghiti.fr, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, liam@infradead.org, 
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, lance.yang@linux.dev, 
-	vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	willy@infradead.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 1/4] mm/huge_memory: scale thp_underused() to the
- folio size
-Message-ID: <aux0jQpRttwcSz6u@thinkstation>
-References: <20261103212004.1356327-1-joannelkoong@gmail.com>
- <20261103212004.1356327-2-joannelkoong@gmail.com>
+	t=1793881271;
+	b=Q2/BHpwEbW9I07HKwMkWPw/ctuU2u4dpf7xIXXt/jYc1evbYhP+ZM7AVp5tsauklB513ze
+	es6KMpSLXypZVRClki1zPOH98Akv2bjaapWhJno3ZN6mDjCetdy6AD4mGl9v4aHGQ94CFl
+	GctMN4r2vnNe7qevGpB/Xl1x9hGNT6k=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KhcIIhhy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=6n5z2yLa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TFuQlAZ+;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IYRGa8XW;
+	spf=pass (imf16.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D5C3D1F458;
+	Thu,  5 Nov 2026 12:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793881270; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLuvYgtpasAKkOVBQjswAHWXysKN7cRsF9p74hK2S2g=;
+	b=KhcIIhhyXURXrxsFKNrS5/KQBWOxVAoWljoB38cQtiYrDrFV8sed3xw/zXNPMim53TtxIA
+	7ZbhM5diXv9jAcO7L3DVJNrAZi+K4lsRTnJWaMYMlYugOK16bRU+y/fGzxnSLhmlcVsvyG
+	csbL8slrND45GD1FIeOECoj0f7hJMwQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793881270;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLuvYgtpasAKkOVBQjswAHWXysKN7cRsF9p74hK2S2g=;
+	b=6n5z2yLaHgAEN7/Tcd0WzA7lHAxJSKkismyyu/ILXPkdtd7h0WOyyJxNx+8962qMQ9rlAn
+	/2Drg5p7a9P7WmBA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793881269; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLuvYgtpasAKkOVBQjswAHWXysKN7cRsF9p74hK2S2g=;
+	b=TFuQlAZ+5WF2YAdSPtrseTWbdG8rKLEqW19DJvUMZa96SoqlsHphdrzQTVaeQPeOfbKMve
+	vRvg45whLPGgBVqZinymhyPdhVasORALEjL7ZX6GmXX/o3Zhkt8KhhIcC5N1tdRheYHdXR
+	b1H4KWKbL93llPPXVmqHJ4S/SUjD100=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793881269;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qLuvYgtpasAKkOVBQjswAHWXysKN7cRsF9p74hK2S2g=;
+	b=IYRGa8XWDYOBq7+hiG0V0rUlmwe1TyUTdwZG614Lw3QLxr1E6xwKO0uuM9xtMm5Wn4Th8n
+	Jk1SsJkUbIlOijDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9880B133F6;
+	Thu,  5 Nov 2026 12:21:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 38udGrV07Gp0IAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Thu, 05 Nov 2026 12:21:09 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 1B713B6D8; Thu, 05 Nov 2026 13:21:05 +0100 (CET)
+Date: Thu, 5 Nov 2026 13:21:05 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, 
+	linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	netdev@vger.kernel.org, ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, 
+	coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
+	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH RFC 33/38] proc: sysctl: copy to and from userspace
+ without holding the table
+Message-ID: <cbocsd4qe254dc7mgzk3jkieahrp5kfxpnfh5owopkulg5oo6l@jd5sw3l4nw5c>
+References: <20261102-work-procfs-bugfixes-v1-0-59422ed3e465@kernel.org>
+ <20261102-work-procfs-bugfixes-v1-33-59422ed3e465@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261103212004.1356327-2-joannelkoong@gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: BA5842000F
-X-Stat-Signature: fa4mwq7jog589hwd1jqhb4w45is64kzh
+In-Reply-To: <20261102-work-procfs-bugfixes-v1-33-59422ed3e465@kernel.org>
+X-Rspamd-Action: no action
+X-Spam-Score: -11.51
+X-Spam-Level: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2D48818000D
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: ze6hd7u3nuyoaz4whoz6sezf1fcpp1sm
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793881261-454871
-X-HE-Meta: U2FsdGVkX18cNpJXfpzLIRxSFjaGklBXPMYV7pFtRJNUn2/Vchh9AJeKyvFPmNNalIvm0XpO0TlVTwbIaYA70xH6Amg11P488c1RT3hP9q/3guAuL5NNQr5MFeaw7zmdwXKC02Mxgkd64hYvM9e9k5Jb5eDVBCiIRjnYoNGCBABY0VxW4D1f3ZLcO5bnnADYOJ+drFnIEqc4J7qII/pBg2Bsn1gs9Tbe0gLa/ZUgy9YV1mX2qSz9pGsT3D2DHx4BbXjdrkF/F+bpBb0Xdndl8kfvR00y14f2gO3qHnyKwTAkH3Vy+ppH0dQ5b33uDl18WdiImt64MVeH353nWEcFrM2Az6pypUmU0dj0hg/BDCvVqq6OWgsyV3+Gy/zKIQYjfLroUDgxEZBIjJu6BSwL6XCzDKn3eN8R4mNwEaYHFI+Y7ntXORvTnp+7LZk7hsYO9DMSc7MpAiITpmiuGC2QR7aj3+iwO72Uw2h1jGUn86HoS1a5EuJO00mq95LpHK3dfZkYJ0uUbrlAk7rBrQzuL45PcH8RMRTN/hgcq0mqe0dmFgd5/g0IMMAphe+qaaGvG7LByfZwBYmF0V2zWLKB/ORXF333mU34AGZSqGL+c7bIf87zMfSTx/5jz9c19GgcCyqIaR9JTaSEx7ERHY2h4UaacM+GTeBUFlbS7E1TiH6vu/tOeZGNHxg7UywckQdSbVePWC3+KNUi7LVLuK+UUKRgwzRzXrEqpcCw/ORtlEivlG9Hah6czZBYwv5QZm4uckyrXDRwos7EwJGo6BqXORbZ1c30sQ80zRa/NnzqObZNGeZRDR8a7falVDCyzIDXnLehkChvvyZGH2RPoQz/d3if5PvhrAYB6FI+1EqDxwA7+AgYCFZkpfb6N8lKif4tXRtncNLU1PcRDbyX1D4fmpw3lQ0Wc0+06pPfK9nStfZhCRKcoCNRDCn4034u23Rt7WmRlaG4t4V814Ln2RU
- DcYnWY5b
- w4jX6JiBVqiztOOK5s3KkU/WmXG1kS6Gmpjh0DkWyvAkn/eCT+DVJ5EhiLiqtTVq2c7IB36YzNngySq6+UiVEa8DCePfANdBXBFWQyfBT70MbtTs76SkceSrXPC0Af0tYUFyAGCxfbXm6OiYJQG6m+1ONNP9v+IzC/t/9h8njKP4J29iF9EBjZu6BDb7X/BzMOugBBpYCDzR7qWWwspJ2fRCNfZhvVWfUIXcMQD6ybFy344M092wXycZ3B3yyaNIJh1Cy8/3gfEuuCfbdXL0UJOWKVeEUFa/+Nkuqq/gGqwaahi/Yb5ZRVeLcoqyxuroxMAUhfMyb96vNFMsfVUVUJ3UHZuXTZg/TA+nZVmZ3pSwNZx3QiWhKcrK3hQ==
+X-HE-Tag: 1793881271-475156
+X-HE-Meta: U2FsdGVkX1/M/ApidMdD2C1BFLQcr0PbIclbk3Do60o/R5PaA2SUNDQ3tEVjUujfd0RG/ZA9nhR74DDlSMASIfJQw88w5NTAfBRemGBk1Ci8FlhTF6Q3Zvg6UqTunJHO+XyeO2Ypdw0yK/tYTfy9a3BHORPaTg/89ybEJe4w4+OFJCnX6PlAXCHDdkWPkejd6u1yfaDCOlU4+7dnqOgv5EbIF3OSSTZKaBm7OXynnbLst3pO7wA2odzQaeBOAzWF3n1tYyuglZK3YqOzsUzTH6JuTGvguc0t8X4+WwjhJl8VbaO85Nj+yRJLRgyRsHjCe01gJQ+77HuTwQcyNYpuk0k5QGAu07t1o5409skz5EWxe0wMLaM8TUQ0rDLSIjwzv3pZyEdUakd4yxfrqWFibUcJ/fqFVf33i2ODcG4Abdz5N98/x4eioWfxW2vl/+8zopeOLm23q0+NNAgRjoouUrvmrmJLnwGHVfnuDawCyrY4w/5RBcsSu36VibI8nrTIPo8u2DTNPvFT4u+V6hVohx/7w0ral3+us9Sf9cbarxXIp06q3FqJ+dRC/heKpxYS23vbHvYowc69iXtAf68peLHUYekEkP6A1bzyLhbgb1hIKG69d5Ey7Kpu+sALwLxezD2NPlChQqFG+8rpmorKqlEKk/+KKc+iAVTxkQyO+bim/57z6B67Htq03oFC78oMK95dsgQ0n8JFtS6ej2Bwf4AX3iODcSr1/TXRSGwlrCJo4MPWovBJ8qGGm8sEjIduR8+VeY8U4oPBLwxV71q5u7MzDmK2AxxxpDk7+R8oqZCZxNLpKuAy4jUvvdzABaMtFIloVxcSzB333bnR4AgkdE/OQrsjKw/ZFhBx4oZx+rBpL0hqJF+aUehTBmF7s2lXmSRhB4rixy++o8jqoPIe9G3S4DdzX6aeEcjGUcl3VVEvi4w5DH8YauSCYzFd6pjPLpZZo4qbfL7QnMiNcM8
+ 2/6O7hgj
+ bmq+vWVpe+nv9mkymt/CEp8+Avuryfut6MrYzAoY3Mmz4dGMTU2kU3Fjwz+6hqSMGqCeNaCwWmPOm2ONy1tKqtqjwrPNZsH35B+Ba4/UTWtZs2hUlrH5RWFBSjuy1dy/0OKG/l+b6oVnDeK51hFfxZ5acTDq+GM8vmtH60CWdjQLFqy/hZYBnUiaGSTeVIuWSl+SM81BhlFid18drytbVaSp7sdCiKa0BClpabe4sbbsQjPnwmaEZeXYDU6EawuRWIqLMVVU0Lw8NdqHdsTh+B/zK7oOjf1+bswBqGnFXRlygslOgXkdnM2rTZxaAs2qlOuQa8mbN+Ihx7wQ+ESciDN1WPkxbQrfkUKVcG7aKEvo/MCWAuVOKOnRP6R6uSbRyoU6IHhHwGtmNE9mJJJm7kvDkdQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,37 +162,130 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 03, 2026 at 01:20:01PM -0800, Joanne Koong wrote:
-> thp_underused() decides whether a large folio on the deferred split list
-> is underused and should be split so that its zero-filled subpages can be
-> reclaimed.
+On Mon 02-11-26 15:21:48, Christian Brauner wrote:
+> proc_sys_call_handler() grabs the table, copies in what is written,
+> calls the handler and copies what it produced out to userspace before
+> it lets go of the table again. Unregistering a table waits until nobody
+> uses it anymore. So a reader or writer whose copy faults for as long as
+> it wants, with userfaultfd or a stalled FUSE mapping, keeps
+> unregister_sysctl_table() waiting, and its callers like to hold locks
+> while they do that. addrconf unregisters the ipv6 sysctls of a device
+> with RTNL held, so a stalled read of /proc/sys/net/ipv6/conf/<dev>/mtu
+> holds up every RTNL user until the reader gives up.
 > 
-> Today it only ever runs on PMD-sized folios, so it assumes that the
-> folio has HPAGE_PMD_NR pages and compares the zero-filled page count
-> directly against khugepaged_max_ptes_none. A later patch will queue
-> anonymous mTHP folios onto the deferred split list as well, at which
-> point that assumption will no longer hold.
+> Copy in before grabbing the table and copy out after letting go of it,
+> like procfs and kernfs do for their files. The buffer is ours, nothing
+> needs the table for the copies.
 > 
-> Make thp_underused() folio-size-aware, and scale
-> khugepaged_max_ptes_none proportionally to the number of pages in the
-> folio (eg every folio tolerates the same fraction of zero-filled pages
-> the user configured for a PMD-sized folio).
+> That moves the allocation and the copy in before the permission check.
+> A write that can't be copied in, or a request that is too large, now
+> fails with -EFAULT or -ENOMEM where it used to fail with -EPERM.
 > 
-> khugepaged deliberately doesn't scale intermediate values when
-> collapsing to mTHP orders (to avoid the memory footprint creeping up
-> through repeated collapses), but if/when collapse later gains support
-> for intermediate values, a folio that khugepaged collapses won't then be
-> split right back by the shrinker (and vice versa) since both collapse
-> and split would use the same threshold for a given folio size.
-> 
-> There is no functional change for PMD-sized folios, as for those,
-> nr_pages is HPAGE_PMD_NR.
-> 
-> Suggested-by: Usama Arif <usama.arif@linux.dev>
-> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> Fixes: 330d57fb98a9 ("[PATCH] Fix sysctl unregistration oops (CVE-2005-2709)")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Looks good. Feel free to add:
 
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  fs/proc/proc_sysctl.c | 50 ++++++++++++++++++++++++++++----------------------
+>  1 file changed, 28 insertions(+), 22 deletions(-)
+> 
+> diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+> index 38b61887b59c..2150cf842919 100644
+> --- a/fs/proc/proc_sysctl.c
+> +++ b/fs/proc/proc_sysctl.c
+> @@ -602,14 +602,36 @@ static ssize_t proc_sys_call_handler(struct kiocb *iocb, struct iov_iter *iter,
+>  		int write)
+>  {
+>  	struct inode *inode = file_inode(iocb->ki_filp);
+> -	struct ctl_table_header *head = grab_header(inode);
+>  	const struct ctl_table *table = PROC_I(inode)->sysctl_entry;
+> +	struct ctl_table_header *head;
+>  	size_t count = iov_iter_count(iter);
+>  	char *kbuf;
+>  	ssize_t error;
+>  
+> -	if (IS_ERR(head))
+> -		return PTR_ERR(head);
+> +	/* don't even try if the size is too large */
+> +	if (count >= KMALLOC_MAX_SIZE)
+> +		return -ENOMEM;
+> +	kbuf = kvzalloc(count + 1, GFP_KERNEL);
+> +	if (!kbuf)
+> +		return -ENOMEM;
+> +
+> +	/*
+> +	 * Copy in before grabbing the table and copy out after letting go of
+> +	 * it. Unregistering the table waits for us and a copy that faults can
+> +	 * take as long as userspace wants.
+> +	 */
+> +	if (write) {
+> +		error = -EFAULT;
+> +		if (!copy_from_iter_full(kbuf, count, iter))
+> +			goto out_free_buf;
+> +		kbuf[count] = '\0';
+> +	}
+> +
+> +	head = grab_header(inode);
+> +	if (IS_ERR(head)) {
+> +		error = PTR_ERR(head);
+> +		goto out_free_buf;
+> +	}
+>  
+>  	/*
+>  	 * At this point we know that the sysctl was not unregistered
+> @@ -624,28 +646,15 @@ static ssize_t proc_sys_call_handler(struct kiocb *iocb, struct iov_iter *iter,
+>  	if (!table->proc_handler)
+>  		goto out;
+>  
+> -	/* don't even try if the size is too large */
+> -	error = -ENOMEM;
+> -	if (count >= KMALLOC_MAX_SIZE)
+> -		goto out;
+> -	kbuf = kvzalloc(count + 1, GFP_KERNEL);
+> -	if (!kbuf)
+> -		goto out;
+> -
+> -	if (write) {
+> -		error = -EFAULT;
+> -		if (!copy_from_iter_full(kbuf, count, iter))
+> -			goto out_free_buf;
+> -		kbuf[count] = '\0';
+> -	}
+> -
+>  	error = BPF_CGROUP_RUN_PROG_SYSCTL(head, table, write, &kbuf, &count,
+>  					   &iocb->ki_pos);
+>  	if (error)
+> -		goto out_free_buf;
+> +		goto out;
+>  
+>  	/* careful: calling conventions are nasty here */
+>  	error = table->proc_handler(table, write, kbuf, &count, &iocb->ki_pos);
+> +out:
+> +	sysctl_head_finish(head);
+>  	if (error)
+>  		goto out_free_buf;
+>  
+> @@ -658,9 +667,6 @@ static ssize_t proc_sys_call_handler(struct kiocb *iocb, struct iov_iter *iter,
+>  	error = count;
+>  out_free_buf:
+>  	kvfree(kbuf);
+> -out:
+> -	sysctl_head_finish(head);
+> -
+>  	return error;
+>  }
+>  
+> 
+> -- 
+> 2.53.0
+> 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
