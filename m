@@ -1,95 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3704606A329
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 02:56:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D95606A326
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 03:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=sJhi3beE
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZRQbI+t8
 Received: by kanga.kvack.org (Postfix)
-	id 355706B05B0; Wed,  4 Nov 2026 21:56:47 -0500 (EST)
+	id DE9996B05B2; Wed,  4 Nov 2026 22:02:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 306726B05B1; Wed,  4 Nov 2026 21:56:47 -0500 (EST)
+	id D99D96B05B3; Wed,  4 Nov 2026 22:02:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21C776B05B2; Wed,  4 Nov 2026 21:56:47 -0500 (EST)
+	id C61D36B05B4; Wed,  4 Nov 2026 22:02:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E9BE16B05B0
-	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 21:56:46 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 67ED1A0925
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:56:46 +0000 (UTC)
-X-FDA: 85399552812.25.4A10AF1
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8E100100008
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:56:42 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sJhi3beE;
-	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793847404;
-	b=CdNgCrpBGieIGltgYtwjcrqt/XynyRZhOFMLJqvSfuCL7BvEG3jc66A6x0z2ZnwDYGllLl
-	RXl2bLGw3/JTfPXKQSn2WaexB5TBKStmdynL6eoRtMByJXMRIy7qdvKBzfxLpuve4li8Ml
-	vqC7oc6KpyX8NgNVvf2dFpJCpPj7/CE=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=sJhi3beE;
-	spf=pass (imf05.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 699C96B05B2
+	for <linux-mm@kvack.org>; Wed,  4 Nov 2026 22:02:53 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0219980906
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 03:02:48 +0000 (UTC)
+X-FDA: 85399568058.15.CDC9E22
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7D34BA0003
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 03:02:47 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZRQbI+t8;
+	spf=pass (imf15.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793847404;
+	s=arc-20220608; t=1793847767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=e7HItsBXSCgxUc39U3iHUfM+8l/Wb7Jodni6FIfl/KA=;
-	b=40dZKe/Xpca0viJZEuxsz/p9N9JOB6gUeInJEtDZ9wvw3OEOdKoLCnatccO5l629WULQBm
-	BJ/685+bBEBEMN3jjEyXiXJIKp+5s71gzI19+b50eB8NjLOPrROxqKlNml77LxRMCG2kBC
-	D5FglPsbdpQcmEJvE1f08w5kMeP+W3M=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793847399; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=e7HItsBXSCgxUc39U3iHUfM+8l/Wb7Jodni6FIfl/KA=;
-	b=sJhi3beEBbsEJE9qy/YnTi+EiZCxX2WyfElrwLg3DzOlo6HeMMD+4xHjp/9asCxLslZKpJjLzOYWqgDBRMgPucqE5hrjxSaqp2FmPEJF5IFz8xpAPr/P26XflXQ+NWCmqCCT0HiFytm2GRM8aEWMmqa0HJQ9By1AuYRN2rkcUNY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=15;SR=0;TI=SMTPD_---0XE7G6W0_1793847397;
-Received: from localhost(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XE7G6W0_1793847397 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 05 Nov 2026 10:56:38 +0800
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: akpm@linux-foundation.org,
-	david@kernel.org,
-	ljs@kernel.org
-Cc: riel@surriel.com,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	harry@kernel.org,
-	jannh@google.com,
-	lance.yang@linux.dev,
-	qi.zheng@linux.dev,
-	pfalcato@suse.de,
-	ayushr@modal.com,
-	baolin.wang@linux.alibaba.com,
+	bh=zGZfT70XyONJWUn47AyDJ+cOnVzmjtxiZaxG/uXFuOA=;
+	b=xu1chNV2mB+o2kWZhFEjkVAXzJD0BNVGNoud+VJQxCeOyibMz4+/XdxvHvlWeqkk1shIh8
+	sRfJj9kWdiiot8hGtsSagtwbOHzxy2PzQLWiPP8Dgung4Eo9DJbGnAwNVD87Rurrobwnz9
+	GPlZ1ToWafp9bGTCLggcgF/BFG/2Ois=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793847767;
+	b=qzcR2XNeSz6mO2C+YO15tslVvyZOHndw7rNz4z6+kpEkzjZ11ShYG5w8T/g4KEjKvTd0Si
+	xy2I94vneUoaY6xIduCBbtaxVerFfhq+/Aqb42RPY1JqfUxHSlPsU+NJG6AAfiOD5QsmaI
+	enb7Mfa/CK+8/vxBHv80ZyVSAuWbsY4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZRQbI+t8;
+	spf=pass (imf15.hostedemail.com: domain of sashal@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9787F43D00;
+	Thu,  5 Nov 2026 03:02:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E8B1F000C1;
+	Thu,  5 Nov 2026 03:02:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793847765;
+	bh=zGZfT70XyONJWUn47AyDJ+cOnVzmjtxiZaxG/uXFuOA=;
+	h=From:To:Cc:Subject:Date;
+	b=ZRQbI+t817mQXZkNttd+gHuqAA44iJMUXeDiQIUSXTrPFP/K3YlmPF8OMp6wcehz7
+	 ep2l76pxw6rI5FPtzNemsq9Zt8Hvxmlyc/AzpjxVhZd1LZPQFBHkHxxBrF2j49WNCu
+	 chDRbIiobEPaUNLWEW2Cmiqj9CtGnquQ5XqSCMUjkVXLQrk5Ti5HFaeBssFD5eneWt
+	 z14re8NUk/JAaGvdNg3DWwS3abUODHWy0aAKWNxIeRRGh6dv+a/T6LqWlLEwXQvHVl
+	 kbK340AdP6KM/rcyPE46Pbj3IYRNHz0RZ5Mvi30G0+W9t3pWd1V976WurCIiLdIquF
+	 LtgHowtaWKWRQ==
+From: Sasha Levin <sashal@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Usama Arif <usama.arif@linux.dev>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
 	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm: synchronize with PTE table reclaim for all folio sizes
-Date: Thu,  5 Nov 2026 10:56:28 +0800
-Message-ID: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
-X-Mailer: git-send-email 2.43.5
+Subject: [PATCH] selftests/mm: skip split_huge_page_test without the split_huge_pages file
+Date: Wed,  4 Nov 2026 22:02:42 -0500
+Message-ID: <20261105030242.1241448-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 9dds6zk8douffbukzuy6rujcz81696if
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 8E100100008
-X-Stat-Signature: jqfeaw6bawy4cej7ck5tjcyu6bh3i9nk
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 7D34BA0003
 X-Rspam-User: 
-X-HE-Tag: 1793847402-98858
-X-HE-Meta: U2FsdGVkX1+S823XdYl1Wc92qcxad5MAZyqbo8gwgkvE6COTsM0HLwC+I05ENLpRv/ZeA+8Qfg70KIUDXc12n+Cgfj0o46tDGbhJZWzhXt7vVaOasZaCfZf00nMw6Q0suQ9apA6qio29fxLF/miBxfrE8d+SCrtT4fa1DDCTzbylNSfuRJj2snoJwlBy3ePrWpdIS8Eh3+neSvPApgTk1isYugkRFjEkU6vH+asaJ+oE9YIVa0XY4gPVNzOWCWlWtBdiLXSoasorm7imZqkYdb7T4D8Jb/rexeEYrBXZWhu4iluZg65FSGA63/xReEn4dftT37y+H8dkOH7bz4wMyk3j/OVM04nwxdAOj5Y3kHchJF3tKhtTfoEob0TdCe3sYJ/1hy1sfFmkV6qAq/MfBvfNrDcvksYqqp5ebtQA0x6lcUcMEM7ty18AoXt9fewsOUIemcAXJInoFyLnKklJo0miq21jnjcZd4Hfpa0PbfjswPahb8wgGSyUbrw3jmPIjfq8Z6ttn7WaGEZ6BAqRoHsL26fGclxZ25EW3dUMM1TazbIx2NVHfzXDKwQyk06x28PkeD6uf4rjyXZcl66cN7m2MLezL9y0/Rec9pWIQHnoTphJrmgYc0lAt6/EMYb2M99gOWqS6JW7q0z8GHTNeRzOf+NYEm4ftcseH//vSKpIFsud06bqPe4TKg1eIkloIfEsp3JwAkLVF0AvocAEE9Kljw7eY3/hLyX4QB2BfpY4s7R3N5BpWLrdOwLlrajFm7kRvzKPQHKvnHlfsEOpMKIX14oNmWcdOmw6DEu6gaGYklj6zCeqfwXZ4w9lkCA05Qd7v2sDhiIDKXL3dTw1N+AGlbRYWEVvKxG/R2mMP6bRc2aO819X/N2Jz1lEex+GbYtxXpO6hRITwne4mMtZCU4376ELqs9eqFU0SUJ11/6A2vHPN6cQBWqQ5aJtWD1qLMevTpMu4FRcNo8rCXZ
- GGF9hE7o
- UBO6pmKCPpAcHkTYXxyQfocXqKBkZGAWXoxV1SQSHkDIZ80yf6YptWmEjDzsxB3ZSpkpBWigbeEvNsMt6tAO8Pzmj5V5ZF2jFjjVt1b4vPKLjo5u7owbktRt4EivqkxxilSdhOeTVCY85VKP8QJyD5dBGreQAtifpGd9ewFD573DJwvVtEn7oBXC/KtX2oGQAF8IdgNgohh/RiGh7Lgp6kcIo64/+PxdxPXapluOXq8XJJXYum5oc/AXBKcdKDwEM2JFavwACR1ZASUr+2JRuJRF+Ww==
+X-HE-Tag: 1793847767-3391
+X-HE-Meta: U2FsdGVkX18SdCEqRMvepgZfR0TURCFq3AcymW22fVnJyoLjMpGaX/oCsv9yGL9iupwFtk1e1Mo86GsXMcmf8pZP/yuf0N0IZsNmyDfojs54Kl7bjLHX+C9zLlGOJD38wKzylxtfw0j7u40q4dlPbBNWcs8pDN4UxEnq4KZ/J5JfhKQzcobLHs5Qy0Tas0UXpOFSoxQNpMawgZKkXOGaNDp9fekLRZ9KdRcP6J6JsAylKTgQn3C/C8VOugWH+R+f1AV2a+TUguzN6VhJ7+KaCJ3bkyyEeFR/EquXF3KF6K4giuG/WAhw1rmfe5nN6KQuAOw5So00Juj8F/7p200AUSvQvPODDvpgotGmGoHEBa42QbeXkXHUFlaYNjQci1JbqlXqhU0ZSDhkqbVC0oAwqhEAJfeGnR8IrBqlFrUqIOPLIDYziLARxgY0/ljufTO55rjhNLJUp2hy3eLOVxnheISL71LgY/ky3apgFPl3ZSsRxQGelzcyTjEwauCWfS2sr2mVfFigSMM43r6Y93d3mQcMHRJCRYnD28zt1HT4qHkupbZDRo4VCjVXYJ+dGR685Rf+iu63tgKd9uHk55s/Qzyubr3SmCnUdfg2O+0BaBznWVbbSYjV9HKDBN5EK6grkAe+kMCfL+HVSk2Z4NLAdP3SUHVTrGqms5d1a7wjMCxYO06YyINZv1bel5xCetwf7wZyC3AbqJPx6c+GcoYlRmKEF9QXJixDLqry1A5aF0IibhczSkS0ZkkCpxnvP04QYz2sN7ZnFB3stl/RSn6V2+yujE3enD+MFtBWwXd2SCnXTCkRjjzK3jF3uL0WTK8dhTnaN60f2OicxLCGtsZTA7o3ogGpCGqx06ebsheSeO4zb7V08/leTvSKPAR8D4aIYcdD5EBTtxy9nTgp/hP5XEfP2SK9Pmu5AX02fl12b8OaFXXfllBD4pzxJ43gQD3Iz/32nqJRoGHxv/XSFIr
+ MVNKyCyD
+ oql4WuAJDdB1FW2cnHspJg6Jep8EIIskSxOA18c037btFmUQF9F1s69JKbpA8gIrU3abcfWw6RNv3NNaMt5uhjaP4/yhvxBDS3KVepDyHz+qHYfzBPBUr50Mxr6yvZmlrNclPzyHyEeKHAgolitZwXq9toOTJOWoR//p1vMJ/M2tk/JYczR0jJJBaZQRIMOXenSB7Sv2OYDaaR1YxfdwSDVbnzxPO7xs6s+/v/hs6fBKAsA2+CTB5NOs0pejpvwGEQdmHZeWyS9YWQemTk/AYpLPt+K9foJCTiMER
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,78 +105,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
-folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
-with concurrent page table reclamation via zap_empty_pte_table().
+Every case in split_huge_page_test goes through
+/sys/kernel/debug/split_huge_pages. When that file does not exist,
+because debugfs is not mounted or the kernel has no CONFIG_DEBUG_FS, the
+first write bails out of the whole test and it is reported as a failure:
 
-page_vma_mapped_walk() is used by many functions including try_to_unmap(),
-try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
-page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
-and try_to_migrate(), the other callers do not perform post-walk accounting
-checks, so the race has no observable impact on them.
+  Bail out! write_file(/sys/kernel/debug/split_huge_pages): No such file or directory
 
-For migration, the race can cause unnecessary retries. For reclaim via
-try_to_unmap(), the race can cause failure to reclaim a folio that is in
-fact already unmapped (as shown below), which may lead to unexpected OOM
-or increased refaults.
+Skip the test in that case.
 
-CPU 0 (reclaim)                      CPU 1 (MADV_DONTNEED)
---------------------------------    --------------------------------
-folio_lock(F)
-try_to_unmap(F, TTU_SYNC)
-                                    zap_pte_range(full PMD range)
-                                      spin_lock(ptl)
-                                      clear PTEs
-                                      zap_empty_pte_table()
-                                        spin_trylock(pml)
-                                        pmd_clear()
-                                        spin_unlock(pml)
-
-  page_vma_mapped_walk()
-    observe !pmd_present(pmde)
-    nr_pages < HPAGE_PMD_NR
-    skip synchronization
-    return false
-
-try_to_unmap() returns
-folio_mapped(F) == true
-nr_unmap_fail += folio_nr_pages(F)
-                                    tlb_flush_mmu_tlbonly()
-                                    tlb_flush_rmaps()
-                                      remove F's rmaps
-                                    spin_unlock(ptl)
-
-Commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped folios")
-has already moved the PMD clear operation (via zap_empty_pte_table()) to
-after tlb_flush_rmaps(). Similarly, page_vma_mapped_walk() also needs to
-use sync_with_folio_pmd_zap() to synchronize and avoid memory ordering
-issues on weakly ordered CPUs.
-
-Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
-Cc: stable@vger.kernel.org
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Fixes: fa6c02315f74 ("mm: huge_memory: a new debugfs interface for splitting THP tests")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_vma_mapped.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+Found with KernelCI's NVIDIA lab, which runs the tests in a chroot
+without debugfs. Tested on an AMD EPYC 9655P with KernelCI's x86_64
+build of next-20261104: without debugfs the test now skips, and with
+debugfs mounted it still passes all 62 cases.
 
-diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
-index e6b6170c2f4f..8797467b6f0c 100644
---- a/mm/page_vma_mapped.c
-+++ b/mm/page_vma_mapped.c
-@@ -293,10 +293,7 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
- 			spin_unlock(pvmw->ptl);
- 			pvmw->ptl = NULL;
- 		} else if (!pmd_present(pmde)) {
--			if ((pvmw->flags & PVMW_SYNC) &&
--			    thp_vma_suitable_order(vma, pvmw->address,
--						   PMD_ORDER) &&
--			    (pvmw->nr_pages >= HPAGE_PMD_NR))
-+			if (pvmw->flags & PVMW_SYNC)
- 				sync_with_folio_pmd_zap(mm, pvmw->pmd);
+ tools/testing/selftests/mm/split_huge_page_test.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/tools/testing/selftests/mm/split_huge_page_test.c b/tools/testing/selftests/mm/split_huge_page_test.c
+index 33a2473327bb7..deabb7db06192 100644
+--- a/tools/testing/selftests/mm/split_huge_page_test.c
++++ b/tools/testing/selftests/mm/split_huge_page_test.c
+@@ -610,6 +610,9 @@ int main(int argc, char **argv)
+ 	if (!thp_is_enabled())
+ 		ksft_exit_skip("Transparent Hugepages not available\n");
  
- 			goto next_pmd;
++	if (access(SPLIT_DEBUGFS, W_OK))
++		ksft_exit_skip("%s: %s\n", SPLIT_DEBUGFS, strerror(errno));
++
+ 	if (argc > 1)
+ 		optional_xfs_path = argv[1];
+ 
 -- 
-2.47.3
+2.53.0
 
 
