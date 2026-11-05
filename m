@@ -1,112 +1,83 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F059606A328
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 07:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=STk28X0f
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611F4606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 07:59:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D6E16B05B0; Thu,  5 Nov 2026 02:38:36 -0500 (EST)
+	id 829876B05B0; Thu,  5 Nov 2026 02:59:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 087FE6B05B1; Thu,  5 Nov 2026 02:38:36 -0500 (EST)
+	id 7DC2F6B05B1; Thu,  5 Nov 2026 02:59:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB8CB6B05B2; Thu,  5 Nov 2026 02:38:35 -0500 (EST)
+	id 6F05A6B05B2; Thu,  5 Nov 2026 02:59:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C4D576B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:38:35 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 34F061C3ED7
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:38:35 +0000 (UTC)
-X-FDA: 85400262990.22.F19F94C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 8E78BC0003
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:38:33 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=STk28X0f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4720C6B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 02:59:43 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C84D080956
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:59:42 +0000 (UTC)
+X-FDA: 85400316204.12.3BF6556
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C59E180002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 07:59:40 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793864313;
+	s=arc-20220608; t=1793865581;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WtxZIHT7OSRlVekSLEKMKnbDe94Yb+d+zJ7oVfsal88=;
-	b=HKrMQNLockdvjLy6zu1acOYYaKFZgf6gJpJL2fX3bMvgV/SjBdWTIma3YQlcBHwPj9cmmO
-	KEk4gif6cOe87F7EOr2DIcMMunb+dfHMOLVCbqglGLQj5MqKIEEgDz9bR+igKsNLiw4Mqm
-	pUBJPon/kHipn3rx70VmC1W7H/5p2M4=
+	 in-reply-to:in-reply-to:references:references;
+	bh=Ln52JZJddcocWfl/gxFwMTgRR26+BYApy8AfhWYLYyY=;
+	b=ETRhjS2yPJ902s8pyyG0Slucq8jcNpKl3YDP1VCM0yogx6OcKgO7DUC46axIMxovi/teQW
+	SjF3srYx5rAzOoHS1S6tqCc7TGljZDF8vhbhaeuOv5JnUNR/gA6IpcCJpgOb/I95+FRP7f
+	29rPp9i04txWAiuadiSBAsGdjM0iKV8=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=STk28X0f;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf02.hostedemail.com;
+	dkim=none;
+	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
+	dmarc=pass (policy=none) header.from=lst.de
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793864313;
-	b=C+O0WBAy0g9mZCQ4UU7AJtR2QDxAUcpWvw+imLlJyfEh6//FYZB0xwETKvA0/Y4Pt/VpzM
-	VCTpyzGhKlfAWr/oh/o4DVGgBsG5NtEAStEldHACdkg9HFDbL06wwOQccHJiUbBxviM2f3
-	dlyr8ULxeOm0H+gScuWdCRZiQ7ZaJbg=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B1CF943D57;
-	Thu,  5 Nov 2026 07:38:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9173B1F000C1;
-	Thu,  5 Nov 2026 07:38:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793864312;
-	bh=WtxZIHT7OSRlVekSLEKMKnbDe94Yb+d+zJ7oVfsal88=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=STk28X0fF6Y909TJuiOHUWcubijSHv9nAkp7aeBbfatLxW3q3DdEJaPDaTpMInw4h
-	 e1snbhiu48GpKc00lTPFIrmHdv8Bw6prdaZHWXbjYw2qUTAQ+Bf8rJCxuVyol7DAnU
-	 pij1fHUfR5rzYK2AKZZiP79iXkCz8iNyjbC2rCrpPCy+PrrfiKdWlJJrHl99RBG5dc
-	 uTFcrvw93TpcQEFs1pEg04FlYOSngrezMHDSlvY1c1vdM67z4BfSOA4Ir6DD1LGM0v
-	 uZO5MWs11lVV6DMHl8g/0fOApbMcLt7wvE4Il7iKqSrOEih5hDnYiYvhXI1XrIwrOv
-	 nPHmRmaMwxNpA==
-Date: Thu, 5 Nov 2026 09:38:19 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Breno Leitao <leitao@debian.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Xu Xin <xu.xin@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>,
-	Lance Yang <lance.yang@linux.dev>, Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-cxl@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH] mm: split out memory-failure declarations from internal.h
-Message-ID: <auwya6Y_jAkTmt79@kernel.org>
-References: <20261104-memory-failure-split-v1-1-3b0a85f0b7e7@debian.org>
+	t=1793865581;
+	b=8Sm3lJV5b/GYtQvhyz7/6AGQDBaGoB3jrkn3lFgA3l+0wY5oq5HF5lIXCqI1CgUuZZtfLk
+	Gzh2TIS8rlBKiK8EKgc/LSxgqM89Dc2DNsnPnZ2g8ARI1gWE4bfwU8WGvzcoqVN3R0i9s6
+	WQBiK3CnSicFFpqFI/7owkbLlH2w0vE=
+Received: by verein.lst.de (Postfix, from userid 2407)
+	id 29D0C68BEB; Thu,  5 Nov 2026 08:59:36 +0100 (CET)
+Date: Thu, 5 Nov 2026 08:59:35 +0100
+From: Christoph Hellwig <hch@lst.de>
+To: Mike Snitzer <snitzer@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>, Matthew Wilcox <willy@infradead.org>,
+	linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+	Chuck Lever <cel@kernel.org>, Jeff Layton <jlayton@kernel.org>,
+	linux-nfs@vger.kernel.org, NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+	Jens Axboe <axboe@kernel.dk>, Jonathan Corbet <corbet@lwn.net>,
+	Jonathan Flynn <jonathan.flynn@hammerspace.com>
+Subject: Re: [PATCH v10 7/7] NFSD: drop a shared boundary page only once
+ both WRITEs have written it
+Message-ID: <20261105075935.GA18069@lst.de>
+References: <20261103211754.35352-1-snitzer@kernel.org> <20261103211754.35352-8-snitzer@kernel.org> <20261104091543.GA31130@lst.de> <autk-osSQ8l2LKz1@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261104-memory-failure-split-v1-1-3b0a85f0b7e7@debian.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 8E78BC0003
-X-Stat-Signature: d163b3hchzp8mygnn5kutmrcx9q5kdfm
+In-Reply-To: <autk-osSQ8l2LKz1@kernel.org>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Stat-Signature: tjo66oi56ebbz8hjqt3mxcgacwxt8cc3
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793864313-190069
-X-HE-Meta: U2FsdGVkX1/cr4RCloL03Iy7AZxk0CwL2xl0T3j7S3HljzGcGXPlYXMYebNyxHDZOeVBjx+JFXjR9PAGaAYnRdeSlLOrZESGXOy94UxjDOgCtDzHCGLKr1K96ja8pABweHcrR1AFl57TqCZfL+h0/IPLVv+aAlyM8e54xhuAF7PsOUkttFnkzFgLF/M9gRLL7flMhEevh4cqz74wOaeiWLtfoQ0Mu+extLgELzn/Ouevldxd6fZ2hLSDyPkS+oWy3CX789EiKd/1mHb17Xyx0jWp4PHqAs20VOdCV96r5pMpJzURJnw1Db5kk7gW0yroBhPHuuVs7svKD0qklBbHsn3rIz3Mwjg65K7/WHqq/lCeLjUlxFoa1SHzt38Nc5vV2FAdMkO3MFK161Gsq2xL/iJy/6Me//n9Ia80EzWes/xxfuyc12/FrVIZx2nQCL5Bp4QJ3d9G7UROb0+iUw98fbsDvBOC6mc/QH6uLQja7t2g9MPHwGVLPeLJNcaX5+WD1kgKFoRXqs/ycD3dyh2uFw9uYgX/hXCohfFk7FvoN96x4DxnBFOHKZkt3Yi13o+QbIYE63tM6jCl3WthbY72e9MbqTnX8+9xTFrg9llLQmNN+nUf43hx9wx+dhHwSlVdAsL9nfSOUH0gLoF12gAw06XW6rFB4mauzR2+ekkM+Lx/JfrMiRAulL+lX3orM5kYjE8/EWuhiv865PeCtByQZfaFvey40N62MbJ/ZsxSzALZQIKHoXO0YtTt81a53P7UH4QSKNtBfuaS98V/j3JGc60SpnRGMh63ZLkF+nYYS91OB5PvlLH1RL2fj0E3Ft0bo3x6Hb4JkvbAWVwg/d84vLy/ZNHd1jcEnv7rO8NTdQ2hvkTBqG56FDwdt9VtF1/aUG16C16NcQJwUiTIlxBrWrCqmXljpMTi/vNUvEmyOB251OpOE/wfCY3r/CDFolstQMyI7pvAn63hFhJyYkn
- jlsUlf1z
- WoCZjWy+bWzaI8j2vKP+az91qdaIotDGnSeI+FNGKXqzzt5AULhHXmg5EV3jncU/oMrCiK5oTOuOHSsFazx9wO62xwfv/21Q9a7tLh9XbfuV41O7bKM0iCQ/ESQywlD4ZxYshDTZeCI1KKxqLWan2cUfX3ZFe5rG6OaipK1XgdiNqrmOQ/7ULTcPx/rR2xvE/Rir9Pl9mVGyhVantmlo98Rr14PnL8WIC89hhsQ0XlPMxHzgNgG6u9R2QA2WwDmqzS3HsIVl79+ewIyhB2jz5qvtBegH8JOm2tuSQQEyNHX9b7ueg06TCqBBjD1adCdhzVAo1E76wMkWd0QoRaGg0DukO7Q4noKU+C5/ouQA9z78kJN4TLnaF65KulA==
+X-Spam-Status: No, score=-5.3 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: C59E180002
+X-HE-Tag: 1793865580-421471
+X-HE-Meta: U2FsdGVkX18l8qZH7nhrl80MR7tHh/bLQvo0Ww7TgQRFlFx3yvNU47UctG96CRP8kMk5RRkMyGaNA/Fp33DdsM8AERbSUrNsUcXzCsttss55NrG2hdrTmq66pMGDlO5FhHqAgqqk6cnE3dZrqVlsPyu4746Dq0ooQ2BCxXfyZKnWDLJilXAXVvL1cXmiPuUZruvonb6QX4Th5Mn4p/kkYrPQtTY0gMhM3EHLBxOnYXE+hU0YeQmTtbic5z2tvuzZSjPkUjHzlPO8n9sSLy1a6Y70B33O6RaEQpxGUAwaZWuC0iLcfoVrCtf3SOs0IfEpZd+UuSvfXG/fsdvU/aKZZJUcPCl8npcjmy0AUG34OyFi0Hpn/Y0k/i0quG09lJOxjoDtaUo9IGJ0p0t0PtI9tTUAdQKrT9cesaJSJ0PXrUxx3mJhr3NDsMMqKHNeV4fhiV+SDJ+oNad2eLf9rw8jeOxJKBGK7MppcDeDmFwWElEFsk3YyjxCgXMcKnpP4wag0GAjkCjg+O66tE+SDizyMvu6l++eP2Hy3D9pF1hj544numb/n/v/G/gtPB13nilNOE9ozU3sYYD8Bo8heFfL8udltZ2CrGd586H8z4lrKBPB30k4Xa4xO8S67kVzy1Jaem/y5duPHGurYcKf2fHoZvZ5ATDSe1Vd9BLs2fZatXj9MVJAfDKBYb7zO/rmfxaJtaVmHgyfWrQM8A1b3oSypRtZC5NvNjX87e9jSCwuClooMqhsRF8wXIri9Nv6TUNee/0SKBRM3mRFrifZLI5TdNuu76VebBcJRYBkWuuXeaC2S6gmzovbruSDGK538liB+OmHGH/KV33Nh8+XHre0JU7WhiY+6tRpXtjtseWacGruE/TUpSMHbrKN+xgAHQQXwc2Xku+r29bvade1X2odvJbUUMczeAZxHFs3XqgfCeUvivQ3r4LB2bpGM6IezQZEgiEDaLeyW9dvWWsOX4I
+ DMrpXAF3
+ UxY7w9HhkgIL+DrPp+3CIpTExr9JL0f39M3oZUcbxkT5fqNr+PQ31L2MwlfCfxbJkQhDrpcl47GnYyWvQ7yM1nkMGkHkLB4H2rcLGsxoLivwAJ3hBacgfGdtz7ZvFNq5VS+06l6B8bhhVmJGM7anvUQHpXDsbxwCRxwYKc5jtYWHxv7lwIH6w6a297OVOVAS3kAN5
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,42 +86,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 08:45:34AM -0800, Breno Leitao wrote:
-> mm/internal.h carries the memory failure declarations, but only seven
-> of the 81 .c files that include it use them.
-> 
-> Move memory failure declarations to a new mm/memory-failure.h and
-> include that from those seven files that need them.
-> 
-> Move the block as is, including take_page_off_buddy(),
-> put_page_back_buddy() and page_mapped_in_vma(): they live in
-> page_alloc.c and page_vma_mapped.c, but are built only for
-> CONFIG_MEMORY_FAILURE and called only from memory-failure.c.
-> 
-> Keep the declarations private to mm/.
-> 
-> No functional change.
-> 
-> Suggested-by: Mike Rapoport <rppt@kernel.org>
-> Link: https://lore.kernel.org/all/aumt-4kfGGtoXuh-@kernel.org/
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On Wed, Nov 04, 2026 at 12:01:46PM -0500, Mike Snitzer wrote:
+> It is the transfer size of IO500's ior-hard: every rank writes
+> 47008-byte records, interleaved with the other ranks, into one shared
+> file, with O_DIRECT.  It is meant as a hard case, and it is the
+> workload that showed the problem on our servers.  The same happens
+> with any record size that is not a multiple of the page size.  The
+> cover letter also has 6000-byte records.
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+So based on a bit googling your totally optimize this for an intentionally
+stupid benchmarking workload.  And that's not been disclosed anywhere.
 
-> ---
->  MAINTAINERS          |  1 +
->  mm/hwpoison-inject.c |  1 +
->  mm/internal.h        | 29 -----------------------------
->  mm/ksm.c             |  1 +
->  mm/memory-failure.c  |  1 +
->  mm/memory-failure.h  | 36 ++++++++++++++++++++++++++++++++++++
->  mm/memory_hotplug.c  |  1 +
->  mm/page_alloc.c      |  1 +
->  mm/page_vma_mapped.c |  1 +
->  mm/vmscan.c          |  1 +
->  10 files changed, 44 insertions(+), 29 deletions(-)
+I guess everyone else was right and just ignored this bordline malicious
+submission.
 
--- 
-Sincerely yours,
-Mike.
 
