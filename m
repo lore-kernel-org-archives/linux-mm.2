@@ -1,83 +1,79 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03B7606EA5F
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7FA26079555
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gzfK7/nF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aFwEUG2M
 Received: by kanga.kvack.org (Postfix)
-	id CD5006B05B8; Thu,  5 Nov 2026 14:43:36 -0500 (EST)
+	id 0540B6B05C0; Thu,  5 Nov 2026 14:45:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAB7C6B05B9; Thu,  5 Nov 2026 14:43:36 -0500 (EST)
+	id 02B776B05C1; Thu,  5 Nov 2026 14:45:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB3196B05BB; Thu,  5 Nov 2026 14:43:36 -0500 (EST)
+	id E839D6B05C2; Thu,  5 Nov 2026 14:45:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 91A1C6B05B8
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:43:36 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C6F49A8B19
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:43:35 +0000 (UTC)
-X-FDA: 85402089990.10.06B7834
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0A470100005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:43:33 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gzfK7/nF";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C6D116B05C0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:45:11 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 68284140962
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:45:11 +0000 (UTC)
+X-FDA: 85402094022.22.F0C4D83
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9096F1C0008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:45:09 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aFwEUG2M;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907814;
+	s=arc-20220608; t=1793907909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dTMunOvWx9vfj4dikKtc63lykbDUpZcV5Bu+Cvs6i4Q=;
-	b=HhkqxuNP2eLvnxMtKKfiKsFhVU4kCTFmPc3pBGINJgCKY8u6cUNw8FLoNxjctc94d1xpn/
-	A2Iu22TIgdpmPxgCpeyLxhQ3B9Ty/7WAq86tM2zAowPJmgn/r8mCNMB2CSQTX4Fv0oDsX8
-	ivZGQzkjYqr3CHlQxLxRDI48NZV91b8=
+	bh=SwwRFdOw4oikJB0l/UHgh6k09vdq8uhcaONY4VtARHI=;
+	b=EWgcZshHb1+HxhRtVWcI48HeO4ItnYOkUApZZ3OBafy3q4dxkvOMfBO8PnMTWTSP+WMJFp
+	LoaCc+TSpJGbu403BHgd34rSiU/w+wKGO51FEeX1tkk6JywdsvaGv9ZnBI2dOn3F23WBtU
+	DhM9YsZqEkXGE04uZf7x2q2TIE5ZOMg=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="gzfK7/nF";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aFwEUG2M;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907814;
-	b=5qWk4NieCfHVp/PDb2z36JM1fmX9567CLDH2fFvdgNdKk2SzhimfC9sTTXXRKspQ3lWvs1
-	3LfzzDfI9BisV32g17VCHnvVcLYd8knffgFT++2qmo7LmeOM3K9gzMWZNDQrAOf4p2l0Eo
-	50CiILJeNY/pz1uuDVLIn/yt61Tngo8=
+	t=1793907909;
+	b=MY0SMGX3Il18F8ue7Yn/5/Auiyg26EU3w5JaaArZz9HHyemNPl/p5DxHQvcT5xsOmnEhjG
+	I1/Ty4iRnBTMW2eyocKvhonFm4a7XzTWTXRPpzp+xx2PocJ4Ato9sJvZogMAznkYlM0TPI
+	9tYSyeCQQBIFJ6PDGSxaIDycnBMCFs0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7A0AB60147;
-	Thu,  5 Nov 2026 19:43:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE29F1F008A1;
-	Thu,  5 Nov 2026 19:43:28 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BD0644090A;
+	Thu,  5 Nov 2026 19:45:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873C91F0089F;
+	Thu,  5 Nov 2026 19:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793907813;
-	bh=dTMunOvWx9vfj4dikKtc63lykbDUpZcV5Bu+Cvs6i4Q=;
+	s=k20260515; t=1793907908;
+	bh=SwwRFdOw4oikJB0l/UHgh6k09vdq8uhcaONY4VtARHI=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=gzfK7/nFuPPtB7TuaDe3+Fc+p0bNF+u4OzPhpYnN6Pgry/ETk5WJw/bk6pxBpNtXo
-	 VakeLxhOZEHtnMaMA/tBF8ufO9+3k+q73OIS4DvkuLPDyKlT0XPBcxLnwnFQgGVYT6
-	 iR5Ow3jhrstIzdB1yLOnqInMkHBiz6HeSWPrVT+6K396fgBqDeSDUbRl+mfkzr5Sf7
-	 lQkvd+zApBq4+NcjVkx12fZytmu2Yg5o6q730thrkMasxcit1lT3Ddk8nk1Md+QKsO
-	 Am85USGObzeUurcYRcqOFtoGLhaGBp9Ox5CAXaSD+iylDf4nZrPOtjeu8rcQYYVov5
-	 kHczTEJKgsa2w==
-Message-ID: <8c11d322-5b30-43ef-8d8f-1baab4a90332@kernel.org>
-Date: Thu, 5 Nov 2026 20:43:26 +0100
+	b=aFwEUG2MRn1cnJpuFDp/RuKE9w9V7lQIsGOnP+6tTnyE/o+7hi44rof4K7A+A3/Me
+	 LmB3NQaaHG6Fw2IrsEZpWvYrsQBeciPKqPKDDvMLdqAHh9VXKDxH+XfG1LPLQmeRmj
+	 no7/Zzpy/GXlRZUJlEW5ZkBLjhGd8f06ItJIzyvVBwK6w95Dz84AIIc1C8XuceM6qX
+	 rTKNcm1C+hQTK/1QoRjbmbi6KHnumMPsIKiRb3/lONH2lBIXPu+3e6QCMoERTTzkyW
+	 B8zlJp5LEpjW8FeIL8f6UVFUDO84dKju21/n+JzAdWWTt6R/kgW6epXpVOpCWcJ5vi
+	 1n+OA1XrQzQEg==
+Message-ID: <ac54a9f6-e21d-4f03-88dc-6562afd59cf6@kernel.org>
+Date: Thu, 5 Nov 2026 20:45:04 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/swapfile: drop a large unmapped swap-in folio in
- unuse_pte()
-To: mt4022@columbia.edu, Andrew Morton <akpm@linux-foundation.org>,
- Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Baoquan He <baoquan.he@linux.dev>, Barry Song <baohua@kernel.org>,
- Youngjun Park <youngjun.park@lge.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, tz2294@columbia.edu, stable@vger.kernel.org
-References: <20261105-swapin-large-unmapped-v3-1-d5906e4cf18d@columbia.edu>
+Subject: Re: [PATCH 5.10] mm: replace free hugepage folios after migration
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+Cc: linux-mm@kvack.org, yangge <yangge1116@126.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Barry Song <21cnbao@gmail.com>,
+ SeongJae Park <sj@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
+ Mark Bundschuh <mkbund@amazon.com>
+References: <20261105070150.3093908-1-mkbund@amazon.com>
+ <2026-11-05-1-daily-reply-0010-mm-hugepage-folios@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +120,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261105-swapin-large-unmapped-v3-1-d5906e4cf18d@columbia.edu>
+In-Reply-To: <2026-11-05-1-daily-reply-0010-mm-hugepage-folios@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 0A470100005
-X-Stat-Signature: rz61oi7ii3i1mh5uff4zmiebgx1horqz
+X-Stat-Signature: 9smqa1oz6fhpd8n51stzzw3cg6eikbjh
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793907813-294262
-X-HE-Meta: U2FsdGVkX18fFt1YhvHV2/fJe9K1yOb+z8F9kc3XoN1CYTmeqgSosIc+nrtZE2TU+hnRfcUzhiKkUZjebiu8BnrkuUujQhgAUyDCH8O2whhucU8VwXovIdDz9UlVfNyeqkkbbncijPz16D8cgh9HiVZSUYxuUAbxU4zMU2jfJXNrBWSYzcSGhRz1PF8EROgZ37BP7bwEm+0qVRKv8LSgLFYxJH/V9iHi5WgC2LkBX0BIJDx22IOANao8bw7nPo/r7wnlzI7ln1W5M3mjxHZw5/vwsbbMzR0kV/Z9Ws/ixedp5fDU/3UGMzhY2iFxkd6TWmTv9WlVw3kU4nWN9OgXNOHkgcEU7pKtU34trd4qPRH85BYs4j8B+hij2lG/YXyphI9f4awN/9Hhwcczts5LIvY6NhWzsYN+zcKXESZr1n1jRx0Z4XOrnb9bfp0OUUkKku50O5APhoEAQx26iVX8CXwXpP3x8UJ6t0ncfnwJ99N2Z0vKW9srM+3YUudTq7mDbRy7dXdzbHkku+NhSw4UaxLXNW3oZmbkRcm5Qlcmbz9hh6tB0vBYdQEv3HF89agNXtPf0LmHFxzgFHvvyFxLBEXHodH4hkCPZR6WSim3yttzKGM2ujTfRrhA+9EYPZ7HGu6hM76sMmU5V/v246SnrdxTiURrWkWHzObvNRoyDYBMye7ilVeF+WCqrZOieIGCW+7/k4XZMcZsNGs1MT+h7eIFo5miRG4TSAf/51mjX1pzoEFiSthuEE2JyJpS1I5rlxza926v5uMrWvRR696zADc0FacYXEAa+Mjz3aLCEU1gwm+P3dtmOvnKwEY8PQ2xs5YHFWyq7/ABVS9y4TNwG76/FV577rgzgZg9LOE37J5p11dVRfeIw7s8jDD1bGm/BR0g/xu7xLRcly9LtRb4sjzJNG48yPa8Lw8hY2CVvGzPt8dLveMHcnOl5ITg6goNDUhn6oPVFDudDQCHJNX
- znbK6j/+
- 5tId+Agz5/+kWDl/LuHq1wQNlLYIVdqytUIENlGiTMJ023uFfO70oHy5lig4MXYxWZsPyEnOmdSwdkB7HSYOI7Jx20w9A94tgZmUsTtlP8F4rnzUMK76W/PTyif8qIo8MOoSVp/wmACjy4Mr/Ox2+3YnOX2KRa/RosgBvKRF3pvYPjH/1xX6qJv8CypyW2hSZs/DazYgGQNySWjsST7ewGXWgS40HE0YMntBVQmz5niiYa8w5VtK3SsXUU7pHib3x/IK1ctKYTDGw/0ZM6nheAazPmTUNr6Dhf5PJGb13B6sKRiOV0W0hK28hMOdIXmVcGgjHLGzfQPKIpZn0EEzpkx6efU4PxcvPKCD5
+X-Rspamd-Queue-Id: 9096F1C0008
+X-HE-Tag: 1793907909-507858
+X-HE-Meta: U2FsdGVkX19C6BhGaE97kC0fzeopMVGd4gErtvPijCz8+EHXvMDlrZhbtNG5HzDc0vHi0G1MLD5puOcgjGh+ScG5XM8dsQ96Bk6hl+XFc4BgQujDnD4uefmzJcKVlU1lpeW36T4OK2nSpfXRDhBFbvog5k+Ge4rOLBpQKE83suAH8m3T2JdLGLElYP3Kc1XHMqG/bZQY5J/tFyEk6sigS+rBUDefnJoynbF7crNFUEexAvrZZs9MAtpxzmARrKrII2oZc+55RLb3FYY161hIL7lca99Az0CGrWXYNtz4ktw1ck6hrKp3LToTENpeQFlD+7hASdlWHne7joJzo5TMl9FEJC+rJl6xjYYm/JKhUJ7PKBOFevLZbTQnKHs/tDb9Ur48JfsP/jqNnSEjvqrMa2QRw20ut9wp/bJKYkQP5xuElvKFllOXEapeAgJYUfgifU6UhZyPfN4wwA9T2OZrDOnOu5Ak0aJ+EALq5OfgW/5ey8u5SxcAmmltVhRiPqJTothqLvakIb3awjOEj2ZRMf/KhKIQwNiHNDFrZkAkfoq/rkfEPMojYWvPQLWrCJN8Rjh/VrmiaB/oiYXHOtDpNN/V9eDw9J71mWFxvCONAtA38voU1NjAvr7Gz3nrmAdnLQipwVTIhoSiMBP0xInEfkMFH0noR0sLQ0fMg4YFBttk7d+dbfwVDRjk67rgYszM6lzSPVvhRtQtE+etlGYcxGIFZBWo0IhzbKhDFy5PlBc7nLxL31UMOVn7MsJeodJsGZjaptkl1oIA9R0AQhnwuu8VH2KsktudHc2wIpJG2Dec23J0JrOIa3qg1hlTYSGEKmybf84GAhVPsb7GX8tOyKEIwhGwhxstCsLZybErrAeGlgUxj/dWwTb0p2nJdx+l+LGDykeRUsq4kR0ZQCLzxDq9i/s+4t53eOg8Bba2xF+h3R7mwXCZ12SmmXyVvOea2G/yRdnz+1PPAVX6dts
+ bbAQoLNc
+ 1mk3f1eM0znmMbeiClSrdNmFhBsroHNEzSRtlLD7Sl4wBV3oqEmiImMxjocOukZfk7BHrJP+pd22pgVN9dqmXvQ2BanJHKhWXmCFKsU+KyvDfAv6HQKWI6ZIDdbc+k//fSaFYPyApol6KesFbv12QxKA6m8e/9YRJncNe2UU4V3IC2g5aqGpq5DGPSAspVeztGrBMN/+nAqw9jlPuU6l3Ujcsl0SNS+WPtnAIu+IkOufsTJUDGG+WwCYIpJzRBY/CWWjYvqBCvDFCnLbbaLe/KVRdzg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,55 +143,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 18:19, Mani Tofigh via B4 Relay wrote:
-> From: Mani Tofigh <mt4022@columbia.edu>
+On 11/5/26 19:39, Sasha Levin wrote:
+>> [ Upstream commit 04f13d241b8b146b23038bffd907cb8278391d07 ]
 > 
-> Since commit f1879e8a0c60 ("mm, swap: never bypass the swap cache even
-> for SWP_SYNCHRONOUS_IO"), a fault can read a swapped-out mTHP range into
-> one large folio in the swap cache.  The folio only becomes anon once
-> do_swap_page() maps all of it, so if the faulting PTE changes in the
-> meantime the folio stays in the swap cache while not being mapped or
-> anon:
+> These carry only the is_migrate_isolate_page() hunk of 04f13d241b8b ("mm:
+> replace free hugepage folios after migration"), which has no Cc: stable or
+> Fixes: tag upstream.
 > 
->   Task A (fault)                       Task B
->   do_swap_page()
->     /* swaps in large folio F */
->                                        madvise(MADV_DONTNEED)
->                                          /* zaps the faulting PTE */
->     /* PTE changed (F not mapped) */
+> I need an ack from an mm maintainer (David or Andrew) on the reduced backport
+> before queueing it for 5.10, 5.15, 6.1, 6.6 and 6.12.
 > 
-> swapoff then maps it, which marks all of its pages as mapped and
-> exclusive, and the next fault on one of the other PTEs crashes in
-> do_swap_page():
-> 
->   [    6.424485] kernel BUG at mm/memory.c:5195!
->   [    6.424503] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
->   [    6.427654] CPU: 0 UID: 0 PID: 67 Comm: swapmthp Tainted: G        W            7.3.0-17087-gd865f2677c44 #1 PREEMPT
->   [    6.432665] RIP: 0010:do_swap_page+0x24eb/0x2fa0
->   [    6.451035] Call Trace:
->   [    6.451567]  <TASK>
->   [    6.453841]  __handle_mm_fault+0x13b5/0x3b40
->   [    6.458525]  handle_mm_fault+0x16f/0x480
->   [    6.461143]  do_user_addr_fault+0x312/0xa30
->   [    6.462044]  exc_page_fault+0x66/0xc0
->   [    6.462846]  asm_exc_page_fault+0x26/0x30
->   [    6.476708]  </TASK>
-> 
-> do_swap_page() already drops such a folio from the swap cache when it
-> can't map all of it.  We move that check into a helper and use it in
-> unuse_pte() too, so swapoff drops the folio and swaps the entries in
-> again as small folios.  With the fix, the next fault doesn't crash
-> anymore.
-> 
-> This bug was identified and confirmed with the help of a deterministic
-> hypervisor currently under development.  The C reproducer below however
-> hits it within about 1s.
-> 
-> Fixes: f1879e8a0c60 ("mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
-> ---
+
+Looks alright, the other hunks are only relevant for migration support of
+hugetlb folios in alloc_contig_range(), which we didn't have in 5.10 IIUC.
 
 Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
