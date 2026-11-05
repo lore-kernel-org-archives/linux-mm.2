@@ -1,136 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71EE6082BF6
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37F4F6082BF6
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 10:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CEIDyS2d
 Received: by kanga.kvack.org (Postfix)
-	id C762E6B05B5; Thu,  5 Nov 2026 05:07:49 -0500 (EST)
+	id 487F06B05B7; Thu,  5 Nov 2026 05:07:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C281D6B05B7; Thu,  5 Nov 2026 05:07:49 -0500 (EST)
+	id 45E776B05B8; Thu,  5 Nov 2026 05:07:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B19A36B05B8; Thu,  5 Nov 2026 05:07:49 -0500 (EST)
+	id 3281D6B05B9; Thu,  5 Nov 2026 05:07:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8C8D86B05B5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:07:49 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1829716092C
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:07:48 +0000 (UTC)
-X-FDA: 85400639016.07.E4461FC
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 28F01180004
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:07:46 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1182D6B05B7
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:07:52 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 96F9C1208E9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:07:51 +0000 (UTC)
+X-FDA: 85400639142.17.07F63CE
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CB636180002
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 10:07:49 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	spf=pass (imf16.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.45 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793873266;
-	b=Ee1758v1ZYIuMsffaOuWg9rAjXvyzRwTAmD4ZaHRGFYS1vSktcHd4etUKKL+3iGZPUKxcM
-	tchtqXqtnvYVZiCBMazdvMrKWneiY0epdIG/iR20qx+mBlryJ1lxz6xf84kmBtDDLxCYdF
-	7900v87KdxpOiRrd4sZKH8bqFSgWLjY=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of geert.uytterhoeven@gmail.com designates 209.85.222.45 as permitted sender) smtp.mailfrom=geert.uytterhoeven@gmail.com;
-	dmarc=none
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CEIDyS2d;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793873266;
+	s=arc-20220608; t=1793873269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HRfPjQi/EPajP85bp44Mrjs4W2fVG4O74jaEjdHYdtc=;
-	b=eafxA7gZKrOVXp7qCQUjoVRdDnY7rRA7DjGKVSsQpAr+4tCoQzNEiwv7bYk6z3HZro5w9X
-	GCRA5CV+kf3ZpRJGBSxixEdX0rqjNL12xEFbp/tao2a43gGzWxrkDl2P9DlTYSW1m3p9oS
-	bGSjraC4fhLPZBmqnk7GNpg2CZdGQNU=
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-9851592ada1so458659241.0
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 02:07:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793873265; x=1794478065;
-        h=content-type:cc:to:subject:message-id:date:from:in-reply-to
-         :references:mime-version:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=HRfPjQi/EPajP85bp44Mrjs4W2fVG4O74jaEjdHYdtc=;
-        b=r5tDiaba9votBvCpF8SehZwYbJMvS0vw6uHHD6MvIeyneLuz9+mgQMb+Ldw/40EyxN
-         Oq5f8wx4obk8B9xRrXHwkvTAPr0ZrJlP7SNJRr0S9ZXrJocDmsNSGmeGE5KMyNuGbH3t
-         OOatiCs8R+5niUp5xLPq/PdnNRQbwW31SITfaYhcA1VHWpLgng6xl92erl+OEIAUfKmF
-         q6tshB4nje53NpHAWE1IdA83Uuju+haAeFQnS6A0DDKPKWIYTL7CGjAh89tAUxMYwJVr
-         j5EbaGVbynomHGWPwwJHhuCtJ7WMftkX3ZQcVGLUJpGjosOBt2lpotpKUW1YGGcTk4ZB
-         fSRw==
-X-Forwarded-Encrypted: i=1; AKwUvByrt4elNnR3Gr7hIGBsG4VJpU/cDMwUor3UuVI1iCBXez0mpQB627xw6/DX/5YAucMTWZx9OZkZNA==@kvack.org
-X-Gm-Message-State: APuU4Z/pYXHZaYKnKuoJfv9dbbbaY0chEeBNMuymwwYjXnMnt32Yt6M7
-	eTbNeQjkAfL+TVVEzv+SV9SLXxV4RHKY2IQH2G+Qq465vzWveahN74p5cZQQiRuZsRA=
-X-Gm-Gg: AYBFou32ELJrw9opRTIn+P0/Py5JECHYsDLdpsUywJuUQMBmU7etVmSwQxFGndQrzxw
-	PNgDxfOJQJr/FFicIDNJjdzS7DFO46gaG8jrOXj2H7v23NJtG/35ztcr0Ewfsz1PWPmev27+Rq/
-	h6G/YIMmoorgtrFlcGEdI3PeB4BRwkgb6VeJySBKVVYFk9DjWx6Q1y0mGm0Tc+2YJrJzDYSu96W
-	PvDBYjFA70K1InT1txuF2dOps7lfY4SSf44jDr+DR8rh2nOb/VhvtK1PnOV+W1k4l95zqfDjh4n
-	8B50Pmy28T44Y5bSTyxz+bOAERwIDXpvjDEAxOzkbqjTzH+RjlriDVCslKg9z3x2fR0djtYc2WD
-	vJhmCUQSe0kOH4JhKIUl8JiFJbgfyDUhpCwj4st3KZoUvOeavB19zZTYfsZjXf5MEzC55avq+Nm
-	clvE6MiideTq38eomkn4JuDqSsVDN3rv4SODjSAwGEZr8d6sySoRzZUupqf3nlwO/2NQPdiDaoY
-	d6MxwalHVmvfp3bdpSXxoxUf0V9MULL/om/9mRsSzhxSyvzMXyNszyZY8zUtBod7/ffUzljLlJr
-	Si9pptqZRSUYcthyfJb0aLFewUvnsEtpE+ZEEyW2xh+3LceNujM25w0UL/EfqF8d1g==
-X-Received: by 2002:a05:6102:14a3:b0:7be:37d8:1567 with SMTP id ada2fe7eead31-7d0725cefa6mr8059061137.10.1793873265194;
-        Thu, 05 Nov 2026 02:07:45 -0800 (PST)
-Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com. [209.85.222.51])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5eca89b6568sm3973281e0c.1.2026.11.05.02.07.43
-        for <linux-mm@kvack.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 02:07:43 -0800 (PST)
-Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-9906034086cso432340241.1
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 02:07:43 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBzZJePB2DJAjnkbap3CcAiRLfAGjFxbZ8l/6aEWnlvD2Jt6DXDJBR2qW/Tm8QVxUqrypscHmMBM7Q==@kvack.org
-X-Received: by 2002:a05:6102:374c:b0:7cc:1a41:20e8 with SMTP id
- ada2fe7eead31-7d07227a940mr8060714137.5.1793873263361; Thu, 05 Nov 2026
- 02:07:43 -0800 (PST)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=GzdAvB2/oHNqGKeRfI1OIOpKJXPB5hmLnx90lxaP2zA=;
+	b=nFlTRpRB86sbL8C+xSjdJJtoXi/9y3k9nJfMeTZue0/mvitRtTmLRvX+5i5gnGtpPtCrMx
+	6Br4bWkLFkVehP/bGoYRyQvY+lVsKgVhgsPft6tZ3ofqZFmjAzh6ZZKVYn9IPdbrsjEsFg
+	IiYAUYT2uAG3TkDjBiaCNPsyc79QNDA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793873269;
+	b=d3E6F5zTNrakDfldcSlH5wVxi7H7UqX6Az/vCajwFU1w1Y7Oav4xaUgCxjMwiPHNuko3p3
+	a8hhmlTcfG+BgKw5WHCo2s45FCajtFw4YdRYTpW4oXH/Y19Q954V3EZw3JQQYy+6Gk1AUa
+	KJNRkKtP1i2q9ZyitOjVeLFs1jfRbi0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CEIDyS2d;
+	spf=pass (imf16.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 03F0C40E85;
+	Thu,  5 Nov 2026 10:07:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F1D1F00A17;
+	Thu,  5 Nov 2026 10:07:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793873268;
+	bh=GzdAvB2/oHNqGKeRfI1OIOpKJXPB5hmLnx90lxaP2zA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CEIDyS2djknf3O5c/eBT+dmxNXdN/G/oUW1+HL7y7blsCddi9eA80g/V5XSEFEC5O
+	 GWzeYpQW/88FuFjd3od24xYlzw1Y8NFhRT9CRAKfOxPxHoEVcWcuhbBFbnYJe5uJ3x
+	 7znzB02zi5HOAp15fi78ez0zS7Xj27yJ7kQw7ICRyVUz6rAYf/2YbkbPXYFvZUG8WV
+	 LWvF2aht/cNIhoVT90q3Y2joyaxE/0lsIxm3UEWmJFmwQuHxu7g3uFWJfcB8187xQc
+	 XUdN+wa8na43x1Uw/a/neuqh2m6zrpJVGHLRYmer9FcDzhG671aBEzU5eMqcXSG2cb
+	 uBUJ5qlFBvWig==
+Message-ID: <c5210774-8c19-4110-8fb5-6273861b019c@kernel.org>
+Date: Thu, 5 Nov 2026 11:07:44 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org> <20261104-work-procfs-core-v2-14-76ace653a773@kernel.org>
-In-Reply-To: <20261104-work-procfs-core-v2-14-76ace653a773@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 5 Nov 2026 11:07:32 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVfakapgBK6TBhO1iWX8qzvLDk8jzRS=t2MVa5G=MCUeg@mail.gmail.com>
-X-Gm-Features: AclHuK9naqg5CZQ7lhJVrMhg9TNH44f-SpA5WbUGCGBsAlcoOw2midTd7doJSmk
-Message-ID: <CAMuHMdVfakapgBK6TBhO1iWX8qzvLDk8jzRS=t2MVa5G=MCUeg@mail.gmail.com>
-Subject: Re: [PATCH RESEND v2 14/23] proc: let procfs copy in writes before
- pinning the entry
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, 
-	Josef Bacik <josef@toxicpanda.com>, Chris Mason <mason@kernel.org>, 
-	Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, Eric Dumazet <edumazet@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, Greg Kroah-Hartman <gregkh@suse.de>, 
-	Joel Granados <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Jan Kara <jack@suse.com>, linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org, 
-	linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, ntfs3@lists.linux.dev, 
-	platform-driver-x86@vger.kernel.org, coreteam@netfilter.org, 
-	kexec@lists.infradead.org, linux-pci@vger.kernel.org, 
-	linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, ibm-acpi-devel@lists.sourceforge.net, 
-	jfs-discussion@lists.sourceforge.net, linux-alpha@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
-	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
-	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, 
-	samba-technical@lists.samba.org, sparclinux@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
-	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
-	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
-	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, 
-	linux-debuggers@vger.kernel.org, Chuck Lever <cel@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: zccqg7pjcnmg6jjumi9zgfa3kbgsb98p
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/filemap: stop fault-around when the walk steps back
+To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org,
+ Krystian Kaniewski <krystianmkaniewski@gmail.com>, stable@vger.kernel.org
+References: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 1teqnt3ec3c4smugkbuoftty4ey1ireo
+X-Rspamd-Queue-Id: CB636180002
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 28F01180004
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793873266-149317
-X-HE-Meta: U2FsdGVkX18UQzKzj4izoUaVOhOYjm9LoxFYQcySiynjhIaoJKtB3plLmnV8Hwi9BEVzZjaSHpk5JvwHi8G08sO8KdZibwdBsNS3FxAKIDIB28OxVxdrBJHFDcfAOlgOnNtpZ9eo0Kqx5do/ftZUbP8+TuEchlt97FE7e7LX6H42IU+CCqYejWMnbrOaR+eyZ3BG1A79QeOuJYmoVAL4/pkgF4JYJvpMh2JvStsLvGKCeIEQvNiMZzSs4hdlHi87GGW5JfLmX9HLyB3kOX7cbF98uz9hUBGDcAHdDRANrU12o7UOYeeeGbD8LEPOmN3BSm5b614KqO7AjHnr3DoTCVt/jGkbjcD2P3ibly6nfotBSiajfdcl0WZKT8BA1aDsm7Gvnz4gkbTxzDwYOqquRjAGk/zrS0vWXB2bq++/KzW5vf+8c4MBSMHplifSg0TiW1wTKgvc2GcNvGN4vIL2XTvFyx1Hr0+xKxOeaC69mYmxda/C9hcj0IwqW2rdOgxPCzJQH9UYB2MYNJuBAs0aJ9gcRBT2S1FnDVn+x05Mk50pTNSHw0EM/3QVuKe5nXrOH3X5rne6zo3b72dVz1vlDQT103K5TSiWLNU8tVtxu9EDVOa92At2nsthEKJGNP1f0FHFUDS5/Q19TlWChvBd+o+9HVaJ/D7oMsNkgvRgc8hankCSEVeqs1MGeLJEUb3kw5Lhj1M3i2hN6BqIS1LW+thXy9n1Vz04HEZn2eMsGWHO1NVgKt04+9/XLXCR9fekC8RyQaXbYkh6VP5nwnVfFv1PwyVKDmXNcuMRYYpFM01DJlIKjMjhTVIX+GNsCRf2Hb7vRo4Y1cfvAnjvTvDBiDZwUjgJwTeSXhTA2lmMyGBIiqRSJDjJeqFJ6Cc6OVrm/33Q0DqheecRolMAgmXSWwsbht+aY/nd5FHWwbduKYX/Vl12P1cbgvzJvIkKTrC6H/lbd3g3GqjDO88Rpy2
- OyRjpZwo
- RASBPYodv4s7d48GFODbuyPT4jsgj38SPGPjXxKWCDHRH715/lepXcp3ntekJ7/cw1Okge2PnQD56zcb3WA3VMMyJJBrfLzCKa8RhRm84W5x4LwGVrDgSQxG+hWz3E4mSTT8OC8EZ6Ko/BmVIowHWGGkqA8V0VsF//2QYhrTHavza/kJnkEerz9JhMVrcKTcNDIk00ncUXY7LL3zKB6tKmLlsU9lT1Kyc/FueWU60X/+PJMpFBwiMC+4Ivf4BYmSVU10CIlIIYsIeuooQN51H5MsQZQzGtz2gSHuVgGOY1Ll1PlLIEcp/uBOoitAhbybsBrfbqEUAovrqj928oN9mYdENaTlcFb0yA0fsl3sSF6HfqAc6EWemySj1XZ2FVpZNVc1HyzHpZuVuH5VwSSVaE6xMaJdX/BvuNBvwFtkjsD5PQcHs2wPzJO+sW57784gHe/bRprSEIDxitue2k+nKGyQ0yA==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793873269-520475
+X-HE-Meta: U2FsdGVkX18OqiNbRTO/vuSJeUgNnoNrZw1kxIewjCB23Jxi/C8xeKFWXAP4X3Dby47ct0u3mFjJ5/6tB+IV44EefbywVGPHwJc0Bg8XzMl6YiDyUtSeXnadcm0klSnXze8TJ46jwLakwdKnG3FF2qAxpexQQOz7OluvxbuEchBxHiPuZiONeulqDAYgIgepc28DUTLpXZD3G+MzP5UznMfPsL5RAkaibjxP7X1ONqJO5sL1gCO0atv1f+SiVo4CAppg2NFHKuRGCHBwnT9q4aUhNJ3UGMEccCYYjrSFvP8i7E9HJ+9oy3Z2iHYMgd8bHnmNGbMmNtOansY1mjOjnmNwdyDK/mXxHJyiZnKOf+xt9X+ChYUw813KgFdgyHFNByAfUAhN/a8rHGQcxyqOqftIDj/BSjpdZKyPzOWX2gmPdtOF0myICndSpzA6ezTc+vcWde7ETxPKKavkBwiicJXqj/pPm09NR5uL4DGuTAMHOpstayXH94HjLugefMEnMhxpyE+wovnUQ6i7zKumG2SFKHqsGBNHW42TvGXtGVJ430Qjwec+rwnVEV7hWH4NBrixJYMh/UqxeqonFZNzcrsjLSLRnUdonXBxTEpZ7iw3Om/86tyG2O9cW6HUs0RFcfnAjOfQaDu57Ozu+Krng+yIw0wPy24O6d3gtng2VzhmdmftSJbPRni3SdIaL8vziMUQB297pDSPgLj026F8yG7fH8paYjnOD5V/wBG5vipzc44AzsAKZqOT4F0Jam9nltGnXIwEtX5egq1ItQl6h7vZVBhgxsVqKdDm21Rw23TT0PYsQDRkJlG6m4XFZfZW3i1ZLH4CNcGCgQJqT15nq8n2tO1F3dtV/5CMssB9gI7mzNJAVBQ+T6VHpdBZx7oeiQzF1ojxYsc8TTbeSAeb7NM2SVUr+u1f2JDhN3ZWHf2bST4d8VmqeoEM84oOxz2HLALsRoksK6skCZPdvNa
+ cTL5GeHd
+ HRwQMuMTeUMPNk2KGBhuJHSchA7UE06sRQr6913qanshIkx0vGiiYvRu8yQncLGCbMT/y6LNTEBuEEUJyb/8KTvIqSD9kRZTunX7yQPtyf89VDE1QcgZTDCK0rQRN9jSIOTDTaE1fzZ0fR7Dfis3g0r4YKuUeC/nGQpEAy5TcAsDGc8XiU2II+iFkFSAQXkPlihNR/i17lk8zHkIpgwGRjx9nNvTqow/BPNABAuZe379THva5fGSwchW4ZubgvXdSJTV6QDxm9hznD/ygECc8cmHYbjDp2SilAOQr/KcxcU3z5Vxk3Iui/TCAAxh94GCTJhcVd4g0cv0tttw2WRgKhhTwilpFjarZvzhQV52jAhDeGIgO9noBjGq/IufYRljLqdVq1i2JkO8Dfms=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,84 +144,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Christian,
+On 10/31/26 05:33, Jose Fernandez (Anthropic) wrote:
+> filemap_map_pages() can dereference a PTE pointer outside the page table
+> it locked. KASAN has reported this as a use-after-free read [1]. The
+> same path can also write out of bounds. When the stray entry reads as
+> none, the fault-around loop maps a page there with set_pte_range().
+> 
+> Its fault-around loop walks the page cache and moves vmf->pte by the
+> change in index. A lower index moves it back. xas_find() can step back
+> to a lower index when a multi-index entry is split during the walk.
+> 
+> [1] fixes xas_find(), but the loop still relies on the walk never
+> stepping back. Stop the fault-around when the walk steps back. ->fault()
+> maps the faulting page if the loop did not.
+> 
+> Link: https://lore.kernel.org/20260904121301.200049-1-krystianmkaniewski@gmail.com [1]
+> Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+> ---
+> Changes in v2:
+> - Add Fixes: and Cc: stable tags, and say in the message that the loop
+>   can also write out of bounds (David Hildenbrand).
+>   https://patch.msgid.link/0a1ad7d2-ff0e-4248-8f03-2a64a9134aae@kernel.org
+> - Link to v1: https://patch.msgid.link/20261028-jf-mm-filemap-map-pages-lower-bound-v1-1-0bf126e876d4@linux.dev
+> ---
+>  mm/filemap.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index b74bc1e5015c..1df776907140 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3968,6 +3968,13 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+>  		unsigned long end;
+>  		vm_fault_t map_ret;
+>  
+> +		/* A lower index could move vmf->pte out of its page table. */
+> +		if (unlikely(xas.xa_index < last_pgoff)) {
+> +			folio_unlock(folio);
+> +			folio_put(folio);
+> +			break;
+> +		}
+> +
+>  		addr += (xas.xa_index - last_pgoff) << PAGE_SHIFT;
+>  		vmf->pte += xas.xa_index - last_pgoff;
+>  		last_pgoff = xas.xa_index;
+> 
+> ---
+> base-commit: 65ba8f34ec886ec72b2c07ddc8cf3d815c32869d
+> change-id: 20261028-jf-mm-filemap-map-pages-lower-bound-a623ed8a81c9
+> 
+> Best regards,
+> --  
+> Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+> 
 
-On Wed, 4 Nov 2026 at 20:32, Christian Brauner <brauner@kernel.org> wrote:
-> proc_reg_write() pins the entry and calls ->proc_write() which copies
-> from userspace itself. A page fault in that copy can take as long as
-> the writer wants, just like the copy to userspace of a read, and
-> remove_proc_entry() waits for it.
->
-> So do what kernfs does for writes as well. An entry that implements
-> ->proc_write_buf() gets a NUL-terminated kernel copy of what was
-> written. procfs makes that copy before it pins the entry. The copy is
-> capped at ->proc_write_size bytes, or at PAGE_SIZE - 1 like
-> proc_simple_write() if the entry doesn't care. Larger writes fail with
-> -EINVAL. The proc_ops go away with the entry, so procfs remembers the
-> limit in the entry when it is registered, like the size of the seq_file
-> state, instead of pinning the entry just to look up a number.
->
-> Entries that take binary data in pieces, like the PCI config space,
-> ALSA's data entries or a firmware image, can ask for
-> PROC_ENTRY_SHORT_WRITES instead. procfs then copies in the first
-> ->proc_write_size bytes and the write comes up short.
->
-> ->proc_write_buf() gets the position like ->proc_write() so entries
-> that write at an offset keep working.
->
-> Note that procfs copies in the whole write before the entry looks at any
-> of it. So a write that is too large or whose buffer can't be read fails
-> before the entry's own checks run, permission checks included, even
-> where the entry only ever looked at the first few bytes.
->
-> An entry that implements ->proc_write_buf() and still has a
-> ->proc_write() fails to register.
->
-> No users yet.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+I'm trusting on Andrew to pick this up :)
 
-Thanks for your patch!
+-- 
+Cheers,
 
-> --- a/include/linux/proc_fs.h
-> +++ b/include/linux/proc_fs.h
-> @@ -67,6 +74,16 @@ struct proc_ops {
->         const struct seq_operations *proc_seq_ops;
->         int     (*proc_show)(struct seq_file *, void *);
->         unsigned int proc_state_size;
-> +       /*
-> +        * procfs copies what is written into a kernel buffer and calls
-> +        * ->proc_write_buf() with it. The buffer is NUL-terminated and holds
-> +        * at most ->proc_write_size bytes, PAGE_SIZE - 1 if that's 0. Larger
-> +        * writes fail with -EINVAL unless the entry asks for
-> +        * PROC_ENTRY_SHORT_WRITES. The position is NULL for a stream, like
-> +        * for ->write().
-> +        */
-> +       ssize_t (*proc_write_buf)(struct file *, char *, size_t, loff_t *);
-
-"const char *"?
-
-Seems like you have to drop several const attributes during the
-conversion from "const char __user *buf" to "char *buf".
-
-While at it, I think it would be good to use this conversion as an
-opportunity to replace "char *" by "void *", which will probably let
-you drop several casts from users.
-
-> +       unsigned int proc_write_size;
->  } __randomize_layout;
->
->  /* definitions for hide_pid field */
->
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+David
 
