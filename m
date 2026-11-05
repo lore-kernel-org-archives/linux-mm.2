@@ -1,107 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABD6606A328
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 05:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95726606A31B
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 05:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=LCNjg0S2
+	dkim=pass (1024-bit key, unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZXfl1Ib/
 Received: by kanga.kvack.org (Postfix)
-	id 5A5106B05D0; Thu,  5 Nov 2026 00:02:02 -0500 (EST)
+	id 7807F6B05B8; Thu,  5 Nov 2026 00:05:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 555796B05D1; Thu,  5 Nov 2026 00:02:02 -0500 (EST)
+	id 70A546B05BC; Thu,  5 Nov 2026 00:05:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46C366B05D2; Thu,  5 Nov 2026 00:02:02 -0500 (EST)
+	id 5D2056B05C2; Thu,  5 Nov 2026 00:05:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 25E6D6B05D0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:02:02 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AEA611C434F
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:02:01 +0000 (UTC)
-X-FDA: 85399868442.08.E148B89
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D310840009
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:01:59 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=LCNjg0S2;
-	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3689C6B05B8
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 00:05:28 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 25A3B140908
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:05:27 +0000 (UTC)
+X-FDA: 85399877094.29.02945B6
+Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 49613100004
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 05:05:25 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="ZXfl1Ib/";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793854919;
+	s=arc-20220608; t=1793855125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RgLMlA+/WqjKCYHcmI1Fs0YnRe4NhBu4xadeUTCY6R4=;
-	b=t5k1xkW7eJL65AyCpu/y4XAwfFYxQNIXTbMn0hClBumFF6voJhZH2uf43iRKY57bZRkh+f
-	BtmoIBTbJoDntjfTE4F7oR0SpDd4LUSW6p0ZKgJAz4bgXA49kXs+ceuOb8ZoMTIwr6+/bl
-	iZnIqn8LiC5acVeRh3KuvU2eub1oBDg=
+	bh=mGyyLkfMtTuuKs4xriRESG+abVUcpds9iYOPA5vDlKw=;
+	b=ajU38nApVny9nAXCsjwTMmLdiKhxGIMxm2UHoak6gZTMwXHOaISaCh/rnKCW92GI7boV+D
+	iMzadA5UVRo/rVrbbvYzz7+8ry6VK2IaojtroaRFWaqsvTVamcT2mSOIbAb6yo9UE1F64t
+	zJBUd+cy3adwNIUOZXlADu1+tE7+knQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793854919;
-	b=ItljMOMwTWnV/EreUfVoVu/Dcpj8JN7jKh1lbp3mEsEJcQXZSNa7ztHHSVArTxSlFDqD2v
-	W1rXggHf9wH9qCoXbjO3mAU3un5Lv6mLAbpCeXVVvgux2zVxLNXRABFfC5TXseDwsmZjvA
-	pQe0voxqSyTQJUP5HtNUdLBknEOM20A=
+	t=1793855125;
+	b=Vx0ANCKmFXa2MiQI+GPrCVaSKD3860rz61LvGKDts0emGw1uOnc4M8/NZUDUwSauM+4e85
+	kynvRF1UCJxrpyQz5zs8cDlaGFfU/cDMWizqJb4+/Ip/LGWZkIFcaxsw6ZBacTs04I+7xN
+	8gNpDNacYd2hfw56iPfRoMXZvb+wh40=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=LCNjg0S2;
-	spf=pass (imf27.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.175 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-36a1947498bso3977863eec.1
-        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 21:01:59 -0800 (PST)
+	imf14.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b="ZXfl1Ib/";
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf14.hostedemail.com: domain of senozhatsky@chromium.org designates 74.125.82.180 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-36e99cf7bb3so39448eec.0
+        for <linux-mm@kvack.org>; Wed, 04 Nov 2026 21:05:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1793854919; x=1794459719; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=RgLMlA+/WqjKCYHcmI1Fs0YnRe4NhBu4xadeUTCY6R4=;
-        b=LCNjg0S2wGCviYemPlRQJGgc3FCMNZC2ic8tRCjfkguqDW2Hps9J8a7ADEbMoZE2gv
-         v+Fp6Gs4F8XU86dOfnLYv8bxHTlYbs9wbqOACVNsCgrEGGtHV2zaPSwp8nGI9DbaTPs1
-         PqBF0Esoz+01/u8IWa/xyl1NMeNa7wQgf0PfU=
+        d=chromium.org; s=google; t=1793855124; x=1794459924; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=mGyyLkfMtTuuKs4xriRESG+abVUcpds9iYOPA5vDlKw=;
+        b=ZXfl1Ib/y7xPPrlPFkLYtSVnGxWaN7rBtJLXYZ6soCiHOwhAOF/3deCG+ZMYSR+ldD
+         Ipf97nsm6KIEC4mtuey65SqIzTz085eq1JzhZa8v6mu374WMX3ZE91PVESI0obL3x0mh
+         qG4LAvlDoWMlBSdraBc1i7uRnChtPLfD5J6bk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793854919; x=1794459719;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=RgLMlA+/WqjKCYHcmI1Fs0YnRe4NhBu4xadeUTCY6R4=;
-        b=2AP6HXyvr6Nt0RRz2Rs42FUvAwWwgB5eKWoLSMrxeGTkowygyd0fOED2+GBCtOagW/
-         x8mtNzY3TLciByRuYd4hX9vWghDLyKM0s7B9wuibjGzSyRuVCbMibeZSiwtsSMdY+dlA
-         0wkCowEYETroMvsCejDzT01HHmNrftDWuJegdR4Oh0M1RmjvdA3Kle+UnXpXaYA+V1tM
-         U9Ie9JCYemVLlfdUvrw/K6kW5ICIM3v0mtgb/1lCQPLIHJ6jzGzeAw0C0jk8zEtUThoN
-         YC1S9ycjVpcQ3ztoZSQNnMl4r6hcRFXFsr2mK0GtTB6+ZuChLsyjW1oTFLctlEIhT1BK
-         SaXA==
-X-Forwarded-Encrypted: i=1; AKwUvByJhxff3cQ2tl4OgdtucSavN5N9vuc7CSS2kxP4OiOQubi9JvnhNHi9D6UgUXVr7EbJo9n0tHTBUA==@kvack.org
-X-Gm-Message-State: APuU4Z/aqA5jmu8hca4d9f0COEoeKm1JvUQ+EMILl1ntzz/byIK6FS+J
-	4fabgky/w9LiYdjsM2SrEsKYK9p1wEeXeFqtxc6GkmX+/Fa1h7gIy47tsGbKwSLPnA==
-X-Gm-Gg: AYBFou2QYhbtH7WkSHGQ7UlzLHXZlY0VTqKkPswwWKar5a4/MoWbn4wCqq3/kSKJBa4
-	hR+jLwkUoj4S0dIPnM28HnT+OHON5enVFgrLblF3Q4l9R2eY9CccgqUiNK7KOABNQ283BE895xK
-	bUm44ER2eklxRT9b+3Naa839JYA8aAao/hrsY7pduj5oUtOqDWrLOXd19vU345jZ0ytO3iDca0Z
-	Tsiny4UVM4zekkjyV6d3qEtGeYPV7PEIWMuhyWXWC7o/K5Xk5lXzd5OJymVHUpCazZHJJaUUamz
-	fPG0QeDcT2bwZflObZYQPWk17JpGWujfbXDw1UUlyk619gzpthUVM+wj+gmAG96w755TET9yEaS
-	PGqlEyI3f5WljtC5iZYjsd4wPGahMLb4+WElhz1uV1AUuSOVZwlRygaiVGa/Jxtlg33RlxgjYE1
-	Y/31mIDlT7HYtW9OH5vnlBF5nG7Ug5snpaDtY0oaEDna92JnmmV2KATcHZvpn6Ok5DsiPBF3/UB
-	MZMkMjN+Kf0TAUpsNGIIemx1My1KSsFrbwX/mHwzKaNIFTWHd12LHXBVA+AMdYBl4TWiVxte34K
-	jWu4gqtzn1HKerTDjuYQyws405qGfDtIP9NeEh8QMtVLIAz0jjFSAJLt0Ld0nXH4xA5I
-X-Received: by 2002:a05:7300:471a:b0:36a:2382:7dab with SMTP id 5a478bee46e88-36a4232cda7mr25234871eec.6.1793854918611;
-        Wed, 04 Nov 2026 21:01:58 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793855124; x=1794459924;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=mGyyLkfMtTuuKs4xriRESG+abVUcpds9iYOPA5vDlKw=;
+        b=MQhMGjj1f6yt9EMBqFXFBfojP6hZTmac5RgAJL053q9Ya7kNc9O2qRhuDmmgnHUKxZ
+         gkmrZg9mk+YMHjT0wG/Y6O20HHWs2jfzwbkUCWfIujXrXQ57s9K0zD384RKgTDgTnlY+
+         kqwJa5C95Ihgk5lyxU/LqUUAM+633qncnD/KNll6MPzPqvWllvq6x67KEF4fCQeqjh/E
+         qjzWm/NgYgOfxJOMypNIsyqGEuTySSBOEeRbjaurzj1R5B3lE9hzlAGkS6D18JI2focu
+         js4E8qr3jC4RJ08fV3MEt21xZL6p26RrVYMQ3VdTjRuYJJ4JVN7I8t9d7QmO5C47Wm6M
+         J5cg==
+X-Forwarded-Encrypted: i=1; AKwUvBxGTL0LaOiRQwFMyTXq+u2qJZubFZYGuFjjZRClpq3XJRHJJLxk/HxtwuPZe1p32agtHR3kssfTNg==@kvack.org
+X-Gm-Message-State: APuU4Z9AtYMoUnHKOwde/wJDzpDaSkQeAHx6HDKo/4ATBPP4mYqBYCGZ
+	SFdXiEymaFWXEtVtr8laAFnnLZhrK8oTeJf87m0WoA/8B7tTWzQL2e2qIofrr1mWZQ==
+X-Gm-Gg: AYBFou1aeIs4551U8hE3/zNAUkf0NsEN0BVQoRjR7FIdKfxCYEkEnoiYgdmBxeHGri/
+	07Wb67GSrLgQgVLVKbx4NIQEWaXYS+zQ1CHyH0x6BzyQFxrkN950v8W/gN/jRQz4mM6WuY2N8Q6
+	ZXPzHIBJsODhBWJyaE7Ijd5rMnam/hXb0pmvwNLEeJJ2rxmPOIzbZO3YfuF1ZVu2z2SazhvjBrm
+	sepS3Dp0OwdHmLlqAiAk1aA8S5L5awFCFC6Aw2snn0LN/RHz3z7gQNunk/VlPaaeAvsZSF2GbCI
+	Ad8Vq9eGDN0biTwrHHfdmaNVtILDpAtesTTqWbWPVCNcyOfyQGqSgUzde0iBA0F3+vpjj0dAYIc
+	dsQ/GhzyCz/WlyYoSe8L4d78kFYt3yfI5DE+sZYG67ZO+OeZagcYrbs3Wigt64DpCR3y7k+585h
+	1kaR8cRwGKBgDp4zsa2tkShzfTgzkFbioukHHXMKmUhSzz604IVcDyLy8kpinl1L9KJpG6kj0aO
+	9pGIeYGFx23z8by9ZjpZZ8jf5dr9IK54Jhx5lyvhrx4IzNDZvcYUPTTQIXBlT5DcLtFqkfiQ0pa
+	AAXxgCC+qsJFda1IAEDY3/Dgd0+3ovrrI0qC732m3eRE+MCKqOk+MHgbjoI2H6h5iX2RvQ==
+X-Received: by 2002:a05:693c:20c9:20b0:351:245b:d1e7 with SMTP id 5a478bee46e88-36a42061e10mr23766914eec.0.1793855123743;
+        Wed, 04 Nov 2026 21:05:23 -0800 (PST)
 Received: from google.com ([2a00:79e0:2031:6:37bc:b763:7ec7:65b4])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36ca39b3b7esm12037974eec.28.2026.11.04.21.01.55
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36dad72dc52sm5463602eec.0.2026.11.04.21.05.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Nov 2026 21:01:57 -0800 (PST)
-Date: Thu, 5 Nov 2026 14:01:53 +0900
+        Wed, 04 Nov 2026 21:05:23 -0800 (PST)
+Date: Thu, 5 Nov 2026 14:05:18 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Nhat Pham <nphamcs@gmail.com>
-Cc: Chris Wiseman <chriswiseman@google.com>, 
+To: Xueyuan Chen <xueyuan.chen21@gmail.com>
+Cc: Nhat Pham <nphamcs@gmail.com>, Chris Wiseman <chriswiseman@google.com>, 
 	Sergey Senozhatsky <senozhatsky@chromium.org>, Xueyuan Chen <xueyuan.chen@vivo.com>, 
 	Barry Song <baohua@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
 	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
 	Minchan Kim <minchan@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, xueyuan.chen21@gmail.com
+	linux-kernel@vger.kernel.org
 Subject: Re: [RFC PATCH 0/2] mm: zsmalloc: make shrinker compaction
  budget-aware
-Message-ID: <auwLksxxF3y-a80b@google.com>
-References: <anVWZVOt-xeD0dMH@google.com>
- <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
+Message-ID: <auwOBaRtM9p_Wxfx@google.com>
+References: <47ed45b5-de67-41aa-aa21-a3ba3479a7cc@vivo.com>
  <anXJ-5_vO7-toSe1@google.com>
  <CAKEwX=Mm2tXcen-quRXHf1Y2qSHYvpEUe4xiw-mHYaJnRUR-EA@mail.gmail.com>
  <auKqt6b4AxCLziIH@google.com>
@@ -110,24 +108,24 @@ References: <anVWZVOt-xeD0dMH@google.com>
  <CAKEwX=MV_xEUvz91pz6uc4qXWnWOUDtXZ2zASdNVOBHBLeA60w@mail.gmail.com>
  <18e4ebf806e937ec.3137322e32332e3235332e313736.1bf52a.0000sendgmr@google.com>
  <CAKEwX=PFdgEbba+H3fEnJFDnfkxCTsvuHEb4numVwJRaiMgwKQ@mail.gmail.com>
+ <179384102494.19062.12740032892044628762.b4-reply@b4>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKEwX=PFdgEbba+H3fEnJFDnfkxCTsvuHEb4numVwJRaiMgwKQ@mail.gmail.com>
-X-Stat-Signature: x5g8ujcotptkba5q13s5htnp8dgx6kxb
-X-Rspamd-Queue-Id: D310840009
+In-Reply-To: <179384102494.19062.12740032892044628762.b4-reply@b4>
+X-Stat-Signature: 3pbbdf3fxmdoiy3skjbgj1dqcxs6r9qt
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793854919-915968
-X-HE-Meta: U2FsdGVkX1+HtU+rP1Dt00OJOaCydqfK2K/pId95PTixv9rTn0vdQVVfHrfJUuGbkZ6P5VDTNSgjXzZBuzp3b3wsWc4zToLqrsI4XQeDZt2ruAa74Zq/WlUqLikelBG1Tv+3YBncCP8FlY+Q0k38Au+pu0FYbIhIX3aFkwnG5tlnk5dqzUdpOlhFQSuMPl5NdZabYSzPGU96UcErT/Io16Y6jxN+5YuC/nYhi19coOE6fDVvG4Hyoh090ThKOdmgsh8QvaWfyo1xepgsZx+lcgkQ2gcxBnHaDtQum7OuOhI/1N/DTcXbLY92Gjxjyj+Ok88JNgWS10/EJSDIBCI4TRBRld6pU531J+AiafOLRlW9BMa97NRzbku4zX4y5Fn0efaDfXh1zZpYx4xxO+//LIX5rASNPk0k6NHX603GKv4Y+I6ZPB6Ht/TVsVtHiM8C3BvZT4q1auiHcaRjd9DWdIR+YK0Sbh0xJy5nmbpk3SrWJhKeKh+FVY08ZEZksMkZKqpdxQC4a+w7IrunsGi7oE9x+BHPxi3DX7jCwhSup7Qdw+vJgdd61kYu1Ak5niGX+3uAarACEx0SgJ+uL5I9yt8wzOGVd3IdeiJLidSt3QHJGKHwb0bDRhB9Zzxmt39ikV7j+vXpnxSh7xJokTkmXD9HVfEp/BbF6nlNU7cDIGr8xH2n7ds+4gLNEBHYr9ue7r4esq9wf7PtxOCvuB0+ZRjKss7ll/Oyuymp35fegFrdSL7H/fKZptJiQ0QAmLbgVhn/8TlTvt+1ri6YkYS00/zAMhcjTaNhpyAnsFsVskEPACDTRI+kdwgUA0UHIpnAtn7eVgID2B/fjAQXROrpSXfCLP2ZTmzkuaBUYnqklda51BFmcfoxfYUtZbyMHhiZyc9MMaBEBVc59h6dpTpbmFTgOEvIYn3pE4Sx5A4TFG45V273FOpaA49YVUV3c22arFaM4jXXtxNyPsKqfve
- dTNhnd40
- 3aHHPknrqR2DuIR+Nif1b/InAcN6S2FEBNaxGehHK3IWFUQg0UyJ8hvbvkkfWsHdP4x4Rn7AfnF/npjplXks8d2tNEirxmdHe3EZ7XeHdAbyim9fktop2H1HjWZVO2ZQtHKNUSHRn3T5LPzClPr8b3/dJUvUBBmNzRH7f5IS42wmm5veNfj/0Ci75Kh+xQRlIykZUa80NmQBEQVjMW816hziwIKQkqip9pRZtEk8LeWYdBV3/M/jOGgGv0WdcIN+JpPFeDwCo+wDG7VVT0OerKu7TAPU2dI7oPTvYyMzu17FeSzA9JIC7wKRHP/s5SWXXm4YHtKvojkzPU1ML8st78pKL1xPum0VTU94HJrTvoItcFw59huV+SqJVO9Q9IhsE1KrgYaTjvt5HVhPCsbHtoVz5NhsZtTcA1t96TNpb6hAaLYIDxAOoAXSJTXNoh4RoFBjyF6Z0y8CZZ95ShGV95SmQcQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 49613100004
+X-HE-Tag: 1793855125-770304
+X-HE-Meta: U2FsdGVkX1/UtYnmt84doaJCcb2fx3Mdj5Gg+/5khjOUkbA4/26798qsg9Qfh33QQTUKCV+AZe3eXYtCmrY7XWv3rqI/GzD87WnITxw5CLFLwfrCBfzw8ntVvjQVVO34XdLIwU9rFpkgJACMklo7dy/fGLHKQb7bbtsQWNdVILCPBwHSRNqGeOc2mqBdm3yV5OAok1vNgYnqdHAKU2OA9HWGAfTKPJsdAFac7N2mAQgDlRAAlXahmF6g6Lq3MRVGqvR/IjBj7DanmA/3ohTStMxPE1jGJFyk3phoF7+xbiis3T6WLUReuWHu6IDMRha4tQAaoy0AK9ihmMwxZmpN1Eh3xMWnLDVSjFisbfVzLJRktnqHAFvgQQJ4KRTxZTvoSZIDLWt6qQoOp8BJ695/J0Bnb/E1EQESgonkczyClyAc5VVkPnp47iYr4ultrMatQM/US7gmUKh8M4HWg+86UWDKw/2c0nseZnO8uG8kvB+4BGc+PNHBgAJnXJELvr43Zre7l6BvUNjLxE86Tn7WegMJMhUtmxGt2ZeEm+0B2eR90arwdlUO8dqwzmZbasr8L2fQZ/84eByLuYyq5K4J+D3TOUy0RPi/chTVNREX7jQgccEFUWNheDaAuig8xfAuPEsOqVw1Uv6gs0mbws+R9XekhF5sU5crDOOtu3Xroh+ZYXItAF3cPq8bUqWDh1O4X2+scjdXjBSTuGUgYUJVA2oja8ibNG7cO1he3yRn3SO9PkHdsoQzBwbr+ch8uw3p+YrY9QP+kDQ58+NgtC4eong1KiySE5sbVqsO0gPMnbJoLyPaW5mrra9UVukqkR84jZO8qNo3kH4fYuGrzmJv5/JRc9ybrKuBjhaGCb/cyAaIamUdDZFBZoqDE3HI0Lt5Wvc2UVuscIqTXq+4KSTjK0BUHDijbTEeY8aoQTY8i7vBgX/I2uX6sEI/rw30lIAlTO6HWrhIP38prJd9ksK
+ eF+prAzD
+ MP53Rood2ysqKnjwRV+ZOuIIBxm3PBWfnhOaKW+Q13KL0FBUc9Y66X/A7+2fZRWKRQ7R3vX2SgDwn4XLLdS/qqkb9+AqKVZcD0w43SBG02ure+1SOAduQxzvFf6wsrvsQhGBxVIHxEZNGRbBG7ky1GzhRVMaObKEesdrItTxGjgBKoPD9y7kd4HvIM44bdtxOr6MSCxBxz3THKKOifEDPiRCKI4Dh+DxTmw2Q3lAHTFDLBZktVgfIFBgv/tXbfRoPCK9+lQIh1eWmya6yjEzgoD1vuGH06Vb2Ib0rBs4D9FrwhkhsHCecuVeqecE3y8P1eksSq8ylrp32kOYRSIC5rn6rpaVmF6cC34rjN6+6b1TRDYBg3qDJuuSuwBsIpgW8v7bidgaPVdDIFrR8rRovgqpLN3qYu5xWqba8Ci3N1Y2QimyWyiu3CQXfTw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,63 +134,18 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/11/04 14:54), Nhat Pham wrote:
-> On Wed, Nov 4, 2026 at 11:46 AM Chris Wiseman <chriswiseman@google.com> wrote:
-> >
-> > On Wed, Nov 4, 2026 at 9:57 AM Nhat Pham <nphamcs@gmail.com> wrote:
-> > >
-> > > Is this precheck basically checking if we can free at least one zspage
-> > > of the size class before proceeding? Yeah the number looks good -
-> > > let's add that, in parallel!
-> >
-> > Yeah, it just checks if a bucket has enough wasted slots to free at
-> > least one full page before taking the locks.  Sergey pointed out those
+On (26/11/05 09:10), Xueyuan Chen wrote:
+[..]
+> > SGTM, but I'll let Sergey chime in!
 > 
-> You meant full zspage here right? IIUC we keep the entire chain of
-> zpages around until the entire zspage is gone?
-
-Full zspage page, right.
-
-> > two counters aren't atomic together so an unlocked check is just a
-> > best-effort hint - if you and Sergey are good with that, happy to send a
-> > patch.
+> Thanks, Nhat and Chris, for the discussion.
 > 
-> Personally I'm happy with it being a best-effort hint!
-> 
-> We can also recheck after we acquire the lock (but I suspect it's
-> unlikely we'll get radically different decision?)
-> 
-> Sergey, how do you feel about this?
+> If Sergey has no objections, I'd be happy to send a follow-up series
+> to make the shrinker configurable and add the unlocked pre-check as
+> Nhat suggested.
 
-Well, I guess... I don't mind the lockless best effort hint.
-
-I suppose another way could be an introduction of ->can_compact bool flag,
-which we can set under the lock in zs_free() (that's where fragmentation is
-created).  zs_can_compact() doesn't seem too expensive, but calling it on
-every zs_free() looks a bit bad, we sort of want to do less work in zs_free().
-
-> >
-> > > Ah ok hmm. Sounds like internal compaction isn't that helpful, i.e
-> > > zsmalloc already does a pretty decent job at packing objects that
-> > > there aren't a terrible amount of internal fragmentation in the first
-> > > place...?
-> > > Should we do CONFIG_ZSMALLOC_SHRINKER (default to N or to
-> > > CONFIG_ZSWAP) for now, and remove it in a couple of releases if users
-> > > in the wild do not complain?
-> >
-> > Compaction still helps when we trigger it between bursts (freed ~21 MB
-> > before the swap storm and ~10 MB after).  It just wastes time running
-> > mid-swap when new writes are filling those open slots right back up.
-> > Defaulting CONFIG_ZSMALLOC_SHRINKER to N (or CONFIG_ZSWAP) for a couple
-> > releases makes sense to me.
-> 
-> SGTM, but I'll let Sergey chime in!
-
-So "depends on ZSWAP" looks a bit problematic, because zswap has both
-ZSWAP_SHRINKER_DEFAULT_ON (which can select CONFIG_ZSMALLOC_SHRINKER),
-but then zswap also has module_param_named(shrinker_enabled).  So if
-want to tie zsmalloc to zswap shrinker then we probably need to wire
-in that run-time knob as well.  If shrinker_enabled should imply zsmalloc
-shrinker (which I think it didn't so far).  zswap folks, do you have any
-preferences?
+Thanks.  Sounds like you and Chris will to have "Rock-Paper-Scissors"
+to determine who sends a oatch ;)  Just joking, let's first figure
+out how exactly we want that zsmalloc-shrinker thing to behave wrt
+zswap expectations.
 
