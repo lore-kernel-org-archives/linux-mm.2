@@ -1,123 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F66606A31B
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9589A606A901
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 11:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hOhJJ17f
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZezyzzF7
 Received: by kanga.kvack.org (Postfix)
-	id 56EA36B05B0; Thu,  5 Nov 2026 06:50:00 -0500 (EST)
+	id A07826B05B4; Thu,  5 Nov 2026 06:52:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50A296B05B2; Thu,  5 Nov 2026 06:50:00 -0500 (EST)
+	id 9B7866B05B6; Thu,  5 Nov 2026 06:52:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40E786B05B4; Thu,  5 Nov 2026 06:50:00 -0500 (EST)
+	id 8A6F76B05B7; Thu,  5 Nov 2026 06:52:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 185B56B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:50:00 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A28C8160723
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:49:59 +0000 (UTC)
-X-FDA: 85400896518.06.E6230D2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5840D6B05B4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 06:52:13 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DE0B3A8583
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:12 +0000 (UTC)
+X-FDA: 85400902104.17.4DF2900
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9B3B112000C
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:49:57 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hOhJJ17f;
-	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1D976140008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZezyzzF7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793879397;
+	s=arc-20220608; t=1793879531;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VImrv8FOkQBPZjLUsdaZmiq4Cy9sbelPnrfcMNk1WI0=;
-	b=Qg5XmFJPhHlkxvq2nf0Z+OrhHTMNlykh+gxVLDPsLjWMI+CJX0H0ajxPlNdfAaGFtWTo5/
-	+7dL2Qrk0Lt9g6i5aFapBvz4Ofz6ANxmfD8TwEveSZa9U46PBSRaOiqcbcyvt+t+4L6j/s
-	vVsX7608v/TP7tlNXkkvTQ+b5FEA2SY=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hOhJJ17f;
-	spf=pass (imf29.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=iw61JVpfIKVjEhkIHEUqUjEP2S+EN2i3Q4HRmPwDDaA=;
+	b=nCpW1YrJtbolPsql5QL6h5rkTntzu+souBaGbJO2erBaQpLfk5q11hMazC/E2wa3/UshUi
+	YGba08W7/lcKQlHlRXAn3gHCNed2Xi3QBrx06pJTon0iuMEU7sWjUaFs8KZLLEG1e/Abvm
+	rdri4iOzPLak0mcLwMyY8SQfg5B0n6s=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793879397;
-	b=jVZwKHFzPw5LKi0Mt/9Lg2lyzZxHpXvicezj9q8049xxxRzRqkFkcxtg03/0Qtk8EOu6o/
-	ZTPWVyzU2wfXcOdayZoiSObuDmXg/GLItgTbVTP96k1hdPN1kF5vgarxHAZN7zn5OzYeP2
-	Wt03klPYBDGjhcv5PupLkjWcqQT3NHA=
+	t=1793879531;
+	b=Ut5sTkKoFnumGrbNpeq6cqTVbWa+NpBZUYREw0l4wcWGJbNE9kmZvjvpP3ypRdud/giO3z
+	iNpxEt27Xbb7IeBlQBtnqYG1JpXS490U2DTNkktTn8HTSecow5XCSEVww0gt0j7j7Z6P+m
+	nse4fO/AqH/7hTZiOuhqGruqPeFsi4g=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZezyzzF7;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CA22443702;
-	Thu,  5 Nov 2026 11:49:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9E71F00919;
-	Thu,  5 Nov 2026 11:49:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 486D041FF9;
+	Thu,  5 Nov 2026 11:52:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4F71F000C1;
+	Thu,  5 Nov 2026 11:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793879396;
-	bh=VImrv8FOkQBPZjLUsdaZmiq4Cy9sbelPnrfcMNk1WI0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=hOhJJ17fnaoVYndtIuekxR8R6KO9FBbg6IMn7mFLdmS1AHggfitt7+Nvrcw1ZoLS4
-	 Q65DYL5m5guEYklW1MnM8sShCjbOu/AVXCRkeAq0oWJzYgdSjMYQSoPJ96z4njASSx
-	 g0B6PgBhVRGiD/wpmrvUwA1kR0egiK6rTVJvWHCbIph7lJVlgjaYza1OLGN6+QLjV7
-	 eB+WAtu5GOmRtEtNDB3x5vun45DMPw9GgdaKtuLzUTNEVCYpObK5jCJwkxgaleD938
-	 anISYi/vi9jKckwLJA6u6BOWD2I3Hy1tpQyEN3C1GYWIOm7+okR8USjxmUUyIzI++d
-	 OX/zTf+vcj9eQ==
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 8419B198003A;
-	Thu,  5 Nov 2026 06:49:51 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Thu, 05 Nov 2026 06:49:54 -0500
-X-ME-Sender: <xms:Xm3saiAdn_cZh3JtSZrh99WhVttXV31FNCr4PBP-ecHfjESLFAyeLw>
-    <xme:Xm3saopxSAetXRYpzwVNDP-QRy3P_jPcWB7JsYsS16lNph1qMbflVqH7SrgNofevG
-    o9yA6mIHliJgXjQtkKKvElnY8KcnuLkCCcGHC9u_cgftVDxmYe4qQw>
-X-ME-Received: <xmr:Xm3sau1vZ0S9_M5aNLCqdNT5Lq-NPQ05c7vA75rSiwVOkLoUv75Ra_nvijk>
-X-ME-Proxy-Cause: dmFkZTFaQBfUFVPMP8xrPqBpPtUnYXtbN3LRpp/oxJl/b1RmZnSSZHsU20CPxF1I64DXUJ
-    SNLa91ZNNqfrtHA9eDebWdeJ3pYuxgu/qVSEnCct1TlKIRlJn3GcjTHnnT+sn/oHMnbGM1
-    92CZwyL88cWl12ru+oFk3aGPCVOPyvG/BBaSa3nzQ0qnYXC+EDwfMTbKFpKaz7lB8mwBSr
-    tjdeBaZoIb3fDCkky6tsMipkpHqSdW7Zzs1aYBXDycZrYrz694hViPMgw3pBshbYyrko2L
-    Ohq3WEDa90dSPdCt1Zj6L7kr+Qhl/jG4fQDMc8x/v4q4YqTy9IFSVobK5sWmdPu2MF5qpt
-    EjNpg3PBFTo3XO9RRKHjGaWEQXb5hxpkiWD5hurwcftjcBKJ3dF7hkJYtdSdF1MXJTQGtI
-    U1DxCDZulyaz+XBHLq20bFdQhQbcfFjWNS+nuDxFo8TUM/HN7akP5A3EdHg18A8AJQwdQv
-    PWAvcY13nCclZdQ9XC+ee25WbgDrMiKU8N3e64SqzkgOYAmYJbKJAAlcOZK0GXdOgKQBNC
-    ul1laNs1D8hTZTkx8NJuJzTLRCqehRluIahZmS7tTps7YtiVuhHvREip5GILZ3mwcCpJtr
-    UaCfBsMS72oJMuFm65lhi0wXsXbtCojAj7PUM7Q/sN338f1Y+5/vcc2kDuzQ
-X-ME-Proxy: <xmx:X23sav36-BZf_GdwZf1t908PDlsbnfG7hQS6Im0OKWe1m08mb8IFBA>
-    <xmx:X23sarciPpe7lJ_W_T8XXfpsZ5Dz4Nickzk89PD9OSK30i_0X_RguQ>
-    <xmx:X23sar4mO8DRWKgjo6flEr1hmYHrDo14rxHdRIiC1TMqq78q9bRNlA>
-    <xmx:X23saoi18BpZHjKIwprPReemBZ9lHVBBrXRlSF6c1dUmGIYVXOylvQ>
-    <xmx:X23satrGkUFjjpRHQtDWiikpbfIcGWhCKBGjUS-v73FO4Hw4LlhPATus>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Nov 2026 06:49:50 -0500 (EST)
-Date: Thu, 5 Nov 2026 11:49:49 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R . Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Shuah Khan <shuah@kernel.org>, 
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests/mm: skip split_huge_page_test without the
- split_huge_pages file
-Message-ID: <auxtQQ7KsQJK0wkH@thinkstation>
-References: <20261105030242.1241448-1-sashal@kernel.org>
+	s=k20260515; t=1793879530;
+	bh=iw61JVpfIKVjEhkIHEUqUjEP2S+EN2i3Q4HRmPwDDaA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=ZezyzzF79xxs58ivikY6ldetzXBC/dypds00DxgP/L7ZF1hVsuYELq9LX0gF+4+vE
+	 MT7+PFkpNgafCMv82vJCf/3SIAiQucZUl2DBLvuXIkc9REvx8a0+/n/ooS2bq9+BwM
+	 3Jythe0bz8SKxemB0D4I8HnaLLlvOFWv2+6N9kD6vO0ppXP3gfxkFOuEpTXLhlSmTh
+	 DuZ/B0lVDQ1DPw5eFroVAjdQvYknBxF26J6fnD++4sxGneiqekTUVl4elkX1UbHFdU
+	 iaZ6urAVlo0fiYNNQjXWtufSkNWTYfA/6/p0Xms/MkikCP17CquHeQNujhnc1X9Drh
+	 rX+GbVI1X26kQ==
+Message-ID: <b45f79bc-5a3a-430d-8a64-5a1ac6097d25@kernel.org>
+Date: Thu, 5 Nov 2026 12:52:04 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105030242.1241448-1-sashal@kernel.org>
-X-Stat-Signature: swke7fhjau5mhywp3z4ai1jpf1k4o6yo
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm, vmscan: make kswapd unreserve highatomic pageblocks
+Content-Language: en-US
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Johannes Weiner <hannes@cmpxchg.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
+ David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>,
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, JP Kobryn
+ <jp.kobryn@linux.dev>, Frank van der Linden <fvdl@google.com>,
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261104-kswapd-highatomic-unreserve-v1-1-38be5106adf5@kernel.org>
+ <75540cfc-0577-4d91-9369-d1c4fe9c3096@gmail.com>
+ <76431b4e-27b4-4922-bc59-bf97516b40fc@kernel.org>
+ <e5865932-ccd9-4f7b-bb64-e05a6f7a60ce@gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <e5865932-ccd9-4f7b-bb64-e05a6f7a60ce@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 8zuzmxeywb7nxmom53as8h36j65uj976
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9B3B112000C
-X-HE-Tag: 1793879397-187403
-X-HE-Meta: U2FsdGVkX18KLzkYoyzGHIpSq6ah7PoueQ74lIviQJiqqR/kl/qWELVZpQRfixxaKN9phrr+gCj+Y7AGeuAxRKMeSZ6aB9+KTiWWWsmADCVutKjCi/pKUPHirD2XmjarjQxipYmfL0jy/yj6oCnlLZtIuJW9Fz99iJY3Fnb/XncKvmI4RaquEBSdjTaVapGYXZ47yyp4I6LsR1/hTREGCYamlKvL22eEE0avIPoMUPnLcV+GiMeqQZMAfXJbPI8qLyvB3XZwolSEjSI95EiwJtAJcaIL4RB3uCKgIiwniVf+KLOa53/d4t5GzY1viGHh50mt2wPU4jVATvWQeAPUS6bt80s6WVR4ihVYYuzyaCo8LkH9I0qSgsGQsaw2KEAg86bGF8qXIrOL86cz8ipwx+xGhPHJDZ32ZaFPw3zr3EO54LAXNIzV7pvTolccSljvjVd5pZq8xUUq/Vo4c2+uvPNUCQS4gM2UQgO+FtmjZ1t7N66X0NkZhJ0W5V5X0HaZywi6xoJYhUKES2JU/sFxn1X1gQ/uDbDZL/KjgGVB/yf9Jl93lHZSVci2DpCulGOWXqhRM4trwQWfdudZHxwlBJSvIKWGSxZ1OsDeNHQbC7gXMG18DwGOn6G4LR3AG8ftff4s5h2c/qsBOuMTwfs/VBIXEdQi+VfR+vibWmErlQNrdNdCTEkkY3oamZ51M4LCpP4UfVGM2Y5gxV0syybcoiTa5jj7waEAkCk0TiOQ9V7n4RVBX9TekTnAe26cUmHj9ONDOOJFQ/Zysdl0CrPRw5aZmVY7iHI0X5FRyGFL16hy/mVrmLG8bfAAmWquQDgCZEIzef8m8PYzpYpphne4Y+6n8ScTo/Gv2ZAZRquFPm6Myxz1AlAky+ErxFcqkfMo9/eH91YWOiz5MpVd18bk8PAWDLXPdL7ysz5gTMLDwm+aEDTeDVGASEtqED0TLMYXg90mRhcPZIQ0LC4T3sa
- KLIkBtFy
- nLIaaPNXog95Of7qJKxXO6JC790Q27Ogc4UIgz5c6VG4cL9zQk0LxZH65tOZ3wTtTpq5eon0vBCG6vKvcWjVmj0cs7R9N7/QsIcYMPkUbP2D0T1UIVP4IK49Xx32iT9LgZynyMj/lgMYqmJkj1zffJHs27cxcG9RsVEfNGfwak8Tl+rSpXPzffPjcVNmRNtx/YvpcsBZxAIXccH61PZLHCynM4rguhGxGMEi0p5jwDDv4ZDvPA39RCRD9VQlhxLHVzp7s6R38ibCTyb1597Ef/GH+AHsMGE009aZsSwQE+LmOZLFcdlOCXzDJNqTpJl4bFuQPhKzGgltLJlK0sdKobzpBFOnOlKY2j98H
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1D976140008
+X-HE-Tag: 1793879530-510817
+X-HE-Meta: U2FsdGVkX19sEHC8EKd8FQwbaZi1UP3MQNIYeOX3wwwTRR8LOIZWj02E1C53g99lUr2XdpceW8vmaAXD11nu1Vz0y0owPTSTOyKx4yhzdPRBf1lrTdibpDpPt+oaTXQfSMsC1EZsMUVuql3XBe7wTsTyFuvzR60B4spUeLLSBt0tn6yyb7Cxys8PC6DEd0/3wG5LpL+Vk5Aomeq7j6x0EPiXP4+0WjOvMVhPAglOW1uvgag6N7rJ1ieEkMDjPsCukQwHxw8EkJ1sZt8nPaTTyOAw4QBypCvNbhYyRUG9ryVD484ZliGccPiP2I6KdV6JtbCcFaKPaiu1ezk2lC0GK0IK7YCF/Z/rJGmR4pwsrMI1uS38s4AwNq5L52yJ6T/78QXAGCIIu+pmi0ezpRcnu0nYEafALPsDWlzUoqNV/VEkHusSmX5yO4WnzaJW1P35XtCq50yIbK/XbZXS4ft0xoU9rn3Bt7FIrG58OB4s9olO4jjkNqHps/AC7YVD/V9omsYqTQY2pv+IRKHRMW9prlBiYVC9taiCOg5ITa8euYSfaZR1Crb+UVorMKMqxloCViioPSrrN8XLodxbIJw+zCMbqBxEIALLxtNT++V7K4sBzZMe0EIy1g968O8PO+BaicnDhCK9jcd+hE6iNEfKkjpJhHhnhISq0ogJ6EjHmO0PifIP4vGTpsAYj0mI4YXy4X8NYyMr6568Ary6LebxbxElp7C3sYX68aL1LJ+9eFAv6XEn8FzocfRdg0fIS6zvdmanNR+k4B59I7b7F5Uj65H717M67uaT0zIVkeexNEca+ug9US3KeBxE+cNnuPn/m0JXGZNFuqbM/ltap0VZplxTXpS1If+s2ISOnoBT05PW0GXSkPuSXFupqsW1h/jwXyFAG7+j2Z2wAxTu5nwaJmxtuWaaQsKwTpldUPxBUDIr5B4dD8awsbL6rGO9PusGspTDqmp51vZL/g5vWQ6
+ q3Q+v0cO
+ 91k5fZVXrrJAXPg+nLjsqPeoXw5mLPHxj+7XDTa8G8bwUCyiuKWcJ8FLzWMRAz9/fDu88LTsecPAJ8haiDKaMGzhle7D9MovBzo/oAP8q/1ujTP/9UMpTH812NNdDxGiYU61gh32ScGczmDWQBaMGFZ3X9l4LvlgoGeeOKNK/EjArlVUHetlKhEqv0Zz+YJLwL6cKGG0+wHLjwCrSoomcDbznVuJIdmHLTuq5B25OGrXCdNplk9HDDE4hgsoHKZtV6zpq
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,21 +149,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04, 2026 at 10:02:42PM -0500, Sasha Levin wrote:
-> Every case in split_huge_page_test goes through
-> /sys/kernel/debug/split_huge_pages. When that file does not exist,
-> because debugfs is not mounted or the kernel has no CONFIG_DEBUG_FS, the
-> first write bails out of the whole test and it is reported as a failure:
+On 11/5/26 12:43, Jose A. Perez de Azpillaga wrote:
+> On 11/5/26 9:02 AM, Vlastimil Babka (SUSE) wrote:
+>> On 11/4/26 22:56, Jose A. Perez de Azpillaga wrote:
+>>> On 11/4/26 7:38 PM, Vlastimil Babka (SUSE) wrote:
+>>>> Hook this highatomic unreserve to the moment we are increasing kswapd
+>>>> reclaim priority, as that is when kswapd is struggling to make progress
+>>>> and it should roughly match the case of direct reclaim failure.
+>>>>
+>>>
+>>> isn't raise_priority true after almost every pass at DEF_PRIORITY, stuck
+>>> or not?
+>> 
+>> Can you elaborate why? At least at first glance, kswapd_shrink_node() should
+>> return true if it scans the requested amount of pages. So I would assume
+>> that although balance_pgdat() will do multiple iterations to reach high
+>> watermarks (because every round of kswapd_shrink_node() will limit itself to
+>> SWAP_CLUSTER_MAX per zone for sc->nr_to_reclaim) this should not be raising
+>> priority if the rounds are successful?
+>> 
 > 
->   Bail out! write_file(/sys/kernel/debug/split_huge_pages): No such file or directory
 > 
-> Skip the test in that case.
-> 
-> Fixes: fa6c02315f74 ("mm: huge_memory: a new debugfs interface for splitting THP tests")
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> it's max(high_wmark_pages(zone), SWAP_CLUSTER_MAX) per zone, so the sum
+> of the high watermarks. by default that's at least managed/500, while
 
-Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Ah thanks, as usual I got the min/max logic wrong, hehe.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+> DEF_PRIORITY scans lru >> 12, so it can't return true above priority 8
+> even when every round is successful. and sc.priority-- runs before
+> pgdat_balanced() is rechecked, so a wakeup that balances the node in one
+> pass still unreserves a pageblock per zone.
+
+Yeah in that case it would probably be safer to perform the unreserve only
+after reaching the highest (lowest numerically) priority and still failing?
+I think it should still be enough to recover from the pathological scenario,
+which should be rare (but not impossible) in the first place.
 
