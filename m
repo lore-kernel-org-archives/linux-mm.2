@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AF6606A33E
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F31D606D829
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 16:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TmXj4IDO
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F0ECtycT
 Received: by kanga.kvack.org (Postfix)
-	id C57366B05B3; Thu,  5 Nov 2026 11:52:48 -0500 (EST)
+	id 726486B05B5; Thu,  5 Nov 2026 11:52:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6B4C6B05B4; Thu,  5 Nov 2026 11:52:48 -0500 (EST)
+	id 6FDFF6B05B6; Thu,  5 Nov 2026 11:52:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A81DD6B05B5; Thu,  5 Nov 2026 11:52:48 -0500 (EST)
+	id 5C5BC6B05B7; Thu,  5 Nov 2026 11:52:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 782516B05B3
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:48 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DB6AAC0B5B
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:47 +0000 (UTC)
-X-FDA: 85401659574.11.B4E44C8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 388A9180009
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:46 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TmXj4IDO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 33D4B6B05B5
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 11:52:51 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BCA9FA0B7D
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:50 +0000 (UTC)
+X-FDA: 85401659700.08.4995E82
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 234B840003
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:52:48 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F0ECtycT;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793897569;
+	b=nXch8x8GVqafMifujtK9INnNDgbyASsOZVhGoZtigLAB1AzOcS+NkzYgTwhtN2z+Zx5sLI
+	39NvKfqV0ztVeZAgZbZ+yFuKMBpfuYTJo2qVpQgLIOGr8gOatjYzwtrMSRduChcR8GvyQ+
+	SiFg9TGmDLrbLZVnOru3UYONelJ15Ec=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F0ECtycT;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793897566;
+	s=arc-20220608; t=1793897569;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fVOwT2J+od3H7hOrDMRcALEBGpShVHk+/+H7TMrc+vg=;
-	b=dXb0dB/Q09G3vnMaea4UCs4FHXCs12wbFYbwiDSkkBYYqRenx8p0SeDSJp3+gTR82sEMES
-	K3fKKgPh+m4q1yaSHOuz8lVrmHifh+Zg36NLq1Q3CYIgOCdOwRBQDmnAVtJD5TbdckL1n4
-	fL7tqGrpHjQuuNibQBNehPGHVkpN084=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TmXj4IDO;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793897566;
-	b=mLyQFZs7dGqd9G/EakzCtOCeVqeY+iF+gNNmCakyFVMcDzHvQhmwBKpnGzMgY0a2L7ljkc
-	/OYU/0VZeDKCjdEwT7YWVbd+4x8sVlSYurISx9eqc6vfooUxa1XadPt3MhWG3pZShlDvjs
-	Z5srypJPeVhSiW8+Wqas4rVzKBuNBbU=
+	bh=93Jjsh5uP1bJuXaCFxDECc/bZWbVcYpxvdFTfNjDZUY=;
+	b=EDPISzpnKTNG22d+BzhpVAfzRUd1d4jjHFwZp6ZcEERHsMAAzxSQzjBzPEIkeie/Wvoe3G
+	tbMHX7+sLNzY9Anyr8GPC+ZzW6Qvv2Eh+Ywq3kvulgDKi6LSkkkzbBo3XgCwgMbffoqq2S
+	VQzcohakrsHnw4AYwOmhYWEN1XRdsGY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 57CCB405F1;
+	by tor.source.kernel.org (Postfix) with ESMTP id A37DC6020A;
+	Thu,  5 Nov 2026 16:52:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AA51F000C1;
 	Thu,  5 Nov 2026 16:52:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F6D1F00A15;
-	Thu,  5 Nov 2026 16:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793897565;
-	bh=fVOwT2J+od3H7hOrDMRcALEBGpShVHk+/+H7TMrc+vg=;
+	s=k20260515; t=1793897568;
+	bh=93Jjsh5uP1bJuXaCFxDECc/bZWbVcYpxvdFTfNjDZUY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TmXj4IDOuBfutiN9cQDhSU+MAtNOJuLmfbZzrjkNpPiOoR2Wj+PaPuDOQYMYOkVxq
-	 Cv/k16hg7Uzqt6YS8bnvWR7lwcEVGOVTQux4OG0ov0Z1iN5aGoG9GgDWRGt98qyDWS
-	 NKWiq5T2nf7hYoFYi8MXD+T5k3/phhAmd//4/EaiNT4lnl4EE/4mrJCoxhcI+L1Rha
-	 VJmmtJDokziST3zi9NDWAvWIbY+KKnMA1s+4PQKuWPj7FBqDlazgS37ESHcrb48xl0
-	 +asZgP/9U6q8LeOJrug/iNGgeTaHYfoegLwsHuKuX6Vp7X6pPL3sWV7QB9wqY6l1iT
-	 fxgbJf60qqV2Q==
-Message-ID: <sashiko-outbox-199540@kernel.org>
+	b=F0ECtycT0ID6uIHdj/OpmBK2gU3FHjDn3/gApTFyDgc91RQtJ4WgWm+RL2HwAhVdt
+	 nWsuBuZYAr0GwetQrft6qOL+ZG0OfKdSu4K1WmEtRjthoSmuVPdG98l1Kpwf6aQG0W
+	 TxNu9lDTAXW6iF8+9OnH1JOR16vW2uC3ZObWq9SKfkU8PZEFIoJyiVJFzz4xz4fKVG
+	 zzPcRa9glxwjIFDFcSrYw1yFqUAO0Hkna49kQLb0fVCLIYNVQjfbRuGEiahNsBkEYN
+	 wkqeuLitvZXCR+Sp14k3ZHYCWxqNnyon64Q4EWpYZKeW/u8085i4PiD3HSrj4uKiaF
+	 h72LTbmmT/bkA==
+Message-ID: <sashiko-outbox-199544@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 02/14] mm: Zero memory during shared memory
- transitions
+Subject: Re: [PATCH v9 06/14] dma-pool: Allocate CoCo atomic pools using
+ CoCo shared memory allocator
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?QW5lZXNoIEt1bWFyIEsuViAoQXJtKQ==?= <aneesh.kumar@kernel.org>
 Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Baoquan He" <baoquan.he@linux.dev>, "Mike
@@ -92,24 +92,24 @@ Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Baoquan He" <baoquan.he@linux.
  Bonzini" <pbonzini@redhat.com>, "Vitaly Kuznetsov" <vkuznets@redhat.com>, "Andy
  Lutomirski" <luto@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>, dri-devel@lists.freedesktop.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, "Oliver
  Upton" <oupton@kernel.org>, media-ci@linuxtv.org
-In-Reply-To: <20261104164555.3555725-3-aneesh.kumar@kernel.org>
+In-Reply-To: <20261104164555.3555725-7-aneesh.kumar@kernel.org>
 References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
- <20261104164555.3555725-3-aneesh.kumar@kernel.org>
+ <20261104164555.3555725-7-aneesh.kumar@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 16:52:42 +0000
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 388A9180009
-X-Stat-Signature: eae9tzrhycduc6qerpgyefmgtotpaza5
+Date: Thu, 05 Nov 2026 16:52:45 +0000
+X-Stat-Signature: woccd6wwrs74uoh71pskhjexrwr95r7f
+X-Rspamd-Queue-Id: 234B840003
 X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793897566-435634
-X-HE-Meta: U2FsdGVkX1+AbB442TWmeYEJJPP5Ta15QIojtH6rE6YoUELsVYD+lF/ec5XsIRV2uTDWzY1Rza0VtYErGCUo7wCaZ737D/Bp0LVRDTICBrzf1VCJKf5zjOAhlAF05JB0VkzSvxOpGdX6bQyJBlIngzQacgGTq9XWi67wFcuVUT1jWetrKABgcV5ji34nNRSK/H4kAEoDR+vpDEXhi1HPXJGX2t3hZPEGq85AJZiDbKz05dMYob+jHW/VVDbu7wS+uVxJIvRLsXGpeaIN/gWDc0bdZAJAx/uiFEcoOfEFTZLAI0N30E0VDeJtmXEfITSURpUJjV9+1cB27FpSO6EaaaOCl08JKBIr2hm1M6OuP8FMA6mg4K4f+TLwuf60xIThjJq4TgZ4ASUxw5XJQ9KTg5uGTmdF2U5DC7SbkgLqVC5bzgjhQy6uFcWgrAT+fdQ2MfYKy9RDpZ88IRnt5ZdN/TbvMcVUyU3IpvyTyIts52IGGOpD3do6YE83Y5t6dqveNyr8nSfqMScqpGLThbLYKCNfYkvShWHBlQarAzOjyS1hdt13Cuz6fXuTFLkYVN8o/zsMEg5ByWgDlmyOn0U9+uF/r38UbVbbuUYd6AUF13yIX5CSbV/dzAB0ZA4SJM9vFydcXIQBkaqZmPUqw2mgkkHDwq/V5SsqueDeJUovqys0/RMMBKx2/hO9gs1Z35bDgwnxldGaebEN0f2H6q35rC5YXKiS/7dcFkXg9FctgW+qZ/Pp2X36Zyl3WnsthcVvrDLMclGGZh0uzfykTlXN/CCJqk8zS0DhFYtMZkoHBFj9C59WuisaJHcpYxJ5U2TKCS1ly55b9wXtJ36wqFLaHav0Jw5ZaOPPjlLCUNVfkn3NEA3/GRClAESy2rWVw9Ho5XMBY9WChFikNQ6xeHscvxd8UNzqbtPHyCmlHzYYWTVSi4OOvz3IityaB6VQUgeqF6cuZkw4t+r/nHmet2I
- EUICuhRF
- yeNIbanw/anGLDh7qRjI1PbGkvm/1iXZdJHMH48Q0H9r32EKsUh5F/SYLjYTOWwq221X+MfVXwFKyuVFAKW+ubF8IW0tnlYgF6sgtjCc5lppy/CzwGiDkoZHmD/zHEJBu/6RVOCvn628oV84y2nqo2PCq7rYAslwJgHDL5bQcXuZ6dHX6rv7+VJOgQE1F6FZ500HFcV7Ordp5ox3rSBJcg+pYCX0Qv4TOasiHjkBNJQpdHbTkBMMojUlZjaa7snBpGBWRQH1eDzXno3vwk5yJXne9h69n7hfuzSYfIzT27X3SisgvxAE8C+hEUqaQUzquCehBPX0zlbZ+9cMhypTOBdxgQEuThRvxITWhZMqKr0U/OXU0brV/BezdZaj0EWiloZqTMXvbzY8UH2XAKUrK7n92SpNTk+QN7zF151z5KEw1WbgzaSnHz9TrB0A9iAvI1KOnpMOqz/Dii1jS8mnYgm51JrCHkYvPHJjU0JWceBCw9m09szA6P32FoGv5Xdk4Xl849YF4gv0Uk/+xyZZa3tgz7w2onPxBhTuI/Veqiv80KIc2wzIxhlow48aQjqHdx86V9ytXihqgpMijIAFx6tnrYCUTL14nUfN3BqQ9PRY7o74NBjJDu5ogvzMn6JuGU9J/7OqiGYppYVinz9+lgnd3KzFwnDV/D/o8Tlqw5qrfu2YmXSLxESsAkRYw85Wbc0zoXL4cs/VoRpI=
+X-HE-Tag: 1793897568-784685
+X-HE-Meta: U2FsdGVkX187Eo7V8EdBn8aPi/YFa3+OJybjaRuVQmWnR27ZFLpH6BtElKemS2CeiTB4GyElR1Ex4OqWueGxdNwQed+oxc8L+xDxEsLkZP9i7ODeBKDC/aT6mPh8A9t1rScuUJmz5AUWjXn/m2+gGm322Ap8rvmIg45gMwf817mX7T90NO4MdPQhCpSZd1YrdKx+H9dwWyPsM+sxa8r/83QkuOvlF0euqcN14tRhY4RVl7K3gaUUWzDck67dvgAjR1F8y/I49y9JzPefrdPwevBbaImrDA8+ddsu27yaMPFEGa3/SUzgx8cQWFhtyilwrMN34yigOsifc17ITFZ7VVFmMWpyFe6b1yeS9T7Rs6/T8KHbNXMEdagsDeL8Qw+5ku3sl4BqDRRKIHmF/M8HsoUhGvwiPqMBWHevlBiXx+qRpysKOt81UhLhXFx12xTs6KuCQdPRxygY78hw6yMnqVHbmVg7X2Q4oDtgm4KZu6CuwjB+lZKga4wqmhbAcqu1xzffYnQFo8dawtFgaKEZc/1w9vigpkHR4qoeqYTYsuDBnGiHMFFCd7neFod4baFLcLOs8S7g02IxfMMM/RiT3KZDCsBzUhoC8jFL7meDuRrlHWqKAxivVJLzcs+hCRN28bg9CjVTPH4g3zekJyEgP4bN7WgFipmY7irFYdKMyj0Dym278f4mqOmqVsv5KVmvD31UvaltfXZOuTUi1XL+F65yMEb2/rnxRxMrrOci3oKrtyJWljaRejp+ktu3/eLEm9xjKSMcb6p5uE0pbOkw6ggAOwtemDqsi6o7BOz1KciZLoKdAqJ3vLGfM/lQZsET/vnCoLqMwEUi3ylY8usp8kEXU480/15kRjOanLzubyDu7mVzl5DVL/UNGi1h/mzphNUVXXa319nXAaUg9RnHd06Cip/L6k4V+8zQVBig1Fv6rB3s/KC7y2NgiJ/myq2/XynaanhVaYocED178m8
+ SemSgran
+ TvaEbVpJOknwpi519+KAznnDoMb22ZXi3yKRCEXeVwf5DPswb+pEMjkjLR1GuNNSE07h+M5VyeoDL/J3W44Gsmq8YiJ2vg+VvpJE7+IHV0LIm5r6NnT7OYzU+DXIXgfaslZOOiCWPsOCEFwc/gCVvt9h5co6f0taBew7cN7VZyYgOMq3tAwFkKN6AKgL9qSjIjDLqopFkxsltN5li/c83m0Jz3jg3MFh9DF16CM0wNl95VCZ7teqdOLj8+menfZ9YKK88oHs2yFzK65MXtH/iYyDAtsRtHg34soKArAu+ybQdUsbqJ+oO6DCfSzMJ9MbqEGzX0Yh381s/35oq7ZijPUE/sW92NyFWwo0pnc1M9tKtKruW2HaQGYdBhwPSU2jQzh/49moU1s+cmy4PvtEVYSfzDTAHGU9jLxxba41iMGyq8bUDuP6ZDkxhC9KAZvxKm/9pEA50cPfEZvfiKF3HYLHGJnEe1UYYf0cWY7nP55SruSgtLvQeUbDvdinBQIRZk3Z0S8KAv++ds8hh+T/NB2yUa2y17BtY2WRJWjXNrI0v6BvMVTzknGVddVvGJkTdzeJy2EB0tIaUil9qvKzd0YQPkr6nBu5pjVp9mlW99fJXrADj7j4VTGhyffMSAPdvCp5npv+4lYispi2/q6WwNT84PIZGeOaNbJF7p6c7Le65dGAF+kB16nhw78tZqe36jvxxtFOHLP1UeCg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,263 +119,46 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Critical] x86/hyperv: premature zeroing in hv_vtom_clear_present() befor=
-e transition
-- [High] Drivers: hv: uninitialized SynIC pages in hv_alloc_page() on non-C=
-oCo VMs
-- [High] dma-pool: dirty cache lines left on linear alias by set_memory_dec=
-rypted()
-- [Medium] x86/mm: set_memory_decrypted() zeroes legacy VGA VRAM/MMIO in VG=
-A_MAP_MEM()
-- [Medium] powerpc/pseries/svm: set_memory_decrypted() zeroes private page =
-before sharing
+- [High] dma-pool: cc_make_shared() runs after arch_dma_prep_coherent()
 --
 
-commit 0a47431deefcabfb66f48104fa0c06cece49f6f0
+commit daae4fcc15a00bc83c4081ef4b27786a7f224537
 Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-mm: Zero memory during shared memory transitions
+dma-pool: Allocate CoCo atomic pools using CoCo shared memory allocator
 
-This commit moves memory zeroing into the architecture-specific
-implementations of set_memory_decrypted() so each platform clears shared
-memory at the appropriate point in the private-to-shared transition. It
-also removes post-transition memset() calls from callers and keeps explicit
-zeroing on paths where no transition takes place.
-
-> diff --git a/arch/powerpc/platforms/pseries/svm.c b/arch/powerpc/platform=
-s/pseries/svm.c
-> index 7a403dbd35ee5..a344e094fe1c8 100644
-> --- a/arch/powerpc/platforms/pseries/svm.c
-> +++ b/arch/powerpc/platforms/pseries/svm.c
-[ ... ]
-> @@ -59,6 +60,7 @@ int set_memory_decrypted(unsigned long addr, int numpag=
-es)
->  	if (!PAGE_ALIGNED(addr))
->  		return -EINVAL;
-> =20
-> +	memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
->  	uv_share_page(PHYS_PFN(__pa(addr)), numpages);
-> =20
->  	return 0;
-
-[Severity: Medium]
-Should the memset() in set_memory_decrypted() happen after uv_share_page()
-rather than before it?
-
-On PowerPC pSeries Secure VMs, memory is partitioned between secure memory
-and normal hypervisor-accessible memory rather than shared in place. When
-uv_share_page() is called, the Ultravisor unmaps the secure page and the
-hypervisor sets pvt->skip_page_out =3D true in kvmppc_share_page() before
-allocating a new normal page and mapping it into the guest:
-
-arch/powerpc/kvm/book3s_hv_uvmem.c:kvmppc_share_page() {
-	if (kvmppc_gfn_is_uvmem_pfn(gfn, kvm, &uvmem_pfn)) {
-		uvmem_page =3D pfn_to_page(uvmem_pfn);
-		pvt =3D uvmem_page->zone_device_data;
-		pvt->skip_page_out =3D true;
-		...
-}
-
-Zeroing addr before uv_share_page() writes zeros to the private secure page
-that is immediately unmapped and discarded (and faults in a secure page fir=
-st
-if one was not yet populated), instead of zeroing the shared mapping after
-the transition completes.
-
-[ ... ]
-
-> diff --git a/arch/x86/hyperv/ivm.c b/arch/x86/hyperv/ivm.c
-> index 2ce4dfe534727..e9c7799a00943 100644
-> --- a/arch/x86/hyperv/ivm.c
-> +++ b/arch/x86/hyperv/ivm.c
-> @@ -755,6 +755,10 @@ static int hv_mark_gpa_visibility(u16 count, const u=
-64 pfn[],
->   */
->  static int hv_vtom_clear_present(unsigned long kbuffer, int pagecount, b=
-ool enc)
->  {
-> +	if (!enc)
-> +		memset((void *)kbuffer, 0,
-> +		       (size_t)pagecount << PAGE_SHIFT);
-> +
->  	return set_memory_np(kbuffer, pagecount);
->  }
-
-[Severity: Critical]
-As reported by Sashiko on RFC v8 [1], doesn't zeroing kbuffer in
-hv_vtom_clear_present() clear the private mapping before the transition to
-shared completes, leaving the final shared mapping unzeroed?
-
-In hv_vtom_init(), hv_vtom_clear_present() is registered as
-x86_platform.guest.enc_status_change_prepare, while
-hv_vtom_set_host_visibility() is registered as
-x86_platform.guest.enc_status_change_finish.
-
-When set_memory_decrypted() runs on Hyper-V Isolation VMs using vTOM or a
-paravisor, __set_memory_enc_pgtable() invokes the callbacks in this order:
-
-__set_memory_enc_pgtable()
-  -> hv_vtom_clear_present()          (prepare: kbuffer is still private)
-  -> __change_page_attr_set_clr()     (updates PTEs with shared_gpa_boundar=
-y)
-  -> hv_vtom_set_host_visibility()    (finish: marks GPA host-visible and
-                                       restores _PAGE_PRESENT via
-                                       set_memory_p())
-
-Because memset() runs in hv_vtom_clear_present() while kbuffer still maps t=
-he
-encrypted/private GPA below ms_hyperv.shared_gpa_boundary, the shared mappi=
+This commit updates atomic_pool_expand() to allocate confidential computing
+shared atomic DMA pools using the cc_shared layout and transition helpers
+(cc_shared_calc_layout(), cc_make_shared(), and cc_make_private()), enforci=
 ng
-above vTOM is never zeroed after hv_vtom_set_host_visibility() makes the
-pages host-visible and present again. With the post-transition memset() cal=
-ls
-removed from callers such as vmbus_connect(), hv_alloc_page(),
-dma_direct_alloc(), dma_direct_alloc_pages(), and
-__alloc_cc_shared_pages_node(), shared buffers on vTOM VMs will contain
-ciphertext or uninitialized data instead of zeros.
+shared granule size alignment and minimum allocation order.
 
-Should this memset() be moved to the end of hv_vtom_set_host_visibility()
-after set_memory_p() succeeds?
+> diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
+> index 70b7f64b17ab5..da487c3f9dc61 100644
+> --- a/kernel/dma/pool.c
+> +++ b/kernel/dma/pool.c
 
 [ ... ]
 
-> diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
-> index 2f8c32173972d..a1199a74e9a3f 100644
-> --- a/arch/x86/mm/mem_encrypt_amd.c
-> +++ b/arch/x86/mm/mem_encrypt_amd.c
-[ ... ]
-> @@ -308,6 +309,9 @@ static int amd_enc_status_change_finish(unsigned long=
- vaddr, int npages, bool en
->  	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
->  		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
-> =20
-> +	if (!enc)
-> +		memset((void *)vaddr, 0, (size_t)npages << PAGE_SHIFT);
-> +
->  	return 0;
->  }
-
-[Severity: Medium]
-What happens during vgacon_startup() when VGA_MAP_MEM() calls
-set_memory_decrypted() on the legacy VGA video memory range?
-
-In arch/x86/include/asm/vga.h, VGA_MAP_MEM() calls set_memory_decrypted() on
-the direct-map address of legacy VGA memory (0xb8000 or 0xb0000):
-
-#define VGA_MAP_MEM(x, s)					\
-({								\
-	unsigned long start =3D (unsigned long)phys_to_virt(x);	\
-								\
-	if (IS_ENABLED(CONFIG_AMD_MEM_ENCRYPT))			\
-		set_memory_decrypted(start, (s) >> PAGE_SHIFT);	\
-								\
-	start;							\
-})
-
-During console initialization, con_init() -> vgacon_startup() calls
-VGA_MAP_MEM(vga_vram_base, vga_vram_size) before probing for VGA hardware a=
-nd
-before vgacon_save_screen() saves the pre-boot screen contents.
-
-With amd_enc_status_change_finish() and tdx_enc_status_change_finish() now
-unconditionally calling memset() on !enc:
-
-1. On AMD SME/SEV, set_memory_decrypted() wipes the 32 KiB VGA text buffer
-   before vgacon_startup() checks the buffer or saves the initial screen.
-2. On AMD SEV-ES/SEV-SNP and Intel TDX guests, 0xb8000-0xbffff is an MMIO
-   range; executing memset() (which uses rep stosb when X86_FEATURE_FSRS is
-   set) on that shared MMIO range triggers a #VC or #VE exception that
-   insn_decode_mmio() cannot decode, panicking the kernel at boot.
-
-[ ... ]
-
-> diff --git a/drivers/hv/hv.c b/drivers/hv/hv.c
-> index fe50090dcc011..6e836a02910a0 100644
-> --- a/drivers/hv/hv.c
-> +++ b/drivers/hv/hv.c
-> @@ -123,12 +123,13 @@ static int hv_alloc_page(void **page, bool decrypt,=
- const char *note)
->  	if (!*page)
->  		return -ENOMEM;
-> =20
-> -	if (decrypt)
-> +	if (decrypt) {
->  		ret =3D set_memory_decrypted((unsigned long)*page, 1);
-> -	if (ret)
-> -		goto failed;
-> -
-> -	memset(*page, 0, PAGE_SIZE);
-> +		if (ret)
-> +			goto failed;
-> +	} else {
-> +		memset(*page, 0, PAGE_SIZE);
-> +	}
->  	return 0;
-> =20
->  failed:
+> @@ -126,8 +142,7 @@ static int atomic_pool_expand(struct dma_gen_pool *dm=
+a_pool, size_t pool_size,
+>  	 * shrink so no re-encryption occurs in dma_direct_free().
+>  	 */
+>  	if (dma_pool->cc_shared) {
+> -		ret =3D set_memory_decrypted((unsigned long)page_to_virt(page),
+> -					   1 << order);
+> +		ret =3D cc_make_shared(page_to_virt(page), pool_size);
 
 [Severity: High]
-As reported by Sashiko on RFC v8 [2], doesn't skipping memset() when decrypt
-is true leave SynIC message and event pages uninitialized on standard
-(non-CoCo) Hyper-V VMs?
+Does calling cc_make_shared(page_to_virt(page), pool_size) after
+arch_dma_prep_coherent() and dma_common_contiguous_remap() leave dirty cache
+lines on the cacheable linear mapping alias when CONFIG_DMA_DIRECT_REMAP is
+enabled?
 
-In hv_synic_alloc(), decrypt is set to !vmbus_is_confidential():
-
-drivers/hv/hv.c:hv_synic_alloc() {
-	const bool decrypt =3D !vmbus_is_confidential();
-	...
-	if (!ms_hyperv.paravisor_present && !hv_root_partition()) {
-		ret =3D hv_alloc_page(&hv_cpu->hyp_synic_message_page,
-			decrypt, "hypervisor SynIC msg");
-		if (ret)
-			goto err;
-		ret =3D hv_alloc_page(&hv_cpu->hyp_synic_event_page,
-			decrypt, "hypervisor SynIC event");
-		...
-}
-
-On a standard non-confidential Hyper-V guest, vmbus_is_confidential() is
-false, so decrypt is true. However, on non-CoCo x86 and arm64 guests where
-memory encryption is inactive, set_memory_decrypted() is a no-op that retur=
-ns
-0 without zeroing the page. Because hv_alloc_page() allocates the page with
-__get_free_page(GFP_KERNEL) without __GFP_ZERO and skips the else branch wh=
-en
-decrypt is true, hyp_synic_message_page and hyp_synic_event_page are handed
-to the hypervisor with uninitialized kernel memory, leaving non-zero garbage
-in message slot headers (msg->header.message_type !=3D HVMSG_NONE) and event
-flags.
-
-[ ... ]
-
-> diff --git a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c b/drivers/virt=
-/coco/pkvm-guest/arm-pkvm-guest.c
-> index 26fe9c3f22e36..7d922e0a28f96 100644
-> --- a/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
-> +++ b/drivers/virt/coco/pkvm-guest/arm-pkvm-guest.c
-[ ... ]
-> @@ -61,6 +62,8 @@ static int pkvm_set_memory_encrypted(unsigned long addr=
-, int numpages)
-> =20
->  static int pkvm_set_memory_decrypted(unsigned long addr, int numpages)
->  {
-> +	memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
-> +
->  	return __set_memory_range(ARM_SMCCC_VENDOR_HYP_KVM_MEM_SHARE_FUNC_ID,
->  				  addr, numpages);
->  }
-
-[Severity: High]
-When atomic_pool_expand() expands a CoCo atomic DMA pool on arm64 (both here
-in pkvm_set_memory_decrypted() and in realm_set_memory_decrypted()), doesn't
-zeroing via the cacheable linear map allocate dirty cache lines after
-arch_dma_prep_coherent() has already cleaned the cache?
-
-In kernel/dma/pool.c:atomic_pool_expand(), arch_dma_prep_coherent() and the
-non-cacheable vmap remap happen before set_memory_decrypted() is called on
-page_to_virt(page):
+In atomic_pool_expand(), arch_dma_prep_coherent() and the vmap remapping run
+first:
 
 kernel/dma/pool.c:atomic_pool_expand() {
 	...
@@ -395,25 +178,35 @@ kernel/dma/pool.c:atomic_pool_expand() {
 	addr =3D page_to_virt(page);
 #endif
 	if (dma_pool->cc_shared) {
-		ret =3D set_memory_decrypted((unsigned long)page_to_virt(page),
-					   1 << order);
-		...
+		ret =3D cc_make_shared(page_to_virt(page), pool_size);
+	...
 }
 
-Because pkvm_set_memory_decrypted() and realm_set_memory_decrypted() execute
-memset() through the cacheable linear mapping page_to_virt(page) after
-arch_dma_prep_coherent() has already run, dirty zeroed cache lines remain in
-the CPU data cache for the linear alias while consumers of the atomic pool
-access the buffer through the non-cacheable vmap alias addr or via device
-DMA. If those dirty cache lines are later evicted, won't they overwrite data
-written via the non-cacheable mapping or by DMA?
+Because set_memory_decrypted() (in commit 0a47431deefc ("mm: Zero memory
+during shared memory transitions")) zeroes the range through the cacheable
+linear map address passed to it:
 
-[1] https://lore.kernel.org/r/20260924100529.1398790-3-aneesh.kumar@kernel.=
-org
-[2] https://lore.kernel.org/r/20260924100529.1398790-3-aneesh.kumar@kernel.=
-org
+cc_make_shared()
+  -> set_memory_decrypted()
+       -> realm_set_memory_decrypted() / pkvm_set_memory_decrypted()
+            -> memset((void *)addr, 0, (size_t)numpages << PAGE_SHIFT);
+
+performing this transition after arch_dma_prep_coherent() has already clean=
+ed
+the linear map alias dirties the CPU data cache for page_to_virt(page) with
+zeros without a subsequent cache clean (and on Arm CCA, cleans the protected
+physical address alias before the RIPAS transition rather than the shared
+physical address alias after zeroing). Those dirty cache lines on the linear
+mapping can later be evicted to the Point of Coherency and overwrite live D=
+MA
+buffers accessed via the non-cacheable vmap alias at addr.
+
+In contrast, dma_direct_alloc() transitions the pages before calling
+arch_dma_prep_coherent() and dma_common_contiguous_remap(). Should
+atomic_pool_expand() similarly call cc_make_shared() before
+arch_dma_prep_coherent() and dma_common_contiguous_remap()?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104164555.3555=
-725-1-aneesh.kumar@kernel.org?part=3D2
+725-1-aneesh.kumar@kernel.org?part=3D6
 
