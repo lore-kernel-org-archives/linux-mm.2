@@ -1,108 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDA9E606D821
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD1D606D82D
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 13:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ed6ednr4
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Ctivv3Mq
 Received: by kanga.kvack.org (Postfix)
-	id 0E6D76B05B7; Thu,  5 Nov 2026 08:23:05 -0500 (EST)
+	id AF8936B05B9; Thu,  5 Nov 2026 08:23:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0976D6B05B9; Thu,  5 Nov 2026 08:23:05 -0500 (EST)
+	id ACFE76B05BC; Thu,  5 Nov 2026 08:23:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEFB66B05BC; Thu,  5 Nov 2026 08:23:04 -0500 (EST)
+	id A0C6E6B05BD; Thu,  5 Nov 2026 08:23:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D17866B05B7
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:23:04 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A94D1409CF
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:23:04 +0000 (UTC)
-X-FDA: 85401131088.11.E480EAB
-Received: from mta1.migadu.com (out-3.mta1.migadu.com [95.215.58.3])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 236D920002
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:23:01 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B4706B05B9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 08:23:08 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DBC4CA0A03
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:23:07 +0000 (UTC)
+X-FDA: 85401131214.18.CB3F0EE
+Received: from mta0.migadu.com (out-12.mta0.migadu.com [91.218.175.12])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 9E0E320008
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 13:23:05 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ed6ednr4;
-	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.3 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ctivv3Mq;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.12 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793884982;
+	s=arc-20220608; t=1793884985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iOupAXTYNfoednpq0XsVSpZ+gvJVRJ03mA/cqdjPBdI=;
-	b=MKmGfR/c7XRiGRmi7X6i68YmmigWw/lPEVzCYZ5K2DOQmuaZ5mVjYspznEn2lhApxqko2E
-	d+0kB/g92Tzp8oBr1UWB6+Z72s4I0kAQl0XWJ+yjWqYgNBZ+fPK5K33rnRg5q5DKw8xs3q
-	CkyTzvFUoLPGcSzrV+gGjDBBChdk9u0=
+	bh=zh22YFNTcCHiUEzZGKdpmex1nn80VuR77bgSMkmuY98=;
+	b=k3ZhpqTNMj85nYeaf/++Ex/7udSw8Y2sd5uslLrBgh7awheCWw6iBAPn7BwZbnIzJIRYUR
+	QTJg3PI9+Cx/kty6k2lmACAPb53W8eatnMNgERqoMfm6Q+MW284vIaPwkCGCB3fnerrLGn
+	qFog0QAjOchChjVnDs4+Jiq9i2NwNos=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793884982;
-	b=6WZTJEo/QfbsXG2JthNxEgXp4fzymbXxTZChNvq9VGry+rO6dFb6m46fic2oZ94FQprPBS
-	SLOkI6KXTSi2oPDx2T8is/poFKuPWFzqe1uKw4RG3Kk9/eHsogxsgpZYBkF6ePVgNSeyHW
-	a4KzW715Q1zWpYVQXT6uhIFgCcNsN94=
+	t=1793884985;
+	b=cKTLoQzxgSTmC7c4Wz9pRvR7CLbW8IOCbxetStKuX299k1/PCyfQJkTmgdfAOo3KqU+JaJ
+	w96sYX3rrN0csWZXGcG2oE8f934o9gLcg0vbjdQFFubrmuDxigYHNKY+8hqjCnO7+coisN
+	J0HH+AlFZr8a2yf4jDl+twYKhj1jWtE=
 ARC-Authentication-Results: i=1;
 	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Ed6ednr4;
-	spf=pass (imf03.hostedemail.com: domain of ridong.chen@linux.dev designates 95.215.58.3 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Ctivv3Mq;
+	spf=pass (imf03.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.12 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=gedQzs9cofqnO/3Mo6G1fafF6KlRIBhBesFXSxuBcbg=;
+DKIM-Signature: a=rsa-sha256; bh=QBfD3euoOAyBl9/iW0ZdDnIB6ewWJVoLmTJxoE+3xEY=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793884981; v=1; x=1794489781;
- b=Ed6ednr4nfdPMGN/KpjaFwJKHYmNrMTRbel0Q89Dd3UnLBKbi2v/fBNZYYPG0K4j1ZzG56pr
- lV9/Op4phvY9Alu9pePz3ifHmgyJMyf65D4REoemzVAV+2QjlukOVgwangNmmYHPuV5QoEw//2M
- 2NwL9zNJpTliTJtF0HtMDNM8=
+ t=1793884984; v=1; x=1794489784;
+ b=Ctivv3MqLQ4XnJ94Sj9gsOzisWtJAH4/DiB9quX/uiOO9cHAIQB5FABRKLGAujlhwA67zQGY
+ P1IYf8kMSPqCpUXaEb8crOi0Igh7hb+Qx0dSNuydc2XZq/PhTD7W0CVvqAdtZ3yHgg0drHHOPVT
+ Va+QrsaRaDC7WOPU+0o4qJqA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id cca60b9dfeddce6e;
-	Thu, 05 Nov 2026 13:23:00 +0000
-X-Mizu-Trace-ID: cca60b9dfeddce6e
+Received: by smtp.migadu.com with ESMTPS id 3da0c8e7b0babbc2;
+	Thu, 05 Nov 2026 13:23:03 +0000
+X-Mizu-Trace-ID: 3da0c8e7b0babbc2
 X-Migadu-Flow: FLOW_OUT
-From: Ridong Chen <ridong.chen@linux.dev>
-To: David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Joanne Koong <joannelkoong@gmail.com>,
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org,
+	baolin.wang@linux.alibaba.com
+Cc: lance.yang@linux.dev,
+	baohua@kernel.org,
+	akpm@linux-foundation.org,
+	ljs@kernel.org,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	qi.zheng@linux.dev,
+	pfalcato@suse.de,
+	ayushr@modal.com,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Ridong Chen <ridong.chen@linux.dev>,
-	Ridong Chen <chenridong@xiaomi.com>
-Subject: [RFC PATCH 2/3] mm/mglru: skip the flags cmpxchg when nothing changes
-Date: Thu,  5 Nov 2026 21:22:19 +0800
-Message-Id: <20261105132220.2233677-3-ridong.chen@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261105132220.2233677-1-ridong.chen@linux.dev>
-References: <20261105132220.2233677-1-ridong.chen@linux.dev>
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio sizes
+Date: Thu,  5 Nov 2026 21:22:58 +0800
+Message-ID: <20261105132258.99528-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <8ebb182b-8a01-4d32-8c76-7e4bd9e54ddb@kernel.org>
+References: <8ebb182b-8a01-4d32-8c76-7e4bd9e54ddb@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 1prj79rtmfcpqy5betzpsoabri73t8wy
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 236D920002
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: m13m1nso158jhc3ih3temr6dq7on9aky
+X-Rspamd-Queue-Id: 9E0E320008
 X-Rspam-User: 
-X-HE-Tag: 1793884981-378831
-X-HE-Meta: U2FsdGVkX18Alsd4iWQXEbdsX/n5Cj+ojKOotO2l5AVWe05QCO/vnTtK/wbGuv9Tymj+1Ue/Pd+xfjI+b7M+UDu5KuPU0xzJbgZXjtYpZuUvlR75HkwiHgXnee5XHpVOOegGBSle7qSgotZJ9V6wTOovWqg8IWZF9rkYafi6pgas1IRy7fmbA+XeOt6W7fzpQURKd8yPHMnhntLyr6FfYA42bYDeoPfxNRrhHoZnNKll3fIzXbJh5RO4LHvZMdsuZ9hduUMDK7nSBDVnHVMGjOhWbr5j1u4h2dN+BOZkQD0nlZdEVz62KjX4KFMkGllQpybhgzR83DS3iYPx76AIaqqeI9s5o5zhMBqRj618zCA7ADqaJNXZRHqFjFc15l+wWATraPHCHCbKzNEtDSS+ooDSutY4GPGh3K8ny4D8BguobNJioMjZuGGtHoJsWlnN6bBsu6LDu7rAFcX+BsvmNdid51uujiCaZsdTbtSi5rmw1Mdkcft5E+BCPLbaUPLJysUJh9zsXm5o7hb6cq0pP6SqAQob04qfPPtARaESn/a3pk4but1CK4QmODnoolfFKEqMCcIcrEJgIrugcf8Yk99S3BeSY4np0SDtd8FnvXebVvNb1VviEuZaggaAw4R5m9tpGwgEKtePIXk/n1icPoPV0xbznrjO2YmGPo6IYBBfWDCRw5s0fOMplOBLtsP6Yt6GJrnKdFo4y+VMSHY5Ff2MNGgSrh5TAwc5aR9fWeui0qv1Omd4o7X0aSOS/q2TLvH1amr+mumEoxxiULEDdezQDVQZrF6j3KOY5tsmy3f1FlQASO//n/7WCqVAiXC5WUX/ceHa5LnYNEFGro1atO5LsCCuHt8+SM/H1K6L0lMEb01hWrdP8QsNHmTrLZREwueKf+wzAM2jSQc4qebpOzwCeV9x5bP8IPl5qQFGX8x0eAYV1TIdV0Vm0VdsFNPeWo1V50ONKMnuUf5xacp
- 7DL6p+nE
- g7jqUnou+NKqPsVT8cdEB704keE5FjKYFPKkL2Y+444QttcJMu7XUv2rugglMAoWGRnw1VfLrm+0/zSxiq64GC94aJ3d5kot7bDpOXQw9Sw/a0TFIwvPXBZiYb3QpUiKS5jUnPqEad6K4V7VZyx2+e36Q4rG4mPk/Uqr5tnPbVCyGvkLLHXOqbBdRxzbRnA5Unw+HJZfavtyOnoWDbUeqZn7tu3Wd1EQuRRQ443sD8JewF1QhZnwq8ZiCYg==
+X-HE-Tag: 1793884985-137037
+X-HE-Meta: U2FsdGVkX18gX39sjtXI2GibFCNAAI0Zn4IiyecyCUbCSH2jaVoNF6LcZuVz8GMoc/UZg/+cqXLoAZl/qlAFBKcagQoJD/J/jIZugv8VroJbwXmuUcsgi8eOM2RLABr557hDq+NgyHbD9mzadf8jt8F5EQWlE9+CS4wFrO/zKCBJcewQnOoDukmCloH3sTVFfOqQFuL88jjYj3URI4so3JlNC4R/Ygm636mz91PR6rytBGBRQT70Cqm5eJBCAFTYx9/rUvydRgcOwyGab10nzQsYmdXI6bC8ynOBEZ/y7SwTRsbg9XQS4EAuwMTh8xnVmTKXduLRr+c71JYiLNohFB+aKiKEVhrW6v6QjSuh8dZ+bJp/UUEbEvwiYoX3BCArNtyGK/oKFTk3VWdUu+aek5/r+kuIB7e1hmQURjGpjwHYO9LBwXzQb635jM5Gr0qOgjkFgheCK8hQu1+E/F1OqY8yqjosqY8VrMDgq3QYg6o4va4eL/nV51Z+Dr2EIBm1E/5br+PsxHMHUTjTyDs1EDCemPQqwvMI8rrLyxiIKH9fOBE6ht/c9RV1g6IwHzWixZ8tbtLkxDLA87kj2sOjoG77z56AAyOWGP6LjDo3m9y4bOPMb9HW/BPLb72F+6l0+0UHBgMnSGSgl2ES7u0qwajGKatQjWYT7vbkc7inkVmBc5jKjPY+AMZPiFLBNrt+OG1UhI8+haGf4T8ZikB/bPzritr1bLZRMLJklnw2/cRwEly2c+YXRHEl9/k1kYz+txaLA4/7z8FYMSyC6XtBb3kN1xahS98jHXZ2Qnl/+Ip/C9AB/vg6bNEmzsVpF86l/fkUFKttQ6O/1G4kkanqHh1xBxXbW6JkykRNjjSxVCm6S5W3GblWd9Fg1spafHDmr9cyIHOPG7aVFvBjPjxjapegBhja8NtKnvm0XPwtaoiBCAj8kbLypHl3UVyhQpmeEthYI9nSx4/u/BYbRMM
+ 0/sFsk8v
+ LG/Q2ayobaaMUFPFVnouh+j/t0vdtDTlP+iDIYm+WXRs0CcPYb/A+yNl3Dj+F5v+SoMTZ252BrEC4Ts+/v+qjyNpP6Jy5H3z3JTKgVJ5O0NgFtJItMzdf8gLeWCFogRhmJiWJrLDO+ooEjqsAKmdY+oLu9AxGpACV052P2933MMREpkUsAYHnAx45VBRoqTC1vKu2b8PHvFswk7Ep9cPVGy7DySYpcPKhyc3alzlVhncr4P7OPFLZN3Yxc/UkbgkVnko2Zj/IQV4F4tbgpBcuJgXP/LsZ2jySghRX2sG1GsgPy3CuaJyBTYmTdbfiefggjg4HG+YX9kBknblA4F1Zj7etVVH/+AcBPw7z7DXt5WUIU7w=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,80 +106,231 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Ridong Chen <chenridong@xiaomi.com>
 
-folio_update_gen() and folio_set_lru_refs() always end with a
-try_cmpxchg() on folio->flags, even when the new value equals the old
-one. The locked instruction still takes the struct page cacheline in
-exclusive state.
+On Thu, Nov 05, 2026 at 11:06:29AM +0100, David Hildenbrand (Arm) wrote:
+>On 11/5/26 10:00, Baolin Wang wrote:
+>> CC Barry, who added the TTU_SYNC in shrink_folio_list().
+>> 
+>> On 11/5/26 1:48 PM, Lance Yang wrote:
+>>>
+>>>
+>>> On 2026/11/5 12:54, Lance Yang wrote:
+>>>>
+>>>>
+>>>> Good catch!
+>>>>
+>>>>
+>>>> Right. Whether the folio can be PMD-mapped doesn't tell us whether its
+>>>> PTE table can be reclaimed, so those extra checks can skip synchronization
+>>>> that the caller explicitly asked for ;)
+>>>
+>>> Ouch ... one thing I missed ... what about order-0 reclaim?
+>>>
+>>> shrink_folio_list() only sets TTU_SYNC for large folio, so can't we still
+>>> hit the same race there?
+>> 
+>> Thanks Lance. But this matches the purpose of the TTU_SYNC flag, which is used
+>> to avoid racy checks with PVMW_SYNC. If no TTU_SYNC flag is set, it means the
+>> caller can tolerate some racy checks.
+>> 
+>> For this case, I think we should set TTU_SYNC unconditionally in
+>> shrink_folio_list(). Barry, what do you think?
+>
+>That makes sense. I hope this doesn't throw a big wrench into our reclaim
+>performance numbers.
+>
+>Can someone benchmark this?
+>
+>But maybe we should really follow-up with the folio-size based optimization in
+>sync_with_folio_pmd_zap(), where we only need a memory barrier (and sufficient
+>documentation why something that cannot be PMD-mapped can get away cheaper).
 
-That is common in practice: a folio mapped by many processes is visited
-once per mm during a page table walk, and after the first visit it is
-already in the youngest generation with refs cleared and PG_workingset
-set. isolate_folio() and the eviction paths also call
-folio_set_lru_refs(folio, 0) on folios whose refs are already zero.
+Dug into the history a bit :D
 
-Break out of the loop when the flags would not change. The result is
-the same as a successful no-op cmpxchg. The only difference is that the
-full barrier implied by the locked instruction is gone on that path.
-No caller relies on it: the eviction and isolation callers run under
-the LRU lock, and the others (page table walks, folio_mark_accessed(),
-lru_gen_clear_refs()) only care about the resulting flags value, which
-is already in place. Note that lru_gen_inc_refs() already returns
-without any atomic when refs is at LRU_REFS_MAX and the folio is in
-the workingset.
+TTU_SYNC goes back to Hugh's THP splitting fix [1]. A racing zap could
+clear the PTE/PMD before updating mapcount, so the walker could skip the
+lock and return before the accounting caught up.
 
-Tested on an i7-13700HX with turbo disabled and the performance
-governor. N processes map the same 2GiB tmpfs file (huge=never) and
-read every page, then one aging pass is triggered on their memcg
-through /sys/kernel/debug/lru_gen ("+ <memcg_id> 0 <max_seq> 200 1").
-Time per aging pass in ms, median of 5 runs of 10 passes each, averaged
-over 2 boots of each kernel:
+Barry later enabled it for large-folio reclaim [2], to avoid skipping
+temporarily cleared PTEs and ending up with a partially unmapped folio.
+He mentioned that small folios had the same race, but with just one PTE,
+they couldn't be partially unmapped. That's where the large-folio check
+in shrink_folio_list() came from.
 
-  processes    base   patched
-          1    32.9      31.7   -3.5%
-          8   195.1     160.2  -17.9%
-         32   755.8     592.2  -21.7%
-         64  1597.2    1260.6  -21.1%
+Then PTE table reclaim [3] added another way to end up with an empty PMD,
+even for a folio that can't be PMD-mapped. The truncation fix [4] moved
+the rmap flush before the PMD clear and extended synchronization in
+zap_pmd_range() to cover those folios too.
 
-With one process, every visit changes the generation, so there is
-nothing to skip. Before the patch, perf annotate attributes 53-58% of
-the walk_update_folio() samples to the lock cmpxchg in the inlined
-folio_update_gen() in this test.
+Looking back at the truncation discussion [5], you also pointed out that
+page_vma_mapped_walk() needed checking, and suggested a possible
+folio-size based optimization in the helper.
 
-Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
----
- include/linux/mm_inline.h | 2 ++
- mm/vmscan.c               | 2 ++
- 2 files changed, 4 insertions(+)
+[1] https://lore.kernel.org/all/c1e95853-8bcd-d8fd-55fa-e7f2488e78f@google.com/
+[2] https://lore.kernel.org/all/20240306095219.71086-1-21cnbao@gmail.com/
+[3] https://lore.kernel.org/all/92aba2b319a734913f18ba41e7d86a265f0b84e2.1733305182.git.zhengqi.arch@bytedance.com/
+[4] https://lore.kernel.org/all/14ebbd556cc4941f0ebc43da59fa6a2fdca25dc8.1793148609.git.baolin.wang@linux.alibaba.com/
+[5] https://lore.kernel.org/all/08a0907f-8e3a-4071-a2e4-fd1411c446f3@kernel.org/
 
-diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-index b3d85fe91385..4ba9079f4dc8 100644
---- a/include/linux/mm_inline.h
-+++ b/include/linux/mm_inline.h
-@@ -244,6 +244,8 @@ static inline void folio_set_lru_refs(struct folio *folio, unsigned int refs)
- 	do {
- 		new_flags = old_flags;
- 		lru_set_refs_flags(&new_flags, refs);
-+		if (new_flags == old_flags)
-+			break;
- 	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
+So, how about starting with order-0 folios?
+
+---8<---
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 74cca0e3c726..d01fe8282417 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -872,6 +872,8 @@ struct page_vma_mapped_walk {
+ 	spinlock_t *ptl;
+ 	unsigned int flags;
+ 	bool pgoff_is_anon : 1;
++	/* Set from the folio, not the number of pages being walked. */
++	bool folio_is_order0 : 1;
+ };
+
+ #define DEFINE_FOLIO_VMA_WALK(name, _folio, _vma, _address, _flags)	\
+@@ -883,6 +885,7 @@ struct page_vma_mapped_walk {
+ 		.address = _address,					\
+ 		.flags = _flags,					\
+ 		.pgoff_is_anon = folio_test_anon(_folio),		\
++		.folio_is_order0 = !folio_test_large(_folio),	\
+ 	}
+
+ static inline void page_vma_mapped_walk_done(struct page_vma_mapped_walk *pvmw)
+diff --git a/mm/internal.h b/mm/internal.h
+index 9b8864a8540a..e70869b38292 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -592,21 +592,29 @@ void pmd_install(struct mm_struct *mm, pmd_t *pmd, pgtable_t *pte);
+  * sync_with_folio_pmd_zap - sync with concurrent zapping of folios
+  * @mm: The mm_struct.
+  * @pmdp: Pointer to the pmd that was found to be pmd_none().
++ * @order0: True if the target is known to be an order-0 folio.
+  *
+- * When we find a pmd_none() while unmapping a folio without holding the PTL,
+- * zap_huge_pmd() may have cleared the PMD but not yet updated the folio
+- * mapcount, and zap_empty_pte_table() clears the PMD only after the rmaps
+- * for the table have been removed, but nothing orders the pmd_none() read
+- * against later mapcount reads. Skipping the PMD without synchronization
+- * could make folio unmapping code assume that unmapping failed.
++ * An empty PMD does not guarantee that a later mapcount read sees the
++ * completed rmap updates. For PMD-mapped folios, zap_huge_pmd() clears
++ * the PMD before updating mapcount, so we must wait for the PMD lock.
+  *
+- * Wait for concurrent zapping to complete by grabbing the PTL.
++ * Order-0 folios cannot be PMD-mapped. Their fully ordered
++ * atomic_add_negative() updates mapcount before PTE table reclaim clears
++ * the PMD. The PTE lock preserves this ordering if another CPU reclaims
++ * the table. A read barrier therefore suffices for order-0 folios.
++ * Keep taking the PMD lock for all other folios.
+  */
+-static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp)
++static inline void sync_with_folio_pmd_zap(struct mm_struct *mm, pmd_t *pmdp,
++					   bool order0)
+ {
+-	spinlock_t *ptl = pmd_lock(mm, pmdp);
++	if (order0) {
++		/* Order the PMD read before subsequent mapcount reads. */
++		smp_rmb();
++	} else {
++		spinlock_t *ptl = pmd_lock(mm, pmdp);
+
+-	spin_unlock(ptl);
++		spin_unlock(ptl);
++	}
  }
- 
+
+ struct zap_details;
+diff --git a/mm/memory.c b/mm/memory.c
+index 44376321180b..8955d1cd31b0 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2112,7 +2112,8 @@ static inline unsigned long zap_pmd_range(struct mmu_gather *tlb,
+ 			/* fall through */
+ 		} else if (pmd_none(*pmd)) {
+ 			if (details && details->single_folio)
+-				sync_with_folio_pmd_zap(tlb->mm, pmd);
++				sync_with_folio_pmd_zap(tlb->mm, pmd,
++							!folio_test_large(details->single_folio));
+ 			addr = next;
+ 			continue;
+ 		}
+diff --git a/mm/page_vma_mapped.c b/mm/page_vma_mapped.c
+index e6b6170c2f4f..36881f8fd45e 100644
+--- a/mm/page_vma_mapped.c
++++ b/mm/page_vma_mapped.c
+@@ -293,11 +293,9 @@ bool page_vma_mapped_walk(struct page_vma_mapped_walk *pvmw)
+ 			spin_unlock(pvmw->ptl);
+ 			pvmw->ptl = NULL;
+ 		} else if (!pmd_present(pmde)) {
+-			if ((pvmw->flags & PVMW_SYNC) &&
+-			    thp_vma_suitable_order(vma, pvmw->address,
+-						   PMD_ORDER) &&
+-			    (pvmw->nr_pages >= HPAGE_PMD_NR))
+-				sync_with_folio_pmd_zap(mm, pvmw->pmd);
++			if (pvmw->flags & PVMW_SYNC)
++				sync_with_folio_pmd_zap(mm, pvmw->pmd,
++							pvmw->folio_is_order0);
+
+ 			goto next_pmd;
+ 		}
+@@ -379,6 +377,7 @@ unsigned long page_mapped_in_vma(const struct page *page,
+ 		.nr_pages = 1,
+ 		.vma = vma,
+ 		.flags = PVMW_SYNC,
++		.folio_is_order0 = !folio_test_large(folio),
+ 	};
+
+ 	if (folio_test_anon(folio))
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 50c352e9ffef..3fa76715382d 100644
+index 7db6be53f3a9..79cfa9bc475b 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -3398,6 +3398,8 @@ static int folio_update_gen(struct folio *folio, int new_gen, int *type,
- 		lru_set_gen_flags(&new_flags, new_gen);
- 		lru_set_refs_flags(&new_flags, 0);
- 		new_flags |= BIT(PG_workingset);
-+		if (new_flags == old_flags)
-+			break;
- 	} while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
- 
- 	*type = folio_flags_is_file_lru(&old_flags);
--- 
-2.34.1
+@@ -1434,26 +1434,17 @@ static unsigned int shrink_folio_list(struct list_head *folio_list,
+ 		 * processes. Try to unmap it here.
+ 		 */
+ 		if (folio_mapped(folio)) {
+-			enum ttu_flags flags = TTU_BATCH_FLUSH;
++			enum ttu_flags flags = TTU_BATCH_FLUSH | TTU_SYNC;
+ 			bool was_swapbacked = folio_test_swapbacked(folio);
 
+ 			if (folio_test_pmd_mappable(folio))
+ 				flags |= TTU_SPLIT_HUGE_PMD;
++
+ 			/*
+-			 * Without TTU_SYNC, try_to_unmap will only begin to
+-			 * hold PTL from the first present PTE within a large
+-			 * folio. Some initial PTEs might be skipped due to
+-			 * races with parallel PTE writes in which PTEs can be
+-			 * cleared temporarily before being written new present
+-			 * values. This will lead to a large folio is still
+-			 * mapped while some subpages have been partially
+-			 * unmapped after try_to_unmap; TTU_SYNC helps
+-			 * try_to_unmap acquire PTL from the first PTE,
+-			 * eliminating the influence of temporary PTE values.
++			 * Synchronize with concurrent rmap updates before checking
++			 * folio_mapped(). Also avoid skipping temporarily cleared
++			 * PTEs, which could leave a large folio partially mapped.
+ 			 */
+-			if (folio_test_large(folio))
+-				flags |= TTU_SYNC;
+-
+ 			try_to_unmap(folio, flags);
+ 			if (folio_mapped(folio)) {
+ 				stat->nr_unmap_fail += nr_pages;
+--
+
+atomic_add_negative() provides full ordering for mapcount updates. With
+243cf1f67b36, rmap removal completes before clearing PMD, including when
+another CPU reclaims an empty table under PTE lock. So smp_rmb() is enough
+here, without an extra writer-side barrier.
+
+nr_pages == 1 isn't enough to identify an order-0 folio, since
+page_mapped_in_vma() also checks individual pages of large folios.
+
+We can then enable TTU_SYNC for order-0 reclaim and use smp_rmb() on an
+empty PMD, while keeping PMD locking for large folios. 
+
+(Haven't benchmarked it yet) ...
+
+Cheers, Lance
 
