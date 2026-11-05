@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB8376077B69
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF33E6078573
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 19:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jO6fHT46
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=icO3rWLw
 Received: by kanga.kvack.org (Postfix)
-	id 9908D6B05B5; Thu,  5 Nov 2026 14:35:25 -0500 (EST)
+	id C9F346B05C6; Thu,  5 Nov 2026 14:35:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8F4C46B05C5; Thu,  5 Nov 2026 14:35:25 -0500 (EST)
+	id C4EE86B05C7; Thu,  5 Nov 2026 14:35:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 793266B05C6; Thu,  5 Nov 2026 14:35:25 -0500 (EST)
+	id B65BE6B05C8; Thu,  5 Nov 2026 14:35:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CFF46B05B5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:35:25 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D11261C4695
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:24 +0000 (UTC)
-X-FDA: 85402069368.05.21656FB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 44F7F140005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jO6fHT46;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793907323;
-	b=1xAfUhWkIpduj4CrDf3jRDiHaQRxZsyIDMJp/4eIcb/mvY3AU2UlrUUHO5mk4J8hWP2GMR
-	BRfyeXgyq0AuBSOcQA5yNtCLL5U2CyUGTAjeJvVJtUg4RfTW9xk8PlHfvBQPdeU40TTcDG
-	IuV6dsSJIGiL0x3yvgdpKnPT9OfXfR4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jO6fHT46;
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FB356B05C6
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 14:35:34 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 185F7140BEE
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:34 +0000 (UTC)
+X-FDA: 85402069788.04.4B2F813
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 735A220004
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:35:32 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=icO3rWLw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793907323;
+	s=arc-20220608; t=1793907332;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5h8pyB6ckh/Fez925GIOXUwCgLju8hiN+2v5AZq1zRc=;
-	b=qWoAdlsjNcYa+AdyU9qnsOGURNf5io/Y9SX7r17VRMqRXxl+qtlKS6l8PMnpBZBfLTL/NQ
-	jDS0DO3qchn83DKOzlmVj+aXz+gJofkehaoqZZ0qE1+b5hjbY0uAdtzJrsIHT895NWOX79
-	yyVTnfCK3sVPFMJMSQtouRbQViK/FjE=
+	bh=QnupmpJjcDSUenY+8iHhV2pDdP26FR+grPEd9BKN+Wg=;
+	b=HykfkojkUAZT1TC56LBXvay4/vadYBasGzyDJPFdKK33jSuwgLxuk9KjrQyxKAtXjbzp68
+	oqQ1lfQ6iNJkKA2IOCEB3/pSHWMqXhnbOWMlHdqWcmhABQ45uZnjOUtFR7rvLbqXyk80mA
+	S2/ScO2+AgZ7litltjuV1F8Tk4v2EZw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=icO3rWLw;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793907332;
+	b=jenOIUsLv+JETLvt1DkLe3tY8pRWnaR4EKztI291R76aEbgvUNcUdzTwRoUycleld9EA2P
+	NSCuRHisviZGwmgPuSXywH4mQMPJzAatfFnJ0hNSBqG6wJEx8b0B8rXpRVj+YrlLW3Xv0V
+	UqBf1/v1LYquqPbUWpG4c2x/+WAc+9s=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D753760172;
-	Thu,  5 Nov 2026 19:35:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914A31F0089F;
-	Thu,  5 Nov 2026 19:35:20 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B12BC43B0A;
+	Thu,  5 Nov 2026 19:35:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E09C1F008A1;
+	Thu,  5 Nov 2026 19:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793907322;
-	bh=5h8pyB6ckh/Fez925GIOXUwCgLju8hiN+2v5AZq1zRc=;
+	s=k20260515; t=1793907331;
+	bh=QnupmpJjcDSUenY+8iHhV2pDdP26FR+grPEd9BKN+Wg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=jO6fHT46k3cC0x6jpyWBno3seAJmOL41FS/48htjx/g/4KS0/AOvvTQNDrK+N2tPn
-	 eSg4IyWf4G4FhYkE6vVJAuVVPft1L/scrcZOgLSXExy1eZXqRymthLKJHvCZEjshCQ
-	 FspK+EGuUBwYnyZw5GP5uQusSuenS6tchWvoKCkW0w6oxWb8XCS/IIeZBRu2cLLxh9
-	 nBalMctIah8ehQC7+J0mGQu5fUWTHREU0FPypSNk4wCDvlkwmfvT2GL0NdosSNP/Lg
-	 beYsluA0YIqlRpFoO5FkXTCF87+/0zOHnBlziRvMNQSTcpA2DxXltjclWi+UeZDyvx
-	 KCSkb1a4yeLIA==
-Message-ID: <sashiko-outbox-199934@kernel.org>
+	b=icO3rWLw6nKGObCQJgYMxAh2P6PTRzIdDeuA404d8zGUUVnEp22awIUt/ONskepjG
+	 FQyNYgueaW+0iYJhp0FqJ+XOW2y+yurI0uUuh+dfsOclM2Nh3qdwIC3ytuTEQmNhzr
+	 MTetr7AbbAQJrQhhBXugv5fx//leXY88njWHb3TZ3743y/bVbrU4sQkjQK81piouKz
+	 MGYh6ZeJ6sFNsrOgjNWWNWno+Xud511eRRatEpGCbh1xHAr4ri1vGAQGPMtUR0YyMD
+	 sstDXtwDG9/n6Jsu5U178yWJP4hODLvoqYoWfkpM7RkF01wue3ewhl7sYNSjaz7bA6
+	 sSwHZw/oTnT7A==
+Message-ID: <sashiko-outbox-199938@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RESEND v2 04/23] proc: wait for the last user of an
- entry with wait_var_event()
+Subject: Re: [PATCH RESEND v2 08/23] proc: let procfs own the seq_file of
+ proc_create_seq() and friends
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Christian Brauner" <brauner@kernel.org>
 Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.com>, "Josef
@@ -78,24 +78,24 @@ Cc: "Linus Torvalds" <torvalds@linux-foundation.org>, "Jann Horn" <jannh@google.
  Pavlu" <petr.pavlu@suse.com>, "Anna Schumaker" <anna@kernel.org>, yukuai@fygo.io, "Heiko
  Carstens" <hca@linux.ibm.com>, "Vasily Gorbik" <gor@linux.ibm.com>, "Alexander
  Gordeev" <agordeev@linux.ibm.com>, "Christian Borntraeger" <borntraeger@linux.ibm.com>
-In-Reply-To: <20261104-work-procfs-core-v2-4-76ace653a773@kernel.org>
+In-Reply-To: <20261104-work-procfs-core-v2-8-76ace653a773@kernel.org>
 References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
- <20261104-work-procfs-core-v2-4-76ace653a773@kernel.org>
+ <20261104-work-procfs-core-v2-8-76ace653a773@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 05 Nov 2026 19:35:20 +0000
-X-Stat-Signature: gxoym53ptye1tgngz15mttbz14x5opqz
-X-Rspamd-Queue-Id: 44F7F140005
+Date: Thu, 05 Nov 2026 19:35:29 +0000
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 735A220004
+X-Stat-Signature: nappsrsoee6x6pg5argyewopm7eay9r7
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793907323-250956
-X-HE-Meta: U2FsdGVkX18RFBvuIhhmqsddnT5CtoY7cKxPtnzWyvAOFGYUdqX4ejYfJrWXyK7lWPVd3SkLx74ES8U8ZqjriY60hmPGf4Vlimt656RKQugnk7AxdYKdY/X5ZI1RCT6BRFNf6Y87oHTDGrSlqJeRUXU6++CSKvnRvyguev5BBEGMlVhGEFq02TAX4u1/iifk82QNSAFGX3ornMW1dSTti8J/xXkk+hEwv0QzbqVqjNJmL4n4E8evPoBKWTtiGlc5vMXIm4uRU0yyimXLXY1WjGGinQWwdciM8uvm4pjX8x6tu77lFja+ibNBnyyVnVg3tPJty0UmzGXGOOLFU6CnRA41OgmPJV+pukc6SYORH606VHp5pBkomLgp34Cl5LgoUAaZ0YErER3qp9yp4V41uHfHoxrRjRbjaGzCd/aZP9H9xAZ4rr8jE4DK+exWIG8CBbGrCV8owXR+tZVVM5EiPLG8vUSZJ4oL7am47Th2+Pgh8XdsaDxSgf2qMI1hep1qrnhB/ZKtTixkseoIxXkYZPkEEuNkEYqIbSSAn+WkfRjPyiY8kMTRae7Ov6hndtloU+c4GfDNPQtCKpXbFr9JpuTnbcXsuG9iY+v1GVnIk18Qb+UyHsc0GhEZacfAMujoZ4xR4Q8ovIrXzM7tYSlVvT+oROKBA48xBaMHERRgRPFPciP9AaeFfHxTHwVpWyrlULAJweM6U32Ee2e19hY25AMpMFK9sQ5O8NkCEIRQ0zDM4VXiUtHucsGYGQmWvlz8jEmXlh8/CdfbMpbT+fiLnbGgGZy1JljSLy1MfimDMNzx79GT0tXnsXyvLX5nVWB7zUuevpzthP+j05UHD7UrijOi7smmndFMTDOLFoUkT7s1R7nak5pm6FXYWy2FJSJOx3znVdooFtJJWC+q/zH7HLEjgJFcoWVDxPCYD4dHIC2ZMIMA7jxprvAigNKbRXMtWSLJ6f8/CnbJkKlfQNn
- lLaI39T8
- N/gPptmylxSxqthwJ3B4Eer6igcfVMwb53jtEtfq7tJ3u3xhc3KWrntb1haeLP8SRvLDCyilpNr34y/RW5T4a84CVoXBWahfZnnV41jW7HVO+IMPseibBkFVN/oB9kxt0Avign0IZuwaDip1yO1hcJoNK7Q65uCSw19vFjTzKq6zbsVn5XbepVcGw9ZIKrpx51ptvVjDn6vvvK6svvyadkbEXOKNscannfalMgXrYSxgwU+G+7tHS4fi+oBPzDJen2ahngvjFJRDca21g5fnX9GdaP33JMP0w5+Fp8CAO8LSxB0dweiw3M3ItiG1kYYSpZ0wmqLodz7LDYfzXG4Ye1KTu5l2+R0PG5PTrfRbhB1laFNYuNidF+B+p6GmAPkIBg6oYshNazdW/407yl2Aa4Nn/n5GHeHjoUU6XOBKiQ0FOmZtIAPdWGf1wpLbLWkZ8KEWXP1aj+RUWQ9ZFC6oZBmLgz9qSRwDtnD7/fCBGEWGHWG3GWmvOzxZPDbm8bqzuDj7AxdrLaUdVlnwp5EZ25n3GsCXifzOkTrjgZ2EVxQrMO00k8jiFuQpnQrIDqvsc5OG/LBuNlOGjeRQ7iHRsbvfigb7Y3aEj9NEZ+TDAXval0sF9Ozmq6+112+3NNnDjzUBK9TswdvW/HEO0KvIH4UhXxNhhJL6JgpDNO4pSrDnuKp+zpEekVPHS7KmmbvQP5oUTztYpEMXplHtyib8kXWThXPwLc/rkohL5trhuTNERlV4=
+X-HE-Tag: 1793907332-641932
+X-HE-Meta: U2FsdGVkX1+PtAg+sJpC+jKxaWIasL82JjKUN/nwVGBcBz9Ab8ofRgq4EIxwgHB4zQoCcv5SfOWutwl1gi1pPfhEG1o4bilAeSj6W9XyVxHgPrQbQNUw1uICau1dyhQYqb2RqjHPt4E4BzJA5OFyPEA1GPWHRnxCnf7nQqBL/N/cpmkywPaM2K53QakD3besS1tFFdc2Kp9rrSVYEy/TU/sDU1tS/uSOJh74TnmvhKdjV/MYO8Rj2WN7/5psR8wcARAxL8rk6VsncCVcJMdfb74XUPXCCwNfOq+H8l55hCMei4TV7CmLitBRUigvlvPvTGwYxtOtZWmRkzAuye+mFhAXjFmxxt/jZrVXlJSTmHBWaPzthatvvFZ8nVyaoDy5XxdfrmWetrc7LSnC08wwBByo/6IItEq0dYaNoRAUsRctNkTgZE+QIhLI0n4tJPIKIM65P59pO14m6CZOpD/b2GB9TDwsRTmAfh2u/wlHj66Cb/L/QWs0DkCDohvdug0PTST8o8ET0tTkIRSJOxipKGhb3SdFMcpv/3G5613FERqTf++FDGYPEjSU8pTd1EQLSyknVbj7IuEbQ0njk2FzyKM3w+HwXa9ox1NHpKhkk4X5+xWUaAoC6xl/Temu/Tyd28vp6PKozHtzX4J8+zv1lnyeIXFxzycfZLExFaaziCvM5MdePJu9GJSCsLnURb+FGKiKG+d3vnfLcLjwHldq+oPVSlCB0UtUmox/DwyNR6ZR8LiJTMiR0INnLUm7bJH2DRrIoLqQltp09QZqyuLjk3JEolKKLvS3vzttKZygwZsP48BYKPfUOr9GUHDyBEk14JiZD/KAYIq6Y4zhZjHlcvOZZ/PqQLO1C7LXPfTLJNrVM/ZZmnMu3310BojshGztltE+Rc/W6AbDKH6Uc0esyq3djUnZHw6tj+fhFS5W9i6ZmzxnWydnvqMVu2i4P5z/+MU/n8fXlZpln6gPSYh
+ rEdz4esG
+ 1jUmDwu62kFWoYb9JJLrFo14mTAJgLszMu2ksSgkPp+Dza2Ro+VbS8hlaUp7P5j2VTwVf8r6DKoatOfPsNaKoFG58CwtujMboGoqKnTpdxA92/BEyMfRFuM/ka/leICz9g1HIsAIUURo/5Rur9eWjeGbzsdqJ33Gu1YDEa5T8TmNsUCPGty6t3GqNMqeRKSPs5Sgk1/S6ZivNjOk1uUcDgeM9aAC0d14UBZSMH9WpKD2Ad3Bkvt2WgoXVkNePo6FglNnrpjSaVkOMD1R8H3glg9rkegYIr4TXSZGKLFTmkD/A/S+g1+6SLlHnvSOe1GflAOmbiH35lYOpENLcf2e8+W94YGGA3kC0jeo2EW9vS3vIOAZ7Yn8NGgWs4Zd7cObMbhl74WR6L/Qr5gkiXv004bcuB8qcKd+Z/tmgP4jaWR4dpVzUW7CvBuUAKFS0Yo5zpM+PchF1lppZxec2IYLnR7MR8zCvrbQzY9mvd3PLyoq78SCzHkUkavKEf89+FO3gg0vYxB/oehLeRAfrkaBjXxHBkGig4mTcq2Oj9vSbvPklpobYZhO0R0rW0P0kRNATuepL6BY4fBnkn1eFw570K95dz5RXwqgoHye7N99cmLUfjG5wOJm9zHe9dXkBX6bfvCG7yRL5qcYWRZ+AqRoIMkNtMU1V+zgTmLUPfMSJ3A+65sSR6H8d+lSGGNb3/nZT5WxXvPrkdv3m88ptWbzK0n3bxg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,75 +107,75 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] proc: missing acquire ordering in proc_entry_rundown() wait_var_=
-event()
+- [Low] proc: unused-but-set variable p in seq_open_net() when CONFIG_NET_N=
+S=3Dn
 --
 
-commit 983e734e20cf0803ce3936df6614c8375020b212
+commit 4dea51dab83a49a4131e34ad5f96bc9822052389
 Author: Christian Brauner <brauner@kernel.org>
 
-proc: wait for the last user of an entry with wait_var_event()
+proc: let procfs own the seq_file of proc_create_seq() and friends
 
-This commit replaces the per-entry pde_unload_completion pointer in
-struct proc_dir_entry with wait_var_event() and wake_up_var() on
-pde->in_use during proc_entry_rundown().
+This commit updates proc_create_seq_private(), proc_create_single_data(), a=
+nd
+their network namespace variants so that procfs owns the seq_file directly =
+via
+PROC_ENTRY_proc_seq_ops and PROC_ENTRY_proc_show. For the network namespace
+variants, ->proc_open() and ->proc_release() are simplified to only manage =
+the
+network namespace reference.
 
-> diff --git a/fs/proc/inode.c b/fs/proc/inode.c
-> index 66a3688757dd7..8795add1898dc 100644
-> --- a/fs/proc/inode.c
-> +++ b/fs/proc/inode.c
-
-[ ... ]
-
-> @@ -266,11 +267,9 @@ static void close_pdeo(struct proc_dir_entry *pde, s=
-truct pde_opener *pdeo)
+> diff --git a/fs/proc/proc_net.c b/fs/proc/proc_net.c
+> index df5484813d5dd..9973f846c4674 100644
+> --- a/fs/proc/proc_net.c
+> +++ b/fs/proc/proc_net.c
+> @@ -37,13 +37,13 @@ static struct net *get_proc_net(const struct inode *i=
+node)
+>  	return maybe_get_net(PDE_NET(PDE(inode)));
+>  }
 > =20
->  void proc_entry_rundown(struct proc_dir_entry *de)
+> +/* procfs opened the seq_file and allocated its state, see pde_seq_start=
+() */
+>  static int seq_open_net(struct inode *inode, struct file *file)
 >  {
-> -	DECLARE_COMPLETION_ONSTACK(c);
->  	/* Wait until all existing callers into module are done. */
-> -	de->pde_unload_completion =3D &c;
->  	if (atomic_add_return(BIAS, &de->in_use) !=3D BIAS)
-> -		wait_for_completion(&c);
-> +		wait_var_event(&de->in_use, atomic_read(&de->in_use) =3D=3D BIAS);
+> -	unsigned int state_size =3D PDE(inode)->state_size;
+> -	struct seq_net_private *p;
+> +	struct seq_net_private *p =3D ((struct seq_file *)file->private_data)->=
+private;
+>  	struct net *net;
+> =20
+> -	WARN_ON_ONCE(state_size < sizeof(*p));
+> +	WARN_ON_ONCE(PDE(inode)->state_size < sizeof(*p));
+> =20
+>  	if (file->f_mode & FMODE_WRITE && !PDE(inode)->write)
+>  		return -EACCES;
+> @@ -51,12 +51,6 @@ static int seq_open_net(struct inode *inode, struct fi=
+le *file)
+>  	net =3D get_proc_net(inode);
+>  	if (!net)
+>  		return -ENXIO;
+> -
+> -	p =3D __seq_open_private(file, PDE(inode)->seq_ops, state_size);
+> -	if (!p) {
+> -		put_net(net);
+> -		return -ENOMEM;
+> -	}
+>  #ifdef CONFIG_NET_NS
+>  	p->net =3D net;
+>  	netns_tracker_alloc(net, &p->ns_tracker, GFP_KERNEL);
 
-[Severity: Medium]
-Should the condition in wait_var_event() use atomic_read_acquire(&de->in_us=
-e)
-instead of atomic_read(&de->in_use)?
+[Severity: Low]
+When CONFIG_NET_NS is disabled, does initializing p unconditionally in
+seq_open_net() trigger a -Wunused-but-set-variable warning?
 
-When remove_proc_entry(), remove_proc_subtree(), or proc_remove() calls
-proc_entry_rundown(de) while another CPU is executing an in-flight proc
-callback, atomic_add_return(BIAS, &de->in_use) returns a value not equal to
-BIAS. If that callback finishes and executes atomic_dec_return(&pde->in_use)
-in unuse_pde() before proc_entry_rundown() evaluates the wait condition,
-wait_var_event() takes its initial fast path:
-
-include/linux/wait_bit.h:
-#define wait_var_event(var, condition)					\
-do {									\
-	might_sleep();							\
-	if (condition)							\
-		break;							\
-	__wait_var_event(var, condition);				\
-} while (0)
-
-Because atomic_read() is relaxed, breaking out on the initial check neither
-takes the waitqueue lock nor issues an acquire barrier. On weakly-ordered
-architectures, memory accesses performed after proc_entry_rundown() (such as
-freeing or reading private data after remove_proc_entry() returns, especial=
-ly
-once the subsequent patch in this series skips pde_unload_lock when
-!de->open) could be reordered before memory accesses made by the proc
-callback prior to unuse_pde().
-
-Previously, complete() and wait_for_completion() unconditionally provided
-release-acquire ordering via the completion waitqueue lock, and the
-documentation for wait_var_event() notes that the condition should use
-smp_load_acquire() or a similarly ordered access so memory changes made
-before the condition became true are visible after the wait completes.
+Previously, p was assigned via __seq_open_private() and checked with if (!p)
+outside the #ifdef CONFIG_NET_NS block. With that check removed, the only
+remaining reference outside #ifdef CONFIG_NET_NS is sizeof(*p) in
+WARN_ON_ONCE(), which is an unevaluated context and does not read the value=
+ of
+p.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261104-work-procf=
-s-core-v2-0-76ace653a773@kernel.org?part=3D4
+s-core-v2-0-76ace653a773@kernel.org?part=3D8
 
