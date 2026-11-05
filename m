@@ -1,132 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF96606D812
-	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 21:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB00606A328
+	for <linux-mm@archiver.kernel.org>; Thu,  5 Nov 2026 22:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=l5bjvXjI
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=jXVSObUF
 Received: by kanga.kvack.org (Postfix)
-	id CD9F26B05B1; Thu,  5 Nov 2026 16:53:19 -0500 (EST)
+	id 52FC46B05B0; Thu,  5 Nov 2026 17:09:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB09F6B05B2; Thu,  5 Nov 2026 16:53:19 -0500 (EST)
+	id 4E1F86B05B1; Thu,  5 Nov 2026 17:09:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9FC96B05B3; Thu,  5 Nov 2026 16:53:19 -0500 (EST)
+	id 3CFBB6B05B2; Thu,  5 Nov 2026 17:09:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 881486B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 16:53:19 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DC49EC0C30
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:53:18 +0000 (UTC)
-X-FDA: 85402416876.01.3B8C3EB
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 01A6340005
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:53:16 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=l5bjvXjI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 103A06B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 17:09:31 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9C29C80C1C
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:09:30 +0000 (UTC)
+X-FDA: 85402457700.06.751C1AE
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf02.hostedemail.com (Postfix) with ESMTP id B1B7C8000B
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:09:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=jXVSObUF;
+	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793916568;
+	b=RFHP7nU9ihdgU5jJdfdIA4UqWqcKj5K4Ii2RZjGz2/c7vMlAP87OErqQ73umI+5qSUz1NN
+	GQE1tt1LnxBozIwsEg++TgPx8OrirmRLvy+Ct0UCf/FdcM4AjtUQ8T926OK4fPeLIFb4L5
+	O35PWbtsJN3/gXiXw5VE70iMIQsV0yw=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=jXVSObUF;
+	spf=pass (imf02.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793915597;
+	s=arc-20220608; t=1793916568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ydingrYB6uW4rebn/QPgfSs9E1VGseZYnprZrlSzIHI=;
-	b=0nUBoNUYO7rs2V6VM1xCHim2S8B6iXegR4Ab08Si0hHxx7E9J5low2LwHOKTLQSzFpQi6d
-	U0hlVz+62TQ1eiZKvHx9IQT2yqolq6Htz3Mexsl/6GHh0+PHsKDAcx3fndBB8RkjjegTcq
-	59yOKzEMzvGfyz6HWxrFiCqDcA0Nzuw=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=l5bjvXjI;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793915597;
-	b=hMFebnyoZZ7gX1lhc67P7Mu2NFGkdX6ndx3N1ASZtvLjGPjpqVJz0ow63L4C8B7sdDhXQS
-	LAevRNRD0y1uBPF5uDbT0SZHcQwqasvYsGRwaia/2skJ4zvwGDtnFHjuiZvEt5vyaALn64
-	V1lJSqre0oFfG/QceveQ2jDuqIDAahE=
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a210470b49so52705e9.2
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 13:53:16 -0800 (PST)
+	bh=q/I6mqklwR3W3ZG0TlgIFqv/lt7q8A458PettktwdYM=;
+	b=nnGXa/3B6zg3bpU05TjvO9gKY60T4DGFFBS67RfEjLGqcbhqQ6POX88hl2ZATarzOQdEbu
+	OIfEgm/gWzmASfZdZK2FL4UWEQcsJlsvSNQf85nSpnt/jILHuqr1hmzc75jmNASP599wBv
+	B8fKxSNfOvEZYzmUowvgkDI9mrMcH6k=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-48e09aa5264so22308f8f.2
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 14:09:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793915596; x=1794520396; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793916567; x=1794521367; darn=kvack.org;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=ydingrYB6uW4rebn/QPgfSs9E1VGseZYnprZrlSzIHI=;
-        b=l5bjvXjIaofjvOyh4kK27amuDa2Q6zsI4GzkFh6ybxbLpzVGyaFpbnpjIWRRef+ZFg
-         hlcjn2EA9Mtrpy6kKfb9eb9rI5tbwDYUIf17mSZylBJ/ZXHCWTRiSWawvDZqj5Lyz3gR
-         qBSPjjI3xKkzMkiYIse6dXPqWHREODj2FrIZrBJeTO1uGXdRhf8dt/UU2yhNuTQg/e0y
-         /G6Jud3BIa9Ma6jLTLseceIzQp9niUmE+zvYzAEm60ovBK4jQvEiExGM98XDjsJ33ZnP
-         qr9kjTgg/gdM0Gpkv82lKav/G+bdxIgzMYtrbfLHYiYwqzp2EsDReRh6eqFL5nlXNCC+
-         ntFA==
+        bh=q/I6mqklwR3W3ZG0TlgIFqv/lt7q8A458PettktwdYM=;
+        b=jXVSObUF5lXTcMiZPlmvEowZUUClNgY2gt7n5hj7tyIyovb5abLT7ef1vk8lD5qRfl
+         b1u6ApOHazmuYrY7qzPnS+0LU24CMYs92lwz3fEen9UPsxjZpjC3SuoRNwft/ZOEEBb7
+         49inu3uplHmCMq8GuAtfbhnAAiLT6ofJs9ZU8FHeJsCCN8UA4FtaCIBv7kHZMiLkV1NI
+         k3o3SEzlEaXj0of4INnd61ogTTzRyrCcyigRvyXU/SdGgdKkzddG5fl5iKe9RTxj/+Jp
+         iKxbVIzF+uLcfXtgVX0QiOaD1s+aydFqeNZhFx5wt+6zH81wFwNdfVfviOOG42Kb2P7u
+         7RNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793915596; x=1794520396;
+        d=1e100.net; s=20260707; t=1793916567; x=1794521367;
         h=content-transfer-encoding:content-type:in-reply-to:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ydingrYB6uW4rebn/QPgfSs9E1VGseZYnprZrlSzIHI=;
-        b=IP7bLFxg50oxnt15pXkIVE29yE5c+7xGeJoIQ5M2w7oej7/bYO8ZeOaD0m05SFoWLb
-         uF/lL333EuCB88uSb7i3NoTZ+OvVm/xediB/MNQrGfDMZPsbLsWtNK+Mijr+DTBFM0RK
-         AdPRZtpOFsj1vIjXDGNjGSG7W3qEHzGjTGd1QCfyIFxxJNvvzVRENSARWbv2J8RFftIw
-         VlBvXVB/CJcjsyjGalriJqbqFCEu1FVu8+w3f35uHjHgUIRyuuGbxmoRy51Ph+7xmZfI
-         iFTebeheQDDMSFJJz7BmN8k1HfnWXXFCiongkyTfUKd0fXcqg4kbkNFszNpFQ6opzTOp
-         lGfA==
-X-Gm-Message-State: APuU4Z/OyaXtvvI10Xv8nbZZvUTe1dfOlKv5ZBpgA2eYkAAltSQpQGoa
-	HNsksj09IKiZp0Rx9Sa1x8GyFGHmv1hkvdaNN3gLXlFDkQ+x32L1U1Hh
-X-Gm-Gg: AYBFou2UP/7UHFXoK19OK5SN68E8ehq/neg1et/87tbZYHOg2hu145UCFjo5NWODxwC
-	PrYMx0DPZHRgWUR8nmvYpHYm8xe0vpmRQBj/S6tL8Jy1vLAADDd0dZc5HhS/ZywrqCKDA7/C96k
-	8iBqbBIQ/RCEhDfWuMDGujzZRpen/If9upQlDjo85M2aAjXyIpjZIwhaJy7Dre+vXOc8+0zcHsf
-	56om/kkDlgC/rfaiDTwKuXO+sm0/OlnpSVkufAtNKeW3Sw3ejENK3FlQQZzIpNj6B/UMoSNQ6bU
-	xMyPSjrKX7+/EmnJZP2y4/wY0LSYs8MxsWwHUiGcqGYJWXllhFBDZkyZUVOQusiNW0QqBEeC4Zg
-	oRRxPq56Wsow7Q3Nk3lpsplvSm4/0RcrzLk+PxGOl64Nj9Q/T03BzTQ4Bsz7/vArSF2r4JtKNT3
-	YM+ig4khWpW5dzkqtTWyslsd0nnsRHGO8f0klkjEESe8YEv4Rp2hFJMn76kF1b9vZKLlZf9qw05
-	O5IeK5rTmoZCovHG6F6kGJ0i9/JQpXF60poa8BvvKQEQ62y4bRdteb2tGkxew+mekcxVJEVytRO
-	OjO1V8AUR/5JQIIvJqG0LEfi
-X-Received: by 2002:a05:600c:6992:b0:4a3:59c9:a754 with SMTP id 5b1f17b1804b1-4b6df11da05mr6193785e9.22.1793915595572;
-        Thu, 05 Nov 2026 13:53:15 -0800 (PST)
+        bh=q/I6mqklwR3W3ZG0TlgIFqv/lt7q8A458PettktwdYM=;
+        b=e0LLRsgEOuXXM+u2DeT9s8gRIZRxvi8jrr3159DBgltHhAfoTRvjY3G53skwxszmJA
+         aVgL9DAOQ2ft0ZaQbAMBtTPWYoQfSzsjMDLyJo49F35ruolKql8mEWBLTm3y4DCzVVLQ
+         d5OVtuwlMM1VtXtxIB6UZf77HFNG7kEw4WKj5JVwODYeJEpVnSK/oP9xNmjPohp3bHKQ
+         I5c5pUx4XtpwgTIArq0SujikmVD3+aoVS5IKkmbhAOaqCFY7f4GhVP+9M7ZiR03KkAN2
+         Q02uSGpdss+wzFzQIld/jCegZ05+q3W823cp90/Y1ipM2K5y4w9wFzjOl7Ul5Jm7Q36J
+         zCBw==
+X-Forwarded-Encrypted: i=1; AKwUvBxwE3rfqravRAn6b2s34lSNMyoG3aTNg2K9cDGxQgzwtMn9qp33jSNOjZZS0KSohzH7AYHOwzlOoQ==@kvack.org
+X-Gm-Message-State: APuU4Z8DLxCG8gNCZqXGcUDPeauGWU2R3oXjaxtxJF7xYymAdzhrTB0W
+	It2BrEJ4jiYWUO+ydsfc/BfpIaplXtY1Osd04AVvXkpSWqT0iQ9kJq6Z
+X-Gm-Gg: AYBFou0GbhASAfT05vdw4zhbk0m1r3hwqyA1AGCm+wWLOIqstLshucJ1qOU/Ss9dzyO
+	tUBY/fS9IZnu3IMjGrR1bNz2GHpErsAskQudUDPrPQbmvAyZfmA1lnP2Hcacra2SmwDytAhEZTk
+	O2Gwc8bUDhVDhY+dPQsrHorUv6uJiPjeytMjoCQymC+wMRmO6MjqUz3WnIGK5vRw9W0/MbrkNWC
+	m8WRpiE4x0OH0DReD/zJ7LE/hOFqbu4tJi2mE2yghpFZOGz659KAbikuYbIJnIgm9T3tRI+tjPE
+	gNTLUHPQFnwrULgIUERCPGMfTF6R+TUEC1Vx5D/GPEMcUuxlGo5YSs1yPXY4dkoVlnOPTKFfVEV
+	7bajkQiIypmT7G2W6+UZsMH6T3hUiuJ2zcbHRxC9X7koz3wWdK0XkgdHStw+ZZSTIUisx8pjQlr
+	FEER6nvqYklhnN2CdRMiMFsLYRGl+F1P+APkNZ3b23mXF6Y6kphTZy+n9czT15r2x9gve4oH4+i
+	YMMw4sTxv5FstKyMNxyuIx+sXgkY8hxAPvDL7k+laGpicDhPxxWRPe0pjw0jV9FyHw0wI3O+HMd
+	4NVy8Kc3cBUuI1P8JHwitnU=
+X-Received: by 2002:a05:6000:46cc:b0:48d:f6d2:9c88 with SMTP id ffacd0b85a97d-492784553b2mr1033560f8f.47.1793916567243;
+        Thu, 05 Nov 2026 14:09:27 -0800 (PST)
 Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b6ed5b8159sm5295235e9.2.2026.11.05.13.53.14
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-48fec8d8e29sm12845499f8f.19.2026.11.05.14.09.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 13:53:15 -0800 (PST)
-Message-ID: <551892bd-d7ca-4c79-9c7b-9d3d08c913e4@gmail.com>
-Date: Thu, 5 Nov 2026 22:53:13 +0100
+        Thu, 05 Nov 2026 14:09:26 -0800 (PST)
+Message-ID: <9e98a961-fb45-4e61-a08b-d8d7f8e9894b@gmail.com>
+Date: Thu, 5 Nov 2026 23:09:24 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm/khugepaged: release contended mmap read lock
- after scanning enough VMAs
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261105-khugepaged-latency-fix-v2-0-4384bbfe4606@kernel.org>
- <20261105-khugepaged-latency-fix-v2-3-4384bbfe4606@kernel.org>
+Subject: Re: [PATCH v2] x86/mm: Remove the zapped-entry checks
+To: Kiryl Shutsemau <kirill@shutemov.name>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
+ <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Peter Xu <peterx@redhat.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Andrew Donnellan <andrew+kernel@donnellan.id.au>,
+ Rohan McLure <rmclure@linux.ibm.com>, Tejun Heo <tj@kernel.org>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <20261105120322.3319301-1-kirill@shutemov.name>
 Content-Language: en-US
 From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261105-khugepaged-latency-fix-v2-3-4384bbfe4606@kernel.org>
+In-Reply-To: <20261105120322.3319301-1-kirill@shutemov.name>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 01A6340005
-X-Stat-Signature: 3uifddxgoemcdnzepn3zeeiedajtosie
-X-Rspam-User: 
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793915596-920886
-X-HE-Meta: U2FsdGVkX18+Ozg2QIpC/4NKqlnp3hw4FL9hLgbTpbYK2E/npYTODhynsmHyMIyC24UGH4dtv0lRca0poI0bbkBQlI8/UJn8iPOwT2vXV0sCsqJWPVFm14WEDaWwsSKOF6S6K2OKGIsIHuG8odhkpad3xCleCz7dPLqDYd8oIGaS137n+P3bI9Aw85Pzs68tgDqEYRdIy1NHjfYT+lFjT1DMr2/4rnZNsrkqfA33+iUADYwSZOy/7DfY3FoQjXhxj8TDAiaf5Ap3Lt3TKbrERTFS9ekdlfxSb7w29rgwk14iSrvnElwE1179TvgP7d9jhIH0RgtooY+3lM5ovRp053WPjNg9jl+dCuwBkgXwO0IfF8649kRDAkEnLirPM16LRUe90palBbSUhYV82iqDnkvUF0QzywqkkEHmJUsW60xk8GfQCna+LJU858XmsPfmv3JeH9P5ZwyZs4LkBbvlDL0zLwVXkgOs4FVmCkdrcmJatVazFTkGryoWMFs1k4Yx+gNM5ulyEMFC8AdzpHP1lxYHe8ze7slGVD6/hE0fSMTMyml8V1BLnFvIGcA0oSdFb4NI5J/yvL4soAxs0KH2Ia1DgoNmiBuXSb9LdXNCvRSDSqLvUhfsFucPQ8LVhSjaxRob+hUDcDpFUJMdrAUqlNN/c5Z1/MoS5UdOTDINwY2oHJPcWnUpSiqXIFktzZnL87iWkZVLjEgeWCIwIf7ReOswhZo25GlSgZCnHOR4SeYbgcyC3WL7Yd0fegEh9W04Cx0SEHM6Y9ySV5ALIoFn3TSEl38qUjydPi9/gwfwYbIFcSvnqkJYYwl9FmGksudCqIbToPgEXdKPGBoLcMtOIpouKw85V1FWdrNOAEqa5MvWDyrL2NmjsfAsDLm1THEfGWzAHt4/krO+ebOwYYhW+X7GshGLJdyOxD90cBxNb/BGBd8eOwA/3IVufAKT/1rTJf2pFGXocgTzONz6AG1
- ls65kvGp
- 7Jvs/vNvrx3RCmLDwm91rJKCPQ7gtW2KRO23CNkEyz6S6RNMVmnl+SVZV9mgp0FRdfRIObQflAt7xAO7TD+lBpKmcuBJdFCfPGNnUS5+vYZrPZwbehvIPHH65CoxrgVskvGy4xX6iNvrjcfJwPYThL2567Yv0Mx2daihfE/aFtV7b8Pgn4X/KmMsWQsrt79XYJP2mq/791Y37nQ/BpViguEN3Oc8vaIaTtgQ8/OIU26hSuAt3UxwIZSNCoiSbWO6z8AOr1bTluFXwSM3jO4QSGLbc4r0DMZAZP3TdLHITVEg5Lq1sOUyXqTNhRofpv63pb7pm4GDJlTyosVnSN7ZewpUhiMzEnDXlSCmUUgZrvVj9LgxPbXhM8S9nhqL2YIrq44hhtTKBYeapBbaiTbPQyyzugpm/ZNhGT/PbCYVzagw0Ez+h++xC57uNgRwjDOkKeFpB3E+7TjYTvl7JsCXdSsQZGg==
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: B1B7C8000B
+X-Stat-Signature: 8wuzuhazgkn5g7acffggjfx9fcfpszfa
+X-Rspam-User: 
+X-HE-Tag: 1793916568-189100
+X-HE-Meta: U2FsdGVkX1/zrte99drsV2M8sRZIWA3Wunf4D+V340gsMA6IbiSxdVKv94UB9VrQ3m2zlU2M41R53QmOz3AsgKs3/VoGweuFHwc5UtZIRXYJwAM2bYD0LvEFbzHrre6YKgYcuHfi9rypWsEgrnemeyHUOXTV2m8+kknfhUGougFzVeKEJCojiw1EgdjrAC0vOHLHjU6XM9zGqSe8Y0kgrY5KWw7w8OUfPqTjiafUcDTa3LJeU7YOFbM1XFBxTD9rwBvlN0I3fPBiGbUWHYxFmTHvtFHqUzTj/4b+91cDKLBmE7T2W0XLy/xAkslz+mGE1KKHkO+b/X8Yn7tGQ/P2ZKvUuwXORkdjP66T73SIlCJ3A63grqS+Y3BDeTIUQnev0iG8dL+ErkBIbOgTn0N6we2prXmjpzWWhdO6A4sVNjtwmiGkG9+40xKS/ukjT4LOrZsIf2bmU3TPTc+hfBq5XXjQ+VoFbGu8C72xrauq7d+yBQqKcRy24uJBScsCf9y7eF3qx82ToIUk0nPkyGHISH2DI7HmFY34jULLQW+2JiiAAXH/VGWeUEn5njrvGC614tACeMGbfEMkyAo0HtW8WZvIrR+lQX6kEZSw6hn/E3nX49cPri4RFrrjVR+9nmg0lBvgUTIK7BF+imC+/doA3Er4I7+gxuvb8rZYqTb/7nycXCR2TeNix7r/dveK5/b7wzRnr00FXctcyGDPH0virAfes+alADHirfdiAdRTuZRVhhmYYI4NVlHcLn6tm5EvbKLFggdUNgVTt6C38EEEVSa8L2oSgHWtMsaYD3J264Q+e/2q6X9A0iHeuAmR9kYHaYJHJ2i51Ya8+mEPw3VBVooOf637lAdMk6rExN2wm+1V6GLkRNNk5WSq9S34h2AIIsAr/1/wnl0zQ4v24Y1911BP8QuSNdMMnO1svxhFJNCOYA8iYGk9I0GLlZmhOZy5WYvq4gnQdKS43TEbTyi
+ yb1pmfS7
+ 1a4d9HAoNG5APyAvarRlBXuPlMy0azAPcZqOuIxDf2WMek0JAnv3FqQFp0E6YqMLTW+7xc7T5ht7RPkM/tCx4BHD1YA7yoFpVLvAVSPvUySW2bPB0Xwc2V1ui6YxxkQFiTHHYXDvuFa9wsglUWAff+unwrPduAfesJhAjzOr7P5J6Y76T3lcIIdcll4RUC8FPIpj+KrcK6rBpc4OTonhCUSTk9CrcYpjFMsY5GG8yQRMrOZ/zNWt3+bHHsMy5GnhMO+v0ALvd1fBrTBTlbNk1P5n+BqG90k3YpXz3AKSg6UZw/1j1JOsS5Sb9PzEiqkAWyrY0NNr8qXqGIEVmUx+c4Bxta+HW26kIoKOGp/5nquzNA8bRMTUrXZ6f61yZDlCJZy82ZZS5duy+XnPIwCSYtjfFNTix3Pi2yzEf70/KuX7+uAtCuD1nvY1Mt1lufltfnfKqSRXzRPabhlNELhgbd75wCf7dwBbEFE1CZ1SZoevxYRT7QTkIRb4b7wPHscoMgAKEw3yJmwlOm+GvI8VDkgq2JyrFfu1sK0/cfNTiB3p9FuM1R6ju8sAd5ApBzuI5Gn9TUggOY21u0Ba1qzJa5Az96XTNg5r92u3s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,96 +147,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 9:57 PM, Lorenzo Stoakes (ARM) wrote:
-> khugepaged walks an mm's VMAs under the mmap read lock in
-> collapse_scan_mm_slot(), checking for ineligible VMAs first, and skipping
-> them if encountered.
+On 11/5/26 1:03 PM, Kiryl Shutsemau wrote:
+> From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> It charges cc->progress 1 page against the /sys/.../pages_to_scan budget
-> when these are encountered, however only checking this budget once an
-> eligible PMD-spanning VMA is encountered.
+> Zapping a range calls arch_check_zapped_pte() for every batch of PTEs,
+> which is every page for small folios, and arch_check_zapped_pmd() or
+> arch_check_zapped_pud() for every huge leaf. Only x86 implements them, as
+> out-of-line functions that warn about a shadow stack entry (Write=0,
+> Dirty=1) in a VMA without VM_SHADOW_STACK.
 > 
-> It can therefore hold the mmap read lock for a long time if there are a
-> large number of ineligible VMAs present in an mm, over which time no mmap
-> write locks (and thus no VMA write locks) can be acquired.
+> The warning is a VM_WARN_ON_ONCE(), so without CONFIG_DEBUG_VM the
+> functions are empty, but the calls remain. With the SRSO "Safe RET"
+> mitigation the return of every such call mispredicts.
 > 
-> Address this by checking whether the mmap lock is contended after every
-> KHUGEPAGED_MAX_VMA_SCAN_BATCH VMAs walked, that is a quarter of the
-> pages_to_scan budget, and if so dropping and re-acquiring the mmap read
-> lock before resuming the walk from the per-mm cursor.
-> 
-> As the walk is resumed from the cursor rather than the VMA that was current
-> when the lock was dropped, the cursor must never move backwards. A VMA
-> ending at the top of the address space causes ALIGN() to wrap the cursor to
-> zero, so treat such a VMA as the last in the mm rather than skipping past
-> it.
-> 
-> This was tested locally with ~1M ineligible VMAs mapped ahead of a
-> collapsible region of memory, and resulted in a reduced mmap_lock hold time
-> of 170us down from 95ms.
-> 
-> This was also observed to reduce mmap_lock stalls in concurrent threads of
-> a similar duration. Note that a reader re-acquiring the lock can currently
-> steal it from a writer that is queued but not yet running, so the full
-> benefit to writers depends on the separate rwsem change at [0].
-> 
-> Local measurements indicated no change for ordinary use cases, so this is
-> all upside.
-> 
-> This work came out of investigations into mmap stalls when getting latency
-> numbers for an unrelated patch series.
-> 
-> [0]: https://lore.kernel.org/all/20261105-rwsem-dont-steal-from-queued-writer-v1-1-275e070f426f@kernel.org/
-> 
-> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> ---
->  mm/khugepaged.c | 31 +++++++++++++++++++++++++++++--
->  1 file changed, 29 insertions(+), 2 deletions(-)
-> 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 216c4b8d28c4..eaa01dae5a03 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -66,6 +66,12 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
->  
->  static struct kmem_cache *mm_slot_cache __ro_after_init;
->  
-> +/*
-> + * The number of VMAs to walk before checking for, and relieving, mmap lock
-> + * contention, as a function of the pages_to_scan budget.
-> + */
-> +#define KHUGEPAGED_MAX_VMA_SCAN_BATCH(pages_to_scan) ((pages_to_scan) / 4)
-> +
->  /**
->   * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
->   * @slot: hash lookup from mm to mm_slot
-> @@ -2910,6 +2916,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
->  	struct mm_struct *mm;
->  	struct vm_area_struct *vma;
->  	unsigned int progress_prev = cc->progress;
-> +	unsigned int nr_vmas_batch = 0;
->  
->  	lockdep_assert_held(&khugepaged_mm_lock);
->  	*result = SCAN_FAIL;
-> @@ -2942,15 +2949,35 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
->  	for_each_vma(vmi, vma) {
->  		unsigned long hstart, hend;
->  
-> +		/* Relieve mmap lock contention after walking a batch of VMAs. */
-> +		if (nr_vmas_batch++ >= KHUGEPAGED_MAX_VMA_SCAN_BATCH(progress_max)) {
-> +			nr_vmas_batch = 0;
-> +			if (mmap_lock_is_contended(mm)) {
-> +				mmap_read_unlock(mm);
-> +				cond_resched();
-> +				mmap_read_lock(mm);
-> +				vma_iter_set(&vmi, mm_slot->address);
-> +				continue;
-> +			}
-> +		}
-> +
+> The x86 helpers already keep such entries out of other VMAs.
+> pte_wrprotect(), pte_mkdirty(), pte_modify() and their PMD versions go
+> through SavedDirty, and only pte_mkwrite() and pmd_mkwrite() on a
+> VM_SHADOW_STACK VMA create the combination.
 
-with pages_to_scan below 4 the batch is 0, so under constant contention
-we keep dropping the lock at the cursor and never scan anything, don't we?
+makes sense to me.
+
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 
 -- 
 cheers,
