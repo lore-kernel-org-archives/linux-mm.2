@@ -1,101 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8374606A330
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 20:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65F5606A32F
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 20:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YrVHuq3J
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=onx2Fe3/
 Received: by kanga.kvack.org (Postfix)
-	id B5E666B05B2; Fri,  6 Nov 2026 15:09:28 -0500 (EST)
+	id DA9B56B05B0; Fri,  6 Nov 2026 15:31:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE7A26B05B3; Fri,  6 Nov 2026 15:09:28 -0500 (EST)
+	id D5AFA6B05B1; Fri,  6 Nov 2026 15:31:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98AF66B05B4; Fri,  6 Nov 2026 15:09:28 -0500 (EST)
+	id C48F56B05B2; Fri,  6 Nov 2026 15:31:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5ACA26B05B2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:09:28 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 824621601ED
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:09:27 +0000 (UTC)
-X-FDA: 85405783974.10.8A9A7CB
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 895E76B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:31:52 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F2255140155
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:31:51 +0000 (UTC)
+X-FDA: 85405840422.08.64F7E40
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AD1AF1C0008
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:09:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YrVHuq3J;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 2655B40008
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:31:49 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="onx2Fe3/";
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793995765;
+	s=arc-20220608; t=1793997110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QYKpj50QcPFYT5hlR28ZO7Qz7JK2NgENQ8jSUlp2pWU=;
-	b=wLlgv6PQBBUpeAFxbS/e4HDlDRUxrWbM6RXzssz9Lnhnyy7TYopM/59rv0d9zJYamF8EPj
-	wXgbyRs3d6Sa5KXnP08euhVSsFFkBDNTDwZ7Zjn+QCMDifaMjXoijrvlP7Q1Di2xJWVBNq
-	NHB5I4NID/0NWs8UOgBUO6xpZMEEP1c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793995765;
-	b=IoDki4dsiAZ+ehJgK/a6TYo+vB6VbOi0FFQn5W857RudGpgjotXZ/N+kYGqoFRFQ2h8MrJ
-	V+mos3T1u/bOCQyslTOmocdtNlTYAaikpcekFtgwFQYOkQtsBrNp2gl5Rr72x9tvJQfOjk
-	Gm2xC/vNoUyVLSaqVDY9Nilzn1l9b6A=
+	bh=Xq9yFMohso02mTNk00VqD923K83qztQ5KJV4mLYhzhs=;
+	b=7AYWJZHFZDPn+x4gx3CH1TDilmjQJExFWdTLancSPrKdPE2fUf8sbMR6sBnLTdFMlE4QBs
+	hpj6yoaubUojoKjtLorGDIJoq/iLfnd9sQXFhUv2/Hb3MoIJ5x23d+HY4KcY6tZGPDRDay
+	t+f26nqUmp/y5tt5fBHHB6QkB4MudhY=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YrVHuq3J;
-	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="onx2Fe3/";
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793997110;
+	b=52uLPOXaLhTIW8Y00aU76EmvhxLxVeJLXEFKsUF6UMjQw0Bcnm4hFmF1hnvaKUczoS2OEv
+	0bL1YI4hc7B2YQr6ng6rx8nWdhaC0SMjU3iOq+dRSJIYq/i2ydNCyK+LtNn/52oZ4uROgf
+	ttLbVe48f7T8fN4o9kPr++0aAjOb2fs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8E01D42B6A;
-	Fri,  6 Nov 2026 20:09:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA0E1F0089F;
-	Fri,  6 Nov 2026 20:09:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A7A940877;
+	Fri,  6 Nov 2026 20:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D371F0089F;
+	Fri,  6 Nov 2026 20:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793995764;
-	bh=QYKpj50QcPFYT5hlR28ZO7Qz7JK2NgENQ8jSUlp2pWU=;
+	s=k20260515; t=1793997109;
+	bh=Xq9yFMohso02mTNk00VqD923K83qztQ5KJV4mLYhzhs=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YrVHuq3JuRIEd7tjBfUeT/Qk0DuNfXl4YVMThJcT80ptmZzANGzEFsALP5sxZlfys
-	 ZABuxRNId9i2ezwIzNGhupGpPTeG/+Ua0IrtHAZyldbRgEphdzF0p3FPQ7z2zoF1kn
-	 nnpyFnX40vBIUYmViW8+50dWaKQ2zK/tAClXS4kmgJtUsTS0KOxjpN86eOoHQVGSep
-	 mHAXwv6xOdHMx1KYuOPXddB6d1cGWA8dfX7t2r/bAOguAP/l+m6+jUWmmCYirJz51i
-	 p+FWCDRFD6IkmQ3s3PTHPzmFC44LSnKdiFht+QMqWssMW7YWrzR8NFKdbo6HzPrjQq
-	 e3DYi6gFzU+wg==
-Message-ID: <23f947e2-ff06-426d-adb7-396871304736@kernel.org>
-Date: Fri, 6 Nov 2026 21:09:10 +0100
+	b=onx2Fe3/b1WKTp5swB/L4MGSd/EdFj14Ek4ih88s3c7F4zetFTEb2NfAHCtEW8l4+
+	 gzSUGvEr/M5n6ncDMjAF6g6AqZRfsfhSKOoUgTbhchFlv7Ib0YOn72yNSwIPtXyLzB
+	 UCm+IunXjY++n+yHh+c9ZRWwJVKniDegMUI/M7iMFggg55ROyyoI/3vV5jXW6INm4R
+	 QbnaVKskXdhf6VPOFNtybnIBJTtIWcfupuKoStKXWFmPOpnKOGn7JGKgIR3AB1j/ac
+	 IVa2CBSTN+KkIYa55J/Nv0weCJXbd10CjTrzjNbuBnWtz5TWeO07Zh6/ORnAhSseGb
+	 OexmN4msddMzQ==
+Message-ID: <238194a3-6a68-4508-adcc-d6e52004d3aa@kernel.org>
+Date: Fri, 6 Nov 2026 21:31:43 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] mm: limit pagecache folio refcount when splicing into
- pipes
+Subject: Re: [PATCH 0/5] mm: limit pagecache folio refcount
 To: Josef Bacik <josef@toxicpanda.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard
- <jhubbard@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- iommu@lists.linux.dev, stable@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Chris Mason
+ <mason@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, iommu@lists.linux.dev
 References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
- <20261105-refcount_overflow_stable-v1-2-70b9c655da3e@kernel.org>
- <n3l2cnx6d25jovloqyoxiz566mh62janclmiewjvumtmqfezo7@zmsmco5vvssn>
+ <2ab3b9da1c31ecfb5880542efa6508c8.josef@toxicpanda.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -142,22 +122,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <n3l2cnx6d25jovloqyoxiz566mh62janclmiewjvumtmqfezo7@zmsmco5vvssn>
+In-Reply-To: <2ab3b9da1c31ecfb5880542efa6508c8.josef@toxicpanda.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: pbfgtkqafe5mrntt3unoujjx888n5b1f
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: AD1AF1C0008
+X-Stat-Signature: 6b933waip4ioes5j5ajg399bx5u1q77t
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793995765-345933
-X-HE-Meta: U2FsdGVkX1/dLcXNnV4JUPHlgxIIs9hUfeK7scirHeV1EHIbLBehQPVQjHJ8P/GeNiUNadVuuBY60EU7RR49JQGwvo5ofczC+/a7TnPPhGZgHpKOg9K82VfiKQV0ZBWv097QRaThqWfs2xD7TzIhj6ewaMCjoqIfyv+ZDqQjmt4AsJJz677sLffQYvnLcymTKu2ZL1N+ixiDwn0OTzsxn7ysB/qWx5w3VP3y53tnuJYQL3ZEfpzoa5nQGxvthR/doycq4DyRBofYMpQokUbHECkgGEYURP3Avwa6HLgSLBACfl0XcojTIL4mnxsbrcOgeM8ND5jOCT0cfOG88olNDd4xbWw7VQRPYozxsU77NtoUt5YTHMD404JK3LuoKLJrmMqVC9fLsISYjYt3WTNo1NTZy9hZGm9s875AIx0j6AJiyAOBSSTzAtN0qP5RD4Hptnsm7CWIZrXFtxaErWRn2QHLU8dpkm7kdSod1klCfdWnoHABC1p/YaW3FkLu9Gzj+/pXUc1o5L7uNOemewehHzI56jL3td1dtJP68XC3McJvNbz4PfBEyawvKNIn+IgsogYhkKlrLybxKG3UYsRWGsJmcNVHRLIjZF4MXNF+sB3mdQTHnzUSHcm3Lx/xfZNpCXgBmvQuAQTt0/3B2LsYEEx5aVcx7svdUkRue8AAvngjY7vq9QShxKvVCVBLsJgwkj/B32EtO0+WVrtBS0uX9uPbJTBksMN4jatgU3GlS/VdiP3+a3S/krIw17Op2ncG5noKnUkoURl7TqJy2vVb4kcrqiXKRXRdsfj5ekPvVXkHEW8SUJgYoB5hEiGC+8h2/KYlXubKuAhrkL6Pdl0MSLw+VSVDImR64iKdeoFrzXgfec6fp8pM1mH+EpO2Nh69/xAQJizXRkCQEV/LMqThkYIp3wMdMEdHTIAqMlOGG1gMbISy58VzgiUTD7NUPXU8BtC2z6TOmX966rGYMyf
- /FVsUfPd
- JhpsEeI+hcWVkIVGhOY+Gq5/tcsDquw1OxUSRBd5FroDDosJRTyY59rjBRizaOV4nKGpBNCH/DRHhbcUZvO78Btp/gF9ySB6FOH5fFoInTC3QdzyQFmMSwdXpWYdbXWqlRdOo/6t9k5+etc5u27JoNZSJpXtNhgczJ0JliomkEfkkAmSt0mNui/kGNFzJxIUb3wiT3r2BtukXiz2JMaexkWojgDP6kcR3BDNh2jk5bwsRdh9EWdEL03gS39vhWUJVg6r7x7LyFYl1ttl3ei6o08eHW4/B7VbN4DbN1N2mmwiaIFcudKh9yIdoGP0xvZOGU/yK3kaj39wZbEKmcrciY6c7c27sCTbGo8Ue/w8m7qltaiQ=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 2655B40008
+X-HE-Tag: 1793997109-523302
+X-HE-Meta: U2FsdGVkX1+i/8VEJayiYuya7Drhe4cSYFyxGjxTNQxKNBMWV7ciLcHpEBqB0mIFDYCtXaQEOdOpRn5NehPMycM9nMTK2e6rPnNGCwaPHQ7C8hW8oKkhltzH8eAIPENtGSwzVCBOVBbBKLNN7zaD//OG8Cm7aLJJ8Z/LWqZGAF4pLJ2+ZiH+faw94sWxJ9CR9lsxPkiSydXM8nVblS2OL0e1oRbGuYGJedl3N3AQ/ePWfWQ5xXAyo27/yR7UzO8l2XKSne00heQfCFFFpxm3qnxAx1Q9QpLfZMgeNa/hnC6LJMgbxHiagwj3FZwIcf5iR5U6dBWYyFTJBtIuzHcM8FoHkdrQzkUGqj8N5zhV1fBFV49yWYjOdIVYnPKytAVu9NJIcQNSoZDsRKIcvzF+mLGaQe/w/fzqR63m4Kz4Kh+XfjvvwStXId+vcTqs7Cxl0tb1GUIuWx4JXyUmHUNuaJdtRNZ7dfKqS2wcVRG6B9cwiI4+74wGbXqdfg7kzz7RHWTuyopCIECgGzLIq6aBjcGzJbyT+LyQL94DIu7dKngSvp+wbd1U7X87rjww75IjOx5YdFdsmR0RBWaA/EWeARJSUhtlNxGBXvWCWAyyLpmWZLl7TVZmcXJRuPPiG6gIw+7jn3oE/mbrhfhtXuq6hb1hgS1osiMlBtS0JL67YjMgxi3zcQUJROoAxrUdm8UI6PQsY0/HKya300GDpGirMlaHWytmXUqZQd0BjN3t1u6CYpR/L9wtDU0MirSGXB4bZMrbvvVSfsent8XhyitBZHAy9B1sUL56ER76VXOyIJONGY5kowaO7gt6DXcDo8K56Ize1n3YgAoyH0ToUcUQz3UChikiz1oYkD1NnVI8CSpFJ6CNmzEh3IaLN7ckSH/Sv8Jl5WqutMWB85RmrBaJlYJ35XRdi75HnY4e3aPcjN1jh1s0RWYyllvAeWC7rhngdGUvxB4DEWWCHldxwuT
+ 0yNbxEZx
+ 691mwZr35/NFICmwu7I0txU5KY8QrXY1/C47LEv/J+u+s2O/QZJKM4f1jmsPeJkQ0trmg1M4a6hBxdtjOMp+3rKu2fLksgbHxTllFmsvLvyInIQLf3WMxXOv/yWj0K0ZjjD1PvJR4Ua4ta3qIDYVw7txMRExMiKaBG3z+jcPw9fvCHl5MjuuXKQThKn3cvWEfamXdyXhWWbyx4C9bybUqckw8RJkpsl6ThlaXkVvVTHVJ0AxV34TYrCuS7lhCnr7BW2bE
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,52 +145,134 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 18:58, Josef Bacik wrote:
-> On Thu, Nov 05, 2026 at 02:10:11PM +0100, David Hildenbrand (Arm) wrote:
->> Similar to mapping pagecache folios into page tables, let's reject splicing
->> folios into a pipe if the refcount is at it's limit, similar to how we
->> handle it during GUP.
->>
->> This will prevent more cases of possible folio refcount overflows with
->> large pagecache folios.
->>
->> Let's keep it simple and check in the two callers of
->> splice_folio_into_pipe().
->>
->> Also check in try_get_page() to cover pipe-buffer duplication by tee()
->> and partial pipe-to-pipe splicing.
->>
->> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
->> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
->> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->>  include/linux/mm.h | 9 ++++++---
->>  mm/filemap.c       | 4 ++++
->>  mm/shmem.c         | 4 ++++
->>  3 files changed, 14 insertions(+), 3 deletions(-)
->>
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 79ae8fc0d6bb4..a82cfbce18215 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -2287,10 +2287,13 @@ static inline void get_page(struct page *page)
->>  
->>  static inline __must_check bool try_get_page(struct page *page)
->>  {
->> -	page = compound_head(page);
->> -	if (WARN_ON_ONCE(page_ref_count(page) <= 0))
->> +	struct folio *folio = page_folio(page);
->> +
->> +	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
+On 11/6/26 20:49, Josef Bacik wrote:
+> On Thu, Nov 05, 2026 at 02:10:09PM +0100, David Hildenbrand (Arm) wrote:
+>> Users can create a lot of folio references to pagecache folios, making
+>> it possible to overflow the refcount of large folios.
 > 
-> Since you're here anyway can you change this to something other than
-> WARN_ON_ONCE, since that results in an OOPS with panic_on_warn set?
-> Thanks,
+> This is a summary of my Claude review of everything, minus what has
+> already been said on the thread.  The numbers are from a TCG guest with
+> the limits lowered to user 6000 and admin 9000.
 
-If it actually turns negative (or 0) with out changes, we had an overflow and
-for sure want to know about it :)
+Thanks.
+
+> 
+> 1) Small folios, 1/5 and 5/5
+> 
+> On an order-0 folio one FOLL_PIN is worth GUP_PIN_COUNTING_BIAS
+> references, so about 2M pins reach the limit.  That used to make GUP
+> refuse more pins, now it is also SIGBUS on new faults and failing fork
+> and splice for everybody else.  6 io_uring registered buffers on one
+> order-0 shmem page (ref 6146) and another task gets SIGBUS mapping it.
+> Mappings alone can't get a small folio near the limit, so could the
+> mapping and splice sites skip small folios?
+
+Sure, our limit slightly lower, but not as much as we would care for small
+folios? I assume your LLM is confused about the actual limits vs. your fake limits?
+
+> 
+> 2) Migration, 1/5
+> 
+> remove_migration_pte() and remove_migration_pmd() check the limit for
+> whoever migrates, not for the owner of the mapping, and kcompactd always
+> gets the user limit.  With mappings in the admin reserve the next
+> migration drops whatever is over the user limit, in rmap walk order.
+
+Right.
+
+> 
+> At ref 7681, move_pages(MPOL_MF_MOVE_ALL) without CAP_SYS_RESOURCE left
+> 1682 of 7168 PTEs unrestored, including all 512 of an mlock()ed VMA, and
+> touching them again got SIGBUS for all 1682.  Could the restore check
+> against the admin limit only?
+
+An actual admin access would, however, not SIGBUS. Sure, we harm mlock() as well
+but that's just expected.
+
+I don't see why the extra complexity for this temporary solution would be warranted.
+
+> 
+> 3) fork, 1/5
+> 
+> If the VMA is only copied because it has an anon rmap, the pagecache
+> PTEs could be left out to refault in the child, like copy_huge_pmd()
+> does, instead of failing the fork.  Only the VM_COPY_ON_FORK cases need
+> the error.
+
+That could be done indeed, although I am not sure if really relevant in practice.
+
+I'll see if it can easily be done.
+
+> 
+> 4) splice, 2/5
+> 
+> filemap_splice_read() fails where read() still works.  sendfile(), the
+> copy_file_range() fallback and overlayfs copy-up get -ENOMEM, and nfsd
+> turns it into nfserr_jukebox so the client retries for as long as the
+> folio stays at the limit.  Could do_splice_read() fall back to
+> copy_splice_read(), like it does for O_DIRECT and DAX?
+
+Same as the above. This solution here is not going to be the solution we'll have
+upstream soon, so I try to keep it as small as possible.
+
+I'll see if it can easily be done.
+
+> 
+> backing_file_splice_read() runs capable() under ctx->cred.  overlayfs
+> lowers CAP_SYS_RESOURCE there, so root never gets the reserve, and fuse
+> passthrough uses the server's cred, so an unprivileged reader may.
+> 
+> 5) Errors
+> 
+> The one condition comes out as SIGBUS, -ENOMEM, -EFAULT (tee, pipe to
+> pipe, MADV_POPULATE_READ, process_vm_readv), -EIO (/proc/pid/mem),
+> -EOVERFLOW (vm_insert_page) and -EINVAL (memfd_pin_folios,
+> fuse_dev_splice_write).  Nothing is logged or counted, so there is
+> nothing that points at the folio.
+
+Right, again, a temporary solution which we can reasonably backport to stable.
+
+> 
+> 6) khugepaged, 1/5
+> 
+> try_collapse_pte_mapped_thp() clears the PTEs and drops their
+> references, and then do_set_pmd() can refuse, so the mapping is gone
+> although the collapse would have lowered the refcount.
+
+Am I wrong or #nobodycares?
+
+> 
+> 7) Changelogs, comments, stable
+> 
+> - 3/5 doesn't say what goes wrong without it.  It is tagged for
+>   10ebac4f95e7 (v6.9) while 1, 2 and 5 go back to v4.8, so 6.6 and older
+>   get the limits without the flush, and it doesn't say why that is fine.
+
+Yeah, probably it should go further back. The PTE batching case was just one
+scenario. It was possible when batching over VMAs before (which my commit
+handles properly).
+
+
+> - 3/5 leaves the "queue is (now) full" comments in asm-generic/tlb.h and
+>   above __tlb_remove_folio_pages_size() stale.
+
+That seems easy to fix.
+
+> - The ufolios_count fix in 4/5 doesn't depend on the rest of the series,
+>   so it could be its own patch for stable.
+
+5/5 makes it easier to trigger. Which is how it was found in the first place.
+
+> - 5/5 needs 1/5 and 4/5, which isn't stated for stable.
+
+lol, they have the same Fixes tags, that sure is good enough in one series.
+
+> - After 5/5 the check is the only guard for pins on small folios, the
+>   kernel-doc calls it "mostly unnecessary" for them.  The comment in
+>   folio_maybe_dma_pinned() still describes the negative refcount scheme.
+
+Yeah, I'm trying not to change to much becuase the while thing will get ripped
+out soon again.
 
 -- 
 Cheers,
