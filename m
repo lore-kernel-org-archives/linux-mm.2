@@ -1,146 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFB6606A32E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 16:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F180B606A32C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 16:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=PxkzuLI/;
-	dkim=temperror header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3G8zjDyi;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=PxkzuLI/;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3G8zjDyi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X23zSpUc
 Received: by kanga.kvack.org (Postfix)
-	id 1863E6B05B0; Fri,  6 Nov 2026 11:47:29 -0500 (EST)
+	id 09EE86B05B2; Fri,  6 Nov 2026 11:48:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 15E156B05B1; Fri,  6 Nov 2026 11:47:29 -0500 (EST)
+	id 0770F6B05B3; Fri,  6 Nov 2026 11:48:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0264C6B05B2; Fri,  6 Nov 2026 11:47:28 -0500 (EST)
+	id ED1D86B05B4; Fri,  6 Nov 2026 11:48:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B5D666B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:47:28 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F2771A012E
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:47:28 +0000 (UTC)
-X-FDA: 85405274976.04.DA24E4F
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 1FB4A140009
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:47:25 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="PxkzuLI/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3G8zjDyi;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="PxkzuLI/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3G8zjDyi;
-	spf=pass (imf26.hostedemail.com: domain of clopez@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=clopez@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BEFC86B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:48:57 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3A2A8C0143
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:48:57 +0000 (UTC)
+X-FDA: 85405278714.06.D1A77C4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8B10FA0008
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:48:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X23zSpUc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793983646;
-	b=dt7F//F6BoS4c6flWRb4HPpBIfr1nxgiL/z+deMS+iam8G7TatKXOQZ+UNnT+36/VCPgeQ
-	mB6tCvBv+3L+VFQBnxNUfCEDDZ1cRI1Xd7w47j/J3zcJNm2TWl+CNfjznj0qSUYSfLjB9m
-	mMlhbutmKCod6gypho+shhDtH6z1LQM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="PxkzuLI/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3G8zjDyi;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="PxkzuLI/";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3G8zjDyi;
-	spf=pass (imf26.hostedemail.com: domain of clopez@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=clopez@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	t=1793983735;
+	b=z3FZVGRv0VMke7UH07WQPZDLRArVoD/Jsrqy2B3ATXFR+zaogtdfFADF6MoR7zW0x3cisu
+	fH+OALEjaEfgy0JWh1Gw13X8rsX9hp+H9D3DOQ59V0aF/FWDIqQJ9os6kUwKm6oJpSuJ3v
+	dD9IwJMoGxqqeECMUDOjXaZ9G/jX/Oc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793983646;
+	s=arc-20220608; t=1793983735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=wPWOls+GsP/LZWvFejuggf19NK8Hy8dSKnoByaWSWbU=;
-	b=ocrniX5vxy2DUzi0Pavf2g3DTpVEvHkJd0kS3BUc8okXe2JCEHHH4RfXANw+8A/z5NGo3g
-	jNXBIlTxzRDW0lbfDmaRFpIw50kJq7s9YGWZn4iFBapeX9bDBUMPT62GYzmobbh+57cnsS
-	LZ7aO5wAVzZsUmP7ay8I0pWvC1llFhc=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id B9E9F21FFC;
-	Fri,  6 Nov 2026 16:47:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793983643; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wPWOls+GsP/LZWvFejuggf19NK8Hy8dSKnoByaWSWbU=;
-	b=PxkzuLI/am9JnYTnTvuEijgDPYfeVBgSqbGO9O+MfngsRdJbzeo4biD6Plw7uupL+RkSYr
-	Hq4PezkwWHm8Dpu0ed6ywBjWd/rVb1h/Z2eDZ7IDZYVHxWLl2xSQ1CmK98wTvhGLERcOqE
-	zzN8n9ag1q/au621BObs+lVpZDXaLyA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793983643;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wPWOls+GsP/LZWvFejuggf19NK8Hy8dSKnoByaWSWbU=;
-	b=3G8zjDyiDhO0L5LiKBTyzfNc2Apd4rvaT59qMkS2k2mY0+P4MMnyI2VnRcnFe70HH1YDf6
-	Fs1bW31Ux15qoeBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793983643; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wPWOls+GsP/LZWvFejuggf19NK8Hy8dSKnoByaWSWbU=;
-	b=PxkzuLI/am9JnYTnTvuEijgDPYfeVBgSqbGO9O+MfngsRdJbzeo4biD6Plw7uupL+RkSYr
-	Hq4PezkwWHm8Dpu0ed6ywBjWd/rVb1h/Z2eDZ7IDZYVHxWLl2xSQ1CmK98wTvhGLERcOqE
-	zzN8n9ag1q/au621BObs+lVpZDXaLyA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793983643;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wPWOls+GsP/LZWvFejuggf19NK8Hy8dSKnoByaWSWbU=;
-	b=3G8zjDyiDhO0L5LiKBTyzfNc2Apd4rvaT59qMkS2k2mY0+P4MMnyI2VnRcnFe70HH1YDf6
-	Fs1bW31Ux15qoeBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AA6F3132C9;
-	Fri,  6 Nov 2026 16:47:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uO5eHpoE7mo4BAAAD6G6ig
-	(envelope-from <clopez@suse.de>); Fri, 06 Nov 2026 16:47:22 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: dave.hansen@linux.intel.com,
-	=?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	linux-kselftest@vger.kernel.org (open list:KERNEL SELFTEST FRAMEWORK)
-Subject: [PATCH] selftests/mm: pkeys: wait for the child in become_child()
-Date: Fri,  6 Nov 2026 17:46:39 +0100
-Message-ID: <20261106164639.2959195-1-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wwedXasY6Bp8ZwF+4iZZRJ4XWL8SdA+Fk4YfEj7+kwE=;
+	b=EDmDGQyNfnn4qCj9rL/f6VpDsPjl1SUxORtCcjFxf1TBeDcEYB51vsa6JbSmmOAh42zUNc
+	sAxdcAGRZTx8mLjdPF/SnloFFu82dV/ZzaC21dwAgOrSQNCDP16yJaipXRhAYsvW0WDA0u
+	RLisJubikOpKodjHrzEhOiHmh7qQisA=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X23zSpUc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4F8F7605DC;
+	Fri,  6 Nov 2026 16:48:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618661F0089F;
+	Fri,  6 Nov 2026 16:48:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793983734;
+	bh=wwedXasY6Bp8ZwF+4iZZRJ4XWL8SdA+Fk4YfEj7+kwE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=X23zSpUcdN+am/IsFeY2VmYV9jInPIWBejU6sNczHeODweAqOhe7W03gMbMU/lMK/
+	 H8EIPCvSaSvqFl0m4mV6/KYWV5kZhZhU0WObpKdkXn63SHiSYXO7FVKFwvaMFMuKIo
+	 F3NmwRk7k0+nYiHTVvZiJ9+PNQIaULYgPbnycBbTgmNNcRbxBB1Yf/qIDx0plxIz0H
+	 W1mmzh3G8rwkmhMPiShbhnoe/BKnyVYbj9i8quoEWRQj8+w0jHGRtYJH02cv1drFGc
+	 PCoLSCgheRNxpmoi6y5wLow+6a3imy1fCK62Y9AvB2+kEx9MKhHqs83M382H0JF4Wg
+	 ztsdFAAwbwt8A==
+Date: Fri, 6 Nov 2026 16:48:46 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Brendan Jackman <brendan.jackman@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Ye Liu <ye.liu@linux.dev>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/huge_memory: prevent losing PG_waiters in
+ __split_folio_to_order()
+Message-ID: <au4A9Jx9_1PjpRCb@gremlin>
+References: <20261029-fix-split_folio_to_order-race-v1-1-a483c7451b0d@nvidia.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Spam-Score: -12.51
-X-Spam-Level: 
-X-Stat-Signature: rqnwauprcbwodx8mknhpujy3ne4hwkfq
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1FB4A140009
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261029-fix-split_folio_to_order-race-v1-1-a483c7451b0d@nvidia.com>
+X-Rspamd-Queue-Id: 8B10FA0008
+X-Stat-Signature: cwzagbcsb1c7ox4q4sk383kmnwfm4yih
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793983645-188472
-X-HE-Meta: U2FsdGVkX1/jvRBpiVYkVAiDV+klWP8a7oSXnBeWE7wDOCehKJVj42KkyKgm2ft2+yPx4RfEQTmFWzR6iFTtx2Pdl0fhS2Vd9eyp5IL6DMdGF1lkOIhyTESPW0VuWXU/vTROaPhrRabGzslloLsFb6SkiISClxhlzsHB3BMgPcixXNRpxAF0RXD0P4DxDzGWw/ktfnRqXHsI7Bi4UvRlIAup7KGg7zqDmQNzvnUFGI/rLkhYaE4Mj9icEVx6Pqd0kTBvwYqOpmm2fY7WrGEavKKcDN6wVPzCKRO0kk48UadMRTnl3L0TG/tvFRF4EEaL8hJd+kR+0HBXlTMsqq7iELP/vFUmShHM+BkAGsSGlN3EVWPigPH8I9v3o8pRUjuU8ZaDLSKmggSHKvejBPWI9t7X+Vujfi69kmro2tDZf1jJziqgEZLgEZcPI0Xqll3tUprIYUCSoSsTtrVVFmOvf4+AUjlWqtVJwPFY8MIN/Y5soeEzXniubmm1U3a0dWK5wY4zGMVvjmYdxEEfatTFKiqL99q9HfRl/28N1/9NDRxVemJMJkTvS2wU1V2O/Nx3t3ZyX30X+6B1ShVOaMgmZPUv6T/SziQnM83Y/xFr76zNW0otC0fLVhHqodpL15XHde2jPGtQBLLPcXY0lTeN0oqKAZvc4hribR2AB7ZeUElw4znkH9H4dlad1EUPJZ39b+w4wYWDjTsLG8glZUF1ENz0Eqfff8lg4c7hUzgce9EIU3WeVGBY/VbL5+21UPAxC17VO2lm140Ye3DjJTeUW0t22SSrBDmnyTxwidVSwYUFUuBscPUILJy0ctIPfUDvPUKocFDXX0QVM/+wMfAteTphu8eQSe+UvL64F9SF05c/pDoQDqY1fcWK2mgiGcPkK17rmYRIjgfxV5Q6nQORgbzgsUQ9Ruaq34pnDCN2t0lt3vu3LcDyr7xZ5N5UPIIqZ8SeSFAVnA+sVoKjqEP
- PLalUBgi
- ecbl29s7R/ibsN6ZfxvPvd/CTZVlJMK2EEBpKht4EG/aWqMDAtCAxJ/Mrn7GpVBpPXG5aNjcWXKNapiMUZ0A9gIMBdgfTKJKkW0HAY80uNfN2EE4VWoWhnGBYMQFOvowv/aTWo9zRlMyMsaBTT9czURTDwP8zR7ecT3wvg5pvNc6DiwXgA01e1K792b3O1YHIN9NEhSGrLVDJ934Nl34JOxISnKAGNsyvuMdHDc/7ozA5Fx29P/u9OtyDQsebNhELdqQVCz1Z/Mmm0doMWE4Ew6Pf8prJ7NV3C47/rRPSvxt+x91JSaiL8FLxy0//LMnwyeS2MVfpLOmEnbXrci7oVysDCobd0gep1XA/5UXgbe6zdwxW58180rkvKOxRQsqFCPlRWdV+ESM7HbetCh1ZhfollUhRUQMx2OHSoM8FpSAVdncdAOZ4Zep7zaIe2ASuLLkGGFu+7kriC2c=
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1793983735-419142
+X-HE-Meta: U2FsdGVkX19JRHSSV0qrXaeKMzEyxq2/pe8UyUMutgBvSQrF5MgBgGqH/PpgUSzsk9tahq9BACvKia7bwmREyb2QqWdBlJMXZAhc8s5JC9tsmhOtqyvSMePD/E30ALw0BXUEZIE1wRyKG8DPcX2sTazYPr3FFU9jYlZlyL6+lnZs2JloZVA4Dj1gARaEvqGCGMaEfFAnZhH+aYVq31lTVB/zhHWF7PMfslarXDvJfxTqsqYrEvEPnnTwTkyYd3TVbizPKF2F1l8zj7cbu7Gj1Ng+sCJiBik4SfpZQatxLiqBbP+IsAHbPOu4yt2h9+Hp3L5GTHE5spFgpIcIemST43+KDehIVrLG95PEkd71rObRkD8uUlwGz9uLkJ9zCRDBkRMpxAc/gWZbMWokJt01uBMR3cg1zMGGYVWGikZyAU8XkxGRzCsUvE/OEVdQnC3LCUVj9cWqW6bdvxslWluF7eWW0GVt1GbA/05N12Rzyii86mmIu8iIQIl8SCeisD4ust0PvMqVW+DE/60Mzbe5+zS8nPPiJlhWmz+14NDHHoDWHAiHTTcr+T9fg+QEqLRCxDYIQTsptUsiRGuxIJ88ZSJ3VmhoEFn7Urra3I++R/+tS+7NZz1+uwWWenQduxIP/3zAxTDyx8CRKnPyng5TpW9hF9A2xBEbh5i8lURY7yBAzU8vH79GqekBU+V/3Y0dbgghgzrLv4kV+2PtFDZRkYV0uFk43FLsk9sAnxeNNgmxiAitEBQqCDy++EcpseSBUB8fCLFXr8sEajabSMC5cIjarb1Nz/RNXLPbUzhd8tplA5+farWPUFaf8Uf9OL7W1yFoscrgNUdrmPMQkl5m8jrt7l2ogyA3J+Ofh1qH5HsLtdf0MND28SyvqUPKOEnDIWnsslgoo5WvaTF8BVxj2/FQ8DpBQV4wikcGfcmdXWUtZNJAUN6zQdNQZXI41WcCX9qcQFQNcuBT+wUW/Ql
+ 4AXaZ6xc
+ 65MiQxeAJqNTX8efNIOKbAb/wiOQsfoSB7bGn2vn0sorK9ytQ4hkkcGV7B8rED12ENkZVEp+3+zgJx2Tf0dqTS7wHLF6hYssDQf9kaUNFCuuavUuYByXwf1Xmgr03n3DUnzCRL2di/PlpZ3/LnIaOKDSrvOACAow8mpxZMoV+HciUaockLAhOu0TXesJIeUouQXPNrztLy7g7MfJKhsMMXmFFgCFfxEwedPrEC+ZU7F0y0z7IctDvUnTCiGeZsyjj1W7CbDg0AvpxYAUfLYaYEBgq1jHJMqvSyo4PREHSb8Is/4hD8oT0eoJPTOpNf0w/BMHd+B3uSRDXk8axJoFsvFZk6QsrZnjJrEJY6PHSs1gGmrU0Atg+ydL5EPcIY7RkBnYrAi2b/O06f0k=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,73 +102,187 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-become_child() forks during test_pkey_alloc_exhaust() and has the parent
-exit, so that the remaining tests run in the child. However, the test
-runner only waits for the original process, so it sees the test finish
-early with a success status while the remaining tests keep running in
-the background. Failures after the first fork are thus not reported in
-the exit status, and the remaining tests overlap with the next selftest.
+On Thu, Oct 29, 2026 at 10:08:44PM -0400, Zi Yan wrote:
+> __split_folio_to_order() calls prep_compound_page() on each new head page
+> to create a compound page after clear_compound_head(). prep_compound_page()
+> uses non atomic __SetPageHead(). It is mostly OK, since the folio is locked
+> and frozen and no one else is supposed to modify the folio's flags.
+>
+> However, code calling migration_entry_wait() can reach the folio by PFN,
+> then access its flags. It is because softleaf_entry_wait_on_locked() used
 
-Fix this by waiting for the child in the parent and exiting with its
-status. A previous fix avoided waiting, arguing that the parents would
-keep holding their resources [1]. Particularly, the parent keeps the
-hugetlb reservation of its test memory, so the child runs out of hugetlb
-pages after a few iterations. Avoid this by freeing the test memory
-before waiting.
+Oh fun.
 
-Link: https://lore.kernel.org/all/20240419115027.3848958-1-usama.anjum@collabora.com [1]
-Fixes: e1812933b17b ("x86/selftests/pkeys: Fork() to check for state being preserved")
-Signed-off-by: Carlos López <clopez@suse.de>
----
- tools/testing/selftests/mm/protection_keys.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+> by migration_entry_wait() sets PG_waiters concurrently without taking a
+> reference and the frozen refcount during split cannot block it. Meanwhile,
+> __SetPageHead() does a plain read and write, so PG_waiters atomically set
+> by softleaf_entry_wait_on_locked() will be lost if the set happens after
+> __SetPageHead()'s read and before its write.
+>
+> One example code interleaving:
+>
+> CPU0: __split_folio_to_order(new_order>0)  CPU1: do_swap_page()
+>
+> 1. clear_compound_head(new_head)
+>    new_head->compound_info = 0
+>    (page_folio(new_head) == new_head now)
+>
+>                                            2. migration_entry_wait()
+>                                              softleaf_to_folio(entry)
+>                                              page_folio() -> new_head
+>                                              (not the old head any more)
+>
+> 3. prep_compound_page(new_head, new_order)
+>      __SetPageHead(new_head)
+>        tmp = new_head->flags.f  <-- load; PG_waiters == 0 in tmp
+>
+>                                            4. folio_set_waiters(new_head)
+>                                              set_bit(PG_waiters, &flags.f)
+>                                              enqueue on waitqueue, sleep
+>
+> 5.     new_head->flags.f = tmp | (1UL << PG_head)
+>        <-- store; overwrites step 4, PG_waiters == 0 again
+>
+> Later, folio_unlock(new_folio) sees no PG_waiters, skips folio_wake_bit(),
+> and CPU1 can remain blocked indefinitely.
+>
+> Fix it by adding the atomic version SetPageHead() and
+> prep_compound_page_atomic() using it. __split_folio_to_order() uses
+> prep_compound_page_atomic() to avoid the issue without adding an atomic ops
+> to other prep_compound_page() users.
+>
+> Reported-by: David Hildenbrand <david@kernel.org>
+> Closes: https://lore.kernel.org/all/DMHE8BEEER1H.2BIY52NXATPIA@nvidia.com/
+> Fixes: c010d47f107f6 ("mm: thp: split huge page to any lower order pages")
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
 
-diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
-index b7882ab97683..5dece144ab95 100644
---- a/tools/testing/selftests/mm/protection_keys.c
-+++ b/tools/testing/selftests/mm/protection_keys.c
-@@ -1009,9 +1009,10 @@ static void test_pkey_syscalls_bad_args(int *ptr, u16 pkey)
- 	pkey_assert(err);
- }
- 
--static void become_child(void)
-+static void become_child(int *ptr)
- {
- 	pid_t forkret;
-+	int status;
- 
- 	forkret = fork();
- 	pkey_assert(forkret >= 0);
-@@ -1021,7 +1022,16 @@ static void become_child(void)
- 		/* in the child */
- 		return;
- 	}
--	_exit(0);
-+
-+	/*
-+	 * Wait for the child to finish the tests and pass on its result.
-+	 * Free the test memory first, as it may reserve pages from the
-+	 * small hugetlb pool that the child needs.
-+	 */
-+	free_pkey_malloc(ptr);
-+	if (waitpid(forkret, &status, 0) != forkret || !WIFEXITED(status))
-+		_exit(KSFT_FAIL);
-+	_exit(WEXITSTATUS(status));
- }
- 
- /* Assumes that all pkeys other than 'pkey' are unallocated */
-@@ -1060,7 +1070,7 @@ static void test_pkey_alloc_exhaust(int *ptr, u16 pkey)
- 		 * preserved across fork().
- 		 */
- 		if (i == NR_PKEYS*2)
--			become_child();
-+			become_child(ptr);
- 	}
- 
- 	dprintf3("%s()::%d\n", __func__, __LINE__);
+Nasty one. Some nits below but change looks sensible to me so:
 
-base-commit: 843c58022865a7b0f9743416c2b48bc2632da23c
--- 
-2.51.0
+Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
+BTW AI flags an hw poison thing doing the same:
+
+memory_failure() does TestSetPageHWPoison(p) on an arbitrary subpage before
+taking a reference (mm/memory-failure.c:2458), which races the same way with the
+plain flag clone and with folio_set_order()'s plain _flags_1 store.
+
+> Cc: stable@vger.kernel.org
+> ---
+> The issue was raised by David when reviewing Ye Liu's "mm/huge_memory: use
+> READ_ONCE() when cloning folio flags during split" [1].
+>
+> [1] https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
+> ---
+>  include/linux/page-flags.h |  1 +
+>  mm/huge_memory.c           | 10 +++++++++-
+>  mm/internal.h              |  2 ++
+>  mm/page_alloc.c            | 20 ++++++++++++++++++--
+>  4 files changed, 30 insertions(+), 3 deletions(-)
+>
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index b0ddc652e76cc..08492ab3da895 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -854,6 +854,7 @@ static __always_inline int PageHead(const struct page *page)
+>  	return test_bit(PG_head, &page->flags.f);
+>  }
+>
+> +SETPAGEFLAG(Head, head, PF_ANY)
+>  __SETPAGEFLAG(Head, head, PF_ANY)
+>  __CLEARPAGEFLAG(Head, head, PF_ANY)
+>  CLEARPAGEFLAG(Head, head, PF_ANY)
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index bd44d58e86845..319b038eba89d 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -3779,7 +3779,15 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  		 */
+>  		clear_compound_head(new_head);
+>  		if (new_order) {
+> -			prep_compound_page(new_head, new_order);
+> +			/*
+> +			 * new_head is recognized as a folio after
+> +			 * clear_compound_head().
+> +			 * softleaf_entry_wait_on_locked() can set PG_waiters
+> +			 * on it without taking a reference, so its frozen state
+> +			 * cannot prevent it. Use the atomic version to avoid
+> +			 * losing a concurrently set PG_waiters.
+> +			 */
+> +			prep_compound_page_atomic(new_head, new_order);
+>  			folio_set_large_rmappable(new_folio);
+>  		}
+>
+> diff --git a/mm/internal.h b/mm/internal.h
+> index aeebb3e49ed11..9b8864a8540aa 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -807,6 +807,8 @@ static inline void prep_compound_tail(struct page *tail,
+>  	VM_WARN_ON_ONCE(tail->private);
+>  }
+>
+> +void prep_compound_page_atomic(struct page *page, unsigned int order);
+> +
+>  #if defined CONFIG_COMPACTION || defined CONFIG_CMA
+>
+>  /*
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 143776e671abb..ace1359468046 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -682,18 +682,34 @@ static inline bool pcp_allowed_order(unsigned int order)
+>   * This usage means that zero-order pages may not be compound.
+>   */
+>
+> -void prep_compound_page(struct page *page, unsigned int order)
+> +static void __prep_compound_head_and_tail(struct page *page, unsigned int order)
+
+NIT: can this just be __prepare_compound_page()? I find the head + tail bit
+quite confusing. The __ implies it's an internal function.
+
+>  {
+>  	int i;
+>  	int nr_pages = 1 << order;
+>
+> -	__SetPageHead(page);
+>  	for (i = 1; i < nr_pages; i++)
+>  		prep_compound_tail(page + i, page, order);
+>
+>  	prep_compound_head(page, order);
+>  }
+>
+
+NIT: Maybe add a comment describing this like prep_compound_page_atomic()?
+
+> +void prep_compound_page(struct page *page, unsigned int order)
+> +{
+> +	__SetPageHead(page);
+> +	__prep_compound_head_and_tail(page, order);
+> +}
+> +
+> +/*
+> + * PG_head is set atomically whereas the other metadata is set with plain stores.
+> + * It should be used when @page's flags can be modified concurrently,
+> + * e.g., in __split_folio_to_order().
+> + */
+> +void prep_compound_page_atomic(struct page *page, unsigned int order)
+> +{
+> +	SetPageHead(page);
+> +	__prep_compound_head_and_tail(page, order);
+> +}
+> +
+>  static inline void set_buddy_order(struct page *page, unsigned int order)
+>  {
+>  	set_page_private(page, order);
+>
+> ---
+> base-commit: d865f2677c44cb2171b833d6775cf692756fa8be
+> change-id: 20261029-fix-split_folio_to_order-race-087a2a9fbf7c
+>
+> Best regards,
+> --
+> Yan, Zi
+>
+
+--
+Cheers, Lorenzo
 
