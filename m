@@ -1,112 +1,141 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16FBF606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9E2606A339
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:58:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=hWyXD4de
+	dkim=pass (2048-bit key, unprotected) header.d=toxicpanda.com header.i=@toxicpanda.com header.a=rsa-sha256 header.s=google header.b=MFsIMa2p
 Received: by kanga.kvack.org (Postfix)
-	id F29676B05B0; Fri,  6 Nov 2026 12:58:36 -0500 (EST)
+	id DC8FB6B05B2; Fri,  6 Nov 2026 12:58:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFFCE6B05B6; Fri,  6 Nov 2026 12:58:36 -0500 (EST)
+	id DA04F6B05B5; Fri,  6 Nov 2026 12:58:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3D1F6B05B8; Fri,  6 Nov 2026 12:58:36 -0500 (EST)
+	id CB71A6B05B8; Fri,  6 Nov 2026 12:58:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C547E6B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:58:36 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2B350A0011
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:58:36 +0000 (UTC)
-X-FDA: 85405454232.28.AB02660
-Received: from pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.34.181.151])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E2F5E140005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:58:33 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A83126B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:58:52 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3849E140191
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:58:52 +0000 (UTC)
+X-FDA: 85405454904.20.41E2A14
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 46A17140003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:58:50 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=hWyXD4de;
-	spf=pass (imf26.hostedemail.com: domain of "prvs=76345edb3=mkbund@amazon.com" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=76345edb3=mkbund@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793987914;
-	b=HW1IY3Od9L1C/s4OIHuUUX6K33/ffch84ettpSr7TvmqaVPGuPyXFPYqz7Cnc2/D/oGrzC
-	xugJcyMcR6Xm13n87HKBT4u0rXoKAEwip/+GoABdw+7mXgldnh8BDdce8U0/mjE2XV+K9A
-	l7mpUJEdSZ11R7kOC/8+FTgyhXNKLYE=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=hWyXD4de;
-	spf=pass (imf26.hostedemail.com: domain of "prvs=76345edb3=mkbund@amazon.com" designates 52.34.181.151 as permitted sender) smtp.mailfrom="prvs=76345edb3=mkbund@amazon.com";
-	dmarc=pass (policy=quarantine) header.from=amazon.com
+	dkim=pass header.d=toxicpanda.com header.s=google header.b=MFsIMa2p;
+	spf=pass (imf26.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793987914;
+	s=arc-20220608; t=1793987930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DvwQWrNQDsi6oCmlPjAhQ6lQDXeqrlYyqk44/rWhVUc=;
-	b=IURvvjpix95z4NpSNLDIG6ohA3f/Jp22DdE3USzh9Mt8wd+BAUEl57V6h+iGiuH7PIfr1p
-	bErY54FbNXdSqXfBPHJENwQcBF3Et/97LYHnpljYcYRui511ya/UUk/JBY2q7n1c4v6nG9
-	wYhlbxrdD89e1DlfR9HNTtTq2A0vWpU=
+	bh=KoOh0KgSmAnOjKaKpi/0YYF58G7PTa1KHqz+Z6PRDOg=;
+	b=WuA5zYHEUe+UPhqD8vs/4h/FfqxmAYfSi6/suVWfbQQigkSqbse1pMhpPYMurWoHv+GRtW
+	P/5jGJDzdYj27uNGmOG0vwv91tpKYEt+DWwDa/zfT7XhDQ9qD4aQ/bq/qO8uchVslCd5ge
+	9q+i/0nM3E2M3iuZ/Tp6PMNTfFJte3o=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793987930;
+	b=se1e+yvOOsJ4M58GCrL3d10j9PHirMosVbd6nUEf/7L7Ekbz/PqC4SYjbNaaZVdeQCYo3G
+	i15fXVPwafKvVGhPeHlg6GXOhLAUce+C0rXhNQw3iHd8mf6Qp/BsdSGqOFuwsSYMXEn89U
+	DJjbv90Amw2+3oXUoFSWKEJnbDM9JVk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=toxicpanda.com header.s=google header.b=MFsIMa2p;
+	spf=pass (imf26.hostedemail.com: domain of josef@toxicpanda.com designates 209.85.160.173 as permitted sender) smtp.mailfrom=josef@toxicpanda.com;
+	dmarc=none
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-53c4b82919fso1124211cf.0
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 09:58:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1793987914; x=1825523914;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=DvwQWrNQDsi6oCmlPjAhQ6lQDXeqrlYyqk44/rWhVUc=;
-  b=hWyXD4deCaAdCgGppFAPjRwcbRInPMkBFeQ4DBC0W2EX5/o1hNbg6WA0
-   Gib9HPPgVU2FPZe8N9xdZFfDxGxhAnCDoBAwcNPoN1Umgci8xNrv/OaKI
-   PiQ2Ya2xRE8K5CdwkBMX6+4JjQLJhjEvc0JI3KOwPLPmkbLHeV9ocjJOe
-   +RL09k3r63ty9jdxzgCO5fxUmggpONFC5iqS1Ppx/Hbx+JT2Ejllb245v
-   Jx0LNyO4Lg+yVQXXXVb/v4soCnbPD6Nq36xXEqK5Edx31A8Hvxu3QcpCx
-   v6nBir5bv7y/gQprkHGoRPAfKFGlFnpaQJiVscrpfWZ9wnlbkrjDuK9bR
-   w==;
-X-CSE-ConnectionGUID: DiyCP6ohTQ6hyTimUcVrpw==
-X-CSE-MsgGUID: SxmlFa6ITHaks0tl955W+A==
-X-IronPort-AV: E=Sophos;i="6.27,197,1787011200"; 
-   d="scan'208";a="33332192"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-007.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 17:58:32 +0000
-Received: from EX19MTAUWC001.ant.amazon.com [205.251.233.53:1052]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.15.208:2525] with esmtp (Farcaster)
- id 0d91adbf-b11a-4273-87a3-673ad09ef406; Fri, 6 Nov 2026 17:58:32 +0000 (UTC)
-X-Farcaster-Flow-ID: 0d91adbf-b11a-4273-87a3-673ad09ef406
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWC001.ant.amazon.com (10.250.64.174) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Fri, 6 Nov 2026 17:58:32 +0000
-Received: from dev-dsk-mkbund-2b-9ea2efba.us-west-2.amazon.com (10.2.100.138)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
- Fri, 6 Nov 2026 17:58:31 +0000
-From: Mark Bundschuh <mkbund@amazon.com>
-To: <sashal@kernel.org>, <stable@vger.kernel.org>
-CC: <linux-mm@kvack.org>, <david@kernel.org>, <yangge1116@126.com>,
-	<baolin.wang@linux.alibaba.com>, <21cnbao@gmail.com>, <david@redhat.com>,
-	<sj@kernel.org>, <akpm@linux-foundation.org>, Mark Bundschuh
-	<mkbund@amazon.com>
-Subject: Re: [PATCH 5.10] mm: replace free hugepage folios after migration
-Date: Fri, 6 Nov 2026 17:58:19 +0000
-Message-ID: <20261106175819.1829099-1-mkbund@amazon.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <2026-11-06-1-daily-reply-0018-mm-hugepage-folios@kernel.org>
-References: <2026-11-06-1-daily-reply-0018-mm-hugepage-folios@kernel.org>
+        d=toxicpanda.com; s=google; t=1793987929; x=1794592729; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=KoOh0KgSmAnOjKaKpi/0YYF58G7PTa1KHqz+Z6PRDOg=;
+        b=MFsIMa2poOg5H9x9+ci8nLRsyS8x5ihaKvqygGlY/+GuUA/6fxxXo3bSHBJfBQmNWe
+         LYbh3VzZ439+fBAaVF+PwEJd9y3/byYhXkhrxP0FiccwwcpWIKuClAXbCyTuYerqC9Tu
+         gJPMSoXvN8j1Jcw4wWh0YhTrtCf296Xpg9BDttAINnFxn5u2Cm0mwDmK4VHUV0TYdxQj
+         n81DqqpzeBqzIUT7Q47HXJQCkZjAFYNCtCsnaCfKPc64QmAh+tAnG8I++V+ELJ5+Ds0S
+         b/M/MiBDCVosYKdue5qkJtZWmKz2zuS8S+v1AfEQtm8zMhwEXM7bpFdCc4sETX4LmXZt
+         5W6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793987929; x=1794592729;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=KoOh0KgSmAnOjKaKpi/0YYF58G7PTa1KHqz+Z6PRDOg=;
+        b=LTQcBAqf+1chA6ZK6ySvrXR2ibHvrYZuAl7To9JoEndSh6knPxyCaIzMpKoxEK9rFc
+         z/DBE3o3lktH3s/LMKXN6loflgEQhEW89xT4r5/Ya8ACCFqO7OwH5KSSKeKozjAO5G3f
+         S5rY9FFH0EeaarRQYs/tZuD+DChkdmyPSAm4gXt8dqUezoA4gmNGDfLUQ93La2c6Ym++
+         sG1rsAFAB8T27QP6FgnY0KJeWuAM1xtFht4QWjf+kehIpRhlyJI3E66Q3hdl6+NKoiSA
+         bemh7OhFzgIU8mRaAqwhil+2KgO+KS/gtAhQLMqbjtFTFIabHP6qFA/cUJsCwQ3X4qPW
+         hJYg==
+X-Forwarded-Encrypted: i=1; AKwUvByGpohBE6RimlqvQil9FHqEWsN1OMdTqkoO6bYalwT/CttCJ9+755FeOZrrogC3rHtSSE7hwWLYiQ==@kvack.org
+X-Gm-Message-State: APuU4Z95xCwBDs0qpmMOVtvLcgzsSVfwVuhWU62zdgKgFOiorfKvCKH2
+	RxJVYpDnpCtpWcTWxu3lbiMRi30NiBVcK48WZaV1k7YSALzrf6kFHoD5aizQqsmB8SE=
+X-Gm-Gg: AYBFou1UXsRJiHovTUJ+6T6XoTvFFRH+ZgxZnbf9wdmjQ0UR6+W38t36aRcVujfJgL8
+	d9q48fWcZqeBw3AdXMGmtIF7i4ly36jOOtE051cddpISXNhy49sXNl+VNTbECbSwR272Z6bX6+0
+	PVNlFhrvvdIb0luTPCKKnANFI1PR08X0SyrIIkUHdsIQjbZPsZ7G+ruIvT37pt/cUT3p1GDVw43
+	Vuuan5r7WBKP3NBoVRByfKm3GNLFbcFYKnbdBkRsoh31bQd0bJsHo66esn+riGDoCDoLsyewoFw
+	8MszQRx2i/aToiJGJnX02VGCDhHlmAppc/36sg34L+gsxK7CUPQhX38chusxxnzWH3sK9HVktmW
+	L/Ze5S5hHOjn4lnewtth6czDsSwMcfnBGWhUugr1JdidHmq02R2prDQWoWmR05k91jmJEGqTDam
+	YeZNexmeE15QAb+LIVYheFtrXccsVITujEwOjcoAuZjH4poEdUcC8G9FV3o+tkoqImtV5LCjl/G
+	TyU5YDz8Ksu56hER3MNr6Z2ms8Cdcq6RfxwKoj+CkUjicJEI0HFM9KAA1VWp2Pf05WyxfNrRUuE
+	Ls+MGrH+s1vgeycQHYx4NoNPF4zVozYBtOW9dHiScAMm
+X-Received: by 2002:ac8:5d08:0:b0:536:699d:9a22 with SMTP id d75a77b69052e-54e157646f3mr53331201cf.57.1793987929323;
+        Fri, 06 Nov 2026 09:58:49 -0800 (PST)
+Received: from toxicpanda.com ([153.61.196.254])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54e27013e83sm25509581cf.24.2026.11.06.09.58.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 09:58:48 -0800 (PST)
+Date: Fri, 6 Nov 2026 17:58:36 +0000
+From: Josef Bacik <josef@toxicpanda.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Song Liu <songliubraving@fb.com>, 
+	Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>, 
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Steve Sistare <steven.sistare@oracle.com>, 
+	John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, iommu@lists.linux.dev, 
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/5] mm: limit pagecache folio refcount when splicing
+ into pipes
+Message-ID: <n3l2cnx6d25jovloqyoxiz566mh62janclmiewjvumtmqfezo7@zmsmco5vvssn>
+References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
+ <20261105-refcount_overflow_stable-v1-2-70b9c655da3e@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D031UWC002.ant.amazon.com (10.13.139.212) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
-X-Stat-Signature: hbyo684r5t3rqbjyoc8e4x1yg3ydpgmk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261105-refcount_overflow_stable-v1-2-70b9c655da3e@kernel.org>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 46A17140003
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: szmtgehuyfiff71ktujxg4zzndypm5sw
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E2F5E140005
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793987913-897917
-X-HE-Meta: U2FsdGVkX1/ncRIx1vRl5iOwc0d9p4oVfgFBKXcrB/qxvpqV8CH28ldBcnpkegV5+oAKxDXdcNOGLoTcZAKTxDTHxkeyUXPdhoEySBL0SxrmhZ6/6eG48aVXd+CaJ7I6Uw5Q5q7weGXw5cFc6EqZvCa573gI7ZiOlyS7L5tV7nOfPZv1eUkPcAS6UgJGhYvzYOk0h7CClpdyP1tY7xxv79yULF30UF86t51X7QMgrPnZaDG4CIwCxl6ZFKG9ZSDcMVjzI1uLoP0BhX5cjnc39oIdVhAhJn4XtKlZkcf0tE5ByNSxfvBFraFApcFbdGWRBUQVuBOCALMPpT7QXF8bWnhiPSnlG4RXkDc1Zp1YeYdGHpavMoP+JwS/FqLWGNBx2ode15cDBL6sLS1NYzHGoGYq2WsY6Qzh97fJWTHZHglkE13VWApiVFeTAyn2bFGBB0xPRz4vzJpnj6JInMDOdgeUmLDT0Iacq79GOUQ+hwrQHxR7Bojj/tjRZvT6TAvDIjKNndS/BKU1P0aaxy2idANHivJb/qPlDR4yZaGsBLfoB2kN5nQIqN+jx5Tmhj/IL2UKBOEN6jBDlx6H4uCtaVM3XQV1gSalYMt8RFxfCPDlWZVYEMpAq5f+g62Zw84aY0gDlbDWXlHLcddcdFi667onLC0pUo2kghPAaRo49Ab5UQnAUTouRQl+aAEBErIzl57TiTDWnjcvgSOwimhfyjrLbnsJcqK7DyAEhZRlO7IACMt10ahaN+/rqNbJfxetjwmNwjSrbNUA1sP+GE30yHo5f49arKD/qkRXaLz6mS3BUAHQzAGj3DSoBBecyI0QnLsNd3o25eyXW865aXMotyNOmESdFENcEdxRyW7TxUCokh2SlQfXj0CVVZF4DOvO5xoY9RDq4d1I+CMiQC6f1cMhx2sTinVsPXZu+hH5wX+AwSxwWIoLc13/jdLGolW6wGWdLlev3fgLKm3UYY7
- bykJIsTf
- /NpD2r1sL90nrbJ6PdPtWQAwCHUsFDmdpIXKhej7sY6nfLlERUWeLZYDMkOXXCzi0MkXFMLpAV0ULyc5UFoifseH12Qw3JvIOkz4uXb07D64x3E6nrEOI7DSiR3IQgmkGmi0Unphqh8+5HMAL0os9Az2qvZ2dCK66voxVzwvKqdFINAq6qHmvpVxXVnYxV/o53uUcbGJlu9AfbDW2CLTxo/0+p3WfH4A6qtimmKipnrewKE0oJxYojvYCH71nic1L06BsiAJvy5Kqh1kLt2LvuDxuBSQk7yM5GNbMxxJzx6OUjuPVTchKEZtCCFL3lKOKgC9GcogFAkZYBHbq+XU62lsspCLqdyylxAbYFzss21MxDUMGR4D2F6ut8TUKjUbYbpsfXPcFTLgVFETZbDzJpfo5K0hYVJpXRRpiQNMbj6CRS4IIAibNAgqF3r79M+qBj8qzNJeZmar+IAMv2TX9IwxGfifPediq7Y30giX2wz033OtTFelvhDWZNqJvK/o4AjQQgO9YGlJKJbWK2Toq1qaVnIcLiZWd04FinxyDakITiSZD8F5Zwlfn7oxA+haLEe26N6XGkboibr6Lg+OqBY3Bb7fiHyUB/orsGURAP1mBtE16+BaxSUv/E07IBkT8LFZ9Vda1cJvz/O3rmn0lfOgz9b7ocr4shgqlEL76/Yte0rFPEm7AJgWQRNTaPtV2a+pcEO2QTs3CR2o=
+X-HE-Tag: 1793987930-980305
+X-HE-Meta: U2FsdGVkX18lG5WrCS5BwOZr8XHh3SQvn5BqHD9O/tPkIlgRWgFMTka+W+ybv/37ueuDqwHrGtMjYyvipimrAGoJ/gfVzMhdauXYbLUbd0BBWIyVoPGEd4x3vANNLyP8GKSu5K0PMyIAxUmYouCsU3V17E40Bapq8rmWsZZ9cRyHp2UYfHzU4kzL1UYeddwrN7AKbBWQZT+I51Fdf6/ugux8QXHZ6bes6e43gW91jwInJuYWA2hAKfkHMeHrib7j8EqJa4S9rBmcIz50QdO2ot2pv2dlsCMC2xQbKyxlXC1wOCY0POHlLXEsqycTRAu+2UrbV79lu+P8GUqoy1EDsvydp+RypyrcWoxv823c+0ksitzTXX7mbJumPQdBkiswb5pdw+B8OqwrmS6BBBOWaMb5n9bUUCnliRJwX1HjJQRuCyaRWVClIiw/GBnyMvcfkSS9rYzVxjWLYJxRi6iPJ7fcIhNky1ZgYDjlP0hNBXgGMEJTSZyX0Uk5Cvfujowx18k+mn/7aVaAUJ6xYQXY8OpaZoH3y+JL8gcP+rw50WGidk+e9QBagaqIu51DgjNmdrXkcjG2IPRLO7bFAXY2G1ycO/zJ2uIJPutkZqzoTShJU2HTVPaGaN2pKt/TuXZLtQF3EDLBFEifhh73P2Aqb0QIlaJsbAftgxBRb5efTCkVhT1aU774gxPr5XCKeHzoZAEnaJ/fOt1JbYIKRqOPVCxZlPKvK90koZyAr0u+JWmo/dpMWA20lf63Ngh3TWmzFV776g83Ca6iUv0ABtkTJe1vb1LKg4MQxHBpw2yoAb7oCPIpOniNSHZCpPWiiG3lBf33zapc1h9eii/LiqJGPFYxszfgolDFlVZGWTbXQum42XlovZ5MmaBPBcT93eWVyAQzFaLj6TH6DIq/V0o6AeFerXRgqxBpj22U8xl+5S97b06pyCDJTQ4B66mvDe9Rt7Ait9iCE4P0fm5vJxV
+ qiYWmB49
+ LAGPMw4r7etvZL2q5dPV17DZyT/j8NiVHv8UGTVzsP7fb3GWiazvMJJBGZ5RGydXx9U1i+UXM85IxRjeamB5K8KZ1UCM0gDYpetVomRshPIdP+EobkZo6Xclyf4IzhCb/XjPl51FkGE/iGlMrImiQpb0AMWWX1nlHzM0w1y4APF6tA/GS4ziyZ50vBHxRAQkJAOBzaeOEtZo7yQ/GTNpZ0ej5MAJ/dYVnRgC6U+oKtHbJ8CA+l0SY375Qa+1jC7Ns9jjmOSn68ASRg6twx+cg68u+hd944iSnLWlNIuehi654DM4tiM1Gl0m0qw2iBon5rtZ0P9FVXAVIwtbTKmmTtzX+zA0CemR5uEGaZSjxmoCLF3m9B8JTVIvhC21qqsYv0nreyawzdsaSjoeIxKZ72QL6Cg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -115,9 +144,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 11:35:53AM -0500, Sasha Levin wrote:
-> Could you respin 6.12, 6.6, 6.1 and 5.15 with the full backport? The acked 5.10
-> patch stays on hold until those newer trees are covered.
+On Thu, Nov 05, 2026 at 02:10:11PM +0100, David Hildenbrand (Arm) wrote:
+> Similar to mapping pagecache folios into page tables, let's reject splicing
+> folios into a pipe if the refcount is at it's limit, similar to how we
+> handle it during GUP.
+> 
+> This will prevent more cases of possible folio refcount overflows with
+> large pagecache folios.
+> 
+> Let's keep it simple and check in the two callers of
+> splice_folio_into_pipe().
+> 
+> Also check in try_get_page() to cover pipe-buffer duplication by tee()
+> and partial pipe-to-pipe splicing.
+> 
+> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  include/linux/mm.h | 9 ++++++---
+>  mm/filemap.c       | 4 ++++
+>  mm/shmem.c         | 4 ++++
+>  3 files changed, 14 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 79ae8fc0d6bb4..a82cfbce18215 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2287,10 +2287,13 @@ static inline void get_page(struct page *page)
+>  
+>  static inline __must_check bool try_get_page(struct page *page)
+>  {
+> -	page = compound_head(page);
+> -	if (WARN_ON_ONCE(page_ref_count(page) <= 0))
+> +	struct folio *folio = page_folio(page);
+> +
+> +	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
 
-Will do. Thanks for the reviews all!
+Since you're here anyway can you change this to something other than
+WARN_ON_ONCE, since that results in an OOPS with panic_on_warn set?
+Thanks,
+
+Josef
 
