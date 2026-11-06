@@ -1,95 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF21606A32C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 10:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60B9C606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 10:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lTSl3Q4A
 Received: by kanga.kvack.org (Postfix)
-	id CAB196B05B2; Fri,  6 Nov 2026 05:09:40 -0500 (EST)
+	id 5FB856B05B4; Fri,  6 Nov 2026 05:13:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C84276B05C4; Fri,  6 Nov 2026 05:09:40 -0500 (EST)
+	id 5D1B56B05B7; Fri,  6 Nov 2026 05:13:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B99876B05C5; Fri,  6 Nov 2026 05:09:40 -0500 (EST)
+	id 4CD3A6B05C5; Fri,  6 Nov 2026 05:13:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 961666B05B2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:09:40 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 81C491A0D74
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:09:38 +0000 (UTC)
-X-FDA: 85404272436.21.9A7DEF6
-Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C7539140003
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:09:33 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf26.hostedemail.com: domain of qiuzhiteng@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=qiuzhiteng@hygon.cn
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E1246B05B4
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:13:21 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EADD11C47FB
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:13:19 +0000 (UTC)
+X-FDA: 85404281718.30.6EF8327
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 13D8C120004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:13:17 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=lTSl3Q4A;
+	spf=pass (imf29.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793959998;
+	b=sH896jeN8UgH3rDADEbvarDR5uNXeffATRPMSckg87enKrfPYEE7BmirOUV4L2NcDx99df
+	NBCs68bd1sFtDHHJqKwkqjlKBinqd7RWuqt9CD4DNIR2VMbnbeGLgYg9YXXwMLATFT0OuU
+	X2oy5y+Eg0XVPmpsVc6NZFkMfG/onvs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=lTSl3Q4A;
+	spf=pass (imf29.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793959775;
+	s=arc-20220608; t=1793959998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=S8nYPHZ5sRm7H2t5xmzRj8iBg0Moiw8TSdKlr7ve9cg=;
-	b=PPXwuBMckrlDzFn6G1Anbei+WQsK83XT5s3OYnt9yPO7DQY6d78q9+YyWQoZtw8JYuB1EC
-	xnTzg/X+rdyHA14Oa7FioLBX2BeEJT6MPoycfr6LkmrRqHkupDLdF1shjG+P8lNuKmkE0V
-	GYnjoC2qP3aKVGO/Z5EX8m1mbbK4+3I=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf26.hostedemail.com: domain of qiuzhiteng@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=qiuzhiteng@hygon.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793959775;
-	b=t5J903UX1sFK7U8QrUWUkeov6A/ot5g3Xywjk4sKyQZpuq6Gua9J36MdmFNGyQZ7u68on+
-	uWUnNNGyX2ufZ1LqmiO+s83CbZv0SuNdvmbLrTemy3mQYIKbkqAbhwO8kktM6ssiBDNIcp
-	Xfnc9xD9tNht7X02TYmI/tjJHMgEMg0=
-Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jLZfH0c5MzBpFyL;
-	Fri,  6 Nov 2026 18:09:27 +0800 (CST)
-Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jLZfD3NTjzBpFyL;
-	Fri,  6 Nov 2026 18:09:24 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id 550BD308158A;
-	Fri,  6 Nov 2026 18:08:46 +0800 (CST)
-Received: from ws.local (172.25.64.90) by cncheex04.Hygon.cn (172.23.18.114)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 6 Nov
- 2026 18:09:25 +0800
-From: Zhiteng Qiu <qiuzhiteng@hygon.cn>
-To: Ying Huang <ying.huang@linux.alibaba.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
-	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul
- Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Alistair Popple
-	<apopple@nvidia.com>, Xin Hao <xhao@linux.alibaba.com>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mm/migrate: don't batch the TLB flush when there is
- nothing to batch
-Date: Fri, 6 Nov 2026 18:09:17 +0800
-Message-ID: <179395975709.1235605.1971486611419119070@hygon.cn>
-In-Reply-To: <87zevmwbaj.fsf@DESKTOP-5N7EMDA>
-References: <20261106041628.1177963-1-qiuzhiteng@hygon.cn>
- <87zevmwbaj.fsf@DESKTOP-5N7EMDA>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=fLL3XmqFz5Pf3FaFIovTOe/0d0X3Y15DtdwfOU4Sa2o=;
+	b=oIIJpnHuxm0LokNlmSW9Kd/qpPLxv6mHmGZP0iAt+xP0N9khgZy7Y14z4MBqLByEWNW8Bz
+	xt2oeDGhw5cZ7JHOdEpJeFiR5/SyIN1jNMA+r7KKsasYM2bmvxqp3QHICqmN4rqCyfM5va
+	1mLOO1WZV2HXUHqQiXylJ0AhLcoMJys=
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a2069b9710so3728635e9.2
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 02:13:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793959997; x=1794564797; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=fLL3XmqFz5Pf3FaFIovTOe/0d0X3Y15DtdwfOU4Sa2o=;
+        b=lTSl3Q4AMl+jWKyqsZyfxGbEJn+e7el5C+14aC//w9XserE6+VfvYlBjzjAs+9ip29
+         1OWD92qR3oxbXFSncT18zUEzN3Jad7NnT02jzXT1/ic51wrA3EuoOGCSsAEZjRltrQS7
+         5MsrtLzNOUtgIUFEaZJi1ahfsy6k+B15BNV0LzZDEmV8x4Hj8mu52gpsFCsrIw94hIjN
+         2+6LOoPd3268SbICnPlZsibae3Mexjmj90veSkJYScceghsIvL+2hiVe34iugLy/izXs
+         Ob73oQMvkaZOk0wnbpmhkzM0U9raDJ1Ns3YaGVplcDE/5xIb9UWc97TJ34SpoxqDuwPo
+         ze1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793959997; x=1794564797;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=fLL3XmqFz5Pf3FaFIovTOe/0d0X3Y15DtdwfOU4Sa2o=;
+        b=xK7v/mMzYnZasTUPQIkeBFPFYEW10cmZyIZ58DvxPshcBUxm534kxLh/WC+LcCYkZU
+         KpBa7yIvSYkw359cSVx4sRMitBJRM4NJdIU8JPMPyT4UGMIFByLaruMCRJN3XeEKmUhO
+         12Y+koRoPPYCQ/swgsT1do791bqc8Vt1TPfzKmQ3jSL9H5r10rDyMyHtaLJyOST1KQli
+         xg7qHb518GbxdL2LK/90siOn6wn56zQUj0hIrHA88pTgfmYa07vjDY6GOorXcfjL7K9x
+         elwqO8qX07YHa8997qlUy4ZdbHDfAK7rY31yWDcVzOYlgg9mJHJPVpCUnA6WK225QnLd
+         4zwA==
+X-Gm-Message-State: APuU4Z9LQlwUaTfUpX8kfelmJTAATP1/9I2h0Ow3yoMMSDAXSVEBYjen
+	yJ4s7WpbWmHwScjrj/1SkCC3ixNgMSBhLwFPjjwljNXSqZ52Niw2kIFl
+X-Gm-Gg: AYBFou1e327w9ZytZ182ZULexTHNAWQcpfGZRDEI/MVplZNarQA/D1qycnmt0w0VSjQ
+	wx919XclAn5b4t4yBrZds+uJan6Fac8a2qHCB0R2KChwAYSr9q/wdNaNzJ+CD/vuG3BlKq7MOzM
+	eAkbC0eDT7cB6aWDNXhcnvhLT6ZULHLcP3mVSMYAKpkxkzlohb3btWZijY0/hklTNKCNeHXeyHV
+	+uJb3/uw6FqXhbANjV143bEIbiZ4u/4lEUyZZsfheAG+8m51v8x3iE0sCCZsbydDc/qSpP4Z5sO
+	uiAvae15+P4G7EaKePvJIvgTKsnc/++tHNKsJq1NWIUgL5dTZUjI9yEEMWer//RQJLqrufJc9jo
+	W+qEO7YTplluX8jU9KJvHa3SPG5yelTumLrDG9sO+HvFD36zterurbM6BT9rugTt1b3JNDi/1pC
+	gqfXDY39WM+QKdmcRYb12d5jytrQFc6Z48TL0Cx1G6DyX01ulNv9cIdc13cWJR78JTGJgquPDHY
+	TTIdNzOyVfASF4McaS6U6iOAoJJqFlvv5o/CHal3OgMYEH0GiaC03Z4/UEJyfnWjvQeFhZ6YqV7
+	F36nyfr5h8FeEXFsiKtq1Y0=
+X-Received: by 2002:a05:600c:310f:b0:4b6:bb67:bb9 with SMTP id 5b1f17b1804b1-4b6ded4a3b0mr30188925e9.29.1793959996617;
+        Fri, 06 Nov 2026 02:13:16 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b572bba207sm121341505e9.10.2026.11.06.02.13.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Nov 2026 02:13:16 -0800 (PST)
+Message-ID: <4763a039-60f8-4263-8124-beb0f9ab3366@gmail.com>
+Date: Fri, 6 Nov 2026 11:13:13 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
- (172.23.18.114)
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C7539140003
-X-Stat-Signature: iqdju5ffa3kzwyec8bqye4ywes97jeya
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/5] mm/gup: limit pagecache folio refcount when grabbing
+ references
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
+ Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
+ Steve Sistare <steven.sistare@oracle.com>, John Hubbard <jhubbard@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ iommu@lists.linux.dev, stable@vger.kernel.org
+References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
+ <20261105-refcount_overflow_stable-v1-5-70b9c655da3e@kernel.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <20261105-refcount_overflow_stable-v1-5-70b9c655da3e@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: b9dpw9sd4gs73e3oa67gn3giraynf46s
 X-Rspam-User: 
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793959773-735563
-X-HE-Meta: U2FsdGVkX1+1TdrqdmKicXJT4vPCsy/AKaBBSkeONQw2wSArXhbmxLgcOuek7YBLwcQn5mX50dRwHGt6PUi5/ET5WfB7HNCw6XCuKguIzNkHBGMIEyzQRiD7rnur80oPGktI834xB7stqL0Q4Z2w7tyKdKZ6a0GZ+AnBvz7SGFw2MUC3MsDjFGvux54lblqMrjR8z0IF653es9s0Yz9gZ3BPKlVPWSotbeEokRXlYhY2CofeIVxD3bE4Hf5s+d9Xq/6VyhsvYFD+0D35aSXZUfo5q5A6iPFfwZ0rnIzRWWZ7bCz9pDIBn3ikKm8QrD2pUvPHuu2Cuma9h8F8UOa8+t0zu/k03Hcm2N3F0C3kOPBiGC+lFKraN0H07kznAEyWYAnsmoC1McnymSP9m4CWgWI7/NcojUjW70o7qCxjzg4nYsBstXlC9RCFwT2eOF+M6BXibPiFMn3IwdKOEbnwEFnzY0N9qAd66yf1SlZSs619mt4QP8sXx9e+S5/ndTobVtyB8Xe8gpK+C+GgewRPdoWTsxFV00hlM5HISjW9J18PP0P5zTdAjFUi+hrg2pYjmQaDRNr8yRordSoMtVMapmL12yMTvz4SdocFmKxx13XAAFQPN91nK721zpbu2AsF5QL44rM8tvIPnzPfi/bP+jRf0W3XKZx1vIxwCXE1vBn2Gec6GV2Euy9jCMAebAS8VN1M2A+Az3WpAdkbhZuvOJSTBEhSxzHH5V4dDJuz4Tq9XCfSb5cvB0zrsHWUVRMkPFJWKXEHcmivQRuYRt+x7QMv6dLF0zwGIMSu9egwT/4JFuPz3xcKYYd7YADUumLXtJEF5rfUFqmI/CliA4MPs/KLEXMroYAVXqmloyOW68MdvC8hOVGUZqgScDqgW3M6b7xYQ0z8HKJC79Zcir//d+JeNyKfd30yEktSjD/BW+GJvfmjGbrlrb0jY298tVZnOzgQ7ydkV7t09ermvWd
- i8wmqShW
- MLmuAwCouwAw2A9S3nFvl+oEF+79uOl5RE5q0HUcQTAsdyQt+Hop31dQis6J7N2zA8iCV6KEwyQVC8+iVXyndC76bxWVbJuD56ynKOAYQp99J5c4pCf+MlBkDofd/FkZRARcnzCkDqhJ+TF+hFiAbxI/1WnT+lyQDbkoVusRQe8aUUOzOEszUUU2bJeJ5iEwifPwwp+XYZ/+cFvM75NrdPuvRGlX1C2iDLIYui+bCAwNqTTYtZ+ryWrI/UGIxec5TkWsFxw/oyzNq8TF8tGSr1JIHi94DDtqzri5lDYWmevTVg3kcazek+gVBXzO3YxNkTO6vaQ5zD/+ayKE=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 13D8C120004
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793959997-623768
+X-HE-Meta: U2FsdGVkX18K90LqHo8TRFXdPTkJ/QDJJrJBBzBW/Tb9MfMX54Pa8A/xFurqm6QqO+QEmTEA+WwkNjhF0Eji7MaLGIavG63zfV1emRzwdmXM8z5pQC7tynmGf6yfRcZR5euvSDIC+KufcCZN5FSWyM9B4RC2SGCMsSl/Nr/43x4qM5ClfU2KzS8YU56D3VATEL7KFJDDGh4lc9n4Kr2D1Hv07RO0NybAxjpzJPPYfoGxiq1ky6mPkYUB5fqknLtYSiIelAM+dgOExa+aEBtzbxJTz3zeD8OGwjya9GU5RrfHeNsSwMWEThul///dXSOWHZ0QalUSZB6HhTjbbe3TQ4rq3IPlBcnMEMjmdJnNmHtbB0UqsAAzLdO4sS7jM1lhxpD3Kq8PivPdb3tViviz6HTIxEKia4vdq3KHmZMB3xRwHIki5di6nGjF0tlFbpagWnPVPs/Hsr8/a57Y3De2jZhJba01FV+4x1OVaMcnTMjjaIKxrzEC8CoUKf13jxXVthvzDSj7K8FV5IUBW8S1p9uQWiwvqwNOHibSkJ62CqLI/Xw1fezXQFKwPv5t729/+pAUQ08++Gajj+Nt4iE60nx6pTOyxHU4JrX4+nFF9vvh4ftLIwRqGQtV7Y7VzW4hG4f3nLDK689jhxylNCe+Ujrh34/6YKG9owSKBiiUN6jSRKq5DPtCxoT3qpIcCBUGP1G+DRVp+UfitbTvMW7wIcAWiSLNdQAhb7dgXK9DC//fp74YBXTOrABKedUo6OIlSRvamhJBZUtflDeGwjhWXSuTf5AmC6dVh0/xYW0MejIowAjMpNStyG4DVYzABMQ9VHvAogdm0EQjJNc8kbOW5Ae9lnhMtDPPjDr1KTXxkKw4BRh/v1AuckB1CDOLpApHAkEZtpe6R4yl2/rQP34mXFaxaNUj+78HzZWb0pqBNLKCMXkalRgOiCuIVTMJ+hw8LesgT0DO4ltqnM4hO9f
+ Ux8NULFh
+ 0fr5FmXH603ZayHcAn5CWnYpvgsVG9/PK/PwCYznXqYyZ1jgWM+pDr2qSJLMTcvTKm0reM92T6XiYrgIPTEJQHDOFRh3QWfgJwO7xaXPnVTxlbogAQ7h2o8RyxHrALP99hOiD9iYrUi6b+fV6onMDgZLABQ8UdoHC6ESgrqDMiKbLU2mGOfHKQz5tGoS6dnlrITwOJWzZGG6zIykGX5VzrvM9HnJJ0frqKzpaICbMkaJ1idvYFZwq8VK+G2F6wz1DclnftHm/sp1B0EeAGsrkdeEWSzIrgZ9qvVNnHilE28Va+Iv841kVtTW3rRZUqUfJPxhRcwVcAljCXlayw5Nkbs+1DCZFp6gMAIsWmJ37iA/GrAAbX2NJgM8l2DvMRtg+GR4qzatnR570ddwlqXOIz/jAnJKvGlwerRjEShNjRN3T6zhL7ftw3CTGwIS0LPhYlFMD1KfIAM91d/vuoTnbVHAIwyXzRpvVePk+KKzeeIE4HoHJpQe/Xf0E8K/sJ3XR5qDSk7rRaBra1B80Mhpw9Opxq2NnCbivZwDf
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,28 +151,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Ying,
+On 11/5/26 2:10 PM, David Hildenbrand (Arm) wrote:
+> Let's replace our existing safety check by the new
+> folio_ref_count_over_limit() check in fast and slow GUP before acquiring
+> additional references or pins.
+> 
+> Keep it simple and use the check for all folio types.
+> 
+> Drop the WARN_ON_ONCE(), because apparently these things can currently
+> happen with large pagecache folios.
+> 
+> Keep the zero-refcount rejection if the refcount is 0.
+> 
+> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  mm/gup.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 2ab42fc6834e5..db9db6b2a4662 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -77,7 +77,7 @@ static inline struct folio *try_get_folio(struct page *page, int refs)
+>  
+>  retry:
+>  	folio = page_folio(page);
+> -	if (WARN_ON_ONCE(folio_ref_count(folio) < 0))
+> +	if (unlikely(folio_ref_count_over_limit(folio)))
+>  		return NULL;
+>  	if (unlikely(!folio_ref_try_add(folio, refs)))
+>  		return NULL;
+> @@ -140,7 +140,11 @@ static void gup_put_folio(struct folio *folio, int refs, unsigned int flags)
+>  int __must_check try_grab_folio(struct folio *folio, int refs,
+>  				unsigned int flags)
+>  {
+> -	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
+> +	if ((flags & (FOLL_GET | FOLL_PIN)) &&
+> +	    unlikely(folio_ref_count_over_limit(folio)))
+> +		return -ENOMEM;
+> +
+> +	if (WARN_ON_ONCE(!folio_ref_count(folio)))
+>  		return -ENOMEM;
+>  
+>  	if (unlikely(!(flags & FOLL_PCI_P2PDMA) && folio_is_pci_p2pdma(folio)))
+> @@ -1482,8 +1486,8 @@ static long __get_user_pages(struct mm_struct *mm,
+>  				struct folio *folio = page_folio(page);
+>  
+>  				/*
+> -				 * Since we already hold refcount on the
+> -				 * large folio, this should never fail.
+> +				 * Grabbing more references can fail once we
+> +				 * hit folio refcount limits.
+>  				 */
+>  				if (try_grab_folio(folio, page_increm - 1,
+>  						   gup_flags)) {
 
-"Huang, Ying" <ying.huang@linux.alibaba.com> writes:
+this can fail now, so shouldn't the error path below return -ENOMEM like
+the first page does, instead of -EFAULT?
 
-> IIRC, after commit b99a342d4f11 ("NUMA balancing: reduce TLB flush via
-> delaying mapping on hint page fault"), we can avoid most TLB flushing
-> caused by do_numa_page().  Could you check why it does not work?
-
-Thanks for looking.  b99a342d4f11 is in effect here: on success
-do_numa_page() returns without rebuilding the PTE, so the PTE is still
-PROT_NONE when try_to_migrate() runs, and both the batched and the
-direct unmap path should skip the flush because pte_accessible() is
-false.
-
-The numbers disagree for the batched path.  On the same workload and
-setup there are about 200 TLB shootdown interrupts per migrated page
-with TTU_BATCH_FLUSH, and about 13 with this patch applied.  So
-something makes the batched path flush where the direct path does not,
-and I don't have the answer yet.  I'm instrumenting the unmap path and
-will follow up with data.
-
-Thanks,
-Zhiteng
-
+-- 
+cheers,
+jose a. p-a
 
