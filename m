@@ -1,114 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A9A606A32D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C19F606A32C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=f9FWjavz
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UmWKc631
 Received: by kanga.kvack.org (Postfix)
-	id A01566B05B3; Fri,  6 Nov 2026 12:42:30 -0500 (EST)
+	id 769366B05B4; Fri,  6 Nov 2026 12:42:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B1706B05B4; Fri,  6 Nov 2026 12:42:30 -0500 (EST)
+	id 740A06B05B6; Fri,  6 Nov 2026 12:42:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87ADA6B05B6; Fri,  6 Nov 2026 12:42:30 -0500 (EST)
+	id 656EE6B05B8; Fri,  6 Nov 2026 12:42:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 526436B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:42:30 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF20240172
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F4B96B05B4
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:42:32 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C048B1C21CB
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:42:31 +0000 (UTC)
+X-FDA: 85405413702.29.35731EC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 24F4C1C0006
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:42:29 +0000 (UTC)
-X-FDA: 85405413618.10.E9DBD8F
-Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 25F23140003
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:42:27 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=f9FWjavz;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of 3ghHuagkKCLsuknfsdjfshpphmf.dpnmjovy-nnlwbdl.psh@flex--tjmercier.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3ghHuagkKCLsuknfsdjfshpphmf.dpnmjovy-nnlwbdl.psh@flex--tjmercier.bounces.google.com
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UmWKc631;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793986948;
+	s=arc-20220608; t=1793986950;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dUFLil/A/qxmQAsi18K2mSML2dlbE2/nzQZ4zVZkdWo=;
-	b=LhGbsTIoyh0oDSxCNg9se7szi8O5g9Z7FMoSCO4zJk1SB98qWScUy/vjcjoV0eOGl+RxFY
-	DQ4E5sma7d/t78QbG8nE4M4dpNFX0nzyt6iJsNZxHtAsfo4nrlisRV2N1zOFvSz7lfP3Vx
-	PkE1xRzEZ1VAPna5VorrCigZZrRRh9M=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=f9FWjavz;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of 3ghHuagkKCLsuknfsdjfshpphmf.dpnmjovy-nnlwbdl.psh@flex--tjmercier.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3ghHuagkKCLsuknfsdjfshpphmf.dpnmjovy-nnlwbdl.psh@flex--tjmercier.bounces.google.com
+	bh=+q4fBaayeFFlFMq8uGMRkJxmg9BxhSzj1XcGm2+OXbo=;
+	b=NcxeO32Un061ZxV/qJkjmU5/gePR3gdu7aPy+AVO8lfUp2ba+zSj5O4oXmm3IZnO9e+yfF
+	sUBDgHC5CkjL3whd9n0STTqkf0PzGjIv3LZzMRaJnMfd4NcYNc1msZ38mSNF7ujQUbHuKz
+	MVce0wTKEmPv2TsiJBCss1Ctc00++w8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793986948;
-	b=YsAPj5m8oFVffyjWgt9RuYBtgCItH8mrlKZB1KT9pf1kuTWx/2l07IchbTMvOB/OVdwtHV
-	kiroTAHhPyr2ImPa6lOusxtQ5y4JYjXNUaemF5+ANXjk+hWzrtMSrenm1/opTPXDW296L7
-	9r7av3FzhEi43Ty4zcS8WddowMJH2IY=
-Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-54dbbf252cdso1192846b6e.2
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 09:42:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793986947; x=1794591747; darn=kvack.org;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dUFLil/A/qxmQAsi18K2mSML2dlbE2/nzQZ4zVZkdWo=;
-        b=f9FWjavzU1hNaFljtKPPOJcRS9uooGUpHCRdFSYj5gwrBnJDa8RNM1xbj6K8+MSaOq
-         xxnrmuH51GaOZipt0+2r894tFY0Wgfj0/gRqQf8/lmDXQGt8U5d/wrnz+wmYKrLD09bL
-         Ndr30I/+p0iDpkyjaMv88L1JA4eAXy6waFCmSnzguzARMUsJSWai0E0RmRxQ6RR0VVzH
-         um2EwbpDZwTkQQWgb29X8iVn/pLZ4H8/RGI62PwB0WAGDnjt+5xEnc8qWZy5Td5i04eh
-         kQh06KBxcHFZRT5ZLfua/q8ksMofaer+QWhi7fLSyodktRarWDWuha/Z6q8SY9x8O3tV
-         hobw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793986947; x=1794591747;
-        h=content-type:cc:to:from:subject:message-id:references:mime-version
-         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=dUFLil/A/qxmQAsi18K2mSML2dlbE2/nzQZ4zVZkdWo=;
-        b=Bj+n6gel+/NYISJ5mPsz7oSMnWGwlNAxFt4n0IebBJ1Azgr8Cpx2xrl3tHuuG7VHoc
-         qcUsueYU5GHjnkT+Ig4XZjQo/ww2McXHJ3U3ummSi17zq1pgcdqyDqm+B0+fnWIqIIH3
-         0oT/6W837/oAhVPQ+tO1aGozi/3syQNgmZQmTjRDAFrJSuj3hlTo7i5cD6v8U7DGHTCx
-         5RWG5fEFsSEmYHwrAVckYHIHyqAzvQ+BeWX3+PCfzg2wLAGSLH2Es8oxBcnQMnhL6NMM
-         v5+H6wNArdSKbQSUH2taJ/sBlTXGX81/PUD7FPtMoD0xCcedlFWfHDcfXOfeAXkOQA3n
-         BQqg==
-X-Gm-Message-State: APuU4Z8ecE24YmG38PB1xgwqbAfKnDoy9rC+BAsezVKaARRE+wC/6bOk
-	abNyGZILgJs4aiVPSEnghgYLaj73hohJ+sDblmB//Rew78KZs9ftTHpSP4UCU7mVsOROeX+fQVN
-	RS4+IgO+o8J1soJDiiQ==
-X-Received: from iohc24.prod.google.com ([2002:a05:6602:a998:b0:9c7:7f8f:934f])
- (user=tjmercier job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:4f47:b0:4b9:a8ac:480 with SMTP id 5614622812f47-567e14d9facmr2577739b6e.30.1793986946809;
- Fri, 06 Nov 2026 09:42:26 -0800 (PST)
-Date: Fri,  6 Nov 2026 09:42:23 -0800
-In-Reply-To: <20261106163056.541441-1-ehagberg@janestreet.com>
+	t=1793986950;
+	b=kvc1/HoQRy2gL9D4rjv489tT1Mb3Z7WkN/i+0/Kj8oPxhvP1Abzt6gbAlAMrdCZybq4D0R
+	aLYi3fIsKztmUNKM4irYA2F0bo+oJXmkAKfVlxxYJW0HJPKtn+ZLI0aWzUI/UUYO/B/EfT
+	t7r9BEadFM2zpOdGwJGEV/APYq+boCc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UmWKc631;
+	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9AADA43830;
+	Fri,  6 Nov 2026 17:42:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0F41F008A1;
+	Fri,  6 Nov 2026 17:42:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793986948;
+	bh=+q4fBaayeFFlFMq8uGMRkJxmg9BxhSzj1XcGm2+OXbo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=UmWKc631vhsumw1+vJW8p01VmsJppONkP7+d9n+c7QE9cbCuL9v6MhyWuCBuVtIA8
+	 yypFhxl/2SHSuvD4CVkFGQesEcEhZO5HjxsZC3XrWsPRRmom/QtNGIg/q1wDaCXdHu
+	 BBUuItdKUysyzWtUrG+dxieJ9HK3OjlSC1GlnvkWiUnZndxhiaGDETZROxPWf4aa5Z
+	 MiOJqckFCt764nU6j8YQ6r8Dr7STofUYda3xazb5dCE+SSo4YaU6m4jUzIKqX5zZJ8
+	 WbeogzAp0LyGLyWAmUFkR6T/SiJsU4MTKBR0TlDui4AGXycpjjVRTFOJ1Pp5er2byu
+	 sBdCo4xzbeRKQ==
+Date: Fri, 6 Nov 2026 17:42:20 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Gregory Price <gourry@gourry.net>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Kairui Song <kasong@tencent.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH 1/2] mm/vmscan: consolidate promo vs. high watermark
+ checks
+Message-ID: <au4REhIF64b6TUms@gremlin>
+References: <20261106172620.318113-1-joshua.hahnjy@gmail.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261106163056.541441-1-ehagberg@janestreet.com>
-X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
-Message-ID: <20261106174223.743929-1-tjmercier@google.com>
-Subject: [PATCH 6.18.y] mm: remove '!root_reclaim' checking in should_abort_scan()
-From: "T.J. Mercier" <tjmercier@google.com>
-To: stable@vger.kernel.org
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org, 
-	mhocko@kernel.org, zhaoyang.huang@unisoc.com, shakeel.butt@linux.dev, 
-	qi.zheng@linux.dev, kasong@tencent.com, baohua@kernel.org, 
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
-	ehagberg@janestreet.com, "T.J.Mercier" <tjmercier@google.com>, 
-	Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>, Yu Zhao <yuzhao@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 25F23140003
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106172620.318113-1-joshua.hahnjy@gmail.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: j9sphtqw1yuy3x8mye7thabskzgz7fns
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: kz98sqo6qii6hxrbinjoebkzjskqbo3t
-X-HE-Tag: 1793986947-570356
-X-HE-Meta: U2FsdGVkX19C14jnnEhAB5Ui1Nh5IVSVTwvKcDTxzYes8QRaCNavcMkOFwF1tZzV6HWAPQcEWTQfzMx4b0/+DH9oBHuFNd4zfEwQ8X3VczQ4M8MMlo6W9M9wDDAlkSpIrxwW6WslPUhcLRsRlx0gRckQaSFYILG2gpdiC/UZR1N3nrbMqjGYwRBRY8JpcGsxFk+RzSWJIzQyrIRT8f1haq35WtKG9PzvfFMpWIjAEx0VyGsfFnTMrd8LvLUG2MnHbvNIYXbvY2ETHiPQVr71/nrFZxre8CDV2gBs015mGyVM5YbHdEJqDkA2mYE4vRBNWLxmlyKN+tTux+lVYT5+6GvaUWoYFi8JNh0opiKwTfZarZ1xCgl+lmKFAE4/EM27Vf3gMYY4a5IjgICn+KfGeDO2w2qUBTZRed5scXGDGR4dv+zNK/+dp2Bcf0ZSLGVtPGaE4VINuJ3Fnmveg6bEp0THmIv9PPLhdDYTP1aPOE/S5kc/+Zu1dyWLuG99qCJDL6SwFxPZXEt33KjCw7xcgb8clsOXtfZtdVAL7t3ZJMj3grTK4KecKdR94XuWAR8INyQ7LapYmmjhqyBTnYQ+kUrRB7RwVacpgGhRfix28mJ3GpsJ9Ot4HIXF9ywTU30wJwiLkTlRZcd1fE2uNhWRMjUEvO4RqqKHdP6RYRLteT60kh7f3kWBAZKCZnESavVNUA0yG4a+inrYfwO2H+RRmVAzx0WlNDZA0IzH9BNm67R/54zZLg2Z7MIsWoTDwAMSupDsLjTCKBtWwS6kxkMyNXCKQsNoJ1nn44YQ+WN9Q3EYJtEmEcQCAWGJYQq28/xiwUlQBruFQOg1hjLbfI18s4g/IxHOtupSgE4iu8E7Ynmg1qpcl7gU4nClQ/u/18zkH6q10jEnncp5V+7ykh2xMgv0jdoqnxCZCC5/fz2nesccUUjePtdCllQwUt14okxpBNnbu3e4fMfag3/neJ6
- pg++kxXO
- Tn+6WoyC8m9CU32VmuMWj+PbV+tPgjbj39J8qrvalGvtGvSDMhDBbNgok5J7cmRhm6ow/uiMrODkamO61VoxFUUyOsZcad4ChhdlyiC39g9LCC7+o/aOnVkxJIrSgJzjQ7e15u1FEterqMi26hOZBUyypTSo0wcXIg4apDkSjHPA1IT8mto+t4KvS4MSZom9bCHu2825ZSj8qzXPNcpo9RbgS1KoBR8aVmTFBJ65GRRmxslWqmGDIDEKq04gPKT8vcX7+oUbdG9edoaeRJG9RWI/j1KGMqv8y5pbQklORCnhl7y/J23tDXhpE/hcZmiDz5yQ4PFmOu8n9hRywVdC81qvUsi7TM9wsJ+btyrM90MzoOFzu64SCDNd1d8UDZSHmunzADA9f6m0HmCP28MHvsTKf1ntkAqEooMtuFj+kGZ6OMxNIEacPOw7fsV7Xf6b1U8OpiwqlgnJMi00vr8ayeuyO0xRgWzPRQBI+6kLfskxj/BKc+MPVkX1/ELDjAuFx7ET378jYv7PmdwEwhdGz09jmStR4BNtoRVSjgTDYrC9qAsuOT0g/vRqUnEmojrU0MEfyCM1i3xu5KIXThGRUXxp8YenCyw8BO22V9NoE3vrqj+0Aj9N/xfX3vFmTsDoHyEk1+C/N0/93798ErDNpTB/0l7PcmS98UDz8t96FrBu/rIO9omZ0FkfwTa2MmUo/ZhJH3e3Dthh9JViKmi5VdxFeLWK7bZf5icaYLjN0FUL4oIvGdoECJ3mgrvOl2IVnPnp5zZerfakubV7s57W3X8jerrj7ex+cnF4IA/CWMOpBSurzwfPm4ECfPmEdjocF3LP4qI6faQQqbOX/ulfKj9VrXdYehZiB/HRrbnc3A4OGvDS0PacGb/iesCQTzgCv/P2VGQA+clACGfPYMZopUn0LHWIjvfIHgt0FYb6CoIvDGX2njTe4dJdH+4BtBlu5Jsl1HhcdGY4EGOPSRuRnLAqE77j4
- gUIIeI2T
+X-Rspamd-Queue-Id: 24F4C1C0006
+X-Rspam-User: 
+X-HE-Tag: 1793986949-513555
+X-HE-Meta: U2FsdGVkX18Vz7upTJsYN7+MEyw9jt7mUL61irg4JJWEHSrpcWxhBo/vjjmDH7nDGq16hKlc/d5oKdBhGRgsq46Eknqw8p+VYotm5trHjMtIkgYkGhzYYLpjyaAzQdi5oq3Pq3LWtwVFAz32RfxtETAKMDemrXMZ+63yx+C32Uu7OGM0NL+scxxF4jKrwLr7xPFwUz9oItCGcwnyAymBvwLwFAFbIRqkkqp4aTZWR/II8GMNCOQKYn2ykGvQqsv2SEargL2XbXvvX9OWeJVVrO+hozYTvrrVmt6jPduoYizLlY1l+tU7eArrHLsUhAKSPu199zUcwuQBjJVHT0NF/cJw+32xBL7bTlAOzD4SnfxtmhPW7ueOT+BcmrZ8tjcHxMjoVhCwsXssSMdb13jJ9u0x1byA1kfR37RKjh66/ni7V3BsvCWCKP+07rsCZ9Bc2QnIG/c/ScC+ukpqYMe7bnQCLXDPo7n2FDAz4dA55ViZOuY60qQVLWfb0VelsjaKej4udTNsVCydEHGqoE/KeXrmZ88AgcSi7C7/KzgNr0Zm+RbD/27DG9/aIEtQWoYgw6qqwhAPWSVKVcaKDy1t/h5RkejxDIbd4DJiZNxheUwAnJyTBOZhhcG/bJWRlULoauyui0Bo1HEayTuJkF/8m9XVHKdqMmvy0EPtStoOAXSnK5OQD16cavg0w00tMwHg6C3jliklG6BUr9UuBSoUVxC4pfOGYAdvkqNBT8zfGSj+03zMuStF4WliBLD59LyTu5VzA0vZxjBsgyAcRmqJm/ZXwKRBVpecMGe/ejJWTz5vywolXvA03ElH3psIzERBV0rIpfaH8qSrQPR3gaLikDIGiAfw3x+wPghZOcm8W2opzP35nQ7KXdwQ6tyX8+EVnJKl23+hRbvVezux6B496a4BXr8iyNMqevkdhNBOstvoJIh7odYZ9vvIJfxnjTmt8lRUByfUYq9iy4lrAug
+ xMKEiZ4d
+ vXZCd+P1Dy/OHCPVzHZPRgCUOt7G+59XWomYDBazNadmk0oO9qWUPhSctdeRF+njWL01qFQ9oUu9q7iuM5+0SJNhscgCcSrvxhVKEbsmUt5GPfh6+iM7IuH2Zpyi/+qcqEJ6LOfDAdC+vzG5AUm3cwOaul2+rZHrLj3hp3aCFq7kf9bCEG/YQ4ESJ7zOFrougZdCXn7pb7jgfJd+A/Ksk01G2zq11sl0rifoIPKzwoaHkFxYtWpqp4fkdqnagf8BBzZpK9IPFmmGQKOlMBq1gMRfaYuAmEmTQPvEKQLX0gacmzLlgKoncV5YEmQ0ZnUsLkWYf6YH6rsuVsdRDNQt24nnQVgnCQMuv05w/unKL/0/4uOUJP6vH0W3heg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,68 +103,20 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Hi Joshua.
 
-[ Upstream commit 19999e479c2a38672789e66b4830f43c645ca1f2 ]
+Please send patch series of two patches or greater with a cover letter,
+with each email sent in-reply-to the cover letter.
 
-Android systems usually use memory.reclaim interface to implement user
-space memory management which expects that the requested reclaim target
-and actually reclaimed amount memory are not diverging by too much. With
-the current MGRLU implementation there is, however, no bail out when the
-reclaim target is reached and this could lead to an excessive reclaim
-that scales with the reclaim hierarchy size.For example, we can get a
-nr_reclaimed=394/nr_to_reclaim=32 proactive reclaim under a common 1-N
-cgroup hierarchy.
+The easiest way of accomplishing this (+ our preference) is to use
+b4 [0], otherwise format patches like this:
 
-This defect arose from the goal of keeping fairness among memcgs that is,
-for try_to_free_mem_cgroup_pages -> shrink_node_memcgs -> shrink_lruvec ->
-lru_gen_shrink_lruvec -> try_to_shrink_lruvec, the !root_reclaim(sc) check
-was there for reclaim fairness, which was necessary before commit
-b82b530740b9 ("mm: vmscan: restore incremental cgroup iteration") because
-the fairness depended on attempted proportional reclaim from every memcg
-under the target memcg.  However after commit b82b530740b9 there is no
-longer a need to visit every memcg to ensure fairness.  Let's have
-try_to_shrink_lruvec bail out when the nr_reclaimed achieved.
+$ git format-patch --cover-letter --thread ...
 
-Link: https://lore.kernel.org/20260318011558.1696310-1-zhaoyang.huang@unisoc.com
-Link: https://lore.kernel.org/20260212032111.408865-1-zhaoyang.huang@unisoc.com
-Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Suggested-by: T.J.Mercier <tjmercier@google.com>
-Reviewed-by: T.J. Mercier <tjmercier@google.com>
-Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Kairui Song <kasong@tencent.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Yuanchu Xie <yuanchu@google.com>
-Cc: Wei Xu <weixugc@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
----
- mm/vmscan.c | 4 ----
- 1 file changed, 4 deletions(-)
+(You've got 22 patches landed in mm, I shouldn't need to say this :)
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 2c66fbcd6e84..160481706b42 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4844,10 +4844,6 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
- 	int i;
- 	enum zone_watermarks mark;
- 
--	/* don't abort memcg reclaim to ensure fairness */
--	if (!root_reclaim(sc))
--		return false;
--
- 	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
- 		return true;
- 
--- 
-2.56.0.455.g6c5a503b38-goog
+[0]: https://b4.docs.kernel.org/en/latest/contributor/send.html
 
+--
+Cheers, Lorenzo
 
