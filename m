@@ -1,94 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0434606D80D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 08:00:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4168606A328
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 08:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LGvYi3hL
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pNSI9xBg
 Received: by kanga.kvack.org (Postfix)
-	id 1F0616B05B3; Fri,  6 Nov 2026 03:00:44 -0500 (EST)
+	id 0C6916B05B0; Fri,  6 Nov 2026 03:29:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1C7F56B05B4; Fri,  6 Nov 2026 03:00:44 -0500 (EST)
+	id 077856B05B1; Fri,  6 Nov 2026 03:29:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 105396B05B5; Fri,  6 Nov 2026 03:00:44 -0500 (EST)
+	id EA89C6B05B2; Fri,  6 Nov 2026 03:29:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E55156B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:00:43 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0CE351A0D4B
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:00:42 +0000 (UTC)
-X-FDA: 85403947524.13.8FA4723
-Received: from mta0.migadu.com (out-195.mta0.migadu.com [91.218.175.195])
-	by imf07.hostedemail.com (Postfix) with ESMTP id F3B9B4000D
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:00:39 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LGvYi3hL;
-	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.195 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C831E6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:29:08 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id ADDD3120CA9
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:29:07 +0000 (UTC)
+X-FDA: 85404019134.30.A829A82
+Received: from mta0.migadu.com (out-248.mta0.migadu.com [91.218.175.248])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 91AEC80004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:29:02 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pNSI9xBg;
+	spf=pass (imf02.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.248 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793953746;
+	b=fWhxaHqra056B+3hedLy5MLCHAYk/n5PmmKXirDs6/PcR0VmiUhdlOmAv3GMRhJG9sEqJO
+	TQMCAVU9g5BWEvlDlI5+XKnkQowAh0zFmQSECVG006fInbncM+7nEElAvyRAdd59OmDWZ1
+	L6I3Il2dYg0Rvac3L3tXbH8OwnmjV+8=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pNSI9xBg;
+	spf=pass (imf02.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.248 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793952040;
+	s=arc-20220608; t=1793953746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CSAmRJxA26lVa9d8ef5jJKzg0pl+9P3AFrDuUmlmVQM=;
-	b=x/GxJL3HvlrxgD1U2MC9Ez0NdP0Ti2oCdIzzFSqb72jPIe6B4SanqbX6jmIjtDb3BnOABd
-	Z3Ok/biVV9vUIBjDB3664lceYcl0loRtD3FcC0+GeMNEdTj9J3RsY+nugCBh0WaHXbF63d
-	jm/J+CTXZRP21ywEWdmw0qdtsGbuebI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793952040;
-	b=tOj0fZLed2wiv5d/uYY2tvD7lLxYH06bAawDQNTs92mZwnmyfD7eePrG0vfGh5uJR7D2sw
-	0yBGfaFSwauKJywCWCp0sqFK82y5R4n7fkTeCe0fwNGaeKTVD2EHqE3kZjiiV0KMAvsbEx
-	dEV+XiZEAZ9xD4RfBcttlsOp02VniZw=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LGvYi3hL;
-	spf=pass (imf07.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.195 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=aNiRRJr/HqM32dNtBujr6juLiRF2qd5NxM6dnan6eNs=;
+	b=zS0SHYEXwgkusC+Lq+mC9gYJgu2SXIwQyLK/LCsEuT7F3KmoSfM2EwdaG2WDinyJ35snPK
+	Vy5ojIExxn5ZZFG0sZ2ArrFxSxROnxE95BSR7OUOgKQuFqyTJF3vBQSW2UqNpm3ykQj2Bz
+	qkODEJt5uJh+91/z7MK1i72/RAsC7MM=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=VW9Si2+KVl36tjewGW8VX2mt2qPP953x9tJRVdyvaNg=;
+DKIM-Signature: a=rsa-sha256; bh=tlJTpDnDjtAtZ2QazRj8y5qDCk5dt7YWwEJXMbA6c4o=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793952038; v=1; x=1794556838;
- b=LGvYi3hLOxsmHxvPgvYUsw4MpiOqhAN+N52L4SG7wkmr+5vonjfqNsyf757Zzt/7RyTGp9ap
- zgkFgZhB13sP21GFEICGj9K7w6VlmrLbz7VHv17xxR+hSRoiN77C9IBgZCQxb3YoHX/yniq/enK
- st4tK9a3Et1Lr0EihTqVJq78=
+ t=1793953739; v=1; x=1794558539;
+ b=pNSI9xBgbIn3g3QR07UWBPgC8ngpZPPXPV/9eEgnbwgNCgNpAbFInyRWIsf4JuKB+7gWCwMg
+ voW3mCi/v8ZXU4/koDQQiJFLZLxDjKBU/e3hoTZaN1IaCJkBkm5Sv/SremiLRs+qHoReG7DAoqM
+ jUz5lRxC83OHpaogPylZxFhI=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 9a35c9af166ee30d;
-	Fri, 06 Nov 2026 08:00:38 +0000
-X-Mizu-Trace-ID: 9a35c9af166ee30d
+Received: by mta12.migadu.com with ESMTPS id b2a43df8ec8d98e8;
+	Fri, 06 Nov 2026 08:28:59 +0000
+X-Mizu-Trace-ID: b2a43df8ec8d98e8
 X-Migadu-Flow: FLOW_OUT
-Date: Fri, 6 Nov 2026 16:00:31 +0800
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry@kernel.org>
-Cc: Zhan Xusheng <zhanxusheng1024@gmail.com>, vbabka@kernel.org, 
-	urezki@gmail.com, paulmck@kernel.org, qiang.zhang@linux.dev, 
-	akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, rcu@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	zhanxusheng@xiaomi.com
-Subject: Re: [PATCH 2/2] mm/slab: don't queue the page cache work under
- krcp->lock
-Message-ID: <au2JBV_Y0DJVwVVD@fedora>
-References: <20261028134647.3176080-1-zhanxusheng1024@gmail.com>
- <20261028134647.3176080-2-zhanxusheng1024@gmail.com>
- <auifTNDwbBTJeu81@thinkstation>
+Date: Fri, 6 Nov 2026 16:28:49 +0800
+From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, chengming.zhou@linux.dev,
+	liam@infradead.org, ljs@kernel.org, vbabka@kernel.org,
+	jannh@google.com, pfalcato@suse.de, kees@kernel.org, ziy@nvidia.com,
+	gourry@gourry.net, anthony.yznaga@oracle.com, linux-mm@kvack.org,
+	wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+Subject: Re: [PATCH] mm/ksm: fix ksm_exit() deadlock on exec error path
+Message-ID: <au2PwSAxOU3W9pwF@dgvxl46587.localhost.localdomain>
+References: <20261106013906.2229780-1-tujinjiang@huawei.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auifTNDwbBTJeu81@thinkstation>
+In-Reply-To: <20261106013906.2229780-1-tujinjiang@huawei.com>
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ed6s4znh9y596zqgzxrh8ugk7t8wuofb
-X-Rspamd-Queue-Id: F3B9B4000D
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 91AEC80004
+X-Stat-Signature: q5k6x7t9oyufozih4ib9jfysmds831ho
 X-Rspam-User: 
-X-HE-Tag: 1793952039-160961
-X-HE-Meta: U2FsdGVkX19dArUQzs8TFyeOk9EfcvLyX4aPC2C2xrbojSUb+WlRWPVjMPV3p8tlsX906/f3Ntpce0jz+eQ1HAb5Nu7K/TKIDB5C+gWz+Ham9miIMAR+3e5dXYq4bWsAR6CnUc/VG6Fq+M/JjJVgZ63dbOVNd8dXPg2Bpjls1OejcJ8ULaceWW/1z+jFhADz3nPSMgiaozx998qQBuCuRmfMxKpQ6yzNeWY5KRV5loFzupkPkxKCy9Gzuv+IVJEPzXAryNYOZB23bFpD2ylQr6Lyt8bV5iEbCDUzfEZNxZ7v7/2i9En0HymcJX+OtglILkoxjAyfidUeP6+w+oJKacyRQ7yTqs30ILzNNC0UBGT1yoIutchkLlLaamvvyydfcHJpoK1ttvt7tx5W4j+aIFZu/wutNriQDj+pdxRb+mi1U/7Apvw06ZDTaf4rbKf46IGbbtpOMvJebRJiWk1gvSS/VqudLaxp0zEnErnpCMHytrhDajG8C1sr7l2+2YiTZfthF2VQsmcp0R7K5GPDYhebSUGC02Wkw+8xak7KbJS15apD0zCou7M76omQpPTqbTDnqrfidQRLkQUUQLgi/lAMVc1Wb7J7oUAMDgR6+3LmIaq7VfIk3OMsMC96e6htRwiqjZhg1gMXXke6BMsfHeQcu+2BulaYspuSppeLd7XiAyj1+XgBh1xxWvYE0P0wwVe6X8iZTANoC6Q9W2PbTrK5Pwvk+7kvfn9SARqhefCKSUuG7X/3IuwCgH3i6thu4jYQK7NESZIMQ3xkL3kta6dLV3npROUfzLJ6ssQna7sUUbkrfdOOhQsZo6oqRdad3cxsKG4qnQu4XVZT+Wkz9HKdU5DParYTXU9q8sj0XGWD7h/5wLTeq3mfVskY43x+kC/kl69H6fqMPJO4N+lXYrZv3Vnv47UivZ4MJDVeTngW5Dp1fwXAOSUodOFtoExUKrA+SedP7YJV8PVX1mp
- SN5jWCIV
- o7Lk6MvJlT6XbbKThhvVKLKNf6RpiKRyZVa3kzShYmEpkClKupPtp45wAmUloWgJvjbQoeacexh7hnimsaKiUr211OMxLSG1uPFWIpBEgCSbwi6YLJdEYzx5dEvsQy1pl1RBF/kaKArkza64Ud2ckybp+/a8ugFKzSXM23NHZNjXWgjgxjha9mqpkvwYGPgLHUzdq+IblkDMrFC7OGdQxZJrBzmEX0/n5wQyh8iBrJtpfwvEW8qm0tp4WKiXI9fNVEPysxeZ/e0gskPYhFt9c3pK2vMrYEf+eQSdXr3WO1G0WOjKORi6+7ae6EvTtTAjWcwBF1pOcbVXCHAtkVO81g9f217NDSvqgSKhtXsvFlJTGJY6gLR7jLUkNnvQx2nQdoWyvTJb3QWextqIm8CB7vVtA9JRASYQdPHRjGfZYnVFnjPY=
+X-HE-Tag: 1793953742-849581
+X-HE-Meta: U2FsdGVkX1937BmaogobO/WYLeoysxaGzeMlRY9v3mCu57PcIRecyWTMW/bGwmUTZ1OGg7D5I44np8BpTT20Wg++WtMWfOvfFN37C+u+UV3j9cA6eObRedA41XxCPJYlHpjxcQJD+5qPceQdCPppgs+9f+mNt6Um8elkzDSzR0JUEut6yBymrjfraamCLKpTslXd5CSOokkJiWqVbBvexovl1vasUV3Ocny8OXEMwFN7lBi3lZ3y5Sgh8oulJGBmo6+bM+pvGMy7h/Z67xIVAAbcebxnsagpnz2Z1k2ElDEduwPXbrRUcF7hGaxUscNQjgCP/7SFxpRcDeab9nBTsrZ8arkPMDIyvs3sOcCQzpNbvj757DabtYeX8EY8N2MPe/n2TYLW/8I+Ejusi1VHS94YhsO5r1jg0UCYNuLJg35jj2T3lm1EgaAu3M0fK1tx+fP4Pn/gzJm9kmnm8Au6eGaonx8GPRzYGZONkNR4Cl0NyoQk1x5FW/ISEF5hZzBkWth7KLpUPWlFI39LxP8PRI/QRA2SNlYWQBTwjmLGbP83iOZEDYiv3DVCYD7kk4Vr1gngKtfsW+LX6+++o0BDtGXwLiOSCwPhcD4QKUrPyamUP+2sicEhO4B8ZSaArIcsyVhTZBlIVxIexT4wKdfsLXoFELhVUtmNBmUtO/3E3IJgwaCTYaavPfZ5tcfbeXdxrnLHfSvvHm2qRE5yA7F50ewuOGOqS02YVJwvZuv4zw3c3VcrGzU9BBgw67lbfH+JHGdXt+NSI8p0e2qe+GtOYFZim5D65Ub9aKmPBrG/UMjDG5nulMd9UrhJnuhLLcceGoF4+oI6GrCwbTnU6ggEZo+707a+sbGrXAnNZVBroEiXG2EX+CK763WYjQuR5XQmsyX9zz0mEIPJKLMt2n2nMQa6wp6GFPIT+TOz0r32vJrNt8jBVjizkmde7W4+wWx/SBS0YbL+Q0uCMuCwQlB
+ qGpYlRz2
+ NKLOUuyrw+8HRwWaFgUEeVChyrH+uyxbQNuKKM7G3eqNu2NLCNMlc8bJkpUmemYKAO7vLW6Bw6ENElZn4xw/2DhKQbu25VuNVtyf31Q3FwULGKY7qZRK4KGJZZZRRCb+TT8o/XFFzszfW2OVURf5Sut7+3xrayNHTMwu/mzwcLfcYgjGzPfo1RmaVdhMHXng6fYhMaTxd0kJdB6Hvoe39EeK23CtC995k/EVONcPKDDWUKZoh73EJaRKVFHrOGrjPBmdY0w5pwNee6xOysrz7Q6UBFkIaA1lhzuUIM/IJAglMlXZXIbEuFxBmP5sXQwqrBFlIoSBH5VrLTe4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,50 +94,155 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 02:35:40PM +0000, Harry Yoo wrote:
-> Here I added bit more context and adjusted comment. End result:
+On Fri, Nov 06, 2026 at 09:39:06AM +0800, Jinjiang Tu wrote:
+> create_init_stack_vma() registers the new mm with ksmd via ksm_execve()
+> while holding mmap_write_lock(), and calls ksm_exit() before dropping the
+> lock. When insert_vm_struct() fails, __ksm_exit() takes mmap_write_lock()
+> again when the mm is ksmd's current scan cursor, leading to deadlock.
 > 
-> mm/slab: don't queue the page cache work under krcp->lock
+> The early registration is no longer needed after commit 590c03ca6a3f
+> ("mm/ksm: fix exec/fork inheritance support for prctl"). ksm_vma_flags()
+
+We can go into more detail. like: 
+"The early registration ksm_execve() during the exec() is no longer required,
+since when the process subsequently carries out the actual memory-allocation
+operations, such as brk() or mmap(), ksm_vma_flags is invoked to re-check
+MMF_VM_MERGE_ANY and register the mm with KSM."
+
+> calls __ksm_enter() when the first mergeable VMA is created. Remove
+> ksm_execve() and its stubs.
 > 
-> Commit 56292e8609e3 ("rcu/tree: Defer kvfree_rcu() allocation to a
-> clean context") deferred page allocations to a workqueue. To avoid
-> deadlocks with the scheduler, it used hrtimer to queue the work instead
-> of queueing it directly.
+> Tested with ksm_functional_tests, all tests pass.
+
+If possible, can you provide a reproducible testcase in
+tools/testing/selftests/mm/ksm_functional_tests.c in V2 ?
+
+Generally Looks good to me, thanks!
+
+Acked-by: Xu Xin (vivo) <xu.xin@linux.dev>
+
+Thanks!
+
 > 
-> Commit d0bfa8b3c411 ("kvfree_rcu: Release a page cache under memory
-> pressure") later added a backoff mechanism under memory pressure, but
-> did not consider that queue_delayed_work() with delay = 0 immediately
-> queues the work and introduced the deadlock commit 56292e8609e3 tried to
-> avoid.
-> 
-> run_page_cache_worker() runs under krcp->lock, from kvfree_call_rcu()
-> callers that may hold more, such as set_cpus_allowed_force() under
-> pi_lock, so it kicks the refill work from an hrtimer. Under memory
-> pressure it instead queues the work with a delay of
-> rcutree.rcu_delay_page_cache_fill_msec, which may be 0, and a zero delay
-> queues it at once, taking pool->lock under krcp->lock.
-> 
-> With the delay set to 0, calling kvfree_rcu() on vmalloc memory under
-> pi_lock after a drop_caches makes lockdep report:
-> 
->   Chain exists of:
->     &pool->lock --> &p->pi_lock --> krc.lock
-> 
-> Use the hrtimer when the delay is 0.
-> 
-> Fixes: d0bfa8b3c411 ("kvfree_rcu: Release a page cache under memory pressure")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
-> Link: https://patch.msgid.link/20261028134647.3176080-2-zhanxusheng1024@gmail.com
-> [ harry@kernel.org: add more context to changelog and adjust comment ]
-> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
+> Fixes: 3a9e567ca45f ("mm/ksm: fix ksm exec support for prctl")
+> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 > ---
->  mm/slab_common.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-
-Reviewed-by: Hao Li <hao.li@linux.dev>
-
--- 
-Thanks,
-Hao
+>  include/linux/ksm.h               | 13 -------------
+>  mm/ksm.c                          | 16 +++++++++-------
+>  mm/vma_exec.c                     | 10 ----------
+>  tools/testing/vma/include/stubs.h |  5 -----
+>  4 files changed, 9 insertions(+), 35 deletions(-)
+> 
+> diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+> index d39d0d5483a2..5e228935cede 100644
+> --- a/include/linux/ksm.h
+> +++ b/include/linux/ksm.h
+> @@ -66,14 +66,6 @@ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+>  	}
+>  }
+>  
+> -static inline int ksm_execve(struct mm_struct *mm)
+> -{
+> -	if (mm_flags_test(MMF_VM_MERGE_ANY, mm))
+> -		return __ksm_enter(mm);
+> -
+> -	return 0;
+> -}
+> -
+>  static inline void ksm_exit(struct mm_struct *mm)
+>  {
+>  	if (mm_flags_test(MMF_VM_MERGEABLE, mm))
+> @@ -118,11 +110,6 @@ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+>  {
+>  }
+>  
+> -static inline int ksm_execve(struct mm_struct *mm)
+> -{
+> -	return 0;
+> -}
+> -
+>  static inline void ksm_exit(struct mm_struct *mm)
+>  {
+>  }
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index dbfb8f98b189..2e0f894208d8 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -2777,11 +2777,11 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>  
+>  		mm_slot_free(mm_slot_cache, mm_slot);
+>  		/*
+> -		 * Only clear MMF_VM_MERGEABLE. We must not clear
+> -		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
+> -		 * perhaps their mm_struct has just been added to ksm_mm_slot
+> -		 * list, and its process has not yet officially started running
+> -		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
+> +		 * Only clear MMF_VM_MERGEABLE. MMF_VM_MERGE_ANY is the
+> +		 * per-process setting inherited across exec, so it must
+> +		 * stay set until userspace disables it with
+> +		 * prctl(PR_SET_MEMORY_MERGE, 0). A later mergeable VMA
+> +		 * re-registers the mm through ksm_vma_flags().
+>  		 */
+>  		mm_flags_clear(MMF_VM_MERGEABLE, mm);
+>  		mmap_read_unlock(mm);
+> @@ -2909,8 +2909,10 @@ vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+>  		vma_flags_set(&vma_flags, VMA_MERGEABLE_BIT);
+>  		/*
+>  		 * Generally, the flags here always include MMF_VM_MERGEABLE.
+> -		 * However, in rare cases, this flag may be cleared by ksmd who
+> -		 * scans a cycle without finding any mergeable vma.
+> +		 * However, a newly execed process has not been added to
+> +		 * ksm_mm_slot. The first mergeable VMA registers the mm
+> +		 * with ksmd here. ksmd can also clear it after a full scan
+> +		 * cycle without finding any mergeable VMA.
+>  		 */
+>  		if (unlikely(!mm_flags_test(MMF_VM_MERGEABLE, mm)))
+>  			__ksm_enter(mm);
+> diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+> index 586c52155942..2c644e18b55d 100644
+> --- a/mm/vma_exec.c
+> +++ b/mm/vma_exec.c
+> @@ -128,14 +128,6 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+>  		goto err_free;
+>  	}
+>  
+> -	/*
+> -	 * Need to be called with mmap write lock
+> -	 * held, to avoid race with ksmd.
+> -	 */
+> -	err = ksm_execve(mm);
+> -	if (err)
+> -		goto err_ksm;
+> -
+>  	vma_flags_set_mask(&flags, VMA_STACK_FLAGS);
+>  	vma_set_anonymous(vma);
+>  
+> @@ -163,8 +155,6 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+>  	return 0;
+>  
+>  err:
+> -	ksm_exit(mm);
+> -err_ksm:
+>  	mmap_write_unlock(mm);
+>  err_free:
+>  	*vmap = NULL;
+> diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+> index f786a585caf0..9ab4e524f78e 100644
+> --- a/tools/testing/vma/include/stubs.h
+> +++ b/tools/testing/vma/include/stubs.h
+> @@ -55,11 +55,6 @@ static inline void free_pgd_range(struct mmu_gather *tlb,
+>  {
+>  }
+>  
+> -static inline int ksm_execve(struct mm_struct *mm)
+> -{
+> -	return 0;
+> -}
+> -
+>  static inline void ksm_exit(struct mm_struct *mm)
+>  {
+>  }
+> -- 
+> 2.54.0
+> 
 
