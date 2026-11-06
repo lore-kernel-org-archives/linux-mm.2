@@ -1,104 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93A2606A31B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 01:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4865606A328
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 01:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pI8kjQHR
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jYFWQMOg
 Received: by kanga.kvack.org (Postfix)
-	id BC8636B05B1; Thu,  5 Nov 2026 20:44:19 -0500 (EST)
+	id E71F06B05B0; Thu,  5 Nov 2026 20:44:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B79366B05B2; Thu,  5 Nov 2026 20:44:19 -0500 (EST)
+	id E39F76B05B3; Thu,  5 Nov 2026 20:44:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6B726B05B3; Thu,  5 Nov 2026 20:44:19 -0500 (EST)
+	id D50A76B05B4; Thu,  5 Nov 2026 20:44:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 725756B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:44:19 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CB8DC1A0CEB
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:44:18 +0000 (UTC)
-X-FDA: 85402998996.09.9C0EB81
-Received: from mta0.migadu.com (out-80.mta0.migadu.com [91.218.175.80])
-	by imf09.hostedemail.com (Postfix) with ESMTP id E6435140009
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:44:13 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pI8kjQHR;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.80 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id A9AAC6B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:44:55 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4C7F840CF0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:44:55 +0000 (UTC)
+X-FDA: 85403000550.12.DD0FFE8
+Received: from mta0.migadu.com (out-88.mta0.migadu.com [91.218.175.88])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2EA8440005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:44:52 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jYFWQMOg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.88 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793929457;
+	s=arc-20220608; t=1793929493;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dew6EzCqiWafyHsHJpopQwo/cXSuzlwoO/rf90tBbGc=;
-	b=bSiVaDAvJLgWn6Hz2QDu4Og17c9P5s9XuL6tpzbyt9XdZUuqXCA/7rh8Vdm091XYD/bjvJ
-	qgOZqaw3vpY1SX8Afc3/8RXRG/eYgaKcyHw8ckd4T97Qa7UWKD5EToOHV3hSNCUYBSRbVi
-	rM4ka+4hJ2l38zIN/cspvop8fDT3tEU=
+	bh=D1BQyEii6F0Q1y4egErAzidghcHKqUk0a8SnAS5enws=;
+	b=qr2BLjOvcmplyMaQH0vTKtG9cDjoY5AWcmy1W7sjeORsqlujp4ldUuNkLHvA+FLtqcDKUY
+	wsW+LGNI5Iuw5aikFFB11QWydHzbtCVcg6zQJvDADnQeBO5pOQa6eOVOJgsBh7HP10PFRc
+	9Q0PZi58P8yNs76loWS53TjeDA5I97I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793929457;
-	b=YcjPhdaOqVYdogUngiZh5rd7sg3wtOr5jKlGXXOZ8UUuedbAUurCxcYN9NOdJeTvtGFCe4
-	FWM5wbDZrGk2Z5Iw+OCQpWEPy9K6u5zZlNv0j2Y8wifcColk4Hq9EFtYWPyIAJxaEHmrI7
-	t+KCKMrCTlVTa8OiSk12bybHFLdwdcU=
+	t=1793929493;
+	b=HUGmOxgL5nrY1F2Ri0zXRlPPkuthIJBdRKT19Yc7uEpbTDA/+8lQrTMc8gQyuEIoJqJhRl
+	pOINpQWIR2Y/BnSCklGNydlomYSgm/+jMnLkEKeXN2YeUro+K7WF79NuqWYqq/TNXexZu1
+	AGYo76d5c62XCpoN4uVPNSuOELY2ero=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pI8kjQHR;
-	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.80 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=jYFWQMOg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.88 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=LvBe8nocYbjsZeluU6geuvGEmKucxs6vvjV6JlKiFg4=;
+DKIM-Signature: a=rsa-sha256; bh=h0d+yOrZ64mGc0iSYwHwgGdKZilHQ9XexIhOgkjacwM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793929450; v=1; x=1794534250;
- b=pI8kjQHRH8kUKUAnHaChegvFFy8HWqNBBWoeVhOnRpsHU0wBDy0gJUnUl63Szx8XNtjW7GMP
- O2uHw3mU3h+NC70ImK1nuSxFGlYa0ryOKEnOOCAjjHJziJ3MpITVSqA/19fQuWUHHGP0OMr3W9c
- dE31C6tl043ZfrQEO+Kt1uFc=
+ t=1793929491; v=1; x=1794534291;
+ b=jYFWQMOgfpkZ3mBb54JklcG6tzN9HnFBLmJXkcokoa2V6NhjxwFO0SANbAxuStk3vhzs13PK
+ rcj/5dhCYzxFEvL1fa7/lj5SxJN4AE+F3z0hlp97Q6gr3qqzMQaGTUTTvVQLLb7g5UY7gMzKifJ
+ lXdgdK5Tp3u0ic4lgbiJCIWA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e4cd8311743e1b88;
-	Fri, 06 Nov 2026 01:44:09 +0000
-X-Mizu-Trace-ID: e4cd8311743e1b88
+Received: by smtp.migadu.com with ESMTPS id ac22e0871729a49a;
+	Fri, 06 Nov 2026 01:44:51 +0000
+X-Mizu-Trace-ID: ac22e0871729a49a
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <57d2a4ca-8edc-4291-a919-8a74abda94a5@linux.dev>
-Date: Fri, 6 Nov 2026 09:43:59 +0800
+Message-ID: <76fc7cbb-11e8-4591-bb2f-d6fb8ac1fbf3@linux.dev>
+Date: Fri, 6 Nov 2026 09:44:44 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/3] mm/mglru: skip the flags cmpxchg when nothing
- changes
-To: Kairui Song <ryncsn@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20261105132220.2233677-1-ridong.chen@linux.dev>
- <20261105132220.2233677-3-ridong.chen@linux.dev>
- <CAMgjq7DtU+tSOgQWgTaV0obLwkkUwQqgvtTXjG2qf8L+iPXbiQ@mail.gmail.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAMgjq7DtU+tSOgQWgTaV0obLwkkUwQqgvtTXjG2qf8L+iPXbiQ@mail.gmail.com>
+Subject: Re: [PATCH v2] mm/hugetlb_cgroup: prevent use-after-free during
+ cgroup offlining
+To: Daehyeon Ko <4ncienth@gmail.com>, muchun.song@linux.dev,
+ osalvador@suse.de, akpm@linux-foundation.org
+Cc: david@kernel.org, tj@kernel.org, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, hongfu.li@linux.dev
+References: <20261020103057.8066217f6f6fc5b3ed84c90b@linux-foundation.org>
+ <20261022022146.506005-1-4ncienth@gmail.com>
+From: Hongfu Li <hongfu.li@linux.dev>
+In-Reply-To: <20261022022146.506005-1-4ncienth@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: qqdccgfhir6qy9mkg17qdbd7d9pms3b6
-X-Rspamd-Queue-Id: E6435140009
+X-Stat-Signature: oo9ccqt6njk547pjamptuhbuadwqsox3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1793929453-743112
-X-HE-Meta: U2FsdGVkX187S1vcaISE7y0WdjpPRnBg5sSvgue+rqwDDuRkUwX65EkUzdeef6qGDKZmq1DHFfTOuG5zpxHfu+rKXTuncMaUlR/dl9KYyZkmnuHHqwABlNrMTqnHYEo19ak9v+CxOKpZqucSzCbSZuh55dXV9BNrNe9/rVbUdOl9Z4n86JJOaEPZH93A82O9bvx4kzj/mUomffU0CYdplYX3N2KtzzA3zYth6oljTf4ivhfGxUf5Eg8yhD4AffbPnCoOe8BWzZf6jjLdTX74MmCwNy8+tROKWV/CCSap0olLYW0+1aa4uIMRlckNZ7S6yOLvHtvClH39odv7J/dWU/ihjWmJdFm1BUvKowAApCXuSO/yhXzV+5MppScZPXWbsoWX95yr5BFgHBXZ/7JnOWq0eWhL1Yt5FuCweh2HedlNZyRDRWqXqcTJw00vWk8RSmgxqfMpzCUtVz5MK29/qnB3KY/tigNkNi+0AjijBgjF7LkXgOv8Y1RleC3v1XxlDuMREt0S5cXbrvfcjXrU0jM7SgVO3L2azKaPktRWCbKWo5uCvkFffMFCwqqFPiQbIvqxRz9Ik5X2FKsOiJ5ECTGDMQDSd5Cm5oPYAJtM5H2bebwD9pZl+PbS1d44gN4FwMW5QKl+JepmED2O+K7Z2r0D7+9+tyLp8HarISsIiU89NnwRgyOi3RkuWtQ4lw/7+F7hsekc4OH8Kxy0Ava72xFLwWkMl57gYQD9iNIKnbgQ1IQ6jPwPVPuCRzJgfX6zxTxR7jmvlfhaJO+sQiRJzUqhS57Z04vPC6yLz4/7LIqipoTeBY15oT6jVnQacKfysNd5BuBCbXJbxpjoSM0LEui3RlDWb28Pa42BoMP0Lv7NC/mWme4jvxm7tXXm90HvhVVKQxBVL4n/TznRNTDOZwPzqGxpB6Oo8XCEAg7oaXwFP3oisBLHL04FnffhZgI/aEl8pj5xma7YcMmZug+
- NcZB4s7P
- ZmCxBdfUiXYBAetk7qIYJfPjUlB/tSCKvsNG2VxSpMWbIPnVwdy2sI93W3VHl69tPq8qDtWmwNHLNzjP6XuRIFrjvRqCWgsVEsXzmkCkQ0xqJkfbKIz69+s9gMgHcPPfUGFInTEXpMghTr7I4t40uJxAd+XokT07mOcZk44lVdmXmrwhtG0MTqwYW1RFX9qLSOoatlR7bFwW8U32P3CqUMqNlS4qqrfkhnebZeXWX8/do9SIuS6HUXl/sSS0PaOWh813+oJh6E80cjdJnvn06rFAmWI58kHPuGibCH5qLbIfiwa/xP1HqBoKxOpOjuJQkeddPmENdpEW1itlPz49NHkJzTzjNtVsvYGVRr4m1/Li4CAJzRWfsHKdmUA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2EA8440005
+X-HE-Tag: 1793929492-102198
+X-HE-Meta: U2FsdGVkX1/vvXEdDwPXNTQu3oBz7KqAoM7VeO3K1gOKGR38G8PuXhzJACDzlXJdeVkM6zXTLqqCiMDvSRGdEuFpt15na6JcAlirrdBj8OKJ7ue2+ko19tEZ3Ws+D2cXLAvZ+asa/x04apo3Qdc9J4znyzaUq9g9lTTrr+8Fwd4D6Mul72agh2juK0Rby5w1uXllO9gnwkVwzffh/PPJDldlPMykIR5MqWBSpVGgNr4aywBA64t+qVp0xv1yroWz+l+mov2t9e+dnVPweI3RKU/xRyCwu9w+7shEZd9Dp4EEyuUAun62rkxVLH1iW4McUxxJbT+AKEp3J2cCnI1tLLd5OhxY4h+C9x/rse+eK/k4cMMtyCQkmQBD6sFFwQ17IziqvJZaauTM4oKJgLna4kIBBz9dcjK0Df3LMNBqWDK64xcwiSGIeJixhcaMJIgD/tT3cSR0SwUFpE8c/TmbXtpH7XzCiWL9ro4nOkIwQzpYu3nOXVyxtZtTKjxTPTEnuAmjcvuobgLnPmgvCA/sYcu0HTBV7jLz4pxR6y6bKWl8fu/BabcYxDTdoXO0Zn6g2O+LS5cRL5m8xLuVER7YpbVlBc3Sx1XruUVfpfajkLL1iH6q9oGXtVsAg/e71kuxO5+2UHztcFNU0LFDOy/VNP5Nnc6wTTTxhoBhinNjnVygl6HRrdT7+BtdlFiiBm4VZ3hjJvG1tlL1LwnomweeOL52kPg2UBOhgUJYysiwiPuzsgJ58vJXh2ufkL5sf6bkraAfu/RdQXF4dlKgW/0K5bfzNj812rwZVfy6va1MSQyxwQ6XJ38n7RCQfG7ay3f77iT8Iar1PF/VD/ZsYS5e+KyRylK/NnfnKMO6uSg7PRG5nKIJjkx/QtnK717Xn6ImYtrTWFNS3tijP1HxWai8L+DP7g1Odg6lhw9k8V7nrm/ou/GRHoGDNPboioTr+9KWdz3xLNCby7qS6krK00S
+ S1y3ceOL
+ 7xqpUYagiBBd7gqZg6aun4Jm5fui3MLH52exSuIXm4GF8D8XDQixkBEAEQ80LZ1sPS0W8daWvSXogNUuj3WT1RMSxBo+MEo+Bqu/+NY7qtz0LH6P/4sIDFvOdMcyZ5nlVH+k17+05tTnZvFRfAnvESp+E6aeu1Nnni96mGDmwBC+rsFFP6PZxbbLa42SOxecpcryVDURB+c4m06nfb+fHVMd5+cuxutLajfT1ho6PADTK0XOq0o/8Adh8qaDyM0B1TKr8LC7apxiB6OLMylS/pvMxdt6CtqkcYFE9mgpZonP6HFLLi5FafXGMV15ZHVmLr3mFD+GpmFZvgVl+hcEt9NB7IgNaRpuMyr5wcnWIVs/tIZVeOxzpHr8mpYZlr8YfXYf7/DeqmfBj1n8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,115 +99,141 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
+在 10/22/26 10:21, Daehyeon Ko 写道:
+> A normal hugetlb charge obtains the current task's hugetlb cgroup with
+> css_tryget(), charges its page counter, and drops the CSS reference before
+> the folio is committed under hugetlb_lock.
+>
+> The task can be migrated while the allocation is in progress.  If the old
+> CSS is then offlined, its final active-folio scan can finish before the
+> charge becomes visible.  The allocation can subsequently charge that dying
+> CSS and commit its pointer to the folio.  Once the CSS is freed, uncharging
+> the folio accesses the freed hugetlb_cgroup, including its page counter and
+> per-node usage.
+>
+> Keep the reference acquired by the charge until commit or cancellation.  At
+> commit time, while holding hugetlb_lock, move an uncommitted charge out of
+> each dying CSS to the first live ancestor.  The hierarchical charge already
+> includes every ancestor, so moving it only requires canceling each dying
+> CSS's local count.
+>
+> This orders commit against the offline active-folio scan: either the scan
+> runs after commit and reparents the folio, or commit observes the dying CSS
+> after the scan and selects a live ancestor.  The retained reference also
+> keeps the originally selected hugetlb_cgroup alive through this decision.
+> Reservation charges retain their existing CSS lifetime and are not
+> reparented.
+>
+> On an unmodified v7.3 kernel with a 128-page 2 MiB pool, a
+> capability-free uid 1000 allocator racing administrator rmdir reproduced
+> KASAN writes to a freed hugetlb_cgroup in three of three boots.  Controller
+> disable reproduced the same fault.  With this change, 5,000 rmdir rounds
+> with over 1 million successful faults and 2,000 controller-disable rounds
+> with over 1.6 million successful faults completed without KASAN, LOCKDEP,
+> page-counter, or refcount reports.
+>
+> AI-assisted source review was used to identify the race and to help draft
+> the reproducer and fix.  The interleaving and the resulting allocation,
+> free, and use-after-free stacks were verified with tracefs and KASAN.
+>
+> Fixes: da1def55919f ("hugetlb/cgroup: add support for cgroup removal")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Daehyeon Ko <4ncienth@gmail.com>
 
-On 11/6/2026 12:21 AM, Kairui Song wrote:
-> On Thu, Nov 5, 2026 at 10:11 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>
->> From: Ridong Chen <chenridong@xiaomi.com>
->>
->> folio_update_gen() and folio_set_lru_refs() always end with a
->> try_cmpxchg() on folio->flags, even when the new value equals the old
->> one. The locked instruction still takes the struct page cacheline in
->> exclusive state.
->>
->> That is common in practice: a folio mapped by many processes is visited
->> once per mm during a page table walk, and after the first visit it is
->> already in the youngest generation with refs cleared and PG_workingset
->> set. isolate_folio() and the eviction paths also call
->> folio_set_lru_refs(folio, 0) on folios whose refs are already zero.
->>
->> Break out of the loop when the flags would not change. The result is
->> the same as a successful no-op cmpxchg. The only difference is that the
->> full barrier implied by the locked instruction is gone on that path.
->> No caller relies on it: the eviction and isolation callers run under
->> the LRU lock, and the others (page table walks, folio_mark_accessed(),
->> lru_gen_clear_refs()) only care about the resulting flags value, which
->> is already in place. Note that lru_gen_inc_refs() already returns
->> without any atomic when refs is at LRU_REFS_MAX and the folio is in
->> the workingset.
->>
->> Tested on an i7-13700HX with turbo disabled and the performance
->> governor. N processes map the same 2GiB tmpfs file (huge=never) and
->> read every page, then one aging pass is triggered on their memcg
->> through /sys/kernel/debug/lru_gen ("+ <memcg_id> 0 <max_seq> 200 1").
->> Time per aging pass in ms, median of 5 runs of 10 passes each, averaged
->> over 2 boots of each kernel:
->>
->>    processes    base   patched
->>            1    32.9      31.7   -3.5%
->>            8   195.1     160.2  -17.9%
->>           32   755.8     592.2  -21.7%
->>           64  1597.2    1260.6  -21.1%
->>
->> With one process, every visit changes the generation, so there is
->> nothing to skip. Before the patch, perf annotate attributes 53-58% of
->> the walk_update_folio() samples to the lock cmpxchg in the inlined
->> folio_update_gen() in this test.
->>
->> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->> ---
->>   include/linux/mm_inline.h | 2 ++
->>   mm/vmscan.c               | 2 ++
->>   2 files changed, 4 insertions(+)
->>
->> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
->> index b3d85fe91385..4ba9079f4dc8 100644
->> --- a/include/linux/mm_inline.h
->> +++ b/include/linux/mm_inline.h
->> @@ -244,6 +244,8 @@ static inline void folio_set_lru_refs(struct folio *folio, unsigned int refs)
->>          do {
->>                  new_flags = old_flags;
->>                  lru_set_refs_flags(&new_flags, refs);
->> +               if (new_flags == old_flags)
->> +                       break;
->>          } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
->>   }
->>
->> diff --git a/mm/vmscan.c b/mm/vmscan.c
->> index 50c352e9ffef..3fa76715382d 100644
->> --- a/mm/vmscan.c
->> +++ b/mm/vmscan.c
->> @@ -3398,6 +3398,8 @@ static int folio_update_gen(struct folio *folio, int new_gen, int *type,
->>                  lru_set_gen_flags(&new_flags, new_gen);
->>                  lru_set_refs_flags(&new_flags, 0);
->>                  new_flags |= BIT(PG_workingset);
->> +               if (new_flags == old_flags)
->> +                       break;
->>          } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
-> 
-> Hi Ridong,
-> 
-> I had the same idea in V4 of MGLRU-FG which is posted a few weeks ago,
-> with the same code:
-> https://lore.kernel.org/linux-mm/20261016-mglru-fg-v4-4-2106750c0bfa@tencent.com/
-> 
-> + if (new_flags == old_flags)
-> + break;
-> 
+Hi, Daehyeon,
 
-Hi Kairui,
+Would it be better to send v2 as a standalone thread rather
+than as a reply to the v1 review thread? It would be easier
+to track.
 
-Oh. Sorry about that. I read the series a few weeks ago, but as it is large
-I missed this change. I should have checked it again before sending.
-
-> I didn't have time to benchmark that one function but the e2e test
-> showed very trivial improvement, it's a good improvement though. Feel
-> free to add:
-> 
-> Reviewed-by: Kairui Song <kasong@tencent.com>
-> 
-
-Thanks for the Reviewed-by. If you don't mind, I'd suggest merging it as
-a separate patch, as the test shows the benefit of this small change,
-which makes the code easier to trace. I will also mention in the commit
-message that it is a small part of your series. Does that sound OK to
-you?
-
-> BTW there are a lot of concurrent activity is happening for MGLRU at
-> the moment so conflicts occur very frequently...
+> ---
+> V1 -> V2:
+> - Remove the redundant disabled-controller check from uncharge, as requested
+>    by Andrew Morton.
+>
+> v1: https://lore.kernel.org/r/20261020100345.1677643-1-4ncienth@gmail.com
+>
+>   mm/hugetlb_cgroup.c | 34 ++++++++++++++++++++++++++--------
+>   1 file changed, 26 insertions(+), 8 deletions(-)
+>
+> diff --git a/mm/hugetlb_cgroup.c b/mm/hugetlb_cgroup.c
+> index 3fb41311e4c7dc..6921b185726662 100644
+> --- a/mm/hugetlb_cgroup.c
+> +++ b/mm/hugetlb_cgroup.c
+> @@ -310,11 +310,10 @@ static int __hugetlb_cgroup_charge_cgroup(int idx, unsigned long nr_pages,
+>   		css_put(&h_cg->css);
+>   		goto done;
+>   	}
+> -	/* Reservations take a reference to the css because they do not get
+> -	 * reparented.
+> +	/*
+> +	 * Hold the CSS reference until commit. Reservations keep it longer
+> +	 * because they are not reparented.
+>   	 */
+> -	if (!rsvd)
+> -		css_put(&h_cg->css);
+>   done:
+>   	*ptr = h_cg;
+>   	return ret;
+> @@ -337,9 +336,26 @@ static void __hugetlb_cgroup_commit_charge(int idx, unsigned long nr_pages,
+>   					   struct hugetlb_cgroup *h_cg,
+>   					   struct folio *folio, bool rsvd)
+>   {
+> +	struct hugetlb_cgroup *charged_h_cg = h_cg;
+> +
+>   	if (hugetlb_cgroup_disabled() || !h_cg)
+> -		return;
+> +		goto out;
+>   	lockdep_assert_held(&hugetlb_lock);
+> +
+> +	/*
+> +	 * A task can be migrated after selecting h_cg. Once offlining starts,
+> +	 * redirect the uncommitted charge to a live ancestor. hugetlb_lock
+> +	 * serializes this decision with the offline scan, which reparents
+> +	 * earlier commits.
+> +	 */
+> +	if (!rsvd) {
+> +		while (css_is_dying(&h_cg->css)) {
+> +			page_counter_cancel(&h_cg->hugepage[idx], nr_pages);
+> +			/* The root CSS never dies. */
+> +			h_cg = parent_hugetlb_cgroup(h_cg);
+> +		}
+> +	}
+> +
+>   	__set_hugetlb_cgroup(folio, h_cg, rsvd);
+>   	if (!rsvd) {
+>   		unsigned long usage =
+> @@ -352,6 +368,9 @@ static void __hugetlb_cgroup_commit_charge(int idx, unsigned long nr_pages,
+>   		WRITE_ONCE(h_cg->nodeinfo[folio_nid(folio)]->usage[idx],
+>   			   usage + nr_pages);
+>   	}
+> +out:
+> +	if (!rsvd && charged_h_cg)
+> +		css_put(&charged_h_cg->css);
+>   }
+>   
+>   void hugetlb_cgroup_commit_charge(int idx, unsigned long nr_pages,
+> @@ -419,15 +438,14 @@ static void __hugetlb_cgroup_uncharge_cgroup(int idx, unsigned long nr_pages,
+>   					     struct hugetlb_cgroup *h_cg,
+>   					     bool rsvd)
+>   {
+> -	if (hugetlb_cgroup_disabled() || !h_cg)
+> +	if (!h_cg)
+>   		return;
+>   
+>   	page_counter_uncharge(__hugetlb_cgroup_counter_from_cgroup(h_cg, idx,
+>   								   rsvd),
+>   			      nr_pages);
+>   
+> -	if (rsvd)
+> -		css_put(&h_cg->css);
+> +	css_put(&h_cg->css);
+>   }
+>   
+>   void hugetlb_cgroup_uncharge_cgroup(int idx, unsigned long nr_pages,
 
 -- 
-Best regards
-Ridong
+Best regards,
+Hongfu
 
 
