@@ -1,127 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BCAF6082BC5
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 09:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEB72606D80A
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 09:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Bj3FnFLJ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=uHZj4cG2
 Received: by kanga.kvack.org (Postfix)
-	id A1F9A6B05B8; Fri,  6 Nov 2026 04:35:20 -0500 (EST)
+	id D08F96B05BA; Fri,  6 Nov 2026 04:37:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9CEF56B05B9; Fri,  6 Nov 2026 04:35:20 -0500 (EST)
+	id CB9C96B05BB; Fri,  6 Nov 2026 04:37:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C6296B05BA; Fri,  6 Nov 2026 04:35:20 -0500 (EST)
+	id BCFEC6B05BC; Fri,  6 Nov 2026 04:37:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 648CE6B05B8
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:35:20 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 763651C47B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:35:19 +0000 (UTC)
-X-FDA: 85404185958.29.3F0C5D4
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 959C7A0005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:35:17 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Bj3FnFLJ;
-	spf=pass (imf15.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 94A2F6B05BA
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:37:35 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2365E140CBA
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:37:34 +0000 (UTC)
+X-FDA: 85404191628.26.F1ABF2D
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 6EC04180002
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:37:30 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uHZj4cG2;
+	spf=pass (imf16.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793957852;
+	b=QCOxr8BcNq+ZP5WD9O7uAvBF5pf+CYJXRAFbyfdSqXPzvdvPvkax/iCUIbg8mNxDxoXUj1
+	ffkfjOFBKqSdUzuBv7zo66c5uIg0YWH/XMQP4lo+lL4I4N8Sk2UVyyLkoGpCcINDG1xBRB
+	RzV3qxfaF9a58r+ZkxX/8djvXTKybZo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uHZj4cG2;
+	spf=pass (imf16.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793957717;
+	s=arc-20220608; t=1793957852;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e+beHwPVnOrx0jzUBZNVM2/8fCDJRY0y3tTo+TmZt0s=;
-	b=sdUHcyslXSN3gtGEQzw+ssV5tna6TnwL959hE3llzscWRKbfu4++aoukVxS6yKP9ebPK6y
-	6q9HEXh+un5keVmB7QdnOhBtOIepeTBo5qY/q4/ixQQD8opZKWYfwUHIsLNmEixtYaoZad
-	dhd1bBTOuq7PqTVa/xdoheUclPjSCvU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793957717;
-	b=bE7fk8tvBVJT9NZ+bpWy3ZGUODLyRvHvOxHIh0DukLeT7UMtkXXBPu87EET1FZjzmR19Dn
-	1kfZmdkWaNjvJWhxyV9KL0PqCSi9kWKEel7aey2wYI9dpfwfcFpynkKI3VEzXDP9StWVO3
-	50QmnZL7DxnBiRoCDshUlZoGFoX/++Y=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=Bj3FnFLJ;
-	spf=pass (imf15.hostedemail.com: domain of urezki@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=urezki@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-c49c32650adso52682366b.0
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 01:35:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793957716; x=1794562516; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=e+beHwPVnOrx0jzUBZNVM2/8fCDJRY0y3tTo+TmZt0s=;
-        b=Bj3FnFLJgpM0vdNJSZ0JOioTukvho24jvA7gh6IschoaWRw8oVAltrf9EbeuaEJoud
-         TRetqDFhtpaYj/EcFLQsc5Glt8qY0fSCFBXrnKN0VAZkAj3qpU2FN4VD/Mtj3DC3WkW6
-         wUcgddoYBKZ0n+ii2qShHSCpwPlyuax1hZfTSVHbNrDHZv+9jvlm5+dmhknkiNa6aQV0
-         YXmwqNxjc2t7hmtGWzW4qUfS0RX1wJf8GKn69pjO9Q6c1hWfqSQBz8Lf4YFAd38rRrZv
-         V7pf4w+LMfMf6vkWILjYCGPK37aia78kqmpOT6hJ4KntipzyyHJl/HjV60vVnQ2pDjBA
-         7Zug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793957716; x=1794562516;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=e+beHwPVnOrx0jzUBZNVM2/8fCDJRY0y3tTo+TmZt0s=;
-        b=WjyNm3TilglFfGRwj2q/Iar+WQcom3nPJNcukdWVixEAmZ+zjeBVoXEV5wr2ykVETG
-         zQ36YPs1o1TUSlTN/qVybT5jw5YvfIAonPX6QIv8AueKlm7uNeXIyqHtd3tgiE7d7hri
-         /IOpFCSRxDYx+01jOAfyDjwzVmPk5IcwVzFoF38JKfqJYmqyn5mLlTVlXiEnkrok1Z9b
-         RptGpE5HiuJkc3rl0wQQXOarFgfQjkDBO8Thd8diW+MPWKtsMDHpYKYdqW7LmpIt4tHJ
-         jYP5Ut+ECiD6psG86SC6WWiLB0QRonHwNf/7z6xta3PsP7mkoe8oo+3IvJpKypYw2L52
-         ffKw==
-X-Forwarded-Encrypted: i=1; AKwUvBynT64AUB7wKr2EmfGUXTEs9ouV2O+w/jsyPQaNglE0SWsrfHpUvvdXX44VFR+E4DciS2AoSu1JyA==@kvack.org
-X-Gm-Message-State: APuU4Z+SZ6+yIW4zENgpVYg2b9AWenzAVcBtkBHbXltF/EIhD7auBzQb
-	ej34SVccjj+pK4ymHViwDps7wD0wxHP032D2tHfkN5feK1bD6rPKVedq
-X-Gm-Gg: AYBFou172V4YHmBocn6C5KnAQ0sRl97xRz//NDWF4/88X3vvAxprABoz1CguUUZQKCH
-	nRL28hj/thCOW6ojQLGm/LH3R1qFM57NjgIcO0Km10BSy77ONLVoC/dXVdRscPz4Ut/m7CGHDR5
-	p2WUceZjRCkJRDSB/hqak/wzESsIFcclsmcIcrt4H+eU+5IKSpqtK4P2JRd49UEejTTsnzDffFp
-	2hsCrx3QxydsxpHnLctjGc0pXFA/gjOPvbY5u5aNGzGyPwESp8I0qHdqaBaj+2sgHI+wlysfuW8
-	Y/ev1ysvinmjL7OKrMWPWF+knBlriiPZYCprH4VuBEJsQBt7Uf5hhlBkGZBMkmd4H8ZeML9DTZ3
-	DybjpiFOM9R4YEN4IdCv6iUnfjnTgUNrAyd489d6TdCey3XhyxzqNTaCW98bsSuUZu8xPG3BD2p
-	td9DifMhWdmU42hVVCDVJ5g7wKD5ELw3UQrMr1rt0h3YXgTeMOARrGDZXRmt6pXPv5Jg5s7hGam
-	gikP0Xrmt+1z7+b0QS97Ez/l50qn0JreO8pQGp1ux0rGnoIACWW8tuImauu0/NhOvkC
-X-Received: by 2002:a17:907:a892:b0:c3f:153a:8663 with SMTP id a640c23a62f3a-c4d34bdd8camr155235166b.23.1793957715953;
-        Fri, 06 Nov 2026 01:35:15 -0800 (PST)
-Received: from milan ([2001:9b1:d5a0:a500::24b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c4d35670169sm65381266b.42.2026.11.06.01.35.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 01:35:15 -0800 (PST)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@milan>
-Date: Fri, 6 Nov 2026 10:35:13 +0100
-To: Zhan Xusheng <zhanxusheng1024@gmail.com>
-Cc: vbabka@kernel.org, harry@kernel.org, urezki@gmail.com,
-	paulmck@kernel.org, qiang.zhang@linux.dev,
-	akpm@linux-foundation.org, hao.li@linux.dev, cl@gentwo.org,
-	rientjes@google.com, roman.gushchin@linux.dev, linux-mm@kvack.org,
-	rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
-	zhanxusheng@xiaomi.com
-Subject: Re: [PATCH 2/2] mm/slab: don't queue the page cache work under
- krcp->lock
-Message-ID: <au2fUYzBLv3uvj_2@milan>
-References: <20261028134647.3176080-1-zhanxusheng1024@gmail.com>
- <20261028134647.3176080-2-zhanxusheng1024@gmail.com>
+	bh=PLYAAogcGzOh2NI4d9WLpdaFRZuIFqV2eJZI8IGdoW8=;
+	b=j8ZWdX2FO79t8M9XOczESLOxlE1FuGvQTF8XrM7QPAYQlINS+AZMX9qrgYY2mf0jxsD2/J
+	R8ANtHmu5X1bAXcpxGbZ3D6PrHz4x7EFWFd10hruf0Wy+dLx8PDLKy41+cIogtZppEV3gP
+	AHVodLi3xSpNvKO2H3i+DlOd2zFf7yM=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1793957847; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=PLYAAogcGzOh2NI4d9WLpdaFRZuIFqV2eJZI8IGdoW8=;
+	b=uHZj4cG2y/o/E78mRISRMtIm0ORPO+jnqh7rUD//u/FF4q9yPzp5meszZytP3Vc//CZ14GYqdPW3y+mqjEd9QkEbpOEavWS8M+eqM+3fqWvJDMumngcErUz2pV4TaZ45MMYl2slnbav+3L23r+cXH/ag/JU+etaJVFLNmuSi22c=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R881e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XEBH0Tu_1793957845;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0XEBH0Tu_1793957845 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 06 Nov 2026 17:37:27 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Zhiteng Qiu <qiuzhiteng@hygon.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@kernel.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
+ <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,
+  Byungchul Park <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,
+  Alistair Popple <apopple@nvidia.com>,  Xin Hao <xhao@linux.alibaba.com>,
+  Dave Hansen <dave.hansen@linux.intel.com>,  <linux-mm@kvack.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/migrate: don't batch the TLB flush when there is
+ nothing to batch
+In-Reply-To: <20261106041628.1177963-1-qiuzhiteng@hygon.cn> (Zhiteng Qiu's
+	message of "Fri, 6 Nov 2026 12:16:28 +0800")
+References: <20261106041628.1177963-1-qiuzhiteng@hygon.cn>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+Date: Fri, 06 Nov 2026 17:37:24 +0800
+Message-ID: <87zevmwbaj.fsf@DESKTOP-5N7EMDA>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261028134647.3176080-2-zhanxusheng1024@gmail.com>
-X-Stat-Signature: fum6ndbb3bhicr17s7bxxrdjwti4pc8g
-X-Rspamd-Queue-Id: 959C7A0005
+Content-Type: text/plain; charset=ascii
+X-Stat-Signature: 8zrqrw3onwiqztxk8zdz4jpce398ud8d
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6EC04180002
+X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793957717-820121
-X-HE-Meta: U2FsdGVkX18/PKQK5jLG7B+NsMv8Kaa/uu6T7s9y8wxH8RxGkQHzSDIdAwDWLj+TlC/7At/zrWKtCyNoy5Pj9rhG4aohSoXHNlikc4DIVNIIGu/WT2K3SFK6Wbjg4PDFhAcymMOEAVJH841Jwfd+F9rLaN5rzgGNlTpSZGKoUe6mkygmhR4CVDgs4aZAzTts9WjtUrpN2WRCMOOnlXKRvgSxpLhozYXehFxwAuHXhRPvVgBjO42JQoeK+J6jwIWNXDEEoFjSl2h960Q8SdujjX3eLlp/qCHdmPj/zn3vmhB2L9Ofml/q67DkZsNBHkJtZxt5goGFBaz0Wwj9WZ1vIRhJVMxQajpewkXNVhNXpiJy9YqeE/cgzjh0uIWtXUm3lMVjkOgeeqZjW6/lgFlSqrPcmaOTvVJ4eNghbPTXFs0ZZpIULiR2RlIrWmZ4Fl02IAt8JHC25KyiJNhFcuodD2TOgGphKK3vvArHOUgZtaMSQD6K2VUPZ1oPoP2hkgswCl0h1T0Rbo06Os5TPD7+iikCblTXBqqEb/FAtPGgkIfUpvhRxFmHP+IfMxOjb63sQz/kguqikkMJNY1SXQGj3Zhen391P1f5kSw1s/906DOnfnyznQ/CYEwalvsuQo5xQNcK0zzpROTI9ysB/MhCGpry9m8JXk3Jo1YDthjFEDXhIJ38/3GiSD70SZvUxFmEmb20qG+AW0gevXbqMHIdBzB3hWEibOyX6HZXA+tdyB01Ag2VKGX4gG7b8G378diV9JVhF2ZCVQD4TpBB/m9f+82u4P9a4YMtAD4VsZ2bI5rs3PjqWrdxi2N8CoI89EZEft4sR1l8tc/Yj1rgf6pUUp6VaWUCpPXbdtRbNH18qxnodpOFaq5KTipwOp8Qd3iHga1VHJ9Fg+thN9Tc/P1uGDKqKs5fhHh0Pb28SpN3yIeVtrQiPn0m7HiYW076tY6b4HaZAjXhOKn+XI1VYda
- XbHfSEBh
- qYMnpawnGBKwM2z0mX+nsJ5vg4YrpYJI43PFT34Pwfwe0ECvCFbEnelZrLtmWNCrYGYZea6ol09GgqAPEgjVFOkzSkf62WkQaIPWih/wHLvTG5lBTj7rblCaI+AAJGaM0JKl1V/bVCwkpkEO4fYLie1cfC1jU9w0+eGNrqKodUp8NyfKedzM4IMcZgae8WXo1y/cn2Ukbe7SBPQra+0Ecv/uHKDaMXHdRbUG6nNdw6MJN74jX/oZRBY1iCF4Y1swwVtqBIl2H2sT67/+H9SvhU4S/OsAphssLLE0mf9eFNipx5tqKafNZMZfZZoKjZlLSHbYdkby30VDLnsmnLAtjdeISu5ruFp1drKEbfAc5qjmku5uuRwmIR6OckePgRFLU/hcdpnM/wwC7FQBGS1lgQBNE6dUwBbCv5RHOY9Nx+wN43b3aqXJCsc0BE/OHAgWxbsAjBqTtPbTUn2GAfKQU5ZpVfEpxny4Rqng8Yrcmk819GNlNcRTrBxwLyA==
+X-HE-Tag: 1793957850-842800
+X-HE-Meta: U2FsdGVkX1+vBzDv1AvsxMLrlz28ySS9hbZ0HQ14L47+pSvCIi6j8KzUTFwPE7BE9kkDjqbZXlec2CCanG7oR9rR1PdjcYSBh1xJU/oSlLAw/WVh+RkkndMwfuy5CqU7Rw9vZRmB/W00T/w97ZrYoNiNs6SX003CB3wRgne12VOPGgv09iD/bmofFezv69GVNjdNEO6TU9WvAUfXxVAmc6VWZJFg3nHjH6Z2sIJPfz2vzFmRkLX738/gCnq37gap87ffFisMfiBeJ/tktQWggZf+zgz5AFzZVgiojilMxs7bIiHM5AH0z0FVVhKft6RhyNxLXDDGZhxCKaW1LGlPvGxgZiF2jSF92gW7/RmJJFbmpl/N20cC4JiP47eaEx0/YuIUl/fkcCOkASJX85071bOLg/zcQHUVWmfwQsIAJI7QHryfT7rk6yJ7NE+Pk1k+atB83Pb/+PwV8hUPsaMeaIQ3gLastxp61mRqlZLzPzcyk2lVRhDjJb4zn220pLL+6l4m26ZL0+cF9aVlMuwlj/t0QL1lGxIZTHuM2W10jYIIovNQeQyYcPfmqZ8ssRAA722GRJ2rtvwsFfICPB+2W9V4/ykbzVnuhnU1X6HECiw1Ytfa+ZL/MezvFl4WuTwQ98rPEObcNSiMWwb/I0IRuq5WuVMJO8Cpaes8OQj39cWhZWCnSvWCmFgFQ+OuD8ZDH1+piB8HfKRcSMX0tdil9oEg/tudHe5cMS49vrf2s5imqVKmoPHEht7cWKft0OblVmER9TeaF46QrWmCCM4A61IR3DNZkYt6ekDNJ7aUXsqPANFyvI6nDgZ5jaDZKtUkqrGVvYP8ECH+qmTVZTdJp53KeIiDFtKBjlWtpTzmpHRPd2zFvPIIgJgs4O+HWshgBGAeewbQIxWO+hlPPETZ66Aqq32GVOzZ8/jsRwpJq08MRDZk7ZapINvDCZyg16XGvrHmAvrh0/foOpNPuT2
+ Hl0LGlUM
+ tsZslsVmSFi3zHiZOjsP6bmV4Z6zfEB0yGVPFUWUG6do5oo0pPefBAxzyRNzKJYV/N74ck1WCWGM2E6BUHh/e+Pvf/GRbr/OsmsUtgPwfragE/W8Mqd1iX32KYU5SczNyUC+fjvrFaM2btlJickzF7z7IBdBwcCD/CZk/46qM9E9hc86c6Ep2pU2cxa084jn2pnA3w22WPMvNkHSY3g9OZvldO7dnbPVR+zh30/bdeSRO8c+JVOaVMvk39J8FS8h39wE4DJvRR8smWmusBaY0mFVU1obrZReGwIYw9bxPcDuWg8owuR9xUsf1FsZUk/pu3hWXpRYkVyNZNt/T2MYMbM0OFahNAKL7iqed
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,80 +95,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Oct 28, 2026 at 09:46:47PM +0800, Zhan Xusheng wrote:
-> From: Zhan Xusheng <zhanxusheng@xiaomi.com>
-> 
-> run_page_cache_worker() runs under krcp->lock, from kvfree_call_rcu()
-> callers that may hold more, such as set_cpus_allowed_force() under
-> pi_lock, so it kicks the refill work from an hrtimer.  Under memory
-> pressure it instead queues the work with a delay of
-> rcutree.rcu_delay_page_cache_fill_msec, which may be 0, and a zero delay
-> queues it at once, taking pool->lock under krcp->lock.
-> 
-> With the delay set to 0, calling kvfree_rcu() on vmalloc memory under
-> pi_lock after a drop_caches makes lockdep report:
-> 
->   Chain exists of:
->     &pool->lock --> &p->pi_lock --> krc.lock
-> 
-> Use the hrtimer when the delay is 0.
-> 
-> Fixes: d0bfa8b3c411 ("kvfree_rcu: Release a page cache under memory pressure")
-> Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
-> ---
->  mm/slab_common.c | 8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 3729aa7a6156..ef5ff0a20249 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -1987,7 +1987,13 @@ run_page_cache_worker(struct kfree_rcu_cpu *krcp)
->  
->  	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
->  			!atomic_xchg(&krcp->work_in_progress, 1)) {
-> -		if (atomic_read(&krcp->backoff_page_cache_fill)) {
-> +		/*
-> +		 * A zero delay would queue the work right here, under
-> +		 * krcp->lock and possibly the caller's pi_lock, so let the
-> +		 * hrtimer do it.
-> +		 */
-> +		if (atomic_read(&krcp->backoff_page_cache_fill) &&
-> +		    rcu_delay_page_cache_fill_msec) {
->  			queue_delayed_work(rcu_reclaim_wq,
->  				&krcp->page_cache_work,
->  					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
-> -- 
-> 2.43.0
-> 
-> 
-Can we just clamp this to 1 - 100 seconds interval?
+Zhiteng Qiu <qiuzhiteng@hygon.cn> writes:
 
-<snip>
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 7223a7596dab..2c9236236ac9 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -2249,12 +2249,12 @@ void __init kvfree_rcu_init(void)
- 			WQ_UNBOUND | WQ_MEM_RECLAIM, 0);
- 	WARN_ON(!rcu_reclaim_wq);
- 
--	/* Clamp it to [0:100] seconds interval. */
--	if (rcu_delay_page_cache_fill_msec < 0 ||
-+	/* Clamp it to [1:100] seconds interval. */
-+	if (rcu_delay_page_cache_fill_msec <= 0 ||
- 		rcu_delay_page_cache_fill_msec > 100 * MSEC_PER_SEC) {
- 
- 		rcu_delay_page_cache_fill_msec =
--			clamp(rcu_delay_page_cache_fill_msec, 0,
-+			clamp(rcu_delay_page_cache_fill_msec, 1,
- 				(int) (100 * MSEC_PER_SEC));
- 
- 		pr_info("Adjusting rcutree.rcu_delay_page_cache_fill_msec to %d ms.\n",
-<snip>
+> Since commit 7e12beb8ca2a ("migrate_pages: batch flushing TLB"), every
+> MIGRATE_ASYNC migration unmaps with TTU_BATCH_FLUSH.  That includes NUMA
+> balancing and memory-tiering promotion, which migrate one folio per call
+> through migrate_misplaced_folio().  For an order-0 folio with a single
+> mapping the batch holds one PTE and there is nothing to merge, but the
+> flush still changes: on x86, arch_tlbbatch_flush() sends a full TLB
+> flush to every CPU in mm_cpumask() instead of invalidating that one page.
+>
+> On a 2-socket, 384-CPU x86 server without INVLPGB, a 4 KiB-page,
+> memory-heavy multithreaded workload takes about 200 TLB shootdown
+> interrupts per page migrated by NUMA balancing (v5.15 on the same machine
+> takes about 11), and balancing costs it 13-16% of its throughput.
+>
+> Skip the batched flush only when the batch cannot merge anything: the
+> folio is the only one in this migrate_pages_batch() call, it is not a
+> large folio, and it is mapped only once.  The rmap walk then meets at
+> most one PTE, and ptep_clear_flush() invalidates just that page.
+> Everything else keeps the batched flush, including PTE-mapped large
+> folios, folios mapped more than once, and the batch of sub-folios
+> produced when a partially mapped large folio is split during migration.
+>
+> PMD-mapped THPs already invalidate their mappings through
+> set_pmd_migration_entry(), independently of TTU_BATCH_FLUSH, so their
+> flush behaviour is unchanged.  On arm64 the batched path only defers the
+> final DSB, so a one-PTE batch should cost about the same either way.
+>
+> migrate_folio_unmap() cannot see how many folios its caller is
+> migrating, so migrate_pages_batch() passes that down.
+>
+> Measured on v7.3: 120 GiB anonymous working set, 384 threads, 180 s per
+> run, three A/B pairs (numa_balancing on vs. off, same boot) per kernel.
+>
+>                                     v7.3            patched
+>   throughput loss from balancing   13.0-16.5%      0.5-6.3%
+>   kernel cycles per hinting PTE    1.18-1.22M      0.28-0.31M
+>   TLB interrupts / migrated page   202-210         12.7-13.6
 
-so we forbid zero as value to use?
+IIRC, after commit b99a342d4f11 ("NUMA balancing: reduce TLB flush via
+delaying mapping on hint page fault"), we can avoid most TLB flushing
+caused by do_numa_page().  Could you check why it does not work?
 
---
-Uladzislau Rezki
+> Signed-off-by: Zhiteng Qiu <qiuzhiteng@hygon.cn>
+
+[snip]
+
+---
+Best Regards,
+Huang, Ying
 
