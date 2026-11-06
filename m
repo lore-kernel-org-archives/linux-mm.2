@@ -1,107 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D304E606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 23:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD738606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 23:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HjCG0g1a
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jBfsFrI8
 Received: by kanga.kvack.org (Postfix)
-	id F19CE6B05B4; Fri,  6 Nov 2026 18:29:05 -0500 (EST)
+	id 9EEB46B05B0; Fri,  6 Nov 2026 18:32:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF1D86B05B5; Fri,  6 Nov 2026 18:29:05 -0500 (EST)
+	id 9C66D6B05B1; Fri,  6 Nov 2026 18:32:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E07906B05B6; Fri,  6 Nov 2026 18:29:05 -0500 (EST)
+	id 8DCAB6B05B6; Fri,  6 Nov 2026 18:32:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BE6AA6B05B4
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:29:05 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 553224025B
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:29:05 +0000 (UTC)
-X-FDA: 85406287050.16.0CE9345
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 9073CC0005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:29:03 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HjCG0g1a;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6139F6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:32:12 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE67C12024E
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:32:11 +0000 (UTC)
+X-FDA: 85406294862.13.9281D72
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 367871C000F
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:32:10 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=jBfsFrI8;
+	spf=pass (imf21.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794007743;
+	s=arc-20220608; t=1794007930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=D5Lg8q3KbQTAAjZNb67nMqqiPJ3mZrmihVYvOJgZmWY=;
-	b=rdhiSCJ065uccGgiqpsnK9lGjMaD1PCjMOPLnG2csJHRPM24X6Se73L0luk+h0wd/vCGAn
-	lt9pTQvayBwOVwqhBwmUAYBmE1wVQMZpwoVx2h3LyBDiR7xNHeYkX5bktpdj/rWi1CKioN
-	mH2G0MxGfGDriUB83NjRMfH+YHm1nzc=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=wM60XYkzpSdeB/DJsbUxU2OvbUHo0twWWEWRlCj41e8=;
+	b=cYIQxbzi6FdUGrV/Xex1+OzISzFPAnfBRGzHEP5IxizF9WcCFrExC/uBwPNXg8xP7yzYnn
+	KP8QPXBqjctLPKBOGzs40CaKkLgtZ0uEEYXhZkYuh/YvU4KA0w8REozj63ft2V4Pdrf6Hl
+	wtg/6FxzZlt2wheO64prCDTlFIaU7DI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794007743;
-	b=00LVH4qO2otGu1coBrODSLlwirbWgoYn24rywunKr00apzDkunofvJYxaD0MvI2G/dz93k
-	yohu8kDQ5ZnEO+PND0w6tFpsGe60BBJRKOQPrxvnyelOG3+9rYCvVbZQMcWaz2p0X5H9XW
-	p1UXqM/J9aQxPnB4gOldUXRS5s8FUVQ=
+	t=1794007930;
+	b=uUh4RMMEk7vZ8lhgkUT+xWui0H60BCT5vJA9disOcqWf/a0yuje6Ke2SUv2Yqt9fJRFpid
+	4c4ZaZLHH7L7mvlU65UY86yjaIwYw+1KtQuyR1g+/PWi2i9j6KjT6OwzM+EEvNfJyifnlD
+	JneVQz5SJ/P8fwa45FFeNFQL+V0k2HM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=HjCG0g1a;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id ABEE460D09;
-	Fri,  6 Nov 2026 23:29:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0891F0089F;
-	Fri,  6 Nov 2026 23:28:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794007742;
-	bh=D5Lg8q3KbQTAAjZNb67nMqqiPJ3mZrmihVYvOJgZmWY=;
-	h=From:Date:Subject:To:Cc;
-	b=HjCG0g1aTWciy3pkJyDNFBUBv9stFTaNjuMAfqZBTNGjzbPDRP7Hv5yTgJ4UfSbAb
-	 8AxuShUqRnxXJCFO5FCHTSOYL3nrnKrzHtk6Tl77YM0rJzMq8iXYBPMX2R98m4JqLs
-	 ZyRPBLxrk0v/d4wZWElK8BXnP6C+6ss9SyrIOzVt+N10ncpCv301mHppiSZ1eQ1gzV
-	 ELs3u9tQK4Mli8Ghkzmj8g6k9J9aeIVI69a5hfW7hOhfdFyEDIECTHlFtpjg5Mx+6T
-	 tUrKZ/99debrBN6/xNPxbnXA+zVGkT8NhD6v4IanHAWaNfVpF/AOxCnpB5b2HmzPJu
-	 Of59IvMcDOgCQ==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sat, 07 Nov 2026 00:28:55 +0100
-Subject: [PATCH] mm/mprotect: don't skip uffd marker install when racing
- with PTE table reclaim
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=jBfsFrI8;
+	spf=pass (imf21.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ed3f563739so14235ad.0
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 15:32:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794007929; x=1794612729; darn=kvack.org;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=wM60XYkzpSdeB/DJsbUxU2OvbUHo0twWWEWRlCj41e8=;
+        b=jBfsFrI8JOWJ2ccsnphv0BBtBaiGjyJti+JAE9k4cMu/aCNYJN5Ip3rcWj3tujW9h6
+         1pWLh4exDG6JocALRRppjPHXsgo6S90zOAMDrpauTEts8tnk4F2pklbmtX2kXeORv4F4
+         IfVgOuLcUN54fuJ2/3QBGQBnR2zzv031ljS1XetfZebktxAHTAL9pqCd11Ev+sI2g6xK
+         J1CfHJ94F4imlFJyNl1x5tsVyGxZGWFcfbAksjwV3HDirS0Q6GOCKFMHzk+K0CblF+FR
+         Y2yPCNFhTL0QObwTRnYjWE9a0fzHJnNroUORoasjs4nr7bP6pvnDXb8a9DdPOOSi2cBg
+         dQ2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794007929; x=1794612729;
+        h=content-type:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=wM60XYkzpSdeB/DJsbUxU2OvbUHo0twWWEWRlCj41e8=;
+        b=ZI7o6w7EooN+i7/FJxZoGLz3zcs4yWFs63F7ikbN7yl8MdJOg2Rfc1kaVA2hkpm2Xm
+         NfbVX3ibmroDoEjI4OLU4/6YqiQYyXjeyozRsm2vlG+M4IAXoYDpDhMroVybA4E0vlNi
+         C6tyXYWXv8h9egJ9fOpP2k506J9xOYDYjzEqD8RDGcIHGwkeH+B2cMIn+HZNZPcPD33u
+         VB3a7+sGYo+XVksJQS1avkLbjcDr8wtVr0P7h8qskyD/yotl8EovtTzvcjx5YwtX3sjP
+         /FXnaR4zH4dSZbo3jM7IyMavh+BhKuCXuwEadYWQY8fAopl8bTfeFerChjgRHdVoF1D+
+         DGAQ==
+X-Gm-Message-State: APuU4Z/2LbDsEhBX5qbZoL+POgXnWfdr2HA6SL+bzV5A9Zr9SDAgLPLc
+	SRm4aeGYlEyQyTxcO9i/11JwiSITEIxIC/tFRjvM59e0Okk5ASu7GNnNOp11UFYAcw==
+X-Gm-Gg: AYBFou2+xj5DMVCM13hNIrhgOxyVivBkdxQPV32Vcuo7PT2rzSgfctlCi27uB0dEvx9
+	3HT5WwUBHC7P82LouZmWk3T4jHGX657dMGOhZlnqpvnrzIDg7WODW4WyGhaHkCu/h2yT5X0GLdo
+	5SXY/oGP4yPjauSiM7TGltmwUF6tqHTuvIUJKlDGD+ZO1KlDwUmfcKWWH9AbxW8Aw+9UIBXteRJ
+	bTLXfonoH7yySAbYVBAPTvEkBB/LP9xqc7UPAnPsAxNISyMo+xLOTPeIUubUIA2aK/4ZQs9Zx9i
+	vMQCjr/QpODSQ4/oXnYJGzGtA/zAivXTSJ/hqTspk427qGtgvEkhY/bG19rzQkBiTy/0S02kjsK
+	p1B2J/dihBKxGhO0CDj67bAfd092fgLmjE+jgQPhE3c7aVV4PBM5evfN6vb7VGKjKmz315nWytn
+	5iNYZPmfm1dsUrfXUgM+MMf49MsIeBlXoWkBYyNeVlEj2PXozzJaumlSPKWHMJ6+bGf2SuWRVyx
+	YGjLOZFhk+MjnMaVkZ/r0QUcOporfCPNt9fQEAIbpH+qZRGrA0mAZV5clwsztWvwdh7z3r5uHQQ
+	FdkHhsvaZd6dAV0JJ9AmF9LieoDDPv6RtEk9el/hYdIbVZ/87AgzCYluowBiaClmk2cTvhj8Hfa
+	ecvKI79IxJEMmYLGKnQ4zcdhUnEvXp88UZW9dFiz+rzDvLZ4Wi8xi8UAcEONbdr12dEP7Gg8JoU
+	WqrnA4yO85RZfpYrJl2eU/nXqsMInvvbuHZ9GD3twyXrxhJ5qkNFigxyBpxse2rTwAgg==
+X-Received: by 2002:a17:902:fc8e:b0:2e5:9bdf:6b65 with SMTP id d9443c01a7336-2ed66aa3bcdmr1314825ad.0.1794007928437;
+        Fri, 06 Nov 2026 15:32:08 -0800 (PST)
+Received: from [2a00:79e0:2eb4:9:3ac1:1213:5fc2:edb2] ([2a00:79e0:2eb4:9:3ac1:1213:5fc2:edb2])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b10580ca47sm694276a91.8.2026.11.06.15.32.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 15:32:07 -0800 (PST)
+Date: Fri, 6 Nov 2026 15:32:06 -0800 (PST)
+From: David Rientjes <rientjes@google.com>
+To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+    Frank van der Linden <fvdl@google.com>, Gregory Price <gourry@gourry.net>, 
+    Jonathan Cameron <jic23@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+    Raghavendra K T <rkodsara@amd.com>, 
+    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
+    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
+    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
+cc: linux-mm@kvack.org
+Subject: [Linux Memory Hotness and Promotion] Notes from November 5, 2026
+Message-ID: <fe33f3be-5de8-9283-3b35-14bb9bded4ac@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261107-uffd_shmem_marker-v1-1-91fa2d653cfe@kernel.org>
-X-B4-Tracking: v=1; b=H4sIALZi7moC/yXMTQqDMBBA4avIrA0kFvzpVYpITCZ1lNgyo0UQ7
- 260y2/x3g6CTCjwzHZg/JHQZ04weQZusPMbFflkKHRRGqMrtYbgOxkixi5anpCV1X1Tl42v6oe
- D1H0ZA23389X+LWs/oluuERzHCXdNXQh1AAAA
-X-Change-ID: 20261107-uffd_shmem_marker-a0b9869d783c
-To: Andrew Morton <akpm@linux-foundation.org>, 
- "Mike Rapoport (Microsoft)" <rppt@kernel.org>, Peter Xu <peterx@redhat.com>, 
- "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
- Pedro Falcato <pfalcato@suse.de>, Peter Xu <peterx@redhat.com>, 
- Qi Zheng <qi.zheng@linux.dev>, Tal Zussman <tz2294@columbia.edu>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3788; i=david@kernel.org;
- h=from:subject:message-id; bh=nwDMBOfI116Kjc7OUedjQY4U7ETBhxHwaczK3QvYfAM=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLeJe06+bZNLohnk7Vi/M/oJTzn4/O97u7y2pIkbxVcv
- 4y76LpVRykLgxgHg6yYIktQ8H2Dly/X1Va78THDzGFlAhnCwMUpABOJSmNkWLDDuTVVPOV+18zZ
- 8sF39HM9v5hVK6zkX2x270ZNNMOpU4wMrwWiHe6u/bnGquXkq03B3fVPbXR9FnHrmh4/ufLI5t0
- BrAA=
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9073CC0005
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: euypt1f1u8hi8e91gxfxwb6mbtau9dua
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: xcr7f6jmrpoz9866kqtjcnzcci1zecms
+X-Rspamd-Queue-Id: 367871C000F
 X-Rspam-User: 
-X-HE-Tag: 1794007743-653591
-X-HE-Meta: U2FsdGVkX18Xx3opqEDPVChXvDhEqVbcLSiZqKKwhcrkwkPeoKGmga2BWTPRcHlzJQnAJpAu6Pi/n65PUtmdrNnclZfu6sy8+zuNRDgku/IMSTniQDgtlHP5AYjCghS3ZbO7oLvMx9fl7APh41KY9EvYiCub1dHE8uh7oEpqO3RJMpQEjpUFlYgGeuG24oAMgKxXi6qUWgGcr0T4XXMcsKs2mjqAio4aPAf22iUAtpW6ReUq0IgK8FTcLqnw+pXKn8cIKQQrNweFBE89qpqGC3KsrFof7IO4MHScspeB5lt9wxsWeJZPHdf/HGBv5gUf78gzKLrdFoRYbTquuwzqs2krS6Jeqprx3DfJK+Xj0jnZmnPwn+fQ7QtLsLiF+0rPMRF05ZYrD+t/PZUTEhKVbvvR1UajDadWK0zqy84yNFsW19akQ8Hy43WKg6vc2WxpGSp6W0SgLSWj8KjP9RfRbXS1fkDf0uw8ENIaYxpw+b0n4PmSOwVjrGq/VYjO4BluNSB+OTJukYYtDRA0xQ83R2LXznF2X9Y5NolrMQGfwcD6IBJoaP+fJ7f4N+TwviO+dX5c1KWgK7fZlZlq8jRPBPuTK2hy7dU2vSTmygol3q5J9jE/0yYPUm8jLm9BxroI5KNZ7apsRvixD1I+tj/0srrsXAhQpWHYHqzxx4gQuQVgKQvvqIMNapMfX1n1EJxSh5j7b/zUmt6Hihl6tIHsInFcOE/VnmUtORtb1xZyHhCK7uFMvksYvgjpUSuC6QitRbVvZV4cDcyrcq+3whWWNgBsCwpwonPec0VA8oU9DV58Opt66GoWdjUgwDdldCJt2m/Vknl/a+i7TJ42cCtpr3on9HwNhsznjYYJ4ui6X0llNvknVFF6aXe2Z57L8e5d+S+poWdIexd6JvbWocb1xcBoxxMcIMsqjWDP0shD3hc8iAe3Q34C9lmAxTl/R8lkdcGuI/rpcerCxX8NHOp
- aJC/aZRZ
- 645NR5exzZQktMGKg60DwI+NzMdeXExdbHphCah0jO2bv6EUzvZNiHVuPqDC/fjBvSvj5EMA2ejZSoe1T2wVU/Pf1d4GzKS7BIec7h1hMG+UkVhsqd5mrgamB0WxG2b5Kmzka1Wo2pE0VpTL6Kf+amo3FKLz6YF7/eu9dw193ZJxfDmk7nFzu33r880ifWROiDugXokZ2QiK5phtOeamg65dFf/ZM4WEs7NIgerwY4JBFgkPWwGTj70+FFA==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794007930-215786
+X-HE-Meta: U2FsdGVkX1+w5FX+W8jHklKLENvMZRoNkSaM3yx+neJ4G5sLOQwKt/ZGaYOIqmc8VlgwN/ATirkhbKyKs0KyCQIFjLG1RkB4FjBG6IerO9ui/qK/bhfDyfUII3C3LAp+aSeOH1FxXQNHu/4326fSy5mNHBYoEesleESVgtRpx32qMIJKW2lJSXcGeq5PWu6vv1oNe8msdYrK20LkuppRifjrCS5RVMW99bibidAEsLYlSqYwz8ISvQCmVaS8qM3RyfTfkGAJUNLxJ4fz0nQb7JmVQa9K6R8ZKUOo5zXikNQlC5jSGCsYCYHHLX29X7ZrBZmm6nDaYAkNhSdzKG3PIblq4P46lUAm2HZteqpbDLRULM9g1y/k1HtTV87qS/KIbfwGv4gwjFldx5SsI8CAvFt7MhVckJjT+L6/Clp09qIPrxQnsCXU8zJG39mTLHmRetb7KIo4MT+q7Z3kbHSURq0x6aib9RdTbg3msaaOKQ9ABzYf2JkWiBDmVJsxUC3gyOgpAyBKOf2rY28JGSQVr/phIvAHbulbIYM/bblXzgDYJTM7cC9p4DO1Tx7oJNT+7krrOdP5fXFxvP9qafKZNvLA1sbm+iYPai2yIWESZh6rgrinEoleWSVjOPnDXYlEu1XwhqXK1x99QOYEtc/HBJVFd13cuCopU5x2vjjCVYbXlUFSR85Paca5EQVsMacmyJWMf6nPro4hkHF7T99edtoyGELS0KBtxWZ2IZ5nVlHPpth4PMA8BBa/J7hHtKomnseVbiNw6zUg4uBOxDbEsHh1KnG/9gZ6dtEgtFKcbTVSzcVXJUcNDxbB9jHCVo2Wl9fWcyckMlmoMJqPlIduCKj9zyQZMA3gyTCxOGx9X3iW5OL1AsJgXNEPOPU50y0hvn9YZUO7HLN9U5sCw2dHJaOYqK7uFc2cb5gTk/Nlig7xLi4MWiVtrZ/vXcfl/uzb25NgDrZWxl9e3/25O5D
+ +F/Dfxr1
+ ucwG0jzR51K97r/6NPzsl60rtHfqTet15fEXqOPhXtiu7RPdeS0adUenai8lfKR6C7XYPzJJzaGJ2baRJv5tqyIisR3r/1J4PQNp2LAvTPyU6aqMOJeAl4JWF3R3n3GqIXBVH0QsJv8EUIWk5H8IB4QNxlNNmd/FnTevCpVoe1mt/pLpJqsBgmWnAmKIqQp9EehUznPm3qU49h572758N1YuYNGzVZ8XErs1RBkRRMJWK/4day7aNYBYunB3ifqMV0NA23d0WZ8qotLPLxcFm8UNvmbG8CeLOd9L7jVuNNhyoqvWhWP+fC8hLClN/C9Myc2EERvURezDoPaK8E5wSWLLwq99uufWolccTFs8ROWPhqdDEhAY41EYPcmFUHDSIK9TSSUUfdARV9EeTghq6V7UbgvdKdCFoSzAukIPxyxhReToGUNK/1pZHPA+yUYxrjt8FTZL9ttVASJUFpwoiWmcbTep2OPklKTnn048KoPriZ8FgjQJBImssxv4tJVd+/uwMrLUP5OU+CHRRLTYmvpB5vrREK0uvIM5s
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,123 +123,104 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-change_pmd_range() populates PTE tables before installing uffd-wp
-markers. An empty PTE table can be removed after change_pmd_prepare()
-returns but before the pmd_none() check.
+Hi everybody,
 
-That check then skips the range, allowing UFFDIO_WRITEPROTECT to report
-success without installing the required markers. Subsequent writes by
-userspace to these areas will not trigger uffd events.
+Here are the notes from the last Linux Memory Hotness and Promotion call
+that happened on Thursday, November 5.  Thanks to everybody who was 
+involved!
 
-PTE table reclaim during MADV_DONTNEED and page table retraction during
-khugepaged can trigger this.
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-Retry page-table allocation in that case. Simplify the code, getting
-rid of change_pmd_prepare() by routing all code through the "again" label.
+----->o-----
+Bharata updated offline that there had been no progress made recently on 
+the async promotion work after the discussion at LPC.  He will follow-up 
+in the next meeting to discuss progress and the next upstream patch 
+series.
 
-It's a small race though, so likely this is not very urgent.
+----->o-----
+Davidlohr Bueso provided an update on integrating the CHMU driver, 
+expressing that the generic layer might be overengineered to satisfy all 
+users.  He reported that a working prototype is functioning with testing 
+numbers similar to pghot, and code is expected to be released by the end 
+of the month.  The driver translates DPA to HPA, providing contiguous 
+ranges as large as possible using 4KB granularity for testing.
 
-Fixes: fe2567eb5521 ("mm/shmem: allow uffd wr-protect none pte for file-backed mem")
-Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-I expect Andrew to pick this up.
----
- mm/mprotect.c | 48 +++++++++++-------------------------------------
- 1 file changed, 11 insertions(+), 37 deletions(-)
+Jonathan and Yiannis discussed interleave details.  We also briefly 
+chatted about the ability to derive sub-4KB hotness information for 
+offline analysis.
 
-diff --git a/mm/mprotect.c b/mm/mprotect.c
-index e18d4e12fc341..ef4e7188e24da 100644
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -470,25 +470,8 @@ pgtable_populate_needed(struct vm_area_struct *vma, unsigned long cp_flags)
- }
- 
- /*
-- * Populate the pgtable underneath for whatever reason if requested.
-- * When {pte|pmd|...}_alloc() failed we treat it the same way as pgtable
-- * allocation failures during page faults by kicking OOM and returning
-- * error.
-- */
--#define  change_pmd_prepare(vma, pmd, cp_flags)				\
--	({								\
--		long err = 0;						\
--		if (unlikely(pgtable_populate_needed(vma, cp_flags))) {	\
--			if (pte_alloc(vma->vm_mm, pmd))			\
--				err = -ENOMEM;				\
--		}							\
--		err;							\
--	})
--
--/*
-- * This is the general pud/p4d/pgd version of change_pmd_prepare(). We need to
-- * have separate change_pmd_prepare() because pte_alloc() returns 0 on success,
-- * while {pmd|pud|p4d}_alloc() returns the valid pointer on success.
-+ * Populate the lower-level page table if marker installation requires it.
-+ * Return -ENOMEM on allocation failure.
-  */
- #define  change_prepare(vma, high, low, addr, cp_flags)			\
- 	  ({								\
-@@ -517,30 +500,21 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
- again:
- 		next = pmd_addr_end(addr, end);
- 
--		ret = change_pmd_prepare(vma, pmd, cp_flags);
--		if (ret) {
--			pages = ret;
--			break;
--		}
--
--		if (pmd_none(*pmd))
-+		if (unlikely(pgtable_populate_needed(vma, cp_flags))) {
-+			if (pte_alloc(vma->vm_mm, pmd)) {
-+				pages = -ENOMEM;
-+				break;
-+			}
-+		} else if (pmd_none(*pmd)) {
- 			goto next;
-+		}
- 
- 		_pmd = pmdp_get_lockless(pmd);
- 		if (pmd_is_huge(_pmd)) {
- 			if ((next - addr != HPAGE_PMD_SIZE) ||
- 			    pgtable_split_needed(vma, cp_flags)) {
- 				__split_huge_pmd(vma, pmd, addr, false);
--				/*
--				 * For file-backed, the pmd could have been
--				 * cleared; make sure pmd populated if
--				 * necessary, then fall-through to pte level.
--				 */
--				ret = change_pmd_prepare(vma, pmd, cp_flags);
--				if (ret) {
--					pages = ret;
--					break;
--				}
-+				goto again;
- 			} else {
- 				ret = change_huge_pmd(tlb, vma, pmd,
- 						addr, newprot, cp_flags);
-@@ -554,7 +528,7 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
- 					goto next;
- 				}
- 			}
--			/* fall through, the trans huge pmd just split */
-+			/* The PMD might have been split. */
- 		}
- 
- 		ret = change_pte_range(tlb, vma, pmd, addr, next, newprot,
+Jonathan shared the original CHMU driver[1] with perf aux buffers which 
+more closely resembled a tracing driver.
 
----
+Davidlohr will continue working toward releasing the code.
 
-base-commit: a3d27154a205f6b32000e7e2734b2a6a4d22c65b
+----->o-----
+I noted that an upcoming Linux MM Alignment Session would focus on private 
+nodes and CRAM, led by Gregory Price.  The announcement will go out to the 
+linux-mm@kvack.org mailing list on Monday.
 
-change-id: 20261107-uffd_shmem_marker-a0b9869d783c
+----->o-----
+Huan Nguyen provided an update on the non-temporal store motion posted two 
+days prior, noting open discussions around integrating changes.  Huan 
+noted that a patch for reducing overhead within single folios has not yet 
+landed upstream, which will require updates to their assembly code.  Zi 
+from Nvidia provided minor refactoring feedback, and Yiannis offered 
+assistance to resolve posting and tagging confusion offline.  Huan and 
+Yiannis will coordinate offline to fix tagging issues.
 
---
+----->o-----
+Teja evaluated SDXI for page migration in internal Google use cases, 
+observing significant benefits that met internal requirements.  Teja noted 
+a performance regression bug where an interrupt is generated for every 
+single copy, but confirmed that the driver authors (Shivank and Nathan) 
+are aware and plan to fix this in the next patch.  Once the small driver 
+fix is released, Teja indicated the series should be ready for production 
+use and supported upstream.
 
-Cheers,
+----->o-----
+Joshua discussed challenges with upstreaming the tier-aware memcg limits 
+due to complex edge cases, such as handling memcg charges and reclaim 
+during batch migrations.  Reviewers identified dangerous edge cases 
+involving tier changes within a memory control group where folio locks and 
+reclaim clash.  Joshua debated whether to post a buggy series to maintain 
+momentum or wait until all details are resolved.  I advised posting the 
+series with a clear "do not merge" warning and a detailed cover letter to 
+gather early feedback from the mailing list and Google engineers.
 
-David
+Joshua agreed to proceed with this approach for their shared heterogeneous 
+workload use case.  He will prepare and post the patch series with known 
+deficiencies explicitly noted, and I will coordinate internal Google 
+review and testing.
 
+----->o-----
+Next meeting will be on Thursday, November 19 at 8:30am PST (UTC-8),
+everybody is welcome: https://meet.google.com/jak-ytdx-hnm
+
+Topics for the next meeting:
+
+ - update on Bharata's asynchronous promotion mechanism separated out
+   from the rest of pghot, targeting posting the revision before the next
+   meeting
+ - discuss current status of CHMU driver and its integration with DAMON
+   or any other generic backend as needed
+ - update on private node support as well as CRAM to be posted now that
+   the 7.4 merge windows closed
+ - update on combined patch series for supporting non-temporal stores in
+   migrate_pages() with memory error handling (series from Yiannis +
+   Huan)
+ - discuss Shivank's series for enlightening migrate_pages() for hardware
+   assists and competition between the kernel and user use cases
+ - update on Bharata's support for sources of page hotness and hardware
+   support
+ - Teja's update on SDXI page migration based on AMD patches and hardware
+   issues being encountered that do not result in page migration
+ - update on tier-aware memcg limits status and production testing based
+   on the latest major overhaul
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
+
+[1]
+https://lore.kernel.org/all/20241121101845.1815660-1-Jonathan.Cameron@huawei.com/
 
