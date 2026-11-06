@@ -1,131 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EB3606A334
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F853606D801
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RUzFwGJ+
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JjuKuYCY
 Received: by kanga.kvack.org (Postfix)
-	id 573F06B05B6; Fri,  6 Nov 2026 08:52:53 -0500 (EST)
+	id 9953E6B05B8; Fri,  6 Nov 2026 08:54:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54A806B05B7; Fri,  6 Nov 2026 08:52:53 -0500 (EST)
+	id 9469D6B05B9; Fri,  6 Nov 2026 08:54:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 451F76B05B8; Fri,  6 Nov 2026 08:52:53 -0500 (EST)
+	id 80EF76B05BA; Fri,  6 Nov 2026 08:54:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 180206B05B6
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:52:53 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 976151A0DF0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:52:52 +0000 (UTC)
-X-FDA: 85404834984.14.A310F6B
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BC55F40006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:52:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 562F16B05B8
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:54:56 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9D44780D13
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:54:55 +0000 (UTC)
+X-FDA: 85404840150.24.5C5C8DD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id D80A140008
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:54:53 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=RUzFwGJ+;
-	spf=pass (imf11.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JjuKuYCY;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793973170;
-	b=KK23VibSsVXWU2nCTNTZ1Fqrze0XnQjbCZbRDt+Cw8kANtA0/xeqK+MMmDfHpy3IG5lfoY
-	Zv1LP6fRega4d/spAQpzanf9JvD3j7ZJywd5NmTyM71a8AC+dIk7Ob9Ejp0b7y3JoZG0qC
-	cy2CU9bbFy6hLwWJKGsTzKyPVYArmG0=
+	t=1793973294;
+	b=7iYbNfnS+smxvqVuOpJIKZr2mcMqIHo1sqMdCB+IuMdE8OL9Z3xugTQLZzeYhaDiXMFbuP
+	kxlsMjlmglUDKP8nKdt2aDhJqfh8fcwo+r5QepGQxCJCgtGg17ng5IijO72fVublkbRdiF
+	//vJSALmn/iYVVtBhbXUaoZn+JhcBSE=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=RUzFwGJ+;
-	spf=pass (imf11.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JjuKuYCY;
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793973170;
+	s=arc-20220608; t=1793973294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PcC4IPdf1ihtWsu+EfJlFBQAiBAyUnEQfCqCotWg6Gc=;
-	b=2Bu6OmmlKjAEVCJvBfESi5YAaiuV9YtpjvCEcjf8M9SPmdA8LH1/8Tri0EZ6YaTeyjD5ph
-	mUaP2UPyC4dn55RtF6fEbJrZrsLQdgi1Ki1rxbWHnlUZ+sm0hS1DQGJXejgaH+VTxZg84W
-	q/tOipFVKgnWzOkRIvRwpjQAKx8YzsA=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-492f6b7f70dso388096f8f.0
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 05:52:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793973169; x=1794577969; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=PcC4IPdf1ihtWsu+EfJlFBQAiBAyUnEQfCqCotWg6Gc=;
-        b=RUzFwGJ+m/3C7RfheWbYuhNecjmGKW1Orx7SIjxW0T2H0OhMijc++cG5vl85lpXDUs
-         UEuvIrGFtpbVKrf53adG8H4Ai3MzD+vlpfTXTtWnwqUuyGcN83hFSLi78eNmIUBc8Dp0
-         Q/oPOgbNP5JSPKxKlqmuHSnlIMC4BNxFxreku6z70IpXS7dboU5sgP5JpFhIlRlyyQ1P
-         N4rP0w3TMbF50mGlFAkPv/xeNaZPH/rbNGZY8GmROsLXGVhH6ZymSEPgjAuHJemP7aNe
-         ksQ0gAWOvAWn1wJ3L+eGoAW8CYB26XbnpIs7z8eWJjVuDJhITUVtd2jtWlUNzsBFVGTS
-         DLeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793973169; x=1794577969;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:date:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PcC4IPdf1ihtWsu+EfJlFBQAiBAyUnEQfCqCotWg6Gc=;
-        b=whAuMN9NnPcrKsnhQjVC7ylzhhBlj0A8otid4bm/cLKoVUgfVQgaLh2uyglX//H8t9
-         b/mYclqiGhT3uW8q6n6vjpmFawc/bdYTPZn4J0CCvb3IroWLUBsVzgrcGwKQ7dqJvbH3
-         apJvdmTdlAw8JrOA6hFWhBHrVa7RHy0ZQNp5eDXpug9QRWdggZ9OYdAZOFlaRYTj2oKh
-         fiHUM25YRhZWmBliKNuQxI1VUS8ezZ6UbkXQ1+NukDMhRoXLnvcyx8B0PIpL1JdhTPHm
-         qpzkHzW+cA3a8XESDEMSh2mE1bIPe+L5PS/uhg+D0e3XouyfHF9Y6C80WOClf2XoJ5KD
-         P7Bg==
-X-Forwarded-Encrypted: i=1; AL+hErH1xLAhH8Dc7Z1o9dX+RWJaQ5GAp0PnXcLbWFRfzugQcPfFUBC9MnSjtdRsKhLNQIU7x924U3BBbQ==@kvack.org
-X-Gm-Message-State: APuU4Z/HSLXSe9zELxqnrnxWN4Blo2Yi7VPtUEzyxvwqh91QcL62R0ic
-	2YVKl6FqMpwI3wSH/1erN9+RKns+7IBqoDVbioh7YeQ+S0aeGGRoHeJi
-X-Gm-Gg: AYBFou1nzs1Xvk/1eVEFB4BpYvQc8dzhvrc+q+GqKjbKpMT6UyaXPulsMC+QQ/yw6ae
-	t7QJ4b0jLuCjOCuxNMGDKi3xOXwWJDzDDsyBJ/2kaVbCsmDoZlcChjimKvM4T5+9Im6boaqe82P
-	LYrzq8UxBfv+BSJuig4iS4NxBS7/X4BhVcxMrtUf50yrN5GKSoUBdqHY0u/IdqZIzzvvo3busp0
-	NqHm1wfVmSi0Uyh09A6LzP7lcxLcmLUB5OU3kvSCULLdCF4K0j3Ch8LpGqVnb5Nw5IlLGdvojNq
-	MSNnrIUSr0kdkXZP9GNYNtCZR2v31wyD/1Hz3b/01teeYDJqzzzqJGiJdvEwn2Dw8IWmo4i3MD+
-	IiVPRJ6tLmjqQVuMhJTjoW0FbT9UdZAUfcpNZRffPNfGxI4DsXarz3IzVGApa+luo/g+sPdmjcc
-	ZmlGYKqb4h2NfNSL6fFyc55bbwPIu1t/2fK8pVW9UvjZdrnpy7JCdLJ+WRfv13mJ0lBdnDoBmRB
-	iFluvTtX+JX8TkjQbiu89F1kSM/Wtjogct1O3J77lcO65uZFoNTHNVbkB6z3XGqUZueA5coxPnF
-	ucnLNk6rIs8rXGc=
-X-Received: by 2002:a5d:5c84:0:b0:48c:7386:af18 with SMTP id ffacd0b85a97d-4927b092b8bmr5141147f8f.8.1793973168740;
-        Fri, 06 Nov 2026 05:52:48 -0800 (PST)
-Received: from krava ([176.74.159.170])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d7701bfasm3877363f8f.40.2026.11.06.05.52.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 05:52:48 -0800 (PST)
-From: Jiri Olsa <olsajiri@gmail.com>
-X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Fri, 6 Nov 2026 14:52:46 +0100
-To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
-	linux-mm@kvack.org, Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Federico Di Pierro <nierro92@gmail.com>
-Subject: Re: [PATCHv3 bpf-next 1/8] bpf: Honor const on generic kfunc memory
- arguments
-Message-ID: <au3brpNZG2nANnha@krava>
-References: <20261105102343.311331-1-jolsa@kernel.org>
- <20261105102343.311331-2-jolsa@kernel.org>
- <CAEf4BzbdBLb1cBeF0an386k=CmMYKdz=Or5mSjzy_F5SFOwsxg@mail.gmail.com>
+	bh=34mQdD+b5YZ6XAjM1LZE1WQBn5OVOW6NRSCCNvZHD7s=;
+	b=VKIoT5iWxzwymX+7f+9cMUKwlc/jC/Yn3aSquJyWjTMmw99eahSinLZQx2g6RyxDCblHAL
+	/idla3Pl0f1y+oP2jUJMrqEH/gx0Z5GqwJ8jKtvdo88GgNSpXyO/w3zzRiGcBtMkwSFxjG
+	LBcXAfPIlv1PoPCKU0P1IsUT/HlQCfw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 2075B605E9;
+	Fri,  6 Nov 2026 13:54:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA351F0089F;
+	Fri,  6 Nov 2026 13:54:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793973292;
+	bh=34mQdD+b5YZ6XAjM1LZE1WQBn5OVOW6NRSCCNvZHD7s=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=JjuKuYCYc+1Mx7nL0LE9YfXxydZve4TxL2sCZmkw3PvNaVeRMcK0S3+qk3K1QdcM6
+	 EITNbtqJU8dVj1nHvyFj0eRNmSyiN9Fb+vo5OlbeKKORB01Zb4oe5VEsyxkbWNnMP5
+	 6GuiLetqoMgPqmHZvKo6ASeFi5vxUvgzeYQbZ2d9G9c5fATAn0DUmOQPECHqAMqTcj
+	 ozwW7x6FtyzpJUsjalnHsI9fatbD7T0XNoH9hernaArn2uyW3OTgswysrIkgl6iLPp
+	 +sZkpb1boQixmQaET3jzS+h6KHF+1KZZ05qXOcXGeT30EWihR/4lGwRN4vkl2CXR3U
+	 a6bjcBhxSeiGw==
+Message-ID: <cc803a06-f6a1-440b-9752-917f3698da6c@kernel.org>
+Date: Fri, 6 Nov 2026 14:54:45 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAEf4BzbdBLb1cBeF0an386k=CmMYKdz=Or5mSjzy_F5SFOwsxg@mail.gmail.com>
-X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: BC55F40006
-X-Stat-Signature: waci4kuz3o8m4esf56fjewji9bg7oji5
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/khugepaged: don't map folios that are not uptodate in
+ MADV_COLLAPSE
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
+ stable@vger.kernel.org
+References: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
+ <au3C8lNElGg4LnR1@thinkstation>
+ <254c6f0a-9353-4806-a5ab-a071cd59c64f@kernel.org>
+ <au3YD92l6BwCQIPJ@thinkstation>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <au3YD92l6BwCQIPJ@thinkstation>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 31okqbdwgu9f7ikteo3u8pihtkpz7t3h
 X-Rspam-User: 
-X-HE-Tag: 1793973170-404169
-X-HE-Meta: U2FsdGVkX18FTsZ5q2OkRScIrYnc+PkxFkba8NNNKyP/Xm2h9qUvSJNNUJJYoqtgePQF+XpqYlQsr01g8epe+hBsFij9iXauGBfFrowm29hffQ58lmq7TtCLhk8/OnKGnu9MLu56WbnD5hHQs9whoGG/hy33RGXTbbMLtp2vGZNgXwdUCH7pc4rN7zH0szAlloGRahpPQwK135f3vpPRJ+yck5P/XYCTbalDqZPIE0eySK8TODoxndH7cg2HU2/VtWbiHSkv89jXSAihfvvNiMGoSGrYBW85DSpa7qZ9t2NHkMiuw2iXbxd8Vhd6CjmAy7v8ktJBWw6Vg3qMn69vvwk3JZ0T6LU75E7Ka+HmCCJTR9ZLZrjcd+iq+rmZBUNirxylzicTG/StVgixaOSDjhK2dMKMygd8JsX9U4FdWnAZyfFLaw/L6zylAts/HWnS8r/ja6PwuNVwCPUiLVWPbH+9kSOQbt/B9yQE1jud11zlNF+C25Ml7QnT2q43oJpCmHpjP4Zzuh65Y7cBEGw0+5z1oAZplEeiFvu15m3gvA6lK8kpjeBmXWVtMKF9+US3QD63wu21+5lhSjZNfj+sXFYWZxLsHwFG5AYGeiSf3aOzMADo8FWAi7MFIqyuzvxCZ27tsPuAxIVsujN5/VUCAzO/X/JjquqpFMYOzgDJtApsDnCiMZDn0/XhhWbWBbHvKDYshzE7T8xSGF+Ar7iKydpDi0PTrs91ZZykukDctjuRK//jj8uuvuNNSV+TZuih4Xqh3PMtQ90wVkpWBge8Nj+PMMNCT6b3ouoRA2ambtJ+daWqf5V5dEIst3eEEBWranGVny/DAR0jLRIA35C8/9/lN5pkOBOSNV67u0YaNVCPnbtq2Kge5v6FptqwInzCnj54pLqKFjC6foth2mW5L5pU8Kj2FAnBCsyeOxdmZvm1R0FZnp1rV1OHYY9w47JzIbIXt5BJON5LqG/D7XY
- h9I+bpVr
- a4+K30c0DRyMJRdbZUiv1HHRArhZu2jJdee/gdOIxFr6DDoiaMJG9IyaPh1tQ5gwjSYpeaT6Ry2x+4qE6oD3Ux//a6cPRHhzxfoguopZZ2s2A+GHxz1yc+7ju05V/a8jpca9wSvlVBrQjV3Iqkc2PPM0n1JBsQR9n4fdAHM/COQ2O6rGoSYUjgkZisNqPMvA4wBg+YT5UatnIjRSvLnKvzMgg1g0Lie4tY53f00gPttdDPyTJUn8wbyWb9U1Vfp8RvEcuecZkPfAMi6tZ9wfAZS2Av0MHulcDGjRvLYYZLCmCaPzj0/6K2QbrYVhIzTEcNY9eohjoYUAwQe582d86lVeaL0H3HUztqipL7PC4lQjkIdj5qhLsSHJ26t1YDZBEMQwlZjWXqgPSEIJ6LG98q4FfN0lNrIE+KKoA1eCtbQETNkxV+fyYg85jhvvt66kGgWqHr1j/8aVy+wHmYrMF8CZbadO08luqY4pdlP4er/p0Mqm7xR0yzq0WuzHsRWo6Tm1Fp6HV/98ep5AOGKP3zP4mChGM5S7hRWR1YY7OYUy3PoU=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: D80A140008
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793973293-777753
+X-HE-Meta: U2FsdGVkX19o/46H42uPPeccw6UoRAM7Gl56MPgpOqRn4iRYAi0/dEPajQUXepb+1QLKYxFu8kkrgU1PkJbfBCg8qyKUCGPcv1yDvar/6KdMYqpw5NJ1Flo31/IT6A8dKeJ7zam8GSiqUDEiPIrIAyyapefInNlFC2P+ZBEqI8+X2cVRpXWnfbwFTUhZEOEETw/6hHmUFa5/cqchD85fChW4G5exnuiUh4Wbv9ll/12wz59yX9XnkBmhjObO2u+0BwHY5FPIKu1M98Z5Set7ma1PiyVlL05aY1D4hMDxGqvw4cm8rNlAh0jfjDS/4isP1vek1l+LJZb3xzkTlohJb7QWYXEpFR93Lx/en175YxzzEcDZj8fSG0PzrZQLa/xwtGemDCQiAQAmxTB840q21X+fsjmd+mi6zay72NwVeAt4EsJznMBO7rr59cfIws0zEW+OFOBQjImRvMdF/Zxg5Pc3i+yy+B+FOP7F0PVZaYfIjf/mpIkozmhi5QAP4ioSh27Z7uf7M/637k5mBzIC653TgeV/3EZcD53aSf7WO9drylepCTEqAFf71TfKKUu7+jExRs7KS/2Lgga3TJwIgNL8p1jibrbepJtOFKMVOqWb+RpXMlOloJ3msSaAOnk0FCQLezGc8ZWOAjNBKLGJezGf9XmxOgm5Yvo5xdlPpTWKlY6N8entgsDsI7N/vqmxvE++0bUBFGU+mRTVuSntVISpD8NJvghgTBlHbXNFFI5SztzrmqKzqws9vEvt6yxJ38Nk4w2asv+mYvnIpemboiahZR6Xj67peAjcG8lxJB4hVIpHK8uVxhfosW6VRSgGQxfm6OchbpkE1VxEvpNEY4cCa5bVQBHQLNtmHFmA9iKThHw1YrNihw6ATNE04Rb3R/uuMAn+t2mICck/d58sIRG+DNbL+jsVyXG5DZpKwYbd+OxbNZRdGaBtlLYs62ZgA2WZQtO4bf1CuVwRPeo
+ 3tZlmB9s
+ VP3ChFkQ93X9rNyRY5wUFlFqEwmlwjqOUFyCHHZaxKluC5zW06hHh3+xit6wzCNDVz6J2vsAXDv8RV6GJiZ/FLmFj4uGis86iD9LX7QnteCHRvBWc5wVQnEvhsjrcIQYH3BHNLms/ikW+H8E8C/CgiVgdE0ap8Le6FZhrpLppgGrrYQLDXRqsucyDZH0MVzlSAq6fkALHP4hksrpdE5Q69kYKA+dvhJ4EvZPVmXHvG3Pc2jLtrS1K7IhkxZg/G1BbQNlrNBENBLTgNQn5q0DKUkmJN0LpZ/9BGaRkrmCFzUOdo3Suo35nHHETww==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,75 +151,93 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 04:34:44PM -0800, Andrii Nakryiko wrote:
-
-SNIP
-
-> > +/* A kfunc only reads through 'const T *arg'. The compiler enforces it. */
-> > +static enum bpf_type_flag kfunc_arg_mem_flag(const struct btf *btf,
-> > +                                            const struct btf_param *arg)
-> > +{
-> > +       const struct btf_type *t = btf_type_skip_modifiers(btf, arg->type, NULL);
-> > +       u32 id, ref_id;
-> > +
-> > +       btf_type_skip_modifiers(btf, t->type, &ref_id);
-> > +       for (id = t->type; id != ref_id; id = t->type) {
-> > +               t = btf_type_by_id(btf, id);
-> > +               if (btf_kind(t) == BTF_KIND_CONST)
-> > +                       return MEM_RDONLY;
-> > +       }
+On 11/6/26 14:41, Kiryl Shutsemau wrote:
+> On Fri, Nov 06, 2026 at 01:29:31PM +0100, David Hildenbrand (Arm) wrote:
+>>> Separately from this fix: nothing on the mapping side catches this.
+>>> Every caller checks uptodate on its own (next_uptodate_folio(),
+>>> filemap_fault(), shmem_get_folio()), and khugepaged was the one that
+>>> went straight from filemap_lock_folio() to do_set_pmd().
+>>>
+>>> Should do_set_pmd() and set_pte_range() assert it? Something like
+>>>
+>>>         VM_WARN_ON_ONCE_FOLIO(folio->mapping && !folio_test_anon(folio) &&
+>>>                               !folio_test_uptodate(folio), folio);
+>>
+>> I think so. But looking at these hard-to-trigger but in the end very nasty
+>> problems, should we actually reject the operation and do a pr_warn_once() or
+>> something?
 > 
-> quite weird implementation, skip modifier, and then re-walk
-> modifiers... while not have a loop from t->type while
-> btf_type_is_modifier() and if you find btf_kind(t) == BTF_KIND_CONST
-> -> return true?
-
-the intention was not to introduce another helper with modifier
-classification, the tradeoff is 2 loops [1]
-
-jirka
-
-
-[1] https://lore.kernel.org/bpf/DMLRV3E28SC8.3FJZXLBLZI4DD@gmail.com/
-
+> Yes, rejecting sounds better.
 > 
+> Not in set_pte_range() as I suggested, though. Fault-around only gets
+> there with folios that next_uptodate_folio() checked under the folio
+> lock, and for CoW it maps the new anon folio after do_cow_fault() has
+> already copied from the page cache one.
 > 
-> > +       return MEM_WRITE;
-> > +}
-> > +
-> >  static bool is_kfunc_arg_constant(const struct btf *btf, const struct btf_param *arg)
-> >  {
-> >         return btf_param_match_suffix(btf, arg, "__k");
-> > @@ -13618,7 +13634,8 @@ static int resolve_func_arg_type(struct bpf_verifier_env *env,
-> >                         PTR_ERR(resolve_ret));
-> >                 return -EINVAL;
-> >         }
-> > -       *arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE |
-> > +       *arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE |
-> > +                   kfunc_arg_mem_flag(meta->btf, &args[arg]) |
-> >                     (*arg_type & (PTR_MAYBE_NULL | MEM_UNINIT));
-> >
-> >         return 0;
-> > @@ -14170,7 +14187,7 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
-> >                                 reg_arg_name(env, argno), btf_type_str(ref_t), ref_tname);
-> >                         return -EINVAL;
-> >                 }
-> > -               arg_type = ARG_PTR_TO_MEM | MEM_WRITE;
-> > +               arg_type = ARG_PTR_TO_MEM | kfunc_arg_mem_flag(meta->btf, &args[arg]);
-> >         } else if (btf_type_is_struct(ref_t))
-> >                 /* A pointer to a struct without a size argument is classified as ARG_PTR_TO_BTF_ID */
-> >                 arg_type = ARG_PTR_TO_BTF_ID;
-> > @@ -14195,7 +14212,8 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
-> >                         return -EINVAL;
-> >                 }
-> >                 proto->arg_size[arg] = type_size;
-> > -               arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE;
-> > +               arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE |
-> > +                          kfunc_arg_mem_flag(meta->btf, &args[arg]);
-> >         }
-> >
-> >         if (is_kfunc_arg_uninit(meta->btf, &args[arg]))
-> > --
-> > 2.43.0
-> >
+> Checking the folio ->fault() returned in finish_fault() covers PTE, PMD
+> and CoW; do_set_pmd() covers khugepaged. Both return VM_FAULT_SIGBUS.
+> 
+> Something like this, only compile-tested:
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 6fe0b7dab927..ff2f2deff761 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5674,6 +5674,22 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
+>         return ret;
+>  }
+> 
+> +/*
+> + * A page cache folio that is not uptodate holds data that was never read in
+> + * or cleared, and mapping it leaks stale memory to userspace. The callers are
+> + * expected to check, so treat a hit as a kernel bug and refuse the mapping.
+> + */
+> +static bool file_folio_not_uptodate(struct folio *folio)
+> +{
+> +       if (likely(folio_test_uptodate(folio)))
+> +               return false;
+> +       /* Driver pages from ->fault() never get PG_uptodate */
+> +       if (folio_test_anon(folio) || !folio->mapping)
+> +               return false;
+> +       WARN_ONCE(1, "refusing to map a page cache folio that is not uptodate\n");
+> +       return true;
+> +}
+> +
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  static void deposit_prealloc_pte(struct vm_fault *vmf)
+>  {
+> @@ -5714,6 +5730,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+>                 return ret;
+>         page = &folio->page;
+> 
+> +       if (file_folio_not_uptodate(folio))
+> +               return VM_FAULT_SIGBUS;
+> +
+>         /*
+>          * Just backoff if any subpage of a THP is corrupted otherwise
+>          * the corrupted page may mapped by PMD silently to escape the
+> @@ -5849,6 +5868,16 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+>         unsigned long addr;
+>         bool needs_fallback = false;
+> 
+> +       /*
+> +        * Check the folio ->fault() returned. For CoW that is the source of the
+> +        * copy; DAX CoW has none.
+> +        */
+> +       if (vmf->page) {
+> +               folio = page_folio(vmf->page);
+> +               if (file_folio_not_uptodate(folio))
+> +                       return VM_FAULT_SIGBUS;
+> +       }
+> +
+>  fallback:
+>         addr = vmf->address;
+
+Can you send that as a proper patch? I think this is the right thing to do to
+catch more of these things if they ever pop up in a better way.
+
+-- 
+Cheers,
+
+David
 
