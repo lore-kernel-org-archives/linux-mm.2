@@ -1,101 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0AE0606A32F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 09:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D69606A328
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 09:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=prb5BBLD
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lUfxt6bO
 Received: by kanga.kvack.org (Postfix)
-	id E51476B05B0; Fri,  6 Nov 2026 04:45:46 -0500 (EST)
+	id 83E116B05B1; Fri,  6 Nov 2026 04:49:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E03CC6B05B2; Fri,  6 Nov 2026 04:45:46 -0500 (EST)
+	id 7EFEA6B05B4; Fri,  6 Nov 2026 04:49:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D18396B05B4; Fri,  6 Nov 2026 04:45:46 -0500 (EST)
+	id 705616B05B5; Fri,  6 Nov 2026 04:49:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A3CB26B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:45:46 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 116BD160CC0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:45:46 +0000 (UTC)
-X-FDA: 85404212292.16.D6678D9
-Received: from mta0.migadu.com (out-1.mta0.migadu.com [91.218.175.1])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E66971C0006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:45:43 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=prb5BBLD;
-	spf=pass (imf20.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.1 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 56AE36B05B1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:49:38 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E25F41A0D1F
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:49:37 +0000 (UTC)
+X-FDA: 85404221994.07.1156236
+Received: from mta1.migadu.com (out-94.mta1.migadu.com [95.215.58.94])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D0828C0005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:49:35 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lUfxt6bO;
+	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793958344;
+	s=arc-20220608; t=1793958576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AfPzSFcW+pZH2QIPZRbefoHN3/d9BoE116jyqEDVh6Y=;
-	b=DfoTF1VAQycms0euoEbaxZOP7dOjuyqkq44uYCWc8ES06haTdS6MnnE6o38MPhUU+VsSe2
-	fxhwPScKMU685T/WZBpEdldpHlCotuN1ghmuk6DeHEfWwQ9cQwuXwHL7tR3EepPWWLaSuk
-	j5LWafFAi7f00q46zjWqVuuCsCqNd/8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793958344;
-	b=5jn9JlhB26ULk6m7Wt/HL78p+JDvW3pSZS//J2VrzhntEZ2YqT48vygkVk9yuuEh/SeVUq
-	kNDmfdObO/vkO/SCbGl0anJ9EORL/mCoKCvOpI8bGki+NyJ0n0mAphisZ8dRsk1qMty5GU
-	KTqAxPbgWWtEhEeh7jt/VUQNv8/kJeA=
+	bh=6DU4XzSpmp/n4/D9eXag/+qPRamb2DqfAVopLVqvQOo=;
+	b=JRKdOm0jIx0/1YSHOlo80FjdfxQjUVpbA0cwJa8FxTrl52mHmVWMwB9T3e9oTQAdvvgcGd
+	UeO38PDQ0muxj1Ra1YmXfZn5neaSvpi2imDv7l5N+ho9twVXsUdzkrKVpdRXvo4d+I5Sal
+	uHuf7al7oebOTUHjUYAGcD2IIZTxaXQ=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=prb5BBLD;
-	spf=pass (imf20.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.1 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lUfxt6bO;
+	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.94 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793958576;
+	b=NxD3aPepJtX2d8fV9Ygy+I/r7lYerwjF5BXhehKqTrw94zoa7emccG3V27AxD640fNK5m5
+	0BxylIA68m18ypdi5lUoLyUgMgNGtUmJqgTRTM+D0yVO/iplFjSCLI/gEePAxrIhJFLiN1
+	o/oCrCn6fXrT0igFyndzmxMpYiJA9Ak=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=yMrWApyqMY/NnNDcpTl9xLlqLBpfLw5OYLGgqZXQ1tU=;
+DKIM-Signature: a=rsa-sha256; bh=eG7lP6gOXEU8U4LBsocd1+0PiWMCGV/hYfHSxyzIAWA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793958342; v=1; x=1794563142;
- b=prb5BBLDzBRhDL1dFgS1P9R5uf5nZMEpJiPJBpQZdVdr7tYQdfZaQl7dXQdIPuujdVBUI9SH
- 0IPy8H/s6R/2hutUvkJ1qSlk75e+LGkBRWULDzv5CSZ0l8O+yUvxkayJhn5SsAWoa2ugbJnBdDq
- F20apksvpJr/Z+iR8g3FCjPU=
+ t=1793958574; v=1; x=1794563374;
+ b=lUfxt6bO2AGkup/NTOyuAZoiZE/jQzRxT5tCXgq14ZttaOFnSszhVifTOFP9nEEpplUmd8kd
+ 9wfsWuh5xuZoTmvlJg4W24nXQIet+recIFSbR+orEKuGtuZx7twPiwoMZ9WprNnwHvvE4f6QU14
+ 8UDGWZZy1lxF4UYC0FQsRE1Q=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 2f2b68f79f65d7c9;
-	Fri, 06 Nov 2026 09:45:25 +0000
-X-Mizu-Trace-ID: 2f2b68f79f65d7c9
+Received: by smtp.migadu.com with ESMTPS id ec9a2babcc567cf7;
+	Fri, 06 Nov 2026 09:49:34 +0000
+X-Mizu-Trace-ID: ec9a2babcc567cf7
 X-Migadu-Flow: FLOW_OUT
-Date: Fri, 6 Nov 2026 17:45:15 +0800
-From: "Xu Xin (vivo)" <xu.xin@linux.dev>
-To: Qiliang Yuan <odys.yuan@gmail.com>, david@kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Stefan Roesch <shr@devkernel.io>, Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] mm/ksm: align smart scan skips with the scan
- number
-Message-ID: <au2hqxeIz0l/DusZ@dgvxl46587.localhost.localdomain>
-References: <20261105-bug-mm-ksm-smart-scan-align-skips-v2-0-8a9780b6844e@gmail.com>
- <20261105-bug-mm-ksm-smart-scan-align-skips-v2-1-8a9780b6844e@gmail.com>
+Message-ID: <3436028c-6ab8-42a6-9489-8dfe861fc3f4@linux.dev>
+Date: Fri, 6 Nov 2026 17:48:23 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20261105-bug-mm-ksm-smart-scan-align-skips-v2-1-8a9780b6844e@gmail.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: i6hs37ejwnhxzaar6r7k9jqoofy497x7
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: E66971C0006
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] powerpc/mm: drop powerpc vmemmap_can_optimize()
+Content-Language: en-US
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Sashiko <sashiko-bot@kernel.org>, Muchun Song <songmuchun@bytedance.com>,
+ David Hildenbrand <david@kernel.org>, maddy@linux.ibm.com,
+ Mike Rapoport <rppt@kernel.org>, akpm@linux-foundation.org,
+ mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org,
+ ritesh.list@gmail.com, sshegde@linux.ibm.com, osalvador@suse.de,
+ Qi Zheng <qi.zheng@linux.dev>, chenhuacai@kernel.org, kernel@xen0n.name,
+ linux-mm@kvack.org, x86@kernel.org, linux-s390@vger.kernel.org,
+ hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+ borntraeger@linux.ibm.com
+References: <sashiko-outbox-198652@kernel.org>
+ <20261105080241.57241-1-lance.yang@linux.dev>
+ <2AB0A0B1-1613-44CC-A007-2453F6206D77@linux.dev>
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <2AB0A0B1-1613-44CC-A007-2453F6206D77@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: pza5i6w1x1ez9mbb19puqmynu67goi6p
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793958343-866649
-X-HE-Meta: U2FsdGVkX18ca3Gf6ogdoPG3qGWW2hd+NXaAACgg394We1LBUp/2UKwDVaCVObE92Yl2RQYnlW3rP7NsqZhJBAGcJvqmOL/4UL0t2Jwxuc2zIUGIARU8cevehTK28aP2YiEkD2VAMSNZg+syj356aD85JBqXKDNZEaPkuPKC2lgQYjdNTByZSrwAUCwR4D4wodTuA7Ai2OGjUpeei/EJYIWrs8qurA3ugvl39QVAe38A6VyLhbseK+6ksFjd44Xxw9segTgvTd3AqccSo9fwpAPAKIsyMsuuYcGS85onj5BlEs+6UbyzTQOYUWVyc1/nEi6OJcWCsxRzHIk8xYOf0Xa9y6Bg2cKtHVFG2Roxrsm+1voNpPBSc5dqj1LDNuRvRIQgmsZsyyEH1a9PDkAPB0kiCI9P0fCgfIR7j/Sba+G9OR2vHME+RDENi/yj1VELDVoCtzP7ZFMI8FG2rvkJZ4DUgKVa0wohtZEc1XaE2lWTXLoU/TUh9dDquqZDreH4me3GAMSQ4JDz8oRli3ZXTJIT3vMikK8+cuMXEQfRTZnoteZPl0nx9z5kaWrAbrGu5BzNx3koXObLMIdkxTr/ppvA3Xi+oI4omQmR1xgPHPfvUH59VqQqv7OkEYJFxbZ44ZhEqHgW7Xf3Lcpvrrh1X1RUblGUsoJrd9JScnUdc8JGowbuSNSEzmFAAZdQF+U4HCGnaoL2a+p4eexgjL58gW4J21eNmj6aQc/4cGMbz6m/MVcWjkMzM5siKAmPNknx86rrW4ptHvNLZt2ASPwjTdCpqRZY6Zc17GWsWH4zlrP8nchuvEcM5oflxBPlqtBvvnmOJwKEFndQ3WZU91NQJblG8ZfNHfTh/eeGiTKJUbERm59fNJfd97jzHbcFk/NCuHqXPCBQ/i27C858KIIem7dJ4O2Hh6ODDwl01xgt1443dV26uLANZxVT/+nIxnwR4up5uo8RdXHu8MWOd3A
- 7F22+PSF
- Vo4jcfRCgJqUQSCKf7DhlJbvgqUVpDXUrnQOAx81rtItTo/GPfucPRkMyahjKZJmQGDb7Nfhsx6hOSMzeKOZaIM9ubxf+SwvGS5CxqpdK32CHU94pT/no03X0cbwPhqwof5xplC8AHR90zgt5VVSZFBdXEZpHaVjsg5XponcY3R8fr+hA+gpO2BQ4w6y7nWV+mChDgDjrID4zazrm5eZWU1HMS+mCU3h6rJ7Vcf+MQQ5B8j+8dXGwFzaYa0yPR2QVMehu952EmxCJnWgeXWfNQ948Kj27kLDYb300VX/uy6Fmpdyc1Y5Ld/OLOJ5gNwFY0K+UtWkTE8/Cy4Cc1aJYnDPh9HEb8PUiSXB9mr6hTw/s9M0=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D0828C0005
+X-HE-Tag: 1793958575-884429
+X-HE-Meta: U2FsdGVkX19T2LBb1eJChC/bXHZCxkphHg/w22H6hmUdHa4fzwSCosmhWMqSq8y+mV12Ullo3/+w+pXGSNPiRu1svobXgLq735Y+vrhoEeMiSFvtKCD3xeNaTKGGmdpRvV4ms4qUpjX+dHw9inrPMURL5y96pX7yBVNAWgeEaUak5iseLBeZECFRyC8xE2J7NGM9m35O55hwr04ROFSMWZP1pJLawP49ahYd+gWhxOcnINsWTKa87rxdRi6pqCsPT3pfA2ElixjyZfh71cugTsyTUDvRSbFTsa2WyWb3K+svroe7IJ36bzIs4tZK6e9hwQ/WoOpk/dDl2rKcRQl+I8Uc6JBqBrduDj2D3n+sHk48TA8nRL07LrouJatVHgMn7z/ZaisoseT3w8htHRV6EejjIQrvoaXFtyMmjjrGr8S+7tBo/zBRcLjgjGaDl41rMvc4z1DV1k4vf4QApTtcbQcLPjxs/c2R0r8psgDVi3Oxs+muhGoHYbSDQhzkWL5GTOPpk7MrcSbRyPEGOHZaTY0EQQoWhWVOl5qPVVaIXuHbHn3fg0RMbBau9PYaiQC+elgIs1IveNamlaV82dlXc7tWpsSmEAk5Q4kKWvpp9tb11QLVVQ1WzljmwDGxamf1LZohGcLQT1eoeQPBM4t6cLnn7NjM0uxT8WbOUtZXXX3Bh+X2Wi+mSsH8B4aSbOyd8OOzQrXkbMO7Dyzs9ekHDLi5FNkIHkmInE8TVmiP7V2SKgcOXgVPMdvhyjqOjHi93i7w3w4tOenbFRmHxvvsQYFmRF6X8brkcIp+jsJBvuIRdcQOmVUUffvTlsJcK7pNV4/xuLlDnF6vSZuhFnmDXOGc14SYYOxulWUMDZwoorFjI3rg4FPskSp5cIlxdK5fiKRwXFNb7y4egHsZ+VYeNAhhQ56UPz2ubpeO8gVlbbtb9ut0nLVVQfTzZmg+YsWda6njJI/yWw3O2Z2adX7
+ mGkS7bxv
+ 5EEXxjjFuOXHEWWxCu71EXLfY7leP5rDzC8l0DBjhnM4gyVA0xEJ3/enTwJVl2O0g5NERNQacS8QwnB686UCkda1x6kw/v5xiFPq1xJx1/K4qsnUxIy0F/edjFuDA66YpVAq4gWCxZhVLNo0lkUQQIlzhh08X/TJ1c2OuI85ck551R4Th/q3sfPLwDDOyA+G3vWePjwP1tj/S0c2lr3+BEH/RH1LzsSFDanoUy0jKzfg+AWW9DqedU0oV5N2+Cfr+si54Tot/LmIxgGf6OhpHFZwM5S8CX9dbFRgM/8xWNGdolABTBUJ+ZVVY9anorJgjMoKNpLBhxgzG7vLxt5hthQ/KGIIBDsA22cml1rf2hmJF9+5NcH6PbgqNi8y6hqaKhKjHFgdJxRoZRUoRHcVlfKPFvwD5ZNsnMNargfuSK3mSOG8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,126 +103,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 04:36:14AM -0500, Qiliang Yuan wrote:
-> Smart scan skips pages that KSM has failed to de-duplicate for a while.
-> Once a page is three scans old, its rmap_item counts down its own number
-> of scans to skip, 1, 2, 4 and then 8 as it ages, so an old page is looked
-> at every ninth scan.
-> 
-> The unstable tree is rebuilt on every scan, so two identical pages that
-> are not in the stable tree yet can only be merged in a scan that looks
-> at both. Each countdown runs from when its own page became mergeable, so
-> two pages that became mergeable at different times end up on different
-> phases and, once both are old, may never be looked at in the same scan
-> again. They then stay unmerged for as long as they live. Making a page
-> mergeable, waiting for 0 to 20 full scans before doing the same with an
-> identical page, 20 times for each wait, and checking the pair after
-> another 64 full scans shows this, on two boots per kernel:
-> 
->                                 before            after
->   pairs merged (of 420)         329 / 317         420 / 420
->   64M of unique pages skipped   89.0% / 89.1%     87.5% / 87.5%
->   ksmd CPU time per scan        6.25 / 6.25 ms    6.88 / 7.03 ms
-> 
-> Pick the skipped scans by the global scan number instead, with periods
-> of 2, 4 and 8 scans. The periods being powers of two, every old page is
-> looked at on each scan that is a multiple of 8, whatever its age, so any
-> two pages meet at least every eighth scan. The longest period goes from
-> nine scans to eight, which costs 10-12% more ksmd time on memory that
-> never merges.
-> 
-> Fixes: 5e924ff54d08 ("mm/ksm: add "smart" page scanning mode")
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-> ---
->  mm/ksm.c | 24 ++++++++++--------------
->  1 file changed, 10 insertions(+), 14 deletions(-)
-
-Brilliant design.
-By using the global ksm_scan.seqnr as a unified time base, this patch eliminates
-the out-of-sync problem of the original per-page skip counters.
-
-It guarantees that any two pages will be processed in the same scan at least once
-every 8 scans — the least common multiple of all scan periods — which completely
-resolves the permanent de-duplication failure.
-
-Admittedly, this comes at the cost of shrinking the longest scan interval from 9
-to 8 scans, raising the scan frequency for aged pages by roughly 12.5%. But I
-believe this is a very reasonable trade-off for correctness. So
-
-Reviewed-by: Xu Xin (vivo) <xu.xin@linux.dev>
 
 
-Besides, can we add a extra description about new smart_scan algorithm that we
-missed in Documentation/mm/ksm.rst?
+On 2026/11/6 14:09, Muchun Song wrote:
+> 
+> 
+>> On Nov 5, 2026, at 16:02, Lance Yang <lance.yang@linux.dev> wrote:
+>>
+>>
+>> On Thu, Nov 05, 2026 at 07:16:48AM +0000, sashiko-bot@kernel.org wrote:
+>>> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+>>> - [Low] mm: undeclared vmemmap in section_vmemmap_optimization_disable()
+>>> - [Low] mm: define vmemmap_optimizable_order() before section_vmemmap_optimizable()
+>>> --
+>>
+>> IIUC, on LoongArch, asm/pgtable.h includes vmemmap-optimization.h before
+>> defining vmemmap.
+> 
+> Yeah. Really nasty.
+> 
+>>
+>> How about taking a PFN and page count instead, and leaving the conversion
+>> to the callers?
+> 
+> However, although this can solve the compilation problem, for the caller,
+> it is not very straightforward because they need to calculate nr_pages.
+> section_vmemmap_optimization_disable is only supposed to be used in the
+> vmemmap population path, and in these paths, the most direct parameters
+> are start and end. I think this function could be moved to
+> mm/sparse-vmemmap.c, and that way the compilation dependency problem
+> would be solved.
+> 
+> What do you think?
 
-> 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index dbfb8f98b1892..a97d7563c2124 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -196,7 +196,6 @@ struct ksm_stable_node {
->   * @head: pointer to stable_node heading this list in the stable tree
->   * @hlist: link into hlist of rmap_items hanging off that stable_node
->   * @age: number of scan iterations since creation (unstable node)
-> - * @remaining_skips: how many scans to skip (unstable node)
->   * @linear_page_index: the original page's index before merged by KSM (stable node)
->   */
->  struct ksm_rmap_item {
-> @@ -213,7 +212,6 @@ struct ksm_rmap_item {
->  		struct {
->  			unsigned int oldchecksum;
->  			rmap_age_t age;
-> -			rmap_age_t remaining_skips;
->  		};			/* when unstable */
->  		unsigned long linear_page_index;    /* for reverse mapping, when stable */
->  	};
-> @@ -2446,16 +2444,14 @@ static struct ksm_rmap_item *get_next_rmap_item(struct ksm_mm_slot *mm_slot,
->  }
->  
->  /*
-> - * Calculate skip age for the ksm page age. The age determines how often
-> - * de-duplicating has already been tried unsuccessfully. If the age is
-> - * smaller, the scanning of this page is skipped for less scans.
-> + * Calculate how often a page of the given ksm page age is scanned. The age
-> + * determines how often de-duplicating has already been tried
-> + * unsuccessfully. The older the page, the fewer scans look at it.
->   *
->   * @age: rmap_item age of page
->   */
-> -static unsigned int skip_age(rmap_age_t age)
-> +static unsigned int scan_period(rmap_age_t age)
->  {
-> -	if (age <= 3)
-> -		return 1;
->  	if (age <= 5)
->  		return 2;
->  	if (age <= 8)
-> @@ -2505,17 +2501,17 @@ static bool should_skip_rmap_item(struct folio *folio,
->  		return false;
->  
->  	/*
-> -	 * Are we still allowed to skip? If not, then don't skip it
-> -	 * and determine how much more often we are allowed to skip next.
-> +	 * The unstable tree is rebuilt on every scan, so two identical pages
-> +	 * can only be merged if both are looked at in the same scan. Pick the
-> +	 * scans by the global scan number rather than per page: the periods
-> +	 * are powers of two, so pages of any age meet on every scan that is a
-> +	 * multiple of the longest one.
->  	 */
-> -	if (!rmap_item->remaining_skips) {
-> -		rmap_item->remaining_skips = skip_age(age);
-> +	if (!(ksm_scan.seqnr & (scan_period(age) - 1)))
->  		return false;
-> -	}
->  
->  	/* Skip this page */
->  	ksm_pages_skipped++;
-> -	rmap_item->remaining_skips--;
->  	remove_rmap_item_from_tree(rmap_item);
->  	return true;
->  }
-> 
-> -- 
-> 2.43.0
-> 
+Yeah, fair point, let's do that ;)
 
