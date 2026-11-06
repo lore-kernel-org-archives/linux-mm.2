@@ -1,156 +1,157 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F40606A32C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3159C606D82F
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:03:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=U1cM4ow4;
-	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=yflA69rW
+	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=T99h4t2e;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=A2iRrZUk;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=TrP7zV8B;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=pwChqOUr
 Received: by kanga.kvack.org (Postfix)
-	id 0C8526B05B9; Fri,  6 Nov 2026 09:43:34 -0500 (EST)
+	id 3FAAC6B05B0; Fri,  6 Nov 2026 10:03:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 079376B05BB; Fri,  6 Nov 2026 09:43:34 -0500 (EST)
+	id 3D2616B05B1; Fri,  6 Nov 2026 10:03:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA9756B05BD; Fri,  6 Nov 2026 09:43:33 -0500 (EST)
+	id 2C2B76B05B2; Fri,  6 Nov 2026 10:03:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C3E156B05B9
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:43:33 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C6011C0B7C
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:43:31 +0000 (UTC)
-X-FDA: 85404962622.01.022AF92
-Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A1B11140006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:43:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=U1cM4ow4;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=yflA69rW;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 00FE16B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:03:31 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E662D1A0CD5
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:03:30 +0000 (UTC)
+X-FDA: 85405012980.10.B402DC2
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 8D3E78000E
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:03:28 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=T99h4t2e;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=A2iRrZUk;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TrP7zV8B;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pwChqOUr;
+	spf=pass (imf02.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793976209;
+	s=arc-20220608; t=1793977408;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=4JlsES4uLUIYYaP/yiOT2rHyGIzTwamik4bNttM7hYs=;
-	b=0LsozxSuQURuz9bCRRcTQbgq5ssQArbnpdaNgl9LQk4pLD7jlPH41Zrbz2G6TnOLNDrM4+
-	uf+23ACBor90gxq6sYRJ4ySFalVqRTCgbcy0YmUw+uxPyzZVIfx/oZ8hBPdUHi3X2EBPH/
-	DVp49SaJJclDwIQ96KyWyqHFxH+Uv18=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b=U1cM4ow4;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=yflA69rW;
-	spf=pass (imf09.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.149 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6FoXJI83hjTO3ej0IaD9RjGbYyhgQtVCqkHhpUVyi4c=;
+	b=2b0WKPGD3VqO1IUOfZcjZ9CflZ8RxUvZtJCxI4mCKTX7PpKaWU/IOuDF1zoaaW4orEwZJy
+	MYF17CVjsXhqiahESHREFtMH6QCa6bZKcn95UTFI9g3JCq/sQv+biRooozMhtqSbJrdVbT
+	9PHlkgt1wAy3DE3u+Yrsd6tILE604Mo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793976209;
-	b=NG7aC71phoJYf4cP2uNnoTNDw2nAEOZMw7OrvzYvI60NT2Y94kU8tXQEaFJmPO22VXJC7Q
-	U97vylmnxKsernNvI9ml+2l+83quJCvrfBZlDd2p7GrRxUHU65zqnzNpz48DLbIeZRmhfW
-	z1SFyeEpBxwGHTeBHBR895Bvs3H6sus=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 0A9BBEC01D0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:43:29 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 06 Nov 2026 09:43:29 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:message-id:mime-version:reply-to:subject
-	:subject:to:to; s=fm1; t=1793976208; x=1794062608; bh=4JlsES4uLU
-	IYYaP/yiOT2rHyGIzTwamik4bNttM7hYs=; b=U1cM4ow4O99BMT/eebmQYjkJXf
-	rhloLJOiicazLExlaBKmr9yIpUt1f9P7fbJCD+uieTEvtdxjnLcGrM6EAXcz8mEU
-	OVtZgS46JzxKoSX45oFIaMFbMpgEspcYJzwz7cHzob9X2YgJMorIHGmdRkbvLRAS
-	Lcyf4A27WfYmzmwB0eF1eMtVJxNy9AeA0ll5A1KGSieFZ26Hb6KR+kA7ErWy+biK
-	CNGbOeKYZXILLSzdIXTIokIBI9bMYlVS7GBZ/Dt1AwMqG/i+pAOXoUgZqQLXFaYa
-	c4mXFi4Al0vUjyhTTvMiCHaKLN1Pqr+qODC3z2OnLLiSaDtLInibi1k3MwCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:message-id:mime-version:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1793976208; x=1794062608; bh=4JlsES4uLUIYYaP/yiOT2rHyGIzTwamik4b
-	NttM7hYs=; b=yflA69rWK8GuffmyMc8r1ksMTIyLbmLQGCCGCrF+p8NoEdQcHuU
-	uPY1pDlXoEQ1JCuvBjcyPSUt/ytfHhmpR4PjuhuFKRQF1W3BxnajNSCibOdLG4Ww
-	IGo3BFEtzzwSDyB26M25me9XFEEK1yLe6oJ+tOXYETpWwdUWrZPBhaqL7Ka4ujwN
-	XP2azL9qaLI8+qFl27xOcNRafnlFLct/Ops5ovUB8nBS9vYrn7QP8xQZbTajp/zW
-	HZzntYNFdASRKEfEGCf5xAHJQR9lPGOiaB/h9eC/X9gZhkFQdPjG+tftGFhI8Rfu
-	237vSZXjfKayxE+0R7k4SMTWcL3mnI7lHBA==
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=sign d=shutemov.name a=rsa-sha256;
-DKIM2-Signature: i=1; m=1; t=1793976208; d=shutemov.name;
-	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
-	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
-	s=fm1:rsa-sha256:Nccs9mQfs8vayK1oYK7mbVOdkoYl9dezUp5qwb0wZQNjoMu
-	lPcEapZKHVfODFhL43Y9BDrZbYElXGnI+/OorG9e+eqyJA21tBAzxNE9aNzLhDVY
-	jm99heWwsCStvL36RNnHnZAaKbiszRFujA3qtJ+1s9dXDUc0iG6fnwxBQlF9DO3T
-	2rexxIwwb+lxUm17U2BCiNWiBPhqlkOK4EABO/uv5jkKfjo0oX1+Ss62mHXPCfNY
-	w8jntQaBuE+ZrSQ6Xfof0kaZCNy8pUiNlaFNDEG1nzTGReF0IDcgsVdVfMqnGY+y
-	UMSbalWgbl/0XT1hTis79pBtJBR5zua0t4sXC+A==;
-X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
-	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
-	action=mi-m=1; hc=9;
-	hn=cc,content-transfer-encoding,date,feedback-id,from,
-	message-id,mime-version,subject,to;
-Message-Instance: m=1; h=sha256:mAhdeZutzgxel4LfCIR4P0qGCtKeD7cSodqPFkRXA1A=:gcQGkw5DvWGcUvkEFyLdo943AU6EZF7qgzUb0avWdSM=;
-X-ME-Sender: <xms:kOftamgWQduRzFONPFTcWIos3i3HPa-lIEPFUG1wg93apomkVlxuGQ>
-    <xme:kOftandtYuCNjAq_gmRq6H-ZQhxzTOQt4QKT_UUlyW79K_88VpOEpiFNBSoFohIEj
-    hZb5xEH8GaO4tYwBCJ-m9026RFYE8nplPWnFql4-u_ymcJmHn5iAOER>
-X-ME-Received: <xmr:kOftat312HR9KcYnj1ohQT3PifXe-3GPCgaYzqbmPh_L5AyFWl18ledqD4Q>
-X-ME-Proxy-Cause: dmFkZTEVyi++14NxNXhrhQvWfvjlAPlwXEA1wBKBvLE0AxcstoZuNgjT8CEJY3+Dpk8v4o
-    3zadRI7ItJ0yvlmlUXvyighpPOjkwnnJ1aCWXF9uPXp3YsZjLZ7JHNPRPt7LBo3ZqxDQhu
-    RYF61EmzuRQ5IiIBv/fonHwsAvacjt08M10KWOmuhlizcdpqtxR1hAJbku1N9QaybuWg70
-    y3X4jHPSfETDmAdoEKlnQtvk8LsNFq2v+rmWQa8HQfi/z0u0UyT3A0VhsmGKVoTnMlII7u
-    0HpGg4SiOpQa5vo24Ox6FgZcOb1jj0DOSDQO8pT9sMRmU4n72a+nYSLdaMGbgB7YtD3ER/
-    c89GwVaOUugTIbweoqtmNrbobf7u8j0HKUO93+OtuRmfYjhmct+E5vPwVY8lUqSWY633lm
-    u4APdjacP8VDb6UP9h1bH1wzNv0in2FYQLoXnNQE1GG6Mk2NURyIE8FqjrVrmYUD3wJBJs
-    BsqpApVEBWHY9hKJ3xYZEdmKyBvYbdpI3XQW6IfWpixnZQIu4UbuiCavvDaHVTafeCrTRT
-    nNjJWoO5ZfYk6fb7cwWPB0vKUd3icxxSwASEqLZkt33FwpSu0QtDccIXvDnYg4emEf/4XG
-    60FDjuYkMhtpM1UcbbAZbqDqgrzkFvRSmz5pPylqNm1LlhkIXhthSx6aclwQ
-X-ME-Proxy: <xmx:kOftaroMk1EM42H6nDaEHzD_VIFPD6wf2TkTgBC7T1hE4XktrcusYQ>
-    <xmx:kOftatiRLvs1M1abJ36jKUx1x2GnhEHQpT-t_QAeqUTrl_0Xc2KBEQ>
-    <xmx:kOftanmIr0Bl6pcDvQommBy8iSjyEajTFxDrLzG-xIkAjpDsNcfMXw>
-    <xmx:kOftampZNxFKMugkdOp9rs0pgOWWrZj_KmNHQ4SaBeRCJeAFR96ZVg>
-    <xmx:kOftar0XkI40B59ajnM3xulM6jTa4rcK44UiXxyToiYwqMGS8YtGNLL->
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Nov 2026 09:43:28 -0500 (EST)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Hugh Dickins <hughd@google.com>,
-	Chris Mason <mason@kernel.org>,
-	Pedro Falcato <pfalcato@suse.de>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH] mm/memory: refuse to map page cache folios that are not uptodate
-Date: Fri,  6 Nov 2026 14:43:21 +0000
-Message-ID: <20261106144323.3634477-1-kirill@shutemov.name>
-X-Mailer: git-send-email 2.56.0
+	t=1793977408;
+	b=A1Gm/5ZZdSV3MV8BSp5JwfXxZOoj2XbUpF87kNXe/mGfjxf2Iv0gbUKg6uPB7GmN3X9Lsm
+	yq3xHbleY8U0MDtYmpy7u5KJj+Z3/T0H3F9ea0C92Si9jJV3zJLx4oWhUeGVvAIK5RsxaY
+	oaZL3VQavh7qUNeSLORxhlw4dyGj/30=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=T99h4t2e;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=A2iRrZUk;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=TrP7zV8B;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=pwChqOUr;
+	spf=pass (imf02.hostedemail.com: domain of clopez@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=clopez@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C528B1F452;
+	Fri,  6 Nov 2026 15:03:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793977407; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6FoXJI83hjTO3ej0IaD9RjGbYyhgQtVCqkHhpUVyi4c=;
+	b=T99h4t2eVaDmcmrjVcu27YVtUhLbvUNfnyHjcqGwmJAK8EY3JM5NW5F64yAYp/wwy8z4CL
+	OQ3ZR7qiT0H/FjFFL5nmUgbhfEZgFD9A5EtEfwwQfjsDhOuOnsVFcTehzefBuemiKXfZT6
+	E8gfqHNX/vfuRnQ1iXGfrwne/66b0go=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793977407;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6FoXJI83hjTO3ej0IaD9RjGbYyhgQtVCqkHhpUVyi4c=;
+	b=A2iRrZUkUprSGaX3DSBXtYraW62Mf+y73dvDiOil3BLXplUYqTBbKk5eyLZK8lPx4MkHqO
+	AdHMM067QoKSB0DQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1793977405; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6FoXJI83hjTO3ej0IaD9RjGbYyhgQtVCqkHhpUVyi4c=;
+	b=TrP7zV8B8N1md/3I8OjCcYITIt4ESSWHs0Yz8xJhnNoMmua2OoyrnWj4n7PNXBtu2z1R9G
+	90BoSMUNQDUeYsD97x9WMj89IbtxNHO6Bl24ZQQIgRG5rYGqdWpolgLjdvqds6BCDhpws1
+	YspriT66b/zBgFq/O7crDSGBMle7v+M=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1793977405;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6FoXJI83hjTO3ej0IaD9RjGbYyhgQtVCqkHhpUVyi4c=;
+	b=pwChqOUrbMtB61kYeSJynpZeIOHohxyjdHnde7E83dlZHSYA2ThLpp3JiZ/YStXID2sheR
+	ThpKDcjnpwj+lDBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 33B42132C9;
+	Fri,  6 Nov 2026 15:03:24 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id mWThNTvs7Wo+GAAAD6G6ig
+	(envelope-from <clopez@suse.de>); Fri, 06 Nov 2026 15:03:24 +0000
+Message-ID: <8e5f0caa-6292-4a65-ba8b-7ae647dd3b1f@suse.de>
+Date: Fri, 6 Nov 2026 16:03:19 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 5/9] mm/mprotect: keep writable entries writable on
+ permission upgrades
+To: "David Hildenbrand (Arm)" <david@kernel.org>, kvm@vger.kernel.org,
+ linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-riscv@lists.infradead.org, seanjc@google.com, pbonzini@redhat.com,
+ akpm@linux-foundation.org, peterx@redhat.com, ljs@kernel.org,
+ imbrenda@linux.ibm.com, borntraeger@linux.ibm.com, frankja@linux.ibm.com,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>
+References: <20261105165004.2663799-4-clopez@suse.de>
+ <20261105165004.2663799-9-clopez@suse.de>
+ <60c4f0a0-e3c9-42dc-b2e0-0860ab6e30f0@kernel.org>
+From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
+Content-Language: en-US
+In-Reply-To: <60c4f0a0-e3c9-42dc-b2e0-0860ab6e30f0@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zpakumr89jqstqrqk9guawr5s5zkb41d
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Action: no action
+X-Spam-Score: -14.50
+X-Spam-Level: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8D3E78000E
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A1B11140006
-X-HE-Tag: 1793976209-224927
-X-HE-Meta: U2FsdGVkX1/Vb0EQdd6KCRM97SpCWu9w3VsaDIlut8ULHKRT1FiZ4KPqsT3X0nFVd22/aA/vbVRecuCsdUtUprYYiUhcQfc4vlLLbqj9xi0iSEC+DjrY40iLIgCinnZtfbXxVdJAOjfNRw8qwOTq/8siiuAEfwlc/kilB7rmESA8XN49py2lV5lgj/l5cdmC6+5JHgvVICWFo/IDDhoBXwQiCRMVDqNEiPry/YPOPzymEpwFiBhexC98I/Oy9/LdmrfuH/yqoHCrl9F7q9i7HIb6tbsgPnN0xwvhveXPIqKflbjsdEVyFDclf7JINiflcAM7MV+wHKsCb87zPHqjRI49FDIvRbkVlnrJ+65kfowIDUADNzalClQ4brGsN3G45qRFOEzQyLLG5VbeLbtb/JDDAGepmMzxGStwWR8pdxW5Fkoz+ueqI03o99eJ+uCvaOAqkP6/tneuP/0tWAtrEVz9mdjbR5zCQD3itAUqLthGtD6INDreNpFl84kD6bTuILeoORoDrEDxSq7fZ9wBH0DRow43cgoQXPhA+R/y/Z7qao6Ho7QLbgnJZXSYns/LlNv71oay80kRRg4/RBpQrrv60C/QPSxB7C8fMy+yvXPlypwW8rhj8LnI6umKSgyqU1l5QX2rdq2M/Qi9x0sxoTRV9gb7rLYdtCUQL+cMUG1J38/ifey4/uvB7QdK7xqNardvC6c0tczAPEM6JZa4ymF0bwgdQqVvh94z01l8SUlYH5wHtoMhg/Uva+2R+StkhCze4VilsQDyAJ41PKNZ+U7xDZ9CkSP3CR3v1QLTnlWuNw2ZPNcJYVyeKyj9ZilW/ZuYnR0ntZkjrI3uRk4Y1b4wIDWQFQKIjxaN0eQ9fBFDPo1O82HIAiJc484Y8em+FuaEknifCUeYI+qM/vEFoNxq5mEwQ51iUEZLuGrWU0XlPClxNKWe5GZfaTl4DjY8vFCwbXVjCiaKzJL/aEv
- SRcGaYHm
- 0z94eu+i3XC55v6iYgyXm+ENn61yg7uHO360PVgC7JBc4wug+3Rz6Z0jyR8lwiJnIFYRN8tfNwCT21qWNdrjRmxr2ojq0KUNKgQBWZpfG5E9sJoWh54pyGjaqj44GXqhQqLQ3Het6WqpFkjdBpQZm7+4WSNUjIiRVCEZsORxcqJo+33G2QZ2PgHVJ2ZfUhEfjyzZQe5l3az5dt3tgOJbS3YwKkplxmRtmg8UPNNLCFAmP4wYOSA0ayycwmQpNexH/anzCAM9jwh5NVHDGa+6UHWDdVMRUxyzFnFNUQkKWWjog/Btwj+cCvdU6IsOdQW9FR0cyx7eMuhwtq+AHKuck/84ZDXJ75ClXX66uGoTaG3limuJSEeu6gUYsko/9C0B48DMhA6hmDcosIK0AFPjROfU0AMMgExWGIAfdUv+KHhFP5EKcCmPGPatqvyYOvbd41zs3KLGasY2f8nyxGiUZqqnYmmcr6P+ayxThaBkjthlTtMH0zCOfEbEOL/4ptoWhcgN++L7p11etEjM=
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: fq1dx4ti7wssqbuna71sx9wphk9ytxc5
+X-Rspam-User: 
+X-HE-Tag: 1793977408-804974
+X-HE-Meta: U2FsdGVkX1/84Y+4CO6X0qaVSjcgbr7xqSRqS0NUebAv9zr+jStaKalP/UToV8R8GvFJRWz9x7D54BIhKp7seZ4ipfv1ew3NG8nXlkCcs0/ggDBQSsDUzyfbFOceuQIPb+JwciIoPYd+0uM1KHVVNUmZ+b4WbfiqMNROH6Z6XIy281qeUPziuFHR5FhPUogTa0+SS0Qu96Xuy08trk25mlNbJYg2NB8XkSIO3opjuOe7s+AMJd8hNf2+XgrzJQZkews8FRO2twrC/walzHlwttZ80qvJ9aDnpZidZWtsA4IMx9FzW7bfCngKTVQG8vJ3UjnMBWRHMosNigZSbu5tMqNOcf0bw0bOQnx9kG70XDr8dDYX3nsEjiRukwndJZBqwHJWHHopHVJwU5vW2HtgI3U5T8ZfKsBpr1dGEXAOfu9m0ypkmlDxTUHOTXm9Wfcj/Pe4R3fT/b8zPS0crVHSM72CaiPV+CjC2yN5T8Mk+bnIH9mXkr/iLBVaD08X3UAPmklEKyxkwftth48GilIeOBy/7NZpUbh52OdfiQ1jrWzLGo2wuAjKHHc9aF/qFyBRNH05+vhZ7Iod/A9Ysr4g/5XViFF4VLpDgRqL1HhXmKFUD3qLGW7wOypFFdY7PYLMmKRO8zfg7IkFk+39+Ej/mv5xpEpHLDQsfp1eKVdLb0NFqkM9bVlItBLcQTaZLYHPnV06zNlUGojvHRynRU7n6YqYpUZ80HBokVjH2mdCl9RLkWRjquqlqWzRguHJBqLfxtMEAIMufybYYJMHZgQKlgZnRnEKR9G448KxhnZ5MaopX2SQncYBeNL0XTpBAaqgsDivpVd4ZOoa0j6gE1NjEin6EfaSOuhssZv6avMRhr6SIkgtWOl4KOAW9DL3qUHYkwhj5hfjvOmRiImi32ybuab3m/bFPnH5oC/o4pSGPGZUafuUeL3zn7RCZ9vX95xwnfYWsQbPmF1u6ck23O5
+ hYs61w6M
+ YxfhmXG3fr/6NOriB68Z0++Idq7BHooqjDD5OnlJJZPV0E21FQ3guFRni+oVXGcqzUSnn521KRzXCdi2zclFcw0U652q/wZkFb/og9yA1Mc4l373QYNcSLG0zUzH2EMgl9jvpayAOBpo5NWj96kkyI82XJCU9NDjnWmuD3xxl6y8vayMUzSZ5uDrVCKJF3VMjliMRkw8794eU3HNBJJKizH6cBPQz29Mc2L5FFM3VSxX+6ncEchLEczARZ2Dfehy0P+dqMec4XtUIjBm24HA1yZBUoivn11pHLovgdcPiVzTUjf5M+2RiAzDytBsKJx3ktCbiI5Bohu9pQjc8RmARhlgps9W8xHDvjBNhiVexNtpX2yY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,91 +160,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On 11/5/26 6:06 PM, David Hildenbrand (Arm) wrote:
+> On 11/5/26 17:50, Carlos López wrote:
+>> change_protection() applies vma->vm_page_prot, which lacks the write bit
+>> for CoW and write-notified mappings, so it write-protects every entry
+>> in them. When an entry would simply be made writable on fault without
+>> further checks (e.g. dirty PTEs in shared mappings, exclusive anonymous
+>> pages), MM_CP_TRY_CHANGE_WRITABLE makes the entry writable again to
+>> avoid the future fault.
+>>
+>> However, writable entries in shared mappings that are not dirty still
+>> become read-only. For example, a uffd-wp unprotect makes clean shmem
+>> PTEs read-only even if they were never write-protected, e.g. when they
+>> were mapped by a read fault before uffd-wp was registered. The next
+>> write to each of them causes a fault that only restores the write bit.
+>>
+>> Now that MM_CP_PERM_UPGRADE indicates whether mprotect() only adds
+>> permissions, change_protection() can tell, together with the
+>> userfaultfd unprotect flags, when a change revokes no access. Keep
+>> writable entries writable in these cases, at the PTE, PMD and PUD
+>> levels. This is consistent with the write fault handler, as an entry
+>> that is already writable needs no write fault.
+>>
+>> Signed-off-by: Carlos López <clopez@suse.de>
+>> ---
+>>  mm/huge_memory.c | 7 +++++++
+>>  mm/internal.h    | 7 +++++++
+>>  mm/mprotect.c    | 4 ++++
+>>  3 files changed, 18 insertions(+)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index 506e1e61c0fd..6e23d0e4ae66 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -2809,6 +2809,10 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>>  	if (userfaultfd_rwp(vma) && pmd_uffd(entry))
+>>  		entry = pmd_modify(entry, PAGE_NONE);
+>>  
+>> +	/* See change_present_ptes(). */
+>> +	if (mm_cp_is_perm_upgrade(cp_flags) && pmd_write(oldpmd))
+>> +		entry = pmd_mkwrite(entry, vma);
+>> +
+>>  	/* See change_pte_range(). */
+>>  	if ((cp_flags & MM_CP_TRY_CHANGE_WRITABLE) && !pmd_write(entry) &&
+>>  	    can_change_pmd_writable(vma, addr, entry))
+>> @@ -2885,6 +2889,9 @@ int change_huge_pud(struct mmu_gather *tlb, struct vm_area_struct *vma,
+>>  	 */
+>>  	oldpud = pudp_invalidate(vma, addr, pudp);
+>>  	entry = pud_modify(oldpud, newprot);
+>> +	/* See change_present_ptes(). */
+>> +	if (mm_cp_is_perm_upgrade(cp_flags) && pud_write(oldpud))
+>> +		entry = pud_mkwrite(entry);
+> 
+> That looks completely hacked on. We do have can_change_pud_writable() below to
+> make such decisions.
 
-A page cache folio that is not uptodate holds data that was never read
-in or cleared. shmem fallocate(2), for one, adds such folios and clears
-them only on first use. Mapping one hands userspace whatever the memory
-held before.
+Okay, for v3 I can pass the old entry to can_change_{pmd,pud}_writable()
+and return true if it was writable, after the existing write-tracking
+checks (uffd-wp/soft-dirty). For PTEs, can_change_pte_writable() is not
+used on the change_protection() path, so the same check would go in
+set_write_prot_commit_flush_ptes().
 
-Each path that maps page cache checks for this itself: fault-around in
-next_uptodate_folio(), a fault in filemap_fault() or shmem_get_folio().
-Nothing in the mapping code does, so a caller that misses the check
-leaks stale memory silently. MADV_COLLAPSE did exactly that with
-fallocated shmem THPs until recently.
+Does that sound more reasonable?
 
-Warn and refuse the mapping in finish_fault() and do_set_pmd().
-finish_fault() checks the folio ->fault() returned rather than the one
-it maps: for CoW, do_cow_fault() copies the page cache folio and maps
-the copy. do_set_pmd() covers MADV_COLLAPSE, which maps without a
-fault.
+> Whaatever you propose here is either wrong or way too shaky, sorry.
 
-The fault gets SIGBUS, as for a folio that fails to read in.
-MADV_COLLAPSE fails and leaves the range to be faulted in.
-
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
----
- mm/memory.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 6fe0b7dab927..ff2f2deff761 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5674,6 +5674,22 @@ static vm_fault_t __do_fault(struct vm_fault *vmf)
- 	return ret;
- }
- 
-+/*
-+ * A page cache folio that is not uptodate holds data that was never read in
-+ * or cleared, and mapping it leaks stale memory to userspace. The callers are
-+ * expected to check, so treat a hit as a kernel bug and refuse the mapping.
-+ */
-+static bool file_folio_not_uptodate(struct folio *folio)
-+{
-+	if (likely(folio_test_uptodate(folio)))
-+		return false;
-+	/* Driver pages from ->fault() never get PG_uptodate */
-+	if (folio_test_anon(folio) || !folio->mapping)
-+		return false;
-+	WARN_ONCE(1, "refusing to map a page cache folio that is not uptodate\n");
-+	return true;
-+}
-+
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
- static void deposit_prealloc_pte(struct vm_fault *vmf)
- {
-@@ -5714,6 +5730,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
- 		return ret;
- 	page = &folio->page;
- 
-+	if (file_folio_not_uptodate(folio))
-+		return VM_FAULT_SIGBUS;
-+
- 	/*
- 	 * Just backoff if any subpage of a THP is corrupted otherwise
- 	 * the corrupted page may mapped by PMD silently to escape the
-@@ -5849,6 +5868,16 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 	unsigned long addr;
- 	bool needs_fallback = false;
- 
-+	/*
-+	 * Check the folio ->fault() returned. For CoW that is the source of the
-+	 * copy; DAX CoW has none.
-+	 */
-+	if (vmf->page) {
-+		folio = page_folio(vmf->page);
-+		if (file_folio_not_uptodate(folio))
-+			return VM_FAULT_SIGBUS;
-+	}
-+
- fallback:
- 	addr = vmf->address;
- 
-
-base-commit: dba8aba0a9a00ff781c03d82ae534fc6f8c2e263
--- 
-2.54.0
-
+The idea is that MM_CP_TRY_CHANGE_WRITABLE relies on the dirty bit to
+make entries in shared mappings writable, which misses clean entries
+that were already writable (e.g. shmem read-faulted before uffd-wp
+registration). Such entries can stay writable, as anything that relies
+on write faults write-protects the entry first.
 
