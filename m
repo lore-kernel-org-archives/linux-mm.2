@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7F97606A339
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 21:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BA86606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 21:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Giqjo2Ce
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KHkxMzoj
 Received: by kanga.kvack.org (Postfix)
-	id E91FC6B05B0; Fri,  6 Nov 2026 16:10:09 -0500 (EST)
+	id 4B2226B05B0; Fri,  6 Nov 2026 16:16:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E42016B05B2; Fri,  6 Nov 2026 16:10:09 -0500 (EST)
+	id 464C06B05B1; Fri,  6 Nov 2026 16:16:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D306B6B05B4; Fri,  6 Nov 2026 16:10:09 -0500 (EST)
+	id 37B7D6B05B2; Fri,  6 Nov 2026 16:16:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A0F0C6B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:10:09 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 153CF6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:16:18 -0500 (EST)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8A9DD1201FA
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:10:08 +0000 (UTC)
-X-FDA: 85405936896.07.71B50A4
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A79F24020D
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:16:17 +0000 (UTC)
+X-FDA: 85405952394.07.CAE378D
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id E982C140007
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:10:06 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Giqjo2Ce;
-	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793999407;
-	b=R15pn5AK+E6b8b3cthPcaT1RU2k2EUT8rlZ0ofF1ic5GVidnioN9W2MktBc8Zlmj9I02/X
-	+I74PfMRlMiNnT8n2fkuVDnhrv6LmiVmGDr7m/h25S2rhvfrd06cX+pJkg8wssEKAIc2ZS
-	rdygM/GkkhIgxnhW99S43XkGJqymd48=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Giqjo2Ce;
-	spf=pass (imf26.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 17821C0004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:16:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KHkxMzoj;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793999407;
+	s=arc-20220608; t=1793999776;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=To0Z/jX4wfVG9baWyVxWTdD5Be58PFm2uiAc3VkWvns=;
-	b=TOIvEz/T0ye+eTVMyIEdgWjBZRRpTvmi7zLL33jdkBBFIPM7kJ7RCdClHCZCvjh+KL097a
-	Bd+EeTn2cOP9UX5oBuFl4OxctCRM+k34zzjrE1mRgBFpZPHF55lStvSCcgodYHlzo6Qb/s
-	rZp75d8PydjyzkXTNvRf3REbsUFylTg=
+	bh=lGIry59/kztjQjrt6vun5/zmI1Vxrfxdl0pZwMKu6dk=;
+	b=TDTdRDZ20isK+V/YntJgmEPpKJZcRAYxC7seD6Zlwzv0Tmk6Bqp3oYr/qzNfzrcPClBxcy
+	WAk1J/HguB+Bmgi9OUuF7qOTuawbZ2icfJSV/F6Nr596UcAvdicWNNMMtqUFNHiLoWCd3Y
+	aaH6kv0znVKWLXB+wIj3Uix/vHrZ2t0=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KHkxMzoj;
+	spf=pass (imf10.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793999776;
+	b=M6Xvw6WfjDCqngXflD7V7p8UCFDucfSn5uF2p5ww2X7X1QKxjpFaLb+1VnCfu7fLLoS4xQ
+	0tm0lrh9OUPPCnsYGz3K53fWvJNMzZb9gBbHPHLUd1viHehgMcM6OOctdMXXXvOSu8tynf
+	PbMg+I/yVyDaK2zHjpuVqr44xBNx5xk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 30D9860052;
-	Fri,  6 Nov 2026 21:10:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5E661F0089F;
-	Fri,  6 Nov 2026 21:10:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A4EF060145;
+	Fri,  6 Nov 2026 21:16:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 224811F0089F;
+	Fri,  6 Nov 2026 21:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793999405;
-	bh=To0Z/jX4wfVG9baWyVxWTdD5Be58PFm2uiAc3VkWvns=;
+	s=k20260515; t=1793999775;
+	bh=lGIry59/kztjQjrt6vun5/zmI1Vxrfxdl0pZwMKu6dk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Giqjo2Ce+NopmhmRaiY5iJk0dFJnI16mLjdGE5rJh4qXwjO9MstWWzlWAn+tYbOFP
-	 1XiIOHUZvkhvQU7ULmkIeK1Zg2CvKlvoAG+bWnJAM4EzDNXuLemkGlY1MJvQlakPvS
-	 s7ILKN3SE8s2UK2cExOdMo93LqaZwTZj3KP1fC3O0QlHl9eOgFLkmc7gg4+MuPPoRj
-	 GC6KoF34Ah4I4vDr2NWoYNbpwXzqICEDQi/IJMtd+weysgskmTHDWVBwil6AZDEODW
-	 qLoJzryDTxS/9Z9VoXzNIJoBe784lmQ9oHUBuEC9XOUmRkgQzu9h1zIhvnaaw6Wly9
-	 nCYj2DryzOoZg==
-Date: Fri, 6 Nov 2026 21:10:03 +0000
+	b=KHkxMzojGNv82WuwiAhohEz5muS6LECPJGM545RBj1EfFNYtPurIgbEssNtN2VQLx
+	 8L8OsE2Lkv2BnuGTihJubUE/ExDn4RDMSpFu7LorsuwNEV+8WcZQCnu3P+Dfvixu5d
+	 a3Vh8AFreDjKwd2g9bMyFrz9x8dB+mhfyKxy91vMN+ZDjh1Mwi3Fa5t4ASSaHqxivC
+	 UW3uS0exUkF36cOnL640O0PfBs61LoFpl7clTBXPKybP4+eXwURCpDBWCevt+vI7ay
+	 rDQgN9C83HQMOAZdaa03R0awimi3M4Isxnjgt7RQgqn/Z8joo5eFkVENzxge/Q+P0x
+	 aCbtD+foXHZDw==
+Date: Fri, 6 Nov 2026 21:16:12 +0000
 From: Yosry Ahmed <yosry@kernel.org>
 To: Usama Arif <usama.arif@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, 
@@ -73,28 +73,28 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org,
 	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
 	nphamcs@gmail.com, shikemeng@huaweicloud.com, qi.zheng@linux.dev, 
 	luizcap@redhat.com, kernel-team@meta.com
-Subject: Re: [PATCH v9 15/32] mm: swap: share swap-cache allocation error
- cleanup
-Message-ID: <au5CJBMUUUnDwbhe@google.com>
+Subject: Re: [PATCH v9 16/32] mm: zswap: reject high-order swap cache
+ allocations backed by zswap
+Message-ID: <au5CgmSHCebwhNMa@google.com>
 References: <20261105183940.2236717-1-usama.arif@linux.dev>
- <20261105183940.2236717-16-usama.arif@linux.dev>
+ <20261105183940.2236717-17-usama.arif@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261105183940.2236717-16-usama.arif@linux.dev>
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E982C140007
-X-Stat-Signature: hu4eusg6tnrq15kf8jd9d94tcmj7693x
+In-Reply-To: <20261105183940.2236717-17-usama.arif@linux.dev>
+X-Stat-Signature: 95r67dqdswbhykm7kmfry3hkawyn5swx
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793999406-681547
-X-HE-Meta: U2FsdGVkX1/830VOJop/XrXy8sLh1YFmNuxqN2iQAHthy/p8+83MFh0J9jCZQheO/2r3+Dl/Y1KACgN+IS+Ju5euOT+313eMEZiBIJRXjelMpdFEBKET9iOjvK8+jiDI2yslFxpyLK/IfO3Sx+EBKf4+uSJT92xYLeGKEDzs4idWUuh4IBGxR2NByNTx8/3vvCDGgUzTGztFFNA4az7a0CvOOU/5y8wdbvAmq4Fzv3bKGK45ixn7/2DurID01VCtSoIbiUZ8Fwd4JtxvaNzOuO0jh4qvQy0i9ilIFT/dfYJK+zvX0ndzViXqyujNtgCiDypd9RwTEY6loEOGPYtPl4uztysL/MAZ40sJcP/vMvbWsebUJCAX+Y/0OtWkWN4RheKbzcN8h2/Jo9KJv1MSy5cFTMxOFBR1SC2vxtYZa6b8u30Z6I6r4X6GvO7P8Re2NqvPKNpfdGEHRcmS5CsOeHShI86zqUbu5CRkXUFC2l6a0f8W3RFvI0PNiy7Gkvv8uRDfdOlJTyGV1KIA/fmpeoo1cQw/gi7MXREZYMoNkFTBYKnQr5iZmsDTf0Mon1gjXkGzCb5Iw9Qek4qS3ekZrSz1quGFQI4AX8jguZNFRDIr6K6EmeHPLf16zxnzxZvuoy/CvtnVI8y9lZaWqYFcICr4kumUobC0912qrMrJI0Ay9ZZ4zZcDobQvzLegtXmNUVkcQM1YGjdZiYPmd6qtb86rgUGZFJ5JeQ+0N9CUu5qkeVL54xbiQhdOMa07Zq0m67yPIsaXdo+AtMZT+kEKDUxPcrJynrxoXifuBHcXlx+wBy/fOr/UPaJzYC7vdHpxRjxj6kEDb9jh1v4qET7Ot0feymwFcQgWTe/A9XcDQ2IKNhRnP8Z745iQGkWIo0PttMpxOBP9CyNDKAPyr4Cf6U5T1xbQmalt8CXkPbPvIiljn4g+Wapsfv4fbg9M7nJQF2mSrI/x8v3SSM6hruX
- RIPnZCKR
- TBZKEggmbyFTKmKgQmY3MCv3hhZs3oMmGllvdpwZveqvRsZiJAl0TeRwFbOZpBP0U6X/3EEASZnIykuHCjVRdnvgW7W4/s5YPGzjrutRu7i+3w2rw3P5diYjRkMBBCNR/i9BtO4WWvqKY1GXqOp8cEGv4xQMUkkpFL40ljQKxttiD6oH4ZFgikBuBZT21yCsYRvRfJsB/4a40IGLSAWNgeLmpt5w1F450CipjudK/deKzEyx2L0y12psMwieIHpmnHGBSbpJJYxx0B2s=
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 17821C0004
+X-HE-Tag: 1793999775-414422
+X-HE-Meta: U2FsdGVkX1+LnNa66HC0Qx8dyDvl6n8BQa37HQk8EZ6jG/OOwUOq5HRN4GZ5FQC7wh9OEjmX4dEIwtYvYDlKwjISSpUjRIvui/BE3n4JlZBHJFsTBHGMZOG132LkF4izkFaCO1khWd24Wwku6jT4NTkS8pmN/HNTv9Np5oB717KjHHzlTM4Hk0tmJDJEO1mttC4UQyEheIB0olwOo6tpmXgrEvBqPTqdhf7LanXdZNC/ov3V6BwWjC9GA1Q4cb9wBLROTkZgBoJUFQLiGm0p1wu2Ucve0b15MPZBK3xZ+Bm4f6oQ8I2j8Hk4UFT0jgaNQoHXhXsMUo/3ybUWB2dB581Xkz/ZGOfa74TronHXJ2rQWXi1Ne8Uy1M4DTrZr3lN3DMfMtV449lX0QmwX4IpQMHn+OOieX39kPSBBhtGmd7m2LnhCWbwwGOp9H7YCxkT8Nd2etjKZGV7SB2+X15dgAJkUaQYk6o8kOtZrK15CyF23mW0jD49/ty4w2X9iqXnN/TSY9rmK0a8g1eIshw5l2ckxaCOjYKbwsWW8pWO+quJOKS5Gz1RDGCiM6L+2wLpNXYngBPH1I3YaZk5R5epKYvtWeYrKjyg/Cs43qb6RWwHKDGcTmI7ykXHSH1i5jwKA/VDbGLDIcAmGSHQpzZ6vtuDA6r06Xdst09ZO+DvGjbJH1TIn0FyjXbYHvL47yP5TpbkMroLvtXF92wUrcLRrO/JTz/tVbJQbsMu83GAT7gubMJIMi8PgSgcv0wGC5ruVsmSCkUVjTftAV0SgmOpyuqUX10oX3jmkv+39XQpDjKmc/+F1kvKuWa6MIcodWkZC3yc2ec7lPlsf9apGIaPLXD5CZUv53JvhuySmMoLa1ArKDA75OtyBxM/ubRvJRaez+jo5ODRc/MP2crBIt9pEn7wKjo13WX7JQ/3AG0EvTY1S4Wp3IbgZomiA7ZEaYSUjjIw5YFzbXDGpkqWCa6
+ P1VPrysM
+ Kvs13nEXkBD96bREPa4eVha01vIGXhmNnv7Y/H9kEojJPcrgXYNFJbmLHWYLLfio4Suf54tHTD3i1BuwpENvRTjynZjOdqAa8a/m2WzGZIFBkY8e8FhT2HDGE+d7XSiyNo/6hSUQX0yYayfUWWpDNX+OgpBywnUb04NmTflkevYtCzyrcS/mcGhx9kZT4M/Ht38rR+wP25iP3YBCjkOOmpmaNxf+qzmILiiuCXtleImjvnI1JWzrSkwDWACUQCifJHx02j6rG8+2Th6dD5EQIPOLHsHTJSR04DEa5EQfQBGbbdVqzWsDpSIzo+Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,12 +103,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 10:38:59AM -0800, Usama Arif wrote:
-> Both post-insertion allocation failures remove the folio from the swap
-> cache, restore its shadow and drop the folio references. Factor the common
-> cleanup into one error path so additional checks can use it.
+On Thu, Nov 05, 2026 at 10:39:00AM -0800, Usama Arif wrote:
+> zswap stores swapped-out pages one at a time, so a range of swap slots can
+> be split between zswap entries and the backing device. A high-order
+> swap-cache folio over such a range cannot be read back in one go: the disk
+> read would return stale or zero data for every slot zswap owns.
 > 
+> Reject that in __swap_cache_alloc(). Do the check after the folio is in the
+> swap cache: from that point zswap can neither start storing nor start
+> writing back any slot in the range, so the answer is stable. Callers
+> already fall back to order-0, which zswap_load() handles per page.
+> 
+> Co-developed-by: Alexandre Ghiti <alex@ghiti.fr>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
 > Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> ---
+>  mm/swap_state.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+> 
+> diff --git a/mm/swap_state.c b/mm/swap_state.c
+> index a8a486b0403ab..f41e740a91b87 100644
+> --- a/mm/swap_state.c
+> +++ b/mm/swap_state.c
+> @@ -12,6 +12,7 @@
+>  #include <linux/kernel_stat.h>
+>  #include <linux/mempolicy.h>
+>  #include <linux/swap.h>
+> +#include <linux/zswap.h>
+>  #include <linux/leafops.h>
+>  #include <linux/init.h>
+>  #include <linux/pagemap.h>
+> @@ -482,6 +483,17 @@ static struct folio *__swap_cache_alloc(struct swap_cluster_info *ci,
+>  	__swap_cache_do_add_folio(ci, folio, entry);
+>  	spin_unlock(&ci->lock);
+>  
+> +	/*
+> +	 * Now that the folio is in the swap cache, zswap can no longer start
+> +	 * storing or writing back any slot in the range, so this is a stable
+> +	 * answer. Reject a high-order allocation over a range that already
+> +	 * has per-page zswap entries.
+
+Probably worth mentioning *why* we reject the folio is part of it is in
+zswap.
+
+> +	 */
+> +	if (order && zswap_is_present(entry, nr_pages)) {
+
+I am curious how often this fails in practice when zswap is enabled and
+how often do we end up churning the lock and swap allocation for no
+reason. I am mainly wondering if a lockless check at the top of the
+function would be useful.
+
+Anyway, this looks good:
 
 Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+
+> +		err = -EBUSY;
+> +		goto delete_folio;
+> +	}
+> +
+>  	if (mem_cgroup_swapin_charge_folio(folio, memcg_id,
+>  					   vmf ? vmf->vma->vm_mm : NULL, gfp)) {
+>  		err = -ENOMEM;
+> -- 
+> 2.53.0-Meta
+> 
 
