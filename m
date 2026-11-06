@@ -1,160 +1,203 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8FB606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 19:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BF7606A329
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 19:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XVDJ4NAa
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=n/HM7x3O
 Received: by kanga.kvack.org (Postfix)
-	id 23F666B05B0; Fri,  6 Nov 2026 14:11:51 -0500 (EST)
+	id C0ACD6B05B0; Fri,  6 Nov 2026 14:37:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F0706B05B1; Fri,  6 Nov 2026 14:11:51 -0500 (EST)
+	id BBBB86B05B1; Fri,  6 Nov 2026 14:37:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B7E96B05B2; Fri,  6 Nov 2026 14:11:51 -0500 (EST)
+	id A84226B05B2; Fri,  6 Nov 2026 14:37:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D09066B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:11:50 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98CD11401C3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:11:49 +0000 (UTC)
-X-FDA: 85405638738.16.950CD08
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 9DDE6160009
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:11:47 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=XVDJ4NAa;
-	spf=pass (imf08.hostedemail.com: domain of namangulati@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=namangulati@google.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 7B2AC6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:37:14 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 85F6DA77C8
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:12 +0000 (UTC)
+X-FDA: 85405702704.24.26D7AD0
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 90342180003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="n/HM7x3O";
+	spf=pass (imf24.hostedemail.com: domain of almasrymina@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=almasrymina@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793992307;
+	s=arc-20220608; t=1793993830;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h2A6aCl8kyfujglJb3VkwVgvWA7M4CaDd0+96AnNPHA=;
-	b=lCI5F7hVACYj9g/0x92AhCFBDaUhQBukbTV5hS6KF4V7pH3W04i1Hbk/8bdsKRfIFHmxZN
-	9ruE6neY8SyI5PN4jjSOsvaSHQ5+pNJX0DK+QkBPPsJbj7n9H6ujBWDFCRVJnbnUOfVBop
-	xwM0Nqpp8EYooW19GYMLc0xfukoSVJw=
+	bh=v077dxPdbR6B229Sx3h6EgyHNBd+S9MvYu+3WDhncOM=;
+	b=L8J+1eDODM0Yyg09aWm3qfADzs/6Y1yLy/hoFA55SvumcxUmq7C+9bIAdtFS7dH7oZ7k2o
+	YHAN3V6bxE2El60i1X24hemfdPI7RyA24D1p1cebZtXPrNCmSqxGHl6cyV6B4PAmlAccUn
+	uD9tkIfRcu8G01z8jRsWcnZyJeHqQXg=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793992307;
-	b=gLe6vJsB2MxSkJxPteBCjmlwjhqm3Pb6gAyrc6LNmkcHxIfOEdHCokqSaJwhJZ5gKKdJfO
-	R8trS7abvzkDdOBnH4EKFkBrNNIXt1iruRePpzJAu1bsJFYpHFEJwbNPAbQK52qAIFx920
-	2szMgiQz7EDiuvMHlrJIyuJLtrIudD0=
+	t=1793993830;
+	b=L9bB4n9Zja8Y7bblhg0CPJBKu5jUiHTUTu6gUgJnimkY3KSdMbpXZaq5xsmbmwq4cJTdpK
+	xZd5XCHKB1pVjYnsMBjnXuaBJ812BpuCrywjf0gR3ZNxqfdL1xJjAwX3yfBRB8ucVSSqN/
+	8mBTbgowpmDbVjO7+6Y8mx/zhGJi7c8=
 ARC-Authentication-Results: i=2;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=XVDJ4NAa;
-	spf=pass (imf08.hostedemail.com: domain of namangulati@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=namangulati@google.com;
+	imf24.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b="n/HM7x3O";
+	spf=pass (imf24.hostedemail.com: domain of almasrymina@google.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=almasrymina@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
 	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-54492d8a988so971cf.0
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 11:11:47 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793992307; cv=none;
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6b571a45a2aso330a12.0
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 11:37:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793993829; cv=none;
         d=google.com; s=arc-20260327;
-        b=hOQ3eJs9W1yRl5PO+OJhIAWaeKxeaFjuu0kfEauE2GXyBxJKs9f52oClqIciYm3IdJ
-         DrYtM1DPQWO7lQDhP0eFLlAAKIaZiWmgqFE/JcmHeMEHXSICPxVhV8vFuZEt451I24Ak
-         2K8JD2RcGDVsXifCmkmdyutXWk2yM2ApL+GDNj/M+WN1clfsYw/dIoDvdUFoqBZ1HLV+
-         AkjOdCne0E2kjTMnOGf13Rw+aB4m+7opIoY6mstkGmk9wVMdZEiyW3oKGq8DrSPjTC8B
-         76gibgaZLhmco3ZQQJn47AvAR1LxIfKGAKxd7JVkPfXhp5udTRkQu9xXgu3nEMcXzQ+H
-         5lrQ==
+        b=noCcL7oIePyRLDp3Fc4334WK2izW35lXshKe1/s58D7kfW8NwnUvCNkjURzWDbd5Kv
+         guopXIFzSlnlV5Dnzgk02SmquNif4EtF4RkHWaPpLC3V7Y2lSF0QgsZHV3GOStyCQOS/
+         71wYLduqWe68sYptPynr+ttmWnaG62uUM3LmkF2ocm77o/7Ku8Jb4ilwiya3HJUKZyVN
+         R4UB96Z7eIsxLHE79q0x/vuUsx7ZDEOHUH000IacOGrCP25DtYeEVvGrYI54mOV4qsRk
+         e0yi/pmXOGDM5e1YtujFW7t9Dh9zys/r7L8/D9wdBy3Mnr3OYYuoZ6uqZcu2Kvny3ReC
+         BFAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=h2A6aCl8kyfujglJb3VkwVgvWA7M4CaDd0+96AnNPHA=;
-        fh=489JV2GKSIEYGI5nCfZQPdmA8cAJw6Sa+yQjtRHszZE=;
-        b=iKXiL1A0hnPWhQlXmoQ2ECSZZufqLzhzTBjvU8nkcPC4LVWhsWmIjY+rK/H/GGSLOV
-         E+CffJhFWGIt4QIDU9Q2UPeF4gUIxLVGnr63i8fUFpZ6QDrEBl/r+mJf5cIWt5+spDuv
-         8m0LA7di2XB21BMCkfe0eqgNN6I2U6WuL7OrCVetg24Bi0yNDlZdrwWZNp4nuviZle71
-         2ZDIf72QDQVBd/gX8O+edwGF+/6PX0GOb2hW4JKjmYgv6iUzBtGqbvHJOaquATCUi6z1
-         krGDqRVcz4V+8uLCD59gx7/cGe4IJFAHWlRrjfIwdn1YgvCqvZimlcaTah6GaqlLVgh1
-         otHA==;
+        bh=v077dxPdbR6B229Sx3h6EgyHNBd+S9MvYu+3WDhncOM=;
+        fh=NWwCR2Qfx5xCshJB0Tso8n/pBg2kYByZdWNmuKCmxuM=;
+        b=dQr4F7D7/oveM2yCVY9Y7LphvOUgzEn9vNToao2C4a6UG5j4rZ7H2BCZXFxUtoT71M
+         gNfL5/aJA57qp6ralm0/dqNJ9xPFDBFSF8h4knv/aay1S6Fn4DeBZBWFi3etSPqZ6gs3
+         g26JLwNZKbEhJefg43wrOXa5QwgTnYzvsIdNDQCKLw/u/z/fD5wlZSKjqfU1DPAuc8tD
+         LlsJfkyXr4rxJ/DOZXe+BduXjWKdWjf6oU5RAKxrKvGBRbVhtRL9sUsNMgDB5uGw0L/Z
+         15h/Ygheec859VT0DAWUQfGul3MQYMCGEsdwT0HVFtz+B3CFexOBqcpwGzDOX1bjS0wG
+         U2fg==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793992307; x=1794597107; darn=kvack.org;
+        d=google.com; s=20260707; t=1793993829; x=1794598629; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=h2A6aCl8kyfujglJb3VkwVgvWA7M4CaDd0+96AnNPHA=;
-        b=XVDJ4NAar1YiCgQQkJSF7z7+LpC1VYNkVGYxWGk08t0V6imMHZ8IRb7UHKgruJNs7H
-         EhzY9ZmOingfeGqC4/XKSaMt9oqUrjhhO2GFxIdNwa0qxd4veAMpBidHHQ+P/Ail4b3Q
-         yVjUaZhomVhlEZfXZNX9kKpuyskXOHtdYVsnJkuYLOa64JwRfXszYv4gH+hbYHu4m0H0
-         g/vtLOYET4LafMczHAVEi6ZbXpxYz9to0lFkXgj6jZpmFmvrDaVFOSPFn8EjBPtlrmX8
-         vs9n3xcHCchWIUhWxLGkTvhL0HbxoCJ4TBwFTD+JxnccZ8/TMq+RCqEUVZlSFcok0f7j
-         T0Ug==
+        bh=v077dxPdbR6B229Sx3h6EgyHNBd+S9MvYu+3WDhncOM=;
+        b=n/HM7x3Owe5daRsw1kTZTbUchvPKxjzULyjeMpYRick54oSJMPmlIvcelGa466J6hh
+         JAX7W9PUPJnTF0wOLZXWXCeyaSQX/v277ctKDfo7jBCeoDTO0p8qnHci8q3CaeiByzAt
+         lzQoix4GWBCl4KMc2dBJ9uUWLcO/w7xyJ0bu5pN25L2gKNzwiRM/D584EIzoRvgJadKh
+         I+vsPSPhlgUadIJRvuifSx8UmbqMqkzidvTDuYmsMnT8sTmkD/dKWuvCy8a+pES5ZGxc
+         RejO+8SXtpMRKWlkGvFF4FS8SIeNbg89F7Y2xS2AGo68bxNAuYdOC4PUXu76NX2iHvTp
+         mPDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793992307; x=1794597107;
+        d=1e100.net; s=20260707; t=1793993829; x=1794598629;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=h2A6aCl8kyfujglJb3VkwVgvWA7M4CaDd0+96AnNPHA=;
-        b=VglZjvlBxqGBQj09uNtg3MZvWL+99JKuU7xZDhyMPuKuyVzfxoO3qj+d+pEhEujKiW
-         6bMx7MExoQ2nV/MwefU7ZY8QGxhXD7E38ma73qAZbvkR4UKUim310Tz34TruZdxFWcLw
-         Q5AbwQ1l/YGs1OPIumADwKLa21w817ZcBfYnee1pNGqa6RDDYcOYO1w9FozWPc2wzJRy
-         IP+3mDMqQqlJr4S0rp9Mh6aHnisOw2sNG+tqhFrlmiRkFsKiqw11BnozAWW9geg7v0gs
-         YBsz76a2QtkCXUuzLxWqV/t6FA/xPnB0bX4XQVvDT3zdk1SfCvDPvBkErlyS2WmByTUZ
-         H4sQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzOaWi2NifND53mVK1I01/7DemTrHsBVHGEXrDY7+VzruOUUb2DfMMoz7s83Fu+B/d6HSflN99m1w==@kvack.org
-X-Gm-Message-State: APuU4Z8TZuh0NmKNAdoq9Nb+gGmtn2FT48ZNRPztjcm5sjUvmstJw+mb
-	SKHL38UUXi14iZJd6tUbJah8iIsGuw2fznmkQ0OzdX4+COoZu2GeKuqocJOqPd18Cuv/fH0KuBF
-	hodI6Yc24cRfB3XoRqHd9Z5Ly/PctiEQBHXn1WsMM
-X-Gm-Gg: AYBFou28dd3WdHnm8CVTQYUpkRJEdECK9+EjfsYX4HRfpqnNgMtm5sWFraJ8AubZj3x
-	7QYGH4N9uk56X1hyXBEFcRiLefAJrxZGvRQ0MgxuiEhOIideoQ0QOgJQOYO1R3xBEAXhWn6zLKA
-	CVz2Iz+Qg54yctnSUlXOgyW3stFg7qedf3KR9r9I1UpsMtg+sv7JqaVxYAW3F57p2xc+mRixEfg
-	QRjnh9rphn4glElIVkG6D9dyB9M49kUifqhXTcU3PE/Zk8wV0w8WQJi4InWNUfaOvZXr6jsEnMY
-	wEy7qc99oenkW4pC2r9UZqApBsJZxNybXEPl2BwExaiQOcHGZS6YtdKSwZn26WAe+/dKiBwtc9M
-	JYV/kVBMNWiAjA59NZoLxtZbWRF+FBFxvrRaPwCCgO8tQvYUSb7eyY1KWTnEOsChXrxWuzw==
-X-Received: by 2002:a05:622a:2297:b0:532:eff9:ca08 with SMTP id
- d75a77b69052e-54f82d870e1mr1932401cf.12.1793992305834; Fri, 06 Nov 2026
- 11:11:45 -0800 (PST)
+        bh=v077dxPdbR6B229Sx3h6EgyHNBd+S9MvYu+3WDhncOM=;
+        b=EQsW4QynoXqtJouYw8xenuqFkUsgKBxazgqjBU7p0JD2fFMi086n9rpiQ3WDNQFNka
+         G0sa1/i+mBmxVw/kX0mWU1n5lfRfy5+rgI5FKzJolpDc/hnls27DPFv54TouV1p89wEB
+         hZnrEorJqDRTLFhs59GZDNxxQ+qKabuMLWfO4LRuBi0082R58VpVLyqkQ8bM0CH1uBdL
+         xvCmrmadNgcxjfRm/VkcaiHlWC3ZA3Nu9AXgiPaWbTfv1NLL9ZRrsghhcTPcsUFRGWni
+         1wgIIs1FETojeFcLiyIFyYE6WiHLMum9RdC7Wr4EmKIqAIZdAIndTgAj76qrW2u75oqV
+         9gBg==
+X-Forwarded-Encrypted: i=1; AL+hErEJHIWdIU/3LPCigXRZHd6AAg9uO1qDQ7yYLYssiX2z2qHBoxpVEsVT8V/28ruBM3uHKb3oCeB5dg==@kvack.org
+X-Gm-Message-State: APuU4Z+2zpmYwdlpDiRrebtWlkET0ycRX2QM7okb17hCC7Wfn42gFeez
+	elawMni/lWmV3IwtqF7/ykNTu6rbM96PcoSOVIY/c0hhYJ7jAqB21tsyyVETO2B8jEdbdD8z6yC
+	RNWAGBG+TqO+/K6OEtEIUTU4Rj6rDHP4fZil3kFqj
+X-Gm-Gg: AYBFou3qAfNOLdhuLblxYICkvTi/LM6YMJMlYgUBV8lEKL8fiapkEnwsHoGx1ue43/p
+	7Moj6HYmrdGcH8Isb2tri6xA2DFNKTH+62P9FzVXsw+eWiI0OCA58h8E9OWblBTC2h0wvhh3esT
+	PF0eh3Wu+kO948eH148M0FSOwmyEUpOy7Gh9wyOEa3Zrg5CyP130two5b9u9ETCVGdQboUA8PYd
+	fEIrntPrC05kT0WPNis7/1Ex8uMFJ+2bxSCHBRS8WZ47/loJQtVgsxyVwF3zEO8AEgox3NiHOF4
+	8psPXAMZILAxAuuy9Qk6sHnaTX6EipQSwNU4SyCzkIUQWpek8lguD4O9otKDdwPh8cy8kV4vIZ7
+	cPbdwEw39FrRkgzaigM9XLJPf3F3vNSh3Hy6MQC9lZ8nbl4q2IJxIjTwYjrDiF83RyhA=
+X-Received: by 2002:a05:6402:23d0:b0:6a6:7dff:61ab with SMTP id
+ 4fb4d7f45d1cf-6b6f845ff3cmr14348a12.15.1793993828178; Fri, 06 Nov 2026
+ 11:37:08 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261023140107.GC3977851@ziepe.ca> <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
- <20261023145023.GH3977851@ziepe.ca> <20261103080933.GA4213@lst.de>
- <20261103151021.GK3889730@ziepe.ca> <CAMP57yWvHO0pWCR3-9q1gtwVe8WV4Y6i69trmw+BJRVYf3JB1g@mail.gmail.com>
- <20261106173054.GH663069@ziepe.ca> <CAMP57yU-VhZWXijvwAXcN9=zZ+eWXZ6J1bkHuCJw3ocRaFaV=Q@mail.gmail.com>
- <20261106180714.GI663069@ziepe.ca> <CAMP57yW6Y4g-xM9YTB+MpgxPN7RFeEWhAPWvqrfOoMDEuL8HZA@mail.gmail.com>
- <20261106184346.GJ663069@ziepe.ca>
-In-Reply-To: <20261106184346.GJ663069@ziepe.ca>
-From: Naman Gulati <namangulati@google.com>
-Date: Fri, 6 Nov 2026 11:11:28 -0800
-X-Gm-Features: AclHuK9JPUckmOeUyc8sSIbL-A7oi1CB3RcBM1vHWdycPuPf0ms-UPAYg2zqwxM
-Message-ID: <CAMP57yU7RoWXkvOfx3ksX8kaO+0h8WPefpjnY2DH9WR_TYGJog@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Christoph Hellwig <hch@lst.de>, Luigi Rizzo <lrizzo@google.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+References: <20261103211424.127627-1-almasrymina@google.com>
+ <20261103211424.127627-5-almasrymina@google.com> <sashiko-outbox-198073@kernel.org>
+In-Reply-To: <sashiko-outbox-198073@kernel.org>
+From: Mina Almasry <almasrymina@google.com>
+Date: Fri, 6 Nov 2026 11:36:56 -0800
+X-Gm-Features: AclHuK-XzQbdvaiv61WJyi_8ZqhwGRBCNFscgmlOjr77cMwMQUJZYeAEPiQPfDQ
+Message-ID: <CAHS8izMDj5a0xyX4HAoAt=djt7As-Ko=LyEUfq9iJnPoCegXsA@mail.gmail.com>
+Subject: Re: [PATCH net-next v1 4/5] net: remove skb->pp_recycle and
+ consolidate netmem refcounting
+To: sashiko-reviews@lists.linux.dev
+Cc: virtualization@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	bcm-kernel-feedback-list@broadcom.com, imx@lists.linux.dev, 
+	linux-rdma@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	Willem de Bruijn <willemb@google.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Pavel Begunkov <asml.silence@gmail.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowangio@gmail.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
 	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	John Fastabend <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>, 
+	Johannes Berg <johannes@sipsolutions.net>, Byungchul Park <byungchul@sk.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Lorenzo Bianconi <lorenzo@kernel.org>, 
+	Wen Gu <guwen@linux.alibaba.com>, Philo Lu <lulie@linux.alibaba.com>, 
+	Justin Chen <justin.chen@broadcom.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Vikas Gupta <vikas.gupta@broadcom.com>, Michael Chan <michael.chan@broadcom.com>, 
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, Doug Berger <opendmb@gmail.com>, 
+	Nicolai Buchwitz <nb@tipi-net.de>, Satish Kharat <satishkh@cisco.com>, Wei Fang <wei.fang@nxp.com>, 
+	Frank Li <frank.li@nxp.com>, Shenwei Wang <shenwei.wang@nxp.com>, 
 	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, 
+	Fan Gong <gongfan1@huawei.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, 
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>, Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Sunil Goutham <sgoutham@marvell.com>, 
+	Geetha sowjanya <gakula@marvell.com>, Ratheesh Kannoth <rkannoth@marvell.com>, 
+	Subbaraya Sundeep <sbhatta@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, 
+	Felix Fietkau <nbd@nbd.name>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, Tariq Toukan <tariqt@nvidia.com>, 
+	Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
+	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
+	Horatiu Vultur <horatiu.vultur@microchip.com>, UNGLinuxDriver@microchip.com, 
+	Daniel Machon <daniel.machon@microchip.com>, Steen Hegelund <Steen.Hegelund@microchip.com>, 
+	Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
+	Dexuan Cui <decui@microsoft.com>, Yibo Dong <dong100@mucse.com>, 
+	Brett Creeley <brett.creeley@amd.com>, Justin Lai <justinlai0215@realtek.com>, 
+	Larry Chiu <larry.chiu@realtek.com>, 
+	=?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>, 
+	Paul Barker <paul@pbarker.dev>, Masahisa Kojima <kojima.masahisa@socionext.com>, 
+	Maxime Chevallier <maxime.chevallier@bootlin.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, 
+	MD Danish Anwar <danishanwar@ti.com>, Jiawen Wu <jiawenwu@trustnetic.com>, 
+	Mengyuan Lou <mengyuanlou@net-swift.com>, Ronak Doshi <ronak.doshi@broadcom.com>, 
+	Ryder Lee <ryder.lee@mediatek.com>, Shayne Chen <shayne.chen@mediatek.com>, 
+	Sean Wang <sean.wang@mediatek.com>, Juergen Gross <jgross@suse.com>, 
+	Stefano Stabellini <sstabellini@kernel.org>, 
+	Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>, Jordan Rhee <jordanrhee@google.com>, 
+	Ankit Garg <nktgrg@google.com>, Tim Hostetler <thostet@google.com>, 
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>, Eric Joyner <eric.joyner@amd.com>, 
+	Mohammad Heib <mheib@redhat.com>, Prabu Thayalan <prabu.ponrajthayalan@amd.com>, 
+	Chintan Vankar <c-vankar@ti.com>, Nora Schiffer <nora.schiffer@ew.tq-group.com>, 
+	Alexander Sverdlin <alex@sverdlin.org>, Kevin Hao <haokexin@gmail.com>, 
+	Karl Mehltretter <kmehltretter@gmail.com>, 
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Meghana Malladi <m-malladi@ti.com>, 
+	Jacob Keller <jacob.e.keller@intel.com>, StanleyYP Wang <StanleyYP.Wang@mediatek.com>, 
+	Frank.Li@kernel.org, wsa+renesas@sang-engineering.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 7rfmkm8qdfwiw5scyuk1ykso7mn9swfu
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 90342180003
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9DDE6160009
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: eypwh8dk9u6niypieuhh3rbr7me9au3d
 X-Rspam-User: 
-X-HE-Tag: 1793992307-671740
-X-HE-Meta: U2FsdGVkX1/RhzhfBZkvEL1493w66hIZ0G30BpFavj7SN7rpj1w6PKArBENuM6dPZaETQFz8bzsxKPU9d0nscpk7MW4k+kC7aX2CrChrtdzi814+vJCbWWIUOmFeX6xWyEVY4GeVa20LRZAz4ZnbTwfsvHcB4le/f0wZbTpeiT3ANmMr8Mcuh/XDJFDWOOLuHpsbLxCp9VXhHuwy0xI7OHPeZxqcamMSiI9QT0MGPyK1T4QRcUf2FtJwk4nhqNkysiqkpHkcV0VK9yneA/Z18o7AEGOyq3UYIgWBT+8nH1PDiGGpt2WReXeT30zVceT2bZScoKPMMjsoT/JQlPIpinn81lI7C2te6lKRk32zWw39p0lY1MscKtrEWEpnRAMP9n0E2HvsXnkVtlV+FDh+RThOT+l6fNabH6lVYne5REST0B1/iAK1PXEjaD8tSbD+YLV6E+cpsP8zkBAhLqcKKH9a+7IE7gBBQlF305VeEjIQBHN7QtQLlHQtM97bVJ7j3HacpNeqH7ldZAhLG5H9HcGfwrMRGkr2hUjurOpBAZdg6L3qSfDshnGgfUOB/ykdA0oIU7odJSeDYJAD1cVf/sRqZp3YLm2B0ysjNNCDdUn0QLdPWN9QuNQgvAKAhJ7SZ1ANrJ4i3H2NiIxe3jzHSSCHOVNDm7dpacoctrT0pcfGXsqUfB5215lgzpMzO7Uq0oYrRBMjOyI59r5vdvgYmgumvVyXy+I0fb1dDLCR9vA5xqC2qD9Mh6djAy0IOQ393TyULSKEVstOGxyGUy+FzLs1fm6Fe+Ihlm/6SWt6aXhAhxOpcxa5ZrnmXBL7pnn0zCXOZkbIvhxnRyl50uodwDNqY30mizWfU4vj9OxstkJruCx55Ds3ZRtvgnFMTgaWeVM1rPU5px9nYn5H+jVRk2EywTS28HfVtwex4o8+7tGVIeac9OpyheJzo+K/4K5AQaRtQwhMWPkfcl/dx9b
- HMsdONyv
- IRe0gXOJQoSSoBxUjyF2STOoP2jM5cbrr24ItfyisAEDGPCJI/lFNV2dzJDvBYAMr2eqWIt5k+abuKtrCdb0UqibLedOWk43cAax5uDwiqF1Dqv0Lkr62Fsh62qH3PNtvPKIOTVi7Pcm3GW1Ni/AI86PyiycAbcn6ZwiglRoLmEiqCtLORQ9V2f7pYtmkJ6AQNAeSrh0maOyGsywVK2ndMcq76t6/UyLT+mR6Iy6k8FYsEH6s8uyKaNu3j5VzckKH3CkLsqxHUqwXj6DvR4xqesII+urlPd2tIFRalsl8F9un+IHcgL2m/vbYxcHKIxKIG5piNsYOHmqRZGtgPOPE/ySqf9XwOzRbCTobUbxDY5vDFmAhZoxwKMAbFXKtfNcbEmbExCcLuhNC4RrCtYw4CXpcBsKgMM5o0NLmKAcLC1cpIZfrNhdEUTwAkrCbwHOIIMSk
+X-HE-Tag: 1793993830-33375
+X-HE-Meta: U2FsdGVkX1/JM93Qm4H2i0bJOvyDsHG+AGHV5pCSXjoNO2EUZnMP++HGNC7y9BuM4wG3I5I+7NPe+pWxt9vEEMGH7C/oU8AZCUGPZAFDqW48NqJAXVmQTvw709m+W5+b2bhef6/vaS66imulQKkHUzYKKLWo7/UhvqIHIWTWoo7pkDIhTxUuGgj8MPqnqR0nM8PmT/7/zrdSiPFagUpZpTv7BsNhbySJk7F9uem652zm3ncsZBIZaoUfDfWF7hkLtXDl23rv9ou14k5MBEhl7zUSuJkuhCTjHZ5uou6k4A7Tb0OMzjtWELYMP9A7L6xgLjbpA4qgDscD8JAFitC9y0cAFicuQeic8/lxWSDlYrnX+nllPsNTY7gqJAeS46iqsJ+5Z9noF0xQMKJ3fsbUREUjjVS96+sTEEJRIIy95dcR1yzEH4djUtULnh7ttElXeyek9SqTGjwX+STG0RLqEPAC/DUalOfKUtakZqu0dd75X4SPWtzHnoDnyJgGA4t95B9xg3sJe8eWi4GeSxhtW6qO7Fz9aK4048jOXZZ9KV2ftk22cNNZqYyefmiOin4UX278IEOUt3gcmQyykd8fMBQLsZOvzIwpfxLcckkQbg2JSUTxSBMaO72rPThaZCsB7VpxBDQFtz7oFBsiy/aUsJlb1DCKUOHUyCFu/o0phSG/zqw3yeKu6S1yh31ZLPNFmSMhXRw/U7qYdVhMmn32hJsBEvDAkEkSOQCgYH1e4z9FUlmcPIhLdgb2zE4o6J7NtQxMbNIvGtwZhKMNHIvfaZ03d3SvIgIuIWrbzoUO8v3j+zggXlc0xU3QvBeZ76fLioP+46U5qzcJuUMAkUtIP86CZY0nNT9mu2GcQOt9UFwu5Rz53jd9qjlEnnNQSxWmGB3ZTYmwDDnlNpfcBaylX+j8MOwxwYpiChLY4la8NFItN4tBDreXAor4vxvPcAfsERvINvjRMSVS7q5e92R
+ 9ExBUcpp
+ 7Ls9xSRxr6itSsN+Q3WJH/ta5rjFJc4oqtrk7S4q5kLXeB8a1cKWudGhluRt+AFSfdF1IQXqlaB19CN4s6aq0N9lG+sscXzRjJAvwDAPGZFtvsdZP4slIJKGfR/6FrvZf8cf0BSnNzitm2uAKmX0Do1J0WPTDoGHoC6dMrFcgxLJyQhS03PSX/iYhwvAkFrl2+UVio+VdK6FZjdmjrhligHeNI80W5IbEHIfvg9GqYWnSF5fjksvUcyxS4YB5LlKlp2ifiYSUg3hiQt5FjAlf55iR99LaUgDTa02oUUxKsujxnKxsxW14ekWQzzv+vydT9teqMAgE/TueW3THA3sxH2u6OBT8PPFBGXIFPa6QhAUN9PgtAaen2qJJ8AfFCQSsYJoSz8oq2K6455DzN4BabMIGrWRImwojDooh7OhVzwH+INTz8JJ/9DDL+g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,107 +206,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 10:43=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrot=
-e:
+On Wed, Nov 4, 2026 at 1:15=E2=80=AFPM <sashiko-bot@kernel.org> wrote:
 >
-> On Fri, Nov 06, 2026 at 10:17:38AM -0800, Naman Gulati wrote:
-> > On Fri, Nov 6, 2026 at 10:07=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> =
-wrote:
-> > >
-> > > On Fri, Nov 06, 2026 at 10:00:35AM -0800, Naman Gulati wrote:
-> > > > On Fri, Nov 6, 2026 at 9:31=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.c=
-a> wrote:
-> > > > >
-> > > > > On Fri, Nov 06, 2026 at 09:21:08AM -0800, Naman Gulati wrote:
-> > > > > > I drafted an implementation [1] for premapped TX and RX buffers=
- on top
-> > > > > > of the existing networking page_pool. It is implemented entirel=
-y in
-> > > > > > the networking layer and extends page_pool as the default RX
-> > > > > > allocator, to the TX path. There are no hooks in the IOMMU, DMA=
- or
-> > > > > > page allocator code. I wanted to understand if this implementat=
-ion
-> > > > > > correctly captured the feedback on this thread. Key components =
-of this
-> > > > > > design:
-> > > > > >
-> > > > > > - Chunks: as in Luigi's series, memory comes in 2 MiB chunks, b=
-ut each
-> > > > > > chunk is mapped once per opted-in device through the DMA API an=
-d
-> > > > > > records its IOVA for each device, rather than using a shared IO=
-VA
-> > > > > > window.
-> > > > > >
-> > > > > > - TX: page_pool accepts a memory provider for pools that are no=
-t bound
-> > > > > > to an RX queue. Per-CPU page_pools take 32 KiB pages from the c=
-hunks
-> > > > > > of their NUMA node; TCP copies sendmsg() data into them through=
- the
-> > > > > > task page_frag and allocates its skb heads from them.
-> > > > > >
-> > > > > > - RX: an instance of the same memory provider, sharing the chun=
-k code,
-> > > > > > backs RX queue page_pools. RX chunks of order-0 pages belong to=
- one
-> > > > > > device and NUMA node, and are shared by that device's queues on=
- the
-> > > > > > node.
-> > > > > >
-> > > > > > [1] https://github.com/torvalds/linux/compare/master...NamanGul=
-ati:linux:netdev_dma_pool
-> > > > >
-> > > > > IMHO the netstack should never read from shared/decrypted memory.=
- If
-> > > > > you put it in a SKB you have to be sure the only touch after that
-> > > > > point will be a DMA read from an untrusted device on the TX side
-> > > > > (sending it to a trusted device would be a fail) and the final co=
-py to
-> > > > > userspace on the RX side.
-> > > >
-> > > > That's likely a fair callout. TBH I'm not very familiar with CoCo a=
-nd
-> > > > will spend some time understanding the constraints. I kept CoCo out=
- of
-> > > > my implementation as I approached this solution from the overcommit=
-ted
-> > > > VM problem where we are trying to overcommit memory in VMs and use
-> > > > these pre-mapped pages to avoid using bounce buffers.
-> > >
-> > > Why does overcomitted VM use bounce buffers? Do you mean this is
-> > > about getting better memory clustering in page pool since the VM
-> > > paging granule is 2M?
-> >
-> > Not exactly, we are trying to use VFIO passthrough NICs in
-> > overcommitted VMs. Since the guest memory is overcommitted we can't
-> > dma-map the entire guest address space (as non-overcommitted VMs do).
->
-> ?? I understood you could and this was implemented under the
-> virtio-iommu by pinning the memory under active DMA?
->
-> Where in upstream does the DMA API force bounce buffering for this
-> case?
+> Thank you for your contribution! Sashiko AI review found 2 potential issu=
+e(s) to consider:
+> - [Critical] page_pool: TOCTOU race in page_pool_unref_netmem() non-RMW f=
+ast path
+> - [High] tls: page leak between netmem kTLS records and mlx5 tx_sync_info=
+_get()
+> --
 
-Sorry, should have been clearer: the DMA API does not enforce this,
-bounce buffering is typically implemented by the drivers in this case.
-Such as QPL mode in the GVE driver.
+Real issues.
 
->
-> > So overcommitted VMs can use bounce buffers to have a set of
-> > pre-mapped buffers to bounce traffic in and out. We're trying to use
-> > this solution to map pages dynamically with virtio-iommu and recycle
-> > them via page-pool to avoid traps on each TX/RX and avoid the copy
-> > cost of bounce buffers.
-> >
-> > This problem extends to generally reducing IOMMU overhead in
-> > networking - taking the dma map/unmap cost out of the hot-path and
-> > avoiding IOTLB thrashing.
->
-> Sure, that makes sense, but just having a pool of entirely normal
-> pre-dma-mapped memory is quite a different problem from what launched
-> this thread...
->
-> Jason
+pw-bot: cr
+
+--=20
+Thanks,
+Mina
 
