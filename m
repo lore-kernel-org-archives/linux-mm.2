@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF8A606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEC2606A329
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=jeFNHfv5
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=e39dX1aD
 Received: by kanga.kvack.org (Postfix)
-	id 9CC6C6B05B8; Fri,  6 Nov 2026 08:19:29 -0500 (EST)
+	id D272A6B05BA; Fri,  6 Nov 2026 08:19:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A24D6B05B9; Fri,  6 Nov 2026 08:19:29 -0500 (EST)
+	id CFEC56B05BB; Fri,  6 Nov 2026 08:19:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B8AF6B05BA; Fri,  6 Nov 2026 08:19:29 -0500 (EST)
+	id C14876B05BC; Fri,  6 Nov 2026 08:19:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6351B6B05B8
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:19:29 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CD52B80D51
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:19:28 +0000 (UTC)
-X-FDA: 85404750816.03.ADF16B3
-Received: from mta1.migadu.com (out-71.mta1.migadu.com [95.215.58.71])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A8E17A0003
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:19:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jeFNHfv5;
-	spf=pass (imf25.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.71 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 996A96B05BA
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:19:43 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 337D3A0D05
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:19:43 +0000 (UTC)
+X-FDA: 85404751446.09.0ADF9D0
+Received: from mta1.migadu.com (out-83.mta1.migadu.com [95.215.58.83])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4E33E12000E
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:19:41 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=e39dX1aD;
+	spf=pass (imf29.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.83 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793971167;
-	b=ue1pyiwdYq+oX65XBGVtwtgB8tzMhh5aFahWDimg5Z9gmw008VpdGd1+6Z4byfV8k0yfq4
-	BLmXJpVdR6Y8bA97DKD0075AZnMnqCeJXImxAmTsPqMLS3LTp6qWLvwfKJxfO5lv9erGA+
-	2B7JgZ8IcFH+KlOjBfuSSgpbk5d/sFs=
+	t=1793971181;
+	b=BRb5Geg6iU2aQC/Tt4pdnOg6FF6CdNNQ1NOvVbo/Sz+h16KiBldARfrSZY+Bn4lRseWYm3
+	j5TRCgNjfT/nYvlbNaGYo1JI9mTGroarcn5r7Gt3LVN12E5kFJL/JSqKvAQOMc/+3O6Uwx
+	0kGCEsXiFd9nfFOC6G7uSVWvebnwe0g=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=jeFNHfv5;
-	spf=pass (imf25.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.71 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=e39dX1aD;
+	spf=pass (imf29.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.83 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793971167;
+	s=arc-20220608; t=1793971181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OjxbtrTpVECakggq3aaOcAKtXEWGwtyTzHqRGiNRk7Q=;
-	b=0v2h6rIUaYfuAAa5C6kKKGLy/PWvL6Bj6HlsmDDlt/qOEX5d7a2Qff1vHKjznCAIu2MKTh
-	KOMAk0iA/22HHfdEKLxEMcInPsa4B7y3FHaSWzxyIH/7cDVg4eCp3M+00LC9MPjV6FRmma
-	cLXbQFbEgOFuMrDa0TS5ahFMTHmBKX8=
+	bh=uHDTPFGM/AF1nyT/Yc6bbkTHW5yMlJbnq5ZETvmi2Vs=;
+	b=NqlcZ1Qv2ycRqC0ZLvTGaMCO49HoDR1MkYquGR8/S9IFktKZUvjw+mABq82QgnIdC/tMMk
+	+6opghH/19hgN0vTrAxwTi08NX1onk4p2FdqPmulIgJ9CDaDNx+038x87MJe7jc0mvteR3
+	ELGrWEePJe+JHQTkbnN25OMOEWWIuMQ=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=KO2+Pw/HQKx0a4JyoCFPhhmUGDsn7IBoIsdjd3UIB1k=;
+DKIM-Signature: a=rsa-sha256; bh=55Gu1BuWJQRvJsCcgFgbtSGQhBxGx47gTgITgbn0eiI=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793971165; v=1; x=1794575965;
- b=jeFNHfv5f4zmg3psPVOfCRejiIcbH0mRSeUBXfYvbsOUUduFnoh4Xb/lFO75h7OZwr3xb52j
- hl5asAf3vpi1tP7ZCwkufcg0keAVYJ9DH3vunUx+P7OTGGe6hcvnkzOe8I6jXRUX5LbI2tCx1XU
- DqQcY5Z6CBplWlVJlLCwbnXY=
+ t=1793971178; v=1; x=1794575978;
+ b=e39dX1aDFsU5NTPTFLe3+RT+3/gSUyvAl18yS049B+1+avfXR5NJDC/GkY5xOMwPLboBKIzd
+ N/1dhMtcwKi5kzXqiwRZhxE3jiyRM5th46sYicPK4WAzdzE7WYf96hN+5fs28ZwivqYdNalGYQh
+ JAlb8yu3ez3DJaz2LqvdS2LE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 99a7a9ba11e11fd9;
-	Fri, 06 Nov 2026 13:19:24 +0000
-X-Mizu-Trace-ID: 99a7a9ba11e11fd9
+Received: by smtp.migadu.com with ESMTPS id 2231816b5623e6c8;
+	Fri, 06 Nov 2026 13:19:38 +0000
+X-Mizu-Trace-ID: 2231816b5623e6c8
 X-Migadu-Flow: FLOW_OUT
 From: Tao Cui <cui.tao@linux.dev>
 To: akpm@linux-foundation.org,
@@ -104,27 +104,27 @@ Cc: linux-mm@kvack.org,
 	vbabka@suse.cz,
 	cui.tao@linux.dev,
 	cuitao@kylinos.cn
-Subject: [PATCH 1/7] scsi: sg and st: account the command buffer memory to memcg
-Date: Fri,  6 Nov 2026 21:18:23 +0800
-Message-ID: <20261106131829.3228926-2-cui.tao@linux.dev>
+Subject: [PATCH 2/7] dma-buf/udmabuf: account the page array metadata to memcg
+Date: Fri,  6 Nov 2026 21:18:24 +0800
+Message-ID: <20261106131829.3228926-3-cui.tao@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261106131829.3228926-1-cui.tao@linux.dev>
 References: <20261106131829.3228926-1-cui.tao@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nyfewnhtjyb4mxppdzrm3us1ed36tru3
+X-Stat-Signature: biomtwapq8i9nam689my9cb7yx669ghg
+X-Rspamd-Queue-Id: 4E33E12000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A8E17A0003
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793971166-308931
-X-HE-Meta: U2FsdGVkX19+e5WCMw39KnWPzCiES/mbCBITeEFF7uj7O8lgec7vaJ+cdDrwnLbPNZklZxLBlh+GeAQzD9XCOLn7cZw6AwOvLqS0JTs1HDFs1G6ZcnKFRiedjR1bcnnwR9sydRx+2B1YEX7jP7ztRsgqV5EwyRU/NgZqMXOjWmLHyJbOrzxyw2SkXpopVXJm7Wy8wdKx+fLdcPBhBseQT/wwH1ka0MVaosC5P0jwwPrm0i2isI7wS+t/KaCxylg//PPgcpEVDS2pF4/wHvuz13UYdPim/jlBWgt+L822Y+I1goqlCu6dekrM8ohOSxT3BLvqM602sI/TS252JA/h2hZPUWmMOww438xcHONSNH1lT/cYR/ns2P+do6QsDxrhyVqGdWaNOUsn7uaCOWcUAKR1mD2tVJthQxXsYXW4mhw+K0NGLwos1e+0k+L+3UcfRi48ki0dFma8Oo8vJNAVtDAkR8rzyodhIBe5NF8K68SOLXNOXI+btE7kFCRM7TSG5NYext5LhwUp/67MfVQ3j9oIn3iLr6VlPHxttHHUgZQDx9GSBw02xy0BlorsF4wMQ1AwmdUhPBZiJPAQry/tV2HjW7vf2Cv9FiuLNn8ffSOHp+wmIVVH9Q+pIerKha0SWbmUTE/HiXQfENNGhXyPO3YsIiBxa+5gE6y5B9BcAUvyrZgorl6z72y0sRka32Wr9j9bnz+Z/rtxw42EAttHp4C+7wiGj/2bw7IKUWi3ocFpKkp48MdR24oouidcGhO59pjbRV7gvItXJUjhuvswTdqnnfHX/52kU6Cmb87TSZz2rFDDYr1gSu1Qx/LkbbD066/fFLJn87WtI/4ygDCq8FyF4GF+HZQK4SkaW2qbckTf+ZnzqUuOz1V5VTqzPJ9FmPteE/ZR1gzFXUEt77efgu/lrsLGGDdn8c4GKnAh+XBmdhUFh+2YSS/cJrTtjnqc1jOT6FmfwRuCnV6F6u/
- pkM4Whqv
- 9XD3NRphaOHi8KTHWQU7CEZFRWjHGz0I0tXV3NFMy6oPFm961O3R8ZQpVdKFYeos9UOL4AnI4563824W7fK8l2BosGUUe62b33xbVvA+rETxkzCTZaWZimQhH4cECLFQR7mNu6+LDmuUbZhvHj+6QZNNppcb7Ikly43he+4+vTiK/4vA+tYUvNM4xN8030vYFXsS3TWCrTuokO0LcD/XK0l3aUYRZIw0gdyuj4fGb6xkAIs55pV+BKIazSLgT3VzmWUTnm8MhJUBtSZNMafHk160Hgqimbj6q0i1HdXjqDRIfC8o=
+X-HE-Tag: 1793971181-354563
+X-HE-Meta: U2FsdGVkX1+TRB41XbVKJqTSMuTKKdqjnvwe6S80o9PrV3uAUsSL7LeHgtijYQ1L0DwWqBRjE6PVDYABxnAiUTDWCBARPiPFw7FgcXknkk494JoAILRxLu5OV8IIR428TALv/KbonDCCddtsQRS8XWHgVL9+3sKyLTFKtu5yB2R+JmOrLotd7T2KKO6h3qif+9+4qGxA5uinVNhnKxSMxrTVybXXoPfMTnFj6ZOHlB8YTvMIEJr74WI6gxHE9EkHfmAAZ0ABReZPafAXTx8SZ00VVVdQ1g/k1ur59Yi+JrUkVQLNUWasnJwRJZc2WUSq/VEiApIMzF3p3LVwo820SyQt5lB5LCX6eX7UPt7vhG7Lkipnjw/tSWxII976wi+duSWSkWS6zfwtNPKAn90AV5xI48BmejGmKjrG/StE1YvPKlS7qQU/oO0ljhhWmxR9u8yhh1OoB+2cXmtvawooUv+JYhlm2RZ4xkaP8vKhRM4LSUcmQ8bIdEpV3eAI1gPqCq+2GIEdyrS+rYVV5QgRJI6QzA5sjQrNpMHFtUg7+VVZvaGWt4nLAglal2leMR8WpqP2DN08bUeQpYoBxYcg4wDfi8Urt4466r8cQMz6RoBWOy7DXHtT6BRCqA/Yh1hq10DXcS1KlshoOt0IrkMQ+RAQEI2kg8LGePPmlXnd9FA/ouyYBCnKzIZdwxQR4Du6t1SL3hjZqox+6m4xUsEWYnGEnj1FkSB0DFABWIHu7iGB34BbVkAVi0YOJlx7lT835kBqLuCpMdQuVaVeRKxy272amJ3OiGs5J+hRaA9sG8sOQuRh3ZgD4UP5BRSefL6U11fTCZcunxJ3vDC8JA1NvL28Fjk+B4T1rKbQVjr4C9t4UGeNsdClO5DyGpEMZLSbndtR99nJGAMJkPvPSBlxOCPJkG36G9NUlSibOaTG5OK2KiElUQjVSqFz0QOM8UbqW6PH2i4xFZ4EwGZO5zf
+ MvWOICU2
+ zn+MABH1bF57iZb4BV5p17nkWY/qUS05uSFXh9uw6OF/xFln2a8v3i2st7JBjn00PqMgxvs8PWhcbHw1g7dgmJ6AM73jHnotRkp8eBq2NA+2XTSBI4FrwIHgj2vKHZopBKunLXL6CqJPETOqGcVp6WB13sknYabaPdoJcwcv1YIzF+u+70xWf3Q1x+PzakXoXAiHt3lp5aZZD60Zfok1sJZjJYuxmE2NjEJq6OIdD3qsN9b25KkAw/O43HEgcqn5vbLC2hJEPC8Jqrp3n6Y2MypLCxpkEvaJfPCFUp73fJq90COo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,118 +135,52 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Tao Cui <cuitao@kylinos.cn>
 
-The sg data buffers are unaccounted: the per-fd reserved buffer, the
-scatter-gather page array, and the order-0..N pages behind it, plus the
-per-device tape buffer in st.  All of it is user controllable.  The
-reserved size is capped only by the device max_sectors, SG_MAX_QUEUE
-(16) commands can be in flight per fd, and the fd count is bounded by
-RLIMIT_NOFILE.  Nothing is charged to the memcg of the process driving
-it.  The September 2026 fixes in sg_build_indirect reshaped the element
-sizing and left the accounting alone.
+udmabuf pins the pages of a memfd and hands them out as a dma-buf.  The
+data pages keep the accounting of the memfd they were instantiated in,
+but the bookkeeping around them does not: the page pointer array and
+the pinned_folios array, both sized by the buffer page count, plus the
+transient folios array sized by the memfd folio count, are plain
+GFP_KERNEL.  A 1GB buffer costs about 4MB of uncharged SUnreclaim
+memory, and size_limit_mb defaults to INT_MAX.
 
-Mark these allocations __GFP_ACCOUNT so the driving process pays for
-the memory it induces.
+Charge the three kvmalloc allocations so the creator pays for the
+metadata it induces.  The system heap in the same subsystem already
+accounts its buffer allocation; the data pages here stay with the
+memfd.
 
 Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 ---
- drivers/scsi/sg.c | 23 ++++++++++++++++++++---
- drivers/scsi/st.c |  7 ++++---
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ drivers/dma-buf/udmabuf.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 6551f1284d44..9c1414479b21 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -911,6 +911,19 @@ static int put_compat_request_table(struct compat_sg_req_info __user *o,
- }
- #endif
+diff --git a/drivers/dma-buf/udmabuf.c b/drivers/dma-buf/udmabuf.c
+index df6dd0046242..40182c82df6b 100644
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -190,11 +190,12 @@ static void unpin_all_folios(struct udmabuf *ubuf)
  
-+/*
-+ * The sg passthrough of the blktrace ioctls has the same exposure as the
-+ * block device path: holding the node is the only requirement today, and
-+ * a created trace outlives the fd.  Must match the gate in
-+ * blk_trace_ioctl().
-+ */
-+static bool sg_is_blktrace_cmd(unsigned int cmd)
-+{
-+	return cmd == BLKTRACESETUP || cmd == BLKTRACESETUP2 ||
-+	       cmd == BLKTRACESTART || cmd == BLKTRACESTOP ||
-+	       cmd == BLKTRACETEARDOWN;
-+}
-+
- static long
- sg_ioctl_common(struct file *filp, Sg_device *sdp, Sg_fd *sfp,
- 		unsigned int cmd_in, void __user *p)
-@@ -920,6 +933,9 @@ sg_ioctl_common(struct file *filp, Sg_device *sdp, Sg_fd *sfp,
- 	Sg_request *srp;
- 	unsigned long iflags;
- 
-+	if (sg_is_blktrace_cmd(cmd_in) && !capable(CAP_SYS_ADMIN))
-+		return -EPERM;
-+
- 	SCSI_LOG_TIMEOUT(3, sg_printk(KERN_INFO, sdp,
- 				   "sg_ioctl: cmd=0x%x\n", (int) cmd_in));
- 	read_only = (O_RDWR != (filp->f_flags & O_ACCMODE));
-@@ -1829,7 +1845,7 @@ static int
- sg_build_sgat(Sg_scatter_hold * schp, const Sg_fd * sfp, int tablesize)
+ static __always_inline int init_udmabuf(struct udmabuf *ubuf, pgoff_t pgcnt)
  {
- 	int sg_bufflen = tablesize * sizeof(struct page *);
--	gfp_t gfp_flags = GFP_ATOMIC | __GFP_NOWARN;
-+	gfp_t gfp_flags = GFP_ATOMIC | __GFP_NOWARN | __GFP_ACCOUNT;
+-	ubuf->pages = kvmalloc_objs(*ubuf->pages, pgcnt);
++	ubuf->pages = kvmalloc_objs(*ubuf->pages, pgcnt, GFP_KERNEL_ACCOUNT);
+ 	if (!ubuf->pages)
+ 		return -ENOMEM;
  
- 	schp->pages = kzalloc(sg_bufflen, gfp_flags);
- 	if (!schp->pages)
-@@ -1844,7 +1860,8 @@ sg_build_indirect(Sg_scatter_hold * schp, Sg_fd * sfp, int buff_size)
- 	int ret_sz = 0, i, k, rem_sz, num, mx_sc_elems;
- 	int sg_tablesize = sfp->parentdp->sg_tablesize;
- 	int blk_size = buff_size, order;
--	gfp_t gfp_mask = GFP_ATOMIC | __GFP_COMP | __GFP_NOWARN | __GFP_ZERO;
-+	gfp_t gfp_mask = GFP_ATOMIC | __GFP_COMP | __GFP_NOWARN |
-+			 __GFP_ACCOUNT | __GFP_ZERO;
+-	ubuf->pinned_folios = kvmalloc_objs(*ubuf->pinned_folios, pgcnt);
++	ubuf->pinned_folios = kvmalloc_objs(*ubuf->pinned_folios, pgcnt,
++					    GFP_KERNEL_ACCOUNT);
+ 	if (!ubuf->pinned_folios)
+ 		return -ENOMEM;
  
- 	if (blk_size < 0)
- 		return -EFAULT;
-@@ -2134,7 +2151,7 @@ sg_add_sfp(Sg_device * sdp)
- 	unsigned long iflags;
- 	int bufflen;
+@@ -387,7 +388,7 @@ static long udmabuf_create(struct miscdevice *device,
+ 	if (ret)
+ 		goto err;
  
--	sfp = kzalloc_obj(*sfp, GFP_ATOMIC | __GFP_NOWARN);
-+	sfp = kzalloc_obj(*sfp, GFP_ATOMIC | __GFP_NOWARN | __GFP_ACCOUNT);
- 	if (!sfp)
- 		return ERR_PTR(-ENOMEM);
- 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index e9d41e3cc2dd..b92633ab2757 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -4074,7 +4074,7 @@ static struct st_buffer *new_tape_buffer(int max_sg)
- {
- 	struct st_buffer *tb;
- 
--	tb = kzalloc_obj(struct st_buffer);
-+	tb = kzalloc_obj(struct st_buffer, GFP_KERNEL_ACCOUNT);
- 	if (!tb) {
- 		printk(KERN_NOTICE "st: Can't allocate new tape buffer.\n");
- 		return NULL;
-@@ -4083,7 +4083,8 @@ static struct st_buffer *new_tape_buffer(int max_sg)
- 	tb->use_sg = max_sg;
- 	tb->buffer_size = 0;
- 
--	tb->reserved_pages = kzalloc_objs(struct page *, max_sg);
-+	tb->reserved_pages = kzalloc_objs(struct page *, max_sg,
-+					  GFP_KERNEL_ACCOUNT);
- 	if (!tb->reserved_pages) {
- 		kfree(tb);
- 		return NULL;
-@@ -4109,7 +4110,7 @@ static int enlarge_buffer(struct st_buffer * STbuffer, int new_size)
- 
- 	max_segs = STbuffer->use_sg;
- 
--	priority = GFP_KERNEL | __GFP_NOWARN;
-+	priority = GFP_KERNEL | __GFP_NOWARN | __GFP_ACCOUNT;
- 
- 	if (STbuffer->cleared)
- 		priority |= __GFP_ZERO;
+-	folios = kvmalloc_objs(*folios, max_nr_folios);
++	folios = kvmalloc_objs(*folios, max_nr_folios, GFP_KERNEL_ACCOUNT);
+ 	if (!folios) {
+ 		ret = -ENOMEM;
+ 		goto err;
 -- 
 2.43.0
 
