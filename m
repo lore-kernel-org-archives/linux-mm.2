@@ -1,133 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E772606D807
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE87B606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CmzgYoZC
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NHfHZnPS
 Received: by kanga.kvack.org (Postfix)
-	id 0E4006B05BA; Fri,  6 Nov 2026 10:39:26 -0500 (EST)
+	id E839F6B05B5; Fri,  6 Nov 2026 10:45:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BBAA6B05BB; Fri,  6 Nov 2026 10:39:26 -0500 (EST)
+	id E5B096B05B9; Fri,  6 Nov 2026 10:45:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F130A6B05BC; Fri,  6 Nov 2026 10:39:25 -0500 (EST)
+	id D71BC6B05BA; Fri,  6 Nov 2026 10:45:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C56126B05BA
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:39:25 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 542CA16076B
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:39:25 +0000 (UTC)
-X-FDA: 85405103490.06.CC22AB6
-Received: from mta1.migadu.com (out-202.mta1.migadu.com [95.215.58.202])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 4C8E3140009
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:39:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CmzgYoZC;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.202 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B58526B05B5
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:45:53 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4293EA0D86
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:45:53 +0000 (UTC)
+X-FDA: 85405119786.20.0B4A80D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 92D081A0002
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:45:51 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NHfHZnPS;
+	spf=pass (imf19.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793979563;
+	s=arc-20220608; t=1793979951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4tmGxuQStKCk7w+onoi1RLdqwI1kArXig6jzABebmog=;
-	b=ib2PFvJLi0dGRBiK8Ks96zHpN9yJ7Fh0sbbxbb8kiriXdHbzaunQ/4QqoS/2BEJdEoLcjt
-	LSaEjCE1KvAcCjDBluK0yCeeQE+BxyLqwEs51OmmyG1ac1GIn+SsfI3T6cUmJhvkhYVkHW
-	c8adkouUeYtutYz0HbJF23Htmy95pjk=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CmzgYoZC;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.202 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+	bh=Sf7jpXPq+wp6SBfVuD5VhfW8K2K7PrL3pzRu30lk/Qs=;
+	b=ryjAtOlY2rV+5OMWZp9Dv0+e7JyEiwppheDzykqqbptv75cfYi0F+u8Hey3U9as6njUsLs
+	lNRNBDJ2nJ1O5WWkU0HfBUf3YtRKG0glexcQhoumfXVu9X0O4FYNI3+I6Ffm3eyl/N1TcX
+	7gdOx1kAO2Y7NfOX86WM0OvA6eJPYXo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793979563;
-	b=T8AYRsvQkRXlONz9jPsmjDR7riSkeDpdxgTcOfBJP57hqqqlroPa0rb6wvoGdDxgt6beOI
-	4TbJd8qUwm9uWWZQQtIG9+sGNXw/E6qHPg2xF8+DRtxD3C/B7t/pKVDK7bBYYjPBqOHb4k
-	x9fZ1GEwbLaXZ4XAkrjiEUWVc2v1FKI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=cxp+oaexrpUE0cyElicHmhKBrNrP/fzOSAf3exqA3F4=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793979561; v=1; x=1794584361;
- b=CmzgYoZCoSCoPOD8d4J2CNcL+azM+zYCz75PcmISXevWmg5vTMxyEjplZCkCK5TM1Om8yZ6V
- Zbx3Wd/Y4LxkocPiaUzZIXerQYHYqPH79yMQI8F7Y4Qt8r5e7Ub4KBDOVvOGzoyHoXX09hBsmQG
- 4dbcIPuXWKdimO8uWiqmyp2U=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id be0c1e5625ffc958;
-	Fri, 06 Nov 2026 15:39:21 +0000
-X-Mizu-Trace-ID: be0c1e5625ffc958
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	willy@infradead.org,
-	jack@suse.cz,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	peterx@redhat.com,
-	hannes@cmpxchg.org,
-	songliubraving@fb.com,
-	riel@surriel.com,
-	hughd@google.com,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	peterz@infradead.org,
-	jgg@ziepe.ca,
-	kevin.tian@intel.com,
-	joro@8bytes.org,
-	robin.murphy@arm.com,
-	steven.sistare@oracle.com,
-	jhubbard@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	iommu@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 4/5] iommufd: fix cleanup when adding memfd folio pins fails
-Date: Fri,  6 Nov 2026 23:39:14 +0800
-Message-ID: <20261106153914.91168-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261105-refcount_overflow_stable-v1-4-70b9c655da3e@kernel.org>
-References: <20261105-refcount_overflow_stable-v1-4-70b9c655da3e@kernel.org>
+	t=1793979951;
+	b=qwuc2ClKgwZVxjiIl5oKeqVBYVmF6ibEjwWN8mR8U8IcOsNU0r5duVpWSMhyiexmMAf4wI
+	RTfB+dvT8SN/6ENRsvnSEru+Cbut4e/rDlUffjn1HqeQKJM6T/B2dm3mzVT7A3U37lGtwE
+	KugryFzk194mnF3oiOYHMWgF1/8s4Cw=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NHfHZnPS;
+	spf=pass (imf19.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C680640784;
+	Fri,  6 Nov 2026 15:45:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1B21F008A1;
+	Fri,  6 Nov 2026 15:45:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793979950;
+	bh=Sf7jpXPq+wp6SBfVuD5VhfW8K2K7PrL3pzRu30lk/Qs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=NHfHZnPSDSHLthC28xmc7Tynk3g3EuBVtAtF3YePrjls2avEgiFGihXMqKalL6SYK
+	 SeJfbKbhS1SHWhGP9tCN6jALT7jREvu0x9m17dhcE0oLL42alVk0H4Ve6UWnQsZ17V
+	 pOd3zRki1UcQZ29EAFK0E5v9T4pzWtOa2Z1QlBdeIUapAvd2pzBNLlIfkVE6aLRurr
+	 uq5rcOkbHr9280TJ3ts+7TSC30ovRao2lHyLtEiO9tHldNoUeF0owFJmmy9pFG8jCG
+	 5cQRmxsKh588fJfaFewhWE1XgoaoMSVyjoOt6yV+WAzO5GfLn/FYQd7wPywABOqUIP
+	 iCRRMFk+OTbyQ==
+X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: linux-coco@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Brian Starkey <Brian.Starkey@arm.com>,
+	John Stultz <jstultz@google.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Radu Rendec <radu@rendec.net>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <chleroy@kernel.org>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H . Peter Anvin" <hpa@zytor.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	linaro-mm-sig@lists.linaro.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org,
+	kvmarm@lists.linux.dev, patches@lists.linux.dev
+Subject: Re: [PATCH v9 14/14] irqchip/gic-v3-its: Preallocate VPE L1 tables
+In-Reply-To: <86zevn1c9a.wl-maz@kernel.org>
+References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
+ <20261104164555.3555725-15-aneesh.kumar@kernel.org>
+ <86zevn1c9a.wl-maz@kernel.org>
+Date: Fri, 06 Nov 2026 21:15:29 +0530
+Message-ID: <yq5ah5huoteu.fsf@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4C8E3140009
-X-Stat-Signature: pydur3yqkum8wbiiocw943q4c88soefu
+Content-Type: text/plain
+X-Stat-Signature: n4to3gcxnkmifp5naxmz9i15sqwm8yaf
+X-Rspamd-Queue-Id: 92D081A0002
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793979563-585236
-X-HE-Meta: U2FsdGVkX1/hIqAzQZ5yB1NxDW+EZ26RRKmxgXiaOwqZwdVc1229gEB4FrQgAx6EiWKhz5QeWoUchZpOYHw1uwddIgvdDWV5Kg3JB9fQpKQLlweszsNg/lX+EtxScJCyrrmI8NwMVDzgFB7lI67Z5pBwv7nQjYXqRNJP4UYMkud7WtkNx8sYnuESm4cjVDODnZz+WwxTE/ZR+om4FJDnsvxh9TiSJcFWiF8kCCBaITcQ2b8qi9UMuZpsdBzgr/WmMvqzDc1qAH487rISb3hFBc0+7ds+NVlcREn8U7gJ4Xr46Omhhj3Vovo9+b6hPNctZD8eUqEGOg7GoyjymuoCXdxmD97rISV7WrwvhHezjf2U/HnUwAchkOwrua0I3DxcTv52psc64U+jN5BcnZzYAT/7P/2t1NYKNvjsIvemAfKChYO+eKd9vptCMCH1utziCpSjV4JFkWGPvZMteUqdSJgBZD3CNEP/Ad+71De4FFWSQYQMB5JTvPXdqI9E+ND9SjHV9wVaLp7qERS9Uwha6TkC2Au0J98yO6Key3MkBiTho0ulev4AN46PO67C1Myrhtj8BqVbWBWIi+LBqfE/m043nwFgvP62Lmkm4LGv6OrGuAWjZd3xYx/t8WP+xQGN1hjiyM40/cjbUPf4U0GmRtpHUF0mxPsi8UMklaQLADJd+EAvZqG8/ax2jPt5uBpPuJSiaSN+9tWMnxAF+OW6OfKGD+3RqJ9AOzRdH41aGqxZVLmmy8TnRWybr7sCuaRqrXB+z98uu9LcVPXVE40gWB8Xmb94iQicX6xQByIh3Y1BAvBP5pSoQarCicZsdYWZXFLUrwKeMkJuTLx4nFMXBcDULtpGGncOZ4KLZvQsZ4X6sRenrrUBYICbPv7ijo41q7AlzL+mcHCMK1rG+zsW3TQYY5s4O3Ew+sx4WF94mIJBSluQz37O2C8kKdc7wL7PX03eidbRzuCKmc1ORts
- TBZue9bx
- 4v3S2htWKQ0U8zm7yXH/2mJTkVBMcwkZ9de/1hxnexcoSoBLFTVwV8Kdo23IasaBSR7nGGWQPLXCO3lfB4ziPic0fklKGy6g823WeyZdVIm9sdWW2WTX0CoE2dZjRYILjpuzLW+pBMiINKt72YfLjQSpptCTjLUfx58897mcNYvjiK9BWpz6MhPFEv22Hpnlmv0295XuDVZkJ8V8GpBZFquFkUIzYwuuNfysU1XjJVBZJEf0RoHOcOEwTs4FIuRVEiOGblpM5VH1Z9wLpBATWRsc8Tm55X916upOaFnpSTGktVDr3NterhYsLstVdlmjStabTs/qL1Zfgvf0=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793979951-117557
+X-HE-Meta: U2FsdGVkX18bBvxR3zjdq5h/4AJVZVcUXhEnR6ROuHEGmjYPq1WIVm0TkdhnQXsAwmaT5jQWpjURULI8UE+PGJMyL0jeojxqcG5QlCW88ZUCfk/83jzxzHNP9ODyOVTj1XXLF3d9BLbJEgK7BE7pVn1DIoKri32pqLZVI2fNQO6y87foxNpJkqAzhBdbDSZ6/Yb8z2GE1C+ry1Ro4Qr5Di5FTortzpBNXWfJQ7RSQgW5kAVs2z9nSag7ZUAn4WUfNiLghiqtGxn41mYyxa+SsQabK9Sw+SO1oghiqJDkUAHcxNyZb2RX6pVJXzYfbUyxQr8lJf8FFKqSTkHfb4PRUF/c+7weO9MojlJRVfVWhTgrrZX6wSjfIKYqu1K8ZeBrqa0rdkEx7RkVOAkdkmzUVId3MMaKVEK7mlTGVni87Dgah/hMMM6agxsBKIgGNV2azzItjAWn+Wfgmitc6Lvrq8VotGbXKALCv+77W2YxOj5mLvtfOAEMYpBSCOMzcW6SDNmqYEcbmdXYMsOLcEdBwLD8K5fafq6Cyul/Pir3/T6ooYZ9wJ4Ufm1Pl8xxR7XPGD14IERpJC88WwDMrBfhUA5cVPl+kT+9/2hx9N7Sum4z6xxULwKCS+vxPaGmiOC4Y+x9t6N2hGHULELaHpDG6ac8tLozFbpMcEY7NjnJNQGmOLx5rQTkjRJ0jp8Rz2VUaljCJS9hx7RJ/OmS7nRTyuE9kjR8omHmkGCVvHL5NDtxGFb3ar5Az+5qUx+d3wc2YZm66FnSEVxokouu6M1p78C9Cw/6OelyDslkJJom/VWQ6WUHBIF5My7HJJnS09FHbyVBd7PffDjZPhiA2Anp2gt+LDNI4rVQp7RmZ6hLZ6HPl3SWfJ3NG5cBtQzR3MmMdU+/IrNCbEurMJ6Rg5y0Os2pUUaDWPBKSJiS8VZgacoFx+0m89P3eBm0MIbXJV/8N9aLz/LtgS5gvI3n/9k
+ W9RTWnHP
+ ko5r+QuGruQ0pyADxYZRPjkRW4KYWHdISeIML72FTm3cBF1giR9bXH7PMrpw+aCjmM1syjeuz8BO47B8LFAF6MzcLXF1irTfzI/u4uJ9Hvw3cqRsjRhE24VqeGkkAMKmoM85rnlYVyQXkIBFTrxEQYWimsna30Bx+cXqc1jRydlfzuQnFFbk2wjfn6BW5QJL8/TdKb6ZXe1qtK9mK1PxDvZTA0EPydgKgWwIzAY5KMfE7LIk9JccLS+LYcGMSpEdX/f/Uo7kcd9nkhrnanakHn5+SVWoIFJAzp7J9kVag+PTXxxQXsyPDM82u/A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,34 +149,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Marc Zyngier <maz@kernel.org> writes:
 
-On Thu, Nov 05, 2026 at 02:10:13PM +0100, David Hildenbrand (Arm) wrote:
->folio_add_pins() can fail after memfd_pin_folios() succeeded pinning a
->folio. Upcoming folio refcount limit checks will make this easier to
->trigger.
+> On Wed, 04 Nov 2026 16:45:55 +0000,
+> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
+>> 
+>> VPE L1 tables are allocated from the CPU-starting callback, where sleeping is
+>> not allowed.  Remove the page allocation from this atomic path.
+>> 
+>> Use a blocking allocation for the boot CPU and record the resulting table
+>> order.  Allocate a page of that order from the sleepable CPU hotplug prepare
+>> stage for each secondary CPU.  Consume the preallocated page only when the CPU
+>> cannot inherit an existing redistributor or ITS table.
+>> 
+>> Reclaim unused preallocations after the CPU reaches the online state, and from
+>> the prepare-state teardown when CPU bring-up aborts.
 >
->Let's fix three problems in the error handling:
+> No. The way to do it is to move the ITS probing out of the
+> non-sleepable CPU hotplug path.
 >
->1. pfn_reader_release_pins() uses the allocated array size instead of the
->   number of folios returned by memfd_pin_folios(). With large folios,
->   cleanup can unpin uninitialized entries. Remember the number of returned
->   folios and use that during cleanup.
+> I proposed a potential hack at [1] (which I find far more palatable
+> than this proposal), but the real fix is to probe the ITSs as
+> devices.
 >
->2. pin_memfd_pages() returns on failure without releasing the pins acquired
->   by the current call. Release the per-page pins for folios already
->   expanded into the page array, and the single pins for the remaining
->   folios.
->
->3. pfn_reader_next() returns on failure before updating batch_end_index,
->   even if the batch already contains successfully expanded folios. Update
->   it before propagating the error so cleanup releases those pins as well.
->
->Fixes: 92687c793644 ("iommufd: pfn_reader for file mappings")
->Cc: stable@vger.kernel.org
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
 
-Nothing jumped out at me, so:
+Could you share a bit more detail on what you have in mind?
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Are you suggesting that we create a platform device for each ITS and
+initialize it through the driver's probe callback, while the rest of the
+GIC initialization stays in the existing early boot path?
+
+Would that mean the main GIC is operational during early boot, while
+ITS-dependent features, such as MSI delivery and direct injection, become
+available after the ITS devices probe?
+
+Is that the split you have in mind?
+
+-aneesh
 
