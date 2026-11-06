@@ -1,123 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF271606D824
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 12:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B5C606D813
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 12:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SSV8AS27
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=TCPI1cJA
 Received: by kanga.kvack.org (Postfix)
-	id DD83C6B05B5; Fri,  6 Nov 2026 07:09:35 -0500 (EST)
+	id 7D0786B05B2; Fri,  6 Nov 2026 07:19:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D89166B05B6; Fri,  6 Nov 2026 07:09:35 -0500 (EST)
+	id 7A8A16B05B5; Fri,  6 Nov 2026 07:19:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6E236B05B7; Fri,  6 Nov 2026 07:09:35 -0500 (EST)
+	id 6E4936B05B6; Fri,  6 Nov 2026 07:19:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A5B166B05B5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:09:35 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3CBFD1405A2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:09:35 +0000 (UTC)
-X-FDA: 85404574710.26.1EEEA93
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3B49940006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:09:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SSV8AS27;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793966973;
-	b=pW4QaNt5YcZPxYMTGbS71KbO4jNWNUa0cxvDvY6n60ibt1K4A7CJy9i6l8tRzXOHqtg6KU
-	Yof9dmArVOb6K9gbJwQ9cSmzDy1spy8P0jJ7nCfS+wpv570YzSgGGwZKdxnSC6IOO+jmZ8
-	AAbalnw3x+VzT+jWUB7NBhlKiv4ZdfU=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SSV8AS27;
-	spf=pass (imf27.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 555266B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:19:03 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF4EA40DB5
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:19:02 +0000 (UTC)
+X-FDA: 85404598524.15.7F4676E
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1B023100005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:19:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=TCPI1cJA;
+	spf=pass (imf05.hostedemail.com: domain of zhanxusheng1024@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=zhanxusheng1024@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793966973;
+	s=arc-20220608; t=1793967541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3b/3qYRDMXJenPydA6vHboyvASPjz0NdoyZJUNW0tcQ=;
-	b=MnFza2JJM8yeUrnbyvckG66e0Udh3LN6V2SZTnR6Ej+UMVBZ4mSYOGOUG/P+E5mN9qBPOI
-	qcZBb0cMu1LafWGDZzCxLISfnDMnfrUJzxQqVObZn41EnSBWa16hSNVIJdrv17qGjGkL7Z
-	dZHzWt9EoRJ+uH21U5sQ0zSBEpfxvMU=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8D9CE6062A;
-	Fri,  6 Nov 2026 12:09:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6C901F008A1;
-	Fri,  6 Nov 2026 12:09:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793966972;
-	bh=3b/3qYRDMXJenPydA6vHboyvASPjz0NdoyZJUNW0tcQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SSV8AS2751IGaedM251Pc4kK1DfG/a5bXt5MUyMNuFjb3V6Vn4xUp3iR/L8tIzXEg
-	 fW4QFbnPW9W7EFxJK14UemEGPM3sJH8q9j+G7WwaoQm9O8Df1ERa66qRD3/FAlWTxP
-	 nWUN+s/FNTSF/IFYYiRX6jmkcO0Mt1AF6vtN0rX+pwFm65+yXDKIlIIJfYN1GjRDLT
-	 KHa+J7Uc512zgU/qKs5v0uq/r6j8OxdzBWrasIoTrJry2k59HpAyPhqYtJ5oUuZAMy
-	 rq+F+fgBjIH1SumhykP5qDVrutk32EhXAjAhaJXPidbzARM6gy4/UgMIXctumJc/sr
-	 tndge1RuvYGKg==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id A07FB1980047;
-	Fri,  6 Nov 2026 07:09:26 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-02.internal (MEProxy); Fri, 06 Nov 2026 07:09:29 -0500
-X-ME-Sender: <xms:dsPtaqxrJTBKMp7OtKltwm2epPFXcBPMCXjHSnvSTBZiEgpTCoszRw>
-    <xme:dsPtaivhymwhYzphNsED75O-jVH3wrP7jKUF-fcFhrf_ltrIPQ1Mzf5fbdobahiN0
-    DXR0fXbL_820ZYAyXeNBir1bUGTL_6fHcfbQL5d88PmyZsoB-KaOpjJ>
-X-ME-Received: <xmr:dsPtajnMMIFZRQqyyuMajejjm8d7hjO0epIrwV9knfZzeapZLHElEqOGctw>
-X-ME-Proxy-Cause: dmFkZTFX6YYaRab9TtEmMZcJX+vH22GvpLmKiqkJD2aksNON1/L0ndlQvnX8flK4ouosr5
-    YGDUsiJ7BeAviv4JgQQ7uP7Q+wJ/EXSI9CRs9yYssUQBr42HFWwk4wrtc4JQdlkef7n68F
-    nkAp48OZv+C6deWppFMl1GEzsmXrXcRCtNlS1Qjs+aP6RV1JNO9OgT6J+XnDi7YVbuR8De
-    igCglYK6lQoAS4zHclSb0LfjyhmpZ/wcRoRbFIW9Kn8GxKsVqVGW+GF6OeO+8eok3lBCtN
-    1D4Z9CbSWh1tkn1l7VRQwMsJnnSTVAwraXBCXqv6KiYwLXUWwr7wRmk/4JXWi7hqf99OBt
-    0SzFoIlQgDEpMlYLsmsV44GLRWl8+6hUNbvse1m9zA3MICJRu2RPFptHarOrLNY4CY9lHd
-    cmD82b0qW6ldXjXoIYNwPaaIwA0Q1zJXsfoLpowA0oUagELfqFgfzmKhi9i7/hYJNMOboS
-    I80WilBCOxVz/X+dB1z4YwMbbGsJxJ0YGcdxwQ+oHybZTSxD49/KuR4HEZryIuuvDqnvYE
-    3NpNfqDnIjTqqTUq5Hcxvfxv3tsbi9yVToFzcrI3NWelhh3yRDTy2trG/3lYRieRDRkKmE
-    QS6adowkJkf/1ha5D61Y49oD8WyVzsZKzFUIOwtIblhjfFzxbZ8NKjXzIhHw
-X-ME-Proxy: <xmx:dsPtanBGI0m3xopWzemDYTi6JuRs1JLnAPlsouh3Y_0c8HYJfcb_CA>
-    <xmx:dsPtasQCcTihdD87s1X0vrmqulaZ4IXi8iL-xm-1W4DFdbuO3MPh_A>
-    <xmx:dsPtanI8ymsHX5TW3iOzWHpISJ_hH6rm0IAbh5X-NisdFWL8tDRDpA>
-    <xmx:dsPtal0dZAG_OiwyPICzFkV9pDGpdlM5nDgnzQIMZkTnC1gpHob_1A>
-    <xmx:dsPtajuRiOMZHIW4dzpShBuOzRcwTMEriXB5q7BFJkzYYX3quu2Zor2y>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Nov 2026 07:09:25 -0500 (EST)
-Date: Fri, 6 Nov 2026 12:09:24 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/khugepaged: don't map folios that are not uptodate in
- MADV_COLLAPSE
-Message-ID: <au3C8lNElGg4LnR1@thinkstation>
-References: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
+	bh=Z0rdYCKEnZd8FGC567jnfce1H0VjvyM0Z9c9ULvtLp8=;
+	b=ooCbxWHAVQf7ofpyLdb7zqw0EIqy/s9m9Oltzr9ShRhObZEjGibNyAwL7gu4h5A20abofc
+	NatEIrwxrxxNHVAXAFZadpSbMtmVxfWSox0Nn7D48s69CTxxjaAhN/eUHHklHkUDgOtSTA
+	CEh+XulgMJxHKhHyhui6otuPo5NDM/Y=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793967541;
+	b=e4Z1mJecmuA1/49WsnVTeEvupTnVfN4vw7wPFZPhYyHIrmF2HS1LKcavezZ0Xw43UBGLG+
+	ZPVlxhxFYIEFJUT//FNRQ7Dl6ioEQMXexckW0QnZPUlnfnErghqaLVETKHz291xtV5mqW7
+	FAeNefRanWspqIHQK2s5LOpsj64uePs=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=TCPI1cJA;
+	spf=pass (imf05.hostedemail.com: domain of zhanxusheng1024@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=zhanxusheng1024@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8b271e573adso240189b3a.2
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 04:19:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793967540; x=1794572340; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Z0rdYCKEnZd8FGC567jnfce1H0VjvyM0Z9c9ULvtLp8=;
+        b=TCPI1cJAS+HeWKDPfVu1YqbXgJMfQVXuR3GX/6KWwYIvLdRL97YXKd+mr1LtcjPuDL
+         mvKBt0NFALjyt8M5HPXP0/fl+svHemNLGVIWYvNgjK0NBvfIyoAwPEbReQYZ3vTIxTzr
+         Pf1svOT99wmicBX6KpKE5+Xm6CnziICY26WfNfbtgPT1gdQnZ3owiW4AoIiiKGBKCXXb
+         +plN0Vr+U0E/s/+sJbwvwXNLW2W1200fHl4Sjy8g1QR1VaeSNJ9eqoNV75Px11eHICaG
+         nl6np7zopX7rCMpow5ma2bQ9ICsuaGw/sA1Z+ZSERJNkggL/RdKKitbM3AhUYD2M+Bth
+         ZFcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793967540; x=1794572340;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Z0rdYCKEnZd8FGC567jnfce1H0VjvyM0Z9c9ULvtLp8=;
+        b=TYCvSEOwcAvuNmB/TEaiK6Vhfch3wN5WNvRzoaP6kAMVjuoTeG/UkuBNl4W9cNFT70
+         CCnvBMrN+JyjjPPxcPTo9dwhQ9t5J02v5FaX5ECnG3drh4RPP8u0TX6D5dEAxstlxwoc
+         3okXbY8YBRKxBHksA1LIIQuNeZIkZWjhLVtDnLs5D2b4T24Jv1sy//0RBPJn/e5IQsgb
+         XRr2Ooodoc1YHep2iTDoXSvHH6WhJN0vHnDb4AduIgzmkTLGVzSrFmtVw8wkBND5NkDr
+         9qghgyhiGSRWfWJRB6yLkMG0bDhhtdkG7ZFGI+yoAX8q0IGls5gOU4pGyxAN7EE+4Zjp
+         LsQw==
+X-Forwarded-Encrypted: i=1; AKwUvBzrUxrjoX10YhMUFJsn0GAqmQzeYgF4nYcRaAwTikbEpERSGfyyG7rljDd0luiUf2XwCkN1LEH6sw==@kvack.org
+X-Gm-Message-State: APuU4Z94nWb/1aOkt26kx2gIJPiW2v4lmeQsM8wdTTe64oICzjWjMsHX
+	+3CgWFfU7385F+VAKbf91BkHmaVMXo4w+vwczNjE77M/+bsaJJzKYky3
+X-Gm-Gg: AYBFou1qAOFfdQ8v4sfKq6nDOBHOVYuFqkvTtUSqqtMyV5Vo8Neop75W+wy+E8XILP2
+	bU1QCyaApfwwTjtKetPlYO/t5e9uGNjkpLSjW361yTm3g2od+6D30q+8dGDD+mS8U43yUdAV5rx
+	MF+a6BeVzIE0kYSUO0JhNwm/P2mqz0Gl3gNTkQMX9JfVT/a/LxObLIwvZThpgNay6WSePRGOBSf
+	Iht4yO8rFEdX4pwePx/E9N6cN3kDAGMoimMZsyPbF49ZarNeLJQBx5are0O0LjbsHk632oUeptZ
+	5uncQLVaVEjjdP9qj4CcmM8r7m4uWz3pHUEzsu/8G0FRnt3JUlLvDUvx1PQa++CIW5O2t4n2oF0
+	5M0JM/3pRrldAw3IXKTLI8u0pn1VwyBkJLs0YsH9tHH1wSA2mvFC8LACL+3CV4CJQymd9tSwPvx
+	wRXmgf3V2IYy4Q1G55kS0TLggyXGKUKWivNmYQadF91VwKBl/9qbbst8eFEPp9WammCCVjtoADe
+	tbTFuj5aou/OrhhO7cjPJ3WcynFfj65BYftL9RPeidYyyD3wroGF4FA7i6lzf3pfuJShNdyoqvf
+	KDIKg4quadrnaROYymD9VnGkEURLtyb840bNtRo4nlDtl65viLcBCqDoO4MY6sIbROk=
+X-Received: by 2002:a05:6a21:2d98:b0:3e2:afda:c37d with SMTP id adf61e73a8af0-3ebb29a4f9dmr2641715637.60.1793967539621;
+        Fri, 06 Nov 2026 04:18:59 -0800 (PST)
+Received: from osman.mioffice.cn ([43.224.245.178])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb706494d6sm517562a12.8.2026.11.06.04.18.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 04:18:59 -0800 (PST)
+From: Zhan Xusheng <zhanxusheng1024@gmail.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: vbabka@kernel.org,
+	harry@kernel.org,
+	paulmck@kernel.org,
+	qiang.zhang@linux.dev,
+	akpm@linux-foundation.org,
+	hao.li@linux.dev,
+	cl@gentwo.org,
+	rientjes@google.com,
+	roman.gushchin@linux.dev,
+	linux-mm@kvack.org,
+	rcu@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zhanxusheng@xiaomi.com,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>
+Subject: Re: [PATCH 2/2] mm/slab: don't queue the page cache work under krcp->lock
+Date: Fri,  6 Nov 2026 20:18:52 +0800
+Message-ID: <20261106121852.3124703-1-zhanxusheng1024@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <au2fUYzBLv3uvj_2@milan>
+References: <au2fUYzBLv3uvj_2@milan>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
-X-Stat-Signature: x48bct8z5hjaey98shzix19b8tsray8a
-X-Rspamd-Queue-Id: 3B49940006
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 34s641qigiqqezr55xtzsu9x987ebzuh
+X-Rspamd-Queue-Id: 1B023100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793966973-261639
-X-HE-Meta: U2FsdGVkX1+iLwAb0VpPjFLA7xvY66owum70E5b9jFK7718eiC0a2IVNfcSdSfhvKbp7eSXIHVY4nimchLH2BAtdCL9PRPdXjaGo8ZkzQsokJqL3QRA07aAhe3fMgu9DmAE/QzquE3XJPinTrDUka/TcOdVC7/16SqJR28HsLMNQqdef73KIkqarpAGMoFVbqWCOYniL40H0DA+BBvvtXwX6hc+pQcwRvUknG4mv5pAo/Gdw/zVxnYGxKwHs61bDxNo/d0TqGQ/txf/78LlN43f1BxNMb71tzDM5Q/taSDenwfjUscAPnSy41JkbI99sSGJxh7K8T493SCH726ja8w/FIJ2XqYQ7HlKvMK2DWP97UVCkxKX4rdatJT6M4Kk1oi0u6bWUgQkPeAOszNLQ/RrNw1pUfe4F0h+KqZ+kx/ohVmGIr2ORKA6/Wu7/P0bE+vP0WhfQX/+3wQLifN3hvHyEwa38+iBoXmv3Jx+DhrwU4vu1ENaqB828jXDpPJlhO1JpoEb5E5uhaXhLpFFD1y9q+X/kPRvyxHdogfyUHleeGXwxBoKyqFawlW3nfE1W7yI/aCXuhTrphAKce3YigHw1iO0mwd+FMkbIFuJX75rD7XG2Eyzp3kT2GXXP8mrLgfVhK5Hx4R9To2Xs9aplZup5L8DxFW/wFwE8nI1N3l8qs4p8FFZ3NeyPGZGvwMv/R0+X8sabgKeiRomDeib63eP/Ca7zYKkwS0meav5OnSKBbNn7QqkR8tTgvArz7vAAsDlEGEJHcaohJxbwXCYpgWsfshPNGPBekUa7qW1LOF3nW1b9zcm6TwLjo3YMyhlu8mK9yCa1q3GT9boT6aoE/vPSYOmPSSJmfytO9PEox7/dXObSlH2wwnjGKNYWqsXHpQdewFTdbuqg/tIxjfrG1ouYI1FCqt+YrcUokHQpxepWxtIknRjx+tpwqiwNoSDvF2y74EHA3Zm8R4eiZzF
- AG0IEljI
- vLFNsOLDOwjrS8km3C8PJ4eSo4fxWcCZjQLvSUqdlQDEDFkfuXtFxhAqy33DWhSrvLZk5pYI2rErXkFECIPjWfMOxI5TkIyhPrapVqKjKLOHcI5bCw4tUo7a9VxU8qb1C5LpQGuyOf6KmwjyyNn7eoEkpy1IHM87KM95t/4613qo+H2mscAk6lTPxhSyHAwb+KrK0mZA+ORdjQS3qX2py8dUxJ7PQP6jPOpwdnEx8QTKp0HAgrhW0OoZV6FgDAfzdJGWMOnhi0OgLpkunQ81s2YYIgyfF2E4jwe1gI6avtIEI92ndAKACkLNkC3ZDaDfB4AnWpUz0LLcesOloKIrlpSktjay1VZ7qi4kC
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793967540-799052
+X-HE-Meta: U2FsdGVkX19+DRSySnBcB/I0rXcI4ls5x41vI5DHc7KSMIB96MBWx3rAOuNtruL+mdEsH0NTEdyGVVhLevJGMKFBIasTuG/CPQ+ck/+vW+MrtoTlHz/h5zfpIEZX2LSVDJLs2FqLVfjHkO3Fu7NOTtQD+m4B2lkkhmQBSY7ETNPTzxg4zc8Z+umP7XTiiayTMeHcq8zPSuTyH5S7W9Zpkl9uFMfin1wkNf8lA9aNel61d7uDdPI6o1WyHSG8SRBofzi4JeD21ryZW2ak6z+W68SjDO51rq4M3JXnmFhElDIqlj7VoeszHdOMINbqgu63y1hqztZf2qHx/VQcIFLIZ2DKKoyKl4SheYaV5h4/vWKbAkhJOREO0AW/jqQJ17XIrSXy6LE6nW1rvdiEV+b6fldJWGWC1/o7B9ybtq9MVNdSZ4HEJzHNqRpjZEbj1p+sMDh+wGJcsOwr4yP6IKCigLZUIUXkTgnJF/UtsZ/3F+CyAxKUrStgw3N4XByp8Gd4JTgGPQidOwZyDzr6j0Dmwvj64TLP0Y8CcGmE5IGRPQBVZNpfr9JQ+uMldEKxcDU42MTxolbblH/MbLJoJ4Uhz6yYrzylJ7wv2DbJgUi+1rhGm0uNVgS1tyTJshoQmF2xtZaoIIK/3mehKWuyAK0gvR3trTk1vDgpVrgUd/67jGGsWv6lYnMrne/QhNJMADolgLom5qHM+1zVxK0aSpltaCzN/XaIBtgXKWKo6V9+tbtEI/kGJusm9Lsr6UaXD0XXkGh8tCTifb2n5gaYJcgnL1OWdchjKcnIwsrcZb/fYjxViKbZEtWR9ygimSkN631NBwMhLLKPNfHS757x8RHrn3LSPYMzgU2ReNXvrkVUVy43PodSVlgu6yKTk7obz2qJLXomrSfh4FMir6jLTzrZl5FdbevaxuE+2P7ClahQKVfKIk8tt0/T3atq0TPJBBMnBEqKk02KV+xh9vvViP0
+ ySxifz9O
+ WccLwVH7tKNN9hFwD8PAscpEAe3Hnrbo+0W5SlZr/WzdhpykCBVQ2q0VfSuGNfAcLpJtGFPooi2KKwjOi9v9u1BysEc39IkCpa1oh9GTDEuaajAN1OkXgJj3jdXL8naW/6L64gOnTJ1KibF8EioWROSMLCo8qo3PUyMKLv8s+Lr9OTlzzYu9u5DrH/QrodA6xpeMjjiE4voPWfeZKsbIjqyXuerpOMiUDBNtYLHRfxArHcpMNrkNfrIdDgRmV2UWXhTuuJSiIDvw4r90seQjkuj9J3eeH1K8hNe6smEZHsI1whBXuiXAFKTVocnh9+wi0vHWCnv2Yy8wPs8l1qFsRxuuhun8gjYjn9gH8EquzbHB4yP8DapI1NBwA++kku64ZkMuNqak5BJhHlOQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,39 +134,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 07:16:44PM +0100, David Hildenbrand (Arm) wrote:
-> madvise(MADV_COLLAPSE) can map PMD-sized pagecache folios that are not
-> uptodate. For example, shmem fallocate() can put such folios into the
-> page cache.
-> 
-> collapse_file() already refuses to proceed with folios that are not
-> uptodate. Let's just do the same in try_collapse_pte_mapped_thp() and skip
-> such folios, leaving handling to the page faults.
-> 
-> Note that collapse_file() effectively clears shmem folios through
-> shmem_get_folio(); let's keep this fix simple and simply let the page
-> fault path deal with that.
-> 
-> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
-> Reported-by: Chris Mason <mason@kernel.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi Uladzislau,
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> so we forbid zero as value to use?
 
-Separately from this fix: nothing on the mapping side catches this.
-Every caller checks uptodate on its own (next_uptodate_folio(),
-filemap_fault(), shmem_get_folio()), and khugepaged was the one that
-went straight from filemap_lock_folio() to do_set_pmd().
+Yes, that works as well. The parameter is 0444, so the clamp in
+kvfree_rcu_init() covers every case, and with a delay of at least one
+jiffy queue_delayed_work() arms a timer instead of queueing the work
+under krcp->lock. The check added to run_page_cache_worker() would
+then not be needed.
 
-Should do_set_pmd() and set_pte_range() assert it? Something like
-
-        VM_WARN_ON_ONCE_FOLIO(folio->mapping && !folio_test_anon(folio) &&
-                              !folio_test_uptodate(folio), folio);
-
-The ->mapping test is for set_pte_range(): finish_fault() also maps
-driver pages that never get PG_uptodate.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Thanks,
+Zhan Xusheng
 
