@@ -1,106 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079DD606D803
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9179F606A33D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:13:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g2ewZjrC
+	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=pvRI/D8R;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=AzVXIHVV;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=pvRI/D8R;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=AzVXIHVV
 Received: by kanga.kvack.org (Postfix)
-	id 28ACF6B05B1; Fri,  6 Nov 2026 09:11:38 -0500 (EST)
+	id B66C36B05B8; Fri,  6 Nov 2026 09:13:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 239A46B05B7; Fri,  6 Nov 2026 09:11:38 -0500 (EST)
+	id B3E306B05B9; Fri,  6 Nov 2026 09:13:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12A286B05B8; Fri,  6 Nov 2026 09:11:38 -0500 (EST)
+	id A541E6B05BA; Fri,  6 Nov 2026 09:13:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E5DCD6B05B1
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:11:37 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C9A31403C1
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:11:37 +0000 (UTC)
-X-FDA: 85404882234.16.A315F5C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C73B74000A
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:11:35 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g2ewZjrC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B0486B05B8
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:13:54 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1744C1C4429
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:13:54 +0000 (UTC)
+X-FDA: 85404887988.11.B413BD3
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id F0951180003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:13:51 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pvRI/D8R";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AzVXIHVV;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pvRI/D8R";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AzVXIHVV;
+	spf=pass (imf16.hostedemail.com: domain of jbohac@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jbohac@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793974295;
+	s=arc-20220608; t=1793974432;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BLPH8onp6C7AoW4lZMqXDExv0D9uGk4L9LfjO8m+oHo=;
-	b=rvXmXgySGmk9G9V6yq2TlRuWWpo36t7iyKq8q6u2i5TJaIl8JI2uKB/JuRkY0WpFGUHLIc
-	KPTRCS7KeWR9NQMbyNn8byMavkh2XCwt23d44rqJbZfrXPCMCQeyMvekfoEgoFEOKE7oEV
-	8q9TBHRaUYG7jrcuJeVglu9dkmxHPCQ=
+	bh=DbWVk74jXjpvpjgKYrK4/CAQhS2u1tHZBMZnBzvHIS8=;
+	b=LXNzwoMpP2dMHt/ibzQvfDYnhFF3i26ABvISEE+inJ5vFIBmrK7x92H1scppFjVPLv9giE
+	L8eXFM0p7ZA30tS/Cuv37RB0eRdUWcjdrJgq+tM+cdg6NbSxg3+1p7IEKm07YZjt/8xT2j
+	bnW5/gFpGRFVD73emru3rgYpf/BHavI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793974295;
-	b=dtYcDnhlREnaApPB+nWsA1IsGFC9LzfpTC8zohK09gif+WchwB9XvBtD/zspNn7+ynP1NX
-	+fJJW3PtOVQYsHS1h8Y6H/Y63HH+8DGoDu6Q4EiKni+fVOr8nvR2+7WyPb1oxMJPFxcx7+
-	FAjgWTrB0/h6KN1CnyIjkMAUsr/dJew=
+	t=1793974432;
+	b=SiK3V35XPOXP6iAvbVBK1i49d1QIkwWwSQVT2Ms2G9oFftRm7nF3L1V6SG8yevRlTTcrLH
+	vpyZ6tK702NuPGBRbTifXZCKdTxFjmqO2tMdBpzrf7hVl6MiuP3Ax9T/5Jrydolhe3JMGp
+	joHH5YBdiyJSL1TM/Po+WPFyikVUyEI=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g2ewZjrC;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9AB3C43D04;
-	Fri,  6 Nov 2026 14:11:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C2F1F008A3;
-	Fri,  6 Nov 2026 14:11:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793974294;
-	bh=BLPH8onp6C7AoW4lZMqXDExv0D9uGk4L9LfjO8m+oHo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=g2ewZjrCHw3WTRPfHVHQxqbS1wA2g3wTh8480oj0lnvKZf5Py0zb7HkGFUGjZ6QSA
-	 RBZ/BrP5GFgfXjKQaVwBIgtyh70yIGqFmj4eNHDJaFS+UrScNolIuIm1Irq/glNT9u
-	 RMDoXxZQVVC2FARzVwO+iCwWeWc9ptgaHE6/yBn88hSeN9ODaTw6HiftZ+zI5VCmSw
-	 G4llq4/bkghvyG2s/hIh6+lM2R0qBGt3H1Mi+CnIcMHeiJUSx23GA0JPC0gbGv+KTT
-	 KZ8ZhjL0UGyyvHaMcFPS0aaWi+hoWsnP7ATmE7NywBYeukjSNn2NrqVIxtLA9oW0aY
-	 RDRxL2XiQij7A==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
- <pratyush@kernel.org>,  kexec@lists.infradead.org,
-  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,  Alexander Graf
- <graf@amazon.com>,  Andrew Morton <akpm@linux-foundation.org>,  Baolin
- Wang <baolin.wang@linux.alibaba.com>,  Christian Brauner
- <brauner@kernel.org>,  David Hildenbrand <david@kernel.org>,  Hugh Dickins
- <hughd@google.com>,  Jonathan Corbet <corbet@lwn.net>,  "Liam R. Howlett"
- <liam@infradead.org>,  Lorenzo Stoakes <ljs@kernel.org>,  Michal Hocko
- <mhocko@suse.com>,  Mike Rapoport <rppt@kernel.org>,  Randy Dunlap
- <rdunlap@infradead.org>,  Samiullah Khawaja <skhawaja@google.com>,  Shuah
- Khan <skhan@linuxfoundation.org>,  Suren Baghdasaryan <surenb@google.com>,
-  Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v3 09/10] mm/shmem_luo: Allow retrieving tmpfs files
- with O_RDONLY
-In-Reply-To: <auuzKNZsPD10XM4q@google.com> (David Matlack's message of "Wed, 4
-	Nov 2026 22:35:20 +0000")
-References: <20261103010216.3447716-1-dmatlack@google.com>
-	<20261103010216.3447716-10-dmatlack@google.com>
-	<2vxz5wyck08d.fsf@kernel.org> <auuJ4msatqzoOrjN@google.com>
-	<auuzKNZsPD10XM4q@google.com>
-Date: Fri, 06 Nov 2026 15:11:29 +0100
-Message-ID: <2vxzse1ehwxa.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pvRI/D8R";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AzVXIHVV;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="pvRI/D8R";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AzVXIHVV;
+	spf=pass (imf16.hostedemail.com: domain of jbohac@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jbohac@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A268E22130;
+	Fri,  6 Nov 2026 14:13:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793974430; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DbWVk74jXjpvpjgKYrK4/CAQhS2u1tHZBMZnBzvHIS8=;
+	b=pvRI/D8RopcbFtgNPfW+iZ2eH21pmmfyjNXaTBk2vE1ikaUyi5ZiBfpUI9DBHxSg056LZ/
+	bgaYzzIfmdjyGKdvkKYDTONndhOEEdBNMQoBgWoZ/a8TN+unCtfVpYKTENumVFgNiyx8PU
+	jzG6MUyNuwxCdK8tH73YdFpwQlrjj68=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793974430;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DbWVk74jXjpvpjgKYrK4/CAQhS2u1tHZBMZnBzvHIS8=;
+	b=AzVXIHVVE8uagLfECKc27F9aiHHqwykOgSHiYeP032HqnsmkIBLN0HR+sxphwH+ZhZ+jLJ
+	ogoAPHclIxaMcyCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1793974430; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DbWVk74jXjpvpjgKYrK4/CAQhS2u1tHZBMZnBzvHIS8=;
+	b=pvRI/D8RopcbFtgNPfW+iZ2eH21pmmfyjNXaTBk2vE1ikaUyi5ZiBfpUI9DBHxSg056LZ/
+	bgaYzzIfmdjyGKdvkKYDTONndhOEEdBNMQoBgWoZ/a8TN+unCtfVpYKTENumVFgNiyx8PU
+	jzG6MUyNuwxCdK8tH73YdFpwQlrjj68=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1793974430;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DbWVk74jXjpvpjgKYrK4/CAQhS2u1tHZBMZnBzvHIS8=;
+	b=AzVXIHVVE8uagLfECKc27F9aiHHqwykOgSHiYeP032HqnsmkIBLN0HR+sxphwH+ZhZ+jLJ
+	ogoAPHclIxaMcyCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7AC9C134E9;
+	Fri,  6 Nov 2026 14:13:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Ao+wFZ7g7WoTZAAAD6G6ig
+	(envelope-from <jbohac@suse.cz>); Fri, 06 Nov 2026 14:13:50 +0000
+Date: Fri, 6 Nov 2026 15:13:50 +0100
+From: Jiri Bohac <jbohac@suse.cz>
+To: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Dave Young <ruirui.yang@linux.dev>,
+	David Hildenbrand <david@kernel.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	kexec@lists.infradead.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kdump: Give crashkernel CMA areas unique names
+Message-ID: <au3gnsckVTK6tUs5@dwarf.suse.cz>
+References: <20261106104309.3669583-1-zaslonko@linux.ibm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: xbyw58ejmjxb6pr7gxa3k44fwzyjjnj9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106104309.3669583-1-zaslonko@linux.ibm.com>
+X-Spam-Score: -13.30
+X-Spam-Level: 
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: r6axp4ba8hquf5647rnwj8dio914ffce
+X-Rspamd-Queue-Id: F0951180003
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C73B74000A
-X-HE-Tag: 1793974295-923620
-X-HE-Meta: U2FsdGVkX194Pp+m2Aa/ObTHHAhXkkYTAB4CmOIQfhq5/Q81DUP5Qv68Q3FoinFJ0twUmlg+peE0w2YuLFyyYtUjwN32au0f+wgf0k2xaj2li+Ynv9rkE5jbRaafb4Yof2/4oSLDGDYrVOQkHfMFAJW2Lqy36l3Erqu52XBZqkEGJXJ8F0bKHcDY37iqmGJwfDr6su8Rc7mmtzDXhrXlpHZ7aUyqChz26tdG7FCtvyVKx+cC31O+trFwNvXHvtS1h226OUr+bFlNKNppNlrWyr5gr5oh5XMKL8XUEBuLVSKBTAWHc3lE1wtAlKXrsTOS5X/4qZZsevAL8TqrK39YbtVJFJZ9cC8tORxlr3G4js5XXuPpvGe+ObPzbyeJETO08FOP1fyDWV4MgeJhYNZ7nMxIa5nPgZAZdsNJjfcBOOBc/GpRqgq6hcDk7QaGUTx/7J1TFaLHmrfiHuCWBhiDnBqkPB00xnoP0ao4g+GqGL8ae1OypkkYIlWISz9uzN7hSWOI62tDsHc3/qlmJHAAq2a2YW27MEzMN9JKL+h9dA4xQAtiz8r+LZveaA0IEmOtHEsrkUVibWd2djlXELU5pOQdZVlO6cXCAHDmvQGOjqH06fe7OD65pqpAvklMhZsgm/0Y5/tDKOMu/jTdQLVgnLxwPcCERCiHU3VnZz3tlEKqZTPjx+Z2Q2Ao9NeAEinhDA9bEek90TVnsTLOJW9NTNfP7kXv5UXJB9fO6wc/VUVMnXpZJz4l2sH1TxF0g1ZT0D1UG3JEh+zXc75Ef+/6YIiBrO8MDg2JphANLLcItJb9lyMW7W1Kai7Tghe4/SHRuztpogSRoyuW6d6MIK6xNTLZW+rzAfPhdokizdQVy/MAoDpGVYnaBuIT/bjO54beS0Qm8/y9WnS/ZoFSavFFbXAp2ZF61tPxMbRJ0fpQpTaY6JVq7auC9C+kevdRFgl/dIRp4X5mcTUAS4GejUg
- Pn7ZT7Or
- 5j98nifeA2R6lfbpnK314GbjtNK7OXSlK1D0RWoJsb3hm9YTDoQ8g80Y9rwMxfr6OEhFpspN53RHRwcHft+5pywdTYtfRzcrJLWQlzrQ4/FM4QjWF00HxEG/rR7rDPy1/DhHbhRRijypAr8ig3EhZh1sY1D8cUGVxvDFLZ81Te9Mr1ynxvAHd91zyw4U+0ziuwjOa8nB6aXRZwa/YYjo/uKa2HTenWmk1/IQjdnB+wr2q7CeT03I+WXbDARgCF5sqiLX1
+X-HE-Tag: 1793974431-399002
+X-HE-Meta: U2FsdGVkX1+YOhqD5Ki7AZ8geDY+IT8l+yVbe4rUl8eigu7n4sT1ViIwHael+jGHpIy1gBq1IT0Aaf6pSSSzbesdnq7k9yddHygIQEw7KLf4FFou9ZNnqQ/McUyy7wmy8L8cIMdyNabuGDfTHzyWeOqeU34wseQ/cQ5sFVFoM9RBbCRez2J5NfWwUGIsMgYP5QEMX68UiWAE2X2ZOFXF/Co46WYvC6jc1IuVIGqbM0+K4QnxN0x/ixwhAA8P1jBV0yHlqVQKpX+BzXWpNL545fUtAVrNy2/Y19Hlr2QairVauPHxwijT+f9Mbr68e7ik8aPz1x8CwRk5Q9XJbDJXBGwqOAtnBqDKkHJnchOBSg96tMW9TAra8umkGpVZLDJPXCVS+xGkwGCl9VJ5sodSwAVqxHGYDq335/xpoyMcYBKDh/2cRDuIQuQ10UUXB3aZGgpI6qGb6dioCzoa7qjhOO4xK+DGyTN1oJEZI7twU+tSxRf4IUz/IeCGkLo2WM4xelelffufLBRTbTXXe7rN25Z2LCJlAbnc03Q9hNfnsMTU4pb7I53Zae3hLWFUf6hchVT+409c50XDQampigvc/ueQcdQeOm4/nbslO+cR1VEbhhEL4qpKA45NkUJMnvYujtXWN5iTJKF5YkrZ6jbdWygSMjQsL6FysRdkCMcn1FMqUBTPXDYzEDvNrrdFw7NyXbJ/vd+9xcrWwe+Wc/YRDXSILfsNoTxZFz/ors8+HNoRDGc9wIre5YvTwmDz5MIpiQDxC+TpXVdnYSmLWZccsQQAlmWZCGVgK5OuMmg+lNLh2Uff+ai9RTNmAZwoASt6tYjTxfr1y9a1sk66mtavdiU3Gx4bd3MGkFKn0s+1rkSWTgUhdPEi+epzrfK9MkjTA9xDVjF0obtb/kcVtrEQow/IpHicEiFNYMwzdgeHVBGmBgSSlYYY4xi5+eFSwQ1sp9gpL0J8V8wN5wVit22
+ kINepqpO
+ IwzmxcUBqdA7Q92qBkc+juv93oztPk4EqeWGJcbbjnpxNI6+ZI9vZRAS90VdEH0iHprTq7pJOi2U7/xRB6tHeCCkMFmOVRyaGtQ4apGu8L0yFbye/a0LTYTKTP3wUAgBLbtAOIUwAOS77FmeKeiFwTZl1WO8rX1K97roqkVH9mqMN3JMoCtG13TrjnEQnNYGGrNbEdlhOCUeF3gLtd4XgNTU3e0XTrchWBpRkSybjMCTnbN9OVm7KWAuaNTjlE3aA0kQwBDCKdT5Stmdd7ISdd83rWxZLnA/JWUXq042o0vkCLoeGMv+7Ar+mDg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,53 +147,39 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04 2026, David Matlack wrote:
+On Fri, Nov 06, 2026 at 11:43:09AM +0100, Mikhail Zaslonko wrote:
+> reserve_crashkernel_cma() names every CMA area it reserves
+> "crashkernel". If the requested size can't be reserved in one piece,
+> it falls back to several smaller areas, all with the same name.
+> With CONFIG_CMA_SYSFS, cma_sysfs_init() then fails to create the second
+> directory:
+> 
+>   sysfs: cannot create duplicate filename '/kernel/mm/cma/crashkernel'
+> 
+> and the error path removes the sysfs entries of all CMA areas.
+> 
+> With CONFIG_CMA_DEBUGFS, debugfs refuses the duplicate directories as
+> well:
+> 
+>   debugfs: 'crashkernel' already exists in 'cma'
+> 
+> so only the first area shows up in debugfs.
+> 
+> Keep the name of the first area and add the index to the others:
+> crashkernel, crashkernel1, crashkernel2, ...
+> 
+> Fixes: ab475510e042 ("kdump: implement reserve_crashkernel_cma")
+> Signed-off-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
 
-> On 2026-11-04 02:45 PM, Pasha Tatashin wrote:
->> On 11-04 17:52, Pratyush Yadav wrote:
->> > On Tue, Nov 03 2026, David Matlack wrote:
->> > [...]
->> > 
->> > Can't you put all your binaries in a separate session, retrieve it as
->> > the very first thing, and then finish the session? Then you can execute
->> > those and retrieve all the other sessions.
->> 
->> This is a good workaround. I am not opposed to this patch for 
->> completeness of functionality, but if we decide to keep it, perhaps it 
->> should simply be squashed into an earlier patch. The current diffstat
->> looks bad, as it mostly deletes code that was introduced earlier in this 
->> series.
->> 
->> In any case, given Pratyush's suggestion, we could also drop it.
->> 
->> > 
->> > Why do we need to support this in the kernel?
->
-> That would work for binaries, and I agree that use case alone doesn't
-> justify this. But I see O_RDONLY as part of the retrieve interface, not
-> a feature for one use case. The retrieve argument is modeled on
-> openat(), and openat() lets you open an existing file read-only.
->
-> open(O_TMPFILE) only requires write access because it creates an empty
-> file, and an empty read-only file is useless. A retrieved file isn't
-> empty, it has the preserved contents, so O_RDONLY makes as much sense as
-> it does for any other existing file. Without it, every retrieved file is
-> writable, even when userspace only needs to read it.
->
-> Preserve already works the same way: a file can be preserved through a
-> read-only fd, as long as the caller has permission to write to it.
->
-> If we keep it, I'll squash it into patch 7 in v4, so retrieve supports
-> O_RDONLY from the start. The commit message will lead with the openat()
-> reasoning and keep binaries as just an example.
+Thanks for fixing this.
 
-I'm guessing this all goes away after you do Christian's suggestion? I
-don't think we should be retrieving anything into a file that userspace
-has opened O_RDONLY. Retrieval is in effect a write operation. So
-userspace _has_ to retrieve a file and reopen it O_RDONLY after
-finishing the session.
+I don't think we really need the special case for crashk_cma_cnt == 0 
+and that "crashkernel0" would be fine. But I don't mind either way.
+
+Acked-by: Jiri Bohac <jbohac@suse.cz>
 
 -- 
-Regards,
-Pratyush Yadav
+Jiri Bohac <jbohac@suse.cz>
+SUSE Labs, Prague, Czechia
+
 
