@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABCE606A329
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 07:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110E9606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 07:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IQG2BxQr
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mtpRkca8
 Received: by kanga.kvack.org (Postfix)
-	id D6CE76B05B5; Fri,  6 Nov 2026 02:04:48 -0500 (EST)
+	id 333796B05B6; Fri,  6 Nov 2026 02:05:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D43556B05B6; Fri,  6 Nov 2026 02:04:48 -0500 (EST)
+	id 2E3416B05B7; Fri,  6 Nov 2026 02:05:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C808A6B05B7; Fri,  6 Nov 2026 02:04:48 -0500 (EST)
+	id 220496B05B8; Fri,  6 Nov 2026 02:05:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A35216B05B5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:04:48 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D677120C98
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:04:48 +0000 (UTC)
-X-FDA: 85403806656.22.74E7A0A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F202C6B05B6
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:04:59 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EFDFC402CC
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:04:58 +0000 (UTC)
+X-FDA: 85403807076.09.4DDC024
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 859F1100010
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:04:46 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQG2BxQr;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 56AE81C0005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:04:57 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mtpRkca8;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793948686;
-	b=fyOEdZP7G5cJ2TdJllZBLU2VZa2kf+kw+MfRpBOOK6ZG9bri2faDbc92nFySnTPPngDp/o
-	71w3Yzk7szKpJvcV1aKblVoLDS1S/hd/VnUAaeUlv/gvJuz/zIQKGpuMJsM5kRi9yVmXl4
-	CcAoltBA5hBwZpcFocl8vUBKC6cNEdA=
+	t=1793948697;
+	b=hK8KJzc/kx2apPRMRVbf86BNGPklUzCw70ulPipO+lFLmmk9wNMS4UKgZh8ozeqzfa5/WR
+	i+BKOIkhBX1lAZPDMXXy180f4XvN9cT6pInY2IrulIfnxZyY7Ne3JI6M6ZUXAZk722gM6u
+	xy1hdaGDLzdwcEEDgCb9DKjaeV3nfqU=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IQG2BxQr;
-	spf=pass (imf05.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mtpRkca8;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793948686;
+	s=arc-20220608; t=1793948697;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zkWSEF3JjPGyKhkbeSaRitsFGRfwe5De57BGkHIE5uM=;
-	b=3S6Gz2iOwqio8HS+KvWi6KubxqAJNqm98BqfRfAPwQSn1hbImLLwz2oX3LX1TywyqRojO7
-	utljqkxU72HcZKpx/3MMbh055YDrvQ7RBwv3Hei2aBF+b+wBZhPFZrTdjyEipU7XjAeex+
-	WibyywWYLrn3y7/V2tfplfbP8h+7w+A=
+	bh=gKruOE7Fi0Bd2chLADYya0ZBum/jyd36keRj4caMYsA=;
+	b=hNR3ARarjPoGQM5G0vmxFlGgV8731AdAyzwJhlUQ/2jYz1/t4GkqUhaiVuehn1uHqJNnb7
+	sGS/lOuYE7sf0U+Wdfk+zg2QA2sHyE2cQpEslTWHu4kVUGbdYTW/o7KuCbEeC1KbqPyulP
+	EBicVhYbLj1C7RCn/ADZowLiVGCODNo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B628F406B3;
-	Fri,  6 Nov 2026 07:04:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C801F0089F;
-	Fri,  6 Nov 2026 07:04:45 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A3EEF42AC7;
+	Fri,  6 Nov 2026 07:04:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D1481F0089F;
+	Fri,  6 Nov 2026 07:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793948685;
-	bh=zkWSEF3JjPGyKhkbeSaRitsFGRfwe5De57BGkHIE5uM=;
+	s=k20260515; t=1793948696;
+	bh=gKruOE7Fi0Bd2chLADYya0ZBum/jyd36keRj4caMYsA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IQG2BxQrjjLTTFieNDP+y6zSALmjmmJjINPaYp3+3nFPhrH+W2lH0r9yDW4Rj+FRi
-	 D83wDAHQ53ZBSvDiuO1z7JMltTeLbAha00EvzAFQ4MXeGcbRqSNDTyBwGTA4RwuERn
-	 S2BKOBlB1U/HObQPakDPdvO7tb2ckGEqib3H65mhXgtYlcimT8hWV1hO+VJOb2fa8q
-	 ZPB9KhfLKgiw0z59XTCRBI/AhOChqX2t5z7wRKJNCk0nkz28w/5gJmCidpP+/+K19i
-	 6tVfW2tx3HbzxnRYX397KiTSm7qwriIcEKHdUj3QSx4rGOtJnddwBWFBv4RIymgDGl
-	 /3wt2BwveicVQ==
-Message-ID: <sashiko-outbox-200953@kernel.org>
+	b=mtpRkca8/hRapQm9zK6rw1oC49xxQ/eDkE5GX9Aa0Tn9GJnIPzaKL9r49XkznVbU1
+	 hVG1gJCIY3g7XD5M06/jC/IbFzgye7CsY4q7bQU0CNHNrUK4FliuRuWtTEqdRnOLKk
+	 2wnD8WgWJH1K0YWQNZlKvViENA/FVLMJ2SJ3ggU3Spx8njS+AW/nq/Ae5zbP5mSi7y
+	 AIqDpPZGV0vu2chn8PmjBiXEGLkAlxAEX5CN6fyvkNvhtgaNHdQObY7r+Fo6pGNbJQ
+	 Yr4W4ANJ4um7PwPd0/EkEJTvOOOclYmERliAfxObZnLk1DXTL/6/cBoFHaT0ZmZ0QQ
+	 5RAWHH9PsgbOg==
+Message-ID: <sashiko-outbox-200954@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 6.1] mm: replace free hugepage folios after migration
+Subject: Re: [PATCH 6.6] mm: replace free hugepage folios after migration
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Mark Bundschuh" <mkbund@amazon.com>
 Cc: linux-mm@kvack.org, david@kernel.org, yangge <yangge1116@126.com>, "Baolin
  Wang" <baolin.wang@linux.alibaba.com>, "Barry Song" <21cnbao@gmail.com>, "David
  Hildenbrand" <david@redhat.com>, "SeongJae Park" <sj@kernel.org>, "Andrew
  Morton" <akpm@linux-foundation.org>
-In-Reply-To: <20261105070346.3099207-1-mkbund@amazon.com>
-References: <20261105070346.3099207-1-mkbund@amazon.com>
+In-Reply-To: <20261105070431.3100950-1-mkbund@amazon.com>
+References: <20261105070431.3100950-1-mkbund@amazon.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Nov 2026 07:04:44 +0000
-X-Stat-Signature: 4ine6iokg9g3hgjdzi6d44mfseyo45r5
+Date: Fri, 06 Nov 2026 07:04:55 +0000
+X-Stat-Signature: 9qugo8x55qzarfybuogdx9nb4a55m5mi
+X-Rspamd-Queue-Id: 56AE81C0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 859F1100010
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793948686-221705
-X-HE-Meta: U2FsdGVkX18u/xGYVtryO365wqbGsnSRjsSHRER4yHc50OsX1eMAtzkpzKLpKFGU/ZFDMMcOikw3JMTI3ZD7AyVIgECZuXapdgodPwuq21vGz5dyEaAWuN6XDIKfposRyioaaCr/iEnspekDDeNXIdUNYBg/KwicDrmoRLKPou6FbYIz6oLy/o31g0LSNLfh6YLV0yQvjJIs97VnvOtQKwsYImicum3XmhfFwc1Dao4kx/cRWbv+A9B/EPqWgh24njLdB7xHLuxCIVOC8FZEDTlOBXsoA7caXMdrB+iv4jJREsRvk/88keb7vCt5grqA28XAv9v2LE27VYe45hNRf5BtJciWsWy7j3xMQ77HPQUjtD5R88t6SPMhLRtV95pf2Bgb6iBYitSkAqNuaamC8/Xdi4WClza+Ga74TSZYYZ1hEW/ZzZMC2uQfZ2WpVZlHhiB9NS7dCO0VHeyrstTLrAg1ZV8DdCph3fBrnGXW+AVRSkhOhpU7KGgtK6fp1rO7bpvwQyUH4rcbz9wMey+65+Kkl4DUqvaEFQY+GPpI08yTV9att1l6wVrBX2+lIHZfmX1ZajksrOS6TzY2rGtuzzvSt+XJgE9phRwDllFxcUFj6vtis2LF0/LWDHu3dqsG5WV8qQ8QVLNV+cXwWyc7K+nJUp5UmtNdIA+M1f4+iq6W/k7jC8RowUcUHX6Svhuhy+aCtrAue7IpRAI+Y+bt8WC2hzrZFiPvayR3WcL+J3IHBbl8OFnRtFLQBD+YcZs2wpB9HXi9Azb6AnqJNvO7vbwCPDDv74JPmgB+CNZUeoQvXpWvezQgA/EiuOvKmUvjz0zSz26GTB45P66u+PUaSoXRxLhZ2/qeqqSGx1LmyPXxyAV+Agx/oIZMX+rTci7YVmFUBltA0tVLj1P8GL04q8OPovuu2lJelNi0RklCrBE/4sOVLIqlLHV7zPW65DvmsrJ3Cviw1iAYvbEQbN0
- mP0sugle
- W0rAobD9rsax61W02fCD+Nq6sXNDUZmYmiCwt4H0xMtxIxuKy6Wd/PPpOsdqjb/p0f5YiyC5eYRlP0e2QOV/OWwvobjKXDYkBEPDwP1MNVkLyMqWChjua0JW4yAY+hlq1fR8s6ZfD/vFvgK7CEuC2xgeYQrxz6JFH1NwylDNI4YTG7a4DUlemwyRM3D7Et09UiLHtDQ8u+yFTHotkjwt0XYIQ8lAl+0hRbi1NnZKZkXG/MmRDjMaJ9R8xL8SR14LJQXPnQ51/SRtpj4YBNKv9p572egkVWg6Uov+IjUWIfOjGjoE8jN6/BRFAUwJFsccL3HYsC97cEnk2StrZUXpfoXd/T+exxnXcV6yJPlunWqyj6XicZ7GUVnNFs/2PBqh1Io81Pw7dY7ZHd+KVb2YKhE+C6kYNJ6b41V0hKmtL/3oVpPwNw3Z2z2oJm3Vo10L8tBqeD4ZiDh+fPHXh6Y4NFC3KEmy2hYmEVM69o8pORJotAT2kp4Ld1xZsNhDwhbXiFoua6vflI8vHYaKr3xJypY6HIcojgp7c7FKrA7ClckxMo2ireoUEeCS/+fvIEhNUYPK1jYgS31qxnW8UZiIHH/BlNn4qPsu1zsDxgnI5OJPBtH5qjPRXNSUWz51jUA97SdVXSELt7+XwiebBirKJLx4j8KnG+P6czEFQ
+X-HE-Tag: 1793948697-789869
+X-HE-Meta: U2FsdGVkX18Njobv4qwkOZ9/XTgIz2DfmoAYRJWVYSqR5mZnyMiTiVgSONE0LmSdOSNffwwDzTqcmiaNmYML+FmgWGWEDKHnGXcoZ7Z3QDh/aWNWoWsipm4YovZJtW743wXOJT1DT9PPgqA+R4UEhiUSPGoex0PfEknpKBn04WJSW4C2kAsEjkpR/TV5wbEQVU8rE+Sxcc+whB2BVzFj/GsmkZeDhGGqIXs8L8sMhYSd2WIM8eAijRYrEn7LS33AiWLyAgctHiz8edw7TckLzFiLFrOHaKOY2DOkDLsIp2hxk+L137W/Es58sDGOlf8whH0mdQqpTnGno+0XQ+DVKMqPByPiGCPG3tA3RnPpJgu5s1V3QfkgwOPsYcAr1g9tbRdU+oB/Tu9HsBo/WSO0zhJU2stPvyl/vgU8y7jQllOUcK+JjcXj7xTPuJWgTkY1RXqneQBFHLxLnkeSB4XuLBnJadXs/rXzJeWAZ++85H4qtABMvWFH8zpHAF7H6Rc569gZU6GYdQ2nOWCRhjLlGKYSp/2d0iEvpnR2DXftCCPgsXYqrQzs0f7XVxzvf9+ewLbGiUi+nIkYHP0ju/w1mMFGTCK0NVrhSsNPs8WUIfD+fbBBwScWkagj/sOIWJeUNjGW4AyFL8seKrITG3DEG2PufPpQA4K6H45p4HCJIdxy7zvqOpSK70yyZZgPitY2xDbh9GISdnmtrIQsAb7TPEzcz1+1vDN7GHtIj3mo28ZRizHCMbOeTPrHK6a8Qm259wgLFet4uSj7VJlSDrTru2ITAwnKcXgLRUequEntA+umYvucv/wJ5DA/TpY6NN0Ituna8FZRE4L0EyoWPFu1rJfQoBnZl+FFd3K+wDmbwrnohM65tGbUpEJF/TiluDzCRL2yH56+QOaUgL228YQfMmvc6m1298IYsgtZZfDMTrkWlE98isGjF10whiYSDRvee8/OutpBE+HtkRZkKVh
+ qQWBCYGG
+ n2W8LFX4fD961hAc5zmSNbiCYJF58H9qU/GlBeAR3GzYAMHqlfX8EWFQlt46y9L2xVGB7xikjMLkAQvAQtTGdaBFOwKHxX4hqwrDPjYSeyXebtc9RQhDkrX5f+pdDss7lrXbUpUcbmzyDOAbIpB0z1TYInVTsg6TfwFfyRIS5T/zYzA7z2Nn97jwoSiJORXafZ9sFrAu3hIdp/NwsnPHBgc3HlgD+HgtWVNcoLyixGbt4WJeLV3Gnjdq+MbQ5kZu4pf5qEXSDWaRCXSEoCi0Sm9XpuLtfoDA4XrECrzPudVxtiCzv73V0RzUL9El0uwI7HodXnQ6iA+Af2Z7t60+XmUsDbO0kqYUnxyKUicdrtk8Szx/V6jX2ULgHPbPOnPkCDQ/1za0DgPWmyCgftNLcVeyYhTjXGLsZbRwJbqp9SGp2FtJi8S7U9fJa3oJ1h33Z1FfuY9ozuNuAOG/K/OOwQf6cQCC1dSlqzLHLnNVQCa0DErESNsccKtpnT3vcb1Fa8ofY8GeJrvbBgprCl2QUIItLaV1NOFEDtdClec4uoofewNASnJ76FSSgtPZTa6c0ku5WKfg7qCDJguLlioWvZjNq2tayCBpunlCvg/llnWZZyQCmsGKzIbVl2s5v4wAp10MAevXFV1yV1J64dg3k1luYxdyM1wh9v+kQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,111 +97,126 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [High] mm: hugetlb: skipping isolated free pages in
-  dequeue_huge_page_node_exact() breaks reservation accounting
-- [Medium] mm: omitted replace_free_hugepage_folios() leaves cma_alloc()
-  broken
+- [High] mm: missing replace_free_hugepage_folios() breaks
+  alloc_contig_range()
+- [High] mm: hugetlb: skipping isolated folios in dequeue breaks resv
+  accounting
 --
 
-commit dac0c7128f296db4178dac403221b3262724e8f6
+commit bc6da6c8bf105f6ed6558b1313cb2fed9d8b04a8
 Author: yangge <yangge1116@126.com>
 
 mm: replace free hugepage folios after migration
 
-This backport of upstream commit 04f13d241b8b146b23038bffd907cb8278391d07
-updates dequeue_huge_page_node_exact() in mm/hugetlb.c to skip free hugepag=
-es
-located in MIGRATE_ISOLATE pageblocks so that isolated free hugepages are n=
-ot
-reused during migration.
+This backport updates dequeue_hugetlb_folio_node_exact() in mm/hugetlb.c to
+skip free hugetlb folios located in MIGRATE_ISOLATE pageblocks so migration
+does not reuse isolated hugepages. However, it omits the
+replace_free_hugepage_folios() implementation and call site from the upstre=
+am
+commit while retaining the upstream commit title and changelog.
 
 Link: https://lkml.kernel.org/r/1734503588-16254-1-git-send-email-yangge111=
 6@126.com
 Link: https://lkml.kernel.org/r/1736582300-11364-1-git-send-email-yangge111=
 6@126.com
 
-[Severity: Medium]
-The commit title and changelog describe introducing and calling
-replace_free_hugepage_folios() after migrating in-use hugetlb pages in
-__alloc_contig_migrate_range(), but this 6.1 backport only keeps the
-is_migrate_isolate_page(page) check in dequeue_huge_page_node_exact() at
-mm/hugetlb.c:1347.
+[Severity: High]
+In mm/hugetlb.c at dequeue_hugetlb_folio_node_exact() (line 1348), this
+backport only takes the check for is_migrate_isolate_page(&folio->page) and
+omits replace_free_hugepage_folios() along with its call after
+__alloc_contig_migrate_range() in alloc_contig_range() (mm/page_alloc.c, li=
+ne
+6267). Does omitting replace_free_hugepage_folios() leave
+alloc_contig_range() and cma_alloc() broken while also shrinking the
+persistent hugetlb pool during memory offlining?
 
-In __alloc_contig_migrate_range() at mm/page_alloc.c:9231, when an in-use
-hugetlb page in the target range [start, end) is migrated while
-available_huge_pages(h) > 0 and a non-isolated free hugepage exists on
-h->hugepage_freelists, alloc_migration_target() -> alloc_huge_page_nodemask=
+When alloc_contig_range() calls start_isolate_page_range() and
+__alloc_contig_migrate_range() on a range containing in-use hugetlb folios,
+alloc_migration_target() -> alloc_hugetlb_folio_nodemask() (mm/hugetlb.c,
+line 2488) checks available_huge_pages(h) and dequeues a free folio from
+h->hugepage_freelists[nid] instead of allocating a temporary folio via
+alloc_migrate_hugetlb_folio(). Because HPG_temporary is not set on the sour=
+ce
+folio, when migration finishes and free_huge_folio() (mm/hugetlb.c, line
+1945) releases the old folio in the isolated range, enqueue_hugetlb_folio()
+places it back onto h->hugepage_freelists[nid] rather than freeing it to the
+buddy allocator.
+
+Because isolate_migratepages_block() in mm/compaction.c already advanced pa=
+st
+the migrated folio and replace_free_hugepage_folios() is never called (even
+though alloc_and_dissolve_hugetlb_folio() is already available in
+mm/hugetlb.c at line 3050), the freed source folio remains on
+h->hugepage_freelists when test_pages_isolated() runs in alloc_contig_range=
 ()
-dequeues that persistent pool page without HPageTemporary set. When migrati=
+at line 6297, causing alloc_contig_range() and cma_alloc() to still fail wi=
+th
+-EBUSY. Moreover, when multiple in-use hugetlb folios are migrated, skipping
+MIGRATE_ISOLATE folios in dequeue_hugetlb_folio_node_exact() without
+replacing the freed source folios causes each migration to pull another free
+pool folio from outside the range into use and leave multiple freed folios =
 on
-completes, free_huge_page() at mm/hugetlb.c:1978 enqueues the old source pa=
-ge
-back onto h->hugepage_freelists[nid] instead of freeing it to the buddy
-allocator.
+hugepage_freelists inside the isolated range before test_pages_isolated()
+fails.
 
-Because replace_free_hugepage_folios() was omitted from this backport (even
-though 6.1 already has __alloc_contig_migrate_range() in mm/page_alloc.c and
-alloc_and_dissolve_huge_page() in mm/hugetlb.c), the old source page remain=
-s a
-PageHuge page rather than PageBuddy inside [start, end). Won't
-test_pages_isolated() in alloc_contig_range() at mm/page_alloc.c:9366 and t=
-he
-!PageBuddy(pfn_to_page(outer_pfn)) check in isolate_single_pageblock() at
-mm/page_isolation.c:439 still fail with -EBUSY, leaving the cma_alloc()
-failure described in the commit message unresolved?
+Similarly, during offline_pages() in mm/memory_hotplug.c, when an in-use
+hugetlb folio in the offlined range is migrated into a free persistent folio
+outside the range, the old source folio is returned to h->hugepage_freelists
+inside the offlined range and then dissolved by dissolve_free_huge_pages() =
+->
+dissolve_free_huge_page() (mm/hugetlb.c, line 2305), which decrements
+h->max_huge_pages and shrinks the persistent hugetlb pool. Finally, the
+commit subject and changelog still state that replace_free_hugepage_folios()
+is introduced and called after migration, which no longer matches the patch.
 
 [Severity: High]
-In dequeue_huge_page_node_exact() at mm/hugetlb.c:1347, skipping pages where
-is_migrate_isolate_page(page) is true leaves those isolated free hugepages =
-on
-h->hugepage_freelists[nid] and still counted in h->free_huge_pages.
+In mm/hugetlb.c at dequeue_hugetlb_folio_node_exact() (line 1348),
+is_migrate_isolate_page(&folio->page) skips isolated folios on
+h->hugepage_freelists[nid], but those folios remain counted in
+h->free_huge_pages. Can this mismatch with available_huge_pages()
+(mm/hugetlb.c, line 1398) cause migration to consume reserved free folios,
+breaking offline_pages() and causing SIGBUS on reserved hugetlb faults?
 
-However, available_huge_pages() at mm/hugetlb.c:1397 still computes
-h->free_huge_pages - h->resv_huge_pages without discounting isolated free
-hugepages. Can this cause two regressions in reservation accounting?
+Because available_huge_pages(h) returns h->free_huge_pages -
+h->resv_huge_pages, any free hugetlb folio in a MIGRATE_ISOLATE pageblock
+(either isolated beforehand by start_isolate_page_range() or placed on
+h->hugepage_freelists[nid] by free_huge_folio() after migrating an in-use
+folio) still inflates available_huge_pages(h) even though
+dequeue_hugetlb_folio_node_exact() refuses to dequeue it.
 
-First, when a free hugepage backing h->resv_huge_pages lies in a
-MIGRATE_ISOLATE pageblock (either isolated in place by
-start_isolate_page_range() during offline_pages() or alloc_contig_range(), =
-or
-placed there after migration), a page fault on a VMA with a valid reservati=
-on
-calls hugetlb_no_page() -> alloc_huge_page() at mm/hugetlb.c:3139 ->
-dequeue_huge_page_vma() -> dequeue_huge_page_node_exact(). Because
-dequeue_huge_page_node_exact() skips the isolated page, dequeue_huge_page_v=
-ma()
-returns NULL and alloc_huge_page() falls back to
-alloc_buddy_huge_page_with_mpol() -> alloc_surplus_huge_page() at
-mm/hugetlb.c:2456. When h->surplus_huge_pages >=3D h->nr_overcommit_huge_pa=
-ges
-(which is 0 by default) or hstate_is_gigantic(h), alloc_huge_page() returns
-ERR_PTR(-ENOSPC), delivering SIGBUS to a process faulting on a reserved map=
-ping.
+Suppose h->resv_huge_pages is R (backed by R non-isolated free folios) and
+1 unreserved free folio is in a MIGRATE_ISOLATE pageblock, so
+h->free_huge_pages is R + 1 and available_huge_pages(h) is 1. When
+alloc_hugetlb_folio_nodemask() (mm/hugetlb.c, line 2490) runs to migrate the
+next in-use hugetlb folio, available_huge_pages(h) is non-zero, so it calls
+dequeue_hugetlb_folio_nodemask() -> dequeue_hugetlb_folio_node_exact(), whi=
+ch
+skips the MIGRATE_ISOLATE folio and dequeues one of the R non-isolated foli=
+os
+backing h->resv_huge_pages instead of falling back to
+alloc_migrate_hugetlb_folio(). Once the migrated source folio is freed into
+the MIGRATE_ISOLATE range, available_huge_pages(h) remains 1, allowing
+subsequent migrations to move all R reserved folios into the MIGRATE_ISOLATE
+range.
 
-Second, during offline_pages(), suppose an unreserved free hugepage H0 is in
-the MIGRATE_ISOLATE range (for example, after an in-use hugepage H0 was
-migrated to an unreserved pool page and freed via free_huge_page() ->
-enqueue_huge_page()) and another free hugepage F2 outside the isolated range
-backs a reservation (h->free_huge_pages =3D=3D 2, h->resv_huge_pages =3D=3D=
- 1).
-Because H0 is still counted in h->free_huge_pages, available_huge_pages(h)
-remains 1. When migrating a second in-use hugepage H1 via
-alloc_huge_page_nodemask() at mm/hugetlb.c:2546 (or during a concurrent
-unreserved fault in dequeue_huge_page_vma() at mm/hugetlb.c:1417),
-available_huge_pages(h) is non-zero, so dequeue_huge_page_nodemask() is cal=
-led,
-skips the isolated H0 in dequeue_huge_page_node_exact(), and consumes the
-non-isolated reserved page F2 instead of falling back to
-alloc_migrate_huge_page(). H1 is then freed onto h->hugepage_freelists insi=
-de
-the isolated range, leaving only isolated pages on the freelist to back
-h->resv_huge_pages. When offline_pages() subsequently calls
-dissolve_free_huge_pages() -> dissolve_free_huge_page() at mm/hugetlb.c:235=
-9,
-won't it dissolve H0 and then fail on H1 with -EBUSY because
-!available_huge_pages(h)?
+When offline_pages() later calls dissolve_free_huge_pages(),
+dissolve_free_huge_page() (mm/hugetlb.c, line 2305) dissolves the first
+unreserved folio (reducing available_huge_pages(h) to 0 and decrementing
+h->max_huge_pages) and then fails with -EBUSY on the remaining isolated free
+folios because available_huge_pages(h) is now 0, aborting memory offlining.
+
+In addition, while the free folios backing h->resv_huge_pages sit in
+MIGRATE_ISOLATE pageblocks, a page fault on a VMA with a valid reservation
+calls alloc_hugetlb_folio() -> dequeue_hugetlb_folio_vma() (mm/hugetlb.c,
+line 3113), which returns NULL because dequeue_hugetlb_folio_node_exact()
+skips the isolated folios. alloc_hugetlb_folio() then falls back to
+alloc_buddy_hugetlb_folio_with_mpol() -> alloc_surplus_hugetlb_folio(), whi=
+ch
+fails when h->surplus_huge_pages >=3D h->nr_overcommit_huge_pages (0 by
+default, and always 0 for gigantic pages), returning -ENOSPC and delivering
+SIGBUS to a process faulting on validly reserved hugepages.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105070346.3099=
-207-1-mkbund@amazon.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105070431.3100=
+950-1-mkbund@amazon.com?part=3D1
 
