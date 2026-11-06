@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8A7606A334
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A9A606A32D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hsD06pKF
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=f9FWjavz
 Received: by kanga.kvack.org (Postfix)
-	id CBDF86B05B2; Fri,  6 Nov 2026 12:40:47 -0500 (EST)
+	id A01566B05B3; Fri,  6 Nov 2026 12:42:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C47376B05B3; Fri,  6 Nov 2026 12:40:47 -0500 (EST)
+	id 9B1706B05B4; Fri,  6 Nov 2026 12:42:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B0EC96B05B8; Fri,  6 Nov 2026 12:40:47 -0500 (EST)
+	id 87ADA6B05B6; Fri,  6 Nov 2026 12:42:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 80BEF6B05B2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:40:47 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E69151C0EBD
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:40:46 +0000 (UTC)
-X-FDA: 85405409292.26.0A74E4D
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 37D86A000C
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:40:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=hsD06pKF;
-	spf=pass (imf25.hostedemail.com: domain of 3GxHuagkKCFQF580Dy40D2AA270.yA8749GJ-886Hwy6.AD2@flex--tjmercier.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3GxHuagkKCFQF580Dy40D2AA270.yA8749GJ-886Hwy6.AD2@flex--tjmercier.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 526436B05B3
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:42:30 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF20240172
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:42:29 +0000 (UTC)
+X-FDA: 85405413618.10.E9DBD8F
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 25F23140003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:42:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=f9FWjavz;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 3ghHuagkKCLsuknfsdjfshpphmf.dpnmjovy-nnlwbdl.psh@flex--tjmercier.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3ghHuagkKCLsuknfsdjfshpphmf.dpnmjovy-nnlwbdl.psh@flex--tjmercier.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793986845;
+	s=arc-20220608; t=1793986948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Y13j0LTUOpG3IGiPRUu5f/tDHT82BAGPGt8tpe2/3YY=;
-	b=H3/lHfXGj5LXgAVjaFprhFLBuK48Qjbpg9WguzNnn+Km7OSGyzSmTbJlvlcKnlAI0+dZNq
-	cKHW0S6IkyMFw/HiEi8+zgZENzHGIncmatP2G2V7aGFXaix/9ZT+dVfcmwdPyg6OkcLDXe
-	pu17LAF9A+znbvlnpzJg3okhBXyTgIE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793986845;
-	b=XgVFhSlYBFOpepsYU77THOrIkrPAVgjNZG1GEStxFUCnuz4MD9qyLfuLq1X3Scf+6Xf4Z0
-	GhC0dqg+7FOAXgPGmU4QSYC/e8/NOrxYF0+Pxx+7/WybNq37H01dGH1coFzQN4Cl6cQqkk
-	/YKGNYOFCBLFvVV4D84tKyIUTGcPtG0=
+	bh=dUFLil/A/qxmQAsi18K2mSML2dlbE2/nzQZ4zVZkdWo=;
+	b=LhGbsTIoyh0oDSxCNg9se7szi8O5g9Z7FMoSCO4zJk1SB98qWScUy/vjcjoV0eOGl+RxFY
+	DQ4E5sma7d/t78QbG8nE4M4dpNFX0nzyt6iJsNZxHtAsfo4nrlisRV2N1zOFvSz7lfP3Vx
+	PkE1xRzEZ1VAPna5VorrCigZZrRRh9M=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=hsD06pKF;
-	spf=pass (imf25.hostedemail.com: domain of 3GxHuagkKCFQF580Dy40D2AA270.yA8749GJ-886Hwy6.AD2@flex--tjmercier.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3GxHuagkKCFQF580Dy40D2AA270.yA8749GJ-886Hwy6.AD2@flex--tjmercier.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-84fe2593525so1173634a34.3
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 09:40:44 -0800 (PST)
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=f9FWjavz;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf23.hostedemail.com: domain of 3ghHuagkKCLsuknfsdjfshpphmf.dpnmjovy-nnlwbdl.psh@flex--tjmercier.bounces.google.com designates 209.85.167.200 as permitted sender) smtp.mailfrom=3ghHuagkKCLsuknfsdjfshpphmf.dpnmjovy-nnlwbdl.psh@flex--tjmercier.bounces.google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793986948;
+	b=YsAPj5m8oFVffyjWgt9RuYBtgCItH8mrlKZB1KT9pf1kuTWx/2l07IchbTMvOB/OVdwtHV
+	kiroTAHhPyr2ImPa6lOusxtQ5y4JYjXNUaemF5+ANXjk+hWzrtMSrenm1/opTPXDW296L7
+	9r7av3FzhEi43Ty4zcS8WddowMJH2IY=
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-54dbbf252cdso1192846b6e.2
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 09:42:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793986844; x=1794591644; darn=kvack.org;
+        d=google.com; s=20260707; t=1793986947; x=1794591747; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Y13j0LTUOpG3IGiPRUu5f/tDHT82BAGPGt8tpe2/3YY=;
-        b=hsD06pKFjr7WZJCk6SZ0EbhalUqU4tkbDiH5AkqlTA9kp3jp1Fi37Q3BY4N3JWV+KF
-         uIW8l25JjjADWVWM4F4CrTxQynY8CDShKQPZ/SLY0UAWFWnAsgToWWbTzcQ9g3wVb/vy
-         /I4DIVkhFkdRgZP92VU5ArtbQza0XalSxVNv9ZvcEMd7dmaK3fn1AYrL+m+088GJ4Ib0
-         E0yy8ODtictIwh8/slayXKWxr6DWSnzlFJ+YTFcQmZxdG4IpvDR5+EdgENW5tv/obbV6
-         Vr4LvJVTHMOYHoTNjPHYs8rTkKgW5jaTMq9RAQ/vTGncLUS0P53KrYhHwzI12qghZE3C
-         VAbQ==
+        bh=dUFLil/A/qxmQAsi18K2mSML2dlbE2/nzQZ4zVZkdWo=;
+        b=f9FWjavzU1hNaFljtKPPOJcRS9uooGUpHCRdFSYj5gwrBnJDa8RNM1xbj6K8+MSaOq
+         xxnrmuH51GaOZipt0+2r894tFY0Wgfj0/gRqQf8/lmDXQGt8U5d/wrnz+wmYKrLD09bL
+         Ndr30I/+p0iDpkyjaMv88L1JA4eAXy6waFCmSnzguzARMUsJSWai0E0RmRxQ6RR0VVzH
+         um2EwbpDZwTkQQWgb29X8iVn/pLZ4H8/RGI62PwB0WAGDnjt+5xEnc8qWZy5Td5i04eh
+         kQh06KBxcHFZRT5ZLfua/q8ksMofaer+QWhi7fLSyodktRarWDWuha/Z6q8SY9x8O3tV
+         hobw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793986844; x=1794591644;
+        d=1e100.net; s=20260707; t=1793986947; x=1794591747;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Y13j0LTUOpG3IGiPRUu5f/tDHT82BAGPGt8tpe2/3YY=;
-        b=R9FadZcCVuX/fmcdUpCx+q5CfbwuaKycrpu4Rm68IYj3VuCKdhwNx1jsoGxB8lrz79
-         p8t9n7AS90Ui22loC0zHPaWbRuaBDvLCwFl2ix3T0lApC5CTUYa9KGzdVYMLAq/Lm6NP
-         DcM8B1q6mP6jY3pQGxcy+VltQAotsU0qYy12mYDGlyUjjhB+o5Ka7hnRXR+Wi8qmi751
-         DCCfyz1OPWzFMsqt/MJO6GMcjbrQoMtrdeTPTjBgDcQDy9wOAxoaAAukhHvuhrY+LxAx
-         QsAco78RMJVCHg0W9GeTz1kFyxLphJrFf5+2zQuKhJ11CZB4NG0cBpQfBnEc9RUTGxDi
-         yCAA==
-X-Gm-Message-State: APuU4Z87yBo3fdAZZEdt0EOedarlgzwSM9NRQRA2gw+Vz8bnJHUUTp2J
-	dX4fMfDQ9DWlkx5SxW8zga+Ee1B9RNYxDtiEB7PEup+utSNOGEO1Ej2PdwGsCH0Fa5YRmsl6S0T
-	+8L774HrZDVstQU7MUw==
-X-Received: from ilef12-n2.prod.google.com ([2002:a05:6e02:618c:20b0:53d:490:b043])
+        bh=dUFLil/A/qxmQAsi18K2mSML2dlbE2/nzQZ4zVZkdWo=;
+        b=Bj+n6gel+/NYISJ5mPsz7oSMnWGwlNAxFt4n0IebBJ1Azgr8Cpx2xrl3tHuuG7VHoc
+         qcUsueYU5GHjnkT+Ig4XZjQo/ww2McXHJ3U3ummSi17zq1pgcdqyDqm+B0+fnWIqIIH3
+         0oT/6W837/oAhVPQ+tO1aGozi/3syQNgmZQmTjRDAFrJSuj3hlTo7i5cD6v8U7DGHTCx
+         5RWG5fEFsSEmYHwrAVckYHIHyqAzvQ+BeWX3+PCfzg2wLAGSLH2Es8oxBcnQMnhL6NMM
+         v5+H6wNArdSKbQSUH2taJ/sBlTXGX81/PUD7FPtMoD0xCcedlFWfHDcfXOfeAXkOQA3n
+         BQqg==
+X-Gm-Message-State: APuU4Z8ecE24YmG38PB1xgwqbAfKnDoy9rC+BAsezVKaARRE+wC/6bOk
+	abNyGZILgJs4aiVPSEnghgYLaj73hohJ+sDblmB//Rew78KZs9ftTHpSP4UCU7mVsOROeX+fQVN
+	RS4+IgO+o8J1soJDiiQ==
+X-Received: from iohc24.prod.google.com ([2002:a05:6602:a998:b0:9c7:7f8f:934f])
  (user=tjmercier job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6808:2443:b0:4f5:eaac:517a with SMTP id 5614622812f47-567e0f40db8mr2120139b6e.1.1793986843828;
- Fri, 06 Nov 2026 09:40:43 -0800 (PST)
-Date: Fri,  6 Nov 2026 09:40:31 -0800
+ 2002:a05:6808:4f47:b0:4b9:a8ac:480 with SMTP id 5614622812f47-567e14d9facmr2577739b6e.30.1793986946809;
+ Fri, 06 Nov 2026 09:42:26 -0800 (PST)
+Date: Fri,  6 Nov 2026 09:42:23 -0800
 In-Reply-To: <20261106163056.541441-1-ehagberg@janestreet.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261106163056.541441-1-ehagberg@janestreet.com>
 X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
-Message-ID: <20261106174031.740868-1-tjmercier@google.com>
-Subject: [PATCH 6.12.y] mm: remove '!root_reclaim' checking in should_abort_scan()
+Message-ID: <20261106174223.743929-1-tjmercier@google.com>
+Subject: [PATCH 6.18.y] mm: remove '!root_reclaim' checking in should_abort_scan()
 From: "T.J. Mercier" <tjmercier@google.com>
 To: stable@vger.kernel.org
 Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org, 
@@ -95,20 +95,20 @@ Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org,
 	ehagberg@janestreet.com, "T.J.Mercier" <tjmercier@google.com>, 
 	Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>, Yu Zhao <yuzhao@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: daqkn1bmp3xjbsccnsykzrybmtm6k5to
-X-Rspamd-Queue-Id: 37D86A000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 25F23140003
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793986845-108041
-X-HE-Meta: U2FsdGVkX18mLxM2DyMVdhsJ9M8hEeOWwGtzIJ8/5jCg6Q2go+OIFyGpXOK/AKEz8NiiUMnHVKgzygzUThFFquZdud3jW4zjJ4b9hs/1aeeMH8YPAY3o1LpPqXIr1+a9lnwiePGWCQfClNson6td/XHdDp5bAuE94L4RCF/X8d14XWhMIP/tjnTSxVz7mkmFogyt4AJVRQ/dXde5te/ReTqnCxS9Bs2TPApJXA2i+mYHd8s0zUF5ywo5nGf9bmeHgYC7LZfVs+ATOSCaqNiBhNZYS1x7mn4jDMJMidnntC6HC9ju2iDljDQDBnwuFrsv2Z3DiRqZOzii1du8qy6wzx386+4F4aZiCTZ+DiQBEsxl/YeffD9hKx2mVZ7XvHRMD9eEr6ywysgcsb+gg2pDX7nLkwuF2DtuuwBAOsaM5pmqCcOMghXA1umWnD+RJ0DtVa8C84djQSukonr1zje6bcveENX4K0k/Vz1ndt8o4jy5az46aD9Rf/2QQpmRI4fQ97i6/W2EcV4JXolEcJTcMU9z34TaUPY2qZ8E/mpS5fTmJMVj/Gy7j7rQuAXZa46AfQz1bdk6MaEjkBEebXgwj1/mBGY5uOFieHxkpogmkxAwfrDftBDBpR+GKR9sBjlU60CBwfqB/NxfXhvD5+nw/uY0WduFIHEKQBU2woVVb1VzyJmLHMBjivHw42JB2yQBh2a9g8XaZujKB9QLhCrkIFERyRG2yMorepZCunsa5RBpJRKINzf6VToEg9Uj6xPiGRncZQwB6p3XlhosA2orDOw4cqefZnhGmIf7G43sRKjpmxwEdmm+ANOeX2s6B4KzaHJtZFW5siNub3wNu7YQqOFyqZRhMRIqjbMgq2qnGxI1aL2bCDXW9ToF8miUDbxGtnXNhlhJQXHA9Yjrnp1exdwc8agkMfuRRB3Kj6NSaEu4cyjvp3+No62XdPCUHaTbrZTSJwCywvww0w7FbCW
- zfj43mKy
- VwTVcSS5WMziMX2c0BjRforSRXpfiueO1VbFcVtGt7nO0KV43PrrXu3QAms0Vyh4DlxVGcIM4nl8Y9LvVeOSQ0ou++3JSL0HNa4FPKT/0CfC/FYG8Sbi4SlP3P2SsAGgqGZ9mS/yiE40tPvT8x9fu8BbCu01QsqSZ+4X7ww+NTEiit7NwWKzvQWn7zzEgd6SmoI0+2ch8Os/YhO9lA0AQGhbd9RhE20tIzkQTyR1KDVt2ySIdRCD3PCpTvuDWe8KvRpY+yvEAE1bztw2mdj8TOXQ9GQbxIhJLwEH6yfFi1zvm7AVObD1LHGdX0RLDOxia/rAouNmmr2T8hUrSuf/6Z3Tc+UexeeY03rXpVyBTcclSimX2Fi2EBcDoWopZn7DvUb6Pbkm2ax3566PKNeJyJ9At7BwTk9jsWOIQWNgraW0795+QgrOc3D5rxd+Nkga1y0/pEXhhdPpdmZD9/n87KilQSUXPe3fTUNLAzmYZhfx3b5wrtrR2SKJyf0Dff+AWIPM8cxTF3LP+LDA01SoDCfRhV5esBvyVMc6bhdE3ZGHWNugtwpU3s5nxEPthoCHaBzPt3RTZZiAmW9f5TDWzPs/r8NG6ZTznsgrzu+jtEjwBhu2/ZGVS86tcRCv+C9wrLjaI9ba5Ex/IABeSv2L7wkHlaDRFtQxEeVEMn1E5JRoC7hxhNBhYXJL5mQmv+BHV68U0tIY0rSnEj8AL7O2fAsCTqV4ngCjWvNdwqLIQ4xuczeyXczDt2tG3NzYTGBd5ab9rTokormz/F+7dSgNc+VD0e9IPkKItp7gj7rKmvgrH+HHML1OQM+Y+ticWX+GCo2cpiO2FSmu6LtKKCznRQxxw/7fTTs9eXXVQv5yKEsIp6ZArEGNz6Sxz+9suzCPwIa/T2WIVOs4nSmdEQSRnVTM6IOZChZ/EMhGuQMi+yA8WX7MumRV0GCcPomNOeRFxoKFZBTzpWs3Rov/KhzCbVafh5oTK
- 3/w1YYET
+X-Stat-Signature: kz98sqo6qii6hxrbinjoebkzjskqbo3t
+X-HE-Tag: 1793986947-570356
+X-HE-Meta: U2FsdGVkX19C14jnnEhAB5Ui1Nh5IVSVTwvKcDTxzYes8QRaCNavcMkOFwF1tZzV6HWAPQcEWTQfzMx4b0/+DH9oBHuFNd4zfEwQ8X3VczQ4M8MMlo6W9M9wDDAlkSpIrxwW6WslPUhcLRsRlx0gRckQaSFYILG2gpdiC/UZR1N3nrbMqjGYwRBRY8JpcGsxFk+RzSWJIzQyrIRT8f1haq35WtKG9PzvfFMpWIjAEx0VyGsfFnTMrd8LvLUG2MnHbvNIYXbvY2ETHiPQVr71/nrFZxre8CDV2gBs015mGyVM5YbHdEJqDkA2mYE4vRBNWLxmlyKN+tTux+lVYT5+6GvaUWoYFi8JNh0opiKwTfZarZ1xCgl+lmKFAE4/EM27Vf3gMYY4a5IjgICn+KfGeDO2w2qUBTZRed5scXGDGR4dv+zNK/+dp2Bcf0ZSLGVtPGaE4VINuJ3Fnmveg6bEp0THmIv9PPLhdDYTP1aPOE/S5kc/+Zu1dyWLuG99qCJDL6SwFxPZXEt33KjCw7xcgb8clsOXtfZtdVAL7t3ZJMj3grTK4KecKdR94XuWAR8INyQ7LapYmmjhqyBTnYQ+kUrRB7RwVacpgGhRfix28mJ3GpsJ9Ot4HIXF9ywTU30wJwiLkTlRZcd1fE2uNhWRMjUEvO4RqqKHdP6RYRLteT60kh7f3kWBAZKCZnESavVNUA0yG4a+inrYfwO2H+RRmVAzx0WlNDZA0IzH9BNm67R/54zZLg2Z7MIsWoTDwAMSupDsLjTCKBtWwS6kxkMyNXCKQsNoJ1nn44YQ+WN9Q3EYJtEmEcQCAWGJYQq28/xiwUlQBruFQOg1hjLbfI18s4g/IxHOtupSgE4iu8E7Ynmg1qpcl7gU4nClQ/u/18zkH6q10jEnncp5V+7ykh2xMgv0jdoqnxCZCC5/fz2nesccUUjePtdCllQwUt14okxpBNnbu3e4fMfag3/neJ6
+ pg++kxXO
+ Tn+6WoyC8m9CU32VmuMWj+PbV+tPgjbj39J8qrvalGvtGvSDMhDBbNgok5J7cmRhm6ow/uiMrODkamO61VoxFUUyOsZcad4ChhdlyiC39g9LCC7+o/aOnVkxJIrSgJzjQ7e15u1FEterqMi26hOZBUyypTSo0wcXIg4apDkSjHPA1IT8mto+t4KvS4MSZom9bCHu2825ZSj8qzXPNcpo9RbgS1KoBR8aVmTFBJ65GRRmxslWqmGDIDEKq04gPKT8vcX7+oUbdG9edoaeRJG9RWI/j1KGMqv8y5pbQklORCnhl7y/J23tDXhpE/hcZmiDz5yQ4PFmOu8n9hRywVdC81qvUsi7TM9wsJ+btyrM90MzoOFzu64SCDNd1d8UDZSHmunzADA9f6m0HmCP28MHvsTKf1ntkAqEooMtuFj+kGZ6OMxNIEacPOw7fsV7Xf6b1U8OpiwqlgnJMi00vr8ayeuyO0xRgWzPRQBI+6kLfskxj/BKc+MPVkX1/ELDjAuFx7ET378jYv7PmdwEwhdGz09jmStR4BNtoRVSjgTDYrC9qAsuOT0g/vRqUnEmojrU0MEfyCM1i3xu5KIXThGRUXxp8YenCyw8BO22V9NoE3vrqj+0Aj9N/xfX3vFmTsDoHyEk1+C/N0/93798ErDNpTB/0l7PcmS98UDz8t96FrBu/rIO9omZ0FkfwTa2MmUo/ZhJH3e3Dthh9JViKmi5VdxFeLWK7bZf5icaYLjN0FUL4oIvGdoECJ3mgrvOl2IVnPnp5zZerfakubV7s57W3X8jerrj7ex+cnF4IA/CWMOpBSurzwfPm4ECfPmEdjocF3LP4qI6faQQqbOX/ulfKj9VrXdYehZiB/HRrbnc3A4OGvDS0PacGb/iesCQTzgCv/P2VGQA+clACGfPYMZopUn0LHWIjvfIHgt0FYb6CoIvDGX2njTe4dJdH+4BtBlu5Jsl1HhcdGY4EGOPSRuRnLAqE77j4
+ gUIIeI2T
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -164,10 +164,10 @@ Signed-off-by: T.J. Mercier <tjmercier@google.com>
  1 file changed, 4 deletions(-)
 
 diff --git a/mm/vmscan.c b/mm/vmscan.c
-index f9b5fbd072db..333e3c800e78 100644
+index 2c66fbcd6e84..160481706b42 100644
 --- a/mm/vmscan.c
 +++ b/mm/vmscan.c
-@@ -4752,10 +4752,6 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+@@ -4844,10 +4844,6 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
  	int i;
  	enum zone_watermarks mark;
  
