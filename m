@@ -1,125 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5182606D80D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 11:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C80160A260F
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 11:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KoqO1Qim
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RjrXchn8
 Received: by kanga.kvack.org (Postfix)
-	id 138296B05B3; Fri,  6 Nov 2026 06:33:20 -0500 (EST)
+	id 386CC6B05B4; Fri,  6 Nov 2026 06:36:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 110616B05B4; Fri,  6 Nov 2026 06:33:20 -0500 (EST)
+	id 337CB6B05B5; Fri,  6 Nov 2026 06:36:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 025816B05B5; Fri,  6 Nov 2026 06:33:19 -0500 (EST)
+	id 24F116B05B6; Fri,  6 Nov 2026 06:36:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CCE6C6B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:33:19 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C48F41C483E
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:33:17 +0000 (UTC)
-X-FDA: 85404483234.24.E8EA214
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C15211C0004
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:33:15 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KoqO1Qim;
-	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F20166B05B4
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:36:12 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 86ED4140D07
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:36:12 +0000 (UTC)
+X-FDA: 85404490584.02.408B7A8
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 99B4340003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:36:10 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RjrXchn8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of krystianmkaniewski@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=krystianmkaniewski@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793964795;
+	s=arc-20220608; t=1793964970;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dwhjR2jVQFrycXPK2wViGRifyfXgiVWt6Joh/0g230U=;
-	b=1uhsakPbtCx8uEx37uKUqSjj4+cOPWdm8Cx+VEE8GaTwahUKM25IytMgslHnIYAvh41DeN
-	0sgaqMwaRM9HPuMXC6h8zQfreaY/miMO+dR29LyY4Qx74V7OoxR6rFUtZ71Lyj20gcto6Q
-	uzR5RPWL7VxYZZtjVSiyl4Im3vRHHnA=
+	bh=R1fgwrt/J2JYxCxSGOKH3dANX3eXUBpSh/LEwH4Q6no=;
+	b=X5NrrFZGtCNMAM6h8UdCvQ7tzRI37OaUwSbr6XUfSQH5IXXK+ymtarxdAaQ12BC13IjgxR
+	ja5WzDeJGq/kJi1xAYwFXzL3V6v6DXkKAv6AGlrIIQtTgpQ1I4ffFscJgvW6kt2O7wwrFs
+	1T49BCnCzvxob4A9Py4WV9n301QBNo0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KoqO1Qim;
-	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RjrXchn8;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf07.hostedemail.com: domain of krystianmkaniewski@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=krystianmkaniewski@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793964795;
-	b=gwY7RBuE6IUaaQ/rqBsJoJvbB+hODKdJ0dT99fOBeGoslRo9UIYCJdZgEn0W5USSLMAQUv
-	TbWH0OGHnQ4q94nqm942Res36s6L/mHHU5axbj1uA7fVmA6h1dFBA5nlQi2JfH6X5YD3UJ
-	9aOIYydyuy9g/mZrU68qsTivPvsi02g=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A580343D8E;
-	Fri,  6 Nov 2026 11:33:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A901F008A1;
-	Fri,  6 Nov 2026 11:33:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793964794;
-	bh=dwhjR2jVQFrycXPK2wViGRifyfXgiVWt6Joh/0g230U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KoqO1Qim6fhPciC3HrjGQpiNGTwfFkaaXnbHF/sP3XEWozhHAXPaWtoWRY5xXxTze
-	 eoeBWbY+1e+iiei4kEtpDFZkgWVi1NnJjmmD5F8Cp1ysUYb0CFCThB71XKqLhs6Nr+
-	 TSHxDqrRA1Nk4MJkHxtKif7C5VT1dbiGt2+HXmlV5ve0AnML+weKBLu7Xza/Y2j3vH
-	 0XuZnoQlmW/YQ2MwmJlpufFDS4W3DNSthfkON++SKyn7Qzy8SAkajdVWr0Q8vJ25Va
-	 T3dQpWZfOXJuAZYXgBTtazrbQUwosSq5FlT+W9+lViaQx4kjtlYjoS8Gm3JiJ9EOfD
-	 D7+ozfAk3yCXg==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 725E6198003A;
-	Fri,  6 Nov 2026 06:33:09 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 06 Nov 2026 06:33:11 -0500
-X-ME-Sender: <xms:9Lrtaqkp9-3qkexNMvtLxgPrPnal44LmqtyIgUdwLB4SmxkS8dGE1Q>
-    <xme:9LrtakI3cPRKr4852ao8p7a2WlMa65T0MWCOFdxesHhJ83q3rl9YZllV-pvXxREAG
-    3TEBByUImzVX4Za3JlhhvmQ1vIgAMAsID2k9o4d_TJGi8RnelAkbgm9>
-X-ME-Received: <xmr:9LrtanUwGC87sY1OI40EDIoynU-OFR5U63teqDTIuCXa8opSVure6Gds49o>
-X-ME-Proxy-Cause: dmFkZTEEFydlobSPmqq0NWC3mdnVpucy8xcvPzschiasYSG+OlRLasLiG9TZecSqeMAclu
-    7ECEtWVEhVpFWw9L6x3TGu7nLR1O8zMFRELSlvLmXKF62TGeSu+644g+WtnosqAEJIBj3U
-    1C1xys8WSxfv9kl/qzdvEzw3Cmj6rt7AE0u4GPfINkxDQ8zw5DYnQjjQtbTR4RRoqjyH3J
-    xSUHuMOjWG/Jv5cLkhX/zTYDAz1ltDGIqG6hWds/QusvUCZGhIPZDTiXfUTJ7XCWMS2Inv
-    DKk+mMT3lijC1m0RacMemu8D1Nvwd5LmLGsePLgiHP+eq5CrM0rj8rw3sU2o8aU0G/aqZY
-    A69lcB4t4u/6I3XF0CLKZG7/FrHRMbIFy91zFZsNq52tbDvUbCUw92oGtyfOeBsfeeHeww
-    szcOiH3p4asmaQMuWqhZSIJATRQx6Yr1IMLeUQMILL65RAq7YfKG+2GdkT/+LIcpxUBzwR
-    XqFgJ8wxShaUOclMoMCNjGFiRyWU2+xFwKDBGiHXON7plZ5a0RyLEHmhszCw6SdkseHAUi
-    iQvRY+kFYPLRCy8uR2wh+SKRWNDRH6kJe8WsrQ9L5nRgDt4qaub4NojRxEwuzGRpYfEmTk
-    JXgOWukBYX8wmNJNrd8qNKlhsASz34Kb9aA7VBHVdrD+CSShqlN4PNWOK6sA
-X-ME-Proxy: <xmx:9LrtarjV3mOSTqEcSTQaGqQ2WA_JhkjmAFoYe-W-js3fCWW1Rhs4Rw>
-    <xmx:9LrtamdsFe3goRTjxc25y1zLrqNTxsgWzYZAgDmI_q9uhStOCjquiw>
-    <xmx:9LrtatthR6KhOJSalUybeoTVfZ8N3aeen0odPHYe4f9nfn4kmqSvJg>
-    <xmx:9LrtajmCqGSLd0xyR7P5i5lLOhaPZJNytvL5pCRdx8z8e1yoZXVm9g>
-    <xmx:9brtahOQu1ng3v8YW7uyxKi-JWtXj0BnCwjxZwKEUJ6w-uO2HTj4DZXi>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Nov 2026 06:33:08 -0500 (EST)
-Date: Fri, 6 Nov 2026 11:33:07 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/khugepaged: free unused page table when setting a
- huge PMD fails
-Message-ID: <au263-sEU03puJQm@thinkstation>
-References: <20261105-khugepaged_set_pmd-v1-1-cb79ab117199@kernel.org>
- <aux9liPvdZgpKCpa@thinkstation>
- <aux-ZdKu97JHLY96@thinkstation>
- <c13cdd25-7d7b-4059-a22d-af0a48fabaac@kernel.org>
+	t=1793964970;
+	b=W9tgSA4obDs0xGS9wQwUcIC04a956mzblEwIw4yB9FybiQW4KH20HuJ0T5okce1NNEt2nl
+	SrNrXQlWcpz0OqcRJaB4jAaAa53gAWOk5wcG0L17HdOoK9enfC0nTvtW4riusbvNSwOlYD
+	2lVlU8tR2SbM7ofXNtkukTQMi/wsaSE=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b5669a5100so651800a12.1
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 03:36:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793964969; x=1794569769; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=R1fgwrt/J2JYxCxSGOKH3dANX3eXUBpSh/LEwH4Q6no=;
+        b=RjrXchn8Y34u7RtBaWPu9KN7U27ge7B404VoatSj2r+4/FAc7d2CMLS/He4fQxbiNc
+         gvi3KKoC/LQZHUEPtdtgpIgkCI+plmZnfRUlDe3lPwIpvZBJC+CjWWtkgvEtmi1MlN74
+         TXBt4WALO31c4+j3wWz8oTr7kPZwi/gCMdY8FJ2TFhzpUIhSCL2RJR8aGvbKJceu6aV3
+         g2uIGd3uYwIv39+1xFgAvE5/PXyvPKnGPJqh8ZKayrnmYABr77p5Cdn/HACMXHRjrobG
+         1obwtEXBWX3suUy4rl25D7tzM+3Hiv3Ta/e3HZxil3Tgy4vs2HLjG9YTecSWeNYHITfm
+         hFJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793964969; x=1794569769;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=R1fgwrt/J2JYxCxSGOKH3dANX3eXUBpSh/LEwH4Q6no=;
+        b=U9QbBJ3z26szOK1CL0i4CHXuGuqzc5432oKLKdgGFkVB+tnKaUStltex+omOdCRPms
+         O/khOpKWX9MSZNKahZF0C61XsFRzfkkTgGMmxSwpjpVj+hbtGs/rkuBqvjzJE2l+FoPO
+         NwgbDWn9IoifEOV1pgUq4A8a6olcdB9UUDw9lVCmmulkGsNxezd642MOK4BWIp4XPe4D
+         6O8u1Ad+d/Qk+MtcrUI30foQS8xuIV48BGrd15DRibe4Thbqe6bNKnpnxnyUog+BbPjY
+         1dd8xdBD5ge0xf2/zgOkuSVSnVfjwIXDptPnuFg6E7Y2xru9xxhLN88VvnKHSPlMmc8X
+         kFYg==
+X-Forwarded-Encrypted: i=1; AKwUvBxOVCTux55JmuXhIWvA7OsvF6mKmCk3BDWqM9ImUPjCnUz3PD6GkQulGX9f+ISbrgwZSB4Wd8vwPw==@kvack.org
+X-Gm-Message-State: APuU4Z+aCtJeeEYbhYTHFabgHNOnK4gEyAagiyGfS57IGs2J0oXShkGs
+	VhicoRWlnsM5sld4l8I8wjfWy41RvXDxy6g6WHfmWi8wAh/qfq1wh1TR
+X-Gm-Gg: AYBFou2EJ4kqmQidMjjT9NPOdebsx8Jqruurw1JG26Y0Vv0357MdcGwfcKxhNxq+58e
+	t8RZMOolLSj+wBX4xf0Ktfo7v3EIv3iT9L9Ps2qmo++nlNd1nhCHesebogHt/h+y7qy8BB/D64U
+	DHg/ZoOZ6BNWNIREz/CmoKRfI1rY0Pc8iSVM3VsLtT3efB/teLEoz4xnV/6XebBZvgHaQbr+SJM
+	r5mhWeMLEleZZJYTx5CYDWLfneKJU3kE2ByhBUfS4saKYGwOfP1MKNjOhoIct/em4vadF8xn/HB
+	Sw+CZf40fHn5p2kvzpkdv2lwXSBEHK9D6mNY4hukFWQPfOMRgfa3OHvyomlsIyOGYsCEf/M6Hk5
+	fZMsdNNlji95TathEh2pxiin9B6tXLyGRMJrcDfWqhJqgt1QLdEdPwbPyM5xuDEbHSqLQC1f4MV
+	DqrHfxDnJunyZVBceLWZmhIPx9DqRA/Tnst8gpBk1jNr5Klwdw3r1M12U82D6iy2pcrA1/Mq6aG
+	9NfsJiPAhDsw+GLKX8gmihNbnljlWoASqbcmFYQVozeYp4GfO+ltyf78AfsMeNT4T557h9Rurqi
+	ShWx/NqCjNn7vjndnCkAg33DiH7nfOFAAaYKR9kAkVIl4FYSmh1sQZnE3e6QUfJQt4mcQZhiedN
+	gXevMC35jSxHZKQNQ9z/zDAnhVOuSKPFRpIz1jiwcyfwzuOSdX6VZvFhBK8786A3gtnUG4Wa4eO
+	5Ip76jeoynwylionAToAJXksJ2HzPBXX/7xbEOYNOwkVQDD+HkSbO2UUh4T4ke7Sk=
+X-Received: by 2002:a05:6402:2b91:b0:6b4:602d:f1f7 with SMTP id 4fb4d7f45d1cf-6b597816109mr1452325a12.20.1793964968944;
+        Fri, 06 Nov 2026 03:36:08 -0800 (PST)
+Received: from [192.168.100.100] (87-205-15-91.static.ip.netia.com.pl. [87.205.15.91])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b664ae5692sm615592a12.17.2026.11.06.03.36.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Nov 2026 03:36:08 -0800 (PST)
+Message-ID: <4284c2d3-75cb-4e41-aa45-f7311e60ab4a@gmail.com>
+Date: Fri, 6 Nov 2026 12:36:05 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c13cdd25-7d7b-4059-a22d-af0a48fabaac@kernel.org>
-X-Stat-Signature: gcp6rxi6hagx11518x65pndw4c5k6xt5
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/filemap: stop fault-around when the walk steps back
+To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>,
+ Pedro Falcato <pfalcato@suse.de>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
+ <aunPI5eOUOAEUa8d@pedro-suse.tail5790ac.ts.net>
+ <20261104-jf-filemap-v2-pedro-reply-r2-74c87c6fbcf@linux.dev>
+ <auxvLCiljPhy0n_q@pedro-suse.tail5790ac.ts.net> <au0GBdGqu6cv5PMy@linux.dev>
+Content-Language: en-US
+From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+In-Reply-To: <au0GBdGqu6cv5PMy@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 99B4340003
+X-Stat-Signature: zmdmkscqngw8c44efnd15t7huy8eb1es
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C15211C0004
-X-HE-Tag: 1793964795-422283
-X-HE-Meta: U2FsdGVkX1+IspS7zgFv+RTJV3hpFJxZN1a8mmsxkEoWJjVlghmjVV8GtGyGuAbgdczsrSkzH78uT9t2SXVZmW12ryINEJ0GbJUOMdVNYrumn4g45Ju2XZ3AiaYK7hatCZuE33WeQ3LvdniXZQzWznESiF9ChEFufRW8lE5Y5SAl0kEvaubNzNrdbmWIpftzR7PsGRdooGXD05lWjSnEGyWR9m4IODRc8fROvfs3NQok4XCUeWYbvv5Tnx1UH36AubKEk0HThW171NbcPvg30abyBcftR3l//1bzhW9OmUMfBevMQxCQOPb3tt+HbWESvVmv+RRhsKWhgic3StAmFs1ug0UN5QnJ+hEuehXNinPcWXcKZJXGE5Qhc15H/fWhRbFLu7FKLZtwaS8In3MxefozdrXQeCTtuaiWGyR57BKAIAuK1odK3PwqRWOQGd0NgEjHz6wGSpGgcfSx6p20d1PvBSu5FljbgVnGQzC5QrZj33dzG24SPz9JWWTgcL2h8pRgrLZbSJ+xbB9J94P/KGv3uff6ZvUYAfOHKA28ONtXVMtAJG8l29tByyu4DLE4BIv31SRt1lshC2pGURJKqbQpNo4YtvRufGicFIAyL5INR55XGFA7r0k5AFGqcfg7KwcWorg6IAQuPwUnWUsm7lVZA+Fclsv9WOXwbekmww18XGMj/GLg0kcVZZQPQdEtEc2aWuOpvIttrPgjELcvjlSPEwmGLSkoVCAsYigOKJcLrS1hkwvsdiR5UfXeefV0xVLPs1djbJNWtV8L1VdiP5ewHOE7SbEFzAm5XTo5nmJHaOHzEP3c19kWmm9uC+jN5fXpyqcHTSRXYSP0dl+1xcWwPGpJfCBenJ1iVJtRGoFYGhRKPhzWnC/NC5XkqPfY77FQDwXB/cdscE+OpViuDh6U2wMotbdukTSFw3AFuzchyIjvl4fvJcnsZzzN3b4I6GQIO+tLlKgcjDzVqtg
- cvotSbzl
- 4+f3ytWOB1PNZ6/RKWOD3IrjFye6+xWdCW43/erzYboqJufhevoo/VnkplM97xhX+v3SJkmDYHJwHPtYmZEhf5YDLhTpYUYzY2c4t1V+OniLiQYd+bTnl9uq9zrKx9sRF1nV8vGeleIezktXwUq+OcgeC9Nc+VTKt0exo4EYiCxrA7iffq5x14QBmmqGmlPVEPJ5duL4lcRdtJhZ89fc7rNJGqzUj5Ko8FD/EcwqN4vHBCMiM7W6KbICDKEBYtrkTIhR6i0VPBm32jVhrvH0riHtuUCQzBjYNxbzlk/uyMRoBtjM=
+X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793964970-23257
+X-HE-Meta: U2FsdGVkX1/r7gjhRfDI1RCSETHCmTKjJhcteOid2ZZFMvWpQWJPxRmme4npDtz6OPupfohbeWoqRzEtt9+09V6gqgPzquYGYB4wEu1WXupBZuTvabtBkWEVU/ckxGd1Q6xQug+CtQzmnvJdaIwbqwcKWwYzuxoCO03DxokbcZULs4kRsOZuUO8G7DDuY0fXhEpXFsvMNhO4PmFl31J8+avSlLlOqLBuW36PjDX2HKF6FuuBYiTcClu1j6RVDH3KaR9tmDOl81zsaQhSV/DHVJqoKJ5qRMIV82tl3Gj73xq9OFi40oxjhp636rM1m04yDK2klaHo3QghRrBxqM+X0xBqwGjhHEdZR+2i1FX0JTWolHRMvYqnWKVg0jdGFc8V0Nr9Zsxxo4wR4oIffCUQCociomv6z6BygkhDzC95edrjstjUqOn6QX9S1PXflkMFUmPvD2cIFU4fr2l5FxLF6SL31SSUxgYGU5fMH7MJoO0ZRfPIyTumoh42ETPJ7+DOg47+nDIFEkZcqQFO8abzpQWq4Gpv0tpv+J3Smh5xeyg11bVO0OXdFGrXapPDruq1jJ1eLWD8kzzNHzkTfFz/rdH1z8TSp0j1wcGFY1px8HnDsxmGvgeJFHi7ZOpOw2T5xP4WF8sjWD+vIkRSVDWp7qbj/gRy47U9yZT1EQWwxsQd2iHAMb6If3JN61Uz+8BrLpqbBTn1s7JTPNqu8ESLF3lo3vFuTbAhELKziLWsjnHp6cuwacesxGoO30QiOEiKremXmoi6K2Lb5OeCA0pVU4RElmTYFwZeops7cdZdgmBl4OhaXITr7HvzzE2gCIo1NLB4FDJd18A/cuvzIOcrKxwPkczuLMuF7s6mIXwe8UiAw6txjguDlpANKV1y7Es+tdFRjDBOQlHYBvto5MoiDLglETIcS6Y4RzBVIABYEeJltITwSafxmadelOuO0Wr1dFJfNIfVOVrFQP+lgWa
+ SfOAQn4e
+ GstrOTlVx5MlDLSuTaoSdNyl2qQarGbxIeCuTvNflhA1aO6siTpDECZKeHnfCZx3xK33p5qcKpt05kIp2A/Uf2/uM/KJqDI1vyzNLIdX74mbDQ9jBPJIvagQJFaiPwFtKvCKQ6mm87rNF2JAyl2eBRP45ZQiT7lnGofKxss6Z8opWKJjioDBA8iB6B2TVaeH2h40+NWnxEHE7mEpNLCVcAsvo1EoS22wmcnTuzhqcAVWL1bbCWTaPeMOsb0K4BoeS0Lb+qKdPXGRGIXcbzKm8OcE/2SUzq34m6WddZJDaDQvx3ZwIDn/OWxNtJaVJo6oDbAgXEAHbPW6rqNDcUzyvuTWsdzsksAMobL7ECFEBnG6DmWqRcfmdjfCSxoG/1cfGtQSuQP7zRjdxALYSY0Xzolw7c5DJb1916GAIOm85h3lxCXh9veq69ZkHh9wsQkg2SNZZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,71 +136,38 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 05:40:39PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/5/26 14:04, Kiryl Shutsemau wrote:
-> > On Thu, Nov 05, 2026 at 01:02:08PM +0000, Kiryl Shutsemau wrote:
-> >> On Thu, Nov 05, 2026 at 01:16:05PM +0100, David Hildenbrand (Arm) wrote:
-> >>> do_set_pmd() can allocate vmf.prealloc_pte on architectures that need a
-> >>> deposited page table, such as PowerPC with the hash MMU. If the PMD is
-> >>> no longer empty when it takes the PMD lock, it returns VM_FAULT_FALLBACK
-> >>> without consuming that table.
-> >>>
-> >>> Since collapse_pte_mapped_thp() uses mmap_read_lock(), a concurrent
-> >>> userfaultfd operation can install a PTE table before taking the folio
-> >>> lock. If that races with set_huge_pmd(), the unused preallocated table
-> >>> is lost when its local vm_fault goes out of scope.
-> >>>
-> >>> Free vmf.prealloc_pte on failure, as do_fault() already does. Successful
-> >>> PMD installation consumes the table and clears the pointer.
-> >>>
-> >>> Having to do this cleanup outside of do_set_pmd() is rather nasty, but
-> >>> other callers depend on it already having been allocated. This needs a
-> >>> cleanup at some point.
-> >>
-> >> I hate this being outside of do_set_pmd().
-> >>
-> >> What about making do_set_pmd() freeing ->prealloc_pte if it was
-> >> allocated inside? Nothing changes for caller.
-> >  
-> > Or if we want to keep in set_huge_pmd() then set_huge_pmd() has to
-> > allocate it too. At least, it makes some sense.
+On 11/5/26 23:43, Jose Fernandez (Anthropic) wrote:
+> On Thu, 5 Nov 2026 12:19:13 +0000, Pedro Falcato wrote:
+>> Thank you. So, if I'm not mistaken, this is the race:
+>> First, you map/see this:
+>> 	[folio pgoff 4, length 4]
+>> Then, at some point in time, someone punches the hole:
+>> 	[no folios here]
+>> Then, at some point in time, someone faults another folio in the range:
+>> 	[folio pgoff 0, length 8]
+>> so you step backwards. Is this correct? Or am I misunderstanding this?
 > 
-> It's all rather nasty.
+> Not quite. In my test a large folio goes away and a small one comes back
+> below where the walk started. If that happens during the walk's first
+> lookup, the walk can step back. Krystian's fix doesn't cover that
+> lookup.
 > 
-> I thought the callers depend on it, but if we just free in the function
-> it will behave the same way independent of arch_needs_pgtable_deposit(),
-> so that makes sense.
-> 
-> From 4e8d0a928f0b21e0583dac9234fb1821f3c973b2 Mon Sep 17 00:00:00 2001
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
-> Date: Wed, 4 Nov 2026 20:56:37 +0100
-> Subject: [PATCH] mm: free unused page table allocated by do_set_pmd()
-> 
-> do_set_pmd() can allocate vmf->prealloc_pte on architectures that need a
-> deposited page table, such as PowerPC with the hash MMU. If the PMD is
-> no longer empty when it takes the PMD lock, it returns VM_FAULT_FALLBACK
-> without consuming that table.
-> 
-> Since collapse_pte_mapped_thp() uses mmap_read_lock(), a concurrent
-> userfaultfd operation can install a PTE table before taking the folio
-> lock. If that races with set_huge_pmd(), the unused preallocated table
-> is lost when its local vm_fault goes out of scope.
-> 
-> Track whether do_set_pmd() allocated the table and free it after dropping
-> the PMD lock if it was not consumed. Preserve any preallocated table
-> supplied by the caller for PTE fallback. Successful PMD installation
-> consumes the table and clears the pointer.
-> 
-> Returning without a preallocated table matches the existing behavior on
-> architectures that do not need a deposited table. All callers
-> already handle that case.
-> 
-> Fixes: 1043173eb5eb ("mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Right. My patch only covers the case where the walk has already
+returned an entry. The first lookup, and every lookup after xas_retry(),
+starts in the XAS_RESTART branch. My patch does not change that branch.
 
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+There, xas_load() can read the sibling slot of the start index before
+a concurrent erase, and the canonical slot after it. In that case it
+returns NULL, but xa_offset still points to the canonical slot.
+xas_find() then moves on to the slot after the canonical slot. That
+slot can be below the start index.
 
+I tested this in the userspace XArray harness. I wrote that state into
+a node and called xas_find() from XAS_RESTART. It returned an index
+below the start, with and without my patch.
+
+Andrew, Jose's Tested-by for the xarray patch is on the filemap patch
+in mm-hotfixes-unstable.
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Krystian Kaniewski
 
