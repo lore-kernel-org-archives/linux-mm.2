@@ -1,112 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DA6606A335
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 06:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8461E606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 06:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LPUwG9DY
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bvPJUts0
 Received: by kanga.kvack.org (Postfix)
-	id 69D476B05B3; Fri,  6 Nov 2026 01:10:04 -0500 (EST)
+	id 851486B05B8; Fri,  6 Nov 2026 01:13:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 674A36B05B5; Fri,  6 Nov 2026 01:10:04 -0500 (EST)
+	id 8287C6B05B9; Fri,  6 Nov 2026 01:13:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 57B8B6B05B8; Fri,  6 Nov 2026 01:10:04 -0500 (EST)
+	id 7655A6B05BA; Fri,  6 Nov 2026 01:13:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DBD26B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:10:04 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ADA3E1209D2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:10:03 +0000 (UTC)
-X-FDA: 85403668686.26.01A2F27
-Received: from mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9A59B40009
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:10:01 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LPUwG9DY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 566D86B05B8
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:13:19 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D41C3120C7F
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:13:18 +0000 (UTC)
+X-FDA: 85403676876.17.15C021E
+Received: from mta0.migadu.com (out-89.mta0.migadu.com [91.218.175.89])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D3D5EC0004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:13:15 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bvPJUts0;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793945402;
+	s=arc-20220608; t=1793945597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=odu5xQIFS9JlM9FDfnwszB/Td3i57T5yLrDAwemp88g=;
-	b=Yrpn1tit8edmf7KUQ/3xRu2l7H5u39zE+MTPKshtoEFjWWBf+xH7Wp+xHq/4BjirYcRz3Y
-	0QC0hwVmI3+Ol0Y5ZXBXGc3XyXtzpOrI2KkjTV5CaX7vzoYbKg2Lt0qNBMYB4zk35h3xDY
-	IL3b8kvTICmoBg7w5IbE1HfS3Ie0lPw=
+	bh=UeFRryLaJVqpKuXcRGUVHxdnIHbny7uLg2c6R3dh+AA=;
+	b=cCaePVRosuZtglUeW4vExRSAqmH+ihfctUSwXxQiIcHsSkbha4eOGDL/4q7pUZESA7t2WT
+	DXsbEKBJWs+McP5Cmq4W5pY+5atD03gVECwWuLCFe5DERwggcJ3LiEe2h3xnMldD75MTz9
+	exBYj7JtbkYYLZOXLY9uUIUPbwhuk2E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793945402;
-	b=vpfl62r1q2kC9QYbBcWlBXEw9nLbQA/CwibfMsg8G12snuFMK87+qiwrZ2QeeB3khBFfUs
-	L1TpUzElf11G5JJe5PaCLRxuCichDODMoX8OUEZNcGnbMpOkUv4V9EtPrxrOL4HWvUBTWJ
-	8Yh/fqt9Qs1wZ61xRlkLO9OsCRfZu9E=
+	t=1793945597;
+	b=wvsz7Q7mlNg0gcB4iNxkUu67wsaNtKNKeBZeUFAnDF9HCuUSTeozqaMs9NYqZG5xMUoCge
+	IMYR9a0VpXM2SbfNACZNX6w8CI/+vZpR5I7hhWpXuU4D+xJBAYNgX/CxFQ4X/HZf7edQzX
+	Kvg9P4l0gdqBkJyyz3b7RG9kMBh+37w=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LPUwG9DY;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bvPJUts0;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.89 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=96w6STjHwYkE35n2l9bpIcIdDPfklnzi3TLMb74lvdA=;
+DKIM-Signature: a=rsa-sha256; bh=UtMR0huybFZzo68zuG5r3t/yLCzKnw9Q4ZZ92vgROyE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793945400; v=1; x=1794550200;
- b=LPUwG9DY+37Mw47I04qtDylr24akTAUKpuuHl+5P9OIhn0B4ba2SW/p0v/RPgl3W/VAkN+iY
- rArmYPbQoJE9dqX9LLgkA3iiCQ63d16uVHTV1yKiy/l7mkcFE5gJbU6PQ0Ouh1XS6bxXoTYFMM3
- d9L12BGO6tLvlABqfAArRQKw=
+ t=1793945583; v=1; x=1794550383;
+ b=bvPJUts0NfHUKQVK2bHna3jm1DTJS6OWUm5OJ5OLiijya+d6Vfg8vLaYBXApL2GOXiidk85N
+ dP/RwNh/+nLcYXh2IEvX2bbeESfUaQVPaZ79T7zXLqfJ1a6I9Wp+4Y/yIp8ubSq0waJlyLf55yu
+ jrfU62V+HSgFBkLFlkNckuxA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id c4f90aeb3fa4551c;
-	Fri, 06 Nov 2026 06:09:59 +0000
-X-Mizu-Trace-ID: c4f90aeb3fa4551c
+Received: by smtp.migadu.com with ESMTPS id ff19274c30c44807;
+	Fri, 06 Nov 2026 06:13:03 +0000
+X-Mizu-Trace-ID: ff19274c30c44807
 X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+Message-ID: <d035a565-aa50-4aba-8213-f39869baad05@linux.dev>
+Date: Fri, 6 Nov 2026 14:12:56 +0800
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 2/5] powerpc/mm: drop powerpc vmemmap_can_optimize()
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261105080241.57241-1-lance.yang@linux.dev>
-Date: Fri, 6 Nov 2026 14:09:39 +0800
-Cc: Sashiko <sashiko-bot@kernel.org>,
- Muchun Song <songmuchun@bytedance.com>,
- David Hildenbrand <david@kernel.org>,
- maddy@linux.ibm.com,
- Mike Rapoport <rppt@kernel.org>,
- akpm@linux-foundation.org,
- mpe@ellerman.id.au,
- npiggin@gmail.com,
- chleroy@kernel.org,
- ritesh.list@gmail.com,
- sshegde@linux.ibm.com,
- osalvador@suse.de,
- Qi Zheng <qi.zheng@linux.dev>,
- chenhuacai@kernel.org,
- kernel@xen0n.name,
- linux-mm@kvack.org,
- x86@kernel.org,
- linux-s390@vger.kernel.org,
- hca@linux.ibm.com,
- gor@linux.ibm.com,
- agordeev@linux.ibm.com,
- borntraeger@linux.ibm.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <2AB0A0B1-1613-44CC-A007-2453F6206D77@linux.dev>
-References: <sashiko-outbox-198652@kernel.org>
- <20261105080241.57241-1-lance.yang@linux.dev>
-To: Lance Yang <lance.yang@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: kjnz57zndp69fxcjtnoz7xpo4unaj7oc
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/4] mm: hugetlb: fix GFP mask propagation to CMA
+To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
+Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
+ akpm@linux-foundation.org, azpijr@gmail.com, lance.yang@linux.dev,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
+ Qi Zheng <zhengqi.arch@bytedance.com>
+References: <cover.1793850539.git.zhengqi.arch@bytedance.com>
+ <ac2de9b321f68c1025333e92e3ce94beadcb0b6c.1793850539.git.zhengqi.arch@bytedance.com>
+ <auxTwrKCeg7a3hfY@localhost.localdomain>
+ <1535887c-6be2-4415-b54e-2008e6e7a35c@linux.dev>
+ <au1qtSMDpimURGuq@localhost.localdomain>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <au1qtSMDpimURGuq@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: afq53wspyta4kpwchhig1wabsxr43xfh
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9A59B40009
-X-HE-Tag: 1793945401-252261
-X-HE-Meta: U2FsdGVkX1+HN7lstjQKiltOXhOJ/jFJp1B14gnNv2VZtyI3lrAIC2UNvQEDTS7iLWKAOQSQ8u2+r0eQuC04BVixJXzzKHofKlo/K7CPvBVWyg1ZCZzkH8au7+C622REqF8J8OZmne64XjPV67MkYIXOWS6922pcIDWrXf2unV177s7h3n2k6FGlGnDwkXTmwRfqeG1KiCOPp1cb/I9ZqlYlUiheLXrR1CQhjnIeBSho8zPyJkhAua70Dfxbt5HGh8csh04Lidky7oour6Q2idKHvkVBqGEotDToQTpDS1BF8OQ7t7W1g8u7k4/Lq3xvmHqM1Z+OqTS5hGMxJYLxP7h0INLjXCeIwXLXRZes9hWBXEKEaPYPoBauYEEHpJ9kU1LK0LkGgzaK0Ebk2B273q0gmvpKVHsrUuUEc+0d68dck8GjbD9N1ChLfwyCFqQDvDxnYSTM+Y1eqL2kgXmaCSpW+mko5oj6HtzaP1SzUM2eoIyDeQXwkw/gLpXnBdnR6im7qtD4eeNEfqahU/rr5yX9IDIvQPLK5wxNLDGootrNua8gVT1j4lvljYx2VRNWe8Z3czExhIlE2vCJrTsuaJXVdPdC3k+0E5JUzhGgSQrrz87Y425FW/2SsbdX/9BqXRR/mpD6CYr+RwQI6YdGsIBGqqSwLtTSpG+mN2meGJqUn7PZ2m1upDtiOJUOuPAAyvefyvySBjPN7YUUYxgm59pat5Xm9dpvsjcRZrzDlgQSNNXf8jV2IvVqOlWa1ZlqRSHzD2dfM1WzD3XrNpL4xQ0Xjasiw7utXXQaRjU99gh5OncTJEW5IaUF8ItOq+J+dKfLmlYlTTctj/VWNdIk4e0FpLQ+QVCispewInPWHSUKLLMBnFK9Ge5/3/IxvTjNXi4o+5JXxAspiPgE9ri/+MSfY1s4TdP+opeCFmC+0hns72RJsm3i/CQuOBnGdb/XmD3kYgOKCYr6VVR6HRK
- Zxj5y9r5
- NeP4Ai+d1W+76NeR/d1w/b9nTWFgkTx5m8kKDNE8XRsszltnoCzLFbGPjROur2qgP8fjjN1Ic0S1fNAiZ/GjRQ8BXnvs5NeNyftSSDg/RIdlfi41NDowYS7kAbtWnDJPhNZD8FR6GvtcclxCPe2OAHkqr+iGMDTPLCR3bdHzC5vOmVm4FmqwOSOa0qctm2vL9T+K2X9Iep/YGYsQKXg+IBg84hxVs1ITgJEBRm5YvVIxrfTvCG6l9GYziPi2pYDIcT7OGa60XBO7xTChOPLwpjAU6L0bcATUmiaVrmnmA9ScqvMSoWU0gRXpCO2hKVhbyLzXwvypNJdpA8+JywbHcyh86FlPfuzCo1ayiHKltYmVfDWJWf6YGMdDyZNiEBtZFxaUXQ1DeoutBNao+vEBq/fPPtO3cuHDUHrR1
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D3D5EC0004
+X-Rspam-User: 
+X-HE-Tag: 1793945595-489459
+X-HE-Meta: U2FsdGVkX19y0/HXwvk/UQD8LSvc1cICKkJXMEqn7s7dQAMq+QAKwxuDlD2Vw7q2n1sYRW93jaGtby/Q5KAGgsG1p+u4ZcYW/ylfPMSmgqSCiSvcOO5/2sXtL4xeYQbgrZuG/s22F/wAKr7GrnYTI92jrisl7VNgPpcMHHHdwynSvkpSAE8AYC/Q7snFUA5ZbuAGic+uUhHxH/T72b1UK1H5cox3DrWGWmHNdZtVG+Mp0OUfiM4+2H1MJJpiTJhRZgr0lXyoa60afJST072saIzvqoqSvjPaEQCgIgRQdaCnraslWnZXyG7yQWjmHYMuopWCeIRxAnS2/w5zLOpQY6+Nx7FdrBf/TDKNo2b524MXwJdKbKIKh1i0ayZKhAMXd1HTCpUuHRxOZ34S1qw2BbIg3BweaXw+eJ7BHZlzqN6e3/liiRJdzJMQR5Ucec8dIKDjV1voHggpMemS+K9fVXfFRP+QuihEt1uzGZ7BvVm+6tUHuSIWb6H67cFI1mz8jYr+Ba6SL883X8m5vgP7ilem+ZFItc1J84oVRNyirGTe9zjk0gIPTlHRWulv7BCCU2+qxKw092CXjfVJ8kt/alwwHPvsbpqvefa2gTTsAEFWbLPTHg/eM3KxczfaLyDO7wrFaWYOyORgZw7b/Ee4eI32Cr9wFex4JgAdYz/fqAyOJ03bF4d1VlOARrSP54roVIu/BGPdDaGfcpJQruhh5Zj/SpDRTZz70zsGl74GJFhl5Vr1j7D9ilZDidNG0Ht26+Elq28S/sHR/Cj1aZcgiXtSLq4+INJ+VOfVy1hv1nClDKWOD3rXgBC7OtNa8wRBgyErkAbgXfOQFJ9gvXvFT7EaYmyqsZKx32SAeAhlCDO5b4xLIbhyFFlpz3PjDVRvC8MDM1L/XZFNykzmbzKnYSmhk3OMEMvXfQRGOVrnt7awRRQOvllPahDW+9Zr0Zv3kZaywnpHMeadReQLbEZ
+ yTcJUKlO
+ 31emOKNbUCbzpaplpb1+RvAQjP0Y2jdXjbY0Xo+cnqvwC0TFs9ShaJKpBXKGRsodbji6K7sKoBSJzGBi7t7pzLqQ6d6xHe8L0GCKTEZcGeLxnYh5gEIQNy2VBDJUUOBE4JQS4upeZO9McXUFDNQbf0+sMMGP1iTNJNY8MXcTw4gxD/u3Xb3APTgZfV/rlHZxaR6dcJPxVJGhDePPytlsGCftzQIV8HBt782HWZnjsM5C+P7b3PPV2ltH4tTTF2d5ib3YvpGt5550kZAgarTDbbTGgwQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,136 +101,42 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-> On Nov 5, 2026, at 16:02, Lance Yang <lance.yang@linux.dev> wrote:
->=20
->=20
-> On Thu, Nov 05, 2026 at 07:16:48AM +0000, sashiko-bot@kernel.org =
-wrote:
->> Thank you for your contribution! Sashiko AI review found 2 potential =
-issue(s) to consider:
->> - [Low] mm: undeclared vmemmap in =
-section_vmemmap_optimization_disable()
->> - [Low] mm: define vmemmap_optimizable_order() before =
-section_vmemmap_optimizable()
->> --
->=20
-> IIUC, on LoongArch, asm/pgtable.h includes vmemmap-optimization.h =
-before
-> defining vmemmap.
+On 11/6/26 1:50 PM, Oscar Salvador (SUSE) wrote:
+> On Fri, Nov 06, 2026 at 10:43:53AM +0800, Qi Zheng wrote:
+>> I'd still prefer to keep __GFP_COMP so that
+>> cma_alloc_frozen_compound() itself guarantees compound allocation,
+>> without requiring callers to supply the flag.
+> 
+> Well, but aren't all callers hugetlb? And we already do supply __GFP_COMP there
+> for evident reasons.
+> And should that not be the case, and you want to catch someone who went rogue,
+> I would just place a WARN_ON_ONCE to catch it here, so we know who is not following
+> the rules.
+> 
+> Makes sense?
 
-Yeah. Really nasty.
+Ah, make sense.
 
->=20
-> How about taking a PFN and page count instead, and leaving the =
-conversion
-> to the callers?
+How about this:
 
-However, although this can solve the compilation problem, for the =
-caller,
-it is not very straightforward because they need to calculate nr_pages.
-section_vmemmap_optimization_disable is only supposed to be used in the
-vmemmap population path, and in these paths, the most direct parameters
-are start and end. I think this function could be moved to
-mm/sparse-vmemmap.c, and that way the compilation dependency problem
-would be solved.
+diff --git a/mm/cma.c b/mm/cma.c
+index 876635a56180e..45017ed876f76 100644
+--- a/mm/cma.c
++++ b/mm/cma.c
+@@ -935,7 +935,8 @@ struct page *cma_alloc_frozen(struct cma *cma, 
+unsigned long count,
 
-What do you think?
+  struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int 
+order, gfp_t gfp)
+  {
+-       gfp |= __GFP_COMP | __GFP_NOWARN;
++       if (WARN_ON_ONCE(!(gfp & __GFP_COMP)))
++               return NULL;
 
-Thanks,
-Muchun
+         return __cma_alloc_frozen(cma, 1 << order, order, gfp);
+  }
 
->=20
-> ---8<---
-> diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
-> index c91afce46136..5a3a225135be 100644
-> --- a/arch/loongarch/mm/init.c
-> +++ b/arch/loongarch/mm/init.c
-> @@ -143,7 +143,8 @@ void __meminit vmemmap_set_pmd(pmd_t *pmd, void =
-*p, int node,
-> int __meminit vmemmap_populate(unsigned long start, unsigned long end,
-> 			       int node, struct vmem_altmap *altmap)
-> {
-> -	section_vmemmap_optimization_disable(start, end);
-> +	section_vmemmap_optimization_disable(page_to_pfn((struct page =
-*)start),
-> +					     (end - start) / =
-sizeof(struct page));
-> #if CONFIG_PGTABLE_LEVELS =3D=3D 2
-> 	return vmemmap_populate_basepages(start, end, node, NULL);
-> #else
-> diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-> index 4d6928f717cf..43c98aec29aa 100644
-> --- a/arch/powerpc/mm/init_64.c
-> +++ b/arch/powerpc/mm/init_64.c
-> @@ -283,7 +283,8 @@ int __meminit vmemmap_populate(unsigned long =
-start, unsigned long end, int node,
-> 		return radix__vmemmap_populate(start, end, node, =
-altmap);
-> #endif
->=20
-> -	section_vmemmap_optimization_disable(start, end);
-> +	section_vmemmap_optimization_disable(page_to_pfn((struct page =
-*)start),
-> +					     (end - start) / =
-sizeof(struct page));
-> 	return __vmemmap_populate(start, end, node, altmap);
-> }
->=20
-> diff --git a/include/linux/vmemmap-optimization.h =
-b/include/linux/vmemmap-optimization.h
-> index 9d9f7a67d195..0501234ab16b 100644
-> --- a/include/linux/vmemmap-optimization.h
-> +++ b/include/linux/vmemmap-optimization.h
-> @@ -76,11 +76,9 @@ static inline bool =
-section_vmemmap_optimizable(const struct mem_section *section
-> 	return =
-vmemmap_optimizable_order(section_compound_order(section));
-> }
->=20
-> -static inline void section_vmemmap_optimization_disable(unsigned long =
-start,
-> -		unsigned long end)
-> +static inline void section_vmemmap_optimization_disable(unsigned long =
-pfn,
-> +							unsigned long =
-nr_pages)
-> {
-> -	unsigned long pfn =3D page_to_pfn((struct page *)start);
-> -	unsigned long nr_pages =3D (end - start) / sizeof(struct page);
-> 	struct mem_section *section =3D __pfn_to_section(pfn);
->=20
-> 	if (nr_pages < PAGES_PER_SECTION) {
-> @@ -119,8 +117,8 @@ static inline bool =
-section_vmemmap_optimizable(const struct mem_section *section
-> 	return false;
-> }
->=20
-> -static inline void section_vmemmap_optimization_disable(unsigned long =
-start,
-> -		unsigned long end)
-> +static inline void section_vmemmap_optimization_disable(unsigned long =
-pfn,
-> +							unsigned long =
-nr_pages)
-> {
-> }
->=20
-> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-> index 5777f2e29684..64bc346d0fc5 100644
-> --- a/mm/sparse-vmemmap.c
-> +++ b/mm/sparse-vmemmap.c
-> @@ -474,7 +474,7 @@ struct page * __meminit =
-__populate_section_memmap(unsigned long pfn,
->=20
-> 	/* Altmap-backed vmemmap pages cannot be optimized. */
-> 	if (altmap)
-> -		section_vmemmap_optimization_disable(start, end);
-> +		section_vmemmap_optimization_disable(pfn, nr_pages);
-> 	r =3D vmemmap_populate(start, end, nid, altmap);
-> 	if (r < 0)
-> 		return NULL;
-> ---
->=20
-> Cheers, Lance
+>   
+> 
 
 
