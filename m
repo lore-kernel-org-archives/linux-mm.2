@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94771606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 04:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6948F606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 04:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O6uzABMp
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ga22zn7Z
 Received: by kanga.kvack.org (Postfix)
-	id 995236B05B0; Thu,  5 Nov 2026 23:34:50 -0500 (EST)
+	id 5F0046B05B2; Thu,  5 Nov 2026 23:34:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 945716B05B1; Thu,  5 Nov 2026 23:34:50 -0500 (EST)
+	id 5C5FC6B05B1; Thu,  5 Nov 2026 23:34:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85B496B05B2; Thu,  5 Nov 2026 23:34:50 -0500 (EST)
+	id 449746B05B1; Thu,  5 Nov 2026 23:34:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 69C156B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:34:50 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D1717160C9B
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:34:49 +0000 (UTC)
-X-FDA: 85403428698.25.D47391F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 294D540003
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 250836B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:34:51 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B10EB14056F
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:34:50 +0000 (UTC)
+X-FDA: 85403428740.15.F776E28
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 1E5541C0005
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:34:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O6uzABMp;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ga22zn7Z;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793939688;
+	s=arc-20220608; t=1793939689;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NjHCkiX1DxGw4VudwKQlKUUW9/FbD3J3r+sGDh0hf68=;
-	b=VYDdlybW2P+hltcC8iURbYqILVKngJAKgBaES6GwIqzt8+FMn9xBbkOC83jtr66rd/TA0h
-	tX5vaj3XRlWzqEVrbSIgtz0iL7LxAu0Typ/54nN6DAyaAz58yRlVUCbAKMW6eG9ZKSSMOl
-	MzLyEclDBliMH741Q+iCrQZ7v3oE02E=
+	bh=CUkEJyWxlEUAd6dHqpQRBgzc0viOzPmb9/EGQLN/UcU=;
+	b=b9pXTbFcMDGt+U3q7/9ANOzEB13nnwDBuPFr7ahC1EDaJ1ftaG0qFLT4QylSDjsm+kRNqO
+	v8e5DIy/X36U3dAGkkMkxi6T4ZdKZfPY4jbkHXS0TMgcJDTGcaK0gBrBX0aJOX62KgyfIe
+	ukRBCogLg1PVYdVEwg7LJBPqKD5UvjM=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O6uzABMp;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ga22zn7Z;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793939688;
-	b=jKCjyU12bC/uT/q5gTlaQrhDDl9HN4SZiues4R8rXW0kN1hxV8BVXQnHEZ7USXEbKGjU1X
-	/Kjti9JTMbHSPycfnNoeYZECaJSJRicDT41H60RcA8/mZq5KrOVMlzTIv/EqwW//9FjK3H
-	/EdoB0Vq1nWPosiQVSqd6tueBpH8l5I=
+	t=1793939689;
+	b=1jeAqFLxyaodnqlgeOeJyMxoFU2ujI1utJOM+PjV1dhKVqIa0teWRhKUZHEYt7UuG2/qRy
+	7Q58RTr1x44djtW608bb7lnzlPFIxaov9GA+liSDM/b+tAGh47qzC8J3drUZVZK7YkyVqp
+	stkCG0CX6f19CWKNoDX4T2YKz+GAMOs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5AA3243C18;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9689C605DA;
+	Fri,  6 Nov 2026 04:34:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3C091F0089F;
 	Fri,  6 Nov 2026 04:34:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A040A1F0089F;
-	Fri,  6 Nov 2026 04:34:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793939687;
-	bh=NjHCkiX1DxGw4VudwKQlKUUW9/FbD3J3r+sGDh0hf68=;
+	s=k20260515; t=1793939688;
+	bh=CUkEJyWxlEUAd6dHqpQRBgzc0viOzPmb9/EGQLN/UcU=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=O6uzABMp6UiMjcIylH36jG6CsdoKIrO/zf5uqGPmsaTPEmFWdt70dJ+u3zzF5608s
-	 NrjNQSaZ39ogvHoQfwfeuVZv69MQPQpLIcydqYF8Kuj/TfHR6pFjyA6s/UNvpjsmI3
-	 M9w1fPkQ4SRLy8DQnQ2fXoG3lrAjeLBeJHS2xtdfDHEgPEGMck0CaSLlez2+lAgJ0T
-	 1tge/02AHPWBalD9LkhBUIpBGBKDcbSKYm1m0+xz1K1OajxbHLYFG1CcF85jFcN5ip
-	 IXAKQv4kPBBY6hmdB1MxMzpxvZfxAretSQar9kNaaPGwOvlrg5AJS6bx3BsqeI/Nni
-	 B+C1z90YRd1xw==
-Message-ID: <sashiko-outbox-200738@kernel.org>
+	b=Ga22zn7Znw2giwTWdZhF7ERP6ahnkXPahTQV30EGlt63rtJdEvi2AmaroAHKYFW3D
+	 AQKKLZeFMp7rGwGqhQxHeSde2OHEbrURkNw+yM+wdegu60hyTLDHh3sgSr/paQ00dW
+	 xlM5v53gRcBNgUjN+R3OTk/VzfmUAlH+ZJL4qKvPLKIEtEW3AixFRAowFKf2/uHtkq
+	 4CuzPuSYx/2azw9fOuQsz5qjIulruGo6suk1Qfy6OTF/87YfLw83vkVTVR3Kd4qYFd
+	 SpNemZ8zeuzhrt7W5z0IGUoN88j1phJRIrPgxUs57AIsjA2GDifSbp0VUX11OLQR+B
+	 KSaktEDJ0R83Q==
+Message-ID: <sashiko-outbox-200739@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH V4 3/4] arm64/mm: Use p4dp_get() for P4D accesses
+Subject: Re: [PATCH V4 4/4] arm64/mm: Use pgdp_get() for PGD accesses
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Anshuman Khandual" <anshuman.khandual@arm.com>, catalin.marinas@arm.com, will@kernel.org
 Cc: "Ryan Roberts" <ryan.roberts@arm.com>, "Mark Rutland" <mark.rutland@arm.com>, "Lorenzo
  Stoakes" <ljs@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>, "David
  Hildenbrand" <david@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Linu
  Cherian" <linu.cherian@arm.com>, linux-mm@kvack.org, kasan-dev@googlegroups.com
-In-Reply-To: <20261105043403.3326445-4-anshuman.khandual@arm.com>
+In-Reply-To: <20261105043403.3326445-5-anshuman.khandual@arm.com>
 References: <20261105043403.3326445-1-anshuman.khandual@arm.com>
- <20261105043403.3326445-4-anshuman.khandual@arm.com>
+ <20261105043403.3326445-5-anshuman.khandual@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Nov 2026 04:34:46 +0000
-X-Stat-Signature: 99g7bc767jmbauxjqcspk8hhio87taii
+Date: Fri, 06 Nov 2026 04:34:47 +0000
+X-Stat-Signature: fouzouccj3ea5eg3qynqy65mrbcypmey
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 294D540003
-X-HE-Tag: 1793939688-5021
-X-HE-Meta: U2FsdGVkX1+qfLs5yo9ZQKMZdhXRmlehZI/Yh4MX/H8vivztYaEHcvggN/burv7b0zoEUwNGl8ZrokevzO81hYDH0QfJBC64JstrAFax/l9g3KJ2DL0P+h2axIue+LxjI+fEnxzTajVY3+lciIv2m/K3/+fyq8Wtd+rSrXMWMjihPZHcvMor+sqnpBirtyA3T/FNd+AfkPxOeeDnxvIx/VpIG+kmlf+iV2gcgLodxo2A2CCmaGurVY8WEDcoaffsWPMWMnyINXb98r58QCB8+GVIzFIwx4hBeu7IKFKWBztlMS9NYoWQuy5Kw9lq0FLmxW4ypSi7dLKKpuiXbcfDzCpUDWk9kXbhByK4Hp2KBQNjdJen4V8yhUOcK1H5zWnVk8iNEhu5jBf29WIT+Dc8WlSGoqYNIE9cgm+sB20BZvQq4cHRdbRxQRw2c2GgeFWfG/v9jXsf7UY+5vnVksQPzI/YxLjJotzBFDWB/mR2ahwowao0i++Z+wTzzABscRwJEkuCHFwb01WWyQKi8rJ8WhUIc9FNuoInGQBFnZkc4CDVm8M2KOhI/OUymFuNZ74sFMKTJzHgC50RBnw2/pfwVC7nkOewppEE5QHO0KL+2FXzYrKF+3eAL6MRVKChj4IFxh7eYzXn5BqCuGapjU5WdHpSsi4zUm0st6ZJHj5SaPO6a1OTGwzaJWFDGu2VdZpQn/HRmd0/kgoPWLWxDpVUHv9mycB1LFMuHbo9KprCtuzc4MmZwNMT4WujJTOOjKQP81j5khntleLjjTF6HlLUJsuuu2jIYCpzZ3lbN+IYBiY/2iCQlI2aEU+epvzGquGpCa/YLSRWc+GZamgkE1dXLOPWh6zOwdPUi/NPffJn8rMGaoLoKyVtQHEtFslBro1q5KD4MghiIBGvInfJ7WAYQwsfrSwfrl435uqEFVEIP2BSXEQStulIJoHyp++6fDu7mH8REqM4JcGzysFyvJA
- ojCR9XfW
- K2prW6QXgFlUL3nzi5i1WVxhKRI0168CAUshr2TOWjlkODqdoIqBoYNeUsZbQ3tbkq3nsC3O4q/JcUGFYTtsaGeV11H0SnmW995bT/5dcDG84vxadD6tDBmCMZvfUov9uq0TDYXevSe9+io0iwYsjDSKOAlUN0y7hs6hqy/VdjOhbaybYrDD/Pt1HT+WyJ0YkXjTwIXXY7F7C2xH/qZFAvfq+lGixgmMbjzoZVGF7EUyMhFOkdPrGXsz3aKv2BatYgNhlEY0FYRoVQWESyFMWTImeXNTFJ29UVMjuYhVhcQYkBT9TNCfH6bH8vwEUmYiNGIozRSwcQJNcn+x6enwwUsNhCbjOukvmMSEwWpm1AzbxSYTsjEKcm4EFIBVrrfegzakTKKz7iyKVli5DxHu3oyABDb6SSbqVq4U74nyADZsxnuK7oxjZ6pzCTTNnbkK4hZrE23OI5ELKbrMEynZYGey1nJglxSh4p4Hdhqn3ACZXt+Z/wB03P3tOoF9jrOKSRlULA7Tpj/HZ4sldQAPOHlLblJed1Y1biU5vEV2sgnJmJphn0QM8/L5zQ68izhh3WElZk8UapQ1rW7xuvvpS0QjSpHzg4NOds8ERH3jbR+PW8kCEphm2HwQ2y1Y78/zN0QVtFiM7kx9HoYMOWhWe12L5ndcay5mxCqpFT4/xEzbtaoQ=
+X-Rspamd-Queue-Id: 1E5541C0005
+X-HE-Tag: 1793939688-962331
+X-HE-Meta: U2FsdGVkX18QEIeM1xEWul0WXujI6G+QdLr4A5GjKzpotCYgDY7SUnfOY3NLvItYV44PcRJXvIKd6geArd57crIpWiLtKT5xPM8+opfQJHIsm/KULRNBeZlZLRqnq/1bIAQNbooU0wVI12xODNZIJVlztcvVWofWgd+leprsW82YLFIFnoajO2WBz28YjQyccKjz7LyvVxP050BYHAgZLXats9sMKn35wybGLClCrIjObW1V1y0P4rOaf6TNFPLIOb0pLC02Okv4AHHfwNbDB8Kqy8aZQumr8B3Y9wKi9oHJXoVtqeBL9VxIS5ReqrRFO4ZG29XEcdHyfCseC6ceiOjQnLJYpqraISIJ5uEXzl3jMEj6NnazaiKQDNJ4q/4pKD5Rj67Tu57FJnt6LWp6LtB40wIpi6DQW37yiaHzj1eJQWle34iEOKvZHzPQb/zNIsdqLJasSwXKbSRs9fEulaH45RUgAa5Kd7QYt2I8kijGqF8LC4dMOwiTq3LH+GKtiFKL8VbhZTrz9GNb6KTmE34myB6I7fWVtS1UQENNp0b+4RUiELYqn3WrX8pFFqdFq/hQNjp9699VUkmPd0D4RW6+B1y4wbhWpYKfToJU9b+CvbIfKpwwbq4JWppn8++KArEW8Hp7WXkB1u8JdlsJnyXJwnWveNrOn1BNI7qOGyQgniiI6tAQHEMwDCJVkVLdXzqdRe+LFhoKi1hyzT1zpMmEZjXCWD74f4L3QwCvENyCZiUc3MQ0H4ltDSfGS+ZwZKgmROc+zSYT+fYxP404NPZiEjM9hcYMaGuRnlKQTaEH0/gMjQWbeheQg3Y0H2CD1mCB1vSGhrTWCAaQbLZw1JQqIoGiBmvTtW3kq/XMjuEmNCTuEZtV/WdTR8IWCqtne8vRN0EBKlo521VGylaK12JW6Un7BX9/A8zUPnj/Hhxp+oBv5rqbYn9oi/9A2H46Yx6uyWVwYL8/IXBQHNY
+ 2Ls5rjXq
+ 4qFEynD21uNQHRiouPS50Lb0vG366xtufPjA8pe0x35qmLtrXQ9SqnbFB7eb46RWK3T0GOiDWFuaAbMBKDeSlRl2ZKwulJNf4hADm94LlOrdwgSedIGd3kjqSoD3QBXOHsWmBuBssbce2NPcdlystSYKuUOFiM3vK8XMkTKSsc/D45A6asle+LRN613KaiqlSzY3wIst001wm25Q/diuxuseqh+gUQPceJWrGxjzQ+sLxCksl4LKK4ChBwdadwEayG3mnUgQfR9NNvNw/6xztA8dpvs7G5hox3LJZNijibKdPSu/YMOcxhkhx1hiBZsTnC55XiZYofbibyGym03gyGKuFp65XvVTq4lNsu/lrCgOl9sd+WNDplx+rDGFLp2N2QegK7URnymexoWkGG+7JwyQWSpthHIM4quHZJ4FtoIzXzDjESwseO6hMvPNinUyf7JzLSWN+svpQtEpc+ity+yPKnPavBswBlrGoDWRlJbKT3qLtrWgokmLRqJhQYvW+BDmM7KmoGT+dY2J+p80Q5sqmU9Tx/ZJcTehtIyxxVCKHQ/WQhjs9wqF1X6zR07KyF0SGsoEa/+hTDLbors2XidHQ7on1GlmnfGPkDiQor1CrXKyLVYN/OP9XRT8s0Ql2gTgdBEAtkZdQld8GZAGcNnVTxyTIpxzFy2uwUeuH54kKYnM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,80 +98,80 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] arm64/mm: early boot KASAN fault in out-of-line pud_offset_phys()
+- [High] arm64/mm: KASAN fault in p4d_offset_phys() during kasan_early_init=
+()
 --
 
-commit eaa67607aabb8af35fe6970c5442e1ab262f0286
+commit e9bf68a7a555b3c58c2a0a8736f337dde8136ab9
 Author: Anshuman Khandual <anshuman.khandual@arm.com>
 
-arm64/mm: Use p4dp_get() for P4D accesses
+arm64/mm: Use pgdp_get() for PGD accesses
 
-This commit replaces READ_ONCE() with p4dp_get() for P4D accesses across
-arm64/mm and moves pud_offset_phys() and pud_offset() out of
-arch/arm64/include/asm/pgtable.h into arch/arm64/mm/mmu.c to avoid header
-dependency cycles.
+This commit replaces READ_ONCE() with pgdp_get() for PGD accesses and moves
+p4d_offset() and p4d_offset_phys() from arch/arm64/include/asm/pgtable.h
+into arch/arm64/mm/mmu.c to avoid header include dependencies.
 
 > diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index afa15b1a8a247..5b5a85a0527d6 100644
+> index 5b5a85a0527d6..11015e1deb32f 100644
 > --- a/arch/arm64/mm/mmu.c
 > +++ b/arch/arm64/mm/mmu.c
-
 [ ... ]
-
-> @@ -2449,3 +2449,17 @@ bool pmdp_test_and_clear_young(struct vm_area_stru=
-ct *vma, unsigned long address
->  	return __ptep_test_and_clear_young(vma, address, (pte_t *)pmdp);
+> @@ -2463,3 +2463,17 @@ pud_t *pud_offset(p4d_t *p4dp, unsigned long addr)
+>  	return pud_offset_lockless(p4dp, p4dp_get(p4dp), addr);
 >  }
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE || CONFIG_ARCH_HAS_NONLEAF_PMD_YOU=
-NG */
+>  #endif /* CONFIG_PGTABLE_LEVELS > 3 */
 > +
-> +#if CONFIG_PGTABLE_LEVELS > 3
-> +phys_addr_t pud_offset_phys(p4d_t *p4dp, unsigned long addr)
+> +#if CONFIG_PGTABLE_LEVELS > 4
+> +phys_addr_t p4d_offset_phys(pgd_t *pgdp, unsigned long addr)
 > +{
-> +	VM_WARN_ON_ONCE(!pgtable_l4_enabled());
+> +	VM_WARN_ON_ONCE(!pgtable_l5_enabled());
 > +
-> +	return p4d_page_paddr(p4dp_get(p4dp)) + pud_index(addr) * sizeof(pud_t);
+> +	return pgd_page_paddr(pgdp_get(pgdp)) + p4d_index(addr) * sizeof(p4d_t);
 > +}
 
 [Severity: High]
-Does moving pud_offset_phys() out-of-line into arch/arm64/mm/mmu.c without
-noinstr or __no_sanitize_address cause an early boot translation fault when
-CONFIG_KASAN_GENERIC or CONFIG_KASAN_SW_TAGS is enabled with 4-level or
-5-level page tables?
+Does moving p4d_offset_phys() (and pud_offset_phys() in the preceding patch)
+out-of-line into arch/arm64/mm/mmu.c cause a translation fault during early
+boot when KASAN is enabled with 5-level (or 4-level) page tables?
 
-During early boot before start_kernel(), __primary_switched calls
-kasan_early_init() in arch/arm64/mm/kasan_init.c to populate the initial
-early KASAN shadow page tables:
+During early boot, __primary_switched calls kasan_early_init() before the
+KASAN shadow region is mapped. Because any KASAN shadow check will fault
+until kasan_early_init() finishes populating the early shadow page tables,
+arch/arm64/mm/Makefile disables KASAN sanitization for kasan_init.o:
 
-  __primary_switched
-    -> kasan_early_init()
-      -> kasan_pgd_populate(..., true)
-        -> kasan_p4d_populate(..., true)
-          -> kasan_pud_populate(..., true)
-            -> kasan_pud_offset(p4dp, addr, node, true)
-              -> pud_offset_kimg(p4dp, addr)
-                -> pud_offset_phys(p4dp, addr)
+    KASAN_SANITIZE_kasan_init.o :=3D n
 
-At that point, no KASAN shadow PTEs have been mapped yet, which is why
-arch/arm64/mm/Makefile sets:
+and set_swapper_pgd() in arch/arm64/mm/mmu.c is marked noinstr for the same
+reason.
 
-  KASAN_SANITIZE_kasan_init.o :=3D n
+When kasan_early_init() populates the shadow page tables, it calls into
+p4d_offset_phys() and pud_offset_phys():
 
-Previously, pud_offset_phys() was a static inline helper in
-arch/arm64/include/asm/pgtable.h, so it was inlined into kasan_init.o
-without KASAN instrumentation.
+    kasan_early_init()
+      kasan_pgd_populate(..., early=3Dtrue)
+        kasan_p4d_populate(..., early=3Dtrue)
+          kasan_p4d_offset(..., early=3Dtrue)
+            p4d_offset_kimg()
+              p4d_offset_phys()
+          kasan_pud_populate(..., early=3Dtrue)
+            kasan_pud_offset(..., early=3Dtrue)
+              pud_offset_kimg()
+                pud_offset_phys()
 
-With pud_offset_phys() moved into arch/arm64/mm/mmu.c, which is compiled wi=
-th
-KASAN sanitization enabled, calling pud_offset_phys() from kasan_early_init=
-()
-triggers KASAN shadow memory checks on p4dp before the early shadow memory
-is mapped.
+Previously, p4d_offset_phys() and pud_offset_phys() were static inline
+functions in arch/arm64/include/asm/pgtable.h, so calls from kasan_init.c
+were inlined into kasan_init.o and compiled without KASAN instrumentation.
 
-Should pud_offset_phys() be marked noinstr (like set_swapper_pgd() in the
-same file) or __no_sanitize_address?
+Now that both functions live in arch/arm64/mm/mmu.c, which is KASAN-sanitiz=
+ed,
+the compiler emits KASAN shadow checks for their memory accesses (such as
+pgdp_get(pgdp), p4dp_get(p4dp), and vabits_actual) before the early shadow
+memory is mapped.
+
+Should p4d_offset_phys() and pud_offset_phys() be marked noinstr or
+__no_sanitize_address?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105043403.3326=
-445-1-anshuman.khandual@arm.com?part=3D3
+445-1-anshuman.khandual@arm.com?part=3D4
 
