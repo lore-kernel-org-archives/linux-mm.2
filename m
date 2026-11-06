@@ -1,160 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958B8606A32E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 18:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EED5A606A332
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 18:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LHaqBEGm
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kvlR7CoN
 Received: by kanga.kvack.org (Postfix)
-	id B056D6B05B2; Fri,  6 Nov 2026 13:17:56 -0500 (EST)
+	id 1952F6B05B0; Fri,  6 Nov 2026 13:20:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB6BB6B05B3; Fri,  6 Nov 2026 13:17:56 -0500 (EST)
+	id 16D0E6B05B1; Fri,  6 Nov 2026 13:20:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A4C96B05B4; Fri,  6 Nov 2026 13:17:56 -0500 (EST)
+	id 084906B05B4; Fri,  6 Nov 2026 13:20:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 709BB6B05B2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:17:56 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0BF548018F
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:17:56 +0000 (UTC)
-X-FDA: 85405502952.05.96D7716
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 6EF4A180005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:17:53 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=LHaqBEGm;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf06.hostedemail.com: domain of namangulati@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=namangulati@google.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793989073;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BFBB46B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:20:43 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 53610A0177
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:20:43 +0000 (UTC)
+X-FDA: 85405509966.15.BB86B01
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6EE3140007
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:20:41 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=kvlR7CoN;
+	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793989241;
+	b=Ir2ET02gqoJgLoSbnXDgufCRWPQv4jknDp5OWIlQQ2Jm4K93FLNwi6j5vagIwfENIuQujX
+	D4PlIE9woFNIJH+fSgPfzMmm1lKjGM6S3QWFu6eQjdffZ9uO8nLrc77+rDgcdtm5mHgs7T
+	GQEqj21HPpVXFCd6EuiMpHNl4rWGwNg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=kvlR7CoN;
+	spf=pass (imf01.hostedemail.com: domain of dmatlack@google.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793989241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BvW3kJ042sHlnHfK0H238m7dXO47goeCrBgoSLkn/eI=;
-	b=yxUtlqyMZemvUKP+tfTi/vGW6+v6Hr77FlbJDSCVIH9TMCR/Tl+OzJl7KMNzNOsY7jlhCt
-	OzLAt9hbRrJQ0icMjqKebUxgJIRTiKBLuwrN+8AcSzm5VxsqkGgWuPNWpE/SZf5aLZzWgZ
-	owTVLb8kUVN/8lgd+n8yWQozsNIQdhs=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=LHaqBEGm;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf06.hostedemail.com: domain of namangulati@google.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=namangulati@google.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793989073;
-	b=ZY0AIilNOp1VTNgg4Mc6PuDOmzgwljuTE1z8+SuhJSDy+2GSkdAeniKwCRalW/JIfcBGY6
-	OsaAtXDwVNNOAPzySEMiHbSMq9oDO0d9cTHEcJXHYa1O95ldD2mjRAGessERbh/1Cty4Yr
-	jPhpQq8gF+5RUvuwnRiQKztbSjyLSOQ=
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4b6266b5bc4so4245e9.1
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 10:17:53 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793989072; cv=none;
-        d=google.com; s=arc-20260327;
-        b=eZTLvDJmud2u305XB3lFx5zKQJYmOBHxInMGu4mfMNafwQjhM4sayovLd/QpmwYESk
-         IQDxr+hM5mK+kIu7tILle7MD1kVjLXIJrE1yBTMe0Jdpo42I2fIfpTWzEtkOYa9Y/u5i
-         mN5dzHDPkjACLGW/ANalLRQPx4Br52H8sz+hUeahEEypJMetorNSwQoH8vylcfnbJVap
-         vEOyV3ADGGamXTO9MMZWW7aCvL+Rq4bYrrUsfYqNyKayJu3o5Qh11pG+6duFCl67cjVz
-         7t7wpbWluJrcv9fsnrYBRxOraHmuSCQrdGnUbObYn3EfJV655Df/2DUSeJR1cqkgGzIw
-         NiWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BvW3kJ042sHlnHfK0H238m7dXO47goeCrBgoSLkn/eI=;
-        fh=ipFwM4uZwaf88gVV1dK1520AeceysRhOn73P0URdf8A=;
-        b=iw5m6lxMXKnX6xiRm05BmkUS656q8P+bYFtua7im1O7s4sj8LAIv3TjLRAc+d5eHfl
-         otHR0KJW+QxxiPbf7JIC+2shG4DsvTJqufq9UpOfr3I1NgSs7e6H7G+ySwMvYpLr2+XV
-         E5l89uMn+ZsU4yxOIlgbWDlP9FWLDtX2clHEW0PXiujg46+uJ8i3nb00iCxzdj98MTPj
-         UJD75SRIKSq3M5Ypr1bGJNSEHSlPasmC/4oRBIBZSCCg/tvrZMSnZ06tjuzQYjrqZwi9
-         bXhLZbdl43xCAoJqrLK0Sqyl9uwwrOKdYW5AnbFCALdB9iPzXQKrwUwgB4IY0snEHMWi
-         W3Jw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=9qaZQMzb7DXoF7l3soDYlbhGMbKj+MV76UM39vsbcMY=;
+	b=sOCcog0oPAAO6rtZGM4FBvdAQHZaXDjpM4C0K3PsY6/2EATXL4XSuImhXbbXIqVe9SSEtJ
+	eumVG7X/fsB9QfQDMCrjPwdYgyaVnludaDEZ/rHhAKShs0NMYRmb15Ac5RIx3dldejmPUd
+	l758e0WVqgr17pwVyy1z1VBIi0ztVNw=
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-8a594d313a3so527408b3a.1
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 10:20:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793989072; x=1794593872; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=BvW3kJ042sHlnHfK0H238m7dXO47goeCrBgoSLkn/eI=;
-        b=LHaqBEGmotkuP+T8qL3dwxm7jvyDwjsrDJzHDdGcBxNlrzlPsb+IgBlrM3hmU416qR
-         UI/cYfCG9wOkKjkDofXen2TS5cACX4t6l3WCDMk5jgFqDrFynObdjpxVab/KysMcpIEH
-         LCk5o6McqrevDS5WBscfIGmthJGIWDZNLL1TThU9X5N7OxKKfBMfMHgbt8X3i3/aahFk
-         n/h9Uw92p/Zq3g1PB7nhxu+Uhxr4Se+vyniOi5iKKZiUvIOCf7Wg/mJ0E8q9iGV2/pAy
-         eZIz7Dt9Dt7lJz/KOlGJ/AtRTnUBx0FdokL4aziSxN5/KAhkBZpXY6K4CoSq6ZP4QWe+
-         cugw==
+        d=google.com; s=20260707; t=1793989240; x=1794594040; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=9qaZQMzb7DXoF7l3soDYlbhGMbKj+MV76UM39vsbcMY=;
+        b=kvlR7CoNKxtkYAbwvEgc3Gg4CUV6m4FDu2L6hVwyDOnjoz7YU389UiEE6/ooXkKDtw
+         4waAsqExFNwAxVF1utYUWmm8eC6fKywF8VZZoNSfuT1CABDQTzYieNSCd6WplJIPW0Kj
+         OpCL2NnrzD/9AYcL77Zj4cJFa9m5tgorjGG2Xv8l1dgOjvonk1/bcq9kh/gYNQN9mSJU
+         ietatZjiXyj2AtDvQ501ZV0CnRCbgxjisIJpmvVN38H/6vkwGbfuy51ejjgw3wqUDiDv
+         FZbkBkz7IXi8Ek77uRGWvpZk+uXPwG7qESelY5N0xtGf+jnTT5rMq3ts5BOjqanSXujB
+         Q8qQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793989072; x=1794593872;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1793989240; x=1794594040;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BvW3kJ042sHlnHfK0H238m7dXO47goeCrBgoSLkn/eI=;
-        b=wcOxmxLCz7ukKeAUI/aE4adQxQ+PaN9A5R6xz1a+2WEuzLDpC4KCBz7hiFtZ6ucxUN
-         xreTDh/kHF0kcNtVHP6Y02vH8842C+3grf9uFlXx+9V6setsrURx2NEsdfVlAtrrnyvs
-         keZXWeD6sxHLqP6yTbuMy3l6hRE9EvsQI4n4V5vGt1GFVJByjnjQUe0UTc6sqccia9Dd
-         tD80wD3KRzBb2YddhhtGTVTocGoFMOWSzlDJftXPi4TsgI0/s0fawwUP2yybJkzNp+wz
-         Kxdd6paOzwZOvsBlyE1fIYXiUJqNZ9MmleO0m0txq/Af360X/MJerbf0Db2dByEZREB2
-         HrZQ==
-X-Forwarded-Encrypted: i=1; AKwUvBzE1Wz3YReY3PDcpjYOuwILOZZ/Gs0xWp5NI2CULEoRH4nrwE3GJCOSs55mEFGygTseW8SzuGLnmQ==@kvack.org
-X-Gm-Message-State: APuU4Z9+SHXoNRDhs1xGJtOGE0spqyi88UBerQPsynkakMTJm7Teuei8
-	hDuF9i2gHOkpgAgSzICicr52H3QsxVnO53xqfLcAW+1rFEdOx4AEoY3e1EM5KSihUXia1/rmrVj
-	IK1LL6Car6BLlKHAJtFEXV8/oUOHFRurU+V9m6mrP
-X-Gm-Gg: AYBFou3y/YSnI3abwLE6xNRMQYbhYUKUGRa/OIYtxt8q5Sy0s8nxqaxYtGDJCzKlmC+
-	MzYnrnXk4fH1wGRbDmMx2liaZamSAirmi+Dwc1JomQKJqj++L8hZw/w/hpPKAbaAhppEzxOHGmB
-	fD9a/gAEhDagXzZvSIZLuumhk4FBaRlg3rXfr8J8Nbl9tvAU9wTXgIMxcXLoTkfb/Z5vzIrMvCy
-	j4AesMya8mcVuTMl164bbNUJe+gbk6D/mOLGQnLkCpzp115rQmY683aaBmHJMztHnTCFllspW4O
-	ZfqU5ZJDcFt3OOJQ4U8WbttDAcChcnHkyCSvOKdoojFFiCgTY3c9hMYXLfoARm9u/8oCsRhFYnE
-	Rr0iTpriNF9/IuYovm/d15ZKYGy/zpTxjGTUIFtjE/moJpQ4yiYh99lVHsnne4iAZt1qiXQ==
-X-Received: by 2002:a05:600c:8b12:b0:4b6:24ca:8848 with SMTP id
- 5b1f17b1804b1-4b78a30d377mr98115e9.11.1793989071681; Fri, 06 Nov 2026
- 10:17:51 -0800 (PST)
+        bh=9qaZQMzb7DXoF7l3soDYlbhGMbKj+MV76UM39vsbcMY=;
+        b=pZ8d8hCH1+JQd80fqk9eng62hLRDixe2iT0rKsiatNpDWhaZQ8BQFUFSsffYkFDvv3
+         b3EOFQteYGw/f7lvqIdmLtrQmWM/rO6Q85n+E9zreK9ln1whq9nG5sumgjvUSK53pbUw
+         XZRBYhTa5SuE43r1iObwYrLMmlv06lrtewV2dj87WlDnNGWdmR/Xo1BgtFkKMnKyk5q5
+         HMY5kuv7bRRzcml9Q9TcZTF42SttoSziS7NfnNXHG0hKstX8SQDqTeRDzRC2qR5/1SpA
+         7w3FU2waMNVbQaN5osz4OFzAuTF020S1wcb4qoYO4bFhaKpTASWPcNQoBlIBd3lw2S6q
+         QiSg==
+X-Forwarded-Encrypted: i=1; AKwUvBzDxY8id3Y+E9AAVGxJB9MDvmrHWaSgI1yVcwRb+WY5yViQdP4rIMzPR3KQIS+GACjyD5XrbQy4zA==@kvack.org
+X-Gm-Message-State: APuU4Z+Kq4c78EQlGuhFlvooWioOpEvHSbsF8fcoU5iY+gac8Fmz7VMg
+	+O6+y2F3IKqXFj3KMSPwLvLqaASNZp8oz2snt3u6x4lMWg9K4IXBciG38ydRedYmHQ==
+X-Gm-Gg: AYBFou1g1zdEkuTEWGWwNkaok82VA4a0Heg6ZBdyTcPivLMKcYd2yTYCYAUpXyAZWaO
+	y+UvZjRi62V8VkKkTFDN1i/Q3aGDR4F4KDzXNQWGsh19hbxCfyfUqghQN5LJ/Czsrm3YvkPDRY8
+	frqAzv70PoYyYP7nLvmozgSyzUcSiPYJM+AYJn6moa0eL52pp2rJ6Upwj/IjDxRGANu4EugMJSb
+	i0yXHWDazVhHWm5vjbR3GO0UBYEmE4cTWfueZqo/IR01ZNacaIpUwG1+IohAYamB6poFg6iOT1l
+	GTkQwlXHwBg+dXtYWcwciww0T15yVmbrm1MTXwyQmiuy6XkWiiL/sDqYINjSY+hbTtC6a848rPR
+	8wlexy56L3NrOfG37nChZCpElov/d3A4rAurLrZ9+Dt62zBLut9oIi/xQ5Ai6EE4qLFETV0t2Ve
+	JsDFCuom0pPeMHtDT9olzHclLGX+t9QE1kygxDB0j+tGpEqDs8v5Gez+NA6Y6/7O49H+ZcT5+qd
+	swjFCOb/vj6LcIfSHy9cwJNiLmfnaK+vebgLGMQEooxfZoaMtctdc+VCnSQwbVEIhT/waKXFH7p
+	xOVVhkB+VXw/t/3u3lflMc1iL0BBhGrI/dPwQZ6UNYwR43q5J2YBca4MOyhtf20d
+X-Received: by 2002:a05:6a00:2188:b0:8a0:3483:51ec with SMTP id d2e1a72fcca58-8b37cdfd31bmr3344310b3a.58.1793989239208;
+        Fri, 06 Nov 2026 10:20:39 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8b359128352sm848989b3a.13.2026.11.06.10.20.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Nov 2026 10:20:37 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261022201229.GH3381610@ziepe.ca> <CAMOZA0KaanmevmvWS=M3gKfBeborzfCQTiF_xbSeYMWbozG7Mg@mail.gmail.com>
- <20261023140107.GC3977851@ziepe.ca> <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
- <20261023145023.GH3977851@ziepe.ca> <20261103080933.GA4213@lst.de>
- <20261103151021.GK3889730@ziepe.ca> <CAMP57yWvHO0pWCR3-9q1gtwVe8WV4Y6i69trmw+BJRVYf3JB1g@mail.gmail.com>
- <20261106173054.GH663069@ziepe.ca> <CAMP57yU-VhZWXijvwAXcN9=zZ+eWXZ6J1bkHuCJw3ocRaFaV=Q@mail.gmail.com>
- <20261106180714.GI663069@ziepe.ca>
-In-Reply-To: <20261106180714.GI663069@ziepe.ca>
-From: Naman Gulati <namangulati@google.com>
-Date: Fri, 6 Nov 2026 10:17:38 -0800
-X-Gm-Features: AclHuK-83DU2Twv76ErkJhEGQxs5tivwJ4EGd2AJl7A0D8r5G3Ha6ydUc43L3ns
-Message-ID: <CAMP57yW6Y4g-xM9YTB+MpgxPN7RFeEWhAPWvqrfOoMDEuL8HZA@mail.gmail.com>
-Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
-To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Christoph Hellwig <hch@lst.de>, Luigi Rizzo <lrizzo@google.com>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, 
-	Danilo Krummrich <dakr@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Jesper Dangaard Brouer <hawk@kernel.org>, Ilias Apalodimas <ilias.apalodimas@linaro.org>, 
-	Willem de Bruijn <willemb@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, Michael Chan <michael.chan@broadcom.com>, 
-	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-mm@kvack.org, driver-core@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6EF4A180005
-X-Stat-Signature: 36hga8ycd7a6zynp5xbdwqkmda1o76wr
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 06 Nov 2026 18:20:36 +0000
+Message-Id: <DMOC3XV68W0K.3FGK4UZ87838R@google.com>
+Cc: <kexec@lists.infradead.org>, <linux-doc@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-pci@vger.kernel.org>, "Adithya Jayachandran"
+ <ajayachandra@nvidia.com>, "Alexander Graf" <graf@amazon.com>, "Alex
+ Williamson" <alex@shazbot.org>, "Bjorn Helgaas" <bhelgaas@google.com>,
+ "Chris Li" <chrisl@kernel.org>, "David Rientjes" <rientjes@google.com>,
+ "Jacob Pan" <jacob.pan@linux.microsoft.com>, "Jason Gunthorpe"
+ <jgg@nvidia.com>, "Jonathan Corbet" <corbet@lwn.net>, "Josh Hilke"
+ <jrhilke@google.com>, "Leon Romanovsky" <leonro@nvidia.com>, "Lukas Wunner"
+ <lukas@wunner.de>, "Mike Rapoport" <rppt@kernel.org>, "Parav Pandit"
+ <parav@nvidia.com>, "Pasha Tatashin" <pasha.tatashin@soleen.com>, "Pranjal
+ Shrivastava" <praan@google.com>, "Pratyush Yadav" <pratyush@kernel.org>,
+ "Randy Dunlap" <rdunlap@infradead.org>, "Saeed Mahameed"
+ <saeedm@nvidia.com>, "Samiullah Khawaja" <skhawaja@google.com>, "Shuah
+ Khan" <skhan@linuxfoundation.org>, "Vipin Sharma" <vipinsh@google.com>,
+ "William Tu" <witu@nvidia.com>, "Yi Liu" <yi.l.liu@intel.com>
+Subject: Re: [PATCH v10 05/13] PCI: liveupdate: Auto-preserve upstream
+ bridges across Live Update
+From: "David Matlack" <dmatlack@google.com>
+To: "Bjorn Helgaas" <helgaas@kernel.org>, "David Matlack"
+ <dmatlack@google.com>
+X-Mailer: aerc 0.21.0
+References: <20261013162529.1928093-6-dmatlack@google.com>
+ <20261106173427.GA1633106@bhelgaas>
+In-Reply-To: <20261106173427.GA1633106@bhelgaas>
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793989073-682700
-X-HE-Meta: U2FsdGVkX1+Jg9MjAY02oYY3+FYzZOVSuWCmVWGZbGOH/FF73nqpLxsYZg2DUeZUNb9+ovecFz8qLMmDYqAD2MB0P3SwR10/R9GAw7nt547mbLzN0r75GbmEj4IrzWtavCsZBX2z9Ev9Uk15vdQepuk3juyJ02KmS3M3YIRWCK5EdPdtc9PVC6ntbbxmxBQkFF0XnyJaklWnYZJygDDx9EB5+g78JadCSsk1ZW1gnz1yjwnvPRiLUHFbnfMSBzHYd/rivWMTJbLyfmPv3ceNGd5Qk7I8m2/6MKIkg5m/6nuN24n2Ol/TSZJrtHRh1cGzAFeFOaGQsPSZNy73eUddChUhuXo0iD5OWStjyaIBAWIdK1wGs38OD67JIbjl8CfI4iKtbbtKqWjLRhvrqPdKHfrrl4txwFhlL8GqxA3Hb2jMT8CTfDZ8zY1EdQ+FddMbdzFRUPYnEo3eL1JlwsZ2ZMh5W0swPT2r0dAJste5SgQWNnmAh2EHIm+y8ug91betEf1xo4UEqyu4KFKgqfNogX+2VO6WBP4OOtnzaJfHkDLjG07y3U1MRORPSatajrtf4iOSgLCfvp1gBDjod2/SvG+dV2UbysQZe3CZj9rngWCcgSZ+VDBscpPMYmahQjaiycV764YvYakI86ldd3qLrcPK1fzyPO0Z/uaer7pXcBunJNHZKrHmWc3m+NBwZWr9bI/7vUWkv4iY9io1kyMFZBz1/OBMVQI6Hd8/D8XgpnF8Cck/QGIXnYKwP5tlH4KypS0Kw8ImLHj8EZD0A6AiecmxzfhTnlipDhXuvcDLorqkfumWUZ0nPFOclrW64G+9rYNXmjOTpDFcwyoaG3cX1E8Fp6Ot3caDyLY91ZsMmk4n/CLw5ikqmDe0u/3uM2Wjo4ciLs6Eh7+bjFWubRlo63JZTCo/oQoIZv+QgXke1fLSGCcTLRlcIQ+Mtczkz6UsK9BiGBNlNPgkzlbWWFt
- 8HTsQcjB
- fYgh3kU0I1IkeOijLtA0LrsLVXD4nUHE1y6ZgP/IoTptc2bZ7Yo2N6G36AaDXd/yx1FCQj1GEnfzlSyEdJa6Sz9LE1GVv+b8oRbQBDn1U6/SxnLf4byto8cbUETDQ0r8awy3izrq5Laa9uOMh5gFUDPqUP/Q0Ef2Hx+WiXNrkL9zFrT1NXgu4i87BEe/t9LuYC1RwGl1UPq32Zglj3A709kEaEazrOFO8dUuks9xrOHoqLMUaXGXi+f/8PvmSOAP3Ugz0YUr/LmluZolCkJ7XUnpVtqSGUlym2xuTM32jjixCrqFVhjM43yqpu3ShV5X2VZn20a9s4TbOWD2VJnGTekW2XFziRpZwH18CWgJvSNhA37qPWGxGCdz+xDRWtHGutGkZZqeReItQPjUWmzhkctiq7+rv+sb89+e/acmRk0F03m5Sk+nC4XQhMtISF337NFSv
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 6EE3140007
+X-Stat-Signature: 8z6dj4rgwxagfg9brtm9edd8xh649ww3
+X-Rspam-User: 
+X-HE-Tag: 1793989241-928128
+X-HE-Meta: U2FsdGVkX1+rQKD8nyIL4VmbwBsE+1DmtlDJZBTMJvrHTfjm34dOicV1FTrM6CmYht9r12uKMAugvI5HqUYKTj7kG/kadpgctEIIL9KZTHImZLu9H1VHsXncp0G49DylADOPUXxMaaeIxl2iLvqzcxMz2RmRPW2/b3+WizKB7aCtEZ5ywXqOzXOQW9+lbax4cBjq075EWuTFZ12aGvH9s9Mw8qM65ankM+D35Sv1zLlgCGzMu3vOslOHj8Ej+Fkbm/BkrXj0U4Bm7vRGd6SYgXl7vw2GMEn9OAJw+E8tsLJEkTOUu+XdOtYLSvaQ0dfOUiIUt58fT0FXAbxp0P0j1XVbYNxt1efFN0rpoSk8AzZnFo2spiKrw/6K/bpAZqkwOnDcmhYLiAgvaFK6s0GFftUog5slRCAQejUpvSg32PZ2o9PopyYPisXdp5AJ5H/pGj79GfY7qzSUP8nUdrPgtALMiOvJiagJXb12lpdlxKbcAsTBHx1Xtr7uf+JvoXOkxgv6mbXMthQbaKDIHM62QjqEpWKBoHtv2uF3egUB9SaHXqcttRStkbfA64dBNW3Nduat3rTEWZ6oZZ5rZn7BDeacBQ7FgSq8tTTMla1e4kyeRfH5WpdV2+USbNXeg18V7zaVYcfpG2ImHwZQfYvYeuMRFbuDE1slW8BkbOdX7PTN74w53e8FGH1QIZ8MSuZEO8FJPF9J6SI9zbdV2k4PNb1cUJBfo9YNkkjlziTS2CH70HA8COon+j1GdfjBvoBoEvl4ho7eIb1OjBGJQp7GPICn8OO4xs/cisaLjcmECOm1TrXpb40Qgebz5LAazSvVHmfIJTRoYQK6tIyoZAfu1uXLeu1mpyKU+jbbBSUxVQ1OnlZnX3PzLFmQJBa4G4zATTyw+mAX+i2tzsZhFFczNwO6Ji5e2pwcHCzA8zQZjtSFelF2ycnZXSw6cftlQDMWKVOyuS54yXj8H9Ap8aO
+ 6gyptEND
+ GMDah57BKGCkkqqzPtUIaEbqikj6llFq0Xyja5aBzSgOUA6WEK/DQK6Xwr2oCBq/GQE0Mld26Wf+u8eOuVmeB6V38GprBGxI5Ds2E814XSWY10MylQicUOM2XLi3OnrCcm4vbAODfoo4UIfmj5jH9XY6lMvMyVH8SoA3nCzdX+SHJVBGNa3Fe/9L/tkwjCcVNwk4HasjLzVgyrQfJJxLNEGvkk07/9uRxPKh9vyo9nVNUG4xbkzI0M+Z0J85jTpYH5+3DHNG1CdSliZVNzSd9azolJf04RJ7UwmE1bxpKzw116OWkfv6yXdhFBjX3i/ZH4Cxqcf48DZ1dCr+fbjM9n3U/LCdVxRTbcMIalMaF5qDjZBYrvytewREY6qAY3pLgoSzDW23Y4KFMHQhBQj4CzRGlSg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,76 +142,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 10:07=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrot=
-e:
+On Fri Nov 6, 2026 at 5:34 PM UTC, Bjorn Helgaas wrote:
+> On Tue, Oct 13, 2026 at 04:25:21PM +0000, David Matlack wrote:
+>>  static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outg=
+oing,
+>>  					  struct pci_dev *dev)
+>>  {
+>> -	struct pci_dev_ser *dev_ser;
+>> -
+>>  	if (dev->is_virtfn) {
+>>  		pci_warn(dev, "Cannot preserve Virtual Functions\n");
+>>  		return -EINVAL;
+>>  	}
+>> =20
+>> -	if (dev->liveupdate.outgoing) {
+>> +	/*
+>> +	 * Endpoint devices should not be preserved more than once.
+>> +	 * Bridges are preserved once for every downstream device that
+>> +	 * is preserved.
+>> +	 */
+>> +	if (dev->liveupdate.outgoing && !dev->subordinate) {
+>>  		pci_warn(dev, "Device is already preserved\n");
+>>  		return -EBUSY;
+>>  	}
+>> =20
+>> -	if (!pci_is_root_bus(dev->bus)) {
+>> -		pci_warn(dev, "Cannot preserve devices behind bridges\n");
+>> +	if (dev->liveupdate.outgoing && !dev->liveupdate.outgoing->refcount) {
+>> +		pci_WARN(dev, 1, "Preserved device with 0 refcount!\n");
+>>  		return -EINVAL;
+>>  	}
+>> =20
+>> -	dev_ser =3D pci_flb_alloc_dev_ser(outgoing);
+>> -	if (IS_ERR(dev_ser))
+>> -		return PTR_ERR(dev_ser);
+>> +	if (!dev->liveupdate.outgoing) {
+>> +		struct pci_dev_ser *dev_ser;
+>> =20
+>> -	pci_info(dev, "Device will be preserved across next Live Update\n");
+>> -	outgoing->ser->nr_devices++;
+>> -	outgoing->ser->devices =3D kho_block_set_head_pa(&outgoing->block_set)=
+;
+>> +		dev_ser =3D pci_flb_alloc_dev_ser(outgoing);
+>> +		if (IS_ERR(dev_ser))
+>> +			return PTR_ERR(dev_ser);
+>> =20
+>> -	dev_ser->domain =3D pci_domain_nr(dev->bus);
+>> -	dev_ser->bdf =3D pci_dev_id(dev);
+>> -	dev_ser->refcount++;
+>> +		pci_info(dev, "Device will be preserved across next Live Update\n");
+>> +		outgoing->ser->nr_devices++;
 >
-> On Fri, Nov 06, 2026 at 10:00:35AM -0800, Naman Gulati wrote:
-> > On Fri, Nov 6, 2026 at 9:31=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> w=
-rote:
-> > >
-> > > On Fri, Nov 06, 2026 at 09:21:08AM -0800, Naman Gulati wrote:
-> > > > I drafted an implementation [1] for premapped TX and RX buffers on =
-top
-> > > > of the existing networking page_pool. It is implemented entirely in
-> > > > the networking layer and extends page_pool as the default RX
-> > > > allocator, to the TX path. There are no hooks in the IOMMU, DMA or
-> > > > page allocator code. I wanted to understand if this implementation
-> > > > correctly captured the feedback on this thread. Key components of t=
-his
-> > > > design:
-> > > >
-> > > > - Chunks: as in Luigi's series, memory comes in 2 MiB chunks, but e=
-ach
-> > > > chunk is mapped once per opted-in device through the DMA API and
-> > > > records its IOVA for each device, rather than using a shared IOVA
-> > > > window.
-> > > >
-> > > > - TX: page_pool accepts a memory provider for pools that are not bo=
-und
-> > > > to an RX queue. Per-CPU page_pools take 32 KiB pages from the chunk=
-s
-> > > > of their NUMA node; TCP copies sendmsg() data into them through the
-> > > > task page_frag and allocates its skb heads from them.
-> > > >
-> > > > - RX: an instance of the same memory provider, sharing the chunk co=
-de,
-> > > > backs RX queue page_pools. RX chunks of order-0 pages belong to one
-> > > > device and NUMA node, and are shared by that device's queues on the
-> > > > node.
-> > > >
-> > > > [1] https://github.com/torvalds/linux/compare/master...NamanGulati:=
-linux:netdev_dma_pool
-> > >
-> > > IMHO the netstack should never read from shared/decrypted memory. If
-> > > you put it in a SKB you have to be sure the only touch after that
-> > > point will be a DMA read from an untrusted device on the TX side
-> > > (sending it to a trusted device would be a fail) and the final copy t=
-o
-> > > userspace on the RX side.
-> >
-> > That's likely a fair callout. TBH I'm not very familiar with CoCo and
-> > will spend some time understanding the constraints. I kept CoCo out of
-> > my implementation as I approached this solution from the overcommitted
-> > VM problem where we are trying to overcommit memory in VMs and use
-> > these pre-mapped pages to avoid using bounce buffers.
+> This looks a little funny because prior to this patch, nr_devices was
+> always incremented in pci_liveupdate_preserve_device() and always
+> decremented in pci_liveupdate_unpreserve_device().  Now it's only
+> incremented once (per device) in pci_liveupdate_preserve_device(), so
+> it looks unbalanced.
 >
-> Why does overcomitted VM use bounce buffers? Do you mean this is
-> about getting better memory clustering in page pool since the VM
-> paging granule is 2M?
+> My guess is this is because previously we didn't expect to preserve
+> bridges at all, and now pci_liveupdate_preserve_device() might be
+> called several times for a bridge, and it's all just fine, but it's a
+> little subtle.
 
-Not exactly, we are trying to use VFIO passthrough NICs in
-overcommitted VMs. Since the guest memory is overcommitted we can't
-dma-map the entire guest address space (as non-overcommitted VMs do).
-So overcommitted VMs can use bounce buffers to have a set of
-pre-mapped buffers to bounce traffic in and out. We're trying to use
-this solution to map pages dynamically with virtio-iommu and recycle
-them via page-pool to avoid traps on each TX/RX and avoid the copy
-cost of bounce buffers.
+Right. nr_devices counts struct pci_dev_ser entries that are in use, so
+it goes up when a device's refcount goes from 0 to 1 (the entry is
+allocated) and down when it goes from 1 to 0 (the entry is released).
+For endpoints that is every preserve/unpreserve call, but a bridge is
+preserved once per preserved device below it, so most calls for a
+bridge only change its refcount.
 
-This problem extends to generally reducing IOMMU overhead in
-networking - taking the dma map/unmap cost out of the hot-path and
-avoiding IOTLB thrashing.
+> I suppose the "(dev->liveupdate.outgoing && !dev->subordinate)" test
+> above is what allows us to just increment refcount each time a bridge
+> is preserved.  And the test around pci_flb_alloc_dev_ser() is doing
+> basically the same thing.  I wonder if there's a way to connect them
+> more explicitly.
 
->
-> Jason
+Agreed, both points come from the same thing being spread out. I think
+both can be fixed by splitting pci_liveupdate_preserve_device() into
+"already preserved" and "first preservation" cases, and moving the
+nr_devices accounting into helpers that allocate and release the
+struct pci_dev_ser, so it is visibly paired:
+
+	if (dev_ser) {
+		/*
+		 * Endpoints can only be preserved once. Bridges are
+		 * preserved once for every preserved device below them.
+		 */
+		if (!dev->subordinate) {
+			pci_warn(dev, "Device is already preserved\n");
+			return -EBUSY;
+		}
+		...
+	} else {
+		dev_ser =3D pci_liveupdate_alloc_dev_ser(outgoing, dev);
+		if (IS_ERR(dev_ser))
+			return PTR_ERR(dev_ser);
+	}
+
+	dev_ser->refcount++;
+
+with pci_liveupdate_unpreserve_device() calling a matching
+pci_liveupdate_free_dev_ser() when the refcount drops to 0.
+
+The helpers would only manage the entry and nr_devices, not the
+refcount, so there would still be a single refcount++ shared by both
+paths, as you asked for in v8.
+
+Since the series is already in liveupdate.git, I'll send that as a
+follow-up patch on top of lu-pci-preservation. If you are ok with that,
+then an R-b or A-b tag on this patch would still be needed.
+
+Otherwise, happy to send a v11.
+
+Thanks for the review!
 
