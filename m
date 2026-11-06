@@ -1,98 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE87606A32D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EB3606A334
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=V5Ru+o+2
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RUzFwGJ+
 Received: by kanga.kvack.org (Postfix)
-	id A06776B05B5; Fri,  6 Nov 2026 08:52:25 -0500 (EST)
+	id 573F06B05B6; Fri,  6 Nov 2026 08:52:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DE586B05B6; Fri,  6 Nov 2026 08:52:25 -0500 (EST)
+	id 54A806B05B7; Fri,  6 Nov 2026 08:52:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D0ED6B05B7; Fri,  6 Nov 2026 08:52:25 -0500 (EST)
+	id 451F76B05B8; Fri,  6 Nov 2026 08:52:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 668846B05B5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:52:25 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E4BA3160D7B
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:52:24 +0000 (UTC)
-X-FDA: 85404833808.30.B6D6A3B
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 150C320006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:52:22 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=V5Ru+o+2;
-	spf=pass (imf13.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 180206B05B6
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:52:53 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 976151A0DF0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:52:52 +0000 (UTC)
+X-FDA: 85404834984.14.A310F6B
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BC55F40006
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:52:50 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RUzFwGJ+;
+	spf=pass (imf11.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793973143;
-	b=yUwP3hP2TD8VBlg4uvMMrEEpclqRV/xDXMvAja5eV3WikWEl0t5C2QZRbFTHB+0ZaNJ4QZ
-	LLivQSfDPc7JT/A9RibIi984LtHddLBdNMEUSVVMEp4b97jmokQ+kdgaHkFOL0HzPobvW/
-	nNKig/CDHqDwq8/spqOgn12xaJIaa00=
+	t=1793973170;
+	b=KK23VibSsVXWU2nCTNTZ1Fqrze0XnQjbCZbRDt+Cw8kANtA0/xeqK+MMmDfHpy3IG5lfoY
+	Zv1LP6fRega4d/spAQpzanf9JvD3j7ZJywd5NmTyM71a8AC+dIk7Ob9Ejp0b7y3JoZG0qC
+	cy2CU9bbFy6hLwWJKGsTzKyPVYArmG0=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=V5Ru+o+2;
-	spf=pass (imf13.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=RUzFwGJ+;
+	spf=pass (imf11.hostedemail.com: domain of olsajiri@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=olsajiri@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793973143;
+	s=arc-20220608; t=1793973170;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f7qkgX7ESuYJEi65BD2oZdm27r2FwJ6aXncoGqVoKbE=;
-	b=k/OwOlog6ScDuOo6ivlQQTKuOUePEnS9S3ko6AVK5X8vzzrkTMwTdbZRZQxQK4ZuzldniG
-	Lf8w5BVNrKlDdIKyrHBJdWgUJEuziCiWbOyr2Nj+PiWVYQGXn1jlWHXItyUGnhnNHYkx8N
-	ixiGxsaV0liYHVuqKGunppCa8D7GWCs=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4a1fbd52ab6so4361785e9.0
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 05:52:22 -0800 (PST)
+	bh=PcC4IPdf1ihtWsu+EfJlFBQAiBAyUnEQfCqCotWg6Gc=;
+	b=2Bu6OmmlKjAEVCJvBfESi5YAaiuV9YtpjvCEcjf8M9SPmdA8LH1/8Tri0EZ6YaTeyjD5ph
+	mUaP2UPyC4dn55RtF6fEbJrZrsLQdgi1Ki1rxbWHnlUZ+sm0hS1DQGJXejgaH+VTxZg84W
+	q/tOipFVKgnWzOkRIvRwpjQAKx8YzsA=
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-492f6b7f70dso388096f8f.0
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 05:52:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793973141; x=1794577941; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793973169; x=1794577969; darn=kvack.org;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:date:from:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=f7qkgX7ESuYJEi65BD2oZdm27r2FwJ6aXncoGqVoKbE=;
-        b=V5Ru+o+2dE+qwVJM2QxYeARR2sWSHaYWvLJFvv4u0NDw5qUg/4gECJ4JS3bFXui2XV
-         PIYBS7a1KT5kQX+SO6lIjtVKF/hkgkadfdUKDMWF5w1SrmyAabOtc6Sx4u0ZtAbbMk7C
-         yRRzm3IgYOHtoqqZHymJp8kho2g9gAkoUC3z/nhwxf+ECPWujVzBZ2QrheeLZUJX7CJX
-         okAUIvRe5JmLjun17JXSaWyACygQ2jPgiisdxs90CQHcveoEjBmfZBhEkTWtCSPGdhsm
-         JQq5uUoe9ZYcVlSesMBZ7p+CM01n6dYG7sWLNXLK25q5KtPxSEsn83ZZFgNzadPqpvJe
-         40tA==
+        bh=PcC4IPdf1ihtWsu+EfJlFBQAiBAyUnEQfCqCotWg6Gc=;
+        b=RUzFwGJ+m/3C7RfheWbYuhNecjmGKW1Orx7SIjxW0T2H0OhMijc++cG5vl85lpXDUs
+         UEuvIrGFtpbVKrf53adG8H4Ai3MzD+vlpfTXTtWnwqUuyGcN83hFSLi78eNmIUBc8Dp0
+         Q/oPOgbNP5JSPKxKlqmuHSnlIMC4BNxFxreku6z70IpXS7dboU5sgP5JpFhIlRlyyQ1P
+         N4rP0w3TMbF50mGlFAkPv/xeNaZPH/rbNGZY8GmROsLXGVhH6ZymSEPgjAuHJemP7aNe
+         ksQ0gAWOvAWn1wJ3L+eGoAW8CYB26XbnpIs7z8eWJjVuDJhITUVtd2jtWlUNzsBFVGTS
+         DLeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793973141; x=1794577941;
+        d=1e100.net; s=20260707; t=1793973169; x=1794577969;
         h=in-reply-to:content-disposition:content-type:mime-version
          :references:message-id:subject:cc:to:date:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=f7qkgX7ESuYJEi65BD2oZdm27r2FwJ6aXncoGqVoKbE=;
-        b=G362rnT+cneLCh6tgNY35c3rqwjKordWRiM2zT2meXovSQMyDmSNeofNleHyvGr0uc
-         3ib7J8xcWC5WijoVH5H82yO+IIMjCwaX2NMHyYV6WYKeNTLeKBpD0PmXoUHxCpY63qpT
-         xg5H8TUqmdO/6VvRtWTJHYbaRrP0qjLS82sLrwVdXCYs1ijOUtEGKjXBNPpNeik2wlHh
-         4AGFuhcU23loDxa4yUtX1NwRY+8f7jc10pyiWS5G/T7+yegKjTcUfyU/vwPbJ3sacdfa
-         XrO/MiESNAvhr0BODyXQlRzQ+VZX2btSQuOHyT9TSZjscZKj1u+uO7k7P2IM9kvuzcWz
-         xvoA==
-X-Forwarded-Encrypted: i=1; AKwUvByARHMZQotVePuHk14g2ujKRZ9r8DizHo5nqy/ZjD2/PKZ0YQb3xZo1wDxZ0VHd43y19YYA9jcC1g==@kvack.org
-X-Gm-Message-State: APuU4Z9hrXBv9V3TuynZIWzEio2jhwOmVpK7u+OAXhEzHxE9ANkkpQch
-	tPAmHdw5vFV0DbeWoJRLSj2JfQB1DRnmmx0NH1h2Y9BnH6hcYn2vIu5E
-X-Gm-Gg: AYBFou3dP4hk/ODyz546kx9wBya1CN1N9LzAH9rUD9/gq77kG5Cccy1a3Az4ecMulGp
-	ysH1PImXiD/FRhFho7y0jy7MOD1+WPPy/yfqwd0p3gKh/O5TfHgo3kV8n/Mo5KqeNSJhS7sg8Yf
-	s1mHbxhsRCsfEl8NM7G1UnRZv45o5lr2sfpM4xNqFHdj3HNXIVTESKf2CMvmuiZav/TZ8WZOvjE
-	rkS+GsFELPYNpEIJYl/x5nmyuAAAcTq5CGM3qSgNZpUG1czi/IyPpJjp0xrU+W1F1PTEMgfvcdP
-	s+Zjql8BypAMrhNcJTIHLhW4IBZuXghFo0zfgWeoYxGy3WC04yLn7tMlShVrqLO9HmGIF4PssOp
-	G3U8eMXZ8//kA3yj+wZ1WX1Ed9PFHnCipoH3x2fVPvbHpRqcXJfqMpDGeUBzQ3q4yLWQ0o2iCMV
-	GL46FW+PNshDhaphk8YFzMQnLna08ICtmN59aukGxnmTKxpuQ4rAN+MNZ5yyc8oeqmjVSIjX/dH
-	NXbsymnnI6mhOMHczhPRIky8IZ8GDu/tHcROW32gHbDN06kJWQ7moxJrNjcUvUDDF3ldNNoS2Y3
-	/pSzmfyzd2TUh6A=
-X-Received: by 2002:a05:600c:811b:b0:49d:1fa8:b266 with SMTP id 5b1f17b1804b1-4b6deb5fe17mr43147355e9.26.1793973141312;
-        Fri, 06 Nov 2026 05:52:21 -0800 (PST)
+        bh=PcC4IPdf1ihtWsu+EfJlFBQAiBAyUnEQfCqCotWg6Gc=;
+        b=whAuMN9NnPcrKsnhQjVC7ylzhhBlj0A8otid4bm/cLKoVUgfVQgaLh2uyglX//H8t9
+         b/mYclqiGhT3uW8q6n6vjpmFawc/bdYTPZn4J0CCvb3IroWLUBsVzgrcGwKQ7dqJvbH3
+         apJvdmTdlAw8JrOA6hFWhBHrVa7RHy0ZQNp5eDXpug9QRWdggZ9OYdAZOFlaRYTj2oKh
+         fiHUM25YRhZWmBliKNuQxI1VUS8ezZ6UbkXQ1+NukDMhRoXLnvcyx8B0PIpL1JdhTPHm
+         qpzkHzW+cA3a8XESDEMSh2mE1bIPe+L5PS/uhg+D0e3XouyfHF9Y6C80WOClf2XoJ5KD
+         P7Bg==
+X-Forwarded-Encrypted: i=1; AL+hErH1xLAhH8Dc7Z1o9dX+RWJaQ5GAp0PnXcLbWFRfzugQcPfFUBC9MnSjtdRsKhLNQIU7x924U3BBbQ==@kvack.org
+X-Gm-Message-State: APuU4Z/HSLXSe9zELxqnrnxWN4Blo2Yi7VPtUEzyxvwqh91QcL62R0ic
+	2YVKl6FqMpwI3wSH/1erN9+RKns+7IBqoDVbioh7YeQ+S0aeGGRoHeJi
+X-Gm-Gg: AYBFou1nzs1Xvk/1eVEFB4BpYvQc8dzhvrc+q+GqKjbKpMT6UyaXPulsMC+QQ/yw6ae
+	t7QJ4b0jLuCjOCuxNMGDKi3xOXwWJDzDDsyBJ/2kaVbCsmDoZlcChjimKvM4T5+9Im6boaqe82P
+	LYrzq8UxBfv+BSJuig4iS4NxBS7/X4BhVcxMrtUf50yrN5GKSoUBdqHY0u/IdqZIzzvvo3busp0
+	NqHm1wfVmSi0Uyh09A6LzP7lcxLcmLUB5OU3kvSCULLdCF4K0j3Ch8LpGqVnb5Nw5IlLGdvojNq
+	MSNnrIUSr0kdkXZP9GNYNtCZR2v31wyD/1Hz3b/01teeYDJqzzzqJGiJdvEwn2Dw8IWmo4i3MD+
+	IiVPRJ6tLmjqQVuMhJTjoW0FbT9UdZAUfcpNZRffPNfGxI4DsXarz3IzVGApa+luo/g+sPdmjcc
+	ZmlGYKqb4h2NfNSL6fFyc55bbwPIu1t/2fK8pVW9UvjZdrnpy7JCdLJ+WRfv13mJ0lBdnDoBmRB
+	iFluvTtX+JX8TkjQbiu89F1kSM/Wtjogct1O3J77lcO65uZFoNTHNVbkB6z3XGqUZueA5coxPnF
+	ucnLNk6rIs8rXGc=
+X-Received: by 2002:a5d:5c84:0:b0:48c:7386:af18 with SMTP id ffacd0b85a97d-4927b092b8bmr5141147f8f.8.1793973168740;
+        Fri, 06 Nov 2026 05:52:48 -0800 (PST)
 Received: from krava ([176.74.159.170])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b6e24012c3sm56107585e9.13.2026.11.06.05.52.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d7701bfasm3877363f8f.40.2026.11.06.05.52.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 05:52:20 -0800 (PST)
+        Fri, 06 Nov 2026 05:52:48 -0800 (PST)
 From: Jiri Olsa <olsajiri@gmail.com>
 X-Google-Original-From: Jiri Olsa <jolsa@kernel.org>
-Date: Fri, 6 Nov 2026 14:52:18 +0100
+Date: Fri, 6 Nov 2026 14:52:46 +0100
 To: Andrii Nakryiko <andrii.nakryiko@gmail.com>
 Cc: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org,
@@ -102,28 +102,30 @@ Cc: Alexei Starovoitov <ast@kernel.org>,
 	Lorenzo Stoakes <ljs@kernel.org>,
 	John Fastabend <john.fastabend@gmail.com>,
 	Federico Di Pierro <nierro92@gmail.com>
-Subject: Re: [PATCHv3 bpf-next 2/8] bpf: Add user memory kfuncs
-Message-ID: <au3bkmPTBnpVU-9m@krava>
+Subject: Re: [PATCHv3 bpf-next 1/8] bpf: Honor const on generic kfunc memory
+ arguments
+Message-ID: <au3brpNZG2nANnha@krava>
 References: <20261105102343.311331-1-jolsa@kernel.org>
- <20261105102343.311331-3-jolsa@kernel.org>
- <CAEf4BzY+1a8v8AHcr1AfUBR24uMitU7gEe2_1Npwp-8_kagU3w@mail.gmail.com>
+ <20261105102343.311331-2-jolsa@kernel.org>
+ <CAEf4BzbdBLb1cBeF0an386k=CmMYKdz=Or5mSjzy_F5SFOwsxg@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAEf4BzY+1a8v8AHcr1AfUBR24uMitU7gEe2_1Npwp-8_kagU3w@mail.gmail.com>
-X-Stat-Signature: 9wmn3drxtpb6pziatzjmpkwierqyoqne
+In-Reply-To: <CAEf4BzbdBLb1cBeF0an386k=CmMYKdz=Or5mSjzy_F5SFOwsxg@mail.gmail.com>
+X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: BC55F40006
+X-Stat-Signature: waci4kuz3o8m4esf56fjewji9bg7oji5
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 150C320006
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1793973142-442115
-X-HE-Meta: U2FsdGVkX18Gtqm9Gs9KKS3H3wPih9MFeDdgSCEp5WvGVrmZoID+7SiWOLncJCEyrZ+GvTwvcnDSY58wDluffY71Z5yv/IfhEhw8CLkwQt++XWuHoq+4xU/hNw8q3cWKSWG9kPd/LwD0n3FoPjLZ/phj487oUPowEH0OvEMjbLDgAIpsSUybTbhC08NWleWXm/It9ekwbUHEH0nQgsXUBC/BrlxJkhgNnIjTp1szTB7mqUsg3JXeIGR/yM+HVdPMzWhJshc1OfJbXZzZ2L4BivLieLZ7AWwLbuZCx3ZaEraTsVqb1Tz2O6TJ4awgR/bB9UyHBcO8tsj4aWWuzVICt4r+9cI+Xl2I0+zUp2PRGgB9l+imqRdRAFKsk+uv8F/9MzD5xzk2WykC224qKLOoY5czTmScbmiAKWOim5Mhks6dSkCk47VryYbAPwwEC/Ruf8JSfL8br2d7R1D66pfCciobeNRG2jdMxxIhpkdBzU8R9tmAdIGHGTYFhR+gKNsXBLQ6I0LYI/0fuRiBkDnyasJdBfgKJIYVidWvZ5jS05/fls6jj29ryS3KgsfPtJ1Cu/ay6KI+oO+/iOQB2iE+VrLfzaHG4d1yHGaHD0hz5I8JFxXr+JHWVBACjmlzkxt/2I10iwimHBZ0gExAAygNo1IqPOggcjA7m47Ftudon0XiBkD9uKQe41Rt8aG2jvvSboRcNL1DPsa0u/cA5rL698Ho/tnm9Lv9mRiDYj/3s/4Gi5TAY1NG+aX5A/Jnp0C2qOR/oaaBv/n6Qbvte2iMo5Ge+t0j9+ZwUB+mgcj607jeOo4cJro5FpbulwTmXA57edky66vgogO6kB8FJGJzC1U0NIIlOWvkSWf2Byl8jO6q55e1YFKr7cAK3Tf4ZyilDBldwtCiEudRUkWshly4zLpats8wFEN07o0qwC4G+yp7wWdhgv+Mi6qAeiaS+NTkseRTBBVFOoDEX22/Ukf
- ZtVdLvL8
- tx3oQT3jp3siBD3eP1G2VOJJfuzWDQG5evSZnNnQfTD7AlhYaBuuFkTI6rrpZRFVk3RrQgGadQeAVQ5OS+5b4v1ZjlMdALh8jiV4ZSMMIGF889UBI4VZ9+Ty7PlmA/po33O+G4flQ5s1a2d7uNnaJXOtjWL6uVOFU8D3sWoiPQETkXQi3lCR9Pg8A2Rrd/NlWxuaB3HFVib/ga/TY4BojH0YhcPO1HHLNGzG6fbksysqtvdDds+Ump9NkCp6RgWi7x//e07wubvxSBR0Cbut5udLqOVfo7QRwwZRU+leLt57MUcbhT9OG8EHo01p3N2f9mxmIk4NyFQKdwXO7BBTIvbXJ3hUbsM6Du49Qpx/ASFdYH9bwRAvtfoxr07OjPxC+Ia6gs467lxHGR69ssS8o8l0EVMSZamFG0Af5dEmEMTmr4qkXEWHOUmtK4ISVULsQFwCk+ZnD2XSpVQrXXMEffjoSI4SriQqT+CyhuyiouU5GlFp+npd3HHtOqPpjAlUxo/xp
+X-HE-Tag: 1793973170-404169
+X-HE-Meta: U2FsdGVkX18FTsZ5q2OkRScIrYnc+PkxFkba8NNNKyP/Xm2h9qUvSJNNUJJYoqtgePQF+XpqYlQsr01g8epe+hBsFij9iXauGBfFrowm29hffQ58lmq7TtCLhk8/OnKGnu9MLu56WbnD5hHQs9whoGG/hy33RGXTbbMLtp2vGZNgXwdUCH7pc4rN7zH0szAlloGRahpPQwK135f3vpPRJ+yck5P/XYCTbalDqZPIE0eySK8TODoxndH7cg2HU2/VtWbiHSkv89jXSAihfvvNiMGoSGrYBW85DSpa7qZ9t2NHkMiuw2iXbxd8Vhd6CjmAy7v8ktJBWw6Vg3qMn69vvwk3JZ0T6LU75E7Ka+HmCCJTR9ZLZrjcd+iq+rmZBUNirxylzicTG/StVgixaOSDjhK2dMKMygd8JsX9U4FdWnAZyfFLaw/L6zylAts/HWnS8r/ja6PwuNVwCPUiLVWPbH+9kSOQbt/B9yQE1jud11zlNF+C25Ml7QnT2q43oJpCmHpjP4Zzuh65Y7cBEGw0+5z1oAZplEeiFvu15m3gvA6lK8kpjeBmXWVtMKF9+US3QD63wu21+5lhSjZNfj+sXFYWZxLsHwFG5AYGeiSf3aOzMADo8FWAi7MFIqyuzvxCZ27tsPuAxIVsujN5/VUCAzO/X/JjquqpFMYOzgDJtApsDnCiMZDn0/XhhWbWBbHvKDYshzE7T8xSGF+Ar7iKydpDi0PTrs91ZZykukDctjuRK//jj8uuvuNNSV+TZuih4Xqh3PMtQ90wVkpWBge8Nj+PMMNCT6b3ouoRA2ambtJ+daWqf5V5dEIst3eEEBWranGVny/DAR0jLRIA35C8/9/lN5pkOBOSNV67u0YaNVCPnbtq2Kge5v6FptqwInzCnj54pLqKFjC6foth2mW5L5pU8Kj2FAnBCsyeOxdmZvm1R0FZnp1rV1OHYY9w47JzIbIXt5BJON5LqG/D7XY
+ h9I+bpVr
+ a4+K30c0DRyMJRdbZUiv1HHRArhZu2jJdee/gdOIxFr6DDoiaMJG9IyaPh1tQ5gwjSYpeaT6Ry2x+4qE6oD3Ux//a6cPRHhzxfoguopZZ2s2A+GHxz1yc+7ju05V/a8jpca9wSvlVBrQjV3Iqkc2PPM0n1JBsQR9n4fdAHM/COQ2O6rGoSYUjgkZisNqPMvA4wBg+YT5UatnIjRSvLnKvzMgg1g0Lie4tY53f00gPttdDPyTJUn8wbyWb9U1Vfp8RvEcuecZkPfAMi6tZ9wfAZS2Av0MHulcDGjRvLYYZLCmCaPzj0/6K2QbrYVhIzTEcNY9eohjoYUAwQe582d86lVeaL0H3HUztqipL7PC4lQjkIdj5qhLsSHJ26t1YDZBEMQwlZjWXqgPSEIJ6LG98q4FfN0lNrIE+KKoA1eCtbQETNkxV+fyYg85jhvvt66kGgWqHr1j/8aVy+wHmYrMF8CZbadO08luqY4pdlP4er/p0Mqm7xR0yzq0WuzHsRWo6Tm1Fp6HV/98ep5AOGKP3zP4mChGM5S7hRWR1YY7OYUy3PoU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,55 +134,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 04:34:40PM -0800, Andrii Nakryiko wrote:
+On Thu, Nov 05, 2026 at 04:34:44PM -0800, Andrii Nakryiko wrote:
 
 SNIP
 
-> > +/**
-> > + * bpf_copy_to_user() - Copy data to the current task's address space
-> > + * @unsafe_ptr__ign: Destination address in the current task's address space
-> > + * @src:     Source address, in kernel space
-> > + * @src__sz: Number of bytes to copy
-> > + * @flags:   Reserved for future use; must be zero
-> > + *
-> > + * Faults in the destination and writes the way ptrace(PTRACE_POKETEXT) does:
-> > + * a private mapping doesn't have to be writable. A partial copy is not undone,
-> > + * the bytes before the fault stay written.
-> > + *
-> > + * The caller must coordinate with other threads so they do not execute the
-> > + * destination range while it is being modified, and ensure execution begins
-> > + * only after the copy completes.
-> > + *
-> > + * Return: 0 on success, -EINVAL if @flags is non-zero, or -EFAULT if the copy
-> > + * fails or is partial.
-> > + */
-> > +__bpf_kfunc int bpf_copy_to_user(void __user *unsafe_ptr__ign, const void *src,
-> > +                                u32 src__sz, u64 flags)
+> > +/* A kfunc only reads through 'const T *arg'. The compiler enforces it. */
+> > +static enum bpf_type_flag kfunc_arg_mem_flag(const struct btf *btf,
+> > +                                            const struct btf_param *arg)
+> > +{
+> > +       const struct btf_type *t = btf_type_skip_modifiers(btf, arg->type, NULL);
+> > +       u32 id, ref_id;
+> > +
+> > +       btf_type_skip_modifiers(btf, t->type, &ref_id);
+> > +       for (id = t->type; id != ref_id; id = t->type) {
+> > +               t = btf_type_by_id(btf, id);
+> > +               if (btf_kind(t) == BTF_KIND_CONST)
+> > +                       return MEM_RDONLY;
+> > +       }
 > 
-> you'll eventually want bpf_copy_to_user_dynptr (we already have
-> bpf_copy_from_user_dynptr), so might as well add it from the get go?
+> quite weird implementation, skip modifier, and then re-walk
+> modifiers... while not have a loop from t->type while
+> btf_type_is_modifier() and if you find btf_kind(t) == BTF_KIND_CONST
+> -> return true?
 
-ok, might be useful will check.. will send as follow up
+the intention was not to introduce another helper with modifier
+classification, the tradeoff is 2 loops [1]
 
-thanks,
 jirka
 
 
+[1] https://lore.kernel.org/bpf/DMLRV3E28SC8.3FJZXLBLZI4DD@gmail.com/
+
 > 
-> > +{
-> > +       int ret;
-> > +
-> > +       if (unlikely(flags))
-> > +               return -EINVAL;
-> > +       if (unlikely(src__sz > S32_MAX))
-> > +               return -EINVAL;
-> > +       if (unlikely(!src__sz))
-> > +               return 0;
-> > +       ret = access_process_vm(current, (unsigned long)unsafe_ptr__ign, (void *)src,
-> > +                               src__sz, FOLL_FORCE | FOLL_WRITE);
-> > +       return ret == src__sz ? 0 : -EFAULT;
+> 
+> > +       return MEM_WRITE;
 > > +}
 > > +
-> 
-> [...]
+> >  static bool is_kfunc_arg_constant(const struct btf *btf, const struct btf_param *arg)
+> >  {
+> >         return btf_param_match_suffix(btf, arg, "__k");
+> > @@ -13618,7 +13634,8 @@ static int resolve_func_arg_type(struct bpf_verifier_env *env,
+> >                         PTR_ERR(resolve_ret));
+> >                 return -EINVAL;
+> >         }
+> > -       *arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE |
+> > +       *arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE |
+> > +                   kfunc_arg_mem_flag(meta->btf, &args[arg]) |
+> >                     (*arg_type & (PTR_MAYBE_NULL | MEM_UNINIT));
+> >
+> >         return 0;
+> > @@ -14170,7 +14187,7 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
+> >                                 reg_arg_name(env, argno), btf_type_str(ref_t), ref_tname);
+> >                         return -EINVAL;
+> >                 }
+> > -               arg_type = ARG_PTR_TO_MEM | MEM_WRITE;
+> > +               arg_type = ARG_PTR_TO_MEM | kfunc_arg_mem_flag(meta->btf, &args[arg]);
+> >         } else if (btf_type_is_struct(ref_t))
+> >                 /* A pointer to a struct without a size argument is classified as ARG_PTR_TO_BTF_ID */
+> >                 arg_type = ARG_PTR_TO_BTF_ID;
+> > @@ -14195,7 +14212,8 @@ get_kfunc_arg_type(struct bpf_verifier_env *env, struct bpf_call_arg_meta *meta,
+> >                         return -EINVAL;
+> >                 }
+> >                 proto->arg_size[arg] = type_size;
+> > -               arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE;
+> > +               arg_type = ARG_PTR_TO_MEM | MEM_FIXED_SIZE |
+> > +                          kfunc_arg_mem_flag(meta->btf, &args[arg]);
+> >         }
+> >
+> >         if (is_kfunc_arg_uninit(meta->btf, &args[arg]))
+> > --
+> > 2.43.0
+> >
 
