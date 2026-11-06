@@ -1,156 +1,138 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A86A606A336
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB78606A336
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=obH7tJHE
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=l0Du36VY
 Received: by kanga.kvack.org (Postfix)
-	id BDE1C6B05B4; Fri,  6 Nov 2026 12:25:32 -0500 (EST)
+	id 2DE0D6B05B5; Fri,  6 Nov 2026 12:26:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8F016B05B5; Fri,  6 Nov 2026 12:25:32 -0500 (EST)
+	id 28ECF6B05B6; Fri,  6 Nov 2026 12:26:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7E266B05B6; Fri,  6 Nov 2026 12:25:32 -0500 (EST)
+	id 1A6A66B05B7; Fri,  6 Nov 2026 12:26:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E91A6B05B4
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:25:32 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16616C010A
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:25:32 +0000 (UTC)
-X-FDA: 85405370904.18.7D4FB2B
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 19AB780005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:25:29 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=obH7tJHE;
-	spf=pass (imf02.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793985930;
-	b=AWbkoAedNlEDM6D2DFavLrBs/7LYWowzMZKP4l+IO83KPQcWMEHNOU80smhUhVj7E+axOS
-	QFPmL5+aJPqqfXZF0MO8+3J9sk12HLDzqPmJvJ6xyc1dWcgF0eLR8W2hvSeo+/+0QE/kLw
-	6/xX5zG7RWkR6hGAgujo+EzeLpkdNkQ=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=obH7tJHE;
-	spf=pass (imf02.hostedemail.com: domain of tjmercier@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=tjmercier@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793985930;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E7E066B05B5
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:26:24 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7F6A8140189
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:26:24 +0000 (UTC)
+X-FDA: 85405373088.19.FBB2EE1
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	by imf31.hostedemail.com (Postfix) with ESMTP id C301E20003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:26:22 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=l0Du36VY;
+	spf=pass (imf31.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793985982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fUrJNblI2O1hZNjcXmW6nSh+tuR5hYmiGJK5WvnJCM8=;
-	b=N43Q0IuakoMvfrXPYzV4cJxmuK6kAmlkKgDBOXApnuj39IbIu5/yH1LhsxtgbVmgZxrCpE
-	0kqeGewqOZ0YE9oikXaPreSMlZP2jyT+POGC0DGVWAIRZAb9q1eaptFpMnlsLJM6SP29zT
-	5HCw9aD+hFlBtwJwpD1whdCBelZC6ik=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4b6266b5bc4so1425e9.1
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 09:25:29 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793985929; cv=none;
-        d=google.com; s=arc-20260327;
-        b=b1MMffXmf+LD66sYq1ucIZWQIZCUAYCMdy4wWvc2Js+aHqS7HKLwi8Ipp7FbWJ4IKN
-         9Ke1dxJEaVekz2GH1NP6LSErieygz+Aqzt4tZKaYRJNBqDy9QcvJgHDkpugaytyff2NP
-         rYzp0rX0MVHXpl3KGLNZ4EGlMKOyea6KBIeXNuqSRN1jQEngO+/+8FV9weR3OShZnuiU
-         kHBl0xko4kGao31Nyayp6C7HtrM5OsH0oqLdVBX2W9+tY4rmuGzA5Dmbd2B5wOUJBHJA
-         VlJtbmFprgA9vFScnn7gZZyfIvg6OeASrdKg/BBLxIyH20DxeWVZ6ggY29tVJFS2Af4v
-         v2LQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=fUrJNblI2O1hZNjcXmW6nSh+tuR5hYmiGJK5WvnJCM8=;
-        fh=8z9IHfdRBhmVb2lU4u0+9bRhe14gx2HIjBMrntX+Ens=;
-        b=hzGw7wP4NHPPMrrJHXd2D71i5CddKjU8cclk5Y80yM4qu4EqSsvhfz9SSi1yAmYeMP
-         V5+ScpiV6p26fblOCnLmUHfIDa+8IlQXBqkmYzR/LltjTtJWBgJ7xpGJRRTmo6URT28a
-         ePTChk9dPx/4/Bb6ntJp1J/zxLNIjBjzhNDXP35h0ej8WP8+AO0igZkv6vE2Iw0pIWZU
-         RgYPlZnbVZmPAAMDtVXNiI25Osp/YMwas3dwHnq9j0RTaTzWWnk2ziFNPhXoyyioak5K
-         qatRiq3mwId0G+vSXYQryIn4HW1bk+omeGZuqM6sBJ0iCySgpfWKZgpTdX6TbvVs533v
-         BRdw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=xtFTk05uiNaRRdHOMAXi3GiW3HAfYxRIOaZ0COEoKVE=;
+	b=nkcqSHReoWhjpgTr363uQod36GTHlOpCA9ihdc+Hitgx0lZtQWNJGtqvJOjQOPbnmgyvGR
+	NI+kUVqcFuTj93iyGFarKNFysoiTxDqg0r5n98j6USqbBcA11rAmjblBs4kk5kyKphsaGE
+	gbejXj4ov+sUmNhSRlcWlrOJ+u7il+I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793985982;
+	b=6eogDHex0+ip4VNTVjR9YKQQdzlScr//gsB7dTzFzncj3eCpc7o/JfsNralQI6PlJeQB6r
+	l2QzyLWwgbhvJ1jlcQ8rk109cOVGQsEw/RsmkYM0JSmPDnZeAJ0qWqQ3oDDQawyJSpr4fd
+	ESONojbJLinyFG1sWu6Z3wROnQLOMfs=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=l0Du36VY;
+	spf=pass (imf31.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-8b309147589so8318267b3.1
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 09:26:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793985929; x=1794590729; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=fUrJNblI2O1hZNjcXmW6nSh+tuR5hYmiGJK5WvnJCM8=;
-        b=obH7tJHExZkRbcPQ3md7DIkpPjoMKPS3I9sRwOfYSR9ZYMn5qYZu3LMzVvfVIEOF6G
-         fp6GzVE3EsIo3AtPwK0+wt8lNWGnx6/lVjLHdQGb+tkC4subNZomRkPyRVwgFB60xNyX
-         8806wxGIa+XixiaUfwWL0y8SO7qrGEqYhHMx9sOUE0qLTc8igunEn1WiyK589KNabl80
-         iG2Bs6nuXJLhlLb68RNrtpqFJqm5OcxUd7AOmrF1EAIiBLkU+X5SOVEdUPtZyAn0wgnF
-         UGfLmK52SOvdQ3e2H17L/tvapic/zBAIaWAHNcDDue+93vMHMMCCg4yTQijASHSF66HV
-         gUmg==
+        d=gmail.com; s=20260707; t=1793985982; x=1794590782; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=xtFTk05uiNaRRdHOMAXi3GiW3HAfYxRIOaZ0COEoKVE=;
+        b=l0Du36VYTpRy44QqO6c84bioDz96KO5pGIA1AzfKbxDeEf1ngFUStuKNkTRHG1L16X
+         Er+bpYKUPPlCQeBzj+ymBpHxUSGc6mpq+R4UsNRiDPW6mw4E+MX0fRyjlhSYrlAWTN5h
+         TrXBKNk8juaAT9KZX1f9WGkCRKJskYZx/TfbvmaMXicWAdqaZiddpHMVGZN0alWOLINO
+         grLb+yq2q0Jpyb/iwYxXW9v4OWj0Bu32jMqJQXlJrRGklTQ+l5cs2Vsdcixbq0ItET6k
+         NL2Ou48jxOazN0D6Q0Tf+3yz5jNCJXFFSo6harWm819uisF32pKIbrnVWAo/Me2LuBwM
+         bTtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793985929; x=1794590729;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=fUrJNblI2O1hZNjcXmW6nSh+tuR5hYmiGJK5WvnJCM8=;
-        b=qMOOvMKN5EiM5BIc8CrdL32FMjFAEkeAVJPWsw9F5yXQS+FuJjiaLELej5BMl6vBpj
-         JDNZWuv1OyiKXYRhnWIAPUXZaMRDhXP2zVcBzMioyqJEhgy/DsMAyAeMpFu9lw8+RVJA
-         Wr1WBxcDaVypziFRrRixwyEwNskm5irgrTe/Nj/KWjpHoDU+Ll8xvyhkX/MQdelHHw/y
-         uowadUvL2t1ZgoWFzELkZl6YuDl6rXgZHJGLM3SWPAxiLrdGF4Pu5irX48M5lcAQjWOa
-         EgNKof5o1LWuqyHy2aCBnfGK1LLbStd0pbIDCoxkwMCtn7eIJYl1xO+FgZlFWch6OHzm
-         OB1Q==
-X-Forwarded-Encrypted: i=1; AKwUvByqwvSxXhkkARKMcT+j/rshZ3bBqRrwtyozzVn5QdzLI/uD3XdiEnidY0f2nXtke5ZTUTvdXvLgXQ==@kvack.org
-X-Gm-Message-State: APuU4Z8/qgna+NCfwYNUMZYk7FsgqtPDH6jULwWKIumUvnMK/FCu2NI1
-	Nv53brLfZwh4unuAURpAYHeux50rwoguzn8gUs87SOv/hyW9bDma3TpI1Cmli/PCebAbR6ON9mj
-	51co2u3KLrUF0NP3+mGT3L5ic4MItwS6b7faZjAF4
-X-Gm-Gg: AYBFou3sPHbVe0tXvvImoFX4gktPLEUMkppyJHryAUhpGHYdrmM2D5YDEebHV8PlQ0T
-	sai97N+1DUCs4LKUFVuPUrnoSHfwLIXL8tJNm4mG23Ms5Ac/lKLNxt+WMnXwz9l6LLiWbk4jywH
-	wcUjkcnGkOTKBVx9s2daOxql9N/WVZ8tEHf3qgZH286MJ5sZRD3EdkeVKTbxAP+0HVi+9KnyzJa
-	K/zgja4T7Hy42QphsVRzcWIU+FDlRchWtz39tTLhZHdEt4uEAsJYSPpOeg23GgZjtbdzhE1Ntjk
-	hbZESPbU+4fEHZlrZ4AG2Xo+Ld7bSyEFhMINXDgqzfIfR6M4RYQYOoB/1uslbTErw+BPWm/kVuj
-	F9X7njp1+IHF+TS9eWNWhU7OvoIb8d1Iifi8wa9zNcJQWQUnJV6mTnKAl5H5QNw81AmidncL+cB
-	sJVGC4Eo7N5wv/W5lQfecbCxyb8Q1W3v/oMGyJ05Ir1MjP
-X-Received: by 2002:a05:600d:644f:20b0:4a2:a8c:22ae with SMTP id
- 5b1f17b1804b1-4b78a315689mr14125e9.12.1793985928307; Fri, 06 Nov 2026
- 09:25:28 -0800 (PST)
+        d=1e100.net; s=20260707; t=1793985982; x=1794590782;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=xtFTk05uiNaRRdHOMAXi3GiW3HAfYxRIOaZ0COEoKVE=;
+        b=RafWe7WnZvkceOpqBztWZKtL8F9LCfZBUjGLHwKp0UhR3f2fInQ19WXd0HrMqmGEAt
+         F34UenwKP1JKXRxsU0VdT3JoM+RnENWQ8QLMGw05UrS5g2DHMrSmE68p8oWhjXPocv+1
+         mFg7qtv9bTSXsxRqH83CwvQUxBvWnD9sBQB1g3/sirI+/TQ6ISwBGQ71w3N7X3C8D06T
+         8hQvkg/dQrVrQhrhQJeiLAIn97ff/5QX73GAVdHX0d2N3f5AIeDKzs++Gm+a9R1Ou3uJ
+         T5jmRkomM/wxHMQWCB7C4R5ogXaO941N6h9UxRixgBpDpKdgC+RP0ieNzweimXx08gto
+         VXzA==
+X-Forwarded-Encrypted: i=1; AL+hErGhEgb8xfNAL6vQRpI8hf2JkcYrn3WjUjUWwix7+E7EoicQRGXl1a7eSFkr1poyOzEjYUgfRtdp6Q==@kvack.org
+X-Gm-Message-State: APuU4Z8vMr/AjWzvbfqGeAQ0L1MoJSfRQqMelaSPUjdFnI1MMZE7eG8Z
+	p3jULC14YcA91LD6BIoEDYoQa5eDRbgU8fOFCl2sZ+DlJQ1RD54aZI09
+X-Gm-Gg: AYBFou3KDq4W27IGoDvZwHnSF3XJfRz5qzPi76BXaj3QQC3TmAO67MmpBNIhDw118Q7
+	W5T8K2faj+LBJNMCg/zfC9yxJYyMRs3D5OqzMvCF2d77sb85OVzluT2iW0PHixbMh5TRvZ1S7xE
+	KNJpHkVtmB5STfwtZen4e7l+7teviZzl7WrOOGKz89BTPgNTe3qww0gPWvlpbj2XSleML+NIlZj
+	qfSRonT29rWAl00YEbsMwopM9FlrDlU6CXJfbhzkpcsmKRUubR+V1uVRcyza08L8O4X9UgQYVc+
+	6K5G9bKKL6Ciaphax6A6ofHEqSOzDqAHhBioJeLE841tA0iCNF2DNVa+pDmiNnTrdSIXD8uReh9
+	wSg40XSbXdrsAN05TpyoJWLHFed/3vyr/erIlsdh4A5R+6dMawbGFX123LgvZfv7zWB5KqYi4gs
+	4aFf5f8BpvRXKmDbjy+Ky7J4o6eV8hDwP1GRzgV0cM0FPdRQPBXCOaLGI9NHCkDiFwtaME04q8W
+	KnLhFmmMgTh1XmzmJcG/pjlVuMEQRZV4Yv63GX/nvzVLb1JR2kkFkr9IwZe3yGjJ+T+9kgBYph4
+	Vj5OE5ESmhFU8WxCC2wA8JVX95Fd95Sja3sg+nm7GxYdYAG19OhyvafDvylu
+X-Received: by 2002:a05:690c:2b86:b0:8b0:ab62:c636 with SMTP id 00721157ae682-8b34199dcb8mr13500317b3.45.1793985981518;
+        Fri, 06 Nov 2026 09:26:21 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:55::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f77055bsm23291777b3.8.2026.11.06.09.26.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 09:26:20 -0800 (PST)
+From: Joshua Hahn <joshua.hahnjy@gmail.com>
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Gregory Price <gourry@gourry.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Brendan Jackman <brendan.jackman@linux.dev>,
+	Zi Yan <ziy@nvidia.com>,
+	Kairui Song <kasong@tencent.com>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH 1/2] mm/vmscan: consolidate promo vs. high watermark checks
+Date: Fri,  6 Nov 2026 09:26:18 -0800
+Message-ID: <20261106172620.318113-1-joshua.hahnjy@gmail.com>
+X-Mailer: git-send-email 2.53.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261106131829.3228926-1-cui.tao@linux.dev> <20261106131829.3228926-3-cui.tao@linux.dev>
- <1e18fcfd-785d-43cc-afd6-d181bf8305eb@amd.com>
-In-Reply-To: <1e18fcfd-785d-43cc-afd6-d181bf8305eb@amd.com>
-From: "T.J. Mercier" <tjmercier@google.com>
-Date: Fri, 6 Nov 2026 09:25:16 -0800
-X-Gm-Features: AclHuK_zmhBLd-fBLwMoqE-7QVB_DAT0nisVVyTe7VWHd67XlQDn1ECR61povKo
-Message-ID: <CABdmKX0nCB2hT+iMh=BB-nC=fUBPof8YvjvO-gtEw+zcHZgvZA@mail.gmail.com>
-Subject: Re: [PATCH 2/7] dma-buf/udmabuf: account the page array metadata to memcg
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Tao Cui <cui.tao@linux.dev>, akpm@linux-foundation.org, dgilbert@interlog.com, 
-	mkp@kernel.org, loberman@redhat.com, jmeneghi@redhat.com, kraxel@redhat.com, 
-	vivek.kasireddy@intel.com, mst@redhat.com, jasowangio@gmail.com, 
-	eperezma@redhat.com, stefanha@redhat.com, sgarzare@redhat.com, 
-	rostedt@goodmis.org, vdonnefort@google.com, mhiramat@kernel.org, jgg@ziepe.ca, 
-	kevin.tian@intel.com, axboe@kernel.dk, linux-mm@kvack.org, 
-	James.Bottomley@hansenpartnership.com, sumit.semwal@linaro.org, 
-	phasta@kernel.org, joro@8bytes.org, will@kernel.org, 
-	linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
-	kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	linux-trace-kernel@vger.kernel.org, iommu@lists.linux.dev, 
-	io-uring@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	bobbyeshleman@meta.com, mathieu.desnoyers@efficios.com, robin.murphy@arm.com, 
-	mason@kernel.org, aesteve@redhat.com, harry@kernel.org, vbabka@suse.cz, 
-	cuitao@kylinos.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: k46h6mdwy7y33hgpzb3c3965dju8tn93
-X-Rspamd-Queue-Id: 19AB780005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C301E20003
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: k4wdt199t349t63scxfdm1di1xgc9id5
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793985929-172319
-X-HE-Meta: U2FsdGVkX185j8nOW8WtYEx2c2XnN7v41JKJj4DVJSlQtY5aYD771Rp8irL1yJkmlOrvoDNPCYNKtMhONQ6/t261hoD7B/qV8tO0YmT1GNE+B55O7d/DUT8HpUKXdQ400wdS3GEdntlDUmRixObIuBTdY4FiWIu8UEQGsLaX782AbU7mRZRYEwnlZB/mnWLhEiWf4Yr0fhbn4ijj5knHkNG3xGlan1hYfyuP8FVbAPFrlwgFoBuSkAX4IVHYEUzW/34dO8fTQqa1B0R4CaGu+cl79EYYWKKKppDMy91wC2xSYBwIr95t5/ExdUD3Av6UDXogdOg7nSAxRGT0CeAOzfTMUttUFnfCl/p+3/KG7FlI9/kfULUTFJWscHEL7uR9Hv98Ku5yDGvdTsvalaoBhiBVkn2g4KHtPdFbiQM2OdUqMJkZvxwNpdVLMVPVsGrHIjOIvtBjZClgXk/FWBdVbJ1domgvXcfdyamMnc1Pcmd3vVkzuEDY+fOruy90NEZEFZncyIeJJmomTjyVYbjX3hlMBD+2+UJeU1J+6puzk1CXq5Lf4uEeS6ftDKo+oi+aU6DZA7DCr4Elmh0dBvdwR/MKcFbdF5meebwGorux9Fu8Yj52it6cjq0Ndrb89KVbkxWJwTyZym9I5nydoZwMo9ppvGBpl/WNDJA2gOwjALwR1miYRFwSf8IALadk6Vjm01Hi/ILFt6xuFs9FCEZpI9lIUPN8NAnEbLtULQtG16xiIaUsLKN1cigOaEr6cCijVn2HtZodMDA4alHu/9GptJyjua+f7xWl7/KgjFfAgjghBZ8rTZ2tpOSKpR2w9b6Y27BtBXMB4gGu9P3X6Jge9LrXupI4YEgCMMi7QPWJ8eCL/cRgdXLXP7hA0xeErb0ylnrgU8JI3cDVYScQCTrblS5apGHutip8neuTgLFCARFYJD1Jcp4mxyeP4iWXhqKE4i3Z6XPuTuXAhOeYozq
- 6+46E3i6
- 9tPrDgCtWjghNEjjWNx+b/7gm2S/HL8fah4w3kTaohQDKYMlRlpUbUz1zC5RqKNs6opBwGmPzTM9/s8vvp2ajYHMYXoVL2DGrQ7wdGVB+gX32UOEQtlIs+aHV2Sfc5MRFQ9GunV3WBkRYOVHvxWRkRNoASr2/Cel3TkuZqFJ/Fjt0wIxJj1ZiyqUtOHE66wK725Znasv7eOJt6L0IOEZ9pVTL0zBP0rikZ2jW4Bzqg+lhfQ3dP2tlAo4tGmqvJeA6IGvKrZknYRXBCkFiY4/scK8CuFjyOK52L2vIhvFPaYNzAcwomD+lIdDv9TZbyMIwFL7bFVxIWfmIvBQwsl8s7zz9igkssSW3aLWT7hnEFtsuaD0=
+X-HE-Tag: 1793985982-337672
+X-HE-Meta: U2FsdGVkX1/ELjntkqY9jXJwUz1LCD5NXQJmRELLwyTmIRFXzxqh8jTfxuxGio6wQnE+iLhHtlKj1k+4NfYZrwxFZ00QQHuqmDlwrxA/R3isfMcXTzZT1QycW81eVFSvTQi5KLc67h2RE/3ICGFrPxIcyVboEtTdfXrOTxMveGX2YZHNEpObQdJW0NRlQI2iyIwTEgXmDDjQvMhwINYZsUl4bWgc9fx5t6jduerQByXpDp4fIUv9XSlTE12XvsOf8PnpqmWqZ75JYGaekvWpjwVQKmJW76itaLh7PvwrErl0FHglzOWe1bUlYbDM1Nc46gfmytg53DeT8lLU9IegGYBZlkc9yl4S0k5kCfI0aWQnwuDUHk3ELaTSl8wfcHs2priQN4f55g/qU2PL2d0xDsN9ILC1vDwa1XrgUYH+YMlwjefjeOHO8cXXHVDbuQ3eqFoyvhSQXE0rzFs5eny8+ghCmI/VE9SCcRlfM6HSfI4hW8DG/Lpfdo1nOWRR3Kq4BUx6yRwGZ3XR0jmscZUOhaonnOJEsFzLcUYPWu4UmCETcX1WR1A2bcHVZ+fP2OnTKvUmiFWuW+VDKbLNHdYRvepTBoQAjHiePtAXXaBT5jZX7Vofte6yYpSk+IYFzLhs/qBcumqK9i7Sg6h7N/lHkq2AR7Ts3PuoS4JAToKh48FK3kN+0VViwRy55iD6odmL+Ujbydnid6+1h234O1lo7NWKXIm7dS816HKApj0fdIxzw347KDUlCaDkGJUrJfncQ+RQzsET06mMAU7inkSA0HkP97ClaR9lhLBqqDmXx7ecUHRFOtF9rAl0dZEOZMwKtdMnrh6vPxT5SHGDHq9XfXW4bzPeTeEolmJZCVOSCABcJgKXZHr4xViN1+xyULk0vVqEuR5FeSKomZvo+xWWur0+OsOYX9WDNo552hVZUEOoKw/PNhL1yQOGktYa1T0dQiUEJ1uQIiKjmoRjFnP
+ g1rPn8Ii
+ vm7Ylrvtz7BasP8katIKLWxBu6DXHRd7Y2ZWTj/u2P8k3FueOVSKcHz+NmheTmDwLhBlcBDwQCsmXOcEjPSfbwiAJHtGS5J5PQbqyPLVfQzDngtZtNmsdmFgvE08rvFac8Jq902eVvcFD9Psztnn3W8Zk+nGwbYh8jT2NIKkqIZgh2gIbDkoUbf+7UgpuWJQQDBshrU5EuRAh4Y24I7jsqHPiDRBWjB/7urdqKbGPvqpgthGIvaTjxeLE+lNsZ3b6hs5RtOyn8fid1kYlTDLKnqeVk4xEUw4VHVLR6rzz06oPS8XAQyP3hzKGn7q/7iY7j9GvshnzeSpHniJXSTWcHwinixjTI53RyGQewDXpa42HYFSWxqoJyK3JM3dolDUUMUcroWmYfEqX7A5lXC0E3OmPrhQlbodsWI91rf/pok2XpaSta4I505yp0iTYUKcyRpyOectbmZ6JSMlViSddlu9blVkhOMpsKMxzSfiGg13R3Ar1hphtZNle/Cbe2/QYBDrO
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,61 +141,89 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 5:23=E2=80=AFAM Christian K=C3=B6nig <christian.koen=
-ig@amd.com> wrote:
->
-> On 11/6/26 14:18, Tao Cui wrote:
-> > From: Tao Cui <cuitao@kylinos.cn>
-> >
-> > udmabuf pins the pages of a memfd and hands them out as a dma-buf.  The
-> > data pages keep the accounting of the memfd they were instantiated in,
-> > but the bookkeeping around them does not: the page pointer array and
-> > the pinned_folios array, both sized by the buffer page count, plus the
-> > transient folios array sized by the memfd folio count, are plain
-> > GFP_KERNEL.  A 1GB buffer costs about 4MB of uncharged SUnreclaim
-> > memory, and size_limit_mb defaults to INT_MAX.
-> >
-> > Charge the three kvmalloc allocations so the creator pays for the
-> > metadata it induces.  The system heap in the same subsystem already
-> > accounts its buffer allocation;
+should_abort_scan() and pgdat_balanced() both check the watermark that
+kswapd reclaims zones up to, which is the promo watermark when NUMA
+balancing memory tiering is enabled, and the high watermark otherwise.
 
-Only if the mem_accounting param is set to true. We (Android)
-currently depend on it being disabled because system heap buffers
-don't have a single owner for their entire lifetime (ownership often
-changes immediately after they are allocated), and the kernel doesn't
-have the ability to switch who is charged for the buffer memory quite
-yet. Albert is working hard on it at the moment.
+Consolidate the pattern into a helper function.
 
-Could you update the message to note the mem_accounting param pls?
+No functional changes intended.
 
-> > the data pages here stay with the
-> > memfd.
+Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+---
+ mm/internal.h |  1 +
+ mm/vmscan.c   | 22 +++++++++++++---------
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
-memfd / udmabuf is a little special because it uses shmem for the
-backing store, which is already tracked by memcg under all conditions
-(except hugetlb). We don't currently use udmabuf, so the lack of memcg
-charge transfer for udmabuf is not an issue. But once we get charge
-transfer working for the system heap it'd be good to follow up with
-udmabuf.
+diff --git a/mm/internal.h b/mm/internal.h
+index 78a7f17b9934f..66495845ec058 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -68,6 +68,7 @@ unsigned long try_to_free_pages(struct zonelist *zonelist, int order,
+ 				gfp_t gfp_mask, const nodemask_t *mask);
+ unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru,
+ 			      int zone_idx);
++unsigned long kswapd_wmark_pages(const struct zone *zone);
+ 
+ #define MEMCG_RECLAIM_MAY_SWAP (1 << 1)
+ #define MEMCG_RECLAIM_PROACTIVE (1 << 2)
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 071a6eaef1a1a..97c5843e14f15 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -371,6 +371,17 @@ unsigned long lruvec_lru_size(struct lruvec *lruvec, enum lru_list lru, int zone
+ 	return size;
+ }
+ 
++/*
++ * The watermark kswapd reclaims zones up to. With NUMA balancing memory
++ * tiering, kswapd keeps room above the high watermark for promotions.
++ */
++unsigned long kswapd_wmark_pages(const struct zone *zone)
++{
++	if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
++		return promo_wmark_pages(zone);
++	return high_wmark_pages(zone);
++}
++
+ static unsigned long drop_slab_node(int nid)
+ {
+ 	unsigned long freed = 0;
+@@ -5049,7 +5060,6 @@ static long get_nr_to_scan(struct lruvec *lruvec, struct scan_control *sc,
+ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+ {
+ 	int i;
+-	enum zone_watermarks mark;
+ 
+ 	if (unlikely(sc->proactive && signal_pending(current)))
+ 		return true;
+@@ -5061,12 +5071,9 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+ 	if (!current_is_kswapd() || sc->order)
+ 		return false;
+ 
+-	mark = sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
+-	       WMARK_PROMO : WMARK_HIGH;
+-
+ 	for (i = 0; i <= sc->reclaim_idx; i++) {
+ 		struct zone *zone = lruvec_pgdat(lruvec)->node_zones + i;
+-		unsigned long size = wmark_pages(zone, mark) + MIN_LRU_BATCH;
++		unsigned long size = kswapd_wmark_pages(zone) + MIN_LRU_BATCH;
+ 
+ 		if (managed_zone(zone) && !zone_watermark_ok(zone, 0, size, sc->reclaim_idx, 0))
+ 			return false;
+@@ -6966,10 +6973,7 @@ static bool pgdat_balanced(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 		enum zone_stat_item item;
+ 		unsigned long free_pages;
+ 
+-		if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
+-			mark = promo_wmark_pages(zone);
+-		else
+-			mark = high_wmark_pages(zone);
++		mark = kswapd_wmark_pages(zone);
+ 
+ 		/*
+ 		 * In defrag_mode, watermarks must be met in whole
+-- 
+2.53.0-Meta
 
-> T.J. needs to take a look here, but I fear that this might break uAPI.
-
-Thanks for looping me in Christian. The buffer allocations cost
-gigabytes, but these metadata arrays are only 4MB per 1GB of buffer,
-so I don't expect charging them to break anyone. Leaving them
-uncharged is an accounting gap though, since someone could spam many
-udmabufs from the same memfd and only pay for the memfd pages once. So
-this change is ok with me.
-
-> A lot of the DMA-buf resources are intentionally not charged against memc=
-g.
->
-> Regards,
-> Christian.
->
-> >
-> > Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-
-With the commit message updated to mention the mem_accounting param:
-Reviewed-by: T.J. Mercier <tjmercier@google.com>
 
