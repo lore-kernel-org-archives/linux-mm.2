@@ -1,148 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5E4606D811
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 09:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD39606A32E
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 09:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dOnm9spY
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OkYMi/fF
 Received: by kanga.kvack.org (Postfix)
-	id 6EC156B05B3; Fri,  6 Nov 2026 04:56:20 -0500 (EST)
+	id E8DD96B05BA; Fri,  6 Nov 2026 04:56:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69DCD6B05B6; Fri,  6 Nov 2026 04:56:20 -0500 (EST)
+	id E3DA16B05BB; Fri,  6 Nov 2026 04:56:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58B9C6B05BA; Fri,  6 Nov 2026 04:56:20 -0500 (EST)
+	id D2D4B6B05BC; Fri,  6 Nov 2026 04:56:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C2C46B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:56:20 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1F889C0CE5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:56:19 +0000 (UTC)
-X-FDA: 85404238878.03.9802E3D
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 394E840005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:56:17 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=dOnm9spY;
-	spf=pass (imf17.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A9BC76B05BA
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:56:27 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F236120CE5
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:56:27 +0000 (UTC)
+X-FDA: 85404239214.12.E59D503
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 465DB1A000D
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:56:25 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OkYMi/fF";
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793958977;
-	b=O0Zcn3lbA8Xw2IZlNs0J97lbPDZ8t8L/D2a+aYfQutOUUi35fOiVuLommTWiZY6kK9id9D
-	KZ4/byAn3SFUim44gfVBl4QctNyJTAT32P94ztT4Vmk/mM23qcC4h1JJvLEMjKfyUa+wRU
-	T1x2NnhW5Ezj2rufBfWYTn1W78VNGbw=
+	t=1793958985;
+	b=jtMLXEmNH1d8KR09h45tSCQxUi8knGkZYurH7B6uZwcUADoi9BpQCqDbNUaIP3WEO74P+B
+	DO7GyNUvesu5g8HOEvoqFuQd3pITTaGtSRelRkVLT3wfuGsIbAgiiK7PuxOVxko+ysUrD5
+	KDaF4fV2IHi79LAIuOp9vkQfgO7ItIQ=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=dOnm9spY;
-	spf=pass (imf17.hostedemail.com: domain of azpijr@gmail.com designates 209.85.221.44 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OkYMi/fF";
+	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793958977;
+	s=arc-20220608; t=1793958985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PVNqNcKixHGsvQRk+aF9Z3pXurarEsFSJxJzB1XGyf0=;
-	b=GZDWMKTHYNlASPLapwx6rtDWw2ZpqS7HYG3sgdDyGUp61mnFydJPlcQSirU0D5A8eOczNh
-	oN/wUDY7pBZ//bvb43cjrAxvFboRYpbQNTtNEqYrf9FYRu+82kFLR4oFBBEgu8JOmT7OQB
-	2nf3ZWtKoMEBWVe4P1RNddgVylD2UH0=
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-491846221ffso365211f8f.3
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 01:56:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793958976; x=1794563776; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=PVNqNcKixHGsvQRk+aF9Z3pXurarEsFSJxJzB1XGyf0=;
-        b=dOnm9spYQArlMtZ3SEfE3xLOyIvxY2MKG1r/k/36SuG+FnSwGZBivHpi7Nzqn3XMtN
-         2pzyGVCnzJEx8bY+SZF46y3BxrRQsSBeKrqdStlOGaaRBDT6cKwwZoO3sNIGO/pXj6Xu
-         W3Ht99hlTHVGnzoKfKeh/9capjKT3/i0Swxtz11XB1C6vJG2qwm0SZwvTittF/lSTyIE
-         A5H2qSR5s4h7UYfyYRfqkSy51G89QoiECIxSzco1Nggzc9Zp7tZ8Np6fyiWoNyYp1GDR
-         akTg4pane407G+glN+h+tbUHaiwsd9hDcVUC6S1xR7Udo441V1p+5XJCXap67LTYIkJc
-         L3tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793958976; x=1794563776;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=PVNqNcKixHGsvQRk+aF9Z3pXurarEsFSJxJzB1XGyf0=;
-        b=Q4O55jFx3HHvXHKH2Ja4qvKHpChzOLH89Foh0nk4xWnb5u1aS9nQ/Be819mntTHrkY
-         Y/fGSlKOUrJsoOuTPt3plyygF/BgEfYHtfUjsIhpCx7vbUuf/PAuOen399Mwmf69SLWV
-         7xe5fI0G1Br/yDWDko6N9j5BH4LnK21pIbnH5KRCdxaEfXE4fXXZSujSNfRYdFzeisYY
-         +k1GDabrX3uIwRjVyqrPuk4I4YgoPMH8h/gI+Nzttw8jRt3fz/KJUxvWCXHVcaYGy131
-         aWM3TU20yr4S96HT2nDiw4T+nvjh/fVYePR2CK4JESmxL+SQ9JOnVSyCE1mhKQW57SjF
-         W8eg==
-X-Gm-Message-State: APuU4Z+015f109n63652lrsgvr/eoSQoMMfrSUDGDCMxHRh05jF7qR6p
-	6jdmOyLbDaoJhG0sgdxBkOite59AruKj2rc+bRgTg7+nHe6BAHPqWY6h
-X-Gm-Gg: AYBFou2ur2iC7CRJe50oIPU7jC+s1BLFLYz++lYR2HTby6u3lLmgmNzjT7Ezl4eY1Ic
-	I0Fr6nbwPcQ2KXyUCks+P3+6AxgTVwRExqTIb5fW3YCuvEY1uyWYcvMMkEty52+XEuqt1fxtYiJ
-	4QP7qgHl/vMVxIEpiyPAVOa2enU+EXzFF7jL6xEIFeTpl7OtWIu89vHx/faLnGTLBkAuMa9f9c9
-	s/ox2ph7WSNIxMZGZNTv761fV5WlxZLxm2fV+XVrtDcbQeQ6/9gFzYV1e4pbVINqSEUCo5gzfqM
-	qCakzVmMO4n3EuGifcTnAotpsOOySpnX6vsse0BKBC/yBfoN1zcH6WbQZTpMTtIe92YgK6zxkby
-	Lq/96dpJk7b7KcW2fm1mEifH4BQtNlafsBIU179OCxQAxuojvk2tZBgirzTPlJ8JOa8MIzPYazG
-	a/u63tK4d+0HvJ3e3T4NNFCgeE3juQpjuBJixkfAAyBIvaw3qeWB7DMa94f9rvGAu7MDfonGfY8
-	tMqej7S0NQSxC2GpG52sZSl4/3nmdI6/4eQXNWxUtTXINGRXySEk1hx1Jm/7ZikMJRUgsTlv5wr
-	TWy2ID9+1OWuLFcYB8QR8DI=
-X-Received: by 2002:a05:6000:26d3:b0:48e:6159:8274 with SMTP id ffacd0b85a97d-492765a3e9emr3874962f8f.27.1793958975594;
-        Fri, 06 Nov 2026 01:56:15 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d7dbb0d4sm2752385f8f.50.2026.11.06.01.56.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 01:56:15 -0800 (PST)
-Message-ID: <e3e15340-d6c0-479b-867f-e5eeac1e0e2c@gmail.com>
-Date: Fri, 6 Nov 2026 10:56:11 +0100
+	bh=w8OzRqDZQKjlnkKE6E4d5qASDSC6RPN4pLC36VUFGsI=;
+	b=3xOfyMrw+i3oJU2C6zAMau4c6WDD58GXg5ro3Kt/SoyrafKR/OjvGVoiKx1y0HtVGvTR+M
+	zB8tw8I4vBh5eVMjXCsFJyZ4XMecWngYpuWnR7jb3I9XTCkmC94t66FWJzSccX9Cg0V4lg
+	A+b/XUbgkLugSTH9P5MsS2Hc2Ar8Sj0=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8555B605F9
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:56:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540DF1F00902
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:56:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793958984;
+	bh=w8OzRqDZQKjlnkKE6E4d5qASDSC6RPN4pLC36VUFGsI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=OkYMi/fFnOE55CJ7cd/1YEvR4T/qaVbna+FxAJ0RGz1BJOMNCz7nXthukL33Izh8v
+	 Jts1gbVEXev5YDKBCendBcjZiYEO8zOcciVzOh1dc08wQlkc+hQ2Gc3LnvH7Jb1oo/
+	 16/SM/BsnS4jYHVaOusWKsOTxhqbQX08f24PrL8bcCajSyn0BIF5enyZ6+Jaf5edx+
+	 Q5u3ieOdb5821sqEgQ4b6L6rO9swJUiY9bN1gOkrfC4V+/3a/Tph9db/aWHHlrMtkT
+	 Ges8bTP8Kn/rjXd4j7CV+Dh6BkqbGseQEJ1QIDSwOuK8m+GHPPuZKe0DsUQFT9QGa5
+	 8glYSFl5V38ug==
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-945ae2daa3eso59167085a.0
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 01:56:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBwP41Qcfdomr85MZ3kWIRfwXGqmImx/x2J7nNA3sztivEXCKAHB42otq2f2JIRBhoNqjj1QTY9i/A==@kvack.org
+X-Gm-Message-State: APuU4Z+n1fd7+3y0v/37wSEPviHxvOGhXM1QneUVFjWLgKTYlF4+bX7R
+	eiekzF6asTWF+qjWi511JlxAnbPnIadKVGAHqtu5zRVgeHCDGmBa1cwC8X3aEbrPeuh7tjKbZJ2
+	ae84Y8PwDQe39OzlZSNi5xtpzUVJe35E=
+X-Received: by 2002:a05:620a:294a:b0:93e:ce12:aadd with SMTP id
+ af79cd13be357-945f34ef78bmr296469885a.58.1793958983724; Fri, 06 Nov 2026
+ 01:56:23 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] mm/mmu_gather: flush pending references early before
- the folio limit
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
- "Joerg Roedel (AMD)" <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard <jhubbard@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- iommu@lists.linux.dev, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
- <20261105-refcount_overflow_stable-v1-3-70b9c655da3e@kernel.org>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261105-refcount_overflow_stable-v1-3-70b9c655da3e@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3emzc5mqnd8dauh49bssq38z4yr1p74k
+References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
+ <20261105045406.39871-1-lance.yang@linux.dev> <0ddaf336-7cb7-4e83-af2c-f60d23f7aafd@linux.dev>
+ <f7bd740e-1328-473e-96f5-89658a08d514@linux.alibaba.com> <CAGsJ_4zHtv7hBCaW=wdfiM7yA4OJS7pcFomSo22bEzWHizYAXQ@mail.gmail.com>
+ <453e2c18-4e79-4db2-b565-1af881925f08@linux.alibaba.com>
+In-Reply-To: <453e2c18-4e79-4db2-b565-1af881925f08@linux.alibaba.com>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 6 Nov 2026 17:56:10 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zLiwYf6LM_BWoZyiYWxvW2H_siZ0QC7FmEHazF_fLa6g@mail.gmail.com>
+X-Gm-Features: AclHuK95LDvF5ZiNBpoPTxiS2rEhGEEMq1D27yisdsMbvX4nhwqVupPOIZSeW-w
+Message-ID: <CAGsJ_4zLiwYf6LM_BWoZyiYWxvW2H_siZ0QC7FmEHazF_fLa6g@mail.gmail.com>
+Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio sizes
+To: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, david@kernel.org, 
+	ljs@kernel.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
+	harry@kernel.org, jannh@google.com, qi.zheng@linux.dev, pfalcato@suse.de, 
+	ayushr@modal.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: mcpks4s99i75dz83u9o13qjfnyt9ugmw
+X-Rspamd-Queue-Id: 465DB1A000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 394E840005
-X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793958977-867469
-X-HE-Meta: U2FsdGVkX1+buF5gT8kf/1eCYvHDhY39JCzLerPKcRW4rzZWGSNvGby2uhQjtg47F/8GgpJELzX5CdSTVbWjbso5K3iSSKQ0Q2V5X11iYynajDKCGF2ggQj/0P2dIW2R189cTFY+d5ucE+u3TqYN+/KhHHoj1R5CCQxO86U3GXIw0wu6AP+P6in9D3kIbbUDNUJWeI3cqsnixgYps94vZ2aM4bmwDH0AS+Z5dND1kRKMlRYq9JwQLxb78NS3jlcgbFMND7i2xMiQJ7PueRU48vahWpUldWPou9zD1Bw4eZ/3z8CaaiDnteRB3W5yvtIqSorqYmFlq4Sb4pxQUP02IKj7dlmDh99OYawHDZR97U430uZUteTuvNoIvCOjogDMTYlzN9z26mdglHY0BeMZ+fYNxF0nKVd9ceDxZUG04c3+evdlTMnee296B3qByYpzWRxXUCtCLKUXPOKFwr7bIgyiURxBRFl8l2eS9GCrwWmNumdl57nqnR1fDFL+haDE5vEagZQjNAeIkVKP7+2RwxGEZ16/PrYFtc3qfjdpvHe6WBI7u0YTPW8o29sC+5iTX56La/bwigT06mHx4i9cWh6EARyH9U1fNVtcDr4Goaz+gRsBVvWjlmoYpylqUNricbRunoupX375WIxWymAsRL5am/H3mm3vlJRG/XGxjZiaxdKywS9TKMUNgGUa+EIk/4Uy6ibEp1jz+sI+Kry6icWsPmI/3AWaU1dx2ZHXZ/+hjvIlbAQxkmGjKeAqwF5e2F5FpU/gZYmQKMIR8KEHQusmnvA3q87TZbpFfwEwzgPh+JmfqvxOw9vk1wZ5jW95IFkc7zTgwSPCViThq1DL8Qw98VfeyKwD4btt90+0wjoaXX5qik7ORUeTWWeQ1Qw5hLQzWbPvzjFtOGL5lWPYIumy1yGygNjGqpy1v8nwXU1N/TVYnNinNNe8NtxuJnad9h9Sme++wsTwrLZRFd5
- moaeHl8h
- p2JRGHiK38QO+Tm/0dUKs8TiOZLk1Aak8ma8Cfaz9Ug4y11tscAZLC8OUmj3QBcxbFSyGS8d0ABXR7gilFx2NgN3TJLuf2BhH9JCbZV2REAADEmOcObJ02Huo1c/GeJhkR2F0D43PAqOzn3e86/BBhXGtIugQeyrbmPadZkrw7Qg57Z+qrR+H78H2Owl9Y4lZT57xF1Chxh/3fiLHlsXARHf64wKYbd6sBhfyxJTTt8UDh/TmMUhjGWdCKTVUIqxWKNggvX5t0pXQD5vFmVFHxPnmR5sETd3p+vly4jzeWJgFpeLNMmM1+8U2W56gdAMFSfYCGU/Hl83+N25Pp+mYTtVkn4muyUubDK7bPqrKzQTOyhYkdCWalC+WUfoS0C6bbVG3M1EOYf5A/Bo+CtTyKErv+1wyflfHbpLYiw5065aTRvFUkrZylefL0EplHO0DSIiUWpXv2ns/uigde3dUayALYdjG56BTtGq6Hbmwsm7hhm/LnSORQfWC+8IjfevedCNhJLUxVZyetNOZ5/eEOKAtLjhm7JQZBs3WqJQLBWDdNlihmrdALgX3ag3AbK7DfK25rqk4g5Fu7JrX25qpav2LzBg94tFfzNLgowfPAdgtUao=
+X-HE-Tag: 1793958985-395341
+X-HE-Meta: U2FsdGVkX1+RxMR9RAe3zNCxv1+29d1m8+mBaeku9Hg6vLK9vxdu1bFo3mzH8C5xXl7ArkiQyESAFxD9A/cAa9bz4HmAiA8W73KoBq2WvU4f5a9rMOXbxf1/Ob7HW/3YtK7MwjWOMhl2JwxTX36/vvED/PBQA5xHho9VQiA6KyVa0WbuMmiqM9titP1vWzoRgPXz2aeHEpeyvp0k0KtEGJRnWXtxtNfwDC8j5SospPXYUrrYJTf42LlS539hiFh/2T8GvjEVZEXAnwOzC1en87ZpO9DPpSr+zjZGhany1x6MnqiYnadI+HHpNYaz5AeiUm85q5gLoU18Li3/GJ58pAi/qYJ4MdTKdvWlctuBCJaHIb9Pp3lnFh3YX/TaUUiog/djn2dz3Q3SVlqNYj4BL1WS9nLUyZOh+oqbuKhHPdnQKU1/zomXfInQrloAr4YRcgqYmbb1TuFEYm+cNZNIQuoEsfBq3R2flLB8a6HRaSY0FZUcUhati1eogRZKw2lgMeFmvtqYo9wpX9/nAqptSmA0DzWR4g8kLe8iDbmnbvtUtM/R4+TpmqV1bg4lGtCpr2q70E72C1suYH9mo5atBYGwBcqkmJ3eHaQvsr3emWR+k9R/UIhIz03TW5DxtGM1rOrY0qflxV2GeMc6gOefAabNbYNCvXoQHEwErhMbj2Ntbnx9riTR4ieM3OL5SSzQObK8Zt3nlnT5dnBG7dEvObvOxXs+wcfCS9ls6qZ1pOw8d8p75oxzXO3Yiwwkd+ECC7UMmRGMcXE0QI7cdNjN0VSho29ByjIG+9GUUhSx2e9jh5kPXt16HAD2GiHnWhXqfl6zCQ44NeBNw0CnpWpVKoO/SBGUAA7nW4eCvH7Ty8oJFSGQHQbWwbuy2uVSSzeJcfszCzb2qjhXcHuhW40io5liSXaeWYS0BrlaCCwjUQ3Fudbq6c7RSGauRmHzRwLr3ojTzR7vhbGG+PsdMVR
+ mBYtEm1q
+ f25VvnWvkOOk8yBbE2wGejIUIdxNAp+a4xzWTa1bUMIr9hicw07tibke0xfh60Ae/gw+sPPPsiX3y1FNAkGuC0f5AQKYmpxouULgT7MhwnCBEhFApZ33Vhw8mznYrDmBRkJ7wJHtTA9xPoBTGvjiNPudaofiMUORCHn9yH+zFJrUXGq6FGvsCbF+7jnzgN3VBQnkq9KEsV1ZGYJNfI6h3S5KdwF+OFR2HjMUHjfPtLp87K55TN02wiaRQPBWjITB0p4o1Xc5IVBh50mwMw0rftFHvbaQe/v4g3ZcBkS0E+Prn1ctSBwUIxBiEsg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,28 +110,111 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 2:10 PM, David Hildenbrand (Arm) wrote:
-> When a task zaps mappings (e.g., MADV_DONTNEED), it can drop the PT lock
-> and defer dropping the folio references. In the meantime, page faults
-> can refault pagecache folios, creating more references for the same
-> folios.
-> 
-> Let's just request a flush after enqueueing a pagecache folio whose
-> refcount reached a certain threshold. Start flushing well before new
-> references are refused, regardless of the caller's privileges.
-> 
-> This is a temporary measure until we have something better.
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: 10ebac4f95e7 ("mm/memory: optimize unmap/zap with PTE-mapped THP")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Fri, Nov 6, 2026 at 4:55=E2=80=AFPM Baolin Wang
+<baolin.wang@linux.alibaba.com> wrote:
+[...]
+> >>> Ouch ... one thing I missed ... what about order-0 reclaim?
+> >>>
+> >>> shrink_folio_list() only sets TTU_SYNC for large folio, so can't we s=
+till
+> >>> hit the same race there?
+> >>
+> >> Thanks Lance. But this matches the purpose of the TTU_SYNC flag, which
+> >> is used to avoid racy checks with PVMW_SYNC. If no TTU_SYNC flag is se=
+t,
+> >> it means the caller can tolerate some racy checks.
+> >>
+> >> For this case, I think we should set TTU_SYNC unconditionally in
+> >> shrink_folio_list(). Barry, what do you think?
+> >
+> > Baolin, thanks for reaching out to me. I added that flag
+> > mainly for large folios.
+> >
+> > I observed cases where PTEs for large folios are partially
+> > cleared during certain transition states, for example, when
+> > PTEs are cleared before being modified:
+> >
+> > pte =3D ptep_get_and_clear();
+> > pte modification;
+> > set_pte_at();
+> >
+> > In such cases, page_vma_mapped_walk() skips the empty
+> > entries and starts from the next valid one.
+> >
+> > This may result in partially unmapping PTEs for large folios
+> > and trigger unexpected folio splits. At the time, I was
+> > particularly concerned about unnecessary folio splitting,
+> > so my focus was mainly on large folios.
+>
+> Thanks for the information.
+>
+> > However, I also noticed that a similar race can occur with
+> > small folios. In that case, the folio may simply remain
+> > unreclaimed by the reclamation path.
+> >
+> > However, my main concern at the time was avoiding
+> > unnecessary folio splits.
+> >
+> > Your new race also seems to amplify the same situation.
+> > However, I don't think this problem necessarily depends on
+> > the commit you mentioned. It has been around for a long time.
+>
+> Agree.
+>
+> > If the concern is reclaim failure, I agree that there is no
+> > fundamental difference between large folios and small folios.
+>
+> OK. And I did a quick measurement to reclaim anon and file folios via
+> the memory.reclaim interface.
+>
+>  From test results, reclaiming 1G small anonymous folios (using zram as
+> swap) shows no significant performance change. However, reclaiming 1G
+> mapped clean small file folios does show an observable regression if the
+> TTU_SYNC flag is set.
+>
+> Without TTU_SYNC for small folios:
+> time echo 1G > /sys/fs/cgroup/test/memory.reclaim
+> real    0m0.178s
+> user    0m0.000s
+> sys     0m0.178s
+>
+> With TTU_SYNC for small folios:
+> real    0m0.315s
+> user    0m0.000s
+> sys     0m0.314s
+>
+> So for the current patch, I'd prefer to keep things as is: only sync
+> when TTU_SYNC is set. Without setting the TTU_SYNC flag, keep the
+> original logic, meaning the caller can tolerate some racy checks.
+>
+> Any other thoughts?
 
-LGTM:
+I'm still struggling to understand where the regression comes
+from. You're doing echo 1G > /sys/fs/cgroup/test/memory.reclaim
+without the concurrent CPU 1 (MADV_DONTNEED) operation that
+causes the race.
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+so the regression actually comes from other places, maybe here?
 
--- 
-cheers,
-jose a. p-a
+static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
+                    spinlock_t **ptlp)
+{
+        bool is_migration;
+        pte_t ptent;
+
+        if (pvmw->flags & PVMW_SYNC) {
+                /* Use the stricter lookup */
+                pvmw->pte =3D pte_offset_map_lock(pvmw->vma->vm_mm, pvmw->p=
+md,
+                                                pvmw->address, &pvmw->ptl);
+                *ptlp =3D pvmw->ptl;
+                return !!pvmw->pte;
+        }
+       ...
+}
+
+Am I missing something?
+
+Best,
+Barry
 
