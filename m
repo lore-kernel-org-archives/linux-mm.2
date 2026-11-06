@@ -1,126 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2DA7606A32C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB9DF606A329
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=HoIuxL1I
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RhNUG8v3
 Received: by kanga.kvack.org (Postfix)
-	id 917156B05B7; Fri,  6 Nov 2026 10:34:37 -0500 (EST)
+	id D3EE86B05B0; Fri,  6 Nov 2026 10:39:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C7906B05B9; Fri,  6 Nov 2026 10:34:37 -0500 (EST)
+	id CEFDB6B05B8; Fri,  6 Nov 2026 10:39:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78F016B05BA; Fri,  6 Nov 2026 10:34:37 -0500 (EST)
+	id C06266B05BA; Fri,  6 Nov 2026 10:39:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 42E636B05B7
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:34:37 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C1D8FA8DA0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:34:36 +0000 (UTC)
-X-FDA: 85405091352.17.F3504CB
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8048B160014
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:34:34 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HoIuxL1I;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf08.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 953456B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:39:12 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 105FF40E31
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:39:12 +0000 (UTC)
+X-FDA: 85405102944.01.F742B73
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 640DC140003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:39:10 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhNUG8v3;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793979550;
+	b=M6Hm3aSj6ZJF7OrEGO64YQEk2ZiY0VLXiY/0MeW5UqV3EFCurmLDywUAY9bvN21S8r+rCn
+	rqCW95Jb1hU5EtzfW6hp5+x6KOE1374Pfcd3QQzFyYjar033ho6qB9OI3Vh3NCFbLlotdS
+	FQdJA0jzDYjigOVaZc7JWrKkQp69xv0=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RhNUG8v3;
+	spf=pass (imf26.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793979275;
+	s=arc-20220608; t=1793979550;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Uj6b08bxBrGPMBQHtFI05sMh6Xoy8ejNAgMPUPWV1BQ=;
-	b=mtOjAdgHBzb1XkIa1+4bmwzM7X/fGvDrXRWSaBwCiwMnIx66A3tNddUUJ+u/a+eXGgPeey
-	u7XtMyaFYJqQx2qWhpi+ZOPlBpkiwZr1GCL5xfCJ6n4g/Dgn7T5SPF/Cal6icnIiQNIn8K
-	nMrd+6S3/bdsw+k+vKEZl3SAKLuKGbE=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=HoIuxL1I;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf08.hostedemail.com: domain of suzuki.poulose@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=suzuki.poulose@arm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793979275;
-	b=clz00Owbrrcjyc66q4J9Z7E6wAg2383Hw0SI1sPBmYp3dUKiVGREl+a7ggbxh2keQiE7v7
-	P5HBjnHnpcL/er1DiekyZX464LFnLWe+dA8Gj/Hcz8pRBBLU+4DNx+cU0BrlTL2rx+xMf0
-	dj3cilY90PbX74x8o+CcUAvIaa6N1Vk=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1F8F71650;
-	Fri,  6 Nov 2026 07:34:30 -0800 (PST)
-Received: from [10.2.197.99] (ewhatever.cambridge.arm.com [10.2.197.99])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2B6803F632;
-	Fri,  6 Nov 2026 07:34:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1793979273; bh=kbtuYZHukFIc3XIsRQp6dsFZOem1VpVxmEcgHFZmqd0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=HoIuxL1ItDLUGlcavjNXD/JxrmPk3WBhtY7TT2qM8F45c/7Q3yyjSI+pQ153K1fb0
-	 YXClJGmCHDlVOTNxhr9aTezROBBizZumSyroGckV652hcFVqpuVFnjin2TJWlbTvqZ
-	 Bx38XYVnikraEyti5l13jjcvEmncaKF99Gps4Xng=
-Message-ID: <397b7702-ae85-472b-909e-05b3c4135c61@arm.com>
-Date: Fri, 6 Nov 2026 15:34:23 +0000
+	bh=343eayTvifkkMlrwy/xdVN6F48t4446WEUYad6Mst4M=;
+	b=r7AMxTi+aanEr4wB6CPCYeqko43ob1AlF76qj3GFcMkfW/YjbikyuEcSFbc6eDBUWrOHnN
+	r2z2dM5ebuchS9LOENnCx20/POCRL2BiFZ4PLNDZJU6fjcvKPU8vUbKkl/XpVjISzbzhKx
+	6Y8SsQm3zOD75ZHuCA4mMN0vZw4bcSQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id D82C040D5E;
+	Fri,  6 Nov 2026 15:39:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A10E1F008A5;
+	Fri,  6 Nov 2026 15:39:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793979548;
+	bh=343eayTvifkkMlrwy/xdVN6F48t4446WEUYad6Mst4M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=RhNUG8v3jLxEuKfkjzjh2O3hzkT/GXHoHwjFXad+jlqrHMmoroWCSEGOJ0whXTbw2
+	 xSujptrJUOFXO6gYslpAoW99b5HL12/fyBJuJOuhsieu3ICH/oxVleEoAIkh7RcG6U
+	 SIwdwG+dP6IuacVdo+ipywY41G0+dKBsxkxgOtACZ7bUEtTcEo4MTSd+nd3GadPzyU
+	 bAeFw2ZOH3g8/lu99jX2UxMQ9VF/cEMNnaOpzFIGQfKnsGek3+2LNwGgETaY9PfRiY
+	 DwG+UpF2w89nS7IKxvChsEE0SCP5nqnZ8YrJWZEf4Pf3/iugNsee2VmRdh2bUVHvqT
+	 DatnXZ2gE5+og==
+Date: Fri, 6 Nov 2026 15:39:02 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Vernon Yang <vernon2gm@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] mm/khugepaged: release contended mmap read lock
+ after scanning enough VMAs
+Message-ID: <au30N0kjlIRfxMTx@gremlin>
+References: <20261105-khugepaged-latency-fix-v2-0-4384bbfe4606@kernel.org>
+ <20261105-khugepaged-latency-fix-v2-3-4384bbfe4606@kernel.org>
+ <au3CUJO9zBMHLx-B@gremlin>
+ <798cd192-9ec2-4f37-9cba-44db275a269c@gmail.com>
+ <au3xEVu-SGXZYfyi@gremlin>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 01/14] mm: Add an allocator for CoCo shared memory
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, linux-coco@lists.linux.dev
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- Pratyush Yadav <pratyush@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
- Marc Zyngier <maz@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Steven Price <steven.price@arm.com>,
- Sumit Semwal <sumit.semwal@linaro.org>, Thomas Gleixner <tglx@kernel.org>,
- Will Deacon <will@kernel.org>, Russell King <linux@armlinux.org.uk>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>,
- Brian Starkey <Brian.Starkey@arm.com>, John Stultz <jstultz@google.com>,
- Mark Rutland <mark.rutland@arm.com>, Radu Rendec <radu@rendec.net>,
- "T.J. Mercier" <tjmercier@google.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <chleroy@kernel.org>, Ritesh Harjani
- <ritesh.list@gmail.com>, Shrikanth Hegde <sshegde@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
- Kiryl Shutsemau <kas@kernel.org>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
- linaro-mm-sig@lists.linaro.org, linux-arm-kernel@lists.infradead.org,
- linux-media@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev,
- patches@lists.linux.dev
-References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
- <20261104164555.3555725-2-aneesh.kumar@kernel.org>
- <2e448ac1-7b4f-4d45-90db-dfe9dc5ad329@arm.com> <yq5ald76ou4m.fsf@kernel.org>
-Content-Language: en-US
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <yq5ald76ou4m.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <au3xEVu-SGXZYfyi@gremlin>
+X-Stat-Signature: hkutzyy1eoedq1k8gpedtw7qtd4joa1y
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 8048B160014
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 56xrc15qa8cmwjwdfhy4amujn9ypu67e
-X-HE-Tag: 1793979274-461406
-X-HE-Meta: U2FsdGVkX1/eVUutA95TfE5RKQxNm3YcgT8RbTxQ+RUaUvh6SO32KL6+u3Pnaz7VHAhpdWM3HSsY5wmVVX1somoBEByfemDfYoNV+8yZeKxIFTqfQryfMofyj5fsVJ5MJ9OKsRISYTlMwZQDru8nX6s59cDV87lN6z0cFHNUhfwKfeuopuPTlDsnY+U+q3pZZFji7Cb2PH+Q6cmA/FjsjEhXs/Rs2Zc5malSOJUoFZar+54p2ssIoDAijb388WWNduiBvKDkCk47FgtdjEYdNOKv22KUSHNzzLCdaKsguBGj7szt6wO/ALLoTo6R4x30t6QHJwetz3BGOYUjt2CVYVpkIaHajKT7Qxjnu7RLMPgk1j5LFVQaDmarY3P/A/tfTubeLrNPT4P4gIjlVjyruR7NQKiaU7aK1u/3hnNzBOtRX4kgaupFy11l+KM62SGzxpENdbOjzI26RnJhiaJWlZW6skCqQyGGSuC4Q42ywnAYoanxozSBXBZNadEITY5UpV+SkVbRPh6sQw0dCsnZweZkSL50B8bUvQk8TXz3ebEzeBjSns2rjyzjzw631BmI1RmFnabwXkyA8IXd4zJ66AfPCslb9H3gRJtkjQomn/5thUFSOjPaQffK/ROETFEh9Y5h2MAsKU/5Vv0xxXQwW/mtk2KLGh+dX2362vS4kEiWcRcNjxfuX6DxKaTbfNJvmxxXtU4DmWe4NaqB0szDyGmdNSgn3neG2DcqDRFi6HrVA6tHv9nBnjbTFbt892ZGXv19N8rreoW3dqLT1dnMMNSj+UPfO1V1nnWlBnTZU+dDs/Qn2KXLkt/r5ZX6arkzyvxhdo/WPeQaF+Y7XX9wjpPgBhLV4o8+MNMZqZsjEoQ87YtubZBrRuHTw4WGrn0DQAf3tzJMo1EHP2nz5DTFkDHIIVls1S9vjPUTQAvdAojXJxSQWi6rpeEjoJmKcxvZJoAqFLIW7YcaJ9whJzc
- sBekYQCQ
- B+l73oCITc1K28+jNke4PhrUYQ44P1q4ZkKcvIrLJ76JWYWzLiXDici9JJ1fEmYw05ZyXZVd85ZVpzqalsXouBYRaoFJ7+XjKg03fR9vvHDk9M8nFrYqmQ4N0Q54kQhyFDKIwCZVk2EAn0mv2iTVjUGw52VkAT6aLwi5CE6KJUS73WypLuikb07V5rWgmiGYowII5vMdeoWUJuNT4MosePoj9Itdtyutmng73BfLjZoCzLU1dMnsdpINidYc1yh4a44WEo4jJqt617sGgkCikNPwAKr3CMGnlA8BD9bDSfmMF2GsY8e3zDipx+TtuuwvWYhFZM/5AXL0lzZs0cDtoWuuGvtGfydMQqgXdQWX1JsH+csg=
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 640DC140003
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793979550-484044
+X-HE-Meta: U2FsdGVkX1+JUZARgbjC1r9NQ6aiWi1J8e9bZqgv+2kYDl9ncxaRT7RumkhtWOHczI9cq0qq7v2gJnltAlCCefc8uqSf0KQjq/zwRU0Kg6b6K+wQc3mjipgBX0hk1omeHFrXa54KATct8w0GeS7s6TmtZNrtetl4wlXUfBRX7vtXqa5h38+xDSnQ4uk19BpgPVfTk6ZBrY5pPWdzWIR+izhcEpJ18DOu8/fZWCqeLj5tAvwyUDfxnEc0tZjoWrxlIPycjkDJ8bFb3gjiQBrQwA/utdsIDbhuOBbVFiZe9kr5BMKeVaSX8DsLnimn0DQPuVfCdBPaVBt5XLlqyosAssU74rNoV9V2/fvd4hUFxS9nrTRJOGh2z9P3ljcbel7/Q8jYNopVdvAef0bO5x7YtQPkmzPoSLv8LIXUbOMjVqKR0Tdo3s0eqnoBFRgxKB0SfwAQRcNTDhnHM1erpZs2vgKUNsXVuHlaWD0Q9ZA5ie8n9hAabb0fQT6ItNPjS6TzkfD7Q2+4eN0qAuNZP1fgPIEm5rlNcC157OsveIM/RYSYvihV98/rYyU3Y5hASVDEn00QQ1PvuPL45ezxopNPmv/a5FNkwtfoyC0KtpUMisDHftO9JrOCQH8sUgfnXSNPiwdHh8J4iN7IXDTR00MDn70wQBUea33UDNVKq4fRobHxeI0e+seA7hahVOe0LPExoUexrpnng6h7SB9uF66QXV50rJCm56KHzFq6HO4xN7nHCcmcX9omk6+tKaM4W1mkB5FHrYKwN9lOBHbDAy7jdOOnA0k+qEo/c9MnyHTbpFs9mqk4mPNlnHGfCgAMXaFFtaWsc6oEnnBlhrMChAe1fQpw+Cq74EWBB7N7WAjLdLDnNa6nxl/kIUNp6m0Qn6J88U9y1XA8RE0thVdv7/cXHe+iq6Mzr8DFK997cQIC3CLkTC47pHFEl5Wh7dElIrxrTF9KfV3oTJ4ldFKLv7U
+ fAUK9sJm
+ hOBJBDKs5UM0T7LUDcAiHvUdHLcCGlU47lyjk3HvaS4KW2IGQ7xYLq5AoxnuwQ7aC4q3mLYtcrrfts68I86Ozd52k6tEDnk0/QstsIftB9tXg3dvl4aNIhEUFRIziQ9xiPpuKVBQ/c1+xUXg1Zz6eTkJNZPk/inutXTA8VHZvI7NCco5YO+b0RJk+QJZ7Eu2TDv9x1Nz4eqbQRJ0LujQYIxpJCTxtqQ3dqnd7LyW7EmAY4UiAvhwHWURBz539gNOoTM0y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,42 +102,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 06/11/2026 15:30, Aneesh Kumar K.V wrote:
-> Suzuki K Poulose <suzuki.poulose@arm.com> writes:
-> 
->> On 04/11/2026 16:45, Aneesh Kumar K.V (Arm) wrote:
->>> Confidential-computing guests may require memory shared with the host to
->>> be aligned and transitioned in units larger than PAGE_SIZE. Several DMA
->>> users need struct page-backed allocations satisfying these requirements.
->>> Provide a common allocator instead of requiring each user to open-code
->>> this sequence.
->>>
->>> Add alloc_cc_shared_pages() and its node-aware variant. The allocator
->>> rounds the requested size to the architecture's shared granule,
->>> allocates suitably aligned contiguous pages and transitions the
->>> complete range to shared state. It also preserves the caller's GFP
->>> policy.
->>>
->>> A private-to-shared transition may alter memory contents. Mask
->>> __GFP_ZERO from the underlying allocation and when requested, clear the
->>> complete transitioned range after cc_make_shared() succeeds.
->>
->> This is not true for pKVM though. It is the other way around. i.e,
->> pages must be cleared before transition (e.g., from private to shared)
->> to make sure the contents don't leak into the host.
->>
->> Do we need to handle such cases with a pre_conversion and
->> post_conversion hook ?
->>
-> 
-> Patch 2 does something similar.
+On Fri, Nov 06, 2026 at 03:24:20PM +0000, Lorenzo Stoakes (ARM) wrote:
+> On Fri, Nov 06, 2026 at 09:26:01PM +0800, Vernon Yang wrote:
+> > On Fri, Nov 06, 2026 at 12:07:53PM +0000, Lorenzo Stoakes (ARM) wrote:
+> > > On reflection, I think this would be better implemented as something like:
+> > >
+> > > static void collapse_scan_mm_slot(unsigned int progress_max, ...)
+> > > {
+> > > 	unsigned int long lock_start = jiffies;
+> > > 	...
+> > >   	for_each_vma(vmi, vma) {
+> > > 		...
+> > >                 if (time_after(jiffies, lock_start) && mmap_lock_is_contended(mm)) {
+> > >                         mmap_read_unlock(mm);
+> > >                         cond_resched();
+> > >                         mmap_read_lock(mm);
+> > >                         lock_start = jiffies;
+> > >                         vma_iter_set(&vmi, mm_slot->address);
+> > >                         continue;
+> > >                 }
+> > > 	}
+> > > }
+> > >
+> > > Which avoids magic numbers, and means if we hold the lock for 1-10ms (depending
+> > > on HZ), which is a long time in the kernel to hold a lock, AND the lock is
+> > > contended, we drop/reacquire.
+> >
+> > Looks good to me. Is the test result of this solution the same as the
+> > current one?
+>
+> Thanks! I will update the commit to reflect the changes.
 
-Ah, yes! Thanks
+Hmm, actually the poor granularity of jiffies makes things measurably worse.
 
-Cheers
-Suzuki
+I think I have to just use a fixed constant still, and explain how it was
+derived.
 
-> 
-> -aneesh
-
+--
+Cheers, Lorenzo
 
