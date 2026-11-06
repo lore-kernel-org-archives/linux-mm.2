@@ -1,86 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D4E606A32C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 20:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D47606A335
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 20:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RoZSWYg8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Dh32LNST
 Received: by kanga.kvack.org (Postfix)
-	id 837076B05B6; Fri,  6 Nov 2026 15:44:55 -0500 (EST)
+	id C17746B05B8; Fri,  6 Nov 2026 15:46:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F7AB6B05B7; Fri,  6 Nov 2026 15:44:55 -0500 (EST)
+	id BEF156B05B9; Fri,  6 Nov 2026 15:46:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70CBF6B05B8; Fri,  6 Nov 2026 15:44:55 -0500 (EST)
+	id B058E6B05BA; Fri,  6 Nov 2026 15:46:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DE456B05B6
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:44:55 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4F981401E5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:44:54 +0000 (UTC)
-X-FDA: 85405873308.27.2CDB331
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F215C40007
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:44:52 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoZSWYg8;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 85E546B05B8
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:46:11 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2787F1C2413
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:46:11 +0000 (UTC)
+X-FDA: 85405876542.08.428072A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 560B5A0005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:46:09 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dh32LNST;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793997893;
+	s=arc-20220608; t=1793997969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TUX6youhnFPrGvYeU+pJ1avCVsOlphuFIqYLTiOl4y0=;
-	b=kfAi8KrtgjXBLTM3ks3ZkqiIPyx6LRG/MoZtd1X6pyQ7XGehmAwrLttn75203Vwi0ffIVD
-	3lHt1Xkkd0VFeJM1O05FRp+uQzmg32MUICIdAoDS20c+UBQjYOEgHAvAWt/vqTcJ1enmsL
-	0seDpL/cznelOaPpytGJb3zSszaajOo=
+	bh=21rPeGQN4m+gmz77llR1oP7XvKWuoASAddhYLzUcGNY=;
+	b=UujYDtBPaCLAm3OM0+xyXKi8E6yq1yE5jSyYOklZo19CtwHd9fVhTboywOpn8B5NBZaKe5
+	34JlBmKBMAcNHB9OCqAUv7BaXdeJwM++osK2P3Lj7I2oLWysCbZjiifhL9AcIHWcIC3D3l
+	UzicQm86EILR/VMwFkWcQPqPDgE6jMA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793997893;
-	b=LWAJDxmM3t7BY7kGUufWiGkftSj2p8U1feBSpOtocln0QdY02DdnOtgxRetyaQ4q7lvd61
-	t7G6PYUbEkmRYhNK95IXUz71FVr4nmymDO6R9FiYEc92JWZjM1Z9gYBeKNVz1WE6051PUb
-	ylHSsIXjjxnY/lwh1LFEuK0wYVFTkfs=
+	t=1793997969;
+	b=ZXsVwV92Lo1hzckuiqgrM3YyFJjJazTMusmypnFavL6Jz1+DAwdr343tdMTQt+sixCzLOr
+	O/audLcs+6nzX+QmyIxp56nB2neNmRj+z1YhN3yyPrJjHOo3luTmMAzSDC1XG53B/GPiZS
+	hmfVkgosuE0dLbIICtJv52Jj0tmCPXs=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoZSWYg8;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Dh32LNST;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 448C84095B;
-	Fri,  6 Nov 2026 20:44:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D8C1F0089F;
-	Fri,  6 Nov 2026 20:44:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C8C826020A;
+	Fri,  6 Nov 2026 20:46:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC371F0089F;
+	Fri,  6 Nov 2026 20:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793997892;
-	bh=TUX6youhnFPrGvYeU+pJ1avCVsOlphuFIqYLTiOl4y0=;
+	s=k20260515; t=1793997968;
+	bh=21rPeGQN4m+gmz77llR1oP7XvKWuoASAddhYLzUcGNY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=RoZSWYg8QitL0GYcOrie8WCPNu7m0hXKq/ot0GX77lPOskVbUTIosB3gUSEX0bfs1
-	 nyCG+d63mv2gPixZ4MDnJSPfdssODbCLHKAMvxOXegpzjQVpdDilAWLMFDOCVV2T5W
-	 mTGLJmqTWI6PvZSlzelPkUZpWr8tZqAx1STnZbUvLDQzXbPA9MFhVE+Gnz/GVTvAae
-	 Y66COZnizRE5m3Rvcru5Uyg4aBAdRHrHBZUL/IyWOcW4kX21stIlp5m3w4N9ECi/K4
-	 uUzTIg5UwTss4Us/M9f8HAEXoRMZbFbjcSKtYdkuHsGjeraZjO0DUdafwXei8u88LR
-	 van6A/Ja2bq7Q==
-Message-ID: <f85dbae0-e7a1-4441-901b-e1efd0fd4a65@kernel.org>
-Date: Fri, 6 Nov 2026 21:44:44 +0100
+	b=Dh32LNST0N3JC7WVundUzUbSPcEot0NuPwkkB3z4MmyPcUtS9uEbzNbhjYRrcgSb4
+	 pEhVr8htSyiLzDbwlK5Zpmi+V1H7OAQSsuUaGIUD+lMDbRvd9JBiXRZC3K4cJp0rMz
+	 l5jQyTnnnUNNe/TDH18fKXc5v7HLGeoYJiCdfJF1QZ6AdkwBGIZXo5Be0gviM4lRiB
+	 eMNY4xCj0vApLZLhaTCmCLw04lhHTy2pRQJT1hhKItxsj67y6+A4/hLhqKHzs67pWY
+	 Bc5ygmim6ocR6Yq9GUFmkaGSxuoMqoIiV6JqoJJXCApMiC3cxbvxTknS9mgqrXcN1N
+	 MNBmeUVw/Aljw==
+Message-ID: <25e0354e-f6b4-4d42-b5ec-1656c9df8308@kernel.org>
+Date: Fri, 6 Nov 2026 21:45:54 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] mm/memfd: handle GUP references reliably when
- write-sealing
-To: David Rheinsberg <david@readahead.eu>, Hugh Dickins <hughd@google.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
+Subject: Re: [PATCH 2/5] mm: limit pagecache folio refcount when splicing into
+ pipes
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Josef Bacik <josef@toxicpanda.com>,
  Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
- Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, stable@vger.kernel.org,
- Chris Mason <mason@kernel.org>
-References: <20261103-fixes_core_2-v1-0-f332954f1df4@kernel.org>
- <20261103-fixes_core_2-v1-2-f332954f1df4@kernel.org>
- <2c95ecf1-058e-4d81-9de5-622e32dc57df@app.fastmail.com>
+ Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
+ Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Steve Sistare <steven.sistare@oracle.com>, John Hubbard
+ <jhubbard@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ iommu@lists.linux.dev, stable@vger.kernel.org
+References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
+ <20261105-refcount_overflow_stable-v1-2-70b9c655da3e@kernel.org>
+ <n3l2cnx6d25jovloqyoxiz566mh62janclmiewjvumtmqfezo7@zmsmco5vvssn>
+ <23f947e2-ff06-426d-adb7-396871304736@kernel.org>
+ <20261106204310.GK663069@ziepe.ca>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -127,21 +145,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <2c95ecf1-058e-4d81-9de5-622e32dc57df@app.fastmail.com>
+In-Reply-To: <20261106204310.GK663069@ziepe.ca>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 5qd5nt5rjkj9f8pjj8rt9bci499rqz69
+X-Stat-Signature: u4bymetqbutpcn9tt693cumdjzampq89
+X-Rspam-User: 
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: F215C40007
-X-Rspam-User: 
-X-HE-Tag: 1793997892-572159
-X-HE-Meta: U2FsdGVkX19CLvG93p7ay48CLebCuv7S8QCpa1qmykERxv6FIi2d0enOAHZ1g9H28QhurCFKwiIBDMygNLiBbm0Xuj0dNDfQnOkJIlqwC0cv9qjZXhSBmn0QxhWhsHeybiNvhrbsItb/nh/WnFrYCGKuNtIdFunA5UioW21Yk8z8UB+T/wYNbwkQhpgppS88yyDrOK3/soowM5fMmhxyuWq/KLYJJrvQMONCrDHCvc+mHzlED/ZzJeKbdWlIIRHItKg44gI7nboamWMknRqN0o3Cx/Yq0B4u6zRHvsq4W0czZGG8QA8rTVGGZyR1aNTZyswkpzBnHIN555ZxAE7oZagtiXOvzZwlrSXZquatKor4IiOwKhHjLMXyQ9Vga9RYh9YdkI2QkaVV0CeXuHBcIxwYouMTnq6HCqMc8yS1POhLfFex8TSYxcgjlN3ElBp5e9+g8rNAjj5STOA3ObsejwmebGrt9oDH5Mtw6NXw4ETitiJHe7OxYMa44UbhmzePt6iNfOTE4MS9oN8LuBABdON4Y1v91h0WF9/iEGa3et9E/BoLpkMAMJrd3rxuJ+z6+ufHMsfp+c1cBVegj49AFVJ85k1Jhoatwkct5USwiFQUA413psB+sRUdX32YOUa52BOue8D9EStQSs1VUzRx2yxvRJf0pjDVIkY74rBH0YCbSP1UjS+q/tQOgfCzGVwpecdrebxbVlwJfSqMWYw+o1xdpjVALUlAAioSIBPvKQWE5XXUuzkA6ZKsnFpJCiiCoT8C5topbcmuVAZhNI9iBmcr8yI3Uw95ZTV2HM26Xz3t+aAWtXFK8OtvoLBrRywJ4ZdKeTUKBoNSs9hjOKLxPdyWQ8FPo4mtIQHNCoDwBDc4XAmJngb2yQ6ho55XGahP/1LOouWPRZTwKmrPnympsmhWXDit8vQUgWxaG1ch3sLfmAT/pqbqPyalvp//eAF60CuFgsoUqVZrsfF5ESg
- CndLvCUg
- ZxijlLU8nu985TuXlIwfFvTqREvdd4SxUtlrLTh+et6JGT1AcAtK2Qv3A3pkP2MoIBw7kcexNVZ0kkgqlUfujb5RmFce0r0cNQrXw008TKXVSIeUearFlFcbFX6jNpsaeJ5hXBiZERlfDrhHFmL/FtgLBkDE3g1oEHgq67L8w+PmYtN6U5xiwjt0ln11ob1WPit3GVN4+7Xie5Hf2CydG2kTBPAwFbKqnOxdV9UXCGHbfqBknoSZQdhLZDza6+f4h7BMI
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 560B5A0005
+X-HE-Tag: 1793997969-937445
+X-HE-Meta: U2FsdGVkX19Tm/w3fTcqshNvc5W1u5ULzv+wPDfuac5geafDGyARdho5de1CBoOvk666tgvslDFeNCJdCWqKUCxmbFDlyN6SDDtH4Xfcc5uQ//qE/08DMruiJp5faLxAhgFFAGVRhcOgvKEzJwgbrqcVLchmIxowErMFtCNwAaDapNjkIUjJLkwUqAsmyxSNisl6vu2Blbw4Umxr6a6lYt++XeJ1P/DfNDD8/T7xhfE6usqUATMgnPO0SZmjYR4BOtSi6sb+0ht9s3oNXPwEgntCVtfiV8Cuqyt4baXtqYCaY2dU0XKkr5f4+hcqATBOGGYF1ZosMU73zd5DflNN1M6azL+h/JB+m0CkP0ORXcND5MYratvQ1EWMwbvrGetz1jxxpaYo+4sPAuMUM1e7TwEoqIHZaqSpBmQa1pc7IPni1KALP7pFoRkE8UHe4icCFlKf8xU0CAQt9ypB37E7/ythgf9BVSd2EhpzTlQzvv0dtOqxreiQU39HNPQOXK131ZUaiVODN832Mi+9oy3s8LYnMgQu2GCQ2Ah/LbhfOQ8HY5IvitBROQ0GMXNveMlfkVYu3QS+RlJTBtAfdWB9ITAVGmDrCvD+ZQlF+KZ1Wvz3jLRxEXisTC6djEvcqTUpPKf9bk8/s43cgeqNnHk9yKaxDdMKjnmeejLRfaDLQzwiKtLyw80HL0nxq18ovDUwLQtX21RqPC7ATD9VO64Fw8STr9rSF7+R6rgn0XHxfL1ksszbnSbX6MZNgbz4NsKt4aG00oj/J+AA4Swq8TwZmyiUW6ZipSu6BeCTS6PLEcHVVYKDjQ9xpgg1FNgoWgYmT4X2aKR4jcZaSCoxezq01L10KUXmFETxMYp+n+j/FJV66Av+sA95wpMthdm7d5ru9JRWt4wevLtRhy9PR1ObFTPQba89QRNFFru/h92TWPoJC+Dsg+LXjcJUgjohmw4MyPVRgzZR33iMku7/YSV
+ DJxMu0Qn
+ DrX9kvms0zjEuQdUyHHG6oJOmPuIoQY/Hz8NeGd0OUuBZwrZrR1cef5y1Y144nL77RGjaYHRL+qgMe3tqNU24Bk4Y0Ba8veQ5GJbiJeLtnMj7FR1RaxsHkfQcmDr6FsahTyjaaR/jZjHeQYZX+ZepI9Dot5NHC7yxZ1vUrPQLb2schKFGACCZ0sSKGrkb0/LI1GWgmEhjoS46iqZQU03cK2q1V/0diT5vD9bQTwF+t9W5zY2Nrq280IKRGeJueoSHywDeL2aZGbwn3F+Mev3GAV37Df2Q4FLMCHGMEGIoJPVT5CJ7DC6UtxP48Ygl4MMt4gEXuDcSr3p16Jw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,57 +168,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 20:46, David Rheinsberg wrote:
-> Hi David
-
-Hi!
-
-> 
-> On Tue, Nov 3, 2026, at 7:31 PM, David Hildenbrand (Arm) wrote:
->> We made a big mistake when introducing write-sealing: we should have
->> disallowed *any* file mappings while we are write-sealing. Write-sealing is
->> usually done by a producer that wants to hand-off some data to a consumer.
->> Having the producer have a read-only mapping (private or read-only shared)
->> of the memfd while sealing is rather odd: it couldn't have been used to
->> fill the memfd in the first place.
+On 11/6/26 21:43, Jason Gunthorpe wrote:
+> On Fri, Nov 06, 2026 at 09:09:10PM +0100, David Hildenbrand (Arm) wrote:
+>> On 11/6/26 18:58, Josef Bacik wrote:
+>>>
+>>> Since you're here anyway can you change this to something other than
+>>> WARN_ON_ONCE, since that results in an OOPS with panic_on_warn set?
+>>> Thanks,
 >>
->> Most identified public users don't do anything like that: they either never
->> map the memfd before write-sealing (using write() instead), or munmap()
->> before write-sealing:
->>
->>  - systemd's journal writes, fwupd, Flatpak, runc, crun and
->>    containers/storage write to the memfd without mmap'ing it, before
->>    sealing it [1,2,3,4,5,6]. The FD consumer will not access the memfd
->>    before sealing.
->>
->>  - dbus-broker, Mutter, Chromium's Android linker, KWin, Weston and glycin
->>    map the memfd file, but unmap it before sealing [7,8,9,10,11,12].
->>    glycin retries sealing while waiting for the loader to unmap.
->>
->>  - go-memfd exposes a shared writable mapping before F_SEAL_WRITE and a
->>    private read-only mapping afterwards. Its API explicitly requires
->>    unmapping the writable mapping before sealing [13].
+>> If it actually turns negative (or 0) with out changes, we had an overflow and
+>> for sure want to know about it :)
 > 
-> When I wrote memfd-sealing, we had this use-case where an application writes a buffer and then shares it both with in-process and out-of-process tasks. Only if out-of-process tasks are actually involved, the buffer is sealed. Otherwise, it is kept unsealed and can be recycled. Hand-off to other processes was optional, rare and asynchronous, so sealing could happen at any time. Yet, we wanted to keep the buffers mapped to avoid costly TLB flushes. Mappings were readonly, but writes were done through syscalls.
-> 
-> We still do this, but I don't think any of the open-source users picked this up.
+> Yeah, didn't you get Docs merged to clarify WARN_ON is fine if
+> userspace can't trigger it?
 
-Ok. So internally you would have to accept the additional insecurity and enable
-the kernel workaround through the parameter. How much of a problem would such a
-workaround be in your fleet once you upgrade the kernel?
-
-Not nice, but there is simply not proper way to fix this mess right now in a
-better way.
-
-> I did not follow the folio changes, so I am quite unsure whether the implementation was racy from the beginning, or whether new infrastructure introduced the races.
-> 
-> Can you elaborate why folio ref-counts are unreliable / unstable?
-
-I'll have to point you at the doc of folio_expected_ref_count() where this is
-properly documented.
-
-Back when you used page_count() vs. page_mapcount() you probably had no idea
-that this is completely racy as we didn't have any such helper to spell it out.
+Yes, I pointed Josef at it off-list.
 
 -- 
 Cheers,
