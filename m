@@ -1,144 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55782606A32E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079DD606D803
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=HYCXuoie;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=k6n/Kfux;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=HYCXuoie;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=k6n/Kfux
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=g2ewZjrC
 Received: by kanga.kvack.org (Postfix)
-	id 712306B05B3; Fri,  6 Nov 2026 09:06:37 -0500 (EST)
+	id 28ACF6B05B1; Fri,  6 Nov 2026 09:11:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C32A6B05B6; Fri,  6 Nov 2026 09:06:37 -0500 (EST)
+	id 239A46B05B7; Fri,  6 Nov 2026 09:11:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B2376B05B7; Fri,  6 Nov 2026 09:06:37 -0500 (EST)
+	id 12A286B05B8; Fri,  6 Nov 2026 09:11:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 365206B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:06:37 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 44FFC80461
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:06:36 +0000 (UTC)
-X-FDA: 85404869592.19.CF6C48A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1C24340006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:06:33 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HYCXuoie;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="k6n/Kfux";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HYCXuoie;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="k6n/Kfux";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	by kanga.kvack.org (Postfix) with ESMTP id E5DCD6B05B1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:11:37 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C9A31403C1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:11:37 +0000 (UTC)
+X-FDA: 85404882234.16.A315F5C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf27.hostedemail.com (Postfix) with ESMTP id C73B74000A
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:11:35 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g2ewZjrC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793973994;
+	s=arc-20220608; t=1793974295;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kkNYkeNE70WPtaAN9DA9oFQKwNzrr37+/VHeOjZamN0=;
-	b=6yy5cCFDB2s8kQdTSLHkyMRr3q1vtd6RYZitBUpALuXBe4FUhq5d1p8vQT27kMk5qUNqkL
-	OzqrJIHRpgjzO+6f3+DJwKkBr5c/7UJLPRIkUPBVQ6mb+EaI39XaS3xB/BwX1ZBbFLcY33
-	YPR2bC8qtIDDueX5fVkwVTQfzmAVOpA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HYCXuoie;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="k6n/Kfux";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HYCXuoie;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="k6n/Kfux";
-	dmarc=pass (policy=none) header.from=suse.de;
-	spf=pass (imf12.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.131 as permitted sender) smtp.mailfrom=pfalcato@suse.de
+	bh=BLPH8onp6C7AoW4lZMqXDExv0D9uGk4L9LfjO8m+oHo=;
+	b=rvXmXgySGmk9G9V6yq2TlRuWWpo36t7iyKq8q6u2i5TJaIl8JI2uKB/JuRkY0WpFGUHLIc
+	KPTRCS7KeWR9NQMbyNn8byMavkh2XCwt23d44rqJbZfrXPCMCQeyMvekfoEgoFEOKE7oEV
+	8q9TBHRaUYG7jrcuJeVglu9dkmxHPCQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793973994;
-	b=LKNiaI4zRUiSvlelrPYQxYClXa0PC7Iu5LfGvFUp+nhBroM3aWLNdSAehLnPXcbVX96uuk
-	tFa+bwu+AlQp/269DCciB38ZT6saD8FKCHsBXzwPhIj4ycmNUuvU7JkYhJ4Gby0con7N2T
-	zBgZWw72X9fEzwpW+QS9xI3MVLfP1Xw=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5170C1F7F5;
-	Fri,  6 Nov 2026 14:06:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793973991; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kkNYkeNE70WPtaAN9DA9oFQKwNzrr37+/VHeOjZamN0=;
-	b=HYCXuoierL737OpwGTSBiFtCNZsGHglPQTMPO4xMGvCJEhpXHAfWCPkjEWr2Zt6zeucAuZ
-	Aw4xlaalSlJRo6qbRgIiC3dhzTu20ZWsEdGWxzfIh2RaQfU3w05UqFuL8h3JeZirIKOt23
-	I9wm5k70zac1ek2/yfQvV33IYc++MrU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793973991;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kkNYkeNE70WPtaAN9DA9oFQKwNzrr37+/VHeOjZamN0=;
-	b=k6n/KfuxZ+6UVLlCllYhPpTvopJG2L2NtK31AQ3FXc0D8tanjreTzupE1aEZBil9oXPmfu
-	i75D+RtwwwZauaCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793973991; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kkNYkeNE70WPtaAN9DA9oFQKwNzrr37+/VHeOjZamN0=;
-	b=HYCXuoierL737OpwGTSBiFtCNZsGHglPQTMPO4xMGvCJEhpXHAfWCPkjEWr2Zt6zeucAuZ
-	Aw4xlaalSlJRo6qbRgIiC3dhzTu20ZWsEdGWxzfIh2RaQfU3w05UqFuL8h3JeZirIKOt23
-	I9wm5k70zac1ek2/yfQvV33IYc++MrU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793973991;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kkNYkeNE70WPtaAN9DA9oFQKwNzrr37+/VHeOjZamN0=;
-	b=k6n/KfuxZ+6UVLlCllYhPpTvopJG2L2NtK31AQ3FXc0D8tanjreTzupE1aEZBil9oXPmfu
-	i75D+RtwwwZauaCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 14F53134E9;
-	Fri,  6 Nov 2026 14:06:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id JH6tL+Xe7WooXAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 06 Nov 2026 14:06:29 +0000
-Date: Fri, 6 Nov 2026 14:06:28 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/khugepaged: don't map folios that are not uptodate in
- MADV_COLLAPSE
-Message-ID: <au3bJel0YnSeowCq@pedro-suse.lan>
-References: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
- <au3C8lNElGg4LnR1@thinkstation>
- <254c6f0a-9353-4806-a5ab-a071cd59c64f@kernel.org>
+	t=1793974295;
+	b=dtYcDnhlREnaApPB+nWsA1IsGFC9LzfpTC8zohK09gif+WchwB9XvBtD/zspNn7+ynP1NX
+	+fJJW3PtOVQYsHS1h8Y6H/Y63HH+8DGoDu6Q4EiKni+fVOr8nvR2+7WyPb1oxMJPFxcx7+
+	FAjgWTrB0/h6KN1CnyIjkMAUsr/dJew=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=g2ewZjrC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9AB3C43D04;
+	Fri,  6 Nov 2026 14:11:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C2F1F008A3;
+	Fri,  6 Nov 2026 14:11:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793974294;
+	bh=BLPH8onp6C7AoW4lZMqXDExv0D9uGk4L9LfjO8m+oHo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=g2ewZjrCHw3WTRPfHVHQxqbS1wA2g3wTh8480oj0lnvKZf5Py0zb7HkGFUGjZ6QSA
+	 RBZ/BrP5GFgfXjKQaVwBIgtyh70yIGqFmj4eNHDJaFS+UrScNolIuIm1Irq/glNT9u
+	 RMDoXxZQVVC2FARzVwO+iCwWeWc9ptgaHE6/yBn88hSeN9ODaTw6HiftZ+zI5VCmSw
+	 G4llq4/bkghvyG2s/hIh6+lM2R0qBGt3H1Mi+CnIcMHeiJUSx23GA0JPC0gbGv+KTT
+	 KZ8ZhjL0UGyyvHaMcFPS0aaWi+hoWsnP7ATmE7NywBYeukjSNn2NrqVIxtLA9oW0aY
+	 RDRxL2XiQij7A==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  kexec@lists.infradead.org,
+  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,  Alexander Graf
+ <graf@amazon.com>,  Andrew Morton <akpm@linux-foundation.org>,  Baolin
+ Wang <baolin.wang@linux.alibaba.com>,  Christian Brauner
+ <brauner@kernel.org>,  David Hildenbrand <david@kernel.org>,  Hugh Dickins
+ <hughd@google.com>,  Jonathan Corbet <corbet@lwn.net>,  "Liam R. Howlett"
+ <liam@infradead.org>,  Lorenzo Stoakes <ljs@kernel.org>,  Michal Hocko
+ <mhocko@suse.com>,  Mike Rapoport <rppt@kernel.org>,  Randy Dunlap
+ <rdunlap@infradead.org>,  Samiullah Khawaja <skhawaja@google.com>,  Shuah
+ Khan <skhan@linuxfoundation.org>,  Suren Baghdasaryan <surenb@google.com>,
+  Vlastimil Babka <vbabka@kernel.org>
+Subject: Re: [PATCH v3 09/10] mm/shmem_luo: Allow retrieving tmpfs files
+ with O_RDONLY
+In-Reply-To: <auuzKNZsPD10XM4q@google.com> (David Matlack's message of "Wed, 4
+	Nov 2026 22:35:20 +0000")
+References: <20261103010216.3447716-1-dmatlack@google.com>
+	<20261103010216.3447716-10-dmatlack@google.com>
+	<2vxz5wyck08d.fsf@kernel.org> <auuJ4msatqzoOrjN@google.com>
+	<auuzKNZsPD10XM4q@google.com>
+Date: Fri, 06 Nov 2026 15:11:29 +0100
+Message-ID: <2vxzse1ehwxa.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <254c6f0a-9353-4806-a5ab-a071cd59c64f@kernel.org>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -13.51
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1C24340006
-X-Stat-Signature: hcqyqfxcbs57yiptxo793osij87k7xke
+Content-Type: text/plain
+X-Stat-Signature: xbyw58ejmjxb6pr7gxa3k44fwzyjjnj9
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793973993-946696
-X-HE-Meta: U2FsdGVkX19XtE3FFDdOR7WXJ9Nkz9UqhwgThF1jNf3lq/6wALUDpmlIA73KZZuQkhSkztX6HJvI69/Akws23QCj6ZAjoBlR4q/7HMZMOezAmcUxM18YcJOklll80Ch2simZOBaVuwCjsL5PXOuu47+VIZoNWEbg8H8yBuCeiCG7AaaekJRODQ+ujJcuz4Wmo6ZtELok+WuMKHCbqAMMQupCF30LfJRLYVANbDUgZefsdTqTha8DURcgNYdZg0zbe8+33IbwT9/aSt58m0nfS5dZb494rU6OlPKVvjuLZ9kxXQe2Idp28ZsgxCXZELo58zrUl5qPqRZd7KIEEMQag581n65Tvbhd80UlRBcV4n3ykYKcDzL2/I5TOPSsyL0VYRQ5vb6YEw8SB6XBAuEaEq0dnuGx4Ymu85Xg3u2dWObxY3yvtnhHbVtgIBkfOQWRXFgsVYFWxZ3vmpHCfOOFLDo8Eeh5QJKtAdJlMdkJR2LCbbuQOoSJOwZywokhvKr39ZEde9HRdgOXDpH8ji55ysOvEbvvy6i+dhFSggxrKmGgDHTgvvT0+UIlFpLSWmm9HbhIzaC9ZOHKQU4cthc7sVfYsmKiMfh+xVoLfD7dHyq9+5+Ibmw0a/55B/LTZHDSL6KtlUz9Sf4/Wf84Z0tLVxWKhpRGLeC1vvUtZx7a1C6ThHtgOJoNujlTmIdOZ2V/r6o7NE7+whSeJYWnVbJXfXY+X+3tVSelZsbWwDmv0es6ihjRkueskdbZr/44p7zSVToAaP1Rin/GxeP+bOndMO1fiElXuG4nXl2Wl3v6lYP4U+mBmvlcu6X5FNMRQ95IWuTox4hcsmZdL0Q6c1l6NCizEqfQ0arJedQSRisB0hn4wZxIwX0333g9te5JPq0vsV/ZIOyI2RV438U8S2ofEIhjbxbhuMqA7Qr98v+XLmvqD8Yvc7YOEjkSo4/U6W6+eyvgUXjL5GKBRRkYoRp
- rKzqC7MD
- hyAB8XUxRlNBAv7p7h4aD4t9GHhc5uhpVvepED5lC+RdRTjJIS+es9CM0PbvgplqBk53SAYplhP0muPV70OiL79/l1coMAy9tlGCyRYyxxcZ/TWnnULsVhsMS15BLMd3L4W9O3pDdUe3vuHsW81cgP8kQLepijVIHcf6F6WoHX9RN2gsQlokuONczuMvpQ6HD7+SOnjov+itMS0pCgZL8F4TETSWA9E7Urgmk+S3mNVFN7E27Wdk0HcdwVXOepTbWlTvkQReLx+BurN5wXeKCUw0Ww5ueC+ERQyL91MKogStn5ivSS1o+FjCrnJka9I9hlMycpSHXf6NKV9Y=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C73B74000A
+X-HE-Tag: 1793974295-923620
+X-HE-Meta: U2FsdGVkX194Pp+m2Aa/ObTHHAhXkkYTAB4CmOIQfhq5/Q81DUP5Qv68Q3FoinFJ0twUmlg+peE0w2YuLFyyYtUjwN32au0f+wgf0k2xaj2li+Ynv9rkE5jbRaafb4Yof2/4oSLDGDYrVOQkHfMFAJW2Lqy36l3Erqu52XBZqkEGJXJ8F0bKHcDY37iqmGJwfDr6su8Rc7mmtzDXhrXlpHZ7aUyqChz26tdG7FCtvyVKx+cC31O+trFwNvXHvtS1h226OUr+bFlNKNppNlrWyr5gr5oh5XMKL8XUEBuLVSKBTAWHc3lE1wtAlKXrsTOS5X/4qZZsevAL8TqrK39YbtVJFJZ9cC8tORxlr3G4js5XXuPpvGe+ObPzbyeJETO08FOP1fyDWV4MgeJhYNZ7nMxIa5nPgZAZdsNJjfcBOOBc/GpRqgq6hcDk7QaGUTx/7J1TFaLHmrfiHuCWBhiDnBqkPB00xnoP0ao4g+GqGL8ae1OypkkYIlWISz9uzN7hSWOI62tDsHc3/qlmJHAAq2a2YW27MEzMN9JKL+h9dA4xQAtiz8r+LZveaA0IEmOtHEsrkUVibWd2djlXELU5pOQdZVlO6cXCAHDmvQGOjqH06fe7OD65pqpAvklMhZsgm/0Y5/tDKOMu/jTdQLVgnLxwPcCERCiHU3VnZz3tlEKqZTPjx+Z2Q2Ao9NeAEinhDA9bEek90TVnsTLOJW9NTNfP7kXv5UXJB9fO6wc/VUVMnXpZJz4l2sH1TxF0g1ZT0D1UG3JEh+zXc75Ef+/6YIiBrO8MDg2JphANLLcItJb9lyMW7W1Kai7Tghe4/SHRuztpogSRoyuW6d6MIK6xNTLZW+rzAfPhdokizdQVy/MAoDpGVYnaBuIT/bjO54beS0Qm8/y9WnS/ZoFSavFFbXAp2ZF61tPxMbRJ0fpQpTaY6JVq7auC9C+kevdRFgl/dIRp4X5mcTUAS4GejUg
+ Pn7ZT7Or
+ 5j98nifeA2R6lfbpnK314GbjtNK7OXSlK1D0RWoJsb3hm9YTDoQ8g80Y9rwMxfr6OEhFpspN53RHRwcHft+5pywdTYtfRzcrJLWQlzrQ4/FM4QjWF00HxEG/rR7rDPy1/DhHbhRRijypAr8ig3EhZh1sY1D8cUGVxvDFLZ81Te9Mr1ynxvAHd91zyw4U+0ziuwjOa8nB6aXRZwa/YYjo/uKa2HTenWmk1/IQjdnB+wr2q7CeT03I+WXbDARgCF5sqiLX1
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,60 +109,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 01:29:31PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/6/26 13:09, Kiryl Shutsemau wrote:
-> > On Thu, Nov 05, 2026 at 07:16:44PM +0100, David Hildenbrand (Arm) wrote:
-> >> madvise(MADV_COLLAPSE) can map PMD-sized pagecache folios that are not
-> >> uptodate. For example, shmem fallocate() can put such folios into the
-> >> page cache.
-> >>
-> >> collapse_file() already refuses to proceed with folios that are not
-> >> uptodate. Let's just do the same in try_collapse_pte_mapped_thp() and skip
-> >> such folios, leaving handling to the page faults.
-> >>
-> >> Note that collapse_file() effectively clears shmem folios through
-> >> shmem_get_folio(); let's keep this fix simple and simply let the page
-> >> fault path deal with that.
-> >>
-> >> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
-> >> Reported-by: Chris Mason <mason@kernel.org>
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> > 
-> > Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> > 
-> > Separately from this fix: nothing on the mapping side catches this.
-> > Every caller checks uptodate on its own (next_uptodate_folio(),
-> > filemap_fault(), shmem_get_folio()), and khugepaged was the one that
-> > went straight from filemap_lock_folio() to do_set_pmd().
-> > 
-> > Should do_set_pmd() and set_pte_range() assert it? Something like
-> > 
-> >         VM_WARN_ON_ONCE_FOLIO(folio->mapping && !folio_test_anon(folio) &&
-> >                               !folio_test_uptodate(folio), folio);
-> 
-> I think so. But looking at these hard-to-trigger but in the end very nasty
-> problems, should we actually reject the operation and do a pr_warn_once() or
-> something?
-> 
+On Wed, Nov 04 2026, David Matlack wrote:
 
-Yes. FWIW, this is something that's been going through my mind. Our page table
-manipulation APIs (and usage) are way too fragile and allow you to do the
-most insane things without ever realizing it (e.g you can clear a pte, set
-over a PTE, get-and-clear and discard the result, and do all of the above with
-no locks held, set a pte for a folio that's not uptodate, set a pte for a folio
-for which you don't have the lock, etc).
+> On 2026-11-04 02:45 PM, Pasha Tatashin wrote:
+>> On 11-04 17:52, Pratyush Yadav wrote:
+>> > On Tue, Nov 03 2026, David Matlack wrote:
+>> > [...]
+>> > 
+>> > Can't you put all your binaries in a separate session, retrieve it as
+>> > the very first thing, and then finish the session? Then you can execute
+>> > those and retrieve all the other sessions.
+>> 
+>> This is a good workaround. I am not opposed to this patch for 
+>> completeness of functionality, but if we decide to keep it, perhaps it 
+>> should simply be squashed into an earlier patch. The current diffstat
+>> looks bad, as it mostly deletes code that was introduced earlier in this 
+>> series.
+>> 
+>> In any case, given Pratyush's suggestion, we could also drop it.
+>> 
+>> > 
+>> > Why do we need to support this in the kernel?
+>
+> That would work for binaries, and I agree that use case alone doesn't
+> justify this. But I see O_RDONLY as part of the retrieve interface, not
+> a feature for one use case. The retrieve argument is modeled on
+> openat(), and openat() lets you open an existing file read-only.
+>
+> open(O_TMPFILE) only requires write access because it creates an empty
+> file, and an empty read-only file is useless. A retrieved file isn't
+> empty, it has the preserved contents, so O_RDONLY makes as much sense as
+> it does for any other existing file. Without it, every retrieved file is
+> writable, even when userspace only needs to read it.
+>
+> Preserve already works the same way: a file can be preserved through a
+> read-only fd, as long as the caller has permission to write to it.
+>
+> If we keep it, I'll squash it into patch 7 in v4, so retrieve supports
+> O_RDONLY from the start. The commit message will lead with the openat()
+> reasoning and keep binaries as just an example.
 
-Some basic assertions (even if there's no easy way to back down from those)
-would be nice, or ideally yes a rejection.
-
-I would just add that these very much should be VM_WARN_ON_ONCE instead of
-pr_warn_once(). pr_warn_once() will (AIUI) not be caught by fuzzers, at least
-not as easily.
-
-Also, if they're inexpensive enough, we might want to upgrade them to full
-WARN_ON_ONCE().
+I'm guessing this all goes away after you do Christian's suggestion? I
+don't think we should be retrieving anything into a file that userspace
+has opened O_RDONLY. Retrieval is in effect a write operation. So
+userspace _has_ to retrieve a file and reopen it O_RDONLY after
+finishing the session.
 
 -- 
-Pedro
+Regards,
+Pratyush Yadav
 
