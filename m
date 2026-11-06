@@ -1,94 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 454EE606EEB3
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 07:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A248F606A331
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 07:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=a1D6LomM
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=uB7tEP2q
 Received: by kanga.kvack.org (Postfix)
-	id BE3B86B05B6; Fri,  6 Nov 2026 02:24:27 -0500 (EST)
+	id 1D1E16B05B7; Fri,  6 Nov 2026 02:24:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B6DC96B05B7; Fri,  6 Nov 2026 02:24:27 -0500 (EST)
+	id 182336B05B8; Fri,  6 Nov 2026 02:24:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A366C6B05B8; Fri,  6 Nov 2026 02:24:27 -0500 (EST)
+	id 0421F6B05BA; Fri,  6 Nov 2026 02:24:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7368F6B05B6
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:24:27 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0450880CA0
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C9B786B05B7
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:24:28 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5F948120CA8
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:24:28 +0000 (UTC)
+X-FDA: 85403856216.23.2B98E39
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 88C8C20006
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:24:26 +0000 (UTC)
-X-FDA: 85403856174.18.A9D7DF9
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 27E2F140005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:24:24 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=a1D6LomM;
-	spf=pass (imf26.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=uB7tEP2q;
+	spf=pass (imf31.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793949866;
+	b=n5IHaAcKodAxTEb5I0dA0pSGSHca3sjL5JR5U5Lrd3YhUL0Km3L5IpT5SqQP5YNvQ6ovmL
+	xmFB7SGvdyiqX57tR0ndQpjk4YS2k8x6g8KTltax66OKWSohPJW9euDSeGaA4lgX2H3/G/
+	sPl0oMn/8+GEl0IamKonzMk/32ntays=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=uB7tEP2q;
+	spf=pass (imf31.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793949865;
+	s=arc-20220608; t=1793949866;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J0Xj9pg0Rg2jp4fCvJcvvgKONDkNxiGPLuEEZm9n/Ik=;
-	b=rwZ2hWloMtIzunAhGwCnL7l1Jk2VJgmm9u3WU6LUfpqv6/7y+e6XHpu0KLJIgc0FygPsIj
-	EbUUCGN87f1gHjjrLtskx4RDq7uOmI9/gOcD8DpafPuphp4VAOKWsHu9bNiE02/97xq5Gv
-	5aHjYKQmhZVUc6XWjRTqkzj2HvrndSA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=a1D6LomM;
-	spf=pass (imf26.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 74.125.82.50 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793949865;
-	b=0JzKnQfvY+gmyA8RRplrz++TcQN3PIrtpt3ZD+qq96YNq0VSu7ZI6RpIlDGx1p0XsnK3XC
-	PkRhaUGvXy+Cq5YDQFlt5eSc94U4ff0fetzSOVWdDGP4ZH9+EdjhMoXl/OaasCvNH/NAvp
-	JiFqj6S0acMYJL1KBQ2qb3U0BIUQb2I=
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-1a3c08d6928so665585c88.0
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 23:24:24 -0800 (PST)
+	bh=hnkDMtwt0yq1d4PAeYVaT2YC+Oe3WZGJ26Fjv0oSbVo=;
+	b=491OHa7zSFaB0vslawnbsT1BoX55oN4E6y1QLWGeXFyv0m3lmCIjJsRJyKLSEvKnU2aeEi
+	o1dGWg6LhJyph1MyI9ObVHq8xPsw7Kpl/Iuzci6LTRlzsAlMoUYUfUIUesGrSuBX/nNa89
+	B5BekhaqIoto8bjIOaM1w/s73L6DZ/Y=
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-14394530ec6so544302c88.1
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 23:24:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793949864; x=1794554664; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793949865; x=1794554665; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=J0Xj9pg0Rg2jp4fCvJcvvgKONDkNxiGPLuEEZm9n/Ik=;
-        b=a1D6LomMGspQoNDy7Xdf2aafEe6ryOrMYcczAOQfoJDwRwFU1G59/dsncznQFFTsWn
-         pX0ar6DtKaNwYbKgLA824N6mxhyyzkKsuLjr3pA06+aB1cwbEWEspi3NZYx4jzzcqKXS
-         MSrXZbmwzghGypAzzEhEmLoxw429rX2oNT50u9L4/09wd/FpskkDJ2nPxv31M3Uf+gng
-         P1vkz3DkFXwU75GtCt+AhuTBSgtRAgiDX4NBQRE9NHVHvxnsXb0EHNCXu08UWFxkwmkx
-         /hKAgn0vaYvVkzbfqDIVnWLaU/nHE+UgnhFOc3QuVeik5iEryly3PqUSKhYR4OFvgcVi
-         L6IQ==
+        bh=hnkDMtwt0yq1d4PAeYVaT2YC+Oe3WZGJ26Fjv0oSbVo=;
+        b=uB7tEP2qkcznj0UuviuI56gv7yFH5bpmLGIzYi0zA/RiqKTyiyDAQ6WHlctcxufXjF
+         lhsvVudxkhTUw3Uzv4liQ+3YY911MC6w75KutrVGgQfOO9/hfV4MJaei5A3yfUuvfeI9
+         q9JqbNDBgCiE5WzEfbDEDKQSLteDt7n/RMFnUG0WGlyTR6UpHSFoOMj4RE/jPNL8CStY
+         DgAcdAUwMntY2vpUaSqN6nwX55EF2L2ilS6Do0yi7/xGEKgGkyisZyUHa+4WPCUjqVkU
+         fGP+Z1Gloa27Ztikz2kfSt3KwpOJYidULsHQqmow3ooura9Wpy2lJs9CdmGrtdywxCkU
+         4Xjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793949864; x=1794554664;
+        d=1e100.net; s=20260707; t=1793949865; x=1794554665;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=J0Xj9pg0Rg2jp4fCvJcvvgKONDkNxiGPLuEEZm9n/Ik=;
-        b=a3o939FsmlyetD7zN1dNKECf4jJa18EQ+jfYTLlXM8ZQwywHoJZgmpye6LsIR4Io0p
-         gqqr6OoK8NH5MxTWa20yT6melvrA1AfnKmhwzUTMkE4UpVsK2ohOZqC7erZZwFxCAlEH
-         iCk7DXWwjmWeRsHO4nMaiIlmv1NTKJ8bHs2m/Znb7MQNTMOP4C7G5oGRResCi+J6f3Pm
-         pg/Ja8M75y1QSVlaSEmTtwnYqM7y7ze9Lorn94C41vM2HcBtFehh31xpwEni4ABbLrP8
-         E+ly6jzZppb0rYkli25cCgk6NCwPlMNcA/s7j8OJJUm70jPIk1AQqucXfwsm2T5rwUq+
-         MW0g==
-X-Forwarded-Encrypted: i=1; AKwUvByKHxs/UUqNm5zJPvFzc5wayKeIyTkQAc8rZSrji/1JqAUJJJhZAOsrj7K8EULu5+MBMZlNdUop1g==@kvack.org
-X-Gm-Message-State: APuU4Z8kB56vjgB5yNbzL7ZNIpRZ+y/xGMF3go1/H8Vpzcc2ud4h1oE8
-	6eiDVA23JE4cd1J9lgqjzQa86837iM/MNGDBecGEbV3yfLf1HdVeaFV5
-X-Gm-Gg: AYBFou34pY4XEAp1bOlV/Dtf+y3+kgm6pARFSetQtutWl/HlBVggLSOspy5jbEc/3qo
-	MnSqZ5wQLxcziEJkD7svJXrchCN19Uq0dENUeT3xNtkqQXcvAc2/JaGxRjT9BnGHhff8eggt0a6
-	0RAbb7p7cyqDl9Vz88NZZTNff6Adsbg+KdUKUaJdiL8uJj23G9VdntBfmfDAFZTh6jmRbC5fu16
-	ogwPlxI/+tCvO1L+3FQNK6srOafHoshO5YvU9+x6a2jNWujuPnxDK5w0+i2jHX8RRk8C+dwCzWL
-	ISTSK60nrRrEzyZuDs0NADi2H7+ie7umqzR93S/Js/f+mHhPcikPMJMjIPrWBll5mxArr4QpsFW
-	EnEZZveQ2rcDNp9sAGUUENYqiwX1cFv5o9yD+KIJ6dtBB89wzgnIwPpX1KOMsnXgmwgQ4eZoejk
-	Rq7LxfN8bVeQrtjtzeHBY7CaK+2dGw2xQ19+rdjtnSrU56nB2BxHvGRI9qXr2uE5xyxPZ8RZotZ
-	9xvSPPfExKUYRxYbdfSg2dzFnVulKexQ9TF1kt8qYh9tGYDiQ5MOyeldLSrrhDjhUXNx8OORZUN
-	3AEZkIpUVH0PCWRSCGfWL1AggabvcmWg50JQYQY6Rw==
-X-Received: by 2002:a05:701b:2905:b0:151:2e62:fe4b with SMTP id a92af1059eb24-1b25d338dddmr1769252c88.23.1793949862359;
-        Thu, 05 Nov 2026 23:24:22 -0800 (PST)
+        bh=hnkDMtwt0yq1d4PAeYVaT2YC+Oe3WZGJ26Fjv0oSbVo=;
+        b=oEh0hNqdyUqDDhzCO++g08yY+2jJZ7vPvWPIxKQvDRGCfzptWrG6cKMePt6DY8BxEM
+         qfdJBwAzU3oUXZxGXoLOpQWbWZ8+fboAmtTEVtSX4fUSccQTe8bHG3ZcM0duri0vcDbD
+         qkQKA73mElDkjwT0xupDRUlgtj/xYVCyYWn0n+r0mkgFEKXzi2xKMUKuKZWhTTGzOfh7
+         G7WU4O/Tw1P1RWxxGENsjlhMKlZMR4IGmna2jdhbvGfv03zNMST/W0p+5LuGaJY946Wv
+         s6m+lq3jsTxNoH+R+vikGTTPW/N/3X2hBG4VnQlscseaIBFYusXHYON3syfu3dHHUFEY
+         /f2w==
+X-Forwarded-Encrypted: i=1; AKwUvByz3Rb/seEPYBn8cU1/o2WpkgTYM06MOBegZ6abjL65z2NJfCfQx0W7x+LenAq3YqmXr4yLhN6cbw==@kvack.org
+X-Gm-Message-State: APuU4Z8WiI4eTRTR8Phez70QAbsNOyY2KWYrciCuqNmVG4tz+mI7fBls
+	tFu9hYH6Jnkllp3kRgsk0R+tGtUPdRJmSfvDBn+1raAM86J0EOmTdcqu
+X-Gm-Gg: AYBFou0GalN9sZuj3E508TlAuCVwT6qhT6/dK78ImEclKcw4LGdMtuVSKDHptexNqtS
+	5QvjgpGUfXHAD8IeGSAgHgo6Oe3MxAFxZKWboEjeCF/wBaARD5TFC62hQrjF8NgDHMfh+TVs+ST
+	tcUhXSIQ7g7zVE1uSgS+/RghVrVESgpjs2vFmnoB/OxD5u8mlOFKWuJv/9ptxldqYuXTeXBoS3s
+	GZyIhBJKP0HJyKtJcJ8gumcsvUvDfl7v59Ot7LzKTnYJu0sa1f6wNPk1gSgACc9QjvWz4bM3GZs
+	ejAkM8M2XQxDOX/4SbyMcDEZJcAwayYhFWRALiXBYKTTCQzffa+AmQPOnzJatbJs9l0qzhRFQR4
+	vm2hHgDLs2vrd/zvQ3ZiElkPc2DdgH0oA8w7JVhdING/TwMKKbrELGlP8faRjmtwL2+zJsrXIN2
+	sx0wPwwTGcIdJivzr4yJnvIIo4AGIpuQDEB1YiYLYQ3BOP5s/SAvKCfYtaolR4qwPSh1+d1cfo8
+	o4gb5C7m25YpHloiuLYop5YYiQ18NZDBUM5dRszBxibzdojQI9FMBKAHnNbzJFMSBSMslKxp4bf
+	Q/fXutDe7UzyBic/XqzfzJ2uDx/wPM8JeH2lcKCFzA==
+X-Received: by 2002:a05:701b:270d:b0:183:7d42:cfb5 with SMTP id a92af1059eb24-1b25d30e08emr2068315c88.19.1793949863734;
+        Thu, 05 Nov 2026 23:24:23 -0800 (PST)
 Received: from penguin.lxd ([12.187.136.98])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b25e4840f3sm6262220c88.5.2026.11.05.23.24.20
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b25e4840f3sm6262220c88.5.2026.11.05.23.24.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 23:24:21 -0800 (PST)
+        Thu, 05 Nov 2026 23:24:23 -0800 (PST)
 From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
 To: hannes@cmpxchg.org,
 	yosry@kernel.org,
@@ -104,28 +104,28 @@ To: hannes@cmpxchg.org,
 Cc: rientjes@google.com,
 	willy@infradead.org,
 	senozhatsky@chromium.org
-Subject: [PATCH v3 3/8] crypto: acomp - Add trivial segmentation wrapper.
-Date: Thu,  5 Nov 2026 23:24:07 -0800
-Message-Id: <20261106072412.7909-4-kanchanapsridhar2026@gmail.com>
+Subject: [PATCH v3 4/8] crypto: acomp - Add API to get a compression algorithm's batch-size.
+Date: Thu,  5 Nov 2026 23:24:08 -0800
+Message-Id: <20261106072412.7909-5-kanchanapsridhar2026@gmail.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20261106072412.7909-1-kanchanapsridhar2026@gmail.com>
 References: <20261106072412.7909-1-kanchanapsridhar2026@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wbsae5qyf8xz7hrfmzho8wqpgqyp1tpa
-X-Rspamd-Server: rspam01
+X-Stat-Signature: w5cz9cjjzza1w43on8xestb543dmd8oe
 X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 88C8C20006
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 27E2F140005
-X-HE-Tag: 1793949864-747863
-X-HE-Meta: U2FsdGVkX1/JPOkQSRlv44uBVPdfDBTBQJb+lfhMdcYrfmsj8JrWvuvQwYdYrCQP1ZHtVyoIMBQOvkZGNGS+QtkA32WlnjgFqBoZctY2T24J7QBlR5Z0rYJatS5R8Avast2Hkgk0pxMnI7gJti9mlUdi6lfQN0cNiyZdlPP7lDKymha2XRFqt4HZ0jH8UyHsXn/XC7EWCerNuSKIPrU2pNb88DtoE7gW6wrHOrg7ykMQw+QTUnplqFKFteGiya1wPUN0LCJ+5mFw7wazfdug2PqHhirSWkrLENa212WPm56FyFIa/i6zdV3adyi4SIiQZOIWQvSoaApjWL7gSyPn4Q+ja8T4wuNTVqsTG5GsFlxxuxOrHmD0onCGmLigH6eQeSddq4FfkDKyqde0cSj2uMJH58ii5FsCwjBila3z1c0NuHxHUdueHe4k8CNU0PL2G+FKdb9pe9ZE6g2SN/0cmDhWLN69/uG3Brr6eiPWS7v+R9h56AVrXEPSjFqZQFO1QnvRmz53l3edbUfltxlat3hfZBTHFitHWAG1idW0YMT+ha2ieASqpNG1URwiWDb7qsYpHa6GKmfi2ngn8Nh/75w1MvsiKJdKtyQBG4qQY8QI9XYwMB0dUiM61l9SuQa4O5WYZGEXc0o3NzG54VLbgM8d7iOb+PrznMMf0J1/7LrlvU7B6fABbvDIo+nyJrx01IhYU/K2Myu+kmOdrofTeuRJC9ycyDVtbRo08JMAzyBmQgD3PYngS4rm+QKh8md9JhslBunLYSgiK0bWSYBanaSAsBAg61IjSx9ebtx1Jkc1MQYzt15kvqUHshpFbrIA47xXmMxpcWqJd1PBJBZmNegkUrUCSvyMtqd2Edr+U3MOcItVi+gIvL3JxYXdica30Ru4uljnmAukko5J331TmCyK+EvD/xmEpnw1WFWspE59keGStHEsrSpeBcIrYvQdTpXmQu3AGvIU8Ur3dHi
- LJ7QQFqU
- CoIcIaCvXGaaZLplQiiG39LN7DMmiF1bCv6sw2szvaUIHhlmmfSLeZWvAF4ZQBzAYGwBTuQzwsMPmMUJ7cwNhslXitwgtihEqVDHYa/XDtyl0Vkb9QqwNpi+m0xuO9rjAIkqp6Vaf3eF/M7tnkoVc3h9N1fq8e+B3kqHG0uSpXVfI1cagBzPbA6/QE/buqPfF4ZItfatjsPnR4ysb9f8WoHROzCQotkoXhlieM7bqsInTsktOtW9h7iloOSBBDN91J4CGJxwuxdnduXnzg2KCQwFdC2U5M1Wf4EutkvZRxS1ms5gH+ufFvVtDTjr7HJdQJVsn5AudQTONuf34n0mJrP7vuOmBBQgN8AT8C48dlrqFT5whfk4YSnziQIIjscxHXIhqpwUj0JRhoUwIEo7diq7DupAyHCJhuKTpfcIbXYOujPAchPg1ttfmwLT85GnDFRi0xOiul10bwyd7jLjsqB82A+JVty0z+2NDTAwsDtgmE8floRvzVWZJGg==
+X-HE-Tag: 1793949866-647761
+X-HE-Meta: U2FsdGVkX1/HPNHK4tLPP8J6WMzA/GELdvSOqvNGlHb5NpQxh5Vf81xkgdir+2+t6M6juWYr0nKctSP2NVu0bt7TCSXXMe3A7ZFS4WWMAoIc72mJoHv0aY1xF3yBNhEWP3gOU0wr9jCCDAoH8q3b0wCr6ICNYrbr/zvG5fv4RwhKZrJSoOlZ8obsH5UHlGM4jogH49QkOyTFbrGnv4zEIN2YNdmIcCu3w9IHhhX+H+thCjsNgPsM9XHBuxvSG9c/6SrnncDTYdz93i29m4hMkLF9lLz/tIptSgzaQO753bQkiMQhu1ZaX1z3lhR/ov/+4B9FblZMnjBhN9kwGPVUySzvbfSUVqiYKvoo9GWIY9pLGJu3Y/y54I08KyRGOGj1OGFShg+mYBsX0rmMJoq2+gLvqkddVOOIqmFZOXxXCEOH6M5Sr0sjeDGiynYpVa/ZfSEYR44l7E7q76CHQMMmoBtJWfVoEZqoTbcKkoBJg2mqAVQPeraX+v28ekYkYDGE2cHh3CsdqkajfzksX2HehIFq4ssKf2fnzuYqfxtsS+eeEr2J6Gm7GgVauNnY+VV0VJtmoCeGeSg9f8HAt5mEglV1jTFzXOoVrxn50cpSAuLZm92fcdMsVbonViXiMSm0JogYJ6fweMTmoWONV5qztyfX9b7Xgjdo03D4IaMPloOTsa0zXXSEY1hMzTi36f9234bcPbJoC63qf99iBevXDUXEcd9GXmpCvpMCEqQUOyYii3A9XaJLeTpDR7LsApf2hPlZv4TBkLiUKHGRLIlFI1voftO9EIsDD5fTlwgeSpCcj0GpPDbQZcjVPPOfll7E5fQREYu6tmOgBfxwnm7GRNnjS0MEf0f/JHb4ZbP8YrtSQn1D3wNPfo9g9/9tkdDUD2kcl5K3VV3UFqD4mkDYw5ha4PRhDi+4XztNnflB70mX0O3jkyBah62xKq+35lsfZlWWoW8AXD1pw5XuFsa
+ wOAXYq0m
+ R5xFgzqYp2vEgtCpXGBu4+uvnUlHJ8/iHr+kuPCN4qL03bN2WX1Ef0kYqUWWzPWWFpK6ripsTSxmJ5I11VdZ07W3XHJ4hDrz6ClTy34ULMdAbwT7MX6iegtCLtIlJJC8nQ6MwMQppG6CVcRAquYw57ozT0Lf8hJUbum1XScLRpD706VvHUCkWihenM9Rm3HswApnFNDT6vK9PpXgOL0x1i9PjvH0e+HuPTe+d5D3ObrbOO/gyvoLYJhENmlMrkzKGnGqIU8koMb47je3fioQp9hXFzg3/3t+T9L54wwuYjKp9pBaUoEwMmgVe8pxKToEVEpr17+PV4qk+RlObZZn/y5sAFboY1EhWP8UX/S25LPGcTjVjxDwfV+4cYUAPjCeYqGPCn2oDLEQSIyQ+XNVKLG4ggYWbQMzBOYf4fxD2LxFUMibW9OFkgc+HRQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,190 +134,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This patch provides a wrapper for existing algorithms so that they can
-accept a single segment while returning the compressed length or error
-through the dst SG list length.
+This commit adds a @batch_size data member to struct acomp_alg.
 
-This trivial segmentation wrapper only supports compression with a
-segment count of exactly one.
+An acomp_alg compression algorithm that supports batching of
+compressions and decompressions must provide a @batch_size greater
+than 1, representing the maximum batch-size that the compressor
+supports, so that kernel users of crypto_acomp, such as zswap, can
+allocate resources for submitting multiple compress/decompress jobs that
+can be batched, and invoke batching of [de]compressions.
 
-The reason is that the first user zswap will only allocate the
-extra memory if the underlying algorithm supports segmentation,
-and otherwise only one segment will be given at a time.
+The new crypto_acomp_batch_size() API queries the crypto_acomp's
+acomp_alg for the batch-size. If the acomp_alg has registered a
+@batch_size greater than 1, this is returned. If not, a default of "1"
+is returned.
 
-Having this wrapper means that the same calling convention can
-be used for all algorithms, regardless of segmentation support.
+zswap can invoke crypto_acomp_batch_size() to query the maximum number
+of requests that can be batch [de]compressed. Based on this, zswap
+can use the minimum of any zswap-specific upper limits for batch-size
+and the compressor's max @batch_size, to allocate batching resources.
 
-To gain latency in the zswap_store() hot path impacted by this patch:
+This enables zswap to compress/decompress multiple pages as a batch
+to improve swapout/swapin performance and memory savings.
 
-1) The most common code path is invoked first in
-   crypto_acomp_compress().
-
-2) The helper functions used in (1) are made __always_inline.
-
-Co-developed-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
 Signed-off-by: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
 ---
- crypto/acompress.c                  | 34 ++++++++++++++++++++++++++---
- include/crypto/acompress.h          |  5 +++--
- include/crypto/internal/acompress.h |  4 ++--
- include/linux/crypto.h              |  2 +-
- 4 files changed, 37 insertions(+), 8 deletions(-)
+ crypto/acompress.c                  | 14 ++++++++++++++
+ include/crypto/acompress.h          | 12 ++++++++++++
+ include/crypto/internal/acompress.h |  3 +++
+ 3 files changed, 29 insertions(+)
 
 diff --git a/crypto/acompress.c b/crypto/acompress.c
-index c8b4b8589769..ac4dc52668b8 100644
+index ac4dc52668b8..df9e42f519c3 100644
 --- a/crypto/acompress.c
 +++ b/crypto/acompress.c
-@@ -166,14 +166,18 @@ static void acomp_save_req(struct acomp_req *req, crypto_completion_t cplt)
- 
- 	state->compl = req->base.complete;
- 	state->data = req->base.data;
-+	state->unit_size = req->unit_size;
-+
- 	req->base.complete = cplt;
- 	req->base.data = req;
-+	req->unit_size = 0;
- }
- 
- static void acomp_restore_req(struct acomp_req *req)
- {
- 	req->base.complete = req->chain.compl;
- 	req->base.data = req->chain.data;
-+	req->unit_size = req->chain.unit_size;
- }
- 
- static void acomp_reqchain_virt(struct acomp_req *req)
-@@ -242,6 +246,10 @@ static int acomp_reqchain_finish(struct acomp_req *req, int err)
- {
- 	acomp_reqchain_virt(req);
- 	acomp_restore_req(req);
-+
-+	if (req->unit_size)
-+		req->dst->length = unlikely(err) ? err : req->dlen;
-+
- 	return err;
- }
- 
-@@ -266,10 +274,13 @@ static int acomp_do_req_chain(struct acomp_req *req, bool comp)
- {
- 	int err;
- 
-+	if (unlikely(req->unit_size && req->slen > req->unit_size))
-+		return -ENOSYS;
-+
- 	acomp_save_req(req, acomp_reqchain_done);
- 
- 	err = acomp_do_one_req(req, comp);
--	if (err == -EBUSY || err == -EINPROGRESS)
-+	if (unlikely(err == -EBUSY || err == -EINPROGRESS))
- 		return err;
- 
- 	return acomp_reqchain_finish(req, err);
-@@ -279,10 +290,27 @@ int crypto_acomp_compress(struct acomp_req *req)
- {
- 	struct crypto_acomp *tfm = crypto_acomp_reqtfm(req);
- 
-+	if (likely((req->unit_size == req->slen) && acomp_request_issg(req) &&
-+		    !crypto_acomp_req_seg(tfm) && !acomp_is_async(tfm))) {
-+		int err = tfm->compress(req);
-+
-+		req->dst->length = unlikely(err) ? err : req->dlen;
-+		return err;
-+	}
-+
- 	if (acomp_req_on_stack(req) && acomp_is_async(tfm))
- 		return -EAGAIN;
-+
-+	if (req->unit_size && acomp_request_issg(req)) {
-+		if (!crypto_acomp_req_seg(tfm))
-+			return acomp_do_req_chain(req, true);
-+
-+		return tfm->compress(req);
-+	}
-+
- 	if (crypto_acomp_req_virt(tfm) || acomp_request_issg(req))
--		return crypto_acomp_reqtfm(req)->compress(req);
-+		return tfm->compress(req);
-+
- 	return acomp_do_req_chain(req, true);
- }
- EXPORT_SYMBOL_GPL(crypto_acomp_compress);
-@@ -294,7 +322,7 @@ int crypto_acomp_decompress(struct acomp_req *req)
- 	if (acomp_req_on_stack(req) && acomp_is_async(tfm))
- 		return -EAGAIN;
- 	if (crypto_acomp_req_virt(tfm) || acomp_request_issg(req))
--		return crypto_acomp_reqtfm(req)->decompress(req);
-+		return tfm->decompress(req);
- 	return acomp_do_req_chain(req, false);
+@@ -327,6 +327,20 @@ int crypto_acomp_decompress(struct acomp_req *req)
  }
  EXPORT_SYMBOL_GPL(crypto_acomp_decompress);
+ 
++unsigned int crypto_acomp_batch_size(struct crypto_acomp *tfm)
++{
++	if (acomp_is_async(tfm) &&
++	    (crypto_comp_alg_common(tfm)->base.cra_type == &crypto_acomp_type)) {
++		struct acomp_alg *alg = crypto_acomp_alg(tfm);
++
++		if (alg && alg->batch_size > 1)
++			return alg->batch_size;
++	}
++
++	return 1;
++}
++EXPORT_SYMBOL_GPL(crypto_acomp_batch_size);
++
+ void comp_prepare_alg(struct comp_alg_common *alg)
+ {
+ 	struct crypto_alg *base = &alg->base;
 diff --git a/include/crypto/acompress.h b/include/crypto/acompress.h
-index 6462fc46f4ec..93fa02ce818b 100644
+index 93fa02ce818b..3ce4704dc879 100644
 --- a/include/crypto/acompress.h
 +++ b/include/crypto/acompress.h
-@@ -67,6 +67,7 @@ struct acomp_req_chain {
- 		struct folio *dfolio;
- 	};
- 	u32 flags;
-+	u32 unit_size;
- };
+@@ -593,6 +593,18 @@ int crypto_acomp_compress(struct acomp_req *req);
+  */
+ int crypto_acomp_decompress(struct acomp_req *req);
  
- /**
-@@ -199,7 +200,7 @@ static inline void acomp_request_set_tfm(struct acomp_req *req,
- 	crypto_request_set_tfm(&req->base, crypto_acomp_tfm(tfm));
- }
- 
--static inline bool acomp_is_async(struct crypto_acomp *tfm)
-+static __always_inline bool acomp_is_async(struct crypto_acomp *tfm)
++/**
++ * crypto_acomp_batch_size() -- Get the algorithm's batch size
++ *
++ * Function returns the algorithm's batch size for batching operations
++ *
++ * @tfm:	ACOMPRESS tfm handle allocated with crypto_alloc_acomp()
++ *
++ * Return:	@tfm's acomp_alg's @batch_size, if it has defined a
++ *		@batch_size greater than 1; else return 1.
++ */
++unsigned int crypto_acomp_batch_size(struct crypto_acomp *tfm);
++
+ static inline struct acomp_req *acomp_request_on_stack_init(
+ 	char *buf, struct crypto_acomp *tfm)
  {
- 	return crypto_comp_alg_common(tfm)->base.cra_flags &
- 	       CRYPTO_ALG_ASYNC;
-@@ -294,7 +295,7 @@ static inline void *acomp_request_extra(struct acomp_req *req)
- 	return (void *)((char *)req + len);
- }
- 
--static inline bool acomp_req_on_stack(struct acomp_req *req)
-+static __always_inline bool acomp_req_on_stack(struct acomp_req *req)
- {
- 	return crypto_req_on_stack(&req->base);
- }
 diff --git a/include/crypto/internal/acompress.h b/include/crypto/internal/acompress.h
-index 93ae59623f13..0c0d3fc8a9fc 100644
+index 0c0d3fc8a9fc..2d4d302d1b3f 100644
 --- a/include/crypto/internal/acompress.h
 +++ b/include/crypto/internal/acompress.h
-@@ -146,7 +146,7 @@ void crypto_unregister_acomp(struct acomp_alg *alg);
- int crypto_register_acomps(struct acomp_alg *algs, int count);
- void crypto_unregister_acomps(struct acomp_alg *algs, int count);
+@@ -28,6 +28,8 @@
+  *
+  * @compress:	Function performs a compress operation
+  * @decompress:	Function performs a de-compress operation
++ * @batch_size:	Maximum batch-size for batching compress/decompress
++ *		operations.
+  * @init:	Initialize the cryptographic transformation object.
+  *		This function is used to initialize the cryptographic
+  *		transformation object. This function is called only once at
+@@ -47,6 +49,7 @@
+ struct acomp_alg {
+ 	int (*compress)(struct acomp_req *req);
+ 	int (*decompress)(struct acomp_req *req);
++	unsigned int batch_size;
+ 	int (*init)(struct crypto_acomp *tfm);
+ 	void (*exit)(struct crypto_acomp *tfm);
  
--static inline bool acomp_request_issg(struct acomp_req *req)
-+static __always_inline bool acomp_request_issg(struct acomp_req *req)
- {
- 	return !(req->base.flags & (CRYPTO_ACOMP_REQ_SRC_VIRT |
- 				    CRYPTO_ACOMP_REQ_DST_VIRT));
-@@ -189,7 +189,7 @@ static inline bool crypto_acomp_req_virt(struct crypto_acomp *tfm)
- 	return crypto_tfm_req_virt(&tfm->base);
- }
- 
--static inline bool crypto_acomp_req_seg(struct crypto_acomp *tfm)
-+static __always_inline bool crypto_acomp_req_seg(struct crypto_acomp *tfm)
- {
- 	return crypto_tfm_req_seg(&tfm->base);
- }
-diff --git a/include/linux/crypto.h b/include/linux/crypto.h
-index 78c699ac3f82..0628b62e4946 100644
---- a/include/linux/crypto.h
-+++ b/include/linux/crypto.h
-@@ -492,7 +492,7 @@ static inline bool crypto_tfm_is_async(struct crypto_tfm *tfm)
- 	return tfm->__crt_alg->cra_flags & CRYPTO_ALG_ASYNC;
- }
- 
--static inline bool crypto_req_on_stack(struct crypto_async_request *req)
-+static __always_inline bool crypto_req_on_stack(struct crypto_async_request *req)
- {
- 	return req->flags & CRYPTO_TFM_REQ_ON_STACK;
- }
 -- 
 2.39.5
 
