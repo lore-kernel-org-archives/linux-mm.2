@@ -1,151 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0354606A32C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 11:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531B3606A32C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 11:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Pu/0y5rW
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bK0a9SGW
 Received: by kanga.kvack.org (Postfix)
-	id C20426B05B0; Fri,  6 Nov 2026 06:21:31 -0500 (EST)
+	id 5909B6B05B2; Fri,  6 Nov 2026 06:22:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA9C56B05B1; Fri,  6 Nov 2026 06:21:31 -0500 (EST)
+	id 541726B05B3; Fri,  6 Nov 2026 06:22:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A49EF6B05B2; Fri,  6 Nov 2026 06:21:31 -0500 (EST)
+	id 431506B05B4; Fri,  6 Nov 2026 06:22:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FA876B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:21:31 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 16B8E6B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:22:03 -0500 (EST)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id F11BDA0D2E
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:21:30 +0000 (UTC)
-X-FDA: 85404453540.01.16A80A0
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf27.hostedemail.com (Postfix) with ESMTP id AACB740006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:21:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="Pu/0y5rW";
-	spf=pass (imf27.hostedemail.com: domain of zaslonko@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=zaslonko@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A4CA11A0D9E
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:22:02 +0000 (UTC)
+X-FDA: 85404454884.01.FA3A1A1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id EB95240004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:22:00 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bK0a9SGW;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793964121;
+	b=DK09Ug0v4v/5/aovVl/0d7G5GSe8NmnVbEOBVqWWwVrlKo1RnGsKNXXhcNe1wRuvApESM/
+	uG924V8pSdQE02C/erfJs8fOu3D8Ypl1fxzsvJEjMoyF5+BRxMJqkA7amao0eFwOCJ9Li9
+	v+q/JvoKEjTitV0Mx9CHUi1wJc+/x+I=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bK0a9SGW;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793964088;
+	s=arc-20220608; t=1793964121;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XSkCRP/iCAmBq/Ps3sn+ycEaOS8RbaoK3GlU0yrOuoo=;
-	b=ZrQavGLGm13Am4w/57ABdS+oaqFwZBCR8BgcHWoHqKRefMz/Hn1Um1dp2HMyLbWnZ08WJ6
-	w6wiUj76rSsTxEjEhCziMwglGbOSSMGsgsFDfSaRHisXyT0o/dHXye/l2cKDOZiesEq4c3
-	ixgddYTUWH4i7Voe60IrmpsVgzL+RIA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793964088;
-	b=SbFqtGcou7ELGuTRHHUdaT6lpMEbgz5Y8FVD7n4T8kZeejtI4eZwjBd3BzwICHfTQOEzj0
-	MpA6XqoglcFW9uwEeosEsgyLaH7xwcCf1joGY9wkLgNgRoUQ1wa+b8jfFTFzvvEXSk/CQi
-	2yixzrhkBgC2b6HONjwYI97jCtuofoE=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="Pu/0y5rW";
-	spf=pass (imf27.hostedemail.com: domain of zaslonko@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=zaslonko@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6AjbgX980374;
-	Fri, 6 Nov 2026 11:21:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=XSkCRP
-	/iCAmBq/Ps3sn+ycEaOS8RbaoK3GlU0yrOuoo=; b=Pu/0y5rWc2ZrdPZqiI2pP/
-	Te1Gta1kngdRT+2amzGzZ3MydLtq4CkBKZ3uTRCtTMnXvT6bfDYrxyaANsvsyh/R
-	33MRcI1343pdxyf0lDnJTeppbWzknzuWe6v+lZE85A8jlrqurH0KuEH0AzoqF4Kz
-	O3bTMiT3XWDVeKsIjcefVIoUGfSMcyODzR86L8Eh0ByIm4KME+zQuOUwkBu0ViRV
-	u9n6gZZVa+vhgJ6V8lIqJYVOcAQiM2XE//xsnf5N684CZqNamr6X8XLVKLo9+dbe
-	t+GxoilQWHzPfmqJDHAHFO04CE9iRQkfkQbp29ay4xXoMwquAyO65vzF9cUiCnGQ
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4hs3rbuufn-1
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 06 Nov 2026 11:21:20 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.11/8.18.1.11) with ESMTP id 6A6Ao7943260750;
-	Fri, 6 Nov 2026 11:21:19 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4hqv1v6tfh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Nov 2026 11:21:19 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6A6BLIss4981286
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Nov 2026 11:21:18 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2EA5F5805D;
-	Fri,  6 Nov 2026 11:21:18 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CA0D58058;
-	Fri,  6 Nov 2026 11:21:14 +0000 (GMT)
-Received: from [9.111.151.197] (unknown [9.111.151.197])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  6 Nov 2026 11:21:14 +0000 (GMT)
-Message-ID: <0a3c64d1-2b8f-4e0b-87ca-5397d1aaa3ee@linux.ibm.com>
-Date: Fri, 6 Nov 2026 12:21:12 +0100
+	bh=p+Ok2jd0IVx31NW+VHJJuf+Q+PVcuhS6OrBHlNc0X1Y=;
+	b=Z37p0l4wjQrIEG6/dTAd+90ihmrP1UGa3qkq1VR6FAIolMUAUhb2t2BT6GBJYEyNT7r08a
+	3OHxqIx0MmMbtnEJXdqDJmLEsxfIr7mlI2RDcOAL6SuCXWx4pl+tNHbY4CeXsoDrSaFJCC
+	C+l3AS2/efeNGKqkQgihgUWrwbd4Prk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1C9DB4325B;
+	Fri,  6 Nov 2026 11:22:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F931F0089F;
+	Fri,  6 Nov 2026 11:21:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793964120;
+	bh=p+Ok2jd0IVx31NW+VHJJuf+Q+PVcuhS6OrBHlNc0X1Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=bK0a9SGWX+VyZD0kFIiK4yNIK9A9v+An7WfGjPiMiNKuUGcrfRy/CwNqTxljrBpV0
+	 U7m1a/COhNVgako5ExzfFpup8zroemN8PZasns74e+wzdmXNGp9HfFsumePkfHpqUz
+	 B54avhJDK4RV1zIBmim6BKz7o7ZgZ9/g1a3ek0DWtoergphiLCDdHz5glMnik8SvAi
+	 sjlHg1ttAqkP8985sWOQHptTvB9E/+p4pzQXWHiAvU6YBAJ26cTB4FDz0XEBtsF1a0
+	 bgh+paL3EuS+CEi5iRnn4vYJCUV3oXHmFOJ7h5ygJmRsCVDkmI4xEURGnOh8gud8UK
+	 jwyBg4yTS3zRQ==
+Date: Fri, 6 Nov 2026 11:21:40 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Barry Song <baohua@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, SJ Park <sj@kernel.org>, 
+	Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	John Johansen <john.johansen@canonical.com>, Georgia Garcia <georgia.garcia@canonical.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, damon@lists.linux.dev, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+Subject: Re: [PATCH 03/13] mm/rmap: convert remaining VMA flag tests to use
+ vma_flags_t
+Message-ID: <au2yhvzWy6HID8jM@gremlin>
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+ <20261105-late-2026-vma-flags-v1-3-0d3cd15ab75f@kernel.org>
+ <CAGsJ_4wCd_j5or0uHwPLq0PUixcXgiFim=_d7uUhUhAuQf0nTQ@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] crash: keep crashkernel CMA pages reserved if activation
- fails
-To: Usama Arif <usama.arif@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>, baoquan.he@linux.dev,
-        rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org,
-        ruirui.yang@linux.dev, jbohac@suse.cz, david@kernel.org,
-        hbathini@linux.ibm.com, leitao@debian.org, kexec@lists.infradead.org,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org, kas@kernel.org,
-        hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev,
-        kernel-team@meta.com
-References: <20261104145600.3708886-1-usama.arif@linux.dev>
-Content-Language: en-US
-From: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>, Heiko Carstens <hca@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>, linux-s390@vger.kernel.org,
-        Bradley Morgan <brads@mainlining.org>
-In-Reply-To: <20261104145600.3708886-1-usama.arif@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zxaghCs0BOzGJLIG7jFmKscVIT5NRM5b
-X-Proofpoint-GUID: zxaghCs0BOzGJLIG7jFmKscVIT5NRM5b
-X-Authority-Analysis: v=2.4 cv=MqLHeGae c=1 sm=1 tr=0 ts=6aedb830 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=VnNF1IyMAAAA:8 a=v7f7EczwOuDDiPIii9gA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA2MDA0NCBTYWx0ZWRfX7zq9oNWaXh0U
- FC1wxkRX4UHerDFfCDSe/7AR824SCkh7FVX0m2cCeucIHT4Qq+DAREGwDLQSjfLCCK+nKG0/Z1I
- k4IO/PNS/iN+mDiWAQFfOU4tOWY5As4=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA2MDA0NCBTYWx0ZWRfX3tB4QAo85Yle
- twUqL/+8aN7LMEcEsB0CAs9RLVC9vrrZteEwPlo0j3uRnR1W7YoMALXTqFVp8Q8esXu727tdaNN
- DzdYK3osL5l2FKNQAldUR0T/tbOAmH1Ye7UE3wTJuE0EOaRNi70qgaUXGol9TOXkv2GzsZtVF8Y
- HzOla4OtHShSHyenU7fM371K9csCj8c/HHABc9VweEns5PXP7bX7EL4kWFCss4zMnR2/zKaKLCe
- teVC0uDbMbjV2EJNV5CkaHjB/+l0F1RJo7ul4xS36lSlXia5Ma/cCGqXFB6bNEwM41dH2yFJZgu
- CztOkLSkX+4K90IxdqV2zMzKwQLt6WM6P78Rn3Nh7gGTu/4e1UxH+zNtWduHbZJbrf1VG2i/nBd
- tbST2q9naYNAlGRwdh3794QaOWbdN9MwRT+TrDPbHB+1Y0HEQNOYk3xyea7O1qObAt4ldoqYP+b
- IYwsVB69XIeNuxIWUOw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-06_03,2026-11-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 priorityscore=1501 adultscore=0 clxscore=1011
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611060044
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 9ib7axrykjhyzu7boeqkngme7xpu9mc9
-X-Spam-Status: No, score=-10.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: AACB740006
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGsJ_4wCd_j5or0uHwPLq0PUixcXgiFim=_d7uUhUhAuQf0nTQ@mail.gmail.com>
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: EB95240004
+X-Stat-Signature: q3k1ah1zqre447nh5e7z6ux846wskcsu
 X-Rspam-User: 
-X-HE-Tag: 1793964088-517228
-X-HE-Meta: U2FsdGVkX185PYjnB+hVb+9WORTvYcB9iAcL5+hLvTfXupPO92nPbKVvBw2rxX1yHBRBqp9J2MzbbaROhQcY7mWCgY2wlYwOcgte9pU6cIrGsdGW57DFkuwA/OG2nHKOhuAbcKYb2VGTZX4ya+/hIrFZEbqzj13iVwzAwM9hqB64kKtbx4TQNy+Gj0an3EYvlzRY3YVYx8wYMN6Sony65lWAxCktuRq3znYFoY9YRBVe8W7vBu3MY89d73IFTrM4wUXVBo0jD+lAvaNRUcszfG9i/9nU85TOmgXmsVz4ximMl9JUr1C0CYq8cDusu6tKRQQH93gkT8kyVME6A++d8jj+bue/W9cSAKhkOwp7psqngKqSaP64Vh4HdOwPZQt0qr/E2zsUtlaznYevxO7UZ9UyRl86kM26vfGpnm/OJsv+WGiP/XdjtquTLJh4mK8Dh/xu+5kWBYgKJVxO8z/CtFOiqOHHdhGsUsMTNiQ66302fa64KukGtg0ejm1zH4yTkvVCqXcVdLJvRO918sghp3fWqHvIfZMloAQZTBy2ilSzmJzUF/L5LCZ51z1Zkl+OJDSmXDG/dlirPdbMD+Lu1bsNZQy2zZDYP6fPDozk58DM6q8O4++HtEXkuWVx4X4/SdzqKVbJ3//az5lsvYmzBC3mvS36YOq24lFow9sHzdGh4yVQfHJFfTvxuiwFUpZoyHkOBzXy4Z9s1y7W+F1Kbci873PAM6J2026A+VC1oVVg0VFAvqhvRp59hjlk6/CTZcnPe+uwJhNhbHJ64qE7EynMJ7wDrkeD6xdBO7QGZxIlT0d4FgH1Hi/PTz6jC5W1Av75Vwdvq01D5tv7hlJb11s5WWrRYBPtrkODq4jMkvlmTk0sdFyQUPAOvMhMP7a5Coak2ispW1FPpGmgX6aS2QZlN+i0/l0ilA+bK9RwH2XnZP9Xp1bo/cUcjHVr9xTcWDRvQzNmIU0X9FIJl5F
- uw5hVHuh
- ReqnApg7ZPryZDxaxFxvGxklcTVqrDH5GOl/rcBlFYga6JOptREtRYpDP4nHgFMuiQWb262BC10ktKwhscuChMgMu7zwZFbN3V1SnV8WYwsrCFiLc6df+BKcE53r4OcBucxU+6rYAzYCJE7s24NHF7CC6jvU7xcoqiEQnctpczJ377Z9fg7xBRdTZ72iDfjV9KLpMEwE6kChAV+Z4rBmmZp6hFFa6Ainj1KElJPoLM+BigQ4kkhSq1SY39GrZC57X3Kq3TOYrZq6zHCtmRADEUcHYBg==
+X-HE-Tag: 1793964120-717719
+X-HE-Meta: U2FsdGVkX18RtReiwv+CS87nfmq4TtlH1DxAkq8zNcqDOmgI/jYZkQN4aa0p3e1TJL9DXPKC2uSk+3suPIn9ubcPz/lweE9XQXH/dfGBMMbJO9LLosvxGHUGSr6PoR7undjbNIzPp5SxgoTYNtO13mu7IawZCsGnnIjbbFtTAdEwwg2Rz+vbL+t6S2X5wqFxAh3Vvn74n+0wPT4NU6wP58Cb+U+/XqNP8qv+bu9/q4ywJJDEA5aim+zZM/WH7YRCQlIRYnW7UNdksqDJTebBFRRHZRyP5SHmQ+QA6NVohd86CJTBQ37ojn+GZ6Mv4JAHAutzxFke4lWI9SpiAwSKRyMe6o08PT20gScEbh+m+r1SwcPNhK8hVmu1UWk+1SVWfMTokL2HOsv/oo9GscMmMPOW5qEya+ZNByfpyQV/Jgl7xcbN5qSMIFvJPQDyRtpsiUWaB++YAVVtH6fvdhamZTCbPq5iRFh5i7GZKr+s2iXzh7n7imsFW/ICjwurM+sIlLj4aBfm0GL2bfd8HaGNzv2PZTLAUH17h5n9ST/RjuzNWFPsOPWNDG1LEBd4BRj0dBrI69C2QWKIWm6GfRnwGuk/aVwmYBJrFiPLOOa0dPKXJu7EhNxWIbW3N9GNfY5Yq6YzYdyFdNq+o+0wKTpKuBy7vhbvUHrEAaOQhjsZxFlDwwdwa/6a5lluzACLvRF1pVPObRKC2PFqNE/4MQpo6VVfFfxKTWICmmTvuaj675c7qcWgCvSzBCS85hZqPTxF1OoQz2/Ail4vCQHIVA+gRzdayTpItg1yI+nYUYjZBJwnW0Eg6NILear6rG2boEwG6HapKLKFySclga8p69wqrEUA5uJKDdhz0FtPTKMX8teJPckxI6CBnHadwqYdxxo+RXfKSM3D0AN2sM0i3Eel81pu8sHTFrkG4WTdnKrRP7bP8DITzGWAU9DyVmBuZcgQzuXQq3cenkcPjHlXguE
+ 6lS7QTen
+ wGKmglUXZ3EOJzq2uRGHzUfWmk0Yr55k88JGlIPNgMcbMqRpaOBPYjWPYDj54w9q6vcCPwJdvQ+rVNM36+J02i1kX7yPCJ85IXOVd+oQGkuBb1ny863bBXy6ZBmXS3u7Qku0gaHgJCE6fIWI8iJ2bYAJ2ez1MXOXISnl871xpmtLsuHlFGKzI/bu0lt5Fs+leqNx8hlLUTwMNZIHKGzKgZCNHFq9Jvo5gWS7opfvDNnpL4+E6DNQ6qCIvTB8mJASFr6tP/P+JH7uwjyMrvYE4GJPgBAIlYsZVzPP/j8nkgCM9dMjzxa2ka0hP3GkwHaYC9TlVZ/zyt27z8CheCp67ejl5/v+WrvY8QVa17RU3+5+k5aLwW4/QBUh2nOLzNCy729jPXd+UsYx6N7f+ktfIqjAqSpPDCE60jprOr+WD/M+PWm4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,43 +135,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Fri, Nov 06, 2026 at 11:57:08AM +0800, Barry Song wrote:
+> On Fri, Nov 6, 2026 at 5:32 AM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
+> >
+> > Replace the remaining uses of the legacy vm_flags_t flags in the rmap logic
+> > with vma_flags_t values.
+> >
+> > No functional change intended.
+> >
+> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> > ---
+>
+> LGTM,
+>
+> Reviewed-by: Barry Song <baohua@kernel.org>
+>
+> >  mm/rmap.c | 8 +++++---
+> >  1 file changed, 5 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/mm/rmap.c b/mm/rmap.c
+> > index 1131b76bbbc2..cdc97fec8586 100644
+> > --- a/mm/rmap.c
+> > +++ b/mm/rmap.c
+> > @@ -1196,7 +1196,7 @@ static bool page_mkclean_one(struct folio *folio, struct vm_area_struct *vma,
+> >
+> >  static bool invalid_mkclean_vma(struct vm_area_struct *vma, void *arg)
+> >  {
+> > -       if (vma->vm_flags & VM_SHARED)
+> > +       if (vma_test(vma, VMA_SHARED_BIT))
+> >                 return false;
+> >
+> >         return true;
+> > @@ -1660,7 +1660,8 @@ void folio_add_new_anon_rmap(struct folio *folio, struct vm_area_struct *vma,
+> >          * VM_DROPPABLE mappings don't swap; instead they're just dropped when
+> >          * under memory pressure.
+> >          */
+> > -       if (!folio_test_swapbacked(folio) && !(vma->vm_flags & VM_DROPPABLE))
+> > +       if (!folio_test_swapbacked(folio) &&
+> > +           !vma_test_single_mask(vma, VMA_DROPPABLE))
+>
+> Right, VMA_DROPPABLE_BIT is not available on
+> 32-bit architectures, so vma_test() cannot be
+> used here.
 
+Yeah, it's an annoying wrinkle having to differentiate, but is necessary.
 
-On 04-Nov-26 15:56, Usama Arif wrote:
-> reserve_crashkernel_cma() adds each crashkernel CMA area to
-> crashk_cma_ranges[] as soon as it is declared. If the area later fails
-> activation, e.g. because movablecore= put the ZONE_MOVABLE boundary
-> inside it, cma_activate_area() releases the pages to the buddy allocator
-> as ordinary memory. The range is still handed to the crash kernel and
-> excluded from the vmcore, so kernel data that lands there is overwritten
-> by the crash kernel and missing from the dump.
-> 
-> Mark the areas with cma_reserve_pages_on_error(), so that a failed
-> activation leaves the pages reserved: lost to the first kernel, but safe
-> for the crash kernel to use.
-> 
-> Fixes: ab475510e042 ("kdump: implement reserve_crashkernel_cma")
-> Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> ---
-s390 hits this without movablecore= (adding the s390 maintainers and
-linux-s390) since ZONE_DMA ends at 2G here.
-CMA tries to reserve areas above 4G first, but falls back to lower
-memory when it doesn't fit, so a cma area can end up across the 2G boundary.
-I ran into this while adding crashkernel=,cma support for s390, which I
-will post soon, and came up with the same fix.
+Eventually we will have 32-bit kernels move to the same size vma_flags_t as
+64-bit, e.g. something like:
 
-About dropping the range instead, as you offered for v2: I'd keep this
-version. With the range dropped, the kdump kernel gets less memory than
-configured, and that only shows at crash time. With this patch, the
-the first kernel 'loses' the memory as with a regular crashkernel= reservation
-of the same size.
+- #define NUM_VMA_FLAG_BITS BITS_PER_LONG
++ #define NUM_VMA_FLAG_BITS 8
 
-There is a second problem in the same loop: all areas are named
-"crashkernel", which breaks the CMA sysfs and debugfs entries when
-there are several. I've sent a separate fix for that:
+But that's down the road :)
 
-https://lore.kernel.org/r/20261106104309.3669583-1-zaslonko@linux.ibm.com
+Which will solve the 'not in 32-bit-kernels' stuff.
 
-Reviewed-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
-Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+But also this form is also used for stuff that's not defined under certain
+configurations, in which case you get something like:
+
+#ifdef CONFIG_FOOBAR
+#define VMA_BLAH	mk_vma_flags(VMA_BLAH_BIT)
+#else
+#define VMA_BLAH	EMPTY_VMA_FLAGS
+#endif
+
+And then vma_test_single_mask() is necessary too.
+
+An unfortunate outcome of defining per-bit (so no bit value means
+'nothing'), and any kind of invalid bit value solution has worse drawbacks.
+
+In the end all this stuff will be useful as it allows us to no longer be
+constrained by either 32-bit vs 64-bit or in only having 64 possible
+flags. :)
+
+--
+Cheers, Lorenzo
 
