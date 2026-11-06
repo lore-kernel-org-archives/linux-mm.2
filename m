@@ -1,192 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF7E5606A338
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 10:07:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=awE3xrn6
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCF21606A32C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 10:09:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCEA96B05C2; Fri,  6 Nov 2026 05:07:41 -0500 (EST)
+	id CAB196B05B2; Fri,  6 Nov 2026 05:09:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA6D16B05C3; Fri,  6 Nov 2026 05:07:41 -0500 (EST)
+	id C84276B05C4; Fri,  6 Nov 2026 05:09:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B6FC36B05C4; Fri,  6 Nov 2026 05:07:41 -0500 (EST)
+	id B99876B05C5; Fri,  6 Nov 2026 05:09:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 88E6E6B05C2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:07:41 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 186B1C0D11
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:07:41 +0000 (UTC)
-X-FDA: 85404267522.09.53772BD
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010033.outbound.protection.outlook.com [52.101.85.33])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1B8101C0007
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:07:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=awE3xrn6;
-	spf=pass (imf21.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.85.33 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793959658;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 961666B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:09:40 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 81C491A0D74
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:09:38 +0000 (UTC)
+X-FDA: 85404272436.21.9A7DEF6
+Received: from spam01.hygon.cn (unknown [101.204.27.37])
+	by imf26.hostedemail.com (Postfix) with ESMTP id C7539140003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:09:33 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf26.hostedemail.com: domain of qiuzhiteng@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=qiuzhiteng@hygon.cn
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793959775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yHD/RpfUjSx94Lvg9mBmOf6cNArrPmvUb8sTgQ54zbM=;
-	b=eFcNSP7NyrYXkpNqPJbHjDhCIMTxqDgX/OH4upHnB+/HBaDpZZIXkcRl5N58E6uIHk/+bJ
-	6+DB/YexxDdCpzv0+bzauKN0djHtPcJHGF8BL/ECnxDqzMhxRaApLygK9K/VEGG1cyMXwd
-	Khog/vSMDvyijuuwV4Cgo3X+VwamfY0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793959658;
-	b=rJGgMe0za39rlmpnjxhtQuZp5yuIvEzZu46JaOPzXleZzhq5yQ2pwWlz0okr4v9AglB4x4
-	6D41SDJUaXIMi+xTYG5eGKK9OZeesy9BIVBiadwwsf3p60JVZFkQSvhibV0rTxgpVlXqFy
-	1yZqvWnT5v4UE5PI3+ak1H+zJEZismI=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=awE3xrn6;
-	spf=pass (imf21.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.85.33 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=oOjLziJGg25OPrrGcUkBC999NeGy4KknI71F1V56PLXuUP7vzw4S1KK0ALukAc65a83+AuK2y+QTn9JXKzpZ9MKBaFW8BEYLv5e0CLbXKd3N1t1YLH9gR8s+bkXuIUB8okXNuHhbXVCH83+xexD0UoGCgP7p3OnTNgMKlJjUFN/1ZQH7S8rTpF0xQuJVtKJXzqjaJiT3pSG+58+rdLA8arJC1k+ru3Z9vKeQy+GNY9o2EO7VA3Z29/HJpqkvBDW0Dt3q3aUxwK7cAR7GRilpfvDAY1p7FN8uGQmJDgGVa5XiOvgGOEcDiEssFeKxVZvrzYVrU0LcRGWi1iShXQX2Pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yHD/RpfUjSx94Lvg9mBmOf6cNArrPmvUb8sTgQ54zbM=;
- b=cVFqWd46YfElK26vnIXMjYAtCBUQHWp25jvoMuVkPAJEGNdYpqsirhK2IPwK1AZpKtDx8qJ4IYsgaOhYw/ve1aRcPqw1dcZ7b90jNxZvobCODZpJdk5sM+Vr/9trNSAUrqdO3pReGwM0NB+5pj1XDL/ZF4R95WNG62VGllgCmEfVI1B57K/0ljeCWM0+5iGgWdujX/b9ERh2MzUm1HKTk2Drdq3fJtBTw1cEYYxjj/9B0rzKBe88ACgoHE0zokvJro4z1zsFWubsCxlP+38z+SxWQJDGuY+yVYMyuAfvFB8/J2vqSHPx+8iqt3JlOoBFpi0DJomZ4++gRcBkdr15oQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yHD/RpfUjSx94Lvg9mBmOf6cNArrPmvUb8sTgQ54zbM=;
- b=awE3xrn65W3cf3pFfBrnW2h/ClWfAFw7QCkyoC4FlggVu/zn/7uDU7UliP+7feNIaHmIdCCqu9kWANy98y8Lu7i5kMpDyiUGzNzOVyupRkDBbGtp/x8L851pKqZyD5R5bOJu19VBrpRUBRN+7LtcF+sYN8Kcm2XpSb5F9HA7zitRfdvk6M8Gl7UyYd1T+nEeztLHUAr1s354ZQvDdE9glQtIDKD+edN4iD6JA1M82+lzOhZf0cWIRpjz2dn9UIZ/ljH1zLO1CS4XJ6o1YzdF6XpD9NdNy3yi6UCFkujui7q+aQ3GgcXeQGK43TawqNllClKc0U5XsVz/yXidz+5N9g==
-Received: from CH3PR12MB9730.namprd12.prod.outlook.com (2603:10b6:610:253::9)
- by CH2PR12MB9495.namprd12.prod.outlook.com (2603:10b6:610:27d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.569.12; Fri, 6 Nov
- 2026 10:07:30 +0000
-Received: from CH3PR12MB9730.namprd12.prod.outlook.com
- ([fe80::843d:c1f0:b2ed:4128]) by CH3PR12MB9730.namprd12.prod.outlook.com
- ([fe80::843d:c1f0:b2ed:4128%4]) with mapi id 15.21.0592.010; Fri, 6 Nov 2026
- 10:07:29 +0000
-Date: Fri, 6 Nov 2026 21:07:23 +1100
-From: Balbir Singh <balbirs@nvidia.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Michal Hocko <mhocko@kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>, Harry Yoo <harry@kernel.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Maarten Lankhorst <dev@lankhorst.se>,
-	Maxime Ripard <mripard@kernel.org>,
-	Natalie Vock <nat@pixelcluster.dev>, Tejun Heo <tj@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>, cgroups@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v8 0/7] mm/page_counter: move stock from mem_cgroup to
- page_counter
-Message-ID: <au2m28-Zl1MMs4Rk@parvat>
-References: <20261104233029.3282438-1-joshua.hahnjy@gmail.com>
- <auwfZj6QTwQqFIZb@parvat>
- <CAN+CAwPNsSWyqbKRGEL_rtrz9CWTdFvhKFvZpbUNoJJONXxuZA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+	 in-reply-to:in-reply-to:references:references;
+	bh=S8nYPHZ5sRm7H2t5xmzRj8iBg0Moiw8TSdKlr7ve9cg=;
+	b=PPXwuBMckrlDzFn6G1Anbei+WQsK83XT5s3OYnt9yPO7DQY6d78q9+YyWQoZtw8JYuB1EC
+	xnTzg/X+rdyHA14Oa7FioLBX2BeEJT6MPoycfr6LkmrRqHkupDLdF1shjG+P8lNuKmkE0V
+	GYnjoC2qP3aKVGO/Z5EX8m1mbbK4+3I=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=hygon.cn;
+	spf=pass (imf26.hostedemail.com: domain of qiuzhiteng@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=qiuzhiteng@hygon.cn
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793959775;
+	b=t5J903UX1sFK7U8QrUWUkeov6A/ot5g3Xywjk4sKyQZpuq6Gua9J36MdmFNGyQZ7u68on+
+	uWUnNNGyX2ufZ1LqmiO+s83CbZv0SuNdvmbLrTemy3mQYIKbkqAbhwO8kktM6ssiBDNIcp
+	Xfnc9xD9tNht7X02TYmI/tjJHMgEMg0=
+Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jLZfH0c5MzBpFyL;
+	Fri,  6 Nov 2026 18:09:27 +0800 (CST)
+Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
+	by spam01.hygon.cn (Postfix) with ESMTP id 4jLZfD3NTjzBpFyL;
+	Fri,  6 Nov 2026 18:09:24 +0800 (CST)
+Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
+	by maildlp2.hygon.cn (Postfix) with ESMTPS id 550BD308158A;
+	Fri,  6 Nov 2026 18:08:46 +0800 (CST)
+Received: from ws.local (172.25.64.90) by cncheex04.Hygon.cn (172.23.18.114)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Fri, 6 Nov
+ 2026 18:09:25 +0800
+From: Zhiteng Qiu <qiuzhiteng@hygon.cn>
+To: Ying Huang <ying.huang@linux.alibaba.com>
+CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
+	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul
+ Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Alistair Popple
+	<apopple@nvidia.com>, Xin Hao <xhao@linux.alibaba.com>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <linux-mm@kvack.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/migrate: don't batch the TLB flush when there is
+ nothing to batch
+Date: Fri, 6 Nov 2026 18:09:17 +0800
+Message-ID: <179395975709.1235605.1971486611419119070@hygon.cn>
+In-Reply-To: <87zevmwbaj.fsf@DESKTOP-5N7EMDA>
+References: <20261106041628.1177963-1-qiuzhiteng@hygon.cn>
+ <87zevmwbaj.fsf@DESKTOP-5N7EMDA>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAN+CAwPNsSWyqbKRGEL_rtrz9CWTdFvhKFvZpbUNoJJONXxuZA@mail.gmail.com>
-X-ClientProxiedBy: ME3P282CA0061.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:220:f3::12) To CH3PR12MB9730.namprd12.prod.outlook.com
- (2603:10b6:610:253::9)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB9730:EE_|CH2PR12MB9495:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2708a7e3-fe0c-43ad-9459-08df3bedc432
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|1800799024|376014|7416014|23010399003|366016|261022105027099003|261022075727099003|261022113327099003|261028144727099003|261026140227099003|261026121527099003|4143699003|11063799006|56012099006|18002099003|22082099003|10067099003;
-X-Microsoft-Antispam-Message-Info:
-	xcZv+/8rQvxLjLDqzU1lXiIviLWt8NRSDDTp4SIWZSh4kpIiaEr4UJEhIFNyF7l0rzCVUgXMGf4DGlEacUoY5ypfRtGrfKrolZyAPdr6LPPZq+/bbKVodJtY8uIhM+eGZ8RhnV79jVX6s1vnPpE2or06gNcTFwF2ExwO8Y78UgiWof+6N7C7Xonzs4citbiV2V52Lnj2Q9+1SYRbLy3fLQ0vRQrxT1LKtx73iHseF3qlMARwcW4c822fiXzIOM6sPqxK96De2ZXT/KJFnV5wkcP1bah9fuYjCkIfbEWvLS1AkfrbwaLsysKwZihgT+4kwi3AEi5YPO95N7P9wJgXGz2cpXqgwJVxNLvilqtL75ZeFpLL4irnnpXnmqknRZGjEZV4aC+EP/9X4LEe5u/Po03ky1d74IMzNPdVyhhH6GasfHO4tARCPK+m/BUngjCi74IeVVv9gAfTZIrsIm0bDBfRDIEZVgzmEKAfr219CZNn1OMMg8aU45yYZEyBJfb+cOTA8bsP5evjFyUmN7ON1AAo9Unyo70eAB7mOKv6CEJBW2BAkYRfeTc95FCUbeuUz598PZZcHQ17MURu4UFFwC++XudPhHHY1gnA9vYfHZE+svTsWRfQQTtmjgj8vtZzXaqJ7702Z9C6y/lwSNgYhIdzwIy2/gkDuUOJxtafhjY=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9730.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(7416014)(23010399003)(366016)(261022105027099003)(261022075727099003)(261022113327099003)(261028144727099003)(261026140227099003)(261026121527099003)(4143699003)(11063799006)(56012099006)(18002099003)(22082099003)(10067099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?enAzMmZZa1g1M2YvaUYxL2RscHZ2UXl5RHZtQ1RjL0VDMGtyNVhrcVE0TkNu?=
- =?utf-8?B?aEpWNHZTM1YveEtaYVRDN3psSG80TXpLTlZNbE1zRHNHN2NYSXYrRFBGNVhT?=
- =?utf-8?B?WHJxNHJ4KzFqTzR0UzNKdnNBdzJ6UHoyakVLT01WQmNYWHZmaFFMd0V5OXYx?=
- =?utf-8?B?N2phMUxWK0tCdC9WNzhtRnA5Y0Faa1hEVGlsU0hZeWVIQzBDSUY4Z1JDZ3R3?=
- =?utf-8?B?SkxpVkZNQ0pIeUlZNzMySHE3QXAyVlRWbVJpdGpZZVMweHhFY0lXWUhtcm1y?=
- =?utf-8?B?MExuODc0QmJvT0wwcFN4ejJhbGxkU2p0Uk5oQk9FcjNwditCMHZ3TU1wU3JM?=
- =?utf-8?B?YWUxaEdQL2JRK0tiaXVQRGo4VUdkUWpQaDg0aGczMFNGVWRac2MyUDlPZThw?=
- =?utf-8?B?SHhJUHNJdk9iS3pyVDNkRTV2U3h0RHRBZUxCY0FMa2FCcE5Sb3ZSMEJibzZH?=
- =?utf-8?B?bTJIZ3F2cWJWQ2RxMjA2c1hNbFpGbk1VTk1pRUhqRXZzRUNLNC81VFduQW1S?=
- =?utf-8?B?ZHp5WG5RcnVicS95QWw2SHpUQlg1cGZFbDF0WnFBQlJkQ091TU5Wa2M4Mm1K?=
- =?utf-8?B?ck9YWHM5V3lTbUQvOGRlMEtmZys3aS82bHRiMFNyQ2JTbjgzRldIZENVL29J?=
- =?utf-8?B?THFqcldKV0Nmb0ZabUVvdHZhRVNPQlA2UjdsTUo2V0d3ZFdHSjFoV2Ztc3B4?=
- =?utf-8?B?N083MTNFOEgyYzZTU3BxWDQya3drcUlCU0U5ZnhhSXNyTmVGSUpCaHA4T1V4?=
- =?utf-8?B?dUlrVzNSTUxNa1lYdm9YUEZINFlwMTNsNkYrZUpNT2VHU2w0Q1FlYld4VWVG?=
- =?utf-8?B?bFhpZ1VRYVJ4eUJYQ2QrejNpbTI5bUpsVDU3dmxnbzgrNDFuYmdTbXNtUU45?=
- =?utf-8?B?WjdHVjFwS0JGVXdnckVQY3JJRzJac2tXMTV5UjB5VFR0TE83NzluR2ZnRmd6?=
- =?utf-8?B?UWJGRmJpbmpPZFNYMkkyaDdmTVVTZEhObXhxcDQ0U1ZpNmNrZUcxMHVGTkMz?=
- =?utf-8?B?d2F4SmZtVEUrR1o0VmFUQTdoT3o0OHdKUHd4U211Kzc3YldGd1VYajA5ZmRw?=
- =?utf-8?B?SjdYNUR6R0hPb1prVkJSYzJkcjRRTzM4VFljak9GOHkyNXdOaTlXSzJ3cGNw?=
- =?utf-8?B?UFpZcFgzTFBoUUdncmlSOWVsZmlYVmpWZTJSV0NaYTRsYzRZVjFqT2lJdzhS?=
- =?utf-8?B?Nm0vblFOem1VS0lYYkxacjdyVGRJbEJtZ2JYT2ZaNjZsSkQxbjd1Sy8yYmw3?=
- =?utf-8?B?Qko4eUJjTVBuSGdIUklsUldXMm1FSHNtWnZrK3poQVNpeUl5aE0ySlZhb1pl?=
- =?utf-8?B?NUdrOGJGcVlHaUV6cUZIczVhMFhLS0p5NnBIMjhycFBsWDYvekh5NTJsNmtO?=
- =?utf-8?B?SGZqY1RBUFAvbXJzK09BYXR4dnRpRDYxY0xjVWRiL0lYRE5IMVR2YnhzRlJU?=
- =?utf-8?B?LzZZZkFqM3VQZTRlM25VeU1zdkI5NlNNMTZmcU1INGJFeFZWWUtnRzMrRjJP?=
- =?utf-8?B?WlVlT3lSQzBscCtTaXoxOGlFWlB6b0ZZQUZrZS9FL3hZNSs1L0lrWnp1QUFX?=
- =?utf-8?B?TTJ2R05ERnpUc0FlRnNkT0JXZ2p1dzFtdUdoUC9PVEdpTkFEU1krSUpPUHdv?=
- =?utf-8?B?TkRlVUMzYWMyaUtWL2ltVW1GKzFpaWVWOVBoZGdqNXBiY3BKdW81WkhzS3hG?=
- =?utf-8?B?N3ZtM1lLVWtOdGNUdnVXR2poVS9TUldXMkxKdE9WdGhjQk5aNXVTVkNSeXJT?=
- =?utf-8?B?dC9UY0RiWW1RZW1UU01jR3hYcXdTaUFlbmo0WXhrb2o3Qk9yb1lBdTdiYzNG?=
- =?utf-8?B?OXNETGgzNFFvWTNxcVZoMnFUMDUxZWJnc0ZxRHBZbDlrQW94REgwZU8vdnJh?=
- =?utf-8?B?aGdmZ2NzSm4wdHVsVVJiS3AzUjZ0b1ROcGdXVU0wZXRhV1AvWHFLa1d4UmNC?=
- =?utf-8?B?djZ1L0tIbzlzb2dnMGNSWldEY21oN2ZmKzBSZkFkclJZUTVMckpSeThpUnlQ?=
- =?utf-8?B?cmZiREVyN3Fwc2FtS24rZzIrQ2R2bUdxeUpua3FHSThkSGdVd2lxM1M0UnVl?=
- =?utf-8?B?QkZGT1RKbklTU2tPL0pyd3V2ZlA1NzJLQTV4NTc5QmMrdFRZWDhLdHBKRENR?=
- =?utf-8?B?T0c0N0ZkZzhNOVc0Uktudnk2bXhuYjJaSmNicWFFSlp6aG9BOHVxTGREci93?=
- =?utf-8?B?VVdmWDBxbmRaNmxJNWtaWkxDbzhXY29aVHF2ME9aR1pNd1czbnFXZFZFTmNk?=
- =?utf-8?B?VFo3TnBRLzVBMUxaMU1hMFh2ME1ZeWlHd3F2K3dSMm42SVA0Nm1IWVJGK1VE?=
- =?utf-8?B?bzNEaXdhdEY4ZncyK2h5WWtIc0VxRHZ4ODQ4Q2xnK3AvS1B3aHZraWh2UC9E?=
- =?utf-8?Q?Sfebv38LhzeA4LWThWJVcs2V7a6ZDmv5QluVdw+FO13aM?=
-X-MS-Exchange-AntiSpam-MessageData-1: z5HBvwBeW1W3pw==
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2708a7e3-fe0c-43ad-9459-08df3bedc432
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9730.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 10:07:29.7676
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4ouaWUTCbTbCYr2cYHf20oDNO5BqbPeIldhV/90LeXqPnDiajx4n3Tz0MXM7a9fztczfW3Aq6GIHEpJgZ+ZKeg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB9495
-X-Rspamd-Server: rspam06
-X-Stat-Signature: fpux3nirxykjxpu6sirqf5hhomomqeow
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 1B8101C0007
+X-ClientProxiedBy: cncheex06.Hygon.cn (172.23.18.116) To cncheex04.Hygon.cn
+ (172.23.18.114)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C7539140003
+X-Stat-Signature: iqdju5ffa3kzwyec8bqye4ywes97jeya
 X-Rspam-User: 
-X-HE-Tag: 1793959657-195807
-X-HE-Meta: U2FsdGVkX1/ewtyQ0KjKvH7sd3zGSW54Uf1TgifKbKJGxUFLI49YHafLLhMQU3YdytE9cvQSXrI5yTscXuH8pQ4IMYhqelYyJJlshoRXLgpM2adoEVMje5xlP0y0KDCB0sM8JkjRpDSi4uPTgg95tqKyan5jLkDAlMMYfFHZhwc1zM9041Jxy+IQ6WJrgW5BWgxupBrvcy7GrCZJfbhsh5DP6ypPori5Mxzzt4Tk+Zvwxoz2GMREfbUsBoHmEIxd4JyGHs7gHnlFlRzQ9iWw0EldzGKuwngC0Ze9LXmlvrn97Jhs9aoJny2JtMPqEJudIa2TWd6HeSdCVxVOj3vRNg+jz5p2yy26Nh03fNFrkCGaiw3P3/qeNvojiLldFIuBQSctE42bsLQ5cloZqW3GFA5hZGYfkg7Zh/mo+Nk7VCwBgdOF8KRkhuY0jGnQfTfNGL2mYpjW5RDtHJ7MoUOGALKy05uTXS8LDSHalsx8+P62ssHYrJH6kp7Po0hwiLm02tFI+S0ZeL+HJznSOLSfFoTruQpaPVU568ncfykkGojCA8QVqpYauFdRzLftoR8c/APsPrMKbQVVjTvw9iBWVkMtazOi8a0BXKudu6tmUcl00C+tXRmPr3ySX3TY6dmvERpwD5pwAS/BmkRXhcr/0ZMe11civQ0z2oeLxsrFofLrqHCo5I3oeE9jCVLFjNl+qGiZFrqV7nAU9Ay0GLfTDfn3BMeYkfaXDXMwaUV59jPaLOjaMh8AbVJX7yfXvQJMHuJfGqgcAlkyeo+kVJgSdNlJ2XHJi97PX+luawn9LWBsqCwgrrMtVjGIW8T2iRDMyvO1PY/9gm4hFi7qDLv0SgmJr+5L/tTEi14uarnQKrZUr3/YdH6zkdlPtn1b+hlet2DBxTi3Uf56P4+Ph4vsiKMHlPOHycGF+bqy/uGpYJ/C0fG1RfXP7h/5i3HwsTn3PPf2X6YLH4dx5Plw1Rj
- fsKHDS9A
- mrDnj8SH04AAXgL2k0ZvCdGvrdU1y0es3uEeVhtCjC5nmVcTSOnTnnraT6m4xKhERWNCvuZRDhDJGho+k0w11+ckWokeIKp3r0GkSkC5FWwpJIfHuqa3lx9B6VPOXZNQTjxHYe+IgeSJ16jf2bXf5K2fVzHpVMvWsOkCZBlBLao/BWhrnsFUatyaz2HcgUCwVQ+AaMRAeg5bFRxuTj8UvDcsQ/ALrIXI86wg+WvTG6AoiNIHBdAOUlksYcs21MxSWetJMDQza1RnDXiS8K8jni9SwjDwSw2AKm1nNt8NAoCslVW+xF+GeTj2m5BwewPcgmH8HyKZ1cSXIzOGTa8HTddsZU5UIjP3XjZDalgkKWKR7DXFXFoXzwRqQW2xcbYVHKwTS89BFmeMFC0OeRnC3MMM4qxEn4GNR3mz9U7rUcCPdhFE93dmSlQ2gEuSaSYTfykhbJ3K46mMNf+msykRfFULoBsLhM9L6Qi9KJVzZ+s2br6BM90NLjg/kCistnr1sEHCFeJH+SHVEjcqGZhVDmQj6edbJTvt1b2aYujQIKwnS4yJ9+FRq4ehw395l3kUQKv5tSNpLZb4cmnBR1Vr6BedYMjq1RKuFRhoL8ohaPQrbsjvS7sVJSt0Y9g==
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793959773-735563
+X-HE-Meta: U2FsdGVkX1+1TdrqdmKicXJT4vPCsy/AKaBBSkeONQw2wSArXhbmxLgcOuek7YBLwcQn5mX50dRwHGt6PUi5/ET5WfB7HNCw6XCuKguIzNkHBGMIEyzQRiD7rnur80oPGktI834xB7stqL0Q4Z2w7tyKdKZ6a0GZ+AnBvz7SGFw2MUC3MsDjFGvux54lblqMrjR8z0IF653es9s0Yz9gZ3BPKlVPWSotbeEokRXlYhY2CofeIVxD3bE4Hf5s+d9Xq/6VyhsvYFD+0D35aSXZUfo5q5A6iPFfwZ0rnIzRWWZ7bCz9pDIBn3ikKm8QrD2pUvPHuu2Cuma9h8F8UOa8+t0zu/k03Hcm2N3F0C3kOPBiGC+lFKraN0H07kznAEyWYAnsmoC1McnymSP9m4CWgWI7/NcojUjW70o7qCxjzg4nYsBstXlC9RCFwT2eOF+M6BXibPiFMn3IwdKOEbnwEFnzY0N9qAd66yf1SlZSs619mt4QP8sXx9e+S5/ndTobVtyB8Xe8gpK+C+GgewRPdoWTsxFV00hlM5HISjW9J18PP0P5zTdAjFUi+hrg2pYjmQaDRNr8yRordSoMtVMapmL12yMTvz4SdocFmKxx13XAAFQPN91nK721zpbu2AsF5QL44rM8tvIPnzPfi/bP+jRf0W3XKZx1vIxwCXE1vBn2Gec6GV2Euy9jCMAebAS8VN1M2A+Az3WpAdkbhZuvOJSTBEhSxzHH5V4dDJuz4Tq9XCfSb5cvB0zrsHWUVRMkPFJWKXEHcmivQRuYRt+x7QMv6dLF0zwGIMSu9egwT/4JFuPz3xcKYYd7YADUumLXtJEF5rfUFqmI/CliA4MPs/KLEXMroYAVXqmloyOW68MdvC8hOVGUZqgScDqgW3M6b7xYQ0z8HKJC79Zcir//d+JeNyKfd30yEktSjD/BW+GJvfmjGbrlrb0jY298tVZnOzgQ7ydkV7t09ermvWd
+ i8wmqShW
+ MLmuAwCouwAw2A9S3nFvl+oEF+79uOl5RE5q0HUcQTAsdyQt+Hop31dQis6J7N2zA8iCV6KEwyQVC8+iVXyndC76bxWVbJuD56ynKOAYQp99J5c4pCf+MlBkDofd/FkZRARcnzCkDqhJ+TF+hFiAbxI/1WnT+lyQDbkoVusRQe8aUUOzOEszUUU2bJeJ5iEwifPwwp+XYZ/+cFvM75NrdPuvRGlX1C2iDLIYui+bCAwNqTTYtZ+ryWrI/UGIxec5TkWsFxw/oyzNq8TF8tGSr1JIHi94DDtqzri5lDYWmevTVg3kcazek+gVBXzO3YxNkTO6vaQ5zD/+ayKE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -195,63 +98,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 09:50:43AM -0500, Joshua Hahn wrote:
-> On Thu, Nov 5, 2026 at 1:17 AM Balbir Singh <balbirs@nvidia.com> wrote:
-> >
-> > On Wed, Nov 04, 2026 at 03:30:21PM -0800, Joshua Hahn wrote:
-> > > INTRODUCTION
-> > > ============
-> > > Memcg keeps a per-CPU stock of precharged pages so that small and
-> > > frequent allocations do not walk the page_counter hierarchy every time.
-> > > Today, the stock implementation lives in memcontrol code, even though
-> > > the operation it caches is a page_counter charge. This makes it
-> > > difficult to add new page_counters to a memcg and preserve the fast path
-> > > behavior.
-> > >
-> > > This series moves the stock into the page_counter layer.
-> > > page_counter_try_charge() consumes the stock, charges a batch to the
-> > > hierarchy on a miss, and refills the stock with the surplus. Memcg no
-> > > longer manages the stock in try_charge_memcg.
-> > >
-> > > So the stock keeps the existing layout, which is still a per-CPU bank
-> > > of 7 slots, each holding a count of precharged pages that it hands out.
-> > > It maintains exclusion using local locks on each CPU, and for remote
-> > > drains we schedule on the memcg workqueue.
-> > >
-> > > This change gives us the following benefits:
-> > > - Separate charge caching (page_counter) from charge policy (memcg).
-> > > - Makes it simple to keep stock out of interior cgroups on cgroup v2.
-> > > - Prepares for future work for stock improvement, which can now be
-> > >   isolated from memcg changes.
-> 
-> [...snip...]
-> 
-> > Is the main motivation ease of addition of page_counters to a memcg?
-> > What would those counters be, why not add them here?
-> 
-> Hi Balbir,
-> 
-> Thank you for your interest in the series! So yes, that is the main
-> motivation but this series offers standalone benefits as well (which
-> are right above).
-> 
-> The new page_counters that I want to add track per-tier per-memcg
-> residence. Those are used for enforcement (and not necessarily for
-> visibility), so I think they wouldn't make too much sense to add on
-> their own now, without the actual enforcement parts.
-> 
-> What do you think? I've also linked my tiered memcg series [1] if you
-> wanted additional context.
+Hi Ying,
 
-Thanks! I'll take a look. I was just curious based on the numbers I saw
-in the cover letter and wondering what the changes got, I can see how it
-helps in a hierarchial situation.
+"Huang, Ying" <ying.huang@linux.alibaba.com> writes:
 
-> 
-> Thank you, I hope you have a great day!
-> Joshua
-> 
-> [1] https://lore.kernel.org/all/20260807202059.2620949-1-joshua.hahnjy@gmail.com/
+> IIRC, after commit b99a342d4f11 ("NUMA balancing: reduce TLB flush via
+> delaying mapping on hint page fault"), we can avoid most TLB flushing
+> caused by do_numa_page().  Could you check why it does not work?
 
-Balbir
+Thanks for looking.  b99a342d4f11 is in effect here: on success
+do_numa_page() returns without rebuilding the PTE, so the PTE is still
+PROT_NONE when try_to_migrate() runs, and both the batched and the
+direct unmap path should skip the flush because pte_accessible() is
+false.
+
+The numbers disagree for the batched path.  On the same workload and
+setup there are about 200 TLB shootdown interrupts per migrated page
+with TTU_BATCH_FLUSH, and about 13 with this patch applied.  So
+something makes the batched path flush where the direct path does not,
+and I don't have the answer yet.  I'm instrumenting the unmap path and
+will follow up with data.
+
+Thanks,
+Zhiteng
+
 
