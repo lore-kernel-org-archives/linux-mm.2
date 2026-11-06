@@ -1,146 +1,109 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BC0606A331
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D75606A32E
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=T9F6eGMH;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=T3BliDtd;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=wP9/6bwL;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=JTKT7OmU
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NW+CiO38
 Received: by kanga.kvack.org (Postfix)
-	id 284406B05B3; Fri,  6 Nov 2026 09:29:56 -0500 (EST)
+	id 8CE936B05B1; Fri,  6 Nov 2026 09:35:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 233C06B05B7; Fri,  6 Nov 2026 09:29:56 -0500 (EST)
+	id 8A64A6B05B2; Fri,  6 Nov 2026 09:35:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FCCD6B05BE; Fri,  6 Nov 2026 09:29:56 -0500 (EST)
+	id 79D956B05B4; Fri,  6 Nov 2026 09:35:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D8F6F6B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:29:55 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 78AFDA09C5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:29:55 +0000 (UTC)
-X-FDA: 85404928350.04.3DF2748
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4EC5E40011
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:29:53 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T9F6eGMH;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T3BliDtd;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="wP9/6bwL";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JTKT7OmU;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 529986B05B1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:35:16 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B1F3E40DF0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:35:15 +0000 (UTC)
+X-FDA: 85404941790.08.705361F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id CC73714000D
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:35:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NW+CiO38;
+	spf=pass (imf26.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793975714;
+	b=MCRhKRwm6itqud6QH/7cWornBEAjVoqXbbmiTnIHkD6cqupBiSv4feAw7eurGr+jlQZwUK
+	muiURAH4acgyTLmCqk9FQELSljBtRx+iceJYWu5Y9KYHGijXrb6Q9eYObkbLEHtYc+Rqjq
+	MJUo412sGlm6arK+X3tvnOTYTwy5s2s=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NW+CiO38;
+	spf=pass (imf26.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793975393;
+	s=arc-20220608; t=1793975714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O3BxtbkW6dUgg0e4SBYmdv0h0k2sMGxdODd1ZfZ8Kws=;
-	b=qfVX9ljf1lpJifzDYKRQZnSL/i5gD9A5bkpuWsKVAEnKphRiCHDiq/A0dmM5k3JRFdB9d1
-	FMIeH39EUnw/uOhMtGdwepuoMCJSgi+r4bkP98/EQ/e1KWEGBbKEizY1TOu6qIAN2ZJIro
-	TbVatdfBtgYejHZJdLtBBl89V9aOZkg=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=T9F6eGMH;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=T3BliDtd;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="wP9/6bwL";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JTKT7OmU;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793975393;
-	b=3QVbKQeeJfp3oKEjVn3O7jya6pdwr7o3hdWY9onlgqI3vcoUd9p+42J0NEFXPdMS1tjIvr
-	J4aEVb1RTJ9j4ZJyrlH82K5xUEhtEYN648OuY6z0yUam5i2HUMJbPwdtfJifQ1z8NXjQHo
-	pDp4qPn31wYjrjl0ZJHEeIVp+2KfpYs=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C76B222218;
-	Fri,  6 Nov 2026 14:29:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793975392; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O3BxtbkW6dUgg0e4SBYmdv0h0k2sMGxdODd1ZfZ8Kws=;
-	b=T9F6eGMHRkO93M0BvqGAMusPFNwPVE2nZTwMPcHXoJFTTbB3+4NoLHOv1C+toGGOBKGOsM
-	Zk4TdOT631Sy0ozE6svg4m/sffbWzP/QAJ9aPH/eJBtbPI2nO8HVCr3M8wwf69BTk6F+b5
-	MK/wZecBX5OFBNb0NhG3xr2Kip7cVRY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793975392;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O3BxtbkW6dUgg0e4SBYmdv0h0k2sMGxdODd1ZfZ8Kws=;
-	b=T3BliDtd9hpp3d6y1F+DcpLXvmp5oYhKc7XGdJvyWIGfamCNevWsZnL5z/zeAONom/Wnl4
-	zQDZz8EVxlBqibBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793975391; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O3BxtbkW6dUgg0e4SBYmdv0h0k2sMGxdODd1ZfZ8Kws=;
-	b=wP9/6bwLd7Dg8vz1YAVSAYLlngNth8RT+ABVFG/3gC8noUpc2zJt3wyocGMDkrdQWl7x5I
-	WngtzrQB3YSlYjHF4Vl+HeqNxFwnSwYziKY4/4ODYOeCUmuJL3TWzdQFFciBGYPJk3dpMv
-	52qK1UnCZMrWr2M1XgV/nQ153kZ26bg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793975391;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O3BxtbkW6dUgg0e4SBYmdv0h0k2sMGxdODd1ZfZ8Kws=;
-	b=JTKT7OmUoUh5jLYQxMNsM55o6rRZZSOOxNxxzyR4vBWtUM8EmfkSYsSlSJG9eJG0uMLMFu
-	FomoGh0SM6bwlGBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7AA7D132C9;
-	Fri,  6 Nov 2026 14:29:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eDMeN17k7WqTdAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 06 Nov 2026 14:29:51 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 7FBCE21B8E; Fri, 06 Nov 2026 15:29:35 +0100 (CET)
-Date: Fri, 6 Nov 2026 15:29:35 +0100
-From: Jan Kara <jack@suse.cz>
-To: Breno Leitao <leitao@debian.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Julian Sun <sunjunchao@bytedance.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 3/4] writeback: log the end of a slow writeback wait
-Message-ID: <ftkoesjrylhcmtij2gi63wnrkjdjf2ps65cwhz4g7rejhpjdh3@ieu2t4wtnjwo>
-References: <20261106-writeback_stall_report-v1-0-bf0c3b9023a5@debian.org>
- <20261106-writeback_stall_report-v1-3-bf0c3b9023a5@debian.org>
+	bh=ABFV9qqW5v9B/veTK1qFSxVFzw8UX9r8phfo5f88bHM=;
+	b=x+J8vMKUjCBDcHYdI4RFGyn4hE7jXpBhRv3sx416fkYCXnXX+T+6MKMf595uW++EP7xUtD
+	M7GBDripcFEw3kZAXfl92pgWjEh0LwCliC0BI+uffaoXplugWdWWKWh3hKBZBzgL0/q2aF
+	ioUPXGxkhr+RkkdbbUp8yOQdERQ+KS8=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0D716400C2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:35:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E617C1F008AB
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:35:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793975712;
+	bh=ABFV9qqW5v9B/veTK1qFSxVFzw8UX9r8phfo5f88bHM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=NW+CiO38XAipmRfvZb5pGzPtdB2zoSkBFY3QqVyfdPAFpM6fBH+ps3C/WRq7ZfzE2
+	 o7WUwzmqQQ3PkE3gvMRfgOCP9XzXNGtg12V8S2fi5UZdZmB4q3mp8G+xTIwOtPAtXN
+	 3uNZAFMQ5hm//mnLWi8wTsZWz9GGPkHPOFoVPJnbpwCohuzkA8Xk3qgp15B/Qd4kC/
+	 XXTNMv1YKeN4P6VHCjS/J2rMGpKFjXdtYP8tYgnawdShP5GHiBIrTMXGFyBBhzj8Df
+	 6SsOM4/1dFVK9LCCm2l2qkHcdnKYWKMJ3f1ACFpTO2jqaReJZQlahdWNR0bptLYcEb
+	 BhkFz9AHmxvVw==
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-6b581b6b0e9so818124a12.2
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 06:35:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AL+hErEUpNVpvahDBdEM3wzzNCL3fclwBL0DUXvNn2L0kZyL13KfKd9BJ63kC595B3jEW3QJtBtznmipsA==@kvack.org
+X-Gm-Message-State: APuU4Z+J1glRvHrNffv3u80zBohlXyIDsY6UO2r/0o9b0Becdaeq068j
+	gxHFyn5qOApcOUe32vbt5OKB12RKeGY70oAN/VpysHlkzw1H6TEhvOmRd8+Xu+dRmWSDzyD8qYx
+	AeQl3tYOJeHioc+aRIbjkcp2X4JFmfhc=
+X-Received: by 2002:a05:6402:1e94:b0:6b6:edd7:7928 with SMTP id
+ 4fb4d7f45d1cf-6b6edd7899emr802991a12.26.1793975711577; Fri, 06 Nov 2026
+ 06:35:11 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106-writeback_stall_report-v1-3-bf0c3b9023a5@debian.org>
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spam-Score: -13.01
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 4EC5E40011
-X-Stat-Signature: w4n3tn9w7sgp9ngw8fsr1ch59g7b7nut
+References: <20261029172956.20791-1-dongtai.guo@linux.dev> <20261029172956.20791-6-dongtai.guo@linux.dev>
+ <aux9Hm0QFJLUDPWv@kernel.org> <CAAhV-H7Dsnz03iXChzE6nYM2cs+D6fdDFiWrDxX5jM13kYL6HA@mail.gmail.com>
+ <auypq8_7T-vml5_B@kernel.org>
+In-Reply-To: <auypq8_7T-vml5_B@kernel.org>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Fri, 6 Nov 2026 22:35:01 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6aO_QNEzV-r6+FbNa=9EUQgv1vH0ET-ETXAH5x6oQGjA@mail.gmail.com>
+X-Gm-Features: AclHuK9KCIrf61pzsewLNfcg32ftrSETM4BdWXL6OTYNNDPn4F3U0UamXyiZ-QM
+Message-ID: <CAAhV-H6aO_QNEzV-r6+FbNa=9EUQgv1vH0ET-ETXAH5x6oQGjA@mail.gmail.com>
+Subject: Re: [PATCH v6 5/8] LoongArch: Allow memblock arrays to resize
+To: Mike Rapoport <rppt@kernel.org>
+Cc: George Guo <dongtai.guo@linux.dev>, pasha.tatashin@soleen.com, pratyush@kernel.org, 
+	ardb@kernel.org, shuah@kernel.org, ilias.apalodimas@linaro.org, 
+	akpm@linux-foundation.org, baoquan.he@linux.dev, ruirui.yang@linux.dev, 
+	guodongtai@kylinos.cn, kernel@xen0n.name, graf@amazon.com, 
+	liukexin@kylinos.cn, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: hzyccy19w4ta1bickzux3ocbceq4hsco
+X-Rspamd-Queue-Id: CC73714000D
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793975393-422874
-X-HE-Meta: U2FsdGVkX1/F1g77GYo83ElzJghl8Jkx0vwpNIch7YhTbMq5qFZaD1JEoGQ+CUdHOW/rIGOJWQyiM5K0AlAHykXm7bLlk2mSQxUJzPoor6PM1GakTrFOKAv0ZirqShnaAzdkBgYMVkEYRDKvYdBc9Exy7b7Z+r4sbs92LwDnefFH5P2EO5HiOyLNbBGbCJTZdoS7phjnQkQ4Kr4d0/ddhAV4NASJmkcSwhqpu0tCswmWsEecVRXgvHVZZFGz+Bj9cwjCHk7Au3mXLEY46BuZsk/efgmjS54qqvEJ7TYKlVquTXj1y6BS6bU4C6KWba/lln6x0cLz3a9SdfoAFI5+rVYtRdtGf41rZRm7LdDo6ua/qQ9eyHjYQb4gk9caMNOTUE92/A9ywOnXhHNu3hkU618WFVwrEbb/dn1c4CZCQ7RvbBDK9V+t3Eq01ErUZTI339u3Bnz//rowDU/28dhIGIlXczgPBLYAZjt4yNDFOLM6OW7VW/+Tv8ESl/94PHr6hQ+mYe2+Zswk+mg7dZUoOKJXlqqRoW9jn9agobmrH9QBnO+o6BnSzvqF40gEVeyCC6PqDUYFJ3qeF4BDp4oHJ3/bHjamvQ1z+0zbGVPgHtQDtTe0N5Oy4h+w92Q2qS1KssJE4weMbL5ifmcYG2VccperXwFOt278zN1ex2mZn7TXtrDjSrMare87UVIIyycXr/9fvsmAnxuUZFbTi005L+MRbXmLiBMIlePAfrX5wdR8rvFdVlrlOGknLMo0CXiZVaCrSV5/s91WmgHdoCuA3rLAcy3/Be0fmyaPKB2o1a6F/IYKJziyLv79KMLS/2tB55nq6IlbK0v0oA4qJbYeMWTlmLacazxMct+070HCFMMVSVT8R9uN18jsATTBgw9G2NCjmc0DRiQgNrpTjJLs2sOx+OCR5uD84HU8ahZ8Z24vlb+k3Ug2nyro5xK+E6HYWnFX/xdxrNvX8EZqnVn
- yWlARQJc
- LgZtMAmi/FNjDQt6g9nZjBOR6KfmlEA3hP+sV/pMl688LxDVOKFZP5WMjUMws/Im8GajjpvouAwfjcFjiTFgHHiMk7rN4bZi26UG+avLik1pHT8J3/Qla9RmjOdND07pJx3uuNE5eG3/4uKGmf3LqFx9xIa28c5N8aAGGnlioNzPUzHeLAW5GPgTbz+ntL9kAcuxxTNrDkznSIDs6ojee3wxQ1xnQrbrlOjMH0//7BxHXnDQK0uoKuq+Jpazsa3am/yCqeDf2dhLND3lunGNEj2Zm6RfUWIz9uwoKnVJcbTQ19bRvVjv9Va689oVy86OJiDbsuW1wIOO8y+XMIuI2OAfo9UEFRpwEzXWRFJUGLWrqnxCxWXp/qfRFPEapnBDX7N9DtKuacqIJ77wegsfWYmBeQBYUSkiPf9YH
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793975713-433990
+X-HE-Meta: U2FsdGVkX1/6boWshkks4u8HMtIxf2uSPU90dXlytt8ghXyLB7uWga/WXjVIxZBsu5kLaXc6hHDAtjIeNcUzpXgKTQWt+JsONe7NUDgl9RdB3fPBwkZrIfwJ4q90GPbyM57rtorrK1LNv7kaF1iHx22NzEQDqde6XErdSlBGqJeysmFeor3S+zMYXmP1hxgnrt/ede3s/4FrVVfpDV66fdnxFkXG4Kw5E/7qc5AD77v0gLQMGWPffmgnENGUOCGHODButpTe4JIkvmiOIuUJh+6aPop7hEO0ZVxV4gWiAmRxupofeZgWd8L/rty7pOXAoA002ziBSMc+Cm2PA7kh8KQDfucksdzUHs6CLqtwfdH85/Vw1sC2+qZpI28KC/SKLpDpAV2WS3W3++xrsEATTx+o31eZo4Qa/owiaeu+F/YPTU7fUnrbw7c2mT3v5w9MhHx4EkcQLvlu5gijiC8ojmLtFmydqMsyK6kgc0ZjfEXkzOgys7OHL1KuI5HMjqCtCTXgdzJ8mRbL4jP7fv/HL3E4z365+anSJ96O7EqNoBzHeKWHVnP/WfJtnwLTB4Jd7RplyOJMHm26ch782W/NumiZ7j7EaimAs9teXUF+vZ8FbFAPT61YogAIRQC0amnF6E5LXjPG18/6kc0qq9h/iQVIvURk11FvEF7AJrur/2Mf41c8vmkHaW+max9MDMlxpHugpum4It8Zjkw3mpfzLpC1wrDRIUUzMIx4WLg6LmEQsFom0HlQEC4gY7zKyS5bkDk4edovBT5BHLyVt78PiQfPVjFMpA3+kht9CrpBkFdgiuqkCgzC0CH3gFLdfvRT34d3D3rjECk1Sd7uiKvZ7n/wOsUxPiDSTgiRfpacnK25qU0ONSWD6oAgfLQT3pznRhNWgP5Ute7IvkI/E1d18BE9BHTmhtdPf5srTiZulCufDM4wAFf/LeUuD9CFE+sHcy2u62z1FmhQBE72Nx0
+ RtG32VWm
+ sPR8s2/DXpUp8yPAgBTQKlyRm2QoVWj0wm5iDSiWmt979FBzUz7mh1zfO0r44gkLhfYsZW/wuUuS+Q+GA6AQlOpDnE2bArprNNWs1rlYDic1h753GInEV6XlZp/tG5Fdwa9BQj8cwPO8qOA69egKPaL/5It5ldomlXZdL/PTKVxRm/FPs18VSUKBdvHw5p9sUrFiOiocNGT3gg7VR/7dJEU/LCmDlYSLQ2EFczksfAcCF/xh3MwejrZtPZu+4z6k+u688q+TjiWeri2hNTmjou2zYIbKQab4BgyZpA9BCi+JmeL6hIUiw0fwTUw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,84 +112,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri 06-11-26 04:26:33, Breno Leitao wrote:
-> A slow writeback wait ends with one more "has been waiting" report,
-> printed by the wakeup that sees the last work item complete:
-> 
->   INFO: The task sync:180 has been waiting for writeback completion for more than 29 seconds.
->         bdi 252:0, work items left: 0
-> 
-> That line reads as if the task were still waiting. To tell a slow
-> writeback from a stuck one, the reader has to notice that the reports
-> stopped, which is easy to miss in a busy log.
-> 
-> Report only while work items are outstanding, and log how long the wait
-> took once it is over:
-> 
->   The task sync:181 waited 29 seconds for writeback completion on bdi 252:0
-> 
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+On Fri, Nov 6, 2026 at 12:07=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wro=
+te:
+>
+> On Thu, Nov 05, 2026 at 11:07:01PM +0800, Huacai Chen wrote:
+> > Hi, Mike,
+> >
+> > On Thu, Nov 5, 2026 at 8:57=E2=80=AFPM Mike Rapoport <rppt@kernel.org> =
+wrote:
+> > >
+> > > On Fri, Oct 30, 2026 at 02:29:52AM +0900, George Guo wrote:
+> > > > From: George Guo <guodongtai@kylinos.cn>
+> > > >
+> > > > LoongArch never calls memblock_allow_resize(), so the reserved regi=
+on
+> > > > array cannot grow beyond INIT_MEMBLOCK_RESERVED_REGIONS entries
+> > > > (INIT_MEMBLOCK_REGIONS + NR_CPUS).
+> > >
+> > > This might be something to fix independent of KHO.
+> > >
+> > > Huacai,
+> > >
+> > > What's the reason LoongArch never enables memblock resizing and why i=
+t
+> > > defines INIT_MEMBLOCK_RESERVED_REGIONS to include NR_CPUS?
+> > At first we didn't define INIT_MEMBLOCK_RESERVED_REGIONS, then we got
+> > boot failures on a 128-cores machine, so define it, and the value is
+> > similar to arm64.
+>
+> AFAIR, arm64 had to reserve some per cpu data before they could enable
+> memblock resizing, so they had to make it static.
+LoongArch is similar, so below 64-cores machine has no problem.
 
-Looks good. Feel free to add:
+>
+> > The reason LoongArch never enables memblock resizing is because the mm
+> > code is derived from MIPS, and MIPS never enables it.
+>
+> If that's the only reason, you might want to revisit that :)
+Yes, it seems we need memblock_allow_resize(), but maybe it is better
+to bring back paging_init()? Most other archs call
+memblock_allow_resize() in paging_init().
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Huacai
 
-								Honza
-
-> ---
->  fs/fs-writeback.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> index 3dee9d65eaf721..cdb2631b8552e1 100644
-> --- a/fs/fs-writeback.c
-> +++ b/fs/fs-writeback.c
-> @@ -201,17 +201,18 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done,
->  {
->  	unsigned long timeout = sysctl_hung_task_timeout_secs;
->  	unsigned long waited_secs = (jiffies - done->wait_start) / HZ;
-> +	int left = atomic_read(&done->cnt);
->  
->  	done->progress_stamp = jiffies;
-> -	if (timeout && (waited_secs > timeout)) {
-> +	if (left && timeout && (waited_secs > timeout)) {
->  		pr_info("INFO: The task %s:%d has been waiting for writeback "
->  			"completion for more than %lu seconds.\n",
->  			current->comm, current->pid, waited_secs);
->  		pr_info("      bdi %s, work items left: %d\n",
-> -			bdi_dev_name(bdi), atomic_read(&done->cnt));
-> +			bdi_dev_name(bdi), left);
->  	}
->  
-> -	return !atomic_read(&done->cnt);
-> +	return !left;
->  }
->  
->  /**
-> @@ -228,9 +229,18 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done,
->  void wb_wait_for_completion(struct wb_completion *done,
->  			    struct backing_dev_info *bdi)
->  {
-> +	unsigned long timeout, waited;
-> +
->  	done->wait_start = jiffies;
->  	atomic_dec(&done->cnt);		/* put down the initial count */
->  	wait_event(*done->waitq, wb_wait_for_completion_cb(done, bdi));
-> +
-> +	timeout = sysctl_hung_task_timeout_secs;
-> +	waited = jiffies - done->wait_start;
-> +	if (timeout && waited > timeout * HZ)
-> +		pr_info("The task %s:%d waited %lu seconds for writeback completion on bdi %s\n",
-> +			current->comm, current->pid, waited / HZ,
-> +			bdi_dev_name(bdi));
->  }
->  
->  #ifdef CONFIG_CGROUP_WRITEBACK
-> 
-> -- 
-> 2.53.0-Meta
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+>
+> > Huacai
+> >
+> > >
+> > > --
+> > > Sincerely yours,
+> > > Mike.
+>
+> --
+> Sincerely yours,
+> Mike.
 
