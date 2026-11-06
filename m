@@ -1,102 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E54606A33F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 02:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E446606A31B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 02:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=giIFEOCE
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=zMv7TaMh
 Received: by kanga.kvack.org (Postfix)
-	id 9E0656B05B5; Thu,  5 Nov 2026 21:54:34 -0500 (EST)
+	id 57E736B05B4; Thu,  5 Nov 2026 21:59:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 992D26B05B7; Thu,  5 Nov 2026 21:54:34 -0500 (EST)
+	id 554BD6B05B6; Thu,  5 Nov 2026 21:59:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85AAC6B05B8; Thu,  5 Nov 2026 21:54:34 -0500 (EST)
+	id 4923A6B05B8; Thu,  5 Nov 2026 21:59:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 503306B05B5
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:54:34 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id AB8F3120C41
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:54:33 +0000 (UTC)
-X-FDA: 85403176026.18.DCFA1A4
-Received: from mta1.migadu.com (out-119.mta1.migadu.com [95.215.58.119])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 904A1120005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:54:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=giIFEOCE;
-	spf=pass (imf29.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.119 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 21D3E6B05B4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:59:47 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 810CB140B83
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:59:46 +0000 (UTC)
+X-FDA: 85403189172.27.FFB2EDD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B3C89A0009
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:59:44 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zMv7TaMh;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793933672;
+	s=arc-20220608; t=1793933985;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+zOtCFcE7RqUU0PBGSnDyGDe/moPxuMOnjuMw8Y5ppU=;
-	b=C/k5Ov9eDrrW7t1WDqpMm1s5GzK++ruzcFvL+vY9QY/vIZqVUkXO7FTC+j/pCMVEHukzn/
-	F5HTgt2PDBEGz+tOXpL3mK3Nnk5EcgFusk0KVyhSNPedDml+sLhlEPIzipEjF1+17aO4MD
-	YCunue0Vlp0JBGxxgo82m9PqePiDaW0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793933672;
-	b=6riKNjEHSmKsh5BgMO/9x4tE9QBJit5ySJq6r7q3tieq7rP/CZ97Omk2jeJErhVUs7ujxJ
-	wgV88S0n1FoArZcIeDDeevhAHK8JlP3O4E+jkQa6H9xCg0PufNXkvUufj0Si8yi1NqP8BQ
-	DtyaYfuwJNuDX9YftMkQ4yx3HvEeapc=
+	bh=g0MaA95Bx3ZoEANP3GZek3B2SzCrodWB+6/VqV4dGcs=;
+	b=f2auGEj94rV7kAkcueyMjyzhxsi0yN+dHH44cdBF2vs3AVCv8PDUEgEVTgFFodNxnvEpJi
+	vuHHew7LnAdtXOr7k52S7kzSEx63WapPlpeHsJFl3Jp8McaAwGScUc8yQZAFyltG0Xb+Jq
+	LNQpHvTpF0E7zSz+60FrJTKM8vUFi5E=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=giIFEOCE;
-	spf=pass (imf29.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.119 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=cq7ZuuC5w2lt71axYm7fgLbho4rWP3X1twp9z5xV2ZU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793933670; v=1; x=1794538470;
- b=giIFEOCEQO1u+pkZHjbf8duu258+M6iZsrdqhnn9+VYR4/3OZzXw8ZI/g+VSbMVTTqZjG6G1
- x1oxJh5hwiSoUXVMel1yIo/JRiKQdNW9T2RMv/kgYfkuhWNPq1kO1LOkl5WZkyMWi5dt2CX8H3o
- exu6iY8JiNHZFZIGP3SbH09k=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 58241d6b69efd81c;
-	Fri, 06 Nov 2026 02:54:30 +0000
-X-Mizu-Trace-ID: 58241d6b69efd81c
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=zMv7TaMh;
+	dmarc=none;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793933985;
+	b=0+l/I1OlCP0Mp/Aj6SZCwvsPAN+yR8mRPwc5hjp6QvwP4E205g2NXWlHK9879M/TKpHpdt
+	SSDmLg0Fvckhgdm6LqJbMLgrCPxuiv4pa/6TkIA4kmd+81vk5XQJ3Xnh5Ru8Sl2ytv86OV
+	lLoa0tbo0yTQCxY5XqFpGCwIwGTywuQ=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 305D360202;
+	Fri,  6 Nov 2026 02:59:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5281F008AB;
+	Fri,  6 Nov 2026 02:59:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793933983;
+	bh=g0MaA95Bx3ZoEANP3GZek3B2SzCrodWB+6/VqV4dGcs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=zMv7TaMh+8CJiKiz3Jbclm1ei9kNfUkBmRzCfBVB6LdILr7EU2lvxKPKfCnMNTgBf
+	 nfcA4A1uqXz6FO3f8sGRDFS62Vmu1W30tiaLLBCRPfgDFDZj407JOhFeLegCN2Axem
+	 Q+UptajLNRQmUmpdda7AanFZeq5TNNrrJpLm+CJA=
+Date: Thu, 5 Nov 2026 18:59:43 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Josef Bacik <josef@toxicpanda.com>
+Cc: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett"
+ <liam@infradead.org>, David Hildenbrand <david@kernel.org>, Vlastimil Babka
+ <vbabka@kernel.org>, Jann Horn <jannh@google.com>, Pedro Falcato
+ <pfalcato@suse.de>, Muchun Song <muchun.song@linux.dev>, Oscar Salvador
+ <osalvador@suse.de>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Sarthak Sharma <sarthak.sharma@arm.com>, linux-mm@kvack.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v3 0/5] mm/mremap: fix accounting on a partial move
+Message-Id: <20261105185943.3d6f4b34fbdbba8599bc7360@linux-foundation.org>
+In-Reply-To: <20261105-b4-mremap-pre-split-v3-0-f8789de76849@toxicpanda.com>
+References: <20261105-b4-mremap-pre-split-v3-0-f8789de76849@toxicpanda.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 2/4] mm: gup: allow long-term pins of CMA-allocated
- HugeTLB folios
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <39b7ecd4-e5a1-48d9-8d34-4bf8f8ad4ca2@linux.dev>
-Date: Fri, 6 Nov 2026 10:54:10 +0800
-Cc: osalvador@suse.de,
- David Hildenbrand <david@kernel.org>,
- akpm@linux-foundation.org,
- azpijr@gmail.com,
- Lance Yang <lance.yang@linux.dev>,
- linux-kernel@vger.kernel.org,
- linux-mm@kvack.org,
- stable@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <ED3C9A78-9823-4F37-BF2B-0A8873001BF5@linux.dev>
-References: <cover.1793850539.git.zhengqi.arch@bytedance.com>
- <818fb0b4bbb234e4a2bd0552d61634f1a8431616.1793850539.git.zhengqi.arch@bytedance.com>
- <8F5F930D-A05E-4255-8E70-2567921A92A0@linux.dev>
- <39b7ecd4-e5a1-48d9-8d34-4bf8f8ad4ca2@linux.dev>
-To: Qi Zheng <qi.zheng@linux.dev>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 904A1120005
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: agof8ohgw375gzsyqqdkm843zo4mw9q3
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B3C89A0009
+X-Stat-Signature: dykx8i5czn81etonbiwxfyqa7y8ecbsr
 X-Rspam-User: 
-X-HE-Tag: 1793933671-99645
-X-HE-Meta: U2FsdGVkX1/+H3CuP5xofwrRKz87IJBF7mZrJPELXnb8UeRdsWvlC0Zn07Q0f390yBAUCmeXLiw182AuhDejzPJzRNXNl1qHTpIb8OzTBTjapYtXQityxkb7EJdzfdlri94l8RlIq2yUP2SUfv6ztkzjpNoeT58QbpjYJhvHxsVN2nlwKMkrEMN/DG7uvHDFGZRvDGGedPs4J1q+yPMQoLvMAHJpJ808j5sBQ2vm3tgjeHLJLwN+38jqRB1Bsi7lv9lC8TYuO2mCnYicVia4bdxM44/44q0StxNDCzt19BpXxeMxTjQh4wwDKz/pv+pfcYTKIZBjqlMPQPJHjzOcRJX7nbcBMkoaM+EiRT4MX5aVxaDi6C3ENim/02tFEEp6XEdn+8SAYB4CLGmLubVgZh2U34gZ+9+cDdI//k/dkMcbPz1dlwP56HwsXCRYe7q+IdKGB39mwgxf2l8m4SFbWgyyhJa7kUb3kPP1BiIe38EaGqsurcA+A34Ym46oTUdZO0PBUx77iqfFd9E1irxPW1/e/giAroyuhm9ncPUTxMTN3Lq7byngkvWUhXGsqYTms1DoMSRC7KRiTCH7qMs7APg1u/GBkTEthDvZyOi9zyjJZmH0emhpfsTPepKFR4karNe0ikUzkIGg7RNlwTzTyVF84xRFRLaxDvkyigOuzd/ysOl+26Z437r+3orZfS6zTSi8cAefKY5Wp3KOq4yn8V1bHHWD916edv1yy/ltT271C1VTJAXDdQElIwxSGSiWtc2LuDYM8L62Dem1oS4wKnuKPq8Z9M3EJrAOK+tkDly2GYdFZVWGPWt4HRD+0dkaxIY5WUtOGLlPVvOqAnxpTyK8OIGYngKsSXkotE2YxVt6WbBV+t/RVA5NsqsiUyig9hk8OIVkbmNM2yhOQPMtJFAnAnVUeUUhgiTbFbRvb/M+BeiZMLJsG573P3tbPjMrB7xM8Az3HeMUNMojogU
- +to9hizd
- QidPAFxNfZlzNK8uzvARbw5TGHJ2VjnM5hRhFglmJSYqCYCLvHxb0A1ZdbuaiB9vMAb+Z8q9BXnPTdXd99Rak+Bfik3nLvCkV6K09KKl7rU/CQcq69p5q74VllDpRnBXOGFXUVxx0leZCDw8tUDCM9DK1N5HVt6QV0SAeIWuvIG4z69UpLYMbg0obH2ojRS0vozH0zfY3VJZ2GKh+rKZY8ZLa9PmJJOL0CKW0NU6Tw1sA54/mLBLrd9GOK9jzUcPGj+vTUMHDNKGIYWjE9kDvu6/18XLYuPzVchkipESL7rXczTooLMBUyodqMg==
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793933984-926753
+X-HE-Meta: U2FsdGVkX1+Xr5S4Gz/ZESFPJE2YcE7q6Tv6wLgfQKm0YbbrCpsjCv1hnvT2tTdi2egyWvgWYTN7al4jZqMrgn2/4MFeA5/oJEwYcGNZ2pqllZK3ezjGFYg0sGa4qjO1cTyiLIGVZQh+VSAA+P/b5i2uCprK8VA7u5TCpcLhPHJAh63DieEt0oL6zvHX7MqVtOjRO07bNby2NWqwrfwKRfpXzm86LbJCaj0MGHzjM6ZI0gPcMdfK95t+KG+3wy9FpoT7iMXg9ZTE1Lh9tTqieLxsTi9fzLtY4fFBpu4PaV6hcyIkC+Exj+xr9w/s0pv4sH9S+H4bU3LPfqt2iZzsRPZdvYLnOft5zpqi5/86wNj6k36ddHpsNJBi7wTRAJsrFmg1PtbP+3kJCKcx6QLdILOvlnyjD+R+giBk+yCdeXnv3guc20A3Scytb7SrhD+M1ofEahZ7Ya/ML/NZN46iherVaRmNa54ldsjeioLO5nV7FX5wvbXTjQU49cXfmSF+KnVw2KHGHgXkHl/YrWvMoAQJBIgZVkShhlDv97+Zw0QyJge1poeQzyKanO60/zPkcwnM9A5zuarmBQ0I2vpXQmX8Reua6b61tdusrWP0YozzOkhyNAk/1g5HOKFzs0GYMhPU5HSw9cKxnaYEroZyDJhA9R2mv7dipxekTBvF419e53EFNn0jOCN/xkPsbkpgUplOggx6V051dU5TmS3yy6TRxOK+trTm7HOVKKox6m4lSvaN+FNPLEyoEvDzXf03gaL34AVeBxCPGMDepSt6YN7ZA+jdv5Uir0FczxD0MV3ZqHoh9becbh4lFoPhxrPiJFcJe3SH5DfKw/bCkNbwWPeP0cDcfJyqV8n4S5Kow9hz5bFYjeiWUttJQN+f7bK5ebzz4ErSMoxWHIZru6h0N/joFjKYug3CN4W4QLZp24l21Ukh/bXif7VCUl5XUeSwnrJQOR1OZ3PVlq4T6T3
+ nCxh817E
+ wmgTBghPinQ+mXrjwjeNFWEoChPVjY9i6RpAm7/WI+FL7F15L6pfMugxaCTGIM0KT5aoGyVR8eJnaV/rveqrejqOB61dqh121ddcHq7uhoGX4c0sAt6N5gcAYTOmoS8AnFbFsIjLruXffsv0+xRo+R3ALTk85Eo7y8tnG5CUDe1gEmTqwL6pX96KPQCQQFIl5R5s1g5uUDUAtPR9BsS1s3iprsThXfZS6aCl6lC9tpH+2I9GJklyRhPNA2bWz5C508O/FDYKMxene1Vln09L7lmtBP4LgRgcrdhWJMCGgDOogqYWSInDAQE0l5eUCJu6MsU88tdeSEZKjHPGwWGneORAiQJkHU0uhIhd8kL4jKhoKbOamN+71w04f5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,114 +97,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, 05 Nov 2026 14:02:02 +0000 Josef Bacik <josef@toxicpanda.com> wrote:
 
+> This fixes a hugetlb reservation leak and two Committed_AS bugs in mremap().
 
-> On Nov 6, 2026, at 10:48, Qi Zheng <qi.zheng@linux.dev> wrote:
->=20
->=20
->=20
-> On 11/5/26 1:13 PM, Muchun Song wrote:
->>> On Nov 5, 2026, at 12:07, Qi Zheng <qi.zheng@linux.dev> wrote:
->>>=20
->>> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>>=20
->>> Long-term pinning treats explicitly CMA-allocated HugeTLB folios as
->>> unpinnable, causing unnecessary migration or pinning failures.
->>>=20
->>> These folios already own their CMA bitmap ranges, and memory blocks
->>> overlapping CMA areas cannot be offlined. Allow HugeTLB folios with
->>> HPG_cma to be pinned directly, including in ZONE_MOVABLE.
->>>=20
->>> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic =
-hugepages using cma")
->>> Cc: stable@vger.kernel.org
->>> Suggested-by: Muchun Song <muchun.song@linux.dev>
->>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> Acked-by: Muchun Song <muchun.song@linux.dev>
->=20
-> Thanks.
->=20
->> But a nit bellow.
->>> ---
->>> include/linux/mm.h | 29 +----------------------------
->>> mm/gup.c           | 31 +++++++++++++++++++++++++++++++
->>> 2 files changed, 32 insertions(+), 28 deletions(-)
->>>=20
->>> diff --git a/include/linux/mm.h b/include/linux/mm.h
->>> index 2d0b8a4c9974f..75dd40265d3f4 100644
->>> --- a/include/linux/mm.h
->>> +++ b/include/linux/mm.h
->>> @@ -2975,35 +2975,8 @@ static inline bool is_zero_folio(const struct =
-folio *folio)
->>> return is_zero_page(&folio->page);
->>> }
->>>=20
->>> -/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
->>> #ifdef CONFIG_MIGRATION
->>> -static inline bool folio_is_longterm_pinnable(struct folio *folio)
->>> -{
->>> -#ifdef CONFIG_CMA
->>> - 	int mt =3D folio_migratetype(folio);
->>> -
->>> - 	if (mt =3D=3D MIGRATE_CMA || mt =3D=3D MIGRATE_ISOLATE)
->>> - 		return false;
->>> -#endif
->>> - 	/* The zero page can be "pinned" but gets special handling. */
->>> - 	if (is_zero_folio(folio))
->>> - 		return true;
->>> -
->>> - 	/* Coherent device memory must always allow eviction. */
->>> - 	if (folio_is_device_coherent(folio))
->>> - 		return false;
->>> -
->>> - 	/*
->>> - 	 * Filesystems can only tolerate transient delays to truncate =
-and
->>> - 	 * hole-punch operations
->>> - 	 */
->>> - 	if (folio_is_fsdax(folio))
->>> - 		return false;
->>> -
->>> - 	/* Otherwise, non-movable zone folios can be pinned. */
->>> - 	return !folio_is_zone_movable(folio);
->>> -
->>> -}
->>> +bool folio_is_longterm_pinnable(struct folio *folio);
->>> #else
->>> static inline bool folio_is_longterm_pinnable(struct folio *folio)
->>> {
->>> diff --git a/mm/gup.c b/mm/gup.c
->>> index 2b405cce2ca5c..e8503141bb275 100644
->>> --- a/mm/gup.c
->>> +++ b/mm/gup.c
->>> @@ -2216,6 +2216,37 @@ struct page *get_dump_page(unsigned long =
-addr, int *locked)
->>>=20
->>> #ifdef CONFIG_MIGRATION
->>>=20
->>> +bool folio_is_longterm_pinnable(struct folio *folio)
->>> +{
->>> +#ifdef CONFIG_CMA
->>> + 	int mt =3D folio_migratetype(folio);
->>> +
->>> + 	/* Explicit HugeTLB CMA allocations own their bitmap ranges. */
->> The description of "bitmap ranges" is weird, making me think what's =
-the meaning of
->> bitmap. Please use more generic description here.
->=20
-> How about this:
->=20
-> /* These HugeTLB folios own the CMA memory, so they can be long-term =
-pinned. */
->=20
+Indeed it does.
 
-At least better than original.
+Please lmk whether LLM's runtime test plan was sufficiently complete:
 
-Thanks,
-Muchun
-
-> Thanks,
-> Qi
-
-
+: I reproduced all three accounting bugs before the series and verified
+: that they are fixed with all five patches applied.
+: 
+: The new HugeTLB partial-move selftest left three reservations behind
+: on the baseline and none on the patched kernel. First/last-page moves
+: also leaked three reservations before the fix and none afterward.
+: Whole-mapping moves and populated-mapping controls passed.
+: 
+: For the unmap-error cases, identical diagnostic hooks in both kernels
+: failed the first source-VMA split, or allowed the first split and failed
+: the second. With a four-page source and a one-page move, cleanup left
+: four committed pages behind for accounted anonymous mappings and one
+: for NORESERVE/shared mappings on the baseline. All patched cases
+: returned to zero. I checked task-specific accounting deltas and verified
+: that every surviving accounted source segment regained its account flag.
+: No-failure controls also returned to zero; destination data was checked.
+: 
+: The updated mremap_test passed 25 cases, including both new old_size=0
+: shared-duplication cases, plus three expected rejections for overlapping
+: or misaligned requests. All eight mremap_dontunmap cases passed,
+: including locked partial moves. No unexpected kernel, KASAN or lockdep
+: diagnostics were found.
+: 
+: This used x86-64 KVM guests with GCC 13.3, KASAN and lockdep: 8 GiB RAM,
+: four vCPUs arranged as one socket with four single-threaded cores and
+: one virtual NUMA node. Both kernels contained the same temporary
+: fault-injection/accounting instrumentation. Cleanup tests used munmap;
+: process-exit cleanup was not separately tested.
+: 
+: Tested-by: Andrew Morton <akpm@linux-foundation.org>
 
