@@ -1,95 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B29606A329
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 02:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DA1606A31B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 02:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=p4hIGK3F
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=dKoGpakC
 Received: by kanga.kvack.org (Postfix)
-	id A8EDC6B05B0; Thu,  5 Nov 2026 21:44:05 -0500 (EST)
+	id D9C7D6B05B4; Thu,  5 Nov 2026 21:44:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3FBE6B05B3; Thu,  5 Nov 2026 21:44:05 -0500 (EST)
+	id D743A6B05B5; Thu,  5 Nov 2026 21:44:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 955BE6B05B4; Thu,  5 Nov 2026 21:44:05 -0500 (EST)
+	id CB1436B05B6; Thu,  5 Nov 2026 21:44:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 70DF06B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:44:05 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78BE51608E9
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:44:04 +0000 (UTC)
-X-FDA: 85403149608.09.26F5927
-Received: from mta0.migadu.com (out-224.mta0.migadu.com [91.218.175.224])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 86CAC40006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:44:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p4hIGK3F;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.224 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ABDAF6B05B4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:44:15 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BE70540CFB
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:44:14 +0000 (UTC)
+X-FDA: 85403150028.13.ABF31E7
+Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D76621C0004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:44:10 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dKoGpakC;
+	spf=pass (imf20.hostedemail.com: domain of zhaogongyi@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=zhaogongyi@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793933042;
+	s=arc-20220608; t=1793933053;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zSAnlbuhwhmUG9bBEmOB7UE9ygtoZLL5whU9bUfyqnc=;
-	b=bYq2c1WHQNJ5v4EXLTZIscAPrEGJUtvWc4Io4L7NaEIalVor1pwQu+AhPEkT4Xpwf/0q36
-	hm/SONovb4b0jPn1INSDA0CG39ijK/v5vG6v/IxNv8+7f9Kyub022X+RlPMdtuGVpRLS7O
-	X7QtiybWW5yi1h1GxRhTi7OuJhKLFXw=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p4hIGK3F;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.224 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	bh=tgrWvNnafi0hz01idjBDDnVhQC6ycv925GHIdoMUXIU=;
+	b=8S6k7BV+zjhfjUp7VfL0dPvcJps41Rc2pnweQKJ5bmemxa/5WV9IEpCgjoxwFuTKcjGnx2
+	BM+WWSgG5BnpUsRuLtjeuBqWomSmmlMs02b0gX+XZZ/dgyNo0cr02QmiXGOQSJ2HvuePsE
+	drL/SOUEleNp8CdrnsNrWJdLC88U4Tc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793933042;
-	b=KbOoFCnwUnvlUf4L0GptTauttwvDKIzzpzZJR5UzaJ9AlBA90gRwwrpEfzVbRETJCJeLc8
-	YLgRs3g85ofX+fFT+nEGl/6H57RuhJaL+TwAnJfuUdAoccBw5o5zcEohwT09tV+1RV442J
-	3fg3meKzT1D27NbekoDUy2nCsZTV2Yc=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=BV4jydBngbK5OT+ZHvts5CVNgLwnfznFuT39h8Pecis=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793933041; v=1; x=1794537841;
- b=p4hIGK3FvTBncEACzoquuYTKUahICVVjb+yGf0kJM0hCa8vbXeIeqBgaM5JLMbHZmxt6o5/W
- 64Xh/rztiH19Yyid8rqfxTMTeIrFpa6d20K3WGt17QdWQhU8O3lmgNECf403fraDz70m9uVegTe
- x5p01mJXm2W82ZxyKfNpk+Cs=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f76348987678bbc6;
-	Fri, 06 Nov 2026 02:44:01 +0000
-X-Mizu-Trace-ID: f76348987678bbc6
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <1535887c-6be2-4415-b54e-2008e6e7a35c@linux.dev>
-Date: Fri, 6 Nov 2026 10:43:53 +0800
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
+	t=1793933053;
+	b=GAQVkZm4zRqQLU4Jab5W5OQOxGN8952H+p3pyb3KvwHOiSfWhDGYnTy75W9oGES3rtF1D+
+	pRfm9a17IAHbAmi5gzQGtBCGnhtrfqDTbupND/+H0gVsOD+FTcj6JTIM/u5vZwyAxa2Bux
+	wyQu5impbcqUjkY4zS0AVXk/eDbPeL0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=dKoGpakC;
+	spf=pass (imf20.hostedemail.com: domain of zhaogongyi@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=zhaogongyi@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1793933045; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=tgrWvNnafi0hz01idjBDDnVhQC6ycv925GHIdoMUXIU=;
+ b=dKoGpakCq+RU2UuXTJysOZT7YmHbb040g0fXp8Wmfj6zU/Z/qjxPR/SWw401MV7u0e3Gqa
+ Ni1Pllf43TdKWrUQ4s7RlJO/+Edi3Hc5QWuW2WTVzoX2XFIn5qtIAJ8/b5fZtu2s1dIu7J
+ KRm5KaKPjvItNiC6gwLlZjhYlEdQvoHJgC2YO0X7iiZ6LAOHOfaT89gSWOErsL1eGK55E8
+ udPQqfbSeZfSTOTO5wW3we2PTS5tyArqlnunk8Knq6Hanhq0q4k9ydL0NYfhUtOKNAqMVL
+ drApI/PdEL+L7lEK2lGdUJDB5/WucJwwOxhqROGNDAsRx0g9v+IpT1zlMLUuTw==
+Content-Type: text/plain; charset=UTF-8
+To: "David Hildenbrand" <david@kernel.org>, "Xu Xin" <xu.xin@linux.dev>, 
+	"Chengming Zhou" <chengming.zhou@linux.dev>, 
+	"Andrew Morton" <akpm@linux-foundation.org>, 
+	"Rik van Riel" <riel@redhat.com>, 
+	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+From: "Zhao Gongyi" <zhaogongyi@bytedance.com>
+X-Original-From: Zhao Gongyi <zhaogongyi@bytedance.com>
+References: <20261102-ksm-anon-rmap-fix-v1-1-68962acfb59b@kernel.org> <179387163181.11797.15205182972949028650.b4-ty@b4>
+X-Lms-Return-Path: <lba+26aed3ef3+2342e1+kvack.org+zhaogongyi@bytedance.com>
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/4] mm: hugetlb: fix GFP mask propagation to CMA
-To: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-Cc: muchun.song@linux.dev, osalvador@suse.de, david@kernel.org,
- akpm@linux-foundation.org, azpijr@gmail.com, lance.yang@linux.dev,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org,
- Qi Zheng <zhengqi.arch@bytedance.com>
-References: <cover.1793850539.git.zhengqi.arch@bytedance.com>
- <ac2de9b321f68c1025333e92e3ce94beadcb0b6c.1793850539.git.zhengqi.arch@bytedance.com>
- <auxTwrKCeg7a3hfY@localhost.localdomain>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <auxTwrKCeg7a3hfY@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] mm/ksm: avoid unsafe anon rmap dereference in KSM merge
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+Message-Id: <75926835-508f-48d3-a5d9-176cea61546d@bytedance.com>
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Date: Fri, 6 Nov 2026 10:43:45 +0800
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 86CAC40006
-X-Stat-Signature: 65cw6neb7qarn1a7myf34a5xe3gigaxs
-X-Rspam-User: 
+In-Reply-To: <179387163181.11797.15205182972949028650.b4-ty@b4>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ubimmmxaijad1cwbso5w8jpr7tk7chei
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793933042-394770
-X-HE-Meta: U2FsdGVkX18o1X9XuC64q54lolEucA80+8bOgxGH0JRndCwcxVpY/TEYggIQT77Ng5zxNwjNNRk0jL0n2WmORICfU/WByEVaUEHgwcfqDm5l5nXLquT1gJF48ec/1lQI8iTVZdl7/4PFcqRXpDop7IZB3UQkWs+5+iP14MLCyqA9bGsoRKgykeGFIyJfz6mJ41poZXZ1Bz6dS1O0HGeUTI3Kerxh0U7SaLiOBhRr16caYgUOyd7wT3sPZtDqmq1igbNhIMakH6R3F53p1zz8Tq+4H388bhq7Kf+LTKlUX0I6MzTiMKyhp4CvxixjV5oIsmuDgiwRMLuZlUxhL0ocj37+ivwNz7iydPfdDegq6vbiQ4zE/PFcGV2Zog83fQrfK7s55RQaPW/ksbEhFWs/dKfTOm9/lxkoZY66gM5GXhxgXdJT67bdy8W40FyrQh6+DStQt/IKXWAi6g+b4geIVl0/iFYDZRywlbnCvDFr8//XvCwQYK6jH3rhTbVVeZm+bp22brhT5+hW42Hb9gy0HP2uY4EbQgbNzyOltDfEucK7rT0TKaYuakBHaipD2JC7RuEfB23dBRfob3Aq6r6PJUSNWxTwGPjNTrTELOIl27i/LyjbDvYjeWga4BHxEogNu+DGBztn+JHGNQxA1SnU4ElIowciLF16mQ7XlFdTEP1ZiznUfXi0Oz3H43TkgwaisE9XP3+9uwHKf035977QDKkwNaYdNHcedkN0PiBoXgT8Kl9o5SpsIUgRfbjuro/byvKFfHoFGJlBi4ex/RN1ZnE2xeKN2ar8m7jOrK26hMsqKYQ8Hj/58lGQ8JJT9ZCuBw8qpe5C+pwD8ByEsu+OWPr6I6364JYgt75jbdHSQb2j9deXIDLOBlEhjA1nUeiPskfqlfwe+ymNuNLA1On7FPlJmvrUeD2xUkqyGN+5frmI3EHStJAszo4yWU42AUkulK5EwHkF/hMqcg7t0aS
- yn0MOEkV
- U+2pKtbM+5C+ogXZFQMGIjJYL7m4g1qtf9S9UawO90zemBClJgvo/sRmaYLEsy1VXrMMXWS/qoWqbkR8F79Vhdr6t1ZZ3rDnjOs87bYTaY2Uhvr35TAQrRnqZIfjheHGN6aT0cEeSszToxFWwA8POXfDclrCUjRB4hag5pd925BcSmvi/sIiDBA/da+Gn7lNhHWeAXtu6My94DsnTgt11SLkc/7XWzOO2hrdK0cQh3DveH/Yr6CetMwnqmyxpQgZjuwMjdnoDlMJepMXHkxkL0OVZd3MNUfg3XlrIyp2pOAUqhvRO6HVMFCiU8Qmg7/X8Ma5K
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D76621C0004
+X-Rspam-User: 
+X-HE-Tag: 1793933050-514252
+X-HE-Meta: U2FsdGVkX18uk0C6PnQaDl9a/TmLKYIo7dksZY9zwoK7oLymEL/nM47mDT2hTxo4GhjSlcXJvlAJjPCthCJFYVFUfIAEdN2RXO3JaAuC68RUCWO+WDn9npiLWlJvMCQhAQc5a6ffMKAlMGQNC8BBehX0+309G2srcu4DX0Zwz1nIsLUcd8ztSdeeGpb1BwEGb14VlFmwa1DEUDstNrFNB8NQgdx+8PaHVxnA4JvMZJTX7R1WQTnVj7LtAD21ZixDCBn1YOMhBx/aBuUzYXtiivu5nVYlFK2j24K2/FFu93YfhFAZsxYWkMtWRj1HgFVolp66toKb8Dgwe3hmKTOx1dkZFShaxyP6CmzVW8BzNL0DT/9pK8lfB0BfazZb3nU63geXAG9vo3EIx3X4aJ+U1bWFSbV2n4suwLdNSB1byzoaXrU5ibIbu6sbOEeXH/xEik/Nqih10YFeTlx1p30Ara6pDsyJVV04dTfvGohXzndHzsnibYNUlZwt5xoN9mMHKliDq5q/JPbDQpb/h+2FzuO8gPBaj13Ktw4mGZ9jIpLUutVU6Fqs6+Wp+MybmB3vxnuPGZuxifOOTaOzVNjxyfMVjNcvIxbMYqs9azxk7RCneoxPg0DGfBa5ZoYoVxnBrXhnIZ/R9xE42PzJb4xbahPvDBEYSFk4/uGj9Z+QOmunt/MG65qhE5TPlvsQUwV74UZ954zkB5Yc7/cDxeziOSaobM3dp9Na0bedQzQGe5z5LRvx508eCAlK2iVQByIqSR+GbxYdRzo1xLUVFBO9txjN1FxvUtUCkZ4UpT6U8oFpQlSTRubKUjEkMEx4bNn8I4DjdOGpXixWNzyww2lXinZtu2jRO9wv+3tRVcGKwUQu7rD+AIcoZ8Eeq2wDz88JKoHvUdLBRM17DRaz1x3YipDVZcyBhBSeB462jZZfQeb+yZ4CVdIqGbeQHv9bHDjooSIjU3moLTNZ/za6oGJ
+ TQh+ieNE
+ bWF+p+qRanqSvbH1tP8OmxjdAbH26MMgAlJn+skrankoXs2CEBL+GQf+6el3jSam0PmKU5QOdMqa0oXp69GKIn0VmjGUTgfM3wEGOtb0y0dZ4GZwB0IgHA4M7CAmlslj8xiw69C0VSdzqIKe/HEpTumEjArx8oqfsuEEc5JI0Galjj6aK9Alby/WM6+WI3fDYwyEqYjB8cHQsBrBqrSNX1nRahhjp3FAZ16iWmxYufaqupkQ8vnZu3ti9tNff/zRBvsenNqGzHFpb3bNb7KFtAOFRYFTpM9sAhV9KlNlyw3Y79PXO/Y4kQSUAEge2WSydTVhD
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,63 +96,53 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Oscar,
+Hi David and Lorenzo,
 
-On 11/5/26 6:00 PM, Oscar Salvador (SUSE) wrote:
-> On Thu, Nov 05, 2026 at 12:07:45PM +0800, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
+On 11/5/26 5:40 PM, David Hildenbrand wrote:
+> On Mon, 02 Nov 2026 12:32:25 +0000, Lorenzo Stoakes (ARM) wrote:
+>> When KSM examines candidate VMAs in scan_get_next_rmap_item(), it
+>> accumulates (mm, address) pairs in ksm_rmap_item objects, assigning them
+>> via get_next_rmap_item(), pinning folios via a page walk in
+>> ksm_next_page_pmd_entry().
 >>
->> cma_alloc_frozen_compound() uses GFP_KERNEL, allowing direct reclaim
->> during the first MPOL_PREFERRED_MANY allocation attempt even though
->> the caller clears __GFP_DIRECT_RECLAIM.
+>> Throughout this operation, scan_get_next_rmap_item() holds mmap read lock,
+>> which it drops afterwards.
 >>
->> Pass the caller's GFP mask through the helper so CMA respects its
->> reclaim constraints when trying the preferred nodes.
->>
->> Fixes: 9bda131c6093 ("mm: cma: add cma_alloc_frozen{_compound}()")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> ...
->> --- a/mm/cma.c
->> +++ b/mm/cma.c
->> @@ -933,9 +933,9 @@ struct page *cma_alloc_frozen(struct cma *cma, unsigned long count,
->>   	return __cma_alloc_frozen(cma, count, align, gfp);
->>   }
->>   
->> -struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order)
->> +struct page *cma_alloc_frozen_compound(struct cma *cma, unsigned int order, gfp_t gfp)
->>   {
->> -	gfp_t gfp = GFP_KERNEL | __GFP_COMP | __GFP_NOWARN;
->> +	gfp |= __GFP_COMP | __GFP_NOWARN;
+>> [...]
 > 
-> Do we really need __GFP_COMP | __GFP_NOWARN here?
-> It is my understanding that all allocations coming from hugetlb are
-> handled with htlb_alloc_mask(), and that should already provide
-> __GFP_COMP | __GFP_NOWARN.
-
-Right. All current callers already supply both flags through
-htlb_alloc_mask().
-
-> We might have needed it when cma_alloc_frozen_compound() constructed its
-> own mask, but not it gets it from the caller, and that should have been
-> done via htlb_alloc_mask() up the chain.
-
-Right. Now that we restore GFP propagation, setting __GFP_NOWARN here is
-redundant. I'll remove it.
-
-I'd still prefer to keep __GFP_COMP so that
-cma_alloc_frozen_compound() itself guarantees compound allocation,
-without requiring callers to supply the flag.
-
-What do you think?
-
-Thanks,
-Qi
-
+> Applied, thanks!
 > 
-> So, any reason to have it here now?
+> tree: mm/core.git
+> branch: ksm-7.5.misc
 > 
->   
+> Applied patches will appear soon in mm-next, followed by linux-next.
+> 
+> Please report any outstanding bugs that were missed during review, so we
+> can either drop the patch series or decide how to fix it up.
+> 
+> It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+> though the patches have already been applied. If possible, patch trailers
+> will be updated.
+> 
+> Note that commit hashes shown below are subject to change due to rebase,
+> trailer updates or similar. Further, this is not a guarantee that the
+> patches will go upstream. If in doubt, please check the listed branch.
+> 
+> [1/1] mm/ksm: avoid unsafe anon rmap dereference in KSM merge
+>        https://git.kernel.org/mm/core/c/d8d12d97
 > 
 
+I tested Lorenzo's posted patch on Linux 7.3.0-syz-13001714+
+with CONFIG_KSM=y, CONFIG_KASAN=y and CONFIG_SLUB_RCU_DEBUG=y.
+
+An earlier unpatched run of the fixed-pool KSM/mremap reproducer hit a
+KASAN slab-use-after-free in page_address_in_vma() after about 342 seconds.
+With the patch applied, the workload ran for 12 minutes (1027 KSM full
+scans) without KASAN, BUG or panic. The fork/COW smoke test passed.
+
+ksm_functional_tests reported 8 passes, 1 failure and 1 skip. The
+"ptrace write failed" failure is a known test-environment issue; dmesg
+showed no kernel error.
+
+Tested-by: Zhao Gongyi <zhaogongyi@bytedance.com>
 
