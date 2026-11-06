@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D06606A335
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:20:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 317B6606D817
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rIL05bAp
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=AWU+oP3u
 Received: by kanga.kvack.org (Postfix)
-	id 894F66B05C0; Fri,  6 Nov 2026 08:20:25 -0500 (EST)
+	id 561B96B05C2; Fri,  6 Nov 2026 08:20:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 844B46B05C1; Fri,  6 Nov 2026 08:20:25 -0500 (EST)
+	id 512376B05C3; Fri,  6 Nov 2026 08:20:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 781D66B05C2; Fri,  6 Nov 2026 08:20:25 -0500 (EST)
+	id 4000C6B05C4; Fri,  6 Nov 2026 08:20:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F8106B05C0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:20:25 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 02C69A0D11
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:20:24 +0000 (UTC)
-X-FDA: 85404753210.22.116D386
-Received: from mta1.migadu.com (out-153.mta1.migadu.com [95.215.58.153])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 1F28980007
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:20:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rIL05bAp;
-	spf=pass (imf30.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.153 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E79B6B05C2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:20:47 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B4293C0D7C
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:20:46 +0000 (UTC)
+X-FDA: 85404754092.24.A806A8C
+Received: from mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7DC0820006
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:20:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AWU+oP3u;
+	spf=pass (imf13.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793971244;
+	b=KjiZJgXrxLvv0eBCH2IhlpTcdGeKHQuEY3iICfcyQADBj/schVD0/Pq7+8juVlWxBPen/P
+	ARuFSsT9b0ei1GsyDJCcyNG9luyH+qmh5sgBEv5gGvbPm4CNoJ4+QMiEqVinYizOGnS+6q
+	QJc85x9SQf3IQHnPKDJXTGtk1NpFfPM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=AWU+oP3u;
+	spf=pass (imf13.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.188 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793971223;
+	s=arc-20220608; t=1793971244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q5STX0i0nZe9qBiCwKpYPE22fAldGg2mVbLAiRStB5A=;
-	b=or0AQIOR3LZuzfaJMPvaJKdZZ7xrKf4RMQDDbgi4i886QIYz0k105N2CRH1CbilodFo868
-	6vXYY24bYja1Q0pae+Uq1nGenR4tCp3I6R87v5A2nZjJIm9NbT8jpw6drB8U+fBGjnsF3E
-	AhjxN31Yk7LRfkNRVdBQ3prttiKVx18=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793971223;
-	b=23WtmwdFTJDBgC2ADQatNAf4POSLRdHE5T+kbUPkhluKWwsNsRg0bvYf7rjdobb7afyWPJ
-	4oBrnYIZmEgJpKJVDJNlA6ttZRm6ddAlW1QDquKaO25Res8Ea1t0u/HuCMFIRaDwySi0OF
-	R5FA4zpWeXfIigevqc5bqaREAHgG+8E=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rIL05bAp;
-	spf=pass (imf30.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.153 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=fUXCYLhn52D7jjqtCGZ+7rWovE/XUiCSennV1JjWXTc=;
+	b=GyY3hgoas6XECUC5BRRnj9bglD6kgi9aOUdvLGEFTHvcv9iSuvwMGzYt0c5tr/V56PLY+F
+	CrNEZFZ2YG5uyGnUwBsMGFSFUU9hooXDFbP1nJ2fmOQl1dhnSOg+HgbrRctiqxrn26Sr85
+	pqVaVgEWl0YK8lC2aZklOaiEohAhIRs=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=lnwy3IIIUITEEW39wV2rv1u7rm4YP9o1MSolIsKb45g=;
+DKIM-Signature: a=rsa-sha256; bh=ojgBXCCljWWMx/by6O5nBZ1cYADUOJnAnHqRvmqKFno=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793971221; v=1; x=1794576021;
- b=rIL05bApbBDzOPWzbbU8YuxO7nQzlRV10FOkiPXXtG+Vy2ZGnjEWnAq12IsnzslYTzIRVk5B
- h/tgqwtkZSdnpTFJvl7bkqNLG0+Xrsm31XkQW14CwE2VrR+NWIE2mfShF1ULKWPQ6cWhJVWD0OW
- /OoTZqkomwb3ocSMx2DXmZwo=
+ t=1793971243; v=1; x=1794576043;
+ b=AWU+oP3uE+Bp9M4NHthTv7q7awqULRAk7AJ+yUdGd8HP3gv4OZ3L3y2iim+wbp8ZY+SmjP6f
+ RQOZ8k1aHyjLLkndQT62PYK+Mb5tL6fxCe7tCZ6NDOnwdYBj1Z+KZlsMEmliGrhC5h4dkKcDQnt
+ /zsj+KNoWYeiGHHuaHTmkkzg=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 42ebb214afb95bc7;
-	Fri, 06 Nov 2026 13:20:17 +0000
-X-Mizu-Trace-ID: 42ebb214afb95bc7
+Received: by smtp.migadu.com with ESMTPS id fd2f547758ebbf7f;
+	Fri, 06 Nov 2026 13:20:43 +0000
+X-Mizu-Trace-ID: fd2f547758ebbf7f
 X-Migadu-Flow: FLOW_OUT
 From: Tao Cui <cui.tao@linux.dev>
 To: akpm@linux-foundation.org,
@@ -104,27 +104,27 @@ Cc: linux-mm@kvack.org,
 	vbabka@suse.cz,
 	cui.tao@linux.dev,
 	cuitao@kylinos.cn
-Subject: [PATCH 5/7] iommufd: account the hw_queue page array to memcg
-Date: Fri,  6 Nov 2026 21:18:27 +0800
-Message-ID: <20261106131829.3228926-6-cui.tao@linux.dev>
+Subject: [PATCH 6/7] io_uring: account the ring context and SQPOLL thread data to memcg
+Date: Fri,  6 Nov 2026 21:18:28 +0800
+Message-ID: <20261106131829.3228926-7-cui.tao@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261106131829.3228926-1-cui.tao@linux.dev>
 References: <20261106131829.3228926-1-cui.tao@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: qi9onsn8rnkpjidqoh8se549jbtyjmpo
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 1F28980007
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7DC0820006
+X-Stat-Signature: c3jjpbzr5c8rhhimfgjs5nqrt938dbs9
 X-Rspam-User: 
-X-HE-Tag: 1793971222-742684
-X-HE-Meta: U2FsdGVkX18Xo8BGvXc3RloAWKZ6DqXmx/NsT7G4RFbI/S/wmPEqypNIWa1EVjPHNr9920jscvDGtBGNFGSvVCJWYd5E9xtJqfeoYYVJHz8/5va3WxZUdP2HyfoFYXIzimRK0NaF2qiGqspek+oEQ2Jwr15o6jVMMkuAjUiQCP+zbb6EgQ+9fCXA8thTRNIcn9aPUo2gaIimzm3V9iiURnbtrZpsx+kxG6zBcBfQcPmNPtHGz/sJ7SwLujC8bfaVswbqnKbUiibkkkXHIeRriehAnlD+qx9zEzybF39ZZ3PuSxkL5UGkpZn75ksoPUPVT4r42J0nAQ9CMqadalU9BgOjF7H1nvwTGxiYMHboGF5Cc45IYsCTI96T9FuTbwIaqq6t6KIoKlex9SJL6emltSQfi+16XOleBngc5uP+4ivI9lByKqSMhiUubRhm/BhFSPYsynD6henQzHnh2WQjeVQkype9hQ0urXPO9VuOWKcpRC/ERNLZy2dHa6eakNF1t0LLmQyUsWwxsuB5mB1BEst6sLweRFR0nyVpF4OSAP/VeHLd58uji5laJtkvlSw6GCtDmRZBZIjfvFFj7d1tzUeYKHdlijcblUzfeohuEObBSfp7WBw4y96yWoja99WGavHQmEYljbaFaWCbCSLAVBjNlhazNwequ1JX66YKOld9x1ePujfWYuAMhrVy3sAy62BKF8GSu35/nkeXXkJnGeMbtLkcG71akbDVU96MajWgdDX6kKeviUE2+pAy0fe+WtL71Ha4To/hXn3gd6g/XKk7ln2wSq2lTRwFEoD3mlQtqPwfUB8pdCc0G2pLCDs3wyuK7I0m1OvTwiJnAH5ggZFqqdvhryYd+ATr8fjf/EGhBJJakmyHVgB6k1ThlDAyv6V6ySvpzSVKPB9ID2XADgr8bFsZ+qx6wx2Wo6F1u1svuPDyxqoP+X724a5IwG1b9+M4ep8N3Sb4gj9tSRC
- JiEDmYU8
- OboYdfdbrwqxbIi1eNnwkPyU+XnwBHjhFR5k5zXctmfxeujAZikqXu7eY1JG6qmetyqYntGHwnjnp99hYUzpDQsn0b2tMHBxvJlcljk18c/eadBZgEM32lAGZqTAZLUsWuIqE9uj66K3RYrsqq+nI5HQ9qjEcmZrNtRAB4a1eJRqeuI1pgNuGz/teMIULmXUy6w1zDFsIr7kZ1cUSVpfojumhnJHGKPhaalbVzrgLEaS/ad2tDNtaxIKscg42x65mDIKjhWUGtAGiWNLkwBuZlbfGQbU33qQjVf38ZB4fHUlFuyJjpvITjbyrhgUhDDmU9sVB5Q9MOVBYCMtdthx4tYMBgBc7sPgOBRMK
+X-HE-Tag: 1793971244-634513
+X-HE-Meta: U2FsdGVkX19Hhz2NJOruxTn5RdvhIbFP60974wDNQ28zKIJsHMd9j3v6MmeuUmKFwEu9n3eJroJ3EA9LlyXmGbIxTDNcugeeK618S6zLvr7MLhIrXY98ClPX4QfWeihf8dabeki+3O/ZFlEcAF4UDWh2rFiCKXZIYvMcM0zlgpfcSgqXH2fo+Css2egly0pOkopkk/oKWn996V2AMh3jpfZ1PfOEQQ4s49mDhXlkyHaExOJXdH7zmLrgGCPqVVOKjzgrD9RvvDNo7mNJWwxe7ic2YXgkxYeFTiGWPHf5hXtlENGkcqdq3qrEtGEdMcwgeC6iKQzmCF0cOQRtLZow+I87KU8PRFSsWuYbPKcpM2AHMeiwrQBNKvSKOGEc0fNiCGpEGt/56vv+EG+ADPqm1ESqWApJLGFawWAETGwiZaQBdZra+8K6z3z9FXm7b3up9RMGpk9EgNqgwT+flup+n4MUvtlMnX9+efO5C3Sa0Dsx8SZIANTe4sS/aZJtCisjYqdoS1ABpiRNOvgsgLZiEx8xMj9GmUQofty7gZx+EKOBhL/Y+PkdpoRzI/bDIA8pPHlj2w/3nYnGeme5qfZrvkWd9ecG7bzl9gYnaH7XmebWoyq5sd1clDnTxxysu8MQ8Sk3ksw04V5gOe8YYsxifnpLQMSUBHz1KgzUYpRl3HmAVk5/gno2h9uTCG4YBkFODItaAfT/wMFz0lu9FAz/pcWyVoCbg2YtWxVJm7sfOXbW5xVZQE69+vmJ74MekhSEEzZuJI4NBNeE0KvnEXO6A6Zdni1r279rNOqguXjw4LFx7U5GNZvPkOrdI9ITBzT7dVV3DxGVQQxfisavN3Pg/fb3nGVOuIaSfTVHW4QvRepb7ja3ZK1XzrBBdilHXOG2nojoj/yzo1WEG2TjfewXLe/5IIsrlWPUpchLFMrNwbJEmbYnkP+rWbcwy2VlY77F2EhPmp/L+5RTh0jGQ5K
+ KIlB6XuV
+ +/kYnEFLyI81oRczXLWTYFNLbTGI4JGj1ZNqzxXKMXDM8cxdoo3FhKoEJKev0DVhDFdQG+QnITy5eHFyWa+uIMr9bcTBnSHumwlYYolqMbbUNUqJKR7C1G0oWpaLXOvRyVJ6uF8ufTfOnGShWh9qMW76uh7v9DVW6KPvqXjC8Y2ShTk1AVOH0wH0x8qJox3wCVPj4JfxEh4Q9l+sDzJ2EtbxJDOWiUIYnxnml4S7mPxluVd4swuK/vDXrJKxYkLo82CqQ7rCO/VAsTOBV5suM1xgmytI7Byqp9Af46SncxwBHfTyJTrXuy2NHEiW92HicN3jIA+FiFjz5QYVWaQnued2vuMwxKmDYrb9NxLSOBZ9GHvrnx/qMaOTKwq7TVa4C9R8taz6uU9XSKvE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,35 +135,83 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Tao Cui <cuitao@kylinos.cn>
 
-IOMMUFD_CMD_HW_QUEUE_ALLOC pins up to max_npages pages just to check
-that a user supplied queue region is physically contiguous, and the
-page array for that check is plain GFP_KERNEL.  The size comes from
-cmd->length, a u64 that is only overflow checked, and the array is
-freed again as soon as the contiguity check fails, so the allocation
-can be repeated concurrently: a 1GB region costs about 2MB of
-uncharged memory per attempt.
+The io_ring_ctx and the SQPOLL io_sqd are the last per-ring allocations
+made with plain GFP_KERNEL.  The larger surfaces around them are
+already charged: io_mapped_ubuf and io_rsrc_node since commit
+075d5837bafc ("io_uring/rsrc: charge buffer arrays and nodes to memcg"),
+the tctx node and its XArrays since commit 0b34e7b20a48 ("io_uring:
+charge tctx nodes and personalities").
 
-Every other iommufd allocation that scales with user input is already
-charged, and the pinned pages charge the mapper at map time.  Charge
-this array like the rest.
+Charge the context and the SQPOLL thread data the same way.
 
 Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 ---
- drivers/iommu/iommufd/viommu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c | 2 +-
+ io_uring/rsrc.c     | 3 ++-
+ io_uring/sqpoll.c   | 2 +-
+ io_uring/tctx.c     | 4 ++--
+ 4 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/viommu.c b/drivers/iommu/iommufd/viommu.c
-index f7951057a1e5..ab17e190da49 100644
---- a/drivers/iommu/iommufd/viommu.c
-+++ b/drivers/iommu/iommufd/viommu.c
-@@ -330,7 +330,8 @@ iommufd_hw_queue_alloc_phys(struct iommu_hw_queue_alloc *cmd,
- 	 * Use kvcalloc() to avoid memory fragmentation for a large page array.
- 	 * Set __GFP_NOWARN to avoid syzkaller blowups
- 	 */
--	pages = kvzalloc_objs(*pages, max_npages, GFP_KERNEL | __GFP_NOWARN);
-+	pages = kvzalloc_objs(*pages, max_npages,
-+			      GFP_KERNEL | __GFP_NOWARN | __GFP_ACCOUNT);
- 	if (!pages)
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 03724419c4e1..d39cdde49a9f 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -229,7 +229,7 @@ static __cold struct io_ring_ctx *io_ring_ctx_alloc(struct io_uring_params *p)
+ 	int hash_bits;
+ 	bool ret;
+ 
+-	ctx = kzalloc_obj(*ctx);
++	ctx = kzalloc_obj(*ctx, GFP_KERNEL_ACCOUNT);
+ 	if (!ctx)
+ 		return NULL;
+ 
+diff --git a/io_uring/rsrc.c b/io_uring/rsrc.c
+index e0345c3e764e..9a971c983686 100644
+--- a/io_uring/rsrc.c
++++ b/io_uring/rsrc.c
+@@ -825,7 +825,8 @@ static bool io_coalesce_buffer(struct page ***pages, int *nr_pages,
+ 	unsigned i, j;
+ 
+ 	/* Store head pages only*/
+-	new_array = kvmalloc_objs(struct page *, nr_folios);
++	new_array = kvmalloc_objs(struct page *, nr_folios,
++				  GFP_KERNEL_ACCOUNT);
+ 	if (!new_array)
+ 		return false;
+ 
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index d387488db2de..b82d3a285337 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -172,7 +172,7 @@ static struct io_sq_data *io_get_sq_data(struct io_uring_params *p,
+ 			return sqd;
+ 	}
+ 
+-	sqd = kzalloc_obj(*sqd);
++	sqd = kzalloc_obj(*sqd, GFP_KERNEL_ACCOUNT);
+ 	if (!sqd)
+ 		return ERR_PTR(-ENOMEM);
+ 
+diff --git a/io_uring/tctx.c b/io_uring/tctx.c
+index b4fecea3ea47..6673393100ec 100644
+--- a/io_uring/tctx.c
++++ b/io_uring/tctx.c
+@@ -23,7 +23,7 @@ static struct io_wq *io_init_wq_offload(struct io_ring_ctx *ctx,
+ 	mutex_lock(&ctx->uring_lock);
+ 	hash = ctx->hash_map;
+ 	if (!hash) {
+-		hash = kzalloc_obj(*hash);
++		hash = kzalloc_obj(*hash, GFP_KERNEL_ACCOUNT);
+ 		if (!hash) {
+ 			mutex_unlock(&ctx->uring_lock);
+ 			return ERR_PTR(-ENOMEM);
+@@ -85,7 +85,7 @@ __cold struct io_uring_task *io_uring_alloc_task_context(struct task_struct *tas
+ 	struct io_uring_task *tctx;
+ 	int ret;
+ 
+-	tctx = kzalloc_obj(*tctx);
++	tctx = kzalloc_obj(*tctx, GFP_KERNEL_ACCOUNT);
+ 	if (unlikely(!tctx))
  		return ERR_PTR(-ENOMEM);
  
 -- 
