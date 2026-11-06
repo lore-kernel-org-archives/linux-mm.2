@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C3F606A330
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90C6A606A333
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dkbDgXa9
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wk+SZxiM
 Received: by kanga.kvack.org (Postfix)
-	id D69FB6B05B4; Fri,  6 Nov 2026 09:17:34 -0500 (EST)
+	id BBBE96B05B6; Fri,  6 Nov 2026 09:18:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D41666B05B5; Fri,  6 Nov 2026 09:17:34 -0500 (EST)
+	id B93BA6B05BD; Fri,  6 Nov 2026 09:18:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7EFF6B05B6; Fri,  6 Nov 2026 09:17:34 -0500 (EST)
+	id AD07F6B05BE; Fri,  6 Nov 2026 09:18:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AB6DA6B05B4
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:17:34 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F887C0DA1
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:17:34 +0000 (UTC)
-X-FDA: 85404897228.29.18FB1EF
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 8AFEC6B05B6
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:18:03 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2093D80D65
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:18:03 +0000 (UTC)
+X-FDA: 85404898446.19.E387146
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 7A58314000B
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:17:32 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dkbDgXa9;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7B639C0010
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:18:01 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wk+SZxiM;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793974652;
-	b=jhTGWaUIJxJujVDjYGEr0IAtuU+VsRaw9nYdgKne0AIKKhvIbTRA4+SHlqKKlWq6uyqQpL
-	uqxx214gNqS8G6YbG+U7gKjv5gGVKNKguA3Ix9Oc5aG7DoHpTKjptNUWi2YGG6eJnY8e3f
-	5EqUnzG+/dqNHUczMR758pwnnSF53M8=
+	t=1793974681;
+	b=Anik98gEbC6uONNfaKW4Ta7sWVdKy0EBuyiE36VirZOOOHcVntQrGuruXHV9pyJxFVgnT6
+	+yeTYJn/D8mZvtTQkYRGqvwCsD/nKNp9ixYLC3vfWcxMsxEbCdFqoJ1nJOM0QEozmjtwvs
+	cmm/7qCGi7JegHoB9m3/OXx6cakMSXQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dkbDgXa9;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wk+SZxiM;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793974652;
+	s=arc-20220608; t=1793974681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C6998j54hMzCksQFziWwL93rZ04Tbfc01l4jxthA7xg=;
-	b=uClPnMpQQR0nvERi86VpKLCQiJYHrZuSugIQlPbrB6wHqMBiFb+6I73riUhL7iKiivjXlN
-	5vOsq6F9r54gUI/20f/Wbv4WdMDGZCD8OXesKr4RG1FTLj0flVtCNwuY9bXUjbN2mmrx8f
-	QjOXPbpJ4LTnXOTvFHz4+I6eWvgC49M=
+	bh=CKIHf3OuOvVhhpjIT2Z7Y0q/g50O7bhUDTdoEBDp0pM=;
+	b=q7uQdVik7pKCvbdIxE1xSlp85A3wknLzWuw0EhHKluCYhHXr7E3deriEuzaF1qYRMg8hAA
+	3IhPwOsAk+cKuPURJDz0911eZ/hFPGjicFKmbKPuft03/Inv/MzxuOJ5V7vyOUVDWWkO+d
+	jvZIz62V6hacXzsf1kyUN8uK3Gny+vA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EF535601E3;
-	Fri,  6 Nov 2026 14:17:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25F51F0089F;
-	Fri,  6 Nov 2026 14:17:24 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 25FEE602D4;
+	Fri,  6 Nov 2026 14:18:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880DA1F0089F;
+	Fri,  6 Nov 2026 14:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793974651;
-	bh=C6998j54hMzCksQFziWwL93rZ04Tbfc01l4jxthA7xg=;
+	s=k20260515; t=1793974680;
+	bh=CKIHf3OuOvVhhpjIT2Z7Y0q/g50O7bhUDTdoEBDp0pM=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=dkbDgXa9u3oj+08Vl8kuBq+lpN1QTdOG+sLOcpaAGzlRd4w5evIO7OWT3Ow38XZN5
-	 j4yVAXCZOuJ2Todjle2ykecaDL9Q1QzvDw3wcQiB6TxYBDULHGEFsOFIj0vZSXdSth
-	 C5AblNYqXlnfe0VXm2AY7wUZ6NBr6wSym04VoSyB3KlzxSjBTeUfXZROojnEkBVlqx
-	 F8ykkf8PnlExPRA2G4uGTUHcgglQDXcoz6uPHBc/znhq+9WH9AM2P05bvWGPvvaWNH
-	 fZnDWd28yZQNBAg83dLkgy7C+iw5pu/mwLtgehBdmDU4aDZyy1owZ6mGJIwuVtdZ4Q
-	 1cqLG39PLKq3Q==
+	b=Wk+SZxiMm5gTpWtlAhHjoOQe/HhgStlQ9toblskRjXi8q7qfd6NHBiNw6XchB2NsU
+	 0wlsp0v2HXwnkk+X5Tw7V1imz/B/XsJwAR2HOyZxWq8MHX8WfX63KY6OVx2WrJDrUg
+	 bJou11opbt4I0rq2CxLnQBFEYk4rTVlVv1Ub0NGpEvsnMkuvTqjlcQF4H94fJaSVIy
+	 BjrAKPAD0Md+/eJJK3i1A/S8qr/EpUFNrUO6kQTqPKTFwx4i6iD6KNBP0xWRotz7Ad
+	 TE+DyscmrEDjGiKUft4vu5tloisCvjpC1tsGPE2K4UyIIYPpmTkOySzCIaBW6K6oGO
+	 ZIfppdults0OA==
 From: David Hildenbrand <david@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  Sasha Levin <sashal@kernel.org>
@@ -79,25 +79,25 @@ In-Reply-To: <20261105171801.2189772-1-sashal@kernel.org>
 References: <20261105171801.2189772-1-sashal@kernel.org>
 Subject: Re: [PATCH] selftests/mm: add CONFIG_DEBUG_FS to the config
  fragment
-Message-Id: <179397464426.9151.10517393467431591853.b4-ty@b4>
-Date: Fri, 06 Nov 2026 15:17:24 +0100
+Message-Id: <179397467526.9397.17872200045070830000.b4-ty@b4>
+Date: Fri, 06 Nov 2026 15:17:55 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
-X-Stat-Signature: f9wsr3gg8yeaz9rix66cwwqx5mapir74
-X-Rspamd-Queue-Id: 7A58314000B
+X-Stat-Signature: 6oqo68ezo88otfkdt4t1uj4ww6r9jw4k
+X-Rspamd-Queue-Id: 7B639C0010
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793974652-645117
-X-HE-Meta: U2FsdGVkX1/XjMugJmfhv+eRUQBKW1B+rb8Pm0WzZLON1RFwJ6912Jz0CCvK3jsTT6w/XernW8UShmjVKFjm1ZCI91xiKI4e86pZd+aBcgTBqi8ymmI/19gQPYTrWrlvz6GOkOxi7pczBoCyW344LQ54qalxBVfRtHQ/F5MJyCtEqdZJpR9qCwZCVzt8cjd5bJdbbOASQxnunnpWOTUMgmIHlpuZW+KyuobmgkN3WOkmXmUMDynFwksEOPLnh7cQXuWgam05yDTwS6x9ZDtPo64gRFyQMe4dRwJ2VpuEV2s6etj3GLh0fst4/YMqIJ8t8czCmr1Z7tlTKjawoAM5nVM44BQLCmndtFwwNxj1WcrJj2xeAicjU95d/9GrK5fVY5KmeSrzJNhCwiKMbT4tmd0cafbMD8gJu6ruP3hbsf3qNm2jHp1dzajoYtm0c5piS/kbS9QmDd/9/LMe+LwLyQJ34TFgxM6GFQ55wSgt8zPLgXzRawVM16PW4gu7zfPziC11My/eaouc6tTky5RKd7ZCjpBq0z8rvhr+XKOYE445sGKURZwpWrhc3zGNxDQd6x7aYtmmEazwh2gMh4WbqFBCoBqf0u/yKx9SBkCDgO6aixwnhV07p6kOHa5Ly4MpiuJ+lk+Pu2jMx0FjWMmZxSeuw268nlDmvlxl+S5uTRKn2faCMlPKdbd6aeF94Gzp9maK/1s7eBB2HYOULxNCXllnEfPGEvAah8UDQCRkl07n2QqNkBhYGgwpvaGnsxRtHmaS4TAArXWYWaVTx0k+89OruuzhggPvW6GhuaFNs1zF6UR7dJL2V8fvrweky0QvBXYlQxCch7Wsa3gYNug8RpJepkr2jY8+o0hE28xu9lgby5rS6/vxgtdpCpXDQvaC6oYi6e5t0L5i5cfdoneIHHb5fMQhiyoJ5gCq6RjTf5JlEwyOR0kOppo/p7EYZJuEYQtf8whyY7k1/F2OSvA
- lZU+XXmd
- Fj1zcW/hG7WqJXP4vfluwJXfj93VWlsymVUJTTab5elc6PVtkQpUkDBlaUOojPQ3J+BUP5NSYVLQW/b08kGP19DUDvzKPJi6YHd1hal0xrNdisDt2at3+xi23ygu0LtJ7HfiZQztVTPe/S8mfsx9j7k1hpJDo8rFkmB/00+1R5gsZ1OGi7Dfj4nDfNCQ8BtCsM5M7/00ZliKV3/+GP9e2qwSAqahKpjbgbWQw/exctZ0VuRCw492BEmDvE+zERxhJJ+Jx6O6uoqNQ53T8JQKsm2frqBrJGzjYELwH
+X-HE-Tag: 1793974681-377396
+X-HE-Meta: U2FsdGVkX18beJLjf4hGRQbpNO8o9Zng2uot8gK1P2CT4AD9SHnh1SWIx08j6PqzyRGzmichVfJ3MgTTMmzk+GDd7UjoE++/qSXHJHViWW8haqYFOT+m8jto4mKzHvRrEA+NWevFAY+D04ITzHkIpVJKecXuk+sD8Q3/SX6yEq/TS+jZijPkOBxTa0aYJCbP/Iu0UQ6Q5v4qW+wGc0bFa9hL0xIW/QeJEHoY0pMJfxBTy/rQXdEIlEmSo5xMjIEufQPBOUPErMM0klwVe6YhhY2dxhNT5y3WlVUgl3vAdH2AqHV634DoWxYwmHuNET46Z68wc3ekhaTysVMGVrhucRK++wRzCU82+QP6stXzzDDm0fCKot0S/b/xosHKrSs9+TdXr3+Ws3oy/S1zPsdnBF3l6jyvCYd4UsGB+riIeJvxIYYPqtWIJSiPij1l6cLbceK/5bmoZEtUGFk/xCaWKw/qpvAWv8WC44OQ9BsuCHEWjvYaMEpeTcyGjFxA8/PEDUaCKJkXAl0j5noLCv8Gn2M65W5B3zR64Zpxdl6+yUnS2X8jXZ1qou1sQOMocXkpwkVESXH6C0o/8WdVtzOl0U1UDPHEj+yLFbdbUndw059JPhwuizmS/cm1LfDQ75qBteXvyJiR4gYTk0apnLf0lr6CNYiZHN58XiIwpXNCaJOdtsMgXMmiE2f2PP/TCr5EqFba9KMe1sRecjrObhqo+AomV7tLNbckB+hY/BEeBFat4gTg+Kkw2/dSGanNKQmkD0D7bpWV2qgeOvUZ6bZ8nNG7iRudKLS8GVZXts8INAmVxfrB00l4utDEHBgSAJ8LId9YeqkDCmyv8+r4F0DXLycrWhGXjy7WAUvv+jWz1HUUCJrQZBKRy4rlP+Gq2AQ9ge4vUAEznm+O8JfYrwytULV70uweQSPOPr2ODvGsYoINFAUAgfOXQ2RjS3eemcj3mKsS97dqyMnWDHBNi3v
+ X31t/DBl
+ zkMolmPHzHs1tiY+MmdeXKTMj8NqpcdO/lwUd9TMJa/Cu1VpuCEbjC4KFAGAUQnv9Jt/HX7FLRG//gm9R7NILzEKvy9o831iMlK5X9HJbjf/3B8KV+791rloLTWRWI/I/+8+qkK2HNWKfCJRgjHLU6h3ta/9QGmfR8vVJLBJBn/eZm9vG5fhdfG6VYIUVr8KPYqVldv7nu8k6vnLPKwY26oJx3O5Sp23cUv+MkyYzyFffeKoD2iq7SC/LnUBzg03+DrbJhd+g6s4BTepDsR4TrZo719Pd5Eld7sKS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,7 +113,7 @@ On Thu, 05 Nov 2026 12:18:01 -0500, Sasha Levin wrote:
 Applied, thanks!
 
 tree: mm/core.git
-branch: thp-7.5.misc
+branch: core-7.5.misc
 
 Applied patches will appear soon in mm-next, followed by linux-next.
 
@@ -129,7 +129,7 @@ trailer updates or similar. Further, this is not a guarantee that the
 patches will go upstream. If in doubt, please check the listed branch.
 
 [1/1] selftests/mm: add CONFIG_DEBUG_FS to the config fragment
-      https://git.kernel.org/mm/core/c/31ea5515
+      https://git.kernel.org/mm/core/c/194b6319
 
 -- 
 Cheers,
