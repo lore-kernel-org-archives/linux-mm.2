@@ -1,111 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A492E606A329
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B370606A33B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=Ago+KLWk
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=IuV32zb5
 Received: by kanga.kvack.org (Postfix)
-	id A59236B05B8; Fri,  6 Nov 2026 12:05:27 -0500 (EST)
+	id 89DBD6B05B0; Fri,  6 Nov 2026 12:19:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A09BD6B05B9; Fri,  6 Nov 2026 12:05:27 -0500 (EST)
+	id 827E06B05B1; Fri,  6 Nov 2026 12:19:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91F846B05BA; Fri,  6 Nov 2026 12:05:27 -0500 (EST)
+	id 6F0376B05B2; Fri,  6 Nov 2026 12:19:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 64E8F6B05B8
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:05:27 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E83561C1F1B
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:05:26 +0000 (UTC)
-X-FDA: 85405320252.12.EA54CFE
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0BCEA40004
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:05:24 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=Ago+KLWk;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	spf=pass (imf17.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com
+	by kanga.kvack.org (Postfix) with ESMTP id 34FCC6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:19:37 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3B801160142
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:19:35 +0000 (UTC)
+X-FDA: 85405355910.26.13C7049
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4F909C0003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:19:33 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=IuV32zb5;
+	spf=pass (imf10.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793984725;
-	b=e/VP5fUcAkYsLD6yFlFmF/8KI8HaNePljKknAPCLx4tGRZKIk8s1ib4nA/qPTdDMFNPHCw
-	IKgzXjRzE6KrffixBdNdaDuOW5ZIh8hXHPW/oGjqR372/jeUFNuPYDX6+mBXnmVZ21eNVX
-	4THi9pFCsHDvtSD5+OgumiruKv7zAcw=
+	t=1793985573;
+	b=PdAu50PzXkGY0vANaYiTrun4hM/gbOzR9xEDj83tSWx4ZLu0ilK2smljeoJUii7v0M7C3O
+	vCImpDWs42mbuZ0LoohKGG3VpWZfiTt2BBoaL9qF49kP+tQAJTBDb60/vR6QIA+v8gZ46L
+	s4A/Nozh8bVz+7N0N4E0s2VvTOrArpc=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=IuV32zb5;
+	spf=pass (imf10.hostedemail.com: domain of dmatlack@google.com designates 209.85.216.53 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793984725;
+	s=arc-20220608; t=1793985573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=LqH9iMIGaGgfrltDU+0qHbUT1ie4g3kkbL58F1jr5Pc=;
-	b=CJrSSKaIrDRWZ1Ma4WRcFTILf/AMKPFygSqyf0DW00maNE7H7PO7gre2MKEpLWdcaWnKCT
-	rH0JqimlHvepoa75AcIig2yptXhThM6AYKI0ifQlCQDpv7rdbM3P1Eg1uc6XI6L4uRBQNs
-	caDZcBwZIBW3hpBuSASxG9MrjrvaEzw=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=relay header.b=Ago+KLWk;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	spf=pass (imf17.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
-	:From; bh=LqH9iMIGaGgfrltDU+0qHbUT1ie4g3kkbL58F1jr5Pc=; b=Ago+KLWko091EDuZeHQ
-	xy4CpnbJrV3UtJFWa/DKDNjFPXScS1j02Z/HD+SIdAiU/sGojmXnMMdoBcpTl5UuNjnuPQcOBXYg5
-	tdY8AVDg0m9ETwjl0V+ANAPL/LzlSk4ZmQ2K8pR2Yuaih6M0O+Ah42qtt3fMvd/rS5UEAZ0+gg8Wo
-	aMQlfaunc7lyAcg0af9VGeEcgDBX6jaLKRBo80xp3fx8ndLNqW5kLe0tAAtJv+gscRrioHhxF1+9o
-	nqS2GnBc+Eg06N4bD0KqJyWaq/er2+KCnhK4v3X3OgcUw45U6Rou8m7F54o6XhdJAq/pGuFUsVxO9
-	LIn6HYM3b6a7Fnw==;
-Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
-	by relay.virtuozzo.com with esmtp (Exim 4.96)
-	(envelope-from <khorenko@virtuozzo.com>)
-	id 1xPNJS-00F6fe-1u;
-	Fri, 06 Nov 2026 18:05:18 +0100
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-Date: Fri, 06 Nov 2026 18:05:20 +0100
-Subject: [PATCH] mm/huge_memory: use folio_dup_file_rmap_pud() in
- copy_huge_pud()
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=tEaeh2MQM8Yqh+InUxWcP/c3Ugn8r1gCgilB/e+XZTU=;
+	b=AqCy6zZBqBXxp+uqcnFrieXP3TaiQyJe2VR+9QeObASXBLHHV5o/RSg4B60yTr4kY8mWpJ
+	73B3pIzT8GbDVbhy4PQc7Kq/EOKg1cynHcmphXqqZ90YnSus55U7Q6B8DTS9mr6ga4Ctfz
+	A6mnM9uZ3Fb4+WKs4F0LoROCf3SKQKk=
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-3b0ae87069dso424681a91.2
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 09:19:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793985572; x=1794590372; darn=kvack.org;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=tEaeh2MQM8Yqh+InUxWcP/c3Ugn8r1gCgilB/e+XZTU=;
+        b=IuV32zb5uucDQ9/yxXwOKg6rlEONGzx9+Cr3/n66kNTo3ELWDRVqOusddrmr/Kb9u4
+         /iEV4sNCfcYhxRFpC0MWNCS+DM1buH/CyU4JZ3G6B0eq0ZAHC7rNjRdMe6ipNO0r8ruc
+         it1HzU4gVR76+YPJVD/6J0v1+ItKIqgQXkpVpsuylZUMZc67XmUItcixEHzRaEPQtiKV
+         8iYYjfc3R9MNEy8SUGPMzqMI/uhna1COC2/3XdXSn78tVBuaENp8heeHeZY1Ly2Q54/Q
+         V4ttFsVErAfkV/dWZJxNVjt79Lv0rY/h0qcL4kwOWtVUB09Zs2fx5mUE/34LwDbVUDff
+         jb1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793985572; x=1794590372;
+        h=in-reply-to:references:cc:to:from:subject:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=tEaeh2MQM8Yqh+InUxWcP/c3Ugn8r1gCgilB/e+XZTU=;
+        b=b3yZzYjUn7vahkgecTz2FUpRfvhLO/iJutP0yntuPpCb/C8dXWsL43J7357qlHPsPL
+         YXkOH2cKPsqPEQtA3m/Sk81PLbTNZvswhjpJ8wQZ5m8v4ZDYFykj2hU+ztrKnuDco0lF
+         ZHWAvHnvZCQ8c/T/7mhNSEcozQBiTjcDVJgOM/jXvT4jT7i+DwqbJNNLFf2cOXWxMFDl
+         zhFb2lXDPLon4Uqp/yyknxpOjpCd37MovNhl8+B92bDPf1reX/I0YCaARS8DdcX1iQ7f
+         zvfa2CqipzMF8FJdFfvKhqE/5dYp0uLCG5sewqV7UaQJ+Q2qbLTSWk4vD5yieym63BHe
+         jjdQ==
+X-Forwarded-Encrypted: i=1; AL+hErF2ejYESIwNC1oJnBub88mDe6C8nAf+N5Fnb7vktd1bZJJxHmVOaLY2YN1CnAW9nKFTlB8XopRthQ==@kvack.org
+X-Gm-Message-State: APuU4Z/eRHZ5lO460HKkc09FbgqTiv+z8rr7v3wPLgtIKyX2LtTn/MSN
+	dijAMJ7Sqbyae4WOeP1UdXOMFRCcfvmamgpmIqABgdLXTRyT3pluf6FKfqbXxuxxFg==
+X-Gm-Gg: AYBFou3w6iCmVREwE1UtMO/GvzgPNAx0dC4AUMPs+g8Zk3WZn0aS1bR4/1/t9BcnvOC
+	C4cnPmtGDYphJjYovHNIetnJBYV2DHNTkKNobnUKn+vsFt2a/FWjxxXsrWlCyIFoA4v4E5IuTpy
+	IvItzCwSye1FfBNBCW4aJNurHt+DgOPfONaFkwhFy7+vdi/USK+zrB2ZGbXnbIKT2MixNM12grf
+	SzPZPCE0M+BnQiHIQEMZWD/3DqyM5qMlhMprTtKyhAqU7LIJu34NycefyiI7hvMOvOCCpVt8t7/
+	FctfR7z4mIALT0Vl1OZfwtdgNxFI6tsVKt5+0ODcIt8HUCkVr9P9x4V5yqT1N2b6YzHLNWQcRVj
+	jeSOyJf9Z5bsLFsE1tQbALnrEqe7iPX6aMuZIsJp9I1uW3GHx1aVJynzT93hRHSHuuI6nXf5KVU
+	XXcW5JnfYKFCK2+i9mBynTVXLf85l5U/uI1qlBlMDtUiz/cPzMd9K2ISXJ2IUk2jd6JsGybR3cQ
+	TLkMSGrx9FwNDLMDd0COHNJcwnwo2JdARnL/SZlh0TNS+rAeriz7VmrH7C5y8cPWnh0brWkc0q5
+	k/U7iY2u9eRHtGpPQjklH6b0nhgRao5KXGbLrswROd+3y0BoFldf3mQ99wfbv71X
+X-Received: by 2002:a17:90b:554d:b0:3ac:bfa7:b079 with SMTP id 98e67ed59e1d1-3b0db5edb73mr3411640a91.7.1793985571464;
+        Fri, 06 Nov 2026 09:19:31 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb70a7fbcbsm795231a12.25.2026.11.06.09.19.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Nov 2026 09:19:29 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-khorenko-vstor-151183-copy_huge_pud-dup-rmap-v1-1-cf8ee4fafabb@virtuozzo.com>
-X-B4-Tracking: v=1; b=H4sIAM8I7moC/yXNQQ6CMBBA0auQWTtJB6UBr2IIgXakldg2LSUaw
- t2tunyb/3dIHC0nuFY7RN5sst4V0KkCZUY3M1pdDLWoJZGQuBgf2S0et7T6iNQQtWdUPrwHk2c
- eQtaoc8D4HAO2tRDdRTVy6gSUZIh8t6/f7tb/nfL0YLV+H3AcH7uGbvCQAAAA
-X-Change-ID: 20261106-khorenko-vstor-151183-copy_huge_pud-dup-rmap-820094c56b90
-To: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- Alistair Popple <apopple@nvidia.com>, Dan Williams <djbw@kernel.org>
-Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev, 
- linux-kernel@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3715;
- i=khorenko@virtuozzo.com; h=from:subject:message-id;
- bh=gxuw6LjVBrmV9639XN62UX0bOkR/j46xaDVTVYxMcMc=;
- b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq7gjRCymH1gaE3n+O11UPy5GKgSUYwmvmhhEug
- XGKykHU5QWJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCau4I0QAKCRBRlgpH+WFc
- KiAYEACov2BLVf6uA7xgliUWGHkOGWR3GCd3SE5HdxqeC9cfajx1YRp+3ZXchQbMMFjnjzeq/md
- y086jisNW1nF4Th1SH8pAXOWOwD4PwbOW/GVAZrQFJcUFW4g48vZW/aFDOqThcvg1R9QUfpkYAF
- MjRrB0i3xJzMEMaXtWt44wQeeRxJP9tq3yMqJAoXz15NTStwwvdCG8PAAZ6pqoh5PezLcf5m59g
- udW0MGwNMOrC/IukbEzvSb+KuwSeOk63FS4dpDr+nJd0oPHzKTzLpJ7Cmio9Ge+FIWlN2mh6cdr
- 83SvhFTQG0GNCm0z8qTAe7TiJMEWcnTm6nIWA8B1jSCD7Zk9OTxe45GEdMmkfRZU+BYNIeq8jPU
- myeEL6Uyg5fzo9b0ch1ln9qXG0TIzs/LJ0dWkVsj5ikVLQjnIGSw3CarWo/3UQLsbGMFN03Yge4
- vi0mFfz8tplVJFzxHviraCZTnHqCVq/9K6gj9eOwdd1w78zjmmiKE7DGHcDQmlOisHbJoSnqS1W
- dvfXCimmSQITK9Sna9W7BJEDWzSZbw/QV+60OLvceSvmfqWEEpXiueADyXRHNHW8+95XSz+e/iD
- vFN2o92Y3OkOF2otlb9DeT6ZikMcAglhovQTQ+HyrYVdSo64RZTVFjNcCW8r4TnOaQOzr/BLhpW
- oJasVA+qM7v7wxw==
-X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
- fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
-X-Rspamd-Queue-Id: 0BCEA40004
-X-Stat-Signature: uyk73zbgt6wobwodikc4ohiemgctszy6
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1793984724-900387
-X-HE-Meta: U2FsdGVkX182Y9BeuHFSm3EzZSVmjTq+iS0ZFhhSFEVFF4KFFtW7uMCiU5yjT8fKvKuXmzoiuX7zo4FKCODN1L0VfpfW/voS5j/W0qwwJXeWlvWXkvKa9HUrFveFCjmRn73uqeuVN/IReZR8YySp04+oDSOJDVLzJTVzfj2et3VSaGa6Cp/QMaaWnJQFK1zPbmR7gx2alOCFY9FAQH6YLygprJNQvQ2Mii2cqIAZIyyz8B1o7gYNLP3LTAfOwNcC27iZicCsXiWl3UhD/C7GVzXkQRKnMeqFiYDh3QaQN7jtWbXw7d2T4jxCcw3qr88x2wZypRdQIOkWTS1VLtXPq674rPwpr+CLSco2Od6YlKfvLiQqQlDsQhOZRNBSRGOB1x1eRBihH4Ice8xVohFn1n5vO4hRdlTQQ9nBW47Ijdq875XMk9c+s6ZTvDeXYSNNja3ss9NYJ6WBRs0WV+8f5jRZUvnNim3WMzlHB8JMzwbWsETug1UVoJmjHG7vLtPkt+9Tp8ua23jei4U0an7IwyMOKSr9keRICem+7ZjzaQcz+GTDjCFQF1fGKg37PytuqYWlXBdkA5HeZ2Zv1JHvJTzDvqs4kACz8tsGQq6gbmJGaNdfCQIl1Src4+NzxebmMPMRdFwsEaI5xhlpnylhsFDW3T6y+J/UAQs9prXxvDoL/PurGWVimV/9Jvixczp9Izm1B7K0sCQoSjqJjhhnq71yHIrqyOHMBImNLik4rs/BAwkFvpi1cEP+pkbC1brjQ4ZJkrQfM/POYTWtzxtLUuDJrHJ4n2qfNJhQv65l62OWcUpRqT14neoY1aQBaLEl4yce1Ma07Da7foHSksF8bYvCmy+yktt662N5Sw+0O08UA7EbLs47I76RuhBpIR277NPedwKFkGDDGgsCbZqWcFo7SK7zB70K5SLuKdqhSIuhi6t066cyLP9lZmJvtah/PZWFlTG/7w25DSy02PA
- alkuCN8T
- UGU1S3o9l01a0rF/3hDtuM31P4a+ZcZlmFLMUqLNX99HZDljI52iMPlfX6lbU1LfeUXumcRW/qsHQfYP0BZ0c8PcUpAC8B5G814/c8an/WiLDF1bEI06pzds8VeCh/8LeETZKQBn4XjMfGklzURBhKLzyuBG8dleYgTPNasDg4GvWpx2eJTKNECm9qvhG+Q+p7yK8d0hwF3b1R/M3ONPDZiFijhPHs6yHx/qdbdc5ByCQTtZbKnx/nCrnHk7vPu8q+9KPojSRkrt3jAGycF/wr+ENEGes6iT1MHyDjj/bizjCcPXWKIWueNE3GIzcEIFY5YJhqI/X9j6s/5mLhQb2NGU3CuBtNrWqmv3frfqCdGvqmXPLXGn/h5Ed96DrZtkSXmDJJpnE9oTmjQwAVG/ZXKMAjaeJhVYPKxhT3rfakDoIzy8=
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 06 Nov 2026 17:19:28 +0000
+Message-Id: <DMOAT4VV939P.2DI8CEOMMSKMY@google.com>
+Subject: Re: [PATCH v6 11/27] vfio/pci: Retrieve preserved device files
+ after Live Update
+From: "David Matlack" <dmatlack@google.com>
+To: "Vipin Sharma" <vipinsh@google.com>, <kexec@lists.infradead.org>,
+ <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>,
+ <kvm@vger.kernel.org>, <linux-mm@kvack.org>,
+ <linux-kselftest@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Cc: <ajayachandra@nvidia.com>, <alex@shazbot.org>, <amastro@fb.com>,
+ <ankita@nvidia.com>, <apopple@nvidia.com>, <bhelgaas@google.com>,
+ <chrisl@kernel.org>, <christian.koenig@amd.com>, <corbet@lwn.net>,
+ <dmatlack@google.com>, <graf@amazon.com>, <jacob.pan@linux.microsoft.com>,
+ <jgg@nvidia.com>, <jgg@ziepe.ca>, <jrhilke@google.com>,
+ <julianr@linux.ibm.com>, <kees@kernel.org>, <kevin.tian@intel.com>,
+ <leon@kernel.org>, <leonro@nvidia.com>, <lukas@wunner.de>,
+ <mattev@meta.com>, <michal.winiarski@intel.com>, <parav@nvidia.com>,
+ <pasha.tatashin@soleen.com>, <praan@google.com>, <pratyush@kernel.org>,
+ <rananta@google.com>, <rdunlap@infradead.org>, <rientjes@google.com>,
+ <rodrigo.vivi@intel.com>, <rppt@kernel.org>, <saeedm@nvidia.com>,
+ <schnelle@linux.ibm.com>, <skhan@linuxfoundation.org>,
+ <skhawaja@google.com>, <vivek.kasireddy@intel.com>, <witu@nvidia.com>,
+ <yanjun.zhu@linux.dev>, <yi.l.liu@intel.com>
+X-Mailer: aerc 0.21.0
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-12-vipinsh@google.com>
+In-Reply-To: <20261102153656.1431701-12-vipinsh@google.com>
+X-Stat-Signature: p4ka9tpp6eiuyryp9xbupjaxb41r43pi
+X-Rspamd-Queue-Id: 4F909C0003
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NEW_PRODUCTS,SPF_HELO_PASS,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793985573-671609
+X-HE-Meta: U2FsdGVkX19nHegkQJS5+bjO9vFPHj4Bet8gjFq3keZQkDdyrvWp6l/kFnTnvwYkcNmgm8cH1mRoZeoFLvljlAhLZHvlZR/L+s6/OPEpUHVlgMpQlpWoYrod7kuZKuaTH/w1Ef2hIXM9SCcKvTfM0UwEfbsBw0jOgvCGU4R25RE2pTmOYKVjqCzYGVjMCFrxLOGFk1Yeu1/KsU3Rrc63hTHFqrvCz/fY3rZb/Xa40BETybq/joDBtWQpfYr2ATmo1apSgRYSbrP+WfD3MtZ2603eC66COhKpHuCDlsbiEvKMcm0OF6Yb1oVNv/01dfwmZlutNFDiB1GSoMoXSYZi681fKc8PrDRGOQkA6r+VoLK026UejsxX8IR2QppIeBNz+6tO/rMgcDCD8qZ0mquPNKKRXdhsVIyB679Jn3r6vlYtk03ZeVrAZ6ppIECrC39bwL6j350GWkyuwjrTRCs9mzsVWPlqjT4V7PBQCVTFN6PcJpKZwfR94hH+vs5EbFVRQFZaMJ5rmd1A1Jv7zYry6LdJkGA+COiF6aAbcgQvf41vwh+xm+Gpb7F4o53DdmKVlSKqTYVjLbDBAYqqi4Ax1sKyquEe5+mdoWDsX0qmBq/h/OCit5G7JHcxX5pIeVaC9CYM0ggdOoLjspi0iiY7a/wLEH5WNsU9gU5a8g/J26ppYzuCnBapJRHP2dRhglKzfAcgXwOQWvLB57DG3uiILDef918YvSPWpeh7UH66x9gZ68cSKIed/ORX/3kJVD8TOHSFjMtczmeuljtwwhQ3RhPNepFMHsAQpuDqVplr60p3dSUnicT1dsLtQj5skmVVDcvVKLNKke1hplmhZC3R3FRiU3wZDWxKensqPge8TqFDp8dHcsQEEzipqco8dnuZVh525UUUtL6yclKQUOoM4lcDjrwzzOqnClk6LR+Wm9VLEvXl5UPy+F4p40U8FkVdZX1j0KWnLyhVDNpmImn
+ rfvu03K1
+ EGBW7hUV6zuy5Ii9JDuVuTD13Y3znIb9s1a3wnLReGN0CYh060OF+P/pGJYRnH3H8Vwp94EjYFs3UW71fRbwYkMnQhVvhpYYGqhxvs2uiYSNio+oaBlhOK37OtwVIPWQx4iqHRKzXGalSO/8XsJaxm5pzrTV8QRUI95c1UrcbAC7B8vmCA6FnX6LzFCkRe2kbLUGNlXSkBU2FPdmeKytVNvTgfu8vLicqH7kQqpHNobsO6+cjNcRmReI2Y6Wlldng9gKLABAi5psKWdjH0gGCxxWFB6gkXNs9/H++yNczCoWS/sHoKZp7VmL7+wTkt3F+riySF3n2WVcOO9xjZln9IwlBVk+jmtJ6NX+lEWgzVFYhHqZjYB0SJhKTFoqhl+VQH/CogMf2cgysFIrerDDqTD5VaWf3hrzwbd0+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,101 +142,83 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-copy_huge_pud() adds the child's rmap of a device DAX PUD with
-folio_add_file_rmap_pud(). That helper maps a folio afresh: it updates
-NR_FILE_MAPPED when the folio becomes mapped and mlocks it in a
-VM_LOCKED VMA. Neither applies at fork: the parent keeps the folio mapped
-under the page table lock, and dup_mmap() clears VM_LOCKED in the
-child's VMA.
+On Mon Nov 2, 2026 at 3:36 PM UTC, Vipin Sharma wrote:
+> During retrieve():
+>  * Validate the handed-over struct vfio_pci_core_device_ser header,
+>    sizes, and flags.
+>  * Locate the registered vfio-pci device matching the serialized domain
+>    and BDF (requiring device->ops =3D=3D &vfio_pci_ops) under the device
+>    lock. vfio-pci registers the vfio device before its probe completes,
+>    and the probe holds that lock, so a device that is still being probed
+>    is not returned.
+[...]
+>  * Open and return an anonymous VFIO cdev file via
+>    vfio_device_liveupdate_cdev_open().
 
-copy_present_ptes() duplicates the rmap of a PTE with
-folio_dup_file_rmap_ptes(), which only raises the mapcounts. Add
-folio_dup_file_rmap_pud() for the PUD level and use it in copy_huge_pud().
+Here's an idea for how the device file could be created on retrieve,
+which I'd like to hear your thoughts on.
 
-No functional change.
+The patches from Pasha at [1] lets userspace pass a
+file-handler-specific argument to LIVEUPDATE_SESSION_RETRIEVE_FD. In the
+next version of the tmpfs series, I'm planning to use that to have
+userspace create the file and pass it in the argument, and the kernel
+then restores the preserved file into it.
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
----
-David's fix for the device DAX PUD fork bug, commit d90bdc02e36e
-("mm/huge_memory: properly handle refcounted PUD mappings on fork"),
-went in before v2 of my series for the same bug [1].
+I wonder if VFIO should work the same way, e.g.:
 
-This is the follow-up David asked for [2].
+  struct liveupdate_vfio_retrieve_arg {
+          __u32 size;
+          __s32 fd;
+  };
 
-The Reviewed-by tags are from v2 patch 1, whose rmap.h hunk and
-copy_huge_pud() line this patch carries unchanged.
+Userspace would open /dev/vfio/devices/noiommu-vfioX itself and pass
+the fd. retrieve() would check that it's an unbound vfio-pci cdev file
+for the preserved device (domain/BDF, noiommu, incoming, cfg_size),
+attach the incoming state to that file, and LUO would track that file
+as the retrieved file. VFIO_DEVICE_BIND_IOMMUFD would then take over the
+device as it does now. Since VFIO preservation is new, the argument
+could simply be required.
 
-The selftest from v2 [3] is not included, as it needs a real devdax
-device. It is there for anyone who wants to run it.
+I think this could get rid of some of the special handling:
 
-Based on thp-7.5.misc of the mm/core tree.
+ - There'd be no need to fake a cdev open with an anonymous inode, so
+   PATCH 09 and PATCH 10 could probably be dropped.
 
-[1] https://lore.kernel.org/all/20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-0-2828fe5a51ed@virtuozzo.com/
-[2] https://lore.kernel.org/all/6f035f97-8b55-47ad-bd52-833b86b8ae8f@kernel.org/
-[3] https://lore.kernel.org/all/20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-2-2828fe5a51ed@virtuozzo.com/
+ - retrieve() wouldn't need to look up the device by BDF, or reason
+   about racing with probe under the device lock. If userspace was able
+   to open the cdev, the device is registered and probed.
 
-Assisted-by: LLM
----
- include/linux/rmap.h | 22 ++++++++++++++++++++++
- mm/huge_memory.c     |  2 +-
- 2 files changed, 23 insertions(+), 1 deletion(-)
+ - The device file would be opened through the normal cdev path, so the
+   usual permission and LSM checks on the device node would apply.
 
-diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-index 74cca0e3c7264..52fff8dc74213 100644
---- a/include/linux/rmap.h
-+++ b/include/linux/rmap.h
-@@ -564,6 +564,28 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
- #endif
- }
- 
-+/**
-+ * folio_dup_file_rmap_pud - duplicate a PUD mapping of a page range of a folio
-+ * @folio:	The folio to duplicate the mapping of
-+ * @page:	The first page to duplicate the mapping of
-+ * @dst_vma:	The destination vm area
-+ *
-+ * The page range of the folio is defined by [page, page + HPAGE_PUD_NR)
-+ *
-+ * The caller needs to hold the page table lock.
-+ */
-+static inline void folio_dup_file_rmap_pud(struct folio *folio,
-+		struct page *page, struct vm_area_struct *dst_vma)
-+{
-+#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
-+	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
-+	__folio_dup_file_rmap(folio, page, HPAGE_PUD_NR, dst_vma,
-+			      PGTABLE_LEVEL_PUD);
-+#else
-+	WARN_ON_ONCE(true);
-+#endif
-+}
-+
- static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *dst_vma,
- 		struct vm_area_struct *src_vma, enum pgtable_level level)
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index d0e19d9e6b651..13caf81cb51af 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2100,7 +2100,7 @@ int copy_huge_pud(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
- 		 * TODO: once we support anonymous pages, use
- 		 * folio_try_dup_anon_rmap_*() and split if duplicating fails.
- 		 */
--		folio_add_file_rmap_pud(folio, page, dst_vma);
-+		folio_dup_file_rmap_pud(folio, page, dst_vma);
- 		add_mm_counter(dst_mm, mm_counter_file(folio), HPAGE_PUD_NR);
- 	}
- 
+ - It would be the same model across file types.
 
----
-base-commit: 31ea5515bf595046effc74a5bafdcc26320d2d86
-change-id: 20261106-khorenko-vstor-151183-copy_huge_pud-dup-rmap-820094c56b90
+A few things I think would need care if you go this way. The file check
+and the attach would need to happen under dev_set->lock so they can't
+race with a concurrent VFIO_DEVICE_BIND_IOMMUFD on the same fd. And the
+incoming state should probably be tied to that specific
+vfio_device_file rather than just the vdev, so only the file passed to
+RETRIEVE_FD can take over the device.
 
-Best regards,
---  
-Konstantin Khorenko,
-Virtuozzo Linux Kernel Team
+It would also change PATCH 12. Opening the cdev of an incoming device
+would have to succeed, so the check would move to the first open of the
+device instead: fail with -EBUSY if the device is incoming and the file
+being bound doesn't have the incoming state attached. That one check in
+vfio-pci would also cover VFIO_GROUP_GET_DEVICE_FD, which opens the
+device right away, so vfio_liveupdate_incoming_is_preserved() and its
+dev_is_pci() special case could be dropped from the VFIO core.
 
+The next tmpfs version will also add a way for a file handler to say a
+failed retrieve can be retried, and a helper to claim an existing file
+before restoring into it (so a file LUO already manages, e.g. one that
+is preserved in an outgoing session, is rejected). Both seem useful
+here too, e.g. so that a mistake in the argument (wrong fd, an fd for
+another device, an already bound fd) doesn't make the device
+unretrievable. I'll Cc you when I send it, and I'm happy to share the
+branch before then.
+
+What do you think?
+
+[1] https://lore.kernel.org/kexec/20261103010216.3447716-1-dmatlack@google.=
+com/
 
