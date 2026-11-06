@@ -1,96 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881A7606A333
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 07:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2540C606A32C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 07:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=cuAvI3mh
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FmSv5120
 Received: by kanga.kvack.org (Postfix)
-	id 9B1C36B05C0; Fri,  6 Nov 2026 02:15:14 -0500 (EST)
+	id CF4926B05B2; Fri,  6 Nov 2026 02:24:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 986216B05C1; Fri,  6 Nov 2026 02:15:14 -0500 (EST)
+	id CA5076B05B3; Fri,  6 Nov 2026 02:24:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 875A66B05C2; Fri,  6 Nov 2026 02:15:14 -0500 (EST)
+	id B93D66B05B4; Fri,  6 Nov 2026 02:24:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C3426B05C0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:15:14 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F1E2E804C5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:15:13 +0000 (UTC)
-X-FDA: 85403832906.28.6396564
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D299F1C0002
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:15:11 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 945CD6B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:24:02 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A78F3160CCB
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:24:01 +0000 (UTC)
+X-FDA: 85403855082.29.F3DBE6B
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E69371C0006
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:23:59 +0000 (UTC)
 Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cuAvI3mh;
-	spf=pass (imf20.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FmSv5120;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793949312;
+	s=arc-20220608; t=1793949840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WHFpp4e9/46UoCbTdVt0BUwdiaUS8B1AQ+AAM13FSjw=;
-	b=sZig6h+lHeFDKhzoJnukFVQPrzIrmnmBx6WlLJqkSq/ZYNOSnrnUHxTMYMV8UMgu1w0r3G
-	5k3Ir8pgOdXZVbm7c0mFlY3GOFY+JrP+wRO5b79B/wext9KElA6bNvevkbcEKqO5VccjbD
-	uEaVksgNpAlfTd/pm9iOBWOLLTaYt1Y=
+	 in-reply-to:references:dkim-signature;
+	bh=t8XtYL0CMtSz8VjOCnnSQ70xiU2Xw1jxqraDN3jPXMg=;
+	b=LTPf0sjPeE/lmGtPJiMMeIcGibkeWEYc2w/fQ1Lk5lEgVp9E13V7LuE8GvZGUZCY3WKUjw
+	rFZ/hCdAZ0vu8wfyP6rAzBtmlK0TiNiWVKi4MR3SQ1mpgcX7I/4QwAzk9cfHkuqzrdc+Pp
+	O5oNSLJQyw4o8Xxd4w5pKvAMo+1XIJk=
 ARC-Authentication-Results: i=1;
 	imf20.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=cuAvI3mh;
-	spf=pass (imf20.hostedemail.com: domain of cp0613@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=cp0613@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FmSv5120;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of thnkslprpt@gmail.com designates 209.85.221.50 as permitted sender) smtp.mailfrom=thnkslprpt@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793949312;
-	b=v08u4aMvHb7fv8J7wbJfDCEPLBvQt2GxqHUizzegKH7QvppMuADfCtKFIjZ4VSyOnKwtfK
-	Gqc+ddtkPTMUxaANiadimDMiTOuoKKDoh8X0afXKeI2CjfRi+RRa7eW/lXggWtjAJ03saG
-	XQThcmkvwrDLN1/CR1POFpnW4Yqjz0k=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1793949308; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=WHFpp4e9/46UoCbTdVt0BUwdiaUS8B1AQ+AAM13FSjw=;
-	b=cuAvI3mhgmPZXBDnJoKAeP1QCTDsrLlbvqo0xRXGF9MdTfVckWwsIx4ss+X6vhV+nNboSZSNM9x0ZH4ZbEWlyAij5lDtM6RjqbggZ1u3wo6wcv9MN0AtZoEdF69t99M6Rz9PZbLAVskAJ9hWvIOawNnW7KS1Thh297uiOCAerpY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=cp0613@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XEAtjNn_1793949306;
-Received: from DESKTOP-S9E58SO.localdomain(mailfrom:cp0613@linux.alibaba.com fp:SMTPD_---0XEAtjNn_1793949306 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 06 Nov 2026 15:15:06 +0800
-From: Chen Pei <cp0613@linux.alibaba.com>
-To: pjw@kernel.org,
-	palmer@dabbelt.com,
-	alex@ghiti.fr,
-	rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	graf@amazon.com,
-	shuah@kernel.org
-Cc: guoren@kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
+	t=1793949840;
+	b=PFQZ3mmIGormd3bqFrAD2ojYFrEYpxazTYdOeWIaI3DkQYUm+oK8rpQoVBHUy3Y1/Gly0I
+	Rf9WM2X0xZLKVSEpGT/Fj6Bm8C3+fEvcfXb4vyatNLrW8bG3tDrF5+RoMu2Lo1ZWwzMty+
+	jKnO1acDPfix+c9A59JHjvXriijvo5c=
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-48dee593f18so212946f8f.3
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 23:23:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793949838; x=1794554638; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=t8XtYL0CMtSz8VjOCnnSQ70xiU2Xw1jxqraDN3jPXMg=;
+        b=FmSv5120TGtOrTRc3yBTobQlfyI9Zbhq8H0Bcj1pSoWuLZrCdTAyTeuIND6xoTp57u
+         fyx006WK/QXeWX9ImW3mL2mjjwNoKEjc3+Qv28gboOgMVm9WlYi8OMhYkqsHcYhvxHog
+         xIbsg/4oIn1i3j4tLAYhgkVOh9MA0l2IVmjW69Xm1NA8EPl2PlGc8NRqRqh5FtGk9yNp
+         FW7howgkQV7BaWSZJiBc2Bm5M33vl+9uZ1rAl1q5N9SBV0j9EWwqDMxljqgJfbdnYz+G
+         OmMtUV1zFYGCbIAWx9DAjPY4XSYi42ZcSo9scCDBgvGzYSEVRpSAxsMQA4aBfC8qI/f8
+         wjdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793949838; x=1794554638;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=t8XtYL0CMtSz8VjOCnnSQ70xiU2Xw1jxqraDN3jPXMg=;
+        b=YkWnwtFOTR/EGKi4vx1E3RJtnNLt4jCZ8UKv4qf5mucb77CBSptenLrqoaGI4Ts5dI
+         6e4I+AZBOTGIpFFgqJLUMLREhg34hoN0E9/H0oilA+9PbqsD+aElCjBoFEbius94fR7S
+         O+pb0Iu8glNCWUublIkr226ILLjLubCKK0rnFeM/vCx1j4vnOYw6m0NW/SHgwHq3/Yvs
+         LnWPjCMd08tfzclp+0yoi0Qp+R4dGWrpO7MRgGhTXEdqxAuYRemInLyFF5KxWXnglDNT
+         0cExkCfQoSJQH0a1Us/Ra4phjamS9RCIKOmcQwxDurGArxfNhR9310pswDYt6MTRCACl
+         ypoQ==
+X-Forwarded-Encrypted: i=1; AL+hErF5YkAQ9ZE79xpT6go3ywAw1irOuJ6cYFcK16DlrnLS9kqjLz9Yy7yBD2D1RtHl96B/9fCEYh5phQ==@kvack.org
+X-Gm-Message-State: APuU4Z9Ev3OIUaSEbISlpbhPPj4igfugq4aOoP9+cXLbUtz9KIozK5mI
+	FGgQ6E2iPGY3smhR+tZG/W9t7BPueZG1ebO4Sk9VL/jbZHyUyWZjTvfj
+X-Gm-Gg: AYBFou0SQ/QMLCBTcoSmyrLW2Q9RWRNxFgLHhaYCXjzLDF/nsH0AOP8k5DreRjzwItO
+	gYscgmpaUvPnPW5n/6IpfFjJILBG2arScbZCA+v00Z3HQJ8Ieb2GGk4FNeT1lGbQDm3z8GqArTC
+	xkTEpEKfM9bwklHrxFnGXBgkx18E4Er4KsMqxzSCbdJkL9Ye64Ww04/Oy8ezemvG5gJDMuXPcTc
+	nYqc5BOOmaRrRx/77C+dQ4sKv6FlJn7APLYSzOL7AgjOaexZv4/nquB3JVb2tJu94hu77ljhDYi
+	x8LchfJi7ekfpli2b8ZqEDnJA/X1bcXKi5qZ3iKpw/AobJxO9JxQrX50mdWq5NlBX5w/tnBu/hd
+	TjOYjXqhcGcQF1OTT2rFe7JBmK0O49B5G/Oc5a3pyKCiljR3aDZTAJ4EHsyoox0BSit+LMIsFQr
+	G8nWDOwXZq2c35zXMcx8i+GQn0rkkNjjdi8olL1jHeHNCUXtIiD4p9qcfnLcAFfKw4KFcDe4Ooq
+	z2roNyDzPRmLaTrIo8M0cmzRqUCR7ltRRaGIOSxhoh+/lp7AWKnhILvVT8lWbHAdx76cgezaffR
+	12vCEFGMOYN8XAOmvGK+UL1f6FSiJkSKl5mx
+X-Received: by 2002:a5d:5d82:0:b0:48d:facb:5937 with SMTP id ffacd0b85a97d-49273e5b191mr3119041f8f.7.1793949838028;
+        Thu, 05 Nov 2026 23:23:58 -0800 (PST)
+Received: from LAPTOP-AVI.lan ([2a06:c701:475e:f800:a7fc:23a0:3fe2:eb8b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-492d3d609c8sm2201123f8f.6.2026.11.05.23.23.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Nov 2026 23:23:57 -0800 (PST)
+From: Avi Weiss <thnkslprpt@gmail.com>
+To: rppt@kernel.org
+Cc: akpm@linux-foundation.org,
+	rientjes@google.com,
 	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	kexec@lists.infradead.org
-Subject: [PATCH v3 4/4] selftests: liveupdate: Add riscv support
-Date: Fri,  6 Nov 2026 15:14:59 +0800
-Message-ID: <20261106071459.2003-5-cp0613@linux.alibaba.com>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] mm/mm_init: avoid overflow in percentage-based core sizing
+Date: Fri,  6 Nov 2026 09:23:55 +0200
+Message-ID: <20261106072354.2234189-2-thnkslprpt@gmail.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261106071459.2003-1-cp0613@linux.alibaba.com>
-References: <20261106071459.2003-1-cp0613@linux.alibaba.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zhym8irm5tgqm4ajp9nc4amwuhor7ewb
-X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D299F1C0002
-X-HE-Tag: 1793949311-64134
-X-HE-Meta: U2FsdGVkX1/dtN1oti5SxlMXdCmnz9jOjlSjcgphul1HaPseM9KRM2hXaPkwhuE84BuFMV4f02Ymetd5qbPrgazceUCcoHaXM5OB0dl9mId4rC6HLKLvhY8DfSs/kl+vm1ojeGg2ZXBLs6YhYf8O0wtykW8ub5bqFJMdL/oGJIEzJY1taXWUKZFp1evUA2m5rjjuJzB8p7AScZVNCRs12KthuCNt06nxjQlOq0yzYqmBLpZ3u/VZ3/oOw2hq972tScBVLNO2wem3pa+uGKrPDVA37ojyFEv2sln49st/t6DUSvd+b72swVF6vwy9n/8V2UNEP3XFt5bdNaqu8bxesEr/tC8DMBN+s08XHxkkVi4rKPgUxkOavc07+yu4KqPNFxFCOVDlwRexHfDBTRV5jopMfvHYrl2o5tndhXqNnTiKftD5pSt4kUOkbKR5LNsstA0ZCPwEbRYT4VRhqj0+WWvt08sTEjS+7aKD+iPFRiaQDQQQI2J0uxOMY64MkX9MyDF4tXcoR9HRv4afCrNop2nboSIWVVPmrGTj62W+Q90h0asMwYpmUNxO4NWdUw18UraLn/EDzArslNvpKGVAVQysHlLQUEIOkVxzFlLnmyzE0Qq8Gq5S006fd+3eb+1hHIiaHgg91Ib6fxbRlLovJZSfUBy4HJw0vp++Hm5CVGzDM2LA34L+j0Nt+Y7WhwLwBUOYOY7zpdG/wKuVBRnxfefMWA8p4c6NHFZzP6eiKsEvDuLxPIvov12xoFfzSzBCWbHaV36Nr7Gn0Up3TMAKc+eDxFIY9xHemofnPCxGGBXeLGwElVpEmUKWGHZ7a2q0Vf4hbqjyhePDX2Xi0s5BQCzdJ+sxkispFfZrl0L6Iwl4mqRtthnSiNgh5JyduYyQGHTb3XUImI1r1AoCp8+BLHpBq/eL+gJgyxZL/rukz5R0hr2SP0tnV4ebNLwSo0tc2hMhrVciPoUkb333Uaf
- 9iv4Ew4u
- 31Zm2JfiuIsho6XT/VfMBBL3gM1HUPNe51Em3tauOksdlO9VVr6dBniaMxhVCj/yH7kNvqQ6xhtuiYvRurHkt3f9GLwxSx86w/tz7BZI0DujLcByS7euz3LRf++7SLNuKtyTSz9Uol3bJtZHxklqzCeji//qJJVT8GtQaE6nsF7z4PdlqqqCBzCn4LN/NKzgwkeG7kGsiMolE0Khc4ZGlZdlSEsNStzD6Zxd4ehBXqPyESY8gLnYE92oMctPehrTvjwck
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E69371C0006
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,FROM_LOCAL_NOVOWEL,HEADER_FROM_DIFFERENT_DOMAINS,
+	HK_RANDOM_FROM,INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: x8q7soyi9owe9kb7i56o4yhyhi8mz5jd
+X-HE-Tag: 1793949839-973599
+X-HE-Meta: U2FsdGVkX1+5U6s2ePmB5MsFXvDkg3fqLLFngPSkAZKxtP1zplUc1CX3LDMV3EDA+og4pjEIGOXF6mtqH63d61qA8OsJQ9QSlNhV5pMvJRhGW/pdX/f4tspzVP+GdNMCrcIn5kHxNhrgF/H4880rS7+1+ppY9lwhUwQLDkhkghn9XWGcDEKleqtkQFW7nWufGZ0XEVCog9yZAzSuhsdtZiGssJkUHHe/LmoGLMa8ZqG7F2UVgOy1+JFPIElM4DX0JYr86ccavBz3XjnBxQRHjl/naOSeNcFFDFSM8TbG2Xw85YQVciD0ZoTjLwf/hLffFdI+7+TxYYVpNXm+Tqy5IWidJfNJL7E3KD2/LWbDjTP8cMrU62QyJ/olDl9RayQhkT1/pFTKEocX++AUBUUizaVF5hNUVDjtJbL3IRBy87ZkaSw4NVtLgauTzEIkwsg59c9Gw1oFQ92vlOwDRK1ThH/bUkVwlNe13bsm4jL8LWquLvvd9wbKUq2/9RLOMS9DTfBlyo7OIUjmDkmdukn9b/m6bkbnDkn1n1uxG5hpqzl25tvbXCVoeEjx+tly5GjGtmPNpsv1uPlAb24b6UHEd94nMmqBcoBkZKFtwKqWPYvxz3eIbGUuovjvNuzY3zxDrplpLZwGwDpQMDhUACF5yP96rbSO97NdXehot0IGO9EcZPkaFyYMSnLXwVhCAuK/9k4QaTBp2IeDk8ermYfNwt/AlozjZ/TjBW5tiyoXMggg3IRToEL25YjuhjUUtH0fXzEHCqZ0FnjX1+EEm+Xt+a1vC/0TIwNjSeFwqfdPrI7BLmD7U/LuHH4ncSeEVGt3LwitFMFEAjANQfYpEuwumt+0briD0J3FoADzg67b9R3RHLapN652ZiHB0jD6AKCun8jkuXF86FbLtmYPK7K3kWJFETgLtFCA/3byHbVH4AjppQLqpRvsPmUXv812To7sYT/ICa4Nb6MGN7kf7mm
+ sATPT1Zw
+ 8BUo+gY+yxn4HPXLpLIw/Nr3sUnMC3Angog0/g0O04Jn2JE0LhffdRvzDcniN4qUDeuLqm57w5QtVQNSrrvPXPJ1MrGxgncRM/Rywy8eUJ0neGIpUQ9NSfVePKCYIzLJlJItVQEjFVCr0Phdbw9OnaW+VckEOXlNw1JsbAKu4Z8LGaxYnMgm38Ip3oOM1ybC+WS+Fii9+72H/xhAkWtoDc8tWKbHhjDZVAttQMLfC6oqW6Fw+uw64r7Oqf7Ba4hPNLs9YD0HExOK/QgzyHBmFYrsFl4k8dwuOdm2EmUTkwbRiaw9wniVAO/ncbGCh13UA3zfJiTOa1Aj7k63JKdHFSyZxtlqjx65Xf2Yr1OjVYHJrkvRcnzOSnUXou+GjXEGF42qoV8l2UfYAsXMlL1nKEbAVJiHVssmh/rd8934WyIJdSGVjq7KavYIUzJF3Kc8sYo7XdFqxSdBhMjjcObzj+wOYZBbdRIIq9mNF9+GBWwJUNkwAPkF63MCdRo+PZrilwyqXx2rcrQLtdvKs6Sj4itG7Mw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,101 +123,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Teach the live update vmtest runners about riscv64, so the LUO tests can
-be run on this architecture.
+The kernelcore= and movablecore= percentage calculations multiply the
+total number of pages before dividing. On 32-bit kernels, the
+intermediate unsigned long product can overflow, producing incorrect
+memory zone boundaries. With 2 GiB of RAM and kernelcore=100%, a
+32-bit HIGHMEM kernel incorrectly creates ZONE_MOVABLE.
 
-LIVEUPDATE depends only on KEXEC_HANDOVER, enabled for riscv64 by the
-previous commit, so nothing in the tests stood in the way.
+Use mult_frac() to calculate both percentages without overflowing
+the intermediate product.
 
-Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
+Fixes: a5c6d6509342 ("mm, page_alloc: extend kernelcore and movablecore for percent")
+Signed-off-by: Avi Weiss <thnkslprpt@gmail.com>
 ---
+ mm/mm_init.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-Test: qemu-system-riscv64 (virt, -cpu max, -m 1G, -smp 2, TCG), in-tree
-runner "tools/testing/selftests/liveupdate/vmtest.sh -t riscv64 -T <suite>",
-all four suites:
-
-  ok 1 luo_kexec_simple succeeded
-  ok 1 luo_multi_session succeeded
-  ok 1 luo_stress_files succeeded
-  ok 1 luo_stress_sessions succeeded
-
-each with "# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0". The
-simple suite's serial log shows the handover round trip:
-
-  KHO: found kexec handover data.
-  luo: Retrieved live update data, liveupdate number: 1
-  # [STAGE 2] Test data verified successfully.
-  --- SIMPLE KEXEC TEST PASSED ---
-
- tools/testing/selftests/liveupdate/config.riscv64 | 3 +++
- tools/testing/selftests/liveupdate/run-vmtests.sh | 2 +-
- tools/testing/selftests/liveupdate/vmtest.sh      | 8 +++++++-
- 3 files changed, 11 insertions(+), 2 deletions(-)
- create mode 100644 tools/testing/selftests/liveupdate/config.riscv64
-
-diff --git a/tools/testing/selftests/liveupdate/config.riscv64 b/tools/testing/selftests/liveupdate/config.riscv64
-new file mode 100644
-index 000000000000..edbc551199b0
---- /dev/null
-+++ b/tools/testing/selftests/liveupdate/config.riscv64
-@@ -0,0 +1,3 @@
-+CONFIG_SERIAL_8250=y
-+CONFIG_SERIAL_8250_CONSOLE=y
-+CONFIG_SERIAL_OF_PLATFORM=y
-diff --git a/tools/testing/selftests/liveupdate/run-vmtests.sh b/tools/testing/selftests/liveupdate/run-vmtests.sh
-index 6f592aec0f85..c3d828cfd63b 100755
---- a/tools/testing/selftests/liveupdate/run-vmtests.sh
-+++ b/tools/testing/selftests/liveupdate/run-vmtests.sh
-@@ -4,7 +4,7 @@
- SCRIPT_DIR=$(dirname "$(realpath "$0")")
- TEST_RUNNER="$SCRIPT_DIR/vmtest.sh"
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 2a0e782a151d..27a50ecd5c20 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -7,6 +7,7 @@
+  *
+  */
+ #include <linux/kernel.h>
++#include <linux/math.h>
+ #include <linux/init.h>
+ #include <linux/kobject.h>
+ #include <linux/export.h>
+@@ -448,11 +449,9 @@ static void __init find_zone_movable_pfns_for_nodes(void)
+ 	 * amount of necessary memory.
+ 	 */
+ 	if (required_kernelcore_percent)
+-		required_kernelcore = (totalpages * 100 * required_kernelcore_percent) /
+-				       10000UL;
++		required_kernelcore = mult_frac(totalpages, required_kernelcore_percent, 100);
+ 	if (required_movablecore_percent)
+-		required_movablecore = (totalpages * 100 * required_movablecore_percent) /
+-					10000UL;
++		required_movablecore = mult_frac(totalpages, required_movablecore_percent, 100);
  
--TARGETS=("x86_64" "aarch64")
-+TARGETS=("x86_64" "aarch64" "riscv64")
- 
- GREEN='\033[0;32m'
- RED='\033[0;31m'
-diff --git a/tools/testing/selftests/liveupdate/vmtest.sh b/tools/testing/selftests/liveupdate/vmtest.sh
-index dea5a6fb2abc..70a8d978077a 100755
---- a/tools/testing/selftests/liveupdate/vmtest.sh
-+++ b/tools/testing/selftests/liveupdate/vmtest.sh
-@@ -25,6 +25,10 @@ function get_arch_conf() {
- 		QEMU_CMD="qemu-system-x86_64"
- 		KERNEL_IMAGE="bzImage"
- 		KERNEL_CMDLINE="console=ttyS0"
-+	elif [[ "$arch" == "riscv" ]]; then
-+		QEMU_CMD="qemu-system-riscv64 -M virt -cpu max"
-+		KERNEL_IMAGE="Image"
-+		KERNEL_CMDLINE="console=ttyS0"
- 	else
- 		echo "Unsupported architecture: $arch"
- 		exit 1
-@@ -37,7 +41,7 @@ $0 [-d build_dir] [-j jobs] [-t target_arch] [-T test_name] [-w workspace_dir] [
- Options:
- 	-d)	path to the kernel build directory (default: .luo_test_build.<arch>)
- 	-j)	number of jobs for compilation
--	-t)	run test for target_arch (aarch64, x86_64)
-+	-t)	run test for target_arch (aarch64, x86_64, riscv64)
- 	-T)	test name to run (default: luo_kexec_simple)
- 	-w)	custom workspace directory (default: creates temp dir)
- 	-k)	keep workspace directory
-@@ -87,6 +91,7 @@ function detect_cross_compile() {
- 	case "$target" in
- 		aarch64) candidate="aarch64-linux-gnu-" ;;
- 		x86_64)  candidate="x86_64-linux-gnu-" ;;
-+		riscv64) candidate="riscv64-linux-gnu-" ;;
- 		*)       skip "Auto-detection for target '$target' not supported. Please set CROSS_COMPILE manually." ;;
- 	esac
- 
-@@ -194,6 +199,7 @@ function target_to_arch() {
- 	case $target in
- 	     aarch64) echo "arm64" ;;
- 	     x86_64) echo "x86" ;;
-+	     riscv64) echo "riscv" ;;
- 	     *) skip "architecture $target is not supported"
- 	esac
- }
+ 	/*
+ 	 * If movablecore= was specified, calculate what size of
+
+base-commit: 36aad21d50d1af3f6954bb0c988257a908202477
 -- 
-2.50.1
+2.43.0
 
 
