@@ -1,185 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9602D606A32E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A492E606A329
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=selector2 header.b=pXM7tqqY
+	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=relay header.b=Ago+KLWk
 Received: by kanga.kvack.org (Postfix)
-	id B12746B05B2; Fri,  6 Nov 2026 12:00:07 -0500 (EST)
+	id A59236B05B8; Fri,  6 Nov 2026 12:05:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC3366B05B4; Fri,  6 Nov 2026 12:00:07 -0500 (EST)
+	id A09BD6B05B9; Fri,  6 Nov 2026 12:05:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98B026B05BE; Fri,  6 Nov 2026 12:00:07 -0500 (EST)
+	id 91F846B05BA; Fri,  6 Nov 2026 12:05:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 697756B05B2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:00:07 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id DE360C0154
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:00:06 +0000 (UTC)
-X-FDA: 85405306812.03.1AA629C
-Received: from AM0PR02CU008.outbound.protection.outlook.com (mail-westeuropeazon11023111.outbound.protection.outlook.com [52.101.72.111])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CB8CF20013
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:00:03 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=pXM7tqqY;
-	spf=pass (imf03.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.72.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 64E8F6B05B8
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:05:27 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E83561C1F1B
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:05:26 +0000 (UTC)
+X-FDA: 85405320252.12.EA54CFE
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 0BCEA40004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:05:24 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=Ago+KLWk;
 	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793984404;
-	b=7TTT0pJGJowZdmdjxk04O3vNrIWejmoko9xryUlrU7ZhPlIcbqsO6CKzW/pMrjSk+9PEot
-	idHhVGpqMm1ShuEDxFkE9pmZVv2Qna7kdk004tRknSj2eNGCyEXhsogsXpgSgw+DlF5q1K
-	cgYiLuV3PL0sDnma5lEvbpgaR+nN28I=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b=pXM7tqqY;
-	spf=pass (imf03.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.72.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793984404;
+	spf=pass (imf17.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793984725;
+	b=e/VP5fUcAkYsLD6yFlFmF/8KI8HaNePljKknAPCLx4tGRZKIk8s1ib4nA/qPTdDMFNPHCw
+	IKgzXjRzE6KrffixBdNdaDuOW5ZIh8hXHPW/oGjqR372/jeUFNuPYDX6+mBXnmVZ21eNVX
+	4THi9pFCsHDvtSD5+OgumiruKv7zAcw=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793984725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xUrvLi8v5PVW3mtZpb5r6hg1JHrY+OISzmk00mxPeZE=;
-	b=5oRK2Vly2atgeUZR3VWgVwL7ZLwF+Xn/bmBIkkSUS26UjIWpgjRyQ/iHLeeAKj8HaPKkF9
-	KQZx7od++e7k4Hyqq0gXNIT/T5jQd0U91kni2v7tLHaRGHZMuSg7/EFPpdQRainRPHPqgY
-	7zXlCjf+RWvOQz631E/xWGfWXDNhLRk=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=OQgrFayHABR+G4CQ4VGyAXpwmxjR2wKFXYnPvUZzVE4RSo4MGEHmgAmLXU3Y+2EC/0dK4zlgccUv2Jy0axOUvXFhtHt4x6N4fiX6Ma8fEtouTILgynzVG6RXwYpp5DsEGks1Ps/EeaPU5R9EwysgNwp33wq3+L+BJqWt6qrzqJsFXI8CSiJE0sqC89E5X6MUI7S6UfCUkLuqteFbrbSpPFcd0HWO7BOmy0ET/oxDwpMmRT8WwSH3Y+P6Mdi4Og5Lhq10GMiibjmNp+P1ioB9ip81J2KDniTzMlOptUNbUvSLJZ7wqzYn0E7aQhpaqPS2f/AnfGhwzphcs2tFRzvqvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xUrvLi8v5PVW3mtZpb5r6hg1JHrY+OISzmk00mxPeZE=;
- b=TENa6d645YalXkziQkhTkFWDrsWBwYJQMoieKqpAZs7AlfWQ9eMfoHCwA21KZ1D8GHPpFfpGc5ItRv013mpBfMgrP71sBHlg+FJTOU+ALK8A0jYuxZnz7h3Oc8dkjGmJE6ROGTsCkXcCZjRQJRwA3OlCDyhbVzFWGhVaCtq+qiUVlj69t1gF9xXKQKHJNU1SvKtEgTdzaYJGIVl6bq4GZJLAvORXDGdFoxJ6guaMGXJwoFdhFtYMKdYzdU9ciNs4SvCyBFJWtbDp0sUaCaGrGN5zY3jgYfUUcdHojoQ3Do/TPXY2tvDWIe7XVMQRCzYklvW/C31R0m6LNUArQaEjmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xUrvLi8v5PVW3mtZpb5r6hg1JHrY+OISzmk00mxPeZE=;
- b=pXM7tqqYG/Hgt3Y+cLvq2/ncgSPjsszyn2SrG/QEXpFNu5ywcKHwsMrA1VbykipOnDGGlJh5CfVB5gicTxGEos4QOffcke6ur94o9ohX4Rcqz3fSQUB0sxhcIJ4lr2NaskC1/YkLlBoisSM9Dq2Pzt383A2bEHKwAS/vUuJHqZMxnZUkFs8DhFt55xLj7cMKRgnZiZwvp3yO89R4VDp3mpS2iiAelN/2rMu2Bn9/Qe6d09d5g3yajAbKG9OxYebgZf9n6OLA2rAYpLZM119GMq9F8bLb5P4MlD+++Upy91C8oFTe10yrovFtLvGvTe8YlTRJ1m20DcCGQ+OmFTBiUQ==
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com (2603:10a6:20b:5ff::9)
- by AM9PR08MB6690.eurprd08.prod.outlook.com (2603:10a6:20b:301::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.9; Fri, 6 Nov 2026
- 16:59:58 +0000
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8]) by AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8%4]) with mapi id 15.21.0592.009; Fri, 6 Nov 2026
- 16:59:58 +0000
-Message-ID: <2f3e4557-f4d0-43df-bce2-c653d1de305e@virtuozzo.com>
-Date: Fri, 6 Nov 2026 17:59:56 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 0/4] mm/huge_memory: copy PMDs at fork like the PTE
- path does
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Peter Xu <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>,
- kvm@vger.kernel.org, =?UTF-8?Q?Lo=C3=AFc_Molinari?=
- <loic.molinari@collabora.com>, Lorenzo Stoakes <ljs@kernel.org>,
- Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
- stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
- <20261105211819.2a6a349b2edc077784ca52f9@linux-foundation.org>
-Content-Language: en-US, ru, sr
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LqH9iMIGaGgfrltDU+0qHbUT1ie4g3kkbL58F1jr5Pc=;
+	b=CJrSSKaIrDRWZ1Ma4WRcFTILf/AMKPFygSqyf0DW00maNE7H7PO7gre2MKEpLWdcaWnKCT
+	rH0JqimlHvepoa75AcIig2yptXhThM6AYKI0ifQlCQDpv7rdbM3P1Eg1uc6XI6L4uRBQNs
+	caDZcBwZIBW3hpBuSASxG9MrjrvaEzw=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=virtuozzo.com header.s=relay header.b=Ago+KLWk;
+	dmarc=pass (policy=quarantine) header.from=virtuozzo.com;
+	spf=pass (imf17.hostedemail.com: domain of khorenko@virtuozzo.com designates 130.117.225.111 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=Message-Id:Content-Type:MIME-Version:Subject:Date
+	:From; bh=LqH9iMIGaGgfrltDU+0qHbUT1ie4g3kkbL58F1jr5Pc=; b=Ago+KLWko091EDuZeHQ
+	xy4CpnbJrV3UtJFWa/DKDNjFPXScS1j02Z/HD+SIdAiU/sGojmXnMMdoBcpTl5UuNjnuPQcOBXYg5
+	tdY8AVDg0m9ETwjl0V+ANAPL/LzlSk4ZmQ2K8pR2Yuaih6M0O+Ah42qtt3fMvd/rS5UEAZ0+gg8Wo
+	aMQlfaunc7lyAcg0af9VGeEcgDBX6jaLKRBo80xp3fx8ndLNqW5kLe0tAAtJv+gscRrioHhxF1+9o
+	nqS2GnBc+Eg06N4bD0KqJyWaq/er2+KCnhK4v3X3OgcUw45U6Rou8m7F54o6XhdJAq/pGuFUsVxO9
+	LIn6HYM3b6a7Fnw==;
+Received: from ch-demo-asa.virtuozzo.com ([130.117.225.8] helo=f0.sw.ru)
+	by relay.virtuozzo.com with esmtp (Exim 4.96)
+	(envelope-from <khorenko@virtuozzo.com>)
+	id 1xPNJS-00F6fe-1u;
+	Fri, 06 Nov 2026 18:05:18 +0100
 From: Konstantin Khorenko <khorenko@virtuozzo.com>
-In-Reply-To: <20261105211819.2a6a349b2edc077784ca52f9@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM9P195CA0010.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:20b:21f::15) To AS2PR08MB9075.eurprd08.prod.outlook.com
- (2603:10a6:20b:5ff::9)
+Date: Fri, 06 Nov 2026 18:05:20 +0100
+Subject: [PATCH] mm/huge_memory: use folio_dup_file_rmap_pud() in
+ copy_huge_pud()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS2PR08MB9075:EE_|AM9PR08MB6690:EE_
-X-MS-Office365-Filtering-Correlation-Id: a491597c-7e47-4671-b75c-08df3c2763b4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|23010399003|1800799024|7416014|376014|366016|261022075727099003|261028144727099003|261102123227099003|261026121527099003|261026140227099003|261022105027099003|261009223027099003|261021121427099003|10067099003|4143699003|5023799004|22082099003|18002099003|56012099006;
-X-Microsoft-Antispam-Message-Info:
-	KqdUF9srlb+YSkRBI7D+QRBoDrPHTJ4s32/mKzcOckbykMWN++Zp5aMSw7Rf9JMy4n+tkOMvYxfZkmL4vlRdBSjQ+jyrITBjXIT2Tfam4/C2LxLbY/cXK4RdT+Hf1TmrLNhtQK/SIqWUv0gEGTUKrSuF8K7NhMfJiQfGUnDmvJMsgfMIWhFSGiTRu0eSYgsaDpTV7hGax0C2k1V/b3uygu9Yyk7lStKJPvD+hVrxHPIn5hxQPiwTeaAnHktbEOKjXNtDuMLcp/k1m65olA24tYWLOL3uw7CdCzMhOgfw0jP8Tt7Gg/a20b+jbD/cdnqnAbr0m/0NNMMU9IQivBXDN+tslBMpzKdVEClm3vjJUT0idu329S8PAUAmG06HcF1O8G8MjuwzoBnCU0cCD4mXwh6aslGlq9jtpM55b1JLsGRg7xEUMehtAkuqZw4O/pnN9KUwsacJBKqN+UKyR1s83W35FlkqHUCI5JMBURCW7tx3g5AJaEmigdGOU0zprUSi4Pev9REQSGK1xO+D3IAyZpMQy9QtOJc5sVaM9i8nct/J7Ccn0V/wwSRHEpUlYVt24BSQREP17WXguOepV6vVD5qE3/Zudxoc4F23Htv4756Ii+3AcB4TPxt8sWO3l5iG
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR08MB9075.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(7416014)(376014)(366016)(261022075727099003)(261028144727099003)(261102123227099003)(261026121527099003)(261026140227099003)(261022105027099003)(261009223027099003)(261021121427099003)(10067099003)(4143699003)(5023799004)(22082099003)(18002099003)(56012099006);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?c2t3WGlkZGRURjBtUDZ0b0RKZU16aGRjR1NZd1lEdk9QWTdCVkxMNzZyNmdu?=
- =?utf-8?B?RHpTL3B3K2FNdGxocGFXTWczRlRPZ3phNjd4elNSTDZzcFYzMjJ1aGxpMExV?=
- =?utf-8?B?Z2dpSXRkQVUzelBlSmtYRkhhZWtMUENEcTE3MmxtYjlVV21JcmtiVG13L3l1?=
- =?utf-8?B?MWZlZGlYTjRzTjBPQWQzNkZpY3VaeWI4VUxEYlVuTFRUamVzTkd5ZEpZdnBQ?=
- =?utf-8?B?NTFiRTN2cklBS2RleUtkQUplK1N4dHY2d1ZPTU0zOXFiK0FSMWpIaXpaNE04?=
- =?utf-8?B?NGJRN244elhudXdXbzVTSENRMExSRkhGd1Y4N0dqeGxRL3B6YmI1VlpGaUgx?=
- =?utf-8?B?N25ZMnRoM1VaeWNjWmZxQTIzT1BoYWFqMS93a2lEZFNDaDM0SWF6dzAyVkM2?=
- =?utf-8?B?aURrWlUxVW90UndRUVNIOHRzcnVIVkVtNFBUU1lmbiswWkk3M3A0a3VUcEho?=
- =?utf-8?B?bUFpMUMrTXZjWU9BZDhCek5KbXRIcjF6MWw5QWgxUWUwN1B5NE9ZbUF5SEd2?=
- =?utf-8?B?VDVlRTY0Q2Fsb1ZMN2VDRjVXdW01c1diVlJZaWprNDNpcFIxU3hLTmNacUg4?=
- =?utf-8?B?ZmVhWlJGWElpdUxYbWFUSEd6eCsvUnFzRDlQZytKRFhjR3lCNTZBOTRnMUJY?=
- =?utf-8?B?Smo0MFlhcGZJU3ZFRU1aOTlFWk5rbUNaVzBzb0QzWllxeHFYSGF1TTF0aG5R?=
- =?utf-8?B?Yms5R1A5MWUwakpSdnZhQ3hlV1JYUU16N0RIRnE2SGxRVHo4d3pBdDR3MkU3?=
- =?utf-8?B?ZUR2N0s5cGlqTjRXRm11ZURoRU9wRUtHODRYN0RLZzl2Z0tHSWpPZzNTUXIw?=
- =?utf-8?B?YWxwMkxFM3dNNE5jQ1F3ZTFKNGtpd2FDUjRYN0RGT21ja1psa0NRd1pHTzJp?=
- =?utf-8?B?bENwMWFKUkVNUHg5TTE1YzVxbjFhcCtrR3o2WStYNUNLbkozTmxOem1jUjZV?=
- =?utf-8?B?cDc4SjIyL0xoL00rRTFneXNuTUpTTDZyTFBzdW1ZbzlxRUVMeDVzM3IyaFJO?=
- =?utf-8?B?RG9XZkR1VGNOSUVIZDVMSmNRUkg2Mm15cXhSbU9iakpsUG1ZUm1pYUFWeHBx?=
- =?utf-8?B?ZXlCOVRLTk5FUVEwc1lJa2g2UzhxYnRvNlZ0aU9YaUQ5YmEyOXBjZ1VpN09q?=
- =?utf-8?B?VHlldXBvOUg0QXdPMzVwZjE1U0I5QnhxcFc3eFliWUN4TkxIWUwvUDBiTmpH?=
- =?utf-8?B?cXA5aVArOVZwRUJDOGRiZUVGUExuQ053UURiUGVFUlZkZ2YzOXBPNm50Y0xX?=
- =?utf-8?B?NlBENVJnc2FBd1lzNDQyeWdCeVlBY25SQXA5b01vVTdPNnU1dkJQc3VnTUov?=
- =?utf-8?B?YU1maHJrbG1IdjFwKzNkT2Y1b3F2ekV4WUExNDl3eVNXWkRuM0pRdS9NbjN4?=
- =?utf-8?B?M0tvaUJhZmlIUDQvUzBpVXhaSVF5NktzSzRzbmdWd04rZnNIQnZUa3lpUkQ1?=
- =?utf-8?B?Ti9qczk0NEVONXJCQnhrcDFyamQ2SnI3RFJ4M25sbk1mWnRoRE9FTVdNSk1E?=
- =?utf-8?B?S3VJcVA4SEx1NHhHOGdNa2lBdThsZ0NjRjN0YW9sa0xrM2ZwQ2h1OG9FUWhn?=
- =?utf-8?B?ZFowMW1nRFNJY2VpS1NCM3lBTmpQbFNTT0hUZjZpZjJCUEF5c0Z0bnBHUHM0?=
- =?utf-8?B?ZDVqZCtPbXNGSVZGaVY3azFvSnYxbmNaOGltUmFuWGIrYXZlNlJzQldtemk1?=
- =?utf-8?B?TW90eVEvSk43UllacU1CR0ZJSVd6eHhRSWpGMTJSa3ByZVJqTGZMRE9XdWVL?=
- =?utf-8?B?WHpZVjZvQTdYRDM4VTFvUHp5WmZSZHVRblozTll0VkNST1d6S2xRelBMb3Jy?=
- =?utf-8?B?MDRlTVhaaEZVbzYwbG5WTmtmeTVyRDFHWlhEdEhWMWtjNDRUekdzUXg2VGNm?=
- =?utf-8?B?QkpYNXZZK3o5c1lieWdCSTNhS2N5WG1KOGNEQ2FvMzNtWjJKSmJqa3VZd21F?=
- =?utf-8?B?b3p6cFAvSEZEbkRldlFmVjhnWng3bkt0YjF1b1lCbjJNNmZXQnZRS0R2dG92?=
- =?utf-8?B?Ym92NUM4eTFpM3RIQmRvSGFZeEZ1Q2ZDeGVpcnBuNlA5ZTZ2YW5CTzhoZ3Mw?=
- =?utf-8?B?cE1iazFEL3dTU3l0Qk1vY1FkcnBhRGtQVjRIUlRCVm5qM0RMclRreVBSREhj?=
- =?utf-8?B?VDBpRWphTzBZK085VElZUDJMbThKVEpKKzcwckxGWWkxdDVIMEp3aGxQYnI2?=
- =?utf-8?B?WHI2dUJjeUVlRWJBRXIwbzBlK20xcWVmVHdIRnEzbFpoZ05nUnRuejNDclAz?=
- =?utf-8?B?YjMwVndWbG00Z0tyV3NUOVNLRFdrbUxiZWx3Y25xY2dOVmgzbnJ3MnB0ZW5G?=
- =?utf-8?B?Y3Y5NUt3L1V1N3g2NW9odVpGRG5TelNDRlNmQmpCMk02SHJjUVl2QT09?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a491597c-7e47-4671-b75c-08df3c2763b4
-X-MS-Exchange-CrossTenant-AuthSource: AS2PR08MB9075.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 16:59:58.5389
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ogzO48TyRfiiw/CvWwTRZEIIM73vwkJkgMBEFZwWnZV6qeNxEzzJPYE5H/A4E/xaoBG9gruOJOSg1i717qVgmw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR08MB6690
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261106-khorenko-vstor-151183-copy_huge_pud-dup-rmap-v1-1-cf8ee4fafabb@virtuozzo.com>
+X-B4-Tracking: v=1; b=H4sIAM8I7moC/yXNQQ6CMBBA0auQWTtJB6UBr2IIgXakldg2LSUaw
+ t2tunyb/3dIHC0nuFY7RN5sst4V0KkCZUY3M1pdDLWoJZGQuBgf2S0et7T6iNQQtWdUPrwHk2c
+ eQtaoc8D4HAO2tRDdRTVy6gSUZIh8t6/f7tb/nfL0YLV+H3AcH7uGbvCQAAAA
+X-Change-ID: 20261106-khorenko-vstor-151183-copy_huge_pud-dup-rmap-820094c56b90
+To: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Alistair Popple <apopple@nvidia.com>, Dan Williams <djbw@kernel.org>
+Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, Konstantin Khorenko <khorenko@virtuozzo.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3715;
+ i=khorenko@virtuozzo.com; h=from:subject:message-id;
+ bh=gxuw6LjVBrmV9639XN62UX0bOkR/j46xaDVTVYxMcMc=;
+ b=owEBbQKS/ZANAwAKAVGWCkf5YVwqAcsmYgBq7gjRCymH1gaE3n+O11UPy5GKgSUYwmvmhhEug
+ XGKykHU5QWJAjMEAAEKAB0WIQRWD23IPcXT0GO9CCxRlgpH+WFcKgUCau4I0QAKCRBRlgpH+WFc
+ KiAYEACov2BLVf6uA7xgliUWGHkOGWR3GCd3SE5HdxqeC9cfajx1YRp+3ZXchQbMMFjnjzeq/md
+ y086jisNW1nF4Th1SH8pAXOWOwD4PwbOW/GVAZrQFJcUFW4g48vZW/aFDOqThcvg1R9QUfpkYAF
+ MjRrB0i3xJzMEMaXtWt44wQeeRxJP9tq3yMqJAoXz15NTStwwvdCG8PAAZ6pqoh5PezLcf5m59g
+ udW0MGwNMOrC/IukbEzvSb+KuwSeOk63FS4dpDr+nJd0oPHzKTzLpJ7Cmio9Ge+FIWlN2mh6cdr
+ 83SvhFTQG0GNCm0z8qTAe7TiJMEWcnTm6nIWA8B1jSCD7Zk9OTxe45GEdMmkfRZU+BYNIeq8jPU
+ myeEL6Uyg5fzo9b0ch1ln9qXG0TIzs/LJ0dWkVsj5ikVLQjnIGSw3CarWo/3UQLsbGMFN03Yge4
+ vi0mFfz8tplVJFzxHviraCZTnHqCVq/9K6gj9eOwdd1w78zjmmiKE7DGHcDQmlOisHbJoSnqS1W
+ dvfXCimmSQITK9Sna9W7BJEDWzSZbw/QV+60OLvceSvmfqWEEpXiueADyXRHNHW8+95XSz+e/iD
+ vFN2o92Y3OkOF2otlb9DeT6ZikMcAglhovQTQ+HyrYVdSo64RZTVFjNcCW8r4TnOaQOzr/BLhpW
+ oJasVA+qM7v7wxw==
+X-Developer-Key: i=khorenko@virtuozzo.com; a=openpgp;
+ fpr=560F6DC83DC5D3D063BD082C51960A47F9615C2A
+X-Rspamd-Queue-Id: 0BCEA40004
+X-Stat-Signature: uyk73zbgt6wobwodikc4ohiemgctszy6
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CB8CF20013
-X-Stat-Signature: zdg867t8pq6pn5uq94o8grr7gtqwxmqa
-X-Rspam-User: 
-X-HE-Tag: 1793984403-867982
-X-HE-Meta: U2FsdGVkX18BT1KQULbxqYdzHOaHdMAcL2F2fSiM00iT3Y5FVeoookIe1+37BIPIxiKi3hCfqWu8vTpQFADnvLALT4OF2bxq/gViTsM/CfZtmGlJCMvX8Ar+jEZeol4wBo3hjr1c5TDOxMFmDDkxExtHMrbkdUj9biRQShApAg0jE9gb9qq4YHY8QFtjkJH4rYjZelyFWOHF2Ey3qnq9e4nBqLnz1uqSbjgpfssXb9g/i41sm5r3DbQDbTOolQZA/b8jBDGOvLJ1moDu08Sv02mXHImKw4BBWooZDoGn2ENq6t2NFPv8ud9jtfroA0kVZiUFChrD7gtYHHfUrSctnndGPz3+Ur9o7Z0a8ACzKga45dLbR7Q7wEEzD/rwMefzF2RpfcUEbafPqeksDgeAyhLHUFpjvBWPYLNWgNFbfdpTYWuJAtjeachHS33PxR/HBCjW27GhJgHDCizgKrwAeRfmRk4dM4HS2gT5/sPNgScdLhihDkCLRwtI/WKPywlOTF+3SO6s8R+69nM2jxKWUwS9kVxr01QGh2bIUIAf8UTcAabgBaa64Qr3BUzEEZuVuZG0GHgj3n0v1G5w1MqZ0865gi/n5wWWQBrkDZJtDjVp2O/sDwV5Q7arvoqOXIj+US8fc9LKJ+MnKEFtNZv+3XR9XhyJdE3YpisLnEVN7rKZGvcS2Ocnud4Pv9U/4kVfMF/stxLCfgM7+N5YT1E5nU79WZRJqJKKZaOFoTEPX69gPOM2na4DrBdEyoa4Dkj1ym08zz9bFPS+MSQvJQGSCdJ+h5vBS9/9VsWp21NOfxXLdOTKGxeR5gZXHRoFljuRgzhJLL08rR/hPxHSi/Bv6cUuRfbLEVGSHVNTYIMB6h/TwV/8Gy65q1W6pf7hoCNquocAHFD+3LvG0u6luN/qA29WbKq867pMCb2kjkGvALVmlPhS0vyUhlqOYmMBGRTJ38PX8SGA9N8Jlpvmd/D
- c7nU0oq0
- FBwhkuyzfO43u9yJZrG9QTFIgDvn4Z0d9mJpCgYr9TY0btviHw5ohww/C7m5xZVrrvDeZ9Rz7yvSyScbeTFmJsrYfbtJoKrKwG9jL6mG+ZdiTlD/0q1RpCYZ3BWUlyFGR2BT+9FwCAniuoL+9s/Z1FLRpA+Mmv6r3vze2vqTsI9FfhXYHiVzPFZJZ+wv5UfztSTN3zWsNzKzGgx4SwMfqQkURLp1p+4bZrgpx7xywjtWe0wUmmvEEfyPxpDIxCvCGFIk51sZ+RnGaYT7e6KY2hKImfDvgZi4V4EpXTxxAK9uiomXLvIKoI1j8irZGt+llOIwkbFse/qquKEQZxzUlLaRmArohZx8q/yNeflyX+6M3mRRn2uhVxH+pHaQAMttWzDa/rp/rScHYqEGzc03fxWqDB2QVut4rx0pxvV8woCSgxvepaMH3T+dsvRwRduA4+EJNmNxQxvhELd3HXtCHll8NZ0syFik8V7MaMm4/RXgUzCtZxOHkfBeDIRO9vpxTEjqlkOU4Odc4m7G0jsCaSGKkcRZB451WuRAc9/D0DRM/lQsTVi63Hne5b0CQ3B0aqK4zNsbNu3ce6kE=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1793984724-900387
+X-HE-Meta: U2FsdGVkX182Y9BeuHFSm3EzZSVmjTq+iS0ZFhhSFEVFF4KFFtW7uMCiU5yjT8fKvKuXmzoiuX7zo4FKCODN1L0VfpfW/voS5j/W0qwwJXeWlvWXkvKa9HUrFveFCjmRn73uqeuVN/IReZR8YySp04+oDSOJDVLzJTVzfj2et3VSaGa6Cp/QMaaWnJQFK1zPbmR7gx2alOCFY9FAQH6YLygprJNQvQ2Mii2cqIAZIyyz8B1o7gYNLP3LTAfOwNcC27iZicCsXiWl3UhD/C7GVzXkQRKnMeqFiYDh3QaQN7jtWbXw7d2T4jxCcw3qr88x2wZypRdQIOkWTS1VLtXPq674rPwpr+CLSco2Od6YlKfvLiQqQlDsQhOZRNBSRGOB1x1eRBihH4Ice8xVohFn1n5vO4hRdlTQQ9nBW47Ijdq875XMk9c+s6ZTvDeXYSNNja3ss9NYJ6WBRs0WV+8f5jRZUvnNim3WMzlHB8JMzwbWsETug1UVoJmjHG7vLtPkt+9Tp8ua23jei4U0an7IwyMOKSr9keRICem+7ZjzaQcz+GTDjCFQF1fGKg37PytuqYWlXBdkA5HeZ2Zv1JHvJTzDvqs4kACz8tsGQq6gbmJGaNdfCQIl1Src4+NzxebmMPMRdFwsEaI5xhlpnylhsFDW3T6y+J/UAQs9prXxvDoL/PurGWVimV/9Jvixczp9Izm1B7K0sCQoSjqJjhhnq71yHIrqyOHMBImNLik4rs/BAwkFvpi1cEP+pkbC1brjQ4ZJkrQfM/POYTWtzxtLUuDJrHJ4n2qfNJhQv65l62OWcUpRqT14neoY1aQBaLEl4yce1Ma07Da7foHSksF8bYvCmy+yktt662N5Sw+0O08UA7EbLs47I76RuhBpIR277NPedwKFkGDDGgsCbZqWcFo7SK7zB70K5SLuKdqhSIuhi6t066cyLP9lZmJvtah/PZWFlTG/7w25DSy02PA
+ alkuCN8T
+ UGU1S3o9l01a0rF/3hDtuM31P4a+ZcZlmFLMUqLNX99HZDljI52iMPlfX6lbU1LfeUXumcRW/qsHQfYP0BZ0c8PcUpAC8B5G814/c8an/WiLDF1bEI06pzds8VeCh/8LeETZKQBn4XjMfGklzURBhKLzyuBG8dleYgTPNasDg4GvWpx2eJTKNECm9qvhG+Q+p7yK8d0hwF3b1R/M3ONPDZiFijhPHs6yHx/qdbdc5ByCQTtZbKnx/nCrnHk7vPu8q+9KPojSRkrt3jAGycF/wr+ENEGes6iT1MHyDjj/bizjCcPXWKIWueNE3GIzcEIFY5YJhqI/X9j6s/5mLhQb2NGU3CuBtNrWqmv3frfqCdGvqmXPLXGn/h5Ed96DrZtkSXmDJJpnE9oTmjQwAVG/ZXKMAjaeJhVYPKxhT3rfakDoIzy8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -188,80 +114,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 06:18, Andrew Morton wrote:
-> The second column assumes that the child touches all the file THPs,
-> yes?  If the child touches only a small proportion of those mappings,
-> or just does fork+exec, that changes the "Cost" comparison?
+copy_huge_pud() adds the child's rmap of a device DAX PUD with
+folio_add_file_rmap_pud(). That helper maps a folio afresh: it updates
+NR_FILE_MAPPED when the folio becomes mapped and mlocks it in a
+VM_LOCKED VMA. Neither applies at fork: the parent keeps the folio mapped
+under the page table lock, and dup_mmap() clears VM_LOCKED in the
+child's VMA.
 
-Yes. I measured it again on bare metal, with a fork()+exec column:
-x86_64 with 4 NUMA nodes, the benchmark bound to node 0, both kernels
-v7.4-rc1 with the same config, 4 GB of shmem THPs mapped MAP_PRIVATE
-with an anon_vma, medians of 2000 forks, range over the rounds. The
-exec is of /bin/true.
+copy_present_ptes() duplicates the rmap of a PTE with
+folio_dup_file_rmap_ptes(), which only raises the mapcounts. Add
+folio_dup_file_rmap_pud() for the PUD level and use it in copy_huge_pud().
 
-  +-----------------+------------+-----------------+--------------+
-  | kernel          | fork()     | child reads all | fork()+exec  |
-  +-----------------+------------+-----------------+--------------+
-  | v7.4-rc1        | 135-141 us | 3820-4036 us    | 559-567 us   |
-  | v7.4-rc1+series | 429-440 us | 1007-1036 us    | 1190-1226 us |
-  +-----------------+------------+-----------------+--------------+
+No functional change.
 
-So a child that execs right away, or touches little, pays about 0.3 us
-per huge PMD: the copy at fork and the teardown at exec or exit. A
-child that faults a PMD in itself pays about 1.8 us for it, so the
-copy wins once the child touches more than about a sixth of them.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Zi Yan <ziy@nvidia.com>
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+---
+David's fix for the device DAX PUD fork bug, commit d90bdc02e36e
+("mm/huge_memory: properly handle refcounted PUD mappings on fork"),
+went in before v2 of my series for the same bug [1].
 
-> And on ppc64 hash-mode setups this also allocates deposited page tables
-> for mappings which the child might never touch?  So a modest increase
-> in memory use is to be expected?
+This is the follow-up David asked for [2].
 
-Yes, but a small one, judging from the code (I have no ppc64 to test):
-one 4 KB page table fragment per copied 16 MB PMD, 1/4096 of the
-mapping. Radix and other arches deposit nothing.
+The Reviewed-by tags are from v2 patch 1, whose rmap.h hunk and
+copy_huge_pud() line this patch carries unchanged.
 
-It is freed when the child unmaps the range, execs or exits, and a PMD
-the child faults in itself deposits the same 4 KB anyway.
+The selftest from v2 [3] is not included, as it needs a real devdax
+device. It is there for anyone who wants to run it.
 
-> But I worry that this change is not an overall win for thp-file
-> mappings, which are the common case.
+Based on thp-7.5.misc of the mm/core tree.
 
-Only a narrow case pays the extra cost, a file THP that is:
+[1] https://lore.kernel.org/all/20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-0-2828fe5a51ed@virtuozzo.com/
+[2] https://lore.kernel.org/all/6f035f97-8b55-47ad-bd52-833b86b8ae8f@kernel.org/
+[3] https://lore.kernel.org/all/20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-2-2828fe5a51ed@virtuozzo.com/
 
-- mapped MAP_PRIVATE;
-- in a VMA written to at least once, so it has an anon_vma;
-- a PMD-sized folio in the page cache, mapped by one PMD;
-- itself never written to.
+Assisted-by: LLM
+---
+ include/linux/rmap.h | 22 ++++++++++++++++++++++
+ mm/huge_memory.c     |  2 +-
+ 2 files changed, 23 insertions(+), 1 deletion(-)
 
-For example:
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 74cca0e3c7264..52fff8dc74213 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -564,6 +564,28 @@ static inline void folio_dup_file_rmap_pmd(struct folio *folio,
+ #endif
+ }
+ 
++/**
++ * folio_dup_file_rmap_pud - duplicate a PUD mapping of a page range of a folio
++ * @folio:	The folio to duplicate the mapping of
++ * @page:	The first page to duplicate the mapping of
++ * @dst_vma:	The destination vm area
++ *
++ * The page range of the folio is defined by [page, page + HPAGE_PUD_NR)
++ *
++ * The caller needs to hold the page table lock.
++ */
++static inline void folio_dup_file_rmap_pud(struct folio *folio,
++		struct page *page, struct vm_area_struct *dst_vma)
++{
++#if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
++	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
++	__folio_dup_file_rmap(folio, page, HPAGE_PUD_NR, dst_vma,
++			      PGTABLE_LEVEL_PUD);
++#else
++	WARN_ON_ONCE(true);
++#endif
++}
++
+ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
+ 		struct page *page, int nr_pages, struct vm_area_struct *dst_vma,
+ 		struct vm_area_struct *src_vma, enum pgtable_level level)
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index d0e19d9e6b651..13caf81cb51af 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -2100,7 +2100,7 @@ int copy_huge_pud(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
+ 		 * TODO: once we support anonymous pages, use
+ 		 * folio_try_dup_anon_rmap_*() and split if duplicating fails.
+ 		 */
+-		folio_add_file_rmap_pud(folio, page, dst_vma);
++		folio_dup_file_rmap_pud(folio, page, dst_vma);
+ 		add_mm_counter(dst_mm, mm_counter_file(folio), HPAGE_PUD_NR);
+ 	}
+ 
 
-- a big data file mapped MAP_PRIVATE that is mostly read and patched
-  in a few places;
-- a private mapping of a memfd or tmpfs file.
+---
+base-commit: 31ea5515bf595046effc74a5bafdcc26320d2d86
+change-id: 20261106-khorenko-vstor-151183-copy_huge_pud-dup-rmap-820094c56b90
 
-The common case does not get here. fork() skips a VMA without an
-anon_vma and without VM_COPY_ON_FORK (vma_needs_copy()), so shared
-file mappings and private ones that were never written are still left
-to faults.
+Best regards,
+--  
+Konstantin Khorenko,
+Virtuozzo Linux Kernel Team
 
-In these VMAs fork() already copies the PTEs of the same file folios;
-only their PMDs were skipped.
-
-> I'm not understanding why we need to mess with thp-file behavior at all
-> in order to address a special-PMD bug?
-
-It came from the review of v3: David asked to make copy_huge_pmd()
-decide the way copy_present_ptes() does, instead of keeping rules of
-its own for PMDs:
-
-https://lore.kernel.org/all/973fd409-64b7-4c62-82e1-c75c784b80f7@kernel.org/
-
-> Changelog is soooo long.  I replaced this Reproducer section with simply
->
->       - A reproducer is at the Link;
-
-Sure, thanks. And thanks for the pmd_psize fixup.
-
---
-Cheers,
-Konstantin
 
