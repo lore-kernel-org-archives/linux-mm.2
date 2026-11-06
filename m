@@ -1,146 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386D6606A32E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66C62606A331
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=FIawBo5u;
-	dkim=temperror header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GAIC8+xY;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=FIawBo5u;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=GAIC8+xY
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=glNjLAFW
 Received: by kanga.kvack.org (Postfix)
-	id 52D1D6B05BE; Fri,  6 Nov 2026 09:18:13 -0500 (EST)
+	id 7035B6B05BF; Fri,  6 Nov 2026 09:19:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 505CB6B05BF; Fri,  6 Nov 2026 09:18:13 -0500 (EST)
+	id 6DB466B05C0; Fri,  6 Nov 2026 09:19:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41B576B05C0; Fri,  6 Nov 2026 09:18:13 -0500 (EST)
+	id 5CA7C6B05C1; Fri,  6 Nov 2026 09:19:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 124936B05BE
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:18:13 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9B48540DFE
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:18:12 +0000 (UTC)
-X-FDA: 85404898824.27.6D444D6
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5D81F40007
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:18:10 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FIawBo5u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GAIC8+xY;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FIawBo5u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GAIC8+xY;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793974690;
-	b=2hnTCWml/3sKi3zb8eJIPGASVfGZ5xhJWMgN4CK2zCn641Ks16vsBNU73/ZaojocTv5Z40
-	13dGAoSUtcE5B/fFnsxWhyt0qOUcFHSUr2xb6CSv4acb7cn4zINX1zlKIdgo6bVroTc7cl
-	o0gD3mJ6e3bW9ffJz2RfwzROaVvp/l8=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FIawBo5u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GAIC8+xY;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FIawBo5u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GAIC8+xY;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 38B936B05BF
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:19:18 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BC4551A0E26
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:19:17 +0000 (UTC)
+X-FDA: 85404901554.20.E75C6CC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E2FBD140010
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:19:15 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=glNjLAFW;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793974690;
+	s=arc-20220608; t=1793974756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DbXOMRc+RxyXDwhPgVxgq6OSlAD0HlpBTR9dAYmXezE=;
-	b=Mu4YtsiCJRnHhPneQx6tHqyAe5urm+RoJhNU0A1UnhS6I35GoKfioMc+9DLVHa0NoIias9
-	WeKkyhRaBp+PPfn0oVRiba/myt3JdVf9y5+TDZkuVdZa9nkYYuqY7eT6M+SWFCE+2tYTIw
-	qHRHwL5sc7ZzClmyu6GLii9fHCg1mmQ=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1D076221AB;
-	Fri,  6 Nov 2026 14:18:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793974689; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DbXOMRc+RxyXDwhPgVxgq6OSlAD0HlpBTR9dAYmXezE=;
-	b=FIawBo5uxM6qqiDjVJWp3+osfdJHTB7/9k/8ZXnfwSqMSVMQsrA+ls8eohG0IqsgJpshAu
-	4k11WqrTgHHWctbcwqEkg37q29R+/n7gnGuz2bQMgmmTJ/h2bxDAuTJMuFv97yn+PnssG4
-	8k8LiAdzcqtEIdwStCzpo35K3tJtj+M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793974689;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DbXOMRc+RxyXDwhPgVxgq6OSlAD0HlpBTR9dAYmXezE=;
-	b=GAIC8+xY/rXGUL8rB7GiG/X98jUIopLTsD8tl90kFvlhyIwDk5QTCQpDh/2tRDj5r7pbP4
-	TKSB1zBzbcO0FBBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1793974689; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DbXOMRc+RxyXDwhPgVxgq6OSlAD0HlpBTR9dAYmXezE=;
-	b=FIawBo5uxM6qqiDjVJWp3+osfdJHTB7/9k/8ZXnfwSqMSVMQsrA+ls8eohG0IqsgJpshAu
-	4k11WqrTgHHWctbcwqEkg37q29R+/n7gnGuz2bQMgmmTJ/h2bxDAuTJMuFv97yn+PnssG4
-	8k8LiAdzcqtEIdwStCzpo35K3tJtj+M=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1793974689;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DbXOMRc+RxyXDwhPgVxgq6OSlAD0HlpBTR9dAYmXezE=;
-	b=GAIC8+xY/rXGUL8rB7GiG/X98jUIopLTsD8tl90kFvlhyIwDk5QTCQpDh/2tRDj5r7pbP4
-	TKSB1zBzbcO0FBBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EDB5D132C9;
-	Fri,  6 Nov 2026 14:18:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WnUKNKDh7WpnaAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 06 Nov 2026 14:18:08 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 8BE5F21B85; Fri, 06 Nov 2026 15:18:04 +0100 (CET)
-Date: Fri, 6 Nov 2026 15:18:04 +0100
-From: Jan Kara <jack@suse.cz>
-To: Breno Leitao <leitao@debian.org>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, Julian Sun <sunjunchao@bytedance.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, kernel-team@meta.com, stable@vger.kernel.org
-Subject: Re: [PATCH 1/4] writeback: add the missing newline to the slow
- writeback report
-Message-ID: <qmosz7e5iaxgadaltvzzcduym4z3dpzw7qrdcwahfvoh75mbzm@2gfo7v62qajq>
-References: <20261106-writeback_stall_report-v1-0-bf0c3b9023a5@debian.org>
- <20261106-writeback_stall_report-v1-1-bf0c3b9023a5@debian.org>
+	bh=Mj147cNESXGoHXlvAzbxpGpmr95p6iDfBMnRQY2C7B8=;
+	b=dRtRGuMxsbBZEKUme7MarM+xY1ZR7rXZH+D+urZMs+WQs6c+JcQEkiSNvZQFnuDEEzs9nQ
+	fA1Dzc2gvcjza6gUOYJFp1jDl40ZyIkgaPF/YFji4FFCWFIrMS5VRoZddS9t2BQbWoN/Vs
+	bvCEFXnsE0LwMX2ZFrDx5RsA/dhthlQ=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793974756;
+	b=Sw1CQCU1apMAUYaZKJO0XRMRpJeFdi7k//mCFzqxVBKcPaw1WSvXnc6XNYQJOfv9rrDGTQ
+	KN8sme1AaXodlbRXcZa6man5lNN2alt2glW6c3KVWXLEQ84GYii4rxKrht5Fp7+O386W38
+	6XAMJpE3stKF4zw12XU2Z+knjIftd84=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=glNjLAFW;
+	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7FCFB602D4;
+	Fri,  6 Nov 2026 14:19:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5BCE1F0089F;
+	Fri,  6 Nov 2026 14:19:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793974755;
+	bh=Mj147cNESXGoHXlvAzbxpGpmr95p6iDfBMnRQY2C7B8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=glNjLAFW1fuGqbZDoB5SwTXJ1klRGdu4dM85avTojgRKe6Nvf+K9w/+QcqV01wJyz
+	 nsds+R8YBm9rxSjVpTuMb6gCEO1/qbeh6mEok02DtM14EcX+d/OJIL0T3t+hNhBR83
+	 SVDFpU/E9Xe8cejTsae7oMzZht/QMiVKCsnWNuBkiVd6baNt5XXgRd1Up5ZIRZ1YUz
+	 11qGRvlzaQWoH1rxR0FlUd5W528hrqReet7m2LPNbU1DMCUl97jInKhlA68OgopVJK
+	 zUR/ZHWrpWx1Hc5A2gJ3FP3BrYyaxlGAvyLFJsyXOhm4UDTHVtwBfJXMMfDDFOAy1T
+	 3mbwikECpbBUA==
+Message-ID: <41b4de46-4f25-46bf-8b34-02577c38ef8f@kernel.org>
+Date: Fri, 6 Nov 2026 15:19:08 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106-writeback_stall_report-v1-1-bf0c3b9023a5@debian.org>
-X-Spam-Score: -12.80
-X-Spam-Level: 
-X-Stat-Signature: m738xfuafijgdisxzebj394o8awa9gww
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/khugepaged: don't map folios that are not uptodate in
+ MADV_COLLAPSE
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins
+ <hughd@google.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>,
+ stable@vger.kernel.org
+References: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
+ <au3C8lNElGg4LnR1@thinkstation>
+ <254c6f0a-9353-4806-a5ab-a071cd59c64f@kernel.org>
+ <au3bJel0YnSeowCq@pedro-suse.lan>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <au3bJel0YnSeowCq@pedro-suse.lan>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ii9c7y4ta94qt48i1h5a8ko11fwneok1
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E2FBD140010
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 5D81F40007
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793974690-101936
-X-HE-Meta: U2FsdGVkX194ZnaBkJ2wLNerNjMJ4tVqdNt66G5AnzeIkegdWblS/jbzU7sGxGHZ885zejI3AbXydXbU/cOi9Kq90tkJ50jcqXF9FaRdurNbznAn4/AhgmaejPzAId6+L7K7aWmWHyq2Wx9S0Hj+6EPtCXIx8mzAD6nkkdYSM/TiFnmmiP1crZc4tphVQU3b5PppnjgcC09VxIkc3IJgCBWWTY2d04LuPwJdnmESIN6A32UwbxkgbiB8tulH2fPPCSWgeguiRaeduSubbjXuy/TAwHf6IhOeUxLriWdpZptkASo67eZsw4LF4/d5bgzGuueW8HL3vnjj0cvyysIqOw+emjshcO8tXvD3d6wt1IQoxWwRKFNtxq3wF/p2RN6HpSReV47vSYJqSku68a1evQuC210DjOrdiFqT2/PqkJc65a9MOqPu67oJC+BVciE+HqFNdQKzpAlumYq4ILKsY0f9kPJyIHPv6+7ToFWYyRoiG6GLxATc3tRr9zDFMiITkEC3L31hwygf+5jGBtvgTtoXFKzyzxlI7rVSE2SATTaXT2ZK1e9iAPCp3PmhxziXeya3glkojRBrYo8051fE4de7fYPQVgHy/OFFuMDqR8H17Hm61dBAwLHBvU+htPd1g0BgtClJm/w2H6fo1ia8tY+bszrIY0UB9YGRxgh6FdBt8wGMVCwweNlAkX2aRgtXlWdNWlOvcLssDVSir4XnDv9Z4DGwIrRg/pClyIozEcLjRGe3ww29dkjKctpC3U8lKd9TXAmTztbXZnnPI4M9RyHL6EJjU5xQSiWnfNTVOk/gnmxgm8x6+gEJlIbjiwAmsF6SZuMiVwfy2c4gs6fI4LZJCQrI4gpP3zEbJvatL25zuoFDQBNmkZYfdFnpQ8nUU+XybvImXjOjNh5sIjpYrvajaBNV0TabUcCO0X1txlGzO1JQUs0CWR+8kbaqyA/3JiYsf2hrr3w7O444HlD
- OXCDLXbL
- /nGI6bH3qPkMuAEaet/9uFp91Cu6JzGI1tzEkNn6FKNYB5VcUW8KBmRuspDvb6w0UhMcO8tPH1o4t6NarbT5gXaDkL68dI4c86xd5PtYSueQR5dtMBCXw93JlZBkA/YHCtBS97BQ+wpY6pLqDvS1OfqfR0pjUQTNW7G/hZRA3HjH2PVCAQrobiEsGmtz5ARpWXJhRP9JmzJ1GL3m600zMHioHxD39dp1bccwb/iD/vB3HQF3kCXvfRFWuBWymZ2RpOL2VwNqQq7IM50mWn2yezzLHdzo1OvMSOHcnFD8W4v7rInz+fXSytvRpbUFE5+vb4//hOVb3GV1KTSOgRXI+xg48Q6IuzQBIXqDkFTIyHPLgqjsElRJ4eo5RWsJVBPGQG6R+
+X-HE-Tag: 1793974755-310599
+X-HE-Meta: U2FsdGVkX18k5ilACwfayGi1BpFOVPfKGJiecJBYzINhAFrh/HSdhJ2a7pVEenjMX8Rxe9UtfpQW1/4lMV2OTztCArybkWdSZy8SuqNf8CCV664xZTJZg2VAEY2BuL9sb/HM5VCLN4BeOMLLiQCOti/APG94RVqoblHin2Yvc9TYseyxx2oVbQKpL4tb+iNS6olh7OQmPO7iuY+Ns9YH2S58c+S4El9vhNtVazXTvc4YVRsJzqAl8gMn6ZOlL6YB5sPcFVGxgFlM4691wF67REuwfOCdjdF0P1gssvgpgdz9S0R7E54aQeXlQ7hDO7kYy9f4x1GE/kk7bRsEYmXT0Pp4Ob3PJkX76mq/Wh0M51FOrvVdxPEk5z0V6amm80YTzjopFOq9iXCJ4hhYlCbeUX1nMGKAPfcGYubiGOF7UpU9K/c+QnPL7/Ygc58CPcDZapF+ClDd3NGno+Owzqn9YUGK3F4828bhVKqAQpGaAbBkNWt8I3b+2EgxpI+xEhn5wBIXK/CFnX6bRq2OyR543jU0VOwCObl1DSFoBv7U231N8AtV7YKSkYS2bqAh8CPPgHen28xcojn2BBQX8bcljyg6r4qFACtvWGhFx49oQsthxMJfLAu5mBHU13c5vl8Uj23jGVo5xGRel5vnMLWLa8Xp0XpqO4HoA9kCIK66GTBbyJtco53GC2GwepvYOjFd+iwMuxjOPlsNd6Zcs34S1dg8s+ocBxuGpTLFLk2PcWPSjl5x+aRl7empyKOm0TWJEnwXe9PcSG2MU8XtGMb95krTp1GGB/M1hKjtXQfs2wRSBgxLAT3txdJkzhWaGFRR7srkSBuQngLJkhl5aG57DFPbklPQQZO/SVXCpDGlNvFLr8LN0/DB3IHPXxzDHWBShRaGWtKQUqr14igC51KZFP/EFZVFkvm1zxFU6i5AcvfkhNAXZj0T6cZtthw6IQvOD7H6rphm+K+HRewWIjW
+ IDv8uskY
+ VhSVj8HUgKdd/RD+4G8Y98PDtTidR4421CNs0qTlRxEwgV7mvR5Pzpjo6zG3RC8T+r7G7bAsmk3A7eLhE9Y1ZRzD3m4e0mQtZGNxbFjRnQRCe06VgeOVDI+E/ynsPTScGzyzCY0Q8WHsMT563C8IC/HjLqd+mf5d32Pa13nxOeMXtFt3edCZjx2sHDqwtVret3qNSD5GXUX098ywbLK4m0ch0eAaTtYOhv9M8SRO59KJpD82dsDIhbN6oduARLUl3AoB/moIcZrbza8xTYUL569Rxu9yHwZSqlTv3280t+vQ1J5mtEwsjzBlVshDfM4P3FdOtA3CkojLN+IU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,47 +152,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri 06-11-26 04:26:31, Breno Leitao wrote:
-> wb_wait_for_completion_cb() reports a writeback wait that exceeds
-> hung_task_timeout_secs with a pr_info() that has no trailing newline.
-> printk() keeps such a record open for a continuation and does not
-> finalize it, so dmesg, the consoles and netconsole only see the report
-> once the next message is logged.
+On 11/6/26 15:06, Pedro Falcato wrote:
+> On Fri, Nov 06, 2026 at 01:29:31PM +0100, David Hildenbrand (Arm) wrote:
+>> On 11/6/26 13:09, Kiryl Shutsemau wrote:
+>>>
+>>> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+>>>
+>>> Separately from this fix: nothing on the mapping side catches this.
+>>> Every caller checks uptodate on its own (next_uptodate_folio(),
+>>> filemap_fault(), shmem_get_folio()), and khugepaged was the one that
+>>> went straight from filemap_lock_folio() to do_set_pmd().
+>>>
+>>> Should do_set_pmd() and set_pte_range() assert it? Something like
+>>>
+>>>         VM_WARN_ON_ONCE_FOLIO(folio->mapping && !folio_test_anon(folio) &&
+>>>                               !folio_test_uptodate(folio), folio);
+>>
+>> I think so. But looking at these hard-to-trigger but in the end very nasty
+>> problems, should we actually reject the operation and do a pr_warn_once() or
+>> something?
+>>
 > 
-> Terminate the message with a newline.
+> Yes. FWIW, this is something that's been going through my mind. Our page table
+> manipulation APIs (and usage) are way too fragile and allow you to do the
+> most insane things without ever realizing it (e.g you can clear a pte, set
+> over a PTE, get-and-clear and discard the result, and do all of the above with
+> no locks held, set a pte for a folio that's not uptodate, set a pte for a folio
+> for which you don't have the lock, etc).
 > 
-> Fixes: d6e621590764 ("writeback: Add logging for slow writeback (exceeds sysctl_hung_task_timeout_secs)")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Breno Leitao <leitao@debian.org>
+> Some basic assertions (even if there's no easy way to back down from those)
+> would be nice, or ideally yes a rejection.
+> 
+> I would just add that these very much should be VM_WARN_ON_ONCE instead of
+> pr_warn_once(). pr_warn_once() will (AIUI) not be caught by fuzzers, at least
+> not as easily.
 
-Sure. Feel free to add:
+Good point on the fuzzers.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/fs-writeback.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> index 15260cf2a29b09..01a00d7542b371 100644
-> --- a/fs/fs-writeback.c
-> +++ b/fs/fs-writeback.c
-> @@ -204,7 +204,7 @@ static bool wb_wait_for_completion_cb(struct wb_completion *done)
->  	done->progress_stamp = jiffies;
->  	if (timeout && (waited_secs > timeout))
->  		pr_info("INFO: The task %s:%d has been waiting for writeback "
-> -			"completion for more than %lu seconds.",
-> +			"completion for more than %lu seconds.\n",
->  			current->comm, current->pid, waited_secs);
->  
->  	return !atomic_read(&done->cnt);
-> 
-> -- 
-> 2.53.0-Meta
-> 
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Cheers,
+
+David
 
