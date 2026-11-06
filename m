@@ -1,136 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C71A606A33F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 12:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFD93606A330
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 12:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FStjyAY0
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kUZRTMii
 Received: by kanga.kvack.org (Postfix)
-	id 9F1A66B05B3; Fri,  6 Nov 2026 07:38:54 -0500 (EST)
+	id 9589A6B05B4; Fri,  6 Nov 2026 07:38:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A31D6B05B4; Fri,  6 Nov 2026 07:38:54 -0500 (EST)
+	id 92D186B05B7; Fri,  6 Nov 2026 07:38:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86A866B05B7; Fri,  6 Nov 2026 07:38:54 -0500 (EST)
+	id 843826B05B8; Fri,  6 Nov 2026 07:38:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C2B36B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:38:54 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F1B9D40DC8
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 646076B05B4
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:38:56 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D58BCC0D46
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:38:55 +0000 (UTC)
+X-FDA: 85404648630.25.A97C5EC
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2431010000E
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:38:53 +0000 (UTC)
-X-FDA: 85404648546.04.F13C556
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E46C1180002
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:38:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FStjyAY0;
-	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793968732;
-	b=iY15Y3gfsuTjEg2Ko/+gcXTfTXhEcp1EJzUHWQSeR3kFFOFJk1JtJJG3Z2StMXpvzwUbRA
-	oC6ic1CtkwL3VEJIGBc8u1Wx1GjLjVtFi3afa3XbSdRBk4dB0uWYMQY3N0lztRbRuQ/FHu
-	5aePeh3ccr7WHIJzixobpk7Ol2QLWhE=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FStjyAY0;
-	spf=pass (imf16.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kUZRTMii;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793968732;
+	s=arc-20220608; t=1793968734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2pfmacECcqVcYywkgZMGS6LkZuCwqHkVAmJzamD2whI=;
-	b=JMBjdz5ksRQBXF8qjsy81t3JPE0XWM/275LguW5JbfVaPSJ2cCg/rlNQWsEFrMIQ1B0zou
-	UF2wBJLM/vT5MtCTgjAP1Q1nFPHv3XX2CC/i9k54LygJ6P+e2nKLTu7BmiuZaMfZzs81eg
-	2ZMRzakympWF1LDZgoAohihb0wS50gU=
+	bh=sLdUC4Dy0rzYN6SNOPoi87adYyDpl146R+DLmZmqN5k=;
+	b=Zj4ewNR/oSk5NVCC2RCrMZuWJcxgAr5e+mRHh+FYl9BU+gI5KP/0yopXNW/25vbn9tXULt
+	vWqKtu/demWLB09KqIYIuN++N53zoi7OBlVT0WeUQ0TKKsxv/fldiuTb5U1r7yMqu6LVH3
+	KK/UZeGghDC6D5KeSD3qFgPqafqgaPA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kUZRTMii;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793968734;
+	b=4J3blx9yv9qN3rvS+juZLAOI9MkrFzTNuwOn9L/8KoKK5RvVBc2PFlFXSd9NsXdb/qgC7/
+	1PV2yT8WT8tXSgvp8NVOlIAhG90VYXk3XGgXt8UrDQ6VHjEMhlVmLG/evS3IH0BA6JBjei
+	CXC8OkQ6v5FMIGsG29UJJViiGuFDbZY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2716841A7A;
-	Fri,  6 Nov 2026 12:38:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EFB1F008A2;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9C869601E3;
+	Fri,  6 Nov 2026 12:38:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95ABF1F0089F;
 	Fri,  6 Nov 2026 12:38:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793968731;
-	bh=2pfmacECcqVcYywkgZMGS6LkZuCwqHkVAmJzamD2whI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FStjyAY0FW6kbw3uXf62FFRYlWxG2nSgA93yBnFn9ugwM4dGwj+PVQ5pap3K6oUCi
-	 6dxcxRVZr9JyPyaOU6SYFRRi58za2FXqmecILZDvxCPf7QF6Mlhi6kF01dciRML/Z4
-	 eRn5sl5YOxCMJYaQvK+u+uPEdGNKFbQPlgkNW0i/k60D1vI70pS5ye7rqRu75Zndy3
-	 ZQ8pUPUv1CNkmt7bvel927xSaAxSegYQoftq/nm4tU+F5STRijVbDSs55DLUR47sJZ
-	 QiK2yN/hspvh0Iklt1e9SeTadZzrE5GuO3l2AnEfFwMYTy26psvQbGlQ/5oBg3tJnq
-	 Ml0ZmtOtJlCtA==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 7526D198004A;
-	Fri,  6 Nov 2026 07:38:40 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Fri, 06 Nov 2026 07:38:47 -0500
-X-ME-Sender: <xms:T8rtasefdrDg50RCfXVYapWRPd7hJhOH7MR_vMfF_RkFPcpgn0iabg>
-    <xme:T8rtaq11Zf6R1Zc0aftUnIsFDaY0LWo5YyxJjLiJyorI0EjMIMb_FQ2H1PSDt_qJk
-    eenHVeoya81NzJfPZ9LLMg62Zf4K4Yl6CtsrypytKDJ7q2XXT-7fkAQ>
-X-ME-Received: <xmr:T8rtauiyuNtFX1s9r67EC8H9v-rJ9qUshbNAZWxxA-i546XDDMOnOCzcYEY>
-X-ME-Proxy-Cause: dmFkZTGzAjGnz4qczRWBwFDzqEedcIN2RDs77+IhaKJdOHI/wRF4GJ+/XYgTh6qUDCaXtK
-    q3BGgpdQwiz8g3jZv+XNiZ3PHhWZePA+KkMXnh5DVEYxm4xAwVX0MEjom76ZmfzWC+JTPH
-    KiS19Dcunkmjpxr4Uil2sC19R8pXj7ovLT0PA2yAVZWcLty5pA48PAv7fst0p77EiM3n+1
-    SmGSQ5XOtXFCV1+dbb7vBvMxrwGRHPa+XdLj9z9pUYo6DwpdcyJmkiF0P6rFAo/V/JZdTc
-    JB24ZdeHtaiEyrrTwoEjAufvE1haKfVDIo+IxU19WrQxgP8cc4psM9iHQFHP4vpOpa7VoH
-    wzQ1pi5Xm1k+/vd5fWuuLnXYA4NDa3sM6PbhRSGJ29vaEqlrEoBKvduJJT2QLau5zON77X
-    LVS4No3GqNmQ7P5K5ZGNyDCsQUAFFMjELc5QUn1AxYZC+wWsbenSBZU/lmEyveJGaJ2+jX
-    5fuGn8bxlHcwcJNuyglZcxdfbk0Sa0PEcwNUH2TBBBLTHU0CoNDi/SD5/1309grZ9OgwS7
-    L3pcQ1dDN1WJl/+zOkyXMbph0dlAPT58n+aswI4a5WzW2PE7JzKbmxjsgGo+8fBfzklnrj
-    EBr+0lhdOkv1TdfFi5YziSH1mehaQtbycU8WlCmDbaBUbLQfGwo3GJ9qXvIg
-X-ME-Proxy: <xmx:T8rtat7js2s-eKQZcHK3_aXiUqi4PQT3ApNyxSy7PplOfAyVt45tMw>
-    <xmx:T8rtagW_pOIDqaJwR8OxdqY5JxVHrJv54OXWTAdpWfg2Vex1AvmGtg>
-    <xmx:T8rtatlscF93bVi-jaQNcHjAI-NjY-w5CIlVvBjJDaO8_4AtvZP4lQ>
-    <xmx:T8rtahSHJTPBlU6GOzNLC9za7s75hOd8IlP5D3JPnl2Uwi1M9NeaSA>
-    <xmx:UMrtaiNVGrkcAtiFcecPVVpaYRDrYD4OeE5iPf8Os-chIedx19aW39g_>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 6 Nov 2026 07:38:39 -0500 (EST)
-Date: Fri, 6 Nov 2026 12:38:38 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>, Hugh Dickins <hughd@google.com>, 
-	Will Deacon <will@kernel.org>, "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
-	Nick Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>, 
-	"Joerg Roedel (AMD)" <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>, 
-	Steve Sistare <steven.sistare@oracle.com>, John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org, 
-	iommu@lists.linux.dev, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/5] mm: limit pagecache folio refcount when mapping pages
-Message-ID: <au3JT5QXbcOFXCp0@thinkstation>
-References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
- <20261105-refcount_overflow_stable-v1-1-70b9c655da3e@kernel.org>
+	s=k20260515; t=1793968733;
+	bh=sLdUC4Dy0rzYN6SNOPoi87adYyDpl146R+DLmZmqN5k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kUZRTMiiYfuTSKX1UiKtrxAx8J7ITGdv0i/nEpv1JHzH6XuLBzRZ2oI6n9fgytLqi
+	 wejIghDottL4e2EFMBAcTNwRosFRy2YnOFiaCgUOMJ2Bq6PPHFuElG5HMsjh3rxfpl
+	 7lL4v4AuLXxbb5lujDWInFq2T1SWeQLsnrIUGTfN8r6OVki941A+WzyWflcppAY2LW
+	 uJvJ8HgoFKbYE4BWF1ud6nS6XFo0lnA3f+qrguCXbCSBbr+pTB3ohqDTa5CadmVJJ9
+	 ygVrBsz+nJtjtXo6xG7ZOgrcnvzVBcby11/plPVs9RZjs439vedhKgalK3fJMAcMF5
+	 tiSRAKXr1wnPQ==
+Message-ID: <1904cd51-66d5-4305-864c-57219b69bca2@kernel.org>
+Date: Fri, 6 Nov 2026 13:38:42 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-refcount_overflow_stable-v1-1-70b9c655da3e@kernel.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E46C1180002
-X-Stat-Signature: 6ftph36d14bz5ikkfxs4617gs63ibdru
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] kdump: Give crashkernel CMA areas unique names
+To: Mikhail Zaslonko <zaslonko@linux.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Baoquan He <baoquan.he@linux.dev>
+Cc: Mike Rapoport <rppt@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ Pratyush Yadav <pratyush@kernel.org>, Dave Young <ruirui.yang@linux.dev>,
+ Jiri Bohac <jbohac@suse.cz>, Usama Arif <usama.arif@linux.dev>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, kexec@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261106104309.3669583-1-zaslonko@linux.ibm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261106104309.3669583-1-zaslonko@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2431010000E
+X-Stat-Signature: ytgtneirw4g5gaeorm5roys1fa34e4an
 X-Rspam-User: 
-X-HE-Tag: 1793968731-219650
-X-HE-Meta: U2FsdGVkX18+aftqlEheUvIZW0PqHyiNsDwRTsHIwRjdAW3TmMA6mEYj9EzbDTp/GDKECnjV6q3AOyvKuP8ler0G/j3JX7dMjjgqJqUl/m8h3ftiCno7nEKAZ54pDrEE6vvjpwMKckdrLj0lK8Crt0kLaBhvzQef4fEDdlBBxAHtYYUvAZStyWPr9nU0wGj8cvU4AWCUe3YuINedbQ9lm68IGSWv86LPckwekJ4UMdZqJQHimcpoQiAUjg5j4WwCBodqcqt3zPhrvkQGIpRqgtkkPA5iY6yVwnmudBzkvvhV6i4Kx/Jd9YpnTHhgdJ1xWue1KjvY+hVFsZB4/BQIYSvDSqbD2qfNCYDBAm15GK7WIMVd3eqq2WtAMSHnVuTL6r076wAZDw6PeZFRgy+7cSwo+ZRXd667KYSlGO/zc37Gp2QooyllwfRUKme+a4w2VHdsYtyu8I+RFCHeOoey3ikaWCihuFhLTpYsALqiyM3hej5+aIIcSWHVFWrGPquIAGmGWX+VdQ3lBEseJZA97hL97nUl8oN4GmsSSeMyHPOUfNQDwUp3xV8Vi4/VuzHO2UAKANZdwX6Wtq40DTeDsTNGasBilBZhafoEMRpeugS3NNTfKljDfeRJYI3i3sFZU15NBswEMerSTQ1Qxwlb8qpb2VEw693+C5E7LPr9kRXsUbWbAF95M/u/wOsbYTtwjkfuwkk4jEhwzy1wYHs7v2VKo7yfUSnumLYY6sy2Ros8Y2WJlBbZgN6AfIMo82hv+5hFP25pPrQsgfU1W/NuWr3l+kH3jg527CF4USXfvcdeGpF4Ox5tH90voRSw6OIHOdTwuRNLo+BKn2IottYelM8mZyRlrAAWSQqAo2VExJKfgnqTSjUZy20MSJMf8ijCjUX5fY7P0w7WyVK6Slq4WetNBzRqXrupw0zuLZn/Ra8oltyb29wGorZ4Ef03nTsoF9ifJepAcTxZiE1+SRw
- iD6VwdWt
- qLv5BMuHO+ZPZ6mIyPoNz5qGt6ZR7x2Z0293n3Xrit34AePNSegOGQNuOTr6/EudDKBh0Z7tbJZwwtpetE795ftA5jKMk5QcgKSL3IFip6wwjWJNaJpaf+nd+zmwRJplTrfEoTV5pCC356XI057gKbDizOFszpUmoQNd9JWzS9y9lfkC1GlKzy95XrE//rWfxgczCimNo6p5T/rBnexDYjMioLTkUJfx5D6w0NtKBxhj1kRhf+cukeK4f9T/JhJqfuA70GeKpiY7aMmdNPovmkGBQxQtclIHvZQPC2yA6unMqlx6Ke/rzJh06w6ReQ0ftrvhfpLHOQRKkxDKy+ZmzenYoNkJ0qKC0bc03HwLR+WYwi3LjBG5UKGeozBqZ/ZBspXuw
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793968733-340915
+X-HE-Meta: U2FsdGVkX18GtonPLNX05Ef/gTLqBbKjjxlNSpRknJqyLImS3ULUS8MSXkc394TT9kNzCAucnfZ0yyh2c/mgZRsquxlbB1/jJd9DIUFwnk7jmMxRQyfefLA6WnkRtova5HGH38Yqboh3NwWh5QF3AkPUnOLusO1L+WjItsCJtyCCpH6u7GIhCxiKgJbWpC9t/YnTNhzTVjd6jX3ew/stIqFGeNTnULLGrLtAdRNW2G1cQ98yBw4K24Og/CnKF6HjsLNM49euYqCGvu8cegheu1SWNS8NsI+Y3GadP5Mr8JvXh80UjVuWUehcJRGfDLz8FER/cdGI7w8BySO1yjp3nRX5hvevlyGykLiNaxvKasNtphn+3rTLwtpXR040/O1K9ll0JtGQyJawPoRGdG/ikuqNspLjFxiqlubf2i1w5MDBFoeux+utboB3w40Uh1fzxJjYDzvWm+HaKcHHWEWzTZVBL+Na4eE86e3GVC5O6LBs+/+wEnpebJKvqtB33kXFu/wsaYFA4fIQH1ntIq6Oe8z6YXPGMBnGqMe4McIDtd+mddnZGaTXl+4uTO9dq/JLJCWYQHS6289J3nnEyF/rETgiX/GsWDNugli9eu/ikolzRHjC86U+FirWSUIyH8+eBMIZGQTiSJoqWZj1fxmr9EHSUwin5+KZzj2ORqI5AORKKxRsyV+X+x3on8Oi6mGVIIJBuNNBKjlxfFX+40Ycgkta14VlvdQIiFnTuEb3jQBUWgK0pBMYtB3AaLpbLN0pXb7jkk71xfd9D/TTOk3IC1AXUNEBFE8SC3Dh9zpclIch9Yp1A0LuSw5kiVnSD4Vr/32ucOSKPvOAOyhOpkW41xEz/B+inleie//HWpBvuXvsmUsdTXpeT7hqJNY+ydKJSqfkMyhkkyyE+RUs8Gf7iP5IUAVJl5WXEEmVIXY6lf7/vtGcEG3DM7hqmeLCxyy5zs/lOJpR8hZyq7or6Eg
+ f3x1gMCe
+ cgRwt5dLxBMQNMYFcgM1oXyfQAjoWaB3qBriInHhw5U6LygEM9xXhzb6Sb1tdSAQSCt5Ea0YGeEMKfSNenKHGqsEl37X0wYp3jkyNHiL1psjEKFRffjRTVgXGqQpiTOvHnsBcOOkTZ+0Wz0rUxcwcpWnOyP7f29mqSocv2eITpUuVH8wZV0ApQiG3unzhe3+vrX5V94ZF+Euqv20+9g180KIli57gJ1us8UDuSYdJvNMQnUNhoob7II8LMFq7RJzYr0sXz0o142B+H+awXqBtGjpoiGGbCNiS9b2UMwUAeNWvxo3qIaA2Ae/6qPEjvt2KgipopDEVOp4MrDo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,139 +147,35 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 02:10:10PM +0100, David Hildenbrand (Arm) wrote:
-> With large file folios, overflowing the folio mapcount and refcount
-> became possible. For anon folios it is currently not really an issue:
-> each large anon folio can only be mapped once into a process.
+On 11/6/26 11:43, Mikhail Zaslonko wrote:
+> reserve_crashkernel_cma() names every CMA area it reserves
+> "crashkernel". If the requested size can't be reserved in one piece,
+> it falls back to several smaller areas, all with the same name.
+> With CONFIG_CMA_SYSFS, cma_sysfs_init() then fails to create the second
+> directory:
 > 
-> That's not really big news, but it's about time that we do something
-> about it because some modern technology might find ways to abuse it :)
+>   sysfs: cannot create duplicate filename '/kernel/mm/cma/crashkernel'
 > 
-> One of the enablers for that was commit ddc58f27f9ee ("mm: drop tail page
-> refcounting"), however, file thp support was added later.
+> and the error path removes the sysfs entries of all CMA areas.
 > 
-> File folios can be mapped multiple times into the same process, allowing
-> for processes to hold many references to the same folio.
+> With CONFIG_CMA_DEBUGFS, debugfs refuses the duplicate directories as
+> well:
 > 
-> As a short-term solution, let's introduce two folio refcount limits:
-> one for ordinary consumers and one for admins. Leave some headroom
-> before the refcount goes negative, which we really don't want (having
-> the mapcount go negative is also not expected).
+>   debugfs: 'crashkernel' already exists in 'cma'
 > 
-> Start reporting SIGBUS if we run into limits. When restoring mappings
-> from migration entries, instead zap the pte/pmd entry. We allow for
-> slightly exceeding the limit to keep things simpler.
+> so only the first area shows up in debugfs.
 > 
-> This is far from ideal, but better than all easy alternatives we can
-> backport comfortably. For now it fixes the big problem: letting
-> the refcount (+mapcount) go negative and cause trouble.
+> Keep the name of the first area and add the index to the others:
+> crashkernel, crashkernel1, crashkernel2, ...
 > 
-> This is only a temporary fix, we'll follow up with something better.
-> 
-> While the refcount checks are not required for order 0 folios, let's
-> just add them for consistency: each folio_add_file_rmap*() and
-> folio_dup_file_rmap*() needs a prior check.
-> 
-> Also, just document -EHWPOISON for copy_present_ptes() while at it.
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Fixes: ab475510e042 ("kdump: implement reserve_crashkernel_cma")
+> Signed-off-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
 > ---
->  include/linux/mm.h | 33 +++++++++++++++++++++++++++++++++
->  mm/filemap.c       |  6 ++++++
->  mm/huge_memory.c   | 24 ++++++++++++++++++++++--
->  mm/memory.c        | 23 ++++++++++++++++++++---
->  mm/migrate.c       | 11 +++++++++++
->  mm/userfaultfd.c   |  4 ++++
->  6 files changed, 96 insertions(+), 5 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index a2dd76cc5bbfe..79ae8fc0d6bb4 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -8,6 +8,7 @@
->  #include <linux/gfp.h>
->  #include <linux/pgalloc_tag.h>
->  #include <linux/bug.h>
-> +#include <linux/capability.h>
->  #include <linux/list.h>
->  #include <linux/mmzone.h>
->  #include <linux/rbtree.h>
-> @@ -2228,6 +2229,38 @@ vm_fault_t finish_fault(struct vm_fault *vmf);
->  #define folio_ref_zero_or_close_to_overflow(folio) \
->  	((unsigned int) folio_ref_count(folio) + 127u <= 127u)
->  
-> +/* Leave separate reserves for administrators and concurrent reference gains. */
-> +#define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
-> +#define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
-> +
-> +/**
-> + * folio_ref_count_over_limit - Check whether to refuse more folio references.
-> + * @folio: The folio.
-> + *
-> + * Relevant for large pagecache folios (!hugetlb). For these, we have to check
-> + * before adding page table mappings or other significant refcount users whether
-> + * we are close to our folio ref count limit, to avoid overflows.
-> + *
-> + * Checking this for other folios does no harm but is mostly unnecessary.
-> + *
-> + * This check is an approximation; we leave some headroom such that concurrent
-> + * increments, batches and temporary references are not a problem.
-> + *
-> + * Return: True if the caller should refuse additional references, false
-> + * otherwise.
-> + */
-> +static inline bool folio_ref_count_over_limit(const struct folio *folio)
-> +{
-> +	const unsigned int ref_count = folio_ref_count(folio);
-> +
-> +	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
-> +		return false;
-> +	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
-> +		return true;
-> +	/* Background threads must not consume admin reserves. */
-> +	return (current->flags & PF_KTHREAD) || !capable(CAP_SYS_RESOURCE);
-> +}
-> +
->  /**
->   * folio_get - Increment the reference count on a folio.
->   * @folio: The folio.
 
-Does the slow path need to be inline at all 15 call sites, GUP-fast
-among them?
-
-Maybe only leave the likely() check in inline and move the rest into a
-function call?
-
-Something like:
-
-static inline bool folio_ref_count_over_limit(const struct folio *folio)
-{
-        const unsigned int ref_count = folio_ref_count(folio);
-
-        if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
-                return false;
-        return __folio_ref_count_over_limit(ref_count);
-}
-
-bool __folio_ref_count_over_limit(unsigned int ref_count)
-{
-        if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
-                return true;
-        /* Background threads must not consume admin reserves */
-        if (current->flags & PF_KTHREAD)
-                return true;
-        return !capable(CAP_SYS_RESOURCE);
-}
-
-Also, should this be capable_noaudit()? I am not sure a refused
-reference should leave an audit record. cap_vm_enough_memory() checks
-the admin reserve with CAP_OPT_NOAUDIT.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Cheers,
+
+David
 
