@@ -1,100 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F638606D80E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B27606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NoMaartx
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LVdL5OTg
 Received: by kanga.kvack.org (Postfix)
-	id 7F29C6B05BB; Fri,  6 Nov 2026 09:00:24 -0500 (EST)
+	id F2F1E6B05B0; Fri,  6 Nov 2026 09:06:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C92C6B05BC; Fri,  6 Nov 2026 09:00:24 -0500 (EST)
+	id ED85C6B05B1; Fri,  6 Nov 2026 09:06:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7069D6B05BD; Fri,  6 Nov 2026 09:00:24 -0500 (EST)
+	id DEF4E6B05B2; Fri,  6 Nov 2026 09:06:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 54CCB6B05BB
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:00:24 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id BDFCB6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:06:03 -0500 (EST)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E0F6BA8D4E
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:00:23 +0000 (UTC)
-X-FDA: 85404853926.23.6002661
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1A75040017
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:00:21 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NoMaartx;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 42925140D10
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:06:03 +0000 (UTC)
+X-FDA: 85404868206.23.A08A494
+Received: from mta1.migadu.com (out-226.mta1.migadu.com [95.215.58.226])
+	by imf11.hostedemail.com (Postfix) with ESMTP id EC38440009
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:06:00 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LVdL5OTg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.226 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793973622;
+	s=arc-20220608; t=1793973961;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MMisgwf5ivCyneAXCg/69ag5tUf9sccmY26a8c7FNEM=;
-	b=GG1b6Y8WnYgN99C7cGkM9UyFz6bhzUFNVbJZp8JTzWo8+0Wl5CamcfTdEqEOclCW9xVPks
-	wDnV8DVlePmqp7mMiYOdc+tleL1T2Bf+hOb1YjMURLxEydIggd2SD5zaHL1bR3EywMfECt
-	aP+yExqfOCUCVESnUCsIQ9a65cft0AI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793973622;
-	b=KaE8CzrbS7hxiljTbu8CPokuj70tmbw8vB2qvE2hEo8rlN8z7OsG35kLlF1/cSIXlFRMv+
-	n4LMUhojlTn+bSoZcm6z1wXKMZNf0iP1p40dEi8gXx+SR3PAX3TsQv9cFSo1o9891PetUL
-	OjcoVoBSmI38DCv0EIKlojg6nB4jL/M=
+	bh=PuZSxoPIfBuBWYT5kGfR/wiii4e+fymaeZzVU1jtsaI=;
+	b=8MU/EurQuGLsjpkk7IVNZFHKDQHJD4i1z2El+r11Ba9JcO87QO0vWCf0/SEt1qMvAi8C5l
+	XXZgU8Wjc7/3pPUCcnDqnnyGER+5zFPrCStzGSbYHf9r33GBheDG65HD6Q668pWSm3ULMN
+	0KUX9O9KWOArmWHqi80j7g9kYqiFZjU=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NoMaartx;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9826D60D0B;
-	Fri,  6 Nov 2026 14:00:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E0DE1F0089F;
-	Fri,  6 Nov 2026 14:00:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793973621;
-	bh=MMisgwf5ivCyneAXCg/69ag5tUf9sccmY26a8c7FNEM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=NoMaartx2k1NoDKHbinjDj/PbXDYhvLBDoS7ThiZ6Zh8degSdrM/cbNrjWCvJFPXn
-	 IJa6OLrwSv7WeMgzoB3AuW/FePKuMzJwKFHbXEdI+ZYAwQGc/8vmhnKnmMjWU6LJ9x
-	 33ovPBGmrTbUtWQlZ8QAyW3GCySDsLz5acI0WwsJZ5luc2SvTKggPaXxOHYrDVTmU1
-	 D0Syu1/RiDILFaoQPgpwI3BeakKZgA8HYUcIZbDXsO1DAvgiVgvpXqbRHAyOx0m8ju
-	 kJuhvtjsTeuWAZga6LkTBCYXNU81R/1eVeG/45nAIROGbzedXUk1SOmtB8Ud+4XU9q
-	 KBbQqwdFHF80w==
-From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
- Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
- Qiliang Yuan <odys.yuan@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org
-In-Reply-To: <20261105-bug-mm-shmem-undo-batch-v2-1-ae5f89ced044@gmail.com>
-References: <20261105-bug-mm-shmem-undo-batch-v2-1-ae5f89ced044@gmail.com>
-Subject: Re: [PATCH v2] mm/shmem: remove truncated folios from the page
- cache in batches
-Message-Id: <179397361569.3706.17727764242079446039.b4-ty@b4>
-Date: Fri, 06 Nov 2026 15:00:15 +0100
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LVdL5OTg;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf11.hostedemail.com: domain of usama.arif@linux.dev designates 95.215.58.226 as permitted sender) smtp.mailfrom=usama.arif@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793973961;
+	b=T6POFc+LPR16jfqQ7yVicOZw2dEREja13vU2mMoFrs65Ef4LASsuG/BniTztqSAItfyuDO
+	ZTY0ZryJ9MIztQYl38kM8WROdBlEWyW444Vuo6QWENY/9oMNHSYu8RESrV4VDInPK6Uxoi
+	OK+ommOzR0wlvTTB2Yz30CbMT0Xf11s=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=KdFDOOwfZpllsNIG61lzpXhrUDjzYe3zHf7j2d/rM0w=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793973959; v=1; x=1794578759;
+ b=LVdL5OTgDLMIMrDfJNp3W6jbpvLzebf6/nHzDbVsgTI0/F2WoQhDR4vMHHY/shEStctNJS22
+ dd7IxwlftsFazxu7/U6NZrUo2Y07ny27+rcGp8oRXvl5hSd/nIpV9I9I0S59iRX/LC+xgzdwdnv
+ ibgHVLBtX3zy2134lTvrWdOs=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 5b86ef43620373c7;
+	Fri, 06 Nov 2026 14:05:59 +0000
+X-Mizu-Trace-ID: 5b86ef43620373c7
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	baoquan.he@linux.dev,
+	rppt@kernel.org,
+	pasha.tatashin@soleen.com,
+	pratyush@kernel.org,
+	ruirui.yang@linux.dev,
+	jbohac@suse.cz,
+	david@kernel.org,
+	hbathini@linux.ibm.com,
+	leitao@debian.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	kas@kernel.org,
+	hannes@cmpxchg.org,
+	riel@surriel.com,
+	shakeel.butt@linux.dev,
+	kernel-team@meta.com,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	linux-s390@vger.kernel.org,
+	Bradley Morgan <brads@mainlining.org>
+Subject: Re: [PATCH] crash: keep crashkernel CMA pages reserved if activation fails
+Date: Fri,  6 Nov 2026 06:05:54 -0800
+Message-ID: <20261106140556.1667159-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <0a3c64d1-2b8f-4e0b-87ca-5397d1aaa3ee@linux.ibm.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.16.0
-X-Stat-Signature: qae5atnee4zzr6qktgzu8q48eqhhz7xj
-X-Rspamd-Queue-Id: 1A75040017
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EC38440009
+X-Stat-Signature: wqhxgggegtjc8pyzktic6poqj97go6s3
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793973621-665525
-X-HE-Meta: U2FsdGVkX1/544KTkOGXQhVOWh7iu9NTWmDQHP8tgil8YU1coYYjmneqahT+PlnVU3d+5uZxP7BDPDOY6wJgM7BTCvDl0CruddQerX/757Ukk8YuvJjX5OdtFWjd8tR7glCpxppiQ9MG3AThH2f5VUAzRzW1y90rbMbJ0Wu/tx8QmNfEqj1QywjDJl8LmrZNJIegFw4p1GSLEu48dDE7w9Uc3qduff1cd1a7AI0WkgAUIoN8hSyRSUPHWF6bLK0XtkEf6he4pkhQc9HweKmgtrHJLH2TVl6cpPB/ljw5g/02nF8RQJce8jit6p766R3EOkNn46Q3kS89oTMao/I30fNK1nbY3L7Q5FVwIGO6YfFhKkcuNNp6f6IR63XCUk+LC0m/yaCB8CVnUmSXYPSiBthhMF2nZLxjZRsRdXVNBsX5AUGYmgI1AHMepRJ+mW6nvV06Hp6X2z9dBzTAxQiUbwny1AAcos6M7NvWJ/Ha8/oeT7kg4CTo657c4YFlhqXp5hrlgxYRfQ8Cvl4aCwAYMt5qTStDxr+MuP0I9yqYolzQVUtG135SzJiIVw/Gk2EOLEjmwMjLQqaLU9hoHO8F4r8JhNboeC5e/gMaGqfxB9gzclp5CfHimU0CEh6fsLFKGiE288OG9med5Ro6maa1AON9+HeDyLjUIX6ImWvNWFr98eAMCEObtsI+VVZreAwoRd0DLvD9yzQLg5KnFH5e/Eg1CeAopV+Wb+k6kxU15WxRZnIiRZOayExC5UwmebL0PtKATDUiYQKGlE3cUB9C0qxYYfOa4F/XG3z1xMKMK2ZP1ph11QwOxi3hRroek6Y+f5KxteNItK8+Atdr+m57cDFS/7E4/jqyknid1mIhinWhRLZAB4u7+zv4egifHoo3o44gFokLJOoP4jwn9ORg7blFt8/OIYraQqiXBIo/5GkqyE73u0GLtP36fWC3JjPvGY+AYDG2xI9EgC5Ghj+
- UM2u9kcr
- BFaWJyTRFwZRWPQ5cifiJvcTM20dD0tw2PCQm2JjLDWeTLmGQe5ktbuzcSCjfpzen/T4xxrzCPCHt7GI8970Bjlu81o/O7vvxlAnkS4Mbzb13pH5OV70mUzHg3JWmD2k5A/+TENguxNrmarixQhpVYcqgMYf1jbf6Qj2r20kT43oTjiLaPHlr/AXpyp1lkK3SGZFnxcQwsqMQ7U683vJmyhS/3qEPbahhsbYCv+RwvPWiG1xCDcXYXe8RtnOIrGGCru4YrsxM8k+IZXahot6nqYhv9fG+TkTwV/6MtfYYzgCqcMGmAZcPo385mydgKW2xkf4f
+X-HE-Tag: 1793973960-29892
+X-HE-Meta: U2FsdGVkX1+bbOILmLfOlERBVnNroWLMLf9/etnfUgjVjtwzVzfLmSzhblKzQzZVtuYggGDKxOoh8WhDmlnccEahWtL9I++lzLRDJeoJ/ddHA8TWqzPi9OcEJWv03r3jWfsL7g3s49Nwly3rx4ngtBiWDBXLX+B4idNOx2iIj2wQptLAXebdSoizwqDQYrGpJPfAbNnevEuEPVko+YkKbKd6WoV94bYL+mYpMgsMkTLDp8/jjlB18lTdtevGqytXsPzYPHpX+6QouWwbLAEozauXHlmGi/GhzMH+8KzwC8ChUnw7Pa8ZD48M2YK+CNE5c09mLSh2W0EaxXkp26mxmcsmbG+Mt/tTzDKghnvi2U3fLxA/8+14TQ2oaWB9v5UUykGvvQEUoUIs+9jXLjLXRpaaZyfbKpeVaqFIC15YW1Lmog/y7YtPPk/+XrkdKuIZ2zJ5qVvgJrpphTB2CfjL6YMHdd9pwHG4tJ+BkPB8nbx0v9zFAsyHLlXEWjgbFCVLilx1xurzm2LwqenltQy6xbSCpeVl668NQY8222En4OtlLIdZXTePbKPJj5UpUNZ9Rxahq0POy42o4IJtC1lPb49FKi+Wy2Ljm2+EnPZdZBmGuAwtCuOoG4C2PGSJLWRVw76Hp/CNpqkQMIJMdnF9FGSx4vt8QUGpHcgjTSWF25LOLFg6EolohEmfoapMJTDLds2kSMn06DYfnBiVwG9JP43teAPIAyEVqF/jrks4QU0YZazyMd73rwzEwKwpkDAtyDDWBiZyQFTlv/N7/S/Az9x40gYByk3NFI+ZKUS0UF4fOqntPz0A2FEuHm8XTe+dYlIzbHxYSr9jT+ijG4k+r4adj9Y0hueRMVuCLjheAmHKXix2xQ8pEA+Js290JxtnPrMeI1aRhjL1TTQUG1B/lCNDAlL5C6LrcxfXyqxLIT8LS2PA+hKlRZ3iqQcSV+lYV6I0k2UstQ2hmWYPtaX
+ d2uBCydC
+ BLXohIie6DO9l/BhI82FWk5RdEyLoPc2nabp+QrfVjiuue7MUcLl5wPrzrAqsiwnGpTn9YralQ8qA9xTIn4JDKRPwwI+WTLO3IV7lLXYrW8OBxPBvwMosumykDPiRjvwapzxqGJt4G+U2z+20TJp+BaLJlfmvmf6/NUBzq+hslWWP2OjacxzhcybeZc5uKvPMvb70M30Fy9HWnDE6hFyRs6lGzmPsRrxv7vQrJSX+34tVBJxagQNPZX5FLh3afdTOs7/BZCegDkxozWW4y48ntvgsow==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,43 +113,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 05 Nov 2026 07:32:11 -0500, Qiliang Yuan wrote:
-> truncate_inode_pages_range() takes the folios it finds out of the page
-> cache with delete_from_page_cache_batch(), which takes the inode's
-> i_lock and the i_pages lock once for each batch of up to
-> FOLIO_BATCH_SIZE folios.
+On Fri, 6 Nov 2026 12:21:12 +0100 Mikhail Zaslonko <zaslonko@linux.ibm.com> wrote:
+
 > 
-> shmem_undo_range() calls truncate_inode_folio() on each folio instead,
-> so filemap_remove_folio() takes and drops both locks once per folio.
-> Truncating, punching or freeing a tmpfs file or memfd made of small
-> folios, such as a large /dev/shm segment, pays for that on every page.
 > 
-> [...]
+> On 04-Nov-26 15:56, Usama Arif wrote:
+> > reserve_crashkernel_cma() adds each crashkernel CMA area to
+> > crashk_cma_ranges[] as soon as it is declared. If the area later fails
+> > activation, e.g. because movablecore= put the ZONE_MOVABLE boundary
+> > inside it, cma_activate_area() releases the pages to the buddy allocator
+> > as ordinary memory. The range is still handed to the crash kernel and
+> > excluded from the vmcore, so kernel data that lands there is overwritten
+> > by the crash kernel and missing from the dump.
+> > 
+> > Mark the areas with cma_reserve_pages_on_error(), so that a failed
+> > activation leaves the pages reserved: lost to the first kernel, but safe
+> > for the crash kernel to use.
+> > 
+> > Fixes: ab475510e042 ("kdump: implement reserve_crashkernel_cma")
+> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
+> > ---
+> s390 hits this without movablecore= (adding the s390 maintainers and
+> linux-s390) since ZONE_DMA ends at 2G here.
+> CMA tries to reserve areas above 4G first, but falls back to lower
+> memory when it doesn't fit, so a cma area can end up across the 2G boundary.
+> I ran into this while adding crashkernel=,cma support for s390, which I
+> will post soon, and came up with the same fix.
+> 
+> About dropping the range instead, as you offered for v2: I'd keep this
+> version. With the range dropped, the kdump kernel gets less memory than
+> configured, and that only shows at crash time. With this patch, the
+> the first kernel 'loses' the memory as with a regular crashkernel= reservation
+> of the same size.
 
-Applied, thanks!
+Yes, I do agree with this. Losing memory in first kernel is preferrable
+and it will then force someone to fix whatever is broken rather than
+finding out when their kernel crashes.
 
-tree: mm/core.git
-branch: shmem-7.5.misc
+> 
+> There is a second problem in the same loop: all areas are named
+> "crashkernel", which breaks the CMA sysfs and debugfs entries when
+> there are several. I've sent a separate fix for that:
+> 
+> https://lore.kernel.org/r/20261106104309.3669583-1-zaslonko@linux.ibm.com
+> 
 
-Applied patches will appear soon in mm-next, followed by linux-next.
+Thanks! I reviewed this now.
 
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
+> Reviewed-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+> Tested-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+> 
 
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
+Thanks for testing and reviewing!
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[1/1] mm/shmem: remove truncated folios from the page cache in batches
-      https://git.kernel.org/mm/core/c/b97fbd54
-
--- 
-Cheers,
-
-David
-
+Usama
 
