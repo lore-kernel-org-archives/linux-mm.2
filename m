@@ -1,179 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C75DE606A329
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 01:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE20E606A31B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 01:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=Ns6k3bHp
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=4cDnAf9X
 Received: by kanga.kvack.org (Postfix)
-	id EFA286B05B2; Thu,  5 Nov 2026 20:22:51 -0500 (EST)
+	id 8D94A6B05B0; Thu,  5 Nov 2026 20:39:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAB3A6B05B3; Thu,  5 Nov 2026 20:22:51 -0500 (EST)
+	id 889A26B05B1; Thu,  5 Nov 2026 20:39:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D74056B05B4; Thu,  5 Nov 2026 20:22:51 -0500 (EST)
+	id 7A2206B05B2; Thu,  5 Nov 2026 20:39:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AE0156B05B2
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:22:51 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BDF99A09BA
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:22:49 +0000 (UTC)
-X-FDA: 85402944858.30.231F0F8
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C534514000A
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:22:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=Ns6k3bHp;
-	spf=pass (imf23.hostedemail.com: domain of paul@paul-moore.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793928167;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 496666B05B0
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:39:17 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BED1DA8C19
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:39:16 +0000 (UTC)
+X-FDA: 85402986312.17.31606E1
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf26.hostedemail.com (Postfix) with ESMTP id AF73B140004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:39:13 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=4cDnAf9X;
+	spf=pass (imf26.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793929155;
+	b=sfuiritir8hOQ9JB3/PnOJDArqwt9hGFQme53ivc/5Z+HKq5i9s4/JDFYz1YNYyLj7SN9E
+	f7SbLblxesPvJCHHI4boPYn90jsQt/Mp+aRsDMjbNiRS4ITe7uxm1aI7SennrHR33bV09I
+	Jd9BVinr0RMdEj2SWu37f2SIhX0vGxc=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=4cDnAf9X;
+	spf=pass (imf26.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793929155;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oLgPV68l9ICjIDifE65oCN1RGzBXPv/N3KtgmZVNysE=;
-	b=Vw9A9QTgJZI65MqW7A+gtI2w02riyhH0YGuyXDjgMy1+8cZe0JESjVRFadmATLa/PT00ov
-	hhnBBq58+kwKuh2XDArYvmJLcVypPCG2lk72OGdXQBgafOwIcDOVI+ER9QWtYd+itpJbZY
-	hw3TNaXMab8pbvZC5nu8NMwb4yvApl0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793928167;
-	b=KiGJRPYJUhMafArfi+9NSywR8BlfbjPivA1JlrIDlwf7/n5fCrF42eCQICxaoY6O2HJdrU
-	xSohxfFgABXCW+wqUHvN8bn08becqMl/gUoR/kOI1oseN42FwGD3uYS2z0Cl6c9biyVhk8
-	wRHFWDbrrsdv6RSZrz1qK4zmacVNtAg=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=Ns6k3bHp;
-	spf=pass (imf23.hostedemail.com: domain of paul@paul-moore.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
-	dmarc=pass (policy=none) header.from=paul-moore.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-8a06210b29fso39896b3a.1
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 17:22:47 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793928166; cv=none;
-        d=google.com; s=arc-20260327;
-        b=UmcHKAyNnVCYcu1xXIXZpR/UODfmaLirEbxtOF1mpuDgYgP8hNMakPOM88xB/Vjipa
-         LMPUvqpNw7TuSby8b++2PR6w0KoiUs+yyTfeUjIEFfE92SOzaqd5Xy6XOYRwyD5U6Rqf
-         SvJMck+Ddzpb0AtLAA70mbNBpTU3RCXPlbdEiNljTmQQWLYC+X2V7vbtyy01KQFkU417
-         D+1APqSULtAWT3Ir8zzJRUQEL1SO6LjxfQHUixlB25QRPvpq235vpxOpxdxXhjPSImXQ
-         l/gZttY8pduZHPugORZW52Y8TTwGGUtKLcSaSKcnOkDCKatiP/oKcQgqIeSO7W0hy3n3
-         3WGA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=oLgPV68l9ICjIDifE65oCN1RGzBXPv/N3KtgmZVNysE=;
-        fh=dIgt6QsXTO/tspysUBknsv1CJYCDQUwxOb1YLvil/WY=;
-        b=F+5lmajB9CJXlwAW27tZ9rVlFLeX0JOGp2DliOI7aCb0ZiHoJWWx1E3XDeZZTK62xK
-         E80DVCcHdY4nhKZ8fTrV8MMTArKNMgz6I075K2Uws+bw0nm7R9dFaYtmOTATxLQpp9j/
-         KIPAgsaYbs2IIeIUjZq6zNZeSPLmptjCo5qKDxbMBRPb7ejZU6NiRYjkxzZZPlOlONXQ
-         zxVLZO7KYt8+1eUVWKshqF+TD69uGUMcJr7YqFTvBZYSixAdCLWvx5NpSn21/VQk5G/P
-         e2GkUIuvtO5ZbDJw4eIZfRQ+d0vINlunp0fmXP9KTJ3FqdsQVdgX65ejU4Hhm7j/NkYt
-         LflQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1793928166; x=1794532966; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=oLgPV68l9ICjIDifE65oCN1RGzBXPv/N3KtgmZVNysE=;
-        b=Ns6k3bHpqLEw6ytf7koEGzLQcCNo+erKrz7H1X1PZprYgXAjcN5hJtak+U29Xlq60R
-         SUUuZnpC1buKla/wtbEej6Lzc3DE8ZX9dLF3K15SBfDnkEBhLxEiICWzVApeoZS2CYlB
-         whvFdBWEtxk7+13JORSNpR9iEQEufiyFIDrLUn0OIE0U7C7Kq5VHLc/PtcR7SjfzF+5Y
-         V8MOIMjmTwDpFd08n2MBp5CvSY/7O/i0USabaKKhoH6nos2WfG7Vubu68J7xWvMEjD+7
-         ydVTHFa6fa9017kEimiug8GwVcKwxyqXzetU/SnPVyt96+lM9RuIaS8p941eoNMykDEp
-         6Nbg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793928166; x=1794532966;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=oLgPV68l9ICjIDifE65oCN1RGzBXPv/N3KtgmZVNysE=;
-        b=NQ/xNH4UpgpPmWT8VCUAqUJQIrL63uwce39RQyEl4BwRx+PHvGk1fMqOlmExGknfuI
-         5hjV2obQAaog5FKj3ttg9bkRYzhsL3SVV4aGViSe1569yiTEg+jiLBec6QS0PEnZfLDA
-         wlpzNsMWmD7mlssVf9Qx2yKGvvoeSkLSZaC1wT5P+R7QV5hah7xLXJoiInWkjH+OixDU
-         XrnzPRZWSx0EWuW4RRfIk6wLxSWdOBeIL/TJeLf/YN2rsqgjq7YJWU6hxM5arBEUauof
-         SExZDmaT/+vR+FVFolc3uL3xr2EDAkvDq7GSFJ6B3IrzZnEsgx4xAwojr0py870lqp4Q
-         X40w==
-X-Forwarded-Encrypted: i=1; AKwUvBwdubMDPE11JCfAM1RujOpFQUYO52EbOwJ4JAzqIOngmYM6efVAy4v6XUY8iNiOQ0Khw5FI/RLmdg==@kvack.org
-X-Gm-Message-State: APuU4Z+SjCjYM4BNttCsxCNIY9vPpJnxNA08G/hUtlptCq0c+airoOUu
-	tbmfeLgMIl8SC4HMM7TDTaW52kDaXOI3tK8g/aQsRSR8dveCk2Dh6nul2NxP/Z6pFjHjEjrVmh9
-	tKdNIEDslFU+9Crs6CICGdm/ZeplSKpXj69CQGJTX
-X-Gm-Gg: AYBFou0cQA5kUl+pHp88+Yst8vvrYjzj0+B9cJmj0WIha2yk5jkhgCMXkPlotkIiSet
-	xTUH4rRU38Fv5URgr9zbHdaiQQ/JbKOQ4tsQIGQ+by+K9putu3UImVLN9EMehslTCwaMQFMg7xM
-	1CHfvmfUkRbALAPFZSzvxMMISSwJhb0YLDBxLmknha8lCHNnyKz4k9WC7OYM7EKrvsYQ2rbl1qB
-	9R8EqWlU1lmzESAiEFWw1c+vB/ddloLS2CX7WsRYC1fQWrozRqPzrlJGs/qCcVRk0kLXMLthew0
-	JzKd99pwwjBksfLLqoCKJLrSkQy1QOFCJBzyr+SfVRlN5cY/5DZ/4vo0yV2KPf/xI7K6/+w/PrQ
-	z6iQX3V4fD7bze1Ol+zwfIptsJNaqr1D8PtH9wcXIZ439JTRP4Rk0SSKxWQHfvdAGnh98
-X-Received: by 2002:a05:6a00:4f82:b0:87d:e8a0:2389 with SMTP id
- d2e1a72fcca58-8b37b37d233mr903874b3a.21.1793928166471; Thu, 05 Nov 2026
- 17:22:46 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=cCbxTUPPChxKnWhtqlld2Jnw8yL45tSd5lb6BGBKG4M=;
+	b=aP0Z4ws5OmW9IQj8aI1ZKwXSLhal+H2AID0+TnmFNDgx8ii81+y6/R4AM9lT5dWEOcLsiz
+	Nn2OhDZj0euEHavKTDNY1oTRA5jz4BobLaxZFxivZLZRdBPRmStKx31csIUz3X+FYoCow8
+	EcpQM82wAhErmRfkqzR6MplpiczDWs0=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=cCbxTUPPChxKnWhtqlld2Jnw8yL45tSd5lb6BGBKG4M=;
+	b=4cDnAf9XTpg+FNhFaYxxv2WSuIUk216fJTaYCT20EbMXpjeJ9M4Pt65hlPXP7/XM85GWIrl46
+	XI1WpHli/qXzlpTQj1vA6m2jsJgRM8+pqIn3QYbuiBeFQ3hkDkp5LH+JkzMgMsFLHmAzoKSFo/B
+	Q/8g49RbGEu1gMdWS5Lkm5w=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4jLMKL0J5Pz1K9Xs;
+	Fri,  6 Nov 2026 09:39:02 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 039034056C;
+	Fri,  6 Nov 2026 09:39:08 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
+ (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 6 Nov
+ 2026 09:39:07 +0800
+From: Jinjiang Tu <tujinjiang@huawei.com>
+To: <akpm@linux-foundation.org>, <david@kernel.org>, <xu.xin@linux.dev>,
+	<chengming.zhou@linux.dev>, <liam@infradead.org>, <ljs@kernel.org>,
+	<vbabka@kernel.org>, <jannh@google.com>, <pfalcato@suse.de>,
+	<kees@kernel.org>, <ziy@nvidia.com>, <gourry@gourry.net>,
+	<anthony.yznaga@oracle.com>, <linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
+	<tujinjiang@huawei.com>
+Subject: [PATCH] mm/ksm: fix ksm_exit() deadlock on exec error path
+Date: Fri, 6 Nov 2026 09:39:06 +0800
+Message-ID: <20261106013906.2229780-1-tujinjiang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
- <20261105-late-2026-vma-flags-v1-13-0d3cd15ab75f@kernel.org> <CAHC9VhSR=9YNhBxeFBcTR8wgG2yDP1fW590QKjzuc4Kq9ohaiQ@mail.gmail.com>
-In-Reply-To: <CAHC9VhSR=9YNhBxeFBcTR8wgG2yDP1fW590QKjzuc4Kq9ohaiQ@mail.gmail.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 5 Nov 2026 20:22:34 -0500
-X-Gm-Features: AclHuK_C6UmASiuiBuBvumlcrlzJEUCTa0-vZyEfxhlZIjAFaCskKj-ONE1360g
-Message-ID: <CAHC9VhRDVz4M-m_4UZZDKMgs4uc+j-+-jwYEdBDfSD0rtd-1Og@mail.gmail.com>
-Subject: Re: [PATCH 13/13] security: convert VMA flag tests to use vma_flags_t
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
-	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
-	SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Oleg Nesterov <oleg@redhat.com>, John Johansen <john.johansen@canonical.com>, 
-	Georgia Garcia <georgia.garcia@canonical.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm@vger.kernel.org, damon@lists.linux.dev, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
-	linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Stat-Signature: sa4oyqa3n5gu4tjoacchxpjkob1sqg7q
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Stat-Signature: ksbahr51bkex84zfaquo4tw3t5xg4w63
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: AF73B140004
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C534514000A
-X-Rspam-User: 
-X-HE-Tag: 1793928167-547457
-X-HE-Meta: U2FsdGVkX1/xA0RGCODzqca41l32EyJhHVdrJ5mwLwzNw+DgVEaQ0eV+QxdlORsH7a7OXJZP2KwkmpUEXeRjrqByihgbCDDB3wvmYGHrnP9WTtdgtKMhROLKKLz7NaXsCxiOW/Kz5IB+FAtOTSQvYqsKRTUn4iPHlFeVT2sQ4U+tsbTD3NfU6rrgXAHpDqAKeTxQZ7pronuxn3nQUfHb5hX3YfqQ9zZP3Db8LN79qeMwFjnXdKn5GPx28EZTh4JRfEvy9PHZiNiCFUnxImhxwUiIIjwy0CmVV2oaqYteTVCQUNEVVVwWbRomM2fM/SO+9fyzW25WxE26q7iQlAbSlb5vqN1SBWgbe776e97jg5+sfkycpnoebV2PGMG0/1Pfm2d8Q81ZxQ2bkgKNV7+WHEmwdpjB+oZ9ZfEqVCHALj/qLZvFboOb5G7RNolFuvHTK5Xdn/T+RaOBlsDxKMXbSx2skMiM6Pdax+M4HP06wFWfxSII0Tp4WQAI2JFBIlUcHYAOlvsmyuj5Q00B3H4PZAIri+irxOovZ6HSdbctA8U8RJcrznZNaKlAyIi/KuXK4GkUJAGrWp8FClXrvc3SdJgc1AoP7hvMUndfNHzCU4PzrFbpwjl/lATcejkR5Tgj4ZBZD3KBWYO/PIG3b39y60e48rF/mOeiLHixDvBSLxiEep4PBoQ5yzIB5xlrFGdg8gPB4k+hzU0Dxu10HeQGDcoyQUceof41xkrV8/Co/kRUEFByMm+yORevSdU2B75YA3zAHZTgRIdIGg1d+cgpAyY/h3H+GhIKKwoRM6BN96YP5K0BIY5am5fpscjP/2sjFYfa3YUYIp0TTAb7Y0Fmqt7BQsBx25TQYXfNioc4eoT1rVnNg9ICQmDNp8N9VFJyRABRS2o+UmVozGZZ4Jpwa6gYZLB1ajmgZxvxn9nD/0xBo2srAGr/9Dxv+dU2E98IEId7HfK3pBRmfs0uKWj
- TSxgm3B3
- RMJ1fXdGKYT8mtenIYe0c5pxs6UyQDP7lvEdWzf/fSfKb1lhCpffI+o7139wOIIKq4T87SGAFru8VATmMai6E78Uxgzqio0w7iEoYe8c/3ls7nyBICTyuuTosllwQTh6mOkf5Q19AQYgE4Nf+MJ5TyutJMSQ1tYdfmrvyxE0gDlVpzOwjKe8BksrB1EbRbMHZdJcGdZKoZIsdtakocu/Pc6s1BtI+kwV10pGMgoZSfMDjnNdyGhTKZ5dkYbAw67zlH/pucpWlnK4pLdbkC2kBeFri86DO4sFx70fdcVXqNNMia1W3ERG/EXxpEXWCBps8vDxAwKT/PwVRpY2szWxj4yTOD9CxF/j5Cb45soFr5LGA/RdYdTU5KdIFxShY67DenibIGWHgweKtQGJIdYPF+Y5XHoOUweuV3WEs6XUXm1SKlKPJGV3W1w3/l3XtGVMvELsXuro/y5d5p3k=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793929153-176860
+X-HE-Meta: U2FsdGVkX1+VR55IF730t/kOP1+KJGvtYHbo+cG1v1YZJPPQqaNGFA/FWBVwefN55rC99qc8AbdaPAx2BAM0qk53jjCGPLEHSAGQktJrFR9zIC+OVEFpGkeL+ijfIZM3WbCQ1vti1bAfdXYhZkCs7PM/YSbHQYC1/jBFlNeahSh44w7+11NpTu4NqS1XW2+hwbTbt+ZNH1WwA4QRBmaE9tZgA+v7zEtX4cz3RzfEncZ7aTlFwrK8OvzPDy8YjvTSJ572WDn9k6MUmyH2lJQnwxkdKfx8+AlYtFQykDvKQh87JcImDL3Hv+4febwq6Cv45l/UM6HZZSCLyTV7lgbVoNrbYZPpAxuNxe1GOu6c9MAI2q8gbGZY922zqthRbafp47tKXrK/OUbIysZG69xy51qolLYAH3MJ75NtVo0aDgSUWApJCimkJwqjH1qUJ6Jl1bZfe4gx503Zm4wnT5lktCWQzxe0s9rebP86oAYuXR8ltEywxkn1UNKBSpp/xBDSjLLPmJ2jr0nQ52rlyJRgsPNTvD34XB0iZcqlDkCnprRyShp+SU9OhZ1WJhl52KEsB3VWM4xMfWszGBNNPdwyd51X1DgEBhA5DIl28nr+Us3Gs1kUK62Kav+e45/NCCNpqqVGzSN+T3K+GNjnxirApXpckKQiQa9wHRlaSLkgXtRlnsGyEZzgbu3/qpMU6XnGh7NsGuKYbjZOZsJKA/FktUbpPD0nM4mu5ZzeHdr5C7TWWFqpNLfU4a6fOjwoNt+4QnWBqdLXT3HWJaZ29Fi/yyWrRPqcoC0UwAqAoye+NQRBxXpUjYpFtkYUE0CUEEFA2M6jLFGpT8rzy6tyiKjmNDq8pLvifAznJOA4+GO34VURLsPuUnigQM26Sbi4rVWXUkX+xXGiscT54voZAwwEalqSmWUnfDilMjI/70gBLZfFOrSCep0Aulw3HfdZSC7GFevloQ2mUo6N6Mmp+ac
+ IhuH1qB+
+ 9kSdsUHtcd1e/96tn95B0zxz/UoTOmBVSPz5x5eUBQb3Ow8SD3FLhQacvF2eKbw9ruuWQWFItIEVTpoZqoPH3RLuxnAyP/YyX6/xtzkShJof6wukea9LLBg4OJszJeVwMQRlY/9EePOps5dCoaxMCRBz02Ka5BrmmHGv51e/37u1b+AqATEqKFwMgc9bjs01odJvaG/dzkm/D0+FAaNgt28gvaY5m4ZkTKVW9SRlq1ly8mWuTMDkNtZyezXU/I9S1En+Tb7FWqyHkyUK9/ZLq8FB4ZN3n99H8mtG5LRAwnqy95bg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -182,41 +100,137 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 5, 2026 at 6:17=E2=80=AFPM Paul Moore <paul@paul-moore.com> wro=
-te:
-> On Thu, Nov 5, 2026 at 4:35=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.=
-org> wrote:
-> >
-> > Replace use of the legacy vm_flags_t flags with vma_flags_t values in t=
-he
-> > mmap and mprotect LSM hooks of SELinux, AppArmor, IMA and IPE.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> > ---
-> >  security/apparmor/lsm.c           |  2 +-
-> >  security/integrity/ima/ima_main.c |  2 +-
-> >  security/ipe/hooks.c              |  2 +-
-> >  security/selinux/hooks.c          | 14 +++++++-------
-> >  4 files changed, 10 insertions(+), 10 deletions(-)
->
-> Similar to the other patchset you just posted, is there any reason why
-> individual subsystem maintainers can't pick these patches up, or is
-> there some reason I'm missing and they need to go through a single
-> tree?
->
-> If they can go through multiple trees, can you split this patch up?
-> AppArmor, Integrity/IMA, IPE, and SELinux are all maintained by
-> different groups/people.
+create_init_stack_vma() registers the new mm with ksmd via ksm_execve()
+while holding mmap_write_lock(), and calls ksm_exit() before dropping the
+lock. When insert_vm_struct() fails, __ksm_exit() takes mmap_write_lock()
+again when the mm is ksmd's current scan cursor, leading to deadlock.
 
-Since there seems to be a desire to bypass normal procedure in favor
-of speed (surely that will never backfire), the SELinux changes look
-fine to me, but please do wait to hear from the AppArmor, IMA, and IPE
-maintainers before merging this patch.
+The early registration is no longer needed after commit 590c03ca6a3f
+("mm/ksm: fix exec/fork inheritance support for prctl"). ksm_vma_flags()
+calls __ksm_enter() when the first mergeable VMA is created. Remove
+ksm_execve() and its stubs.
 
-Acked-by: Paul Moore <paul@paul-moore.com>
+Tested with ksm_functional_tests, all tests pass.
 
---=20
-paul-moore.com
+Fixes: 3a9e567ca45f ("mm/ksm: fix ksm exec support for prctl")
+Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+---
+ include/linux/ksm.h               | 13 -------------
+ mm/ksm.c                          | 16 +++++++++-------
+ mm/vma_exec.c                     | 10 ----------
+ tools/testing/vma/include/stubs.h |  5 -----
+ 4 files changed, 9 insertions(+), 35 deletions(-)
+
+diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+index d39d0d5483a2..5e228935cede 100644
+--- a/include/linux/ksm.h
++++ b/include/linux/ksm.h
+@@ -66,14 +66,6 @@ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+ 	}
+ }
+ 
+-static inline int ksm_execve(struct mm_struct *mm)
+-{
+-	if (mm_flags_test(MMF_VM_MERGE_ANY, mm))
+-		return __ksm_enter(mm);
+-
+-	return 0;
+-}
+-
+ static inline void ksm_exit(struct mm_struct *mm)
+ {
+ 	if (mm_flags_test(MMF_VM_MERGEABLE, mm))
+@@ -118,11 +110,6 @@ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+ {
+ }
+ 
+-static inline int ksm_execve(struct mm_struct *mm)
+-{
+-	return 0;
+-}
+-
+ static inline void ksm_exit(struct mm_struct *mm)
+ {
+ }
+diff --git a/mm/ksm.c b/mm/ksm.c
+index dbfb8f98b189..2e0f894208d8 100644
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2777,11 +2777,11 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+ 
+ 		mm_slot_free(mm_slot_cache, mm_slot);
+ 		/*
+-		 * Only clear MMF_VM_MERGEABLE. We must not clear
+-		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
+-		 * perhaps their mm_struct has just been added to ksm_mm_slot
+-		 * list, and its process has not yet officially started running
+-		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
++		 * Only clear MMF_VM_MERGEABLE. MMF_VM_MERGE_ANY is the
++		 * per-process setting inherited across exec, so it must
++		 * stay set until userspace disables it with
++		 * prctl(PR_SET_MEMORY_MERGE, 0). A later mergeable VMA
++		 * re-registers the mm through ksm_vma_flags().
+ 		 */
+ 		mm_flags_clear(MMF_VM_MERGEABLE, mm);
+ 		mmap_read_unlock(mm);
+@@ -2909,8 +2909,10 @@ vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+ 		vma_flags_set(&vma_flags, VMA_MERGEABLE_BIT);
+ 		/*
+ 		 * Generally, the flags here always include MMF_VM_MERGEABLE.
+-		 * However, in rare cases, this flag may be cleared by ksmd who
+-		 * scans a cycle without finding any mergeable vma.
++		 * However, a newly execed process has not been added to
++		 * ksm_mm_slot. The first mergeable VMA registers the mm
++		 * with ksmd here. ksmd can also clear it after a full scan
++		 * cycle without finding any mergeable VMA.
+ 		 */
+ 		if (unlikely(!mm_flags_test(MMF_VM_MERGEABLE, mm)))
+ 			__ksm_enter(mm);
+diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+index 586c52155942..2c644e18b55d 100644
+--- a/mm/vma_exec.c
++++ b/mm/vma_exec.c
+@@ -128,14 +128,6 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+ 		goto err_free;
+ 	}
+ 
+-	/*
+-	 * Need to be called with mmap write lock
+-	 * held, to avoid race with ksmd.
+-	 */
+-	err = ksm_execve(mm);
+-	if (err)
+-		goto err_ksm;
+-
+ 	vma_flags_set_mask(&flags, VMA_STACK_FLAGS);
+ 	vma_set_anonymous(vma);
+ 
+@@ -163,8 +155,6 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+ 	return 0;
+ 
+ err:
+-	ksm_exit(mm);
+-err_ksm:
+ 	mmap_write_unlock(mm);
+ err_free:
+ 	*vmap = NULL;
+diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+index f786a585caf0..9ab4e524f78e 100644
+--- a/tools/testing/vma/include/stubs.h
++++ b/tools/testing/vma/include/stubs.h
+@@ -55,11 +55,6 @@ static inline void free_pgd_range(struct mmu_gather *tlb,
+ {
+ }
+ 
+-static inline int ksm_execve(struct mm_struct *mm)
+-{
+-	return 0;
+-}
+-
+ static inline void ksm_exit(struct mm_struct *mm)
+ {
+ }
+-- 
+2.54.0
+
 
