@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B538606D82F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA90E606D80E
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OBh2yzfS
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZsQM8du1
 Received: by kanga.kvack.org (Postfix)
-	id 49CCA6B05BC; Fri,  6 Nov 2026 08:19:56 -0500 (EST)
+	id 6BF6A6B05BE; Fri,  6 Nov 2026 08:20:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4737C6B05BD; Fri,  6 Nov 2026 08:19:56 -0500 (EST)
+	id 696F56B05BF; Fri,  6 Nov 2026 08:20:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38AC36B05BE; Fri,  6 Nov 2026 08:19:56 -0500 (EST)
+	id 5869B6B05C0; Fri,  6 Nov 2026 08:20:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CD8E6B05BC
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:19:56 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9CBB4160D78
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:19:55 +0000 (UTC)
-X-FDA: 85404751950.12.C90E80F
-Received: from mta0.migadu.com (out-96.mta0.migadu.com [91.218.175.96])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A573D20004
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:19:53 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OBh2yzfS;
-	spf=pass (imf13.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.96 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DDDE6B05BE
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:20:08 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1E00E140D37
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:20:07 +0000 (UTC)
+X-FDA: 85404752454.17.6D1A679
+Received: from mta1.migadu.com (out-134.mta1.migadu.com [95.215.58.134])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 25DBE4000F
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:20:04 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZsQM8du1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.134 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793971194;
+	s=arc-20220608; t=1793971205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CYfB1FwPouVvSzabiejXQPBqorI59dDF0aM5IPAqcsI=;
-	b=FJYtmV17Lq+vxerfU56B9kC10aBjrOpbBzW36KZKjAx4RtyG1CiZAbm5W7aEM6osR3pmG7
-	lEdxP28psbPXpydhoxaC5F3bFH2JUMJtqdleX7kHZocqtGGJjd28R6AyZ6G7PJDGmMrDik
-	QvXjF8MjtNBNcMdSdebKsOZfv+a9dn0=
+	bh=hTZCBIjpZOspCZhwg+BKx9PwD4UeGBiWTdjVtWLRfNE=;
+	b=QmjYeFShpySAV6c6knkRdBnbo7c2pPr7kVpmj4FAJmvAZNmEUyNVOuQcuHDPQNzYArJwrq
+	wwNtsAEfsiF9VSBXZmxh/NVsFuYh5YkgFt9oUjShgkcCEXWstPGXP1vGP5o+ZuHu5BToTk
+	VlHmXfnpE963nYn6AH3WmpvwgxdxTR8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793971194;
-	b=v8r0j7L+N8xnku2DyQzdcoyLRbi+ztgCJ+0+MJEpwBd4JssX2cfPmubFZVRlcUsJi+Z+kD
-	QX2ldDt0M9SwRfQVOwN8Xn+wpUn2zEHHXFA6jOFFf2mafflOMxIVX0u9rpn2fBowATJ1qU
-	uxQBAumL7C/MvE6fbxlfSeKqEghCzsE=
+	t=1793971205;
+	b=1P7umTcScEcaRobGAmQ0Ee4PPDTBP9nZ822CWi3gpSw4vCPa+65JWb/q3YAtgkbj9Wt9Si
+	/TydlrOJHia4k3qI6tiVB4PhmvIrewiLcAGo0tjdIu4gWtjY7sdgzuaTNArYUEf9NwwAmo
+	+EjRPCK2xmDVOgZdJ6WcNI70Q/9IjmM=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OBh2yzfS;
-	spf=pass (imf13.hostedemail.com: domain of cui.tao@linux.dev designates 91.218.175.96 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZsQM8du1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf04.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.134 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=73QCibDvpuaBGtRTNbIkxL+btURCG2VkLUsjiT9bmAg=;
+DKIM-Signature: a=rsa-sha256; bh=SEovZ4ALBXSWOhtuKK3tlcth4LgwnYMDhPbgNF54x8Y=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793971192; v=1; x=1794575992;
- b=OBh2yzfS4sOkxhGkT+JBPca55NoqbHEL9VIcAcbEj1J1rXgOoQHQgV3Mcnc02kQNXVO902W+
- noDVT/X6o8QePW+IXif0wVhRtAIt7pCstFsBd5LRqmTL17bi9HehYz49UEdj6gHklLbJYcIOxCM
- FPVWpW0g4r5YYg1Ao8bNZ4dk=
+ t=1793971204; v=1; x=1794576004;
+ b=ZsQM8du1un+p13NyVJ1yhVa398SB8wxdZLQ0JQyp1c6X5ODPLHnxJZqvtRCTrx1iU6llGtKE
+ 7Xp3yGRC03VJqWi9CIvNXW4YucO+qekJmzhNVV2+KxCdstjLOrP+rqHxJ3s/GMjAgX4LRILhr7N
+ SpABoT3u/6S3cKTo5soLK5RE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b2c073d8feb08521;
-	Fri, 06 Nov 2026 13:19:52 +0000
-X-Mizu-Trace-ID: b2c073d8feb08521
+Received: by smtp.migadu.com with ESMTPS id 7dc7413b7e7a1b47;
+	Fri, 06 Nov 2026 13:20:03 +0000
+X-Mizu-Trace-ID: 7dc7413b7e7a1b47
 X-Migadu-Flow: FLOW_OUT
 From: Tao Cui <cui.tao@linux.dev>
 To: akpm@linux-foundation.org,
@@ -104,27 +104,27 @@ Cc: linux-mm@kvack.org,
 	vbabka@suse.cz,
 	cui.tao@linux.dev,
 	cuitao@kylinos.cn
-Subject: [PATCH 3/7] vhost: account the per-device kernel allocations to memcg
-Date: Fri,  6 Nov 2026 21:18:25 +0800
-Message-ID: <20261106131829.3228926-4-cui.tao@linux.dev>
+Subject: [PATCH 4/7] tracing: account ring buffer pages and trace_array metadata to memcg
+Date: Fri,  6 Nov 2026 21:18:26 +0800
+Message-ID: <20261106131829.3228926-5-cui.tao@linux.dev>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20261106131829.3228926-1-cui.tao@linux.dev>
 References: <20261106131829.3228926-1-cui.tao@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: uif1h4decpgabipq3fke1mtkpg5bjafp
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ys8iwf8y4fx95z5i8i773itw6y1r3jt3
-X-Rspamd-Queue-Id: A573D20004
-X-Rspam-User: 
-X-HE-Tag: 1793971193-853745
-X-HE-Meta: U2FsdGVkX19WGcY0IcTxWuLAnWh3D1CRpwNlducNPTOqmMv8rptej74NO5M4UChJunmOGP2WMwCe6rJXrbD8hBj17hJgZM3QDml+j+0XTfyjjAmVUn0ooox2JiLb2yAgD1XiD+gVjyyIM/SQGDaQQHPh2VoXbotzgp5BYLn8oW9Gy34CA75ep/NaoWjR9e8aiO9e0Bx9kZDC+oUXyO8BZ9XMIAGQqS20r8RkkHzE/M2Y2wUMCscdX4KUycPStjNrkXjTqZoEoYlF3ErWMZ39BoNqBpbvTVDw3hOUa09XqquTMZANHBjSVJo6wvZFXFarY2TaDi2A4ilzYp/fXbeUQQAweXqpv7LG6PgCzTagnKxmzSANN1m88S3WepEMCtrrunCghrrqhwLDoiEyETJWeWwCRjSfxMzM23JL45by67HkFThEbUhTVZQZrYgTBPMPdCshSt02QnVWLRhbeKfrX/Zd0ifg9FEiPhPn/0mZo70sjAPXNTK6mRYJ5vwHTbezhTgXTvi8gUGQM77OhVPHOIRgF7Z2VuM/jLQiAY6Lwhi1S3iiF8J5i1lb9smpptISjBV/U/YLFa+1z94Rr8+KPvIaPKpt4KP+iO2Z0AEismqvlMKHPwLsqtkS31/AHpADgHZTJoYWipUtubV1vpaxjWxEDV5KzOwQUiJBitzYh95zz2soT+H45iOoOD9NUwCbeCHte3kqNiidA59v2n1QZkxK4zCFbKoUWx3RhmiwHNznP0I4845OB5lud+GQxakRTgnWBVgBUECTGqNWCbUwwQlH0poyuUGzBXv4/VydSKtXFVGKtseVJ4BczJnG9NyvYvLI6yp5v3PeIEUy5oiuOCZB+J9U1iNDzPOmrlDsCFiHrRLs/3kLTOHRjPfIaRzJSWOE+pWT/Qf441+VrFFyeB0mrxv0DoT52+EfLAlnAPlVBHByZYZm2pai5HXxbWrH0+SzD9mAH3MJnW3NvVT
- RkNGXbGe
- xlG0Txp9IE07VyLPEOdoJiV4pCGKvibrs52EgbvFPNQT/Au0BAt2jTySWNeRG9DGCdgiqZYaGPtErTnXXFt5I+3iFfOUFbaMICBR02sRjMCQvhFwOXzw9RzCxQYs8N8MjA3tkj6ijKk7zjdC9az5h8FPvrKTzH1KW/K6WfBKlhKruhCNaUx8LGZBlxU9ldnCIyP5EOHW3uUqKPhqLdFeCh9C7WajZ5F1/+M1L6dI9UsFqay7SYCTVKMuSIzFC3DVSKzACd9Gn7VpjAz+LEEuGUBxUZ9NpM69HGB4e0VpI31OhvgiLq6NwpJmcSQ==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 25DBE4000F
+X-HE-Tag: 1793971204-135617
+X-HE-Meta: U2FsdGVkX1+IoyHecpj+o8xWU45z9yuw4ApCTUVDWAA+XO9/+Yeb0nF4sXtZ26UOT0wtLckUqLUC+nOXuA9zO9p3m2exmtoGvkRhboAOqeWz19q4caS1UY8Sri3ceqWEN+B2k7kcCaRQ482VA1ZIO+1EXAs5Aq39CLHJBFxo0PPZMoUzg3GysGzAMBeF+/hPY0R9KCNwMDiDfeb4F5g4yaOvj1qPr992eiBVqsG4bPy3ZL5MYgHQT9Z/j9NO2B+lQofEvQB0pSXIhasFbSPjrPZAAcifE0YojL7X4+YAoEP9Kht5w0Jo5d+i/sjSDEPbEPGQBQceyc9D5Z4VLDOmJ29btwt7UVZYZ8jpgGrNj1HNUBf2ZC1Jl6GrctGpZvtpNM9XkyNoqz4QjtwGjBHViz4nRH5vgt9oRfcpaIxYd6yIfS5VXpmg201AYvg3tNEXOxutNSR5aGWD7ThL0QO441CFGbv5t2/AgnHcpMYva0dNQGY2u23fN6dHYk9/0jvD8cnaCgiqYEGyqZp9KNWykb7b6HHGr8QR0JhcNokD1JcUroP11CO3ALcRoS8rGCxkp45KKo6BoEYmmQI7+S5lGCG7KTijrDSFahAEPJzUR+KjfFylg7hAcnZLcRj//wXSq2GJ4LZspHYiLMo9HaWZQRaYzeyvBrb7Iw79wqjkQl35ydNT8Tnf2BqIqFPOD/B5TraDUPzwc3BOM4KQsXAJeXwyUOxNqHtn8N4DYVtllhrF97Ma5lPG7s0o+C6q5htRbyuj7IqT/Ystfl+csEwICdh3w14SWdCZStBNX5WXOUdRx5O17+51Hs6pFUu5Vkb+brBeQFZLUyE7izyngZgOir8aDuITVYGTDLr+WLFrosRHhhIKYhsSaQ+y4VBlCbwVzrUWy1ohJs6uC+nYtABbjn+aaw1ubrU498vzYpn3Ek2Aot178tWABY3kq8WH2PJwK2nVyLNCVJGAWbl8FSA
+ pNd3h4vs
+ GJ5OdQX1pQVPppLLrT+RJgVUdkKqKXILyDlqIY6YkxwRv67LjoDqFrLJm6e5oBDekAvmlVyo+OI629X3/gqpIRk3VICC3qpkwMFxNSqcgMMyMEtL+pLKvQxHQ6qURB+ReNiiZ3noWCi0ZKgjMFhINf8E5+LP/MNFLiTSvjcYt0YAU4QSk7YeHzQfEDIgmqXGpgEhJzzUbb6GQBrei+bxZkZRwfHuLMKA3SY6PJmkFbP1Lx2259g6OJIf7QMQvDrWDiaNwRlhoHul9iRU64ziUAF8HYRBpI/wrflaof3WTJ2R53lcSIblpCQIZcf4S0mPv2XLZfIGwma9LZvNxPKzob8Ni63asjniUPlvM
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,140 +135,71 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Tao Cui <cuitao@kylinos.cn>
 
-Everything except the worker struct is allocated with plain GFP_KERNEL:
-the per-vq iovec and log arrays at VHOST_SET_OWNER, the memory table at
-VHOST_SET_MEM_TABLE whose size follows the user supplied region count,
-the pending message nodes, and the vhost_net/vhost_vsock device structs
-with their fallback to vmalloc.  The worker has been accounted since the
-vhost_task conversion.
+Creating an instance immediately allocates two full sets of per-cpu
+ring buffers, array buffer plus snapshot, about 1.375MB per cpu per set
+on the default config, plus the trace_array and its name.  None of it
+is charged: neither trace.c nor ring_buffer.c passes __GFP_ACCOUNT,
+while user_events in the same directory accounts everything it
+allocates.
 
-A container that can open /dev/vhost-net or /dev/vhost-vsock, which
-device plugins hand out with passthrough, holds roughly 150KB of
-resident kernel memory per device after SET_OWNER.  Charge the rest the
-same way the worker already is.
+Instance creation is currently gated by tracefs file permissions
+alone, so a
+rootful container with the host tracefs bound in can create instances
+until the host runs out of memory.  Charge the ring buffer pages and
+the trace_array metadata to the creating cgroup.
 
 Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 ---
- drivers/vhost/net.c   | 14 ++++++++------
- drivers/vhost/vhost.c | 16 ++++++++++------
- drivers/vhost/vsock.c |  5 +++--
- 3 files changed, 21 insertions(+), 14 deletions(-)
+ kernel/trace/ring_buffer.c | 8 +++++++-
+ kernel/trace/trace.c       | 6 +++---
+ 2 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vhost/net.c b/drivers/vhost/net.c
-index 4570a4ffbab2..bab6597c696d 100644
---- a/drivers/vhost/net.c
-+++ b/drivers/vhost/net.c
-@@ -249,7 +249,7 @@ vhost_net_ubuf_alloc(struct vhost_virtqueue *vq, bool zcopy)
- 	/* No zero copy backend? Nothing to count. */
- 	if (!zcopy)
- 		return NULL;
--	ubufs = kmalloc_obj(*ubufs);
-+	ubufs = kmalloc_obj(*ubufs, GFP_KERNEL_ACCOUNT);
- 	if (!ubufs)
- 		return ERR_PTR(-ENOMEM);
- 	atomic_set(&ubufs->refcount, 1);
-@@ -302,7 +302,8 @@ static int vhost_net_set_ubuf_info(struct vhost_net *n)
- 		if (!zcopy)
- 			continue;
- 		n->vqs[i].ubuf_info =
--			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV);
-+			kmalloc_objs(*n->vqs[i].ubuf_info, UIO_MAXIOV,
-+				     GFP_KERNEL_ACCOUNT);
- 		if  (!n->vqs[i].ubuf_info)
- 			goto err;
- 	}
-@@ -1344,17 +1345,18 @@ static int vhost_net_open(struct inode *inode, struct file *f)
- 	struct xdp_buff *xdp;
- 	int i;
- 
--	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
-+	n = kvmalloc_obj(*n, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
-+			 __GFP_ACCOUNT);
- 	if (!n)
- 		return -ENOMEM;
--	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX);
-+	vqs = kmalloc_objs(*vqs, VHOST_NET_VQ_MAX, GFP_KERNEL_ACCOUNT);
- 	if (!vqs) {
- 		kvfree(n);
- 		return -ENOMEM;
- 	}
- 
- 	queue = kmalloc_array(VHOST_NET_BATCH, sizeof(void *),
--			      GFP_KERNEL);
-+			      GFP_KERNEL_ACCOUNT);
- 	if (!queue) {
- 		kfree(vqs);
- 		kvfree(n);
-@@ -1362,7 +1364,7 @@ static int vhost_net_open(struct inode *inode, struct file *f)
- 	}
- 	n->vqs[VHOST_NET_VQ_RX].rxq.queue = queue;
- 
--	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH);
-+	xdp = kmalloc_objs(*xdp, VHOST_NET_BATCH, GFP_KERNEL_ACCOUNT);
- 	if (!xdp) {
- 		kfree(vqs);
- 		kvfree(n);
-diff --git a/drivers/vhost/vhost.c b/drivers/vhost/vhost.c
-index ea127af58ada..d1274106ad5d 100644
---- a/drivers/vhost/vhost.c
-+++ b/drivers/vhost/vhost.c
-@@ -526,11 +526,14 @@ static long vhost_dev_alloc_iovecs(struct vhost_dev *dev)
- 
- 	for (i = 0; i < dev->nvqs; ++i) {
- 		vq = dev->vqs[i];
--		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV);
--		vq->log = kmalloc_objs(*vq->log, dev->iov_limit);
--		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit);
-+		vq->indirect = kmalloc_objs(*vq->indirect, UIO_MAXIOV,
-+					    GFP_KERNEL_ACCOUNT);
-+		vq->log = kmalloc_objs(*vq->log, dev->iov_limit,
-+				       GFP_KERNEL_ACCOUNT);
-+		vq->heads = kmalloc_objs(*vq->heads, dev->iov_limit,
-+					 GFP_KERNEL_ACCOUNT);
- 		vq->nheads = kmalloc_array(dev->iov_limit, sizeof(*vq->nheads),
--					   GFP_KERNEL);
-+					   GFP_KERNEL_ACCOUNT);
- 		if (!vq->indirect || !vq->log || !vq->heads || !vq->nheads)
- 			goto err_nomem;
- 	}
-@@ -2053,7 +2056,8 @@ static long vhost_set_memory(struct vhost_dev *d, struct vhost_memory __user *m)
- 		return -E2BIG;
- 	if (max_iotlb_entries <= 0)
- 		return -EINVAL;
--	newmem = kvzalloc_flex(*newmem, regions, mem.nregions);
-+	newmem = kvzalloc_flex(*newmem, regions, mem.nregions,
-+			       GFP_KERNEL_ACCOUNT);
- 	if (!newmem)
- 		return -ENOMEM;
- 
-@@ -3405,7 +3409,7 @@ EXPORT_SYMBOL_GPL(vhost_disable_notify);
- struct vhost_msg_node *vhost_new_msg(struct vhost_virtqueue *vq, int type)
- {
- 	/* Make sure all padding within the structure is initialized. */
--	struct vhost_msg_node *node = kzalloc_obj(*node);
-+	struct vhost_msg_node *node = kzalloc_obj(*node, GFP_KERNEL_ACCOUNT);
- 	if (!node)
- 		return NULL;
- 
-diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-index 0cb87971d749..600daeb05e7b 100644
---- a/drivers/vhost/vsock.c
-+++ b/drivers/vhost/vsock.c
-@@ -721,11 +721,12 @@ static int vhost_vsock_dev_open(struct inode *inode, struct file *file)
- 	/* This struct is large and allocation could fail, fall back to vmalloc
- 	 * if there is no other way.
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 1fd28a72e6ee..676c059c112c 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -441,7 +441,13 @@ static struct buffer_data_page *alloc_cpu_data(int cpu, int order)
+ 	 * gracefully without invoking oom-killer and the system is not
+ 	 * destabilized.
  	 */
--	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL);
-+	vsock = kvmalloc_obj(*vsock, GFP_KERNEL | __GFP_RETRY_MAYFAIL |
-+			     __GFP_ACCOUNT);
- 	if (!vsock)
- 		return -ENOMEM;
+-	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO;
++	/*
++	 * The subbuffers are charged to the memcg of whoever caused the
++	 * allocation: the creator of a trace instance, or root at boot for
++	 * the global trace.
++	 */
++	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO |
++		  __GFP_ACCOUNT;
  
--	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs));
-+	vqs = kmalloc_objs(*vqs, ARRAY_SIZE(vsock->vqs), GFP_KERNEL_ACCOUNT);
- 	if (!vqs) {
- 		ret = -ENOMEM;
- 		goto out;
+ 	page = alloc_pages_node(cpu_to_node(cpu), mflags, order);
+ 	if (!page)
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index e8c4efa8107b..04b60b9cc4f5 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -8693,11 +8693,11 @@ trace_array_create_systems(const char *name, const char *systems,
+ 	int ret;
+ 
+ 	ret = -ENOMEM;
+-	tr = kzalloc_obj(*tr);
++	tr = kzalloc_obj(*tr, GFP_KERNEL_ACCOUNT);
+ 	if (!tr)
+ 		return ERR_PTR(ret);
+ 
+-	tr->name = kstrdup(name, GFP_KERNEL);
++	tr->name = kstrdup(name, GFP_KERNEL_ACCOUNT);
+ 	if (!tr->name)
+ 		goto out_free_tr;
+ 
+@@ -8708,7 +8708,7 @@ trace_array_create_systems(const char *name, const char *systems,
+ 		goto out_free_tr;
+ 
+ 	if (systems) {
+-		tr->system_names = kstrdup_const(systems, GFP_KERNEL);
++		tr->system_names = kstrdup_const(systems, GFP_KERNEL_ACCOUNT);
+ 		if (!tr->system_names)
+ 			goto out_free_tr;
+ 	}
 -- 
 2.43.0
 
