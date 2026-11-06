@@ -1,128 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91560606A31B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 00:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6006A606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 00:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=MERLs9Cg
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UFA23sne
 Received: by kanga.kvack.org (Postfix)
-	id 8C1B86B05B0; Thu,  5 Nov 2026 19:23:54 -0500 (EST)
+	id 615B56B05B2; Thu,  5 Nov 2026 19:34:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 870C16B05B1; Thu,  5 Nov 2026 19:23:54 -0500 (EST)
+	id 5C5906B05B3; Thu,  5 Nov 2026 19:34:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 788766B05B2; Thu,  5 Nov 2026 19:23:54 -0500 (EST)
+	id 4B5816B05B4; Thu,  5 Nov 2026 19:34:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AF726B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:23:54 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0943B1C4588
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 00:23:54 +0000 (UTC)
-X-FDA: 85402796388.07.750B0BF
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 29CF81A0007
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 00:23:52 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=MERLs9Cg;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 207F06B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 19:34:56 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 159E9C0AA5
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 00:34:55 +0000 (UTC)
+X-FDA: 85402824150.29.709FA20
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 1BF3A4000E
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 00:34:52 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=UFA23sne;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of skunkolee@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=skunkolee@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793924632;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793925293;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9bnssphz9tPNkziEw1TrPwX8Qw76+EQZeM5ElxoXCNo=;
-	b=3QZuq13BzsX6HFs2ktEv3JLCMML4MZ9oD8zvSGGYR7vy6COTkRr5UWJqNnUc1O5gXouJ5U
-	gYnLnGd59FUcuSK/+LqsC209dqLBiUi5lVPBOPCropfw42m+DtkXw9fBTMz/FaU3klQtnC
-	YWRUqcfBQ0MkAvNQQugFOFR6n4Dn9n0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=MERLs9Cg;
+	bh=02QAP4BRChAM3iykURm2Ztmkd6pLWewsJZlk3WHtQgM=;
+	b=aFU38OVONnhS5F8CN1u8iV/TtGoOLYRJPg+LRS7wHv71+OqbQpRNIyV/V+0LpIdiFmizaa
+	I6ZLuyYjk2TrEonxnhB1cVhgv1MGCs2z1LKVpd2YQ4cwSBrEL8Vw+3ad2lm4ems/0HTfCW
+	SYSlyiBLDj3pwUkoJj4Yt1dqFY0Opuo=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=UFA23sne;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf19.hostedemail.com: domain of skunkolee@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=skunkolee@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793924632;
-	b=tEKeTaY0iXGenMw3nqiul4Irnfio+bMKBnLUuDKx/3rCgX1BS/oUQaciRtK0+TjcjUJmmC
-	4QeDVJkFkFrW9MBRBgXVaV5AwykbgL7qwF6FN9y79MTrzxazMk8DXycfsSpcbiF6d45yOH
-	ikHqjTI0/QsI2f2DzlYCIbwbiWMh3Ak=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2e8f2c3ad6bso411965ad.1
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 16:23:51 -0800 (PST)
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf04.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793925293;
+	b=fxQZ/oUJJHoOU9qAP70VhWVF16sIzBk9uEtVwe2JhlrVvd/tIxXixeKUu+Vsr0ryMJ5Wk6
+	9Igykvi521xo/orOtC2p56SIl/NcNwf6GrItUqAZtDurcMq6cRDN+oTw6OjrLsivWMA+Ij
+	BhVoPYix/0ijFz3Gy7rp1pee8uk8uIk=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2ed3d8877e6so410815ad.3
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 16:34:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793925292; cv=none;
+        d=google.com; s=arc-20260327;
+        b=kpN9RsLUCFo7CEdnh6RAeuh69dnFMXbPW7QuEYABk9wblASoEGltV9RASE08d4qaEn
+         +gTYrXeG15F0Fj1YNrOW/s/wXgUWYnqcAr6s11hn6ZDTt+gTDQiVt5GsGd2+QQ/5ZZ+I
+         3TTYBpEsV5fALybT3nNlxQ1ix3WTYXmT8U7jH2A7LOZJhd7c5BC4Fy/EBwnTyfFfBsRO
+         1i0WtGB9ZsOVTFR0xsOBOMK/u+f/A7tnliT1aJdxky0NsvceVHJOWMky4dRq6hOkaKG3
+         8YJ7XwU+S7Tig5WesnrnjK2o5eCgl1JNxA9ZSg+ajHSj89fzorSP+/4HEVPmwb2bGirH
+         VxhQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=02QAP4BRChAM3iykURm2Ztmkd6pLWewsJZlk3WHtQgM=;
+        fh=e2p4+HzfzEFgRimQmjzZlIHPN+WYopyKq48Te2JSlNE=;
+        b=nPVG0QQS5rhOj/HPYkT+3mlkO5pRaUyICCIfoatujwAyGyjpf+5Ok7I6h/nnBOaqkD
+         drPDYL5YjIbuhFi9/Nv5ZBeiNiXanHmjv2c21oT87/oVfQA/sFp3dzQaGWPUCwgimjDO
+         FABiO3cEtf3qkVbiWoIWoX595ClOI175A+/yYO2c4HBaBFOG5R3cbwD3wG/hgD1azLPE
+         rrB8l4gSY+kCsQl8tawvsfMQwZybNY2KqohQoLlsVpX9msXpJiKqxuRd8bArxqp8hgYb
+         BPk1RleY7ecXAxou1wuleBRAdc7trzNENbVKt0Aha/QbY7gi7/lhdqaniT7ECFI85jdO
+         ZSqg==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793924631; x=1794529431; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9bnssphz9tPNkziEw1TrPwX8Qw76+EQZeM5ElxoXCNo=;
-        b=MERLs9CgPX6PhqXixCuPRVUu5YBMoa1qdD+fGXL2teMJb4AcZfsTzMThCx+WtSTdsL
-         9IWTKkn7+Qz0Jwrb7y7IZjl6EOyAWKaAbCvYu6Pc3UtJLBY60eygoJDkQvYUW9VHBRq7
-         QklIBuEXpkJCdEqCwvO2xIyVF7Ib4VQcYB5C5P5/lQ67jrL4LKNy1aeunhQAvRL4tJfK
-         XiRctBqzXzVjjBIED5fGbNTsqAgBdZcHtth6Q8X4MYVjPJhE5hGxzXdtOGCA8pHS0/9E
-         IAR5dqq+THTdKZD0T8oWEFrTVr/o/cc8JwJSzMXgmmjL0My2oiTS3B3znrW2Y/n8RBZ2
-         iceA==
+        d=gmail.com; s=20260707; t=1793925292; x=1794530092; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=02QAP4BRChAM3iykURm2Ztmkd6pLWewsJZlk3WHtQgM=;
+        b=UFA23sneEvrDb5o+QZeAaL0OOYNwqZbi9VvcEiQfBYLKK8eqFhWb+ALEJZP8W4Y+DQ
+         wD+li4Lqpw7xQ07zNYf+GGmUCd2fQDYlJI5LZ0Z0VVvZpfasZjJMoQyjtyxBd5c/kC5Y
+         Oy/mv0MO51KjpdcKqNzXoaBtMSU6QCyxQfy//6CzWcHlewmbrPzf6MmC4MiFPiS0wNiv
+         OSEA8V4dg6vwVX0zNJ+DeN+/MOXOP5xx4lY/MVWduqRGrPZoJ/XCltl0KgmKA7PTHe5M
+         8IWrXn7F8GxTAWfaWEUKlPar9cvhbPZnf70WAnJVkVNg82W1qcP+l5MMdxYQ4j037a/2
+         c6ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793924631; x=1794529431;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=9bnssphz9tPNkziEw1TrPwX8Qw76+EQZeM5ElxoXCNo=;
-        b=cZLcn4zKb5Gm1lfiO0B/GA+feZU2GG7hzQ+/mHxsSxCAEjyQ52BVUe+q8jvUZMuqN9
-         x5q+MMCZtliTUfA2jPq+mqhRHZSkOwV7MVoGe7oZMfUOlkgeJ5Stpfu6GliNCmt+e+PI
-         61TPoRWXK5vC6QZxAvyKdJmJVht/8d8ugEhME6T1l8T5uHAPoBnZ68reSnmBHUKSVhpc
-         ovqhgjTWO+9TfUQt9sGSWEIU9RgPzjX46B0Vij29P5Sj24UYmeWtfkahaClT1j8pRDRa
-         ih1jNEjpp4t3DISI1RObbqUZMJF+hkAUwpnvJBUaujS/OOORIQ4W9pF+q+EV4GrDdv4g
-         C5wQ==
-X-Forwarded-Encrypted: i=1; AKwUvBz6ytBdLDIQ6kmaqNYiNPK4T9mjR/kJYaCv7/cg7o2E3xazMgmMQE8ub6wV4A3Yz6dU27fe9Op1jA==@kvack.org
-X-Gm-Message-State: APuU4Z+KtWM6Lvas18nPHAtFLBb61vvr8fK7baTax+UwfP0pkXDpQfYM
-	W7jqYtN6o82wIz28mtN/KfLy5fm/b77OHSLFPtHQspv/6izHMkkjPVNm
-X-Gm-Gg: AYBFou2KeD2xXuySYKCHXulnTlwmAXUtsG8WOYs4790eDPUfDhS/ur8WUCdwI+IH9eK
-	zZgSUTOLEFN1Lc7xVY6hT1Aelm9VWizclAde+cPSDyaHGrbuFvzPIKiQOscL/nLmD/QKli4LXSY
-	zRTesiREqgHdI4GZctYu4bVQ9r/MoHg8AmjgpIKB2bVhGSY3NxaMu0x30kbn8QS3gawEg3KCjlO
-	oc95fDj6zi6+B050CS0HK+0hH2xSt4RtNCaOZbogCyuaowdd+ZKhVNjqi6+RFi5VjgHtH0CGRYv
-	mfyWJuhKo3ZbfekNfRgpzdvCnVzDOcMli1SmODbVO8i7wALtSQHNva/XYHEY3E2lLYxZGTjk49p
-	ncHl3XPiHx+rnjRwmLIZ9shtrBI+3Ksj4Rn7b3H5BZzza8/HgfDspGdDg2AUEychrCpWbXjLxi6
-	T0SjPoFpFUgJ1Tt5LkEQ2nJ4gHfRP39Y9wwbWZ0/mdqbPSFf8cYtaOcjAhizuGNSEkFOVQI0QTQ
-	120hUXdPJAO83qUGF6cGGVgqLbj6j0zOdSIO8cwMKvroqWLHLnQEz5l8EgfH2GEFV2Ug69itViO
-	EXwYA8n7+ofpZNKCVHtGpjaCNXQhD7cOBGuLOtVI0rWUcKLdqOxqkgmR4t+1utNzmwKZYJjmK9+
-	KO5drCj8=
-X-Received: by 2002:a17:902:f78d:b0:2ed:2475:e40e with SMTP id d9443c01a7336-2ed41e914c1mr13079085ad.61.1793924630892;
-        Thu, 05 Nov 2026 16:23:50 -0800 (PST)
-Received: from bloom.localdomain ([2604:3d09:178e:e100::5567])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed47da165dsm307555ad.73.2026.11.05.16.23.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Nov 2026 16:23:49 -0800 (PST)
-From: Ivy Lopez <skunkolee@gmail.com>
-To: david@kernel.org,
-	rppt@kernel.org
-Cc: akpm@linux-foundation.org,
-	ljs@kernel.org,
-	liam@infradead.org,
-	vbabka@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	fvdl@google.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] mm/cma: fix range selection in cma_declare_contiguous_multi()
-Date: Thu,  5 Nov 2026 18:23:47 -0600
-Message-ID: <20261106002347.255584-1-skunkolee@gmail.com>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <6099bcde-15be-4197-905e-13dfa4c83bfe@kernel.org>
-References: <6099bcde-15be-4197-905e-13dfa4c83bfe@kernel.org>
+        d=1e100.net; s=20260707; t=1793925292; x=1794530092;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=02QAP4BRChAM3iykURm2Ztmkd6pLWewsJZlk3WHtQgM=;
+        b=aS1r7prFr5RcTR2jxkUtnpFHx/RRzz0L4Rls3uEKW9Ga93O8wt2ZTOkY5x5TJMnFjz
+         Vn41XMt4TWWRGzX6hM0tXBnKP/BfP6uzmyaDwUjMLNIfiy0KpN+40VSy7RR+dmyenRou
+         K3x8YbBpMBv94SBXBjedTsvdNErD56Q3WVL1xynr7eSE8MQ/cw0eBlKtxZw7g3Pbromy
+         Zk+hs6iFL4jySlFBBn4tD6XtRltjdP2Iasuy5PFVlon6oelpEVPvvnryC5B9XOC6pg5J
+         QfvEmmir170kAN6gyLiAKzHPIIxjgYv9A9Ncq8tfJD1UqJK1PESEQH4r5yWHg5G5IgNm
+         p3Sg==
+X-Forwarded-Encrypted: i=1; AKwUvByGZXignOORSMOCyQriCCR44qQ93AKNYgU8q9a6F/QUQnuioeeq7ZmSgklJccTWulxekMpZom628g==@kvack.org
+X-Gm-Message-State: APuU4Z/jSYWUGb/BofBRp6CI18f+W8BEHGOc+KgJ0NewLLpJo7qdkgEd
+	bD5CoOvaRb8dj34/ZydXBcTSKZmQkcc/j72gv8iM/XGjejwWwZl/6AacS+X0+BcbY8+yickrd0c
+	+7qpS+PnAPVweVxNs8zrbM1wrvPUn3HM=
+X-Gm-Gg: AYBFou0uXj3zviQE31o6mI49NsceySPy6YSy6skezg5DqxDRWpXv8IQB9tmECL5Kh7g
+	gTmUmr4voGwCaeugv0XaypSpQA7++LbyU5mYt+mbcadsGNwl5ooF+pw8LD8UtCDGDNMsI6tDbCm
+	gXTxHUuqNl7ZPm05XUD3uHDRptU3V58vfioCE50EUks+clmX5JoLtgctkCOahdZOhNXEc1to9+2
+	46jL24M8uTx62edRSzpXAVUvwsTYFI2rVP3XMgXQO/0YePp/hZF2O3po/S0XEyuUvtHvMm/Sthh
+	kQPebimWn42A/WiqKYWH+ukrU4bTVMGzt5q1igkAV2VX+6OkNd+YBmBUU4ubVibUNFz028PByaU
+	A5vqHVWCuvcQMiSEPoRSVmK3kp0kX0vilwLSKcAH5C0ANau1+wfE+Z7BQGShDwoj/+cuEh9tjc5
+	O67Wj5Tkz6De5jOhA9uUOefAN0TwUx4p3wLA==
+X-Received: by 2002:a17:903:2b05:b0:2ed:3f47:9696 with SMTP id
+ d9443c01a7336-2ed40c7b5bcmr13899535ad.35.1793925291850; Thu, 05 Nov 2026
+ 16:34:51 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20261105102343.311331-1-jolsa@kernel.org> <20261105102343.311331-3-jolsa@kernel.org>
+In-Reply-To: <20261105102343.311331-3-jolsa@kernel.org>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Thu, 5 Nov 2026 16:34:40 -0800
+X-Gm-Features: AclHuK8eP4aP7e5aZ3VTvmtBXE3vHsFqbDq4B6KK4YEagZrzajw2VXUziTJJzRM
+Message-ID: <CAEf4BzY+1a8v8AHcr1AfUBR24uMitU7gEe2_1Npwp-8_kagU3w@mail.gmail.com>
+Subject: Re: [PATCHv3 bpf-next 2/8] bpf: Add user memory kfuncs
+To: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org, 
+	linux-mm@kvack.org, Andrii Nakryiko <andrii@kernel.org>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Federico Di Pierro <nierro92@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 29CF81A0007
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Queue-Id: 1BF3A4000E
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 6pgxdbo3j81h7sa639a8h63xaoa44148
-X-HE-Tag: 1793924632-768975
-X-HE-Meta: U2FsdGVkX193XHkg1+ip4LmAyWSQSHRhafAwt3hPGDzr95I1C6gKyVkBptXwR3i20nP4tzf7tCyNfVSyTVIbIw4Oynh5mbmj/geiXsVi3rGeRQ4YPk/YdmYQIu50Df9GJn2PpKuy5TaNtl7puCoVyPbF2WlyCPHGs8pCPJ3M79VIMSiDCT80gxEtFmg3QABoBEJIo1arQw7gvg/xIYypcsTNN+Zfm5v+94ThL6obWlkUhGrfKZwwBOOvKLKAjlWUCAEpkddyajLoaX3j6RcLwFMvcwLG8kXuFPsH78ZIuIV1X+d0BJUEsD0XpYTcoy/JQ1oDK9Zyy77bUalrQMn5TwjlFs/WvL9zeVj1BWbaddhsdIbbDqxNxw7SU1m5YJFMAHj/VGLJvPZskQprCn2ceT5qtXfSaGLIwns7QVt0dmdEzYAezD5kuxiHCRYI1b+Pd23gXiXG5kYDVxYMtRUFrB5tom0owX0ckppNmUY2xgAoTHdLrkMKZBy+gVGPEdpX1oa0zfavNxfP8Xlns0DZB4lWBe2worxGCuOBJ/FHtMRQTpmhy9eTSxEPKZM75QBvy0Eujorxtxg5k4LaTNoaQFUJiT9vFKHE1oDasLTcX1HLkMLR3g/oDUJQLiiEhjrx6Vmi6o2ofCHVxCmMySXidDSXMZQoADNoew3V15OX3rdDIx670EndRNGXCsVxMahni+25mm8Nn+ClTQKLERtwqhQQH5D98KfTFBj/DIHXW1sUqAV5EM1nHzIVtdvpr5QIr0/rBHO6DGumHqmVANr098+M7KfZpvF23Lyg/1l+bzwzTJA0+q/7hl8M2DkbhAbyXjtDX/n1HaXTSOnvV1V9EgeL+i1crDM7Zgq8JVmhEu2fC0TbPNRqxYQwbJ76uOz0E8fPzGFaeYujC3L9MI+QqagOnHNF3+L1eE9EOr0UrgHH8Er/IcRGE0JDCRicMYII0UWRQKTuo+El0YSQzM6
- dViCKsCY
- gOQAOlavl8GYaGYP7KFkgkn+MBS3rjgUuKycNGNfd/1iPozp3NNjro33AlGohu2cW83PQXgBespgehdcTPLJ+nngTySTopVTJ1Z0FuKrQqG9Uvmg9mVKEablW4YdwGQSIiLa8To0CEK5SYoH4+mJyQL+ixVd12MZL/5TsjbdaM9wTW44Qva/vM1kG3G5r+Sy0Xyu7JAGMi0nTWH0rK71oHLqY17O0VsksKU+TDYHvg10PfXCshdwi7NO4JtSKRSoQJTdJt7hyMgBQhpg4DWWpZJcUtevoBsOcN8BI5yqhOgmTIwb1qVeRzFD3FmsZrUPSgChw6RrFX5paNcrkaCihup3RV0vtjZ7rfb4+YPwFJ+kp9Oys8XGTfn/RLim+pBSbR413FLk5SSXI9wrvhzjc9bGvt5UoztLpijPO20zilHSfXIxhDmskZGfk36DiVGn8dg1bnlRdt0xnAaSHelAGp73l11YiwCKTQC8i
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: mjxr5xkh1n53po8su8t75cwxdzskphx6
+X-HE-Tag: 1793925292-942461
+X-HE-Meta: U2FsdGVkX1+AFVklOplpAg6rKRYJDVH6CDC+8L6JRqyhU2ELMj7iY2BIxqotMBWSeiHZ71Uf2m91XYvonLQVptk7vzw5Tnc/WH1pdWjQO93vnPGzsdyD27s2QocTqtxpAwIuDFgX9xT6Nn9p4sM4jJc5vQzAY9lvqnq+qjydZ3CuJiTu9y1vxJzKhzfSlSQbpOm2aKPFfR2qYuqjOSvmESpBX8FUG3gGOGFRFB81etHzpFZNXpSH50XKMaV+xxZ3iSBYWzsTEB9zBXzIXL5zpmFZLE2I7Hb6nE5V1UJJvycyN34J1zoQYcD5WU5dnZ2vnSOSqrUVswpI6qSH+dtnwb5Y11+vXydvizpWD7193Sul5nAEc5K+xNa4YuMMrc8XdM+nH1gASfA97H6HUc4ZULqq1SGQW41MckL+Lrxe5D8r52WX9G+giRWIZGcwZ/IZwzcMPOBzoGJhZQ8uHrRxl9VcYu0Ep3wWew4/5REnycX6mHMTLFTfJV2H2vmsSjPuNK4BFu4t5WUcOpldjEYnTLyTjXe7XNXrLofCNzJGkZVFmAfaVpXaXURoicgNbUi06NskwLlaXPg6PEnNh5m5VNVWUg9uOQwqqDyQXYlIHs8roxw3A4UZdHqiVs2qdR7ToEo570Gl9Xn3K64m4byiRaOvcuLKY3VwgxrGKpHpol+jtY0p6ukiqt6bv52izzR8tFiosZoml/qMtmwNgbDmuNJGw9qN3inUGGczv1WZA9sP14qW5vQ/mIrNxJ0w5c7uuwos+m2W4Todr2UIlq8DnDmyucXAumdu+QSqfC3j9YTN8X1l6uwI42dM12DH0Ot9swJqcFNeOIA3oPqPds7nlhVp7soxD3Ui9d8X1fNqzk3l9ZfPoxcnLG0w00vPXdwbWAO/Czffls2HNeTv90iSnXH2M0gRqcEkDJ63DcY7iLvAytjVwpkFaeLayEXL2mHfs3Zqpj3juh563vDnXrB
+ GKuapCj+
+ nzhRmr8oQARxRH08UrTvZXn863xgWgqZaKlEJy2W5C0cuVTBPoXpLT/6KhjbdmLzw3gSY5RpHd7S+OTIe+dwtseoABCgplp8+ycu+8zXe/SpWkGAHCLW9EfRx7rOM9kDdwwNSSe/9kCq+VAl9Gkftb9RXzfnAuukdqB3Ci5GMGAL1/ctFlpksE34yM5K7eIfTLRy6njAlHeNzNOJ45jF1gXbGBXQW7LTrsqlkCyXgZm0gThvMVsp4HYFCq4pL9t38APPgzdhlTXr+52CdixBSZlW36o/CvhJxDQgoKI/+VeZ2EpDjuYrLcXiCTYo6SwszhfO9QHmO9VytwwhRWhS4S+eK7l8sIm8ek6pqryDsCnDSYJnXpao2etbpjwszUewhnvkVzw/Ftupg0p8vWvJbCjgsSgxhxVktt1cvMKP/LRMvhs/xPlPxoFbwNMcghLd1K3b/qoFWpaDW9ahcKpN142tqZw1iTXcdUw0dz9BueNs3ed1ccwsEAMPHJ5Invhhn++8YrjG6wf6H0v7g093G9xUtQo3//dwatCl+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,15 +147,126 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 20:38, David Hildenbrand (Arm) wrote:
-> Do these two fixes still apply?
+On Thu, Nov 5, 2026 at 2:24=E2=80=AFAM Jiri Olsa <jolsa@kernel.org> wrote:
+>
+> Add sleepable kfuncs to copy data into a task's address space and to map
+> or unmap private anonymous memory in the current process.
+>
+> Require a usable user mm for mmap and munmap. Register the kfuncs for
+> KPROBE programs and gate them on CAP_SYS_ADMIN BPF token capability and
+> the BPF_WRITE_USER lockdown check.
+>
+> Use FOLL_FORCE | FOLL_WRITE for task memory copies and return -EFAULT
+> when a copy is incomplete.
+>
+> Rename the syscall info-copy helper to bpf_copy_to_user_buf to avoid
+> the name collision.
+>
+> Assisted-by: Codex:GPT-6
+> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> ---
+>  Documentation/bpf/kfuncs.rst |  17 ++++++
+>  kernel/bpf/helpers.c         | 107 +++++++++++++++++++++++++++++++++++
+>  kernel/bpf/syscall.c         |  10 ++--
+>  3 files changed, 129 insertions(+), 5 deletions(-)
+>
+> diff --git a/Documentation/bpf/kfuncs.rst b/Documentation/bpf/kfuncs.rst
+> index 4f8dd7c1d785..81686d556f58 100644
+> --- a/Documentation/bpf/kfuncs.rst
+> +++ b/Documentation/bpf/kfuncs.rst
+> @@ -976,3 +976,20 @@ the verifier. bpf_cgroup_ancestor() can be used as f=
+ollows:
+>  BPF provides a set of kfuncs that can be used to query, allocate, mutate=
+, and
+>  destroy struct cpumask * objects. Please refer to :ref:`cpumasks-header-=
+label`
+>  for more details.
+> +
+> +4.4 User memory kfuncs
+> +----------------------
+> +
+> +The user memory kfuncs operate on the current process's address space.
+> +``bpf_copy_to_user()`` writes to this address space, including private m=
+appings
+> +that are not writable. A partial copy is not rolled back if it faults.
+> +
+> +``bpf_user_anon_mmap()`` and ``bpf_user_munmap()`` create and remove map=
+pings
+> +by calling the kernel's mapping functions directly rather than issuing
+> +``mmap(2)`` or ``munmap(2)`` syscalls. As a result, seccomp filters do n=
+ot
+> +mediate these mapping operations. A seccomp filter can still allow or de=
+ny the
+> +syscall that triggers a BPF program, but it cannot separately filter the
+> +mapping performed by these kfuncs.
+> +
+> +.. kernel-doc:: kernel/bpf/helpers.c
+> +   :identifiers: bpf_copy_to_user bpf_user_anon_mmap bpf_user_munmap
+> diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+> index 6788489a2608..937a0d7d6839 100644
+> --- a/kernel/bpf/helpers.c
+> +++ b/kernel/bpf/helpers.c
+> @@ -29,6 +29,9 @@
+>  #include <linux/task_work.h>
+>  #include <linux/irq_work.h>
+>  #include <linux/buildid.h>
+> +#include <linux/mm.h>
+> +#include <linux/mman.h>
+> +#include <linux/limits.h>
+>
+>  #include "../../lib/kstrtox.h"
+>
+> @@ -3768,6 +3771,88 @@ __bpf_kfunc int bpf_copy_from_user_mm(void *dst, u=
+32 dst__sz,
+>         return ret;
+>  }
+>
+> +/**
+> + * bpf_copy_to_user() - Copy data to the current task's address space
+> + * @unsafe_ptr__ign: Destination address in the current task's address s=
+pace
+> + * @src:     Source address, in kernel space
+> + * @src__sz: Number of bytes to copy
+> + * @flags:   Reserved for future use; must be zero
+> + *
+> + * Faults in the destination and writes the way ptrace(PTRACE_POKETEXT) =
+does:
+> + * a private mapping doesn't have to be writable. A partial copy is not =
+undone,
+> + * the bytes before the fault stay written.
+> + *
+> + * The caller must coordinate with other threads so they do not execute =
+the
+> + * destination range while it is being modified, and ensure execution be=
+gins
+> + * only after the copy completes.
+> + *
+> + * Return: 0 on success, -EINVAL if @flags is non-zero, or -EFAULT if th=
+e copy
+> + * fails or is partial.
+> + */
+> +__bpf_kfunc int bpf_copy_to_user(void __user *unsafe_ptr__ign, const voi=
+d *src,
+> +                                u32 src__sz, u64 flags)
 
-Yes. I checked against akpm/mm-new at dba8aba0a9a0: both patches still
-apply (two hunks with a small line offset from the accept_memory()
-additions) and both problems are still present, since
-list_insert_sorted() and the sizesum accounting are unchanged there.
-If Mike's rewrite is going to replace this code soon, dropping them is
-fine with me. Otherwise I can respin them.
+you'll eventually want bpf_copy_to_user_dynptr (we already have
+bpf_copy_from_user_dynptr), so might as well add it from the get go?
 
-ivy
+> +{
+> +       int ret;
+> +
+> +       if (unlikely(flags))
+> +               return -EINVAL;
+> +       if (unlikely(src__sz > S32_MAX))
+> +               return -EINVAL;
+> +       if (unlikely(!src__sz))
+> +               return 0;
+> +       ret =3D access_process_vm(current, (unsigned long)unsafe_ptr__ign=
+, (void *)src,
+> +                               src__sz, FOLL_FORCE | FOLL_WRITE);
+> +       return ret =3D=3D src__sz ? 0 : -EFAULT;
+> +}
+> +
+
+[...]
 
