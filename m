@@ -1,94 +1,176 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1810A606A328
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 07:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B3B606A335
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 07:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UUslPJzJ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=nj9sDAKN
 Received: by kanga.kvack.org (Postfix)
-	id 337066B05B1; Fri,  6 Nov 2026 02:43:49 -0500 (EST)
+	id B980E6B05B3; Fri,  6 Nov 2026 02:46:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E0786B05B2; Fri,  6 Nov 2026 02:43:49 -0500 (EST)
+	id B48C16B05B4; Fri,  6 Nov 2026 02:46:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 21DC26B05B3; Fri,  6 Nov 2026 02:43:49 -0500 (EST)
+	id A109A6B05B5; Fri,  6 Nov 2026 02:46:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F35776B05B1
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:43:48 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 852356B05B3
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:46:05 -0500 (EST)
 Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 62C89120BC1
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:43:48 +0000 (UTC)
-X-FDA: 85403904936.09.964E7EC
-Received: from mta0.migadu.com (out-176.mta0.migadu.com [91.218.175.176])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 0EDAB140006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:43:45 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UUslPJzJ;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0FD361A0513
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:46:05 +0000 (UTC)
+X-FDA: 85403910690.09.B3D5790
+Received: from mta1.migadu.com (out-238.mta1.migadu.com [95.215.58.238])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0EEA0180004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:46:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nj9sDAKN;
+	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.238 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793951163;
+	b=7CgHceypwp4qhOmOS1KxHRyqg0S+tGD+2wUzUa+kg1YKvfjjEYGyAJKzpkmeC7VkkrU29H
+	Flrx0oq1r5XCaaC2vGicr9K2jVKixAlz/461glPjToLtXt+s2W3Kr3ZVOamscFc1sSIh74
+	tbroXbn9a+5FyUbfFp6W/i9hP4845Go=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=nj9sDAKN;
+	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.238 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793951026;
+	s=arc-20220608; t=1793951163;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pQ493reg1DFWSPby69XzCWASVouZmLq1W+aADtj60OE=;
-	b=v9fLHy/Tw1lz03px5KPlYGjOIMu3C8aJEDli0GzhXzCYWy9pg55qRuDgZJUHB9T+Rat7nr
-	wj0a2qbeg/VUF+37ulyvEw/tPZ+jPxbpbgqIq9QMEl8S72qah/hSCm1zTVc1Kas9sHNvfD
-	3n8D9fR2NNMO4gvzLBWU9tfJezLaBuY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793951026;
-	b=3JLLJ2yCpyO7NP2vVzXJaqpTZQQHInIbNeuu2xoLkOXAckvGwiDzrUzw9qJatPOZQiiX5A
-	FqIIcZOZvg5j6wT4OsQeYeqqV1mcV4UfzgxAk3kpfg1lp3eRPVAYe4Fxbz7F5FLuhTNJTT
-	3smo9BIX1MQ3vaSXrhC+bstZIwZX18U=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UUslPJzJ;
-	spf=pass (imf09.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.176 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=8RPjRkRw6TGzo85+j1RMaJO9Gz+t0O/3LiAQ/KX/BlA=;
+	b=m789nKEZou6EOf0Ie5dEwXpeL4eWC6sh94/XJdrzQSuDkelmjTGFQmEBeDOyiEnpYX/ZAL
+	Vp7kqV69m8if1+tX/aXsXLubII1DPNN2it3ONRx5byvOlreVAxedyVQEpqu+nwiE2Q13iL
+	yh/IuOo0CNJ95VrQ7dmVNeqw0cC7xhY=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=o9Tmykt3lhCIaXXKkm5ZZA+SVo0MxKGt6zqyZUr8nlc=;
+DKIM-Signature: a=rsa-sha256; bh=8RPjRkRw6TGzo85+j1RMaJO9Gz+t0O/3LiAQ/KX/BlA=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793951024; v=1; x=1794555824;
- b=UUslPJzJsosbxl4LiZgDzuNLV1FVGk2DOY0WYsTMTq36yXOBkwDrQPaDUJDvAU+iwqhKds3j
- FCFvH3005Nvt6h9U51/e+Xb7AkapHPYzZ0wWlkwJHuF11Er6SOJ/RBIztOf7P6C9TCcanA8YMrn
- jLG9y/fYc64cHri8M0MpjY8o=
+ t=1793951161; v=1; x=1794555961;
+ b=nj9sDAKNfkvbBGNxUae68sem25H3PJydnfLYRCEquTfzOGknOJJaghCjguFnHEM1Tv2sOAqv
+ 1Dlhalz3OIiYsrxXcBlzYQ7L5wC9z9d/t1tVu2xjsUHyj9DmQPymjq+m+Nk6PEfXpKvCGwRWJhK
+ UyWYLWpQac9Ccw6BbX++PldM=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 047cd03742201f6e;
-	Fri, 06 Nov 2026 07:43:44 +0000
-X-Mizu-Trace-ID: 047cd03742201f6e
+Received: by smtp.migadu.com with ESMTPS id a2e578c5cb1dba6c;
+	Fri, 06 Nov 2026 07:45:25 +0000
+X-Mizu-Trace-ID: a2e578c5cb1dba6c
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <3bccbb5c-bc3f-425a-b8cd-42342ca71f42@linux.dev>
-Date: Fri, 6 Nov 2026 15:43:41 +0800
+From: Lance Yang <lance.yang@linux.dev>
+To: ljs@kernel.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	jgg@ziepe.ca,
+	jhubbard@nvidia.com,
+	peterx@redhat.com,
+	willy@infradead.org,
+	jack@suse.cz,
+	riel@surriel.com,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	harry@kernel.org,
+	jannh@google.com,
+	lance.yang@linux.dev,
+	ziy@nvidia.com,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	xu.xin@linux.dev,
+	chengming.zhou@linux.dev,
+	maddy@linux.ibm.com,
+	npiggin@gmail.com,
+	mpe@ellerman.id.au,
+	chleroy@kernel.org,
+	ritesh.list@gmail.com,
+	sshegde@linux.ibm.com,
+	pfalcato@suse.de,
+	kasong@tencent.com,
+	qi.zheng@linux.dev,
+	shakeel.butt@linux.dev,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	baoquan.he@linux.dev,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	leon@kernel.org,
+	sj@kernel.org,
+	rakie.kim@sk.com,
+	rientjes@google.com,
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	peterz@infradead.org,
+	mingo@redhat.com,
+	acme@kernel.org,
+	namhyung@kernel.org,
+	mark.rutland@arm.com,
+	alexander.shishkin@linux.intel.com,
+	jolsa@kernel.org,
+	irogers@google.com,
+	adrian.hunter@intel.com,
+	james.clark@linaro.org,
+	mhiramat@kernel.org,
+	oleg@redhat.com,
+	john.johansen@canonical.com,
+	georgia.garcia@canonical.com,
+	paul@paul-moore.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	zohar@linux.ibm.com,
+	roberto.sassu@huawei.com,
+	dmitry.kasatkin@gmail.com,
+	eric.snowberg@oracle.com,
+	wufan@kernel.org,
+	stephen.smalley.work@gmail.com,
+	omosnacek@gmail.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org,
+	apparmor@lists.ubuntu.com,
+	linux-security-module@vger.kernel.org,
+	linux-integrity@vger.kernel.org,
+	selinux@vger.kernel.org
+Subject: Re: [PATCH 12/13] perf: convert VMA flag tests to use vma_flags_t
+Date: Fri,  6 Nov 2026 15:45:19 +0800
+Message-ID: <20261106074519.54904-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261105-late-2026-vma-flags-v1-12-0d3cd15ab75f@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-12-0d3cd15ab75f@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/4] mm: hugetlb: fix cpuset violations in gigantic
- surplus allocations
-To: sashiko-reviews@lists.linux.dev, muchun.song@linux.dev,
- osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org,
- azpijr@gmail.com, lance.yang@linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: linux-mm@kvack.org
-References: <cover.1793850539.git.zhengqi.arch@bytedance.com>
- <046fd77e49ee8bb35e3bcc4104b9275d2e72ea5e.1793850539.git.zhengqi.arch@bytedance.com>
- <sashiko-outbox-198588@kernel.org>
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <sashiko-outbox-198588@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0EDAB140006
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: onz7coqxcf7re99j7kn94kjkapeyx1uj
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0EEA0180004
+X-Stat-Signature: 8begrimte3paf338fp7nfinf6148ykxo
 X-Rspam-User: 
-X-HE-Tag: 1793951025-144505
-X-HE-Meta: U2FsdGVkX1+aau/STiUfgQGteSh4GErl/5gEIgNAnbxixhjuZtGF3r7zHW4t3PiqOcL1iW1iZivk3nK9lpC9uG2SXFzSAAU2GuN2/E6c9wLjGJPxwe6vhanu2KoVA3YotDSK65ow+TePeewoVsNY+1DnscGEOStNPMJgKVKCqV2ANDPhlqR++bpZZS4JvNcCFbDkzfcvsTekNy3jxmseAJlVSWVQ0VPcv9IEI4NUpX8LaWEIQBc7WLnPz99ABYTuMmJGVvEZHkdCUdPTvbRg0px3ZG5uEehYM1E12SjhIksJiDauEdLEeV3a4E5qJ4NJOvrjY3ltbP3ropc+5JLmvQvovpezVxUupRY8X0pI6eu8KlQirDvWzeT/7nQXbguGNB7akp9vhqHyr6buUKdrz4o8zOzB3gwG7g8omWqAh3+w2RUhfSDqU464qt7Tqec8tN+xm7W+pgggApWTGO5mAtlw9uDOSI+L7EMNKsNhDFLfQss1IGFqrrYLc/UYqVu3Gl/pnjfOR//ZvXzMlink3wdwyAdSCEWDjpSzHpuKRy7SmZ8VGsDAix6VSx6oSTA96NjAMfgVdP7eEZXdnO6lOu1KRQ9Og8CXIjwqPJJw3JMtEkkQREnhlG8hzCXdaIjW+LJBM6duPORzDzomY/V5S4O4WDoMwxtncL7dp2nx+nFyHcHzoumpQ4s+vE+MwCQ6ycxpOxz02W5gzNzUqsO4dvjJsduU6Kh81VhhTbEluDaOst2LhLOf0m7s/jYiuNcaNe1szOrPnJkXyLGHv7T5h8e+wP+eDq7Bjyd6wMvXxKUAsWD9/rfEyHJk29x0ZpOu4OdfGVETVEfrI+mlC2uuQFPGEDduNTNnOmOyEuNVUkRjS46FhvQsJmP9rQCeK+S6iwFVxG6m9CPy81i0cxoU6nFrkZMnyJtTfXe7+RfRgGweQJlt1zzG0IjxmuyHELd17qTnb/pxRzVNmUwBIwe
- f7lpW9gi
- wJ/xbJvgBDm8uA+YuMrgSlvCOuZhPLrNrzLuf2zONx5i5Ee3MfufCOeGrHVcvO6g1sOJOeQ3sn2Ix5sC4BhYf3Sh2My5b4nGXJpRyrjSbMQGCpO8GUxJa5vD3s7thtT4A6OwzI2Az3/rys4mS5btbLdJVRYqkm4igjD8ZcNNpB9f1U96oSMiihw6SJiFOfXh1tfZPxoglN/jLMJ2aWQ7SngOs+PTj9sEcNqyFcINOJCkmVLceHv0gvmthxhKMVF//llS5cHm3MPymdeKo5VjKWP2KcyGd2/heBHQ8v4xXf5yi9qk=
+X-HE-Tag: 1793951162-418512
+X-HE-Meta: U2FsdGVkX19Jarh8KJZziPCEEbXo2uRjuJBEOWSj55eF/hR81+ZmycXSv09BhbwYQ/jp4qdqh8k/RTq+PohQkFh/KBUUSqCWWH9KJYpaarB+ykrOI+q6EFaUntd/wtYXqNbMXrDRQRtgQe3gRdAMDWrxeJXZaMdCUvH3vzgIfirqUsCTjxc5PRK19f7VrF0NVMpWZ9I7Bg2GAwl74JVNn0NA7Jf962BQehNbUBbOD/+2kCLGHhDdasypLZxpeosnoPrpWJ1HlIRvQ3cXRCvICY33vS195/F7DjxEsyCcZkU1fFjJxqlO23vuHY4Jz9IWCMdzsyy2aBvTLWlW933RIy+KHjJTUHk/9m+p/8u2rSl+AZ7DbGfFGqLSb0rZGurC0lK3Ru3sb9RF6jHBI72thfH+ETgb5/xRTJqHex9Mxlopqykw7eLlSGQkKoJn7jWNWMy70DUmzDWyNXi/1cZ3i+u6g3T14NMNsHQmu0xLfC4QOgTGRDlTjLPDwjtHsG/XwKKIilL88TwW/mk17n6b0OHX9fO7s8lNGg7UMb2AHyUulR8SR+ZFjTa19RcmH7PRDmwvuois2G6ma9IIWQ43wSt+2UCyAD85MPzSV/poOw/C3TAVp+1K4PVk2rtEJAG2ewa5zIx9IPeOrLK8JKEiyG29VPRG30yFyMBn1MQlUl7dBsuePVebFXQd+zLS24viI0rAC20PklUn35gjjXmNVlz94s1t7sxux+Y6Ml4krcnsfVI4OSY0WE/xCGSV/Q4fkdacrjwRymGrKIu3hQAUCTANANTli3QuPpXuUORiAcB1Un3/o9wqgMO4iiEs5F7TbFab3GNlP2a6B6E99z/hG9tEYJv0Y2igp+rSNtYE9KmE0bFu4h+SzpuD8Fi6vwzAjDRrbMy6vskwUxFm+APfJ7cwtJ1BSX4wjaouwqvhKHs3yz5c4uHksxhGPfLGY9c/6FFQ24I6MYBWtrXtK3Q
+ BkzIIj2g
+ u5arau3RAmTc+Q2U6/vZy27Xxs9uVDqoOgdAnDdiqCOQq8mLX+6S5g35yHoTwnN9+49oJB6OHsPACETxg8qoJ8ZiMjrv/AUxIUB2Ma+srjKYwwnIzjgZCV+aqa3ZRCoF80fyjcNZVGH1u49canZv/Ae1bD18tvLckN9j9GjDn5P6mh7jKz9jTqbLGg364RX+0CiYY08KeX6lz5YastPXBZciyUdcKOu4tV6V0IEoq9GB99KdEokjvrmab4fsbjNYsC74CM3R2/Cu5MrrfYWVrWjWdXKs645Qg68Umnud4Ve+cmT9MWqtU0uUYQStkvot5wATRGPcxtasD/p3yCPrZcpon+4Gog0AeabvxY4sRwIPwph545+c1Uhf+mW3f5QZSyUc8
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,136 +180,14 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
+On Thu, Nov 05, 2026 at 09:31:03PM +0000, Lorenzo Stoakes (ARM) wrote:
+>Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
+>perf mmap and mmap event logic.
+>
+>No functional change intended.
+>
+>Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>---
 
-On 11/5/26 1:15 PM, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
-> - [Medium] mm: hugetlb: empty nodemask passed in alloc_buddy_hugetlb_folio()
-> - [Medium] mm: hugetlb: MPOL_BIND violation in alloc_buddy_hugetlb_folio() on cpuset race
-> --
-> 
-> commit 6e27dfcfc4f6238bea6b6e8639c15188d8d94295
-> Author: Qi Zheng <qi.zheng@linux.dev>
-> 
-> mm: hugetlb: fix cpuset violations in gigantic surplus allocations
-> 
-> This commit intersects the allocation nodemask in alloc_buddy_hugetlb_folio()
-> with cpuset_current_mems_allowed so gigantic surplus hugepage allocations do
-> not allocate from nodes outside the current task's cpuset. It also retries
-> failed allocations if cpuset_current_mems_allowed changes during the attempt.
-> 
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index 6fba92b0f6749..09b64f7c11dd2 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -2181,22 +2181,33 @@ struct folio *alloc_buddy_hugetlb_folio(struct hstate *h,
->>   		gfp_t gfp_mask, struct mempolicy_interpreted *mpoli)
->>   {
->>   	struct folio *folio = NULL;
->> -	nodemask_t *nodemask = mpoli->nodemask;
->> +	nodemask_t alloc_nodemask;
->> +	unsigned int cpuset_mems_cookie;
->> +
->> +retry:
->> +	cpuset_mems_cookie = read_mems_allowed_begin();
->> +	alloc_nodemask = cpuset_current_mems_allowed;
->> +	if (mpoli->mode == MPOL_BIND && mpoli->nodemask &&
->> +	    nodes_intersects(*mpoli->nodemask, alloc_nodemask))
->> +		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
->>   
->>   	if (mpoli->mode == MPOL_PREFERRED_MANY) {
->>   		gfp_t gfp = gfp_mask & ~(__GFP_DIRECT_RECLAIM | __GFP_NOFAIL);
->>   
->> +		nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask);
->>   		folio = alloc_surplus_hugetlb_folio(h, gfp, mpoli->nid,
->> -						    nodemask);
->> +						    &alloc_nodemask);
-> 
-> [Severity: Medium]
-> What happens here when an MPOL_PREFERRED_MANY policy's nodemask is disjoint
-> from cpuset_current_mems_allowed (for example, after moving a task or
-> non-leader thread to a cpuset on different NUMA nodes, since
-> mpol_rebind_preferred() does not remap pol->nodes)?
-> 
-> Unlike the MPOL_BIND branch above, this path does not check whether the
-> intersection is non-empty before calling alloc_surplus_hugetlb_folio() with
-> &alloc_nodemask. When alloc_nodemask is empty:
-> 
-> 1. For gigantic hugepages, alloc_surplus_hugetlb_folio() performs a wasted
->     pass through CMA and alloc_contig_frozen_pages() with an empty nodemask.
-> 
-> 2. For non-gigantic hugepages, alloc_surplus_hugetlb_folio() ->
->     alloc_fresh_hugetlb_folio() -> only_alloc_fresh_hugetlb_folio() ->
->     alloc_buddy_frozen_folio() -> __alloc_frozen_pages_noprof() fails the fast
->     path and enters __alloc_pages_slowpath(). In check_retry_cpuset():
-> 
->     mm/page_alloc.c:check_retry_cpuset() {
->     	if (cpusets_enabled() && ac->nodemask &&
->     			!cpuset_nodemask_valid_mems_allowed(ac->nodemask)) {
->     		ac->nodemask = NULL;
->     		return true;
->     	}
->     }
-> 
->     Because cpuset_nodemask_valid_mems_allowed() returns false for an empty
->     nodemask, check_retry_cpuset() treats it as a raced MPOL_BIND nodemask,
->     resets ac->nodemask to NULL, and restarts __alloc_pages_slowpath() with
->     __GFP_DIRECT_RECLAIM masked off. That wakes kswapd across all nodes via
->     wake_all_kswapds() with ac->nodemask == NULL, attempts an allocation on
->     non-preferred fallback cpuset nodes at ALLOC_WMARK_MIN before the normal
->     fallback pass at ALLOC_WMARK_LOW with reclaim/compaction runs, and
->     increments HTLB_BUDDY_PGALLOC_FAIL in alloc_buddy_frozen_folio() if that
->     first pass fails.
-> 
-> Should the first-pass alloc_surplus_hugetlb_folio() call be guarded by
-> if (nodes_and(alloc_nodemask, alloc_nodemask, *mpoli->nodemask)) so that an
-> empty intersection skips straight to the cpuset fallback pass?
-
-Right. We should skip the preferred-node attempt when no preferred nodes
-are allowed by the current cpuset.
-
-> 
->>   
->> -		/* Fallback to all nodes if page==NULL */
->> -		nodemask = NULL;
->> +		/* Fallback to all nodes allowed by the current cpuset */
->> +		alloc_nodemask = cpuset_current_mems_allowed;
->>   	}
->>   
->> -	if (!folio) {
->> +	if (!folio)
->>   		folio = alloc_surplus_hugetlb_folio(h, gfp_mask, mpoli->nid,
->> -						    nodemask);
->> -	}
->> +						    &alloc_nodemask);
->> +
->> +	if (!folio && unlikely(read_mems_allowed_retry(cpuset_mems_cookie)))
->> +		goto retry;
-> 
-> [Severity: Medium]
-> Can pre-intersecting alloc_nodemask with cpuset_current_mems_allowed cause
-> non-gigantic surplus allocations to violate MPOL_BIND or use a stale nodemask
-> when cpuset_current_mems_allowed changes concurrently?
-
-Yes. We should preserve the original policy nodemask and check cpuset
-constraints separately in the hugeTLB CMA and contiguous allocators.
-This avoids losing policy information or restricting retries to a stale
-cpuset snapshot.
-
-The plan is to:
-
-1. Add optional cpuset checks to the contiguous allocator.
-2. Add node-selection checks to the HugeTLB CMA allocator and enable
-    cpuset enforcement in both paths for HugeTLB surplus allocations.
-3. Keep policy fallback at the policy-aware callers and retry failed
-    allocations when cpuset changes.
-
-I'd like to address cpuset handling more comprehensively across the
-HugeTLB allocation paths, so I'll drop patch 4 from this series and
-follow up with a separate patchset.
-
-Thanks,
-Qi
-
-> 
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
