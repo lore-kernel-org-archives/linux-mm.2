@@ -1,146 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 642C6606A32E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BE5606A333
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZRYmaiq/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=VhokyNrA
 Received: by kanga.kvack.org (Postfix)
-	id 64FCF6B05B0; Fri,  6 Nov 2026 10:30:25 -0500 (EST)
+	id BAE846B05B1; Fri,  6 Nov 2026 10:34:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6273F6B05B6; Fri,  6 Nov 2026 10:30:25 -0500 (EST)
+	id B38DF6B05B3; Fri,  6 Nov 2026 10:34:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 53D226B05B9; Fri,  6 Nov 2026 10:30:25 -0500 (EST)
+	id A02856B05B4; Fri,  6 Nov 2026 10:34:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 38E386B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:30:25 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C5A2180D13
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:30:24 +0000 (UTC)
-X-FDA: 85405080768.05.4BA0D23
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E73A5C0005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:30:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZRYmaiq/";
-	spf=pass (imf22.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B6FE6B05B1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:34:21 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E9D240D1E
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:34:21 +0000 (UTC)
+X-FDA: 85405090722.29.E4D5301
+Received: from mta0.migadu.com (out-252.mta0.migadu.com [91.218.175.252])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 0737912000A
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:34:18 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VhokyNrA;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.252 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793979023;
+	s=arc-20220608; t=1793979259;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ajX4lfiph+VivXIsw2riYK43KZT3Do0cgXxc26s8IY=;
-	b=5x7YybpkEIYfGhcmxcJrkeiXotOsKycblNxYOwA+WQMS5ALi172Zl1XuiZNRBJdtqeakfE
-	HfYsgqDBvjoAx6x6tsYCVopOBVpg8pHHuoJbJm5uQV+p7WZ3uBe8b0C0qNto7Q7QhleQKP
-	3geTwCNwOvGm/oJ5v2s5zmsa93RWzNU=
+	bh=3UAbQu4Zz7jM5fvfnVPIQRW8LGHO6T/qo7Hc+AehbY4=;
+	b=IafJvN3RdKTCi+aEDyzwpx6QkBP8hGU7HuunTFhldH6+TXvCId0VikG7tp56AZmY8vu2RM
+	AKrJRvIg2X8shm84eFPaXxwdbcDOcuYDRNc6vsWwdHA7nLk99dF/1Fv9aSV2BQ1NLfR1K7
+	ZuOYNttb24mveGsyW1LKXgt6VZC1y/Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793979023;
-	b=g1eNAWcsijyAivM1wR3UKN5/pU8iRmds+XeiB/bzEMaTzBy9ae0aEEB7Ocsv1OBvGPrRjg
-	U6ZxDgIcYvkwTmdEDhgQNIo0Ykuf/VdazgcLczNha99UOJVwr/kXkIUzuE9IgCQs1nwbOa
-	4In4p9vfgyp2UN+dN5M0Q97SsVEC0tQ=
+	t=1793979259;
+	b=fHAKikB5ETucpbdkTwukkjaUzO7Ws36dsoMomUsSLxra3+/JiNZQfTFwc8o8zxrIahUGKM
+	7O/vQvDHyfvzdMkZW02WCYvK/qBK0/7t+vewlZKESioBxX7R0DMq6ZwJEzKn2a+83lOXhA
+	4j9d+sti+JdLidcU25qer7XTr4sGCAQ=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="ZRYmaiq/";
-	spf=pass (imf22.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D825E411C6;
-	Fri,  6 Nov 2026 15:30:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E4D1F0089F;
-	Fri,  6 Nov 2026 15:30:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793979021;
-	bh=6ajX4lfiph+VivXIsw2riYK43KZT3Do0cgXxc26s8IY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=ZRYmaiq/u/SQjBF4ufiS7XCsUtIWBR8hL8WYwn3u9em1LPif/YCL7ChpmRJhgOyIX
-	 7IC3EXVPCAkmKpLit8fAZGhbU6zO4Vo41xdkh0y1FE4VLwuE7EJ30uktOPNCEggpHD
-	 MbD1RX7dmUIkjT1awTBDV15avM4RN85WC1q1el5mr5tbkabk3V6dhoZUlfF40LSpgk
-	 KGlR22lgb9rXJhGOGQUNnGEHkpSn3m9hgHzxauJLxhjdxnvoN5U5o3aZh72JhgeHUT
-	 8BdOqsA5VITYBbXwdbZ6w5prD5p1MVjT+3jhhqFtkmeHdpWI1SXbbXixdwYl6O4EkL
-	 ecOySiCRp0UYA==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Suzuki K Poulose <suzuki.poulose@arm.com>,
-	linux-coco@lists.linux.dev
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=VhokyNrA;
+	spf=pass (imf29.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.252 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4IpYDm1JeTeVQryoSNRzjLLGuozzk6CpKr9+AhGJ6uY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793979257; v=1; x=1794584057;
+ b=VhokyNrA9rO/IiddTY7Qj6x7ba7aZUn1FKhs7ajCtrOgaJAPnmZzejHHyYw4UfLOAiH5bxP+
+ 4EWVftLheEtm70YmUWkm1Px7Rdi/ZpK1E+FLUi4G28bspY0FLOVM838t2GYXE+DcjLjAXlIXX6y
+ nSKJFHy9h74g1jcO9X8vu3GA=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 1c7542236927aa1f;
+	Fri, 06 Nov 2026 15:34:17 +0000
+X-Mizu-Trace-ID: 1c7542236927aa1f
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Nico Pache <nico.pache@linux.dev>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
 	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v9 01/14] mm: Add an allocator for CoCo shared memory
-In-Reply-To: <2e448ac1-7b4f-4d45-90db-dfe9dc5ad329@arm.com>
-References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
- <20261104164555.3555725-2-aneesh.kumar@kernel.org>
- <2e448ac1-7b4f-4d45-90db-dfe9dc5ad329@arm.com>
-Date: Fri, 06 Nov 2026 21:00:01 +0530
-Message-ID: <yq5ald76ou4m.fsf@kernel.org>
+	Qi Zheng <qi.zheng@linux.dev>,
+	Hugh Dickins <hughd@google.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] mm: free unused page table allocated by do_set_pmd()
+Date: Fri,  6 Nov 2026 07:34:13 -0800
+Message-ID: <20261106153414.2938216-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261106-khugepaged_set_pmd-v2-1-d2457b5e377a@kernel.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: erfaqxktg5btjg8sgipnjt7ct96nhw6r
-X-Rspamd-Queue-Id: E73A5C0005
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: nzciahzp5y5dw3xnf9e6fsn57xh5iai5
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 0737912000A
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793979022-921043
-X-HE-Meta: U2FsdGVkX1+ipAyDwL8w57xX0Mdv7TD81nrtvROdXwOIbcOuIow7DVn5AFdwrYxALxPvFB3SAJIazEnEmCMdFn3rY14Ig4d92XV7EiBK7YeYGABmF0cDkVavalFjzrjXJFyiVdvEzjJJvojUgZbauySOMIesPb4AIq/FovO+XseIUKSvU03FjIeZy6l/KCmYLrSvtak/fSebfzYXQXYFOcGhIp83Lh6ZaOe3bBvwcsAIaLPW7+A/MNO1Li3CteHAHWjCkuzWxHBt+Uv2YZx8MaFc79gdSxx4eeWl1NUpPWOlEXw24e6B93Ib+MxpXjtKhL/k0qDWWrf+2tK1nYctdRg8JmtMre0pOEvau+5fUXexiTQiUnYgdQWdK1tBX6gGX2pInTjTEvmbjHkZ4E5q+T2Y4VmS0PgwcciWQzmTeobonmzVtsFOCD1NZ0VstxuTYBpuKQGshS0bB+9Ob8UkEh940bS/xZwSWbcv3RUG7DItWy7BEAuZNGLoU8kere5nBbs1UvS1cCdn2IctzNbcBBxgMY7Vdy/e9FWMufAhjIIQq+ZHYxsmWSyHxK8afnmxLClJ96UwcAIk+i5CMB3a8gLFouPLdjj1MrBdFmm32FCYZ6pYUIjOAlbrT9yWELqQrbb8ZDcjAbBW5dwgljOGz2SmpaosKMERXEdI6q3BRRY4rK+OB9wihTAkH5IfuSA9F01mhaECu5O7aeOdcBPWq2XnmklfJUK81k57gNEg0f5Y2exWFSeola86UyBO0dX4hx5JBMLHGB0KV0KIOdeS+CNBadpTTN4lAx+wRHqfCq+Ygru8a1/EMVgnSIQviTXjUp7rwG3ztxlSN+LA1yCppjPx1O5JcFEg5H9eofBNHRFx2nGoftFgtK0SfXVD6CnP/oqaqYH8TCehGdEieO/aucEy5FiKPxZ9kF0sqrWLbs+s0Mj8ioo6nKBMkjz3CO66suzvKOvHHg3c1eUc8em
- BYSU5ynP
- +Lmso3qI+yXf3EFwNQTIpVfqRr3K7FmPpsZ282n92IrlB7fRqNskOZktPbWdbabGeZ23NF7HgwufNifse5QrWmUEV/HqzdDjL4xT/H2LG7JFrEg3La242f7Z1a3/4JtC7ABbF7yykW7Hy6cQcRAd+QtGffW3eDgl+PQDze1hzYl41vEUlEOeZ7hvIZuYqc/iPVh650MzpEtEIiTOsreQv85I6EbMv6MDuKYrEzLaTPcZmNmHcNKFSgQo9EQ9Vc824ypixt/WPA0MSeN3W8PmmuKn7eztq7SJkzdFt8gLqqhwpgGzVdhiEk3eZae9hAvAE6t+ixb+1AH8d+B9S+RSyyaiyZQ==
+X-HE-Tag: 1793979258-235294
+X-HE-Meta: U2FsdGVkX1+vcWfD6hcTgPeeFwgtrKiynY4Ydn3yWjFZJ9udVeQEBr3qsYlQbt3szhK+nWCveSp62a9ZJ9WFZshZNo4G7lS9ZOcUhxEbibZSPGVoVdfW8vyeKgxXB7Wv4GTi4ItR5EyIw0ktRwBH1fSZuiRkqp7tQ5PbdOLhtAIjRjDV/uDX0r1qqSZj43My9Z6+bi2N/bUp/mLG2Ph/tFUDnQs3RR2wYdB5L0BiT/snAhImj4rUDKLpWB/uy0c+uZkRMD8W+nebGIZtBPLGH2JB4n2bTqx7sq0nc40uzCl75r4a4TSduvVFrtG0qNmUg+Oj0OOfpBhpgBS+pY0D7gdk7OK1RlurFktqNUVaK/OP0iSmWrm8DW8N5xJ6cWJrJlq/juAV8vZpSGLHRjyrEVf0Mt7Cr86Rcs7HFYRGIuG1Y+uqKq99u1Awor9J5TySTgFKAmK5hGDypUDQ/TAUJ8EMIYOke/tTCykE39cPF15hDj3tt398QoKRqaNn20SfhKSEvFG+pFJF90w4FEbnITwJJyqc2p1exI5tFTcVKLtDWxrb5rB99YoRTsHRIf/kv8+WU2y1j+XbkItLnKYUMuc1vRsUZbIIs2ZXCIW688RZsDVxx4piUOCOf59XXAPvUQM8DA6yGDOE19vxwdZ4HXaapb+R6D8RPo+mVDI/37QJYn4mE4KFu6mml5lejtJWtgcxHWSYmPoX7p58y3JXdjiYaOIEAMZlWICVnXpRexiNpdwVW7WzrxaIkkQBlvJaTGSuswVD6gLXXiURhMOHWQElldRmeJ2IJxA7UkwYo0MLGVXPRAmnmcxpk96NSqef6+f7WOvVkVu6Fizd/ZbUQLe9SvdeX8zlSmnBgLoFdh8UiW6hs73ud8GX6VtfgKfTDozT0EFu3OeEHpc2KXzCSNt9WUAJWyLc8ea/He+JntsMKt42PeIiJvrPRvEEQSIc0WQ/W/2xye7suVJEJOY
+ 8F85xz2n
+ yep1pyCGVbqfgPuhzgTfr2fNegZDESlZjr9WaW7PUfpRDB8KXV95pJ9OLlctIfjJ9M1fR29cYdZpXSeNBInuAGiIBacKWXCzBWvM/L0APR8xJd+W71tKi36mKEJEJO3jPtSKN1BqJ4D3MzPisZzsft8WI5GgHE8ua6/5cqekjSN+E01aXbtl+nZAv9hwJFZ96nDjCu1Vf93qHYT6R52XGh7sMNQdtwz1rGvpyska07/zAnqGTVG0UUO3fXDBCZQudQc3avlv+XLsEq9YNtKrELhnANijqnJFzGA2OFl5n/u0+qH0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,34 +105,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Suzuki K Poulose <suzuki.poulose@arm.com> writes:
+On Fri, 06 Nov 2026 13:36:12 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 
-> On 04/11/2026 16:45, Aneesh Kumar K.V (Arm) wrote:
->> Confidential-computing guests may require memory shared with the host to
->> be aligned and transitioned in units larger than PAGE_SIZE. Several DMA
->> users need struct page-backed allocations satisfying these requirements.
->> Provide a common allocator instead of requiring each user to open-code
->> this sequence.
->> 
->> Add alloc_cc_shared_pages() and its node-aware variant. The allocator
->> rounds the requested size to the architecture's shared granule,
->> allocates suitably aligned contiguous pages and transitions the
->> complete range to shared state. It also preserves the caller's GFP
->> policy.
->> 
->> A private-to-shared transition may alter memory contents. Mask
->> __GFP_ZERO from the underlying allocation and when requested, clear the
->> complete transitioned range after cc_make_shared() succeeds.
->
-> This is not true for pKVM though. It is the other way around. i.e,
-> pages must be cleared before transition (e.g., from private to shared)
-> to make sure the contents don't leak into the host.
->
-> Do we need to handle such cases with a pre_conversion and 
-> post_conversion hook ?
->
+> do_set_pmd() can allocate vmf->prealloc_pte on architectures that need a
+> deposited page table, such as PowerPC with the hash MMU. If the PMD is
+> no longer empty when it takes the PMD lock, it returns VM_FAULT_FALLBACK
+> without consuming that table.
+> 
+> Since collapse_pte_mapped_thp() uses mmap_read_lock(), a concurrent
+> userfaultfd operation can install a PTE table before taking the folio
+> lock. If that races with set_huge_pmd(), the unused preallocated table
+> is lost when its local vm_fault goes out of scope.
+> 
+> Track whether do_set_pmd() allocated the table and free it after dropping
+> the PMD lock if it was not consumed. Preserve any preallocated table
+> supplied by the caller for PTE fallback. Successful PMD installation
+> consumes the table and clears the pointer.
+> 
+> Returning without a preallocated table matches the existing behavior on
+> architectures that do not need a deposited table. All callers
+> already handle that case.
+> 
+> Fixes: 1043173eb5eb ("mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  mm/memory.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
-Patch 2 does something similar.
+Acked-by: Usama Arif <usama.arif@linux.dev>
 
--aneesh
+Reminded me of lazy pagetable deposit series :)
+
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index becf53a2a0944..421064aef3cf0 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5687,6 +5687,7 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+>  	struct vm_area_struct *vma = vmf->vma;
+>  	bool write = vmf->flags & FAULT_FLAG_WRITE;
+>  	unsigned long haddr = vmf->address & HPAGE_PMD_MASK;
+> +	bool pgtable_allocated = false;
+>  	pmd_t entry;
+>  	vm_fault_t ret = VM_FAULT_FALLBACK;
+>  
+> @@ -5725,6 +5726,7 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+>  		vmf->prealloc_pte = pte_alloc_one(vma->vm_mm);
+>  		if (!vmf->prealloc_pte)
+>  			return VM_FAULT_OOM;
+> +		pgtable_allocated = true;
+>  	}
+>  
+>  	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+> @@ -5755,6 +5757,10 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+>  	count_vm_event(THP_FILE_MAPPED);
+>  out:
+>  	spin_unlock(vmf->ptl);
+> +	if (pgtable_allocated && vmf->prealloc_pte) {
+> +		pte_free(vma->vm_mm, vmf->prealloc_pte);
+> +		vmf->prealloc_pte = NULL;
+> +	}
+>  	return ret;
+>  }
+>  #else
+> 
+> -- 
+> 2.43.0
+> 
+> 
 
