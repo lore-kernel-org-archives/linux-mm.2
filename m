@@ -1,91 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A16C606A31B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 04:48:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B25606A32D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 05:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OtSg4Csq
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=q0ovCD7x
 Received: by kanga.kvack.org (Postfix)
-	id 605BD6B05B1; Thu,  5 Nov 2026 23:48:46 -0500 (EST)
+	id BB9796B05B0; Fri,  6 Nov 2026 00:18:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DC5C6B05B2; Thu,  5 Nov 2026 23:48:46 -0500 (EST)
+	id B6A366B05B1; Fri,  6 Nov 2026 00:18:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 519F36B05B4; Thu,  5 Nov 2026 23:48:46 -0500 (EST)
+	id A80286B05B2; Fri,  6 Nov 2026 00:18:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C62A6B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:48:46 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 379EB80A84
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:48:45 +0000 (UTC)
-X-FDA: 85403463810.14.7FAE098
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 9FCFB40002
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:48:43 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OtSg4Csq;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7C68B6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 00:18:24 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E8890120C6A
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:18:23 +0000 (UTC)
+X-FDA: 85403538486.20.EA14E9A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 15A3680002
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:18:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=q0ovCD7x;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793942302;
+	b=FGjbPx5Qb7VRJAL9eMPJRoLq60anAIIgOz0fYF1sGquupa8hXexueu6fPK/GNIYvj4u3al
+	7XbxID32a6ARGVN5QPm/PfdLgh5DtN6sRk1Ovz6VgmbmiR9pPzwR8MDeTtT8G5mvNwT1cY
+	6eMonOSBiL4kilbbWmpwCGM8/endrAs=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=q0ovCD7x;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793940523;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793942302;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hhfOeJeYz1xj0gbEi9rPmzkvN0a5SwOK634qNkp20no=;
-	b=bvTDpJNyJ4EYN1xvcHTicyJzKHbaueOVXmg7rt1QomsV3ju+Yp8O6ncJdvS5BoLnikt1FS
-	nTJoAGz2ayFKWTm1pHBjv+3Y6PpZs8B6zkJHHFw4m62KvPpVjkWVY0jot9wMdt8G0lUxMK
-	Pt27wbxSjKHSOvwkIBk0iLEH2I0pioI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793940523;
-	b=S07Ku9lCzE8urcuSj8g0WKTNBn1ISfDTzuZiku9qrA9KGIqXytzxL2WB8oU5DgDi/tClHd
-	jHg82/DDVf3a66oysdEgJOcqPJeKev0pONHwylQ0wIRZsyqe7b2tm2v7b6R6SmFv7G4CNh
-	1HqW56J+i6s3eoVz1uFMSwxHD9dBr7Y=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OtSg4Csq;
-	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=w/aL1sjxZAD4jPRBmObfPh4EoB+Er0nYqQkFKEvP8dI=;
+	b=36b5Ruj1AiW/zhpdZMRgKEhrrqRJW3E+LdvUQhqWBtBEBaH79W2U+Z3ofFBcjnR/li75gI
+	I/xN9B9f72PNxqXUT8qmQT8a4xssF56i3NgiJXUv5PnJv03EERarybpxqigyP2+HZnK5Xt
+	3oqFFufDnh1/hWNKdJYpf/FJAs4HpC8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A90D601E3;
-	Fri,  6 Nov 2026 04:48:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BE51F0089F;
-	Fri,  6 Nov 2026 04:48:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793940522;
-	bh=hhfOeJeYz1xj0gbEi9rPmzkvN0a5SwOK634qNkp20no=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=OtSg4CsqvH8zrALUwiU0cY6l4JK+S9jQanwD3HBGC3Yq9sIEM0Nt3fzxjfq2uqYdJ
-	 6PnMQ1KDM/c7vn4tRtyzY8ojCra1Y3jqCxeAjxSfqoLfzVIUOZIVQebtBqFhhml4O6
-	 +PS94Jvf+ZSwyRfV0DYKcAKd7LbwM/6xLCQAD1pNiGyoh0V7OLWVdA7n9MHmpTK9J8
-	 lkdJLcgDpNbbvO5dFMw1PvnMY1JB8TrZMKLEgB+Ktz1cad+JIsMVfd0NRnqinTqcV8
-	 da4FqfJeWVy1c+PgcN3hSi/Z8uJ93H+EN7yNalFu3CCVYEphK5fAealdDY9UvaWwzx
-	 Epz1MTtZikYVQ==
-Message-ID: <sashiko-outbox-200764@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 4/7] zram: allocate zsmalloc object under slot lock
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sergey Senozhatsky" <senozhatsky@chromium.org>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "Nhat Pham" <nphamcs@gmail.com>, "Yosry Ahmed" <yosry.ahmed@linux.dev>, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Brian Geffon" <bgeffon@google.com>, "Minchan
- Kim" <minchan@kernel.org>, "Richard Chang" <richardycc@google.com>, linux-mm@kvack.org
-In-Reply-To: <20261105044752.1997895-5-senozhatsky@chromium.org>
-References: <20261105044752.1997895-1-senozhatsky@chromium.org>
- <20261105044752.1997895-5-senozhatsky@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Nov 2026 04:48:41 +0000
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: d7ur1bquwjd75ebgbtjhrbwzqiosemiw
-X-Rspamd-Queue-Id: 9FCFB40002
+	by sea.source.kernel.org (Postfix) with ESMTP id 1E62443CC8;
+	Fri,  6 Nov 2026 05:18:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8BD1F0089F;
+	Fri,  6 Nov 2026 05:18:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793942301;
+	bh=w/aL1sjxZAD4jPRBmObfPh4EoB+Er0nYqQkFKEvP8dI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=q0ovCD7xIiR0+ANf/raivI4OhRAQOY6dX6Pc57lH4HPcSvDIuQJ3knVapFQmGtx5L
+	 RcTkRAX3SqUxY4Q6SCFu12gdGRAQ88bWqEZUPiRcnOFZFeJ928jqdsddLogK7ZrlCA
+	 85oG4mh8tHfOEMRS42hc30LZfmiSJv2AgWPj1LD0=
+Date: Thu, 5 Nov 2026 21:18:19 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Konstantin Khorenko <khorenko@virtuozzo.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, Ryan Roberts
+ <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
+ <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif
+ <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Peter Xu
+ <peterx@redhat.com>, Alex Williamson <alex@shazbot.org>,
+ kvm@vger.kernel.org, =?ISO-8859-1?Q?Lo=EFc?= Molinari
+ <loic.molinari@collabora.com>, Lorenzo Stoakes <ljs@kernel.org>, Shuah Khan
+ <shuah@kernel.org>, linux-kselftest@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+ stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH v5 0/4] mm/huge_memory: copy PMDs at fork like the PTE
+ path does
+Message-Id: <20261105211819.2a6a349b2edc077784ca52f9@linux-foundation.org>
+In-Reply-To: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
+References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: suj6q3cr179s9zk9ugcgapq1a78uun6w
 X-Rspam-User: 
-X-HE-Tag: 1793940523-382271
-X-HE-Meta: U2FsdGVkX18AxT/2/iDzHrn0wS8jAwxlf1SJ+mcksbx3J7+THlqQiZVX1fk5XaYxfsGONX+LdElgbtRsWfWmXWASY1dBv4CKGBbnuuSrB4LGx75f+JKz0luFfVSRVF2laaC0WmbClG0imdrotfU2qkxPlEfsQ8JyxcIswsRcEdOrY7FQZvn5VPAIT6GMZxjLch9lx51L0UOTtxyarauJoBQuv2sqGjdufWlGioNozlt5BJs3vmwyUiz4QxmOH2bgfHiDRpohesTp04nXlhIZWbQOA8jEVamU88aWVLuI7iFjzIOPi0xI8gsyxIRhCiZLI92t6B2IKveM/8UczbjsXZ2qrZHDyXR4I1nfSYqLkq1K8g853saDgypSNJG5UFj4liVwy1gQN4iOVBQeGP6O0tcOAyjpuugcZoxEcaDvdsHSjT/llUEDrvUn0L3nMw/xDHYujbbIu6Toz8aRdLWb6mPY/I4cj7lyXNm3T8zDD4pySpJDQE2vC4BE8q7uj8+sCTiCJUoExt5YNtMupYcY5LfYjFdtXm6hCyfQ9n7/bLlJK0W6FFNGM9x0F0FvHxxPoByeCwvi2priEBqoRBox0QipcPRimtoab7A7i3f3K3EaREijLn0wCzXQp9hXjq+xawQTzTmdrn9Eskvvg2D9gvktM2iRJSsaybqxjOOUfO3bfKHEd/dO4Tc+8DUZP8/2WJKqQ6ICln3OXv387rMvP/nmM58TgBeM+F7kHiwu4vo/8i2z6II/anskMhtpBOWFtGEizIU3rwSCL0UJqE/LpR/wR+tAxuvXZxIC26HNelRqfE9AzA1ga4hPgiXPdT5UZfs5VlkUE1rJxPUBP6rjeoc9zFxrL47UDX20198inUN22MAl8+WTZGv2LwPQrg+sXXSW0QLCqRdSTlVz6BzhbsVlIEJS5+BqilGpe25Au1ocTlEQ33V4Zxt9EzMXO7FckCs9HZV2m6TFbMq4vQ2
- bqRrczuy
- YC3RTgNWuXg5LBLSlugY/E7JZiTGTKYyOjSPS7f0wphpWU8gIYFYMej2/ZA7Vs7DBgDUqLbs39kghW0AYPLDPwK8KpbN5nS6u2qvlrQ9H0s3U7RaC2+nkDA4jyf6bV8TgIutCRLt28wMSNFhWHt7whwdBki6otfYMyr437NvrpXxMUB7NQaesAJttGYA4RGAUCwjscGTnWR1bdPwXq0kVIh6XS/m2PYhh2gRsyDrEp2xJwUNODH6HC+m2SOOeEOxJRPCc98Ib8IssCio5p8w2C1uHs7Jl6OdNK+7Di1gr1ywyXSlXtn4C0kUKv4T9upy5/QLSTQ49p7vCu6JZfP2VzusArFx3AgUj7WY+ONhhrO/aHbi+FwpEX9Q5UkU51vqBj3kzUxLgO3hbJmPT2+YU349mRxyDE2G+RKqt8CBHrFJvaf9L69mdU25oVvKdEZU9j4q/f4YS/ZRtzq5i41wpjA3GR1LuQjMyLAmE94LS43YEGZ4TCMkI2WHHnb+Q5fFYcyL8DhoKO/Vvm2c7nLQOZebdsTG1BKyAR9mzMnZmlzOFkTuTaUhPy1lMQ/nQvBm3efRGv09FmmP2RyaGsJwvJSb8eg==
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 15A3680002
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793942301-516106
+X-HE-Meta: U2FsdGVkX1+EbfRkqS1GL2MmlcwM4hCIS72JEayto04bwr77WzRtWO5RfE8oSNK4nl/YFEwShF3NRegb79NcNIAAyetQLxTdKgzvdXzwkuidc/dFer1RJbB3bpvSXl453D9+9rbztlRUiUQ20mqsXlYudtjOxNBzeaEmMQAlYlJl3yFbgDGxkmCp8Iq3rZqUgY9LTsffFQfmrlMwBMmuayUjRt9kHSW5SUV1Bsny+3J2zFDhejJIvCd7zLz9osqemWUCvR1MB/70rVSyfSwaMZaHsYgyfZdFUjDvcnG+EA/xIcaL1NiRrPhvARAqggQvXfijbE6qf6bPWehEUSk06Myhpp/qRd6cpdMc0bvNcirxpSiVpVnbMP8Cqbuq/zPAjq+tJWZWsEgQoNrZs2I44sTu0ceZ1OMHAlE4hGgo9YA9SodF5lcb3AHxOfRiltm1Wa9WUzOesInv9XoPP552YD3dkLMpEVeexa8Ud/9P5xQWBuKXp9ORUeXIP086lBZEXvn9TPGz3DCzqWtbHIjnc0v87UTm46LnPETMRrbAdwoH7TzytyLuO3mVhgJWU4qj3A8TGY7PNsxmFqamZMDOHCz4SP/oZsaUIsjRm2qeFEXL7RvgiLeoa++c0+MYNy9jQDhPC356rtsE1YO8qdGqvch1UmxDeNykCSlwyHd8ZQhMx6YZOSYr+v/IOroER3z4nUYm39PPv9H2jdIRY/R+eYBN9Id4lcB0v24rng4Ujh1cnKzmxVMhbBhlTP9zm8OnIn2MZa4mrS164nN/G8dnPMroQKT7o19c7k5E206qw+432YowmTsGyiMeMApgAL9ONX3JoWgxHgkXKh6lTCYyA+G/cgHii979U2I0rVRkDYLTCD3TAp/QBh9RaHpY8BCVo9vyst2HjPscuMPDOvsud23Sfc+BHPOmHmAAOTaqmjzHH1Ml/tJhRvhXOKlgG72Ji3Xm7Hzsl/wLr7TnCLM
+ ce5Bgw6e
+ U/jEg7pUfMYW6e99lkfHJopYscgjPqPr5qRh6uozqfnIurudmsNEcTq6Zdh1uILEf9MAhXyZRyUYFOqVNZbmbjNqpEkhREHgfQEVKrxaGeTV4HnkUX7/ue5DI6CiNvdxf8+3CsILb0d+rvtd4dG6Es9zDsnkX0P6MqHCqje8yeCQkBosdHYgnrMszfoZctbcNe7RQFB+R8VddQmnjZ+SDqpzoJ1lWLJtv6wai7EVYF+J7vRv7m8RMfVQsu35QPo9urO5asAYpKkkaTg83RKoMnnI2cGf+4VNfSqEMcg1F9Xg+nZc9fh47USAACxK069L6A9IvKwkCrMj5xSF3Q5ZlG4VBdYrJy4zIT7lm9zfXIueTA5V/p/8ccRVne2VNWK9/S9oVyNAwq8HMrV1NwSMSmI2pwlE2orw7bGW29xSeVZA+VFXIi3rCik6YVA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,124 +105,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] zram: data loss on write failure after slot_free() in zram_wri=
-te_page()
---
+On Wed, 04 Nov 2026 21:40:54 +0100 Konstantin Khorenko <khorenko@virtuozzo.com> wrote:
 
-commit e7f04891f4b67054972cd177192ff9867fcbceb7
-Author: Sergey Senozhatsky <senozhatsky@chromium.org>
+> copy_huge_pmd() decides what to copy at fork by its own rules, apart
+> from copy_present_ptes(): a lockless check for special PMDs, and a skip
+> of every file THP. Following David's review of v3, this series makes it
+> decide the way the PTE path does, under the page table lock, with
+> vm_normal_page_pmd(). That fixes the two bugs v1-v3 were about. The
+> patches:
+> 
+> 1. folio_dup_file_rmap_pmd() duplicated a PMD mapping as HPAGE_PMD_NR
+>    PTE mappings. It had no caller until patch 2.
+> 2. File THPs are copied at fork instead of being refaulted by the
+>    child, as their PTEs would be.
+> 3. The special-PMD read moves under the lock. That closes the race with
+>    a driver zap (vfio-pci, panthor) and the missing page table deposit
+>    on ppc64 hash that Sashiko found in v1.
+> 4. A selftest for 1 and 2.
+> 
+> ...
+> 
+> Cost
+> ====
+> 
+> fork() now copies file THPs instead of leaving them to a refault, which
+> costs fork() a reference, an rmap update and a counter per huge PMD and
+> saves the child a fault per huge PMD it touches. fork() of a process
+> with 4 GB of shmem THPs mapped MAP_PRIVATE and an anon_vma on the VMA,
+> medians of 2000 forks:
+> 
+>   +-----------------------+------------+-------------------------+
+>   | kernel                | fork()     | fork(), child reads all |
+>   +-----------------------+------------+-------------------------+
+>   | 7.3-rc7               | 86-129 us  | 2380-2620 us            |
+>   | 7.3-rc7 + this series | 230-355 us | 820-930 us              |
+>   +-----------------------+------------+-------------------------+
 
-zram: allocate zsmalloc object under slot lock
+The second column assumes that the child touches all the file THPs,
+yes?  If the child touches only a small proportion of those mappings,
+or just does fork+exec, that changes the "Cost" comparison?
 
-This commit moves slot_lock() and slot_free() before zs_malloc() in
-write_incompressible_page() and zram_write_page() so that the old slot is
-freed under the slot lock prior to allocating a new zsmalloc object.
+And on ppc64 hash-mode setups this also allocates deposited page tables
+for mappings which the child might never touch?  So a modest increase
+in memory use is to be expected?  I can't say I care about this
+(sorry!).
 
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> index 2c2e11b2b6638..e2710ce35b1f5 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -2260,14 +2260,19 @@ static int write_incompressible_page(struct zram =
-*zram, struct page *page,
->  	struct zs_handle *handle;
->  	void *src;
-> =20
-> +	slot_lock(zram, index);
-> +	slot_free(zram, index);
->  	handle =3D zs_malloc(zram->mem_pool, PAGE_SIZE,
->  			   GFP_NOIO | __GFP_NOWARN |
->  			   __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(page));
-> -	if (IS_ERR(handle))
-> +	if (IS_ERR(handle)) {
-> +		slot_unlock(zram, index);
->  		return PTR_ERR(handle);
-> +	}
-> =20
->  	if (!zram_can_store_page(zram)) {
->  		zs_free(zram->mem_pool, handle);
-> +		slot_unlock(zram, index);
->  		return -ENOMEM;
->  	}
-> =20
-> @@ -2275,8 +2280,6 @@ static int write_incompressible_page(struct zram *z=
-ram, struct page *page,
->  	zs_obj_write(zram->mem_pool, handle, src, PAGE_SIZE);
->  	kunmap_local(src);
-> =20
-> -	slot_lock(zram, index);
-> -	slot_free(zram, index);
->  	set_slot_flag(zram, index, ZRAM_HUGE);
->  	zram->table[index].handle =3D handle;
->  	set_slot_size(zram, index, PAGE_SIZE);
-> @@ -2325,25 +2328,27 @@ static int zram_write_page(struct zram *zram, str=
-uct page *page,
->  		return write_incompressible_page(zram, page, index);
->  	}
-> =20
-> +	slot_lock(zram, index);
-> +	slot_free(zram, index);
->  	handle =3D zs_malloc(zram->mem_pool, comp_len,
->  			   GFP_NOIO | __GFP_NOWARN |
->  			   __GFP_HIGHMEM | __GFP_MOVABLE, page_to_nid(page));
->  	if (IS_ERR(handle)) {
->  		zcomp_cstrm_put(zstrm);
-> +		slot_unlock(zram, index);
->  		return PTR_ERR(handle);
->  	}
-> =20
->  	if (!zram_can_store_page(zram)) {
->  		zcomp_cstrm_put(zstrm);
->  		zs_free(zram->mem_pool, handle);
-> +		slot_unlock(zram, index);
->  		return -ENOMEM;
->  	}
+But I worry that this change is not an overall win for thp-file
+mappings, which are the common case.
 
-[Severity: Critical]
-Does calling slot_free() before zs_malloc() and zram_can_store_page() in
-write_incompressible_page() and zram_write_page() cause existing data in the
-slot to be lost if the allocation or memory limit check fails?
+I'm not understanding why we need to mess with thp-file behavior at all
+in order to address a special-PMD bug?
 
-Previously, both functions allocated and populated the new handle before
-calling slot_free(zram, index), so a failed write left the old slot contents
-intact. With slot_free() called first, the existing handle (or backing devi=
-ce
-block when ZRAM_WB is set, or ZRAM_SAME entry) is freed and
-zram->table[index].element is reset to 0 before the new allocation is
-attempted.
+> Notes
+> =====
+> 
+> - drm_gem_shmem and mshv_vtl map special PMDs with
+>   vmf_insert_pfn_pmd() as well.
+> - copy_huge_pud() still differs from the PMD tail in that it does not
+>   mark a shared PUD clean in the child or handle uffd bits.
+>
+> ...
+>
+> Reproducer.
 
-If zs_malloc() fails under GFP_NOIO memory pressure or zram_can_store_page()
-returns false because zram->limit_pages is exceeded, the write returns an
-error while leaving the slot empty. Subsequent reads via read_from_zspool()
-then see !zram->table[index].handle:
+Changelog is soooo long.  I replaced this Reproducer section with simply
 
-drivers/block/zram/zram_drv.c:read_from_zspool() {
-	if (test_slot_flag(zram, index, ZRAM_SAME) ||
-	    !zram->table[index].handle)
-		return read_same_filled_page(zram, page, index);
-}
+	- A reproducer is at the Link;
 
-and silently return a zero-filled page instead of the previous data.
+So interested people can still find it.
 
-Additionally, on systems with PAGE_SIZE > 4096, a single slot holds multiple
-4KB logical blocks, and partial writes go through zram_bvec_write_partial():
 
-drivers/block/zram/zram_drv.c:zram_bvec_write_partial() {
-	ret =3D zram_read_page(zram, page, index, NULL);
-	if (!ret) {
-		memcpy_from_bvec(page_address(page) + offset, bvec);
-		ret =3D zram_write_page(zram, page, index);
-	}
-}
+Anyway, bugfixes come first so I'll fix the selftest pmd_psize thing
+and I'll toss this onto the pile, thanks.
 
-If zram_write_page() fails after slot_free() here, wouldn't that also wipe
-out all the other unmodified 4KB logical blocks sharing the same PAGE_SIZE
-slot?
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105044752.1997=
-895-1-senozhatsky@chromium.org?part=3D4
+I'm attempting to runtime test this on local LLM-driven live kernel
+test setup, but it keeps on kicking me out and calling me a
+cybercriminal.  Sigh.  Giving up.
+
 
