@@ -1,135 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E51606A32C
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 10:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C93606A332
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 10:46:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=P0ua6IF5
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=hCunnEIZ
 Received: by kanga.kvack.org (Postfix)
-	id F3AFA6B05BA; Fri,  6 Nov 2026 05:45:21 -0500 (EST)
+	id 10C6B6B05B0; Fri,  6 Nov 2026 05:46:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F11516B05BB; Fri,  6 Nov 2026 05:45:21 -0500 (EST)
+	id 0BF9B6B05B6; Fri,  6 Nov 2026 05:46:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFF726B05BC; Fri,  6 Nov 2026 05:45:21 -0500 (EST)
+	id ECC5E6B05BB; Fri,  6 Nov 2026 05:46:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B8E256B05BA
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:45:21 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 51AD340D77
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:45:21 +0000 (UTC)
-X-FDA: 85404362442.27.C0F6D57
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 75C3B1C0005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:45:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=P0ua6IF5;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=vdonnefort@google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BDCDC6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:46:52 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 39CFFC0D22
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:46:52 +0000 (UTC)
+X-FDA: 85404366264.19.E6C14E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7BC98100005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:46:50 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hCunnEIZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793961919;
+	s=arc-20220608; t=1793962010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ysUKDhkycj13Q2P+bjvds2QR5Xb4PbnZNX+l6BEN+k=;
-	b=j4LQWKxmKdkuKo/z0sBC+Vt1oD8d546FnvjqvHdl+zaTTzB8Asb3eWfKhNgAsLUPaYTcFg
-	HpQgjK8lT7o9b1GCREC0ymk9f2IhnLrAsk0mCH4vuGgnyNKjTgNjC7i7k39KWdwngvJfsQ
-	x58L37GwyEkyN+7KaU8ebyvfHB65Dsk=
+	bh=R4UXJ8D6lFItiQJcibx9Gvr2Xk0BfzjmL2Cx9RaqZ2M=;
+	b=ohH/x9OHIFRTWMg5wL4OuBNXOH7GJnOwbv1y6No8qYOi6U6rSulr5+IrErbe9IZcRX6m6G
+	iwkitrAZB5QUXcb5tfDPOPlL9X+Nhor7bfeahmCgHd1ix3hnXrShsnvgdvIufMmt3XJH/3
+	FV3/jmsS9O6ZUHTkRycCqtNKJQED7mE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=P0ua6IF5;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf18.hostedemail.com: domain of vdonnefort@google.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=vdonnefort@google.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=hCunnEIZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793961919;
-	b=JY6N3ATec/Grr8RofZgtqeugKY56E54sB2qV2b/o0CC1MD3Csni5y6ThmJf9XB1dmPR3ip
-	7ue7qhiyWC/NMA7Xw7f9BIp4uTrwcVG7NtbT3013e/+00+POm+7RJ4EnBHr1mK0pGKqZVu
-	HVQXo8JKggMmlVeA9QrJNKnQ29oF9SU=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4a208d93758so4877065e9.3
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 02:45:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793961918; x=1794566718; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=6ysUKDhkycj13Q2P+bjvds2QR5Xb4PbnZNX+l6BEN+k=;
-        b=P0ua6IF5RTTrJqVlncxkgWdDIhtEkwPd5P1GhWy8nA1mJSShetdNYBD5Zn+uxtOfNp
-         xW8sdFzh5xCQEFBFNtV1VLfHIPIWlkIyU0tXOxJAagL4sTJWMi312NV7OJYi7Tn/FS9X
-         T5UhtQ0VuUeXLmROhqefHnwLBnqlQTyrLcS79DzUYrReomqDOrDuCF76aA6OJ/kiW2NF
-         dAm/d2S1LcEDK7ZnfkBV5sQ+ehX7k/BX3kDUAbPFbkT6dn0aGy8svfWndqqO8TCmbzlT
-         kozBvdAkeX6dnIbZ9k6UfeC+ZkteBrcnyUHmMZKmYWT18aDTnxYoZbQpl/KC3UGmlUJk
-         jV9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793961918; x=1794566718;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6ysUKDhkycj13Q2P+bjvds2QR5Xb4PbnZNX+l6BEN+k=;
-        b=VZ+iThxZdVNGnbfFvmmSI4yQvey3r1HMfRZXHcg+RHFvuVRUn8ZV1VKr4SOsn/HTaH
-         s+myp+QZMbAu7JMAKlW1h4znxpBFkmHBtVMXa9JtmnFNXHAfZIaD7js8AcfxMgKoSJ6j
-         3z5G5zX1UPu/uF5wlUFXCYYRwP8QOl3hWeKrMJ4xaclyHEUyDaxSxYy9I/hfjX94aB77
-         b/iRZV3ruo2MugqAytM8qUXdKrVOXTjYVCdiJPyW5x2LK4apjwSXkl0PU8C3hF7B5Mf6
-         1fPCTaQjnudgPtY9y/0jNXC7X+QgP8Rof0BGMYt0qlGHSPZTDOwU1Ey9ngsEar+9arAn
-         htUQ==
-X-Forwarded-Encrypted: i=1; AKwUvBxNPFeMAdZvMbbne5fvzBv5ge60IBV7cf2x3ZSN4SEjef/3tTSuNHtgLOLXAyKcTdNNZarkF/esgw==@kvack.org
-X-Gm-Message-State: APuU4Z+AVlEidPutqEpu7/gS9I+YDSlgJQmnenSm0fwz6wcPOCrD/TSf
-	3y1ztqbIUA7a77o/n20ObQgNPWFg0nbWWxfCv+pDunJzYWT+rwFh0Ebs5sa19nl1YA==
-X-Gm-Gg: AYBFou1EiZCA1PmrDWIM/BnI7/oV23LtPkpr1KP0gZScF9b8QXz2slKZSBtltPbWPoa
-	6MH8Ii2YPjPAzGHz/zwDbRfyTR/i+26/OgQIxp+CKdJN7kAa7UIaox+4lOH7oT9zGGMLlFLDuCD
-	Z7CsUqsokqgovhBwJy6dRycCoQ0iq7Y113yI9qRFBbDLQ1h0PMlp9/oWsBvy99Wjc6rBnmiW8qT
-	WDgeWr0PadDZCgRIqPR0uATpPNLaIdoeEtYbRMaQJmGtsz7/vq3efmy+KZWybYprEV5Dm8B3EX3
-	nqLrAINiMYMTEWdw9fpsvJJv9fgiIcS2+Fxx/o07ZdMNXGMwnaLXGrxUNSikR9+8wUyOYm7u3nt
-	525jzbdC3ASvA8wfyarvjw5gc5HgHEc1buZfk7FE0IzBpixlI/H9ifZ79dssWDEeIbfkvNiN5zP
-	yz2bk5LPe42ASG0DB7eBW7XicUXW28cfzYiS+bDhGHc39amLDYyj8Vwr8wVPohvBsiM+Rk1PZ3Y
-	DHYIJFUfsaUu2m+cKkl2EsdIzkkrM/MmSIML1eY3ae0iwFeSuUiZnZOg028lYhhjxypz08l82fW
-	sR6A4cUkmSJGdyNY7aBfJiqK3FB/4X28eX9Ugm2ncVnOKr0vdb3/S8LQU3oZp6Vj
-X-Received: by 2002:a05:600c:3b02:b0:4a1:fe55:88ef with SMTP id 5b1f17b1804b1-4b6df5eab2emr32006075e9.20.1793961917300;
-        Fri, 06 Nov 2026 02:45:17 -0800 (PST)
-Received: from google.com (0.182.34.34.bc.googleusercontent.com. [34.34.182.0])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b73d28cb10sm16111895e9.0.2026.11.06.02.45.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 02:45:14 -0800 (PST)
-Date: Fri, 6 Nov 2026 10:45:09 +0000
-From: Vincent Donnefort <vdonnefort@google.com>
-To: Sumit Garg <sumit.garg@kernel.org>
-Cc: Will Deacon <will@kernel.org>, brendan.jackman@linux.dev,
-	catalin.marinas@arm.com, rppt@kernel.org, akpm@linux-foundation.org,
-	sudeep.holla@kernel.org, jenswi@kernel.org, robh@kernel.org,
-	mark.rutland@arm.com, ardb@kernel.org, thierry.reding@kernel.org,
-	david@kernel.org, danielmentz@google.com,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	op-tee@lists.trustedfirmware.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/8] arm64: Unmap FF-A lent memory from direct map
-Message-ID: <au2vtZFyfUVWeils@google.com>
-References: <are21BjeS1O3RYE3@sumit-xelite>
- <aruh86rd5FMv2i9G@willie-the-truck>
- <ar5TPvANFUoosxGW@sumit-xelite>
- <asOAYODGZa-7EIV1@google.com>
- <asOD31rTX6dNfD1o@google.com>
- <aszdnInyJxLhSQRp@sumit-xelite>
- <as3798SFCfKFirag@google.com>
- <as4ATqhp0bPI03PA@sumit-xelite>
- <auILvMVSXk9pZh6M@google.com>
- <auQ5hCdPFz0BmvDG@sumit-xelite>
+	t=1793962010;
+	b=zdNORV4fnlfIOAOm3t0Xc63+f5zeY/RegOlEoF6LMWczVUvkd1al66tot59ma1FYIy6aBD
+	KZi1gkXU3HD8IrkXlPs8uDITSVDcGpEgNOFdWQi7DAxud+gOwEApRDA4xfku4JMYkmTUXq
+	Rw3hevuVCCj12wexoWsKEPofRY18W8E=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6844843A2F;
+	Fri,  6 Nov 2026 10:46:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0321F0089F;
+	Fri,  6 Nov 2026 10:46:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793962009;
+	bh=R4UXJ8D6lFItiQJcibx9Gvr2Xk0BfzjmL2Cx9RaqZ2M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=hCunnEIZfKlr6qoMUNMOsdGsxQ7IjWUgxiafHv1Z+GtVnHVIkVloNm7JSe0jucf4v
+	 Be00OZ6LyBekuVn6BjvLPY9n2k+e1AmiDi7InnmDdbDQGdSnjuudqzxDjYAlNYhG2v
+	 SnIHZ4gjFJUpZLBedEUDIPptonWTz9uotLA6iRgOA5X7/RHU+Qv1IOi7Qmd5Lw5GMa
+	 S4EJI6CpXc1502QDo0gR7VlleOn0nXISLFq96tAGYmHD/6PzuqiHbzA0uFQN4lnX9K
+	 Fvb6evOecIr4CJf2MUAMnT/LJw8xU/8SNUha42jnLM4sIhXYighfjJoCreU0/7wDnB
+	 tlpx359Zg2mQQ==
+Date: Fri, 6 Nov 2026 10:46:29 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Lance Yang <lance.yang@linux.dev>
+Cc: akpm@linux-foundation.org, david@kernel.org, jgg@ziepe.ca, 
+	jhubbard@nvidia.com, peterx@redhat.com, willy@infradead.org, jack@suse.cz, 
+	riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org, 
+	jannh@google.com, ziy@nvidia.com, matthew.brost@intel.com, joshua.hahnjy@gmail.com, 
+	byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com, 
+	apopple@nvidia.com, baolin.wang@linux.alibaba.com, nico.pache@linux.dev, 
+	ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, 
+	kas@kernel.org, xu.xin@linux.dev, chengming.zhou@linux.dev, maddy@linux.ibm.com, 
+	npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, ritesh.list@gmail.com, 
+	sshegde@linux.ibm.com, pfalcato@suse.de, kasong@tencent.com, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	baoquan.he@linux.dev, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	leon@kernel.org, sj@kernel.org, rakie.kim@sk.com, rientjes@google.com, 
+	viro@zeniv.linux.org.uk, brauner@kernel.org, peterz@infradead.org, mingo@redhat.com, 
+	acme@kernel.org, namhyung@kernel.org, mark.rutland@arm.com, 
+	alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com, adrian.hunter@intel.com, 
+	james.clark@linaro.org, mhiramat@kernel.org, oleg@redhat.com, 
+	john.johansen@canonical.com, georgia.garcia@canonical.com, paul@paul-moore.com, 
+	jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com, roberto.sassu@huawei.com, 
+	dmitry.kasatkin@gmail.com, eric.snowberg@oracle.com, wufan@kernel.org, 
+	stephen.smalley.work@gmail.com, omosnacek@gmail.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, damon@lists.linux.dev, linux-trace-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+Subject: Re: [PATCH 09/13] fs/proc/task_mmu: convert VMA flag tests to use
+ vma_flags_t
+Message-ID: <au2tJWwPamlmx1Q4@gremlin>
+References: <20261105-late-2026-vma-flags-v1-9-0d3cd15ab75f@kernel.org>
+ <20261106065925.50906-1-lance.yang@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auQ5hCdPFz0BmvDG@sumit-xelite>
+In-Reply-To: <20261106065925.50906-1-lance.yang@linux.dev>
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 75C3B1C0005
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Rspamd-Queue-Id: 7BC98100005
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: uphpbk9xykhhcb9uxb3xmkukhox49rxt
-X-HE-Tag: 1793961919-118658
-X-HE-Meta: U2FsdGVkX182Rk07bzkS2iOscennkXxgTljGFLmiOSI6mh37mS8IR0lJ0CVFqNhJ0xieZHXXmChb6PDBXTyIK17U6g/WCU0Dh8DSVmNJmBxOywc7qu3YDj8/hSWd7CvBN/1KEf2GOZplO215xolOd4Yh7Oq94AsYB/Lc8InHGEQ6zzOGWonZsTUwwPV1XWQuYZcKvBWky0aL388OFS1taaVkqu+Nhc12FgSvn7hXwfsCv8J7RnCqsMzSXva7TtIGGuaN9vGDzjQ4OMk91txF0qz6/Wm2Jwj654hCQTHT7c1bGSBTH/Xdp/EP+0vc/tuf68bInsnYzABrvFssnpCEuXS1DzsSHuA37NDoKhsjTapKlJ+eHBt7wKDFfVynt22PphjIjdhezgrXPzKFur5UqGhsubLiHP0/pEb+pNUvg0UKYQK8RGV4Z6wewEfMBl7Y5Z5ocwTGdYKruoxnBIrIftusDF+Ovyps54yiUqXCOqUZJNKFFo3skAXt2RfPUleHloqCFsXx+VcXlwbHYxoEJkre477ufYOfePrcQ9ZpSOsS3ZZSqn9UxRvCEnJ79w6Fh6HTC1W+MTgZMKkAIU9eOVfvodyGixLNhT8p7i2lgiIBFMLejUz9XRMX57BVrl0fn0i/W6w113oXdFhEwQzkmEhGwduPqd6jMQH6O3dIM24Mgm01srugJ0pqc0a0KYKka5Y0sT20b7Y+7WOG4rVOUpi7LbFSXIP3VMrssDLaZQ62hlJG+hODlWY9EgPYtbvwqV8Gup8eWnXXMJ4GO4QQcBHuhjAwS1xR7BRUggOijesmzBrUcqJ57pKL+SicK1YsnWxRD17jHRPc2XWRjGgWVa60fNgO8gYSiKDQkmXc6Isj57LAJ5pdYIhEPsnpm2Z3H1q9WCmCu2vMDN5gSFLtbNloVUQ5Wd/Js/WTM3PrbrLXBsU4eNPfJqL8umkb4Rvlw+bt3d9114pRqJb5WPK
- y4pSRphK
- q4pXf0LEyvmFS06b7Mts72LMDDtO9cNpqXBYHOY66Ql4dPj1Fpr5nzyk/lmJEyC1Ln6+vOuL/RDKQzwe1/5uPOJusbM/IPKU1CKge4+fPoaCy3M7KwPjH2dnP7N9oC7+ekjd3bJWikutwWqgO4uHqM9wQeeikEUtmwZtfzjhYdBL5H7i4EzOUVOR/hQlb2+cQ0B/zKxicVLUbVsA4QuqK26hl7R8lM65WZ/SeIqwljCa+1MlD5OiL/3rWO5+j3xmnkTcNO/LBvoW8DfUquT1i6oP38bWEDY+A/Ed8I8UaglMTZCyRkq/VkGi+riLDs6hpax01+IgppjCyFjSZ5FTMqrvgHxcBzqW1T/8xVWLDpyB5oybGMFs41f3E/vSaZ2SxW4Eo
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 6xm7gyh66juwasz1ukq9p5njipws6jj5
+X-HE-Tag: 1793962010-285169
+X-HE-Meta: U2FsdGVkX1+97RxeYwTLBX8OXPGY13+LlSpXCQ5sMtydqBQjGdjrlDH+OJ2o2Ywfk7jx2/hGTujZQxxwApc9fNa5ibaPqh3Q6cS3Sbx69eHfujakxYkCtlugkr0Oie3xKWXFchu10TEh7fPqV4x/hfRmjZmCw2L82/2ifJcSl4VHV49v9ZDhgx5faLI1+N88CqHyQwbqqqfrDUxsLoQEfSA4kx/aIWFqfctBwgwx+6HnPsy5/UDOENOTRg75H4NfvqegG+mie4eYLp1FaIWftUIlNumdmcwFkUk8n5Z36MYg9JUZIeq94LUORAA4CcNLFbgpBqTFvMS74K7Al/VdKlabjkzV3XLl+4QllkS5q+ljEbVTu+x/iuNg1Q9TJRzedRlwFu8cjDjOlI7Ur1M+8HzmPL6NXPm408WT1GnCHraCyW484xxBEVRIHR+4wOhmJensT4Uw6TY8snNvFFO7lZ4qwUf/LQzKEl0K1P1X0d6HmfMsRzVCh/4i/aw8wfZUXfF3wTbLuXzByv0lA9tzFQUdxQW6hoExRNtlP8gFxEzSYRRJx1OmEZGR68UAhYUkbqkuu5x6EbI0HqeqEHEi3+qoA+mTmai4tkfpsEX09hm+cz9/k4XldeN5sLm05ufE3wSbIIRzeua4jSBWLjF+L/f268VsOPts8UiEecW24wuRHLG1ylIo5wUaIayalb/KI5WbOtPnftHGs39D9Og0bBgW50TCnVNbScJmvoaHEIzKmX0NsPTJh3j2AYuRHtlo6emfRubJmH/bOmt6boLprRCIyvCBr4EoPDXknLSUZ84KVJGDMZMjoBHDAeFqW2Bv5ogNpQMGLa0+VP+z7+CVn01Sy0gdUO0sRUq2eZxJvCKoESA2QH9UltZlrzBqn6Kmey8b8izBNHMnAyTAujtQ93UFtYCdnvFdV7Co2XYZlQOPqIG1jNOnketr+0AxLaEd6B8W52bg2qY2M8zPdFG
+ S4BCuq/M
+ wKj61l9dsGZwZ/zb2FEMNx6Gp1u/V5kmI/02LQsrauAV/HMcCbulJh4RzdNGNNF/gkxSbFlcEWofptVDFCR9c/aQ12sCyKZoMGV0rcvXWu/q/7q1rq/HLHekXvcpvDFNxX+F/du4rg068akfOa5avIbJ47eYGe4fWkrQFeRfZHpXsf8OnO0TYsln14C7r4kVxm5rRmhuualKmJTNCcy7hVa7eAqcXfQF5SzRNZhrM167aXYL6q6QlNfmIWCO5+kBQW2d+mAWqI74PhP7YNSKp2ofy0z8JhsKKMaNiuL/pi8rX8hPFc/4XpobVcUAA7ERuYKxgOpFl9ENpetoz09xvZP0McSlBmGARYMA38g0jt99oZeGHYNy0On0LWVBxw3L6zAxyFIlwC5GJUUAogIKaP9hb9g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -138,76 +118,127 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-[...]
-
-> > > Yeah I saw that constraint too, let's leave it for future extension
-> > > then although having this reordering dependency fixed will be ideal.
-> > > 
-> > > >
-> > > > So the only case it would work would be when a reserved memory has set
-> > > > "linux,cma-default".
-> > > >
-> > > 
-> > > Let's rather just turn DT based default CMA pool to support PTE-level
-> > > mapping and keep it configurable via Kconfig or cmdline or DT.
-> > 
-> > If we need a DT declaration anyway, a Kconfig and a cmdline option aren't really
-> > necessary.
-> 
-> Agree, it rather makes sense for DT independent generic CMA pool.
-> 
-> > 
-> > Also, Rob wasn't very keen on having a DT option for the reserved memory and
-> > suggested to have a compatible string instead [1]. So perhaps we could have a
-> > a separate driver that handles the unmapping.
-> > 
-> > 	linux,cma {
-> > 		compatible = "shared-dma-pool", "unmap-on-alloc";
-> > 		reusable;
-> > 		linux,cma-default;
-> > 		...
+On Fri, Nov 06, 2026 at 02:59:25PM +0800, Lance Yang wrote:
+>
+> On Thu, Nov 05, 2026 at 09:31:00PM +0000, Lorenzo Stoakes (ARM) wrote:
+> >Replace use of the legacy vm_flags_t flags with vma_flags_t values where
+> >VMA flags are tested directly in /proc/$pid/[s]maps, pagemap, clear_refs
+> >and PROCMAP_QUERY.
+> >
+> >In replacing vm_flags_clear() (which takes the VMA write lock) with
+> >vma_clear_flags() (which does not) in clear_refs_write(), we explicitly
+> >write lock the VMA. The mmap write lock is already held at this point.
+> >
+> >The show_vma_header_prefix() and show_smap_vma_flags() output functions and
+> >the thp_vma_allowable_orders() call continue to use legacy flags for the
+> >time being.
+> >
+> >No functional change intended.
+> >
+> >Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+> >---
+> > fs/proc/task_mmu.c | 43 ++++++++++++++++++++++---------------------
+> > 1 file changed, 22 insertions(+), 21 deletions(-)
+> >
+> >diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> >index 22361607020d..b6e8ef15e40e 100644
+> >--- a/fs/proc/task_mmu.c
+> >+++ b/fs/proc/task_mmu.c
+> >@@ -569,18 +569,18 @@ static struct vm_area_struct *query_matching_vma(struct proc_maps_locking_ctx *l
+> >
+> > 	/* VMA permissions should satisfy query flags */
+> > 	if (flags & PROCMAP_QUERY_VMA_FLAGS) {
+> >-		u32 perm = 0;
+> >+		vma_flags_t perm = EMPTY_VMA_FLAGS;
+> >
+> > 		if (flags & PROCMAP_QUERY_VMA_READABLE)
+> >-			perm |= VM_READ;
+> >+			vma_flags_set(&perm, VMA_READ_BIT);
+> > 		if (flags & PROCMAP_QUERY_VMA_WRITABLE)
+> >-			perm |= VM_WRITE;
+> >+			vma_flags_set(&perm, VMA_WRITE_BIT);
+> > 		if (flags & PROCMAP_QUERY_VMA_EXECUTABLE)
+> >-			perm |= VM_EXEC;
+> >+			vma_flags_set(&perm, VMA_EXEC_BIT);
+> > 		if (flags & PROCMAP_QUERY_VMA_SHARED)
+> >-			perm |= VM_MAYSHARE;
+> >+			vma_flags_set(&perm, VMA_MAYSHARE_BIT);
+> >
+> >-		if ((vma->vm_flags & perm) != perm)
+> >+		if (!vma_test_all_mask(vma, perm))
+> > 			goto skip_vma;
 > > 	}
-> > 
-> > That "unmap-on-alloc" driver sets the memblock flags and register some cma hooks
-> > (to be defined) for cma_alloc/cma_free where it unmaps/re-maps into the linear
-> > map.
-> > 
-> > The nice property is optee won't need to be modified anymore. The downside is
-> > the entire pool is now mapped at PTE-level.
-> 
-> Sounds reasonable to me. If folks are really worried about performance
-> with generic CMA PTE-level map then OP-TEE already supports no-map based
-> reserved carveouts for protected DMABufs too.
-> 
-> -Sumit
-> 
-> > 
-> > [1] http://lore.kernel.org/all/20260902172436.GB1440252-robh@kernel.org/
-> > 
-> > -- 
-> > Vincent
+> >
+> >@@ -647,13 +647,13 @@ static int do_procmap_query(struct mm_struct *mm, void __user *uarg)
+> > 	karg.vma_end = vma->vm_end;
+> >
+> > 	karg.vma_flags = 0;
+> >-	if (vma->vm_flags & VM_READ)
+> >+	if (vma_test(vma, VMA_READ_BIT))
+> > 		karg.vma_flags |= PROCMAP_QUERY_VMA_READABLE;
+> >-	if (vma->vm_flags & VM_WRITE)
+> >+	if (vma_test(vma, VMA_WRITE_BIT))
+> > 		karg.vma_flags |= PROCMAP_QUERY_VMA_WRITABLE;
+> >-	if (vma->vm_flags & VM_EXEC)
+> >+	if (vma_test(vma, VMA_EXEC_BIT))
+> > 		karg.vma_flags |= PROCMAP_QUERY_VMA_EXECUTABLE;
+> >-	if (vma->vm_flags & VM_MAYSHARE)
+> >+	if (vma_test(vma, VMA_MAYSHARE_BIT))
+> > 		karg.vma_flags |= PROCMAP_QUERY_VMA_SHARED;
+> >
+> > 	karg.vma_page_size = vma_kernel_pagesize(vma);
+> >@@ -970,7 +970,7 @@ static void smaps_pte_entry(pte_t *pte, unsigned long addr,
+> > {
+> > 	struct mem_size_stats *mss = walk->private;
+> > 	struct vm_area_struct *vma = walk->vma;
+> >-	bool locked = !!(vma->vm_flags & VM_LOCKED);
+> >+	bool locked = vma_test(vma, VMA_LOCKED_BIT);
+> > 	struct page *page = NULL;
+> > 	bool present = false, young = false, dirty = false;
+> > 	pte_t ptent = ptep_get(pte);
+> >@@ -1017,7 +1017,7 @@ static void smaps_pmd_entry(pmd_t *pmd, unsigned long addr,
+> > {
+> > 	struct mem_size_stats *mss = walk->private;
+> > 	struct vm_area_struct *vma = walk->vma;
+> >-	bool locked = !!(vma->vm_flags & VM_LOCKED);
+> >+	bool locked = vma_test(vma, VMA_LOCKED_BIT);
+> > 	struct page *page = NULL;
+> > 	bool present = false;
+> > 	struct folio *folio;
+> >@@ -1728,7 +1728,7 @@ static int clear_refs_test_walk(unsigned long start, unsigned long end,
+> > 	struct clear_refs_private *cp = walk->private;
+> > 	struct vm_area_struct *vma = walk->vma;
+> >
+> >-	if (vma->vm_flags & VM_PFNMAP)
+> >+	if (vma_test(vma, VMA_PFNMAP_BIT))
+> > 		return 1;
+> >
+> > 	/*
+> >@@ -1798,9 +1798,10 @@ static ssize_t clear_refs_write(struct file *file, const char __user *buf,
+> >
+> > 		if (type == CLEAR_REFS_SOFT_DIRTY) {
+> > 			for_each_vma(vmi, vma) {
+> >-				if (!(vma->vm_flags & VM_SOFTDIRTY))
+> >+				if (!vma_test(vma, VMA_SOFTDIRTY_BIT))
+> > 					continue;
+> >-				vm_flags_clear(vma, VM_SOFTDIRTY);
+>
+> vm_flags_clear() still warns on VM_SOFTDIRTY when pgtable_supports_soft_dirty()
+> is false. Did you mean to drop that?
 
-I have just looked deeper into and cma_alloc can't unmap automatically the
-default pool. Callers expect a valid linear mapping right after the alocation.
-dma_direct_alloc() and dma_direct_alloc_pages() zero the allocated page,
-dma_direct_alloc_no_mapping() runs cache maintenance on it, and the userspace
-available heap /dev/dma_heap/linux,cma zeroes it.
+Yep it's silly. Checking every single operation with VMA_SOFTDIRTY_BIT for
+whether CONFIG_MEM_SOFT_DIRTY is enabled, which is not done for literally any
+other VMA flag, is ludicrous frankly :)
 
-Also, it isn't possible to use two compatible strings for the reserved memory.
-The registration stops at the first matching compatible string. Layering drivers
-won't work either.
+>
+> (Vaguely recall you weren't too keen on that warn, though I could be wrong.)
+>
+> Otherwise, LGTM!
+>
+> Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
-So while the pool can still be generic and serve as linux,cma-default:
+Thanks!
 
-  linux,cma {
-      compatible = "unmappable-dma-pool";
-      reusable;
-      linux,cma-default;
-  }
-
-We can't escape providing an additional API to unmap/remap in the linear map. 
-
--- 
-Vincent
-
+--
+Cheers, Lorenzo
 
