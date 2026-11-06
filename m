@@ -1,114 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C871D606A334
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 19:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8FB606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 19:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=TQt8Fx08
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=XVDJ4NAa
 Received: by kanga.kvack.org (Postfix)
-	id DC5EE6B05B3; Fri,  6 Nov 2026 14:01:57 -0500 (EST)
+	id 23F666B05B0; Fri,  6 Nov 2026 14:11:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9DD06B05B4; Fri,  6 Nov 2026 14:01:57 -0500 (EST)
+	id 1F0706B05B1; Fri,  6 Nov 2026 14:11:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB38A6B05B7; Fri,  6 Nov 2026 14:01:57 -0500 (EST)
+	id 0B7E96B05B2; Fri,  6 Nov 2026 14:11:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A10126B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:01:57 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97D78A018D
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:01:56 +0000 (UTC)
-X-FDA: 85405613832.23.2CB9EC6
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 87C9940003
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:01:54 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=TQt8Fx08;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D09066B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:11:50 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 98CD11401C3
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:11:49 +0000 (UTC)
+X-FDA: 85405638738.16.950CD08
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 9DDE6160009
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:11:47 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=XVDJ4NAa;
+	spf=pass (imf08.hostedemail.com: domain of namangulati@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=namangulati@google.com;
 	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of lrizzo@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=lrizzo@google.com
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793991714;
+	s=arc-20220608; t=1793992307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cnari2EfkfcqWLrylXnWPpbFbNnmk3zqvy2a0yZnams=;
-	b=f2utEQPWQnqJsyoUSAZajpRA85uIy+OnXEAKRXYVgsLj4BeKdgyyvdWITmL8QWdf0QsPt+
-	7T+OK+vqRSvBdcyn7rwnwtUj7e4urm5fox8KTh6o6AS9Q5x3PRMEmX9rSHMbwwV4rmolUZ
-	YyB6XhpNmYEpWkftm2iL2ZuJt6PLT2k=
-ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=TQt8Fx08;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	spf=pass (imf11.hostedemail.com: domain of lrizzo@google.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=lrizzo@google.com
+	bh=h2A6aCl8kyfujglJb3VkwVgvWA7M4CaDd0+96AnNPHA=;
+	b=lCI5F7hVACYj9g/0x92AhCFBDaUhQBukbTV5hS6KF4V7pH3W04i1Hbk/8bdsKRfIFHmxZN
+	9ruE6neY8SyI5PN4jjSOsvaSHQ5+pNJX0DK+QkBPPsJbj7n9H6ujBWDFCRVJnbnUOfVBop
+	xwM0Nqpp8EYooW19GYMLc0xfukoSVJw=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793991714;
-	b=P+sM4PQeA9uur5Gl0e0UQ1qbY7Ud1Kj9jkFvEhJTZz9XI/OiwAXcUZyNs0Z/PCxQiZP7qs
-	LbSZgx2T2J4Xlhi2BJFo1mGaw6e8Nv4Lujq+DJSVT+tfynC+TSVV7hAXDkFDx9UnR65y6m
-	hIbszOEw4F3CFmRFw22jLVsV0x2ljrE=
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-533202fe429so102011cf.0
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 11:01:54 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793991713; cv=none;
+	t=1793992307;
+	b=gLe6vJsB2MxSkJxPteBCjmlwjhqm3Pb6gAyrc6LNmkcHxIfOEdHCokqSaJwhJZ5gKKdJfO
+	R8trS7abvzkDdOBnH4EKFkBrNNIXt1iruRePpzJAu1bsJFYpHFEJwbNPAbQK52qAIFx920
+	2szMgiQz7EDiuvMHlrJIyuJLtrIudD0=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=XVDJ4NAa;
+	spf=pass (imf08.hostedemail.com: domain of namangulati@google.com designates 209.85.160.171 as permitted sender) smtp.mailfrom=namangulati@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-54492d8a988so971cf.0
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 11:11:47 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793992307; cv=none;
         d=google.com; s=arc-20260327;
-        b=GGYKKmAN2qYpRigg7xlKa+qZngRXV138FDOgpgwFNIhKLRUoxwSg50rW9obP6ef7Hz
-         CpHTDR8lAvCbXCwsacUlgeqgNhu4KOTXC0gtne0/sgexy7wh4iioWQMHMk2AhYwi7Rtn
-         TiV0nhsGe8W2P99Drw2/rsb3NabG1vUHexFfc20YqHyxn2WQvnEzApqCQOsEMxMTa47e
-         Kod5V7u0uCXxBoxwMpsXqVjjOfernFY09tJfmUVtk1oGKrYnVN/PzeK4dxPW0CF9aN/u
-         q5SCVU1ZBPf73WQXOdc0oD9mKz5zKR4TJ8iTJgap9S9gbmUOIxfFcKTuyHQDMd+sE4Gv
-         3knA==
+        b=hOQ3eJs9W1yRl5PO+OJhIAWaeKxeaFjuu0kfEauE2GXyBxJKs9f52oClqIciYm3IdJ
+         DrYtM1DPQWO7lQDhP0eFLlAAKIaZiWmgqFE/JcmHeMEHXSICPxVhV8vFuZEt451I24Ak
+         2K8JD2RcGDVsXifCmkmdyutXWk2yM2ApL+GDNj/M+WN1clfsYw/dIoDvdUFoqBZ1HLV+
+         AkjOdCne0E2kjTMnOGf13Rw+aB4m+7opIoY6mstkGmk9wVMdZEiyW3oKGq8DrSPjTC8B
+         76gibgaZLhmco3ZQQJn47AvAR1LxIfKGAKxd7JVkPfXhp5udTRkQu9xXgu3nEMcXzQ+H
+         5lrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=cnari2EfkfcqWLrylXnWPpbFbNnmk3zqvy2a0yZnams=;
-        fh=dii+X5IU98qFC6ISJlD/BQ9jhbpM+3m4WPvU42vnj9A=;
-        b=f2VvRoaK6egre7GuYJKRHmCpaT22RNLEl6A5GqZG5rM6GvEGdp2kxTZHbAhtPH446v
-         sE1VT/xK+/sVDmN1Q5MUJjAW5d+516DBxGQyMZy8UUAXpwHuc1/Uz7Vf1oJS7Ta8aLrW
-         oUo+FRICqZNCGEqhKlF5pbMKNV7Eh9NOvdXZ9gF9y4WxId69Vafl8cfYMfRx+v+rbegA
-         wVhoL7B7jPsnmISD99wuYj7YknmdQiTFcVNl1FbgU7nNmfEq52dIcMttgk2WXGJE7e/e
-         T8fJ1aSZ6O997Wtfs5v6yeygcMiFj5OZlosM3lbm21cSwFg5do6/kOEQyEwcrEmcXxK0
-         oEWw==;
+        bh=h2A6aCl8kyfujglJb3VkwVgvWA7M4CaDd0+96AnNPHA=;
+        fh=489JV2GKSIEYGI5nCfZQPdmA8cAJw6Sa+yQjtRHszZE=;
+        b=iKXiL1A0hnPWhQlXmoQ2ECSZZufqLzhzTBjvU8nkcPC4LVWhsWmIjY+rK/H/GGSLOV
+         E+CffJhFWGIt4QIDU9Q2UPeF4gUIxLVGnr63i8fUFpZ6QDrEBl/r+mJf5cIWt5+spDuv
+         8m0LA7di2XB21BMCkfe0eqgNN6I2U6WuL7OrCVetg24Bi0yNDlZdrwWZNp4nuviZle71
+         2ZDIf72QDQVBd/gX8O+edwGF+/6PX0GOb2hW4JKjmYgv6iUzBtGqbvHJOaquATCUi6z1
+         krGDqRVcz4V+8uLCD59gx7/cGe4IJFAHWlRrjfIwdn1YgvCqvZimlcaTah6GaqlLVgh1
+         otHA==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1793991713; x=1794596513; darn=kvack.org;
+        d=google.com; s=20260707; t=1793992307; x=1794597107; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=cnari2EfkfcqWLrylXnWPpbFbNnmk3zqvy2a0yZnams=;
-        b=TQt8Fx089OF2+HT1Db6dHqi7KMR9uFzZqLe2+VnVEohBP1ILvvHYKLrhOxePRyHrp9
-         SvGkcn6ILhvEx+3uRI3Kr2ugEkv2UFSA1230uCdHTr9hfaTMCT7JfxDCpSn1/YNHz2ke
-         SxABvfoRm8QBrf4Sxjf5TF9Rr4xIAfPsln2EFrp7FJnQ3VFdfCY/oo6NQlUW5fNe3B4A
-         +GltVivU8R/d4Zp2R5GpJMNlJgP+BJflo7836IIeqxSSxWlViWG7xa+fY8kAZk1R7wCi
-         k/7ByG3CO7XQ5EdihsYTk3K0pIy6BqCTbsvKro+rEmjABqu+Ona/V5LaNzV+b4kewevc
-         1ehg==
+        bh=h2A6aCl8kyfujglJb3VkwVgvWA7M4CaDd0+96AnNPHA=;
+        b=XVDJ4NAar1YiCgQQkJSF7z7+LpC1VYNkVGYxWGk08t0V6imMHZ8IRb7UHKgruJNs7H
+         EhzY9ZmOingfeGqC4/XKSaMt9oqUrjhhO2GFxIdNwa0qxd4veAMpBidHHQ+P/Ail4b3Q
+         yVjUaZhomVhlEZfXZNX9kKpuyskXOHtdYVsnJkuYLOa64JwRfXszYv4gH+hbYHu4m0H0
+         g/vtLOYET4LafMczHAVEi6ZbXpxYz9to0lFkXgj6jZpmFmvrDaVFOSPFn8EjBPtlrmX8
+         vs9n3xcHCchWIUhWxLGkTvhL0HbxoCJ4TBwFTD+JxnccZ8/TMq+RCqEUVZlSFcok0f7j
+         T0Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793991713; x=1794596513;
+        d=1e100.net; s=20260707; t=1793992307; x=1794597107;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=cnari2EfkfcqWLrylXnWPpbFbNnmk3zqvy2a0yZnams=;
-        b=Fz1Qx3oHvqi0oay1KwhIUQbLZv9n7Pu0jniOjr4diS8poc9Em371NAg61BDjwSkJ7Y
-         octyUzcz31EiO2gbvPwiATu0qsC+lTYU7YejyzV8SUuJ7J+7C+po0NLiAWZvuZeNRPlI
-         JpOA/z9F47rKZKbKZk9xMd8Ewls+vhriDOl9PUJpj2tp+X66mhZu64fKmq80mA9NLvn+
-         mD/tBEr2q+7o5baQHavvjdX76W8mOcwfndlk8cCN7pEnZwHQgB9KQLRg9Ca5I9eN9m8f
-         B1yoClYCrylsDG3tjPTGIVywjC3zk6cPlTmWHeFBKhdqkO/H5n+Kjg/PeuuW7EJ7B6+e
-         so2Q==
-X-Forwarded-Encrypted: i=1; AKwUvBwFohwXu9cCSR2bK9aY+d71Kx1SrEV8s3SLPH++Qh1DZC5DfzjZWd5uChOGx5Q72/HzRq6bF28kXQ==@kvack.org
-X-Gm-Message-State: APuU4Z96Te+bC7l+KikQlMAvaZxAZoatU8lUvLbBc/xRHOEr/GqIh9Cv
-	6ztP9Iw9mtpIXpp4gfSZNYQMmhhCoOlKPKU+yB4Y77Lv2HiU9PGsKZU2EItfRGWJuFJDbgUU4tC
-	3m3PmLvMqkn5W2l4WeVSe8WcIVDdXAKAdP6eyuxCS
-X-Gm-Gg: AYBFou1JdfruOKwiFb3Ix9tExjS7bkOwfr4w6fajJTGN13cKv8K0PXRHbmak9oJlEH5
-	iv6cuTawCPt93+sKxUAmw7OC06f9hnBG2FMvoCqrwEAPu/JyF0ooQY1Pkn7H3C5hq8Kte3LhL67
-	qEkCHZeCwRRAGWLmpQ5/HBKxfM8H/VHAIF4WazMvxp3ME+ZFbS7Zba83dMJ7UxJbBF+MOrxgtFh
-	YseW+Msyzi1JtHZFAttIi0f30CitydivOsEY29Yp4SnSatThJbPBp4lgDkn+HltGW/orfc+5tIk
-	bUNjfUMz5sUruwKoIFKiV6+QtcRWSr74dC9K01lzzVLdiPsvyQYCQT6W5G1yVQ8kT9kBxjwdNaR
-	GSL9qpvdSBk0x7IC7M9KJbf7YOQPKFXySHkKiKQ==
-X-Received: by 2002:a05:622a:90c:b0:533:9746:9a86 with SMTP id
- d75a77b69052e-54f5c235197mr4277431cf.5.1793991712760; Fri, 06 Nov 2026
- 11:01:52 -0800 (PST)
+        bh=h2A6aCl8kyfujglJb3VkwVgvWA7M4CaDd0+96AnNPHA=;
+        b=VglZjvlBxqGBQj09uNtg3MZvWL+99JKuU7xZDhyMPuKuyVzfxoO3qj+d+pEhEujKiW
+         6bMx7MExoQ2nV/MwefU7ZY8QGxhXD7E38ma73qAZbvkR4UKUim310Tz34TruZdxFWcLw
+         Q5AbwQ1l/YGs1OPIumADwKLa21w817ZcBfYnee1pNGqa6RDDYcOYO1w9FozWPc2wzJRy
+         IP+3mDMqQqlJr4S0rp9Mh6aHnisOw2sNG+tqhFrlmiRkFsKiqw11BnozAWW9geg7v0gs
+         YBsz76a2QtkCXUuzLxWqV/t6FA/xPnB0bX4XQVvDT3zdk1SfCvDPvBkErlyS2WmByTUZ
+         H4sQ==
+X-Forwarded-Encrypted: i=1; AKwUvBzOaWi2NifND53mVK1I01/7DemTrHsBVHGEXrDY7+VzruOUUb2DfMMoz7s83Fu+B/d6HSflN99m1w==@kvack.org
+X-Gm-Message-State: APuU4Z8TZuh0NmKNAdoq9Nb+gGmtn2FT48ZNRPztjcm5sjUvmstJw+mb
+	SKHL38UUXi14iZJd6tUbJah8iIsGuw2fznmkQ0OzdX4+COoZu2GeKuqocJOqPd18Cuv/fH0KuBF
+	hodI6Yc24cRfB3XoRqHd9Z5Ly/PctiEQBHXn1WsMM
+X-Gm-Gg: AYBFou28dd3WdHnm8CVTQYUpkRJEdECK9+EjfsYX4HRfpqnNgMtm5sWFraJ8AubZj3x
+	7QYGH4N9uk56X1hyXBEFcRiLefAJrxZGvRQ0MgxuiEhOIideoQ0QOgJQOYO1R3xBEAXhWn6zLKA
+	CVz2Iz+Qg54yctnSUlXOgyW3stFg7qedf3KR9r9I1UpsMtg+sv7JqaVxYAW3F57p2xc+mRixEfg
+	QRjnh9rphn4glElIVkG6D9dyB9M49kUifqhXTcU3PE/Zk8wV0w8WQJi4InWNUfaOvZXr6jsEnMY
+	wEy7qc99oenkW4pC2r9UZqApBsJZxNybXEPl2BwExaiQOcHGZS6YtdKSwZn26WAe+/dKiBwtc9M
+	JYV/kVBMNWiAjA59NZoLxtZbWRF+FBFxvrRaPwCCgO8tQvYUSb7eyY1KWTnEOsChXrxWuzw==
+X-Received: by 2002:a05:622a:2297:b0:532:eff9:ca08 with SMTP id
+ d75a77b69052e-54f82d870e1mr1932401cf.12.1793992305834; Fri, 06 Nov 2026
+ 11:11:45 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 References: <20261023140107.GC3977851@ziepe.ca> <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
@@ -118,13 +118,13 @@ References: <20261023140107.GC3977851@ziepe.ca> <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQR
  <20261106180714.GI663069@ziepe.ca> <CAMP57yW6Y4g-xM9YTB+MpgxPN7RFeEWhAPWvqrfOoMDEuL8HZA@mail.gmail.com>
  <20261106184346.GJ663069@ziepe.ca>
 In-Reply-To: <20261106184346.GJ663069@ziepe.ca>
-From: Luigi Rizzo <lrizzo@google.com>
-Date: Fri, 6 Nov 2026 20:01:14 +0100
-X-Gm-Features: AclHuK8RLl1nJ3Ebb-rbtl0GPWPY_LeKIqNGDlWDxF7jQ269eiN5kMKC-Dmlr_c
-Message-ID: <CAMOZA0L3c0zWvvVF9btAxQSox_hQTZP6W1sK0vgYPQ2OMJtS8Q@mail.gmail.com>
+From: Naman Gulati <namangulati@google.com>
+Date: Fri, 6 Nov 2026 11:11:28 -0800
+X-Gm-Features: AclHuK9JPUckmOeUyc8sSIbL-A7oi1CB3RcBM1vHWdycPuPf0ms-UPAYg2zqwxM
+Message-ID: <CAMP57yU7RoWXkvOfx3ksX8kaO+0h8WPefpjnY2DH9WR_TYGJog@mail.gmail.com>
 Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
 To: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Naman Gulati <namangulati@google.com>, Christoph Hellwig <hch@lst.de>, 
+Cc: Christoph Hellwig <hch@lst.de>, Luigi Rizzo <lrizzo@google.com>, 
 	"David Hildenbrand (Arm)" <david@kernel.org>, Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
 	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, 
 	Marek Szyprowski <m.szyprowski@samsung.com>, Andrew Morton <akpm@linux-foundation.org>, 
@@ -143,18 +143,18 @@ Cc: Naman Gulati <namangulati@google.com>, Christoph Hellwig <hch@lst.de>,
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 87C9940003
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 7rfmkm8qdfwiw5scyuk1ykso7mn9swfu
 X-Spam-Status: No, score=-18.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: j8yssjjgdxnorci393ugkgo5huuo369h
-X-HE-Tag: 1793991714-585477
-X-HE-Meta: U2FsdGVkX18oZ3vm+PoBqii9eMm2YLbzNnLTTZNozDM+iHiorLHPieU1CFl2QWcwRaXJ/52b1M0vtDUpgAyLBo1aX1icBqMFmTzC14ytzbggFH83PACKG2tcdVN2JPLIVUt3iCcmO5idu+tA10ybJukYPe1uVmk7xuyW2WSf/TSx+cwtbuVM0NyJcODjLg6K6vLrhnlO6L+7aDSsYEP6pHvMBapqqZfFyBOCRNBMQnecpfIcWNOVdLgE9nyg2Ht62RcwUbLY9Tw4WtAC3usfjoLDzETh2EBsiGCJir7H3Y7S6atGwXTY2yL/etOU2YFV5HlaTHuLrLZANpc4H01G8dlLyfL4Ph2rXKwZOfJHJAGlSKPTHA14rGMfvEoPXnd0blplwudF0WXrvaNmdBkuWqfknaV64D9ulwRg3fBMDpnhAjczDjmGM2e+/HyGF30v8Unta7HsZD/qA1kLm0RarHVzdDjnj3/9nYGhWiG16qSXw1m1oN1pkwpRyASUxR72fmdoYrNFEOcpyqBOw2hkhV3f4/wL4RKYfQEd9ofneCCjHXOk0B7qDm2IeRmRvope8n0hwsvUYXpL6mbrn+I74CbGBcTDbZVL4DlIFx0zf+Nsy26W13rF+IhWhjINHgmWnAGQpz2CFOW64J+yz6tQmsqdy1UGfoQiT5uvM3eZxfrp+FxkoeO1orZyaNWK8N2g2Ig1m4o4nx+zfdE1fgdThtXuWSx98Il9RYRHSoijftIfGr/OrczEYy7FsfOt4sjiCq5Qp7mBDQQonVjBtlEuZPj2twSkDwKz5kIn5KD3FgPqdNxH+jtDU/HcJ7q90QRO/KohJQu52GVv5Ddm+nv6Dk5LCZV4oOTXSzVqghzC1JR1b3OaerN+kT+i2KnXJYj0ViwaUynQo+vfiYcsfiqSNRW8uVDYMaNgqTkj7ANvzLDIQtkCkd6i2DL/TxWSn/JobInGHwfPNpVd6Q4+r1v
- Im85/+Yt
- cej8xRCl7K1cge59O4S4Sso+Oss8QTUVYsYAcHvEqNZHZH+9J8OfQ+FCnuue/PBgIraXF13gOoFgBxPKK326IHYuPSdaZ7Z/nW3tEM4g+48jDRebTnQzqJ2zh7IsCBL5yC3L2RQoC8iQccFvZoCY7l3IzbXeJK1/jMSDie5GSpM+Tn3c4PN32aJQNAD9cTYQZXeMeh2F5gGuvVoelZoTFuDrSDMuEyapHBwukdiejI8mYl8J4QmLCLkqzQDfAnlybxtuW22cqefvebMQ1DQ0+56UngmYUyRP8FsVaB8L8cCp4rSP5T7UXKDlqBD8VNZDL4PDPbMVScpw00VBr9Ytn91SA+ZhQIHzDSlWoND4j2mkeiliza7c4NApBS632GLy7AAN5uzm8F3yBEHyT9dfTryW26EXgXz0arbAjgxPDQjfS3Ek=
+X-Rspamd-Queue-Id: 9DDE6160009
+X-Rspam-User: 
+X-HE-Tag: 1793992307-671740
+X-HE-Meta: U2FsdGVkX1/RhzhfBZkvEL1493w66hIZ0G30BpFavj7SN7rpj1w6PKArBENuM6dPZaETQFz8bzsxKPU9d0nscpk7MW4k+kC7aX2CrChrtdzi814+vJCbWWIUOmFeX6xWyEVY4GeVa20LRZAz4ZnbTwfsvHcB4le/f0wZbTpeiT3ANmMr8Mcuh/XDJFDWOOLuHpsbLxCp9VXhHuwy0xI7OHPeZxqcamMSiI9QT0MGPyK1T4QRcUf2FtJwk4nhqNkysiqkpHkcV0VK9yneA/Z18o7AEGOyq3UYIgWBT+8nH1PDiGGpt2WReXeT30zVceT2bZScoKPMMjsoT/JQlPIpinn81lI7C2te6lKRk32zWw39p0lY1MscKtrEWEpnRAMP9n0E2HvsXnkVtlV+FDh+RThOT+l6fNabH6lVYne5REST0B1/iAK1PXEjaD8tSbD+YLV6E+cpsP8zkBAhLqcKKH9a+7IE7gBBQlF305VeEjIQBHN7QtQLlHQtM97bVJ7j3HacpNeqH7ldZAhLG5H9HcGfwrMRGkr2hUjurOpBAZdg6L3qSfDshnGgfUOB/ykdA0oIU7odJSeDYJAD1cVf/sRqZp3YLm2B0ysjNNCDdUn0QLdPWN9QuNQgvAKAhJ7SZ1ANrJ4i3H2NiIxe3jzHSSCHOVNDm7dpacoctrT0pcfGXsqUfB5215lgzpMzO7Uq0oYrRBMjOyI59r5vdvgYmgumvVyXy+I0fb1dDLCR9vA5xqC2qD9Mh6djAy0IOQ393TyULSKEVstOGxyGUy+FzLs1fm6Fe+Ihlm/6SWt6aXhAhxOpcxa5ZrnmXBL7pnn0zCXOZkbIvhxnRyl50uodwDNqY30mizWfU4vj9OxstkJruCx55Ds3ZRtvgnFMTgaWeVM1rPU5px9nYn5H+jVRk2EywTS28HfVtwex4o8+7tGVIeac9OpyheJzo+K/4K5AQaRtQwhMWPkfcl/dx9b
+ HMsdONyv
+ IRe0gXOJQoSSoBxUjyF2STOoP2jM5cbrr24ItfyisAEDGPCJI/lFNV2dzJDvBYAMr2eqWIt5k+abuKtrCdb0UqibLedOWk43cAax5uDwiqF1Dqv0Lkr62Fsh62qH3PNtvPKIOTVi7Pcm3GW1Ni/AI86PyiycAbcn6ZwiglRoLmEiqCtLORQ9V2f7pYtmkJ6AQNAeSrh0maOyGsywVK2ndMcq76t6/UyLT+mR6Iy6k8FYsEH6s8uyKaNu3j5VzckKH3CkLsqxHUqwXj6DvR4xqesII+urlPd2tIFRalsl8F9un+IHcgL2m/vbYxcHKIxKIG5piNsYOHmqRZGtgPOPE/ySqf9XwOzRbCTobUbxDY5vDFmAhZoxwKMAbFXKtfNcbEmbExCcLuhNC4RrCtYw4CXpcBsKgMM5o0NLmKAcLC1cpIZfrNhdEUTwAkrCbwHOIIMSk
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,11 +163,100 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 7:43=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrote=
-:
+On Fri, Nov 6, 2026 at 10:43=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> wrot=
+e:
 >
 > On Fri, Nov 06, 2026 at 10:17:38AM -0800, Naman Gulati wrote:
-...
+> > On Fri, Nov 6, 2026 at 10:07=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.ca> =
+wrote:
+> > >
+> > > On Fri, Nov 06, 2026 at 10:00:35AM -0800, Naman Gulati wrote:
+> > > > On Fri, Nov 6, 2026 at 9:31=E2=80=AFAM Jason Gunthorpe <jgg@ziepe.c=
+a> wrote:
+> > > > >
+> > > > > On Fri, Nov 06, 2026 at 09:21:08AM -0800, Naman Gulati wrote:
+> > > > > > I drafted an implementation [1] for premapped TX and RX buffers=
+ on top
+> > > > > > of the existing networking page_pool. It is implemented entirel=
+y in
+> > > > > > the networking layer and extends page_pool as the default RX
+> > > > > > allocator, to the TX path. There are no hooks in the IOMMU, DMA=
+ or
+> > > > > > page allocator code. I wanted to understand if this implementat=
+ion
+> > > > > > correctly captured the feedback on this thread. Key components =
+of this
+> > > > > > design:
+> > > > > >
+> > > > > > - Chunks: as in Luigi's series, memory comes in 2 MiB chunks, b=
+ut each
+> > > > > > chunk is mapped once per opted-in device through the DMA API an=
+d
+> > > > > > records its IOVA for each device, rather than using a shared IO=
+VA
+> > > > > > window.
+> > > > > >
+> > > > > > - TX: page_pool accepts a memory provider for pools that are no=
+t bound
+> > > > > > to an RX queue. Per-CPU page_pools take 32 KiB pages from the c=
+hunks
+> > > > > > of their NUMA node; TCP copies sendmsg() data into them through=
+ the
+> > > > > > task page_frag and allocates its skb heads from them.
+> > > > > >
+> > > > > > - RX: an instance of the same memory provider, sharing the chun=
+k code,
+> > > > > > backs RX queue page_pools. RX chunks of order-0 pages belong to=
+ one
+> > > > > > device and NUMA node, and are shared by that device's queues on=
+ the
+> > > > > > node.
+> > > > > >
+> > > > > > [1] https://github.com/torvalds/linux/compare/master...NamanGul=
+ati:linux:netdev_dma_pool
+> > > > >
+> > > > > IMHO the netstack should never read from shared/decrypted memory.=
+ If
+> > > > > you put it in a SKB you have to be sure the only touch after that
+> > > > > point will be a DMA read from an untrusted device on the TX side
+> > > > > (sending it to a trusted device would be a fail) and the final co=
+py to
+> > > > > userspace on the RX side.
+> > > >
+> > > > That's likely a fair callout. TBH I'm not very familiar with CoCo a=
+nd
+> > > > will spend some time understanding the constraints. I kept CoCo out=
+ of
+> > > > my implementation as I approached this solution from the overcommit=
+ted
+> > > > VM problem where we are trying to overcommit memory in VMs and use
+> > > > these pre-mapped pages to avoid using bounce buffers.
+> > >
+> > > Why does overcomitted VM use bounce buffers? Do you mean this is
+> > > about getting better memory clustering in page pool since the VM
+> > > paging granule is 2M?
+> >
+> > Not exactly, we are trying to use VFIO passthrough NICs in
+> > overcommitted VMs. Since the guest memory is overcommitted we can't
+> > dma-map the entire guest address space (as non-overcommitted VMs do).
+>
+> ?? I understood you could and this was implemented under the
+> virtio-iommu by pinning the memory under active DMA?
+>
+> Where in upstream does the DMA API force bounce buffering for this
+> case?
+
+Sorry, should have been clearer: the DMA API does not enforce this,
+bounce buffering is typically implemented by the drivers in this case.
+Such as QPL mode in the GVE driver.
+
+>
+> > So overcommitted VMs can use bounce buffers to have a set of
+> > pre-mapped buffers to bounce traffic in and out. We're trying to use
+> > this solution to map pages dynamically with virtio-iommu and recycle
+> > them via page-pool to avoid traps on each TX/RX and avoid the copy
+> > cost of bounce buffers.
+> >
 > > This problem extends to generally reducing IOMMU overhead in
 > > networking - taking the dma map/unmap cost out of the hot-path and
 > > avoiding IOTLB thrashing.
@@ -175,77 +264,6 @@ On Fri, Nov 6, 2026 at 7:43=E2=80=AFPM Jason Gunthorpe <jgg@ziepe.ca> wrote=
 > Sure, that makes sense, but just having a pool of entirely normal
 > pre-dma-mapped memory is quite a different problem from what launched
 > this thread...
-
-Since I launched the thread, I guess I should comment...
-
-I wanted to address multiple problems, in random order:
-- IOTLB thrashing
-- better security than DMA-FQ
-- reduce dma map/unmap costs (both on the host and guest)
-- reduce/avoid bounce buffer overhead in Confidential Computing and
-overcommitted VMs
-- not just for networking, also for disks and accelerators etc.
-
-Now it turns out that one way to address all of them was to
-- create a special memory allocator, which distributed ordinary  memory but
-  with additional metadata that make it easier to implement large
-iommu mappings,
-  track lifetime etc.
-- hook this allocator into relevant kernel subsystems so that consumers
-  could use it with little or no changes.
-
-As it happens, the first version I posted last month was not terribly clean=
-,
-and possibly not terribly well presented, and had some redundancy that
-was unnecessary.
-
-The next version (hopefully next week) is hopefully a lot cleaner,
-and i think the best witness is how small is the change to pagepool,
-basically "if the device has opted in, ask for that special memory"
-
-
-
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index b775b6305fb78..e12ba47a20e43 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -16,6 +16,7 @@
- #include <net/page_pool/helpers.h>
- #include <net/page_pool/memory_provider.h>
- #include <net/xdp.h>
-+#include <linux/pisa.h>
-
- #include <linux/dma-direction.h>
- #include <linux/dma-mapping.h>
-@@ -602,6 +603,8 @@ static noinline netmem_ref
-__page_pool_alloc_netmems_slow(struct page_pool *pool
-         */
-        if ((gfp & GFP_ATOMIC) =3D=3D GFP_ATOMIC)
-                gfp |=3D __GFP_NOWARN;
-+       if (dma_map)
-+               gfp |=3D pisa_rx_gfp(pool->p.dev);
-
-        /* Don't support bulk alloc for high-order pages */
-        if (unlikely(pp_order))
-
-The network tx side is more complicated because, as discussed
-earlier, we need to be sure that the leaf device is one that needs
-those special dma-able buffers, and there isn't (or I have not found)
-one central place to hook into for tcp, udp, zerocopy,
-security things etc., leading to a plethora of small hooks
-
-
- net/core/skbuff.c                                            |   42 +++-
- net/core/sock.c                                              |   62 +++++-
- net/ipv4/esp4.c                                              |    4 +-
- net/ipv4/ip_output.c                                         |   19 +-
- net/ipv4/tcp.c                                               |   23 ++-
- net/ipv4/tcp_output.c                                        |   12 +-
- net/ipv6/esp6.c                                              |    4 +-
- net/ipv6/ip6_output.c                                        |   19 +-
- net/tls/tls_device.c                                         |    4 +-
-
-
-cheers
-luigi
+>
+> Jason
 
