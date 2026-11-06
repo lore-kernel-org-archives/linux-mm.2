@@ -1,138 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65E8606A338
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 03:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4AC606A31B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 04:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WkqpfmLb
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LNdgrU5z
 Received: by kanga.kvack.org (Postfix)
-	id E072E6B05B1; Thu,  5 Nov 2026 22:58:03 -0500 (EST)
+	id 4E55D6B05B9; Thu,  5 Nov 2026 23:01:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D90D96B05B6; Thu,  5 Nov 2026 22:58:03 -0500 (EST)
+	id 46F7E6B05BA; Thu,  5 Nov 2026 23:01:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C7FFB6B05B9; Thu,  5 Nov 2026 22:58:03 -0500 (EST)
+	id 33A6B6B05BB; Thu,  5 Nov 2026 23:01:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9983A6B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:58:03 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2D9D080C24
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:58:03 +0000 (UTC)
-X-FDA: 85403336046.01.BD17B37
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B79981A0007
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:58:00 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WkqpfmLb;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id F3C3D6B05B9
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:01:22 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C8F2140280
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:01:22 +0000 (UTC)
+X-FDA: 85403344404.30.87754B1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9CF8D1C0005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:01:20 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LNdgrU5z;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793937481;
+	s=arc-20220608; t=1793937680;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9akG+nDtIvJDcRYJ/oAtRMDaGCKBlqt1RbnUpTcKFrU=;
-	b=J1GMLm8JzUs1OTsDFLrptf+eBfwOAfhvkxxIDdShirNbiK3xavqEM0f5igVh2stv0O9YUc
-	yfFIbzxI80n28W6wkt0HFYtz7NI1XLKMLU08GboGMBdKVZBWUvD30fvKp9KCo3xwz1MONv
-	HBg5ZnS8Xy1+7xvoIrGqOElBAuYKvj4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=WkqpfmLb;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of mpilaniy@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=mpilaniy@redhat.com
+	bh=EKI7PGZaHzRnKhw9+Gxl7Ck/B2CGZVJrrWzNjxtIAHE=;
+	b=zGsMoehQo3kE746rnzdwMNmEFiEXsgjr4R34bWoqpxrguHQgxj1y1bjguwVUUdZoTVEZWo
+	eckHymGWvJSLn9T32+negaIc3QrPWQzhd+wKzyVy1HeFqAExuXWmBlY+XicTOgWDuMW3Sj
+	z8skRfE931Yn4mV6Sd6PM82jFJ9ON0o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793937481;
-	b=LGSXyn+F3fGmo87He3HEaDzR5qOr4AaDTTf5hMfMehfPJplj5gM+LqfINuJ8P5qfV101qH
-	ic4KqWihwkvGmrcZmAhVGmsd634OMzGoE0kBp4jietHJBk2iGm3+xDWkl72sDm++UwjL45
-	L2SlXdvA0q9NwIR7/8gxltNLnn00LLY=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1793937480;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9akG+nDtIvJDcRYJ/oAtRMDaGCKBlqt1RbnUpTcKFrU=;
-	b=WkqpfmLb86STo6pkTZCgVlyjM8fHpT4OE0FMuHzSKSBdgnoyMuf/GlITl9h+0PL8XRmwCl
-	Eb2NHC2uh7SqpC2sgeeWcgniXsv1SKxYVksWUdcMt/aB+uXuxzVGLsCcI4hk5fRpOISp/V
-	YQvL4NZY/YsHTBmHvkHMXHxylitcO1Y=
-Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com
- [209.85.214.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-212-NItpbNvcMjq71dLQY-DXuw-1; Thu, 05 Nov 2026 22:57:58 -0500
-X-MC-Unique: NItpbNvcMjq71dLQY-DXuw-1
-X-Mimecast-MFC-AGG-ID: NItpbNvcMjq71dLQY-DXuw_1793937478
-Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2e987ec84afso2594985ad.3
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 19:57:58 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793937478; x=1794542278;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=9akG+nDtIvJDcRYJ/oAtRMDaGCKBlqt1RbnUpTcKFrU=;
-        b=JIjpTTl6DnKdiu8vp61pP2ZXhtFHvLLu9i2OkVfECMadrZVQn3KbGZLltWJfDYjMOT
-         ahXITOIjaRRKB3sR+OkLCe9IrkIDnCYsgEekb/cNbBEfV2QP4Nh/vMzRWqGZxcYQjHki
-         Aln0N9r2EBbLYkaDISBsHcQfCqaEuqP5jV74RwiG2f+cy+BuvxixF5dk7KOJCyZdPrAj
-         lBVOnRLeoepx8bM+Pdzgi+dHJsQVCfAUdokUCaB6Ki4Y/RgceHcS99CiqdAZXrqa9JhS
-         d5t2Vc1uPuJd57hNKESRMPbOyh7N6bvb7eouzohMA6bOZm/1F+QyfQaH4JrSHR3bkaPJ
-         U/Qw==
-X-Forwarded-Encrypted: i=1; AL+hErEJ9m5hGPUcEl6M3MODKTOJoE3W1vORxcQmnNK04PIF3aBGXt81gHe9OQBYRzIuMpsyqduWvn0b1w==@kvack.org
-X-Gm-Message-State: APuU4Z+4U/JI5jsI6lF5SbIF2yFthDSgbKAjQ58A2XxbSORszCcyoEKp
-	o/0A2tFEw+AOZmfsAgjap0lLj62YSIbGJRI+dHQ9GY/VAlDY6RW83/PAnPy5u05sfpvUbG9aOVW
-	lMJN0Qey1G49pfAd7Az+kJ0J1c9GLb8+mWnj4A/dfKboQojAJHVvG
-X-Gm-Gg: AYBFou3z8oRDUzwCwKVdYiSpTfYqJS1xkj5NADlbUq0YyuJRoa1yLQlP6yTRET4xUNO
-	NpIt9qkiGqzP0xNjA2sgGDH6s3jXSvsLDRkGwCIHkPOcu3mIUA00rJURhNlc0yiK9Ds6a3cgWUt
-	G5N+nKLkgZwyMjxDbRmxfxV5o29WQD3Y9nB3RXZHrXD9WbSBa0lkGYdsIXwfGYBtB+B+74fXlHQ
-	sL+mZCNZLbUTR8Z6Hij3/dYhn83M0FDFTLX020uFriGFKiw4g5pcXXJ3UdlvNw5M5HaVPbVvq1Q
-	NZi/S7cCMmYix+8Q1Xf2k4LoV2t/YIZxaFRNzbeE8XAP0BgOPSYvkisUBlCtpHn9bdGIO6pHrc9
-	EMDTTemagVrxv8yS6ZAFZiDoxEyHFrJVEfPFEvkfSk8BXJ/8iA9zeIZpWLu8hlbbfiZC2lspkrh
-	HhBUqYveIQViQlMJbpQDPZ0QlGFt5uM8kgaA5izQ==
-X-Received: by 2002:a17:903:3d10:b0:2ed:69b:9e76 with SMTP id d9443c01a7336-2ed40c59069mr18818615ad.28.1793937477685;
-        Thu, 05 Nov 2026 19:57:57 -0800 (PST)
-X-Received: by 2002:a17:903:3d10:b0:2ed:69b:9e76 with SMTP id d9443c01a7336-2ed40c59069mr18818435ad.28.1793937477119;
-        Thu, 05 Nov 2026 19:57:57 -0800 (PST)
-Received: from ?IPV6:2401:4900:1f28:63e0:a033:fd4:21a3:8f1? ([2401:4900:1f28:63e0:a033:fd4:21a3:8f1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ed477a941csm1173495ad.18.2026.11.05.19.57.52
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 05 Nov 2026 19:57:56 -0800 (PST)
-Message-ID: <d928099c-4e43-4af8-a929-b510819967ce@redhat.com>
-Date: Fri, 6 Nov 2026 09:27:50 +0530
+	t=1793937680;
+	b=gb/urZfnQfutZStB8ljzm+76O7+hxJ/p8iuVAYEEtv+QYgNehAA4lzEqCcMiFR1tmqmyxB
+	w8vyo3zRops2UnNosCP6aYE34UNqJQY4vT/9yrk/eVv1WoS9zpBFGsP3akJPDO7MVQlh+Q
+	RAhtEqxY4bMM0xQq0iPEOkAn0b/gViM=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LNdgrU5z;
+	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5B3A16020F
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:01:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0873D1F008BC
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:01:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793937679;
+	bh=EKI7PGZaHzRnKhw9+Gxl7Ck/B2CGZVJrrWzNjxtIAHE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=LNdgrU5zM2nugBvZVCR02iYgDIFmlQHM3kqBcyp/SVdk7mtCDyZg91KEZW9QGqiq4
+	 pTrdL/v5+Sridp9dwQOz13aeDVsJ3H2YdUTQ2WgTqzAN3jOXnwlTOnh17e7nKmSJJS
+	 cBGQ2Hysr/0o2u+C0HNxL4jSArWNZCkAWoE4VqHwdeCR6AmOWsinVXhs4XeD3AnnYL
+	 NyyqQbfWqKaONffmcdGvCd7zgPIyaaZdh/1bZChmRJVWt9bEoba8Mj9VPdtvLQJHSL
+	 LtcLpkBtQervU2s3YqAwlJwk+9qPdvnWWnyivKaN8yf3MXd/mXhVPuD1TG2CyQRZXk
+	 koUxpIOcYqO3g==
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93f259cdc86so15092085a.3
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 20:01:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBxTP3X25oNFNp606+ZjqGC8Hyb52pRBwmZ68LWrjDHAcNysabxnMvIR2prrY4xHm0b8QqdGifTpIw==@kvack.org
+X-Gm-Message-State: APuU4Z8cKfREggQyEFY0VSnZNeR1Rur6UfLCQ0r94+CLESyV8cGhcDaW
+	GHnn1rUoKxtMAz53Sv3kC0rUm/HPwVlBcl2Zb5mnMNhAetFWdvdXIDJfuurC7ep/ogW/apK1Hk6
+	NeXw6nB5AOKlWgfQ+PGWBwjPzCIW/KR8=
+X-Received: by 2002:a05:620a:688f:b0:93f:5f83:2cbb with SMTP id
+ af79cd13be357-945f33a9aa3mr181925685a.7.1793937678322; Thu, 05 Nov 2026
+ 20:01:18 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] memblock: don't allocate new reserve_mem regions on a
- KHO boot
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>,
- Kees Cook <kees@kernel.org>, Changyuan Lyu <changyuanl@google.com>,
- Alexander Graf <graf@amazon.com>
-Cc: Tony Luck <tony.luck@intel.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, linux-mm@kvack.org,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>
-References: <20261105213153.9572-1-azpijr@gmail.com>
-From: Mukesh Pilaniya <mpilaniy@redhat.com>
-In-Reply-To: <20261105213153.9572-1-azpijr@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: q7QWksKl-A5-tLPeLJaD32tAzcqx2ywAckxOvCv27NE_1793937478
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B79981A0007
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org> <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
+In-Reply-To: <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Fri, 6 Nov 2026 12:01:06 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zKtBarGn2gMEH7ckKtLLgugoyPb040Z2KtXX5Feye1Mg@mail.gmail.com>
+X-Gm-Features: AclHuK-043SJnHCawrQog3yw2g1v7cvWQi1ZSPtdBLorMSdL4MZoNdMju91VkJk
+Message-ID: <CAGsJ_4zKtBarGn2gMEH7ckKtLLgugoyPb040Z2KtXX5Feye1Mg@mail.gmail.com>
+Subject: Re: [PATCH 05/13] mm: convert THP VMA flag tests to use vma_flags_t
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
+	SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Oleg Nesterov <oleg@redhat.com>, John Johansen <john.johansen@canonical.com>, 
+	Georgia Garcia <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm@vger.kernel.org, damon@lists.linux.dev, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+	linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: md87bmdgttbr9afhc77mnwbkm7mtkkjs
-X-HE-Tag: 1793937480-97505
-X-HE-Meta: U2FsdGVkX1+/8HnwSqbVmCocqIlT5Z/m1P/3Hx1igZOe69SQbRhb3xM5hw3NwLOTvfmpU8FRulUe3//P1ZshDSfJ1GVy7smlF/z6GKGdRhOqc2dOxULimMBn8eg90G7mIdOLznuv2QOoL6mxeZR03TXq2u+xhbtCKN1RPo0NRQX4YpIe5im/mkK3tMTwZyp2t5tHyIEinTwMimFFqimLXa9pkzdq/kHf9M4ilSCRi0+ldoXTxHnnvtocOtvf25VE7T4+JCxR+D6BpGTvzhEzSaEnPKK+Rxu9wUfH7TfVPLb9L6hMKFa1khUt9VsmiQlI34ZCrGrTXebPiz/+IapVlivpkdhIpERQ3dKTvUkAZDq0GCuJ1/qLnaCXEvE8si0aYhHoQJNK3mXyG4OtUM8YiqOn/+Kd0fjlvZEVwPoooC8eBoZeDoCCsbvaXyP3nDeRFwKg9SOwlIntH0JUGT2VB+p+ncoiPk0TP8rMt3toG74iJYKZEOg2mXbzhuc9Bp7MMwzknrtFcMC1O+VCiDPuRn+LZOAmSvviWXYF8C2PwcdPcv2rT3PTW/C7fv7bgZswTebVqsxgimlvDtedPL0CaWisADVSWxwDOGUYJJFPIGtLoSs961UkVMhqOwBwqbVMerjQgA25Fro1zi5pPDAo3FodMhpltNM0Teo/G3mOzNoRUDTouuuWHD3955+1m9mcIG8UeUiNosD6f0O1byrzixuH+r1NJus6dBm7CG019cxy492fOPuttvwVLl2/ckeECaq3Nhb08izkaOElnpSbAXPiOH7XBAzj7DUDNA4x8Vs1YUE60HojLBXPF7qXX3UalC2KTrFvry/f56c4nwj0ZNLyBKvlRRTZbEv/W4JExaidOdDvKNz4tnG5M6r+b/TrGM1oxcTTikPD1jPBZqvlpl2xgFONEkB9Kyd7WCI65tu8Y+M7n6IhH/arTSSbFm/ICc+pqjZkQeG8aOxemQc
- SbSOazZv
- rjFuOVXo2OKikdxqHbfzCH/K7FonmaHmHI0bxs02VuBhE6H+82hOr2+vTR0OT99PyRxF0YYCdyMQqV2gqiW3raEO6IewcsEfDWzIwNh/Iv4TJxp3AK/66RhXn0Mfg9fj61tb5My8Lnf+GUDnUbrEEVXLCF4pVCmFmpf53iDjuW8b6SLGoIOagTgsGMlcautqjz9h0+5GRYa0GFhBsUqZDLNHBpaCnuFTHsIovBdbW1m3Wd/cqoJrDIY0Mwf5Ehsknlqy7OGrK59aJ4+B0plC/grxrh3r9g4TI6rMacK/Bzvj9cOGWWhpPl2jM8Jb+T4I/yHHLtQqlVYWHkXA/N0o0N6GObK+lz9prwiMGLxDq5ampzj1C+1QoPiGEGYu9SkKPWHHzy2eTzr2WFL3NcKBPPgQeZOeGhYRMCc/VHk/NA1eyzpT/DUl8UW+Vz40JzrrO+xGakOjVcNpEknG9kIGplcn2VAqAjduQoJ39a2wtjD1zlovOB1RTxHZLF+WOlZh4DumP4GtOf4zTX5Quw6tl4jbBqxX+4Ijtnijw
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: eppybygg3qmrzautttnckqncg9kttn6m
+X-Rspamd-Queue-Id: 9CF8D1C0005
+X-Rspam-User: 
+X-HE-Tag: 1793937680-701545
+X-HE-Meta: U2FsdGVkX181wXJPnQDgfz5FJfYHvOKrzwFiJz/WQghtQ7TxdSPJrivW60AKlLucbt2WMavp5bWXw2O8HbdPTDlzgFPtxsj/5hASkb/1KnooBIBG0GC2WZImubClD2fJFe37xOJTuMw3WvXJsnBlcbVCZDW7JplhL9QjsSviw161ImFe7I1nQ85fLeuN3qSmjSNS5ij60//JYQF24/YpMgOvuNCLZs7iWkKmJFd7cQBvBE7TQHOgW9J6gkTnAJRXbjrlQZkDGnJ/ya+svY4wwwK8Vb5OjhJRrcOclGI9YQCbtPHghiormhfcztHyMbGKcxeFtqwfQhXMjAJ5B81EsXMcbR7ufepMHGhcPK6A4ol8aQ/LTHWYuDNZdODbot8CGeQEFnTCmfImxjwnO/2iXO3gUTdUUPBZkjFY016TxyI2P6PXsx1wlOMLa0VFV9TQk7UDzt1IhdCi2czE7qvmW55/BsPlwjLDUVS/EEvzG8/Tng7IK516aBv5o6Y3xao2SteLONtW4x68c8JmE74oX2T2HjDmXh+swn1lCKFCA7bDNf6wi+55t+k+UB8xFqI5FLqZXDktHupQza7s4DWUZ3SByKrCcD5PINvDwtJ8wdunx4yfRjCjWFmRemXCDyaVemmZB2vyngT4LzXBqUURgiwJCPO8nEVoM+RbBbO2J/NVXxOMPe73MFg4n3OwdVbVE+Fcg949WI0BBb2yC/jVo0XgMf9aWtBfKQt+HzL1UtGkmkAM2m5geuAEANOxKZ7Qo4fmWoZKRCBPtFjrFunX1bk++xo7aX9cWoq7rFNLqsKMdy4iEimclt6A/QN/ZB1PDZdgeFc87e7EXGdRc8ABwya/e+ABjHI7I3Kn2j3qEnfbmsoLlLtAyHHicVc1ytUzY/qtnPQW5AOoFI3c3PhQbOFs/EZnb7coaIWpo8aa5tHe0bNGm+wnCyjotaUf5Kk2Br/GL4Fcu9cG5S/UFRi
+ CqtFj2HN
+ 2ktZn//qMcjctjRPTvo/9TD735naOKvopA1pgsSALEzwzRgWM003zigIFW3ughZeeXh6UvsFTwjPMHBq0a1Y0aNQV6N3SeIof1fJHtgYXXADwMciio6Uu8PUXGAz4E1aAnXONMBvVEeLEvxgMpaqMTCK8ij03A4Z1QDqtTEgabCknGtbSbcVunR+LXPFkIkqAQW9iBpC639aZiSZz/GUD/dS0capIqv+k4vdSd9PdyX1DAH76Vfqkdt+4OzzZOva4WIumY9UYk/fvpIQ+kwC/yRzOLeRnUE+CzinTGMURipp7o0RPmVCClMxnYzkIqrBwBPJ3DC5QtvjWglmOWnnbJDEn7H5UQqo+cXxDvrl3C+wGhj+a1PZfACQ7l0BenJLXXFP/rbOpLDB5L7iCrvm0f3VWcxedTDA2Ls5XmsJ4D9uoOiE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,112 +143,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Jose, Thanks for the patch!
-
-On 06/11/26 3:01 am, Jose A. Perez de Azpillaga wrote:
-> On a KHO boot, a reserve_mem region that can't be revived is allocated
-> from KHO_NOPRSRV memory, which includes the bootmem the next kernel
-> boots out of. With CONFIG_KEXEC_HANDOVER_DEBUG, preserving the region
-> then fails:
-> 
->   WARNING: kernel/liveupdate/kexec_handover.c:1245 at kho_preserve_pages+0x168/0x180
->   failed to prepare memblock FDT for KHO: -22
-> 
-> Without it, the next kernel puts its memmap on top of the region and
-> the ramoops records in it are lost.
-> 
-> There is no use case for adding regions across a live update, so fail
-> instead of allocating, and drop the TODO.
-> 
-> Add an is_kho_boot() stub so the memblock tests still build.
-> 
-> Fixes: f99230780211 ("memblock: add KHO support for reserve_mem")
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+On Fri, Nov 6, 2026 at 5:33=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+g> wrote:
+>
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values where
+> VMA flags are tested directly in the THP and khugepaged logic.
+>
+> The thp_vma_allowable_orders() family of functions, hugepage_madvise() an=
+d
+> khugepaged_enter_vma() continue to take legacy flags for the time being.
+>
+> Also update BUG_ON()'s to VM_WARN_ON_ONCE() while here.
+>
+> No functional change intended.
+>
+> Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
-> Changes in v3:
-> - add an is_kho_boot() stub to the memblock tests (Mike).
-> - add Pasha's Reviewed-by.
-> 
-> Changes in v2:
-> - fail on a KHO boot instead of allocating outside bootmem, as agreed
->   with Pratyush [1]. this drops v1's patch 1.
-> - not an RFC anymore.
-> - based on v7.4-rc1.
-> 
-> v2: https://lore.kernel.org/all/20261104204235.9066-1-azpijr@gmail.com/
-> v1: https://lore.kernel.org/all/20261021211058.83483-3-azpijr@gmail.com/
-> 
-> [1] https://lore.kernel.org/all/2vxzfqxglrg6.fsf@kernel.org/
-> 
->  mm/memblock.c                     | 11 ++++++++++-
->  tools/testing/memblock/internal.h |  5 +++++
->  2 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index a450092a80fb..e325e0542c9a 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -2827,7 +2827,16 @@ static int __init reserve_mem(char *p)
->  	if (reserve_mem_kho_revive(name, size, align))
->  		return 1;
->  
-> -	/* TODO: Allocation must be outside of KHO_NOPRSRV region */
-> +	/*
-> +	 * On a KHO boot memblock only allocates from KHO_NOPRSRV memory here,
-> +	 * which includes the bootmem the next kernel boots out of. Only regions
-> +	 * handed over by the previous kernel are supported.
-> +	 */
-> +	if (is_kho_boot()) {
-> +		pr_err("reserve_mem: can't allocate \"%s\" on a KHO boot\n", name);
-> +		return -EOPNOTSUPP;
-> +	}
-I think this over-restricts when KHO is explicitly disabled. kho= is an
-early_param parsed before reserve_mem=, but kho_populate records the
-incoming FDT without checking kho_enable. So a KHO payload booted with
-kho=off ends up with is_kho_boot() == true and kho_is_enabled() ==false.
 
-In that config nothing can be handed over again; reserve_mem_init
-returns early on !kho_is_enabled(), and kho_fill_kimage bails on
-!kho_enable. Allocating the region from KHO_NOPRSRV is therefore
-harmless, and the documented best-effort reserve_mem= behaviour is
-preserved.
-That said, a new reserve_mem= line is rejected and its ramoops/ftrace
-boot-instance consumers lose their region.
-
-So, Would
-
-	if (kho_is_enabled() && is_kho_boot())
-
-be better here? If so, the memblock tests will also need a
-kho_is_enabled() stub, since
-tools/testing/memblock/linux/kexec_handover.h is empty and reserve_mem()
-sits outside the CONFIG_KEXEC_HANDOVER ifdef.
-
-Otherwise, the patch looks good to me.
-> +
->  	start = memblock_phys_alloc(size, align);
->  	if (!start) {
->  		pr_err("reserve_mem: memblock allocation failed\n");
-> diff --git a/tools/testing/memblock/internal.h b/tools/testing/memblock/internal.h
-> index ba4d1c02fde5..84f22a964510 100644
-> --- a/tools/testing/memblock/internal.h
-> +++ b/tools/testing/memblock/internal.h
-> @@ -51,4 +51,9 @@ static inline bool kho_bootmem_overlap(phys_addr_t phys, size_t size)
->  	return false;
->  }
->  
-> +static inline bool is_kho_boot(void)
-> +{
-> +	return false;
-> +}
-> +
->  #endif
-> 
-> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-
--- 
-Regards,
-Mukesh Pilaniya
-
+LGTM,
+Reviewed-by: Barry Song <baohua@kernel.org>
 
