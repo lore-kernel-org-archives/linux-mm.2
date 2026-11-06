@@ -1,162 +1,147 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B770E606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 20:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D4E606A32C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 20:44:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=Dk9MxigL
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RoZSWYg8
 Received: by kanga.kvack.org (Postfix)
-	id D4ABC6B05B4; Fri,  6 Nov 2026 15:43:15 -0500 (EST)
+	id 837076B05B6; Fri,  6 Nov 2026 15:44:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFB976B05B5; Fri,  6 Nov 2026 15:43:15 -0500 (EST)
+	id 7F7AB6B05B7; Fri,  6 Nov 2026 15:44:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEA076B05B6; Fri,  6 Nov 2026 15:43:15 -0500 (EST)
+	id 70CBF6B05B8; Fri,  6 Nov 2026 15:44:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9CF236B05B4
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:43:15 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 37D8D160188
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:43:15 +0000 (UTC)
-X-FDA: 85405869150.05.096F855
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4DAF6180003
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:43:13 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=Dk9MxigL;
-	spf=pass (imf06.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793997793;
-	b=SieEwyRUrjf/GhuoR3s6H5dBV5PBxc1jFDp6cKhY21KKG8P0ztMPKzpuDhBR1NaO/p3H3/
-	8semXTTRXyJnYE9XB6Sd0NLGhoI/AyImsCsoJ0XpeRFfrJ3wlMOm0Uqj5TwAm+YziGQgN8
-	1gIAZZZwsXYylFKuptN6Kfvf8bkgnmA=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=Dk9MxigL;
-	spf=pass (imf06.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DE456B05B6
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:44:55 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4F981401E5
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:44:54 +0000 (UTC)
+X-FDA: 85405873308.27.2CDB331
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id F215C40007
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:44:52 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoZSWYg8;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793997793;
+	s=arc-20220608; t=1793997893;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ws2V6VbViJ6cnrlfEDvDEs6KCs0YOuB35XjyLfjvYOA=;
-	b=Z8u122RHUps7Fl5Ur3AXhVRSGg0K2MJMa+2sEb2JBBY9KNBQ8s3nAvyjRz3BhPM3PWEjFR
-	nO/RDDuFJf25ahp9tTLNm1TXS2rcRPYbgp4iYqQRtNZJ17NEAmYSZx0bKTEluHILqd5q/o
-	Q+caFnmqpMfT5wBBz7UvfiY4mRAfsFg=
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-91e9309f171so10529506d6.2
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 12:43:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1793997792; x=1794602592; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=ws2V6VbViJ6cnrlfEDvDEs6KCs0YOuB35XjyLfjvYOA=;
-        b=Dk9MxigLSEjspY6QbzG1726B39o+E5ZzN+oO9XjJUuZMl3LkXEpw3d+Jto3VhqA0bU
-         UaU6TSOJ1gKl7HGCaunSix8a5ORZSVb58Ogd9SeyRIE1Zztz0KrE2WPgZoosPWVF89kh
-         Zk7EZshNQ7U238fyOUdDcKXi7WaP3IK3vqAv1Zlq2O8KCLevgQf9jMvMOy6ErYJcIc1d
-         x4O4USPGgEvl86naK32qvTHFbnrPczI909IQMcA4YH8TptP8GYuiHGt81+rbUI4dlVBY
-         NLskw6xcCquOQazTcr5ov1ItzJcg0OzZrcrErIKMSymhb9sCwQb8DN79SCvAiBjppLhL
-         0NBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793997792; x=1794602592;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=ws2V6VbViJ6cnrlfEDvDEs6KCs0YOuB35XjyLfjvYOA=;
-        b=Z0uxU2c1VTYTjnbcUW74OLUjsTLSmwmJdeaNPdCIcdLnlXIXs/C9wv1nPxahOg6q9Q
-         4cMIBBISxmqLQh4Vby5dPUlwpkz7tRXK5arSKGuT4MFPSgcofddEud+P0W1uk2kR00Vv
-         VzOjgd9MUELxHQy7CAb2SzmZOABKM5OEbRT0soYCcQFUkgi3vinslYD22dd1aI9uAmIs
-         gXbV9tsFcxA3VUJsetrh+3Zg1QfjxHjNrjs/HqkBYnC5UbYX2DbAwx/pK42do+pEJhcb
-         mlAGcfW3hC0wmj9X9bSWwjAC6PcD6GZ3iMe3NC6L0Eait2Cx7JU6rcMvkbNjzIkKSnt9
-         Q+rA==
-X-Forwarded-Encrypted: i=1; AL+hErG69JTyaonLlatY+5yie5Xc1wbMHESNyp9h6Ywg0YWhc7FsSNbSQ+/I1uY305c2jqADqIf9w7FBqA==@kvack.org
-X-Gm-Message-State: APuU4Z97i2rcyMvMVtXlf4jgPDTds6kXHI8KLF+pwlhPz40N+VyhCFs3
-	BfpRXOnBa5b/bVJFwI1Ygz2tywruOFnIWcU2tqHZqXqfUqw9UHcU6S5j7ZnltJjxjkE=
-X-Gm-Gg: AYBFou3G7j1ahx6J73RdjNi9kMaaAlQj4GFLU4KAmSvAiRaoxzy6kh6/5ZqoTxuVT6v
-	bRipbQtAUpN9vyYungVM+nRjXFhLNnc2KQ47lQhOx0UoOv4AuYaLv/CDM8/gwU92wpPHZH4uyiJ
-	iLxl/XsPonaESl5n6ryis5V3l1s6OyUAeE3UQP4q4YxDQzxwNZ/eqn4ZRjlvQ6XRb7UTypNcg+d
-	zsfXDVCijW2OqMRTGeU/iiW1XMU+DCJXREuZ5b7wes+VWHbIbbU0tDbvR50QZ2pVQc0LcVS8IZQ
-	gIrrO+lYt+kc5SUq/nLQFZEGkG3kOrf8xRkmZW/F7GOQgGQdzuh5Y+YaxqaHAQWKk1VKRJyX3iu
-	Rm0AUIrMjdoJ+Jg2B8YCaBpfVeyZrQDzLAafHJeEtVB9PpPeQ9iS04cvV/iBiYEKtB1vverrUGw
-	brPGArRiTnV2+txoyKhAR0NIaFD9pmGnOF2E7NnaF2alpAieJ4IMsFSItEfSBPgbYlm6NxymA3T
-	EGk54j/Ba+0eyJMLF2GmL6RNEAB8CALP01FRTMUrOCeI4CNJVzs8aH/oOWWs9W2RXHb9qwxi4PD
-	0wAuxIIP+XagWoKRYeqV16xVIGE10kpRorgI1/a5c0YYYYJ8Zn1mGtW2FpSlXtwaHhFBlHckYOA
-	URx6FJRS+ww==
-X-Received: by 2002:ad4:4ee5:0:b0:91e:a5c2:37f7 with SMTP id 6a1803df08f44-91ea97a22b7mr53003846d6.42.1793997792129;
-        Fri, 06 Nov 2026 12:43:12 -0800 (PST)
-Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-91ea6a2c742sm29232026d6.11.2026.11.06.12.43.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 12:43:11 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1xPQmE-00000007ent-3ktJ;
-	Fri, 06 Nov 2026 16:43:10 -0400
-Date: Fri, 6 Nov 2026 16:43:10 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Josef Bacik <josef@toxicpanda.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>, Peter Xu <peterx@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
-	Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Nick Piggin <npiggin@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	"Joerg Roedel (AMD)" <joro@8bytes.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steve Sistare <steven.sistare@oracle.com>,
-	John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-arch@vger.kernel.org, iommu@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 2/5] mm: limit pagecache folio refcount when splicing
- into pipes
-Message-ID: <20261106204310.GK663069@ziepe.ca>
-References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
- <20261105-refcount_overflow_stable-v1-2-70b9c655da3e@kernel.org>
- <n3l2cnx6d25jovloqyoxiz566mh62janclmiewjvumtmqfezo7@zmsmco5vvssn>
- <23f947e2-ff06-426d-adb7-396871304736@kernel.org>
+	bh=TUX6youhnFPrGvYeU+pJ1avCVsOlphuFIqYLTiOl4y0=;
+	b=kfAi8KrtgjXBLTM3ks3ZkqiIPyx6LRG/MoZtd1X6pyQ7XGehmAwrLttn75203Vwi0ffIVD
+	3lHt1Xkkd0VFeJM1O05FRp+uQzmg32MUICIdAoDS20c+UBQjYOEgHAvAWt/vqTcJ1enmsL
+	0seDpL/cznelOaPpytGJb3zSszaajOo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793997893;
+	b=LWAJDxmM3t7BY7kGUufWiGkftSj2p8U1feBSpOtocln0QdY02DdnOtgxRetyaQ4q7lvd61
+	t7G6PYUbEkmRYhNK95IXUz71FVr4nmymDO6R9FiYEc92JWZjM1Z9gYBeKNVz1WE6051PUb
+	ylHSsIXjjxnY/lwh1LFEuK0wYVFTkfs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RoZSWYg8;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 448C84095B;
+	Fri,  6 Nov 2026 20:44:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2D8C1F0089F;
+	Fri,  6 Nov 2026 20:44:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793997892;
+	bh=TUX6youhnFPrGvYeU+pJ1avCVsOlphuFIqYLTiOl4y0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=RoZSWYg8QitL0GYcOrie8WCPNu7m0hXKq/ot0GX77lPOskVbUTIosB3gUSEX0bfs1
+	 nyCG+d63mv2gPixZ4MDnJSPfdssODbCLHKAMvxOXegpzjQVpdDilAWLMFDOCVV2T5W
+	 mTGLJmqTWI6PvZSlzelPkUZpWr8tZqAx1STnZbUvLDQzXbPA9MFhVE+Gnz/GVTvAae
+	 Y66COZnizRE5m3Rvcru5Uyg4aBAdRHrHBZUL/IyWOcW4kX21stIlp5m3w4N9ECi/K4
+	 uUzTIg5UwTss4Us/M9f8HAEXoRMZbFbjcSKtYdkuHsGjeraZjO0DUdafwXei8u88LR
+	 van6A/Ja2bq7Q==
+Message-ID: <f85dbae0-e7a1-4441-901b-e1efd0fd4a65@kernel.org>
+Date: Fri, 6 Nov 2026 21:44:44 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <23f947e2-ff06-426d-adb7-396871304736@kernel.org>
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4DAF6180003
-X-Stat-Signature: ihyc9b3di7oppt6a7muhpzi4bkrzazue
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] mm/memfd: handle GUP references reliably when
+ write-sealing
+To: David Rheinsberg <david@readahead.eu>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org, stable@vger.kernel.org,
+ Chris Mason <mason@kernel.org>
+References: <20261103-fixes_core_2-v1-0-f332954f1df4@kernel.org>
+ <20261103-fixes_core_2-v1-2-f332954f1df4@kernel.org>
+ <2c95ecf1-058e-4d81-9de5-622e32dc57df@app.fastmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <2c95ecf1-058e-4d81-9de5-622e32dc57df@app.fastmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 5qd5nt5rjkj9f8pjj8rt9bci499rqz69
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: F215C40007
 X-Rspam-User: 
-X-HE-Tag: 1793997793-343647
-X-HE-Meta: U2FsdGVkX1+PlQky+W0XvvC+edufkTGUGh+94YDdMlM8jlB8UaumyYfl2+MS9h89qyX/PM8NpMT6JTp3m551K4Mb2cpVZla5L8FdeSuFTthRlqOO0Gg9Lq+bHtaj2P/nbMdsjIt7vdDuSxumcrylrNhNyNfO/Y3XpLQRo1/9pkoAmXwLPMHFCVMtJe0BlnmfaI6Y6QZ1hm8T71Wwh+b9DOx8Rm7OouyHM2Ns+5/gNtOaSslrOCwuSHKMDLtKIZBklSEq76zC22843ypb6x9KX9G0RmtUpHv2GVc4/zgRaqZvIOcb0KNY9n1asQ75l3A3RVSaeQ75HSlNwpyly/Pmtewl55+Z/MCNH7RN47C6u1+G3rXULJ+0XrBgWh/S1YNv1Smxp+sOLmLP8lQ+uoq3QrGjIY3v4OXOzGhlwD/YeqfxJPPEtbLBpOhMXoQYKAfUs/bc9s9nG5NlrD4lWoG7MqjZKlotWGsgWrc1JbC3lmLIvYKZO31f+wclFzAxnh6zZYT4YpJWjEobnlcFqlXIH2skuTa8/HpqJPo3xX+TYP62vWTBBh6EnMjGJBgqFcPg6v8rG1VZPN7GOnxbPsIP6GZi/SxW+3uaOCCs8xzhr7Of/kPRS+JLK1sHdWnk1HhlAv/kx+KsHa3CAyU28GS9rPtR6xwf02g9Qo/w1jIlGg7+yGvLR0cFzakepK/CuoEU96GmKbbn9kDKyWEG9q3RwMEGzohyYM3eirbbZtbPzh5C6L8BW/x0Y1HHeH0a7V7AAD1REfoWnpW7949pzBblimrvoU3i83KBLnvureukozBvTIgYHQziYmDkTIFRfqUMdhVoZIBA1egh2TV0K6c/d6+qLDzoKCz66XrEaLICTAGTY/MhjKR3LPADxWJwuMm1TniZWDAGlfDKVX0Ry/yB7ukbxrN7hAdxNTp39mW+M8Yx614YiK+wqhaZFcXudkiNZNQA6mWrpVFkmGFTF+t
- B+lyGPz3
- ReS5HgyIumok2J8VrQ70yP+6sosmT6XJ/RVyeFJVICbo4O65iXVsGvn8gYgJAyvu43ActoJbxFpVag58Gw8y2Y/D6X2YOAzzJafT34vq0jo6c5KSFMq8DgY6TD8y8AFUHn8KVwuaLNdRSC7kkW6daYRGIkfGkzksLXH9JXGNNw1OJ4dt1vcx3Iivs9u7bHqjvLSKdbMxupSQdcr/uRgrNCduihxDsgWiv4X0xzox0mP3w1lVtjLoqDMNnjrc3YTJKbduOn6EOixkkrjRAjeFawncFnSNZQmQ5w/tinCbG/si/3RbJAwEUPX6PmsWSK7oGHY/6vrsNsB8kbPx7Vz77qv3tJ6y679Cy5HuBpZQ4+x8cRFSdQMYzaZy8voVdX5v0Lje6
+X-HE-Tag: 1793997892-572159
+X-HE-Meta: U2FsdGVkX19CLvG93p7ay48CLebCuv7S8QCpa1qmykERxv6FIi2d0enOAHZ1g9H28QhurCFKwiIBDMygNLiBbm0Xuj0dNDfQnOkJIlqwC0cv9qjZXhSBmn0QxhWhsHeybiNvhrbsItb/nh/WnFrYCGKuNtIdFunA5UioW21Yk8z8UB+T/wYNbwkQhpgppS88yyDrOK3/soowM5fMmhxyuWq/KLYJJrvQMONCrDHCvc+mHzlED/ZzJeKbdWlIIRHItKg44gI7nboamWMknRqN0o3Cx/Yq0B4u6zRHvsq4W0czZGG8QA8rTVGGZyR1aNTZyswkpzBnHIN555ZxAE7oZagtiXOvzZwlrSXZquatKor4IiOwKhHjLMXyQ9Vga9RYh9YdkI2QkaVV0CeXuHBcIxwYouMTnq6HCqMc8yS1POhLfFex8TSYxcgjlN3ElBp5e9+g8rNAjj5STOA3ObsejwmebGrt9oDH5Mtw6NXw4ETitiJHe7OxYMa44UbhmzePt6iNfOTE4MS9oN8LuBABdON4Y1v91h0WF9/iEGa3et9E/BoLpkMAMJrd3rxuJ+z6+ufHMsfp+c1cBVegj49AFVJ85k1Jhoatwkct5USwiFQUA413psB+sRUdX32YOUa52BOue8D9EStQSs1VUzRx2yxvRJf0pjDVIkY74rBH0YCbSP1UjS+q/tQOgfCzGVwpecdrebxbVlwJfSqMWYw+o1xdpjVALUlAAioSIBPvKQWE5XXUuzkA6ZKsnFpJCiiCoT8C5topbcmuVAZhNI9iBmcr8yI3Uw95ZTV2HM26Xz3t+aAWtXFK8OtvoLBrRywJ4ZdKeTUKBoNSs9hjOKLxPdyWQ8FPo4mtIQHNCoDwBDc4XAmJngb2yQ6ho55XGahP/1LOouWPRZTwKmrPnympsmhWXDit8vQUgWxaG1ch3sLfmAT/pqbqPyalvp//eAF60CuFgsoUqVZrsfF5ESg
+ CndLvCUg
+ ZxijlLU8nu985TuXlIwfFvTqREvdd4SxUtlrLTh+et6JGT1AcAtK2Qv3A3pkP2MoIBw7kcexNVZ0kkgqlUfujb5RmFce0r0cNQrXw008TKXVSIeUearFlFcbFX6jNpsaeJ5hXBiZERlfDrhHFmL/FtgLBkDE3g1oEHgq67L8w+PmYtN6U5xiwjt0ln11ob1WPit3GVN4+7Xie5Hf2CydG2kTBPAwFbKqnOxdV9UXCGHbfqBknoSZQdhLZDza6+f4h7BMI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -165,62 +150,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 09:09:10PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/6/26 18:58, Josef Bacik wrote:
-> > On Thu, Nov 05, 2026 at 02:10:11PM +0100, David Hildenbrand (Arm) wrote:
-> >> Similar to mapping pagecache folios into page tables, let's reject splicing
-> >> folios into a pipe if the refcount is at it's limit, similar to how we
-> >> handle it during GUP.
-> >>
-> >> This will prevent more cases of possible folio refcount overflows with
-> >> large pagecache folios.
-> >>
-> >> Let's keep it simple and check in the two callers of
-> >> splice_folio_into_pipe().
-> >>
-> >> Also check in try_get_page() to cover pipe-buffer duplication by tee()
-> >> and partial pipe-to-pipe splicing.
-> >>
-> >> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> >> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-> >> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> >> ---
-> >>  include/linux/mm.h | 9 ++++++---
-> >>  mm/filemap.c       | 4 ++++
-> >>  mm/shmem.c         | 4 ++++
-> >>  3 files changed, 14 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> >> index 79ae8fc0d6bb4..a82cfbce18215 100644
-> >> --- a/include/linux/mm.h
-> >> +++ b/include/linux/mm.h
-> >> @@ -2287,10 +2287,13 @@ static inline void get_page(struct page *page)
-> >>  
-> >>  static inline __must_check bool try_get_page(struct page *page)
-> >>  {
-> >> -	page = compound_head(page);
-> >> -	if (WARN_ON_ONCE(page_ref_count(page) <= 0))
-> >> +	struct folio *folio = page_folio(page);
-> >> +
-> >> +	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
-> > 
-> > Since you're here anyway can you change this to something other than
-> > WARN_ON_ONCE, since that results in an OOPS with panic_on_warn set?
-> > Thanks,
+On 11/6/26 20:46, David Rheinsberg wrote:
+> Hi David
+
+Hi!
+
 > 
-> If it actually turns negative (or 0) with out changes, we had an overflow and
-> for sure want to know about it :)
+> On Tue, Nov 3, 2026, at 7:31 PM, David Hildenbrand (Arm) wrote:
+>> We made a big mistake when introducing write-sealing: we should have
+>> disallowed *any* file mappings while we are write-sealing. Write-sealing is
+>> usually done by a producer that wants to hand-off some data to a consumer.
+>> Having the producer have a read-only mapping (private or read-only shared)
+>> of the memfd while sealing is rather odd: it couldn't have been used to
+>> fill the memfd in the first place.
+>>
+>> Most identified public users don't do anything like that: they either never
+>> map the memfd before write-sealing (using write() instead), or munmap()
+>> before write-sealing:
+>>
+>>  - systemd's journal writes, fwupd, Flatpak, runc, crun and
+>>    containers/storage write to the memfd without mmap'ing it, before
+>>    sealing it [1,2,3,4,5,6]. The FD consumer will not access the memfd
+>>    before sealing.
+>>
+>>  - dbus-broker, Mutter, Chromium's Android linker, KWin, Weston and glycin
+>>    map the memfd file, but unmap it before sealing [7,8,9,10,11,12].
+>>    glycin retries sealing while waiting for the loader to unmap.
+>>
+>>  - go-memfd exposes a shared writable mapping before F_SEAL_WRITE and a
+>>    private read-only mapping afterwards. Its API explicitly requires
+>>    unmapping the writable mapping before sealing [13].
+> 
+> When I wrote memfd-sealing, we had this use-case where an application writes a buffer and then shares it both with in-process and out-of-process tasks. Only if out-of-process tasks are actually involved, the buffer is sealed. Otherwise, it is kept unsealed and can be recycled. Hand-off to other processes was optional, rare and asynchronous, so sealing could happen at any time. Yet, we wanted to keep the buffers mapped to avoid costly TLB flushes. Mappings were readonly, but writes were done through syscalls.
+> 
+> We still do this, but I don't think any of the open-source users picked this up.
 
-Yeah, didn't you get Docs merged to clarify WARN_ON is fine if
-userspace can't trigger it?
+Ok. So internally you would have to accept the additional insecurity and enable
+the kernel workaround through the parameter. How much of a problem would such a
+workaround be in your fleet once you upgrade the kernel?
 
-If you use panic_on_warn you *WANT* your system to stop if it detects
-corruption, that's the whole point. Removing corruption detection so
-panic doesn't trigger is pure 100% nonsense.
+Not nice, but there is simply not proper way to fix this mess right now in a
+better way.
 
-This keeps coming up and it's frustrating to go over again and again.
+> I did not follow the folio changes, so I am quite unsure whether the implementation was racy from the beginning, or whether new infrastructure introduced the races.
+> 
+> Can you elaborate why folio ref-counts are unreliable / unstable?
 
-Jason
+I'll have to point you at the doc of folio_expected_ref_count() where this is
+properly documented.
+
+Back when you used page_count() vs. page_mapcount() you probably had no idea
+that this is completely racy as we didn't have any such helper to spell it out.
+
+-- 
+Cheers,
+
+David
 
