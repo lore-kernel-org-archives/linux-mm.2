@@ -1,93 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A53606A329
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 02:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9680606A335
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 02:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IYXRShHc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YViRP3+J
 Received: by kanga.kvack.org (Postfix)
-	id 802156B05B0; Thu,  5 Nov 2026 21:06:10 -0500 (EST)
+	id 90B436B05B1; Thu,  5 Nov 2026 21:06:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D2D06B05B1; Thu,  5 Nov 2026 21:06:10 -0500 (EST)
+	id 86FF16B05B7; Thu,  5 Nov 2026 21:06:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 674776B05B6; Thu,  5 Nov 2026 21:06:10 -0500 (EST)
+	id 710406B05B5; Thu,  5 Nov 2026 21:06:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BACA6B05B1
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 4A9A76B05B0
 	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:06:10 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D99771C4710
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C90AEC0C58
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:06:09 +0000 (UTC)
-X-FDA: 85403054058.13.9C1DAE2
+X-FDA: 85403054058.08.D7B8999
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4B78C40002
+	by imf11.hostedemail.com (Postfix) with ESMTP id 4D8DC40006
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:06:08 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IYXRShHc;
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YViRP3+J;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793930768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JU/kEulr0sCfPlgQi9t7wGxnFtKUBD8hcPHbhMmyvTo=;
-	b=5WC6UTQjVw86ZQDdC37WSqLKAs0cgiSKNuOeuCsgHFUOgNs5e7RnjMZFgOcAN697LFRGiT
-	0stAORhpKdgBf4ShuBClChA9tacTxJP2HCHXzqi6sf4+HhehujXr7MvxAGutcH83OhQMAH
-	GA1B4JRRAoDEQwb/HRrk797CfNX+aDg=
+	 in-reply-to:references:dkim-signature;
+	bh=+jfAcZvSxO4g28unhuivWT88AZU4hI/BOX/Z4s4PPy0=;
+	b=qa02MH0EgIV47N6y9kKvIP5i4YznUOz/R131zi9VT6fO2Xf/F0COnFOPOeDqX2wguIOJoK
+	hbP8hqe0L4WsxkjaF8LR5GNlDAuyBks3/VukrvckqW6srZGZI/xZ2lVxtxJm5bYQNQl7hf
+	aj5nkFsmU0e8XVA0Haty824gY7jGlHU=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YViRP3+J;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793930768;
-	b=RhpuG8madbJTbCmCt4RwBrs7oCCQaY8mrgIyye1AZY4y6vkaKFZ3eN6LOU0PvlQ6wynVmJ
-	8GzYEd1aQbTbPFIUiCcXC069poo9BEmlQyDI22Zcp9SsMRvNaQGzcntkjXNtXpCbWEfK7w
-	R0m0oQQR4kMhbhX74c8ZjZwPmgdLx14=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IYXRShHc;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	b=Ih4f9Tl8wX3+mjPqX5BXYkW/Z90owTofhV85fDWiiBGUsPQgIh0tzkq7IdwjaWOn3qG3f2
+	zNrGPwxbf6GPq23FcFmSdg6xR1Q6BDUPTtfe3PWUMrlqvm25CBh84yjGDiC40zKL5Kz0Rw
+	NheaAJG7qrUERooMA/zmlIURJ5Snmxs=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id CB3116020A;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1A095601E3;
 	Fri,  6 Nov 2026 02:06:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A191F008A3;
-	Fri,  6 Nov 2026 02:06:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0191F0089F;
+	Fri,  6 Nov 2026 02:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793930767;
-	bh=JU/kEulr0sCfPlgQi9t7wGxnFtKUBD8hcPHbhMmyvTo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=IYXRShHcXsbYaO0cZRrtcV7bQEp07dVMcV5AHu8xHpmHI7Sn4sKEv3CrQoHEDTpNO
-	 AZotsx3lhmFGBIua6I/LILHRLT4tBBBYljA/oYz1hwD5lMetrGbdsk0H45fVGc2SBW
-	 Dpy99ebFeB+E6KY9Q4ihu8FIRXyw3uhr25fHIEIqsyWb9pjTA37hT3UxXst3fZ/UdH
-	 ErHvpMmy2WyE38c40ruQDGM/ykpfqc1/2eSqewvF5oiQet+6rhp2RJfnjAmHJEnik7
-	 L1i1dNeYCiWWqa3irkm6pzHndH0rRVYP9vPIePcBT+eFACJs81sVW1u/OD57ipui4Q
-	 ecWH3504Vb5GA==
+	s=k20260515; t=1793930766;
+	bh=+jfAcZvSxO4g28unhuivWT88AZU4hI/BOX/Z4s4PPy0=;
+	h=From:To:Cc:Subject:Date;
+	b=YViRP3+JBx0U/NyWH9/JaYvOBxsvdJHuPWnx/znRaVcUJG5Br2bSxRVILsrtyploB
+	 I2N9qQ0q4+5BpquvAzUvhS+dNU075TUW9mQUdJIHNP5Z5nZ/5KSXANCVGml5axjAc5
+	 yYPDc1H+vczREA3nKWnImiQ+7dm2OWIPy9AXfWF+thanS9C7wmYd5cRC36us/N6M5W
+	 nBCyyE+sBwC7AmGQargd7SZ1zZwjKSw+vH+9jJRlpz0mCOpM2UfGshveKWq4oU/L9g
+	 1RSG6L1f21Cc8+ENpo04tG0Fl6ccLVTtKAin6eTfAMMWSuaK8h4de/vFIouv/BZfZr
+	 xNGAxY3mpYULg==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Aveline Noir <jm5905938@gmail.com>
-Subject: [PATCH 2/4] mm/damon/sysfs-schemes: support DAMOS_FILTER_TYPE_AGE_MS
-Date: Thu,  5 Nov 2026 18:05:56 -0800
-Message-ID: <20261106020559.98352-3-sj@kernel.org>
+	linux-mm@kvack.org
+Subject: [PATCH 0/4] mm/damon: introduce age_ms damos core filter type
+Date: Thu,  5 Nov 2026 18:05:54 -0800
+Message-ID: <20261106020559.98352-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261106020559.98352-1-sj@kernel.org>
-References: <20261106020559.98352-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1ikdzjfjtepxo7x1ycniw5u1pc5jpyxk
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 4D8DC40006
+X-Stat-Signature: dg16sth8wzmxcshk8mm7zc1py8atcqwk
 X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4B78C40002
-X-HE-Tag: 1793930768-532138
-X-HE-Meta: U2FsdGVkX1/JeiuF3P7xtK75O+A7Pu2g+bnerEl1vwpDQGMEoGXoBrQi0wKWLpAcu+1O+WZm7WYl5N1F7w5EY0/3bi2yDv+NRo7302xndjWDDaFpfuUPIbvOLJxz5Fiy5LLGZLKWc80c/cvwO25BdP7DEkl3gqa4zWVCWDbXzoG+YG7wa6kcpuvbNC2fym865s028TVPiQiwBiWWQeJFwH23dUPrhaZ2w3i115q/cRwyPPC6QC7raVRvV7UFLU1T9azlcHDo7ggl6NS1uZDcOTbJ59CbRIQG4Vs5KlPgrnsMN+tHskbh02dG83vsDEORI0McQ29qze/R7C6Azadz0D8p9vShrT8Jdai75Ghej/QN8eK/vWA0IvFKD7mWN2FxJJYss3yPaXW+pWitaYz2K/wl1ucG9XBjg30fDu3Vt/YIjtoLJF4H1FnjCTax3oG1c9CVqb3vJXeRNNiyYLaOZjgs4LBCeHXv7C+OtYgA4+Fcushj+bvq2GaXwkT5r5ygi7BO0vK6c0T67zd1WkjJwjH9QJCVnw9KgO3jUJa3e6esWsP+ah26BEh+JtteWHvItf2LuPwSPBg68DhrqO2lf8++YqWfjT+zBQDCWStfqZY8FC0lbI3LqVb+d4QR8goM+FQr2hDM2EVua0GVFbWH8ZcyNYU9JE8vVZorEq9SflDb0+Ow6eu0dSDE2EqbsE7lWaaXmlChsxOBwqKbF+zPkt56r7t9JY2i5roYtZMAHGsKoyYnKebNIJCpJiEldTM1dO+j373LgYhxlG4aovOT56l9T9dDwnpzBaVo2n+ni0bXelo+LKMEEaBkg5xKIJ9GcTIY+WP88oDoUJfMpKG5ifc2oYqdV+svEg2d0+qoK8LY0NgFbV7E1z8ibG3KWGguRNsdGkHVlB4RJkJ9TKns6uBneqx2xA96tlE0xuw1SVse+hutTDIR/S0M02WggZ0cRgO7Rwz+x8NQcQLUYyW
- 7a+SHvOd
- lsVl+OvyBE6beQ60/QEnb3SBlNDusdzcJb8dex5vvxVXC05WTHvTrD7NTKRYb0Im6EqU6xyfxmAykWS7ROooCdZbY/5Gmgx8eKfwO4JKlEAP+i/beSOIgH/+Wqt7J8/bxwxHvhgg1S5pspd8ml2o+GGk5Cs9jKUy8te+OxYUPgQWinlTBo9rnKQzHm/tEzyajeArmYejPtieDn5VCcxQLABPex+rP13rXdqqjN37R4sTTtCsSfC9rLMmqbqEiG1Vdc+FrXVPs1EqLVRw03S3OvwAdTmTMU0eha2vJNvXYRGJWwFc=
+X-HE-Tag: 1793930768-634727
+X-HE-Meta: U2FsdGVkX1/JtCemRzSlsYFw92fwSG31XShGodfXeyGkNTQsCdHK7mQ9PHKdL4JlEe8OzJpj7hRktxs1mP4LT8KngKAQ+s2iorXqQjU3M44P+SshGJiqqI0QrX0PCRyIGEz1cK6jCIM33yckkgmFesBlDGquSP7q90HMyKOAWpzxErdkUSjWBICcP4DDtkhOdk5spaQV56OONE0QUS4ssoWJ4jvn7jJUj6Qtc5m0oVERYsgrQixLDc/CWEkfdKc18Iycg5iPkbRwRXA+NcwThJjzQpvud4ybs0ynWM3Y2OuPLUIjr8/eC+fAKN6DVce2jFCvfNbeRPkHcZzobH2u7AGi+L7lWh1UyYCjT/NZDFsIRSj5NdGh2Dbh6qLHMFXb6zBiDjUfIuJAvDR/V2sozKO0XZb71Z09XcrL0b8p8cOSUvdutPtbHGO0sYoyIdr92PWMD2Jstfn/Bh3fI93e7FiZrHxiWNB5aFyyVNAgC8FPbFkcj5ObW9UmXt73a7y5Fo1+xaIgjYXYRezQcEHmSsvFfy+SlB1yUEUGP6CSCN+W8d3qdK7GT+UkrYaKd3/cF/0LjU+aWpDJYT5zEzhktaOsL4S4CcbXSSlB+jf3GUprRSAvFhRmWpU999o/S+uOQ/Z7//SH+LnoEPYvrS4C1pqrJldKnKecxIxZcvm7kEYIX4tZwgO5Mu/zGaF7mu7zitQ+Glb+NCJrqUvfh5Rj46G+1WHJlN6JJhxoLoP0KdgsJAjN/wVGl9sFPjxNt4SjUQ8xx/l/8+T2lG6j4yTo6pYKTuU5gNXnKivVFuKAIdTFQyks2WGIMoJtY/fnb8EKzPPXx/NgxBJw+UjR8QxCiu9Lduu+dXO9/gagVoMDNe9f3w5sCozYu9UcGRXTvIRpW0UZtqlO3z6rVcLGmHI581D9p9zM22JN6NUmsMnAgDBoCvtjeiKRULsXh/3UeixgWIv2S1Vzu1obFJoslZE
+ pNNtJ+IV
+ YCsQUGnX0g74hM5Q3Y6/5VvC6uqKEmNXt9OfUhUG9IxySw8/WG3AQU+zSUvX+NvG0TVNYWQ/Ov/UueUhoQasxv8+SsU7LWQmh+k5mg+oKCL9+3sAiiBd74ItOVBwTeQrA9FxKFy89qT+DOqzPsyM3yUHgkI5XFS3f4fttJ95V0jgDhz8NBGnibn3KxFfcDYwiwE4xcS/US+RHDrWWpOZdGgs825laQzdGd5xK0LLHkJ+l2zrkzHkuDffiXOLcg5aIfic8yfm3935egbJG4/pEXXtFqLjLgvqwx4uhD3FwneUCllU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,41 +97,120 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Support use of DAMOS_FILTER_TYPE_AGE_MS via DAMON sysfs ABI.  Add a user
-keyword "age_ms" for configuring a filter of the type using the existing
-filter configuration interface.  Reuse existing 'min' and 'max' sysfs
-files in the filter configuration directory for storing the age range in
-milliseconds.
+DAMOS access pattern supports selecting regions to apply a given
+operation to, based on their age (access frequency stability).  The age
+is specified in the aggregation intervals unit.  The aggregation
+interval can be changed by users or intervals auto-tuning features.  If
+the intention is to specify the age in a deterministic way (e.g., 2
+minutes), it should be updated for each aggregation interval update.
+Doing so is cumbersome and challenging, particularly in the interval
+auto-tuning case.
 
-Reviewed-by: Aveline Noir <jm5905938@gmail.com>
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/sysfs-schemes.c | 5 +++++
- 1 file changed, 5 insertions(+)
+One straightforward solution is extending the DAMOS access pattern for
+specific deterministic time based age specification.  However, DAMOS
+core filter is a better option.  It is playing a similar role in a more
+flexible way.  It can be used for both accepting and rejecting regions
+based on if they matched or unmatched to a given criteria.  Multiple
+filters can also be combined for more flexible and detailed rules.
 
-diff --git a/mm/damon/sysfs-schemes.c b/mm/damon/sysfs-schemes.c
-index 637f1bd0c950b..230987efac3ac 100644
---- a/mm/damon/sysfs-schemes.c
-+++ b/mm/damon/sysfs-schemes.c
-@@ -593,6 +593,10 @@ damos_sysfs_filter_type_names[] = {
- 		.type = DAMOS_FILTER_TYPE_PROBE_HITS_WSUM,
- 		.name = "probe_hits_wsum",
- 	},
-+	{
-+		.type = DAMOS_FILTER_TYPE_AGE_MS,
-+		.name = "age_ms",
-+	},
- };
- 
- static ssize_t type_show(struct kobject *kobj,
-@@ -2875,6 +2879,7 @@ static int damon_sysfs_add_scheme_filters(struct damos *scheme,
- 			filter->sz_range.max = sysfs_filter->range_max;
- 			break;
- 		case DAMOS_FILTER_TYPE_PROBE_HITS_WSUM:
-+		case DAMOS_FILTER_TYPE_AGE_MS:
- 			filter->range_min = sysfs_filter->range_min;
- 			filter->range_max = sysfs_filter->range_max;
- 			break;
+Extend DAMOS core filter to support milliseconds unit based age
+criteria.
+
+Implement a new DAMOS core filter type, DAMOS_FILTER_TYPE_AGE_MS, in
+core layer and expose to DAMON API, via patch 1.  Add the support of the
+feature on DAMON sysfs ABI with patch 2.  Update the design and usage
+documents to explain the new features with patches 3 and 4,
+respectively.
+
+Reviewer notes (no need to be in git history).
+
+Test
+====
+
+Confirmed the age_ms filter is working using masim [1] and DAMON
+user-space tool [2]'s DAMOS filter-based snapshot feature, like below.
+
+Start masim.
+
+    $ ./masim.py run --config_file ./configs/stairs-500mb.cfg \
+            --quiet --repeat 10 &
+
+Start DAMON for access monitoring.
+
+    $ sudo ./damo start --probe \
+            --probe_prep set_pgidle --probe_filter allow pgidle_unset
+
+Monitoring results without an age_ms filter shows regions of any age.
+
+    $ sudo ./damo report attrs --style idle-time-percentiles
+    # total recency percentiles
+    <percentile> <idle time>
+      0     0 ns  |                    |
+      1     0 ns  |                    |
+     25   100 ms  |                    |
+     50  3.300 s  |****************    |
+     75      4 s  |******************* |
+     99  4.100 s  |********************|
+    100  4.100 s  |********************|
+    memory bw estimate: 66.628 GiB per second
+    total size: 7.797 GiB
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+With an age_ms DAMOS filter applied for snapshotting, shows regions of
+given age range.
+
+For [0, 2s range]
+
+    $ sudo ./damo report attrs --style idle-time-percentiles \
+            --snapshot_damos_filter allow age_ms 0 2s
+    # total recency percentiles
+    <percentile> <idle time>
+      0     0 ns  |                    |
+      1     0 ns  |                    |
+     25     0 ns  |                    |
+     50     0 ns  |                    |
+     75   100 ms  |*                   |
+     99   200 ms  |**                  |
+    100  1.600 s  |********************|
+    memory bw estimate: 100.311 GiB per second  df-passed: 0 B per second
+    total size: 7.797 GiB  df-passed 0 B
+    scheme stats
+    tried 0 times (0 B)
+    applied 0 times (0 B)
+    0 B passed filters
+    quota exceeded 0 times
+    0 B
+    tried 0 snapshots (max 0)
+    record DAMON intervals: sample 5 ms, aggr 100 ms
+
+[1] https://github.com/sjp38/masim
+[2] https://github.com/damonitor/damo
+
+Changes from RFC v2
+- RFC v2: https://lore.kernel.org/20261105044425.87142-1-sj@kernel.org
+- Rebase to the latet mm-new.
+- Collect R-b: from Aveline.
+- Add test results to the cover letter.
+Changes from RFC
+- RFC: https://lore.kernel.org/20261104153645.82945-1-sj@kernel.org
+- Use div_u64() to avoid 32 bit overflow of age_ms in core.
+- Rebase to the latest mm-new.
+
+SJ Park (4):
+  mm/damon/core: add DAMOS_FILTER_TYPE_AGE_MS
+  mm/damon/sysfs-schemes: support DAMOS_FILTER_TYPE_AGE_MS
+  Docs/mm/damon/design: update for age_ms damos core filter type
+  Docs/admin-guide/mm/damon/usage: update for age_ms damos core filter
+
+ Documentation/admin-guide/mm/damon/usage.rst |  3 +++
+ Documentation/mm/damon/design.rst            |  3 +++
+ include/linux/damon.h                        | 16 ++++++++++------
+ mm/damon/core.c                              | 10 +++++++++-
+ mm/damon/sysfs-schemes.c                     |  5 +++++
+ 5 files changed, 30 insertions(+), 7 deletions(-)
+
+
+base-commit: f10c161fdac5b0b3fac99877805e64e682c56281
 -- 
 2.47.3
 
