@@ -1,90 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1648606A336
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 22:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49BE606A32D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 22:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JGMdQPeY
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L63UwzrP
 Received: by kanga.kvack.org (Postfix)
-	id EE8EC6B05B5; Fri,  6 Nov 2026 17:42:43 -0500 (EST)
+	id E4D136B05B7; Fri,  6 Nov 2026 17:42:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC1B26B05B6; Fri,  6 Nov 2026 17:42:43 -0500 (EST)
+	id E25176B05B8; Fri,  6 Nov 2026 17:42:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DD5936B05B7; Fri,  6 Nov 2026 17:42:43 -0500 (EST)
+	id D3A116B05B9; Fri,  6 Nov 2026 17:42:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AD1EC6B05B5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:42:43 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2A98016023A
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:42:43 +0000 (UTC)
-X-FDA: 85406170206.07.AD22D2A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AE2456B05B7
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:42:54 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C6CEC0225
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:42:54 +0000 (UTC)
+X-FDA: 85406170668.21.04C351E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5E7C9100005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:42:41 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JGMdQPeY;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794004961;
-	b=VW17pSvUpK/wvg4cwmNNeXI6tBh2sdBaS3VknyXu+C5vrxVhS3FV3zqDVZCDtezGBy9gBQ
-	jzSo4SZp+ozv6aNuIasz+ArWZONdT9VHarypOjhh8MJNH0BrE/Y++FNLBfrdnMm4gHAq5u
-	E8rkvtn63MDwHJYS4lHuTEm67pG3K9k=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JGMdQPeY;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id 6FB9F160005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:42:52 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L63UwzrP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794004961;
+	s=arc-20220608; t=1794004972;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JlbEJ/mAQ5AEryfKs406khz/jZEGvS7oBKVbDoRy+Xo=;
-	b=1T+tFnl8fnGau59pCbT4Q7aV6ARt9fSKeWKnupes0fEg2d/kdB1zmZFp46TshR9Iz7cwon
-	bz1y4/RCPYJRlOuWtMc9uams/Xy5mjimXIZVBnUpj9AzUtI0XbB1HGaze0vWpM2iV98zss
-	fng4zH271dPhVai/OLWzABc+8eQjudg=
+	bh=xrGWYrqGixJhZjc6cA3u15ineEoMPVTqbCNBS3vO/E8=;
+	b=YqQ1Pk5Dlci+5/3KqA7iDHdx7dxch6mywEaOwdpSOrwzfBzADeU+VjKiJYcV94QiKRRSg4
+	1nrYL0In33ELvDnxqGwH8wy/JB/erVFQd3K/y59BMrzt3TKJUpiQszbtsKGTRe0sZcjuYt
+	X9D0OHS96zmRqcLo5a0wdiSBE/W9bSw=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L63UwzrP;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794004972;
+	b=Q11wk3/fzbcbpFBSNPFfDMuGQ53+LI0ffumVnoqoHHjXmoV0cYo1dSTv62rXuBom9SZyKB
+	6YOpVMzBNqEIcbfYSd5bM1u9HgQx8QyV+1f0L2vfriBJz+NOqm8kXd8dJf2xHLy9bO3EYp
+	79SsJB2mHQK9CptaVirfuHybMK6z6ic=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 95E5943F9F;
+	by sea.source.kernel.org (Postfix) with ESMTP id A87114183D;
+	Fri,  6 Nov 2026 22:42:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019D31F0089F;
 	Fri,  6 Nov 2026 22:42:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFDB1F008A1;
-	Fri,  6 Nov 2026 22:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794004960;
-	bh=JlbEJ/mAQ5AEryfKs406khz/jZEGvS7oBKVbDoRy+Xo=;
+	s=k20260515; t=1794004971;
+	bh=xrGWYrqGixJhZjc6cA3u15ineEoMPVTqbCNBS3vO/E8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JGMdQPeYWvZkx75geWZtgyTHasxq12eL2mvw130fUowkgQt5u/0QMWgjSwtPkrv9x
-	 nAmjmlLC7P72HaNBsSW594Z2aGntB2xZRIbb1q2R8ZtMH3EYlK1ql87XNKKuF6C8g9
-	 YgeHFDQ0cWMuaQUVjBvcVGKQAJpu6mwtlDJ0sGswiWtLGmASIR6/6q4X0dEpOAE2eF
-	 iNsdg9qv5vVMyNNORv0rIQQxNkFL+m6shCr1VUsNJuYFfxAv45qwMOjzvRCmv+QD+r
-	 SbMFCEmReiNw5AyNldI87KX38Qhwj6dZrU+wBDI8Sqtq/2STIRj0mAqTnzOzfGK3Zx
-	 OkxQrVY8oZSWw==
-Message-ID: <6b8d6030-efe7-47d2-8aa2-3f8fd77ce95c@kernel.org>
-Date: Fri, 6 Nov 2026 22:57:19 +0100
+	b=L63UwzrPS2ataztpBxby6ngbB/ads9+t+yjRipL316Dhw0VSCOCocujlpDrXQuR92
+	 8cHpI5LF473Ryale/9WffhFi44DKGSYK/ZKvCx/DE/l3c1ItJmN6w0NuBhoDgnTVim
+	 R0DJ5yQCaHR1w6HEmo9gpud9qnI/d42WwKGteXUoEtngqrw8LxtvSBXHqCXAOCRQK8
+	 DCWqGNxp8pGnD9fk5PGtMcnSu4BYj3TXiWyH31as3EUW4+fGpL7NWJmAsPyq4O1QVu
+	 UWgmOZlW8cQq63VBB2npIDRUKf9QYGivudLkoE0YWyW/Nw19B2w3UDUxxAcWiNZ6/d
+	 Zm3KgmdtNVSrQ==
+Message-ID: <9c86902c-b942-4641-aee0-672adcc84823@kernel.org>
+Date: Fri, 6 Nov 2026 23:42:17 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] mm: limit pagecache folio refcount when splicing into
- pipes
-To: Lance Yang <lance.yang@linux.dev>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, liam@infradead.org,
- vbabka@kernel.org, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
- willy@infradead.org, jack@suse.cz, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, usama.arif@linux.dev, kas@kernel.org,
- matthew.brost@intel.com, joshua.hahnjy@gmail.com, byungchul@sk.com,
- gourry@gourry.net, ying.huang@linux.alibaba.com, apopple@nvidia.com,
- peterx@redhat.com, hannes@cmpxchg.org, songliubraving@fb.com,
- riel@surriel.com, hughd@google.com, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, peterz@infradead.org,
- jgg@ziepe.ca, kevin.tian@intel.com, joro@8bytes.org, robin.murphy@arm.com,
- steven.sistare@oracle.com, jhubbard@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-arch@vger.kernel.org, iommu@lists.linux.dev, stable@vger.kernel.org
-References: <20261105-refcount_overflow_stable-v1-2-70b9c655da3e@kernel.org>
- <20261106100320.77084-1-lance.yang@linux.dev>
+Subject: Re: [PATCH 5/5] mm/gup: limit pagecache folio refcount when grabbing
+ references
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
+ Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
+ Steve Sistare <steven.sistare@oracle.com>, John Hubbard <jhubbard@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ iommu@lists.linux.dev, stable@vger.kernel.org
+References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
+ <20261105-refcount_overflow_stable-v1-5-70b9c655da3e@kernel.org>
+ <4763a039-60f8-4263-8124-beb0f9ab3366@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -131,21 +142,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261106100320.77084-1-lance.yang@linux.dev>
+In-Reply-To: <4763a039-60f8-4263-8124-beb0f9ab3366@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 69jxpeeo7kmyubqyzip14w7m1au7b7di
-X-Rspamd-Queue-Id: 5E7C9100005
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6FB9F160005
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794004961-731006
-X-HE-Meta: U2FsdGVkX19mKLbB8Hg7JOjPPVkNji30UG3e0564rhYidJlx+aWn3tcOkkhmjto1KN3KOfKUUM3BuDPZfXZotRvVdk8N/kiihOylJ66D8fETLLHERTtMOD1C6UFSl//Yd3Dzzu3A5lyDjJK9oq2xXLZuZUqqct4Ru4Ctdv2Lm8IP9srGZJ30ca5TPatqH9vW6OWUwFgIbII9L7Tc0vw6Hdl+W/YewIx7Ttw6CDKF5ejkonmK9RouHNClpYm46Vd/d1IwL+QMfQ276czloy/45OZpVcVQtLmq7NJcGYNTiFCVpuTOevFzZo84E1pVZ1l9JcXbOf+9EtJ/ca5kW6hoLAi7/MrfwnyLd1HOkK523o83IqEwMlL/9DcD8Y9nlCYhbXhmD0VQi4AcwTTqYn8CnWLtStHwzenpwwQ23VgbcRwZILsmnnkk9+HqGq1zPho4W3ge8Tjk7h/GeJVIkSsCd2zcGSvEsY1o1yw8ORKgxJWZIzR8MuCn+V3PIzYBkMZxoPETpMtFdgql72nzqXO6S+wNOUyCbqxt4muOcmQgTp9nI2M37rt3+iMjtUsIATYxMvQjxGYovWig/ZG5ITKLV1nAtGRpUhZp96qr0q3Ik0Z1iEvuN5EbshZfcDoK7wLIoWXxKMQkbsMmS11Dr7F3gd9eJPH9gYyzbXUqlERprtcJyobNrfB/xyjWF8OUtZRIqLTni55LpoGTORklBK5EHdFGB1fFDGHoGvxL/fqz9kaAdsSPBWHJHMZ3N4zOC2Z6tPX/0sk/AFpjaAMVlh2QxuKAOa6OVQ4UjjLXfumMs8p1GVZYrql1WCmbUQBUnPKOqGuxSdfIpDFZUjEOYyek4KvntdOmhKinzfJGrt7pZDL84ij20G2agmrYWUTinFpMzIR+UI1fKF8iyBD4Y6ogjMWFix80RUdwFidKSq9dK1z+jc2SZ6Lpgg6K4d9tE02//wF31WsxD/z+gSm09s3
- cPg2yVUI
- 70QTBytauycZbVYXk7FovMBdzKg/VVQYbpSdMWFi6sMycrIDbQRi6jFk5MQJoRCiMFCz/pDJFO9AnL1BIg4kdzkSTCFvFHY1RntPvXsi4lWkzovB3SF+UpTGGcO7AIdVEQnv5MQOeygOa0aPQNsHwUfI4mcqxOoq64SL4k/darWPx804ZrZoQ6epG/L8xhJuAW8gD2Ucj+MznC4WJ6WCBC4MCoxaAHqcAXhCX4OjoV3j9tdDHbzyAwu0FHTz7QStkL7FHdp+MhgL3FWGSPGcoPUHrMI6QNtvyVXt34yGaPYpHWQqr82TEen0DkEW2RKwjBfU1UJ7zdJZ//LkMY6zW5pvHDA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: oz5zrno55pp349msut1w5j8kdqxc7c7b
+X-HE-Tag: 1794004972-962514
+X-HE-Meta: U2FsdGVkX191GrWp8JL+dAcqWNiS0aMCOxfzWMxTPiplNQHm8ctdLxNM3f1aHbwSZ7rPoYwJ8qGYFKzEVZKFC8YagItWssWvNFz4NEE8mRIjHQzFSzm6gaNAKJu5A5ORjL248H+fGcsp9DKnsirOu+rpDIN1Wua/G3Xgrv6GCaN59DkJPgYKQ7u/ieJvBTgTp+H+xJjSDMgeaAfoxNZwQP+4C0kN9TaWqXrLpWf1fhQG1gYul2/E8/olnjlLnsq3pozZ7JVMjbiZVpCED1TFcRXPkizW442gK48m6QhgWrafhT8iTRd5RK3dkmF2JxLj7wtmTIv2cKjwc3AM1xxdx44B/t1aYfIFp7tvpcpsinODPm5stBD3ZbBlcTTTBNEnqzz9Jz2YiyxasGfb7TEpy9/xIjOo5qHN1BDDFaPWE46X0sW0Fuaz11/MWEgyEA4K68ztnnVAiuQ6ExuexRI5RYOmmm//Sm6jPVFKCoJ08+5pC6Q0k6HZA/PYGxB+/pD8ithQW+ehUAvrpiEe/XEq2oUWUW1tdXAHC4V+A4bXodkmlEem51+i2xooDEoP5hdtzgZlwjYvckN1WlSfJu0eeaAGncwEy2dWPoI1yd+IQ6dqy+2cjK3Rl2+tqMjX51UvbeSXE3h18si8Ak2eOXPqJJrNfdluvNXC9bWBU3oVsd5iLXRYQx2XefmZgCqz9yIr0Hsq3fyxZuWneLjKHoluYTLJRW+1v8uDJeuH7JNJFNbtv9cruHsngaRx1ed5D3A/5zfroy8G1WCGzn2uG5N6MLDlLIWIZpWHrr+TGkeu1CQNtAn2LHIpqzmrXXEytZFjOsFHytAj1pULlOxPF0xIsjS03H+qf3k+jKsEcmVSdGYtH6bAgzo1Xb9FWPyAxjQotGYQhxJhwz+nKiYpSKd2fS7dgWOsTAaJ6zazRyafEYRUccmye/L1v2a9hNSLjCZMUbmB4oMFyRh/PseI1Ms
+ 01UB5u0c
+ vfcaFMtHielFrqM7gnCkx8wDintiVjl7+C8m5F9l4TxAIO5TXb2jBzEWbcHnaxmfpBXjvHvfHTBF9bTj83glVplqgnDy2GJyHwpCpJ8YGua0mPSvhBxvmLglVyiYJfH2yMW8Acxqm1J0oeyvR18YgcM19giTPSu8/LX7I0YSinCwvCYFs6ys/iu5aGq/FwPYKSdlVxML0JBLSztzZxGSnIxnQhJAy69Jhg07ZtfYCR2l2mBkXTpJVC8Zaoivkq7OxQi8RnHuNM2bP1tEM0jSBjdyfrHXpIxM3MFMQ71tyYCoOqihlppEiamneWC+P1Dz3FJrmzSNrNlMNUGFXGwee1h4qvtD5NVOkkQhDJub1WC+vE+Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -154,31 +166,97 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 11:03, Lance Yang wrote:
+On 11/6/26 11:13, Jose A. Perez de Azpillaga wrote:
+> On 11/5/26 2:10 PM, David Hildenbrand (Arm) wrote:
+>> Let's replace our existing safety check by the new
+>> folio_ref_count_over_limit() check in fast and slow GUP before acquiring
+>> additional references or pins.
+>>
+>> Keep it simple and use the check for all folio types.
+>>
+>> Drop the WARN_ON_ONCE(), because apparently these things can currently
+>> happen with large pagecache folios.
+>>
+>> Keep the zero-refcount rejection if the refcount is 0.
+>>
+>> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+>> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+>> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>> ---
+>>  mm/gup.c | 12 ++++++++----
+>>  1 file changed, 8 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index 2ab42fc6834e5..db9db6b2a4662 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -77,7 +77,7 @@ static inline struct folio *try_get_folio(struct page *page, int refs)
+>>  
+>>  retry:
+>>  	folio = page_folio(page);
+>> -	if (WARN_ON_ONCE(folio_ref_count(folio) < 0))
+>> +	if (unlikely(folio_ref_count_over_limit(folio)))
+>>  		return NULL;
+>>  	if (unlikely(!folio_ref_try_add(folio, refs)))
+>>  		return NULL;
+>> @@ -140,7 +140,11 @@ static void gup_put_folio(struct folio *folio, int refs, unsigned int flags)
+>>  int __must_check try_grab_folio(struct folio *folio, int refs,
+>>  				unsigned int flags)
+>>  {
+>> -	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
+>> +	if ((flags & (FOLL_GET | FOLL_PIN)) &&
+>> +	    unlikely(folio_ref_count_over_limit(folio)))
+>> +		return -ENOMEM;
+>> +
+>> +	if (WARN_ON_ONCE(!folio_ref_count(folio)))
+>>  		return -ENOMEM;
+>>  
+>>  	if (unlikely(!(flags & FOLL_PCI_P2PDMA) && folio_is_pci_p2pdma(folio)))
+>> @@ -1482,8 +1486,8 @@ static long __get_user_pages(struct mm_struct *mm,
+>>  				struct folio *folio = page_folio(page);
+>>  
+>>  				/*
+>> -				 * Since we already hold refcount on the
+>> -				 * large folio, this should never fail.
+>> +				 * Grabbing more references can fail once we
+>> +				 * hit folio refcount limits.
+>>  				 */
+>>  				if (try_grab_folio(folio, page_increm - 1,
+>>  						   gup_flags)) {
 > 
-> On Thu, Nov 05, 2026 at 02:10:11PM +0100, David Hildenbrand (Arm) wrote:
->> Similar to mapping pagecache folios into page tables, let's reject splicing
->> folios into a pipe if the refcount is at it's limit, similar to how we
->> handle it during GUP.
->>
->> This will prevent more cases of possible folio refcount overflows with
->> large pagecache folios.
->>
->> Let's keep it simple and check in the two callers of
->> splice_folio_into_pipe().
->>
->> Also check in try_get_page() to cover pipe-buffer duplication by tee()
->> and partial pipe-to-pipe splicing.
-> 
-> What about fuse_ref_folio()? Buffered FUSE_WRITE requests can carry
-> pagecache folios into a pipe through /dev/fuse without going through
-> splice_folio_into_pipe() or try_get_page() ...
+> this can fail now, so shouldn't the error path below return -ENOMEM like
+> the first page does, instead of -EFAULT?
 
-Of course it has its own handling ... :)
+Hm, indeed, that's inconsistent. The issue is that we have this -EREMOTEIO check
+mangled in there. But the ordinary path would already have checked that and
+failed with he same error.
 
-Thanks! I was hoping the number of folio references would be bounded ... I guess
-one reference per pipe buffer is not the end of the world, but, let's just add
-it, and fallback to copying.
+So this hunk would become:
+
+                                /*
+-                                * Since we already hold refcount on the
+-                                * large folio, this should never fail.
++                                * Grabbing more references can fail once we
++                                * hit folio refcount limits.
+                                 */
+-                               if (try_grab_folio(folio, page_increm - 1,
+-                                                  gup_flags)) {
++                               ret = try_grab_folio(folio, page_increm - 1,
++                                                    gup_flags);
++                               if (ret) {
+                                        /*
+-                                        * Release the 1st page ref if the
+-                                        * folio is problematic, fail hard.
++                                        * Release the folio reference we
++                                        * already took.
+                                         */
+                                        gup_put_folio(folio, 1, gup_flags);
+-                                       ret = -EFAULT;
+                                        goto out;
+                                }
+                        }
 
 -- 
 Cheers,
