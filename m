@@ -1,133 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C80160A260F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 11:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD10B606A33C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 11:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RjrXchn8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZASBbMWP
 Received: by kanga.kvack.org (Postfix)
-	id 386CC6B05B4; Fri,  6 Nov 2026 06:36:13 -0500 (EST)
+	id B960E6B05B0; Fri,  6 Nov 2026 06:53:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 337CB6B05B5; Fri,  6 Nov 2026 06:36:13 -0500 (EST)
+	id B47906B05B1; Fri,  6 Nov 2026 06:53:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24F116B05B6; Fri,  6 Nov 2026 06:36:13 -0500 (EST)
+	id A388C6B05B2; Fri,  6 Nov 2026 06:53:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F20166B05B4
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:36:12 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 86ED4140D07
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:36:12 +0000 (UTC)
-X-FDA: 85404490584.02.408B7A8
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 99B4340003
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:36:10 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=RjrXchn8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of krystianmkaniewski@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=krystianmkaniewski@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 7A5E16B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:53:21 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 08B70140D01
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:53:21 +0000 (UTC)
+X-FDA: 85404533802.23.5C36739
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3EEAEA000B
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:53:19 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZASBbMWP;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793965999;
+	b=C+cH18o9e03MTNUWON1L+nVMCqHooaQ2ZbRIgWWk1ous2SQVz8Lgf/jhSy19JX5UbIiT9X
+	wGaENZVUhkG4NIqDO5Es1a4UlL3b9e6vKk//7I7gixwr2hZlVjPx/NstLBu9V2kjuDIrd5
+	sE41Yw5F3fbmCnJ7LxcJeGSlSrcSkn8=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZASBbMWP;
+	spf=pass (imf15.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793964970;
+	s=arc-20220608; t=1793965999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R1fgwrt/J2JYxCxSGOKH3dANX3eXUBpSh/LEwH4Q6no=;
-	b=X5NrrFZGtCNMAM6h8UdCvQ7tzRI37OaUwSbr6XUfSQH5IXXK+ymtarxdAaQ12BC13IjgxR
-	ja5WzDeJGq/kJi1xAYwFXzL3V6v6DXkKAv6AGlrIIQtTgpQ1I4ffFscJgvW6kt2O7wwrFs
-	1T49BCnCzvxob4A9Py4WV9n301QBNo0=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=RjrXchn8;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of krystianmkaniewski@gmail.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=krystianmkaniewski@gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793964970;
-	b=W9tgSA4obDs0xGS9wQwUcIC04a956mzblEwIw4yB9FybiQW4KH20HuJ0T5okce1NNEt2nl
-	SrNrXQlWcpz0OqcRJaB4jAaAa53gAWOk5wcG0L17HdOoK9enfC0nTvtW4riusbvNSwOlYD
-	2lVlU8tR2SbM7ofXNtkukTQMi/wsaSE=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6b5669a5100so651800a12.1
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 03:36:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793964969; x=1794569769; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R1fgwrt/J2JYxCxSGOKH3dANX3eXUBpSh/LEwH4Q6no=;
-        b=RjrXchn8Y34u7RtBaWPu9KN7U27ge7B404VoatSj2r+4/FAc7d2CMLS/He4fQxbiNc
-         gvi3KKoC/LQZHUEPtdtgpIgkCI+plmZnfRUlDe3lPwIpvZBJC+CjWWtkgvEtmi1MlN74
-         TXBt4WALO31c4+j3wWz8oTr7kPZwi/gCMdY8FJ2TFhzpUIhSCL2RJR8aGvbKJceu6aV3
-         g2uIGd3uYwIv39+1xFgAvE5/PXyvPKnGPJqh8ZKayrnmYABr77p5Cdn/HACMXHRjrobG
-         1obwtEXBWX3suUy4rl25D7tzM+3Hiv3Ta/e3HZxil3Tgy4vs2HLjG9YTecSWeNYHITfm
-         hFJQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793964969; x=1794569769;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=R1fgwrt/J2JYxCxSGOKH3dANX3eXUBpSh/LEwH4Q6no=;
-        b=U9QbBJ3z26szOK1CL0i4CHXuGuqzc5432oKLKdgGFkVB+tnKaUStltex+omOdCRPms
-         O/khOpKWX9MSZNKahZF0C61XsFRzfkkTgGMmxSwpjpVj+hbtGs/rkuBqvjzJE2l+FoPO
-         NwgbDWn9IoifEOV1pgUq4A8a6olcdB9UUDw9lVCmmulkGsNxezd642MOK4BWIp4XPe4D
-         6O8u1Ad+d/Qk+MtcrUI30foQS8xuIV48BGrd15DRibe4Thbqe6bNKnpnxnyUog+BbPjY
-         1dd8xdBD5ge0xf2/zgOkuSVSnVfjwIXDptPnuFg6E7Y2xru9xxhLN88VvnKHSPlMmc8X
-         kFYg==
-X-Forwarded-Encrypted: i=1; AKwUvBxOVCTux55JmuXhIWvA7OsvF6mKmCk3BDWqM9ImUPjCnUz3PD6GkQulGX9f+ISbrgwZSB4Wd8vwPw==@kvack.org
-X-Gm-Message-State: APuU4Z+aCtJeeEYbhYTHFabgHNOnK4gEyAagiyGfS57IGs2J0oXShkGs
-	VhicoRWlnsM5sld4l8I8wjfWy41RvXDxy6g6WHfmWi8wAh/qfq1wh1TR
-X-Gm-Gg: AYBFou2EJ4kqmQidMjjT9NPOdebsx8Jqruurw1JG26Y0Vv0357MdcGwfcKxhNxq+58e
-	t8RZMOolLSj+wBX4xf0Ktfo7v3EIv3iT9L9Ps2qmo++nlNd1nhCHesebogHt/h+y7qy8BB/D64U
-	DHg/ZoOZ6BNWNIREz/CmoKRfI1rY0Pc8iSVM3VsLtT3efB/teLEoz4xnV/6XebBZvgHaQbr+SJM
-	r5mhWeMLEleZZJYTx5CYDWLfneKJU3kE2ByhBUfS4saKYGwOfP1MKNjOhoIct/em4vadF8xn/HB
-	Sw+CZf40fHn5p2kvzpkdv2lwXSBEHK9D6mNY4hukFWQPfOMRgfa3OHvyomlsIyOGYsCEf/M6Hk5
-	fZMsdNNlji95TathEh2pxiin9B6tXLyGRMJrcDfWqhJqgt1QLdEdPwbPyM5xuDEbHSqLQC1f4MV
-	DqrHfxDnJunyZVBceLWZmhIPx9DqRA/Tnst8gpBk1jNr5Klwdw3r1M12U82D6iy2pcrA1/Mq6aG
-	9NfsJiPAhDsw+GLKX8gmihNbnljlWoASqbcmFYQVozeYp4GfO+ltyf78AfsMeNT4T557h9Rurqi
-	ShWx/NqCjNn7vjndnCkAg33DiH7nfOFAAaYKR9kAkVIl4FYSmh1sQZnE3e6QUfJQt4mcQZhiedN
-	gXevMC35jSxHZKQNQ9z/zDAnhVOuSKPFRpIz1jiwcyfwzuOSdX6VZvFhBK8786A3gtnUG4Wa4eO
-	5Ip76jeoynwylionAToAJXksJ2HzPBXX/7xbEOYNOwkVQDD+HkSbO2UUh4T4ke7Sk=
-X-Received: by 2002:a05:6402:2b91:b0:6b4:602d:f1f7 with SMTP id 4fb4d7f45d1cf-6b597816109mr1452325a12.20.1793964968944;
-        Fri, 06 Nov 2026 03:36:08 -0800 (PST)
-Received: from [192.168.100.100] (87-205-15-91.static.ip.netia.com.pl. [87.205.15.91])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6b664ae5692sm615592a12.17.2026.11.06.03.36.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 03:36:08 -0800 (PST)
-Message-ID: <4284c2d3-75cb-4e41-aa45-f7311e60ab4a@gmail.com>
-Date: Fri, 6 Nov 2026 12:36:05 +0100
+	bh=hqpiqZcrPC9wx5aNBvYP4zckV3Yjf+8M1ASIDcJQ21k=;
+	b=6kYiZKnfKMSB6QHMBov5Enx5tPkW2Po22QZ+2Pns1Ne8+E4ZTQn3Ibg+kq5rbVYo/C4QAM
+	vo4kef7gkPgyUE26reUYckZIIKX9qY2ZIlvoGhdsHa0epo6gqDyGqReSqOOoCj0n6UXIcz
+	Z48TjP3Bj/eY6KZhcr0yemPoNqCUWY4=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 75F194356A;
+	Fri,  6 Nov 2026 11:53:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D67501F008A2;
+	Fri,  6 Nov 2026 11:53:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793965998;
+	bh=hqpiqZcrPC9wx5aNBvYP4zckV3Yjf+8M1ASIDcJQ21k=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZASBbMWPNza7o7x9E3ufbm4LKePl9d45ui5EyEQj0c6nFYmEnKRqRSm6yN2TUJnIG
+	 x84xkieBm9T900liY371Whv+vlEgtVoIoe8ljwbZ4lwWbM8KpyGnDW53gpM4hXJBWS
+	 OVFW5f4RKVdmXU/CRk9MtOYLRTOVEPMg4cMbwOjQw3CDtAgUhShid4U2o80KoWCvXJ
+	 7iOsi5mT/kqUbrGf15Pj29AgOI3H4VhdUJhDFAAQhNzZE0VHvIyVtlFvkhJjAua2XU
+	 YUPMnsJ4zBwKcR/8IaIsESK7/SOqxLxJHo/P8jZeFAnAF9NyOrBY6sci09ixJJiZ++
+	 qRejsB3E6wJmQ==
+Date: Fri, 6 Nov 2026 11:53:00 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+	Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	Alistair Popple <apopple@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, SJ Park <sj@kernel.org>, 
+	Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	John Johansen <john.johansen@canonical.com>, Georgia Garcia <georgia.garcia@canonical.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>, 
+	linux-mm@kvack.org, kvm@vger.kernel.org, damon@lists.linux.dev, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org
+Subject: Re: [PATCH 02/13] mm/filemap: convert fault and readahead logic to
+ use vma_flags_t
+Message-ID: <au2_PPpdAMgRJZtX@gremlin>
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+ <20261105-late-2026-vma-flags-v1-2-0d3cd15ab75f@kernel.org>
+ <sashiko-outbox-200257@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/filemap: stop fault-around when the walk steps back
-To: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@kernel.org>, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
- <aunPI5eOUOAEUa8d@pedro-suse.tail5790ac.ts.net>
- <20261104-jf-filemap-v2-pedro-reply-r2-74c87c6fbcf@linux.dev>
- <auxvLCiljPhy0n_q@pedro-suse.tail5790ac.ts.net> <au0GBdGqu6cv5PMy@linux.dev>
-Content-Language: en-US
-From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
-In-Reply-To: <au0GBdGqu6cv5PMy@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 99B4340003
-X-Stat-Signature: zmdmkscqngw8c44efnd15t7huy8eb1es
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <sashiko-outbox-200257@kernel.org>
+X-Stat-Signature: f8jkdfu85jdmfh7dunc69fatukyjupwf
 X-Rspam-User: 
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=no autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793964970-23257
-X-HE-Meta: U2FsdGVkX1/r7gjhRfDI1RCSETHCmTKjJhcteOid2ZZFMvWpQWJPxRmme4npDtz6OPupfohbeWoqRzEtt9+09V6gqgPzquYGYB4wEu1WXupBZuTvabtBkWEVU/ckxGd1Q6xQug+CtQzmnvJdaIwbqwcKWwYzuxoCO03DxokbcZULs4kRsOZuUO8G7DDuY0fXhEpXFsvMNhO4PmFl31J8+avSlLlOqLBuW36PjDX2HKF6FuuBYiTcClu1j6RVDH3KaR9tmDOl81zsaQhSV/DHVJqoKJ5qRMIV82tl3Gj73xq9OFi40oxjhp636rM1m04yDK2klaHo3QghRrBxqM+X0xBqwGjhHEdZR+2i1FX0JTWolHRMvYqnWKVg0jdGFc8V0Nr9Zsxxo4wR4oIffCUQCociomv6z6BygkhDzC95edrjstjUqOn6QX9S1PXflkMFUmPvD2cIFU4fr2l5FxLF6SL31SSUxgYGU5fMH7MJoO0ZRfPIyTumoh42ETPJ7+DOg47+nDIFEkZcqQFO8abzpQWq4Gpv0tpv+J3Smh5xeyg11bVO0OXdFGrXapPDruq1jJ1eLWD8kzzNHzkTfFz/rdH1z8TSp0j1wcGFY1px8HnDsxmGvgeJFHi7ZOpOw2T5xP4WF8sjWD+vIkRSVDWp7qbj/gRy47U9yZT1EQWwxsQd2iHAMb6If3JN61Uz+8BrLpqbBTn1s7JTPNqu8ESLF3lo3vFuTbAhELKziLWsjnHp6cuwacesxGoO30QiOEiKremXmoi6K2Lb5OeCA0pVU4RElmTYFwZeops7cdZdgmBl4OhaXITr7HvzzE2gCIo1NLB4FDJd18A/cuvzIOcrKxwPkczuLMuF7s6mIXwe8UiAw6txjguDlpANKV1y7Es+tdFRjDBOQlHYBvto5MoiDLglETIcS6Y4RzBVIABYEeJltITwSafxmadelOuO0Wr1dFJfNIfVOVrFQP+lgWa
- SfOAQn4e
- GstrOTlVx5MlDLSuTaoSdNyl2qQarGbxIeCuTvNflhA1aO6siTpDECZKeHnfCZx3xK33p5qcKpt05kIp2A/Uf2/uM/KJqDI1vyzNLIdX74mbDQ9jBPJIvagQJFaiPwFtKvCKQ6mm87rNF2JAyl2eBRP45ZQiT7lnGofKxss6Z8opWKJjioDBA8iB6B2TVaeH2h40+NWnxEHE7mEpNLCVcAsvo1EoS22wmcnTuzhqcAVWL1bbCWTaPeMOsb0K4BoeS0Lb+qKdPXGRGIXcbzKm8OcE/2SUzq34m6WddZJDaDQvx3ZwIDn/OWxNtJaVJo6oDbAgXEAHbPW6rqNDcUzyvuTWsdzsksAMobL7ECFEBnG6DmWqRcfmdjfCSxoG/1cfGtQSuQP7zRjdxALYSY0Xzolw7c5DJb1916GAIOm85h3lxCXh9veq69ZkHh9wsQkg2SNZZ
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 3EEAEA000B
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793965999-632620
+X-HE-Meta: U2FsdGVkX1+Rel51PYQlvK3RYpsD8W7aKI6xGs6Z+ZFmfnPRPyR6jAoRHBZVUaUY7yGyqj9H4N9dnvIbftW78lv+pW2HYGh4EZRsRk17Yfha74fWAE9jlKpZg22p4UZhJL0grBrYwEtC1hV2Q5QGXLuduJN7EqW5gMnmBLZaZp23thcZj9GBR7t91cwbEOgJ0cEfC4sdBvRxY1EZZNfl92lpvpLxAplqCnlzWdUpPE4clwYa9GRyZIUoLviy78e/m9uru1J/lMyW+7EwIHs3VDEPDM1OYnmGj4vGtvuGSa6g/yIZUpYWiJPvUmEV8jY5foLnbfDnx0YeWBPzIrFi9ifrt7PVtccKhrc57bkaguBVYqyLkQWqRceUZZFR8PZ9zrwyzlHFNU7B5alw6yW2VNsLRFrCpGJAjYwW1MefDqLDfvp4JKeTqKS7AAKvAa9aRnNVCpsiODhHfoh6IpxZhhZeFk9OQfXi1Jhx3D+mTH49tOD/fW9PppTcQahFCAX4iYyK9yRDC3n8GeL5aZUgJt9yFOZjg7ew5E1z1cev/A6ibbnF+13jdhHjhZe1Trkq3q8Qo1eyuwVdQMpCjbnMoRkOXqRMboW1MrrpCB//D8MgXCBKdU4bR7DoeJhf8kHJ3KEaz99PiOUX4ffed6IMe+hEG1caiRMVYyxlw5Cgq7FBDaKVjISWfHUDWgIa5xmn3wjtS11G01I95Vew6zZg2LwtnyrxLCpxZyaT1uxzjxvFjgXGLRHoNaf8Vgc9SEAeUTDr7Wxdc8dfyabPvCuDV/vvqOFkAVFvxq7NI4GCVNjEUkZuxsuXLSKUjJz+Oskj/SnOyC4ao/lurPTNVATzyXPsJfdkSOvZ1/e3jQcCHLNuw6EECYreDTpxf/Lh6z+LxuJcTqRm0xrH4deYF/QLeg+QxYIYi2YfYMJgSI+v4Ec4cUj0pZ8FB7NTi6fh7ZI7oK1L8LfQ8xGpnODMqXv
+ dhrhaFpu
+ iAJ6SQamawU2HDXMV4DDXjAGA1trNLuDjbOFv+uREbQxLTez9eKZOqJ3/5Y0H3m27/F6vW/utHYgdX/i3MxUTPdKBn+08aAKzT+oR9/MQwrOFULqsZGDRm4KfwSYSy4MB23h/wHzfpt5Rf7CrJr+5q/eYTVyix3OI5s2gkay3hAgJr4AQrvHCXGrIPEj8hy/u1IYWTV7Zr2XlapBqa74xnSQ+gfpnh92g3Jol2OX7S+e0e6LjpkylK6zuo6d0jaqyd7CKXD74CAqViItElxqiEmnVxLGG7Ht1SXfDz9dnU6KjunMQ573BgIwcfhJqPXBTIrOb31r6SqUiA1dWw4vOQ39ACbNWkNR/FH0oBO1OtVwavGumUikJ4q8+V0uBx7Q/+Vvv7O3T4F5o6kbrs5djGuSYcbGGzDWpbMcHwiWxlGYQQOYlGIty7cxHPt1uK2BmMEKQc+/18H02tm1RCJI97TWgmjhbRUc+KzisK5XAYWS7ozw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,38 +135,140 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 23:43, Jose Fernandez (Anthropic) wrote:
-> On Thu, 5 Nov 2026 12:19:13 +0000, Pedro Falcato wrote:
->> Thank you. So, if I'm not mistaken, this is the race:
->> First, you map/see this:
->> 	[folio pgoff 4, length 4]
->> Then, at some point in time, someone punches the hole:
->> 	[no folios here]
->> Then, at some point in time, someone faults another folio in the range:
->> 	[folio pgoff 0, length 8]
->> so you step backwards. Is this correct? Or am I misunderstanding this?
-> 
-> Not quite. In my test a large folio goes away and a small one comes back
-> below where the walk started. If that happens during the walk's first
-> lookup, the walk can step back. Krystian's fix doesn't cover that
-> lookup.
-> 
-Right. My patch only covers the case where the walk has already
-returned an entry. The first lookup, and every lookup after xas_retry(),
-starts in the XAS_RESTART branch. My patch does not change that branch.
+On Thu, Nov 05, 2026 at 09:41:34PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential issue(s) to consider:
+> - [High] mm/filemap: use-after-free on vma in do_sync_mmap_readahead()
+> - [Low] mm/filemap: inner vma declaration shadows outer vma in do_sync_mmap_readahead()
+> --
+>
+> commit f5f0f8e634a6a2e2b76ad818de67e83f30cb7dea
+> Author: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+>
+> mm/filemap: convert fault and readahead logic to use vma_flags_t
+>
+> This commit replaces direct checks of vm_flags_t values with vma_flags_t
+> helpers in the filemap fault and mmap readahead paths.
+>
+> > diff --git a/mm/filemap.c b/mm/filemap.c
+> > index b74bc1e5015c6..d8b538bd14043 100644
+> > --- a/mm/filemap.c
+> > +++ b/mm/filemap.c
+> > @@ -3351,13 +3351,14 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+> >  	struct address_space *mapping = file->f_mapping;
+> >  	DEFINE_READAHEAD(ractl, file, ra, mapping, vmf->pgoff);
+> >  	struct file *fpin = NULL;
+> > -	vm_flags_t vm_flags = vmf->vma->vm_flags;
+> > +	struct vm_area_struct *vma = vmf->vma;
+> >  	bool force_thp_readahead = false;
+> >  	unsigned int thp_order = 0;
+> >  	unsigned short mmap_miss;
+>
+> [ ... ]
+>
+> > @@ -3414,7 +3416,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+> >  		 * Fetch two folios so we get the chance to actually
+> >  		 * readahead, unless we've been told not to.
+> >  		 */
+> > -		if (!(vm_flags & VM_RAND_READ))
+> > +		if (!vma_test(vma, VMA_RAND_READ_BIT))
+> >  			ra->size *= 2;
+> >  		ra->async_size = folio_nr_pages;
+> >  		ra->order = thp_order;
+>
+> [Severity: High]
+> Can this trigger a use-after-free on vma?
+>
+> Previously, do_sync_mmap_readahead() cached vmf->vma->vm_flags by value in a
+> local variable at entry while the fault lock was held, as introduced by
+> commit dcfa24ba6899 ("filemap: Cache the value of vm_flags").
+>
+> In the force_thp_readahead block, maybe_unlock_mmap_for_io() is called before
+> this check:
+>
+> 	if (force_thp_readahead) {
+> 		unsigned long folio_nr_pages = 1UL << thp_order;
+>
+> 		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+> 		ractl._index &= ~(folio_nr_pages - 1);
+> 		ra->size = folio_nr_pages;
+> 		/*
+> 		 * Fetch two folios so we get the chance to actually
+> 		 * readahead, unless we've been told not to.
+> 		 */
+> 		if (!vma_test(vma, VMA_RAND_READ_BIT))
+> 			ra->size *= 2;
+>
+> Since maybe_unlock_mmap_for_io() only pins vmf->vma->vm_file and calls
+> release_fault_lock(vmf) to drop mmap_lock or the per-VMA lock, isn't vma
+> unprotected against concurrent modification or freeing when vma_test(vma,
+> VMA_RAND_READ_BIT) dereferences vma->flags?
+>
+> > @@ -3422,7 +3424,7 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+> >  		return fpin;
+> >  	}
+> >
+> > -	if (vm_flags & VM_EXEC) {
+> > +	if (vma_test(vma, VMA_EXEC_BIT)) {
+> >  		/*
+> >  		 * Allow arch to request a preferred minimum folio order for
+> >  		 * executable memory. This can often be beneficial to
+>
+> [Severity: Low]
+> Does the newly added outer vma declaration in do_sync_mmap_readahead() cause
+> the existing inner declaration in this VMA_EXEC_BIT block to shadow it?
+>
+> 	if (vma_test(vma, VMA_EXEC_BIT)) {
+> 		...
+> 		struct vm_area_struct *vma = vmf->vma;
+> 		const unsigned long start = vma_start_pgoff(vma);
+> 		const unsigned long end = vma_end_pgoff(vma);
+>
+> Should the inner vma variable be removed now that vma is declared at function
+> scope?
+>
+> --
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org?part=2
 
-There, xas_load() can read the sibling slot of the start index before
-a concurrent erase, and the canonical slot after it. In that case it
-returns NULL, but xa_offset still points to the canonical slot.
-xas_find() then moves on to the slot after the canonical slot. That
-slot can be below the start index.
+It seems these are valid, oops!
 
-I tested this in the userspace XArray harness. I wrote that state into
-a node and called xas_find() from XAS_RESTART. It returned an index
-below the start, with and without my patch.
+Andrew suggested a fix off-list, and I agreed to this as an in-place fixup to
+avoid respin.
 
-Andrew, Jose's Tested-by for the xarray patch is on the filemap patch
-in mm-hotfixes-unstable.
--- 
-Krystian Kaniewski
+I have also updated the series locally to reflect this change:
+
+----8<----
+ mm/filemap.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+--- a/mm/filemap.c~mm-filemap-convert-fault-and-readahead-logic-to-use-vma_flags_t-fix
++++ a/mm/filemap.c
+@@ -3410,6 +3410,7 @@ static struct file *do_sync_mmap_readahe
+
+	if (force_thp_readahead) {
+		unsigned long folio_nr_pages = 1UL << thp_order;
++		const bool random_read = vma_test(vma, VMA_RAND_READ_BIT);
+
+		fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+		ractl._index &= ~(folio_nr_pages - 1);
+@@ -3418,7 +3419,7 @@ static struct file *do_sync_mmap_readahe
+		 * Fetch two folios so we get the chance to actually
+		 * readahead, unless we've been told not to.
+		 */
+-		if (!vma_test(vma, VMA_RAND_READ_BIT))
++		if (!random_read)
+			ra->size *= 2;
+		ra->async_size = folio_nr_pages;
+		ra->order = thp_order;
+@@ -3438,7 +3439,6 @@ static struct file *do_sync_mmap_readahe
+		 * pad that might exist between sections, which would be a waste
+		 * of memory.
+		 */
+-		struct vm_area_struct *vma = vmf->vma;
+		const unsigned long start = vma_start_pgoff(vma);
+		const unsigned long end = vma_end_pgoff(vma);
+		unsigned long ra_end;
+_
+
+--
+Cheers, Lorenzo
 
