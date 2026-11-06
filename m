@@ -1,67 +1,67 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB200606A329
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:47:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1802606A331
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=hxJ0aWWr
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=kawekjpF
 Received: by kanga.kvack.org (Postfix)
-	id 119C96B05B3; Fri,  6 Nov 2026 10:47:51 -0500 (EST)
+	id 1E0AE6B05B7; Fri,  6 Nov 2026 10:48:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F1656B05B6; Fri,  6 Nov 2026 10:47:51 -0500 (EST)
+	id 1B6B96B05B8; Fri,  6 Nov 2026 10:48:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 008186B05B7; Fri,  6 Nov 2026 10:47:50 -0500 (EST)
+	id 0CE706B05BA; Fri,  6 Nov 2026 10:48:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CE9C06B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:47:50 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 58988120D7E
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:47:50 +0000 (UTC)
-X-FDA: 85405124700.25.A07A98C
+	by kanga.kvack.org (Postfix) with ESMTP id E718C6B05B7
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:48:53 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D1D2120CD7
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:48:53 +0000 (UTC)
+X-FDA: 85405127346.03.F800AFA
 Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A14D320004
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:47:48 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=hxJ0aWWr;
-	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 53E644000B
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:48:51 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=kawekjpF;
+	spf=pass (imf17.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793980068;
+	s=arc-20220608; t=1793980131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UmKUyztNyCKEX6kdM2pzglbfBGyZ6nijYc/+g6Roixw=;
-	b=WPi9Dgm1jRQ82ZjEtee+9P5PmlKlA/rphFa/DZTUyykxZkbfC4VMvxtokqHtfrJidE8sKF
-	Jv4o4E4IFMul3gVPLpmaytYzT8hFTcXokO09+WwaKDeOxef3rwlFJPx1NI+qWjRUAEkS6/
-	kLNmvFTF12NvfdAI60MAXiMxlBsVo0c=
+	bh=tYP5TleIEch3VLAIP9Ft5HxHg1kcwlIJDfJyqYRyetQ=;
+	b=HKIP67gbFy4obOupW/0W9TvB4TCYRZUkeNMt91URpJloqxFdlJSTPxH74RVHE7DUW5f2tM
+	s00x3FTPJiE+ptou0vTEDlETfO7Zzf7kGHphH4yv356HW6BKEHugDUg+7lczGVFP6949Dx
+	hLEQ2OJHcdWsXeGmgz6OtigeUyrOQlc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793980068;
-	b=r4vDTxC1/2hkeL3BEEzZ/wS2dOInSpD6JtY4CXSEEgcahkCS4Lq8qFMrnmdwRimrhEShKe
-	NJ2OlbtPe1w03xcMZJSNweSpZ2cOx9XUyFqeEE353mmuXk1UT/7nYe38WgFUd8v34UAAP5
-	TfW7ylHTct8E18KqVr7/2USPk2nUDlg=
+	t=1793980131;
+	b=5qeqiPN8NSUNK8Oh0cnUAEV6BARb7DKMBVNy/psNtgR74eeYbgUsM/U/LV+gPsQ1Sjqbw+
+	bsRlc15HHDLxikBGT58guE2vfbnOIrT68LJ2DIbJ0hTDLhkqrrCBB7l+5b5LAZaAq3EeSJ
+	SXgaDjoR/Xqq+anxTZ4/kku7coMRNag=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=hxJ0aWWr;
-	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=kawekjpF;
+	spf=pass (imf17.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
 	dmarc=pass (policy=none) header.from=debian.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
 	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UmKUyztNyCKEX6kdM2pzglbfBGyZ6nijYc/+g6Roixw=; b=hxJ0aWWrhA/N+kPnh9QdadK03I
-	lphqVrug6uscPzlWL2jyy4zJB2rNqXeOEXOLuwmTGBKV3e6eyRkSxZroS7b5nL61OzJDkf2UkX+ln
-	0BmB02lmybqsifwdOsPKfRKNklN7Giqov+pGQZVxC5OCfay9a3Wn3EhTRIaImRfCjzT4xtmKEtpzx
-	svMGJfZBLYPoYIHp/j8+GM0EpjPZlGl/zWct1qAtM3b9sush4NCM+c1ChfiEjgkhJoDryu9M53/lU
-	bWMwwwkvUcLuN3iGCOJ9nqxg6EvJeYKwB+fKWCDpK2kjJFauLIg9FqPkOwViu3y64uaSgBQBi1bJG
-	RqdWC0iw==;
+	bh=tYP5TleIEch3VLAIP9Ft5HxHg1kcwlIJDfJyqYRyetQ=; b=kawekjpFkeEGdTL/oDhrDnFvls
+	K1D01E+FexEpQanMibxBalmMtyOvnUTJ+UVQ8QxUMrKmFHlioowyeYzLKNbVsfgIp7VObIcFExEpf
+	vqYossnW/QB+XhOiQZEppddiMVHXWse+H6IqywSELZUSdLbBdVk4mDFaLTGnjY6c1zXFYdGRZviu1
+	a1JRUdlohP6HrX1J+E2nkajmSx1GeiVHJV/RkCNrWDiGtvZFHB+MgKikLbDD8f/s+7y4Wh1Uqfyl8
+	3xiLyWiCoerUT2LoIv1B8UEwXKqw9UuoY2k0ksG4hzsmmN4H47F7SWp6jznWjd8iBPUPCXWoA9lv+
+	luXUpRbA==;
 Received: from authenticated-user
 	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
 	(Exim 4.96)
 	(envelope-from <leitao@debian.org>)
-	id 1xPMA3-009OAp-2L;
-	Fri, 06 Nov 2026 15:47:27 +0000
-Date: Fri, 6 Nov 2026 07:47:22 -0800
+	id 1xPMBA-009OCi-2T;
+	Fri, 06 Nov 2026 15:48:37 +0000
+Date: Fri, 6 Nov 2026 07:48:30 -0800
 From: Breno Leitao <leitao@debian.org>
 To: Jan Kara <jack@suse.cz>
 Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
@@ -74,30 +74,29 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
 	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
 	cgroups@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 4/4] writeback: report a slow writeback wait once per
- timeout
-Message-ID: <au3w4xiaYbEYLTru@gmail.com>
+Subject: Re: [PATCH 2/4] writeback: name the bdi in the slow writeback report
+Message-ID: <au32skMUJvDOSsgb@gmail.com>
 References: <20261106-writeback_stall_report-v1-0-bf0c3b9023a5@debian.org>
- <20261106-writeback_stall_report-v1-4-bf0c3b9023a5@debian.org>
- <ysxh2sfvjikoh6cw2qmk2i6p7xripwnqxkx43jj7unxop5tkiw@gws5wezjt34g>
+ <20261106-writeback_stall_report-v1-2-bf0c3b9023a5@debian.org>
+ <n7s5cijjaiso6mhaqolsmfkyyfk7wkb4l4o2cnxqadjfllik7b@hh6u4v5f6t2t>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ysxh2sfvjikoh6cw2qmk2i6p7xripwnqxkx43jj7unxop5tkiw@gws5wezjt34g>
+In-Reply-To: <n7s5cijjaiso6mhaqolsmfkyyfk7wkb4l4o2cnxqadjfllik7b@hh6u4v5f6t2t>
 X-Debian-User: leitao
-X-Rspamd-Server: rspam06
-X-Stat-Signature: zitngb6c437eixfj54sb4ynif1gnceje
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A14D320004
+X-Rspamd-Server: rspam09
+X-Stat-Signature: pu5yskdn87r7u7rju59ruxmgtsrmg5a4
+X-Rspamd-Queue-Id: 53E644000B
 X-Rspam-User: 
-X-HE-Tag: 1793980068-626443
-X-HE-Meta: U2FsdGVkX19o3TRT0J1dO+adAM7PFh3KaoeWrE4no7p8iCQ4qLP6zACKj6WGb8nOrcp7qh1rMaAEhT9VtEipPS77T9sFDXGcj/8yHRbzmyuTzTHNkpNw7Ln5xZtVHK8tA2N7+HVUxy5YxiQ5KGys/TIETj/d1U85qbb7mqlKpUcNQheGv3qi9eU/X6mXPrXycg6eFqPMDy4KwThzq0oX0PlK6t2tE/lsKdywOMo8OzqNm0VSmjCriz58BcPU/u05L6L69PZHLzuYZkAjUybCAp3q4jSeGP4fnKDu2JtUvrCY2ZgeJUh4CqhkDowzEO22yKLmdde5ro97NPZYgt8M/GJo/oHB3HNyaQ1qiqvbnvFJkS7KUCH9877KEKPxXZlSHS5KNd9EhKUb97saKEkjiiCdv8xUa/BNVsN20J8mU0T7xjll8LeAEozhTnpPxDmPgfBP7SjWccghvFEwSZXalfcPIbeub25Eaum7tNMHULxgG+UQCrfuHnYNBDZ6eDmV0QWp9nG4XrlnGFdmAzabj6AiQzdYHje4tox4phYN452lxopUOSe05u9ju2trOfU2XWYMQ6lbKp5FNcR9WUy84rh8QubH73+teR1Q7o9ycFn7FG5A7UThfszYBXiow1INqR0aJS+o4Slv2gomdxSgvsrWUNQ0/3t3U5oart9VXZuiqVgW2emBFNzNal6dFrO3AQU+tQoOW4Xcpt6fUJ+3jw2MQ8AwLK7XXN51RCAHPmPgscpXiZqAchEEXSZ8LQPLRXvcGN/oYgqe8gp+jRtb2wqWRbfMXcDdWcU8hOUwACgq8ErQTmB6XDmwLuVRuVUHUVcfKFfuVA6PykqhtwlOU4yOHXoFmz7dCkVMeiIYhjMVYkIlhMVHnj/eW+T5BtWM7Zu+jem0EnuQ7nZsNXxde45KOfQtRzIRok1YC2Kyg+dWAbnMgTDHTb9mn3sJhMn2NPOSk+PVwHLJDeGTRpC
- nRoiaRQx
- lk+tiMFeLc0XqXfKe98UNmScZDqfcAhBY/UYHcmcwSq+WSvNrSLUaWzM2EELV5jUZiphUsmN3LBmMWmWX9D7936XTOR5DWPOTGq6s71MVrp04VIgAQrufufuirWYHyUkvBt34R0jOsa7wJuvo39oqB7NpNiM17TigV2jO1V7plOw4b6/UHc5UZYgzkxwUWnccISVh37NO9BGyANAkE2yHm5k/K+ARG1JPxWBT3peGDoNppUhTCL6I+26lmIg1DNvIjbadHVj2E+bdU4Q9o0iV3quEzw==
+X-HE-Tag: 1793980131-342912
+X-HE-Meta: U2FsdGVkX1/Lvajg9UGa+AsaAJd/sHxwjnVccfqEafxSugYtiHWyRUCsPjq39ug1t16D35y9icQ+kokS3ctnrmGQ48pVBlU8GJ/7taTk5G/G9lRHiGQXgByn02exCmwSaAnkD/9W9/dUiYmSZ1gK8P4kHpercXOmCdLIvfpFxIdGQv7kzxCnoiX/DsWR9i9YYxIzYKtd+lGtucl3/rvZFHI1LBb91ANpDi242z/mxCrm4f4pqo3piaGRvjrkreh7RRz7IIXhXz5xHklf4IjZe3PzJ3KbofAVnCi9Qx4pVcgVi6C7V7JWooyLwedve31e1g6yVfdCJkHOvG03306B5nzXzDBOpGi5NNMmmzeigwEXDlfawQmLjucbVAmiFfHGHd2Mc/EvtYYvq43qDdYhtUkVMBvWhGcb0nUd0loqLI2tSOEOnejqE29WCBeRNh8rn0gN81PglDRVariuf/1nheXC97JdTbqdCYsHeOy7L0sLxc+E5FKIrrFjbjUGOMU/wudJNp1qEcP1cDy7bbBKYQP3Jt1ccZ+5nU8Ipofolf7xImatKXBGl1pxBBTlXbFLMjdgKT0kTOl0lgqdeeh6ZEuYXDp4Qjn9fijtYNdkVjAh4SpffzmSjsmzPzyNWUcdgkC43YZz18dhEVLZdSJVmOJSmf2HpNgSDOtuDkZNS2DSj/uCzGLPtjfHfE7uNz0v1kW6rDzkEPLnFKGDTsRORNk4NCAUwlQToA2CdMCpY5pGFMKI2lYB2HFjyHud83X3H9JmaZmeXcniXrtntHE+ZyNvuFoRIr36+dL5mFixRs5D3M2RPl0u+hcoBCHZ4whzQDl7lfDUJTgfM4db0TS1T34IehCPgt0OrljWK26Ytat2+R1cqLsLyoG/bCoyZiNyR6UQixZVhe+yy6IGccdhPXDJE+8HvqIVXhEkNWXr9YV7S7fwzvdi1TKHt8/rWFWqJUCsarpHGHXUfDvhal0
+ Oxt+i1Ih
+ d9HN0Sx/pCB22p/m/bryDCCn5gdrElU7YEIYiX62n61DnWzw5uTlGAGtxO5mqYK4FQfYeMYXWF8s62C4SWLqtEyiTey4Xk4oobE76Qwcu/FqyJIgrUnncVv0WYrGKVWwGzb4WIN5Z7xJifLx65HQykPkyIR3Z0PrhNRSm2x5fxfHdfIMeQnXM9hU4/QR20Hsy8dHRwrdeVssI4D1KD/mhf8GnOkGMocmbUnY2SThUldcTgy75v6fIqh/Eglk6WllbZMeb1r1HPhYq1dvuXzHKAfI1UA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,68 +105,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 03:37:45PM +0100, Jan Kara wrote:
-> On Fri 06-11-26 04:26:34, Breno Leitao wrote:
-> > The slow writeback report is printed on every wakeup of the waiter past
-> > hung_task_timeout_secs, and the waiter is woken more often than that.
+On Fri, Nov 06, 2026 at 03:27:49PM +0100, Jan Kara wrote:
+> On Fri 06-11-26 04:26:32, Breno Leitao wrote:
+> > The slow writeback report names the waiting task and how long it has
+> > waited, but not what it is waiting on. On a machine with several
+> > filesystems there is no way to tell which device is slow.
 > > 
-> > Each flusher working for it wakes it once it has not run for half the
-> > timeout. All waiters on a bdi share bdi->wb_waitq, so a wakeup meant for
-> > one of them reaches all of them.
+> > Pass the bdi to wb_wait_for_completion() and print its name on a second
+> > line, together with the number of work items still outstanding. A sync
+> > issues one work item per cgroup wb with dirty inodes, so the count also
+> > shows whether a single cgroup is holding up the others.
 > > 
-> > A sync of files dirtied from two cgroups, on a throttled null_blk device
-> > with the timeout set to 5 seconds, gets a report every half timeout,
-> > each printed twice, 18 reports for a 29 second wait:
+> > wb_wait_for_completion() took the bdi until commit 5b9cce4c7eb0
+> > ("writeback: Generalize and expose wb_completion") made it usable for
+> > the memcg foreign flushes. memcg tracks those by bdi id only and passes
+> > NULL, which bdi_dev_name() prints as "(unknown)".
 > > 
-> >   [   10.327992] INFO: The task sync:276 has been waiting for writeback completion for more than 8 seconds.
-> >   [   10.328000]       bdi 252:0, work items left: 2
-> >   [   10.328003] INFO: The task sync:276 has been waiting for writeback completion for more than 8 seconds.
-> >   [   10.328004]       bdi 252:0, work items left: 2
-> >   [   12.888187] INFO: The task sync:276 has been waiting for writeback completion for more than 10 seconds.
-> >   [   12.888195]       bdi 252:0, work items left: 2
-> >   [   12.888197] INFO: The task sync:276 has been waiting for writeback completion for more than 10 seconds.
-> >   [   12.888198]       bdi 252:0, work items left: 2
-> >   ...
+> > The first line does not change, so anything matching on it keeps
+> > working. A sync on a throttled null_blk device now reports:
 > > 
-> > Remember when the waiter last reported, and report again only once
-> > another timeout has passed. The wakeups do not change, so the hung task
-> > detector still sees the waiter making progress. The same test now
-> > prints 5 reports:
-> > 
-> >   [    7.661129] INFO: The task sync:277 has been waiting for writeback completion for more than 5 seconds.
-> >   [    7.661136]       bdi 252:0, work items left: 2
-> >   [   13.241102] INFO: The task sync:277 has been waiting for writeback completion for more than 11 seconds.
-> >   [   13.241109]       bdi 252:0, work items left: 2
-> >   ...
-> >   [   31.801068] The task sync:277 waited 29 seconds for writeback completion on bdi 252:0
+> >   INFO: The task sync:180 has been waiting for writeback completion for more than 28 seconds.
+> >         bdi 252:0, work items left: 1
 > > 
 > > Signed-off-by: Breno Leitao <leitao@debian.org>
 > 
-> Now I'm waiting for someone to complain it gets written out too
-> infrequently :). 
+> Dunno, I'd put everything on one line. Otherwise things can get interleaved
+> by other messages. Kernel messages are not really an ABI, we can change
+> them...
 
-Once per timeout is also how often the hung task detector checks by
-default, and patch 3 logs the total once the wait ends, so maybe that is
-exactly what people need? Not sure.
+Ack!
 
-> Is this change substantially different from
-> writeback_sb_inodes() waking up done->waitq less frequently?
+I will get them in a single line and respin,
 
-You mean the ->progress_stamp field? That is not used for reporting
-purposes, right? Should it be?
-
-It could drop the duplicates: a wakeup with work left runs the
-wait_event() condition twice (since 84654c7f4730, it is checked right
-after schedule() and again after prepare_to_wait_event()), and the
-second check would find ->progress_stamp just refreshed by the first.
-
-But the waiter refreshes ->progress_stamp on every wakeup, so it cannot
-space the reports further apart than the wakeups, and those have to
-come more often than the hung task timeout.
-
-So it is a choice between a report every half timeout with no new
-field, or once per timeout with report_stamp. Which one do you prefer?
-
-Thanks for the review,
 --breno
 
