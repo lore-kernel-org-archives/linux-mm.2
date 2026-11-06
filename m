@@ -1,131 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41267606D80D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 08:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7973B606A32F
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 08:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=YbmWk8WU
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=avLsiJ0U
 Received: by kanga.kvack.org (Postfix)
-	id 5FA116B05B1; Fri,  6 Nov 2026 03:31:15 -0500 (EST)
+	id 6F34B6B05B0; Fri,  6 Nov 2026 03:38:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 584AF6B05B2; Fri,  6 Nov 2026 03:31:15 -0500 (EST)
+	id 6A3DF6B05B1; Fri,  6 Nov 2026 03:38:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44F716B05B3; Fri,  6 Nov 2026 03:31:15 -0500 (EST)
+	id 5BA7E6B05B2; Fri,  6 Nov 2026 03:38:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 15AA86B05B1
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:31:15 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9D86BA0CE7
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:31:14 +0000 (UTC)
-X-FDA: 85404024468.29.CE39221
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AFBFFC0005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:31:12 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=YbmWk8WU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 372446B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:38:45 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C2DFC140357
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:38:44 +0000 (UTC)
+X-FDA: 85404043368.09.0F75C4A
+Received: from mta1.migadu.com (out-140.mta1.migadu.com [95.215.58.140])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8925D100003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:38:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=avLsiJ0U;
+	spf=pass (imf14.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.140 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793953872;
+	s=arc-20220608; t=1793954323;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gRVAhGeZWCNMiNHPmygg3aA49aMAiMWPBcpElZA7SC0=;
-	b=VH8+OPvGT4jVMjeMEN72G5ATVcoZZcf9MGALKBUZQf28XIegBjEVN0zwRMKnLAvwJmrlUo
-	zk0aU8puNBXZGX0cnmUQ4xIEbZW+XzRZ/6HPAoLLrKvj7qYDv+V+hPjTxHnE/+LX4ulEQG
-	f+CLocAmxvWkdOCdyJv5SRwHA7ZvTQY=
+	bh=7HL2QGS1OX92aMQqi1SQISrpLABTArOf/d1xsMjIfRU=;
+	b=jguTP58AHfV47NEz7WhwwOru/skJo2df1c44du++jwcgoY0tha2qONtv3pDb8LWH0yMWWh
+	TTmJjWPXN2+UJgt8YYpa/xiNguMLrhgjJU9D0bbHGPukmo0rswjixScGYp1g6ejCyt8/fN
+	AZu+brSxZZ98XL7JkIRE75ANYepX0D0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793953872;
-	b=xWRTJ5U6tmB2zY+i3VEfkuqsSWTamfBarTRCvu4pigastiYamHjNTWBf3SvstnMuOZVKn8
-	8lI1K8Mg7aTOTW4aXgg6Al2tiL7LTuwBmYg77CsGuh07Lr29+3WuoyJjzrqglVBQVxvh4k
-	pHE+n4+qBjzw9nUyM2P+xL4ZHID50Ls=
+	t=1793954323;
+	b=gB+HgINsqHVGvOIS4CK1vPXz0UGKVqaj2WsFC+3xxFCbb9i7QA7wv4gz/GmEXhH7Y0wHbU
+	5HvuAgMhrBjeHvxR467l4XTetdj7LVho/xzSyHH/Wp2UEKQAKyMumhFFhBhR6HnwSQaSKe
+	COxQIwtSM0C1stJk93HR8YuEkPpNpbA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=YbmWk8WU;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.43 as permitted sender) smtp.mailfrom=azpijr@gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4a9a8d6cea8so3046145e9.1
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 00:31:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793953871; x=1794558671; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=gRVAhGeZWCNMiNHPmygg3aA49aMAiMWPBcpElZA7SC0=;
-        b=YbmWk8WUrhIEj3EGj3vkVgzvY0a4Ny5j39EBxCiXSJjfQjBpzj1CcrPpT30F7crH9w
-         FtabW30/C9evTqo++oNQW1bhYJgv4BDSy5aSgnc8HYssIO2NKZ2wLU/rddYFoIvieyM9
-         aDaF2SnH5LUQjO1e3rnC3jCRudlQglQnj+0EfXtwtcP7s8APhNe2yNeuyf3j178p4ZS2
-         A+Y3fQqeye7JKs1UZiMkT6eS6oW/eTENHr2Y7rnLEuj5CoKcwCTrtbSIlkK1OmHNYwuo
-         vvJQZKSY4nv4GNpCDx7x8sGrDrPLgYEDQVrx4ZyJq8uhfCJiiW9Y96m65OoTllRnl+Vn
-         SQTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793953871; x=1794558671;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=gRVAhGeZWCNMiNHPmygg3aA49aMAiMWPBcpElZA7SC0=;
-        b=Pw/Llc7Jg/v9sGjuRjf/CARUD7qiHns0+Vw5g5KJ0O3HHIOAnU3OMKdHno6+d90Xlh
-         vaBFzShWZhyWH+4682YhmqRgDDL+vNE4kU/udx2m7bdZtgLfFi5fzGjhALHNPhqLdKX+
-         ssXFh6c47wzp9mZiYNtVEniCQNIiMVmfhzvXuSJLow0wABl9lXiGE38WlwT9Ock7J2oT
-         opwgisrQl2fn3qg/DrAvMAJBYoQkDfJbRsc83EL6BOA8DX6B3d5M3KZ48fL8OBHia8aC
-         nnnKThR8BO2E+m2YgeE0og3MYvJHrpLWSKSWuEutEWNWgLNLMLYYPzIcj5Fhd+Xz0R7e
-         b19g==
-X-Forwarded-Encrypted: i=1; AKwUvBwTKSJ3Rp61/W21j7dpzWgpyX3VG5GfJ1UhZth8/js9verPCFW8AXzy1H1rjGjXYQOqnk9LUgPjhQ==@kvack.org
-X-Gm-Message-State: APuU4Z8BR4BwrIxzakqG3z/lLrlrNkKVZAu8ZkA99GVOxb7EIYW7G++E
-	XPkdOdBSI/lcddrApOUNuEdSTuddkpUD9AAs0WoplbGnmfuGmxD6TRIU
-X-Gm-Gg: AYBFou3ep2BG6TNLU+lLsiynck1YWTrQ9F5ofjFTUhN9BBf1i4g7qLvxQYxcb4L0Ps2
-	/zSjvoYKKrsp5G1ZACE5gW+SlR/HTkNI0q3b3vsQRTBF8fMzagzkciVvgKp62EOCsxZR91LRP++
-	qhMTHGzDH756dwfNB0C5v3h7okvKyJiZ2Q553AYZtNjaGnmLowknBILKsOkb6XRBDMM4OcmN0eD
-	jNJzdduJ2yxTGK4C0oYhRJ9A0bd1Ez5UNFRZOAlh/kUAgsuIsnDWNQq/Vuu6vkKh4vj300Ljqg4
-	XbPpx+UJFWdX+lTfZZ/ha9zgMAK8tl/ycc/ZMR0fZ+BvMkPe+V7+T/jRbkEh0IItK2nZDImt4Xf
-	fWe83GJNG7udmOHy0bKKlbpE8ElLPmQpBUVli9mHSIVZ7hc0K/yXCzD0qJMe1dgvbFhEq5BS69d
-	XiMblD2sKUJyjN26RjUNdYAQhlIZS8ZyTRyunUfvHLnwJj7UspyovL8KwqWBl2eEczYblpHLF5A
-	nAacS9kTRVg1Pamy/T6x6wbeIe9AMAEngVNDvCxbSVeO77sr/XH5F6zayq+mENST6E2gF9ayQ0L
-	ZmERveoFd+EPppYPcBG+9pa4
-X-Received: by 2002:a05:600c:4f42:b0:4b2:4b5e:8141 with SMTP id 5b1f17b1804b1-4b6df4f2304mr29162125e9.9.1793953870825;
-        Fri, 06 Nov 2026 00:31:10 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b6dc6e0cfbsm44553765e9.0.2026.11.06.00.31.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Nov 2026 00:31:10 -0800 (PST)
-Message-ID: <40bdc057-7e5a-4904-9f1a-1a36e639e0e7@gmail.com>
-Date: Fri, 6 Nov 2026 09:31:09 +0100
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=avLsiJ0U;
+	spf=pass (imf14.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.140 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=OQv2V6wgOoL/c3SmQoZgSHZMEHskeM3NZ49yCaWoo0Y=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793954320; v=1; x=1794559120;
+ b=avLsiJ0U8JkNoApkvbqr8ex0R1z0VcEIOEgvt78Xjk6zeNaX9AX6FOF114vxKtIRy6EwZDYp
+ sljQMWyAxHutm56MKltEfZuB5ZwjqOlyDDSJj18Wfn107hqxWm2eiDlOZ9G4RwSE3+zzXoQti2c
+ G4L/j7q1y6QOIZbU43ezAYDY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 36c4e4aa0a83de9a;
+	Fri, 06 Nov 2026 08:38:40 +0000
+X-Mizu-Trace-ID: 36c4e4aa0a83de9a
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <8e5956d5-ae03-40c0-b5a0-bd550f4c14b3@linux.dev>
+Date: Fri, 6 Nov 2026 16:38:35 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] memblock: don't allocate new reserve_mem regions on a
- KHO boot
-To: Mukesh Pilaniya <mpilaniy@redhat.com>, Mike Rapoport <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>,
- Changyuan Lyu <changyuanl@google.com>, Alexander Graf <graf@amazon.com>
-Cc: Tony Luck <tony.luck@intel.com>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, linux-mm@kvack.org,
- kexec@lists.infradead.org, linux-kernel@vger.kernel.org,
- Pratyush Yadav <pratyush@kernel.org>
-References: <20261105213153.9572-1-azpijr@gmail.com>
- <d928099c-4e43-4af8-a929-b510819967ce@redhat.com>
+User-Agent: Betterbird (macOS/Intel)
+Subject: Re: [PATCH v2] mm/mglru: fix a no-op lru_gen_clear_refs() call in
+ lru_lazyfree()
+To: Barry Song <baohua@kernel.org>, Kairui Song <ryncsn@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
+References: <20261026084035.535989-1-hui.zhu@linux.dev>
+ <CAMgjq7AJSU9jUBTHGcm05mtGBH4EMQ_ua9YNwuLOGVzhkdLKkA@mail.gmail.com>
+ <CAGsJ_4zPZg6pCuhDtTpSkueS2EDSfWeYa23h7kC9hEU0iGB-+w@mail.gmail.com>
+ <CAMgjq7DvmrwTu0vz7oHx7y7w1B9uA0AbS3YJ5CcrDVg9VwKqpw@mail.gmail.com>
+ <CAMgjq7A6jJQ_Ncp0BCqjQJ8pJXrjr1PoOu0rdj0NJOivKp6e+A@mail.gmail.com>
+ <CAGsJ_4zO5S5XFc6dd70wKEs_mzqu_QW2bGOPyhKo4w2cjZrWUQ@mail.gmail.com>
 Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <d928099c-4e43-4af8-a929-b510819967ce@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: dpsz37h6z6ybxnr6hzt5fxcc6g9er54f
+From: Hui Zhu <hui.zhu@linux.dev>
+In-Reply-To: <CAGsJ_4zO5S5XFc6dd70wKEs_mzqu_QW2bGOPyhKo4w2cjZrWUQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: b8q3hyanqdp7twscy7w8amdqewuqh1dn
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 8925D100003
 X-Rspam-User: 
-X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AFBFFC0005
-X-HE-Tag: 1793953872-231231
-X-HE-Meta: U2FsdGVkX1+kYzQpx9BfPs5hadEXo7qtSxPxZik+RuKpb7Qew16HAKIOCziqZ36GPlxJJ4iIzIQwKOtXL4MFI9h0rRcH0IVgGNCqR3NR9pP+TRQzdNblkqxMHlhudJydDmUWqgir+FlcXAMsD96qG0Rd4LEUeHrUD6IFvceYNz73aDtmzqEbwTZQIKLs+e1sp9Hmp7mA5cJZDF8Ap67m/mBIyXAzofmsSYB02DRPNfNAB+t5bN9NAl8nMuV3iHEHPEZkYaqLIghx2YSM92wVUwMrUZwESqkFp4NHGKD7AbRoAAr+XqIVRvJWhcEdrtDERVhdi7TmD2WONOzOV400GhYFeqtkArAsT3EkM/18d3MHrPyufgi+cZfIRt8ApD2iMY1TZuqfGLTzQiltp4KyKI5eoHbyqm/g23bLT3dDiN8VhjuiHFofJdarZq3yyyHPSLXOXAFibUrgwTxZl3RUAMRBG/xOM1mxCphDIRC41bh34MQZydV7Auf7pC7htrYtHh27lGNL0w9vmBg5dgI9+/iwMSJwqcf/uQ6LUA7V3w8D87iX2Ok2SZI8l38d1m4ufnSbrKxiVHRDiuP5F7wDjzIgPjo3lQCO7xpvmzVG8qdYuKGCzhaNDG7QEfuuPN+38nTmOUelLZ8R19T2kYwwlqtcdd7tzpKY2Jy1/nARTwIMWZ7dyNBQMwxZ2qtH229B0zV3rliPu3krCFD53oCnTKmI777cN1kwjYs+WXgM71Ap5jUDf8G+Ql1j4nnlf38Ctf2nhaDIcCKy19ptZRJJco8WYNu7tvp7ZaNsoTUZM061hvHlnXLaC4zhuizjVPp08DQadEevwE3oUz95eHYdRt4cbMjOosUK8zaico6JwmZuLpSGyXnlhVkMZLipbVU/rsjx7JOqRnw8nehbaKBGa9XUskvOmpe3ogBbvbvwYFquHHym+ZtcWFG+lktMHX9lxkU5MF6XvS/wiPdAhhW
- sAaZpQBa
- wvYAenARzhogjfsnyOmRUhjbkY3QMcKpOZB7aOXqEnd2c/cYzhkrriyCpynUzTsXf17zgCf75EqwNScC6fvvdCjQaidfIcTPZ0rXMLAcgoE2xt3rpLlYMXmQ4nkqC0Hdakpr8bTqiagRfCQ6HJAwGq24/XHQu2kxeaCdQptRCYwK1QrZpYn1YvYKo1tceHwmdYZkoXHmx4mTJN1+XCwRFwKid6YZzl1Zrd/LVuyGfphY1BhfwQAYQiWi1jNzjBhjG1O6alKubsM7TLJw5VJk0on1OfepMIUNch11hIqVxySfZdjFfnjYxLTqEQMV25/2rJITyeXzlogMbvdkGBffiYvwy/Ah47WMCPv4dsjOTPAM005vAXX6AKosRZjhfwRIb/nbnkvXS7NxCxa59bZJ0SfDzB4K1DTgjoO6FcBarqPX3HGo5h8HQf67KcsrSmh7VmJtB2vDa6lnG6luN3sNpqjFdisx2/RRgrRV86klU28Q/O4SLwafxoasuPBmMNNvnJyC811Hg5o+x9r2HVb96IA5C5sGWXBSFPwVyMCdEiZtptySLtOTaYflKZJarncUOdcfDQ668Js/9NeA5DL1COF2YGQ==
+X-HE-Tag: 1793954322-933870
+X-HE-Meta: U2FsdGVkX1/DzNTUDJ6k69WCS/G+06wgnNFIdqXeeZXypIi4NjNXPDyDQfwltIJK7MFNleeb89OzW5HcW4+r2qf4jMpg+CpbS08sWJ2fMUXSjsVBBQPehKUbx2OCFFa+9zaVTkkbXAojpkIugWkPL2rIs3rjzCdN5N9wYGgYJBXBR72MUVWp3Y9bZV0zzCnEhYz22xVcl6ya3jyqMNhQoQA+BKd3croAD767WZGvdwo3T52woGV+CNP0G0kr8vWPJOGCMsI4Jcl7ymW6VQKhUfR8Kx+Bzw9ptfokq4G/SBCfigCos5v8LZuM2BYUom21+86KJQ8ZEzfXmWsLhr9I0KdZA3RO0ot2hUwuD+9szcGyb8W8HOboKWJ0P89NgnhiK0vmEEeVACvyVSbOSXKbxeon5l6zcZODE9DjW4iXw+nQYHQSqh9I8ll9pElAkZhEivoIjYgwdVVFREi6OAku/xKqDXxzZQqA/0++QhJ9wFkHltIvEFaF5hbwQ4GYSCijTt5czrLy02lRdemUnq2W1vQu3yG2kokc+MEs/DOqtl1qcG6QX5GOrhFlgPHeaXyoOr49qYRkEyG7kZeYlhNXnnbd6BtmMkJnv03UDgsnTNtUsOq54xEEjSlAF7z7MpCrL2guUcW4oQllw1+j6EBTRcvvs6Rgd2lo3lR7i8huEiQ/GWkHxIL+7LpATTPC3DcZvv21tZCzv19SCvve0aVYK563+9CrvFZ8dLkrRPQ1noY0cJFwN17e3EtIRfccHi4d2XaqTnRHQCYTDNQe5zS2O50GSopNEoEsCoCItxNjKqmw885Gp/qy5mJJSHxfQPmRVlveaLqjGfFZp2gKecwbrGh286rA3XF4YuOQ+jWMiNCNNbgbwlD/MCBinjHNaxQadbz2KY/7nGUKSuxdvNe6nlSKg1S/4QDGD7HpJf0sDjXWxVeW3TSXxhi/OfJEGT6PZwrhhkGah/dP0sr8jNh
+ QScBCkm6
+ qc70qzPuUkMEPuykV8zaBbnFf6eOnzUc2TccwzoxWLmjIjlayg2XEQuRJnd00DazyIWxYjA2y1S7+Dv24H7zjG82wRGLOJdf2U1fZzJGWNoGO4urwQbhc8ydn4YvF8qPTcH4bxK0iMn15QhRVjQclZsjyp+M/M4s7PAZakX7aj+mdU5jUwLYM5aFXY32q+m5a+zb1EL5MpxRLZ068ljHlPyFmwFW7Pw3r2xtHQVFcd027pJphSqRkasodBAHTndQw+s5+9zkl28PstDwU1OZfApmAPTx33MuPoyBj+qpsC269tycgYcjEMbJA7W/GyCk4ScgYrvDBRuY95CKdFr3t8fvZ5gUsNX3tcCPY77UC7l0I80vKmQt0A6FKiw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,92 +104,173 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 4:57 AM, Mukesh Pilaniya wrote:
-> Hi Jose, Thanks for the patch!
-> 
-> On 06/11/26 3:01 am, Jose A. Perez de Azpillaga wrote:
->> On a KHO boot, a reserve_mem region that can't be revived is allocated
->> from KHO_NOPRSRV memory, which includes the bootmem the next kernel
->> boots out of. With CONFIG_KEXEC_HANDOVER_DEBUG, preserving the region
->> then fails:
->>
->>   WARNING: kernel/liveupdate/kexec_handover.c:1245 at kho_preserve_pages+0x168/0x180
->>   failed to prepare memblock FDT for KHO: -22
->>
->> Without it, the next kernel puts its memmap on top of the region and
->> the ramoops records in it are lost.
->>
->> There is no use case for adding regions across a live update, so fail
->> instead of allocating, and drop the TODO.
->>
->> Add an is_kho_boot() stub so the memblock tests still build.
->>
->> Fixes: f99230780211 ("memblock: add KHO support for reserve_mem")
->> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->> Signed-off-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
->> ---
->> Changes in v3:
->> - add an is_kho_boot() stub to the memblock tests (Mike).
->> - add Pasha's Reviewed-by.
->>
->> Changes in v2:
->> - fail on a KHO boot instead of allocating outside bootmem, as agreed
->>   with Pratyush [1]. this drops v1's patch 1.
->> - not an RFC anymore.
->> - based on v7.4-rc1.
->>
->> v2: https://lore.kernel.org/all/20261104204235.9066-1-azpijr@gmail.com/
->> v1: https://lore.kernel.org/all/20261021211058.83483-3-azpijr@gmail.com/
->>
->> [1] https://lore.kernel.org/all/2vxzfqxglrg6.fsf@kernel.org/
->>
->>  mm/memblock.c                     | 11 ++++++++++-
->>  tools/testing/memblock/internal.h |  5 +++++
->>  2 files changed, 15 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/memblock.c b/mm/memblock.c
->> index a450092a80fb..e325e0542c9a 100644
->> --- a/mm/memblock.c
->> +++ b/mm/memblock.c
->> @@ -2827,7 +2827,16 @@ static int __init reserve_mem(char *p)
->>  	if (reserve_mem_kho_revive(name, size, align))
->>  		return 1;
->>  
->> -	/* TODO: Allocation must be outside of KHO_NOPRSRV region */
->> +	/*
->> +	 * On a KHO boot memblock only allocates from KHO_NOPRSRV memory here,
->> +	 * which includes the bootmem the next kernel boots out of. Only regions
->> +	 * handed over by the previous kernel are supported.
->> +	 */
->> +	if (is_kho_boot()) {
->> +		pr_err("reserve_mem: can't allocate \"%s\" on a KHO boot\n", name);
->> +		return -EOPNOTSUPP;
->> +	}
-> I think this over-restricts when KHO is explicitly disabled. kho= is an
-> early_param parsed before reserve_mem=, but kho_populate records the
-> incoming FDT without checking kho_enable. So a KHO payload booted with
-> kho=off ends up with is_kho_boot() == true and kho_is_enabled() ==false.
-> 
-> In that config nothing can be handed over again; reserve_mem_init
-> returns early on !kho_is_enabled(), and kho_fill_kimage bails on
-> !kho_enable. Allocating the region from KHO_NOPRSRV is therefore
-> harmless, and the documented best-effort reserve_mem= behaviour is
-> preserved.
-> That said, a new reserve_mem= line is rejected and its ramoops/ftrace
-> boot-instance consumers lose their region.
-> 
-> So, Would
-> 
-> 	if (kho_is_enabled() && is_kho_boot())
-> 
-> be better here? If so, the memblock tests will also need a
-> kho_is_enabled() stub, since
-> tools/testing/memblock/linux/kexec_handover.h is empty and reserve_mem()
-> sits outside the CONFIG_KEXEC_HANDOVER ifdef.
 
-good catch, will do it in v4 :)
+2026/11/6 05:13, Barry Song:
+> On Sat, Oct 31, 2026 at 3:27 PM Kairui Song <ryncsn@gmail.com> wrote:
+> [...]
+>>>>>>   mm/folio.c | 6 ++----
+>>>>>>   1 file changed, 2 insertions(+), 4 deletions(-)
+>>>>>>
+>>>>>> diff --git a/mm/folio.c b/mm/folio.c
+>>>>>> index 35e242b48870..ea3adb6a89d7 100644
+>>>>>> --- a/mm/folio.c
+>>>>>> +++ b/mm/folio.c
+>>>>>> @@ -597,12 +597,10 @@ static void lru_lazyfree(struct lruvec *lruvec, struct folio *folio)
+>>>>>>              folio_test_swapcache(folio) || folio_test_unevictable(folio))
+>>>>>>                  return;
+>>>>>>
+>>>>>> +       lru_gen_clear_refs(folio);
+>>>>>>          lruvec_del_folio(lruvec, folio);
+>>>>>>          folio_clear_active(folio);
+>>>>>> -       if (lru_gen_enabled())
+>>>>>> -               lru_gen_clear_refs(folio);
+>>>>>> -       else
+>>>>>> -               folio_clear_referenced(folio);
+>>>>>> +       folio_clear_referenced(folio);
+>>>>> Why can't we just call folio_set_lru_refs(.., 0), and should we clear
+>>>>> PG_workingset? Keeping it helps PSI on refualt / redirty tracking (not
+>>>>> sure if meaningful but CLRU does this), clearing it makes eviction
+>>>>> better, but the eviction issue is MGLRU-only, CLRU keeps it.
+>>>> I recall that in v1 [1], Hui mentioned:
+>>>>
+>>>> "Use folio_clear_referenced() rather than
+>>>> folio_set_lru_refs(), which is not defined without
+>>>> CONFIG_LRU_GEN."
+>>>>
+>>> Or prehaps we can have a folio_clear_lru_refs() do in a unified way
+>>> for For both CLRU / MGLRU? (Just like folio_migrate_lru_refs).
+>> And it will be better if we can keep this operation off-list just like
+>> right now :), some later works could benefit from it.
+> lru_gen_clear_refs() is currently multifunctional. It clears
+> refs/workingset, but also returns true to skip
+> folio_batch_add_and_move() in both deactivate_file_folio()
+> and folio_deactivate().
+>
+> This actually looks a bit weird. However, following the current
+> logic, I've drafted a version that we can use as a starting point
+> for discussion:
+>
+> diff --git a/mm/folio.c b/mm/folio.c
+> index dc2c796a4ea7..bc17cd3b6b6c 100644
+> --- a/mm/folio.c
+> +++ b/mm/folio.c
+> @@ -444,12 +444,12 @@ static bool lru_gen_clear_refs(struct folio *folio)
+>          int type = folio_is_file_lru(folio);
+>          unsigned long seq;
+>
+> -       if (gen < 0)
+> -               return true;
+> -
+>          folio_set_lru_refs(folio, 0);
+>          folio_clear_workingset(folio);
+>
+> +       if (gen < 0)
+> +               return true;
+> +
+>          rcu_read_lock();
+>          seq = READ_ONCE(folio_lruvec(folio)->lrugen.min_seq[type]);
+>          rcu_read_unlock();
+> @@ -465,6 +465,8 @@ static void lru_gen_inc_refs(struct folio *folio)
+>
+>   static bool lru_gen_clear_refs(struct folio *folio)
+>   {
+> +       folio_clear_referenced(folio);
+> +       folio_clear_workingset(folio);
+>          return false;
+>   }
+>
+> The another option is:
+>
+> diff --git a/mm/folio.c b/mm/folio.c
+> index dc2c796a4ea7..8d1fd788188c 100644
+> --- a/mm/folio.c
+> +++ b/mm/folio.c
+> @@ -438,6 +438,12 @@ static void lru_gen_inc_refs(struct folio *folio)
+>          } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
+>   }
+>
+> +static inline void __lru_gen_clear_refs(struct folio *folio)
+> +{
+> +       folio_set_lru_refs(folio, 0);
+> +       folio_clear_workingset(folio);
+> +}
+> +
+>   static bool lru_gen_clear_refs(struct folio *folio)
+>   {
+>          int gen = folio_lru_gen(folio);
+> @@ -447,8 +453,7 @@ static bool lru_gen_clear_refs(struct folio *folio)
+>          if (gen < 0)
+>                  return true;
+>
+> -       folio_set_lru_refs(folio, 0);
+> -       folio_clear_workingset(folio);
+> +       __lru_gen_clear_refs(folio);
+>
+>          rcu_read_lock();
+>          seq = READ_ONCE(folio_lruvec(folio)->lrugen.min_seq[type]);
+> @@ -463,9 +468,10 @@ static void lru_gen_inc_refs(struct folio *folio)
+>   {
+>   }
+>
+> -static bool lru_gen_clear_refs(struct folio *folio)
+> +static inline void __lru_gen_clear_refs(struct folio *folio)
+>   {
+> -       return false;
+> +       folio_clear_referenced(folio);
+> +       folio_clear_workingset(folio);
+>   }
+>
+>   #endif /* CONFIG_LRU_GEN */
+> @@ -659,10 +665,7 @@ static void lru_lazyfree(struct lruvec *lruvec,
+> struct folio *folio)
+>
+>          lruvec_del_folio(lruvec, folio);
+>          folio_clear_active(folio);
+> -       if (lru_gen_enabled())
+> -               lru_gen_clear_refs(folio);
+> -       else
+> -               folio_clear_referenced(folio);
+> +       __lru_gen_clear_refs(folio);
+>          /*
+>           * Lazyfree folios are clean anonymous folios.  They have
+>           * the swapbacked flag cleared, to distinguish them from normal
 
--- 
-cheers,
-jose a. p-a
+
+Hi Barry, Kairui,
+
+>
+> I would personally prefer the latter. What do you think, Hui and Kairui?
+
+I prefer option B too: it keeps the flag clearing independent of the
+list state and leaves the two deactivate callers untouched.
+
+But I'd suggest splitting this in two:
+
+1. Take v2 as the fix now. If that is acceptable, I will respin it
+    with Cc: stable added.
+
+2. Follow up with option B as a pure cleanup, no Fixes tag. The
+    lazyfree site then becomes the off-list __lru_gen_clear_refs()
+    call that Kairui wants for later work.
+
+The reason is backporting. Every stable from 6.14 (cc8ec7be78ff) to
+7.3 carries the regression, but B is written against
+folio_set_lru_refs(), which only landed in this merge window
+(64169ceea5b1e). None of the affected trees has that helper, so
+backporting B would drag the refs-flags rework along with it. v2
+applies to all of them with only the mm/swap.c -> mm/folio.c rename
+to adjust.
+
+B also starts clearing PG_workingset on the classic LRU. I agree
+with Kairui that this is the right semantics for MADV_FREE, but it
+is a change beyond this regression and deserves its own patch - it
+fits naturally in the MGLRU-FG flag cleanup, as does the sort_folio()
+lazyfree check.
+
+Best,
+Hui
+
+
+> Best,
+> Barry
 
