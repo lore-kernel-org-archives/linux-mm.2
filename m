@@ -1,102 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1802606A331
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0BF606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:52:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=kawekjpF
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=QQitm8a4
 Received: by kanga.kvack.org (Postfix)
-	id 1E0AE6B05B7; Fri,  6 Nov 2026 10:48:54 -0500 (EST)
+	id 605136B05B0; Fri,  6 Nov 2026 10:52:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1B6B96B05B8; Fri,  6 Nov 2026 10:48:54 -0500 (EST)
+	id 5DC7E6B05B2; Fri,  6 Nov 2026 10:52:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0CE706B05BA; Fri,  6 Nov 2026 10:48:54 -0500 (EST)
+	id 4CDC66B05B8; Fri,  6 Nov 2026 10:52:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E718C6B05B7
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:48:53 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2D1D2120CD7
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:48:53 +0000 (UTC)
-X-FDA: 85405127346.03.F800AFA
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 53E644000B
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:48:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=kawekjpF;
-	spf=pass (imf17.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793980131;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E77E6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:52:40 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 80BCFC0DBB
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:52:38 +0000 (UTC)
+X-FDA: 85405136796.09.827E2ED
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8EFBAA0002
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:52:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=QQitm8a4;
+	spf=pass (imf15.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793980356;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tYP5TleIEch3VLAIP9Ft5HxHg1kcwlIJDfJyqYRyetQ=;
-	b=HKIP67gbFy4obOupW/0W9TvB4TCYRZUkeNMt91URpJloqxFdlJSTPxH74RVHE7DUW5f2tM
-	s00x3FTPJiE+ptou0vTEDlETfO7Zzf7kGHphH4yv356HW6BKEHugDUg+7lczGVFP6949Dx
-	hLEQ2OJHcdWsXeGmgz6OtigeUyrOQlc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793980131;
-	b=5qeqiPN8NSUNK8Oh0cnUAEV6BARb7DKMBVNy/psNtgR74eeYbgUsM/U/LV+gPsQ1Sjqbw+
-	bsRlc15HHDLxikBGT58guE2vfbnOIrT68LJ2DIbJ0hTDLhkqrrCBB7l+5b5LAZaAq3EeSJ
-	SXgaDjoR/Xqq+anxTZ4/kku7coMRNag=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=kawekjpF;
-	spf=pass (imf17.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
-	dmarc=pass (policy=none) header.from=debian.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=tYP5TleIEch3VLAIP9Ft5HxHg1kcwlIJDfJyqYRyetQ=; b=kawekjpFkeEGdTL/oDhrDnFvls
-	K1D01E+FexEpQanMibxBalmMtyOvnUTJ+UVQ8QxUMrKmFHlioowyeYzLKNbVsfgIp7VObIcFExEpf
-	vqYossnW/QB+XhOiQZEppddiMVHXWse+H6IqywSELZUSdLbBdVk4mDFaLTGnjY6c1zXFYdGRZviu1
-	a1JRUdlohP6HrX1J+E2nkajmSx1GeiVHJV/RkCNrWDiGtvZFHB+MgKikLbDD8f/s+7y4Wh1Uqfyl8
-	3xiLyWiCoerUT2LoIv1B8UEwXKqw9UuoY2k0ksG4hzsmmN4H47F7SWp6jznWjd8iBPUPCXWoA9lv+
-	luXUpRbA==;
-Received: from authenticated-user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.96)
-	(envelope-from <leitao@debian.org>)
-	id 1xPMBA-009OCi-2T;
-	Fri, 06 Nov 2026 15:48:37 +0000
-Date: Fri, 6 Nov 2026 07:48:30 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Jan Kara <jack@suse.cz>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Julian Sun <sunjunchao@bytedance.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 2/4] writeback: name the bdi in the slow writeback report
-Message-ID: <au32skMUJvDOSsgb@gmail.com>
-References: <20261106-writeback_stall_report-v1-0-bf0c3b9023a5@debian.org>
- <20261106-writeback_stall_report-v1-2-bf0c3b9023a5@debian.org>
- <n7s5cijjaiso6mhaqolsmfkyyfk7wkb4l4o2cnxqadjfllik7b@hh6u4v5f6t2t>
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=imxiLTdOX5HC1rp3c25qmGQ65Qq/V6SkfQFDiRpdc+U=;
+	b=5HIyCfFFHYovr+5NHdfagxtAGzBGdwXA/yRPTeRhT5HyCvZAwJXRvzz4l5YB2/ljltGBNq
+	q8wrOqggBxVKkgm7ocGkm1dEs3VZurqaFb1wh2WW/9aG5h4JnBvP/JPBrRIVgrC87Dji34
+	KnvQfJdx0YO8uJJSU2lRGEysWarWiMo=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793980356;
+	b=twjhuUd3kpMiOKZgy6uV5FXN1YS2P/DK+O5DDByi3PudxcAURqjWXmGRkY3XDUwkQLfKI3
+	bhTsD9PYB5fOdb7poilw5QVzWpieHU6jOPrTo4H6J7bTab2nbzIsPdh7E9PIuToDdGzJU6
+	TW883RXGhAejU8po7lrwMB7RjDSIPbE=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=QQitm8a4;
+	spf=pass (imf15.hostedemail.com: domain of mjguzik@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=mjguzik@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-c414e5d282eso106225966b.1
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 07:52:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793980355; cv=none;
+        d=google.com; s=arc-20260327;
+        b=eHW0KQI0/YcmVEwwbTXK4CLX4Ce4DPCFiDfYt3RYJzJPhnh1yUQaQD3XDpSNIHAEVE
+         CMjbpTgnUYxsC0kg4w3tOCJOvv2KF72Qzcg6sCwVGZcGM7OlM1EakaFJwxRJDxgATvcc
+         hFHzq1XE2KTX/8B6o1slBirMBy6dHvGF9yuD5Lb7SVAFeWXKahTbJKDxtog1j+hAUhmY
+         qgJEZBaJwLRqJKxdtQKhdNUPmBlQihm8cGATBBwVws8ed1I4EIi/k8BkeYYbHJX+2CBR
+         Ri7gUhY563mxGh90DNBsIzrQ2vLEu76jZCdZ8hDIg1BjiLCttbDTUyuJvRxfjgnKLJ2B
+         sCKA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=imxiLTdOX5HC1rp3c25qmGQ65Qq/V6SkfQFDiRpdc+U=;
+        fh=E1yZadVcqoIIzX876JiiXpeoOsHj7T4Rpupk9WSN5tc=;
+        b=RgccHRu4lqEiKpqC41Urp03kliH9r+4GSAnn/UkYJ8ruyn/CAFFuUxmVk+A8wiK5Ck
+         2euZ8MsffWZRrp5ARiTTAz7tYl69+iNBEU1t83mD5WPjNptumTNtYtimgJKhmoH4pIDg
+         pmh/X1EZ36NZRgedVnAuWd14irajsTzgXoIKw9jL6Vi/hKKG/j4rfBHEtoY3whX5Jmtv
+         CMlmxjM+Rt8rC57XY+FD2kE4gzB1Ubw5GajOIciNMXYOl4JLbAgfhmO07W32RTK6ROG5
+         i9+sltFVbW+kf80v8lIBX6xdCVg0zPK8j7ki5qDcTQDHw+BZeAhf/alQlCVAOSK2mp94
+         tu+g==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793980355; x=1794585155; darn=kvack.org;
+        h=content-type:to:subject:message-id:date:from:mime-version:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=imxiLTdOX5HC1rp3c25qmGQ65Qq/V6SkfQFDiRpdc+U=;
+        b=QQitm8a4EiEeH08n4QWN6LR54/BM10EbRoLjzmWnm1c/hyiKdmAipxXvoSRKgFqK1m
+         hRl2XFBPajp9JbjDn02UPX3Lvn5RZH/UUeH8JaYITtzdpz2uEDQXjkw11P6MncPek73k
+         Ktx2iuTRBwqjkuJXGtZfaQWWtJNU76lEici26d/4M4q9Okapn7dw7ON8HfIUylNKTOe6
+         nv9oZP9+1z95Z8pZ61XV9AIjnc951FRGLiQH47reTz4evUrKSYj0V+IR8UjCe7aNwWRU
+         vqJMnw9KmiuN355+SyX3bB6g2WwAIfNE2UPNVjjfuq4wD2+deEx/78FetjjKHJ1AzMZ1
+         W/kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793980355; x=1794585155;
+        h=content-type:to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=imxiLTdOX5HC1rp3c25qmGQ65Qq/V6SkfQFDiRpdc+U=;
+        b=DVrVXaFK18FIR4rFcTWm4HN1qaqKXlVumMXvf0T4ewskmGynvjloMCkuLuzY0o3Nxv
+         KMRDAG1qsfsI4orSBE/+1nrwPRSI67cdHJ6eCsYRysxKToJjRdNA4MzIE9XBxDfU/piC
+         LUJ24Yp0UDnQusghXlhlRs44wu0vW0MlZx0i/CjCFWldyPwN4mKqPJrANA1kQXh9sD+O
+         jAGA8IgI5AK/FQzQ8Ul6H2Fq04XGIK+dkH323DXvcAfABwo9GvACY6fGFxGjzfLpNtPk
+         fUou3TRzDa5D0ut2AGcKvIoaybQQHTVR0vMNk0UNdnZnwMxIPksY2XvJOtJZun1Teg6y
+         Gb3g==
+X-Gm-Message-State: APuU4Z+oWfQI+9L7C4bHPe3S6owqfvsOoJyFsILZmLsfHC8tee6S8dl7
+	ymY2xF3DtXbJXnOfIGS2RUTo9YrCaAP803JzXwVVewBYSlWMQtW6t+mV/rpN8nmid6EhmhjRmLs
+	7R+ieTYKP9V0X2k9qjRJmKLktoQUO4UaCQHYQ7dk=
+X-Gm-Gg: AYBFou2tA/ccDsFOMNB7Jt0XSxN5/CGNA2tLl3TRSlxACA4UnlEHtTgbuE9XkfxLbb9
+	AqCOjrGo38bemptr1hbLxrSg1zZqDgCYiF0esK13CnnRakpi2+wP9ZzkDQba734Z6zCcNFBQ6M/
+	TsD6Ev38GUdOGNquaVyAvScUY/ZlB2YB7RI7YBcmO/AplMU3ZdbcLI3KbbcHASoPaiyy6pHihcp
+	3eYASswGS6NaMNKhk/6fLOdRQhz438BxCCBtWnLcq6oNq5OYQe73f99egzFFkfWiVlhNy3J3c/T
+	l6fk+O76PxYN7s8NuBBdQUjpk1mLRRIHJCNjAXgSwh10bUM0cOSUPxeupDHqo2DVDXhWXy9jafx
+	tYhIxxql2Cbfd+qmNVcL94egH73XXs2widNWeTbiUu2nFL4ps1mhdPVkFDDh8iQry7UxHfo/BCs
+	yhiVwqkjV+A+aXwAQS/AKGpNzDvR5k
+X-Received: by 2002:a17:907:1c91:b0:c48:ddac:7eb1 with SMTP id
+ a640c23a62f3a-c4d34cdc549mr257468666b.45.1793980354757; Fri, 06 Nov 2026
+ 07:52:34 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <n7s5cijjaiso6mhaqolsmfkyyfk7wkb4l4o2cnxqadjfllik7b@hh6u4v5f6t2t>
-X-Debian-User: leitao
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: pu5yskdn87r7u7rju59ruxmgtsrmg5a4
-X-Rspamd-Queue-Id: 53E644000B
+From: Mateusz Guzik <mjguzik@gmail.com>
+Date: Fri, 6 Nov 2026 16:52:22 +0100
+X-Gm-Features: AclHuK8p0HBDrOmkB3xF0AiTXt-CjeYHVOqupnZd0JdVBSmHKu9mDQ6Xg5ihE28
+Message-ID: <CAGudoHGEfHXydqneyo94zEWfFZY32AWCOfQL01dYGCQKi0zJgg@mail.gmail.com>
+Subject: unstable performance during continuous memory reclamation
+To: linux-mm <linux-mm@kvack.org>, linux-fsdevel <linux-fsdevel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: gtgj7cs6q8jf17kpq8u4gtzj6nbj8sai
+X-Rspamd-Queue-Id: 8EFBAA0002
 X-Rspam-User: 
-X-HE-Tag: 1793980131-342912
-X-HE-Meta: U2FsdGVkX1/Lvajg9UGa+AsaAJd/sHxwjnVccfqEafxSugYtiHWyRUCsPjq39ug1t16D35y9icQ+kokS3ctnrmGQ48pVBlU8GJ/7taTk5G/G9lRHiGQXgByn02exCmwSaAnkD/9W9/dUiYmSZ1gK8P4kHpercXOmCdLIvfpFxIdGQv7kzxCnoiX/DsWR9i9YYxIzYKtd+lGtucl3/rvZFHI1LBb91ANpDi242z/mxCrm4f4pqo3piaGRvjrkreh7RRz7IIXhXz5xHklf4IjZe3PzJ3KbofAVnCi9Qx4pVcgVi6C7V7JWooyLwedve31e1g6yVfdCJkHOvG03306B5nzXzDBOpGi5NNMmmzeigwEXDlfawQmLjucbVAmiFfHGHd2Mc/EvtYYvq43qDdYhtUkVMBvWhGcb0nUd0loqLI2tSOEOnejqE29WCBeRNh8rn0gN81PglDRVariuf/1nheXC97JdTbqdCYsHeOy7L0sLxc+E5FKIrrFjbjUGOMU/wudJNp1qEcP1cDy7bbBKYQP3Jt1ccZ+5nU8Ipofolf7xImatKXBGl1pxBBTlXbFLMjdgKT0kTOl0lgqdeeh6ZEuYXDp4Qjn9fijtYNdkVjAh4SpffzmSjsmzPzyNWUcdgkC43YZz18dhEVLZdSJVmOJSmf2HpNgSDOtuDkZNS2DSj/uCzGLPtjfHfE7uNz0v1kW6rDzkEPLnFKGDTsRORNk4NCAUwlQToA2CdMCpY5pGFMKI2lYB2HFjyHud83X3H9JmaZmeXcniXrtntHE+ZyNvuFoRIr36+dL5mFixRs5D3M2RPl0u+hcoBCHZ4whzQDl7lfDUJTgfM4db0TS1T34IehCPgt0OrljWK26Ytat2+R1cqLsLyoG/bCoyZiNyR6UQixZVhe+yy6IGccdhPXDJE+8HvqIVXhEkNWXr9YV7S7fwzvdi1TKHt8/rWFWqJUCsarpHGHXUfDvhal0
- Oxt+i1Ih
- d9HN0Sx/pCB22p/m/bryDCCn5gdrElU7YEIYiX62n61DnWzw5uTlGAGtxO5mqYK4FQfYeMYXWF8s62C4SWLqtEyiTey4Xk4oobE76Qwcu/FqyJIgrUnncVv0WYrGKVWwGzb4WIN5Z7xJifLx65HQykPkyIR3Z0PrhNRSm2x5fxfHdfIMeQnXM9hU4/QR20Hsy8dHRwrdeVssI4D1KD/mhf8GnOkGMocmbUnY2SThUldcTgy75v6fIqh/Eglk6WllbZMeb1r1HPhYq1dvuXzHKAfI1UA==
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793980356-73775
+X-HE-Meta: U2FsdGVkX1+RA/X6/Akapvbu20/w7GCkE2HzYmAcBp1QBVTdNj2nbarj+rxFrTHtGfCwydRzZ8U8BcxjyYyt2bEqkCiFklTipla2fKR/ivcYMXBOTjZoA+2izTDoZ9RUYNM3bGXCY3Pv59EmSeyne/0NXvqo2OKyqADzLLC/Iurb+H7P4uYPnKZ5YsrtLrCKOipfTpM42y87khkQN4GL5n/IaKI0LSeYw7SMrqwS4b6QmqDoOX3AiUU6NCvJZAr62MHw7aO/RrBkLDA9DaDyjITYJnUp3wTYKoH2kqRyF/GkyX1cOKMmhTvUecag5Asxeh5I22bCSDI8vta8iq4iY9HRrGZ1f3de8vcQK8jQCUecsjF0fJg6xmVS+Ipkq0nFusdCPaCFLGcuNfKRBJ1NOYR8kz4UlJ4meN6hLbwl/FFvYUu/9te+OMQbhK3oGESTZqSR+p0UYP3iM/nOolOFjGWziGd9So1OYkxnWok0WDaVN1SNHllH9ZURUEIOx8IBpSecRFGEIfTSf+hCeaI7oJlSk36HntGCGsovQwV+afuF2ZwoumaZAL37VK7U6hGbIHyGGNHV9y9CTl97LgqQ+76PIxiGCpflwM5JKFo3yPBNa0CE8sbN+L5hCEfhXc456j26IjEvigDBtQNFCw9SwhHsWUVqSfnmTqyJH6QZhLI1yw+jDnJNtO+vCeaZcsm2GZr0jLyRLgzj9xuFwfeJZjDxlmpiQGBgNhvZ3aAVrUVpZW2im2N75nOH5W72J7uQbNPZk8NmCO40JsVrsluyptvWmSgH0gK/GVoc+iMmbkucfha5AGZRzllgo9zQtTKwbZyqE25s4IPdBV1PRFMk7LEtT5lJnDnVTiClbVgEUx6BYK+kLPkqQZOd/9+kxVqWNPtDAZjQT3amZ2w+UBEfs8e4uyGCErNvTBPbkOFKmFRkkgAXdYEDWzXgCLupvuLT9OUSvRuTuUeKz6E2Vck
+ OQUmCICL
+ 7oGqB+MmjvU8sA/Mt5pKCEg9R61/KJ8+L8bEUU5Kj4q2ikPiPn74Eb9c5/rowFqhkoH2wqYnt7SnduWH6Z+eZwyoHC2t+jE0ZYyC5N9cggylQ8knN1egwUe2rI/MqRxNE/L/thv4+ucGulBJjgNXq2VQWCWIhYTIHHkoVUGKoSBZfRhF0d3O2ZtSSNk+ukGuIS34U/tPb5M3Z5AcAVnlW6IiL6ufaua8n5kfgn+i63FK0pRalhGZAl7SiujqwPCWnG+aid8C0A4Uhyb8VhRxkzPChuBxmn1C7ZKo+3VY0PUBnDnJiZ6RwLroG8YFAhg10aENFrdVuqwbEEeOFP/g66gYY11JzlxxujvxSA67R61jDcwXVz62Nj+tvOXHmkx9SS6Qlt3AnJgwVF9ctpCdsr40lIwHYKQmDAtoo
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,37 +133,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 03:27:49PM +0100, Jan Kara wrote:
-> On Fri 06-11-26 04:26:32, Breno Leitao wrote:
-> > The slow writeback report names the waiting task and how long it has
-> > waited, but not what it is waiting on. On a machine with several
-> > filesystems there is no way to tell which device is slow.
-> > 
-> > Pass the bdi to wb_wait_for_completion() and print its name on a second
-> > line, together with the number of work items still outstanding. A sync
-> > issues one work item per cgroup wb with dirty inodes, so the count also
-> > shows whether a single cgroup is holding up the others.
-> > 
-> > wb_wait_for_completion() took the bdi until commit 5b9cce4c7eb0
-> > ("writeback: Generalize and expose wb_completion") made it usable for
-> > the memcg foreign flushes. memcg tracks those by bdi id only and passes
-> > NULL, which bdi_dev_name() prints as "(unknown)".
-> > 
-> > The first line does not change, so anything matching on it keeps
-> > working. A sync on a throttled null_blk device now reports:
-> > 
-> >   INFO: The task sync:180 has been waiting for writeback completion for more than 28 seconds.
-> >         bdi 252:0, work items left: 1
-> > 
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> 
-> Dunno, I'd put everything on one line. Otherwise things can get interleaved
-> by other messages. Kernel messages are not really an ABI, we can change
-> them...
+I have a synthetic benchmark which stats millions of files in parallel
+(each worker stats inodes in its own tree), which I'm running in a
+loop. The total number of inodes is purposefully chosen to NOT fit in
+ram and require continuous memory reclamation to proceed.
 
-Ack!
+I would expect the total time needed to be roughly the same for each
+run. Instead I am seeing massive variance, from 18-ish seconds to over
+50 (see sample runs at the end of the e-mail).
 
-I will get them in a single line and respin,
+I don't have time to dig into this, I am posting this in case someone
+would be interested.
 
---breno
+You can grab the bench here:
+https://people.freebsd.org/~mjg/fstree.tgz
+
+My test jig has 24 cores and 24GB RAM running this against ext4, the
+kernel is 7.4-rc1. The problem is not new but I could not be arsed to
+write this up previously.
+
+The fs is prepped with mkfs.ext4 -N 24000000 and mounted on /testfs.
+
+$ sh createtrees /testfs 20 # creates 20 dirs with a million inodes each
+$ while true; do time sh walktrees /testfs 20; done # bench
+
+sh walktrees /testfs 20  3.32s user 255.90s system 1397% cpu 18.55s
+(18.549) total
+sh walktrees /testfs 20  3.65s user 376.84s system 883% cpu 43.08s
+(43.079) total
+sh walktrees /testfs 20  3.25s user 253.34s system 1314% cpu 19.53s
+(19.527) total
+sh walktrees /testfs 20  4.45s user 423.65s system 1079% cpu 39.66s
+(39.664) total
+sh walktrees /testfs 20  3.19s user 288.14s system 1590% cpu 18.32s
+(18.317) total
+sh walktrees /testfs 20  3.34s user 342.73s system 1124% cpu 30.78s
+(30.778) total
+sh walktrees /testfs 20  3.14s user 231.58s system 1374% cpu 17.08s
+(17.080) total
+sh walktrees /testfs 20  3.33s user 329.40s system 1108% cpu 30.02s
+(30.019) total
+sh walktrees /testfs 20  3.68s user 301.85s system 602% cpu 50.70s
+(50.701) total
+sh walktrees /testfs 20  3.61s user 259.41s system 1172% cpu 22.43s
+(22.427) total
+sh walktrees /testfs 20  4.20s user 376.32s system 1093% cpu 34.80s
+(34.797) total
+sh walktrees /testfs 20  3.50s user 268.13s system 1238% cpu 21.93s
+(21.930) total
+sh walktrees /testfs 20  4.17s user 377.34s system 1065% cpu 35.81s
+(35.810) total
+sh walktrees /testfs 20  2.81s user 245.95s system 503% cpu 49.37s
+(49.373) total
+sh walktrees /testfs 20  3.75s user 367.58s system 920% cpu 40.34s
+(40.335) total
+sh walktrees /testfs 20  3.73s user 298.43s system 1191% cpu 25.36s
+(25.361) total
 
