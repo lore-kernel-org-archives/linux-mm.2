@@ -1,105 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B890E606A32F
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA4D606A329
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DYBPV1og
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Brk88eoB
 Received: by kanga.kvack.org (Postfix)
-	id C7D0C6B05B2; Fri,  6 Nov 2026 09:16:56 -0500 (EST)
+	id B6B4B6B05B3; Fri,  6 Nov 2026 09:17:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C55056B05B3; Fri,  6 Nov 2026 09:16:56 -0500 (EST)
+	id B434D6B05B4; Fri,  6 Nov 2026 09:17:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B94056B05B4; Fri,  6 Nov 2026 09:16:56 -0500 (EST)
+	id A80006B05B5; Fri,  6 Nov 2026 09:17:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B8406B05B2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:16:56 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id B27E51C48D5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:16:55 +0000 (UTC)
-X-FDA: 85404895590.01.378BD37
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F0FC140011
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:16:53 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DYBPV1og;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 818D26B05B3
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:17:02 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A6FF3120D61
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:17:01 +0000 (UTC)
+X-FDA: 85404895842.10.4FD406E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id EA7CA2000C
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:16:59 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Brk88eoB;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793974614;
+	s=arc-20220608; t=1793974620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YbRvJ/bHp76KL1OEmDU1Qb2Rcrg4+B3yQbyXLRJ6Aio=;
-	b=nnEhnEeqZa9VfEf0SXNbZADPiCbYPwHf6VRmLDEjDfjIiOeTcZFbbac18mjzdMmowvad4e
-	kuFR46ObVHoOtgiXE949bop+54Hwt2gnL3iwY1R0gWKVMNxMYRZ2fYLnkgkMZKvl30e5PK
-	d/peZxhNRwPuN1JIpUFJzZNHAEVe4MM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DYBPV1og;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=uecgvdcnBS0ssXlLSJ0XuUQT+Bqc+3M+IkCyY0hC8q0=;
+	b=mOqNKh8uGiLlAVJbE5DxmdMqh+AQ8W94XrjjgpMg+fUVymMjyOiiURb8yg2NNwDB5wYmi8
+	dhWkKQ3oyPzSMuhvZHeHpQGsQK04Rk0Et+KpAwpSS/UZHZNeBNSb76w6nhtw6FqUcsDz3C
+	g0vIDGRv+UO4SvN1525CsFj7iaOGnOg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793974614;
-	b=qT73OldzU0QXYseghiKEVwfTb0bSKSgSJtrhiFCn8hXoN/TDoQu+oEunfb7mRVV6UvNGrI
-	yJIaDmuAREYtGtP6mUqldr8QcrKqcqCcTQnJVsqUTrTHoR6lFalMngyn50bE4nss1LlR0u
-	gK2RtGptICYMm8GUAF/YtcNyx+vCDbc=
+	t=1793974620;
+	b=LkZgJ3IVJ3sJCjmVXldJxhQoXSwcWhNVQ1XnQBkfVudysk9vX2tQMxWKLXul5h0YHuulnQ
+	hF4ei3aXEHVn/ZS2gRwTbBLaODPl3YoSCrJnlbT/B58a2Jy/oWt8jfg+qmQP5Lat3sRObJ
+	wZYv7JGoPyHILVCJugag2odGG5recno=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Brk88eoB;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 190CC41964;
+	by tor.source.kernel.org (Postfix) with ESMTP id 7EFA5605FB;
+	Fri,  6 Nov 2026 14:16:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B5B1F008A1;
 	Fri,  6 Nov 2026 14:16:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BA81F0089F;
-	Fri,  6 Nov 2026 14:16:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793974613;
-	bh=YbRvJ/bHp76KL1OEmDU1Qb2Rcrg4+B3yQbyXLRJ6Aio=;
+	s=k20260515; t=1793974619;
+	bh=uecgvdcnBS0ssXlLSJ0XuUQT+Bqc+3M+IkCyY0hC8q0=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=DYBPV1ogE/bLXFI/8qugY9boxyNnRkJH+vF52rmefXvV9/QtYzE1/KEfal3C83Lk+
-	 1VGRfkAn50aP4TDwE/JvkrNWozXJZHTH3kUOrLzMz5r6H2Si+PQZ0TqT1tPm3h1lC2
-	 JC2q3PMIhh/mDUYhZDdIn46r6BLMibxIE/GkzVArcyXyKz768NeS+D6Vu0Yag9jgrP
-	 mCWj1YQE2jhqfNg8Vh/spK5An5+Ri2gm0l/tfp/l80FnNr+aXoHb5dFeJc8J7qpjbC
-	 nTeymdjQymInKOj9IF1oMLL08Zf9AC6xLU8e5d9DdWtvOSiTXsr4+NVrfeT1N2vMzq
-	 LBDliO+OLOEAg==
+	b=Brk88eoBEtDsQXHFyYUp+pJODIzkeWJ06z1vTkD7owXBB9aQ8/wPo0pGvH6yQsk5c
+	 xoOXKyjgBNAXeP0LWQ8hA3QYoapPGEdJa6mNg2MZzIHFTnMFGVWRjYbgYBW8+a9JZ1
+	 3kqtpzfbks3i/5u2/V+v7aIvPewO0SfbXGxvrd8ioj7V9ZDwvukpLn0Hg9qBHba7cF
+	 V8YGjZpxNJwgnuIbwA+7z/QpzruaITRvV6/mV2JHGD1UkIKdJMGiD8Hz9lZvGilZBA
+	 L2rUTnvzcU08BQINjJaG+G5BnhpAHMDbQ46VcMXUsLX7KEYD3od5CTRhpwP+zshTzQ
+	 VIbGgdz2574LA==
 From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
- Joanne Koong <joannelkoong@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
- "Liam R . Howlett" <liam@infradead.org>, 
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
- Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, 
- Roman Gushchin <roman.gushchin@linux.dev>, 
- Muchun Song <muchun.song@linux.dev>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>, 
- Usama Arif <usama.arif@linux.dev>, Lance Yang <lance.yang@linux.dev>, 
- Hugh Dickins <hughd@google.com>
-In-Reply-To: <20261019230646.3510790-1-joannelkoong@gmail.com>
-References: <20261019230646.3510790-1-joannelkoong@gmail.com>
-Subject: Re: [PATCH v3] mm: unqueue deferred split folios outside the
- lruvec lock
-Message-Id: <179397460737.8873.12735484060049239618.b4-ty@b4>
-Date: Fri, 06 Nov 2026 15:16:47 +0100
+To: akpm@linux-foundation.org, Joanne Koong <joannelkoong@gmail.com>
+Cc: shakeel.butt@linux.dev, yosry@kernel.org, hannes@cmpxchg.org, 
+ mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+ rppt@kernel.org, surenb@google.com, kasong@tencent.com, qi.zheng@linux.dev, 
+ baohua@kernel.org, baolin.wang@linux.alibaba.com, axelrasmussen@google.com, 
+ yuanchu@google.com, weixugc@google.com, baoquan.he@linux.dev, 
+ cgroups@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261029204157.117879-1-joannelkoong@gmail.com>
+References: <20261029204157.117879-1-joannelkoong@gmail.com>
+Subject: Re: [PATCH v2] mm: move LRU size stat updates out of lru_lock in
+ folio batches
+Message-Id: <179397461320.8873.1139979903597807353.b4-ty@b4>
+Date: Fri, 06 Nov 2026 15:16:53 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F0FC140011
-X-Stat-Signature: bjsgwnoyociud3ctdiczfaf1uunq6pum
-X-Rspam-User: 
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793974613-582044
-X-HE-Meta: U2FsdGVkX19+sLHuWX4fLcOkDKNdOL0lPCfYL+j93NyPPi+B2nArI2og9Aby++dkZ2ZgX8o8gW3Ave70g2qB9Qzw6TGSXCV0AM5e0bkm/D3K8vfsggWhvY4qynGcovTZ8GyWtfO/f+ganfPWQ7bnN6jROplXPASOh4KqpA42c/8xlvZFpqDTfug1y8DhlNNrk4KhH051shYwgF0tHPRHwZPnWO/3Vqw1STcI31PHZCErLws043ndpTbl+tvEsV27gELi7Fm1r6NbXjiZ1sxIfBtIlEjuI4kP/K3t/g7UozD2HYqSUZ+rOovwb+ivA25jns0d0J4GRWO/Qar940M/+lqXjRix4RQyyKehLUZsXV4pdbhodVun21pYHYPRND+zvOp6tleRjk60RnqY9uyrBXRFAl4oUpEBwkFK8G8xyjqoh+4pW884pCDY0nyipm2PHn8a9Nslj0yCEfq9W2bR0u2dOQCpsiSlmXMlsMv3ocnwpXXm24F1PwDrbjT9qg8g4cynr1PS0limVXdjwn6xwIMc2TBjwWiKBuwn/FitDOy4mpZpWZRZE4g7b+1mZ5UMz1aEBlpOYr/la3ZdM041OxG3yEAjsxTg87R6Ysb1q4FiZZ7cqbKCbUUzyfxZ6/Fsi22G6tLHiOWdE6jyAXyJPckEIGEIVP4Tl7nedRF03yS1YCs8tepUHcI9SpR1cmmCAbBrv/AjhNXQ98QWgMTL++0+zjiZgH+bdlqhDuqL5HQ+JzCot3PkLqkLIMEYSsiG0V8DS+uDUah+HdZBDTnuaTzq+Mp6GMqFhruvSVAhG9iBnMFLu02cVGGLqPehqD93quSNZKVw+svDARNah18oMK58QyhS8Qbu6hYbjv0TDleh4l0bL68bGSNsDtOqyLmWauw4cEPljTO4J/oWihgX782/A4RuzvYeZcYmEaqVCju7qONhrMhnmyzHjAyekbtrArItM1Td0KPh6Xq0dJE
- t1VUTfXr
- NQdmzfuo6QgggEjh3FgHcfjQDQakW8FeswSI1t0Z7ZbZvT1mLzX0sQSYYKJ4SPrenA/WmwSFQWRWDlsNmZSbz78bTiymUZq/CdMiDPkMicWkQqZMFRI24cLtPFTu14U3e3TZGv2pT5bizFXdtqysVIBlzYzB/bMOn23wu/R+N0332qjIfXIFufCpsgaZU3GLIBUkHBHD/qui6ImJdoRUdAtqexM3/koG7u2i7IgMRcz+PN60WREhh/jIU7g==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: icnw46qjcdp6bmnsqi47mushrzmo5tm1
+X-Rspamd-Queue-Id: EA7CA2000C
+X-Rspam-User: 
+X-HE-Tag: 1793974619-126874
+X-HE-Meta: U2FsdGVkX18WspgzVbJ6b/OV9wcad1MPmWzUMew17F4qixeXfNGnETzQS6ng2xjnYJSlotZ/B5HvxhgygEN+vwbHoTZ2BaAQEzoByU+kmPudDsj2v3WqBn5bxLFPkpRpvhREf7bARjKiZp+vCajS6mUWUjUOa26Yaksw9DXKj8rtpSX2iQ6T1r7Swxhpb0H52FyqlxBa4r4x1pSEazOI4Dflp0o8tt75zcm21fDJRIXiwWJfORH9gan4POpFk5iaszVmR7DmNE4/m0Ot7cKY264UN0guxXFoKX1aY6f12b5sLM5OeGKAd6Eg1nWwpQ5sqtoJQ1kz8ZW/LMKicZp4CuK5Ltd2LxshOpxSKqFxfH8YTdHVCf2N4Fgq8gg0NEa8XUzO9DEuqwd+xDe0AtqB97jVRY5PrvBxhynrghboMxE5XiGk+/71JppV7QzMMx7IuHDnKU3HC6nhNvJo2kKrLNVGL9r5Xa0hmKfmZ7eCaEAYIy1pZupD12wMuSa9DeveZCuLtTdaUn3xku/xWFd78kHkFmLbG2vQd0rVIBmqChYWWTW6pAdnzqJPY6E2ummk1XqITnkzudEXluBlqCkBK6Ym5lWr5KH1lijuJ7J9I5tSeK2svaZ9HH7+X5TMHfd10yIFEkvUIYfreVWGz+3pHqKq6q637MI50oc1Vh/1jdo6znOvlxaB1xsPU/DH16h9Nm0IoweBt4hgZJCPoPA5Qyl2lWpZuVj56zYbXkDugVt9ZpH0RflC5KQYIpKI5vEEQ+rinH1Tyu2+Uh2BcGRo367df4GqOiC0jl/Zx488GkbNzFodZBenEYcNyZKzGsi/l8MFfO0Lsa+iBKVwLIcaTMQkCiyoFbs+VHh20w6vKzbbfhNnC1b0sgiFo+rx8ylwanHP6IDP3X2Xzp/3faMKBz1daSvZ/LCpqxp1CGHvgIDnQYfvGH6TYmWPdClpsNxyHBpK8vJPG1U1S+l6T7N
+ 1wAtyZ+T
+ 3eg3Z96MNsqQQGXHzLQNkEjTBya09DAMkiyVpUj9A7s/urkFGpywZ0+NtsHxQwEFzl/sZIzUDSK1yzx8CHeFkvGxgbwbF89bQoaRMVUYXqjApTUOe/eICQpEsOicCEranyfNpoZW3zBeNhlinsGetpM3VsX9RjvYOpygb2TPwvI3T8R4u5zSJD78oNArOgmzXO3Sq5QmpC8OY2AVmABdvXwGIYwEBdSiBPvDQF6zDUhzz77R/JtDoS7GeVUiwbDAYSt+0wh2cVa+7HT/cC6zyZw/8p4nvXm2DEV6Y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,14 +101,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 19 Oct 2026 16:06:46 -0700, Joanne Koong wrote:
-> move_folios_to_lru(), folio_batch_move_lru() and folios_put_refs() call
-> folio_unqueue_deferred_split() on folios where the refcount has dropped
-> to zero. In these paths, folio_unqueue_deferred_split() is called with
-> the lruvec lock often held (move_folios_to_lru() always holds it and
-> folio_batch_move_lru()/folios_put_refs() usually hold it for every folio
-> in the batch except the first). However, it's not needed to hold the
-> lruvec lock.
+On Thu, 29 Oct 2026 13:41:57 -0700, Joanne Koong wrote:
+> folio_batch_move_lru() and folios_put_refs() take the lruvec's lru_lock
+> once per batch, but they update the node and memcg lruvec stats for
+> every folio in the batch while holding the lock. Only the LRU lists and
+> the memcg lru_zone_size need lru_lock. Updating the stats while holding
+> the lru_lock is unnecessary, and they make up a large part of the
+> critical section, as seen in [1] where a change that added just a few
+> instructions to the memcg stat update path cost about 2% throughput
+> because the LRU stat updates run under lru_lock, and the overhead went
+> away once they were moved outside of the lock.
 > 
 > [...]
 
@@ -137,8 +132,8 @@ Note that commit hashes shown below are subject to change due to rebase,
 trailer updates or similar. Further, this is not a guarantee that the
 patches will go upstream. If in doubt, please check the listed branch.
 
-[1/1] mm: unqueue deferred split folios outside the lruvec lock
-      https://git.kernel.org/mm/core/c/8c38bf2a
+[1/1] mm: move LRU size stat updates out of lru_lock in folio batches
+      https://git.kernel.org/mm/core/c/ee65a1da
 
 -- 
 Cheers,
