@@ -1,102 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C423C606A330
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B7A606A32C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=nIN9eJWk
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=iicvIvre
 Received: by kanga.kvack.org (Postfix)
-	id BB1506B05B4; Fri,  6 Nov 2026 10:56:11 -0500 (EST)
+	id 0436E6B05B7; Fri,  6 Nov 2026 10:57:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B618C6B05B5; Fri,  6 Nov 2026 10:56:11 -0500 (EST)
+	id 019296B05B8; Fri,  6 Nov 2026 10:57:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4FC76B05B8; Fri,  6 Nov 2026 10:56:11 -0500 (EST)
+	id E4A776B05B9; Fri,  6 Nov 2026 10:57:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 73ADF6B05B4
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:56:11 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id ED4D8140D97
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:56:10 +0000 (UTC)
-X-FDA: 85405145700.14.6D76D16
-Received: from mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C3C3BC0009
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:56:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nIN9eJWk;
-	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id AD9156B05B7
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:57:23 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2396780D75
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:57:23 +0000 (UTC)
+X-FDA: 85405148766.09.62EDAD3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 60B6C80003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:57:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=iicvIvre;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793980569;
+	s=arc-20220608; t=1793980641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UfD8ZnH6BJz/4LIcV1+SpPJwWoacvDCqotJJBOhRHbY=;
-	b=e4s088N8key7c/vBe4U0ByR3ZATdKzvYYFPhXmNlGjHpGKPmY1901OS7MSIlUYp3IKz6gC
-	mwLoBkTXijWbwKHJM7c5bf6us7Q2hAOblccLHjegNYDW3GdF93PupmR43ywJWtjhCMM559
-	kWT1ZdEjO6lUNSLJzLjz5N7avwAxi+w=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793980569;
-	b=yDwOoBu9Jq/SeS4EpEsbpazDNOYruFt3NOxUQNslX5/Bq1tOj+hI/QEGx3dFRSWp1bL+Tu
-	5qUJV8UJ0sjlAmZ/+yGOoMhasbh+s9MfwxWML6CDclD2iq4zKfE/yIf14h961dG/tEKNLx
-	QNjhb65PWuCK3B58z1aca6kM7hQ2+kk=
+	bh=kGLkV2arTsITsFBFDWHaARE2+eYeJRko9HB2FvywEtA=;
+	b=7JzwOPpMG0ykU7y3hQ+kCfG3siunfXAHROKBSDLOgxoNPm3EaQxhLLqttsKyDpsNRW5PRv
+	8ybHrCkaDryvKq4ZRvMIZ0kNE9Xl/grxAEoV6n8tJjiEqRR+RBYsNAKjg5mvS+3Nl1ktJu
+	kWLZoMH0nxiLgrIihbSbeExI6XV1RVg=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=nIN9eJWk;
-	spf=pass (imf10.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=IUxtcrSK4ScUgL4iwrR/fCWoiD4BzoTR6aRMHmOVWZw=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793980567; v=1; x=1794585367;
- b=nIN9eJWkx0/Zp/tqNTNTIvfGLDUajdmUzVXC0+QaFWbCFAy2R9/Ih25xdkqBZ7HDtFUqSmKE
- oPvIQGjNMhiMAfVLoJ2QIEZ8nrCHtV1dqzun4eQFtCp9m72m0pGRyYmw5EW+soHwI2Rp+Zzrph5
- VW24hOtLjtiGG7UAilnor9hg=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 7a7c6486c02f11c8;
-	Fri, 06 Nov 2026 15:56:07 +0000
-X-Mizu-Trace-ID: 7a7c6486c02f11c8
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Usama Arif <usama.arif@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Nico Pache <nico.pache@linux.dev>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Hugh Dickins <hughd@google.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mm: don't allocate a page table under RCU in do_set_pmd()
-Date: Fri,  6 Nov 2026 07:56:03 -0800
-Message-ID: <20261106155604.3999641-1-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261106-khugepaged_set_pmd-v2-2-d2457b5e377a@kernel.org>
-References: 
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=iicvIvre;
+	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793980641;
+	b=KQahv0FHrodi+IkR57dFbJ6Az0Lm2iQrD/F0AHlG2/S4g6XI9mIlXmw0Wf8fqDDGUypbpa
+	MS0wIZBtShcjMsgFiH7t8iDL2b29aAsdSeKMK+HqnQobuuGncyJpM6Df6uurYU0TOHZFVL
+	JATnZJKvccnu014qIu9shx2spjExJHU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7CD76601BF;
+	Fri,  6 Nov 2026 15:57:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E850F1F0089F;
+	Fri,  6 Nov 2026 15:57:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793980640;
+	bh=kGLkV2arTsITsFBFDWHaARE2+eYeJRko9HB2FvywEtA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=iicvIvreJ71pkcvw1woL/L4zbavYkDErAVrArRIp0dsEjS5KXngMPY+bjbp3m/FKb
+	 c036lM6d9y2HoPzyRIKUUF/5Wiq9g9Q/PPMtAupq43FycCfj8H/teRDPmstoA13Uf8
+	 FnWskYgGKvCK7CeatILM3S21WjlcHZAT6gBX4HoM=
+Date: Fri, 6 Nov 2026 07:57:19 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+Cc: "Jose Fernandez (Anthropic)" <jose.fernandez@linux.dev>, Pedro Falcato
+ <pfalcato@suse.de>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan
+ Kara <jack@suse.cz>, David Hildenbrand <david@kernel.org>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm/filemap: stop fault-around when the walk steps
+ back
+Message-Id: <20261106075719.5ae53a9d248c9219381ee60e@linux-foundation.org>
+In-Reply-To: <4284c2d3-75cb-4e41-aa45-f7311e60ab4a@gmail.com>
+References: <20261031-jf-mm-filemap-map-pages-lower-bound-v2-1-21029744e589@linux.dev>
+	<aunPI5eOUOAEUa8d@pedro-suse.tail5790ac.ts.net>
+	<20261104-jf-filemap-v2-pedro-reply-r2-74c87c6fbcf@linux.dev>
+	<auxvLCiljPhy0n_q@pedro-suse.tail5790ac.ts.net>
+	<au0GBdGqu6cv5PMy@linux.dev>
+	<4284c2d3-75cb-4e41-aa45-f7311e60ab4a@gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: m347ey539p44xa3nhosisk6kxi6dmy77
-X-Rspamd-Queue-Id: C3C3BC0009
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9ukob8a4qxww4o7f96akqsmp7afs3tni
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1793980568-996273
-X-HE-Meta: U2FsdGVkX1+3Uu2KyMYNp7F46fqhLK5K2ZOx4yRo9MX8sb2lhfcO2BY2Q0Tx6R3M4NOO7c7i9obn9q8LFlPY+S86m50mT+sqZ/UXt128iAasYAuiqPKoo2NxWp6Gnp+Dk9z/cmALSARH0Ah2kj2OU2iwH9hOfAWV/O6ZZnKI56LDWYj2Jjo6e4VXCQ4nOFZINoStoFkQmedAs6JajKh6oiynCT019YRiJBd/5kFcpQueJhrbKMFfRaWJcBn3THLuStsr0QsR9LxqvorAmetAXq49rp3hyYt2Z9PTtOsmoUFJWNU3PmwLsxKhAJuR7+zuOSBitfIKv7iedtgtxRqKpFh+Wd8bP/dxvEYDwmgj5Ezi7OodOp8X5amM5ITkr1r2dgcbke9o54rN7ok5uML3RC3lGW4WlAuQiwMY6x6J5wyWJDCj1W5obZV8bRMmaQxYRO7ScFKcF1SsgXVoUejEycyDD4KQNRuEddAOy5Oxqr8XlueddUDZEg8GFvY1oPmUun/WUpxRb+SKS5gbq0ZwsnGz0uB3+WpZ0V/UQ9o87sJELQeM4cndJ6bP/Owf09VWkh1Wlud5NP7/fKA1bA7uuKRTNtAE/ZxL0DhC8Slq0rs3bvsQtjP4zpr9kbqrg05xW9Qf6bkymbpdisM8OnSNj5l3DxfcvqBBC9zadqE2xj2QbVxpEwLz0LqXEeMjB2skpzOSbNAsWy032Yj11a9K08kVe9hRlRZbRr3eBsTXjpjEkoiVppu9eCRO2wLceG2q4xKhbjLAGU713SWJqNkzqbBvEnHYeI24Gf1nHkRadkn7d+s9EMOG8Py31oWv2KCITnBWhAbxFTOM+AiISvbV51dkUHbzoQgNHFYqed5cupO4MK3njK0NP5BSGJZmXPxg+8cb+bcNme0jfdSj33rkzIphscOUXQvOL5/KoSzCziLu+aRZUoX4x9Yccxta31z/BV4yiDb9VgHPmiQ9s3R
- 3Nw5Ne5k
- Dl2Q+BpnB2vPCGrDXUWJFPzjgtVRRlKo4A2ONoP+lN2BQ6AkB+i8P98iH+YsKmNEelfCbtOk2oQF5yfvyD4vuCLTddTquDWkcB6bn2uuW5vb+Lv8xvDU/+6etp7ci8uvvnOUW4KE50X+nqQYYUukY5eYazh/zgicu4k/Y4BtNAE0Fl36O4RvKSLZ53PN+FEP4geGEyVCO6XRgPm8uNLi7d7XlNVej+dHS8B99zcA1Xxdz1v4Pic9Q8FP1Unix3n0eac/njAMDOJldR9ViXvMyERwkRzdRq9eafYYkDXuk7Z4WnFI=
+X-Spam-Status: No, score=-17.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,NICE_REPLY_A,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 60B6C80003
+X-HE-Tag: 1793980641-365428
+X-HE-Meta: U2FsdGVkX1/IgcHTCyMVSFCIKwpLOJWm8vldMxblyKwBcL7CKWQcSL1a1GfJ6kNQQPwU7LnpE4WE7N+vDJCkU3rdi706rTX/ADraqK4t7g/tqK0f1/bPhS6WJtfVjD/W0Rk2UX/d0mhpFGIM7uyRcwYXF7SilQ/ksU/BbHSfWgxBcikb59CXH95bXB2zHZ9ZgMftx34FLZOJZNWikmaOW5501bMzGGPMKCqzAIlVlfw3Am10a4LEjISzlWoWDjMPxhFqioZrfr/3bN/7clo8i+1GSDAfQIIBy9unGQHwhzABRTrrLE7iOdPATzFPbq5It3BS07sY0WxXjofwmtjci08dHc+OcNUrgMqWfd6YbskKoxn7EtNLP0/dw7oehyfHtI13vnJMYyW17lOMmHibRptZ+rqEzO3bGTHTADQMsJVxD6NWC37qQgcsjtD3FFoNAjM+WO0u7B+35ijGVzXq56+Ysbvxnxoj+0/nX1FTVdvtjMgUB1KhVnB9FQdFoyyUWn9Wq1EJ6fW1cN2D428Pw5TVuvQNeomQCOpnjsA/QJgbuyL+BsnQFxURnPQjD+PjMDenb4fIve5Xkp+I5eO4uLfA4Ubd54BkawOCnQi10RX2jpkniutALcBf81H4bt4WDGfG57KTwQcJbkaWvo9qtW2d964ycIkzhAtdZ3ial62aBF8mYlDK7gSjWsfNLIQM1B3N1OQf29ckNHheCJm9zzeHyLPmi1AuAXZNWT6rkW97DXKMS5Vht/rHSzECTum9UID98gCCyuM6O7JGqvOcQnXpnDh0RhR1XMI9kLlGBUGWcs9YEOYguTKukboLfStUNPEkfoKVgpMxPk6D/UjopB0V8Jo/Eu6aiqMzwQPZ128iecYO3a5felVZbGBOOhXMztQs2EwxcxKNrU5qbvJ+IuiYnuPmsiLGTPig4xqavJcbc4kys874jsN65PeJr7YvqBrmcNELrRLnkazXXKK
+ W+q8FN3o
+ qK8GenoaEmwJ/WmMECUBQttOL6im+8lJscHbmsNoutVEaiIzIR3XTGNRFKvsJmFdBRvSSVwhF7U3T3KFm97TW6ZCnFCsLkjCCCRJHZlNPEE1CtMI+Nyq+RiN1QdJJTtv3sainZq+dbZNSN+uL6NnX83YW1i2G2l/yMbs02+U5AzMGYIspgm3YHQpwGKAN5mHcBJYRmRt9VGShoLRPFMuTh1qsDOYvhkbQz10A/aVahk83KxPOJl2OHwz01CwQwif9J/p8xUZrBZ8ZHdEbHRxZ9bBTca8ZxhyHIgEKcUQ9itG9PGpS3Ovpxv7/T28ScchSN3iP0PCJx/qI8Ol33MtlrguPAzSyhfNnjVaB6xlAXgICOKbBMNKq7NSszAdNE545bSn8AQugm80x66iMQCRa8aXBBQjsbXKSymd3pqfG2NTIKTKVsZPMTwqrF7Kd4ZUV1b+sV/57CE5siEwMx+gYjFxR838FfdPswsXHjpRmn9N9NvGurgFmRvZrICE/dxe6vKnqd1z+as6i2RoDQowgXDEZag==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,131 +101,173 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, 06 Nov 2026 13:36:13 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Fri, 6 Nov 2026 12:36:05 +0100 Krystian Kaniewski <krystianmkaniewski@gmail.com> wrote:
 
-> do_fault_around() skips PTE table preallocation when the PMD already points
-> to a PTE table. A concurrent collapse can then retract that table and
-> clear the PMD before filemap_map_pages() locks the new PMD-sized folio.
-> 
-> filemap_map_pmd() can then call do_set_pmd() with an empty PMD and no
-> preallocated table. On PowerPC hash MMU, do_set_pmd() then tries
-> allocating a PTE table to deposit. But filemap_map_pmd() calls
-> do_set_pmd() under RCU, so allocating from that context is not good.
-> 
-> This race became possible when retract_page_tables() stopped taking the
-> mmap and VMA locks. Previously, those locks excluded retraction while
-> the fault was in progress.
-> 
-> Add a may_alloc argument to do_set_pmd() and pass false from
-> filemap_map_pmd(), so we can fail with VM_FAULT_FALLBACK instead of
-> trying to allocate.
-> 
-> This issue should be fairly hard to hit in practice.
->
+> Andrew, Jose's Tested-by for the xarray patch is on the filemap patch
+> in mm-hotfixes-unstable.
 
-Yes, I imagine it was very difficult to reproduce, doing a sleeping
-pte_alloc_one() inside filemap_map_pmd()'s RCU read-side section
-when a concurrent retract_page_tables() empties the PMD. Only
-possible on PowerPC.
+So it is, thanks.  I've moved that into "xarray: fix index jumping
+backwards in xas_find()":
 
-> Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
-> ---
 
-Acked-by: Usama Arif <usama.arif@linux.dev>
+From: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+Subject: xarray: fix index jumping backwards in xas_find()
+Date: Fri, 4 Sep 2026 14:12:59 +0200
 
->  include/linux/mm.h |  3 ++-
->  mm/filemap.c       |  2 +-
->  mm/khugepaged.c    |  2 +-
->  mm/memory.c        | 10 +++++++---
->  4 files changed, 11 insertions(+), 6 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index a2dd76cc5bbfe..bd144fec5f5da 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -2156,7 +2156,8 @@ static inline pte_t maybe_mkwrite(pte_t pte, struct vm_area_struct *vma)
->  	return pte;
->  }
->  
-> -vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *page);
-> +vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *page,
-> +		bool may_alloc);
->  void set_pte_range(struct vm_fault *vmf, struct folio *folio,
->  		struct page *page, unsigned int nr, unsigned long addr);
->  
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 86297841f9955..9871b4f32a916 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3745,7 +3745,7 @@ static bool filemap_map_pmd(struct vm_fault *vmf, struct folio *folio,
->  
->  	if (pmd_none(*vmf->pmd) && folio_test_pmd_mappable(folio)) {
->  		struct page *page = folio_file_page(folio, start);
-> -		vm_fault_t ret = do_set_pmd(vmf, folio, page);
-> +		vm_fault_t ret = do_set_pmd(vmf, folio, page, /* may_alloc= */ false);
->  		if (!ret) {
->  			/* The page is mapped successfully, reference consumed. */
->  			folio_unlock(folio);
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 8d9f05a39afb3..5836e08abc984 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -1826,7 +1826,7 @@ static enum scan_result set_huge_pmd(struct vm_area_struct *vma, unsigned long a
->  	}
->  
->  	vmf.pmd = pmdp;
-> -	if (do_set_pmd(&vmf, folio, page))
-> +	if (do_set_pmd(&vmf, folio, page, /* may_alloc= */ true))
->  		return SCAN_FAIL;
->  
->  	folio_get(folio);
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 421064aef3cf0..6eeed43b05a19 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -5682,7 +5682,8 @@ static void deposit_prealloc_pte(struct vm_fault *vmf)
->  	vmf->prealloc_pte = NULL;
->  }
->  
-> -vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *page)
-> +vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *page,
-> +		bool may_alloc)
->  {
->  	struct vm_area_struct *vma = vmf->vma;
->  	bool write = vmf->flags & FAULT_FLAG_WRITE;
-> @@ -5723,6 +5724,8 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
->  	 * related to pte entry. Use the preallocated table for that.
->  	 */
->  	if (arch_needs_pgtable_deposit() && !vmf->prealloc_pte) {
-> +		if (!may_alloc)
-> +			return VM_FAULT_FALLBACK;
->  		vmf->prealloc_pte = pte_alloc_one(vma->vm_mm);
->  		if (!vmf->prealloc_pte)
->  			return VM_FAULT_OOM;
-> @@ -5764,7 +5767,8 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
->  	return ret;
->  }
->  #else
-> -vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *page)
-> +vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *page,
-> +		bool may_alloc)
->  {
->  	return VM_FAULT_FALLBACK;
->  }
-> @@ -5888,7 +5892,7 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
->  
->  	if (pmd_none(*vmf->pmd)) {
->  		if (!needs_fallback && folio_test_pmd_mappable(folio)) {
-> -			ret = do_set_pmd(vmf, folio, page);
-> +			ret = do_set_pmd(vmf, folio, page, /* may_alloc= */ true);
->  			if (ret != VM_FAULT_FALLBACK)
->  				return ret;
->  		}
-> 
-> -- 
-> 2.43.0
-> 
-> 
+A bug in the XArray iterator xas_find() causes the iterator's index
+(xas->xa_index) to jump backwards when iterating over a multi-index entry
+(like a THP) that resides in a non-leaf node and is concurrently split.
+
+When iterating over a multi-index entry in a non-leaf node, xas_load()
+sets xas->xa_offset to the base offset of the entry, but leaves
+xas->xa_index at the requested index.  When the caller subsequently wants
+to advance to the next entry, xas_find() is called.  xas_find() attempts
+to synchronize xas->xa_offset with xas->xa_index before advancing. 
+However, the fixup logic was incorrectly restricted to leaf nodes
+(!xas->xa_node->shift).  Because the THP resides in a non-leaf node, the
+fixup is skipped.
+
+As a result, xas_find() simply increments xas->xa_offset and recalculates
+xas->xa_index based on this new offset.  This causes xas->xa_index to jump
+backwards.  If the THP was concurrently split, the entry at the new offset
+is a node pointer, so xas_find() descends into it and returns the folio at
+the backwards index.  The caller (filemap_map_pages()) then calculates the
+PTE pointer based on this backwards index, resulting in an invalid memory
+access such as an out-of-bounds read or use-after-free on a page-table
+page freed via tlb_remove_table_rcu().
+
+A userspace access that faults in a file-backed mapping can trigger this
+path.  When the index moves backwards, filemap_map_pages() can calculate a
+PTE outside the page locked for fault-around and dereference a freed
+page-table page, resulting in a KASAN-detected use-after-free read.
+
+To fix this, check if xas->xa_offset matches get_offset(xas->xa_index,
+xas->xa_node).  If it does not and the node is a non-leaf node, set
+xas->xa_offset to get_offset(xas->xa_index, xas->xa_node) before
+advancing.  Also add test cases in test_xarray to verify xas_find()
+behavior when iterating over and splitting multi-index entries.
+
+Link: https://lore.kernel.org/20260904121301.200049-1-krystianmkaniewski@gmail.com
+Fixes: b803b42823d0 ("xarray: Add XArray iterators")
+Reported-by: syzbot+b72767277f29b6407083@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=b72767277f29b6407083
+Closes: https://syzkaller.appspot.com/ai_job?id=a01c56bd-74d0-411c-afb4-ee6f0cb6cb61
+Signed-off-by: Krystian Kaniewski <krystianmkaniewski@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Tested-by: Jose Fernandez (Anthropic) <jose.fernandez@linux.dev>
+  Link: https://lore.kernel.org/20261104-jf-filemap-v2-pedro-reply-r2-74c87c6fbcf@linux.dev
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: <stable@vger.kernel.org>
+---
+
+ lib/test_xarray.c |   70 ++++++++++++++++++++++++++++++++++++++++++++
+ lib/xarray.c      |    8 +++--
+ 2 files changed, 75 insertions(+), 3 deletions(-)
+
+--- a/lib/test_xarray.c~xarray-fix-index-jumping-backwards-in-xas_find
++++ a/lib/test_xarray.c
+@@ -1247,6 +1247,75 @@ static noinline void check_multi_find_3(
+ 	}
+ }
+ 
++static noinline void check_multi_find_4(struct xarray *xa)
++{
++#ifdef CONFIG_XARRAY_MULTI
++	unsigned int order = XA_CHUNK_SHIFT + 1;
++	unsigned long next = 1UL << order;
++	unsigned long start = next - 1;
++	XA_STATE(xas, xa, start);
++	XA_STATE_ORDER(split, xa, 0, 0);
++	void *entry;
++	unsigned long i;
++
++	/* Multi-index entry in two slots of a non-leaf node. */
++	xa_store_order(xa, 0, order, xa_mk_index(0), GFP_KERNEL);
++	XA_BUG_ON(xa, xa_store_index(xa, next, GFP_KERNEL) != NULL);
++
++	rcu_read_lock();
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != xa_mk_index(0));
++	XA_BUG_ON(xa, xas.xa_index != start);
++
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != xa_mk_index(next));
++	XA_BUG_ON(xa, xas.xa_index != next);
++
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != NULL);
++	rcu_read_unlock();
++
++	xa_erase_index(xa, next);
++	xa_erase_index(xa, 0);
++	XA_BUG_ON(xa, !xa_empty(xa));
++
++	/* Split the multi-index entry after a lookup begins inside it. */
++	xa_store_order(xa, 0, order, xa_mk_index(0), GFP_KERNEL);
++	XA_BUG_ON(xa, xa_store_index(xa, next, GFP_KERNEL) != NULL);
++
++	xas_set(&xas, start);
++	rcu_read_lock();
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != xa_mk_index(0));
++	XA_BUG_ON(xa, xas.xa_index != start);
++	rcu_read_unlock();
++
++	xas_split_alloc(&split, xa_mk_index(0), order, GFP_KERNEL);
++	if (xas_error(&split)) {
++		XA_BUG_ON(xa, true);
++		goto out;
++	}
++	xas_lock(&split);
++	xas_split(&split, xa_mk_index(0), order);
++	for (i = 0; i < next; i++)
++		__xa_store(xa, i, xa_mk_index(i), 0);
++	xas_unlock(&split);
++
++	rcu_read_lock();
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != xa_mk_index(next));
++	XA_BUG_ON(xa, xas.xa_index != next);
++
++	entry = xas_find(&xas, ULONG_MAX);
++	XA_BUG_ON(xa, entry != NULL);
++	rcu_read_unlock();
++
++out:
++	xa_destroy(xa);
++	XA_BUG_ON(xa, !xa_empty(xa));
++#endif
++}
++
+ static noinline void check_find_1(struct xarray *xa)
+ {
+ 	unsigned long i, j, k;
+@@ -1370,6 +1439,7 @@ static noinline void check_find(struct x
+ 		check_multi_find_1(xa, i);
+ 	check_multi_find_2(xa);
+ 	check_multi_find_3(xa);
++	check_multi_find_4(xa);
+ }
+ 
+ /* See find_swap_entry() in mm/shmem.c */
+--- a/lib/xarray.c~xarray-fix-index-jumping-backwards-in-xas_find
++++ a/lib/xarray.c
+@@ -1410,9 +1410,11 @@ void *xas_find(struct xa_state *xas, uns
+ 		entry = xas_load(xas);
+ 		if (entry || xas_not_node(xas->xa_node))
+ 			return entry;
+-	} else if (!xas->xa_node->shift &&
+-		    xas->xa_offset != (xas->xa_index & XA_CHUNK_MASK)) {
+-		xas->xa_offset = ((xas->xa_index - 1) & XA_CHUNK_MASK) + 1;
++	} else if (xas->xa_offset != get_offset(xas->xa_index, xas->xa_node)) {
++		if (!xas->xa_node->shift)
++			xas->xa_offset = ((xas->xa_index - 1) & XA_CHUNK_MASK) + 1;
++		else
++			xas->xa_offset = get_offset(xas->xa_index, xas->xa_node);
+ 	}
+ 
+ 	xas_next_offset(xas);
+_
+
 
