@@ -1,109 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35935606D81D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 09:29:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6737606A32D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 09:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VG9BxYMs
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=awIOW8uj
 Received: by kanga.kvack.org (Postfix)
-	id 50A386B05B0; Fri,  6 Nov 2026 04:29:36 -0500 (EST)
+	id D6F9C6B05B3; Fri,  6 Nov 2026 04:29:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BBD66B05B1; Fri,  6 Nov 2026 04:29:36 -0500 (EST)
+	id D20716B05B4; Fri,  6 Nov 2026 04:29:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3D18E6B05B3; Fri,  6 Nov 2026 04:29:36 -0500 (EST)
+	id C10D86B05B6; Fri,  6 Nov 2026 04:29:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F4AC6B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:29:36 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFAEB1A0D71
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:29:34 +0000 (UTC)
-X-FDA: 85404171468.17.89DEADB
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id B8A71160002
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:29:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VG9BxYMs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A00E66B05B3
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:29:56 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3F0B1120CE0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:29:56 +0000 (UTC)
+X-FDA: 85404172392.23.83E0B62
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 5BFF640002
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:29:54 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=awIOW8uj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793957372;
+	s=arc-20220608; t=1793957394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WneRI8zEINthMc9GHmH6/zD7m3iR83/KjXE9iSNfWjg=;
-	b=N+HAAP2/uGG6nO7CY4VDQPkS2gQ+03Fzq37MtNp1aPPpKzyH/4h0P/wbP/L0iW36R/gKh+
-	HDygED1Ieh7ckvp+YCeRxQyYNymO07isJ9U5HMeyiISuBRanQ0b/BDXQ6VLqIJb/ilsO3G
-	PywqWpk6Jmg1odMvbQaLte0/2hpcVGM=
+	bh=waJSczF0G97CDukNHhtkD5XBmdR6Pv681qHRenWC8Ck=;
+	b=N+QrYKx+8ApY6pvnFX1/5qTx4iISdsOLY8MxUdK6v5i+IyOwsfr1A+npyhaMc7tAGv72rm
+	zW1uv+nEUY/BrxnCxISdvrn3mHmsYT/nKQqEa6hCyr7MMsdAtrsOnShHpXgdTcu/Z3EmBU
+	wsnUvpemdRybcxJgQLqkWp4R2FIJQwg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VG9BxYMs;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=awIOW8uj;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf12.hostedemail.com: domain of vernon2gm@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=vernon2gm@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793957372;
-	b=iT0k7PjHq3J1URMk67A383D5bQcB737LQG/TAXBU5XAJSz+9+33zPfUIdaTSdIViJyFsRQ
-	ynLLrgDBIYbdYRhLwWd9vguLMgw8yFypejZ+HwSode7+bEZJLXx8ZkVmsgouuWtMwouagn
-	8gFZ8qlU1qYIoe0euG5WhTan2sRrRNY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 97797438E2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:29:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F13B1F00900
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:29:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793957371;
-	bh=WneRI8zEINthMc9GHmH6/zD7m3iR83/KjXE9iSNfWjg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VG9BxYMs/WkgcUa5xAMa0aimQAVFO9n94zvHJYAgPP0epXkE+GOOnJ1msivl/bciT
-	 DUZEmeF1iutR2OZOcyFL3vTsN9QSHEyhoQVf06DYHVz0C1JoV72waTlB8LstOkBNpl
-	 oHM0zmTMJsu9M0+4s8j6Z+D14jUy4kharCNQ/N5z1PTEmZJ96EMzyC3hsXkTC1jOL4
-	 PgRVW8WwvINXHon1a6DRI+b4Uh0G7wSdxReZHUspA77FB8EiAnVJdvFydyv88Fn6EL
-	 70skqzOxMLoLvm5qnVU5iJGn4zC0jJ0Y8pPl8IU1G+ZKaVBJikgaILeT23gjwFgaUP
-	 FqtqZE86hsv+g==
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-93e64d52949so37938785a.1
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 01:29:31 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBz62BO4tPM8sPM6qbf8nWExgJ6p2nfWRW7XPzrWYGQc4pijTmDEEg710qx+xiu0E6uLIiFO/X7WJw==@kvack.org
-X-Gm-Message-State: APuU4Z+DW5viJTzJMGT7/+mb+HBuYCp+88KG3m8zCweg25ymL8hrZxmW
-	Q35/JnCL8hH2Th7Bpyd6HYaTIVxMpJB5GR1hWQ000Oe7MdahzUK+qbZqnfBTAI6M1M1BdNealoK
-	90/C/nYLnl1+87Rcc6MEOrtVn3LRDFxQ=
-X-Received: by 2002:a05:620a:4143:b0:93e:c12c:f11e with SMTP id
- af79cd13be357-945f35fc301mr264775585a.74.1793957370683; Fri, 06 Nov 2026
- 01:29:30 -0800 (PST)
+	t=1793957394;
+	b=rm2p65Q8a5ZU/pofnScdBd5LQhFoPAUhzEyJrQ0NF98D8AAH3yc5eNNfynwp/Z5T4d1Sfv
+	f0r3C3hRzcx46KjHk/SFdOkHlRSLBZVOEfc2EYXYb/z+B8DQ9ZMlSNsGOeOPoRzMP1lN2C
+	AmGQ37uVb9Ut+loFZo6xiUopVAqS0R0=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3ace1f3897cso220355a91.0
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 01:29:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793957393; x=1794562193; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=waJSczF0G97CDukNHhtkD5XBmdR6Pv681qHRenWC8Ck=;
+        b=awIOW8ujmZd9caAsJtL2Q8s27Ytgx9OlF6Wjm77kHoGrcyTBjMJOfN99ilvhdh5nKs
+         zrpeBfK3Dx4eNRoF1MH61To/RCWb0NzegIk2KNWfhSZ0BPoqJS61LGaZ8LrvyFLqyfyD
+         Jiimxy/z4RgxzcgXoZb4zUwPn2Df/8sGwseH7XMlENSAs336iL9BMc1/KLCcdDSAF9bV
+         tgOrbS7X7dH3cgQ735EuFcMc9OE7yTjYgCxJs/3oLCqnPdYupmXBLxg6ITBHEbrBwTFp
+         AVKmnOlyJ2B0Rrib8ncXrmeUAx5eEcFrdMG7RkbG6UC4Az8+C2qF6hcwbw8PxcvXp6i3
+         g0JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793957393; x=1794562193;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=waJSczF0G97CDukNHhtkD5XBmdR6Pv681qHRenWC8Ck=;
+        b=1EezB0PkJyIHStdHqtvd7HndVJzjhA3AuEJeGRKxlAnvOn1Z7Hyt8bU8JBtpOsAAAA
+         XWadT7mxxaDb2nUrPaDcIckz+/nJUEYy0kWqg5VaCCKZRiEcJlikTzr8MfHDe6XQ8WRS
+         qcELNsr0iSdZWMRVCiaeQHqe3F2WMCs7zXxY3ME29PMoSdT6yOqk/ssB0G2frEqAAYwH
+         OnMPXbczXREcetQPp1Jpi2tj0ujuHiKtudZIJhj+J/5EE44Hsb2HROI32BFwhZXcfX47
+         rnS/E8U/y77AuySnlUDLtCBZEQieElfPy1WYPzhcz9QTUmjWytOxrUVaRY43e3cQnJwg
+         ryTA==
+X-Forwarded-Encrypted: i=1; AL+hErHbBlwUpQdqKzW2+GL8BUTj9WsE9R+evm9N3oqsppoFDF7LMWrAbDIC9K7t2dNyq23HuNt43Tpykw==@kvack.org
+X-Gm-Message-State: APuU4Z9tRNW1Un5Ttk8V02J0vFtlnlRGc0adjZ4ZwBfPtXaffgPLSgCn
+	W3URuXQ2AybxtWHhB/q4/LKdEiFa+sBmNE978uK+VMT7jPWPhuch7h2q
+X-Gm-Gg: AYBFou1gWY8FbX8jYAtywAiAqKbI0NK7uz640HNPdCzYtgSptF7JQCQhVd6Czw7ZZDq
+	RgAibkUr5IAdOqJwtSNl5wmzAubITNg//UZ14jqVPKLE+rwsDDdUAm+X6kE3PI6yhRT49YqmmAB
+	P/l5bnv8hBpifddtLJ9fDvXUt0iu+Xk5stofxB6LOUlC6A1nA4adXgBziGpafoi7qb+XncU7ZVp
+	Qv3G0tux0t1dnAGUGUbENqhD/s+jKP8vlzwp858NqNHui/SXxiOZOxOqos5Gy+GnT0FrSiwzDfe
+	7ssVW8M5Kj59eMD8cIdu3JxAFfXQZjOIyU8a0CxMxYrjjd94kpLzTuRHcEhBXro0f7fc7Q/ETwy
+	V4+SUnu76BQcaEgwubM+CoRqYHPzqijJVgDXB5CKy5hLSWT7vRe4G919n8U+ulTAt+5MZxU0RxP
+	buJZiwMgaQtMP38mEHX/UQ6MfVRna2on5WBnKBQadcy3wVeLQLceOBY5yuwK7eLYC6NoOZmMcrg
+	DBQNdKnU4uXMX/RwbwP5KoUnIqbRaIkZiPmynVyw57LXwJCb0Vm6sEk+1lgvkAqriM6eFbAhbry
+	jXhQX0ebpFe5H1mcyeps54rUMPs8run2ZU7QlyWuqs7D1CPFpNmlRgM/ZLlwciUB
+X-Received: by 2002:a17:90b:2c8f:b0:3ac:8897:7ba5 with SMTP id 98e67ed59e1d1-3b0db713f11mr1803189a91.59.1793957393089;
+        Fri, 06 Nov 2026 01:29:53 -0800 (PST)
+Received: from localhost.localdomain ([240e:b8f:1df9:a600:c693:b19f:ada0:748])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b0b326add7sm7043845a91.8.2026.11.06.01.29.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 01:29:52 -0800 (PST)
+Date: Fri, 6 Nov 2026 17:29:45 +0800
+From: Vernon Yang <vernon2gm@gmail.com>
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/3] mm/khugepaged: release contended mmap read lock
+ after scanning enough VMAs
+Message-ID: <b48e1b6d-0286-489c-a688-cf751fb74fe6@gmail.com>
+References: <20261105-khugepaged-latency-fix-v2-0-4384bbfe4606@kernel.org>
+ <20261105-khugepaged-latency-fix-v2-3-4384bbfe4606@kernel.org>
+ <257ab860-b408-4897-838b-e7b68f981d6c@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261026084035.535989-1-hui.zhu@linux.dev> <CAMgjq7AJSU9jUBTHGcm05mtGBH4EMQ_ua9YNwuLOGVzhkdLKkA@mail.gmail.com>
- <CAGsJ_4zPZg6pCuhDtTpSkueS2EDSfWeYa23h7kC9hEU0iGB-+w@mail.gmail.com>
- <CAMgjq7DvmrwTu0vz7oHx7y7w1B9uA0AbS3YJ5CcrDVg9VwKqpw@mail.gmail.com>
- <CAMgjq7A6jJQ_Ncp0BCqjQJ8pJXrjr1PoOu0rdj0NJOivKp6e+A@mail.gmail.com>
- <CAGsJ_4zO5S5XFc6dd70wKEs_mzqu_QW2bGOPyhKo4w2cjZrWUQ@mail.gmail.com> <8e5956d5-ae03-40c0-b5a0-bd550f4c14b3@linux.dev>
-In-Reply-To: <8e5956d5-ae03-40c0-b5a0-bd550f4c14b3@linux.dev>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 6 Nov 2026 17:29:19 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4wzDCqBsbQyAUiY=+iHNzDw0+qRvuKLQ_FWpc9CunSmvA@mail.gmail.com>
-X-Gm-Features: AclHuK_055utCAu_emgM4jBlSxIibsKx9PY20xKuJpfTBMPvN5423Jhekgjf2qY
-Message-ID: <CAGsJ_4wzDCqBsbQyAUiY=+iHNzDw0+qRvuKLQ_FWpc9CunSmvA@mail.gmail.com>
-Subject: Re: [PATCH v2] mm/mglru: fix a no-op lru_gen_clear_refs() call in lru_lazyfree()
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: Kairui Song <ryncsn@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Yu Zhao <yuzhao@google.com>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, Hui Zhu <zhuhui@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <257ab860-b408-4897-838b-e7b68f981d6c@gmail.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 5BFF640002
+X-Stat-Signature: 1w4593c1gysimfiehhncb5pomq46ofjg
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B8A71160002
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: i5we9w17eowbzafu46w6sszzfwhd3mit
-X-HE-Tag: 1793957372-178362
-X-HE-Meta: U2FsdGVkX1+EgBDFW9lfFYDkIJy+MhniPk5dO2HrDGZeYAqhROr7O0ORTZyO4dPPhlzsQ3CIYhHNBfnTbBF0/A3CMPZQ7WOrDAUGImTrK8hYL0Jj/4a/KTbY4rFFK2UoQziGWkN2gGcyte01Pz78ktvTA/eJsI6kT5xz1RlDShtR3ZJsMY0B64A5iOPV8Xribf2ZVFm0W60CyKSPzaMN1rr6CwbyOdj3V+0fB7+vsWaHTqQkTMOSzRuQacZUvdxaB+0ppMVQv/OyiT8/zVYQQGNroaRfolroUWqSBdCqP7WVewc3cPcKvkeuq1xE7jETasYKztcUBcJbcPjpLQ4LmFttHcjNsO17mOzXFbpOyRgyjz/PIszMteSa5J/KnBAMvyqAnsvqFjvQaQvzwhjaNuE0k+SLjzsrY4CN5k2LIxj6jBeKPo7bNzCoeISFb0X+tWL2dTWUJPbioJfvcZ+FuAyLbTZiu4wlP/kGshIDUFylj23Gx+UEgOc/gvEFawmqFhZhMvlOFyWfGrsr8GvljwfycCBidvSqaUIt8VnBoyNOA34xYilkgyyPlwxh4O67k3EmcBBlFPuv50CmgZ5nn44HqXv/wQumzKfJyO6gTbvZJSCG8Rfy0aMJ8IbMT5NxM+KizXdCi5BFNcVhmayA9X+Sx8AijHDreELp7wJ8UpTE0iJdLu/G8N494nXRTVnTCygVsJVEl/W52hPO0aHqkafJujvUMwU5nt89hFVvRU3ixgWCEhW8YEPrnss9D3RVy059n9CdoTCCLQMmWOHEXJMT2Eezcws5rz4qh0ytlPO/Nju3lF304F9qcFDfFCf5PFf6GweoHd31BYR+1xJdAC0xEsgzHvNEr/crwfCPey0G9LbkWWXq9S8uyoGQjHEtlODT1heoIGB1DuvZKTPJI3mp3r5QJpjvfYMw2siA2i3QbwxhZO6QqHNUryua2z2U5kEFzLIBcxcbtIBf/O3
- S5ogTU82
- DJOz8+pVQT7oVDX2neQ7U8hByvPUzfYEmcbEx1hpsyayZPLeONyaPWjWLkI1ZW7z4dry9pXl0D2UbKBj+3H/bpTm5pxh+qw8Wi3KA3+fkYzkwx+NaK6AOub/N7hA+1/lL1JuLOBD/bGjMQbRfc0NEYT4d7QGcoXBU+LPsaSY+sMhz6j4uZBYVYjLxHY36Pi4iBbm/GqRN7xYi3vprII6DWqdTiZAgjp23SuL6Di00uNf6D7k6gQNhtnsnGRnBUiaw0gUWZoSdDePDYlHcKtLUYQlahPXhJT05AfRd5A1YeGyQ/S98omF+c5ccOrXLrG4gptj+szjkA5ona3Adaf7BTkLOAkrbr2jjFYzpHivQowFwHumKQix6N+OWwle0cLCKvwxvEYun3IgcoaWATlWB1pBHD0Uo5Z+6dWVOfjK06pbcTx/kBX8xL3/rUg==
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793957394-947003
+X-HE-Meta: U2FsdGVkX1/Xhon4klLuyzffI7Lu6BX+JKl07Ug31gxoTwJZMRbTXcLniPAHpCQQUty52qjf8fEh9TBKwzQ0VFaYNZvrbXROuBKYy/7ZCkVzb0aSHn4gi5hhsUnnNNnEr96JzQ0xefWBpFdFLOuAvdQUYnSTpL//ObbxSTCzBYQFZBiFO8MESFzdpGcJKs6XatBai3ekOEh9wd9TSorhVC9MozbX4HLyyldrxafnE9LqvsXb41jIzxFryLyJa0iZ8/66u3xG4ov3m02dvVpbZmojDH6fOrqR1sGh6t2SRjGX0lVHX0nS85C97MyXVtqTQQvMIOWNtWjqIt6ZReI/i2nBfB++X5OzdaxVIJBOKCEICcBZOb3VHpCY4UCw0bsXh9kLMwSJ2axbHVVE1tmHKW64I/IhL5wG0Z6QslYZQWJD/TkJOunBng+iOa2T6855Nmrc+4E6/GhEHqzlz0tOQ0sG2+YkHMNtAL6tjGqKyioH9eLJu88Rp/3denDH33qtOsnbkhPbBvUW0ha+m/pz4OhIhxZ8mgKTMr1jDJ6uU0vIaKK0MMn+E/gbw25yRAuHI890bfAmIIhvYfi/9+zvnw818Q79dwYtQ4jPuAayStnue4ywStKEBN2j1d0EAbWGTWMr/Z4A/W7sZFwvrNGtYRHiP8Weili09lm9nxAO/qA2ve81QuAuGKnaq9s+tUNJcopWuKAYHObH4EMqeQVp9pSkr7Uo4iAdKuuqIKaCNE//2IMVhL6KAKqSXx+pQpYUH8te+xAebcvwW2wZOoofp9evT+Q8NiHyUAIf0X0rba4icv9se0a8LRr9gnIVhczGnFDEzxWVC6FMy7FatXqIgXiWv2Yk7qedLuNmy6RGOTZRfljKaQ9gM5aN3f+VhxmFTImcTTko7mdsuZs6QACU5VPXfglSsJkU8KplUKINV2Rkm4Z+x8NocgliWU56aCznfpBIgSQYmjY3DVlkLWq
+ nBW6NVYc
+ Uw9Q/N4EToWgyMsM1xFv8bp2U/68g4Dt5hg8V9VUPQygUhRVfwdgscwVf7sIyO876R1hvscO2bvsm0Ksz6x0U5wAjGdDtlaLCjS1L19KQuBUeugnAoj3aRedWA6ohL7+Am9nLh5BsYrKCM38Z6MJpwMiYCeDnVPPlvbWQrILjjjxUHs1uKEkfvuMiFfPrnFSFLflzE4M6vBlIJoq82u5vn0H7fSin7vMAKP+DX5CgXlW4Pd7E8b6opGIRU3wwfGmIPLetmiXCYRUHqPouW2PQyCB5ao/RxPg/LynFGCIx/UXSJ6lj1moiStJvy+UQGSJxA0M1NBxJhXASuTV7U9KFt146N2fZzEzHc0s0BMnINtT7IHBzzwH21an2cD4rrh+9moV2iZYD1gMgOcbUPrJsBX0rMPfirk7WDUTUpUpICCqqSHRtm5SpBjetXsi1g5TuavdMYafvX0XR1dj9RrqV5rUCrSKv6D5UNgq64gxdHyigXdl8z8RHggIsPEXAbsopT8K3
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,185 +132,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 4:38=E2=80=AFPM Hui Zhu <hui.zhu@linux.dev> wrote:
->
->
-> 2026/11/6 05:13, Barry Song:
-> > On Sat, Oct 31, 2026 at 3:27=E2=80=AFPM Kairui Song <ryncsn@gmail.com> =
-wrote:
-> > [...]
-> >>>>>>   mm/folio.c | 6 ++----
-> >>>>>>   1 file changed, 2 insertions(+), 4 deletions(-)
-> >>>>>>
-> >>>>>> diff --git a/mm/folio.c b/mm/folio.c
-> >>>>>> index 35e242b48870..ea3adb6a89d7 100644
-> >>>>>> --- a/mm/folio.c
-> >>>>>> +++ b/mm/folio.c
-> >>>>>> @@ -597,12 +597,10 @@ static void lru_lazyfree(struct lruvec *lruv=
-ec, struct folio *folio)
-> >>>>>>              folio_test_swapcache(folio) || folio_test_unevictable=
-(folio))
-> >>>>>>                  return;
-> >>>>>>
-> >>>>>> +       lru_gen_clear_refs(folio);
-> >>>>>>          lruvec_del_folio(lruvec, folio);
-> >>>>>>          folio_clear_active(folio);
-> >>>>>> -       if (lru_gen_enabled())
-> >>>>>> -               lru_gen_clear_refs(folio);
-> >>>>>> -       else
-> >>>>>> -               folio_clear_referenced(folio);
-> >>>>>> +       folio_clear_referenced(folio);
-> >>>>> Why can't we just call folio_set_lru_refs(.., 0), and should we cle=
-ar
-> >>>>> PG_workingset? Keeping it helps PSI on refualt / redirty tracking (=
-not
-> >>>>> sure if meaningful but CLRU does this), clearing it makes eviction
-> >>>>> better, but the eviction issue is MGLRU-only, CLRU keeps it.
-> >>>> I recall that in v1 [1], Hui mentioned:
-> >>>>
-> >>>> "Use folio_clear_referenced() rather than
-> >>>> folio_set_lru_refs(), which is not defined without
-> >>>> CONFIG_LRU_GEN."
-> >>>>
-> >>> Or prehaps we can have a folio_clear_lru_refs() do in a unified way
-> >>> for For both CLRU / MGLRU? (Just like folio_migrate_lru_refs).
-> >> And it will be better if we can keep this operation off-list just like
-> >> right now :), some later works could benefit from it.
-> > lru_gen_clear_refs() is currently multifunctional. It clears
-> > refs/workingset, but also returns true to skip
-> > folio_batch_add_and_move() in both deactivate_file_folio()
-> > and folio_deactivate().
-> >
-> > This actually looks a bit weird. However, following the current
-> > logic, I've drafted a version that we can use as a starting point
-> > for discussion:
-> >
-> > diff --git a/mm/folio.c b/mm/folio.c
-> > index dc2c796a4ea7..bc17cd3b6b6c 100644
-> > --- a/mm/folio.c
-> > +++ b/mm/folio.c
-> > @@ -444,12 +444,12 @@ static bool lru_gen_clear_refs(struct folio *foli=
-o)
-> >          int type =3D folio_is_file_lru(folio);
-> >          unsigned long seq;
-> >
-> > -       if (gen < 0)
-> > -               return true;
-> > -
-> >          folio_set_lru_refs(folio, 0);
-> >          folio_clear_workingset(folio);
-> >
-> > +       if (gen < 0)
-> > +               return true;
+On Fri, Nov 06, 2026 at 10:12:46AM +0800, Vernon Yang wrote:
+> On Thu, Nov 05, 2026 at 08:57:24PM +0000, Lorenzo Stoakes (ARM) wrote:
+> >  		if (!collapse_possible_orders(vma, vma->vm_flags, TVA_KHUGEPAGED)) {
+> > -			/* Unable to collapse, skip to the next candidate. */
+> > -			mm_slot->address = ALIGN(vma->vm_end, HPAGE_PMD_SIZE);
+> > +			const unsigned long next =
+> > +				ALIGN(vma->vm_end, HPAGE_PMD_SIZE);
 > > +
-> >          rcu_read_lock();
-> >          seq =3D READ_ONCE(folio_lruvec(folio)->lrugen.min_seq[type]);
-> >          rcu_read_unlock();
-> > @@ -465,6 +465,8 @@ static void lru_gen_inc_refs(struct folio *folio)
-> >
-> >   static bool lru_gen_clear_refs(struct folio *folio)
-> >   {
-> > +       folio_clear_referenced(folio);
-> > +       folio_clear_workingset(folio);
-> >          return false;
-> >   }
-> >
-> > The another option is:
-> >
-> > diff --git a/mm/folio.c b/mm/folio.c
-> > index dc2c796a4ea7..8d1fd788188c 100644
-> > --- a/mm/folio.c
-> > +++ b/mm/folio.c
-> > @@ -438,6 +438,12 @@ static void lru_gen_inc_refs(struct folio *folio)
-> >          } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_f=
-lags));
-> >   }
-> >
-> > +static inline void __lru_gen_clear_refs(struct folio *folio)
-> > +{
-> > +       folio_set_lru_refs(folio, 0);
-> > +       folio_clear_workingset(folio);
-> > +}
-> > +
-> >   static bool lru_gen_clear_refs(struct folio *folio)
-> >   {
-> >          int gen =3D folio_lru_gen(folio);
-> > @@ -447,8 +453,7 @@ static bool lru_gen_clear_refs(struct folio *folio)
-> >          if (gen < 0)
-> >                  return true;
-> >
-> > -       folio_set_lru_refs(folio, 0);
-> > -       folio_clear_workingset(folio);
-> > +       __lru_gen_clear_refs(folio);
-> >
-> >          rcu_read_lock();
-> >          seq =3D READ_ONCE(folio_lruvec(folio)->lrugen.min_seq[type]);
-> > @@ -463,9 +468,10 @@ static void lru_gen_inc_refs(struct folio *folio)
-> >   {
-> >   }
-> >
-> > -static bool lru_gen_clear_refs(struct folio *folio)
-> > +static inline void __lru_gen_clear_refs(struct folio *folio)
-> >   {
-> > -       return false;
-> > +       folio_clear_referenced(folio);
-> > +       folio_clear_workingset(folio);
-> >   }
-> >
-> >   #endif /* CONFIG_LRU_GEN */
-> > @@ -659,10 +665,7 @@ static void lru_lazyfree(struct lruvec *lruvec,
-> > struct folio *folio)
-> >
-> >          lruvec_del_folio(lruvec, folio);
-> >          folio_clear_active(folio);
-> > -       if (lru_gen_enabled())
-> > -               lru_gen_clear_refs(folio);
-> > -       else
-> > -               folio_clear_referenced(folio);
-> > +       __lru_gen_clear_refs(folio);
-> >          /*
-> >           * Lazyfree folios are clean anonymous folios.  They have
-> >           * the swapbacked flag cleared, to distinguish them from norma=
-l
+> >  			cc->progress++;
+> > +			/* Check for overflow. */
+> > +			if (unlikely(next < vma->vm_end)) {
 >
+> I think you want it to be like that.
 >
-> Hi Barry, Kairui,
->
-> >
-> > I would personally prefer the latter. What do you think, Hui and Kairui=
-?
->
-> I prefer option B too: it keeps the flag clearing independent of the
-> list state and leaves the two deactivate callers untouched.
->
-> But I'd suggest splitting this in two:
->
-> 1. Take v2 as the fix now. If that is acceptable, I will respin it
->     with Cc: stable added.
->
-> 2. Follow up with option B as a pure cleanup, no Fixes tag. The
->     lazyfree site then becomes the off-list __lru_gen_clear_refs()
->     call that Kairui wants for later work.
+> 			if (unlikely(next >= vma->vm_end)) {
+> 					  ^^
 
-Makes sense to me. I also personally hope this can be merged
-into mainline soon so that we can backport it to the Android
-common kernel. Having lazyfree folios with hotness information
-sitting on the file LRU really makes little sense.
+Don’t read this comment please. Your code is right.
 
-I recall I once did the below to ensure that lazyfree folios get
-higher reclaim priority:
+The VMA at the top of mm, after aligning the end values according to the
+PMD, may overflow to 0.
 
-https://lore.kernel.org/linux-mm/20240914063746.46290-1-21cnbao@gmail.com/
+It might be easier to understand if this coding is used.
 
-And it significantly improves Android performance, according
-to Gaoxu from Honor:
+			if (unlikely(next == 0)) {
 
-https://lore.kernel.org/linux-mm/7dcd3446cd8c4da69242e5d6680c1429@honor.com=
-/
-
-I didn't pursue that approach further, but at least yours
-should address part of the problem.
-
-Best,
-Barry
+--
+Cheers,
+Vernon
 
