@@ -1,94 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AE0606F8F6
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 11:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5182606D80D
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 11:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=uAh/rscF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KoqO1Qim
 Received: by kanga.kvack.org (Postfix)
-	id 99CC16B05B2; Fri,  6 Nov 2026 06:33:05 -0500 (EST)
+	id 138296B05B3; Fri,  6 Nov 2026 06:33:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 94D0D6B05B3; Fri,  6 Nov 2026 06:33:05 -0500 (EST)
+	id 110616B05B4; Fri,  6 Nov 2026 06:33:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83B6A6B05B4; Fri,  6 Nov 2026 06:33:05 -0500 (EST)
+	id 025816B05B5; Fri,  6 Nov 2026 06:33:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F49A6B05B2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:33:05 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ECBBA120C92
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:33:04 +0000 (UTC)
-X-FDA: 85404482688.20.2203431
-Received: from mta1.migadu.com (out-46.mta1.migadu.com [95.215.58.46])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C425140002
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:33:00 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="uAh/rscF";
-	spf=pass (imf11.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.46 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CCE6C6B05B3
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 06:33:19 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C48F41C483E
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:33:17 +0000 (UTC)
+X-FDA: 85404483234.24.E8EA214
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id C15211C0004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:33:15 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KoqO1Qim;
+	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793964782;
+	s=arc-20220608; t=1793964795;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3jUYdZrEkjrMq6IR/U7hgRh3o6mcETEnWphbPhg2wWw=;
-	b=S5DBrTVRLQTTER4LgsadA+AfwEdlEwDQpzm65ced6P8KEnoX5GCLJgtG9QvDg/ru++d16s
-	wyV71J7JoYymKVafWvZ7rDU6Cr5ikNHwVwzAWr9U7CllvmO7JW/7JOOLoOnN6DhzftPj86
-	sV5A3ZdVj1wHX6S9NzmKyKGKQECGJ6g=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793964782;
-	b=t3ihVb+byMAre6aPvtbORYgsbykNAM07/K1XK4LpYmiBCn5dUgSVFm7y4i0k4mOXLJobIc
-	9zc6rCK9GvPevobIpcc4vbsZX6Vmu/kgA/xBYTbqJFTgQJjoNeZo5LYCMgr3gOe3SLG8Py
-	Kd0J09qcl01/TUd6gVv2ejtVd3VVWiU=
+	bh=dwhjR2jVQFrycXPK2wViGRifyfXgiVWt6Joh/0g230U=;
+	b=1uhsakPbtCx8uEx37uKUqSjj4+cOPWdm8Cx+VEE8GaTwahUKM25IytMgslHnIYAvh41DeN
+	0sgaqMwaRM9HPuMXC6h8zQfreaY/miMO+dR29LyY4Qx74V7OoxR6rFUtZ71Lyj20gcto6Q
+	uzR5RPWL7VxYZZtjVSiyl4Im3vRHHnA=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="uAh/rscF";
-	spf=pass (imf11.hostedemail.com: domain of hao.li@linux.dev designates 95.215.58.46 as permitted sender) smtp.mailfrom=hao.li@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=GwHFqDFLj3G24ers9Fd8pFCaPPZSSUfX8U/u7WtHQmU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793964777; v=1; x=1794569577;
- b=uAh/rscFFhisTP9HlCD+0tRO3XPNijIP1QIJyTobv41JPTXex2txhnpl+ZlpimVsYDYKxdXN
- voPEar/jSKh1FzcAeEuj5wI0iO0dhKXcLdf50PvBF0cK5iiZK5p687OKWC7+KjM3huIk1FzqP20
- T+Nza2yU3qzTDtntrmYfmVD0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 33a186fbf79cc617;
-	Fri, 06 Nov 2026 11:32:57 +0000
-X-Mizu-Trace-ID: 33a186fbf79cc617
-X-Migadu-Flow: FLOW_OUT
-Date: Fri, 6 Nov 2026 19:32:46 +0800
-From: Hao Li <hao.li@linux.dev>
-To: Harry Yoo <harry@kernel.org>
-Cc: Zhan Xusheng <zhanxusheng1024@gmail.com>, vbabka@kernel.org, 
-	urezki@gmail.com, paulmck@kernel.org, qiang.zhang@linux.dev, 
-	akpm@linux-foundation.org, cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, rcu@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	zhanxusheng@xiaomi.com
-Subject: Re: [PATCH 2/2] mm/slab: don't queue the page cache work under
- krcp->lock
-Message-ID: <au24uW1sxT2Kb_Qb@fedora>
-References: <20261028134647.3176080-1-zhanxusheng1024@gmail.com>
- <20261028134647.3176080-2-zhanxusheng1024@gmail.com>
- <auifTNDwbBTJeu81@thinkstation>
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KoqO1Qim;
+	spf=pass (imf20.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793964795;
+	b=gwY7RBuE6IUaaQ/rqBsJoJvbB+hODKdJ0dT99fOBeGoslRo9UIYCJdZgEn0W5USSLMAQUv
+	TbWH0OGHnQ4q94nqm942Res36s6L/mHHU5axbj1uA7fVmA6h1dFBA5nlQi2JfH6X5YD3UJ
+	9aOIYydyuy9g/mZrU68qsTivPvsi02g=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id A580343D8E;
+	Fri,  6 Nov 2026 11:33:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A901F008A1;
+	Fri,  6 Nov 2026 11:33:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793964794;
+	bh=dwhjR2jVQFrycXPK2wViGRifyfXgiVWt6Joh/0g230U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=KoqO1Qim6fhPciC3HrjGQpiNGTwfFkaaXnbHF/sP3XEWozhHAXPaWtoWRY5xXxTze
+	 eoeBWbY+1e+iiei4kEtpDFZkgWVi1NnJjmmD5F8Cp1ysUYb0CFCThB71XKqLhs6Nr+
+	 TSHxDqrRA1Nk4MJkHxtKif7C5VT1dbiGt2+HXmlV5ve0AnML+weKBLu7Xza/Y2j3vH
+	 0XuZnoQlmW/YQ2MwmJlpufFDS4W3DNSthfkON++SKyn7Qzy8SAkajdVWr0Q8vJ25Va
+	 T3dQpWZfOXJuAZYXgBTtazrbQUwosSq5FlT+W9+lViaQx4kjtlYjoS8Gm3JiJ9EOfD
+	 D7+ozfAk3yCXg==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 725E6198003A;
+	Fri,  6 Nov 2026 06:33:09 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Fri, 06 Nov 2026 06:33:11 -0500
+X-ME-Sender: <xms:9Lrtaqkp9-3qkexNMvtLxgPrPnal44LmqtyIgUdwLB4SmxkS8dGE1Q>
+    <xme:9LrtakI3cPRKr4852ao8p7a2WlMa65T0MWCOFdxesHhJ83q3rl9YZllV-pvXxREAG
+    3TEBByUImzVX4Za3JlhhvmQ1vIgAMAsID2k9o4d_TJGi8RnelAkbgm9>
+X-ME-Received: <xmr:9LrtanUwGC87sY1OI40EDIoynU-OFR5U63teqDTIuCXa8opSVure6Gds49o>
+X-ME-Proxy-Cause: dmFkZTEEFydlobSPmqq0NWC3mdnVpucy8xcvPzschiasYSG+OlRLasLiG9TZecSqeMAclu
+    7ECEtWVEhVpFWw9L6x3TGu7nLR1O8zMFRELSlvLmXKF62TGeSu+644g+WtnosqAEJIBj3U
+    1C1xys8WSxfv9kl/qzdvEzw3Cmj6rt7AE0u4GPfINkxDQ8zw5DYnQjjQtbTR4RRoqjyH3J
+    xSUHuMOjWG/Jv5cLkhX/zTYDAz1ltDGIqG6hWds/QusvUCZGhIPZDTiXfUTJ7XCWMS2Inv
+    DKk+mMT3lijC1m0RacMemu8D1Nvwd5LmLGsePLgiHP+eq5CrM0rj8rw3sU2o8aU0G/aqZY
+    A69lcB4t4u/6I3XF0CLKZG7/FrHRMbIFy91zFZsNq52tbDvUbCUw92oGtyfOeBsfeeHeww
+    szcOiH3p4asmaQMuWqhZSIJATRQx6Yr1IMLeUQMILL65RAq7YfKG+2GdkT/+LIcpxUBzwR
+    XqFgJ8wxShaUOclMoMCNjGFiRyWU2+xFwKDBGiHXON7plZ5a0RyLEHmhszCw6SdkseHAUi
+    iQvRY+kFYPLRCy8uR2wh+SKRWNDRH6kJe8WsrQ9L5nRgDt4qaub4NojRxEwuzGRpYfEmTk
+    JXgOWukBYX8wmNJNrd8qNKlhsASz34Kb9aA7VBHVdrD+CSShqlN4PNWOK6sA
+X-ME-Proxy: <xmx:9LrtarjV3mOSTqEcSTQaGqQ2WA_JhkjmAFoYe-W-js3fCWW1Rhs4Rw>
+    <xmx:9LrtamdsFe3goRTjxc25y1zLrqNTxsgWzYZAgDmI_q9uhStOCjquiw>
+    <xmx:9LrtatthR6KhOJSalUybeoTVfZ8N3aeen0odPHYe4f9nfn4kmqSvJg>
+    <xmx:9LrtajmCqGSLd0xyR7P5i5lLOhaPZJNytvL5pCRdx8z8e1yoZXVm9g>
+    <xmx:9brtahOQu1ng3v8YW7uyxKi-JWtXj0BnCwjxZwKEUJ6w-uO2HTj4DZXi>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 6 Nov 2026 06:33:08 -0500 (EST)
+Date: Fri, 6 Nov 2026 11:33:07 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/khugepaged: free unused page table when setting a
+ huge PMD fails
+Message-ID: <au263-sEU03puJQm@thinkstation>
+References: <20261105-khugepaged_set_pmd-v1-1-cb79ab117199@kernel.org>
+ <aux9liPvdZgpKCpa@thinkstation>
+ <aux-ZdKu97JHLY96@thinkstation>
+ <c13cdd25-7d7b-4059-a22d-af0a48fabaac@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <auifTNDwbBTJeu81@thinkstation>
-X-Stat-Signature: meo13apyoyj1ufxn6xsmo7ejhtmy6mgi
-X-Rspamd-Queue-Id: C425140002
+In-Reply-To: <c13cdd25-7d7b-4059-a22d-af0a48fabaac@kernel.org>
+X-Stat-Signature: gcp6rxi6hagx11518x65pndw4c5k6xt5
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793964780-212177
-X-HE-Meta: U2FsdGVkX18FAmJ6TBoavPOhjPrbSHN7m5Zectm4BGEIeBJUD018ZP40ot6RvGmNhnHS8QfuRZ1Oa1u0aXCzpofVw9rkbe81/spWMAsvBGTY9Aej1XRXDrsdsWqDVylPAybLERVOSDuRq9pLXzDcPlrVf0gAgFVtHC+aJ9K65Mno+JZDVFz1UO1M5hy+OTtWbWc1wMpjO2w+AdwpN579NLN7YF4lMvKk4XId8yPXyohicbwh1iYk5KqMyoZvnWWmYSiuIWCTOdWuiite4w5BZtM6JVM5hDMUcJ65ymKVXj/1MbaqTGGVHFTuTYrLpGzbuCo4gfla9O5uBNmsTTKIGf3BJ0jBdfMNNMGOTABhapwvO1i4deBoGzQBoR3go9MtK5rctW9Dr1ez36DCEHXUa5vG1n13hoI0mLmMI57ldcgT9ItDIv1EVd8QxgJxPTKljS06BrGf6f/UYqkWLiwo8ruC6uYutGQ/e7gHGk/9Q0uoQa9QCyPQXQa4NqGL9gFU9OiLubvG3L1sK868Gz1XWYvEiV57N6Y4d4Ki9Xzs4HLlYUng6sgrE9feuliMBE0XvFMGbg9LzMUpCu9EqeDtV1u/SnLo/dWhMIChJR3qzneejLxlkG4S4PfJpk5q4Qpo2K+p+p1bA9bgQh6yKnFSjsUwggNjg6phiz9oocFeWaNmcXrYavfyBWogRX1MJjgS0zTbEZtlvdpkmXRHcfdETyMjyrhp+DPcZWJZXqZZIJ47WBJHGxpy1vb3WDa3t0GcQpT238Y0N/V/V3vWzaf1irmHtVGMuE7Qamyzq+S2Q87Xi4jfipr7FpgN/Mga2mlB4mhx4F26jB3B08O+l9V8VdcCWmTpjao3nhF2rLhPPfD19J6VeShGP27n4m/JzTIElmOMAoCHYpA7NoabMEwz8k20Har23fz2akkzudrncuHhJSHOlU0j2NFgwVdP8LH0DOSgaM68Wa6DfSN8gbQ
- eevx51oY
- Kl2P3QbO8cjLEZbyhcW4yy54yOBPMO6OJ5JHGn43yYRWlP9AR9i46hwuu23CA9zLHcReySBSCdMoDMWcD9Jm4cQ+bXQfxBueEww2a2ZVOYOtf/rRxOPdm2H56Wxulc7LvvN6TZ+uI1yWGxb9rYm6QP5upfha7NvtjgtrxxP0nla2YzkcqTfH+XC3aBMOerJYlrJ/ql0At2eZvxJO6XJKzSjTZXPNufmzK5kVwrxQFX/LuIkkom3T6O3CPpjGzg2Q3ugvL/adH5SSWh0DhbfbXealYIMMVHYz3oxidgwJ7/sjnVfk2Ij7lypoypO67sRf2XCWQL6S7uq3nx8cNVm1X/pJmmmFEY+44vyTB1b0IcdLx/cLjX21g2NtbI3tH5jOcv7E/Xd3j6Fh2FO2wPPXBf0NkjSoT257xay3OkKhg5Zdh9dk=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: C15211C0004
+X-HE-Tag: 1793964795-422283
+X-HE-Meta: U2FsdGVkX1+IspS7zgFv+RTJV3hpFJxZN1a8mmsxkEoWJjVlghmjVV8GtGyGuAbgdczsrSkzH78uT9t2SXVZmW12ryINEJ0GbJUOMdVNYrumn4g45Ju2XZ3AiaYK7hatCZuE33WeQ3LvdniXZQzWznESiF9ChEFufRW8lE5Y5SAl0kEvaubNzNrdbmWIpftzR7PsGRdooGXD05lWjSnEGyWR9m4IODRc8fROvfs3NQok4XCUeWYbvv5Tnx1UH36AubKEk0HThW171NbcPvg30abyBcftR3l//1bzhW9OmUMfBevMQxCQOPb3tt+HbWESvVmv+RRhsKWhgic3StAmFs1ug0UN5QnJ+hEuehXNinPcWXcKZJXGE5Qhc15H/fWhRbFLu7FKLZtwaS8In3MxefozdrXQeCTtuaiWGyR57BKAIAuK1odK3PwqRWOQGd0NgEjHz6wGSpGgcfSx6p20d1PvBSu5FljbgVnGQzC5QrZj33dzG24SPz9JWWTgcL2h8pRgrLZbSJ+xbB9J94P/KGv3uff6ZvUYAfOHKA28ONtXVMtAJG8l29tByyu4DLE4BIv31SRt1lshC2pGURJKqbQpNo4YtvRufGicFIAyL5INR55XGFA7r0k5AFGqcfg7KwcWorg6IAQuPwUnWUsm7lVZA+Fclsv9WOXwbekmww18XGMj/GLg0kcVZZQPQdEtEc2aWuOpvIttrPgjELcvjlSPEwmGLSkoVCAsYigOKJcLrS1hkwvsdiR5UfXeefV0xVLPs1djbJNWtV8L1VdiP5ewHOE7SbEFzAm5XTo5nmJHaOHzEP3c19kWmm9uC+jN5fXpyqcHTSRXYSP0dl+1xcWwPGpJfCBenJ1iVJtRGoFYGhRKPhzWnC/NC5XkqPfY77FQDwXB/cdscE+OpViuDh6U2wMotbdukTSFw3AFuzchyIjvl4fvJcnsZzzN3b4I6GQIO+tLlKgcjDzVqtg
+ cvotSbzl
+ 4+f3ytWOB1PNZ6/RKWOD3IrjFye6+xWdCW43/erzYboqJufhevoo/VnkplM97xhX+v3SJkmDYHJwHPtYmZEhf5YDLhTpYUYzY2c4t1V+OniLiQYd+bTnl9uq9zrKx9sRF1nV8vGeleIezktXwUq+OcgeC9Nc+VTKt0exo4EYiCxrA7iffq5x14QBmmqGmlPVEPJ5duL4lcRdtJhZ89fc7rNJGqzUj5Ko8FD/EcwqN4vHBCMiM7W6KbICDKEBYtrkTIhR6i0VPBm32jVhrvH0riHtuUCQzBjYNxbzlk/uyMRoBtjM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,148 +128,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 02, 2026 at 02:35:40PM +0000, Harry Yoo wrote:
-> Here I added bit more context and adjusted comment. End result:
+On Thu, Nov 05, 2026 at 05:40:39PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/5/26 14:04, Kiryl Shutsemau wrote:
+> > On Thu, Nov 05, 2026 at 01:02:08PM +0000, Kiryl Shutsemau wrote:
+> >> On Thu, Nov 05, 2026 at 01:16:05PM +0100, David Hildenbrand (Arm) wrote:
+> >>> do_set_pmd() can allocate vmf.prealloc_pte on architectures that need a
+> >>> deposited page table, such as PowerPC with the hash MMU. If the PMD is
+> >>> no longer empty when it takes the PMD lock, it returns VM_FAULT_FALLBACK
+> >>> without consuming that table.
+> >>>
+> >>> Since collapse_pte_mapped_thp() uses mmap_read_lock(), a concurrent
+> >>> userfaultfd operation can install a PTE table before taking the folio
+> >>> lock. If that races with set_huge_pmd(), the unused preallocated table
+> >>> is lost when its local vm_fault goes out of scope.
+> >>>
+> >>> Free vmf.prealloc_pte on failure, as do_fault() already does. Successful
+> >>> PMD installation consumes the table and clears the pointer.
+> >>>
+> >>> Having to do this cleanup outside of do_set_pmd() is rather nasty, but
+> >>> other callers depend on it already having been allocated. This needs a
+> >>> cleanup at some point.
+> >>
+> >> I hate this being outside of do_set_pmd().
+> >>
+> >> What about making do_set_pmd() freeing ->prealloc_pte if it was
+> >> allocated inside? Nothing changes for caller.
+> >  
+> > Or if we want to keep in set_huge_pmd() then set_huge_pmd() has to
+> > allocate it too. At least, it makes some sense.
 > 
-> mm/slab: don't queue the page cache work under krcp->lock
+> It's all rather nasty.
 > 
-> Commit 56292e8609e3 ("rcu/tree: Defer kvfree_rcu() allocation to a
-> clean context") deferred page allocations to a workqueue. To avoid
-> deadlocks with the scheduler, it used hrtimer to queue the work instead
-> of queueing it directly.
+> I thought the callers depend on it, but if we just free in the function
+> it will behave the same way independent of arch_needs_pgtable_deposit(),
+> so that makes sense.
 > 
-> Commit d0bfa8b3c411 ("kvfree_rcu: Release a page cache under memory
-> pressure") later added a backoff mechanism under memory pressure, but
-> did not consider that queue_delayed_work() with delay = 0 immediately
-> queues the work and introduced the deadlock commit 56292e8609e3 tried to
-> avoid.
+> From 4e8d0a928f0b21e0583dac9234fb1821f3c973b2 Mon Sep 17 00:00:00 2001
+> From: "David Hildenbrand (Arm)" <david@kernel.org>
+> Date: Wed, 4 Nov 2026 20:56:37 +0100
+> Subject: [PATCH] mm: free unused page table allocated by do_set_pmd()
 > 
-> run_page_cache_worker() runs under krcp->lock, from kvfree_call_rcu()
-> callers that may hold more, such as set_cpus_allowed_force() under
-> pi_lock, so it kicks the refill work from an hrtimer. Under memory
-> pressure it instead queues the work with a delay of
-> rcutree.rcu_delay_page_cache_fill_msec, which may be 0, and a zero delay
-> queues it at once, taking pool->lock under krcp->lock.
+> do_set_pmd() can allocate vmf->prealloc_pte on architectures that need a
+> deposited page table, such as PowerPC with the hash MMU. If the PMD is
+> no longer empty when it takes the PMD lock, it returns VM_FAULT_FALLBACK
+> without consuming that table.
 > 
-> With the delay set to 0, calling kvfree_rcu() on vmalloc memory under
-> pi_lock after a drop_caches makes lockdep report:
+> Since collapse_pte_mapped_thp() uses mmap_read_lock(), a concurrent
+> userfaultfd operation can install a PTE table before taking the folio
+> lock. If that races with set_huge_pmd(), the unused preallocated table
+> is lost when its local vm_fault goes out of scope.
 > 
->   Chain exists of:
->     &pool->lock --> &p->pi_lock --> krc.lock
+> Track whether do_set_pmd() allocated the table and free it after dropping
+> the PMD lock if it was not consumed. Preserve any preallocated table
+> supplied by the caller for PTE fallback. Successful PMD installation
+> consumes the table and clears the pointer.
 > 
-> Use the hrtimer when the delay is 0.
+> Returning without a preallocated table matches the existing behavior on
+> architectures that do not need a deposited table. All callers
+> already handle that case.
 > 
-> Fixes: d0bfa8b3c411 ("kvfree_rcu: Release a page cache under memory pressure")
+> Fixes: 1043173eb5eb ("mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
-> Link: https://patch.msgid.link/20261028134647.3176080-2-zhanxusheng1024@gmail.com
-> [ harry@kernel.org: add more context to changelog and adjust comment ]
-> Signed-off-by: Harry Yoo (Meta) <harry@kernel.org>
-> ---
->  mm/slab_common.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index 41dea01a8c1f..051ca63c0b67 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -1987,7 +1987,15 @@ run_page_cache_worker(struct kfree_rcu_cpu *krcp)
->  
->  	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
->  			!atomic_xchg(&krcp->work_in_progress, 1)) {
-> -		if (atomic_read(&krcp->backoff_page_cache_fill)) {
-> +		/*
-> +		 * Use the hrtimer to avoid a deadlock with the scheduler
-> +		 * by waking up the worker directly. queue_delayed_work()
-> +		 * uses a timer to queue the work, so it's fine.
-> +		 * But with delay = 0 it queues the work immediately.
-> +		 * Fall back to the hrtimer in that case.
-> +		 */
-> +		if (atomic_read(&krcp->backoff_page_cache_fill) &&
-> +		    rcu_delay_page_cache_fill_msec) {
->  			queue_delayed_work(rcu_reclaim_wq,
->  				&krcp->page_cache_work,
->  					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
-> -- 
-> 2.54.0
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Just a thought: once this fix is applied, could we simplify the code further by
-always queuing the work via hrtimer? This would make the logic more
-understandable. For example:
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index ef5ff0a20249..e5213f952e16 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -1480,7 +1480,7 @@ struct kfree_rcu_cpu {
- 	struct delayed_work monitor_work;
- 	bool initialized;
- 
--	struct delayed_work page_cache_work;
-+	struct work_struct page_cache_work;
- 	atomic_t backoff_page_cache_fill;
- 	atomic_t work_in_progress;
- 	struct hrtimer hrtimer;
-@@ -1878,7 +1878,7 @@ static void fill_page_cache_func(struct work_struct *work)
- 	struct kvfree_rcu_bulk_data *bnode;
- 	struct kfree_rcu_cpu *krcp =
- 		container_of(work, struct kfree_rcu_cpu,
--			page_cache_work.work);
-+			page_cache_work);
- 	unsigned long flags;
- 	int nr_pages;
- 	bool pushed;
-@@ -1974,34 +1974,27 @@ schedule_page_work_fn(struct hrtimer *t)
- 	struct kfree_rcu_cpu *krcp =
- 		container_of(t, struct kfree_rcu_cpu, hrtimer);
- 
--	queue_delayed_work(system_highpri_wq, &krcp->page_cache_work, 0);
-+	queue_work(system_highpri_wq, &krcp->page_cache_work);
- 	return HRTIMER_NORESTART;
- }
- 
- static void
- run_page_cache_worker(struct kfree_rcu_cpu *krcp)
- {
-+	ktime_t delay = 0;
-+
- 	// If cache disabled, bail out.
- 	if (!rcu_min_cached_objs)
- 		return;
- 
- 	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
- 			!atomic_xchg(&krcp->work_in_progress, 1)) {
--		/*
--		 * A zero delay would queue the work right here, under
--		 * krcp->lock and possibly the caller's pi_lock, so let the
--		 * hrtimer do it.
--		 */
--		if (atomic_read(&krcp->backoff_page_cache_fill) &&
--		    rcu_delay_page_cache_fill_msec) {
--			queue_delayed_work(rcu_reclaim_wq,
--				&krcp->page_cache_work,
--					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
--		} else {
--			hrtimer_setup(&krcp->hrtimer, schedule_page_work_fn, CLOCK_MONOTONIC,
--				      HRTIMER_MODE_REL);
--			hrtimer_start(&krcp->hrtimer, 0, HRTIMER_MODE_REL);
--		}
-+		if (atomic_read(&krcp->backoff_page_cache_fill))
-+			delay = ms_to_ktime(rcu_delay_page_cache_fill_msec);
-+
-+		hrtimer_setup(&krcp->hrtimer, schedule_page_work_fn, CLOCK_MONOTONIC,
-+			      HRTIMER_MODE_REL);
-+		hrtimer_start(&krcp->hrtimer, delay, HRTIMER_MODE_REL);
- 	}
- }
- 
-@@ -2295,7 +2288,7 @@ void __init kvfree_rcu_init(void)
- 			INIT_LIST_HEAD(&krcp->bulk_head[i]);
- 
- 		INIT_DELAYED_WORK(&krcp->monitor_work, kfree_rcu_monitor);
--		INIT_DELAYED_WORK(&krcp->page_cache_work, fill_page_cache_func);
-+		INIT_WORK(&krcp->page_cache_work, fill_page_cache_func);
- 		krcp->initialized = true;
- 	}
- 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
