@@ -1,97 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE20E606A31B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 01:39:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93A2606A31B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 01:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=4cDnAf9X
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=pI8kjQHR
 Received: by kanga.kvack.org (Postfix)
-	id 8D94A6B05B0; Thu,  5 Nov 2026 20:39:17 -0500 (EST)
+	id BC8636B05B1; Thu,  5 Nov 2026 20:44:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 889A26B05B1; Thu,  5 Nov 2026 20:39:17 -0500 (EST)
+	id B79366B05B2; Thu,  5 Nov 2026 20:44:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A2206B05B2; Thu,  5 Nov 2026 20:39:17 -0500 (EST)
+	id A6B726B05B3; Thu,  5 Nov 2026 20:44:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 496666B05B0
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:39:17 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BED1DA8C19
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:39:16 +0000 (UTC)
-X-FDA: 85402986312.17.31606E1
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AF73B140004
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:39:13 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=4cDnAf9X;
-	spf=pass (imf26.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793929155;
-	b=sfuiritir8hOQ9JB3/PnOJDArqwt9hGFQme53ivc/5Z+HKq5i9s4/JDFYz1YNYyLj7SN9E
-	f7SbLblxesPvJCHHI4boPYn90jsQt/Mp+aRsDMjbNiRS4ITe7uxm1aI7SennrHR33bV09I
-	Jd9BVinr0RMdEj2SWu37f2SIhX0vGxc=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=4cDnAf9X;
-	spf=pass (imf26.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 725756B05B1
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 20:44:19 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CB8DC1A0CEB
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:44:18 +0000 (UTC)
+X-FDA: 85402998996.09.9C0EB81
+Received: from mta0.migadu.com (out-80.mta0.migadu.com [91.218.175.80])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E6435140009
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 01:44:13 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pI8kjQHR;
+	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.80 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793929155;
+	s=arc-20220608; t=1793929457;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=cCbxTUPPChxKnWhtqlld2Jnw8yL45tSd5lb6BGBKG4M=;
-	b=aP0Z4ws5OmW9IQj8aI1ZKwXSLhal+H2AID0+TnmFNDgx8ii81+y6/R4AM9lT5dWEOcLsiz
-	Nn2OhDZj0euEHavKTDNY1oTRA5jz4BobLaxZFxivZLZRdBPRmStKx31csIUz3X+FYoCow8
-	EcpQM82wAhErmRfkqzR6MplpiczDWs0=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=cCbxTUPPChxKnWhtqlld2Jnw8yL45tSd5lb6BGBKG4M=;
-	b=4cDnAf9XTpg+FNhFaYxxv2WSuIUk216fJTaYCT20EbMXpjeJ9M4Pt65hlPXP7/XM85GWIrl46
-	XI1WpHli/qXzlpTQj1vA6m2jsJgRM8+pqIn3QYbuiBeFQ3hkDkp5LH+JkzMgMsFLHmAzoKSFo/B
-	Q/8g49RbGEu1gMdWS5Lkm5w=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4jLMKL0J5Pz1K9Xs;
-	Fri,  6 Nov 2026 09:39:02 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id 039034056C;
-	Fri,  6 Nov 2026 09:39:08 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by kwepemr500001.china.huawei.com
- (7.202.194.229) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Fri, 6 Nov
- 2026 09:39:07 +0800
-From: Jinjiang Tu <tujinjiang@huawei.com>
-To: <akpm@linux-foundation.org>, <david@kernel.org>, <xu.xin@linux.dev>,
-	<chengming.zhou@linux.dev>, <liam@infradead.org>, <ljs@kernel.org>,
-	<vbabka@kernel.org>, <jannh@google.com>, <pfalcato@suse.de>,
-	<kees@kernel.org>, <ziy@nvidia.com>, <gourry@gourry.net>,
-	<anthony.yznaga@oracle.com>, <linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>,
-	<tujinjiang@huawei.com>
-Subject: [PATCH] mm/ksm: fix ksm_exit() deadlock on exec error path
-Date: Fri, 6 Nov 2026 09:39:06 +0800
-Message-ID: <20261106013906.2229780-1-tujinjiang@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dew6EzCqiWafyHsHJpopQwo/cXSuzlwoO/rf90tBbGc=;
+	b=bSiVaDAvJLgWn6Hz2QDu4Og17c9P5s9XuL6tpzbyt9XdZUuqXCA/7rh8Vdm091XYD/bjvJ
+	qgOZqaw3vpY1SX8Afc3/8RXRG/eYgaKcyHw8ckd4T97Qa7UWKD5EToOHV3hSNCUYBSRbVi
+	rM4ka+4hJ2l38zIN/cspvop8fDT3tEU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793929457;
+	b=YcjPhdaOqVYdogUngiZh5rd7sg3wtOr5jKlGXXOZ8UUuedbAUurCxcYN9NOdJeTvtGFCe4
+	FWM5wbDZrGk2Z5Iw+OCQpWEPy9K6u5zZlNv0j2Y8wifcColk4Hq9EFtYWPyIAJxaEHmrI7
+	t+KCKMrCTlVTa8OiSk12bybHFLdwdcU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=pI8kjQHR;
+	spf=pass (imf09.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.80 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=LvBe8nocYbjsZeluU6geuvGEmKucxs6vvjV6JlKiFg4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793929450; v=1; x=1794534250;
+ b=pI8kjQHRH8kUKUAnHaChegvFFy8HWqNBBWoeVhOnRpsHU0wBDy0gJUnUl63Szx8XNtjW7GMP
+ O2uHw3mU3h+NC70ImK1nuSxFGlYa0ryOKEnOOCAjjHJziJ3MpITVSqA/19fQuWUHHGP0OMr3W9c
+ dE31C6tl043ZfrQEO+Kt1uFc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id e4cd8311743e1b88;
+	Fri, 06 Nov 2026 01:44:09 +0000
+X-Mizu-Trace-ID: e4cd8311743e1b88
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <57d2a4ca-8edc-4291-a919-8a74abda94a5@linux.dev>
+Date: Fri, 6 Nov 2026 09:43:59 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 2/3] mm/mglru: skip the flags cmpxchg when nothing
+ changes
+To: Kairui Song <ryncsn@gmail.com>
+Cc: David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Johannes Weiner <hannes@cmpxchg.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
+References: <20261105132220.2233677-1-ridong.chen@linux.dev>
+ <20261105132220.2233677-3-ridong.chen@linux.dev>
+ <CAMgjq7DtU+tSOgQWgTaV0obLwkkUwQqgvtTXjG2qf8L+iPXbiQ@mail.gmail.com>
+From: Ridong Chen <ridong.chen@linux.dev>
+In-Reply-To: <CAMgjq7DtU+tSOgQWgTaV0obLwkkUwQqgvtTXjG2qf8L+iPXbiQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Stat-Signature: ksbahr51bkex84zfaquo4tw3t5xg4w63
+X-Stat-Signature: qqdccgfhir6qy9mkg17qdbd7d9pms3b6
+X-Rspamd-Queue-Id: E6435140009
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: AF73B140004
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793929153-176860
-X-HE-Meta: U2FsdGVkX1+VR55IF730t/kOP1+KJGvtYHbo+cG1v1YZJPPQqaNGFA/FWBVwefN55rC99qc8AbdaPAx2BAM0qk53jjCGPLEHSAGQktJrFR9zIC+OVEFpGkeL+ijfIZM3WbCQ1vti1bAfdXYhZkCs7PM/YSbHQYC1/jBFlNeahSh44w7+11NpTu4NqS1XW2+hwbTbt+ZNH1WwA4QRBmaE9tZgA+v7zEtX4cz3RzfEncZ7aTlFwrK8OvzPDy8YjvTSJ572WDn9k6MUmyH2lJQnwxkdKfx8+AlYtFQykDvKQh87JcImDL3Hv+4febwq6Cv45l/UM6HZZSCLyTV7lgbVoNrbYZPpAxuNxe1GOu6c9MAI2q8gbGZY922zqthRbafp47tKXrK/OUbIysZG69xy51qolLYAH3MJ75NtVo0aDgSUWApJCimkJwqjH1qUJ6Jl1bZfe4gx503Zm4wnT5lktCWQzxe0s9rebP86oAYuXR8ltEywxkn1UNKBSpp/xBDSjLLPmJ2jr0nQ52rlyJRgsPNTvD34XB0iZcqlDkCnprRyShp+SU9OhZ1WJhl52KEsB3VWM4xMfWszGBNNPdwyd51X1DgEBhA5DIl28nr+Us3Gs1kUK62Kav+e45/NCCNpqqVGzSN+T3K+GNjnxirApXpckKQiQa9wHRlaSLkgXtRlnsGyEZzgbu3/qpMU6XnGh7NsGuKYbjZOZsJKA/FktUbpPD0nM4mu5ZzeHdr5C7TWWFqpNLfU4a6fOjwoNt+4QnWBqdLXT3HWJaZ29Fi/yyWrRPqcoC0UwAqAoye+NQRBxXpUjYpFtkYUE0CUEEFA2M6jLFGpT8rzy6tyiKjmNDq8pLvifAznJOA4+GO34VURLsPuUnigQM26Sbi4rVWXUkX+xXGiscT54voZAwwEalqSmWUnfDilMjI/70gBLZfFOrSCep0Aulw3HfdZSC7GFevloQ2mUo6N6Mmp+ac
- IhuH1qB+
- 9kSdsUHtcd1e/96tn95B0zxz/UoTOmBVSPz5x5eUBQb3Ow8SD3FLhQacvF2eKbw9ruuWQWFItIEVTpoZqoPH3RLuxnAyP/YyX6/xtzkShJof6wukea9LLBg4OJszJeVwMQRlY/9EePOps5dCoaxMCRBz02Ka5BrmmHGv51e/37u1b+AqATEqKFwMgc9bjs01odJvaG/dzkm/D0+FAaNgt28gvaY5m4ZkTKVW9SRlq1ly8mWuTMDkNtZyezXU/I9S1En+Tb7FWqyHkyUK9/ZLq8FB4ZN3n99H8mtG5LRAwnqy95bg=
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1793929453-743112
+X-HE-Meta: U2FsdGVkX187S1vcaISE7y0WdjpPRnBg5sSvgue+rqwDDuRkUwX65EkUzdeef6qGDKZmq1DHFfTOuG5zpxHfu+rKXTuncMaUlR/dl9KYyZkmnuHHqwABlNrMTqnHYEo19ak9v+CxOKpZqucSzCbSZuh55dXV9BNrNe9/rVbUdOl9Z4n86JJOaEPZH93A82O9bvx4kzj/mUomffU0CYdplYX3N2KtzzA3zYth6oljTf4ivhfGxUf5Eg8yhD4AffbPnCoOe8BWzZf6jjLdTX74MmCwNy8+tROKWV/CCSap0olLYW0+1aa4uIMRlckNZ7S6yOLvHtvClH39odv7J/dWU/ihjWmJdFm1BUvKowAApCXuSO/yhXzV+5MppScZPXWbsoWX95yr5BFgHBXZ/7JnOWq0eWhL1Yt5FuCweh2HedlNZyRDRWqXqcTJw00vWk8RSmgxqfMpzCUtVz5MK29/qnB3KY/tigNkNi+0AjijBgjF7LkXgOv8Y1RleC3v1XxlDuMREt0S5cXbrvfcjXrU0jM7SgVO3L2azKaPktRWCbKWo5uCvkFffMFCwqqFPiQbIvqxRz9Ik5X2FKsOiJ5ECTGDMQDSd5Cm5oPYAJtM5H2bebwD9pZl+PbS1d44gN4FwMW5QKl+JepmED2O+K7Z2r0D7+9+tyLp8HarISsIiU89NnwRgyOi3RkuWtQ4lw/7+F7hsekc4OH8Kxy0Ava72xFLwWkMl57gYQD9iNIKnbgQ1IQ6jPwPVPuCRzJgfX6zxTxR7jmvlfhaJO+sQiRJzUqhS57Z04vPC6yLz4/7LIqipoTeBY15oT6jVnQacKfysNd5BuBCbXJbxpjoSM0LEui3RlDWb28Pa42BoMP0Lv7NC/mWme4jvxm7tXXm90HvhVVKQxBVL4n/TznRNTDOZwPzqGxpB6Oo8XCEAg7oaXwFP3oisBLHL04FnffhZgI/aEl8pj5xma7YcMmZug+
+ NcZB4s7P
+ ZmCxBdfUiXYBAetk7qIYJfPjUlB/tSCKvsNG2VxSpMWbIPnVwdy2sI93W3VHl69tPq8qDtWmwNHLNzjP6XuRIFrjvRqCWgsVEsXzmkCkQ0xqJkfbKIz69+s9gMgHcPPfUGFInTEXpMghTr7I4t40uJxAd+XokT07mOcZk44lVdmXmrwhtG0MTqwYW1RFX9qLSOoatlR7bFwW8U32P3CqUMqNlS4qqrfkhnebZeXWX8/do9SIuS6HUXl/sSS0PaOWh813+oJh6E80cjdJnvn06rFAmWI58kHPuGibCH5qLbIfiwa/xP1HqBoKxOpOjuJQkeddPmENdpEW1itlPz49NHkJzTzjNtVsvYGVRr4m1/Li4CAJzRWfsHKdmUA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,137 +107,116 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-create_init_stack_vma() registers the new mm with ksmd via ksm_execve()
-while holding mmap_write_lock(), and calls ksm_exit() before dropping the
-lock. When insert_vm_struct() fails, __ksm_exit() takes mmap_write_lock()
-again when the mm is ksmd's current scan cursor, leading to deadlock.
 
-The early registration is no longer needed after commit 590c03ca6a3f
-("mm/ksm: fix exec/fork inheritance support for prctl"). ksm_vma_flags()
-calls __ksm_enter() when the first mergeable VMA is created. Remove
-ksm_execve() and its stubs.
 
-Tested with ksm_functional_tests, all tests pass.
+On 11/6/2026 12:21 AM, Kairui Song wrote:
+> On Thu, Nov 5, 2026 at 10:11 PM Ridong Chen <ridong.chen@linux.dev> wrote:
+>>
+>> From: Ridong Chen <chenridong@xiaomi.com>
+>>
+>> folio_update_gen() and folio_set_lru_refs() always end with a
+>> try_cmpxchg() on folio->flags, even when the new value equals the old
+>> one. The locked instruction still takes the struct page cacheline in
+>> exclusive state.
+>>
+>> That is common in practice: a folio mapped by many processes is visited
+>> once per mm during a page table walk, and after the first visit it is
+>> already in the youngest generation with refs cleared and PG_workingset
+>> set. isolate_folio() and the eviction paths also call
+>> folio_set_lru_refs(folio, 0) on folios whose refs are already zero.
+>>
+>> Break out of the loop when the flags would not change. The result is
+>> the same as a successful no-op cmpxchg. The only difference is that the
+>> full barrier implied by the locked instruction is gone on that path.
+>> No caller relies on it: the eviction and isolation callers run under
+>> the LRU lock, and the others (page table walks, folio_mark_accessed(),
+>> lru_gen_clear_refs()) only care about the resulting flags value, which
+>> is already in place. Note that lru_gen_inc_refs() already returns
+>> without any atomic when refs is at LRU_REFS_MAX and the folio is in
+>> the workingset.
+>>
+>> Tested on an i7-13700HX with turbo disabled and the performance
+>> governor. N processes map the same 2GiB tmpfs file (huge=never) and
+>> read every page, then one aging pass is triggered on their memcg
+>> through /sys/kernel/debug/lru_gen ("+ <memcg_id> 0 <max_seq> 200 1").
+>> Time per aging pass in ms, median of 5 runs of 10 passes each, averaged
+>> over 2 boots of each kernel:
+>>
+>>    processes    base   patched
+>>            1    32.9      31.7   -3.5%
+>>            8   195.1     160.2  -17.9%
+>>           32   755.8     592.2  -21.7%
+>>           64  1597.2    1260.6  -21.1%
+>>
+>> With one process, every visit changes the generation, so there is
+>> nothing to skip. Before the patch, perf annotate attributes 53-58% of
+>> the walk_update_folio() samples to the lock cmpxchg in the inlined
+>> folio_update_gen() in this test.
+>>
+>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
+>> ---
+>>   include/linux/mm_inline.h | 2 ++
+>>   mm/vmscan.c               | 2 ++
+>>   2 files changed, 4 insertions(+)
+>>
+>> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
+>> index b3d85fe91385..4ba9079f4dc8 100644
+>> --- a/include/linux/mm_inline.h
+>> +++ b/include/linux/mm_inline.h
+>> @@ -244,6 +244,8 @@ static inline void folio_set_lru_refs(struct folio *folio, unsigned int refs)
+>>          do {
+>>                  new_flags = old_flags;
+>>                  lru_set_refs_flags(&new_flags, refs);
+>> +               if (new_flags == old_flags)
+>> +                       break;
+>>          } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
+>>   }
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 50c352e9ffef..3fa76715382d 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -3398,6 +3398,8 @@ static int folio_update_gen(struct folio *folio, int new_gen, int *type,
+>>                  lru_set_gen_flags(&new_flags, new_gen);
+>>                  lru_set_refs_flags(&new_flags, 0);
+>>                  new_flags |= BIT(PG_workingset);
+>> +               if (new_flags == old_flags)
+>> +                       break;
+>>          } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
+> 
+> Hi Ridong,
+> 
+> I had the same idea in V4 of MGLRU-FG which is posted a few weeks ago,
+> with the same code:
+> https://lore.kernel.org/linux-mm/20261016-mglru-fg-v4-4-2106750c0bfa@tencent.com/
+> 
+> + if (new_flags == old_flags)
+> + break;
+> 
 
-Fixes: 3a9e567ca45f ("mm/ksm: fix ksm exec support for prctl")
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
----
- include/linux/ksm.h               | 13 -------------
- mm/ksm.c                          | 16 +++++++++-------
- mm/vma_exec.c                     | 10 ----------
- tools/testing/vma/include/stubs.h |  5 -----
- 4 files changed, 9 insertions(+), 35 deletions(-)
+Hi Kairui,
 
-diff --git a/include/linux/ksm.h b/include/linux/ksm.h
-index d39d0d5483a2..5e228935cede 100644
---- a/include/linux/ksm.h
-+++ b/include/linux/ksm.h
-@@ -66,14 +66,6 @@ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
- 	}
- }
- 
--static inline int ksm_execve(struct mm_struct *mm)
--{
--	if (mm_flags_test(MMF_VM_MERGE_ANY, mm))
--		return __ksm_enter(mm);
--
--	return 0;
--}
--
- static inline void ksm_exit(struct mm_struct *mm)
- {
- 	if (mm_flags_test(MMF_VM_MERGEABLE, mm))
-@@ -118,11 +110,6 @@ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
- {
- }
- 
--static inline int ksm_execve(struct mm_struct *mm)
--{
--	return 0;
--}
--
- static inline void ksm_exit(struct mm_struct *mm)
- {
- }
-diff --git a/mm/ksm.c b/mm/ksm.c
-index dbfb8f98b189..2e0f894208d8 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2777,11 +2777,11 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 
- 		mm_slot_free(mm_slot_cache, mm_slot);
- 		/*
--		 * Only clear MMF_VM_MERGEABLE. We must not clear
--		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
--		 * perhaps their mm_struct has just been added to ksm_mm_slot
--		 * list, and its process has not yet officially started running
--		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
-+		 * Only clear MMF_VM_MERGEABLE. MMF_VM_MERGE_ANY is the
-+		 * per-process setting inherited across exec, so it must
-+		 * stay set until userspace disables it with
-+		 * prctl(PR_SET_MEMORY_MERGE, 0). A later mergeable VMA
-+		 * re-registers the mm through ksm_vma_flags().
- 		 */
- 		mm_flags_clear(MMF_VM_MERGEABLE, mm);
- 		mmap_read_unlock(mm);
-@@ -2909,8 +2909,10 @@ vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
- 		vma_flags_set(&vma_flags, VMA_MERGEABLE_BIT);
- 		/*
- 		 * Generally, the flags here always include MMF_VM_MERGEABLE.
--		 * However, in rare cases, this flag may be cleared by ksmd who
--		 * scans a cycle without finding any mergeable vma.
-+		 * However, a newly execed process has not been added to
-+		 * ksm_mm_slot. The first mergeable VMA registers the mm
-+		 * with ksmd here. ksmd can also clear it after a full scan
-+		 * cycle without finding any mergeable VMA.
- 		 */
- 		if (unlikely(!mm_flags_test(MMF_VM_MERGEABLE, mm)))
- 			__ksm_enter(mm);
-diff --git a/mm/vma_exec.c b/mm/vma_exec.c
-index 586c52155942..2c644e18b55d 100644
---- a/mm/vma_exec.c
-+++ b/mm/vma_exec.c
-@@ -128,14 +128,6 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
- 		goto err_free;
- 	}
- 
--	/*
--	 * Need to be called with mmap write lock
--	 * held, to avoid race with ksmd.
--	 */
--	err = ksm_execve(mm);
--	if (err)
--		goto err_ksm;
--
- 	vma_flags_set_mask(&flags, VMA_STACK_FLAGS);
- 	vma_set_anonymous(vma);
- 
-@@ -163,8 +155,6 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
- 	return 0;
- 
- err:
--	ksm_exit(mm);
--err_ksm:
- 	mmap_write_unlock(mm);
- err_free:
- 	*vmap = NULL;
-diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
-index f786a585caf0..9ab4e524f78e 100644
---- a/tools/testing/vma/include/stubs.h
-+++ b/tools/testing/vma/include/stubs.h
-@@ -55,11 +55,6 @@ static inline void free_pgd_range(struct mmu_gather *tlb,
- {
- }
- 
--static inline int ksm_execve(struct mm_struct *mm)
--{
--	return 0;
--}
--
- static inline void ksm_exit(struct mm_struct *mm)
- {
- }
+Oh. Sorry about that. I read the series a few weeks ago, but as it is large
+I missed this change. I should have checked it again before sending.
+
+> I didn't have time to benchmark that one function but the e2e test
+> showed very trivial improvement, it's a good improvement though. Feel
+> free to add:
+> 
+> Reviewed-by: Kairui Song <kasong@tencent.com>
+> 
+
+Thanks for the Reviewed-by. If you don't mind, I'd suggest merging it as
+a separate patch, as the test shows the benefit of this small change,
+which makes the code easier to trace. I will also mention in the commit
+message that it is a small part of your series. Does that sound OK to
+you?
+
+> BTW there are a lot of concurrent activity is happening for MGLRU at
+> the moment so conflicts occur very frequently...
+
 -- 
-2.54.0
+Best regards
+Ridong
 
 
