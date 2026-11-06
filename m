@@ -1,84 +1,84 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CE3606A331
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 23:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF06606A332
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 23:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TH7OyQdi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NceyAkCQ
 Received: by kanga.kvack.org (Postfix)
-	id C4E536B05B0; Fri,  6 Nov 2026 18:22:39 -0500 (EST)
+	id 575DC6B05B2; Fri,  6 Nov 2026 18:25:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BFFDD6B05B1; Fri,  6 Nov 2026 18:22:39 -0500 (EST)
+	id 54DDA6B05B3; Fri,  6 Nov 2026 18:25:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA3316B05B2; Fri,  6 Nov 2026 18:22:39 -0500 (EST)
+	id 43C006B05B4; Fri,  6 Nov 2026 18:25:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E5FA6B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:22:39 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 195CE1C2DDC
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:22:39 +0000 (UTC)
-X-FDA: 85406270838.17.0F26AD7
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5309E140003
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:22:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TH7OyQdi;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 1A9F56B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:25:21 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A0E331C207A
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:25:20 +0000 (UTC)
+X-FDA: 85406277600.05.C1C1C2F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id C132980004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:25:18 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NceyAkCQ;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794007357;
+	s=arc-20220608; t=1794007519;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zOrS2oEsMLKAlSzqsplSP4kVfn432L2W3OnnE5qefj8=;
-	b=Lq2rGi+Rqz3t0NsKbNkspT4cbEebCys5BmOGCSRweTVCKwWXYDyjNg00xjffixUnJP6EP4
-	QlMAhwZEM/CHzbljm1sxWNYk7KprVu9Eg8ec5T/82R1Aftt1A9SApTq0lwK5JBASOvx72y
-	Ux4rDIBRccqdyhyi0aWC4dz2bwRqVBg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TH7OyQdi;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=OS/+VLIvLCclNI397My8q3LjXY/Yk5vw3CEic1mr37c=;
+	b=pfmRl8xDpzg65u6b5ZMsRoceizyOgfbfAqmiQsRo6JLa12mec2Rt9E9zN3usxXV5se+cCK
+	hgX0lBrU9gq4i7Kjz2nEhKqn/UjZplmvyFiGXUvNcomFXiY2IGAvrLfZZklzOrdigYS16+
+	iq7lVka+/1MuzAUnvz0LkUJU1W/2LDE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794007357;
-	b=wdG0aOkvRvqjPKNAgRv8X0WP+OkPFo+KlxDm0l+2XligafTO2q6VKt1xCG1PgOFeX36pSu
-	L6hyK/zHns6uNLCcC37ORroRQb/JkrZd7yqsKx/uKJhWPPvF2WSddJljuaCyaXsZcL7TW+
-	oAU3aF8ac5JXxpdg3DitRCvKuggoLM4=
+	t=1794007519;
+	b=rqpKEYIduLH0motS4q+74uY9jYSiv6Dvbyj1wEo5uOgoDn4qydWs876b4y+7VjnRH4pRfW
+	nhikI/I1FXnTCVrN+WywwpYs1P+msSgoJ88wIu12iMyKT4VPP2xfP1vQUCy+NwoFrffJVf
+	aRNPjPaleNaAQPBs1A6XvSNnM9gZ568=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NceyAkCQ;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9F7E4601F8;
-	Fri,  6 Nov 2026 23:22:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CC71F008A1;
-	Fri,  6 Nov 2026 23:22:26 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BC5E54233F;
+	Fri,  6 Nov 2026 23:25:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF931F0089F;
+	Fri,  6 Nov 2026 23:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794007356;
-	bh=zOrS2oEsMLKAlSzqsplSP4kVfn432L2W3OnnE5qefj8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=TH7OyQdiZ6kX4QUC4x1DKV7dNA3ms0ENMHCujHn6I/lEujseI/4nJj6Y04M8XaSZb
-	 PS2TwrZ1rtWzWJNakc76P4u33V0dUG5QLK2jvG4FQ0NZpa9uNHxYNkBI0O5M1I6Hkf
-	 kWNs/3+a31Oue8HLxwNem4ZvEUcXsiG9YO8gUSOiYPd4WCsBr6YJ+dW1UmTj9KWqHN
-	 jfREmzPSQqWtQK+GS0hEkTKOVzJLAtT/K3Zlyq78hb694Vl0md78Zfxewf25g/3Q0g
-	 p7NZ1wggioFiSZBMYZKW61Q5TZ3hgpAS1M6Ctsj/RxI93UNOl8JjqZQJeO3RfEhjzZ
-	 OCrHnmzQANBDA==
-Message-ID: <d4559f3c-dc6b-41c3-92ac-8ae0d07ccfcb@kernel.org>
-Date: Fri, 6 Nov 2026 23:50:55 +0100
+	s=k20260515; t=1794007517;
+	bh=OS/+VLIvLCclNI397My8q3LjXY/Yk5vw3CEic1mr37c=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=NceyAkCQmMG4b/DAanRIqf+RGeQZ275A6btG9R6Jeyvow7he/aODMZmg+NZa03Z1N
+	 xwdHlCdI8opWflHq/tbeeJQKWfeF9FydRg8c+gDukJ1up2XXQ2K5Gb1m/pCeQawlLr
+	 CP+jgbKTf0kv4gunItcSesSP4mw7Z3WWvBgP+a/OA3XLqEoRibzLSa9ZiMgkzR1vaQ
+	 2YBcXelmsslr431xNQx19YBll30Rfeb/rTKd7mqhwFt6da6naDqjofspumCgK2OoIh
+	 A055sIERzPUYeoOEFVkiYb81xdiAOhbc2eo5cdzcCmmtmPrzKwCVa11NafBmZzyP1E
+	 BxxHvrFsUj+lQ==
+Message-ID: <7948ffce-9062-4362-b191-984368bfbaca@kernel.org>
+Date: Sat, 7 Nov 2026 00:25:03 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/5] mm/gup: limit pagecache folio refcount when grabbing
- references
-To: sashiko-reviews@lists.linux.dev, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
- <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
+Subject: Re: [PATCH 1/5] mm: limit pagecache folio refcount when mapping pages
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+To: Kiryl Shutsemau <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
  Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
  Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
  Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Matthew Brost <matthew.brost@intel.com>,
  Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
  Gregory Price <gourry@gourry.net>, Ying Huang
  <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
@@ -89,12 +89,14 @@ To: sashiko-reviews@lists.linux.dev, Andrew Morton
  <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
  Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
  "Joerg Roedel (AMD)" <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard <jhubbard@nvidia.com>
-Cc: linux-mm@kvack.org
+ Steve Sistare <steven.sistare@oracle.com>, John Hubbard
+ <jhubbard@nvidia.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ iommu@lists.linux.dev, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
 References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
- <20261105-refcount_overflow_stable-v1-5-70b9c655da3e@kernel.org>
- <sashiko-outbox-201446@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
+ <20261105-refcount_overflow_stable-v1-1-70b9c655da3e@kernel.org>
+ <au3JT5QXbcOFXCp0@thinkstation>
+ <323500a7-ffca-4285-929e-f667415589a3@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -140,21 +142,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <sashiko-outbox-201446@kernel.org>
+In-Reply-To: <323500a7-ffca-4285-929e-f667415589a3@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: h5fq3cggnd1ex8whh741d7fnr317npby
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ooydewdgpyctd9mewczgw897b8debyj5
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 5309E140003
-X-HE-Tag: 1794007357-569937
-X-HE-Meta: U2FsdGVkX1/YSMIgk/bix1QlHbZCc3iXM0gtTNI6gXa8g+RvdPOk3Qlft9XmCo87pO1pPyMINHvybPr8APku8RK1Qke7MhmBxsRkvv2MxGMPDUndI54IcScG5RecZaIkXvc6lMOrWZm/HzymhRCPF6cyti967BqGmlo+YIHb7+l/l5aSk0ojOZVJkVbp48y/WCL2Vhqig+xKekov4vfTzhCbB4Hmo9uJfdafaIHrYe++u/8B1E30GYWQUZnxPg8saMClWO/YoVUfvD4tiOYjT+lvYXml5IaGw0rN07gUdgkF9T8jOB4KeuUTJq9ekLBx1wWBGZuf7/3oimcyQb75TDQznQKXCs3k0EzaTtsJNLp3SRTPVoHkqFN32Dwfpc/txZMUdlX/KIN0JCFtZfxhIJ0uLigV7d8ZONT6C9ESYctViEQKQ409JAtA5r69OV5CqemaA+5WPzByL1/r9mVijOPT3SZBCp2X654CkCD9xEeEsPr3uoa6Rhln4xICYmf1RIc+hpjDYJeqYCN45E5Kp/7aOFyFDjsZqY79Z4hCPM7xN/swFBAMmCCrokbJ2fy/o+bH05ZAJWNJx3Zqs4ozej+lNnd/BNKeq0hThdBAJReg2mQBdwOwfYKviYEItYK+Gx+UZmNrJg/XrAKGI2mLH/ZuA65vlhExWMIvG3l+SrayHVxp2guQ1m+YPegOK0xg1iolvH+5OMXkqHIN1i0w6ejqA3QDS+JuuSD3kO+aE59oH9mQa+pReWBLjAv4GKPq+9g+08nrPKSteJ4pdLYn8MdfgaSUT5QojRWlruOeWc02gNCvmG8H5fCPbxj3NbR1B84v9mdVeTQhSLCc4jixFI5x9qk3HUTpzvn/lETT9HPMXopNJ5l55K2HP5VXwYyyXisBZIbTPPqDAuomnB5WgSW3qmSmEg5RQwak+YKxlRMaQO4x6JGENnRkbSypsEoDaIkLf9YXXKk3ky92Pep
- j/xE1+Sp
- Ymr5TQIOF1p4I+3Aarl/1vh0V23eO115w+JK2iEqhESdGx8x2KTBd99Zc8jNNiKWeYsymvGZg2SRnOH0hihjjnxC1jlwEPodAJHqgOJGgg13Y384uWM+mxotRuWPudjKwpQA0OAqguVfMLB0y93Wn5mL8Ox4hXq6hGfLyeY8tu9066Nf1t92yw5/eYQlpF1JDEupWW+zu/qKzdJmyYUgWQbuTlI/LSL35/scavwJAyZ09EqTVeiu2Mr2Xfj+U3ABHAo6zk7wsy30LsqFtc7wsCF0yAB7U//HBg8ERqQB5PNP3sDcHlhMIKPouNXi+lDeTo1Ww+5KOaAMWEEzcJ5hRdMexckmeWjs0XaoK1lytI39LvsE=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: C132980004
+X-Rspam-User: 
+X-HE-Tag: 1794007518-938776
+X-HE-Meta: U2FsdGVkX19XnAUIMf7PHiWAatieopld0RLojWHxQod46eTSltw5ICrD/qNH8QI5oJo860EZUucxyQfl18KsOC3iAgw9t4tRLhzSopRz6G+8x7sRpPnhJtpVXm+y7IxinYiT5NxF1w4Clbs+1n8YPW/AYivo/d/Vk0NAh6xi6LvywxdcHt7P9VxhZdQ7Grv4Cch6/z5RtQR+lYiUa56SET41aVaz4xItlmllQZbk9bfjpE+w+VqgDKp2kGTJDq2ID8DPHf9Zj+Cm/8lDA7N9ikAfJfBwPP1213hEkrAMjUrbDI+sgtux8aY9/BF7quMJhIS74Rc3XDk4ofIoU7UByUuCi97FgfvxjqTW9JIHJiGTH+eg9EV7ZSZAsgP/4ZSqeUMLsEpPuiMCNoonb7U7zmowFhN+0J2MwRoTDXf57UpU0k50qB71ecjbjPd5i+I7IJA81OtAWpzQS6ZumzCB/h3dLaMNHrPzfZjRpaOhHqa6hQ+C2a09nQCLs51ppY7yBeip2z6TtTWkCsFh86Z1cVGPsti/ab8yTn5b3lhwQt9LLoahSyCfoLxDweY1W14u9vC1MNnhvIPEtiwqQYhpXr7IA1oyarkoAm69zYrZ1yGDsvRlxdteAC0ZcBOLj30a5oGVlONwgIC+rG612ZTObt6nGaT9qozPuSAuNxj04DSy4hHXnl5HIrnUlf+c2kxOBBD3L34XpucE8c12MzrJgtnptRT61plVZp9n7AnjkUpnZfZA8FoJ5HkP4zeD5ozPfTTyhKyzxHvoYuv8cdR/CJoVrV13nNtH0zbDu02gpc+aEnlYZbM2n3xA6Bji6HfdhmFf1zzmY3j6GT9rBgsw1iATPRUri1UyR4HUIUBghsGQI/ACCWL2R51FX2G2tx15ZEVaWxLBRUTeI+kOSO+Tfnm85lMJPiMWODbh8AtFyX4sCEqb3AG897SUFa1IOTirtJY24lUXeVze/GAUvMM
+ lzS/0ukl
+ c2bXd1v/oAt1X0tQzU/isCM8V2qx0E8QglhvqERzppgmK0ljcAFHLbS7TOgqqV/8Kx4WtvNglZxhzUjz/C7lJaeVtf7URp4fNF1Vfkr+G6Yfc7i5KaWwh4v9XLfEx0xGHTE7f+zNxc7E39BvlO7H4ez9Sb9l7v0eUPdEknC74kb2lzgiB+Efp2+2E2OB6BQtjzHwv9/cZtbww7yg62velg5kuFdYh7MW8FRlhmEQCN9h9JEMyw0plqGEpiTWHLBh3T6zv/yy48GmYPtUnz5WpVRSE4ZU8RazOaub6znOsdjy2YSdnTV3+d5wK3O0Lxn66rZZgCAhfYpRQaNknk04bIfwCengx+UnGzXFcyA1R0cNcgqg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -163,148 +166,164 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 14:11, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [High] mm/gup: try_get_folio() calls capable() with IRQs disabled in
->   GUP-fast
-> --
+On 11/6/26 21:54, David Hildenbrand (Arm) wrote:
+> On 11/6/26 13:38, Kiryl Shutsemau wrote:
+>> On Thu, Nov 05, 2026 at 02:10:10PM +0100, David Hildenbrand (Arm) wrote:
+>>> With large file folios, overflowing the folio mapcount and refcount
+>>> became possible. For anon folios it is currently not really an issue:
+>>> each large anon folio can only be mapped once into a process.
+>>>
+>>> That's not really big news, but it's about time that we do something
+>>> about it because some modern technology might find ways to abuse it :)
+>>>
+>>> One of the enablers for that was commit ddc58f27f9ee ("mm: drop tail page
+>>> refcounting"), however, file thp support was added later.
+>>>
+>>> File folios can be mapped multiple times into the same process, allowing
+>>> for processes to hold many references to the same folio.
+>>>
+>>> As a short-term solution, let's introduce two folio refcount limits:
+>>> one for ordinary consumers and one for admins. Leave some headroom
+>>> before the refcount goes negative, which we really don't want (having
+>>> the mapcount go negative is also not expected).
+>>>
+>>> Start reporting SIGBUS if we run into limits. When restoring mappings
+>>> from migration entries, instead zap the pte/pmd entry. We allow for
+>>> slightly exceeding the limit to keep things simpler.
+>>>
+>>> This is far from ideal, but better than all easy alternatives we can
+>>> backport comfortably. For now it fixes the big problem: letting
+>>> the refcount (+mapcount) go negative and cause trouble.
+>>>
+>>> This is only a temporary fix, we'll follow up with something better.
+>>>
+>>> While the refcount checks are not required for order 0 folios, let's
+>>> just add them for consistency: each folio_add_file_rmap*() and
+>>> folio_dup_file_rmap*() needs a prior check.
+>>>
+>>> Also, just document -EHWPOISON for copy_present_ptes() while at it.
+>>>
+>>> Reported-by: Chris Mason <mason@kernel.org>
+>>> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+>>> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+>>> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>>> ---
+>>>  include/linux/mm.h | 33 +++++++++++++++++++++++++++++++++
+>>>  mm/filemap.c       |  6 ++++++
+>>>  mm/huge_memory.c   | 24 ++++++++++++++++++++++--
+>>>  mm/memory.c        | 23 ++++++++++++++++++++---
+>>>  mm/migrate.c       | 11 +++++++++++
+>>>  mm/userfaultfd.c   |  4 ++++
+>>>  6 files changed, 96 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>>> index a2dd76cc5bbfe..79ae8fc0d6bb4 100644
+>>> --- a/include/linux/mm.h
+>>> +++ b/include/linux/mm.h
+>>> @@ -8,6 +8,7 @@
+>>>  #include <linux/gfp.h>
+>>>  #include <linux/pgalloc_tag.h>
+>>>  #include <linux/bug.h>
+>>> +#include <linux/capability.h>
+>>>  #include <linux/list.h>
+>>>  #include <linux/mmzone.h>
+>>>  #include <linux/rbtree.h>
+>>> @@ -2228,6 +2229,38 @@ vm_fault_t finish_fault(struct vm_fault *vmf);
+>>>  #define folio_ref_zero_or_close_to_overflow(folio) \
+>>>  	((unsigned int) folio_ref_count(folio) + 127u <= 127u)
+>>>  
+>>> +/* Leave separate reserves for administrators and concurrent reference gains. */
+>>> +#define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
+>>> +#define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
+>>> +
+>>> +/**
+>>> + * folio_ref_count_over_limit - Check whether to refuse more folio references.
+>>> + * @folio: The folio.
+>>> + *
+>>> + * Relevant for large pagecache folios (!hugetlb). For these, we have to check
+>>> + * before adding page table mappings or other significant refcount users whether
+>>> + * we are close to our folio ref count limit, to avoid overflows.
+>>> + *
+>>> + * Checking this for other folios does no harm but is mostly unnecessary.
+>>> + *
+>>> + * This check is an approximation; we leave some headroom such that concurrent
+>>> + * increments, batches and temporary references are not a problem.
+>>> + *
+>>> + * Return: True if the caller should refuse additional references, false
+>>> + * otherwise.
+>>> + */
+>>> +static inline bool folio_ref_count_over_limit(const struct folio *folio)
+>>> +{
+>>> +	const unsigned int ref_count = folio_ref_count(folio);
+>>> +
+>>> +	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
+>>> +		return false;
+>>> +	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
+>>> +		return true;
+>>> +	/* Background threads must not consume admin reserves. */
+>>> +	return (current->flags & PF_KTHREAD) || !capable(CAP_SYS_RESOURCE);
+>>> +}
+>>> +
+>>>  /**
+>>>   * folio_get - Increment the reference count on a folio.
+>>>   * @folio: The folio.
+>>
+>> Does the slow path need to be inline at all 15 call sites, GUP-fast
+>> among them?
 > 
-> commit 9290efad216cdf3b5ee1cdfafab0a5d9928a1976
-> Author: David Hildenbrand (Arm) <david@kernel.org>
+> It's not a lot of code. Do we really care?
 > 
-> mm/gup: limit pagecache folio refcount when grabbing references
+> E.g., in gup.c, the compiler is free to not inline into each of the two callsites.
 > 
-> This commit replaces the negative refcount safety checks in try_get_folio()
-> and try_grab_folio() with folio_ref_count_over_limit() to enforce folio
-> refcount limits in fast and slow GUP before acquiring references or pins.
-> 
->> diff --git a/mm/gup.c b/mm/gup.c
->> index 2ab42fc6834e5..db9db6b2a4662 100644
->> --- a/mm/gup.c
->> +++ b/mm/gup.c
->> @@ -77,7 +77,7 @@ static inline struct folio *try_get_folio(struct page *page, int refs)
->>  
->>  retry:
->>  	folio = page_folio(page);
->> -	if (WARN_ON_ONCE(folio_ref_count(folio) < 0))
->> +	if (unlikely(folio_ref_count_over_limit(folio)))
->>  		return NULL;
-> 
-> [Severity: High]
-> Is it safe for try_get_folio() to call folio_ref_count_over_limit() in the
-> fast GUP path?
-> 
-> In mm/gup.c, gup_fast() disables hardware interrupts across the page table
-> walk:
-> 
-> mm/gup.c:gup_fast() {
-> 	...
-> 	local_irq_save(flags);
-> 	nr_pinned = gup_fast_pgd_range(start, end, gup_flags, pages);
-> 	local_irq_restore(flags);
-> 	...
-> }
-> 
-> which calls into try_grab_folio_fast() -> try_get_folio() with IRQs
-> disabled:
-> 
-> mm/gup.c:try_grab_folio_fast() {
-> 	...
-> 	/* Raise warn if it is not called in fast GUP */
-> 	VM_WARN_ON_ONCE(!irqs_disabled());
-> 	...
-> }
-> 
-> Furthermore, get_user_page_fast_only() -> gup_fast() -> try_get_folio() is
-> invoked from hardirq and NMI contexts, such as perf_prepare_sample() ->
-> perf_virt_to_phys() in kernel/events/core.c.
-> 
-> When folio_ref_count(folio) is between FOLIO_REF_COUNT_LIMIT and
-> FOLIO_REF_COUNT_ADMIN_LIMIT and current is not a kernel thread,
-> folio_ref_count_over_limit() in include/linux/mm.h calls
-> capable(CAP_SYS_RESOURCE):
-> 
-> include/linux/mm.h:folio_ref_count_over_limit() {
-> 	const unsigned int ref_count = folio_ref_count(folio);
-> 
-> 	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
-> 		return false;
-> 	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
-> 		return true;
-> 	/* Background threads must not consume admin reserves. */
-> 	return (current->flags & PF_KTHREAD) || !capable(CAP_SYS_RESOURCE);
-> }
-> 
-> Calling capable(CAP_SYS_RESOURCE) -> ns_capable_common() ->
-> security_capable() in these contexts appears to cause several issues:
-> 
-> 1. LSM capability hooks (such as selinux_capable() and apparmor_capable())
->    perform audit logging via common_lsm_audit(), which allocates memory and
->    acquires spinlock_t, rwlock_t, and SLUB local_lock_t locks. On
->    CONFIG_PREEMPT_RT, these are sleeping rt_mutex locks, so acquiring them
->    with hardware interrupts disabled in gup_fast() will sleep in an invalid
->    atomic context.
-> 
-> 2. When get_user_page_fast_only() is called from hardirq or NMI context,
->    acquiring non-IRQ/NMI-safe locks in the LSM, audit, or SLUB paths can
->    self-deadlock if the interrupted context on the same CPU already holds
->    one of those locks.
-> 
-> 3. In security/apparmor/capability.c, audit_caps() accesses the per-CPU
->    audit_cache using get_cpu_var(), which only disables preemption:
-> 
->    security/apparmor/capability.c:audit_caps() {
-> 	...
-> 	ent = &get_cpu_var(audit_cache);
-> 	if (ad->subj_cred == ent->ad_subj_cred &&
-> 	    ktime_get_ns() <= ent->ktime_ns_expiration[cap]) {
-> 		...
-> 	} else {
-> 		put_cred(ent->ad_subj_cred);
-> 		ent->ad_subj_cred = get_cred(ad->subj_cred);
-> 		ent->ktime_ns_expiration[cap] = ...;
-> 	}
-> 	put_cpu_var(audit_cache);
-> 	...
->    }
-> 
->    If an IRQ or NMI invokes get_user_page_fast_only() while the interrupted
->    context is inside audit_caps() on the same CPU, both contexts can race on
->    ent->ad_subj_cred and cause a double put_cred().
-> 
-> 4. In kernel/capability.c, ns_capable_common() updates current->flags
->    non-atomically:
-> 
->    kernel/capability.c:ns_capable_common() {
-> 	...
-> 	capable = security_capable(current_cred(), ns, cap, opts);
-> 	if (capable == 0) {
-> 		current->flags |= PF_SUPERPRIV;
-> 		return true;
-> 	}
-> 	...
->    }
-> 
->    When called from hardirq or NMI context, this mutates the interrupted
->    task's flags and can race with process-context updates to current->flags.
-> 
-> Should try_get_folio() avoid calling capable() in fast GUP (for example, by
-> falling back to slow GUP once the folio refcount reaches
-> FOLIO_REF_COUNT_LIMIT)?
 
-What a minefiled :)
+Okay, I ended up splitting it up. A bit nsaty now that fuse will require an
+exported symbol.
 
-Best to throw in something like
+>>
+>> Maybe only leave the likely() check in inline and move the rest into a
+>> function call?
+>>
+>> Something like:
+>>
+>> static inline bool folio_ref_count_over_limit(const struct folio *folio)
+>> {
+>>         const unsigned int ref_count = folio_ref_count(folio);
+>>
+>>         if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
+>>                 return false;
+>>         return __folio_ref_count_over_limit(ref_count);
+>> }
+>>
+>> bool __folio_ref_count_over_limit(unsigned int ref_count)
+>> {
+>>         if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
+>>                 return true;
+>>         /* Background threads must not consume admin reserves */
+>>         if (current->flags & PF_KTHREAD)
+>>                 return true;
+>>         return !capable(CAP_SYS_RESOURCE);
+>> }
+>>
+>> Also, should this be capable_noaudit()? I am not sure a refused
+>> reference should leave an audit record. cap_vm_enough_memory() checks
+>> the admin reserve with CAP_OPT_NOAUDIT.
+>>
+> 
+> Not an expert, but capable_noaudit() sounds good.
+> 
+> Not sure if that fully resolves sashiko's complaint in the last commit.
 
-	if (!in_task() || irqs_disabled())
-		true;
+Ok, the noaudit definitely seems to be the right thing. But getting overlayfs +
+fuse oddities done "better", I am using has_capability_noaudit(current,
+CAP_SYS_RESOURCE) now.
 
-In the (new) slow helper to just reject admin reserves in such
-context.
+Hoping that is the right thing to use now ... review appreciated.
 
 -- 
 Cheers,
 
 David
+
 
