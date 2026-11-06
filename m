@@ -1,100 +1,134 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC64606A32D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 08:59:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FCE606A332
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 09:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bQggY6Sf
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=SP14kqgH
 Received: by kanga.kvack.org (Postfix)
-	id 56C636B05B8; Fri,  6 Nov 2026 03:59:07 -0500 (EST)
+	id 956596B05B1; Fri,  6 Nov 2026 04:11:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51D196B05B9; Fri,  6 Nov 2026 03:59:07 -0500 (EST)
+	id 907086B05B2; Fri,  6 Nov 2026 04:11:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45C3A6B05BA; Fri,  6 Nov 2026 03:59:07 -0500 (EST)
+	id 81C046B05B3; Fri,  6 Nov 2026 04:11:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 211986B05B8
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:59:07 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 665D36B05B1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:11:54 -0500 (EST)
 Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6142B80CCF
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:59:05 +0000 (UTC)
-X-FDA: 85404094650.27.1321CF2
-Received: from mta0.migadu.com (out-19.mta0.migadu.com [91.218.175.19])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B8B871A0006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:59:01 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bQggY6Sf;
-	spf=pass (imf19.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.19 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5D4EB40D67
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:11:52 +0000 (UTC)
+X-FDA: 85404126864.27.1BBB072
+Received: from mta1.migadu.com (out-14.mta1.migadu.com [95.215.58.14])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3067540002
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:11:50 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SP14kqgH;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793955543;
-	b=W7UNhBgbK3yPVTXKduvFjhKKLd4a+gyeWDQH2XqZQL7AYEUkKpjYBP6376xC9z08PlpCMI
-	sO6CUDesfc6cPEv+7BP6aUCSFHzvr2hc1hIosx4QQfJkuEqodheIYiHaxEbF3A2hCpju1J
-	wuP8Ftne4b80bYXe193rE9+6fSJKJsc=
+	t=1793956310;
+	b=cQk8ZfhM0m2nBEcR3wYP4sziPU6GAmV7jTcA+uutRLGVUK1qjm6K+b/xr+k+2iybh+Aqoh
+	OpdnaFSygH99s6j+7heE2bS9L0vEO0/xWnjTr4aHVyj6votLu7JqUi7IwVtMLYB6pCQXIh
+	2nTrIoBWghYYf6AzNe0QLu2TlzyyStg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bQggY6Sf;
-	spf=pass (imf19.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.19 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SP14kqgH;
+	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.14 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793955543;
+	s=arc-20220608; t=1793956310;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Yh+ePy4k2Ej6351I944wQj3itVcd2iIkRAI/E3uzaMY=;
-	b=kDbDUwPdMBU5t1uVuX54KLkMxazeK+ik0fxXMczqs3sv+XCNe3BblLACQnPbNJSC4ZTyu0
-	hm+8XQFy2Rf7WjUn+kc7+iZNMWCyQGEsD2xqLzmU3zlxRZRx4fgvCudr5jEWsOFeRfD1Ls
-	bPJSmRRy1BXLmSUSruYB4mbLM4i0Hv4=
+	bh=AKi4F1XkSqKNw3b7+Ng4uXx+ZMXFkYDoN/Pwc1tdXyw=;
+	b=EqA/6Swc3wn8UpP5S5xX4RoKWtY7VpOCHA0QpMxmBA85YKur4Teb8ybQqOI1gqZei8qK/5
+	EyAqv8qG1wZz6uwiSk8eIArK6s8EuYspGimJRyovLALXQ6A4eTJ5d4LveFi5YTe5jHLO2f
+	AO0Et1zT4gZN1rwbyGGZjpGcOPo4DNk=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ragY6FzqrbiIYwHJcjk3800TKOnL9b0LX6exoGgGvrI=;
+DKIM-Signature: a=rsa-sha256; bh=RB9jCfeGXFtAeNZRCJe7qF1HA2DzPZCiRtQ6f8rlwO8=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793955540; v=1; x=1794560340;
- b=bQggY6SfCbxRY2UHK2EIOX4BV1trzD6hlgH6mA9zcyurzJ9/BA4o5GjbMHM5adXG6nIV92m6
- cMpxhlILSSBPmZnBzNWQYjYznBzO43Uwvukss0Pt0BJJekCqsBaguJ+TuO8AxP9uwGmW241x297
- ZyB076wfrRFg45F4MemmEz78=
+ t=1793956308; v=1; x=1794561108;
+ b=SP14kqgHZegobLguKceMWVRaaEf3xj0wYia2VHIJv7nrvC8v/x1oCpRu272qEx3kMDDC6SEE
+ DlL0PmcvKPbKwAj+xL2YncyuVQl1aPxY6vKPhNcd0sk3NnzrIjyjhtFA8ayH6u8Qep1tmr357io
+ IqEHRdCNdAzL3+8AVKpJKnLM=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id b07fd71a6e5f18a4;
-	Fri, 06 Nov 2026 08:59:00 +0000
-X-Mizu-Trace-ID: b07fd71a6e5f18a4
+Received: by smtp.migadu.com with ESMTPS id a5d8b693a372ae24;
+	Fri, 06 Nov 2026 09:11:48 +0000
+X-Mizu-Trace-ID: a5d8b693a372ae24
 X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	willy@infradead.org,
+	jack@suse.cz,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	peterx@redhat.com,
+	hannes@cmpxchg.org,
+	songliubraving@fb.com,
+	riel@surriel.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	jgg@ziepe.ca,
+	kevin.tian@intel.com,
+	joro@8bytes.org,
+	robin.murphy@arm.com,
+	steven.sistare@oracle.com,
+	jhubbard@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	iommu@lists.linux.dev,
+	mason@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/5] mm: limit pagecache folio refcount when mapping pages
+Date: Fri,  6 Nov 2026 17:11:39 +0800
+Message-ID: <20261106091139.67845-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261105-refcount_overflow_stable-v1-1-70b9c655da3e@kernel.org>
+References: <20261105-refcount_overflow_stable-v1-1-70b9c655da3e@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v3 04/12] mm: hugetlb_vmemmap: generalize vmemmap page
- allocation
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261104023510.260766-5-songmuchun@bytedance.com>
-Date: Fri, 6 Nov 2026 16:58:46 +0800
-Cc: Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Mike Rapoport <rppt@kernel.org>,
- Qi Zheng <qi.zheng@linux.dev>,
- Lance Yang <lance.yang@linux.dev>,
- James Houghton <jthoughton@google.com>,
- David Hildenbrand <david@kernel.org>,
- linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <08143A6C-D96D-4E6B-B7F3-359E9311B272@linux.dev>
-References: <20261104023510.260766-1-songmuchun@bytedance.com>
- <20261104023510.260766-5-songmuchun@bytedance.com>
-To: Muchun Song <songmuchun@bytedance.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B8B871A0006
-X-Stat-Signature: zf4rfiqujxzb4soiwp36mc33beitied9
+X-Rspamd-Queue-Id: 3067540002
+X-Stat-Signature: wrhjradmy5x85zczshx7c5qd13ot6xyn
 X-Rspam-User: 
-X-HE-Tag: 1793955541-868092
-X-HE-Meta: U2FsdGVkX1/mVOSCUKR6w7ssSZd8Aae1zS3fY2gfMOSBxf+DBWNjUaErCy9AdyZHKsS0VqbG1zhocg3gypEl4FRx7lqjH34MWFngUEmZ1OQT58Ijk9tcvceQZ3MXhfgEV9NMQ7xaFziH4Ri7bDhcQWZFb+q8rKubDHOPEQk16OtckOmdPStbjIy1VtGJn8RTmvyugKIavGY1qKrUH11SPyRGXe9VZGKc9VsHu+x7RpNKgSREjS6VcAWVSTpp59x/vBsn53GkKsgRm3Anb5hIkza83VtkWks06jXzd9KCjIaL6lR0gKFUIJA756s6pQWDFghfh8iV54T9GXvcK9gJxzKtjPvXZPA13UYzSr3Y2eMicyAe49tQ88w2VeBCudUDVIqB1xq1ArtG+O4w715le8taFPbTtX71m/SyqPgdL0P1pLX4rBwc6v2HQJJeTFPJmfPjEUbsmrG+3ORGlwCedTPkP7HJPQQJt5NiBUyjqNbGNPDcCxW5cpSq4uNZHOQAVivQ3TBarp00XZneOWur7gLgUpG4NABXpmvqtPc/VKkh86yGCTPUMezAdsTCxPtR4VufUsNg8YAdxHGv4I9n4eF0OBRh6+dbu5KL1ohKWkcjdVD+ae2YKfE6eySz6vHmTmvMbYmEhbwrPZbCFAHyE3wjGDy14YY1iC4Ew7rH8FB4Uce3njYfocpb25uNhzECcjAltXIw/QM625pOURObr0itDEQrwq9grsfmQ+Y+oL4/1WPLveItxi3unrBrHskXggV+BM+AuqRpvvLEJd/lrLNvMlEZCSlBRB2FSJe8rQmFyp7iLSxdh3PwwjE55r2vpXbW4wce07WsX1ijtidlEyY/CwXQQifxRSNQh8ZIYorJLTiscZjbjQrOMdE+OvSu2y9FfaiH3ZNY5+faEK/kscHf3C2GPrn6dgSlKXoiWjV4tPbRDY0gaKj+sH0Ov8+uMj8q6AgDKugkQgt2nh9
- wY1OgvLR
- INtHIAowTtV3UGsZCg+/AF6YxL0+1F8cF4c0bHBVFsnbmT0I9zH+bb0uSPK+iHmfqFD0aoECBh8fr9sw9XbfV+/M6BjuietEECGGw3ODNoqoyMRuk+L4nUiOIq+Y8EBtQbZHU3G9x0EHo/RyIoY7og+wCEvRYZdjS6jRIo+wVeVL8EBzVtlhOq/tVgRmtiklSHkRkcZonXcW/hYu03Osqgft06Rg0px8ijkHS7Kmh599XjssRQ5wMDaCrrKbEJqnIC2Q9gKxRarRFM9WW1fRzIvJdN8e9jY0alVxwQM16gs5AEN8lsXXUJP2+9csDsOi2y5WuIkEsIrIWYfaUlF8ocWIMij9VahZCywLCB4dCGk9fqlWr3kZxC5m173nKfyHDvWz7
+X-HE-Tag: 1793956310-974338
+X-HE-Meta: U2FsdGVkX1/5GwW7jzNDRPRfoi1RNWQ36phunenBSKTT2nbxVMgkg1JgqoP/g6Lbl5hzyf6rl37PCYFj/+TRKvgLAUveI//0AKdoVvtBRCJuVXjG2bo532SXXNBZMdzH9ZQrqE5SQV+10PGqazzGgOET8LWyiT5umztr0Q0XlOGnggZ7lftj4Jtk3dfdZrlp34vy0P1461HE9EzWqT9XfEnA7fmOUmlBDvSZC/zFKcclLDqHZ0fhm8Kxaxgy+Z80hSahPKfvWSDtiLXLp6jYMJi6KJYXaKy4Zh1lLmAyhYxrVgRpIkMVUBPitjjpS7zIu9Bk2j6E6Hx/Vo5GO1Sb90t9TMBFZbud9Yg6dfsKegPFW2Ap1J/GOR6NsvNqye5RP4jygwBLCoQXfraxHgYH0WDBbAJ1TIHRXb/GA9xIR0Sc5M7SETR5VKlz2Dc5uNksPqbDoSoJXOf/7wY5BGuSyPbGb32VZyecriCEpXkLQmKETJrLyh2+TM2jclxf0/e8NW51Vv0+YMo2XwfuYeoPa/wNPWD32L3vTlfg/UpDLo/SJTC+rKC47523oKusTqKV/B6MZTGOrOjhXyjdEAutru38OnFVKL+jmsk7bF2u/PImT1Pf0QKWht3Vo7ePBQj+vrEiYIVaJqmFP1h89s8xbwqwiSDD0PI65W7YseImLRptbygqIF47uSITy/OwFE3yE6f9nvCL1iThUXffqqfBpwVggdvFzHyqm20zcoONDA+203Fy3tCrP6h8lugQhs2u9FfRvahbTc5iGC7MxeIjeIDRRXVcNalX82hz1YVT+adnnYp2YEnVXXgvahSoe92pOBom+F2SYGv5BMiGx/Jxq33P6yw/C4SzzYlJS9YlXNQZaBuv18afHFQmVYRtWpEqyIaWywrAXEvh76mh+YQxSqLF5E7rICFkqiBV7crJ9LeJ9qzHF7QW3E+3Y1ns15nP7KzslBnrMH0qOyokg7h
+ +882tvpw
+ +h3B/XMFN81cMPjcwFuJ17QjgAOfB4nH7fycdGqlaIWYfqhIPswBnItmNutvzovEs2hJvc6zy0d0BkpwCj3cGXUVpX9oE5D5NDlc/0g6T7sf78EWohNRBCy07SNxz+qBbiYsdthBYoYA7bHPpmrGo+4l/yKh/0Oao/UliojqZdDCnJsQ7ooLn/tEwowVHI1+OLsWsc8pjzRs4EQAVaE8Urx6cyCSNcXbsueZpYXC43DhP79s2qH364mXvXCtlM9RMeCZXF10uJfcytu/0MIjLdhj5e8Ft4bAoirAty6a+SeZZkUmsA51422X+CA+vGk20dIDy+1BJM8AZYQ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,28 +138,60 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
+On Thu, Nov 05, 2026 at 02:10:10PM +0100, David Hildenbrand (Arm) wrote:
+>With large file folios, overflowing the folio mapcount and refcount
+>became possible. For anon folios it is currently not really an issue:
+>each large anon folio can only be mapped once into a process.
+>
+>That's not really big news, but it's about time that we do something
+>about it because some modern technology might find ways to abuse it :)
+>
+>One of the enablers for that was commit ddc58f27f9ee ("mm: drop tail page
+>refcounting"), however, file thp support was added later.
+>
+>File folios can be mapped multiple times into the same process, allowing
+>for processes to hold many references to the same folio.
+>
+>As a short-term solution, let's introduce two folio refcount limits:
+>one for ordinary consumers and one for admins. Leave some headroom
+>before the refcount goes negative, which we really don't want (having
+>the mapcount go negative is also not expected).
+>
+>Start reporting SIGBUS if we run into limits. When restoring mappings
+>from migration entries, instead zap the pte/pmd entry. We allow for
+>slightly exceeding the limit to keep things simpler.
+>
+>This is far from ideal, but better than all easy alternatives we can
+>backport comfortably. For now it fixes the big problem: letting
+>the refcount (+mapcount) go negative and cause trouble.
+>
+>This is only a temporary fix, we'll follow up with something better.
+>
+>While the refcount checks are not required for order 0 folios, let's
+>just add them for consistency: each folio_add_file_rmap*() and
+>folio_dup_file_rmap*() needs a prior check.
+>
+>Also, just document -EHWPOISON for copy_present_ptes() while at it.
+>
+>Reported-by: Chris Mason <mason@kernel.org>
+>Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+>Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+>Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
+> include/linux/mm.h | 33 +++++++++++++++++++++++++++++++++
+> mm/filemap.c       |  6 ++++++
+> mm/huge_memory.c   | 24 ++++++++++++++++++++++--
+> mm/memory.c        | 23 ++++++++++++++++++++---
+> mm/migrate.c       | 11 +++++++++++
+> mm/userfaultfd.c   |  4 ++++
+> 6 files changed, 96 insertions(+), 5 deletions(-)
 
-> On Nov 4, 2026, at 10:35, Muchun Song <songmuchun@bytedance.com> wrote:
-> 
-> Vmemmap page allocation is currently tied to restoring a virtual range
-> and assumes an empty destination list.  These constraints prevent it from
-> being reused when pages are requested independently of a vmemmap range or
-> appended to an existing list.
-> 
-> Generalize the allocator and give it an all-or-nothing list contract so
-> the restore and optimization paths can share the same allocation policy.
-> This also allows HVO head-page allocation to fail gracefully under memory
-> pressure without triggering the OOM killer.
+Nice work! I just went through all folio_add_file_rmap*() and
+folio_dup_file_rmap*() callers, including callers of set_pte_range().
 
-Before this report [1], I did not realize that this unexpected behavior
-change fixed a real issue. Therefore, in the next version update, I will
-extract the GFP_KERNEL modification from this patch as a prerequisite patch
-and place it at the very front of this series to fix this issue, so as to
-facilitate backporting.
+All covered, looks good to me1
 
-[1] https://lore.kernel.org/all/20261104133938.50974-1-zhangyili01@baidu.com/
-
-Thanks,
-Muchun
-
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
