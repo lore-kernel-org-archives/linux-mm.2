@@ -1,85 +1,85 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4AC606A31B
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 04:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32DBF606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 04:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LNdgrU5z
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=M4g7meN9
 Received: by kanga.kvack.org (Postfix)
-	id 4E55D6B05B9; Thu,  5 Nov 2026 23:01:23 -0500 (EST)
+	id 6A5FB6B05B4; Thu,  5 Nov 2026 23:10:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46F7E6B05BA; Thu,  5 Nov 2026 23:01:23 -0500 (EST)
+	id 656686B05B5; Thu,  5 Nov 2026 23:10:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33A6B6B05BB; Thu,  5 Nov 2026 23:01:23 -0500 (EST)
+	id 547986B05B6; Thu,  5 Nov 2026 23:10:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F3C3D6B05B9
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:01:22 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7C8F2140280
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:01:22 +0000 (UTC)
-X-FDA: 85403344404.30.87754B1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9CF8D1C0005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:01:20 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LNdgrU5z;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BB946B05B4
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 23:10:17 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 83ACB40CA8
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:10:16 +0000 (UTC)
+X-FDA: 85403366832.28.B61A00E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8E9B3100002
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:10:14 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M4g7meN9;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793937680;
+	s=arc-20220608; t=1793938214;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EKI7PGZaHzRnKhw9+Gxl7Ck/B2CGZVJrrWzNjxtIAHE=;
-	b=zGsMoehQo3kE746rnzdwMNmEFiEXsgjr4R34bWoqpxrguHQgxj1y1bjguwVUUdZoTVEZWo
-	eckHymGWvJSLn9T32+negaIc3QrPWQzhd+wKzyVy1HeFqAExuXWmBlY+XicTOgWDuMW3Sj
-	z8skRfE931Yn4mV6Sd6PM82jFJ9ON0o=
+	bh=bpOrsKv6qGnA9uW832gOGeZZa5N6TFONX1C9LOr1sUo=;
+	b=766Jz9g8+/1aXdiq8y2kRw6tScNRx18krCE+Oebptvey4EwyA919tNw9f9yhRJBib4YweK
+	v6gA97M9sG2CVwpR8GBKki27La0Q0NEHS/G0vqMNccNO3LPfZkt0qEfZJv+bh3XQ8bgtDB
+	k5erthziowPUxvslAOADpUak9gGJZxU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793937680;
-	b=gb/urZfnQfutZStB8ljzm+76O7+hxJ/p8iuVAYEEtv+QYgNehAA4lzEqCcMiFR1tmqmyxB
-	w8vyo3zRops2UnNosCP6aYE34UNqJQY4vT/9yrk/eVv1WoS9zpBFGsP3akJPDO7MVQlh+Q
-	RAhtEqxY4bMM0xQq0iPEOkAn0b/gViM=
+	t=1793938214;
+	b=fCIdNrKflYybvsoe1SXZkweEwm5f0XCHWjEM5BqO3bBA05f9CnpdBQFb8dT1QdTo2Q1khN
+	IV700WcbaqODtShBWzc7rxW0URd31WES6MZhrpjtiUESITyttuXGZWvsQKG2Up55UFZB8b
+	wiTxlOruI8O5UyzlVMEBWYCQ9UnGRPw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LNdgrU5z;
-	spf=pass (imf21.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=M4g7meN9;
+	spf=pass (imf14.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5B3A16020F
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:01:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0873D1F008BC
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:01:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9CC7144044
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:10:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80B1F1F008A7
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:10:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793937679;
-	bh=EKI7PGZaHzRnKhw9+Gxl7Ck/B2CGZVJrrWzNjxtIAHE=;
+	s=k20260515; t=1793938213;
+	bh=bpOrsKv6qGnA9uW832gOGeZZa5N6TFONX1C9LOr1sUo=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=LNdgrU5zM2nugBvZVCR02iYgDIFmlQHM3kqBcyp/SVdk7mtCDyZg91KEZW9QGqiq4
-	 pTrdL/v5+Sridp9dwQOz13aeDVsJ3H2YdUTQ2WgTqzAN3jOXnwlTOnh17e7nKmSJJS
-	 cBGQ2Hysr/0o2u+C0HNxL4jSArWNZCkAWoE4VqHwdeCR6AmOWsinVXhs4XeD3AnnYL
-	 NyyqQbfWqKaONffmcdGvCd7zgPIyaaZdh/1bZChmRJVWt9bEoba8Mj9VPdtvLQJHSL
-	 LtcLpkBtQervU2s3YqAwlJwk+9qPdvnWWnyivKaN8yf3MXd/mXhVPuD1TG2CyQRZXk
-	 koUxpIOcYqO3g==
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-93f259cdc86so15092085a.3
-        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 20:01:18 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBxTP3X25oNFNp606+ZjqGC8Hyb52pRBwmZ68LWrjDHAcNysabxnMvIR2prrY4xHm0b8QqdGifTpIw==@kvack.org
-X-Gm-Message-State: APuU4Z8cKfREggQyEFY0VSnZNeR1Rur6UfLCQ0r94+CLESyV8cGhcDaW
-	GHnn1rUoKxtMAz53Sv3kC0rUm/HPwVlBcl2Zb5mnMNhAetFWdvdXIDJfuurC7ep/ogW/apK1Hk6
-	NeXw6nB5AOKlWgfQ+PGWBwjPzCIW/KR8=
-X-Received: by 2002:a05:620a:688f:b0:93f:5f83:2cbb with SMTP id
- af79cd13be357-945f33a9aa3mr181925685a.7.1793937678322; Thu, 05 Nov 2026
- 20:01:18 -0800 (PST)
+	b=M4g7meN9L4jcufSegpXXlWaGlXSAiSHsKt/N0gqp+weN1qe6aJeULVDkyojAgWtGd
+	 gPzkuMhS3VJVvD2iSMsunZRORx5vJwxaWTAQVgFcpLq14jjWIAD7Nw2dIR1i7/2Hzk
+	 /O5QenXf94M6jdl7yxnrnrLBTyfQ+VOsC+G1To0qVtvIPWpP8LkN4Fxrkoshn5Eodv
+	 iI2U+VQDFU28zucCyh62Ju3w7+sSJBZjMtmNRYMl89xvA9b06kdZffirB4Mo5dQJxN
+	 lfwJBW8CcnqbWHB2+bVzFKHN9Grs/TML+8Rs5t7LhzX+R2+u3PZkzW2XpkS0NsohGE
+	 EFmyKRadV+PGA==
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-91c719669a8so1958406d6.0
+        for <linux-mm@kvack.org>; Thu, 05 Nov 2026 20:10:13 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AKwUvBzYZPNHwp/nHlb3z5+aUtVSnV75idU1oOr3kfyS6Reovs+Jg9oprkqJsE+KPRnklT/cELNTQSTyUg==@kvack.org
+X-Gm-Message-State: APuU4Z/UQU5fp6a/OLKrZoyKcsvhjeRW4fMgBRgk5EolK04cKkS6uInr
+	X1dYqYccdUTXnI0TtWY03PrZJ9+dMNcwntT1hB2ZgmryFnuU5y8nyXO9eFnZG0kk8sUyGhTfMfF
+	OLwXPM+CHHeS88yJPqdPe5i/IiUiMfpI=
+X-Received: by 2002:a05:620a:1b86:b0:93e:c12c:f134 with SMTP id
+ af79cd13be357-945f364d640mr184996685a.79.1793938212273; Thu, 05 Nov 2026
+ 20:10:12 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org> <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
-In-Reply-To: <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org> <20261105-late-2026-vma-flags-v1-4-0d3cd15ab75f@kernel.org>
+In-Reply-To: <20261105-late-2026-vma-flags-v1-4-0d3cd15ab75f@kernel.org>
 From: Barry Song <baohua@kernel.org>
-Date: Fri, 6 Nov 2026 12:01:06 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zKtBarGn2gMEH7ckKtLLgugoyPb040Z2KtXX5Feye1Mg@mail.gmail.com>
-X-Gm-Features: AclHuK-043SJnHCawrQog3yw2g1v7cvWQi1ZSPtdBLorMSdL4MZoNdMju91VkJk
-Message-ID: <CAGsJ_4zKtBarGn2gMEH7ckKtLLgugoyPb040Z2KtXX5Feye1Mg@mail.gmail.com>
-Subject: Re: [PATCH 05/13] mm: convert THP VMA flag tests to use vma_flags_t
+Date: Fri, 6 Nov 2026 12:10:01 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4zfovh2t9zNeo2D6+TqPbKeEeoFniTyE6DQT8w8stXNhw@mail.gmail.com>
+X-Gm-Features: AclHuK-3k2KPmLqEqbOgFVFtxh57Y4Ge5X7nQzdyUQMEUj3H7k7EkhGovaoUjnE
+Message-ID: <CAGsJ_4zfovh2t9zNeo2D6+TqPbKeEeoFniTyE6DQT8w8stXNhw@mail.gmail.com>
+Subject: Re: [PATCH 04/13] mm/migrate: convert VMA flag tests to use vma_flags_t
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
 	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
@@ -123,18 +123,18 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.o
 	linux-integrity@vger.kernel.org, selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: mqoqyfz1hdr8fuetpeaojrxfaetmdasb
+X-Rspamd-Queue-Id: 8E9B3100002
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: eppybygg3qmrzautttnckqncg9kttn6m
-X-Rspamd-Queue-Id: 9CF8D1C0005
-X-Rspam-User: 
-X-HE-Tag: 1793937680-701545
-X-HE-Meta: U2FsdGVkX181wXJPnQDgfz5FJfYHvOKrzwFiJz/WQghtQ7TxdSPJrivW60AKlLucbt2WMavp5bWXw2O8HbdPTDlzgFPtxsj/5hASkb/1KnooBIBG0GC2WZImubClD2fJFe37xOJTuMw3WvXJsnBlcbVCZDW7JplhL9QjsSviw161ImFe7I1nQ85fLeuN3qSmjSNS5ij60//JYQF24/YpMgOvuNCLZs7iWkKmJFd7cQBvBE7TQHOgW9J6gkTnAJRXbjrlQZkDGnJ/ya+svY4wwwK8Vb5OjhJRrcOclGI9YQCbtPHghiormhfcztHyMbGKcxeFtqwfQhXMjAJ5B81EsXMcbR7ufepMHGhcPK6A4ol8aQ/LTHWYuDNZdODbot8CGeQEFnTCmfImxjwnO/2iXO3gUTdUUPBZkjFY016TxyI2P6PXsx1wlOMLa0VFV9TQk7UDzt1IhdCi2czE7qvmW55/BsPlwjLDUVS/EEvzG8/Tng7IK516aBv5o6Y3xao2SteLONtW4x68c8JmE74oX2T2HjDmXh+swn1lCKFCA7bDNf6wi+55t+k+UB8xFqI5FLqZXDktHupQza7s4DWUZ3SByKrCcD5PINvDwtJ8wdunx4yfRjCjWFmRemXCDyaVemmZB2vyngT4LzXBqUURgiwJCPO8nEVoM+RbBbO2J/NVXxOMPe73MFg4n3OwdVbVE+Fcg949WI0BBb2yC/jVo0XgMf9aWtBfKQt+HzL1UtGkmkAM2m5geuAEANOxKZ7Qo4fmWoZKRCBPtFjrFunX1bk++xo7aX9cWoq7rFNLqsKMdy4iEimclt6A/QN/ZB1PDZdgeFc87e7EXGdRc8ABwya/e+ABjHI7I3Kn2j3qEnfbmsoLlLtAyHHicVc1ytUzY/qtnPQW5AOoFI3c3PhQbOFs/EZnb7coaIWpo8aa5tHe0bNGm+wnCyjotaUf5Kk2Br/GL4Fcu9cG5S/UFRi
- CqtFj2HN
- 2ktZn//qMcjctjRPTvo/9TD735naOKvopA1pgsSALEzwzRgWM003zigIFW3ughZeeXh6UvsFTwjPMHBq0a1Y0aNQV6N3SeIof1fJHtgYXXADwMciio6Uu8PUXGAz4E1aAnXONMBvVEeLEvxgMpaqMTCK8ij03A4Z1QDqtTEgabCknGtbSbcVunR+LXPFkIkqAQW9iBpC639aZiSZz/GUD/dS0capIqv+k4vdSd9PdyX1DAH76Vfqkdt+4OzzZOva4WIumY9UYk/fvpIQ+kwC/yRzOLeRnUE+CzinTGMURipp7o0RPmVCClMxnYzkIqrBwBPJ3DC5QtvjWglmOWnnbJDEn7H5UQqo+cXxDvrl3C+wGhj+a1PZfACQ7l0BenJLXXFP/rbOpLDB5L7iCrvm0f3VWcxedTDA2Ls5XmsJ4D9uoOiE=
+X-HE-Tag: 1793938214-991681
+X-HE-Meta: U2FsdGVkX1/mO8gzTqmRrQk1EHypTIT1qDUUazGtQDPzZKdKlHojDHwGJ8WnQGuxDHOy8g8MuyejbFHlB90h8ACmm1ohTDBxv3kXPnzIAQOPHRlvBNrNPyyXA12BHBBTVPXfWyFzwij+RleXIcLOQfIv9/lcseYl25lDic2j3hDU7i0cAA6TXAFPzhqgy7zhDCR0L5p4H/GI8BfxGJVOG6Yst+p3h97XeGwJdSlIylYolr2OEe/+Ge2hK16seU/ozz2fGa72s8THEC3d9Kw1wOHWPSsxngGDkpDS0m9QkV7SHpABZbiDgmVsxEFPHp+qMkjSmOmqa96d9Q9uuzN4vg30Re4QMePjiPdetxhXmvhr9R/30jciA9VvKW+MfgUDdQUWri5gEgvVgjX0wxOCwA8cavN8/ZYwNL/PF/qyEhQuqZyu5dHsYN9kEqxxxJXYPmgsLpYycNFHZNvn7mIqwOMzu9Q7TVJgGkE+gIkbyP5UgfA+A8fEGfIrGhr5lyl6/H74fe0J8tP+ud6vWuLnLTA4VodhAbxxok2I9qwUhrrX1DNJW5b5dXMeXH543B7fb4rhmHBVN3f9bX5tLC6Tr3rcvV9Nefcmcw4eBnSTB1gWCtWYe7M2YU79gflt7nwbkiX8qnK8E2mU/xgULOWEkgRhu23WxvMtNzxVm/oEYGn37f1uMJkIapV2brcfaUEnQcrNncydorEFD2lsbxSk0hglaHP0HiqVV6YkFJzOfsqmXPiymDXdq+UTjY9zpJgHmU2NlPy8h79qN9oKlOwoplLgxwdIjGGDib2rqu6vU4Gixbr7Bg2DJ5LqA9uNmpMs2J8R0tFI/101k4bO3IJ+oMboJpljdlaPRm7L004ay3OGX+aqtB0OMC2JxAfISvZzGRbdeLXVh31W5eny+XzwILrZgms2D5uN1Ai+mng9EZ9KE3GtReFe9/Ymtu3dNF8xUA964s70epOKDG8hYyG
+ 62+mVBHh
+ XIUDVS5bJ0fd58RYmJ/4Nj/nDdW63P0YW7H7AlquV4OXw7yVnWlG6MJMRL8oVh1IdFl3cQ1IjGCEd7DC6mJKUHLhZeA9hOSBTmjG2z0lRXVKwZeqkiYA0nMa5tLlWI1iaeNVajwA0fbKfEJRRhCgxEC5ux55aPnH9WnWjvVtrlPAzwXUo75LJB9qCHbJQxx/ToEemL6QxOguoaFUrURQprVzggejCfrffSBbKVn/PwB81LDrjzqjgFpG/G/IHS4cIQT76Qx1KUWEnu9evHEOLd6xJ4jC2FQabfa0gMHKYiEDV6ENb9Dx05huYnvwSkp1lTJTBiL31q43ZHMd6zNqc2tB1Wd2emzpgYuNqYZn2xli2oRMF/fHQ+KXk0AMeILLy4oT5FeqFmz5fsDj/HFSENW7twuEsW2g/zgh+nNpqdB1P4+A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,17 +143,15 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 5:33=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
+On Fri, Nov 6, 2026 at 5:32=E2=80=AFAM Lorenzo Stoakes (ARM) <ljs@kernel.or=
 g> wrote:
 >
-> Replace use of the legacy vm_flags_t flags with vma_flags_t values where
-> VMA flags are tested directly in the THP and khugepaged logic.
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
+> migration logic.
 >
-> The thp_vma_allowable_orders() family of functions, hugepage_madvise() an=
-d
-> khugepaged_enter_vma() continue to take legacy flags for the time being.
->
-> Also update BUG_ON()'s to VM_WARN_ON_ONCE() while here.
+> We retain the READ_ONCE() of vma->vm_flags in remove_migration_pte(), as
+> there is no vma_flags_t equivalent, and arch_make_huge_pte() continues to
+> take legacy flags for the time being.
 >
 > No functional change intended.
 >
@@ -161,5 +159,6 @@ d
 > ---
 
 LGTM,
+
 Reviewed-by: Barry Song <baohua@kernel.org>
 
