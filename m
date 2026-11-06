@@ -1,99 +1,183 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A721606A335
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 03:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6958C606A330
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 03:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=iDKrsO+B
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jVSPpolz
 Received: by kanga.kvack.org (Postfix)
-	id 22AC26B05B1; Thu,  5 Nov 2026 22:03:56 -0500 (EST)
+	id 670F06B05B2; Thu,  5 Nov 2026 22:04:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 201A76B05B2; Thu,  5 Nov 2026 22:03:56 -0500 (EST)
+	id 648676B05B3; Thu,  5 Nov 2026 22:04:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13EF56B05B3; Thu,  5 Nov 2026 22:03:56 -0500 (EST)
+	id 5115E6B05B7; Thu,  5 Nov 2026 22:04:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E0BC66B05B1
-	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:03:55 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0E1E140CEA
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:03:55 +0000 (UTC)
-X-FDA: 85403199630.20.2E8BF91
-Received: from mta0.migadu.com (out-138.mta0.migadu.com [91.218.175.138])
-	by imf31.hostedemail.com (Postfix) with ESMTP id D248F2000A
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:03:52 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iDKrsO+B;
-	spf=pass (imf31.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.138 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793934233;
+	by kanga.kvack.org (Postfix) with ESMTP id 1EF136B05B2
+	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 22:04:32 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9371340CF8
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:04:31 +0000 (UTC)
+X-FDA: 85403201142.27.93AA4CE
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010001.outbound.protection.outlook.com [52.101.56.1])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B294F180008
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 03:04:28 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=jVSPpolz;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.1 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1793934269;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eeUY/7cJGXFEn20K8oROVcv/0XXhUdc/6BlusTj1DNU=;
-	b=Ixo5ejYuhKrwiD2MMQdihZrTtPpPNZNh2ci6QmOphsE5+ziU4k9KMtkYQjhviV9Pf3XQCI
-	VmcACNKtO8is+wODaXpNJpFPSRy7GcEH5RihE55JqV7pt6sM7PMC5VpiH0du9yvjhB3Zc1
-	2+3ZiP5CHx2qzl9nD7PoBNOKTLQkdi4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793934233;
-	b=pmFk0RN+nYd1UNLvXBDUXgh+T7X89JjRDVJyj5gDI9hrMfsKeUB6Vc3vP5th+gR1Ea4+tY
-	GhVR30TeGy30oFBS+LshhuEs3EOsDzkqYsNy3ScdvHdj722wjskz9R//WTh37j2u8HxK73
-	S6RTJxiWm3apjoYi4Ch7LDFZuJrVTAk=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=iDKrsO+B;
-	spf=pass (imf31.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.138 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jLiXUbWh0Cq3K7wdDXTxGIGTG12TPsew4PFOTwWSpWU=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793934231; v=1; x=1794539031;
- b=iDKrsO+BXI5lRueVDL1VlGWh5PUtQvd5QPfMcXlcflU/tL2xOd8/J2XNEsJBpoNvINTzAXoK
- VNjQJmv+UDu8PSkTVvoYMfjtYO9fp1B8+yP5d8BnpKP6L+DPF/nsEH/sP5ajPM7dYrrEkS+Ry6Y
- a7b/G7AFrSME9IqNeTV/Og0g=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id b619772cf9920b08;
-	Fri, 06 Nov 2026 03:03:51 +0000
-X-Mizu-Trace-ID: b619772cf9920b08
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <88a6bf17-2189-44a8-8255-50b7ee1d80f2@linux.dev>
-Date: Fri, 6 Nov 2026 11:03:46 +0800
+	bh=wrOS4zcZPhwmUQqqAD1I4FSRc8tgpRNwmJ2j3smD0L8=;
+	b=4fDWnMkRrGXrsPcbfG8N94XOyBkYqjj5xLB5sJLRf4/d8FMxOe29ztLoATFW/U6JK8fLIW
+	MQ38tJQzGqd+qptU2s44CZjlrWwNfniygL49f9AsHfyJSzqFTWwI4e4AWXT8ggKYVB+BjY
+	iYmvdzNI0xV+ikqUUtyqq/yT4slUCWc=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1793934269;
+	b=zq7rUIMNykXZ2vjfoshr4YG48q1EfjKNE1Ip/K4c1MYkHbvqpw59/WgKrPnvHwOXVQwSev
+	WG1eM0j5z/AYr/AkRsKWVbB5TJXSRxXJ7Qz8QUxJF8YMsAqjc1uQFe/aDiwdushn9TWJPf
+	p0MR9wMLrYiFrlnb5s1/Uo/yLRpjQ0g=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=jVSPpolz;
+	spf=pass (imf16.hostedemail.com: domain of ziy@nvidia.com designates 52.101.56.1 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QdxowHRDIw6xDC6iWGwCS8edZDYvnbpwkSP2Bcztp8ywnAA2YCWy0S+5j3H80TbnlYb4nuAVI7UbFH4xleE5EDvovVFzdi5gvIN6amiAP7VRt/dTSsc1hn46hxhQdXZHcKdjhYQPAhNyRr6jCjN5P9vh3vXCZCDcy6fOVyYefkSrM6AT/RnkW2TQr39CNdszR0RgUK3HqgJAj5ws0jeZv3QYfmtXUvbF413HG4iFe4M/nHfEhovHSDnkZ5TRbWMba7g8nDsQZle7xPEEmoLu42zZlMdonoS6NMu74nj8Ar49DCWzhCurGaiaflKM3OJCj/py08FrofrtGWkLu+A9Zg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wrOS4zcZPhwmUQqqAD1I4FSRc8tgpRNwmJ2j3smD0L8=;
+ b=LX9Zg+4jQvlBDkrtvDAcjpkJgoGHbwIltvB2ej7L615ttgB756ev3uPqwn/wQ8i9YMhngSxj94jqblDx0l0BhYBWKL52c9xpAQNKsWEUNTp+HbpKmuBVXl7VU2X374debQSSwEYlhT9LD7sN5YnS6MgIUwOde5lI1ulFWWFug+J+8y2bmaZcFBpvTNt2AP15pmdVX+ZaX0gFkmNbxGhNhGjOwt3ew3eH61R+p775yP2jx/OYnE+H02p6V/qKRglwUQ0lCMY02OWAO9oYizycgcbCWTNAIARUo9iaK1j+h03YEfJrECoPc+AvWdWsC0lbVrHWBNQRtoaBSGTk3NUwdQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wrOS4zcZPhwmUQqqAD1I4FSRc8tgpRNwmJ2j3smD0L8=;
+ b=jVSPpolzn0fhUnEwwVeZ6JRKTMb0F5qjGlksP1oZl1W24o1y0DDVvfBbUkSEw407vI9W7yC4dNpeF/etnrQAvcqz43UeDQLEDSPzii7od4K+9AXCqxTqgf7c2XxCl6GZn+yJ2RP2i1npMklZ73XBSpFNXzrBjU3Em5it+PBmk8i57E5DZx2Eey7OLt9aaJ8QlrA8yYE7f/5WN3ajYFpmtGfp60JO8fA+0DiX/Ss+cWGcN9KVM2nTR/1V/JyWbWRD4ClVdhDb6/mz8zc70FccibaHR4g+Z+Ian3YC3K2S5Vpl0UTAOSj0q06ohDbokeEIZp9ZB2Z2TLUduy9dVPoS+A==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by BN3PR12MB9571.namprd12.prod.outlook.com (2603:10b6:408:2ca::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Fri, 6 Nov
+ 2026 03:04:24 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0592.007; Fri, 6 Nov 2026
+ 03:04:24 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 05 Nov 2026 22:04:23 -0500
+Message-Id: <DMNSMFH1W66H.SFI19PO6JKJL@nvidia.com>
+Subject: Re: [PATCH v5 2/4] mm/huge_memory: copy file THPs at fork like
+ copy_present_ptes() does
+Cc: "Alex Williamson" <alex@shazbot.org>, <kvm@vger.kernel.org>,
+ =?utf-8?q?Lo=C3=AFc_Molinari?= <loic.molinari@collabora.com>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Shuah Khan" <shuah@kernel.org>,
+ <linux-kselftest@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>, "Ritesh Harjani (IBM)"
+ <ritesh.list@gmail.com>, <linuxppc-dev@lists.ozlabs.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, "Jason Gunthorpe"
+ <jgg@ziepe.ca>, <stable@vger.kernel.org>
+To: "Konstantin Khorenko" <khorenko@virtuozzo.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "David Hildenbrand (Arm)" <david@kernel.org>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>, "Liam R. Howlett"
+ <liam@infradead.org>, "Nico Pache" <nico.pache@linux.dev>, "Ryan Roberts"
+ <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry Song"
+ <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama Arif"
+ <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Peter Xu"
+ <peterx@redhat.com>
+From: "Zi Yan" <ziy@nvidia.com>
+X-Mailer: aerc 0.22.0
+References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com> <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-2-c56d0d26f970@virtuozzo.com>
+In-Reply-To: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-2-c56d0d26f970@virtuozzo.com>
+X-ClientProxiedBy: BL1PR13CA0232.namprd13.prod.outlook.com
+ (2603:10b6:208:2bf::27) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (macOS/Intel)
-Subject: Re: [PATCH v4] mm/memory: use pmdp_get_lockless() for the pmd read in
- do_fault_around()
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>,
- Sam Creasey <sammy@sammy.net>
-Cc: Hui Zhu <zhuhui@kylinos.cn>, stable+noautosel@kernel.org,
- linux-m68k@lists.linux-m68k.org
-References: <20261104091050.117076-1-hui.zhu@linux.dev>
- <dec26f4a-138a-4cd7-b000-4bda7c61af82@kernel.org>
-Content-Language: en-US
-From: Hui Zhu <hui.zhu@linux.dev>
-In-Reply-To: <dec26f4a-138a-4cd7-b000-4bda7c61af82@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 81n4ipnigchnp1z9qfzqywc9eqesjxbu
-X-Rspamd-Queue-Id: D248F2000A
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|BN3PR12MB9571:EE_
+X-MS-Office365-Filtering-Correlation-Id: bbd259cd-d951-49ec-f6e9-08df3bb2a96b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|23010399003|376014|1800799024|10067099003|18002099003|22082099003|921020|56012099006|11063799006|4143699003|261026121527099003|261026140227099003|261102123227099003|261028144727099003|261022075727099003|261021123027099003|261021121427099003|261022105027099003|261009223027099003|261013131602099003;
+X-Microsoft-Antispam-Message-Info:
+	iZh933GAaAjVpK53oMfRM8THGOjFV1s5nGQxGLNXCxMT2KYtTKTdoC8j/v3MIBRdFwcV7z8QOaf0+uWEjULPZfOXsi0c1bkdsDyKcfd/VU1bEFyU9wT42395K20vIS1unFq3m6gIBNmdPB5FR5EPoNwc3By5n19onhRzA2D+QGoTu2WB33ep4ix8X0ZZx5GAmCDztsncTErcoxJe8a8TN/12cw1OFLeVRvJDErFrH27P4lMIejEUkmhSFOK7rYU6exSR0ZDMrpv/mRQielSfVKUei5TB29AESteFh2TKH+C+VluAkF2Tv7g9pSC4DvxeeReDCHrf0a3vU7UroQOP3oXf1AddZzE89jqL+8kgC+SMZJ4NEoDR6PD73gUBeCXXfQ7YXSXvBM9axbTIT9mGSBmxaMB6yEq4T7VAuvict7/4Z4YRgDGYgSynBU3g+ZL5WXMBP65UYu9b0+bSXhrDkAqQ0XqfKvCXEc6W6J1gg/jXIW3B0GHaEhSP9cb4vEzT0uFe0GIcO6q8qD9X8uCreWqG3wN75+eemWw9Ue5ubJ7l7wUdLTG20dl3pifrKEX3JTfHqNfC2pMeRy4oW6AG0Q6lDel9W2OpfqyLKdR9aQRJvhRjLv1O5w/rWSZ9D5qjY/xztDmn+KE3mVQBfB0P3TcfbghtbIV7VB8vCp5sXHBLFMTak6r8dqIS6KD8t5CX6B158FPQDxdp75JxNReslQ==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(23010399003)(376014)(1800799024)(10067099003)(18002099003)(22082099003)(921020)(56012099006)(11063799006)(4143699003)(261026121527099003)(261026140227099003)(261102123227099003)(261028144727099003)(261022075727099003)(261021123027099003)(261021121427099003)(261022105027099003)(261009223027099003)(261013131602099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?Ulo2VGhnUVhadW8vNVRQSzZ0UzI5dHlkTitNY3Z2dXBwNEUxcEhZR0FuSUdv?=
+ =?utf-8?B?RHd1aHRuRm0zZXJ6K2ZGYkx6bjNSWG5sWXFjdk5CTTlLdlNVSSt6SitRUy9G?=
+ =?utf-8?B?dVVkeGcxTVlaU3FPbHluelFsWEdSRWp0Z0VlOENuaGNQeEZaQmlQM2U2MDAy?=
+ =?utf-8?B?TXh6NTZPRmpJdnFHUVVzbzI5dGtTTkhNanpvMWtzbDJ4SXRHL1BTUHovQlBT?=
+ =?utf-8?B?a1VpWGoxeEdUSmhHeW5paUdzMGh1YjRDeUM3VFdmeTBLc3JDTlhTWlNjUklQ?=
+ =?utf-8?B?eFUweDRUZkRFUzQ4YXhxMzlrYlhJUVFoOWdxaVhjcnQzNVNnZElXOXdYZnZG?=
+ =?utf-8?B?ZEdIZ1gwblIyZUgxcnZBMGdEcWFoekJOcVRPcW16Rlk3YmVzYjFDSHRwMndr?=
+ =?utf-8?B?Ri8xbW5adHQySmJoMU1NWGk2eUNYbWsvVStxb2lUWFNmOWU1Q2c1bGFraDh6?=
+ =?utf-8?B?VVI4bng4cHdZUnJPVVR6Z2thY0lHcGExZUdSeWJFbXJkUGdrWDkyVmNmMkRt?=
+ =?utf-8?B?aFU0dWh1YXcwQkMzK2FKL3RNdDdmaHJQWVkyTE1xcHZzMExNM2pkLzNqOWIy?=
+ =?utf-8?B?ek5WbUtrNUVOb0V2M0F4U0NzeU8xMTl4N0d5SXorUkFTOUlpNnFTWWRkaUN0?=
+ =?utf-8?B?S0NmT3A3a1RSeW1iTmRyYmF2YStHYUtDYU5sZFlaL01FczdLU2c3NDg5QkJz?=
+ =?utf-8?B?bjQybjhFOFFNQzk1VzhnQjMvaWlGNWI2L0xZcG1OMlFvQWZjMEpDZ2NsT0lZ?=
+ =?utf-8?B?UUg5Z3ZXSmFGUkNUQVgzOUhhbW9vdmhpdVB0cjlEb2xwaW53VWc1NE9zT3k3?=
+ =?utf-8?B?VXNwa0twMkZkbERVZXVwajQrYldvY2VIeTFzWC84SVBEUjM2cXpReDNYc2ty?=
+ =?utf-8?B?ajNyM3QvWmJiQ3dYR3hXWXhqaSs3Nk9taVFRVys5UUV3R2ZjcktEMGJXNzVD?=
+ =?utf-8?B?MlFzd1NHcHBCSWZjWDN5TC9EQkpmbWxCNzlleXJFdmxkRDY1cmdFSW9abUNh?=
+ =?utf-8?B?bmdvUkNQd21jRGJGNFhlTWhrdXRyaFFTY0NDNlNBTFcxNllUZklPcGUweTgr?=
+ =?utf-8?B?V2pUWW9jYkNWa01uR3c3dFFzMTFjWFRLOU5TeWRZVWxpcU1KcllpQTk4S2Jy?=
+ =?utf-8?B?b2pidWNQSWJNWG1HU2lpVW8vLzFreCtrUll2UkllUjBET1JUUThRYmZja2pF?=
+ =?utf-8?B?SzV2UWdZSU1GZEJjQ0lXY05qUWJ4WXQrbmlYcVZiYkoraTJEV0tjZWNXR0tB?=
+ =?utf-8?B?OW1aNE8xSEh3UlF5NHp6M3ZOcWJtTmlTb1J0V1p4UWFKdWxGVEhvNW9meEZr?=
+ =?utf-8?B?NGlhdHFLeVRwR2RBclFKZEY0U3ZCVGtkYmxMd2pGMmVoT3BsRlE2SGNOVjhC?=
+ =?utf-8?B?dk1aUDZYbmMzYm10dDBtSk9vdHc3SG5XeTNiV3FMMm1UYmVMNmFMeGlkNVZL?=
+ =?utf-8?B?b3g3NFhFcGVES1VhMXV2YnB5eGlCcmxSS1lpYUQwL0hrTzkzalYrektQVWxS?=
+ =?utf-8?B?Smt1d2dOdmhKaDZpa0Q3WGtoN1lTbDhSTGFUa1dsa3Q4dDU2UEV3UDlzdEpX?=
+ =?utf-8?B?eGtNbXRJdDk5S2djcUxTb2c5b0hzeVlkejhOR1ptT21uTmRQQTNqUFhSUDlI?=
+ =?utf-8?B?NFloandBSG43c0xuR2dkUzJxSmFIMEJRVmlWV1BnZWhhZm1tRERtME9hRHcv?=
+ =?utf-8?B?U1haY0VOSzBmUVNVb2dsWERtZ0NHcDR5YmRraDdRaWlKVzYxZFF0UEFwOXYy?=
+ =?utf-8?B?SUdjV3gwRTdRN2d3c1poREZzRXpkTVUxSWg1L3V1MExHNnNLU00raGxFRHMr?=
+ =?utf-8?B?bkdDYkNwaVF0TWQzTVpRWWhXd2U1YXN2QTV0N01zOHpaQ0lqUjZNZ1QyRXVa?=
+ =?utf-8?B?SVZ0eFNFNXJLcGJLTkNPcVNNcFFrL1pUNS92c1g3MFpuYnpHV2xLU1QxWXJo?=
+ =?utf-8?B?bUxiRVVndkRwY21VMm1aQW43cDJNMHY4UCt0V0J0MjB2cnRpU29ncVlGVUJ1?=
+ =?utf-8?B?K2ZhTmZ2Y0pucjdWTVNxZ2p1VjVHOW9sWU44TzJPYlc3YnNjQ3ptVHZFMEdV?=
+ =?utf-8?B?NCtaUjZhWU9sbkRkWTZhbmZ1b0JtTjltYU5aZGpST01zM21xd2FGNGNhVFJS?=
+ =?utf-8?B?bnlaRlA0M09tMFh5WkxZV0dVbXRzc0w3VjVaNDhEdzk0c2liK1A5Vk5SbGRu?=
+ =?utf-8?B?M3V4aUNXMU9hdEtmNFV6Tk9RZnAralUzaHlVVmc5RlBnWEdUVU1sZ2RNQTV0?=
+ =?utf-8?B?QTdPcjFlZllPZXhJZ1ZoS2tISHhOZXNkVDhMenpRRFVwQmdZcGs0R2tjTUFm?=
+ =?utf-8?Q?bDLz/kiN14EC5j6el3?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bbd259cd-d951-49ec-f6e9-08df3bb2a96b
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 03:04:24.4184
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: W1ge9I7mrvkDl/b84dPuGsYlvwMJkd80qNUTV7lvgNa4ElV1DJ+yBPks0xl2ml7y
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN3PR12MB9571
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793934232-511569
-X-HE-Meta: U2FsdGVkX19do9Yw6Nd4smqE5/lBctZmvhEf8ahSaoXFidLK1kR/7ov/qcmsrHM0GTNaTGW8jyBQvNZYGpz3RrhG3tupnbnvlZSZ5j0PPrD+mmxhr2QrOUu4wCDUZhU02Hjjj0ytbyjHNvB4zn+7hP0IIVVyKvL4hI0Rr0XrWK8Tt3eUwdI3e40vgxJL/mbTGWFVBrU+s6Vw0QZqVscjpM4aIfyNtDdQDLci/D2+6SGDB8kz8dRpBBrDNhXjHDs4xROSjGlyt0rGkjvKZjIWqgnDvN3BMYspqsUmZcymosSx6MkSC7urK6avusNN76UmcsYZmWCqaRjtIpU3wwuTC8Fdy3dbKIiUEe4BWRghZtFYnWI9Up0z+cid0dlWq7kmyMII+v5K8WK6IwHOQH+DG30HeB7Ymk5N8yzJu/YgZuCbLAfHacK6lUR1k6047O/qE2Lu1p/miqAQssxICLAdoBord2RG5Vnhfxfm4h5ijOP4adyGvVwdJnNe0Dq30sbUp53Q1Y4ODhjLd6Ce3OqJmPCeyyZBb+Hrx1zAqU+1C/bnsiDKC363iB5Pe/we3pdHbIXprgrpcTeUVhkeYan9E/e/fPPjLvS7d0lENYbQRrtDR8A2jjiivOukTG7C8hVbk7v/d+WeFDl6N38e5Aq7APgYOfuXVsVi/WDU8fs7fgpJFhhX2EH2olBGzYgEdTWJaFJfuEHLpG7D6egrAcfCBmIzfyUdzT98nuP92DyPptDacVll6uItEwIGVYM/sSGO3sSzve+WR5/5T45u5HRaAjAo48hyEteusr8f2fFk0+BDn9FomSSxJf5XFKvbKwelEEGIPn9WI1pVujlGYd0j0WQ814bN1bSPFO60ia4LixlBEmbCYiWRIfpjigFuM+RoDURa8y/bUJ0iontRbqHyp8HNqRUSAqvWWD1m28XPRwdWpHymdx09gXP+WnmeH7KDW/HpEwxkGbipBCdz53J
- myc/cKeU
- KC/4x8Mhozc4Q+8ygBMBWlVbQJiaKdHdLqUDg0h+6X94D2uzPF1BfAwbe0IiW3zn7JJQPF7h2sjvfBAHNSFPsK9QpQsu/axLhXL5AveY7Zd9TidIRUP1lZwd2IHvKP0+fTR0bYT6JXN+0U4xM4oBD9l87mRMnbqsp23+LAMcyPW+ULM+56sBwD9Ico0RHSBODmbMfaW7xw3PWgNqMlfdqkFPW6eOHw757a/IjP6exB022CV2J1ZoCTBtjmHfk2+AwgIAk7CgWOGfQY9FrR78Wxv2L4x/17MRMJz24RYzZ30j0jJfmiGqAmpAxwy7RMOb/CR6D0H2G/dTlNfKmFsKOGIDzQL9CVuF8t79jMJLGc7tGVPx+J3/L/q63IfmA3oJaUvaLgn+TFEybHQQws7kBdvu3LvD/L71uWpJg26lWzJ17RsifofhKDIe0Wr5Ua7eZsisoSUd8+GbtCflk9uSurftTB2Tf8el99L0PoElaUU4pk+JxQG3cIs8u8w==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 3yzma5bkymaggrqkgorrie47ra31hsht
+X-Rspamd-Queue-Id: B294F180008
+X-Rspam-User: 
+X-HE-Tag: 1793934268-648224
+X-HE-Meta: U2FsdGVkX19Y64sAthEBnCMrYD6xB/1jGDlJuiaIf35JFt+svF2ZiYeA1OTdTIXiOIY9a2tyniqsHpkllbfow3WrX1rSbXFX6W5AgJ3mlwWj6AoLOGiBTwqheSW+EHRY/WZ+NiIeKxuNVPmc2Kqpcn6jAiD/gkGUHs7GUw0mLSH+XiceIdzqqi7dRYuGvE2GpS2xwTEfe3apqXp/f/9pGC0bA2ZnimB1V93wrkM2jiuMi/gRNNSyibNNPqbFjvKRi2rb3hGbATg+ji3SXdKWP+sewQOuazo4b0cHjCUe8FNkb9vfbs/S8I9wOdczzIG40AWr5YDqKd3xuD1+lHlk/3zLZE01u5/sgerIXnQ6zISuP5UJk7X/wTiSIkgwX4GQj7x1dPeY+/nzVUpRvixoEAseuYIU0KbLLthjX+I0zfhb3dICe1e7iacc/U1QaElx7MJRF+ON3CT1+kyfZEDorKRWfNvZ7BF6KJT8V36r/pwDIgcnR5bF7TsOG/mhIa5lfJIuNfQ09aL08TcFzi7+l7ZTwX43Hyex+Ph5rrBjfKR9q9FWth1K8WJHcX9F6cYopqRTFBdqAMD+vOM6i3Lr+pdTX2HPmme94UJqR969WIhbj/HrD3RTCTZOi+GsZ2wnolVQd9k57QHKrVx/uEps96TjhDDFLW92KQO+DbsTH2cpbdqpeVzdteHmTseQI2up/IKAIPEgKwO/XoftLPvpTJSqoS2Mmpf2LTCI4USuz8jS8MBfWv6c8OPmK4xScKA/dUIRiuqrPg6uaamH05tHjgDua8txTz79LnXi8elCzkalJp2hv5Kl+1iYh/e0OqGNBN4u/9jbBit41X1o8eCL4IWNo4myBBJ+cfnCQNWI2BMCblXJ0+MuNMTcdTYw4DsXjW1oBrLdtW/vhrainYLNatjweOr9yhh9MFds2KnA8LDP8E0IAPwXgPOeOTFsrW18jy4u71TuoGJJBxpDaGg
+ ReQtVwC8
+ tUVzv4OCkzHvPajYun5Ex/uW/xyurbVWsLdIVCEn22LNGaoyd8m0bRrr7YJJFEXR6Y+Ysz7M7krHgfGjm7J37qtroPP5AbmecFHSrukmrQnYS6NF2Drvoj4iolDgBfxUMyRdSpTR8rIKX/eFXjyO4BQFnPXyRZv6l6LhzxAmZBWYk7FeepiJ3/SGVcd9fpaWIKDoO845ee/B4V1v1JG3zv7AyCDpblZsiH6iL/B3ev1+JS7U6sN3IejX5HSxXGGU6ljas5C9UsGfU4lgzJjIC//9aPcslFRFf6pbahby7sEKnY7SW6QkEJhJ/V4696tWHmUyOUdRPa04R44OCF5T14vgrDolRpPGLVilVVww8UwyO+1eBf5yTC3zqCcv3S+c6x/UgrM0hywdvGHP3zBKXZ3Mmsh6onBF+8tDg6+gX92K5H3EspZvYTEZVEuNcEVDSt8rsjQIn5JcxhllFq/t0+1Ty3YSYQ0AvdyRj24hKS7sJveuc2dYeBpkREXclqckQ/J4sljWKIaXsVFMzOY03SxAXcPqBem/IE3crcns5geY8tAAfZQE+bEaTkRa5KLea9AQaYRPPQw8Rnc9yrrqMa8nl1Q6Vs+k5O4oS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,285 +186,54 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-2026/11/5 20:00, David Hildenbrand (Arm) :
-> On 11/4/26 10:10, Hui Zhu wrote:
->> From: Hui Zhu <zhuhui@kylinos.cn>
->>
->> KCSAN reports a data-race in do_read_fault / pmd_install; the same code
->> is in mainline:
->>
->>    write (marked) to 0xffff8d52a75fb810 of 8 bytes by task 27487 on cpu 5:
->>     native_set_pmd arch/x86/include/asm/pgtable_64.h:83 [inline]
->>     pmd_populate arch/x86/include/asm/pgalloc.h:84 [inline]
->>     pmd_install+0xe0/0x120 mm/memory.c:444
->>     finish_fault+0x5bc/0xb00 mm/memory.c:5204
->>     do_cow_fault mm/memory.c:5432 [inline]
->>     do_fault+0x5d0/0x6e0 mm/memory.c:5526
->>     handle_mm_fault+0x211/0x4c0 mm/memory.c:6218
->>     __mm_populate+0x144/0x270 mm/gup.c:2207
->>     __do_sys_mlockall+0x2cd/0x380 mm/mlock.c:764
->>
->>    read to 0xffff8d52a75fb810 of 8 bytes by task 27527 on cpu 9:
->>     do_fault_around mm/memory.c:5341 [inline]
->>     do_read_fault+0x162/0x670 mm/memory.c:5381
->>     do_fault+0x31a/0x6e0 mm/memory.c:5524
->>     handle_mm_fault+0x211/0x4c0 mm/memory.c:6218
->>     faultin_page_range+0x227/0x530 mm/gup.c:2156
->>     __x64_sys_madvise+0x67/0x80 mm/madvise.c:1479
->>
->>    value changed: 0x0000000000000000 -> 0x000000001386c067
->>
->> Both paths only hold mmap_lock for read, so do_fault_around() tests
->> vmf->pmd while pmd_install() populates it under the pmd lock.  The race is
->> benign: a stale pmd_none() only wastes the prealloc_pte, which do_fault()
->> frees again, and a pmd seen as populated only makes ->map_pages() find no
->> PTE and do_read_fault() fall back to __do_fault().
->>
->> The load still has to be lockless-safe.  The store side already is: on
->> i386-PAE, pmd_install() publishes both halves of the pmd with a single
->> cmpxchg8b.  The load side is not.  pmdp_get() is a plain READ_ONCE() over
->> a pmd_t that is wider than a word there, so it becomes two 32-bit loads
->> and can return the low half of one pmd together with the high half of
->> another.  Use pmdp_get_lockless(), the accessor for pmd reads that do not
->> hold the pmd lock: it re-reads until both halves come from the same pmd.
->> It is also what __pte_offset_map() already uses on this very pmd a few
->> instructions later.
->>
->> Only X86_32+X86_PAE and SH+X2TLB compile the retry loop, these being the
->> GUP_GET_PXX_LOW_HIGH selectors that have more than two page table levels.
->> mips32 with 64-bit physical addresses selects GUP_GET_PXX_LOW_HIGH too,
->> but is 2-level and so falls back to pmdp_get().  On every other
->> configuration, x86-64 included, pmdp_get_lockless() is pmdp_get(): the
->> pmd is loaded in one go, the READ_ONCE() silences the report the same
->> way, and there is no functional change.
->>
->> Fixes: 7267ec008b5c ("mm: postpone page table allocation until we have page to map")
->> Cc: stable+noautosel@kernel.org # KCSAN annotation only, no functional change
->> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
->> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
->> ---
->> Changelog:
->> v4:
->> Commit message only, the diff is identical to v3.  Spell out the affected
->> arches and add the lore links for v1-v3 (Lorenzo Stoakes).  Reword the
->> cmpxchg8b sentence: the store is already atomic, it is the load that tears.
->> Add the Fixes: tag (David Hildenbrand).
->> v3:
->> https://lore.kernel.org/all/20261103014749.96764-1-hui.zhu@linux.dev/
->> Shorten the comment to one line (David Hildenbrand).
->> v2:
->> https://lore.kernel.org/all/20261102093120.92654-1-hui.zhu@linux.dev/
->> Use pmdp_get_lockless() instead of pmdp_get() (David Hildenbrand).
->> v1:
->> https://lore.kernel.org/all/20261102031308.66177-1-hui.zhu@linux.dev/
->>
->>   mm/memory.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/memory.c b/mm/memory.c
->> index 0fb676dd2bd63..f25c2ce0ef153 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -6017,7 +6017,8 @@ static vm_fault_t do_fault_around(struct vm_fault *vmf)
->>   	to_pte = min3(from_pte + nr_pages, (pgoff_t)PTRS_PER_PTE,
->>   		      pte_off + vma_pages(vmf->vma) - vma_off) - 1;
->>   
->> -	if (pmd_none(*vmf->pmd)) {
->> +	/* pmd_install() rechecks pmd_none() under the pmd lock. */
->> +	if (pmd_none(pmdp_get_lockless(vmf->pmd))) {
->>   		vmf->prealloc_pte = pte_alloc_one(vmf->vma->vm_mm);
->>   		if (!vmf->prealloc_pte)
->>   			return VM_FAULT_OOM;
-> Fun, this breaks some odd m68k configs because they do some legacy weird stuff with pmd_none().
+On Wed Nov 4, 2026 at 3:40 PM EST, Konstantin Khorenko wrote:
+> This fixes no bug: it makes fork copy a PMD the way copy_present_ptes()
+> copies a PTE. Until now copy_huge_pmd() skipped every folio PMD of a
+> non-anonymous VMA and left the child to fault them in again, while the
+> PTEs of the same VMA are copied.
 >
-> I'll throw in the following cleanup. CCing m68k maintainers: I would drag
-> this along with this fix here unless you disagree.
+> Treat file folios as the PTE path does: take a reference, duplicate the
+> rmap and account them. fork then pays a reference and an rmap update
+> per PMD, and saves the child a fault per PMD it touches. The next patch
+> sends PFN mappings through the same tail.
 >
->  From e3c739933a04743e3923f6f39a603e93f2700304 Mon Sep 17 00:00:00 2001
-> From: "David Hildenbrand (Arm)" <david@kernel.org>
-> Date: Thu, 5 Nov 2026 12:49:38 +0100
-> Subject: [PATCH] m68k/mm: simplify
->   pmd_none()/pmd_val()/pmd_present()/pmd_bad()
+> That covers the VMAs vma_needs_copy() sends here:
 >
-> pmd_t on m68k used to contain 16 words. Commit ef22d8abd876 ("m68k:
-> mm: Restructure Motorola MMU page-table layout") reduced Motorola PMDs
-> to one word; Sun3 and ColdFire use word-sized folded PMDs.
+> - private file mappings with an anon_vma;
+> - VM_COPY_ON_FORK ones: uffd-wp and uffd-rwp, VM_MIXEDMAP, and
+>   VM_MAYBE_GUARD, which shared shmem, file and DAX mappings get from a
+>   guard region.
 >
-> Use direct member access in pmd_val() and replace the Sun3 and ColdFire
-> pointer-taking predicate wrappers with inline functions taking values.
+> The DAX huge zero PMD is copied too, with a reference taken by
+> mm_get_huge_zero_folio() as for anonymous VMAs. A migration entry of a
+> file folio is copied and accounted like copy_nonpresent_pte() does, and
+> made read-only in both processes only in a CoW mapping. A device
+> private entry gets the same CoW check, as in copy_nonpresent_pte().
 >
-> This allows us to write something like:
+> The copy then gets the same tail as __copy_present_ptes(): write
+> protect both sides in a CoW mapping, mark the child's copy clean in a
+> shared one, and drop the uffd-wp bit where the child is not armed. An
+> anonymous THP is now write protected only when its PMD is writable, as
+> a PTE is.
 >
->    if (pmd_none(pmdp_get(pmdp)))
+> A page table is deposited under the copy where the fault paths deposit
+> one: in anonymous VMAs, and wherever the architecture needs one.
 >
-> While at it remove unused pmd_present2() and commented-out pmd_bad()
-> on sun3.
->
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Cc: stable@vger.kernel.org # needed by the next patch
+> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
+> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
 > ---
->   arch/m68k/include/asm/mcf_pgtable.h  | 20 +++++++++++++++-----
->   arch/m68k/include/asm/page.h         |  2 +-
->   arch/m68k/include/asm/sun3_pgtable.h | 23 +++++++++++++++--------
->   3 files changed, 31 insertions(+), 14 deletions(-)
+>  mm/huge_memory.c | 63 +++++++++++++++++++++++++++++++++++---------------=
+------
+>  1 file changed, 39 insertions(+), 24 deletions(-)
 >
-> diff --git a/arch/m68k/include/asm/mcf_pgtable.h b/arch/m68k/include/asm/mcf_pgtable.h
-> index f45a882238dbb..4efa8e3e1e98a 100644
-> --- a/arch/m68k/include/asm/mcf_pgtable.h
-> +++ b/arch/m68k/include/asm/mcf_pgtable.h
-> @@ -130,11 +130,21 @@ static inline void pte_clear(struct mm_struct *mm, unsigned long addr,
->   
->   #define pte_page(pte)	virt_to_page(__pte_page(pte))
->   
-> -static inline int pmd_none2(pmd_t *pmd) { return !pmd_val(*pmd); }
-> -#define pmd_none(pmd) pmd_none2(&(pmd))
-> -static inline int pmd_bad2(pmd_t *pmd) { return 0; }
-> -#define pmd_bad(pmd) pmd_bad2(&(pmd))
-> -#define pmd_present(pmd) (!pmd_none2(&(pmd)))
-> +static inline int pmd_none(pmd_t pmd)
-> +{
-> +	return !pmd_val(pmd);
-> +}
-> +
-> +static inline int pmd_bad(pmd_t pmd)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline int pmd_present(pmd_t pmd)
-> +{
-> +	return !pmd_none(pmd);
-> +}
-> +
->   static inline void pmd_clear(pmd_t *pmdp) { pmd_val(*pmdp) = 0; }
->   
->   
-> diff --git a/arch/m68k/include/asm/page.h b/arch/m68k/include/asm/page.h
-> index d30f8b2f15927..09a2c020ec992 100644
-> --- a/arch/m68k/include/asm/page.h
-> +++ b/arch/m68k/include/asm/page.h
-> @@ -17,7 +17,7 @@
->    */
->   #if !defined(CONFIG_MMU) || CONFIG_PGTABLE_LEVELS == 3
->   typedef struct { unsigned long pmd; } pmd_t;
-> -#define pmd_val(x)	((&x)->pmd)
-> +#define pmd_val(x)	((x).pmd)
->   #define __pmd(x)	((pmd_t) { (x) } )
->   #endif
->   
-> diff --git a/arch/m68k/include/asm/sun3_pgtable.h b/arch/m68k/include/asm/sun3_pgtable.h
-> index 704442a391fd7..5867d24032655 100644
-> --- a/arch/m68k/include/asm/sun3_pgtable.h
-> +++ b/arch/m68k/include/asm/sun3_pgtable.h
-> @@ -109,14 +109,21 @@ static inline void pte_clear (struct mm_struct *mm, unsigned long addr, pte_t *p
->   #define pmd_page(pmd)		virt_to_page((void *)pmd_page_vaddr(pmd))
->   
->   
-> -static inline int pmd_none2 (pmd_t *pmd) { return !pmd_val (*pmd); }
-> -#define pmd_none(pmd) pmd_none2(&(pmd))
-> -//static inline int pmd_bad (pmd_t pmd) { return (pmd_val (pmd) & SUN3_PMD_MASK) != SUN3_PMD_MAGIC; }
-> -static inline int pmd_bad2 (pmd_t *pmd) { return 0; }
-> -#define pmd_bad(pmd) pmd_bad2(&(pmd))
-> -static inline int pmd_present2 (pmd_t *pmd) { return pmd_val (*pmd) & SUN3_PMD_VALID; }
-> -/* #define pmd_present(pmd) pmd_present2(&(pmd)) */
-> -#define pmd_present(pmd) (!pmd_none2(&(pmd)))
-> +static inline int pmd_none(pmd_t pmd)
-> +{
-> +	return !pmd_val(pmd);
-> +}
-> +
-> +static inline int pmd_bad(pmd_t pmd)
-> +{
-> +	return 0;
-> +}
-> +
-> +static inline int pmd_present(pmd_t pmd)
-> +{
-> +	return !pmd_none(pmd);
-> +}
-> +
->   static inline void pmd_clear (pmd_t *pmdp) { pmd_val (*pmdp) = 0; }
->   
->   /*
+LGTM.
 
-Hi David,
+Reviewed-by: Zi Yan <ziy@nvidia.com>
 
-Thanks for picking this up, and for the m68k cleanup!
-
-Tested-by: Hui Zhu <zhuhui@kylinos.cn>
-
-Tested with gcc-m68k-linux-gnu 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04), on
-three configs that between them cover all three m68k families:
-
-   amiga_defconfig                    Motorola MMU, PGTABLE_LEVELS=3
-   sun3_defconfig                     SUN3,  PGTABLE_LEVELS=2
-   m5208evb_defconfig + CONFIG_MMU=y  ColdFire,  PGTABLE_LEVELS=2
-
-Without your patch none of the three can build mm/memory.o, and each fails
-at a different site:
-
-   arch/m68k/include/asm/page.h:20:27: error: lvalue required as unary 
-'&' operand
-   arch/m68k/include/asm/sun3_pgtable.h:113:33: error: lvalue required 
-as unary '&' operand
-   arch/m68k/include/asm/mcf_pgtable.h:134:33: error: lvalue required as 
-unary '&' operand
-
-With it, all three build a full vmlinux with zero warnings.
-
-Two things that might save you some time:
-
-- m68k looks like the only arch with this pattern. Grepping arch/ and
-   include/ for '(&x)->pmd' and '(&(pmd))' finds nothing outside arch/m68k/,
-   and pmd_none2()/pmd_bad2()/pmd_present2() only exist in mcf_pgtable.h and
-   sun3_pgtable.h. So your three hunks look complete to me.
-
-- No m52xx/m54xx defconfig enables CONFIG_MMU, so the ColdFire path through
-   mcf_pgtable.h has no defconfig coverage at all; you have to flip it on by
-   hand (scripts/config -e MMU && make olddefconfig) to reach it. That is
-   probably how this went unnoticed for so long - my patch has been breaking
-   m68k since v1, because pmdp_get() returns by value just like
-   pmdp_get_lockless() does.
-
-I also checked whether your patch changes code generation, by building the
-same tree with and without it and comparing every object with objdump -d
-(plain cmp is useless here, timestamps and link layout shift everything).
-Counting only objects whose disassembly actually differs:
-
-   amiga      3733 objects, 0 changed
-   sun3       3553 objects, 3 changed: mm/memory.o, mm/pgtable-generic.o,
-                                       mm/vmalloc.o
-   m5208evb    716 objects, 1 changed: mm/pgtable-generic.o
-
-amiga is the interesting one. It is the only config where pmd_val() itself
-changed, and it comes out bit-for-bit identical, which also says the build
-is reproducible enough for this comparison to mean anything. sun3 and
-ColdFire differ because pmd_none() stops taking the address of its
-argument, and the direction is an improvement. In mm/vmalloc.o on sun3 one
-function loses a forced spill:
-
-   -  subql #4,%sp
-   -  movel %d0,%sp@(12)     /* spill the pmd value */
-   -  lea %sp@(12),%a1       /* &(pmd) */
-   -  moveal %a1@,%a0        /* read it back */
-
-and turns into a 13 instruction function with no stack slot at all.
-Instruction counts are otherwise flat (sun3 mm/memory.o 7373 -> 7373,
-mm/vmalloc.o 5514 -> 5515), so it is not a size regression.
-
-Dragging the cleanup along with the fix sounds right to me. It is a hard
-prerequisite, and sent on its own it would just look like a cleanup with no
-urgency. I assume it goes in ahead of 6ab55cfd in core-7.5.misc, so that
-linux-next never sees a broken m68k in between.
-
-One red herring in case anyone else pokes at this: m5208evb with its stock
-defconfig (CONFIG_MMU not set) fails to build mm/memory.o for reasons that
-have nothing to do with any of this - implicit declarations of
-pte_is_uffd_wp_marker() and pmd_pgtable(), plus a parse error in
-include/linux/mm.h. Pre-existing, and it goes away once MMU is on.
-
-Best,
-Hui
-
+--=20
+Best Regards,
+Yan, Zi
 
 
