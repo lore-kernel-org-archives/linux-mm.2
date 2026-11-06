@@ -1,120 +1,118 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD738606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 23:32:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A45B606A332
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 23:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=jBfsFrI8
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TWJXqG4g
 Received: by kanga.kvack.org (Postfix)
-	id 9EEB46B05B0; Fri,  6 Nov 2026 18:32:12 -0500 (EST)
+	id D6D326B05B0; Fri,  6 Nov 2026 18:51:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C66D6B05B1; Fri,  6 Nov 2026 18:32:12 -0500 (EST)
+	id D1E746B05B1; Fri,  6 Nov 2026 18:51:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8DCAB6B05B6; Fri,  6 Nov 2026 18:32:12 -0500 (EST)
+	id C349E6B05B2; Fri,  6 Nov 2026 18:51:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6139F6B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:32:12 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DE67C12024E
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:32:11 +0000 (UTC)
-X-FDA: 85406294862.13.9281D72
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 367871C000F
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:32:10 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=jBfsFrI8;
-	spf=pass (imf21.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 95FB86B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:51:22 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D31A8160143
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:51:20 +0000 (UTC)
+X-FDA: 85406343120.06.40E7F52
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 1662C40002
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:51:18 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TWJXqG4g;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794007930;
+	s=arc-20220608; t=1794009079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=wM60XYkzpSdeB/DJsbUxU2OvbUHo0twWWEWRlCj41e8=;
-	b=cYIQxbzi6FdUGrV/Xex1+OzISzFPAnfBRGzHEP5IxizF9WcCFrExC/uBwPNXg8xP7yzYnn
-	KP8QPXBqjctLPKBOGzs40CaKkLgtZ0uEEYXhZkYuh/YvU4KA0w8REozj63ft2V4Pdrf6Hl
-	wtg/6FxzZlt2wheO64prCDTlFIaU7DI=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=htFkXyUAg99+8mwg8DQwhnbl55aL2EnLvZlSJCSC81E=;
+	b=IxQiJoZ5raZlj3eJW3edmxVFh5MOrJM1AfcUaHNLhjs8xwDUAQKFiO9MJWLkolmVdFnKrh
+	Ntbv4rO1kH7xaBiKr6np9v8IYa6RaMo6AweySbj+CGtYNRzRWZTyI3PpRS5QQyxrpMJHh9
+	ThgfV6te43vOwWWKBJKmqrjjwnJ8SEA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794007930;
-	b=uUh4RMMEk7vZ8lhgkUT+xWui0H60BCT5vJA9disOcqWf/a0yuje6Ke2SUv2Yqt9fJRFpid
-	4c4ZaZLHH7L7mvlU65UY86yjaIwYw+1KtQuyR1g+/PWi2i9j6KjT6OwzM+EEvNfJyifnlD
-	JneVQz5SJ/P8fwa45FFeNFQL+V0k2HM=
+	t=1794009079;
+	b=iOcRLPb+q5Mpib6I0bNvYUV12a35ERVOKspgLEskG6NzXUD+SwyTQsfSSFugEahSFttWUT
+	pVVZyp+1nXhTDh0gPTWjvPZ8+Wl28hKrk3YG2K5vznMZVkan3EIpLJRpJ0bAKYQZGkAtYz
+	PdNDn0YZKebpFvX6WsDVOR3vNNZhgpg=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=jBfsFrI8;
-	spf=pass (imf21.hostedemail.com: domain of rientjes@google.com designates 209.85.214.178 as permitted sender) smtp.mailfrom=rientjes@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ed3f563739so14235ad.0
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 15:32:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794007929; x=1794612729; darn=kvack.org;
-        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=wM60XYkzpSdeB/DJsbUxU2OvbUHo0twWWEWRlCj41e8=;
-        b=jBfsFrI8JOWJ2ccsnphv0BBtBaiGjyJti+JAE9k4cMu/aCNYJN5Ip3rcWj3tujW9h6
-         1pWLh4exDG6JocALRRppjPHXsgo6S90zOAMDrpauTEts8tnk4F2pklbmtX2kXeORv4F4
-         IfVgOuLcUN54fuJ2/3QBGQBnR2zzv031ljS1XetfZebktxAHTAL9pqCd11Ev+sI2g6xK
-         J1CfHJ94F4imlFJyNl1x5tsVyGxZGWFcfbAksjwV3HDirS0Q6GOCKFMHzk+K0CblF+FR
-         Y2yPCNFhTL0QObwTRnYjWE9a0fzHJnNroUORoasjs4nr7bP6pvnDXb8a9DdPOOSi2cBg
-         dQ2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794007929; x=1794612729;
-        h=content-type:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=wM60XYkzpSdeB/DJsbUxU2OvbUHo0twWWEWRlCj41e8=;
-        b=ZI7o6w7EooN+i7/FJxZoGLz3zcs4yWFs63F7ikbN7yl8MdJOg2Rfc1kaVA2hkpm2Xm
-         NfbVX3ibmroDoEjI4OLU4/6YqiQYyXjeyozRsm2vlG+M4IAXoYDpDhMroVybA4E0vlNi
-         C6tyXYWXv8h9egJ9fOpP2k506J9xOYDYjzEqD8RDGcIHGwkeH+B2cMIn+HZNZPcPD33u
-         VB3a7+sGYo+XVksJQS1avkLbjcDr8wtVr0P7h8qskyD/yotl8EovtTzvcjx5YwtX3sjP
-         /FXnaR4zH4dSZbo3jM7IyMavh+BhKuCXuwEadYWQY8fAopl8bTfeFerChjgRHdVoF1D+
-         DGAQ==
-X-Gm-Message-State: APuU4Z/2LbDsEhBX5qbZoL+POgXnWfdr2HA6SL+bzV5A9Zr9SDAgLPLc
-	SRm4aeGYlEyQyTxcO9i/11JwiSITEIxIC/tFRjvM59e0Okk5ASu7GNnNOp11UFYAcw==
-X-Gm-Gg: AYBFou2+xj5DMVCM13hNIrhgOxyVivBkdxQPV32Vcuo7PT2rzSgfctlCi27uB0dEvx9
-	3HT5WwUBHC7P82LouZmWk3T4jHGX657dMGOhZlnqpvnrzIDg7WODW4WyGhaHkCu/h2yT5X0GLdo
-	5SXY/oGP4yPjauSiM7TGltmwUF6tqHTuvIUJKlDGD+ZO1KlDwUmfcKWWH9AbxW8Aw+9UIBXteRJ
-	bTLXfonoH7yySAbYVBAPTvEkBB/LP9xqc7UPAnPsAxNISyMo+xLOTPeIUubUIA2aK/4ZQs9Zx9i
-	vMQCjr/QpODSQ4/oXnYJGzGtA/zAivXTSJ/hqTspk427qGtgvEkhY/bG19rzQkBiTy/0S02kjsK
-	p1B2J/dihBKxGhO0CDj67bAfd092fgLmjE+jgQPhE3c7aVV4PBM5evfN6vb7VGKjKmz315nWytn
-	5iNYZPmfm1dsUrfXUgM+MMf49MsIeBlXoWkBYyNeVlEj2PXozzJaumlSPKWHMJ6+bGf2SuWRVyx
-	YGjLOZFhk+MjnMaVkZ/r0QUcOporfCPNt9fQEAIbpH+qZRGrA0mAZV5clwsztWvwdh7z3r5uHQQ
-	FdkHhsvaZd6dAV0JJ9AmF9LieoDDPv6RtEk9el/hYdIbVZ/87AgzCYluowBiaClmk2cTvhj8Hfa
-	ecvKI79IxJEMmYLGKnQ4zcdhUnEvXp88UZW9dFiz+rzDvLZ4Wi8xi8UAcEONbdr12dEP7Gg8JoU
-	WqrnA4yO85RZfpYrJl2eU/nXqsMInvvbuHZ9GD3twyXrxhJ5qkNFigxyBpxse2rTwAgg==
-X-Received: by 2002:a17:902:fc8e:b0:2e5:9bdf:6b65 with SMTP id d9443c01a7336-2ed66aa3bcdmr1314825ad.0.1794007928437;
-        Fri, 06 Nov 2026 15:32:08 -0800 (PST)
-Received: from [2a00:79e0:2eb4:9:3ac1:1213:5fc2:edb2] ([2a00:79e0:2eb4:9:3ac1:1213:5fc2:edb2])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b10580ca47sm694276a91.8.2026.11.06.15.32.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 15:32:07 -0800 (PST)
-Date: Fri, 6 Nov 2026 15:32:06 -0800 (PST)
-From: David Rientjes <rientjes@google.com>
-To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
-    Frank van der Linden <fvdl@google.com>, Gregory Price <gourry@gourry.net>, 
-    Jonathan Cameron <jic23@kernel.org>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-    Raghavendra K T <rkodsara@amd.com>, 
-    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
-    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
-    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
-cc: linux-mm@kvack.org
-Subject: [Linux Memory Hotness and Promotion] Notes from November 5, 2026
-Message-ID: <fe33f3be-5de8-9283-3b35-14bb9bded4ac@google.com>
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TWJXqG4g;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3E32C437AF;
+	Fri,  6 Nov 2026 23:51:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435D01F0089F;
+	Fri,  6 Nov 2026 23:51:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794009078;
+	bh=htFkXyUAg99+8mwg8DQwhnbl55aL2EnLvZlSJCSC81E=;
+	h=From:Subject:Date:To:Cc;
+	b=TWJXqG4gIBCeMZf/jPz6qGQyGhibhtlw2l6DAWV3+YLJa4wrkzZCIsrM2Hf5iKHOs
+	 QTlkAGX5XF2cFmbBaHLxDihed8xcFGq7IvMkIKsYDHj5enrAiii57x3BUrI+nVkpdp
+	 VOqh40QqQsDT6+1/RhnHVGmb1g2aD8dhUvAfccTmZtcfrHIywboGLqNbaQJ3EPSP3D
+	 xf79xDYg4B7nJly7UqpkFrSLBz7HDP3mO6JlkJhJ01doS9hykZ+cA9e2Q6iru5ey0M
+	 1IO6uOiGMDfwriPSehthK0uX5z6sUo+pOnzJ1swjWTzLCAeNH/m1ZOu33Gh4ojCbZo
+	 vvikzXAmsbZCg==
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Subject: [PATCH 0/2] mm/userfaultfd: prevent poison marker loss
+Date: Sat, 07 Nov 2026 00:51:04 +0100
+Message-Id: <20261107-b4-uffd_marker_loss-v1-0-82926b22704c@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: xcr7f6jmrpoz9866kqtjcnzcci1zecms
-X-Rspamd-Queue-Id: 367871C000F
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOln7moC/yXMQQ6CMBBG4auQWdukbbQLrmIMgfIPDCqYGTEmh
+ Ltbdfkt3tvIoAKjutpI8RKTZS4Ih4ry2M4DnPTFFH1MIfjkuqNbmfvm3uoV2twWM8eeTwk5xIx
+ EpXwoWN6/6/nyt63dhPz8rmjfP5kX66B3AAAA
+X-Change-ID: 20261106-b4-uffd_marker_loss-f0f56ec12ce6
+To: Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>, 
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Peter Xu <peterx@redhat.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Zi Yan <ziy@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
+ Kiryl Shutsemau <kas@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-mm@kvack.org, 
+ linux-trace-kernel@vger.kernel.org, 
+ "David Hildenbrand (Arm)" <david@kernel.org>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1675; i=david@kernel.org;
+ h=from:subject:message-id; bh=yRPv7tjSRkmwFOuXv6HEv2HTp/IOs38MxUyLIMLVLl4=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLepb9hOqd57p7K1jih09ufpB+5pN7m+uxPZWqp8u/W+
+ +f+yuY96ShlYRDjYJAVU2QJCr5v8PLlutpqNz5mmDmsTCBDGLg4BWAiK9cy/A9VP3mNb8PPqpaz
+ hllHBa++/211Mb8u9Fj71X2Lmt7nno1gZDgyVy3nf9L0gmXLPy19FsM5W3ha9v2w5BvZxZkhYoc
+ DN/ADAA==
+X-Developer-Key: i=david@kernel.org; a=openpgp;
+ fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ngmtj4kmrpr7wsdsz76oituti1xtdpr9
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794007930-215786
-X-HE-Meta: U2FsdGVkX1+w5FX+W8jHklKLENvMZRoNkSaM3yx+neJ4G5sLOQwKt/ZGaYOIqmc8VlgwN/ATirkhbKyKs0KyCQIFjLG1RkB4FjBG6IerO9ui/qK/bhfDyfUII3C3LAp+aSeOH1FxXQNHu/4326fSy5mNHBYoEesleESVgtRpx32qMIJKW2lJSXcGeq5PWu6vv1oNe8msdYrK20LkuppRifjrCS5RVMW99bibidAEsLYlSqYwz8ISvQCmVaS8qM3RyfTfkGAJUNLxJ4fz0nQb7JmVQa9K6R8ZKUOo5zXikNQlC5jSGCsYCYHHLX29X7ZrBZmm6nDaYAkNhSdzKG3PIblq4P46lUAm2HZteqpbDLRULM9g1y/k1HtTV87qS/KIbfwGv4gwjFldx5SsI8CAvFt7MhVckJjT+L6/Clp09qIPrxQnsCXU8zJG39mTLHmRetb7KIo4MT+q7Z3kbHSURq0x6aib9RdTbg3msaaOKQ9ABzYf2JkWiBDmVJsxUC3gyOgpAyBKOf2rY28JGSQVr/phIvAHbulbIYM/bblXzgDYJTM7cC9p4DO1Tx7oJNT+7krrOdP5fXFxvP9qafKZNvLA1sbm+iYPai2yIWESZh6rgrinEoleWSVjOPnDXYlEu1XwhqXK1x99QOYEtc/HBJVFd13cuCopU5x2vjjCVYbXlUFSR85Paca5EQVsMacmyJWMf6nPro4hkHF7T99edtoyGELS0KBtxWZ2IZ5nVlHPpth4PMA8BBa/J7hHtKomnseVbiNw6zUg4uBOxDbEsHh1KnG/9gZ6dtEgtFKcbTVSzcVXJUcNDxbB9jHCVo2Wl9fWcyckMlmoMJqPlIduCKj9zyQZMA3gyTCxOGx9X3iW5OL1AsJgXNEPOPU50y0hvn9YZUO7HLN9U5sCw2dHJaOYqK7uFc2cb5gTk/Nlig7xLi4MWiVtrZ/vXcfl/uzb25NgDrZWxl9e3/25O5D
- +F/Dfxr1
- ucwG0jzR51K97r/6NPzsl60rtHfqTet15fEXqOPhXtiu7RPdeS0adUenai8lfKR6C7XYPzJJzaGJ2baRJv5tqyIisR3r/1J4PQNp2LAvTPyU6aqMOJeAl4JWF3R3n3GqIXBVH0QsJv8EUIWk5H8IB4QNxlNNmd/FnTevCpVoe1mt/pLpJqsBgmWnAmKIqQp9EehUznPm3qU49h572758N1YuYNGzVZ8XErs1RBkRRMJWK/4day7aNYBYunB3ifqMV0NA23d0WZ8qotLPLxcFm8UNvmbG8CeLOd9L7jVuNNhyoqvWhWP+fC8hLClN/C9Myc2EERvURezDoPaK8E5wSWLLwq99uufWolccTFs8ROWPhqdDEhAY41EYPcmFUHDSIK9TSSUUfdARV9EeTghq6V7UbgvdKdCFoSzAukIPxyxhReToGUNK/1pZHPA+yUYxrjt8FTZL9ttVASJUFpwoiWmcbTep2OPklKTnn048KoPriZ8FgjQJBImssxv4tJVd+/uwMrLUP5OU+CHRRLTYmvpB5vrREK0uvIM5s
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 1662C40002
+X-Rspam-User: 
+X-HE-Tag: 1794009078-723663
+X-HE-Meta: U2FsdGVkX19s9d3UQRS1zl4XZHUNbPo5BRFlR1KP72cZWO48j2rVEG5IhvHLfzR56dMgBTUkWIwUcz3FAxXlryrxZhnAZk7389L1Eb/9j4qQ+eg2HxWj+PY0Ip6WDFHL1NpZrovAekTDaetbfuOmTwjKab0YSgBvxKxUsR+0D/36LaUfjvOMAHCWcthlktfPHewbkVxbKtTawvTsFS64fSgDxbSJq8nn8a7BiDyftc/H7HwEHEEjuOLkjdFo8si5o0Hbe5qyHN0Ipm+Bkd+4Fxov6+w2jtUs8VIpbe8LBC+ZNIiYmoCmuEZRinHs1Vfm2kTmmhe0AYQJubmR+FjyQEKvX5BrtPjUnetIuSSU2jV28WfpFvFk4VXsGKK1k3IsGdZcSdlnNUs6GX+9k2QwV488AktMOzjei0ZJ4QdJ7We0kAO9X0adWHW0/SKiY8iFHBH7GBIG9k+754SfiIDpwx2UtzZsSFVZfiyoEUS/qVxxc90okylngWGLnZTZnOQkeTOczU3RyS1CBraURHA51bGlGGUEWx9sojSXjJTqrG0YtPcVwpr6cKMUDA+2mDggm1w3EQbvjYmrY5zO9oWT+AN2QsodxUh2McAZTId+XZzEqt8ZloGZBMZX/5QhBSBpTd1Uu7A/Ls++VDn5d+aE4x37KJ+X5AXCe24OCFiEFYjOxVp9ptrGKUggPgQW6x29cA3ZA00M65W0zgDOlFiQ5Wb7uW3lF8V+rF41snM8yuuq/hhIZO08sXIxzFklr/z3UbiL7+QXXalpJXfeQ18rFSdj1InnPvMw+XIFoL3LDWISI9fkV0AW5AOUwZfLn+BMEainx3rr8rQC/Ckm87RB9y6yEqANJs1S4TCzkXEvwYCichUVHDu2a9f3dJ16vYfPB0fbyWpURzIEUx8dlw6XXm+gKYxxwcHwAYfdbqXkYMiuzCjSmpBpA8HO27XGt+PJaNqW+e8PYrTXlVaI/3P
+ 2u9XiSV5
+ vvXep8CTmP5o2aTyNPA1t1a5afJ2ALxNu1rBkvchHgYC/V911ezf/dDo8HYwCmn/XSvjVr6TUrpXfhjyxivQDYrLrDfY8mN/nHizEoagZ3SS4S8rXU/RGNfWvvQXB2N5aagT065bEQhXOdbDIZEi75NRlwDiYSC+lo8lpOyGOp+oR1FdtK3TV+57Mbq1jROxF1X7N8IGl2e5JxaunR9bRgSRhf0QfcodSRF3ZAx5XMcI6jKWzzejvecKT5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,104 +121,52 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi everybody,
+Now that Lorenzo's atomic vma flag fixes are in, we can also use it
+for userfaultfd POISON markers.
 
-Here are the notes from the last Linux Memory Hotness and Promotion call
-that happened on Thursday, November 5.  Thanks to everybody who was 
-involved!
+In patch #1, we use a new VM_MAYBE_UFFD_POISON to remember that we had
+POISON markers installed by uffd. We then use that to fix marker
+handling during fork(), during hugetlb PMD table sharing, and during
+retract_page_tables().
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+In patch #2, we perform a similar rework to retract_page_tables()[1] that
+we did to try_collapse_pte_mapped_thp(), to make the code simpler and
+less error-prone.
 
------>o-----
-Bharata updated offline that there had been no progress made recently on 
-the async promotion work after the discussion at LPC.  He will follow-up 
-in the next meeting to discuss progress and the next upstream patch 
-series.
+Once review finished, I will take this through core.git, where it
+depends on a related try_collapse_pte_mapped_thp() cleanup/fix.
 
------>o-----
-Davidlohr Bueso provided an update on integrating the CHMU driver, 
-expressing that the generic layer might be overengineered to satisfy all 
-users.  He reported that a working prototype is functioning with testing 
-numbers similar to pghot, and code is expected to be released by the end 
-of the month.  The driver translates DPA to HPA, providing contiguous 
-ranges as large as possible using 4KB granularity for testing.
+This is not urgent, just something that should be fixed properly.
 
-Jonathan and Yiannis discussed interleave details.  We also briefly 
-chatted about the ability to derive sub-4KB hotness information for 
-offline analysis.
+[1] https://lore.kernel.org/linux-mm/20261031-fixes_core-v3-18-d6437171ecc3@kernel.org/
 
-Jonathan shared the original CHMU driver[1] with perf aux buffers which 
-more closely resembled a tracing driver.
+Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+---
+David Hildenbrand (Arm) (2):
+      mm/userfaultfd: prevent poison marker loss
+      mm/khugepaged: check for empty PTE tables before retracting
 
-Davidlohr will continue working toward releasing the code.
+ Documentation/filesystems/proc.rst |   1 +
+ fs/proc/task_mmu.c                 |   3 +
+ include/linux/mm.h                 |  45 ++++++++-----
+ include/linux/userfaultfd_k.h      |   7 ++-
+ include/trace/events/mmflags.h     |   9 ++-
+ mm/Kconfig                         |   1 +
+ mm/khugepaged.c                    | 126 +++++++++++++------------------------
+ mm/userfaultfd.c                   |   3 +
+ tools/testing/vma/include/dup.h    |  20 ++++--
+ 9 files changed, 110 insertions(+), 105 deletions(-)
 
------>o-----
-I noted that an upcoming Linux MM Alignment Session would focus on private 
-nodes and CRAM, led by Gregory Price.  The announcement will go out to the 
-linux-mm@kvack.org mailing list on Monday.
+---
 
------>o-----
-Huan Nguyen provided an update on the non-temporal store motion posted two 
-days prior, noting open discussions around integrating changes.  Huan 
-noted that a patch for reducing overhead within single folios has not yet 
-landed upstream, which will require updates to their assembly code.  Zi 
-from Nvidia provided minor refactoring feedback, and Yiannis offered 
-assistance to resolve posting and tagging confusion offline.  Huan and 
-Yiannis will coordinate offline to fix tagging issues.
+base-commit: df3c65887715e66e2cba69116924020c37996cd8
 
------>o-----
-Teja evaluated SDXI for page migration in internal Google use cases, 
-observing significant benefits that met internal requirements.  Teja noted 
-a performance regression bug where an interrupt is generated for every 
-single copy, but confirmed that the driver authors (Shivank and Nathan) 
-are aware and plan to fix this in the next patch.  Once the small driver 
-fix is released, Teja indicated the series should be ready for production 
-use and supported upstream.
+change-id: 20261106-b4-uffd_marker_loss-f0f56ec12ce6
 
------>o-----
-Joshua discussed challenges with upstreaming the tier-aware memcg limits 
-due to complex edge cases, such as handling memcg charges and reclaim 
-during batch migrations.  Reviewers identified dangerous edge cases 
-involving tier changes within a memory control group where folio locks and 
-reclaim clash.  Joshua debated whether to post a buggy series to maintain 
-momentum or wait until all details are resolved.  I advised posting the 
-series with a clear "do not merge" warning and a detailed cover letter to 
-gather early feedback from the mailing list and Google engineers.
+--
 
-Joshua agreed to proceed with this approach for their shared heterogeneous 
-workload use case.  He will prepare and post the patch series with known 
-deficiencies explicitly noted, and I will coordinate internal Google 
-review and testing.
+Cheers,
 
------>o-----
-Next meeting will be on Thursday, November 19 at 8:30am PST (UTC-8),
-everybody is welcome: https://meet.google.com/jak-ytdx-hnm
+David
 
-Topics for the next meeting:
-
- - update on Bharata's asynchronous promotion mechanism separated out
-   from the rest of pghot, targeting posting the revision before the next
-   meeting
- - discuss current status of CHMU driver and its integration with DAMON
-   or any other generic backend as needed
- - update on private node support as well as CRAM to be posted now that
-   the 7.4 merge windows closed
- - update on combined patch series for supporting non-temporal stores in
-   migrate_pages() with memory error handling (series from Yiannis +
-   Huan)
- - discuss Shivank's series for enlightening migrate_pages() for hardware
-   assists and competition between the kernel and user use cases
- - update on Bharata's support for sources of page hotness and hardware
-   support
- - Teja's update on SDXI page migration based on AMD patches and hardware
-   issues being encountered that do not result in page migration
- - update on tier-aware memcg limits status and production testing based
-   on the latest major overhaul
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
-
-[1]
-https://lore.kernel.org/all/20241121101845.1815660-1-Jonathan.Cameron@huawei.com/
 
