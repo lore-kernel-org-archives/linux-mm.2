@@ -1,63 +1,63 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AEB8606A329
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 05:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5C5606A328
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 05:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=p+5ATKcy
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=XdOrnOff
 Received: by kanga.kvack.org (Postfix)
-	id 82DEF6B05B0; Fri,  6 Nov 2026 00:54:29 -0500 (EST)
+	id 3C8106B05B1; Fri,  6 Nov 2026 00:58:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 804D66B05B6; Fri,  6 Nov 2026 00:54:29 -0500 (EST)
+	id 378966B05B2; Fri,  6 Nov 2026 00:58:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F4586B05B7; Fri,  6 Nov 2026 00:54:29 -0500 (EST)
+	id 241236B05B6; Fri,  6 Nov 2026 00:58:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FCC16B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 00:54:29 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id ACE6F120C81
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:54:28 +0000 (UTC)
-X-FDA: 85403629416.01.EC2CB3A
-Received: from mta0.migadu.com (out-74.mta0.migadu.com [91.218.175.74])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 97188180006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:54:26 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p+5ATKcy;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.74 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E7CBC6B05B1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 00:58:41 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 17A181C447B
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:58:41 +0000 (UTC)
+X-FDA: 85403640042.05.0D50900
+Received: from mta0.migadu.com (out-131.mta0.migadu.com [91.218.175.131])
+	by imf08.hostedemail.com (Postfix) with ESMTP id E174A160005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:58:38 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XdOrnOff;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793944467;
+	s=arc-20220608; t=1793944719;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZkVgJPqUyM/MWdECKVhoMlY0/kmR087+Z++BChEE7DA=;
-	b=Mx0KaLaFlV46JX4uuzYONNxNargDvvQMi3aK7RVGxAcfZGeVosZDk0Prh//o8CkcE9OaWV
-	xCQMpUlzHyamPbKeEDbgIYy4g51LVuhxGKv6Y1zT2aU7Ffu9+kmuFixRlNSQmIeEWaugbY
-	nzBxJaYwSX12sTYAljKETHqDWzDZ6bM=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=p+5ATKcy;
-	spf=pass (imf16.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.74 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	bh=PkBehpMQ1APfXjT2IE3+mlc+y4KHDiIRfa6RZSDO6oE=;
+	b=2hlEEtQYU/QaB5ILK4vVzb6sdONkGph+hGKA84KfqovMGT5cJUDHYUyxHruZOhnQfTw/LC
+	lBf6Zss5C1BuIO0mo2TCAcLiAYOrR1dmT2MccaxtbGkC8KUWuNniJfjcOE1KdxcK7w9emq
+	6tKqK3eXEei23mILxVQzLD4id49s3X0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793944467;
-	b=Tpagf2tqyfBfrHlUoIC/tNl6VJPRjIBsKnfcZflNrvKgzKfQOVgcsFD5s//UKD9mqeaIZe
-	Eh3/++tsvW5f29aeOYyLZMZbg2smPuHmwVaMYvWtb88sBFCAkcycouzoy937QDHgDQrtHh
-	KruJe7pR8kciXV/ibQjPwr+uyHQMPXU=
+	t=1793944719;
+	b=pOsX9gJ68OoMtVWWavxruB55YMLGpblxp0rK6MbJ5BWUmooOT7JkmTy8mWtdw52LMwG0Qx
+	i0TMDt6vY8uLqLm5v0Uqv600ZDyrhbqet3RVptAfTQtSzvkh4J6N088wY3C/CP2p1otgql
+	gkbPRDaZ/UrwYPsQ0DZJRqawByt2EUU=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XdOrnOff;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.131 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ZkVgJPqUyM/MWdECKVhoMlY0/kmR087+Z++BChEE7DA=;
+DKIM-Signature: a=rsa-sha256; bh=PkBehpMQ1APfXjT2IE3+mlc+y4KHDiIRfa6RZSDO6oE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793944464; v=1; x=1794549264;
- b=p+5ATKcypUGZS4VBqs6eMheOi6I74aXlfRwogwAjhKBYw21b1VUhmGNGpK9SSQyZMEJBoKV4
- FckvjSRIpg6ENHbkXNGTrjOnx+hHqUfWH8RrwDdGDeB5IreeZ6cJmJnQk4qRX1/j7CRotF/+VY9
- 7Lfilw4xylzHGllFPm9ybBRc=
+ t=1793944717; v=1; x=1794549517;
+ b=XdOrnOffQTx1UPchmwcD3G9CjSPrVCHD4iwwf1eez29n+8UuEmQWBnNuo+tv+WX0jYnIuuKn
+ ZEDuk3T+aac75YrXwLgooXesiE0yhoWtAL4UfUotSKwnYE+DimImSE5t2leD493mh2Kd5la+QK2
+ G0d1yur0sUNpDmcaS0qriDm0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 578f26654fbdc28a;
-	Fri, 06 Nov 2026 05:54:24 +0000
-X-Mizu-Trace-ID: 578f26654fbdc28a
+Received: by smtp.migadu.com with ESMTPS id d93371a15e2af6bb;
+	Fri, 06 Nov 2026 05:58:35 +0000
+X-Mizu-Trace-ID: d93371a15e2af6bb
 X-Migadu-Flow: FLOW_OUT
 From: Lance Yang <lance.yang@linux.dev>
 To: ljs@kernel.org
@@ -149,28 +149,28 @@ Cc: akpm@linux-foundation.org,
 	linux-security-module@vger.kernel.org,
 	linux-integrity@vger.kernel.org,
 	selinux@vger.kernel.org
-Subject: Re: [PATCH 03/13] mm/rmap: convert remaining VMA flag tests to use vma_flags_t
-Date: Fri,  6 Nov 2026 13:54:15 +0800
-Message-ID: <20261106055415.42873-1-lance.yang@linux.dev>
+Subject: Re: [PATCH 04/13] mm/migrate: convert VMA flag tests to use vma_flags_t
+Date: Fri,  6 Nov 2026 13:58:30 +0800
+Message-ID: <20261106055830.43260-1-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261105-late-2026-vma-flags-v1-3-0d3cd15ab75f@kernel.org>
-References: <20261105-late-2026-vma-flags-v1-3-0d3cd15ab75f@kernel.org>
+In-Reply-To: <20261105-late-2026-vma-flags-v1-4-0d3cd15ab75f@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-4-0d3cd15ab75f@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rbfc6s1dey64x1zz3jt6k36w6yg9paan
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E174A160005
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 97188180006
-X-HE-Tag: 1793944466-883321
-X-HE-Meta: U2FsdGVkX1+vbrAHac5FM7LzRu4q6hyNcZwa7/HIqJVSFHixTrjMYSvp5XfaPcKA7FrXFkrYeXl7ovz1+P5nd77GnKH26Nnr4Ynd3Epmv5Y3ob8GrhVZhHZQ52+rJAxUEKrmlSUGE1lUmZmk2t3BfzNx3Jeczp98qy1H9ZmrkvcBY9ZnPYGnY2cQVnc3Hje4c0xHZGhL5vc7kQz/tH/YnlGSjaHYpw56MTKa9ybNRcVtzTjPM43dqIC303kYBrV+4+KjBzRKart31SK/9nb1skfxwP3hVt+/+cuq80yq/DBGRe280kifa6DC2HUILZM4ETvnwHMY2GnhDdJYwDo1JuB0Olni1Ct2yfie77+aB4jvi3bS74VBqkC2IjuRjJFRyriZISRotxKA+oj1fvORnrDhjq+3NJM7ARYqc1YIoFywouAC3P8S4+Pu4Lt+oCBbxG+JLrFvWz5rTAUeMEhAlQtGLP9hSQXtwDWK669fXHxMfFEMg5C2a1Wi3Z/LQJkYgzYOGwIM0mo9V47ddCmUH/x376ce4RtQIuEiSKouNMVdVLinywKfFEGlMuhQAgiPTpZbjo0mSyLxpTEv4Wj71kKiH7yKd4vyNsytiai5lJrmHEH6L6BZWuVrc4iOBqNpDn6GWI9owUcBVltmoHBrTW0JbQiFStF6SdiRHO4abkXWS40QcxNV4Vm/9rjxslZN3CACN/NfrlhTSz9CFJAZugvdX8CNVGZxlZNMTBE9HK6JBc+u5ba25gcI2fFposcHXL7ZcvLbVjdusDUcUEvIhxCQ/qW09kJHoUVKcSWFj9lE22E3fySZbiSGjt8v3e95w9jTB2Bw6KW7ivR/QSAtoo7994kWWZoPCnOcwEzJLdKlno3Km9hkZv6DQTbezZUI8K32tseQGSc1YU8jvQF03QYyoP4nLhH2vZH23KZtIjPFtYK3KOHftgMFSmJiE03/DtdW/NLRJrx8kBcizSR
- IGRSJj7r
- HwLSLGc87xlGYlAAaNAxCnwT/qZ9xQ/ccwVoWiZANc+lrsB73lHeecEnA61SjlA63SJk4znVb2BIzdcWF1XbvMJmhsIw3G618qxSn/rrKGi94T3441SWOUwTxIyEelBvy8mVwZuPigTF6YrnfOi6eR4b7ety8/6nWwxgUe0284u9Zu11a1BviQtmpJiWXsYt72sUEGvp05ZClc+SDwqtJOI2AR8cMaSWAXweeY53TLu3zvYfC7ic489j8vOdWkGgHaPoryj4TT4u+FcSz3Svwx23T4ukNHmqQ+lFBvxIjWW6vxTjN3WZbJEMB4qJKg07qvAgx8yofdTvbnzEU8edN/Mxud384QrJVQvZQBHAg0x32dNZ+X2WMNI+5e4Ygw3wX7rwx
+X-Stat-Signature: n4k6arp3dtbz1k7fd73mup543xm1zx9e
+X-Rspam-User: 
+X-HE-Tag: 1793944718-931129
+X-HE-Meta: U2FsdGVkX19ILHtQKxW4vXgGsy7/PJ/8GHkXycxKvMpm7u5fXCTepoI09OBpArD+Zq1Y9vACW1mmlzBfSVDsfuhSQ1/GYkTROF7RjUtHMzv4EUiwwOLbCeqEref35C3xyU1AMjxwFgnX6LFG6zskbLVreUDemQXoS/L245denu2fiRuXEu/dIB6KHILMeDFJlBwmWnN7Pm0w8T7klRUswaQBnBai76ydg3wHsqzl17jpBugEbDeNWfrNFHGuc/rYexgZer/dm/ltvaCB9JF8uvBljKHkj1EoqJsWt/lEoUT9Aon7SfuZ2qKvR7yqdkVS4CP2nxFOZlgOgjqqGIkxDEJMOiFklW1kDR+QGjYdIOQIO2NWTxG/jkVzUt6UZVrer84ddFiQxhv1zQMX+GJt5Ey8VQxdOiBCz1hc+MstmkUAtEFgS3vExXfLWdzr/tkiiZ68Z114OBSDW3bo6zdpkX95P/DmhvOzBPPeILoxS8Rts6j8hfju9cJSLmd1VLIzd6y8gU6bQaafKXgICvx/HQ+mthWNT5DsvbD5D4+ZJP9kCv0TWlQKlnRML3gthF8JH/1Fj0p7Bzel0MK1ugsx4Y6a0IlQ6aDcVkTLMpGciBAgEG2Oi5aMOal9kTXjqggeG4bK4lB92TXPO0wlZZOZUdRwXouEdOahEGlTXGw0TIuEy2VFTnpfkNZa2YV77vGzhvsCta3Gkv0FjlMleLWlzJndAfkQLWK+LGF6E8Jan+9i6SLwBGMV4EchhOMZCeOdP4ShWsdGCzT10J6zJTdIkYKziSs80lArYTykqegb/vY/Kcnj6y1EYBDl8NbCtzly705NlBzsMAw5ZYQTK07QpIk9Me+C3y6VFHKahbr1sKVApYCs6YNF7BWwj+eaPzsCHm/x1zmPLZigbRw1CkAOajI9alTf+Ka3Rg1AR5668EaXRZB7kQYBETyxsUDlWFG/0FRp2mld3KbdfexEhQ8
+ DD/ktpLQ
+ k2nSIzATezHi4yXKwANddY925R99po6mbS9YZZtZr4AtfIDDGBvlHTlEjPj+LTfsfc42dro1AtcBPekGxCbQewaZqZkA25X1uZXuSZdf7n05//cEW24Zptqw4ZzABlLQRGwDNH/UDqRRk30sLychOjGI9kl2yOuX9a3Jvz01z/5u+ugt3gRmVshSgi0vcFDEgpPwVl8hvUQV9qXXnfG1/pNDXWFwhaRrT6I9Ag33v0/N9AyKEDFuHn2wS2pnCVGtFgyNKVMB8SI/ss5x2x+r80181jueca6NosVSJULKWM4lQEqzco40tFHJ7CphaG1l31jSRLmwIswCk73GroVxquLSZyZWAHd32cFkUVGRG40Zuyu/Fl8BFGmVzwl5mpm7Q13lj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -180,9 +180,13 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-On Thu, Nov 05, 2026 at 09:30:54PM +0000, Lorenzo Stoakes (ARM) wrote:
->Replace the remaining uses of the legacy vm_flags_t flags in the rmap logic
->with vma_flags_t values.
+On Thu, Nov 05, 2026 at 09:30:55PM +0000, Lorenzo Stoakes (ARM) wrote:
+>Replace use of the legacy vm_flags_t flags with vma_flags_t values in the
+>migration logic.
+>
+>We retain the READ_ONCE() of vma->vm_flags in remove_migration_pte(), as
+>there is no vma_flags_t equivalent, and arch_make_huge_pte() continues to
+>take legacy flags for the time being.
 >
 >No functional change intended.
 >
