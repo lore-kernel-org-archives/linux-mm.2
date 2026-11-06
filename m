@@ -1,110 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C57C606D812
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 18:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B37606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 18:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oY+DYiQh
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=J4qmlh1+
 Received: by kanga.kvack.org (Postfix)
-	id 4518B6B05B7; Fri,  6 Nov 2026 13:40:37 -0500 (EST)
+	id 911036B05B4; Fri,  6 Nov 2026 13:43:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 428FA6B05B8; Fri,  6 Nov 2026 13:40:37 -0500 (EST)
+	id 8C1096B05B8; Fri,  6 Nov 2026 13:43:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3679E6B05B9; Fri,  6 Nov 2026 13:40:37 -0500 (EST)
+	id 7B18A6B05B9; Fri,  6 Nov 2026 13:43:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0EE916B05B7
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:40:37 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7C527120114
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:40:36 +0000 (UTC)
-X-FDA: 85405560072.08.4371C88
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E6B806B05B4
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:43:11 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85CA1A019A
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:43:11 +0000 (UTC)
+X-FDA: 85405566582.30.228634C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id EEFED1A0006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:40:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oY+DYiQh;
-	spf=pass (imf19.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf23.hostedemail.com (Postfix) with ESMTP id E9256140008
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:43:09 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J4qmlh1+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793990435;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=d9rgt/0ZjW9cJWRqIx3PEfjuDN/5drVoS4iqtSrIJtI=;
-	b=IZVbcntqh06usxiI/AOMfFGhBOCy4Gy/b43qu357cYzJNton8Xgs58BykdJR61sVSIz6qI
-	kZUKGJXQ4/t1a40H5tN6tif7xPuAvmxFmEkbk5v10mFf3fO0yly+5oGFKJvhtSabiV4hLk
-	hSX02vi9mru/dtgdQBf48EnMPolA3AY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793990435;
-	b=ML1oMHjbwHeDdQNr23mS6DsmdEsjDRinFaesMN0vJ7yeLR8F4K+op4MNLpAqemfIGA7Q7j
-	jkKsOne1ZhaR1fdSJ8ezgPo9aM9v8uQ2i/EgeYOkkvkXASRKYR4cPItgxNPqZI0J4n2zok
-	RjZGxsYzZRJ6hPpk1M2pYo0gsaitPi4=
+	s=arc-20220608; t=1793990590;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=4VXNhdVB1zPb/1iHJuZxMDgL4Pk8lsL6uSz8sbk2F68=;
+	b=e5jy4N9loYpz0q+mNt4xM94hNLmB0jXiHFhyDgll7RiY/5jJ4TOCRvd60d/SYruzF3L0m5
+	QMRcGvOomeIxx2JcIbxu9teqeDNBRaQE55O20F34MeEtvnWXzm107Kz6zLF6lzP2eQG3VC
+	7ZN8BSMEB+TtAWxYDggCStd7Xgj9b+w=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oY+DYiQh;
-	spf=pass (imf19.hostedemail.com: domain of helgaas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=helgaas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=J4qmlh1+;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793990590;
+	b=bxF2kiPGmZtjYt5yjIvGaOvTUVVsHqKqYO0cdKztwUl8yH+oxs1LHu1ymA7uAPcchoVJZr
+	jn7xfGl/w9K0RQTv90G+ElFRrrOo+vwD131oaESApkL+uwPHmljpqF9wTM2Ru15ZdagSy3
+	Kf3aK1dQhqzOHf+Qsgk+x8F/6HU2eJ8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 277F9601F8;
-	Fri,  6 Nov 2026 18:40:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60B31F0089F;
-	Fri,  6 Nov 2026 18:40:33 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5C37C60145;
+	Fri,  6 Nov 2026 18:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C751F0089F;
+	Fri,  6 Nov 2026 18:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793990433;
-	bh=d9rgt/0ZjW9cJWRqIx3PEfjuDN/5drVoS4iqtSrIJtI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=oY+DYiQhz2qhURLJX4BDC/kmudYeEjDpY0mTplMC7by/77+JSrwJ3cPy0pAcpZY97
-	 fZehsr6eSagi1hfvJzy6tX6lqz29+bGYK3xSKa0OTnst9MaQ5j8E/D30O63P4HUDk2
-	 1xT7ZDqhrzrXp+rAMioUXloF0PcDNOLqEyE1lY6PX0Jf63xyCqAwU8+rJ1zfx8gvnK
-	 Ab3RFED9RMqASj9LT1swYH4CwBPe0jo1CtmL2IXstISB9dUcaO1BVKpTO/pd9kGcwQ
-	 ttaapWVgo9M3UfMpozYSTbixGW+reEsNu8DqEFOQLmf10nJD4nZksup2s2GpGl5JYp
-	 hlebewHwXEDBg==
-Date: Fri, 6 Nov 2026 12:40:32 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v10 05/13] PCI: liveupdate: Auto-preserve upstream
- bridges across Live Update
-Message-ID: <20261106184032.GA1640926@bhelgaas>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DMOC3XV68W0K.3FGK4UZ87838R@google.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: mofwhc7rc8ujwn8ifwh36ge6owhiossu
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: EEFED1A0006
+	s=k20260515; t=1793990589;
+	bh=4VXNhdVB1zPb/1iHJuZxMDgL4Pk8lsL6uSz8sbk2F68=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=J4qmlh1+PKFdvdFh0DBOHUVGg4hxbDsHM9dZtfhAYLGrqu8X+HHkucGav4cZaGfoC
+	 7nvhZBUvQ5QWHMrnW7T5LRcXHdrd+VLt8aqdBXAyfTjbjH5xTmIin64nuk6v3jJhxS
+	 iXprNvAEHTdp5+oDYcmdPHdAYD6G5y3hi5kRB2w3hEf1s93/G+zgdwneDziZcB6l1w
+	 KhOAmFATa2uV631VurMQGPgANxg3wrAi/EIeCxpuSLNu+7ztV8E9nM/CQbKzwbl0zg
+	 Mt+CH7CpNJdKhL9vsbJSfrhlXFTgY52hmULGe7wQR6MnXFXBt+wi1C1G2PvEgt9//E
+	 Pc5O0493djmZA==
+Message-ID: <sashiko-outbox-202082@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 27/32] mm: handle PMD swap entries in MADV_WILLNEED
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Usama Arif" <usama.arif@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
+Cc: chenhuacai@kernel.org, ying.huang@linux.alibaba.com, "Baoquan He" <baoquan.he@linux.dev>, willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com, "Nico
+ Pache" <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, "Vlastimil
+ Babka" <vbabka@kernel.org>, lance.yang@linux.dev, nphamcs@gmail.com, shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev, luizcap@redhat.com, kernel-team@meta.com
+In-Reply-To: <20261105183940.2236717-28-usama.arif@linux.dev>
+References: <20261105183940.2236717-1-usama.arif@linux.dev>
+ <20261105183940.2236717-28-usama.arif@linux.dev>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 06 Nov 2026 18:43:07 +0000
 X-Rspam-User: 
-X-HE-Tag: 1793990434-366777
-X-HE-Meta: U2FsdGVkX19uXeY83XAF0gmod4e/QjgMWCNgOuCBryuNM38NzSUep3H3Xs3Dx5VGjF3xDItscb543nVWhFOntc0inJKaL/AYQY09a0GLAzj0X1EsRYw7ql7vgn7kxVg6e3Tp8PEAfGZkP4rHd1GQa0MucVlz8SuViktj4f7qzG684t07fDmNje5Iafg2KDbWaA3gXh5ZcFwsmqXs2d59Xe5zr9jKfnDukhLDWR0X88XV08FnXK3X6S5ADIku0q4sQlGdtg0FAENAlqR2xkLeoukLoOYiOWFr2kcWo3YIk8Gm/ppO5bdRNxjgC4fzNrtYbk6OQjA3dKrx0iger3gApYGbffCLKPcVhiV+sAkwRHG4K//hwmfLBDm7P5Qh0w+IVFmDAa+WMU7m3iYTqYIYZ+pOII+vxK+4iRVajhzzMhwNIklss1SFaI9o8Q8bOakZ3kIJCFRzrGwp/VaQvgpIVJj2RdV9fd5XnBFN4o/tQlrwjJ+JFrmHMAVOobAGVPV5CIY5fn9QX2x5bZ2y8z0Q2QAJWNplrcCkHr6EPEGbNqvc6ISl1PVCDDpFWYwqQtHWMQd6TniVkR+Sn1m5KPmV8SxMz8rGRd49PDHOjJGIJEFn6zDdxQ3tgy+QY4psKAeNWHs2elq83M9NPj7tKuc0Ec7HGlLsTvnTuZrVeSqGyjUOe5OHHzzO8xbohnNtc1Dj4SN1JVtMXg0/whCXFJGhtEJSvS3cir2AZfg+cja9F2lyghCNPKd8KDuRt4PWELmEcQ/MADMT/iaf/9AKONSZRzXc4vAReahLanJAu9hH6rUXw90Mw0mDJ3iD7Z4zx8pu5ywiAuGQ4OV0OK8wnP09rdHsHcVnQkU0I4S33lalKvl6a62HwCH4Kbmp3vRxOzoBtABqEbbjkMy5wvqidbQUgGbhiI1hwjLowHEFcfZSHKJGF42IDdfSOaTGG42giw9xMXfsk/ulifQrWKE2CBR
- p9shD0l2
- qsz2rLFGNCdmFxFV0Q7PQoB7Cdgv7/Mb4iXGHdXhjJI6G2H03jaA7KAaQg7zp9P7mxuBSHXmvrMq9+224uXH/Czk8ztJdiPkiB3h6l09KQ46Ljb6xa0L+z2KBPupGgXN4z+tp1Cyjnvdp30/LEQMLPM+NHDD/YjKXMLvuNoLrQnpocb9JX6Lqra+WoKLW44j4rC/FEA0PUUg7yRsisYmHxEvhWcZHxWsGLV7WYRYRr0TjfE1S6KOXaNZUG3p5V7aS565S
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E9256140008
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: 543sa7guejac9q4n8y7kw4ixxfe6fnct
+X-HE-Tag: 1793990589-646293
+X-HE-Meta: U2FsdGVkX19BAoH0pmJC+EVBjQ31i0Kcy9OHhjxY6Kx3U3UeQrqMjnz6bkdXhVwawOgQAem6lsnTURxqCU6Hv7s4ENi00POBXrqs4du9G/YP+jqrqHClziXT+90eBSxIjYTEYcqFktPpk/KtjAj/Hm47nMnjyQn5IqQfUK8TrhJEXQXezEz35swlkf8WSs+re9lYLDNhTohY6ESCuP8vKjdtBPCBT4Di3gLCtI08zeRlheQ6ABYW56Uxzmf8kXK1E6qhJKxp6/Ll3RpBj6Ru1Du73hhiLjGqCPTwBmNnTvIgk8Q3tMNrvSmgpdc4w3WEzyMgXgMIBHyFEcMrONn++bBNGYn6q2Ps9IfHBUao53FDvEu+fF6yZryHsCvi0CY8p7kihoskWGSjrvt4duXELNlWXHPSOlJz1rx17YmRoSqO5P6gYlvZmEtUHCJEVw4dqKmnmlwnSUf+4pNCRkScsHU6K65Koo9jvzzkgJuP6iuX1y8oBxQSFqJqewGEIBCnwcnR9wP3v+00IS8cqYgiyXJdd3I5NDVlWBgyW5gUaQPZlW96gtUp9QHDPBjgXrfznITPlKyX3beth5lJPT5kY01UhQ2TsMjhh1dQCvNRs/8czH4/cfDYrPJxYByqB6ZIU8M8v6Pprq3vJjECUTTmwJfPbIK4Eemxnd2kfHvoWDJLEOlmcaInbtMV55abAHdZauMca8aa/F7LzQv0DAKuxua6FbGegbrHw1vLCWNiV0TPsjbbf7qfZnCSbkQO1/FJHIVAgVlpDfUk27lWH1Dr4OFK+X8sem+9ANHuw7+Uds9CtHynrdfbn5Co2NAbV5PZcsfyIt4fZ6LmweAqxs0Z/W88EXTzUrRtbY2r4PD9coTLZtL3bj+lUj+lQ1cFYhc9Mi2QG/viZsxrGBwXqFS44YbweGJEDh3pfFNCsR3kZMHaBH6ufJ0hDJa0bIKYSauPrBdqo6YEFPcR2E9+go9
+ epsshcPj
+ 0CuJ+PQvRBvE0bmaKUCciHV+PLvhk8UsvaojNH7QwzyW3AaGjUreB/p2cWMwjbM/2GX/rGRWDNJcFdzIeDj4CUYJYpL07WcAyhv935M4NSdrJFDHmA8ZFJLDl88ZQVcYd+DWE3cLG47r9Aw5dXKaKJl9sSzA1KON6q81npjjYlTMGdpSXMhvpsnG8eVcx5Qnb7RTH9sujq3jNK199gZzxYhJuwGHOuVbLIUwBCVP4mOlQJ3bh9meG1Mb6OcAithi7SYDK10j4ur8Ad7m0gfw3sTz0Ix3WJr2jk0rRsAcBwFESQbO/l2//YnPbbr27UCJiGFnxl1Dqs9AVoKVrFhArhvuhVcEhhq2yMMcm2t5+9oMYqUq3duGwv1/fZ1BB26OWzRwcr8rO8zBW4O3jKhxPY68N7jABJ3SVmN3zR9iekvs+IsRT7Iha9umRzOOinCjLCEmli9EhCwy4Y2ig/YiN0NvHF7UpamZdAs/EFIMvPAmF9M42DURP2bG2Kxt6BtmDqsQP/bHUqYG6NRLY0pRRqiidKpeXfGHzAOXepOvM5xSh3NwbyJd4MU3VuqGYYHi0d6x+/zhuDVhHWGmYvxVwOZvCbIMPwuuaQcwV8SK/KRp3i4E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,107 +93,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Fri, Nov 06, 2026 at 06:20:36PM +0000, David Matlack wrote:
-> On Fri Nov 6, 2026 at 5:34 PM UTC, Bjorn Helgaas wrote:
-> > On Tue, Oct 13, 2026 at 04:25:21PM +0000, David Matlack wrote:
-> >>  static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
-> >>  					  struct pci_dev *dev)
-> >>  {
-> >> -	struct pci_dev_ser *dev_ser;
-> >> -
-> >>  	if (dev->is_virtfn) {
-> >>  		pci_warn(dev, "Cannot preserve Virtual Functions\n");
-> >>  		return -EINVAL;
-> >>  	}
-> >>  
-> >> -	if (dev->liveupdate.outgoing) {
-> >> +	/*
-> >> +	 * Endpoint devices should not be preserved more than once.
-> >> +	 * Bridges are preserved once for every downstream device that
-> >> +	 * is preserved.
-> >> +	 */
-> >> +	if (dev->liveupdate.outgoing && !dev->subordinate) {
-> >>  		pci_warn(dev, "Device is already preserved\n");
-> >>  		return -EBUSY;
-> >>  	}
-> >>  
-> >> -	if (!pci_is_root_bus(dev->bus)) {
-> >> -		pci_warn(dev, "Cannot preserve devices behind bridges\n");
-> >> +	if (dev->liveupdate.outgoing && !dev->liveupdate.outgoing->refcount) {
-> >> +		pci_WARN(dev, 1, "Preserved device with 0 refcount!\n");
-> >>  		return -EINVAL;
-> >>  	}
-> >>  
-> >> -	dev_ser = pci_flb_alloc_dev_ser(outgoing);
-> >> -	if (IS_ERR(dev_ser))
-> >> -		return PTR_ERR(dev_ser);
-> >> +	if (!dev->liveupdate.outgoing) {
-> >> +		struct pci_dev_ser *dev_ser;
-> >>  
-> >> -	pci_info(dev, "Device will be preserved across next Live Update\n");
-> >> -	outgoing->ser->nr_devices++;
-> >> -	outgoing->ser->devices = kho_block_set_head_pa(&outgoing->block_set);
-> >> +		dev_ser = pci_flb_alloc_dev_ser(outgoing);
-> >> +		if (IS_ERR(dev_ser))
-> >> +			return PTR_ERR(dev_ser);
-> >>  
-> >> -	dev_ser->domain = pci_domain_nr(dev->bus);
-> >> -	dev_ser->bdf = pci_dev_id(dev);
-> >> -	dev_ser->refcount++;
-> >> +		pci_info(dev, "Device will be preserved across next Live Update\n");
-> >> +		outgoing->ser->nr_devices++;
-> >
-> > This looks a little funny because prior to this patch, nr_devices was
-> > always incremented in pci_liveupdate_preserve_device() and always
-> > decremented in pci_liveupdate_unpreserve_device().  Now it's only
-> > incremented once (per device) in pci_liveupdate_preserve_device(), so
-> > it looks unbalanced.
-> >
-> > My guess is this is because previously we didn't expect to preserve
-> > bridges at all, and now pci_liveupdate_preserve_device() might be
-> > called several times for a bridge, and it's all just fine, but it's a
-> > little subtle.
-> 
-> Right. nr_devices counts struct pci_dev_ser entries that are in use, so
-> it goes up when a device's refcount goes from 0 to 1 (the entry is
-> allocated) and down when it goes from 1 to 0 (the entry is released).
-> For endpoints that is every preserve/unpreserve call, but a bridge is
-> preserved once per preserved device below it, so most calls for a
-> bridge only change its refcount.
-> 
-> > I suppose the "(dev->liveupdate.outgoing && !dev->subordinate)" test
-> > above is what allows us to just increment refcount each time a bridge
-> > is preserved.  And the test around pci_flb_alloc_dev_ser() is doing
-> > basically the same thing.  I wonder if there's a way to connect them
-> > more explicitly.
-> 
-> Agreed, both points come from the same thing being spread out. I think
-> both can be fixed by splitting pci_liveupdate_preserve_device() into
-> "already preserved" and "first preservation" cases, and moving the
-> nr_devices accounting into helpers that allocate and release the
-> struct pci_dev_ser, so it is visibly paired:
-> 
-> 	if (dev_ser) {
-> 		/*
-> 		 * Endpoints can only be preserved once. Bridges are
-> 		 * preserved once for every preserved device below them.
-> 		 */
-> 		if (!dev->subordinate) {
-> 			pci_warn(dev, "Device is already preserved\n");
-> 			return -EBUSY;
-> 		}
-> 		...
-> 	} else {
-> 		dev_ser = pci_liveupdate_alloc_dev_ser(outgoing, dev);
-> 		if (IS_ERR(dev_ser))
-> 			return PTR_ERR(dev_ser);
-> 	}
-> 
-> 	dev_ser->refcount++;
-> 
-> with pci_liveupdate_unpreserve_device() calling a matching
-> pci_liveupdate_free_dev_ser() when the refcount drops to 0.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Critical] mm: rmap corruption from unmapped PMD folio cached by
+  swapin_pmd_swap_entry()
+--
 
-I think that would be good.
+commit 14ed08337de0c0909e93ae1d8b999993fb793692
+Author: Usama Arif <usama.arif@linux.dev>
+
+mm: handle PMD swap entries in MADV_WILLNEED
+
+This commit teaches MADV_WILLNEED to prefetch PMD swap entries as a single
+PMD-order folio when THP policy allows it, falling back to splitting the
+PMD into PTEs when PMD-order swapin is disallowed or fails.
+
+> diff --git a/mm/madvise.c b/mm/madvise.c
+> index f7f17efdd926d..576be4b8744c2 100644
+> --- a/mm/madvise.c
+> +++ b/mm/madvise.c
+[ ... ]
+> @@ -193,6 +194,108 @@ static int madvise_update_vma(vm_flags_t new_flags,
+>  }
+> =20
+>  #ifdef CONFIG_SWAP
+> +/*
+> + * Prefetch a whole PMD swap entry as one PMD-order folio.
+> + *
+> + * Called with the PMD lock held; always drops it. Returns true when the
+> + * caller should ask the walker to retry so the PTE path can handle the
+> + * covered slots individually.
+> + */
+> +static bool swapin_pmd_swap_entry(struct vm_area_struct *vma, pmd_t *pmd,
+> +				  unsigned long addr, softleaf_t entry,
+> +				  spinlock_t *ptl)
+> +{
+[ ... ]
+> +	/*
+> +	 * The range was PMD-mapped when it was swapped out, but the policy may
+> +	 * have changed since: MADV_NOHUGEPAGE, or the sysfs knob. Reading it
+> +	 * back at PMD order would then hand do_swap_page() a PMD-sized folio to
+> +	 * map with PTEs, which is exactly what the policy forbids. Split now
+> +	 * and let the PTE path prefetch at order 0 - the next fault would split
+> +	 * the entry anyway, so nothing is lost that the VMA still permits.
+> +	 */
+> +	if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_PAGEFAULT,
+> +				     HPAGE_PMD_ORDER)) {
+> +		spin_unlock(ptl);
+> +		return true;
+> +	}
+> +
+> +	cache_state =3D swap_pmd_cache_lookup(entry, &folio);
+> +	if (cache_state =3D=3D SWAP_PMD_CACHE_HUGE) {
+> +		/* Already cached as one PMD-sized folio, nothing to do. */
+> +		folio_put(folio);
+> +		spin_unlock(ptl);
+> +		return false;
+> +	}
+> +	if (cache_state =3D=3D SWAP_PMD_CACHE_SPLIT ||
+> +	    zswap_is_present(entry, HPAGE_PMD_NR)) {
+> +		spin_unlock(ptl);
+> +		return true;
+> +	}
+> +
+> +	/*
+> +	 * Pin the swap device under the PMD lock so the PMD-swap-entry
+> +	 * observation keeps the entry valid for swapin_sync().
+> +	 */
+> +	si =3D get_swap_device(entry);
+> +	spin_unlock(ptl);
+> +	if (IS_ERR_OR_NULL(si))
+> +		return false;
+> +
+> +	folio =3D swapin_sync(entry, GFP_HIGHUSER_MOVABLE, BIT(HPAGE_PMD_ORDER),
+> +			    &vmf, NULL, 0);
+
+[Severity: Critical]
+Can leaving a newly allocated PMD-order folio unmapped in the swap cache
+corrupt rmap and mapcount state if the PMD swap entry is split before a
+PMD fault maps it?
+
+When madvise_willneed() -> swapin_walk_pmd_entry() ->
+swapin_pmd_swap_entry() calls swapin_sync() with BIT(HPAGE_PMD_ORDER), it
+inserts a fresh HPAGE_PMD_ORDER folio into the swap cache and leaves it
+unmapped (!folio_test_anon(folio)).
+
+Before a PMD page fault maps that folio via do_huge_pmd_swap_page(), the
+PMD swap entry can be split into 512 contiguous PTE swap entries without
+removing the cached folio. For example, if userspace applies
+MADV_NOHUGEPAGE (or the sysfs THP policy changes) and then either calls
+MADV_WILLNEED again (hitting the !thp_vma_allowable_order() check above
+and splitting via __split_huge_pmd()) or faults on the range (causing
+do_huge_pmd_swap_page() to split the PMD for PTE fallback), or performs a
+partial munmap(), mprotect(), MADV_DONTNEED, or MADV_FREE, the unmapped
+PMD-order folio remains in the swap cache while the page table now holds
+PTE swap entries.
+
+When do_swap_page() then faults on one of those 512 contiguous PTE swap
+entries, swap_cache_get_folio() returns the HPAGE_PMD_ORDER folio and
+swap_pte_batch() batches all 512 PTEs so nr_pages =3D=3D folio_nr_pages(fol=
+io),
+bypassing the partial mapping check:
+
+mm/memory.c:do_swap_page() {
+	...
+	if (!folio_test_anon(folio) && folio_test_large(folio) &&
+	    nr_pages !=3D folio_nr_pages(folio)) {
+		if (!WARN_ON_ONCE(folio_test_dirty(folio)))
+			swap_cache_del_folio(folio);
+		goto out_nomap;
+	}
+	...
+	} else if (!folio_test_anon(folio)) {
+		VM_WARN_ON_ONCE_FOLIO(folio_nr_pages(folio) !=3D nr_pages, folio);
+		VM_WARN_ON_ONCE_FOLIO(folio_mapped(folio), folio);
+		folio_add_new_anon_rmap(folio, vma, address, rmap_flags);
+		folio_put_swap(folio, NULL);
+	}
+	...
+	set_ptes(vma->vm_mm, addr, ptep, pte, nr_pages);
+}
+
+Because folio_test_pmd_mappable(folio) is true for an HPAGE_PMD_ORDER
+folio, folio_add_new_anon_rmap() initializes the folio as PMD-mapped
+rather than PTE-mapped:
+
+mm/rmap.c:folio_add_new_anon_rmap() {
+	...
+	} else if (!folio_test_pmd_mappable(folio)) {
+		...
+	} else {
+		nr =3D folio_large_nr_pages(folio);
+		/* increment count (starts at -1) */
+		atomic_set(&folio->_entire_mapcount, 0);
+		folio_set_large_mapcount(folio, 1, vma);
+		if (IS_ENABLED(CONFIG_PAGE_MAPCOUNT))
+			atomic_set(&folio->_nr_pages_mapped, ENTIRELY_MAPPED);
+		if (exclusive)
+			SetPageAnonExclusive(&folio->page);
+		nr_pmdmapped =3D nr;
+	}
+}
+
+This maps the folio with 512 PTEs while setting _entire_mapcount =3D 0,
+_large_mapcount =3D 1, nr_pmdmapped =3D 512, leaving per-page _mapcount at =
+-1,
+and only setting PageAnonExclusive on the head page even when tail pages
+are mapped by writable PTEs.
+
+Similarly, if swapoff runs on the split PTE swap entries, unuse_pte() will
+find the unmapped HPAGE_PMD_ORDER folio in the swap cache:
+
+mm/swapfile.c:unuse_pte() {
+	...
+	if (!folio_test_anon(folio)) {
+		VM_WARN_ON_ONCE(folio_test_large(folio));
+		VM_WARN_ON_FOLIO(!folio_test_locked(folio), folio);
+		folio_add_new_anon_rmap(folio, vma, addr, rmap_flags);
+	}
+}
+
+Would it make sense to ensure that unmapped PMD-order folios in the swap
+cache are either removed when a PMD swap entry is split or rejected by PTE
+swapin paths such as do_swap_page() and unuse_pte()?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105183940.2236=
+717-1-usama.arif@linux.dev?part=3D27
 
