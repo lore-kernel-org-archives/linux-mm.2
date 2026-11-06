@@ -1,146 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE87B606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB200606A329
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NHfHZnPS
+	dkim=pass (2048-bit key, unprotected) header.d=debian.org header.i=@debian.org header.a=rsa-sha256 header.s=smtpauto.stravinsky header.b=hxJ0aWWr
 Received: by kanga.kvack.org (Postfix)
-	id E839F6B05B5; Fri,  6 Nov 2026 10:45:53 -0500 (EST)
+	id 119C96B05B3; Fri,  6 Nov 2026 10:47:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5B096B05B9; Fri,  6 Nov 2026 10:45:53 -0500 (EST)
+	id 0F1656B05B6; Fri,  6 Nov 2026 10:47:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D71BC6B05BA; Fri,  6 Nov 2026 10:45:53 -0500 (EST)
+	id 008186B05B7; Fri,  6 Nov 2026 10:47:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B58526B05B5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:45:53 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4293EA0D86
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:45:53 +0000 (UTC)
-X-FDA: 85405119786.20.0B4A80D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 92D081A0002
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:45:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NHfHZnPS;
-	spf=pass (imf19.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id CE9C06B05B3
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:47:50 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 58988120D7E
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:47:50 +0000 (UTC)
+X-FDA: 85405124700.25.A07A98C
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A14D320004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:47:48 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=hxJ0aWWr;
+	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793979951;
+	s=arc-20220608; t=1793980068;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sf7jpXPq+wp6SBfVuD5VhfW8K2K7PrL3pzRu30lk/Qs=;
-	b=ryjAtOlY2rV+5OMWZp9Dv0+e7JyEiwppheDzykqqbptv75cfYi0F+u8Hey3U9as6njUsLs
-	lNRNBDJ2nJ1O5WWkU0HfBUf3YtRKG0glexcQhoumfXVu9X0O4FYNI3+I6Ffm3eyl/N1TcX
-	7gdOx1kAO2Y7NfOX86WM0OvA6eJPYXo=
+	bh=UmKUyztNyCKEX6kdM2pzglbfBGyZ6nijYc/+g6Roixw=;
+	b=WPi9Dgm1jRQ82ZjEtee+9P5PmlKlA/rphFa/DZTUyykxZkbfC4VMvxtokqHtfrJidE8sKF
+	Jv4o4E4IFMul3gVPLpmaytYzT8hFTcXokO09+WwaKDeOxef3rwlFJPx1NI+qWjRUAEkS6/
+	kLNmvFTF12NvfdAI60MAXiMxlBsVo0c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793979951;
-	b=qwuc2ClKgwZVxjiIl5oKeqVBYVmF6ibEjwWN8mR8U8IcOsNU0r5duVpWSMhyiexmMAf4wI
-	RTfB+dvT8SN/6ENRsvnSEru+Cbut4e/rDlUffjn1HqeQKJM6T/B2dm3mzVT7A3U37lGtwE
-	KugryFzk194mnF3oiOYHMWgF1/8s4Cw=
+	t=1793980068;
+	b=r4vDTxC1/2hkeL3BEEzZ/wS2dOInSpD6JtY4CXSEEgcahkCS4Lq8qFMrnmdwRimrhEShKe
+	NJ2OlbtPe1w03xcMZJSNweSpZ2cOx9XUyFqeEE353mmuXk1UT/7nYe38WgFUd8v34UAAP5
+	TfW7ylHTct8E18KqVr7/2USPk2nUDlg=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NHfHZnPS;
-	spf=pass (imf19.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C680640784;
-	Fri,  6 Nov 2026 15:45:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC1B21F008A1;
-	Fri,  6 Nov 2026 15:45:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793979950;
-	bh=Sf7jpXPq+wp6SBfVuD5VhfW8K2K7PrL3pzRu30lk/Qs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=NHfHZnPSDSHLthC28xmc7Tynk3g3EuBVtAtF3YePrjls2avEgiFGihXMqKalL6SYK
-	 SeJfbKbhS1SHWhGP9tCN6jALT7jREvu0x9m17dhcE0oLL42alVk0H4Ve6UWnQsZ17V
-	 pOd3zRki1UcQZ29EAFK0E5v9T4pzWtOa2Z1QlBdeIUapAvd2pzBNLlIfkVE6aLRurr
-	 uq5rcOkbHr9280TJ3ts+7TSC30ovRao2lHyLtEiO9tHldNoUeF0owFJmmy9pFG8jCG
-	 5cQRmxsKh588fJfaFewhWE1XgoaoMSVyjoOt6yV+WAzO5GfLn/FYQd7wPywABOqUIP
-	 iCRRMFk+OTbyQ==
-X-Mailer: emacs 31.1 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Marc Zyngier <maz@kernel.org>
-Cc: linux-coco@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Mike Rapoport <rppt@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Joerg Roedel <joro@8bytes.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Steven Price <steven.price@arm.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Brian Starkey <Brian.Starkey@arm.com>,
-	John Stultz <jstultz@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Radu Rendec <radu@rendec.net>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Kiryl Shutsemau <kas@kernel.org>,
-	Rick Edgecombe <rick.p.edgecombe@intel.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
-	linaro-mm-sig@lists.linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-media@vger.kernel.org, linux-mm@kvack.org,
-	kvmarm@lists.linux.dev, patches@lists.linux.dev
-Subject: Re: [PATCH v9 14/14] irqchip/gic-v3-its: Preallocate VPE L1 tables
-In-Reply-To: <86zevn1c9a.wl-maz@kernel.org>
-References: <20261104164555.3555725-1-aneesh.kumar@kernel.org>
- <20261104164555.3555725-15-aneesh.kumar@kernel.org>
- <86zevn1c9a.wl-maz@kernel.org>
-Date: Fri, 06 Nov 2026 21:15:29 +0530
-Message-ID: <yq5ah5huoteu.fsf@kernel.org>
+	imf13.hostedemail.com;
+	dkim=pass header.d=debian.org header.s=smtpauto.stravinsky header.b=hxJ0aWWr;
+	spf=pass (imf13.hostedemail.com: domain of leitao@debian.org designates 82.195.75.108 as permitted sender) smtp.mailfrom=leitao@debian.org;
+	dmarc=pass (policy=none) header.from=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=UmKUyztNyCKEX6kdM2pzglbfBGyZ6nijYc/+g6Roixw=; b=hxJ0aWWrhA/N+kPnh9QdadK03I
+	lphqVrug6uscPzlWL2jyy4zJB2rNqXeOEXOLuwmTGBKV3e6eyRkSxZroS7b5nL61OzJDkf2UkX+ln
+	0BmB02lmybqsifwdOsPKfRKNklN7Giqov+pGQZVxC5OCfay9a3Wn3EhTRIaImRfCjzT4xtmKEtpzx
+	svMGJfZBLYPoYIHp/j8+GM0EpjPZlGl/zWct1qAtM3b9sush4NCM+c1ChfiEjgkhJoDryu9M53/lU
+	bWMwwwkvUcLuN3iGCOJ9nqxg6EvJeYKwB+fKWCDpK2kjJFauLIg9FqPkOwViu3y64uaSgBQBi1bJG
+	RqdWC0iw==;
+Received: from authenticated-user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.96)
+	(envelope-from <leitao@debian.org>)
+	id 1xPMA3-009OAp-2L;
+	Fri, 06 Nov 2026 15:47:27 +0000
+Date: Fri, 6 Nov 2026 07:47:22 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Jan Kara <jack@suse.cz>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Julian Sun <sunjunchao@bytedance.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 4/4] writeback: report a slow writeback wait once per
+ timeout
+Message-ID: <au3w4xiaYbEYLTru@gmail.com>
+References: <20261106-writeback_stall_report-v1-0-bf0c3b9023a5@debian.org>
+ <20261106-writeback_stall_report-v1-4-bf0c3b9023a5@debian.org>
+ <ysxh2sfvjikoh6cw2qmk2i6p7xripwnqxkx43jj7unxop5tkiw@gws5wezjt34g>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: n4to3gcxnkmifp5naxmz9i15sqwm8yaf
-X-Rspamd-Queue-Id: 92D081A0002
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ysxh2sfvjikoh6cw2qmk2i6p7xripwnqxkx43jj7unxop5tkiw@gws5wezjt34g>
+X-Debian-User: leitao
+X-Rspamd-Server: rspam06
+X-Stat-Signature: zitngb6c437eixfj54sb4ynif1gnceje
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793979951-117557
-X-HE-Meta: U2FsdGVkX18bBvxR3zjdq5h/4AJVZVcUXhEnR6ROuHEGmjYPq1WIVm0TkdhnQXsAwmaT5jQWpjURULI8UE+PGJMyL0jeojxqcG5QlCW88ZUCfk/83jzxzHNP9ODyOVTj1XXLF3d9BLbJEgK7BE7pVn1DIoKri32pqLZVI2fNQO6y87foxNpJkqAzhBdbDSZ6/Yb8z2GE1C+ry1Ro4Qr5Di5FTortzpBNXWfJQ7RSQgW5kAVs2z9nSag7ZUAn4WUfNiLghiqtGxn41mYyxa+SsQabK9Sw+SO1oghiqJDkUAHcxNyZb2RX6pVJXzYfbUyxQr8lJf8FFKqSTkHfb4PRUF/c+7weO9MojlJRVfVWhTgrrZX6wSjfIKYqu1K8ZeBrqa0rdkEx7RkVOAkdkmzUVId3MMaKVEK7mlTGVni87Dgah/hMMM6agxsBKIgGNV2azzItjAWn+Wfgmitc6Lvrq8VotGbXKALCv+77W2YxOj5mLvtfOAEMYpBSCOMzcW6SDNmqYEcbmdXYMsOLcEdBwLD8K5fafq6Cyul/Pir3/T6ooYZ9wJ4Ufm1Pl8xxR7XPGD14IERpJC88WwDMrBfhUA5cVPl+kT+9/2hx9N7Sum4z6xxULwKCS+vxPaGmiOC4Y+x9t6N2hGHULELaHpDG6ac8tLozFbpMcEY7NjnJNQGmOLx5rQTkjRJ0jp8Rz2VUaljCJS9hx7RJ/OmS7nRTyuE9kjR8omHmkGCVvHL5NDtxGFb3ar5Az+5qUx+d3wc2YZm66FnSEVxokouu6M1p78C9Cw/6OelyDslkJJom/VWQ6WUHBIF5My7HJJnS09FHbyVBd7PffDjZPhiA2Anp2gt+LDNI4rVQp7RmZ6hLZ6HPl3SWfJ3NG5cBtQzR3MmMdU+/IrNCbEurMJ6Rg5y0Os2pUUaDWPBKSJiS8VZgacoFx+0m89P3eBm0MIbXJV/8N9aLz/LtgS5gvI3n/9k
- W9RTWnHP
- ko5r+QuGruQ0pyADxYZRPjkRW4KYWHdISeIML72FTm3cBF1giR9bXH7PMrpw+aCjmM1syjeuz8BO47B8LFAF6MzcLXF1irTfzI/u4uJ9Hvw3cqRsjRhE24VqeGkkAMKmoM85rnlYVyQXkIBFTrxEQYWimsna30Bx+cXqc1jRydlfzuQnFFbk2wjfn6BW5QJL8/TdKb6ZXe1qtK9mK1PxDvZTA0EPydgKgWwIzAY5KMfE7LIk9JccLS+LYcGMSpEdX/f/Uo7kcd9nkhrnanakHn5+SVWoIFJAzp7J9kVag+PTXxxQXsyPDM82u/A==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: A14D320004
+X-Rspam-User: 
+X-HE-Tag: 1793980068-626443
+X-HE-Meta: U2FsdGVkX19o3TRT0J1dO+adAM7PFh3KaoeWrE4no7p8iCQ4qLP6zACKj6WGb8nOrcp7qh1rMaAEhT9VtEipPS77T9sFDXGcj/8yHRbzmyuTzTHNkpNw7Ln5xZtVHK8tA2N7+HVUxy5YxiQ5KGys/TIETj/d1U85qbb7mqlKpUcNQheGv3qi9eU/X6mXPrXycg6eFqPMDy4KwThzq0oX0PlK6t2tE/lsKdywOMo8OzqNm0VSmjCriz58BcPU/u05L6L69PZHLzuYZkAjUybCAp3q4jSeGP4fnKDu2JtUvrCY2ZgeJUh4CqhkDowzEO22yKLmdde5ro97NPZYgt8M/GJo/oHB3HNyaQ1qiqvbnvFJkS7KUCH9877KEKPxXZlSHS5KNd9EhKUb97saKEkjiiCdv8xUa/BNVsN20J8mU0T7xjll8LeAEozhTnpPxDmPgfBP7SjWccghvFEwSZXalfcPIbeub25Eaum7tNMHULxgG+UQCrfuHnYNBDZ6eDmV0QWp9nG4XrlnGFdmAzabj6AiQzdYHje4tox4phYN452lxopUOSe05u9ju2trOfU2XWYMQ6lbKp5FNcR9WUy84rh8QubH73+teR1Q7o9ycFn7FG5A7UThfszYBXiow1INqR0aJS+o4Slv2gomdxSgvsrWUNQ0/3t3U5oart9VXZuiqVgW2emBFNzNal6dFrO3AQU+tQoOW4Xcpt6fUJ+3jw2MQ8AwLK7XXN51RCAHPmPgscpXiZqAchEEXSZ8LQPLRXvcGN/oYgqe8gp+jRtb2wqWRbfMXcDdWcU8hOUwACgq8ErQTmB6XDmwLuVRuVUHUVcfKFfuVA6PykqhtwlOU4yOHXoFmz7dCkVMeiIYhjMVYkIlhMVHnj/eW+T5BtWM7Zu+jem0EnuQ7nZsNXxde45KOfQtRzIRok1YC2Kyg+dWAbnMgTDHTb9mn3sJhMn2NPOSk+PVwHLJDeGTRpC
+ nRoiaRQx
+ lk+tiMFeLc0XqXfKe98UNmScZDqfcAhBY/UYHcmcwSq+WSvNrSLUaWzM2EELV5jUZiphUsmN3LBmMWmWX9D7936XTOR5DWPOTGq6s71MVrp04VIgAQrufufuirWYHyUkvBt34R0jOsa7wJuvo39oqB7NpNiM17TigV2jO1V7plOw4b6/UHc5UZYgzkxwUWnccISVh37NO9BGyANAkE2yHm5k/K+ARG1JPxWBT3peGDoNppUhTCL6I+26lmIg1DNvIjbadHVj2E+bdU4Q9o0iV3quEzw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,41 +106,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Marc Zyngier <maz@kernel.org> writes:
+On Fri, Nov 06, 2026 at 03:37:45PM +0100, Jan Kara wrote:
+> On Fri 06-11-26 04:26:34, Breno Leitao wrote:
+> > The slow writeback report is printed on every wakeup of the waiter past
+> > hung_task_timeout_secs, and the waiter is woken more often than that.
+> > 
+> > Each flusher working for it wakes it once it has not run for half the
+> > timeout. All waiters on a bdi share bdi->wb_waitq, so a wakeup meant for
+> > one of them reaches all of them.
+> > 
+> > A sync of files dirtied from two cgroups, on a throttled null_blk device
+> > with the timeout set to 5 seconds, gets a report every half timeout,
+> > each printed twice, 18 reports for a 29 second wait:
+> > 
+> >   [   10.327992] INFO: The task sync:276 has been waiting for writeback completion for more than 8 seconds.
+> >   [   10.328000]       bdi 252:0, work items left: 2
+> >   [   10.328003] INFO: The task sync:276 has been waiting for writeback completion for more than 8 seconds.
+> >   [   10.328004]       bdi 252:0, work items left: 2
+> >   [   12.888187] INFO: The task sync:276 has been waiting for writeback completion for more than 10 seconds.
+> >   [   12.888195]       bdi 252:0, work items left: 2
+> >   [   12.888197] INFO: The task sync:276 has been waiting for writeback completion for more than 10 seconds.
+> >   [   12.888198]       bdi 252:0, work items left: 2
+> >   ...
+> > 
+> > Remember when the waiter last reported, and report again only once
+> > another timeout has passed. The wakeups do not change, so the hung task
+> > detector still sees the waiter making progress. The same test now
+> > prints 5 reports:
+> > 
+> >   [    7.661129] INFO: The task sync:277 has been waiting for writeback completion for more than 5 seconds.
+> >   [    7.661136]       bdi 252:0, work items left: 2
+> >   [   13.241102] INFO: The task sync:277 has been waiting for writeback completion for more than 11 seconds.
+> >   [   13.241109]       bdi 252:0, work items left: 2
+> >   ...
+> >   [   31.801068] The task sync:277 waited 29 seconds for writeback completion on bdi 252:0
+> > 
+> > Signed-off-by: Breno Leitao <leitao@debian.org>
+> 
+> Now I'm waiting for someone to complain it gets written out too
+> infrequently :). 
 
-> On Wed, 04 Nov 2026 16:45:55 +0000,
-> "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org> wrote:
->> 
->> VPE L1 tables are allocated from the CPU-starting callback, where sleeping is
->> not allowed.  Remove the page allocation from this atomic path.
->> 
->> Use a blocking allocation for the boot CPU and record the resulting table
->> order.  Allocate a page of that order from the sleepable CPU hotplug prepare
->> stage for each secondary CPU.  Consume the preallocated page only when the CPU
->> cannot inherit an existing redistributor or ITS table.
->> 
->> Reclaim unused preallocations after the CPU reaches the online state, and from
->> the prepare-state teardown when CPU bring-up aborts.
->
-> No. The way to do it is to move the ITS probing out of the
-> non-sleepable CPU hotplug path.
->
-> I proposed a potential hack at [1] (which I find far more palatable
-> than this proposal), but the real fix is to probe the ITSs as
-> devices.
->
+Once per timeout is also how often the hung task detector checks by
+default, and patch 3 logs the total once the wait ends, so maybe that is
+exactly what people need? Not sure.
 
-Could you share a bit more detail on what you have in mind?
+> Is this change substantially different from
+> writeback_sb_inodes() waking up done->waitq less frequently?
 
-Are you suggesting that we create a platform device for each ITS and
-initialize it through the driver's probe callback, while the rest of the
-GIC initialization stays in the existing early boot path?
+You mean the ->progress_stamp field? That is not used for reporting
+purposes, right? Should it be?
 
-Would that mean the main GIC is operational during early boot, while
-ITS-dependent features, such as MSI delivery and direct injection, become
-available after the ITS devices probe?
+It could drop the duplicates: a wakeup with work left runs the
+wait_event() condition twice (since 84654c7f4730, it is checked right
+after schedule() and again after prepare_to_wait_event()), and the
+second check would find ->progress_stamp just refreshed by the first.
 
-Is that the split you have in mind?
+But the waiter refreshes ->progress_stamp on every wakeup, so it cannot
+space the reports further apart than the wakeups, and those have to
+come more often than the hung task timeout.
 
--aneesh
+So it is a choice between a report every half timeout with no new
+field, or once per timeout with report_stamp. Which one do you prefer?
+
+Thanks for the review,
+--breno
 
