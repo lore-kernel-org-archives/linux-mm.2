@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09DDC606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CBAB606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9BteXLT
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eOInTTz3
 Received: by kanga.kvack.org (Postfix)
-	id 2DDF56B05B3; Fri,  6 Nov 2026 08:11:28 -0500 (EST)
+	id 80E916B05B6; Fri,  6 Nov 2026 08:11:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B5DB6B05B6; Fri,  6 Nov 2026 08:11:28 -0500 (EST)
+	id 7E5AB6B05B7; Fri,  6 Nov 2026 08:11:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1CBCF6B05B7; Fri,  6 Nov 2026 08:11:28 -0500 (EST)
+	id 6FB8C6B05B8; Fri,  6 Nov 2026 08:11:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EC04E6B05B3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:11:27 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8E39440DBF
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:11:27 +0000 (UTC)
-X-FDA: 85404730614.23.B8D226F
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 43F706B05B6
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:11:30 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BB8E9C0D5A
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:11:29 +0000 (UTC)
+X-FDA: 85404730698.27.DC35DD1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F0627C0008
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:11:25 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E9BteXLT;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 301FC180008
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:11:28 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eOInTTz3;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793970688;
+	b=Al1Tilvh0w7vB7dSC/lqMlMGhpQg6jm4JqivCRMos62k3PxNtC8Bkul7O1AwBanWfoeEoI
+	K1F/Zc4lDaOrewfXS5cbSUn9J1YNA2cxuB6hLf+Wng/oTsn5muUDnoHyKjtLqWTdPW0dOY
+	z5RvrWcRXmL9a3tK3mOAfJHKFjlty8s=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eOInTTz3;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793970686;
+	s=arc-20220608; t=1793970688;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r05KjIaky8vd387v1sUpB/cEZd4wDF7ZmrnvdsQX3M0=;
-	b=H4s037vu2af58KjG4Tdefcl683h125OIycFDpG1mQjlmk6Gd98tlA2nlUqqxAnZRPqkjL4
-	OFmAauOwhR78zHkcgKlZasNCMGyXpakGuCaAthyuCEvvumvxfBFAM1UH2LRV3u+lToNE+L
-	9jt4rf7+n63MUNd/6W5mqJnUA9SE1TQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793970686;
-	b=BDJPPOn31SOte62OdMiGB57XzoEo94EY3ARxnWtFVJnfVt12CYGdxVKWK3l6UCOx2ajnt7
-	LjmX8e2NktfWn/yw8SSQsycZvwO1fm9bWnfG6irPvhOjJ6JSAI6mgxSKqefz3j4zv5IDLh
-	jb5aNC8jYIu7XpEmRLdNheBILEPHU3g=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E9BteXLT;
-	spf=pass (imf22.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=uj1zOkcoJlQmGVIJ4wv6hSDJ3ygl8SX6bqs5LM6sloc=;
+	b=Sz/YxiuQyupkq+ypUDVUcTnkY5SKwRsD9JI7rA9tFJNFo5CK9zTzHRThpnA1xuOHRsTvJx
+	i60KNdHbDaEta9t4bBUx8u87qmsy+IiDbbBrX7Z6WqZ7HuEcpGGu6kYtQ/798ENEL6PSq/
+	tahVI0+Qqvb3qqWmPJoFCiRcZww4EZA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 68101601BF;
+	by tor.source.kernel.org (Postfix) with ESMTP id C10C6602D4;
+	Fri,  6 Nov 2026 13:11:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D7D1F0089F;
 	Fri,  6 Nov 2026 13:11:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0391F0089F;
-	Fri,  6 Nov 2026 13:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793970685;
-	bh=r05KjIaky8vd387v1sUpB/cEZd4wDF7ZmrnvdsQX3M0=;
+	s=k20260515; t=1793970687;
+	bh=uj1zOkcoJlQmGVIJ4wv6hSDJ3ygl8SX6bqs5LM6sloc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E9BteXLTvyCKEJOTFQuvbld5a1HvPSVwFlWKdnTlhqwRIN1eLkaBNpZCgGVLG1rmO
-	 z/rQ3S1pFoK/FhHE9wgPMy+m3zkCBELSLBjMuTQcajy9uKTmFeGLEaLnQ2eY8T7dzv
-	 dPk0TH3cS99x4h9Kn2vDFJaJlAObvB2xDzEJJO5yfs+V6P4NY3KnLO6iOqjnEUsIi8
-	 rd973tt2VJbymUQAa+7f/j7bdVcvPCh7vYf9Ytf8OvtA7e4xuE8WCOMXnJLdnx5Lr1
-	 yDHCDz6wOynkazyVcSCMfs+GM5MNhWdEwSUXs82S6HbwEzK5zvwmogYlXE5OZdYcp8
-	 68DGE1easc73g==
-Message-ID: <sashiko-outbox-201442@kernel.org>
+	b=eOInTTz3XZQe0cICbxewcjhb55DlllAzL+HVSsXWq+ArHfEU6aB8Krdjqupoz7CED
+	 pM04G7iwnJ5Yl3PhK6gbUZ0+H+zlSojbrpByJKYg0PekkNLPHBKxyL2h418Q/J2/1K
+	 5rJ9kMaZIj1UI1yu2lGihc6tWcwTIXzBYb8xy1d3OAV9nJ3FPi7N3lb/I8a6qEFTvo
+	 Nefy1Jlh8Q/hR9T7ehYLmw/iTkJJWr6AJkBCNm8hSF1L2zHgzUobqV0gRHOYqUsG9p
+	 QXQtXlr3CaHOcSxEeA4M+D2IBs0NerufjmfCPc7UFL7LAKV5OGstgOO+ME8RfHM/5X
+	 mqLN2pqRphvNA==
+Message-ID: <sashiko-outbox-201446@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 1/5] mm: limit pagecache folio refcount when mapping
- pages
+Subject: Re: [PATCH 5/5] mm/gup: limit pagecache folio refcount when
+ grabbing references
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?RGF2aWQgSGlsZGVuYnJhbmQgKEFybSk=?= <david@kernel.org>, "Andrew
  Morton" <akpm@linux-foundation.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
@@ -84,25 +84,25 @@ To: =?utf-8?b?RGF2aWQgSGlsZGVuYnJhbmQgKEFybSk=?= <david@kernel.org>, "Andrew
  Tian" <kevin.tian@intel.com>, =?utf-8?b?Sm9lcmcgUm9lZGVsIChBTUQp?= <joro@8bytes.org>, "Robin
  Murphy" <robin.murphy@arm.com>, "Steve Sistare" <steven.sistare@oracle.com>, "John
  Hubbard" <jhubbard@nvidia.com>
-Cc: linux-mm@kvack.org, "Chris Mason" <mason@kernel.org>
-In-Reply-To: <20261105-refcount_overflow_stable-v1-1-70b9c655da3e@kernel.org>
+Cc: linux-mm@kvack.org
+In-Reply-To: <20261105-refcount_overflow_stable-v1-5-70b9c655da3e@kernel.org>
 References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
- <20261105-refcount_overflow_stable-v1-1-70b9c655da3e@kernel.org>
+ <20261105-refcount_overflow_stable-v1-5-70b9c655da3e@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Nov 2026 13:11:23 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F0627C0008
+Date: Fri, 06 Nov 2026 13:11:25 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: ha9jdntbpkipps7krenqohhte956s4ey
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 301FC180008
+X-Stat-Signature: 8z8r91nehws7kxgu89iu3no6tnzzuofs
 X-Rspam-User: 
-X-HE-Tag: 1793970685-6325
-X-HE-Meta: U2FsdGVkX194ZtcM4huCf5cE6U5sWE+LPFNbicP44730CZXO8eoj265GBaPluYnnaIaWcJUUZMEv+NohL659qvwGMk93344a+2PIIV+1uB1ESYTc8Ny61a+sdVnUBstoCsKlAYzat83ood1+zylxYGzmHltwywUWfo5RjQMcWRxQLFYzrRqTFAv8u+F73kCbuCFsyXroqtLPUnTMQUxA5613hpa4lj6iu/tmkC+QH7gcABBgkjdPXC/Idz7ofMdsRwDN60ao96sGpFnFb8S2k/HEaMU+CeLd8ii2lPEQfRfFOl7rn8xhMI57R44oVIqMzMPRBMAcFN/q3rieqFSf5cHMVbKr0v4bm2d5IB6EWLgiK2pKzDrlYI4W1yIjeCQlw1OQTVAoLAE9E0U4ZBAVrNHC6dYtCxKbrldpCogKRknWUY5MxyCOyV0AnyhmgLuCKcMP6vFSbKJ6pkeuiX3MbAZWpePJcYZN/l2GlPigId6WIDBOv/wFP9QXvpG4zpyxBSrsfDy3oQmPK0Be4dvYmZWIO/VRCLmSa9yhmdtTR3MII5auBkKfKrTwk0gi3p+Ejx9XrCXx08kml96929sMhcaXAOb6af/dmgFXsUfsOmn4HMrVQ1UeMriwoxEWI58GC3QsiYdyofi7P052tQIPxms1LaFc/dtVVREHVsAj3A62xS6W8vbWvzIFYFvza26aZ5JVzlG98izQD2Rn078V+/0qf6sCW9K0AnQbCdQ5Xf57DFGFuBglm+sHryhVQ5PtsTehZAulilo+xsPI4bhmpGuOnu0p1M34GryjZVDGJU83O64ykQWlcPmZ+kCBQx/1Cr/Y+QyBnI9111y9kObmM8mxDNZ6EyUn1OQA8S2wLf55AmNIA0YOQx4J1byMdoMnOofsurOmFTlD3AIXsTCNLLB4NfE/sNraifBjjRE8ilWzX7GauiNg53Zw98o4DBZexN0H9A29hTzrvDYcRE6
- MZrNXD5Z
- 3+MsljJ9pWGAPPdkukEqMXnzgXbbkuTnieEFiIREpZQLak5SgcOoNNA1p4i3PPIBnKO1ExjpYmmwPFthWcSMozVJX9S/rk/WfgL3qeP7v4GcWnSlrdRNa108UZyRKlgasLiGIE0XWSMhEfTfA7nL8w6GN30BdHn0y5mNXWj1nElTasVLvzZMJLLW9OADKnH2Jslj0GRsgUQlrbaHAeu3rpZfS1azPtKlEHfK/Kj+OKpoJfVRinSOidQYxu4z3s1QS7pJl2bC6SPnWdGdKdPMYGzAoHIHK8lQsvMEi6JhqiNnqrJH3+vD88e6sOhkvOrUjQpYMCwDinMS5jZvT9IvhqpMUPDJM9rE9Jf05WbMJIETMXhjtuJRNw00I15gJBueo+6blrZNE5Eawmu4JwxXYraAVgeR2lRMwECY3KT75FPckrHHgnaYX2C9YEnPnq4Nj7Tk9LjV+KHvTnrxWgbUAG+j2gjzvaK3Hce70AgoVUY29sBfhgviYPTBGtfR7ht56hcHtWPJxz2Xcj98K7fpxuWpr2qmyeoeaEvcIGpe+qicGJsUw+XeKK07YJNrBsSWEAfFvF7LnQlFSkVoE3E6giHMmbZ9hf1pvD+JDpRyrQxKt18VxzGi3VA5cvI5n68SCwFQeyneFIzvCD9RIPzW5ydUFfCBC1YUreB8uQXVz+rjsoAggn8NbeBqtBMhT5G8/IB7KxqUNsTZpf94=
+X-HE-Tag: 1793970688-772564
+X-HE-Meta: U2FsdGVkX18xhgtMh8+yLLEcKqn4sVdbKj9dJtmbLxRGZ7xvICkk4H8+QTgy7XoO2GeXYjmx96U5MRdx+FwYe/txBkUjVP8Tw+bZJAtcTXIYo5mMCM3TA790gglx+O0YWPID+A1V0NRSSdC5ZMdfCEN+i/gG0m6sNAQZZCvs1wXdTsKATDwIHRbnxJ0l6uzt31oLP2RQOLHqy146niufZEsfDMJNtJDlDp8uBPXPZqsdBE0/nG1hX0lGCbOHd8AOaIVAVVZyI0T8gRRZHKE4fmMlFwjeQ7WwSJVkGwmat3yKDSMwEEatmB3rA4L8PeyNWIAWEUuTbNftOLf2bphCxSbK2XamJA92LCYWXo4rIudlUIh7c64EG5UAOjsW0PnBnOZuxASZChTQla7goxh8ALT8KZPKzpkbMbJ/7mW+/oKjfp/bhMK0bon1UxfASjgPso8TiPb0diUjkYZa9beWdig2KqMcGh96krNm52rqO93BCX4gLZDf8Adrwc8x5Ifwi4IIhviDZkalAl+I9aM4nhGs18XM4Vs2kCG6CtxHWLKBLjoGMsIqVcChCayi1UKS9Efq5zHyWLW+THRpdKzvqNezT0Wqw0TVMvpgxnAhZRimDXRAUgU5H+/SxaLjhKPQOvxQZEB1QbejebyP36tbHPlxxxy/poCRY7IKQQNF6nnM6ta8IcnkvsqcVpM6o9uEdqjRJWS90tb028raoP6/y3fR19hria+RZmqTX/jfKdlIFT/Gv8WUIV8+iqE1exmSy1xZPPBmT5bCujbEOXa3ivyY+T1tIOY76Sb6fme6CmKkArDzaj3G7yQlQkubX1nwp632SY/6eTzug/RfD9QzFnPxpoq6r/QajytPKKf0BStI9ubjPHp/3CbBB+BRFxHSSuCozjFgfFNiqpQJ2r873svGC2Me4+HDH5SPlE2pZ2rHT+0T2fnDZw9Txbj4H92xjz7aiHUbqWdgnjG7oFc
+ WYLLg4KJ
+ ax/1ATZy7pik6UO7969DfQTNZLjg5ia+LmWEGhDFS/3DoJ3EQcj0Z1EWJeSEy8eglBwJRMNsLlj3P+Sjmf7y46hx+rSU1LJwogGvxP2UIRI0jWenQtU/L9Zj0Sc61bjSiKNBgZcpmsNhOhCwggQOEpKkmVM4AAV/flr90ZB7V+wCOeITQam15xsVtYXloeGKRZrGiXXE9UfiEnluIAFRbdjCHqZySFxGzMDqfpRclold53I2UkCxmtKHvxcfo6BVXHiLqdrvTz9uedpPFnKbqE7d2Aj5Hdf32/rmZrMIJ8/T8yb+HX4JCKcxdZVc2O+ot5M8kYOLluxnj+deJ/VZ3GIx7eCEd3ZD4jubsLTBavYQwMp7RC/WqdG7FUJD1Rrfx+tjAJf+njfHt8cfalpUeSglRSoC2xoNcMl8GDdZaO/F26bW6JW41OGAAKndCsvQIYvzv3JTgpsH3/DsF1dSHSJqiY4sDecpzv1F8GkCk6N7LkM2p2vpAC/A+ePZH6o1nXoWZliobUNjqaCAPYHBizVg3s25/MzQz+fdyyvTUbHWaXzOyJGvKtG3dm1kjn9N3FTHP+Rsw9/gLw86802dZadwX0C6T/BJ3BPkhdibY494BUs05pkvBHmSp1XSeeRmgFl/5iMOdciGnP2gHYdKxOTjAdTToYbjsdmu8TuhPaDB+9X546x0ghCKqt3vCxlSoiMjT68Shpz+hMYU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,75 +114,135 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mm: missing folio_ref_count_over_limit() check in
-  copy_huge_pud()
+- [High] mm/gup: try_get_folio() calls capable() with IRQs disabled in
+  GUP-fast
 --
 
-commit f7e3ed38c742cda863dfe55787d1e17c689cd9cb
+commit 9290efad216cdf3b5ee1cdfafab0a5d9928a1976
 Author: David Hildenbrand (Arm) <david@kernel.org>
 
-mm: limit pagecache folio refcount when mapping pages
+mm/gup: limit pagecache folio refcount when grabbing references
 
-This commit introduces FOLIO_REF_COUNT_LIMIT, FOLIO_REF_COUNT_ADMIN_LIMIT, =
-and
-folio_ref_count_over_limit() to prevent large pagecache folio reference cou=
-nts
-and mapcounts from overflowing when adding or duplicating file mappings.
+This commit replaces the negative refcount safety checks in try_get_folio()
+and try_grab_folio() with folio_ref_count_over_limit() to enforce folio
+refcount limits in fast and slow GUP before acquiring references or pins.
 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index d0e19d9e6b651..2596ff0f0e185 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-[ ... ]
-> @@ -1784,6 +1790,10 @@ static vm_fault_t insert_pud(struct vm_area_struct=
- *vma, unsigned long addr,
->  	if (fop.is_folio) {
->  		entry =3D folio_mk_pud(fop.folio, vma->vm_page_prot);
+> diff --git a/mm/gup.c b/mm/gup.c
+> index 2ab42fc6834e5..db9db6b2a4662 100644
+> --- a/mm/gup.c
+> +++ b/mm/gup.c
+> @@ -77,7 +77,7 @@ static inline struct folio *try_get_folio(struct page *=
+page, int refs)
 > =20
-> +		if (unlikely(folio_ref_count_over_limit(fop.folio))) {
-> +			ret =3D VM_FAULT_SIGBUS;
-> +			goto out_unlock;
-> +		}
->  		folio_get(fop.folio);
->  		folio_add_file_rmap_pud(fop.folio, &fop.folio->page, vma);
->  		add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PUD_NR);
+>  retry:
+>  	folio =3D page_folio(page);
+> -	if (WARN_ON_ONCE(folio_ref_count(folio) < 0))
+> +	if (unlikely(folio_ref_count_over_limit(folio)))
+>  		return NULL;
 
-[Severity: Medium]
-The commit message notes that each folio_add_file_rmap*() and
-folio_dup_file_rmap*() call needs a prior folio_ref_count_over_limit() chec=
-k,
-and insert_pud() is updated here accordingly.
+[Severity: High]
+Is it safe for try_get_folio() to call folio_ref_count_over_limit() in the
+fast GUP path?
 
-However, when forking a VMA that passes vma_needs_copy() and contains a
-PUD-mapped folio, copy_page_range() -> copy_p4d_range() -> copy_pud_range()=
- ->
-copy_huge_pud() in mm/huge_memory.c also increments the folio reference cou=
-nt
-and calls folio_add_file_rmap_pud():
+In mm/gup.c, gup_fast() disables hardware interrupts across the page table
+walk:
 
-mm/huge_memory.c:copy_huge_pud() {
+mm/gup.c:gup_fast() {
 	...
-	page =3D vm_normal_page_pud(src_vma, addr, pud);
-	if (page) {
-		struct folio *folio =3D page_folio(page);
-
-		folio_get(folio);
-		/*
-		 * TODO: once we support anonymous pages, use
-		 * folio_try_dup_anon_rmap_*() and split if duplicating fails.
-		 */
-		folio_add_file_rmap_pud(folio, page, dst_vma);
-		add_mm_counter(dst_mm, mm_counter_file(folio), HPAGE_PUD_NR);
-	}
+	local_irq_save(flags);
+	nr_pinned =3D gup_fast_pgd_range(start, end, gup_flags, pages);
+	local_irq_restore(flags);
 	...
 }
 
-Should copy_huge_pud() also check folio_ref_count_over_limit(folio) and ret=
-urn
--ENOMEM (which copy_pud_range() already handles) before calling folio_get()
-and folio_add_file_rmap_pud()?
+which calls into try_grab_folio_fast() -> try_get_folio() with IRQs
+disabled:
+
+mm/gup.c:try_grab_folio_fast() {
+	...
+	/* Raise warn if it is not called in fast GUP */
+	VM_WARN_ON_ONCE(!irqs_disabled());
+	...
+}
+
+Furthermore, get_user_page_fast_only() -> gup_fast() -> try_get_folio() is
+invoked from hardirq and NMI contexts, such as perf_prepare_sample() ->
+perf_virt_to_phys() in kernel/events/core.c.
+
+When folio_ref_count(folio) is between FOLIO_REF_COUNT_LIMIT and
+FOLIO_REF_COUNT_ADMIN_LIMIT and current is not a kernel thread,
+folio_ref_count_over_limit() in include/linux/mm.h calls
+capable(CAP_SYS_RESOURCE):
+
+include/linux/mm.h:folio_ref_count_over_limit() {
+	const unsigned int ref_count =3D folio_ref_count(folio);
+
+	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
+		return false;
+	if (ref_count >=3D FOLIO_REF_COUNT_ADMIN_LIMIT)
+		return true;
+	/* Background threads must not consume admin reserves. */
+	return (current->flags & PF_KTHREAD) || !capable(CAP_SYS_RESOURCE);
+}
+
+Calling capable(CAP_SYS_RESOURCE) -> ns_capable_common() ->
+security_capable() in these contexts appears to cause several issues:
+
+1. LSM capability hooks (such as selinux_capable() and apparmor_capable())
+   perform audit logging via common_lsm_audit(), which allocates memory and
+   acquires spinlock_t, rwlock_t, and SLUB local_lock_t locks. On
+   CONFIG_PREEMPT_RT, these are sleeping rt_mutex locks, so acquiring them
+   with hardware interrupts disabled in gup_fast() will sleep in an invalid
+   atomic context.
+
+2. When get_user_page_fast_only() is called from hardirq or NMI context,
+   acquiring non-IRQ/NMI-safe locks in the LSM, audit, or SLUB paths can
+   self-deadlock if the interrupted context on the same CPU already holds
+   one of those locks.
+
+3. In security/apparmor/capability.c, audit_caps() accesses the per-CPU
+   audit_cache using get_cpu_var(), which only disables preemption:
+
+   security/apparmor/capability.c:audit_caps() {
+	...
+	ent =3D &get_cpu_var(audit_cache);
+	if (ad->subj_cred =3D=3D ent->ad_subj_cred &&
+	    ktime_get_ns() <=3D ent->ktime_ns_expiration[cap]) {
+		...
+	} else {
+		put_cred(ent->ad_subj_cred);
+		ent->ad_subj_cred =3D get_cred(ad->subj_cred);
+		ent->ktime_ns_expiration[cap] =3D ...;
+	}
+	put_cpu_var(audit_cache);
+	...
+   }
+
+   If an IRQ or NMI invokes get_user_page_fast_only() while the interrupted
+   context is inside audit_caps() on the same CPU, both contexts can race on
+   ent->ad_subj_cred and cause a double put_cred().
+
+4. In kernel/capability.c, ns_capable_common() updates current->flags
+   non-atomically:
+
+   kernel/capability.c:ns_capable_common() {
+	...
+	capable =3D security_capable(current_cred(), ns, cap, opts);
+	if (capable =3D=3D 0) {
+		current->flags |=3D PF_SUPERPRIV;
+		return true;
+	}
+	...
+   }
+
+   When called from hardirq or NMI context, this mutates the interrupted
+   task's flags and can race with process-context updates to current->flags.
+
+Should try_get_folio() avoid calling capable() in fast GUP (for example, by
+falling back to slow GUP once the folio refcount reaches
+FOLIO_REF_COUNT_LIMIT)?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105-refcount_o=
-verflow_stable-v1-0-70b9c655da3e@kernel.org?part=3D1
+verflow_stable-v1-0-70b9c655da3e@kernel.org?part=3D5
 
