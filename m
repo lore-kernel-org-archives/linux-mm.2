@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49BE606A32D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 22:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CE3606A331
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 23:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=L63UwzrP
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TH7OyQdi
 Received: by kanga.kvack.org (Postfix)
-	id E4D136B05B7; Fri,  6 Nov 2026 17:42:54 -0500 (EST)
+	id C4E536B05B0; Fri,  6 Nov 2026 18:22:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E25176B05B8; Fri,  6 Nov 2026 17:42:54 -0500 (EST)
+	id BFFDD6B05B1; Fri,  6 Nov 2026 18:22:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3A116B05B9; Fri,  6 Nov 2026 17:42:54 -0500 (EST)
+	id AA3316B05B2; Fri,  6 Nov 2026 18:22:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AE2456B05B7
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:42:54 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3C6CEC0225
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:42:54 +0000 (UTC)
-X-FDA: 85406170668.21.04C351E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6FB9F160005
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:42:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L63UwzrP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E5FA6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:22:39 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 195CE1C2DDC
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:22:39 +0000 (UTC)
+X-FDA: 85406270838.17.0F26AD7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 5309E140003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:22:37 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TH7OyQdi;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794004972;
+	s=arc-20220608; t=1794007357;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xrGWYrqGixJhZjc6cA3u15ineEoMPVTqbCNBS3vO/E8=;
-	b=YqQ1Pk5Dlci+5/3KqA7iDHdx7dxch6mywEaOwdpSOrwzfBzADeU+VjKiJYcV94QiKRRSg4
-	1nrYL0In33ELvDnxqGwH8wy/JB/erVFQd3K/y59BMrzt3TKJUpiQszbtsKGTRe0sZcjuYt
-	X9D0OHS96zmRqcLo5a0wdiSBE/W9bSw=
+	bh=zOrS2oEsMLKAlSzqsplSP4kVfn432L2W3OnnE5qefj8=;
+	b=Lq2rGi+Rqz3t0NsKbNkspT4cbEebCys5BmOGCSRweTVCKwWXYDyjNg00xjffixUnJP6EP4
+	QlMAhwZEM/CHzbljm1sxWNYk7KprVu9Eg8ec5T/82R1Aftt1A9SApTq0lwK5JBASOvx72y
+	Ux4rDIBRccqdyhyi0aWC4dz2bwRqVBg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=L63UwzrP;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TH7OyQdi;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794004972;
-	b=Q11wk3/fzbcbpFBSNPFfDMuGQ53+LI0ffumVnoqoHHjXmoV0cYo1dSTv62rXuBom9SZyKB
-	6YOpVMzBNqEIcbfYSd5bM1u9HgQx8QyV+1f0L2vfriBJz+NOqm8kXd8dJf2xHLy9bO3EYp
-	79SsJB2mHQK9CptaVirfuHybMK6z6ic=
+	t=1794007357;
+	b=wdG0aOkvRvqjPKNAgRv8X0WP+OkPFo+KlxDm0l+2XligafTO2q6VKt1xCG1PgOFeX36pSu
+	L6hyK/zHns6uNLCcC37ORroRQb/JkrZd7yqsKx/uKJhWPPvF2WSddJljuaCyaXsZcL7TW+
+	oAU3aF8ac5JXxpdg3DitRCvKuggoLM4=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A87114183D;
-	Fri,  6 Nov 2026 22:42:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019D31F0089F;
-	Fri,  6 Nov 2026 22:42:40 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 9F7E4601F8;
+	Fri,  6 Nov 2026 23:22:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CC71F008A1;
+	Fri,  6 Nov 2026 23:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794004971;
-	bh=xrGWYrqGixJhZjc6cA3u15ineEoMPVTqbCNBS3vO/E8=;
+	s=k20260515; t=1794007356;
+	bh=zOrS2oEsMLKAlSzqsplSP4kVfn432L2W3OnnE5qefj8=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=L63UwzrPS2ataztpBxby6ngbB/ads9+t+yjRipL316Dhw0VSCOCocujlpDrXQuR92
-	 8cHpI5LF473Ryale/9WffhFi44DKGSYK/ZKvCx/DE/l3c1ItJmN6w0NuBhoDgnTVim
-	 R0DJ5yQCaHR1w6HEmo9gpud9qnI/d42WwKGteXUoEtngqrw8LxtvSBXHqCXAOCRQK8
-	 DCWqGNxp8pGnD9fk5PGtMcnSu4BYj3TXiWyH31as3EUW4+fGpL7NWJmAsPyq4O1QVu
-	 UWgmOZlW8cQq63VBB2npIDRUKf9QYGivudLkoE0YWyW/Nw19B2w3UDUxxAcWiNZ6/d
-	 Zm3KgmdtNVSrQ==
-Message-ID: <9c86902c-b942-4641-aee0-672adcc84823@kernel.org>
-Date: Fri, 6 Nov 2026 23:42:17 +0100
+	b=TH7OyQdiZ6kX4QUC4x1DKV7dNA3ms0ENMHCujHn6I/lEujseI/4nJj6Y04M8XaSZb
+	 PS2TwrZ1rtWzWJNakc76P4u33V0dUG5QLK2jvG4FQ0NZpa9uNHxYNkBI0O5M1I6Hkf
+	 kWNs/3+a31Oue8HLxwNem4ZvEUcXsiG9YO8gUSOiYPd4WCsBr6YJ+dW1UmTj9KWqHN
+	 jfREmzPSQqWtQK+GS0hEkTKOVzJLAtT/K3Zlyq78hb694Vl0md78Zfxewf25g/3Q0g
+	 p7NZ1wggioFiSZBMYZKW61Q5TZ3hgpAS1M6Ctsj/RxI93UNOl8JjqZQJeO3RfEhjzZ
+	 OCrHnmzQANBDA==
+Message-ID: <d4559f3c-dc6b-41c3-92ac-8ae0d07ccfcb@kernel.org>
+Date: Fri, 6 Nov 2026 23:50:55 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 5/5] mm/gup: limit pagecache folio refcount when grabbing
  references
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+To: sashiko-reviews@lists.linux.dev, Andrew Morton
+ <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
  Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
@@ -90,12 +90,10 @@ To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
  Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
  "Joerg Roedel (AMD)" <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
  Steve Sistare <steven.sistare@oracle.com>, John Hubbard <jhubbard@nvidia.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
- iommu@lists.linux.dev, stable@vger.kernel.org
+Cc: linux-mm@kvack.org
 References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
  <20261105-refcount_overflow_stable-v1-5-70b9c655da3e@kernel.org>
- <4763a039-60f8-4263-8124-beb0f9ab3366@gmail.com>
+ <sashiko-outbox-201446@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -142,22 +140,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <4763a039-60f8-4263-8124-beb0f9ab3366@gmail.com>
+In-Reply-To: <sashiko-outbox-201446@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: h5fq3cggnd1ex8whh741d7fnr317npby
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6FB9F160005
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: oz5zrno55pp349msut1w5j8kdqxc7c7b
-X-HE-Tag: 1794004972-962514
-X-HE-Meta: U2FsdGVkX191GrWp8JL+dAcqWNiS0aMCOxfzWMxTPiplNQHm8ctdLxNM3f1aHbwSZ7rPoYwJ8qGYFKzEVZKFC8YagItWssWvNFz4NEE8mRIjHQzFSzm6gaNAKJu5A5ORjL248H+fGcsp9DKnsirOu+rpDIN1Wua/G3Xgrv6GCaN59DkJPgYKQ7u/ieJvBTgTp+H+xJjSDMgeaAfoxNZwQP+4C0kN9TaWqXrLpWf1fhQG1gYul2/E8/olnjlLnsq3pozZ7JVMjbiZVpCED1TFcRXPkizW442gK48m6QhgWrafhT8iTRd5RK3dkmF2JxLj7wtmTIv2cKjwc3AM1xxdx44B/t1aYfIFp7tvpcpsinODPm5stBD3ZbBlcTTTBNEnqzz9Jz2YiyxasGfb7TEpy9/xIjOo5qHN1BDDFaPWE46X0sW0Fuaz11/MWEgyEA4K68ztnnVAiuQ6ExuexRI5RYOmmm//Sm6jPVFKCoJ08+5pC6Q0k6HZA/PYGxB+/pD8ithQW+ehUAvrpiEe/XEq2oUWUW1tdXAHC4V+A4bXodkmlEem51+i2xooDEoP5hdtzgZlwjYvckN1WlSfJu0eeaAGncwEy2dWPoI1yd+IQ6dqy+2cjK3Rl2+tqMjX51UvbeSXE3h18si8Ak2eOXPqJJrNfdluvNXC9bWBU3oVsd5iLXRYQx2XefmZgCqz9yIr0Hsq3fyxZuWneLjKHoluYTLJRW+1v8uDJeuH7JNJFNbtv9cruHsngaRx1ed5D3A/5zfroy8G1WCGzn2uG5N6MLDlLIWIZpWHrr+TGkeu1CQNtAn2LHIpqzmrXXEytZFjOsFHytAj1pULlOxPF0xIsjS03H+qf3k+jKsEcmVSdGYtH6bAgzo1Xb9FWPyAxjQotGYQhxJhwz+nKiYpSKd2fS7dgWOsTAaJ6zazRyafEYRUccmye/L1v2a9hNSLjCZMUbmB4oMFyRh/PseI1Ms
- 01UB5u0c
- vfcaFMtHielFrqM7gnCkx8wDintiVjl7+C8m5F9l4TxAIO5TXb2jBzEWbcHnaxmfpBXjvHvfHTBF9bTj83glVplqgnDy2GJyHwpCpJ8YGua0mPSvhBxvmLglVyiYJfH2yMW8Acxqm1J0oeyvR18YgcM19giTPSu8/LX7I0YSinCwvCYFs6ys/iu5aGq/FwPYKSdlVxML0JBLSztzZxGSnIxnQhJAy69Jhg07ZtfYCR2l2mBkXTpJVC8Zaoivkq7OxQi8RnHuNM2bP1tEM0jSBjdyfrHXpIxM3MFMQ71tyYCoOqihlppEiamneWC+P1Dz3FJrmzSNrNlMNUGFXGwee1h4qvtD5NVOkkQhDJub1WC+vE+Y=
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 5309E140003
+X-HE-Tag: 1794007357-569937
+X-HE-Meta: U2FsdGVkX1/YSMIgk/bix1QlHbZCc3iXM0gtTNI6gXa8g+RvdPOk3Qlft9XmCo87pO1pPyMINHvybPr8APku8RK1Qke7MhmBxsRkvv2MxGMPDUndI54IcScG5RecZaIkXvc6lMOrWZm/HzymhRCPF6cyti967BqGmlo+YIHb7+l/l5aSk0ojOZVJkVbp48y/WCL2Vhqig+xKekov4vfTzhCbB4Hmo9uJfdafaIHrYe++u/8B1E30GYWQUZnxPg8saMClWO/YoVUfvD4tiOYjT+lvYXml5IaGw0rN07gUdgkF9T8jOB4KeuUTJq9ekLBx1wWBGZuf7/3oimcyQb75TDQznQKXCs3k0EzaTtsJNLp3SRTPVoHkqFN32Dwfpc/txZMUdlX/KIN0JCFtZfxhIJ0uLigV7d8ZONT6C9ESYctViEQKQ409JAtA5r69OV5CqemaA+5WPzByL1/r9mVijOPT3SZBCp2X654CkCD9xEeEsPr3uoa6Rhln4xICYmf1RIc+hpjDYJeqYCN45E5Kp/7aOFyFDjsZqY79Z4hCPM7xN/swFBAMmCCrokbJ2fy/o+bH05ZAJWNJx3Zqs4ozej+lNnd/BNKeq0hThdBAJReg2mQBdwOwfYKviYEItYK+Gx+UZmNrJg/XrAKGI2mLH/ZuA65vlhExWMIvG3l+SrayHVxp2guQ1m+YPegOK0xg1iolvH+5OMXkqHIN1i0w6ejqA3QDS+JuuSD3kO+aE59oH9mQa+pReWBLjAv4GKPq+9g+08nrPKSteJ4pdLYn8MdfgaSUT5QojRWlruOeWc02gNCvmG8H5fCPbxj3NbR1B84v9mdVeTQhSLCc4jixFI5x9qk3HUTpzvn/lETT9HPMXopNJ5l55K2HP5VXwYyyXisBZIbTPPqDAuomnB5WgSW3qmSmEg5RQwak+YKxlRMaQO4x6JGENnRkbSypsEoDaIkLf9YXXKk3ky92Pep
+ j/xE1+Sp
+ Ymr5TQIOF1p4I+3Aarl/1vh0V23eO115w+JK2iEqhESdGx8x2KTBd99Zc8jNNiKWeYsymvGZg2SRnOH0hihjjnxC1jlwEPodAJHqgOJGgg13Y384uWM+mxotRuWPudjKwpQA0OAqguVfMLB0y93Wn5mL8Ox4hXq6hGfLyeY8tu9066Nf1t92yw5/eYQlpF1JDEupWW+zu/qKzdJmyYUgWQbuTlI/LSL35/scavwJAyZ09EqTVeiu2Mr2Xfj+U3ABHAo6zk7wsy30LsqFtc7wsCF0yAB7U//HBg8ERqQB5PNP3sDcHlhMIKPouNXi+lDeTo1Ww+5KOaAMWEEzcJ5hRdMexckmeWjs0XaoK1lytI39LvsE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -166,28 +163,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 11:13, Jose A. Perez de Azpillaga wrote:
-> On 11/5/26 2:10 PM, David Hildenbrand (Arm) wrote:
->> Let's replace our existing safety check by the new
->> folio_ref_count_over_limit() check in fast and slow GUP before acquiring
->> additional references or pins.
->>
->> Keep it simple and use the check for all folio types.
->>
->> Drop the WARN_ON_ONCE(), because apparently these things can currently
->> happen with large pagecache folios.
->>
->> Keep the zero-refcount rejection if the refcount is 0.
->>
->> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
->> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
->> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->>  mm/gup.c | 12 ++++++++----
->>  1 file changed, 8 insertions(+), 4 deletions(-)
->>
+On 11/6/26 14:11, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [High] mm/gup: try_get_folio() calls capable() with IRQs disabled in
+>   GUP-fast
+> --
+> 
+> commit 9290efad216cdf3b5ee1cdfafab0a5d9928a1976
+> Author: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> mm/gup: limit pagecache folio refcount when grabbing references
+> 
+> This commit replaces the negative refcount safety checks in try_get_folio()
+> and try_grab_folio() with folio_ref_count_over_limit() to enforce folio
+> refcount limits in fast and slow GUP before acquiring references or pins.
+> 
 >> diff --git a/mm/gup.c b/mm/gup.c
 >> index 2ab42fc6834e5..db9db6b2a4662 100644
 >> --- a/mm/gup.c
@@ -199,64 +190,118 @@ On 11/6/26 11:13, Jose A. Perez de Azpillaga wrote:
 >> -	if (WARN_ON_ONCE(folio_ref_count(folio) < 0))
 >> +	if (unlikely(folio_ref_count_over_limit(folio)))
 >>  		return NULL;
->>  	if (unlikely(!folio_ref_try_add(folio, refs)))
->>  		return NULL;
->> @@ -140,7 +140,11 @@ static void gup_put_folio(struct folio *folio, int refs, unsigned int flags)
->>  int __must_check try_grab_folio(struct folio *folio, int refs,
->>  				unsigned int flags)
->>  {
->> -	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
->> +	if ((flags & (FOLL_GET | FOLL_PIN)) &&
->> +	    unlikely(folio_ref_count_over_limit(folio)))
->> +		return -ENOMEM;
->> +
->> +	if (WARN_ON_ONCE(!folio_ref_count(folio)))
->>  		return -ENOMEM;
->>  
->>  	if (unlikely(!(flags & FOLL_PCI_P2PDMA) && folio_is_pci_p2pdma(folio)))
->> @@ -1482,8 +1486,8 @@ static long __get_user_pages(struct mm_struct *mm,
->>  				struct folio *folio = page_folio(page);
->>  
->>  				/*
->> -				 * Since we already hold refcount on the
->> -				 * large folio, this should never fail.
->> +				 * Grabbing more references can fail once we
->> +				 * hit folio refcount limits.
->>  				 */
->>  				if (try_grab_folio(folio, page_increm - 1,
->>  						   gup_flags)) {
 > 
-> this can fail now, so shouldn't the error path below return -ENOMEM like
-> the first page does, instead of -EFAULT?
+> [Severity: High]
+> Is it safe for try_get_folio() to call folio_ref_count_over_limit() in the
+> fast GUP path?
+> 
+> In mm/gup.c, gup_fast() disables hardware interrupts across the page table
+> walk:
+> 
+> mm/gup.c:gup_fast() {
+> 	...
+> 	local_irq_save(flags);
+> 	nr_pinned = gup_fast_pgd_range(start, end, gup_flags, pages);
+> 	local_irq_restore(flags);
+> 	...
+> }
+> 
+> which calls into try_grab_folio_fast() -> try_get_folio() with IRQs
+> disabled:
+> 
+> mm/gup.c:try_grab_folio_fast() {
+> 	...
+> 	/* Raise warn if it is not called in fast GUP */
+> 	VM_WARN_ON_ONCE(!irqs_disabled());
+> 	...
+> }
+> 
+> Furthermore, get_user_page_fast_only() -> gup_fast() -> try_get_folio() is
+> invoked from hardirq and NMI contexts, such as perf_prepare_sample() ->
+> perf_virt_to_phys() in kernel/events/core.c.
+> 
+> When folio_ref_count(folio) is between FOLIO_REF_COUNT_LIMIT and
+> FOLIO_REF_COUNT_ADMIN_LIMIT and current is not a kernel thread,
+> folio_ref_count_over_limit() in include/linux/mm.h calls
+> capable(CAP_SYS_RESOURCE):
+> 
+> include/linux/mm.h:folio_ref_count_over_limit() {
+> 	const unsigned int ref_count = folio_ref_count(folio);
+> 
+> 	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
+> 		return false;
+> 	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
+> 		return true;
+> 	/* Background threads must not consume admin reserves. */
+> 	return (current->flags & PF_KTHREAD) || !capable(CAP_SYS_RESOURCE);
+> }
+> 
+> Calling capable(CAP_SYS_RESOURCE) -> ns_capable_common() ->
+> security_capable() in these contexts appears to cause several issues:
+> 
+> 1. LSM capability hooks (such as selinux_capable() and apparmor_capable())
+>    perform audit logging via common_lsm_audit(), which allocates memory and
+>    acquires spinlock_t, rwlock_t, and SLUB local_lock_t locks. On
+>    CONFIG_PREEMPT_RT, these are sleeping rt_mutex locks, so acquiring them
+>    with hardware interrupts disabled in gup_fast() will sleep in an invalid
+>    atomic context.
+> 
+> 2. When get_user_page_fast_only() is called from hardirq or NMI context,
+>    acquiring non-IRQ/NMI-safe locks in the LSM, audit, or SLUB paths can
+>    self-deadlock if the interrupted context on the same CPU already holds
+>    one of those locks.
+> 
+> 3. In security/apparmor/capability.c, audit_caps() accesses the per-CPU
+>    audit_cache using get_cpu_var(), which only disables preemption:
+> 
+>    security/apparmor/capability.c:audit_caps() {
+> 	...
+> 	ent = &get_cpu_var(audit_cache);
+> 	if (ad->subj_cred == ent->ad_subj_cred &&
+> 	    ktime_get_ns() <= ent->ktime_ns_expiration[cap]) {
+> 		...
+> 	} else {
+> 		put_cred(ent->ad_subj_cred);
+> 		ent->ad_subj_cred = get_cred(ad->subj_cred);
+> 		ent->ktime_ns_expiration[cap] = ...;
+> 	}
+> 	put_cpu_var(audit_cache);
+> 	...
+>    }
+> 
+>    If an IRQ or NMI invokes get_user_page_fast_only() while the interrupted
+>    context is inside audit_caps() on the same CPU, both contexts can race on
+>    ent->ad_subj_cred and cause a double put_cred().
+> 
+> 4. In kernel/capability.c, ns_capable_common() updates current->flags
+>    non-atomically:
+> 
+>    kernel/capability.c:ns_capable_common() {
+> 	...
+> 	capable = security_capable(current_cred(), ns, cap, opts);
+> 	if (capable == 0) {
+> 		current->flags |= PF_SUPERPRIV;
+> 		return true;
+> 	}
+> 	...
+>    }
+> 
+>    When called from hardirq or NMI context, this mutates the interrupted
+>    task's flags and can race with process-context updates to current->flags.
+> 
+> Should try_get_folio() avoid calling capable() in fast GUP (for example, by
+> falling back to slow GUP once the folio refcount reaches
+> FOLIO_REF_COUNT_LIMIT)?
 
-Hm, indeed, that's inconsistent. The issue is that we have this -EREMOTEIO check
-mangled in there. But the ordinary path would already have checked that and
-failed with he same error.
+What a minefiled :)
 
-So this hunk would become:
+Best to throw in something like
 
-                                /*
--                                * Since we already hold refcount on the
--                                * large folio, this should never fail.
-+                                * Grabbing more references can fail once we
-+                                * hit folio refcount limits.
-                                 */
--                               if (try_grab_folio(folio, page_increm - 1,
--                                                  gup_flags)) {
-+                               ret = try_grab_folio(folio, page_increm - 1,
-+                                                    gup_flags);
-+                               if (ret) {
-                                        /*
--                                        * Release the 1st page ref if the
--                                        * folio is problematic, fail hard.
-+                                        * Release the folio reference we
-+                                        * already took.
-                                         */
-                                        gup_put_folio(folio, 1, gup_flags);
--                                       ret = -EFAULT;
-                                        goto out;
-                                }
-                        }
+	if (!in_task() || irqs_disabled())
+		true;
+
+In the (new) slow helper to just reject admin reserves in such
+context.
 
 -- 
 Cheers,
