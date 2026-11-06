@@ -1,91 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CB4606A335
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:45:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835CE606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:50:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=gentwo.org header.i=@gentwo.org header.a=rsa-sha256 header.s=default header.b=h+QEgR1f
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZonrmaN+
 Received: by kanga.kvack.org (Postfix)
-	id 8311B6B05BB; Fri,  6 Nov 2026 12:45:01 -0500 (EST)
+	id 9744C6B05B2; Fri,  6 Nov 2026 12:50:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 808D56B05BC; Fri,  6 Nov 2026 12:45:01 -0500 (EST)
+	id 925016B05B5; Fri,  6 Nov 2026 12:50:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71FE06B05BD; Fri,  6 Nov 2026 12:45:01 -0500 (EST)
+	id 8396C6B05B7; Fri,  6 Nov 2026 12:50:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 444646B05BB
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:45:01 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C88BC4017C
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:45:00 +0000 (UTC)
-X-FDA: 85405419960.09.B61B309
-Received: from gentwo.org (gentwo.org [62.72.0.81])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2163E40003
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:44:58 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=h+QEgR1f;
-	dmarc=pass (policy=reject) header.from=gentwo.org;
-	spf=pass (imf17.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793987099;
-	b=AHlncwYXo3d1L+Iq4FA20NVxMnuZtDNy+NggCk2pvEDcCu3p6TEguJ1495s3u6zVTGZGju
-	m4oHZL/YgwMY6NLZfZc+acBrAsZU6ctnDOSRAF8bGIXM/cX3zADgJLpPJBnEBmIDz3SkSZ
-	Aptv6/qQE3KCP/mVkzjWeZuisMzCzQo=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 592EB6B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:50:18 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DB34080108
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:50:17 +0000 (UTC)
+X-FDA: 85405433274.30.9079824
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 37AC9100005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:50:16 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZonrmaN+;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793987099;
+	s=arc-20220608; t=1793987416;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1uoprF+BWZMjYQHafHnomTTQtakytGeDxHNxG458KU4=;
-	b=IAX7cO/531eiO9cyxt0yEnEA77v5ScTOVAWT722EtQ+o7yQ6l11pziAKKgOsnviuOga3M8
-	/jnf4vio3I5i4M/JlmXEJ/I0/V/6kiBwpH0hxLPqZ89D+2wVr+HnQazughJ2HD8j/HhubT
-	k6aVQyDULc6fZOyArADTcwvFNjg4SsI=
+	bh=BnnkrLBDIOF3ryis613NWNf1pYsRv2SOtis6XbCWIQU=;
+	b=iRVawKj5yk7TG6XW9Ck6EsFYip9P2fwu/Gm4AlHGosAf/G+dv90RtpU7k8fD+Vpw/AlXYL
+	qQrT3qehLHSwEp3fkwnm5InX+f4VZi4NV2NlvpsulLHAk277ZQ/0LLTiwd1kCSsxM18FMZ
+	ETaF84bXeMosVm03FIZXpqfDvz2Qy1o=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793987416;
+	b=QIVhs8ZV0SSJZ6dx2fRMjajbAG2UVsrI6Xwru9nYibfgjO41R89PUGXROxfS6miEvFtIdZ
+	eXqj0ypAMzCU7eQeI9RrLqzZL261N5S42BWkWlAyOCaERohdiBrzHp3W9jeh7YfnU265Qr
+	k5MSwva5USJJrc5yjOUTt+m8duA+A1g=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gentwo.org header.s=default header.b=h+QEgR1f;
-	dmarc=pass (policy=reject) header.from=gentwo.org;
-	spf=pass (imf17.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
-	s=default; t=1793986630;
-	bh=j8vdMm0hGJoZSKbsDFe2MZRFIjAVfM8/OQPnYklq6tg=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=h+QEgR1fn7lqdq2kynHMk2XnpoLTWXW5bsY2VXxfV9GkG5jZ4AhEH8GR10JNCbiDj
-	 3xoqJFjQjHjwLbMFM8mfuZK//nunxaseFKqKl9vb14V8Mz5UD+po0IOIPmlCXcIraa
-	 VEIfAm+GuiLZZrp4yWdus29GklEsu0kQ7lPE/VRQ=
-Received: by gentwo.org (Postfix, from userid 1003)
-	id 275D140257; Fri, 06 Nov 2026 09:37:10 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-	by gentwo.org (Postfix) with ESMTP id 24F52401FC;
-	Fri, 06 Nov 2026 09:37:10 -0800 (PST)
-Date: Fri, 6 Nov 2026 09:37:10 -0800 (PST)
-From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-To: David Rientjes <rientjes@google.com>
-cc: Andrew Morton <akpm@linux-foundation.org>, 
-    "David Hildenbrand (Arm)" <david@kernel.org>, 
-    Vlastimil Babka <vbabka@kernel.org>, 
-    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-    Sarthak Sharma <sarthak.sharma@arm.com>, linux-mm@kvack.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [patch v6] mm: vmstat_kunit: add synthetic benchmark for mm
- stats
-In-Reply-To: <21183f5b-2697-cbe6-6370-dbd27c5e2b60@google.com>
-Message-ID: <2e88a1d0-3a36-cfd5-3e4b-79cf4c8aae0b@gentwo.org>
-References: <21183f5b-2697-cbe6-6370-dbd27c5e2b60@google.com>
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZonrmaN+;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6273D406C8;
+	Fri,  6 Nov 2026 17:50:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20C971F008A7;
+	Fri,  6 Nov 2026 17:50:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793987415;
+	bh=BnnkrLBDIOF3ryis613NWNf1pYsRv2SOtis6XbCWIQU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZonrmaN+/FMDB1mJ0VM9VxShp8vWLeWgjOb8D1wbDx7UsgsxSm8LPV3VFU35EkNGm
+	 a0rFU1BCza+W6Kbu86HFV3DXQ2tekxZc5tjAJRMud2L9DLKciKjmi2ClSXHXbLNoH3
+	 HJEARahBmj5UIi7Kx9w0etD5p1u2BCi5nzH/pmkQQBrOgf7hH7ZxxjZBbjcMb55ua8
+	 F2AxgAWWwYPouLSVW89+eKFT4Y7+otdcEEmOuIZYv5WtYpwxROVK+6s1l7rSVL2tFf
+	 /pQwN2c3JNNCCAeN3gXsGLk4ggkpJfmKKPssx7GWWhZ63ntUx5eX2xVzLiWgPcAOqp
+	 Djoq5jQn/e3lw==
+Date: Fri, 6 Nov 2026 17:50:07 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: Joshua Hahn <joshua.hahnjy@gmail.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>, 
+	Gregory Price <gourry@gourry.net>, Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@kernel.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, Kairui Song <kasong@tencent.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH 2/2] mm/page_alloc: only skip kswapd nodes below their
+ kswapd watermark
+Message-ID: <au4SKZKfJoE0ZgAw@gremlin>
+References: <20261106172620.318113-1-joshua.hahnjy@gmail.com>
+ <20261106172620.318113-2-joshua.hahnjy@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 2163E40003
-X-Stat-Signature: obgmusbznnzcawc58zdqt5dryoh3nhup
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1793987098-39479
-X-HE-Meta: U2FsdGVkX1+Aw3+mFCk14mTiIUun/iAp5iWWWRZv5BlIV5SHdnRfUdUR72K4WSBFsX4ZMjuCyP9ZJSzK87DElIrO5dvQqMpcvnSnkbMlSGYrL3WUf7faz+ztf9AQAViPm1aLdrckoV/Uq/Kq//GebvZS2O3ho++hcae5y4cOfqVc6Juzqg/cqPCamM+YyA80X+dR5zC5BozvAEdk+8wqr2d7OAmoe7xuEMabblt4YcLf7DFMpQQvNIMCp3E6LudTX1ktu25itQEA7Fz/sBDGbbIK19iqz12iWnjnzjEfIj4twH2TY3ZYgkNVzNyzBRsVRVmyUNuApzvUoiQm9AJ6Dz3GiJdZ0C4pKRfZalGhjU8vGwBUnDH6WAd3WcKGg629XJ+ItTf8Llk0OLjqOJ8xU0QFJi8cWGkWIQP5rCYihtqTUnFiVCSaC+HhTv3VYKhrJeljRarShslUmNIuvRgpMkYH4qQU6FwcwBnQUufRU1iNW7dHOREY9vn34GnEkaxMVyqp4zETTh5+XgJmmAGI/z5norlWoz9Mtwv/xVZLIDCWr445FRBEeoE9g0lFPuotIzyVll9ZvzlpWW8TowEU316SfkfRilSoQxHt5TBM3d3NKstC5F4doLu+gH2j5UB6aFBimZLieV4UR2OBOZNf/v7e6P16CnOSi9hC8+qMxscvV1eL/t5VPBldsjgpV7qH5YUosWGEjsu78DqP1Qz/RTq+vlL95MSbBAkbIk3kl4NoNhcClv3MdQS1KQHZn8Gk6AJe/L1+sXglp7N6naI6emrLWQToFoyPnxTCWtALdBdNhga2c1RqAbCt9Mwbhqpm+UJNeB3l/bBry+lF4JvpIhV1dlh9koreRngkDUuXQYzkcl0pdC8Fe769/AgMr9bJRUTo+yUF+zgXLQcXN991tnxa8OsJhUdmxAvhglAxN/2WmLnDecgO1gMymDzGjsGtU0x0Xjpu1EHbqfUhbCO
- +dfTp8r2
- 31LpRpP+WyCEh0usxpTgZfdgVcuq3LjybFY5RqcD6o6okTqOjGroncCXo74B0bc+N/mFaYDB5S67WA79DL+4EXUEtoz9HD2TVTOxSeQd3verRJDYSUUMsM2KMgg3UFfWYSbt6i8hv79QQdRb7OoO2benP+hf7xvRje9I0n/qNCviH0Vmymjhg3hKUDDNmqqK6hASCKqeZw3l580fxg4gUmyJ9g8FQqfH9T2eUbJat3F34ryIH2RzHlHt1e/HfCW6Lr48e2P/3xdK62xVRnOddLx7Mlm0cyA592tog/5DhTZOEVtj6DMqq1SKYIpibsAtroD+Zm5Bq7qEc8fM8HSyE0cO60A==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106172620.318113-2-joshua.hahnjy@gmail.com>
+X-Stat-Signature: 8rzjhb4cp8c8m1nnteztqrdqha97tmig
+X-Rspamd-Queue-Id: 37AC9100005
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793987416-329125
+X-HE-Meta: U2FsdGVkX1/wKNZAackDIr8SRniOkZ6NJT6H2RGPK02vSJbG4wa8/nX7MFMWlFfgFcbr86jR3tOl8fhezi6ssy6hSy3zxzeUauuF0iXoadNZJAp2YK+gqfwiVaAtrWmM0fLUscmo/nuZhbK9hmRagxR69nXOoTTTpTpYlCQrQvieYCEAaF25urQkVRBdwYMM9EoF86eddBBSWTztoNJLi2RBLfORzd22PL0wonwNfoNaVc+emerD2ltEMakwJMvgLLF4P4VtA3AHR2QQmhR/xLP4Y8DaDalUw0cGqecsgOiiZbB1F+3vHw+koFztH1xzhclFLkefkzF5CHbydDUqb2eG0IXCDy57pdB5CRZIFpV85eAhdJcmhDXCy3Oo+IaazLxyOyByXUK/bW6z2kF7b/nyvz7JfS65k+UCHzVqqQ7PMCMaPk7nq2BSGJ96OYfgbre/VQhT+f+FaIaB+PqHZ7clql21VJktj+4jN83nnxAdBweMUvBm+nA2fg/k3Gl3cs6eVI91MQdQ6UcX5AY10xNqBscb76etzpA66kP4byy06hZdc8f3zTtODF7P7DeBZcKOUHEBPSmgOmVxJ5KVK3yBbgDsrf5ldM4gtN3q5GzXPkdllXBmSPlDNV4yfDmC+tDFhbIcSNkKo62TbviPl2VgVUUwAkw4YxsRwMUh/rNQ3l4Qq51Cq47muht/e4HlXYzRawCafB8UatP/mVKp/E1BRfsqayTK43pArNkATyrjvOWJ7CoTlh3i8XIdH6w9b1uX9/kVHl3cBewySNWXdYWc+99wtRwv1q0QThD0R3YGpn75ieFN8DIflAJgI02HrsxaH4mj7L+zCfvq/VHLRHERQNOfBmnyI4E0Is2uXij4npngEYlGOYQhmem4PyX1Sgk58XybgxBlC4hIrLpJueBj/wDl20ma6haW7UI+pSDX4sQqitEkQIV7d7hCSNAtI1a0IDP0xzw3ThXj0Nu
+ hEdsYWMg
+ XpEQYhspXoeKSkB8cyyll0dv3CCuSIHEUtamJpqi04tBqXapEr8FsGm/xBbDqJahtXb7HY8nrQIfcQBcOKEPjI2Cc3KgYV9mA89ESMIAX5PyI1J+ad1F2gHUuQo7pUTN06MoshHz9fw++2CGqKOAsu782XXvQVcjAyT3egzNfsBCENxPTfS07f0hD5Yx1ZYNawJdNgNIP/kyEv6jrBDuNgI05tJmHMtuWwp7xzU/86YuCG9tu9Z1IZa3r9y9aa/9YByYQUnYPVVfo2BQ75k4kLz6AufWw9CUOE099BjsRBJr+FQqwebyThRNoHVD4efxap7+tKVVUFxg7Hi6oJ6DGHnTNc/6n9ryd7HdKnmi7WnVcrobEP4vh5YGCCvsMqGl0BB27EM7kv8of4U33oKJzXod4Mh9smtUMjrZZKxwMYoZL3OSvmoTa18V2JigJyf6y63kIAfPMSwm+XQk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,14 +104,101 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 4 Nov 2026, David Rientjes wrote:
+On Fri, Nov 06, 2026 at 09:26:19AM -0800, Joshua Hahn wrote:
+> Commit 19c5fb83f2a4 ("mm: page_alloc: avoid kswapd thrashing due to
+> NUMA restrictions") makes get_page_from_freelist() skip any node whose
+> kswapd is active to avoid piling on an already-pressured node that is
+> constantly churning to make free space that is immediately consumed.
+>
+> But kswapd can also be woken up for order 9 requests with THP defrag
+> set to defer. This means that a fragmented node with plenty of free
+> memory will have a kswapd thread continuously spinning and preventing
+> order 0 pages from allocating on the node. This causes the opposite
+> problem of piling on pressure on all other nodes.
+>
+> This behavior was observed on some Meta production workloads running on
+> 2-NUMA systems, where processes with a preference for node0 allocations
+> continuously allocated order 0 pages on node1, despite node0 having
+> hundreds of GB of free memory.
+>
+> To prevent piling pressure on any one node, only skip a node during
+> page allocation if the zone also fails the watermark kswapd is
+> reclaiming it up to. This is the high watermark, or the promo watermark
+> if NUMA balancing memory tiering is enabled. Make sure to mask the
+> reserve flags so that __GFP_HIGH / atomic requests in the slowpath
+> do not get a relaxed version of the check.
+>
+> This preserves the existing fix to prevent piling memory on the local
+> node, while also preventing memory pileups on non-local nodes when
+> the local node has memory.
+>
+> On a 2-NUMA VM with a 60G node0 and a 20G node1, with THP enabled=always
+> and defrag=defer, I ran a process that prefers allocating on node0.
+> With a fragmented node0:
+> - Before the patch, 66% of faults were served from node0
+> - After the patch, 100% of faults were served from node0
+>
+> Suggested-by: Daniel Hodges <hodgesd@meta.com>
+> Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+> ---
+>  mm/page_alloc.c | 16 ++++++++++------
+>  1 file changed, 10 insertions(+), 6 deletions(-)
+>
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index 5423ff4805f84..8e8a2c8d6e6a4 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -3882,14 +3882,18 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+>  		}
+>
+>  		/*
+> -		 * If kswapd is already active on a node, keep looking
+> -		 * for other nodes that might be idle. This can happen
+> -		 * if another process has NUMA bindings and is causing
+> -		 * kswapd wakeups on only some nodes. Avoid accidental
+> -		 * "node_reclaim_mode"-like behavior in this case.
+> +		 * If kswapd is already active on a node and the zone is below
+> +		 * its kswapd watermark for this request, keep looking for other
+> +		 * nodes that might be idle. This can happen if another process
+> +		 * has NUMA bindings and is causing kswapd wakeups on only some
+> +		 * nodes. Avoid accidental "node_reclaim_mode" behavior.
+>  		 */
+>  		if (skip_kswapd_nodes &&
+> -		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
+> +		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait) &&
+> +		    !zone_watermark_fast(zone, order, kswapd_wmark_pages(zone),
+> +					 ac->highest_zoneidx,
+> +					 alloc_flags & ~ALLOC_RESERVES,
+> +					 gfp_mask)) {
 
-> cause performance and scalability impact for users.  Google has carried
-> these tests internally and kept them updated since Christoph posted them
-> back in 2009 for this purpose.
+I know this code is hardly the cleanest, but you're now adding a 3rd condition
+to a branch that was already complicated enough to have a massive comment and
+duplicating a block of code that already dupliclated twice here.
 
-Thank you. I have a couple of more for atomics, slab, tlbs etc that have
-evolved over time and gathered specifics for the variuos platforms being
-benchmarked and the issues that it was used to track down. I can dump that
-stuff somehwere if there is an interest.
+You're also then going against the convention of
+
+	mark = ...
+	if (... !zone_watermark_fast(zone, order, mark,
+					 ac->highest_zoneidx, alloc_flags,
+					 gfp_mask)) {
+
+(Obviously yours varies on alloc_flags too)
+
+And also inlining the mark value.
+
+Could you clean this up a little given this isn't a fix?
+
+In general extending functionality should pay down some technical debt if
+possible, it's ok to add a preceding patch in the series to do something like
+that.
+
+>  			skipped_kswapd_nodes = true;
+>  			continue;
+>  		}
+> --
+> 2.53.0-Meta
+>
+
+--
+Cheers, Lorenzo
 
