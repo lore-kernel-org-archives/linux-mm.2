@@ -1,144 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05FA9606A329
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 19:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC14606A336
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 19:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oy3ovt0e
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=aFACtggm
 Received: by kanga.kvack.org (Postfix)
-	id 0BC466B05B4; Fri,  6 Nov 2026 14:52:02 -0500 (EST)
+	id C350E6B05B0; Fri,  6 Nov 2026 14:59:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 067026B05B5; Fri,  6 Nov 2026 14:52:02 -0500 (EST)
+	id C0D0B6B05B1; Fri,  6 Nov 2026 14:59:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E97B56B05B6; Fri,  6 Nov 2026 14:52:01 -0500 (EST)
+	id B23B66B05B2; Fri,  6 Nov 2026 14:59:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC9956B05B4
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:52:01 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9905BA78BB
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:52:00 +0000 (UTC)
-X-FDA: 85405740000.07.3CBD2B5
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf13.hostedemail.com (Postfix) with ESMTP id A3DD020004
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:51:58 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=oy3ovt0e;
-	spf=pass (imf13.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B76A6B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:59:45 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1422DC01AA
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:59:45 +0000 (UTC)
+X-FDA: 85405759530.04.29A07D5
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 2AFED120004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:59:43 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=aFACtggm;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793994718;
+	s=arc-20220608; t=1793995183;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DjNVWR97LjF/tV9YPAfdBbtgPlmR3ehf5bmKolaVmy0=;
-	b=VW39OgzkNBqXxAtSXX5wv3+RpMiPYTwaT1bBmiKzKsRY7QeH8sa3VUixfGwc+tHrV8zuHJ
-	mAY+GYS5RojWbycoqgbu6I7IyKKN9/AeW2PqB/mF6bmQpp/taPcrK3J0fZ28l5He47XLi9
-	5Xtu6S6xh2ght9mfCN5nAr6pWtMZ2/I=
+	bh=4IjryWNxdORCjNaHoK0nCSyu8CfUlBnhe9uOpGWyC/k=;
+	b=eNf4CiAs/FMpQe6GNaSl48X25quM0hitJKU4W/ALlBgpQS7CoZg7d34DOGCL2fwMY3gcHw
+	7fOnsL+8EzuEmnp6y8wYvAiOakbCQVnBIcS5nCnWDG7BEshxf/9HljK/A5z/AgZnP9zFGp
+	IRbic1Fe1jIbbyVPH39FcnHsjY7GJSo=
 ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=oy3ovt0e;
-	spf=pass (imf13.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=aFACtggm;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=pass (imf29.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793994718;
-	b=bSHlqZsc5ZkB25VqmEndryuwChEVS1RmAmJuxdsOpnc2UTolsR8W0wW81o0W+APOvwwpNi
-	wIrCneJV1kFvAn4WqKmlq7Z9T8L9jEHGjrMxHesg0AbNkaTyHggC6BT4J/+1fz+hv/eRfm
-	SAl6mws/3WN4QyMXPsZ2o4Gx0wFOC3M=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ed08b07213so4169005ad.2
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 11:51:58 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1793994717; cv=none;
+	t=1793995183;
+	b=QIYAhCSjXr3qG+XjcWLgS4GlnYCGmmYFDzuGTB82LczD6/HiiURLUFzOirLXTma66f/tQk
+	fGH+yjjyh/AHtU51/HTVjoNPOpEqPH4D7R34i+lcIUwA5P8MgBxbcm8CpHRgH+JnwKkIsA
+	TBWobai1mTjZyr85y+cMWM5cTfWfexw=
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4a208d93758so10878445e9.3
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 11:59:42 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793995182; cv=none;
         d=google.com; s=arc-20260327;
-        b=aXV29H00UmYUar0v75BBEYcb7RoY4rpLre2mDXPvGHbC6Kqjkx6XMgWXkuScPMNju3
-         RIZt6k5d13kIKizsIjFltERGq+ctJwpbsq42t5lKA3/3BcW9/t3e0IScWsSwz0m9rBsG
-         1n0gnmRT2KfXJquq7Z/CiQ2Uxqft7jNKP4Ujk6A2lWMIlJLpug0oNF5UpfBwiBx48DY1
-         8Y08X+v1Jk/wc60cSXXUkMFQfJLdaLQ+cCk7U4MfizCRrcnynweQFYlSy8b9a1rv5mAX
-         ljEixvb8NCWRFsq302UbkVhbUFet7x6PcYvfoZ25/5QZ7/hrWxtQPUnXsNLeL2ItsSbl
-         ZyCg==
+        b=X+73wpdTtRSkt8WEke0sPF+kEe4p0wWnQBjAjaMVf+CDid8r+ko6cXgY9CsAhlv4Mn
+         7dXgayEMrtVTjtZiRU6K8cnSnvvE0OFQ8NVCtOHDTsN0765r23AQe+f2rkbcYNxipr+V
+         ruzeRvIyL8vDxALsF1PNzPnz/dPvxlJHUwAvzu2fD/uVSAVzPGhhed0G51Z5vD0uQMSd
+         9qDHnGxJr/voUnKkYVAEvghHp/BXW0Bq7W+hUW8Y1lJYdtrIv7SZARzYnWvvhEe3MlsC
+         kd3jichOGz7JLYb3r4Y7XtEXv+eziqTxpLHpNeLTTTLe49FjmzQ/go133Uni+nnpbF3V
+         HNcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=DjNVWR97LjF/tV9YPAfdBbtgPlmR3ehf5bmKolaVmy0=;
-        fh=imKhE/jTk3ZzclrbglNv/gJS/f1f8e0bZ65BK+hIdjM=;
-        b=g1TXdQdlu/I1OYP3dG/SNdVh0yu0sfD/0R5HjVWK87T5PkBtEY9zqWEr+2n9rqWSRv
-         AAOpO0tXBLfVFd9Qoc7lQnvRxOvo6/cwTVZp2hbjbO0IDhsqtdn40TVve4m6CgdL+YZ7
-         Y4H6K7yj/0yrz8QR3nGOGo0KfTJ5ghzUZBX+MM8tieXK3Jedp7fISUomY2KBRYf1dF4z
-         k7vvc7EM3/XOpg4xKk4SxJgF/JtC7k/eSj7ztZVG5FHO4kuHeOvZnlnkmprUTIdU8QM/
-         q3q1iHJ6pPPL5ewSjDoiP6uEW2V83JmkdoyyYNfNSQyQrByvZY1zYRMGybfMilUGNDV+
-         tFoQ==;
+        bh=4IjryWNxdORCjNaHoK0nCSyu8CfUlBnhe9uOpGWyC/k=;
+        fh=u422dgagqtW+wwzV8B/cuwJ22PhiTvFBtarLUYn3eaU=;
+        b=IljrBdCDQJcc6IRZ8sZt+g+KcFTQaoS/SKG6qARu3ahdDawpVFqm4CKL7grophLrFo
+         iXdag7KPhYpTPe7J+QDFRHOUJwc+92Iu2dTBCxx+kOX7fr945rTreqjKLoIpjjvDJSAf
+         ehvRnjFPqEC2/OmE/1WWBwfmULR4GBAj/ITuzTpJQ3FX4PNJEm2R5qspe9tCEjRxB4Jh
+         GamcftWtr/bN6GZSY5FdJm1poRIQpegdMuQQeZhCJPT5do7aygXCC9tZ/fRB5tJP/DCr
+         YjmZlH18gfiI8vVnyBdH5ajbJPyNOJEoALm/Pyi/roOa1NJ3icl7zVs4WCPAz1walmJ9
+         5I5g==;
         darn=kvack.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793994717; x=1794599517; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1793995182; x=1794599982; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=DjNVWR97LjF/tV9YPAfdBbtgPlmR3ehf5bmKolaVmy0=;
-        b=oy3ovt0eXzpz9vV3bsDdhytf6nK7hGFKfxvZQMf/uQ8Aoneu51i3Ymo3Dc1KbGzyAC
-         LIX1kkYTfZbTIvFplBjm4jj7FMT/rp14OULBoTOoWEfDxE/HgtE8xPhwgreHjAnwzyU9
-         wN4H3mdmz4QwYJAfuSFsqmu2rngCvVJED+AAn30X4I9i60dp2YJYV3kIcjIbSWHQYgxM
-         UaPqAp7MRqr0HlfnhF5KToh4NklO+gUGeZexmjJaLLHqx6uPiDSfrv+Sdx0CO2ebCRKf
-         j+hbDIP2exnALOyFPbikBDRE+F3w+pfIbuzfTrUhhtcTZZB6xqLFDKXYJW2aE56i+N1r
-         U78Q==
+        bh=4IjryWNxdORCjNaHoK0nCSyu8CfUlBnhe9uOpGWyC/k=;
+        b=aFACtggm3Z17ac7Q7sOWQNrrUHmflJR/j8jjHRL2401bjiCMEwKQGMrqIVZjOdGf63
+         ttffrAUX5+elx2Oue90YD5zHRh0UFbacFVgUrdrnlUe8Uvndu6uRVHkYxf1cdaj+6KNK
+         hkpHswt5tusgLUwrXvxnSG3NkuyS2r/GS3X8MAu67mZGiyMyr4/jV5iqeFt7mX5dyWcj
+         tIiiNNrvzNiNSvShhDOTC/luZmOkjqzrgy2H3fEQAOigzW85hh++x5zFgfk8XxsN+jk+
+         MIyipPINTxn5Udw3y43ch7BF15CVX6+y9qdf0CXwv3TUFdKxwhP+KUE1QaEzcigIOipR
+         IfFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793994717; x=1794599517;
+        d=1e100.net; s=20260707; t=1793995182; x=1794599982;
         h=content-transfer-encoding:content-type:cc:to:subject:message-id
          :date:from:in-reply-to:references:mime-version:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=DjNVWR97LjF/tV9YPAfdBbtgPlmR3ehf5bmKolaVmy0=;
-        b=USwr5bOcFlVLSR2t0OCQ0+dospOYbFwRVThvzaRG06DljAHwHGuuFYn77vDnw5XoVN
-         26bk6P9N3g/D8PRfC2FbvELXero5+6iNpShxbVe2ZTquGzYFv5JohoPA7B0pSt7dQK8I
-         /oiIRSYu7Ol4Fm8aXgbMy68xrv1MvtndCIj67j2alhSiposhiJ9WETeHwUWiUxhjzvbb
-         +ym73wySTfn7UwxQwPTclJPgo3sqep+lX4VNOWUAO4p64IJRNkG1CuVs5l4WoH4CcP8d
-         nuSDHU/rTERI78pRvrSsKGH8fsIbXZ2XYO98awnzQm5c9MVpAI+GXWc3TpP89BCIOxBi
-         c+kg==
-X-Forwarded-Encrypted: i=1; AL+hErH1QeMbwvuirOROxLHE8OcHTPteNlzvFA640lUE+WLg0mK1NmDwj+BhEg3naCQEAGBbue3NeYGEvw==@kvack.org
-X-Gm-Message-State: APuU4Z9kV0mRttUwMbdhmcL27f79tM7OKiB1CYxEDynwk6pFthUr6RXv
-	s4myNRghpIYpC5Z3fBeaD1i10BTW/v6odgoKKs4pt40e5GvCrFTQ/SjD1e+Lhg5KTD4l0HbzOid
-	GIj/NRVzmG2GuYaR4w8DyPMmDQS1Sy/o=
-X-Gm-Gg: AYBFou2J86OT6JKFhrQktS8dsA7hrAgY/awaE8q+C/UAkXUJHUeTHU6+xGAJSJ9UZYT
-	aeWh0DrG9NMF5WuNmJjUwoj0YzBpNkCgBxszYBulDJ0hekvRT2KXhsQsj9//r/MgfggJTeYlvpI
-	WU0ON6yidE1uOKXFPkkahzNTCF0Q3kNfvLju3aPqnBju9VGzP2fu/qfDBdn2JGdu1dcjbGgIDde
-	PIb2PICaU1qlEEk4HMZevtPuV1TkZUDpQJxF/3XMDKcpSHkgB6z4e4vtMeNBHLz+x/E0/HWjEKJ
-	kPwDpA4zb199GASUeDnSU/yw3hmKn/fEndVtpiMEcU2LMR1tO++CewfPGrF82kspdXwt6TJLhVR
-	R6xAXuUXsT+73ipEzTKXGKM5L/I9iZrZyfH6vWpoaAHBZey91YeZdfhmo7k3Apd+yrwHE8YEa0l
-	2JdwRlv9t09vgQWeOxalz5SbI72tVj8knybp1ZUwQ=
-X-Received: by 2002:a17:903:19cc:b0:2ea:fb8b:258d with SMTP id
- d9443c01a7336-2ed404dd21emr46673395ad.6.1793994717399; Fri, 06 Nov 2026
- 11:51:57 -0800 (PST)
+        bh=4IjryWNxdORCjNaHoK0nCSyu8CfUlBnhe9uOpGWyC/k=;
+        b=c5XUseib0FM8IcRCANxI3wZFRCNf9fXJD50gyHs911x3JJfuJrp21N+vn4WhNDgHKz
+         lilOi7vvAUDvt8SwMscMY4uLvo9YR3OZ8WhVhso9Cg6Hi9S/NrRICfqreDiOaNftsGMK
+         QS3smrcc9L8MhxJWWvw479M9oSvHkLY2Qi+tl9RMWiAo/MZTlMkx2oK9QB5CWAj6ATfk
+         6oiqSLMn6s6zWxhRtokrklgwRYgUzAaUTYpBPKU0eTAfdBOXTFrnAX4WRitybWhyZy9T
+         vjWp6FC63uyD7f4JsWyRGzdp8YWvefQ88rX0otdsr3HkPjrK98N/N8u3lBamiu1MfK0Y
+         cXIA==
+X-Gm-Message-State: APuU4Z9ZxkLJLXQpQ3o/zPiNLcsHrT81S8TanhEyl56mvE8vyMl6keDc
+	3iJ1ctSBFOEZFaI9iV5K+eXyMz856ziV9849tnb7RmZc7lgAl75D5oj6CUTiTk+u8lTl2RnZY5d
+	wffxDacsUm4UbGodmdxV3Z7KbWEHWiq3PdOpVHBe60A==
+X-Gm-Gg: AYBFou2kOwFWPjrYKMLrMxK4INb1QE5mLeaEQn6mSLeiRL7BVUZ7flobhAkSloPphEd
+	5Y6jXdRQzTB+NFTCBGah4vty92D67toJ3yrB1N9uvWuBOd/H2z9sRUQf4QMsHZet5nfS7BRwJO4
+	fI6koWQqxn0vrl6Ye2q99Wjg0rdryp7J3Uh2wwaQ0aEMAI3uqYIR4v2HlnAHFmkM/JU/xuwS2wF
+	F0MjhaFCSlKO+qvE/+v+KgAZKsJ2Nrek5qAVcQeBqIyPM31TnfLAbELZG2eOnhKZlKaA0IRu/PT
+	VBc15sWGFJdA4XVJfJfK0DhRZXQJ6ycjvyBTc+LRHUzH6CoK6WQnfVnvpSddub4Gy3KjdjRlBj3
+	oJnXy5LslvjhPdfPxBJ150OckyV5MuG9Ji4x9A3DKI/0N7BXTLSTneQcVcpC5/HwMvBPDnaPKV+
+	XLDXJaKzhl7lxzL5D5POHeEkjD65HIjVFojWVt0jPMxWR+z2OrmkbD
+X-Received: by 2002:a05:600c:818e:b0:4b3:9540:47a6 with SMTP id
+ 5b1f17b1804b1-4b6dff86e38mr59681805e9.28.1793995181368; Fri, 06 Nov 2026
+ 11:59:41 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261105102343.311331-1-jolsa@kernel.org> <20261105102343.311331-2-jolsa@kernel.org>
- <CAEf4BzbdBLb1cBeF0an386k=CmMYKdz=Or5mSjzy_F5SFOwsxg@mail.gmail.com> <au3brpNZG2nANnha@krava>
-In-Reply-To: <au3brpNZG2nANnha@krava>
-From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date: Fri, 6 Nov 2026 11:51:45 -0800
-X-Gm-Features: AclHuK_ptQ1JZ0aIAB-Tf1Sid3nwdJVHkGL304qYA1pDY1ULh37q1biQaKwvn0c
-Message-ID: <CAEf4Bzbrwbg+oD+Tx=uVEdQkAB=hWxYrgyEFuON8cUWwjQ-Ojw@mail.gmail.com>
-Subject: Re: [PATCHv3 bpf-next 1/8] bpf: Honor const on generic kfunc memory arguments
-To: Jiri Olsa <olsajiri@gmail.com>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, bpf@vger.kernel.org, 
-	linux-mm@kvack.org, Andrii Nakryiko <andrii@kernel.org>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	John Fastabend <john.fastabend@gmail.com>, Federico Di Pierro <nierro92@gmail.com>
+References: <20261106160432.2552507-1-nphamcs@gmail.com> <20261106160432.2552507-3-nphamcs@gmail.com>
+In-Reply-To: <20261106160432.2552507-3-nphamcs@gmail.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 6 Nov 2026 12:59:29 -0700
+X-Gm-Features: AclHuK-x2stv42uMBHd5li29XslCAB0_-6f7YisoUMr7LicPx45if_utjKD95Yc
+Message-ID: <CAKEwX=PiM8vc27jOVdinOGO9AdCOpbKozu=Hj_b55y10-ynFyA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] mm/swap: publish cluster tables after reacquiring
+ allocator locks
+To: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org, 
+	baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, brauner@kernel.org, 
+	chrisl@kernel.org, david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, 
+	ljs@kernel.org, mhocko@kernel.org, nphamcs@gmail.com, qi.zheng@linux.dev, 
+	shakeel.butt@linux.dev, shikemeng@huaweicloud.com, weixugc@google.com, 
+	willy@infradead.org, youngjun.park@lge.com, yuanchu@google.com
+Cc: stable@vger.kernel.org, ryncsn@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mqucbyxr3hshix8bem5raphtskrdms8g
-X-Rspamd-Server: rspam01
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2AFED120004
+X-Stat-Signature: z6mtuw9qcu1eytdq43uabfd9pxoyr4jj
 X-Rspam-User: 
 X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
 	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A3DD020004
-X-HE-Tag: 1793994718-363992
-X-HE-Meta: U2FsdGVkX1/GJpp/+0SFxh+G1s0F5kWyhACdpRQLyuuvd4f1UdGkP/3wJQkv3Z49dFkdjsv4W/XmleLzCoYBMfthyPU+BzVRqOiaxBZ0d2tq4JoNRbmxWpAIyZ8OxZypR7qHYRew8O+OQOnvhE3hGq0Y4WC7s9yvN+1esI/2Qphy4K/0aoarrUIcrvJecfZpaYKaquUfxitjULq3yOUigSO+TllScdJdIMpDdRZUMBnXrEP/VRKm2yfP9EMvyvbUVK/olR5MzsQLbceRmzNY9lkU3gJmyKogZGAL7FS4yOttGC54xv9UYXu61O1EQAJr+FTmhESDuhJf6q/7KaqTmYSZyRRtOo1izIfl5+PiN194y0rTgPxktXxShNtkuehQaV81rNuADuncvy/RcD8t0Mg9uplvKzFd9EtSURWjXvsXlb8R/tPdBoGTka9jofce90guBXW9raXJXrY7QtIBTkHeqLIrlhXK0VNTAHDSxO2tyxMRUm1JL8Vg9siQyZj7CTEqk+MgsBDxv5ZtNJ1vwPQh116EbOrccQy/RkfHKw3+uhf7DUTIPwme9pAAryNmgt4vpk6ev/DhsLasSNN5m2SIofYTQW6+vmHnPmVEmXTfyk9jHDFlrSiZ0umvBriJKFsZp/7NV4WP37fR/Ds7yMpis8yUuSGRcvRDXFyYTW3GGYX+/L77aHvgpCBXS0ly7kXDIchTgpPh8Pxc21VnvIjpZaXPeg5TIWCdW2NascmwDxXyJyLewGCrIB0KcSFfU/2jOoT5CSYNmPc6r1dlqVPkd3c+mCZlyRVX7vemV/NL2Uki2KYu4iabYzc5ggoYBapltRA+FRXgocucj3Qdy0cFnNSORI3kk13v9S0EEdkPRD9mfy+CJCRSzthd96MtPCR+fv3rzY31NrQWYS1LYlVgpQJWEMV0Dt+GUQhmhaeq2CgYDLQeM6GIhREwr/fpsmS4D3t837n/gLzCpJ5
- FndwjJHp
- iF0p3LrsxNq886lArWZKGXxJ9+fU+TIjoFrQbUEKqxuccQD6NsBMNfHRdBmeiNfxG8LCzYIPbHYH7iFeGxbryasJHULvbUeqN+fwO9mTnW1h6ZJEbzeRxphv/t9uggE9T5K6kXXkEn0RsHcjCDAE8HulE4wzjX/UAzI4S4w8O1IOKPPkd2dCaWArM36eE2q+dTh9948WnQPmYE5cNsLjo46EIZtdOS61tjS5y8MLw/QwR+/0l0Hs5f5S/3R1Rl4NDNcOEKR8tJDLsYUewIB5e6e5S3NS9CrgKPT2+twUpJ2MogUPUKevEZLoaUgx0FqiRalL8XB/wgk/WgkVFAGvLXgfRVIQg0OJBn2NxoUParvdCKUvvoCa9obhwbwCZMZ6U230crHJFo+91uv+0bGnme/5w/GmsouoPHHVWixCaE0vtOCaoWdX2jwKhwlNuySVatufHeUovuGxAA2bMuZqwru6Ei88x0fgjF/M/HiBH1HIfK3m+RMY8mHBVoDEDEbHUG2jejiC1XCwnKaY=
+X-HE-Tag: 1793995183-410153
+X-HE-Meta: U2FsdGVkX1+r4c+LlGghuQdyOgGzDNAzay62HqOBabVwrdZY/EpI/+sX98oQpcUjKGp6unbodbVkGZ5DN4IVq41PEmQsBe1xjeNpSnjfsPYGamF4/NAYlMdJyQDGWkZBJorvQbK5B3Ql9Yb2Xs74VKEX8AxdDKSGIU6lb4O1tH/EINlyb9NIuXCF6q1/0dYAGFJVrbVFYN48cEcNSIq1ydhLz6xpzov82atkt7vPLMENt9JZ6H3bwa7RrnT3amsbCfx8rieF1SWj9Rvj63fgNnNlCEXgMm6w7eNFJNIorE+MrfjzaPKVIWClHhG2a9X/D5+ALlcxTbAmfIEDWfu/w0y/0p1MptaPNeg4zAPUuNDqT0xn3G/GrS/amVIqCavEB1yEg/xT5Gkk9C6odqqeBOdlq6hN0Cz4s+rjcAVp362dhaU5dWN/WxzTWLtwaMoeKzLS7YpTUCI/gbhoIgl9wA4S+oWmSihDI3p87x18ZAJAAJlTNXuacVStA03ynhsu7oc2ya3/wODOKeIY4h3Oqoynydjp8RPJnzzO3E5Eo64Qlg5gSqxz4Hm1ONYnX6+jcsoLwwI+uXH7f0K+2MK4mFAn/lX7yJIKvB6u8cB3yoFppaHasoDB+L+k7U1kWJdFDEtDbsdTglpOX8C6gOq80FW43j6eIsbNvl+ni6Jpg1N0uGrkWnLx9UiFTWTWvb0WYOfjfMhIsztXtOidswzzr+eraEjEpNchWr+4deQ76/iAewtHKsE3Uh/xX8D7g+Ft860ZylC3Sbn8MRN9IcvTLDpRaMmKfNzOne+nW8am+zBB9Cj+FeiaVHok9d2RQSvxLkHku2Ue9pC/kF7VgsGOnmZLzMKTfvlxxzghPyXKBjXPhQBcKcheR2b9iLQq6VVtnELn2xbF1vBdkM4bEBtyY9lno8ytf2TcLwRT9qKDnNLcJ1zK/WmjGgM8+Vjn4sbtLP/Yg0ftexa9NPeQaXN
+ VmUeZJq2
+ n0mTSab3ZoIJ+WcesiqkO/1yKy2sKnFkNjHetXBrJlSuXpTzHxCWPWixuP0zBhLVLUL6ovMy5lRgkiPHIvE1WpBSx7DZHWDy4Pg2OW3Sm9oYnV+WzinU80kIvcPtqiwbmsnVi/1RCi9jdkYHWxTJDMzXX2WzEM4N/u+jcFB8gIGycZ3qJuC7YUOqgkWViG7JoTMW9vlGrAoW8JacFXVts23webiEL0m7Z04cTaNxDzbAGTx2Ik40+1G9XUJJ3N8GOF/Vfs+gH1JqrR/BjBsDwU+TV3fsq+up8iy6HzDsN+tWIOAS05wxASJGCQc8dvymWldZyysGNWQmbg7BfQXHZn7oo74dpsTXtMM4AKtisa8UJ1EaqkUG3IE5o6AAjsMGIGdHVTiBxMYuGhLXl1LqXqWwMOqrFn/L6iyJAwOCeAdCIW49v0yJDT0xTnG5XThTtZwFn
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,97 +149,49 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 5:52=E2=80=AFAM Jiri Olsa <olsajiri@gmail.com> wrote=
-:
+On Fri, Nov 6, 2026 at 9:04=E2=80=AFAM Nhat Pham <nphamcs@gmail.com> wrote:
 >
-> On Thu, Nov 05, 2026 at 04:34:44PM -0800, Andrii Nakryiko wrote:
+> Under memory pressure, swap_cluster_populate() can publish a table
+> while its locks are dropped for a sleeping allocation. A cached
+> allocator can consume and free that table before the populating
+> allocator resumes, leaving the resumed scan with a NULL table.
 >
-> SNIP
+>     CPU0                           CPU1
+>     swap_cluster_populate()
+>       drop local/global/ci locks
+>       allocate and publish table
+>                                    swap_alloc_fast()
+>                                      consume the table
+>                                    charge failure cleanup
+>                                      free the table
+>       reacquire local/global/ci
+>       return ci
+>     alloc_swap_scan_cluster()
+>       read the missing table
 >
-> > > +/* A kfunc only reads through 'const T *arg'. The compiler enforces =
-it. */
-> > > +static enum bpf_type_flag kfunc_arg_mem_flag(const struct btf *btf,
-> > > +                                            const struct btf_param *=
-arg)
-> > > +{
-> > > +       const struct btf_type *t =3D btf_type_skip_modifiers(btf, arg=
-->type, NULL);
-> > > +       u32 id, ref_id;
-> > > +
-> > > +       btf_type_skip_modifiers(btf, t->type, &ref_id);
-> > > +       for (id =3D t->type; id !=3D ref_id; id =3D t->type) {
-> > > +               t =3D btf_type_by_id(btf, id);
-> > > +               if (btf_kind(t) =3D=3D BTF_KIND_CONST)
-> > > +                       return MEM_RDONLY;
-> > > +       }
-> >
-> > quite weird implementation, skip modifier, and then re-walk
-> > modifiers... while not have a loop from t->type while
-> > btf_type_is_modifier() and if you find btf_kind(t) =3D=3D BTF_KIND_CONS=
-T
-> > -> return true?
+> Keep the count table, cgroup table and zero bitmap private until
+> swap_cluster_alloc_table() restores all allocator locks. Install them
+> under the cluster lock and retain it through the scan. Initial bad-slot
+> setup takes only the cluster lock because the device is unpublished.
 >
-> the intention was not to introduce another helper with modifier
-> classification, the tradeoff is 2 loops [1]
+> A stale reclaimer can return the isolated cluster to allocation while
+> its locks are dropped. Abandon installation if the list state changes or
+> a table appears, freeing only private allocations. Restore locks on
+> allocation failure too, so the caller can return a still-isolated
+> cluster to its free list.
+>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Link: https://lore.kernel.org/all/sashiko-outbox-181084@kernel.org/
+> Link: https://lore.kernel.org/all/sashiko-outbox-181086@kernel.org/
+> Co-developed-by: Kairui Song <ryncsn@gmail.com>
 
-there is btf_type_is_modifier() helper, you just need to drop it's
-static qualifier. it's not so much about performance of extra loop,
-it's just harder to follow what's going on. it would be more
-straightforward to have a loop that goes over modifiers and check if
-it has seen const. that's all. but up to you.
+I think I need a
 
->
-> jirka
->
->
-> [1] https://lore.kernel.org/bpf/DMLRV3E28SC8.3FJZXLBLZI4DD@gmail.com/
->
-> >
-> >
-> > > +       return MEM_WRITE;
-> > > +}
-> > > +
-> > >  static bool is_kfunc_arg_constant(const struct btf *btf, const struc=
-t btf_param *arg)
-> > >  {
-> > >         return btf_param_match_suffix(btf, arg, "__k");
-> > > @@ -13618,7 +13634,8 @@ static int resolve_func_arg_type(struct bpf_v=
-erifier_env *env,
-> > >                         PTR_ERR(resolve_ret));
-> > >                 return -EINVAL;
-> > >         }
-> > > -       *arg_type =3D ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WRITE |
-> > > +       *arg_type =3D ARG_PTR_TO_MEM | MEM_FIXED_SIZE |
-> > > +                   kfunc_arg_mem_flag(meta->btf, &args[arg]) |
-> > >                     (*arg_type & (PTR_MAYBE_NULL | MEM_UNINIT));
-> > >
-> > >         return 0;
-> > > @@ -14170,7 +14187,7 @@ get_kfunc_arg_type(struct bpf_verifier_env *e=
-nv, struct bpf_call_arg_meta *meta,
-> > >                                 reg_arg_name(env, argno), btf_type_st=
-r(ref_t), ref_tname);
-> > >                         return -EINVAL;
-> > >                 }
-> > > -               arg_type =3D ARG_PTR_TO_MEM | MEM_WRITE;
-> > > +               arg_type =3D ARG_PTR_TO_MEM | kfunc_arg_mem_flag(meta=
-->btf, &args[arg]);
-> > >         } else if (btf_type_is_struct(ref_t))
-> > >                 /* A pointer to a struct without a size argument is c=
-lassified as ARG_PTR_TO_BTF_ID */
-> > >                 arg_type =3D ARG_PTR_TO_BTF_ID;
-> > > @@ -14195,7 +14212,8 @@ get_kfunc_arg_type(struct bpf_verifier_env *e=
-nv, struct bpf_call_arg_meta *meta,
-> > >                         return -EINVAL;
-> > >                 }
-> > >                 proto->arg_size[arg] =3D type_size;
-> > > -               arg_type =3D ARG_PTR_TO_MEM | MEM_FIXED_SIZE | MEM_WR=
-ITE;
-> > > +               arg_type =3D ARG_PTR_TO_MEM | MEM_FIXED_SIZE |
-> > > +                          kfunc_arg_mem_flag(meta->btf, &args[arg]);
-> > >         }
-> > >
-> > >         if (is_kfunc_arg_uninit(meta->btf, &args[arg]))
-> > > --
-> > > 2.43.0
-> > >
+Signed-off-by: Kairui Song <ryncsn@gmail.com>
+
+here as well...
+
+(Kairui - up to you if you feel like Co-developed-by + Signed-off-by
+or Suggested-by + Acked-by is more appropriate here. I just filled in
+the sketch you gave me.)
 
