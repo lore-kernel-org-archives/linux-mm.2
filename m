@@ -1,108 +1,161 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F57E606D813
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 10:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06713606A32C
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 10:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QQcQuH9V
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LnIYthTQ
 Received: by kanga.kvack.org (Postfix)
-	id 59FDB6B05B9; Fri,  6 Nov 2026 05:06:10 -0500 (EST)
+	id 9BDC56B05BC; Fri,  6 Nov 2026 05:06:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5793A6B05BC; Fri,  6 Nov 2026 05:06:10 -0500 (EST)
+	id 9961A6B05BD; Fri,  6 Nov 2026 05:06:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B6836B05BD; Fri,  6 Nov 2026 05:06:10 -0500 (EST)
+	id 837CD6B05BE; Fri,  6 Nov 2026 05:06:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 26E276B05B9
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:06:10 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9B780120CE5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:06:09 +0000 (UTC)
-X-FDA: 85404263658.14.639D724
-Received: from mta1.migadu.com (out-157.mta1.migadu.com [95.215.58.157])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 99127A0002
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:06:07 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QQcQuH9V;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.157 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 489B46B05BC
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:06:11 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1614E140CC2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:06:10 +0000 (UTC)
+X-FDA: 85404263700.02.D5EBB6D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 58DDB80004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:06:08 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LnIYthTQ;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793959567;
+	s=arc-20220608; t=1793959568;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FrQo1zWdhbR37KjzuqMTCbGMlx2UHVUhGDoqAfLgAy8=;
-	b=eOidMqUIfS7iOWDZvryId50Zkm41vGgKWdm60zCLaeXHP+uK5Hr2XuPti1iCs+rb6nKgmn
-	YBXF0Haa9InmgLEt9pmfRS327bkaVdYfO/FIAxFSYI6a6yCGWo9LojpEokYKg5q549874K
-	1EawqSTIO0xmSoRAncjrKCzk37KS1as=
+	bh=Px8YGrUbpB2T2jEhenGoA16y8NMxi2MB1FLmbQ0eAMw=;
+	b=3zHb7Vkb8rVcV3GwCSZ4P6rhQPnF4wrLvahywIHjw0epGR7dmfuwRfqIiax97WIEktgCCC
+	34LvPLaqIlue9VQ4R+fl3/IygLN72eReXbZ5jfONN3bzPdQGjrAKMQBFo9v9B8rVQajKxh
+	EerZ30+aJTjBiEhY8TpJFcdoiFeGJHc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793959567;
-	b=kbPxnrlvE4Sp58ko41lwUhcxzJn2Zvyy6Ygak8aUvQfa0uIClFgXnzbCNAb7DrjhSIOg/Q
-	nofMciWWEELDnDoVcy3C/Vw5rums4l/70HwOs7Hw4tXi+cqKJT/U2ysGQTzqAfG3VeeVvv
-	H/AxBCzyb4j05DJSSIrdAXGN/bMiIfU=
+	t=1793959568;
+	b=g3itUqrguasF8etBYHdJeoVjLKqJ0ouIWVwSCbCJDckhOGhOxglyD5VOxDnOfdHuhGt+gg
+	8e8pLRZ1BhF9uOdtfGJmOeE2PXL6LCfdYp34MP9qVGuNY9fAmWqigVxmzZmpphPJVOWLH0
+	y1mKB3xP9K8X7OFg+LzdV0TGwOnohxQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=QQcQuH9V;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.157 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=bNru5tLaTrRcZny2inHzZJIS32KRCi5plf6iM9ROkK0=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793959566; v=1; x=1794564366;
- b=QQcQuH9VnzgGtpanWuXL2/YQfHVbyvzI/2MufWqAK8iHgjK9fxO0jO1ZBEOlJWmWvML6hs4y
- cXVhDX5Fi8xY0Llbfo1CLnKzo8/YXAKXuSAIO3xMs2is5wxAaEjhZlBHHgYwJfgoVaUgCoT2m97
- ajM6C2X2j/XcKzdf812B3tOo=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f3d9d3dc338d93a1;
-	Fri, 06 Nov 2026 10:06:06 +0000
-X-Mizu-Trace-ID: f3d9d3dc338d93a1
-X-Migadu-Flow: FLOW_OUT
-From: Kaitao Cheng <kaitao.cheng@linux.dev>
-To: Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Mani Tofigh <mt4022@columbia.edu>,
-	Zi Yan <ziy@nvidia.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Frank van der Linden <fvdl@google.com>,
-	Chris Down <chris@chrisdown.name>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	Kaitao Cheng <chengkaitao@kylinos.cn>,
-	Qi Zheng <qi.zheng@linux.dev>
-Subject: [PATCH v3 2/4] mm/hugetlb: Preserve persistent flags when returning folios to the pool
-Date: Fri,  6 Nov 2026 18:05:19 +0800
-Message-ID: <20261106100521.30099-3-kaitao.cheng@linux.dev>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261106100521.30099-1-kaitao.cheng@linux.dev>
-References: <20261106100521.30099-1-kaitao.cheng@linux.dev>
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LnIYthTQ;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id DFB7560232;
+	Fri,  6 Nov 2026 10:06:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E68161F008A2;
+	Fri,  6 Nov 2026 10:05:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793959567;
+	bh=Px8YGrUbpB2T2jEhenGoA16y8NMxi2MB1FLmbQ0eAMw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LnIYthTQJEXOjvvLs54ZGX/uUfr0klYw3b86wsbcnRnjMkpBZxFYk4+mow/6/uap8
+	 Ivtt9RN/Kg0Vc9xqaRycTlEc2bPPJKnPZ6QatK+5uisGzt8lOls3vzsRNfvYPei+Gb
+	 XU7CLMDzEh5hkUwM5oR8dSDjbO5AXhJfvwxMegtiuS3dtstOuW+UNGQgD3B/Z7aKDc
+	 B/jYYug6sRFk+ZM0OhppHwhlPQCm4lPM5vlZE7T20ObUuqvApxXnI/Ra+UjDJ1Tram
+	 cJlEkqKW0G6jBDB1Y5PPWZc6twszsfy5hzKboS8hBCJmh0OmA0vOHCV4OrE7HdLivD
+	 BIwEstq14SG0A==
+Message-ID: <086c3d5f-84cb-412b-b61a-8cb3ca3e2e28@kernel.org>
+Date: Fri, 6 Nov 2026 11:05:54 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 9q5t711x7a476to7h5dezwioak94dnm6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/5] mm: limit pagecache folio refcount when mapping pages
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Jan Kara <jack@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
+ Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Jason Gunthorpe <jgg@ziepe.ca>, Kevin Tian <kevin.tian@intel.com>,
+ "Joerg Roedel (AMD)" <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>,
+ Steve Sistare <steven.sistare@oracle.com>, John Hubbard <jhubbard@nvidia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-arch@vger.kernel.org,
+ iommu@lists.linux.dev, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
+References: <20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org>
+ <20261105-refcount_overflow_stable-v1-1-70b9c655da3e@kernel.org>
+ <528e3a0e-04fb-427f-88c7-63a7f4bbc505@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <528e3a0e-04fb-427f-88c7-63a7f4bbc505@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: bib46k9q1h4surd3cicucyadhwuyiy1t
+X-Rspamd-Queue-Id: 58DDB80004
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 99127A0002
-X-HE-Tag: 1793959567-208569
-X-HE-Meta: U2FsdGVkX1+Aw2MTZxGsfjiQhh3n94FxtiU9HRSO6gZ8K/XOiHIIUhin7xytuoM2Zjgn45jAKjQ424HjI4vD2XXR0Y7VGx/pHI1RNZH/JjUV4VNekPHO52d5beFbgmlONXHt8BVP//+OxuYGIml7jszJzabM9Cg3iTg7zhbusY3nmmRo8gl3twABwobtIlLfedPBtas1dE0eNa4U7BGNrQnqhvN0JwBbJBrnY+sNGYcfSfrTChWetnTXOeN/bJbL5DVTjwHJ4xnXgh+J3hDS6aUl7zY/ZnRPPVw7XmxIlRIrqG9SK0+AjjIaDthTfzGliIqfB+auYRyM73JYBkWUHxBWaMyq7J/TWna34AJmFhsY+Wxhg//CcA5PHPXCP7o3laNxCN/fDlLHInSEBYx5atYKKveXSrSBGuPp3GC7ORdwn0zkCYpx29bSXlAJZa4hy9EDNj7SfwDjmIIOjssE+VSrGIXdd0O4bK0MRMiE2uv5hPLNvb7u1pBpfG+1V6plA9W2wFNwvPXBkO+aUi6MZFSEYt6OMkjnW5FKswI2IjkJS9z7morLAwh/OEDigQELyEQwEIcM9frWVRpZr5yibEOfNgEENYGNawlMdNUqmQ1Cq0rN1VcUpEN8XufgJ7w0IIdUdCURSqyf/NE0KRhXvoc6NsgY+FBojtiPrQF+xv5mYUQ4C/JkKxF1hg4edSFf08ZxIzKuycQXNgd0y2U7eyfgGoQpPKZ+O1m4R66iNRo8+w04JqZMY6W9sDVK7TN05Jduz/jUtnTKHGGo1eJWqG/N5oID+d5rL6kzClZB0Bb7VGMn8VDoL1aFVAmqpNcaXOGNvTeHpb9nv5wHBjw7CoqUz7NJGeaJGJzAvXH7EjPmboA+iozLHs2m/X2LiEGGruz2RzEU6Ump3e7BQNkseLHcA+4V3WfRVcR2B4nfbwLumLSPffcIjykFKW7125XW4QfHFRxUpDsfOqSUmJ6
- qOG181kO
- t+P0yneRqYifgA4QpiQgqzqsDGD/VSllNBHhQ+xRKiSRVxaQonassxoJFj5gvf454C1YaET1T+aUAuIkiEjg6avXc7IPCptaY/seTtHadQUp/GBx/kBk/J9uWqKObkcGPvDnvARRfo7bhkB775a9vba7MGF/EEu6TOrF4U76HLV5yaGjDbw+dThMAwm8GaOA/pvc/oCrrxhsoKmI0b2R3K818I5SlZNizGgBeS7PSbz+U3Ypcw7SzPJx982ZIdth3sB4EuMAuXsF1DlJYNP6khTuX+xjiPEvX3c9wN0XRXfmfyIsgdwPjEFv6RR6F6Vwmhlk0WB0ukUKAU0KVXw5P8T1f9yBtQkcPj2RKP+kqdRH0oNAO/lvpFUMg90X0ITbrs0I2Krnv5BiYgZxy8oiJlbK6Dg==
+X-HE-Tag: 1793959568-542601
+X-HE-Meta: U2FsdGVkX182IUYuxu+MEASHg8SqhKBgfxte9fa6TnaVp4iPozCXRpUuIs3+OJs/vwObKYG1k43FaKCXDNjNsLZWQNGiF7zJ4dzXVZKKnJwWlswD5sD76bB+C7dAhXrSJHsee4gxWG3zNsmxxpPsmAq2yLNpxJ/Aa2kLEAY5Y1fHWuxWTS1HpeoYL9x7X1RPgaLStN4MtXpSLL4l7B7E1d8Liq4vph0V4OE2VdbZ1g1NWWEdG6xPstynRHee/acS/5bboPzHwWmLo+iBvSMUK6VQxjNsBplV2F1kgPwJr63K324FTi9ismWtyfR7F0VZlcRvoZKzr2IYcNZEwzwjoQmwVTv1M7/i/eYE2MgaT6mXGLUUvDEb2xftfXwnBIA16q8xPlqFezsERfv0nvBVxqXTCA+umtLmCCO21gsiAPlC6EgBqQ6anIUDZaSKctCOyR6VTWe27Or7HYUsYUXjwxJmb4vZjvIdSB2MIahNRONaITY+eFFEbaHc9mOjI5lOvjby2us6CSRBQbyDrK6/KCmXV4SDNl1zcdW8SbJxUl5kZjNkfvGNslvnnY6n34JXX9CKn5eQ9hbMC6X1wflSI95gBIMGPed5Lz2DAAZsky+pBJ/KV6kHQFKqM8GbP/V/dYHy4CXHDOppzAVcVhxbzBvA2yPhPTYeOjei7zJa9Q5i4yOhuLf4fkNZswJjOyywO/73OqZSu8nIz8ITeXxOvXPlnGOtJIJLSyg4chFXO0p53zR8oK6bfKD0dHXw2fbxjQDajIIWD/KbrP74JKxEWBLM8hxJENiC2Pl1gOMxe3o99kxl6eKjLUR3jqNxXHZJb8OXJybTaF/9udXw9XqQsteVdle+2RA2DJBUPQ08NVTR6KQVZkOBOD3m8NHR8pbD+ksA3TgkHMPDjiL0xrMgeVEVvM5DmNIqUplFw2GVdmKNZRTHzuWxwGUkPZAdlccnA10i8Wsudl4u/OpO/bS
+ dpUpQ4Hf
+ F1KWF/1DA8eRKZvZ9Xts1J0Y1eiY19LyeMtyMia0FGfs/+TpenX6GjVgbLZN4ptM5gTwCFO4HXJH5YdN2kWXH7g5tLbJSoSAJXPMnsSu+BCRQsTja+AYdZdYkK9cZy3+b+P5P5mhA5qvH+UCJwceGa5RQUcyqm3Q9idtWEkL5clTKB+WUH8seqe3OArtHaj22wplaZoJYbMmIUBbJksYR2pqEsdFSqhDBl42PYugciO5ztOOJdVNr4STBsznUDr8KBAOMevgE5EpXL8Avbv8WOTzR5OXvugXlarqASMXmxzA5jn1h9ehrHKonsqx8tXlIhSP4qlXSovKhtRc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,77 +164,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Kaitao Cheng <chengkaitao@kylinos.cn>
+On 11/6/26 10:42, Jose A. Perez de Azpillaga wrote:
+> On 11/5/26 2:10 PM, David Hildenbrand (Arm) wrote:
+>> With large file folios, overflowing the folio mapcount and refcount
+>> became possible. For anon folios it is currently not really an issue:
+>> each large anon folio can only be mapped once into a process.
+>>
+>> That's not really big news, but it's about time that we do something
+>> about it because some modern technology might find ways to abuse it :)
+>>
+>> One of the enablers for that was commit ddc58f27f9ee ("mm: drop tail page
+>> refcounting"), however, file thp support was added later.
+>>
+>> File folios can be mapped multiple times into the same process, allowing
+>> for processes to hold many references to the same folio.
+>>
+>> As a short-term solution, let's introduce two folio refcount limits:
+>> one for ordinary consumers and one for admins. Leave some headroom
+>> before the refcount goes negative, which we really don't want (having
+>> the mapcount go negative is also not expected).
+>>
+>> Start reporting SIGBUS if we run into limits. When restoring mappings
+>> from migration entries, instead zap the pte/pmd entry. We allow for
+>> slightly exceeding the limit to keep things simpler.
+>>
+>> This is far from ideal, but better than all easy alternatives we can
+>> backport comfortably. For now it fixes the big problem: letting
+>> the refcount (+mapcount) go negative and cause trouble.
+>>
+>> This is only a temporary fix, we'll follow up with something better.
+>>
+>> While the refcount checks are not required for order 0 folios, let's
+>> just add them for consistency: each folio_add_file_rmap*() and
+>> folio_dup_file_rmap*() needs a prior check.
+> in mm-new copy_huge_pmd() now does a folio_dup_file_rmap_pmd() at fork,
+> since Konstantin's "mm/huge_memory: copy file THPs at fork like
+> copy_present_ptes() does". doesn't that one need the check too?
 
-add_hugetlb_folio() returns a folio to the HugeTLB pool when vmemmap
-restoration fails. It clears folio->private and restores only
-HPG_vmemmap_optimized, losing other flags that must survive the rollback.
+Yes, that one will need care as well, thanks. I think I missed it when rebasing
+on top of the other fixes.
 
-Clearing HPG_cma causes a later free to bypass the CMA release path,
-leaving the CMA allocation bitmap set. Clearing HPG_raw_hwp_unreliable
-loses the indication that the locations of poisoned subpages are unknown,
-undermining the checks that prevent freeing or unpoisoning such folios.
+Thanks!
 
-Preserve the existing flags instead of resetting folio->private. Callers
-already clear HPG_restore_reserve, HPG_migratable and HPG_freed before
-returning a folio to the pool. Clear HPG_temporary in free_huge_folio()
-before attempting to free a temporary folio, so a failed vmemmap restore
-does not leave that flag set on a folio returned as surplus.
-
-Add a VM_WARN_ON_ONCE_FOLIO() check for flags other than
-HPG_vmemmap_optimized, HPG_raw_hwp_unreliable and HPG_cma to detect
-incomplete transient flag cleanup.
-
-Fixes: 161df60e9e89 ("mm, hwpoison, hugetlb: support saving mechanism of raw error pages")
-Fixes: d2d786714080 ("mm/hugetlb: enable bootmem allocation from CMA areas")
-Closes: https://sashiko.dev/#/bug/linux-5363eb09-9c3c-4f8b-9f3c-a998a8c4b258
-Suggested-by: David Hildenbrand <david@kernel.org>
-Suggested-by: Muchun Song <muchun.song@linux.dev>
-Suggested-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Qi Zheng <qi.zheng@linux.dev>
-Signed-off-by: Kaitao Cheng <chengkaitao@kylinos.cn>
----
- mm/hugetlb.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 6fba92b0f674..5b5353ff5ee2 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -1450,6 +1450,12 @@ void add_hugetlb_folio(struct hstate *h, struct folio *folio,
- 
- 	lockdep_assert_held(&hugetlb_lock);
- 
-+	/* Callers must clear transient flags before returning to the pool. */
-+	VM_WARN_ON_ONCE_FOLIO((unsigned long)folio->private &
-+			      ~(BIT(HPG_vmemmap_optimized) |
-+				BIT(HPG_raw_hwp_unreliable) |
-+				BIT(HPG_cma)), folio);
-+
- 	INIT_LIST_HEAD(&folio->lru);
- 	h->nr_huge_pages++;
- 	h->nr_huge_pages_node[nid]++;
-@@ -1460,9 +1466,6 @@ void add_hugetlb_folio(struct hstate *h, struct folio *folio,
- 	}
- 
- 	__folio_set_hugetlb(folio);
--	/* Clear all folio->private flags except hugetlb_vmemmap_optimized. */
--	folio->private = NULL;
--	folio_set_hugetlb_vmemmap_optimized(folio);
- 
- 	arch_clear_hugetlb_flags(folio);
- 	enqueue_hugetlb_folio(h, folio);
-@@ -1750,6 +1753,7 @@ void free_huge_folio(struct folio *folio)
- 		h->resv_huge_pages++;
- 
- 	if (folio_test_hugetlb_temporary(folio)) {
-+		folio_clear_hugetlb_temporary(folio);
- 		remove_hugetlb_folio(h, folio, false);
- 		spin_unlock_irqrestore(&hugetlb_lock, flags);
- 		update_and_free_hugetlb_folio(h, folio, true);
 -- 
-2.53.0
+Cheers,
 
+David
 
