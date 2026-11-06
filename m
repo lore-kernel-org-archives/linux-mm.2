@@ -1,98 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C937E606A332
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 07:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D85606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 07:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Vrz8qWT1
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N4PDt2E2
 Received: by kanga.kvack.org (Postfix)
-	id DA2486B05B1; Fri,  6 Nov 2026 02:53:20 -0500 (EST)
+	id DD3CA6B05B2; Fri,  6 Nov 2026 02:58:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7A9C6B05B2; Fri,  6 Nov 2026 02:53:20 -0500 (EST)
+	id D84836B05B3; Fri,  6 Nov 2026 02:58:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB7126B05B6; Fri,  6 Nov 2026 02:53:20 -0500 (EST)
+	id C71FF6B05B4; Fri,  6 Nov 2026 02:58:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A523B6B05B1
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:53:20 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2777EA08D7
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:53:20 +0000 (UTC)
-X-FDA: 85403928960.11.0D6E744
-Received: from mta1.migadu.com (out-29.mta1.migadu.com [95.215.58.29])
-	by imf05.hostedemail.com (Postfix) with ESMTP id EAA7E10000C
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:53:17 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Vrz8qWT1;
-	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.29 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D9CE6B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:58:26 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5475C0CBC
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:58:24 +0000 (UTC)
+X-FDA: 85403941728.29.8F0A72C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2035B1A0007
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 07:58:22 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N4PDt2E2;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793951598;
+	s=arc-20220608; t=1793951903;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nfNxFDQT6Xg6nXD5htivaWJyrQFYadRTu+IGG2oGCYk=;
-	b=M64OaXjLP3nZjoDDjtjE4wiZobAU/rs/k23Fe3gJ5VfzJOPpSaGYIovPAJN9B/21pyLKVw
-	QKt2x+FjdCVnCctjIG/57cg1sBKplro2AKgothP5NnUXER3x0T+KVSEuc5JOTpBmJSwqg6
-	I0nxi4qm2K68Dtt3+qeYoGkX+0CQa+A=
+	bh=G7sxNEVsyIuTPV8a6FVFVg4qeZbioTDu21HyPpnSnRI=;
+	b=XF4ytjWyfU7PT9yyW6t6WXrKE0+kWmUD1uLJ0Fox09jyGjUw3WEP78fR0mlCDURrFcD/vj
+	wWX7vUoH2Ec6uaaAJS4w3O5Nw4NEg8sX2M5WDuJlqo89vM0Rc//DLkMCAjfLZchuWv045A
+	jsj+MyneuOxrTIW3hqRTTdY5NFIL6Zs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793951598;
-	b=8XHXK6uK/eKPfmAMFiwIZfsEoSlSP4j2uqSQSVS+5WVG0siyQnGMRq36aj8o6TngceFyIn
-	UI63jT8HUUVxQQgGSvIlZEbmLso+JC4zHrHG9en/Nk6a9E0DgafWmp5ZzxfSG6wjcO5k92
-	OieXxDW8rHO/BVGkvr5WNkugBziWMhI=
+	t=1793951903;
+	b=xe+ZJJAR+9WbNqnDeWF4utZwoSw7OV0Y5xFSe5SxAqAojIoFaqruvxllPzOv88C2JNO/ya
+	F+kdwlldP3KWEME2Uqksq1JdMRbG0iDP+cxyXYcreK2+8IvVYxBV4Y7s+JVs/pwvUq166K
+	jUt06kQ4E8hLjaT+gpDYMLL4bb7nHu4=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Vrz8qWT1;
-	spf=pass (imf05.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.29 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=n7/NfrBJOVijHE2gqo7g667Jx3EWyuJGPjofeyvSjCA=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1793951594; v=1; x=1794556394;
- b=Vrz8qWT1P4W9M1nqC7wjtd2uGW5JAlG9erVpQzw06B9GbkT6XnYaHIpRQcPtbd4IOmUWqM4H
- DVyTGInze+DPWjDsu8AJ43BejySZ2F3e/ej9Kc9jOPYkgMN29gUnE8PKXIsR4EeJl0O0LyCjyek
- 7yhi2bihAA0XiJytIXTUi6ws=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e8ec85b10918d5e0;
-	Fri, 06 Nov 2026 07:53:14 +0000
-X-Mizu-Trace-ID: e8ec85b10918d5e0
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <9a4323e1-a966-41fe-8268-9d6621346fea@linux.dev>
-Date: Fri, 6 Nov 2026 15:54:33 +0800
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N4PDt2E2;
+	spf=pass (imf19.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 15FB64080D;
+	Fri,  6 Nov 2026 07:58:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF8F1F0089F;
+	Fri,  6 Nov 2026 07:58:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1793951902;
+	bh=G7sxNEVsyIuTPV8a6FVFVg4qeZbioTDu21HyPpnSnRI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=N4PDt2E2G4E+VIbvP7UlpoJPj86dhujZdzHPEsZxc3xuXtlYhZskE4BayNPfpZ/oR
+	 P8gUzu9WnPVRdzSBSb2ePhoiGEmmDBep9EAQ6jSY1hXdRbpyyiRm2pc87Xx68vFi1/
+	 5Ny7OoMEhaXP2x8+4d0uWbuGxGEqY+IRHHOyMf+cVuzuMy6TwlFyLXbzMQTvbrYapr
+	 uoDtgKkKt1JJARcN0hgr0Vxtxsl4QYrrcrRlQuaxpX1KSflyhJkbvVjWnDfhI5DWt3
+	 zIbZxsASJ5jb6CgyhoBm9ppPnATR24JLITsmmbhiWMwPrw3rV/J55g4HWmJ1m8ct1Y
+	 Oot/kWOGNLORQ==
+Message-ID: <5d13a6f7-6b00-4557-9a1f-acc934a2c168@kernel.org>
+Date: Fri, 6 Nov 2026 08:58:17 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/5] alloc_tag: Introduce IOCTLs to toggle allocation
- tracepoints
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Abhishek Bapat <abhishekbapat@google.com>,
- Suren Baghdasaryan <surenb@google.com>, oe-kbuild-all@lists.linux.dev,
- Linux Memory Management List <linux-mm@kvack.org>,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- kernel test robot <lkp@intel.com>
-References: <37ae7dca766994d3872fcc65b623a80d5d506369.1793818636.git.abhishekbapat@google.com>
- <202611052344.mDV2DB89-lkp@intel.com>
- <20261105172104.339c6f598a65056ed46e56fc@linux-foundation.org>
+Subject: Re: MAP_FIXED leaving holes on failure is very difficult to recover
+ from and can even be a security hole
 Content-Language: en-US
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <20261105172104.339c6f598a65056ed46e56fc@linux-foundation.org>
+To: Demi Marie Obenour <demiobenour@gmail.com>,
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+ linux-mm@kvack.org, Bert Karwatzki <spasswolf@web.de>,
+ Jiri Olsa <olsajiri@gmail.com>, Kees Cook <kees@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>
+References: <8b45a161-101f-4f28-9b7a-c7c8b8a29f90@gmail.com>
+ <auyXeApQlV_CMQDm@gremlin> <310aec2d-3a83-4544-870a-ccd5abd78f48@gmail.com>
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Autocrypt: addr=vbabka@kernel.org; keydata=
+ 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
+In-Reply-To: <310aec2d-3a83-4544-870a-ccd5abd78f48@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam06
-X-Stat-Signature: 6ajrg1d1oesht5xq486iprk6o533gk8p
-X-Spam-Status: No, score=-22.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: EAA7E10000C
+X-Stat-Signature: eyf6sg86h3cq7zgha98djar94jhj8h73
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 2035B1A0007
 X-Rspam-User: 
-X-HE-Tag: 1793951597-789576
-X-HE-Meta: U2FsdGVkX18Z55igiz5vHRIs+2zo6b/vJZKDK6VIeQeocTtaPuatQdTgFXmvqusI54p0eXauj7RUmgWuvsCuUh75h/JqDVU3yp7rFT4gKed7xHtq6dknbwZaOHtc2fgs3n1NIJBKCXlx6rut0wU6CKYYRs9iURpGsl2hWUtcB0VqJ0obu/oKff3PDO/z4p0VPPkBdNdYKZ+iJjhX2hFPRWNizX6io/9NNUl4DS+YpJcYRKrGhJhLMKXk/e4KA7OEKr8p5HFiKjw+PX+iMruyy27nJXT1cVw+MSOZsG14kN53HKZ4hWDyk/FJr0egbDPAlkcEs1r6qHhk/I9ZeRqwRRi6uUe10zn09DVGQNzYI3XSULvYAzr0h+GhQ29LnkLhRqi967rn8Kb9WQM7WjHmvlYNVebMV4UL9HGBPRAHu6HZrm+676tPkEwXsNe9s8suOY1fV92uEOBLuFaX9/Ppsbn+ykF9FDzqvgio2uuoiFZUNOLWPMyHoRoYhUjWvkkBpEfGMu0pUvW8xiKcxTNLqbGe0JzV+hqJa/fG3OX/SKAdsnRYSvZbYUNB3NV/vgGOUKpiRJlMUYFBbwxzuz08aaoWp8hQTagoBc2lgd98kzkwvKQQUnghfpX8r2LUya8WMrf9fjfDwQHs1ZyFixMrT9quf4LH3msOgX2R5hXJH29PSkj/hlqLY5/ZwTcZAYvTNXDmpkDqeoy5Ylg1MHhgn4ATAsp87t8Yr5O+TIpW7gBQ8HKF4aN9ac+0j/3yirxfnZOOxS4ibgWkjgX5aO0ORAL1mEk4wKa0fqHLlT5U3mvilV11e7u/oo7J1R2pV9nwTM0e2PmM4RtJwEFo6HFdJSAqqi63S6zNpFONteB6r6DFSHwg0WjRDB0vgpQzrLZfML0LTPHpo13WWLN5VJsmd5ePb9iXPxqpPvIEIVahT9nXyswQtYDmZ7CuIM0b2hRvageX8ECdQ/4lA19dr3T
- SwrD3a7x
- KUddOHS+oNWiO1vJ3zAv1/p/U23jzy1iHKFlaVXlTohqjIvAFw/q4S6n0aD7H27TDoVcuoAb0yZVymH6QlfCFjim8lSghQrNLmUMo/V1teONM8RBxY0/fLFeDwzGfkwq/7yXZkQKiQX8R2Wj/zzyxhItqxct4g7S8LnM7QzNM4BfiPdBEWoYRYEJRzI+C4SxOHsetKO/7EqkEAAFtNMVfnY8ALD9DeyW/W/b+4fj4GEgUyjB1vTL/78LGj42iuTQvyDTKBiE4IrvbowF39IXgawOpfEXhPUw8EwVRCu81fNneB0CrzLq2lOdwoMthIAh/Z3aBjQuMsW18lmv7MwAaUQ/2xKJAa8c75Rpu+Jv3ETMjCN6ejKYN1Z3YUkkfU3gQD1hCYN95Xajo0XQTYtVA3E2aKfPA3v3+Q8Bt5qMs7RsPI2Whk5Xc4NyjAEDhSi9biG8Bl+vwxJiHzLz37pSAqv/H1EbpX137Q14pSirMTPze9UEkPHMEJVQWhsBPlasvNfipKtklzxc90hrvU2BdNExpsA==
+X-HE-Tag: 1793951902-396585
+X-HE-Meta: U2FsdGVkX1+zPo8xVENWHQk2l/pXzZXoLoFgb7AEqCv/o+BVn6PuR9shjvhxoevSBszHWi94tnR1J4CEnNiYt+ZcbmBZ0kQi8EDhFHBKFb+vIKdDupaNFIg6uM+tym2ZXlxq8rSHFtqC3PWpeMY8kptJ9fzgAb9ZJ4O67X44DgvF9BQTzh5KWHLHS+xYtlOBXB7ghAWoupEcWD92BF9ooJ+bnStfDwOHgVmsX/7AUT9i6QzAJoWEojKLh5fcXGwtRQbmSZ0ieUhBTe3iKB/7T9Xdvc/WeUR2KWrzlpXN753QCNPjKonu2XllKab5lWvDV6aWLTtSTNZhwMKKukj/QXpefTDIiFLGCXmByELPHnu0qDJLaOh+jpt8MANoWbNlFvzzFtfUcVuxSnWUKQqod1G7i2RO57gBjF6MHtgfFcK9uSX9ZVigrKsagPaEM0sSqq9wGTpqujlt5laWLJqt8LqL17A0JQNWxnIcqikXOOCJEcUjEP6uKPPf32KhsbIlFMZxDx4uXyA2XFBiFX8uWW3Nxw8QWk1ojGHqWH+awl/JQUf2cFcxLzgJlAmXq1/xvMVqQkfzRHr+3BYzunFTejn/F4Sa001zqo5kL9Yobl4fv0AlHaVqU5MUR/AsMuwZeg1yOmZfeS0EHwmZPvC0+IQi1Lgj+90Hd81glVJQPaVcM+3+zp40BH9/Q4hVEWaL2dDCUh72n/tfIvM8M/4BVaAy00bUJBPANfwqdJ4sr22OIYAWjtUI2KpPKbR36yMu8iYh+Vg3EmUKIJJeGhkjx5IZsDGRJAdg0/QTyiKW1yVKP4TvJtxM/xY6pCyv6nmLXLu5PRKz/BkpIPWhDl5iqmCcFnNMtVdM/Lkf4NhhbkIT/+XL6o1SuLmdxfkdTk4njZGeTF4wCgWv9DAMmWgFDA1/gk2niXdxIPdMlldH1sxA+dEULzvq516SEN3h3B0Kqzn/ocCq6CgtR0Bkzz5
+ 5DvoAwLn
+ DVYop9a3e5RWpm+lpa5/iCgAHyE8JSIH8AXxVhGctUmhnSoCW4UEUFXPb8pwzQwYy08hFr2coXH4zf/LX7sdpFNMBR8Wj4G79eTmOBhq/oEsWLkxxfzwf2VnJ6wem7OcXdiykNG6KevP6rnV1ObajMM3+GRVoYiJpcYaYyCBFkjDiWeRdbMdVRPbW5hqxKlIeSYsYwu1eWh2bs4wVXI8mNNhf3gB41+mMmFjt9n0AqHWKfXPR/UVovH5piskomu9TrVOrzYvSsOBIpT4ShJJ6W5BUfDNH7sVnJ59oW01WFxUBkQUan9c+KDADEYK04QY/6m1t11SN5vsGEZRZHHYSpNNVDacHBvZvSDbpObDBdQZVzzDHSMhEv9HFLdInyDy0a8ciyofMu6cE/hhkgdnBKpKTPEwtvj5GBDkLstuBePi5+1A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,84 +145,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Andrew
+On 11/6/26 00:59, Demi Marie Obenour wrote:
+> On 11/5/26 10:11, Lorenzo Stoakes (ARM) wrote:
+>> [ please check kernel mails in MAINTAINERS - my and Liam's at least were
+>>   incorrect, which makes it easy to miss. Fixed those up. ]
+> 
+> I thought I did that, but obviously I didn't do it properly.
+> 
+>> Thanks for the report.
+>> 
+>> In general linux system calls do not guarantee compound operation
+>> atomicity, and any assumption based on that is incorrect. If you see an
+>> error - the operation failed, perhaps partially.
 
-On 2026/11/6 09:21, Andrew Morton wrote:
-> On Thu, 5 Nov 2026 23:15:33 +0800 kernel test robot <lkp@intel.com> wrote:
-> 
->> Hi Abhishek,
->>
->> kernel test robot noticed the following build warnings:
->>
->> [auto build test WARNING on bcc036cfa1670a64500f6d857eaa71908b79e3fb]
->>
->> url:    https://github.com/intel-lab-lkp/linux/commits/Abhishek-Bapat/alloc_tag-Add-trace-events-for-tracing-allocations/20261104-190336
->> base:   bcc036cfa1670a64500f6d857eaa71908b79e3fb
->> patch link:    https://lore.kernel.org/r/37ae7dca766994d3872fcc65b623a80d5d506369.1793818636.git.abhishekbapat%40google.com
->> patch subject: [PATCH v5 2/5] alloc_tag: Introduce IOCTLs to toggle allocation tracepoints
->> config: xtensa-randconfig-1001-20261105 (https://download.01.org/0day-ci/archive/20261105/202611052344.mDV2DB89-lkp@intel.com/config)
->> compiler: xtensa-linux-gcc (GCC) 8.5.0
->> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261105/202611052344.mDV2DB89-lkp@intel.com/reproduce)
->>
->> If you fix the issue in a separate patch/commit (i.e. not just a new version of
->> the same patch/commit), kindly add following tags
->> | Reported-by: kernel test robot <lkp@intel.com>
->> | Closes: https://lore.kernel.org/oe-kbuild-all/202611052344.mDV2DB89-lkp@intel.com/
->>
->> All warnings (new ones prefixed by >>, old ones prefixed by <<):
->>
->>>> WARNING: modpost: vmlinux: section mismatch in reference: alloc_tag_trace_enabled+0x2c (section: .text.unlikely) -> initcall_level_names (section: .init.data)
-> 
-> Thanks.
-> 
-> #syz test
-> 
-> From: Andrew Morton <akpm@linux-foundation.org>
-> Subject: alloc_tag: force inline the allocation tracing check
-> Date: Thu, 05 Nov 2026 17:18:09 -0800
-> 
-> alloc_tag_trace_enabled() is declared inline, but the compiler can
-> still emit an out-of-line copy. Force it inline,
-> 
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202611052344.mDV2DB89-lkp@intel.com/
-> Cc: Abhishek Bapat <abhishekbapat@google.com>
-> Cc: Suren Baghdasaryan <surenb@google.com>
-> Cc: Hao Ge <hao.ge@linux.dev>
-> ---
-> 
->  include/linux/alloc_tag.h |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> --- a/include/linux/alloc_tag.h~alloc_tag-introduce-ioctls-to-toggle-allocation-tracepoints-fix
-> +++ a/include/linux/alloc_tag.h
-> @@ -161,7 +161,7 @@ static inline bool alloc_tag_is_traced(c
->  	return !!(atomic_read(&tag->ct.flags) & CODETAG_FLAG_TRACE_ON);
->  }
->  
-> -static inline bool alloc_tag_trace_enabled(const struct alloc_tag *tag)
-> +static __always_inline bool alloc_tag_trace_enabled(const struct alloc_tag *tag)
->  {
->  	if (static_branch_unlikely(&alloc_tag_trace_key))
->  		return tag && alloc_tag_is_traced(tag);
-> _
-> 
+I'd think we only cared about not exposing the temporary state between unmap
+old and map new, right?
 
+>> Further, a failed MAP_FIXED leaving gaps was the case for most of the> history of linux. Avoiding that is infeasible.
+>> 
+>> I advise you to review the NOTES section
+>> https://man7.org/linux/man-pages/man2/mmap.2.html on MAP_FIXED - your
+>> suggested use of it is not recommended.
+> 
+> Does that mean that MAP_FIXED should be deprecated?  It seems that the
+> safe use-cases can all use MAP_FIXED_NOREPLACE, and that the use-cases
+> that cannot be served by MAP_FIXED_NOREPLACE cannot be served by current
+> Linux.
+> 
+> Specifically, if a MAP_FIXED mmap() fails,  the mapping might either
+> still be there (in which case one _must_ call munmap() to cleanup)
+> or it might not be there (in which case one _must not_ call munmap()).
+> There's no race-free way to tell which is the case.  This means that
+> MAP_FIXED is unusable in multithreaded programs, unless one is okay
+> with leaking address space.
 
-Thanks a lot for looking at this - and for putting together a fix at all.
+You said "This was fixed in the past, but the fix was undone in
+4f87153e82c4". Any idea when exactly it was "fixed", whether the change was
+done consciously (or some refactoring side-effect) and if somebody started
+depending on it?
+4f87153e82c4 is from 6.12 (2 years old by now) and nobody complained so far...
 
-Perhaps alloc_tag_is_traced needs the same treatment as well?
+> Are there cases, such as anonymous mappings, that cannot leave holes?
 
-Even with your patch applied, I still hit the warning, just attributed to a different symbol:
+(I don't have an immediate answer. I'd guess that if e.g. some kernel
+allocation can fail, this can happen)
 
-WARNING: modpost: vmlinux: section mismatch in reference:
-alloc_tag_is_traced+0x10 (section: .text.unlikely) -> initcall_level_names (section: .init.data)
+> I believe there are some programs that depend on this to handle
+> SIGBUS faults from truncated mapped files.  If even that can leave
+> a hole, the only thread-safe alternative would be longjmp() out of
+> the SIGBUS handler.
 
-Marking both helpers __always_inline clears the warning in my build, and it would fit what the series
-intends for the fast path anyway.
+A concrete example would help I guess.
 
-Thanks
-Best Regards
-Hao
+> An alternative behavior would be to unmap the pages, but keep the
+> address space reserved, as if the mapping was a PROT_NONE anonymous one.
+> That would avoid the "it may or may not have been freed" situation,
+> as it would be safe to retry the mapping or call munmap().
+
+It would probably have to be a new flag as that's a different semantic from
+what we have now. And the use case for adding it would have to be strong IMHO.
 
