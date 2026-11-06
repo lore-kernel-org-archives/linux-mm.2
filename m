@@ -1,107 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD39606A32E
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 09:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE50606A329
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 10:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OkYMi/fF
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=K70IeZK4
 Received: by kanga.kvack.org (Postfix)
-	id E8DD96B05BA; Fri,  6 Nov 2026 04:56:27 -0500 (EST)
+	id 85A776B05B2; Fri,  6 Nov 2026 05:03:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3DA16B05BB; Fri,  6 Nov 2026 04:56:27 -0500 (EST)
+	id 811776B05B4; Fri,  6 Nov 2026 05:03:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D2D4B6B05BC; Fri,  6 Nov 2026 04:56:27 -0500 (EST)
+	id 71F7B6B05B7; Fri,  6 Nov 2026 05:03:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A9BC76B05BA
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 04:56:27 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F236120CE5
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:56:27 +0000 (UTC)
-X-FDA: 85404239214.12.E59D503
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 465DB1A000D
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:56:25 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OkYMi/fF";
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793958985;
-	b=jtMLXEmNH1d8KR09h45tSCQxUi8knGkZYurH7B6uZwcUADoi9BpQCqDbNUaIP3WEO74P+B
-	DO7GyNUvesu5g8HOEvoqFuQd3pITTaGtSRelRkVLT3wfuGsIbAgiiK7PuxOVxko+ysUrD5
-	KDaF4fV2IHi79LAIuOp9vkQfgO7ItIQ=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="OkYMi/fF";
-	spf=pass (imf19.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 4D6216B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 05:03:35 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D6F9B120CDB
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:03:34 +0000 (UTC)
+X-FDA: 85404257148.01.A212721
+Received: from mta0.migadu.com (out-64.mta0.migadu.com [91.218.175.64])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 48A66A0002
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:03:31 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=K70IeZK4;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.64 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793958985;
+	s=arc-20220608; t=1793959413;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w8OzRqDZQKjlnkKE6E4d5qASDSC6RPN4pLC36VUFGsI=;
-	b=3xOfyMrw+i3oJU2C6zAMau4c6WDD58GXg5ro3Kt/SoyrafKR/OjvGVoiKx1y0HtVGvTR+M
-	zB8tw8I4vBh5eVMjXCsFJyZ4XMecWngYpuWnR7jb3I9XTCkmC94t66FWJzSccX9Cg0V4lg
-	A+b/XUbgkLugSTH9P5MsS2Hc2Ar8Sj0=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8555B605F9
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:56:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540DF1F00902
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:56:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793958984;
-	bh=w8OzRqDZQKjlnkKE6E4d5qASDSC6RPN4pLC36VUFGsI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=OkYMi/fFnOE55CJ7cd/1YEvR4T/qaVbna+FxAJ0RGz1BJOMNCz7nXthukL33Izh8v
-	 Jts1gbVEXev5YDKBCendBcjZiYEO8zOcciVzOh1dc08wQlkc+hQ2Gc3LnvH7Jb1oo/
-	 16/SM/BsnS4jYHVaOusWKsOTxhqbQX08f24PrL8bcCajSyn0BIF5enyZ6+Jaf5edx+
-	 Q5u3ieOdb5821sqEgQ4b6L6rO9swJUiY9bN1gOkrfC4V+/3a/Tph9db/aWHHlrMtkT
-	 Ges8bTP8Kn/rjXd4j7CV+Dh6BkqbGseQEJ1QIDSwOuK8m+GHPPuZKe0DsUQFT9QGa5
-	 8glYSFl5V38ug==
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-945ae2daa3eso59167085a.0
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 01:56:24 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AKwUvBwP41Qcfdomr85MZ3kWIRfwXGqmImx/x2J7nNA3sztivEXCKAHB42otq2f2JIRBhoNqjj1QTY9i/A==@kvack.org
-X-Gm-Message-State: APuU4Z+n1fd7+3y0v/37wSEPviHxvOGhXM1QneUVFjWLgKTYlF4+bX7R
-	eiekzF6asTWF+qjWi511JlxAnbPnIadKVGAHqtu5zRVgeHCDGmBa1cwC8X3aEbrPeuh7tjKbZJ2
-	ae84Y8PwDQe39OzlZSNi5xtpzUVJe35E=
-X-Received: by 2002:a05:620a:294a:b0:93e:ce12:aadd with SMTP id
- af79cd13be357-945f34ef78bmr296469885a.58.1793958983724; Fri, 06 Nov 2026
- 01:56:23 -0800 (PST)
+	bh=rMheU+EhCPcWnJV6yby7BQW3sus9xoZHDLVucVGtR10=;
+	b=T5IeQkY+mMMfAMZo2n0yy/2hm60/UZx7emc0eiQutvaWNIvHaiAviO7J2H1Bi3TeyTzWAC
+	rOqru56IaGjf77QSuz7XQvJxIktkL0mAFkCtDhwW+GJcuXgiEiBppetZ2KMILiS+vpfc+I
+	tABK4cCJyEGQreB5Gh2cKQhaAADAzEk=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793959413;
+	b=cueLjYKIFuMalIOu+KPDbwvei+eyGFI4BxLBydzUM6jCp3OwBf2HW5mCv2ALag35aNIB/O
+	3YtV8tPXI3S/h9HIf1hYUs/aEsCsClkJOclU2B/pvi2xfx8LUu2ucBi5izNE30nvRcif2k
+	TKuDCYrxZbRRC9a0B3LqgmlMSvTOteY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=K70IeZK4;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.64 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=HebWn3oEvn+Xp5ULYEc4RbMXXdDqctn1MVk/JQNM9Qc=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793959408; v=1; x=1794564208;
+ b=K70IeZK4ChyvsIjWjnf+4PyYUZUZL+M7DAGxBjGVRAmkn4E59xs9gXe+dS1tEo52DLU3NhHk
+ wXzvG7P/tU2y7zNLQsSQnRMcfXQ4yMM+F2CZjQk+ARRmJKVphNGgrmSLhAxkOKraKZmY/dMWglf
+ 06tBoeDwOxOfZFLyydTEs3CE=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id cd637f8f166aebf7;
+	Fri, 06 Nov 2026 10:03:28 +0000
+X-Mizu-Trace-ID: cd637f8f166aebf7
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: david@kernel.org
+Cc: akpm@linux-foundation.org,
+	ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	willy@infradead.org,
+	jack@suse.cz,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	nico.pache@linux.dev,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev,
+	usama.arif@linux.dev,
+	kas@kernel.org,
+	matthew.brost@intel.com,
+	joshua.hahnjy@gmail.com,
+	byungchul@sk.com,
+	gourry@gourry.net,
+	ying.huang@linux.alibaba.com,
+	apopple@nvidia.com,
+	peterx@redhat.com,
+	hannes@cmpxchg.org,
+	songliubraving@fb.com,
+	riel@surriel.com,
+	hughd@google.com,
+	will@kernel.org,
+	aneesh.kumar@kernel.org,
+	npiggin@gmail.com,
+	peterz@infradead.org,
+	jgg@ziepe.ca,
+	kevin.tian@intel.com,
+	joro@8bytes.org,
+	robin.murphy@arm.com,
+	steven.sistare@oracle.com,
+	jhubbard@nvidia.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	iommu@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/5] mm: limit pagecache folio refcount when splicing into pipes
+Date: Fri,  6 Nov 2026 18:03:20 +0800
+Message-ID: <20261106100320.77084-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261105-refcount_overflow_stable-v1-2-70b9c655da3e@kernel.org>
+References: <20261105-refcount_overflow_stable-v1-2-70b9c655da3e@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
- <20261105045406.39871-1-lance.yang@linux.dev> <0ddaf336-7cb7-4e83-af2c-f60d23f7aafd@linux.dev>
- <f7bd740e-1328-473e-96f5-89658a08d514@linux.alibaba.com> <CAGsJ_4zHtv7hBCaW=wdfiM7yA4OJS7pcFomSo22bEzWHizYAXQ@mail.gmail.com>
- <453e2c18-4e79-4db2-b565-1af881925f08@linux.alibaba.com>
-In-Reply-To: <453e2c18-4e79-4db2-b565-1af881925f08@linux.alibaba.com>
-From: Barry Song <baohua@kernel.org>
-Date: Fri, 6 Nov 2026 17:56:10 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zLiwYf6LM_BWoZyiYWxvW2H_siZ0QC7FmEHazF_fLa6g@mail.gmail.com>
-X-Gm-Features: AclHuK95LDvF5ZiNBpoPTxiS2rEhGEEMq1D27yisdsMbvX4nhwqVupPOIZSeW-w
-Message-ID: <CAGsJ_4zLiwYf6LM_BWoZyiYWxvW2H_siZ0QC7FmEHazF_fLa6g@mail.gmail.com>
-Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio sizes
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Lance Yang <lance.yang@linux.dev>, akpm@linux-foundation.org, david@kernel.org, 
-	ljs@kernel.org, riel@surriel.com, liam@infradead.org, vbabka@kernel.org, 
-	harry@kernel.org, jannh@google.com, qi.zheng@linux.dev, pfalcato@suse.de, 
-	ayushr@modal.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: mcpks4s99i75dz83u9o13qjfnyt9ugmw
-X-Rspamd-Queue-Id: 465DB1A000D
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: jkirruedzrc3zbnnmd6zou7yn4prtiuq
+X-Rspamd-Queue-Id: 48A66A0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1793958985-395341
-X-HE-Meta: U2FsdGVkX1+RxMR9RAe3zNCxv1+29d1m8+mBaeku9Hg6vLK9vxdu1bFo3mzH8C5xXl7ArkiQyESAFxD9A/cAa9bz4HmAiA8W73KoBq2WvU4f5a9rMOXbxf1/Ob7HW/3YtK7MwjWOMhl2JwxTX36/vvED/PBQA5xHho9VQiA6KyVa0WbuMmiqM9titP1vWzoRgPXz2aeHEpeyvp0k0KtEGJRnWXtxtNfwDC8j5SospPXYUrrYJTf42LlS539hiFh/2T8GvjEVZEXAnwOzC1en87ZpO9DPpSr+zjZGhany1x6MnqiYnadI+HHpNYaz5AeiUm85q5gLoU18Li3/GJ58pAi/qYJ4MdTKdvWlctuBCJaHIb9Pp3lnFh3YX/TaUUiog/djn2dz3Q3SVlqNYj4BL1WS9nLUyZOh+oqbuKhHPdnQKU1/zomXfInQrloAr4YRcgqYmbb1TuFEYm+cNZNIQuoEsfBq3R2flLB8a6HRaSY0FZUcUhati1eogRZKw2lgMeFmvtqYo9wpX9/nAqptSmA0DzWR4g8kLe8iDbmnbvtUtM/R4+TpmqV1bg4lGtCpr2q70E72C1suYH9mo5atBYGwBcqkmJ3eHaQvsr3emWR+k9R/UIhIz03TW5DxtGM1rOrY0qflxV2GeMc6gOefAabNbYNCvXoQHEwErhMbj2Ntbnx9riTR4ieM3OL5SSzQObK8Zt3nlnT5dnBG7dEvObvOxXs+wcfCS9ls6qZ1pOw8d8p75oxzXO3Yiwwkd+ECC7UMmRGMcXE0QI7cdNjN0VSho29ByjIG+9GUUhSx2e9jh5kPXt16HAD2GiHnWhXqfl6zCQ44NeBNw0CnpWpVKoO/SBGUAA7nW4eCvH7Ty8oJFSGQHQbWwbuy2uVSSzeJcfszCzb2qjhXcHuhW40io5liSXaeWYS0BrlaCCwjUQ3Fudbq6c7RSGauRmHzRwLr3ojTzR7vhbGG+PsdMVR
- mBYtEm1q
- f25VvnWvkOOk8yBbE2wGejIUIdxNAp+a4xzWTa1bUMIr9hicw07tibke0xfh60Ae/gw+sPPPsiX3y1FNAkGuC0f5AQKYmpxouULgT7MhwnCBEhFApZ33Vhw8mznYrDmBRkJ7wJHtTA9xPoBTGvjiNPudaofiMUORCHn9yH+zFJrUXGq6FGvsCbF+7jnzgN3VBQnkq9KEsV1ZGYJNfI6h3S5KdwF+OFR2HjMUHjfPtLp87K55TN02wiaRQPBWjITB0p4o1Xc5IVBh50mwMw0rftFHvbaQe/v4g3ZcBkS0E+Prn1ctSBwUIxBiEsg==
+X-HE-Tag: 1793959411-433883
+X-HE-Meta: U2FsdGVkX1+iGGhL3+fAOC9r9I7wG4TN8Agifn9bqLCbXBIBRob3iAxL1FXX+gUwJ2Dk9jkPAW+cquogUSXPXT5yfam/+JWxqb3td/1JS8sq4iVmjv4ZNjaOPhM/Vbn4gTf16kPlALgpIT/e8wQ9QEqnlwsP904WgNG8/C1dwd11o8jGdoaOxxmwyLIGxUKgMPV/SxbyW+5PmWmij6PQGyKJlg6NfETlIg5iI90mqOSpLUZBF8o7Dle+35uRMOU8G0eSkN+IBAKnYtu1fr4MtqpMEMVmsLy0/tVgcZagS4IDuoF0evB6DgCw1014/b4MoEhdPq/9UKfUhDlUvj0knjLsFT0Yg5A8W8Trj9bo7q12ex4aByNWCszBRH3/LCxuEqC1gomYzkziERx/KIz1SCNiXnWcMVCDigD56xIaEb1wD4TUU6dkrUwtVFeOjj3Hest5cSAC2vdKSb6YWbhLJd4re9qnYuB5ZaP4dK8rwhxpOV6D20GPJbPI2WbaKnujOolpNNrnkGDjwCZeNSN93qnI3bEH9woRIaYz+ezNEnc0yqfMEkbGTa54xxrI+gfp9FtWMNo0aFnBGMeWE7SJIEd5AsGrQ1hDjciYFmDusZsN+wz2MmvTiqzXnkvCNKqYa+NhtJhuzL6MHKY228ZOirV7V7vzduKEJM6J2lKbgwJRbLRTggHG6+OUWnzHUKSCk5wMyn8ElUF4DnWHXYnGAh68SvvbbtdPdTZ5SezuW4WY4Ze8nEL4hc0mmXJRhaLrWz6EPDVORfevZ6w5qhwkHNHtPhEvuAnm6wjONR4UdrCtumix0qOWJ15cfjhW1f4NIRdX4fhtUMzFf1wkOHrW+2FAzyvUxrUiDprBbOphh4+oqcYQZGhZ7VSglwCFh5h2ys7YsHZTPlNZyMYZDh7ztZeRGZDHnNVcdVu6zoVNlDbacdUo5cm5HmxcA7cHZc8RSo61uEsYdiyNsfRmW1P
+ BfkGKVkA
+ a05CsXoxPkyqpZkwkFt9VEUAAP4FEX3iWjJvHv05O6ZtYmaEMouw9ycoL7mnw2OpVwa7d/Rll5msD5fNx4k3gOKyhmXfbLaCqpTqcRmVARX6vDn5mnd/cBT898540iNfw1o7unZGTvJREjRSvX3vmq6VWVrk+8PrC/VGi7muzo38bN1gW+pJqYHLPphPgbqZmyi2A5liRyJmLYNv5cEhfl0vLp5CshAgmDCYp83vMiRZCfzpU+ey2wmMP2zQ9ECXYdWuxSVcIqIYLxLv8yhLzCS2LE5Ombzho2tbZ/Qn2zmmZC1gjYnEXidYOS1sAeANjkTY+sHI7QcV4hx4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,111 +136,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 4:55=E2=80=AFPM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
-[...]
-> >>> Ouch ... one thing I missed ... what about order-0 reclaim?
-> >>>
-> >>> shrink_folio_list() only sets TTU_SYNC for large folio, so can't we s=
-till
-> >>> hit the same race there?
-> >>
-> >> Thanks Lance. But this matches the purpose of the TTU_SYNC flag, which
-> >> is used to avoid racy checks with PVMW_SYNC. If no TTU_SYNC flag is se=
-t,
-> >> it means the caller can tolerate some racy checks.
-> >>
-> >> For this case, I think we should set TTU_SYNC unconditionally in
-> >> shrink_folio_list(). Barry, what do you think?
-> >
-> > Baolin, thanks for reaching out to me. I added that flag
-> > mainly for large folios.
-> >
-> > I observed cases where PTEs for large folios are partially
-> > cleared during certain transition states, for example, when
-> > PTEs are cleared before being modified:
-> >
-> > pte =3D ptep_get_and_clear();
-> > pte modification;
-> > set_pte_at();
-> >
-> > In such cases, page_vma_mapped_walk() skips the empty
-> > entries and starts from the next valid one.
-> >
-> > This may result in partially unmapping PTEs for large folios
-> > and trigger unexpected folio splits. At the time, I was
-> > particularly concerned about unnecessary folio splitting,
-> > so my focus was mainly on large folios.
->
-> Thanks for the information.
->
-> > However, I also noticed that a similar race can occur with
-> > small folios. In that case, the folio may simply remain
-> > unreclaimed by the reclamation path.
-> >
-> > However, my main concern at the time was avoiding
-> > unnecessary folio splits.
-> >
-> > Your new race also seems to amplify the same situation.
-> > However, I don't think this problem necessarily depends on
-> > the commit you mentioned. It has been around for a long time.
->
-> Agree.
->
-> > If the concern is reclaim failure, I agree that there is no
-> > fundamental difference between large folios and small folios.
->
-> OK. And I did a quick measurement to reclaim anon and file folios via
-> the memory.reclaim interface.
->
->  From test results, reclaiming 1G small anonymous folios (using zram as
-> swap) shows no significant performance change. However, reclaiming 1G
-> mapped clean small file folios does show an observable regression if the
-> TTU_SYNC flag is set.
->
-> Without TTU_SYNC for small folios:
-> time echo 1G > /sys/fs/cgroup/test/memory.reclaim
-> real    0m0.178s
-> user    0m0.000s
-> sys     0m0.178s
->
-> With TTU_SYNC for small folios:
-> real    0m0.315s
-> user    0m0.000s
-> sys     0m0.314s
->
-> So for the current patch, I'd prefer to keep things as is: only sync
-> when TTU_SYNC is set. Without setting the TTU_SYNC flag, keep the
-> original logic, meaning the caller can tolerate some racy checks.
->
-> Any other thoughts?
 
-I'm still struggling to understand where the regression comes
-from. You're doing echo 1G > /sys/fs/cgroup/test/memory.reclaim
-without the concurrent CPU 1 (MADV_DONTNEED) operation that
-causes the race.
+On Thu, Nov 05, 2026 at 02:10:11PM +0100, David Hildenbrand (Arm) wrote:
+>Similar to mapping pagecache folios into page tables, let's reject splicing
+>folios into a pipe if the refcount is at it's limit, similar to how we
+>handle it during GUP.
+>
+>This will prevent more cases of possible folio refcount overflows with
+>large pagecache folios.
+>
+>Let's keep it simple and check in the two callers of
+>splice_folio_into_pipe().
+>
+>Also check in try_get_page() to cover pipe-buffer duplication by tee()
+>and partial pipe-to-pipe splicing.
 
-so the regression actually comes from other places, maybe here?
+What about fuse_ref_folio()? Buffered FUSE_WRITE requests can carry
+pagecache folios into a pipe through /dev/fuse without going through
+splice_folio_into_pipe() or try_get_page() ...
 
-static bool map_pte(struct page_vma_mapped_walk *pvmw, pmd_t *pmdvalp,
-                    spinlock_t **ptlp)
-{
-        bool is_migration;
-        pte_t ptent;
+Cheers, Lance
 
-        if (pvmw->flags & PVMW_SYNC) {
-                /* Use the stricter lookup */
-                pvmw->pte =3D pte_offset_map_lock(pvmw->vma->vm_mm, pvmw->p=
-md,
-                                                pvmw->address, &pvmw->ptl);
-                *ptlp =3D pvmw->ptl;
-                return !!pvmw->pte;
-        }
-       ...
-}
-
-Am I missing something?
-
-Best,
-Barry
+>Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+>Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+>Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+>Cc: stable@vger.kernel.org
+>Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>---
+> include/linux/mm.h | 9 ++++++---
+> mm/filemap.c       | 4 ++++
+> mm/shmem.c         | 4 ++++
+> 3 files changed, 14 insertions(+), 3 deletions(-)
+>
+>diff --git a/include/linux/mm.h b/include/linux/mm.h
+>index 79ae8fc0d6bb4..a82cfbce18215 100644
+>--- a/include/linux/mm.h
+>+++ b/include/linux/mm.h
+>@@ -2287,10 +2287,13 @@ static inline void get_page(struct page *page)
+> 
+> static inline __must_check bool try_get_page(struct page *page)
+> {
+>-	page = compound_head(page);
+>-	if (WARN_ON_ONCE(page_ref_count(page) <= 0))
+>+	struct folio *folio = page_folio(page);
+>+
+>+	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
+> 		return false;
+>-	page_ref_inc(page);
+>+	if (unlikely(folio_ref_count_over_limit(folio)))
+>+		return false;
+>+	folio_ref_inc(folio);
+> 	return true;
+> }
+> 
+>diff --git a/mm/filemap.c b/mm/filemap.c
+>index 920bbf86dfdff..0f2ec790a5b65 100644
+>--- a/mm/filemap.c
+>+++ b/mm/filemap.c
+>@@ -3168,6 +3168,10 @@ ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
+> 			if (writably_mapped)
+> 				flush_dcache_folio(folio);
+> 
+>+			if (unlikely(folio_ref_count_over_limit(folio))) {
+>+				error = -ENOMEM;
+>+				goto out;
+>+			}
+> 			n = min_t(loff_t, len, isize - *ppos);
+> 			n = splice_folio_into_pipe(pipe, folio, *ppos, n);
+> 			if (!n)
+>diff --git a/mm/shmem.c b/mm/shmem.c
+>index cda1a0f7db99d..1c0f6bceac486 100644
+>--- a/mm/shmem.c
+>+++ b/mm/shmem.c
+>@@ -3819,6 +3819,10 @@ static ssize_t shmem_file_splice_read(struct file *in, loff_t *ppos,
+> 			 * Ok, we have the page, and it's up-to-date, so we can
+> 			 * now splice it into the pipe.
+> 			 */
+>+			if (unlikely(folio_ref_count_over_limit(folio))) {
+>+				error = -ENOMEM;
+>+				break;
+>+			}
+> 			n = splice_folio_into_pipe(pipe, folio, *ppos, part);
+> 			folio_put(folio);
+> 			folio = NULL;
+>
+>-- 
+>2.43.0
+>
+>
 
