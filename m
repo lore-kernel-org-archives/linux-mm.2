@@ -1,105 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25DC606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 588FA606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QZiZxI9G
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dYis7w0t
 Received: by kanga.kvack.org (Postfix)
-	id 1A3556B05BC; Fri,  6 Nov 2026 09:14:38 -0500 (EST)
+	id 74C456B05B0; Fri,  6 Nov 2026 09:16:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1549E6B05BD; Fri,  6 Nov 2026 09:14:38 -0500 (EST)
+	id 7241E6B05B2; Fri,  6 Nov 2026 09:16:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 042D66B05BE; Fri,  6 Nov 2026 09:14:37 -0500 (EST)
+	id 63A9C6B05B3; Fri,  6 Nov 2026 09:16:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D5A196B05BC
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:14:37 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B2474160DB1
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:14:36 +0000 (UTC)
-X-FDA: 85404889752.09.F8EF32C
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A6F36B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:16:32 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 39535A8A06
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:16:31 +0000 (UTC)
+X-FDA: 85404894582.08.C949D24
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 27FAB1C0009
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:14:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QZiZxI9G;
-	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6A8E580009
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:16:29 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dYis7w0t;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793974475;
+	s=arc-20220608; t=1793974589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RDov0eoVo/jXZsEH8waw4PclHfxr4UeOoI1jJZ0wFVU=;
-	b=cESxjWx6y1aZlVyW691iDJ4naJtHz6QwlxPpP4LDKn6igNrUa9VwbQWviBWGsyNCAucE+q
-	MeZu5yBUViRC3dhjk4KoKp5VrcivI+8uSvlTYqvaHcsyLjuoc1nGyLkXx5zaDViH7oWK58
-	h3EcAmqX0luSqkRzHd9IowAp4Jtwvx0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793974475;
-	b=PSEBzlCQwl+7e94dUWrU3foAOgVElnSYkMC25eJ2+GfKonvTL6zKUz+nT9ZOPSAPkI6pwq
-	ApM0etAdTwdJWsX0+HJBf+ip6AlXaOjK0Z2y/T3knUSf9x0wQNoNHTeSmPe2pzONpp61rj
-	vbnaXindvTJtww8hAggITO0CLUz7WOA=
+	bh=Iqu6C6KXsE4USp3iSBQ/mHI3K4Pk+aZ5OmB26zeDtpM=;
+	b=DOax97WYpBsm7QYArV0bPSljxMe4omfcHiDo7UYjBK1M+J5Z0qWtnCvSY6pKNZR85igC/7
+	Rqzvq38XBDKr1yjiRiL0kd/xNynmOaF7DwrUPUbQOJu1jBZWVThNxbFppK/TH58wCeFsm4
+	eGBloMfmog533RxPwfEobEIRAgoQKME=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QZiZxI9G;
-	spf=pass (imf20.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dYis7w0t;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793974589;
+	b=t7hI/Uyb3U7xSfCeCE063uPpsas2YndHssDH2eRmPmAhXMOPumDaH1HwzEIE1iPBsYFvpU
+	zDzO5ObHXUwbnWjFEpbsL9Jq52ubqP+v8f/QGh8vQWgwoJ91kQC6q+IcZ4fkyLJ1GdQw0Y
+	e/XMB4NfNE/a4mc3GVlHsVH/hlNMngw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BAC4860204;
-	Fri,  6 Nov 2026 14:14:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9485A1F0089F;
-	Fri,  6 Nov 2026 14:14:30 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 02937601E3;
+	Fri,  6 Nov 2026 14:16:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DB41F0089F;
+	Fri,  6 Nov 2026 14:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793974474;
-	bh=RDov0eoVo/jXZsEH8waw4PclHfxr4UeOoI1jJZ0wFVU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=QZiZxI9GAjrir92IAFfKGitZXVtY1jvK5zvkVio451cKaNQy+4alLSBiO8n4IXk5a
-	 FeU8B/aZpr2kFUdrrLErUTcJxOy0VJSqfsasS4uw81KAuNjyZAdjxKj1wiOj7JAxBR
-	 mbCHQFfN6Q4wIrn+IpBW0KIgDBUhwENIZc64nO3QfIl87WE6M+kj1UTV6sgxuXYxMn
-	 NBH9mBHcgEDIzbAvb8xyON+HXQ/hi5v/jPOplklBmwp+o7m+ZKVqOoBmQIYtXJQb1s
-	 3Or4fuYh0VQ6PHIfJzhif/V26peoD/pmRt4Txg9M2arpzKsXqRwdmfeKOE1qfqnC9v
-	 wxbaO2Ww9a69A==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  kexec@lists.infradead.org,
-  linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,  Alexander Graf
- <graf@amazon.com>,  Andrew Morton <akpm@linux-foundation.org>,  Baolin
- Wang <baolin.wang@linux.alibaba.com>,  Christian Brauner
- <brauner@kernel.org>,  David Hildenbrand <david@kernel.org>,  Hugh Dickins
- <hughd@google.com>,  Jonathan Corbet <corbet@lwn.net>,  "Liam R. Howlett"
- <liam@infradead.org>,  Lorenzo Stoakes <ljs@kernel.org>,  Michal Hocko
- <mhocko@suse.com>,  Mike Rapoport <rppt@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Randy Dunlap <rdunlap@infradead.org>,
-  Samiullah Khawaja <skhawaja@google.com>,  Shuah Khan
- <skhan@linuxfoundation.org>,  Suren Baghdasaryan <surenb@google.com>,
-  Vlastimil Babka <vbabka@kernel.org>
-Subject: Re: [PATCH v3 06/10] mm/shmem_luo: Don't make early retrieve
- failures permanent
-In-Reply-To: <auuxi10mmCQrq-y2@google.com> (David Matlack's message of "Wed, 4
-	Nov 2026 22:28:27 +0000")
-References: <20261103010216.3447716-1-dmatlack@google.com>
-	<20261103010216.3447716-7-dmatlack@google.com>
-	<2vxzik2ck5dp.fsf@kernel.org> <auuxi10mmCQrq-y2@google.com>
-Date: Fri, 06 Nov 2026 15:14:29 +0100
-Message-ID: <2vxzo6c2hwsa.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1793974588;
+	bh=Iqu6C6KXsE4USp3iSBQ/mHI3K4Pk+aZ5OmB26zeDtpM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=dYis7w0tUQde6/ADfk2fxt45SU+oba+XrjaE0hJO9IiTbhtBdqvho7edgmqZgqLwn
+	 3RnXTN4nBxW2NFDHVMS2xOvL6nNYqTqKw/1j/q2Oc6Lr10uqgkne1flWV1gfwXFFJI
+	 vCbtm/ZTEZJwUHn8b0t7MfRTQihfNXdzmelkiQH2hzdBKHKxiUZG2PZDAm9FTFvPeE
+	 S49NFHOS0sW5i301mzJM42hQKSz9FhPlaKCMbfUBAZbIxHDjBpsBIrvBRjwSn1BuJ1
+	 yUIHFyMXbSl+mPwQkcZWe+jbMMF8Xp4wZNDRmezlIyXakudGTHRQ/ebkvYRck4b39i
+	 68fs5XCmBj9uQ==
+Message-ID: <264c406d-9f71-48a2-8892-ad0c902e3c47@kernel.org>
+Date: Fri, 6 Nov 2026 15:16:20 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 27FAB1C0009
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm: move LRU size stat updates out of lru_lock in
+ folio batches
+To: Joanne Koong <joannelkoong@gmail.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, akpm@linux-foundation.org,
+ yosry@kernel.org, hannes@cmpxchg.org, mhocko@kernel.org,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, ljs@kernel.org,
+ liam@infradead.org, vbabka@kernel.org, rppt@kernel.org, surenb@google.com,
+ kasong@tencent.com, qi.zheng@linux.dev, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, baoquan.he@linux.dev, cgroups@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20261029204157.117879-1-joannelkoong@gmail.com>
+ <auPhT70GU-Zqe9Qy@linux.dev>
+ <6849a9c7-0e11-42f2-bd99-d7ae3d5b944a@kernel.org>
+ <CAJnrk1ZF7FminyCYORxysXW0zA=fuUtBe5YXkabsSTOmXt_vdA@mail.gmail.com>
+ <CAJnrk1acAiHB06DKAJhuSZBNHn0dkRYJ5RU54sSz+xGXhwwnwA@mail.gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <CAJnrk1acAiHB06DKAJhuSZBNHn0dkRYJ5RU54sSz+xGXhwwnwA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ozwjkbaf83k73xzss8mzhowezqboxs3o
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: 6goiczu4d5y8wjtjx3chq4ttickdmb7i
-X-Rspam-User: 
-X-HE-Tag: 1793974475-996822
-X-HE-Meta: U2FsdGVkX18zdfBGtAXdj4UAoMLdziIECta9YaxovLY4S/xhk9SwKoBbu2LAGXFh6G7KyA7IiN64N3Pah6RjCED7F2JKj6nyJiniinr4mOXh760wtAiGxsANtJ7hjngS5D2ZauvLylbKp7b/1r4Uoj6I18RWPcCDg6b5c0Q4OD8wOlJJx9OJzZ/ea002Rkq8539uvO5mer04V89pG01arrJ82rlhTQBCa8AKckbmQpZREBcdrvFZC2dYNeYcbpU2X7HQe9Z114pUT7aBfjp+Huj9o/Dm40NRtdhURlbD4rgi3zWccSEIvGOgBnBn6rWiJoS1qsWcm8Sa1SJAZ5YxHupjHywnuBrf5L4YoU2Ue6ekizfrASyWKpNRlmOvHrULRBuvDYyD8ujRKw2z1N30n3g5rSQPBC/A49X3FquYK5ZZrFbhixttpnyWm9gTBEFGC+kucP4FbMgHSut5kFlvLSkuElLZge6KsazwYbxyMezWI1Jx1rnb6FpJB/LtHtbG4Jw7sb/76/6h9NZRbQwMEB4KNbUCeLQ0gS1HrfVSULRoGADLesJZbH4WBSvz6blQb+CVV7438ymxz65DYHNGp/cQ2dkDhioQA4smB09BEQke2Rrxyd7KbSBwCliQfoj7kkYoScB7OQldKsr6O5fLzFcJ2KfwEZNaiq9ssHYOm6vFE/zLuoF57LUd9hMbAr7IuDgT2DVmJZSYfzrB3r83SxV1XY1bpaJNPn7tixHhOG7wcmDjQvHrkFqIYbgPpZ2IU+lrW0YiauzD/2LoKeqjoEFCjL+toqLFRm0Wz96fZSbmeD6ZkFGVYQwrO4+KyhDUHZBXWi00V+GjBgZIGS/7IA4wrqcqQwWmXzBcYhZdHFWCYSfaEht7oDcDPZjpCN+idsyz0uqIzRQ06mekGWfKVcF3oWerhHGmrivpZjbpCmdbZ5ojpZ33WOx+77IYWg03/KNxTJhCkJnjz/l4F0K
- 23OVAnWr
- eNbTQbiy+lhmI8GqmYwCo6vVbaKB1N1b5MRs8L6ZiQr0uogvdcjYShbxgF4CNXUWfh+7zfZ9FurenI+pJjOFSJtmYziOtfONLbtUz28Bi5KKgx9AbhX+SO5+cK7Pst0mtJkfha/AR4luIIjDIcwpC1OSpemKNDUkvT5q8vL92VSC39x7U75Hefkl0Xum1YwAJEX7rm6Hdpx7zDrctFSeTdexbFzzHYVm2RHcYdS5W8oy6pcy/WFUgc3x7hskkkdpBSrch
+X-Rspamd-Queue-Id: 6A8E580009
+X-HE-Tag: 1793974589-687193
+X-HE-Meta: U2FsdGVkX185o6U4AdFEK3XznQ2Lgqr01zxP8pv1gx7wZt46+vdH9kU32BPCm1/gkM1FwCE+T9p8wQNSLgj8BOXLwcqnEmg2KpzAa9X4taikKtY6Ymxj2gNZFAPyAWvC2pbjnvfg70B6pCWinnHclBSWwatEtx1aletqi5WoqdrO5Ystl6E+Qhk3lcvi9XFCWGAyMpUwt4DLtlB+eYR9mwOs89956EWvqrX7eEKtnaZrrenDMzKQkvyzf0C1mRiE/uo6bxTEMorgRyPj6y7APuhP8IayC2rYz/HbiVKAz0eZj98jySZ/iVkMQEXT5yqiy7ciJFpj7ynGzXot/7tN2wdMnAy65yOhuH8C+3LNfSIfbXybjpY+FXhhf4U8Y0YuoR1A6sEpU0Dnxo+fRqUUbX2USxqC1hwc0eANpyi96A6fN2qifRCT4oAvRyrM1YxbbLNijwll8lnVZsBpGskBUna0CRM/o1xfz0b9K3sEpXrsHyRvIhr/N0+i8kal3jTJUMhum9XQa0So99Fprlp6uvSznpHOsKblB2bJrdkBxdZJ/nvamFeY9jmIPt8bnPp7a1nSQCCI8N1hWN03faa9+LwWMEHhne4yj7fSNvHXiDqNjCNY4ACLBhkN+dXy0tGQ0wbOZF/RGQWFicK3v6lAoTN3HONrxjqfoovQJyiNBYZr9fs1/iyiGwGLdX6swM4+t6O4Audzb5tAFtxMm2OQmsfytw1jx7YOihi38wkvOASaIZSvAp5ocnRZGBpq+0XHouDSKwIzgZ8XFYKGYeXrKYzw6GIFiF2T5CHPA1111GaYHm4sUsCAK5cVOMicCuNmHeR8DLy5rSyLT7VlL+ozFbFDg2z39zRp8mBWbDA72r6+HNMCHDU38+9KwZ1/T2pR4AAhWPiTbSoAgXEsO9gcjdWUvXH9hWhhln2FPbPESWAJliNms6PDDYGsd02A549nfvGr2TaRqVeOjwyiKRE
+ lDts7XgW
+ MtKUXLuQxIrVsT+J2Oi0PoRaD3gj7XdIs/Hm0MRNnCo10XOVF627AiagX98F92HxB7nl5StPnrbqAGjnOxfJms/m97J96wR2lhWhm+oYYQYyEI9Kxqvuh1ncGHdHKEnW5k9Rw9zu9JkAAaJrhQ+6I70v06wAJq+DkcmMsBtux7hHexU65jVxCuCvEbinmfUfcR76bBdMOPlB2n6Nnzgm8wfPvG3eFsZXh2jmUsBXiCZAJ8CsDj03ifsmnIgNzGwm26LHHVIgmjK2ClUciy4MBalNG7O+ZSHzrmNnJGOHNbufOV1c8Bnrm3/PUyurcWTVm8kheKdNo01WNUtwSlpxnQ4fld0Q2Xe5CtAxU2T3QfZkoiA/AV/Vnd6YM3GPXL9eR2cKa
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,54 +151,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04 2026, David Matlack wrote:
+On 11/5/26 21:07, Joanne Koong wrote:
+> On Thu, Nov 5, 2026 at 11:53 AM Joanne Koong <joannelkoong@gmail.com> wrote:
+>>
+>> On Thu, Nov 5, 2026 at 11:37 AM David Hildenbrand (Arm)
+>> <david@kernel.org> wrote:
+>>>
+>>>
+>>> Thanks, I'm planning on queue this.
+>>>
+>>
+>> I'll send out a v3 today that adds the documentation Shakeel suggested
+>> about the race between reparenting on offlining and stats update.
+>>
+> 
+> I'm seeing that the patch was picked up yesterday into mm-new. 
 
-> On 2026-11-04 04:01 PM, Pratyush Yadav wrote:
->> On Tue, Nov 03 2026, David Matlack wrote:
->> 
->> > Mark failures in shmem_luo_retrieve() before it starts restoring the
->> > folios as retryable, and return the error without freeing the serialized
->> > state. If no retrieve succeeds, finish() frees the preserved folios,
->> > like it does for a file that was never retrieved.
->> >
->> > Nothing has consumed the preserved state before the folios are
->> > restored, so the retrieve can be tried again.
->> >
->> > This also fixes leaking the preserved folios when one of these early
->> > steps fails, e.g. because the file has seals that this kernel doesn't
->> > support. The retrieve freed the serialized state but not the folios, and
->> > finish() then skipped the file because its retrieve had failed. There is
->> > no Fixes tag, since the fix relies on args->retryable, which was only
->> > added earlier in this series.
->> 
->> If the seals don't match, the retrieve is not retryable. It will always
->> fail.
->> 
->> I think the only retriable part is memfd_alloc_file(), although even
->> that is quite unlikely to fail. But I think that also fits pretty well
->> with the most important type of error you want to retry on, which is bad
->> arguments. In later patches, you check the argument on
->> shmem_luo_create_tmpfs_file() or shmem_luo_create_memfd(), so perhaps
->> set retriable in those functions?
->
-> When retryable is set, LUO leaves the file unretrieved and finish()
-> frees the preserved folios. If the seal failure did not set retryable,
-> finish() would skip the file and the folios would leak.
+Yes, soon Andrew should probably slow down on picking things that I am supposed
+to pick now.
 
-Yes, but in that case you free the folios on the error path of
-retrieve().
+Will resolve itself once patches only cleanly apply against mm/core.git :)
 
->
-> In v4 I can move the seal checks into shmem_luo_create_memfd() and
-> shmem_luo_create_tmpfs_file(), since the valid seals differ between the
-> two, and reword the commit message so it doesn't suggest that a bad seal
-> can be fixed by retrying.
+For now, he will drop patches once I pick them.
 
-I think it is important to signal to _userspace_ too that bad seals
-aren't retriable either. So I would really suggest doing some sort of
-non-retriable errors for bad payloads.
+> Could
+> you or Andrew add this paragraph to the commit message after the
+> "Accumulate the stats changes..." paragraph?:
+> 
+> "Applying the stats after dropping lru_lock means a batched update can
+> race with reparenting when the memcg is being offlined. This is ok
+> because updates to a dying memcg are redirected to its nearest
+> non-dying ancestor, which is where its folios end up after
+> reparenting."
+> 
+> Apologies for any inconveniences.
+
+Done, thanks!
 
 -- 
-Regards,
-Pratyush Yadav
+Cheers,
+
+David
 
