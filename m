@@ -1,144 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1884C606A334
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 22:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CE1606A332
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 22:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=M09S19cX
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=NqZQqOUt
 Received: by kanga.kvack.org (Postfix)
-	id 33A6E6B05B2; Fri,  6 Nov 2026 17:30:54 -0500 (EST)
+	id 7D78C6B05B1; Fri,  6 Nov 2026 17:35:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 311F96B05B3; Fri,  6 Nov 2026 17:30:54 -0500 (EST)
+	id 787116B05B4; Fri,  6 Nov 2026 17:35:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 227A96B05B4; Fri,  6 Nov 2026 17:30:54 -0500 (EST)
+	id 6768C6B05B5; Fri,  6 Nov 2026 17:35:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F3C7A6B05B2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:30:53 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E5C6140248
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:30:53 +0000 (UTC)
-X-FDA: 85406140386.13.BFD1056
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 8AD4240010
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:30:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=M09S19cX;
-	spf=pass (imf01.hostedemail.com: domain of fvdl@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794004251;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 3185D6B05B1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:35:38 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 605D816023A
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:35:36 +0000 (UTC)
+X-FDA: 85406152272.03.49226F9
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 8991820006
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:35:34 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=NqZQqOUt;
+	spf=pass (imf03.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794004534;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7km9XbIZetC0r5re3sewHW/q1xGLE5OrcXCR5UGQTt8=;
-	b=y1gRZKDtYgyFAhcsApkAZoh5Mw3vR+X6K7Cmunim/0cyKUaAFBlYTl9CirgLSWGoLUfxdT
-	ayyu1Vf4PlBnZcEvZ40xf+0n80lzo1JA3nkl7a+bjASsSTGqlBknSTntPCfyouakDeg3Ac
-	5OV0u11fjZVS1ziBrblcsrZ4pBlyDA4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794004251;
-	b=veC+tZmCESPd399AJRbyplvx2OKDe8UJ6ZfO/tkZPfK8Rb8y3XajZwT5xZVjW6UEhW2hoz
-	97k3XcUgEmTYbw+pnozmQRd/NW1xL99YX1V6qOieXAqpHIBaRboGLkIIs6E4m0wzrq2tOX
-	UZNg3Je7RbzRIMMbt2/BBl/nuJaimno=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=M09S19cX;
-	spf=pass (imf01.hostedemail.com: domain of fvdl@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=fvdl@google.com;
-	dmarc=pass (policy=reject) header.from=google.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5383c97c8cfso8951cf.1
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 14:30:51 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794004251; cv=none;
-        d=google.com; s=arc-20260327;
-        b=kS1qVzfgiG67Hiz6C4Rrzo790X/NV7xRjljB5ar/AN1kG2izxmZrqvwqg8V9Q2tDLg
-         Gfy4F6LW/n6f3hAUpIMB5YYNwV6t9rpV0Vvqw+6meVITv5cAUQo+c8R+CgAmG9UwzR9v
-         HxPwPEoGJHAyFd4BaXKpJ7HwuaIEyq82DZ9LaxRSWuJNH2qzwY6F1V5ULL4dxDKy+mSk
-         tV7qs+a0pEF3Q1zQqgkfVZ3ldn5nOjZgO2eC77/OQKMhk4CCcXNHoEU4LXTE911HpIWa
-         upk/3e8jcdxGdh9inp/Ts5F2ZdSNqkgmofSYA1500omp5tgI81pHlS/bonUHx8JwtPYp
-         4sBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7km9XbIZetC0r5re3sewHW/q1xGLE5OrcXCR5UGQTt8=;
-        fh=UXquDCMSsfOQyXrFf9Jmfq+pbqGMY9llI0/HwPI6csI=;
-        b=lrC67sp0vmPWdyL+euda34811+pXLYNqCPpMuOG6LRWgCTN1ZXVSP/+RztswHyCxJL
-         i6WcERfDN7xKICHvkiqyinqQaBoDpdcp1fueSMPv2QqSmYQTXHPDW43/1XCJdyv7NiE4
-         R7OLJb9pTkrLv2IUiix22vpAdnz7QuOG9QPVvPcBhWcBXEHL7XEQ0VeEsX0lV4ftsvyY
-         2aYENGCGty1IWZRdIFwR8tVq4WkZDQCcGPVRES8ZhBtb/M9PU8AoHuuZpj7O9/4tiTsF
-         JuhsqXSlJSzPo9Pf1m5EWV9kmVn3ihnayyWLlX1X29GsTs5Kwu1oqfrin2EwbVSDy7oG
-         12Mw==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	bh=BwjRA8ftZApzwOyImkXY8LHZEAElz+0AJdwAhV3strc=;
+	b=gKpr+AKx0BiB7lcKMgQSNIkztDasO/s8fvgKcMZR9rFinqkaJUe7WguaBiTegD91H/NCpE
+	aTgs9jfTHeXfzyLZvbcN+AY3ntrtPFVYiJy/fkrd7ckLPll8dAH2TJzXuQwiy6ZaCcp6oR
+	nFIN7+a3OHmqAWL8qv8G4B9HH2LO3tg=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794004534;
+	b=bm1svlLzF2JicgCLN1ajYWdkC79RsZoQXAF3ZJquZCdm6Z9IT63niQ70VCtVLpzLSKx+pp
+	qQm2nhkfG5p7If0swZGsd1Cmc4a9YVPNIKd9tgPJIWJ+B10Gg0FPCCXLfvymHOkpDleOul
+	C4W+/FrLMQIebzkFmTwhkbGg5RX9vjQ=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=NqZQqOUt;
+	spf=pass (imf03.hostedemail.com: domain of skhawaja@google.com designates 209.85.214.170 as permitted sender) smtp.mailfrom=skhawaja@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ed3f563739so12085ad.0
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 14:35:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794004251; x=1794609051; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+        d=google.com; s=20260707; t=1794004533; x=1794609333; darn=kvack.org;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=7km9XbIZetC0r5re3sewHW/q1xGLE5OrcXCR5UGQTt8=;
-        b=M09S19cXlKbP1xjK11jBwWJ3vWFFs/jDvhekovHJq20Ao37rOkHW2ydwJdzrdy46KM
-         tqkGQqCNktFfzIPgBc6B0Oo1ilMZLcwBXRltkcfzQucHDqk1P8fm4UibO29tbl3pnYNs
-         1bl+SIoWX8buHs0VL5tpKSAUGvlzCeQysM8OYnXSzR7B3RdVRv5TJUt6UDNCymZTq1as
-         MLsPieVoLY174h2AnGSkmAiyiZMB1xsO7xty6RMFSGaQw/WOOKH17sxqUhNuhqgo7VtG
-         PlJqHSQfDJJKHEqEtDpkoZa5yytQZELf/0IDKDIVUZapZePxyxZuSjKz4jnDEgu5t4V5
-         Ti+g==
+        bh=BwjRA8ftZApzwOyImkXY8LHZEAElz+0AJdwAhV3strc=;
+        b=NqZQqOUthW2y+72BE/C+LIFYMU/S+WBwwrOfTiDFwrm+vBDSU0c4QGL8f5FhJwC58k
+         fzX/Q91QSSbunADrVVMSpLMYP0ircOi3sbC0eeeuGXHNS6Zc6F1UvDzC+LCM3IRIL3X3
+         NCDU4e6AHriDzP2IJ98wxu+fSjBl8p1v7BIJK1zPiM8180trDQZ4iBoAN2M3UD4jIHMt
+         Yev8TT6n5TXJ/icc9cyReujetHAJnkLx/Da92KW9Q2gA6KB7LIkl/RMdyM4voV8J9j7g
+         OBswY+EKu1jR1H97HdPc0Q7qPacNT+WhShgu7CJbkioKIwpolvkTj7Sq0FBbEsJUWvOl
+         Be0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794004251; x=1794609051;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
+        d=1e100.net; s=20260707; t=1794004533; x=1794609333;
+        h=in-reply-to:content-disposition:content-type:mime-version
+         :references:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=7km9XbIZetC0r5re3sewHW/q1xGLE5OrcXCR5UGQTt8=;
-        b=FJVKAvgWs921OCu3lr/61z6wAGN32XpJsBW0NIgM+PL9rWS7E87MuUOn+ORU1s/IQ3
-         +VibnG3wzE7ZikdF5dPhzjd7BEpG7moPm/kivpyfHnRb5cDzKMV5Z5BaxeyyJnkXXanu
-         x9jfXS4GxH8seSfoTgHoU8U3zgpZ2DKHcZ7mSl1wSsfE4hps+BVAVYLrfpKfDG2q7wDv
-         82AlISzo88YFZvsxX4oHgsOex0gFtYxcfIU+b30grUde+ZTpMzPNoY6YkJI3vN0xUels
-         HHWLSyPWd04lr15JRcoUFRGvgDR6WF/Kz3o5n2RoAkTiSm5YBOdPYFn+3QDEtJi8ZXuX
-         WUkw==
-X-Forwarded-Encrypted: i=1; AKwUvBxXn6yv6NQ/JJa9/brZRCf5aRf3bXaVZY5M70yOM3JcOq6oxsqrx8zgsRLdqsRc1K8xUbRkiKR8Ag==@kvack.org
-X-Gm-Message-State: APuU4Z/AQZvSo6PBAN/u+rUVkkdlv4vXr843KSK7u0VkoNfA287LBw8s
-	U1YO66q0Tq4+Na4fuxo5Q6h48GHiOleGTFHxFQ/K3DPpGQwQ+KO7luUts7Xq6DfFIfsd5SPLC+z
-	5AGWE9YCLyscKxtTIzky/SMM+JfiV6fyP6O4E7Vix
-X-Gm-Gg: AYBFou1lYXCxd+TPQGXA7kcWb+H+lnOcNKm3+CaLk8UiI1R0UQuRLY/6GqRVporbHYK
-	gEcyRS1jfYagKYuhjwyUmHkcJY0qJ/5gAZJaDlc7uexOLbp/gDOe6PfPRwQKrB7+p5BDLbA9LHC
-	rkJUvKEeD9XmNfrIAQoZVvEPcd8xngSnqBWu4QwMcc/LsBhOmQzywE69FkN+MsTjVmtAMYjTx3G
-	b4hZ073E91xUz9UH2UIYx52NrFBz/0E9h65OJ6+4b5VDzrcnFHsOHISF74+zJd8BEKqQp2bYJkC
-	1sGAHmhYT6ZKASV+7JOetTMyiYMwlkc40nt4NVdKAWmgMbXpDZGKAtRS/ZKIRnkE0aaKDDsf6jd
-	UA/gSf6am9+AGAjxVT6V8rJa5B2WHxP9K7Qg1
-X-Received: by 2002:ac8:6f10:0:b0:52f:8389:29e0 with SMTP id
- d75a77b69052e-54f9ab01486mr4142751cf.0.1794004249631; Fri, 06 Nov 2026
- 14:30:49 -0800 (PST)
+        bh=BwjRA8ftZApzwOyImkXY8LHZEAElz+0AJdwAhV3strc=;
+        b=HXisNuVmxDVW5F115FG1LAAI9HEVTqO6oRTZbkIRh4yD/OoMgFr9u2NAaQURqlKcIa
+         OMqHJJoPmlGVzsQDxsMCmOnEtJ37VVhrMdZLeWIFNBJcsZ7Q08+wg6pUfGCdevGPneiw
+         E3R4AZTeU37R/Cybsw70AxQP9AuuuOZC4gF+F3bWHn7gtmj5UL8IofiQdotBxWN3V8iS
+         WZP6agdoBj/VlLAwPSJP8ujMhOAO4zUQ1SXULVHxgCkXCM0kpSHRijGaE/3Jmw1Pav0o
+         /mXzTdJ0S9Qu5Dw7w4TO1KTV/IMNA9z50jfBWsrYX1jKbkf4POs77p+AiO+GlZU5Sfcf
+         7Q0g==
+X-Forwarded-Encrypted: i=1; AL+hErHwxTf1FBTQoHs9aCm9ImbzFGV+9FCTqyzUpqC8Zkp+VvJBMLhVqHE1BqfCO65Maye6Jl/Vx8gfjQ==@kvack.org
+X-Gm-Message-State: APuU4Z/mAFVcbEXo7wOBTsieIf21ZtC92xPTXVKJ39ljtmpmSpDDcC70
+	5SKkmT0G6Q5+Zy/qEPY29r4VmKyOP+JiFTzP8gQdjd3Agzmb2jybF9vjv0H3JJavWA==
+X-Gm-Gg: AYBFou1gGw+ykawY6Wi+pa0dpVjvV/AdG44I7Pp8qZzDxeCM+YNMo2ZxRfVYb4ttIBU
+	slv4gNGKeqtpxLw9XUxj6wlHxzz4gWqjkdkZyjXcJ++TBG0/2I8GRve+9xJZtEPZpesZCD6o7W/
+	ggVposMGmdDGC8aT77LU8+lZOIvsqTmhiJ21PHCdx76un3Xgl3WW7YUgeKIdRurqJkBsEzi34Or
+	3sXkpK3Tr8WG03RSwlfhQq1Ql+huq9pKs+jVC0nh2Hy71WZpSKJ/i7JIjFL7HNnFY9Vgp5696hM
+	ZjRmshXmeHXvK3dMNB3/tGfgVyHPEjKIhVdpL11sDW712IvupPLNV1zrScGJtNQYePkLPub6i/s
+	AOGSQ0Kxkxd8/8OB+/SJaTKRVMlqAPfD9jJt7ddj83Kx0oXlIEeOP25IAz2684d3va+wd+Gaosb
+	MTtb8/5S66PhQrtPheBvz9+2oekj3j8HWkhLH4evUB8iLUU/1/SaWOst+Uktp3D2px933m+bKY+
+	8toj/aVBidjdVTAOCoOtGA3afC4mDQ2aYJjtV2+VUdV9Xa5YZUx3xoQ2MoCPtxY1STOIjBUmDFN
+	YdwttITX4H785EmT0W4IbzmMVo62LqkyXWPVtaUkj4E0nwA8+f4woGuRGbiDNM7CVDSMumLlC9p
+	qdt1NyPCgmlTRYotTCmlg
+X-Received: by 2002:a17:902:e80e:b0:2ea:1079:e519 with SMTP id d9443c01a7336-2ed6a97c2c6mr202835ad.17.1794004532665;
+        Fri, 06 Nov 2026 14:35:32 -0800 (PST)
+Received: from google.com (25.75.145.34.bc.googleusercontent.com. [34.145.75.25])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b103435561sm482994a91.3.2026.11.06.14.35.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 14:35:31 -0800 (PST)
+Date: Fri, 6 Nov 2026 22:35:27 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Vipin Sharma <vipinsh@google.com>
+Cc: kexec@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, ajayachandra@nvidia.com, 
+	alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, apopple@nvidia.com, 
+	bhelgaas@google.com, chrisl@kernel.org, christian.koenig@amd.com, corbet@lwn.net, 
+	dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, 
+	jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com, kees@kernel.org, 
+	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
+	mattev@meta.com, michal.winiarski@intel.com, parav@nvidia.com, 
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
+	rdunlap@infradead.org, rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
+	saeedm@nvidia.com, schnelle@linux.ibm.com, skhan@linuxfoundation.org, 
+	vivek.kasireddy@intel.com, witu@nvidia.com, yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v6 07/27] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <au5VMy7zhOb65xIE@google.com>
+References: <20261102153656.1431701-1-vipinsh@google.com>
+ <20261102153656.1431701-8-vipinsh@google.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261106-cma-multi-v1-1-054eae6e2c1c@kernel.org>
-In-Reply-To: <20261106-cma-multi-v1-1-054eae6e2c1c@kernel.org>
-From: Frank van der Linden <fvdl@google.com>
-Date: Fri, 6 Nov 2026 14:30:38 -0800
-X-Gm-Features: AclHuK90lFsqv1keBn7-ZLmlCrya18UgcO7zKAXShu8o4byRhpln0OSfr_V_EHM
-Message-ID: <CAPTztWYzN1mkADOAJ3bskqpsv9c7qXNSMUdj_Ovg-aDQJDDmow@mail.gmail.com>
-Subject: Re: [PATCH] mm/cma: simplify cma_declare_contiguous_multi()
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
-	Ivy Lopez <skunkolee@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8AD4240010
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20261102153656.1431701-8-vipinsh@google.com>
 X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-Stat-Signature: yygutfbqy15msgu4ywuog48zmtrpu8qp
+X-Rspamd-Server: rspam09
+X-Stat-Signature: 77i73d7umk3pwu8g4refdppm8zcbz95c
+X-Rspamd-Queue-Id: 8991820006
 X-Rspam-User: 
-X-HE-Tag: 1794004251-948463
-X-HE-Meta: U2FsdGVkX1+Y4PqW1fcBpOqLDl9HrUH69+0wWZ1aR99Kme3YQ32g/exTsOoz8bVprqiJPHVoQdebVNXWgyNBt9HayswCCF+Q8i/c5RK7OCt5/2kPXJc9iu2f6l9vpRI9xlO2i+NsaQ6Na+aqjiTcoCga2vuIOLL91pY1bAaSiS86KJ9hYgMaDTx2AfBqhpA0pzupFCoLFqckXbYzoeCNfygUJKz5sPEatNHKhGtrVk9gs2CasSwTfytVADFID6ihmW0Xg0m0i1FDPApXcmnl3oIBD2Ps7PYXEV22BC9ARR9UQLzWlLtHZNeNgK9G5CEaC3r8LnZq1BryCVkLpaUoW2SFraDuFrwq3+jmLCy7BEI1KfjUl5mwCidopADX7A+jILqg/rdx3Vt0TgqPofZJZPDMGNy62zhurOHRYjYHAazs3AzPK9QcasuO3iMcfllOYY21y+TnFBM2TskeE0pT0RPCikgvkyxq2iH7ukHT6XJrR1OMmaPk0jzrXDKR0j+70rz+meps4h7uaMMWJABN/NJXCI7OIrqV0+Ee8MU+SbkQZul3dIV6mr3TQbTDhAjzRhtke3NYvO5UIu3pXlvQwk9NzJbHB50E6yJ3fr2Cw/8u9fph1vCpOmTMCraP1qHqBwsEOhIAKUn8qHG5AOBRn5KUxzE5P7t4vKd9TLmjjRhCBsqlu6HuVl8uleVUGTjlmB3jXL1QhAFBh5rvq83HctYMaVBpGsczx57cnmtJLO5QerW5FGaY8XCCgN6VxplefvNJhgE5GF+/r2/J2XDnDHtlyRFL/+mGnk+7y+B+WG+QkfXllYXXMxuCq5MwovJYQrDnzm9rTpMuRp/cv0L+f+ReigN6aB/S96MGFiIEF49BSrRliKOCd3jl9HQe7E7lYlqqWmTvlPSc7bkzNf+rUQCSXJOt0R9DXgxHTzG3NUO3eVoITRWvFqWmaBj1/M19aYaP4zhGwSUDxk3mWO4
- 6/KVfVDL
- MCqd5J4XKNcG4w4zjapFsDRhXeVbBeMhet3s42T2P8l4qiihcy2j1o38wgKkc1+Ip+OHjqh/p+AaNAGAoGgy3ND2bqNagrPODZO8vNKJ83ZMvAt8QldDUZ9DoyvR/7SmThmurbsyRclKl3RhSjy3LoV301xIZ65XV9RFIzY1UE4SrSWC2d2mlN2tkorQZRcGf7gvw962DQhJDvr41pzjOTRppbYFS2PApGWIfkJzf+yVjrY0xB23sdwx0W1CMqhHwQWAW65EmYf8vtg9Ee1Lp1x9oOFADIyeyJkUI43NyTUym3VQvA1CIWgj24iW7wmoDJRRPhS9n5mYB4rw=
+X-HE-Tag: 1794004534-917642
+X-HE-Meta: U2FsdGVkX1/NmfcnabyN6alSSbaybSwJS/dsisxC+rs6hVmnh0yNx0+iBUtjuXGVh3HwxS71Q7WezpTZeI+VpAyqzgHfrXns/jdHa2orCKKISXCTqQFZcOxzhNAWuZ8HvRt2fpEqpgY5tcPBxGAxsU0PVjFiQLkdWQwOTRIHjce0vSB9uKWL4MgxNgnSlrCvgISPbzVaRMuHaqkcb+jdHJigNta4IwJdbDaixd5BlsA8Zj89ixyKUxVtbKXRsJwPIFvOLSj1xWoYrWPTUO/JG/ErfsKcDaI7neEDclv1hvxF6zFCCcLSaHCOap40wTNCR+q3xvHHAxFwAYvlpgyBU6VDVs5Z6xxOrprZxUiDXq9YAx2K2iPfvnGyhYmTC16ROB8vxP9zNZxUmAdGzpucqZof+BodXPulPkcv/1rRFuJmtn2QIFSxs51rCIM/uWQ/HnNHVnSYJIpktbwa6csGBEwXJ3OTxOu7pb6ZS7O6C6zkuW90+AZIkv0Ngg6YCVMGTGSPw7BHQwRx5VVg55oDRp1s0776IbfHcmw3Z3UubM5MbTuxLFiMUdi6vOS/dW9g9iQY6aU6EiTRF+6StoIWZHjwzctfm+p+1cQzlFGB2tvmRL5MVLX8IFB+FYlV2CfReBe/JPl8vrm6IRvWQffV5klxGyV1ZJju55LvHHKz3z2mjx9nIBFOf+xRq4MkF883rMSi+r7l2BUEKzAPi0Et68VWNwT00GJ++XW1isVDUTTn9kZsc2hbccUizQLLbx5F2i51ywELBQZeBwfy6MylqzW/Pjl/O2yOBrKvEnfCT0846cjrzylm+p3RJXcA1sBLhdSR30eOPoDG7ymZHFbwl05LQzUfastNoqL1Of6r3y5S4wJiooEYWolzNr8MIMNT00JKwwC0ddEiLtzwUGrEJfM00WUMxbGyjjWIhgaW7PoeFofvkgNx0vPnOAnDsBGBPOpw1gYse/TkPgTLui1
+ Zsm0peFk
+ m4yDkLwEQ37306J2pJl6pSeQkaBmsDkn5zizGVBevdcHk2g6JDsHymWmGE+MEpoeTfvesP+nk60rvQ1dDcJBbnpk6rzA8bQfXLgcyd/tdt5/Ttyb/QShJzopeGyA8G114JNuiiQ+5K/nNC2/H/zbkF6nRDZpO8l64iy17l2KA5z6QPygIJ4sit8wpuvAXIg10uA0DDVRQjqqTwcz+6G63f0nCU2LnYkptTMZnsq/ZEln3sYlQ1q5A4PcvDm1sCmzGot8DESvmJlDAHV+hriFlKIrkVyDcpdnqXedEHqT6VUfYILp7cMQxy1rytlOYqy4ilv0XdD5gTR687C6wNEEbNtvweYozbu/Z/Ay+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,428 +138,174 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 4:56=E2=80=AFAM Mike Rapoport (Microsoft)
-<rppt@kernel.org> wrote:
+On Mon, Nov 02, 2026 at 07:36:36AM -0800, Vipin Sharma wrote:
+>Implement the Live Update file handler callbacks to preserve a vfio-pci
+>device in noiommu mode across a Live Update while keeping it running
+>across kexec. Subsequent commits will enable userspace to retrieve and
+>take over this file after the Live Update.
 >
-> When cma_declare_contiguous_multi() cannot allocate a CMA area as a
-> single range, it falls back to collecting a list of up to CMA_MAX_RANGES
-> largest free ranges above 4G, reserves them in memblock and adds them to
-> cma->ranges.
+>State about each device is serialized into struct vfio_pci_core_device_ser
+>using Kexec-Handover (KHO) to preserve the pages holding the struct and
+>the Live Update Orchestrator (LUO) to preserve the physical address of
+>the struct.
 >
-> The list and subsequently cma->ranges are supposed to be sorted in the
-> order of base addresses of the "allocated" ranges.
+>Key design notes and constraints:
 >
-> This implementation has two bugs:
+> * Noiommu-only policy and bound cdev requirement: can_preserve() verifies
+>   that the preserved file is a bound vfio-pci cdev file descriptor via
+>   vfio_file_is_bound_cdev(), and preserve() requires the device to be in
+>   noiommu mode via vfio_device_is_noiommu() (returning -EOPNOTSUPP
+>   otherwise). CONFIG_VFIO_PCI_LIVEUPDATE now depends on
+>   CONFIG_VFIO_DEVICE_CDEV and CONFIG_VFIO_NOIOMMU.
 >
-> * The allocation may fail even when there is enough free memory because
->   list_insert_sorted() sorts the list in the wrong order.
+> * Serialized state: During preserve(), serialize the PCI domain, BDF,
+>   config space size, reset_works flag, and the initial pci_saved_state
+>   captured when the device was first opened. During freeze(), snapshot
+>   the virtualized PCI config space (vconfig) and capability map
+>   (pci_config_map).
 >
->   When the list is full, the largest range is evicted rather than the
->   smallest, the final list is not sorted by address, and the smallest
->   ranges are used first.
+> * Keep-running freeze and unfreeze: Do not reset the device, clear
+>   PCI_COMMAND_MASTER, zap BAR mappings, or revoke dma-bufs during
+>   freeze(). Validate that VFIO interrupts are disabled, that the device
+>   is in PCI_D0 (and not in VFIO runtime PM low-power mode), and that
+>   SR-IOV is not enabled, as VFs are not preserved and the next kernel
+>   disables SR-IOV on the running device. Then mask physical INTx
+>   (recording the prior state) and mark the device frozen. If the
+>   Live Update is aborted after freeze(), unfreeze() restores the physical
+>   INTx state and clears liveupdate_frozen so the existing FD remains
+>   usable.
 >
-> * the function may report success while it reserved less memory than
->   requested because sizesum accounts for ranges that were skipped.
+> * TOCTOU synchronization: vfio_pci_dev_is_frozen() is checked locklessly
+>   on entry to the ioctl, read/write and mmap paths, and re-checked under
+>   a lock that freeze() holds before any operation that could change the
+>   device or vconfig: under vdev->igate in vfio_pci_ioctl_set_irqs() and
+>   around every config-space write in vfio_pci_config_rw_single(), under
+>   vdev->memory_lock in vfio_pci_runtime_pm_entry(),
+>   vfio_pci_ioctl_reset() and the SR-IOV enable path of
+>   vfio_pci_core_sriov_configure(), and under dev_set->lock in
+>   vfio_pci_dev_set_hot_reset(). A racing operation thus either completes
+>   before freeze() takes its snapshot or fails, while existing BAR mmaps,
+>   ioeventfds and dma-bufs keep working. Serializing config writes on
+>   igate covers the PCI_COMMAND, INTx disable emulation, power state and
+>   FLR paths at one point (the INTx disable emulation now uses the
+>   igate-held __vfio_pci_intx_mask() and __vfio_pci_intx_unmask()
+>   helpers), and also serializes the irq_type and virq_disabled accesses
+>   of config writes with VFIO_DEVICE_SET_IRQS.
 >
-> And overall it is a lot of list management and open coded range
-> selection for no real gain.
->
-> Replace the current code with a loop that finds the largest free range
-> above 4G, reserves as much of it as needed and repeats until the entire
-> area is reserved or CMA_MAX_RANGES ranges are used.
->
-> After successful alocation sort the cma->ranges by their base address.
->
-> The new code scans free memory once for every range rather than once
-> for all ranges, so it is slightly slower, but it is way simpler and more
-> robust.
->
-> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if req=
-uested")
-> Reported-by: Ivy Lopez <skunkolee@gmail.com>
-> Closes: https://lore.kernel.org/all/cover.1792032699.git.skunkolee@gmail.=
-com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
->  mm/cma.c | 265 +++++++++++++++++++--------------------------------------=
-------
->  1 file changed, 77 insertions(+), 188 deletions(-)
->
-> diff --git a/mm/cma.c b/mm/cma.c
-> index f61d52796f4ef..ef0c49985067d 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -23,8 +23,8 @@
->  #include <linux/sizes.h>
->  #include <linux/slab.h>
->  #include <linux/string.h>
-> -#include <linux/string_choices.h>
->  #include <linux/log2.h>
-> +#include <linux/sort.h>
->  #include <linux/cma.h>
->  #include <linux/highmem.h>
->  #include <linux/io.h>
-> @@ -310,56 +310,6 @@ int __init cma_init_reserved_mem(phys_addr_t base, p=
-hys_addr_t size,
->         return 0;
->  }
->
-> -/*
-> - * Structure used while walking physical memory ranges and finding out
-> - * which one(s) to use for a CMA area.
-> - */
-> -struct cma_init_memrange {
-> -       phys_addr_t base;
-> -       phys_addr_t size;
-> -       struct list_head list;
-> -};
-> -
-> -/*
-> - * Work array used during CMA initialization.
-> - */
-> -static struct cma_init_memrange memranges[CMA_MAX_RANGES] __initdata;
-> -
-> -static bool __init revsizecmp(struct cma_init_memrange *mlp,
-> -                             struct cma_init_memrange *mrp)
-> -{
-> -       return mlp->size > mrp->size;
-> -}
-> -
-> -static bool __init basecmp(struct cma_init_memrange *mlp,
-> -                          struct cma_init_memrange *mrp)
-> -{
-> -       return mlp->base < mrp->base;
-> -}
-> -
-> -/*
-> - * Helper function to create sorted lists.
-> - */
-> -static void __init list_insert_sorted(
-> -       struct list_head *ranges,
-> -       struct cma_init_memrange *mrp,
-> -       bool (*cmp)(struct cma_init_memrange *lh, struct cma_init_memrang=
-e *rh))
-> -{
-> -       struct list_head *mp;
-> -       struct cma_init_memrange *mlp;
-> -
-> -       if (list_empty(ranges))
-> -               list_add(&mrp->list, ranges);
-> -       else {
-> -               list_for_each(mp, ranges) {
-> -                       mlp =3D list_entry(mp, struct cma_init_memrange, =
-list);
-> -                       if (cmp(mlp, mrp))
-> -                               break;
-> -               }
-> -               __list_add(&mrp->list, mlp->list.prev, &mlp->list);
-> -       }
-> -}
-> -
->  static int __init cma_fixed_reserve(phys_addr_t base, phys_addr_t size)
->  {
->         if (IS_ENABLED(CONFIG_HIGHMEM)) {
-> @@ -524,37 +474,71 @@ static int __init __cma_declare_contiguous_nid(phys=
-_addr_t *basep,
->         return 0;
->  }
->
-> +/*
-> + * Find the largest free range above 4G that can hold a part of a multi-=
-range
-> + * CMA area.
-> + */
-> +static phys_addr_t __init cma_find_free_range(phys_addr_t align,
-> +               phys_addr_t size_align, int nid, phys_addr_t *basep)
-> +{
-> +       phys_addr_t start, end, size;
-> +       phys_addr_t max =3D 0;
-> +       u64 i;
-> +
-> +       for_each_free_mem_range(i, nid, MEMBLOCK_NONE, &start, &end, NULL=
-) {
-> +               if (start < SZ_4G)
-> +                       continue;
-> +
-> +               start =3D ALIGN(start, align);
-> +               if (start >=3D end)
-> +                       continue;
-> +
-> +               size =3D ALIGN_DOWN(end - start, size_align);
-> +               if (size > max) {
-> +                       max =3D size;
-> +                       *basep =3D start;
-> +               }
-> +       }
-> +
-> +       return max;
-> +}
-> +
-> +static int __init cma_range_cmp(const void *a, const void *b)
-> +{
-> +       const struct cma_memrange *cmr_a =3D a;
-> +       const struct cma_memrange *cmr_b =3D b;
-> +
-> +       return cmp_int(cmr_a->base_pfn, cmr_b->base_pfn);
-> +}
-> +
->  /*
->   * Create CMA areas with a total size of @total_size. A normal allocatio=
-n
-> - * for one area is tried first. If that fails, the biggest memblock
-> - * ranges above 4G are selected, and allocated bottom up.
-> - *
-> - * The complexity here is not great, but this function will only be
-> - * called during boot, and the lists operated on have fewer than
-> - * CMA_MAX_RANGES elements (default value: 8).
-> + * for one area is tried first. If that fails, the area is assembled fro=
-m
-> + * up to CMA_MAX_RANGES of the biggest free memblock ranges above 4G.
->   */
->  int __init cma_declare_contiguous_multi(phys_addr_t total_size,
->                         phys_addr_t align, unsigned int order_per_bit,
->                         const char *name, struct cma **res_cma, int nid)
->  {
-> -       phys_addr_t start =3D 0, end;
-> -       phys_addr_t size, sizesum, sizeleft;
-> -       struct cma_init_memrange *mrp, *mlp, *failed;
-> +       unsigned long size_mb =3D (unsigned long)total_size / SZ_1M;
-> +       phys_addr_t size, remaining, size_align;
->         struct cma_memrange *cmrp;
-> -       LIST_HEAD(ranges);
-> -       LIST_HEAD(final_ranges);
-> -       struct list_head *mp, *next;
-> -       int ret, nr =3D 1;
-> -       u64 i;
-> +       phys_addr_t start =3D 0;
->         struct cma *cma;
-> +       int nr =3D 0;
-> +       int ret;
->
->         /*
->          * First, try it the normal way, producing just one range.
->          */
->         ret =3D __cma_declare_contiguous_nid(&start, total_size, 0, align=
-,
->                         order_per_bit, false, name, res_cma, nid);
-> +       if (!ret) {
-> +               pr_info("Reserved %lu MiB at %pa\n", size_mb, &start);
-> +               return 0;
-> +       }
->         if (ret !=3D -ENOMEM)
-> -               goto out;
-> +               goto err;
->
->         /*
->          * Couldn't find one range that fits our needs, so try multiple
-> @@ -572,151 +556,56 @@ int __init cma_declare_contiguous_multi(phys_addr_=
-t total_size,
->          * aligned to @align, and a size that is aligned to
->          * both @align and @order_to_bit, things will work out.
->          */
-> -       nr =3D 0;
-> -       sizesum =3D 0;
-> -       failed =3D NULL;
-> -
->         ret =3D cma_new_area(name, total_size, order_per_bit, &cma);
-> -       if (ret !=3D 0)
-> -               goto out;
-> +       if (ret)
-> +               goto err;
->
->         align =3D max_t(phys_addr_t, align, CMA_MIN_ALIGNMENT_BYTES);
-> -       /*
-> -        * Create a list of ranges above 4G, largest range first.
-> -        */
-> -       for_each_free_mem_range(i, nid, MEMBLOCK_NONE, &start, &end, NULL=
-) {
-> -               if (upper_32_bits(start) =3D=3D 0)
-> -                       continue;
-> -
-> -               start =3D ALIGN(start, align);
-> -               if (start >=3D end)
-> -                       continue;
-> -
-> -               end =3D ALIGN_DOWN(end, align);
-> -               if (end <=3D start)
-> -                       continue;
-> +       size_align =3D max_t(phys_addr_t, align, PAGE_SIZE << order_per_b=
-it);
->
-> -               size =3D end - start;
-> -               size =3D ALIGN_DOWN(size, (PAGE_SIZE << order_per_bit));
-> +       remaining =3D total_size;
-> +       while (remaining && nr < CMA_MAX_RANGES) {
-> +               size =3D cma_find_free_range(align, size_align, nid, &sta=
-rt);
->                 if (!size)
-> -                       continue;
-> -               sizesum +=3D size;
-> -
-> -               pr_debug("consider %016llx - %016llx\n", (u64)start, (u64=
-)end);
-> -
-> -               /*
-> -                * If we don't yet have used the maximum number of
-> -                * areas, grab a new one.
-> -                *
-> -                * If we can't use anymore, see if this range is not
-> -                * smaller than the smallest one already recorded. If
-> -                * not, re-use the smallest element.
-> -                */
-> -               if (nr < CMA_MAX_RANGES)
-> -                       mrp =3D &memranges[nr++];
-> -               else {
-> -                       mrp =3D list_last_entry(&ranges,
-> -                                             struct cma_init_memrange, l=
-ist);
-> -                       if (size < mrp->size)
-> -                               continue;
-> -                       list_del(&mrp->list);
-> -                       sizesum -=3D mrp->size;
-> -                       pr_debug("deleted %016llx - %016llx from the list=
-\n",
-> -                               (u64)mrp->base, (u64)mrp->base + size);
-> -               }
-> -               mrp->base =3D start;
-> -               mrp->size =3D size;
-> -
-> -               /*
-> -                * Now do a sorted insert.
-> -                */
-> -               list_insert_sorted(&ranges, mrp, revsizecmp);
-> -               pr_debug("added %016llx - %016llx to the list\n",
-> -                   (u64)mrp->base, (u64)mrp->base + size);
-> -               pr_debug("total size now %llu\n", (u64)sizesum);
-> -       }
-> -
-> -       /*
-> -        * There is not enough room in the CMA_MAX_RANGES largest
-> -        * ranges, so bail out.
-> -        */
-> -       if (sizesum < total_size) {
-> -               cma_drop_area(cma);
-> -               ret =3D -ENOMEM;
-> -               goto out;
-> -       }
-> -
-> -       /*
-> -        * Found ranges that provide enough combined space.
-> -        * Now, sorted them by address, smallest first, because we
-> -        * want to mimic a bottom-up memblock allocation.
-> -        */
-> -       sizesum =3D 0;
-> -       list_for_each_safe(mp, next, &ranges) {
-> -               mlp =3D list_entry(mp, struct cma_init_memrange, list);
-> -               list_del(mp);
-> -               list_insert_sorted(&final_ranges, mlp, basecmp);
-> -               sizesum +=3D mlp->size;
-> -               if (sizesum >=3D total_size)
->                         break;
-> -       }
->
-> -       /*
-> -        * Walk the final list, and add a CMA range for
-> -        * each range, possibly not using the last one fully.
-> -        */
-> -       nr =3D 0;
-> -       sizeleft =3D total_size;
-> -       list_for_each(mp, &final_ranges) {
-> -               mlp =3D list_entry(mp, struct cma_init_memrange, list);
-> -               size =3D min(sizeleft, mlp->size);
-> -               if (memblock_reserve(mlp->base, size)) {
-> -                       /*
-> -                        * Unexpected error. Could go on to
-> -                        * the next one, but just abort to
-> -                        * be safe.
-> -                        */
-> -                       failed =3D mlp;
-> +               size =3D min(size, remaining);
-> +               if (memblock_reserve(start, size))
->                         break;
-> -               }
-> -
-> -               accept_memory(mlp->base, size);
-> +               accept_memory(start, size);
->
->                 pr_debug("created region %d: %016llx - %016llx\n",
-> -                   nr, (u64)mlp->base, (u64)mlp->base + size);
-> +                   nr, (u64)start, (u64)start + size);
->                 cmrp =3D &cma->ranges[nr++];
-> -               cmrp->base_pfn =3D PHYS_PFN(mlp->base);
-> +               cmrp->base_pfn =3D PHYS_PFN(start);
->                 cmrp->early_pfn =3D cmrp->base_pfn;
->                 cmrp->count =3D size >> PAGE_SHIFT;
->
-> -               sizeleft -=3D size;
-> -               if (sizeleft =3D=3D 0)
-> -                       break;
-> +               remaining -=3D size;
->         }
->
-> -       if (failed) {
-> -               list_for_each(mp, &final_ranges) {
-> -                       mlp =3D list_entry(mp, struct cma_init_memrange, =
-list);
-> -                       if (mlp =3D=3D failed)
-> -                               break;
-> -                       memblock_phys_free(mlp->base, mlp->size);
-> -               }
-> -               cma_drop_area(cma);
-> +       if (remaining) {
->                 ret =3D -ENOMEM;
-> -               goto out;
-> +               goto err_free_ranges;
->         }
->
-> +       /* allocate from lower addresses first */
-> +       sort(cma->ranges, nr, sizeof(cma->ranges[0]), cma_range_cmp, NULL=
-);
-> +
->         cma->nranges =3D nr;
->         cma->nid =3D nid;
->         *res_cma =3D cma;
->
-> -out:
-> -       if (ret !=3D 0)
-> -               pr_err("Failed to reserve %lu MiB\n",
-> -                       (unsigned long)total_size / SZ_1M);
-> -       else
-> -               pr_info("Reserved %lu MiB in %d range%s\n",
-> -                       (unsigned long)total_size / SZ_1M, nr, str_plural=
-(nr));
-> +       pr_info("Reserved %lu MiB in %d ranges\n", size_mb, nr);
-> +       return 0;
-> +
-> +err_free_ranges:
-> +       for (int i =3D 0; i < nr; i++)
-> +               memblock_phys_free(PFN_PHYS(cma->ranges[i].base_pfn),
-> +                                  PFN_PHYS(cma->ranges[i].count));
-> +       cma_drop_area(cma);
-> +err:
-> +       pr_err("Failed to reserve %lu MiB\n", size_mb);
->         return ret;
->  }
->
->
-> ---
-> base-commit: b3710a1d0f145a4f6f1d44fdaff56a6af8cffe89
-> change-id: 20261106-cma-multi-ff88e84bf599
->
-> --
-> Sincerely yours,
-> Mike.
+>Co-developed-by: David Matlack <dmatlack@google.com>
+>Signed-off-by: David Matlack <dmatlack@google.com>
+>Signed-off-by: Vipin Sharma <vipinsh@google.com>
+>---
+> drivers/vfio/pci/Kconfig               |   2 +-
+> drivers/vfio/pci/vfio_pci_config.c     |  19 +-
+> drivers/vfio/pci/vfio_pci_core.c       |  49 +++-
+> drivers/vfio/pci/vfio_pci_intrs.c      |   4 +-
+> drivers/vfio/pci/vfio_pci_liveupdate.c | 303 ++++++++++++++++++++++++-
+> drivers/vfio/pci/vfio_pci_priv.h       |  13 ++
+> include/linux/kho/abi/vfio_pci.h       |  52 ++++-
+> include/linux/vfio_pci_core.h          |   4 +
+> 8 files changed, 434 insertions(+), 12 deletions(-)
 >
 
-Thanks for cleaning this up. You're right, what I did with the list
-sorting was too much, and it contained some bugs too.
+[snip]
 
-Just one remark here: I don't think you need to sort the ranges by
-base address at the end, I am not aware of anything relying on the CMA
-ranges being sorted. The sorting was just there to mimic bottom-up
-memblock allocations while acquiring the ranges, but the eventual
-result doesn't need to be sorted. I'm not aware of any CMA code that
-relies on this.
+>diff --git a/include/linux/kho/abi/vfio_pci.h b/include/linux/kho/abi/vfio_pci.h
+>index 67e8199eec59..725043a44b55 100644
+>--- a/include/linux/kho/abi/vfio_pci.h
+>+++ b/include/linux/kho/abi/vfio_pci.h
+>@@ -9,14 +9,19 @@
+> #ifndef _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
+> #define _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H
+>
+>+#include <linux/bits.h>
+>+#include <linux/compiler.h>
+>+#include <linux/types.h>
+>+
+> /**
+>  * DOC: VFIO PCI Live Update ABI
+>  *
+>  * VFIO uses the ABI defined below for preserving device files across a kexec
+>  * reboot using LUO.
+>  *
+>- * Device metadata is serialized into memory which is then handed to the next
+>- * kernel via KHO.
+>+ * Device metadata, virtualized PCI configuration space, VFIO's capability map,
+>+ * and the initial PCI saved state captured when the device was first opened are
+>+ * serialized into memory which is then handed to the next kernel via KHO.
+>  *
+>  * This interface is a contract. Any modification to any of the serialization
+>  * structs defined here constitutes a breaking change. Such changes require
+>@@ -25,4 +30,47 @@
+>
+> #define VFIO_PCI_LUO_FH_COMPATIBLE "vfio-pci-v1"
+>
+>+/**
+>+ * define VFIO_PCI_SER_RESET_WORKS - Device supports function reset.
+>+ *
+>+ * Set in &vfio_pci_core_device_ser.flags when the preserved device had
+>+ * ``vdev->reset_works == true`` prior to kexec.
+>+ */
+>+#define VFIO_PCI_SER_RESET_WORKS	BIT(0)
+>+
+>+#define VFIO_PCI_SER_KNOWN_FLAGS	VFIO_PCI_SER_RESET_WORKS
+>+
+>+/**
+>+ * struct vfio_pci_core_device_ser - Serialized state of a single VFIO PCI
+>+ * device.
+>+ *
+>+ * @domain: The device's PCI domain number (segment).
+>+ * @bdf: The device's PCI bus, device, and function number.
+>+ * @cfg_size: Size in bytes of the device's PCI configuration space
+>+ *            (``PCI_CFG_SPACE_SIZE`` or ``PCI_CFG_SPACE_EXP_SIZE``).
+>+ * @size: Total size in bytes of this serialized buffer, equal to
+>+ *        ``sizeof(struct vfio_pci_core_device_ser) + 2 * @cfg_size + @saved_state_size``.
+>+ * @flags: Bitmask of ``VFIO_PCI_SER_*`` flags; unknown bits are rejected.
+>+ * @saved_state_size: Size in bytes of the serialized &struct pci_saved_state_ser
+>+ *                    blob stored in @data after ``config_map``, or 0 if none.
+>+ * @reserved: Reserved for future use; must be 0.
+>+ * @data: Variable-length payload containing, in order:
+>+ *        1. ``u8 vconfig[@cfg_size]`` - VFIO virtualized config space snapshot
+>+ *           captured during ``freeze()``.
+>+ *        2. ``u8 config_map[@cfg_size]`` - VFIO capability map snapshot
+>+ *           captured during ``freeze()``.
+>+ *        3. ``u8 saved_state[@saved_state_size]`` - serialized
+>+ *           &struct pci_saved_state_ser captured during ``preserve()``.
+>+ */
+>+struct vfio_pci_core_device_ser {
+>+	u32 domain;
+>+	u16 bdf;
+>+	u16 cfg_size;
+>+	u32 size;
+>+	u32 flags;
+>+	u32 saved_state_size;
 
-- Frank
+We will need space for iommufd_token when we preserve that, we should
+probably add it now as otherwise the compatibility would be broken when
+we add it? Is the reserved here for that?
+>+	u32 reserved;
+>+	u8 data[];
+>+} __packed;
+>+
+> #endif /* _LINUX_LIVEUPDATE_ABI_VFIO_PCI_H */
+>diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+>index 9a1674c152aa..6bae7581f4f4 100644
+>--- a/include/linux/vfio_pci_core.h
+>+++ b/include/linux/vfio_pci_core.h
+>@@ -149,6 +149,10 @@ struct vfio_pci_core_device {
+> 	struct notifier_block	nb;
+> 	struct rw_semaphore	memory_lock;
+> 	struct list_head	dmabufs;
+>+#ifdef CONFIG_VFIO_PCI_LIVEUPDATE
+>+	bool			liveupdate_frozen;
+>+	bool			liveupdate_intx_disabled;
+>+#endif
+> };
+>
+> enum vfio_pci_io_width {
+>-- 
+>2.56.0.317.g454f8302e1-goog
+>
+
+Thanks,
+Sami
 
