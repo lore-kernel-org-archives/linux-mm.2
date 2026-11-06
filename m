@@ -1,91 +1,164 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EFE606A330
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 18:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4345D606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 18:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BM4pbDC5
+	dkim=pass (2048-bit key, unprotected) header.d=ziepe.ca header.i=@ziepe.ca header.a=rsa-sha256 header.s=google header.b=f6S9tySr
 Received: by kanga.kvack.org (Postfix)
-	id DA4946B05BD; Fri,  6 Nov 2026 13:43:20 -0500 (EST)
+	id 6051F6B05BF; Fri,  6 Nov 2026 13:43:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2C0A6B05BE; Fri,  6 Nov 2026 13:43:20 -0500 (EST)
+	id 5B5836B05C0; Fri,  6 Nov 2026 13:43:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD07F6B05BF; Fri,  6 Nov 2026 13:43:20 -0500 (EST)
+	id 47CEF6B05C1; Fri,  6 Nov 2026 13:43:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A9B66B05BD
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:43:20 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 021B5A0196
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:43:19 +0000 (UTC)
-X-FDA: 85405566960.12.EA867EA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 4BB8B80006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:43:18 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BM4pbDC5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A9B36B05BF
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:43:51 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8FBCA401B1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:43:50 +0000 (UTC)
+X-FDA: 85405568220.18.8ABA92C
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 951991C0002
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:43:48 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=f6S9tySr;
+	spf=pass (imf20.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.177 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793990598;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1793990628;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K5eh8gBduftPTrHxS2AnSVoj7nXD8Jh1lKA/TSgrlUE=;
-	b=IsY4wt/FMA9fFCXXxvd8tM17hLELc8RaVLnxj1ZKAXEKda4L0Atj8ZK8kHaUGHwh0QCFD9
-	/VCsKy33nlqy083T5hBjsHkyK4hi0if8rHpzPDdvF+ewDZP90j0TYhzNwh03o5L+9igXIM
-	8eMk1H2t9FYsxO0GhuRepFn5R/DSSTg=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BM4pbDC5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=b7Y85ZMNTmnO5vyHoGmhNUdpyQ1xa3t2s3wZRjsJimY=;
+	b=KMxMxmN5Qu62cDMwiCg7+KTV8sXiEWUeU2NZE41NLMheyuKYUP+EN3921rshxrDqiMLUib
+	ZwdxB4NcwHV67sFIY6ggw79sJvmz/W1heA2AoR1vyojub9fCBhHB62UNPIBG4htkPkUyj9
+	oSKa5OQseFcBAFtE7WyWJxXkGF5awWc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793990598;
-	b=rWkS22BQS+zeLVjKJBeI2ceUr6oUorJaWziKXYGO65J5Tt0yliLfwWicyhmMB2LBCtBML3
-	3r0rwvCvMz7z+0ij4EW3Zg6vszGYS8qXNZ2quRubVfPovtzzBZI7CA2Ws4Yw3H5/adANcZ
-	RzIDjsZAmLFpJC7XnyuruZKiQwH8Erc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9988842E48;
-	Fri,  6 Nov 2026 18:43:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3711F0089F;
-	Fri,  6 Nov 2026 18:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793990597;
-	bh=K5eh8gBduftPTrHxS2AnSVoj7nXD8Jh1lKA/TSgrlUE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=BM4pbDC5kz1sTxvk+jNGeQnExkMiBe0BKUreJ7jN9jBdOg1/UjEGA7LCo/zWJWsqo
-	 Ye4IuzcZUF6cR7OwXekKMlOoJ89zqCfHNei21tUXA+vqQyj9+62K0iJrOAGvJXd89W
-	 TjvmsIyUvAyT6LEYboM5nSKjlPtTjXRyP90Uh+Bg7gHlZ51+4/ccwOG75RkYdp75xK
-	 BDbqF6Jc+qH1LkdTGJ8ltGuIsBue3AKWnJhOqzAob5QagWb9+M6xndDz/MSEmhDe4I
-	 H5Y+XS2IDXr2py85EalggMR8/jaKSVAt5dyvbaV2ZJ59dE6gxBLbqyj88VbSOHG0GA
-	 5Oje8RqocrAow==
-Message-ID: <sashiko-outbox-202087@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v9 32/32] selftests/mm: add PMD swap entry tests
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Usama Arif" <usama.arif@linux.dev>, "Andrew Morton" <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org
-Cc: chenhuacai@kernel.org, ying.huang@linux.alibaba.com, "Baoquan He" <baoquan.he@linux.dev>, willy@infradead.org, youngjun.park@lge.com, hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, kas@kernel.org, baohua@kernel.org, dev.jain@arm.com, baolin.wang@linux.alibaba.com, "Nico
- Pache" <nico.pache@linux.dev>, "Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, "Vlastimil
- Babka" <vbabka@kernel.org>, lance.yang@linux.dev, nphamcs@gmail.com, shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev, luizcap@redhat.com, kernel-team@meta.com
-In-Reply-To: <20261105183940.2236717-33-usama.arif@linux.dev>
-References: <20261105183940.2236717-1-usama.arif@linux.dev>
- <20261105183940.2236717-33-usama.arif@linux.dev>
+	t=1793990628;
+	b=JbLWYIHPF/EyMhx/mfbgKtI4Q8Rh87qSQCMo0w7fTejkbC2y7cUiWY6mKYr8Irk6ndyC1O
+	Ze7USyPXcxb8ekiw9a4N9yKSkTa77XYAvdkosfZFdc/LbTq1fSZ+9BaZNuY+zBdpHs3nVR
+	IMbkZTYm/apKqSdshKOtmBX9Hw97abo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=f6S9tySr;
+	spf=pass (imf20.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.160.177 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-5363c8de563so9472491cf.0
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 10:43:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1793990628; x=1794595428; darn=kvack.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=b7Y85ZMNTmnO5vyHoGmhNUdpyQ1xa3t2s3wZRjsJimY=;
+        b=f6S9tySr94+jMZhRlTX0KCKTdVR17uB6Qov+DFTzTLJ+D4Z211dBUNoS+0sjhJRmTz
+         YNQS6U1qioDGQ/W/y8A/hBRjW0NIwYIVAA6rU8HNTbDXi/XU9AWtimzMpRjCVYhOwLtc
+         lx75xg1V0jIRgAtOLozVfuty2I4h3syV4JykNqLiQaVty0NiscaNzg/VyY35Y1gvCJxE
+         fV+J5G0i49uMd9CDIpp/uOL9QT6cqPxK2+1UMiY1JRgVlNioetQxXro2Joc0uUGgWA4+
+         Nw/UOAFGrzUbZd58NKeccn/rr34uwc2Y/vRXZSfK3M8A7gY7xoHu4XIXsXReWFF3Y4w3
+         lvGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793990628; x=1794595428;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :content-type:mime-version:references:message-id:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=b7Y85ZMNTmnO5vyHoGmhNUdpyQ1xa3t2s3wZRjsJimY=;
+        b=hdfqqdIl1EXUJrbWVsbmtFbVvfeYsUwLCvO7soUh3kz9LPIJpO7o4vHty13CIHDzca
+         pWgPACjl3UFQn/kUtzANl1RZcobwenN9MhH3NGQVtdorem09YYlzfJhg0HEK468ASj3E
+         +Le7Oy6GOXjMamfmCF4sqlFZ5jZxFTzUvzzTlvlj3Lpyluovd2FZcQgK6TMNfltyBygB
+         wbTxsvSwYlf+DY8RdLYt3EHP/Wrwfkt6sUwsTKfhJkVUbyKqBGPouYDZ5F8S24+aB4MA
+         P7UpXw/eog+EerdiIaxpgBUNtYFyhhipiRdavBukbzO8RMO0yMa2Oqk6aB65pI18pOR3
+         pK2A==
+X-Forwarded-Encrypted: i=1; AKwUvBz+sVKmnrp/dQ1+oynVWmx8u0wgrxXhfxsDK/7fPQUFvpr/x8pJ2mbcHt24l6FaatpeJI46T03RsQ==@kvack.org
+X-Gm-Message-State: APuU4Z8WDkZhQkxn6zaTEiS1b/YqoI+xtlt/nwOTcP93et9B0DSDUYcC
+	LIJQlmuqH36as9BffJXQilWCSQ/ddI8dKpPyuhXXyPblrAkWN+ixnLPYogjGwrZ+PAE=
+X-Gm-Gg: AYBFou22FUYVMW28ISOoiZPE83g8UYoAYzfr5ZgS/rone+i3rdgY7GkhYfKe021fxxr
+	E2+syNRK8KnFxZMqOYwD6+jAGKbnhCQf+PkfRXAXA7qSSBNovnNVQ739uOB763C9EJ1eWnK7xk8
+	kbjYzfK47lGzI+IV+Y0z0+yt3kiqW83VeWjUnHcO5iA3hnj8AC/i8MZFiZd18pJbfqQ1u5+4ZTt
+	dkYSRn03BLTmW+8lJU18LJ4o1qHN4Pz5YsAwZsX//Ls6qxCVH1UkSmWF72qX9Hqdw4yOv/iYlQJ
+	zbkvjliu/JbsrivlvrZHOQ0din59rxAR52r/dun0CndyxiHChm6LoH1fr/DuU8zjdYoWTMAUSae
+	q/bsmn6qhzKKSlngbiLRdbXG4hWqlKhFBRjIqQZ2tc7Qd2Vd1iiWdRk7+7X/S7GM1B8x2xhxSS3
+	5ifqGdtAVjvanXtWTeoh2M2TAJ6pyGD5SYIF6+6oLxXn/FOCoumU+XOLKq7QlvCbEsqD1EYiA+2
+	aSoVqDdDtyAc6dxXG9/Pv98KUuGWm+TBPRIeH04q6L5GXFy9U9NfFmYusAvtI7V2OUtQgd65XET
+	XKmUlnuW+y2Pt07/UPfNTyfxfl8sxYuEroh4i6dIkv1x6/IVIEb+j/MOExMoR5rAy1/W0/ysyrT
+	9Wy3TzKhbGg==
+X-Received: by 2002:a05:622a:47cd:b0:536:764e:1527 with SMTP id d75a77b69052e-54e14a6c486mr53004081cf.44.1793990627606;
+        Fri, 06 Nov 2026 10:43:47 -0800 (PST)
+Received: from ziepe.ca (hlfxns010zw-159-2-239-150.pppoe-dynamic.high-speed.ns.bellaliant.net. [159.2.239.150])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-54e25785f14sm26823821cf.5.2026.11.06.10.43.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Nov 2026 10:43:47 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1xPOug-00000007JdL-0xGY;
+	Fri, 06 Nov 2026 14:43:46 -0400
+Date: Fri, 6 Nov 2026 14:43:46 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Naman Gulati <namangulati@google.com>
+Cc: Christoph Hellwig <hch@lst.de>, Luigi Rizzo <lrizzo@google.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Joshua Washington <joshwash@google.com>,
+	Harshitha Ramamurthy <hramamurthy@google.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>, iommu@lists.linux.dev,
+	netdev@vger.kernel.org, linux-mm@kvack.org,
+	driver-core@lists.linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC: DMA_PMD 00/22] DMA_PMD: PMD_SIZE-backed IO buffer pools
+Message-ID: <20261106184346.GJ663069@ziepe.ca>
+References: <20261023140107.GC3977851@ziepe.ca>
+ <CAMOZA0J+MOLv+s4PAvsAK1jbasnbQRyHffZw1VEKutH9Vr6ODw@mail.gmail.com>
+ <20261023145023.GH3977851@ziepe.ca>
+ <20261103080933.GA4213@lst.de>
+ <20261103151021.GK3889730@ziepe.ca>
+ <CAMP57yWvHO0pWCR3-9q1gtwVe8WV4Y6i69trmw+BJRVYf3JB1g@mail.gmail.com>
+ <20261106173054.GH663069@ziepe.ca>
+ <CAMP57yU-VhZWXijvwAXcN9=zZ+eWXZ6J1bkHuCJw3ocRaFaV=Q@mail.gmail.com>
+ <20261106180714.GI663069@ziepe.ca>
+ <CAMP57yW6Y4g-xM9YTB+MpgxPN7RFeEWhAPWvqrfOoMDEuL8HZA@mail.gmail.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 06 Nov 2026 18:43:15 +0000
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMP57yW6Y4g-xM9YTB+MpgxPN7RFeEWhAPWvqrfOoMDEuL8HZA@mail.gmail.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: jxgezt4ogmptjdgc3sai8gjsqd778f6m
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 951991C0002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 4BB8B80006
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: hw3r3ck57g5dec7j6s4k3kwwg484whnr
-X-HE-Tag: 1793990598-79672
-X-HE-Meta: U2FsdGVkX19zO/FGQmrZWATAHo+ZKxim4C6r8B24RX04bLvWg66qYIHgmNyhyjQgOWnmMta47DOA07UtIg63r/5/ii0DWLDA5f5mlQz7VEoNb0bJquN7HldF/r2aj85nX71czalh4/u+xBvFfvfFHnD6ci7QYOQCeyg6xW+3GE/p/GDih5qFp7B68V2HCV0gj823kfYwhh+TLBqUcN2GHOgEzH2lYx6mZBkN0E7mxLvu+qxRtsMK7/xTHBsVa7aKDleLLvN1GUyY3vmQ9x+6nxr4qopK26gurw9Dy/cpVgRHq5K7QsosgW0BHc4t7IAHPo6A0Isb0QR/hAsO1tiFX9HV4eqj0DjxroFjlcO9Uk7OHGMLfnCYJKAlEdcW/8WdnbtW3NkQ1ICh6eE9wGJ3fuf7HCFXO8jH0FM2mVuyAUZeQljihl6T3DX8+8XCZMX+8E3x72SOu+nt2kHTy+xsj3eykbU5nGapoWyH7yH67/Fc6WoBpJKm37y1cZsqVykgwuxSDaNG9luXeT85k3dcpKZuFvYa87KmSn7sKptKpJ2iDwJyHSR/FkdhaXTaWBec8djn4eS2JgdlSnv6daImaATA1O+kSyW1SiJt7PVvMBi/eXIjqxh/qaA0+7S6MFi7/0t4AWhSDcOIxpl8gJx7cDoPYJLaaSsdPtNAv63PEBfUG2gF22gXx5eDnRaKQUDSdNJQBeIyw5jOV+ufHpzXHSHuhwFVPxs05ycMH97BO6NfwH6Txa5fUZlqlWUB8lUnsm/OspjmUJoM39A8imkzVC3MsIq75T6emazF3BVQTye9PlFD55h4fsmDRoGLz3nc2ES2l2sQJZixejsE46SFke0onCuXBfo6pcU6UnWShPlTBQ+6ltpGlrbpTA9tMSPtvkA6XNtvYorYhheTTRKAVftb6l3VIUOLkh+p7T84M+S4s9UuO8MXzaqLV9tgc1kYAGTomL9zd7ErStNSYBe
- yJ+fv435
- bjfYqjtEM9tMJmKtJ7uuKn0BsenM5es9V4e4wJzy17k5weYlN+nO8Xaq+Qw881MNf4DAMCbmjRqhvU+MJXc237976M1Qzb5H8HqgAPd42WiygMqtnOGiuQ+VIqhdrLyg4mp/4AaFQRLuCmWt1K2oAWMQWQVfnZGMXNkf78pj5tM3jvItJT3cobGjzLpwM5wH8y31F2PgDokazN70OHunvnWEbxPbp0HjVstXBUTaOlYDHTDJOaBIGqcV3fGfbOLCO/hsbFR/T1Pxq8+QK07Tf5srpURBvOPZWMUOdbOfMV3MvSaOqbuJduGt4oLinmPQ4Hyv4eC4mEvbIjfFcPDiuTNPR7dUAN1jEm92bNvywnratb77/LJogrceChiO36bjFe63D63GG/iK0C6nInO4a0gLKaPpGcAad/kJSMwPbsuPgkhL4U7R4Y6jkbQUDrHJ9TdKca4JtWQCFDNDSM1LZlgeRnRJmo6qZj3GYHQNhjHL1yuphsisrNd84OEYP3x7xJBBjTcgNn+fWf34F45YAbqhxWzSMPNUIhC04VQskPK6rchlhCzNNqGxSETWt1Cct8g8M
+X-HE-Tag: 1793990628-673297
+X-HE-Meta: U2FsdGVkX1/rveGD3TUUsil1n8F6sXKcW2Pt+ShbK7JOSblp/CKkNRYBdsiKRW1JHXiBYD2e0wvZ7IA+qjGxj5qnDe1a1j6iK+b+JQByNVb7aNcBOdsbYNrsiM76rMLHrl/OVDqGtzxXlM6vncReRQchtnk6C7Yti+KkrYhtWCVKO9PBUH2h2zvIIUYop8RyWY8JmRjibvLX1JsT7qHCjoruBC8AskmT3iPMlnFQyEHl0B+PIvkbRxZUVZNrwv7H4OMWiwIMfhW28krGBjWVvMxqmn6RyWIf+cI6qcXdiqXijg6JLPjojtbmhcBbARJT+mjjCCimMPv7XPIAgkQvG2/KxcpADQv6TgqMq2ZP1t5F50GMVk/8pV63fSrzRyFS5OLoCTDuEv2neQHFjYi6ZpOZZqtcjemAzvlJlg8lC4WXyMXtf3sK5LaA46RyhPKrF2QqIWw53gp75AlWZ7KhtlGobcjg7HSndx6GLO4PAchRrPmgB0m3kNs5/Sp/1SI3Kc9wq2EkSkbPAxrApIbcAjuTIa0i88rh7E9R3L5eQBYG2PwVoS3KZTTn9esZjNWPRFoFPIVqcFh1Vki9zFfV9V9E4TgUKsA0TqXr430axfmfP/Rcotb7d0qvTYjT/7DjVyGSxID7n5Dwwwgv4Jb+/kNy3GUBxILvmQZR6x33W60wGDGPXJukQFThlbySPSfiOlPEXnVgZTsh3VDR4YWYfDltOsCS4TMnVLxakuIrLPNDhLG3u93GojAgICwXOp7ex3mUoStyTj6KncvpG7L1m+UXmPiCOsnF5jx2B9j3V2e0VrsRAwtnxqW+G7G9Z5cIVUEG1dHWlrmu05sCMItzuZNVn32XigfnmtuvLGV7V/NCBvl2YTdJ0OLXuCcUUeli/z4LJhG1APNze5fUmchlmpj6WbSMES67xYHqzTC/HKRdv7keo5WaWzv9G3fRu7inf66/PCwwdFOFAOQfgLo
+ Tl5mLPGf
+ xBrOWhwCn1YjuAH+NNcPb/cycb3rKlBwCV8fmG9N2qrd4uU5L9WAHidJKtOqCyVTtboeybiC4l/Ru8GHbzxEAQ/wqCofnrbLD0TErV2RQ8Isc9BlVfZQ16PLq+ciZe0yzcbYaw4jw9GwzIkLQJsX8Lv6zvwQws5Iyyv7DHHm5GbvNImpSB2uS45kMTg2dRgLa9ikPs9JqRp3xL/IxvaV0X8+P2rxSKukbP7M3otUjCAlDNC8nnMi+VdofW4mMPTFAoc40jHgrwuyayHWxQpzFK146bRVVlc8JCIqoqPwExLtdNi26BvP8xz48NGszl44yNqqHj6BsyxQY2jm31pa1DVBULDoEen+HInDh3XoDd/UemKljbV/rU4VQ815tBisFhZhOXP3wUxEiLOq/3IqhLgyY4BnYK6gqytOoKlFB2XULQfZ4ek4o6hcwT6WVkTG7BcsuFmybFPStKovCUby4kxg2gw3Rb2jMW98EWaMhg8kPyCyAGA0uMwdKxp1Oe28OMxL1Bg1LiGoVSOM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,170 +166,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] selftests/mm: check_huge_anon() in swapoff test passes on
-  swapped PMDs
-- [Medium] selftests/mm: uffdio_move test fails UFFDIO_API when RWP is
-  unsupported
---
+On Fri, Nov 06, 2026 at 10:17:38AM -0800, Naman Gulati wrote:
+> On Fri, Nov 6, 2026 at 10:07 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> >
+> > On Fri, Nov 06, 2026 at 10:00:35AM -0800, Naman Gulati wrote:
+> > > On Fri, Nov 6, 2026 at 9:31 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+> > > >
+> > > > On Fri, Nov 06, 2026 at 09:21:08AM -0800, Naman Gulati wrote:
+> > > > > I drafted an implementation [1] for premapped TX and RX buffers on top
+> > > > > of the existing networking page_pool. It is implemented entirely in
+> > > > > the networking layer and extends page_pool as the default RX
+> > > > > allocator, to the TX path. There are no hooks in the IOMMU, DMA or
+> > > > > page allocator code. I wanted to understand if this implementation
+> > > > > correctly captured the feedback on this thread. Key components of this
+> > > > > design:
+> > > > >
+> > > > > - Chunks: as in Luigi's series, memory comes in 2 MiB chunks, but each
+> > > > > chunk is mapped once per opted-in device through the DMA API and
+> > > > > records its IOVA for each device, rather than using a shared IOVA
+> > > > > window.
+> > > > >
+> > > > > - TX: page_pool accepts a memory provider for pools that are not bound
+> > > > > to an RX queue. Per-CPU page_pools take 32 KiB pages from the chunks
+> > > > > of their NUMA node; TCP copies sendmsg() data into them through the
+> > > > > task page_frag and allocates its skb heads from them.
+> > > > >
+> > > > > - RX: an instance of the same memory provider, sharing the chunk code,
+> > > > > backs RX queue page_pools. RX chunks of order-0 pages belong to one
+> > > > > device and NUMA node, and are shared by that device's queues on the
+> > > > > node.
+> > > > >
+> > > > > [1] https://github.com/torvalds/linux/compare/master...NamanGulati:linux:netdev_dma_pool
+> > > >
+> > > > IMHO the netstack should never read from shared/decrypted memory. If
+> > > > you put it in a SKB you have to be sure the only touch after that
+> > > > point will be a DMA read from an untrusted device on the TX side
+> > > > (sending it to a trusted device would be a fail) and the final copy to
+> > > > userspace on the RX side.
+> > >
+> > > That's likely a fair callout. TBH I'm not very familiar with CoCo and
+> > > will spend some time understanding the constraints. I kept CoCo out of
+> > > my implementation as I approached this solution from the overcommitted
+> > > VM problem where we are trying to overcommit memory in VMs and use
+> > > these pre-mapped pages to avoid using bounce buffers.
+> >
+> > Why does overcomitted VM use bounce buffers? Do you mean this is
+> > about getting better memory clustering in page pool since the VM
+> > paging granule is 2M?
+> 
+> Not exactly, we are trying to use VFIO passthrough NICs in
+> overcommitted VMs. Since the guest memory is overcommitted we can't
+> dma-map the entire guest address space (as non-overcommitted VMs do).
 
-commit 19ef341b36a063e4b63f435180149741746c0988
-Author: Usama Arif <usama.arif@linux.dev>
+?? I understood you could and this was implemented under the
+virtio-iommu by pinning the memory under active DMA?
 
-selftests/mm: add PMD swap entry tests
+Where in upstream does the DMA API force bounce buffering for this
+case?
 
-This commit adds a selftest suite for PMD-level swap entries covering basic
-fault-in, swapin_sync, fork, COW, mprotect, munmap, userfaultfd move/RWP,
-mremap, pagemap, mincore, madvise, and swapoff operations. It also adds a
-read_vmstat() helper to vm_util.c and wires the test into run_vmtests.sh.
+> So overcommitted VMs can use bounce buffers to have a set of
+> pre-mapped buffers to bounce traffic in and out. We're trying to use
+> this solution to map pages dynamically with virtio-iommu and recycle
+> them via page-pool to avoid traps on each TX/RX and avoid the copy
+> cost of bounce buffers.
+> 
+> This problem extends to generally reducing IOMMU overhead in
+> networking - taking the dma map/unmap cost out of the hot-path and
+> avoiding IOTLB thrashing.
 
-> diff --git a/tools/testing/selftests/mm/pmd_swap.c b/tools/testing/selfte=
-sts/mm/pmd_swap.c
-> new file mode 100644
-> index 0000000000000..8af94bd7e105d
-> --- /dev/null
-> +++ b/tools/testing/selftests/mm/pmd_swap.c
-> @@ -0,0 +1,989 @@
+Sure, that makes sense, but just having a pool of entirely normal
+pre-dma-mapped memory is quite a different problem from what launched
+this thread...
 
-[ ... ]
-
-> +TEST_F(pmd_swap, uffdio_move)
-> +{
-> +	struct uffdio_register reg =3D {};
-> +	struct uffdio_move move =3D {};
-> +	struct uffdio_api api =3D {};
-> +	bool rwp;
-> +
-> +	self->aux =3D mmap_pmd_aligned(self->pmd_size);
-> +	if (self->aux =3D=3D MAP_FAILED)
-> +		SKIP(return, "Could not mmap aligned dst\n");
-> +	ASSERT_EQ(madvise(self->aux, self->pmd_size, MADV_HUGEPAGE), 0);
-> +
-> +	self->uffd =3D syscall(__NR_userfaultfd, O_CLOEXEC | O_NONBLOCK);
-> +	if (self->uffd < 0)
-> +		SKIP(return, "userfaultfd unavailable\n");
-> +
-> +	api.api =3D UFFD_API;
-> +	api.features =3D UFFD_FEATURE_MOVE | UFFD_FEATURE_RWP;
-> +	if (ioctl(self->uffd, UFFDIO_API, &api) ||
-> +	    !(api.features & UFFD_FEATURE_MOVE))
-> +		SKIP(return, "UFFD_FEATURE_MOVE unsupported\n");
-> +	rwp =3D api.features & UFFD_FEATURE_RWP;
-
-[Severity: Medium]
-In TEST_F(pmd_swap, uffdio_move) in tools/testing/selftests/mm/pmd_swap.c,
-will requesting UFFD_FEATURE_MOVE | UFFD_FEATURE_RWP in a single UFFDIO_API
-ioctl cause the test to skip whenever UFFD_FEATURE_RWP is unsupported?
-
-In mm/userfaultfd.c, userfaultfd_api() rejects the call with -EINVAL if any
-requested feature bit is unavailable rather than masking off unsupported bi=
-ts:
-
-mm/userfaultfd.c:userfaultfd_api() {
-	...
-	uffdio_api.features =3D uffd_api_available_features(ctx, features);
-	ret =3D -EINVAL;
-	if (features & ~uffdio_api.features)
-		goto err_out;
-	...
-}
-
-On architectures or configurations where UFFD_FEATURE_MOVE is supported but
-UFFD_FEATURE_RWP is cleared by uffd_api_available_features() (because
-VM_UFFD_RWP =3D=3D VM_NONE || !pgtable_supports_uffd()), ioctl(self->uffd,
-UFFDIO_API, &api) fails with -EINVAL, skipping the test with "UFFD_FEATURE_=
-MOVE
-unsupported" and leaving the !rwp fallback path unreachable.
-
-[ ... ]
-
-> +TEST_F(pmd_swap, swapoff)
-> +{
-> +	int ret, err;
-> +
-> +	self->swap_dev =3D getenv("PMD_SWAP_DEVICE");
-> +	if (!self->swap_dev)
-> +		SKIP(return, "PMD_SWAP_DEVICE env var not set\n");
-> +	/*
-> +	 * Otherwise a higher-priority device may have taken the PMD swap
-> +	 * entry and swapoff() would operate on the wrong backend.
-> +	 */
-> +	if (!swap_device_is_only_active(self->swap_dev, &self->swap_prio))
-> +		SKIP(return, "PMD_SWAP_DEVICE must be the only active swap device\n");
-> +
-> +	self->uffd =3D register_rwp(self->mem, self->pmd_size, true);
-> +
-> +	ret =3D swapoff(self->swap_dev);
-> +	err =3D errno;
-> +	if (!ret)
-> +		self->swap_disabled =3D true;
-> +	ASSERT_EQ(ret, 0) {
-> +		TH_LOG("swapoff(%s) failed: %s", self->swap_dev, strerror(err));
-> +	}
-> +
-> +	/*
-> +	 * Check residency before touching the memory. If we read
-> +	 * first, a bug that left a PMD swap entry in place after swapoff
-> +	 * would silently trigger do_huge_pmd_swap_page() and reinstall a
-> +	 * PMD mapping, masking the regression.
-> +	 */
-> +	if (self->zswap_enabled)
-> +		ksft_print_msg("zswap enabled: PMD restoration not checked\n");
-> +	else
-> +		ASSERT_TRUE(check_huge_anon(self->mem, self->pmd_size, 1,
-> +					    self->pmd_size));
-
-[Severity: Medium]
-Does check_huge_anon() in TEST_F(pmd_swap, swapoff) in
-tools/testing/selftests/mm/pmd_swap.c actually verify that the PMD swap ent=
-ry
-is no longer swapped out before the test reads self->mem?
-
-In tools/testing/selftests/mm/vm_util.c, check_huge_anon() calls
-__check_huge() followed by __check_type():
-
-tools/testing/selftests/mm/vm_util.c:__check_huge() {
-	...
-	for (; start < end; start +=3D hpage_size) {
-		categories =3D pagemap_scan_get_categories(pagemap_fd, start);
-		if (categories & PAGE_IS_HUGE)
-			nr_pmd_mappings++;
-	}
-	...
-}
-
-tools/testing/selftests/mm/vm_util.c:__check_type() {
-	...
-	for (; start < end; start +=3D page_size) {
-		categories =3D pagemap_scan_get_categories(pagemap_fd, start);
-		if ((categories & PAGE_IS_PRESENT) !=3D PAGE_IS_PRESENT)
-			continue;
-
-		if ((type =3D=3D CHECK_TYPE_FILE) !=3D !!(categories & PAGE_IS_FILE))
-			goto out;
-	}
-
-	ret =3D true;
-	...
-}
-
-In fs/proc/task_mmu.c, pagemap_scan_thp_entry()->pagemap_thp_category() sets
-PAGE_IS_HUGE | PAGE_IS_SWAPPED on a non-present PMD swap entry. Because
-__check_huge() only tests PAGE_IS_HUGE without PAGE_IS_PRESENT, and
-__check_type() skips non-present entries via continue, check_huge_anon()
-returns true even if swapoff() left the non-present PMD swap entry in place.
-
-Additionally, when self->zswap_enabled is true, no residency or swap check =
-is
-performed at all before expect_rwp_fault() and verify_pattern() read
-self->mem. Would checking that none of the pages in the range remain swapped
-in pagemap (or checking residency directly) before reading self->mem catch a
-left-behind swap entry in both cases?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105183940.2236=
-717-1-usama.arif@linux.dev?part=3D32
+Jason
 
