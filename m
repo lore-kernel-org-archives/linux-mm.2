@@ -1,98 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23CFB606A331
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54169606D804
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 15:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E9dNbIMv
+	dkim=pass (1024-bit key, unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=hNmDLPIP
 Received: by kanga.kvack.org (Postfix)
-	id 2E8F66B05B1; Fri,  6 Nov 2026 10:24:29 -0500 (EST)
+	id 621A36B05B2; Fri,  6 Nov 2026 10:26:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BFF06B05B6; Fri,  6 Nov 2026 10:24:29 -0500 (EST)
+	id 5D1A96B05B8; Fri,  6 Nov 2026 10:26:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D7106B05B7; Fri,  6 Nov 2026 10:24:29 -0500 (EST)
+	id 4C05E6B05B9; Fri,  6 Nov 2026 10:26:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id EF8E16B05B1
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:24:28 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 80376A8D5E
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:24:28 +0000 (UTC)
-X-FDA: 85405065816.20.D12AF2D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E1A012000E
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:24:26 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E9dNbIMv;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 2F9276B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 10:26:41 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 96CC7804E3
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:26:40 +0000 (UTC)
+X-FDA: 85405071360.01.C51584E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C519B100009
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 15:26:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hNmDLPIP;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793978799;
+	b=3V4XRbHVRWBTBnMDU+F8h+23EuWAKWe0H9BNQK027gZY4dzJCd/p6vpix9zgZHPwBrcHPK
+	QCDu6KK0j6t1rqUvXH+pd8+3u5ePnKGbZ8QqIRr7urrClYsvwWdEnzmTt+NXWA/vMxU1Zy
+	NzLroM5pq9365qQQNLh098RJCJWsVuA=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=hNmDLPIP;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793978667;
+	s=arc-20220608; t=1793978799;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TLgNyXFrGS0TryALTyECIzzY5cEQxpys9ixb+i595LQ=;
-	b=yYulm/M5NSF4Mq0lKDLvWkU3UnoiIKBFWB+NBU4phEGCUbVpQLSKb6JEGMdoCtleZWmuMD
-	00p4UAwoSPii+Hheose/EdEafMhklIaWXqEW1Pwk0Boit7bQ8HpI9Im1k0bHMcEppT9Gxe
-	OpxfxO5+X0iyXwxJoMmTRBwU6bpsCLA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793978667;
-	b=CWg53+5gdgrDP+l/iQr7mw7+ffjadkzvghv8uZ2+YuN29NdrHiyMtuXdEZwO6BV0LAwCWG
-	c/He/ZyTwD6GF35qeHYUdb5XxF+eVTwyrVSiDCCJqxOc9fVFBYBS3tA4FsMyogofx+yPpv
-	msRMl2sUfXtvjqrxINIJpMAIwOIqIM4=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E9dNbIMv;
-	spf=pass (imf13.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=NFRk93kVwDnKUZB/pcB0eF0UozOQGGbpKAYRpLOWGWw=;
+	b=iqLRjp3q/awMX30W4FsEcgPKxeS0zEw2pRWxzRVuTeJFOF2anVpBeFdIvnEj5woTgPurq1
+	cuZuS3tzrJF3JMLkBJfyb6chgO4t1DIODzc82s/yF5dMZfxFDt5fOADXWdq8UorTh1exVu
+	nBUPVRa1sER008kk18gbZOkj+Zjr6RY=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3D0D160213;
-	Fri,  6 Nov 2026 15:24:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D538B1F0089F;
-	Fri,  6 Nov 2026 15:24:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793978666;
-	bh=TLgNyXFrGS0TryALTyECIzzY5cEQxpys9ixb+i595LQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=E9dNbIMvKrV4r7KYAGyHcAcgMkbVi7NVeGv74QZS6YsZpCAawM3rJyKrzu0kGUmoR
-	 Bj/DAcnTvVZR1djvBU9Lg3QVTY5LCV5uAawidByHA+Ke5JNXq5LeZ6zopldNKKlpKo
-	 QZKc90oVLJgkOm0eDLkALAvGz2ocxyqEugxe5zKZc550TuDT6jOZBCOdFNbPijdy+f
-	 HJris1dK2k20jvpzqMEVCuPzLq3CWHKZYiqMDQvvlOhke4+5fCFu8sT++gBEPE6aj8
-	 tCdFDNSeX2ABRCxwuoO3Pm/1oR9uq4MerdTgx8flrWHgSzBy7gvU6RusFUM85qyq0D
-	 Z0TJT2KFPERkw==
-Date: Fri, 6 Nov 2026 15:24:20 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Vernon Yang <vernon2gm@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] mm/khugepaged: release contended mmap read lock
- after scanning enough VMAs
-Message-ID: <au3xEVu-SGXZYfyi@gremlin>
-References: <20261105-khugepaged-latency-fix-v2-0-4384bbfe4606@kernel.org>
- <20261105-khugepaged-latency-fix-v2-3-4384bbfe4606@kernel.org>
- <au3CUJO9zBMHLx-B@gremlin>
- <798cd192-9ec2-4f37-9cba-44db275a269c@gmail.com>
+	by sea.source.kernel.org (Postfix) with ESMTP id 7DD844086E;
+	Fri,  6 Nov 2026 15:26:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3EA1F008A4;
+	Fri,  6 Nov 2026 15:26:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1793978797;
+	bh=NFRk93kVwDnKUZB/pcB0eF0UozOQGGbpKAYRpLOWGWw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=hNmDLPIPCIvMSZn0FOQJtTkkZXYaqyFnlZNSYPuCKTcNHe51SqoKWL3VMdVHTVsM7
+	 K9HIuP0ELk+KrsbSxnuHYQ2Ka8ZGcjchQ6Uxijf+zNY+KstKz0upt/iNNUPs6A4lbN
+	 cpGjgUjU6ke1JlbVlOQ8kyyZm4LV2/eGZZyLR2rs=
+Date: Fri, 6 Nov 2026 07:26:36 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Hao Ge <hao.ge@linux.dev>
+Cc: Abhishek Bapat <abhishekbapat@google.com>, Suren Baghdasaryan
+ <surenb@google.com>, oe-kbuild-all@lists.linux.dev, Linux Memory Management
+ List <linux-mm@kvack.org>, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v5 2/5] alloc_tag: Introduce IOCTLs to toggle allocation
+ tracepoints
+Message-Id: <20261106072636.524e8f0a6a618e7b28988273@linux-foundation.org>
+In-Reply-To: <9a4323e1-a966-41fe-8268-9d6621346fea@linux.dev>
+References: <37ae7dca766994d3872fcc65b623a80d5d506369.1793818636.git.abhishekbapat@google.com>
+	<202611052344.mDV2DB89-lkp@intel.com>
+	<20261105172104.339c6f598a65056ed46e56fc@linux-foundation.org>
+	<9a4323e1-a966-41fe-8268-9d6621346fea@linux.dev>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <798cd192-9ec2-4f37-9cba-44db275a269c@gmail.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 9b3d7ntmz8qgfajzwhthzrnmytetee48
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: E1A012000E
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: fasp7zgxfsriwrcmo8e8asxm3eqx485g
 X-Rspam-User: 
-X-HE-Tag: 1793978666-258360
-X-HE-Meta: U2FsdGVkX1+UBWTemeO4IZdHeiq/JXLoIbInb88leMAzEz1IFkOxXN0EOhhHMqKpbKMYaaL5mFdFs9rSbLZ+2pPduCDfaT1uuZxnTxFdUIewP1igKsmAVWNwbTAZ4qYzjXzycZZLx07uLkw/u8tapHr5OoRA4Xy+LaP6IWcAT59NX51WaqTRgStFuMtzOvOUMzJm51fGJAIRbVt5WKT0Ff1kClJ3F211t34jzMXznIsv/TSsun3/sXRTUff9M5sGZp3ZtAPNzXAuMAilnzzIbkS4Rhzn3wsUcloLcMs+9DlTutTiOWIh2IRScLBxQtTUIi2mr3dqnyGuXvNEgcRkFOVWvr2qRHeyIleyyk/8sxxn8Zg58+xAodO4XbbawmGNgcaeqb5dZZpvTJvOp4UgcJq9rbsUNNdGQQDI99bjidqxUmYu2pei3mP114xwYm0W/V/GWjt2sz6pL0hPxO3+X9RBn+9W3P8ONdA0MjWXyLLKSOzkx/1TOCagvtGJ3NKHCsHSX5uoBznyxIF11BfpKnba5HmrLWzpXN7MWb1aT1gJhQVlCNPdnujQFrKz5T6XRWyNQEIdpky8OEQVrScCVNH9Nds5mvj+osWPfmN6XOQsMHVgMEueymwJdleyHEYU+2Sa1qm01lH/hXKPQHcjTjce6nAQSakOnJqkY4mIrMY29WWPFhifNDPN8nIWfjaORiCcuyg3Cxri/uRQ0dJANHzwwl9Pg5p99x/oFOY1geDfFLUSyl4L6CDZ2zDBhc4y5qlxr6NLrQy8DO74vH0ckGtvlOkQ2NehfpN2w6n9Wz+O13WLoCxzILJZ5/LzwBC0yjY7MQ/DFx/fHcEbbC8jQZKBF/GK0fYGEuaaKgrhmdIj6bdLWiQcEW6+U59CL1h9+ovYDJhaC8/uuyBWzB0/kjm5lHU05D5WlzTDKO00EGk8GzKYlonGBdQevoZrJqhxX0ncDf5Hjruxt0XS9bS
- yNZqoBAz
- qtMQ0tnUacy9+pfNp7J0F/W5xYm3qRoYWWZBhBvfQBYhUpRaipf3HNYfeKqafmSPHsJeToj/t25FldkmXFPiwzdurLGvBWiKn4X58nXMCBkWe9ma8TxhLygAEuJ3QKy1u7gjCKwaYgMZqf8cVIgmy4wAEsPinrl1oEs9gBZTHHF5G5/hl8jRedqGrylwmW7gmB4r3bIs+LbbRbLpn7O7P37XXyTNLjwnK4I8fqxXC+6dkiJG9iyACO3ymZDdlYw8iMN/b
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: C519B100009
+X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793978798-699139
+X-HE-Meta: U2FsdGVkX18TP7Acv7zyLqXiPHBc2YCFvQVhq3OtkwYSsK4UfTpyRU3xXXR9tZwoflZsm9mGxIy+c7hyACw+SlHJIjqSHFr1Se4TiyQSefNfYrECh3R8NzwXa/OF7uyCApKhH+HETvuOOZhAUTXR+NPFKmN+szdMHFf8LymblxT2dfhUEQwRUsb6AvB92GiMJT8f41wyrKyaVG9pyZR3LiVjZQa8TWuLMfpzq+dMlXzb6QZ6fHMLrjhfbGLifKm+ravJltIRF0C01scdQRJUVqqYoAHqyUzLCfrVhRxDNyN+y8eQyo9y+hUoaIXeVP4xLe6PRoblvQGrG3AOgtmYXmgvO0MdTy7wvK0Adqrkb6hmlaI0IS2kd1qqI4AVAtVKXoUAX+oHVTsWbpbFwyhXuU8Szf53Dh4DDK2cxO1yD0rUwJHvAHjZMYPEZFKBpaL4AC8jHiIzowsFaGc9nhLnB478XNo+YKcfWKur+do8NkdBOybJAX/RvVbUTCQQdNq105B2YLrWB2i4vx6kDmiGT1pOvHQvGzlhvH1/ulXXaeskDelaIIj/cEz4ltqrM30hf9evMB9du95UOaDM3pswjEBbbC5Arma05Vu8vCK8HsVZe+HZTX69mTQKja00JVCIYpp70ytcmNKLkQqkr/Xt1liXIp8Ep+eG86Vbcym8qwgDOimRFUX9oxCpYlxXZrr+xfsQVLeMkEKU1vz8zvdpR5MZ+hh3hiAwRx9EeOqN4yIuW6Gq+Yz0nqRAEUj3ioe9FW6xDNEwHvWOjEN7asSmqLkQCuMfJY6KjtwkYpJm6k5z4y3fe9bO1SrrvjNmFT9G7dlVCPNXBXUMSzy22uGfT6zRL1Azewyt0Hb1E+pNQpF+AuVLR/N8TbLwprg2YE8UXy7TuHI1FwvU6Nwm3Y3JW7v52lrtCLtYHGeyX4BmSzYzgGVgVy4SMZAb39BeRHp16NUpm9ls5fVxcetfHyD
+ w0pj2CjY
+ i21CvXBQ9eE9HvitNxhTYg0htJSySurfIP4f2ZJIy9OBsUac2Pei64kC+GeQWTLXKGvyebnmOL5HVFU2/H6pGuKi7un3bUgxyLAw2ssoh7gz2lAaS1/o9RxJ/vW/c8vTKdIbE1tQaqzfUfivJ9PV2pZ+noi9wlQQHEbixw21+bnggG7Hnr9eC7LZGa9LmkcIDqJoSrAf3luMW+JlEcZUa0KSSi0AOJ8YHGckLJY64R83f9AuuXFisDUYIuRwmX+eilCmf5Eivn4bOjyDmsnDIqeC8GZfiANr2nvR//lpvAsB1xb0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,41 +98,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 09:26:01PM +0800, Vernon Yang wrote:
-> On Fri, Nov 06, 2026 at 12:07:53PM +0000, Lorenzo Stoakes (ARM) wrote:
-> > On reflection, I think this would be better implemented as something like:
-> >
-> > static void collapse_scan_mm_slot(unsigned int progress_max, ...)
-> > {
-> > 	unsigned int long lock_start = jiffies;
-> > 	...
-> >   	for_each_vma(vmi, vma) {
-> > 		...
-> >                 if (time_after(jiffies, lock_start) && mmap_lock_is_contended(mm)) {
-> >                         mmap_read_unlock(mm);
-> >                         cond_resched();
-> >                         mmap_read_lock(mm);
-> >                         lock_start = jiffies;
-> >                         vma_iter_set(&vmi, mm_slot->address);
-> >                         continue;
-> >                 }
-> > 	}
-> > }
-> >
-> > Which avoids magic numbers, and means if we hold the lock for 1-10ms (depending
-> > on HZ), which is a long time in the kernel to hold a lock, AND the lock is
-> > contended, we drop/reacquire.
->
-> Looks good to me. Is the test result of this solution the same as the
-> current one?
+On Fri, 6 Nov 2026 15:54:33 +0800 Hao Ge <hao.ge@linux.dev> wrote:
 
-Thanks! I will update the commit to reflect the changes.
+> >  
+> > -static inline bool alloc_tag_trace_enabled(const struct alloc_tag *tag)
+> > +static __always_inline bool alloc_tag_trace_enabled(const struct alloc_tag *tag)
+> >  {
+> >  	if (static_branch_unlikely(&alloc_tag_trace_key))
+> >  		return tag && alloc_tag_is_traced(tag);
+> > _
+> > 
+> 
+> 
+> Thanks a lot for looking at this - and for putting together a fix at all.
+> 
+> Perhaps alloc_tag_is_traced needs the same treatment as well?
+> 
+> Even with your patch applied, I still hit the warning, just attributed to a different symbol:
+> 
+> WARNING: modpost: vmlinux: section mismatch in reference:
+> alloc_tag_is_traced+0x10 (section: .text.unlikely) -> initcall_level_names (section: .init.data)
+> 
+> Marking both helpers __always_inline clears the warning in my build, and it would fit what the series
+> intends for the fast path anyway.
 
->
-> --
-> Cheers,
-> Vernon
+Great, thanks, I added another -fix on top:
 
---
-Cheers, Lorenzo
+--- a/include/linux/alloc_tag.h~alloc_tag-introduce-ioctls-to-toggle-allocation-tracepoints-fix-fix
++++ a/include/linux/alloc_tag.h
+@@ -156,7 +156,7 @@ static inline void alloc_tag_clear_trace
+ 	atomic_andnot(CODETAG_FLAG_TRACE_ON, &tag->ct.flags);
+ }
+ 
+-static inline bool alloc_tag_is_traced(const struct alloc_tag *tag)
++static __always_inline inline bool alloc_tag_is_traced(const struct alloc_tag *tag)
+ {
+ 	return !!(atomic_read(&tag->ct.flags) & CODETAG_FLAG_TRACE_ON);
+ }
+_
+
 
