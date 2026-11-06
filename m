@@ -1,93 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E24606A336
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 16:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F49E606A331
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 16:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=lKunDg2N
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=v719N1eg
 Received: by kanga.kvack.org (Postfix)
-	id 0C3C86B05B0; Fri,  6 Nov 2026 11:04:40 -0500 (EST)
+	id 6DD926B05B1; Fri,  6 Nov 2026 11:04:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0747C6B05B1; Fri,  6 Nov 2026 11:04:40 -0500 (EST)
+	id 68D786B05B2; Fri,  6 Nov 2026 11:04:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA5656B05B2; Fri,  6 Nov 2026 11:04:39 -0500 (EST)
+	id 57CD06B05B3; Fri,  6 Nov 2026 11:04:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C9D106B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:04:39 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6567A14010F
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 346E46B05B1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:04:42 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 95543120116
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:04:41 +0000 (UTC)
+X-FDA: 85405167162.20.CDB0008
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C3F9340002
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:04:39 +0000 (UTC)
-X-FDA: 85405167078.05.D040B80
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A7C06160019
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:04:37 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=lKunDg2N;
-	spf=pass (imf08.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=v719N1eg;
+	spf=pass (imf07.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.172 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793981077;
+	s=arc-20220608; t=1793981079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=ge/zVN4OrHH3glz23GfvxcZb8aPxUfChE7sml4cA/3M=;
-	b=2mE7kowjNON1K+q08+BGvaeC24VWGGc+Amcp5L56kHsJBIFcosBxSH4MBzM7ibfyt1nsFa
-	skFpWrS0xVUqxK3dV5kMveV9nMFmvcCgrDPNFv2YQpV52GMv3ceOmhRhcooLqxKPTDcce2
-	578K96VxeB+3m9i+Kslspw59vlBB3AA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=jrPqOBbmQTC7cKWIEZPDDl/+MmJimjcBhJLEmrI30vM=;
+	b=sco9mgqHEQqLVI7l8P+RTF2ZrBiXLJyLAxCfVaP5+pjVTbeovqfQUuWct8R3qmoy8ldCld
+	0oD30zcGZQAuYh475wlmA+NOsCXjXSO+dboX29wGtneKRBIefAw11SfrT4DaZ97OJN5d8w
+	+kaTgBp2ZWys+c4MN0j+wixXyn0WeCs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793981077;
-	b=TuytoWBU9IRXJ/Xy3eY/YSSfLKBbTbKmAURDI7NEaIMWAP5ht9XjzAHVy1hHaNVnL3PePZ
-	70F0TAW//MvljzDjQiuNq7RVQhMYfXjHInSZV+IVBui7BCtZ+tpqMJu+qXtxIV7+cbXBmU
-	BEKj6GzKWpOAKwpsgzddPBhzTxLVIYU=
+	t=1793981079;
+	b=0RHzerX1hDNthbP7saDuxgTb7BnXXqC0zkPJT8+5rxK2Tsp7BZL5dkrjBpAFzoFzgp7zrz
+	L8ZEkmsR4eMOq1c8kt4+G91kFXv+duGsCIAVm8m35ObEYu+TNx+uiKnkMe4Jcs85xcaR52
+	bJDm60X34FK2+McN3JCg0uQpO73tXC0=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=lKunDg2N;
-	spf=pass (imf08.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=v719N1eg;
+	spf=pass (imf07.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.172 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-67990a45e02so837813d50.3
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 08:04:37 -0800 (PST)
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-8b31448caccso6912547b3.1
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 08:04:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1793981077; x=1794585877; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ge/zVN4OrHH3glz23GfvxcZb8aPxUfChE7sml4cA/3M=;
-        b=lKunDg2NQi+dixw064EH88BO9EPcOIQ85vya6jpiJDcoCWAT6XSUIq1hzu60gqtspZ
-         GD/Zl3bpfOL0L5VIFWk519dUBZr/T2YiXpDEeI5qoUlnxkI9qbW7LmEE+AYlWEXLImh4
-         M6fffY0P+l0gf1f0MdwRNNjGLeuU53vnUEn2THZ0fWAb+rHHd+p1rmifnXBOsia8Si11
-         lTEP/Gtnyw2ZNYHOx8CLpGdIn6L5EKjfmjcsTbxNSs0u5GsiONYNfsVSLyFVtwvKJ/8g
-         FBB7CCfEydsX5xEKM7fo5tmNYC64GezP8GTYUaSbhbibQ6BrskHFrl8Rrc71fngzYN2J
-         WLyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1793981077; x=1794585877;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20260707; t=1793981079; x=1794585879; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=ge/zVN4OrHH3glz23GfvxcZb8aPxUfChE7sml4cA/3M=;
-        b=OLSZrF1mw1qMM4yL0ObcD8lobIJ5HQPu4vdXerh41ya29iIzZR2AckO5Hfiu+xc+dL
-         prCNbRlfm4s8c9T2lben+7rSm+GQ64wN9RvG5/pnfxBHYZRsfTFxZlORG4HZLrkT7PhQ
-         5GsdBukFOwc9KLpbWXhfYgAGDrZP6+lBgX6W9++QAdrgJnshF+AMlo1/E1GF3hrXTd1F
-         qi4FzMc/uE3HyYFqGQ5ZTgZi0sgcPKt8JD7LAFBLKeuMu6gUv7lCrTkXc1GcQ3c/h61X
-         t5DEnxFclq+14i53YiYIGvw70sJkCyeqnjqlZKSnw07HZ6fAepwq20WWPg9HzTY75cg+
-         xf5w==
-X-Gm-Message-State: APuU4Z+3GUOpU7M3OhHNsJ4pHTMQIusQO3/Hp3DnQuIMWfExBXD85RB4
-	V9oPStXUwZ68OTzkzMIzwdlX+8ZCHV+sxS8OcKi3hkeTuF5Ce3j3KiFnL8XcL2I+
-X-Gm-Gg: AYBFou1u9C8e4mBQjc3941zFeqrr4oeLJgBQEMwh+UkQRi9zyr6GAHNdd0+0bBzqaVK
-	hjaG98kfk4DJMqYzJtJ7XxXraFac+2gSPQWXk3EjxA1V74XyjkWxcnkOHtmZRZSzR2mZ4DJwhFk
-	F3bhsR8ah0PhFpyO472OleGN8Un5o/1nrUkRIh6FaLkDa0hH+R7dauv0vD22Qfuwb/Xgnp2i/WO
-	xFI+dT0CxBU1hybivy8wNLRQe+eBvGTHR4eUYoLgvhg75vLb0q/YGztBP+qfNOm9HnNgclzrer3
-	ecKJES+as9hMpMCU1sfnZK+G1SLz4HncXggcXw3NuHY9ca7iY2rqjM4HJBD5OMWg3x3dfDpqWjB
-	xNcJRsI+drwkmNjm81Xmk0FoOhcX04h7dA0qzP8xldY3nuw3wwGRILlMZIE5nCR3lPgt+XTdKzS
-	1RkTwrf9rYI2ou4izH8LOHLYJAUEGb71urX6DGMwqQodXy4IHpbBzowOdLtIzF+cpCLdmfOFr4c
-	gBxkx3xSjUyDCn9b2CfQnoQSLa4XywY1xo9/IUSCsoaT0J4DPK+8lWnKw3wKDkmXnQKzfNpfbz3
-	szCuT8WGZ61ExsVDMR5nkifT1O/wH4pCyVOT9QA/sNIiuIpDEvaLdm2C6r8Y+xuqhO4WVUjoW+6
-	jNYWyPU8XigY+LuBc3DzDXgbahtmqnPnCMvhWaw==
-X-Received: by 2002:a05:690e:228b:b0:679:a650:a083 with SMTP id 956f58d0204a3-67c1428a29fmr1291761d50.21.1793981076502;
-        Fri, 06 Nov 2026 08:04:36 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:1a::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f770cc6sm21382727b3.9.2026.11.06.08.04.33
+        bh=jrPqOBbmQTC7cKWIEZPDDl/+MmJimjcBhJLEmrI30vM=;
+        b=v719N1egUsqRli+e4vFK0D8TipC7YYuZ5q5b0aE4J8L3NJqsgQkk8zpZRMTGpAXq4i
+         O+s8AYfs2ZgPdL7Yghu0jWn9FyllLiCiAZeCvjfBn4+A8fCd5bJgNh4pcfMprqHkPMb3
+         vdKQ/eWIBgoW+0mwtCbSCiC/Anx/cNPg8BUsEJysx1+oQ6+bDbAG1UTKhX2TH51ERYp8
+         yCnxIH39u8rQssEgu+Ev1+UVqYwUce5tk1RMgEHg79kt5COL8hahNb35J82l+bvXDjqc
+         1MAD/IH0CqAUeNVBNFnnQQER4FMDZ7IhW9DnAIWquVu6YAupZUYyQvy9UCSNAYe2ydb2
+         VrcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793981079; x=1794585879;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=jrPqOBbmQTC7cKWIEZPDDl/+MmJimjcBhJLEmrI30vM=;
+        b=hD4gu/63hGjcW2GFNT+nyCfeZA8gPw4BL6hDXJSv19tdULtY3899YoynBphiIMe/qd
+         jCwT4qJ58TTHElAVcS+oyVKVS9Ccscy63mxsQZKRGqVcb4dVTGF6BLCvAk1VDo0Tpz7v
+         u8P8bYczaCf/eRYt8sDwXxKc0RNs7jHTufRc4zxXtxTV4DPaV97WLIDE7FWG2aun/ISx
+         H4WdnmGdJ4/hLxXrKF7u9dobDZHKhgSc/kleJ8ImvtY4k1n5UM7mkSFK0POY/aM2bZBh
+         NdO6R3+F7lsr+q3Mfx+JdUvkvUOFMillvmnVN2nXnQ9LJUp5lJe5DVEN/IOdSg3XAtjs
+         38bg==
+X-Gm-Message-State: APuU4Z9BmkhKuO5R3Q+wY7YVA2GXKxuclB66iH2G03ZHDEM6LnDxGi9G
+	c2McXCWSy9jZhsLVsrUIRqjqpAqIB96axiYhGZ500bGGEIYVMxtnLvtL4sNcVMDB
+X-Gm-Gg: AYBFou3SB+VbpJDAuyhhki64qJ37UJFYaYV/FAixObucdj5xJNuqyQTDxZAuwsiXZbX
+	t97MNWl3Oqjd/J8RJKcmdLwo35KJWrJlNDLG5sZW5SLuVF8iBpv3DjAh2yy9uax8P8++i0+8QCK
+	nh3W41qSjInQ0FFEd0j6pyUQGrHDcgQKk/hBGteTaiZiZ+uXomvm9o9XMWg03ADb5LqRuyOwt2y
+	WkMIfLuiRLwtLhndJF0s2bEZj0gfknTVVmh3TaDf95jC4lizTMeeUJ2KiXAYHdTJh7WjUjQrkLf
+	5pVxuDknE3aoLVwXrBJO/Wq0rVC/uJemJB7lVeyAT0IBkCYi+Hut9v00PpfKq3/Zy/3evdMUgTg
+	t00Eim65NEOmVc5FakxwVZ/7FCARdrrG9EJ3og3Z54w7vrYClsZsV00WqHAfpH3KVAc1vE/2X0J
+	APiN7fZdeRpumQhQZRcPTjlASL3jboycytZirgmUCeXTM1iaMOY1ABJ3RBdvKAInm6bNOMyHC88
+	CxtHaKTUQaipSLDWLOKYsRE3WKbsmJDx0sjAIvp8K0L6MmrocPxSUxakLwPKhf4rzgtZ23o3L58
+	J/pVSRvvYqpp77Ukp+eyLHw8LtSEscjZaMwYWyb4js9KgqeeLyRGvPON4VHCjRYSIQxWzMe/VN/
+	gXM4I3wT4ZKPIEM+krFtslanJ5L+AA8CQ+IaNFQ==
+X-Received: by 2002:a05:690c:930a:b0:8b0:ca83:c5a1 with SMTP id 00721157ae682-8b34157e11bmr14898427b3.0.1793981078714;
+        Fri, 06 Nov 2026 08:04:38 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:22::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b33f7cb4eesm21953687b3.16.2026.11.06.08.04.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 08:04:34 -0800 (PST)
+        Fri, 06 Nov 2026 08:04:37 -0800 (PST)
 From: Nhat Pham <nphamcs@gmail.com>
 To: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
@@ -113,26 +114,28 @@ To: linux-mm@kvack.org,
 	yuanchu@google.com
 Cc: stable@vger.kernel.org,
 	ryncsn@gmail.com
-Subject: [PATCH 0/2] mm: fix swapcache writeout and cluster table publication
-Date: Fri,  6 Nov 2026 08:04:30 -0800
-Message-ID: <20261106160432.2552507-1-nphamcs@gmail.com>
+Subject: [PATCH 1/2] mm: vmscan: allow writeout of swapcache folios without anon mappings
+Date: Fri,  6 Nov 2026 08:04:31 -0800
+Message-ID: <20261106160432.2552507-2-nphamcs@gmail.com>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261106160432.2552507-1-nphamcs@gmail.com>
+References: <20261106160432.2552507-1-nphamcs@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam06
+X-Stat-Signature: x4aqcyt76ewrbsog47kpwakzs4yadghx
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: prmr3ocf63jegqwpamy13nnsgep3gd11
-X-Rspamd-Queue-Id: A7C06160019
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: C3F9340002
 X-Rspam-User: 
-X-HE-Tag: 1793981077-770640
-X-HE-Meta: U2FsdGVkX1+Fm7MQSPAImljK2pt//sPzDTVCRhmKju19sEBfMiqgG5bkKQ7coRUpL5wUy1IDf1KaPzj/Y/MuAObDudzJqDT+FwQmrooRYpqgvDZ1tVguIWwpDDksPm8dZsJPHxbJRLD4n1brMOqFZV9JGPcwD7omZ73A3UNfhIdskeasCbo0bte9ROsxVlLNXvGmyVexnjmuqjR2w5kV5haQwGTdnlPHMgaqnzdt9Q/OkpV5hInQ2vH3YH2Kt2AojKI7OifbT891bJfS9qRaIdBrzYZA+PDm/0K4Uke+Frj9SSguip4pFX0MjE794nU9Tj/xYPu8NcxT5w2a93NN5XXaNx8b/Xl4mAMGZyAwQqRqqgtFbdmLzlx5d/wnQODa0/wFpo5v/TbfClzXAmN/mrlRtXkOA40qAl01TZNMjGDJgOFmXYbZUWOpwe5PmAoiti+zCTJ8VKZ2c5n5YY97dy19Ii9SBr6cDkcs5egEFHRwL9hrNSO+YAH7PBTTLW+CAyqhVQAfEujwXAFalijRD9JOljVfWEgjmQIxwqDuzRPRL8Zh/A82ifiIqmbwImrjtYKtETdkPCiDjX0q3Gqre6xf5eAMnxFpQ8WQxpdWHFV35pJx5mzuZ/+eocrxGqWhJvdLZW50/yEEmmpNInforxm6w3l3VTHeCUVGGHoMMqK/tTtAnzino2IWXCrsM+x/9L2YYrdQg0zGeBcKSwDU/8uReRnizUpj7+t8wgeP4LgsuKpdZEiL3riPIuNOZJuJ8TFGlWn/6rlFH3cFAUunCsZkWU8OfmsnXkRzt7thep8dcvF2xc0Mq01jgP4EFprE8OzYwgUSVAAqs9zIqSeV/vbgWJ4m4LUtGI0yYltvP/I0Ir6BgMK9D4N05BnYvLNUfCsQLc2djhyxHbq/Qogyma3TJWN4Xqpp7dQ6K1WOhRvrwOGw3I74R6zjIcsmQjK4wlqhBcc/BW+fNJBlPGj
- 2C9GmvV9
- h2l22v2eISrpjp59TTyeIvXEJftJmN3rGvbRZfZH03iiKdPXyPmisXF7PpG24p7ivzf1nUvWFMK1Ph/SosbLbY+gclis4CGjntwjYTEf1efdxMnvSSONKDbAs9EYFAxaPl+zc0bdF3XseE3MenYg/wNsXJnaCr/AQVbzPBew4ZWKPugIdJAN7E9h9zLger57F+CHKRKe0EUhigzZesXRopchF1twSJ88lbkR99URypa/IMX+Eer5q4mM5rXxIn6aMCpmTH0n11aXXX7Wx6WrGskAnne680/yzZqLVed2fDJBs7WGAhdPuSe6dw+x6p7Pd0UiE6ea23Ywjb4rE/zIO7bzKZ4+WaFD0+CoXMXDyoJCvaeC+damHLhZmzOzK3Q2d/2/YC4XY9qDV6Wz18vngAZWDKKThtEmGpPzzJ/Lg2hVIIKZ4C6XPwje+HQcYpG0Hfe2nFNVHnQpynpsWaVUF6b1ojR0g4AtrKuBM
+X-HE-Tag: 1793981079-415202
+X-HE-Meta: U2FsdGVkX18NflSgimGQ+0Hy3dllEqH1IDG9yCeCy65hE5cKEdHjdVzJ8hzORxjfauCDtWtA86ogDC0TxZbqwcyDac94r8kWXzxON78QRS2K64nqgzvV84AmLKf2KHAaqUJQ4gy5xUlDZZyM8WZnAxHnLsm1JXA31FFNi2YF91sz99dU6frWJo01/JsorCM0L+3Cm4RdmH4t6piEj3QS7pemhAs0SsnncI+OQ1AH/fuWrXaNafzLB90DcI4l0cE9JPO526ymmflRQJFsWegOWP7EPpv46FHOKp04FfS9VrPv67ytJ7qmFrnxXOMMaeZwBYiL0tm4LR/6wCW6wPglVipSX/gGIdaD4EoZnvgVt6pKjfWuzqp9CUzGhgxwHWOyKIFxSJpfGafrY317BuKK5/BauFCs+ME+E/z2DwsHX/4UnUdCABIZA6hCzvdCQ/E5SM01KmyyaQQ/QkBH9DEaohjljCN2/DioFndfkSMCVaL2URdfFn1Wh5uvMfSFi2+UreH+CC39mo5xcE6Oyx8ITPvJum9zJQs87WPdJxjIf/rVsPbkFgu/PvDTHb7my6zVWo4qbvS0K4n6Nm9ouqRrTCcKSPr043zwJCjQO/C0Rk52pnFEKz+zBn6PuayZC7c7jd62Eah2xGDuRzjESEYjeRHvY962mtltQnWvpoE3GKMKBaZlenX7LniP0kM33k//h96maiUaVx5kQ0P8r54coBEbrPYVHnf5ih7uZFJM6TujlZleU1r2YD8AOBYlcvfBJoy/nQhuCWRgAjy+AeqCFQziPWx7Dlod5i5BBsfoU85acnVmwqzkKJLtDJFfcLiKJD1c3tIcfZJI4emWieurnfIqFA1hr7AmImBcGJ7J9NsnBvR1Vx28aQKbXYxLZgYl4RlN6v81kAbmPBNMChlXECbCitJo5V5KqxjkjSOY2UIZ+ID4avCJBpBubjjxSDzqGElhskIMkJiNQRn8N5I
+ okNxCXo5
+ /5OzAz/DxU3bdT6ln/6q2mN1v0H1Y+dCzd5OuLFfz6XdHBYTnqyD/yKegl7wvn/2tETnMkgfBjaF03uocmBviyeR//hLUtUj6rJMC2VDWyum7oxOEkG7/HiFCZygLFBFp7oamlJMboLFyelYoFUql3Dbtxv3Zjv9HPJCWAnRmvgNZOymfoxYf/m048fBxqlQqrhv8fOsolay0JMccWOm3BGGOZpZPHcB4m8/8rwl5XElM3u1PisJJJ1jHlQDv/DVKDZYALAgXRiLeyrFdl8zCtsZDkFleSF1JKGSvcqd6dR4sNv6E0VxA2Wd8M+egcdIiqh7RFmEFQOuKFQ5ggS8nyyJGN7L2+7QQyXoKaIgQBAIyx6o7+W46/YRhm40FzHM8hxU8yEyQ+T7YFGTLEuEhR1BtEYIyAnkXUozz8FyJmjJQaqurup51NirSstaz7nkrmn2BURTFZaSUQvIpqPqtGuDShlrsj8+4D778c+BBiYyRE+RS5CA1EcmQqw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -141,22 +144,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Sashiko's review of the vswap series uncovered two bugs in existing swap
-code: reclaim skips swapcache folios without anon mappings, and cluster
-tables can be published while allocator locks are dropped.
+Unfaulted zswap readahead folios can be dirty and in swapcache without
+an anonymous mapping. pageout() rejects them before swap_writeout(),
+so reclaim cannot write them out while their swap entries remain
+referenced.
 
-Allow swapcache folios through pageout() and keep cluster tables private
-until the allocator locks are reacquired. The second patch completes
-Kairui Song's locking sketch.
+Allow swapcache folios through the filesystem folio check. They already
+have swap entries and can use the existing swap writeout path. Anonymous
+folios outside swapcache have no mapping and already return PAGE_KEEP.
 
-Nhat Pham (2):
-  mm: vmscan: allow writeout of swapcache folios without anon mappings
-  mm/swap: publish cluster tables after reacquiring allocator locks
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Link: https://lore.kernel.org/all/sashiko-outbox-181078@kernel.org/
+Fixes: 84798514db50 ("mm: Remove swap_writepage() and shmem_writepage()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+---
+ mm/vmscan.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- mm/swapfile.c | 106 +++++++++++++++++++++++++++++++++++---------------
- mm/vmscan.c   |   3 +-
- 2 files changed, 76 insertions(+), 33 deletions(-)
-
-
-base-commit: 32959c9a49d24faffb39413322ef80014f88dd16
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 7db6be53f3a9..4b014e3c07bd 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -714,7 +714,8 @@ static pageout_t pageout(struct swap_io_ctx *ctx, struct address_space *mapping,
+ 	 */
+ 	if (folio_ref_count(folio) != 1 + folio_nr_pages(folio) || !mapping)
+ 		return PAGE_KEEP;
+-	if (!shmem_mapping(mapping) && !folio_test_anon(folio))
++	/* Anonymous folios outside swapcache returned PAGE_KEEP above. */
++	if (!shmem_mapping(mapping) && !folio_test_swapcache(folio))
+ 		return PAGE_ACTIVATE;
+ 	if (!folio_clear_dirty_for_io(folio))
+ 		return PAGE_CLEAN;
 
