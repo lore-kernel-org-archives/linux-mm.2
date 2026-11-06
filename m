@@ -1,140 +1,101 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69317606A332
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BEE606A339
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 13:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=uNyLqImD;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=CbMIDbjG;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=Gpzlf8gB;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=1PCIbXGU
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Oa+RYcvU
 Received: by kanga.kvack.org (Postfix)
-	id 744B36B05B0; Fri,  6 Nov 2026 08:50:21 -0500 (EST)
+	id 263E96B05B3; Fri,  6 Nov 2026 08:51:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F4B76B05B2; Fri,  6 Nov 2026 08:50:21 -0500 (EST)
+	id 23AB96B05B4; Fri,  6 Nov 2026 08:51:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E4D36B05B3; Fri,  6 Nov 2026 08:50:21 -0500 (EST)
+	id 1509E6B05B5; Fri,  6 Nov 2026 08:51:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 38E0F6B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:50:21 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id BFDEBA0D76
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:50:20 +0000 (UTC)
-X-FDA: 85404828600.02.8247B39
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B09A1A000C
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:50:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uNyLqImD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CbMIDbjG;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Gpzlf8gB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1PCIbXGU;
-	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E8F286B05B3
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 08:51:03 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 88F8B1C3C23
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:51:03 +0000 (UTC)
+X-FDA: 85404830406.21.43CFB80
+Received: from mta0.migadu.com (out-162.mta0.migadu.com [91.218.175.162])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 5F3761C0004
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 13:51:01 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Oa+RYcvU;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.162 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793973018;
-	b=elP8P6d5UfKjO/jtbiEJrVJRmrN7PsTyOijfjOGslHYlozDQdQ2vKLUmBPWcINE62R3eAe
-	hK9pQ7Wu3FMC4RYq6GKOz5bDNkT5NviJ1LrVVYBmCn4tQoXXI1bNLYtjccBzW+5ndwuOQi
-	lfI52s37THOnT33YFxG1qREFybT9e4U=
+	t=1793973061;
+	b=pLAE3m68LOenAd3TJNgZMUSgyaXFjVrXBBIcZCrmscf/5cRibaD6+i1sA5bvJNlndIKb6M
+	ZhN2kPoiBe5KZFjWh8a6pLB6csnNdYYKVva2uAjqAyBa5NtgWKaaLSeTusZn2iqR5HdT0V
+	a5apEivaqB4lHvqVuJ0eg6mCtzsbFqc=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uNyLqImD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=CbMIDbjG;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Gpzlf8gB;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=1PCIbXGU;
-	spf=pass (imf15.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Oa+RYcvU;
+	spf=pass (imf21.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.162 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793973018;
+	s=arc-20220608; t=1793973061;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q9ESeoxc2axeNsRXLbRhvtNOs3u64Vs/IsR+3Ogm2vY=;
-	b=Ir/WGtFgUDM61GFOIqVZDERuzjnPiSClYhaws6N1pjm++hiyR862T8BYqZrsXQqtFlg8DK
-	8JaHBOLHcvhDB3EOevYcRHTpj4X9+WOnyRikv+CwT1cTJVkMewcDYQts6EL7E5tt4uyB71
-	Rtqw0vGIehVVIJPjYTMfKf5mzOfYRag=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1F25C22154;
-	Fri,  6 Nov 2026 13:50:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793973017; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q9ESeoxc2axeNsRXLbRhvtNOs3u64Vs/IsR+3Ogm2vY=;
-	b=uNyLqImDHX5uOVHWzgeMclZhQbEhpse/Z2vmgRqvrp5T6T07d6tkR2t1stQFxUA3EhOC6r
-	lpeuo10ir0ehucz4b1zWpIU7fQjhHHJ5t895N9mi5dEFKYGHh7bJdJC5yN2h7kH5+2bsi+
-	u6ZCJYRpdr4ItxW5JEYexZnc2or9XC0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793973017;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q9ESeoxc2axeNsRXLbRhvtNOs3u64Vs/IsR+3Ogm2vY=;
-	b=CbMIDbjGYYizk2NtlAxWDcCK/DL2ZKdH4cwLciH/sTjQCuKLF+hsp2giK8raBgUYwm15dP
-	SKl5t7Uafqv0jXCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1793973016; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q9ESeoxc2axeNsRXLbRhvtNOs3u64Vs/IsR+3Ogm2vY=;
-	b=Gpzlf8gBupkwuEjLYZQim2/w0Pm1DWe7vX27mrWFwxFX5Nm/U1MbOdnF6x8z2smK2DAUWY
-	A9EaopU20S5XLe8GQXAxN3qDrmh6ua6I+BovvBnIzjti9ELEfAE0eIgKo5lmsSej/nM5/n
-	vBOx0TW0lxl8RXmscGS8S4o/ku2ereA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1793973016;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=q9ESeoxc2axeNsRXLbRhvtNOs3u64Vs/IsR+3Ogm2vY=;
-	b=1PCIbXGUsJP/R+j/iM9waFtP1LQvuSJhoIFrgr57FV2V116bXLSY15leCUqZzwgmVVkNgr
-	nOKpwWr0IfLvXvBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C7106136CC;
-	Fri,  6 Nov 2026 13:50:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dNaYGRbb7WpeSwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Fri, 06 Nov 2026 13:50:14 +0000
-Date: Fri, 6 Nov 2026 13:50:12 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Hugh Dickins <hughd@google.com>, 
-	"Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] mm/khugepaged: don't map folios that are not uptodate in
- MADV_COLLAPSE
-Message-ID: <au3bACuJ8BBg_le6@pedro-suse.lan>
-References: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
+	bh=fCYv0pUxgmAeB4rdFLxkyhkQaEAR/KeTjA5yN8eBLPw=;
+	b=KHyCsY0DFOtcjiV4WkZL6oK7o5oU2ijd9LFw4HKpqs+ofPi+QkWKfhVEgtSUzQa6WGwc4l
+	I8zoLdLt294bkDMFPLRVoAFg8n3DS3rqQDTCYvg949rCZylSqPxuiAgEhhadkKiRCUMAh/
+	Vw4fWMv8SuG8daAVLJ35WAHrdz2LkMg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=aSjJokHbfeqfaOpdHS6iuJx1acJZQq2O8WuSPhMF0YI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1793973059; v=1; x=1794577859;
+ b=Oa+RYcvUBR5PfQFFNyEECSKE8IZFUE0qtcC3TqqrH8gbPiNFoniV3V3wuatfAQl0gXy12YzC
+ H8NAGpfZTqXU/gE2k1uaedWlmbuWsfz2rNEktpesnIBFVsUREBprL/vUo4+xz1fZ94VCGsMRe3R
+ OPIImH5D+vmH4STXi7jisnI4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id 821439f0cfeaeec5;
+	Fri, 06 Nov 2026 13:50:59 +0000
+X-Mizu-Trace-ID: 821439f0cfeaeec5
+X-Migadu-Flow: FLOW_OUT
+From: Usama Arif <usama.arif@linux.dev>
+To: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+Cc: Usama Arif <usama.arif@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <baoquan.he@linux.dev>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Dave Young <ruirui.yang@linux.dev>,
+	Jiri Bohac <jbohac@suse.cz>,
+	David Hildenbrand <david@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kdump: Give crashkernel CMA areas unique names
+Date: Fri,  6 Nov 2026 05:50:55 -0800
+Message-ID: <20261106135056.790448-1-usama.arif@linux.dev>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261106104309.3669583-1-zaslonko@linux.ibm.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
-X-Spam-Level: 
-X-Spam-Score: -13.30
-X-Stat-Signature: 5m9hpomshgtfxesptnfpotcth8kh93we
-X-Rspamd-Queue-Id: B09A1A000C
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zj53fxj6iku4joppw7nzgefe7htkkygu
+X-Rspamd-Queue-Id: 5F3761C0004
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793973018-2873
-X-HE-Meta: U2FsdGVkX18N9hVHJQ4zDraR1PFllE4QGJHcdieIe6qh9Zki6WirqQGe0/Y4LufJUDcv5zaiZE33AD6HGdvZ4/pNEzvfwk5D/k9pbk1X8Vilne7AS3sp7DBKJghlN/LVV32A5MahBa+TwoEXRoF7SlqRIMy70wyh41c4zmw0DhuMVVOBgYjhe9wlt4/Ro1pUGIsjUOt0FhYsjGfwLgoTUa3Q7x2FK9dQn2RzmCnBnbK3b7dJsKhIIvv+McvHrxwch1qCf4VZVrwqnF4nUHJIYwE57rtonYRDv8/vJlj671uTN+3uj6Bfo2W10UvmPRcTq9kQto6FziYK/bnJPLeJl6OKwVfPWbn6Hi7tdM4nmKYuBFtFDfMsuUsPtaYG7K2Fdsn40KXdik+si0iHfri4LXumy00RRM3okoA3Bsie6JyPYrgj6OJW2HYCNJnFgXnc9qCh6Yrfqez8UZHJLU7jmEBlPmetpWJE4o6c6OWniGIPOTYxD98DiGK7EfW76dZgic153oN8UEArAtNKEUnWK2GPqDmCFVCKTV22iLglQZptPHxEmn3TpKZiQThJcDDFQ+WYawasnY4uwT/2dOm/E54ekR6zE4+2LZJAal7tTDXt/2XfOhdYEVW4L2CfK4FWmkvTbLhJHbVAMi+Bc2bJLajwIbJuip2wUbfHcrKrlAbNgKR6gTCviz5229zB+2ay1f1rLZlH86oYo20dIKrs52JhHYphw28jz/voZUBJdjhInLV1Yl8uBbXU5ixr/w2NL/zS5x0l4VrIsa+olIJuJd+aySsKNTco7Q9oReXgvXbq3hL5OmyM3P9hJqZa2Ct0FlAIxuDSHKve98YBAbh38ak6bynLKnDM2gVFpghaoGaGm3sTyo+M8a72gLLLLb1L9E6bF+mG5uSm6t3UwFCVstvwvCOsCuGl4X6CkAWn4JtV27gZfeDbfRzKzrxHJ9iCCwcY1dUMRr2tDpDDApM
- BydhsW0Q
- oNHP7j1Jn/SZVnwnVLUOSBNF5auvExc6CKRNyxmletmDMVfQzFfEeWhSXcO5R5qD2APyDKEBr29hFlBgKfT5266Zxe8FG19ddPoWWT7sgOBXAbeh48TCtpixJmyPpzk0c7kynioGNS0jPo4gST5Qn0frX1YZoXmcIGleKvAcL1RS79CMl4AU+k8MtY+rQi0g79BS8CFzcyB0IbSmmA3II1GumgPbRsVf7PkdZaS0YtKXFtlMESfY2hh0ltWkxopbwRZGHzTCvUeI/YnVkU6FeqA1M4nIeXYhC2bade8oX7cIX97D3LYBBfX0rGRqQkbf3oImYhiiheENmUBQ=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1793973061-696242
+X-HE-Meta: U2FsdGVkX1/Gi1b9ljMzh03PXN4DRNBiyuSnBlx+Ns4bgzIQjK7i+5V7mxy64x5aei+rU8GeO6r9XPKPBoU9sexI3avXroHZBYP3AI1aBlwz0PfN9YJjulVbjBGUvJE2IkdrpRDuCy6ZEkoHh6dvXHllCTE35y5SFU5QgZA2QtwnPQ73sAbbPe00okuD6mfeHRfivQ+jLETp1DH+VnAj3sqnUHwKd+oN7msTo8x4iSXAT1Igy80QMMmLj5c5NprPoSJZ2Hv49uPYtrO7rQGAUUFRF+2xpltcP7ko19Ib1mf+BM6eAZYoSipuhf0YHkvlZTYEp1mdVk4rFIm0YvixqDSWX07w+0LdFpDy3knCD5P0v0kssZYmHE7smdov61ZMcvgDBquof7yiAQ4xNpdyaPGyVqIeSlMjd4aTSec1nZwm+tQrO3H8sVk8t49+2FgBlt1OyqcjdjAoZ7Yy/SVxB5sG3bKP6zE6r4OeBkHVK+wa82q/sFPvCO2LkYEH39mKRBzVma74wKZJaTNHtRDvZuti60aMap+CZGkly+NPBcDlmZfQb2FtvDYTb0Il4DuASaTje0eZkfoKGpmAqc4PQQRUC20c4YNof1UoDzl60XVgm/Aopx6HFcB7NGJSIHhKeIWoVArg5+b4XAxzkVHZmzzYAiw7f9E2oeFm/455hcLImplLld9DGHHuTWZQNRfsOP2RQ/H5xxP99zbOQ7IOlZD2DzfHEFs5Jid0j65ul6cc701dgdT+0vuf2IIQ0hlk6DFPavmGyfI6geF/lZ89MudSnw4pLn6r5LHIETweUD3iyBknMHhN7kdx/rjl1RSh5pOmX/D/+6W7+P4I4SWs1mwWkKtk+nAIospjdFgYrR6sMZlVXYkI8oN5xiBHaZGNVBFGJBOd47VDmCscdwEAynGmsLy3vI5+9S5hMV5eQdB5nw/5sttJci2NWLC5oi9rGQsiNlgWW8rXQHATqAC
+ NoVVL8PZ
+ E0lx7LgauxyzzqgJlxsGrLJxB1mJsT2hu7XV4VRTLv0RwVVwydIIVixtkf/pAP1/8jxtmSdAT19eyjGcCDJxHL/VoyuWZAOCoGVfCtW5cui5bhzpkri/tbjjJF0lN76qyeXCxg2kCPntFJgdBj3c37k6OUfCIKcBw7GKzS4ZC4mpzoipx5XBqrhfcH8fGahHk/lrx23c26rp/s+IFhIuPSkqflnG/bBcjT6B04UBtngMVhfibymSePiGprGBMpMaK+UdrcVRhc+W5/bIslrbPxpqlVw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,26 +104,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 07:16:44PM +0100, David Hildenbrand (Arm) wrote:
-> madvise(MADV_COLLAPSE) can map PMD-sized pagecache folios that are not
-> uptodate. For example, shmem fallocate() can put such folios into the
-> page cache.
-> 
-> collapse_file() already refuses to proceed with folios that are not
-> uptodate. Let's just do the same in try_collapse_pte_mapped_thp() and skip
-> such folios, leaving handling to the page faults.
-> 
-> Note that collapse_file() effectively clears shmem folios through
-> shmem_get_folio(); let's keep this fix simple and simply let the page
-> fault path deal with that.
-> 
-> Fixes: 34488399fa08 ("mm/madvise: add file and shmem support to MADV_COLLAPSE")
-> Reported-by: Chris Mason <mason@kernel.org>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+On Fri,  6 Nov 2026 11:43:09 +0100 Mikhail Zaslonko <zaslonko@linux.ibm.com> wrote:
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> reserve_crashkernel_cma() names every CMA area it reserves
+> "crashkernel". If the requested size can't be reserved in one piece,
+> it falls back to several smaller areas, all with the same name.
+> With CONFIG_CMA_SYSFS, cma_sysfs_init() then fails to create the second
+> directory:
+> 
+>   sysfs: cannot create duplicate filename '/kernel/mm/cma/crashkernel'
+> 
+> and the error path removes the sysfs entries of all CMA areas.
+> 
+> With CONFIG_CMA_DEBUGFS, debugfs refuses the duplicate directories as
+> well:
+> 
+>   debugfs: 'crashkernel' already exists in 'cma'
+> 
+> so only the first area shows up in debugfs.
+> 
+> Keep the name of the first area and add the index to the others:
+> crashkernel, crashkernel1, crashkernel2, ...
+> 
+> Fixes: ab475510e042 ("kdump: implement reserve_crashkernel_cma")
+> Signed-off-by: Mikhail Zaslonko <zaslonko@linux.ibm.com>
+> ---
+> Found while adding crashkernel CMA support for s390.
+> 
+>  kernel/crash_reserve.c | 8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 
--- 
-Pedro
+Thanks for the fix and pointing me to it in [1]!
+
+Acked-by: Usama Arif <usama.arif@linux.dev>
+
+[1] https://lore.kernel.org/all/20261106104309.3669583-1-zaslonko@linux.ibm.com/
+
+> 
+> diff --git a/kernel/crash_reserve.c b/kernel/crash_reserve.c
+> index eee37a11380c..e58318b1e092 100644
+> --- a/kernel/crash_reserve.c
+> +++ b/kernel/crash_reserve.c
+> @@ -483,10 +483,16 @@ void __init reserve_crashkernel_cma(unsigned long long cma_size)
+>  	while (cma_size > reserved_size &&
+>  	       crashk_cma_cnt < CRASHKERNEL_CMA_RANGES_MAX) {
+>  
+> +		char name[CMA_MAX_NAME];
+>  		struct cma *res;
+>  
+> +		/* CMA area names show up in sysfs and debugfs, keep them unique */
+> +		if (crashk_cma_cnt)
+> +			snprintf(name, sizeof(name), "crashkernel%d", crashk_cma_cnt);
+> +		else
+> +			strscpy(name, "crashkernel");
+>  		if (cma_declare_contiguous(0, request_size, 0, 0, 0, false,
+> -				       "crashkernel", &res)) {
+> +				       name, &res)) {
+>  			/* reservation failed, try half-sized blocks */
+>  			if (request_size <= PAGE_SIZE)
+>  				break;
+> 
+> base-commit: f66469d9905b39d2c260a15d7d6db450f4db67c1
+> -- 
+> 2.55.0
+> 
+> 
 
