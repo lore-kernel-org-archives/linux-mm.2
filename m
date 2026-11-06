@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4E1606A32D
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066D0606D82B
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 14:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bbS5o8Rc
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=XyhloYBR
 Received: by kanga.kvack.org (Postfix)
-	id 1AC7B6B05B2; Fri,  6 Nov 2026 09:35:28 -0500 (EST)
+	id 2AB706B05BC; Fri,  6 Nov 2026 09:37:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1543E6B05B4; Fri,  6 Nov 2026 09:35:28 -0500 (EST)
+	id 241436B05BD; Fri,  6 Nov 2026 09:37:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01CEA6B05B5; Fri,  6 Nov 2026 09:35:27 -0500 (EST)
+	id 109906B05BE; Fri,  6 Nov 2026 09:37:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE8B26B05B2
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:35:27 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 771DFA8D69
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:35:27 +0000 (UTC)
-X-FDA: 85404942294.10.D6AFBA3
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D0E2E6B05BC
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 09:37:23 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5AB7B1A0A31
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:37:23 +0000 (UTC)
+X-FDA: 85404947166.15.CF6B568
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AAFBCC000A
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:35:25 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bbS5o8Rc;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793975725;
-	b=49Dz0twV6cphl9NU5czZmasQM9YuAwPKOot8nq98IScWHJeZkVe3snltDpifZzUGrhSdzq
-	wYSpaICzHJ7FklAs3b8uUWJn5NSXX4KAJV2YnR4o7yD40rS4+z8b9NNu3BQWpgUSVktLHI
-	jOPeS2ojiRxED6gWhsftyeg18wSqwdQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bbS5o8Rc;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 98BAC20005
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 14:37:21 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XyhloYBR;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793975725;
+	s=arc-20220608; t=1793975841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dVYlhG5zwe3KP2A+EnIMjZEgzahfx4Lny8jKmNJoSns=;
-	b=K1ZBOmqEAczTYX9oLHzLgprZI0wANaqgu2sKHGpfPnZ3ppY+QCSGrLFXUo+yO6MauNTSwr
-	EkAHeFJYhlD3UMLIxbZP4zr+X3n1iiYUqFTQPnuAdxxMyQTGmsYjES5JVycagujw6s+ErV
-	lS+kXie2ZE1lFx7ncriQlsIy/cS95uE=
+	bh=keIAQnphxXzZvo7hqiOt5+X+8kVcH3dwqTVAhWNwa0Q=;
+	b=6SimXn4TlUcI0Me3wMKPHd4LiVu0ycrHiNuc383uGrQCH7IIa0Oe40KMQZJNseuU1d3BIH
+	LzXvZp1SyyweiD5IrOnPralNTnIEmjrfEtYAD7pE8Yc3vYdMEX09I9nsK4VFTvYe0s5F0q
+	iskFQSYUKrmvOQI7Vas4udK14Bnl/PE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1793975841;
+	b=Somz5y5H+bgF2WNs2do+ufn0QErd+rm3SjUYQLWYzTh5PdMesVhwrVi9uMX1L/LvPfT5WO
+	sjxAstUzIJDS7HNXcqZllhxiLBNe35XC2ASHabxOHBY6gKvmUpTdilytKTmD/rwdLUum47
+	fRgW6Ro38RNSEoLw2lODruEt4VpBHKI=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=XyhloYBR;
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 98063601BF;
-	Fri,  6 Nov 2026 14:35:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EB91F0089F;
-	Fri,  6 Nov 2026 14:35:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CD97D60A81;
+	Fri,  6 Nov 2026 14:37:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE6EB1F008A6;
+	Fri,  6 Nov 2026 14:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793975724;
-	bh=dVYlhG5zwe3KP2A+EnIMjZEgzahfx4Lny8jKmNJoSns=;
+	s=k20260515; t=1793975840;
+	bh=keIAQnphxXzZvo7hqiOt5+X+8kVcH3dwqTVAhWNwa0Q=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bbS5o8RcEMSXv+wnNKUX2QlPsL3eYMot1atUWBvd2g07t7FbPNdIHI1p7vV5CR6HS
-	 zbmWeQpU8ByWX50kTNamEbcSnT1e9HT/c07ylE8QiRp83ZcVf6gJ31FJWS6N7JFrsl
-	 Tooqt0/DM80yb1TjjXEcDHgflkxA/vYfmpwGfidJdjHWpIwpCOUGXUJOALdqb9Nusd
-	 ddqgc4AoOIYX5vLfBxknD9yLoCszK3cdeF/SOm9uZ57yEFqqQdWnI12Oig0UXv2i4K
-	 GuwrCZVcwoRPVBCv4Igxf7uv7q3Ynp3EgEYA3o1Yf5hsmd1qeZqB3nt09CPz5H9und
-	 9eQ13pQ/tn2DA==
-Message-ID: <d0ea7929-7c12-4245-ba3f-6dd5c0269e6b@kernel.org>
-Date: Fri, 6 Nov 2026 15:35:01 +0100
+	b=XyhloYBRU5PZfGy0zwVshpBAJFi+mIJTXNNHmRhQZ7EzgoDIjVDmnidnrNgrc9V7u
+	 aVX495bpwJHG0YCLC7BkhFjwSvRyFwfvT7/9JZU5dfEhDsGnT1lXzgYCb70owp8FNi
+	 dYSqAyaH21pE3nSP1vh9MqvsnWtYSHcG3feZOdlP+KPLwhdj+vU58l5hR5WVLLRwvi
+	 gmlDSu/X2hi4GCV6LieIYl9ofm2sFNdnX0juU1RB4aGUsoM9j1IuKlaqvo4WKejCFh
+	 9Ur0h9FMMX/2KDlz/jUbXYiE2GBFYYVYINV90SkMOqsvDM+6OfhVyTMbJDwj1Hp5ro
+	 zXiwPTj3+pYTg==
+Message-ID: <631047fa-8a19-44b8-9fed-6607ec79a1c1@kernel.org>
+Date: Fri, 6 Nov 2026 15:36:55 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/13] mm: continue vma_flags_t conversion
+Subject: Re: [PATCH 05/13] mm: convert THP VMA flag tests to use vma_flags_t
 To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
  John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
@@ -121,6 +121,7 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
  linux-integrity@vger.kernel.org, selinux@vger.kernel.org
 References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+ <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -167,21 +168,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+In-Reply-To: <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 98BAC20005
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AAFBCC000A
-X-Stat-Signature: bqj7wr64jp3kokagewf9fa61rdg9atzf
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: efyxq76mikafdxobpgz1w9zuwxf9rndd
 X-Rspam-User: 
-X-HE-Tag: 1793975725-902735
-X-HE-Meta: U2FsdGVkX1+z0fAyJKnxAel73NdcckE9aSB+IFEmTXWUyHQJno+IrcsZAgenvuWTbc2Jcix1v2PWKj+RyAqqDP7G+K+GD44BrG5GKmiyVyaypIfSrK8raI2t+rLqpP3+TUos8WQXkyyw5mIaQR9LB5AkmJXe9VCxo5s4JDY3E2xl4o2ahcPxZp3KBKTPW/5bIJSrR4BknAWntAydDmOHEKX+nLAKGCeA7K3HLndKrjpnsiiUA1/GA8rosSA6TFIx4P4or3+pyy4x8rkgoALnG7OJDpS3hrMZjD7uKy991ZStDp1iBdcilN9lHw3GRM+H9W0TJZQ8swoKnB4KDwPpCmJVGXuMi7kOrh3Ykk3MVURRgCiTmEljjToptsBgaubGTedYT9buO66+tSEHhmJ0Dnr8jpM6EMUar4PpGrheg2sBAkooxWJ+uRPPFIJ55GhAxY/j3NV4wo7E9GKU40tx+gjnt3xs604ceVwjInCE74MyWDzf/jCnYDQktrTdEEQu+UdxV+MkYFI5FnrWXNhPoK7ZqYFARCgTfbDuVVlWVzNt3uz+7ZS2tQ/PK8tNt0br0kL0TFtwFE7TQej7vLTBs0RkURf6qqOqLojpQZKg7hKMDGoaG9wvzCGjYad06rSiqLBNhKWHioPiWQFqE0oASdrAIQZiQpOPySqI7OtKbuZr69/3Jok8wVsi1ZbUW0r3wlXwVqbCD3JTx0UPhlsdClzlQpP1MBgsHTz42XnEPX1/BTVfblM7Ap3Mnt1CIQS9/BEibN1Z1Q172ARsuXgkpMxids+IfQeVy1QME0nhyHgxqJifhRiVQRNJkIAAHXV6Q9vt/g1OtJR/iiXMHDIXK1XtDkIYpLxNY99+kD/nqpK429mqdfBUwhEA9BjyaBlUuhtsbQdvGZP1K925+Xp1kT5TWzVoLHOK7TnYpZuba32ZyIHbvQ6VKn8OqhvIQ++6xdQOkBCSunMeKTdbvM2
- Ly0vi3Ag
- xs+cSWF28QDi/uXfCKc7ZDWAyloL4JnPUrMO0x7XxmfoPmGdQj/iyn6wyEcAlAJBI3gcuY4YKUywfJkhSKbe+X1Ecm+NhG8Rs4pOu98EiO889NNr11ogaxRBwT4DlU/4AAuldcwfyhLErcOT4g09L+9V4KcvS20rcM2ZUS7j2CTmRgnna5NrCpU3AjAcV/EyASb7or23Pu9eSsFR8lhw8IbgqNTlxT5dHzmhvDqClnLh2PD9LvXVYTWLkNm9s9/+vLfXViK1RX2VFLnAsQRKdC6BvjEjcfXGkkqKHkmkPpXErlyb5owANf803RBw4jKq8kJgyTiG1Gz1/g2tvfYRJ3z8I3qwJeOBCVtcvywk5ye1gABugYgRdiWTBWwgiDyYodRBywaKvRz8p2ygx8ybMNlAWsA==
+X-HE-Tag: 1793975841-715899
+X-HE-Meta: U2FsdGVkX18zM0FIIFRHpX67EFTXserl9/Kz8zF4eBm2GXl+uKPNVjIdmP7O0IiG+F6wIspx23XMslCEfO8zfeXrzeiadbTD045zNkB7pgzf8XLZdS4TBSKGd88xSySO0eE0ikJV8gvyJGTm6FDmfJKCQqusvgZXTmX6L0wGuZATBo6MpElAhHpMTHkfIxH/Sm1ONL9DvbDG5ZE8fd39rNJomAB2bYr5UhW2yHTGbO2TiB4O4S+RfiZCuQFiFx4FtJQHY3UFB9SIZwjWD1sejaVkfaKk48aPrjfos0PVrRH88/OQqjfRITGwratnBaTstQTSE+6xoMImo49oR9RnlisXWzwT9usx8vAGT7v8q3iRnAUus4AfEDm5A1wzXUC44eNcXMhA07TaG2Klimhrr2Qatl+Voz0FEgdGgs2pqquKyQqeDaJu04BcVKzkC0AeePd8Y4gwm/qHE1O+1LuecR22kgQaDeZXyBVqrxAB/mZlTk74uzjZHWWOoibUfjEmOnXG7xj8GCSPhYfteUdMnqx2c7mEmBBpiALNJimdQfzFENIPbunzUQk7yovDYQsxRoCOy8xUXNw/z+k7L7AKMhEqU38hJg6HBypA0BNYfrEQ6nyAnUg0aoKWAvxJW0oIcUipOd+2AM2pklsMWKoYcFMbH0zZ9g9Ek78XHik3LIUQbDUeu9kBJMzsgN+1ujS3b7/hmE7EpW7Gq6C6qAKkKX/nhvLH5k9dLJK1pWjd+Hu5bYLD4i1PvadVAdYMAVYuglGGuHEGf6LxGOwyBRgqMwNCkYqPNX0VlVYbEGRF/ReeEg/M1OGb44uD04M6ID0kzUnNazWEZdHLxCS/WgLbhuaTKvbIiClc8/XbQvBC/t+d/hTFy6O8CPKh+S7htbFh81hKJdyKj3e0cP/eNTWRC68bBsO+0njJ1c8cseSqSXsk5sOI9YNW/KAXWMX+M1tYeeh7XksugNsU2vqFKKQ
+ WtErr+Wj
+ MIsp6jeoxpE8g6cLez3Eo+d1/DR0sj7JJjpTUI1gjCadDVZqUYgduLRccjVz16lfRv/KuqlKulCr2+UXgaPcvnqenx3RMQVTi9z6PP4jRad7rl5uiOdjOZgu00wjVMPiXH+xc3hASDaEk6Dx6aq1wlQMQ5ycwqbPDsQ2ujcfZPz4D5SEXQbKpFEsXBOeQscO+0IdNv4t1tySXR1JYpKfS2Pg7DoCJvmbXabXvDQ3/h9RthjDz9PJSxlzMGFGjoZJC0tTVaJeHiUN/D+f9zcRpAGeNwSIb4V6nnvVfm+xAuzkqeXIrjrDuAu0XCKr8EAmGPSNjrJKUzqObT2991Sa4CGjMKH5POt20lOFP+/POzXDGCwZCERyH8qzzZU435/XhWlGG1Mkdb+0nN7IurlDsq3IWpA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -191,48 +193,165 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/5/26 22:30, Lorenzo Stoakes (ARM) wrote:
-> Continue the conversion of legacy vm_flags_t flags to the new vma_flags_t
-> bitmap type.
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values where
+> VMA flags are tested directly in the THP and khugepaged logic.
 > 
-> Do some more core mm conversion (we really should be the first to
-> completely move to the new scheme :), but also update some mm-adjacent and
-> otherwise straightforward cases - /proc/$pid/maps and friends, the coredump
-> VMA dump size logic, uprobes, perf and LSM mmap/mprotect hooks.
+> The thp_vma_allowable_orders() family of functions, hugepage_madvise() and
+> khugepaged_enter_vma() continue to take legacy flags for the time being.
 > 
-> This series only makes strictly mechanical changes to keep things gentle
-> during this very busy cycle.
+> Also update BUG_ON()'s to VM_WARN_ON_ONCE() while here.
 > 
 > No functional change intended.
 > 
-> Build tested on x86-64 (allmodconfig, each patch individually), i386,
-> arm64, riscv nommu and ppc64le.
-> 
 > Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 > ---
-> Lorenzo Stoakes (ARM) (13):
->       mm/gup: convert GUP code to use vma_flags_t
->       mm/filemap: convert fault and readahead logic to use vma_flags_t
->       mm/rmap: convert remaining VMA flag tests to use vma_flags_t
->       mm/migrate: convert VMA flag tests to use vma_flags_t
->       mm: convert THP VMA flag tests to use vma_flags_t
->       mm/ksm: convert VMA flag tests to use vma_flags_t
->       mm/madvise: convert madvise_vma_behavior() to use vma_flags_t
->       mm: convert miscellaneous VMA flag tests to use vma_flags_t
->       fs/proc/task_mmu: convert VMA flag tests to use vma_flags_t
->       fs/coredump: convert vma_dump_size() to use vma_flags_t
->       uprobes: convert VMA flag tests to use vma_flags_t
->       perf: convert VMA flag tests to use vma_flags_t
->       security: convert VMA flag tests to use vma_flags_t
+>  mm/huge_memory.c | 32 ++++++++++++++++----------------
+>  mm/khugepaged.c  |  8 +++++---
+>  2 files changed, 21 insertions(+), 19 deletions(-)
 > 
+> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> index 7e589a2fb02d..764e693b422f 100644
+> --- a/mm/huge_memory.c
+> +++ b/mm/huge_memory.c
+> @@ -1257,7 +1257,7 @@ __setup("thp_anon=", setup_thp_anon);
+>  
+>  pmd_t maybe_pmd_mkwrite(pmd_t pmd, struct vm_area_struct *vma)
+>  {
+> -	if (likely(vma->vm_flags & VM_WRITE))
+> +	if (likely(vma_test(vma, VMA_WRITE_BIT)))
+>  		pmd = pmd_mkwrite(pmd, vma);
+>  	return pmd;
+>  }
+> @@ -1517,7 +1517,7 @@ vm_fault_t do_huge_pmd_device_private(struct vm_fault *vmf)
+>   */
+>  gfp_t vma_thp_gfp_mask(struct vm_area_struct *vma)
+>  {
+> -	const bool vma_madvised = vma && (vma->vm_flags & VM_HUGEPAGE);
+> +	const bool vma_madvised = vma && vma_test(vma, VMA_HUGEPAGE_BIT);
+>  
+>  	/* Always do synchronous compaction */
+>  	if (test_bit(TRANSPARENT_HUGEPAGE_DEFRAG_DIRECT_FLAG, &transparent_hugepage_flags))
+> @@ -1716,10 +1716,9 @@ vm_fault_t vmf_insert_pfn_pmd(struct vm_fault *vmf, unsigned long pfn,
+>  	 * but we need to be consistent with PTEs and architectures that
+>  	 * can't support a 'special' bit.
+>  	 */
+> -	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)));
+> -	BUG_ON((vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) ==
+> -						(VM_PFNMAP|VM_MIXEDMAP));
+> -	BUG_ON((vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma));
+> +	VM_WARN_ON_ONCE(!vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
+> +	VM_WARN_ON_ONCE(vma_test_all(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
+> +	VM_WARN_ON_ONCE(vma_test(vma, VMA_PFNMAP_BIT) && vma_is_cow_mapping(vma));
+>  
+>  	if (unlikely(is_huge_zero_pfn(pfn)))
+>  		return VM_FAULT_SIGBUS;
+> @@ -1750,7 +1749,7 @@ EXPORT_SYMBOL_GPL(vmf_insert_folio_pmd);
+>  #ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
+>  static pud_t maybe_pud_mkwrite(pud_t pud, struct vm_area_struct *vma)
+>  {
+> -	if (likely(vma->vm_flags & VM_WRITE))
+> +	if (likely(vma_test(vma, VMA_WRITE_BIT)))
+>  		pud = pud_mkwrite(pud);
+>  	return pud;
+>  }
+> @@ -1827,10 +1826,9 @@ vm_fault_t vmf_insert_pfn_pud(struct vm_fault *vmf, unsigned long pfn,
+>  	 * but we need to be consistent with PTEs and architectures that
+>  	 * can't support a 'special' bit.
+>  	 */
+> -	BUG_ON(!(vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)));
+> -	BUG_ON((vma->vm_flags & (VM_PFNMAP|VM_MIXEDMAP)) ==
+> -						(VM_PFNMAP|VM_MIXEDMAP));
+> -	BUG_ON((vma->vm_flags & VM_PFNMAP) && vma_is_cow_mapping(vma));
+> +	VM_WARN_ON_ONCE(!vma_test_any(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
+> +	VM_WARN_ON_ONCE(vma_test_all(vma, VMA_PFNMAP_BIT, VMA_MIXEDMAP_BIT));
+> +	VM_WARN_ON_ONCE(vma_test(vma, VMA_PFNMAP_BIT) && vma_is_cow_mapping(vma));
+>  
+>  	pfnmap_setup_cachemode_pfn(pfn, &pgprot);
+>  
+> @@ -2262,7 +2260,7 @@ static inline bool can_change_pmd_writable(struct vm_area_struct *vma,
+>  {
+>  	struct page *page;
+>  
+> -	if (WARN_ON_ONCE(!(vma->vm_flags & VM_WRITE)))
+> +	if (WARN_ON_ONCE(!vma_test(vma, VMA_WRITE_BIT)))
+>  		return false;
+>  
+>  	/* Don't touch entries that are not even readable (NUMA hinting). */
+> @@ -2277,7 +2275,7 @@ static inline bool can_change_pmd_writable(struct vm_area_struct *vma,
+>  	if (userfaultfd_huge_pmd_wp(vma, pmd))
+>  		return false;
+>  
+> -	if (!(vma->vm_flags & VM_SHARED)) {
+> +	if (!vma_test(vma, VMA_SHARED_BIT)) {
+>  		/* See can_change_pte_writable(). */
+>  		page = vm_normal_page_pmd(vma, addr, pmd);
+>  		return page && PageAnon(page) && PageAnonExclusive(page);
+> @@ -3568,7 +3566,8 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
+>  
+>  	if (pmd_dirty(orig_pmd))
+>  		folio_set_dirty(folio);
+> -	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
+> +	if (folio_test_dirty(folio) &&
+> +	    !vma_test_single_mask(vma, VMA_DROPPABLE)) {
+>  		folio_set_swapbacked(folio);
+>  		return false;
+>  	}
+> @@ -3600,7 +3599,8 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
+>  	 */
+>  	if (pmd_dirty(orig_pmd))
+>  		folio_set_dirty(folio);
+> -	if (folio_test_dirty(folio) && !(vma->vm_flags & VM_DROPPABLE)) {
+> +	if (folio_test_dirty(folio) &&
+> +	    !vma_test_single_mask(vma, VMA_DROPPABLE)) {
+>  		folio_set_swapbacked(folio);
+>  		set_pmd_at(mm, addr, pmdp, orig_pmd);
+>  		return false;
+> @@ -3614,7 +3614,7 @@ static bool __discard_anon_folio_pmd_locked(struct vm_area_struct *vma,
+>  	folio_remove_rmap_pmd(folio, pmd_page(orig_pmd), vma);
+>  	zap_deposited_table(mm, pmdp);
+>  	add_mm_counter(mm, MM_ANONPAGES, -HPAGE_PMD_NR);
+> -	if (vma->vm_flags & VM_LOCKED)
+> +	if (vma_test(vma, VMA_LOCKED_BIT))
+>  		mlock_drain_local();
+>  	folio_put(folio);
+>  
+> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> index 0d3bd9e23613..a2c7c6a0768d 100644
+> --- a/mm/khugepaged.c
+> +++ b/mm/khugepaged.c
+> @@ -640,7 +640,8 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+>  		 * If the vma has the VM_DROPPABLE flag, the collapse will
+>  		 * preserve the lazyfree property without needing to skip.
+>  		 */
+> -		if (cc->policy.anon_skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
+> +		if (cc->policy.anon_skip_lazyfree &&
+> +		    !vma_test_single_mask(vma, VMA_DROPPABLE) &&
+>  		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
+>  			result = SCAN_PAGE_LAZYFREE;
+>  			goto out;
+> @@ -1683,7 +1684,8 @@ static enum scan_result collapse_scan_anon(struct vm_area_struct *vma,
+>  		 * If the vma has the VM_DROPPABLE flag, the collapse will
+>  		 * preserve the lazyfree property without needing to skip.
+>  		 */
+> -		if (cc->policy.anon_skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
+> +		if (cc->policy.anon_skip_lazyfree &&
+> +		    !vma_test_single_mask(vma, VMA_DROPPABLE) &&
+>  		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
+>  			result = SCAN_PAGE_LAZYFREE;
+>  			failed_pfn = folio_pfn(folio);
+> @@ -1948,7 +1950,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+>  	 * So page lock of folio does not protect from it, so we must not drop
+>  	 * ptl before pgt_pmd is removed, so uffd private needs pml taken now.
+>  	 */
+> -	if (userfaultfd_armed(vma) && !(vma->vm_flags & VM_SHARED))
+> +	if (userfaultfd_armed(vma) && !vma_test(vma, VMA_SHARED_BIT))
+>  		pml = pmd_lock(mm, pmd);
 
-I agree that this should be picked separately. For example, I will pick
-everything that falls into my realm to reduce conflicts.
+A patch in mm/core.git will remove that entirely.
 
-Ideally, patches really only touch one component.
+Right now it results in a conflict between mm-new and mm/core.git.
 
-[PATCH 07/13] mm/madvise: convert madvise_vma_behavior() to use vma_flags_t
-
-is all over the place :)
+Beat to drop this here entirely. (I can also drop it when applying)
 
 -- 
 Cheers,
