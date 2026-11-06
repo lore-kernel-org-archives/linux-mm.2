@@ -1,110 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC91606A331
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8A7606A334
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 17:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N5RYYI4O
+	dkim=pass (2048-bit key, unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hsD06pKF
 Received: by kanga.kvack.org (Postfix)
-	id 167216B05B0; Fri,  6 Nov 2026 12:34:33 -0500 (EST)
+	id CBDF86B05B2; Fri,  6 Nov 2026 12:40:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 118856B05B1; Fri,  6 Nov 2026 12:34:33 -0500 (EST)
+	id C47376B05B3; Fri,  6 Nov 2026 12:40:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F22C96B05B4; Fri,  6 Nov 2026 12:34:32 -0500 (EST)
+	id B0EC96B05B8; Fri,  6 Nov 2026 12:40:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D277B6B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:34:32 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 17120A0105
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:34:31 +0000 (UTC)
-X-FDA: 85405393542.11.92DD7E0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6003420006
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:34:29 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N5RYYI4O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 80BEF6B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 12:40:47 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E69151C0EBD
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:40:46 +0000 (UTC)
+X-FDA: 85405409292.26.0A74E4D
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 37D86A000C
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 17:40:45 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=hsD06pKF;
+	spf=pass (imf25.hostedemail.com: domain of 3GxHuagkKCFQF580Dy40D2AA270.yA8749GJ-886Hwy6.AD2@flex--tjmercier.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3GxHuagkKCFQF580Dy40D2AA270.yA8749GJ-886Hwy6.AD2@flex--tjmercier.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793986469;
+	s=arc-20220608; t=1793986845;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=gA4D1pJiwhc9kkEYDEd+V8rUmsSUvkvpMFSeoQRuBtw=;
-	b=5FGE7b6eeu6UXbRrxSF0Ll59yc/7T5QtPbBbmR4S1/qgA0OCXQnh7uChNs8KOiyHW9gqED
-	GfmTK+l8F5dNs2M9441lFogyfo1cWpF+lV3RjH8dX1e36B3jvQm08nWCbo7+rw5Fm3v2Il
-	tvfcoXJAbOjmI2jbXZLKdxdnsHz0wVI=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N5RYYI4O;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of helgaas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=helgaas@kernel.org
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Y13j0LTUOpG3IGiPRUu5f/tDHT82BAGPGt8tpe2/3YY=;
+	b=H3/lHfXGj5LXgAVjaFprhFLBuK48Qjbpg9WguzNnn+Km7OSGyzSmTbJlvlcKnlAI0+dZNq
+	cKHW0S6IkyMFw/HiEi8+zgZENzHGIncmatP2G2V7aGFXaix/9ZT+dVfcmwdPyg6OkcLDXe
+	pu17LAF9A+znbvlnpzJg3okhBXyTgIE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1793986469;
-	b=jaiOaqHjntDOrYq+KjlCGLpVhwFP/cj8/rwMry3eQTqkMVtNBYkifFBgWkkMQjm9a+qK4S
-	xPGCdzMXOh/mjmTbw2nNWF4G8STVg3KwRKxBQitpAFlsitAA+gbG9ATSQ97ZcV+vJsgiWd
-	beqMFBKN4nLFFl+36Efnhs5W4Z6xNfs=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 82C7943ED0;
-	Fri,  6 Nov 2026 17:34:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB691F008AB;
-	Fri,  6 Nov 2026 17:34:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1793986468;
-	bh=gA4D1pJiwhc9kkEYDEd+V8rUmsSUvkvpMFSeoQRuBtw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To;
-	b=N5RYYI4OSz3IGpbPyU3Mv3dayinVOZr37Iudk263zXtChhY8u9IXbj5UJKU/ZiuBw
-	 EjSGvAAfc5LfRp8KUfRMAA4tDBEeDRCLR4s68oMRCd8u5Em0KGdLU5R3QgVWD5b6Cd
-	 unSENQe000AwVfssC7mlr8TAP0wa62eRHRKIsDrXBW9Yz+ZpND4JjVlDojJl/7CrM0
-	 UyV5ODhVmngegb4aT00BIRmZa+YV6zRBvRTJLrLxUUQ+pVKxWcRhofEx1I4H6ZW7IS
-	 2fvvlT2l/qdPzcUBtpkLx0xoQqz1kjSBlIP/n2/wR2FKP/py4PUqLSgv10x1Z1FyW2
-	 mEyLiKKYjd43g==
-Date: Fri, 6 Nov 2026 11:34:27 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: David Matlack <dmatlack@google.com>
-Cc: kexec@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Alexander Graf <graf@amazon.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Chris Li <chrisl@kernel.org>,
-	David Rientjes <rientjes@google.com>,
-	Jacob Pan <jacob.pan@linux.microsoft.com>,
-	Jason Gunthorpe <jgg@nvidia.com>, Jonathan Corbet <corbet@lwn.net>,
-	Josh Hilke <jrhilke@google.com>,
-	Leon Romanovsky <leonro@nvidia.com>, Lukas Wunner <lukas@wunner.de>,
-	Mike Rapoport <rppt@kernel.org>, Parav Pandit <parav@nvidia.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Vipin Sharma <vipinsh@google.com>, William Tu <witu@nvidia.com>,
-	Yi Liu <yi.l.liu@intel.com>
-Subject: Re: [PATCH v10 05/13] PCI: liveupdate: Auto-preserve upstream
- bridges across Live Update
-Message-ID: <20261106173427.GA1633106@bhelgaas>
+	t=1793986845;
+	b=XgVFhSlYBFOpepsYU77THOrIkrPAVgjNZG1GEStxFUCnuz4MD9qyLfuLq1X3Scf+6Xf4Z0
+	GhC0dqg+7FOAXgPGmU4QSYC/e8/NOrxYF0+Pxx+7/WybNq37H01dGH1coFzQN4Cl6cQqkk
+	/YKGNYOFCBLFvVV4D84tKyIUTGcPtG0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=hsD06pKF;
+	spf=pass (imf25.hostedemail.com: domain of 3GxHuagkKCFQF580Dy40D2AA270.yA8749GJ-886Hwy6.AD2@flex--tjmercier.bounces.google.com designates 209.85.210.70 as permitted sender) smtp.mailfrom=3GxHuagkKCFQF580Dy40D2AA270.yA8749GJ-886Hwy6.AD2@flex--tjmercier.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-84fe2593525so1173634a34.3
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 09:40:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1793986844; x=1794591644; darn=kvack.org;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=Y13j0LTUOpG3IGiPRUu5f/tDHT82BAGPGt8tpe2/3YY=;
+        b=hsD06pKFjr7WZJCk6SZ0EbhalUqU4tkbDiH5AkqlTA9kp3jp1Fi37Q3BY4N3JWV+KF
+         uIW8l25JjjADWVWM4F4CrTxQynY8CDShKQPZ/SLY0UAWFWnAsgToWWbTzcQ9g3wVb/vy
+         /I4DIVkhFkdRgZP92VU5ArtbQza0XalSxVNv9ZvcEMd7dmaK3fn1AYrL+m+088GJ4Ib0
+         E0yy8ODtictIwh8/slayXKWxr6DWSnzlFJ+YTFcQmZxdG4IpvDR5+EdgENW5tv/obbV6
+         Vr4LvJVTHMOYHoTNjPHYs8rTkKgW5jaTMq9RAQ/vTGncLUS0P53KrYhHwzI12qghZE3C
+         VAbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793986844; x=1794591644;
+        h=content-type:cc:to:from:subject:message-id:references:mime-version
+         :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Y13j0LTUOpG3IGiPRUu5f/tDHT82BAGPGt8tpe2/3YY=;
+        b=R9FadZcCVuX/fmcdUpCx+q5CfbwuaKycrpu4Rm68IYj3VuCKdhwNx1jsoGxB8lrz79
+         p8t9n7AS90Ui22loC0zHPaWbRuaBDvLCwFl2ix3T0lApC5CTUYa9KGzdVYMLAq/Lm6NP
+         DcM8B1q6mP6jY3pQGxcy+VltQAotsU0qYy12mYDGlyUjjhB+o5Ka7hnRXR+Wi8qmi751
+         DCCfyz1OPWzFMsqt/MJO6GMcjbrQoMtrdeTPTjBgDcQDy9wOAxoaAAukhHvuhrY+LxAx
+         QsAco78RMJVCHg0W9GeTz1kFyxLphJrFf5+2zQuKhJ11CZB4NG0cBpQfBnEc9RUTGxDi
+         yCAA==
+X-Gm-Message-State: APuU4Z87yBo3fdAZZEdt0EOedarlgzwSM9NRQRA2gw+Vz8bnJHUUTp2J
+	dX4fMfDQ9DWlkx5SxW8zga+Ee1B9RNYxDtiEB7PEup+utSNOGEO1Ej2PdwGsCH0Fa5YRmsl6S0T
+	+8L774HrZDVstQU7MUw==
+X-Received: from ilef12-n2.prod.google.com ([2002:a05:6e02:618c:20b0:53d:490:b043])
+ (user=tjmercier job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6808:2443:b0:4f5:eaac:517a with SMTP id 5614622812f47-567e0f40db8mr2120139b6e.1.1793986843828;
+ Fri, 06 Nov 2026 09:40:43 -0800 (PST)
+Date: Fri,  6 Nov 2026 09:40:31 -0800
+In-Reply-To: <20261106163056.541441-1-ehagberg@janestreet.com>
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261013162529.1928093-6-dmatlack@google.com>
+Mime-Version: 1.0
+References: <20261106163056.541441-1-ehagberg@janestreet.com>
+X-Mailer: git-send-email 2.56.0.455.g6c5a503b38-goog
+Message-ID: <20261106174031.740868-1-tjmercier@google.com>
+Subject: [PATCH 6.12.y] mm: remove '!root_reclaim' checking in should_abort_scan()
+From: "T.J. Mercier" <tjmercier@google.com>
+To: stable@vger.kernel.org
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, hannes@cmpxchg.org, 
+	mhocko@kernel.org, zhaoyang.huang@unisoc.com, shakeel.butt@linux.dev, 
+	qi.zheng@linux.dev, kasong@tencent.com, baohua@kernel.org, 
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com, 
+	ehagberg@janestreet.com, "T.J.Mercier" <tjmercier@google.com>, 
+	Rik van Riel <riel@surriel.com>, Roman Gushchin <roman.gushchin@linux.dev>, Yu Zhao <yuzhao@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: daqkn1bmp3xjbsccnsykzrybmtm6k5to
+X-Rspamd-Queue-Id: 37D86A000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6003420006
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-Stat-Signature: pm6f3eaihkjga6pbory9h5sjoeg7hape
-X-HE-Tag: 1793986469-810950
-X-HE-Meta: U2FsdGVkX19m9utOBGn7t4hCmoKfuySBWvGRBZwa/3SlXZ8+y0aRxPf2mQKxh2OEFMYfM5oRLj3VqijONpMZeLECs7ay1Lh5y3vYlFjSsbrk0wgotSTCFr78539IDYe93n5Ap0SGalxfz7l5XZhqwsiO8KJ26wD84XMjrHTYTqqTeRnoddE8plxnmdlU7eznnRE/ryK1kogPEkE6OCubB60gOMMZvx38/waEpoi7t1StXe9dUuqQt1kisrxZZXPYJ8Ph+C8g9TTKVQsA/OR/ptXFSE+QnV4JokkjqxXqRPDh0YEdaCSmZzEwzf9JL9/fHcvnxA3r5HT4x7Mq2AEkCLXeeIfCAfkZylG0IcXoN1Hxm8IYFitce1SMjGDP5vKXgzVCbu3K8ajAXxjiDkQNTIdfxotenL16mENFHt8NRDmtdRpK1iZ8gc41M0w4oDss7/AN7UfwmCwOx35Ia6HgBqkpvjfCvN+AMsuKhfs9JwJ1/H/m9y2/4BNzWIIgdAoCV4cCwpLKeWtgRBhCKkZgIES/T0hmHVpCUeFu+4VOnXtjDeGSmh7Ke5HirH/+Dec6jyEfM+/uNE7CmQrk+7dUuO/W/GEI+Pnxf3V99VnX0Y1eJcLdT7mdLvL9T0F/d5MDUvAnm5BlB0a1KS3qBjHMHOhlOnuPn/gTwxyUVRrWj4capYRrMP4sb3Hqr3/tFuszTBXgMWMsvf7kKjvzxgADsxib73bz4iFqHlicD52m9Qy6RiTjkS5HrnfQXozP4ah9EPlUSmSE1IwivWN1AHKps1PFGeZKevlxcpo7MYK4WWM4AvKTFpnpyjRHn44OMkCcVY7+2LJWglPtpPqS6xn07CfPaeokX+lK6yXxjgSsxV8sCKOuJ94K0TAKvGgZN8MSyNpFO3J+SsYcESWkzEwdClVxndWTQk4+aHgmmTRP/G3f3vK59A3CswRHDHgp8S8CBbHA5CfDUHc3DsgegE1
- BwKTORJI
- x67k2htqPWUb0M7JfoYxFD1mK3pV7oJxmFByoFC/a1KH4Phj03dBagf0L2uZCz287R8wf3MZTa4sx4QxYhbvZjn9tOSKXEJ8kdwShbC/7S1lGgRm2K1oVKPPeAD8tnlSGNRQq1fTTbfiUfnkQmXC0FM/WIgb351mk9FCBm6Gu4ydC5Kf0g5nxc649tsD/dUQF4VlLUU/kq9br+j011LlofM5T3d7sKRtY7YcJXzXKunekOIGOzA0dy8+XfHOTb6LlZp+sWMr6GFcABA2jG1p0ht+Z3AIQ6pb/GlziMaF3pXaWgHXxITl9X6xZVyc9nBQjbPtz20O4EllF5LWk6rAdF1saFpgio9jkwH7UjFIN2DlE8Sg=
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1793986845-108041
+X-HE-Meta: U2FsdGVkX18mLxM2DyMVdhsJ9M8hEeOWwGtzIJ8/5jCg6Q2go+OIFyGpXOK/AKEz8NiiUMnHVKgzygzUThFFquZdud3jW4zjJ4b9hs/1aeeMH8YPAY3o1LpPqXIr1+a9lnwiePGWCQfClNson6td/XHdDp5bAuE94L4RCF/X8d14XWhMIP/tjnTSxVz7mkmFogyt4AJVRQ/dXde5te/ReTqnCxS9Bs2TPApJXA2i+mYHd8s0zUF5ywo5nGf9bmeHgYC7LZfVs+ATOSCaqNiBhNZYS1x7mn4jDMJMidnntC6HC9ju2iDljDQDBnwuFrsv2Z3DiRqZOzii1du8qy6wzx386+4F4aZiCTZ+DiQBEsxl/YeffD9hKx2mVZ7XvHRMD9eEr6ywysgcsb+gg2pDX7nLkwuF2DtuuwBAOsaM5pmqCcOMghXA1umWnD+RJ0DtVa8C84djQSukonr1zje6bcveENX4K0k/Vz1ndt8o4jy5az46aD9Rf/2QQpmRI4fQ97i6/W2EcV4JXolEcJTcMU9z34TaUPY2qZ8E/mpS5fTmJMVj/Gy7j7rQuAXZa46AfQz1bdk6MaEjkBEebXgwj1/mBGY5uOFieHxkpogmkxAwfrDftBDBpR+GKR9sBjlU60CBwfqB/NxfXhvD5+nw/uY0WduFIHEKQBU2woVVb1VzyJmLHMBjivHw42JB2yQBh2a9g8XaZujKB9QLhCrkIFERyRG2yMorepZCunsa5RBpJRKINzf6VToEg9Uj6xPiGRncZQwB6p3XlhosA2orDOw4cqefZnhGmIf7G43sRKjpmxwEdmm+ANOeX2s6B4KzaHJtZFW5siNub3wNu7YQqOFyqZRhMRIqjbMgq2qnGxI1aL2bCDXW9ToF8miUDbxGtnXNhlhJQXHA9Yjrnp1exdwc8agkMfuRRB3Kj6NSaEu4cyjvp3+No62XdPCUHaTbrZTSJwCywvww0w7FbCW
+ zfj43mKy
+ VwTVcSS5WMziMX2c0BjRforSRXpfiueO1VbFcVtGt7nO0KV43PrrXu3QAms0Vyh4DlxVGcIM4nl8Y9LvVeOSQ0ou++3JSL0HNa4FPKT/0CfC/FYG8Sbi4SlP3P2SsAGgqGZ9mS/yiE40tPvT8x9fu8BbCu01QsqSZ+4X7ww+NTEiit7NwWKzvQWn7zzEgd6SmoI0+2ch8Os/YhO9lA0AQGhbd9RhE20tIzkQTyR1KDVt2ySIdRCD3PCpTvuDWe8KvRpY+yvEAE1bztw2mdj8TOXQ9GQbxIhJLwEH6yfFi1zvm7AVObD1LHGdX0RLDOxia/rAouNmmr2T8hUrSuf/6Z3Tc+UexeeY03rXpVyBTcclSimX2Fi2EBcDoWopZn7DvUb6Pbkm2ax3566PKNeJyJ9At7BwTk9jsWOIQWNgraW0795+QgrOc3D5rxd+Nkga1y0/pEXhhdPpdmZD9/n87KilQSUXPe3fTUNLAzmYZhfx3b5wrtrR2SKJyf0Dff+AWIPM8cxTF3LP+LDA01SoDCfRhV5esBvyVMc6bhdE3ZGHWNugtwpU3s5nxEPthoCHaBzPt3RTZZiAmW9f5TDWzPs/r8NG6ZTznsgrzu+jtEjwBhu2/ZGVS86tcRCv+C9wrLjaI9ba5Ex/IABeSv2L7wkHlaDRFtQxEeVEMn1E5JRoC7hxhNBhYXJL5mQmv+BHV68U0tIY0rSnEj8AL7O2fAsCTqV4ngCjWvNdwqLIQ4xuczeyXczDt2tG3NzYTGBd5ab9rTokormz/F+7dSgNc+VD0e9IPkKItp7gj7rKmvgrH+HHML1OQM+Y+ticWX+GCo2cpiO2FSmu6LtKKCznRQxxw/7fTTs9eXXVQv5yKEsIp6ZArEGNz6Sxz+9suzCPwIa/T2WIVOs4nSmdEQSRnVTM6IOZChZ/EMhGuQMi+yA8WX7MumRV0GCcPomNOeRFxoKFZBTzpWs3Rov/KhzCbVafh5oTK
+ 3/w1YYET
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,311 +117,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Oct 13, 2026 at 04:25:21PM +0000, David Matlack wrote:
-> When a PCI device is preserved across a Live Update, all of its upstream
-> bridges up to the root port must also be preserved. This enables the PCI
-> core and any drivers bound to the bridges to manage bridges correctly
-> across a Live Update.
-> 
-> Notably, this will be used in subsequent commits to ensure that
-> preserved devices can continue performing memory transactions without a
-> disruption or change in routing.
-> 
-> To preserve bridges, the PCI core tracks the number of downstream
-> devices preserved under each bridge using a reference count in struct
-> pci_dev_ser. This allows a bridge to remain preserved until all its
-> downstream preserved devices are unpreserved or finish their
-> participation in the Live Update.
-> 
-> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> Signed-off-by: David Matlack <dmatlack@google.com>
-> ---
->  drivers/pci/liveupdate.c | 125 +++++++++++++++++++++++++++++----------
->  include/linux/pci.h      |   3 +
->  2 files changed, 96 insertions(+), 32 deletions(-)
-> 
-> diff --git a/drivers/pci/liveupdate.c b/drivers/pci/liveupdate.c
-> index d6b659b346bb..bffb3e1d8b2d 100644
-> --- a/drivers/pci/liveupdate.c
-> +++ b/drivers/pci/liveupdate.c
-> @@ -122,7 +122,6 @@
->   * preserved. These may be relaxed in the future:
->   *
->   *  * The device cannot be a Virtual Function (VF).
-> - *  * The device cannot be behind a PCI-to-PCI bridge.
->   *
->   * Driver Binding
->   * ==============
-> @@ -137,6 +136,18 @@
->   * bound to the correct driver. The PCI core does not protect against a device
->   * getting preserved by driver A in the outgoing kernel and then getting bound
->   * to driver B in the incoming kernel.
-> + *
-> + * PCI-to-PCI Bridges
-> + * ==================
-> + *
-> + * Any PCI-to-PCI bridges upstream of a preserved device are automatically
-> + * preserved when the device is preserved. The PCI core keeps track of the
-> + * number of downstream devices that are preserved under a bridge so that the
-> + * bridge is only unpreserved once all downstream devices are unpreserved.
-> + *
-> + * This enables the PCI core and any drivers bound to the bridge to participate
-> + * in the Live Update so that preserved endpoints can continue issuing memory
-> + * transactions during the Live Update.
->   */
->  
->  #define pr_fmt(fmt) "PCI: liveupdate: " fmt
-> @@ -425,55 +436,84 @@ static struct pci_dev_ser *pci_flb_alloc_dev_ser(struct pci_flb_outgoing *outgoi
->  	return dev_ser;
->  }
->  
-> -static void pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing,
-> -					     struct pci_dev *dev)
-> +static int pci_liveupdate_unpreserve_device(struct pci_flb_outgoing *outgoing,
-> +					    struct pci_dev *dev)
->  {
->  	struct pci_dev_ser *dev_ser = dev->liveupdate.outgoing;
->  
->  	if (!dev_ser) {
->  		pci_warn(dev, "Cannot unpreserve device that is not preserved\n");
-> -		return;
-> +		return -EINVAL;
->  	}
->  
-> +	if (!dev_ser->refcount) {
-> +		pci_WARN(dev, 1, "Preserved device has a 0 refcount!\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (--dev_ser->refcount)
-> +		return 0;
-> +
->  	pci_info(dev, "Device will no longer be preserved across next Live Update\n");
->  	outgoing->ser->nr_devices--;
->  	memset(dev_ser, 0, sizeof(*dev_ser));
->  	dev->liveupdate.outgoing = NULL;
-> +	return 0;
-> +}
-> +
-> +static void pci_liveupdate_unpreserve_path(struct pci_flb_outgoing *outgoing,
-> +					   struct pci_dev *dev,
-> +					   struct pci_dev *end)
-> +{
-> +	for_each_pci_dev_in_path(dev) {
-> +		if (dev == end)
-> +			break;
-> +
-> +		if (pci_liveupdate_unpreserve_device(outgoing, dev))
-> +			return;
-> +	}
->  }
->  
->  static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
->  					  struct pci_dev *dev)
->  {
-> -	struct pci_dev_ser *dev_ser;
-> -
->  	if (dev->is_virtfn) {
->  		pci_warn(dev, "Cannot preserve Virtual Functions\n");
->  		return -EINVAL;
->  	}
->  
-> -	if (dev->liveupdate.outgoing) {
-> +	/*
-> +	 * Endpoint devices should not be preserved more than once.
-> +	 * Bridges are preserved once for every downstream device that
-> +	 * is preserved.
-> +	 */
-> +	if (dev->liveupdate.outgoing && !dev->subordinate) {
->  		pci_warn(dev, "Device is already preserved\n");
->  		return -EBUSY;
->  	}
->  
-> -	if (!pci_is_root_bus(dev->bus)) {
-> -		pci_warn(dev, "Cannot preserve devices behind bridges\n");
-> +	if (dev->liveupdate.outgoing && !dev->liveupdate.outgoing->refcount) {
-> +		pci_WARN(dev, 1, "Preserved device with 0 refcount!\n");
->  		return -EINVAL;
->  	}
->  
-> -	dev_ser = pci_flb_alloc_dev_ser(outgoing);
-> -	if (IS_ERR(dev_ser))
-> -		return PTR_ERR(dev_ser);
-> +	if (!dev->liveupdate.outgoing) {
-> +		struct pci_dev_ser *dev_ser;
->  
-> -	pci_info(dev, "Device will be preserved across next Live Update\n");
-> -	outgoing->ser->nr_devices++;
-> -	outgoing->ser->devices = kho_block_set_head_pa(&outgoing->block_set);
-> +		dev_ser = pci_flb_alloc_dev_ser(outgoing);
-> +		if (IS_ERR(dev_ser))
-> +			return PTR_ERR(dev_ser);
->  
-> -	dev_ser->domain = pci_domain_nr(dev->bus);
-> -	dev_ser->bdf = pci_dev_id(dev);
-> -	dev_ser->refcount++;
-> +		pci_info(dev, "Device will be preserved across next Live Update\n");
-> +		outgoing->ser->nr_devices++;
+From: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
 
-This looks a little funny because prior to this patch, nr_devices was
-always incremented in pci_liveupdate_preserve_device() and always
-decremented in pci_liveupdate_unpreserve_device().  Now it's only
-incremented once (per device) in pci_liveupdate_preserve_device(), so
-it looks unbalanced.
+[ Upstream commit 19999e479c2a38672789e66b4830f43c645ca1f2 ]
 
-My guess is this is because previously we didn't expect to preserve
-bridges at all, and now pci_liveupdate_preserve_device() might be
-called several times for a bridge, and it's all just fine, but it's a
-little subtle.
+Android systems usually use memory.reclaim interface to implement user
+space memory management which expects that the requested reclaim target
+and actually reclaimed amount memory are not diverging by too much. With
+the current MGRLU implementation there is, however, no bail out when the
+reclaim target is reached and this could lead to an excessive reclaim
+that scales with the reclaim hierarchy size.For example, we can get a
+nr_reclaimed=394/nr_to_reclaim=32 proactive reclaim under a common 1-N
+cgroup hierarchy.
 
-I suppose the "(dev->liveupdate.outgoing && !dev->subordinate)" test
-above is what allows us to just increment refcount each time a bridge
-is preserved.  And the test around pci_flb_alloc_dev_ser() is doing
-basically the same thing.  I wonder if there's a way to connect them
-more explicitly.
+This defect arose from the goal of keeping fairness among memcgs that is,
+for try_to_free_mem_cgroup_pages -> shrink_node_memcgs -> shrink_lruvec ->
+lru_gen_shrink_lruvec -> try_to_shrink_lruvec, the !root_reclaim(sc) check
+was there for reclaim fairness, which was necessary before commit
+b82b530740b9 ("mm: vmscan: restore incremental cgroup iteration") because
+the fairness depended on attempted proportional reclaim from every memcg
+under the target memcg.  However after commit b82b530740b9 there is no
+longer a need to visit every memcg to ensure fairness.  Let's have
+try_to_shrink_lruvec bail out when the nr_reclaimed achieved.
 
-> +		outgoing->ser->devices = kho_block_set_head_pa(&outgoing->block_set);
-> +
-> +		dev_ser->domain = pci_domain_nr(dev->bus);
-> +		dev_ser->bdf = pci_dev_id(dev);
-> +		dev->liveupdate.outgoing = dev_ser;
-> +	}
->  
-> -	dev->liveupdate.outgoing = dev_ser;
-> +	dev->liveupdate.outgoing->refcount++;
->  	return 0;
->  }
->  
-> @@ -486,12 +526,16 @@ static int pci_liveupdate_preserve_device(struct pci_flb_outgoing *outgoing,
->   * pci_liveupdate_preserve() from their struct liveupdate_file_handler
->   * preserve() callback to ensure the outgoing struct pci_ser is already set up.
->   *
-> + * pci_liveupdate_preserve() automatically preserves all bridges upstream of
-> + * @dev.
-> + *
->   * Returns: 0 on success, <0 on failure.
->   */
->  int pci_liveupdate_preserve(struct pci_dev *dev)
->  {
->  	struct pci_flb_outgoing *outgoing = NULL;
-> -	int ret;
-> +	struct pci_dev *start = dev;
-> +	int ret = -ENODEV;
->  
->  	guard(rwsem_write)(&pci_liveupdate.rwsem);
->  
-> @@ -499,7 +543,13 @@ int pci_liveupdate_preserve(struct pci_dev *dev)
->  	if (IS_ERR(outgoing))
->  		return PTR_ERR(outgoing);
->  
-> -	ret = pci_liveupdate_preserve_device(outgoing, dev);
-> +	for_each_pci_dev_in_path(dev) {
-> +		ret = pci_liveupdate_preserve_device(outgoing, dev);
-> +		if (ret) {
-> +			pci_liveupdate_unpreserve_path(outgoing, start, dev);
-> +			break;
-> +		}
-> +	}
->  
->  	pci_liveupdate_flb_put_outgoing();
->  	return ret;
-> @@ -515,6 +565,9 @@ EXPORT_SYMBOL_GPL(pci_liveupdate_preserve);
->   * pci_liveupdate_unpreserve() from their struct liveupdate_file_handler
->   * unpreserve() callback to ensure the outgoing struct pci_ser is already set
->   * up.
-> + *
-> + * pci_liveupdate_unpreserve() automatically unpreserves all bridges upstream of
-> + * @dev.
->   */
->  void pci_liveupdate_unpreserve(struct pci_dev *dev)
->  {
-> @@ -528,7 +581,7 @@ void pci_liveupdate_unpreserve(struct pci_dev *dev)
->  		return;
->  	}
->  
-> -	pci_liveupdate_unpreserve_device(outgoing, dev);
-> +	pci_liveupdate_unpreserve_path(outgoing, dev, /*end=*/NULL);
->  	pci_liveupdate_flb_put_outgoing();
->  }
->  EXPORT_SYMBOL_GPL(pci_liveupdate_unpreserve);
-> @@ -618,28 +671,30 @@ void pci_liveupdate_cleanup_device(struct pci_dev *dev)
->  		pci_WARN(dev, 1, "Destroying incoming-preserved device!\n");
->  }
->  
-> -static void pci_liveupdate_finish_device(struct pci_ser *ser, struct pci_dev *dev)
-> +static int pci_liveupdate_finish_device(struct pci_ser *ser, struct pci_dev *dev)
->  {
->  	if (!dev->liveupdate.incoming) {
->  		pci_warn(dev, "Cannot finish preserving an unpreserved device\n");
-> -		return;
-> +		return -EINVAL;
->  	}
->  
-> -	if (dev->liveupdate.incoming->refcount != 1) {
-> -		pci_WARN(dev, 1, "Preserved device has a corrupted refcount!\n");
-> -		return;
-> +	if (!dev->liveupdate.incoming->refcount) {
-> +		pci_WARN(dev, 1, "Preserved device has a 0 refcount!\n");
-> +		return -EINVAL;
->  	}
->  
->  	/*
-> -	 * Drop the refcount so this device does not get treated as an incoming
-> -	 * device again, e.g. in case pci_liveupdate_setup_device() gets called
-> -	 * again because the device is hot-plugged.
-> +	 * Decrement the refcount so this device does not get treated as an
-> +	 * incoming device again, e.g. in case pci_liveupdate_setup_device()
-> +	 * gets called again because the device is hot-plugged.
->  	 */
-> -	dev->liveupdate.incoming->refcount = 0;
-> +	if (--dev->liveupdate.incoming->refcount)
-> +		return 0;
->  
->  	pci_info(dev, "Device is finished participating in Live Update\n");
->  	dev->liveupdate.incoming = NULL;
->  	ser->nr_devices--;
-> +	return 0;
->  }
->  
->  /**
-> @@ -651,6 +706,8 @@ static void pci_liveupdate_finish_device(struct pci_ser *ser, struct pci_dev *de
->   * Update. Drivers must call pci_liveupdate_finish() from their struct
->   * liveupdate_file_handler finish() callback to ensure the incoming struct
->   * pci_ser is allocated.
-> + *
-> + * pci_liveupdate_finish() automatically finishes all bridges upstream of @dev.
->   */
->  void pci_liveupdate_finish(struct pci_dev *dev)
->  {
-> @@ -664,7 +721,11 @@ void pci_liveupdate_finish(struct pci_dev *dev)
->  		return;
->  	}
->  
-> -	pci_liveupdate_finish_device(incoming->ser, dev);
-> +	for_each_pci_dev_in_path(dev) {
-> +		if (pci_liveupdate_finish_device(incoming->ser, dev))
-> +			break;
-> +	}
-> +
->  	pci_liveupdate_flb_put_incoming();
->  }
->  EXPORT_SYMBOL_GPL(pci_liveupdate_finish);
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 76abe884e3dc..b35ac263c451 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -836,6 +836,9 @@ static inline struct pci_dev *pci_upstream_bridge(struct pci_dev *dev)
->  	return dev->bus->self;
->  }
->  
-> +#define for_each_pci_dev_in_path(dev) \
-> +	for (; dev; dev = pci_upstream_bridge(dev))
-> +
->  #ifdef CONFIG_PCI_MSI
->  static inline bool pci_dev_msi_enabled(struct pci_dev *pci_dev)
->  {
-> -- 
-> 2.56.0.385.gd3acb90ef8-goog
-> 
+Link: https://lore.kernel.org/20260318011558.1696310-1-zhaoyang.huang@unisoc.com
+Link: https://lore.kernel.org/20260212032111.408865-1-zhaoyang.huang@unisoc.com
+Signed-off-by: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Suggested-by: T.J.Mercier <tjmercier@google.com>
+Reviewed-by: T.J. Mercier <tjmercier@google.com>
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
+Acked-by: Qi Zheng <qi.zheng@linux.dev>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Kairui Song <kasong@tencent.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Yuanchu Xie <yuanchu@google.com>
+Cc: Wei Xu <weixugc@google.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+---
+ mm/vmscan.c | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index f9b5fbd072db..333e3c800e78 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4752,10 +4752,6 @@ static bool should_abort_scan(struct lruvec *lruvec, struct scan_control *sc)
+ 	int i;
+ 	enum zone_watermarks mark;
+ 
+-	/* don't abort memcg reclaim to ensure fairness */
+-	if (!root_reclaim(sc))
+-		return false;
+-
+ 	if (sc->nr_reclaimed >= max(sc->nr_to_reclaim, compact_gap(sc->order)))
+ 		return true;
+ 
+-- 
+2.56.0.455.g6c5a503b38-goog
+
 
