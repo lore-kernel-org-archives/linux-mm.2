@@ -1,176 +1,151 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D56F9606A329
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 16:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 086A7606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 16:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=virtuozzo.com header.i=@virtuozzo.com header.a=rsa-sha256 header.s=selector2 header.b=F/nxZ6PO
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=B6MvUc13
 Received: by kanga.kvack.org (Postfix)
-	id 9EBC96B05B0; Fri,  6 Nov 2026 11:26:14 -0500 (EST)
+	id E30886B05B1; Fri,  6 Nov 2026 11:26:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 99C016B05B1; Fri,  6 Nov 2026 11:26:14 -0500 (EST)
+	id E0E106B05B2; Fri,  6 Nov 2026 11:26:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 83C326B05B2; Fri,  6 Nov 2026 11:26:14 -0500 (EST)
+	id CD0D16B05B3; Fri,  6 Nov 2026 11:26:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 457996B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:26:14 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A863F400FE
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:26:13 +0000 (UTC)
-X-FDA: 85405221426.20.D7FA652
-Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022098.outbound.protection.outlook.com [52.101.66.98])
-	by imf04.hostedemail.com (Postfix) with ESMTP id A922740011
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:26:10 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b="F/nxZ6PO";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf04.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.66.98 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 931DB6B05B1
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 11:26:19 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75CAFA0127
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:26:18 +0000 (UTC)
+X-FDA: 85405221636.26.B9AFCB3
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 7E89140003
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 16:26:16 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=B6MvUc13;
+	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1793982371;
-	b=HKOpKqPS5L0OWjn6cJ6CBDZz1qxl+G/5B4AcfOGZdef7q8oZJgShzHevelm77LugFf5O1k
-	p0SSyH597Jwe88+1wz5nPdGxTIVwxNRIf+W3yCDrJlLMGkrK4XG3gug9jre9AYnmxHlTRg
-	UvxZopylwSOWAoH4m7Om9VuLO+7wG2A=
+	t=1793982376;
+	b=J819V2IwxKfmeQVFZlmm2QXlqhOYuzlJERrtGiFzLhxyXpDUtS+xvwpC5HqO7g6cibCYtY
+	WnVSJOjTCXOb0RdGdJ/RWMaXNegXFxNihFG4vh0f0VC/mcl9WZ+/yCmT4D3sQsoiPE5f38
+	51/ot7m/e03lTWxvdAxdUCrSOKaqAH4=
 ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=virtuozzo.com header.s=selector2 header.b="F/nxZ6PO";
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf04.hostedemail.com: domain of khorenko@virtuozzo.com designates 52.101.66.98 as permitted sender) smtp.mailfrom=khorenko@virtuozzo.com;
-	dmarc=pass (policy=quarantine) header.from=virtuozzo.com
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=B6MvUc13;
+	spf=pass (imf11.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.172 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1793982371;
+	s=arc-20220608; t=1793982376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YG+E9zcYaVo1vKTClzcJJd5o/JitJK2VEzRg8TkV54g=;
-	b=NG3xH6ZuUokw+3r7sTfkpbe/x/6KvtTjbTAWbkwV37GcwVE6X/0E3ho0yISAgI6wC36a8K
-	SZq7aXdr700KhXyAO7gr2fIeYrso3g0t3qhKwZHo8g4VTUc6zb7LnwMbAgd6No/0qgVkoz
-	nAYUGbsZ3oXrNGK1iUrEDhtghPRRWb4=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eGIZhj3Ir3+GIqA3jYrh+WUyUjV/0OwKvffgQjP1cek7XvO/5a6Udgdt9k3/g6pEgv60PoDimQHai3EOaGenthpFTUpm9LNYfQaTK1XvB4qABsWwP4fwXmSFivxpavS29hEuw1vhXLHETuuLH7XQzMCEVOezTqTwKzkMA8ARSu2UKKA1drpN+fNr+/X7H0PYwkTiF3/GBwha5ugYGUavjO54zyTGFV/h94EMSRuWS5fv6ZFO0s8pJoYoEehqQEfR7wNIUPKNJft2wGVPJm17v3cuslB1MToSD464OGB7ZLLuB/C60f1g0ztu61rLHuvWmgesaZEyw4lbJIs4zl9w8g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YG+E9zcYaVo1vKTClzcJJd5o/JitJK2VEzRg8TkV54g=;
- b=GLaP5njc8+t+LfhSmY/fIBh2vUWjXIAs2RzSHk/VsHzKrOG3IDic/bkF0qKFP1PiaY+kV9szmvNS5TNaqpIUylR4WxdQ64l/nM+IJ9hoR0su7lrm45FwggUTSKgzmGrnXdKQgunGjQ5YgMyhQVWIeyvUkWmToMJLANSh5g6KSI4v9LPzBgEtvHUZprnB/2+waDD4OFxpI5KZhUf2jgcpSQXhou32lgWO6Z8F9HBlPis8IjAG4wILEGqOTGqVwmWUII2DYaQ3iWl9LOYp8dvNIskhSoNkM3hm9EqhGjeax1/Gnuj1E6jLb8cKivGWAthUoIU1klWQeNeuWQ6/2oqWWA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
- header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YG+E9zcYaVo1vKTClzcJJd5o/JitJK2VEzRg8TkV54g=;
- b=F/nxZ6POAR91y6NWO7NZfJvIfVTYNACnnNl1lWUIc6PprJZuXjjSdEAG38OrJdqcSsZG6dmzgnnYqBV3pMcLXZAZKipLqUTPfiNwueP/AZCEaFtCqKiE98jwH8hwumGITedbDxwg3ZhpGetB4u46vBEGYqsRi+8loyaC/lzJ0apvUAHc5gze5LTzpq6OF9JUYgtBWdvf4muxCiYV91hcEiG5TjTqfj9IFCIMaCEif40ZNw4sbbKNAT1JDmX3YeZe9R+IhMLYJpzksOpXm5T76igrkyN8F0c5qycd+1XeldPe7mg6s4x+xlhKPp6jGwdU76HeuFeOYvbOLZkCRZoKmw==
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com (2603:10a6:20b:5ff::9)
- by DB9PR08MB11427.eurprd08.prod.outlook.com (2603:10a6:10:60b::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.11; Fri, 6 Nov
- 2026 16:26:06 +0000
-Received: from AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8]) by AS2PR08MB9075.eurprd08.prod.outlook.com
- ([fe80::3f57:9ced:7a37:1bd8%4]) with mapi id 15.21.0592.009; Fri, 6 Nov 2026
- 16:26:06 +0000
-Message-ID: <18d49173-60f8-48b8-af1a-2ac435aecc79@virtuozzo.com>
-Date: Fri, 6 Nov 2026 17:26:04 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] selftests/mm: test fork of a device DAX PUD
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Lorenzo Stoakes <ljs@kernel.org>, Alistair Popple <apopple@nvidia.com>,
- Dan Williams <djbw@kernel.org>
-Cc: linux-mm@kvack.org, nvdimm@lists.linux.dev,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-0-2828fe5a51ed@virtuozzo.com>
- <20261105-vstor-150143-copy_huge_pud-folio-refcount-v2-2-2828fe5a51ed@virtuozzo.com>
- <eb5e8a1c-a654-4d68-92b1-db0128fa8752@kernel.org>
-Content-Language: en-US, ru, sr
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
-In-Reply-To: <eb5e8a1c-a654-4d68-92b1-db0128fa8752@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VIVP296CA0017.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:800:354::10) To AS2PR08MB9075.eurprd08.prod.outlook.com
- (2603:10a6:20b:5ff::9)
+	bh=HdRV2fv9sn3Zv1QD3CF2qLLoDxMKfmhR4N5vPY7tcE4=;
+	b=bJgWcXVWqcA95yXdYrMHe9j1h3uIYwsBQSZglqdT/O8O34bD7ItjA6nUGrSIo5Hk1K80LG
+	TqytbpCsqSmfN9xdKOJ2jh+zQQoWpRNwbKKYm5nFnxpO2VRPahy1fVDpv15f21MptpY+wO
+	VnalHtiA8Q7sEEmedSGsN+i0rlXxEN4=
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-3ab4891fc73so5973501fa.0
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 08:26:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1793982375; cv=none;
+        d=google.com; s=arc-20260327;
+        b=OW4JbQ3nejM9xRVxePYI8taLkeSExtqKD0dLrIUKRZWGf5fF4y+IRCU2XwE+Kv0knS
+         jkEQ1pEyIbWhK67EPmkYzqzPe4YsFXOm0mPT4k5pTmmI1HWHknDMLdcBhfcQE6uqyIZf
+         3Z+5C+KsX0PwLhQJqGlTuVWLY0j/L/vmwPepcy5yocuVGn9pHroXr2UwYn7X9bXu6MAf
+         QsQyZK7y+KTH+UnhaJPLCwGfXkb+XL9c1qf+voKdhT7hbtCyQkYCir4NQtzbNEnCVAWl
+         hptajYvozaN8UdppUWGqPdYInqiAj6z6kvBjfbp21Dx6LoQ9XjMoFvIFQjYOMwaz/5PX
+         vRpA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=HdRV2fv9sn3Zv1QD3CF2qLLoDxMKfmhR4N5vPY7tcE4=;
+        fh=7fr8Pac2sm2EJVrmLnGmNl/vxCQH+rN7wwQ/XKOsYgw=;
+        b=cTEAJ+rHHH3AZLJjeSgblbcDFv1bnoSRDyxv+m4qgUREtJFNf5AX4IcVMUSg44+2tU
+         YsH7R23UcahiX1jRGLx1keWCLLgXBWdPUi/j4T58kbJJG9L1MKsGzB7VH6DaX9CVmi1c
+         HRTlzJWMfSBnqHNQpfZauuY5uEixNrJjTdWnVtQbSq5zox6N0/lJtU1LvIOZc1QHf187
+         n63zio6OtOHkcD7J651OZDxiip4JI1GgMv+PS6LCA7SYL8/IvYHTUrNp6RFT8ZSD/Ohk
+         TnKdYmvGcpu7fRH549PmLkSCZj00Le4i/n9PDLw7xI1uEFhqLc/h6OTa7qMrK95u9YFZ
+         YiyQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1793982375; x=1794587175; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=HdRV2fv9sn3Zv1QD3CF2qLLoDxMKfmhR4N5vPY7tcE4=;
+        b=B6MvUc138LqK9/sUss1pxHGUKHdjnP/x7vYVdLDY60xt7p1jyZoIIooIW15HMZ0bJF
+         ha4OoGByNdklR2R/aDnvxiG/rE29lR3uN+IEhMdjqC5EtRG2SM2ff6NW+lfOP/Ghx1ws
+         jv5lI0EBe7sGXggAGjdC7FJazzBN+z+E7uPmIeqzsWNynacMT6IRPzlyVVjYW8N8zV9Y
+         In2ImVs9GlEJP7a2FeGVPANqAHAbJctPnv0iaO5p+7H/quzLt7JSlzEC+pcEt0Xv/Owx
+         yZ7/loBFYNs2nrEWn+7Q5SzDO8Mp9KIwHv04cmHZS6Y332dRninT5gjhX9Dw5JA23Kfu
+         29tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1793982375; x=1794587175;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=HdRV2fv9sn3Zv1QD3CF2qLLoDxMKfmhR4N5vPY7tcE4=;
+        b=lc+XItM7GY+A1zK+zfx6u8HzyKwxFmFaMZwy7W9e7zKlsDjLrr9DWgpuR0F5VGGAoh
+         hmUyMdvfaWfAOKiUo2LrfyCHDjAhwyX10aVgWjYXjFJe12AewKP0Vxr//WnVNqjClVzu
+         eHwZ8o07zEw9GgRJJ21U9OPRYHVJVLbsbAErNghrd8QrrYxBdwLyb27mUn1QVqv+7WdA
+         D8K2ftkMYK4sYaEFERtsjnjP1RiEcK4fQc3VuyzVFXc256gRxI4w84+oeeZxrdSW7+3k
+         FE8ZdMZyNLbyjv5j/GXE0iXOeJRWfGRcGlqOakM9ilooNz6b0JWSBV4YgveWFcEpQGcZ
+         rUUA==
+X-Forwarded-Encrypted: i=1; AKwUvBysWNEVUpS65ntiye66/FXhq99t33fMkNElAVW6XDC5lWra4j4iVH13mKi30GXON/n8jWb+nh2miQ==@kvack.org
+X-Gm-Message-State: APuU4Z8RTI3f4xaNJScUHxktXFIonxu6gABPN1FJfLvjA6ct7nMhT/ol
+	ELdpFRSJkUHhn435T6x8/Hjthd7UoUoWOyk+x5Y8rfLE9kGrLz7g6ghuTA2t3hmxQ2+v11F4bN/
+	BdEcgULfUcOSwemnbzCYK43/bh0aUQNY=
+X-Gm-Gg: AYBFou1s8F40Y7FYYhvE2SXmphOf3e8dklPaP57dGtf3oWDeTvVU7uab571aT0HcM86
+	r8r196E7LcMQjRNcoVXmGv0a6jP9fYOcf6kx0MxxQKmSBx68oA0DO1dt5BcO7Ha7ZZHpRpz+h9p
+	FLoyn4ZkraXT2sZONyuqHOsJuGYObRUAqKI5GgSerwga9uOp59QZuL1UfoUEbC9qG4NyvXir1Ob
+	KMqpMR6woDTJrOscQXR7aqhweD0Egq3L6s8voQA3p+GRy16hXsftjbMrzXYNcdRZggfQrP3d4zs
+	J0rFZQ11gL0tn9ApdMl5A646uNGB6zdL0xlnY9eMa8FAk5jnmtb00Vqf1m+U4KjTZy+8H94DQv8
+	UQDBSNUwggAlMVgVyBMeIxJ/lAJ4+u3R6kBaLLEPqQhkr8aXQNN9rH4eSQxHtyzy0/bmB9B1p7V
+	xq5Qoyb51Ac8MWaKqOWI+qE2KQrLo50JZRiUMlZdxNb2lVig156aKO
+X-Received: by 2002:a05:651c:1581:b0:3ab:3f1c:c2c7 with SMTP id
+ 38308e7fff4ca-3acf36e3c14mr5753981fa.0.1793982374444; Fri, 06 Nov 2026
+ 08:26:14 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS2PR08MB9075:EE_|DB9PR08MB11427:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1ba033a0-71e6-47f5-177c-08df3c22a894
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|23010399003|7416014|366016|18002099003|22082099003|3023799007|6133799003|10067099003|56012099006|5023799004|4143699003|261026121527099003|261026140227099003|261102123227099003|261028144727099003|261021121427099003|261022105027099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	TpWn/Ab45CVwcA6IW9ups3/iSUQDJf90tGZeD7EmS6zDkL9gFP6x1tnc1PGhGugWlgy/CsFDe+Fya0NNXyI7Gqi00VFKAThAMbtRzkLFAV1ybj6zdouXiXurkYGzvfcF9mB46vOGv4gBuEKfjJ9LZBr4cYslDsz/cT7TAcBMjapCXdPuorxg/oT9ZNG1DjoODOCI1swfvs3IIw1ZjV6CxwgbkXiz1pGpGs1pUatEJ7AFEL9C9YOtCX+MyGDRdpZy+rRS44LTSkUCn12hHUf+Ei+vtilIKC15rgyYuxJLb9hYHkg5MoxAwDO/H3pRC6sQ0tUZfXZa4p4G74jkDxub9bzSHE7g9jm5pquUJJaBwQMteFn5Ie9Tf8PEgA07+btnTCRVp0riziYuriAzLkgqjmmDiSkBJJ+BPFtAhJuK6AJVg/3H8tUhnD6EQrc+35YqKRj/SfTAhGVUrcDfz35PeoCAcSU0nl5pkrEi5UTCo8P15Zmb++HiyruJsg9iSnyFPEW34Oech7ykY8lkPfnIj6qvNeD00sbTtpjNH86xPOcZp5/FHVMz5Eik/QwYLe88h9iZQ7FMQ5/GAqOsiFIpcwGarmzeCWgPBokaa4ysYjQln6eHOCL2DZgG20vPmfz4SVZ92UdOqFEkehIUJTRywpRgqBxUZPNXxrBGCKTSBUU=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS2PR08MB9075.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(7416014)(366016)(18002099003)(22082099003)(3023799007)(6133799003)(10067099003)(56012099006)(5023799004)(4143699003)(261026121527099003)(261026140227099003)(261102123227099003)(261028144727099003)(261021121427099003)(261022105027099003)(261009223027099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?M1hweXdsNStHbjBON1I0dTU0Q2p5d0s4VnpkRCtaVXM1VUZLdzZXNTZESXFM?=
- =?utf-8?B?cnNyR1puS2NZU1hYNThPNmwrb0M4RVJJRmI1YStFcUZXRFN5bEIrUGVzdElZ?=
- =?utf-8?B?OVprVitUSTFiTWlBdVp2SkQ1OG1UNUNQNUV1SXA0R2VEUUQ4bHNjWmtKak1u?=
- =?utf-8?B?RFBoSFppMGRlcngwN3FHc1M1SC9rQVQya2R1NmYxOTJyV0lUZ1JLUjNwWUo0?=
- =?utf-8?B?amkyT0VBeUpTdDQxYTY1VGV3WG93QWhZdlhnZHE4NVVScTlvTUtnZFk3TUUr?=
- =?utf-8?B?eFhVRUZYOXl5WFhtUlBpZnk1dlJ5NEw3akt4TjFOeE1MMTNJTmRLV21sUW5t?=
- =?utf-8?B?VWxKTlBQR0ZpQUduSmZCU2ZDU1VDcXU3WEkvZFZyRjlCZEsxY2J4ZHJ0N3gx?=
- =?utf-8?B?Q2pJTWJQZzVXRDNSSDFvVmxUTUdJd1p0NEQwZmFVcXcwNUhOU2J3U1VoVDhR?=
- =?utf-8?B?SVd5R0Ziak16QTVxSVVvZEFYaExrRlhtU0J6S1d1dlR5cHZwQng4M05sZHZU?=
- =?utf-8?B?aVJyRVhQa2dOb2k0dmpyUDZHeDJLWTEyNFdmZ29CVVpYUmw5eHJCMHFpUU5X?=
- =?utf-8?B?VEhsLzJIeG1XN2pBM3J4UERteDB6N0dWRDFQZ2dZL2ZLd1hQbHNQZ05oUnpi?=
- =?utf-8?B?T0JMNHpqMXZlM2p5MWMwWldpVkpKTDFtV0U0WS9CVDdjdGUyMG55cGVWTDBu?=
- =?utf-8?B?dlc3cm9iN0I1WlM2YW85R05ydWYzNzVRUmV5UTFYNTJ4a21xb2tqZ1dyajMw?=
- =?utf-8?B?amxzTWdsZTl3RmlJZkQrNnpkRlM5d0Zjc25EQTVFVUxnQllOWCtmK1dRUVJ3?=
- =?utf-8?B?cXA1VStQWldWbXdJVUg5UTdFTFhqUWd2Wkp4dCt1NnB4b0h0TVNTZ0pWeWMr?=
- =?utf-8?B?emk3blh5Q0piVUIyZ3Zxd2ZIK3NYbXk3ZktzUEdDZXc4T2ZTVmRyb0hwU01m?=
- =?utf-8?B?a3FZY29RVzF5aUY1S0dWWVRHeE9LWFNOZVBhMFlEYkcrb2FGdnlnUFdGYksr?=
- =?utf-8?B?dXBRTko4M2dZTml2bjZUc3lFMVBEdXZISVV1RVhMQllHMXpma2ZCM2pLeVEr?=
- =?utf-8?B?SVcrRjhyVC94UG1MZGxqMjVWbTZRTkdXZ2NPNkhmUGpTeFYrUk50K0NtOWNE?=
- =?utf-8?B?OEZ4azBjdmxMT200TFVTNjBkMG53Ri9Bbi9kdExocEIybnVaclgzYVRKWFBJ?=
- =?utf-8?B?c0xhTGxJT2taT1lqMjNOWGxKb2tlc25xMncxOC9CVnpGb1Z4MVRuR1poQ0tT?=
- =?utf-8?B?Um9rR1VZNXk5cVh3WUk1L2pvUG1VSWJSNnNHZ0pEUnBnT285UUVyczFUTW5W?=
- =?utf-8?B?dWhNWFBmQnJUdDJkVHN6dlRJZXl4TG5IbHFYSXRVd2tld043VjNYMHlTS2R6?=
- =?utf-8?B?bU1BRGRTM1QyMUhMa0hYMldWRlZNSFVJbkJhT214TFNydFRVWXVTVWlBRFdv?=
- =?utf-8?B?RndTQjdvVEdPb2NsZzkyZTFjd3VCdTNDazdjSjdhZy9ienlHdlpOc1hGMCtK?=
- =?utf-8?B?Tkxub3ZzZEFmZU1rY01PRkpGRy9NWVVITzJBSisyV0M2SFNRd2x6N0tmMGdn?=
- =?utf-8?B?TERFRTY1U1c3UXRVRHBDMGl3R0ViMkVGNDJqU3drRXdrSjBDTGFMRnE0OFVW?=
- =?utf-8?B?TzFWZEFZb0l4bHIwZWJHYmlwSWJncFQ3aERWWkJxdE1raGdVblB4REhETytW?=
- =?utf-8?B?V2JSRUhkZHZwY1U2czdLVi9CSkZVcTBPSjk2VVo2V0ZmTDErbVB5OUlMcTkr?=
- =?utf-8?B?RFBaQWRXdjRmZlVoZkhrV0VEYk1ZZWJWck5RWHozbnFhd3R4ZWZhRmRyRVox?=
- =?utf-8?B?RHlyV1pjTVJRRXozc2Vld2l0aXNpWlJWdmVHWWI1cnhIZ1pZUXJ2ZGhaYkNB?=
- =?utf-8?B?N2NPZ0t3N2NaZmRaVHU2bDMrZ1NJSnBjM2JMbENvN29TUDlVcXRYcXVkWGQr?=
- =?utf-8?B?d0ZRV3E4UkRIUDhGU29kTE43U2R2V1l1WUx1UWh0azZFV1BtT0ZNbWV0VDJC?=
- =?utf-8?B?eVR3RVRKOXFCTGpZdHdVRndQbFBxWER5SlNVZTNXYlphTzFxS09ZMnhUdW1r?=
- =?utf-8?B?M0JWdWdNSU1EeXVyb1pBNUdvS2Zla09Qem9xbld1UERKRDUyQnVaSXEvRnow?=
- =?utf-8?B?cGZITXRRMkN1RCtiRGZLNWVOQ094SklHbWtQaXIvVDlrYlhrYnZsamVYV2dU?=
- =?utf-8?B?aTI1ZktETEcxeW5kNGpqZDE4RG9Ta1JOa1Z3OURqalExNmF0TnZnRkQrZUxT?=
- =?utf-8?B?cmNhc2VGS1l0Si80YTY0N0VBRFYxNm9lckx1VzloUHE4ZzhnRE13bHpQNitV?=
- =?utf-8?B?RU9EUHdRREpzd1FCY0FiOHg1TmRDRXdvcGd6enhtc2ZnTG5nWHNuUT09?=
-X-OriginatorOrg: virtuozzo.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1ba033a0-71e6-47f5-177c-08df3c22a894
-X-MS-Exchange-CrossTenant-AuthSource: AS2PR08MB9075.eurprd08.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2026 16:26:06.6030
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iSbBHOaZ98fzBsTnRLWLJHRPSDXKuW36kxYayswTzsWWCMrFo31YVMoSY5Mf4ug+HF8hp9HMi/cqi94ptYprmA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB11427
-X-Stat-Signature: ukt5z15dwjua35kxxzzqkenp157hr981
+References: <20261105183940.2236717-1-usama.arif@linux.dev> <20261105183940.2236717-17-usama.arif@linux.dev>
+In-Reply-To: <20261105183940.2236717-17-usama.arif@linux.dev>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Fri, 6 Nov 2026 09:26:01 -0700
+X-Gm-Features: AclHuK-EQG1rFsL9_37CcQp4-MiQ2_X7-vdSo7RZgU-ncnM9jHkiaTfyM8fgSFs
+Message-ID: <CAKEwX=Od10cXx5Xz8td4Zsg2rsMkU+_t0UdqcQoXx6dZwfFU0Q@mail.gmail.com>
+Subject: Re: [PATCH v9 16/32] mm: zswap: reject high-order swap cache
+ allocations backed by zswap
+To: Usama Arif <usama.arif@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, david@kernel.org, chrisl@kernel.org, 
+	kasong@tencent.com, ljs@kernel.org, ziy@nvidia.com, linux-mm@kvack.org, 
+	chenhuacai@kernel.org, ying.huang@linux.alibaba.com, 
+	Baoquan He <baoquan.he@linux.dev>, willy@infradead.org, youngjun.park@lge.com, 
+	hannes@cmpxchg.org, riel@surriel.com, shakeel.butt@linux.dev, alex@ghiti.fr, 
+	kas@kernel.org, baohua@kernel.org, dev.jain@arm.com, 
+	baolin.wang@linux.alibaba.com, Nico Pache <nico.pache@linux.dev>, 
+	"Liam R. Howlett" <liam@infradead.org>, ryan.roberts@arm.com, 
+	Vlastimil Babka <vbabka@kernel.org>, lance.yang@linux.dev, linux-kernel@vger.kernel.org, 
+	shikemeng@huaweicloud.com, yosry@kernel.org, qi.zheng@linux.dev, 
+	luizcap@redhat.com, kernel-team@meta.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: ddxc9715bjjoiifni4tzku58ece8yxuj
+X-Rspamd-Queue-Id: 7E89140003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A922740011
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1793982370-696217
-X-HE-Meta: U2FsdGVkX1+OUnGzvQoJmcgm5fG2WPr/ewiLO3TcUy5VAtHDKdXeKJGUA4OJCOMjMjOTU9cuy+2FRNTvMkeYjHv56fbtibjvsqIqGjZA9MrqufgP+FiWhMAmNcKBJ9i8gJeyuVR3NGQ7mj03NNxz2I+oIQB5qgptOQLfz9ROaxB7a82RyXH91LgiK4QtlKYEL1UmThKbnE0Q6/oTymYVZtLXwHs8cVEor2kdMaxL98mC3J3RO6Lw+4OXP/TtILXlJ4HNywdzkYH3tyMGPWq8q5AJ74ZWMtrJ1k936F4WUcTEZPukUZqAaVmMAPVU6rTW+Ln/mHjHfyysuMiMlVCBOBWftdIloHFFsXg2CvQSVEkD76Y0IA/tZwZ/VNPuOhp/WUI/CFXqzEUG51yswc1gjwPgCU0/sDsS6IRducGxrlbBTYW2wH8GIC610rzvKi0KIOPrJRFAuVlGRbrMnkWbNZKDhABnDV7Y6NruqBVd5vKzqjLrRf5qPxs4m72NMxW8AkXJ28mlV0dRISOa4vmjPmVUmWjCZmkWh7vpd4wqTDYsJI6LbBc2Q7jGvHz1tyLvK8GFDhHvgafbErFvbYVLA/W4+o1fZJ7nHAr0iNFoYWcZziAq1JlufHN/uYpjCgqTsj6W7Ux/tZObCTPIYV45LxlPEU7G2MJfgo+4v2CV/zbfI4taUJ0vCfMSxOQ4uWHFF0eIFYppoImCmntJsURtI/KsGRvFYCe+0UPiXYRJO8dMCyFB23h1SUtK3Ck10VE5eDbS25UM7sdALTPQjj3nAiSfwR5vCK9jBBc2PNK1+n7/66fh3AwJiLStqBvpdUVBnetMZ01qicGfhGrWV7wunBZehX1jYyjgXFp0Bis20dQSTi4L5x+XLPSpjpkORPIjF02TqHPh3RRITz0Ab4uYReUx4X5BD26wCYDxvKQIKUKRynrFXbOv7AvVO4UEAO4Q2QUpxjUjDf17wB5MbPS
- 6Ilnn70q
- wtV59rKFiVGPDzyKeNOtWdLCUoFP/teIDH0aNv52Go8gLjtrvE5uitnZMIE5MFB4FIt0TvAoMlxMaSXCi1CSajmnSMcbAznzBNAj0bxINnxGyhOcvPck646pWqpFQXLVFR/ZIgZOrFqktC/ylUOdVm2LTRnBXumcaSsz5sYmfvETya0O2WiHBlFp5CeYc31ivVovUgoBWDF9ZS6Ry5sYOlwuxkQ5BUjY9JF9ir+L4EbcQTb19SgSP5nYi3WjQB/coU9cZYGLkNbQjGW7KEiA1cXfgAe77+vvf0HO2/aO7iLCmJl5lqj7oZqaEkWduh4vE0O96xpXgpFQySbJSiaRZakDEFfiJAJ2/6aDOZW7fiYadbxjj/4oZDyE56DL/wRvZlsmZxVDN+VDZo1wIvTclB3uejofQum/FdzNVY4FkTCYiBri53KMH7WiNq7QGoGsAHRqTJe+zUlsfFYQF7wy2Op/WFY5/kAoTTtdwuNSjrDOjqow=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1793982376-206433
+X-HE-Meta: U2FsdGVkX1/WiKhjz6LK2io+Y/XA+UPpfxykwX4dBWwr4IX6DEfOkLTvTI+F3quJ2CAx1Tidwkuggw8IJA75AFQCwhhWkz5XfJCprqzapcnnx4Un1GbPHHdCO90KXoN95f/ib77KmmaEjY5A2SnE8J0KqaUUXOHogacrYYJLnemvMW+9qKS6SOXUK2FyKWr9oG8siUWmwfjeY4KHqnvmIoe1fh1Rw09oIRwzLf4NmTq+rJl3DbL3mlOWrXKXIPMNctuvdo+SZEBgt/uxqXDuMcGRCfX5ZIL0aME+5RFU2agE0ABjKDKyFvEvNupG5FQIZVis3OSEAs4aYBQDmgJm9DJl7TqiA7npLSdV4DcOivqOKNDQvi7zeYoV8xFupCiOwBl8zNnCni5aL0YtRm7bP9f6TQBI1N7hxY8BIc5ZsnI5mGRBvpFIEwWc1UGcvPiyZ8O44R9+7OXyC5hZJ0gq39E1A9kQschw+Mhx4yulsva9g5DTpvzsMVhCl1Ng6Fh2FyUDhn9DvpVZRXGmB2XtQsVCDz2JIFh3Dca5agqUnOfgyC4PEYrRFEGSlSW7KQS6IrzxDNRdNJkcKPkU4eKoHl3+HaBuwZ4aGJmapGr1NMNzTrh9nOn3/zJZW+YJmt9eKzdtRwPQh/jbwNxfZ/xek73KeL/68I7jxdp7ymBC/7xtLHij844HYfYGmRsHsZKEV6bzZprB51lqrq4tjgHTJ3/lUqlpPHDOK3ba1x7jtym0LRxolVVRbiXMQu1hutwiwNwXZ89tlVYVe9XgenHeONTE02/0XV/HSAifjS/9IhjL7egsXnD/jKNqm4eJaIZrrpRLcTPYdBBGHR1ig4/Hdy/+ivvcNcAzg5LQIna4VAVUaZ84bvvQq+02abP/L+sd0hdsmGipx4w9vSqeggfOG0hEhMhSujMcvLhvSzXEjSFaBlj/9jpM8zdoQHeu4oEqlj6KQXxH5KGAHLvt7rj
+ DGVTBBCA
+ B5wv+YfV05c7yoCoY0YMhyVHXJbASaP7l+wsqChBMGKcIch4rAMpDmhsCJR08RTaGZvtUI5ZTQ7+4E0LOPY2tSf4kQ+/aYx1IEJ97x39iB0uatbZpETNYABUxiVDvzOn0tcXgq+Tt9tNwE3iPHUR4Zo3UCsPUEeidseEEd8CA++63z+QjX2Kumb9adrIheYHgfiUjtms0IbDoysmzEPvJbaLZyxYPiE49W0AM+SuoxdpuzgSC0wi3HLrIYbAcvEMtzGK/agft1dBu5ztQlh2f9mWuWqykcZGJ9GZEeLnAO2C1POcmNzvZx5AEDCuC/KAG4932xtGgl5Kqom6xqA/OVYCwBrin3va/iFWjXHFLCamPK171yHu2cideCJVRUjy8m61Uo4wfBvHnmdfSx0pMfUYCcHrmqui7wnSytfnaamdUGrpD8ilRi6Lk+ktL1Lwe5w8nBtcLT/K+oXl97m2Y+FYhGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,185 +154,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/5/26 20:30, David Hildenbrand (Arm) wrote:
-> On 11/5/26 18:00, Konstantin Khorenko wrote:
->> Fork a process that maps a device DAX instance with a PUD, in a VMA
->> whose page tables fork copies because it has a guard region. The child
->> must account the copied PUD in its RssFile, which a new rss_file() in
->> vm_util reads as rss_anon() reads RssAnon.
->>
->> Without a reference, an rmap and a counter for the copied PUD, the
->> child's RssFile misses the PUD, and its exit leaves the child's file
->> counter negative: "Bad rss-counter state".
->>
->> It runs only on a device named in argv[1] or $FORK_DAX_PUD_DEVICE: on
->> a kernel without the fix it leaves the device folio's mapcount below
->> zero.
->>
->> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
->> ---
->>  MAINTAINERS                               |   1 +
->>  tools/testing/selftests/mm/Makefile       |   1 +
->>  tools/testing/selftests/mm/fork_dax_pud.c | 114 ++++++++++++++++++++++++++++++
->>  tools/testing/selftests/mm/run_vmtests.sh |   1 +
->>  tools/testing/selftests/mm/vm_util.c      |  21 ++++++
->>  tools/testing/selftests/mm/vm_util.h      |   1 +
->>  6 files changed, 139 insertions(+)
->>
->> diff --git a/MAINTAINERS b/MAINTAINERS
->> index d63d8b2152773..247e16f3276f4 100644
->> --- a/MAINTAINERS
->> +++ b/MAINTAINERS
->> @@ -17931,6 +17931,7 @@ F:	mm/huge_memory.c
->>  F:	mm/khugepaged.c
->>  F:	mm/mm_slot.h
->>  F:	tools/mm/thpmaps
->> +F:	tools/testing/selftests/mm/fork_dax_pud.c
->>  F:	tools/testing/selftests/mm/khugepaged.c
->>  F:	tools/testing/selftests/mm/split_huge_page_test.c
->>  F:	tools/testing/selftests/mm/transhuge-stress.c
->> diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
->> index 0ea72e9979347..130500f5f6e0a 100644
->> --- a/tools/testing/selftests/mm/Makefile
->> +++ b/tools/testing/selftests/mm/Makefile
->> @@ -108,6 +108,7 @@ TEST_GEN_FILES += folio_split_race_test
->>  TEST_GEN_FILES += folio_order_check
->>  TEST_GEN_FILES += khugepaged_sync_check
->>  TEST_GEN_FILES += khugepaged_race
->> +TEST_GEN_FILES += fork_dax_pud
->>  TEST_GEN_FILES += soft-dirty
->>  
->>  ifeq ($(ARCH),x86_64)
->> diff --git a/tools/testing/selftests/mm/fork_dax_pud.c b/tools/testing/selftests/mm/fork_dax_pud.c
->> new file mode 100644
->> index 0000000000000..0d19c30b1dc6f
->> --- /dev/null
->> +++ b/tools/testing/selftests/mm/fork_dax_pud.c
->> @@ -0,0 +1,114 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +/*
->> + * fork() of a process that maps a device DAX instance with a PUD, in a VMA
->> + * whose page tables fork copies because it has a guard region. The child
->> + * must account the copied PUD in its RssFile.
->> + *
->> + * Runs only on a device named in argv[1] or $FORK_DAX_PUD_DEVICE that
->> + * nothing else maps, with 1 GiB alignment and at least 2 GiB. To make one
->> + * on pmem emulated in RAM, with CONFIG_X86_PMEM_LEGACY and
->> + * CONFIG_DEV_DAX_PMEM:
->> + *
->> + *	boot with memmap=3G!4G
->> + *	ndctl create-namespace -f -e namespace0.0 -m devdax -a 1G
->> + *	FORK_DAX_PUD_DEVICE=/dev/dax0.0 ./fork_dax_pud
->> + */
->> +#define _GNU_SOURCE
->> +#include <asm-generic/mman.h> /* Force the import of the tools version. */
->> +#include <errno.h>
->> +#include <fcntl.h>
->> +#include <limits.h>
->> +#include <setjmp.h>
->> +#include <signal.h>
->> +#include <stdbool.h>
->> +#include <stdio.h>
->> +#include <stdlib.h>
->> +#include <string.h>
->> +#include <unistd.h>
->> +#include <sys/mman.h>
->> +#include <sys/wait.h>
->> +
->> +#include "kselftest.h"
->> +#include "vm_util.h"
->> +
->> +#define SZ_1G		(1UL << 30)
->> +#define DAX_SYSFS	"/sys/bus/dax/devices"
->> +
->> +static sigjmp_buf sigbus_jmp;
->> +
->> +static void sigbus_handler(int sig)
->> +{
->> +	siglongjmp(sigbus_jmp, 1);
->> +}
->> +
->> +static bool dax_attr(const char *dev, const char *attr, unsigned long *val)
->> +{
->> +	char path[PATH_MAX];
->> +
->> +	snprintf(path, sizeof(path), DAX_SYSFS "/%s/%s", dev, attr);
->> +	return !read_sysfs(path, val);
->> +}
->> +
->> +static bool dax_dev_ok(const char *path)
->> +{
->> +	const char *name = strrchr(path, '/');
->> +	unsigned long align, size;
->> +
->> +	name = name ? name + 1 : path;
->> +	return dax_attr(name, "align", &align) && align == SZ_1G &&
->> +	       dax_attr(name, "size", &size) && size >= 2 * SZ_1G;
->> +}
->> +
->> +int main(int argc, char **argv)
->> +{
->> +	const char *path = argc > 1 ? argv[1] : getenv("FORK_DAX_PUD_DEVICE");
->> +	char *area, *mem;
->> +	int fd, status;
->> +	pid_t pid;
->> +
->> +	ksft_print_header();
->> +	if (!path)
->> +		ksft_exit_skip("no devdax device given\n");
->> +	if (!dax_dev_ok(path))
->> +		ksft_exit_skip("%s: needs 1 GiB alignment and 2 GiB\n", path);
->> +
->> +	fd = open(path, O_RDONLY);
->> +	if (fd < 0)
->> +		ksft_exit_skip("%s: %s\n", path, strerror(errno));
->> +	area = mmap(NULL, 3 * SZ_1G, PROT_NONE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
->> +	if (area == MAP_FAILED)
->> +		ksft_exit_fail_perror("mmap");
->> +	mem = (char *)(((unsigned long)area + SZ_1G - 1) & ~(SZ_1G - 1));
->> +	mem = mmap(mem, 2 * SZ_1G, PROT_READ, MAP_SHARED | MAP_FIXED, fd, 0);
->> +	if (mem == MAP_FAILED)
->> +		ksft_exit_skip("mmap %s: %s\n", path, strerror(errno));
->> +
->> +	/* A PUD in the first GiB, a guard page at the end of the second. */
->> +	signal(SIGBUS, sigbus_handler);
->> +	if (sigsetjmp(sigbus_jmp, 1))
->> +		ksft_exit_skip("%s cannot be mapped with a PUD\n", path);
->> +	FORCE_READ(mem[0]);
->> +	signal(SIGBUS, SIG_DFL);
->> +	if (madvise(mem + 2 * SZ_1G - getpagesize(), getpagesize(),
->> +		    MADV_GUARD_INSTALL))
->> +		ksft_exit_skip("MADV_GUARD_INSTALL: %s\n", strerror(errno));
->> +
->> +	ksft_set_plan(1);
->> +	fflush(stdout);
->> +	pid = fork();
->> +	if (pid < 0)
->> +		ksft_exit_fail_perror("fork");
->> +	if (!pid)
->> +		_exit(rss_file() < (SZ_1G >> 10) ? 10 : 0);
->> +	if (waitpid(pid, &status, 0) != pid)
->> +		ksft_exit_fail_perror("waitpid");
->> +
->> +	if (!WIFEXITED(status) || WEXITSTATUS(status))
->> +		ksft_test_result_fail("child does not account the copied PUD\n");
->> +	else
->> +		ksft_test_result_pass("devdax PUD copied by fork\n");
->> +
->> +	munmap(area, 3 * SZ_1G);
->> +	close(fd);
->> +	ksft_finished();
->> +}
-> 
-> I prefer to not merge this. It requires an actual dax device, so it's not very
-> applicable on CI systems, and we don't want selftests to take parameters in one
-> form or the other.
+On Thu, Nov 5, 2026 at 11:41=E2=80=AFAM Usama Arif <usama.arif@linux.dev> w=
+rote:
+>
+> zswap stores swapped-out pages one at a time, so a range of swap slots ca=
+n
+> be split between zswap entries and the backing device. A high-order
+> swap-cache folio over such a range cannot be read back in one go: the dis=
+k
+> read would return stale or zero data for every slot zswap owns.
+>
+> Reject that in __swap_cache_alloc(). Do the check after the folio is in t=
+he
+> swap cache: from that point zswap can neither start storing nor start
+> writing back any slot in the range, so the answer is stable. Callers
+> already fall back to order-0, which zswap_load() handles per page.
+>
+> Co-developed-by: Alexandre Ghiti <alex@ghiti.fr>
+> Signed-off-by: Alexandre Ghiti <alex@ghiti.fr>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 
-Sure, i will drop the test in v3 and just put a link to this test in the
-cover letter and that's it.
-
--- 
-Cheers,
-Konstantin
-
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
