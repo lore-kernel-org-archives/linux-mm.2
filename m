@@ -1,29 +1,29 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7FC606A326
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 02:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F34606A326
+	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 02:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Tphx6Tfi
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=b+o8Zs4u
 Received: by kanga.kvack.org (Postfix)
-	id 7FAED6B05B5; Thu,  5 Nov 2026 21:06:11 -0500 (EST)
+	id 033B16B05B6; Thu,  5 Nov 2026 21:06:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ABB46B05B6; Thu,  5 Nov 2026 21:06:11 -0500 (EST)
+	id F26046B05B8; Thu,  5 Nov 2026 21:06:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 589326B05B7; Thu,  5 Nov 2026 21:06:11 -0500 (EST)
+	id E15BA6B05B6; Thu,  5 Nov 2026 21:06:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 363406B05B5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C53DE6B05B6
 	for <linux-mm@kvack.org>; Thu,  5 Nov 2026 21:06:11 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C7657A86BD
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:06:10 +0000 (UTC)
-X-FDA: 85403054100.28.05048D1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3C2FAA0002
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 58E1D160718
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:06:11 +0000 (UTC)
+X-FDA: 85403054142.26.9F5EF9B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id BE6E440007
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 02:06:09 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tphx6Tfi;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b+o8Zs4u;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1793930769;
@@ -31,35 +31,35 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0n/wDrzFbORfw6YzEg6DroNWO8MgvFUslfYGWlwdzxI=;
-	b=6ZtDuCJbYlDCjFHtoq+74G/yulwRdNC/tm5xvXpZ3EasYKTVpd9KyqqR0lpSZxiUXFE33G
-	KDcY2xaSwFI6Q+O3mFfs4u8zGFWJTmJktgcCAkKyTkEXxCJOXeJecQWTsvO2so7B6xqQK6
-	CTNerSqOIZsR7bB4qr2eSZkUJyQiKu0=
+	bh=6jgnNWSf/GS9C16/6/oW04FCJlMaqBDrU/5PeIB0ivY=;
+	b=yGS0YlELljKZagQgK0cys3zXRqst/2GGSnK7zR4BEmcmk3XCA/h4/5WBWkT5WDOQvOhjPn
+	wh912eJ2sp+niwQsV5kiw9AGi9FDlC6AQ9L0AJcMXzXWeidfWTMJjW6t3I8/r/8z+Rd+dD
+	cEAwxvNJHmzxvOrJZ5dESgMuBawwDgw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1793930769;
-	b=ZwJLqEPLFbr2UDjaF7TCu3nUSoWm2C2g9u7ooS8TZLSqQEgfqjrqC+WCpqIuIgjkurVPd0
-	UKg0oSQCg3LhcFpJcRp9wX7u+2O5gzIkkrDpP2+7KMwgR8Y5YA/5qrRJS+4xWVuEOpFpbp
-	M+a8eJLNiqaAaqX4ED0bnb2KCBKBiQg=
+	b=1jWCvb+HhAos2+W5Wcbo+wF96u2cGRxyl9wQ1e5HxCcxf6kdqRDNN+Vel2WoF0hQVrkwEk
+	9t6OtxDON0hIvwVyvCoTre6VQ6oh1Q1IiQCHb2Z2aom53xXmGi9uZo4JNeP0SACeFYpxp3
+	LSr5T1Q4KrtqbJwca9thQlgRjuJ1PvE=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Tphx6Tfi;
-	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=b+o8Zs4u;
+	spf=pass (imf11.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D82B16020F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3088041440;
 	Fri,  6 Nov 2026 02:06:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B2711F008A1;
-	Fri,  6 Nov 2026 02:06:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0EC1F008A4;
+	Fri,  6 Nov 2026 02:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1793930768;
-	bh=0n/wDrzFbORfw6YzEg6DroNWO8MgvFUslfYGWlwdzxI=;
+	bh=6jgnNWSf/GS9C16/6/oW04FCJlMaqBDrU/5PeIB0ivY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Tphx6Tfik8E4UtEnOk8Clt/iHUWlHE6k1PWmjL4eJTrPCPcxUwl5+3udkaPcNrUaV
-	 3/z9ygt75kQexmfFkoR79CmuIg78I8JbA3mUF9OBg7TCq3NK+BdukJSyeenTWcJd0i
-	 H4Z6L5acwe0egZDICo87IHlxCzsuIWcffoLi/GrVvoK9BwcVhfHRwzQGXOYZhedKQg
-	 ptMN9VhvdzR+RzuMfCDNoqAgjSjnNW4ig5xRWF7eLHQaye/ax+itiZfHjT/o6PL7BQ
-	 LYuErvG7amcFnH+i6tcKiMK4A1uyRZQb0h2FJTDRL/RrJosMEo2Y8Qfw67Xks8bGQ9
-	 7IfNSHH0Qo95A==
+	b=b+o8Zs4uMMohaqHf7oACOGb0O8r8zWS4hxH0SNbME9OEiZy7vlKSf0eARVaV3hPGv
+	 h5N9pho+5C5Fd9FRKQhLjil2jCUc+o4JKhd5YqrHUF6IKs4DTFhTaVJJnOcfjpZ3VK
+	 5IivQl+uVEnqNgNhqCLNNuu8xDtME6UkHej5oIxy7IooLMEkT+ul1GSVulir4zl5Xs
+	 0VNzEM1L98djvD3n2WVDkyunVZ1hIvNnpye9ao0H9vgvXMpxOWu1Wc0K5oz4O8Tq+A
+	 SKOD7w8MhNYtSu3InvWw1ZK+bjUsdVNPh+WTa96Ehfosk1VdH4byhqzk54mXV3ngVk
+	 KIIt2U0cMV5Qw==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SJ Park <sj@kernel.org>,
@@ -71,27 +71,27 @@ Cc: SJ Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
 	Aveline Noir <jm5905938@gmail.com>
-Subject: [PATCH 4/4] Docs/admin-guide/mm/damon/usage: update for age_ms damos core filter
-Date: Thu,  5 Nov 2026 18:05:58 -0800
-Message-ID: <20261106020559.98352-5-sj@kernel.org>
+Subject: [PATCH 3/4] Docs/mm/damon/design: update for age_ms damos core filter type
+Date: Thu,  5 Nov 2026 18:05:57 -0800
+Message-ID: <20261106020559.98352-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261106020559.98352-1-sj@kernel.org>
 References: <20261106020559.98352-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 3qaoyaz94ehiu8xiuapdht418385pjxn
-X-Rspamd-Queue-Id: 3C2FAA0002
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BE6E440007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1793930769-519028
-X-HE-Meta: U2FsdGVkX1/gcdkrVSIOu1tyDyGHWwRM56w4qfVlgNW1nQn0SjUiqLtvcsSgr1+yNzgjOV52vPEqsOmcegAxjNWS40G8vKWFUImgzVAO+tUPlNaZyzsz74bg660b9qrNvgW0Et8Z7a04UUkPEwUUa8VNqEjoCFEtBDkeZ4d+mZtPuXDaCu3hKH0hDVE0ES60GVTPI9cwgUULhGc73p/pMwgR6aoxyx3TQIg4u6tXW91kXmlAc5LBd6+xfqo7SAln/IC3pvD50SjLAKlVe7urqh0cZ9G+4dlTu3BlJpElnFZHwGfN4WSdi+qF0GdsyX7bh5SLvBS5+KYusipYsEXaJcQrAX6pZFIptMImZOtqfKGnevqzqsDCIdf4NGix3SQePpPBXam3h4hnPCvQdS2fmgulF8urbKZ5YDMO3XeGX5A100OxS4gWErmh/4/Ylufi02yAetCFWEshj0DuIhs6lROFKkBWPkJESjGrb0OyaJ98/uo+mfiSnSIYWDJ42QYtgD0ovaOex+FstqR/+Dv57kq9DLlxK61LZYFCxDgoUTokraIzGa3h/oem7lAQAjMeqaXFBTyQW8H/71hfvZrz6COPJu4wIsaakAEB4N9kgfnI7HORbSNcDJ83jHLi4VbTpybwtwMsY1WU1CK2i3IgFtZfm0fx8mQh3z9z9WsQHmfRli/hi7LwTs845nVy/coWa3v/TSF9MxYRQ8h1mYCT0PbViUFYU3FxM0HhZpK8CB3VBABe9Ni6pU+Wt1hxynqKl/k0CMfa596rwsqXntlLaeFgz7l3n45J78tCSCn/mT9EzhjsXPz+qWJ+qlqke8DTojxopdUNxHRjY12Ax/McRhYRhz84KCNNvSAYrkU6PbtjBgsYxDZ8leXAPG4UGK0jpDwIu6fHw2LqpCjB4QvGxvSRfIaEI816enYIJ1gNdEa+iVlh17jSxzb37V8va5WH6lFhRDKDadOBGpZxXKI
- 8LMVvtgb
- m/m3xinL78bp1EA02VwH67FBABp5z+Z+KR89WQBnxbcVPJ2DKImgVGxwoYf0Vp4ZFTAuDd5hiyRunVY6u8BBLWLZpz0dN5hqYjzq9s0++YUsGXZKZ9r5vN5e0unrASkdyb0vHcT5F6jvVvH1vdwTHs/HPBJcstBY+aj7DyAmYxftpuDWWvcl4Fhn1q0fA3cS0TlN1Vc6Wd41eakvCC0+YAWOHOFDamzZSdwXv05gTeaumQy3tpWvEQ3JYL//FP0p8+n260PbDg/idLMwfiarDRPoIpB+pEtUgUoh/oAQuBN0Ns2UrMsbZYP8fog==
+X-Stat-Signature: gjdkh9x568a1q6xhpbt8f5a3fzri1ksg
+X-Rspam-User: 
+X-HE-Tag: 1793930769-509681
+X-HE-Meta: U2FsdGVkX19KDA657kB6YeTvkNHkJaKna+PS/K/9vMr7XbNKLKyUmiQtZjPHBs4y/1bbwfO65Mq1pOQRBYUffaazSpOCU9C4XC7Frq3TqVjk5i45JNBYsD06PJK9w24JvGdYVwDiqzfI3IHHungSwKK7P+GXDe7q5RlKeTBCf/qK1trZEG88u4+4Cd1nKErGrHF9itVvM1GijEUajxNqN0ODIm2uXZJmDnHsfy7cCEHf+juzsMHrMDsOMKmHA/BXBePaJ3PvWChhhkG9NGaa6LFGqCfj29lt4kBqe5sljJi7Y37FxM6KO6YsvcFuw6eD0yixjJkUshk+1cN6I0Hs3g7USh47gQKL4ogTzJ7Lwb3NeiDiGwC/SUGEN5ef6oJoxALjChPnHz0WSfbSZaX3Y9cxzonYhJ4BNe4ME9dQ4HC35u6rqe+I0s6YAXDlfWtpZYoqGX2Ukp6G71g9Tgh3Sa/Wli8tTF+kaJzKygTh1hayjaMDUCtXwhSwU3NTYtRlv7mLpBRQO51gPiKk6RBtJ/6S1LW7vKX9AUcyvqqCcIddEvxUKnERzCEulUNGJhdA5FwktNi7QftETMG6IkmFmD1hqzjOKDDrWOShNqvikzLp+6hYgyBFZZP798IjxDdrkKZdwEmQKW01WXLm/E4hVsAEgS2Y41/oDVnbsLe3aredFX04cgPVhyiKGHEsWkZH4ZiDC/AcfwRaEbYkAKpQE5lTnC5Q8k2DYIJKilMHhzueKoWc/+bNPXo3Mj31U/nBqh0E4VQYhQ+gA237UVaCIBET6iFFPodEtmdsihWWQhZ6OmtIoRqLLWzilXSdnzplyuHmSgmUpPr0aXpAdgrYcSM+pcX0kvkah0xQQcb/xtWT0HhgCagrCX7OqwG0nejIw7cSWNWGNMv5UmGoEbUTybzbP/nFoIv0mP08L7c54ugL6F9wdkH+62aLrT8Bjcbnz/YbcLPOwqiNiZkXA8s
+ pXZZBuwz
+ a7mFVQTD7ycrNAnqcdhdFrYty6qFrhgPKMCuJhs79dAb1UIHgm8vioJRYkAm+MUmOSuaDfoBBl6HBnc9sz9ffCWGqhJxf9EooB2qJE1FN9QvWw/CrLPFVTFWGeIMwkFSziJOwwHc9ZE9WIM9ZDuoCFJ4KJneUq7/iRc/MlHHu/EvhWlWhp82YuiRXbWkNUX97BPp17C6Z8K9MT2FGOiISdVGVrZCDAOzYuKjkO+nhEQIFA7Vyutm0uRlZBbK/QidJ0HMHGYniugcjn0GTkiYpL9qzSMUx06WIc9m4gKbebWuorBHurgJMsxIoLQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,30 +100,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Update DAMON usage document for the newly added age_ms DAMOS core filter
-type.  Add an explanation of how the age range for the filter can be
-specified by the user.
+Update DAMON design document for the newly added age_ms DAMOS core
+filter type.
 
 Reviewed-by: Aveline Noir <jm5905938@gmail.com>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/usage.rst | 3 +++
+ Documentation/mm/damon/design.rst | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/damon/usage.rst b/Documentation/admin-guide/mm/damon/usage.rst
-index cc7465251bb6f..6093b1c8fbfd9 100644
---- a/Documentation/admin-guide/mm/damon/usage.rst
-+++ b/Documentation/admin-guide/mm/damon/usage.rst
-@@ -559,6 +559,9 @@ For ``probe_hits_wsum`` type, you can specify the minimum and maximum probe
- hits weighted sum value for the filter to ``min`` and ``max`` files,
- respectively.
- 
-+For ``age_ms`` type, you can specify the minimum and maximum age in
-+milliseconds for the filter to ``min`` and ``max`` files, respectively.
-+
- For ``memcg`` type, you can specify the memory cgroup of the interest by
- writing the path of the memory cgroup from the cgroups mount point to
- ``memcg_path`` file.  For ``addr`` type, you can specify the start and end
+diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
+index 0689fd48446dc..8440c4954090e 100644
+--- a/Documentation/mm/damon/design.rst
++++ b/Documentation/mm/damon/design.rst
+@@ -838,6 +838,9 @@ Below ``type`` of filters are currently supported.
+     - probe_hits_wsum
+         - Matches to monitoring regions having a given range of :ref:`probe
+           hits weighted sum <damon_design_attrs_only_monitoring>` value.
++    - age_ms
++        - Matces to monitoring regions having a given range of :ref:`age
++          <damon_design_age_tracking>` value in milliseconds.
+ - Operations layer handled, supported by only ``paddr`` operations set.
+     - anon
+         - Applied to pages that contain data that are not stored in files.
 -- 
 2.47.3
 
