@@ -1,29 +1,29 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B538606A800
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0654D606A800
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=B4UFVrbJ
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ox45Wigg
 Received: by kanga.kvack.org (Postfix)
-	id C1A1E6B05E8; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
+	id D31E96B05E9; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7C6E6B05E9; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
+	id C3F9C6B05ED; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A43CB6B05EC; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
+	id AB9FF6B05EB; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A1AA6B05E8
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BC556B05E9
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F07F120263
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3645B1A01EC
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:17 +0000 (UTC)
-X-FDA: 85406458914.16.82A844C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E12C980004
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B4UFVrbJ;
-	spf=pass (imf30.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+X-FDA: 85406458914.22.838B6FE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 2B14910000C
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:15 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ox45Wigg;
+	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
@@ -33,72 +33,72 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zJY7JgmUY6kTEuouX8pOKywnDwfciguXt0q9Bu2Yilg=;
-	b=1DFSm2BP8N9q8bTN5CnQOwEUmqkXysjOlAZMQnb4waXpe/i7lSJMJQAlI41xgTB1czdV3P
-	s/ERRhTOgwO3COL/5YCNwbNFGlo4xggASSEOJSHrIVdK6suU3CbUQxkihMWdZUB3eU8FA3
-	8QmyA/CjyNbkfKC1b+QjWcJ25S650G4=
+	bh=Wc3ZDddF/SoKim6dDvu+EZKuiq91csySlG+i1DCw1cw=;
+	b=l4FA/ZoBEH9BMaXC+zaWAKMrSdWqyc0uEw6WmTheDb96HQPW/ZzkFBLzG9nxo0xCS1A535
+	3QJaYqPd8cegkmM+2Q39jL7PAr9pnRRBvGdoV49AdwwzN7E7874dMDk5WGnuSlqiqudEbi
+	98Nconkn2+xmSEqzPz20gYm61FfHIqI=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1794011835;
-	b=UVJEorbcP1Ol5dNfT+SYAuwYD8ASRBjWjdOASVrr+90gnnk3E6U9SjDeoyjwO0iXnO0PIo
-	BxhUyR5fUn7fOPY2L5UiCYvWgs7PZMNICVkF6JrQVMKbr0lTsfx4tA+V1oQ/mfgk4Wz/xE
-	OXz+5pvmES84OWKXYTwmXNyHS1qns8E=
+	b=Tin+xZeYAWzAlYsEbnVz1PxicEqIlcPjOr57bt/ZrokG9YjXt/j9hlP81/rYuuQWAlF6x9
+	W3H+jvOcI9Mc4+mV4tbsDLNKY3j5BAZtmuUAIZcV8zbxS30E25VHf8FvgTe2vf1L6YCePw
+	aoc9faBgJjtYUsIIIs3iWQn7EL8jitg=
 ARC-Authentication-Results: i=2;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=B4UFVrbJ;
-	spf=pass (imf30.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ox45Wigg;
+	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AD33444037;
+	by tor.source.kernel.org (Postfix) with ESMTP id C280560E22;
 	Sat,  7 Nov 2026 00:37:14 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794011834;
-	b=Lzwke8rtQkHzmfm2D5TO1chfrpon9r2wqYJ4RpcLcWqQIcjYD4ckTllnKUEqLVhssww2
-	 qeZBBnKDbRV2detZ4sFdoueoFk7+0YW/ugR7RzfyetI7waF8daDXRAr2Ix2EyA3q7vWU9
-	 Rm1pzypGp0FI3q4KTSzhOTYFIchqP8hjwyCqqi9GSbwfqfxgpYGw+QgBSjlG6YBAJjOXL
-	 vIU8uD7COxakrLlPjfu2wEV9nxWFDSNQH7OyiMQMUwbysVax5E+Y3eaerSkUPfp/MQAwL
-	 SZSLvzuXTzHyxXC36wGNEu9JOsUjPtXBGVkbFx5qSf6dE/ABMECJ4KBz2g1Gk7khcYQ==
+	b=Zz5OI4UnS+Im9SbNjVgMQn2QG+mBRPyYISR4/XjNlKx9lz9I4vSHxpk7SRQjaz7IKEVf
+	 x7XFcCe+NBA6E310meVaDkT82KGXrm6r57CvpEOzzW/60EqLWx/9/fixN0+PFJm/rf9jr
+	 W8Z2ov8uLwpRltTNsewGKF9QGB51D/YULNlWxPnuAvT64dlVHebql5W05YZUlsFh1jdzr
+	 ni46Y+jdhpNX1Ftk5kOMOmB+KPGt03f+hY1UHUHl9c9qsygjbfdi3Fs9wszFg1l7Nrh/6
+	 lvhbDvMXwUmwyjcggOkSkgPq3mpaxVGjtK6mM1pvzoBV0fNTxRIunlfmN11Ce8znZEA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794011834;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=zJY7JgmUY6kTEuouX8pOKywnDwfciguXt0q9Bu2Yilg=;
-	b=LnEcD9eWp8XVYgQHdK9N4yXq15wtQQah8yS6d86M6W2ib3G3F0NW8qiu2lbCAR2kOQ66
-	 jKY5eXKtMIrOriq5XcZgxTZ1VUcGoe8Ns2ra6jmd9RRQTrgXLdvprOnTNWcnMZ24NTb14
-	 7eGj0pLiatnLQUq9gS4s4wj33rgOZ/Hb5nuTvG1PRHC9fEZcjdnrqCnvxIxOBoneK2vFc
-	 RT21LREcGJCQWb28hCmiLssyFtOYibMmyaFkSTy61vD7DauP7tYzDe5IkkwUa0Ab3CXVy
-	 avhcL6rUafzrVe3losZZQW0X19KGMjtTvobEM7XlYsjpgOvAoVlw42vw8O+HqEzfXng==
+	bh=Wc3ZDddF/SoKim6dDvu+EZKuiq91csySlG+i1DCw1cw=;
+	b=C8L5m0dXh0hoCyNkRT2rH1tCEvDcjR+CcvXmbyouKO50T9kNSzU2lm5RLwG9jF2ddCwb
+	 61WqQw1W5HMvvBluTSJ101Ryw9iFqLRhiliRLFotgMFyvF/qYpcpzrT1Emub3FZTCRhxP
+	 TfUQS+zknYSoE0JZBXZvt4PLVu21q/NwHy9YdwK42BKIRzbnG8JHmX7JHbP8UbS83r+wp
+	 tibf5RqPeb5zR1p2lV+oM+qnkX734Re7HKFbH9yfTcSwZJwVLP6+JdcROpMTb4lACQeh6
+	 mJy3g8cIbdcb1Ew3Ep+/w5TOntomgJo88zfeyOpCgJcyE4zo+7D9ODnNw+ofCInzofg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 019C51F00900;
-	Sat,  7 Nov 2026 00:37:11 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 821CD1F00931;
+	Sat,  7 Nov 2026 00:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794011834;
-	bh=zJY7JgmUY6kTEuouX8pOKywnDwfciguXt0q9Bu2Yilg=;
+	bh=Wc3ZDddF/SoKim6dDvu+EZKuiq91csySlG+i1DCw1cw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=B4UFVrbJvOUKkjPwh59GQzYlHcNAletngx9/LR6/42Ddc87G/AMlfoEjh9/9Lrcob
-	 vEj6ePlHz4BzkKPNq46KjizXlxN8tHHbTZ3jjn+6N8KcxPfW1vviujTxBuV6N6G5tO
-	 6r4BIZeAOp2Gc3zWAm2MtJ/8cK7mXxEWtffCjZpjVJ8Uty/pZA/u2X+tf7hX6hiZ0D
-	 HCpYmRfNKRT167vCF2O47xTaBCs0NMdhLer6GUyC6FHqrj3gRO4syHuEkIAhkp0I28
-	 U7jLkVdpf6Kf8UGrEgRqpc9CYqa81NCCpvUxg031q7LVKto77++JivIRpGiCNTbNsy
-	 DeVRMZUqNZPLg==
+	b=Ox45Wigg0rP/vYFLncB75Hq5AYXzucWZcIsHNiwt8ekt/v7HmVTnfF3LXVUH5R3g0
+	 7F5zfz52rR9w28s8JAfi7vEZGVDUbVWSpryFcFsMV9bzniDKrJyboMv+gCE1M6fVfn
+	 iOfqoTi+MCVS/tsxLb0FsaMVhsEwbA/VDEv/jyRnzkvgCFE2jMRMDsXsXeA7/2peWb
+	 bcqfKNGvBjt1qC+DF0E7zj0KbNRL26/4FYBOgPQ97x00Wdze/+zUHwRNc8IGSAOB4Y
+	 nVihah4Qq2K/aZKDvJXmByQv08cS3uaxTA4SJLCDeQaNLI81b8/Q9V+uA44E30kIf1
+	 316D0DlA4nW0Q==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 00941479FC;
-	Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id D5AC9479F4;
+	Sat,  7 Nov 2026 00:36:56 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:34 -0800
-Subject: [PATCH RFC v3 60/88] vfio/pci: Implement get_pfn provider op for
- guest_memfd
+Date: Fri, 06 Nov 2026 16:37:32 -0800
+Subject: [PATCH RFC v3 58/88] vfio/pci: Implement attach and release
+ provider ops for guest_memfd
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-60-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-58-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -119,11 +119,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=3886;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=4120;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=csbHfwVQmJAIvOL3JkXMdnFfqy9AUj2CCzhFEzRs5Ek=;
- b=WOkAJg7cFMQRQZBPquFwhsiqfmQ+MJXo+8XyVeu5y9SUxzhSHcejH5/SogBd1YAcut6NsIkjq
- Wb9r8OuGmI2CKiK9HL0TQjRmrP6IA+Y54RW+x0R/lWeRZxEsEgvr07e
+ bh=BlUGE6K++nDiJr8qPUVvPATO+O8fe24pYgQMxNdL00c=;
+ b=NgSlL+6BQDukoZMQwJMCQVxrx2tW2tfdtYAwt2Mqe6zuF4vrIrK51yN6n7vJ+9KVephyFm5Wd
+ nI/Gwn7eHXYBu4/2kJhD2xUzUg8WGqxthiF+W0hHlwEEnmJsIIb2avw
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -131,18 +131,18 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E12C980004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 9ham4f6twagtgfkg9j6m7xab5k3be7zj
+X-Rspamd-Server: rspam09
+X-Stat-Signature: ojf5w1t61or1ytsszhq1bmeupsf7p884
+X-Rspamd-Queue-Id: 2B14910000C
 X-Rspam-User: 
-X-HE-Tag: 1794011834-678598
-X-HE-Meta: U2FsdGVkX18CV+2iKQN6IVey1st9mQr1A1koHrkS6jN0ppuUR9LJ//clWnuKzXWxV1qof9eib3su9AOmWHGS9Eshs4pkTwco42h6/ksHvGiJX9jGq8t2hK+PVswS9TW12w6fnd5XFH8ASx13OlEhCwtcpoL9X6RbQimGXICCa+2KJhOVn/o/jIjLMwP0dJ6fVRM09rGTu6Nxxf7gLKxWkJHukc12mSlKhJuG035ZyTC1C8IWP0fUEWgR2JgxiKfEXLTlBRKmUZjMW/n6+yXMWKIBPXtVMdhKL3MUZ2JO9+OizZ1H8kmPfUXv5PL9j7ig/Q3+7LF0Z3CjVfRlhgzIWVk2iS/YSmLLZyY2T+YbvrW512/z3qjy+MgZ9hAjMkbHlLCMUtEgXLGvkuvQCj6aCxozDY6NozOUWO/6MjyvYBT65AyAWqz5vG+iRWzLA7bBm/6c/9MhC1H0/WuSNPS/tMiNwJxk0zEYH6W9qZzwrZUwLGZQ5Cl/X6k/5u9zSxIzF46TE2TnM8v5Y6JiemQcesyagHabJCEVlHnqC6nUOW8Edvm08PJqlzOMFkMhTgAwZb/L4YSLW1ZEVlPb9TD6ECOP+RPhZDVHMYRCJzufjW55OP0vy0YYDZ9kw/Y66Lw3pJ9DWFfN7Ya6KhEy0hwua0dtM9pD+exM5NtYfTi/yITG96+3hFKAOZDLtUx45b7povH3mORlsigyXlRcLibExQtYCLM1COpyjUHaCXjcdpSOSkiedYjHtGGT015J6bcHIGDdtUHfUa+lddNiRkCXrp7ezK0OMe5I5I/DOnttASizxDaDOs18otAR/pHKtYS/DDA/pEkAzTYfSEoAncu5VJbFQcbMmmafkXNVy8cHtsMnSn5x/M5WCBIBZo7WQVbjVoWzGaWM4VaJ1dVyH/O4a9/WA9gH9XmnQEFSNEzsHTBXen3auxVl3pIquLFyyYsPfjR9tOcW1onGyl01B1+
- 3pG92/kQ
- BqhB9iMr+qXJGgdA9D36gxwva1tZ3gDj4Roca0k4ez8FTjmO1M/kT3nRKIN2gbuW6F93eAOc+YNLiWLJQS2oc1HrGij9cRQ8IkwW1zNzFxabHcUjPpQq4M332J/p/nD+w0/w48HrTMA3a+1E29aktby6JPcgGZQqVLv5lmvxMQdfGfHh47w4U7eto9JKA7d8AoEnzRFCUgWqzWKgtnMBkW/sXcz8I3qutvcMNdON5MulMGhbLY2hWVkQdOO7q4ucPDcoub/VN+sDgX/cYz18o6o0dFGr08cpwNnJz/4+SL02EXJMd5P37lmuB1MoQFzMrDiAMV14GNeONir+ez35LQOyI+y1kXbhoHpw2Q10AoEf68ynFH+LydKYx2b5lWB1T+N8DZ6JB1Mkwc1CExQKeB7GY6QAO8d9iV5BuFRjNe2Xdm2Y0Nt0uG1EXt0Pmjmxsr9/tE5fQEC+GXS6MVye44S6MXmfmUFoG7RrUGizseslzPcjZBS4bslKaATIpEOzRSwxUmE5X8atrHGlwNnfITqWI9SmnxyMtL+M/fUWVatyXumheUJCUxt72FQTNGJYKgpbXvCTpd8LNmovQMQMxV8pt5A+y8xubMQtfNo5H5KkvIcw=
+X-HE-Tag: 1794011835-602791
+X-HE-Meta: U2FsdGVkX1+Yq+5W3dN5vhWQ5uVvl3NJwxNQdva5Q42bjbdMkz9dmGTbOOCqIUxtHlFc+eOywdYhxNkCpjtCuaYDzR0mtL3PxV3vjcsi+3rD3OdCVVn4dphMLnSrNMsb0NWX2ZSSIjccrBXeukrZO3dUbEmszD+XekbHsgPJ+v5wRs2pyLigKXArJtcENoqkaSn5JfrVO2P5wvNNjySnZ0PHEK0icRdu1XlnjMn17JH/PNy9JuJ9vElUFdtbIOr1HJ4/hG/UXfT5w2j+xfbGnktnJKi8duE62DHQ9ks1CO2t3qPDgw96FeLoc+cYL9IE+GVbaIVVIA15Y4ptRNsAm19BJ1zIsZ24dnSwE6Ns5R7ATDEzQTAHxOqLzbprISJB4+B38OnmjmdmKIFWz3xMnJO14qBW0U3Jejg8MZ0F6faN6JJTJviibh+vw0UJOJyaEfjeaxu/CPS0WDBZOqlkKlLkPXU572LAYd49KHYAs0BowVkH0iadICC5lEB31k78F01RZvFM9K2IG3Jz4mD9CbRVBQKNeefoT6l9i6xDp7DDMOL7SEyMa18Z8kA6UVdgi5IPDc9cPqyershFofK1/zeUOqrnrJKsFUFwro1Xfy6KdhUOLaxRa9Pm3PF3cs336bn+o0Dv6uhmB3TxUygiJ/r8AYIHWCYiw8smdPFSDYyHYHG/Tr6NKiNzK5zShlczfuYlP1uGoj1ghA/id/Z8FLxLKK1csHnn8JZKirL7Obx04yExsf3eteBViFEPb6ZmBB7C2GMeGQlrluLih1o3sA8yJlWsnbg7NKEK4lC0fRWPBAAE+W5UIlT30S2pIDQ7alx8qOPk52RtMA6FeRhrH329QVEprIotAxshBKPZU6WlOPyuMkC0oERMVnq7A40VbNVb9rloAaR2h7HhggO55bEseIm+r7ICQeZVjuIfJSJnjn2nzmOMM607fwR6R+xkwg1udmiAdTZmRd0M1jR
+ 1vfmJbFA
+ 5bnxNjKaX6deHSsgiOEXHmr7eaEjFZVDVO9aytnXePRBHzYHgT2yS6QBaO4vzObCFW3g5wBTvQwb5FORN7w6S63DfX36uNx1Mrxn9BGImdT6DaOagvSdL9y8uUeK1OSRH20pO1Sqt68utAXf8o7xn+XDNsgm2W6PS2tkQDm05StuWL+VLOnGnDUMeATx1nFhgo4X7TOweTYzhS2OOLpdo105Wv5jdKZCCoz5TcFJPlkSevxdjqMbyUy34qkeB/FSryKk/HwSFuH+Amg+k4vi+KWhx5EhW8hkTkFikssl7uMly4Ko0d1rZDeXL0eSNRv3Peo52+rLpsH6b5AxvnXmmRf4BrPsZyh5LZJAdnSiqSfguoIIfQ65YruQbIzDW77xmXYDuAgxCpkH74jHA5X+gwbkRRWtp0JULFyqV1j4uD4/wdCzSjD/IBVqwcZrfRSoY7ja6yv+kxus0nFBRMbXZ6bSsw6KoKMKRmCsBEMHeJYHM8OcNfW2H6gNZogmdJG3DtfTMfMvnldp+r70ZoY/oQ+DwPGKsrGVYVQieIPDlXgR1FG3FpOFhX418rXAGDWNb7zbwQKebFJ2m8TqxAEaZktrm9U5wH0XtbrHEMjJI+AVS1h58gpxTtPmuct0hSMJ0rfxnlMweARZ6R4E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,104 +153,118 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Implement the .get_pfn provider operation in the generic PCI VFIO bus
-driver to translate guest_memfd page offsets to physical BAR frames.
+Implement guest_memfd provider operations in the generic PCI VFIO bus
+driver to support attaching VFIO PCI devices to guest_memfd.
 
-Check the BAR availability flag locklessly via smp_load_acquire() to
-avoid acquiring the device memory lock on the fault path, returning
--EFAULT if memory decoding is disabled or the device is in low-power D3.
+In the attachment path, acquire the device memory lock for write to
+initialize the BAR availability flag according to whether PCI memory
+decoding is active and runtime power management is not engaged. BAR
+resources are already mapped and reserved during device open at bind
+time.
 
-Decode the 40-bit VFIO region offset to identify the targeted BAR and
-offset within the BAR, validating that the BAR is a standard memory BAR,
-supports memory mapping, and the offset falls within the resource size.
-
-Compute the physical frame number from the PCI resource start address
-and report GUEST_MEMFD_PFN_ATTRS_CACHE_UC_ALLOW_WC as the frame's
-caching attribute so stage-2 mappings permit guest write-combining while
-host userspace mappings remain uncached.
+In the release path, acquire the device memory lock for write and mark
+BARs unavailable.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- drivers/vfio/pci/vfio_pci.c      |  1 +
- drivers/vfio/pci/vfio_pci_core.c | 38 ++++++++++++++++++++++++++++++++++++++
- include/linux/vfio_pci_core.h    |  3 +++
- 3 files changed, 42 insertions(+)
+ drivers/vfio/pci/vfio_pci.c      |  4 ++++
+ drivers/vfio/pci/vfio_pci_core.c | 37 +++++++++++++++++++++++++++++++++++++
+ include/linux/vfio_pci_core.h    |  5 +++++
+ 3 files changed, 46 insertions(+)
 
 diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-index 96f438671db29..9bc8009a9e766 100644
+index 3dc232ee65491..96f438671db29 100644
 --- a/drivers/vfio/pci/vfio_pci.c
 +++ b/drivers/vfio/pci/vfio_pci.c
-@@ -171,6 +171,7 @@ static const struct vfio_device_ops vfio_pci_ops = {
- #ifdef CONFIG_KVM_GUEST_MEMFD
- 	.gmem_attach	= vfio_pci_core_gmem_attach,
- 	.gmem_release	= vfio_pci_core_gmem_release,
-+	.gmem_get_pfn	= vfio_pci_core_gmem_get_pfn,
- #endif
+@@ -168,6 +168,10 @@ static const struct vfio_device_ops vfio_pci_ops = {
+ 	.detach_ioas	= vfio_iommufd_physical_detach_ioas,
+ 	.pasid_attach_ioas	= vfio_iommufd_physical_pasid_attach_ioas,
+ 	.pasid_detach_ioas	= vfio_iommufd_physical_pasid_detach_ioas,
++#ifdef CONFIG_KVM_GUEST_MEMFD
++	.gmem_attach	= vfio_pci_core_gmem_attach,
++	.gmem_release	= vfio_pci_core_gmem_release,
++#endif
  };
  
+ static const struct vfio_pci_device_ops vfio_pci_dev_ops = {
 diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index c7b67fbce4cae..9551a067b5689 100644
+index 907e6ab024acd..c7b67fbce4cae 100644
 --- a/drivers/vfio/pci/vfio_pci_core.c
 +++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -2731,6 +2731,44 @@ void vfio_pci_core_gmem_release(struct vfio_device *core_vdev)
- 	up_write(&vdev->memory_lock);
+@@ -15,6 +15,7 @@
+ #include <linux/device.h>
+ #include <linux/eventfd.h>
+ #include <linux/file.h>
++#include <linux/guest_memfd.h>
+ #include <linux/interrupt.h>
+ #include <linux/iommu.h>
+ #include <linux/module.h>
+@@ -2696,6 +2697,42 @@ static int __init vfio_pci_core_init(void)
+ 	return vfio_pci_init_perm_bits();
  }
- EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_release);
-+
-+int vfio_pci_core_gmem_get_pfn(struct vfio_device *core_vdev, pgoff_t index,
-+			       unsigned long *pfn, int *max_order,
-+			       u64 *pfn_attrs)
+ 
++#ifdef CONFIG_KVM_GUEST_MEMFD
++int vfio_pci_core_gmem_attach(struct vfio_device *core_vdev)
 +{
 +	struct vfio_pci_core_device *vdev =
 +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-+	struct pci_dev *pdev = vdev->pdev;
-+	unsigned int bar;
-+	u64 pgoff;
++	bool bars_available;
 +
-+	/*
-+	 * Lockless check: if memory decoding is disabled or the device is in
-+	 * low-power D3, fail immediately without blocking on memory_lock.
-+	 */
-+	if (!smp_load_acquire(&vdev->bars_available))
-+		return -EFAULT;
++	down_write(&vdev->memory_lock);
 +
-+	bar = index >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-+	pgoff = index & ((1ULL << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
++	bars_available = __vfio_pci_memory_enabled(vdev) &&
++			 !vdev->pm_runtime_engaged;
 +
-+	if (bar >= PCI_STD_NUM_BARS || !vdev->bar_mmap_supported[bar])
-+		return -EINVAL;
++	/* Pairs with smp_load_acquire() in provider operations */
++	smp_store_release(&vdev->bars_available, bars_available);
 +
-+	if (pgoff >= (pci_resource_len(pdev, bar) >> PAGE_SHIFT))
-+		return -EINVAL;
-+
-+	*pfn = (pci_resource_start(pdev, bar) >> PAGE_SHIFT) + pgoff;
-+
-+	if (max_order)
-+		*max_order = 0;
-+
-+	if (pfn_attrs)
-+		*pfn_attrs = GUEST_MEMFD_PFN_ATTRS_CACHE_UC_ALLOW_WC;
++	up_write(&vdev->memory_lock);
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_get_pfn);
- #endif
- 
++EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_attach);
++
++void vfio_pci_core_gmem_release(struct vfio_device *core_vdev)
++{
++	struct vfio_pci_core_device *vdev =
++		container_of(core_vdev, struct vfio_pci_core_device, vdev);
++
++	down_write(&vdev->memory_lock);
++
++	/* Pairs with smp_load_acquire() in provider operations */
++	smp_store_release(&vdev->bars_available, false);
++
++	up_write(&vdev->memory_lock);
++}
++EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_release);
++#endif
++
  module_init(vfio_pci_core_init);
+ module_exit(vfio_pci_core_cleanup);
+ 
 diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index c3c16459e14f4..3a6d039454472 100644
+index 1053774d2d659..c3c16459e14f4 100644
 --- a/include/linux/vfio_pci_core.h
 +++ b/include/linux/vfio_pci_core.h
-@@ -172,6 +172,9 @@ void vfio_pci_core_unregister_device(struct vfio_pci_core_device *vdev);
- #ifdef CONFIG_KVM_GUEST_MEMFD
- int vfio_pci_core_gmem_attach(struct vfio_device *core_vdev);
- void vfio_pci_core_gmem_release(struct vfio_device *core_vdev);
-+int vfio_pci_core_gmem_get_pfn(struct vfio_device *core_vdev, pgoff_t index,
-+			       unsigned long *pfn, int *max_order,
-+			       u64 *pfn_attrs);
- #endif
+@@ -149,6 +149,7 @@ struct vfio_pci_core_device {
+ 	struct notifier_block	nb;
+ 	struct rw_semaphore	memory_lock;
+ 	struct list_head	dmabufs;
++	bool			bars_available;
+ };
+ 
+ enum vfio_pci_io_width {
+@@ -168,6 +169,10 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev);
+ void vfio_pci_core_release_dev(struct vfio_device *core_vdev);
+ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev);
+ void vfio_pci_core_unregister_device(struct vfio_pci_core_device *vdev);
++#ifdef CONFIG_KVM_GUEST_MEMFD
++int vfio_pci_core_gmem_attach(struct vfio_device *core_vdev);
++void vfio_pci_core_gmem_release(struct vfio_device *core_vdev);
++#endif
  extern const struct pci_error_handlers vfio_pci_core_err_handlers;
  int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+ 				  int nr_virtfn);
 
 -- 
 2.56.0.455.g6c5a503b38-goog
