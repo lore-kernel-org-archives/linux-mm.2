@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081D4606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9264606A32D
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A97LRtV/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q9kAMNeE
 Received: by kanga.kvack.org (Postfix)
-	id F12026B05C0; Sat,  7 Nov 2026 14:48:19 -0500 (EST)
+	id A0AA16B05B9; Sat,  7 Nov 2026 14:49:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC23F6B05C1; Sat,  7 Nov 2026 14:48:19 -0500 (EST)
+	id 9E2D86B05C2; Sat,  7 Nov 2026 14:49:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB2496B05C2; Sat,  7 Nov 2026 14:48:19 -0500 (EST)
+	id 8F7F26B05C3; Sat,  7 Nov 2026 14:49:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B5BCC6B05C0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:48:19 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48C141603C9
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:48:19 +0000 (UTC)
-X-FDA: 85409359518.29.7E6B87D
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 56E926B05B9
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:49:14 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 395AA1A03FD
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:49:09 +0000 (UTC)
+X-FDA: 85409361618.02.636358C
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 7C12B20005
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:48:17 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A97LRtV/";
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 84B5E1C0009
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:49:07 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9kAMNeE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794080897;
+	s=arc-20220608; t=1794080947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PgfupnOI9y63nTPBwUuVBVA9ftyhpGgpL4SadbS98oM=;
-	b=zqUmpMYzyCRPSAtPSppTcxiHJrGoujqevL8IwfIrqRSOJeSzEEXq0dnRqPSi/wgFgVJNJD
-	PsNGrI9O1cnSbD4HgUXHY5tr3gVqrzZJWZ+m9Ugzihakl1LtxhDo0Rert4lbX3bMb/OHzW
-	9jI5DNoPYnfy/NZscygdTl0s3Nqecrs=
+	bh=quEIxWxT5Q+S3gOy3uhM6ka01cjxSecT9mp5i4V7aKA=;
+	b=BYDRZeRL3sb2oHJeQTJHCx+mm3qyh59hSu46nsM508DVnJyUT1hzsEsntY1+NrgQwfmRic
+	BO94JhFRojOnwuALa3IOw+KEzwbXcBQHkjP5ZZHY8AsKsaMfrfjzoprqPcmIp9JfYMLttf
+	axaphZPyVWQvp4UStx0ZCsGiVxUZKJw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794080897;
-	b=n3M5CrTH9g4qgqXrUVtzIi4XsaBBqnGZS7GvglCseK2yp0HKAN8PVtFS5m+jPrkFV1bOwi
-	SouftbD1CFBPe/vgk6ox99X7KdviV5sHr0hwe02WBD9LWwVUcuGsgUx58iP7egTS5eq+IV
-	Kdk7ni+W/1ViF5TcrNbcaVhdP/gwtXk=
+	t=1794080947;
+	b=YE59bhVmy/F7ouDbx6oKTDMgT70mlmN8QeMq5mXqUXbQIFv/tMBnfOPqGfHmlV4fdeVz4P
+	bqM5CEDRms+J6euuj+9IjbivpchRJeFvUlCinDORE6Ze2t3B4VxEhkFMuHqMZSAa72H/Lp
+	1AkEe8ZQzoeKm9M34nsro6hfiNlDOSk=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A97LRtV/";
-	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q9kAMNeE;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 69AA461148;
-	Sat,  7 Nov 2026 19:48:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5808D1F0089F;
-	Sat,  7 Nov 2026 19:48:10 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 29FBF6117A;
+	Sat,  7 Nov 2026 19:49:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA2881F0089F;
+	Sat,  7 Nov 2026 19:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794080896;
-	bh=PgfupnOI9y63nTPBwUuVBVA9ftyhpGgpL4SadbS98oM=;
+	s=k20260515; t=1794080946;
+	bh=quEIxWxT5Q+S3gOy3uhM6ka01cjxSecT9mp5i4V7aKA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=A97LRtV/UUHCQnkUrvGqtIgzlx3uxP7kbRD8h5sUFLlcyZ7oYisz4YMCY6RSdd6Sm
-	 aGMqDDuK6P+5x9Seobd4qsGICa4HESW+Cz/F1qLcDQzVfMsYE6L5a7c8cXt5TqjdlB
-	 4dhzoAL1Y52RPCY0ERC7LzQSxATD+urOPRwyUDyWq3EdlK73K/izVvC8jaUQ3IJSpR
-	 +0HtFI4/RzJ8QAlpH5i5TJbibWEyZoUuLHW3ITklZGXyjWFSogroDc/g9fHJqQeoAZ
-	 ZVGRJlud74lr1UcNyWAVexAmqn9fxBB6cWjp08cpvKEPWyNrZ3ikNWMFnA5vG+z/3y
-	 PVLi6hgK3gFzw==
-Message-ID: <fd2faf21-ce9c-496a-9bd5-4d8334cf5f13@kernel.org>
-Date: Sat, 7 Nov 2026 20:48:06 +0100
+	b=Q9kAMNeEmpMt1H6xQlnIWiQ9o/ScZQHlFtgj0GVZUjX04tr1tZYKe+1144Dh5uuhG
+	 5ft+9002eIOnO/abET6se6fs98rqU/wNe04AUe8pNLOIVDVEV8/A7nmuGJRtRJdtg0
+	 iliJNmBxybwkEoYfkWfmDtF3pkmu9Mhp4LRuUDFo+zKwrPlTF3B4nzOy+egJrBrRKf
+	 Wd6dOEtDraGbLqSZEcE1pYZkmDKWKOA7q+0IxCwWdbCP8X/ndLdoBQ4j85S//fNgOP
+	 H8QBXQo1w1M1hOuOeRxxnADbVx1wPMR8P+BEnr1a9xN6oylccFLlHhQY7oGgP3jVM/
+	 g7fdvSk/sQEig==
+Message-ID: <03e74c29-c6a8-4ace-9388-6a658aff9031@kernel.org>
+Date: Sat, 7 Nov 2026 20:48:56 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/4] docs/mm: ksm: describe how smart scan picks the
- scans to skip
+Subject: Re: [PATCH v3 3/4] selftests/mm: move waiting for KSM full scans into
+ a helper
 To: Qiliang Yuan <odys.yuan@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin@linux.dev>,
  Chengming Zhou <chengming.zhou@linux.dev>, Stefan Roesch <shr@devkernel.io>,
@@ -79,7 +79,7 @@ To: Qiliang Yuan <odys.yuan@gmail.com>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
 References: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-0-16d5ce8b5fd6@gmail.com>
- <20261107-bug-mm-ksm-smart-scan-align-skips-v3-2-16d5ce8b5fd6@gmail.com>
+ <20261107-bug-mm-ksm-smart-scan-align-skips-v3-3-16d5ce8b5fd6@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,22 +126,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-2-16d5ce8b5fd6@gmail.com>
+In-Reply-To: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-3-16d5ce8b5fd6@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7C12B20005
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: h37afqu1d7o83mt638d7uzufiwnnee6z
+X-Stat-Signature: 1jx3cwknt897qka94tcoxoxfkffoe7ss
 X-Rspam-User: 
-X-HE-Tag: 1794080897-907964
-X-HE-Meta: U2FsdGVkX188H6FchI6sTSD5b1cct0WXtiWBHYjR+SBGsfMXsuU7MMq+yrLDwnSiHz8c6FUj0m9N1ty3rcUYN5HM4w/T1Jmroxkv4UUt5OWfs/+MpMdBomwytGM4OktlPx8KzQIhApmV5vMw+N57wbNAASN5bHAAWBQVfasNhKTQgIdd0k98v9KRil47krjo7usYfupM60NGnveamPTLkZtDyMnOmAxuzam4LO55SQX2WmcS+TLZZ6C09hFUuGPQVPXTY7s465Yle6AhtffmvX3xG1Ux7WHZsQpeNmGhNFilefc+NLUhqKJ9iZ7X0TOK29ph9VrLCEEH2MBCAoeshUSAdrzEY0vwCcrlG/Q1zByCXuSRUjorCcmva4JC+WU43hHjuTlc4Blp1iWG7uMoLpgaepvi7GhrSgj7+/5G4H0J+Nb6lYTvsnIw/lKdJvTWU0TKSRnIuQLpYT1LwPakfzw7z9GU3wJNVU99BKDcDuBJW9WE+K16SEOGh6MEluS5z43U68NLOnovUgvcaAUfyxHOzEl7G++NzYiEaJf0DBdTq10teWVlR5VmYH/vUSj8OqH7qHzdCGU3eLPsAcphlv9jTUsR4UbSv1jskUKuATGHRqBV4Lj9oczUa4lJBP5qj4/p7nbu6kfFAugGD0slH+vQCjOvJvZ2q88zAay0gc4JFWBBFPsSISsrPwC6ufXst4TjxPNlU7quZynF8LcQ7cMQ8nYoxVAHMeUsqjhx0LuvXeerPt5X0imD/TTKlqGSXXcydfgkgDPGuAi8fScS1oSAEsv1SWE7XnEUoBNPoBdANQgD7Z+L3hMGTJyfrl+11EWRF8GP97VkVrfBDO73DQy3F5Hxlndp/iwkUIXrnCqxJpZVLduEGs3qvjWCDnx/jKhpHg5ss4+9SKdeNZVTfOdygie4X+q//C3iNe0IZm98SCn/4wHBEMIaAH9EWNS9rBdkVhFtel3FtYALEZk
- KVcGQpAl
- QadX5vQklEzp7WsDsQTTorhBvpOTmtJ4mUlc7MS4QauZfdSkTGW0avi+kFcKCAhZ/W2t1UxoHLJn3sP6aeVM9k1ztfttocOCdOm23woyktKb00EJ03jXLPapYR8h+hTrvOgzH9jbGp7jMG2m0zrich+iOs+2TCLbl2shs0TPi+AKtBFIF7nGeO7XTgM1ThQFPIyrngEAfHrqJwzzeQZ4O0ft8VBnNbn+efJmfCHQRxeAP7NHi7LkDXS83p6XIOM3zArpjeR5/pUIIY1V10xuxFBVTzklcyI2ZPLT/XJvPK0fH25kBRluBQFN/llhym6JciB0508k1rQtdE4yooy4zEmOjsW8peIF2q+D4lM84Djnpnv98L96n3FFfQJR/L0MBm1O7
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 84B5E1C0009
+X-HE-Tag: 1794080947-898556
+X-HE-Meta: U2FsdGVkX1+HkbXVfhWEEmS4igC+rRQ4DlPSmpzA5hPjDSQ3ZzSSka6EXaEJDofdj5gyI0wIIv6Qyy33nIsMLXqAVK2Lu8YFrKrsXfOdZGTh6tpcW12Gda4zWdqiNh1yJBKZJx8BlHZvJUTnVeDU0ktwX9R5FUe5ro9k8cSOlZNefRuiQ7FCDBAKL/JgzjJAzKEgrb/sCaa0CifwHRq3dVyCjdWUxu8AAFxK7GROy6vIPrLVcLuTNmGXAHSIzXUnNoS2+okmhhgmpiU/FF9rlskbWgMB+1FFlTIBnH1dXGPLyfIWmAo4NvtvFcu9CG4ux7an5MzTlU1z/bx0e/LcK5m9XR868WLYIZsGv7XRVGEKVWFNAWNt9gk/vZ7sYcC4h7FcM4PxUTV9IlWP6LDz7W8t8P3jOjE7CTiosBe7rIMeRHap3cuZjxVHFbB/+xKHGJz+tql3Jcxat5Iu6kkWZn/74p2XlZCzvXeNTgGU4AdJL7vbLn2LxDWh9zRs3tMZNOi+S33ciR0HALUbW9n70IDTnYErXQ5NnMAM7pUooo3fXYn8/YABDKTOzkFvnHYR3MXFFmPiThLdPM9H72/zo5WhvimfNBw7WkU6t+OMwU1bUPDA2GXVi8ZEOJrijInYwjEvpe/cATy//yoNTA7tOVJM/Dz2Vg4CACfzkZ6nGbP06MQPncSIENU92KM1WPZJlF7UPbWYxF5vVYJWs4oBavyE8Ai5cZnk91A6hD7TQ9cR5Rp1WyO6Sakn+BAfh5b3BMReELbhvHm6sajQ/7lEbz3c1X0Hkj340O1YS6coywFNhf5t9r/vh6nCE3b1rne/KCGF8R/jiHE1HQq91vcCYBy/asNCblTfDeQNunQ+RsAd8noHWo9Mm/k3O3vnTy9CeugggeG4BY/TMPYUowRuiwzw18ttRj1Yhcx19X/QgHxPuFgZ80s0c9EpogZckkGVEiMbsDJ/DJ9I0H6t4qn
+ 9EBXS+1X
+ 7HoFkJJhO90hAqcoLoKVjaotBrTEzojU9LBkngSPaXrxLbq5mw7bZX0Q1r1purKZFKoffvjHD2wv9djQhs+NL9uO1ryN4ww7Gk9/Hg6uZ0U1iT7aXamsTkTlDnb6Y/4j1Bk4x/4eyrEB7LSjJuwpwS9f+lx+9IQkpfyty1L3FCh6/+nT4UHEpVKW2QkXg6eyUcoXW5nHNAfiJSwnUpAqrIQwBAezaIEGP/APtF6eB7bT6taQWqgM0mBXXGrp7ex8wtfZOERWg+uxv7Sn0ZbYJZAXBqvU6BEZQgzCkURsD5MwCkI7XayN2rEFZ47U0mUJeYE4hKJwsjEBKIykNQD5Ckh4lxIMvRq72aNdJ4WJQBickVK0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,47 +150,17 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/7/26 17:57, Qiliang Yuan wrote:
-> Documentation/mm/ksm.rst covers the stable tree and its reverse mapping,
-> and Documentation/admin-guide/mm/ksm.rst only says that smart scan skips
-> pages KSM has failed to merge before.
+> ksm_start() enables ksmd and then polls full_scans until two more full
+> scans have completed, so that any merging that can happen has happened.
 > 
-> Neither says how often an unmerged page is looked at, or that the scans
-> are picked by the global scan number so that identical pages of
-> different ages still meet in some scan, which merging through the
-> unstable tree depends on.
+> There is no helper to wait for a number of full scans while ksmd is
+> already running, so a test that needs one has to copy that loop.
 > 
-> Add a section on smart scan that describes both.
-> 
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-> ---
->  Documentation/mm/ksm.rst | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/Documentation/mm/ksm.rst b/Documentation/mm/ksm.rst
-> index 5a80573162def..f954d221e8017 100644
-> --- a/Documentation/mm/ksm.rst
-> +++ b/Documentation/mm/ksm.rst
-> @@ -75,6 +75,22 @@ The whole list of stable_node "dups" linked in the stable_node
->  The frequency of such scans is defined by
->  ``stable_node_chains_prune_millisecs`` sysfs tunable.
->  
-> +Smart scan
-> +----------
-> +With ``smart_scan`` enabled, ksmd skips pages that it has already tried
-> +to merge without success. The ``age`` of a page's ksm_rmap_item counts
-> +the scans that went by while the page stayed unmerged. A page younger
-> +than three scans is looked at on every scan; after that it is looked at
-> +every second scan up to an age of five, every fourth scan up to an age
-> +of eight, and every eighth scan from then on.
-> +
-> +The scans that look at a page are picked by the global scan number
-> +``ksm_scan.seqnr``, not counted per page. The unstable tree is rebuilt
-> +on every scan, so two identical pages can only be merged in a scan that
-> +looks at both. As the periods are powers of two, every page is looked
-> +at on each scan whose number is a multiple of eight, so two identical
-> +pages meet at least every eighth scan whatever their ages.
+> Move the loop into ksm_wait_full_scans() and make ksm_start() call it
+> after enabling ksmd. The count is now read after ksmd starts rather than
+> before, which can only make ksm_start() wait longer.
 
-Yeah, much clearer, thanks
+Right, we don't care about that
 
 Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
