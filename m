@@ -1,178 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E46B5606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 02:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9C3606A32C
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 02:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=nop8ZZz5;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=VkJbFzsR
+	dkim=pass (1024-bit key, unprotected) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=s0wIDPw6
 Received: by kanga.kvack.org (Postfix)
-	id D5F5B6B05CE; Fri,  6 Nov 2026 21:40:37 -0500 (EST)
+	id 7CA426B05B5; Fri,  6 Nov 2026 21:49:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D10826B05CF; Fri,  6 Nov 2026 21:40:37 -0500 (EST)
+	id 77AF96B05B6; Fri,  6 Nov 2026 21:49:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C27566B05D0; Fri,  6 Nov 2026 21:40:37 -0500 (EST)
+	id 669786B05B9; Fri,  6 Nov 2026 21:49:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 872B56B05CE
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:40:37 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3EDC66B05B5
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:49:06 -0500 (EST)
 Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1160116027A
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:40:37 +0000 (UTC)
-X-FDA: 85406769714.23.20EFA19
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B18F11C0005
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:40:34 +0000 (UTC)
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C81C71402A1
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:49:05 +0000 (UTC)
+X-FDA: 85406791050.23.A691194
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D37901C0005
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:49:00 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=nop8ZZz5;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=VkJbFzsR;
-	dmarc=pass (policy=none) header.from=oss.qualcomm.com;
-	spf=pass (imf18.hostedemail.com: domain of himanshu.chauhan@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=himanshu.chauhan@oss.qualcomm.com
+	dkim=pass header.d=huawei.com header.s=dkim header.b=s0wIDPw6;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794019744;
+	b=2uf1YyktFzi/QVKNo5MHmqfjuw9aloOUzjqittqmWPHyGEq0ERa6HJoaJuFSuzj6b7w5Ty
+	BbIh8q7dedv0f+pHKW9eN3z489oQpXIwVWLfQ0Trg5ltGjHhxV0hu3Bih+d+rUXNCTDL0o
+	WQUIg6cQ6WMIPAiY9DADwuRX/E7D6+U=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794019234;
+	s=arc-20220608; t=1794019744;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3GIOH+/c8ZlwAH4hdy3vTg9Fnv+nr6QlL6HrUi9JjUI=;
-	b=I/5MIn9guPdf6JZQ6BEbrnB299IRy4fxBoVDEBryWQBpfNUygkSPhDk2NR8ze8ZvRjngqD
-	Jbaqzq3m9mz6agoo6EGUFezy41ElYLTbaqudi4jUXNouWmNIbuEFsuo728IW8H3QBI3EwF
-	2f6F7kcMUZmVuzsusE98BrdaXWlPoCg=
+	bh=V2ehoWyNFIHWoL0rk22oGF6YUNoTHO9lXNQV3gq5XAw=;
+	b=c4l18lOo2mSiaJSTqZjQdim7jgZznCWwnQzG6llbI6HYqLyn9gSuG9ldh76zRNTaKQM3jC
+	VCHl+95H6u/E3SsmCvlmuwV0hD7pni1E1gxPjVybLE2ajtiQy4qSNFpKFlJ50kOXbMlY0F
+	OrVVbgfRAaho5+VizqmnqgfrIeuorzA=
 ARC-Authentication-Results: i=1;
 	imf18.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=nop8ZZz5;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=VkJbFzsR;
-	dmarc=pass (policy=none) header.from=oss.qualcomm.com;
-	spf=pass (imf18.hostedemail.com: domain of himanshu.chauhan@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=himanshu.chauhan@oss.qualcomm.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794019234;
-	b=sqyFlhS0mZQGFPeE9+ZPaM2BPcSB/5+dme8+RvYv5CpufcpBOFXcFAVs2tTWeTbUZ6db5x
-	3TIBZNdocV6fl6l1eZ/V6srJBgWRJhvcgGLlWCOdWRWr5Mr2uMvTk+1IEM6JhtYCSjoFYa
-	z0GCQRDKCEx6Mkz4A0/wJHeqg7lGksM=
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A72B3W41521200
-	for <linux-mm@kvack.org>; Sat, 7 Nov 2026 02:40:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=3GIOH+/c8Zl
-	wAH4hdy3vTg9Fnv+nr6QlL6HrUi9JjUI=; b=nop8ZZz50KWkS8urDJT3hxpTV4k
-	BAEPCnNgvlCV5nW/ALTCX9VJTey5w3I10a/mjLDouG3WOysCbGYEzn7gNFkNg8M/
-	nzpOsFkzTU0Z/dY4mPagcZ7QvQcIjZqzc44YLqeoKSxhr7/j/HR9z2FI+0DuoyDV
-	i1bCmfL8UTAFZpvehzU413xo0+FAgXLAC7BKlCtlyydehZhLOkP/Qs49TEO2o2Rm
-	Tt6kwxWKzdvHE5kMzJ0E0bXvcpYIna7EiRYtn8YmVfbrX5esD/ex4wFvDxncrpOF
-	kmJbd5Xw6pX9NV4pmdQJWV8D0BfLJPqH+N0rZNvJ+7Dyq9HYKMns1MG1JZg==
-Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hssbnr9hj-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Sat, 07 Nov 2026 02:40:33 +0000 (GMT)
-Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-36fa5673fccso2876057eec.1
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 18:40:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794019233; x=1794624033; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3GIOH+/c8ZlwAH4hdy3vTg9Fnv+nr6QlL6HrUi9JjUI=;
-        b=VkJbFzsRkkJQs2RzbLnDLuu2NoDDMtC1Ys6PYSiAA+a1arNJKQzXISoOj/UrQJ6CFs
-         bwjEPL1TX48jk5qqnyzzm3Y+AEuZdTQGCqinuiY5E2AYcTR80NzFmU4vNx7SX5BGc6Ql
-         EMmsER64zN1Uaco7ojSy7gYl0a2PPwDjkZS7rVuOA5DoRcqJjLylu8KVnVIdtTvJ6o/o
-         ASihZvEfpJ7ai3tg1M5QAEA/pLIaPJ2PEyu4j1d9ojMU1MZnsxoaSrIj9BVEGWD6PuiJ
-         SdUZgiBqqn/9QDwXkmQ7rzEdCbwIWTNzD4RiEsZPy0McjXk4IjbGzM9i6H0hcdFNEJYV
-         dNzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794019233; x=1794624033;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=3GIOH+/c8ZlwAH4hdy3vTg9Fnv+nr6QlL6HrUi9JjUI=;
-        b=YHUDv+Mp4LXosG35SghB4UnAxjfV8KKcnRFZqs0AfgXN3WCYpoGlAm8kFQfVHe+EaQ
-         CBSgBsPBbe5YK8AxiXS8Cvy970kr6POeWlKXb4m26KNMN/+dQd5G3Ja1SE84ypgw1GTw
-         WJmty//ktUhNCPcqaVag81CA3alrXMq2rHLLuRgNXNW3SpFP1JhmXl9EBUIfyFFajf9w
-         +FuJWILbr3nGh537TbIewxtTU32Q+828bovV4PM/fVutA1ZXppp8DLRDEu0o1ANqOP9C
-         buFIJUhVDxauvalGskG/YGbTvHfAsnlpgyDQXHdB6Zk66dZZNX9HbIa/iQlCFMikXhxY
-         5QZg==
-X-Forwarded-Encrypted: i=1; AL+hErEEUW7VteMaqnyJnm/hd06Be187xjhOonKi7ZF5Ud7nQtyqvAn4tckb+9lOeplKEykoF6v7UqQX+Q==@kvack.org
-X-Gm-Message-State: APuU4Z8/wIHIvBJ4t5W9t2oRM8kU18LWWZlFDtLajJHk1iIwBGhw8kab
-	RWLmzP+ErQPdQT81JXZd/gUTQJn0HVCY51lwbdtOseAR/dDdtKC4o+66+5JaE/Jn/lDdjjtY4uU
-	dnudagt2J6/tov2NstpPar7QQ3t1lKyfcaqzyEvL+cpmOSOkpVtUJiw==
-X-Gm-Gg: AYBFou2DgyMRJeAUy48PhdEhApWlL+/iIhisidKasnvkeo/OR0iJhymQvMRRsGcfr/f
-	XQazYxfzHLC3h2+5TBUqs7fOu+QHBYIYCPZ3PSpZ5KN2wobh7eM+jgH++GEumuHOTi1s8J0cLhF
-	E/EuOvgimqgUda/Brn0iLjpq7qpqONOBws79LasIDI8D9SPSQ/7IkKJp9ROXuMaKo8n5QPPbxIP
-	NMGxPUaWHNW5CbCTjoBj+LcsP9K0B1lfV1xbj/D6nVAbcNev3ECQbMHaxCZKafxHwGfBkkc+zRk
-	gw5a8cZ7gAA/JAD9C095ftOQi+0mYLcwNBLmui5ATLXAns0hGiJIvn6ICYHqueJDVZhhN0jfM0c
-	c8hx3McH20m03UU8M7eY3LoMMQRgrxzbelaXTDWHq1esvWfZ0kYiC/lpPqucGcjZ1t+z3EpCy5S
-	TKZXQkfMUZMlxbHtC9PKFD3PmPZW27uCMiIpnJRoy1ix/UytTz35pSvZqGaLCBPHxYV700L9hKR
-	Q==
-X-Received: by 2002:a05:7301:d805:b0:362:fa87:2aa6 with SMTP id 5a478bee46e88-36f6fc79169mr4866640eec.0.1794019232687;
-        Fri, 06 Nov 2026 18:40:32 -0800 (PST)
-X-Received: by 2002:a05:7301:d805:b0:362:fa87:2aa6 with SMTP id 5a478bee46e88-36f6fc79169mr4866588eec.0.1794019232016;
-        Fri, 06 Nov 2026 18:40:32 -0800 (PST)
-Received: from hu-himchau-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faac86a96sm11069040eec.29.2026.11.06.18.40.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 18:40:31 -0800 (PST)
-From: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
-To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org
-Cc: Alexandre Ghiti <alex@ghiti.fr>, Jesse Taube <jtaubepe@redhat.com>,
-        Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        James Clark <james.clark@linaro.org>, Shuah Khan <shuah@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
-Subject: [PATCH v8 8/8] perf tests: keep bp_signal memory accesses visible
-Date: Sat,  7 Nov 2026 08:09:17 +0530
-Message-ID: <20261107023917.40606-9-himanshu.chauhan@oss.qualcomm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261107023917.40606-1-himanshu.chauhan@oss.qualcomm.com>
-References: <20261107023917.40606-1-himanshu.chauhan@oss.qualcomm.com>
+	dkim=pass header.d=huawei.com header.s=dkim header.b=s0wIDPw6;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf18.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=V2ehoWyNFIHWoL0rk22oGF6YUNoTHO9lXNQV3gq5XAw=;
+	b=s0wIDPw6+NyU33w1CyCBkI8Y8vDmSApq0sauZ/wEZxbcU4l7lsdb3uSJU+v1v4l5cUTFcM458
+	4qc3r5URfrkrhbhJ3s2b9R+f4yAZjd3r1veaUc0rYNmNhBAY0eHS6XCaccSQWKhxC4KvxjPjNwK
+	hn/kBO/rUBSPTZNUNXqFJTw=
+Received: from mail.maildlp.com (unknown [172.19.162.223])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4jM0pr45pgzcZxr;
+	Sat,  7 Nov 2026 10:48:20 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id 54E9440575;
+	Sat,  7 Nov 2026 10:48:52 +0800 (CST)
+Received: from [10.174.178.56] (10.174.178.56) by
+ kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Sat, 7 Nov 2026 10:48:51 +0800
+Message-ID: <7e9d20b9-ed6c-4f65-a332-9936722e9ec0@huawei.com>
+Date: Sat, 7 Nov 2026 10:48:50 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/ksm: fix ksm_exit() deadlock on exec error path
+To: "Xu Xin (vivo)" <xu.xin@linux.dev>
+CC: <akpm@linux-foundation.org>, <david@kernel.org>,
+	<chengming.zhou@linux.dev>, <liam@infradead.org>, <ljs@kernel.org>,
+	<vbabka@kernel.org>, <jannh@google.com>, <pfalcato@suse.de>,
+	<kees@kernel.org>, <ziy@nvidia.com>, <gourry@gourry.net>,
+	<anthony.yznaga@oracle.com>, <linux-mm@kvack.org>,
+	<wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
+References: <20261106013906.2229780-1-tujinjiang@huawei.com>
+ <au2PwSAxOU3W9pwF@dgvxl46587.localhost.localdomain>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <au2PwSAxOU3W9pwF@dgvxl46587.localhost.localdomain>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: Yru_zqj1xJqCLJ1ew4P9T7amey0QPtt_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA3MDAxMCBTYWx0ZWRfX6N4i5EbsPQnH
- LFTTtW5P7b8GW4DGNO9miK672Bq6tFXPs459DxMS6rVeAqqRMz/WemNfmAvljBXicUf9/8W/GTu
- veKeC4wXTduubbVYv8qArCLSSp9SYljKeFEu78fG2BsbMZ7xwkuaW/LWn3eXYsGfboU7UEfsXgm
- nDYr6FjhfJPWi3Rc+4P62oWSko+ei+wEWh4HkyDXJd1li0jTc5sBwooYKZ29vSkrHiRYj7mbPzM
- BKNLsTJTPVJAv4CGyTXU1XWC/pDvbaiio+hoOKQonMGYJvuJND0F6btw6epZiQpga+3mLakEWcd
- SWbRnHp8P26CJISp11diOLfjqabyv8tSoZ5PT6AjDKayBsrugjELu6NvCKpfMSvAjThV8h3me4w
- Zn4slEw1ZicRikKpZJ3JIsbAJrUtt3Vxpn6GmA8d+JWGhphOPnUy8XyC1Qti+/62IWckO5vJ1/b
- kFYqjG79b3YWcI+Morg==
-X-Proofpoint-ORIG-GUID: Yru_zqj1xJqCLJ1ew4P9T7amey0QPtt_
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA3MDAxMCBTYWx0ZWRfX3SaV8aUYeZds
- uAVBl7K+bpSCPB1a+NORX++MGYN7CRb4kPdpTvH+q/QJ/e6BjJXkhhmXvI2ly9ae7UEk17Iez9+
- hS1SuGzSqHvA3KPcku/qLGeEWpI2bI4=
-X-Authority-Analysis: v=2.4 cv=JtBkP84C c=1 sm=1 tr=0 ts=6aee8fa1 cx=c_pps
- a=Uww141gWH0fZj/3QKPojxA==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
- a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
- a=tsqkxpHE8OKeFbBeJjEA:9 a=O8hF6Hzn-FEA:10 a=PxkB5W3o20Ba91AHUih5:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
- definitions=2026-11-07_01,2026-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 suspectscore=0 clxscore=1011 lowpriorityscore=0
- impostorscore=0 phishscore=0 adultscore=0 priorityscore=1501 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611070010
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B18F11C0005
-X-Stat-Signature: oxfj3yd4nsnrccjdcuxgk5kpxqn77r7t
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Rspamd-Queue-Id: D37901C0005
+X-Stat-Signature: 9o8kod5ni6oimuiob3ggcgmeacbg55sj
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794019234-905114
-X-HE-Meta: U2FsdGVkX18WRz7xnOvmglMOxzQ3uow0ONLh+mntP21ZOu+0lSAJ/oCNnUNylE/HiuTFDrxh8w2SAcnfs7O7K39DqRGilA4gLJgOSZ2XYLc+LngY9F6AHHPzAwcemmVvxNj4VU48iFamUObu4CKIME3qsxFRvHWa+E2laSyMgfgngeLl/zpo/NkjgkYMemVJOLFXD6jOaz4XQqAxGtYEdKRZqZ/Xw70o10wkrdTx70CG1yQe7BgYzRavtnR3LpIupC1DcM/LQCD6MKmnaRZomtvl2KupOQIFCBoz6HF09LDZeKSZBubk97a0Zo/zbf113IS3cOIi5JpKjpjoASPZcdY+/V0QEo/zxUD8CAjG+EHNQo4vdJxngvcjOuEffiXGydxAShavmrjHP7GvPuWvjPW6M64HrPuCOgoTv/+6Wp7XokzIRI02xpHpt++0TX1lPNSgAgaD3t93evL493w3n5KFwcQDSoBIbuFja2KsnTDeqEAq2uA1EfIl5aFOwoh2sREte6QjwvfPNGyrqGf4czpA6zmzhqAlEn+F0saiU8rfbZ85D8aqRRuEOaHyofPHJNRzaNnuvvY4mV2GQOmiTqTT4DrcuRYhsDVTXRPd+YPa3MwQeOB7C43KckBwCKTX34Y6lql3NWVTnsKv1sMdPmz2CY61BbUnn5X0xZ48NXNaRa9pUfHS9ihobUFWqnC+pKjVgy/YnlGlROZQcsaayGCkXiyEI5icuF9LIvBDIdFe5ymTDCl48wf1qxWeNbCOEFQ1JnQvCM52zhXFtzHWxRedMzmzwRfOLShOMJhfwQwrxrJLaUvLQkoleN0CFqw506RgNl+dgpGRbRpxgyK0XZOOmIUbnCHD1Bp1b3HMpe8PyeC3S2Pm/Fa6aeyWbk5oznjAk0VwMBHHBO9QK80lgRUBo8IzQ0xnun4qxNDti50I+dmeFrWflP9R7/k5LJTH6TqCTyLTiYGvdCcDv9M
- Z3QwZiE7
- ZRIZ0Qbkq8Khel9A0Qwd/JeElesahX/Oext/NniVthSzyl13JvtimrkP96bGxH1z3U2Q83TvW1yJudHWi3YVFwm3ptJGCGCjclf6JyPZBFjBEgcWi5NbT9IB34RCdvmgTPTwF+AMeeln0Qo6g0t4ZyNLS++4AnSViakggknxv/jNI/Lg8zrNzyWzNZIQvHNQMm2J98lz3mUPZBqSGeRueNLKW8yTXg6WeZ5BpL3hC//F3nXRBxUDZNNVVzFiAufmcAHwnkfv+7kIfhiv8y67HIM82P0q9ttNh+p5O+ee5+sbNeKKQken4lzCMr1qzd9LJOPOz1IM3hGk9eRq8D6HEPYSFi5jBvjenYecX61ak5+CZwnDTEHnuQ/CqtIsq4rKn0G6xTMqFjwGw9jt6PVnowmcL2eeFRJaayNMel4xgb+PMl73EqHKCcDXZP3zMHHcWXOm2Piu5adDoLFtQRpcPdP2XvxzRQXS8c+XYiy0NN/WEZyYwfx37+ZPNHw==
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794019740-286620
+X-HE-Meta: U2FsdGVkX18fjXkiUVJECOF/v6Y+YuHCOnRFmeFaMJPDUizer2ONpo6+PWtTxt/jeSWR8p8owUgYB020r3hC6WnxcZ44R0yueaOf5S7d7O/z5Q6f7l6YziGcPm5DyzyhtNxgXP6+U28FcNhjVZtHwdSEVLb1iAQNgZCIgBiPYHrcl+iqOuf0SPlnZQ+5MUKR3JWJXHif4xA59u/9lETuNTu85jFs8P/JGmmWet33V2UYTy0b+l3Gg1/ihNYZEaZVO4dVIT1o/oQBmPlOifbmSH/qhW3CQpHOH0pbcDmUdcrEfz+raxBdjl85mwMa0d5UjEzIN4Ye+oHv/+8UipQklCAHdvK0eRKJujD27aN3OFoh7IlgwZqvKrIAM4yh7/hpNuLDCc0tIsJe1Fmb12kA72y+DdbxFJBYrLt1yHI2PRsIEP+CgeL2pd7S0A87XtKp5LldgY4DxUTNomDZWGi8BsYdRn/8H4VCo+vRa+kbcrtTvckS/3YyLBoVVHiSeBboyaORmLEVOCDguUy9ADRCaK+sB6mSMt7mDvVS4q9CNFNY7Q2wKphSR8yOUA7RUHFnVh41+8fsPFrVQARCAllJlofiA1sHrzgs2NlJPnfNpdOuGiHmq0NJ4+uWgI6HPJQAbkDzSDBi2Nopr03Uc8kT4GJTFcwq1H1Pg/T/vbUfABiJpwYGYI0LVUJPBLdnar4cSXMhWDOxWsGUcD1+dti13G4h+wZtmcrm0MnSq+wn8vmKY0wu7HuTLbz+inkbamvxjMQ0LGfaesDnaPRAWcaT8NJsAEMQ7ibU2vKjON6AfpTvn9VW3Rh+dOK99+7/Y8+HLO0yRumbTGYU5DKcpiDEXmkazSH3ZN0WaD8g4HoBSbEaXIfUrc9AgbkuyV+/96nXdyM+B79r+0EOXpBC+cfoux6go08iIZmWC9ObROnOrUi2VmEvS/M4z16H1B1AIWpMepthThs0H1K7AkK2+Np
+ Fgo5SNBa
+ PV6mXlWulAxMWzv6jtQHTlPZM08civDECdRU4dG4cVUmL3UrNWwjZLjf1g78c6aMGXUS1W8u+t2fKPyg8T1kDBFRQFcf6n5BRz9T6V8cZYK/QPqGub5yOLe9+Ft9heQSrGS0ARAL/82cykOtEgoxKBuPWH21g5uEUQizA2MQKlWZCg+rxCcmjGTiEfbRXEYBjOgB/kBZvHsYu+fhcy6aK0BJduoxKWY0KYcJuhiylURto9JPgvhJ/6wXqsWyEg57+TbmdFOmkS6FIVKaFuhx5GzkmY9L5QxK9qxkPBY25fO4T5AQ9BX1p7bC8X7R0ywkFx8GSYpQ1Y9SJKg016DXLRh24iF9yz7EieMvDBAiusflDZEoDsGplJicTn0zVUusWdmyOZQ1GLe69JwAtrA/RgmuAf5qSrkEI8efWpG4q5whTdKXAHY10nBut11IkqvIkuZoy+C2uRkc0Yytji4N3uXH5MfezR7yxjuFo3vksg4Tv8wY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,66 +105,168 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-In the breakpoint signal handler test, a breakpoint is set on
-__test_function. Keep that helper as a real call target so the breakpoint
-has a stable address.
 
-The test also relies on the watched variable being accessed as distinct
-memory operations. Use READ_ONCE() and WRITE_ONCE() for those accesses
-instead of making the object volatile, so the source marks the exact
-operations that must be preserved.
+在 2026/11/6 16:28, Xu Xin (vivo) 写道:
+> On Fri, Nov 06, 2026 at 09:39:06AM +0800, Jinjiang Tu wrote:
+>> create_init_stack_vma() registers the new mm with ksmd via ksm_execve()
+>> while holding mmap_write_lock(), and calls ksm_exit() before dropping the
+>> lock. When insert_vm_struct() fails, __ksm_exit() takes mmap_write_lock()
+>> again when the mm is ksmd's current scan cursor, leading to deadlock.
+>>
+>> The early registration is no longer needed after commit 590c03ca6a3f
+>> ("mm/ksm: fix exec/fork inheritance support for prctl"). ksm_vma_flags()
 
-Signed-off-by: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
----
- tools/perf/tests/bp_signal.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+Thanks for review.
 
-diff --git a/tools/perf/tests/bp_signal.c b/tools/perf/tests/bp_signal.c
-index f580ba7486b1..2e4f7747d32f 100644
---- a/tools/perf/tests/bp_signal.c
-+++ b/tools/perf/tests/bp_signal.c
-@@ -36,15 +36,14 @@ static int fd3;
- static int overflows;
- static int overflows_2;
- 
--static volatile long the_var;
--
-+static long the_var;
- 
- /*
-  * Use ASM to ensure watchpoint and breakpoint can be triggered
-  * at one instruction.
-  */
- #if defined (__x86_64__)
--extern void __test_function(volatile long *ptr);
-+extern void __test_function(long *ptr);
- asm (
- 	".pushsection .text;"
- 	".globl __test_function\n"
-@@ -54,16 +53,19 @@ asm (
- 	"ret\n"
- 	".popsection\n");
- #else
--static void __test_function(volatile long *ptr)
-+static noinline void __test_function(long *ptr)
- {
--	*ptr = 0x1234;
-+	WRITE_ONCE(*ptr, 0x1234);
- }
- #endif
- 
- static noinline int test_function(void)
- {
-+	long value;
-+
- 	__test_function(&the_var);
--	the_var++;
-+	value = READ_ONCE(the_var);
-+	WRITE_ONCE(the_var, value + 1);
- 	return time(NULL);
- }
- 
--- 
-2.43.0
+> We can go into more detail. like:
+> "The early registration ksm_execve() during the exec() is no longer required,
+> since when the process subsequently carries out the actual memory-allocation
+> operations, such as brk() or mmap(), ksm_vma_flags is invoked to re-check
+> MMF_VM_MERGE_ANY and register the mm with KSM."
 
+Will update it.
+
+>
+>> calls __ksm_enter() when the first mergeable VMA is created. Remove
+>> ksm_execve() and its stubs.
+>>
+>> Tested with ksm_functional_tests, all tests pass.
+> If possible, can you provide a reproducible testcase in
+> tools/testing/selftests/mm/ksm_functional_tests.c in V2 ?
+
+ksm_functional_tests.c has tested KSM setting is inherited
+after fork/exec.
+
+Or do you mean reproduce the deadlock? It only reproduce
+when insert_vm_struct() fails to allocate memory, it's
+almost impossible to trigger in practice.
+
+>
+> Generally Looks good to me, thanks!
+>
+> Acked-by: Xu Xin (vivo) <xu.xin@linux.dev>
+>
+> Thanks!
+>
+>> Fixes: 3a9e567ca45f ("mm/ksm: fix ksm exec support for prctl")
+>> Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
+>> ---
+>>   include/linux/ksm.h               | 13 -------------
+>>   mm/ksm.c                          | 16 +++++++++-------
+>>   mm/vma_exec.c                     | 10 ----------
+>>   tools/testing/vma/include/stubs.h |  5 -----
+>>   4 files changed, 9 insertions(+), 35 deletions(-)
+>>
+>> diff --git a/include/linux/ksm.h b/include/linux/ksm.h
+>> index d39d0d5483a2..5e228935cede 100644
+>> --- a/include/linux/ksm.h
+>> +++ b/include/linux/ksm.h
+>> @@ -66,14 +66,6 @@ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+>>   	}
+>>   }
+>>   
+>> -static inline int ksm_execve(struct mm_struct *mm)
+>> -{
+>> -	if (mm_flags_test(MMF_VM_MERGE_ANY, mm))
+>> -		return __ksm_enter(mm);
+>> -
+>> -	return 0;
+>> -}
+>> -
+>>   static inline void ksm_exit(struct mm_struct *mm)
+>>   {
+>>   	if (mm_flags_test(MMF_VM_MERGEABLE, mm))
+>> @@ -118,11 +110,6 @@ static inline void ksm_fork(struct mm_struct *mm, struct mm_struct *oldmm)
+>>   {
+>>   }
+>>   
+>> -static inline int ksm_execve(struct mm_struct *mm)
+>> -{
+>> -	return 0;
+>> -}
+>> -
+>>   static inline void ksm_exit(struct mm_struct *mm)
+>>   {
+>>   }
+>> diff --git a/mm/ksm.c b/mm/ksm.c
+>> index dbfb8f98b189..2e0f894208d8 100644
+>> --- a/mm/ksm.c
+>> +++ b/mm/ksm.c
+>> @@ -2777,11 +2777,11 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>>   
+>>   		mm_slot_free(mm_slot_cache, mm_slot);
+>>   		/*
+>> -		 * Only clear MMF_VM_MERGEABLE. We must not clear
+>> -		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
+>> -		 * perhaps their mm_struct has just been added to ksm_mm_slot
+>> -		 * list, and its process has not yet officially started running
+>> -		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
+>> +		 * Only clear MMF_VM_MERGEABLE. MMF_VM_MERGE_ANY is the
+>> +		 * per-process setting inherited across exec, so it must
+>> +		 * stay set until userspace disables it with
+>> +		 * prctl(PR_SET_MEMORY_MERGE, 0). A later mergeable VMA
+>> +		 * re-registers the mm through ksm_vma_flags().
+>>   		 */
+>>   		mm_flags_clear(MMF_VM_MERGEABLE, mm);
+>>   		mmap_read_unlock(mm);
+>> @@ -2909,8 +2909,10 @@ vma_flags_t ksm_vma_flags(struct mm_struct *mm, const struct file *file,
+>>   		vma_flags_set(&vma_flags, VMA_MERGEABLE_BIT);
+>>   		/*
+>>   		 * Generally, the flags here always include MMF_VM_MERGEABLE.
+>> -		 * However, in rare cases, this flag may be cleared by ksmd who
+>> -		 * scans a cycle without finding any mergeable vma.
+>> +		 * However, a newly execed process has not been added to
+>> +		 * ksm_mm_slot. The first mergeable VMA registers the mm
+>> +		 * with ksmd here. ksmd can also clear it after a full scan
+>> +		 * cycle without finding any mergeable VMA.
+>>   		 */
+>>   		if (unlikely(!mm_flags_test(MMF_VM_MERGEABLE, mm)))
+>>   			__ksm_enter(mm);
+>> diff --git a/mm/vma_exec.c b/mm/vma_exec.c
+>> index 586c52155942..2c644e18b55d 100644
+>> --- a/mm/vma_exec.c
+>> +++ b/mm/vma_exec.c
+>> @@ -128,14 +128,6 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+>>   		goto err_free;
+>>   	}
+>>   
+>> -	/*
+>> -	 * Need to be called with mmap write lock
+>> -	 * held, to avoid race with ksmd.
+>> -	 */
+>> -	err = ksm_execve(mm);
+>> -	if (err)
+>> -		goto err_ksm;
+>> -
+>>   	vma_flags_set_mask(&flags, VMA_STACK_FLAGS);
+>>   	vma_set_anonymous(vma);
+>>   
+>> @@ -163,8 +155,6 @@ int create_init_stack_vma(struct mm_struct *mm, struct vm_area_struct **vmap,
+>>   	return 0;
+>>   
+>>   err:
+>> -	ksm_exit(mm);
+>> -err_ksm:
+>>   	mmap_write_unlock(mm);
+>>   err_free:
+>>   	*vmap = NULL;
+>> diff --git a/tools/testing/vma/include/stubs.h b/tools/testing/vma/include/stubs.h
+>> index f786a585caf0..9ab4e524f78e 100644
+>> --- a/tools/testing/vma/include/stubs.h
+>> +++ b/tools/testing/vma/include/stubs.h
+>> @@ -55,11 +55,6 @@ static inline void free_pgd_range(struct mmu_gather *tlb,
+>>   {
+>>   }
+>>   
+>> -static inline int ksm_execve(struct mm_struct *mm)
+>> -{
+>> -	return 0;
+>> -}
+>> -
+>>   static inline void ksm_exit(struct mm_struct *mm)
+>>   {
+>>   }
+>> -- 
+>> 2.54.0
+>>
 
