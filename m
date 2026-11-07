@@ -1,93 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7AD606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 09:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D66606A32C
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 09:45:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=RjxXIsm3
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FGDnI9wq
 Received: by kanga.kvack.org (Postfix)
-	id 4D3546B05B0; Sat,  7 Nov 2026 04:39:47 -0500 (EST)
+	id D67E06B05B2; Sat,  7 Nov 2026 04:45:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 484F06B05B1; Sat,  7 Nov 2026 04:39:47 -0500 (EST)
+	id D18D06B05B3; Sat,  7 Nov 2026 04:45:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 373186B05B2; Sat,  7 Nov 2026 04:39:47 -0500 (EST)
+	id C08A86B05B4; Sat,  7 Nov 2026 04:45:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 102B26B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 04:39:47 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0CC1C1C33F5
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 09:39:40 +0000 (UTC)
-X-FDA: 85407825720.02.E77AEC1
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 41A3020002
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 09:39:38 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=RjxXIsm3;
-	spf=pass (imf13.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9624A6B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 04:45:14 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 273351402D8
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 09:45:14 +0000 (UTC)
+X-FDA: 85407839748.26.ECA6320
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 5951B20002
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 09:45:12 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FGDnI9wq;
+	spf=pass (imf03.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794044378;
+	s=arc-20220608; t=1794044712;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BhP7zGWAKdDhvoK/dqiwsbUC8TFOQvEskzC0SJWqEq8=;
-	b=dCnRWGUfXbmhuIaE0l5ail4ZikZ981a7igIXuWZMpsAniag0h+Ek/WzwMyg/Evw8WQdgT1
-	yGb0rJrXVHtVLk4pT5KaV9hw/B3tBJlc44XqqbjCtUB+lMzRDg9WGDMMpvRJjhuh1fbpG9
-	w7zKtHVn3jnVrIlC2RyH6BvnM1pczA0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=RjxXIsm3;
-	spf=pass (imf13.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.214.171 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=BlmA8eYzmWyrO0gOdWezWdA8rgwwfEDu++sldJMdKd4=;
+	b=us8gyVOJu1fwQ8mFt7os+JEGO/6DWNglHT0dukQwiGZoyGBdxG1elCkJyQt8flnOuGpcas
+	tRpFw0o/sv9lOYje4f62n07NY41RMJgmtYen6n6D3s0VkFN26gWrAkXBNYufmhcPLTD17w
+	/NHQRvK6yG3WOmAxmSiVR81HmvAEFxw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794044378;
-	b=QbYl3RAAMXej/E+nQklRISpQ+FfZFt38ZFUGtHU4T2GQNM7qFqVoc4+p+eaDU+/uu6GAPK
-	9Tf7apqEZI4o08LrsdxYXIOtVm5P9xY+PEwmU0eI/vFBBhSUb/nDxCfwIT9tguSeKWZg+L
-	8Jxe4FNt6D+P6gIqRHSbmb+ukK5Sriw=
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2e98798cbddso6656755ad.0
-        for <linux-mm@kvack.org>; Sat, 07 Nov 2026 01:39:38 -0800 (PST)
+	t=1794044712;
+	b=flsBh8V/JwYgBaiRSsIb9xXqYZyaB0XCG2Gnrz+A63bTkPPQ8DCswxYSv6lEEJr4xfiPk1
+	qKlK+a7xRLZmGIqH6gQgEzHyZg9BBsIWgkGjEAafbZB4z/6UmziWLFv90sMyiNfDu4gxUG
+	ZSgR3uTZFt+gsD6yRjO4VA1EXVFzR9Q=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=FGDnI9wq;
+	spf=pass (imf03.hostedemail.com: domain of lianux.mm@gmail.com designates 209.85.215.175 as permitted sender) smtp.mailfrom=lianux.mm@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-cc4c02ddd62so678128a12.0
+        for <linux-mm@kvack.org>; Sat, 07 Nov 2026 01:45:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794044377; x=1794649177; darn=kvack.org;
+        d=gmail.com; s=20260707; t=1794044711; x=1794649511; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=BhP7zGWAKdDhvoK/dqiwsbUC8TFOQvEskzC0SJWqEq8=;
-        b=RjxXIsm36pGSMX3ZQUNgqcPkgZ1JBNPmRvVzZsIYXw19QdGL0FrOzV8VRGQMKtsqFy
-         aaJA2xOxiFVC8GHaH9Xkz+AGoUX1+Z3//SEN8qxxLh0EG7fAyhFmUAMzBXrC/AaWmTnh
-         +twVOIaqPJ1yK6Tej1KIDn41/yvOWuXqIzyI0gDe0qLmKltrIz5aZcLfEvyI6QcS2vL3
-         tgeXqbUtTAO99A0OxPqb2x2XaybeSEH9e0ITeVIfoY9lVyKZdLdedzvedo4CL8j8GbdM
-         sE2tUbbTRvowpZ7iEGoE+Th4nb1/SWJLsv1ASp4V+s/NDBGooPKcnnJ4smVowKuQN9tI
-         ulWw==
+        bh=BlmA8eYzmWyrO0gOdWezWdA8rgwwfEDu++sldJMdKd4=;
+        b=FGDnI9wqsLlOdyP3Sdk+gw9vVNHjXCBUpMcW2QINz7+x4kDGPU547bgRdFwm6djUKp
+         gHVYNZFBDGMucusfV10tq6dyjd5FfJzZugifbdPYwUXVSCp+cR2QGOM8rkOtoxUqAzED
+         EJoGfPLwcrC13j9LPI57ESGminEN09BB8Eb1Gza8zX7TRYtf4Z0dYiZ2bNaRe9yyLd2b
+         T/NXwJVWzwOnif7v55XL3EzAL/XuIREto9ZjmNkcpa+IyaurJQcNQ5wv4Y/bH5ji6je9
+         QmC7iRHL4KTLBNCsac6PAXjWoyfLTxsqG2u/07CVHMtz2V/PibDko3PzULzDshXBgSh4
+         hcYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794044377; x=1794649177;
+        d=1e100.net; s=20260707; t=1794044711; x=1794649511;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=BhP7zGWAKdDhvoK/dqiwsbUC8TFOQvEskzC0SJWqEq8=;
-        b=TxtP1mq+DYjYPov1r/nITzC1wvm5ZK7p7EAHUqAuLJ+RIthi49QyPWpB6aZ4nBaede
-         Yn+wMOsJm7T7+r+U+PaUY547Lqxax5U80KMtxE377HZx5Md0kBf8jDf+wE6e1JAdh0UV
-         PSaQHsawLYaOJGXklJ7v9t/0dQRto+VaoiYjPdOhxbniFAufn5RI6mvUQt6z6KnrBHNV
-         ubwex3s77pRJg7Qz46NLGg+wR7/Me5oHHKatD1y45x5mwl6a67v2/qGAxo8TX5Hmm+5+
-         bpPWnrJWCnRaMEMYDxFUFqrAjif23HTwyLXYmJeyt02lLwq902BHAYForztUfR59MtB7
-         hXaA==
-X-Gm-Message-State: APuU4Z/0IWwAdUJ+IP04cI4mKyvKIkwUV2WK7qWye25BrDjaAkp8ages
-	z5walxFqKWfkfVtTL8BhcYN/BJimfQ2niXVrRWW6khpIBWefz2YlQaVl
-X-Gm-Gg: AYBFou0uUR+YDsWwAQwBjMMsmUTYi3EyYWs7S7NBdjlucXRUlXBhyeZTlzG3q5MYkfq
-	iFdW9rWlUUmsa+qIiojwBVkZQ0fMDl/eh/xUYSgg079ZTo8Dx7XuLrO+AQ3alXGQKZVUYwA9FEc
-	b5e6a3bw4fDxh5mOF8FZkgZOQjNv3I2yeBMSivIY5a8KKdwrBJDO0a2k76xnn6CecZso3+H/rG6
-	DPv/SLPXfZVbGeNTUluvQhcKHPchEq/sLNjP3Ev++41Bvx0CkBzrZl0R+KYwEu9Z9Gxa/z4orY1
-	cw90CpjAkQ+0hwWo86czCupRxA/ZiUzjNBpf4qvyjqHH8CcE3h0Fh47zW2R1LHwbcejmamzL2NG
-	NvlChzf/dGFYvtKo0s4IO3+d4xcC4oxRRCtb23SQy3RIHeDeGclMfjZXCpT8htKEoOw7HtixXEm
-	q+mAU0Gn1mqaRzvfnVOmB+lHZoqQQ3Js80V3n67s+P4jeYcbeeabpTo3teGL9LIP7/okKHSqYlo
-	pDHIoMbRhGqgxi5ZZl7cOhlcEXVgmMHgO9Ys+LszfzZF8hsxSB2ygxN0cxROwyDNbwOe/cwnE83
-	7YkdzNz9CV0yg/Z/POELoKXtvdbwSVpoMsO3YL/rgPFhWOgz3/43ZT/y8Us8+zzzmyXm
-X-Received: by 2002:a17:90b:3950:b0:3b0:92b2:2e74 with SMTP id 98e67ed59e1d1-3b0db6f6c35mr5119998a91.62.1794044376916;
-        Sat, 07 Nov 2026 01:39:36 -0800 (PST)
+        bh=BlmA8eYzmWyrO0gOdWezWdA8rgwwfEDu++sldJMdKd4=;
+        b=PU693BRn9v6mOyIUPITJIjccEFuzoudwnTiUzJyWwYQWxlVhpt4xzA6/Mp6ofucUBR
+         lH5y446ufGwbx9CCgjXICWKXiU6SW4XExR/9XdQ/UpOvgAoqzIERAa9sU28QIkxPqOg3
+         2NjGTYhyXZHqfEiIAxPY358L1KQEh21W57J/LFLxf9FEBaN8aY9DxYsCZZEw27JesE78
+         k9oyAmkmKOVXuyG6mpugNAISReXc8S21bv5vuP6kwmh3KtjSgPF8p6S1Yf4YHva3BqY7
+         BOIywB7sdXFkX78py5j5RwcD8DerrqJbgAkmzevoIrhRLnakvax7RXPQtowAcK5I5ss4
+         t2mQ==
+X-Gm-Message-State: APuU4Z+k0DCQIL9trpx0Mgcp59tqYw9GEz0RHb2/ceDBfTlU7Eociik9
+	hePApYWarVIffFr1EycW4etAkWONtxy6yjU9wqMXD03EOgt9plRQ2BX4
+X-Gm-Gg: AYBFou0izYGn1oZGNqpIo9s26pQDf6bT7Y5KUf9xdMU02qX1vLZzfYM3QA4w92ox4pL
+	a8K5WBnDc/+sFznUbmFzYbPOwO+iaMDhPilznj/knO9leMLpVMrj66olh2Mv2CR/GigWEH0DMxZ
+	Mpq3GntwKn1uz7AOGui9uAaQtnWgjNaETsCKOku38zmDMn2CN5HK40LrAcLIP8DFQX/eV6fENHe
+	0G3v5JoxellrtpIwHcKBgsm+bMo6SacYqzNkFEb4duWTSXphu0lv5lWfsPR0mXh2iRblvXyHzvi
+	h4tbSncE5L14XGMchwXDw/tQqtiblXd4B88mgYT2pqqw+WK/xfpgu31sS9glEhZjw/ZXKyFYMuS
+	RoST2SfSwf2QrijDgooyAWAY2nGY32WWAGrgCYvDq9itY+fRBw7ibPh0Jh/h/jftVrftZO+vakN
+	Uy6h81XKEl0C7n9rmn3Bkco3x5HDuGo9XHxNMbnGLEldMPP7l4bLD+7njGLOhN2aRHxEbEn2VUA
+	ACwEzJdmIgOd+xb0dftLC2V7g01cItRM10Thtgu+VHTzG7wXIRX2XLGhonNKrT6TlMFamE33qy8
+	/RDmdhN/rW/oRX9ylqG18tVjMfzeJlVS2WOc47cNTatZAs0LIMJyIV4X6fcudxYXrLb47A==
+X-Received: by 2002:a17:90b:2f4c:b0:3ab:2d17:51c5 with SMTP id 98e67ed59e1d1-3b0db5f176bmr5147749a91.6.1794044710961;
+        Sat, 07 Nov 2026 01:45:10 -0800 (PST)
 Received: from localhost.localdomain (vmi2317719.contaboserver.net. [84.247.152.64])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1057b17f8sm2792987a91.1.2026.11.07.01.39.30
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b105817ce1sm2910093a91.9.2026.11.07.01.45.03
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 07 Nov 2026 01:39:36 -0800 (PST)
+        Sat, 07 Nov 2026 01:45:09 -0800 (PST)
 From: Lian Wang <lianux.mm@gmail.com>
 To: sashiko-reviews@lists.linux.dev
 Cc: linux-mm@kvack.org,
@@ -104,27 +104,27 @@ Cc: linux-mm@kvack.org,
 	kees@kernel.org,
 	gustavoars@kernel.org,
 	tglx@kernel.org
-Subject: Re: [RFC PATCH v3 03/18] mm/swap: cleanup and document swap device availability flag usage
-Date: Sat,  7 Nov 2026 17:38:35 +0800
-Message-ID: <20261107093906.36492-1-lianux.mm@gmail.com>
+Subject: Re: [RFC PATCH v3 05/18] mm/swap: change the swapon lock into a percpu rwsem
+Date: Sat,  7 Nov 2026 17:44:26 +0800
+Message-ID: <20261107094447.37093-1-lianux.mm@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <sashiko-outbox-188132@kernel.org>
-References: <cover.1793106426.git.lianux.mm@gmail.com>	<c3a660c13ec9a98af8a496b5f9139e73eab5aa3a.1793106426.git.lianux.mm@gmail.com>	<sashiko-outbox-188132@kernel.org>
+In-Reply-To: <sashiko-outbox-188134@kernel.org>
+References: <cover.1793106426.git.lianux.mm@gmail.com>	<d7120017ded998ca722ed78e1995f0d1af82e88c.1793106426.git.lianux.mm@gmail.com>	<sashiko-outbox-188134@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zpdf3yp7rrsopyjymzjj6ho4rkhky3qb
-X-Rspamd-Server: rspam01
+X-Stat-Signature: z56fgkoyhx35iw8umdradtoy4yzq8ppk
+X-Rspamd-Queue-Id: 5951B20002
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 41A3020002
-X-HE-Tag: 1794044378-786273
-X-HE-Meta: U2FsdGVkX19tFgNu56W4ik2k1OoVEDYT35ggnlnw2i8V4mLGWb0vlTOt6lk6rW987y4spxtoqmevLZnrFTh4YvoIuqVagX2Lwt3ApG7wOPkOvQ4dX/PoQvVyM4n7p8EqvmbqXGCEc1SJq1zWcYxCAOHLB9AezcsWDYCcD0TOyckncDLiZkeCK+QXqPzSp8sGdK9GtcORxhvuFjlpJyQZWipc7crweAL3DX3h4S6nbn4tcAvinhog73OdEO4mAIQtNmSVPhVEFoIG9/FLKg9Y1fkCxu1H8CuVWbB51eLwlsljtS6mpjb2b5jvJBFhtAIZQq30Dtm2OPiIPCQZQ6ebcVq96EQ6I5M0iZhcUzjX+qXXhihl9Ao8xJaR29Buzi2+7unT4rLngLvyGGjAq3fveIBVeYc7etjITV6jnDphk/RL61PeCs7lVBHdSlzGADLwQgmRVS+1VMKnGcKAcgJsFP7QJwhIdPJUY+qEhi8iQnvYZ2o3J8U0FHAvxD0nRmQ9ogrsXM5mybKS1zuiV4y7MQ39q4wj+c8X/MlUtak0gfw9ku328gNdc5oefHssUso2cmqHp94k5yHf7AnY5kbhRoylAFnayyaDP8QsZq5zmN3Z3jvTJW8xVAOMBfegVxEUYZmhe4VKXkbOB5Gdfime1fUYUPM/LFeIs+tZyc7uXuDQ/gUPG5qrNKsuUTIPaYhtAhVRjlhPMYAfGMppzq2g4iuVIc0FvA60DbmfAvMSSGCxydBlqkdRHw/4COUL7Td/H/qIct/dukc9Z6etrc49B0NLtHj6gVdbDoJg7ikUpFZLM04J0eBrE1paAjI9O90GxnkHCMYGBH+d5LD96FMIr67dE8VuSsHhHqGBIcxCFsCPxzAYgcgFIn2oJC0T5kd+QSqotvJm64dwx2++Qa+Be7Mcw5XAjlpPTcjYgIsA/7Jxk7N4V+zJW+CQUrTO2lqta5PYH37SnUeBmxyJvTo
- y9pNdj+I
- 43tEvA/F8bTgkNJ/YIKk+onwByhBvV31wnUV7+SYoY+W4/szFNxzjPS0jYGyFKL9F5RW7zklt7Qn0tY0jMI4cLA5QXlILx1kXPWM4VCr0/XIMExnJ7+3+eoUXBcQpX8kk+xwz36QaPDbv2NM2Sx9zWsTpwQcZItMhmUcSx5BfVzl3u3wJEg1T7ePmzL/zFF9wUnv46IWEfoxwnz67DF2NvUzEvNSMdCN7ifuLYW35XG53gF9Fr4obf5EZJ42zNshPoaY+HEpAkNK1G8b3rVZuxxWi7iGVcnGcKcNPTKKdIKXn9RSaJHmNgmKT/mSJnuCwu0p0OFCFLYfi4IlcJEkt20UviKA1knWvtq2/PTbvFLbmbmckUpOIR46jnxtec13pkSfYFVzRkuYlxHFQ1McKc4JrleqAYZBrVan3tOUK/Om27Se7gxKdSytqr3/fcmSKPiL1
+X-HE-Tag: 1794044712-88406
+X-HE-Meta: U2FsdGVkX18Tt489N9T7Sh701zKdDZZ1n8GYY2/L+LhJSQwc2ldgMJZOE4vJsC3ELgdAJzyljRxFNxe6DCxvLQhAmcT0cVsoJeF03+/xKKugT5LkPGFM0zAi+933vrMOeuJn0IS/fEsLFlTZ7cJwYjU7LhCP2GdqxMst/ZKtN4aammchFU0XszKTY+Ogx5dLGtCU8LKWtJRzYHPSqSI6vLWCdGTGkkzjiNwTNJ9czcwjpbKv1XdQGp5Sqx7RnSBw9GKqORg7ri8BlhUFq1Cc8vUzp255kmUfTjCw8/E01BXvfqLIrkBtul9QajwfzfWAEqSF1hZ1CpUgbmmZzTev5EnhR24lU9hIjGUecZaEtYZ1Lk1Fflxj/QK7ag4mPAAbbHDfWVGQhtcHjri4ScuXSRO3MyH4BinzfEZomWawOdfZqDY66sLTQFzx5kQ4GNcMA4GnKZisjOj9aknb55F0GCaPOmLLQXEES077yAVdpl6IleX2A2AhPhLWmHgOKtZh9A+ksM7rpGsZqmWS/APXgalqqlDzbbCtzCbNqJYLBn+p7Ez58BRF1coDNNWkE9BSI5mj/Eg3vM1BUwq43TjZ6Y1v41q8BxyTBZdM3niH2Seeje8lcjc5wIsIidn5+NCutfqZkPsmD0z4AmcbsZyz08rIEHEdGNyTcpGhZUptnAIkYgaDQXoEzLPEY6zD7XEjXIslXGWJVyUsVPmjtE2XEXNUTbZr/6UMjewRaGhiu+WAALmOGoOnk0RkYnIL1EMQSjtU84ItwGN9THL3Q/ZaUFDCTOcfI0HHJlyLZUHJR0PEj1nFB/564vZsGW5HDUHyGZLDtl980K/P60YBbjmGn42irPPcWn5KREL8OUSp8pOErdIOgIai53YEgdryYtkv19go1wnE5azvjVzZvOf5Y+epxex0JKEWqESIpv/167JlMlr5rTi6HYDrTX7+t3MG/7GX+yrl7MrjAQ3g7KC
+ WtCb1k+O
+ 0ZMGyZQMoS19qsRyj/5dv2d70dp7VRc4ZqH/KKrxsEX+7dPcyOppCH8j30TBKReUfGJdWHwugXaUhznV0yoiAAIa5QHRel6MSy5PaLMaNYUPF38yRAUk1IUaI8HIKq/myK2xPtpsSrFD85GjESlsuwIVhPvT6iGjOMrR5rynqR4k7oBC1MQzyUdyWOoOFKgbDTyrGIEuNPRkg4o6acBAHfeJIRa2p/JK3Yo2a/Le08b+OZwkUSeR3ijSTmUbRVOJ0ORtYobgBvb6Bp6GRR21ddmPFMmg+BO5dYxobwvnr/ED1qUd+YTLTqrvPooUYcETkjrfpoRx/0hnMyzhvk2T7PNM8GpZM2MAJ9petSYm8NLiEwVNQcfC4H3YqSU/IYkw2PXoUYYXnTVHVdjGY+BkfJW+IKB44+CV+x2zDDXadQRMGAMHXIlUWnF4f8DehJ5CeFMWg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -133,45 +133,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, 28 Oct 2026 16:14:54 +0000 sashiko-bot@kernel.org wrote:
+On Wed, 28 Oct 2026 16:14:56 +0000 sashiko-bot@kernel.org wrote:
 
-> Can splitting the clearing of SWP_WRITEOK from del_from_avail_list(si, true)
-> cause an infinite loop in alloc_swap_scan_list() and corrupt the cluster
-> lists?
+> cause a concurrent order-0 swap
+> allocation to enter an infinite loop in cluster_alloc_swap_entry()?
 
-Separating these state transitions does open a selection window. I have
-not found evidence of list-pointer corruption.
+Yes. Clearing SWP_WRITEOK while leaving the device selectable opens the
+same availability window reported on patch 03. I will restore the atomic
+flag/off-list/list-removal transition in patch 03 and preserve it through
+this lock conversion.
 
-In the next revision, clearing SWP_WRITEOK, setting the off-list bit and
-removing the device from the available list will again happen in one
-swap_avail_lock critical section, before dropping swap_lock.
+The device-selection and cluster-allocation paths do not yet hold
+swapon_rwsem here, so merely moving the separate operations inside the
+writer is insufficient. The transition must stay within one
+swap_avail_lock critical section. The synchronous-discard fallback already
+takes a short reader, but it does not protect this earlier selection and
+scan. Once patch 10 protects allocation walks with a reader, the queue
+mask must also be complete before the writer is released.
 
-At this point in the series, allocators do not take the topology lock.
-Moving two separately locked operations under that lock would therefore
-not be sufficient.
+I am keeping the underlying scan-liveness guard separate, since an
+allocator selected before disable can encounter that problem on the base
+tree as well.
 
-When SWP_WRITEOK is clear, an order-0 allocation scanning a partially
-occupied higher-order fragment cluster with scan_all=true can make no
-progress. The cluster lock is released on each iteration, but the cluster
-can keep returning to the same list.
+The final revised tree passes the targeted KUnit scan cases, including
+the disabled fragment scan that does not complete on v3. The earlier
+availability-lock boundary has been checked in code; this guest comparison
+does not execute each intermediate commit or the syscall race.
 
-An allocator that selected the device before disable can encounter the
-same underlying scan problem on the base tree. I have prepared a separate
-fix: stop before isolating the next cluster when SWP_WRITEOK is clear,
-leaving the current iteration's normal cleanup intact.
-
-I checked the scan helper in an isolated x86-64 KUnit guest. On v3, the
-disabled higher-order-fragment case did not complete; the stall stack
-included alloc_swap_scan_cluster(), and the host stopped the guest after
-45 seconds. On the revised tree, that case and both enabled-scan controls
-completed successfully.
-
-This tests the scan path directly, not the concurrent swapoff selection
-window through syscalls. The publication boundary is checked separately
-in the code and through the intermediate commits.
-
-Thanks for the report. I will include the availability-boundary correction
-in the next revision and keep the base scan fix separate.
+Thanks for the report.
 
 Lian
 
