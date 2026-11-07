@@ -1,92 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AD2F606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 20:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8381E606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 21:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CZmLfasw
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=a0HhVEsC
 Received: by kanga.kvack.org (Postfix)
-	id 2C5EE6B05B0; Sat,  7 Nov 2026 15:58:09 -0500 (EST)
+	id 210006B05B2; Sat,  7 Nov 2026 16:06:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 275486B05B1; Sat,  7 Nov 2026 15:58:09 -0500 (EST)
+	id 19AA46B05B3; Sat,  7 Nov 2026 16:06:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18BCB6B05B2; Sat,  7 Nov 2026 15:58:09 -0500 (EST)
+	id 062006B05B4; Sat,  7 Nov 2026 16:06:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E79156B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 15:58:08 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6FD3D160393
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 20:58:08 +0000 (UTC)
-X-FDA: 85409535456.13.FC6FBFC
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 865E36B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:06:20 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 090A3C02F3
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 21:06:20 +0000 (UTC)
+X-FDA: 85409556120.08.C91EB4B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id D4C7F1C0007
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 20:58:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CZmLfasw;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5C86B40003
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 21:06:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a0HhVEsC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794085087;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794085578;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hNaLIAIiL2IsLQ7leBeTRdMuAYI+LVw10gRNfTdmkDE=;
-	b=vviUFzic+r/FotC7AQLkD2qsmDdh4T+HXvrijDo4FfB2MpV2DQENTtzwpy7kcfsrmI+vta
-	X8ysOwZwUfgI3XjPfq20fXtm+mB+uCURDwHMQHh3lJLj6ACFJQly5SpyYWJS45m9ycQuIp
-	ZGMHsb+RKZWTsOcwHwO6RmeSY19/b5k=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CZmLfasw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=rKOpXDTka6zsRI+o/WN9YYaFvky2KJDqfkcQZqbSnuk=;
+	b=vGBaLThdr1C22z1dGFx7XWRVb5Y84zjdHaEOp5XtfhFmlZGYqJ5/mfrd/1emSkml24lKUN
+	P3VnTDKBSq+tUsDHI5zYYRLprlQz/LPLPeKhh5hGT/QmXgJ66ctRcMb6xQSveSlFc1EXO7
+	pubNLwgqBI8ynyLH7mP/hN/6f4Uo+v0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794085087;
-	b=KsQjdRE7Qf65fmjZmD93LbgQdVceyKuVIzVSOp2enOgcQlps1YpGZ2f84vKVqBuzKKvBe/
-	UXvTslnw4r6eb39CIOYvFQHZpl15Fv2htE+RrOVs41tL8xgcd0q120Cl0GGW1NN7SnmZCQ
-	fI5p8rYY4L1taQxeSDkjn1TuBg/wHjw=
+	t=1794085578;
+	b=lNt3RhcyPBxLvZKP3Svuw4K2Uac1OgvVQHgPMWx3iYvUtENIwna7lMK2bfgj8kjLYu69+J
+	JxN/rG/+huqX1utLLUhbpqEJ84NCOhvafhCriv61lCmfV1c1WWK573yEzaD4l+0zPY4n8a
+	EuBfm7qbpEM6DZn9JFSwHXHm4lKWrh0=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=a0HhVEsC;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C334142AF2;
-	Sat,  7 Nov 2026 20:58:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EFFF1F0089F;
-	Sat,  7 Nov 2026 20:58:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 44CD940867;
+	Sat,  7 Nov 2026 21:06:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AE11F0089F;
+	Sat,  7 Nov 2026 21:06:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794085085;
-	bh=hNaLIAIiL2IsLQ7leBeTRdMuAYI+LVw10gRNfTdmkDE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=CZmLfaswRWd05P4qWMaXlEhR7N+spn7PLuPOwrRImBpioqOws788/2WvdKO0hlu9w
-	 ECUv3jO0K7SbCHkg/9vntP+u+jd3VSraQa/mnM2DIg7b9LS7WSJ/nTbjoFcq5dmpgY
-	 RWgLyhOBYMVWhsQRonHSBL5z155oqoFRkuF8BCPqudYfknGz+tc6v2Z/tzkQzfpRVu
-	 fvbviuZwVi9clZ1zvnMXDvUhGNePTkkEMzus5ehr6BscKRFP0GDVN6yDuis1zDJGhV
-	 7VMs8oQCjfBBrGRPsJ+pqh1bvDjFdGjZ/JIxbklIYMtH5dVAAi9Hd1hRpep1WJCYw1
-	 +2Ug0zPpwkZyw==
-Message-ID: <sashiko-outbox-203336@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] binfmt_elf: return the real error when program
- headers cannot be loaded
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Konstantin Khorenko" <khorenko@virtuozzo.com>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Christian
- Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>, "Kees Cook" <kees@kernel.org>, "Paul
- Burton" <paulburton@kernel.org>, "Shuah Khan" <shuah@kernel.org>
-Cc: linux-mm@kvack.org
-In-Reply-To: <20261106-b4-prep-vstor-149847-binfmt_elf-enomem-load-elf-phdrs-v2-1-1c8b7b1dae5c@virtuozzo.com>
-References: <20261106-b4-prep-vstor-149847-binfmt_elf-enomem-load-elf-phdrs-v2-0-1c8b7b1dae5c@virtuozzo.com>
- <20261106-b4-prep-vstor-149847-binfmt_elf-enomem-load-elf-phdrs-v2-1-1c8b7b1dae5c@virtuozzo.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 20:58:04 +0000
+	s=k20260515; t=1794085577;
+	bh=rKOpXDTka6zsRI+o/WN9YYaFvky2KJDqfkcQZqbSnuk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=a0HhVEsCCO989RwnIKRu0YCBkukRW5SoTDDJrsDOmtPFdYdN2GP3+kmQOBs/AVd2X
+	 AWDWlh/spnyvqU2xCNEKf+OChocFfOc+KgynHefki9QebPyg2I0M1cSmHpxh47KAmg
+	 TonPYIIqVjVMD/jQ2c0Qss1fkKnJVC6RMdMi3r3etcVgzOP9p0bN3fezOHkGG9jkur
+	 gxD9w+LzkBi+Pm7cSjzHclviioQ9qNXiKdiIy/F0L3uG1ApFCvXuNgiBnwzbkjS8M7
+	 X2qH1lzNWuifeXlfzVs1X2qemCMTpWB1YLyd7pGDdEylhXmhjnreWeOZyMU8KoOtVn
+	 Srr38yUNYRbVg==
+From: SJ Park <sj@kernel.org>
+To: sashiko-bot@kernel.org
+Cc: SJ Park <sj@kernel.org>,
+	"Andrew Morton" <akpm@linux-foundation.org>,
+	"Usama Arif" <usamaarif642@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 6.18.y 1/5] mm/damon/core: skip applying scheme if region split for quota fails
+Date: Sat,  7 Nov 2026 13:06:08 -0800
+Message-ID: <20261107210610.270916-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <sashiko-outbox-203262@kernel.org>
+References: 
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: w6ef3whu8wwikxemzh4c9446unstr6ja
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D4C7F1C0007
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: a9aqgr9rzpbiogj9ugso8qk6pisbbymm
-X-HE-Tag: 1794085086-768506
-X-HE-Meta: U2FsdGVkX19X1qGjxrX5RAHScX/As3ABjRA98jjutBT6PxsLb4j22KW7lYmf6q1vMRnepwpqt8G7Hpru3ICS+ULMU5OHZIpBWYEdleuhG6X+M4EaHX1HOaB51+2Jz0YFwpDetQ3odbTgMWJIq1VEu1MD8IZ3pqFtbOjb4nSKgwNZ3yfVAr7o94gU/nTNFD12BoaWYS+WAFSCjj9CBgE+3xH/Y+/qEpHyXMhBfl2o31RKs7GAVvV1rNMglZebrSnkIcDf6L7QNLZdLa9p+huEETx4ox7Mh20S3ItHYDSP0lkBK40x6POnP63Zkeep49IXA2FslMMUgvY3o5mKkWcnbdT2PEEk27vCJ5vecZta7rICqlcOLgdouN/vpXUJwyf7rPp3oFLdMYJkHVE/n1axFMFrUfoOdEHNAHxKycTZsbcQauMQof5YYmeS35cUOHcqZTgRhb6plH9yroRotHrZFNiCUEnm5daB3baANaXxL1LhIwmvm1YmUODFT/nGSVEbHjIAkAnJS3ecl4sLWhee/eoD86PSlK/s3D4ZOFBke+/AUWZ4XlO26e2DSXe9YmQJmMAHbfolFFltxRVtdMjzVal1eXDWrct/BF7JNBGMT2ShD2xcpOK97q6nzonpZR2FRf7OAwwVCOwsnC4i377sm5VRwCev4lzRzEKfv2wZbwDzTOCFVmcOcS2tdHK30UAWtascoqDkJqY5oRj7Kn8SoeZ13t2OEmaZt3RU/mdK0NChjxvsIW8j/qHfGU64r40+4jKFDOWRA73r4Cr5z6VRC3LSM9345rgsNmKegC2ua9ZDt2RyWGq/6TdcgLSi5KuQZzvSnbbXJjaQMCzvnh92yrt/bcAuCr9qauC7SV3GaPMu1GI3auLmRxXo6T/QkFko8joFEH9FLfRydjrL0naYKM114qvZGww9iuczX6k1/w7HBMQ0rKBp79ZWHAZoX6ErYD5TQxvpE27fYbRZyPI
- iZfo2kHC
- zWJVXxSK+IqNcDuY4ThR1bpZzbjA4RJBSx6fXkDTc9X4qDoX/zxUP5P1pRVrZsOLcdSpnrkwah/DeTdzJL8CbDqipR8WWrWmYBhO/XtKSANdew92hQmjhhPc6O/ddS6hBo0zp3nK1fShqX5Nvtw0b96AiGZmA0XaKjH6t6WESl3mLgBb7xIOJL0sBh8+5I9yPAWOV90i+T3a1U19mYu5xO+6p9SYiA7xcsD6NiaTI8HxGLdF8oQAJR318q/vSWnxhtPNVqjvBAsvxxyIbMMXtRVR7xAtqthio5IRplZmZHPtqOBo6mCsiYBBvMoF/I4s7G5AODfgMjnJw9anUdnPf9NjiavKwPQZnvRlty3HQzlGbyeoq6ofIV8VCwU4i7Pk+GZ4TrS0L/IvUQZ/EU0M9Tco18+NQ0CBSgZZVIc9pUiv7JFYP+PX5rfFBDSg8+GhNSc5or0mNLOSnINO2Sbpqq3zDFruo3TnsJN2vMjWd+1WDNYrwaBGCnoWwlbqNKKwV0ctH1TQOaIFjHJyvsp6su1niqUPBuDO2/Zr2p6iIlWmXCj6nxlONCVCzhGH5qkhas+ERLuSSqGvWQxCiIKASqMEgTLaA+IjK0i32mmbD49/lh4ZM9tOeb588i+882+dGnswSoN9wzw6yJ3ekzMFpPim2VMxuNqQSpNo2crvqUELKYbGu5OSPaBb7BeT5Erz1S/rU
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5C86B40003
+X-HE-Tag: 1794085578-377972
+X-HE-Meta: U2FsdGVkX18JZv/1NskjpwKCunaqpM0Q8rKXg+MLm0qF6eS+XIKUksHWsQ0ZRiBclPvgObqQSoqqdl1KZrFQhZJzekCaYaKh6MHhGqmytzqSFqqVD1iDr+Ngcmqzp5/OcnZRAZLaz9v7PgHrsgayWU2BvFXFpYD3g00yuCCHgqvPi5EXSoNnYTor3wPdzullaMezL4ce2jBmx0xaFEasrTSpuNaU/CyvF+VCds5CmzHcOpa93eHbjRkCp008kbbK8As7nhz4LQlyTMp/uDAtAv6HjYBa/RlrQ6TbAW5xfalv8SpcQVBYosmf1vufVG9XFQCwmwuqRc7F+Z06k2TFlmDmwyaJDVqFaTZFOCBwFgpdZItCK9aVFsSUNstzNmyhlXrl8kS9BC2jw1z7/Z3f+faJQAzUL9F68GHjTRl7Izn+fM+Hb76XEnBShEjqi4vAkOHUshU2+HD540KFsOZFp2n25EgvsgC1+YwZpdfLBw/aPVYptuXve8aYBvk1grgFr9byIb4zfheL1i5jUeqi2dAPljrgzfGnRUmZAQlgFJ5XjxVMIqBUXPNqQzti8E9dXoQYRy5J5V13kh4Pjt2Y8iTvOf6jWuPa3IdInA8z6erIVZLro862bN/FxiDN0J8Z43kH9vYZudLa2WDyw4RzhgPKVgRds6cpGgUabzHoztQ26uVHGVJXbtb5LiiHygldD1jjN2aOrTpp4nhzPT8gutgc67xZcp4jnkRPfE9rYrFhbca4w+bCjoxGSguPl9ianVf0kpzH3LcTaw4spWBAAnt7hqI35zaRzQrXZ4pKym2h2QcEcyhu5F4sm+m689Fr8jFOVw838eUsuA6WegYrLBS2KWrZhU7WZ/C8z4S8UTd4i/tu84/aBa7HYwPLCJJRH3VqESpRt8H0lQpb9xUuZ1h2ahE0+En7YvhmOIEDNOwH3CdCkyToW0Tskdt/Dm2hgotyCjeQ904QUPoB32V
+ MjVq4meZ
+ gN7BlLNHTg25nvHBgjh4h8qpv8vdkuoem9q9KwQSdD/Ph2FpwCEqExtHv2kCEmkdp2ux4QaT2KGnRAo1LforXg/rb9LBBH7gRFLg63P1Sw0baHbBypF5kCKJ4BET+NboIcuHwgJOK4CN/+2UQFcuKJFP2YyLSE2a6zfjdvm7si0KVTHwdPtxuBPV0SOx8snYj5Whdz4CmZCYPbM9A7DiYoDFgL9O2tV+uWWRgelsIvr5ROf8XW96fjY889T5t6LmI+mBhiwJKqQTdegvZq5nBQRg39JBL39t+eYPAEfIPtJrp2sBMoCSjDowvWDmemfy33RH2bmyxWWI1pSE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,52 +97,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Low] binfmt_elf: missing Fixes trailer for load_elf_phdrs() error
-  return
---
+On Sat, 07 Nov 2026 20:18:33 +0000 sashiko-bot@kernel.org wrote:
 
-commit 46b1e6b996d116acfe43305abc30c04627bdcd95
-Author: Konstantin Khorenko <khorenko@virtuozzo.com>
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Low] mm/damon: damos_apply_scheme() inflates stats on region split
+>   failure
+> --
+> 
+> commit dd2b638af6fec217ed7123ab31fe119102f17f78
+> Author: SJ Park <sj@kernel.org>
+> 
+> mm/damon/core: skip applying scheme if region split for quota fails
+> 
+> This commit updates damon_split_region_at() to return an error code on
+> allocation failure and skips applying the DAMOS scheme in
+> damos_apply_scheme() when splitting a region to fit within the size quota
+> fails.
+> 
+> Link: https://lore.kernel.org/20260901131850.98037-1-sj@kernel.org
+> Link: https://lore.kernel.org/20260901131850.98037-2-sj@kernel.org
+> Link: https://lore.kernel.org/20260718171523.87547-1-sj@kernel.org [1]
+> 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index 8fa788b0d709c..4c536a9b958e4 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> [ ... ]
+> > @@ -2000,7 +2000,8 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+> >  					c->min_sz_region);
+> >  			if (!sz)
+> >  				goto update_stat;
+> > -			damon_split_region_at(t, r, sz);
+> > +			if (damon_split_region_at(t, r, sz))
+> > +				goto update_stat;
+> >  		}
+> >  		if (damos_filter_out(c, t, r, s))
+> >  			return;
+> 
+> [Severity: Low]
+> Does jumping to update_stat when damon_split_region_at() fails inflate
+> s->stat.nr_tried and s->stat.sz_tried?
+> 
+> At this point sz holds the non-zero aligned quota remainder, so
+> damos_update_stat() increments s->stat.nr_tried and adds sz to
+> s->stat.sz_tried even though damos_filter_out() and c->ops.apply_scheme()
+> were skipped.  Because quota->charged_sz is not updated on this failure
+> path, subsequent oversized matching regions in the walk will repeatedly add
+> sz to s->stat.sz_tried while allocation keeps failing.
 
-> binfmt_elf: return the real error when program headers cannot be loaded
->
-> load_elf_phdrs() returns NULL on any failure, and load_elf_binary()
-> turns that into -ENOEXEC for the executable and -ELIBBAD for its
-> interpreter. So a failed allocation or read of the program headers
-> makes glibc's execvp() run the ELF file with /bin/sh, and for the
-> interpreter reports a healthy ld.so as a corrupted shared library.
->
-> Return an ERR_PTR instead:
->
->   +------------+------------------------------------------------------+
->   | error      | when                                                 |
->   +------------+------------------------------------------------------+
->   | -ENOEXEC   | bad e_phentsize, e_phnum or e_phoff, or a short read |
->   | -ENOMEM    | the allocation fails                                 |
->   | read error | kernel_read() fails                                  |
->   +------------+------------------------------------------------------+
->
-> Malformed files and short reads keep getting -ENOEXEC and -ELIBBAD.
-> The table is read with kernel_read() directly, as elf_read() turns a
-> short read into -EIO. An e_phoff past LLONG_MAX - size is rejected up
-> front, so that rw_verify_area() does not turn it into -EINVAL.
->
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+Good finding.  But too trivial to block this patch, in my opinion.
 
-[Severity: Low]
-Prior to 6a8d38945cf4 ("binfmt_elf: Hoist ELF program header loading to a
-function"), load_elf_binary() propagated -ENOMEM and negative read errors
-when loading program headers.  Should this include:
+It happens under small memory allocation failure, which should be very rare or
+even could be argued as too-small-to-fail.  The inflation would also be also
+capped to quota size.  Hence it is trivial.
 
-  Fixes: 6a8d38945cf4 ("binfmt_elf: Hoist ELF program header loading to a f=
-unction")
+Also, same issue is in the mainline.  I will consider fixing it in mainline
+first and add Cc:stable@ tag.  I might conclude not to fix this, since the
+user impact is quite trivial.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-b4-prep-vs=
-tor-149847-binfmt_elf-enomem-load-elf-phdrs-v2-0-1c8b7b1dae5c@virtuozzo.com=
-?part=3D1
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261107201001.206120-1-sj@kernel.org?part=1
+> 
+
+
+Thanks,
+SJ
 
