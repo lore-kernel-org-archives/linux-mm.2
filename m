@@ -1,117 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28F2606D814
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 15:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38AF9606D82A
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 15:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=LmLGIXJz
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lZbFR2qj
 Received: by kanga.kvack.org (Postfix)
-	id AEED06B05B2; Sat,  7 Nov 2026 10:37:11 -0500 (EST)
+	id 4D03D6B05B4; Sat,  7 Nov 2026 10:37:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC2906B05B3; Sat,  7 Nov 2026 10:37:11 -0500 (EST)
+	id 4A94D6B05B5; Sat,  7 Nov 2026 10:37:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9D85E6B05B4; Sat,  7 Nov 2026 10:37:11 -0500 (EST)
+	id 3E56A6B05B6; Sat,  7 Nov 2026 10:37:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6CC1F6B05B2
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 10:37:11 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 75C5D8036F
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 15:37:10 +0000 (UTC)
-X-FDA: 85408726620.10.321E1C8
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 177AF6B05B4
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 10:37:24 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AA1EBA0372
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 15:37:23 +0000 (UTC)
+X-FDA: 85408727166.05.2D2DDCC
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A1528180002
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 15:37:08 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=LmLGIXJz;
-	spf=pass (imf06.hostedemail.com: domain of 3okXvagUKCEk04z3trzzrwp.nzxwty58-xxv6lnv.z2r@flex--ptosi.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3okXvagUKCEk04z3trzzrwp.nzxwty58-xxv6lnv.z2r@flex--ptosi.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794065828;
-	b=18OYJY6Awxj84MRR1wQp5KYnJGWAjxNEQCrcipq3xtDacLxAKiRZCzjVIGKelsdlqSGCky
-	bnh/otUW5FqQr6JK3Lwvo3gQen/ggtpn/VMJKLVohgmGm08eo4DZyVMxJfncD9i7egXpPA
-	d6yOc0p3OIVbRoPVDYDMBK52XPGMuME=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=LmLGIXJz;
-	spf=pass (imf06.hostedemail.com: domain of 3okXvagUKCEk04z3trzzrwp.nzxwty58-xxv6lnv.z2r@flex--ptosi.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3okXvagUKCEk04z3trzzrwp.nzxwty58-xxv6lnv.z2r@flex--ptosi.bounces.google.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id DC101A0003
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 15:37:21 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=lZbFR2qj;
+	spf=pass (imf15.hostedemail.com: domain of 3sEXvagUKCFcEIDH75DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ptosi.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3sEXvagUKCFcEIDH75DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ptosi.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794065828;
+	s=arc-20220608; t=1794065842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=QyPiotEtbjmbAknxSU0jdiIPb/Ej3HeKpoXn1Xbs3Mw=;
-	b=FKArarnJ2Q7ci0gHWFhC9bD8fzx6YnDfIFeE5/TFhTGASjuC5RbMJHp/REVbysRd6l1YyQ
-	dvd3/kQPjYHGbnWmUB1QR8h+0E7ObitYBP1yaOOSVDdGRFjjwJKqNM0ZlL1IVasDisB0iH
-	4ylhGqTHyu0TP/B0kd2KuWwOKtaSvl8=
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c4108bfb63dso107996266b.0
-        for <linux-mm@kvack.org>; Sat, 07 Nov 2026 07:37:08 -0800 (PST)
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BA87cHxXtTWR3BYiMzRslM1IopR1GCSiZApOjRzAgt8=;
+	b=GRDHqjLJ+QmS/YP3k6dOlFjMShGJqCi2kPzW2NMSuAmxG/I6iJ0WEFsmEnlh0lRPeZGucu
+	G20BRUxAB04JzDd8XdsdcJi89oUVjCCshVh7Lyjz3V3hmRc6uyboYch1/fDmqp8U9sWApd
+	WDIQ3WhKRXXVrDA5yqL8LtY7DbVRkK4=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794065842;
+	b=XxrBWbdZgr6flBW3BClP1WBtQm+FcqzOaG5gkt9yY436fS1mayWqE8Lbf9l29JmjHTxPf3
+	p0yQ+xHXQGbgtwi2zF1O3Ddl4hFRrQRcUJlb9tTG2HSvH281wLbIEet6RXFfCZtD3fkFCj
+	57tUSfrsfbqxHREugzPPgFjR7z8GiWY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=lZbFR2qj;
+	spf=pass (imf15.hostedemail.com: domain of 3sEXvagUKCFcEIDH75DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ptosi.bounces.google.com designates 209.85.218.72 as permitted sender) smtp.mailfrom=3sEXvagUKCFcEIDH75DD5A3.1DBA7CJM-BB9Kz19.DG5@flex--ptosi.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-c41f85ee4a3so155543966b.1
+        for <linux-mm@kvack.org>; Sat, 07 Nov 2026 07:37:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794065827; x=1794670627; darn=kvack.org;
+        d=google.com; s=20260707; t=1794065840; x=1794670640; darn=kvack.org;
         h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=QyPiotEtbjmbAknxSU0jdiIPb/Ej3HeKpoXn1Xbs3Mw=;
-        b=LmLGIXJzf4DkG7crMve3EvOtkAQ4MwnMS0M3kVM5G5RSbtkjj+yzd4hgd2u8ZVYSB5
-         ewJnqy21sAcwm7cdfn17V9Qn0Nn6wSl/lkbzW8PhCLmD4347SUrhvm2zoibYN7jgmdBC
-         R97f32RZz/dTUji1HmXk8WCPQDNaa3sHXppElIj9uxeJAN+52uZZbBOMN/DBDCC8xEZj
-         yEiZnMFmSjnjAUFW73f2EvxDfn8zIchkqCU7zm2frbkeGpp+5B1AoY/ZDX3e/JlyLj20
-         ul79sc3cL261cqmw12SdWvz5bPBmRD+WtMJAvKaD7//2kO8dd8XMctHE8CEOyHWmG3Al
-         IS+Q==
+         :message-id:references:mime-version:in-reply-to:date:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=BA87cHxXtTWR3BYiMzRslM1IopR1GCSiZApOjRzAgt8=;
+        b=lZbFR2qjMFrmsHA5FoSh6rbc2meiUEIiQ43zKO/bE/fAt2F6JIzKyTketk+Zqrph25
+         d8NEX91CjM1AV3RIn1flIs7KMgp+yiUAtHdyAoP3iOYmCHtgfUvSWlAlt4ISdkQAciK6
+         67oLq5ejx2D41izjTiqG4saKm7xCN6DZg3+WPtRvs2l2p4oAOIXB4zcUSdzMgDTJg5nL
+         PhFHBFaQJY5gm/RLHQ6BXQVZk5WIoAmKGmaEik3Let3BRENPwR0C53sfOi1M3SMza98l
+         3HPyna/WE/gaVAmy1Mq1mtazaz+xf+VCbty9psDgrEDHOOodDMXxdkiNGdx7r3ytBo9u
+         5G3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794065827; x=1794670627;
+        d=1e100.net; s=20260707; t=1794065840; x=1794670640;
         h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:mime-version:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=QyPiotEtbjmbAknxSU0jdiIPb/Ej3HeKpoXn1Xbs3Mw=;
-        b=T/J7buogJUiPo/vucUqnlkMU2tkEXMG1KvFTe/yIqQMP/3ka76flJr5xk7k513nA3R
-         0M+omHZPESLld3SgRwzrw0o0KrxWLA7djY3dePXAUnDoZD9AlF4Yci9YK5VUOY5Lnws4
-         AkWbK2iy7M6omOR9iOmZ35i5AZO2+VkHFCmQGdzaggv7I9TgLNDKIzkmKrqRacrXiuH0
-         tr9Lkj0EVmuoQO6WVkfsCX1MfKWNuUi9IJl2WUcTg8wnqPXDo8zqqNi/TE+z08SYhpVd
-         DY1D6TaGmhXz1JdYce6bCMdQmCFreMlJnEN9VAmsL0B19fn8za/F7EK68XUPo098+eyS
-         VMPA==
-X-Forwarded-Encrypted: i=1; AL+hErHA4ZrSUjKAT0Hol3iFSUTOEVCH2He4XR+GFCdXLR/zzXExVTWFXhQZJsqFo02U+mEUjdo8UojqSA==@kvack.org
-X-Gm-Message-State: APuU4Z95Wcacd4iW+dOjyCg+GoVIpql+znQzTB9hJ5g6bp6mLLL8zLbX
-	OufEybtmf4lQCNZyEqBRoeMyfBgEazVxwGQKFf0wEkW0bD/rJXeAtvdB5l2OLwfUVvrlN3Sh3BM
-	Xjw==
-X-Received: from ejih2.prod.google.com ([2002:a17:906:2dc2:b0:c31:9613:6217])
- (user=ptosi job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:9f8a:b0:c40:d920:747c
- with SMTP id a640c23a62f3a-c4d3449c10dmr439396066b.7.1794065826487; Sat, 07
- Nov 2026 07:37:06 -0800 (PST)
-Date: Sat, 07 Nov 2026 16:36:06 +0100
+         :message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BA87cHxXtTWR3BYiMzRslM1IopR1GCSiZApOjRzAgt8=;
+        b=GBcfv7OuhHHDYt8//BsNqUB/meQ0WOAcTV8L+lHTNFLKb/iJEz6DXr1PWgioABgqp2
+         QOPoTfC+WDhcJtoodPq+214QrnFWzBwCSW2cf7pxz1mugcHXeb8f2s6OZxkaYoCCBLXZ
+         YeIA78LHOAw9rJpx7FTYzK8cnStp4Sz4ng+/nSUcbumg2LBFbuZVugu/0E+ieqmtDzFz
+         6NbITOi6OdPwB9GjETqq441/v35Bz5dVhAmKThbRm0eEDNn+O0EauGkv/9hzRwi/UMHN
+         A7pQ2zQr2E2jE3c+CYk8ufyYMEGQkzTGca8t1oJ/rm0y22xxKsUSiQboqhZREI0D+wZk
+         n4hg==
+X-Forwarded-Encrypted: i=1; AKwUvBx5Qps/dGubvc6pR7maZTWiO2wHY9GjX697qdhbcIKDmh/x9/hJt93C2iJsYfMfSxG3qeVxuwRHcQ==@kvack.org
+X-Gm-Message-State: APuU4Z+ds6e357EaX9UkiVjSrKetd0SRPb3iP06mOX32QWxBW/eKdeIU
+	NFYmqV/VbKP+ljmnlGAR4il8tGCt8saRm3akA6IO6NvX20CKQEIxr27/cnJZsNosVmC11pZBosb
+	kDw==
+X-Received: from ejblu34.prod.google.com ([2002:a17:906:fae2:b0:c4d:356c:195b])
+ (user=ptosi job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:9fd0:b0:c40:80eb:c54e
+ with SMTP id a640c23a62f3a-c4d3449c0c7mr421982466b.4.1794065840288; Sat, 07
+ Nov 2026 07:37:20 -0800 (PST)
+Date: Sat, 07 Nov 2026 16:36:15 +0100
+In-Reply-To: <20261107-mte-kasan-split-v1-0-d84ea5f30f94@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAGZF72oC/x3MQQqAIBBA0avIrBtQg9KuEi2kphoqCyciiO6et
- HyL/x8QSkwCjXog0cXCe8wwhYJ+DnEi5CEbrLaVMbrG7SRcgoSIcqx8YlmVlpxxo/c15OpINPL 9H9vufT8GvSV/YQAAAA==
-X-Change-Id: 20261107-mte-kasan-split-3632e818f997
+References: <20261107-mte-kasan-split-v1-0-d84ea5f30f94@google.com>
 X-Mailer: b4 0.14.3
-Message-ID: <20261107-mte-kasan-split-v1-0-d84ea5f30f94@google.com>
-Subject: [PATCH 00/24] arm64: Decouple MTE code from KASAN support
+Message-ID: <20261107-mte-kasan-split-v1-9-d84ea5f30f94@google.com>
+Subject: [PATCH 09/24] kasan: rework hw_{force=>flush}_async_tag_fault()
 From: "=?utf-8?q?Pierre-Cl=C3=A9ment_Tosi?=" <ptosi@google.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Peter Collingbourne <peter@pcc.me.uk>, stable@vger.kernel.org, 
-	"=?utf-8?q?Pierre-Cl=C3=A9ment_Tosi?=" <ptosi@google.com>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
 	Alexander Potapenko <glider@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
 	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	"=?utf-8?q?Pierre-Cl=C3=A9ment_Tosi?=" <ptosi@google.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-21.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A1528180002
-X-Stat-Signature: disoiyqwyzjbf8iwk6c1qjiqhmbifbuy
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: am3pxsfsutitjsyubbi1q6hfccwafr4s
+X-Rspamd-Queue-Id: DC101A0003
 X-Rspam-User: 
-X-HE-Tag: 1794065828-162951
-X-HE-Meta: U2FsdGVkX1/GhD9jQM5kD0Q9aDPcKfnAVtZD5RCjRvy/FMVwBBqVRtnQUdi2A1TwhzNKc4XGmsYG/RM8cfeGLhZOaF4eUq87ODTG3aDsN4Qqyvnb6G3aDBgqo+HK5vvL25k5uB3RJ1hLYxuepJYX8pRr+BZO16xK0IhVoH1HUJf18+oL3KHL1xmEb1/p90fWyPVHpu0wrxv6aMTvidwQhy6m1rVzj1CTdAN/toDX4QNPcKPp8lPRA+6Rm1W3Eb0XB/DFflLyUtu9tgQfA3n1dxHx3G1gx3JL9wYq9n+kJ+6gqzPg111A10NOWzQYTCcFHY1oJcDPRWiuegEZ107RHdyji969/Up/GeHG89WwqEXoQDKEcohDGWefhTMunc/XK59ku0rquth5KsCi36rBAPZff+EstwI1R1GsKwepV2n2c+ysSL/8HHXKpUJrjOLEwMZCUD2i8TGnKNlQjYhSZSu2U2F49s4PJvEJADYn97plw9OSwBqUgGkxakZjQ4SpyGimDiV1VjKOG1QwfQbPSkiqG/sv7VGVfDkKrt03fuD/RAOXjgwn0mM24PMIE+3Run240lP4joZ5KJS4nnxz4QhfucoVoisJ1riJGe67lpjlX0fspJxG1FyQLJEIfqz0546tUqoqsPAxv963tB1mzDUhu43AMCbjPY0nu/eTI6XlcLOlnlVTN92HG6IK08t8EOkjOWZlIFPNGGpAatJYlTe26wVGI9VFgh8V3Jk+k7HYlkJPykcoUbws6n+R7q/qM7vYtKk5+QrlKwEk/0mxMZEaAhqTps04GTzsdVbUVF+CKM/tup3bu/8k57rUnJZ5EFaYMN2vlZtsWqGkCQXCkjIellQTJtYx2pUuQENh0NugWN5T+7cXc8wDGpL8UBqX8e+PeeSRnfRlLNdj9nIS7CR259dkmw9klfdFTo+Kg7944uwYx2/4VZT2brkkN/EaHBdhpyzCCR84elYiVNe
- AdYPpml1
- n6ByXzRsDr7nuTySMk38lxKkOMBq23vjwtFvrSEH42nBulWWjfh5m1SdO3pGxWqc/7XULkQJF3qc+s6n7IXkgVoR6ENw+t9PEJssltHcap+VSVOmZht9YF80LF+PUBMR9sAnZ30KN7dmtuYh0ibPkJ3zOqbK8d5HmBzIVSyG9Myz0yai6yTrKNoPiC+wojvCivqWllWrU2HaXBMBVP/HZBERoL2xY5WKIMBUx05OttjcPwGfiAo6gwZn2CuC2G8SqMJzMBx94etUHfF/KJHbvNdL+EgUe5+F6vaQ4hDwh0ZLroprFaDNaUukcrSHw8Pb73WHigq7JplZS2p9b+9MVmu++aeTTuUhtC0Tp/c65EqkBu61DQOM9xsAOEa6J1YJDMCEKrYu7MY786cHUQ160PntYL6gqPelksH/M8JPXmp8YmkY4jU3g4pgABsSaBdX2m/SQDLEVQMsWXxwIiof9E6VQQd3rVbQ8bDXifu1GJ/0wVS2+Ttm7dYZpZ3PXmDOEsiN5BfN7h1FLYW4F1ghIbonq1ba+hK62wCHbglQPhT+NHWVRAAYzAUOjL3wQ8t3/KjKghEaYKonOj/959ntYOsqdsGCeLSEkoS907PQ+i15eZRiOIzu6QWBjzDkyGEv+GhOQ2DXoXzd4f+hM+eatmL2y9JfZlShktE7I
+X-HE-Tag: 1794065841-712501
+X-HE-Meta: U2FsdGVkX186wTi2Ozc0OUpfK1So7MbJONk1IqVPqAkhIrw5KK1HAJkNdhxRo4NZmzfD6nlGjq/I7RKKWEUmZt7TSCgclv3bDoQFtXN7cQfA//ekd51ZPDd+0Yil7WmvLPSRMaRwojhb9XwWjDVRGVyXIX/3mX+tg0jpLmWpzl2zzueceVpZGMKkVruFtlx7xZ9PdkBrqK48gVnVXctp1YNMzNDrY/hgDx10F5Awr0PicVN/DtLwvFD7P+fWO6+OvRkq+thNH7zo+9AfV4JLKzLQZinp4l14aN0Kyxrpw8AHzAXJGdqeWuycVIYb7jvH6bYfDiYnzGgOxkwMtY/Af5KaqQVwvcWxbfeVJHuNadA9VPRldUoSeV7MV3Xwgk1/1AIo7dHPabTKi5z8257/yWGYXYvGYMnKkk7kXldmONie298GC2F1925vdTdLPH/fANtkMBnNmJVwNyB88yuTBlPv45tiDvPYb7yax07Yh2/WmuVJvlcCdeOEyxQ89fWlSTP+jZwSkwyUrdO8zs+qgCy71DW0rCSp3DRg058K1X/nh6Qilo4bwiD1fZJomXKJuLJNCvvP33S631TD88VSfGDxrIIULYEsvSd7RxTgQTlBcEPnP0hf3JmPuyV26nYxI7cIuBaI7ti4cEBHXE9Ykjb71dwCJ86464F/tExZICwzZPaHaZ8ZYO4zCAhwv/NQFaPVodPys9gqq5NZy5VMUQn++ukzD6yKkiSL3fLiy9zmdw4Wl9FcDnrEkR0cosLW2G9v0uhCBZsJ12/YrGunQH9//tNprTNVI1vqjWObcQfsKSo1Ctj0I3OC4RWfpbjRXzWP2RcjwhqJiEMakMAxmPoRwCu7YGeNGBJ69v2nLciycbppddQ5gBP0BXky+NSCIZ/q79tphsicLAgaw5REoi4ve005EMZxIKdIuXqtmHk0midrAqWedxzRloVtBpSFtnEvZdthR6XrjAAeE4J
+ ROofe+Mx
+ yShOi7JUIMWgVBfLhWCtJOF82Wc7qcVRsfFXwLzJmBhhapZUqbWxeXOAAPQubpTD5W95tCnBsD661uY4ix0nYli6oI3D/4l3ggyB3YphdPile4WUWN4CmkNraYJ0DYuQ7Z7eCVsiFAjOlmVENEilCx4XR0XouP44S5KlR/RNEpX9lSUo5j8EKssPqCcRorRhgQt7P9QqWB0eP+/pKbQFQWT8SM//+Mz3XilHI6A4EyMf4zxM56FFW5hraOFgbp6kEptAdQbgXW5DXH85TAg3jezRsrhxmn/8DHD5u8iLoeOr8HkhJgw5zvZ5U29dRmFd50Iae1NUpiTMu3QB/JSW9kt/Tk5cvuQfpntmCh+yqGq4tzcjZxnxlRTiyYc6rfoLmyA3lKaye9Dtpjo1HhvlgDDh/fSjwBxMDs7Lma4B/b6OQKzKG8bU49t42LNtGF2VzDnzM+bnesBwqBeQky2+gbGxafPlu5ws4LpUNYg5vOch0LlPWG5pmPURtc8Tg/RRLI4UQFGCTW6G8TDH9hDYNV5swe7IBguNDq/fcB9K8Tbf6hHFyXkTmbnTVCdww79r8fxm8Zx88cjgXXeBV/ZcwrWAgsxrl7RLL/zd+ve5laUYZy37CaHASWHif0hhUN9AtZts+1+Ag0iNEV8B3f0OS138htJJdVKM+utrlCX/gDOoRXE9W660wIzaKaToWSV/fiNwTv24kX6CoO9n4embNGPi4rxgrPAjG7kRyaFvLzjZTkB/kcQ02xL8sMqLJglyPh9vmxw4dZD5NC913TYYgSt+qfMh8o+LH8zcVLNNQuKeBJxX21fyKBeXxXl+ghGmwxCvh/BfKcSXot5Lw6VzBJiS6qUpqUwxFDv7Tl3AfesjloQqtznV0pYjb479WQI1HNqff
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,117 +120,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-MTE is a hardware feature, KASAN is software infrastructure.
+Separate common arch-agnostic KASAN policy (fault reporting) from arch
+HW details (fault flushing) by reworking the function's signature.
 
-The direction of the dependency should be clear: KASAN uses MTE.
+Update its only definition (in arm64) accordingly.
 
-However, the code does not reflect this split: many mte_*() functions
-are actually only intended for HW_TAGS such that there is no way to make
-use of in-kernel MTE functionality without enabling KASAN. Furthermore,
-there is a lot of unnecessary indirection in those functions, causing
-duplication, code that is harder to follow than it should be, and making
-it easier for subtle inconsistencies to hide.
+This resolves #include challenges arising from the circular dependency:
 
-Instead, this series aims to untangle the two into a set of reusable,
-arch-level MTE functions and a thin wrapper around them that KASAN
-needs. For non-KASAN MTE-related code, instead of attempting to reuse
-KASAN functions, break out individual MTE primitives into KASAN-agnostic
-functions and use them where needed by aligning in style with how other
-features are supported e.g. during kernel entry/exit.
+  mte_check_tfsr_exit() =3D=3D> kasan_report_async()
+    kasan_report_async() =3D=3D> <linux/kasan.h>
+      <linux/kasan.h> =3D=3D> hw_force_async_tag_fault()
+        hw_force_async_tag_fault() =3D=3D> arch_force_async_tag_fault()
+          arch_force_async_tag_fault() =3D=3D> mte_check_tfsr_exit()
 
-The result of this rework made some bugs and inefficiencies obvious so
-I ordered the patches into 3 sets: first, bug fixes, then, functional
-improvements, and finally the refactor. Specifically:
-
-- patch 1 fixes a bug in the support for userspace MTE, with a kselftest
-  reproducer in patch 2
-- patch 3 fixes an unsound inline asm statement
-- patches 4-7 address inefficiencies in PSTATE.TCO-guarded sections, TCO
-  lazy clearing, and harden TTBR1 address categorization
-- patches 9-12 rework MTE-specific code in arch-agnostic KASAN, with an
-  arch-level early refactor in patch 8 to keep those minimal
-- patches 13-23 then proceed with the methodical untangling of MTE
-  from KASAN, leaving only a thin KASAN_HW_TAGS wrapper in <asm/kasan.h>
-- patch 24 introduces a hidden Kconfig flag ARM64_MTE_KERNEL, to better
-  document in the code when logic is required for EL1 MTE, as opposed to
-  KASAN
-
-This was tested on v7.4-rc1 and applies cleanly to arm64 for-next/core
-at commit f46be4da2cbb ("selftests/arm64: GCS must not leak on a failed
-clone3").
-
-The following checkpatch.pl errors are consciously ignored:
-
-- "WARNING: ... does MAINTAINERS need updating?" on patch 2 for the
-  new kselftest but selftests/arm64/ is already properly maintained
-- "WARNING: Macros with flow control statements should be avoided" on
-  patch 5 but the new __raw_{get,put}_mem_tco() macros are intentionally
-  consistent in style with the pre-existing __raw_{get,put}_mem()
-
-while the other warnings/error are false-positives I fix in [1] and [2].
-
-[1]: https://lore.kernel.org/r/20261107-checkpatch-asm-complex_macro-v1-1-9=
-a7b3c69fc28@google.com
-[2]: https://lore.kernel.org/r/20261107-checkpatch-file_path_changes-v1-1-8=
-b11814560d8@google.com
-
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: kasan-dev@googlegroups.com
+Cc: linux-mm@kvack.org
+Signed-off-by: Pierre-Cl=C3=A9ment Tosi <ptosi@google.com>
 ---
-Pierre-Cl=C3=A9ment Tosi (24):
-      arm64: Fix lazy TCO clear when enabling user MTE
-      kselftest/arm64: Test lazy PSTATE.TCO handling
-      arm64: Fix volatility of IRG inline assembly
-      arm64: Skip TCO on privileged uaccess without kMTE
-      arm64: Check MTE once per fault-handling section
-      arm64: Harden is_ttbr1_addr() on tagged addresses
-      arm64: Skip redundant TCO clear post-kernel entry
-      arm64: Introduce mte_get_reset_tfsr() helpers
-      kasan: rework hw_{force=3D>flush}_async_tag_fault()
-      kasan: rework hw_{get=3D>set}_random_tag()
-      kasan: provide empty stub for kasan_report_async()
-      kasan: drop mte-kasan.h from arch-agnostic header
-      arm64: Introduce set_pstate_tco() helper macro
-      arm64: Add mte_{enter,exit}_*_{kernel,user}_mode()
-      arm64: Refactor and remove mte_disable_tco_entry()
-      arm64: Refactor KERNEL_GCR_EL1 out of <sysreg.h>
-      arm64: Introduce MTE & KASAN tag handling helpers
-      arm64: Inline and remove mte_check_tfsr_*()
-      arm64: Rework static branches for kernel MTE
-      arm64: Move MTE insn wrappers to <asm/mte-def.h>
-      arm64: Introduce mte_tag[_and_zero]_range()
-      arm64: Consolidate MTE-based KASAN in mte-kasan.h
-      arm64: Fold <asm/mte-kasan.h> into <asm/kasan.h>
-      arm64: Introduce CONFIG_ARM64_MTE_KERNEL
+ arch/arm64/include/asm/memory.h | 2 +-
+ mm/kasan/hw_tags.c              | 3 ++-
+ mm/kasan/kasan.h                | 2 +-
+ 3 files changed, 4 insertions(+), 3 deletions(-)
 
- MAINTAINERS                                        |   2 +-
- arch/arm64/Kconfig                                 |   8 +
- arch/arm64/include/asm/kasan.h                     | 103 +++++++-
- arch/arm64/include/asm/memory.h                    |  14 --
- arch/arm64/include/asm/mte-def.h                   |  65 +++++
- arch/arm64/include/asm/mte-kasan.h                 | 266 -----------------=
-----
- arch/arm64/include/asm/mte.h                       | 189 ++++++++++-----
- arch/arm64/include/asm/processor.h                 |   6 +-
- arch/arm64/include/asm/sysreg.h                    |  17 +-
- arch/arm64/include/asm/uaccess.h                   | 106 +++++---
- arch/arm64/include/asm/word-at-a-time.h            |  22 +-
- arch/arm64/kernel/entry-common.c                   |  58 ++++-
- arch/arm64/kernel/entry.S                          |   3 +-
- arch/arm64/kernel/mte.c                            |  72 +++---
- arch/arm64/lib/strlen.S                            |   4 +-
- arch/arm64/mm/copypage.c                           |   1 +
- arch/arm64/mm/fault.c                              |   2 +-
- include/linux/kasan.h                              |   8 +-
- mm/kasan/hw_tags.c                                 |   3 +-
- mm/kasan/kasan.h                                   |  14 +-
- tools/testing/selftests/arm64/mte/.gitignore       |   1 +
- tools/testing/selftests/arm64/mte/check_lazy_tco.c | 152 ++++++++++++
- 22 files changed, 649 insertions(+), 467 deletions(-)
----
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-change-id: 20261107-mte-kasan-split-3632e818f997
+diff --git a/arch/arm64/include/asm/memory.h b/arch/arm64/include/asm/memor=
+y.h
+index a2b7a33966ff..8e751b56d20c 100644
+--- a/arch/arm64/include/asm/memory.h
++++ b/arch/arm64/include/asm/memory.h
+@@ -316,7 +316,7 @@ static inline const void *__tag_set(const void *addr, u=
+8 tag)
+ #define arch_enable_tag_checks_write_only()	mte_enable_kernel_store_only()
+ #define arch_suppress_tag_checks_start()	mte_enable_tco()
+ #define arch_suppress_tag_checks_stop()		mte_disable_tco()
+-#define arch_force_async_tag_fault()		mte_check_tfsr_exit()
++#define arch_flush_async_tag_fault()		mte_get_reset_tfsr()
+ #define arch_get_random_tag()			mte_get_random_tag()
+ #define arch_get_mem_tag(addr)			mte_get_mem_tag(addr)
+ #define arch_set_mem_tag_range(addr, size, tag, init)	\
+diff --git a/mm/kasan/hw_tags.c b/mm/kasan/hw_tags.c
+index a848eb2f9910..c4772eebb80d 100644
+--- a/mm/kasan/hw_tags.c
++++ b/mm/kasan/hw_tags.c
+@@ -428,7 +428,8 @@ EXPORT_SYMBOL_IF_KUNIT(kasan_enable_hw_tags);
+=20
+ VISIBLE_IF_KUNIT void kasan_force_async_fault(void)
+ {
+-	hw_force_async_tag_fault();
++	if (hw_flush_async_tag_fault())
++		kasan_report_async();
+ }
+ EXPORT_SYMBOL_IF_KUNIT(kasan_force_async_fault);
+=20
+diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
+index fc9169a54766..be5dcf6b052c 100644
+--- a/mm/kasan/kasan.h
++++ b/mm/kasan/kasan.h
+@@ -431,7 +431,7 @@ static inline const void *arch_kasan_set_tag(const void=
+ *addr, u8 tag)
+ #define hw_enable_tag_checks_asymm()		arch_enable_tag_checks_asymm()
+ #define hw_suppress_tag_checks_start()		arch_suppress_tag_checks_start()
+ #define hw_suppress_tag_checks_stop()		arch_suppress_tag_checks_stop()
+-#define hw_force_async_tag_fault()		arch_force_async_tag_fault()
++#define hw_flush_async_tag_fault()		arch_flush_async_tag_fault()
+ #define hw_enable_tag_checks_write_only()	arch_enable_tag_checks_write_onl=
+y()
+ #define hw_get_random_tag()			arch_get_random_tag()
+ #define hw_get_mem_tag(addr)			arch_get_mem_tag(addr)
 
-Best regards,
 --=20
-Pierre-Cl=C3=A9ment Tosi <ptosi@google.com>
+2.56.0.455.g6c5a503b38-goog
 
 
