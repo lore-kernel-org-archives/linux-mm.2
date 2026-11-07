@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B68606D801
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 10:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F425606D810
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 10:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Wc8PkROU
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=auqiAvlQ
 Received: by kanga.kvack.org (Postfix)
-	id DE9156B05B0; Sat,  7 Nov 2026 05:31:03 -0500 (EST)
+	id B78106B05B1; Sat,  7 Nov 2026 05:31:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D71026B05B1; Sat,  7 Nov 2026 05:31:03 -0500 (EST)
+	id B29F46B05B2; Sat,  7 Nov 2026 05:31:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C38DC6B05B2; Sat,  7 Nov 2026 05:31:03 -0500 (EST)
+	id A3EBA6B05B3; Sat,  7 Nov 2026 05:31:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A68C36B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 05:31:03 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 43AE04032A
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 10:31:03 +0000 (UTC)
-X-FDA: 85407955206.02.9A4D7CC
-Received: from mta1.migadu.com (out-1.mta1.migadu.com [95.215.58.1])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1E8471C0008
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 10:31:00 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wc8PkROU;
+	by kanga.kvack.org (Postfix) with ESMTP id 885676B05B1
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 05:31:15 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 115DA4032A
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 10:31:15 +0000 (UTC)
+X-FDA: 85407955710.21.9C262C0
+Received: from mta0.migadu.com (out-249.mta0.migadu.com [91.218.175.249])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D3C942000A
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 10:31:12 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=auqiAvlQ;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794047473;
+	b=X367/XvKu8FEk8Pt89Y7rgjgOw3Xbm4x/9EoJOpY0X746vvvk/Q1DVru/RH5dPvkE9x1cY
+	qowFllQUtEqkycbS8Oe9IFrkHkjTtqnhQr9xxND0nnoezwYJR8+SU4rNQ6gFFHz73AG8cG
+	AukHp6fbs5dH4vCR2ffwXAzSyUTWTMA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794047461;
+	s=arc-20220608; t=1794047473;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=qnfaXKSjzVJK7X+JqrAUXuAfLa2GhSU1USswboGhOL0=;
-	b=VVZtBjDlU8spDehM4jABb4AhXQ1JiUFtkRpPmBSzlVJo+w6jscQ9HfwqqKV9BTdZhz8QdV
-	ZylaAZoAkkwR6W3SyywL/iXip+4eT/+BMlSQ8Coq93ptoDyxq6BIhDbtPwo492bYgoksvB
-	Tr7+6n4Kuz9Zhc0NKRHPBA/8R4VamcY=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=gCifWas0BpuNzXE9zytOMZSgJlGt46sndvW+hr71f/g=;
+	b=dSbFxVo+sR/eUKzubt9B/AH7PPBSf8gk5en0z+zF/ipO9f+pkF2oG4+979s4HA9c6ySDLO
+	DRC1X8HJUYnREPPpkaIR2hCqTs9+Vo6L44qk9kxZEOOrYLUBrTOHxhOXoc6d209UfVrTzt
+	bkmfXxTqgJj+VlF2pPqNFaz9NDTABSI=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Wc8PkROU;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=auqiAvlQ;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794047461;
-	b=CsDlsXUK/wZbHStEhT/Fa/jqnWDXYS9mtLtwwLke0ILz1xthUz2hAelSUcf/PRMdLbu9BF
-	TfiTakmUvIhsSHq9esYbX+wKWrpLLqtPVJ37k5MNixC4LiP6Mte8K89KzesVVrs6vlOYYE
-	DODojWa0HYbebHYKz1vEl5InxiL8GNk=
+	spf=pass (imf03.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.249 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=RsCoCmOPMyHJd+R/ztk5rMnp9buDWmn47/QOCHLh9IA=;
+DKIM-Signature: a=rsa-sha256; bh=/MVFvmVwbUPNerAUsqUVWH7M0FSKEB7lNQ5SvFhDebM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794047459; v=1; x=1794652259;
- b=Wc8PkROUmnrUppOP/U+Uvpe3LJkTskW4WEVIWTvNN2+/MB5KAGCiimASsH9xdK1ghbb7zQ7G
- SuEFF2OWaADsJdilE51qbcrNA6tbY2g/Pp/tLv3fOaKgXv6VwZUZdgYB/uB7MX0Pxtwgu18I6eV
- 8MXR1+pjoU6RWhhulg8RnHiE=
+ t=1794047469; v=1; x=1794652269;
+ b=auqiAvlQwa+6XyJFCihWXNeea0nlZna1fNdg7wXuKwV+FljBmPEhFrL3gvwX2VEv3XEJHoOX
+ XzvSudGAwDtC5NX1WqCpX13kl4o0Okp21hODeasPZdyU9e4HNAvAbx8Q0MhjIOoja9bFRMaOySN
+ Q5zlFzBy+zNX865bW/2ra1yE=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5feb844c2993f120;
-	Sat, 07 Nov 2026 10:30:59 +0000
-X-Mizu-Trace-ID: 5feb844c2993f120
+Received: by smtp.migadu.com with ESMTPS id 59b71af0a5b0d19c;
+	Sat, 07 Nov 2026 10:31:09 +0000
+X-Mizu-Trace-ID: 59b71af0a5b0d19c
 X-Migadu-Flow: FLOW_OUT
 From: Qi Zheng <qi.zheng@linux.dev>
 To: muchun.song@linux.dev,
@@ -67,26 +67,29 @@ To: muchun.song@linux.dev,
 	lance.yang@linux.dev
 Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v3 0/3] mm: hugetlb: fix CMA-related issues
-Date: Sat,  7 Nov 2026 18:30:44 +0800
-Message-ID: <cover.1794046188.git.zhengqi.arch@bytedance.com>
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/3] x86: hugetlb: disable default CMA reservations on 32-bit kernel
+Date: Sat,  7 Nov 2026 18:30:45 +0800
+Message-ID: <94ec966eb5be064108a5cbdc8b72f92f8dda6724.1794046188.git.zhengqi.arch@bytedance.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <cover.1794046188.git.zhengqi.arch@bytedance.com>
+References: <cover.1794046188.git.zhengqi.arch@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 1E8471C0008
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: bxbd3ainzz3i73osb3au1yoxj6de3fph
-X-HE-Tag: 1794047460-670306
-X-HE-Meta: U2FsdGVkX1+6F13nAr/iDOP7OwxtMYzwoMbqQ2x4gu1RbxrwqauvBsKMrXvcuUnPuC46k/UYvO6/ancoKPB28NuqK7loe7BjZPehx+sRbeH9HK3v3+jF6rjWOzfTxqiCFwLdWRm8+xnwtcrzQWgRyVeQOAQ8ABQSdsrz+HBCi9dzmh88rWhhUtgw/1KR7uiOBM/U/ITUiHUnUAgpt7LqLwJ4/xEgir/Gi3SucIi5HX5ZaNlMJ842CKHnfGKqNQHwT4uybVzkbMWGYn/oIiFjFV3K/nNWr8WHBuZ2v10B5cTQtTwtW0fxOyp1ICZRDnBmm7oxMCOTXLdogHvd63bcc/U3st0tGCXNwDSpPdz3476PCLqLhc2N+dv0rXcX9ARCaLFUHvvuGrJZ0fRsfcV9L2Br0v+/ZB8BpsaVLedelinOLmSqOgu9TSzZfqutvvSwl3YbIF6uCvudR0PDNodAVj9oSDWbaGqiYC3pvWviF7la54KZpwtqPW9lMejccTWVTCMcW8A7CoN4pw55D5rX2pn9RN36JmdWZ1vNFoj5OEafGhkgDUtLsNelfRoi8hBdwLAgBATTl5GJt/SwwSLfQiH/ogXeSvxzYQ1wDGF7gkxiLfvZQisUvQS/Yiju3xVTGii8iLCSRx1AyJZtbwaknxzHOB+1q0EN1hH02SYgJ6pOdKnlqU/904aJa5K3EVpR6LMCZ5h8DsF9m3z64c8ULmbOxd4EwsGaIZBc5i0egPQ9l6G13dAIOHAAujzKuy12EkV23G+SdVwfdrlgw6g6MkV/uIiCJ3qOd0iovz0BXCvG9HhcqTWoYj2ECcDe38a3hcWpv9UoYfpvZBzPhA7v/NEKRD5EHDUJNOsM1kgE8zk/wKeS5JkLH9MKkSv+iEIQ6wpxsWPds7NFyjQZVciWVrQv+EvW2GzG3bUrPnmgM4BRTEXRHVZkwh0BFGWjoe0NaxSztbt5hGVKyf/xJbJ
- y8+4dK2h
- vXexca6atqRBF5rknQOWbScPSMNdtS80kEVs4p8SN8chiND3INNP4hqzKisQzUwaC6thbEkgfX8Ap4Dpg7drUIo5vnufZEDfj965cAWkIGWT/V7FBMtOZfwN0ES2DsXjWmTpd81lP2FXC4oMFiZHQ4sJONJJR8DTHtE3DhGn2gjA7LwbixH7VfxhaK4LHf7XKw5HWCT4wLlisJHU=
+X-Rspamd-Queue-Id: D3C942000A
+X-Rspamd-Server: rspam12
+X-Stat-Signature: wcwgm9jmqtig3jab41fjhnueqtiybwnm
+X-Rspam-User:
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794047472-237522
+X-HE-Meta: U2FsdGVkX1+3g4hELOutYHknu9U4IzABjNH2C/+o35bYR5jy23idyQ8mMHJtK0qaq5Jo59FHGCCAnGHEwH+eDXL3E0RNxuRsJb31dMrDYYTBKmHhExrCIJVWnFWG8WaaAdQx3HV34k2yMkdexbwddfeo157jIzDu657E3STD2RttYiApvcvgGJXLPaWUgd/u9a9YQqtdHZCVJQsCjmQXFwphP6DuSqIhUk8BKw22uQ0vB7/voZJHRQB1qgJkclIhwJKbnorh5ylC1yPf3v3E0I+M1MqzMNKGZsCl4Adf4OaJLcJTTzPtWAgNv6Ztw9ZJTkvh+BcuOEVq4gBt7ptxlaxH5rondqaadqRtHK97c4cxbbUbzaZD4hpctUsnKDQh2LIbBxYwPYeTGceSdU7f6HI0b/Bwdw0wjDDYNMync3KLQNcCc4957CNvbkKo+1mrUDttQI/11XABC9MKL/YxVtYzqzYKuon1GNfVUb0uTsTUJLEM3QaGgDGeJhr7t6sdLwe/IAdewIIFQOq/2A/MziMCzJobcXdHrsiVuJATGkqADMAUTE2BVLLiJC5Fhyf1fU9fa5uSEwChf73W0XvQ12Q+mMRB1buelHlHWfcfBMeMLUZMs1WzOAm63J0cUuwVeNHfNRPo11IuCMuLmLnEEQOVl6Qpj+AP+2+FBw9FWIotKUxYAGn1msKe/qGzo7j5Ctq79lZqHQ0g0q6HS+91iNWI4rA+anzgnu0w4hP3+Y0ibFTSeMxGz/rN23FPP5iZqnc0mMGuZtt1kDY5WMlCirCTJVgNUFU0qEN3KetB5ORq5ws6PqIiPH68LDu+f+WHFa6YTQc68yEt486LA8WZWCoSm4wsrdua3Hfwf5oYO6H/xZeGmDMH/vkmYEbA9H5TxWpVuc+161zuDiIAyLw2bAdMOpGyPj659o5mUlVcp4TbjObxkGSBI6Fh8Nm3/gRNtlqj+xCdXoHwTdAVptL
+ v+Zy3bLV
+ zEhBJaDHq/9JyY1QSlNirAtalB1c+Ff/SD2gg/3xBvWe4vgeh+6+wFuIjLuKISgyUhM/WGVCO4rnVg9Z1r80rOPmOTU7pgmxv3S549H4Ybt3luj8anhNZ6FTdUoRzYh/q61DI/mMhLAbjMlcTNXS1OoofmOJZKi+gC/MU9S+FT33FNS7s24jq7Rf+mUc+26nDSJKO89qHwgfNNOWw4va4X8CpIYlV12q1taM1DReefQbMfRNr/h6TbJvpm513IWnK2YVNLb+a6JQanI/1B5t7axt9TCY7ENacvMtTm7Mbp9/w1JsQMmGr7kDVK3wklTXRA845SAyHoa0ro4Tz+FbFPE2ut7lZmaFc4BFr50If2qJtY1WXXhkm2PzkZaZPxSPJiANksNNXwhBLVPDRcik08zIzfxqaQraC357xbe0xAAZx9dw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,57 +100,43 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Hi all,
+A 32-bit x86 kernel can run on a 64-bit-capable CPU advertising GBPAGES.
+arch_hugetlb_cma_order() checks only this feature and returns a nonzero
+order, although gigantic HugeTLB support on x86 requires CONFIG_X86_64.
+Specifying hugetlb_cma= can therefore reserve a CMA area that cannot
+serve the intended gigantic HugeTLB allocations.
 
-This series fixes three CMA-related issues in HugeTLB reservation,
-long-term pinning and allocation:
+On non-PAE kernels, the folded PUD_SHIFT yields a 4 MiB order, which is
+equal to MAX_PAGE_ORDER. With CONFIG_DEBUG_VM enabled, this triggers the
+VM_WARN_ON(order <= MAX_PAGE_ORDER) check in hugetlb_cma_reserve(),
+warning that hugetlb_cma is attempting to reserve a non-gigantic order.
 
- - Avoid ineffective CMA reservations on 32-bit x86 kernels running on
-   CPUs that advertise 1 GiB page support.
- - Allow long-term pins of explicitly CMA-allocated HugeTLB folios,
-   which already own the CMA memory.
- - Preserve the caller's GFP mask when allocating from CMA.
+Require CONFIG_X86_64 as well as GBPAGES when selecting the default CMA
+order to avoid these ineffective reservations.
 
-Changes in v3:
- - Drop the cpuset fix. A more comprehensive fix across the HugeTLB
-   allocation paths will follow in a separate patchset.
- - Check for __GFP_COMP instead of adding it in
-   cma_alloc_frozen_compound(), and leave __GFP_NOWARN to callers.
-   (suggested by Oscar Salvador)
- - Clarify the CMA ownership comment in folio_is_longterm_pinnable().
-   (suggested by Muchun Song)
- - Collect Reviewed-by and Acked-by tags.
+Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+Acked-by: Muchun Song <muchun.song@linux.dev>
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Acked-by: Oscar Salvador <osalvador@suse.de>
+---
+ arch/x86/mm/hugetlbpage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Changes in v2:
- - Replace the PF_MEMALLOC_PIN allocation restriction with a GUP exception
-   for HugeTLB folios marked HPG_cma. (suggested by Muchun Song)
- - Pass the caller's GFP mask through cma_alloc_frozen_compound() instead
-   of skipping CMA when direct reclaim is disallowed.
-   (suggested by sashiko)
- - Remove unnecessary revalidation of successfully allocated folios after
-   cpuset changes. Retry only failed allocations.
-   (pointed by Jose A. Perez de Azpillaga)
- - collect Reviewed-by and Acked-by.
- - Rebase onto next-20261104.
-
-Thanks,
-Qi
-
-Qi Zheng (3):
-  x86: hugetlb: disable default CMA reservations on 32-bit kernel
-  mm: gup: allow long-term pins of CMA-allocated HugeTLB folios
-  mm: hugetlb: fix GFP mask propagation to CMA
-
- arch/x86/mm/hugetlbpage.c |  2 +-
- include/linux/cma.h       |  2 +-
- include/linux/mm.h        | 29 +----------------------------
- mm/cma.c                  |  5 +++--
- mm/gup.c                  | 31 +++++++++++++++++++++++++++++++
- mm/hugetlb_cma.c          |  4 ++--
- 6 files changed, 39 insertions(+), 34 deletions(-)
-
-
-base-commit: 8b7179210b22f8e48a82c5ceacb9d56a9c4cfec4
+diff --git a/arch/x86/mm/hugetlbpage.c b/arch/x86/mm/hugetlbpage.c
+index 3b26621c91286..70726a99ede7b 100644
+--- a/arch/x86/mm/hugetlbpage.c
++++ b/arch/x86/mm/hugetlbpage.c
+@@ -45,7 +45,7 @@ arch_initcall(gigantic_pages_init);
+ 
+ unsigned int __init arch_hugetlb_cma_order(void)
+ {
+-	if (boot_cpu_has(X86_FEATURE_GBPAGES))
++	if (IS_ENABLED(CONFIG_X86_64) && boot_cpu_has(X86_FEATURE_GBPAGES))
+ 		return PUD_SHIFT - PAGE_SHIFT;
+ 
+ 	return 0;
 -- 
 2.54.0
 
