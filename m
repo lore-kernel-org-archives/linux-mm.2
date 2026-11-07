@@ -1,115 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712A2606A32E
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 02:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE44606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 02:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=TblrE9gS;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=LagpfpVQ
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=L1gmG5pY;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=KK3HPOu5
 Received: by kanga.kvack.org (Postfix)
-	id 4D3C36B05CA; Fri,  6 Nov 2026 21:40:23 -0500 (EST)
+	id C75856B05CC; Fri,  6 Nov 2026 21:40:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4848C6B05CB; Fri,  6 Nov 2026 21:40:23 -0500 (EST)
+	id C4CB86B05CD; Fri,  6 Nov 2026 21:40:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 34BD16B05CC; Fri,  6 Nov 2026 21:40:23 -0500 (EST)
+	id B14666B05CE; Fri,  6 Nov 2026 21:40:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0457E6B05CA
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:40:22 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 87C9E1C2F10
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:40:22 +0000 (UTC)
-X-FDA: 85406769084.13.73ADB01
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 1D103140003
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:40:19 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=TblrE9gS;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=LagpfpVQ;
-	spf=pass (imf23.hostedemail.com: domain of himanshu.chauhan@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=himanshu.chauhan@oss.qualcomm.com;
-	dmarc=pass (policy=none) header.from=oss.qualcomm.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7EDA06B05CC
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:40:30 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0E192C025C
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:40:30 +0000 (UTC)
+X-FDA: 85406769420.03.37C945B
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A9A8C180003
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:40:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=L1gmG5pY;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=KK3HPOu5;
+	dmarc=pass (policy=none) header.from=oss.qualcomm.com;
+	spf=pass (imf16.hostedemail.com: domain of himanshu.chauhan@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=himanshu.chauhan@oss.qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794019220;
+	s=arc-20220608; t=1794019227;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QUPdidpUUsqYD9lA1DSIxpA+Qv+zvKKtEyXbdM4HL6k=;
-	b=6egsizG4BNFXUmwR2vtBMtK5X0OgnHL7m8emSyrq4cPgfce5eS37u+8fiQ1lcpsX1xo4yX
-	pTjzK9A1GSqoIowk1SJzKwDCCgbPVqlvwWTFCGGlFoquaH12LQ8kY8YYIG5WBTqBai3d+v
-	wxcNabpxgx8ztJs3CfTOX6BVspsldzI=
+	bh=sxv5EqtnYWUCOVJkYUviHmwxoOD0vd5Ri8oexCtFYW4=;
+	b=pbl8QiVVg5tbOHxKFF20MLndJ6pllr+ebxtw3hitf/e1Lse6jA3QNFlQfcO6ppLYVUYiDz
+	HAnGvrd9L+NW2q0qx3zQ4ICfco1Pu2GBus8Cf6QpZE3F8fGz6QrIihF56Lj79Pi226r7nm
+	9+33C9sVugJDg3ftoM/cCW/FBi4MOS0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794019220;
-	b=oWBn70fQfFCYhMlilQILlcIdBgijKMebhfrERLdxW9OY3jLDD0zeN1jg6QUGOkvYYmiNM7
-	eMxTJpM7J2D8WNwhSMzjOum0Pi4/Pjn9PCdzfAbUz8fwGDfngvHTBWs09X8Hg46oWvaoni
-	i2R+VBOnD4EMX930oY3nREyRAHM+5NQ=
+	t=1794019227;
+	b=JImpnWlYgo77zlskxDuK+Ocp3uylRCM5aRZzq6xUbnMTCBg2f9UV9kPoTO1IU3zY/aLGD6
+	ujatgRjBoGUKcGsAn07S/+Nqot+05f09pe6OjW7k39HdEXaoO7VdKZzgH2pyLt378skv+k
+	hX996Oi9W7MwUUrypRfzgcA68sFs8bo=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=TblrE9gS;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=LagpfpVQ;
-	spf=pass (imf23.hostedemail.com: domain of himanshu.chauhan@oss.qualcomm.com designates 205.220.168.131 as permitted sender) smtp.mailfrom=himanshu.chauhan@oss.qualcomm.com;
-	dmarc=pass (policy=none) header.from=oss.qualcomm.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A72AmRb568414
-	for <linux-mm@kvack.org>; Sat, 7 Nov 2026 02:40:19 GMT
+	imf16.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=L1gmG5pY;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=KK3HPOu5;
+	dmarc=pass (policy=none) header.from=oss.qualcomm.com;
+	spf=pass (imf16.hostedemail.com: domain of himanshu.chauhan@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=himanshu.chauhan@oss.qualcomm.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A72B3Pr1537656
+	for <linux-mm@kvack.org>; Sat, 7 Nov 2026 02:40:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=QUPdidpUUsq
-	YD9lA1DSIxpA+Qv+zvKKtEyXbdM4HL6k=; b=TblrE9gSh6xghEsFcfaKI05o2kj
-	sJBVjr2aWsiK6pQnsDXYm1GfTmJdGd3AJ38hPcNH6eLIolxxbUkU74w+IF35HmCO
-	/jQ3zhxj0eyNiBVs2xj1iRpPF6rQrxLbujDShqhuqnZZq10SfGb+D88GZTnBFya2
-	rUuJXYqx6rwbWNTEhPwx+Yzgz6OTuRqU0ow3qIQ0WdwLkqX1TEHNr4Cb6CWBGfp2
-	LR2BZhUb6aNTMNO48nzCFbLP64DtVGe3lh0UNrWvulyXOwlb4y8qxJS60ih39kc1
-	exdfBTuSXEmFck8A3LdriWJn7482BBN7OxWHdoUfb4MKY8pzO5TogKW9TVw==
-Received: from mail-dy1-f198.google.com (mail-dy1-f198.google.com [74.125.82.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hsmyk17s5-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=sxv5EqtnYWU
+	COVJkYUviHmwxoOD0vd5Ri8oexCtFYW4=; b=L1gmG5pYYAgjaDrzkHaVi16Gsq6
+	/LL/bdPzdAX+2q1kcDuvVuYbcHTP9YzU9jn16oZISlObiwgRlIxwbZW9kJI9vQUj
+	WVGtlB3lCpDLs2sRw5F137AbZn8tqtHCfw1DoysxFjVKjoM/HCiWHUnWVF9YvRF8
+	q4DeiWs7kiZTohtW0hA9dT/QPrJnvSPDnMNQDBD8/F2eKDk448Wx6S3wG7/cBwSs
+	IO/cNrdrg8zXPxmdC79q77wGkr5uVdPkdfVXICkT9OltUFRUPjMJ3fchFLYcaMa7
+	ZUltcETQFkaXmYGOJNKXt7SiZ6PyJs2iYJLoKbueD3CNUN5AosrUJ+Nol9A==
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hsn03s6b6-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Sat, 07 Nov 2026 02:40:18 +0000 (GMT)
-Received: by mail-dy1-f198.google.com with SMTP id 5a478bee46e88-30c0d568830so2665042eec.1
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 18:40:18 -0800 (PST)
+	for <linux-mm@kvack.org>; Sat, 07 Nov 2026 02:40:26 +0000 (GMT)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-33c35f5ca6cso2313167eec.1
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 18:40:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794019218; x=1794624018; darn=kvack.org;
+        d=oss.qualcomm.com; s=google; t=1794019226; x=1794624026; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=QUPdidpUUsqYD9lA1DSIxpA+Qv+zvKKtEyXbdM4HL6k=;
-        b=LagpfpVQND5WGv8iKambjz5c5kWuGttvUBQWiZfgCIdIOBtAJbEPhFHF9KqjKU6hw2
-         /+LoFvyV40lA1SFrgtdtEo2LzUooch2tF+8nWhaxv1TXPYKRgGvOa7UM5mdc+x4EW4nt
-         NcaS6weBOvUbCYzgHCVnakLyKyVhcyk3BmZgKVz4XzSdine/lONHHZpVgX8jBducGsM+
-         kRSGrv1LIyl/PJAgjql7shKryr9jsFIj/OD2/2B+cQY589btoGOjsOG1t8xze6VgmB3Q
-         y9I4C3H6WkKNZVcOw619IDs68V2yZDi5+Em144+elcgYkE9+Q5z+EyNiIfamvZyoqrBR
-         clSA==
+        bh=sxv5EqtnYWUCOVJkYUviHmwxoOD0vd5Ri8oexCtFYW4=;
+        b=KK3HPOu5DZKnnU4XU1cXPyB+SRxJXZjU5Ql3u9DrO09hn8DHJjOhO5UIgtFUL1OqTR
+         Xr/F08PGabVy7oeN0Q4TozxspublG+tA9ljYHYzZuitL5fnb/SZNxQRhlOu7qW6BiRji
+         fycYF4bkjgB7SO9WlYwd1SVJfpXnynoot2XeKip/kcPiTEeSrI0dSzP5HTnrYcyo9wxG
+         12LUVi85ygZQx+9ZttcRBm3CJhRZr+maeVgmQ3FKE4VFnuPDc/QmmDg356Ee22Z1YPB/
+         xPKmhDBZpeeON0ypz6C4aGacmDeUdukYFUOViYhpmI/u0o8jNSpLx4GSzHpr5UUQc4kw
+         vTrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794019218; x=1794624018;
+        d=1e100.net; s=20260707; t=1794019226; x=1794624026;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=QUPdidpUUsqYD9lA1DSIxpA+Qv+zvKKtEyXbdM4HL6k=;
-        b=04I4eeAjf+TGkT4QBRW2ddwexeLsSd509HM5xekz357vBAo3kYbm0IkKHxGxp/cLu2
-         +K5HK0bwbEN0o9P5tSS+n8ZP5rz9dyihU25EGIM5otQt5XnwhsDnxjkK3TKlzVPHoBPZ
-         +eH7/CIdx8yHbLul9RJ8MsJwftKS2y53ugDLviukXDC+9cUxhjc8ysMS5tmFM2Kg1UQP
-         5n9mAU8iZRKgGMLdQusQMGJxtLxzRvhGDfLHPTkSZfW70QuQ8ccmGavt6pm8WzScUdLD
-         a/mR42JjS3jXlog0eRQ56q3X6Rnp6C4ZhDFOIX6qZWkHZ7tTJAykcz2X5SvtHysaXYfM
-         X7NA==
-X-Forwarded-Encrypted: i=1; AL+hErFYaVSxDQ2fl95fmSxvrtwS/el7WW1FtzZxqnN8OAFDshKq97lcvJdjbF4egvmLB5AdPnodFUygng==@kvack.org
-X-Gm-Message-State: APuU4Z9bDT17SMed5nAscaKsqGF2+yPDomcyjj/M3747tkjZPataFvgg
-	srejrZ86DCiM45fdfV0dpoiuqmFTZ85CCoz4WU3l5s5Fcb8JnV/EHjeYietHg/mN7u0QSsXxBp1
-	AcuUrmlX3s5AHevJZgfylrg1BWJV6YEOPo732PqI+8w6BVZ3FWg7Wjg==
-X-Gm-Gg: AYBFou2+Rny+7l8Jy/N/+oUkSd7MfnXv5lCcv6B5DfeTfLAAnStMLcJjnYPBmtqo+ki
-	62EhhIzksJJSyWOYAToABkdfYHiQwp3weEaHIZ5lZUs4mSlm/6wwQINPJODIJUxpLTq5ZdPSJCW
-	WUGZTD5FP3TXlLFEEe9SQw3YT+Q8q57XgkhCZ9FYlLUqCUls524qmMiub2DZltdmxVP7rhqQt7C
-	oqayyPSAJCrSvz7oBcVM0r5REEK37q1X97z93FJ1s9BRhql6R+NQzy5XRvxy8x0Vf/O1KH5fcpA
-	jY7UiJUeLsLGDFU2wAZuozFeTdjaTbBeKKc2KS2VfXrBhoEYen+H1z1f3y7eFvvAmd+sedR/vR1
-	WY/mZ7icCkQC/VOlZW3+ZKDxHfrnTmbmNs+21ZJbZ+mEDlY5ksZUYwL0ztqxMX1+KVGC9nJRtcU
-	mrNOcjNcNlEKIEySa4rhVnC1x2S7Q6+Hdl+znCZokLJ3JWvbXBFPCY/CAtcnVXh+H/NjWjpH7Qm
+        bh=sxv5EqtnYWUCOVJkYUviHmwxoOD0vd5Ri8oexCtFYW4=;
+        b=DOjO2rOP0geHapcVBb4hZM/rrWSXHyJttVvDCkPlV4byaNkE44Url2kaiavD//x+s4
+         HQALqC/d332y9W93gsdsfvrdrFiGlgfcRqm60jsZZ3Vrg4boD9c595ZPLqvvv/oQ0P2D
+         G5RlPPy7RYhUzPJ2W736vZkJVS7g9p7pMGleOfPUz1LQ04TN2eRGQPUf/NdlPCiMUZAM
+         ms/6dD7jQ/kcXBm5TW25rKWy0sWebMO8A1TsC2Z75kfNkNDJ+zXMrcrspNgTwUJomapc
+         AGiPj5SmwCL7kLMR/PhtTmoxlXjmNcKyjuZh9Lxobq0agmOh7JjSpTp0qW0QbYkFtajb
+         tFYQ==
+X-Forwarded-Encrypted: i=1; AKwUvByrTzlR/DUf8LzrWfkhHpBknsAWt6xUz7B50uhym1E54Z5ONsNsNb4/CP2v7oNR6dMzbt92KxcCSQ==@kvack.org
+X-Gm-Message-State: APuU4Z9Dm07U8pqwfLg/Z+hETZnZwCL2o5mciaEOqN2kbE5pMyeQ0U6l
+	mxE9nb3bA7Yc1yGnrc2/TgNmT/YNcC9S5Kgx3j/AvQLEmIZd3uU+N8zECMiAQesq7dGH3RCE6am
+	UByqQ5KwZ0geYSI9iiqCHz7Vx6WafFvKl68OubPr8LjzVH7SQPzE0xw==
+X-Gm-Gg: AYBFou01jJmgrctwn/HDGBavTHAjUFMwWtXaINobxkQ9SWoaYn1KGX7uQfxGeIrJ0t/
+	JusQMgN5GxjghZI9H49ZO/a0uhYQLFFI+pqly2E+KcpsC/rrV/MJy0UIJ+y9Trrc+z2KXiThPkC
+	EPzuHYaGijvQ47GnTd/YELJegJNEkQXgeE8Nw5Zg6K8cic4jo5IPQZg7Wmpm9oyHRnpBlgL9pde
+	SOSU1BjKtBaZeCLAwm0QhVJ17eOsJX25D6gHHSi5EYap7+yaIQR+szcUdsm9tuVvVSI4x02JA0U
+	N1akD2tnsuhKn4EfHb9whIchqUKXcHI2oXYZjd7LEWA8/WUioMW7c8C9Z/eS6Mlam1xDU6rtfuU
+	RuNm2NMskCp8PdwZufN0tlJx95LPMAKkrHaVpeoGch7sLSdmfDLjSvFG0BjIQ+3866kKbUQvCnA
+	/tqGOXhw5SM6X0zmKljX5hWqLvaDFFWNBY8HUWu+iXMKrY221OTZeSSTLSFHRd0ywiVZeW4Hi/v
 	A==
-X-Received: by 2002:a05:7301:dc2:b0:369:daea:812a with SMTP id 5a478bee46e88-36f76023981mr5665220eec.30.1794019217734;
-        Fri, 06 Nov 2026 18:40:17 -0800 (PST)
-X-Received: by 2002:a05:7301:dc2:b0:369:daea:812a with SMTP id 5a478bee46e88-36f76023981mr5665174eec.30.1794019217093;
-        Fri, 06 Nov 2026 18:40:17 -0800 (PST)
+X-Received: by 2002:a05:7301:6190:20b0:36a:1089:9836 with SMTP id 5a478bee46e88-36f75839295mr5734774eec.15.1794019225406;
+        Fri, 06 Nov 2026 18:40:25 -0800 (PST)
+X-Received: by 2002:a05:7301:6190:20b0:36a:1089:9836 with SMTP id 5a478bee46e88-36f75839295mr5734715eec.15.1794019224581;
+        Fri, 06 Nov 2026 18:40:24 -0800 (PST)
 Received: from hu-himchau-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faac86a96sm11069040eec.29.2026.11.06.18.40.09
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faac86a96sm11069040eec.29.2026.11.06.18.40.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 18:40:16 -0800 (PST)
+        Fri, 06 Nov 2026 18:40:24 -0800 (PST)
 From: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
         Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org
@@ -126,55 +126,53 @@ Cc: Alexandre Ghiti <alex@ghiti.fr>, Jesse Taube <jtaubepe@redhat.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org,
         Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
-Subject: [PATCH v8 6/8] riscv: Add shared instruction fetch and decode helpers
-Date: Sat,  7 Nov 2026 08:09:15 +0530
-Message-ID: <20261107023917.40606-7-himanshu.chauhan@oss.qualcomm.com>
+Subject: [PATCH v8 7/8] riscv: Add software supported single stepping with mc/mc6 triggers
+Date: Sat,  7 Nov 2026 08:09:16 +0530
+Message-ID: <20261107023917.40606-8-himanshu.chauhan@oss.qualcomm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261107023917.40606-1-himanshu.chauhan@oss.qualcomm.com>
 References: <20261107023917.40606-1-himanshu.chauhan@oss.qualcomm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: qQ3j4ISFPrkjHKRg840D7BwgdcTC346Y
-X-Proofpoint-ORIG-GUID: qQ3j4ISFPrkjHKRg840D7BwgdcTC346Y
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA3MDAxMCBTYWx0ZWRfX81/BPNCxJiFU
- q6EmjledOhIII7Uh96PDA50Xj5FVCvVUcu1Gq6IozgVRIrODv90kmIM8c3fwndBssdP8ZxjoL4E
- wXV8MNv9L+K9IsKZIPx7t/W0Ak2HlMw=
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA3MDAxMCBTYWx0ZWRfXyvMllEtbL5jn
- WqgQM0wh5kIWQQ2xzuvR6HyMA3u0GerDPV9e76ib7EDPOHdOQ95Oa2h9Ysnnu+r6G5Ekayx1wL8
- 6O9w8u5ugnfb3Se5fJ5iDRLNDGnvUzS/Uq499+pbaMX+grq4WaSPSRWmCs40Fa1nfux5aqlwJdo
- In5ay9dsWgP6OTQG8IThOB4g3obkSG8qxSVF3XS5oHU44ZrX/vlwqrWFSdE4yXc9vjdMRNZrgTu
- MZBumSMnv8dBoBBf2oFtVWRAkaIQLc+KxZ6H6KdVWJ2wNEOCDV2QtJyi4QfVK2uyni9V2zb9Yck
- 0Qjam+jnSiTBKMntoq3Wlshr+iKQv0VCI9oDQQSjrdOjQDbd4bh4jBV/ecdWnnmoiqOycD9QNEW
- diH77ODvxXDxSCyktP/TgCEKXjyrFI7qj8s2xEbG72ll9UzFIszIo2mu/00nEDL4v/aDjimnA02
- VjeheSxIwaccWE1vRrw==
-X-Authority-Analysis: v=2.4 cv=I5Tw19gg c=1 sm=1 tr=0 ts=6aee8f92 cx=c_pps
- a=wEP8DlPgTf/vqF+yE6f9lg==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+X-Authority-Analysis: v=2.4 cv=JMSuIMKb c=1 sm=1 tr=0 ts=6aee8f9a cx=c_pps
+ a=cFYjgdjTJScbgFmBucgdfQ==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=YMgV9FUhrdKAYTUUvYB2:22 a=20KFwNOVAAAA:8
- a=EUspDBNiAAAA:8 a=JfrnYn6hAAAA:8 a=XkDl4Et5ty8ZtOCQo2QA:9
- a=bBxd6f-gb0O0v-kibOvt:22 a=1CNFftbPRP8L7MoqJWF3:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=gowsoOTTUOVcmtlkKump:22 a=EUspDBNiAAAA:8
+ a=m8l0dXrX7-G3mt2yGekA:9 a=scEy_gLbYbu1JhEsrz4S:22
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA3MDAxMCBTYWx0ZWRfXxF35HmB8UE4r
+ h+5LNlYdJOWi34KBTICYdUrsFWNIGQl/oiems5ByxZyJFWkglFvOdbNzyGj3NASFNCskHV8W54O
+ gj+iaKpiGIqubDdlpERtb7RfPjm2gBs=
+X-Proofpoint-ORIG-GUID: b2FgFz9FKntWfNMQSpoqZ1_BillsCDMl
+X-Proofpoint-GUID: b2FgFz9FKntWfNMQSpoqZ1_BillsCDMl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA3MDAxMCBTYWx0ZWRfX4xgVINU60Kl6
+ ha7y19UJ/UYCtZhtcnN8L3J8f7iTCo3PctiS1wl+EkkMTnUqP31chsNiEdvw+KaiP1vcEhrgSoJ
+ BZFTaMo8Dxjak5QDg/7IiuyEPzCOoFh9MkraNfVNBgvev2icA/IGCsYdccis4AOgLNz5D7zTyNG
+ ymJGgjTCuF8R54VrcLVnMjQFq4QY8cqfn/+DFB0F4tuEXzV+kPJ2Lgb5Oy4q9iay9olVWQtoFn0
+ MTAgjLSSuAK+s3ZjpRYwlyKzBw/jOcsnFFYquplTS3mMi+/8UJWoVN68ckRfyuYd3hA75iWhP7b
+ 90eSy15jFqf/ZSUM7ro7UtcmbUKfrN0ldmUG1e2kS4NeU5tWcBscITEU4NmbQ77ziso1Hn/NGYk
+ 36rR7Myt3flhEUpbMKClg96yIcVmDU50CGgZJWlaviZI4carI8SOZ2/8Io8aGkXtIqLws2VtpuO
+ qyBzEIXCVObbpwMBlDg==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-07_01,2026-11-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 clxscore=1011 suspectscore=0 lowpriorityscore=0
- priorityscore=1501 spamscore=0 malwarescore=0 phishscore=0 adultscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611070010
-X-Stat-Signature: pks6ui887b6sy8sym5pm8ot9ocgknkac
-X-Rspamd-Queue-Id: 1D103140003
+ priorityscore=1501 spamscore=0 suspectscore=0 adultscore=0 phishscore=0
+ impostorscore=0 lowpriorityscore=0 bulkscore=0 clxscore=1015 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611070010
+X-Stat-Signature: xybu9j9y8w8w8soua1ufjbq6oosiu1x8
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794019219-205222
-X-HE-Meta: U2FsdGVkX18GvI/hCMzOjr9aa6GF9OE74d7GdEqdghi/DjYuNnkCoEgByX9COx9sqb5HrCm2Mw0aAu/EDkQmOwdoRU7k2RFhkFyFxGo9hK5RfX4HnfQDCTZQqVatB2hchVHiYQiRPnG34Lsn12UlVaVJEFY+zytd2b2HCJmA2oLUtjLaygeDLSBDukMVzCNrlTiveeIszN8HIeJrLoQEKrjPu5tsVp3a7P8wH7Js7Og87ONX9oRa0V9mC0dwr3klmkjhmT41x3SLMUAO6piH1WTysupwdQfj/gqFyHJN4jkPgfEZ/ECv9hE7kPcAriQ95nFebyvd2G+UG+iXmkBtywSjYZxN1jKuu4h4tPJg5XLrmIjFsVtPhtQZ+T/eT/lYflVgFJrDGexkAAWY4MTATkoscDOkoeXlM2vCyA8yVnam0t5GoWbTqc2csq5FhmlFfvhCF2V5Kl4u1v20tuf4ku33yiPkx1MbQJQdlY9bKE22MbBOutMQph8diK3x9vn0Dv7PUf99+uBLdsPDQ9qZvrcjIo203PJnsOTb2ZVLrqDGuyjYuw3ES6Ko2RIqucKViUY117ICqyfIHa63FPdGxPAN5h2XY9DqypF/B8S1Caxv4Pjtp77I7ebWeMVuWWQrig4KgTmHrkjloMuHeHfxn8xZKifuxSF024d4yjycT6IsSUywAFEx2abKReGJD9x2YyRK32/5ApMRgEmjISKPj7uooAFfG4MEUaurkoTkou/WXd7PdTajKUI5tQZ4LIU4s3TP9k4tDnyIoyZ9gV53PrTkqkqWVdnuI2V/TTQ0dvBTf+hhr1tDTQGDIBLKU+w5hGYOtxODPex6RqwKIFwwosjmkbe6TGONjVhy0994ixria2M+ATknixO6FnRApU5BDe5vc5emKgZ2v5uSLkul1pMIUz36Pn9s4/wZ8GlH/weSKdJMLMTrjGhSHKPJUih76XZsKAomb8ZCqKCJwc1
- r6jlnBww
- XhpBC79ngzFtYorYSJwD0icQpNWr59oj/iY/nia+KUtbH/Rti22GVCdeC3GSyegVqEmFtHR8uepgcpaZ4voOG9YQk0upM2JoGWTHUAO6lfGJ5VDXXEJQKz+qCDmz+vurujzwbHzgfIyJ1ALtksyHINH1AwWJf6SUCHgvPDooRkxDoWbVgSI/0F4tqvdypsWGS/vH3440ZRGw/5p9JvopLs/p6qCyeslKbnZYm9E9X0+erZxOUvH1mSCcu0MhSfv8BWxA7t3tzpWTHVwsjcAdE4wed3T3uGbWs0huIpA+TxbB9p5pGt72pcNXY6pLDrSC4vWeNkuwxp3MdBbHx4kDVLebm2VoGzxNUZWNnJhMUJBBT5C7cYbyf2zn015nVWh1jOI+9x9yux3LUqxgNUCUtVYtlFqhOsAwDvPuZKr7LzDHekviV1BhgKnJXkUtvdOoJj22WX9YT7H3tA6lEk6ErQrj/pJocm/tHocdGNVqMQNzTZl2Z9ydRh2EB7SHE2EKTdZ4p
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A9A8C180003
+X-HE-Tag: 1794019227-282612
+X-HE-Meta: U2FsdGVkX1+JjGPoG9FPvLIXcbaFIGQnWbzw53fDoHgzuvWphjJ7whSBn0vyU4Y6AartADe8fWNTssykIJEBWef0SScarmJXQWa+VnjjdyFQMQ5EYTi0a94okanGlLcHGh4koJ9mwmT8FwPASujU9jYA81Z/mz2EtIK8MHVvI2wVItxC/7vH4Wb1evcNiCLkXWEEwjQ6lzv9amxG3pa9Rpsrs0jk1kmKHej9otA1flnBt08lS5UJw71uZhHUrjQx3WMFkjHGrgVbl43tmr7FWtMI+GYk1TtyfVxor/Vj9XKGyK8PnQYWwMMaxRRT1P745Jvv2PqWreT354CnRsrCKVymCngQV/Varooh+ZcY+ZXuOKI/nReAR/HGJCOuOpAzz4JUi/J0ezsdspLFCvAdPT+/HA5WE6ViI1we2b1fV31tdg7pJd+QK4V+QrkDyo9LczJbmKBE/W3mZnlNh9lfS4/0WyCRGS9VPRkoLQkCS5blmJgWvk31bB0pE3LFa9pFAFUsgYonYwIrjbaFYMn62EMtls0P/UBIi4PBhm4a7A0c51U2+VTT9WFQrI7KRjwEzUP2J8qgdZ8N+071xvOaETfV+JgzdWX95ImGe2qdB4vt0ib66ZXlr+52dSWNrb1Y8+intxC4Vp31mE3zgdKKHVrsjMsd1XFMRp7Wkf5Dx3rGtMLbT6Wb5w0lYEEzKvyz39UQKYGhYaGcPIReQlybiS0RBr3uzBvWdj1lev72wDKU/YqtjcvjpZjDZ7yOqDs0pzbltWqYxkcIovzHtYF4kb6Im6FEua8v7duTG1zcnqZ3+ODWuF07uzL485pG3hH1g6NuEjmdLQoc7oauppLzAy9nwOXd3puPgmDPpG7ar1UfbxRtNmUWgNNWnaQYBaW5SwQz7ex1ljhS5BJINSKXPyjSJygZEP18dYYQ8yX+QD1XP8iyDT/MyIPhRsG2JCKXLF9dKGeVBHrPScCKtVY
+ hFc9JhWL
+ fTOPcojUBAZzUP6tp7X+5pjCV61gU2ikFHzbAlv3xLb+Gx5dTgNn6wt1LNQxHkP99El6Deu7+B6VNKgG1qepABzh6L/bykSRut2KU8COQH0nXb/YSh3hn9iBDtOmVV+dF/Pm+i6iqf5VXM8HHeuen7NW0+hXqI84fYCjuUri9h8YX2uPfkENx8KnGlE/YBIqw3QGtpA4CMnrMKz0Tm8TNvdYqHduqFUPO8d2jWDugu6E3fLQ9XaFaFnBh5GPrtvbU3YipK/2O5UShOyJJjLJELpmZ26jvAqZr8Lymd+vCavUxftHIC6KO8qUWXtnSoNzlWCd1UnTUT/aTVBHUC/GyIwfDc9AvC1LQ6p/t/05z2fZmMqRT5YE7UtmCeVVYetX8gpYfkOa51DZrjm/7Es59IhZGJYbsBH9Z/KIViY/ifXz0BC9LBUZg1vZr2Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -183,441 +181,436 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Move get_insn() and __read_insn() out of traps_misaligned.c so
-breakpoint single-step code can share the instruction fetch logic.
+With mc/mc6 triggers, after handling breakpoint at current pc, there
+is no way to tell trigger to skip same breakpoint after the handler
+returns. This can cause loop of breakpoints at the same address until
+the trigger is disabled or uninstalled. Debugger may keep the breakpoints
+enabled and if kernel disables it, there is a loss of state coherency.
 
-Add helpers to read GPR values and compute the next RISC-V PC for
-control-flow instructions handled by software single stepping. The helpers
-cover compressed and standard branches, jumps, JALR, and SRET.
+To avoid the loop, software disables the current breakpoint, finds the
+next instruction that would be executed after pc and puts a breakpoint
+at that address. When this breakpoint hits, old breakpoint is reinstalled.
 
-Suggested-by: Jesse Taube <jtaubepe@redhat.com>
 Signed-off-by: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
 ---
- MAINTAINERS                          |   2 +
- arch/riscv/include/asm/insn.h        |  16 ++
- arch/riscv/kernel/traps_misaligned.c |  52 +----
- arch/riscv/lib/Makefile              |   1 +
- arch/riscv/lib/insn.c                | 279 +++++++++++++++++++++++++++
- 5 files changed, 299 insertions(+), 51 deletions(-)
- create mode 100644 arch/riscv/lib/insn.c
+ arch/riscv/include/asm/hw_breakpoint.h |  16 ++
+ arch/riscv/kernel/hw_breakpoint.c      | 297 ++++++++++++++++++++++++-
+ 2 files changed, 308 insertions(+), 5 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index baf97e8c39f6..db65093d751f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -24167,9 +24167,11 @@ RISC-V DEBUGGING
- M:	Himanshu Chauhan <himanshu@thechauhan.dev>
- L:	linux-riscv@lists.infradead.org
- F:	arch/riscv/include/asm/hw_breakpoint.h
-+F:	arch/riscv/include/asm/insn.h
- F:	arch/riscv/include/asm/perf_event.h
- F:	arch/riscv/kernel/hw_breakpoint.c
- F:	arch/riscv/kernel/perf_*
-+F:	arch/riscv/lib/insn.c
- F:	drivers/perf/
- F:	tools/testing/selftests/breakpoints/breakpoint_test_riscv.c
+diff --git a/arch/riscv/include/asm/hw_breakpoint.h b/arch/riscv/include/asm/hw_breakpoint.h
+index 6e8913d69df2..b3ccebb5185e 100644
+--- a/arch/riscv/include/asm/hw_breakpoint.h
++++ b/arch/riscv/include/asm/hw_breakpoint.h
+@@ -15,10 +15,26 @@ struct task_struct;
+ /* Maximum number of hardware breakpoints supported */
+ #define RISCV_MAX_BP		16
  
-diff --git a/arch/riscv/include/asm/insn.h b/arch/riscv/include/asm/insn.h
-index ad348d8b8857..01b5bbce1270 100644
---- a/arch/riscv/include/asm/insn.h
-+++ b/arch/riscv/include/asm/insn.h
-@@ -227,9 +227,16 @@
- #define RVC_MASK_C_EBREAK	0xffff
- #define RVG_MASK_EBREAK		0xffffffff
- #define RVG_MASK_SRET		0xffffffff
-+#define RVC_MASK_INSN		GENMASK(15, 0)
- 
- #define __INSN_LENGTH_MASK	_UL(0x3)
- #define __INSN_LENGTH_GE_32	_UL(0x3)
++enum riscv_hw_bp_step_method {
++	RISCV_HW_BP_STEP_DISABLED,
++	RISCV_HW_BP_STEP_ICOUNT,
++	RISCV_HW_BP_STEP_SW,
++};
 +
-+static __always_inline bool riscv_insn_is_compressed(u32 code)
-+{
-+	return (code & (__INSN_LENGTH_MASK)) != (__INSN_LENGTH_GE_32);
-+}
+ struct arch_hw_breakpoint {
+ 	unsigned long address;
+ 	unsigned long len;
+ 	unsigned int type;
 +
- #define __INSN_OPCODE_MASK	_UL(0x7F)
- #define __INSN_BRANCH_OPCODE	_UL(RVG_OPCODE_BRANCH)
++	/*
++	 * Single-step callback state.  While step_method is enabled, the
++	 * hardware slot is temporarily programmed as either an icount trigger
++	 * or an execute trigger at next_addr, and the original trigger config
++	 * is restored when that temporary trigger fires.
++	 */
++	unsigned long next_addr;
++	enum riscv_hw_bp_step_method step_method;
++	bool pending_perf_event;
+ 	unsigned int match;
+ 	unsigned int chain;
+ 	unsigned int select;
+diff --git a/arch/riscv/kernel/hw_breakpoint.c b/arch/riscv/kernel/hw_breakpoint.c
+index 4231170d4901..72be50943937 100644
+--- a/arch/riscv/kernel/hw_breakpoint.c
++++ b/arch/riscv/kernel/hw_breakpoint.c
+@@ -15,6 +15,7 @@
+ #include <linux/cpu.h>
+ #include <linux/cpuhotplug.h>
  
-@@ -600,4 +607,13 @@ static inline void riscv_insn_insert_utype_itype_imm(u32 *utype_insn, u32 *itype
- 	*utype_insn |= (imm & RV_U_IMM_31_12_MASK) + ((imm & BIT(11)) << 1);
- 	*itype_insn |= ((imm & RV_I_IMM_11_0_MASK) << RV_I_IMM_11_0_OPOFF);
++#include <asm/insn.h>
+ #include <asm/sbi.h>
+ 
+ #define RISCV_HW_BP_NUM_MAX	32
+@@ -62,6 +63,9 @@ enum {
+ #define RISCV_DBTR_MC6_HIT1		BIT(25)
+ #define RISCV_DBTR_MC6_HIT_MASK	(RISCV_DBTR_MC6_HIT | RISCV_DBTR_MC6_HIT1)
+ 
++#define RISCV_DBTR_ICOUNT_U		BIT(6)
++#define RISCV_DBTR_ICOUNT_COUNT_MASK	GENMASK(23, 10)
++
+ #define RISCV_DBTR_MC6_HIT_FALSE	0
+ #define RISCV_DBTR_MC6_HIT_BEFORE	1
+ #define RISCV_DBTR_MC6_HIT_AFTER	2
+@@ -77,6 +81,7 @@ static union sbi_dbtr_shmem_entry __percpu *sbi_dbtr_shmem;
+ /* number of debug triggers on this cpu . */
+ static int dbtr_total_num __ro_after_init;
+ static int dbtr_type __ro_after_init;
++static bool dbtr_icount_available __ro_after_init;
+ static unsigned long dbtr_init __ro_after_init;
+ 
+ #define MEM_HI(_m)		\
+@@ -194,6 +199,17 @@ static void init_sbi_dbtr(void)
+ 		return;
+ 	}
+ 
++	tdata1 = dbtr_tdata1_type(RISCV_DBTR_TRIG_ICOUNT);
++
++	ret = sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_NUM_TRIGGERS,
++			tdata1, 0, 0, 0, 0, 0);
++	if (ret.error) {
++		pr_warn("Failed to detect icount triggers\n");
++	} else if (ret.value) {
++		dbtr_icount_available = 1;
++		pr_warn("Icount trigger available.\n");
++	}
++
+ 	tdata1 = dbtr_tdata1_type(RISCV_DBTR_TRIG_MCONTROL6);
+ 
+ 	ret = sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_NUM_TRIGGERS,
+@@ -397,6 +413,9 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
+ 	hw->tdata1 = 0;
+ 	hw->tdata2 = attr->bp_addr;
+ 	hw->tdata3 = 0x0;
++	hw->next_addr = 0x0;
++	hw->step_method = RISCV_HW_BP_STEP_DISABLED;
++	hw->pending_perf_event = false;
+ 
+ 	switch (dbtr_type) {
+ 	case RISCV_DBTR_TRIG_MCONTROL:
+@@ -414,6 +433,168 @@ int hw_breakpoint_arch_parse(struct perf_event *bp,
+ 	return ret;
  }
-+
-+#ifndef __ASSEMBLY__
-+#include <asm/ptrace.h>
-+
-+int get_insn(struct pt_regs *regs, ulong epc, ulong *r_insn);
-+int get_insn_safe(struct pt_regs *regs, ulong epc, ulong *r_insn);
-+unsigned long get_next_insn_address(struct pt_regs *regs, ulong insn, ulong pc);
-+#endif /* __ASSEMBLY__ */
-+
- #endif /* _ASM_RISCV_INSN_H */
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index 6e8ae6c66322..541e6a5b8039 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -10,6 +10,7 @@
- #include <linux/irq.h>
- #include <linux/stringify.h>
  
-+#include <asm/insn.h>
- #include <asm/processor.h>
- #include <asm/ptrace.h>
- #include <asm/csr.h>
-@@ -129,57 +130,6 @@ static unsigned long get_f32_rs(unsigned long insn, u8 fp_reg_offset,
- #define GET_F32_RS2C(insn, regs) (get_f32_rs(insn, 2, regs))
- #define GET_F32_RS2S(insn, regs) (get_f32_rs(RVC_RS2S(insn), 0, regs))
- 
--#define __read_insn(regs, insn, insn_addr, type)	\
--({							\
--	int __ret;					\
--							\
--	if (user_mode(regs)) {				\
--		__ret = get_user(insn, (type __user *) insn_addr); \
--	} else {					\
--		insn = *(type *)insn_addr;		\
--		__ret = 0;				\
--	}						\
--							\
--	__ret;						\
--})
--
--static inline int get_insn(struct pt_regs *regs, ulong epc, ulong *r_insn)
--{
--	ulong insn = 0;
--
--	if (epc & 0x2) {
--		ulong tmp = 0;
--
--		if (__read_insn(regs, insn, epc, u16))
--			return -EFAULT;
--		/* __get_user() uses regular "lw" which sign extend the loaded
--		 * value make sure to clear higher order bits in case we "or" it
--		 * below with the upper 16 bits half.
--		 */
--		insn &= GENMASK(15, 0);
--		if ((insn & __INSN_LENGTH_MASK) != __INSN_LENGTH_32) {
--			*r_insn = insn;
--			return 0;
--		}
--		epc += sizeof(u16);
--		if (__read_insn(regs, tmp, epc, u16))
--			return -EFAULT;
--		*r_insn = (tmp << 16) | insn;
--
--		return 0;
--	} else {
--		if (__read_insn(regs, insn, epc, u32))
--			return -EFAULT;
--		if ((insn & __INSN_LENGTH_MASK) == __INSN_LENGTH_32) {
--			*r_insn = insn;
--			return 0;
--		}
--		insn &= GENMASK(15, 0);
--		*r_insn = insn;
--
--		return 0;
--	}
--}
- 
- union reg_data {
- 	u8 data_bytes[8];
-diff --git a/arch/riscv/lib/Makefile b/arch/riscv/lib/Makefile
-index f668b98970bd..84cdd35afa42 100644
---- a/arch/riscv/lib/Makefile
-+++ b/arch/riscv/lib/Makefile
-@@ -1,5 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- lib-y			+= delay.o
-+lib-y			+= insn.o
- lib-y			+= memcpy.o
- lib-y			+= memset.o
- lib-y			+= memmove.o
-diff --git a/arch/riscv/lib/insn.c b/arch/riscv/lib/insn.c
-new file mode 100644
-index 000000000000..fc44e2aa6f5f
---- /dev/null
-+++ b/arch/riscv/lib/insn.c
-@@ -0,0 +1,279 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright 2026 Qualcomm Technologies, Inc.
-+ */
-+
-+#include <linux/uaccess.h>
-+
-+#include <asm/insn.h>
-+#include <asm/ptrace.h>
-+
-+/*
-+ * fetch_insn_u16() - Fetch a 16-bit RISC-V instruction parcel from memory
-+ * @regs: Register state used to determine the access context
-+ * @insn: Pointer receiving the instruction value
-+ * @insn_addr: Address from which to read the instruction parcel
-+ *
-+ * Fetches an instruction parcel from user or kernel memory, depending on the
-+ * execution context indicated by @regs. RISC-V instruction parcels are
-+ * stored in little-endian byte order, so the fetched value is converted from
-+ * little-endian to the native CPU representation before being stored in @insn.
-+ *
-+ * The conversion is a no-op on little-endian targets and performs the
-+ * required byte swap on big-endian targets.
-+ *
-+ * Return: 0 on success, or a negative error code if reading user memory
-+ *         fails.
-+ */
-+static int fetch_insn_u16(struct pt_regs *regs, u16 *insn,
-+			  unsigned long insn_addr)
++static ulong get_step_address(struct pt_regs *regs, ulong insn)
 +{
-+	u16 val;
-+	int ret;
-+
-+	if (user_mode(regs))
-+		ret = get_user(val, (u16 __user *)insn_addr);
-+	else
-+		ret = get_kernel_nofault(val, (u16 *)insn_addr);
-+
-+	if (!ret)
-+		*insn = le16_to_cpu((__force __le16)val);
-+
-+	return ret;
++	return get_next_insn_address(regs, insn, regs->epc);
 +}
 +
-+static int fetch_insn_u32(struct pt_regs *regs, u32 *insn,
-+			  unsigned long insn_addr)
++static int dbtr_update_event_tdata(struct perf_event *event,
++				   unsigned long tdata1,
++				   unsigned long tdata2,
++				   unsigned long tdata3, bool wait);
++
++static bool hw_breakpoint_event_active(struct perf_event *event)
 +{
-+	u32 val;
-+	int ret;
-+
-+	if (user_mode(regs))
-+		ret = get_user(val, (u32 __user *)insn_addr);
-+	else
-+		ret = get_kernel_nofault(val, (u32 *)insn_addr);
-+
-+	if (!ret)
-+		*insn = le32_to_cpu((__force __le32)val);
-+
-+	return ret;
++	return READ_ONCE(event->state) == PERF_EVENT_STATE_ACTIVE;
 +}
 +
-+/**
-+ * get_insn() - Fetch and decode a RISC-V instruction
-+ * @regs: Register state used for instruction access
-+ * @epc: Address of the instruction to fetch
-+ * @r_insn: Pointer to store the fetched instruction encoding
-+ *
-+ * Fetches the instruction at @epc and stores its encoding in @r_insn.
-+ * Both standard 32-bit instructions and compressed 16-bit instructions are
-+ * supported. If a 32-bit instruction is split across two 16-bit instruction
-+ * accesses, the halfwords are combined into a single instruction encoding.
-+ *
-+ * Return: 0 on success, or %-EFAULT if instruction access fails.
-+ */
-+int get_insn(struct pt_regs *regs, ulong epc, ulong *r_insn)
++static void clear_singlestep_state(struct arch_hw_breakpoint *bp)
 +{
-+	u32 insn;
-+	u16 half, tmp;
++	bp->step_method = RISCV_HW_BP_STEP_DISABLED;
++	bp->next_addr = 0;
++	bp->pending_perf_event = false;
++}
 +
-+	if (!(epc & 0x2)) {
-+		if (fetch_insn_u32(regs, &insn, epc))
-+			return -EFAULT;
++static void disable_unhandled_singlestep(struct perf_event *event,
++					 struct pt_regs *regs, bool deliver_event,
++					 int err)
++{
++	struct arch_hw_breakpoint *bp = counter_arch_bp(event);
 +
-+		if (riscv_insn_is_compressed(insn))
-+			insn &= RVC_MASK_INSN;
++	/*
++	 * If the temporary step trigger cannot be installed or restored, leave
++	 * the CPU with no active trigger instead of re-entering the same debug
++	 * exception forever.
++	 */
++	pr_warn("single-step setup failed for bp_addr=0x%lx epc=0x%lx: %d; disabling event\n",
++		bp->address, regs->epc, err);
++	clear_singlestep_state(bp);
++	if (deliver_event && hw_breakpoint_event_active(event))
++		perf_bp_event(event, regs);
++	if (hw_breakpoint_event_active(event))
++		perf_event_disable_inatomic(event);
++}
 +
-+		*r_insn = insn;
++static unsigned long icount_step_tdata1(void)
++{
++	return dbtr_tdata1_type(RISCV_DBTR_TRIG_ICOUNT) |
++	       FIELD_PREP(RISCV_DBTR_ICOUNT_COUNT_MASK, 1) |
++	       RISCV_DBTR_ICOUNT_U;
++}
++
++static int restore_original_breakpoint(struct perf_event *event)
++{
++	struct arch_hw_breakpoint *bp = counter_arch_bp(event);
++	int ret;
++
++	/*
++	 * Rebuild the original trigger from the perf attributes instead of
++	 * keeping a second copy of the trigger data.  Do not update the
++	 * temporary trigger in place when changing back from icount/software-step
++	 * mode: uninstall/install gives the original breakpoint a fresh hardware
++	 * slot and clears any transient hit state.
++	 */
++	arch_uninstall_hw_breakpoint(event);
++
++	ret = hw_breakpoint_arch_parse(NULL, &event->attr, bp);
++	if (ret)
++		return ret;
++
++	return arch_install_hw_breakpoint(event);
++}
++
++/*
++ * setup_singlestep - Set the breakpoint to next instruction after current breakpoint.
++ */
++static int setup_singlestep(struct perf_event *event, struct pt_regs *regs)
++{
++	struct arch_hw_breakpoint *bp = counter_arch_bp(event);
++	unsigned long insn, next_addr = 0;
++	int ret;
++	struct arch_hw_breakpoint tmp = {};
++
++	clear_singlestep_state(bp);
++
++	if (dbtr_icount_available && !arch_check_bp_in_kernelspace(bp)) {
++		/*
++		 * User breakpoints can use an icount trigger to retire exactly
++		 * one instruction.  The sdtrig icount path reports EPC after the
++		 * counted instruction, so the callback sees the post-step PC
++		 * without decoding the original instruction here.
++		 */
++		tmp.tdata1 = icount_step_tdata1();
++
++		ret = dbtr_update_event_tdata(event, tmp.tdata1, 0, 0, false);
++		if (ret)
++			return ret;
++
++		bp->step_method = RISCV_HW_BP_STEP_ICOUNT;
++		bp->next_addr = 0;
 +		return 0;
 +	}
 +
-+	if (fetch_insn_u16(regs, &half, epc))
-+		return -EFAULT;
-+
-+	insn = half & RVC_MASK_INSN;
-+	if (riscv_insn_is_compressed(insn)) {
-+		*r_insn = insn;
-+		return 0;
++	if (!event->hw.target) {
++		/*
++		 * A CPU-wide software-step trigger follows one task's decoded
++		 * next PC.  If that task migrates, the per-CPU slot may wait
++		 * forever for an address the CPU will not execute.
++		 */
++		return -EOPNOTSUPP;
 +	}
 +
-+	if (fetch_insn_u16(regs, &tmp, epc + sizeof(u16)))
-+		return -EFAULT;
++	ret = get_insn_safe(regs, regs->epc, &insn);
++	if (ret < 0)
++		return ret;
 +
-+	*r_insn = ((u32)tmp << 16) | insn;
++	next_addr = get_step_address(regs, insn);
++	if (next_addr == regs->epc) {
++		/*
++		 * Some control transfers, notably SRET, cannot be represented
++		 * as an execute breakpoint at a different decoded PC.  Refuse
++		 * the software step rather than programming the same address
++		 * and looping on the original breakpoint.
++		 */
++		return -EOPNOTSUPP;
++	}
 +
++	/*
++	 * Software path: update the trigger in-place to an execute
++	 * breakpoint at next_addr.  Build the tdata directly without
++	 * calling hw_breakpoint_arch_parse() so that bp->len and bp->address
++	 * remain valid for the handler's matching logic after restore.
++	 */
++	tmp.tdata2 = next_addr;
++	tmp.tdata3 = 0;
++	switch (dbtr_type) {
++	case RISCV_DBTR_TRIG_MCONTROL6:
++		tmp.tdata1 = dbtr_tdata1_type(RISCV_DBTR_TRIG_MCONTROL6) |
++			     RISCV_DBTR_MC6_EXEC;
++		if (user_mode(regs))
++			tmp.tdata1 |= RISCV_DBTR_MC6_U;
++		else
++			tmp.tdata1 |= RISCV_DBTR_MC6_S;
++		break;
++	case RISCV_DBTR_TRIG_MCONTROL:
++		tmp.tdata1 = dbtr_tdata1_type(RISCV_DBTR_TRIG_MCONTROL) |
++			     RISCV_DBTR_MC_EXEC;
++		if (user_mode(regs))
++			tmp.tdata1 |= RISCV_DBTR_MC_U;
++		else
++			tmp.tdata1 |= RISCV_DBTR_MC_S;
++		break;
++	default:
++		return -EOPNOTSUPP;
++	}
++
++	ret = dbtr_update_event_tdata(event, tmp.tdata1, next_addr, 0, false);
++	if (ret)
++		return ret;
++
++	bp->step_method = RISCV_HW_BP_STEP_SW;
++	bp->next_addr = next_addr;
 +	return 0;
 +}
 +
-+int get_insn_safe(struct pt_regs *regs, ulong epc, ulong *r_insn)
+ static void dbtr_encode_update(union sbi_dbtr_shmem_entry *shmem,
+ 			       unsigned long idx, unsigned long tdata1,
+ 			       unsigned long tdata2, unsigned long tdata3)
+@@ -574,12 +755,43 @@ static unsigned int mc6_read_and_clear_hit(int idx)
+ 	return hit;
+ }
+ 
++static int handle_triggered_breakpoint(struct perf_event *event,
++				       struct pt_regs *regs)
 +{
++	struct arch_hw_breakpoint *bp = counter_arch_bp(event);
++	bool defer_perf;
 +	int ret;
 +
-+	pagefault_disable();
-+	ret = get_insn(regs, epc, r_insn);
-+	pagefault_enable();
-+
-+	return ret;
-+}
-+
-+/**
-+ * riscv_get_reg_value() - Get the value stored the given RISC-V register number
-+ * @regs: Register state containing the saved register values
-+ * @regno: RISC-V register number
-+ *
-+ * Returns the value of the RISC-V register identified by @regno. Register
-+ * x0 always returns zero, as required by the RISC-V ISA.
-+ *
-+ * Return: The register value, or zero if @regno is zero.
-+ */
-+static unsigned long riscv_get_reg_value(struct pt_regs *regs, unsigned int regno)
-+{
-+	return regno ? regs_get_register(regs, regno * sizeof(unsigned long)) : 0;
-+}
-+
-+static unsigned long riscv_jalr_target(unsigned long base, long offset)
-+{
-+	/* JALR, C.JR, and C.JALR clear bit 0 of the computed target address. */
-+	return (base + offset) & ~1UL;
-+}
-+
-+/**
-+ * get_next_insn_address_compressed() - Calculate the next address for a compressed
-+ * RISC-V instruction
-+ * @regs: Register state used to evaluate indirect jumps and conditional
-+ *        branches
-+ * @insn: Compressed RISC-V instruction encoding
-+ * @pc: Current program counter
-+ *
-+ * Determines the address at which execution should continue after processing
-+ * the compressed instruction in @insn. Indirect jumps use the value of the
-+ * instruction's source register, unconditional jumps use the encoded
-+ * immediate, and conditional branches evaluate the relevant register value.
-+ *
-+ * For a branch that is not taken, or for an unsupported compressed
-+ * instruction, the address of the following 16-bit instruction is returned.
-+ *
-+ * Return: The next instruction address.
-+ */
-+static unsigned long get_next_insn_address_compressed(struct pt_regs *regs, u32 insn,
-+						      unsigned long pc)
-+{
-+	unsigned int rs1_num;
-+
-+	if (riscv_insn_is_c_jalr(insn) || riscv_insn_is_c_jr(insn)) {
-+		rs1_num = RV_X(insn, RVC_C2_RS1_OPOFF, 5);
-+		return riscv_jalr_target(riscv_get_reg_value(regs, rs1_num), 0);
++	/*
++	 * Report user breakpoints after the temporary step trigger advances
++	 * past the armed instruction.  Otherwise signal delivery can re-enter
++	 * the same execute trigger before the PC has moved.
++	 */
++	defer_perf = !arch_check_bp_in_kernelspace(bp);
++	if (!defer_perf) {
++		perf_bp_event(event, regs);
++		if (!hw_breakpoint_event_active(event))
++			return NOTIFY_STOP;
 +	}
 +
-+	if (riscv_insn_is_c_j(insn) || riscv_insn_is_c_jal(insn))
-+		return RVC_EXTRACT_JTYPE_IMM(insn) + pc;
-+
-+	if (riscv_insn_is_c_beqz(insn)) {
-+		rs1_num = RV_X(insn, RVC_C1_RS1_OPOFF, 3) + 8;
-+		if (!rs1_num || riscv_get_reg_value(regs, rs1_num) == 0)
-+			return RVC_EXTRACT_BTYPE_IMM(insn) + pc;
-+		return pc + 2;
++	ret = setup_singlestep(event, regs);
++	if (ret < 0) {
++		disable_unhandled_singlestep(event, regs, defer_perf, ret);
++		return NOTIFY_STOP;
 +	}
 +
-+	if (riscv_insn_is_c_bnez(insn)) {
-+		rs1_num = RV_X(insn, RVC_C1_RS1_OPOFF, 3) + 8;
-+		if (rs1_num && riscv_get_reg_value(regs, rs1_num) != 0)
-+			return RVC_EXTRACT_BTYPE_IMM(insn) + pc;
-+		return pc + 2;
++	bp->pending_perf_event = defer_perf;
++	return NOTIFY_STOP;
++}
++
+ /*
+  * HW Breakpoint/watchpoint handler
+  */
+ static int hw_breakpoint_handler(struct die_args *args)
+ {
+-	int i, bp_ret = NOTIFY_DONE;
++	int i, ret = 0, bp_ret = NOTIFY_DONE;
++	struct perf_event *deferred_step_event = NULL;
++	struct arch_hw_breakpoint *deferred_step_bp = NULL;
+ 	struct arch_hw_breakpoint *bp;
+ 	struct perf_event *event;
+ 
+@@ -590,6 +802,74 @@ static int hw_breakpoint_handler(struct die_args *args)
+ 
+ 		bp = counter_arch_bp(event);
+ 
++		if (bp->step_method != RISCV_HW_BP_STEP_DISABLED) {
++			bool pending_perf_event;
++
++			/*
++			 * This trap is for the temporary trigger installed by
++			 * setup_singlestep().  Software stepping must match the
++			 * decoded next_addr; icount already reports the post-step
++			 * PC and can restore the original trigger immediately.
++			 */
++			if (bp->step_method == RISCV_HW_BP_STEP_SW &&
++			    args->regs->epc != bp->next_addr) {
++				/*
++				 * A nested breakpoint can fire before this
++				 * event reaches its decoded next_addr, for
++				 * example when perf delivers a signal handler
++				 * with its own breakpoint.  Let the later slot
++				 * handle that trap and keep this temporary step
++				 * armed.  If nobody handles the trap, restore
++				 * below so a real divergence does not lose the
++				 * original breakpoint indefinitely.
++				 */
++				deferred_step_event = event;
++				deferred_step_bp = bp;
++				continue;
++			}
++
++			if (bp->step_method == RISCV_HW_BP_STEP_ICOUNT &&
++			    args->regs->epc == bp->address) {
++				unsigned long tdata1 = icount_step_tdata1();
++
++				/*
++				 * A trap can be observed before the original
++				 * user instruction retires, leaving EPC on the
++				 * armed breakpoint.  Delivering the deferred
++				 * perf event here would account the same
++				 * breakpoint twice, so rearm icount and wait for
++				 * a callback with a post-instruction EPC.
++				 */
++				ret = dbtr_update_event_tdata(event, tdata1, 0, 0, false);
++				if (ret) {
++					disable_unhandled_singlestep(event,
++								     args->regs,
++								     bp->pending_perf_event,
++								     ret);
++					bp_ret = NOTIFY_STOP;
++					goto exit;
++				}
++				bp_ret = NOTIFY_STOP;
++				goto exit;
++			}
++
++			pending_perf_event = bp->pending_perf_event;
++
++			ret = restore_original_breakpoint(event);
++			if (ret) {
++				clear_singlestep_state(bp);
++				perf_event_disable_inatomic(event);
++				bp_ret = NOTIFY_STOP;
++				goto exit;
++			}
++
++			clear_singlestep_state(bp);
++			if (pending_perf_event && hw_breakpoint_event_active(event))
++				perf_bp_event(event, args->regs);
++			bp_ret = NOTIFY_STOP;
++			goto exit;
++		}
++
+ 		switch (event->attr.bp_type) {
+ 		/* Breakpoint */
+ 		case HW_BREAKPOINT_X:
+@@ -603,8 +883,7 @@ static int hw_breakpoint_handler(struct die_args *args)
+ 					       RISCV_DBTR_MC6_HIT_FALSE;
+ 
+ 				if (hit) {
+-					perf_bp_event(event, args->regs);
+-					bp_ret = NOTIFY_STOP;
++					bp_ret = handle_triggered_breakpoint(event, args->regs);
+ 					goto exit;
+ 				}
+ 			}
+@@ -640,8 +919,7 @@ static int hw_breakpoint_handler(struct die_args *args)
+ 				hit |= ranges_overlap(bp_start, bp_len, stval,
+ 						      sizeof(long));
+ 				if (hit) {
+-					perf_bp_event(event, args->regs);
+-					bp_ret = NOTIFY_STOP;
++					bp_ret = handle_triggered_breakpoint(event, args->regs);
+ 					goto exit;
+ 				}
+ 			}
+@@ -653,6 +931,15 @@ static int hw_breakpoint_handler(struct die_args *args)
+ 		}
+ 	}
+ 
++	if (deferred_step_event) {
++		bp = deferred_step_bp;
++		ret = restore_original_breakpoint(deferred_step_event);
++		if (ret)
++			perf_event_disable_inatomic(deferred_step_event);
++		clear_singlestep_state(bp);
++		bp_ret = NOTIFY_STOP;
 +	}
 +
-+	return pc + 2;
-+}
-+
-+/**
-+ * riscv_branch_taken() - Determine whether a RISC-V conditional branch is taken
-+ * @regs: Register state used to obtain the source operand values
-+ * @insn: RISC-V branch instruction encoding
-+ *
-+ * Evaluates the branch condition encoded in @insn using the values of its
-+ * source registers from @regs. Signed comparisons are used for BLT and BGE,
-+ * while unsigned comparisons are used for BLTU and BGEU.
-+ *
-+ * Return: %true if the branch condition is satisfied, or %false otherwise.
-+ *         Unsupported branch instructions also return %false.
-+ */
-+static bool riscv_branch_taken(struct pt_regs *regs, u32 insn)
-+{
-+	unsigned int rs1_num = RV_X(insn, RVG_RS1_OPOFF, 5);
-+	unsigned int rs2_num = RV_X(insn, RVG_RS2_OPOFF, 5);
-+	unsigned long rs1_val = riscv_get_reg_value(regs, rs1_num);
-+	unsigned long rs2_val = riscv_get_reg_value(regs, rs2_num);
-+
-+	if (riscv_insn_is_beq(insn))
-+		return rs1_val == rs2_val;
-+	if (riscv_insn_is_bne(insn))
-+		return rs1_val != rs2_val;
-+	if (riscv_insn_is_blt(insn))
-+		return (long)rs1_val < (long)rs2_val;
-+	if (riscv_insn_is_bge(insn))
-+		return (long)rs1_val >= (long)rs2_val;
-+	if (riscv_insn_is_bltu(insn))
-+		return rs1_val < rs2_val;
-+	if (riscv_insn_is_bgeu(insn))
-+		return rs1_val >= rs2_val;
-+
-+	return false;
-+}
-+
-+/**
-+ * get_next_insn_address_standard() - Compute the next PC for standard RISC-V
-+ * control-flow instructions
-+ *
-+ * @regs: Register state of the current context.
-+ * @insn: Instruction located at @pc.
-+ * @pc: Address of the current instruction.
-+ *
-+ * Determine the address of the next instruction to be executed after @insn.
-+ * The function evaluates control-flow instructions whose target cannot be
-+ * obtained by simply advancing the program counter:
-+ *
-+ * - Conditional branches: returns either the branch target or @pc + 4
-+ * depending on the branch outcome.
-+ * - JAL: returns the jump target encoded in the instruction.
-+ * - JALR: returns the computed indirect jump target using the instruction
-+ * immediate and the value of the source register.
-+ * - SRET: returns @pc, as control transfer is handled by the trap return
-+ * mechanism.
-+ *
-+ * For all other instructions, execution is assumed to continue at the next
-+ * sequential 32-bit instruction and @pc + 4 is returned.
-+ *
-+ * Return: Address of the next instruction to be executed.
-+ */
-+static unsigned long get_next_insn_address_standard(struct pt_regs *regs, u32 insn,
-+						    unsigned long pc)
-+{
-+	unsigned int rs1_num;
-+
-+	if ((insn & __INSN_OPCODE_MASK) == __INSN_BRANCH_OPCODE)
-+		return riscv_branch_taken(regs, insn) ?
-+			RV_EXTRACT_BTYPE_IMM(insn) + pc : pc + 4;
-+
-+	if (riscv_insn_is_jal(insn))
-+		return RV_EXTRACT_JTYPE_IMM(insn) + pc;
-+
-+	if (riscv_insn_is_jalr(insn)) {
-+		rs1_num = RV_X(insn, RVG_RS1_OPOFF, 5);
-+		return riscv_jalr_target(riscv_get_reg_value(regs, rs1_num),
-+					 RV_EXTRACT_ITYPE_IMM(insn));
-+	}
-+
-+	if (riscv_insn_is_sret(insn))
-+		return pc;
-+
-+	return pc + 4;
-+}
-+
-+/* Calculate the new address for after a step */
-+unsigned long get_next_insn_address(struct pt_regs *regs, ulong insn, ulong pc)
-+{
-+	if (riscv_insn_is_compressed(insn))
-+		return get_next_insn_address_compressed(regs, insn, pc);
-+
-+	return get_next_insn_address_standard(regs, insn, pc);
-+}
+ exit:
+ 	return bp_ret;
+ }
 -- 
 2.43.0
 
