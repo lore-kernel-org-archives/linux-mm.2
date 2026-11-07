@@ -1,117 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0815660A260E
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 15:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4D8606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 16:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=Owkv85d4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ly4kEVDP
 Received: by kanga.kvack.org (Postfix)
-	id C9A3D6B05B7; Sat,  7 Nov 2026 10:37:28 -0500 (EST)
+	id 9217E6B05B0; Sat,  7 Nov 2026 11:05:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C77916B05B9; Sat,  7 Nov 2026 10:37:28 -0500 (EST)
+	id 8D2596B05B1; Sat,  7 Nov 2026 11:05:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B60706B05BA; Sat,  7 Nov 2026 10:37:28 -0500 (EST)
+	id 7E83C6B05B2; Sat,  7 Nov 2026 11:05:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9213A6B05B7
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 10:37:28 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 285381C37A0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 15:37:28 +0000 (UTC)
-X-FDA: 85408727376.16.9745120
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 6A714A0006
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 15:37:26 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Owkv85d4;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3tEXvagUKCFsIMHLB9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--ptosi.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3tEXvagUKCFsIMHLB9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--ptosi.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 51C9D6B05B0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 11:05:03 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3A9E1C3B08
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:05:02 +0000 (UTC)
+X-FDA: 85408796844.07.369BBFB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 265074000A
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:05:00 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ly4kEVDP;
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794067501;
+	b=qxTEzhtX7tNoLl80H0yZlP+sDB/bmBEuy9wcxc+uBYsvdjShPsRlDHVLVt1nv3fCtvwqBc
+	8mFVE35n1knJrhIYyEX9KJ43SxB3RWYe1GQFOUw53zHKJgw11kKpKYvgrMQEI25B2zVYv4
+	uVxJQ7RCsqe3MrlWVHG89R6DhPlwC0Y=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ly4kEVDP;
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794065846;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794067501;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dKqRRHhy6BHS4ck54ga2pt3P+7mkrZNg70kpGu+nmOs=;
-	b=cGEnM/eLrnLfAPzv164nZ1xMxwzcZ2HCvAmUoJySG5pHpR/3m2gYcXIAlWPsGFLcg8fi8y
-	LChn9VrGDu3fv0RKnpJwIEv5FoYSgMNvofsYZ6Wxmce07imWvqB0k47i441dhC0lkVzSI6
-	pAzeUwv2LP6TMoGhU+I5Dlox1Z+Ajo0=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=Owkv85d4;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3tEXvagUKCFsIMHLB9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--ptosi.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3tEXvagUKCFsIMHLB9HH9E7.5HFEBGNQ-FFDO35D.HK9@flex--ptosi.bounces.google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794065846;
-	b=MEM9Bqm8MJ4Ri1k5x8EweXPqJbiWHmmWHPF3caMwFlLQGFJx8DTOTzFX/whkWXEsPHndrn
-	ezBF5N0O+W3PSDUpS0xXkkNOig8RDUYfK9FuNouutOW6hYogxV5IA5qhtH7v7ArAxwkrcA
-	Bsn77N2kj1QolCXG7ok+kVpm6mgLdEc=
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c40285df2a0so102666466b.2
-        for <linux-mm@kvack.org>; Sat, 07 Nov 2026 07:37:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794065845; x=1794670645; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=dKqRRHhy6BHS4ck54ga2pt3P+7mkrZNg70kpGu+nmOs=;
-        b=Owkv85d4rwZfY4LENZDkGc9Hb66f7fIZpiG28a8rNxV72K5Ca8NWtrrsAJTzpbQkLm
-         7acPDgdvDlWh503JBCo+VmDmgWZROxVK1G1aeqvwI9Fc60mV29+UYxYbpvMckof0t9bV
-         D675zSeGAvPcPqfAiR0mozWJBuWB+Ln+CMg0V2+b8qDx9p2m9sW2EdKX362m5pw7aquW
-         d6dklUj1O5wjdvUFkjq3Ewtd0cA2Tna4CUuKfAo6LHcOqkmkZRtoirbEfsn/BUlbcorU
-         WNh7XdbZaVs1wudCy32XA4EsVFzLgwdZ6gEf4aNlQFOdcIckoCRnzY8cDTZk1Bl0wa+p
-         nk8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794065845; x=1794670645;
-        h=content-transfer-encoding:content-type:cc:to:from:subject
-         :message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=dKqRRHhy6BHS4ck54ga2pt3P+7mkrZNg70kpGu+nmOs=;
-        b=PNSwxLz5a1r07t/PaQ3jYO5zLQnQVIYKPqdMgmM2pd9QhtMQWNNsR12LhOORg32LiN
-         Wa68BWUbNx2iULBB273AG1vgJeLkNEEEjLdgp27jB3AJ/dtd2+mOCihCjRxOwAa2Lcy7
-         Qa+mjklcxO7TPqEjfp8fm3hadue1zC74rOCCnbxWgPWqOeoa8IPih571+rjNz84togxZ
-         Ts+HxRQXtcE0vYLgUP0BTIW9KIVvS4uz9ltBpuRd5QuyoWuYuvj6sfHIjntrwIxWhSzn
-         DUuJBJowfUS8v2OoxUGYKzIGRYcUW/IcXAZyb/1V000ueXmEw+KgOUMQS8AOXOOaPmQH
-         Xr5A==
-X-Forwarded-Encrypted: i=1; AKwUvBx4Ij+kaj5uPOY02wQYsAPviN2jY/98Jj1bg+3tOXSEYXBXgPgdIS/Aw0rFRKwmMkaB0UbL1Quo6A==@kvack.org
-X-Gm-Message-State: APuU4Z+gHwl+fHeMth1M7/A3jBkSNkKSRes+xXoVp6PVE9+CToeBtE09
-	jrJoE/ZHY2GS2mox1hDX8mBMB7XGwrF7rXPwt1XYSc6EdlriP9NH0GKiPkkmLZjhJejR/epCab/
-	hGA==
-X-Received: from ejcyb22-n1.prod.google.com ([2002:a17:907:e0d6:10b0:c4d:32b9:af48])
- (user=ptosi job=prod-delivery.src-stubby-dispatcher) by 2002:a17:907:9c05:b0:c41:cf68:bbcf
- with SMTP id a640c23a62f3a-c4d34c42700mr430478966b.32.1794065844907; Sat, 07
- Nov 2026 07:37:24 -0800 (PST)
-Date: Sat, 07 Nov 2026 16:36:18 +0100
-In-Reply-To: <20261107-mte-kasan-split-v1-0-d84ea5f30f94@google.com>
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-References: <20261107-mte-kasan-split-v1-0-d84ea5f30f94@google.com>
-X-Mailer: b4 0.14.3
-Message-ID: <20261107-mte-kasan-split-v1-12-d84ea5f30f94@google.com>
-Subject: [PATCH 12/24] kasan: drop mte-kasan.h from arch-agnostic header
-From: "=?utf-8?q?Pierre-Cl=C3=A9ment_Tosi?=" <ptosi@google.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	Alexander Potapenko <glider@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Andrey Ryabinin <ryabinin.a.a@gmail.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	"=?utf-8?q?Pierre-Cl=C3=A9ment_Tosi?=" <ptosi@google.com>
-Content-Type: text/plain; charset="utf-8"
+	bh=Un1gBsObcxnsYn3FCTYyDKwp8qPSNNnbH9/hnIvuRMQ=;
+	b=g3rclmEZPlmucwGRAGH9/m5w4HMcqTBPXptP2olRQ9drUqMJDEfjNNZeNzNSjx8YMfVcYt
+	cO1mQRCrzZ+QeVaVagtBpzkfBiEpnRc3cOtj0BDvj20JHp8gv7hM5P+hJTGfEttuvRXPtP
+	lIgC32l/DuzbjlzsK06wt7VsrlwsOZw=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 266646060F;
+	Sat,  7 Nov 2026 16:05:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86E61F0089F;
+	Sat,  7 Nov 2026 16:04:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794067499;
+	bh=Un1gBsObcxnsYn3FCTYyDKwp8qPSNNnbH9/hnIvuRMQ=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ly4kEVDPu67vbfIdhVsVxt+pL7rpxAbpI+4XuCVfZidcwOx3JXdG61abO2vEsB1gp
+	 SneBwN9aDKBKBkt+D5NPiQNVRXdKIdINywH7WK6J74ZEpBY0UkmT9Wuqes/VaIDYw+
+	 zLPZzc8Mkt8df+uFrND1BXiShg2HiB5p4Rzm5JY6oUIL6b1BBkISx51eaf6ceD0qSv
+	 DBnLI0EFRx5eohnPq3OGOsyxdDhVVPs5n1yDu/wdjfu1kfcE5P1fPpif3VoqPd2jJD
+	 IJDthwEbt41oVQ7m5x+HC4fS9fplaySkRWAMboOAV7HJeAh0Zm6apvP8T3gmOddxS+
+	 mpwCzt2Xlko3Q==
+Message-ID: <sashiko-outbox-203018@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 2/2] mm/swap: publish cluster tables after reacquiring
+ allocator locks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Nhat Pham" <nphamcs@gmail.com>, linux-mm@kvack.org, akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, brauner@kernel.org, chrisl@kernel.org, david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, ljs@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, shikemeng@huaweicloud.com, weixugc@google.com, willy@infradead.org, youngjun.park@lge.com, yuanchu@google.com
+Cc: ryncsn@gmail.com
+In-Reply-To: <20261106160432.2552507-3-nphamcs@gmail.com>
+References: <20261106160432.2552507-1-nphamcs@gmail.com>
+ <20261106160432.2552507-3-nphamcs@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 6A714A0006
-X-Stat-Signature: qbjnfkmmh9py85kfe4uuxcxn6jd9i4ez
+Date: Sat, 07 Nov 2026 16:04:58 +0000
+X-Stat-Signature: n4ruwiajgkgay5sha7xude685bn8qpkg
 X-Rspam-User: 
-X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 265074000A
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794065846-544518
-X-HE-Meta: U2FsdGVkX196a3up/tkEKUwd6HhxNiFFgcKFNaNZxlSghFi5cWwGGIrLoC0sAgCTkQwrHAY7zRw/10ikDuEqFHv8ZcithlFy1y8kkiyis0XK9cEE4mih26LNxqqhhIEa7sPAdCVRtrbRDYiDAKl6LVAYHdL1W4Vjxr3vIT56fs+Fvin9NX1ws8KJVnGa9h/2b6v6Add5q01xmuq0Iu/jKftGjWFWXJCnHwSobQ2P3U50cveZIFNTDHrzk5AO3WabypujZlPZ5z3D2BPsxr9r1FL5Hn/aGPzlHvalxUFJSrFU/pr82GqG4uHn2DwW64K0lutPjEL96nDqNg7iCfb4gwZls4s/pCygnzc/TiNOai1fQ1IDA/CCHNCd80Q3yekhXJAj31Vlik8tHwSzsDCW7roMLDjA7YzAihmIRCsFwWvC9Q3YK4O9iegCDMVhIDSJgUYLs3x5jSzCzePuwTfUBaioHGxpbxZNyCfqBYAH+HwRjYXIadZpFnbFBlN4trmCe/ypPR5mGXFukwgx0OEmaW2DT1EhDAyTAr8TiaDUXr6HxQRPHEAbE0on/7Pkalg9yp1Y1Y/E+1TEyYnoUYC0Bxp3o4Y6dTG7LBtLnulIicwl7M8Nx4DGSIt8QmiIPJOFht8Eres8+ewB1VJEp/x9yX6MekOWG+1n0aFo5p/Bx9dvwvsqE/t+E69aAtM+j0uvsPItz4gcaGaMw4d6M4okibGvGQs9ZmaamW8yiLsF1Cdlq/8Rx4mRM170i/OfEZT5AaCWu/vzj8o7I6jMSQTiT5C+9P/vh1cfkCB9KecDTM3hFrfi7H7y2nhK62WWu6xMD4b6OMmFI4JJkyXrCzqJkCgyq08XsoA3L1XbEt3xXyboV6lrpBc5oJ5s69uK0HzJm3A77P6MFJpIhg2AN0zOPBYyAU1T+bZSalDRjd6KvXSh4f/JEeC8GwJsYO8d2X1EWrtsnoV1y5sx19/aVKE
- GZFMEc/M
- 7fqhrXSI/bzt5m7gqeglhi5o5HxhoZelwa82WjsVONr2zxV/fHMSln8iKxbPzoT1OOLMl+NCF24AjI4hF0173xq8XdcAT5pPF4Z89AL3+L8MBkh5EfSOdE9gk8592+MV6YaozbxDXhJQJoT/iDmf50RjVM6eeSR72Lc4uaOo7ZtYx9F6HRcOFsMGVT7B6X2EQ3x06g+8FxsSCvFMGKuqnhOfx00sZ+EEh6lSPLDiR8vERMm1E0jDEwcHQ1TRsQTwIDw0JEMUcFLRIO2D4aT4nhDZf/ANkFn5JkmNZhU3a5nOUOGBQG7SCW3B75OdfYKlq9bS7MzIs9s7Ei3emVMJzpgUsjSoC/JQ549spDeGM77oH+SUvYeuGsDX2P6RzsmPf4/XwL0UgtDkMIXvD+q2Aed+r6MxacJtaA59P/DPOjPc0COHsi5gRuswWvtWgLYbUFJuH81azJSXUVENOInVtmul2JnZmdehCct4q2FLqR7dKHmcsUjaryoE979bEIEq/cOn/vg5QZb33JKeaOSw5AJ6y/ax+gURSWekdOSIo8hNYbTfBnEgbqUIq0DQVNJqRt9XlB9PSReaGMy61bp0ufcG1xaf9LzXAE+jJaygT9dWedo6E9s4Wjw0tEl7S+FK59+Z+1gO2WteXSXxz7O4xS/qpYE832bvAv9TqXQ04utHV1tV4Q8cfLUGTCC4MB5Etc0xoPqAw+1BnkT9ZlX+FtqrZOH+ctDw3EctGGV/5T8eLXhoGy6e2yO02XDr+d8TdtlsA5NaJtG+FgjZidelcU2PLv16bKFAeJuyHnky4nNZvu/Qk0CpLsC8pglCfjq1X+ZT1hkMXEo4wOAg=
+X-HE-Tag: 1794067500-76560
+X-HE-Meta: U2FsdGVkX181s3Jx0PyIw81AoVVJcjZGDAmaYXc3/f1A+gc8/Br3/iHH1vTBPhYcltH7bFjk0TVURq5CgzNyIOcyeOC7+wcTebZrZTiK0brZnH6OZ3KYEI381MQuMT/a52HjXc8XYhJNGh1f4lsbvF3L21K87c+GFLFTOjPenjJpKRaEfWne7+T0HRQa9ZJJj6Usal9YvzYZevgsZ38TpbdNt2udVdUJ8TGAg5UQ8EMSz/kzSCyFkN1X/ne22Q06mGSV+8guSp54N8Ks2A1wyMcCy9pHAPqR9xQuv03RvT1gil4l4GP4E/KB3cWcu0GxN1qbJ9JBG+IMCd99n2hsOSRGN6QgnkyWap+BkRmt1NDt34wJS/+eDF8F3Uy8M9abbPMC52O9hVSG5wr8c9xUd00d6H6Q/s+hIuh1SZPYGlBC1tbb58CxyGWGPc+abv4ApVrS7JMckZNbL/vvhD0Yf1ga5VEJardAKV//O2ErNJ+QCuXTjXrMBCZQVED8TY4RgF4sKLt38cTwiojcb/gk6V+kXoWbQmP2OCgS3hZAWhvRKqIb/VZnUVYiuZBaM5QyIBxAU5R3F3qErwTNgWEu+MRY/eWd3J5keEhZ+2SbrlEuXYjaKGtBGxRIb9H+Tvo2QcP7pDY2nw2mb3wnGO3N3/B2H29pkph5K+FlOF/NhNe7RH6yQk7/d/6SIYkMINeSD/ybx0/E53w7R/4OUrxiH9WbI0LzgN/BLixxz+QlNVkKBFmn2SKK4xdZt65jdQptkztPPrl7h/KHs2f1nrFg3pfGwTC2L2tV+beDPZCiyAyJGnnjCe4112oy2zE+ZdzGX20coazxHtGRYt2/aSloLPVYz0mL8oSxWyXvki3Y2q/pfdlZvdfMHB6++3cpjAH+0mPsFSPkEi9mJTghOW1HqR7p3QoCDcygPF3ipCCy0Lkyr6llHsexoClRNtG2plKNR1dtRZGDeeJgzte0WaF
+ F21B5iEY
+ DHMgB1kSpzM9CN2uDnjQYgowA5+hJugN+5J4MCngXCueweo/F0iu1eSN0pHA9MQKqhJqn5ObbOst2ptujEvgtBdnSIuwSbGFZEWZBdTb29g6axQnfUoGAKXFQo7zHhYI8AKjOLTyTVGKwDbbG86ToslZMWaSjZ4wX/3vvDfRotYYAnQZ5Dwkf0J9W2xyp+XwL6ISqu074BN3A2jakTTyFgfomgx40anhkTgsGNtxMpA7ZvtVUe/Eeo5EC8BgWmUMLB8OzO9S4F3zHUx6IldrV4VkcE4fhtLsiVEdeJzEmHN0IjIqV9bYOwvmpyMZUfVg9Wq572bkD2fJ76GN9mGt+HNPgohKW52ZJ6NFbaJenrAwiEIQzX6oMMr0lvdSNT9bKiCI93rk/KDtZRBUKYMZ53ZrqR71IIkJR3Tm2syEOBk4eewR3ybYK/D35eOuVwOG2E4Iz/MpLYYYCGt4HaBwv/0m4ujL6UPAZzY6m6owGyjFVhJST/DjemKUsL3o1h/l2G6eJEQccFkmB5gSUk//3DLs5uX/JovjoDPKSGE6m4Pl8XUWXVPIsgMK0zPY4EcSpDNGzJu37TTjDNXE3nBINzrjYvyPVWB1axF1dr82b0u0CNdw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -119,74 +92,188 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-The inclusion of <asm/mte-kasan.h> (only defined by arm64) is based on
-the brittle assumption that KASAN_HW_TAGS is equivalent to MTE, which
-will break as soon as another architecture supports it. Furthermore,
-exposing the header's contents to common KASAN_HW_TAGS code risks
-spreading this wrong assumption further.
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [Medium] mm/swap: NULL deref in swap_cluster_assert_empty() on stale
+  reclaimer race
+- [Medium] mm/swap: ABA race on cluster state check in
+  swap_cluster_alloc_table()
+--
 
-Allow KASAN_GRANULE_SIZE to be arch-defined, with a fallback.
+commit 22e220b18bd05df45a828a3170169b92c0c14f76
+Author: Nhat Pham <nphamcs@gmail.com>
 
-Define KASAN_GRANULE_SIZE in arm64's KASAN header when KASAN_HW_TAGS.
+mm/swap: publish cluster tables after reacquiring allocator locks
 
-Remove the #include, which is now unused as a result.
+This commit keeps newly allocated swap cluster tables private until
+swap_cluster_alloc_table() reacquires the allocator and cluster locks, and
+abandons installation if a stale reclaimer returned the cluster while the
+locks were dropped.
 
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: kasan-dev@googlegroups.com
-Cc: linux-mm@kvack.org
-Signed-off-by: Pierre-Cl=C3=A9ment Tosi <ptosi@google.com>
----
- arch/arm64/include/asm/kasan.h | 5 +++++
- mm/kasan/kasan.h               | 5 +----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+Link: https://lore.kernel.org/all/sashiko-outbox-181084@kernel.org/
+Link: https://lore.kernel.org/all/sashiko-outbox-181086@kernel.org/
 
-diff --git a/arch/arm64/include/asm/kasan.h b/arch/arm64/include/asm/kasan.=
-h
-index b167e9d3da91..3106a2271781 100644
---- a/arch/arm64/include/asm/kasan.h
-+++ b/arch/arm64/include/asm/kasan.h
-@@ -6,6 +6,7 @@
-=20
- #include <linux/linkage.h>
- #include <asm/memory.h>
-+#include <asm/mte-def.h>
- #include <asm/mte-kasan.h>
- #include <asm/pgtable-types.h>
-=20
-@@ -22,5 +23,9 @@ void kasan_init(void);
- static inline void kasan_init(void) { }
- #endif
-=20
-+#ifdef CONFIG_KASAN_HW_TAGS
-+#define KASAN_GRANULE_SIZE	MTE_GRANULE_SIZE
-+#endif /* CONFIG_KASAN_HW_TAGS */
-+
- #endif
- #endif
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index 0df7daee1864..52c2e7dca739 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -128,11 +128,8 @@ static inline bool kasan_requires_meta(void)
-=20
- #endif /* CONFIG_KASAN_GENERIC */
-=20
--#if defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)
-+#ifndef KASAN_GRANULE_SIZE
- #define KASAN_GRANULE_SIZE	(1UL << KASAN_SHADOW_SCALE_SHIFT)
--#else
--#include <asm/mte-kasan.h>
--#define KASAN_GRANULE_SIZE	MTE_GRANULE_SIZE
- #endif
-=20
- #define KASAN_GRANULE_MASK	(KASAN_GRANULE_SIZE - 1)
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 189f04d8838f3..162a73a9e6638 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+
+[ ... ]
+
+> @@ -467,27 +475,49 @@ static int swap_cluster_alloc_table(struct swap_clu=
+ster_info *ci, gfp_t gfp)
+>  		table =3D kmem_cache_zalloc(swap_table_cachep, gfp);
+>  	}
+>  	if (!table)
+> -		return -ENOMEM;
+> +		goto lock;
+> =20
+>  #ifdef CONFIG_MEMCG
+>  	if (!mem_cgroup_disabled()) {
+> -		VM_WARN_ON_ONCE(ci->memcg_table);
+> -		ci->memcg_table =3D kzalloc_obj(*ci->memcg_table, gfp);
+> -		if (!ci->memcg_table) {
+> -			swap_cluster_free_count_table(table);
+> -			return -ENOMEM;
+> -		}
+> +		memcg_table =3D kzalloc_obj(*ci->memcg_table, gfp);
+> +		if (!memcg_table)
+> +			goto lock;
+>  	}
+>  #endif
+> =20
+>  #if !SWAP_TABLE_HAS_ZEROFLAG
+> -	VM_WARN_ON_ONCE(ci->zero_bitmap);
+> -	ci->zero_bitmap =3D bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
+> -	if (!ci->zero_bitmap) {
+> -		swap_cluster_free_table(ci);
+> -		swap_cluster_free_count_table(table);
+> -		return -ENOMEM;
+> +	zero_bitmap =3D bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
+> +	if (!zero_bitmap)
+> +		goto lock;
+> +#endif
+> +	ret =3D 0;
+> +
+> +lock:
+> +	if (!locked) {
+> +		if (si) {
+> +			local_lock(&percpu_swap_cluster.lock);
+> +			if (!(si->flags & SWP_SOLIDSTATE))
+> +				spin_lock(&si->global_cluster_lock);
+> +		}
+> +		spin_lock(&ci->lock);
+>  	}
+> +	lockdep_assert_held(&ci->lock);
+> +
+> +	/* A stale reclaimer may have returned the cluster to allocation. */
+> +	if (ci->flags !=3D CLUSTER_FLAG_NONE || cluster_table_is_alloced(ci))
+> +		ret =3D -EAGAIN;
+
+[Severity: Medium]
+Can a stale reclaimer trigger a NULL pointer dereference in
+swap_cluster_assert_empty() while ci->lock is dropped here?
+
+Because ci->table now remains NULL across the sleeping allocation in
+swap_cluster_populate(), a stale reclaimer that dropped ci->lock before the
+cluster was freed and re-isolated can reacquire ci->lock while ci->count is=
+ 0,
+ci->flags is CLUSTER_FLAG_NONE, and ci->table is NULL:
+
+CPU0                              CPU1
+                                  cluster_reclaim_range()
+                                    spin_unlock(&ci->lock)
+                                    /* ci is freed and table is freed */
+isolate_lock_cluster()
+  ci->flags =3D CLUSTER_FLAG_NONE
+swap_cluster_populate()
+  /* atomic alloc fails */
+  spin_unlock(&ci->lock)
+  swap_cluster_alloc_table()
+                                    spin_lock(&ci->lock)
+                                  ...
+                                  relocate_cluster()
+                                    free_cluster()
+                                      __free_cluster()
+                                        swap_cluster_assert_empty()
+                                          __swap_table_get()
+                                            <-- NULL pointer dereference
+
+In relocate_cluster(), !ci->count and ci->flags !=3D CLUSTER_FLAG_FREE are =
+both
+true, so it calls free_cluster() -> __free_cluster() without checking
+cluster_table_is_alloced(ci).  With CONFIG_DEBUG_VM enabled,
+swap_cluster_assert_empty() calls __swap_table_get(), which dereferences the
+NULL ci->table.  With SWP_PAGE_DISCARD enabled, free_cluster() also schedul=
+es
+a redundant discard before swap_do_scheduled_discard() calls __free_cluster=
+()
+on the tableless cluster.
+
+Should relocate_cluster() avoid calling free_cluster() when
+!cluster_table_is_alloced(ci)?
+
+[ ... ]
+
+> @@ -571,13 +612,9 @@ swap_cluster_populate(struct swap_info_struct *si,
+>  	 * could happen with ignoring the percpu cluster is fragmentation,
+>  	 * which is acceptable since this fallback and race is rare.
+>  	 */
+> -	local_lock(&percpu_swap_cluster.lock);
+> -	if (!(si->flags & SWP_SOLIDSTATE))
+> -		spin_lock(&si->global_cluster_lock);
+> -	spin_lock(&ci->lock);
+> -
+>  	if (ret) {
+> -		move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
+> +		if (ret !=3D -EAGAIN)
+> +			move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
+>  		spin_unlock(&ci->lock);
+>  		return NULL;
+>  	}
+
+[Severity: Medium]
+Can an ABA race on ci->flags and ci->table cause a failed allocator to put a
+cluster back onto si->free_clusters while a second allocator still has it
+isolated?
+
+When CONFIG_DEBUG_VM and SWP_PAGE_DISCARD are disabled, a stale reclaimer
+calling relocate_cluster() -> free_cluster() -> __free_cluster() moves the
+tableless cluster back to si->free_clusters.  A second allocator can then
+re-isolate it and also drop ci->lock for a sleeping table allocation:
+
+CPU0                       CPU1                       CPU2
+swap_cluster_populate()
+  spin_unlock(&ci->lock)
+  swap_cluster_alloc_table()
+    /* alloc fails */
+                           relocate_cluster()
+                             ...
+                             __free_cluster()
+                               ci->flags =3D
+                                 CLUSTER_FLAG_FREE
+                                                      isolate_lock_cluster()
+                                                        ci->flags =3D
+                                                          CLUSTER_FLAG_NONE
+                                                      swap_cluster_populate=
+()
+                                                        spin_unlock(&ci->lo=
+ck)
+    spin_lock(&ci->lock)
+    /* flags =3D=3D NONE,
+     * table =3D=3D NULL */
+    return -ENOMEM
+  move_cluster(..., FREE)  <-- puts ci on free_clusters while CPU2 owns it
+
+When CPU0 reacquires ci->lock, ci->flags is back to CLUSTER_FLAG_NONE and
+cluster_table_is_alloced(ci) is still false, so swap_cluster_alloc_table()
+returns -ENOMEM instead of -EAGAIN and CPU0 moves the cluster back onto
+si->free_clusters while CPU2 is still sleeping in swap_cluster_alloc_table(=
+).
 
 --=20
-2.56.0.455.g6c5a503b38-goog
-
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106160432.2552=
+507-1-nphamcs@gmail.com?part=3D2
 
