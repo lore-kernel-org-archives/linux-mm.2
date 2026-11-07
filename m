@@ -1,107 +1,103 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10436606A32D
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776C0606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=qkxhKiuC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=e7XZKBhe
 Received: by kanga.kvack.org (Postfix)
-	id 304DA6B05B2; Sat,  7 Nov 2026 02:40:17 -0500 (EST)
+	id 995DF6B05B4; Sat,  7 Nov 2026 02:40:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD7B6B05B4; Sat,  7 Nov 2026 02:40:17 -0500 (EST)
+	id 946556B05B7; Sat,  7 Nov 2026 02:40:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F3CD6B05B6; Sat,  7 Nov 2026 02:40:17 -0500 (EST)
+	id 85C646B05B8; Sat,  7 Nov 2026 02:40:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id F087E6B05B2
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:40:16 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 81FF5802C3
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:40:16 +0000 (UTC)
-X-FDA: 85407524832.13.AF85731
-Received: from mta1.migadu.com (out-48.mta1.migadu.com [95.215.58.48])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 0301D20002
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:40:12 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qkxhKiuC;
-	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.48 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 672686B05B4
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:40:53 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id EDF851A0253
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:40:52 +0000 (UTC)
+X-FDA: 85407526344.22.A692382
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 6B2FB1A0002
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:40:51 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7XZKBhe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794037214;
+	s=arc-20220608; t=1794037251;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8vTtHhOU7KFGccpDaVfJbGmgTDtSx5A2CfyTXw9K8qU=;
-	b=I59IiyuIlEEmPOs7SkDN7OdKspPmeem+2JTmwvL35OhPiUxTCRCCL19aUhJk08YHFrFbH8
-	Juc2AOTrFfRDihIkYC1fNaElTSukk/XQNwpwOmK/zLfOsPjec/5MFpwSa7vPztKizUgQXc
-	5nME37mfWJtJ91Vdf6fChwA+3RBWWzQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794037214;
-	b=vJZMLKOmeai7sXAUQoTnyKGcO2DE0PnokwUKrmaxY0Gk9ft4kWfNuBw06fXCB6fuhODR2c
-	bKomcX2ZV/9FSvhEyv3hroXxAY/20v5LaphEaG5InYgT12I7jnpJVRxPdixTOSfbugUhn+
-	tEkTjUptJkAdAqIKVrPgGyCifPB5eW4=
+	bh=mb6zscB9xA65zKWgADOGhrqsQ/nGHmGTb9eOGjPV3Qo=;
+	b=7kGgsxp60DCn/R7H7dYqVwjwfCDRmCRASgB7oqKqz4oXYsPXe0rlR+SKLkU257fFX4tAPF
+	dYFlTW0yvwNwr2mlfpESkBQku3Fw4m8+qUD9pcPUTEqNLDaCFmTgtJJ++KMaSupI2YDJzu
+	zsryU/p2M/yu3021GqVoOW5ONgmVhkY=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=qkxhKiuC;
-	spf=pass (imf31.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.48 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=ba5vOU7cFBOUOtdQvyDB/MD00fPiK2yMPUvY9IZ/14M=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794037208; v=1; x=1794642008;
- b=qkxhKiuCf51nEKbt8/RKaTf4dA8yfgY1A+zviok65ANjerB4R7Y9GAqkaj++W+d13UrOBQF/
- ns2+GE/FynhDeIs1BsLoh/FMfbtVcFVuyS3nQYBZ3LGjxgdDULcN/oYGxAtf5kHNERZnywDMRHy
- R358mxNUXLuIWh2qp+k5DW54=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id 447480f83695572a;
-	Sat, 07 Nov 2026 07:40:06 +0000
-X-Mizu-Trace-ID: 447480f83695572a
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=e7XZKBhe;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf19.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794037251;
+	b=XrjVLfwZ3Q307NCZGChMEifjJcMb4C8zGUzCK0Ruq9AEmzOv8bFORXBxhBpN3ll1KTXdrv
+	aNXT6UnODS/FHBXj54hKn1/Y1XHYbt1F4qIiU5RGV0IJA/P3VsBO02yiFsfTcIxsk0vs8V
+	TcU6alKiqzjWluGayb6UtM9PQFwWx4k=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 1742160F6B;
+	Sat,  7 Nov 2026 07:34:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6821F0089F;
+	Sat,  7 Nov 2026 07:34:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794036847;
+	bh=mb6zscB9xA65zKWgADOGhrqsQ/nGHmGTb9eOGjPV3Qo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=e7XZKBheSrKbie5VnFexSeQbIOTBncXvr7lTKpAFdHOkLHTyzufBqIEvQc9/QUiZ8
+	 bL0NQ6orZouqNfUCKfpZ93GbXCDENZP3lgZx7PEYSf5lLFHd5Bq9UYCUbBfFHXQg+x
+	 OsAnvXdsQb7OPApbsT+etftmAEHezMs1DTCkZNlGpuF8bwSR7PFW/NFSpZ03yzXh6y
+	 1KHmLi06/f4BWOxmc2z1ozGzpCSYF1c5a6f309R7NTf0wba/KhbLzfqP7cnjE828pi
+	 RKrj7UhzORA2cvJwgMKPTkt0PKzzUB37T0ehen5rlXy5L2w/Gr8ikx2vFSsL8eQTMh
+	 QyeG/kAuci3Ag==
+From: Jisheng Zhang <jszhang@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Tejun Heo <tj@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Christoph Lameter <cl@gentwo.org>
+Cc: linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com,
+	linux-mm@kvack.org
+Subject: [PATCH 4/4] arm64: alternatives: Make branch and ADRP offset helpers noinst
+Date: Sat,  7 Nov 2026 15:13:39 +0800
+Message-ID: <20261107071339.17467-5-jszhang@kernel.org>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261107071339.17467-1-jszhang@kernel.org>
+References: <20261107071339.17467-1-jszhang@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 09/20] hugetlb_vmemmap: Allow architectures to make HVO
- enablement boot-time only
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261003002123.505555-10-jthoughton@google.com>
-Date: Sat, 7 Nov 2026 15:39:46 +0800
-Cc: Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Nikos Nikoleris <nikos.nikoleris@arm.com>,
- Linu Cherian <linu.cherian@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- David Hildenbrand <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Nanyong Sun <sunnanyong@huawei.com>,
- Yu Zhao <yuzhao@google.com>,
- Frank van der Linden <fvdl@google.com>,
- David Rientjes <rientjes@google.com>,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <9448E513-B372-46BB-929B-E0D7D6A6834E@linux.dev>
-References: <20261003002123.505555-1-jthoughton@google.com>
- <20261003002123.505555-10-jthoughton@google.com>
-To: James Houghton <jthoughton@google.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Rspamd-Server: rspam06
-X-Stat-Signature: a9unr68tfhnscc5eizmgh8k3obg3pntk
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 0301D20002
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1794037212-217786
-X-HE-Meta: U2FsdGVkX1/BGKid5la19UytWKYL1Cd3UByec5ia8GaX8lJTPR3xxokueccQCCgljmQdFbVv+jRnZf71c7Tue3VGzMWC1GIK5kgAmQR1N2U2/YZFuWlHnrBv5Zagf1H2IeaKixh8/eOBCqlfOhsJk9o8IlpOVfI6i4goigkZ3rxt4qyhA639f+txKg5nZF8VGGiswcpuTba7qdVaMs+0bW0+eHGQtVL7nOnqKocSl/SugWYyqbsJSfy1UbQiW0l8oLzTs/vR/0XM9drLcO7pnNFiLubFekeODMkGnL/GIc2LBMl9alklqCIbDR9iMfYDFtrVC+FZhK2lFeP5x7dSEuU397Xtdbyh2ljhGRWMi+f2JDT5JgmBZ+j6XKpt6cpy3KMpSpEYsVIHuEYUuE8fxpGtJkSEQzeD/iZVXnXGe7PrPHAkflfTCyoDWmHkWuM9uGJrJfEAHQiY91mUtP5+wP38FJSEm/B+s5fwu6eRA/fM11RgJoDkx6CSK2yGwngMOOIy+BySLQpTVczc5UtobV/y2CwAkkHV8v0LdVcIwxa21W9LBcXEmViYBitk8CJX+E2Cb+uIL2OOdtQSPdACKLL9x0enXgMXMiX/oirc2qK+8XfFFEcjWatdQi/0tb55z8nXxeBHgVTL8NnxvlytXfasPtYLdxORE2qV9u5nNsb5Ex7cDQ4l1Owb5BKbyuhgkvqQhH/wAgt9hRAnFJQbxl0gr1wdUQfs9obg7iMhLyfS3cuDVz2mLAXI0LGj9kz612z0JuB2nO0eKoi+yUUGjnlrOgTWtq7odHHi9ZPs/DSgWcjiKM0aC8e+jtSqugWETH9u6FXJUKfXCw7eJzPNyskmunEoyDzCQ/JQ58xvL/c7hRg52DTbWoZF2EXink4sEaaj3GUbmSp4RIdFOvEXEPppnKn0dfF/QWQ4I4orJWsCsE7I2NsmjWeVuQq1fH8nw7hhoHdvClphDJnLndB
- u5Va+KFr
- Z0MwLXqMMxFpUab+RiGQeiEtk0ALG44p9/U/c9r25ir4xJjUiYcR6aOqDbjJJCImuGnTITJYbvORRb6MRACl4Q7+tGgkRVF6DsOUFxxShYaw5NaNFlxD5bgoWcnM3d4z2guXsGMM0tS4iAA5KaSakxRqomOIYe6A8LJoEo1ZFWzLDvNPFNGvHwPMCAHcYTedvyQgxKBuN2yF26mj1Obd6fNbGDhIcZ6N+UDidfSDSDnTyygVYHWKmMoHKepjHL4lAUZDp+iYx1lXQ42W4XRc/O/SLeHz5OHtlQwcb4bhlUmFhc0ioUE1oLpEgenAUNbHOom/vd2TFVMqdi9I=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6B2FB1A0002
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: h18nksdyw5nszsbjupkqk8jtfqdrpgut
+X-HE-Tag: 1794037251-985971
+X-HE-Meta: U2FsdGVkX1+sYr0evtkpEdPVaDZ9ryMggCVDzskKlEGTz8b5prPZDQmluCyXWOhWmOLWNUuf/YUcaoErfMQb/8USR1GwGNO9UrMAqN8VcQquT5H6pW8stIBKOV73eevjsXE6Tz2ZYwXvdUVX1UvkJwPv3IbCVIlI/JZuUGQm4gYgzycirkeOSJ1SKIfoMLO49pzatUjtMmavMXXV3gXkTkbt6o0yECdKz537B47HlFKqvC9rVef0mjqLQ2fOEOjDnwrccFRiLtPhywSm6Rh8R65coaahH4Hob3hFFMlFKfE7Ob2nP2nI9HdrGLO3S/+DkyD9XRqSTNUHAxG8oznhtIzFtq5kqcFOAwbHdoQHZfWWOpIZVgMmH/gbvtc/LqQBp/kfwpAsiSm3ljWAcVPQT7aYpfLHluPb/PQvYyj3iXxRHUOF3AISxNjQwgWX4+iW/9noSwX2VRrDHPAUBARGBsgDA35t+zvKGN5tfUu2VDZC/vRipdiN5x5GqhlYs6u2ZZu2RLF2PIFOBqWqjHQF558mKiQSp+2NpvgHRfuW0nUrp7BuFHtEBdx0kieBZhM/ihVW+JBQNe3DRGX1Em42dtQYxmRMjBQF1FPo19Pc7TAeY3spJrCJbkOWCB0Y1OtXAk3b5KDgJAJs3TXKSTfYTR/mZiSJH1CijHrKj9i4RYmtK5J9vhB5YmU8zFWg8BkxaPYJhHZQIXMZH4Fo7KUs4j/ZH2PjLTPsjrLD3Qha+3DO7GMHwDmN35v1gnz0g5jXYcczSHbuzKKlHblnYPaK3WVwwFq94IdhbnCN+PsZd3bvQ3AfqIMCj0StxQWcmV3fKZbHXk/unoQw0chKs/gN96cOYxSJgnvtEAlDWZQqaVhdSOYKQcam4+Ov32qOIZZOkgukJaMEWlmpiMbY3C0k+k8x63lSbmp0fxF3AIDe9gCU4xevADAEWR3ZvlnX97w8jVxU+5+kgwYUIKJfphC
+ /V1r97aG
+ QQlppZ9rjhBh7VJUSB5E3cYgDLKy3nh3J5rJR2qOgP+YzIWHl9McYKiv8IIgVkHOh9rMIpmre/ou43FWIZ8VwHoNFGzp1THZ1sr469HfHNpi6smIy2bBwCh2Qb7OJXNluXc/8Y5ur3t1MmZER1TVM1KSC9NKz3YBgDydvIvXdpGnHY8+3Xm19qNGUZe+Ws10vQ5Xo5+PQ9QhXcaLu4DyCwd6m8BXu7Sv/DiNiaA64lZmafh0XrpG7bXHrbJDpJkfkRG1MIdyGdiByQjroFP+/Jc2EWkULQs2JBl1g3YCRQN8ggPL7nfQkOR6PZw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,177 +106,178 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+patch_alternative() must avoid instrumented code while alternatives
+are being modified, before cache maintenance completes. However, its
+branch and ADRP offset helpers are instrumentable. A GCC build with
+function tracing enabled emitted ftrace patchable entries for these
+helpers.
 
+Mark the four offset helpers noinstr. Introduce private
+__always_inline immediate encoding and decoding implementations for
+their use, and force inline the immediate mask helper.
 
-> On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> =
-wrote:
->=20
-> arm64 needs all CPUs to support hardware updates of the access flag to
-> safely update the vmemmap in place, and it will need to refuse to =
-online
-> CPUs that lack it, but only if HVO may be used. This only works if HVO
-> cannot be dynamically enabled, otherwise incompatible CPUs may have
-> already been onlined at enable time.
->=20
-> Add CONFIG_ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT for architectures =
-to
-> select. When selected, vmemmap_optimize_enabled is __ro_after_init, so
-> it can only be set with the hugetlb_free_vmemmap=3D kernel command =
-line
-> parameter, and the sysctl is made read-only.
->=20
-> Signed-off-by: James Houghton <jthoughton@google.com>
-> ---
-> Documentation/admin-guide/sysctl/vm.rst |  3 +++
-> fs/Kconfig                              |  3 ++-
-> mm/Kconfig                              |  9 +++++++++
-> mm/hugetlb_vmemmap.c                    | 17 +++++++++++++++--
-> 4 files changed, 29 insertions(+), 3 deletions(-)
->=20
-> diff --git a/Documentation/admin-guide/sysctl/vm.rst =
-b/Documentation/admin-guide/sysctl/vm.rst
-> index 5b318d17aa4b..d962d563cfd4 100644
-> --- a/Documentation/admin-guide/sysctl/vm.rst
-> +++ b/Documentation/admin-guide/sysctl/vm.rst
-> @@ -692,6 +692,9 @@ pages.  So, those surplus pages are still =
-optimized until they are no longer
-> in use.  You would need to wait for those surplus pages to be released =
-before
-> there are no optimized pages in the system.
->=20
-> +On some architectures, this knob is read-only, and HVO can only be =
-enabled or
-> +disabled with the hugetlb_free_vmemmap=3D kernel command line =
-parameter.
-> +
->=20
-> nr_hugepages_mempolicy
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> diff --git a/fs/Kconfig b/fs/Kconfig
-> index 1454b7fe9641..4222db17ba02 100644
-> --- a/fs/Kconfig
-> +++ b/fs/Kconfig
-> @@ -267,7 +267,8 @@ config HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON
-> 	help
-> 	  The HugeTLB Vmemmap Optimization (HVO) defaults to off. Say Y =
-here to
-> 	  enable HVO by default. It can be disabled via =
-hugetlb_free_vmemmap=3Doff
-> -	  (boot command line) or hugetlb_optimize_vmemmap (sysctl).
-> +	  (boot command line) or hugetlb_optimize_vmemmap (sysctl, if =
-the
-> +	  architecture allows changing it at runtime).
-> endif # HUGETLBFS
->=20
-> config HUGETLB_PAGE
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index acefc994d9a8..ad313fddc9da 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -475,6 +475,15 @@ config ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
-> config ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
-> 	bool
->=20
-> +#
-> +# Select this config option from the architecture Kconfig if HugeTLB =
-vmemmap
-> +# optimization may only be enabled or disabled on the kernel command =
-line, e.g.
+The offset helpers pass constant encoding types, allowing the compiler
+to eliminate invalid-type diagnostic paths. Keep the public immediate
+helpers as wrappers to preserve diagnostics for other callers.
 
-I suggest using the following phrasing to specify precisely what becomes =
-RO.
-Something like:
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Assisted-by: LLM
+---
+ arch/arm64/lib/insn.c | 57 ++++++++++++++++++++++++++++---------------
+ 1 file changed, 37 insertions(+), 20 deletions(-)
 
-# Select this from the architecture Kconfig if the =
-hugetlb_optimize_vmemmap
-# sysctl must be read-only.
-
-> +# because the architecture configures the system at boot based on =
-whether it
-> +# is enabled. This makes the hugetlb_optimize_vmemmap sysctl =
-read-only.
-
-I don't think it's necessary to include the last two sentences. This is =
-a public
-file, and we only need to describe its purpose. What specifically caused =
-it is
-architectural choice, so we don't need to explain it here.
-
-> +#
-> +config ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT
-
-How about ARCH_HUGETLB_VMEMMAP_OPTIMIZATION_SYSCTL_RO? I'll explain the =
-reason below.
-
-> +	bool
-> +
-> config HAVE_MEMBLOCK_PHYS_MAP
-> 	bool
->=20
-> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> index 817ce39d4cf3..de4148a8aabf 100644
-> --- a/mm/hugetlb_vmemmap.c
-> +++ b/mm/hugetlb_vmemmap.c
-> @@ -428,7 +428,20 @@ static int vmemmap_remap_alloc(const struct =
-hstate *h, struct folio *folio,
-> 	return ret;
-> }
->=20
-> -static bool vmemmap_optimize_enabled =3D =
-IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON);
-> +/*
-> + * Architectures selecting =
-CONFIG_ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT rely on
-> + * HVO only being enabled or disabled on the kernel command line.
-> + */
-> +#ifdef CONFIG_ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT
-> +#define __vmemmap_optimize_enabled_attr	__ro_after_init
-
-If we do not set vmemmap_optimize_enabled to RO, the implementation =
-becomes
-much simpler. sysctl is read-only, so it was already impossible to =
-modify
-vmemmap_optimize_enabled in the first place. Therefore, even without =
-this
-layer of protection, we lose nothing; on the contrary, we gain a simple =
-code
-implementation.
-
-> +#define HUGETLB_VMEMMAP_SYSCTL_MODE	0444
-> +#else
-> +#define __vmemmap_optimize_enabled_attr
-> +#define HUGETLB_VMEMMAP_SYSCTL_MODE	0644
-> +#endif
-> +
-> +static bool vmemmap_optimize_enabled __vmemmap_optimize_enabled_attr =
-=3D
-> +	IS_ENABLED(CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON);
-> static int __init hugetlb_vmemmap_optimize_param(char *buf)
-> {
-> 	return kstrtobool(buf, &vmemmap_optimize_enabled);
-> @@ -751,7 +764,7 @@ static const struct ctl_table =
-hugetlb_vmemmap_sysctls[] =3D {
-> 		.procname	=3D "hugetlb_optimize_vmemmap",
-> 		.data		=3D &vmemmap_optimize_enabled,
-> 		.maxlen		=3D sizeof(vmemmap_optimize_enabled),
-> -		.mode		=3D 0644,
-> +		.mode		=3D HUGETLB_VMEMMAP_SYSCTL_MODE,
-
-So, I think
-
-  .mode =3D IS_ENABLED(ARCH_HUGETLB_VMEMMAP_OPTIMIZATION_SYSCTL_RO) ? =
-0444 : 0666,
-
-is simple and enough.
-
-Thanks,
-Muchun
-
-> 		.proc_handler	=3D proc_dobool,
-> 	},
-> };
-> --=20
-> 2.56.0.rc1.315.gc6ed9934b7-goog
->=20
+diff --git a/arch/arm64/lib/insn.c b/arch/arm64/lib/insn.c
+index e70ac0238515..b98610fcab32 100644
+--- a/arch/arm64/lib/insn.c
++++ b/arch/arm64/lib/insn.c
+@@ -21,7 +21,7 @@
+ #define AARCH64_INSN_N_BIT	BIT(22)
+ #define AARCH64_INSN_LSL_12	BIT(22)
+ 
+-static int __kprobes aarch64_get_imm_shift_mask(enum aarch64_insn_imm_type type,
++static __always_inline int aarch64_get_imm_shift_mask(enum aarch64_insn_imm_type type,
+ 						u32 *maskp, int *shiftp)
+ {
+ 	u32 mask;
+@@ -86,7 +86,12 @@ static int __kprobes aarch64_get_imm_shift_mask(enum aarch64_insn_imm_type type,
+ #define ADR_IMM_LOSHIFT		29
+ #define ADR_IMM_HISHIFT		5
+ 
+-u64 aarch64_insn_decode_immediate(enum aarch64_insn_imm_type type, u32 insn)
++/*
++ * Keep the immediate helpers inline so noinstr callers using constant encoding
++ * types do not call instrumentable code, including the invalid-type diagnostics.
++ */
++static __always_inline u64
++__aarch64_insn_decode_immediate(enum aarch64_insn_imm_type type, u32 insn)
+ {
+ 	u32 immlo, immhi, mask;
+ 	int shift;
+@@ -101,8 +106,8 @@ u64 aarch64_insn_decode_immediate(enum aarch64_insn_imm_type type, u32 insn)
+ 		break;
+ 	default:
+ 		if (aarch64_get_imm_shift_mask(type, &mask, &shift) < 0) {
+-			pr_err("%s: unknown immediate encoding %d\n", __func__,
+-			       type);
++			pr_err("%s: unknown immediate encoding %d\n",
++			       "aarch64_insn_decode_immediate", type);
+ 			return 0;
+ 		}
+ 	}
+@@ -110,8 +115,14 @@ u64 aarch64_insn_decode_immediate(enum aarch64_insn_imm_type type, u32 insn)
+ 	return (insn >> shift) & mask;
+ }
+ 
+-u32 __kprobes aarch64_insn_encode_immediate(enum aarch64_insn_imm_type type,
+-				  u32 insn, u64 imm)
++u64 aarch64_insn_decode_immediate(enum aarch64_insn_imm_type type, u32 insn)
++{
++	return __aarch64_insn_decode_immediate(type, insn);
++}
++
++static __always_inline u32
++__aarch64_insn_encode_immediate(enum aarch64_insn_imm_type type,
++			      u32 insn, u64 imm)
+ {
+ 	u32 immlo, immhi, mask;
+ 	int shift;
+@@ -131,8 +142,8 @@ u32 __kprobes aarch64_insn_encode_immediate(enum aarch64_insn_imm_type type,
+ 		break;
+ 	default:
+ 		if (aarch64_get_imm_shift_mask(type, &mask, &shift) < 0) {
+-			pr_err("%s: unknown immediate encoding %d\n", __func__,
+-			       type);
++			pr_err("%s: unknown immediate encoding %d\n",
++			       "aarch64_insn_encode_immediate", type);
+ 			return AARCH64_BREAK_FAULT;
+ 		}
+ 	}
+@@ -144,6 +155,12 @@ u32 __kprobes aarch64_insn_encode_immediate(enum aarch64_insn_imm_type type,
+ 	return insn;
+ }
+ 
++u32 __kprobes aarch64_insn_encode_immediate(enum aarch64_insn_imm_type type,
++					  u32 insn, u64 imm)
++{
++	return __aarch64_insn_encode_immediate(type, insn, imm);
++}
++
+ u32 aarch64_insn_decode_register(enum aarch64_insn_register_type type,
+ 					u32 insn)
+ {
+@@ -1299,23 +1316,23 @@ u32 aarch64_insn_gen_adr(unsigned long pc, unsigned long addr,
+  * signed value (so it can be used when computing a new branch
+  * target).
+  */
+-s32 aarch64_get_branch_offset(u32 insn)
++s32 noinstr aarch64_get_branch_offset(u32 insn)
+ {
+ 	s32 imm;
+ 
+ 	if (aarch64_insn_is_b(insn) || aarch64_insn_is_bl(insn)) {
+-		imm = aarch64_insn_decode_immediate(AARCH64_INSN_IMM_26, insn);
++		imm = __aarch64_insn_decode_immediate(AARCH64_INSN_IMM_26, insn);
+ 		return (imm << 6) >> 4;
+ 	}
+ 
+ 	if (aarch64_insn_is_cbz(insn) || aarch64_insn_is_cbnz(insn) ||
+ 	    aarch64_insn_is_bcond(insn)) {
+-		imm = aarch64_insn_decode_immediate(AARCH64_INSN_IMM_19, insn);
++		imm = __aarch64_insn_decode_immediate(AARCH64_INSN_IMM_19, insn);
+ 		return (imm << 13) >> 11;
+ 	}
+ 
+ 	if (aarch64_insn_is_tbz(insn) || aarch64_insn_is_tbnz(insn)) {
+-		imm = aarch64_insn_decode_immediate(AARCH64_INSN_IMM_14, insn);
++		imm = __aarch64_insn_decode_immediate(AARCH64_INSN_IMM_14, insn);
+ 		return (imm << 18) >> 16;
+ 	}
+ 
+@@ -1327,35 +1344,35 @@ s32 aarch64_get_branch_offset(u32 insn)
+  * Encode the displacement of a branch in the imm field and return the
+  * updated instruction.
+  */
+-u32 aarch64_set_branch_offset(u32 insn, s32 offset)
++u32 noinstr aarch64_set_branch_offset(u32 insn, s32 offset)
+ {
+ 	if (aarch64_insn_is_b(insn) || aarch64_insn_is_bl(insn))
+-		return aarch64_insn_encode_immediate(AARCH64_INSN_IMM_26, insn,
++		return __aarch64_insn_encode_immediate(AARCH64_INSN_IMM_26, insn,
+ 						     offset >> 2);
+ 
+ 	if (aarch64_insn_is_cbz(insn) || aarch64_insn_is_cbnz(insn) ||
+ 	    aarch64_insn_is_bcond(insn))
+-		return aarch64_insn_encode_immediate(AARCH64_INSN_IMM_19, insn,
++		return __aarch64_insn_encode_immediate(AARCH64_INSN_IMM_19, insn,
+ 						     offset >> 2);
+ 
+ 	if (aarch64_insn_is_tbz(insn) || aarch64_insn_is_tbnz(insn))
+-		return aarch64_insn_encode_immediate(AARCH64_INSN_IMM_14, insn,
++		return __aarch64_insn_encode_immediate(AARCH64_INSN_IMM_14, insn,
+ 						     offset >> 2);
+ 
+ 	/* Unhandled instruction */
+ 	BUG();
+ }
+ 
+-s32 aarch64_insn_adrp_get_offset(u32 insn)
++s32 noinstr aarch64_insn_adrp_get_offset(u32 insn)
+ {
+ 	BUG_ON(!aarch64_insn_is_adrp(insn));
+-	return aarch64_insn_decode_immediate(AARCH64_INSN_IMM_ADR, insn) << 12;
++	return __aarch64_insn_decode_immediate(AARCH64_INSN_IMM_ADR, insn) << 12;
+ }
+ 
+-u32 aarch64_insn_adrp_set_offset(u32 insn, s32 offset)
++u32 noinstr aarch64_insn_adrp_set_offset(u32 insn, s32 offset)
+ {
+ 	BUG_ON(!aarch64_insn_is_adrp(insn));
+-	return aarch64_insn_encode_immediate(AARCH64_INSN_IMM_ADR, insn,
++	return __aarch64_insn_encode_immediate(AARCH64_INSN_IMM_ADR, insn,
+ 						offset >> 12);
+ }
+ 
+-- 
+2.55.0
 
 
