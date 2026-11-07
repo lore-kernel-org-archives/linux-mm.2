@@ -1,29 +1,39 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D85606A32D
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 22:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE6A606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 22:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FqsDAE7f
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dLayhXvj
 Received: by kanga.kvack.org (Postfix)
-	id 1B1086B05B5; Sat,  7 Nov 2026 17:22:15 -0500 (EST)
+	id 81D176B05B6; Sat,  7 Nov 2026 17:22:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C50E6B05B7; Sat,  7 Nov 2026 17:22:14 -0500 (EST)
+	id 7F5676B05B7; Sat,  7 Nov 2026 17:22:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5D9E6B05B5; Sat,  7 Nov 2026 17:22:14 -0500 (EST)
+	id 70AEB6B05B9; Sat,  7 Nov 2026 17:22:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B4C636B05B5
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 17:22:14 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 231AA80250
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 531EC6B05B6
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 17:22:15 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D906F1A0419
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 22:22:14 +0000 (UTC)
-X-FDA: 85409747388.24.BA22582
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 7202DA0007
+X-FDA: 85409747388.03.D09E2D5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7792EC0005
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 22:22:12 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FqsDAE7f;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dLayhXvj;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794090132;
+	b=3tpzVP+581USTxFlSwq4Fa2Ztl04pzMl2V10DNukEeR56g1maRhOqlZ0IROrOCN7T1UpRb
+	TautnpSAb9Rnpwww+/Amn8s1FBEVR8GmuK5QnQAFL12CMDl4guSab7XPbCVC+r8GUHX1R+
+	qLp8KEWuQsU+9jUaXeRZ8Q5/RFAndQ0=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dLayhXvj;
+	spf=pass (imf22.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794090132;
@@ -31,35 +41,25 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e8b2BxiNM2zDfbsfHX5lOdltBPseBRShaz9qPJkxXRw=;
-	b=rAxEU1ofUbUrU/o8XZilnUH98MDW86chgt4AQuNH2ciH/WtUZVq3KRb+ikwJAF95ZGx3nP
-	RnZT5+wWmerY4PWLU1oB4WvzHeHwFNQagSPvWJKgQ0vQG5XJGkwS6nfNudCxtUAIcqw69D
-	1eTXY0T3R1lyAcZf3ya+xBQRD58QFwU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794090132;
-	b=75a5wj+APBFD4QW40FcDcCatVFdaSyAbiW9QGfzbnNjQYhVU0BnsM7Cfv7BZfrcDc1PHFu
-	y5UtR4G6Vo8SFEWNuaP8WyG2Lg2sx/rxLhvmJLAvtKuxpG9cv5kdSWN3p0ESyTUba8mjDq
-	1VdtV4i68J8MirMqJu8nhLO8IAFad/4=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FqsDAE7f;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=dECklwOd4xlNmvN3OSaJ4I8wcJsGZw3Lw9lBlak0+Zw=;
+	b=rM6guDSJ1H4vugQ2ce8BMtS0FEWlzzDGCE88T/cl2m7lScjaBWVjTHpP2xCHU0JIM/0F78
+	eTbkw7srKcs5qI3EIDK8rXiv+Oyg/0F8JkNEBt8QKZhZPVXAFLICGmQATTObxDZB5RBLMJ
+	CT5j2voQzfN8i+VnipVBZadTV2IFR9Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8D6EA43ED0;
-	Sat,  7 Nov 2026 22:22:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 402281F008A3;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1C8F561210;
+	Sat,  7 Nov 2026 22:22:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988D01F0089F;
 	Sat,  7 Nov 2026 22:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794090131;
-	bh=e8b2BxiNM2zDfbsfHX5lOdltBPseBRShaz9qPJkxXRw=;
+	bh=dECklwOd4xlNmvN3OSaJ4I8wcJsGZw3Lw9lBlak0+Zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=FqsDAE7f+a160tFFkgUqjUF6DTdHtN56zbOQZufBN6+E2VrZnKvqyakwl9OdCuNWf
-	 7Kn9rtFQ3Ti9t+yZXjqVADYgS6eBXqRgznjBHQvKHWo+8KfF0SVVgx2SYhPCODCW/v
-	 VzzW7/KzL8x/XBJ/ADaQXCrF94L7vHXFNArCz1KB01j6JW4NWbUcB2sQsKKRSXDmil
-	 8MvXTzdjgpD0LvMZq2kRz8YezFtGlUOVpZU/ISC7ZaYWTDEk5Qjri1mer7zQfxVeDH
-	 2y8B31pkpEt6hnDgwpYWZGdTa4tggab5HxuVd85yr7BJIfOLHC0g2NQ7LFp6HSRUj3
-	 zMyGK3GoED4dg==
+	b=dLayhXvjlMyPbPhj+Cwg4k8CwNhxhZBR+fX479TcrnQ8IrINvaP0MxsFRMp3Ej6c3
+	 /m3nOpiDvY26qgBkfMF8ZvqZzm0Sywrd2TocaoiBZ+ptWHrWDF/jpLQD6IqXrcSnQS
+	 jV280FrsdLZlqxUT+H7sveM/obf3IZ0878/1zpBVclT7+RXf6ApF7+ae+sKjG5kIDx
+	 xBUxG2voo65F7oy4l5NP56nndP2Mf9Pxe9igP4TcyojKsz5XPtkvxVXYXDsL6mLbHc
+	 OxgU775qY9BiOg3DqTWU3n5EAktfKM4DmkeHNOnHooLqvixYbZiPD6EaBvqIwkiWdq
+	 XvulXIidcnBgQ==
 From: SJ Park <sj@kernel.org>
 To: 
 Cc: SJ Park <sj@kernel.org>,
@@ -68,27 +68,27 @@ Cc: SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 6.6.y 2/3] mm/damon/core: filter out damos address filter-split failed region
-Date: Sat,  7 Nov 2026 14:22:00 -0800
-Message-ID: <20261107222202.331476-3-sj@kernel.org>
+Subject: [RFC PATCH 6.6.y 3/3] mm/damon/core: remove unreachable damos charge_{target,addr}_from
+Date: Sat,  7 Nov 2026 14:22:01 -0800
+Message-ID: <20261107222202.331476-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261107222202.331476-1-sj@kernel.org>
 References: <20261107222202.331476-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 768paphb1h34y7qk4fjzdmht9m9md65z
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 7792EC0005
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 6h9fq3o95b3ugd8b13q8dcssx4y63bbx
-X-Rspamd-Queue-Id: 7202DA0007
-X-Rspam-User: 
-X-HE-Tag: 1794090132-981584
-X-HE-Meta: U2FsdGVkX1+FydUKnSs8Q5ksNZHT1P+MGp0173YMLvuN4uOpwgtljMk9i+8T6gblq+xyxuaUD6rGh1CM3cEquWf4aGCkAnhAlGZ7iA0EnUf5sL0JbXr3qsJT6GQepuqDbH24NgH185DqV8xtVh8H30ivr44ZmSqzMs9egP3mNQu8uMmnFwsktLqPxNq+FXLtOuZ7t/XbT84+qgoS59hpRWQaUFZFPIVMij2tgJ9hUiWUHimJKyA999NK/tjIRJpgen9ucUijUeTsG28WfiFzx7tzmCJv5cTCLtYnK7+4jZQ/9qkQFIzQyP16V2uCnk0n5AD4SIJYbHWtooMrVHlZDLpOmkGLKDYuzybq/0TToI3yWDrQr/m3yx8Hey3a/5vjYu10jiO2LLf7cofgYJ6CKhq8pVUfrmgXKmWGRu1ve3woK5Pn1LThLWvkWeOBzs4w1FMoPwOekYjeVSjsxvOv8aLEBp94t+CczcxO42ldnKWOeXzbaNt0klkm1E/vxS7TedTr5cQ3ZLMm0UCBlG6NzYcrAyYzcabB1fnkm0VekUovb3iFeYLKXhQ4tOIbmoLD6xktbV+pWa9EPiIJoj36J75gW0HFffNBXzJ4dNx9FH+jMYHtC7rMFfm8xwCL9bfFZsdu4QsaZH9FnOFVZ+K6W5J2sSgU4T67aorFi6nCBPlYNijieblEAUQfh1QKCgpkNH0EvsxQnzikC0njwXwTutGmg9i/+hR9CYlOaJ4REVsLTSgHmy3kA24Oiq9cmYvh+Qdfgp24dr4uB2dj4XnKK7IuoMXWo12gCvK+3uy30HdP/WwrVE9f6kv2MT2SxYNcjM9Y1JagROvcNL19xZ3Z5ZP7/X4souLfHnd9/e7ZGp8rjFbVgjC6IUFigjJLGR9aGTnvwO+A1V42VRiMOQCGBy6vT9P6zCTOpVHm5eNrY4T8QPO2qZlnUZDUAy7WoxUt1WuACRJ8WekRGlALAhI
- fVpph32k
- acGe+9Rxb4GEUYeD5sbpsi9d754ABOYTXoeg77YL8FsXT60r8H9Av3qlmPlNhxAFV+GSthDsi70lYT1nDAgJuSmltRgXbyDMODNAatf1oUMeF6y/ihwZMCp5ZIo6bPOPv8sOYoWQSwrszmHpDaTOSIiiqQK7phST+N0PKBYrT0N3f5kjkXA0ewqsW6oyt1/z3V9smNejxeG47uD3lfrEZ2KotEumJCVXhz9g2x3NlawwkmqgWyG8NBkLthOVWzBPTi+o6ky3kVNvGxa5YrqESFQ+PyQzHuRp/rLm2
+X-HE-Tag: 1794090132-358871
+X-HE-Meta: U2FsdGVkX18HZfHMQBSe0nBGxNysxINkJRKPtygAGxFYje4JsOjZUrUX66Xz9gK+JoA/QCosmM5Xt1XJ96fVacFsfd0htlNBmDV0w31fkFZyc3kffujbLkJQYIebedSW2tuR2cmtUvjR/kcKBoTKcKPpO3IKCCZfAh7TT4r82hb7ZolNog0nQY103PFJLOF+v4CPGdt9tT5g8Dj+RnQd15OYAQkpC8rfEhQM390KJZmDspeDOyoLKeLVgz9g8FKY1v7gD6F67upHTgSYbZ/Zp7IWEP9RCAIFQYlUi8zZW4mHEowfu/ENVWAWSXb3D66XSk2m6ZKN15PFJHkBWOUxK/JyH4bOUKdOKx5c1QGA81GM9UUbic1otJG4jnHBKwHtplLKCLBYdpKJwMY6o0OZWu+4U9wBUXiozltW9jGpLUchotACpOL56XTKBIOPtLcMEdqaUy7RmkR+nAYj3LODcgOK/b4yBqX0WbHoTMvQj4SNje1SvhyHcxB0JOrRzlYHUQ5o8KjpdH+hU+HeUCOjl4ErfV2Nt8vZ5DTS6thQyNZTLtJ+8Sb8vMhtbPAzCyAsW1w2BzVOr1e9pqu17mUXLtJhAod8/5Nxgvd8ZNj6A8ZZhRrJh1DmZoeoQljJTCp7WK3rIFqiidHdqjYIj3hMfIYg3Lh8ZFMJMj8WLUehwuOPSDfDhjJjZLVe4dHrzt+Dm8WEwZTXUDBP9NsiVQQRvVqa/KgGuzjlo9xSAMGstVnrsPRgaDlufzxdUytVpUD84kKsNLVYkTgCrg8lBpLtJxU8/R9nOVEoKUEVzIw0m+1DT5MuLSCQklEd1rhFsxqBt7VEjP5kpSGSF8j6bg7j0O/87zYE4mYvyJ3qjxDZ8inDJQj3xUd7HlMHdp8WmuD9fiT0GZcbk5yPWr9lbTT1m7OcYCRmvZWWvQ1HaNmv6tu7dHglzVVyRtnHXVp6kV09pUcNI/vX9zC6kirH8xB
+ Z+U9BfTd
+ Yj458mFeaNfBXqEqo/B0wyxnGwBDPLK8EPIuyHkV278XfiYlde9ONPOCNqxe8QucEVrSWEFtnH0bDcYwqVe4WWlzmiC+UdFqsHOJWXs+2KMFue8qrKNTbH3WwLfm7oikdfFh5jBLntzAGvUcTV2A1mCa8BzZvZJa65KHemIPs0Rwj5scITerhrp+YwOUHs4tbs0FTpp+vPlXl9VJkp2O6zxRNnamZs7mHAmFxMGYCLgXSdB9LpMAxfYeylF5DAcPfaHB5HUo2eirjhSKKgsi+xsDAQB0T3qdDNu5RKzNnAZJjfxEurY4eKLqLLgd9ERo5HxpV/N2Xh0y4s6PC8L0eT62xpir5VnaG/Mxi+ZJx/STVVTEv89m/tDmhkew6w/ch6qZcMrRd4vn4a6U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,139 +97,81 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When an address type DAMOS filter is configured, DAMOS tries to split the
-region for the filter range, and apply DAMOS action to the filter-in
-region.  The split operation (damon_split_region_at()) could fail from
-allocation failure under extreme memory pressure.  In the case, DAMOS
-action could be applied more or less than expected, ignoring the address
-filter.
+damos_quota->charge_{target,addr}_from saves the target and region the
+scheme's quota limit is reached.  damos_skip_charged_region() skips the
+target and regions before the point.  The target that was assigned to
+charge_target_from could be dynamically removed from the context by the
+runtime parameters update (aka commit) feature.  In this case,
+damos_skip_charged_region() cannot find if the point is passed or not,
+so the scheme is effectively disabled.
 
-The issue only rarely happens under extreme memory pressure.  No crash or
-leak happens.  Occasionally not applying the action to a few regions
-shouldn't be a real problem.  But applying the action to a region that the
-user has excluded via address filter could be a surprise depending on the
-use case.  It is only theoretical.  No such real case is found yet.
+Similarly, the user could also remove all the regions of the target
+using the runtime parameters update feature.  It would be uncommon to do
+that, but it is a supported feature.  Because the skip pointer detection
+logic (damos_skip_charged_region()) works for each region of targets,
+this result in the logic is entirely skipped and the scheme is
+effectively disabled again.
 
-Filter out the entire region if the split is failed.  Update
-damos_filter_match() signature to receive the error from split.  Also
-update kunit tests for the updated signature.
+The user impact is that the DAMOS scheme could suddenly stop working
+under certain uses of the runtime parameters update feature.  It could
+surprise users. No crash or leak happens though.  Users could also
+simply work around by re-installing the scheme.
 
-The issue was discovered [1] by sashiko.
+Catch the corner cases in damos_adjust_quota() and reset the pointers.
 
-Link: https://lore.kernel.org/20261020004119.106690-1-sj@kernel.org
-Link: https://lore.kernel.org/20260801203121.117449-1-sj@kernel.org [1]
-Fixes: ab9bda001b68 ("mm/damon/core: introduce address range type damos filter")
+Link: https://lore.kernel.org/20261020023958.108276-1-sj@kernel.org
+Fixes: da87878010e5 ("mm/damon/sysfs: support online inputs update")
 Signed-off-by: SJ Park <sj@kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: <stable@vger.kernel.org> # 6.6.x
-(cherry picked from commit bbeec2d8324d7aac438bb12dd2d22b184e0a8d43)
+Closes: https://sashiko.dev/#/bug/linux-cd0c55fc-0cc8-45d8-9637-3334811c49b8
+Cc: <stable@vger.kernel.org> # 5.19.x
+(cherry picked from commit 5695abc4e742b947f586bfb6a080a80ad9957e5d)
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core-test.h | 11 ++++++-----
- mm/damon/core.c      | 13 +++++++++----
- 2 files changed, 15 insertions(+), 9 deletions(-)
+ mm/damon/core.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/mm/damon/core-test.h b/mm/damon/core-test.h
-index dd91b0eea61ff..1988b7dd29e96 100644
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -461,6 +461,7 @@ static void damos_test_filter_out(struct kunit *test)
- 	struct damon_target *t;
- 	struct damon_region *r, *r2;
- 	struct damos_filter *f;
-+	int err;
- 
- 	f = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true);
- 	if (!f)
-@@ -482,25 +483,25 @@ static void damos_test_filter_out(struct kunit *test)
- 	damon_add_region(r, t);
- 
- 	/* region in the range */
--	KUNIT_EXPECT_TRUE(test, __damos_filter_out(NULL, t, r, f));
-+	KUNIT_EXPECT_TRUE(test, __damos_filter_out(NULL, t, r, f, &err));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region before the range */
- 	r->ar.start = DAMON_MIN_REGION * 1;
- 	r->ar.end = DAMON_MIN_REGION * 2;
--	KUNIT_EXPECT_FALSE(test, __damos_filter_out(NULL, t, r, f));
-+	KUNIT_EXPECT_FALSE(test, __damos_filter_out(NULL, t, r, f, &err));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region after the range */
- 	r->ar.start = DAMON_MIN_REGION * 6;
- 	r->ar.end = DAMON_MIN_REGION * 8;
--	KUNIT_EXPECT_FALSE(test, __damos_filter_out(NULL, t, r, f));
-+	KUNIT_EXPECT_FALSE(test, __damos_filter_out(NULL, t, r, f, &err));
- 	KUNIT_EXPECT_EQ(test, damon_nr_regions(t), 1);
- 
- 	/* region started before the range */
- 	r->ar.start = DAMON_MIN_REGION * 1;
- 	r->ar.end = DAMON_MIN_REGION * 4;
--	KUNIT_EXPECT_FALSE(test, __damos_filter_out(NULL, t, r, f));
-+	KUNIT_EXPECT_FALSE(test, __damos_filter_out(NULL, t, r, f, &err));
- 	/* filter should have split the region */
- 	KUNIT_EXPECT_EQ(test, r->ar.start, DAMON_MIN_REGION * 1);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, DAMON_MIN_REGION * 2);
-@@ -515,7 +516,7 @@ static void damos_test_filter_out(struct kunit *test)
- 	/* region started in the range */
- 	r->ar.start = DAMON_MIN_REGION * 2;
- 	r->ar.end = DAMON_MIN_REGION * 8;
--	KUNIT_EXPECT_TRUE(test, __damos_filter_out(NULL, t, r, f));
-+	KUNIT_EXPECT_TRUE(test, __damos_filter_out(NULL, t, r, f, &err));
- 	/* filter should have split the region */
- 	KUNIT_EXPECT_EQ(test, r->ar.start, DAMON_MIN_REGION * 2);
- 	KUNIT_EXPECT_EQ(test, r->ar.end, DAMON_MIN_REGION * 6);
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 9d4a78deaa06a..99e934a6d1ce9 100644
+index 99e934a6d1ce9..61d45d40fc1d3 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -930,13 +930,14 @@ static void damos_update_stat(struct damos *s,
+@@ -1088,6 +1088,27 @@ static void damos_set_effective_quota(struct damos_quota *quota)
+ 	quota->esz = esz;
  }
  
- static bool __damos_filter_out(struct damon_ctx *ctx, struct damon_target *t,
--		struct damon_region *r, struct damos_filter *filter)
-+		struct damon_region *r, struct damos_filter *filter, int *err)
++
++static void damos_fix_stale_charge_pointers(struct damon_ctx *c,
++		struct damos *s)
++{
++	struct damos_quota *quota;
++	struct damon_target *t;
++
++	quota = &s->quota;
++	if (!quota->charge_target_from)
++		return;
++	damon_for_each_target(t, c) {
++		if (t == quota->charge_target_from) {
++			if (damon_nr_regions(t) > 0)
++				return;
++			break;
++		}
++	}
++	quota->charge_target_from = NULL;
++	quota->charge_addr_from = 0;
++}
++
+ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
  {
- 	bool matched = false;
- 	struct damon_target *ti;
- 	int target_idx = 0;
- 	unsigned long start, end;
- 
-+	*err = 0;
- 	switch (filter->type) {
- 	case DAMOS_FILTER_TYPE_TARGET:
- 		damon_for_each_target(ti, ctx) {
-@@ -962,12 +963,13 @@ static bool __damos_filter_out(struct damon_ctx *ctx, struct damon_target *t,
- 		}
- 		/* start before the range and overlap */
- 		if (r->ar.start < start) {
--			damon_split_region_at(t, r, start - r->ar.start);
-+			*err = damon_split_region_at(t, r,
-+					start - r->ar.start);
- 			matched = false;
- 			break;
- 		}
- 		/* start inside the range */
--		damon_split_region_at(t, r, end - r->ar.start);
-+		*err = damon_split_region_at(t, r, end - r->ar.start);
- 		matched = true;
- 		break;
- 	default:
-@@ -981,9 +983,12 @@ static bool damos_filter_out(struct damon_ctx *ctx, struct damon_target *t,
- 		struct damon_region *r, struct damos *s)
- {
- 	struct damos_filter *filter;
-+	bool matching;
-+	int err;
- 
- 	damos_for_each_filter(filter, s) {
--		if (__damos_filter_out(ctx, t, r, filter))
-+		matching = __damos_filter_out(ctx, t, r, filter, &err);
-+		if (matching || err)
- 			return true;
+ 	struct damos_quota *quota = &s->quota;
+@@ -1115,6 +1136,8 @@ static void damos_adjust_quota(struct damon_ctx *c, struct damos *s)
+ 		damos_set_effective_quota(quota);
  	}
- 	return false;
+ 
++	damos_fix_stale_charge_pointers(c, s);
++
+ 	if (!c->ops.get_scheme_score)
+ 		return;
+ 
 -- 
 2.47.3
 
