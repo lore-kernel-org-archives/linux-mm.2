@@ -1,89 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C54606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9A2606A32E
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lXOXgSf3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mxRiTpft
 Received: by kanga.kvack.org (Postfix)
-	id 3E8036B05B2; Sat,  7 Nov 2026 02:15:38 -0500 (EST)
+	id D96A86B05B0; Sat,  7 Nov 2026 02:25:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BFE86B05B5; Sat,  7 Nov 2026 02:15:38 -0500 (EST)
+	id D47E96B05B1; Sat,  7 Nov 2026 02:25:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2FDEA6B05B6; Sat,  7 Nov 2026 02:15:38 -0500 (EST)
+	id C5D926B05B2; Sat,  7 Nov 2026 02:25:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0906A6B05B2
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:15:38 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 778371402A4
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:15:37 +0000 (UTC)
-X-FDA: 85407462714.24.0818BC9
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CB106B05B0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:25:09 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2EEFAC02A6
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:25:09 +0000 (UTC)
+X-FDA: 85407486738.04.C16AF56
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C3FAF20006
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:15:35 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lXOXgSf3;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7C923180003
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:25:07 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mxRiTpft;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794035735;
+	s=arc-20220608; t=1794036307;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vzXZdhnaevFG7m6vfikATmsg/E5a/qIjqv85ia5RRoc=;
-	b=tNTaWzualLX+6VYmjJqmXHeEYm3aoG+LpbEfhIiaSQxHXBMnEfM/tGoKbs1nLkCuKmtTB/
-	rzsQxWXPM75q4GfJjXPBcDHgaW6n6Z4gTbOOBsWCz++PLKSP7e9siUkkFCOhqfGSTclX/G
-	bJuDnvIuc3ePoQt7Clz/pGygDiTii2c=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lXOXgSf3;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=sRnoEnJS6lgMf2aidbtQUnxmoBvYWDnbbxpzbj70vYw=;
+	b=Z2Vf/Cyk1C+YdB32Af65x5vFSgA8B33Y0IoNzCJsLBxt6IVDiBW2d7CckbBorRTQWtMfA8
+	0g3iqnu7DTt/DMn6v4B2oj5ZM3evJpSXU5iP/8JxJzocq/RdxYZZ3g+P3oE/ZbNz/X6pgG
+	LmYyEjKnoyh+dS8LGOPYOMRr9H/wOK8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794035735;
-	b=RBB2T5B10rHe+YpWGFzwgzOPTHWScnNVQiM1OBS8yZhBigiuuvjZ8/DFGSVnivSSw/Mcmg
-	KKxHf3uzuOqGvRIFgAiQfSvo6FZHGLL5EvcBJE1v/8qM562jVGSegGXobgpYMvseOccbB6
-	/lYKHOyRz1IjRDgoIhqKXCIF0vlUMCE=
+	t=1794036307;
+	b=5EAZX4C1UlXxMjsnXxh6xlaTof35aOSZUVfX7knISAeEO9eHwjWcag2aItX7GswiMVIreL
+	T+rZOPkkqVehI8rVa+EiWhj0foC1L8qPO9nIymdnQNgpyykjK/kjdcGYT1unAciwtJikmp
+	FvSR9YMJV05kZaSfnRDapPR//yLfmks=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mxRiTpft;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C9FAE437A3;
-	Sat,  7 Nov 2026 07:15:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2352A1F0089F;
-	Sat,  7 Nov 2026 07:15:34 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 97B804041C;
+	Sat,  7 Nov 2026 07:25:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF881F0089F;
+	Sat,  7 Nov 2026 07:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794035734;
-	bh=vzXZdhnaevFG7m6vfikATmsg/E5a/qIjqv85ia5RRoc=;
+	s=k20260515; t=1794036306;
+	bh=sRnoEnJS6lgMf2aidbtQUnxmoBvYWDnbbxpzbj70vYw=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lXOXgSf3CTPIOLuzygqugyz/m3Kblgh8MJs48+8iMsrQjzG/qreHEh6jO47pbs2re
-	 3Uurw9Fnc9zQFse+AdXIM57kpmzdsdr1ooxzZqIvRiCYXeJlt07zQ8jYqlkv8E8OLB
-	 BUay2w1iDEsNeXgnApmBVX/YkfaRTnV5iO8RYzy2pKRTix0uDbT98nUisN3fax9Vm9
-	 AWVEq0WetPaNznRKVC8P1r3D+YP4JRnSVN+EpNFOKu1I600ottqeNwplAml/t5VSHC
-	 N0BsVidOkEyx3RLTv4wvcJq0/hAHxAWeZytzszlFcTY2vEhrcSIW2Q919aFyhUE1q/
-	 R2sd0rh6zc5tw==
-Message-ID: <sashiko-outbox-202683@kernel.org>
+	b=mxRiTpftuY+2Qfqw5gmB982A/13H8/92gVHVpuRdPbZNh1vA/nlUN3fNzgZN6XmWZ
+	 /kpCA7kVewi0ASrYzwiWFwwHGmlheLm8bDXrK9ImIip83L8mcoORUuGQ5vAnndvLhU
+	 hYm1tQPLA0frelU6Tj2kAfssd10C0Cvq/8Dp+ESsyvoVbip2HbPRbVXS9GQ+n0bhEK
+	 vK6SgGQPRGlbUEB0mpEjuxmaURkDHnI+jvUBruVHyaobL66/sjFjC7X20GboKKwyTA
+	 soZdpeHDL2LnCa7PwMQo+a8eUKC4ISiJ1TBmU1Ug91aoQ1RG6uHtC8yURNbEgTZO8U
+	 cYgydu+i0W6QA==
+Message-ID: <sashiko-outbox-202709@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/4] riscv: Add support for kexec handover (KHO)
+Subject: Re: [PATCH v3 3/8] crypto: acomp - Add trivial segmentation
+ wrapper.
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chen Pei" <cp0613@linux.alibaba.com>, pjw@kernel.org, palmer@dabbelt.com, alex@ghiti.fr, rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, graf@amazon.com, shuah@kernel.org
-Cc: guoren@kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org
-In-Reply-To: <20261106071459.2003-3-cp0613@linux.alibaba.com>
-References: <20261106071459.2003-1-cp0613@linux.alibaba.com>
- <20261106071459.2003-3-cp0613@linux.alibaba.com>
+To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>, hannes@cmpxchg.org, yosry@kernel.org, nphamcs@gmail.com, chengming.zhou@linux.dev, akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, davem@davemloft.net, linux-crypto@vger.kernel.org
+Cc: rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
+In-Reply-To: <20261106072412.7909-4-kanchanapsridhar2026@gmail.com>
+References: <20261106072412.7909-1-kanchanapsridhar2026@gmail.com>
+ <20261106072412.7909-4-kanchanapsridhar2026@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 07:15:33 +0000
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C3FAF20006
-X-Stat-Signature: bnm3wfawae8y13o4unc68d8m1ycfktgi
+Date: Sat, 07 Nov 2026 07:25:05 +0000
+X-Stat-Signature: y6dyq3ikfmisznha77u3z6jcxae5m3gc
 X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794035735-527964
-X-HE-Meta: U2FsdGVkX19va43jQYSlUItqt0jhKN2ZY0sNhYgojITsUtAT+GpV1xD9MchxNJ3YNM5cFGpudjxCcZ/lxNufS/gLtz3+3yFr5ilzm9ka+W+Yc3TgZ3jsd/RtXtqDr2jVCBjU4lS6+LaSF+bbMXTSlbt5MIzckkaLsrPjTXDGUKKAtBGgfUq3EYFxZfMmut0d5YzNSOPBYYGQ8PKiTyaBQhB1eKKI4FrXaBjyZ0Ed9GE0chjAndVPLB6iTatK0HzwZER39M9GOUGuH/J++A7eactH7FEYW/YJW4UBcYABV2OvDT0nzhn4w5ogR3rKCWWgj9DMrFfrrrgvmrnprAotp18ifGcavoINxSE6n7dNOSdapQOe7lrTsA2ufAf6k9/lxqv73Wpe4CgrOauvrfqYlavLBxFiyP/lMwtE/txNyGQ80Blcmxe8lswJsa+AwzN46SMXaBbEdIt1Az8awSKaXBZmozc7RSpiF1HsKUrDHduJwCXMAIOEEZz0+g+r/+ALKi/fNzIgx0XYUtOo4qmZUmxW/HN0OaFarkRVKq/wJm7ZcdpS97TCdt1ZtYZrEuUXuliL5Cb1CBfmFfn65klWeao2RKIr1zx1IqvZEtzOS+KYrHlf63cfH8ok5AmiCqBnH/CD7kAHTr9xg+z0eGQniKxzDTsDGohtJMjVrRYSa04Y9dCR2vUBm0cB/yF7bsFC6drZ3jL8SdcsO3Bn5uWicVHVS0OIlKF59Sch8foyQViMeuHf4HWMNGcFWbjHKE3fmeonTGfOr4Fdua6rFwNCpWAuQpHiL7kYRuUKBA6xGGlds0Air7cK76vu+PYz+vb0Oj+zsChtiPW6yLGjRSL828g6pYohyriJe61ylzd7//e3hiYJ45o4nfPGsUmtg12NGoab5CghbORElX0NsX08/7D6VupbINxCnwDjqXb2dyjKgznCl8jQbK/YE6x5JaR7o5ACxtltVnwbiS56Xmd
- mJ2c5c4r
- A0M9VpAJNhCatFeZ3cmKGumMrLOqY7V3rYSyCHW6BnzuRz/NUqE77grgDBXgrEIg+aX8LkLgvluMhyf+4KSCHwI6hKk4HD+cc7hUOyAceuN3n0Na9yelavkRk4rKc9DI4KvZ/KJtCaXKF3gI1sZiQMt+TLSIaJTfWeUqoKqLA/jLysfE8ILysUVl5c4JgoUVLStkEF294Nvc51AL+HlW3QthRE8v6H73Sjin55g/r+W9Y0Rof4PzKRNTQIKOmsKIDw9zL+pwchlPvmEciodu2/Iq8Zix0WXyZBOh0+QmIv6bMy3zgCsKGFvTbUdZaNkSnCdt6a4IQH5b0xHDItoSUUCNf3sPFOSWMLxmtod42UFrn4u3dn5xU2hL217Sn3fBr3MZ1b/SPWfF2pYadi171oVoJab70o+CePN3LpduUgXV/forN+SvmEZux3n/kB8ZTqc3rm6sVAZeiVbBnvjTG6h1reQlSlmaPZphHk40D+fW5MFrhd5++gN3z2jmPczV4neqlmcoeRB20Itscw5GX++hVBbwxMuD2f5WNBRr0DmTRcTdctGjqwdQKhwuLzeBll0o1xuqIyk08DiOTJbpNCfO9vA==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 7C923180003
+X-HE-Tag: 1794036307-823440
+X-HE-Meta: U2FsdGVkX1+Fdyou60QZLPjSjhWUK2EIs3n3aR/u+9oNEYGRfZB2CvHhMSiPHblnRZSDxJ0u78wumCGa++a7ziKqi7+SGz004E2zncAGQGnwxpkIF4ZJ38Ot/0e68F+GKMyV0HEYAvsgVOJo79GnPqJaqzXEwSkFpO5+ieodpDTGYCdsGBvS2aiwuC05VjkSBq394jSaeLi9NEzAuboyaNFlzwQBVuDRw89JgBPGgp6g2AZ1vqmVscvgzs4lnjp19GHoUHx5LnOGCQJO/bMLR4ZklzTqYCrUuT+D2XwDBbJHQhg/OQR58SUFzZDXMQ3cVE1fiTAKoTGAlhBhqeZARtqPiUdlSn1pdcjRwpKPz4zmghWW2Jay4SDYFXqUgsfovlPAjf1+d0YXc2hl635ESqR3I2LptMBkp52LglsWJPZQjR2cWHzGFyNr3VlVfy/i1IRnbXm9C+jF5i27vXnBiINwrn3ys3466MzagOSVOMRlWpQLDfz9p5HjCqHHuaC8CKnu31Tghd6vMLtfjKPjn8l81VbSxh+cmwO23vm25mLeskXBRL0oXUEpfZKiZqrzTV9uMmjeRL8/cOU8lo84ohP5ez9o5Bi8wy80s+m+ixMYrWmvV55+hyXEoNhibI/yxZLs9fz1qBtlJcsnF9u5aFvgX69Jg8HoEyEogCzuMUv2eiK7zUjVrEJWlHLk2kEjH0sbnHk0ORuxwgnozSGcMKBLZHQJ7oQB3ft+/eGEq7+YO++iZBqdqgSz/JDYfgJQMi+kOThKNL4w/NhuZSg4nzq+8c2om3QCm9gxFyhKzZ5bBmtANWfHKybSS5kcuOw7w3kAmU4OJ/+g8f4Bi5H+EINIHZ3//RbgceNvISK0svh4BAvCgKuG+nTWdZk2QNHfDGfE0Pv8+izjn9p2tj27aJPJFLBjWZkThU/jWJcKDFdEo306dg/ifKQFUmuTrWup27B6mWgQDf21EwI19Wq
+ vOeRvyVT
+ FPu9o+Ng9ugtMBF4asEOyvYBAVZJMI2HtZDJLRpFP0EigILOrhD0Q+GBZhLaPOUMknsLuBbLjBeBCXpwRs4DQ1kbZ9UwQytpVZlZ4HTaenHT+VVyl7HsdyUAPTXMl5qVKIShjRuCeBBtbpJJGTKJ2bHOtCuTgqJ1oCJuuo3h4j9bPFa9QOWRcX0y4NE2MELV9Xyt1M6qvHVSrvS+HiMctfR4R4r0VK81GTg1frVFBGNRPAPm8bqGlHRjtPa3bWw0NUs3GRLivD2ZwnuYhZ4qPWn8rTyi4kUGba3Ojo2DdXm5y3RpvVhcSjCIW9JAwNS4FaMeCMLygn5ysr3PKvPSyqKPXpCE5YqvidBsH5Z2pL4A2FMyStKUZbE7uxEt8aDz6utwdFqOzLCzOM5XSG7VRmp85avWIYyTUSv6SuOZmOFfhlzoXz/oqdjYSblz+QKIzFq3Bww/CoZ0Ym46Dfm3X3t7Nsu8eWP76905rh3VbXHOYStyp9OJ4w83d5+az0WVupKVHgjepCBZlakpKOr2gHdZHQERBPodxOCI0amk9NQPTyr8Zctts6XJTzkMsQPXzaxXqI6cKQv5NzUj9XrkWdvsh+w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,86 +96,99 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [High] riscv: kho: BUG_ON() in linear_mapping_pa_to_va() during
-  efi_init()
-- [Medium] riscv: kho: kho_reserve_bootmem() fails when DRAM starts at
-  or above 4 GiB
+- [Medium] crypto: acomp - missing non-zero unit_size check in
+  crypto_acomp_compress()
+- [Medium] crypto: acomp - union type confusion in
+  acomp_reqchain_finish() on virt dst
 --
 
-commit 9359adbe095f746cadb4028ea618b75e0af09036
-Author: Chen Pei <cp0613@linux.alibaba.com>
+commit c2a605231cabd5e0e15d6d778b3943a2c118d756
+Author: Kanchana P. Sridhar <kanchanapsridhar2026@gmail.com>
 
-riscv: Add support for kexec handover (KHO)
+crypto: acomp - Add trivial segmentation wrapper.
 
-This commit enables ARCH_SUPPORTS_KEXEC_HANDOVER on 64-bit RISC-V systems
-with MMU support.
+This commit adds a single-segment compression wrapper for algorithms that do
+not natively support segmentation, returning the compressed length or error
+in req->dst->length when req->unit_size is set.
 
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index bde1f1885038f..bffef6b903e13 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -1125,6 +1125,9 @@ config ARCH_SELECTS_KEXEC_FILE
->  config ARCH_SUPPORTS_KEXEC_PURGATORY
->  	def_bool ARCH_SUPPORTS_KEXEC_FILE
-> =20
-> +config ARCH_SUPPORTS_KEXEC_HANDOVER
-> +	def_bool 64BIT && MMU
+> diff --git a/crypto/acompress.c b/crypto/acompress.c
+> index c8b4b8589769e..ac4dc52668b89 100644
+> --- a/crypto/acompress.c
+> +++ b/crypto/acompress.c
+[ ... ]
+> @@ -242,6 +246,10 @@ static int acomp_reqchain_finish(struct acomp_req *r=
+eq, int err)
+>  {
+>  	acomp_reqchain_virt(req);
+>  	acomp_restore_req(req);
 > +
->  config ARCH_SUPPORTS_CRASH_DUMP
->  	def_bool y
-
-[Severity: High]
-Does enabling KEXEC_HANDOVER here hit BUG_ON(!kernel_map.va_pa_offset) in
-linear_mapping_pa_to_va() during early boot on UEFI systems with
-CONFIG_DEBUG_VIRTUAL=3Dy?
-
-In setup_arch(), parse_dtb() populates kho_in.fdt_phys, and then
-efi_init() runs before paging_init():
-
-arch/riscv/kernel/setup.c:setup_arch() {
-    ...
-	parse_dtb();
-    ...
-	efi_init();
-	paging_init();
-    ...
-}
-
-efi_init() -> reserve_regions() -> is_kho_boot() -> kho_get_fdt() calls
-phys_to_virt(kho_in.fdt_phys), which translates to __va() ->
-linear_mapping_pa_to_va().  On 64-bit RISC-V, kernel_map.va_pa_offset is
-still 0 at that point because it is not initialized until paging_init() ->
-setup_bootmem().
+> +	if (req->unit_size)
+> +		req->dst->length =3D unlikely(err) ? err : req->dlen;
+> +
+>  	return err;
+>  }
+> =20
+> @@ -266,10 +274,13 @@ static int acomp_do_req_chain(struct acomp_req *req=
+, bool comp)
+>  {
+>  	int err;
+> =20
+> +	if (unlikely(req->unit_size && req->slen > req->unit_size))
+> +		return -ENOSYS;
 
 [Severity: Medium]
-Can kho_reserve_bootmem() fail on 64-bit RISC-V systems where DRAM starts
-at or above 4 GiB?
+Can acomp_reqchain_finish() corrupt the destination buffer when a request
+with a non-zero req->unit_size uses virtual addresses?
 
-RISC-V does not define ARCH_LOW_ADDRESS_LIMIT, so it defaults to
-0xffffffffUL in include/linux/memblock.h.  When all DRAM starts at or
-above 4 GiB, bootmem_size_update() sets bootmem_size_lowmem to 0, and
-kho_reserve_bootmem() unconditionally calls memblock_phys_alloc_range()
-below ARCH_LOW_ADDRESS_LIMIT:
+In struct acomp_req, dst and dvirt share an anonymous union.  When
+acomp_do_req_chain() handles a virtual-address request
+(CRYPTO_ACOMP_REQ_DST_VIRT), acomp_reqchain_virt() restores the raw u8 *
+buffer pointer into req->dvirt before acomp_restore_req() restores
+req->unit_size.  Writing to req->dst->length then treats req->dvirt as a
+struct scatterlist * and overwrites 4 bytes inside the caller's output
+buffer.
 
-kernel/liveupdate/kexec_handover.c:kho_reserve_bootmem() {
-    ...
-	size =3D bootmem_size_lowmem;
-	addr =3D memblock_phys_alloc_range(size, BOOTMEM_ALIGNMENT_BYTES, 0,
-					 ARCH_LOW_ADDRESS_LIMIT);
-	if (!addr) {
-		pr_err("Failed to reserve lowmem bootmem\n");
-		goto err_free_bootmem_desc;
-	}
-    ...
-}
+In addition, acomp_do_req_chain() is called for decompression (comp =3D=3D =
+false),
+so a decompression request with req->unit_size set will also hit the
+compression-only req->slen > req->unit_size check and write to
+req->dst->length.
 
-Because no memory exists below 4 GiB, the allocation returns 0 and aborts
-KHO initialization.  Conversely, when all DRAM lies below 4 GiB,
-bootmem_size_global is 0 and kho_reserve_bootmem() records a 0-byte entry
-in kho_bootmem[], which causes kho_walk_bootmem() to build an inverted
-struct resource with end =3D start - 1.
+>  	acomp_save_req(req, acomp_reqchain_done);
+> =20
+>  	err =3D acomp_do_one_req(req, comp);
+> -	if (err =3D=3D -EBUSY || err =3D=3D -EINPROGRESS)
+> +	if (unlikely(err =3D=3D -EBUSY || err =3D=3D -EINPROGRESS))
+>  		return err;
+> =20
+>  	return acomp_reqchain_finish(req, err);
+> @@ -279,10 +290,27 @@ int crypto_acomp_compress(struct acomp_req *req)
+>  {
+>  	struct crypto_acomp *tfm =3D crypto_acomp_reqtfm(req);
+> =20
+> +	if (likely((req->unit_size =3D=3D req->slen) && acomp_request_issg(req)=
+ &&
+> +		    !crypto_acomp_req_seg(tfm) && !acomp_is_async(tfm))) {
+> +		int err =3D tfm->compress(req);
+> +
+> +		req->dst->length =3D unlikely(err) ? err : req->dlen;
+> +		return err;
+> +	}
+
+[Severity: Medium]
+Should this fast-path check also verify that req->unit_size is non-zero?
+
+Callers that do not use segmentation leave req->unit_size at 0.  If such a
+caller submits a scatterlist request with req->slen =3D=3D 0 on a synchrono=
+us
+non-segmented transform, req->unit_size =3D=3D req->slen is true, so
+crypto_acomp_compress() enters the segmentation path and writes the negative
+error from tfm->compress(req) into req->dst->length, corrupting the caller's
+scatterlist or causing a NULL pointer dereference if req->dst is NULL (which
+can also happen when req->unit_size is non-zero and req->dst is NULL here or
+in acomp_reqchain_finish()).
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106071459.2003=
--1-cp0613@linux.alibaba.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106072412.7909=
+-1-kanchanapsridhar2026@gmail.com?part=3D3
 
