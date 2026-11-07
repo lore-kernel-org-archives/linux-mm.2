@@ -1,122 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B170606A32D
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998C1606A33C
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NaFJfyfF
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=laaaeGzM
 Received: by kanga.kvack.org (Postfix)
-	id 672B36B05B1; Sat,  7 Nov 2026 02:05:26 -0500 (EST)
+	id C3A9D6B05B3; Sat,  7 Nov 2026 02:06:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 61BC86B05B2; Sat,  7 Nov 2026 02:05:26 -0500 (EST)
+	id BEDB26B05B4; Sat,  7 Nov 2026 02:06:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E7106B05B3; Sat,  7 Nov 2026 02:05:26 -0500 (EST)
+	id B015D6B05B5; Sat,  7 Nov 2026 02:06:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1F0A96B05B1
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:05:26 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AAE1F1A02C6
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:05:25 +0000 (UTC)
-X-FDA: 85407437010.02.62F87A8
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 194A380002
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:05:22 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NaFJfyfF;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 894E36B05B3
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:06:59 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 177F21402B9
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:06:59 +0000 (UTC)
+X-FDA: 85407440958.07.F2D703C
+Received: from mta0.migadu.com (out-24.mta0.migadu.com [91.218.175.24])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E5C9F1C0004
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:06:56 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=laaaeGzM;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.24 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794035217;
+	b=4C3yn6DLDP5q9tMP2JDnlteJcVslw9xXvgOcK/PbPoWnYczF0suOrzTp/A1Q4cct/szvAg
+	iZ2UcHEG/KBY4ex9lAmgdkSQoucEmVaV/V+oM+kctoQ9Pf+uHB+pVJskpGTKMUTRpmpd5M
+	+oTPGbq8pNEGC59AvcLvjzeUSYtuz0U=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=laaaeGzM;
+	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.24 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794035123;
+	s=arc-20220608; t=1794035217;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lAwYNWjlqw18PRKfs0wfc6QMvEJ/l8q6K3xULLq/RJc=;
-	b=TrfmQdgPuuVWIFoaqmYtn1JHUNZbMTmCjHg9UrNhenyxw49chm5V9NYpMHxrfbdlwZ+u1v
-	KQLb6XOWO0au4WUNKezYO39ukoGbmJfTS8yf0seqthVOYlJwNWwPStmA9gyRG1bd+CYynw
-	KyP7F8LC1yY28oIt4REOyT+6RmHROzk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794035123;
-	b=dg6ndW1XdQ0GqhfDy2Wrj+GCS5VWGY7JySpoXB62p4h7koUB6gLyF/5v6XqcOgLt5XS36A
-	+QuQLDo8EZBwbOlrpzAgkdWC6sI5M5EEKXdhtUVSs5EwnfwetiUc71IlaZsV7C1TnGjQPg
-	/t8hm2jW6reTeuWxy72a8dMk6KrpWWw=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=NaFJfyfF;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794035123; x=1825571123;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MlHqtS8cT8ajIw/2dp1+/XcpibT8MY0x6er6vc3ClcU=;
-  b=NaFJfyfFLQ8fVFchaFpMq8uorPi0StZdUbRASrKZTD2PdM5eV9dkoA0H
-   wSkfjPZsd3eZkyKH9ZKXlj9/vif8MPkdGs6eHsyxQqAnpnanpQdHuWN4M
-   31uM8GfgRs//Z4R3fqg7i+CxFbqDQ3gkvSDmI/BNbr4lW3Qm2BHfbKnDx
-   h+JL4M46FbIjkNZS6/oTFPobBrDnNVqnchhrRAf2KUi7ATcRVi/aBXtif
-   KKr8fisKzKKHScRVCPblJ7KNcYtGPaoWNbg3SxU/hTPPtSr1XgywpVAh8
-   j/Q15Y5pX49vZjamqxkyetqcAVKYrFIvhNtix3pQRzOYsteCyrpnBqQe2
-   A==;
-X-CSE-ConnectionGUID: G0FbaHDEQg2VbaQR42QSTw==
-X-CSE-MsgGUID: wWtBrhhNQnGcITn4seFXEA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2734859"
-X-IronPort-AV: E=Sophos;i="6.27,200,1787036400"; 
-   d="scan'208";a="2734859"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 23:05:22 -0800
-X-CSE-ConnectionGUID: 9+2ftNMKQAqc50tJyR7fxg==
-X-CSE-MsgGUID: pNt5NwnMSVqZrahXN4gQYw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,200,1787036400"; 
-   d="scan'208";a="7444739"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 06 Nov 2026 23:05:16 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xPaUC-00000000qZf-2cVD;
-	Sat, 07 Nov 2026 07:05:12 +0000
-Date: Sat, 7 Nov 2026 15:04:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>,
-	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org
-Cc: oe-kbuild-all@lists.linux.dev, Alexandre Ghiti <alex@ghiti.fr>,
-	Jesse Taube <jtaubepe@redhat.com>, Oleg Nesterov <oleg@redhat.com>,
-	Kees Cook <kees@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
-Subject: Re: [PATCH v8 3/8] riscv: add ptrace requests for hardware
- breakpoints
-Message-ID: <202611071408.gyIRvq10-lkp@intel.com>
-References: <20261107023917.40606-4-himanshu.chauhan@oss.qualcomm.com>
+	bh=FQGgtDwWrS+TOjm+NTam7HXH9x/oZ1flKgXBC0MLbs8=;
+	b=B2AiEIg7Jgd0SEhwsTyktt84c+t9VVME6Z1Z573g2XjWkcUMyU+T7yCVnBaHTOBtDP1lTL
+	q0rHQUpLO+H3L8AEsyQcyRmLAePmorTkbz+++gShmIi7MsHa3nYKHwR7ghQSpvYFjifG0c
+	ItbZOIJ07y/AtuTcMD4WPTNJZJjxnWw=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=WA6DBOazilQWA0YBctLuPJvG7AIFId4vVmL0J8Gvwrs=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794035215; v=1; x=1794640015;
+ b=laaaeGzMGg4t+lecIujlnzQeisTE9nvbBDsCu1Bil5VTtbW36bfPUrnWhXHZFfEszpdp+CJW
+ 0aQ6ai2SyU4aMbwRCGD9pVbvG5evkYMwIO2BisdMx11yiEVQ/JqzOfspen8u75vuF93hCFEHE4A
+ +xCCq96iQjLMHM9W9vC9cm5Q=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id edb96401be2ea3ce;
+	Sat, 07 Nov 2026 07:06:55 +0000
+X-Mizu-Trace-ID: edb96401be2ea3ce
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261107023917.40606-4-himanshu.chauhan@oss.qualcomm.com>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 194A380002
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: tbishefjur1k9towdk67fze5ff6dg98k
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v2 08/20] hugetlb: Fully initialize tail struct pages of
+ non-pre-HVOed bootmem folios
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261003002123.505555-9-jthoughton@google.com>
+Date: Sat, 7 Nov 2026 15:06:31 +0800
+Cc: Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Nikos Nikoleris <nikos.nikoleris@arm.com>,
+ Linu Cherian <linu.cherian@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ David Hildenbrand <david@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Nanyong Sun <sunnanyong@huawei.com>,
+ Yu Zhao <yuzhao@google.com>,
+ Frank van der Linden <fvdl@google.com>,
+ David Rientjes <rientjes@google.com>,
+ linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <30822F0C-88B8-4ACD-A0CD-F889F438EDB4@linux.dev>
+References: <20261003002123.505555-1-jthoughton@google.com>
+ <20261003002123.505555-9-jthoughton@google.com>
+To: James Houghton <jthoughton@google.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Stat-Signature: udopwf3rfgnuzd9y3fhmhhkiu584w1p9
+X-Rspamd-Queue-Id: E5C9F1C0004
 X-Rspam-User: 
-X-HE-Tag: 1794035122-360914
-X-HE-Meta: U2FsdGVkX19/VGMByQK5M5r29NahWAKGIO8rOZpNAC84BViP+tqryN4lpGXq1FIkZKpP3zqm0rtnxXu+Whbyo5uv+oBoSyfqDP2ilAH7CmHTGnwS2zeZK9stcXrggoq3Zxi+63trGTaBbdURa6GwuI57xjZFFx9ONWSyjvqc9WYErKQWcs8UIuDKr/z0wqlQWNBmKZrSZk5ApOKfjmCtEDWzeh0nSjz9lFMf7UQu09GTLG+L4l15cDnVu0GFuD7wdPfKBXdbF4oCx6cIQjQgWksYm4cuINumQ4hrsaBlP7QY/X9ogx38ddsiNUsa1yO2BKYLvD11XiClHwx78SBvM5xA7zxELTKry/HhdKloz4ZW3wKoq5FzjnHtk5FUK4It0oMBwOX2ryItADeQPSLu+nPn5ZAtj9ESHHcrB39gB3xR6NbJQlgWJO2gpdh+ZaDJ/sq1Npzt+DCKQQOKEbZ2CtEaGO6OoUdguKpW+Bx/qdkrvNgoD3ZA2cAOlq/OZ2bvfSeOVYj8bF8Xs+3AIpmzpJoL+vH8VV7w4d/fTx9Y1PmO/p0RuH3lhTKI4hyt97KD2WcGqw/f0fIptgDaBTI5kH/di9opKA93jB2rnFAbyB10wx3jcW2j+fvLco+DmskuuJHvBEa6RJ5f3C1EJIV4JBn0EIxKNQZ22HtSEkhXbvSzbmDz5suhEBlbmFcBJwM1W0A/tEZ2fMI3skquaos4FSbdUFNNqzvf5cZGS1sRTXI1egw84Ho37Yk84/r4/Zcf1vYooDH0mtcY0GvZNqWerAxb/Em7zlMB1TFuFTgr6Bf15IDroofkvofIHEXQtnTVZvGS7DRvQJD6Y3YvyCkjFrhWu9rERddwIKpPHet64ceZN0SxFQ8j/gPEruQ3imnBgiSqZCJ1eLRepSLqOyfUt5Wrg+lLt1S9jKQxt6poSxGcbk+s6cIAJL1LSdDoSNXuvud08g4mPA6l7tkSf0f
- +/Im4IZT
- Alq/BJPtY+Ysvzqzrbern3cuonzd+eEwZHCO0hpArY6DJMwrM3k4+ybXC7hi5AeXvoS36tz7yCzcuPEd4zqJuA6wEzRaKBByfhSi8+NRtoRomsEMnB5eLNlWebqHjwrSPtN6WBl1AZLQL9pqT2VXgpy15wz8xsqpP+pWpEKo88slo34xFf1avg4/QQFldj02ZEB0VGjAmAmHuYG0d6CFIpTS/CAyQcLvJY+Nui0idWr+jPEnZcUzh2cbWgig6iYYphYG1DLu3z4w5F6QbI5Bkqoc7gFjjbDO6Yx0IwGgeohSC/MIBOTfG/KJP+nGiYyiyGBDcmyrfO3blQp4Dn+aHYTWR1K5HmfmaSfYdcyTZJHxDCFCHXJ+Mk0WIt7+dNYhCDp8G
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794035216-133941
+X-HE-Meta: U2FsdGVkX197e2/6mo/ivrJ/tmwWlRXskZ/h45+s4kkovM4wad2cyJvunnabRjqHdFSFrgQJU67SuTrLIg7kPVDGMWLzn1vmRhC2Gc3ObQ/UCouHToxKZcvl4LKKwmYLWI2661aGoXiDRCWWTpedsGqDxRBzzfqtaWbNLUuywgEym+ysa8NNH4VsRgTHVEkaNwZTxbTqWjHBfz1aNqB5wmv22BCeUkM9jsy8RflDUbJJS814yzQQVk4T18GrbHxsqiJ/PLShsn65M9MZFfxgszjTrczECY0PHUrKlQzJwgT8pd5EUPvs8VI3qtwMuYRYEGpLqorI62TrR6gtgsbjrkYUxXBS4tLaGNdOXLGXApmVKtxP1v1gCtXY4MNpZ3hNI2w9dg+XWAJxpF6CTe6rzHCQ5y0F3KhCB4ars0wh0r5COikCqqRupMWUoUhbR6WYLS0AnhSIFCT29VfY1OQhfWfp5ZrRShw86zvHC6WDSyAUfRzTrX9B5oCFIBhmX5kLFOySWgnQdsngRekX/H713WNNru1lrGK1IMpmOTIBBPYLNGiexoIHOnt151KkoQ8zRrC+wm0GtmbwoL1K+iRBA7VedhXKanHSi5SNFBHHkvMtc82mGt/EOaWMB1iFfPEC1GjpVIryge6EJnSNjGiHROLg9bO2eU421cStqxd5YpRxf8qxrlGaQeUkJTwJTmLYmtHLWmLG7Np4E1AIh1eTtkWTmZMLaQLZC969wy8YrNkcP/G7mE8n3uzK9qglzqMOErgJFHX7Q2B7XkHGYGLwUU6tRgjl0ard3ekM9nJWzxjuI1Gs557BS0WqHPDZy6F6EoQb6CT3ubg9LZso4QF6qs8zGB7IHT5m7JPU9k4SxlYXJFsoLuH/eA4lNv5zAjxBY/kxcm9FUbzTkSaHfyx8e0Q1F6HoZeQJIl4DIyoow71Prl5bFLQ7Mr6BDZAH1nn/TUm4IovT2t8YJGe2iTt
+ pUBgyMHz
+ WQUb5a+Q1H8fDWZnugqIRciGPAT8zVyefYlYSqA8D45zbRVLKm4NC3Vq5z42Tx4ijZZ1YYVafvVWq/zYtUXGVktshOwhdG/egqnUHBA1O3HGKXDDi6ej1XZKL4b9VYrQjNq7CbMxQsW7SO3OXM++QGDn9H0NCBS9MRWjQPjBzrB0T9mHYEe7fKZBDTETEITohOe7X6SmOoj069R1yZIuW9VbEkYaJwvxGFz/oSsjk/iJ0JgT7RfKHSOdgMWmBQ/AdRyP9dq+vB69HcNRWtJE+qxvZbvUgdi9BECrbxFTb/WAc25wjveF9wdjSrd89CtGjD4Pka3fIc7mHylctd7evj6JueQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,62 +110,138 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Himanshu,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on shuah-kselftest/next]
-[also build test ERROR on shuah-kselftest/fixes perf-tools-next/perf-tools-next linus/master v7.4-rc1 next-20261105]
-[cannot apply to kees/for-next/execve tip/perf/core perf-tools/perf-tools acme/perf/core]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Himanshu-Chauhan/riscv-Introduce-support-for-hardware-break-watchpoints/20261107-080910
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git next
-patch link:    https://lore.kernel.org/r/20261107023917.40606-4-himanshu.chauhan%40oss.qualcomm.com
-patch subject: [PATCH v8 3/8] riscv: add ptrace requests for hardware breakpoints
-config: riscv-allnoconfig (https://download.01.org/0day-ci/archive/20261107/202611071408.gyIRvq10-lkp@intel.com/config)
-compiler: riscv64-linux-gcc (GCC) 16.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261107/202611071408.gyIRvq10-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611071408.gyIRvq10-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from kernel/exit.c:57:
->> include/linux/hw_breakpoint.h:137:20: error: redefinition of 'flush_ptrace_hw_breakpoint'
-     137 | static inline void flush_ptrace_hw_breakpoint(struct task_struct *tsk)  { }
-         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
-   In file included from arch/riscv/include/asm/processor.h:18,
-                    from arch/riscv/include/asm/cmpxchg.h:16,
-                    from arch/riscv/include/asm/barrier.h:14,
-                    from include/asm-generic/bitops/generic-non-atomic.h:7,
-                    from include/linux/bitops.h:28,
-                    from include/linux/thread_info.h:27,
-                    from include/asm-generic/preempt.h:5,
-                    from ./arch/riscv/include/generated/asm/preempt.h:1,
-                    from include/linux/preempt.h:107,
-                    from include/linux/spinlock.h:56,
-                    from include/linux/mmzone.h:8,
-                    from include/linux/gfp.h:7,
-                    from include/linux/mm.h:8,
-                    from kernel/exit.c:8:
-   arch/riscv/include/asm/hw_breakpoint.h:58:20: note: previous definition of 'flush_ptrace_hw_breakpoint' with type 'void(struct task_struct *)'
-      58 | static inline void flush_ptrace_hw_breakpoint(struct task_struct *task) { }
-         |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-vim +/flush_ptrace_hw_breakpoint +137 include/linux/hw_breakpoint.h
+> On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> =
+wrote:
+>=20
+> alloc_bootmem() marks all but the head struct page of a bootmem =
+gigantic
+> folio as noinit, and gather_bootmem_prealloc_node() then only
+> initializes the first HUGETLB_VMEMMAP_RESERVE_PAGES struct pages. The
+> remaining tail struct pages are initialized only if the folio ends up
+> not being HVOed.
+>=20
+> This assumes that a bootmem folio is either pre-HVOed, or will not be
+> HVOed at all. However, hugetlb_vmemmap_optimize_bootmem_page() may =
+skip
+> pre-HVO because arch_hugetlb_vmemmap_optimization_supported() does not
+> yet return true that early in boot (e.g. on arm64, where support =
+depends
+> on a system-wide CPU capability), while it does return true by the =
+time
+> hugetlb_vmemmap_optimize_bootmem_folios() runs. Such folios are then
+> HVOed through the regular remap path with uninitialized tail struct
+> pages, which trips the PageTail() WARN in vmemmap_remap_pte().
+>=20
+> Avoid this by initializing all tail struct pages up front in
+> gather_bootmem_prealloc_node() for folios that were not pre-HVOed. =
+This
+> makes the HVO-failure fallback in prep_and_add_bootmem_folios()
+> unnecessary, as pre-HVOed folios are never passed through the regular
+> remap path, and all other folios now already have initialized tail
+> struct pages. A failed optimization either leaves the original vmemmap
+> in place or restores the tail struct pages from the shared tail page.
+> Remove the fallback.
+>=20
+> For folios that are not HVOed at all, this does not change the amount
+> of initialization work, only where it is done.
+>=20
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
+> mm/hugetlb.c | 28 +++++++++++++++-------------
+> 1 file changed, 15 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 4dac7ed1df57..e971e2362412 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -3303,17 +3303,6 @@ static void __init =
+prep_and_add_bootmem_folios(struct hstate *h,
+> 	hugetlb_vmemmap_optimize_bootmem_folios(h, folio_list);
+>=20
+> 	list_for_each_entry_safe(folio, tmp_f, folio_list, lru) {
+> -		if (!folio_test_hugetlb_vmemmap_optimized(folio)) {
+> -			/*
+> -			 * If HVO fails, initialize all tail struct =
+pages
+> -			 * We do not worry about potential long lock =
+hold
+> -			 * time as this is early in boot and there =
+should
+> -			 * be no contention.
+> -			 */
+> -			hugetlb_folio_init_tail_vmemmap(folio, h,
+> -					HUGETLB_VMEMMAP_RESERVE_PAGES,
+> -					pages_per_huge_page(h));
+> -		}
 
-24f1e32c60c45c include/linux/hw_breakpoint.h       Frederic Weisbecker 2009-09-09  136  
-24f1e32c60c45c include/linux/hw_breakpoint.h       Frederic Weisbecker 2009-09-09 @137  static inline void flush_ptrace_hw_breakpoint(struct task_struct *tsk)	{ }
-b332828c39326b include/asm-generic/hw_breakpoint.h K.Prasad            2009-06-01  138  
+Just for your information, I also plan to remove those code, see here =
+[1].
+I need to push this patch along quickly. I'm confident it won't take =
+long.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+[1] =
+https://lore.kernel.org/all/20260513132044.41690-15-songmuchun@bytedance.c=
+om/
+
+Thanks,
+Muchun
+
+> 		hugetlb_bootmem_init_migratetype(folio, h);
+> 		/* Subdivide locks to achieve better parallel =
+performance */
+> 		spin_lock_irqsave(&hugetlb_lock, flags);
+> @@ -3337,6 +3326,7 @@ static void __init =
+gather_bootmem_prealloc_node(unsigned long nid)
+> 		struct page *page =3D virt_to_page(m);
+> 		struct folio *folio =3D (void *)page;
+> 		const unsigned long pfn =3D folio_pfn(folio);
+> +		bool pre_hvo;
+>=20
+> 		h =3D m->hstate;
+> 		/*
+> @@ -3350,11 +3340,23 @@ static void __init =
+gather_bootmem_prealloc_node(unsigned long nid)
+> 		VM_BUG_ON(!hstate_is_gigantic(h));
+> 		WARN_ON(folio_ref_count(folio) !=3D 1);
+>=20
+> +		pre_hvo =3D =
+vmemmap_optimizable_order(pfn_to_section_compound_order(pfn));
+> +
+> +		/*
+> +		 * Pre-HVOed folios have their tail struct pages =
+mirrored from
+> +		 * the shared tail page, so only the first vmemmap page =
+needs
+> +		 * initializing. Otherwise, the tail struct pages =
+(marked noinit
+> +		 * in alloc_bootmem()) must all be initialized now: the =
+folio
+> +		 * may still be HVOed via the regular remap path (e.g. =
+if the
+> +		 * architecture could not determine HVO support at =
+bootmem
+> +		 * allocation time), which expects valid tail pages.
+> +		 */
+> 		hugetlb_folio_init_vmemmap(folio, h,
+> -					   =
+HUGETLB_VMEMMAP_RESERVE_PAGES);
+> +					   pre_hvo ? =
+HUGETLB_VMEMMAP_RESERVE_PAGES :
+> +						     =
+pages_per_huge_page(h));
+> 		init_new_hugetlb_folio(folio);
+>=20
+> -		if =
+(vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)))
+> +		if (pre_hvo)
+> 			folio_set_hugetlb_vmemmap_optimized(folio);
+> 		section_set_compound_order_range(pfn, =
+folio_nr_pages(folio), 0);
+>=20
+> --=20
+> 2.56.0.rc1.315.gc6ed9934b7-goog
+>=20
+
 
