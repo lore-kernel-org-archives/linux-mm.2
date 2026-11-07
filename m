@@ -1,90 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4D8606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 16:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F97606EEA0
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 16:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ly4kEVDP
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SZH7L7+/
 Received: by kanga.kvack.org (Postfix)
-	id 9217E6B05B0; Sat,  7 Nov 2026 11:05:03 -0500 (EST)
+	id B9BD36B05B2; Sat,  7 Nov 2026 11:10:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D2596B05B1; Sat,  7 Nov 2026 11:05:03 -0500 (EST)
+	id B255E6B05B3; Sat,  7 Nov 2026 11:10:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E83C6B05B2; Sat,  7 Nov 2026 11:05:03 -0500 (EST)
+	id 9EDAE6B05B4; Sat,  7 Nov 2026 11:10:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 51C9D6B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 11:05:03 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 673CA6B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 11:10:07 -0500 (EST)
 Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C3A9E1C3B08
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:05:02 +0000 (UTC)
-X-FDA: 85408796844.07.369BBFB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 265074000A
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:05:00 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ly4kEVDP;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EFD73140393
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:10:05 +0000 (UTC)
+X-FDA: 85408809570.07.77BF55D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4786C20006
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:10:04 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SZH7L7+/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794067501;
-	b=qxTEzhtX7tNoLl80H0yZlP+sDB/bmBEuy9wcxc+uBYsvdjShPsRlDHVLVt1nv3fCtvwqBc
-	8mFVE35n1knJrhIYyEX9KJ43SxB3RWYe1GQFOUw53zHKJgw11kKpKYvgrMQEI25B2zVYv4
-	uVxJQ7RCsqe3MrlWVHG89R6DhPlwC0Y=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ly4kEVDP;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1794067804;
+	b=R67WVN+OwiuxBfq//U2YplVWLRyHZJgas64vJIoyypUomgHIw7+leD+A/VYcAPVErXEyzb
+	bW2JXykE652k+QTm/f0m2EX3fFBCJwhi92OCb68DknCizj/GDwlacm07XD02t5EQV5ummg
+	3qZjYESfDALDEj4kzffekK6TbsF7gdw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794067501;
+	s=arc-20220608; t=1794067804;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Un1gBsObcxnsYn3FCTYyDKwp8qPSNNnbH9/hnIvuRMQ=;
-	b=g3rclmEZPlmucwGRAGH9/m5w4HMcqTBPXptP2olRQ9drUqMJDEfjNNZeNzNSjx8YMfVcYt
-	cO1mQRCrzZ+QeVaVagtBpzkfBiEpnRc3cOtj0BDvj20JHp8gv7hM5P+hJTGfEttuvRXPtP
-	lIgC32l/DuzbjlzsK06wt7VsrlwsOZw=
+	bh=LyXRWaEfifY+PE7F6GWkwmdV4KhPbrNV7G9WQeqXIKs=;
+	b=I58DH7CFlW9AQ1E+oWkVwWN4TnozYSM0veBJ2P9uLXE+mYeXRsqjDYOWE5xh5LryKTPMQW
+	KQpog7eliQhuAYCoVpoyWiiKTHLS0+ckK9vDfU+J99BYFCoP7N0mkKz2S1UOwq/J81UMWQ
+	rFhTniRDQFcjk+Nxaq1VxLDVed6TxcI=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="SZH7L7+/";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf31.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 266646060F;
-	Sat,  7 Nov 2026 16:05:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86E61F0089F;
-	Sat,  7 Nov 2026 16:04:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 46B0442497;
+	Sat,  7 Nov 2026 16:10:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECEF1F008A3;
+	Sat,  7 Nov 2026 16:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794067499;
-	bh=Un1gBsObcxnsYn3FCTYyDKwp8qPSNNnbH9/hnIvuRMQ=;
+	s=k20260515; t=1794067803;
+	bh=LyXRWaEfifY+PE7F6GWkwmdV4KhPbrNV7G9WQeqXIKs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Ly4kEVDPu67vbfIdhVsVxt+pL7rpxAbpI+4XuCVfZidcwOx3JXdG61abO2vEsB1gp
-	 SneBwN9aDKBKBkt+D5NPiQNVRXdKIdINywH7WK6J74ZEpBY0UkmT9Wuqes/VaIDYw+
-	 zLPZzc8Mkt8df+uFrND1BXiShg2HiB5p4Rzm5JY6oUIL6b1BBkISx51eaf6ceD0qSv
-	 DBnLI0EFRx5eohnPq3OGOsyxdDhVVPs5n1yDu/wdjfu1kfcE5P1fPpif3VoqPd2jJD
-	 IJDthwEbt41oVQ7m5x+HC4fS9fplaySkRWAMboOAV7HJeAh0Zm6apvP8T3gmOddxS+
-	 mpwCzt2Xlko3Q==
-Message-ID: <sashiko-outbox-203018@kernel.org>
+	b=SZH7L7+/nj/5xK9fHCNN5Cgji0FJN0S2hgbfX1u2rXwtY44nJ+j6l2dIPek+DxZnb
+	 LHw21LH1TeWZj2bHTaXJ+1HjWHi918JcV2hznfc7ng6RLBFcw8pJbzrxKR4s1G1art
+	 5XmZOGgZj3zH4bJQfDZLgDTj90E9Ni86HapMHmIwzjR7IwHvskOw6oQyNLzjVc5uC9
+	 iuW7avqnPlP4m15KvFn5B+yCkpC4Lw1aj289UQyVSrkEDu04mqIIUxAhzBkTXjCny1
+	 ZBkPClmGWDuu5XLVtGWCTgXKHMTSoTWFFvk5DdohdFoKkUuH0lnNONHVDYeqZkAbxk
+	 XGVzc85tI/uJw==
+Message-ID: <sashiko-outbox-203024@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] mm/swap: publish cluster tables after reacquiring
- allocator locks
+Subject: Re: [PATCH v3] mm/memory-failure: set PG_hwpoison of a non-hugetlb
+ page under hugetlb_lock
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Nhat Pham" <nphamcs@gmail.com>, linux-mm@kvack.org, akpm@linux-foundation.org, axelrasmussen@google.com, baohua@kernel.org, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, brauner@kernel.org, chrisl@kernel.org, david@kernel.org, hannes@cmpxchg.org, kasong@tencent.com, ljs@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev, shakeel.butt@linux.dev, shikemeng@huaweicloud.com, weixugc@google.com, willy@infradead.org, youngjun.park@lge.com, yuanchu@google.com
-Cc: ryncsn@gmail.com
-In-Reply-To: <20261106160432.2552507-3-nphamcs@gmail.com>
-References: <20261106160432.2552507-1-nphamcs@gmail.com>
- <20261106160432.2552507-3-nphamcs@gmail.com>
+To: "Mani Tofigh" <mt4022@columbia.edu>, "Muchun Song" <muchun.song@linux.dev>, "Oscar
+ Salvador" <osalvador@suse.de>, "Miaohe Lin" <linmiaohe@huawei.com>, "Andrew
+ Morton" <akpm@linux-foundation.org>
+Cc: "David Hildenbrand" <david@kernel.org>, "Naoya Horiguchi" <nao.horiguchi@gmail.com>, "Kiryl
+ Shutsemau" <kas@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Mike
+ Kravetz" <mike.kravetz@oracle.com>, "Matthew Wilcox" <willy@infradead.org>, linux-mm@kvack.org, tz2294@columbia.edu
+In-Reply-To: <20261106-hwpoison-hugetlb-ro-v3-1-c11186963647@columbia.edu>
+References: <20261106-hwpoison-hugetlb-ro-v3-1-c11186963647@columbia.edu>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 16:04:58 +0000
-X-Stat-Signature: n4ruwiajgkgay5sha7xude685bn8qpkg
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 265074000A
+Date: Sat, 07 Nov 2026 16:10:02 +0000
+X-Rspamd-Queue-Id: 4786C20006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: fs3nbh1paiabiyuidg3mh77bdoz6au4n
+X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794067500-76560
-X-HE-Meta: U2FsdGVkX181s3Jx0PyIw81AoVVJcjZGDAmaYXc3/f1A+gc8/Br3/iHH1vTBPhYcltH7bFjk0TVURq5CgzNyIOcyeOC7+wcTebZrZTiK0brZnH6OZ3KYEI381MQuMT/a52HjXc8XYhJNGh1f4lsbvF3L21K87c+GFLFTOjPenjJpKRaEfWne7+T0HRQa9ZJJj6Usal9YvzYZevgsZ38TpbdNt2udVdUJ8TGAg5UQ8EMSz/kzSCyFkN1X/ne22Q06mGSV+8guSp54N8Ks2A1wyMcCy9pHAPqR9xQuv03RvT1gil4l4GP4E/KB3cWcu0GxN1qbJ9JBG+IMCd99n2hsOSRGN6QgnkyWap+BkRmt1NDt34wJS/+eDF8F3Uy8M9abbPMC52O9hVSG5wr8c9xUd00d6H6Q/s+hIuh1SZPYGlBC1tbb58CxyGWGPc+abv4ApVrS7JMckZNbL/vvhD0Yf1ga5VEJardAKV//O2ErNJ+QCuXTjXrMBCZQVED8TY4RgF4sKLt38cTwiojcb/gk6V+kXoWbQmP2OCgS3hZAWhvRKqIb/VZnUVYiuZBaM5QyIBxAU5R3F3qErwTNgWEu+MRY/eWd3J5keEhZ+2SbrlEuXYjaKGtBGxRIb9H+Tvo2QcP7pDY2nw2mb3wnGO3N3/B2H29pkph5K+FlOF/NhNe7RH6yQk7/d/6SIYkMINeSD/ybx0/E53w7R/4OUrxiH9WbI0LzgN/BLixxz+QlNVkKBFmn2SKK4xdZt65jdQptkztPPrl7h/KHs2f1nrFg3pfGwTC2L2tV+beDPZCiyAyJGnnjCe4112oy2zE+ZdzGX20coazxHtGRYt2/aSloLPVYz0mL8oSxWyXvki3Y2q/pfdlZvdfMHB6++3cpjAH+0mPsFSPkEi9mJTghOW1HqR7p3QoCDcygPF3ipCCy0Lkyr6llHsexoClRNtG2plKNR1dtRZGDeeJgzte0WaF
- F21B5iEY
- DHMgB1kSpzM9CN2uDnjQYgowA5+hJugN+5J4MCngXCueweo/F0iu1eSN0pHA9MQKqhJqn5ObbOst2ptujEvgtBdnSIuwSbGFZEWZBdTb29g6axQnfUoGAKXFQo7zHhYI8AKjOLTyTVGKwDbbG86ToslZMWaSjZ4wX/3vvDfRotYYAnQZ5Dwkf0J9W2xyp+XwL6ISqu074BN3A2jakTTyFgfomgx40anhkTgsGNtxMpA7ZvtVUe/Eeo5EC8BgWmUMLB8OzO9S4F3zHUx6IldrV4VkcE4fhtLsiVEdeJzEmHN0IjIqV9bYOwvmpyMZUfVg9Wq572bkD2fJ76GN9mGt+HNPgohKW52ZJ6NFbaJenrAwiEIQzX6oMMr0lvdSNT9bKiCI93rk/KDtZRBUKYMZ53ZrqR71IIkJR3Tm2syEOBk4eewR3ybYK/D35eOuVwOG2E4Iz/MpLYYYCGt4HaBwv/0m4ujL6UPAZzY6m6owGyjFVhJST/DjemKUsL3o1h/l2G6eJEQccFkmB5gSUk//3DLs5uX/JovjoDPKSGE6m4Pl8XUWXVPIsgMK0zPY4EcSpDNGzJu37TTjDNXE3nBINzrjYvyPVWB1axF1dr82b0u0CNdw=
+X-HE-Tag: 1794067804-587705
+X-HE-Meta: U2FsdGVkX1+gt3cDQS8PA3R3w5oryqSiz2TigMQXby175EaAoOPM0P08syBBksN8M/pUM1pFmBTKNVyFRWMHnLGWq40khnagogv3j9LBW8pVACWW1YwKCP3jVfs7/I1mvL1xdmD4A/zGODxAvgIfhFaXCvbxT9mu7b7pYn5nTNj8U7wR9gihCRYDlnRaDHxJ4CSWx79nYYpwt/JUrliuCShluc20OUSNzBGFBUbX4Op9Y5pMsXcOY6cCGeGv+NNYEuYGwRZKp/KwjQQ3F7YHw+JzX3plluTY9IiEQMG2VZrektYGZYTdG1jx6s1an5ffbY1hrGmotZBBdoz/uZCZwwsL8PAdSQDQ+UqR1zeS3TyVPDV1jIWlzwaTp9rAOfNugNN1KqfeEni62is2Ngfc7Q6Ms5sTJJ0nPb8OfwKsg4H625Jue6/rWD6iwUojto1+kZumJ9HCNCNYrF920dZfQm9yvexkPIp1Br4RDkUOr9k4aA+tD+h6hsY/mC+Qcv8kBMsXenCpUrJrUWIlJlVNYamf6hF74hE79Etj0SYS/JYd4ZU5bvWxdjLfeP2Ym136+wpD3ThmwV+T1AjWoy+yaKDs5zgZSGFENe4bYVVnRdSoG6nJ/FhF6owDgZ2SMlZhqJU76lpS4iLOoqYqTrNlMSDqGuMmqERSqlRNT+XHpzyAj98o29f/eKdvMywGmRF9LUx4HfVBmuh78JYidLs809YmeWjXkBOl0UTeWa9lhJIIAjAQtXNU/39mR4u4Bn7dgGBCpcOBwJm0SiyBvPf8HllunUC/xWmlYKbRx3tvNtpAV+2EDiIh20oIA06D8Ynjz+v3oy9SVhyiUrCNxqDncJPYvCAv90i+YUHg/0reJb+wO/UMcyM2csvpdRgXC8Fh7zOwJS70I2H6wsX9lLjJVUNpLoCLUe5VENuD3OzLMhNxEtMztxCOqI1a1SIExo30XaAdazyVhC81LgomAK0
+ CX2hBDe/
+ p4tCtQJwnFZraxtrgWZ5O188+CD33pp1PLi3k2ncaK1Qb2d7xKqZDJAK+XwYUvKhp+M3RInPsrj4+A05eUCUvwNL2SQKtnLgMhSPWTXs5BoynA+CcAAqCjiBEQhRxg2qzUn5/fWIUnSfBNdv1j4N2KJ3RElUMfHq4RzcOnYFD7Z1HQ1ntUIGUCaMPeU1neeM7ujSxbbhvXbFDTdBqK3dirZWUy87tT36Ppg6IYxC11L3YgW0b5t4cj6EOZ9LEiAOyMoAYdI3AL5sN14kSnhbVE54pR5a1okIOoVfR+W3BG+5wI3Ivw7rEX1tyQnBBdkL8PD/4X93/mSJ/xA4J2VgC1V7b3uyV6NamxGVIXp4fcAt7hRHs1C+O/fAKtfJuzPNtysySQbdcc2mKNpCPiU1H/s5dqvlasq2nBB48ejO6mJAcM60vteMye0RvB32A6ew1vx38mamJzEhc3DZlrc+THERiwO43tsaBmj9gG1CtOGhrwHPH902t5lt+1i/nLjLtNEX6mWSV/Rv7k0AIKko/DUGV00uaxrS0sUohxG2nEiv3p3vL2ZVHj4aNgrHuEbmFhBu/c7YRDwze8ZFcvioENcypiz3kMOo5kn/b9OhiZ9XsAJfDmTYlhQSfNOJaWEhBNvN5w2ez50y6Y+A9iVkKEr/iekMw26yVbtIHsFmUALUf/m9l5iS+UGPSrReNiH0kD9vqYirZvT5vBNr5zICZM66PkKDhDNH2yIjCBgqFcqqkole7thBLpxsTnfbJpXIiDuew4OOaTaHCZf6NKjmrIvWa+pb0brfQKk87AlyG42SwLFo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,186 +97,218 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issues to consider:
-- [Medium] mm/swap: NULL deref in swap_cluster_assert_empty() on stale
-  reclaimer race
-- [Medium] mm/swap: ABA race on cluster state check in
-  swap_cluster_alloc_table()
+- [High] mm/memory-failure: missed retry in memory_failure() on hugetlb
+  allocation
+- [High] mm/memory-failure: first vmemmap page HVO race in
+  clear_non_hugetlb_hwpoison()
+- [Medium] mm/memory-failure: stale tail PG_hwpoison in
+  clear_non_hugetlb_hwpoison()
 --
 
-commit 22e220b18bd05df45a828a3170169b92c0c14f76
-Author: Nhat Pham <nphamcs@gmail.com>
+commit 473f986d60ad157a360960de8cae3064b0d63305
+Author: Mani Tofigh <mt4022@columbia.edu>
 
-mm/swap: publish cluster tables after reacquiring allocator locks
+mm/memory-failure: set PG_hwpoison of a non-hugetlb page under hugetlb_lock
 
-This commit keeps newly allocated swap cluster tables private until
-swap_cluster_alloc_table() reacquires the allocator and cluster locks, and
-abandons installation if a stale reclaimer returned the cluster while the
-locks were dropped.
+This commit sets PG_hugetlb on new hugetlb folios and sets PG_hwpoison on
+non-hugetlb pages under hugetlb_lock to prevent racing with HugeTLB vmemmap
+optimization (HVO), and adds a helper to conditionally clear PG_hwpoison on
+the memory_failure() retry path.
 
-Link: https://lore.kernel.org/all/sashiko-outbox-181084@kernel.org/
-Link: https://lore.kernel.org/all/sashiko-outbox-181086@kernel.org/
-
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 189f04d8838f3..162a73a9e6638 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index 78f0a13349cb3..9795f07b26f59 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
 [ ... ]
+> @@ -2170,10 +2179,32 @@ static int try_memory_failure_hugetlb(unsigned lo=
+ng pfn, int flags)
+>  	return identify_page_state(pfn, p, page_flags);
+>  }
+> =20
+> +/*
+> + * If the page has become part of a hugetlb folio in the meantime, HVO m=
+ay
+> + * remap its struct page unless it is in the first vmemmap page of the
+> + * folio.  Keep the flag then, since the retry takes it as its own.
+> + */
+> +static void clear_non_hugetlb_hwpoison(struct page *page)
+> +{
+> +	struct folio *folio;
+> +
+> +	spin_lock_irq(&hugetlb_lock);
+> +	folio =3D page_folio(page);
+> +	if (!folio_test_hugetlb(folio) ||
+> +	    folio_page_idx(folio, page) < VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES)
+> +		ClearPageHWPoison(page);
 
-> @@ -467,27 +475,49 @@ static int swap_cluster_alloc_table(struct swap_clu=
-ster_info *ci, gfp_t gfp)
->  		table =3D kmem_cache_zalloc(swap_table_cachep, gfp);
->  	}
->  	if (!table)
-> -		return -ENOMEM;
-> +		goto lock;
-> =20
->  #ifdef CONFIG_MEMCG
->  	if (!mem_cgroup_disabled()) {
-> -		VM_WARN_ON_ONCE(ci->memcg_table);
-> -		ci->memcg_table =3D kzalloc_obj(*ci->memcg_table, gfp);
-> -		if (!ci->memcg_table) {
-> -			swap_cluster_free_count_table(table);
-> -			return -ENOMEM;
-> -		}
-> +		memcg_table =3D kzalloc_obj(*ci->memcg_table, gfp);
-> +		if (!memcg_table)
-> +			goto lock;
->  	}
->  #endif
-> =20
->  #if !SWAP_TABLE_HAS_ZEROFLAG
-> -	VM_WARN_ON_ONCE(ci->zero_bitmap);
-> -	ci->zero_bitmap =3D bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
-> -	if (!ci->zero_bitmap) {
-> -		swap_cluster_free_table(ci);
-> -		swap_cluster_free_count_table(table);
-> -		return -ENOMEM;
-> +	zero_bitmap =3D bitmap_zalloc(SWAPFILE_CLUSTER, gfp);
-> +	if (!zero_bitmap)
-> +		goto lock;
-> +#endif
-> +	ret =3D 0;
-> +
-> +lock:
-> +	if (!locked) {
-> +		if (si) {
-> +			local_lock(&percpu_swap_cluster.lock);
-> +			if (!(si->flags & SWP_SOLIDSTATE))
-> +				spin_lock(&si->global_cluster_lock);
-> +		}
-> +		spin_lock(&ci->lock);
->  	}
-> +	lockdep_assert_held(&ci->lock);
-> +
-> +	/* A stale reclaimer may have returned the cluster to allocation. */
-> +	if (ci->flags !=3D CLUSTER_FLAG_NONE || cluster_table_is_alloced(ci))
-> +		ret =3D -EAGAIN;
+[Severity: High]
+Does HVO also remap the first vmemmap page of a hugetlb folio without holdi=
+ng
+hugetlb_lock?
+
+In vmemmap_optimize_pte(), when vmemmap_optimizable_pfn() is false (which is
+the first vmemmap page of the folio), HVO duplicates src into a newly
+allocated page dst, remaps the PTE to dst, and frees src:
+
+mm/hugetlb_vmemmap.c:vmemmap_optimize_pte() {
+	if (likely(vmemmap_optimizable_pfn(page_to_pfn(page), folio_order(folio)))=
+) {
+		dst =3D folio_vmemmap_shared_tail_page(folio);
+		if (!dst)
+			return -ENOMEM;
+	} else {
+		dst =3D vmemmap_dup_page_from_list(src, walk->vmemmap_pages);
+	}
+
+	list_add(&src->lru, walk->vmemmap_pages);
+	...
+	set_pte_at(&init_mm, addr, pte, mk_pte(dst, PAGE_KERNEL));
+}
+
+Because init_new_hugetlb_folio() sets PG_hugetlb before HVO runs, this crea=
+tes
+a race window on the first vmemmap page:
+
+CPU0 (memory_failure)             CPU1 (hugetlb allocation)
+get_huge_page_for_hwpoison()
+  TestSetPageHWPoison(page)
+                                  init_new_hugetlb_folio()
+                                    __folio_set_hugetlb(folio)
+                                  vmemmap_optimize_pte()
+                                    dst =3D vmemmap_dup_page_from_list(src,=
+ ...)
+                                      copy_page(dst, src)
+clear_non_hugetlb_hwpoison()
+  ClearPageHWPoison(page)  <-- clears old src page
+                                    set_pte_at(..., dst, ...)
+                                    flush_tlb_all()
+
+After the remap, dst still has PG_hwpoison set.  If page is the head page
+(index 0), the retry in get_huge_page_for_hwpoison() ->
+hugetlb_update_hwpoison() sees folio_test_set_hwpoison(folio) is already tr=
+ue
+on dst and aborts recovery with -EHWPOISON (MF_FAILED), leaving the poisoned
+hugetlb folio undissolved in the pool or mapped in user processes with an
+empty raw_hwp_page list.  Conversely, if hugetlb_update_hwpoison() runs
+between copy_page() and set_pte_at()/flush_tlb_all(), its writes to
+folio->flags and folio->_hugetlb_hwpoison (at struct page index 3, also in
+the first vmemmap page) land in the displaced src page and are lost when src
+is freed.
+
+> +	spin_unlock_irq(&hugetlb_lock);
+> +}
 
 [Severity: Medium]
-Can a stale reclaimer trigger a NULL pointer dereference in
-swap_cluster_assert_empty() while ci->lock is dropped here?
+When folio_test_hugetlb(folio) is true and folio_page_idx(folio, page) is at
+least VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES, can skipping ClearPageHWPoison()
+leave a stale PG_hwpoison bit on a tail struct page?
 
-Because ci->table now remains NULL across the sleeping allocation in
-swap_cluster_populate(), a stale reclaimer that dropped ci->lock before the
-cluster was freed and re-isolated can reacquire ci->lock while ci->count is=
- 0,
-ci->flags is CLUSTER_FLAG_NONE, and ci->table is NULL:
+When HVO is disabled, unsupported for the hstate, fails, or has not run yet,
+the tail struct page is not remapped.  On the retry path,
+try_memory_failure_hugetlb() -> get_huge_page_for_hwpoison() ->
+hugetlb_update_hwpoison() sets PG_hwpoison on the head page and adds page to
+raw_hwp_list_head(folio), but never clears PG_hwpoison on the tail struct
+page.
 
-CPU0                              CPU1
-                                  cluster_reclaim_range()
-                                    spin_unlock(&ci->lock)
-                                    /* ci is freed and table is freed */
-isolate_lock_cluster()
-  ci->flags =3D CLUSTER_FLAG_NONE
-swap_cluster_populate()
-  /* atomic alloc fails */
-  spin_unlock(&ci->lock)
-  swap_cluster_alloc_table()
-                                    spin_lock(&ci->lock)
-                                  ...
-                                  relocate_cluster()
-                                    free_cluster()
-                                      __free_cluster()
-                                        swap_cluster_assert_empty()
-                                          __swap_table_get()
-                                            <-- NULL pointer dereference
+If unpoison_memory() is later called on that tail PFN while the hugetlb fol=
+io
+is in use (ghp > 0), it frees raw_hwp_list_head(folio), drops the ghp
+reference, and then TestClearPageHWPoison(p) succeeds on the tail page and
+calls folio_put(folio) a second time, dropping the active reference on the
+in-use hugetlb folio while leaving PG_hwpoison set on the head page:
 
-In relocate_cluster(), !ci->count and ci->flags !=3D CLUSTER_FLAG_FREE are =
-both
-true, so it calls free_cluster() -> __free_cluster() without checking
-cluster_table_is_alloced(ci).  With CONFIG_DEBUG_VM enabled,
-swap_cluster_assert_empty() calls __swap_table_get(), which dereferences the
-NULL ci->table.  With SWP_PAGE_DISCARD enabled, free_cluster() also schedul=
-es
-a redundant discard before swap_do_scheduled_discard() calls __free_cluster=
-()
-on the tableless cluster.
+mm/memory-failure.c:unpoison_memory() {
+	} else {
+		if (folio_test_hugetlb(folio)) {
+			huge =3D true;
+			count =3D folio_free_raw_hwp(folio, false);
+			if (count =3D=3D 0) {
+				folio_put(folio);
+				goto unlock_mutex;
+			}
+		}
 
-Should relocate_cluster() avoid calling free_cluster() when
-!cluster_table_is_alloced(ci)?
+		folio_put(folio);
+		if (TestClearPageHWPoison(p)) {
+			folio_put(folio);
+			ret =3D 0;
+		}
+	}
+}
 
 [ ... ]
+> @@ -2487,7 +2520,7 @@ int memory_failure(unsigned long pfn, int flags)
+>  			} else {
+>  				/* We lost the race, try again */
+>  				if (retry) {
+> -					ClearPageHWPoison(p);
+> +					clear_non_hugetlb_hwpoison(p);
+>  					retry =3D false;
+>  					goto try_again;
+>  				}
 
-> @@ -571,13 +612,9 @@ swap_cluster_populate(struct swap_info_struct *si,
->  	 * could happen with ignoring the percpu cluster is fragmentation,
->  	 * which is acceptable since this fallback and race is rare.
->  	 */
-> -	local_lock(&percpu_swap_cluster.lock);
-> -	if (!(si->flags & SWP_SOLIDSTATE))
-> -		spin_lock(&si->global_cluster_lock);
-> -	spin_lock(&ci->lock);
-> -
->  	if (ret) {
-> -		move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
-> +		if (ret !=3D -EAGAIN)
-> +			move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
->  		spin_unlock(&ci->lock);
->  		return NULL;
->  	}
+[Severity: High]
+Can memory_failure() miss this retry altogether when a page poisoned in
+get_huge_page_for_hwpoison() becomes part of a new hugetlb folio?
 
-[Severity: Medium]
-Can an ABA race on ci->flags and ci->table cause a failed allocator to put a
-cluster back onto si->free_clusters while a second allocator still has it
-isolated?
+In only_alloc_fresh_hugetlb_folio(), alloc_buddy_frozen_folio() and
+alloc_gigantic_frozen_folio() remove the pages from the buddy allocator and
+clear PageBuddy before init_new_hugetlb_folio() acquires hugetlb_lock and s=
+ets
+PG_hugetlb.  When check_pages_enabled is false (the default when
+CONFIG_DEBUG_VM is disabled and init_on_alloc/page_poison are off) or in
+alloc_contig_frozen_range_noprof() (which ignores check_new_pages()'s return
+value), the allocator does not reject a page with PG_hwpoison set:
 
-When CONFIG_DEBUG_VM and SWP_PAGE_DISCARD are disabled, a stale reclaimer
-calling relocate_cluster() -> free_cluster() -> __free_cluster() moves the
-tableless cluster back to si->free_clusters.  A second allocator can then
-re-isolate it and also drop ci->lock for a sleeping table allocation:
+CPU0 (memory_failure)             CPU1 (hugetlb allocation)
+                                  only_alloc_fresh_hugetlb_folio()
+                                    alloc_buddy_frozen_folio()
+                                      /* clears PageBuddy(p) */
+get_huge_page_for_hwpoison()
+  /* !folio_test_hugetlb(folio) */
+  TestSetPageHWPoison(p)
+  return MF_HUGETLB_NON_HUGEPAGE
+                                    init_new_hugetlb_folio()
+                                      __folio_set_hugetlb(folio)
+                                  hugetlb_vmemmap_optimize_folio()
+                                    /* remaps p to shared tail page,
+                                       frees old vmemmap page */
+get_hwpoison_page(p, flags)
+  get_hwpoison_hugetlb_folio()
+    /* returns -EBUSY or 0 */
+/* skips is_free_buddy_page(p) retry,
+   returns MF_IGNORED */          <-- PG_hwpoison lost
 
-CPU0                       CPU1                       CPU2
-swap_cluster_populate()
-  spin_unlock(&ci->lock)
-  swap_cluster_alloc_table()
-    /* alloc fails */
-                           relocate_cluster()
-                             ...
-                             __free_cluster()
-                               ci->flags =3D
-                                 CLUSTER_FLAG_FREE
-                                                      isolate_lock_cluster()
-                                                        ci->flags =3D
-                                                          CLUSTER_FLAG_NONE
-                                                      swap_cluster_populate=
-()
-                                                        spin_unlock(&ci->lo=
-ck)
-    spin_lock(&ci->lock)
-    /* flags =3D=3D NONE,
-     * table =3D=3D NULL */
-    return -ENOMEM
-  move_cluster(..., FREE)  <-- puts ci on free_clusters while CPU2 owns it
+Because the retry block in memory_failure() is only reached when
+get_hwpoison_page() returns 0 and is_free_buddy_page(p) is true, a concurre=
+nt
+hugetlb allocation that has already cleared PageBuddy bypasses the retry in
+every hugetlb state:
 
-When CPU0 reacquires ci->lock, ci->flags is back to CLUSTER_FLAG_NONE and
-cluster_table_is_alloced(ci) is still false, so swap_cluster_alloc_table()
-returns -ENOMEM instead of -EAGAIN and CPU0 moves the cluster back onto
-si->free_clusters while CPU2 is still sleeping in swap_cluster_alloc_table(=
-).
+1. While the new folio is still being initialized or HVO-optimized (neither
+   HPG_freed nor HPG_migratable is set), get_hwpoison_hugetlb_folio() retur=
+ns
+   -EBUSY, get_any_page() returns -EIO after exhausting its retries, and
+   memory_failure() exits via the default case (MF_MSG_GET_HWPOISON,
+   MF_IGNORED).
+2. Once the folio is placed on the hugetlb freelist (HPG_freed set),
+   get_hwpoison_page() returns 0, is_free_buddy_page(p) is false, and
+   memory_failure() exits via the MF_MSG_KERNEL_HIGH_ORDER (MF_IGNORED)
+   branch.
+3. If the folio is allocated for use and marked HPG_migratable,
+   get_hwpoison_page() returns 1 and memory_failure() falls through into the
+   non-hugetlb in-use page recovery path (hwpoison_filter(),
+   split_huge_page_to_order(), etc.) on a hugetlb folio.
+
+In (1) and (2), try_memory_failure_hugetlb() is never re-run: if HVO remaps=
+ a
+tail page, the PG_hwpoison bit set in the old vmemmap page is discarded when
+that vmemmap page is freed, leaving the corrupted physical page in the
+hugetlb pool as a healthy page.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106160432.2552=
-507-1-nphamcs@gmail.com?part=3D2
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-hwpoison-h=
+ugetlb-ro-v3-1-c11186963647@columbia.edu?part=3D1
 
