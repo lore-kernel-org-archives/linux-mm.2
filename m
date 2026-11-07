@@ -1,115 +1,115 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF04606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 02:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66994606A32F
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 02:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=lbXY0gAz;
-	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=EmCzfMn1
+	dkim=pass (2048-bit key, unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Ba1yRdRP;
+	dkim=pass (2048-bit key, unprotected) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.a=rsa-sha256 header.s=google header.b=iH760goQ
 Received: by kanga.kvack.org (Postfix)
-	id DAC496B05BA; Fri,  6 Nov 2026 21:39:52 -0500 (EST)
+	id 632CB6B05C2; Fri,  6 Nov 2026 21:40:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D84506B05C2; Fri,  6 Nov 2026 21:39:52 -0500 (EST)
+	id 609EA6B05C3; Fri,  6 Nov 2026 21:40:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4B816B05C3; Fri,  6 Nov 2026 21:39:52 -0500 (EST)
+	id 4F8C66B05C7; Fri,  6 Nov 2026 21:40:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 878C56B05BA
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:39:52 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 140468027D
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:39:52 +0000 (UTC)
-X-FDA: 85406767824.28.343028F
+	by kanga.kvack.org (Postfix) with ESMTP id 190C16B05C2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:40:00 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D95E14029B
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:39:59 +0000 (UTC)
+X-FDA: 85406768118.30.6EA0B6D
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 94370C0005
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:39:49 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=lbXY0gAz;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=EmCzfMn1;
-	spf=pass (imf22.hostedemail.com: domain of himanshu.chauhan@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=himanshu.chauhan@oss.qualcomm.com;
+	by imf05.hostedemail.com (Postfix) with ESMTP id 11EB9100007
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:39:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Ba1yRdRP;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=iH760goQ;
+	spf=pass (imf05.hostedemail.com: domain of himanshu.chauhan@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=himanshu.chauhan@oss.qualcomm.com;
 	dmarc=pass (policy=none) header.from=oss.qualcomm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794019189;
+	s=arc-20220608; t=1794019197;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L420166GSS4TE+K47OptRNcFOTisOIHTM/2QMseJ/eQ=;
-	b=LEFN+OCsAbG8lD1GMILPN2NUx3HU07h/3BRPJxmvI8GrHW+yC+ae1DsHx7djKz1mu2odwk
-	LGgmlwwa2t/s/uiI6C8C+gpG2ySSHgFM70lKVD3hHyGD6KSSOG+k6eeoJqzMQExhBBhd1P
-	BSk2TXYt2g2kzvVJ50N3dqUndf7aqwU=
+	bh=FtJbi3TLd6UzkLX1SyCMRPTJn7wcbqfY9cqjaOspDjk=;
+	b=hDxTlFCjtaq7RFox0/BnQAliU8t2QJsMOvx93exEPtTyeshw7ZLJTKn9cVDSPqDpiyl/rV
+	pAkr98EebzHrLhdfeTJRKwgEUHCIRlSLrayRYpbWW7g7svSJgMyNlBCRYLNy7cakyP+j1A
+	umKymwsvshVzZm7PYZynvqUesLFqhJ0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794019189;
-	b=AQcfxxgsVFDWlXAmDy5U+oNJ/TbT/QarCOxk+K434GPygMSdZyrvjxRndzQ0TI9y7nA3vM
-	wdqh+c3G/S3iNX94DYTF4i74EWcP8lueO7Cro00zkDuNw6wpB2Blki73oHVmlYlFQ249YZ
-	G2l3N0ej7wfZlkba3NOSNIsbp0WQMwk=
+	t=1794019197;
+	b=WmfsPhPwRjBIwND+hCmrFzEkVx1mYRvemhm5DYvd5DLhBSTD6smIaK9M9J6PrOfhkWv5KI
+	wA8dt92LFVa0UZbgdUG9x58gpNu9yxfpdZSFhJNlfqkHT7nzchaHqvNxsmOJ+3jW25RSJI
+	t+smkFhbIGLN/JJA/XMcqu68ydxPfdM=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=lbXY0gAz;
-	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=EmCzfMn1;
-	spf=pass (imf22.hostedemail.com: domain of himanshu.chauhan@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=himanshu.chauhan@oss.qualcomm.com;
+	imf05.hostedemail.com;
+	dkim=pass header.d=qualcomm.com header.s=qcppdkim1 header.b=Ba1yRdRP;
+	dkim=pass header.d=oss.qualcomm.com header.s=google header.b=iH760goQ;
+	spf=pass (imf05.hostedemail.com: domain of himanshu.chauhan@oss.qualcomm.com designates 205.220.180.131 as permitted sender) smtp.mailfrom=himanshu.chauhan@oss.qualcomm.com;
 	dmarc=pass (policy=none) header.from=oss.qualcomm.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A72B2wa1521133
-	for <linux-mm@kvack.org>; Sat, 7 Nov 2026 02:39:48 GMT
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A72XqbJ1237674
+	for <linux-mm@kvack.org>; Sat, 7 Nov 2026 02:39:56 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
 	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=L420166GSS4
-	TE+K47OptRNcFOTisOIHTM/2QMseJ/eQ=; b=lbXY0gAz5PjhZ53/zvhjXNUzRVe
-	2M8GWGe8UczDg43WWUJiAcU22wyjOmftVZWAKG/fBBUx6RC2ZGJdQW3zl20ggfIv
-	jptojMcEOJJkSiicXOzxyARK0CjvbSqTYi+u3W5FtsBXHTygxuYYyIn+Hb0GWGik
-	OUzC7GcOR/Pury2piCPxQeGZr/KFSXlNJdz/j00AzbYm085PJY1og9odi1OFxaJk
-	4dNQhQEFGKqcZnxGD9CPfgqtcSu52bSU6cpcBgKDmki5xTBRzuqSjEfWPFLoo63G
-	DLWGWbNaP2C7TaBPQgHdHyNjv41eQPUq9QOaAinxsUDhE5bouNUB/JXXAAQ==
-Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hssbnr9fc-1
+	:mime-version:references:subject:to; s=qcppdkim1; bh=FtJbi3TLd6U
+	zkLX1SyCMRPTJn7wcbqfY9cqjaOspDjk=; b=Ba1yRdRPm31IuQ/0NDxRWHBNdCu
+	QQTW5Pi0gPLVfCmSxZpy31SZOsXuc39z/164Cj0hvtPOFPypGUoJsljC5ElSpchm
+	NYod7pwBoKcdXlxwh9dsDzpTkkAPXGVhmIBxZOo2hH1VCkwvjKcLpwN2RVRYzqAY
+	vAiU5knJ4vv2pGp4p0/iiYi/Tu+E4XKdlJzz3Xqyny6iPweXa7JH/su1A7aitSeQ
+	IjNvZ4Hgqlo1EqUmNbM22dXMxh+pVr1F56s8dSNTdWiL/owlzhSkriDcZzzmn3Nz
+	eqoyoZpZbukHailS6OeGs9Qj1jKr3Jah5eqTVLGxzkvJEvAWMYkzydYS4LQ==
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4hsuagr0fd-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Sat, 07 Nov 2026 02:39:48 +0000 (GMT)
-Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-36cec75d8caso349107eec.0
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 18:39:48 -0800 (PST)
+	for <linux-mm@kvack.org>; Sat, 07 Nov 2026 02:39:56 +0000 (GMT)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-370230d93efso1883385eec.1
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 18:39:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1794019187; x=1794623987; darn=kvack.org;
+        d=oss.qualcomm.com; s=google; t=1794019195; x=1794623995; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=L420166GSS4TE+K47OptRNcFOTisOIHTM/2QMseJ/eQ=;
-        b=EmCzfMn1lzn6+h3ZDUZclrWFSG88yO9oEu+G2JZk+YY73KYSmn89mQ8JICJSU48zlo
-         gefI+gtQNKwV+yM+cTtx3Ly5rRHHP9OypQcK05EnscCNGE7ElzlYqym3KCC4uKL6PUzG
-         lqYvBIRlRLLPB7r5Q7lho19T2Kkf1ky6GZMtXEnMHYV+Raph72RPZKzydjhkTz1WIfV0
-         407rjqtOUDxe6YtpkPC9HRmh1DZ4ZvZkmIERM1dr/iGTsquX43e689RRT9KKJB6SEch7
-         N54xjt7DadILI1Ginls8JbPWdjvNoZVMmFChmabXdtqwNrnwuxxMI84TqmU6T7dXu3Ft
-         HQLA==
+        bh=FtJbi3TLd6UzkLX1SyCMRPTJn7wcbqfY9cqjaOspDjk=;
+        b=iH760goQctdKXcfwhJ0lWEPQiA/4od9zj4crWxr9O72WVpC3EuCX1K/bt5chWDA9/2
+         DxPo16T+eSdaWykrD2TcaalHkAR1YcjbHkbp1fpYZzBHc4fmhe29FLVuxQIL3+9MMQXL
+         Py2ZEu4DOHg4RVrS+ms8nrp0QMMxAuUxM7EKdsAGCDcFkZZcwGbl5uH61urCiC0wxLpK
+         QEYQnYPQnqEGs9FVybert9jzWWjabDndvJoVsdv+5jg4wHx9q9N0gI+EZ7S5JiItsCSo
+         bFsLCVo8gqR0tqubnI1rmEA1MEStY+sukGqB0kPCP3g2N2DChSCP22HkC6M5YU9WtrEE
+         rvPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794019187; x=1794623987;
+        d=1e100.net; s=20260707; t=1794019195; x=1794623995;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=L420166GSS4TE+K47OptRNcFOTisOIHTM/2QMseJ/eQ=;
-        b=IPuMx5KLUHSr9yp9d8GNrmZJqgtsKAPl+CuaxU1UVf3eOlKr3TuCo7tpFcdclgTB2/
-         eu1ekq3qL1DFkq393bosACD4jSJIwaPL+cW4SDLq072cgRoyztqpDXh8iaWSS3mcXvXK
-         Gc/0me4V+HV2nHBKbJMTMje9m4F8o5OzbpjBt5ExVYtUbWNtLzG4pS2MwtkYpqvlMQqo
-         TaWeve2MXASHAcMlehwfB9TeMtKNw3xN8PvXtOBa2wFT2/wpYCMNe4/4iR4hBhr/OFUx
-         3q/TUw2lbygym6N3ZZRCFk9I7YsiIAXvGeq+P/jn7fzKWMc5W6drVPlM2g6P4n2d1NG5
-         1amw==
-X-Forwarded-Encrypted: i=1; AL+hErHEOeUngYMisRuIfBd6Ki6IE8uHOJRgLXuzLq8BOx6jMvudoZ96ycN4bTm4R5ddTZuM4Ut7+N/AjA==@kvack.org
-X-Gm-Message-State: APuU4Z8J61o3FI5JalVgW0PuyKstR3gORHcTPuvOT9AsHfNFDpSb4Zl6
-	qRnPd8k2TOMIaTmR3bDxTLYbYfNeRVi97O3t/FDNEaRPy1j3gMH+EBvuuP080S7zhvyBq56lfzA
-	T7vM+znwBECE/FROp/2lQtRq8DOeLC/ioZk2or0OMUK41wxNrwP4vEw==
-X-Gm-Gg: AYBFou3NFzk5McIYo4cEqwlZxpaQirHlzdzw33LP15BgxiWaf8VbaiIAbTj1euH7dwr
-	nWRQNhOEpQTSwIJRwPbxyyRNizKN7JMhXIUvSm2YYME6ltme8CC4vqfVc4EcG8jh0EtJatCWnHK
-	bKPz2bhSHjKZ1PW6iFajL8xge74xXpKnJ1LfCSE3LOBFMDzmbC7hFK5q+G96HIq8jRzL29YfSlA
-	vjiAEIDGtYrqCA54IzoavGLFi6TeAp2gUThHtM/Mbzh45iRfP5Y2qPIeZRsf9LpRaulGxnjXTor
-	1qcEi1+kIR0HMmGnfw5pOC+CF6hiD89Lv3+q9QavRzZqsUabe1mf7VM/itX0HMZtfHKP7HmqQ0e
-	Eyuy/E+AY6MUEyg3NbUt551X4lYcWSTW4l8XEzBkr/1KI7KXnVIt5zNNytCO4SeQr/ii4zqMcB4
-	5n4vr6RaaIZZ5y757mZNzVVAl2HUKv7Jm0LhfaWRIlVAKdEnhYW5nAjQ3elytQL47/NE94f3IVE
-	g==
-X-Received: by 2002:a05:7301:7c0b:b0:370:7fee:497f with SMTP id 5a478bee46e88-370f8269e21mr1593309eec.26.1794019187392;
-        Fri, 06 Nov 2026 18:39:47 -0800 (PST)
-X-Received: by 2002:a05:7301:7c0b:b0:370:7fee:497f with SMTP id 5a478bee46e88-370f8269e21mr1593255eec.26.1794019186655;
-        Fri, 06 Nov 2026 18:39:46 -0800 (PST)
+        bh=FtJbi3TLd6UzkLX1SyCMRPTJn7wcbqfY9cqjaOspDjk=;
+        b=rXxn1wUTH1KHFHNulcxFia0q6MEWcyd1v+UfEqa8kcn9uFznKVKbXYaqElnZHOzNTp
+         laPrtcmzV9oDWmZWtwgt7hy/fUAfuduqf87wp9nQLwvS887HUPJjPd0C8mYM/ELno509
+         fTdixh9Emh9LSAaQ1nwzEWWruE5Avv5epOcoO32Tal2YrARoJlKWyGOEDgUwhTu6BlC0
+         tro7uTDBeJJBSUdXG7WMm/4o6oSRLPFgg9xKHIA5HlOeR1hhxPLS3Ok89bCEpAupLUp2
+         x/B+LLp5TY+s6e0PERtPiOGcuTUnglPCBGYkHhsXaTWWQtFCNncZLkYhcA3QjV1wBBiq
+         MnwQ==
+X-Forwarded-Encrypted: i=1; AL+hErFyyys6EpeBnarxMuh6XQY5BfjpwyeLFmV0zAX8lAK68565E3ROgj4K3wPAQrxmaygXQ4sOhF1o3w==@kvack.org
+X-Gm-Message-State: APuU4Z/TnnPINiM+PUQuEuy3YxADZYbRRb0ZeEt8z1WAZPPdtG2PWLCB
+	gGUSLCPfm/GbpP4C1cYa5kpDiHYzdn0vT9N/fNkw8jt15foO+cMpRIJwvtUbaiJXPBPnlPPgcN/
+	yTZ1+cfKra6LeePD0SNpvcn0mP+PoxAs0RXJslfaS/N3c9+DYngZ75g==
+X-Gm-Gg: AYBFou3rNVhXeosjLJ8tBwi+nfUNYhhQPMz9l/GwVFkdh7kb6PHYJTRB4MPMngQyUX/
+	Sf2LxXOeOWi+pdpn+9h5ZQQOisZRv6clLS8Hx+B+ZUCoYP86R2NXsin7Xq+RIpQHAiVevQnwgug
+	F0fB86IgpIATt2t9JCWGuaXT3nNhPKzvpFWTSXVBEJp387R1H8b4SGWzX11Zd4DVwndDWI1DVvT
+	sh5TTUGrH07sKm14H/afedJmmF4eKfhQ+ZX61YXpX9np/jvYq2LrJK0RRRXot4mr+Ly5MuydQhX
+	jIV++OpWKowpexlhZrKwG7RUzWPo1dqP+tiRog31jRUapVjXOUX5tGs6AcPseTUMJ2NUuozgeOD
+	asoB0mIPyeeIVpBjEJSRKgq7A5xY7vmVyYRM+7kYjYWd7H/M/JkEwtXXeZhjGYdcqjasM93rJmV
+	R3vimYJiJ7ab+ert2W4yet+ckWmhsFNfRu26n6GxTxaA4itTNTSXTCoD77qRVdVS2qfKBjv36M1
+	w==
+X-Received: by 2002:a05:7301:78c3:b0:36a:1904:60a3 with SMTP id 5a478bee46e88-36f75a2ae65mr5260158eec.15.1794019194725;
+        Fri, 06 Nov 2026 18:39:54 -0800 (PST)
+X-Received: by 2002:a05:7301:78c3:b0:36a:1904:60a3 with SMTP id 5a478bee46e88-36f75a2ae65mr5260125eec.15.1794019194141;
+        Fri, 06 Nov 2026 18:39:54 -0800 (PST)
 Received: from hu-himchau-blr.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com. [103.229.18.19])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faac86a96sm11069040eec.29.2026.11.06.18.39.39
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faac86a96sm11069040eec.29.2026.11.06.18.39.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Nov 2026 18:39:46 -0800 (PST)
+        Fri, 06 Nov 2026 18:39:53 -0800 (PST)
 From: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
 To: Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
         Albert Ou <aou@eecs.berkeley.edu>, linux-riscv@lists.infradead.org
@@ -126,53 +126,53 @@ Cc: Alexandre Ghiti <alex@ghiti.fr>, Jesse Taube <jtaubepe@redhat.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org,
         Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
-Subject: [PATCH v8 2/8] riscv: Add breakpoint and watchpoint test for riscv
-Date: Sat,  7 Nov 2026 08:09:11 +0530
-Message-ID: <20261107023917.40606-3-himanshu.chauhan@oss.qualcomm.com>
+Subject: [PATCH v8 3/8] riscv: add ptrace requests for hardware breakpoints
+Date: Sat,  7 Nov 2026 08:09:12 +0530
+Message-ID: <20261107023917.40606-4-himanshu.chauhan@oss.qualcomm.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261107023917.40606-1-himanshu.chauhan@oss.qualcomm.com>
 References: <20261107023917.40606-1-himanshu.chauhan@oss.qualcomm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: QusTlS7lThHvoWh5PWwP4YMwPh4L-FUT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA3MDAxMCBTYWx0ZWRfX7nS1VXQfjMqj
- eDe2835RVulCwXdrawjns+8yKkiPVjbgmsMcALVrzOX8M3IVtYHOz6dg6fAas2/2GdIvoZ7srAq
- JeRCeh94SefIawsaTsSk2gPBqaqlMe7OIY7j5vvuT2jyOlQwNN8RVZZBPUpJ7/6bOZr1TogYfNq
- dSta8Vrrv6hPXw4U5niwBnB3r1juFHlhUyILhQVsaOKzmpuJqZx23dABZuJi9q2aPzbQyZPS36g
- ueHfNsY4ubZJrAgducmBt2D/EAJshA7VFcyW9gLxSWngRA9MNvWoY2JpAnLdUaW4UZyj2pMXzXm
- Ydby7CZdb1Jedj3gU+gl0Lcs5dXY5gOSRlmMZ6QS4+h1OqS1cz1V4jgtTpLEBRGk2+mtBtjgE6x
- /CxTG+lDR/nM3VfZuOkH+DeLZu+igLTUqu1sUSW5h2GQHpa19oCqTWt6K9Gh9YAh1e4t3mN9rIS
- YmPX6wBLot11d1iZz6Q==
-X-Proofpoint-ORIG-GUID: QusTlS7lThHvoWh5PWwP4YMwPh4L-FUT
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA3MDAxMCBTYWx0ZWRfX3n0499UZsjax
- 8fSwZMrm460YFw1ZksY0uVGuFjmkpBSKVxKE2ahk9mgSZiaqh2B8eK8+6GRy2zcBuaEM0FHlcCN
- 4XSdHR8jQnGcOlsYApjMDQ6PGZbknLg=
-X-Authority-Analysis: v=2.4 cv=JtBkP84C c=1 sm=1 tr=0 ts=6aee8f74 cx=c_pps
- a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTA3MDAwOSBTYWx0ZWRfXw1wDtWBtNY6H
+ oii4/vi4bjqz1zjw5nHHodYvvLxp+9tREVf8114yr3jDWqPEYO5AIft1990N8zUFiiQu07Pw/dH
+ PrNzimcDStc5SDJaWlcyXXluEQuuYY6HHDUUp2ZtzP1ew9ZLqq53KnayUTi55GyxVoGctSWCLL1
+ +jVvrFJ9APNgidpJBbYR5R3iFENwYpva+8zPNsHyNqTtU+gePkvjyaNOxbOWxM4grtv9eqUUHe5
+ zVAuVPoUh+Wci0RVNfl/bqHVItHDBbehWaMVeRBHxyGY04qWlT3fNY/PYQcTjaY9C3IJXBXdo28
+ sBivYArAxGBhBKF3w4gG5/SkGIwQx846casaArjcb43bBqlOVvttg9LzY1xa75xxdSfNcYvHicO
+ XH8fTjA9Vr08VBi1H92j8AEj2/OIInEmo28nMKa5J0pRq8PEWdtTPFtpMdcgLf2nJWKnV345BD6
+ R7xiirC2vHlBx1z0TWg==
+X-Proofpoint-ORIG-GUID: ndHbhWvA7ZdpxgsG1ZiT2Be7uf4kInw3
+X-Proofpoint-GUID: ndHbhWvA7ZdpxgsG1ZiT2Be7uf4kInw3
+X-Proofpoint-Spam-Info: AW1haW4tMjYxMTA3MDAwOSBTYWx0ZWRfXxXcDHpjddDJa
+ NEpAfsZt3sflYrUY/vQNbf1NspVkqjtDmu3/+xTiQ6k3aY8s0CVE5g3DMAzq+blrz4K+mnq/1sw
+ Qw55EYl+IgdDaXGjkY6GU1aUZh5Cswk=
+X-Authority-Analysis: v=2.4 cv=V8LoQuni c=1 sm=1 tr=0 ts=6aee8f7c cx=c_pps
+ a=cFYjgdjTJScbgFmBucgdfQ==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=zJRp6_cAMcgA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22 a=EUspDBNiAAAA:8
- a=VwQbUJbxAAAA:8 a=2Ls8_GQA_paks6FoIQwA:9 a=6Ab_bkdmUrQuMsNx7PHu:22
+ a=u7WPNUs3qKkmUXheDGA7:22 a=ZpdpYltYx_vBUK5n70dp:22 a=EUspDBNiAAAA:8
+ a=4WprEUycQGGDspryc_kA:9 a=scEy_gLbYbu1JhEsrz4S:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1176,Hydra:6.1.138,FMLib:17.12.100.49
  definitions=2026-11-07_01,2026-11-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 spamscore=0 suspectscore=0 clxscore=1015 lowpriorityscore=0
- impostorscore=0 phishscore=0 adultscore=0 priorityscore=1501 bulkscore=0
+ suspectscore=0 clxscore=1011 malwarescore=0 bulkscore=0 impostorscore=0
+ phishscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501 spamscore=0
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611070010
-X-Rspamd-Server: rspam06
-X-Stat-Signature: tjobwomgyr6tnaoh7hokeed48wiz8n3z
+ reason=mlx scancount=1 engine=8.22.0-2611040001 definitions=main-2611070009
+X-Stat-Signature: w48zj7h871un8j56f4k6kg5ya18c6kuf
+X-Rspamd-Queue-Id: 11EB9100007
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 94370C0005
-X-Rspam-User: 
-X-HE-Tag: 1794019189-32516
-X-HE-Meta: U2FsdGVkX1+1A8PBT5rkuc0Bzv1cXQ+KZDJuYE7joNPOofpuQROnTXBYwWqDJqSLAjHHWAKBuKVCofUOjhBGaGVrluyNf3PXcisLVzsbhvCO2yy5/NjTqniki+u4RWO60844rxsp+9CApH0gI80V7jXUrre6scQr/HrReijsUr7iJo6D9L8yrsIunrpUKWV3hPQRfC7056RnBLfEESKzf3ASor6lYDaB/qZR2if1vhtjj/UqX+mY0VbW0MGLhJNRvanv6/tQkkcwmbW4sJ3IO93pOsQidt4RvUtWQxex0jdZ34C2+aeml3PXG0t7NXXrN5qbx5N/4UJ4Mpm4gkS4QTlhFtKcjlVEQtAk5ehGTKuMOT4XiAsyGTdZwmUvuiz8S5it1iNo+EuLDiiiSh9p2RoRMI6XRfFF/Ir2uS3WghIasTfZdcXbsD799oJ2rzdGJ5t88+NQROsRBUMPLbI3cE5rgla5OTjcrbs9YeEJc91bFXJIMAQRUejlzxJkYXKVDp5Hax6HIpQDwPa/gQvFZvekBQ/EODUefjzQGf73Rq2vaiq/k9/YPr10Tt41wS9ZNKGMkfC3o/hSwcc/+txiijPli/mJW+KbMXp074tJIXirnd3velDV53EggiugWXOOmf/0Xnn2otiQVP//jrl06JH+DPCT1JK7XT6Qf6LIP77q/xMVY028ZoxPuM6nO5J0JHM+r1mEyDog2SkJysmCcubsYeG6NQe5jw77KyxG5gROFNKmHvH1jrX+sUdRvey4EKxUTsa/eK32fpGJV+dq1b9dl6iIvqqTD2lBZ76CBTFOT7dhBCYrqQYxK+HFWcSOthhYNR8YLngOlFxxsRJq0TQMVBwJqN5jgj/5MSTJdXwduUZmy4/pAqgMPH5Xc/+HxurM6kVlw016wUff1N/cKAMlJIDeJwFYUQ+cmay1OwcKIzpQSVjqlTwSGZXCHvRHkaijcLTfGQYZOMu9HVq
- JQr+l3rR
- BTA8lzAqLu8G5Fbo6taHS0KZgvG6bLG5qB/zqKBUxKCKOISK+N1QAmUHiE62vDOt/Ss0hvaXtZ7Z31VorrkF6FKX2lKCR6vqQ9TcXijmgmdq/FdX7WmEDE86KOeC+HsBHp6KKjcLd5ibtzZTk1WrjP8kaR6FP0Yl988hxdI5/+R+Hb8PY2si3IwhgmkqvP7wI3G4ObrmtYFzHTezr5AnsEdTHQ0pz24WPSnW5Z4wbicyGRBCRNo7qQL8upCtLZ/IVu0SQL3cJ0/ohd6srZzK3XzwBv9cuynDuN7aMz1lsM+HT5heZNr2vzp7RGFaiFXGc2iHikqwoj6HCCQxhYXdyPkPQnA/6rQpiGSZZrh7ytulpiKpxp4E0/wIfQ5IYeuRoWmLKIQx0DZChhdiU8IWy39xufDcGIHeVL77iDpomh7DjKPDD2fRhrWJt7bl6TW/6wK0Y67jzpYW8cnY=
+X-HE-Tag: 1794019196-895872
+X-HE-Meta: U2FsdGVkX18T521Pg7OCfY5rJ7dq1ou5qKfMCD48PRV80pmdcvcidUn3sh9yjGZN7vfzj7yD+9IOuoi+ZDkmmRQ45kpAvCY09Mx25UYrNVPOM8Cw3bW+UXW8p1lKJYeHvwodFK16dk9OpDnNx0OzRS28ARPl5F/Y251jzVItpb9c+q0A+HHkjU5TpxeXyckL7Jbs3uJ+br+0Mrv/70RkHnA8MHiunQDEcBZyr36vCbyyWr/FuwCpr+sEq2gGsP/z+a/XN4pAJxKGB2pTW2DPO8dH1gnRvoU3uCaE+VS8tZpWlL2BYmwn6ArxoEyCk9wiax8UhJmGhtszI+NkcWJxU7WX1fOenwOviLEI9SgNZtL/Z0fohAaA1NX/23yrljBvHcOcy3Oxg4kBHPfn3bxWm9RXOMVsIL0GS7N+IdRuXJUO8Xu3aqaqe2XaGgjY7JqQz4BJ9BlHR50B8Rr72juN/hJilw0wGarOlIMpDnHRByWIw9WHUfRKASkWaippjSWy3s5WHUniKmkPqIyIHRK1jVZ38tXpUMxgZi5iGE4sKVBlQ+fZmZ979yfmtpPwV2oXDo0IX49UaJUzUHj12gYAhRnmeyh0HZFTnmySjrqH3F87B85gsjgpTO/lQPdt51VsqJdS4tNnyRyKkj3TlQBSv6hLPzzgSGEpmcDlg8AAPJj9HXsdQPg9NU8TlyCGdXt7QBQyG9UGwfJVqV6/7iiG+bYwImtDnT76KdSJj/5sCRMYLbEycJ2rKOUQGSq95iPtvPKasBI+32z+2cTfpvXyWHpWkf36+X7tNilb55gFByTUV5qOs+ajEZXpxZUigQ4v80eLlTaigEfZ3fbiSpNN8DnlxXfiFwflCOmIeUlfpCR7vfIJjg3tEIqvJYtnis+fp0myy17NF3ZmV55DIvro8xTZ2LfMYyIBJ3pFxIxFq+2c7YJUBtyKJKLf/usEpA8syguGEps29gMu8wseKzn
+ AgWDSPBC
+ qaS5t0WfvxrKOmiUwEqMg+nKed6RkawTgbV/EpndaLmlcfI3WQGUbUieVpPfkatQ4gqJkjFFwAwCEHTfmSXvBZC7HZY+z3sKcPtMX8yyWIIekXlMMniPjN+awJZi9elcep78CPvY//9MIioqr12/xXn6ZRxeX3aaULyktCbnkfDmNTsWm6X9PbLR0fF4s+2buH8jC06SSv5H90QtgYZui66UDfMM8Ys/ZjKnF2kQBXUwrbhQJP5Qcaru+a2wWU9QRH7feAnFnnlQ2/eWuzbgZG7ymot50l7oebzAHDlKk/yjDBp0sRifQWbqlRhp/L1+bej3rMPuvAQaCY7Z6ufEWDevDp7fPEujURTtcoEica6MXdS4ZWiNkBxZih7EOKuwuuJQtkiv/jDFJiOx1zz1vI0iovUXVPwkDDEUimH1xK0jxW8BiTEmtTOTY3w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -181,271 +181,525 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add self test for riscv architecture. It uses ptrace to ptrace framework
-to set/unset break/watchpoint and uses signals to check triggers.
+Add support for the RISC-V PTRACE_GETHBPREGS and PTRACE_SETHBPREGS
+requests. A tracer can use these requests to read or program one
+hardware breakpoint or watchpoint slot at a time.
 
-Also add $(KHDR_INCLUDES) to CFLAGS for the riscv test build so the
-UAPI headers exercised by the test can be located during compilation.
+Store the ptrace-owned breakpoints in the traced task and use perf
+hardware breakpoint events to program the trigger. Report hits as
+SIGTRAP/TRAP_HWBKPT. Clear the events when a thread is flushed or copied
+so breakpoints do not survive execve() or fork().
 
 Signed-off-by: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
 ---
- MAINTAINERS                                   |   1 +
- tools/testing/selftests/breakpoints/Makefile  |   8 +
- .../breakpoints/breakpoint_test_riscv.c       | 215 ++++++++++++++++++
- 3 files changed, 224 insertions(+)
- create mode 100644 tools/testing/selftests/breakpoints/breakpoint_test_riscv.c
+ arch/riscv/include/asm/hw_breakpoint.h |  13 +
+ arch/riscv/include/asm/processor.h     |  15 ++
+ arch/riscv/include/uapi/asm/ptrace.h   |   9 +
+ arch/riscv/kernel/hw_breakpoint.c      |   2 -
+ arch/riscv/kernel/process.c            |   2 +
+ arch/riscv/kernel/ptrace.c             | 321 +++++++++++++++++++++++++
+ 6 files changed, 360 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 73b69e8dcba1..baf97e8c39f6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -24171,6 +24171,7 @@ F:	arch/riscv/include/asm/perf_event.h
- F:	arch/riscv/kernel/hw_breakpoint.c
- F:	arch/riscv/kernel/perf_*
- F:	drivers/perf/
-+F:	tools/testing/selftests/breakpoints/breakpoint_test_riscv.c
+diff --git a/arch/riscv/include/asm/hw_breakpoint.h b/arch/riscv/include/asm/hw_breakpoint.h
+index dcce20ba3faa..6e8913d69df2 100644
+--- a/arch/riscv/include/asm/hw_breakpoint.h
++++ b/arch/riscv/include/asm/hw_breakpoint.h
+@@ -12,10 +12,17 @@ struct task_struct;
  
- RISC-V SPACEMIT SoC Support
- M:	Yixun Lan <dlan@kernel.org>
-diff --git a/tools/testing/selftests/breakpoints/Makefile b/tools/testing/selftests/breakpoints/Makefile
-index 0b8f5acf7c78..1f28f50e8f85 100644
---- a/tools/testing/selftests/breakpoints/Makefile
-+++ b/tools/testing/selftests/breakpoints/Makefile
-@@ -12,5 +12,13 @@ ifneq (,$(filter $(ARCH),aarch64 arm64))
- TEST_GEN_PROGS += breakpoint_test_arm64
- endif
+ #include <uapi/linux/hw_breakpoint.h>
  
-+ifneq (,$(filter $(ARCH),riscv riscv64))
-+TEST_GEN_PROGS += breakpoint_test_riscv
-+endif
++/* Maximum number of hardware breakpoints supported */
++#define RISCV_MAX_BP		16
 +
- include ../lib.mk
+ struct arch_hw_breakpoint {
+ 	unsigned long address;
+ 	unsigned long len;
+ 	unsigned int type;
++	unsigned int match;
++	unsigned int chain;
++	unsigned int select;
++	unsigned int time;
  
-+ifneq (,$(filter $(ARCH),riscv riscv64))
-+$(OUTPUT)/breakpoint_test_riscv: CFLAGS += -static $(KHDR_INCLUDES)
-+endif
+ 	/* Trigger configuration data */
+ 	unsigned long tdata1;
+@@ -42,8 +49,14 @@ void arch_disable_hw_breakpoint(struct perf_event *bp);
+ int arch_install_hw_breakpoint(struct perf_event *bp);
+ void arch_uninstall_hw_breakpoint(struct perf_event *bp);
+ void hw_breakpoint_pmu_read(struct perf_event *bp);
++void clear_ptrace_hw_breakpoint(struct task_struct *tsk);
++void flush_ptrace_hw_breakpoint(struct task_struct *tsk);
++void ptrace_hw_copy_thread(struct task_struct *task);
+ 
+ #else
+ 
++static inline void flush_ptrace_hw_breakpoint(struct task_struct *task) { }
++static inline void ptrace_hw_copy_thread(struct task_struct *task) { }
 +
-diff --git a/tools/testing/selftests/breakpoints/breakpoint_test_riscv.c b/tools/testing/selftests/breakpoints/breakpoint_test_riscv.c
-new file mode 100644
-index 000000000000..a8a94a788142
---- /dev/null
-+++ b/tools/testing/selftests/breakpoints/breakpoint_test_riscv.c
-@@ -0,0 +1,215 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+ #endif /* CONFIG_HAVE_HW_BREAKPOINT */
+ #endif /* __RISCV_HW_BREAKPOINT_H */
+diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/processor.h
+index e9d339bcb7e9..a124ea48d805 100644
+--- a/arch/riscv/include/asm/processor.h
++++ b/arch/riscv/include/asm/processor.h
+@@ -15,6 +15,7 @@
+ #include <asm/ptrace.h>
+ #include <asm/insn-def.h>
+ #include <asm/alternative-macros.h>
++#include <asm/hw_breakpoint.h>
+ #include <asm/hwcap.h>
+ #include <asm/usercfi.h>
+ #include <asm/errata_list.h>
+@@ -111,6 +112,19 @@ struct pt_regs;
+ #define RISCV_PREEMPT_V_NEED_RESTORE	0x40000000
+ #define RISCV_PREEMPT_V_IN_SCHEDULE	0x20000000
+ 
++struct debug_info {
++#ifdef CONFIG_HAVE_HW_BREAKPOINT
++	/* Have we suspended stepping by a debugger? */
++	int			suspended_step;
++	/* Allow breakpoints and watchpoints to be disabled for this thread. */
++	int			bp_disabled;
++	int			wp_disabled;
++	/* Hardware breakpoints pinned to this task. */
++	struct perf_event	*hbp_break[RISCV_MAX_BP];
++	struct perf_event	*hbp_watch[RISCV_MAX_BP];
++#endif
++};
++
+ /* CPU-specific state of a task */
+ struct thread_struct {
+ 	/* Callee-saved registers */
+@@ -135,6 +149,7 @@ struct thread_struct {
+ #ifdef CONFIG_RISCV_ISA_SSQOSID
+ 	u32 srmcfg;
+ #endif
++	struct debug_info debug;
+ };
+ 
+ /* Whitelist the fstate from the task_struct for hardened usercopy */
+diff --git a/arch/riscv/include/uapi/asm/ptrace.h b/arch/riscv/include/uapi/asm/ptrace.h
+index 3de2b7124aff..373a1c14f207 100644
+--- a/arch/riscv/include/uapi/asm/ptrace.h
++++ b/arch/riscv/include/uapi/asm/ptrace.h
+@@ -15,6 +15,8 @@
+ 
+ #define PTRACE_GETFDPIC_EXEC	0
+ #define PTRACE_GETFDPIC_INTERP	1
++#define PTRACE_GETHBPREGS	0x4210
++#define PTRACE_SETHBPREGS	0x4211
+ 
+ /*
+  * User-mode register state for core dumps, ptrace, sigcontext
+@@ -164,6 +166,13 @@ struct user_cfi_state {
+ 	__u64 shstk_ptr;
+ };
+ 
++struct __riscv_hwdebug_state {
++	__u64 addr;
++	__u64 type;
++	__u64 len;
++	__u64 ctrl;
++};
++
+ #endif /* __ASSEMBLER__ */
+ 
+ #endif /* _UAPI_ASM_RISCV_PTRACE_H */
+diff --git a/arch/riscv/kernel/hw_breakpoint.c b/arch/riscv/kernel/hw_breakpoint.c
+index 421ecd8549d9..4231170d4901 100644
+--- a/arch/riscv/kernel/hw_breakpoint.c
++++ b/arch/riscv/kernel/hw_breakpoint.c
+@@ -846,8 +846,6 @@ EXPORT_SYMBOL_GPL(arch_disable_hw_breakpoint);
+ 
+ void hw_breakpoint_pmu_read(struct perf_event *bp) { }
+ 
+-void flush_ptrace_hw_breakpoint(struct task_struct *tsk) { }
+-
+ static int __init arch_hw_breakpoint_init(void)
+ {
+ 	unsigned int cpu;
+diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
+index 34c1d498d1ca..083c45e657b6 100644
+--- a/arch/riscv/kernel/process.c
++++ b/arch/riscv/kernel/process.c
+@@ -204,6 +204,7 @@ void flush_thread(void)
+ 	if (riscv_has_extension_unlikely(RISCV_ISA_EXT_SUPM))
+ 		envcfg_update_bits(current, ENVCFG_PMM, ENVCFG_PMM_PMLEN_0);
+ #endif
++	flush_ptrace_hw_breakpoint(current);
+ }
+ 
+ void arch_release_task_struct(struct task_struct *tsk)
+@@ -283,6 +284,7 @@ int copy_thread(struct task_struct *p, const struct kernel_clone_args *args)
+ 	p->thread.riscv_v_flags = 0;
+ 	if (has_vector() || has_xtheadvector())
+ 		riscv_v_thread_alloc(p);
++	ptrace_hw_copy_thread(p);
+ 	p->thread.sp = (unsigned long)childregs; /* kernel sp */
+ 	return 0;
+ }
+diff --git a/arch/riscv/kernel/ptrace.c b/arch/riscv/kernel/ptrace.c
+index a0055743d3ba..be076865d02d 100644
+--- a/arch/riscv/kernel/ptrace.c
++++ b/arch/riscv/kernel/ptrace.c
+@@ -18,8 +18,10 @@
+ #include <linux/elf.h>
+ #include <linux/regset.h>
+ #include <linux/sched.h>
++#include <linux/sched/signal.h>
+ #include <linux/sched/task_stack.h>
+ #include <asm/usercfi.h>
++#include <linux/hw_breakpoint.h>
+ 
+ enum riscv_regset {
+ 	REGSET_X,
+@@ -380,6 +382,152 @@ static int riscv_cfi_set(struct task_struct *target,
+ }
+ #endif
+ 
++#ifdef CONFIG_HAVE_HW_BREAKPOINT
++enum riscv_hbp_type {
++	RISCV_HBP_BREAK,
++	RISCV_HBP_WATCH,
++};
++
 +/*
-+ * Copyright (C) 2026 Qualcomm Technologies, Inc.
-+ *
-+ * Author: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
++ * Handle hitting a HW-breakpoint.
 + */
-+
-+#define _GNU_SOURCE
-+#include <linux/perf_event.h>    /* Definition of PERF_* constants */
-+#include <linux/hw_breakpoint.h> /* Definition of HW_* constants */
-+#include <sys/syscall.h>         /* Definition of SYS_* constants */
-+#include <unistd.h>
-+#include <stdbool.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <sys/ioctl.h>
-+#include <time.h>
-+#include <fcntl.h>
-+#include <signal.h>
-+#include <sys/mman.h>
-+#include <string.h>
-+#include <semaphore.h>
-+#include <errno.h>
-+
-+static int gfd;
-+sem_t ib_mtx, wp_mtx;
-+static int bp_triggered, wp_triggered;
-+static int test_func_sink;
-+static const int wait_timeout_sec = 5;
-+
-+int setup_bp(bool is_x, void *addr, int sig)
++static void riscv_ptrace_hbptriggered(struct perf_event *bp,
++				      struct perf_sample_data *data,
++				      struct pt_regs *regs)
 +{
-+	struct perf_event_attr pe;
-+	int fd;
++	struct arch_hw_breakpoint *bkpt = counter_arch_bp(bp);
 +
-+	memset(&pe, 0, sizeof(struct perf_event_attr));
-+	pe.type = PERF_TYPE_BREAKPOINT;
-+	pe.size = sizeof(struct perf_event_attr);
-+
-+	pe.config = 0;
-+	pe.bp_type = is_x ? HW_BREAKPOINT_X : HW_BREAKPOINT_W;
-+	pe.bp_addr = (unsigned long)addr;
-+	pe.bp_len = sizeof(long);
-+
-+	pe.sample_period = 1;
-+	pe.sample_type = PERF_SAMPLE_IP;
-+	pe.wakeup_events = 1;
-+
-+	pe.disabled = 1;
-+	pe.exclude_kernel = 1;
-+	pe.exclude_hv = 1;
-+
-+	fd = syscall(SYS_perf_event_open, &pe, 0, -1, -1, 0);
-+	if (fd < 0) {
-+		printf("Failed to open event: %llx\n", pe.config);
-+		return -1;
-+	}
-+
-+	fcntl(fd, F_SETFL, O_RDWR | O_NONBLOCK | O_ASYNC);
-+	fcntl(fd, F_SETSIG, sig);
-+	fcntl(fd, F_SETOWN, getpid());
-+
-+	ioctl(fd, PERF_EVENT_IOC_RESET, 0);
-+
-+	return fd;
-+}
-+
-+static void sig_handler_bp(int signum, siginfo_t *oh, void *uc)
-+{
-+	int ret;
-+
-+	bp_triggered++;
-+
-+	printf("Breakpoint triggered!\n");
-+	ioctl(gfd, PERF_EVENT_IOC_DISABLE, 0);
-+	ret = sem_post(&ib_mtx);
-+	if (ret) {
-+		printf("Failed to report BP success\n");
-+		return;
-+	}
-+}
-+
-+static void sig_handler_wp(int signum, siginfo_t *oh, void *uc)
-+{
-+	int ret;
-+
-+	printf("Watchpoint triggered!\n");
-+	ioctl(gfd, PERF_EVENT_IOC_DISABLE, 0);
-+	wp_triggered++;
-+
-+	ret = sem_post(&wp_mtx);
-+
-+	if (ret) {
-+		printf("Failed to report WP success\n");
-+		return;
-+	}
++	force_sig_fault(SIGTRAP, TRAP_HWBKPT, (void __user *)bkpt->address);
 +}
 +
 +/*
-+ * Keep a real instruction address for HW execute breakpoints: prevent inlining
-+ * and force a visible side effect so the function can't be optimized away.
++ * Unregister breakpoints from this task and reset the pointers in
++ * the thread_struct.
 + */
-+static __attribute_noinline__ void test_func(void)
++void flush_ptrace_hw_breakpoint(struct task_struct *tsk)
 +{
-+	test_func_sink++;
-+	__asm__ __volatile__("" : : "g" (test_func_sink));
++	int i;
++	struct thread_struct *t = &tsk->thread;
++
++	for (i = 0; i < RISCV_MAX_BP; i++) {
++		if (t->debug.hbp_break[i]) {
++			unregister_hw_breakpoint(t->debug.hbp_break[i]);
++			t->debug.hbp_break[i] = NULL;
++		}
++	}
++
++	for (i = 0; i < RISCV_MAX_BP; i++) {
++		if (t->debug.hbp_watch[i]) {
++			unregister_hw_breakpoint(t->debug.hbp_watch[i]);
++			t->debug.hbp_watch[i] = NULL;
++		}
++	}
 +}
 +
-+static int trigger_bp(void)
++void ptrace_hw_copy_thread(struct task_struct *tsk)
 +{
-+	struct sigaction sa;
++	memset(&tsk->thread.debug, 0, sizeof(struct debug_info));
++}
 +
-+	memset(&sa, 0, sizeof(struct sigaction));
-+	sa.sa_sigaction = (void *)sig_handler_bp;
-+	sa.sa_flags = SA_SIGINFO;
++static struct perf_event *ptrace_hbp_get_event(enum riscv_hbp_type hbp_type,
++					       struct task_struct *tsk,
++					       unsigned long idx)
++{
++	struct perf_event *bp = ERR_PTR(-EINVAL);
 +
-+	if (sigaction(SIGIO, &sa, NULL) < 0) {
-+		printf("Failed to setup signal handler\n");
-+		return -1;
++	switch (hbp_type) {
++	case RISCV_HBP_BREAK:
++		if (idx >= RISCV_MAX_BP)
++			goto out;
++		idx = array_index_nospec(idx, RISCV_MAX_BP);
++		bp = tsk->thread.debug.hbp_break[idx];
++		break;
++	case RISCV_HBP_WATCH:
++		if (idx >= RISCV_MAX_BP)
++			goto out;
++		idx = array_index_nospec(idx, RISCV_MAX_BP);
++		bp = tsk->thread.debug.hbp_watch[idx];
++		break;
 +	}
 +
-+	gfd = setup_bp(1, test_func, SIGIO);
++out:
++	return bp;
++}
 +
-+	if (gfd < 0) {
-+		printf("Failed to setup breakpoint.\n");
-+		return -1;
++static int ptrace_hbp_set_event(enum riscv_hbp_type hbp_type,
++				struct task_struct *tsk,
++				unsigned long idx,
++				struct perf_event *bp)
++{
++	int err = -EINVAL;
++
++	switch (hbp_type) {
++	case RISCV_HBP_BREAK:
++		if (idx >= RISCV_MAX_BP)
++			goto out;
++		idx = array_index_nospec(idx, RISCV_MAX_BP);
++		tsk->thread.debug.hbp_break[idx] = bp;
++		err = 0;
++		break;
++	case RISCV_HBP_WATCH:
++		if (idx >= RISCV_MAX_BP)
++			goto out;
++		idx = array_index_nospec(idx, RISCV_MAX_BP);
++		tsk->thread.debug.hbp_watch[idx] = bp;
++		err = 0;
++		break;
 +	}
 +
-+	ioctl(gfd, PERF_EVENT_IOC_ENABLE, 0);
++out:
++	return err;
++}
 +
-+	test_func();
++static struct perf_event *ptrace_hbp_create(enum riscv_hbp_type hbp_type,
++					    struct task_struct *tsk,
++					    unsigned long idx)
++{
++	struct perf_event *bp;
++	struct perf_event_attr attr;
++	int err, type;
 +
-+	ioctl(gfd, PERF_EVENT_IOC_DISABLE, 0);
++	switch (hbp_type) {
++	case RISCV_HBP_BREAK:
++		type = HW_BREAKPOINT_X;
++		break;
++	case RISCV_HBP_WATCH:
++		type = HW_BREAKPOINT_RW;
++		break;
++	default:
++		return ERR_PTR(-EINVAL);
++	}
 +
-+	close(gfd);
++	ptrace_breakpoint_init(&attr);
++
++	/*
++	 * Initialise fields to sane defaults
++	 * (i.e. values that will pass validation).
++	 */
++	attr.bp_addr	= 0;
++	attr.bp_len	= HW_BREAKPOINT_LEN_4;
++	attr.bp_type	= type;
++	attr.disabled	= 1;
++
++	bp = register_user_hw_breakpoint(&attr, riscv_ptrace_hbptriggered, NULL, tsk);
++	if (IS_ERR(bp))
++		return bp;
++
++	err = ptrace_hbp_set_event(hbp_type, tsk, idx, bp);
++	if (err) {
++		/* Drop the event if it cannot be published in the task slot. */
++		unregister_hw_breakpoint(bp);
++		return ERR_PTR(err);
++	}
++
++	return bp;
++}
++
++#endif	/* CONFIG_HAVE_HW_BREAKPOINT */
++
+ static struct user_regset riscv_user_regset[] __ro_after_init = {
+ 	[REGSET_X] = {
+ 		USER_REGSET_NOTE_TYPE(PRSTATUS),
+@@ -549,12 +697,173 @@ void ptrace_disable(struct task_struct *child)
+ {
+ }
+ 
++#ifdef CONFIG_HAVE_HW_BREAKPOINT
++static int riscv_ptrace_bp_type_to_hbp(u64 type, enum riscv_hbp_type *hbp_type)
++{
++	switch (type) {
++	case HW_BREAKPOINT_X:
++		*hbp_type = RISCV_HBP_BREAK;
++		return 0;
++	case HW_BREAKPOINT_R:
++	case HW_BREAKPOINT_W:
++	case HW_BREAKPOINT_RW:
++		*hbp_type = RISCV_HBP_WATCH;
++		return 0;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int riscv_ptrace_bp_clear_event(struct task_struct *child,
++				       enum riscv_hbp_type hbp_type,
++				       unsigned long idx)
++{
++	struct perf_event *bp = ptrace_hbp_get_event(hbp_type, child, idx);
++
++	if (IS_ERR(bp))
++		return PTR_ERR(bp);
++	if (!bp)
++		return 0;
++
++	unregister_hw_breakpoint(bp);
++	return ptrace_hbp_set_event(hbp_type, child, idx, NULL);
++}
++
++static int riscv_ptrace_bp_get(struct task_struct *child, unsigned long idx,
++			       struct __riscv_hwdebug_state *state)
++{
++	struct perf_event *bp;
++
++	if (idx >= RISCV_MAX_BP)
++		return -EINVAL;
++
++	idx = array_index_nospec(idx, RISCV_MAX_BP);
++
++	/*
++	 * PTRACE_GETHBPREGS is a compact view keyed only by index.  The real
++	 * storage is split by type, so search both arrays.
++	 */
++	bp = ptrace_hbp_get_event(RISCV_HBP_BREAK, child, idx);
++	if (IS_ERR(bp))
++		return PTR_ERR(bp);
++	if (!bp) {
++		bp = ptrace_hbp_get_event(RISCV_HBP_WATCH, child, idx);
++		if (IS_ERR(bp))
++			return PTR_ERR(bp);
++	}
++	if (!bp)
++		return -ENOENT;
++
++	state->addr = bp->attr.bp_addr;
++	state->len  = bp->attr.bp_len;
++	state->type = bp->attr.bp_type;
++	state->ctrl = bp->attr.disabled == 1;
 +
 +	return 0;
 +}
 +
-+static int trigger_wp(void)
++static int riscv_ptrace_bp_set(struct task_struct *child, unsigned long idx,
++			       struct __riscv_hwdebug_state *state)
 +{
-+	struct sigaction sa;
-+	unsigned long test_data;
++	struct perf_event *bp;
++	struct perf_event_attr attr;
++	enum riscv_hbp_type hbp_type, other_hbp_type;
++	int ret;
++	bool created = false;
 +
-+	memset(&sa, 0, sizeof(struct sigaction));
-+	sa.sa_sigaction = (void *)sig_handler_wp;
-+	sa.sa_flags = SA_SIGINFO;
++	if (idx >= RISCV_MAX_BP)
++		return -EINVAL;
 +
-+	if (sigaction(SIGUSR1, &sa, NULL) < 0) {
-+		printf("Failed to setup signal handler\n");
-+		return -1;
++	idx = array_index_nospec(idx, RISCV_MAX_BP);
++
++	ret = riscv_ptrace_bp_type_to_hbp(state->type, &hbp_type);
++	if (ret)
++		return ret;
++
++	/* The legacy request exposes ctrl as a disabled/enabled boolean. */
++	if (state->ctrl > 1)
++		return -EINVAL;
++
++	other_hbp_type = hbp_type == RISCV_HBP_BREAK ?
++			 RISCV_HBP_WATCH : RISCV_HBP_BREAK;
++
++	bp = ptrace_hbp_get_event(hbp_type, child, idx);
++	if (IS_ERR(bp))
++		return PTR_ERR(bp);
++	if (!bp) {
++		bp = ptrace_hbp_create(hbp_type, child, idx);
++		if (IS_ERR(bp))
++			return PTR_ERR(bp);
++		created = true;
 +	}
 +
-+	gfd = setup_bp(0, &test_data, SIGUSR1);
++	attr = bp->attr;
 +
-+	if (gfd < 0) {
-+		printf("Failed to setup watchpoint\n");
-+		return -1;
-+	}
-+
-+	ioctl(gfd, PERF_EVENT_IOC_ENABLE, 0);
-+	test_data = 0xdeadbeef;
-+	ioctl(gfd, PERF_EVENT_IOC_DISABLE, 0);
-+
-+	return 0;
-+}
-+
-+static int wait_event(sem_t *sem, const char *name)
-+{
-+	struct timespec ts;
-+
-+	if (clock_gettime(CLOCK_REALTIME, &ts)) {
-+		printf("%s: Failed to get current time\n", name);
-+		return -1;
++	attr.bp_addr = state->addr;
++	attr.bp_len  = state->len;
++	attr.bp_type = state->type;
++	/* Enable or disable as requested by ctrl (0 = enabled, 1 = disabled) */
++	attr.disabled = state->ctrl == 1;
++	ret = modify_user_hw_breakpoint(bp, &attr);
++	if (ret) {
++		/* Drop only events allocated by this failed request. */
++		if (created)
++			riscv_ptrace_bp_clear_event(child, hbp_type, idx);
++		return ret;
 +	}
 +
 +	/*
-+	 * Deadlock fix: avoid blocking forever on sem_wait() if the breakpoint/
-+	 * watchpoint signal never arrives. Use a bounded wait and fail the test
-+	 * on timeout instead.
++	 * If the same index changed from breakpoint to watchpoint, or back,
++	 * clear the old opposite-type slot after the new event is valid so a
++	 * failed update does not destroy the previous state.
 +	 */
-+	ts.tv_sec += wait_timeout_sec;
-+	if (!sem_timedwait(sem, &ts))
-+		return 0;
-+
-+	if (errno == ETIMEDOUT)
-+		printf("%s: Timed out waiting for event\n", name);
-+	else
-+		printf("%s: sem_timedwait() failed with %d\n", name, errno);
-+
-+	return -1;
++	return riscv_ptrace_bp_clear_event(child, other_hbp_type, idx);
 +}
 +
-+int main(int argc, char *argv[])
++static long riscv_ptrace_gethbpregs(struct task_struct *child, unsigned long idx,
++				    unsigned long __user *datap)
 +{
-+	sem_init(&ib_mtx, 0, 0);
-+	if (trigger_bp() < 0)
-+		return -1;
-+	if (wait_event(&ib_mtx, "Breakpoint") < 0)
-+		return -1;
++	struct __riscv_hwdebug_state state;
++	long ret;
 +
-+	if (bp_triggered)
-+		printf("Breakpoint test passed!\n");
-+
-+	sem_init(&wp_mtx, 0, 0);
-+	if (trigger_wp() < 0)
-+		return -1;
-+	if (wait_event(&wp_mtx, "Watchpoint") < 0)
-+		return -1;
-+
-+	if (wp_triggered)
-+		printf("Watchpoint test passed!\n");
++	ret = riscv_ptrace_bp_get(child, idx, &state);
++	if (ret)
++		return ret;
++	if (copy_to_user(datap, &state, sizeof(state)))
++		return -EFAULT;
 +
 +	return 0;
 +}
++
++static long riscv_ptrace_sethbpregs(struct task_struct *child, unsigned long idx,
++				    unsigned long __user *datap)
++{
++	struct __riscv_hwdebug_state state;
++
++	if (copy_from_user(&state, datap, sizeof(state)))
++		return -EFAULT;
++
++	return riscv_ptrace_bp_set(child, idx, &state);
++}
++#endif /* CONFIG_HAVE_HW_BREAKPOINT */
++
+ long arch_ptrace(struct task_struct *child, long request,
+ 		 unsigned long addr, unsigned long data)
+ {
+ 	long ret = -EIO;
++#ifdef CONFIG_HAVE_HW_BREAKPOINT
++	unsigned long __user *datap = (unsigned long __user *)data;
++#endif
+ 
+ 	switch (request) {
++#ifdef CONFIG_HAVE_HW_BREAKPOINT
++	case PTRACE_GETHBPREGS:
++		ret = riscv_ptrace_gethbpregs(child, addr, datap);
++		break;
++	case PTRACE_SETHBPREGS:
++		ret = riscv_ptrace_sethbpregs(child, addr, datap);
++		break;
++#endif
+ 	default:
+ 		ret = ptrace_request(child, request, addr, data);
+ 		break;
+@@ -623,8 +932,20 @@ long compat_arch_ptrace(struct task_struct *child, compat_long_t request,
+ 			compat_ulong_t caddr, compat_ulong_t cdata)
+ {
+ 	long ret = -EIO;
++#ifdef CONFIG_HAVE_HW_BREAKPOINT
++	/* cdata is a compat user pointer for the legacy HBP requests. */
++	unsigned long __user *datap = compat_ptr(cdata);
++#endif
+ 
+ 	switch (request) {
++#ifdef CONFIG_HAVE_HW_BREAKPOINT
++	case PTRACE_GETHBPREGS:
++		ret = riscv_ptrace_gethbpregs(child, caddr, datap);
++		break;
++	case PTRACE_SETHBPREGS:
++		ret = riscv_ptrace_sethbpregs(child, caddr, datap);
++		break;
++#endif
+ 	default:
+ 		ret = compat_ptrace_request(child, request, caddr, cdata);
+ 		break;
 -- 
 2.43.0
 
