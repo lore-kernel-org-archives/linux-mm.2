@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 432D5606A82F
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8829606A838
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cWvjbw3P
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MnYQ3Z5r
 Received: by kanga.kvack.org (Postfix)
-	id 3DD716B05FA; Fri,  6 Nov 2026 19:37:22 -0500 (EST)
+	id B2FDC6B05FB; Fri,  6 Nov 2026 19:37:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 366036B05FB; Fri,  6 Nov 2026 19:37:22 -0500 (EST)
+	id B070B6B05FC; Fri,  6 Nov 2026 19:37:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27C726B05FC; Fri,  6 Nov 2026 19:37:22 -0500 (EST)
+	id 9A85F6B05FE; Fri,  6 Nov 2026 19:37:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F32626B05FA
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:21 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 950B7160210
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:21 +0000 (UTC)
-X-FDA: 85406459082.11.5669F27
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D92C6B05FB
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:22 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1755C4021D
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:22 +0000 (UTC)
+X-FDA: 85406459124.24.C50DB81
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 87D994000B
+	by imf10.hostedemail.com (Postfix) with ESMTP id EAEF1C0006
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:19 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cWvjbw3P;
-	spf=pass (imf17.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MnYQ3Z5r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	spf=pass (imf10.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794011840;
+	b=0CPdDm+m0dtDdhDVoj0i8hM8o/VIRgi3Bb/Fw+nIXi4pM5Pl6YIjqEmUgcEUZFzVU37JxY
+	Cv7wQaxcVc83X7hdiYzv472kJKmtr5XJbeg3By7VXI3t1WYTiKOwcPFqyotGdEbPcocvI8
+	nd537F5CjVxG9IehDPm2Mnl8KO1uiS0=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794011839;
+	s=arc-20220608; t=1794011840;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vOa35AKjWJ6VWW61koXSqeeldsqxuYZd07yMlZHpYyE=;
-	b=PjADT/lkkMakDIcCFFJhS2DkT3m1PvCEykS5821hUHIHbFPE3B80yjZp9eaFpFDk7lijXd
-	aXHZn+DwKmwE5tgBNnmrn7bAh/6JzK0cNSFHyXmiA712N/52nxci09T8w1IQ0/WIFB8+E/
-	duf7403mudhA4+B33qtotg2A/GiHhL0=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794011839;
-	b=fsOmhvlASdUJm37RXttJOmi+15+FBkB2eNXxX5wtRUlA2cXdseghNpkd436ZRf5wpDODxe
-	5M2lRJUq55lre6wNC8dGKt0QgA+Jd3ajZDqHvp2GsELEoEH592fi1euX/5TbzYaeK6nE3W
-	D8xOBIfSgW+DYIlP2MwQ+LxYkNPsyK8=
+	bh=KSzCvt8WQqpzBuP3J/NQntpezWM4rdwAQRra0I/Idek=;
+	b=NBaj1uNwYIXoDWiLambKLHTVUJIsAvUo1GLjP231mu6mvcExTC4DJLTDAy46vMuP0GnsEW
+	Eldjdd1YtDeYHKYxYc7gPMrLfk+EonFFN0PC0TdVPhbA/WmthWfgJwZeEh4VIgq2WtX3Kw
+	N+W3yxGujFdX6TkHo78yq+7tfU8+Www=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cWvjbw3P;
-	spf=pass (imf17.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MnYQ3Z5r;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	spf=pass (imf10.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D512E44513;
-	Sat,  7 Nov 2026 00:37:18 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3604F4195E;
+	Sat,  7 Nov 2026 00:37:19 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011838;
-	b=V4DilyVKWOyIVvZdf0SwqxPTaFu/j0tnayeQLJF/ku1/ZKWvJ7Azitd2ZM646L1mCMxW
-	 c9hTnFKaxEbhX4IGwMdz7S8cL4UKlOu+0stgpqYzooZVjIS4ybAxz2UAtfxTCwz5TeINg
-	 jzeBc2yInbggOvk6A6SpXORj581n6bx378MBOFx8tCbQjbidqrhk9/5IqsBJPjz9gEc9h
-	 7j0ykdbdsurFNa+f69wzrVT/HBHcG2fBZtArrFkFNekk23EkIxej+lHa+M1l+aDXj4cBq
-	 X8nAvFo5+rsLXsZvBmxBLXH71QJXJI2L0N0c+CK/9+1K/6QRoFgh4CnKvvgpcjd//qQ==
+	t=1794011839;
+	b=KrAYrNLBi7d1PD7L5Q1JOQKJfxAGkuDDQ03hvYRyuH/dYwMdSlr2F9zYbVF/gtm33URB
+	 7KkQp/Yqn6yTJ9YFap5Jf0/VQTH78MxLLknvwRnLzuQxXF4InMkl3szTmrgJU8hfBrrYJ
+	 v7l4i5JaKMLgcgbHBff1rkmtgRw0jkzBBJGWpvP9YiggLQb2j+M2KtfIFtlJYDymI40gf
+	 zeOVsPunl5RPQmAH9jBqB4qvZ9yy81ILv1Y2QSRiFP0gkBvZPlkV3f1FDji2j3ssEguaF
+	 pg7WJuAHsUBH632GjLJm48bL28mOzICxYlVRnsRxDHhvrS7+p6oFpFGebHNrt8tz6Ig==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011838;
+	c=relaxed/relaxed; t=1794011839;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=vOa35AKjWJ6VWW61koXSqeeldsqxuYZd07yMlZHpYyE=;
-	b=0/Nd3p1I750O0jxu7/w3NaQt8Qy1vLa64zwVF9jTUALn9Ycur6P8Ho80L+t1dc4DsXf0
-	 F07hF735OtrVS8cAbYd/q1vwdrMC5AtbPwnZmd53xEunfPYnouNDJMmxCS44zHeb38Do7
-	 A2VDWrESkrkO5ba7eguY3oMwByxF4gRhoOII6Nrffrp0z9DHR7F5KUcd0IgzQD1xyUKkg
-	 a9x+KIWL2E355N5Aa4Up2K4J2dNx+pDAZn46NkwYI3FeQWQDG56xI20jEnaWx1zjcub3K
-	 pBKK2Ig/3bKMkjjSutatjiU9UlFB0Eau10p/5W9+9IpAST51IJP8AUcMMAIwUFw2emw==
+	bh=KSzCvt8WQqpzBuP3J/NQntpezWM4rdwAQRra0I/Idek=;
+	b=xcLkA3wwlqpaKCyRxPJNMfvK/gkCVUQk6hE0f6nFBFq2b5fUmkbV+I99/LrxQLUg00uV
+	 opRfzVKJQDZv4/1VO8s6dUazNshPLGbNRZyB64/B4d+i/eH0tb3nPlrRdOI+6gdOBVgV6
+	 e/RHHphClAeMhZoBJElJXC/VYZ+cnRsMG4x5TzwCiUCk3+y2Y1oFpCPJKgpAGqz1GYsoM
+	 VVGA6Oede0nTXwsaIm7d/AAqTEkSNvxtHfACjGRK7L0irVANKDWssnhuuapjpGmM3EbLl
+	 nJJtWpMABkhLWcVIx0ybqhzypd9wa9mVQXZOnQeZu04A+naE4tF/Bx28AQ4eTRIdc/w==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 557DA1F00903;
-	Sat,  7 Nov 2026 00:37:13 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 069831F008A2;
+	Sat,  7 Nov 2026 00:37:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011838;
-	bh=vOa35AKjWJ6VWW61koXSqeeldsqxuYZd07yMlZHpYyE=;
+	s=k20260515; t=1794011839;
+	bh=KSzCvt8WQqpzBuP3J/NQntpezWM4rdwAQRra0I/Idek=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=cWvjbw3PmBJHrEY3WmVsEDbMOn6JMyUXv8RoCZCDfJPqUsWNYhOAbT8WGqP3NzNni
-	 YXlaFsucvto2gW1G0qJy+/DZvxRXmHUZHYn77C3JGauZv5bGy7s2WBgqhBSo1yX0ST
-	 Qt0bxOXy/BlRUa/nhVgktjdsdSo8yloUope+u4+HXo4nuxuFTnSQQuUlOQK18CWNAe
-	 iDYdZORi9pcoj4GzwYCoseFgs1Fwkvjv7I4HZ+Dd3TR0ZD5Kz26O3T/w1kMARXBdxB
-	 dBtyTCN8KynVvDcEO+yZT7y8b1SGkTsMkXlvbcoN4U0ZUDrfztws7WYdYdo9yKEwib
-	 rQqw6OHbO8KKQ==
+	b=MnYQ3Z5rSfWFp59+l0g1SybbhKh9PRW9YHbrIppFTWa/HkXHtR3wvQjIEqPXdrjOs
+	 AIs+CKHU5Z0XotS3FubdL6TpFaLONpq/yRrmrCrfu+9I/LlQOtQP2RYKicNgoUPREy
+	 061mphxTa9LqIN0g2dhnHNxgBQCFjC9+cajEtxnlkyhwgpvtxCqX0YW+2H/LvcjnzT
+	 JQc2IiCSrEXf+juyUlTkkWEJnGlMcCu9UEyrtiMvNSUUQqjsUL6UwK0Smtbl1tY3fa
+	 qr1nEXNOjtmov2gh7hce6aNilqD01WW2q4Bcd2/B3/bkJNxtGx5sQzik9X3usSsPx5
+	 qA+7MTlEmn1dw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 5E71647A14;
+	by lkml.kernel.org (Postfix) with ESMTP id 9DFD347A24;
 	Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:40 -0800
-Subject: [PATCH RFC v3 66/88] vfio: Dispatch guest_memfd lookup_pfn_range
- via vfio_device_ops
+Date: Fri, 06 Nov 2026 16:37:44 -0800
+Subject: [PATCH RFC v3 70/88] vfio/pci: Introduce vfio_pci_bar_rw_kbuf for
+ kernel buffer MMIO access
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-66-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-70-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -119,11 +119,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=2394;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=3928;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=BBsLRY5/zduXiatMpUbbSqrLV52w59feoL+MHLEuZoM=;
- b=7xcifykO14nQsxFEs8sdU2o2UQh7kl92DT/YVnK7Uryfd0l2oNHeq3Pu9Lenfx7JmCK9mvetu
- SSaH9jUPfbAAsKMHNUCvsSRzAHQMcprqLifHfZLn5oE3OIxXZ9WRwNH
+ bh=UIlkF+Cr22G3+Xr2iBhEh8LcRpc3sGqQkL185U7r+lA=;
+ b=+kFt+aQv22Fzn/rAHsafa1OuVqSafNgWyqhLjRHbRfa9pHHNKcUImie1vu/kp7shzbDEOq5Ui
+ o/cvz/JgZIMB7fndBfMPCP9FpzvLu83/5upSc1Qy9/oaTWLV4373+Kc
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -131,18 +131,18 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: it8d5a5843dj6pgc9q6b87e8uobr9b4n
-X-Rspamd-Queue-Id: 87D994000B
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EAEF1C0006
+X-Stat-Signature: cwymwzer13jr8zzxw7bxcmnnrh5aeg3k
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794011839-312156
-X-HE-Meta: U2FsdGVkX1/8FxPwy8OXhWJnyEm37ve8KsEesBByzQCUlpiA7Ys+up5WjGVgXNWCSi03hb/q+xP1/vfqlXW/RmZmJv2g/S3WMNUoBvzzCblfIN03crNHAFESMuBw5Ac4zcqhJKPuRoFrZ/SNVw2m8xjr/87FhNz9Ms1HBsQnCHgmpGqcGeSS/5rluQJnlGnGLNTJ9mzNb36J6GZuJijcY4gZI2NYcKHHB9MevlD4cBdwpziE3QuAH8gxsny2/CmprprOxpitOiSRSFU6xh6sFlT6Y+3Ep6dXLYIuLACT1aye2jZTyTsob+5JZp8MLYfzXq5Y39mu6fMjVk90aJnvvqSQghUL6lCbHRTt7OKWg23S09F/JR8Kn/EKniZWeloMlOlrLve4wTOto0NjheqNVD3MaA346H+5BWEfj2/c415lCpFUwh/Sxhcrz/tZQEEX5u+rqaN/h6gS4N5idmRk0EC5bV3ktQBYtQhFMWMgfs2U1O/Xz7HCadjJG6Rqq6LM0PpCOaL4DHAnxcc7ZqsQPTtQ9DhaTP0NbUfVxQ59/JvR+Se+wkQBOFMCZ/qN/JRSwGRQzV2myQfob2mtL6i8xEJPcu9RlNjE4zWxMI4hhvHLhyS3BQ2I4YDd66/L8GIUZm7Q9oaeeebde6T+oGCfNUbmot/AfdFrry7bi3nyP1BNrLUgFBXqAKY8Tu2SMcY7+vc4LdIBo7+lAXzJFUFMEZNSAvDP8uByqQJsT86Z8tGIfZyamOlrntflT7xnJo/YosGP4HDFQqH557bCxlsCf3+zNXMZKHIwMdUU8Ck09x71czs02SK4kD1/6bsP9r3l7rtbda5s4utMShkM5UFmACX+6oDhwblGayfu6bzLlobWRnBU9eFQqrN8ZitM32dSZX/wpbf7Xr3HopSsKBu3Wb5nY7i0IHyBkyYZOnzbpSfiWIrYo8qre5nI6wLfoMs0DPjOoBLzj9zPoPZ+yby
- zOLXyNmK
- 5Zo89Nx4mk6hZvk51JJiklkE5yVYXwdbPhaMd0LpxC98yhLGS1t+/jnkwXuDayH88/pZPg9rRSc4W2Oz/WmK/BRAEKWmW1+rR8CudQZ/2dDgt60wj+ax3zAxJyNQGL9wFY+HkysvNvZxNpT59g5vRkTtNtAxZ3ZLVU1PxOWTjBMSdSxiNY4rJp/xM2klHveOZMTPxH+FoS72gwxhPkbqcs4M4hmcDbsWxmXDcKJMHB/UzAzipnw2c4ent83T3nv/7zaWPlG5xCvRy0i4gBOiHZTqOFe/J0qX9O3XGiBi5CXrnFJmLW/v+mb+3isaqrhoKI5RY93yzozz5+tTjoDTsskqdjuogEJaRAQqL4Dkkynri5CDn36YTAgcFSe+TkUHk6YJbtDnM4ChPYD/TlV+It7jkUiZkADYYUZsXV7feCqoHkIO5UIUGpYXV6ByeZ8eyhjCWUwgpSaG3LDy77yhDJ+2kvZR75/u9MMRAU6ptTvmpj3yUdzm8I3nxsMja3Rr4o5mAOwGMZd9/OBDAwj3vy4X+n6HVcPF5aGII+5z8+O/jcmNJ8j5kN7ygeZvGkYUm4iOKkspXDrpSsQZS0hRNlWvab7wchTUULZfVZpcTl6VeViI=
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794011839-671376
+X-HE-Meta: U2FsdGVkX192hz7LMXQOMx/mfqSSlm0ieBKt1+swu2m2G3KRD0Gu1TEhiYzSxE3VBDIiI1ZY3INcvSpEoWXqSx5Xw52LCUsRnsVT1RO/zH4OuTvBrp4U2XBAkWKBCYYEboMXq5Z5yLIkb/kN8snW4ysPI/l9jQSW0gWdrD03Ywysf0rQubqMzduOQYKToj4XUULJJzBszhary+OdvO5tzLhsFBOO5M3tdBiRKtDPVY8a+IVrsx4uL5FeBsnwSmvLMGLdLwSVp9SOZIQljRsb58NyHyBB1wrSh/wARg5Hc1uO4vwUS4VbDMHMV627qMR61984YyemEynwxM/wiz+/UAIWvFSpHMIgPVxdwVo6AbEf4+F3Ad1kDnRg6d80F74l3PL5I/0VLM9q0fEa+CgdRg3/h9N5hhHh1WjQSG1DAMn+RO7YHbGo37lz+z2HGjeqXjj0nrK/5MDEKJ1vYyzW/AE6FKXoRzAdmV4G3SJXL6JzQsc0LRy0XS5OXxwK6O0PzuQ09hMvbBPdfhM1KwY6eDMo69d5RMtpFehm4kuT0oWMpeas1+OucyJ69nfnHj3tdU1mLFYpbIp7AXgulFTsQFNkvYZmc9nacZapzHJQyJYyABJG4QMz0AwVxKeyd9c+C/p4So3M1Gwr0i4hqOidmza8xgnc2kVyedu0/uQ37wOZcvQj8U3z+vi/mV+ComdmpmYRT03N8aFkOCko8NlXu7K4m3qgsa7MOSKU5tsV4IsYew3d1dmY3uare2fOTsw2NF2NMb6cAyWuEdwl0Fuy+N3NhL9Y9j/4IeZGyYK0jA0Ux1hs1CLpsmQ0FDru4JWubzMHswxLCy2IfM9lPJaKVBh6yUvHszj7N7P9Kh2I2kdOhNGKA2oWal53rmIfsisRU8XGHnRd/LB0JDwK6AJU/tzlHGGLWlRbWlzB20RAtsnxtyU6HKbYlsMqsM+fIS9NuSVqdbeR9V4D8RW7zcD
+ 3YxAskEp
+ WUF2o42txjq5G49n6iucNcQHFbYbe5KnpaJwzGj94tAO8sIQa3HpRJpylSV9gPQ79qwjoLjd6q2R8owp2Nxy0H0hHvAqf0vy9Y7FBeS7NjPnkt9o/RK60KpXgFKXRRqdflbTQ4tP/Xjb5BqwC8cmHUk75eVNOJRTYaHwkPZhqjIIyIiQPYSzG/5JkUrlPBl9DnmiK7+DYRCPIq/oiJj5pc90xZjHtShrGh7B2FuRF/m2FdIA2lHppTBYy7CRCkBw7mpZE3o24I5rMeeY0clDwGkr3EdMwRYcEDeCv9L3u4XJ/XscfK+N5PU2xY+Mb+hdlLNzln5GUK0kbDGyesGy/T3HsYE8ZaMwuSoDfBcelRNk3zBidTFN888cTnh4lSEvkHbkKz0Fp+Wizp3Q5hWociNKGyX+XVJVtxz+Sy4ja/mCY2siiJrKc01sWHQW9RCKhKq6yfADVCrmN3gwjlneGp/ikFRWdRahDqimcUpNxZGWmsxYvoDj4Vmc9e3RwpwIDgjcbX1yFOx1/73jLNzWZueqfb3mQv+Yb5PTIe+Uufp4l9r6wcHLee3dYXDHZHTiccjr634p64SZ4BvbGnKb2hQienockwQpg5URd16qU1n6bFWQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,65 +153,99 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-When scanning guest_memfd memory ranges for confidential architecture
-reclaim or conversion, guest_memfd invokes the .lookup_pfn_range
-provider operation to locate backed PFN extents or skip unbacked holes
-in bulk.
+Refactor BAR read and write handling to separate the core MMIO logic
+from the buffer source.
 
-Implement .lookup_pfn_range on vfio_device_gmem_provider_ops to
-dispatch to the bus driver's .gmem_lookup_pfn_range callback on struct
-vfio_device_ops. Return -EOPNOTSUPP if the bus driver does not define
-the callback.
+Extract the core BAR read and write implementation into a static helper
+that operates on an iov_iter and accepts a test_mem parameter controlling
+whether memory decoding and power state should be validated under
+memory_lock. Retain the userspace interface, importing the user buffer
+into an iov_iter with test_mem enabled.
+
+Introduce a counterpart helper taking a kernel buffer and setting up
+an ITER_KVEC iov_iter, allowing callers with kernel buffers to read
+and write to PCI BARs without userspace pointer conversion or copy
+overhead, and to specify whether memory testing is required.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- drivers/vfio/vfio_main.c | 15 +++++++++++++++
- include/linux/vfio.h     |  2 ++
- 2 files changed, 17 insertions(+)
+ drivers/vfio/pci/vfio_pci_priv.h |  3 +++
+ drivers/vfio/pci/vfio_pci_rdwr.c | 34 ++++++++++++++++++++++++++++++----
+ 2 files changed, 33 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index fd5f71dfc44b7..1c2811848c775 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -1636,10 +1636,25 @@ static int vfio_device_gmem_check_set_attributes(void *provider, pgoff_t index,
- 						      attributes);
+diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
+index 607a33270aca1..48a068e68aab8 100644
+--- a/drivers/vfio/pci/vfio_pci_priv.h
++++ b/drivers/vfio/pci/vfio_pci_priv.h
+@@ -53,6 +53,9 @@ ssize_t vfio_pci_config_rw_single(struct vfio_pci_core_device *vdev,
+ 
+ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 			size_t count, loff_t *ppos, bool iswrite);
++ssize_t vfio_pci_bar_rw_kbuf(struct vfio_pci_core_device *vdev, void *kbuf,
++			     size_t count, loff_t *ppos, bool iswrite,
++			     bool test_mem);
+ 
+ #ifdef CONFIG_VFIO_PCI_VGA
+ ssize_t vfio_pci_vga_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+index cc64722d1ab9a..c44c78e48e6aa 100644
+--- a/drivers/vfio/pci/vfio_pci_rdwr.c
++++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+@@ -221,8 +221,9 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
+ }
+ EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
+ 
+-ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+-			size_t count, loff_t *ppos, bool iswrite)
++static ssize_t __vfio_pci_bar_rw(struct vfio_pci_core_device *vdev,
++				 struct iov_iter *iter, size_t count,
++				 loff_t *ppos, bool iswrite, bool test_mem)
+ {
+ 	struct pci_dev *pdev = vdev->pdev;
+ 	loff_t pos = *ppos & VFIO_PCI_OFFSET_MASK;
+@@ -284,8 +285,9 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 		x_end = vdev->msix_offset + vdev->msix_size;
+ 	}
+ 
+-	done = vfio_pci_core_do_io_rw(vdev, res->flags & IORESOURCE_MEM, io, buf, pos,
+-				      count, x_start, x_end, iswrite, max_width);
++	done = __vfio_pci_core_do_io_rw(vdev, test_mem && (res->flags & IORESOURCE_MEM),
++					io, iter, pos, count, x_start, x_end,
++					iswrite, max_width);
+ 
+ 	if (done >= 0)
+ 		*ppos += done;
+@@ -301,6 +303,30 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 	return done;
  }
  
-+static int vfio_device_gmem_lookup_pfn_range(void *provider, pgoff_t index,
-+					     unsigned long *pfn,
-+					     size_t *nr_pages)
++ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
++			size_t count, loff_t *ppos, bool iswrite)
 +{
-+	struct file *file = provider;
-+	struct vfio_device_file *df = file->private_data;
-+	struct vfio_device *device = df->device;
++	struct iov_iter iter;
++	int ret;
 +
-+	if (!device->ops->gmem_lookup_pfn_range)
-+		return -EOPNOTSUPP;
++	ret = import_ubuf(iswrite ? ITER_SOURCE : ITER_DEST, buf, count, &iter);
++	if (ret)
++		return ret;
 +
-+	return device->ops->gmem_lookup_pfn_range(device, index, pfn, nr_pages);
++	return __vfio_pci_bar_rw(vdev, &iter, count, ppos, iswrite, true);
 +}
 +
- static const struct guest_memfd_provider_operations vfio_device_gmem_provider_ops = {
- 	.attach               = vfio_device_gmem_attach,
- 	.release              = vfio_device_gmem_release,
- 	.get_pfn              = vfio_device_gmem_get_pfn,
-+	.lookup_pfn_range     = vfio_device_gmem_lookup_pfn_range,
- 	.mmap                 = vfio_device_gmem_mmap,
- 	.check_set_attributes = vfio_device_gmem_check_set_attributes,
- };
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index aade091a91fe8..8022adedc26a6 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -128,6 +128,8 @@ struct vfio_device_ops {
- 	int (*gmem_check_set_attributes)(struct vfio_device *device,
- 					 pgoff_t index, size_t nr_pages,
- 					 u64 attributes);
-+	int (*gmem_lookup_pfn_range)(struct vfio_device *device, pgoff_t index,
-+				     unsigned long *pfn, size_t *nr_pages);
- 	char	*name;
- 	int	(*init)(struct vfio_device *vdev);
- 	void	(*release)(struct vfio_device *vdev);
++ssize_t vfio_pci_bar_rw_kbuf(struct vfio_pci_core_device *vdev, void *kbuf,
++			     size_t count, loff_t *ppos, bool iswrite,
++			     bool test_mem)
++{
++	struct kvec kvec = { .iov_base = kbuf, .iov_len = count };
++	struct iov_iter iter;
++
++	iov_iter_kvec(&iter, iswrite ? ITER_SOURCE : ITER_DEST, &kvec, 1, count);
++	return __vfio_pci_bar_rw(vdev, &iter, count, ppos, iswrite, test_mem);
++}
++
+ #ifdef CONFIG_VFIO_PCI_VGA
+ ssize_t vfio_pci_vga_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+ 			       size_t count, loff_t *ppos, bool iswrite)
 
 -- 
 2.56.0.455.g6c5a503b38-goog
