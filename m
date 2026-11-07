@@ -1,92 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8472E606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 21:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E664606D82E
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 21:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bs7EKf1N
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oL/zu0XQ
 Received: by kanga.kvack.org (Postfix)
-	id 3B5A56B05B0; Sat,  7 Nov 2026 16:43:53 -0500 (EST)
+	id C92D26B05B1; Sat,  7 Nov 2026 16:45:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 366CB6B05B1; Sat,  7 Nov 2026 16:43:53 -0500 (EST)
+	id C43B76B05B2; Sat,  7 Nov 2026 16:45:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 27DF66B05B2; Sat,  7 Nov 2026 16:43:53 -0500 (EST)
+	id B31C86B05B3; Sat,  7 Nov 2026 16:45:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ECA7F6B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:43:52 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5F3F2A7F14
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 21:43:52 +0000 (UTC)
-X-FDA: 85409650704.24.893FDB4
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id BC69040007
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 21:43:50 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bs7EKf1N;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 895B86B05B1
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:45:37 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0A8BD16037D
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 21:45:37 +0000 (UTC)
+X-FDA: 85409655114.09.E2FAAAB
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 73275120004
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 21:45:35 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="oL/zu0XQ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794087830;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794087935;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=N78A/tFJL2MmiAzsL6G/70rStLyxim8xc/oVb8tqpuU=;
-	b=SXnl6ihL4kOgV6AuN4zWAI8DVmL6YOTypge9ZMp3KrUQJH3KF8q4excVCPLnya+1xqIgUY
-	MTaweSDiRFvy1k6XqGMwFwPb0k33MLPlNzOp9GXakvAJp+apoFtJj7TSWCj7ginjVKqar+
-	8UG+BD7G0IS8sJbEEobbtWYMv7Asjlc=
+	bh=Jg6uYRNhV7mTrgb91kiVKd41vY7ff4cg96iZM39MthE=;
+	b=srlhUUTKSjLJF6x9Su5qiO6CrOThNAuHD+EaP3Zgk+cWHJz9QndQ7SjRoJ3PrFUkArZbOt
+	hgP26ec8+Dx8TfZZCjeeVw2ovw4KFriQotvQ04EfPRpHbulgyTBpsTZXe8MJOzPOTs8h/l
+	3JAROHJ+DQXJ5vPPnyqaCkcF7ZdOr7g=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794087830;
-	b=zKRChMdisKfRbSohgxKWBxQi3L33DfH0Q6kcZ6aEq1c1KsNHpxEyUSylTSr8Yb+WqvodFa
-	sX2k0wlHEqIdtVAVQwWwT2COdblMjwZDm0S7M2B8BNmTQECDFzHep48+oQ5+QEDKUy83VP
-	mf2qC9yOQPe1oF5Ee2mF/vPVG5KYKmg=
+	t=1794087935;
+	b=WyNhYPhPHzm+MEWahq2b0yn91v3JNF6zt02vUFM4b+JBAFtkvkyhvdOxzfAhw3G87HytVC
+	miNmSfD7X9dm9mnxDUExAlsDoXWho3v95Tpm//ov44tVd5zVeVkxOt2LEetuvSZJdlcVr6
+	WHgRB1gO9ldwGmEmohLJ2kWEPEXEAlM=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bs7EKf1N;
-	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="oL/zu0XQ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E295461210;
-	Sat,  7 Nov 2026 21:43:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE20C1F0089F;
-	Sat,  7 Nov 2026 21:43:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id C56CD43DFD;
+	Sat,  7 Nov 2026 21:45:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A641F008A2;
+	Sat,  7 Nov 2026 21:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794087829;
-	bh=N78A/tFJL2MmiAzsL6G/70rStLyxim8xc/oVb8tqpuU=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bs7EKf1NrquqVcdeffxNtsF57wBEJNKPQoJVKMNVOjRqdcAKIsmjhcGLpML3JIb4Y
-	 7IiPJGfF9omV+XCSkmQ2P04ceU9CB+2NyUbD44tmFC+8Qnv9YrRbuQbSrmY/SKOft5
-	 TOcPUaWzCBL4MnDJjLXoQ68VO32RnL06KQO/I6edx/PcWl7Uv5o9c8XJY02qpGuq3P
-	 kU++2vSg9WWjzaDlMrfUyoyAHbk0MLABnxK9SBNBKBdgsIftvfpPGe3IIToE3hG/eL
-	 HJFlQBsq9eWr6Y1+Ow4jqUhpZuRKb+4EQbzZTJE3LWo/Gd3VbEQioWJL6x3lqrRL8A
-	 ackYIt2vyboRA==
-Message-ID: <sashiko-outbox-203344@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/truncate: unmap DAX entries before invalidating them
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zi Yan" <ziy@nvidia.com>, "Dan Williams" <djbw@kernel.org>, "Matthew
- Wilcox" <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Alexander Viro" <viro@zeniv.linux.org.uk>, "Christian
- Brauner" <brauner@kernel.org>, "Andrew Morton" <akpm@linux-foundation.org>
-Cc: "David Hildenbrand" <david@kernel.org>, "Alistair Popple" <apopple@nvidia.com>, "John
- Groves" <John@Groves.net>, "Miklos Szeredi" <miklos@szeredi.hu>, "Darrick
- J. Wong" <djwong@kernel.org>, "Carlos Maiolino" <cem@kernel.org>, nvdimm@lists.linux.dev, linux-mm@kvack.org
-In-Reply-To: <20261106-fix-dax-invalidate-mapped-v1-1-292ce5958d67@nvidia.com>
-References: <20261106-fix-dax-invalidate-mapped-v1-1-292ce5958d67@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 21:43:48 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BC69040007
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: 6fanxyzp1ejh8mhq9f17hipfeqzw9n75
+	s=k20260515; t=1794087934;
+	bh=Jg6uYRNhV7mTrgb91kiVKd41vY7ff4cg96iZM39MthE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=oL/zu0XQFZaVfByvORZm31uzlL1kH9iZIQ5kdPtCh6MIXLDcb95w1Y8QfuHey5/fQ
+	 WfhE2Uv3CrpUZO+yBgilHI+A9zN2eQu0oO+XijYO+CkTsztVUvrk1IphCLlJMRhJAl
+	 2vaqWMhpdt0KQGtAmmC9hAjskXzZmnJWJQfE2OYLBCEIklZff4LKXlmY3T3NlnyEbd
+	 Ow3TNupoUfoJNfTIYk6CfPqgZibk4yk5G3uXFZax64L8sS8i7UvdGok6ElA5k8L8So
+	 g4cKAtJ4K7aIaKIvNjizyxxL8V6ArKR6vfrs1oyxLsRcEBNdS6qsvabpy2Ni4MTslt
+	 PlTVyKZIQO6KQ==
+From: SJ Park <sj@kernel.org>
+To: 
+Cc: SJ Park <sj@kernel.org>,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Usama Arif <usamaarif642@gmail.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [RFC PATCH 6.12.y 1/5] mm/damon/core: skip applying scheme if region split for quota fails
+Date: Sat,  7 Nov 2026 13:45:20 -0800
+Message-ID: <20261107214525.304638-2-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261107214525.304638-1-sj@kernel.org>
+References: <20261107214525.304638-1-sj@kernel.org>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ueeucoqsjiomzkmxnawd3kpfokzt5haf
 X-Rspam-User: 
-X-HE-Tag: 1794087830-193293
-X-HE-Meta: U2FsdGVkX1+LcxzQwz277IdKJ/V2AqfmkIWnVMmBiOLzlnDkIUhptjZCO0qSZYzL7jPMJvLk62MpyX6civs98u9ogiK1yCNH2J6PD7Xw8DLSH8iwa+NRXa6OEWc/kZJSSQy2n89rDDxcSPcl1XIHjEurTBYrOZNkndgPvLJIEf6PpCT0Bv+YVkFdm9YzLk/DBT/qjQ0Q1hLpB2TTx0KGFMarsjlsEkJyyNmVapDeKpd5U5O0YLKRDmZ+7MSkAZPJfpM1fjb4qQm2MunBWw/UO7CF1S5p2rrUezuhZ73v244OtixJhLXXxINdA3T6vMpqIRWl7cn5b8/l5/29ti3YP36uCSsv01NB3Kb02v8iVY4AB2qOwabOvqAlxieutFP6B4I/SaUTlaPpsaEs0NTwh6R7N1Y3HjC3OOXRRWgnxIu5sqB4Rl0pkhNmgy//w3qwB5skveWahVJoIyEC4UFV/xCAKA3DndbLqunmwfPCsNCdbY9wgkk7R2SuSLuvO00BL03ttccKQJXwFok8rYZD4e4DZkeP8GWexVLrVhnqDS6UvMjCqwUDyTSW5YZtn7SCIBkuW4tQKTkqDRTDjbF/eRi3FhuwFH9A0xQAysxF4WNanKlA1Z8vcuXn+utQsACq77VSHCfwu8S42gbOgD1rmuSp+/uChrjFT9bUD1EyYo3H7nBKCjQfw8nGbNlkvxnHaiobkzpMZciycnEZXsV2gf9UnbAdcK4IACSofMesfp/LMRvQQEo+uC7V1UKA1ACwcU6U1J6EKcrZzkkrHXYKLLtx9ibT4re11CKAZe6Jv91wGe6DF0xIi716INc1m/y6FF0anS6Cs+DSg7CqE78J69ha3f0egM4sJ/ydsCDpggaFWx7iwFB4pLK7jEtsxX4z5LZ6R9FHQ7VRT4T04/HVJNLUbtmeYSqqX5OJBYiXjfizNzVVWVEdrPH3FtRThuOKmCmQfWa6Ac3DW8iY6uY
- ofcRRYZE
- rE6TrCfQX24Btmr12OaIh2Te6M5spVzdHWOfLcVFipWSLWYCEtgKc235rw21vBKh+HSQAB32oeQW4Asw/ybtsTnqDxe/w8YQCsMGf8tQpwkMaA7KFBxuwSc+y7gGylqytKh5oOm2DmvPbYOL4bNc10OFhh2bHWX8KnN5quUBTgHpNpGPYhDx2vXGKhXJijhItW+cVwPR/tfD/DQZP5OJfCpVnCoKo7boD+lPDj2fyNgPaLxXJPphOUM9mhtjW1TZ1AJgKkMz3eNzp3pj8yeFJNSw8gM0Ou3KXmNyy6jhXquvt5OgDLSAKzNb8eiFhP70yLuJ7rtW1qv85iF+slaF364R08hcUYYrs8/zyrT1uMtaCX7a5dJhMX13K3pvC5Vxw6g7nanQJ9V5ADbuxxvRN5D406niRDaVS2b5R84FHnTRT6Ex1ksqPHz5pgyey3HJOoNM4sfGbZ7cFoM/EgTglYLzpptDyGtgX7LT2ztJbD8MlCFMZ6c1A8aBDa14TSQ7za8DYq9qJQpycbSPsJtFFa81kxwM5nKiVAIhcZ/9a2RiOYKmGSPcs5SFn8fnmjOTmgn23J/z+5nvB9ursQJ4tU8fuGF+1xVL2Ykqodp1eEIvBzNyNn5NdzwQnU7+sEpoRfyxgPTwWvfWvXBsea8Vry2q2Smgb+j+f0CE5
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 73275120004
+X-HE-Tag: 1794087935-524418
+X-HE-Meta: U2FsdGVkX1/GuuDSWL6HIyj/jiVNVdZSR2UGdwbmf+Q2p2FAvUJZp3d17BGNQelrfgz1LpAZuonwn47yIEUpJJeFk9v00TMUrj+t+7kgpgrswv7UnH2QR1JoTu63e2NsJVAxOtKAAjRCVq92lMxOBaa26fvrIpKhpMeiPpaExX9mIs+23v0jY7dSB3gPQUd4YuTtvHATsHFeiwDstY3OCkpI1lH9tbLGifRF6V3gA1jYXRNhObp0/5ysJQfxwly47dEWZRY9yc4+vaZSjGc3+GLLdND5P80r5ICCvV0HnYDWC7UoFx/npf9N3jmtJcDneFxu4Civu/5uX061c59jwedvFMLjp+ZQqIFfN5nhpZ4xAsKQ9f5D25naVX7Fn9iaWl/1Y5uwz4yt+8raE/Sqvs1r7XS1bsbXCx+RTgE02KwQqp0K+xSt5gGNigbqTHw3JpBNdHMkhh7y9meXnhjmOH8asshPQ2QvEVjvK1dABGKjy/nJcMb7aTQY10kMcmXjEFd+aXUou+pgCsuoapoLCE7+8TWRgkE9G3ILPdkez7aPbcPU8DjNWxaHj/puoP1eKHKuhctvmIsj1oDEPG/ILEi4xxUMW+7sCw8WR2CZ/mVCtx3wVrY5XBsVwYicAp01YoGfj+aQ72VpvDJiTZoVxTeGyYpGx4f4SRoTCzA8xygts6341w4YV8gTdA8CP6u0fnZZOS4e0NXfBUtZF8rF8Cmgx0F6PYJD0MB/AjYhXLwIB7sns2BcRpaNIBkQqnkwBy/jdX3jJuIyJWJ0ew3cOjSl/x3JcSpAQqGTOGdbWowaagAt44qzLIkG9dwBGbFkIRKjjVg+Nst01QkhXg2NBJY644rxWZZ+sKcRINcTE0vUPVJAhxdf0pc5SaS8bzi2fsy0S/GgeN9lumVZ3i/Tso4M+DZSF1E27FPGjSmioenuZJ2t6hpbYxaymjvZqDss92XYA0ULrg7q/xaZkc3
+ NYftjxdq
+ rxFhIKgyeK1Ynb0ANY5K3QDMinG5r0riYRDIk4Kem+fr0DSPUQ4CwTn5UMExbKRlucoaxZkTdPTaipCBYchIE/74G+QYjtOXM/obzhCW+kD1VRMlhqHEkClL9fPXj9qvzoBIgrupFc29Z70zoie4pvorp3maSSxl7xh06ksREUkJnl+lIuE46uzTLHBUQaW+atVKZ9CSA8We0hdjL+NNeE7VPGR6ohAkrVAmeM/N1/f/NjeqgT3RlVXth/EgMRw8O2BSxflbvU1Av9zkyLtXrbXpTIKqrY/F77hUjvZ1ESucz3NgotSKo3lLpWg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,211 +97,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issues to consider:
-- [High] mm/truncate: unmap full DAX_PMD range in
-  invalidate_inode_pages2_range()
-- [High] fs/dax: premature disassociation of shared folios in
-  dax_can_disassociate()
-- [High] fs/dax: stale i_pages entry when __dax_invalidate_entry() skips
-  busy folio
-- [Medium] dax: cross-file TOCTOU and data race on folio->share in
-  dax_can_disassociate()
---
+Patch series "mm/damon: fix DAMOS bugs in core, paddr and vaddr".
 
-commit cd725b6545b68d39f6ee84c70fd91581edad91be
-Author: Zi Yan <ziy@nvidia.com>
+Fix misc bugs of DAMOS.  Patch 1 makes DAMOS less stress memory allocator
+under extreme situation.  Patches 2 and 3 fix wrong folios walking in
+DAMON_PADDR.  Patches 4 and 5 fix wrong folios walking in DAMON_VADDR.
+Patches 6-8 handle extreme and unlikely memory situations that can cause
+divide by zero and underflow.
 
-mm/truncate: unmap DAX entries before invalidating them
+All bugs are discovered by Sashiko.
 
-This commit unmaps DAX ranges before invalidating entries in
-invalidate_inode_pages2_range() and skips disassociating clean DAX entries
-whose last association still has elevated folio references.
+This patch (of 8):
 
-> diff --git a/fs/dax.c b/fs/dax.c
-> index 94ba41273347c..e448552d8080d 100644
-> --- a/fs/dax.c
-> +++ b/fs/dax.c
-> @@ -527,6 +527,24 @@ static struct page *dax_busy_page(void *entry)
->  		return NULL;
->  }
-> =20
-> +/*
-> + * Determine if an entry can be disassociated. It cannot be if it is its=
- folio's
-> + * last association and the folio still has a reference.
-> + */
-> +static bool dax_can_disassociate(void *entry)
-> +{
-> +	struct folio *folio;
-> +
-> +	if (dax_is_zero_entry(entry) || dax_is_empty_entry(entry))
-> +		return true;
-> +
-> +	folio =3D dax_to_folio(entry);
-> +	if (dax_folio_is_shared(folio) && folio->share > 1)
-> +		return true;
-> +
-> +	return !folio_ref_count(folio);
-> +}
+damos_apply_scheme() splits a region and apply the action to the subregion
+if it is needed for not violating the quota.  The split operation
+(damon_split_region_at()) could fail for allocation failure.  In the case,
+the quota could be violated.  From the user's perspective, DAMOS becomes
+more aggressive than expected under the extreme situation.  Handle the
+failure.
 
-[Severity: High]
-Can returning true whenever folio->share > 1 allow a shared PMD folio to be
-dissolved while it is still PMD-mapped?
+The user impact is not critical.  The failure of damon_split_region_at()
+is unlikely since it is arguably too small to fail.  Also DAMOS being
+aggressive is limited to the single region.  Users can set min_nr_regions
+to set the maximum size of each region.  If it is reasonably set, the
+transient overhead shouldn't be critical.
 
-During a CoW write on file A, xfs_file_dax_write() holds XFS_IOLOCK_EXCL
-without XFS_MMAPLOCK_EXCL, so a read fault on file A can refault the shared
-PMD between the initial unmap_mapping_pages() and __dax_invalidate_entry():
+The issue was discovered [1] by Sashiko.
 
-CPU0 (CoW write on file A)        CPU1 (fault on A / truncate on B)
-invalidate_inode_pages2_range(A)
-  unmap_mapping_pages(A)
-                                  xfs_dax_read_fault(A)
-                                    dax_fault_iter()
-                                      vmf_insert_folio_pmd()
-                                      (refcount =3D=3D 1, mapcount =3D=3D 1)
-  __dax_invalidate_entry(A)
-    dax_can_disassociate()
-      folio->share =3D=3D 2 -> true
-    dax_disassociate_entry()
-      --folio->share (now 1)
-                                  dax_break_layout(B)
-                                    unmap_mapping_pages(B)
-                                    dax_busy_page() -> NULL
-                                      (refcount - mapcount =3D=3D 0)
-                                    dax_delete_mapping_entry(B)
-                                      --folio->share (now 0)
-                                      dax_folio_reset_order()
-  unmap_mapping_pages(A)
-    folio_remove_rmap_pmd()  <-- corrupts dissolved tail page
+6.12.y porting notes.  Modify damon_split_region_at() to return
+failures.  It is a part of commit c60874860762 ("mm/damon/core: handle
+region split failure in apply_min_nr_regions()").  Without it, build
+fails.
 
-In addition, if file A holds a GUP pin on the shared folio,
-dax_can_disassociate() removes the entry from file A's i_pages while
-folio->share > 1, so a later dax_break_layout() on file A will no longer fi=
-nd
-the entry in i_pages or wait for the GUP pin.
+Link: https://lore.kernel.org/20260901131850.98037-1-sj@kernel.org
+Link: https://lore.kernel.org/20260901131850.98037-2-sj@kernel.org
+Link: https://lore.kernel.org/20260718171523.87547-1-sj@kernel.org [1]
+Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control")
+Signed-off-by: SJ Park <sj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Usama Arif <usamaarif642@gmail.com>
+Cc: <stable@vger.kernel.org> # 5.16.x
+(cherry picked from commit 90c2fa6adfed7abe0935506a43cdff3a05c1fff0)
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-[Severity: Medium]
-Can concurrent invalidations on two files sharing a folio race on
-folio->share in dax_can_disassociate()?
-
-__dax_invalidate_entry() only holds the current mapping's i_pages lock:
-
-CPU0 (file A)                     CPU1 (file B)
-__dax_invalidate_entry(A)         __dax_invalidate_entry(B)
-  xas_lock_irq(&A->i_pages)         xas_lock_irq(&B->i_pages)
-  dax_can_disassociate()            dax_can_disassociate()
-    folio->share =3D=3D 2 -> true         folio->share =3D=3D 2 -> true
-  dax_folio_put()                   dax_folio_put()
-    --folio->share                    --folio->share (reaches 0)
-                                      dax_folio_reset_order()  <-- folio bu=
-sy
-
-Both callers bypass the folio_ref_count(folio) check when folio->share =3D=
-=3D 2
-and then non-atomically decrement folio->share in dax_folio_put(), which can
-either corrupt folio->share (a data race) or dissolve a referenced compound
-folio when the second decrement reaches 0.
-
-> @@ -853,9 +871,14 @@ static int __dax_invalidate_entry(struct address_spa=
-ce *mapping,
->  	entry =3D get_next_unlocked_entry(&xas, 0);
->  	if (!entry || WARN_ON_ONCE(!xa_is_value(entry)))
->  		goto out;
-> +	/*
-> +	 * Removing the last association of a folio releases the folio, so make
-> +	 * sure the folio has no reference.
-> +	 */
->  	if (!trunc &&
->  	    (xas_get_mark(&xas, PAGECACHE_TAG_DIRTY) ||
-> -	     xas_get_mark(&xas, PAGECACHE_TAG_TOWRITE)))
-> +	     xas_get_mark(&xas, PAGECACHE_TAG_TOWRITE) ||
-> +	     !dax_can_disassociate(entry)))
->  		goto out;
->  	dax_disassociate_entry(entry, mapping, trunc);
->  	xas_store(&xas, NULL);
-
-[Severity: High]
-What happens when dax_can_disassociate() returns false during a CoW write a=
-nd
-leaves the old DAX entry in mapping->i_pages?
-
-If the folio has an elevated refcount (for example from a short-term GUP pin
-or a racing fault), __dax_invalidate_entry() skips the entry and
-invalidate_inode_pages2_range() returns -EBUSY.  dax_iomap_iter(),
-dax_unshare_iter() and dax_zero_iter() ignore that return value and complete
-the CoW remap to a new unshared extent while the old entry remains in
-mapping->i_pages.
-
-On a subsequent fault to the now-unshared extent (shared =3D=3D false),
-dax_insert_entry() sees a non-empty entry and neither replaces it nor calls
-dax_associate_entry() on the new PFN:
-
-fs/dax.c:dax_insert_entry() {
-    ...
-	if (shared || dax_is_zero_entry(entry) || dax_is_empty_entry(entry)) {
-		struct folio *folio =3D pfn_folio(pfn);
-    ...
-}
-
-dax_fault_iter() then takes a reference on the old folio from *entry while
-passing the uninitialized, zero-refcount new PFN to vmf_insert_folio_pmd() =
-or
-vmf_insert_page_mkwrite(), which fails with VM_FAULT_SIGBUS.  Meanwhile, the
-stale entry left in the first file's i_pages still points to the physical
-folio now owned exclusively by the other reflinked file, so truncating or
-evicting the first file later calls dax_folio_put() ->
-dax_folio_reset_order() on the second file's live PMD folio.
-
-[ ... ]
-
-> diff --git a/mm/truncate.c b/mm/truncate.c
-> index 9e9bf029635cf..b03cd99c4bba8 100644
-> --- a/mm/truncate.c
-> +++ b/mm/truncate.c
-> @@ -732,6 +732,15 @@ int invalidate_inode_pages2_range(struct address_spa=
-ce *mapping,
->  	if (mapping_empty(mapping))
->  		return 0;
-> =20
-> +	/*
-> +	 * Invalidating a DAX entry can release its folio, so unmap DAX entries
-> +	 * before invalidating them. dax_invalidate_mapping_entry_sync() skips
-> +	 * the last association of a folio that still has references, e.g.
-> +	 * because it was faulted in again in the meantime.
-> +	 */
-> +	if (dax_mapping(mapping))
-> +		unmap_mapping_pages(mapping, start, end - start + 1, false);
-> +
->  	folio_batch_init(&fbatch);
->  	index =3D start;
-
-[Severity: High]
-Does unmapping only [start, end] leave PTE mappings in place when [start, e=
-nd]
-partially overlaps an order-9 DAX_PMD entry in mapping->i_pages?
-
-grab_mapping_entry() and dax_insert_entry() keep an existing storage-backed
-DAX_PMD entry in mapping->i_pages when servicing PTE faults (such as in a
-smaller or unaligned VMA).  When a sub-PMD write calls
-invalidate_inode_pages2_range(mapping, start, end), unmap_mapping_pages()
-only unmaps [start, end], whereas dax_invalidate_mapping_entry_sync() ->
-__dax_invalidate_entry() disassociates and removes the entire 2MB DAX_PMD
-entry covering [index & ~PG_PMD_COLOUR, index | PG_PMD_COLOUR].
-
-If the PMD folio is not shared (or this is its last share), the un-zapped P=
-TEs
-outside [start, end] keep folio_ref_count(folio) > 0, so
-dax_can_disassociate() deterministically fails with -EBUSY and leaves the
-stale DAX_PMD entry in i_pages after CoW remapping.  If folio->share > 1,
-dax_can_disassociate() succeeds and drops this file's share while those PTEs
-outside [start, end] remain mapped, so when the other file drops the last
-share, dax_folio_put() dissolves the order-9 folio while its tail pages are
-still mapped via PTEs.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-fix-dax-in=
-validate-mapped-v1-1-292ce5958d67@nvidia.com?part=3D1
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 81d44e41de210..6ef77741b783b 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -1266,7 +1266,7 @@ static void kdamond_reset_aggregated(struct damon_ctx *c)
+ 	}
+ }
+ 
+-static void damon_split_region_at(struct damon_target *t,
++static int damon_split_region_at(struct damon_target *t,
+ 				  struct damon_region *r, unsigned long sz_r);
+ 
+ static bool __damos_valid_target(struct damon_region *r, struct damos *s)
+@@ -1470,7 +1470,8 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
+ 					DAMON_MIN_REGION);
+ 			if (!sz)
+ 				goto update_stat;
+-			damon_split_region_at(t, r, sz);
++			if (damon_split_region_at(t, r, sz))
++				goto update_stat;
+ 		}
+ 		if (damos_filter_out(c, t, r, s))
+ 			return;
+@@ -1861,15 +1862,17 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
+  *
+  * r		the region to be split
+  * sz_r		size of the first sub-region that will be made
++ *
++ * Return: 0 on success, negative error code otherwise.
+  */
+-static void damon_split_region_at(struct damon_target *t,
++static int damon_split_region_at(struct damon_target *t,
+ 				  struct damon_region *r, unsigned long sz_r)
+ {
+ 	struct damon_region *new;
+ 
+ 	new = damon_new_region(r->ar.start + sz_r, r->ar.end);
+ 	if (!new)
+-		return;
++		return -ENOMEM;
+ 
+ 	r->ar.end = new->ar.start;
+ 
+@@ -1879,6 +1882,7 @@ static void damon_split_region_at(struct damon_target *t,
+ 	new->nr_accesses = r->nr_accesses;
+ 
+ 	damon_insert_region(new, r, damon_next_region(r), t);
++	return 0;
+ }
+ 
+ /* Split every region in the given target into 'nr_subs' regions */
+-- 
+2.47.3
 
