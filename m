@@ -1,102 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577F0606A32C
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 12:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A48606A32C
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 12:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WqVgQ9D4
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fwzpsWx1
 Received: by kanga.kvack.org (Postfix)
-	id 6CEEB6B05B2; Sat,  7 Nov 2026 07:07:40 -0500 (EST)
+	id DAE176B05B3; Sat,  7 Nov 2026 07:09:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 680C16B05B3; Sat,  7 Nov 2026 07:07:40 -0500 (EST)
+	id D5EAA6B05B4; Sat,  7 Nov 2026 07:09:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 594CE6B05B4; Sat,  7 Nov 2026 07:07:40 -0500 (EST)
+	id C78BD6B05B5; Sat,  7 Nov 2026 07:09:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E4496B05B2
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:07:40 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BC5601A02D7
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:07:39 +0000 (UTC)
-X-FDA: 85408198638.02.833E6B6
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 2007E80003
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:07:36 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WqVgQ9D4;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A69026B05B3
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:09:13 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 59F111202FC
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:09:12 +0000 (UTC)
+X-FDA: 85408202544.05.4D5ABE8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B551B120005
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:09:10 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fwzpsWx1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794053258;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=2qaGDM5KXwo/XbIElFXbZo2pyoRiYC1SBXqYkAOocig=;
-	b=CIQWNC5ZE4gwCHcGJi4eUjyN+1tFX6XNtVPUqvcVrpxuqH3p2F8hlQEQztiqrqjZWMa+2E
-	ypcNFYuJ31ki0mbJqDpE1EEPDsCgGZeAMmoqQX8cvJzWyfm2lNLia9KBQ60ws+kS25/AyE
-	9br8LDUZ6ueM8RrD4/9BARyTnjItOyE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794053258;
-	b=QthcJalvgow5zKqLrVQC+dVepuHkWGgyVi8XLA2gbaVS+hiZ6PTz+lgolLeuwDdC4JJaX6
-	rakipvVNDO4Hz3rFb0s9AMlsqXcoEP9rRKMpc9MdwNLPzfT5NYYNyWhdqF/XaarBVUEzqN
-	N9+UCxsAtby7HUQ5ak7dv632kh0Tilo=
+	s=arc-20220608; t=1794053350;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=esvZJHYREiteI43FT7jPdQ/u7/sXZjtksIY128uud3Q=;
+	b=f7T1qTJNYCrptFXYCm81V6YuiSQ1Oxd7ekX2dWoFu8fMmDDyQwNqp9XSp772xY2KWyXpaE
+	Ks06JXD4PaSYnWJcMTswD6B0Bzm25g8PjVPsteaEbPhIE8+cgmANOvzPdF0V0hLJ5I82oc
+	r+LcLX6b+1k6LSE3GwIFvV7ClmYpP3c=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WqVgQ9D4;
-	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794053257; x=1825589257;
-  h=date:from:to:cc:subject:message-id;
-  bh=d5ZgnRix7VXOje43U+Fy8zm1siik98+UBrQqZUXZte0=;
-  b=WqVgQ9D4XwRNopqkE7bIgtn0ku/QxEoPCLK3EaqeA/o54fSdAAhLQNsN
-   We++mrudTCFSQcjMr26llV9Kye+wGNJQGKsORnIm8pM4HiSZ1wkyv7M+A
-   eZI0NgAuEJ73Ru+6dSKzwEXZqCqFcsiW4LvgXGjUV808CSc2WfclQ94Cn
-   ELgLCWNhZAerKsyd0S1DNnhBuzchLZgbOBKzoZTsJYw6ACWFJHywxSj6E
-   9N4RM/QBQoET0y+4GWMRNvvXf43tJTPNHv2K3pKLwPxQ/IiRd6ulka8Mw
-   CtcR3qzmTPyHh0GVwtvKSLEpT8L4xZP0GN4OWpgfRUakd5ivkDfrMGFGx
-   g==;
-X-CSE-ConnectionGUID: JVTfoxqUQOm+ySypQrjHnA==
-X-CSE-MsgGUID: QmLWNwGuTrqQ09v2Szzo0g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2843807"
-X-IronPort-AV: E=Sophos;i="6.27,200,1787036400"; 
-   d="scan'208";a="2843807"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2026 04:07:36 -0800
-X-CSE-ConnectionGUID: TLXXnBsYSx2KDOSdQ88oBA==
-X-CSE-MsgGUID: qXskRPm+S0G7tL3WCjG0ag==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,200,1787036400"; 
-   d="scan'208";a="7354265"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 07 Nov 2026 04:07:33 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xPfCj-00000000qnp-2xYU;
-	Sat, 07 Nov 2026 12:07:29 +0000
-Date: Sat, 07 Nov 2026 20:06:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- mm-commits@vger.kernel.org, Phillip Lougher <phillip@squashfs.org.uk>
-Subject: [akpm-mm:mm-nonmm-unstable 111/117]
- fs/squashfs/file_direct.c:121:1: warning: label 'out' defined but not used
-Message-ID: <202611072044.cmq8jkLA-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2007E80003
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fwzpsWx1;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794053350;
+	b=OF5zNKIOCK/cwv80G9r5jPFSZdStRTr8BCqusp/ew0h2uR7t/diR3tL5ZAuo/XA9HDSLIO
+	C022saVxrAfYxJ3RUpGOdoqmE2o0oF+QxjYGzropb1e5fr0lQAkVMtKgLR/GUaWoJ5QnGR
+	vYk42C52DHnuBNPDiR/XppmYXulTn8Q=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id B106142468;
+	Sat,  7 Nov 2026 12:09:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08BE1F0089F;
+	Sat,  7 Nov 2026 12:09:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794053349;
+	bh=esvZJHYREiteI43FT7jPdQ/u7/sXZjtksIY128uud3Q=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=fwzpsWx1TYF5s6aqXbr7wgfjbvh1WKb6pTI6FUqOINWys2uHvZqtbq2DXEzRkqDYg
+	 1sJGNo64GSjJzJ5uibxNPh+eht3MGVyMRBXYI7HZqn2P2+NZQu9noOQMz0R8injxTy
+	 9T5pKtU+mCAeT2OOT6dIwBjJoQkhSBONgvNQGS/hQJcHH88daGX5Lwhv4+J7k4tce7
+	 jzczoAJGoL2SQCuiA/2W6pBIN2CkY+zsCVYZzss+s72f6j+RrDupAF85h8MMkdh7Sm
+	 wvFbV131TTeUM5ytOU+lsiFQUl4Jd6YjwvFK6vlzH3HwAO07A9SDi/JYTTtF9Kn8aJ
+	 GbzTKulAfjt1A==
+Message-ID: <sashiko-outbox-202871@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] sched/mmcid: Defer affinity updates until schedule-in
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Weiming Shi" <bestswngs@gmail.com>, "Ingo Molnar" <mingo@redhat.com>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent
+ Guittot" <vincent.guittot@linaro.org>, "Dietmar Eggemann" <dietmar.eggemann@arm.com>, "Steven
+ Rostedt" <rostedt@goodmis.org>, "Ben Segall" <bsegall@google.com>, "Mel
+ Gorman" <mgorman@suse.de>, "Valentin Schneider" <vschneid@redhat.com>, "K
+ Prateek Nayak" <kprateek.nayak@amd.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
+ R . Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Kees Cook" <kees@kernel.org>
+Cc: linux-mm@kvack.org, "Xiang Mei" <xmei5@asu.edu>
+In-Reply-To: <20261106120846.2405936-1-bestswngs@gmail.com>
+References: <20261106120846.2405936-1-bestswngs@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 07 Nov 2026 12:09:08 +0000
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B551B120005
+X-Stat-Signature: s3mgn9dmg4sbnys6dku41gz7jjwzpptr
+X-Rspam-User: 
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: bc6qgzbhu9npmhzx8mj5adgtr411y36s
-X-Rspam-User: 
-X-HE-Tag: 1794053256-559717
-X-HE-Meta: U2FsdGVkX19YqTWZYbYDJeoAZN6Z9F5keSyVxBeqcyhChYz2iJaX7y8FEpgEpgYkE6PfI1RwPbQuNg28RxNSqdUWaSgnZRnnq4ejVLUVIDTkEuEQOrt4eFQ6Llu3smpVxIwU0X5nwYRqcrKkkz/s/aXR4L+QGMGXtMzKBFbiGDo4Ae2kuXLaQeDWoa7C3NBhtusKpanNvYQfh8I1v1Ck62nfkanfxo5x+mg+aT7HdlLiUOehF0c2/o+VpGfvbugdM8badH81C9q8d5k2pBgYJUz2UY1jbD67gGvC80aQu987PODpXD7NGUVs70Kor810W6LxRDKTcfndOZGBXeybrT/REUfP9sUheoPDXV8sIgogUj0L13YGwqEmlOhgEcNF2fqGivZ5jEsypGIc006I7yuXeD7B1mugpqpTm+cmmpT+rMn7scxTkcHEYlJDNuqDwr4D9AxfvlUwBJsme/7Z/YSpc6kPEkZgUYJJ79epkEr2zBqgDqjI8mwc8ULTCPoP61q+TIV+KCrExwqolcM3OTXfd/0EOx94q4Ub0GKFVsqInv0nLbGEKr74oR6p9GzK29Wfxf2EJzXyKZlw8g+dizFqSBBaC+pXHIRwyhYV0VG1qDwEYR1l7v+RV+sLzCI1gcP9BCsoxY1kal+uV1ozDf9o1uXajqXrl5hKT+dijwmPEooG5PhLWBXwXva2GGNjQzNl+Nu37tgvgJq1stmZnerlhom/PjrCcl0cNTh8ok87d4Y2wseS/aK0y+9eAfYiecaXjaVwEGk2DpzUrvnUakw6GsD//v+Vx0DKNBYc7u3bB/wpSRzSwPpQSkaS5M62DqW4qAC/Et7Gnu702US/7ikASpzkugHaWIvWNv23OpLd5w34v8/np3NiRdK8fseF1cPZpqX1uOD3rXRkhzKbeIV6Bc1VEuiQpYnfoHJ9jfGdcDnk7YYdsle9WQICh99FLdQ/g1/Sa9WkDcpeD/C
- FU9hUGOH
- PLSSO78HM0i7cu6ooDgd4llMEq6bDRCuYABqAbCnM1yU19wxHwFOugC7Dg6MwuEtHMy+lIJpM8+jJvfrjT+2tvcpG5Gr9eJ6pIT8QbY/l6MBHLlMNGercQKUQgiAVIB/ckDO18yY1k4hsqGJgGiKQ2IYuy7RPQ1CNHu8gvW/Sc39qQNbdWDKH9Y/JLlXhP+lAStRl1psJErVFYCAbjsWh/NM4RanmzTsZGBSJPqmPwgE04Y9wnAbcI6aJoGUwwYhuWn2MdZByLXYZz/kvd0286M/0j7hhHEvuk/PtSkfLes8pRmhaA3XeM/+BuEBD4zJO18sQpiRBxD6KTWhVGKFO/Z9E7KhKYuFE/iI5ze6kF0I0OuYTxZdm0E/l/EvFn+lxQYv44N6khnuwB3gRQeIwHkthfj0262HoSRzkdlB2Nz/hK26HT2DvLXRJZk4FqIQ9LE6598bwpviC7PukeSoCJW73Bg==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794053350-760990
+X-HE-Meta: U2FsdGVkX1+P3rsy8njWF/H8qe7yGVcAVUcWlxs/J5NJc9gc1AS8+lJ1cSscli17ZJxl9B9uAvyiVSG/CmMWqI41U3a08zMlbK059U7xKvvTZ94YQYYvVujsOu1kUXTGXf0PtBs9b8Pmy2sWLMSh/cSTZkAHEx2kqRuKs0yzEqopoy6GXN55NYRsh9XF5z5JyeLfmMBGH0Qq+ilsRzE836fAGxT8//s4qMYeyhIQr5nDtu0ZdE26uTt/w0+IJckzH8+rpBVGYJni2t668dR2qVf8OlDXLCiFr7k5+WH4L0L6SOSM/zcgcR9drq6oaBVpAxe1DhZW8CTt7SRKRGYFjsdqokmO/vI5BY11hNLqvMcUWKmD0I2KhMCMhNpGBBsYcqpaXAhIIRhuIBYFZx4eok3c7fYiqrY/gvehBKOlEtGcHipE9Y0bhqVJB5d1dVKzO8dgJh8GauO5CrKsyXPhvF1oZoPeskAw5lQwCfjpKMpV2gdJLToYz/trx99F3C4brs2HVPpDBVuYGcqZILdw/CgbIDJfr6pEQ8AWXV8j+x4fnCMfZ+8BxH9i1iaKm0ePsYGpMjr8A1tvV1x5018dZAnZKeTBy/xOdZYLHdpRayqbTAu2hP+2q2S9TB0PAp9g9zA/mikEc41AU5a96RnCFa3K1PVXJ1Xys5F+synT6+Hp9qDdiS1VFffUbX894jcsXLhaklsIvWCRDZtGIRRDQAssREQ6Ndyq3C+t1hwVLsMoWpCHHsSG2vnIgSq6lU6+w8PGYcba8LwDvOW/psaYRMBO4VEBlsI0VTnK1LMknUzCdchruLgekVIwq02TnCdHV8yE0529ugaDg/EMTj3jVKorgd5git2xCOwPwPuPy4HdwXuqaAyEb2y3PJsDKyaz07lqrpp1tFs6JH20NAsfn6OYiNeB7km5iJTbncwLXMDxg3J/eZTpy/AKExO5Ye3yFYK3VRuaFuOE7vS9rM7
+ 2ULD53nC
+ QZzFvD2le8pVnt85/xbKdBlkbXyH8QpULcGyE8kNdFTBg1FCNLa+L/vbtoTXMcyVSHUU+9OAKE2Ou9tG0g4EaxDabDwNsallcGEQ3UgZ20/rmPaQHyJ4utLG3Tpz2R0x+9YXMRYS3S1zpDfvP4iIq5D/7omRoIzvx4pAUFeG8iM6tBqKiQ5ZE54kD1itGn92cx1lj6G4ILwvqZ+M+04XJ9Hviz2H5AzmULNUWouV5lrs/inHAMw//8pnfIuH+gUEle0FXWOVqhC9QjttNFeST4BKZsRUc5u6xmzjZxZinWXG74P3qRzY0BicH5yg5Sytg5g9D/RmyXuZ0dM21ydG6LHVBKeK4B90QVBKf1nuqMEccIsQ+PZZ/oDa4HFKJS+p5h9wvM4y0Y6ulbKHgXeUC1V9oFDZc0bcpZg/pOZO/CrrXvmlTpzbMtWUOjNCKq53nA+OWNd32ZH0/c8hLKjZf44BxQnNMJ9lVFO4AFAGE4tjO5B84B+B6/5zq2qVl2ArWtUgTfg4/zpjiZze099ayX3Zy0pnH01H6kfDCoYenE8eBwcoEpwdQzHDGuDNEGAz3r3Ho+HGWazPIY5JskdPLuZN4/w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,138 +101,57 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-head:   09658a93dbdf3596b7c0edec1292ae09e58da333
-commit: 024c3b9753561e3ad2d6cdd47b405126709633e0 [111/117] squashfs: fix leaked page locks when page actor allocation fails
-config: i386-buildonly-randconfig-1001-20261107 (https://download.01.org/0day-ci/archive/20261107/202611072044.cmq8jkLA-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.4.0-5) 12.4.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261107/202611072044.cmq8jkLA-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611072044.cmq8jkLA-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   fs/squashfs/file_direct.c: In function 'squashfs_readpage_block':
->> fs/squashfs/file_direct.c:121:1: warning: label 'out' defined but not used [-Wunused-label]
-     121 | out:
-         | ^~~
-
-
-vim +/out +121 fs/squashfs/file_direct.c
-
-0d455c12c642864 Phillip Lougher         2013-11-13   20  
-0d455c12c642864 Phillip Lougher         2013-11-13   21  /* Read separately compressed datablock directly into page cache */
-2a7aea59cf4dd4a Matthew Wilcox (Oracle  2024-12-20   22) int squashfs_readpage_block(struct folio *folio, u64 block, int bsize,
-a3f94cb99a854fa Phillip Lougher         2018-08-02   23  		int expected)
-0d455c12c642864 Phillip Lougher         2013-11-13   24  {
-2a7aea59cf4dd4a Matthew Wilcox (Oracle  2024-12-20   25) 	struct page *target_page = &folio->page;
-2a7aea59cf4dd4a Matthew Wilcox (Oracle  2024-12-20   26) 	struct inode *inode = folio->mapping->host;
-0d455c12c642864 Phillip Lougher         2013-11-13   27  	struct squashfs_sb_info *msblk = inode->i_sb->s_fs_info;
-12427de9439d68b Phillip Lougher         2023-11-13   28  	loff_t file_end = (i_size_read(inode) - 1) >> PAGE_SHIFT;
-09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01   29  	int mask = (1 << (msblk->block_log - PAGE_SHIFT)) - 1;
-7f73fcde4d93072 Phillip Lougher         2024-08-19   30  	loff_t start_index = folio->index & ~mask;
-12427de9439d68b Phillip Lougher         2023-11-13   31  	loff_t end_index = start_index | mask;
-d31638ff6c5437c Phillip Lougher         2024-10-21   32  	loff_t index;
-d31638ff6c5437c Phillip Lougher         2024-10-21   33  	int i, pages, bytes, res = -ENOMEM;
-7f73fcde4d93072 Phillip Lougher         2024-08-19   34  	struct page **page, *last_page;
-0d455c12c642864 Phillip Lougher         2013-11-13   35  	struct squashfs_page_actor *actor;
-0d455c12c642864 Phillip Lougher         2013-11-13   36  	void *pageaddr;
-0d455c12c642864 Phillip Lougher         2013-11-13   37  
-0d455c12c642864 Phillip Lougher         2013-11-13   38  	if (end_index > file_end)
-0d455c12c642864 Phillip Lougher         2013-11-13   39  		end_index = file_end;
-0d455c12c642864 Phillip Lougher         2013-11-13   40  
-0d455c12c642864 Phillip Lougher         2013-11-13   41  	pages = end_index - start_index + 1;
-0d455c12c642864 Phillip Lougher         2013-11-13   42  
-14694888db2c1f7 Fabian Frederick        2014-08-06   43  	page = kmalloc_array(pages, sizeof(void *), GFP_KERNEL);
-0d455c12c642864 Phillip Lougher         2013-11-13   44  	if (page == NULL)
-0d455c12c642864 Phillip Lougher         2013-11-13   45  		return res;
-0d455c12c642864 Phillip Lougher         2013-11-13   46  
-0d455c12c642864 Phillip Lougher         2013-11-13   47  	/* Try to grab all the pages covered by the Squashfs block */
-d31638ff6c5437c Phillip Lougher         2024-10-21   48  	for (i = 0, index = start_index; index <= end_index; index++) {
-d31638ff6c5437c Phillip Lougher         2024-10-21   49  		page[i] = (index == folio->index) ? target_page :
-2a7aea59cf4dd4a Matthew Wilcox (Oracle  2024-12-20   50) 			grab_cache_page_nowait(folio->mapping, index);
-0d455c12c642864 Phillip Lougher         2013-11-13   51  
-1bb1a07afad9730 Phillip Lougher         2022-06-11   52  		if (page[i] == NULL)
-0d455c12c642864 Phillip Lougher         2013-11-13   53  			continue;
-0d455c12c642864 Phillip Lougher         2013-11-13   54  
-0d455c12c642864 Phillip Lougher         2013-11-13   55  		if (PageUptodate(page[i])) {
-0d455c12c642864 Phillip Lougher         2013-11-13   56  			unlock_page(page[i]);
-09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01   57  			put_page(page[i]);
-1bb1a07afad9730 Phillip Lougher         2022-06-11   58  			continue;
-0d455c12c642864 Phillip Lougher         2013-11-13   59  		}
-0d455c12c642864 Phillip Lougher         2013-11-13   60  
-1bb1a07afad9730 Phillip Lougher         2022-06-11   61  		i++;
-0d455c12c642864 Phillip Lougher         2013-11-13   62  	}
-0d455c12c642864 Phillip Lougher         2013-11-13   63  
-1bb1a07afad9730 Phillip Lougher         2022-06-11   64  	pages = i;
-1bb1a07afad9730 Phillip Lougher         2022-06-11   65  
-f268eedddf3595e Phillip Lougher         2022-06-11   66  	/*
-f268eedddf3595e Phillip Lougher         2022-06-11   67  	 * Create a "page actor" which will kmap and kunmap the
-f268eedddf3595e Phillip Lougher         2022-06-11   68  	 * page cache pages appropriately within the decompressor
-f268eedddf3595e Phillip Lougher         2022-06-11   69  	 */
-2258e22f05aff58 Phillip Lougher         2024-08-19   70  	actor = squashfs_page_actor_init_special(msblk, page, pages, expected,
-2258e22f05aff58 Phillip Lougher         2024-08-19   71  						start_index << PAGE_SHIFT);
-f268eedddf3595e Phillip Lougher         2022-06-11   72  	if (actor == NULL)
-024c3b9753561e3 Nguyen Ngoc Thang       2026-09-27   73  		goto mark_errored;
-f268eedddf3595e Phillip Lougher         2022-06-11   74  
-0d455c12c642864 Phillip Lougher         2013-11-13   75  	/* Decompress directly into the page cache buffers */
-0d455c12c642864 Phillip Lougher         2013-11-13   76  	res = squashfs_read_data(inode->i_sb, block, bsize, NULL, actor);
-f268eedddf3595e Phillip Lougher         2022-06-11   77  
-7f73fcde4d93072 Phillip Lougher         2024-08-19   78  	last_page = squashfs_page_actor_free(actor);
-f268eedddf3595e Phillip Lougher         2022-06-11   79  
-0d455c12c642864 Phillip Lougher         2013-11-13   80  	if (res < 0)
-0d455c12c642864 Phillip Lougher         2013-11-13   81  		goto mark_errored;
-0d455c12c642864 Phillip Lougher         2013-11-13   82  
-84e0e03b308816a Phillip Lougher         2024-08-23   83  	if (res != expected || IS_ERR(last_page)) {
-a3f94cb99a854fa Phillip Lougher         2018-08-02   84  		res = -EIO;
-a3f94cb99a854fa Phillip Lougher         2018-08-02   85  		goto mark_errored;
-a3f94cb99a854fa Phillip Lougher         2018-08-02   86  	}
-a3f94cb99a854fa Phillip Lougher         2018-08-02   87  
-1bb1a07afad9730 Phillip Lougher         2022-06-11   88  	/* Last page (if present) may have trailing bytes not filled */
-09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01   89  	bytes = res % PAGE_SIZE;
-7f73fcde4d93072 Phillip Lougher         2024-08-19   90  	if (end_index == file_end && last_page && bytes) {
-7f73fcde4d93072 Phillip Lougher         2024-08-19   91  		pageaddr = kmap_local_page(last_page);
-09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01   92  		memset(pageaddr + bytes, 0, PAGE_SIZE - bytes);
-1bb1a07afad9730 Phillip Lougher         2022-06-11   93  		kunmap_local(pageaddr);
-0d455c12c642864 Phillip Lougher         2013-11-13   94  	}
-0d455c12c642864 Phillip Lougher         2013-11-13   95  
-0d455c12c642864 Phillip Lougher         2013-11-13   96  	/* Mark pages as uptodate, unlock and release */
-0d455c12c642864 Phillip Lougher         2013-11-13   97  	for (i = 0; i < pages; i++) {
-0d455c12c642864 Phillip Lougher         2013-11-13   98  		flush_dcache_page(page[i]);
-0d455c12c642864 Phillip Lougher         2013-11-13   99  		SetPageUptodate(page[i]);
-0d455c12c642864 Phillip Lougher         2013-11-13  100  		unlock_page(page[i]);
-0d455c12c642864 Phillip Lougher         2013-11-13  101  		if (page[i] != target_page)
-09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01  102  			put_page(page[i]);
-0d455c12c642864 Phillip Lougher         2013-11-13  103  	}
-0d455c12c642864 Phillip Lougher         2013-11-13  104  
-0d455c12c642864 Phillip Lougher         2013-11-13  105  	kfree(page);
-0d455c12c642864 Phillip Lougher         2013-11-13  106  
-0d455c12c642864 Phillip Lougher         2013-11-13  107  	return 0;
-0d455c12c642864 Phillip Lougher         2013-11-13  108  
-0d455c12c642864 Phillip Lougher         2013-11-13  109  mark_errored:
-bbf45b7e6855556 Matthew Wilcox (Oracle  2024-04-20  110) 	/* Decompression failed.  Target_page is
-0d455c12c642864 Phillip Lougher         2013-11-13  111  	 * dealt with by the caller
-0d455c12c642864 Phillip Lougher         2013-11-13  112  	 */
-0d455c12c642864 Phillip Lougher         2013-11-13  113  	for (i = 0; i < pages; i++) {
-6d565409503f4e1 Phillip Lougher         2013-11-24  114  		if (page[i] == NULL || page[i] == target_page)
-0d455c12c642864 Phillip Lougher         2013-11-13  115  			continue;
-0d455c12c642864 Phillip Lougher         2013-11-13  116  		flush_dcache_page(page[i]);
-0d455c12c642864 Phillip Lougher         2013-11-13  117  		unlock_page(page[i]);
-09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01  118  		put_page(page[i]);
-0d455c12c642864 Phillip Lougher         2013-11-13  119  	}
-0d455c12c642864 Phillip Lougher         2013-11-13  120  
-0d455c12c642864 Phillip Lougher         2013-11-13 @121  out:
-
-:::::: The code at line 121 was first introduced by commit
-:::::: 0d455c12c6428647547bacccaaced3cae0f35570 Squashfs: Directly decompress into the page cache for file data
-
-:::::: TO: Phillip Lougher <phillip@squashfs.org.uk>
-:::::: CC: Phillip Lougher <phillip@squashfs.org.uk>
-
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] sched/mmcid: affinity expansions lost or delayed by
+  mm_cid_schedin() deferral
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+commit 8130aa795d763d1b0e9fc8f80bab96df5fedde9e
+Author: Weiming Shi <bestswngs@gmail.com>
+
+sched/mmcid: Defer affinity updates until schedule-in
+
+This commit defers MM-CID allowed-CPU mask updates from
+set_cpus_allowed_common() to mm_cid_schedin() and sched_mm_cid_fork() to
+avoid accessing a remote task's mm while it may be replaced and freed
+during exec.
+
+> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+> index 7d2ec527b8a25..8e8934376e340 100644
+> --- a/kernel/sched/sched.h
+> +++ b/kernel/sched/sched.h
+[ ... ]
+> @@ -4132,6 +4139,10 @@ static __always_inline void mm_cid_schedin(struct =
+task_struct *next)
+> =20
+>  	if (!next->mm_cid.active)
+>  		return;
+> +	if (unlikely(next->mm_cid.cpus_allowed_changed)) {
+> +		mm_update_cpus_allowed(mm, &next->cpus_mask);
+> +		next->mm_cid.cpus_allowed_changed =3D false;
+> +	}
+> =20
+>  	cpu_cid =3D __this_cpu_read(mm->mm_cid.pcpu->cid);
+>  	mode =3D READ_ONCE(mm->mm_cid.mode);
+
+[Severity: Medium]
+Can deferring mm_update_cpus_allowed() solely to mm_cid_schedin() delay or
+lose affinity expansions in mm_cpus_allowed(mm)?
+
+When a running task widens its affinity mask, task_cpu(p) remains in
+p->cpus_mask, so affine_move_task() returns without migrating or
+context-switching p.  Until p is later preempted and scheduled back in,
+mm->mm_cid.nr_cpus_allowed, max_cids, and pcpu_thrs stay stale for all
+threads sharing the mm.
+
+Because p->cpus_mask only holds the latest mask, any intermediate
+expansion that is narrowed again before the next mm_cid_schedin() (or if
+the task exits via sched_mm_cid_exit() before scheduling in again) is
+never folded into the growth-only mm_cpus_allowed(mm) mask, leaving
+max_cids capped too low or triggering wrong per-CPU mode transitions.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106120846.2405=
+936-1-bestswngs@gmail.com?part=3D1
 
