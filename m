@@ -1,79 +1,80 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB1A0606A32D
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B163606A333
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A64igOFw
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FGdo3SDi
 Received: by kanga.kvack.org (Postfix)
-	id D887E6B05B0; Sat,  7 Nov 2026 14:07:07 -0500 (EST)
+	id 803926B05B2; Sat,  7 Nov 2026 14:11:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D397F6B05B1; Sat,  7 Nov 2026 14:07:07 -0500 (EST)
+	id 79CD56B05B3; Sat,  7 Nov 2026 14:11:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2B5C6B05B2; Sat,  7 Nov 2026 14:07:07 -0500 (EST)
+	id 68B9F6B05B4; Sat,  7 Nov 2026 14:11:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C1B36B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:07:07 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 26A281603F6
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:07:07 +0000 (UTC)
-X-FDA: 85409255694.13.23D8F8D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6C78780006
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:07:05 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A64igOFw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794078425;
-	b=wN+LhX+HoNj6LVX5lUC0/viD3wNNM8Ldx5sVrIjkBBCM9jreKf+nQ7/J8mSELY2sAKYIcG
-	1RHcL6jG19UhzyZycxjw8fBwP/ufqlr5/WIB9vfPjl3wBiBAQBV8mILYr9EZ105YsCtFvS
-	HiDEUEPYNrdcgVeTvE8f8p5xp2pk+JU=
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 430EB6B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:11:35 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C70AB1203D2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:11:34 +0000 (UTC)
+X-FDA: 85409266908.09.EB5D0A0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 069B440002
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:11:32 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FGdo3SDi;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794078425;
+	s=arc-20220608; t=1794078693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NsOyfRfBmQLZMCYUcyY/AIK19SXpwuq2A2xY3kassHk=;
-	b=LyDlxXDezukFFYQeDNGG71JFIS28owKNarlESYhyBRlqupZcyoMYm8B2C191yaN6q1lt90
-	MjzC7FHp1vCblK8Kj4v3p36gA9XZuFweSshlELlvVDq1aiYnI/BgkFANo9fU6PerZFQpoH
-	1zkoxImuBTSfT04BfubBNx/oY14ca1w=
+	bh=bH4sG8PxPI3XSzLdlTVmZF250KgsDqk6SB0vAlniKYA=;
+	b=RmfLFaWbmC7LEnyFKYEwNTqktWrJZcWUI8JRtuknQrIRxoqK8SRQK0EGCus0iUkLkCHqYr
+	UYt0xOrz8VIvVLx4m2IX2cNYlZzjozE9LTCS98yZHkPRfuQuYjbsBzXIHVDia3TFpj4W/y
+	JMkaB2t/52sQjcmWNtI8NAF9gjyoKXA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794078693;
+	b=a4F2Iam71nE2G3Iyg0lPltuf/PHFM6+7yqhUjOJtoDrqlxHkC0uteq8ntVS41UGADUGO+S
+	uZUI1+YrkyTmdeCrT6gzvxCbtiYNVRdH/AxHmbENLDlsDtr6NFXdYyrA9RbylXwC//KTYC
+	oGzo+pHUCqTm4A9PuwH1Qar6hbMJJ1M=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=A64igOFw;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FGdo3SDi;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DDA8F60F2C;
-	Sat,  7 Nov 2026 19:07:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1951F1F008A5;
-	Sat,  7 Nov 2026 19:06:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5DD9543C51;
+	Sat,  7 Nov 2026 19:11:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8494D1F0089F;
+	Sat,  7 Nov 2026 19:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794078424;
-	bh=NsOyfRfBmQLZMCYUcyY/AIK19SXpwuq2A2xY3kassHk=;
+	s=k20260515; t=1794078691;
+	bh=bH4sG8PxPI3XSzLdlTVmZF250KgsDqk6SB0vAlniKYA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=A64igOFwwlaHwrsyjLb2iScVGu6goG4rZSi2BRJvofB7goIXME3AxDejLUxdzVtPJ
-	 G9xmD2LDUWBgaPmOupudbhKYypx8YdjHMXRfaAQ+KGUc35wkYLTszvxE3IxprqOYeq
-	 DOrCwd1i6kQyHFwLNmOLS1TrnANHs18dIMmMkVsRNWdcJQ692bBHj5nJGirbP/xQnf
-	 BH5clHynS3NLAiDOdEgQsHA3MVjlsJI2zgI7x6SgDz3FqIZ4h9utDRA0TvWTBqId7K
-	 AidknTkNeA9Vi04tY4gj19LeCb2uiBaU1umnfFWPYzPyQItyEx+E16xy8amemcbh5a
-	 jsVHBDg977fqA==
-Message-ID: <a712518e-e094-474a-b7c3-bb9723917960@kernel.org>
-Date: Sat, 7 Nov 2026 20:06:55 +0100
+	b=FGdo3SDiFOSVJa7QtUjtACayp7b8sVPqRbO3gF7fYZjX1hK6a06frhyCqWXIocQmC
+	 ds6G3zS67yyL7FQFLkmzTYK4ZKIp+G06fQLc9+OUIarNaiiHJmP6HZvy9jnnNUsZt8
+	 JY4E9RciuGTOvMYJSNI17z1awb5d+A4ywGBTekNU5dMtJSJkXqWG4MrDSUPWIq29qp
+	 71Sv4e35V4075qjeGekKguMC3mnd+ji4ap3LrRzuzPb9ACN1f6jtotMrxh+WgiteWC
+	 FqsFYn/XbrVP1dS+kN4DQWgAQGL3S1OtnmNZTljmNcp9pRKbqLgx7MR4/qn96dlIDI
+	 jdCpUvUvq4EjQ==
+Message-ID: <bc095bd8-ee9f-4bab-8333-8f2333b2590a@kernel.org>
+Date: Sat, 7 Nov 2026 20:11:22 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/ksm: fix ksm_exit() deadlock on exec error path
-To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
- xu.xin@linux.dev, chengming.zhou@linux.dev, liam@infradead.org,
- ljs@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
- kees@kernel.org, ziy@nvidia.com, gourry@gourry.net,
- anthony.yznaga@oracle.com, linux-mm@kvack.org
-Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
-References: <20261106013906.2229780-1-tujinjiang@huawei.com>
+Subject: Re: [PATCH] mm/migrate: fix softlockup in do_pages_move() with huge
+ page arrays
+To: Zi Yan <ziy@nvidia.com>, shao.mingyin@zte.com.cn,
+ akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ byungchul@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261107213856462Jx8pIdgdtLvPLfOFTwV4X@zte.com.cn>
+ <DMP795RB75PQ.1XIZ1QUJ51Y0H@nvidia.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,21 +121,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261106013906.2229780-1-tujinjiang@huawei.com>
+In-Reply-To: <DMP795RB75PQ.1XIZ1QUJ51Y0H@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 6C78780006
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 54aixzjrxkfifft1y1k57pedepgusp6z
-X-Rspam-User:
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794078425-252842
-X-HE-Meta: U2FsdGVkX1/YnGeFATO70vsZkFgLi38c/fZngC/OSVTCupMLC4NqEQsbbe55UyN8XeZfufsx6UaNec0cRtWW/yRdYM40Bf+N4YaMGU6N6aonHPhuGXjfM/1vlbQTbnbKlCf15GuW91NewC2lxKkczFEpkiW2aY64AogWSJfzdCudHPBfx+r9Nkyo/z4FQQtubY+qgGtjarWKv4ij4IYfaIUzsLC6qsTmVab4Pf1Ps2P3d5VcMxgR4nPMsVY3WJR/EFv63WvCxRlkbVy7GxUrKhC+oA7mIIsouy3GuYNMEu69W+XYMrOoFQfeUSTPm15S9Dkm6/ZPMtdFC+L6ev+MPrAamDRYVq6LqR/NiMBDxrm0cqDrl+rEFxZbpcETDfEnZZceZE6DJNc9FQOlZ/AcxsqhRx5eau2Q3qZkMNHVjznuTH88LsNiDYIRoXl0WiC44XgG/X448OyDBBEXfLkQw3/iISmFg6fWGN3yVK4F/xGaTtWRhmf5ZOzGbh0RVGnFOaK2MjoqSHlr91ypdRVURZEYS3L5zi5HRD2JqVbqPN6pF0rDLlnbpT9eIaNx+GOtwhly5YciQMi6l1D1KCtGkjKwIGEROX0geCF/qmywBiz/v50Ps+IBy8+zcD6OfJMo586oxdMB3k3NC9mirPEbwGq+thIc3ns4BdaL+pPqDugOcYiuHoswzuGSUDZxA4uzrDQyPho0qh5xFY/mUbuQm/9Eskdvl/oCylm3RJTOcedOzG7ljUrIuHpyl6OoF06NKiq2RGbz6n+oCPf8d/ZhLL/fFoVKmZsskfMB6s1YbufXJAeEWgeBRcdLe4xM2IQqTDU139zg+90dc446Or+/Zg0q72sI+ms1XjBsK+rrHq1GbGVCPRHbr5AXKhWwZDsc+6y0bd/5VN3ik1KuuWg4l/3d8N35taVZCE9czBoIx8YFFKFEnbuzHLCcH3a4ehguGd/s9H38var9Iv9ONYy
- EhppfbH7
- Mh4IAL7sjuAQZfqWwCJQEUZ/HmExqpTIXcDMeLwlnuLokrSDohEy/KvCcyhI3jperpynIp3/BXm/6F/B1nVWbCaorAq6S3uX31Mtc+YHRedNyEiEJpBGx/yVrN2uWw3eT894vqFIwvfvVY6PkffKaMZZwFlWR8zT4/Arhaz0SQlIQYwXPI/tul2ksnxoN2TUZOX1cuQ2tg9o/e6mCe2dx52xWCm+9svMu9zEeAzLBHL7u2Nzccf7tmG+L+ei8yg5bB7tAGMmCWMnoBAwjP7j9QQQsylZNwOcbIiMrktlmLPfN8YnihTc7RSz762dpbBPRwFtIToe0oXIZNgoYo+F068PX/d21lxR2141pZEjvKEdwPcYZYNuyKRqrSbmKPC6xMlJQXnr+USFvM/XNF06GGNeL0us8OugDH20ZuKS7L88fTeY=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: djsx47f77obkxxuu7gdryak7czi3cs13
+X-Rspamd-Queue-Id: 069B440002
+X-Rspam-User: 
+X-HE-Tag: 1794078692-812501
+X-HE-Meta: U2FsdGVkX18RqvCqkyZgZjpeO2Pz7L8Ce/GtwHfatwm/nGFbPWsUp0y3crLyuUBqLB6OOKmWCM2t+9mJ5E4YXKzs4UE1Cn99ax+AIKtNFfK4Z5xkQj3fRj+SiD0A6qC/IaWYLCS7Yf+WUuTU8VX+9Xmt41NU5ZTVz13tsJWXDK4MFlc/imJDegJ8x+v6+6D4bJLY6vHUjEat6xa+hAayhPBhQhoGEjDJIaTNN7fz4f/CuBjtdoaPsHJFIYJB+FLbvt/lpFCYbUqp+qjJ0/LuoeoBKMYYnoV5y0CgGgQc61Ua9s7SOMaVhn45i9eP1ZwLkwTr7I+Or/tToWX3CORhjTU4A+PG4ffBS/bEPbVRrESAZWwNmIdKxc0iDH7qgDp6nPOj/J7DpnbGWs2bRvQ0UDzqTTHqXT6AjudPsdl1sSEWnFTxLSYOUyOUkff6dZkCpH2ICo5VuocdqDoP9yzIUm2eDojwEztC1euBjOs++M6QWUr101hqzMMn4aWxZiK4hauLC2TQAO98IpVECYWsax6Bl7HgGh8oa18yEtMtWJfnc+zjOKCpOOEy9AcGb7d5WGxAbxQSoPJASXjC8S5SC1hsBw40Z3OZBcTnyZ7MjWquPs+DmCmGc9JE2uL+n06ilUyBzuwktS2xCmZ34Um1w+BzdLFHNDIcg3J3C2GJo7G/8Ko91uDB97JiiT6LJjQftlCuEfJpZL1b5WXNvhULKE/PbPyg7nsa51Xdnm3tBDCzi9dGU7kJjGdK6UoGiKvFpeSNuHRtRBfP0dFFdiiQDkPaLOblCVPbH+qco7+p8gFgjR952VStjoGEgnNggh6AaY62QA7m9wguavZ992+QyQhoD8btbls9TkJL5BJ7qvrZWgTiPbhmyD9V9Rr+0Oh5EKYGkXyOVK6mJxp3AJgABzJU/m3yDMGd6mTAfo15GNifVJ1bAk+TWXxcxJwOnGHc2cLRXNqDORoTZVAhROS
+ szJQz2SO
+ 89d6vNNUIrTItqEUaYNRx4uh1kPumHsLpgH4p65vChm+SCOFA0dEFlrQ/ElZjkBSyMa8Hrxpn03tP0W/sdx65ae/jU1JPT5lbKafKHFK+xkOQpYEU8ukcCZuF04K/tRK+x1gapb41YZpOfeMzgnSTxNvoZyiaNLbK1HpeYKJ5+diWMcjlPaC20IAoYhonbMRwzHVS6+mEbI9bEz7z6lVQmyDcg369ZZ1h/QFBaMhJW/nSr8UMTZYDBM4rGkNhbMIqEJb3fxjMReC2oWDpvbgpbgC4USQklLyWU9EagqEZG8PhYe+6LA+OYfpEkZ/j//A62P94QrNJtCMw2viPGEQJzM1DWn5nDFcEkFW99Rjmu2JNW6RHmXmvTydXST00hcvGNSbN0TgVTmMN7hEDiM296iLV1PnnhE5RC3z/1TPzhA2Z/eIn2Q9dcYDu5g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,27 +144,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 02:39, Jinjiang Tu wrote:
-> create_init_stack_vma() registers the new mm with ksmd via ksm_execve()
-> while holding mmap_write_lock(), and calls ksm_exit() before dropping the
-> lock. When insert_vm_struct() fails, __ksm_exit() takes mmap_write_lock()
-> again when the mm is ksmd's current scan cursor, leading to deadlock.
+On 11/7/26 19:45, Zi Yan wrote:
+> On Sat Nov 7, 2026 at 8:38 AM EST,  wrote:
+>> From: Shao Mingyin <shao.mingyin@zte.com.cn>
+>>
+>> mm/migrate: fix softlockup in do_pages_move() with huge page arrays
+>>
+>> do_pages_move() walks the user page array one page at a time.  For each
+>> entry it performs two get_user() calls, an mmap_read_lock()/unlock()
+>> around a folio walk, and an optional store_status(); none of them has to
+>> sleep when the arrays stay resident and the rwsem is uncontended.
+>> move_pages_and_store_status() returns early while the page list is
+>> empty, so an array whose entries all resolve to the same node can run
+>> the whole loop without any scheduling point.  nr_pages comes straight
+>> from move_pages(), so a huge array can hold a CPU past the watchdog
+>> threshold on a non-preemptible kernel; with KASAN and function tracing
+>> enabled, ten million entries can exceed it.
+>>
+>> Add cond_resched() so that long calls yield periodically.
+>> do_pages_stat() has the same problem and is being fixed separately.  In
+>> current mainline only alpha, hexagon and classic m68k can still select
+>> PREEMPT_NONE, and they cannot enable CONFIG_NUMA, so this mainly
+>> targets pre-v7.0 stable kernels.
 > 
-> The early registration is no longer needed after commit 590c03ca6a3f
-> ("mm/ksm: fix exec/fork inheritance support for prctl"). ksm_vma_flags()
-> calls __ksm_enter() when the first mergeable VMA is created. Remove
-> ksm_execve() and its stubs.
+> This is probably in the same spirit as the do_pages_stat() patch[1][2].
 
-I assume you mean the
-
-} else if (mm_slot) {
-	mmap_write_lock(mm);
-	mmap_write_unlock(mm);
-}
-
-Can that actually trigger?
-
-IOW, can we have an slot, and the slot can already have a mm_slot->rmap_list?
+Right, and I'd like to see an actual reproducer, because we sure have a bunch of
+cond_resched() already in migration code.
 
 -- 
 Cheers,
