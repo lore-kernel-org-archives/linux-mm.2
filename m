@@ -1,91 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E032C606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 03:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7815606A32C
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 03:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=F+jZOoWy
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LMWE4Agm
 Received: by kanga.kvack.org (Postfix)
-	id 6A6D26B05B0; Fri,  6 Nov 2026 22:43:51 -0500 (EST)
+	id 5EDB56B05B2; Fri,  6 Nov 2026 22:49:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 656C36B05B1; Fri,  6 Nov 2026 22:43:51 -0500 (EST)
+	id 59E786B05B3; Fri,  6 Nov 2026 22:49:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 56D406B05B2; Fri,  6 Nov 2026 22:43:51 -0500 (EST)
+	id 48D236B05B4; Fri,  6 Nov 2026 22:49:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 284386B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:43:51 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 858BAA7B40
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 03:43:50 +0000 (UTC)
-X-FDA: 85406929020.06.7D208AF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C8317180002
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 03:43:48 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F+jZOoWy;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 0EBB96B05B2
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 22:49:37 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 6EEE1C027D
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 03:49:36 +0000 (UTC)
+X-FDA: 85406943552.25.5169DBA
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CDF03140004
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 03:49:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LMWE4Agm;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794023374;
+	b=zC05JitBdUL1EgfZsMm2DgfgugzkXy0iI83jYuP8mvByjF/xDZT07wmzUUZBXQ6oX6DVcD
+	K4r5cWKZt8ZmU/WMoyIiQhPTiZ5cDbpgTy2G06Fy0HWR2/X9QHaRGc4NMdgwlOF9voQNlu
+	cdi6apbNd4hsfYF+CEFoav8AYyaccKY=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LMWE4Agm;
+	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794023029;
+	s=arc-20220608; t=1794023374;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9E5ibFPsXIKoHnSIZ1Z1BztDjDSUVZCgCyIkzL+syn4=;
-	b=c9qCw1tlri7vJveJY/pB6td6prSY9LEMNLz35qjMMMX+d4/T3+VweW9xSt4uom7Tt8XNN+
-	r4UQtmgyGoQhI00e9fIhJ/svtCrytASh9cS9DccmG2FpwTSmbhS8cAYVWY4eW/EZ4D+MXX
-	6RPaKNN10AcIefQHA4kLuQAforeXfmk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794023029;
-	b=o89YWqa541+g+dkytDxz4ISwFToh15b9s69lcyONsWaHtF+wuqrYzs1IoDGDiIK+epnWJj
-	krmUBbbI0BgJM4HqdZ6uZxlVeufBMjkSMRykqrCmxlfFWRP/WuR3BPQkHvjCZuQQjPmNVX
-	STfAI6pc7ux7r12KLWKetPxdoD2eXp4=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=F+jZOoWy;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=cutAuWHvNzGyfza3iyExlZUzQvoMDgtEBIcgqPWqQFs=;
+	b=3/sDR5UB7e/dcJn+HRwHJniSFqoOhY2PeUNGqasM3mFE5812ATTjdT3ZB7QiKVf50vhFMN
+	JvkR2L2PdFbvMYMLImlSLVgfonaYAP9G7nLITOsdWfrFq6QQQYMOdiZQ7lovIeqnzKta5o
+	2i4Qs2zIcTplqwaCvfVPUWOAeXEj9es=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B5DAA4025B;
-	Sat,  7 Nov 2026 03:43:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4364F1F0089F;
-	Sat,  7 Nov 2026 03:43:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A32FF60ED9;
+	Sat,  7 Nov 2026 03:49:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B281F0089F;
+	Sat,  7 Nov 2026 03:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794023027;
-	bh=9E5ibFPsXIKoHnSIZ1Z1BztDjDSUVZCgCyIkzL+syn4=;
+	s=k20260515; t=1794023373;
+	bh=cutAuWHvNzGyfza3iyExlZUzQvoMDgtEBIcgqPWqQFs=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=F+jZOoWylyIFoHJiNOeY24V4s6HwTnI0yI7ihk/Mk7y7P0VxOH/RAW7LIJ/xIm9ME
-	 wvN+DMjTFT7ON8JrDWCjeQ4LD9kCcyp6qkTm2IgNFHJbnVVgyUXFPTBrSCiHtktyLs
-	 5JW8gYdfo1zZCliQ4yUvdWK+uiHHoi82C+PKJTdjHU+oXUOb7hPgJLelMA54Rwj33M
-	 KPIAPIhpL4w99JbqBtWmMYnYUxGrcRy0z0U+fN7pOMrDjCBPKbm/UZiG2Ce9g0fPqc
-	 qAeR6B7L3KbS1/bQ+alZAUkPQWaIyu19jCvlK0aUGnmNqSuEvRJNqjV86rD6pIBzSv
-	 VnbQv8YV8qbTw==
-Message-ID: <sashiko-outbox-202535@kernel.org>
+	b=LMWE4Agm10/bbloUoyTBQBM4m/ORvxwkqqhUcWMvuU1WMFHpTaR+hkeNm6+w7kbex
+	 SRzhYllQ6gd9O670442FL4B1cDmoBDZvxuo1zcKqFxmAMCDY854tfnaFWrrlaKsU+Y
+	 sS0b14q5xtR7aruyt1RPaD6frWtowNZF1CGuh4sLQkfi+FmZhEqS0vJablEGkXVzYw
+	 F9nw/ciFCQkmcug3hBCfxhfnxaq9vvgE15adj+qBCpPulu4ADld8j/SzjNZe7zveU7
+	 YF61pmRLC2oGG1X/rXba35mBiDgax0ToiyauBzBfhGUyRt46bJN3fCE9yrNI4BRNUk
+	 AKp/hzbTWkYEA==
+Message-ID: <sashiko-outbox-202537@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] ksm: add merge_only_zero_pages to merge only empty
- anonymous pages
+Subject: Re: [PATCH resend] ksm: add merge_only_zero_pages to merge only
+ empty anonymous pages
 Reply-To: sashiko-reviews@lists.linux.dev
 To: xu.xin@linux.dev, "Andrew Morton" <akpm@linux-foundation.org>, "David
  Hildenbrand" <david@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>
 Cc: "Chengming Zhou" <chengming.zhou@linux.dev>, "Lorenzo Stoakes" <lstoakes@gmail.com>, "Liam
- R . Howlett" <liam.howlett@oracle.com>, linux-mm@kvack.org
-In-Reply-To: <20261106034304.231809-1-xu.xin@linux.dev>
-References: <20261106034304.231809-1-xu.xin@linux.dev>
+ R . Howlett" <liam.howlett@oracle.com>, linux-mm@kvack.org, "Huan Yang" <link@vivo.com>, "Wang
+ Xiao" <xiao.wang@vivo.com>
+In-Reply-To: <20261106034841.233085-1-xu.xin@linux.dev>
+References: <20261106034841.233085-1-xu.xin@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 03:43:46 +0000
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 1qzyz5648s1sxj4ajqfa91k5iusr9oka
+Date: Sat, 07 Nov 2026 03:49:32 +0000
+X-Stat-Signature: sxwthj34snshufjr7rfnc6muiobutdzb
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: CDF03140004
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C8317180002
-X-Rspam-User: 
-X-HE-Tag: 1794023028-239882
-X-HE-Meta: U2FsdGVkX18mP9EMWYRdON90HHEU4TonpM/DONG6CbESqLpZzhqckvj16BX/tvdyokLyNkdFWuxVNb36al3qN9ACZGqcpaIPWNnAgBGnYyacQD+IJLv5YaS2JndSqwsc/StaMrET+PCOmuRvCl1J6TW+gBINwAQPqnY8pW92x1yJCI2dMH/itqneEcRFry7IQA3ZsumFcCkhiI5crfI3qL5e+ruSAnxdr2N6qxR4EkBEoMKtecOoSVZguiBy3vPqmKSRdosamPtvbuJnSELG5DRINc4mI9RAYoCToW28EedNkWvLvSAx6+72pCx7SBiWjzFwnkoCuhLaBc9vmyZSLIrzgU6EWnaL/FsAUR7+qVX0mzeZRzpxsZ1pYD6hcqoaiUUa065AlvDgbEp7BlMar1LlHipZUw88BJPs2qzB4PEh/FeISom8kEwOg4cscvEEZlevpg7KRXd3msCPcaJkPkMaBy/ATEItomy+8k/Qg4JuG94Mf62ni3DORWUB/E//7QqSqmsLc+7HGzyK3zNn4vg076Pska44s6eYcFvvDxTr1h3s0EF65r3OEmFEhlt/SngAByA0kNtf9d8RbS6sHfqJA+H5xib6224n0VKKafxavtVH8zC0WBT6FDpNYgzJlNfz2qXmysSYg7H67LXQqtjBA9zdNKcg/rjB4ByCMP7uGUP1hfRDtsAe6+uR1tExdDTXECtm9pl4YAwHVvoHXjTXPSNjtFlpK8t5Ms7FGoZEhu9mDkR+Uuach00yjuKVF1QX1xVR15H2HOMpXt8lT45Ulh22Fh/EX+ouDJIb0+7Bb0QE5c0lbqtrW1aFUuTrWPso63Jd0vIIhKqef6lcVdJCpp6BBJKvMclPpEDMsNhtj8t+oXa+6LTRmDw89v9WESZZd2/O7OaVMUaK9we0uqrzwgRxKmkAg4+Fvepl2FPda/6edyspwmKVEwWNwC1Yf6LYoN9DvIIjxu59GWt
- 3xNxQbQR
- 8URxfAjAHAnlX1963winAiPTavfUvUzwcXQRitjPFaDuhnReG91vqOLJOlQxzfLU8K6CjytVPYO7IIfM2FBhPATIagdQrt8L1Sv6Qdxti3dn02BpEaU45gGVHrObgyKAqm/xuLUyNwWA5qnX5ZqN4deNpeAkj0XmO9s5/HNEebCvZpakp4R8RUuGfAzLKn02tygvWvS3UNjFES36MZJJHcoA/z3loNawpDknOiZ/j9c6LUGPU+0g0JNtmqeasCBNWllBKkmWlMS0z19KmAp97u5dmnPkOnO1HJ/jA9LhcxKoCNnTKMyW5h4EF6MeCHnoXeuhQUvDgMHgs1eK6D1eKxgh017v7SYAlBe184nUGE4L4DOUbARCc3dc1iEKVxGcUyD+9CuFCCoqir5+Ie3qPuDNE9L4y8goizb1u90NiVy9wfzws/4/EkhRnfX3F8NlEpI/JfMYOm9C1ikh7adk6WIg8SIWEV9/yIiyFpfE7ZvwuhCbfGqocn5viJcwnO/bd6kslWiPAUXAAdz7NfouGmxerVnFKk3uuRGKWjhx8psk4UCxnYlzcBGlWB6kAR2FbmnjAAIRwRs3We9badg1utRFBsZKnVIVwr5SNyX8aPx5XLeU=
+X-HE-Tag: 1794023374-609536
+X-HE-Meta: U2FsdGVkX18dXrHgWDuhDS0ZTDgXY4uT+dqoirNfOasazjhSdY6oHw5gY0UPurOub/ZmCAI3vE6xUZW9ABuYp6t7/IeJhS2gp6in/gUHHVGQYOqNGwRHJkpJ9cisd8Mzc7XeG3YuayPQvPXe9SAP66rUfbshNCQwyXrcvrwobQRBb7Q7t/Y6f78s6dsAxPof/aC2O/gvDqL9ovEpGlGSSRvJobipMzD25qrxobRH1pv1gPqmm2y/Cq8UyB4NL9g1ccZ1B54JVbVSDYPidzqWaNitzLLTUTUXYFoTNz2dKKOTJePNPmo+yjJWbr0sSDX0eYCxiUl+6WAySidtn2auXzpy5R+ItsnO6ZLQ20HCBgb+Ux6QZKyVL7dBw66il6RBElNmeAiYMKYuYUSuE4QntM/3rt3IPfSMA1COM5564/jFPerV5g4Y1Ic4j5gBc2u+IJRJBQWz7KZvGd7rh333kVB2LnAZ3xxCtDBwRDfeWM6tfn6cReUn3By/s5dfBKzi5eyNBe4umuSUEBh4SbaNLdMeDNAC4h/n2bMjbQC0kktB08OiUigE0b5hZHCKZxyRJ9m+fUbBknl9mEvTzm84pDY33XakzcL3F+6l68xBIIVIDg+n9Q8+l9FR0EFyyL1zh5jeTMNcZmjwvzRzA3gstQU56jjDzXXfsIDCqYbr/+VI1lvwWuWyh3iOZY9FG+utBsmh9AJHcIm+gXWeckVr1osVigJWzybi4996m+8VnOkEpz+gh+tYx0E+P7JlZtouBN4+1IfT1y3kd2WaOR9Blr0CGR7cE88dwBenPv61ZJV9wOLWrOuG27LWzRpPDUl3v/JKMVEwbkgkWJkxulvIsubPs0XA9G+SP53634jpgKVItFdqF3DE306lU/fZb4jxpoyK7rV/XGvq1cT53rAk0lJdVWMMtKyW8KihADEZFh2BsoKcZm27cFmDuiCSajWCISxfOCh5Edp2rivQGCl
+ 1ST3pt29
+ IqacX4gT6EgQSPwBXxbGBg6B+GIDkFGAgnQVVPq59vP2nrPRNl01lJGMrcnmMGBUB7VkCIZtQG+ref5JP54mapAEtbmbYBfQivX3TWhOhqwTBLsWdoh1gVPgydvSZwgUK2XuzUSkgzZjog13/jgb6+i4SG/dRrq5vJPQJ5tUhvtJ1/lXpHqUiFCEQIePAeSNDOIVjxjk3typVbIjq0+AV2J+XcJfPuUzsTBSzTf75WORzCKMZRMA5zjrzSXM0dA6l9SH1jvjEByyYeVPKvPynlkhLvIIpgOL4Ak+xU5m5keOCRnuUwVRkV1hJLuVtNzmXMK4S+G/3pn+k+kp3kEG76RmO9cEc9TQGojX/D5Oge3fzmi0nkYXlaEzixdDjQVQyuFP++Qj11CiyFAXPBcfeePig241ttw5jL2c3+kIuoqm3+luL/MqN7G1aE/jvqDxfCydalHDaEfOr8bb2n4Q2bQ/HTIUNl3/Tb3eVrJX+8s/zsbnpGN2jIGEGi57byNCEH6loBtj9kWU9h/7MiCIXpW7JQ2ROYt45w9L9M7AxAEP5pPx+wdMxNSFcWZPj6j6+r5ZaMxiMpyUbVkQkPzmXwKdl7Fk7rAcy8sqYpkaKIedfqqI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,19 +98,19 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Medium] mm: ksm: race between use_zero_pages_store() and
-  merge_only_zero_pages_store()
+- [Medium] mm: ksm: unsynchronized state checks in zero-page sysfs store
+  handlers
 --
 
-commit e3394c6484d9d77c2cd89b85bc6fb89ad39b6904
+commit 9b8576e88012c85cc90e3b5aa732dfb204eefebc
 Author: Xu Xin (vivo) <xu.xin@linux.dev>
 
 ksm: add merge_only_zero_pages to merge only empty anonymous pages
 
-This commit adds a new sysfs attribute, /sys/kernel/mm/ksm/merge_only_zero_=
-pages,
-which causes ksmd to merge only zeroed anonymous pages with the kernel zero
-page and skip the stable and unstable trees for non-zero pages.
+This commit adds the /sys/kernel/mm/ksm/merge_only_zero_pages sysfs attribu=
+te
+so ksmd can merge only zero-filled anonymous pages with the kernel zero page
+while skipping the stable and unstable trees for pages carrying data.
 
 > diff --git a/mm/ksm.c b/mm/ksm.c
 > index 340c65aa14e58..35ed40747e30e 100644
@@ -160,50 +161,47 @@ t *kobj,
 > +	}
 > +
 > +	ksm_merge_only_zero_pages =3D value;
-> +
-> +	return count;
-> +}
 
 [Severity: Medium]
-Can concurrent writes to use_zero_pages and merge_only_zero_pages race with
-each other and leave ksm_use_zero_pages set to false while
-ksm_merge_only_zero_pages is set to true?
+Can concurrent writes to use_zero_pages and merge_only_zero_pages cause
+ksm_use_zero_pages and ksm_merge_only_zero_pages to diverge?
 
-Neither use_zero_pages_store() nor merge_only_zero_pages_store() acquires
-ksm_thread_mutex or another shared lock, and kernfs_fop_write_iter() only
-serializes writes per open file description. Starting with
-ksm_use_zero_pages =3D=3D true and ksm_merge_only_zero_pages =3D=3D false, =
-two
-concurrent sysfs writes can interleave:
+Since these are separate sysfs attributes, kernfs does not serialize
+use_zero_pages_store() against merge_only_zero_pages_store(), and neither
+handler takes ksm_thread_mutex or another shared lock.
 
-CPU0                                  CPU1
-use_zero_pages_store()                merge_only_zero_pages_store()
-  if (!value &&
-      ksm_merge_only_zero_pages)
-    // sees false, passes check
-                                        if (value && !ksm_use_zero_pages)
-                                          // sees true, passes check
-  ksm_use_zero_pages =3D false;
-                                        ksm_merge_only_zero_pages =3D true;
+Starting from ksm_use_zero_pages =3D=3D true and ksm_merge_only_zero_pages =
+=3D=3D
+false, if one task writes 0 to use_zero_pages while another concurrently
+writes 1 to merge_only_zero_pages:
 
-If that state is reached, cmp_and_merge_page() will see
-try_to_merge_with_zero_page() fail with -EFAULT because ksm_use_zero_pages =
-is
-false, and then immediately return early at:
+CPU 0                                   CPU 1
+use_zero_pages_store()                  merge_only_zero_pages_store()
+  if (!value &&                           if (value &&
+      ksm_merge_only_zero_pages)              !ksm_use_zero_pages)
+    /* sees false */                        /* sees true */
+  ksm_use_zero_pages =3D false;             ksm_merge_only_zero_pages =3D t=
+rue;
 
-	if (!try_to_merge_with_zero_page(rmap_item, page))
-		return;
+With ksm_use_zero_pages set to false and ksm_merge_only_zero_pages set to
+true, try_to_merge_with_zero_page() always returns -EFAULT and the
+subsequent ksm_merge_only_zero_pages check in cmp_and_merge_page() returns
+early:
 
-	if (ksm_merge_only_zero_pages)
-		return;
+mm/ksm.c:cmp_and_merge_page() {
+    ...
+		if (!try_to_merge_with_zero_page(rmap_item, page))
+			return;
 
-causing ksmd to scan and checksum pages without ever merging either zero
-pages or non-zero pages.
+		if (ksm_merge_only_zero_pages)
+			return;
+    ...
+}
 
-Should use_zero_pages_store() and merge_only_zero_pages_store() serialize
-these checks and updates under ksm_thread_mutex?
+Wouldn't this leave ksmd scanning and checksumming pages without ever
+merging either zero pages or non-zero pages?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106034304.2318=
-09-1-xu.xin@linux.dev?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106034841.2330=
+85-1-xu.xin@linux.dev?part=3D1
 
