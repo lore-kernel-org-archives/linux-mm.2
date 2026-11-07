@@ -1,106 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB17606A32C
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 12:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577F0606A32C
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 12:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=cNoUt+Ay
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=WqVgQ9D4
 Received: by kanga.kvack.org (Postfix)
-	id 25A6C6B05B0; Sat,  7 Nov 2026 07:04:31 -0500 (EST)
+	id 6CEEB6B05B2; Sat,  7 Nov 2026 07:07:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20C356B05B1; Sat,  7 Nov 2026 07:04:31 -0500 (EST)
+	id 680C16B05B3; Sat,  7 Nov 2026 07:07:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 124B76B05B2; Sat,  7 Nov 2026 07:04:31 -0500 (EST)
+	id 594CE6B05B4; Sat,  7 Nov 2026 07:07:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D6BC26B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:04:30 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D3A72C031A
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:04:28 +0000 (UTC)
-X-FDA: 85408190616.15.4A082B5
-Received: from mta0.migadu.com (out-151.mta0.migadu.com [91.218.175.151])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AE6BEC0008
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:04:26 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cNoUt+Ay;
-	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794053067;
-	b=yXbkRvWlaudGBstC/pb9rFChR5qhtYwceXKYGcYxEEsEHYLdN9zu0TxyBbhk+TSzZN5mce
-	9c+7HFfb1pJAyjm7oYzm/qzJnUAOr7K2stRndzVmTdXPAgsvs+8KzO5AGDi58Z21qCr14c
-	GaKqHpgVVresRRZVnP7b2tIxaj1pRcQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=cNoUt+Ay;
-	spf=pass (imf22.hostedemail.com: domain of ridong.chen@linux.dev designates 91.218.175.151 as permitted sender) smtp.mailfrom=ridong.chen@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2E4496B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:07:40 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BC5601A02D7
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:07:39 +0000 (UTC)
+X-FDA: 85408198638.02.833E6B6
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2007E80003
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:07:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WqVgQ9D4;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794053067;
+	s=arc-20220608; t=1794053258;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fehvpwKLkvAzp8Ic92lGZjTmUddHTM0YOLXxTp5AQBo=;
-	b=xSJgq0K/JaR7VQmF2KKZ8jIbv0qsDMSb9GTSOFJ/+fhOUo3jXJe2Pct6qfjbZCra19kfu9
-	2xic3KSBO76Y9kj23ctwSoRTAPfTT6QgVWNRRlz/+hw54uG8r6B6vspTpgb0FcueMc7+z9
-	n5L/TuprL2kooH8W72K919DxUidDo14=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=E8Yy5bgEjYt6pYSaf6glxvsg2jFl/7uxBAsGhxtzXs8=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794053063; v=1; x=1794657863;
- b=cNoUt+AyDRYJYww4eWAnV245h4ALVh+CDwe4HlIqkLVef4mf5Oz0ja/yCE+a+1Psw2NqeZcM
- 1zegAI+cNaLKutgSwSX0RLjDlyXpIRDn5VmmHodYWqrTVK12WFNPeeL50FHSL3tgmOslFlwLURC
- dQwjHEapxMo4n3ei4MWQjXpY=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 3d9503d94a972e62;
-	Sat, 07 Nov 2026 12:04:23 +0000
-X-Mizu-Trace-ID: 3d9503d94a972e62
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <ad63bf38-d3c8-4977-8582-60a65815887c@linux.dev>
-Date: Sat, 7 Nov 2026 20:04:10 +0800
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 2/3] mm/mglru: skip the flags cmpxchg when nothing
- changes
-To: Kairui Song <ryncsn@gmail.com>
-Cc: David Hildenbrand <david@kernel.org>,
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=2qaGDM5KXwo/XbIElFXbZo2pyoRiYC1SBXqYkAOocig=;
+	b=CIQWNC5ZE4gwCHcGJi4eUjyN+1tFX6XNtVPUqvcVrpxuqH3p2F8hlQEQztiqrqjZWMa+2E
+	ypcNFYuJ31ki0mbJqDpE1EEPDsCgGZeAMmoqQX8cvJzWyfm2lNLia9KBQ60ws+kS25/AyE
+	9br8LDUZ6ueM8RrD4/9BARyTnjItOyE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794053258;
+	b=QthcJalvgow5zKqLrVQC+dVepuHkWGgyVi8XLA2gbaVS+hiZ6PTz+lgolLeuwDdC4JJaX6
+	rakipvVNDO4Hz3rFb0s9AMlsqXcoEP9rRKMpc9MdwNLPzfT5NYYNyWhdqF/XaarBVUEzqN
+	N9+UCxsAtby7HUQ5ak7dv632kh0Tilo=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=WqVgQ9D4;
+	spf=pass (imf02.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794053257; x=1825589257;
+  h=date:from:to:cc:subject:message-id;
+  bh=d5ZgnRix7VXOje43U+Fy8zm1siik98+UBrQqZUXZte0=;
+  b=WqVgQ9D4XwRNopqkE7bIgtn0ku/QxEoPCLK3EaqeA/o54fSdAAhLQNsN
+   We++mrudTCFSQcjMr26llV9Kye+wGNJQGKsORnIm8pM4HiSZ1wkyv7M+A
+   eZI0NgAuEJ73Ru+6dSKzwEXZqCqFcsiW4LvgXGjUV808CSc2WfclQ94Cn
+   ELgLCWNhZAerKsyd0S1DNnhBuzchLZgbOBKzoZTsJYw6ACWFJHywxSj6E
+   9N4RM/QBQoET0y+4GWMRNvvXf43tJTPNHv2K3pKLwPxQ/IiRd6ulka8Mw
+   CtcR3qzmTPyHh0GVwtvKSLEpT8L4xZP0GN4OWpgfRUakd5ivkDfrMGFGx
+   g==;
+X-CSE-ConnectionGUID: JVTfoxqUQOm+ySypQrjHnA==
+X-CSE-MsgGUID: QmLWNwGuTrqQ09v2Szzo0g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2843807"
+X-IronPort-AV: E=Sophos;i="6.27,200,1787036400"; 
+   d="scan'208";a="2843807"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2026 04:07:36 -0800
+X-CSE-ConnectionGUID: TLXXnBsYSx2KDOSdQ88oBA==
+X-CSE-MsgGUID: qXskRPm+S0G7tL3WCjG0ag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,200,1787036400"; 
+   d="scan'208";a="7354265"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 07 Nov 2026 04:07:33 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xPfCj-00000000qnp-2xYU;
+	Sat, 07 Nov 2026 12:07:29 +0000
+Date: Sat, 07 Nov 2026 20:06:32 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nguyen Ngoc Thang <ngocthang2710.1999@gmail.com>
+Cc: oe-kbuild-all@lists.linux.dev, David Hildenbrand <david@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
- Johannes Weiner <hannes@cmpxchg.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Joanne Koong <joannelkoong@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Ridong Chen <chenridong@xiaomi.com>
-References: <20261105132220.2233677-1-ridong.chen@linux.dev>
- <20261105132220.2233677-3-ridong.chen@linux.dev>
- <CAMgjq7DtU+tSOgQWgTaV0obLwkkUwQqgvtTXjG2qf8L+iPXbiQ@mail.gmail.com>
- <57d2a4ca-8edc-4291-a919-8a74abda94a5@linux.dev>
- <CAMgjq7BtS6KKqdq1oVrvrO9FcTEkE4HNJe02dA87n6Zm7FFrww@mail.gmail.com>
-From: Ridong Chen <ridong.chen@linux.dev>
-In-Reply-To: <CAMgjq7BtS6KKqdq1oVrvrO9FcTEkE4HNJe02dA87n6Zm7FFrww@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wdmnwyesbwqu5sg76n9oxfif19fdenes
-X-Rspamd-Queue-Id: AE6BEC0008
+ Linux Memory Management List <linux-mm@kvack.org>,
+ mm-commits@vger.kernel.org, Phillip Lougher <phillip@squashfs.org.uk>
+Subject: [akpm-mm:mm-nonmm-unstable 111/117]
+ fs/squashfs/file_direct.c:121:1: warning: label 'out' defined but not used
+Message-ID: <202611072044.cmq8jkLA-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2007E80003
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: bc6qgzbhu9npmhzx8mj5adgtr411y36s
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794053066-523401
-X-HE-Meta: U2FsdGVkX1+TG36d+pnogQvu1tYxfrFg7o2dmBa01rdMrP736cZktLAfiW+MectScK2NrR9CrJe/5LWLikr7BLrxLLUvI4zaSWAO0GpyaXKMZECqIVvTJVaxgcYwgDq431+K2XEveURi92nkqCc4oz38BNjbyqnXF4ncNIBraRcTCNaHJvDCAVSAjIMwZ2DwjsnBmmk4z5el/C5gNw/IaLSxsanLcsDOjIFjEr6vsyp0r4ghY3kVp/FpDJtsNRhcb+WZQdBGTBipzNNNG2X9n6S2OOeP7i3u+Bc/a+Gi9unevXj3E1UU8+I52jdEBmcqb5ROBhOzhhAtoDL51g3Y4iXyYLG31YEMsh2JqrDdf2dSNaCjyqJxFQdP3IIpksYpD5Y7wzEPWfpjufTpjVN4eUHVgvdjMz4Vm7WgeCyH4AYUhS8AaFJzOK3luaW6ZxWc+IY3PfEe9UHwczf2yb1W1t9e8oUYa6s1AhiOQOxVWQmWs5FyKOQ6jtqbD7cYhBll3+RP/9TMEl2PrbSJVNzJMXfqkyeS3Szzyl8Mryw4NiNo88y3OMNk0BH+1XyA/+1STsKvQKc64o5k2cRR9AYHRtkJKw3v0HyY3thz5QaTCO8mziBq9+PrS8MFSJepOSfM2Z6xZ1I6ETRV1qm1PGtbMwJ6WQfh/SYd/kRorsUk+pHW9PzgkN5A8ZfxcZBpq2AP7U6sFAN1/YNDdUXAVnWY7PQBBJXq9zYiYL3cLxoZIzNpEU/IA4wNqd6qH3cD88KVkROXw+sSedYNmMk7bALK73bvxzlNOi++zUNdYLyuTt/3knrkEiFwRaJdJvvAg3fOjdQI/4t0sT4CqtupPPbEjhVCQKGqPIoWyG2LH2TOrCqKDEYRM73eUIT/+kVF+9C9wvUHbbStD1iES4toou2cWV3q51vmisyRGXPcORHR2/vkaq9yMDKk5EEWwB5N7ohaq3QrkntS8+xM687u7fG
- NViDRRtN
- oHp840TOJvgS0waFoYDdxd7SyWp5jbQpQv/dsSPbv/cC6zqH5VO53vCNglcHifsUW861yz7jsSkBb39ufSpYXsCWMQG4kIZAK/B4d9XwfN6YjexsnTGH7BwPFdSuK2nwiPGIOsnJlzof+24FbzGo9gs/NLfjorfNt/Mx5VU/RL6fBRVJyvOwL/Uq1UEc5nKXbA4oRpld5F7s3mz6W1XgExH1cHpJnd0EtwVKuZFSPofItBOljQp5nV5A5mn3wjKZqIMRpIXX82VzufNY9XnH1dMshHt6nMLMyzhZ2uAugwxhzaqpLtJOPkCHFi48NXdoAzJncCTie8rpkH11TwGSE56Rvcbga7A09zSH84Qb54Sl4UfmH/OwlW55Ruw==
+X-HE-Tag: 1794053256-559717
+X-HE-Meta: U2FsdGVkX19YqTWZYbYDJeoAZN6Z9F5keSyVxBeqcyhChYz2iJaX7y8FEpgEpgYkE6PfI1RwPbQuNg28RxNSqdUWaSgnZRnnq4ejVLUVIDTkEuEQOrt4eFQ6Llu3smpVxIwU0X5nwYRqcrKkkz/s/aXR4L+QGMGXtMzKBFbiGDo4Ae2kuXLaQeDWoa7C3NBhtusKpanNvYQfh8I1v1Ck62nfkanfxo5x+mg+aT7HdlLiUOehF0c2/o+VpGfvbugdM8badH81C9q8d5k2pBgYJUz2UY1jbD67gGvC80aQu987PODpXD7NGUVs70Kor810W6LxRDKTcfndOZGBXeybrT/REUfP9sUheoPDXV8sIgogUj0L13YGwqEmlOhgEcNF2fqGivZ5jEsypGIc006I7yuXeD7B1mugpqpTm+cmmpT+rMn7scxTkcHEYlJDNuqDwr4D9AxfvlUwBJsme/7Z/YSpc6kPEkZgUYJJ79epkEr2zBqgDqjI8mwc8ULTCPoP61q+TIV+KCrExwqolcM3OTXfd/0EOx94q4Ub0GKFVsqInv0nLbGEKr74oR6p9GzK29Wfxf2EJzXyKZlw8g+dizFqSBBaC+pXHIRwyhYV0VG1qDwEYR1l7v+RV+sLzCI1gcP9BCsoxY1kal+uV1ozDf9o1uXajqXrl5hKT+dijwmPEooG5PhLWBXwXva2GGNjQzNl+Nu37tgvgJq1stmZnerlhom/PjrCcl0cNTh8ok87d4Y2wseS/aK0y+9eAfYiecaXjaVwEGk2DpzUrvnUakw6GsD//v+Vx0DKNBYc7u3bB/wpSRzSwPpQSkaS5M62DqW4qAC/Et7Gnu702US/7ikASpzkugHaWIvWNv23OpLd5w34v8/np3NiRdK8fseF1cPZpqX1uOD3rXRkhzKbeIV6Bc1VEuiQpYnfoHJ9jfGdcDnk7YYdsle9WQICh99FLdQ/g1/Sa9WkDcpeD/C
+ FU9hUGOH
+ PLSSO78HM0i7cu6ooDgd4llMEq6bDRCuYABqAbCnM1yU19wxHwFOugC7Dg6MwuEtHMy+lIJpM8+jJvfrjT+2tvcpG5Gr9eJ6pIT8QbY/l6MBHLlMNGercQKUQgiAVIB/ckDO18yY1k4hsqGJgGiKQ2IYuy7RPQ1CNHu8gvW/Sc39qQNbdWDKH9Y/JLlXhP+lAStRl1psJErVFYCAbjsWh/NM4RanmzTsZGBSJPqmPwgE04Y9wnAbcI6aJoGUwwYhuWn2MdZByLXYZz/kvd0286M/0j7hhHEvuk/PtSkfLes8pRmhaA3XeM/+BuEBD4zJO18sQpiRBxD6KTWhVGKFO/Z9E7KhKYuFE/iI5ze6kF0I0OuYTxZdm0E/l/EvFn+lxQYv44N6khnuwB3gRQeIwHkthfj0262HoSRzkdlB2Nz/hK26HT2DvLXRJZk4FqIQ9LE6598bwpviC7PukeSoCJW73Bg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,123 +104,140 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+head:   09658a93dbdf3596b7c0edec1292ae09e58da333
+commit: 024c3b9753561e3ad2d6cdd47b405126709633e0 [111/117] squashfs: fix leaked page locks when page actor allocation fails
+config: i386-buildonly-randconfig-1001-20261107 (https://download.01.org/0day-ci/archive/20261107/202611072044.cmq8jkLA-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.4.0-5) 12.4.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261107/202611072044.cmq8jkLA-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611072044.cmq8jkLA-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   fs/squashfs/file_direct.c: In function 'squashfs_readpage_block':
+>> fs/squashfs/file_direct.c:121:1: warning: label 'out' defined but not used [-Wunused-label]
+     121 | out:
+         | ^~~
 
 
+vim +/out +121 fs/squashfs/file_direct.c
 
-On 11/7/2026 6:39 PM, Kairui Song wrote:
-> On Fri, Nov 6, 2026 at 9:44 AM Ridong Chen <ridong.chen@linux.dev> wrote:
->>
->> On 11/6/2026 12:21 AM, Kairui Song wrote:
->>> On Thu, Nov 5, 2026 at 10:11 PM Ridong Chen <ridong.chen@linux.dev> wrote:
->>>>
->>>> From: Ridong Chen <chenridong@xiaomi.com>
->>>>
->>>> folio_update_gen() and folio_set_lru_refs() always end with a
->>>> try_cmpxchg() on folio->flags, even when the new value equals the old
->>>> one. The locked instruction still takes the struct page cacheline in
->>>> exclusive state.
->>>>
->>>> That is common in practice: a folio mapped by many processes is visited
->>>> once per mm during a page table walk, and after the first visit it is
->>>> already in the youngest generation with refs cleared and PG_workingset
->>>> set. isolate_folio() and the eviction paths also call
->>>> folio_set_lru_refs(folio, 0) on folios whose refs are already zero.
->>>>
->>>> Break out of the loop when the flags would not change. The result is
->>>> the same as a successful no-op cmpxchg. The only difference is that the
->>>> full barrier implied by the locked instruction is gone on that path.
->>>> No caller relies on it: the eviction and isolation callers run under
->>>> the LRU lock, and the others (page table walks, folio_mark_accessed(),
->>>> lru_gen_clear_refs()) only care about the resulting flags value, which
->>>> is already in place. Note that lru_gen_inc_refs() already returns
->>>> without any atomic when refs is at LRU_REFS_MAX and the folio is in
->>>> the workingset.
->>>>
->>>> Tested on an i7-13700HX with turbo disabled and the performance
->>>> governor. N processes map the same 2GiB tmpfs file (huge=never) and
->>>> read every page, then one aging pass is triggered on their memcg
->>>> through /sys/kernel/debug/lru_gen ("+ <memcg_id> 0 <max_seq> 200 1").
->>>> Time per aging pass in ms, median of 5 runs of 10 passes each, averaged
->>>> over 2 boots of each kernel:
->>>>
->>>>     processes    base   patched
->>>>             1    32.9      31.7   -3.5%
->>>>             8   195.1     160.2  -17.9%
->>>>            32   755.8     592.2  -21.7%
->>>>            64  1597.2    1260.6  -21.1%
->>>>
->>>> With one process, every visit changes the generation, so there is
->>>> nothing to skip. Before the patch, perf annotate attributes 53-58% of
->>>> the walk_update_folio() samples to the lock cmpxchg in the inlined
->>>> folio_update_gen() in this test.
->>>>
->>>> Signed-off-by: Ridong Chen <chenridong@xiaomi.com>
->>>> ---
->>>>    include/linux/mm_inline.h | 2 ++
->>>>    mm/vmscan.c               | 2 ++
->>>>    2 files changed, 4 insertions(+)
->>>>
->>>> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
->>>> index b3d85fe91385..4ba9079f4dc8 100644
->>>> --- a/include/linux/mm_inline.h
->>>> +++ b/include/linux/mm_inline.h
->>>> @@ -244,6 +244,8 @@ static inline void folio_set_lru_refs(struct folio *folio, unsigned int refs)
->>>>           do {
->>>>                   new_flags = old_flags;
->>>>                   lru_set_refs_flags(&new_flags, refs);
->>>> +               if (new_flags == old_flags)
->>>> +                       break;
->>>>           } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
->>>>    }
->>>>
->>>> diff --git a/mm/vmscan.c b/mm/vmscan.c
->>>> index 50c352e9ffef..3fa76715382d 100644
->>>> --- a/mm/vmscan.c
->>>> +++ b/mm/vmscan.c
->>>> @@ -3398,6 +3398,8 @@ static int folio_update_gen(struct folio *folio, int new_gen, int *type,
->>>>                   lru_set_gen_flags(&new_flags, new_gen);
->>>>                   lru_set_refs_flags(&new_flags, 0);
->>>>                   new_flags |= BIT(PG_workingset);
->>>> +               if (new_flags == old_flags)
->>>> +                       break;
->>>>           } while (!try_cmpxchg(folio_flags(folio, 0), &old_flags, new_flags));
->>>
->>> Hi Ridong,
->>>
->>> I had the same idea in V4 of MGLRU-FG which is posted a few weeks ago,
->>> with the same code:
->>> https://lore.kernel.org/linux-mm/20261016-mglru-fg-v4-4-2106750c0bfa@tencent.com/
->>>
->>> + if (new_flags == old_flags)
->>> + break;
->>>
->>
->> Hi Kairui,
->>
->> Oh. Sorry about that. I read the series a few weeks ago, but as it is large
->> I missed this change. I should have checked it again before sending.
->>
->>> I didn't have time to benchmark that one function but the e2e test
->>> showed very trivial improvement, it's a good improvement though. Feel
->>> free to add:
->>>
->>> Reviewed-by: Kairui Song <kasong@tencent.com>
->>>
->>
->> Thanks for the Reviewed-by. If you don't mind, I'd suggest merging it as
->> a separate patch, as the test shows the benefit of this small change,
->> which makes the code easier to trace. I will also mention in the commit
->> message that it is a small part of your series. Does that sound OK to
->> you?
-> 
-> Sounds good to me! No need to mention that, though; I believe you came
-> up with this idea by yourself. And that will make the change more
-> traceable indeed.
+0d455c12c642864 Phillip Lougher         2013-11-13   20  
+0d455c12c642864 Phillip Lougher         2013-11-13   21  /* Read separately compressed datablock directly into page cache */
+2a7aea59cf4dd4a Matthew Wilcox (Oracle  2024-12-20   22) int squashfs_readpage_block(struct folio *folio, u64 block, int bsize,
+a3f94cb99a854fa Phillip Lougher         2018-08-02   23  		int expected)
+0d455c12c642864 Phillip Lougher         2013-11-13   24  {
+2a7aea59cf4dd4a Matthew Wilcox (Oracle  2024-12-20   25) 	struct page *target_page = &folio->page;
+2a7aea59cf4dd4a Matthew Wilcox (Oracle  2024-12-20   26) 	struct inode *inode = folio->mapping->host;
+0d455c12c642864 Phillip Lougher         2013-11-13   27  	struct squashfs_sb_info *msblk = inode->i_sb->s_fs_info;
+12427de9439d68b Phillip Lougher         2023-11-13   28  	loff_t file_end = (i_size_read(inode) - 1) >> PAGE_SHIFT;
+09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01   29  	int mask = (1 << (msblk->block_log - PAGE_SHIFT)) - 1;
+7f73fcde4d93072 Phillip Lougher         2024-08-19   30  	loff_t start_index = folio->index & ~mask;
+12427de9439d68b Phillip Lougher         2023-11-13   31  	loff_t end_index = start_index | mask;
+d31638ff6c5437c Phillip Lougher         2024-10-21   32  	loff_t index;
+d31638ff6c5437c Phillip Lougher         2024-10-21   33  	int i, pages, bytes, res = -ENOMEM;
+7f73fcde4d93072 Phillip Lougher         2024-08-19   34  	struct page **page, *last_page;
+0d455c12c642864 Phillip Lougher         2013-11-13   35  	struct squashfs_page_actor *actor;
+0d455c12c642864 Phillip Lougher         2013-11-13   36  	void *pageaddr;
+0d455c12c642864 Phillip Lougher         2013-11-13   37  
+0d455c12c642864 Phillip Lougher         2013-11-13   38  	if (end_index > file_end)
+0d455c12c642864 Phillip Lougher         2013-11-13   39  		end_index = file_end;
+0d455c12c642864 Phillip Lougher         2013-11-13   40  
+0d455c12c642864 Phillip Lougher         2013-11-13   41  	pages = end_index - start_index + 1;
+0d455c12c642864 Phillip Lougher         2013-11-13   42  
+14694888db2c1f7 Fabian Frederick        2014-08-06   43  	page = kmalloc_array(pages, sizeof(void *), GFP_KERNEL);
+0d455c12c642864 Phillip Lougher         2013-11-13   44  	if (page == NULL)
+0d455c12c642864 Phillip Lougher         2013-11-13   45  		return res;
+0d455c12c642864 Phillip Lougher         2013-11-13   46  
+0d455c12c642864 Phillip Lougher         2013-11-13   47  	/* Try to grab all the pages covered by the Squashfs block */
+d31638ff6c5437c Phillip Lougher         2024-10-21   48  	for (i = 0, index = start_index; index <= end_index; index++) {
+d31638ff6c5437c Phillip Lougher         2024-10-21   49  		page[i] = (index == folio->index) ? target_page :
+2a7aea59cf4dd4a Matthew Wilcox (Oracle  2024-12-20   50) 			grab_cache_page_nowait(folio->mapping, index);
+0d455c12c642864 Phillip Lougher         2013-11-13   51  
+1bb1a07afad9730 Phillip Lougher         2022-06-11   52  		if (page[i] == NULL)
+0d455c12c642864 Phillip Lougher         2013-11-13   53  			continue;
+0d455c12c642864 Phillip Lougher         2013-11-13   54  
+0d455c12c642864 Phillip Lougher         2013-11-13   55  		if (PageUptodate(page[i])) {
+0d455c12c642864 Phillip Lougher         2013-11-13   56  			unlock_page(page[i]);
+09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01   57  			put_page(page[i]);
+1bb1a07afad9730 Phillip Lougher         2022-06-11   58  			continue;
+0d455c12c642864 Phillip Lougher         2013-11-13   59  		}
+0d455c12c642864 Phillip Lougher         2013-11-13   60  
+1bb1a07afad9730 Phillip Lougher         2022-06-11   61  		i++;
+0d455c12c642864 Phillip Lougher         2013-11-13   62  	}
+0d455c12c642864 Phillip Lougher         2013-11-13   63  
+1bb1a07afad9730 Phillip Lougher         2022-06-11   64  	pages = i;
+1bb1a07afad9730 Phillip Lougher         2022-06-11   65  
+f268eedddf3595e Phillip Lougher         2022-06-11   66  	/*
+f268eedddf3595e Phillip Lougher         2022-06-11   67  	 * Create a "page actor" which will kmap and kunmap the
+f268eedddf3595e Phillip Lougher         2022-06-11   68  	 * page cache pages appropriately within the decompressor
+f268eedddf3595e Phillip Lougher         2022-06-11   69  	 */
+2258e22f05aff58 Phillip Lougher         2024-08-19   70  	actor = squashfs_page_actor_init_special(msblk, page, pages, expected,
+2258e22f05aff58 Phillip Lougher         2024-08-19   71  						start_index << PAGE_SHIFT);
+f268eedddf3595e Phillip Lougher         2022-06-11   72  	if (actor == NULL)
+024c3b9753561e3 Nguyen Ngoc Thang       2026-09-27   73  		goto mark_errored;
+f268eedddf3595e Phillip Lougher         2022-06-11   74  
+0d455c12c642864 Phillip Lougher         2013-11-13   75  	/* Decompress directly into the page cache buffers */
+0d455c12c642864 Phillip Lougher         2013-11-13   76  	res = squashfs_read_data(inode->i_sb, block, bsize, NULL, actor);
+f268eedddf3595e Phillip Lougher         2022-06-11   77  
+7f73fcde4d93072 Phillip Lougher         2024-08-19   78  	last_page = squashfs_page_actor_free(actor);
+f268eedddf3595e Phillip Lougher         2022-06-11   79  
+0d455c12c642864 Phillip Lougher         2013-11-13   80  	if (res < 0)
+0d455c12c642864 Phillip Lougher         2013-11-13   81  		goto mark_errored;
+0d455c12c642864 Phillip Lougher         2013-11-13   82  
+84e0e03b308816a Phillip Lougher         2024-08-23   83  	if (res != expected || IS_ERR(last_page)) {
+a3f94cb99a854fa Phillip Lougher         2018-08-02   84  		res = -EIO;
+a3f94cb99a854fa Phillip Lougher         2018-08-02   85  		goto mark_errored;
+a3f94cb99a854fa Phillip Lougher         2018-08-02   86  	}
+a3f94cb99a854fa Phillip Lougher         2018-08-02   87  
+1bb1a07afad9730 Phillip Lougher         2022-06-11   88  	/* Last page (if present) may have trailing bytes not filled */
+09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01   89  	bytes = res % PAGE_SIZE;
+7f73fcde4d93072 Phillip Lougher         2024-08-19   90  	if (end_index == file_end && last_page && bytes) {
+7f73fcde4d93072 Phillip Lougher         2024-08-19   91  		pageaddr = kmap_local_page(last_page);
+09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01   92  		memset(pageaddr + bytes, 0, PAGE_SIZE - bytes);
+1bb1a07afad9730 Phillip Lougher         2022-06-11   93  		kunmap_local(pageaddr);
+0d455c12c642864 Phillip Lougher         2013-11-13   94  	}
+0d455c12c642864 Phillip Lougher         2013-11-13   95  
+0d455c12c642864 Phillip Lougher         2013-11-13   96  	/* Mark pages as uptodate, unlock and release */
+0d455c12c642864 Phillip Lougher         2013-11-13   97  	for (i = 0; i < pages; i++) {
+0d455c12c642864 Phillip Lougher         2013-11-13   98  		flush_dcache_page(page[i]);
+0d455c12c642864 Phillip Lougher         2013-11-13   99  		SetPageUptodate(page[i]);
+0d455c12c642864 Phillip Lougher         2013-11-13  100  		unlock_page(page[i]);
+0d455c12c642864 Phillip Lougher         2013-11-13  101  		if (page[i] != target_page)
+09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01  102  			put_page(page[i]);
+0d455c12c642864 Phillip Lougher         2013-11-13  103  	}
+0d455c12c642864 Phillip Lougher         2013-11-13  104  
+0d455c12c642864 Phillip Lougher         2013-11-13  105  	kfree(page);
+0d455c12c642864 Phillip Lougher         2013-11-13  106  
+0d455c12c642864 Phillip Lougher         2013-11-13  107  	return 0;
+0d455c12c642864 Phillip Lougher         2013-11-13  108  
+0d455c12c642864 Phillip Lougher         2013-11-13  109  mark_errored:
+bbf45b7e6855556 Matthew Wilcox (Oracle  2024-04-20  110) 	/* Decompression failed.  Target_page is
+0d455c12c642864 Phillip Lougher         2013-11-13  111  	 * dealt with by the caller
+0d455c12c642864 Phillip Lougher         2013-11-13  112  	 */
+0d455c12c642864 Phillip Lougher         2013-11-13  113  	for (i = 0; i < pages; i++) {
+6d565409503f4e1 Phillip Lougher         2013-11-24  114  		if (page[i] == NULL || page[i] == target_page)
+0d455c12c642864 Phillip Lougher         2013-11-13  115  			continue;
+0d455c12c642864 Phillip Lougher         2013-11-13  116  		flush_dcache_page(page[i]);
+0d455c12c642864 Phillip Lougher         2013-11-13  117  		unlock_page(page[i]);
+09cbfeaf1a5a67b Kiryl Shutsemau         2016-04-01  118  		put_page(page[i]);
+0d455c12c642864 Phillip Lougher         2013-11-13  119  	}
+0d455c12c642864 Phillip Lougher         2013-11-13  120  
+0d455c12c642864 Phillip Lougher         2013-11-13 @121  out:
 
-That's very kind of you. Thanks.
+:::::: The code at line 121 was first introduced by commit
+:::::: 0d455c12c6428647547bacccaaced3cae0f35570 Squashfs: Directly decompress into the page cache for file data
 
--- 
-Best regards
-Ridong
+:::::: TO: Phillip Lougher <phillip@squashfs.org.uk>
+:::::: CC: Phillip Lougher <phillip@squashfs.org.uk>
 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
