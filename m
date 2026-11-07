@@ -1,31 +1,36 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A273606A808
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E73B3606A814
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I7vOcxIF
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KINdUHbH
 Received: by kanga.kvack.org (Postfix)
-	id BCC1E6B0606; Fri,  6 Nov 2026 19:37:24 -0500 (EST)
+	id 0816A6B0605; Fri,  6 Nov 2026 19:37:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7C3A6B060A; Fri,  6 Nov 2026 19:37:24 -0500 (EST)
+	id 00A796B0607; Fri,  6 Nov 2026 19:37:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A638A6B0607; Fri,  6 Nov 2026 19:37:24 -0500 (EST)
+	id E3F1F6B060A; Fri,  6 Nov 2026 19:37:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F1C46B0605
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A62836B0605
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:24 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 22A85A0214
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 55E254027B
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:24 +0000 (UTC)
-X-FDA: 85406459208.03.CB05B83
+X-FDA: 85406459208.09.C35B3B8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 0895940005
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:21 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7vOcxIF;
-	spf=pass (imf17.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 401D7C0004
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:22 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KINdUHbH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	spf=pass (imf10.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794011842;
+	b=AGEjixeYvzTUwkAYfpYP5+xIfl9Hs6jEn0dXWGUq6+GhOuGnrrgdFcGCQeDWy4qIX5gezI
+	YE/xaWujCLdwMgT+ezHlQsDgFTlpRlmc8ABGvpPeCL2jg7CNwMDP1oHcEdiWrBSJ6xR3jD
+	3zLWyOsB+ODIhk9Yw7Pj6bkI+VnFrOY=
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794011842;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,72 +38,67 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9SeL/ZiEo1JNFa6uJldLRoyMRqFFh5GFWRQajcrSB+U=;
-	b=QcP5eeIBDqUMFostCdK8aNAMYNEiv40zsBBuBLzdj8l9PeDk3vLzKednIra81weuy32nf0
-	qZq08IlyN5qNFIf/qVrXuZcBbPoC5GHN3f0MC7QSGgB89qVDEzjfeQttdlIvlph2nOJS8k
-	rOBsQJ5Mt3e/JtkAiZPm0Ej9tkM4Xig=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794011842;
-	b=2f4MwvRFufgtOma0QnrXdOE81Pnh4Gv7KHrArXBknisazkYeYnw7SJDemSqRy5jH938vr7
-	lHW2toC2z/HZX5dGd1zainecIg0OCSc+RWvrOMRugWaeLp/Xuce9O4jdGHF5mONmOwP+ae
-	EiXExySdbrVv7ji8ExiVytmyA7G++EI=
+	bh=H8fIHxJ4J5OBMV0gDzF+bqbkZDbxtMyMoTFPXBOC3Ko=;
+	b=KMtiUGuTe8IW+gpiHtPqyRknESJqaTqtFNoVCnhbFYVE3vkZA4QKVIRMtBY5GbXB1rERb3
+	kOT0sBOwDZCnofnNSLPgDtavCya1YNvsUIHjgIH1STBZq5Ez0SvSKjuYLbczXgqf7AzYMQ
+	zLH7p6ajWRdOaKKi71HM/m0zVxx2no4=
 ARC-Authentication-Results: i=2;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I7vOcxIF;
-	spf=pass (imf17.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KINdUHbH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	spf=pass (imf10.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AC36D4406A;
+	by sea.source.kernel.org (Postfix) with ESMTP id C5F0F44606;
 	Sat,  7 Nov 2026 00:37:21 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794011841;
-	b=xuBuVHOw3B27Mps1cafEnHg4JhdM7f7FaAW+UnilnXm+6hfIK/ifZm3JtXWFs6zika5Y
-	 GhT436agRRAKtmPSzKi/llAInBvuXOwtdrE/6vyW2bYOAg6nRGLBeNvLNWjvZW5qDmfVo
-	 ZWHmjXEPs30bbyi7VlYT01Xp5SPxATrnfn8peHTPDeaZ5XmJBiDcBo3i8wP35lT7k5s+v
-	 JnN5JfqfyC8VoUAfcMlxcRToRUGfD0+BPwyOw+hpnLSOFw4wwlrUkxqHGzJEQpcMqd+ye
-	 bA+jb25y5hHuHCxl7LWFmKLwNiygZuSumUeDPqm642P4FCSwv/6D7IO4LzVhEfVktMw==
+	b=iEUBZkmeiK6TuGIqh7IFrbVL/nlicsvwt7AmqBNBGJYx/0dRUdFcAsvwUQZR7yIBZe15
+	 ilGTUbL7G9Sq6PhfNoxmQysqUw6tJTGESEIZgBS9rHFOGNj0jTaEYaX203DF/+fek1Ss1
+	 MRYFfTXQV0NalGe+udndx9b2dyw8y5LXRUivB9yhXmB78y6c7BPFAu8A3GqXXDCEDdt/X
+	 zCiTWxyP3tdRCTiXzLl6TcUBWDto017ZYHEk8kY9ux7C5PilqZiYfLpYhUXs6nggG0d4L
+	 BjbYIXsuTz78hhKJtdU7PKvM9BDuvDWCLlntzpxk+m/1Y1Z2u8u29OeUlbmxdWPBRCg==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794011841;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=9SeL/ZiEo1JNFa6uJldLRoyMRqFFh5GFWRQajcrSB+U=;
-	b=LCWgrOyVZbhP/NpZ9bbl8BAs7oF/by8cg0CcoaI1IWSVhMHrBG8R/RBUNraffgovGoI/
-	 8rUQNj4uu05ympegFr8C6mzBwxGjd+9E7KySCoeSVNp2t7W0tNizFG1n1MTugas+ZnTDp
-	 XRjDW+G8VxTKWvCm12HMgO2B611ug9yxrkeNCBiCAIXMJGFynrHesf9BAd3WOEZcuw3F4
-	 ix2UdWkJdzmGfQm+mlMz6LH9mg8S/mfIIpUUL+QnjGTmRVRdEN99rd/ldtk5q2Q6qNxzI
-	 RBHtEZf6pvh2H/SsFEvFNwcGuBwdim/Woi97Ho97nWEyYa9bDVs1eeS8y0/kOqh7EAA==
+	bh=H8fIHxJ4J5OBMV0gDzF+bqbkZDbxtMyMoTFPXBOC3Ko=;
+	b=vpUb1Rym4v0vO8yLevY2Mga2x9AkkutdGzgbvqn3id7PQBsNQ6Ko6yjC05Ja/+9BMmdj
+	 mMd2TxRfCPUOPirfMaDojAFcf13YBAwwnlsRNPIHq57i777M5MvCKo/Uezso2vo/J42DR
+	 XcAZYcRSf1Es4d185IPJH6xkWatHD2qd1UZF0rkAbC9/G9yc9HBALPANkbdWCykE53LcL
+	 UAcLccsxK5bZ/2S2xp5LshGMpBuZR8Acirorm4jgt9Ez0HNvIpw9emH8MOAl8VHf0zgJU
+	 cJR2gDk2XeuTaZwYrUAKNm1OvS8itP1mAGbbE2ZXWK5aq+VdkUJY9IyCDb7J/GxsUCg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 899E51F008AB;
-	Sat,  7 Nov 2026 00:37:18 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id BAE0C1F00A13;
+	Sat,  7 Nov 2026 00:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794011841;
-	bh=9SeL/ZiEo1JNFa6uJldLRoyMRqFFh5GFWRQajcrSB+U=;
+	bh=H8fIHxJ4J5OBMV0gDzF+bqbkZDbxtMyMoTFPXBOC3Ko=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=I7vOcxIFHL5E6ZIo+hKvEMkq5XPe2+sRl/+U24PXDo2j+rgwUgOzjpL6J0ErFf/dZ
-	 fNZQGfmB/IAwMXQvYiT2cypxB1fcTE4HKmSWUiyTb768HNOa0TmSo6Bkpz08zMc8T3
-	 u/w4Ep7pdORe+5Mb1+imXkyyaQDOyM8zMV7Hico5FlepNd9hQbnQrCmiA3/Ey3husJ
-	 A+DOv2XKgzvE2nMmAtF+lnzU9n2Q78AHxkWAotnfcNYsUiulANXVX1U7qCpOfUaT6+
-	 006kToY9nUAcEJjIJYuiQRvrmi8jzBWtZ2/phxj0O+f6MsusemwsjMioF4t1E3/FiJ
-	 AcYORGjCahE5g==
+	b=KINdUHbH7Q9eJiZ6pg2azrGbWxcKuXaLnE2T6kOumAANRaBRQlI5WtF1P1Z1FCdyb
+	 IoLS1qnK2Wv2cBsLAeEq2ql02EurVkADaQeEbg0x1CCbLZoAkgjjbSQ2nOS+4kBNEd
+	 nBM5lKQEi35FW0QHC/49G0gP2ePzc3In9NsGSegQRA9N6Q6W63WF1mD+5PzR5rNAc+
+	 VcaGLIemH+6n9DCimHxN666W5wJYWPlT5VHA1pJp+vkAdGZ7zCIhvSAH4aIpn6S9qa
+	 Syb36amyfIAXH5R4EGZrUTn538lAyFqJndo8Kl8p13dQBSDCF+jCuOip7dWSMEc2l+
+	 wTGqVNX3P43hw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 8D01F47A5C;
-	Sat,  7 Nov 2026 00:36:58 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 8DF8D47A20;
+	Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:59 -0800
-Subject: [PATCH RFC v3 85/88] KVM: selftests: Verify shared and private
- mmap access for VFIO BARs
+Date: Fri, 06 Nov 2026 16:37:43 -0800
+Subject: [PATCH RFC v3 69/88] vfio: Dispatch guest_memfd read and write
+ provider ops via vfio_device_ops
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-85-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-69-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -119,11 +119,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=5917;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=3723;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=yUySByGqxzqT+Oxfxi3dJk8aiTpxLOKEtbuq/Vzm03I=;
- b=VqBOv4KmhHTpFhYWjDlROlLzM9MRdZp2uwmZyBVP69w5BMEFrucxqf7UGKtcrD4c4NU99K12n
- wWDeO9xZmwvCEAtS9rYITeg/7NOxvTnZdLrUEPPNtklmStGGeLHfVew
+ bh=jM77+UpFK8UZJ6Z/B9OjQwdxpmk38JIQhpdGHBHGDN0=;
+ b=qZQmSdOhDsqL/VO1Qtn/xfjCgHVuDDCpM2sUtQnC+iJGQWbhQHH4tf/D2WJ0crZwfhZ+WoCZ0
+ TPw9vQHWPJGBAJdDnviv0dQFie2JIrL5WljLO4Uq+bUnoXiRG/anEkK
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -131,18 +131,18 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: uwdah5twswqo8hxp4d5iikxecnzmxd4y
-X-Rspamd-Queue-Id: 0895940005
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 401D7C0004
+X-Stat-Signature: xi8zboox3381cwox59845yj6nfnsghiz
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794011841-984902
-X-HE-Meta: U2FsdGVkX19trc+vuA/Nz/pJJQHoOROHDVjdraYfyW5N+L8YvCZDfEgChTIGkJv1U7kmNZaruUG6KJqfUe19AHs2KtaGNLoIii2mK5EMta/beNg/2MXf9plYL0tF+7dNg8p7mPewOMLl2gCjnMzX1ktCC6mriG10wylZ+YR7KS4FJMR4rqNz6/f7+6YZhHlnZLj7gwl8+RaJ3BgGf+FOyZOAuXwPuQF4XD9OV2xQ2O1AAu62YhrmKpVlJvXn4NM/P3/BKK8p+pM/Q7BLhf6i+Lkvh1aku007N0K/VJCcJYDFe0UK6XlTTP3YhXh3T3jrBmmCNXPEyo4DkZjg8iFX+5p2OfDcmxsaetmrx9LibqHqmiAXaFNCgvjF8Lzrafcr7x/UjbTiV4wE/60+7JyvFcNJ4/N9RnjKChc4bUlYMb+wCJJKBfRRKj6SqdIFh/MuHx3JpwppWG7NnG6srHD/nPqu8fm6LR+hC97nYoH2KRDJLkJF/DEi/kFVwc5dfSC0rbKU83cxrCVaEWCGpFpPwq8zrRtQxZ3rCH058sL9UyzcHbmCFQyXCaseK0fcNCGCrGhbKTXmKoqKsy5isDiLfsCaQ+cc+n44l3aS6atVTYyIo+WDsDNnY5YwBJxwep4s3rYzIRzSps+zz56XfmKzQnjFqM4fQRt5LbBdIzKxn3pN7MHfEcLuphNgIl5Bi1ysMygkLnsb4RonPFN+N3b0MSDN+4vF4VUVp8TwLUZdJXMmhHxhW+qEPeGIIHFUoMkAtzRb3sCiX4yETbY0Cx4kad71egxf9iN1v4+z0FEyHPnPZE763Pdw18lVB9UB0Xfbd3c9wCtyz235Op21twm9kvAPobIiFBHZDCxfZHwrFyd34CLvo1mrBaFjGcFeP90zO1H24BNH3UdzCrsNQpO1L97HtuFy0/t3zntyDdyjaA7Onoj7G8NveSMUc+AQiJ9EQJV/eKOPbjzMLDxli/m
- BIxPfDj2
- QKjglx3j3gdxOBZ8LwYgvGYYTpC3kX8VfkPkGo9WaobA1Hm5FMkxqCrjdvtdIsxf1y/OXcoCMXxT7HSMjqkwsarb+wdUAsl0ztH4cGE+cTSkIr9zydkTp+wShFBulyYA6XOZLj3ZdJz/S3ok58qCZZtguOUqbhabMA2GSBsKlM6VmidprPzJSF2TYh9reiRMxhFnEfWBRID0jUW2g/ycBPDGo8v2X1Cql+33wblKKAV1pF0XB0fGeLw1e9uJ/7VtG4VDAoBpxGNTIEuMhIFCbfBf7aEWTPTI7+sT2BrzDuKiG7avpcvpYuEF27WaJM8tN8RmiWkfb8RB77ECXQoEDCq6hBWYNXt3qhoZRh7W87FnDnigCUGXPK5NmL0mt1wf2eAApENXPhKWn+3ErgSE/U0eK+2dl4wKPbTcqcCrazYXaOQ69+8zJeR4rhxPOsQDcmDDfgVVofAGdz5T6046TnMNGkGPIgnaZ/ASGxHZ7aaRoLUTsnsgVccc0QJBOk9LUkL5llV1K5OORhhrz3pHoMh/rE6Nq4az9YtCddkaCsI/NlobSPR/w0LC5bg==
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794011842-832077
+X-HE-Meta: U2FsdGVkX19mj3hgFp3O6P51pih4og2EzxiRFwHlXzMH8F9OYOFJ2B9prQLrjyONcrudWNnuOBAHVr1vZcgLEjnIMbCotV4N8XefzTUkAe7Hjr9BW4GQGlgmJu21tCZt1EYbbvgtDjSiyxzNjikmWD51BZUBSMSOJy6NmQrgZ8h60lvmEtYBXzPt9zxhZ09ZaGyy7yxGMPMPmo86fqBQPaUF/p5diDyzo+jj7l2fVooRkM8sDAy/slpPERmMUL0n5dWfm1u2cD+DbOqVJyGoN2NU6vbQAsmcfRF7AKNBZNXmIHQfOD3qePipn8T5j3TOjoPvPed8JefqXb9iZFWEZpJB4WrtfkBNGgz/G/aNr01vzDkNB2xwEDlhnoq8t5uDh1hJ3SxB/MuhlZgGjmfNz+O3OjklCGLUs+SWZtJ8NB5lu6E+IRcGQ87ygfi71sR0XC6ug9ZJEuEqm91vp8r66GUVWTrkZ9x/u8wRXkldm35P0E9sPUOG4hT53+BOlVIT97ZYpmJkLHwrHu5SlS8WNLBpjghide+W4e13wHPj2u7UHmMCxj/EnJ0uPBQdHAuT8+soq0/YtSCDdxlv24LEzhYAIOQ3X15YdV5HcAgDvgOx56o/WrtrAzbOXHBeLv0TkKsNm0xGNI4niiE7ajRgStDY+v5FmClihlJSYjC2WoLaPYra2/8Ru28b3H969lxUL5NkIeSDKT6QL5VN6f9GpkwdytiIzJca/fn+UgyBjbPJW6YnUbXA+1BKGq61EFUDoeem6NCKIhkbePwk1xXnqC7LDMtJ/oE1mBfM+AnExqIu0vQ9jK/02fiuvZid28r86l+lZWiQlkQtZs8fmN4jynzUejOorb2Wh9dEfZb65MQFAywSZ99Z8+R/z7Yfc8UKUZCnRjZgLrAgRWLzH7qJ9vtGUi2wTlc4pATl6XeAa07GC9MEvpNT+IVMsgC7opUxVNa1IRnumQUSbi7KjBd
+ eT17g7R3
+ B6bjUboAjeS1sCI/f3iLJBCOF5JyrHTdRBbHD4WsdD90EYup+caF3+7pfCMMN3n83YGwwpLt3uv6HRrn1IEDmpxe7jvug2PfaHhZF2MSCAQXbwdxr7Mg/KWWVE8gEL/JiAuYgmqrvLrVFcFECvIEqPxc/cO72SafNRmvWALuURl5wq87hMpdc5GYmg8G73tyyxHKzWi74miMtN50jv5RTjaQ0OfbBi09Q+LsZBOIl/cfjau3oclc359uOQ+DMm2O6opWBlef/wlmY0BeVaqCBeGaOvwrilJgSrmr96VCeGwOU9hwNOsQX4PuAL9jFdpOpdho4HFtSE7LKvJ4+uy36Sd5bIR8lQhNDzsMiJEuw5agThoTEHUzpr5YAAvuD02epapext4V9b+W7anxGJTUXamrR/43mnlg7x3YlM9ug8NixN4CfrOYM890x9sMwXApYjk+TNE+XQg/3Vroq0fqC6HOOfCbzc4fGADmUZOVwM588v9akmtEreJOkuHxlVlAkKgT8nmlUSxsZFt/17aAlR4kf0WUQXiY23alwRPCSHPlxIni2qbNbXulseTV97YtaFMr5hBkR184iahUU/du+xUYJc/aTFGdZ+3JQd5xL74t2Ljo=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,174 +153,97 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add a subtest to verify read and write access to VFIO device BAR memory
-mmap-ed via guest_memfd across shared and private states from both host
-and guest perspectives.
+When userspace reads or writes to a guest_memfd descriptor backed by a
+VFIO device descriptor, guest_memfd invokes the .read and .write
+provider operations under the shared filemap invalidation lock.
 
-Map an operational device BAR (BAR0) through guest_memfd and configure
-it into a KVM memslot for a software-protected VM.
+Implement .read and .write on vfio_device_gmem_provider_ops to dispatch
+to the bus driver's .gmem_read and .gmem_write callbacks on struct
+vfio_device_ops. The callbacks operate on kernel buffers (void *buf and
+const void *buf), as guest_memfd bounces userspace transfers outside
+its filemap invalidation lock. Return -EINVAL if the bus driver does
+not define the respective callback.
 
-In shared state, verify that host userspace reads the device status
-register and performs read-write verification on the scratch receive
-address low register (RAL0). Add and initialize the guest vCPU with
-a guest loop synchronized via GUEST_SYNC to perform read and write
-operations over the BAR GPA and confirm that changes made by the guest
-are visible to the host.
-
-Convert the BAR memory to private. Verify that host userspace reads and
-writes to the mmap-ed region are blocked and trigger SIGBUS, as
-unmediated host access to private memory is disallowed. Verify that the
-guest vCPU continues to have full read and write access to the private
-BAR registers without exiting.
-
-Convert the BAR memory back to shared. Verify that host userspace
-access is restored, that host reads observe updates made by the guest
-while private, and that guest operations continue normally.
+Enforce the partition between direct VFIO descriptor access and
+guest_memfd delegation: query is_ctrl_plane on the target file offset,
+rejecting reads and writes to control-plane offsets (such as PCI
+configuration space) with -EINVAL so guest_memfd only services
+data-plane regions complementary to what direct VFIO descriptor accesses
+allow in control-only mode.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../selftests/kvm/x86/guest_memfd_vfio_test.c      | 130 +++++++++++++++++++++
- 1 file changed, 130 insertions(+)
+ drivers/vfio/vfio_main.c | 36 ++++++++++++++++++++++++++++++++++++
+ include/linux/vfio.h     |  4 ++++
+ 2 files changed, 40 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-index 18fab1a39041e..a520cf45fccb8 100644
---- a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-+++ b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
-@@ -814,4 +814,134 @@ TEST_F(guest_memfd_vfio, conversions)
- 	ASSERT_EQ(0, ret);
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 1c2811848c775..96a768b5ec71b 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -1650,11 +1650,47 @@ static int vfio_device_gmem_lookup_pfn_range(void *provider, pgoff_t index,
+ 	return device->ops->gmem_lookup_pfn_range(device, index, pfn, nr_pages);
  }
  
-+static uint32_t guest_write_val;
-+
-+static void guest_rw_test_code(uint64_t bar_gpa)
++static ssize_t vfio_device_gmem_read(void *provider, void *buf,
++				     size_t count, loff_t *ppos)
 +{
-+	uint32_t *ral0 = (uint32_t *)(bar_gpa + E1000_RAL0);
-+	uint32_t *status = (uint32_t *)(bar_gpa + E1000_STATUS);
-+	uint32_t val;
++	struct file *file = provider;
++	struct vfio_device_file *df = file->private_data;
++	struct vfio_device *device = df->device;
 +
-+	for (;;) {
-+		uint32_t write_val = READ_ONCE(guest_write_val);
++	if (!device->ops->gmem_read)
++		return -EINVAL;
 +
-+		/* Read read-only device STATUS register */
-+		val = READ_ONCE(*status);
-+		GUEST_ASSERT(val != 0xFFFFFFFF);
++	if (device->ops->is_ctrl_plane &&
++	    device->ops->is_ctrl_plane(device, *ppos))
++		return -EINVAL;
 +
-+		/* Write and read-back read-write RAL0 register */
-+		WRITE_ONCE(*ral0, write_val);
-+		val = READ_ONCE(*ral0);
-+		GUEST_ASSERT_EQ(val, write_val);
-+
-+		GUEST_SYNC(0);
-+	}
++	return device->ops->gmem_read(device, buf, count, ppos);
 +}
 +
-+TEST_F(guest_memfd_vfio, mmap_shared_private_rw)
++static ssize_t vfio_device_gmem_write(void *provider, const void *buf,
++				      size_t count, loff_t *ppos)
 +{
-+	struct vfio_region_info bar0_info = {};
-+	uint64_t bar_gpa = 0xc0000000;
-+	struct kvm_vcpu *vcpu;
-+	void *bar0_mmap;
-+	uint32_t *h_ral0;
-+	uint32_t *h_status;
-+	uint32_t val;
-+	int ret;
++	struct file *file = provider;
++	struct vfio_device_file *df = file->private_data;
++	struct vfio_device *device = df->device;
 +
-+	if (!variant->use_gmem)
-+		SKIP(return, "Shared and private attribute rw test only applies to guest_memfd");
++	if (!device->ops->gmem_write)
++		return -EINVAL;
 +
-+	vfio_pci_enable_memory_and_bus_master(_metadata, self->vfio_fd);
++	if (device->ops->is_ctrl_plane &&
++	    device->ops->is_ctrl_plane(device, *ppos))
++		return -EINVAL;
 +
-+	bar0_info.argsz = sizeof(bar0_info);
-+	bar0_info.index = VFIO_PCI_BAR0_REGION_INDEX;
-+	ret = ioctl(self->vfio_fd, VFIO_DEVICE_GET_REGION_INFO, &bar0_info);
-+	ASSERT_EQ(0, ret);
-+	ASSERT_TRUE(bar0_info.flags & VFIO_REGION_INFO_FLAG_MMAP);
-+
-+	/* mmap the VFIO BAR through guest_memfd descriptor */
-+	bar0_mmap = mmap(NULL, bar0_info.size, PROT_READ | PROT_WRITE,
-+			 MAP_SHARED, self->bar_fd, bar0_info.offset);
-+	ASSERT_NE(MAP_FAILED, bar0_mmap);
-+
-+	h_status = (uint32_t *)((uintptr_t)bar0_mmap + E1000_STATUS);
-+	h_ral0 = (uint32_t *)((uintptr_t)bar0_mmap + E1000_RAL0);
-+
-+	/* Configure KVM guest memslot backed by guest_memfd */
-+	vcpu = vm_vcpu_add(self->vm, 0, guest_rw_test_code);
-+	vm_set_user_memory_region2(self->vm, 1, KVM_MEM_GUEST_MEMFD,
-+				   bar_gpa, bar0_info.size, bar0_mmap,
-+				   self->gmem_fd, bar0_info.offset);
-+	virt_map(self->vm, bar_gpa, bar_gpa, bar0_info.size >> self->vm->page_shift);
-+
-+	/*
-+	 * Phase 1: Shared memory access from Host and Guest.
-+	 * Initially, the entire guest_memfd resource is shared.
-+	 */
-+	/* Host read from STATUS and write/read-back to RAL0 */
-+	val = READ_ONCE(*h_status);
-+	ASSERT_NE(0xFFFFFFFF, val);
-+	WRITE_ONCE(*h_ral0, 0x11223344);
-+	val = READ_ONCE(*h_ral0);
-+	ASSERT_EQ(0x11223344, val);
-+
-+	/* Guest read/write to shared BAR memory */
-+	vcpu_args_set(vcpu, 1, bar_gpa);
-+	guest_write_val = 0xaabbccdd;
-+	sync_global_to_guest(self->vm, guest_write_val);
-+	vcpu_run(vcpu);
-+	ASSERT_EQ(UCALL_SYNC, get_ucall(vcpu, NULL));
-+
-+	/* Verify host sees the value written by guest in shared mode */
-+	val = READ_ONCE(*h_ral0);
-+	ASSERT_EQ(0xaabbccdd, val);
-+
-+	/*
-+	 * Phase 2: Convert BAR0 memory to Private.
-+	 */
-+	gmem_set_private(self->gmem_fd, bar0_info.offset, bar0_info.size);
-+
-+	/*
-+	 * Host accesses to private guest_memfd memory must fail with SIGBUS.
-+	 */
-+	TEST_EXPECT_SIGBUS((void)READ_ONCE(*h_status));
-+	TEST_EXPECT_SIGBUS(WRITE_ONCE(*h_ral0, 0x12345678));
-+
-+	/*
-+	 * Guest read and write access to private BAR memory must succeed.
-+	 */
-+	guest_write_val = 0x55667788;
-+	sync_global_to_guest(self->vm, guest_write_val);
-+	vcpu_run(vcpu);
-+	ASSERT_EQ(UCALL_SYNC, get_ucall(vcpu, NULL));
-+
-+	/*
-+	 * Phase 3: Convert BAR0 memory back to Shared.
-+	 */
-+	gmem_set_shared(self->gmem_fd, bar0_info.offset, bar0_info.size);
-+
-+	/* Host read/write access must now succeed again */
-+	val = READ_ONCE(*h_status);
-+	ASSERT_NE(0xFFFFFFFF, val);
-+	/* Host sees the value written by the guest while private */
-+	val = READ_ONCE(*h_ral0);
-+	ASSERT_EQ(0x55667788, val);
-+
-+	WRITE_ONCE(*h_ral0, 0x99aabbcc);
-+	val = READ_ONCE(*h_ral0);
-+	ASSERT_EQ(0x99aabbcc, val);
-+
-+	/* Guest read/write access continues to succeed in shared mode */
-+	guest_write_val = 0xdeedbeef;
-+	sync_global_to_guest(self->vm, guest_write_val);
-+	vcpu_run(vcpu);
-+	ASSERT_EQ(UCALL_SYNC, get_ucall(vcpu, NULL));
-+
-+	val = READ_ONCE(*h_ral0);
-+	ASSERT_EQ(0xdeedbeef, val);
-+
-+	ASSERT_EQ(0, munmap(bar0_mmap, bar0_info.size));
++	return device->ops->gmem_write(device, buf, count, ppos);
 +}
 +
- TEST_HARNESS_MAIN
+ static const struct guest_memfd_provider_operations vfio_device_gmem_provider_ops = {
+ 	.attach               = vfio_device_gmem_attach,
+ 	.release              = vfio_device_gmem_release,
+ 	.get_pfn              = vfio_device_gmem_get_pfn,
+ 	.lookup_pfn_range     = vfio_device_gmem_lookup_pfn_range,
++	.read                 = vfio_device_gmem_read,
++	.write                = vfio_device_gmem_write,
+ 	.mmap                 = vfio_device_gmem_mmap,
+ 	.check_set_attributes = vfio_device_gmem_check_set_attributes,
+ };
+diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+index 8022adedc26a6..012a233a375ab 100644
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -130,6 +130,10 @@ struct vfio_device_ops {
+ 					 u64 attributes);
+ 	int (*gmem_lookup_pfn_range)(struct vfio_device *device, pgoff_t index,
+ 				     unsigned long *pfn, size_t *nr_pages);
++	ssize_t (*gmem_read)(struct vfio_device *device, void *buf,
++			     size_t count, loff_t *ppos);
++	ssize_t (*gmem_write)(struct vfio_device *device, const void *buf,
++			      size_t count, loff_t *ppos);
+ 	char	*name;
+ 	int	(*init)(struct vfio_device *vdev);
+ 	void	(*release)(struct vfio_device *vdev);
 
 -- 
 2.56.0.455.g6c5a503b38-goog
