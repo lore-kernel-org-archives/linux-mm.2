@@ -1,36 +1,31 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9245606A81F
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6201E606A800
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iqR0yZBG
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=liQDf2ND
 Received: by kanga.kvack.org (Postfix)
-	id 22F8E6B05E5; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
+	id 31AE96B05E6; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 208326B05E7; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
+	id 2F2EB6B05E8; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 032A26B05E6; Fri,  6 Nov 2026 19:37:16 -0500 (EST)
+	id 11D486B05E9; Fri,  6 Nov 2026 19:37:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BE8366B05E5
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id D8DC06B05E8
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:16 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 658F11C3083
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 799CD1A026B
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:16 +0000 (UTC)
-X-FDA: 85406458872.22.659102F
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5B79220009
+X-FDA: 85406458872.28.FC8AE3C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6288E120006
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:14 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iqR0yZBG;
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=liQDf2ND;
+	spf=pass (imf29.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794011834;
-	b=SJVaKNw2D2Qy7YPNCjwi1LYMU/0NcQxCet/rKtWhnR9T3rtUTjxuOfnHyY9Y421DfL8Op7
-	l1NNFkg28tV1pT6LfzG4eIovLPEzogjRujd5qkfRBk5Nw+cInOrpMvTwk1o1mneuJ/jLJA
-	/dAEby91f4UEsRXqm2eF/pW99PxpuHA=
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794011834;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -38,67 +33,72 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8wUojUUQbhfKIFXbbfP6LPWOjX5Iaf2r3UNVYHxBruY=;
-	b=BiE8y3Xjfls4J7Q4eAe1bCmPhveXcKQGkwEw0s7wh27BVhBZW5NYOFF8CO3KuA6NeLzkX9
-	oAx3XLrpH6cZr6B32ks0yYfns8H/zj/uR1qzTRlgbv9t6vUHt8/KvIavduohsS4oyW9n7a
-	yJERtUG/h6mOgH2SpDL7VHr+R6pjHsY=
+	bh=wZM6CRwABi3fstnzX44ArAuSrBU3GRfAEQ1WggcvHU4=;
+	b=PC2sZjVqjk3Tuc34sTgOe+wa2ne9EHwXxqPeJLfQf8OcaLYtc+tl5/cW0QQdmKeZMrjAKe
+	wGz13wto3Kp+V/d2+lDU08eGUrDkp8pofHYurGMmop0HeFlKxT4e4l7XfDW/zh89tRqzeY
+	MxJkQLhD3QRGVkDeqU/Lw0J4dDrVzBE=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794011834;
+	b=A2cyU/JGmLJCtt4+aFdSw9R1YZm4ooHPq5BQLIU7zL2qX1R4a9VN3weDeJenS4bXUdAKh4
+	h4T1w0DtPGpUkK6O1d/oFVncITLqvooHBoB7qaJRdBnsqV4/ec8BWzVUUiqVAAc9zB8xg+
+	8dyf0p+WzIUbWz0TUdaRFsntKpoFkTo=
 ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iqR0yZBG;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=liQDf2ND;
+	spf=pass (imf29.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf13.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EB65F60E1F;
-	Sat,  7 Nov 2026 00:37:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 36C9743AE3;
+	Sat,  7 Nov 2026 00:37:14 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011833;
-	b=oLWrvkI4tuefU+4aBCp6uGE+iRdA/QNsyBsNrWtRTbycHgvStlWL8yzI48DO+l5eGL7F
-	 jO8mqNeZiilZExpaP5xkquM0cYEWkF22j/PUPkxgYVOjDo8xudxe6UlPuG9yWQbQm8M4c
-	 4RPKR5LMyrMFxXsDe7LfLMYDc3l2KYvhVRsTs6clpoa38A6UviHLGPsycPORCxKsKSNvz
-	 6W9CbU1U/fKY66aZoBfocvmb6wgvYAz+zh6yyqog8aKOlLoWy0Ao76ipYbebjXkdO9mPA
-	 MsZ97whmAgNQdtkBsxYvkBXIC18S/O6OgF5XOQy30fZxAbLBWKBJ3mMWwqPyzibqbLA==
+	t=1794011834;
+	b=yvD+sBaPrBpS/CBFoMPYG6zV6MJCfpbb00j/t8JZtcs1A8/pjD9jCpL2IoiDexxsYp5T
+	 5eWBqjMKTp6PU+xVEF9VqoWMz8CyBBTaEbZdakL23VvxZZ3IW2ROKQvPrpd+dAFUbqd8w
+	 lPH2WqEfoIobPGjMRPXluPeAEZ3XeJATVUB8lJYUidcVZSFE0MvDCVLP/6CzgIkCYPaFU
+	 3LOl9gKn8lNz4iErQeTK6l6PS6lYQ/cdNHSF45n4INrRtEWKBoTvO0E5fEjgxpMSGOy49
+	 MjBever0TQUjbTkOU8AS5S8k4+yf0WULDR18IdwNkSu3cTmZZtByYn8VH+7/87ynm2A==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011833;
+	c=relaxed/relaxed; t=1794011834;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=8wUojUUQbhfKIFXbbfP6LPWOjX5Iaf2r3UNVYHxBruY=;
-	b=C5mH2h6/sMtWYqK3QUFQShBVbzRq6fBQQnZKqoLris3RcGu/rttN4v4wgM0WDKFddOEH
-	 Sp4G24XJ6c4cFoiH75qE95eEdg3qfRfsBE4VoGRGCr4UIuGvYBiqcxUkmi757qLrwiTHO
-	 Pcj1kTib8rea5iC14ro6dqjI+kW92ZKH5wca2ZvZzACvETE33UTeH4RCnAuGRl/aA3rZn
-	 EYjWGQlAVOa6NJJENlQeyslEhxVDD1bN6COs7+bXZOLApquOiy7s7aTxoWsTiIpIFlmi7
-	 3prhmY1V+9zvDbCck3fUvvIgdASCtGVcsZ458Dd1Nd4i8ihtGmlf1M9J1GnzBcDM8TA==
+	bh=wZM6CRwABi3fstnzX44ArAuSrBU3GRfAEQ1WggcvHU4=;
+	b=FtIT6+K1Yucx7RJTpxEek+MMISonHzfUnUueZ6Hvw8OoZWvyDPqXGGqVuB47ZKMsa267
+	 W3fq/XMLFUenFQS+QsMCc416+LH+RrfzkbSkg4xMd02TRtPKTONcok+faklTof1qDgXnw
+	 eNeqkMQYHGJTR1SkJJhkYIiqST+Kt8ub/HOQYj6F3rN3pYws6j88GKGR9epCbRpAGD2tC
+	 AfechwNVPo5EQ0YSdTZvVCcKjsl30mVnKWZQO/2RFILrRHv41uFKuJ47ha6/bL9C2ssnE
+	 1kj0z9POLlRiWjB21dEuFhxXYBIzHizzdSqWRJ9MHbYuydn9+4Ty3KODH8VyNcYQkYw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 187CA1F00A0E;
-	Sat,  7 Nov 2026 00:37:12 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 926D91F0093C;
+	Sat,  7 Nov 2026 00:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011833;
-	bh=8wUojUUQbhfKIFXbbfP6LPWOjX5Iaf2r3UNVYHxBruY=;
+	s=k20260515; t=1794011834;
+	bh=wZM6CRwABi3fstnzX44ArAuSrBU3GRfAEQ1WggcvHU4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=iqR0yZBGWzgyjp+HYhCfGxAhrs+PJbiGs+QiA4n6lTpvdeMsOo9AhwbEjWNIDcSV0
-	 gwrnIBMm4oKX4IcsmVbVx7xfsFgFonHycwzyImkvW/k5P9envjsL1kToym/4CQLUpQ
-	 BTV4NYjqpxQUiCdDs6BNG4wVqI3lag+3wsdjrtqD3U8jNKxaSbiVu6N398jP3ss8f8
-	 GUSSTPagfzJoEZYMVBCDC59uwvjBgTpFAL45zWvp4iczXi9G4+3Ag2tSO7fyIyvWOx
-	 vJTcaijlR0nSshDR22w+pqH8Bjs5iXcKzGhT8SgOmuOgvhDxZtJ3zlXtH2FEQTByXq
-	 o2TtG8u6ZVasg==
+	b=liQDf2ND2DoP4lr/xVkpBNtdQuy5+FkGWG7EMA8QcUl7kgk8Iir/TP4YDIEMY90cj
+	 RABnixlbaFE64trVoWBHQu+R0v11BPFyLeTYSO1/Hw47T0YxUEFiv90t8/YeemDwBn
+	 hcqLx+xdRBqSnltoSl7w9gjoEded+CQTsIWZjTXbTmjATPut3jNKEv//sx4dJL89C4
+	 uI4rr5vwkrGvHMKa8hZtvg156uifkHuBgpckMxs6iNSvVPionEt4Aw7pTlIjNtDOXp
+	 0ggpLG+rYDAL6jJuoFNx/bRcqrPc+osrBGiXr8dj5laXUPH1GKh5rBrDibesO9X2y2
+	 MU6HQye754PFA==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 2FE4147A08;
-	Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 5700A479D6;
+	Sat,  7 Nov 2026 00:36:56 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:37 -0800
-Subject: [PATCH RFC v3 63/88] vfio/pci: Implement check_set_attributes
- provider op for guest_memfd
+Date: Fri, 06 Nov 2026 16:37:24 -0800
+Subject: [PATCH RFC v3 50/88] KVM: selftests: Test guest_memfd conversions
+ with sample memory provider backing
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-63-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-50-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -119,11 +119,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=5833;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=5146;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=TMwTUp5cqKcj2kTekFr4TruFvpaWuzNv14YEyWz6eMk=;
- b=UbZOzxtTC0NPZ+730r8uhK3++yIyJUWwAWmy+/W4WSFvCFPEUZshY+F2FUPkeQ5iFwFW9Lu4Q
- PXLtOpflYs0DIUR68SWBUFmgEcb08Fk5N8T/UABlrAzf2Oaz48/TkDa
+ bh=pFmVA22FXGETZKWOVPROthnqtuyrzDD+ZHNTU/H+YNY=;
+ b=11BVE+QRpNOg7Hd1AOFKxr49Ovvf9iM3u7cDh54/3reFREN7eARVv8IsPL4S1AeL3D5QnyytI
+ dXlUBPCrGnZCsK0Evp6XvNHNHVCdLa2iZrWfJ9bMPZ/08Aj0X4KMUZn
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -131,18 +131,18 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5B79220009
-X-Stat-Signature: p8ng4y8shn1966uiy4e74jtxtq8mjkiq
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794011834-768882
-X-HE-Meta: U2FsdGVkX19qP764O55cf+EK/zT1E7FGd4gNCMB+dXnTAahtF/EbCFOivhr1SDLDqQ7I2ga+r/FihcPLr9oZ/FfIpFbTcxCq1UzXp1PnU8p+bySc3IUUWKwXWZyUYdPTAfhqzHpAOySSpEq8cMeBv0TtLFFFL43sH9CGKnWmTJF9QXu++dAql6Oh8RxAzwHCv1i3uuba0KW2bjW+nyIviSdEYebTgoG2HXdo3TTHx5B2UYnGdrjNyscXIvdAs8ZgDpUVPjw8SzHGHmm6L2r4UwR+kKKLScqAfPqta494Jg2TpaOel8sn/4BY2rWirFe2yB8v+TV0DoiQsMlHjIIH/HAbYl5su7Y8YBLFkpDSIS0Cmb4XNBex8N3CV7qXXRnKsPMwGTHZMP50LaOZfQ2Jk2558fvPyInTsV4rSoKJayIH5jkV7+4AqZeekUDcPUGUAZpGVX+bcw64ffjtTpxQYK8+gvUioS5vpmlXbCB3arjSMFPCxu9VD83knyD9N2yh9jriiX1t6Nabdas+r/ZxuKSUaBEjlYdgRo2OZcqLLwpjH8NQ93l8Vs4oIaRBFn7HrnT3mV+PaF+/TqzCwlMs0Ogs/z0WJxkuPSv/t1Arnhs/f0rdueBateZpdhuuKxEK7d2FO3eCWDubsF10UPNlyU1znjJB9eK8g7FmjqjpdCtrdSWN6Gr7Q1nFOLbY5oapZ/Dyv9f5SduELfJ/sDtasMk6PoYqtNJFMsAup2wKRGSGflKhrPomnSLdz7I3R7gNP0F7LMVVS4NLK6LfBhTaFf8TscRmUFMRSvSlLkgIhzhbw1pH98v8GvOWAg+vWlJ3LuzcbUZFT4X24t14CypH2X0eEcFMTvgobIjMBxkQH+c3XHRtu+cOkHXK81/A5CGEWj1GURuCEnknos+YpDhx+fWWFfvpIKhiGmYoB3rI5O40MqaKVLTI3kxEWJ8P1BLxaIaSPqXVCdO7mdoHqkP
- jA/ZaZIG
- e0ms0WyAKoH3we3JPS5YFTPseLLzMsNWo/A8R0lNVWK35/LgyDa/qNqG8rfpytBaW0Hlo6xwofGmfCGiioDqhF8Kvv+Pkknqw7ixzJ3e22PuAkT4i6gURzHbLivX8tb90hTeY44+hLNX8seSC7MraE6iVvw3I2JfFx5ghb3wdDm1qBSgeqFcgZJO1bqMmVx383S3L9gJsLkjL8Ayv394+IFv0dVIao/iZgp2f6PFKx0tZvyQkRzwvtQKv/OINkO1g/S8QygvoB6zRqeKRl+UVdSiE83WhsB4k0r8LMM1SC+cegHVfCOtRQNNDXBZcMz0K4HTc3WhFyn2R0k2/TTxxWUpAPo31ANJDlbRfNvIB/9bzdIa6hHCC5FHf9FyDGNoSxwJf5h7sE5l0kEobVyJ5RR5zp+PEcTCXGvG/kPm0sj5LBD61dLFyM23xX45SKEm2sojyW20iNXL61/XLUrmj7VC/XeZpCwzjDrdMM6GTV/qNKyrAdI/xwA/ZgEfGirnhZQ9zo+3vp0O/3fTeeKK7RmC1qL46i+LdY7LoS6xkLOO/nUEwsZzDdoTBQtxYEZKb6ZjOH7ekhIPTfiqUrYKbTGShktP23Gb7Hff189zAUqEJKrs=
+X-Rspamd-Server: rspam09
+X-Stat-Signature: x6snomxdbqe5s9r78yuo195g6wrc96om
+X-Rspamd-Queue-Id: 6288E120006
+X-Rspam-User: 
+X-HE-Tag: 1794011834-530269
+X-HE-Meta: U2FsdGVkX19sRnDn9Spp9NvXN45h/0nJ3mJSlBUtM2eUlKw+s9YNZP+CMh8o/n8A3Otdvfw+dh0q+qNpzo/2MFu+bGsUl9cu5Lx1Ogbhn6FSSBKIe8JxVpgy/Pc4V7ffFNC2F6GBMydBMnk3fvsUIKK9mnWlRWU4Rp6sPT25PAUKKgaTAMv5njC9x9SFIKgQ/P3CV/iI0UmY0F3YmpeuEBqBSV1gkSdNqQkD5le/DaHpenHaNhQpz2gDzys7gz84GAy9+L0PGeOKOnllaE89tgCg492EDh6iiZKFD15EgPy27N4E18RQEe6vaLFYOuy4UtMpLqZ4Xh4WCxZCg0a81rxNkWI1sG3+Qjk/2AGs9mMnWICG8aWGzrVR7/PElNCA2wVAGJCidTzIDjiEJD8Dnycpn8eC8zeVLFBWLwOOX+NL6DFn1wnNNWqEpsWeN1eHVSHegDVYdH2kIwTHDZ/ncLQc0pjYlZCshQm6OiLN7nAkpxhREj+GIwDOXswZNYDv6ABRLpjeJmInDeBbHRJcI+aE9TrK/SO8CBa2Z24GgUUjJkeQeVmRwVGUcUk+zPZh9d9WR5A5zggSz2C1rnCSGxQrQlgCMFqqWECCOnKNo2Ck+78S+t58MRJD3NhwvIPX6KQcUROE724rx6/n3zirG5QigiF7KsL96NpPC/FmF54y7ZYYDBg2OdNXlGXed1ekPj7cqwOaN6YGkm1ZMv7Yxg3PRReOwV5/pi1PRneSSsLWeSLOWGS1XTvgKCsoCwOzcAt3kRW9Aeif3QpCDcQWpP1cz8aJVWp+13mByTYpvouVAtSPkE5viHnb2ySQ1E4MheHp+dz0vZfSa8gic8HwU6ZxmKwVbx+G9/iX9X5RH5+J+T66uYgYFHhjFkdc6fsdARXqPXLmYhaSslUSPA7h4KRzzgRj0fs4Jyr9JjnP1hI7sh4g0KURjYjYLRYpgCibRk3kSywInzQMhKRTojq
+ ++VFazKW
+ M+8UENzG3qUQI93BDTUyD3l0NjsKmF6H9enOqEOCEaU1V7miyOTAqeopjS9tSgNflp5YcEvBCUv225o+Xz4zg7HXEemBTMeCreZxysdVsV1lKjPt62qrlP1B+YxD+Icz/diCFQfc+ALrSwWcsYdvW2b4s7flzTiMwkt2obRyZaRXwt/A0dXWvzLajz6wm9zmZU3EHrZW9oMWsnwjIgSwKQ69+NZp17yfeTMKE4tNXuFsjjRrESiKM6/IDhMzmhe2fVPFkxVPG3HUT7AE1a+7J2jLQ8dkAonNA3NKvAsnVU01xixUcJ/qkEdhjP5DGAiw3z6eoFKcjcIfVoZOAHA07234Cma+mxEda2jeu5aSJBsuxtlh9x/Nl2Rnveq2g/brhwcuWV1urbAAQ3Of9RB2+FbglrtcUW2BkLotO5FEV1jeFgzDBfJTIw8p5QXkCBxf8GydUAUnYXyK6CxM2bZTMLhpUyTxkafg0B38SdfNmS5MYY97CnnKDDXGdr4JwngSDLIpYW7t8xNIPVzEGXT0sMasjPpvxdI1GKMC16oxctgRTLcmxI5PwyiSnK+MXyY0RfFZP0/6zHMMXtyk/uTdZMOPoqsZLfk61vzSWrJQomK5Jt9E=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,150 +153,155 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Implement the .check_set_attributes provider operation in the generic
-PCI VFIO bus driver to validate attribute conversion requests on
-guest_memfd files backed by a VFIO PCI device.
+Add fixture variant for the sample memory provider.
 
-When converting to private, decode the 40-bit VFIO region offset to
-verify that the targeted BAR is a standard memory BAR and that the range
-does not exceed the BAR's physical resource size.
+If the sample memory provider cannot be opened because the module is not
+loaded, the variant is skipped gracefully via TEST_REQUIRE().
 
-Prevent private conversion of pages overlapping the device's MSI-X
-vector table. The host kernel accesses MSI-X table entries directly to
-configure and mask device interrupts; converting these pages to private
-would cause subsequent host kernel interrupt operations to trigger fatal
-hardware protection faults (such as RMP or GPT violations) on
-confidential computing platforms.
+Because PFN-backed memory cannot be pinned via GUP, expect pinning to fail
+for the variant in the elevated_refcount test.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- drivers/vfio/pci/vfio_pci.c      |  7 ++++---
- drivers/vfio/pci/vfio_pci_core.c | 34 ++++++++++++++++++++++++++++++++++
- drivers/vfio/pci/vfio_pci_priv.h | 10 ++++++++++
- drivers/vfio/pci/vfio_pci_rdwr.c |  4 +---
- include/linux/vfio_pci_core.h    |  3 +++
- 5 files changed, 52 insertions(+), 6 deletions(-)
+ tools/testing/selftests/kvm/include/kvm_util.h     |  1 +
+ tools/testing/selftests/kvm/lib/kvm_util.c         |  9 ++++-
+ .../kvm/x86/guest_memfd_conversions_test.c         | 44 +++++++++++++++++++++-
+ 3 files changed, 51 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-index 9bc8009a9e766..f42422c1b7bc5 100644
---- a/drivers/vfio/pci/vfio_pci.c
-+++ b/drivers/vfio/pci/vfio_pci.c
-@@ -169,9 +169,10 @@ static const struct vfio_device_ops vfio_pci_ops = {
- 	.pasid_attach_ioas	= vfio_iommufd_physical_pasid_attach_ioas,
- 	.pasid_detach_ioas	= vfio_iommufd_physical_pasid_detach_ioas,
- #ifdef CONFIG_KVM_GUEST_MEMFD
--	.gmem_attach	= vfio_pci_core_gmem_attach,
--	.gmem_release	= vfio_pci_core_gmem_release,
--	.gmem_get_pfn	= vfio_pci_core_gmem_get_pfn,
-+	.gmem_attach		= vfio_pci_core_gmem_attach,
-+	.gmem_release		= vfio_pci_core_gmem_release,
-+	.gmem_get_pfn		= vfio_pci_core_gmem_get_pfn,
-+	.gmem_check_set_attributes = vfio_pci_core_gmem_check_set_attributes,
- #endif
- };
- 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 9551a067b5689..894b1332f8a0c 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -16,6 +16,7 @@
- #include <linux/eventfd.h>
- #include <linux/file.h>
- #include <linux/guest_memfd.h>
-+#include <linux/kvm_host.h>
- #include <linux/interrupt.h>
- #include <linux/iommu.h>
- #include <linux/module.h>
-@@ -2769,6 +2770,39 @@ int vfio_pci_core_gmem_get_pfn(struct vfio_device *core_vdev, pgoff_t index,
- 	return 0;
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index eca296539db79..1a1387f36a52c 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -1350,6 +1350,7 @@ static inline int pin_self_to_any_cpu(void)
+ 	return pin_task_to_any_cpu(pthread_self());
  }
- EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_get_pfn);
-+
-+int vfio_pci_core_gmem_check_set_attributes(struct vfio_device *core_vdev,
-+					    pgoff_t index, size_t nr_pages,
-+					    u64 attributes)
-+{
-+	struct vfio_pci_core_device *vdev =
-+		container_of(core_vdev, struct vfio_pci_core_device, vdev);
-+	pgoff_t bar_pgoff;
-+	size_t size;
-+	loff_t pos;
-+	int bar;
-+
-+	if (!(attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE))
-+		return 0;
-+
-+	/*
-+	 * Prevent private conversion of pages containing the MSI-X vector
-+	 * table. The host kernel directly programs MSI-X table entries to
-+	 * configure and mask interrupts; converting these pages to private
-+	 * would cause host kernel writes to trigger fatal hardware protection
-+	 * faults (e.g. RMP or GPT violations) on confidential compute platforms.
-+	 */
-+	bar = index >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-+	bar_pgoff = index & ((1ULL << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) - 1);
-+	pos = (loff_t)bar_pgoff << PAGE_SHIFT;
-+	size = nr_pages << PAGE_SHIFT;
-+
-+	if (vfio_pci_range_overlaps_msix(vdev, bar, pos, size))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_check_set_attributes);
- #endif
  
- module_init(vfio_pci_core_init);
-diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_pci_priv.h
-index 4e7162234a2eb..607a33270aca1 100644
---- a/drivers/vfio/pci/vfio_pci_priv.h
-+++ b/drivers/vfio/pci/vfio_pci_priv.h
-@@ -23,6 +23,16 @@ struct vfio_pci_ioeventfd {
- 	bool			test_mem;
++int __pin_pages(void *vaddr, uint64_t size);
+ void pin_pages(void *vaddr, uint64_t size);
+ void unpin_pages(void);
+ 
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index d42e201eba763..9793818f54d23 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -674,7 +674,7 @@ int __pin_task_to_cpu(pthread_t task, int cpu)
+ 
+ static int gup_test_fd = -1;
+ 
+-void pin_pages(void *vaddr, uint64_t size)
++int __pin_pages(void *vaddr, uint64_t size)
+ {
+ 	const struct pin_longterm_test args = {
+ 		.addr = (uint64_t)vaddr,
+@@ -685,7 +685,12 @@ void pin_pages(void *vaddr, uint64_t size)
+ 	gup_test_fd = __open_path_or_exit("/sys/kernel/debug/gup_test", O_RDWR,
+ 					  "Is CONFIG_GUP_TEST enabled?");
+ 
+-	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
++	return ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args);
++}
++
++void pin_pages(void *vaddr, uint64_t size)
++{
++	TEST_ASSERT_EQ(__pin_pages(vaddr, size), 0);
+ }
+ 
+ void unpin_pages(void)
+diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+index 023df9cb9d4a6..d0cbb1353d7ee 100644
+--- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+@@ -16,11 +16,13 @@
+ #include "kselftest_harness.h"
+ #include "test_util.h"
+ #include "ucall_common.h"
++#include "../../../../samples/kvm/memory_provider.h"
+ 
+ FIXTURE(gmem_conversions) {
+ 	struct kvm_vcpu *vcpu;
+ 	int gmem_fd;
+ 	int resource_fd;
++	bool expect_pin_failure;
+ 	/* HVA of the first byte of the memory mmap()-ed from gmem_fd. */
+ 	char *mem;
+ };
+@@ -29,10 +31,14 @@ typedef FIXTURE_DATA(gmem_conversions) test_data_t;
+ 
+ FIXTURE_VARIANT(gmem_conversions) {
+ 	int (*create_resource)(size_t size);
++	uint64_t extra_flags;
++	bool expect_pin_failure;
  };
  
-+static inline bool vfio_pci_range_overlaps_msix(struct vfio_pci_core_device *vdev,
-+						int bar, loff_t pos, size_t count)
-+{
-+	if (vdev->msix_bar == 0xFF || bar != vdev->msix_bar)
-+		return false;
+ FIXTURE_VARIANT_ADD(gmem_conversions, native) {
+ 	.create_resource = NULL,
++	.extra_flags = 0,
++	.expect_pin_failure = false,
+ };
+ 
+ static int create_tmpfs_resource(size_t size)
+@@ -42,6 +48,34 @@ static int create_tmpfs_resource(size_t size)
+ 
+ FIXTURE_VARIANT_ADD(gmem_conversions, tmpfs) {
+ 	.create_resource = create_tmpfs_resource,
++	.extra_flags = 0,
++	.expect_pin_failure = false,
++};
 +
-+	return !(pos + count <= vdev->msix_offset ||
-+		 pos >= vdev->msix_offset + vdev->msix_size);
++static int create_mp_resource(size_t size)
++{
++	struct mp_new_file nf = {
++		.size = size,
++	};
++	int dev_fd, fd;
++
++	dev_fd = open("/dev/memory_provider", O_RDWR);
++	if (dev_fd < 0) {
++		TEST_REQUIRE(errno != ENOENT && errno != ENODEV);
++		TEST_FAIL("Failed to open /dev/memory_provider: %d (%s)",
++			  errno, strerror(errno));
++	}
++
++	fd = ioctl(dev_fd, MP_NEW_FILE, &nf);
++	TEST_ASSERT(fd >= 0, "MP_NEW_FILE failed: %d (%s)", errno, strerror(errno));
++	close(dev_fd);
++	return fd;
 +}
 +
- bool vfio_pci_intx_mask(struct vfio_pci_core_device *vdev);
- void vfio_pci_intx_unmask(struct vfio_pci_core_device *vdev);
++FIXTURE_VARIANT_ADD(gmem_conversions, mp) {
++	.create_resource = create_mp_resource,
++	.extra_flags = GUEST_MEMFD_FLAG_PFN_MODE,
++	.expect_pin_failure = true,
+ };
  
-diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-index 7f14dd46de17a..e5f1f60513709 100644
---- a/drivers/vfio/pci/vfio_pci_rdwr.c
-+++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-@@ -418,9 +418,7 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
- 		return -EINVAL;
+ FIXTURE_SETUP(gmem_conversions) { }
+@@ -75,10 +109,12 @@ static void gmem_conversions_do_setup(test_data_t *t,
  
- 	/* Disallow ioeventfds working around MSI-X table writes */
--	if (bar == vdev->msix_bar &&
--	    !(pos + count <= vdev->msix_offset ||
--	      pos >= vdev->msix_offset + vdev->msix_size))
-+	if (vfio_pci_range_overlaps_msix(vdev, bar, pos, count))
- 		return -EINVAL;
+ 	vm = __vm_create_shape_with_one_vcpu(shape, &t->vcpu, nr_pages, guest_do_rmw);
  
- 	if (count == 8)
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 3a6d039454472..6ff67e38eaf84 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -175,6 +175,9 @@ void vfio_pci_core_gmem_release(struct vfio_device *core_vdev);
- int vfio_pci_core_gmem_get_pfn(struct vfio_device *core_vdev, pgoff_t index,
- 			       unsigned long *pfn, int *max_order,
- 			       u64 *pfn_attrs);
-+int vfio_pci_core_gmem_check_set_attributes(struct vfio_device *core_vdev,
-+					    pgoff_t index, size_t nr_pages,
-+					    u64 attributes);
- #endif
- extern const struct pci_error_handlers vfio_pci_core_err_handlers;
- int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
++	t->expect_pin_failure = variant->expect_pin_failure;
+ 	t->resource_fd = -1;
+ 
+ 	if (variant->create_resource) {
+-		uint64_t flags = gmem_flags | GUEST_MEMFD_FLAG_USE_RESOURCE;
++		uint64_t flags = gmem_flags | GUEST_MEMFD_FLAG_USE_RESOURCE |
++				 variant->extra_flags;
+ 
+ 		t->resource_fd = variant->create_resource(size);
+ 		TEST_ASSERT(t->resource_fd >= 0, "Failed to create backing resource");
+@@ -506,6 +542,12 @@ GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(elevated_refcount, 4)
+ {
+ 	int i;
+ 
++	if (t->expect_pin_failure) {
++		TEST_ASSERT(__pin_pages(t->mem + test_page * page_size, page_size) < 0,
++			    "Pinning PFN-backed memory should fail");
++		return;
++	}
++
+ 	pin_pages(t->mem + test_page * page_size, page_size);
+ 
+ 	for (i = 0; i < nr_pages; i++)
 
 -- 
 2.56.0.455.g6c5a503b38-goog
