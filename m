@@ -1,31 +1,31 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4CC9606A83C
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A677606A82F
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FAglrdYv
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GVWhU+w4
 Received: by kanga.kvack.org (Postfix)
-	id 0A8976B05FD; Fri,  6 Nov 2026 19:37:23 -0500 (EST)
+	id 4C8926B05FE; Fri,  6 Nov 2026 19:37:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 080D56B05FE; Fri,  6 Nov 2026 19:37:23 -0500 (EST)
+	id 4500B6B0603; Fri,  6 Nov 2026 19:37:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB0636B05FF; Fri,  6 Nov 2026 19:37:22 -0500 (EST)
+	id 340196B0601; Fri,  6 Nov 2026 19:37:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id CA33C6B05FD
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:22 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6A1251A027A
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C33F6B05FF
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:23 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A36C8160259
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:22 +0000 (UTC)
-X-FDA: 85406459124.08.D0412D9
+X-FDA: 85406459124.04.B383119
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 6324740003
+	by imf05.hostedemail.com (Postfix) with ESMTP id 98F5E100009
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:20 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FAglrdYv;
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GVWhU+w4;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf04.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794011840;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,72 +33,72 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L1WAIjsJ2f6GPnFK9J8tErfe5hVo5E0rwAzvzNh8md8=;
-	b=NKk3sxKM0/r3Asnh1dnMh7VRkkyFGP/eyMh4OylSXitYbHppd89yiW9O4iWMEXifyY93N6
-	ccwpEACosDCwQMvkU6uBUmFelDySpbtV+G06pc1zdPBvV4w264YvIUYPpu9lXgyd3afqMR
-	ikdxFyPaRc3JFV4aGHfbqjzEKH3cJBA=
+	bh=rynyKDSc0zUIf+ovCUTrOZiWmRXp4NT2kPlsY2Zv9nI=;
+	b=CkD+mHPjuJ23dekpRyag285IoLq/4snAQqrpoFZEoVbVXDMP96QIRHhN2/0i1gxWQreBIW
+	Nrpf4cfQM9Ejza1gXlfTSD5T/TnhXmkaJUc1Ws9Hdavn+w3o8AiFdCx3/UnfANPvPBxryc
+	796LiL3dFfkDGFJTZemGdsk2REQEk9s=
 ARC-Authentication-Results: i=2;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FAglrdYv;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GVWhU+w4;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf04.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+	spf=pass (imf05.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1794011840;
-	b=Http5w31FzZaeT5Bti6wR4Qlz0pd+VKEUbOkFzqEOSFkViTlCPfutq+372n3tLMfHi8ka7
-	zRs1PWm/Bs08Krce42ZrWsjRXV86ci6i/vCIib+xhbrDu0o1WUn5zOMpL/tMNVpx7a/mUO
-	RGX1cEBC4jSacKRXOp7Y2rQ5sjaQEZc=
+	b=cOG/TGpNOTJ1UxRaNGKyFdTxZrU4NET5WiFmUT9/a5egAY0nJ56BS36rovrOJFo2gRB/In
+	Td8Rpu5CobDKTGDDUW8u2UpCeGvnFEwETgrSmpy6VBu19aD3hxtkhwDHt3ESxlDAeFiWG2
+	J8/E+DOb2jO9I4EEewCQe0NevaP0GvA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ADC6440BFD;
-	Sat,  7 Nov 2026 00:37:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 13C00444F6;
+	Sat,  7 Nov 2026 00:37:20 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011839;
-	b=aGaBpPuu+/mFZvkAp1rSH7Yasxkx/nnpM4TaXfb2dK0m+wFH13jBhH2fAggftFj/5c6a
-	 mGEPTy1zM4zsAX15ZK5kX7K2jJYr95Ub3yz/vRVUdI4H/z6xUnnUGNVwdFh8bKExslELk
-	 tqJpstnCgh7RjUMrxK6prnL7cDsdyBVXvUhXQN6OBcfeej341XTqyZIYBYu8/vpADTSkc
-	 HW86Bn3m/5fvnbzkvgA05zXHtbM54nQ240b/igXHa1GPbE3RwENTeyVTKg+gJ++0H5hGd
-	 KrXsgpax8Uoz4sy9Mm0EVMbX8hrpiDCwv+WuqFRwVNDDMZGJSxclO5dCApIg1k/jGSw==
+	t=1794011840;
+	b=I03qTBEhMTxa3skxjm/RHt8UIFcsdm/Lv3oJ7wLwBykGpTWec8F3ksj64DvhNeSFcpxx
+	 g1150VDTxyZGTkGU75uUrYa2EOKaQWiFq/ZeLA+Be2MFzbmTtN0v6Sz3CmDXyzx1SSBsp
+	 KEejLc0PsD3LpsAqgW/X1fGhkSokrJvNdQJL6VgunaaTZMT4UGszzViKg+mQLS8wBtoAp
+	 VFJqUATwkzcHBrMN4+Dn59gBXtgop+NbU1ADCoOtdjA1EeW7Qgx06jZl+jRFQQlne1bGa
+	 hqYGMejYu84etdYyPO4MrCU1Cctny/GWxBFOIikJrmCnKJ1Hr7ijIHlQUhOSAsSS44w==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011839;
+	c=relaxed/relaxed; t=1794011840;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=L1WAIjsJ2f6GPnFK9J8tErfe5hVo5E0rwAzvzNh8md8=;
-	b=WFogn1wF4vd50mLOuJIEk39V8ZxNJmY7BZ3IzdASS+OAbsuN3xPTMuwG0oy1wI3TznOi
-	 BpuNjiUFZQa70llOCgQOc+pEBVrZr4wmXBFw0aF8F6KiZHiE/lL6sgDwyXx+eezZuqZit
-	 QS00s0Buvq6MHhxcd+O8lRhumdoFiQ35rkvNBFDY+4KoE0q+NvAm0d0tNpZrtO2qkBvQ3
-	 5u4jOLtVvVFkfQ6z4lExtYp+fDJaIwsxGMjAH8CH/fhOQQqAwpnhgU4HSJIaT3c8InL9v
-	 Pvkv24J+wPmQ66gsIRaRGbEhhnp6l3SGNOPekxBR3JJ7DK/9FCS/2NzWWzUXlFmpdtg==
+	bh=rynyKDSc0zUIf+ovCUTrOZiWmRXp4NT2kPlsY2Zv9nI=;
+	b=AyYHDDTDavRiD+DTEwt9NCo6H9FsTvzhLico66j3F2msHSYmxvhe/aXmtqN9AcsQOy0X
+	 vH87VNUGsdM141LNVejjHmFzePD7bWp+aMWPGREscc5iIau0Xb3Vup2ahL/m0+zB+wJM3
+	 ct8YCmTiv10hJ+NbIcPTq+gV8qLSU/UA49uH08ChSGUAvYOHhYnpzSbo2DQr902LfrbY3
+	 qJSLvBvPjAEVhBltCYq7m7V/PEzpiQrsZqY8w7SVulj/389febT/mqtLeoHw+xhT41oRt
+	 6fQIXUKS2v1H/AaxQynfWEuLMqn7bLm4xvflhM51VhOKyf0N1ir179NxAi8cwE15QFw==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 6BEEC1F01559;
-	Sat,  7 Nov 2026 00:37:12 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id BBCEF1F008BD;
+	Sat,  7 Nov 2026 00:37:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794011839;
-	bh=L1WAIjsJ2f6GPnFK9J8tErfe5hVo5E0rwAzvzNh8md8=;
+	bh=rynyKDSc0zUIf+ovCUTrOZiWmRXp4NT2kPlsY2Zv9nI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=FAglrdYv+8+AjI1vNIVfyoBykwq94B1Jsxzaaxp8BIhzQAoBm0Np9IlyKyja27FQK
-	 QhhEpYPkeujEXOtnZkmLfwjj/VxY3nUaiCCTO/UGKsyGiLBC3fAQ26SatWOphJZCHy
-	 T6UeH8ua7lxafC1ICU1pXKxHKsZJ0rIvE1EupfWX7TrVPxkeGpeFLpZWatdbG+O8re
-	 NkDWs50HEqN2kaSc1Pq+A/vTWFx4s3f3fq6PqQqRHtQZNnoQv2JilSdWO4dQNP0TCz
-	 k7i1F9pmJToF7d7XteR0Eevx+cmXcq+H1in/UFsoUvt2EXY89m9+W+aLeCtF91qLlm
-	 96tBRh1msbJcA==
+	b=GVWhU+w4d3BSgjsBGPStNhlVwwTbKrmU/QDwqYjI87cXdTL3umZSMAxyTZ3grNQRe
+	 TftFaOjtx85NEPT6+6ldNTzxx4jufKH3abviANVuRExBCfFkOclItVKpbxCZBzSxpc
+	 cAFwWBHPmcW+P3JVaQzcriQia7C2649AJdpay8wc2GA8ekpuoYMjrqc2t9SLWVg8c9
+	 cgxRNVJsJC1MuVzqJMLkHld/yEsMPm6pBrp/FyG5yuI/13kn6SW5uw0HbOBVp63pye
+	 D7DAfiyF5usQjR2Th+15sxmnus1FA3IoFJvOOp50F5+B6gzPDpZsRRIBLQqQsQ0O3U
+	 xLGNoB43ZJM0A==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 3F1EE47A0C;
-	Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 2775747A42;
+	Sat,  7 Nov 2026 00:36:58 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:38 -0800
-Subject: [PATCH RFC v3 64/88] vfio: Add vfio_device_gmem_revoke helper for
- guest_memfd
+Date: Fri, 06 Nov 2026 16:37:52 -0800
+Subject: [PATCH RFC v3 78/88] KVM: selftests: Verify VFIO access directly
+ and via guest_memfd
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-64-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-78-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -119,11 +119,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=2301;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=6129;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=6gfs4j8uCHpXnOLsBDGwfvIT0AGOBGHhi3wjtxG21zs=;
- b=2H/FjEoqaNY0u61FutI/xynBHktbS1ilj9Dq898KbDy8/638MzV06rs1q4/10qrHH8jGsnUXo
- LfFX9u/SduFC73ybrCdDYFQJgPwbpocGEFiTpmQbgpzVeqgnbOtQGrB
+ bh=wMpfVe5pW5612uAirzjznbXSxcHXbU2mXBke4sAga64=;
+ b=tdBMo5bwX2Uer41RpQmN0GH50JgBfYlCVTon4eNRJWYkAyazzOurorg07KXh3Jb95H9HI98uP
+ YptA2UUYyosDFhRRnsmzi7EgQN+1UkGEJfe/r5Sb3/gVzYbH6wjyWS0
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -133,16 +133,16 @@ Reply-To: ackerleytng@google.com
 Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 6324740003
+X-Rspamd-Queue-Id: 98F5E100009
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3fqpj6xpdc97m8mq8sfhe8h5wx33deic
-X-HE-Tag: 1794011840-458355
-X-HE-Meta: U2FsdGVkX18DYATN6BROiyjUIn+PBepoWSoiD041bXy3ythDZupmEFYbPIZDKEVG0QD9TzGH3zc1vlL2GT9o+HoqMzhnBE4Nfun2AdgmxXRNvUuEdZ4TAPj1n8eOiLL7h3V8jxgMLNZMrsGp/6ytUr601Dh/5ppH4hysPV8Sf1LWxs9GFGqqGcbp2hq18H3vkWHRJrgKjRnJRZyi6oONDMQV2I07iGh7dn8G1KpzJfBx4ex+Zz23ag+5IIVc21vOx3LE5ZMCbSwR+a43el1l/gWqrHSoktN7uSQpwPibZor2qJm2oBOgxEun480cH91PKf2v86FMgZdl81Jai8z+7eMS+07GWc1MZdqge7lRlzc1J4npgI1fQJERQSLUFeSxgi9xzNEflhnWGt8OPyCTWt36i4pZAD1atpZyMd0Wbp9iCWPJrCI8hdCYxTG6iaR0Av3IJdGWmQywC0xx3o82Ju/VywvThp3UwZUEoM4MIic6lQx5921Ms803kqrgu2aULpWU9Gq3y3Xk98wX3q7rvy4GzAPzgMA2MVXSJJgK2V8xrZl4JtI7zVp5w/n2e83FFPZko2AdlufvDfT9oorFKYLyN0CUscwL3slsOWGb7PgJvHr/wZ6txcF7HAGqR5JIb1X+alkCjOFSvBiyuZL14gM0oiTsaGoAGlT57ZUF69HofsBvfAUz/cbDPFB8IhaoQ7ILWRlJhARl+0shSegvDbjCvOFEwYv0U0GCAhx/Ny4fHiC+IYheYDsEy9so6qTn2nolOvDQPPcgqFntvAMWAfkaFj3FvedJ8xodizN20chSOVRmorXPGNwTJQfj+lmvwCYuFdUd0FYSKLn1ZtxzJ6VYFhcBsXhHZjQczmm1u4WqaTFQx68A8gOcqsLDfiq4zOce9dgmanWJcUblA8S/xRKAMNpoPSvh4v5zFSbGuU62shYIchiqeFybETw/X+S26wukfJozx2gLStnTTXf
- hiH8ZsPV
- 1X3qQ60j1SXPH8SeUYDSNgrFnzlFXE9nhXQIYTJ7mZ9cpdV0TS8UdtJIR6IBr+KcN7hkRCQYy6V5Vw0npSAfX6MVlNVeO8xdiMC5zEKWeO5FBV171WUZx6lMV6AOcRIoT0gSc2h9woC3EcHZlN8cck//g5ZXlA2wXpJ3hXvJUHJD2uj2Hx62MPPBkYxuwX2kw0ffRAo3JtElyNx9OO/k0y7pu/6HNill5Ni2P0RDPnEfJvLO/a1QtOC9yVF4KdXb47otLZYLjNEXh1K8IyXyK/1g6ybt+yN71gzx1JWG8edmjy1gLhVCSjmOmEpxUMczOW+mPRUDui8QPrixBtx1YroviaNDMgE3ulpJX0vah6LCZyyxL9j/N5rziFUCo1n1qzzsrW11p3JMdHTYlRtL7bY6PodSntGE13i6bTzSHttZgx569eBeXSLt0/6YK9xFaw9apY5byN3fcTu3yt8Fe5N9IuVUE7kZdlYAs8IpUJcNSL/3c8jgNwHxV2dMTfm8ttaKRzPx9EiHdklXwbXi6BCjNWzY4GNhY2vDh6Ac7q4w+YyTYAb8iJcJGy4Zr/oRpAHqabokbqnLv4Wl+xDazz+21KVioenytW/j5XydxXklyiQM=
+X-Stat-Signature: 5zckzfiwztyjc9qqhk63a3jemq4cmyg7
+X-HE-Tag: 1794011840-666914
+X-HE-Meta: U2FsdGVkX1+dLYSw5FXPXDJUSTLMOQlSPnaua6+s5HpYXIAFCE9sWSIC6ofQVBQ95o936nV4lMjrUHGIajjT1L94SUGseAc9K6qKEb6W+Zd3XIEQDYdwuhs5LcwubrzdXVWp8fduua8NhfxEOP00I/aOULRF7F1shHrLycuN2rBTTqauBdP72CxUK0zfrDjRZMLoF5ljQhEEgsvE1swN+QYvjxDUD1ljAWx4aIVImHITTruSsmVEo4qedzyYL2oQfc3q8o4RTXYJSJtVNX32J+tMqs+0J9Qg5m6VlvLboNriNupQ0cJoqPZPizaE/rOgfbhuC7suH1Q/MN5uGE6RPOps2NAIqeDDaUHK8nJVx7YZ4gPlGLY42HhxcOzi10/kyxBBmUjG5NZE6QiMMA/a8DBAmwv/0ID5QmgKdtdD8ls+YzwI9/DU/TvygKND3AQadRtLWsbI699zQZz4GLGHZUd20EgCqv7Atbuo5akAE8F55elHRJRq2IY3905AajkrarkNszI0Nl5jidvQw10Tsw57vZD0wk/O72ntzm4FwCJN0Syw4ScQBz+Gd6hc4mJhC4K8BmXCyg3FQij41MJIyRasY6Q8PMX6Kgp7wDHslPIFpfo0ynwTkxjuJ1nf4gMQDmTd+13sgt7pO4A3Jd1c/YNM316/mE4YVPsfTNbevb4jlO/31vXfsZwcaQ4Jp5BvinHI5xzvoIXa+h9frhT4aJFe1c+LmX9sH6bJvaczIyCDU8AlUdanQuF+3sEltKZhg/6RDKtbre4LLBPvmCkz1suFN8GOBKP2+aXPVAhdyufJEKPB4o9oylJNa61nd8wQj+LdgMNDzxHq1DsuwIjzBvF25ADHiIl7cXpvHwhJfRO34atim9lcaHuWMdTj/t/uf31icm6cX9U8G7d+Xby4L7HdKrYEMEpZXIvBBk5Vg2HPw4jWgyP1qv/OwhxmeSs9MfsbaZ+seUIoKu8OfkE
+ p13CmBYH
+ f7xnlYx/coHO5ky6J3yP+XThj5A7xi4OFiAUry7deGO33GFetkQjdoRN2g+mGiD0tiAsQc7tHqeSskmKtzQ6OYvZJqtEafvCDAatoLcXhQmBLLX+I3nBth8qW2EJEDYmW3GtFwP3WnbzjSuN6vNNQwocnffRyMzf9wdk/5ch4XU2PU3MyYTonKGu+4XRZWES803fRt+2m+gcAaw3+ZfYI4kyWCU+oq3qGC+ubz3TvM7rlpG2TCuvfFHir5uCIp2vsNKDibm/K1jHE0zoOIay7spkDj+TAfz4gS49tC0kV7yin9egP82PdnJIY+2xPh0QhPkiJLO/5Wg/LkFnaGAWcrpNYnn3vOqRirPc26rEvy2LXJPcfieVc0Xp9hlKsLNcDVvExq6Urp9BEnHI4NWd7I/rk5WAyznGTrhu6x6KO8k5xZC0YYI67pqA/eepTbT9ReL5Nn1+VduJ+KygekwvQvOdgiWo7zvKYvqotGkdQ/reC+WIWh/+GEmmMpSZcX9lfEmWMYsjzeEstAeZXhlcfSdOvU9j3/EZJi34axR6NBpKRnfj3v8YcDIsvvZVa4WrLUh2DMQJiSpZ6IhCKUhmrFl3Cc0EGFdaG9BXs/oZD0fuE9Wk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,65 +153,184 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-When physical device regions backing guest_memfd memory must be revoked
-due to hardware reset, power state transitions, or memory decode state
-changes, the bus driver must revoke and reclaim the memory ranges from
-guest_memfd before modifying hardware state.
+Extend the VFIO igb device selftest suite to run across fixture variants
+testing both direct VFIO access and mediated access via guest_memfd.
 
-Add a vfio_device_gmem_revoke() helper in VFIO core that queries whether
-the device is attached to a guest_memfd instance and invokes
-kvm_gmem_revoke() with the specified range and physical frame address.
+Define two fixture variants:
+- direct: binds the device normally, exercising direct descriptor read,
+  write, mmap, and reset.
+- guest_memfd: binds with the control-only flag and attaches the device
+  as a backing resource for a guest_memfd instance, validating that BAR
+  read, write, mmap, and reset succeed through the guest_memfd
+  descriptor.
+
+Because guest_memfd delegation of VFIO regions relies on in-place
+conversion (per-gmem memory attributes) so the entire sparse region
+namespace can be initialized as shared via INIT_SHARED, require
+kvm_has_gmem_attributes when setting up the guest_memfd variant.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- drivers/vfio/vfio_main.c | 10 ++++++++++
- include/linux/vfio.h     | 12 ++++++++++++
- 2 files changed, 22 insertions(+)
+ .../selftests/kvm/x86/guest_memfd_vfio_test.c      | 77 ++++++++++++++++++++--
+ 1 file changed, 72 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index e4e7bfe77d03b..fd5f71dfc44b7 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -1643,6 +1643,16 @@ static const struct guest_memfd_provider_operations vfio_device_gmem_provider_op
- 	.mmap                 = vfio_device_gmem_mmap,
- 	.check_set_attributes = vfio_device_gmem_check_set_attributes,
+diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
+index 91cba359e4392..03c324f7f618d 100644
+--- a/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
++++ b/tools/testing/selftests/kvm/x86/guest_memfd_vfio_test.c
+@@ -21,6 +21,7 @@
+ #include <linux/vfio.h>
+ 
+ #include "kselftest_harness.h"
++#include "kvm_util.h"
+ 
+ #define PCI_VENDOR_ID_INTEL 0x8086
+ #define PCI_DEVICE_ID_INTEL_82576 0x10C9
+@@ -96,10 +97,27 @@ static char *find_igb_cdev_path(void)
+ 	return NULL;
+ }
+ 
++#define VFIO_PCI_OFFSET_SHIFT 40
++
+ FIXTURE(guest_memfd_vfio) {
+ 	char *cdev_path;
++	struct kvm_vm *vm;
++	int gmem_fd;
+ 	int iommufd;
+ 	int vfio_fd;
++	int bar_fd;
++};
++
++FIXTURE_VARIANT(guest_memfd_vfio) {
++	bool use_gmem;
++};
++
++FIXTURE_VARIANT_ADD(guest_memfd_vfio, direct) {
++	.use_gmem = false,
++};
++
++FIXTURE_VARIANT_ADD(guest_memfd_vfio, guest_memfd) {
++	.use_gmem = true,
  };
-+
-+int vfio_device_gmem_revoke(struct vfio_device *device, pgoff_t start,
-+			    size_t nr_pages, const unsigned long *pfn)
-+{
-+	if (!device->gmem_inode)
-+		return 0;
-+
-+	return kvm_gmem_revoke(device->gmem_inode, start, nr_pages, pfn);
-+}
-+EXPORT_SYMBOL_GPL(vfio_device_gmem_revoke);
- #endif
  
- const struct file_operations vfio_device_fops = {
-diff --git a/include/linux/vfio.h b/include/linux/vfio.h
-index ffb01e655735f..aade091a91fe8 100644
---- a/include/linux/vfio.h
-+++ b/include/linux/vfio.h
-@@ -394,6 +394,18 @@ bool vfio_file_is_valid(struct file *file);
- bool vfio_file_enforced_coherent(struct file *file);
- void vfio_file_set_kvm(struct file *vfio_file, struct file *kvm);
+ FIXTURE_SETUP(guest_memfd_vfio)
+@@ -107,6 +125,10 @@ FIXTURE_SETUP(guest_memfd_vfio)
+ 	struct vfio_device_bind_iommufd bind_args = {};
+ 	int ret;
  
-+#ifdef CONFIG_KVM_GUEST_MEMFD
-+int vfio_device_gmem_revoke(struct vfio_device *device, pgoff_t start,
-+			    size_t nr_pages, const unsigned long *pfn);
-+#else
-+static inline int vfio_device_gmem_revoke(struct vfio_device *device,
-+					  pgoff_t start, size_t nr_pages,
-+					  const unsigned long *pfn)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
++	self->vm = NULL;
++	self->gmem_fd = -1;
++	self->bar_fd = -1;
 +
- #define VFIO_PIN_PAGES_MAX_ENTRIES	(PAGE_SIZE/sizeof(unsigned long))
+ 	self->cdev_path = find_igb_cdev_path();
+ 	if (!self->cdev_path)
+ 		SKIP(return, "Intel 82576 device bound to vfio not found\n");
+@@ -123,12 +145,50 @@ FIXTURE_SETUP(guest_memfd_vfio)
  
- int vfio_pin_pages(struct vfio_device *device, dma_addr_t iova,
+ 	bind_args.argsz = sizeof(bind_args);
+ 	bind_args.iommufd = self->iommufd;
++	if (variant->use_gmem)
++		bind_args.flags = VFIO_DEVICE_BIND_FLAG_CTRL_ONLY;
++
+ 	ret = ioctl(self->vfio_fd, VFIO_DEVICE_BIND_IOMMUFD, &bind_args);
+ 	ASSERT_EQ(0, ret);
++
++	/*
++	 * Create a SW_PROTECTED_VM with 1 runnable vCPU allocated for memslot0
++	 * and stack/page table allocation, so guest_mapping can execute vCPUs
++	 * and FIXTURE_TEARDOWN uniformly cleans up self->vm across both variants.
++	 */
++	self->vm = __vm_create((struct vm_shape){ .mode = VM_MODE_DEFAULT,
++						  .type = KVM_X86_SW_PROTECTED_VM },
++			       1, 0);
++
++	if (variant->use_gmem) {
++		uint64_t gmem_flags = GUEST_MEMFD_FLAG_USE_RESOURCE |
++				      GUEST_MEMFD_FLAG_PFN_MODE |
++				      GUEST_MEMFD_FLAG_MMAP |
++				      GUEST_MEMFD_FLAG_INIT_SHARED;
++		uint64_t gmem_size = (uint64_t)VFIO_PCI_NUM_REGIONS << VFIO_PCI_OFFSET_SHIFT;
++
++		/*
++		 * guest_memfd providers (including VFIO) is only intended to be
++		 * used with gmem_in_place_conversion.
++		 */
++		TEST_REQUIRE(kvm_has_gmem_attributes);
++
++		self->gmem_fd = vm_create_guest_memfd_resource(self->vm, gmem_size,
++							       gmem_flags,
++							       self->vfio_fd);
++		ASSERT_GE(self->gmem_fd, 0);
++		self->bar_fd = self->gmem_fd;
++	} else {
++		self->bar_fd = self->vfio_fd;
++	}
+ }
+ 
+ FIXTURE_TEARDOWN(guest_memfd_vfio)
+ {
++	if (self->gmem_fd >= 0)
++		close(self->gmem_fd);
++	if (self->vm)
++		kvm_vm_free(self->vm);
+ 	if (self->vfio_fd >= 0)
+ 		close(self->vfio_fd);
+ 	if (self->iommufd >= 0)
+@@ -236,6 +296,13 @@ TEST_F(guest_memfd_vfio, get_irq_info)
+ 	}
+ }
+ 
++/*
++ * PCI Command register configuration belongs to the PCI configuration space
++ * region (VFIO_PCI_CONFIG_REGION_INDEX), which is accessed via the underlying
++ * VFIO device descriptor (vfio_fd). In guest_memfd mode, bar_fd refers to the
++ * guest_memfd descriptor representing memory BARs and cannot be used to read or
++ * write PCI configuration space.
++ */
+ static void vfio_pci_enable_memory_and_bus_master(struct __test_metadata *_metadata,
+ 						  int vfio_fd)
+ {
+@@ -276,7 +343,7 @@ TEST_F(guest_memfd_vfio, bar_rw)
+ 	 * Confirm device is readable and does not return 0xFFFFFFFF.
+ 	 */
+ 	val = 0;
+-	ret_bytes = pread(self->vfio_fd, &val, sizeof(val), bar0_info.offset + E1000_STATUS);
++	ret_bytes = pread(self->bar_fd, &val, sizeof(val), bar0_info.offset + E1000_STATUS);
+ 	ASSERT_EQ(sizeof(val), ret_bytes);
+ 	ASSERT_NE(0xFFFFFFFF, val);
+ 
+@@ -285,11 +352,11 @@ TEST_F(guest_memfd_vfio, bar_rw)
+ 	 * it back via pread().
+ 	 */
+ 	val = 0xdeadbeef;
+-	ret_bytes = pwrite(self->vfio_fd, &val, sizeof(val), bar0_info.offset + E1000_RAL0);
++	ret_bytes = pwrite(self->bar_fd, &val, sizeof(val), bar0_info.offset + E1000_RAL0);
+ 	ASSERT_EQ(sizeof(val), ret_bytes);
+ 
+ 	val = 0;
+-	ret_bytes = pread(self->vfio_fd, &val, sizeof(val), bar0_info.offset + E1000_RAL0);
++	ret_bytes = pread(self->bar_fd, &val, sizeof(val), bar0_info.offset + E1000_RAL0);
+ 	ASSERT_EQ(sizeof(val), ret_bytes);
+ 	ASSERT_EQ(0xdeadbeef, val);
+ }
+@@ -310,7 +377,7 @@ TEST_F(guest_memfd_vfio, bar_mmap)
+ 	ASSERT_TRUE(bar0_info.flags & VFIO_REGION_INFO_FLAG_MMAP);
+ 
+ 	bar0 = mmap(NULL, bar0_info.size, PROT_READ | PROT_WRITE, MAP_SHARED,
+-		    self->vfio_fd, bar0_info.offset);
++		    self->bar_fd, bar0_info.offset);
+ 	ASSERT_NE(MAP_FAILED, bar0);
+ 
+ 	/*
+@@ -347,7 +414,7 @@ TEST_F(guest_memfd_vfio, device_reset)
+ 	ASSERT_EQ(0, ret);
+ 
+ 	bar0 = mmap(NULL, bar0_info.size, PROT_READ | PROT_WRITE, MAP_SHARED,
+-		    self->vfio_fd, bar0_info.offset);
++		    self->bar_fd, bar0_info.offset);
+ 	ASSERT_NE(MAP_FAILED, bar0);
+ 
+ 	/* Write scratch test pattern to RAL0 */
 
 -- 
 2.56.0.455.g6c5a503b38-goog
