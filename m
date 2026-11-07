@@ -1,144 +1,129 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443B9606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 01:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F4B606A339
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 01:41:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=llDwBif2
+	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HhPUsSs7
 Received: by kanga.kvack.org (Postfix)
-	id 6B71D6B05B0; Fri,  6 Nov 2026 20:28:20 -0500 (EST)
+	id 376706B05B0; Fri,  6 Nov 2026 20:41:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 668AC6B05B1; Fri,  6 Nov 2026 20:28:20 -0500 (EST)
+	id 34E136B05B1; Fri,  6 Nov 2026 20:41:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 530556B05B2; Fri,  6 Nov 2026 20:28:20 -0500 (EST)
+	id 264546B05B2; Fri,  6 Nov 2026 20:41:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 296026B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:28:20 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9C64DC01E2
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 01:28:19 +0000 (UTC)
-X-FDA: 85406587518.26.40A7374
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A80C0C0004
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 01:28:17 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=llDwBif2;
-	spf=pass (imf28.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.177 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794014897;
+	by kanga.kvack.org (Postfix) with ESMTP id E48206B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:41:18 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5AAEDC025E
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 01:41:18 +0000 (UTC)
+X-FDA: 85406620236.19.8AAD872
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	by imf18.hostedemail.com (Postfix) with ESMTP id D9F121C0006
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 01:41:14 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HhPUsSs7;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794015676;
+	b=dhP/d4OJ6xXQ9e5DWvDgY42kCqJ7D+xuIsvNYUYRLYiIxmmL8/uAeGDtzPxOHqQyjbzYed
+	OkKYUoamwpoDiDg5HomofUvGCnCi9EuUC0KWnvn0wmE5w+rEqohVSFGXuA+OFQ1Gi2Ehzy
+	3YvTbAYbJ86h+/4fx+e8supV28GAdUk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794015676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A2K0C4Y601dKboRibgXNYOXQyJ93jJc/YQsibXbCB9k=;
-	b=8FZ5aXV5/tz34lQt8R+E3bDtRW29JXOeRZgpiB2Nc3iASv/OMVLiNLc7/KM0ghd03Kxqll
-	x4rgiGzK8XJwwDBa/tefeJ9U3ZrgAP1/MlGaZFZ19Zx3BrF/EOaDGRnvoGg932ZShNvHnT
-	WiN5g/C3PT3iYJfEuyS/rnsbgkqVhN4=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794014897;
-	b=ujXE5OTNlhQ489WtK3Hh8QEN4i/kmNWley3J357hfRF08tLRRW5Mp2DK+0OqYTwD+CQQRN
-	mvHVxmV2TZnyjMmn+if/nP6ljpxxohIxK/hs5+yBbpl4WkxPguuEyyi1cOMO3HpmmI/Hrg
-	7mCQXZEvx+pMhiesEwsL5rcoOno3Iwc=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=llDwBif2;
-	spf=pass (imf28.hostedemail.com: domain of kanchanapsridhar2026@gmail.com designates 209.85.208.177 as permitted sender) smtp.mailfrom=kanchanapsridhar2026@gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-3aca0bf7fd0so9393411fa.0
-        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 17:28:17 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794014896; cv=none;
-        d=google.com; s=arc-20260327;
-        b=szbKjidY3PjSX5fmUKlFbaJsyoFR/sD0KaX9dZ4arxXhHqOk6Sj1YCcKWNuLjQZS6/
-         1HVLRDTeN6utuJnpOp2j4CMqlerEhSnjeLA0BSX2E3h9/p5+0Lf1JEirl72roju7Qsiv
-         bWHKCqwZ2lHhdh0bHcVjo55B9SzjSvjZz+kkoJon0MBhuMfaprsaYeILfDQjdqnfB+gO
-         liGTCQGj+6j42XoMGDYCiVN90R23BkXdRDmRskb8zGnzXI8uJewIhtTO1rx/ZIIciSH6
-         12XUl59xLJzVeBZN7TQy7bHbsGL8BBgc+8vFPeWXYn/GfS1P16Fk+OLNrGc6cRUXcY0o
-         xP9w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=A2K0C4Y601dKboRibgXNYOXQyJ93jJc/YQsibXbCB9k=;
-        fh=RWn9KlYGYHsKPvqTK6ygGwAbJtGXaGebcV9W7fB416o=;
-        b=kFKoqwXnPRaxhvYeuXnFIRRAN+BwKGsyGAho463XIsTwfhQTBMNU+qEzkRF68kxIEt
-         +NOTIqBGlu9BPN2H9DbFVkid/QaFA1paIF0YZDQuzdYoCCbvhAQxbDO3IkT0XZrYN/tL
-         NYPzRTs4U8vLR1ttYX9RI/zO77blveFn69VIel6tpFQK/ux7S0skfCBT/pOv2lCwGjG0
-         O1Y91Tw0ObrRl382ZVo9gWrEIiU8SZNa2Ej1cBfJWBrUAlGsA1bWTV4Q599yTv5CSwlS
-         CBHgdatVeP5nyUkfrHNhpr5GDs5LGkTG0WEJwC2CFlw63ZMfC+bvSZAS7etIOSni2bKL
-         19fA==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794014896; x=1794619696; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=A2K0C4Y601dKboRibgXNYOXQyJ93jJc/YQsibXbCB9k=;
-        b=llDwBif2M8iODwqwfFoLVw2dyrMGg8HMaArGrzukz8hrK/fT63ACPOeV6+BR49ybbG
-         XlRyFvPl0Iz5yOFmbUZhyZu/MoNa5EdquMZrGz0jxyUL+EpAnnf5xPDppaBrFUHM7WJW
-         1g3Rf3FVImLhpCWyCbPUzUXjc/T+tr0f0JBvu7pIIVQy8JrykPvFAPMnRT3jSPtXjuVG
-         qzIma4C/DihMApfjfOG4Khy+Kg6fNNpE/gh730KM6DFnttbMVgadfSYGir8ShoWOv/At
-         0BK0Y/jlSmkMJKwO/x0RgaJgcUu943TMJqJrFTTMZ0qe82XwIE+PkRAMr0pfBCrvHeHJ
-         Q+MQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794014896; x=1794619696;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=A2K0C4Y601dKboRibgXNYOXQyJ93jJc/YQsibXbCB9k=;
-        b=l7Fvd5ouZ7hkdrHYHzYM4gEdb9bL7qKlMyOoicG6msbF13EgRCB+BKiSaDwv5NCUqs
-         Omwe4XjWF8dp6qdMSnh6P7ETHTXbe7kkrZTd+b18BREi95LaJ0IkEeo8A6SLVCDbnFjt
-         stj/JgnS/APtm7yNlC3q4Ekpt8/gmQCrUZnpvlEJwrjVdcusyQOx0Apu1LS1XmMhsEIE
-         zaPYFTt8zjvxFd84B1TVZ9j+Rqmn0SHi4VRM6Hzmw/KXnExuGC0q7PdePvOT6AGMjnHE
-         jDT5ilbDXDdZCcwh9KY25xTkXuBA0va7E0ZS0ctGO0wqFlmTuhjTxVLkGd6nqG4ZaqPM
-         fXCw==
-X-Forwarded-Encrypted: i=1; AL+hErEevt/tgUuNsEUzQgRQWfJnCYemKmX9mlTv6eaZJwyYydYp/520FxMaTgsbJwJoFHuCdUKs3TKNAA==@kvack.org
-X-Gm-Message-State: APuU4Z8aHG36O/iDnfQchZGnhf/KEXSMVp4C8tK0ZwROLy3paRa7seLQ
-	2ql0vT1tngIGfWMGS8nLkhJTwQrF7EnA7ZMqgFgt1nivdDp9G8ltmgAcBFz2M5rIVMC0dJamntw
-	l1BNTOPTDbSIxJv1PjXCW6qq2VsO2ZlY=
-X-Gm-Gg: AYBFou34QuxLNNF797lMJqMZlxcCJEbhIO++07vpgVyjc+3xTRbnSQjIBTATXlKyHh5
-	1H2jDbQJeZR9u/E7O+KyT4l8VBNfwuBze7efbjdOiiIC1ltiYjONPsC8EYriD9WVSrmNka6+Xdl
-	XATN5mIujPt51HAFoPIqe8ehUdLQTIsetPZey4xKIKAYRFoYKGFdPSJlhVF458xxRMBYfrZ5d93
-	Au1NeplzViwDNCClVftuGrS1QKWvrgHpigiZS854C8tX4W285hGgespPRgj5FBpfFgEtVGghgCk
-	wJi66yADr+DNC+c4rU7w28/ksoO83GZx82MmuMMGB8NGEcB5hBRK++QyonbKTRiCr/t9chNeYqi
-	QQq99V7T0kWvpS2U8/EClG30BcR/latZDFRd/
-X-Received: by 2002:a05:651c:50b:b0:3ac:7ad6:2007 with SMTP id
- 38308e7fff4ca-3acf3d2e1b2mr8306571fa.25.1794014895558; Fri, 06 Nov 2026
- 17:28:15 -0800 (PST)
+	bh=lbyGC7nA73pUh7TjmjuuNPaVYbK+A9mHJCPy/Ni7H2c=;
+	b=KwSX2OFRo2Z4bpFn1CTZjAcS5m2Nrz+Z1K+uPhpZq+umaaC4YLKOBuOfzNgkjBOO+I91dj
+	/uIPrhR6ndWpk4/zDsH9XVUFva9jWb7fwcIJXdL34gqDGL3wIyseapsbVZ+evApk3yR/5N
+	mqCebPz8l1YKHt5w9fINCEDtc4PfwdU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=HhPUsSs7;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1794015675; x=1825551675;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=aTkvPzAbJN4jNBu0r57eQZHavSgwUMEEjEAJtxIPKcM=;
+  b=HhPUsSs7skLtvLAqVaTnY2N+lzE6m90VEo9hzZn1s5fEltHHm/vWCBsc
+   VgvoMJrRRT7dewF6D972uvTob8DC+QDRHzgcJls5VbXcN0IKEuIkrscmC
+   Uq0ybEuknmbpc9RDrA6c8/srvJNR5tZ1jP6a02mrLheGiURgcODYS51vv
+   JwCQpvXPiTKWR6Hp+Q98PQXe1xE1RlyU9g0GLeqy9NwMmj9Ml2vQegU0u
+   xXxtQxmHbFLikvKPwFZrioFWRhMFQH0hT0OBHEeO8YpM+U8cdEQU5U2Gn
+   Jimd0vGbQibmERN+fodjoAhnho1LCFl5tCLwzl8vuv6ekX7fqn8s+hZ4+
+   A==;
+X-CSE-ConnectionGUID: Pm9oNLRJQbaMKtUbF2UY2Q==
+X-CSE-MsgGUID: ti9x0c5TQ2SN5mT0jc63LQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2751744"
+X-IronPort-AV: E=Sophos;i="6.27,199,1787036400"; 
+   d="scan'208";a="2751744"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 17:41:13 -0800
+X-CSE-ConnectionGUID: S7ZRecPUTOGgMLkqtEZAag==
+X-CSE-MsgGUID: 4WSfGiz3TyO7e25/Mxp73g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.27,199,1787036400"; 
+   d="scan'208";a="7567877"
+Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 06 Nov 2026 17:41:06 -0800
+Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1xPVQV-00000000qCZ-0KhF;
+	Sat, 07 Nov 2026 01:41:03 +0000
+Date: Sat, 7 Nov 2026 09:40:35 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michal Wilczynski <m.wilczynski@samsung.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org
+Subject: Re: [PATCH v2 10/15] lib/lz4: switch the compressor to the vendored
+ sources
+Message-ID: <202611070943.EDg3udaH-lkp@intel.com>
+References: <20261106-lz4-vendor-upstream-v2-10-ee04c3f0d7dc@samsung.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261106072412.7909-1-kanchanapsridhar2026@gmail.com> <au5l3KEjG_mri-br@google.com>
-In-Reply-To: <au5l3KEjG_mri-br@google.com>
-From: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Date: Fri, 6 Nov 2026 17:28:01 -0800
-X-Gm-Features: AclHuK8dDkK5HTfWUegZtffyaMCinmRWFj4cc_dRxksYCqbkD4npiRB4j2h1mUA
-Message-ID: <CACpmpoc3R8gwkMouwyFLw9PEqyDN1i6OcmPxsvZ1d0QOPSS_fQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/8] Batched zswap_store() framework with compression batching.
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rientjes@google.com, willy@infradead.org, 
-	senozhatsky@chromium.org, 
-	"Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: zxxcmqc1azw4wkfs3n3qbah5mp9porng
-X-Rspamd-Queue-Id: A80C0C0004
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794014897-254905
-X-HE-Meta: U2FsdGVkX1/9veLk9S/Pg02FZFw3vcsiIJmhVsdZQIZCywG/he1JOPJh75oJEAXc9ZrOn/xWgcQ1nZMS6Nlt55Lk4le7RXLs1SC9/bZYJWXSScAccKzXaVlXAhzPcBgweixvZX1SrY68WVpZktmU1bTx37MOgkb0CcjjpB4IzTR9UbPwhcdEKIMjYrHAqjJCFBiSZnoLFy7IvNTWB24r/w+fQECf3lxvtqLTR1l/M1ORXT6LpAiCpeepQQNmo5cM6um+R6ZQEkiQjXVbmzgz3dcFglV4N9N00cUH/fDuqMQeB9jNhb8mYyQCaOaNl4EQmOYZqZLVsMEiYPz8uaQ2rfU6L1B7HaPuuaupITj1Xib2FaEcyFGBC99r09wvKYhZL8mwSL4ME5nqd0MilgAYCYzhmq2GXKhTv+YIy9PFtszN4xrhr/1SrLkUVZgdf9hl44zuTilP5cA27h3bBCVgHp2CB6WwG/bKXU/eKTFW4qtPsm0FdoiZX1pPduPV9+yizijwQibiU8pS8992TPscqbzSKSM49yuNeStTRPsaAjYWVT3GPY9vO99nsZ9Q0CivfPcqAZQGcVfmnrP0XzCo/O+6CGIC4UbnR5UHe2ht2eH04Ma26szdb9VNFcpfiw1m67PjApC0pTRSo7BVkjqGhiRt34Ey9/OwKLgZ6ak7S/EGJLUw7C8UTO5bFg2HWLrvmMveGhl51jknxnrdWPlF/rBtJYQuxKpH9bZPnHUv8ACbYggpiixHhFmzGHC+XkeQaLpZa2R337oBAMsbIYQcEk0BqVdIQkl23cgEGL0Hy5OYZku9B3BsKFXHGBf8GNMFielVUte6lCncbhJLlG5XqEBH9Dl/VHvINJqmaMDC7qt2Tz0z0Og/uVHWXzyUhc/KXdtA7lx73frycA/4DELfA3Q/NMoBQ5twPlIhxM59pjlAiNO8ilWOHGOnn7YS+X7GZ0kRAwnnP/FkE9fT0DC
- Io+l7T5k
- fP2lc9urBTprzrfq/jLky+hDQiPkNP7YIUJt6CpoXzjb6XT1goV5W10z68wR0sOelZM+f839fbcbh8uWT9Rt485C2ZxbdFu9qeHesnA4WdjVvRa6mF2AjsBOPDrfHkF6CwAg5dHwO+9tpEk4vJ1Wa0SXoB7tgfEnQAcgeV92gHICW9PcMMTdTckLDIpHTmfC3/C4CVM7Wk2p64IrUitoMaVmenHShs9z/ZakMYaUTxNcGUzTBVvuflLd8Rt3MGoYl8jzKJazrB7ORwNy72TLCTnYT2xCT4ow+XxFUKRlpk5Le3Z7JNX5Epr7Owrrled7d7uFcgYV1Bw0tdt6KUsM/xLYpRAAaLRqp6wBT03DV13blCVbKLIHNdwIXVz6iaVgNrToJUEn/7YEB6Nyb89h7wNABKhDjlLT+bY5Va/rLOMf+oXPOEJmfdBkKR0NkpCe/sjcuVDM/6HLNC75vdgFgXkWUc8ux60jsqt5F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261106-lz4-vendor-upstream-v2-10-ee04c3f0d7dc@samsung.com>
+X-Rspamd-Queue-Id: D9F121C0006
+X-Stat-Signature: ftdisk64nnxkwzw1mgpzu7uyuwmnayeb
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspam-User:
+X-Rspamd-Server: rspam12
+X-HE-Tag: 1794015674-353980
+X-HE-Meta: U2FsdGVkX1+/1pkQ/23S3UxT2dnCjFRHPhFNIbOLrgfmVyX0a5LHrFzQTs4EovXaTE4la5nMiFGWMu+lLrZGRwlpMpYC5BhipkswY6cu32dOsS7BVJ0NbhuzOlEulyshNlwynsqE3ChU2glz9Xy94hcuUYGnacAvjBqjaT0JmxEdd6z4fO5X7yu94fL3E5HWcSjk+exZ7vOubgPeOm5WM/m0ESxawuCTtulTAsylUAOKmKRxXC9Sf5/BJdjTEFqZX84arYTzdpr796H/lCAKJa71yM9NVea42xCZmn10ffIYo7Uddw3K/LW9l3YVUaKcNJE5doFdDzuUzcpI1Sbo/u6FGxdAOSTJ5+10QwYWed+BupOzXcbwXENdi6QCuN0HYWzTyalvKYWQAyWAZQovcre/fyJrk6linJEr/fm6PCIN0tdRPHdvIUF1IAhqUBq2ebk0U6Wr4KAKCW9tHQn+wNAs78iAtlPaEoxkqH8HtkUms94FVbdGQb9enOd6ABWIHtVRcICUieJQAPq/jiojEEKg7i5VXj3pi6Dd5YBU0DI3cNyGr2q4oR8y3jQi249cSuRYGdNdBlGPLCPBC6bmfZLC+wxS1cWwJ8p+2EZ0LToM0RL7y2Ud5i99LiDD7RsS7XAjP1iBpIv9noyiiJmpbB4Iy6TkQ/Z40QEHJeCdLeb/k0wdrv9kLueXqcKW53itnB+NqF2xq+SXx9I3gU8hD3SJccd2L/b9H/XO/r9wQJuO3qToZM4ArcxNhiYOpwLWbA2JTfFzWotwypZKY0SOVki2Jh7mKgpSfxuzhlQ3pJhbU6WeH6uGekXd6NRo8oWJpvWmieRX7qqN2eyUDRY6mXQVrFWg8N7O29KfXXMTy3msPg1nLgBpnhubf3UP5xyfaz57OB55iBVQCDUrJctPwSgkEj/3L14+UAqgTKgOkCTNx8ks5nwieHXb9sM3TbY+Fc2jLFVIy8rsAk8dJ6L
+ bFwohltH
+ 2NDqg5Hh1wERlQICWHJUS1Q3fEWHNDMmaEtTx8yc/dS254IQDTa2uylJiQamAxn5uqWQ9LPLMM8kV1hkR7CWP8iYeyN5smkE1Az8c2S2O2ne9lRdstTHy/V4cbWI7PGBVdRt2hQJBbN2uBHm4JAa9gGneyt4qcFXckrdIGCIglIX9a1+Cn2R3oyXlOQsr9Glw14LBdkabCi2bdJZnVja6W04ac/CKuFIZbrQ2J8Nype4XMtVJ/2vJ2c84y3C3LSOH+H5hoKrGIoRLV59tTcnBvCkwnSST3G3Zu9McRxp1uQdnKm8W3fVKlC5cDETemcub0s49kiJsdPYPaFGwrKEccQZCu8GIqVrXt1wHG7khNFgdVus7WymIbuoiG//tAC+qtqvGAJPWdUmf07ZphXYIAjgzcw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,194 +132,232 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 3:59=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrote=
-:
->
-> On Thu, Nov 05, 2026 at 11:24:04PM -0800, Kanchana P. Sridhar wrote:
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> >    usemem PMD THP BPFTRACE
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> >            Baseline           zswap           zswap          Change    =
-Change
-> >         mm-unstable           store        compress            with    =
-  with
-> >          10-25-2026        batching        batching        compress  co=
-mpress
-> >                         (patch 6-7)       (patch 8)        batching  ba=
-tching
-> >                                                                (ns)    =
-   %
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> >   zswap_store_order0_folio (ns):
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> >   p50        39,631          37,538          37,765          -1,866    =
--4.71%
-> >   p95        53,088          49,690          49,349          -3,739    =
--7.04%
-> >   p99        65,065          63,529          57,404          -7,661   -=
-11.77%
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> >   zswap_store_higher_order_folio (ns):
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> >   p50    21,460,366      21,201,411      20,383,233      -1,077,133    =
--5.02%
-> >   p95    25,975,341      27,558,253      25,045,350        -929,991    =
--3.58%
-> >   p99    29,538,493      61,926,648      27,184,835      -2,353,658    =
--7.97%
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> >   zswap_single_compress_per_page (ns):
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> >   p50        37,545          39,320          37,218            -327    =
--0.87%
-> >   p95        51,549          66,503          51,481             -68    =
--0.13%
-> >   p99        89,866         134,854          87,091          -2,775    =
--3.09%
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> >   zswap_batch_compress_per_page (ns):
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
-> >   p50                                        40,493           2,948    =
- 7.85%
-> >   p95                                        56,944           5,395    =
-10.47%
-> >   p99                                        76,242         -13,624   -=
-15.16%
-> >  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D
->
-> As with previous versions, I cannot reproduce these results. I tried
-> with a QEMU VM on a Cascade Lake host. I saw marginal improvements with
-> patch 6 and no significant gain with patches 7-8.
->
-> I noticed that you omitted high-level metrics (e.g. throughput), I
-> didn't see significant changes in throughput, and I also ran a kernel
-> build and saw a small regression in some cases (probably with order-0
-> folios) and no significant improvement otherwise. Even if latency for
-> some functions does improve slightly, it doesn't matter if it doesn't
-> show up on higher-level metrics.
->
-> It could be the difference in setups, or the overhead of bpftrace hooks
-> for zswap_compress() might affect measured zswap_store() latencies, as
-> you will have fewer zswap_compress() calls with patch 8.
->
-> As advised previously, I would trim down patch 6 to the bare minimum
-> (without all the scaffolding and prep work for patches 7-8), and send it
-> separately (with patch 5), and we can check if it's worth adding, I am
-> still concerned it might be adding overhead for order-0 to be honest.
->
-> I am questioning the benefit of batching here without HW batching, so
-> far the results are more concerning than encouraging. I already spent
-> too much time trying to reproduce the performance gains. Also, sending
-> new versions without resolving discussions on previous ones is not
-> really productive.
+Hi Michal,
 
-Thanks for taking the time to test and provide feedback, Yosry.
+kernel test robot noticed the following build errors:
 
-I omitted high-level metrics like throughput since you raised a
-concern about variation. Hence, I decided to go with the "ultimate
-truth" which is bpftrace latency measurements.
+[auto build test ERROR on 93f51579e7df248780214094418f205253383cc5]
 
-For performance validation, I only have access to a 16G Chromebook
-with a Crostini VM to which 13G is allocated. I am setting aside 3G
-for swap and 7G for QEMU. Within the QEMU VM, I am selecting 2 E-cores
-to run the 2 usemem processes to minimize variation due to frequency
-fluctuations. This setup has its own limitations such as being unable
-to fix the frequency.
+url:    https://github.com/intel-lab-lkp/linux/commits/Michal-Wilczynski/lib-decompress_unlz4-use-LZ4_decompress_safe_partial-before-boot/20261106-154241
+base:   93f51579e7df248780214094418f205253383cc5
+patch link:    https://lore.kernel.org/r/20261106-lz4-vendor-upstream-v2-10-ee04c3f0d7dc%40samsung.com
+patch subject: [PATCH v2 10/15] lib/lz4: switch the compressor to the vendored sources
+config: arc-allmodconfig (https://download.01.org/0day-ci/archive/20261107/202611070943.EDg3udaH-lkp@intel.com/config)
+compiler: arc-linux-gcc (GCC) 16.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261107/202611070943.EDg3udaH-lkp@intel.com/reproduce)
 
-Despite all this, I have been able to consistently replicate the
-bpftrace latency improvements with patch 8. My results show regression
-with patch 6-7, and improvement only with patch 8. As noted in the
-cover-letter, patch 8 adds significant latency improvement for order-0
-folios. This is with ZSTD. FWIW, these are bpftrace latency
-improvements in a significantly memory constrained environment and
-this ought to be a useful data point. I have been posting general
-vmstat "system health" metrics to prove that nothing unexpected is
-going on.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202611070943.EDg3udaH-lkp@intel.com/
 
-My data shows that order-0 zswap_store() tail latency improves by 11%
-over mm-unstable with patch 8, although p50 is roughly similar between
-patches 6-7 and 8. PMD store latency is significantly better at p50
-and p99 with patch 8.
+All errors (new ones prefixed by >>):
 
-Likewise, p99 latency of zswap_compress() alone improves by 3% with
-patch 8, while it degrades with patch 6-7. p50 is almost the same with
-patch 8, although patch 6-7 regresses. The page-normalized
-batch_compress() p99 latency is better by 15%. All comparisons are wrt
-mm-unstable.
+   In file included from include/linux/rcupdate.h:27,
+                    from include/linux/rbtree.h:24,
+                    from include/linux/mm_types.h:11,
+                    from include/linux/mmzone.h:22,
+                    from include/linux/gfp.h:7,
+                    from include/linux/umh.h:4,
+                    from include/linux/kmod.h:9,
+                    from include/linux/module.h:18,
+                    from lib/lz4/lz4_compress.c:29:
+   include/linux/sched.h: In function 'is_percpu_thread':
+>> include/linux/sched.h:1860:17: error: 'current' undeclared (first use in this function)
+    1860 |         return (current->flags & PF_NO_SETAFFINITY) &&
+         |                 ^~~~~~~
+   include/linux/sched.h:1860:17: note: each undeclared identifier is reported only once for each function it appears in
+   include/linux/sched.h: In function 'current_restore_flags':
+   include/linux/sched.h:1918:9: error: 'current' undeclared (first use in this function)
+    1918 |         current->flags &= ~flags;
+         |         ^~~~~~~
+   include/linux/sched.h: In function 'set_need_resched_current':
+   include/linux/sched.h:2127:30: error: 'current' undeclared (first use in this function)
+    2127 |         set_tsk_need_resched(current);
+         |                              ^~~~~~~
+   In file included from include/asm-generic/bug.h:7,
+                    from arch/arc/include/asm/bug.h:30,
+                    from include/linux/bug.h:5,
+                    from lib/lz4/lz4_compress.c:27:
+   include/linux/sched.h: In function '__set_task_blocked_on':
+   include/linux/sched.h:2231:27: error: 'current' undeclared (first use in this function)
+    2231 |         WARN_ON_ONCE(p != current);
+         |                           ^~~~~~~
+   include/linux/once_lite.h:28:41: note: in definition of macro 'DO_ONCE_LITE_IF'
+      28 |                 bool __ret_do_once = !!(condition);                     \
+         |                                         ^~~~~~~~~
+   include/linux/sched.h:2231:9: note: in expansion of macro 'WARN_ON_ONCE'
+    2231 |         WARN_ON_ONCE(p != current);
+         |         ^~~~~~~~~~~~
+   In file included from include/linux/nodemask.h:92,
+                    from include/linux/numa.h:6,
+                    from include/linux/cpumask.h:15,
+                    from include/linux/smp.h:13,
+                    from include/linux/interrupt_rc.h:17,
+                    from include/linux/spinlock.h:60,
+                    from include/linux/mmzone.h:8:
+   include/linux/sched.h: In function 'alloc_tag_save':
+   include/linux/sched.h:2361:14: error: 'current' undeclared (first use in this function)
+    2361 |         swap(current->alloc_tag, tag);
+         |              ^~~~~~~
+   include/linux/minmax.h:308:21: note: in definition of macro 'swap'
+     308 |         do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
+         |                     ^
+>> include/linux/minmax.h:308:52: error: assignment to 'struct alloc_tag *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+     308 |         do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
+         |                                                    ^
+   include/linux/sched.h:2361:9: note: in expansion of macro 'swap'
+    2361 |         swap(current->alloc_tag, tag);
+         |         ^~~~
+   include/linux/sched.h: In function 'alloc_tag_restore':
+   include/linux/sched.h:2368:14: error: 'current' undeclared (first use in this function)
+    2368 |         WARN(current->alloc_tag != tag, "current->alloc_tag was changed:\n");
+         |              ^~~~~~~
+   include/asm-generic/bug.h:164:32: note: in definition of macro 'WARN'
+     164 |         int __ret_warn_on = !!(condition);                              \
+         |                                ^~~~~~~~~
+   In file included from <command-line>:
+   include/linux/rcupdate.h: In function 'cond_resched_tasks_rcu_qs':
+>> include/linux/rcupdate.h:226:22: error: 'current' undeclared (first use in this function)
+     226 |         rcu_tasks_qs(current, false);
+         |                      ^~~~~~~
+   include/linux/compiler_types.h:682:23: note: in definition of macro '__compiletime_assert'
+     682 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+   include/linux/compiler_types.h:702:9: note: in expansion of macro '_compiletime_assert'
+     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/asm-generic/rwonce.h:36:9: note: in expansion of macro 'compiletime_assert'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |         ^~~~~~~~~~~~~~~~~~
+   include/asm-generic/rwonce.h:36:28: note: in expansion of macro '__native_word'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                            ^~~~~~~~~~~~~
+   include/asm-generic/rwonce.h:49:9: note: in expansion of macro 'compiletime_assert_rwonce_type'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/rcupdate.h:185:35: note: in expansion of macro 'READ_ONCE'
+     185 |                 if (!(preempt) && READ_ONCE((t)->rcu_tasks_holdout))    \
+         |                                   ^~~~~~~~~
+   include/linux/rcupdate.h:197:34: note: in expansion of macro 'rcu_tasks_classic_qs'
+     197 | #define rcu_tasks_qs(t, preempt) rcu_tasks_classic_qs((t), (preempt))
+         |                                  ^~~~~~~~~~~~~~~~~~~~
+   include/linux/rcupdate.h:226:9: note: in expansion of macro 'rcu_tasks_qs'
+     226 |         rcu_tasks_qs(current, false);
+         |         ^~~~~~~~~~~~
+   In file included from include/linux/local_lock.h:5,
+                    from include/linux/mmzone.h:24:
+   include/linux/local_lock_internal.h: In function 'local_lock_acquire':
+>> include/linux/local_lock_internal.h:48:20: error: 'current' undeclared (first use in this function)
+      48 |         l->owner = current;
+         |                    ^~~~~~~
+   include/linux/local_lock_internal.h: In function 'local_trylock_acquire':
+   include/linux/local_lock_internal.h:55:20: error: 'current' undeclared (first use in this function)
+      55 |         l->owner = current;
+         |                    ^~~~~~~
+   In file included from include/linux/build_bug.h:5,
+                    from lib/lz4/lz4_deps.h:18,
+                    from lib/lz4/lz4_compress.c:16:
+   include/linux/local_lock_internal.h: In function 'local_lock_release':
+   include/linux/local_lock_internal.h:60:41: error: 'current' undeclared (first use in this function)
+      60 |         DEBUG_LOCKS_WARN_ON(l->owner != current);
+         |                                         ^~~~~~~
+   include/linux/compiler.h:77:45: note: in definition of macro 'unlikely'
+      77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
+         |                                             ^
+   include/linux/local_lock_internal.h:60:9: note: in expansion of macro 'DEBUG_LOCKS_WARN_ON'
+      60 |         DEBUG_LOCKS_WARN_ON(l->owner != current);
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/linux/sched/mm.h: In function 'current_gfp_context':
+>> include/linux/sched/mm.h:250:41: error: 'current' undeclared (first use in this function)
+     250 |         unsigned int pflags = READ_ONCE(current->flags);
+         |                                         ^~~~~~~
+   include/linux/compiler_types.h:682:23: note: in definition of macro '__compiletime_assert'
+     682 |                 if (!(condition))                                       \
+         |                       ^~~~~~~~~
+   include/linux/compiler_types.h:702:9: note: in expansion of macro '_compiletime_assert'
+     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+         |         ^~~~~~~~~~~~~~~~~~~
+   include/asm-generic/rwonce.h:36:9: note: in expansion of macro 'compiletime_assert'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |         ^~~~~~~~~~~~~~~~~~
+   include/asm-generic/rwonce.h:36:28: note: in expansion of macro '__native_word'
+      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
+         |                            ^~~~~~~~~~~~~
+   include/asm-generic/rwonce.h:49:9: note: in expansion of macro 'compiletime_assert_rwonce_type'
+      49 |         compiletime_assert_rwonce_type(x);                              \
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/sched/mm.h:250:31: note: in expansion of macro 'READ_ONCE'
+     250 |         unsigned int pflags = READ_ONCE(current->flags);
+         |                               ^~~~~~~~~
+   include/linux/sched/mm.h: In function 'memalloc_retry_wait':
+   include/linux/sched.h:170:17: error: 'current' undeclared (first use in this function)
+     170 |                 current->task_state_change = _THIS_IP_;                 \
+         |                 ^~~~~~~
+   include/linux/sched.h:242:17: note: in expansion of macro 'debug_normal_state_change'
+     242 |                 debug_normal_state_change((state_value));               \
+         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/sched/mm.h:293:9: note: in expansion of macro '__set_current_state'
+     293 |         __set_current_state(TASK_UNINTERRUPTIBLE);
+         |         ^~~~~~~~~~~~~~~~~~~
+   In file included from include/linux/xarray.h:21,
+                    from include/linux/radix-tree.h:21,
+                    from include/linux/idr.h:15,
+                    from include/linux/kernfs.h:12,
+                    from include/linux/sysfs.h:16,
+                    from include/linux/kobject.h:20,
+                    from include/linux/module.h:22:
+   include/linux/sched/mm.h: In function 'might_alloc':
+   include/linux/sched/mm.h:319:13: error: 'current' undeclared (first use in this function)
+     319 |         if (current->flags & PF_MEMALLOC)
+         |             ^~~~~~~
+   include/linux/sched/mm.h: In function 'memalloc_flags_save':
+   include/linux/sched/mm.h:334:30: error: 'current' undeclared (first use in this function)
+     334 |         unsigned oldflags = ~current->flags & flags;
+         |                              ^~~~~~~
+   include/linux/sched/mm.h: In function 'memalloc_flags_restore':
+   include/linux/sched/mm.h:341:9: error: 'current' undeclared (first use in this function)
+     341 |         current->flags &= ~flags;
+         |         ^~~~~~~
+   include/linux/sched/mm.h: In function 'set_active_memcg':
+   include/linux/sched/mm.h:499:23: error: 'current' undeclared (first use in this function)
+     499 |                 old = current->active_memcg;
+         |                       ^~~~~~~
+   include/linux/sched/mm.h: In function 'membarrier_mm_sync_core_before_usermode':
+   include/linux/sched/mm.h:543:13: error: 'current' undeclared (first use in this function)
+     543 |         if (current->mm != mm)
+         |             ^~~~~~~
 
-Hence, I believe even in a memory-constrained setup such as mine,
-batching significantly (7-15%) improves p99 in all cases, with 4-5%
-gains in p50: for order-0 and PMD folios.
 
-In addition to the latency benefits shown through my validation, I
-would like to also emphasize the strategic benefit of moving zswap to
-use batching, as noted under "Conclusions" in my cover letter. IOW,
-batching within large folios to improve workload metrics can only do
-so much (in proportion to the # of large folios reclaimed and
-contribution of zswap_store() to the overall allocation-reclaim path).
-What this patch series attempts to provide is a zswap batching
-framework upon which additional improvements can be built, such as
-reclaiming multiple folios as a batch. I believe that compress
-batching is essential to support these next steps, which improve
-workload throughput/latency metrics even more than simply batching
-within folios. This is with ZSTD.
+vim +308 include/linux/minmax.h
 
-Due to the environmental constraints, I haven't been able to reliably
-use kernel compilation for validation.
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  285) 
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  286) /**
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  287)  * in_range - Determine if a value lies within a range.
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  288)  * @val: Value to test.
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  289)  * @start: First value in range.
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  290)  * @len: Number of values in range.
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  291)  *
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  292)  * This is more efficient than "if (start <= val && val < (start + len))".
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  293)  * It also gives a different answer if @start + @len overflows the size of
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  294)  * the type by a sufficient amount to encompass @val.  Decide for yourself
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  295)  * which behaviour you want, or prove that start + len never overflow.
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  296)  * Do not blindly replace one form with the other.
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  297)  */
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  298) #define in_range(val, start, len)					\
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  299) 	((sizeof(start) | sizeof(len) | sizeof(val)) <= sizeof(u32) ?	\
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  300) 		in_range32(val, start, len) : in_range64(val, start, len))
+f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  301) 
+b296a6d53339a79 Andy Shevchenko         2020-10-15  302  /**
+b296a6d53339a79 Andy Shevchenko         2020-10-15  303   * swap - swap values of @a and @b
+b296a6d53339a79 Andy Shevchenko         2020-10-15  304   * @a: first value
+b296a6d53339a79 Andy Shevchenko         2020-10-15  305   * @b: second value
+b296a6d53339a79 Andy Shevchenko         2020-10-15  306   */
+b296a6d53339a79 Andy Shevchenko         2020-10-15  307  #define swap(a, b) \
+b296a6d53339a79 Andy Shevchenko         2020-10-15 @308  	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
+b296a6d53339a79 Andy Shevchenko         2020-10-15  309  
 
-I have been doing my best to resolve previous discussions by
-incorporating the calculate_high_delay() hack that you suggested to
-reduce variation. The data posted in v3 comprehends this suggestion.
-
-I would like to suggest/request the following, as next steps:
-
-1) Can we reconcile our methodologies for usemem bpftrace
-measurements: # of vCPU, usemem command line, reading Silesia, etc.
-Also swap space and QEMU memory allocation, using linear lhists() in
-bpftrace, etc. If you can share these details, it would be very
-helpful. Thanks again for your time!
-
-2) Does the kernel community offer servers for contributors to test
-their optimizations at scale?
-
-3) Can I please request the help of other zswap maintainers/reviewers
-to validate this series with ZSTD on a server setup with usemem
-running on 30+ cores, under high over-commit ratios; through bpftrace
-and/or throughput metrics.
-
-Thanks,
-Kanchana
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
