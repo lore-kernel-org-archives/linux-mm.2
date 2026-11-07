@@ -1,31 +1,31 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3890E6085D7B
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989D16087858
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YJ0Qo6jN
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YcFgk06y
 Received: by kanga.kvack.org (Postfix)
-	id 1441F6B05C7; Fri,  6 Nov 2026 19:37:09 -0500 (EST)
+	id 7FAF66B05C8; Fri,  6 Nov 2026 19:37:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11C2F6B05C9; Fri,  6 Nov 2026 19:37:09 -0500 (EST)
+	id 7D3396B05C9; Fri,  6 Nov 2026 19:37:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00BC66B05C8; Fri,  6 Nov 2026 19:37:08 -0500 (EST)
+	id 64C546B05CA; Fri,  6 Nov 2026 19:37:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C01E56B05C9
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:08 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5F9191C3083
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E2F86B05C8
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:09 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BEB18C0189
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:08 +0000 (UTC)
-X-FDA: 85406458536.25.1E99360
+X-FDA: 85406458536.14.FFEB142
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 48266120006
+	by imf09.hostedemail.com (Postfix) with ESMTP id B3D01140009
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YJ0Qo6jN;
-	spf=pass (imf29.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YcFgk06y;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf09.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794011826;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
@@ -33,72 +33,72 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7jyih/ZWZhrRU6GcpifC/ctZB9GVVxtxj6yL2+TCX50=;
-	b=5FqUmpnqIApZmyZpsLe+9yp6uNAEqlSc3SjGSmvI3dNA7R/lQJxaTWOtko4A/YCK0pH+Cf
-	09ibUxHgPqPEP0EOI5B2eUVOtpWtyTq7xnvQnkgKppoejErqciho+c7GHC49JAUOlU/dQT
-	2to7kNuj73qs8vGhGwei46JAqDx0tR4=
+	bh=8Tz/4R3+nBGJbuRMe2ive2nBKLEVbhjpacp28U7sWIg=;
+	b=DS+Sh6HRqJBDYh5rkUXTSTwRtDCvuoCfFKY+hf14P4pbZz6SwooU0FMit1t540u0dbdqC1
+	FVzYxcWQERbk4Df3s14hUOD6E8srBucGa1DsMW0Z2V4gADfvQGl/yiSnxR5fdvfAdtH+91
+	uPD4/Se6TyER1ceNyfl/t5/ipxa4PK0=
+ARC-Authentication-Results: i=2;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YcFgk06y;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf09.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
 	t=1794011826;
-	b=Bc/tn+w5UHwfIywdYpmrVvCm4B/yY/gH+bsDNvdEYmcB0af5OZ6qQoSx9nub/BFgbak3Gq
-	3Tp/XuC1uW6TdS8op+4mCNimqbYnkpDD6KJSRwhLlwdULw4eTEqFzAR1YoiZXSZN70rkcD
-	XDMl+9zL1zVlyEPpOryHcV+cFz6QKjk=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YJ0Qo6jN;
-	spf=pass (imf29.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	b=iygZv9hdUFIBAxmNkjE4g7ljjEDRVvwX0C2+WX10/gzSTJu1qawDsk8nC0ToaZsKh/QqFE
+	abDY53xXIRE0AZb5CIi6sAzy+7TOy5l1rPhlNSvMA2I+GwvfP8CPS/jJBgvJv0R5rilUJE
+	4BLspbROZi2RXF/x3i878CGoJDeZ18k=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 981234322C;
-	Sat,  7 Nov 2026 00:37:05 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 13CAE43F9F;
+	Sat,  7 Nov 2026 00:37:06 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011825;
-	b=ewNOAhQVaOJd4siFJzBY8GcVN2CvNpGxyYx1oe3K8DIgjLu5mI6Ee8RDetk17w4Gwidw
-	 VRw3JqLHFd9RImfwmqx74zn/SyCXP5417G++gAWdtSvQf1p5VfaJS+ViLtw3W2tnhRqY2
-	 NXPmafnm2p1IKHUNb75r0OCQRkdQ6cTodo4i9WxpcvfuYLO48qeMNgOIsVYF040EFk/tm
-	 lpAxIWJCp9kCrimwvEJu7MNaQm/cQwLqrkjUeC/6Ot+UscAET1rFJQDvHOkBQJ5cPj00j
-	 9b/LGDMBOJEYcyzay123XnizVGfcyZZRRN3DcFO1+7Qe8iTS3uIjWZjdwLFl4mooPFw==
+	t=1794011826;
+	b=us3VkzdYHP08912mKq5PN8ekRTFJmXPZ04BxJYq9g68sMU91aqsJTY5SgZ7AiioWEoPh
+	 ZQBZiprsMcjB+z4SZUyo4Ut0EFE74SJk11aF1idkiWzht8ZhPh4N3TO/bSW2ZmKebqFLN
+	 X1txzHT+KCxLN6gfhOd8GBRmRrgPVFIoSVLu8V6OL6uZ85VY8M4r+eCSVU2XoCNHixC1S
+	 exjDV/1rdkhAPL4/k14HRnTqx4mWlZfwtSRCSHZ/FaV6dCTzgMhxg5UMXbMwJCQG+RWvL
+	 LMQkoh0RCLn12i8VV57/RKT4LWfrqk7oeUrWDqwgoL/6zmSY++vMBNULttKt7QHJiQA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011825;
+	c=relaxed/relaxed; t=1794011826;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=7jyih/ZWZhrRU6GcpifC/ctZB9GVVxtxj6yL2+TCX50=;
-	b=zxeBR7J22JNNfKUi6a/eB+wlijcGujOJT4m38NmkkI7sSZJ6N3lYxngjkbmFUFzpv2Y5
-	 j5QFuoNx80SPBgfX1UY8QBxsOM68paug0LL65HVmucM7DU4LFPJnG+nQ6sXwq2ggmB6qC
-	 KXeJgI/d4yf523NqvSq+A+J+eMypirNWOvtbE8DgEoxTAdmDbCQE4BaZ7r7yWfJMnBYzz
-	 ujqfao2+QrM0RnVPKbx3YKJ6g31W0RBQRnf7R3XQjoSvuAf0rJ21+NHXgng6dVfmmxA4z
-	 LlUhq38MzfpDgqving4vdfJgXl2obYlU+it+4Y8exTe86Pzx3jNfqTcIdHxxGmz6F9g==
+	bh=8Tz/4R3+nBGJbuRMe2ive2nBKLEVbhjpacp28U7sWIg=;
+	b=RBNzmu2e/EnV4QYovyyO3EZXgsLuTFRniMk/XGr/g6vX3EPHBWe1xjsnX7ZxVnzqLsHG
+	 oEx+OMR/dwI40100Qh0U5q6v6GmvWuRw2OiDL2xsGW6AglDH/g+jLC5vp1tsuTrarOB+A
+	 ok3UBgi5xpyUq0pG6qXWG2YLhznO/WclX+E6VUuPptGXO3we2XYgImxSH1poKThHWUPSU
+	 BhJ+yMVSgSXWV9w/iErpagk/eJ94FlJ4g698xI/6UkrYjzAG6fSr7x5Pqz/646uA7sif0
+	 rqYnPve5mqcyUIqYpMBqJM4YDhRFctSxlITbnlLEfMmH2NR5rUZJibC11I+XPAJa58Q==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 3EC421F00935;
-	Sat,  7 Nov 2026 00:36:59 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id E6F101F008A4;
+	Sat,  7 Nov 2026 00:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794011825;
-	bh=7jyih/ZWZhrRU6GcpifC/ctZB9GVVxtxj6yL2+TCX50=;
+	bh=8Tz/4R3+nBGJbuRMe2ive2nBKLEVbhjpacp28U7sWIg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=YJ0Qo6jNfTzFoj6mVl0zDhylpwBaFlD/OlOhXGoXZIsU0jUXlqchzAvJ2ATcXk8St
-	 SnHAswlThfrMhrV9n9VGgu3ws0GS2y23yNtIZlrlvRt5dKDiqC5NFMcWlXhv8xuW3P
-	 gDRL1FKNnZ23loSt7fupwpnkh20z4WzTOsxlj1nxofp1V+zm7mTdk13qW1kMyjFgLi
-	 TgLsEUqeFHQLkABtg57RFWZlWbK94cI0xu7S4s0O1zwz27db9QbVLBNGMYQLMQkMGf
-	 GtrXTV2ZqIdYNduroGKG/RBRkPj+3TaI4qP12Do6h5G4nrWajOGPPBgE+eSydU/ddt
-	 auX71iruaSjCw==
+	b=YcFgk06yhJGMx4ocEtTr3gFzuX5jO8NFKmGUP29JT/g/8d43ZnvGlJn39kJwh3ifM
+	 sGG8YUQn6msPVOxgGAvKqsJsbl29PDvVcHnOWnqgnWzFiIg6Aj0kyXuLE7l8kAlLW1
+	 vwMSI5sZkeOOsLiHJMPWhXENSb9ZPGn1Uq8ag5oKrlFKzCTePF3XHaf2QiH0cCuHSR
+	 r3SFVQ4M+MJQbiwJD5gfbiEQ7jV2nLwgR23K6L7k2Je7bhUsMhhofNqGGRcwPvqDow
+	 RePU/m4urp+n7NCqph7NJ+hxsB1kO079i5FeOarqAVutz2CmAsZIo2YjCnhRnhwks/
+	 wLD2gE9JJXVog==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 049624798A;
-	Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id B52414797B;
+	Sat,  7 Nov 2026 00:36:54 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:04 -0800
-Subject: [PATCH RFC v3 30/88] KVM: guest_memfd: Refactor error handling in
- kvm_gmem_fault_user_mapping
+Date: Fri, 06 Nov 2026 16:37:00 -0800
+Subject: [PATCH RFC v3 26/88] KVM: selftests: Test marking page ranges
+ present and absent
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-30-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-26-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -119,11 +119,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=1832;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=3215;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=VKBzbTSyM8v25pj2OERwLhVUhvmGhWqrRwXpLizcOTo=;
- b=TNHQGkfJIKvSrJmsMJhLzh4Zf2IlSWb1GaDzeKt8ZF6I4gcbCyM3w70nbNY2BGZBmWj+BSlaL
- RGs8UwVSrcNDrzLDRtCrZvXA3lfyBNeELOimwZhBiqgNYheS6HmLA9N
+ bh=7QFJFoFyo46UmZUpk/RDNGh2vejWq8fPg2Gg5WaYGKY=;
+ b=ohlAxuF/ZwnJnySiSieqvLG3K3rQ2HRF2CfC9ljofHA8P0oU4N4eE4ebYlYM9FPPevFAFBfew
+ 2jjSIdh2dl6D92vo4evhVx/SgIK++1Q/1C6fef7z+b8ldarmKvndCR9
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -131,18 +131,18 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 Content-Transfer-Encoding: 7bit
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B3D01140009
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: n7ke9g85bi7fqpwe3xmzu48689u1dync
-X-Rspamd-Queue-Id: 48266120006
-X-Rspam-User: 
-X-HE-Tag: 1794011826-613069
-X-HE-Meta: U2FsdGVkX1+hhAWBWu+KIKkq6R8+gtgsCJ3keYYs1lMe+d3WCyrBtBEpAlYmFFASm9aIRwJElX/qOLFZoNsGnsEKenerBZOLlqPeSPy84D2XuEqcwUa7OEaQbb7CsJwoQZNHv+5kx2rR9tPCdEv1v3GnJLUZbxreTmhCrvMrP8jEPgHg/pdDcpJeXLysyYV1d7BsMJtIJpOl7Eoq34tEEvTaE/hKjX7yhB1PkSw/apGxy6BrEq+lUO1yAaE/mvHbK6Ltf1+Qp5kiI48KjTZ0JUaSHEzz44RJXlkCOMpGF2E2T94bR4wj/3EH0YN61DhqGtCGZi+Dp8vRJoM4ahsCh4Bt9aciEpapgdU0DPCVQYBhsVuDAmKDYDsJ+UpoaTJ3KiwKgVFmMdTa6l48PYcSW8ZZM64+Py5cY3PJq152kZOD/Fd3L2SUY1J2+1zTWin2MwHqNjMFUEPnm1oVP+6uEmn6cpoHn/+ENoNS1T5sD+M3sKQ+i1YJZ008Ph0LUXJTgorVMCYpOHErhduv6+xzY5PcX+rsgyUnropjFd7WOWgtpqrdZybpDYtlUKinuXhneMEdz8KDbZZ8ghLOpWQePvWl54jlU2n5qREJb2KbbZoYlTudNK22fsbCnnjt+mzV2Jb7zezGcuXngWSdUeWl4DJhEkqVpqHooedyJRk3GIZzvI/u3kW6LyWzzskkJm4OttORDYuTMQcEEJTN8J4uAzPtFFbGVgLuaUsFAjxJufX1EllqCh4UQV3VWDaA1xnaMti++BnoiewQOSWDhXU1GMsiHd5MmPBxMsCwd4wlb2kiwJ5IkKn8HW4gGlwaAimWxLa8xANMEMryiX4/ZKtBBFhONXWAWEvxdNpkKliZGrTJ86UvVmP095C6K7IsY59wd3bRV07ujrhNh8J1LUeOiK/1DumGDpyB7qGV9ASfTfyR64c5plUR012bn2X4WwLwQkhq5Af6mQFR3AuD7l/
- kI0eB7xS
- fARsnsxsW4d6PxOh8ThCxiT9vHwPlVB7dNmRJwKrTo8dZZ+vRnfalwG/Yb7ATJJgMTWDildEKinCUE+nDKcZaGaT3Zl3fR5QegFTJ97PCabYnA85FO7vbII5vPEocoHuelogO9PVGNYCkweDZTHBH0rmSf2gn1JbKfoOAjaKJNNxwpmlNLyirdK1jcdgZLqmwDdXkIgP3ny2L+2NQ4aqusc5Se6vOL0ORl7X+GsmxJ+7T2Rgn+HAUqqQR1Yx/lp1yTHZkK2DeU1m7W9pMx+mO5bHPhIHq2McyhMek/40NtlI1EnI7CqiBsjYQ/ZRWufn3kqveL3R5IrZi6ynIdD7DSVUXuFmKZLFAXe5FtT0a9h/+kWUplWYs2KY0zTDaAqigGPtWmZ/EOkTwH5Xcm7L7F70ZlO7IImRm4J4GsfICvB2CObRgKLCKNeOrkk1XflQu7Z1qg5AcC7ESVUNrdfEGu2U5xRGGvPpJb9hEKgU+BKGz824R/QNJaZmegF0DZX/GcXiZjH/WcIqk6pz7EixJOkiZw00taxxSBWFnYI2iDEToRsfsXeHhDiCuLLnIy63XqJ2qV8tw6vSbnVGtKma6MHN+5rvy3to2g+G1
+X-Stat-Signature: x71osig1skgzpsraywbmj71hn1umau5h
+X-HE-Tag: 1794011826-297313
+X-HE-Meta: U2FsdGVkX1+1V6JIXTbi4tRcgbM87mx1Ebqy+mxy4C/L2LvzWod5iHRfNi7uLtmHmA0M/EzwxqSrzgLDbHz2Ro28Kz+m7/rCLT8N01AbnYJc0bFoPDdf/sfgAwfdYOIy7P3e3L9hdEcZ5dMem7CkuOnDaC23WkUaJ6d8DrS1UPp7uP8WatpYl9WbadcYlOpaefYrYX93CaEfj/vcaycCYfbow9Zawxhq+PrjV6Uw2boygcb0cpH3FQNpUwzWwi2Dp0mkiuz820VvIJoGSP90x3axGn+92vJTYi3V5mYCbp6hoiTwNB1xXCilt9g40huqQeNu3GNYVjlHx6wrtudbd+Ws9KKjncV+SoVyGLIatktBf0dt5UkFUXfZCl3Ap+oOc0HZEBXDLyMMR7D4y7t7fCLy55oowly+jefvRrLguOppCWkDewE8QKtId9j8pNL1dNsdhG05zS4qu8yYDSXjvvfefN/1tFmuUej+mhnQU5cznJtA1m4bZknsRaloTaB0uHIjX58zhr0qjv9qZBniM0AKCPJyxfC1xSjuEcNK71iMeSU4JVUfYgp4YAkRFUBXF2qPTcGpL8SwluOoSf4x780E1jkqr9fL1MrSAJoYfLpGvY2xZAvZcrqy6lOHkKO5QESGpRTHSeBo7nd+qgPTirMsh97z61Bmg4FG02DdC5R4Xm7BfBtPqdK7ZOVFL4mHg2/holrIXPxs92SIEJgHBVB9Mcc/nwejQccku4GQQ3M6e+zlR0FmtRkjgk5M0jnY/azBj8e6br2BBnYIYcn/VWIV72qfzUyWrO462Enick8OpNrgg7YczJRbnXYbE5OnzOqpWVW0QjJIMJV9lzaAGLqnWLaVXIF0VuEcaiYwHwHDIWzTlzVg2lnuJL1spCB/LlFC4c5iSXLQMG4KQz2XSreBKSjpZfXpVh8QYfd0yPbyEZaUa5BPiN+ioS+JTdtw4yVvkFyCPybE1Yl6mno
+ 3XjTsjEe
+ 90FkbTIy+VbHyFG9pBII1b7AkAz7ib73ryB1ccJemFO8LA1WlkZ5anJitj36hB4dcQ6r2QD+TFOU20XfUkdyi5JSKa1/KvqxkwFJRCVGi2ZWfVz/DcHsZJXyonGfTZ2g0THSp5fbGk/0eewHxvgt94E4QJK5XXug12i/tHV3OobLYcRly6aml1gPwwIC+tvAn+Vpt9gmbLMocqL011KSrLcqLNUK5TLciAS/v2NcPVYrfNEeWo21Kc/ia7kfd8SZddt9j5XPymQSsG94XLZo+xrHhPQm0ipXTOyaCEpSEic+an2rl6ZfyIUoNABaBjtPUjAAdCEHu10AWh7JS7cyucLj1b7pLHgNnOE9Qqhsp6DxdGpgtduUbhuuyT7fx26no7Cv6d+j0ccTaYVDcsR7VMFp/9uKpbKDeZna4QTMcvOgySuFdGIl2uBjirQV+ZSecQtcV37OQHO1rQF27Qu7acKIuXBVr94ieQEVaT5XzKmWOit9dXWK+gHBPR8jyZatlzdU4pECAHzidvqOSBxGzHWubR6vdxXljlhurNxge+nyjB0tRvxrPxdkYbg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,59 +153,100 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Track the status of kvm_gmem_fault_user_mapping() using an explicit error
-code rather than encoding errors into the folio pointer.
+Test dynamically changing page presence in provider files via the
+sample memory provider interface.
 
-This moves away from relying on the folio pointer holding error states,
-such as synthesizing ERR_PTR(-EACCES) when memory is not shared only to
-extract PTR_ERR afterwards, and prepares kvm_gmem_fault_user_mapping() for
-PFN mode in the next commit, where no folio is returned on success.
+Verify marking pages absent and restoring them back to present, ensuring
+that absent page counts in statistics reflect each change accurately.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- virt/kvm/guest_memfd.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ .../selftests/kvm/mem_provider_sample_test.c       | 65 ++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index eedf03df12c55..180418c65a1ae 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -568,24 +568,28 @@ static bool kvm_gmem_supports_mmap(struct inode *inode)
- static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
- {
- 	struct inode *inode = file_inode(vmf->vma->vm_file);
--	struct folio *folio;
- 	vm_fault_t ret = VM_FAULT_LOCKED;
-+	struct folio *folio = NULL;
-+	int r = 0;
- 
- 	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
- 		return VM_FAULT_SIGBUS;
- 
- 	filemap_invalidate_lock_shared(inode->i_mapping);
--	if (kvm_gmem_is_shared_mem(inode, vmf->pgoff))
-+	if (!kvm_gmem_is_shared_mem(inode, vmf->pgoff)) {
-+		r = -EACCES;
-+	} else {
- 		folio = kvm_gmem_get_folio(inode, vmf->pgoff);
--	else
--		folio = ERR_PTR(-EACCES);
-+		if (IS_ERR(folio))
-+			r = PTR_ERR(folio);
-+	}
- 	filemap_invalidate_unlock_shared(inode->i_mapping);
- 
--	if (IS_ERR(folio)) {
--		if (PTR_ERR(folio) == -EAGAIN)
-+	if (r) {
-+		if (r == -EAGAIN)
- 			return VM_FAULT_RETRY;
- 
--		return vmf_error(PTR_ERR(folio));
-+		return vmf_error(r);
+diff --git a/tools/testing/selftests/kvm/mem_provider_sample_test.c b/tools/testing/selftests/kvm/mem_provider_sample_test.c
+index b39161f4933d3..8fe634b0b4f2e 100644
+--- a/tools/testing/selftests/kvm/mem_provider_sample_test.c
++++ b/tools/testing/selftests/kvm/mem_provider_sample_test.c
+@@ -72,6 +72,70 @@ static void test_lifecycle_and_creation(int dev_fd)
  	}
+ }
  
- 	if (WARN_ON_ONCE(folio_test_large(folio))) {
++static void test_set_present(int dev_fd)
++{
++	size_t page_size = getpagesize();
++	uint64_t nr_pages = 4;
++	uint64_t file_size = nr_pages * page_size;
++	struct mp_set_present sp;
++	struct mp_stats st;
++	int ret, fd;
++
++	fd = create_provider_file(dev_fd, file_size);
++
++	/* Initially all pages are present */
++	TEST_ASSERT(!ioctl(fd, MP_GET_STATS, &st),
++		    "MP_GET_STATS failed: %d (%s)", errno, strerror(errno));
++	TEST_ASSERT(st.absent_pages == 0,
++		    "Initial absent_pages mismatch: expected 0, got %llu",
++		    st.absent_pages);
++
++	/* Mark page 1 absent */
++	memset(&sp, 0, sizeof(sp));
++	sp.value = 0;
++	sp.offset = page_size;
++	sp.len = page_size;
++	ret = ioctl(fd, MP_SET_PRESENT, &sp);
++	TEST_ASSERT(!ret, "MP_SET_PRESENT (absent) failed: %d (%s)",
++		    errno, strerror(errno));
++
++	TEST_ASSERT(!ioctl(fd, MP_GET_STATS, &st),
++		    "MP_GET_STATS failed: %d (%s)", errno, strerror(errno));
++	TEST_ASSERT(st.size == file_size,
++		    "size changed unexpectedly: 0x%llx", st.size);
++	TEST_ASSERT(st.absent_pages == 1,
++		    "absent_pages mismatch after absent: expected 1, got %llu",
++		    st.absent_pages);
++
++	/* Mark page 1 back to present */
++	sp.value = 1;
++	ret = ioctl(fd, MP_SET_PRESENT, &sp);
++	TEST_ASSERT(!ret, "MP_SET_PRESENT (present) failed: %d (%s)",
++		    errno, strerror(errno));
++
++	TEST_ASSERT(!ioctl(fd, MP_GET_STATS, &st),
++		    "MP_GET_STATS failed: %d (%s)", errno, strerror(errno));
++	TEST_ASSERT(st.absent_pages == 0,
++		    "absent_pages mismatch after restore: expected 0, got %llu",
++		    st.absent_pages);
++
++	/* Mark all pages absent */
++	sp.value = 0;
++	sp.offset = 0;
++	sp.len = file_size;
++	ret = ioctl(fd, MP_SET_PRESENT, &sp);
++	TEST_ASSERT(!ret, "MP_SET_PRESENT (all absent) failed: %d (%s)",
++		    errno, strerror(errno));
++
++	TEST_ASSERT(!ioctl(fd, MP_GET_STATS, &st),
++		    "MP_GET_STATS failed: %d (%s)", errno, strerror(errno));
++	TEST_ASSERT(st.absent_pages == nr_pages,
++		    "absent_pages mismatch after all absent: expected %lu, got %llu",
++		    nr_pages, st.absent_pages);
++
++	close(fd);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	int dev_fd;
+@@ -79,6 +143,7 @@ int main(int argc, char *argv[])
+ 	dev_fd = open_provider_dev();
+ 
+ 	test_lifecycle_and_creation(dev_fd);
++	test_set_present(dev_fd);
+ 
+ 	close(dev_fd);
+ 	return 0;
 
 -- 
 2.56.0.455.g6c5a503b38-goog
