@@ -1,82 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0109606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D40606A32E
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 20:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h9xTXffN
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LyMjq1S2
 Received: by kanga.kvack.org (Postfix)
-	id 4C5206B05B6; Sat,  7 Nov 2026 14:58:21 -0500 (EST)
+	id 6A9EA6B05B0; Sat,  7 Nov 2026 15:06:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49D156B05B7; Sat,  7 Nov 2026 14:58:21 -0500 (EST)
+	id 65B7D6B05B1; Sat,  7 Nov 2026 15:06:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B61B6B05B8; Sat,  7 Nov 2026 14:58:21 -0500 (EST)
+	id 54A976B05B2; Sat,  7 Nov 2026 15:06:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 078946B05B6
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:58:20 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41106A03CF
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:58:20 +0000 (UTC)
-X-FDA: 85409384760.06.0AFFF7F
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1F63A6B05B0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 15:06:05 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9658240229
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 20:06:04 +0000 (UTC)
+X-FDA: 85409404248.15.B7036C2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 723A340003
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:58:18 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h9xTXffN;
+	by imf07.hostedemail.com (Postfix) with ESMTP id E0F0640007
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 20:06:02 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LyMjq1S2;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794081498;
+	s=arc-20220608; t=1794081963;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5UTQ1ZEAazioDw1y7y/k+rDXclQDwetkhM2B+ZU2ofE=;
-	b=QhedS3wnLAkxD/OG6cYIv4j+LwcqAgiEYN6lyXNeJgH9eoDB/VyPvLtZZKhRukROiBU7N9
-	Di2kg8JdgQTvu0WU6kx9k3WQSTCl2WEf372yRgvHA6sR/U2YKdn0B/ml6I3BdK3LmIQazB
-	1z9+3remMM/HFNuktPiE8lYk+ECesQA=
+	bh=z3oDyqgDBVuce1eKczb2I46fcE48/Nsk2k7Al2XC6OM=;
+	b=yeKgHdXU93AmYJ0VsE+AjFV/skkWb7W22JHwr56tbyRQgSwXRVO3pG62ZGpBDzwnl+kU4n
+	JMZR7uq5h5nrkBJTBcovhbGItDFErQT6DxEfLyjKLgegGlSRl/XpFEilP0c8oStxrqfp5F
+	x2vnjEo8R6iTxmBw8PsiOPOzixqmFmg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h9xTXffN;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=LyMjq1S2;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794081498;
-	b=7hQcUUtktAmkxUInFnLP5kZaWKL73AqbyaaHFypGuo2pfFqmzfDADsQdFiWmzuCFWqg/+U
-	ulZPr7W4Qxii6niOL1ue/Y7dcGcAXJeAJJ0zqIxASvKgObWeLSvQ32zMQMUtdH9lCuGpYt
-	7vyKqB5Y9fmDPVf4CPK1fGteLVhFu/0=
+	t=1794081963;
+	b=h/KhnlbgVoN4sN+7YiWR2Ck+7gAthpo47eiYJbNWa4HM9xM4z88iOxJzE0pMxEqBwgQj6c
+	IQcc8nOGHAjsx0SZZd2qthc7jqla1QrxuMEPUJzaamXIRnJpZMfITFSL2daNRhOXq7+9QR
+	pjAGEnPglPO+pH3nz5Kl5R2MzgKc5xM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id B85AF60F6B;
-	Sat,  7 Nov 2026 19:58:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CB51F0089F;
-	Sat,  7 Nov 2026 19:58:14 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 655B860D57;
+	Sat,  7 Nov 2026 20:06:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002ED1F0089F;
+	Sat,  7 Nov 2026 20:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794081497;
-	bh=5UTQ1ZEAazioDw1y7y/k+rDXclQDwetkhM2B+ZU2ofE=;
+	s=k20260515; t=1794081962;
+	bh=z3oDyqgDBVuce1eKczb2I46fcE48/Nsk2k7Al2XC6OM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=h9xTXffNqwZQ2qHfRSoA53rzLxQP4/X8HsgHPusSRZWPug3STKIsz0vkRk76+ytnB
-	 mKdYiVTK8/qRG3H2YaVEi7bn2LOv981Q/HxqyOMx/nlMmKMwpBaliSiMQrX0LWyfvg
-	 FQ+OiCmsRR8EwpkGWSR/ztD5S/ihW1aKdc5sQfjsy7Qq2N6I9CMEHGiLc4cyF2vNxa
-	 fk7upvCZ1E6cL/CtsbRIYtI2aLVhNNY2fgKwVvy6E9zgoSVG3dpP1Y1VsUkABmSbJE
-	 BFuNf9o3OQt/IeMbuCzQHqHDRwe1XhsC/QkBJnZ42rUMd7I+/Sreb1IiBpwvjwDDWI
-	 SqOfDahzRRyRw==
-Message-ID: <4a64ea17-6ac2-406e-a432-b82c481a4f84@kernel.org>
-Date: Sat, 7 Nov 2026 20:58:09 +0100
+	b=LyMjq1S2WAolYZd76EhbJB1FgqYDBs7DcZjYqeRiLVsq1170bDG7Y12zYDonsbPNT
+	 lg0M7URG6heOwJqV+kuEm9hYbeN2fBqeRkbCsLDZJb+9Wshgzn0MD9yugElny91E7X
+	 oniUOhMLu8+2yu/SGKlFq1RU5j2rwn+wrQSFKSk2Qqgm5Rul2aojLZkR0kPjBbu69b
+	 w4vuHY9dS2CsVAcqOpQSRfizM2bkHxp3rhKfZCEU1yb/CL1O3hFEMnwbldf+j6J2IJ
+	 bC4MhtCahSKTQugMI1U+suda+qb8+wMVnoYcMsBB8hSCjfIFajD72Drg9MwmxdrpWR
+	 sgwUb4M7M2R4A==
+Message-ID: <47fee2b0-091f-4c20-9496-eff844ab2f6f@kernel.org>
+Date: Sat, 7 Nov 2026 21:05:52 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio
  sizes
 To: Baolin Wang <baolin.wang@linux.alibaba.com>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, riel@surriel.com,
- liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, qi.zheng@linux.dev, ayushr@modal.com,
+ Lance Yang <lance.yang@linux.dev>
+Cc: baohua@kernel.org, akpm@linux-foundation.org, ljs@kernel.org,
+ riel@surriel.com, liam@infradead.org, vbabka@kernel.org, harry@kernel.org,
+ jannh@google.com, qi.zheng@linux.dev, pfalcato@suse.de, ayushr@modal.com,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
- <auxqWxUfRVvxnk_n@pedro-suse.tail5790ac.ts.net>
- <44740e38-77ae-457e-97db-d6e0a0149dc2@linux.alibaba.com>
+References: <f06d2004-f3c5-46b0-b708-780ffd6727ce@linux.alibaba.com>
+ <20261106023326.10838-1-lance.yang@linux.dev>
+ <9916bea5-3b53-43a0-8f65-cc33995adb23@linux.alibaba.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -123,21 +123,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <44740e38-77ae-457e-97db-d6e0a0149dc2@linux.alibaba.com>
+In-Reply-To: <9916bea5-3b53-43a0-8f65-cc33995adb23@linux.alibaba.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 723A340003
-X-Stat-Signature: as6y5wnqdiois5gw37rgzj1z63cg9ouo
+X-Rspamd-Queue-Id: E0F0640007
+X-Stat-Signature: 7wr4g6znj3qd3s6m5nmj3dy5yn1tp7in
 X-Rspam-User: 
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794081498-512460
-X-HE-Meta: U2FsdGVkX18CBVarrSZLwuFjIxYap3OdWU3gKwIbWQJq5fnD6/XYu1Dr2T8BdUSvlpMX12Gsq7jVLzYk8cwvh9E/mZB2+2TbMxiM6sNZ/HFtBsHFfGl2i39UuLYhz2L2e8V+Tt9Kw3TjIXo9EicYLHYfMeH9kKOLGE90LYbOcXKVBbJOaHQETxIh1SJApO315eRJh0dmAZGQAa+Mct0T8l80BFWYO1qgtkWaK+K7iAbk+5Du28Igz14pZ2+YUc1/d1NfN+up3bAZJ8zSqIRlmMop5zTJo03WI2IbHgki2i6BOtg+Mt3/nfhuomtbUqyaL5bYlUn7xBqe8avszv+K26EXenWN9rICn9hRUeEgc94kcQhWlHUtRZLyDn+AxD9mE83q7OXvPSuncH0zq7esWmQ9gzO/toiw/zQ9yeeOMtat8HUN3+EkenBAh9nBSG7k9HU5QIxdh5ayEycDWMCu8vvbPCvKFw4DSxaNQ/uLOL3MFzBhBXsyRvCiTzF1SUg7L8i5by0rfjZ/4B9+NjGmIZXArJ558N252fBa/O5C6Lf290tPYhrmdmoTKqGEoo6ajHjoifSuyPaH5lfCcWsxFvEqx4t01d1lX2so61IqX7xApogwJPNGU9pwbCt74U7Nc74vPE/wWDL3hzCSV4wl2Chmy4PmGS7FxwcHPCD2d0ZaO9ZeC1BlsyhPBujlNzfp48vLysNzjbYtUOMnLId23Wi36QxRs2L2hOjl7gveC1enT5pun12IwNgPApDUnhN6Q1k3/dI01QvUHV788Txel5uDPb7SHoH8EvDThZuc8iGCpfXDVWHBDgFcS3Rk9toKicmZQ1KefO0S+/YdAGat+QPK71/ZyUDPaSqag6DIhXKMnQiN0ucGBqCI9ZaOPGm/kbuXyZmnL0avlxuPjNV+eie88YV4H4cPfsddP7Weo5y4SbjZ0DrZCsgx6XfPJfbVK8nfUO70l72h0INjQI4
- QnrdNw9k
- /2/uIA1M9t+zfQVJG5o/rGEmi3FEQ41UKXmk6VFzwZKlc+7ZG5BPQ7m7BW/a8DjfgEg/3J/DQvoeIXS3tTTP5hSVRz7eSrDWjUZUyrAQtFOXQohSv2zxgepemwl3wbsgyf5oLyv3gsEUGthqrKkdB9VMMupNCoqD1m9Vg6FsECFQSzzK/CIIHtQsUJWlywuPWsJNk1VzV1P2dCDb8/ymKKx8tWZvfClvfgXJV8fv5CVZVMyvOnvD/JUdvYn9qcf/ELx2g
+X-HE-Tag: 1794081962-501383
+X-HE-Meta: U2FsdGVkX19y25cXXEvHffjyQNSXaz3Tl4f64ZJWPQ04lPhTTj1uFFUdtxY1vfrRUrkA5DExwlM5X6SHI11AbbwTjFp47G+iSrtkYqXI4zwZPqNJGnkyxAVxrC1qhI5r5z7TKPt3Nfxw5gM5pUjej+TgvjHxS1XAUSLyC8urT6o7UtBJ7JmqK/os4BhXFBWL5sfBJR3d+Z3yAZklcOS7NSI9A1zvS7mk7wJbZBRuJHSi8ysZ5fbdhJ+ZFgYk0s+qf/6Rb3uxADRBYm0SlJ9F9xq4aw/r4oeQ4Rihrpu/A9jbB1XGYvCVKq+e6yZwv4St2UGyMWEGMhBQEmtdtoDf+sYg99f16CwpOa5/9RY7fdxJUghwuphxjpLgDkM5btCIjxkLM/Gy0J0Rkpvuct/UvWtt4Az/g+F6BGERxiqgGOlOvZFMVNJdDJ18aaQbeT95WLCxB4HD/8kGutj/7MhZLG2IPwtHgZ+mFd8nr+BRx4rgtYJBq3mnt05A0DJCJ4NRQw17zXevDBEGyRkNgMbtFcntpsk43f65ZmNXWsr0XRaq4Lo80cQUs12qUU6QY+i5q56lXGl9YpUfEcAg2VZjWuMy3ZKiKJ1iwdyXuvQ7f9rtUe1zAytNfyWIDLy8YM/YmxhxsIFLjNfkfqxjA//R/8iAulTNRlRaMVhAouyb4FcW4RXh5gI8eqiIFK+Uta6C3pjeBAt1ZaLYNwN/Sq2XNUQ7BxYVRgAs3GrU2azj0A6gEEMOWZdTAl3dzC93aOrzXw/W1X3Lcro4zQB5S+ArV1YJ7BbFzGOydtOt5wWr+4FS9c7Q1vlxuOZPUlFhTyzHTytmcr4xWhMRRLHr5txlmYp/bRUukZDjG9zcrzGJivURA8w7cLkY+W7G+F2tTAaQcb0f9xNBUTmTIqjkPsP10C9yp51ev3SYkKoG0MZ0hWlucJ/tjgZmnPynCh1aT2JBhNjjK08FKNb62ZSmR7H
+ yhI75zTy
+ amp5l67jlwsCxUJX/1Ke9m9m2RSxOD4iT7W5xQbsEho6duvPJGumWOqmLpKmFp/Ic86R5aooithe9kggkFFGhhCY/AZWyP89l/xPJGuvKi7LYLzRR5Eh7qIFd+vEdQB247dVDNlmAZsrotTV6x1wokM2yzVipfu0pnhQaykXnIc9NZlfGoX7MlwDk72SJPOSrxGxBa0chHNBRsFCzFmVQkL/Z2GkgiTD80akyW4EObcBKs70FzVZva8GCv/4pq614iSnp
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,38 +146,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 03:12, Baolin Wang wrote:
+On 11/6/26 03:54, Baolin Wang wrote:
 > 
 > 
-> On 11/5/26 7:37 PM, Pedro Falcato wrote:
->> On Thu, Nov 05, 2026 at 10:56:28AM +0800, Baolin Wang wrote:
->>> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
->>> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
->>> with concurrent page table reclamation via zap_empty_pte_table().
->>>
->>> page_vma_mapped_walk() is used by many functions including try_to_unmap(),
->>> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
->>> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
->>> and try_to_migrate(), the other callers do not perform post-walk accounting
->>> checks, so the race has no observable impact on them.
->>>
->>> For migration, the race can cause unnecessary retries. For reclaim via
->>> try_to_unmap(), the race can cause failure to reclaim a folio that is in
->>> fact already unmapped (as shown below), which may lead to unexpected OOM
->>> or increased refaults.
+> On 11/6/26 10:33 AM, Lance Yang wrote:
 >>
->> This is very handwavy. Do you have numbers? Does this actually make sense?
+>> On Fri, Nov 06, 2026 at 09:57:47AM +0800, Baolin Wang wrote:
+>>>
+>>>
+>>>
+>>> Thanks.
+>>
+>> Cheers!
+>>
 > 
-> This is hard to measure in practice. But in theory, if we can't reclaim 
-> cold large folios that are actually unmapped due to the racy checks, it 
-> could cause cold/hot inversion (e.g., in MGLRU) and increase refaults. 
-> In extreme cases, failing to reclaim unmapped large folios could even 
-> cause OOM.
+> .......
+> 
+>>>
+>>> I'm afraid the memory barrier here is subtle. __folio_remove_rmap() is
+>>> complex, and in the CONFIG_NO_PAGE_MAPCOUNT branch,
+>>> folio_sub_return_large_mapcount() doesn't provide full ordering, so we
+>>> may still need smp_wmb().
+>>
+>> Yeah, agreed for large folios. In the diff above, only order-0 folios
+>> use smp_rmb().
+>>
+>> Note that order-0 folios take the fully ordered atomic_add_negative()
+>> branch and skip the CONFIG_NO_PAGE_MAPCOUNT branch entirely.
+> 
+> Yes.
+> 
+>> static __always_inline void __folio_remove_rmap(struct folio *folio,
+>> 		struct page *page, int nr_pages, struct vm_area_struct *vma,
+>> 		enum pgtable_level level)
+>> {
+>> 	...
+>> 	switch (level) {
+>> 	case PGTABLE_LEVEL_PTE:
+>> 		if (!folio_test_large(folio)) {
+>> 			nr = atomic_add_negative(-1, &folio->_mapcount);
+>> 			break;
+>> 		}
+>>
+>> 		if (IS_ENABLED(CONFIG_NO_PAGE_MAPCOUNT)) {
+>> 			nr = folio_sub_return_large_mapcount(folio, nr_pages, vma);
+>> 			...
+>> 		}
+>> 		...
+>> 	}
+>> 	...
+>> }
+>>
+>> And large folios still take the PMD lock :D
+> 
+> IIUC, the memory barrier optimization targets all non-PMD-sized folios 
+> (including large folios). That is, for PMD-sized large folios we still 
+> use the original PMD lock, while for other non-PMD-sized folios we can 
+> use memory barriers to sync.
 
-Yeah, but the question is if it really matters in practice.
-
-I agree that page_mapped_in_vma() should sync properly, but the current impact
-might not be as severe.
+It would be nice to prototype a patch and document the required memory barriers
+and how it is expected to work.
 
 -- 
 Cheers,
