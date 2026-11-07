@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F579606A335
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3578B606A331
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I5VSZ0Eu
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bvif/XBB
 Received: by kanga.kvack.org (Postfix)
-	id 59FA06B05BD; Sat,  7 Nov 2026 14:50:07 -0500 (EST)
+	id 2BD556B05B0; Sat,  7 Nov 2026 14:51:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57E276B05C4; Sat,  7 Nov 2026 14:50:07 -0500 (EST)
+	id 2947D6B05B1; Sat,  7 Nov 2026 14:51:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 48DF96B05C5; Sat,  7 Nov 2026 14:50:07 -0500 (EST)
+	id 184A46B05B5; Sat,  7 Nov 2026 14:51:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0FFC56B05BD
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:50:07 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 70704A7F8E
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:50:06 +0000 (UTC)
-X-FDA: 85409364012.06.2A4009E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id AB8B2C0004
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:50:04 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I5VSZ0Eu;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id DB5406B05B0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:51:25 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6CA0F80223
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:51:25 +0000 (UTC)
+X-FDA: 85409367330.21.582D0D6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B33AAA0002
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:51:23 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Bvif/XBB";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794081004;
-	b=aDcUtHP9hZhp4wI+16U1uvAF/2rS4y1yZLzg3eTkbNSmdWJF+ShLhN6gE1mUUaMXc1+OWE
-	nhlQYtR88qcKOm9CJNSphCvmdO19/dZFbFs98l7HwdZMKZQsK14Xwy/EU7voLvXGAUGx4s
-	ygJmJVYuEgLaFyvFMOR3FxaCNJ79RO0=
+	t=1794081083;
+	b=IgPJWR+BB8lBTfpvFrJpmC/FhEhFN8MxSgCoX0Ikz5UZYP2KPk4li/luJq33BprXNGwA1m
+	3Zf7XlGiQB5DR/NJ9wAzJNtv0lHVPuS49k41HxsSp6rlEJ426yh9Zu8Bf+fHThbXfj+DI1
+	VJCWTd6cw1WavYJMqYiokT9S0vbPKlY=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I5VSZ0Eu;
-	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Bvif/XBB";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794081004;
+	s=arc-20220608; t=1794081083;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SJlOV9BBt4UR6jgbVIiAcYdmTN/stgIBQ5MMHSHMERg=;
-	b=mN+fXRF7j1Y75enEl0M9zAgD67OADTNk5O5aicrHY4v7T27Lo5fvI5X/SAvTfsusO2uU8R
-	au9e3pJXJSumWsVRN5MEV6KMC1hguRAGA8obMxPjM4lSahiVDlE7hT+z+mgtyECFNdbeYW
-	YV+punprlIPZsaBIm7eIKousNIUE+1w=
+	bh=8NEcCG6Aq43ZRSmDhnrvufn3WG29LNvsLw98ja7BDX4=;
+	b=5wjO6SKohCLa+kTfx22CYwVSnhRuTHPrsRu5GY9JtF707P5/rMrN8dCAhks6ThFOnhztGY
+	sBcSIoZG3au3r2UQBIvTVC9MR/oe1S2NY7eQnhjlqzxkgSpnINRW05iswB6Stbb6bQpv4f
+	+ArIyKB7IpSvBdbLC5hdksoclfqVikk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C7ED140F33;
-	Sat,  7 Nov 2026 19:50:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2250C1F008A1;
-	Sat,  7 Nov 2026 19:49:56 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 4908F61157;
+	Sat,  7 Nov 2026 19:51:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0097F1F0089F;
+	Sat,  7 Nov 2026 19:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794081003;
-	bh=SJlOV9BBt4UR6jgbVIiAcYdmTN/stgIBQ5MMHSHMERg=;
+	s=k20260515; t=1794081083;
+	bh=8NEcCG6Aq43ZRSmDhnrvufn3WG29LNvsLw98ja7BDX4=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=I5VSZ0Eu8fHazgOSE6oZODYfX0H4ZqLHG7+cbCIGbNBhsoCRwFXHcUvpl8SuhIvCH
-	 QOyRrMyzx83kKD1sT3B2U6KmEnH2yex6XzTp/60nF687YJhfWaDGdj/7z2XrE1Ni0c
-	 al7qijHGR1hCtSJ5Kj/8fjo0wviH009lm6nZPds0Hd/bYI07s2aRwMw4hT6Ogzvbdc
-	 2O1+O7jpePVCDzjdIQG33uNX0x3513HM6f9au5rdHEs8PDLNQ8LHzIm8jnipBaRIOV
-	 Qq5Ghcd4xgrKVdi4AzCFDAI5qmuh1cYnw+P4JZM5AynzTVzes/MIyfxlRgdXgFR9C/
-	 +30zo3cl/sc1A==
-Message-ID: <21ac345b-1b34-4df5-8dd2-6c57912c661a@kernel.org>
-Date: Sat, 7 Nov 2026 20:49:53 +0100
+	b=Bvif/XBBoRKuYGbZ5ITkJSA5/rWfw2LbmlRX3olbvq6SZcfgljnv/7KDgflI2wi3m
+	 cuzA4GAU6SwVrcpUVv2P/vlyi6VovbWWLCXxKix+7fT7BP2+VgSdWEdGDRpstxEyE+
+	 Nerm2JJ7W46xycA3Rrw60HAi2meM9nxTmPj2FsgofK7ZHkPLcnM6rGUaSgBupNjn6p
+	 mVKYgWNT1RycwSVFbjcWczDXnVHM/wLtsSpZQ7dBOPnJbXbtgzxbiFcuddxHpL/stD
+	 tzK/gy7i3TJ/gQEPlZsiTtBZHqyaWS3yLWVgj590zCvAnv1kC4IqB4jYAHgBVpoZXQ
+	 sGjwFX5D8lxww==
+Message-ID: <7df793d7-55dd-40db-8455-1f22bb44193c@kernel.org>
+Date: Sat, 7 Nov 2026 20:51:13 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
@@ -129,18 +129,18 @@ Autocrypt: addr=david@kernel.org; keydata=
 In-Reply-To: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-1-16d5ce8b5fd6@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: AB8B2C0004
-X-Stat-Signature: mrw1bddx3oxmut4wo9fpbtmhti1kdhh8
+X-Stat-Signature: y1fdg73xxygo7z893pynk1ataifkeqo9
 X-Rspam-User: 
-X-HE-Tag: 1794081004-525038
-X-HE-Meta: U2FsdGVkX19U8wkR57GVS/yThsXGfY5O9oZEv7xfGSScWUC5rmU3Xx7ZUQJ5RRgkATLPAnrQTEkvR6w1lxxDEeh65kuezdQUFdNVKIYU7+5XvqjnsQyCzeA14tbrW9jBJzWb7s0fSaXQtTlNejqzSpvCXwIg68cPoaLttF0fHFfQhKNGASO8d8wxJcr3X4v6Hap7ZuYomOU5LjLFyeSLa7OKLqLfN4nrmHDahDaFivC5/mFDE6I5fAbGpTJKahfL1S5YarMvoVhL0HApjqVdvgz6smXBl0dxZFb3lJoVPhiLqoWvYGHGL04UImp3xWrHZcrdy27YQp60X4h8jPzhdfPRlHwt6nCAkuzQDH8oQUEHcPXuDgZm1ZKDeUvgGLtf0ZCA8om9Xn/b6kjXWuvIICyh98nTUaTlkyWkx5z7mhlJuGloflQOlOnaia7dax68sgmP1owb2SYX0dL+xcRbfB+TpR8uGdz7ymp8J5RVsPysPq+pbnKGUF8JfnGULib7jZEOmuaNUVcXSj/hdZtR12nh3y/aEVTx1ysDSDLL+xWl6zPihHghZCy2GV34xeaUXIz4YJRkYtnRulya7tGhwDh7T+GOpNpFn3BmG3Kf4rn5nuCcCIQJ5OYWc9h+uApvanStBaDwZ7cdXUH07booYK9jZvt5Cdk2BeFCTpbLpwbY365TQ1JVcoRgFairNxPyFYDJ0FmJDrfqFghzNzhuhpV34TgZHJ0mJRc8Sl3jsy/AsBxtuBsNdgbx3286VkL5inZ5ysTtBtXFtNpKFZ+v/K5lWETo8BFHRxwJhQXWANHx4GUQ+BEDXHZ7eJv/6iDzGUTJCYCOFDq8bQwS6cpCW0+uZyqrI/ZGJ/a8bf9hmClZlAh/qpErOusmTlFWoETy8SoLKEEDxNTNF5rBVcOI0vtoERSSCkyitaqzpuXd+gl5yfw1aqFCSXLOjRHedfRQS/Retq0ZDFMEM7AgzPX
- CHRbjq5M
- 85+3eaQGmSOQhjt+cD0KwxNLKb4EHWx79eARmUX3VJ+WMxPaGRfAPFN01oT11jAlQvjZpCs+OCmCEWD668xL+p46zo8eH7B++nNGZnUxsD6p7/Nz3l/zxs82KkGh90VdGnh+SE/hIt4pHysgEZEeB0/XXAuPfe/1uVEr437+9khiNcZJZH+sX3gMYtBL6HtkMjp2WoRBoKEikHT+WhfAaiIDSHQwf5SV8Eu3aimL1x/5Mjyf8r6mo3hqzQxw3kDbL7cIvEuuLLoN/tL6RQiAo4NGK20gagqkLqCywqgmogooSYb/TVpwoRso18ImcsOniCPX1bPw6lSh8EbiCKEf724gSHovk2LJ1Ycw308DLJ+eOnkguixU59zRK2UKtALZfzC9E
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B33AAA0002
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794081083-285176
+X-HE-Meta: U2FsdGVkX19HL6KDczYwR601WZ2Tk2QoPkitrZn6rt3k//azm32BO/0LQfaTwFOrJG01vLtcImMyYsKXPvTmcO3i8Q757PzgPGxtpVkGR28DTPqfLojedCOKrMAfpk5Xd81FxQ0czagqks+SIB301Vg50o6wzWx5vgidwbsZtO3g9WwKdhktFzPouK37+hGCzSAgJqRzfg641joPyxAWDcxS2KTlssIY3H2AQDrCKDoG0MqaI77Ll98Hnh9qSm2EWIlAoKW7A7fmZJ36zBSk6nVb+j1UjowCesPEsaLQNjoIES0LhWv25TCxGMcaJXiFSBG9yMYsOGfeaFUp/hF2A6+dZjhWzE76nfjNMmiwkLLTOr0mpQeXlCrZKMrI4HzZCGCcZetbwXU9pdqcL5mbrQTKtifoWO3tgkGcFP4cJhIh+3GRI+qqReUi1kQb2waCd1NHqnAD/zvFd1XKGZYJ6ch591VHp8bgV5oyR1P8R2E4b6fyV9iRBWyR7pCdxKZTKV41eok0dWMisNWoSxpjLFduu4Jcl8nWO2sIL1k6Ry/saDUIP754yIiA6BUOj7stZ54GhN/hxmgk+UDD/HIVHRbttWfBFacf6Xta5en+UV5Bu2nSsAOpElNYkcJ6k1yqi+vDv5bLXX0ubvU/QWs/w7KRtYvZcscdY3asifHgIRMSgEYmfq/SxEQD+adpp+8ByRYqBPas4zUJBo39cn6bNf2TNAnxfsnepkag2koF0vOQwxUk4leYdpGKqgEXTV0CiR+/ClLNn21Zb0dwtAz/SrwLx6XgPWzdkdHj1oNMOGNslRbpGkjDNxvoZU3WA+uE9Ayl7FMuVSzr2+EItDAe1nmJsahuOhEpsCZersgKZFa5JIbF8MU2eQHqY86rYOjSecHmXlQP7BpulAEBCbbXXG9bj/zlk1AO5asV7cneNylHeWU589RjZ3iLg0v5Sfy1bywqlVczUHsEkeKGXFa
+ TMKF+EGL
+ Hdk9kB+lmRd5wdOHlALoWocCS9dHqccTqgacWIRoqX0QuA8tev6yrruHI3tVeVqy1jUhuiuBX2Xa2gQcFLdbuysqoHYyy9EIlnRwj916MqRZCw7M8uin80YgUqDFW959qJ02nUq5Lm4JRWxOhy1VpmMrxtTYii+NDEU7JnIPpvc6Z3LC8YUefqUQWTD8OS6pDG9WENEm0EvpeJQZS8V4B+mToG8VdlsbC+r8i+e3ZpjlLqpFny9Zt5q7VS6hNRNU/xjfaLhMOpLAWpVzEsk/cou8FCtCI3tPUNzMgxvt11B3vMIEGt/17lyIu68bkYsJUCV6kt14kZMpmxPI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -179,16 +179,11 @@ On 11/7/26 17:57, Qiliang Yuan wrote:
 >   pairs merged (of 420)       361        420        116%
 >                               334        420        126%
 >   pages looked at per scan    1792       2048       114%
->   ksmd CPU time per scan      6.30 ms    6.88 ms    109%
->                               6.40 ms    6.96 ms    109%
->                               6.15 ms    6.88 ms    112%
-> 
-> Fixes: 5e924ff54d08 ("mm/ksm: add "smart" page scanning mode")
-> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
-> Reviewed-by: Xu Xin <xu.xin@linux.dev>
-> ---
+>
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Oh, I was wondering whether this should actually go to stable? Do you think the
+above is rather an extreme case, and most users won't really run into it that
+severely?
 
 -- 
 Cheers,
