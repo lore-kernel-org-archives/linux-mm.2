@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A52606A330
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEEA9606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=H9HhWnec
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lOnwfVzT
 Received: by kanga.kvack.org (Postfix)
-	id C7CAE6B05B6; Sat,  7 Nov 2026 02:40:53 -0500 (EST)
+	id 110026B05B3; Sat,  7 Nov 2026 02:43:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C32BE6B05B7; Sat,  7 Nov 2026 02:40:53 -0500 (EST)
+	id 0C17B6B05B5; Sat,  7 Nov 2026 02:43:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B68056B05B8; Sat,  7 Nov 2026 02:40:53 -0500 (EST)
+	id ECBD36B05B9; Sat,  7 Nov 2026 02:43:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8220E6B05B6
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:40:53 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 027F640306
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:40:52 +0000 (UTC)
-X-FDA: 85407526386.04.C58F754
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 65DA1180003
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:40:51 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H9HhWnec;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C95D96B05B3
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:43:41 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 89598402FE
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:43:40 +0000 (UTC)
+X-FDA: 85407533400.17.E1586FA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id D13B4140005
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:43:38 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lOnwfVzT;
+	spf=pass (imf23.hostedemail.com: domain of jszhang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jszhang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794037251;
+	s=arc-20220608; t=1794037419;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bP0SvI1SyNFWGaznG9wghum5HnnqOxchfJ6Ki1mewRQ=;
-	b=4SuNGXnxYC5qr6RriMT0YBbmZuRjRFaH+itOgp24grtFtnMXX5qV0BAhocVSqzOop44imV
-	I4zsMFHSSS9PsFbvgA8lTvxNAxHsJ/daY51PVVR3ttqiOf3c2MbvaumwtLqwaX+DzPKuU+
-	SQXGGs8F5FVoaf799RoAO8EobvfBaQs=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=H9HhWnec;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+	bh=FbGBm47tNYc92nP6La+c3CzQA70ZHrCkA+HjF/TETiY=;
+	b=dbY4BFaYZKZ3rtikvL3fESRDuOkpqnKJ31KeWtjmf5CMESD4wQbD/BZj3fcOTf2+rCb8/J
+	vda7IqrmTZE0QVEggKPckmgreQMWckOukWlyMZdOxlVunqIMTaQt/pSazbLR+GlX+hlxhh
+	IF0Exg82kCMTxVhTx1uFec+eH+dy5YM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794037251;
-	b=sfPgNA9ORgTVhsxfhIBYJ1uTBH/P9tGG+JQ1lPsqrfwsF872iSaI5aFb/olDfv2l79h3i9
-	gFTE+b5D+P3jYhRCr0EQdME/Do2dU2pcXTfACUgaLZrfmKu0jiAd3XXkQkmbdP7rxGuSa4
-	7Bl8XDjPcEgoGgXjJhW3q6Tx8/9xNQs=
+	t=1794037419;
+	b=jo+QeAWIBOD6tdNQdmz9XaQ+n1Njya32m6vwFJME9Hw83Kv9AASmp/BT7nNbZneZ2FXYR1
+	V7Zu7TIFvsiFBF+VVUB2akHCrjVNLGM4gxFx15WrI1soXgkjS4lllq2q1Nnp1Sf+kdCsWT
+	GoVHWRNtJnbblwa9Fp5oyvczXnX1NeU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lOnwfVzT;
+	spf=pass (imf23.hostedemail.com: domain of jszhang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jszhang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E592460D96;
-	Sat,  7 Nov 2026 07:34:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4806C1F0089F;
-	Sat,  7 Nov 2026 07:33:58 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EE48742AC5;
+	Sat,  7 Nov 2026 07:33:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC3D1F008A2;
+	Sat,  7 Nov 2026 07:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794036842;
-	bh=bP0SvI1SyNFWGaznG9wghum5HnnqOxchfJ6Ki1mewRQ=;
+	s=k20260515; t=1794036837;
+	bh=FbGBm47tNYc92nP6La+c3CzQA70ZHrCkA+HjF/TETiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=H9HhWnecdxRy9vEC4nHuQJSaDvquhMBI/PT801hH48JTsRd3zA+RCmU/HDJCkHKUz
-	 9hBx9hkFGuKGERrF2UnNiTcLwsiPNUfWAxAI0rfswINB7IfINNe83yyNK+Ej2D+BCS
-	 OXkL33cMm88csVmrZIt58Pz2+7egV/OvVOGoKu09CBbZGnbXWOzHJqhYy+ZdFrfrBu
-	 MRItFyzQ637jbhvKdvyl+N32L+rfyvgF5fvoCSkonAy/HLJm1lpO6w3gkcU+/RYKwS
-	 90HlrZFYjMZt8hjUpU5+ACKyyckNqKjK2xddxpsbAhtly/u4OqUwOEiIqAPv/gzhqs
-	 ccw0wttMDE0sg==
+	b=lOnwfVzTCtL7gDM+PcYpKoyrqSGazZYg27t906AkpBaSua7ooa60wGklHbYfhqBkx
+	 7Xzf6MQzApazvD16Apns/+ug3yMR/DwyLOdVSW4KEKCht5DhHQfkc2fzmGCk9Ov1EQ
+	 OWgR5yC4pCufnYQNWsBwq9K6shFHcE5dpgO6V2T9KX9TYcPKN34QBnp1T5ZDGUtpRm
+	 XKO8CUC5tOPEdXFHhrYL0TIPSDQR5PCRXjqA5X4rYKNtcGx/FefwhleDbuIpbtcpvO
+	 ctcbl3/9Kqdh7yxsgBcNIHFyuRxTWhtaYtOmAg7XLSaKCLQsEnEUrimaZz5blVRZlF
+	 wbTghD6QyeLwQ==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -76,28 +76,28 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	linux-mm@kvack.org
-Subject: [PATCH 3/4] arm64: stacktrace: Always inline internal stack boundary helpers
-Date: Sat,  7 Nov 2026 15:13:38 +0800
-Message-ID: <20261107071339.17467-4-jszhang@kernel.org>
+Subject: [PATCH 2/4] arm64: entry: Always inline helpers used by non-instrumentable paths
+Date: Sat,  7 Nov 2026 15:13:37 +0800
+Message-ID: <20261107071339.17467-3-jszhang@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261107071339.17467-1-jszhang@kernel.org>
 References: <20261107071339.17467-1-jszhang@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 65DA1180003
-X-Stat-Signature: kqsr14b8h5u49ogjmzkz5trkqq8j68gc
+X-Stat-Signature: 4d7g5r7xao8fkhchruo7ybcyxhmygege
+X-Rspamd-Queue-Id: D13B4140005
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=unavailable autolearn_force=no
 	version=4.0.1
-X-HE-Tag: 1794037251-147625
-X-HE-Meta: U2FsdGVkX18AfZ1Sjrx4lwr2DN8ze5uCmeTOLML7IBVlSMtEIgxE7Rc3PqN1xZ7wNPBhZPslKFKLuZEoXRqyE4Nph9Q5rtUh/LjldF1631wNFphf9G3l+5S0DrAGG74KFeYpe0/b2K9Ks+IrnEx5QnkPif9XFTJW3Rmr3zyaFMG74wBQCQPl14RCtD27IRNp58jzAeC/0KEmTjtSbq9BtaWx2ckw776m/Kc5BGI+Ky9HvZmcYRlOZPSFLAPk44zu1/VZ/0Kzu7GLo49o+nUN0zXeiz4qF+Xpv5hoKEi73+A8YcjzzHUNxNgEhncjG2xxxZNLP7FW6S5vpB8/UX3VxhjzevZ78MXVsUGdDlROCOrH7eWXucSOYm0U3RZydWUa1Jix/ElIzruCqzJ7J16pwQJ88qCW6RqZZckmfiCJBGbpqinh6KTlX91AZ1JMxjM4GusbtMSgkrS43piJ/hr+4ccGSMM49omFPlzIoauIFrxxU+cMOzP1PUaeKzC2ZbuMq4SzkAJ0hIKQwv7nmi/paMnaJTTrnTd8kl9dUwBVyqxpALJllpO11E/BrdmJRUiIdgDDT+jxhy0bwEm08SZnDdEv1apxV6RVTmeENhJ+nLp0/OqVeN5mrFdbPuhAanOIAj7T1CIpiaPybTtAOpyw9BN2X5YL6VT6mlNaBRrnCQJ2b+PTM384moCKAT3NdGsggYhGyh6nuULpgQNdW2Kg/+3bxF8gLnJIgOz1PTK7qSf4tGJEbVuGI9bokw1OMxoNG2Ey3CfWiwBKF8fdEIrblP1Afx8w3xqM34IoNsCIC3qf9rwV0bXRvTJP39LfqK3Txk5hCez1+nH8t+ytBHgLvJW6I0U18zsaf0bhmZBwGtMZu1x7yBteMvg0hK2lUdEkFIUwCMjyj4Y3xJfitgFmzr6vYbbMnVxUqWwOycK+8MZ9/1onm8ag1HmWkOLvd5mKxjnnfrd+Fe33AXBaOB7
- vC1NXYfd
- F17m4l9sqT97IvvdrI4iYIRcjUHll0IK9DX1TxJG674UxF5MsiD4wmZfuMYeEXPjrkxL4JRRnICjJIj1j8SSmVGeO87aYYAB6xqAryV8nWHqBoxg+tegm23Xfz7KauOS89GblULjYYwR/5USOl+vE5L6ek6S9BkA65mJRBTCcBdVpRQKErJo6kVPRupmZmjy6d1xAcU+5YWdYENUVaP/W1zWz3WcybQTiS9Poh0Z9lR8fvjHxlbeeX0G83k8Tqgm7f/HjcY/P1U9Crmf+eWW8kUVibDTxwZiCUYmJSNRuZ9Pum8Ea08s7byeMdw==
+X-HE-Tag: 1794037418-864600
+X-HE-Meta: U2FsdGVkX1+AAl5uCl3DXRvSjCb13gQ6MOe3mp8OFInYyUufsj63FOPviIowNQTpHrVtgwmMzQPfmTEGT/RikEK3BUUv1tvuHtFfbLeHVByQg50/JOHzS8UhfdECR5Ie3MFw8//0XH7+vzWvG+ZDTMX+CxhceUUbtVify5REtu5caUmRd0fdarYh3DlyAQlSY99YcGeLYT/5djn1RoQF4kW6aLDjSg3tmp2pGwmdcf3R6XH8RgdnNoGocDxPGWuqpraoY87E/BBxhEWaKpJrPRjuSYe/pKX2W8PA9oO+PaeMbEzf6UjfCf7PRRO1lJDxn/biJiE8v3+fYGCDBFkg2GYY1L91BQtLuEMfpJ7bn6cm18h0kbfFqFpq8RKmVCfFgB080RG/BjnXEqWS7KHX6gfGOofcPPT2VDEXumcyLzxwN+UT4KN9MS50hQtiO22aru9lzCfL2Yo9HK2BJjHkufgmszJKi3QP7ct1lx/ZTublIT+fnylD4fi0ShKJBb72/IBMaOU3UlQiAO7HSUDwzSY1+ePpbEWUSQ/mM4Gj64wG5vtO/UTzZS35EvVw1N/AiZ+NQC74SLCSrddaokM5U+fAnVCtI5Ub/VdXCo19V9Jf2UjkxYSVjK/9tVb2j0hU6COstYmGMAEiwwHzOnW948X7/RddJ+jQfmf2LWdP4xLaUhUTGJziN5P0inuAJUrQvs7Pi1tPDtsvPBVYv68twouHITNZYHJJw7+JY1dUIfevWPz3JH+hLXUgp9NIBYYTHRI8ofZvQ467Ac1658pcwO68lbaMjNRPX23C/mDXiDXNf6uuSTVapoFuT5l8VZoGHp11/neCO5XzPK5ctpSGDQ8McbEnv1z4kpah3s35+SPuirLNO2j5j2Bnn4YvY8WY6/DjfV0JDx80iEWTaLaCKS79g7kcKvHYLDjOuBmtsviHMgNSjE+sYDGpOTGBNh9ioht71eVRj5zBQ65seor
+ kyCpr36U
+ Pi9PqFsCwDJ+WekX8c3REXs/6f+BgBCUUlo57TwIlN87BcgtLEbInul02ZnulzEonOOl8imTf73ZymZA5d/sYETDrYFfjiN0+m+cJaR/N/gG2EXUmpyPlJY7uhwwI9vgaXaXvanvCqW4ReA4nX4t8V8jbzNuYb5n6+d1cDgNKzFc+Rzn9dqJssbZqVQxAbAMXTDw7tlJ1zo5ildoCxyqAn6l9NrL1HfEScrtbFAeD+rjtv+OZFYeyxVihCf1qUYblKbGUcr8oXkOTl0q8SjXwqMfduC0epD5kYQYKpEtEQXGFny4KilDFw4+YKA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,156 +106,151 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The noinstr stack walkers reach the stack boundary and frame-record
-helpers through an __always_inline call chain. However, these shared
-helpers do not themselves guarantee inlining.
+The noinstr entry and exit paths call MTE and SME helpers, CPU feature
+checks, and the architecture-specific rescheduling check. Several of
+these helpers use plain inline, which permits the compiler to emit
+instrumentable out-of-line copies.
 
-With CONFIG_CC_OPTIMIZE_FOR_SIZE=y, GCC emitted several stack
-information helpers and unwind_find_stack() out of line in .text.
+A GCC build with CONFIG_CC_OPTIMIZE_FOR_SIZE=y emitted
+mte_disable_tco_entry(), sme_enter_from_user_mode() and
+sme_exit_to_user_mode() in .text.
 
-Mark the shared stack boundary and frame-record helpers
-__always_inline to keep their instructions in the non-instrumentable
-walkers
+Use __always_inline for these helpers and their nested feature checks
+so they inherit the instrumentation restrictions of their callers
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 Assisted-by: LLM
 ---
- arch/arm64/include/asm/stacktrace.h        | 16 ++++++++--------
- arch/arm64/include/asm/stacktrace/common.h | 12 ++++++------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ arch/arm64/include/asm/cpufeature.h   | 8 ++++----
+ arch/arm64/include/asm/entry-common.h | 2 +-
+ arch/arm64/include/asm/fpsimd.h       | 4 ++--
+ arch/arm64/include/asm/mte-kasan.h    | 4 ++--
+ arch/arm64/include/asm/mte.h          | 6 +++---
+ 5 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/include/asm/stacktrace.h b/arch/arm64/include/asm/stacktrace.h
-index 6d3280932bf5..b370c0e1e337 100644
---- a/arch/arm64/include/asm/stacktrace.h
-+++ b/arch/arm64/include/asm/stacktrace.h
-@@ -22,7 +22,7 @@ extern void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk,
- 
- DECLARE_PER_CPU(unsigned long *, irq_stack_ptr);
- 
--static inline struct stack_info stackinfo_get_irq(void)
-+static __always_inline struct stack_info stackinfo_get_irq(void)
- {
- 	unsigned long low = (unsigned long)raw_cpu_read(irq_stack_ptr);
- 	unsigned long high = low + IRQ_STACK_SIZE;
-@@ -33,13 +33,13 @@ static inline struct stack_info stackinfo_get_irq(void)
- 	};
+diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
+index e3c8a1493dc8..c62949693b92 100644
+--- a/arch/arm64/include/asm/cpufeature.h
++++ b/arch/arm64/include/asm/cpufeature.h
+@@ -774,7 +774,7 @@ static __always_inline bool system_supports_fpsimd(void)
+ 	return alternative_has_cap_likely(ARM64_HAS_FPSIMD);
  }
  
--static inline bool on_irq_stack(unsigned long sp, unsigned long size)
-+static __always_inline bool on_irq_stack(unsigned long sp, unsigned long size)
+-static inline bool system_uses_hw_pan(void)
++static __always_inline bool system_uses_hw_pan(void)
  {
- 	struct stack_info info = stackinfo_get_irq();
- 	return stackinfo_on_stack(&info, sp, size);
+ 	return alternative_has_cap_unlikely(ARM64_HAS_PAN);
+ }
+@@ -840,12 +840,12 @@ static __always_inline bool system_uses_irq_prio_masking(void)
+ 	return alternative_has_cap_unlikely(ARM64_HAS_GIC_PRIO_MASKING);
  }
  
--static inline struct stack_info stackinfo_get_task(const struct task_struct *tsk)
-+static __always_inline struct stack_info stackinfo_get_task(const struct task_struct *tsk)
+-static inline bool system_supports_mte(void)
++static __always_inline bool system_supports_mte(void)
  {
- 	unsigned long low = (unsigned long)task_stack_page(tsk);
- 	unsigned long high = low + THREAD_SIZE;
-@@ -50,7 +50,7 @@ static inline struct stack_info stackinfo_get_task(const struct task_struct *tsk
- 	};
+ 	return alternative_has_cap_unlikely(ARM64_MTE);
  }
  
--static inline bool on_task_stack(const struct task_struct *tsk,
-+static __always_inline bool on_task_stack(const struct task_struct *tsk,
- 				 unsigned long sp, unsigned long size)
+-static inline bool system_has_prio_mask_debugging(void)
++static __always_inline bool system_has_prio_mask_debugging(void)
  {
- 	struct stack_info info = stackinfo_get_task(tsk);
-@@ -61,7 +61,7 @@ static inline bool on_task_stack(const struct task_struct *tsk,
- 
- DECLARE_PER_CPU(unsigned long [OVERFLOW_STACK_SIZE/sizeof(long)], overflow_stack);
- 
--static inline struct stack_info stackinfo_get_overflow(void)
-+static __always_inline struct stack_info stackinfo_get_overflow(void)
- {
- 	unsigned long low = (unsigned long)raw_cpu_ptr(overflow_stack);
- 	unsigned long high = low + OVERFLOW_STACK_SIZE;
-@@ -76,7 +76,7 @@ static inline struct stack_info stackinfo_get_overflow(void)
- DECLARE_PER_CPU(unsigned long *, sdei_stack_normal_ptr);
- DECLARE_PER_CPU(unsigned long *, sdei_stack_critical_ptr);
- 
--static inline struct stack_info stackinfo_get_sdei_normal(void)
-+static __always_inline struct stack_info stackinfo_get_sdei_normal(void)
- {
- 	unsigned long low = (unsigned long)raw_cpu_read(sdei_stack_normal_ptr);
- 	unsigned long high = low + SDEI_STACK_SIZE;
-@@ -87,7 +87,7 @@ static inline struct stack_info stackinfo_get_sdei_normal(void)
- 	};
+ 	return IS_ENABLED(CONFIG_ARM64_DEBUG_PRIORITY_MASKING) &&
+ 	       system_uses_irq_prio_masking();
+@@ -950,7 +950,7 @@ static inline bool cpu_has_hw_af(void)
+ 						ID_AA64MMFR1_EL1_HAFDBS_SHIFT);
  }
  
--static inline struct stack_info stackinfo_get_sdei_critical(void)
-+static __always_inline struct stack_info stackinfo_get_sdei_critical(void)
+-static inline bool cpu_has_pan(void)
++static __always_inline bool cpu_has_pan(void)
  {
- 	unsigned long low = (unsigned long)raw_cpu_read(sdei_stack_critical_ptr);
- 	unsigned long high = low + SDEI_STACK_SIZE;
-@@ -105,7 +105,7 @@ static inline struct stack_info stackinfo_get_sdei_critical(void)
- #ifdef CONFIG_EFI
- extern u64 *efi_rt_stack_top;
+ 	u64 mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
+ 	return cpuid_feature_extract_unsigned_field(mmfr1,
+diff --git a/arch/arm64/include/asm/entry-common.h b/arch/arm64/include/asm/entry-common.h
+index 1905765159aa..4856bc453c01 100644
+--- a/arch/arm64/include/asm/entry-common.h
++++ b/arch/arm64/include/asm/entry-common.h
+@@ -27,7 +27,7 @@ static __always_inline void arch_exit_to_user_mode_work(struct pt_regs *regs,
  
--static inline struct stack_info stackinfo_get_efi(void)
-+static __always_inline struct stack_info stackinfo_get_efi(void)
- {
- 	unsigned long high = (u64)efi_rt_stack_top;
- 	unsigned long low = high - THREAD_SIZE;
-diff --git a/arch/arm64/include/asm/stacktrace/common.h b/arch/arm64/include/asm/stacktrace/common.h
-index 821a8fdd31af..7c502ae276b9 100644
---- a/arch/arm64/include/asm/stacktrace/common.h
-+++ b/arch/arm64/include/asm/stacktrace/common.h
-@@ -35,7 +35,7 @@ struct unwind_state {
- 	int nr_stacks;
- };
+ #define arch_exit_to_user_mode_work arch_exit_to_user_mode_work
  
--static inline struct stack_info stackinfo_get_unknown(void)
-+static __always_inline struct stack_info stackinfo_get_unknown(void)
+-static inline bool arch_irqentry_exit_need_resched(void)
++static __always_inline bool arch_irqentry_exit_need_resched(void)
  {
- 	return (struct stack_info) {
- 		.low = 0,
-@@ -43,7 +43,7 @@ static inline struct stack_info stackinfo_get_unknown(void)
- 	};
+ 	/*
+ 	 * DAIF.DA are cleared at the start of IRQ/FIQ handling, and when GIC
+diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
+index a67d5774e672..157d0551f627 100644
+--- a/arch/arm64/include/asm/fpsimd.h
++++ b/arch/arm64/include/asm/fpsimd.h
+@@ -749,14 +749,14 @@ void sme_enable_dvmsync(void);
+ void sme_set_active(void);
+ void sme_clear_active(void);
+ 
+-static inline void sme_enter_from_user_mode(void)
++static __always_inline void sme_enter_from_user_mode(void)
+ {
+ 	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_4193714) &&
+ 	    test_thread_flag(TIF_SME))
+ 		sme_clear_active();
  }
  
--static inline bool stackinfo_on_stack(const struct stack_info *info,
-+static __always_inline bool stackinfo_on_stack(const struct stack_info *info,
- 				      unsigned long sp, unsigned long size)
+-static inline void sme_exit_to_user_mode(void)
++static __always_inline void sme_exit_to_user_mode(void)
  {
- 	if (!info->low)
-@@ -55,7 +55,7 @@ static inline bool stackinfo_on_stack(const struct stack_info *info,
- 	return true;
+ 	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_4193714) &&
+ 	    test_thread_flag(TIF_SME))
+diff --git a/arch/arm64/include/asm/mte-kasan.h b/arch/arm64/include/asm/mte-kasan.h
+index de910f1c19e1..cc2151325eb0 100644
+--- a/arch/arm64/include/asm/mte-kasan.h
++++ b/arch/arm64/include/asm/mte-kasan.h
+@@ -18,14 +18,14 @@
+ /* Whether the MTE asynchronous mode is enabled. */
+ DECLARE_STATIC_KEY_FALSE(mte_async_or_asymm_mode);
+ 
+-static inline bool system_uses_mte_async_or_asymm_mode(void)
++static __always_inline bool system_uses_mte_async_or_asymm_mode(void)
+ {
+ 	return static_branch_unlikely(&mte_async_or_asymm_mode);
  }
  
--static inline void unwind_init_common(struct unwind_state *state)
-+static __always_inline void unwind_init_common(struct unwind_state *state)
+ #else /* CONFIG_KASAN_HW_TAGS */
+ 
+-static inline bool system_uses_mte_async_or_asymm_mode(void)
++static __always_inline bool system_uses_mte_async_or_asymm_mode(void)
  {
- 	state->stack = stackinfo_get_unknown();
+ 	return false;
  }
-@@ -70,7 +70,7 @@ static inline void unwind_init_common(struct unwind_state *state)
-  *
-  * Return: a pointer to the relevant stack_info if found; NULL otherwise.
-  */
--static struct stack_info *unwind_find_stack(struct unwind_state *state,
-+static __always_inline struct stack_info *unwind_find_stack(struct unwind_state *state,
- 					    unsigned long sp,
- 					    unsigned long size)
+diff --git a/arch/arm64/include/asm/mte.h b/arch/arm64/include/asm/mte.h
+index 83f3b05fc784..b2bf2e70c9ae 100644
+--- a/arch/arm64/include/asm/mte.h
++++ b/arch/arm64/include/asm/mte.h
+@@ -222,7 +222,7 @@ static inline bool folio_try_hugetlb_mte_tagging(struct folio *folio)
+ }
+ #endif
+ 
+-static inline void mte_disable_tco_entry(struct task_struct *task)
++static __always_inline void mte_disable_tco_entry(struct task_struct *task)
  {
-@@ -99,7 +99,7 @@ static struct stack_info *unwind_find_stack(struct unwind_state *state,
-  *
-  * Return: 0 upon success, an error code otherwise.
-  */
--static inline void unwind_consume_stack(struct unwind_state *state,
-+static __always_inline void unwind_consume_stack(struct unwind_state *state,
- 					struct stack_info *info,
- 					unsigned long sp,
- 					unsigned long size)
-@@ -142,7 +142,7 @@ static inline void unwind_consume_stack(struct unwind_state *state,
-  *
-  * Return: 0 upon success, an error code otherwise.
-  */
--static inline int
-+static __always_inline int
- unwind_next_frame_record(struct unwind_state *state)
+ 	if (!system_supports_mte())
+ 		return;
+@@ -245,7 +245,7 @@ static inline void mte_disable_tco_entry(struct task_struct *task)
+ #ifdef CONFIG_KASAN_HW_TAGS
+ void mte_check_tfsr_el1(void);
+ 
+-static inline void mte_check_tfsr_entry(void)
++static __always_inline void mte_check_tfsr_entry(void)
  {
- 	struct stack_info *info;
+ 	if (!kasan_hw_tags_enabled())
+ 		return;
+@@ -256,7 +256,7 @@ static inline void mte_check_tfsr_entry(void)
+ 	mte_check_tfsr_el1();
+ }
+ 
+-static inline void mte_check_tfsr_exit(void)
++static __always_inline void mte_check_tfsr_exit(void)
+ {
+ 	if (!kasan_hw_tags_enabled())
+ 		return;
 -- 
 2.55.0
 
