@@ -1,80 +1,82 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A16A606A332
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 13:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8329606A32C
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 13:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JUS/oqay
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dmodx5Fs
 Received: by kanga.kvack.org (Postfix)
-	id 85A4C6B05B0; Sat,  7 Nov 2026 08:12:51 -0500 (EST)
+	id EF1E46B05B2; Sat,  7 Nov 2026 08:18:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 80AAF6B05B1; Sat,  7 Nov 2026 08:12:51 -0500 (EST)
+	id EA36C6B05B3; Sat,  7 Nov 2026 08:18:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6F9B96B05B2; Sat,  7 Nov 2026 08:12:51 -0500 (EST)
+	id DB9BC6B05B4; Sat,  7 Nov 2026 08:18:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4213A6B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 08:12:51 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3C2D31C37E7
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 13:12:49 +0000 (UTC)
-X-FDA: 85408362858.21.F6DFFC5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 64FB61C000C
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 13:12:47 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JUS/oqay";
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id BBBF56B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 08:18:08 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 5AA4C1C37DD
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 13:18:08 +0000 (UTC)
+X-FDA: 85408376256.01.E3A7EA0
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 92226C0003
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 13:18:06 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dmodx5Fs;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794057167;
+	s=arc-20220608; t=1794057486;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CQ5mfxv7UGgbtsfCEUxK8ReBmH/PIdEtaJHCFZGwPmA=;
-	b=4xJdnjd3HK9O58o7wYV4Yz6hnwenwlyWstySqoDJ0thuGX2B4aGTH656NGwNDnwMdFzOU/
-	ld2djzGXv4ysOmAdABJVp+/WYSvlGvN75rucpSK+rtEKkBGJVRSypUQPH9yjul2a9ykUWW
-	QcR5sRsO+VNKAcZ4K5TpcraoSBqifZE=
+	bh=WHIeRQXEN/cLq4RDZzIjHJg7538MWLG7Xtt4v6NPKig=;
+	b=i1U975JYWWyBblMEDe/eAfwtvjOvC77t7ycjR1cZP7dvWUWXdgbVWbHsXrQN57iIRp1bkd
+	MfyohijUG8eYp1cNN3ISEo3cCs2CmdYv6s+KTMFru2O/buiMSX8kZDSWjI0jAiPPscpRyR
+	z3emXH2GZrLvyUboHpGE/anFFM0JIpU=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794057167;
-	b=HNmrahLtT1i2OLS0aqnFiRjxfLup1V53nUfiJWvgac6E7TIpQ8BUmLZuaGmLdkG/klmVL4
-	9pcMJTJQuibZshnpONLP1xkftQc+RdiiQASQWIxN3I3QPmvZEr89EWbm2R5ypXrlIVmGny
-	olAl2xyHEJae2fLNM8Z5Mzu2YNYvnsk=
+	t=1794057486;
+	b=1kQ11Cylh2sjqTheZOfuCr7HyP4GvTaQMxNuB+kFYothStSjYiJXHUCk5UGBnEYI4mxycO
+	2oqKPPcNOan+eDwkDn7+/XBjgcKYNQ0SmU4akKvlXC3yQ0NbIsXqHGVlk1BeCUklKgpbkR
+	zSFtqvGM8Al2XjojBqm3Dsfc3BNARgI=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="JUS/oqay";
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dmodx5Fs;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 5970F41AD4;
-	Sat,  7 Nov 2026 13:12:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145861F008A1;
-	Sat,  7 Nov 2026 13:12:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id A43F360202;
+	Sat,  7 Nov 2026 13:18:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CFA1F0089F;
+	Sat,  7 Nov 2026 13:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794057166;
-	bh=CQ5mfxv7UGgbtsfCEUxK8ReBmH/PIdEtaJHCFZGwPmA=;
+	s=k20260515; t=1794057485;
+	bh=WHIeRQXEN/cLq4RDZzIjHJg7538MWLG7Xtt4v6NPKig=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=JUS/oqaySD8cio8i1WThawooJC6rRvaqc0iBBqZkJRZoFctClT4hjpL9J4h1ktQPp
-	 vea7BwYjtqdGF+qJV/XdL8YfRUye33ufwZvYtli83Lb3GCIxg9ZMPJJnwHmsCQMMKn
-	 Ddh7wtj/Buear6TmdR3WMDmeq7DB6xy9W0UTCzUmxfsi+cRmI/NKjRN+Z+GY7s663F
-	 C3iepRVCfS//c9ud1HQO9XezYIqTQCoi578Y4/xnn0uf0RsqMz/7YWEd7FycBV+EcS
-	 HWg5jE/bwqsolX6UWAkhTzpDwnRHvN4cPJnYiEvMgwyV8IIJK90ZP5WjO9fT3leUY6
-	 K+WgkbTlsOGQQ==
-Message-ID: <6525d30b-6de8-4b3f-a79e-fafc6b1cc9dd@kernel.org>
-Date: Sat, 7 Nov 2026 14:12:40 +0100
+	b=dmodx5FsiwXCu5bCklY+ydYX0FIUmCxrsDzsFLtOh0GTw9MNSoUPtk3zPRKKbP5ep
+	 XUZASmIqNRpBJnKezD2+Z0fPtOiQpuw/SXRJ49RgSFG9MM6whfwgFHjUh2KL+PjmZE
+	 CpBEeILbLiHqCVPO7B961xZAm1TmrPHV3aFB41z9LbX3rKDvicyY3oiiltvZKfsnfY
+	 w7PMu9dtqIY2kQPyZ9OQQYKTiykkHTk+lJwJkniTYmBEr3onylybQ4PLYuChDYs2v9
+	 eTavTvW1dcUZPumHUusKC+HEUdeQHDRtJNYkUB+Kv37TZugwtPU0OLMIGv0SOXNsPF
+	 2iRJ2C3KSBGXA==
+Message-ID: <c243e6ab-3eb9-471c-9b6e-91064528ce82@kernel.org>
+Date: Sat, 7 Nov 2026 14:17:57 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: add CONFIG_DEBUG_FS to the config fragment
-To: Sasha Levin <sashal@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20261105171801.2189772-1-sashal@kernel.org>
- <179397467526.9397.17872200045070830000.b4-ty@b4>
- <20261106185218.1766376-1-sashal@kernel.org>
- <8fdcef66-3130-4c90-aecb-050ae624f42c@kernel.org> <au8cno0UHsD_Fxp3@laps>
+Subject: Re: mm/mremap: F_SEAL_FUTURE_WRITE can be bypassed via mremap() VMA
+ expansion/duplication
+To: Junyoung Jang <graypanda.inzag@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R . Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Hugh Dickins <hughd@google.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Baolin Wang
+ <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261107030708.1031977-1-graypanda.inzag@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -121,21 +123,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <au8cno0UHsD_Fxp3@laps>
+In-Reply-To: <20261107030708.1031977-1-graypanda.inzag@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam06
-X-Stat-Signature: f5ymusm8383a1nduwbpxfokcqmuymwag
+X-Stat-Signature: j8kfq4oszy9jenpfs5rdouus46me4umq
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 64FB61C000C
+X-Rspamd-Queue-Id: 92226C0003
 X-Rspam-User: 
-X-HE-Tag: 1794057167-516009
-X-HE-Meta: U2FsdGVkX19bmpjITsy7FL5qF6hg+wERZh/PbnVQGl1AmsJkOc3/Hj7vS7nRVAML77h0guT5zBlh9KI/rj9nXXZJLngcYCNAnHzbO2mqBhQlCMek91i3iaMjHUVETNjyeDxdX5g7lx++HkcGQVAm0M8QPOyVvFpQ1T3WLlVLmdIYvKtbCSAneII9AUYMQvsR+9S3JnCTcbnbcAwothYP7g0nx9hj+SNVK0/6sXtp6kSQuEvWkJ56rlKpdjoDY2PjuEkIFCXM1gVZh8IXCqSoRCpxOhd3HmuJRD8n9GcK+vcX3zfMRNjgnWQPR2XU+edQTE8xgEw/7XK/AVSwcALaVcDowVu3hXiP+rv7GPMCA4k+Fz6uJgRqRav0lvT78O1jxPn9oCKjFf1yVoPI4doiAJgfC15t1sEnONatiK+CIYjKvElGfbvMxCf/yzEhZSmm9sqwhHDpOhab3RZ+UVvW3j4z7fg07z1+VReqQGyUKqwgFyirhDtdw4QGnI+HxdHvBr93NbXHhMA6eRrziVYdPlJaoevhHgMe3m//4J8HaFR0V0eFgqRN5zu+bX44dGvV+dgFYKNhan7sSdrAJ+XqwDjN6ZXw/HD7rrHtiTSTKfHFPOAxvfQ9hc1P5X9m1uwieHCyXMu1wOoSRIUkje4dDPLkgOKuzBK1tR0+1t4mh7xds8UYzbKDMuBx14gju6RklDkmkBsXXw8KWG+Lgt6I368xX9JPy39NCjs4go5YUP0ziwSqWLwoyFgcJ6IHVAiev+HG2G9WPEpUOBb1m5GobJcmA+oBBKCiGJnY/5j/zDmstcGeA+/oQWiSkXXelaWm6MOvigFsOQxZ2QsW5vLo/Fd+HRWr3PgBVC7KI7JdsjrfauOyySIWip/MJR06D0YKmN9PS2tcdIlxZg3vPoCTGtd/5UjllZxpFtjrzuXODwa6Bm9MvHyAB6cLcxLMNysOlcCtQtMQkLqisLLaznm
- /OmTC0iA
- ZUa9IK2Yu2HvGQOmzFUKx/IS+hd69LPyV/6FgKTAIc02SeNN8z02dVio8t+LpXJtftCREC3FtIufmUgXp4QOftHMzoG+ZBpE0qvnatKoAloqBbweLf2tjw9Bf/aNLszYB1Y6CLPxlVhUNq0LabxWV234CZJ/u2zCeau/BZQMVOukU3Ykz15fCXEktdpDuOU+Fnbq8dGoPcuvSupRqyUoroDysdNvvwpe+CtNwumXGdbxceOtEjyYZ7l0fK5AQxTi8HHAp4B5JJvWM62Viol+HXffpwpuKqCLMXwIuEDfjICkvNhc6/FxBNw9fL0x1OjX646bvh7uMGBdASB0=
+X-HE-Tag: 1794057486-320334
+X-HE-Meta: U2FsdGVkX18P2HisGLYG4y22nUAU8vfjaJXfRLh+2+GSkylhAJ3TF3r8iY0rfk2zJN9Fcuu2q9RmA34NzbCFgavOHpq9wexDzVqKo6Evdyro7DR0kJFKWAfhy1FdZsh/d/aKiIh13Hp1ChWKUrW+15PTPerWnFnBoVZxWJ6TNQlJRNoxlBkHV0VnksGEWltA3OW2c+4CAFFOd1KJajBdkImk1NXMykAnOM1OJTcjc/VCGvjBB0L7DZ6ka9kiyR+3Wvj2UEeap4BZXyb4hf7vrtwDLxVZkz2b0dqMUNDrZIUo6SEkl1npLZiQHBUALlZDzNfAY8RSF2gFm3wTHGAV7wIyDC58ZN4BQocTNQO5sUlQUvKfHg8KyAkwSdjG2ixlGlnMFOb9ZSS0obUcMAoUFEXjwvu6HHOpIh9mHVsu16CycTCJW5oeX37ulgaU9e29plzA5yGcyW/tCttgeENxBol2ixGtMcqETO75Nxhu0qM5PoiJkUQLVCR8zvekkb2QoMwkp7RRV+9l5Rci2DH9QgbHGeTUt/h5AS7TbNWnvEIyEHHAntpS6QE/XZ4U+Y5uwEZmsVcT0wZgSNi1vyPu+/mmxCNBiX6aj1vmh1FlcECeWZFRonBxkR+MjGnHA1C0rSn3cLg/XPURO2w44S1JUSduJsA0nQ/1bMnTmXJo0Iit0V6sv/FLA36K4KxswYYh+IevJkp9+3H2P941QCTfmRmrQ0ZUtRFiM+9jEmQtDiIMmznaxS9K8VHYL7aZ4OYV3aJR1w13jwZWW0TkrhQo0tbGPbI3qV78ejNv2lnMVE8n58ZoaIJZkWROVH54pZWbYjIuvjMSYt1wwL3FWzWHmY79gDWdhhFVnyM7yAmCSmHSqZknFMLpd8GuF4ZPLkZC7J/vihl8RTxhbl7n2kgpyIRGEMqmf30imf9QS3Z06G6VHUXMKq4UE5LtskOFe9tYhET+uTJ2+hdE675hbrM
+ W0rENNlw
+ 9OKzJbSS9+HyGSzqOXB8Qpuj+RDI/o/1NwAT5mb4CRhS1RzT7yWxYzvTuFrmnqz0P4vlS5uhYXEA0zUTdWGwwiy4VabwcKC/ztcIjI2YY+uYVdYkmeqgw6lJerU0qehm/Dx9lHZY7I3qxQVv48Byw22KZuyeSUsktCXPHJd6EKy+ApSU53iSxvRiYlryoILUF6LuLjPOV/w+og51F3AH0h9yIBNCekjrnpG+pDjjIYhlE1aDFKcCaQfc+Wrcl61ngZ8rPkD9wsPzfSb9zUJNyjGeyuyRAp9TPFFCUKNoate3TzoARr6Bzw90ld6aDPnkypzB+lRHuBP8Nh3IQE2+aWOKjx1EVVy8vMCdeO83pGYoF2gQE9edabSbhy5HlkYoow1sNACGdpFTJK51KqhraJssTGg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,56 +146,24 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/7/26 13:42, Sasha Levin wrote:
-> On Fri, Nov 06, 2026 at 10:32:27PM +0100, David Hildenbrand (Arm) wrote:
->> On 11/6/26 19:52, Sasha Levin wrote:
->>>
->>> Thanks! It looks like this one landed on both thp-7.5.misc and
->>> core-7.5.misc:
->>>
->>>   31ea5515bf59 ("selftests/mm: add CONFIG_DEBUG_FS to the config fragment")
->>>   194b63198811 ("selftests/mm: add CONFIG_DEBUG_FS to the config fragment")
->>>
->>> Was the thp-7.5.misc one meant to be the split_huge_page_test skip patch?
->>>
->>>   https://lore.kernel.org/all/20261105030242.1241448-1-sashal@kernel.org/
->>
->> Fixes.
->>
->> b4 shazam gets confused when patches are sent in reply to patches.
->>
->> Which is why we shouldn't do it ;)
-> 
-> Remember my gripe about how subsystems are starting to have more and more
-> custom rules around process? :p
+On 11/7/26 04:07, Junyoung Jang wrote:
+> Hello,
 
-Let's not twist my words. I said "we shouldn't do it", there are no rules around
-it and also I don't want any rules around that.
-
-And the example below (bug vs. bug report) makes perfect sense.
+Hi,
 
 > 
-> Our docs currently say (Documentation/process/submitting-patches.rst):
-> 
-> 	Explicit In-Reply-To headers
-> 	----------------------------
-> 
-> 	It can be helpful to manually add In-Reply-To: headers to a patch
-> 	(e.g., when using ``git send-email``) to associate the patch with
-> 	previous relevant discussion, e.g. to link a bug fix to the email with
-> 	the bug report.
-> 
-> I suppose it's okay for parts of the kernel to deviate from the "standard", but
-> it's a bit hard to keep track of these preferences.
+> I found a reproducible F_SEAL_FUTURE_WRITE seal-policy bypass. A process
+> holding a one-page shared writable memfd mapping created before the seal can
+> use mremap() after the seal to gain writable access to additional file pages.
 
-Just to be clear, patch in reply to patch to me is something different than
-patch in reply to discussion.
+F_SEAL_FUTURE_WRITE is not really range-aware. What makes you believe that it
+would be?
 
-People tend to ignore certain patches because it's not relevant for them;
-burying something related but more generic in there is not always the best idea.
+I'd say it's expected that if someone has write access to the memfd, it has
+write access to the whole thing, not just some subset that was obtained through
+the initial mmap.
 
-But it all doesn't matter, because there are not any such strict rules and I
-just have to learn to properly use b4 :P
+Any documentation that made you believe that it works that way?
 
 -- 
 Cheers,
