@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D544F606EEB3
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 061B6606EE93
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DsK7Pw9l
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gUn0y3dH
 Received: by kanga.kvack.org (Postfix)
-	id F006F6B05B2; Fri,  6 Nov 2026 19:36:58 -0500 (EST)
+	id 38D4B6B05B1; Fri,  6 Nov 2026 19:36:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDD926B05B3; Fri,  6 Nov 2026 19:36:58 -0500 (EST)
+	id 33E396B05B3; Fri,  6 Nov 2026 19:36:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC6706B05B3; Fri,  6 Nov 2026 19:36:58 -0500 (EST)
+	id 1DEE56B05B4; Fri,  6 Nov 2026 19:36:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD9A96B05B1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E638E6B05B1
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:36:58 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id CB36E14018C
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
-X-FDA: 85406458074.30.661BEE1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 9FD4D20002
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DsK7Pw9l;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf03.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794011815;
-	b=sLLS/GBMNKqjTDBlSSGrdl969zj3by8TgO3u7UiGacXjCYjcy2csv/klFAOZsUxDO0wdQQ
-	x6frA8lLYYCzOu7EU4E/+VhWjwg71s2+ryTyQO7gUUxgcPL0zBk7CUrMAEV+m7Z632Eu08
-	BEjPDJx4qd9ZusJCv/LyT8x443i0+HE=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DsK7Pw9l;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf03.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6C4AE1A01EC
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:36:58 +0000 (UTC)
+X-FDA: 85406458116.21.C7222C3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 52080C0004
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:36:56 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gUn0y3dH;
+	spf=pass (imf22.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794011815;
+	s=arc-20220608; t=1794011816;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LNwul7zJGFsHKwWZpPtjRY0cIC8DT7VRwlkbbh/D6mg=;
-	b=3M6wNgzYieAkoHTbrTjQkwfjndEeqeNOHbb5cU5HUsN6oCgxyZRw6J81XX2eu98gW0+TJL
-	TQBgdX6S5hOq8Nq3+mDAZ86RSo+vL0h3DiQEfYbHh1Ea/f9lfJrBXmJesMg9cRriK3Wm1g
-	a5cAkPz2AkQoBDoPi52DlA1qe0Z4oj4=
+	bh=IbeBKtCsj1YG60k6+2V9BiCeE3NNRPxOZgepqZewOMM=;
+	b=ny0GSPYBL4xqsUINiTpPsnEEHprS52P9qpzaM0YecgiMFaZm5enKu6rOrj+sxr8FmnxUjE
+	P7zGA1SlHib/lJVwFvTiTXzFSquGtD/4xhyzjhXJIy2G/PqQ1mBFApnLfjnTBPbRVrStxn
+	p7MCFXOcm54N9IgynSiY37p3/npwCsw=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794011816;
+	b=7XaIdtf5PrlA1Ukf6108bmjfwLNKJyod+9mpKlx5OCGBZTbG4UcvC/2U2DJmU24mvnNZeC
+	3VuvzYrHWVdra3czux8FoKuZOyeED4hcp8XLvuvrftFSPv8K0WjTkcbAX5fCfAKydaBwxt
+	5ANEiiE9gNpGa1s+DzmWNtPHFYEQfvc=
+ARC-Authentication-Results: i=2;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gUn0y3dH;
+	spf=pass (imf22.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 24BDE42E02;
-	Sat,  7 Nov 2026 00:36:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 83CE560D69;
+	Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011814;
-	b=Big+S11Te8xov+xmYlWTXp7PJetY3k1BSWJCbvOIfCUbZqmPMB7HGqOhrSEV9LVrJw/P
-	 9hnb0ce22piYHsXM823BeGFKpxJRzSrB3kjNaA3K0e+3+LU+Z7gX4TohF7eD2JTOPEzkm
-	 Fp15skEMYQ/2lttfXlx/BNauSrN/vX6nmYMSgB508ijNL8Q4XN3fFLtnyYPYVdvOtleX+
-	 VpvYF7FWdJT6jLdAG0/i/DDUMII+hdUTjOQhTW/rNMtqxn/kN3EBXniSctOnHsZL0HmLW
-	 HjOcHnIkUFLOvyhydBFDUUZDqx+1+5XP3dxB8MfCncBMO+kxgZrIKF5f7WKxsip5RBA==
+	t=1794011815;
+	b=TGbLaFCNPJpJ7KSdnI/1k//oAQ4TGHPuumoTv9AT60vVeEJ22sxepin6ck1JoXnCnVik
+	 E8lsX9QJazRwKayMGFXXu6r1SkcUX9uI+SJj4Fo6/OXMGacfnV0LOYZ8+v8pT2MxMxb5l
+	 MW6OIDDc6b41GVxReD7OOP4YoWyzcJL61TghQy3bX/c/16NbTzs6km0R5U7NqNRtP922V
+	 ZZapDQdwg+6dp8g+pdCnhf0lqlZpZXCZaPipQl7rs2KecxFNcRmzgLOw9trB+OKwoiohh
+	 cGRElZseMgAYPTD+RIz55BFGTdVzWEIN7ckOcevL61jxNo00+zG/k305Ua52FPyNzNQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011814;
+	c=relaxed/relaxed; t=1794011815;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=LNwul7zJGFsHKwWZpPtjRY0cIC8DT7VRwlkbbh/D6mg=;
-	b=jJ5VuJc5bSU9iLHbyLa7m8IeOxwMYTgC0WDx0Hp7GqRfzoQvtwr0d3bKLBO+tM7DILQ0
-	 IxRC334GfEc/UzWbybDXAEU8LeexzAnpOZ2bMDIboG43jfIGZEET4FpWgzY1UhLbbeHNo
-	 k/jU9jB31L2sDPttu7nIJlWaPOz858Ml4NQw9HEBDvzYgejMBsq29pun+pDPA25ZnWtfS
-	 LLS3Eel/edGath6rJv6VNClJXAnnCRPFaq0fnfFg3eiKn7EptnrnVfbgg/XPA0xgHeXgB
-	 h6oXRY95vKJWoLbr92CHNul/Ai/bxSlVTOsSXaiafz9/gS8j22ffP6mubAdCN/Qzrgw==
+	bh=IbeBKtCsj1YG60k6+2V9BiCeE3NNRPxOZgepqZewOMM=;
+	b=hSc0FmGZL7ZdZoWgDo6pALODMkPVmHkc5K9vguSHFcWL++jOBt5Aem9RuH0lUNTLwBQp
+	 QXknYcW9fXovoDRsR2tldNIw7hJBJCkV7jRuR/QN1bVk0G/Iim7qHIchEYbO1VkG8g8jm
+	 b0P4ZyvidolFVeElOdS5QlJOrXGeOHvP2C4pUUK8J170QzoPqkh/BdV7LSRlsc5pNP+UU
+	 CjJaWs58QLor+SErw9dxZvIDPPghh7Z4imd4c211rOhZQQGV8EuPNpXBkRwch6zWOCYab
+	 JDTgVvaBFltfjqkEFQFBMrcFrT9F08c6Uqx335xZdEvwHFXEmRp1+jS5mxIJfi0P3Ag==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 54DA31F0089F;
+	by smtp.kernel.org (Postfix) with ESMTPS id 681A91F008A3;
 	Sat,  7 Nov 2026 00:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011814;
-	bh=LNwul7zJGFsHKwWZpPtjRY0cIC8DT7VRwlkbbh/D6mg=;
+	s=k20260515; t=1794011815;
+	bh=IbeBKtCsj1YG60k6+2V9BiCeE3NNRPxOZgepqZewOMM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=DsK7Pw9lfCuc6GlTfLe0AW30dYomSQ45g8VkRcyLIlW5ESJDtt9JHYfJsxY5nK3MT
-	 0GIgpC/2u1B4O1jh3WhE6zVlBGmkka1ea2Bux6CNz96r6hsEtjUNqmjpUboDw7dnRl
-	 qwNxSDP6NMSYET8iYA5UsUiQ1scFHjGp2/6UCHl+jJwKzoBPb16AwECoA8FFlDE2YQ
-	 T3piPyAIlhCHUmlvCi9QPDBMi7PA/wmQhUhvEqoHbDiiazSNy8uhxwO2BK6Z8dqxun
-	 VdfKr9iHBMS/waqWy0ERnCSPjZYja5rmFi2Tlqi9D9zFLks/oXLkbOxJvIE5/HfcyC
-	 rnVneKQfxH1Mg==
+	b=gUn0y3dHn8ZLB5GlPUqPPjdXmVEoBA4Jbn0pY0gzqEtkfG1EGyP8GqHdX6WDVYFRh
+	 fse2EFXPOVT3GFNbMGtQivWjW9VbPhzY2rGzWlb6zklTB3dzjo7O0reZ0mut9d+PWD
+	 iM26AzB36riSSkTUBzxesZdMhDVM91CZ6L6O/lQKGh7NZb/Vc9fzU0N1ebE1j6THPM
+	 E5FNqW6Wq4GWRMW7mi7oj+hDxpGex9mzzOcdqJ6fZg3fhzz76VkIzgYIFwVXCut+6K
+	 KJfuFINjG91p1KmxUk6VdB8QYrtWMvn9t3oIcINRIXFBIeiKwWrI/swEFVt6oRzA4J
+	 YhBUA6vUvPhyw==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id BD8D44790F;
+	by lkml.kernel.org (Postfix) with ESMTP id E7A1847921;
 	Sat,  7 Nov 2026 00:36:52 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:36:35 -0800
-Subject: [PATCH RFC v3 01/88] KVM: guest_memfd: Split folio allocation and
- insertion in kvm_gmem_get_folio
+Date: Fri, 06 Nov 2026 16:36:37 -0800
+Subject: [PATCH RFC v3 03/88] mm: shmem: Implement guest_memfd provider
+ operations for tmpfs
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-1-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-3-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -119,11 +119,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=2189;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=9029;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=o3ab3dp1L8d6gPAYkDQmoexjLd9lqXL7N+1eNWmNlKs=;
- b=XgrUtCJ/aWRVJB5VTE6gkAa9uuRn419O1xaO9zrTU5VolBTKlyZwWbNUC8vSaC1I22UUI+y/I
- lnN+VrNouelC2/BHQOpFwyUaGjqOIQU9E0vaik0bSRmm2KnM3CY6qQj
+ bh=w5F2INXe7PMp1rqtUln4bn2FpG8wydJ1GoS1Y0nfVWo=;
+ b=ApZCcNj3gmxsjr9vljr8GO4XoOBmEcNfxs5kg/dUxcnPyZ5Ddc9aDlzef7hGhpAikG4sH/Ytf
+ fHBkFLTMguyDH4ZVii+wc8yob3FcAOKHoie/WWtTaRaV/oGo1AFTuQw
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -131,18 +131,18 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: sqcpxk9tndprwsg1tywsazhduh1xtq9g
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9FD4D20002
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 52080C0004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794011815-921557
-X-HE-Meta: U2FsdGVkX1/qaLkJhGG4us41+PVHoSzeKNQffVptJsGptTj13K6VN3WmuWvoHCcU6v/cAl40/GWAQIP+nSSPCP2on6BxkzT/m+D3s6pqDazmwclv6D9LuU8w8QijjaWfpXA04kUlLXVgu4KUfIiQ6YEKCiZFDDQVMzePpsOXPIKkkLM7MjvKnZat3aYfAhwfhIngzebEQjd5ulZlhpm3jT5Dpimzu8bNo/yLtJHZoELy0iAy98ArDoL7lu9IUWk2Szch+36AdmPENN7mw3L1qWZWIrWogtBDHz5Es4/8/cCs5xf5rKljuSukLeacGmRV6SxrB6bB5R7nbxS9ujAdlLuOr5ffvVUXmbmRKen/39OpwtL5c9QvIeesOROx3ScUHN/wrbuJNPLWyStGrCl1DYLP41W6vKrRpe9Zs0U6c22U3bJKFhK+KF8EFmJS1H1ru4O3fyCrWqejOTOq/1N+eIDLQSecq71V8xrR/MMzN3WUJJMjwxg1g9pdvr/fJiUByyy5iqY2kyttEU2rbf0sOCBsvW2ThPGhgIN44LEprNPTOdt/SDBh6SnrUGvOkMjeUwr9J1U7haH50k/otcfKC9R0S44sg8i1435ej7ZTdZB+qIh/l4qw7Sgkunb0enl4sSO4xTHbeccBo3unxfmEjn1PYZFs6YYQxV+dHQ4qybAl13692X+0UyK/Nme6SigHQDiYheawiPH5tn66CRvI2ug1phIclwfgxIN4grpRJ4G4lHJLw8z/aA5SKdRimLsDus/Ejcb5ppE8lL3o7xgMgXptK1gi/KRswal5FkjEeOm9Q8QyXpvQPmPvmGnX5AIAtPT0Fcqj+Vw/bNnXyvS3x4lPZiaWSWFfxL16zbBbENgMxhIq+n9fkP8096ZSK4M8RXnKCuaXNPVCaCmobla+AyQR4V+lka5+DXfZFDzuzCOukdieBgNGuy5f1kTyxWzr6BinYQbWQbbQddp/zm7
- h9t6rjOw
- 50t9eBKbXHjAAfzTmxlKqe1ECLyoJxP+q+6QXZP/q/Q/vVjq6qH/wYnDjlyfuJjCmlMBrzOch6NOlhCOccO7sfnKTA9aQLEXP2KVBOU+RFI1CFBrKKIkhC0F62rhCqkge6cVTjwN4HaB5GiULDR7QQRtkRDjAVjY5rxwx5axYrsQ7O2GEsW6sZmf7CYz7opgoJy222qJsbQnq6j36/zHnLlpytloqviIWD5fnps5ZJU9kqDLpjkv5Q5idz+OR1bnmgMV41rur9XLSyek6MEehQbVhyg9+DDXe8YxmeN5fhlmmeDuwDBwGKjJ3d2ko38/M/dUe5foLH/FB2lCEDaHexxvgoRhOiLAWLTxDo+bJcXbTC/ILNUpG/Cgjz7VoAI7o4ETGnJxKCwXPWNw9+JecbDyUs66sSs8NwshCFDZPHxhQBOym47wNWtFgh9WEK3SD405J9ICqH0h1tdpz5kJziJPdl2gJZNUhqwCzciYQIi7MMKNTTm9bxKXx8Q3uON1Tyr/JRzHGz+KVWZ9472R7rsN/w6otwKEq44JYLepcgbDYKFGb4ial0Q7d4QRX13bz41VC+NOCigfhZR4wnYPKCjs6QbKnNIIDTFu1
+X-Stat-Signature: obzxcupkt5317wxw65usnzurznnwqq78
+X-Rspam-User: 
+X-HE-Tag: 1794011816-451046
+X-HE-Meta: U2FsdGVkX18Xu1oVdDrnYf7il9AQJg41MGU/tAvdTgrrzHEOHAdoyLrrCY1y2RIM8f4vOjYVFXK69OnbBl5oidSjFcAbeY9nBiCkhNtnvau8X9NwUecDMpWQk9mLVh2VXqTSubKnA9qoXcoN/pozFFE6KwLRF7nk5ZQczCioyMpuEp2mfZY4MKtmgvsLHSixHvxWUqMMWmp726bjOpONHA61fDlp/iEt+9++KVg16WpxFkaebGKehgiSdh+LVL+dVCsJ6lDjAdiwXchCgcuDovsLDIjBt92UQVI16YoGlq/pFqQcawhBl7awDIdEp7yEbqfPJkbCVCvlh5sN9ORuuS6FPw9gJiAz4JlGSbP10EueQQ/i9sSCLkltwvtL0vUVSLW6kj52GMRjAVrDk1XHufw6Tz0D3ciIrq1L9FlNDe2Bhi+9XZv0EncyR+hC93SZ4tmWLTIPqVOzhwlJpLvy5aY0rmO2EBdh9eBlBJEobN1pbwlRrmdx8xODG+6Ck5VlEaxr4ZygSIDZ9f1q8VDoZGMNZYsIlrnr4ZXXd9N3bnTb9SbpzB7MzzdhZRBCKwepl6oxLz0MQxW7ajtgyGAAPK2LagZhbuPMLqQxxLBl0DYAXpHJMtVkYNHGxmo+AeXbqLiiOQ/aPiexgWi8bn2RNy8AYScPMx+nijZUKgZkDnNNvu/eD4Z7/u2eK+PTfUYw+znTWQKJ97/dfLyege5mwpRIoxb/huLtphuxqf2hDejHFhw+73JRVZoBHqTW7T5+47Q1D0fUQZWvTCGoHSTTeJtJz+hoHxfvyiorDGU2zW22NjBvw1QFYtq0aEaKmI/aHB0GVJYkSmV7OkqW6bdWLutqeJ1BR8f8Vb39IKYk5f+PYPNmwRWniIGJ3LWW8DSyB9tvY99cy7TP/OgfBf39eArerydM5UqcJojQDbOpQIbRRSpYMS5/CBXws+XYhTeku1fRjyG3WApreOp24R1
+ vmsL6yZW
+ CXHD5Y3dE4u/hOSL+hJyflVXn9mB3arIdiEkOdoHzeVcManTP3aEi02jSKGKi9YjrUvk7SpXbO7qQlMI8IQKGiIypXJ4t5xefbruBZocdXG25awh2zk98FaGbnxU/lKvf6kWbPtsCsAgv1MLTGbYzM2tCDlbgwSRFi/T+BR97TPp5HzELTPB/ZWDuqk/1N/Cwiou8kcXek6Exc60CRC62KIUjRuBh0ZwP4p0vh1lPKW/LZx0QjZWCwmGFjKvH7nvMmy3u3uluknWDppQh5TpU7dnHT3F23PnwxzM8l/XRew4VX+FHFP4V5i1u6PVaKitGE/w5fJpkgvv4I2sK0nY1cx6QvTGfzMLTJgP8x3vC2w9p0IHRoOAi/ivuX0WnMkUiN8WNrb93Kl06JDVJUc4ktMsdE/fFoXkos9l6CoDwbzdiOs6+WbMywb70xHa/CSxZ0agGx5v+CXddGYM7pnl3AC8Apyc6INeIAo9IdS8QIImOjBFqdLbghy4x5gBXTMXilTtR2rMsn6H318f6CwB9wquOPNA57WkGKf0XhB/y2hSn0frlofX3LedFZxEqCW0IJqdBaOJphssSBHHxEnaI86mLwaHM0ZSrW+UFokEi0c+R1us=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,71 +153,261 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Separate __filemap_get_folio_mpol() call in kvm_gmem_get_folio() into two
-distinct steps:
+Implement guest_memfd provider operations to declare that tmpfs supports
+providing memory to guest_memfd.
 
-1. Allocating a folio via filemap_alloc_folio() with the NUMA policy.
-2. Inserting the allocated folio into the inode filemap.
+I put guest_memfd_provider_operations as a pointer in struct
+file_operations. Being in file_operations generalizes well to other kinds
+of providers, like devices, which don't have their own super_operations.
 
-Handle -EEXIST from filemap_add_folio() by retrying filemap_lock_folio()
-safely to manage concurrent insertions.
-
-Decouple folio allocation from filemap insertion to prepare for supporting
-other memory providers.
-
-No functional change intended.
+Setting it in shmem_dir_operations allows directory file descriptors
+opened on a tmpfs mount to provide memory to guest_memfd.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- virt/kvm/guest_memfd.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ fs/libfs.c                  |   4 +-
+ include/linux/fs.h          |   6 +++
+ include/linux/guest_memfd.h |   4 ++
+ mm/shmem.c                  | 126 ++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 138 insertions(+), 2 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 93f3d29d5751a..f865fa0e46840 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -131,7 +131,9 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
- 	/* TODO: Support huge pages. */
- 	struct mempolicy *policy;
- 	struct folio *folio;
-+	int r;
+diff --git a/fs/libfs.c b/fs/libfs.c
+index 27d7dc16fcb0a..77d3a4fcb5c13 100644
+--- a/fs/libfs.c
++++ b/fs/libfs.c
+@@ -429,7 +429,7 @@ void simple_offset_destroy(struct offset_ctx *octx)
+  * Returns the updated read position if successful; otherwise a
+  * negative errno is returned and the read position remains unchanged.
+  */
+-static loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
++loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence)
+ {
+ 	switch (whence) {
+ 	case SEEK_CUR:
+@@ -551,7 +551,7 @@ static void offset_iterate_dir(struct file *file, struct dir_context *ctx)
+  * Return values:
+  *   %0 - Complete
+  */
+-static int offset_readdir(struct file *file, struct dir_context *ctx)
++int offset_readdir(struct file *file, struct dir_context *ctx)
+ {
+ 	struct dentry *dir = file->f_path.dentry;
  
-+retry:
- 	/*
- 	 * Fast-path: See if folio is already present in mapping to avoid
- 	 * policy_lookup.
-@@ -141,10 +143,19 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
- 		return folio;
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index deb411e866617..4f1494c4fbfde 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -1915,6 +1915,7 @@ struct dir_context {
  
- 	policy = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, index);
--	folio = __filemap_get_folio_mpol(inode->i_mapping, index,
--					 FGP_LOCK | FGP_CREAT,
--					 mapping_gfp_mask(inode->i_mapping), policy);
-+	folio = filemap_alloc_folio(mapping_gfp_mask(inode->i_mapping), 0,
-+				    policy);
- 	mpol_cond_put(policy);
-+	if (!folio)
-+		return ERR_PTR(-ENOMEM);
+ struct io_uring_cmd;
+ struct offset_ctx;
++struct guest_memfd_provider_operations;
+ 
+ struct file_operations {
+ 	struct module *owner;
+@@ -1960,6 +1961,9 @@ struct file_operations {
+ 	int (*uring_cmd_iopoll)(struct io_uring_cmd *, struct io_comp_batch *,
+ 				unsigned int poll_flags);
+ 	int (*mmap_prepare)(struct vm_area_desc *);
++#ifdef CONFIG_KVM_GUEST_MEMFD
++	const struct guest_memfd_provider_operations *gmem_provider_ops;
++#endif
+ } __randomize_layout;
+ 
+ /* Supports async buffered reads */
+@@ -3337,6 +3341,8 @@ int simple_offset_rename_exchange(struct inode *old_dir,
+ 				  struct dentry *new_dentry);
+ void simple_offset_destroy(struct offset_ctx *octx);
+ 
++loff_t offset_dir_llseek(struct file *file, loff_t offset, int whence);
++int offset_readdir(struct file *file, struct dir_context *ctx);
+ extern const struct file_operations simple_offset_dir_operations;
+ 
+ extern int simple_fsync_noflush(struct file *, loff_t, loff_t, int);
+diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
+index 218de509769c1..f3e6077c39ac3 100644
+--- a/include/linux/guest_memfd.h
++++ b/include/linux/guest_memfd.h
+@@ -13,16 +13,20 @@ struct mempolicy;
+  * struct guest_memfd_provider_operations - Operations for external memory providers
+  * @attach: Attach to a resource file, perform filesystem-specific validation,
+  *          and return an opaque provider context.
++ * @release: Release provider context and unpin any resources.
+  * @alloc_folio: Allocate an uninserted folio for a given index and NUMA policy.
+  *               Must return a pointer to a struct folio on success, or an
+  *               ERR_PTR() error code on failure. Must never return NULL.
++ * @invalidate_folio: Notify provider that a folio has been invalidated.
+  *
+  * Used by filesystems and device drivers that provide memory for guest_memfd.
+  */
+ struct guest_memfd_provider_operations {
+ 	void *(*attach)(struct inode *gmem_inode, struct file *resource_file);
++	void (*release)(void *provider);
+ 	struct folio *(*alloc_folio)(void *provider, pgoff_t index,
+ 				     struct mempolicy *mpol);
++	void (*invalidate_folio)(void *provider, struct folio *folio);
+ };
+ 
+ #endif /* _LINUX_GUEST_MEMFD_H */
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 848316eaa7f4f..2a9faf8be7382 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -38,6 +38,7 @@
+ #include <linux/uio.h>
+ #include <linux/hugetlb.h>
+ #include <linux/fs_parser.h>
++#include <linux/guest_memfd.h>
+ #include <linux/swapfile.h>
+ #include <linux/iversion.h>
+ #include <linux/unicode.h>
+@@ -268,6 +269,9 @@ static void shmem_inode_unacct_blocks(struct inode *inode, long pages)
+ static const struct super_operations shmem_ops;
+ static const struct address_space_operations shmem_aops;
+ static const struct file_operations shmem_file_operations;
++#ifdef CONFIG_KVM_GUEST_MEMFD
++static const struct file_operations shmem_dir_operations;
++#endif
+ static const struct inode_operations shmem_inode_operations;
+ static const struct inode_operations shmem_dir_inode_operations;
+ static const struct inode_operations shmem_special_inode_operations;
+@@ -3088,7 +3092,11 @@ static struct inode *__shmem_get_inode(struct mnt_idmap *idmap,
+ 		/* Some things misbehave if size == 0 on a directory */
+ 		inode->i_size = 2 * BOGO_DIRENT_SIZE;
+ 		inode->i_op = &shmem_dir_inode_operations;
++#ifdef CONFIG_KVM_GUEST_MEMFD
++		inode->i_fop = &shmem_dir_operations;
++#else
+ 		inode->i_fop = &simple_offset_dir_operations;
++#endif
+ 		simple_offset_init(shmem_get_offset_ctx(inode));
+ 		break;
+ 	case S_IFLNK:
+@@ -5237,6 +5245,124 @@ static const struct inode_operations shmem_special_inode_operations = {
+ #endif
+ };
+ 
++#ifdef CONFIG_KVM_GUEST_MEMFD
++static void *shmem_gmem_attach(struct inode *gmem_inode,
++			       struct file *resource_file)
++{
++	struct inode *inode = file_inode(resource_file);
++	struct shmem_sb_info *sbinfo;
 +
-+	r = filemap_add_folio(inode->i_mapping, folio, index, GFP_KERNEL);
-+	if (r) {
-+		folio_put(folio);
-+		if (r == -EEXIST)
-+			goto retry;
-+		return ERR_PTR(r);
++	if (!S_ISDIR(inode->i_mode))
++		return ERR_PTR(-ENOTDIR);
++
++	/*
++	 * Would like comments: Requiring the root directory of the mount
++	 * provides a less confusing interface, although this is not strictly
++	 * necessary.
++	 */
++	if (resource_file->f_path.dentry != resource_file->f_path.mnt->mnt_root)
++		return ERR_PTR(-EINVAL);
++
++	if (__mnt_is_readonly(resource_file->f_path.mnt))
++		return ERR_PTR(-EROFS);
++
++	if (inode_permission(file_mnt_idmap(resource_file), inode,
++			     MAY_WRITE | MAY_EXEC))
++		return ERR_PTR(-EACCES);
++
++	/* Enforce noswap because guest_memfd does not support swapping. */
++	sbinfo = SHMEM_SB(inode->i_sb);
++	if (!sbinfo->noswap)
++		return ERR_PTR(-EINVAL);
++
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
++	/*
++	 * guest_memfd does not support huge pages yet; this restriction can be
++	 * relaxed in the future.
++	 *
++	 * TODO: Block rebinding with huge page support.
++	 */
++	if (sbinfo->huge != SHMEM_HUGE_NEVER)
++		return ERR_PTR(-EINVAL);
++#endif
++
++	return (void *)mntget(resource_file->f_path.mnt);
++}
++
++static void shmem_gmem_release(void *provider)
++{
++	struct vfsmount *mnt = provider;
++
++	mntput(mnt);
++}
++
++/*
++ * TODO: Consider refactoring shmem allocation helpers to share code between
++ * internal tmpfs folio allocation and guest_memfd provider allocation.
++ */
++static struct folio *shmem_gmem_alloc_folio(void *provider, pgoff_t index,
++					    struct mempolicy *mpol)
++{
++	struct mempolicy *sb_mpol = NULL;
++	struct vfsmount *mnt = provider;
++	struct shmem_sb_info *sbinfo;
++	struct folio *folio;
++
++	sbinfo = SHMEM_SB(mnt->mnt_sb);
++	if (sbinfo->max_blocks &&
++	    !percpu_counter_limited_add(&sbinfo->used_blocks,
++					sbinfo->max_blocks, 1))
++		return ERR_PTR(-ENOSPC);
++
++	if (!mpol) {
++		sb_mpol = shmem_get_sbmpol(sbinfo);
++		mpol = sb_mpol;
 +	}
- 
- 	/*
- 	 * External interfaces like kvm_gmem_get_pfn() support dealing
-@@ -153,7 +164,7 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
- 	 * to be updated for anything otherwise (e.g. page-clearing
- 	 * operations).
- 	 */
--	WARN_ON_ONCE(!IS_ERR(folio) && folio_order(folio));
-+	WARN_ON_ONCE(folio_order(folio));
- 
- 	return folio;
- }
++
++	if (mpol)
++		folio = folio_alloc_mpol(GFP_HIGHUSER_MOVABLE, 0, mpol, index,
++					 numa_node_id());
++	else
++		folio = folio_alloc(GFP_HIGHUSER_MOVABLE, 0);
++
++	mpol_cond_put(sb_mpol);
++
++	if (!folio) {
++		if (sbinfo->max_blocks)
++			percpu_counter_sub(&sbinfo->used_blocks, 1);
++		return ERR_PTR(-ENOMEM);
++	}
++
++	return folio;
++}
++
++static void shmem_gmem_invalidate_folio(void *provider, struct folio *folio)
++{
++	struct vfsmount *mnt = provider;
++	struct shmem_sb_info *sbinfo;
++
++	sbinfo = SHMEM_SB(mnt->mnt_sb);
++	if (sbinfo->max_blocks)
++		percpu_counter_sub(&sbinfo->used_blocks, folio_nr_pages(folio));
++}
++
++static const struct guest_memfd_provider_operations shmem_gmem_provider_ops = {
++	.attach			= shmem_gmem_attach,
++	.release		= shmem_gmem_release,
++	.alloc_folio		= shmem_gmem_alloc_folio,
++	.invalidate_folio	= shmem_gmem_invalidate_folio,
++};
++
++static const struct file_operations shmem_dir_operations = {
++	.llseek		= offset_dir_llseek,
++	.iterate_shared	= offset_readdir,
++	.read		= generic_read_dir,
++	.fsync		= noop_fsync,
++	.setlease	= generic_setlease,
++	.gmem_provider_ops = &shmem_gmem_provider_ops,
++};
++#endif /* CONFIG_KVM_GUEST_MEMFD */
++
+ static const struct super_operations shmem_ops = {
+ 	.alloc_inode	= shmem_alloc_inode,
+ 	.free_inode	= shmem_free_in_core_inode,
 
 -- 
 2.56.0.455.g6c5a503b38-goog
