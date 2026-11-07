@@ -1,78 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68BD0606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 22:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2076A606A32D
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 22:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GWg5Gcle
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZxAlKgYd
 Received: by kanga.kvack.org (Postfix)
-	id 1913C6B05BC; Sat,  7 Nov 2026 17:24:18 -0500 (EST)
+	id 340086B05B2; Sat,  7 Nov 2026 17:24:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1415F6B05BD; Sat,  7 Nov 2026 17:24:18 -0500 (EST)
+	id 316896B05B8; Sat,  7 Nov 2026 17:24:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 02FA96B05BE; Sat,  7 Nov 2026 17:24:17 -0500 (EST)
+	id 206466B05BE; Sat,  7 Nov 2026 17:24:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C93696B05BC
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 17:24:17 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 528261C3BE4
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 22:24:17 +0000 (UTC)
-X-FDA: 85409752554.13.8E77FA2
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E7FF06B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 17:24:29 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7BCFBA03F4
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 22:24:29 +0000 (UTC)
+X-FDA: 85409753058.27.F42D746
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 82EAA40006
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 22:24:15 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GWg5Gcle;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf26.hostedemail.com (Postfix) with ESMTP id AA52E140004
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 22:24:27 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZxAlKgYd;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794090255;
+	s=arc-20220608; t=1794090267;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=eg5b15u+rTVmwb11gnjCWgwIU3XL9azsyPKK5bBy5wk=;
-	b=Akik+45oL//N4GsTMUNK9zIjewPMb4tYbXBtrqbgzUWstVR9Y6lD9IskYx2pqcNumbcrLQ
-	sYO+YZOmDt0jDefBtZuJToo9zVKs2b/fpb3ZFxG/wSPe7hwyXXl1giMPlqjGdDpxRqUmNz
-	F9AzwotMPn/6fF8sJqz+gFz/CsDlJcU=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=WtEZdA6Wi2SP26pE/qnVtNr9Wkimj3gks8WQKsUMrmY=;
+	b=5n1c+oOmhS7CTIffBEq4oqfz0NaP4jby5Nl8aTfN1/ZI220QetB5jKLLpC1RVcfPTfIIXO
+	WjUsjK2aAWgSxdCqTOZqgbCmnXpqz8wLsNllHckRLDS8t9BRNMyMXZXTCKXQNh+bAKQfK9
+	tThRB92C+xfZeNDJ4YNAMD+7KRDey3o=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794090255;
-	b=y+DeJ53iudPokT5Y1O+M+JDv1bAp6m/KemY8P5lirOXnff0spavEG1cC9MsC8D0Vskrcys
-	80+uVMvH8z8B0e5iJBYbLku/yDWWeu5gQvWtZv3CpPYdbEVS83ipt7OgduIf5nYlCzVT34
-	uxlhcdWKR2lZ0V5O0NZD8WJhBhIYb3w=
+	t=1794090267;
+	b=K3KntsqcrqWuCCxKXIS23/+YoBMdvRHbxnd7skx0Eq1R3virWwhQhfqM9BOfuP5xH7iKrZ
+	H6mlVFQ1NawLkoFSfR5TFEK9kAyZrfePGpFSFdEayhrFNhbYmtQX2wuvHSalTnRHtPcxXH
+	h2d9Mi15Q7BAs6qUojpiw9TxyB/MIIs=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GWg5Gcle;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZxAlKgYd;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ADA0F42DE4;
+	by sea.source.kernel.org (Postfix) with ESMTP id F38414069E;
+	Sat,  7 Nov 2026 22:24:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A081F008A1;
 	Sat,  7 Nov 2026 22:24:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C641F0089F;
-	Sat,  7 Nov 2026 22:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794090254;
-	bh=eg5b15u+rTVmwb11gnjCWgwIU3XL9azsyPKK5bBy5wk=;
-	h=From:Subject:Date:To:Cc;
-	b=GWg5GclejkN5ISovErIV30qR90Bi6M6LkEDCS66iT3mU4aWIxfBW6GdXWslhQ7KgU
-	 bK2z7C57+zrCBW1sTMdPz5zM7FsbRSYjesUJapWWIfNDcDrmzfUmIvmtu49TM1mwxv
-	 ja1zpWR8RkkSLTFEnixGVPpPY0u8Xgu8/gYQTOLGb0/w3HPLSLRNl56SVK2CUNW5pY
-	 JlunxVAYzoMCU+KA+V4Dtqk7hhaPNpIozWOFRDahW+dJZjvK1w1mq3LuA5OlkeEcCB
-	 G1EoKFs0B4WAyNe/gXvpNnVuxDikDZCpzZS8c+I6ZujIA9lxQT8fFBeby/7BqHJ+jn
-	 hfh70rDjAL5WA==
+	s=k20260515; t=1794090266;
+	bh=WtEZdA6Wi2SP26pE/qnVtNr9Wkimj3gks8WQKsUMrmY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=ZxAlKgYdcsdfcplYAoaxdnR0L5kEsLy/hPVQskRyX/bGDfYFHfg1IxCJdaBNJIxF5
+	 SODlq45HAhqJUA2HInlD3KYIKd6iPEv8zHqszJO8CoyhEzxYwikjSCmcZpxD5y369+
+	 4NSZGfcyP9eKCSQWRhmG6eyK1K5NBETafoloJ8p66PESL+uLbkCxsHAWOVs01VpiVY
+	 GthYD6JEG7+Wv4LIbXLBzDsIzto5Jqi/USai0z2hmefQ6Dx2Q+k1+s02tkFtv4/cN0
+	 zUBjiVvYgsryF94hYtce/D6XkhWGsB6kCm4YV5aSDqswAChojwfGT27xP4Eepf0qUx
+	 vrUoa9s+a8mEQ==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Subject: [PATCH v2 0/5] mm: limit pagecache folio refcount
-Date: Sat, 07 Nov 2026 23:23:36 +0100
-Message-Id: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
+Date: Sat, 07 Nov 2026 23:23:37 +0100
+Subject: [PATCH v2 1/5] mm: limit pagecache folio refcount when mapping
+ pages
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42NQQ6CMBBFr0JmbU1bKEZX3sMQAmWAKmnNtFQN4
- e4WvIDLl7z//gIeyaCHS7YAYTTeOJtAHjLQY2MHZKZLDJLLUgiuGGGv3WxD7SJSP7lX7UPTTsh
- UIZHLQuS8R0jzZzLNe0/fqh/7ub2jDltvM0bjg6PP/h3F5v1xEwXj7MTbsy6V6pocrw8ki9PR0
- QDVuq5fdtdUVdMAAAA=
-X-Change-ID: 20261105-refcount_overflow_stable-542e024130fe
+Message-Id: <20261107-refcount_overflow_stable-v2-1-c38f6809b106@kernel.org>
+References: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
+In-Reply-To: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>, 
  "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
@@ -105,30 +104,28 @@ Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
  iommu@lists.linux.dev, Chris Mason <mason@kernel.org>, 
- stable@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>
+ stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6873; i=david@kernel.org;
- h=from:subject:message-id; bh=9KzEE59aveBB6sn+9WVX/Ykd3tcmn6ZAgwUHPEnyXys=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLeL/k3/57Hr8ubliccFjHQiduuuuG/ekXyhtzI5NMb9
- Zdem5tq31HKwiDGwSArpsgSFHzf4OXLdbXVbnzMMHNYmUCGMHBxCsBE9hcw/C/1mMcyeUuf7K+r
- rEYBB6allwjdUjOSUxbg4TJ88WqS3HtGhvl/6sWuuraz8F5ZxhSsye66MPqM5p6Gvzs/mLi+dWt
- gZwMA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=15032; i=david@kernel.org;
+ h=from:subject:message-id; bh=IKW52LWjd1mBBexmwcOzA9oiOBd77E3VRfpttg60TuY=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLeL2Xk23L0X9I27a9CiwTO7fvP+/dryEF1ffF/tSfkc
+ 44IcL9f1VHKwiDGwSArpsgSFHzf4OXLdbXVbnzMMHNYmUCGMHBxCsBEkgQZ/hlLJd9Xnf5dUj6P
+ TYdr64odLn1f0xs/Kj0/NPf2ziVhZvMZGX5zfciafiTmpNvNHgmBIy8r/qR8Pjnb46PizUUnWBO
+ 13rABAA==
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 9jepkf9qkxm93sg4incwwpacjd5ho5ay
+X-Stat-Signature: w6egb18so19oswgob3zwrq8zeyucknb5
+X-Rspamd-Queue-Id: AA52E140004
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 82EAA40006
-X-Rspam-User: 
-X-HE-Tag: 1794090255-983275
-X-HE-Meta: U2FsdGVkX199VOwoN/G6zoJODtRCFcXm5PhvKRBKy3YJXMexfnMyI7HK0y9Fuc9PQFM+FGhmUFvBZC3sa+QDiXBfaaEZp2L4fEXs7iHLHsvM+sdW9veXA4Zm9A8oCamxAPE3fS6tAPZn5sbxkJqSSbQxyLpBF+yGWa6kHW1Vvq1CfDvvplLUiqHsNAWiBd2H7ppZ/td9G/dGwtFIUxzw/huUE3kY0nfYj7R3QpODPI0vALXnEbpR7yAjWygkBhE7gp2qKxEi0vjM/RQEh6S6aRkkgqy/sS9mdZBLrPpTkqojWZFYXjHHX09TwlPBB4alapBMBcLjs/de26pT6sJ7YVYwyf2Udo4TL1h5v2i613QMEMOdU6McyTgiBtvtY/sv5HGk0uIz9ouWrXwuVlhGHnsysbBIKrXf2JWd7KGfGf59sKQtSs4Y6kBDcx10AQx+MW2ijkcc0eA1uowB+rO0OjPACV2eVWsni7tJEH2sSiZ5vaqDH25kUsVAhfdq22tqX9V0D9dBrZvjHhCdrqbR/grZhPxjOmkmPZX84r+85pc+Svj9XMClO9UuxB7Mdaw5nLy8LGKv7bGJnVJ4eAMqZwa21LFdiQBU4P9e1uuXyC1hgfHfYdLuyjJebimOpzbWFPsylqshdGwXohfBA+/RsQ97CpxxZSNj01UGVsBrwnzRZ7WewjYTpYIh2ZhSSnbKo3UUfUrLRFo7md026WCwsTshkU1xbqkeVifoxz6D123l93vy2sJPMgj9AinD7aqVj3NWPqUPIf7hIwH7Jz/ycjxwmi1eL148DEa+yXVp0OnZ971uNTcxBA9hxTswC0GFWgoPHQEbNRjXdm/R5ygt/+UFMnxjQC/eEIEEAUkb/MyL1xq9x6+lN7+t+zkq6q12pWinQ9L3OHFRP0ZjJHbH2jPJkSiUrPQVzgqIku5jRz6fdv3xPca2o4wE5H60ZN/BQF+mfWSiMcy81MN7uWl
- 8SyUy94X
- O+32no8Cus/bNl6SE4kitreELwjthug8z6aIgEPOH2cc9BUVI4htftHAAHcsTIVgLaOOtC0eFKq5ZI/igtZYmHhKFtKPOucHdCE+Gp3EniTIboT+r7dz1PqJAvBI74Apq4aQu2T7o3x76hIXCIYjnPHKppeGgofeEBhjD3vjK2Ez+dsjZl7IRc9/F5T8/1d55RKqs2xANFjf2w2Ano+Q/5YN5DQpOfx6Xq3Xw5T8xaCphPl2tOMH/9LcuqZh1FjYgizZqJiZdYalcJgj+xWuTCdIcBkB+hrN3PMnoPUTkybBxxXV68x1OJyZucop4mDbz4FqdnzoOguy+AP6uwuGvsmC/wfx6BEdR4kcpl7zwsn36CEFecsNUYUPmItsuZqwV2t0pqGeyupmefn7ngvFjX2XMDyi2Ir3yiQL/CwbutiVl3Ut0J6K9rLLMTHq2LfdIU0s6y3noVUJOAZ7PrWxM/AQ4HFuDkFOxQuk7KI+bsYqAEkxdmXwkITZg1MTIWRbdi9CFYEEDxO6CBqJSJKzn1qT1I93aDWsga9Qx5zVbyCqfUEGLUc9Te2Nvt9mTLJydGykBylGYbIMMDL2GhME6OqXfSN7Yh68O/pLNPXibjDwhfmElf/vH0KpLaUAsn+WZdYa1wmnPO36SySlChkY3ID6+RLB4kEfngmtlZq2OvTNZkZAx2grjWGyh1DYlQj0XJmk8qvpiojHEeOOJYyn0fHaiAlMSuwkYTqgXg2JQP9cKJOow2HpDtEHo4F0X1Wb1SOqxl10YiHpQJuLPOcjO52pRyJqbytYNfHIwPNKy59qjRTvqbOX//WceIsgC4VdiqenTnwRFOmYbbPMmzPH5n66C0otDQaodqzGWKrD1Bi6JDBFMRBbGjRIWaEmGqeXf9Jcbd+9J4dNzyJGAVR0n4aLygpueXR9Mvj7WDEoXsNHAjDp2rZgEwehK3VxlOWdzN8hSEIM+78Frpg6BVT4Gze5C8jUE
- H07JVizO
- 689yGBy6y4KaDBkBPoZemreZqTxbBAyNfOhGECB4pFiI577TNjTWFXa+DljvIbAxIt8qKi7OmxfbPo5iQOzcxcfjoNudEufrxoqo9hBiiea/hE8R22lOeBnMylsfS+mNRiRP3Wbe2ZC0XhZYx5eownNmGsVKBFHrUyig73vr9Y+kosEbrnCUYCF4tClqT0caSA9iuFF3ojAl82yMk7WhFsqAYFmg+ZpiJmfNOr20fFgd63WIP0SvgQbbNnfu4Jgn9RajpC3K9o88CWhq90Pa/t+kpeFU561d335o1pZFg0HJ5ZubkWbKd2MSBnrSt7xz
+X-HE-Tag: 1794090267-441402
+X-HE-Meta: U2FsdGVkX189JmImGN9bCK+89kt9A1/zfTSzlLjpt/a19UTyDh62+rABFOVZ+61EZuGfDu//Z9I+jmSBcHQJO6jfMfJg+HFyqbyr7sXfAAqlzakMZWa7KtL6E5NGgN1ptWoMPhZE77m/imyr2/opOhUU64ohxeDuZIVzKr2I7ZuUSDsfz0K27EMpU12m+wdYS+NMHhINd8CXccfT+I7ijgW36771neDnlnKJb8w0AqdLuDMj0ETE8pOZBHXYJL0n3MbN/zu6eEhNwN8DFvAXjb5gx8REaUD5mB9E15+doQBWHI1KrbOBFIerZsxiNurTZVyYbyurNaA1tJX1H3GRmvJFkxe1Cj5ccYRWXVK/124WPiagHGh9ffyhm0kaYDlwF7ff/4IEodhERQQg6t0Mds42vIIIqGXKkJnFW2ER3apj0x5dpmTYup21k6yk924eaE5lwGfpH0hPS1ZVIxed4eeOlLqfYILaaKfHrMLQ9YA5N016UiKRRFngG4p8zo65JGGq7n6ZnlyuiG+HB+X7thtAe25qHkIZ7oDZpUQWUzuZ3Mz9aN9VQ/zE7HDY596gYj9Ib0XF2FwoZHZW8BewXAMFSvZ7d4lEUy3QcENBshJlX6HnNMBULFU4fdbUn3w4ElTI7hmDwyYh2iZKvvOc6cBmgv4UVmis/8Tcs00GTIIgtYA1cKw2C+sV1Wb7A+gKi1gfLUzXZ/zOFI6+qoKKGoemBf8PJTxueM9ciEXc9OL4O9pIIFX6Xd6eXURqQpPTsONpwDv5KXfbpT0wI93XHW74trlPI1QrAdaARLNmj2nYYPS/AWoJRnzoWrDDC4BdwpYp/4eZEnU39NsZfwSnXCmZYk/AU5CiJZ3j4wQzL8z814KeJn1PjagavfKyD5EPOChYTU/rO0jHmzqk8BIlwQh72YlgzBsSYB979ki0ruYFxFX/Sbx0b4nZRBATUmew0vvlIa6NxJ641Gtdb5+
+ F4OLXoHm
+ necPZ7DFBkHKPrUvOQGt+XvxHEKW6J3e0e4kqEY4XaB0hg+gfNr7XCIFt6mxZ8ElSjYcYYPWQkP+6J3fpi+2ouwxqbRhv87OmsETzJ5ISxmtu0zV+eWcnQMBdEb9jhI8Lfjy2wfOOCzQQ/npfkGV9tNrRClbKl2bKDTHIwDaQoeQY/OhALjjHLFQbvBo9ImtuHo4QqSlSNAPXydHWs+3C63RAN8IllhZrxbx82mshZwXttt2GkJ3ZsFSn7X3LoA11uGWfHkKOklzUenZGHpvWUjhkBZIBVP7Z7EMuDuW7jB20qVU6YcSHrcV+4IU8QZgIYK4y
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,164 +134,389 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Users can create a lot of folio references to pagecache folios, making
-it possible to overflow the refcount of large folios.
+With large file folios, overflowing the folio mapcount and refcount
+became possible. For anon folios it is currently not really an issue:
+each large anon folio can only be mapped once into a process; on 4k
+kernels it would be more processes than usually allowed on a system, and
+on 16k or 64k kernels the processes alone would consume hundreds of GiB.
+Something to be sorted out at some point, but it's not as urgent.
 
-While we knew that one could in theory overflow a folio's refcount, we
-mostly assumed that bad things would happen and it wouldn't go
-unnoticed.
+Being able to overflow the refcount is not really big news, but it's about
+time that we do something about it because some modern technology might
+find ways to abuse it :)
 
-Not so sure if that is really always the case, and leaving that problem
-unsolved is irresponsible, so let's limit pagecache folio refcounts.
+One of the enablers for that was commit ddc58f27f9ee ("mm: drop tail page
+refcounting"), however, file thp support was added later.
 
-This is really only relevant for large folios / thps in the page cache.
-With anon folios (including THPs), we should not be
-able to trigger folio refcount overflows (until we get PUD-sized ones ;) ).
+File folios can be mapped multiple times into the same process, allowing
+for processes to hold many references to the same folio.
 
-It was likely a problem for anon folios as well before we had a
-dedicated pincount.
+As a short-term solution, let's introduce two folio refcount limits:
+one for ordinary consumers and one for admins. Leave some headroom
+before the refcount goes negative, which we really don't want (having
+the mapcount go negative is also not expected).
 
-Let's limit the refcount before it turns negative, giving admin processes
-some extra reserves (to recover a problematic system). We still leave some
-headroom to allow for some slight limit overshooting, to make the
-implementation easier.
+Start reporting SIGBUS if we run into limits. When restoring mappings
+from migration entries, instead zap the pte/pmd entry. We allow for
+slightly exceeding the limit to keep things simpler.
 
-Then, we also check when splicing pagecache folios to a pipe, and
-improve our existing checks in gup. We also have to take care of
-mmu_gather, to not hold too many references when zapping (whereby new
-page faults could remap pages concurrently).
+During fork(), prefer not copying page table entries over failing fork.
+Export __folio_ref_count_over_limit() right away as that will be needed
+from fuse code next. Use has_capability_noaudit(current, CAP_SYS_RESOURCE),
+so filesystem credential overrides do not affect access to the admin
+reserve, and to not generate auditing messages simply because we access
+optional reserves.
 
-This is only a temporary solution for upstream+stable, until we have
-something better.
+This is far from ideal, but better than all easy alternatives we can
+backport comfortably. For now it fixes the big problem: letting
+the refcount (+mapcount) go negative and cause trouble.
 
-These fixes will be a bit challenging to backport to stable, but it will
-be much easier compared to the RFC series I have here were we do things
-properly by (what we discussed a couple of times earlier):
+This is only a temporary fix, we'll follow up with something better.
 
- - Letting the mapcount of large folios be a long
- - Holding a single refcount if the folio is mapped, across all mappings
- - Reverting the limits introduced in this series
+Check order 0 folios as well for consistency: each
+folio_add_file_rmap*() and folio_dup_file_rmap*() needs a prior check.
 
-I'll polish that up and send it once we merged something that can be
-backported to stable.
+Also, just document -EHWPOISON for copy_present_ptes() while at it.
 
-Tested on x86-64 by lowering the folio refcount limits such that limits
-can easily be exceeded, to then test fault (SIGBUS), fork(), splice and GUP
-behavior briefly when we run into refcount limits on a shmem THP.
+Note: When zapping file migration entries, uffd-wp is preserved using PTE
+markers, but uffd-rwp protection is lost because there is no corresponding
+marker. try_to_unmap() already has the same problem when unmapping file
+folios, so we'll happily ignore it.
 
+Note2: For now we don't let migration or PTE table collapse exceed any
+limits. Admins can always refault, and if we are already operating in
+admin reserves, something is already off.
+
+Reported-by: Chris Mason <mason@kernel.org>
+Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+Cc: stable@vger.kernel.org
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
-Changes in v2:
-- "mm: limit pagecache folio refcount when mapping pages"
- - Try not to fail fork() by skipping the PTE/PUD instead. We still have
-   to fail in two scenarios.
- - Split helper into fast and slow path. Slow path in mm/util.c,
-   exported for Fuse usage in patch #2.
- - Check has_capability_noaudit(current, CAP_SYS_RESOURCE) instead of
-   capable(CAP_SYS_RESOURCE)
- - Extended patch description and improved function documentation.
- - Dropped RBs due to changes.
-- "mm: limit pagecache folio refcount when splicing into pipes"
- - Return -EOVERFLOW from filemap_splice_read() and
-   shmem_file_splice_read(), and handle it in do_splice_read() by falling
-   back to a copy.
- - Check in fuse_copy_folio() as well
- - Updated patch description and updated+improved comments/doc
- - Dropped RB due to changes
-- "mm/mmu_gather: flush pending references early before the folio limit"
- - Adjust some comments
- - Update Fixes:
- - Extend patch description
-- "mm/gup: limit pagecache folio refcount when grabbing references"
- - Keep all WARN_ON_ONCE() checks for negative/null refcounts
- - Skip has_capability_noaudit(current, CAP_SYS_RESOURCE) with disabled
-   interrupts, skipping it for GUP-fast.
- - Properly forward try_grab_folio() errors
- - Adjust some comments
-- Link to v1: https://patch.msgid.link/20261105-refcount_overflow_stable-v1-0-70b9c655da3e@kernel.org
+ include/linux/mm.h | 30 ++++++++++++++++++++++++++++++
+ mm/filemap.c       |  6 ++++++
+ mm/huge_memory.c   | 29 +++++++++++++++++++++++++++--
+ mm/memory.c        | 35 +++++++++++++++++++++++++++++++----
+ mm/migrate.c       | 11 +++++++++++
+ mm/userfaultfd.c   |  4 ++++
+ mm/util.c          | 12 ++++++++++++
+ 7 files changed, 121 insertions(+), 6 deletions(-)
 
-To: David Hildenbrand <david@kernel.org>
-To: Lorenzo Stoakes <ljs@kernel.org>
-To: "Liam R. Howlett" <liam@infradead.org>
-To: Vlastimil Babka <vbabka@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-To: Michal Hocko <mhocko@suse.com>
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Jan Kara <jack@suse.cz>
-To: Andrew Morton <akpm@linux-foundation.org>
-To: Zi Yan <ziy@nvidia.com>
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-To: Nico Pache <nico.pache@linux.dev>
-To: Ryan Roberts <ryan.roberts@arm.com>
-To: Dev Jain <dev.jain@arm.com>
-To: Barry Song <baohua@kernel.org>
-To: Lance Yang <lance.yang@linux.dev>
-To: Usama Arif <usama.arif@linux.dev>
-To: Kiryl Shutsemau <kas@kernel.org>
-To: Matthew Brost <matthew.brost@intel.com>
-To: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Byungchul Park <byungchul@sk.com>
-To: Gregory Price <gourry@gourry.net>
-To: Ying Huang <ying.huang@linux.alibaba.com>
-To: Alistair Popple <apopple@nvidia.com>
-To: Peter Xu <peterx@redhat.com>
-To: Johannes Weiner <hannes@cmpxchg.org>
-To: Song Liu <songliubraving@fb.com>
-To: Rik van Riel <riel@surriel.com>
-To: Miklos Szeredi <miklos@szeredi.hu>
-To: Alexander Viro <viro@zeniv.linux.org.uk>
-To: Christian Brauner <brauner@kernel.org>
-To: Hugh Dickins <hughd@google.com>
-To: Will Deacon <will@kernel.org>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>
-To: Nick Piggin <npiggin@gmail.com>
-To: Peter Zijlstra <peterz@infradead.org>
-To: Arnd Bergmann <arnd@arndb.de>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-To: Kevin Tian <kevin.tian@intel.com>
-To: "Joerg Roedel (AMD)" <joro@8bytes.org>
-To: Robin Murphy <robin.murphy@arm.com>
-To: Steve Sistare <steven.sistare@oracle.com>
-To: John Hubbard <jhubbard@nvidia.com>
-To: Jose A. Perez de Azpillaga <azpijr@gmail.com>
-To: Josef Bacik <josef@toxicpanda.com>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: fuse-devel@lists.linux.dev
-Cc: linux-arch@vger.kernel.org
-Cc: iommu@lists.linux.dev
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 6a34dd3800f56..3356f7a670d1e 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2232,6 +2232,36 @@ vm_fault_t finish_fault(struct vm_fault *vmf);
+ #define folio_ref_zero_or_close_to_overflow(folio) \
+ 	((unsigned int) folio_ref_count(folio) + 127u <= 127u)
+ 
++/* Leave separate reserves for administrators and concurrent reference gains. */
++#define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
++#define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
++
++bool __folio_ref_count_over_limit(unsigned int ref_count);
++
++/**
++ * folio_ref_count_over_limit - Check whether to refuse more folio references.
++ * @folio: The folio.
++ *
++ * Check before adding page table mappings or other significant refcount users
++ * to large pagecache folios (!hugetlb), to avoid overflows.
++ *
++ * Checking other folios does no harm.
++ *
++ * This check is an approximation; we leave some headroom such that concurrent
++ * increments, batches and temporary references are not a problem.
++ *
++ * Return: True if the caller should refuse additional references, false
++ * otherwise.
++ */
++static inline bool folio_ref_count_over_limit(const struct folio *folio)
++{
++	const unsigned int ref_count = folio_ref_count(folio);
++
++	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
++		return false;
++	return __folio_ref_count_over_limit(ref_count);
++}
++
+ /**
+  * folio_get - Increment the reference count on a folio.
+  * @folio: The folio.
+diff --git a/mm/filemap.c b/mm/filemap.c
+index 86297841f9955..920bbf86dfdff 100644
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3968,6 +3968,11 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 		unsigned long end;
+ 		vm_fault_t map_ret;
+ 
++		if (unlikely(folio_ref_count_over_limit(folio))) {
++			folio_ref_dec(folio);
++			goto next;
++		}
++
+ 		addr += (xas.xa_index - last_pgoff) << PAGE_SHIFT;
+ 		vmf->pte += xas.xa_index - last_pgoff;
+ 		last_pgoff = xas.xa_index;
+@@ -4009,6 +4014,7 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
+ 					   mmap_miss - 1);
+ 		}
+ 
++next:
+ 		folio_unlock(folio);
+ 	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
+ 	add_mm_counter(vma->vm_mm, folio_type, rss);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index d0e19d9e6b651..7cae95070841a 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1626,6 +1626,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pgtable_t pgtable = NULL;
++	vm_fault_t ret = VM_FAULT_NOPAGE;
+ 	spinlock_t *ptl;
+ 	pmd_t entry;
+ 
+@@ -1662,6 +1663,10 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 		if (is_huge_zero_folio(fop.folio)) {
+ 			entry = pmd_mkspecial(entry);
+ 		} else {
++			if (unlikely(folio_ref_count_over_limit(fop.folio))) {
++				ret = VM_FAULT_SIGBUS;
++				goto out_unlock;
++			}
+ 			folio_get(fop.folio);
+ 			folio_add_file_rmap_pmd(fop.folio, &fop.folio->page, vma);
+ 			add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PMD_NR);
+@@ -1688,7 +1693,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
+ 	spin_unlock(ptl);
+ 	if (pgtable)
+ 		pte_free(mm, pgtable);
+-	return VM_FAULT_NOPAGE;
++	return ret;
+ }
+ 
+ /**
+@@ -1759,6 +1764,7 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
+ 		pud_t *pud, struct folio_or_pfn fop, pgprot_t prot, bool write)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
++	vm_fault_t ret = VM_FAULT_NOPAGE;
+ 	spinlock_t *ptl;
+ 	pud_t entry;
+ 
+@@ -1784,6 +1790,10 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
+ 	if (fop.is_folio) {
+ 		entry = folio_mk_pud(fop.folio, vma->vm_page_prot);
+ 
++		if (unlikely(folio_ref_count_over_limit(fop.folio))) {
++			ret = VM_FAULT_SIGBUS;
++			goto out_unlock;
++		}
+ 		folio_get(fop.folio);
+ 		folio_add_file_rmap_pud(fop.folio, &fop.folio->page, vma);
+ 		add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PUD_NR);
+@@ -1799,7 +1809,7 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
+ 	update_mmu_cache_pud(vma, addr, pud);
+ out_unlock:
+ 	spin_unlock(ptl);
+-	return VM_FAULT_NOPAGE;
++	return ret;
+ }
+ 
+ /**
+@@ -2095,6 +2105,11 @@ int copy_huge_pud(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
+ 	if (page) {
+ 		struct folio *folio = page_folio(page);
+ 
++		if (unlikely(folio_ref_count_over_limit(folio))) {
++			/* Skip this PUD; it can be faulted in later. */
++			ret = (dst_vma->vm_flags & VM_MIXEDMAP) ? -ENOMEM : 0;
++			goto out_unlock;
++		}
+ 		folio_get(folio);
+ 		/*
+ 		 * TODO: once we support anonymous pages, use
+@@ -5215,6 +5230,16 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct folio *folio
+ 	if (!(pvmw->pmd && !pvmw->pte))
+ 		return;
+ 
++	if (!folio_test_anon(folio) && unlikely(folio_ref_count_over_limit(folio))) {
++		/* Leave the file mapping absent so it can be faulted in. */
++		pmd_clear(pvmw->pmd);
++		if (arch_needs_pgtable_deposit())
++			zap_deposited_table(mm, pvmw->pmd);
++		update_hiwater_rss(mm);
++		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
++		return;
++	}
++
+ 	entry = softleaf_from_pmd(*pvmw->pmd);
+ 	folio_get(folio);
+ 	pmde = folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
+diff --git a/mm/memory.c b/mm/memory.c
+index d33a2e1512f74..7e1cdaa80b75f 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -1166,9 +1166,14 @@ static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
+ /*
+  * Copy one present PTE, trying to batch-process subsequent PTEs that map
+  * consecutive pages of the same folio by copying them as well.
++ * PTEs mapping an over-limit file folio can be skipped if a fault in the
++ * child will reconstruct them.
+  *
+  * Returns -EAGAIN if one preallocated page is required to copy the next PTE.
+- * Otherwise, returns the number of copied PTEs (at least 1).
++ * Returns -ENOMEM if the file folio refcount is too high and the PTE must
++ * be copied.
++ * Returns -EHWPOISON if copying a page fails.
++ * Otherwise, returns the number of processed PTEs (at least 1).
+  */
+ static inline int
+ copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+@@ -1186,6 +1191,16 @@ copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
+ 
+ 	folio = page_folio(page);
+ 
++	if (!folio_test_anon(folio) && unlikely(folio_ref_count_over_limit(folio))) {
++		if (dst_vma->vm_flags & VM_MIXEDMAP)
++			return -ENOMEM;
++		if (userfaultfd_pte_rwp(dst_vma, pte))
++			return -ENOMEM;
++		/* Preserve uffd-wp protection when faulting the page back in. */
++		cond_install_uffd_wp_ptes(dst_vma, addr, dst_pte, pte, 1);
++		return 1;
++	}
++
+ 	/*
+ 	 * If we likely have to copy, just don't bother with batching. Make
+ 	 * sure that the common "small folio" case is as fast as possible
+@@ -1367,9 +1382,9 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+ 		/*
+ 		 * If we need a pre-allocated page for this pte, drop the
+ 		 * locks, allocate, and try again.
+-		 * If copy failed due to hwpoison in source page, break out.
++		 * Other errors abort the copy after releasing the page table locks.
+ 		 */
+-		if (unlikely(ret == -EAGAIN || ret == -EHWPOISON))
++		if (unlikely(ret < 0))
+ 			break;
+ 		if (unlikely(prealloc)) {
+ 			/*
+@@ -1399,7 +1414,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
+ 			goto out;
+ 		}
+ 		entry.val = 0;
+-	} else if (ret == -EBUSY || unlikely(ret == -EHWPOISON)) {
++	} else if (ret == -EBUSY || ret == -ENOMEM || unlikely(ret == -EHWPOISON)) {
+ 		goto out;
+ 	} else if (ret ==  -EAGAIN) {
+ 		prealloc = folio_prealloc(src_mm, src_vma, addr, false);
+@@ -2474,6 +2489,8 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
+ 	if (unlikely(is_zero_folio(folio))) {
+ 		pteval = pte_mkspecial(pteval);
+ 	} else {
++		if (unlikely(folio_ref_count_over_limit(folio)))
++			return -EOVERFLOW;
+ 		folio_get(folio);
+ 		pteval = mk_pte(page, prot);
+ 		if (mkwrite) {
+@@ -5752,6 +5769,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+ 	if (unlikely(folio_test_has_hwpoisoned(folio)))
+ 		return ret;
+ 
++	if (unlikely(folio_ref_count_over_limit(folio)))
++		return VM_FAULT_SIGBUS;
++
+ 	/*
+ 	 * Archs like ppc64 need additional space to store information
+ 	 * related to pte entry. Use the preallocated table for that.
+@@ -5806,6 +5826,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+  * @page: The first page to create a PTE for.
+  * @nr: The number of PTEs to create.
+  * @addr: The first address to create a PTE for.
++ *
++ * For file mappings, the caller must check folio_ref_count_over_limit()
++ * before adding the mapping references and installing PTEs.
+  */
+ void set_pte_range(struct vm_fault *vmf, struct folio *folio,
+ 		struct page *page, unsigned int nr, unsigned long addr)
+@@ -5972,6 +5995,10 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
+ 		goto fallback;
+ 	}
+ 
++	if (!is_cow && unlikely(folio_ref_count_over_limit(folio))) {
++		ret = VM_FAULT_SIGBUS;
++		goto unlock;
++	}
+ 	folio_ref_add(folio, nr_pages - 1);
+ 	set_pte_range(vmf, folio, page, nr_pages, addr);
+ 	type = is_cow ? MM_ANONPAGES : mm_counter_file(folio);
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 092fca80927a7..153a93b0c38d7 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -385,6 +385,17 @@ static bool remove_migration_pte(struct folio *folio,
+ 		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
+ 			continue;
+ 
++		if (!folio_test_anon(folio) && !folio_test_hugetlb(folio) &&
++		    unlikely(folio_ref_count_over_limit(folio))) {
++			/* File contents remain available for a later fault. */
++			pte_clear(vma->vm_mm, pvmw.address, pvmw.pte);
++			cond_install_uffd_wp_ptes(vma, pvmw.address,
++						  pvmw.pte, old_pte, 1);
++			update_hiwater_rss(vma->vm_mm);
++			dec_mm_counter(vma->vm_mm, mm_counter_file(folio));
++			continue;
++		}
++
+ 		folio_get(folio);
+ 		new = folio_page(folio, idx);
+ 		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index 169f681f9849b..89853c157fa91 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -373,6 +373,10 @@ static int mfill_atomic_install_pte(pmd_t *dst_pmd,
+ 		goto out_unlock;
+ 
+ 	if (page_in_cache) {
++		if (unlikely(folio_ref_count_over_limit(folio))) {
++			ret = -ENOMEM;
++			goto out_unlock;
++		}
+ 		folio_add_file_rmap_pte(folio, page, dst_vma);
+ 	} else {
+ 		folio_add_new_anon_rmap(folio, dst_vma, dst_addr, RMAP_EXCLUSIVE);
+diff --git a/mm/util.c b/mm/util.c
+index 80f6c714844f2..a906dfa755ff1 100644
+--- a/mm/util.c
++++ b/mm/util.c
+@@ -791,6 +791,18 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
+ }
+ EXPORT_SYMBOL(folio_mc_copy);
+ 
++bool __folio_ref_count_over_limit(unsigned int ref_count)
++{
++	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
++		return true;
++	/* Background threads must not consume admin reserves. */
++	if (current->flags & PF_KTHREAD)
++		return true;
++	/* Use the task's credentials, which filesystem overrides cannot change. */
++	return !has_capability_noaudit(current, CAP_SYS_RESOURCE);
++}
++EXPORT_SYMBOL_GPL(__folio_ref_count_over_limit);
++
+ int sysctl_overcommit_memory __read_mostly = OVERCOMMIT_GUESS;
+ static int sysctl_overcommit_ratio __read_mostly = 50;
+ static unsigned long sysctl_overcommit_kbytes __read_mostly;
 
----
-David Hildenbrand (Arm) (5):
-      mm: limit pagecache folio refcount when mapping pages
-      mm: limit pagecache folio refcount when splicing into pipes
-      mm/mmu_gather: flush pending references early before the folio limit
-      iommufd: fix cleanup when adding memfd folio pins fails
-      mm/gup: limit pagecache folio refcount when grabbing references
-
- drivers/iommu/iommufd/pages.c | 15 +++++++++----
- fs/fuse/dev.c                 |  5 +++--
- fs/splice.c                   |  8 ++++++-
- include/asm-generic/tlb.h     |  4 ++--
- include/linux/mm.h            | 51 +++++++++++++++++++++++++++++++++++--------
- mm/filemap.c                  | 17 ++++++++++++---
- mm/gup.c                      | 24 ++++++++++++--------
- mm/huge_memory.c              | 29 ++++++++++++++++++++++--
- mm/memory.c                   | 39 ++++++++++++++++++++++++++++-----
- mm/migrate.c                  | 11 ++++++++++
- mm/mmu_gather.c               | 10 +++++----
- mm/shmem.c                    |  4 ++++
- mm/userfaultfd.c              |  4 ++++
- mm/util.c                     | 15 +++++++++++++
- 14 files changed, 194 insertions(+), 42 deletions(-)
----
-base-commit: df3c65887715e66e2cba69116924020c37996cd8
-change-id: 20261105-refcount_overflow_stable-542e024130fe
-
-Best regards,
---  
-David Hildenbrand (Arm) <david@kernel.org>
+-- 
+2.56.0
 
 
