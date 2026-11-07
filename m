@@ -1,83 +1,85 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9442606A32C
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081D4606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R7xKMfQW
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=A97LRtV/
 Received: by kanga.kvack.org (Postfix)
-	id DFB576B05B7; Sat,  7 Nov 2026 14:41:31 -0500 (EST)
+	id F12026B05C0; Sat,  7 Nov 2026 14:48:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7D626B05BE; Sat,  7 Nov 2026 14:41:31 -0500 (EST)
+	id EC23F6B05C1; Sat,  7 Nov 2026 14:48:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C450F6B05BF; Sat,  7 Nov 2026 14:41:31 -0500 (EST)
+	id DB2496B05C2; Sat,  7 Nov 2026 14:48:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 96F036B05B7
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:41:31 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1BC4EA7F83
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:41:31 +0000 (UTC)
-X-FDA: 85409342382.06.6C56E89
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 465D71C0006
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:41:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R7xKMfQW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794080489;
-	b=1MGbXENE9RTpp+fKo4WA5SQRv6qVHlT2mLnrkNiU0ef8R+SfAFlkQtHA+NJhPK89uPZif4
-	1PsULLfdA3v8TyWvYblPr8gN3JedsDZ3hkSAztumIkgacqCG9VOgPjXnWluTBZxW3Qgevc
-	wiFRZKlLJVl5uIhzIF74RyIV1czIfPg=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B5BCC6B05C0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:48:19 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 48C141603C9
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:48:19 +0000 (UTC)
+X-FDA: 85409359518.29.7E6B87D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 7C12B20005
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:48:17 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A97LRtV/";
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794080489;
+	s=arc-20220608; t=1794080897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qrayV5HgmTcSMMMhveHmxbWzQ03GCDulO+jtmHjEwSs=;
-	b=GRK6sUcmrTcr4L71AvPMJOepcg1yVZnHytC6Rh+iG87SQs7URU5ZxWEwUQn7DHOz8ASEcd
-	Fg1xqVUc2cbzVwYBWV9pcNqADXi1N23OS5G6ju0OI4lfZG1cQZNEjR53yJ6ysK3kJfFJPt
-	PMJxsOhoqAK2yH0TM1wMZJEstifGxuk=
+	bh=PgfupnOI9y63nTPBwUuVBVA9ftyhpGgpL4SadbS98oM=;
+	b=zqUmpMYzyCRPSAtPSppTcxiHJrGoujqevL8IwfIrqRSOJeSzEEXq0dnRqPSi/wgFgVJNJD
+	PsNGrI9O1cnSbD4HgUXHY5tr3gVqrzZJWZ+m9Ugzihakl1LtxhDo0Rert4lbX3bMb/OHzW
+	9jI5DNoPYnfy/NZscygdTl0s3Nqecrs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794080897;
+	b=n3M5CrTH9g4qgqXrUVtzIi4XsaBBqnGZS7GvglCseK2yp0HKAN8PVtFS5m+jPrkFV1bOwi
+	SouftbD1CFBPe/vgk6ox99X7KdviV5sHr0hwe02WBD9LWwVUcuGsgUx58iP7egTS5eq+IV
+	Kdk7ni+W/1ViF5TcrNbcaVhdP/gwtXk=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R7xKMfQW;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="A97LRtV/";
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6733842E49;
-	Sat,  7 Nov 2026 19:41:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4C31F0089F;
-	Sat,  7 Nov 2026 19:41:25 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 69AA461148;
+	Sat,  7 Nov 2026 19:48:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5808D1F0089F;
+	Sat,  7 Nov 2026 19:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794080488;
-	bh=qrayV5HgmTcSMMMhveHmxbWzQ03GCDulO+jtmHjEwSs=;
+	s=k20260515; t=1794080896;
+	bh=PgfupnOI9y63nTPBwUuVBVA9ftyhpGgpL4SadbS98oM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=R7xKMfQWAmEBP+7jr8m/rTZ0qcf3cHfKaGgUQmL4AL+Jj4Q2KlaWLJPKn2wxc/iKK
-	 w9lZQcb/W0uS33hvwpHeyja1a1AQGSExELOIHIA+c/XPHnmuVxQ56RTUbkNWaePdN+
-	 SB78P3uixsTGMMZNrngsUP4hm6/kMzANIxudL81PFPRxkj4MztpEE7T1Kn7dxsTZmz
-	 PhkVPpKh/5AYLInaD/Ev+Y+vUawgIT+MO67PN3fHo5eAvvaSeA2gbcEXbMlKgwbKUS
-	 MozNuMr9XlaQ1OoA7p69wSmY1N6ilueUU+3XjSJknb7Y7qum6Wb/FLvYPYvJ3s1Wzf
-	 Ll0jmq/T6D4tw==
-Message-ID: <a2ec6814-d3d3-425a-b379-f99b219aa55e@kernel.org>
-Date: Sat, 7 Nov 2026 20:41:20 +0100
+	b=A97LRtV/UUHCQnkUrvGqtIgzlx3uxP7kbRD8h5sUFLlcyZ7oYisz4YMCY6RSdd6Sm
+	 aGMqDDuK6P+5x9Seobd4qsGICa4HESW+Cz/F1qLcDQzVfMsYE6L5a7c8cXt5TqjdlB
+	 4dhzoAL1Y52RPCY0ERC7LzQSxATD+urOPRwyUDyWq3EdlK73K/izVvC8jaUQ3IJSpR
+	 +0HtFI4/RzJ8QAlpH5i5TJbibWEyZoUuLHW3ITklZGXyjWFSogroDc/g9fHJqQeoAZ
+	 ZVGRJlud74lr1UcNyWAVexAmqn9fxBB6cWjp08cpvKEPWyNrZ3ikNWMFnA5vG+z/3y
+	 PVLi6hgK3gFzw==
+Message-ID: <fd2faf21-ce9c-496a-9bd5-4d8334cf5f13@kernel.org>
+Date: Sat, 7 Nov 2026 20:48:06 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory_hotplug: don't offline a hwpoisoned page still
- in the page cache
-To: Mani Tofigh <mt4022@columbia.edu>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
- Naoya Horiguchi <nao.horiguchi@gmail.com>,
- Vlastimil Babka <vbabka@kernel.org>, Gregory Price <gourry@gourry.net>,
- linux-mm@kvack.org, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
- tz2294@columbia.edu, stable@vger.kernel.org
-References: <20261101-memhp-hwpoison-pagecache-v1-1-ed8785ca44eb@columbia.edu>
- <1b6a6d13-8a01-414b-9bbe-cd194af1f539@kernel.org>
- <a002901b-715a-4adc-bdcb-7a6fcda67711@columbia.edu>
+Subject: Re: [PATCH v3 2/4] docs/mm: ksm: describe how smart scan picks the
+ scans to skip
+To: Qiliang Yuan <odys.yuan@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin@linux.dev>,
+ Chengming Zhou <chengming.zhou@linux.dev>, Stefan Roesch <shr@devkernel.io>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-0-16d5ce8b5fd6@gmail.com>
+ <20261107-bug-mm-ksm-smart-scan-align-skips-v3-2-16d5ce8b5fd6@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +126,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <a002901b-715a-4adc-bdcb-7a6fcda67711@columbia.edu>
+In-Reply-To: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-2-16d5ce8b5fd6@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 465D71C0006
-X-Rspamd-Server: rspam12
-X-Stat-Signature: quthpccgoyf1je4m115f18j8hut8s8k6
-X-Rspam-User:
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7C12B20005
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794080489-153732
-X-HE-Meta: U2FsdGVkX18HgDHGNy7ZLOUUn4eFvPmp49cHfGVojAA45YbjtijFPVwvFJJU75gSTNt9HtPgzizMTT10Eci8YBTFPk9p0AJjThz8KXfdDG5jFc/QoFXMbPbbpylilAftaw9LgxUuJh6OF5nl0G9lgTjOtbJGW1b8T/yabJs8AT6Yb0TscM/UTuirKDjlQbBzqCsCPuis9CtdlymGcCXMPcMzLZBnZXlfwBnl4QEmAMMBiTFuTfx+dwA/LKA9figC0NWaSBoJJ3lgTSOXES/YAUvZT+I9jKn8pBKNBmZDvFxKw2iAZxZ3H7XeSxm7MTH4TgMJptDsRGgIgvlQJo56kafblHbsyI1eqHFUDiIVzvYGHeJqum6MqFNItXkWpsOhuOxHdTVowWv4cCfvBIrvtuDm7g6tvx4aonDfP8q306qTllaODq7Qr1jh1+NJnrVxNAMmt8q3Y3noJhYy4NMKNGCtZghDfIXDN+V8267sGAwuhHU2bBbD4pSGXTLsoGNPqsPiKIc5pL83BzmVR2HQqwlChZ9BSj/UVCpClavMlZz/XoVwyg1tyfVRy0m4GRepMAyJintMYe+otWbAOD0Wa7XMsHU89c38KPTgGCqvm0/0/X4APg2f0KBNayVhlhd+fKuDRE+pLvuLy2a50iB2homGLoIrlWUg0dgYC9U+BRR30DthXc552cqpX1R0RB8HUw/jfyMeLVs+B9f7DqIn/DD+FtSrTIvpCAD+uhpYfb+GcCOynoXxjzaM8Ru2bYvO+8XHpdBW3qLJWX3oEWF3fWGh6GB4ixh4qaGFHh+sOBt8WLytuE/iMpaOPAcmBX822669CFVx9sMS1qYk+ev3X5bR+9VuTmuEAF+7YcSrKQTRUpRGdYtG0ydyg9u1sw+CDc0fY86QkpRS4ajdrI1z5gZQhGCcDsPQwDavEeW0UfIjO1BUqrdWY6sjGSAuZv1foCjRot5hqNU5qwb8+a3
- v+ArpSmZ
- SmvMyOhxySHHEWzbdfTHN97KThuDPBE5i90A2LRVTmtWGJmIZyhD2eoa3SIdVq9l1KVS0ojYCXw5CBPLIBFVUlVkJqKmfroeBG0BeallR7u5ZGjM7S9aPbKDLNvYGCNyvA27vBijl2LhczhJnpTqMVZtvSp1oMd/IvvXO5uCZVtbcLO1TBDlwr4x8Nq9q7X3wmPeRYhmE8wCE81Z+O90I6gBisAQVnkBhHQK+tqEcRhNGHk4HLsoGIn9K8zihk2oywuSF8gOINA+uykejpo0fXX3S4eeHsfXpe4TsQRCqGujWXSq4aR1ok79ZCmnRrwxEVhyb2zxCjLc9MEbcVqzrzqXbuaWJpjFitq51lIavyjsPqz/VJEF3tZe6Ra9tEqqHicYGXcV05MmdbDIpeYgt9NhTJ6CzISpA2SfkX0Uy1r4U4Y/AGhINkV1akGnnprgdlK2SdK24nudaNZ+XIZAnJ4wSf6b1Y5483+4m4/j6b67KL6AWUH7n0fMxoA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: h37afqu1d7o83mt638d7uzufiwnnee6z
+X-Rspam-User: 
+X-HE-Tag: 1794080897-907964
+X-HE-Meta: U2FsdGVkX188H6FchI6sTSD5b1cct0WXtiWBHYjR+SBGsfMXsuU7MMq+yrLDwnSiHz8c6FUj0m9N1ty3rcUYN5HM4w/T1Jmroxkv4UUt5OWfs/+MpMdBomwytGM4OktlPx8KzQIhApmV5vMw+N57wbNAASN5bHAAWBQVfasNhKTQgIdd0k98v9KRil47krjo7usYfupM60NGnveamPTLkZtDyMnOmAxuzam4LO55SQX2WmcS+TLZZ6C09hFUuGPQVPXTY7s465Yle6AhtffmvX3xG1Ux7WHZsQpeNmGhNFilefc+NLUhqKJ9iZ7X0TOK29ph9VrLCEEH2MBCAoeshUSAdrzEY0vwCcrlG/Q1zByCXuSRUjorCcmva4JC+WU43hHjuTlc4Blp1iWG7uMoLpgaepvi7GhrSgj7+/5G4H0J+Nb6lYTvsnIw/lKdJvTWU0TKSRnIuQLpYT1LwPakfzw7z9GU3wJNVU99BKDcDuBJW9WE+K16SEOGh6MEluS5z43U68NLOnovUgvcaAUfyxHOzEl7G++NzYiEaJf0DBdTq10teWVlR5VmYH/vUSj8OqH7qHzdCGU3eLPsAcphlv9jTUsR4UbSv1jskUKuATGHRqBV4Lj9oczUa4lJBP5qj4/p7nbu6kfFAugGD0slH+vQCjOvJvZ2q88zAay0gc4JFWBBFPsSISsrPwC6ufXst4TjxPNlU7quZynF8LcQ7cMQ8nYoxVAHMeUsqjhx0LuvXeerPt5X0imD/TTKlqGSXXcydfgkgDPGuAi8fScS1oSAEsv1SWE7XnEUoBNPoBdANQgD7Z+L3hMGTJyfrl+11EWRF8GP97VkVrfBDO73DQy3F5Hxlndp/iwkUIXrnCqxJpZVLduEGs3qvjWCDnx/jKhpHg5ss4+9SKdeNZVTfOdygie4X+q//C3iNe0IZm98SCn/4wHBEMIaAH9EWNS9rBdkVhFtel3FtYALEZk
+ KVcGQpAl
+ QadX5vQklEzp7WsDsQTTorhBvpOTmtJ4mUlc7MS4QauZfdSkTGW0avi+kFcKCAhZ/W2t1UxoHLJn3sP6aeVM9k1ztfttocOCdOm23woyktKb00EJ03jXLPapYR8h+hTrvOgzH9jbGp7jMG2m0zrich+iOs+2TCLbl2shs0TPi+AKtBFIF7nGeO7XTgM1ThQFPIyrngEAfHrqJwzzeQZ4O0ft8VBnNbn+efJmfCHQRxeAP7NHi7LkDXS83p6XIOM3zArpjeR5/pUIIY1V10xuxFBVTzklcyI2ZPLT/XJvPK0fH25kBRluBQFN/llhym6JciB0508k1rQtdE4yooy4zEmOjsW8peIF2q+D4lM84Djnpnv98L96n3FFfQJR/L0MBm1O7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,30 +150,50 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/3/26 20:59, Mani Tofigh wrote:
-> On 11/2/26 1:56 AM, David Hildenbrand (Arm) wrote:
->>
->> What if we still have the page pinned somehow? (vmscplice etc).
->>
->> Wouldn't it be better to make sure that poisoning code holds exactly one
->> reference (whoever set hwpoison) and check here that the refcount is 1 ?
->>
->> Pagecache references would turn it > 1.
+On 11/7/26 17:57, Qiliang Yuan wrote:
+> Documentation/mm/ksm.rst covers the stable tree and its reverse mapping,
+> and Documentation/admin-guide/mm/ksm.rst only says that smart scan skips
+> pages KSM has failed to merge before.
 > 
+> Neither says how often an unmerged page is looked at, or that the scans
+> are picked by the global scan number so that identical pages of
+> different ages still meet in some scan, which merging through the
+> unstable tree depends on.
 > 
-> Yes right, a pin isn't covered (neither before nor with this patch).
+> Add a section on smart scan that describes both.
 > 
-> I don't think refcount == 1 can replace the mapping check though. In the
-> race from the changelog memory_failure() has set PG_hwpoison but is 
-> still waiting in get_hwpoison_page(), so it doesn't hold its reference 
-> yet, and a clean page-cache folio then has just the one reference from 
-> the page cache. memory_failure() also doesn't take a reference on the 
-> kernel pages it ignores, and a poisoned page that gets freed later sits 
-> at 0.
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+> ---
+>  Documentation/mm/ksm.rst | 16 ++++++++++++++++
+>  1 file changed, 16 insertions(+)
+> 
+> diff --git a/Documentation/mm/ksm.rst b/Documentation/mm/ksm.rst
+> index 5a80573162def..f954d221e8017 100644
+> --- a/Documentation/mm/ksm.rst
+> +++ b/Documentation/mm/ksm.rst
+> @@ -75,6 +75,22 @@ The whole list of stable_node "dups" linked in the stable_node
+>  The frequency of such scans is defined by
+>  ``stable_node_chains_prune_millisecs`` sysfs tunable.
+>  
+> +Smart scan
+> +----------
+> +With ``smart_scan`` enabled, ksmd skips pages that it has already tried
+> +to merge without success. The ``age`` of a page's ksm_rmap_item counts
+> +the scans that went by while the page stayed unmerged. A page younger
+> +than three scans is looked at on every scan; after that it is looked at
+> +every second scan up to an age of five, every fourth scan up to an age
+> +of eight, and every eighth scan from then on.
+> +
+> +The scans that look at a page are picked by the global scan number
+> +``ksm_scan.seqnr``, not counted per page. The unstable tree is rebuilt
+> +on every scan, so two identical pages can only be merged in a scan that
+> +looks at both. As the periods are powers of two, every page is looked
+> +at on each scan whose number is a multiple of eight, so two identical
+> +pages meet at least every eighth scan whatever their ages.
 
-So the right fix is to fix that then.
+Yeah, much clearer, thanks
 
-We'd need to sync memory_failure() with memory offlining, correct?
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
