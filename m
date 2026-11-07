@@ -1,95 +1,107 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9960D606A326
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 06:54:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CA5606A331
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=NpNHKmNh
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=I3yQwc+n
 Received: by kanga.kvack.org (Postfix)
-	id 82B6F6B05B2; Sat,  7 Nov 2026 01:54:26 -0500 (EST)
+	id C80BC6B05B0; Sat,  7 Nov 2026 02:02:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8042E6B05B3; Sat,  7 Nov 2026 01:54:26 -0500 (EST)
+	id C0CA06B05B1; Sat,  7 Nov 2026 02:02:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71C1E6B05B4; Sat,  7 Nov 2026 01:54:26 -0500 (EST)
+	id AD32C6B05B2; Sat,  7 Nov 2026 02:02:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A6EA6B05B2
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 01:54:26 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C5C62A7C8D
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 06:54:25 +0000 (UTC)
-X-FDA: 85407409290.16.EF21F97
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 260961C0002
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 06:54:19 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=NpNHKmNh;
-	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 839BD6B05B0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:02:18 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E4D46C02A6
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:02:17 +0000 (UTC)
+X-FDA: 85407429114.07.927C99C
+Received: from mta0.migadu.com (out-211.mta0.migadu.com [91.218.175.211])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D69FF100002
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:02:15 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I3yQwc+n;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.211 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794034464;
+	s=arc-20220608; t=1794034936;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7KJP7j2uL4vPq5fW0b0gSJi5ZwRkv6NnOMBE9fSZtqQ=;
-	b=PZbh/+gbv25qeAG5Ra3fWgsdKCn/Di/6daz3bU3cj9XFHJ08cnSYHtlAWr4z09uiUUxumv
-	17z5iLUctMcRuJ92Z6m4e9TDSaF9WdYmVPvCOkEfjfOW/UoxZZoDZ5J14/GaNVPlu0q6Qj
-	NUJxCauR4eEZhjDoT6MhH44aQqqB72M=
+	bh=SNyW7L7svCZC+4vm04JJa3Y3COX/LWxh617gbF6SI0E=;
+	b=X6cIAD1AIR91tvcuGbPGyjmft0iGQpCZx5PtDyPCZVqfG6wJMnhfCZcd0GxO3oM2TFSvCk
+	MWpUb4EojBfWC1LwNnUCiOUmGlWEScmpIP71qFFxtY/CPOOJ9+346SZG4GDK6bKYP9dIpS
+	fGBZ+6WSjDQtZ/q8ai48HLC8Xg7a2YU=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=NpNHKmNh;
-	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I3yQwc+n;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.211 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794034464;
-	b=sfuHYs9RXC8sX5CyGkgeI4nyfCYYmcIf7N1IUjwji4HPurRFqReTJQQdJyKNENiQtBKHF4
-	4toAYA1ga8CbCE11iAW9mUAVs4fyGC88JaSH1VtsbFheCUoZPoXT8ThrVWZ4r+AmmySkH7
-	+mwdNmMpYy5dEFROm0kC8cKKPXkwCwU=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794034457; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=7KJP7j2uL4vPq5fW0b0gSJi5ZwRkv6NnOMBE9fSZtqQ=;
-	b=NpNHKmNhUAx622uQqI6k5wGpxeTIhX+N5T4rWKBE+AQ72WCGu9j9UM+7e6W8lZxFA59qG2q+Oq3riUFzvgIO0R5l4vBQX6kkk7pvmu9vO8gMDN0K7VSCIYVjyJgx4TkY8l9uLjQv4hvIQmg/5nAUVb19vEEDjXL7jDRkzpJJdX4=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R141e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XEDj0Ge_1794034454;
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0XEDj0Ge_1794034454 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 07 Nov 2026 14:54:15 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: Zhiteng Qiu <qiuzhiteng@hygon.cn>
-Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
- <david@kernel.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
- <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,
-  Byungchul Park <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,
-  Alistair Popple <apopple@nvidia.com>,  Xin Hao <xhao@linux.alibaba.com>,
-  Dave Hansen <dave.hansen@linux.intel.com>,  <linux-mm@kvack.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mm/migrate: don't batch the TLB flush when there is
- nothing to batch
-In-Reply-To: <20261107015057.1328227-1-qiuzhiteng@hygon.cn> (Zhiteng Qiu's
-	message of "Sat, 7 Nov 2026 01:50:57 +0800")
-References: <20261106041628.1177963-1-qiuzhiteng@hygon.cn>
-	<87zevmwbaj.fsf@DESKTOP-5N7EMDA>
-	<179395975709.1235605.1971486611419119070@hygon.cn>
-	<20261107015057.1328227-1-qiuzhiteng@hygon.cn>
-Date: Sat, 07 Nov 2026 14:54:14 +0800
-Message-ID: <87qzgxw2qx.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	t=1794034936;
+	b=oZhsTjNaepMAZEcPkknYN5+3rYsLY13wW4gT4YArBk1cDNH8As6F56/GdGF/cwUaCHz+Sh
+	OZYy3fr5MSPLrHgdDg7glzPcRLQRVoePdYe8EtkQ4DAL+KarzRn6biA4CWSO88ICOYz6zF
+	jkoNHUpfDnSr4nLdauwQTslha6UIGcc=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=1eU8LB4FiA31cEPkSs3z/GNpYbcTIlce7/3o/u8t5mo=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794034934; v=1; x=1794639734;
+ b=I3yQwc+nnr9dZ9rJHoIeeQfQUjIaGc2f/SLqKrFxDV2I480KdIkDlwFLnBpoNmKhbVN3fUXJ
+ 61MUGbXwbuS+9RE94YjhsGLI1nsOE0EUWlJkqkywRE5Q624MjkvGo6fGlaAjtrHSpshsbklTY2m
+ LIEKSxp9znNWy0ITPbV6NfYw=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id 89d1383c0cbcfc28;
+	Sat, 07 Nov 2026 07:02:14 +0000
+X-Mizu-Trace-ID: 89d1383c0cbcfc28
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: ckh36ywdbd65wy7n7pqyq37r6oonof3p
-X-Rspamd-Server: rspam01
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH v2 07/20] hugetlb_vmemmap: Disable HVO sysctl if arch
+ doesn't support HVO
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <20261003002123.505555-8-jthoughton@google.com>
+Date: Sat, 7 Nov 2026 15:01:47 +0800
+Cc: Will Deacon <will@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Nikos Nikoleris <nikos.nikoleris@arm.com>,
+ Linu Cherian <linu.cherian@arm.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ David Hildenbrand <david@kernel.org>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Nanyong Sun <sunnanyong@huawei.com>,
+ Yu Zhao <yuzhao@google.com>,
+ Frank van der Linden <fvdl@google.com>,
+ David Rientjes <rientjes@google.com>,
+ linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2122761A-45AD-4AEC-AE88-B51E92E2CA40@linux.dev>
+References: <20261003002123.505555-1-jthoughton@google.com>
+ <20261003002123.505555-8-jthoughton@google.com>
+To: James Houghton <jthoughton@google.com>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: D69FF100002
+X-Stat-Signature: 7mm7w8m1msjsi7r79gajy7mpeauoe4ze
 X-Rspam-User: 
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 260961C0002
-X-HE-Tag: 1794034459-516842
-X-HE-Meta: U2FsdGVkX1+LIIWPLRY2W0zsqz4YhIHIUpeOMWdtsCDhCv+mpmGY98gwBQO3PAAlYBx2LQMUgdU6AXEoeFwEW6jt53cddrBjdHCBOZk3XLENU5DALL27A6sDp07ShJXY8QV/TcJowV7IjOKP5dyN9gsHby1+hUmJbffwERdI22qbkIm3oFd3OPe3imMr37NSkoRCfe64fLIe3zLSObOaS/kcS7Y2G4aa2T4EZaEB7862XavB3lQN7uoTxXg9B3l+1orXhteqpaLcqCweQ/AhvmhuIbUi/8/ZE+FDr1CK4pGC9zjvVNJKXmrXvWLLpncTTdstATYLPnnfanyrg/rgLlyhOxqi+o6p82e6N++LcaTmH+EwWuB7O6Y4TdPJVAu3jpGbm7ZEQAuBs5VQ6x7BpEa9vS2+eUhh5h3nwdJKeGG7BjqwDZ17mFptrRq/E++dT2U72TKt1ZH9eMXq6MVZSfz285H4MBalg2dmg+jKuydmE761zenQ43LHof6N29LRHvEPKySt+P1g9nn6E+Cay47/4YIl9eIV33Mrtt4kQvLPuj1/oyU6y1KBpba/vCPSvqoZLGvRz10EcJZ1MCGuX7xzozd9XuVys28Ae9cUxJTlKhH2krjqP7+fwtugt9sb3/9iMNv+yp3Uwk7a6WCDmtXy2kwl9czToU5yC0EW7uHLIzNu8pUEXF+12SmPsUzYuzoshw4reMSkuedTAbBnH45Lnf+Wnh6bsRnaQv12qdS5JkW6CHtRXvEVxCTCL+NiTQO25/bVAiYdsNJlU4/kfIXjwwb6R+J670Sn/felId439XdglXqi4hwhw48aNXd0c8HK5Z6dSU05XllJTdsB4KN98N1ht++BIvp1bQWt1fryPaACFaigTOO82eO5XfKIJlxZjJxHcO2RX5l+8LjgA8qgD89tRMD3ol4MZrEf/MxF7G3qlfb+C/4blCU0/etJeB9/Kn70xM984rIewdH
- sXnJv+vI
- 23uTruvxc2U7VpbXxB2IPDgHTP1OeCDxs+AvnAajY15QtNqOmBaDI4Cj19lMhnPAr0QvE+cOsapD71jbv3uUQUNAmFBkwdWvPERSyph3NM6FEX2qRbjY2goojQE0yS7ZQqu70VD3n/mcoPwsLdyTjWNAULyByb7QnIyObAyHhw/Ra88gGcBT7jv6h6pv4epzoCLO7YLx8OV/M8Zh9q5x3MmOjNbQes0oJ2mHx68KKMek7MNzwCueuWYupjdd9flhZSYJLfWrxcQbEb7m8y7GD0eh4T8I8LeSsqgEj7YNZR+1znSBCbAvlSURTqcFZLMu0deN1097uWdBVltCBBgEGAW/0qmBA6BakisZyztvH0ECsuQgqogDgcIgGBA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794034935-767112
+X-HE-Meta: U2FsdGVkX1/ikUryvrdKM73rfCZ2/zYivenZDCHNikhJD63rZn3HnyUgY+K2ipK5vj4123Z2c9bXwryQXiJYAXYcU88Z1FOJGO3NR0xuFVcCwb4BWtpfg5FBxy4qGBw1nDFvCtKYxq77P5S9wLUvpFIUfWtnbQidcP31CIJrZR7z0ZWd6pcaAQCab9cSNslt4qTiYltOUEx3v3IBXd/7LAIhws6jiVRrKryuwBYEsFWbK2XJn5IMjjZSkrlD0O/2TEwXZ8jnwnYk+b1KMw9exbLKAbSuwTglkIXYyOjJ0ITICQwcSAWyriAoqn5gL9yWxHtulgeyxyRj0JMdqkp/xhyYfgJMZmg8vkdPKXUBsQIJYAEyyjQGwUyq9Hu8unxfxmUYuXlnXSvUXg+2iY27MFeaJP7Udh2JkHHUBODy7W1NF7COsN4BLmDY08peE77j/mdIjsMnI5zAomay4fCeAsOp5MfJXWgHCShhW/OujgpRbtagl7Zp6su/VxFWQJ6fj7dTlvmylPgvnt68+ikhbMPgLqLB13XcE3NPIuoK85kUh9KmSfVzPwrV0hBxNCzIXRAMt/MLQaGlNf7dkgfFCwoAoDN99EKYpec/DgPBKnfVIdNt8jgboacjEniRaEkGCUreyu0Qn1nyn+MDcKLVHI56FavG0OFrC7a8AXOdGCDIzbjASz2RNyte3eZZ+57zEvl1jvlpZiojrqPuDelOiNBYADNeytcLmzcy83YkdDwK1E1LJ3Rtkm7ncW/LM7uAROZ6mtHsJ+Z9pzjZf734bf6iZpkY74gvKQG4cLrHKjp7kd2T9vz9+cW90oDLZSPa/ZQFqNbiTswesr74r6QtaUeYUniKEf7dXCI/ESGUKjha4s3leieRummcTZDE5qqP3er9OUauXZGpItFUimmJtt0iqKxT/Vhiit0/iZ56v8/HWWnXqQjNuT3DjtYVv1LwvjpfenlRGWk0fHFORBJ
+ CmMhzdKH
+ iMmMinxyLbjb8pQm5CWBnQ//tHUBSsL446okBvJkCXpptBkRlH45M+1AOEBSPzdQ+Jv1i8cT9nNbX6034QYrbKFAxJh5+hb8z3Vom5QwFPuSgE1akVeVzqoZuvySy1ZZPMQW9omZDSDeqk/p9DCVyQEsvAAdHx5ohPfky9DOZ7nLVVwq5UwstLn1sEodBq7QHBaDgVtjLCxH/g1NcPwwi0clfqyxPNZbFJ5m7iKFwEw87Y6UQI5pe11Opa+PxbbwRvuJcBjjtNJrT17npVH7UkrXAANxWRE/IOVA2/CtNWmbOOuMqOr6Bgn944slx9r/GtRCvMuxp2eoxzno=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,57 +110,79 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Zhiteng Qiu <qiuzhiteng@hygon.cn> writes:
 
-> Hi Ying,
->
-> I instrumented the unmap path on both kernels (kprobes, 55 s windows,
-> same workload).
->
-> b99a342d4f11 does what it should.  On the patched kernel, where the
-> old PTE can be read from ptep_clear_flush(), about 96% of the PTEs are
-> still PROT_NONE when try_to_migrate_one() clears them.  The flushes
-> come from pte_accessible() treating a PROT_NONE PTE as accessible while
-> mm->tlb_flush_pending is raised.  On the unpatched kernel that is the
-> case for about 42% of the migrations (3.5% with the patch), and each of
-> those does a full arch_tlbbatch_flush() to about 380 CPUs.
->
-> tlb_flush_pending is raised that often because of a loop.  Each batched
-> unmap bumps mm->tlb_flush_batched, and only flush_tlb_batched_pending()
-> marks it flushed.  So while migrations keep coming, change_pte_range()
-> in the NUMA scanner does a flush_tlb_mm() for every PTE table it walks:
-> about 11,600 full flushes in the window, one per 512 pages scanned,
-> and 99.9% of them come from that call stack.  The average mmu_gather
-> in task_numa_work() takes 91 ms on the unpatched kernel and 6.7 ms with
-> the patch.  A longer scan catches more migrations with
-> tlb_flush_pending set, and more migrations make the scan pay again.
-> With the patch, a lone order-0 folio is unmapped with
-> ptep_clear_flush() and never touches tlb_flush_batched, so the loop
-> does not start.  The remaining ~13 interrupts per page with the patch
-> are the same effect at a much smaller scale: the 3.5% of migrations
-> that still overlap a scan.
->
-> So the patch helps by not leaving a pending batch behind, not by making
-> a single flush cheaper.  I'll rewrite the changelog to say that in v2.
 
-I found that it's not easy to understand the text above.  A figure like
-the one in the below commit may help:
+> On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> =
+wrote:
+>=20
+> Do not create the vm.hugetlb_optimize_vmemmap sysctl when the
+> architecture lacks support. This serves only to avoid confusion for
+> users.
+>=20
+> arm64 support for HVO is conditional on certain hardware features =
+being
+> enabled for all online CPUs. By the time hugetlb_vmemmap_init() runs,
+> all secondary CPUs will have started, and the system feature set will
+> have stabilized, including HVO-through-BBM, which
+> arch_hugetlb_vmemmap_optimization_supported() checks for.
+>=20
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
+> mm/hugetlb_vmemmap.c | 15 +++++++++++++++
+> 1 file changed, 15 insertions(+)
+>=20
+> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+> index 8596a462fee6..817ce39d4cf3 100644
+> --- a/mm/hugetlb_vmemmap.c
+> +++ b/mm/hugetlb_vmemmap.c
+> @@ -763,6 +763,21 @@ static int __init hugetlb_vmemmap_init(void)
+> 	/* HUGETLB_VMEMMAP_RESERVE_SIZE should cover all used struct =
+pages */
+> 	BUILD_BUG_ON(__NR_USED_SUBPAGE > HUGETLB_VMEMMAP_RESERVE_PAGES);
+>=20
+> +	/*
+> +	 * Architectures that need to probe CPU support for HVO have =
+done
+> +	 * such probing now. =
+arch_hugetlb_vmemmap_optimization_supported()
+> +	 * will return the correct value.
+> +	 */
+> +	if (!arch_hugetlb_vmemmap_optimization_supported()) {
 
-https://github.com/torvalds/linux/commit/5a6c9cf117fca3c38a98fb2a2d5549795c8b0b73
+I'm wondering if we could put this architectural check into =
+hugetlb_vmemmap_optimizable(),
 
-Have you adjusted the NUMA scanning parameters?  I originally thought
-that the scanning is slow, so it wouldn't be common for scanning and
-NUMA hint faulting to race.
 
-> The loop could also be broken on the flush side, by letting
-> try_to_unmap_flush() mark the batch as flushed.  But tlb_flush_batched
-> is per mm while the batch is per task, so I don't see a simple and safe
-> way to do that.  Would you prefer that direction, or is the change in
-> migrate_folio_unmap() fine?
+> +		if (vmemmap_optimize_enabled)
+> +			pr_info("vmemmap optimization not supported by =
+hardware\n");
 
-That appear too complex.
+then, we do not need those code. If the current kernel does not support =
+HVO,
+then the sysctl does not exist. It's already a common case when the size =
+of
+struct page is not power of two. If users really want to know whether =
+HVO
+is enabled, they can check via this sysctl file. Therefore, we don't =
+need to
+print a log line.
 
----
-Best Regards,
-Huang, Ying
+Thanks,
+Muchun
+
+> +		/*
+> +		 * Return early to avoid setting up the hugetlb vmemmap
+> +		 * sysctls; HVO is not usable.
+> +		 */
+> +		return 0;
+> +	}
+> +
+> 	for_each_hstate(h) {
+> 		if (hugetlb_vmemmap_optimizable(h)) {
+> 			register_sysctl_init("vm", =
+hugetlb_vmemmap_sysctls);
+> --=20
+> 2.56.0.rc1.315.gc6ed9934b7-goog
+>=20
+
 
