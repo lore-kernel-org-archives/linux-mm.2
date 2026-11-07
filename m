@@ -1,149 +1,131 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5896C606D826
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 16:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0A1606A32F
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 16:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VM9YuiWn
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=UiJNVrqK
 Received: by kanga.kvack.org (Postfix)
-	id 2B8AE6B05BA; Sat,  7 Nov 2026 11:46:26 -0500 (EST)
+	id E67076B05B0; Sat,  7 Nov 2026 11:57:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 291276B05BB; Sat,  7 Nov 2026 11:46:26 -0500 (EST)
+	id E3E536B05B1; Sat,  7 Nov 2026 11:57:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17EA66B05BC; Sat,  7 Nov 2026 11:46:26 -0500 (EST)
+	id D53E26B05B2; Sat,  7 Nov 2026 11:57:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EA4F86B05BA
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 11:46:25 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7BEFC1603C9
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:46:25 +0000 (UTC)
-X-FDA: 85408901130.11.BD055F3
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 5B535140003
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:46:23 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VM9YuiWn;
-	spf=pass (imf26.hostedemail.com: domain of cel@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cel@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A020D6B05B0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 11:57:13 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 33145401A0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:57:13 +0000 (UTC)
+X-FDA: 85408928346.04.2669C06
+Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 6BAB1C0004
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 16:57:11 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=UiJNVrqK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794069983;
+	s=arc-20220608; t=1794070631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iQPFcguwJfJnGIUghj3vW2cnp0ZTKsyoI6OiYKG+trA=;
-	b=PsvszNTqFzIHl2uJy8U/DDR7LH/RVRjRg7DM82sOcxX2npQe5Konf6eDVRLikGY2dr94hh
-	OWW1md658rbKOqCKzTXXXck1WqeJyjDE2b0EbmOxqp2wPfu/ObCz6uodfEyUV1wkEmItXG
-	UaWILfz86MEq25h9LWU2umEmKuiUZlY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794069983;
-	b=JLoe1h/IpnLnRKsxhoXki4dRp3jXDL2rGja+ZWCOB14POsNUf9f6qqvsppSEFchuPa4s2x
-	/C0lXh5ZfEn6uhcl663i/yNmnq9CYbAEA4VxAr6hkERPnB93chuW2Fawsf9gb8lofrkB27
-	YQ/u1Xek12rQzokravZFOVYbHQAAuU4=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=1IdYFHcguOld1djjobDM98S66C+vPqesPppAzQD9DKs=;
+	b=gMHefnZhAv2vxgB+XtyJUTOCrK7RMbBGUhXns/Z8vL1Vt7cg3Tfo2ni8CaAdVsAeNMPEDM
+	T9iKqUZuHQYQtSZkfwSSMesyijFinqL2illBf9uWgViA7GCwGZNVLR+8Xo98tp3LyH/oFv
+	WTEJ1NkXez4Tj/6NcyzwCdc2swKBhRw=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VM9YuiWn;
-	spf=pass (imf26.hostedemail.com: domain of cel@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=cel@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7245B43823;
-	Sat,  7 Nov 2026 16:46:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C841F008A6;
-	Sat,  7 Nov 2026 16:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794069982;
-	bh=iQPFcguwJfJnGIUghj3vW2cnp0ZTKsyoI6OiYKG+trA=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=VM9YuiWnX2AxixylKQUoq+kcitnOG5EzbF2X9QExC8KlL2MDA2iyK+MohWy7Is5c9
-	 XVSDhAm8H/yBVlmhN+3IQseSQF2jGl1M+I2ez83FRgJrdtIoEzyyJH3UteHcMNBF3J
-	 CIxYy49tvs705sBEv6+oNmDe+XeTRlWWJAeIlasE4z+WjzM0vX46Vs29hEnM0d2wZb
-	 W1dkb+g9MV6DZn1boZSIdWYUouaQYtnA2TMkW/lFIttT5mLiUtyZmeYkxA+HrJ549d
-	 6AW15GkyWYPIpCmvFv4xURMQ9MDEdEzTK3dhB19k8mh2nE5zuDwmhWf+JnyyfSm3ph
-	 PLuUxIL3o5qoA==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 8E1DEF40067;
-	Sat,  7 Nov 2026 11:46:19 -0500 (EST)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Sat, 07 Nov 2026 11:46:19 -0500
-X-ME-Sender: <xms:21Xvams7wVEmHspjWmbwhLpib2xNIptoVYE-80X8WqZqZcb1XPT-CA>
-    <xme:21XvamRC29Zg9ykNiW0vwrANU0AC0j8D3WACLizfxgWZ2OLmopVNcj-qyZCZTBqLn
-    FnUPDv24PUXWdCZGoMgnY4GISxXuJoqj_FJTWVyN8AgQyPiOZVj9Iah>
-X-ME-Proxy-Cause: dmFkZTEtlYS0+TY9rHJo1vCDNDBgG/0TlQu1ZgAaexztyT5e7mSb39t8Qfa0vTeatlfpwP
-    5ATotugI+S69Aq5UXpsB8wdUtjDvDqFpA717Gwij4u69sZUh6KSv9WWk6Jq//TgMNLfNVi
-    Uz7LSIH08qzFkhYYh9/35LIN1zJWwwarlCDU1iQg4wt21opJj09VkTQ37+xtOv284TX8B8
-    yl81LC5xmVZyo6A9GjLU5A0F5I2dYlaICl6rU5kYsMelZGpwWY/AOYhI+JMNgaonKgFQaK
-    ku+gQcY5aJl2LKRp0R1zioHZwwCKpV/Rgf4D5rEiKrG8xxXM/BULju0eld0dqqIZyyKUfJ
-    GW19ru42mbqsCpPSyXWqDBJxl5bN5OUlD62byk006CGbw520QKU/yBNHckj8/a7Aw/pswE
-    cEiGWvUnIlIDfqqhyBtbUxKdieVFtOg/Nh7ULYvIP/0NmKpXY6WcXU9anidEQ88SbIQjDc
-    p8Yn7T3r8Bo4iwmbKTgS1vVIcIOOKv75MyWqZv/+HCroxzEXbbFU7dyYNipmhzrf5va650
-    CqAuf2hfcDqsbABPPTHxkCEDCl/Z7jZw9/P1SXCFxyI0OJaeowmrBr44zHzsSCW7ueEBOE
-    v4mcadw/NREalORTbhxI6N8vjS1sruRGJ2ATEo0TnxHIE3AAjUR+ONXu5PSg
-X-ME-Proxy: <xmx:21XvanTCUxiRZL_4tn_RpzN8CzyhB8rLiSKq-UOIyotAbmuEjI7sGA>
-    <xmx:21XvaurCk3dCumlVKotKWDf68V8MDwwzlx-dEeK7pWGM9HqcR4oZkQ>
-    <xmx:21XvavRZiOL5frHmdBkAVeJ6cjpU89f7VYn1Ikw-RN984COqc-2ICA>
-    <xmx:21XvaoJKJLPj7VOMrYps6zuTHuKL8ZgDDK4Gr4RreYxXio5VOww0yA>
-    <xmx:21Xvag3Tq78e8w_19g2SFkvau64M8X7d5PUoh2FKftcFG01vhemSEsb1>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 5E62D782738; Sat,  7 Nov 2026 11:46:19 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=UiJNVrqK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.52 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794070631;
+	b=qB369+xkw8IftohbUNgo3lxIYXh2ElxLAV5e8gvxXGVdOWHLeE/wE8q5wbUnq/V34L0/D8
+	y7uoPajJrma2H96STJS7EzOf580xqqWaM6TqUlXJ96NMO2LC8/fp+51Op4KptoCPy15Xp/
+	2zZwY6B+LHSnpXZVtJWigMM9EZcgCTw=
+Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-1a3c08d6928so2896447c88.0
+        for <linux-mm@kvack.org>; Sat, 07 Nov 2026 08:57:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794070630; x=1794675430; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=1IdYFHcguOld1djjobDM98S66C+vPqesPppAzQD9DKs=;
+        b=UiJNVrqKoZiWHbha/X07sxEMqj7Vw7RL/Dxkoc/qz93X3TMTVkIQi1tTWW5tuUxxeM
+         aEHte1Vu48OX0vYtGWN1joAHiakO2k+FeMdJRkcKKmmtRlh5rPk3ofGNzl1yvYRvaE2O
+         Z7i9U/41+iLJ631ZVzge3z7mUVJ0Ajeao+/Jmoh+/DRYumsbyh1wOfhYRxtD9RQaEmcL
+         lA/9NkbBCu9aUb7qLnj3PjpfAXfWxQEtuUDYbIodm1J3Oi635GgWst09pxkCPicL5jHa
+         IwHbzyeMFPvogJj/Vh024vEK3hSAxeMgQheJWXCT2OWFdFX+P1oicUr5WC4NtSsSr+K8
+         UH4Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794070630; x=1794675430;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=1IdYFHcguOld1djjobDM98S66C+vPqesPppAzQD9DKs=;
+        b=JwfhUJaKs7Wa1PXQLzc4KMiToDqnvvJL7uYbLhAOIh8ATQKW3txWxM0Mqmkp3MKJry
+         X+CEjwMkMNDjwWi1D8aSapR5bbXIGQVD9YXQ4QrCbP+ADRk/kgWVVZF/XHmhMz8So9QP
+         UVC0D7P1brCztFUkJmgSSx6ojUWlAAM/WzxinBEf0H8c8o/AKYFINtkDO9gXghhNY/CD
+         Z414jtHWV4zXvnLsjxPmFCGRSNrrRBYlMmocFnwhB1EYi66s0UVxFMG/QJDw0BsoUOgq
+         cCRUCY5vXHHZ8Ru1u9ZT47Zjs3VJTCoT3+ykfYu5QqdQcm40/Q+6wOZLiC52BRhW6dSJ
+         PZTw==
+X-Gm-Message-State: APuU4Z8rI6ZF7kx9rrFKQA5cZQzdvkbTp7G20ziJMRgwexjU9ZMucl/H
+	cIO4HesrjUil8R5mrcVPNJTCH9wZ1POsUU3Kb9IDsq2sxuBcsweY/n0f
+X-Gm-Gg: AYBFou3V+mn4kz7FPCoWRuPM1eCRa7d/LU6WJjmfKmpnFAOElSzpCeberiF5WdJcdYQ
+	itgdaohgS1JGe4fGbrZ5JMRFR90ekkoiy01J1OBDB5Si21mA6KYHejznzMdE3y2xH52BR7OodQB
+	XA1kxh0gjDeUG4mf4e03DwH7mrZAoLpUqfdXPndJmzCOOtVp8rWe4Opdaic5nP1MEC0C7UfoB78
+	cF1WzlmrzUnKWo2p5MJLpGO89I3dj+tv3U+lZ1SrE4r+xD0QDWsN/YLEpKA+l9FkYHcZkno0c7y
+	pCANzfBpC886M7NMSW4iPGEVStjW7szo/EQjaGEMjAkrE1I59nup9RyVKpv2/NLTMPSwkrEaHV9
+	Jq1hL44Ch+7oXI5CyJys8ZVqt6+WhbVTL3e7rqJWOQARbWANDn4+c7kYUZoaBqqYJUQqQlMmfak
+	JbzdCqBOtyabz/a6smBay4nlBDAlajTmjoQ2cfTbq4YmmH25JxqGIajk83wSEwfBEs8XH9BKyhj
+	NA+0HzeMMkrZhQdyj8njm7yql0ixAuRzMHx3xsyBu6D8VR2709C1rFRTfCbTd1KZ92HIq34W9Z9
+	/a4a58KpN0BsCwUB7akqrXKE
+X-Received: by 2002:a05:7022:c43:b0:1ac:d029:70cb with SMTP id a92af1059eb24-1b25d36f29amr7174636c88.30.1794070628979;
+        Sat, 07 Nov 2026 08:57:08 -0800 (PST)
+Received: from [127.0.1.1] ([23.254.208.9])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b25e4b4aa7sm15456126c88.13.2026.11.07.08.57.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Nov 2026 08:57:08 -0800 (PST)
+From: Qiliang Yuan <odys.yuan@gmail.com>
+Subject: [PATCH v3 0/4] mm/ksm: keep smart scan from losing duplicate pages
+Date: Sat, 07 Nov 2026 11:56:59 -0500
+Message-Id: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-0-16d5ce8b5fd6@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: AjxZksNfZZQV
-Date: Sat, 07 Nov 2026 11:45:59 -0500
-From: "Chuck Lever" <cel@kernel.org>
-To: "Christian Brauner" <brauner@kernel.org>, linux-fsdevel@vger.kernel.org
-Cc: "Linus Torvalds" <torvalds@linux-foundation.org>,
- "Jann Horn" <jannh@google.com>, "Josef Bacik" <josef@toxicpanda.com>,
- "Chris Mason" <mason@kernel.org>, "Jeff Layton" <jlayton@kernel.org>,
- NeilBrown <neil@brown.name>, "Eric Dumazet" <edumazet@kernel.org>,
- "Thomas Gleixner" <tglx@kernel.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Jonathan Corbet" <corbet@lwn.net>, "Christoph Hellwig" <hch@lst.de>,
- "Greg Kroah-Hartman" <gregkh@suse.de>,
- "Joel Granados" <joel.granados@kernel.org>, "Kees Cook" <kees@kernel.org>,
- "Jan Kara" <jack@suse.cz>, "Jan Kara" <jack@suse.com>,
- linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
- linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-s390@vger.kernel.org,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- linux-um@lists.infradead.org, linux-wireless@vger.kernel.org,
- "Linuxppc Dev" <linuxppc-dev@lists.ozlabs.org>, netdev@vger.kernel.org,
- ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org,
- coreteam@netfilter.org, kexec@lists.infradead.org, linux-pci@vger.kernel.org,
- linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, ibm-acpi-devel@lists.sourceforge.net,
- jfs-discussion@lists.sourceforge.net, linux-alpha@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org,
- linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org,
- linux-sh@vger.kernel.org, linux-usb@vger.kernel.org,
- samba-technical@lists.samba.org, sparclinux@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
- "Takashi Iwai" <tiwai@suse.de>, linux-input@vger.kernel.org,
- linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org
-Message-Id: <a1e2d05f-08c6-41ac-a8f9-6985ee00dc97@app.fastmail.com>
-In-Reply-To: <20261104-work-procfs-net-v2-10-221e2437fed1@kernel.org>
-References: <20261104-work-procfs-net-v2-0-221e2437fed1@kernel.org>
- <20261104-work-procfs-net-v2-10-221e2437fed1@kernel.org>
-Subject: Re: [PATCH RESEND v2 10/13] SUNRPC: let procfs own the wait queue of the
- procfs channel files
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qa4f9i4oyhju1nzypi3tuagxq4e3g8ft
-X-Rspamd-Queue-Id: 5B535140003
+X-B4-Tracking: v=1; b=H4sIAFtY72oC/5XNsQ6CMBSF4Vchnb2mrVCKk+9hHAoUuMEW0otEQ
+ 3h3C4tx0/E/w3cWRjagJXZOFhbsjISDj3E6JKzqjG8tYB2bSS6V4EJB+WjBOejJATkTJqDKeDB
+ 3bD1QjyNBVXNhM1NoXRgWnTHYBp/7x/UWu0OahvDaL2exrf/oswAOsilEnatUqNJeWmfwfqwGx
+ zZ9lh9R8OwXUUZRmyLXvFQ6Tb/EdV3f/tmrZyQBAAA=
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+ Chengming Zhou <chengming.zhou@linux.dev>, Stefan Roesch <shr@devkernel.io>, 
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, 
+ Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Qiliang Yuan <odys.yuan@gmail.com>
+X-Mailer: b4 0.13.0
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 6BAB1C0004
+X-Stat-Signature: fgtyodd4q7ntp9n7q1a7hmj16aet8h6g
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794069983-186991
-X-HE-Meta: U2FsdGVkX1+jWByKlUi5JU4+yD0IL3NmBiWqCVnOUTu9I/m+BL6qd1m90/DjjI6a0DpdRhjvL/TY1JmZckuk7i0MSM9SkEgwDQajt75yTqXZlFQ0tk5H1ymMW5LQVMJlvp5lhb+3PFGW94rQByHqUlvJiRygx07qrXudnogbocsIe2b48X9sDnzueqbIBYRmrjjof15GdGWuQ4eq5cO5j2026a+wajRQDrrbGvgGZgj+D1qMikmX5ULknFnh+9tViWggwxKx9sYeaiVjp2S1fDkkpGF7Vde6YQLm0iOPxkr1up3/DBFtucRKXhgIXQ6PS+5pefzNguq2gtWmmkIwgkMZIx/mkRvDMsEzwKlPWn+9z5ZwaUyXWbarJr2yCt8iPTCu9nRap6mE/AbfqaDgEHnLmSM0HxQboAZ5IyvwasXPLGLa+9dMq4AFLYYm0d5SjM5i1utwYjBo7hcP09mPSGs1NSOx5z+6CGwVIOUpkYs20dES4NYuKU00djtsGmbp+XnClllqF22SSYwLcJhzgXNsYAx8SNttNZYRubeMbJCVQboyop79E1Vy+i6c/8C6rEQ1h/L0Red69PqkPv+0jZBNmOL4g+xVC1c6R4hbzt5SGcv7+/g4nfn5NCFP6eQMZ0LXhVv7AjY3+xI0jkp6rth43gDkWIazUQquoVE2ZqsMXFEd59Xbegl2t85R5r1Rd4Uk3T0N0HQ3eLL0RK3Z9a7dnTEyi+/Z8/dLisSJg8uRmh3tbu/BGbEEjteaihPTT2N0vaGtjQzgUQobRC1JvhnuU+0h10OQZ/drklLEMaUkiOomc8WXVw8+ZO28YJ47SciasZ4vB5DPRUOWIZFm0/uETgIwvhY80dRfz1jwBSQipdys8JbhcVc69McXNL/UYcpVbMIyTxWdLReC93b3IytBN45ZAWzkZdeay2l9Hq1diY6/WaxxQSB7gI7snDZ3Kz68aPD1NtngLXr3S/l
- JmHBKXnq
- 72JQZXfNon45x6kBHPxeB/GOBYTle23Cg3Sydl453R/KU+bLHbEcSM8nfK8SjNIyOFnkxpBBCCLeFZcSV1Dy6zsdAsSp93l9ofnpGeJOCquJ6/2PJeUcwGR1l7dMU5GM351jrmgLxjtgjvnJAmyGsMQJo946o7b29ZLxWpU5IlUgZqu5lAqqB8+xUhHq00pKaoYZ62F1/rKnjkjV2lLBazEGElrZXDf83Dq+FHvq5aQyKFp0yrnglAyUH9xVx8Y2NWa0DzoOSju3eqeLUb2twJ7NwTsOsvkPRUo6ZGh9Ix3K3L4ccYZmd0bFoAHvaVZ0G9lsIH1EPmx+gpCkXcuVVc5N3flxYlwWIzEY4
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794070631-145008
+X-HE-Meta: U2FsdGVkX1+acK1w6rDoNXXH4NJhjVxEaq7KJY6ydttO9w1QyuULrOIrl1FEMnlY5Pzv80Mrd1aeta9/JUfPV2l0rx/xQLYTYPpdOb3ypbWVfhAVNrcF1AciqSdhANSc+rg7AQNH79FdGQVAPeP8MYXD57/OQAvQvpPlpxkFwzfIX5SJhaQiQFg0w0/qkuVV7OIZCZBUKoOL7H8ViLy/nYM7au84v0oni3hMaC9V2x44a/46ETPE514hVGqfHc8RHHBZ6JoaUGxEtOsiVmbD/Gp1HbUWFNicSLYNDJcTfSbfJj/RBkJRSFgaUJ6uXckoAWj+xetGRXLfdVl0Upzo0ef1Md6I15Mpa09LMHl72ZF0HpE4Fss32T01bWQK+D4KvP5sTSN5NjUWbWM4UWs2AAcelNHsxezeHp+T1EJmoFfzNQX57Ng6ZMkZxBO6EL6xV1Th5exyE5/EEBEUpa7P79T4n+zhQCMUhf+cBW7/SvnftXA0KuuAB6XwEX7qkBq+L35aTgltLoqnzxdC7fhG7aZ3pgDlgit21/O3iFwmu00M5YZIxQaSdkcDzw7LkB8XgFPbQqaGVCahi0NMQ35qzKUaCZfSJvir/3O9CjmvNWN48BUhTvAJJjxonMSilhr0i/BYggF0BFZxpvOSwHZ3g32PJLlaagBBCbd8E/T1EiZNYBiok7RwE8TwWUtQFHi0lPvs5iMK6bUuczi7U7NYelJNYPSNJjuzPTV6ZosXqbWERdsoxz9hG8n8+RHzFFw7krDRgXpRyV04Fpbc5+m5C1SNweqLtsYZaavaEtlcwS2caeqCOkZAv/8RyW6WSg1uqM/Ve/e5KnN+wLK8evWK+r7D5tp5HqatCIEJCTJc89V80VjgV/q7/+/i2SsR7RPR72r3eNhJzpdbY4aSIryTPoz6Jgj5Lyjymyx7VsrOu1R75jwFczVYYewFKUfszXIF8lWMvbHxWYLjWaJZ92B
+ F0BG2xoO
+ DdquU/kWdITEwXUBtG1KdS91dkxGB8ynBR0jpMoHIvPoBIiEf4sMh6Cgm8XTGIp8FYsqsb9dbPTSilQvhotLhihd+qbuKLXSmyeKb12aaHJA/xKejWBSh7QJ8at59VDs0AsMPVZIzf3TrXH4qoEcwjN2VmGoH7+GEa9TIg9KK8P1rNeMzLqPGFhRlmtC/bmhFoLomAIS/ZDZsaKN7QpmdD7JOSATQMiGaRvF2+gzBF81ub0W/hGjY5qk+4xEVl8kpnGlwHALafDso7xrNiZlXPGiasRu9IvT89GO2G6EXzp2Iab4DlY+c/2I//CHtQADlBVKszcrFKngQ90pB56wYCQFbCTZQWlN9nlZWGNMUwTe6Gz00kGxwTh2Oc585YtnxNVanr9XwfjjCBm1cTc2ZdfcKO4T7N9t75/QCeZebLK1Vl9kwbKcVMnf8eq9A9CZd4H7E2kItJK7sEc8Kf9m+uUB6T3XkEGTytrb22oID/bZUgI5NR38YZP+eqLVQNXb7ViRpnVxxbWZhIfM=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,25 +134,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+With smart scan, which is on by default, two identical pages that become
+mergeable some scans apart can stay unmerged for as long as they live:
+each page times its skipped scans on its own, and once both are old they
+may never be looked at in the same scan, which merging through the
+unstable tree requires. This was first noticed as intermittent failures
+of ksm_tests "KSM NUMA merging" in run_vmtests.sh.
 
+Patch 1 picks the skipped scans by the global scan number, so all old
+pages are looked at together every eighth scan. Over 420 pairs made
+mergeable 0 to 20 scans apart, 361 and 334 merged before on two boots
+and all of them after, at the cost of about 10% more ksmd time on memory
+that never merges.
 
-On Wed, Nov 4, 2026, at 4:13 PM, Christian Brauner wrote:
-> cache_poll() sleeps the poller on queue_wait, which went back to being
-> a static queue so that a poll() on a procfs channel file can't be left
-> on the queue of a cache_detail that its network namespace freed. procfs
-> owns the queue poll() uses now and it outlives the file, so the procfs
-> channel files leave the poll_wait() to procfs and an upcall wakes their
-> pollers through proc_poll_notify(). The channel entry is remembered in
-> the cache_detail for that and forgotten before the entries are removed.
-> The rpc_pipefs files keep sleeping on queue_wait, procfs has nothing to
-> do with them.
->
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-> ---
+Patch 2 documents how smart scan picks the scans to skip.
 
-Acked-by: Chuck Lever <cel@kernel.org>
+Patch 3 moves waiting for KSM full scans into a vm_util helper, and
+patch 4 adds a ksm_functional_tests case that fails 20/20 without patch
+1 and 0/20 with it, on both boots.
 
+Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+---
+V2 -> V3:
+- Document smart scan in Documentation/mm/ksm.rst, as Xu Xin suggested
+- Wait for full scans and switch smart scan through vm_util helpers, as
+  David suggested
+- Rebase onto v7.4-rc1-345-geedaa7d61f1e and retest there
+- Measure ksmd CPU time with schedstat, which puts the cost at about 10%
 
+V1 -> V2:
+- Rebase onto v7.4-rc1-132-g05441d697f7f and retest there
+- Drop the ksm_tests -N -m 1 numbers, as it no longer fails on this base
+  without the fix
+- Update the ksmd cost to 10-12%, measured on this base
+
+v2: https://lore.kernel.org/r/20261105-bug-mm-ksm-smart-scan-align-skips-v2-0-8a9780b6844e@gmail.com
+v1: https://lore.kernel.org/r/20261016-bug-mm-ksm-smart-scan-align-skips-v1-0-2f91d76416be@gmail.com
+
+---
+Qiliang Yuan (4):
+      mm/ksm: align smart scan skips with the scan number
+      docs/mm: ksm: describe how smart scan picks the scans to skip
+      selftests/mm: move waiting for KSM full scans into a helper
+      selftests/mm: cover merging KSM pages aged by smart scan
+
+ Documentation/mm/ksm.rst                          | 16 ++++
+ mm/ksm.c                                          | 24 +++---
+ tools/testing/selftests/mm/ksm_functional_tests.c | 89 ++++++++++++++++++++++-
+ tools/testing/selftests/mm/vm_util.c              | 63 ++++++++++++----
+ tools/testing/selftests/mm/vm_util.h              |  3 +
+ 5 files changed, 167 insertions(+), 28 deletions(-)
+---
+base-commit: eedaa7d61f1ec8ae053a9ece0d553785350ac486
+change-id: 20261016-bug-mm-ksm-smart-scan-align-skips-cd01e5a9889a
+
+Best regards,
 -- 
-Chuck Lever (Come to NFS bake-a-thon! https://nfsv4bat.org)
+Qiliang Yuan <odys.yuan@gmail.com>
+
 
