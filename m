@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F543606A831
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FAE608D92C
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bQdelZVy
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Hx+Lrfin
 Received: by kanga.kvack.org (Postfix)
-	id 5D8C76B05D0; Fri,  6 Nov 2026 19:37:11 -0500 (EST)
+	id B55A66B05D2; Fri,  6 Nov 2026 19:37:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5B6916B05D2; Fri,  6 Nov 2026 19:37:11 -0500 (EST)
+	id B2EBE6B05D3; Fri,  6 Nov 2026 19:37:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 476C16B05D3; Fri,  6 Nov 2026 19:37:11 -0500 (EST)
+	id A448D6B05D4; Fri,  6 Nov 2026 19:37:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 170AD6B05D2
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 857056B05D2
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:11 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A3C4C14027B
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:10 +0000 (UTC)
-X-FDA: 85406458620.13.2EF8172
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3312B12027F
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:11 +0000 (UTC)
+X-FDA: 85406458662.12.8147367
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9042E120006
+	by imf09.hostedemail.com (Postfix) with ESMTP id 175F4140006
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:08 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bQdelZVy;
-	spf=pass (imf29.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hx+Lrfin;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf09.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794011828;
+	s=arc-20220608; t=1794011829;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OqpfAUM6RL3PzGZLar4gOeRZzwpcSnfwgpXmVVFrLVI=;
-	b=WlCfcxPlyodPxe3VHi81a7i+8Cn3mK67Vnn5uVbzqe8w9IF2ukF2s9KSkstgalmhY9FmKs
-	8rBe8cD8zGedGKomCt9DHaHY2fUTpzNGTjl+U1Aq2Rv7hA4EZk2ENq1NJXl/zMjUv2wG9n
-	g7xyPvdqIq0ellY5gJH0r6wG0o1vVeg=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794011828;
-	b=ItvCUsfc6Cur5GGvv8PV1cBRmL4ndbvpA1Cdvkp/UtDpb+K2FVDHpe0wtSQ0WgTe1+xTPe
-	I8/3MaP4Zl95uwHPl0IkuEA/h/hIGWsoS4rzDXNOeRZ2yZlbt34U+9p1Qebwu7xdr47op4
-	Z0pDRJ+L1XQha0yiFMzIxd5W+7N/4+0=
+	bh=XbgD4ImI2n1rI6Htjo1pftOxgnHtLV+P5ZlvPe7/FPM=;
+	b=CE6e0fyCqr2wc4PqIUaBjsJEmlUgLzDsISdqxPVOXtBIVTDQcMunUHscIR9HoVsjZk301r
+	C1gPrhOrdaqNe+qBiRjOtGLQ+BDlBlgCyLnrtgifKMn8SkZMUfJHsNo0lQlkAtOFNogTEO
+	zVLQAb64WwYDR0nV0wYqktD/plIm5ow=
 ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bQdelZVy;
-	spf=pass (imf29.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Hx+Lrfin;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1")
+	arc=pass ("kernel.org:s=arc20260519:i=1");
+	spf=pass (imf09.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794011829;
+	b=vadLq+EEfue4sydDmez1TNyH2Trsl7qsM2YhWd5LSlkdXXTjEuBxxrFRu73GZwzRMulr3v
+	7aAvabnzyqegFWqFnF739gdLeSKZuficS6ffQo8szXyd3Gf4uNxpnHiWBZYK+indbJJskx
+	9/7jWnE6Iv5/Ro+UtuaoY+cHv1gPzWo=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A45A144095;
-	Sat,  7 Nov 2026 00:37:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3CB0F44491;
+	Sat,  7 Nov 2026 00:37:08 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011827;
-	b=WkxG3IA3IISjlhi0ComCYAO8s6CeWT9ZWCppuZF18hv1+K8NmvpTFD4pADpVPAnf509f
-	 06aVK/g4mUG6p9xAQje3IA80lMQ2g2QEKOjRNHwe2WGlqh0TCIGSt5mo9YerLB1qAoYb/
-	 JtU8vT+8PBdaPvVOq9SrESQau4tAkgB6KzvXSXjdT2bMCL8uW7c+O+yR/6l12ie1ujVbH
-	 KtMStZa8+PNC+/c7VW79xpq1B9sY2rq+jl+X0CrbiFQ0D5IvxOFywHs0T8fzTKS4XU4jG
-	 IcUxpNy4IJHDUN7EQ2tx+UQ2Rh0LRm9fQ+S3QZCanK2U+jDjOnsmizEt/dNevgmzH/A==
+	t=1794011828;
+	b=DhCW07Nn03Q+sJ7vioJGBqHKxhj94Gspz/XxJ+f966pMWIYuMynLGUhWqEsvnZ+D6NNr
+	 JxwvHA/mYnrUARMRO0gkHr97CJAdp1dBC6buSy3h4hf1fZImOh9Kyxg8BPghYW4E5uQrz
+	 j11uX6RvMmC0dJvrMa6KYGintB1WfxlXvtWlMcXFaBLLl9FtfQSHCVi74TUoIZ8Pz3zdZ
+	 hSMCohuugs7u8RdU/X9vadKIxgFIV86L99nuV7BIKL2hzuyQGkPcPESdlxba1ZGQBASWX
+	 hSS+mRYsX6NjwQDwgwWRD/uX0PRSO90K3BTPVkdID1ZFSOny6X1qE0SelZpcCu6zDyA==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011827;
+	c=relaxed/relaxed; t=1794011828;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=OqpfAUM6RL3PzGZLar4gOeRZzwpcSnfwgpXmVVFrLVI=;
-	b=r7AoIT6+Z2WvlaE3VNXpVkjkkEuUA0pe5wlHBHKhzCh/YIzRkEe4PLhju9ZeG+F4sEug
-	 /cUKCSicCSjgEa23B6CIR4eLZ9f5BZ51jClCpP97UqneuCiz1hCmeNfWCoxJpumIaFFGo
-	 RzKERZqNeskkWFrSsJmV2jFFH87g4pPzlDrImFyFN01FJXaCibbS4oRjvWWjIsZZCuQkl
-	 hfOUtigTJlqs5C6uLfr+bXnd85TTBxPafJMKNdGtPGrpB4BVxMnszni9IKINvld79z7Lz
-	 Fb2w+QjHaSFM/0x3uE8Dp1xU/3pzD3gVhIGIREBhCwCKbCv2pKCYoCJgGWD0hDpWM2w==
+	bh=XbgD4ImI2n1rI6Htjo1pftOxgnHtLV+P5ZlvPe7/FPM=;
+	b=iBtBJ3JTtUyU6GAUDnZXdEx+XF+KPjBz9VlpnWGhxjFhBBQCfJ+qQ19NmqdgX4tIpNCL
+	 pamOqcyTGQH4Yb/XOvVqcucwTZIhObsvusBeI77Itb7gNORPI4DAzhgORj2HJec44ygAf
+	 W1gn5KGw2DVFMM2+f3cwoXQlfW/HlSXzrOAFCSflB7VaZTcBUrZeewTyRSpo+3DfjGond
+	 f6/qjw3n4KecsS+9zsJOVUXfr4cCTaQI9yr1EEHTEMCam8G0rkGtq+BW0Z0hOQ7cgdXTz
+	 dF8iJqtmikC7AnDthCzSgtqkz/J8ekC8PqzkpKu+QArFy1Upe4VWMhWebV2pAkFQvTQ==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 780D01F00A06;
-	Sat,  7 Nov 2026 00:37:05 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id E22B41F008A2;
+	Sat,  7 Nov 2026 00:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011827;
-	bh=OqpfAUM6RL3PzGZLar4gOeRZzwpcSnfwgpXmVVFrLVI=;
+	s=k20260515; t=1794011828;
+	bh=XbgD4ImI2n1rI6Htjo1pftOxgnHtLV+P5ZlvPe7/FPM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=bQdelZVyvzyp0I9s6V40CthXVoMUSiMzwHxGzMwnNOBznLtjQvzWXksuo24o22ihX
-	 c4bv2xr9a5IQZxeKi8cMiPD/nD6XbFgVtjhNTL083D9A3VfoRMFPUMSxLG/Dqdv88g
-	 R6XWVqyOvR4ZMXEg3zT+TRidcazQ5QdsAadBAGNkgDJaTAb2IbLTBL07HqahiF4Xtp
-	 CsfOs3VNi18WszhLERoXJaU5bD5Nu4UWJ5WVlcSvFyDQLdqX94yr9GYl9WZI78Y4oT
-	 THA9RJOSDt/2kUwc65o9uPYoip3OYNdpIy0Nooxa06Yr4/DIY9NZoxpLkIA2whlJ/O
-	 15BxURqzsFJug==
+	b=Hx+LrfinJ+cKXfOoDEnRa6iap2I/5fgh1ug2S6gqUAVQgh4Ru/LwyE73BnFN6NQrh
+	 gjbWihRk5WcBvYsVG/AnPSbAEUV6liOXdlVKFi4/ulUPLEMytc7GZ8nsqzwLHzx4SK
+	 Pw5D8lXtNGYpGC3/QIYSOtEgqqzQTyakl6FT5lAohHexuw9GzVg1AKiMzpQV2Forrf
+	 w+Av/aNks8R9+hayu8/OToEhj/0ictjzU3NChnqXOA7LuF4cYW/zdR/9Rpup205S+V
+	 xodva+pE5WpqpLnVNVxT+XD0yu1HBM6LgdMF+3mfWRO1ofeLMFLzS10+DiZUGbXDFR
+	 CU3cV8yAVBq6A==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id A9569479B1;
-	Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id A416247977;
+	Sat,  7 Nov 2026 00:36:54 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:14 -0800
-Subject: [PATCH RFC v3 40/88] KVM: guest_memfd: Add TODO for memory failure
- handling in PFN mode
+Date: Fri, 06 Nov 2026 16:36:59 -0800
+Subject: [PATCH RFC v3 25/88] KVM: selftests: Add basic test for sample
+ memory provider
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-40-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-25-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -119,11 +119,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=995;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=3413;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=RMoXxdr7unZnobL7R1i/MK8zqw1q/jitBNuF2OvUGw8=;
- b=hjk6HdU81k97DczNhIQxswAsxYsu4tIqPkDlpmZd+T6wio0f6skkcsf8gsFCP0CMvMeZH6Uiq
- yEe+MejhQ7bCc8jLcDgoJYyK2pebq3F6/hjkDqs/RM2tzA/djMSle1h
+ bh=egSCIn/Z8yZyelQp7cvP3qLOE5NIjYa4+lOtgqtkCcA=;
+ b=eS+nI7PxlE1maO7QU8JcyjZXzc2ref6sfu7l8coYHFOVhGHBKNsZtFBYoz3WLd43hTPKAb1qs
+ PP5daxaQ65oBQ7t7obsP+mJagOwOWNCEhUA/gMKhIeq0BPfUyn6q5uy
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -131,18 +131,18 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 Content-Transfer-Encoding: 7bit
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 175F4140006
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: q11h6bdqyu5s8fgwkrgmydk6u83xktjd
-X-Rspamd-Queue-Id: 9042E120006
-X-Rspam-User: 
-X-HE-Tag: 1794011828-819330
-X-HE-Meta: U2FsdGVkX1/ednQLIwVa1O8QC06KQKP+jljxMdmg0XEky5UvabZb30ojed18wyJw7K38+4tmPwL4tjNRHvrupeTOO2lgTwGXxlfSYy5BmZiwyF0kwglYS/8lOFgfCwoB0AP2UmZyVee4B+/FZZw3NwCQWch12Sb9jYuL/89sLqq84i4AM8jgkaY520QMNolXo4uxFY/QKhvECqCTJa8+f5l2Apr5q1I4Ld6FzS228B4BRYcOm4n2Ilf6fifqkxEqokOK1gcbyBItJ/CxRZDxcOwSa4vmZDgAENExpG2kr6mGLHaK8lEpbmAiCRVdiYPdHmgRz6I0+IQYlp02f3Reg89tEhJ9uKnvHIW0SW7ZSVOJJT4hCNBvdnszoq2uIiw9YwAAEetaGazpBk9t4BpLrQTTJHW9sjKvrg8Wd+GNR4oHFv0MtMusacIrATPSG6pUofGgAzZwKcJy6FfTIb2LgTVj+Xhal8PdXLaC8LIAJFozjdPni2138gjDLI+lTBgZjQUCzNIvXmuXtzVm2xtL1GTNa361IzMFUnYJ3DFZ0D+ApoDMP/jrQ55/TLALcl8NkWRw+svxyR7G9JdJ4EkWegIT4A1hOeVMR87QPXf5gvIL/o58+voYv5YPjvihkkB/tedK5sLNZOburxyfVmwU2VngsT9zyFFtzCrQxrkULxjNVZSrekP2dMcakY4NYJzuV8ZSDEl7RUWMbxFwyxRaDs20MO/WnaKg7NOcrdoZWav1i3AVeVg8fdjzFT+kFX73SA03xbRK6GndE+zIOe6R0PV7t/mhftVqPFhgrPlnp1ere82q+vZcDRr7P8TyHXJpEgKbmHiOF5Kiy91AjA4lHKdETijxDE5Cn8qw24/Y22/BltrOanRVqtCPXEtWzg4ypWPFhPg7117uF1vWIhTEXRaqpU9Dci+ZBeVtl4HdRoB+dZYZ7ruBJ4s/lBmfU8V4QvlGc0OcT7Lw6x91r0Z
- jVC7yRYt
- CegcMItHohfUZf4hSnVwSkuQ8gmE+ahtxEpOoZUu/JleIrPzO0FlBLQ8xkKOUDYYp2mxy1G+4fqpRoRc548xROjo2K3DwYEAK5/66UIiwvoJ2E84M0ML6S0a1eQbXmZ5bPGP0yQ6LIG2AlJ9Go++rIQvFVvjscw3o99Lm3zzrZoUN/Y9lXz8yV7AyfxMD0OLV+8w4UKXi7GFb5n7VfDNlFv4ES5V18oyCk/4Qs7WvW66tKdwnxzKCQ44bweT4Gh+xLvVZ0P28xQvkprmkIAyX+YAgVnSvmArMMbP1no4LUFLfYVt48PBcrzwnWlO3FUmy+GdZqK3YblGoDIN+o4YkwfZXu5HY7px58DnzsnyYQJRS5LSYdotxoRmByyp5b2jVhA2MKVP2SakDNjPdCwiEAAxtGg+OVMPVwpLXZE1iVMWWtaAplDnEJqBv599eGJl4skBOPv48OlhsouZ0ePhNXNuwb104l62IjjGnmAAeRYQkn7m9E6BTrTWW57VRv2Mc9er4bKMSzZlgP8hWlho1lA0Gm6yMLIGMPm76YVPERHKLn/ciYWb/Oahs3d6zJBcwZ67MEnRz/ZhrMaqYxh4DlloAuSDRdqv5es0C
+X-Stat-Signature: 9kioeb1kcmjbyusbgekcaaoz3zeuzdy1
+X-HE-Tag: 1794011828-812887
+X-HE-Meta: U2FsdGVkX19OwuU9vLmMLyqgZ5DQcBaeC4CACzVznNnNePF370dYWonXYwPdq/n7HKI42ucu9bzoFjJpyZ2O5WEF9L4ypK7V/OBMkSDnmElQ6wXiql/Ic3PhdLdFToGe/9JhMXCUmKKeioCdTz2YEXBzcTFDaVFam7sIGucMH7NfI91Aw/AtH86G0y9ixhYEzVIHqSOms6b8qrt3bU/IIE1AOPNuDwKQlFPEIsn1hzX+xeyoeGocztD6oF5jELd0WMPydOA4ZYv2K4M4/ieERQCVxJBHUq/RnNCxccLxZUIC7H5hqVCsUZQAkiUXgpGTapWhDNJHh6psAjup29JLMWpfDIQF4UyaZe+OlnSnoTOM2cK5DsmULvnsWYdWAX1+eQYRdbyv1chPWWQ4lePlxRxI2QBxgidc9b0NRU4C7ISF9oN7oM0kVMDDhip48OXwOhgjWTAbQfaDbfv5G1D4c/vROI6KQkS5tXtvtqR3LK4U+HP3tAUk0BcYZIVKFJ5MLUtQG0JXFa0quY3L6TsP4BzcN+xd15iS3NUERSgJ8/Yv+JIFLAo7ZKL7dx4z9ZPkwhjCfsucVO6u1k7V+0Lm3KIBjfAtdZXb9hv2BY9OJaSLcfbO3AmFY1IF37dVmN20+0RNrkaRF/oLq0ozDh/lYLu70k34LcJgVhZNXIRgOqxLbWi/eknKxUih0ox/XAT3wjgNY7uFZCfW5GglMWLO9llUn8d+DSPuccerLvWqw/55loX/R6grm7zvwqpIbhgJj755SlbqRfxNelJ2yjrY1Gf+dIgknKQXQyceWtZC1B6IrFmkF5JD1AjQEIWJhLot4JsGsbTnCO8zjppXOwR3vcJyT9uXFomGBKoXpyoBhbQAdL3IjY5TuJKk6TbhGgXqaCqZJKUhCz0R1MsDzoUl5RvkzCFPDUzSY63ziIYu43tC5Oway6zqlTYLCHmxjTBpWNtjvAorX34PAWuao3j
+ Q8RNuRGQ
+ lWv9j/YiEmRtD58H3dE+fQ3PwdfoHK1tyRD2kzH8QQQbyxP9n0q90qcE4dOAcqCQ/kFy/9ZagPqrAfAtU3YXbBUSiHoQyzp5vi3EERnIeB1/jTkyzsQwrarfxrOcsuLQCHBUrm248/ZJ05i87kHchxvUrqsC+xZ2JjE0l6N3ZF2qOBObA5K02EGu/Lixi0bLxLpobmhwo9j1pVLCi4k7UtkmVgDfe7GWp/6NRFi+1Va/AMMJYdEJXXvjJQzZWShcrl4OexKNCG+v33bvZNiFDnf/u3owVyD6vLtpZX+zJZrzJuKxh+uzifsnr45JnogYmfrWjMlFkOgUJRHwH+VESLXiCgT0dnjNFZjv26QpEp1uaf2+eQUP+TaeUYKA1ZAnIGRTxhKkYXynkYKGwB3ZEPtRHrsoFbDXFLzrh0rIG5jmqbJpRYYaBCJ6pa23uhobbLLyHRzGgYqveO0G+X88RTvPRrkjcv7DJ8QA8FaeOWp9sfclpQZ8dUM8gSztQ6D1HJ0PwHHVJ5U0P/t+itJi5bcVeF/560r+4hvjX3+WBIkeW6teVfiXgBeV9dw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,31 +153,122 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Add a TODO comment noting that PFN mode does not use page-cache folios, so
-->error_remove_folio() will not be called by the core memory failure
-infrastructure when physical memory errors occur.
+Add a selftest for the sample memory provider to verify lifecycle
+management and file creation.
+
+Verify creating provider files across multiple sizes and ensure that
+initial statistics accurately reflect file capacity, zero absent pages,
+and zero read-only pages.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- virt/kvm/guest_memfd.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/testing/selftests/kvm/Makefile.kvm           |  1 +
+ .../selftests/kvm/mem_provider_sample_test.c       | 85 ++++++++++++++++++++++
+ 2 files changed, 86 insertions(+)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 501c3e250fc98..ffe1508985d61 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -1127,6 +1127,11 @@ static int kvm_gmem_migrate_folio(struct address_space *mapping,
- 	return -EINVAL;
- }
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 17a4256e90819..5f7118bddfc36 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -72,6 +72,7 @@ TEST_GEN_PROGS_COMMON += set_memory_region_test
+ TEST_GEN_PROGS_COMMON += memslot_modification_stress_test
+ TEST_GEN_PROGS_COMMON += memslot_perf_test
+ TEST_GEN_PROGS_COMMON += vm_types_test
++TEST_GEN_PROGS_COMMON += mem_provider_sample_test
  
+ # Compiled test targets
+ TEST_GEN_PROGS_x86 = $(TEST_GEN_PROGS_COMMON)
+diff --git a/tools/testing/selftests/kvm/mem_provider_sample_test.c b/tools/testing/selftests/kvm/mem_provider_sample_test.c
+new file mode 100644
+index 0000000000000..b39161f4933d3
+--- /dev/null
++++ b/tools/testing/selftests/kvm/mem_provider_sample_test.c
+@@ -0,0 +1,85 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * TODO: Support memory failure notification for PFN mode. In PFN mode, memory
-+ * is not backed by page cache folios, so ->error_remove_folio() will not be
-+ * invoked by the core memory failure handler.
++ * Tests for the sample memory provider (/dev/memory_provider).
 + */
- static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *folio)
- {
- 	struct inode *inode = mapping->host;
++#include <fcntl.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <sys/ioctl.h>
++#include <sys/stat.h>
++#include <unistd.h>
++
++#include "test_util.h"
++#include "../../../../samples/kvm/memory_provider.h"
++
++#define DEV_PATH "/dev/memory_provider"
++
++static int open_provider_dev(void)
++{
++	int fd = open(DEV_PATH, O_RDWR);
++
++	if (fd < 0) {
++		TEST_REQUIRE(errno != ENOENT && errno != ENODEV);
++		TEST_FAIL("Failed to open %s: %d (%s)", DEV_PATH, errno,
++			  strerror(errno));
++	}
++	return fd;
++}
++
++static int create_provider_file(int dev_fd, uint64_t size)
++{
++	struct mp_new_file nf = {
++		.size = size,
++	};
++	int fd;
++
++	fd = ioctl(dev_fd, MP_NEW_FILE, &nf);
++	TEST_ASSERT(fd >= 0, "MP_NEW_FILE failed for size 0x%lx: %d (%s)",
++		    size, errno, strerror(errno));
++	return fd;
++}
++
++static void test_lifecycle_and_creation(int dev_fd)
++{
++	size_t page_size = getpagesize();
++	uint64_t sizes[] = {
++		page_size,
++		2 * page_size,
++		2 * 1024 * 1024,
++	};
++	struct mp_stats st;
++	int i, fd;
++
++	for (i = 0; i < ARRAY_SIZE(sizes); i++) {
++		fd = create_provider_file(dev_fd, sizes[i]);
++
++		memset(&st, 0, sizeof(st));
++		TEST_ASSERT(!ioctl(fd, MP_GET_STATS, &st),
++			    "MP_GET_STATS failed: %d (%s)",
++			    errno, strerror(errno));
++		TEST_ASSERT(st.size == sizes[i],
++			    "size mismatch: expected 0x%lx, got 0x%llx",
++			    sizes[i], st.size);
++		TEST_ASSERT(st.absent_pages == 0,
++			    "absent_pages mismatch: expected 0, got %llu",
++			    st.absent_pages);
++		TEST_ASSERT(st.readonly_pages == 0,
++			    "readonly_pages mismatch: expected 0, got %llu",
++			    st.readonly_pages);
++
++		close(fd);
++	}
++}
++
++int main(int argc, char *argv[])
++{
++	int dev_fd;
++
++	dev_fd = open_provider_dev();
++
++	test_lifecycle_and_creation(dev_fd);
++
++	close(dev_fd);
++	return 0;
++}
 
 -- 
 2.56.0.455.g6c5a503b38-goog
