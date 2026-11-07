@@ -1,97 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A48606A32C
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 12:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F5CE606A32C
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 12:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fwzpsWx1
+	dkim=pass (1024-bit key, unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=kZwFvEHm
 Received: by kanga.kvack.org (Postfix)
-	id DAE176B05B3; Sat,  7 Nov 2026 07:09:13 -0500 (EST)
+	id 9D1E56B05B0; Sat,  7 Nov 2026 07:23:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5EAA6B05B4; Sat,  7 Nov 2026 07:09:13 -0500 (EST)
+	id 9824A6B05B1; Sat,  7 Nov 2026 07:23:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C78BD6B05B5; Sat,  7 Nov 2026 07:09:13 -0500 (EST)
+	id 878E66B05B2; Sat,  7 Nov 2026 07:23:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A69026B05B3
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:09:13 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 59F111202FC
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:09:12 +0000 (UTC)
-X-FDA: 85408202544.05.4D5ABE8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id B551B120005
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:09:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fwzpsWx1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D76F6B05B0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:23:03 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CCED9C031A
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:23:02 +0000 (UTC)
+X-FDA: 85408237404.14.1DEA80D
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 28F304000A
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:22:57 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kZwFvEHm;
+	spf=pass (imf01.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794053350;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794054179;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=esvZJHYREiteI43FT7jPdQ/u7/sXZjtksIY128uud3Q=;
-	b=f7T1qTJNYCrptFXYCm81V6YuiSQ1Oxd7ekX2dWoFu8fMmDDyQwNqp9XSp772xY2KWyXpaE
-	Ks06JXD4PaSYnWJcMTswD6B0Bzm25g8PjVPsteaEbPhIE8+cgmANOvzPdF0V0hLJ5I82oc
-	r+LcLX6b+1k6LSE3GwIFvV7ClmYpP3c=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fwzpsWx1;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=TBEFW26Kc/QyTcxgmba5XzRa43zG6gzVhqlbzSDo17M=;
+	b=X+7CSaIerf4PRVUQiUMutIYB8GEqmVWKw4ZNWzvi4Jcb6gApEMHCG++F7igakJEZo+TCHN
+	zLcYSt7kEHZmR2FdSxTlz93u70aZsfCcsxmhiLlZ4lVG+d52ovQzlZwibqXWixvK+f3eWJ
+	/ODe99gh1esTit0a4rKBTZnzH5FA9fw=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794053350;
-	b=OF5zNKIOCK/cwv80G9r5jPFSZdStRTr8BCqusp/ew0h2uR7t/diR3tL5ZAuo/XA9HDSLIO
-	C022saVxrAfYxJ3RUpGOdoqmE2o0oF+QxjYGzropb1e5fr0lQAkVMtKgLR/GUaWoJ5QnGR
-	vYk42C52DHnuBNPDiR/XppmYXulTn8Q=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B106142468;
-	Sat,  7 Nov 2026 12:09:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08BE1F0089F;
-	Sat,  7 Nov 2026 12:09:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794053349;
-	bh=esvZJHYREiteI43FT7jPdQ/u7/sXZjtksIY128uud3Q=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fwzpsWx1TYF5s6aqXbr7wgfjbvh1WKb6pTI6FUqOINWys2uHvZqtbq2DXEzRkqDYg
-	 1sJGNo64GSjJzJ5uibxNPh+eht3MGVyMRBXYI7HZqn2P2+NZQu9noOQMz0R8injxTy
-	 9T5pKtU+mCAeT2OOT6dIwBjJoQkhSBONgvNQGS/hQJcHH88daGX5Lwhv4+J7k4tce7
-	 jzczoAJGoL2SQCuiA/2W6pBIN2CkY+zsCVYZzss+s72f6j+RrDupAF85h8MMkdh7Sm
-	 wvFbV131TTeUM5ytOU+lsiFQUl4Jd6YjwvFK6vlzH3HwAO07A9SDi/JYTTtF9Kn8aJ
-	 GbzTKulAfjt1A==
-Message-ID: <sashiko-outbox-202871@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] sched/mmcid: Defer affinity updates until schedule-in
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Weiming Shi" <bestswngs@gmail.com>, "Ingo Molnar" <mingo@redhat.com>, "Peter
- Zijlstra" <peterz@infradead.org>, "Juri Lelli" <juri.lelli@redhat.com>, "Vincent
- Guittot" <vincent.guittot@linaro.org>, "Dietmar Eggemann" <dietmar.eggemann@arm.com>, "Steven
- Rostedt" <rostedt@goodmis.org>, "Ben Segall" <bsegall@google.com>, "Mel
- Gorman" <mgorman@suse.de>, "Valentin Schneider" <vschneid@redhat.com>, "K
- Prateek Nayak" <kprateek.nayak@amd.com>, "Andrew Morton" <akpm@linux-foundation.org>, "David
- Hildenbrand" <david@kernel.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Liam
- R . Howlett" <liam@infradead.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Mike
- Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
- Hocko" <mhocko@suse.com>, "Kees Cook" <kees@kernel.org>
-Cc: linux-mm@kvack.org, "Xiang Mei" <xmei5@asu.edu>
-In-Reply-To: <20261106120846.2405936-1-bestswngs@gmail.com>
-References: <20261106120846.2405936-1-bestswngs@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 07 Nov 2026 12:09:08 +0000
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B551B120005
-X-Stat-Signature: s3mgn9dmg4sbnys6dku41gz7jjwzpptr
+	t=1794054179;
+	b=R3BBqwXKnv7U732hd00vM/rx9XULmoIS3sYJi4JBFlJwsOE6Qr/6bLMvP1w0SryH2G4Wwd
+	xHe04vHoOCp8Ko7rtEy4fXV3B0LDbpjthraQY2CLOpmWvUOCCNzm3Kx0FKr4v4BChUZImm
+	Rb3OhY2xeV/bw2u6+o4R/WeC+E7PIlE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=kZwFvEHm;
+	spf=pass (imf01.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.119 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1794054173; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=TBEFW26Kc/QyTcxgmba5XzRa43zG6gzVhqlbzSDo17M=;
+	b=kZwFvEHmLBEVjNqObY2i1FK03R8EbPnyLe26aRQRW13+nZP6srgyEvVlJlqSMoO0uRy3ZWMYKUrHzvnkRFEMkboi5TNm6rKxQy3diivusrUgov5g4Cx01uujSw0mHy25GTZqsZ8FUdSmvGjxR2fVjC2waqMhQJVtCwwQ0Ma+py4=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=ying.huang@linux.alibaba.com;NM=1;PH=DS;RN=13;SR=0;TI=SMTPD_---0XEEWiqy_1794054171;
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0XEEWiqy_1794054171 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sat, 07 Nov 2026 20:22:52 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Zhiteng Qiu <qiuzhiteng@hygon.cn>
+Cc: Andrew Morton <akpm@linux-foundation.org>,  David Hildenbrand
+ <david@kernel.org>,  Zi Yan <ziy@nvidia.com>,  Matthew Brost
+ <matthew.brost@intel.com>,  Joshua Hahn <joshua.hahnjy@gmail.com>,
+  Byungchul Park <byungchul@sk.com>,  Gregory Price <gourry@gourry.net>,
+  Alistair Popple <apopple@nvidia.com>,  Xin Hao <xhao@linux.alibaba.com>,
+  Dave Hansen <dave.hansen@linux.intel.com>,  <linux-mm@kvack.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] mm/migrate: don't batch the TLB flush when there is
+ nothing to batch
+In-Reply-To: <20261107190737.1538200-1-qiuzhiteng@hygon.cn> (Zhiteng Qiu's
+	message of "Sat, 7 Nov 2026 19:07:37 +0800")
+References: <20261106041628.1177963-1-qiuzhiteng@hygon.cn>
+	<87zevmwbaj.fsf@DESKTOP-5N7EMDA>
+	<179395975709.1235605.1971486611419119070@hygon.cn>
+	<20261107015057.1328227-1-qiuzhiteng@hygon.cn>
+	<87qzgxw2qx.fsf@DESKTOP-5N7EMDA>
+	<20261107190737.1538200-1-qiuzhiteng@hygon.cn>
+Date: Sat, 07 Nov 2026 20:22:50 +0800
+Message-ID: <87ld74x23p.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 28F304000A
+X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
+	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: h3i1438wtaqcmzt8gyjcu8ptihnw1zak
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794053350-760990
-X-HE-Meta: U2FsdGVkX1+P3rsy8njWF/H8qe7yGVcAVUcWlxs/J5NJc9gc1AS8+lJ1cSscli17ZJxl9B9uAvyiVSG/CmMWqI41U3a08zMlbK059U7xKvvTZ94YQYYvVujsOu1kUXTGXf0PtBs9b8Pmy2sWLMSh/cSTZkAHEx2kqRuKs0yzEqopoy6GXN55NYRsh9XF5z5JyeLfmMBGH0Qq+ilsRzE836fAGxT8//s4qMYeyhIQr5nDtu0ZdE26uTt/w0+IJckzH8+rpBVGYJni2t668dR2qVf8OlDXLCiFr7k5+WH4L0L6SOSM/zcgcR9drq6oaBVpAxe1DhZW8CTt7SRKRGYFjsdqokmO/vI5BY11hNLqvMcUWKmD0I2KhMCMhNpGBBsYcqpaXAhIIRhuIBYFZx4eok3c7fYiqrY/gvehBKOlEtGcHipE9Y0bhqVJB5d1dVKzO8dgJh8GauO5CrKsyXPhvF1oZoPeskAw5lQwCfjpKMpV2gdJLToYz/trx99F3C4brs2HVPpDBVuYGcqZILdw/CgbIDJfr6pEQ8AWXV8j+x4fnCMfZ+8BxH9i1iaKm0ePsYGpMjr8A1tvV1x5018dZAnZKeTBy/xOdZYLHdpRayqbTAu2hP+2q2S9TB0PAp9g9zA/mikEc41AU5a96RnCFa3K1PVXJ1Xys5F+synT6+Hp9qDdiS1VFffUbX894jcsXLhaklsIvWCRDZtGIRRDQAssREQ6Ndyq3C+t1hwVLsMoWpCHHsSG2vnIgSq6lU6+w8PGYcba8LwDvOW/psaYRMBO4VEBlsI0VTnK1LMknUzCdchruLgekVIwq02TnCdHV8yE0529ugaDg/EMTj3jVKorgd5git2xCOwPwPuPy4HdwXuqaAyEb2y3PJsDKyaz07lqrpp1tFs6JH20NAsfn6OYiNeB7km5iJTbncwLXMDxg3J/eZTpy/AKExO5Ye3yFYK3VRuaFuOE7vS9rM7
- 2ULD53nC
- QZzFvD2le8pVnt85/xbKdBlkbXyH8QpULcGyE8kNdFTBg1FCNLa+L/vbtoTXMcyVSHUU+9OAKE2Ou9tG0g4EaxDabDwNsallcGEQ3UgZ20/rmPaQHyJ4utLG3Tpz2R0x+9YXMRYS3S1zpDfvP4iIq5D/7omRoIzvx4pAUFeG8iM6tBqKiQ5ZE54kD1itGn92cx1lj6G4ILwvqZ+M+04XJ9Hviz2H5AzmULNUWouV5lrs/inHAMw//8pnfIuH+gUEle0FXWOVqhC9QjttNFeST4BKZsRUc5u6xmzjZxZinWXG74P3qRzY0BicH5yg5Sytg5g9D/RmyXuZ0dM21ydG6LHVBKeK4B90QVBKf1nuqMEccIsQ+PZZ/oDa4HFKJS+p5h9wvM4y0Y6ulbKHgXeUC1V9oFDZc0bcpZg/pOZO/CrrXvmlTpzbMtWUOjNCKq53nA+OWNd32ZH0/c8hLKjZf44BxQnNMJ9lVFO4AFAGE4tjO5B84B+B6/5zq2qVl2ArWtUgTfg4/zpjiZze099ayX3Zy0pnH01H6kfDCoYenE8eBwcoEpwdQzHDGuDNEGAz3r3Ho+HGWazPIY5JskdPLuZN4/w==
+X-HE-Tag: 1794054177-73988
+X-HE-Meta: U2FsdGVkX1/1ZFehHJKo2r0bOZ5RMFWNZY6CGfcdzpUXYXNwjcZ2gjABmUcTuHUN3AmluN1kwEPzWMSl2eDvPJBX5nY0b2KPn/zlxc4w+uxD3qK4/LivB6GBvbV3hDvliLBU6cQae5X1t/tuU73mOTLvzwzX/8A5KMWdrWAbQlk+UfocfPqkd3aLT2e848n31G4WeqmtUO1vxs0ap8DwY3Ao1PtHsUafXnIMmlTcs39MKHhgtjefCji0UI6e8xJikvB8P8gMQapb5Q5wYCRvUrxUkLWFRno6iiMI/DKlpA0KNVF0zTf7KQUpcANIKHNi262xNbEIIITV7i3uzYbI94QGl/3YEsvoDjCaVr/rkiwHWpwtI5kbeCeM6HUdY3+CpKu0U/gGlBTNKwoiMaGknG12/e/r8HV2nXM3MaUnQXPKqVr9RrptuDw+E+ni2MX24eAZH7KRfBeGZoGswD6HVw7TzqSgBtZFCeg/koroHL6UOs9MvGdN+UGl7i76aKyJhva6PuiYAQksu5UHHaEQEvEo/TTWttlHy//2nOZ4hMdssBAU1UwvFwPtph0zoo8rNsZPxjPVsQ4vaKf7yHvqHmkcGkhqAap8cXsuqU8dc+WNFEnfLhn3MtbFewW0kDgYdssnXWyJAgcRXTaGlQn7wR3E6ddIleWEVcAdBBZfiorHSFn/o3bFpz7Vd2sDIDMfy5Lfpc4pH23EHt8zjmT+gyqwZJ30lm0MXTR5N5VkaSba6usE2BZ8AC4GQNoRkNTYAJUsoIH0tBwDOW4Mf/0YnlfREBVsfOWgLx5tKQFV8GtnHqzntLbumKwDxT7QsM+wLRVeksoX3vULXbnsR7817scy8KGprZQDE9bihbl5s7qMBG8u1rKtu+3NAPEF0cQ0HJ6GR7rlFxD3yWXeucsYkV3mEJhouo5rRY5ZSnueKmvgG8MdBuFq4w9tE7mP2Y4mCPIGri1JLz5OSf3TISu
+ 987jVqiE
+ yUeXMgX6jnNG6GxqDoIOtd+D1Ed2HDqVJ+MlPZrCxOjulkQk1muQwOnTGUFdl9XLL8/uPHLcW0tWk9H3GuuXDh8YItIKCGaFLQyYjFUVaVWyxx0bxfDqOfVOk5jAcyyF8N/q59SSjdolRpUrOLLEAvAEwEvaTPmrBLdwzv2H81Rvn5ooAOeIowbx5fZsvlIXL9+ftaV27lSao+TWHjZm1sQl2EtjR2YlasWvmGXM05T2vrLKAhEMUhlQqSziCMSkTDT+y6718uuV4IMqgstWEaT9YBVT295UbrntsZAM+bo5QwDUGtZKUaCsxd0bW9H5FRwP5Zx9daFG5UZfMuf9igv1z3s34DJRccLJs
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,59 +99,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] sched/mmcid: affinity expansions lost or delayed by
-  mm_cid_schedin() deferral
---
+Zhiteng Qiu <qiuzhiteng@hygon.cn> writes:
 
-commit 8130aa795d763d1b0e9fc8f80bab96df5fedde9e
-Author: Weiming Shi <bestswngs@gmail.com>
+> Hi Ying,
+>
+>> Have you adjusted the NUMA scanning parameters?
+>
+> No.  All NUMA balancing tunables are at their defaults
+> (scan_delay_ms=1000, scan_period_min_ms=1000,
+> scan_period_max_ms=60000, scan_size_mb=256).
+>
+> The scan is indeed slow: 58 passes of 256 MB in 55 s, 89 ms each,
+> about 9% of wall time.  But the hint faults are not spread evenly
+> between passes: those 9% carry 33% of all migrations.
+>
+> The faults come from the scan, just not from the pass that happens
+> to be running at that instant.  Of the migrations that happen
+> during a pass, 60% are for pages in the 256 MB chunk being scanned
+> right now; nearly all the rest are for pages scanned one or two
+> chunks earlier (lower addresses, within 512 MB).  None are from
+> addresses the scanner has not reached yet.  So the scan makes the
+> pages PROT_NONE and the workload touches them again within a second
+> or two, while this or the next pass is running.  The collision is
+> not a coincidence between two independent events.
+>
+> Here is the sequence, one pass on the unpatched kernel:
+>
+>   CPU A (task_numa_work)          CPU B..N (workload threads)
+>   ----------------------          ---------------------------
+>   tlb_gather_mmu()
+>     tlb_flush_pending++
+>   change_pte_range(table 1)
+>     PTEs -> PROT_NONE
+>                                   access page in table 1
+>                                   do_numa_page()
+>                                    migrate_misplaced_folio()
+>                                     try_to_migrate_one()
+>                                      PROT_NONE, but pending set:
+>                                      pte_accessible() == true
+>                                      tlb_flush_batched++
+>                                     try_to_unmap_flush()
+>                                      full flush, IPI to ~380 CPUs
+>   change_pte_range(table 2)
+>     flush_tlb_batched_pending()
+>       pending != flushed:
+>       flush_tlb_mm(), IPI to ~380 CPUs
+>     PTEs -> PROT_NONE
+>                                   (same for pages in table 2)
+>   ... 128 PTE tables, ~0.7 ms each ...
+>   tlb_finish_mmu()                    pass took ~89 ms, not ~7 ms
+>     tlb_flush_pending--
 
-sched/mmcid: Defer affinity updates until schedule-in
+This looks much more clear!  Thanks!
 
-This commit defers MM-CID allowed-CPU mask updates from
-set_cpus_allowed_common() to mm_cid_schedin() and sched_mm_cid_fork() to
-avoid accessing a remote task's mm while it may be replaced and freed
-during exec.
+> Each table flush makes the pass longer, and a longer pass lets more
+> faults happen while tlb_flush_pending is set.  With the patch the
+> migration takes the direct path: it may still flush while the pass
+> is running, but it does not bump tlb_flush_batched, so the scan does
+> not pay per table and the pass stays at ~7 ms.
+>
+>> That appear too complex.
+>
+> Agreed.  I'll keep the change in migrate_folio_unmap() and put the
+> sequence above into the v2 changelog.
 
-> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-> index 7d2ec527b8a25..8e8934376e340 100644
-> --- a/kernel/sched/sched.h
-> +++ b/kernel/sched/sched.h
-[ ... ]
-> @@ -4132,6 +4139,10 @@ static __always_inline void mm_cid_schedin(struct =
-task_struct *next)
-> =20
->  	if (!next->mm_cid.active)
->  		return;
-> +	if (unlikely(next->mm_cid.cpus_allowed_changed)) {
-> +		mm_update_cpus_allowed(mm, &next->cpus_mask);
-> +		next->mm_cid.cpus_allowed_changed =3D false;
-> +	}
-> =20
->  	cpu_cid =3D __this_cpu_read(mm->mm_cid.pcpu->cid);
->  	mode =3D READ_ONCE(mm->mm_cid.mode);
+Sounds good to me.
 
-[Severity: Medium]
-Can deferring mm_update_cpus_allowed() solely to mm_cid_schedin() delay or
-lose affinity expansions in mm_cpus_allowed(mm)?
-
-When a running task widens its affinity mask, task_cpu(p) remains in
-p->cpus_mask, so affine_move_task() returns without migrating or
-context-switching p.  Until p is later preempted and scheduled back in,
-mm->mm_cid.nr_cpus_allowed, max_cids, and pcpu_thrs stay stale for all
-threads sharing the mm.
-
-Because p->cpus_mask only holds the latest mask, any intermediate
-expansion that is narrowed again before the next mm_cid_schedin() (or if
-the task exits via sched_mm_cid_exit() before scheduling in again) is
-never folded into the growth-only mm_cpus_allowed(mm) mask, leaving
-max_cids capped too low or triggering wrong per-CPU mode transitions.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106120846.2405=
-936-1-bestswngs@gmail.com?part=3D1
+---
+Best Regards,
+Huang, Ying
 
