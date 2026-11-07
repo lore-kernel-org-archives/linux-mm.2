@@ -1,108 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F8E606A331
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9442606A32C
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U1DElYiB
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R7xKMfQW
 Received: by kanga.kvack.org (Postfix)
-	id CD7026B05BC; Sat,  7 Nov 2026 14:35:39 -0500 (EST)
+	id DFB576B05B7; Sat,  7 Nov 2026 14:41:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C87A86B05BD; Sat,  7 Nov 2026 14:35:39 -0500 (EST)
+	id D7D626B05BE; Sat,  7 Nov 2026 14:41:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9E586B05BE; Sat,  7 Nov 2026 14:35:39 -0500 (EST)
+	id C450F6B05BF; Sat,  7 Nov 2026 14:41:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 91DF66B05BC
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:35:39 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0F4961203C1
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:35:39 +0000 (UTC)
-X-FDA: 85409327598.01.66067DD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 63DB2100008
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:35:37 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U1DElYiB;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 96F036B05B7
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:41:31 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1BC4EA7F83
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:41:31 +0000 (UTC)
+X-FDA: 85409342382.06.6C56E89
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 465D71C0006
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:41:29 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R7xKMfQW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794080137;
-	b=WlsaUuGz8BOoNTz41hazuwgQbfv/atlF0jBfjYXoYSJ0KUr+58JZyNNzRX1p4wUs0oAMdx
-	qfXLuQsRbYtUAuxYwOuGJKYVG1KdqHhscB2Xa20xys+XZmKf13vcOlTDxFBMjyk+jm+zgM
-	nuveHM1PK6mSb2rVOlZ2og6atT39yMY=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U1DElYiB;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1794080489;
+	b=1MGbXENE9RTpp+fKo4WA5SQRv6qVHlT2mLnrkNiU0ef8R+SfAFlkQtHA+NJhPK89uPZif4
+	1PsULLfdA3v8TyWvYblPr8gN3JedsDZ3hkSAztumIkgacqCG9VOgPjXnWluTBZxW3Qgevc
+	wiFRZKlLJVl5uIhzIF74RyIV1czIfPg=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794080137;
+	s=arc-20220608; t=1794080489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y91yUk3QMpxcP22L5RRZVkCw7buIe7KPREWLseYyt3w=;
-	b=n8Xb10FPxi9qpwfpSBxgm1AdjqMJZPUOsC8gFJse6mQvf7tkjLn6JLYAWmPTauAGokuJ+/
-	7r94ekxdpV3XkmHltMitIS9RGi6ilbLZLNwqh6kaqfMCxPS72mIJS04Od9BOqRi8GZ5U75
-	mz4IBiMs9s9TTUDt+dpqjZiGeUfnW1E=
+	bh=qrayV5HgmTcSMMMhveHmxbWzQ03GCDulO+jtmHjEwSs=;
+	b=GRK6sUcmrTcr4L71AvPMJOepcg1yVZnHytC6Rh+iG87SQs7URU5ZxWEwUQn7DHOz8ASEcd
+	Fg1xqVUc2cbzVwYBWV9pcNqADXi1N23OS5G6ju0OI4lfZG1cQZNEjR53yJ6ysK3kJfFJPt
+	PMJxsOhoqAK2yH0TM1wMZJEstifGxuk=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R7xKMfQW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id DFEDB61178;
-	Sat,  7 Nov 2026 19:35:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3303E1F0089F;
-	Sat,  7 Nov 2026 19:35:29 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6733842E49;
+	Sat,  7 Nov 2026 19:41:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C4C31F0089F;
+	Sat,  7 Nov 2026 19:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794080136;
-	bh=y91yUk3QMpxcP22L5RRZVkCw7buIe7KPREWLseYyt3w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=U1DElYiBCAwYNb5lvnlydTAg+Zx/qbjkhjIeGQqYkRaeyYdOGOECsJgFK+4t8mPgz
-	 kSt884AE/XerPp+N8+qYwVKaiR7Y+UBvrDNbEktuXsk/Xw1sG+J6lpGyEsAfVnGSl0
-	 YEfZXo/fqEJ38p5kWs935lTGr8wM3oN13+H8uwh1njL/1jfNF5zSefgdLLvi4WYT2x
-	 HwD0lTfeJm+z49lcXZYMhkBUBK/8Ev5WTvODQmBd19QxRtrUS8v2iYYQLwqSjXt4bV
-	 3sppTarAIZbmHOlEiwLj4IpYtSP50gzqmLVtOG8R8ZVHl2xY+4Gg7taTVaFJfeyt6K
-	 FxAStSYhTeUjw==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-To: Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Rheinsberg <david@readahead.eu>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	stable@vger.kernel.org,
-	Chris Mason <mason@kernel.org>
-Subject: Re: [PATCH 1/2] mm/memfd: handle GUP pins more reliably when write-sealing
-Date: Sat,  7 Nov 2026 20:35:23 +0100
-Message-ID: <179408004350.4783.10820829282179060083.b4-ty@b4>
-X-Mailer: git-send-email 2.56.0
-In-Reply-To: <20261103-fixes_core_2-v1-1-f332954f1df4@kernel.org>
-References: <20261103-fixes_core_2-v1-1-f332954f1df4@kernel.org>
+	s=k20260515; t=1794080488;
+	bh=qrayV5HgmTcSMMMhveHmxbWzQ03GCDulO+jtmHjEwSs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=R7xKMfQWAmEBP+7jr8m/rTZ0qcf3cHfKaGgUQmL4AL+Jj4Q2KlaWLJPKn2wxc/iKK
+	 w9lZQcb/W0uS33hvwpHeyja1a1AQGSExELOIHIA+c/XPHnmuVxQ56RTUbkNWaePdN+
+	 SB78P3uixsTGMMZNrngsUP4hm6/kMzANIxudL81PFPRxkj4MztpEE7T1Kn7dxsTZmz
+	 PhkVPpKh/5AYLInaD/Ev+Y+vUawgIT+MO67PN3fHo5eAvvaSeA2gbcEXbMlKgwbKUS
+	 MozNuMr9XlaQ1OoA7p69wSmY1N6ilueUU+3XjSJknb7Y7qum6Wb/FLvYPYvJ3s1Wzf
+	 Ll0jmq/T6D4tw==
+Message-ID: <a2ec6814-d3d3-425a-b379-f99b219aa55e@kernel.org>
+Date: Sat, 7 Nov 2026 20:41:20 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/memory_hotplug: don't offline a hwpoisoned page still
+ in the page cache
+To: Mani Tofigh <mt4022@columbia.edu>, Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>,
+ Vlastimil Babka <vbabka@kernel.org>, Gregory Price <gourry@gourry.net>,
+ linux-mm@kvack.org, linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org,
+ tz2294@columbia.edu, stable@vger.kernel.org
+References: <20261101-memhp-hwpoison-pagecache-v1-1-ed8785ca44eb@columbia.edu>
+ <1b6a6d13-8a01-414b-9bbe-cd194af1f539@kernel.org>
+ <a002901b-715a-4adc-bdcb-7a6fcda67711@columbia.edu>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <a002901b-715a-4adc-bdcb-7a6fcda67711@columbia.edu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 465D71C0006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: quthpccgoyf1je4m115f18j8hut8s8k6
+X-Rspam-User:
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 63DB2100008
-X-Stat-Signature: 6936dnwcdf1ynmo8eukbsuugweqnn5s9
-X-Rspam-User: 
-X-HE-Tag: 1794080137-695103
-X-HE-Meta: U2FsdGVkX1+klHVBdklAogt/u24utIQ0b0Zh+6U/ik3NgSQ149ZwwtNeNtdaCgSpZJGIHAOfsU9GpXPMuLfmOMiUszC75ZnLKpk8ZsbH9XoMMVjmUnwavAPfIPWbozyxgDlxHc2CDfUPJhzCFbdLuVfLx3Ha8FAHSoNf8vt3fUwqPS/dd0MRqHj/etzCrVC4Yk7KYLDjAjwnGJ7E2gjREBkbZQeTskhzKh0zKpa6t0sF8ByX/rUGwwJREUc2m66t37MPgPAUHUwLTiH03VXahohI9yMUlDXsveUAoqxWhWJAu+4Dl/X3XzakhqmBd/yepqJKBJ1Xep5JzlwoHIydRU8u34jDJlJr7AppLj7jTyi5/nixVVVUMH9L35k61rD+UZWEOCt2SGOkb4M85j9WOnyTXZnSD1I+Y/Nsn8CDnkKw8mAC9ro/4riYu+PQvn8dORsBaPfQmYyW4EYcN4zMpg/qP/oQ46Yvx9nice2X/iU+ud/20eC6D0BEdDMBQFYr4QRPOtIYMgNfm3hGu2d4Yr+5dLQy7KEgu5WkIIScOyXQ7rPc0D2yHr82er/xR7Joiu/suX9ETI1V3WjFw7qFFq8CAIOVftsUxVVookgViYBFmR5BmBHNWhrXVERum8AXOTbG5RkVK6mUTcCPPdVNpBPscTJzsEA4zsTdgPO5sjM73OD01iokzWzokrimnxTjodnufey1bRjQNWl3Y8MsJQixDNytYcRoMiQqRkKPVT5em3lZzrduvF49EKjNIg3UrceQA4Q58pmdIWWD8hJZrWpDmq9j24yGZk8MaV0UVYxGwiSYlqWh2+9M3JboRWYDeynK9mxVs6XECyAR74OYNJLJYSETX/Op/35yuMaAG3CqcBs6LvwJCRGUtn6wUEwmg5EBPTL77rEdQkfuelzih2MwkzxhU23CYBpuPrdw3WkI0+/ZA6beUjXuVFUQTScAK1Dj8CClUrjgtT74XfF
- GISQpA9I
- 5AkrUEKIMi8SEAeeiRMtamqoiG7wmCJDrt1uPPZv/8yODEcqkpG3mpYuFxWH9KV+p4XvtZ5uNgXTc/7zmtUsIrza7dF5cjtPOwvGUjdwcj/aNelSGA/bQDDBOLK5XvzeX6H3giiW1WkfNlreQNJ+07GdZu9na0CtwBjC4DyJ35CWtZMivvaWVWHwExVFPJ6Chub3s1wq/h7zK+FeYjI1/ot0hM5xibGdtYY2b3SEK9h/CEY8bg8BuC3pbFQ==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794080489-153732
+X-HE-Meta: U2FsdGVkX18HgDHGNy7ZLOUUn4eFvPmp49cHfGVojAA45YbjtijFPVwvFJJU75gSTNt9HtPgzizMTT10Eci8YBTFPk9p0AJjThz8KXfdDG5jFc/QoFXMbPbbpylilAftaw9LgxUuJh6OF5nl0G9lgTjOtbJGW1b8T/yabJs8AT6Yb0TscM/UTuirKDjlQbBzqCsCPuis9CtdlymGcCXMPcMzLZBnZXlfwBnl4QEmAMMBiTFuTfx+dwA/LKA9figC0NWaSBoJJ3lgTSOXES/YAUvZT+I9jKn8pBKNBmZDvFxKw2iAZxZ3H7XeSxm7MTH4TgMJptDsRGgIgvlQJo56kafblHbsyI1eqHFUDiIVzvYGHeJqum6MqFNItXkWpsOhuOxHdTVowWv4cCfvBIrvtuDm7g6tvx4aonDfP8q306qTllaODq7Qr1jh1+NJnrVxNAMmt8q3Y3noJhYy4NMKNGCtZghDfIXDN+V8267sGAwuhHU2bBbD4pSGXTLsoGNPqsPiKIc5pL83BzmVR2HQqwlChZ9BSj/UVCpClavMlZz/XoVwyg1tyfVRy0m4GRepMAyJintMYe+otWbAOD0Wa7XMsHU89c38KPTgGCqvm0/0/X4APg2f0KBNayVhlhd+fKuDRE+pLvuLy2a50iB2homGLoIrlWUg0dgYC9U+BRR30DthXc552cqpX1R0RB8HUw/jfyMeLVs+B9f7DqIn/DD+FtSrTIvpCAD+uhpYfb+GcCOynoXxjzaM8Ru2bYvO+8XHpdBW3qLJWX3oEWF3fWGh6GB4ixh4qaGFHh+sOBt8WLytuE/iMpaOPAcmBX822669CFVx9sMS1qYk+ev3X5bR+9VuTmuEAF+7YcSrKQTRUpRGdYtG0ydyg9u1sw+CDc0fY86QkpRS4ajdrI1z5gZQhGCcDsPQwDavEeW0UfIjO1BUqrdWY6sjGSAuZv1foCjRot5hqNU5qwb8+a3
+ v+ArpSmZ
+ SmvMyOhxySHHEWzbdfTHN97KThuDPBE5i90A2LRVTmtWGJmIZyhD2eoa3SIdVq9l1KVS0ojYCXw5CBPLIBFVUlVkJqKmfroeBG0BeallR7u5ZGjM7S9aPbKDLNvYGCNyvA27vBijl2LhczhJnpTqMVZtvSp1oMd/IvvXO5uCZVtbcLO1TBDlwr4x8Nq9q7X3wmPeRYhmE8wCE81Z+O90I6gBisAQVnkBhHQK+tqEcRhNGHk4HLsoGIn9K8zihk2oywuSF8gOINA+uykejpo0fXX3S4eeHsfXpe4TsQRCqGujWXSq4aR1ok79ZCmnRrwxEVhyb2zxCjLc9MEbcVqzrzqXbuaWJpjFitq51lIavyjsPqz/VJEF3tZe6Ra9tEqqHicYGXcV05MmdbDIpeYgt9NhTJ6CzISpA2SfkX0Uy1r4U4Y/AGhINkV1akGnnprgdlK2SdK24nudaNZ+XIZAnJ4wSf6b1Y5483+4m4/j6b67KL6AWUH7n0fMxoA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,39 +147,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 03 Nov 2026 19:31:44 +0100, David Hildenbrand (Arm) wrote:
-> memfd_wait_for_pins() detects GUP references by comparing a folio's
-> actual refcount with its expected refcount. As spelled out by
-> folio_expected_ref_count(), obtaining the expected refcount when there
-> can be concurrent folio (un)mapping is racy.
+On 11/3/26 20:59, Mani Tofigh wrote:
+> On 11/2/26 1:56 AM, David Hildenbrand (Arm) wrote:
+>>
+>> What if we still have the page pinned somehow? (vmscplice etc).
+>>
+>> Wouldn't it be better to make sure that poisoning code holds exactly one
+>> reference (whoever set hwpoison) and check here that the refcount is 1 ?
+>>
+>> Pagecache references would turn it > 1.
 > 
-> So it is possible that a changing folio mapcount can race with our
-> check for GUP references, and F_SEAL_WRITE might succeed even if there
-> are some, allowing file contents to be modified after sealing.
 > 
-> [...]
+> Yes right, a pin isn't covered (neither before nor with this patch).
+> 
+> I don't think refcount == 1 can replace the mapping check though. In the
+> race from the changelog memory_failure() has set PG_hwpoison but is 
+> still waiting in get_hwpoison_page(), so it doesn't hold its reference 
+> yet, and a clean page-cache folio then has just the one reference from 
+> the page cache. memory_failure() also doesn't take a reference on the 
+> kernel pages it ignores, and a poisoned page that gets freed later sits 
+> at 0.
 
-I'm applying the first patch for now, as that is an obvious improvement
-for many GUP users (esp. iouring fixed buffers etc).
+So the right fix is to fix that then.
 
-tree: mm/core.git
-branch: for-next-fixes
-
-Applied patches will appear soon in mm-next, followed by linux-next.
-
-Please report any outstanding bugs that were missed during review, so we
-can either drop the patch series or decide how to fix it up.
-
-It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
-though the patches have already been applied. If possible, patch trailers
-will be updated.
-
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. Further, this is not a guarantee that the
-patches will go upstream. If in doubt, please check the listed branch.
-
-[1/2] mm/memfd: handle GUP pins more reliably when write-sealing
-      https://git.kernel.org/mm/core/c/42990cfe
+We'd need to sync memory_failure() with memory offlining, correct?
 
 -- 
 Cheers,
