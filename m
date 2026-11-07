@@ -1,105 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECE3608112C
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D776081E63
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:38:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CqIRBYJu
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U2a/JriD
 Received: by kanga.kvack.org (Postfix)
-	id 0A80D6B05C3; Fri,  6 Nov 2026 19:37:05 -0500 (EST)
+	id 1444A6B05C5; Fri,  6 Nov 2026 19:37:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07FFD6B05C4; Fri,  6 Nov 2026 19:37:05 -0500 (EST)
+	id 0F5A16B05C6; Fri,  6 Nov 2026 19:37:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED75F6B05C5; Fri,  6 Nov 2026 19:37:04 -0500 (EST)
+	id F262B6B05C7; Fri,  6 Nov 2026 19:37:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B71506B05C3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:04 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5470712024E
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:04 +0000 (UTC)
-X-FDA: 85406458368.17.50B920C
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CD9756B05C5
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:07 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 620F0A0276
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:07 +0000 (UTC)
+X-FDA: 85406458494.04.2714A39
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 42F12180003
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:02 +0000 (UTC)
+	by imf16.hostedemail.com (Postfix) with ESMTP id 445E0180003
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:05 +0000 (UTC)
 Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CqIRBYJu;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U2a/JriD";
 	arc=pass ("kernel.org:s=arc20260519:i=1");
 	spf=pass (imf16.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794011822;
-	b=BGs9ZlK1SmLwwFzvmEnIpvq4PGUZVdCpeLZNgOkGdkubYXrQJ1yQwZKyQh4Oukq0vjIY5G
-	uBcs/se3xM3JDyyWGzRSpXuR5yyHIuSgOmsi8gYtMveAgAJ9Px2VBfkqm7g6/n9vpPJPAK
-	+pOjFLlZzvKq6SRLI7V6FHVB/QR++1I=
+	t=1794011825;
+	b=qH5RxqaFllSVBn+wmPhC/omXv/jO6N/E7lx6pNnt7zRjhp/bORCnJh9GE7umiKcdU2W32Z
+	Bm0QOU1zc2B5663mvC7SlmB3vS8qrQWtEQOINk2OtlXpaAl/++hP5ACbTA963IB/560P4b
+	ydtPXswl3/bciRF5F18GwBLFZ5lPbvY=
 ARC-Authentication-Results: i=2;
 	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=CqIRBYJu;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="U2a/JriD";
 	arc=pass ("kernel.org:s=arc20260519:i=1");
 	spf=pass (imf16.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794011822;
+	s=arc-20220608; t=1794011825;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VXEN2fX4IZspMfQCjFNkasyktSzz9/ubEwayDCWJkus=;
-	b=Vta7ooVxk3aAyz+89Kaxx89FWrWhiT5NYWaY6EPCdxNiOCsoPur1llQBASzAHaoByFUNi4
-	H6Wrds4+FzuGhS9Hd0ou6UfdrV8JAvye5UP5mFTUiJn2Dfu1nehazkx4cl7wNXcS2XF54N
-	J1saOegrZIyD2iIba1Hm1x7ElnME6JY=
+	bh=ZexpTI9NCkfxTl2+zcrGYej44u/dsyRYTkwcPEgAIK4=;
+	b=Z5zcT1FaCtg6kdQ0T57kmsWlbYmcOjozjaNVYhLDtRXoeaLdMimQ/9HRI9s7t7wncX7/3z
+	JG1PhDl10oZoMPKNSUxVrxt1qa1caJp0LRkGYuJE02AkiXXD22AImz9cqSyER4gsQz8hPP
+	uiC0Udl+qLRnIZzyZNMlni5LuME1xlM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 129DB44038;
-	Sat,  7 Nov 2026 00:37:02 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0F863419E1;
+	Sat,  7 Nov 2026 00:37:05 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011821;
-	b=rSKq5sNG5Gj7gIOhZXrVqFdCXSwy6ApZkCTDorCx+qx2Sq70zpqbg+aKMF6MeLf2V5nj
-	 KTqsw3DGwV74xNre4PWk2L9KqHQO58ewZpmt/bGEstqOyjftc/snnSgyDqsKRQBq+XFnJ
-	 soGibdrwZhnO5rwi7U9g+vQf1fekeWF5ZMAArCcyVnmbatum79EJ4xajak6V8OQR8sIKx
-	 DWCV7gjwi7GnhdIlwhfr+ZpPea13xbzc2hDjktNtscjG9bsiOVXzaQn3FeVCjR1kRyswZ
-	 p4ecTBI46ENAw4dx0V9G9NqaVTwPGit7Z/4gzli3cO8ul4KmHQF7W/RIAMLA5SLx9Cg==
+	t=1794011824;
+	b=n2JBcqPFPglIt/KtST6lDWUQiFUgelLZaDe2WcSiJBrV5cY2OzpIIYt8ZfBd/XnfpTv3
+	 Ot8m5KQbMJlAoGH3waz/8kzpTCu8kr34aVDszDfn2ZYi6BHwg59JLBKtWORRX9EhN6FHB
+	 N8sUU7Tow0of0PoqIbzkvKfRMLTQFOfLsvJs2WCUPetpFlI4mBSH+rL7Y8NV/VtU7t+CP
+	 5HSMTyhlAeaNt0v6IePMKSzrpu478vnpOVvaB92hT3UIgZ2lSPZJLWGF7TdoD+9/aJOrz
+	 7UGasbuWq+C5gZg/H4jaFc82zJwsbiAg37/WiF+Uu9/tjg3B5OBbLjk34m6XrzqRs0A==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011821;
+	c=relaxed/relaxed; t=1794011824;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
-	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To;
-	bh=VXEN2fX4IZspMfQCjFNkasyktSzz9/ubEwayDCWJkus=;
-	b=b3Hx05ywh8qL/e9wDHvUL1bD41rTLNxFBliU2BcmHupPye8irVAtgoj/EbPvFZJK07aF
-	 7f6FlvUnbV7Zdv2Oy0oAdD034CjbvY4eyrPIjLuC0o4zXvuRZZp06Sml+PnnRFWQerRrH
-	 0i4IBpeC+eaPA8y6FxdEDcKdus58uBeGr5DPpbHZP5V8iBNnrQJ5Wc/qTnS+Ayn9PZMbp
-	 E2CwWxbBj06iqe+OGRVuW6ytt6eefGiPc5TvX3qkuhdlJaxnG/AjBJjlednyYoPfnouwG
-	 R2wHsQdQPXgY4ZJg2cjeCe4ePJjE7l7xw2fhpa98scuR7mFETuVje7wuIKOYZCIOjqw==
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=ZexpTI9NCkfxTl2+zcrGYej44u/dsyRYTkwcPEgAIK4=;
+	b=2eCEbqMbpZ/rLjlCnMfZgwQj3e8KYSEglBbtARJrKM/bAdGmYMZC5FazaG1mnopD/jMs
+	 +4hJ2Go45wY2dVADdUVF7ED9djTQ6+wJnIxPXSf+X/vAOOx8k0KgkIPZtcojwalLJAzNB
+	 2nTg/c6G5A4XcYyG0liwcoQ4xvUZ8xKU/LvDHowXKdtxuHmuBm+0rPoWLP9ZoyuaywpPH
+	 ivT3DS9f/0ixHLO+Qc4xKvZoF1MI8GJ0Fr446Fb37EuEM0ak4qMENffysiX8uPdpA5qkB
+	 ZcZ96/5bkWZeBzOXA4rs3AuFHcsmExoPY9ptOOXwYla2W9HgSo0M24D+oBPgbLKC7ew==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 822B01F0089F;
-	Sat,  7 Nov 2026 00:36:58 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 88E421F00929;
+	Sat,  7 Nov 2026 00:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011821;
-	bh=VXEN2fX4IZspMfQCjFNkasyktSzz9/ubEwayDCWJkus=;
+	s=k20260515; t=1794011824;
+	bh=ZexpTI9NCkfxTl2+zcrGYej44u/dsyRYTkwcPEgAIK4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=CqIRBYJuBQm1T3h2S6fC0yitfwcQuoBnf754Uh1Dz1I/iQhfxzFkuIlN+U1E9KDov
-	 x469opBxGeSGfiK7KZXpsGupOTQ/M71ndw9OOOgTp9z8tESAu2rgWbK1AXmBzU2mPX
-	 c7TxDqePJS9LS6lbLe2I0mg2mNVBPAChelWsBYMZEpbXu1owWehdJTNlqBd4pLHSf/
-	 grB1ViPYwd621MiZaVNs5ajTiVBweGsz0MplcPIB9pBZIiArKZXkdSWb909356wAoW
-	 cD7lOJWEMPZuYjBwe4k8goILNG9Q+/YKI6Qg+vZQevR0dJ4Wsq+GPdroWcZ1k2G6q1
-	 6kX0NwtG0wgbg==
+	b=U2a/JriDuhd2uKeFAPf2f07kDJg0uavmyiYcaTQpo9ICmNZW99AYdxwcE3Gt1y5Vc
+	 X4HCSiHqDNLQjmy8V2U05jZOxTa8Pz7/5uvHbBR61rbSRl+IEt6q8O08m8y4OmZfWC
+	 6wqaHI4SNsBksLRXtOpsauaYE2tKcgqw9UQQ1OtNifP3ppXFHweC/hFBSilnzJ5OMO
+	 c/DEE0OwB016TeFike16q+BpqrpvsDaJyOlANSj3xZhfMDVZfUD3hBF7eTWOUL7teJ
+	 rTwo2+yx7KJt8enYB9jrLWYVHWJv7hNWfxDljf0lg+iInTFldiGL+DqysTkofady4d
+	 Qy/acbsBMl5cQ==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 641A247967;
-	Sat,  7 Nov 2026 00:36:54 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id 255D947992;
+	Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:36:55 -0800
-Subject: [PATCH RFC v3 21/88] samples/kvm: Support creating memory provider
- files
+Date: Fri, 06 Nov 2026 16:37:06 -0800
+Subject: [PATCH RFC v3 32/88] KVM: guest_memfd: Support user fault handling
+ in PFN mode
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-gmem-alternative-providers-v3-21-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-32-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -120,29 +119,30 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=4749;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=4803;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=XXTp8SdWg70OOlSfykbRC6MejUHDWKPgp0+KOuBNidk=;
- b=5RFhXgQAErb6ooWSjO2h2LLuBNBG+M12psdrf0zRpmzprvoxOn5g77SsRgDZdK81NEofXQKVd
- ZjHGZkeX1tqBraGtNTCPyfLjAP17YEJOBXzIpgHtEfmSANNbl79366s
+ bh=BHfl6wvLdeD6eD5eILiiO6y1oWReh7OD+qFN9r31eZY=;
+ b=PheuT7ywy0hAO/mjTx3YVz658XWJPOjzwi+5Hkdw/rJUyuN13z+94s/e15qbngjBlOTdHHYJA
+ gCPlAhTinKMAkcCG8fDXSpq+8UE96qNxdU+ZortX7X5Tdcsqh23gX1A
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Stat-Signature: 1k1dy1uk1bfqdq8ac1dwnbg955u8puy1
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: y5icu8m7kkd3hy4j49hpedptynwaiin3
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 42F12180003
+X-Rspamd-Queue-Id: 445E0180003
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794011822-129666
-X-HE-Meta: U2FsdGVkX18wMgZnnDScrxwh/m11BRgcgPTvsjSAhaq3XzFBRvkO2r9O3f5RDvshISNfSbyQe2q5OZDoyn7Cv2QaVllBhy84tQRb3hm7k4ou2BtbdVIC8szgS4yvsH78ADkL1HKhmu4tVSaDzr9KHYIvCZdU0DjC5G4jdWUWM65Qsq7LPu3zPyHKZkdkSLMQiAfmX/TZJB31DDhXNx3KR2V67LfB70Sg3g3AJksXhS3v4COoeEq2U95ihKHkY4emsEoI/T9silEukX30bq9ReU+o6g7o9PL9g+DWF0/4d1PQyKbZdcaDh1s/E4inGSzytk2nUhfl9LA05IkB9imu7nJ89OT+p0oTXZjqhy91dkxzYOX6zqntcj/18d0c5ywYcD2MYk+KgF/ZKS24AWRr49aDl6y1QZBDyC4A00LBu/g897R4FHLDK2hgnHkRSBV3SGvdsCnEkEmxA2FTv2MWuuj/OZJW3rKMTuGApQLmdvygsakdw2b51tUS0TkyF2MrgzUMtYIAJ4NDtcGT0riCIwM8loEq9z96w3ho+Xwk6U5Y9TWWtNhlRUg+XV3dwCr0dj5F2qG1fmIRQgnAt7Nmnbkva3DxW3EYjPUTwqDJylkOHMK2SJeBjyshyrgEs996WqU5S21KbdLPMhtSfXyXqCLygOjDmOj0KvVLki0g6O0iICiL2lredcrN+67I2QthlaRewZLILVzzFtIug/zWYE+FS7Jbeuww+wVLhDzZ9c0kHrExb0MLD2c2Z5GEaRPdGgEbmPsuo5rqWgmQt9jmLySYCAaNLXdte8oHSOPSp89C384HtfQPqXHkJepkdzmYKSSeKxC6oNkooAzv0y8gHINn2ashbtoauxhzlLOM4tsMI9W1RgI7Udpf9/gptJbCAJDB52KFjTguRdIIlEyGAYGjcrWRcqcJoFZIdvUgXoFH8dH7255WKKktZQDYtjn9+0GosWpuFErDl7Itu9X
- AbQAIx7U
- kk2+gUupfns+xlbd0chjDMe8qXYfn3jQlU67ZSIuUrxqfbup1cGAmu+hRU9Fdz4VIRyTMs/5gC7FZGSMAajXIjAHUXVPxkQVjGLeiyk2n+yLBRAfGf3uUV4ewGll1EipuzwukYiFd7sAWvOJPfbAoqnEZ6AJeg2GRSJlhpjdQh2Xdv2WCoUfaCGqC98OU5ErZUZQFUbfcZsZHKjv0/2O0dIa/1BLlc1ZKYZ/RYRYt6QajS6ldoCgQiEeJf5wLeEiCpzBMGyzuKyxtjWjO1ogF/ie82KL74gd1DDXuJJmU6S5hCVveQo/O3jsdycPrNVRnQ8Nail50V7H7xv/XbtUnUqC1eg8lONiSd5sjBhdt/k1yFhkJJ90VqwNVXOT6P7m2Ai92TvzS3/9KLaLX9rrbuxWeClgqwtQ09N/VYHpe6RrVyOkHeagn6Cp/8HOs1rcW9ekr91W6G6Oo3nPiMun5PgypQqvuTtyX5A8iKgNYwSs9XSfI6Pt7UAO9OhmAVZa6hoAMAj+ZnvMD01VjzTIQAe069YUomdRg8sguPnACU55x9vhuaddf+Aa7MTLmox8jgQwajs98dBlOSDY=
+X-HE-Tag: 1794011825-391641
+X-HE-Meta: U2FsdGVkX1+c4X6YVTE1xvlNDurAo4IyNB16vnigp5VXP4ojv9eyA2VXwVwfSnRk+ZHdHLQXwZaCjn8VJtGmOA5OJqjERINdiChj2YAm9W+W0MejMh/HkMM7EgPtgCNOChgdYCqh8hQZidXP1kgbGeDn9We3IRgAMFKz+fqwZKeCBcqvwRunlXSgr+aTsfFmsRU64fQe23bevI57jX4puLwMDidYn5NZV8Qhu2uCwPyyWKU7kzzvKaAzDik252ZrEsyhfJQ7xlRVzAOhz5G1N8zQ1nAkyNfF/06ciY2jviQ56xWfgNoeOAEfRJ/dNKZhnAdmICqdG+Tbr7XdJM5DywFTN4i3wMe2yWAW/AXn1ZdZy1VVpLJaffhBtrF+/MCHMXsz7yg2Z7kr/lb63k6mD9sKOI8n6x435eijjVUv2qYpCfgH/ouHR2psz0uOH8HT8oNCwxVcC0jA/2j4htPByHD+e8+8xJte+qWBK/IAspVwk6tDtDg69k5ZrYoR19ilo4BkrvaRxQpuZG5se79sU0DpqVa30rCJ0Z1eNk8K0NfIPjkvjcPN7WIupqQ9L3pyHx04j/rHwsg1hxiVUolFgvf3L3tPrkPH2mLErH60kfQpANwiVx6SruSf4Y5OUadxZsZ2KM/qYRNVJ6Avesu+28kN56y/jbtXHC5sc3zj1rHg08dKDUK/XxDUd5x+AK7/O2eTqwit7I1F84Eapbm5qKpSP5llMoF4y1/iFTFH6q+L/xkqrK81x8PA5woh1N4rixVVNTvlcJmzAtFWL0Bhq+F+cu256kl024R6Ffbt2dzI22saIto4wuUSeOvlLGxrsHESSKI+QCJmhnqL+/xNFxpASv3DIxqysjA29Klu7rBbSs5RgMjRt3KL/1/XV5plFUwubAzEZEFntaisAvteTYGdelFHgci/vJrHCqnRiUhD52pF287X4EF99xbUZ1Od9daXHth4VbIgjhRrt+V
+ WMtwSeCW
+ 3iFCf9tZsH22WOH/spx12IfSudFDGesjCD7O0SP4xQxwxuVHsSNin8TwEkyP6ByJiGXcW+g3aJWKZiaIzzo8LYAPYPzTq39nCo4WHDWlFqIoFKgBRxLzLa8Qy/9eJ8LHNT2WsnoFyrQUJ74bN43fxxJ8c8h+N5XZFel5ZMsqFxONjd9s2OfGVMx2HRkKTlBDufKXpCi91BRAOvPo3MOvt5T++8qJFxY7V0aHuN4oI2pkBZCO3d/zEtuhNNiiTIzbkns1+MUS4B9ldM7CziGZlE2TJnOUK0UtaUEA16PMJzvYkmgQEgZpbBGzuTeu85Jlxi5fa8mXHz/v0/d/ZKL9FL742S4/IsJukJ3oDzwVtgceAt1TeRoN6y11eWhw3JrkEbJWIGgnUm16yPPeRLDJ8UncCPMX1ONeyNPUvEO8/ouw1I3bTPJ9JT6nXzxH/obgIjmwjcEmxUEXYIsN8o7wRq9MD295f1s7kzGCyJDPuWHZSxu9N69LEua03cDEYFN+wg2fpdepHEYj3aL1hzn5vJHi8rx2hlPbaKQ5PfDeLGzK6N2Qj956H5E3MLMLrTK+loYKuOpEToO7KGVaTMh9B3tES63CBdmwKXwL7gEWlJaOnFSofmO4IXlf+3DpJ49+bmYh4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,191 +151,138 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Fred Griffoul <fgriffo@amazon.co.uk>
+From: Ackerley Tng <ackerleytng@google.com>
 
-Support creating memory provider files via the MP_NEW_FILE ioctl on the
-control device.
+In PFN mode, guest_memfd memory is backed by raw PFNs rather than
+page-cache folios.
 
-Allocating contiguous physical memory at file creation time ensures that
-every provider file descriptor exists in a fully initialized state with a
-fixed physical page range throughout its lifetime. When the provider file
-is closed, free the contiguous memory range and release the associated
-tracking metadata.
+When inserting the PFN into the user page tables during fault handling,
+constrain the inserted protection by stripping write permissions if the
+provider reports a read-only PFN attribute, and fail immediate write faults
+on read-only frames with VM_FAULT_SIGBUS.
 
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Introduce kvm_gmem_pfn_vm_ops with a .pfn_mkwrite callback that returns
+VM_FAULT_SIGBUS to block subsequent write attempts or upgrades to read-only
+PFN mappings. Without this, core MM would have marked the PTE writable and
+the write would have succeeded.
+
+There is no need to do another .get_pfn() call since the contract with the
+provider requires the attributes to be kept constant until memory is
+revoked, at which time the user page tables would have been zapped.
+
+In folio mode, the fault handler obtains a locked folio under the shared
+filemap invalidation lock and returns with the folio still locked so the
+core fault handler installs the PTE before unlocking the folio. Any
+concurrent truncation or invalidation must wait on the folio lock before
+unmapping and removing the folio.
+
+In PFN mode, there is no folio lock to bridge the gap after dropping the
+shared filemap invalidation lock. Hold the shared filemap invalidation lock
+across PFN insertion to prevent races with revocation.
+
+Co-developed-by: Fred Griffoul <fgriffo@amazon.co.uk>
 Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- samples/kvm/memory_provider.c | 110 ++++++++++++++++++++++++++++++++++++++++++
- samples/kvm/memory_provider.h |  30 ++++++++++++
- 2 files changed, 140 insertions(+)
+ virt/kvm/guest_memfd.c | 52 +++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 51 insertions(+), 1 deletion(-)
 
-diff --git a/samples/kvm/memory_provider.c b/samples/kvm/memory_provider.c
-index d5272cb88b758..e89ce55a357c0 100644
---- a/samples/kvm/memory_provider.c
-+++ b/samples/kvm/memory_provider.c
-@@ -2,15 +2,125 @@
- /*
-  * memory_provider - a sample memory provider.
-  *
-+ * The module provides physical memory through provider files.
-+ *
-+ * The control device /dev/memory_provider creates provider files.
-+ * Each file allocates its own contiguous memory from alloc_contig_pages().
-+ * See memory_provider.h.
-+ *
-  * Confidential VMs are not supported.
-  */
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index 183e15775523f..e94f2359b7c9a 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -565,11 +565,40 @@ static bool kvm_gmem_supports_mmap(struct inode *inode)
+ 	return GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_MMAP;
+ }
  
-+#include <linux/anon_inodes.h>
-+#include <linux/file.h>
- #include <linux/fs.h>
-+#include <linux/gfp.h>
- #include <linux/miscdevice.h>
-+#include <linux/mm.h>
- #include <linux/module.h>
-+#include <linux/slab.h>
-+#include <linux/uaccess.h>
-+
-+#include "memory_provider.h"
-+
 +/*
-+ * One provider file.
++ * In PFN mode, physical frame attributes are constant for the lifetime of the
++ * mapping. If a page was inserted read-only, it was because the provider
++ * reported a read-only PFN attribute, and write upgrades are never permitted.
++ * Write faults on such pages must fail with SIGBUS.
 + */
-+struct mp_info {
-+	unsigned long base_pfn;
-+	unsigned long npages;
-+	struct page *cma_pages;		/* from alloc_contig_pages() */
-+};
-+
-+static int mp_file_release(struct inode *inode, struct file *file)
++static vm_fault_t kvm_gmem_pfn_mkwrite(struct vm_fault *vmf)
 +{
-+	struct mp_info *info = file->private_data;
-+
-+	if (info->cma_pages)
-+		free_contig_range(info->base_pfn, info->npages);
-+	kfree(info);
-+	return 0;
++	return VM_FAULT_SIGBUS;
 +}
 +
-+static const struct file_operations mp_file_fops = {
-+	.owner		= THIS_MODULE,
-+	.release	= mp_file_release,
-+};
-+
-+static long mp_ctl_new_file(void __user *uarg)
++static vm_fault_t gmem_insert_pfn(struct vm_fault *vmf, kvm_pfn_t pfn,
++				 u64 pfn_attrs)
 +{
-+	struct mp_new_file nf;
-+	struct mp_info *info;
-+	struct page *pages;
-+	struct file *file;
-+	unsigned long npages;
-+	int fd, ret;
++	struct vm_area_struct *vma = vmf->vma;
++	vm_flags_t flags = vma->vm_flags;
 +
-+	if (copy_from_user(&nf, uarg, sizeof(nf)))
-+		return -EFAULT;
-+	if (nf.flags || nf.pad)
-+		return -EINVAL;
-+	if (!nf.size || !PAGE_ALIGNED(nf.size))
-+		return -EINVAL;
++	if (pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY)
++		flags &= ~VM_WRITE;
 +
-+	npages = nf.size >> PAGE_SHIFT;
++	if ((vmf->flags & FAULT_FLAG_WRITE) && !(flags & VM_WRITE))
++		return VM_FAULT_SIGBUS;
 +
-+	info = kzalloc_obj(*info);
-+	if (!info)
-+		return -ENOMEM;
-+
-+	pages = alloc_contig_pages(npages, GFP_KERNEL | __GFP_ZERO,
-+				   numa_node_id(), NULL);
-+	if (!pages) {
-+		ret = -ENOMEM;
-+		goto err_free_info;
-+	}
-+
-+	info->cma_pages = pages;
-+	info->base_pfn = page_to_pfn(pages);
-+	info->npages = npages;
-+
-+	fd = get_unused_fd_flags(O_CLOEXEC);
-+	if (fd < 0) {
-+		ret = fd;
-+		goto err_free_pages;
-+	}
-+
-+	file = anon_inode_getfile("[memory-provider]", &mp_file_fops,
-+				  info, O_RDWR);
-+	if (IS_ERR(file)) {
-+		put_unused_fd(fd);
-+		ret = PTR_ERR(file);
-+		goto err_free_pages;
-+	}
-+
-+	fd_install(fd, file);
-+	return fd;
-+
-+err_free_pages:
-+	free_contig_range(page_to_pfn(pages), npages);
-+err_free_info:
-+	kfree(info);
-+	return ret;
++	return vmf_insert_pfn_prot(vma, vmf->address, pfn,
++				   vm_get_page_prot(flags));
 +}
 +
-+static long mp_ctl_ioctl(struct file *file, unsigned int cmd,
-+			 unsigned long arg)
-+{
-+	void __user *uarg = (void __user *)arg;
-+
-+	switch (cmd) {
-+	case MP_NEW_FILE:
-+		return mp_ctl_new_file(uarg);
-+	default:
-+		return -ENOTTY;
-+	}
-+}
+ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+ {
+ 	struct inode *inode = file_inode(vmf->vma->vm_file);
++	struct gmem_inode *gi = GMEM_I(inode);
+ 	vm_fault_t ret = VM_FAULT_LOCKED;
+ 	struct folio *folio = NULL;
++	kvm_pfn_t pfn;
+ 	int r = 0;
  
- static const struct file_operations mp_ctl_fops = {
- 	.owner		= THIS_MODULE,
-+	.unlocked_ioctl	= mp_ctl_ioctl,
-+	.compat_ioctl	= compat_ptr_ioctl,
+ 	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+@@ -578,6 +607,12 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+ 	filemap_invalidate_lock_shared(inode->i_mapping);
+ 	if (!kvm_gmem_is_shared_mem(inode, vmf->pgoff)) {
+ 		r = -EACCES;
++	} else if (kvm_gmem_is_pfn_mode(gi)) {
++		u64 pfn_attrs;
++
++		r = gmem_provider_get_pfn(gi, vmf->pgoff, &pfn, NULL, &pfn_attrs);
++		if (!r)
++			ret = gmem_insert_pfn(vmf, pfn, pfn_attrs);
+ 	} else {
+ 		folio = kvm_gmem_get_folio(inode, vmf->pgoff);
+ 		if (IS_ERR(folio))
+@@ -592,6 +627,9 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+ 		return vmf_error(r);
+ 	}
+ 
++	if (kvm_gmem_is_pfn_mode(gi))
++		return ret;
++
+ 	if (WARN_ON_ONCE(folio_test_large(folio))) {
+ 		ret = VM_FAULT_SIGBUS;
+ 		goto out_folio;
+@@ -650,6 +688,15 @@ static const struct vm_operations_struct kvm_gmem_vm_ops = {
+ #endif
  };
  
- static struct miscdevice mp_dev = {
-diff --git a/samples/kvm/memory_provider.h b/samples/kvm/memory_provider.h
-new file mode 100644
-index 0000000000000..0bd9e250aeaf5
---- /dev/null
-+++ b/samples/kvm/memory_provider.h
-@@ -0,0 +1,30 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _SAMPLES_KVM_MEMORY_PROVIDER_H
-+#define _SAMPLES_KVM_MEMORY_PROVIDER_H
-+
-+#include <linux/ioctl.h>
-+#include <linux/types.h>
-+
-+/*
-+ * A sample memory provider.
-+ *
-+ * Every fd that this module returns is a provider file. Pass it to
-+ * KVM_CREATE_GUEST_MEMFD.
-+ */
-+
-+#define MP_IOCTL_BASE		'P'
-+
-+/*
-+ * ioctl on /dev/memory_provider: create a new provider fd of @size.
-+ * Returns the provider fd.
-+ */
-+struct mp_new_file {
-+	__u32 flags;	/* Reserved, must be 0 */
-+	__u32 pad;
-+	__u64 size;	/* bytes, page aligned */
++static const struct vm_operations_struct kvm_gmem_pfn_vm_ops = {
++	.fault		= kvm_gmem_fault_user_mapping,
++	.pfn_mkwrite	= kvm_gmem_pfn_mkwrite,
++#ifdef CONFIG_NUMA
++	.get_policy	= kvm_gmem_get_policy,
++	.set_policy	= kvm_gmem_set_policy,
++#endif
 +};
 +
-+#define MP_NEW_FILE \
-+	_IOW(MP_IOCTL_BASE, 5, struct mp_new_file)
-+
-+#endif /* _SAMPLES_KVM_MEMORY_PROVIDER_H */
+ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+ {
+ 	struct gmem_inode *gi = GMEM_I(file_inode(file));
+@@ -665,7 +712,10 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
+ 	if (kvm_gmem_is_pfn_mode(gi))
+ 		vm_flags_set(vma, VM_PFNMAP);
+ 
+-	vma->vm_ops = &kvm_gmem_vm_ops;
++	if (kvm_gmem_is_pfn_mode(gi))
++		vma->vm_ops = &kvm_gmem_pfn_vm_ops;
++	else
++		vma->vm_ops = &kvm_gmem_vm_ops;
+ 
+ 	return 0;
+ }
 
 -- 
 2.56.0.455.g6c5a503b38-goog
