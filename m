@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2076A606A32D
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 22:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26109606A32E
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 22:24:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZxAlKgYd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Oi/wh6Fo
 Received: by kanga.kvack.org (Postfix)
-	id 340086B05B2; Sat,  7 Nov 2026 17:24:30 -0500 (EST)
+	id E3AFA6B05BE; Sat,  7 Nov 2026 17:24:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 316896B05B8; Sat,  7 Nov 2026 17:24:30 -0500 (EST)
+	id E14306B05BF; Sat,  7 Nov 2026 17:24:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 206466B05BE; Sat,  7 Nov 2026 17:24:30 -0500 (EST)
+	id D2A006B05C0; Sat,  7 Nov 2026 17:24:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E7FF06B05B2
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 17:24:29 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7BCFBA03F4
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 22:24:29 +0000 (UTC)
-X-FDA: 85409753058.27.F42D746
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9DD696B05BE
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 17:24:41 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 34FC0A7F88
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 22:24:41 +0000 (UTC)
+X-FDA: 85409753562.07.A0C3C7C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AA52E140004
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 22:24:27 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZxAlKgYd;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf07.hostedemail.com (Postfix) with ESMTP id 5ED1E40004
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 22:24:39 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Oi/wh6Fo";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794090267;
+	s=arc-20220608; t=1794090279;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WtEZdA6Wi2SP26pE/qnVtNr9Wkimj3gks8WQKsUMrmY=;
-	b=5n1c+oOmhS7CTIffBEq4oqfz0NaP4jby5Nl8aTfN1/ZI220QetB5jKLLpC1RVcfPTfIIXO
-	WjUsjK2aAWgSxdCqTOZqgbCmnXpqz8wLsNllHckRLDS8t9BRNMyMXZXTCKXQNh+bAKQfK9
-	tThRB92C+xfZeNDJ4YNAMD+7KRDey3o=
+	bh=s6N4YpPTgOoqUcx/vTuyNssoa2j7GTXJb10U+3l7OOI=;
+	b=u/F1mnOM5vEnakQom5gkXPOjwnY7jnUbGt+cLVbu4LvnY44pqa8m7TR4NCyhOYIxiOio0R
+	I4w9FaAT/kef+0agCTSrG5iEP7hRLxFzgNTVPAyKXtalqZdCRUIS7xv8/iZa9JM6or3LXU
+	T/w5U+QJfq+7wzqMNG7LwA3ldixVUAE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794090267;
-	b=K3KntsqcrqWuCCxKXIS23/+YoBMdvRHbxnd7skx0Eq1R3virWwhQhfqM9BOfuP5xH7iKrZ
-	H6mlVFQ1NawLkoFSfR5TFEK9kAyZrfePGpFSFdEayhrFNhbYmtQX2wuvHSalTnRHtPcxXH
-	h2d9Mi15Q7BAs6qUojpiw9TxyB/MIIs=
+	t=1794090279;
+	b=lYBQn5AVZqRCB0Y3VqivaAYqni/V8bykF5NG/m/zMTaM7RD8zdL01IffpOum0VObxc1nkn
+	xVz1kGUo1xsEByIXEmqt30lgvW6GUkgXAgeGRa2zgeckk92ybS3NAopcKtx1acoqrFfZx4
+	/8v0on8gF3tjKhB81MwfV9pXH2ih/n0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZxAlKgYd;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Oi/wh6Fo";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F38414069E;
-	Sat,  7 Nov 2026 22:24:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A081F008A1;
-	Sat,  7 Nov 2026 22:24:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B7B7844703;
+	Sat,  7 Nov 2026 22:24:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 674061F008A2;
+	Sat,  7 Nov 2026 22:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794090266;
-	bh=WtEZdA6Wi2SP26pE/qnVtNr9Wkimj3gks8WQKsUMrmY=;
+	s=k20260515; t=1794090278;
+	bh=s6N4YpPTgOoqUcx/vTuyNssoa2j7GTXJb10U+3l7OOI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=ZxAlKgYdcsdfcplYAoaxdnR0L5kEsLy/hPVQskRyX/bGDfYFHfg1IxCJdaBNJIxF5
-	 SODlq45HAhqJUA2HInlD3KYIKd6iPEv8zHqszJO8CoyhEzxYwikjSCmcZpxD5y369+
-	 4NSZGfcyP9eKCSQWRhmG6eyK1K5NBETafoloJ8p66PESL+uLbkCxsHAWOVs01VpiVY
-	 GthYD6JEG7+Wv4LIbXLBzDsIzto5Jqi/USai0z2hmefQ6Dx2Q+k1+s02tkFtv4/cN0
-	 zUBjiVvYgsryF94hYtce/D6XkhWGsB6kCm4YV5aSDqswAChojwfGT27xP4Eepf0qUx
-	 vrUoa9s+a8mEQ==
+	b=Oi/wh6Fo/queHm2D7vPoJJ1fq6YiCpzQtIUPsMBDDhk7dLv5IcXdilowlTNG7d0FF
+	 baIzia55b/JRdjUobNqZjaqmklfUOnZI6gMTSmEUj3AhAE9M/ViQ/zKHXwEuthHHWw
+	 JqJhxxiQOYeQV6UeF4l+SBpXy0Rgodw18hdVVS5mgI+Zcq3OKeUoV0W0OmireqmSXh
+	 /tKcv/OIVa1dZi0mgxomFJCWkkMPpxHl9T0pVjypmUn2eGrrB+XSM9FqO5kQiiSc1k
+	 wdWE5gbvaFhC8GVduDwKtoTtxBr9Qli91+dDkJ6znNoCj1LE7EGK1mo4AUekojw0tR
+	 DJWVEVuA5ZY+A==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Sat, 07 Nov 2026 23:23:37 +0100
-Subject: [PATCH v2 1/5] mm: limit pagecache folio refcount when mapping
- pages
+Date: Sat, 07 Nov 2026 23:23:38 +0100
+Subject: [PATCH v2 2/5] mm: limit pagecache folio refcount when splicing
+ into pipes
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261107-refcount_overflow_stable-v2-1-c38f6809b106@kernel.org>
+Message-Id: <20261107-refcount_overflow_stable-v2-2-c38f6809b106@kernel.org>
 References: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
 In-Reply-To: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
 To: Lorenzo Stoakes <ljs@kernel.org>, 
@@ -103,29 +103,28 @@ To: Lorenzo Stoakes <ljs@kernel.org>,
 Cc: "David Hildenbrand (Arm)" <david@kernel.org>, linux-mm@kvack.org, 
  linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
  fuse-devel@lists.linux.dev, linux-arch@vger.kernel.org, 
- iommu@lists.linux.dev, Chris Mason <mason@kernel.org>, 
- stable@vger.kernel.org
+ iommu@lists.linux.dev, stable@vger.kernel.org
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=15032; i=david@kernel.org;
- h=from:subject:message-id; bh=IKW52LWjd1mBBexmwcOzA9oiOBd77E3VRfpttg60TuY=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLeL2Xk23L0X9I27a9CiwTO7fvP+/dryEF1ffF/tSfkc
- 44IcL9f1VHKwiDGwSArpsgSFHzf4OXLdbXVbnzMMHNYmUCGMHBxCsBEkgQZ/hlLJd9Xnf5dUj6P
- TYdr64odLn1f0xs/Kj0/NPf2ziVhZvMZGX5zfciafiTmpNvNHgmBIy8r/qR8Pjnb46PizUUnWBO
- 13rABAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5422; i=david@kernel.org;
+ h=from:subject:message-id; bh=v5xbjRDjGerU96PcN0sE4co5RzL91Qtl1i190D5ET5k=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLLeL2Xk5vyk/dx2wZ3WtSXz/61y5Vi6fu2NK74f77Leq
+ bhaprc4rqOUhUGMg0FWTJElKPi+wcuX62qr3fiYYeawMoEMYeDiFICJ3OljZFh7JHkG47+nvk+3
+ iOnN84uO+5wSfFopl92xev7MOQI/9W4y/HdlZX9kI3VeLbTqbUzNo8NzNla/sjnTXx2i11dbtP+
+ aBT8A
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: w6egb18so19oswgob3zwrq8zeyucknb5
-X-Rspamd-Queue-Id: AA52E140004
+X-Stat-Signature: sgjo7g1kb6k5kc4shbqz5ox7nt3habwt
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794090267-441402
-X-HE-Meta: U2FsdGVkX189JmImGN9bCK+89kt9A1/zfTSzlLjpt/a19UTyDh62+rABFOVZ+61EZuGfDu//Z9I+jmSBcHQJO6jfMfJg+HFyqbyr7sXfAAqlzakMZWa7KtL6E5NGgN1ptWoMPhZE77m/imyr2/opOhUU64ohxeDuZIVzKr2I7ZuUSDsfz0K27EMpU12m+wdYS+NMHhINd8CXccfT+I7ijgW36771neDnlnKJb8w0AqdLuDMj0ETE8pOZBHXYJL0n3MbN/zu6eEhNwN8DFvAXjb5gx8REaUD5mB9E15+doQBWHI1KrbOBFIerZsxiNurTZVyYbyurNaA1tJX1H3GRmvJFkxe1Cj5ccYRWXVK/124WPiagHGh9ffyhm0kaYDlwF7ff/4IEodhERQQg6t0Mds42vIIIqGXKkJnFW2ER3apj0x5dpmTYup21k6yk924eaE5lwGfpH0hPS1ZVIxed4eeOlLqfYILaaKfHrMLQ9YA5N016UiKRRFngG4p8zo65JGGq7n6ZnlyuiG+HB+X7thtAe25qHkIZ7oDZpUQWUzuZ3Mz9aN9VQ/zE7HDY596gYj9Ib0XF2FwoZHZW8BewXAMFSvZ7d4lEUy3QcENBshJlX6HnNMBULFU4fdbUn3w4ElTI7hmDwyYh2iZKvvOc6cBmgv4UVmis/8Tcs00GTIIgtYA1cKw2C+sV1Wb7A+gKi1gfLUzXZ/zOFI6+qoKKGoemBf8PJTxueM9ciEXc9OL4O9pIIFX6Xd6eXURqQpPTsONpwDv5KXfbpT0wI93XHW74trlPI1QrAdaARLNmj2nYYPS/AWoJRnzoWrDDC4BdwpYp/4eZEnU39NsZfwSnXCmZYk/AU5CiJZ3j4wQzL8z814KeJn1PjagavfKyD5EPOChYTU/rO0jHmzqk8BIlwQh72YlgzBsSYB979ki0ruYFxFX/Sbx0b4nZRBATUmew0vvlIa6NxJ641Gtdb5+
- F4OLXoHm
- necPZ7DFBkHKPrUvOQGt+XvxHEKW6J3e0e4kqEY4XaB0hg+gfNr7XCIFt6mxZ8ElSjYcYYPWQkP+6J3fpi+2ouwxqbRhv87OmsETzJ5ISxmtu0zV+eWcnQMBdEb9jhI8Lfjy2wfOOCzQQ/npfkGV9tNrRClbKl2bKDTHIwDaQoeQY/OhALjjHLFQbvBo9ImtuHo4QqSlSNAPXydHWs+3C63RAN8IllhZrxbx82mshZwXttt2GkJ3ZsFSn7X3LoA11uGWfHkKOklzUenZGHpvWUjhkBZIBVP7Z7EMuDuW7jB20qVU6YcSHrcV+4IU8QZgIYK4y
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5ED1E40004
+X-HE-Tag: 1794090279-330050
+X-HE-Meta: U2FsdGVkX1+SZnb87TPVPAiuWKSbAHD7aC9Oc1KgCOoTmMgQ7LpHlN3d4Qop+pupfBPPDm5zFJEv1Wr+kHzEp1a23Vi2qT7rF1PwX8NHkd9mZORal/K7Ik5uuyfQv2KpftMuf6+DqmSb7i/rG+FePtbOW9MIURKGH5le5rhGgGFY9ehYq2D/gYBQspFvfIkA3f+wcGpmFzGc7KzE/rQyK1MqqhCG0TJ0jpVI2P2pO6ylL+2b5vlTmH4WRhNjBSQrE3paY8aISpmiL4KX36ynF4Oy4xhE0VgUQWiwvzDm5+RSmP1Y53bH3zXi3mQzuJ//tUAJo75xBB35ovYOMUMGgzB8DePdL1MDvVRDXxGdQi3VlSY54JXM/0N40vurVRloiqMDC53fOH0Rl7TQIrAlYaVF1BsN6EyaQ/96WVTxD/W6HqjlioVG1ThqBzdIzVRSa6W14RSIUrqAe1LIYvXJA1o+kKQ5JwdhxlIBDAF7oa6N1BFrDQ7FU5DC1HGRLAOSv7jUs1jkruJtfHVWu1RBZuBggNfb7Sc9IWoFzfRhJ+/iUwiE3Bzs0+9wvIwG6/HL7pJc2c7AekS3Ps0C9TS39VgOcY07txmXj295tPOD96+xhdH3A68yvFkIoizLJwpGBxxNNNB/epbxejMoXpjNpTDxqXidtlh5lRR2mHzFdJyQUdLBz0H1E3Up+bagzWkRvaeVom5gysqT+nUpEXUg2aAbv4/v5Bf6i/DIuggpMmUSl0plltBPRHyd8POz1iseHDSn441ch05tH9g5rEsNVaFYHGGHA9N6haFTtzCY3X4Pt+AWHrdJEBn9BupIo1E2guQAzDZCr5xMPKioZbvEUB8Neygfy4IlHtgUvESWlf3GLPnPY/Z6j1PZblciwTp2tg/ET3/WxuuKsQrexkJivDHBHXO9HGx+/EGWK4sr6mA/1hfFXSMWGbs0Yn2B8pL5G0QHkR2hld9Y5UtvnqG
+ eDGtjsqK
+ gw047wwiYkKAzltEkSMoe1e9qWLyuIF2krIu5YiAPL5GXY0KPr3Gp93oP4lhwkzEiLyxtm3Zuq0CDcOX9SSkJCBezfFVmiknuApqJuwUO27l6yYQyVM0IH0yyqdobL2P/3ePU3uc3uQaD/6MEf9Vd+zWF9aBb8ei9rOo1DYIFMh2+p0kEJmuYAaKdKifRKyhqA0RJNZrGniA0xvoFh0Ypidp5+n68lCWwwwyQ3VhR/yNFx47HcFJxPU5vMwtbQTjRjl6Dh6wijVa60IN1Pcyfv2qXfg7Fv2lUzgxKEc4zb7xwB5aXrTqlzOzu06HEhkNa/FPB
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -134,387 +133,146 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-With large file folios, overflowing the folio mapcount and refcount
-became possible. For anon folios it is currently not really an issue:
-each large anon folio can only be mapped once into a process; on 4k
-kernels it would be more processes than usually allowed on a system, and
-on 16k or 64k kernels the processes alone would consume hundreds of GiB.
-Something to be sorted out at some point, but it's not as urgent.
+Similar to mapping pagecache folios into page tables, let's reject
+additional references when splicing folios into a pipe if the refcount
+is at its limit, similar to how we handle it during GUP.
 
-Being able to overflow the refcount is not really big news, but it's about
-time that we do something about it because some modern technology might
-find ways to abuse it :)
+This will prevent more cases of possible folio refcount overflows with
+large pagecache folios.
 
-One of the enablers for that was commit ddc58f27f9ee ("mm: drop tail page
-refcounting"), however, file thp support was added later.
+Let's keep it simple and check in the two callers of
+splice_folio_into_pipe(). Return -EOVERFLOW if the limit prevents any
+progress, so do_splice_read() can fall back to copy_splice_read() when
+read_iter is available. This keeps sendfile() and other splice users
+working when ordinary reads would still succeed.
 
-File folios can be mapped multiple times into the same process, allowing
-for processes to hold many references to the same folio.
+Also fall back to copying in FUSE when taking another reference through
+fuse_ref_folio() would exceed the limit.
 
-As a short-term solution, let's introduce two folio refcount limits:
-one for ordinary consumers and one for admins. Leave some headroom
-before the refcount goes negative, which we really don't want (having
-the mapcount go negative is also not expected).
+Also check in try_get_page() to cover pipe-buffer duplication by tee()
+and partial pipe-to-pipe splicing.
 
-Start reporting SIGBUS if we run into limits. When restoring mappings
-from migration entries, instead zap the pte/pmd entry. We allow for
-slightly exceeding the limit to keep things simpler.
-
-During fork(), prefer not copying page table entries over failing fork.
-Export __folio_ref_count_over_limit() right away as that will be needed
-from fuse code next. Use has_capability_noaudit(current, CAP_SYS_RESOURCE),
-so filesystem credential overrides do not affect access to the admin
-reserve, and to not generate auditing messages simply because we access
-optional reserves.
-
-This is far from ideal, but better than all easy alternatives we can
-backport comfortably. For now it fixes the big problem: letting
-the refcount (+mapcount) go negative and cause trouble.
-
-This is only a temporary fix, we'll follow up with something better.
-
-Check order 0 folios as well for consistency: each
-folio_add_file_rmap*() and folio_dup_file_rmap*() needs a prior check.
-
-Also, just document -EHWPOISON for copy_present_ptes() while at it.
-
-Note: When zapping file migration entries, uffd-wp is preserved using PTE
-markers, but uffd-rwp protection is lost because there is no corresponding
-marker. try_to_unmap() already has the same problem when unmapping file
-folios, so we'll happily ignore it.
-
-Note2: For now we don't let migration or PTE table collapse exceed any
-limits. Admins can always refault, and if we are already operating in
-admin reserves, something is already off.
-
-Reported-by: Chris Mason <mason@kernel.org>
 Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
 Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
 Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
 Cc: stable@vger.kernel.org
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- include/linux/mm.h | 30 ++++++++++++++++++++++++++++++
- mm/filemap.c       |  6 ++++++
- mm/huge_memory.c   | 29 +++++++++++++++++++++++++++--
- mm/memory.c        | 35 +++++++++++++++++++++++++++++++----
- mm/migrate.c       | 11 +++++++++++
- mm/userfaultfd.c   |  4 ++++
- mm/util.c          | 12 ++++++++++++
- 7 files changed, 121 insertions(+), 6 deletions(-)
+ fs/fuse/dev.c      |  5 +++--
+ fs/splice.c        |  8 +++++++-
+ include/linux/mm.h |  9 ++++++---
+ mm/filemap.c       | 11 ++++++++---
+ mm/shmem.c         |  4 ++++
+ 5 files changed, 28 insertions(+), 9 deletions(-)
 
+diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+index 3641abb90d6bb..4f6b7b42bfd3e 100644
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1265,9 +1265,10 @@ int fuse_copy_folio(struct fuse_copy_state *cs, struct folio **foliop,
+ 		if (cs->write && cs->pipebufs && folio) {
+ 			/*
+ 			 * Can't control lifetime of pipe buffers, so always
+-			 * copy user pages.
++			 * copy user pages. Also copy folios at their refcount limit.
+ 			 */
+-			if (cs->req->args->user_pages) {
++			if (cs->req->args->user_pages ||
++			    unlikely(folio_ref_count_over_limit(folio))) {
+ 				err = fuse_copy_fill(cs);
+ 				if (err)
+ 					return err;
+diff --git a/fs/splice.c b/fs/splice.c
+index e6d43329ed3f0..df73a4e65118b 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -956,6 +956,7 @@ static ssize_t do_splice_read(struct file *in, loff_t *ppos,
+ 			      unsigned int flags)
+ {
+ 	unsigned int p_space;
++	ssize_t ret;
+ 
+ 	if (unlikely(!(in->f_mode & FMODE_READ)))
+ 		return -EBADF;
+@@ -977,7 +978,12 @@ static ssize_t do_splice_read(struct file *in, loff_t *ppos,
+ 	 */
+ 	if ((in->f_flags & O_DIRECT) || IS_DAX(in->f_mapping->host))
+ 		return copy_splice_read(in, ppos, pipe, len, flags);
+-	return in->f_op->splice_read(in, ppos, pipe, len, flags);
++	ret = in->f_op->splice_read(in, ppos, pipe, len, flags);
++
++	/* Fallback to copying when hitting folio refcount limits. */
++	if (unlikely(ret == -EOVERFLOW) && in->f_op->read_iter)
++		ret = copy_splice_read(in, ppos, pipe, len, flags);
++	return ret;
+ }
+ 
+ /**
 diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 6a34dd3800f56..3356f7a670d1e 100644
+index 3356f7a670d1e..dd50262a70758 100644
 --- a/include/linux/mm.h
 +++ b/include/linux/mm.h
-@@ -2232,6 +2232,36 @@ vm_fault_t finish_fault(struct vm_fault *vmf);
- #define folio_ref_zero_or_close_to_overflow(folio) \
- 	((unsigned int) folio_ref_count(folio) + 127u <= 127u)
+@@ -2288,10 +2288,13 @@ static inline void get_page(struct page *page)
  
-+/* Leave separate reserves for administrators and concurrent reference gains. */
-+#define FOLIO_REF_COUNT_LIMIT		(INT_MAX - (1U << 26))
-+#define FOLIO_REF_COUNT_ADMIN_LIMIT	(INT_MAX - (1U << 25))
+ static inline __must_check bool try_get_page(struct page *page)
+ {
+-	page = compound_head(page);
+-	if (WARN_ON_ONCE(page_ref_count(page) <= 0))
++	struct folio *folio = page_folio(page);
 +
-+bool __folio_ref_count_over_limit(unsigned int ref_count);
-+
-+/**
-+ * folio_ref_count_over_limit - Check whether to refuse more folio references.
-+ * @folio: The folio.
-+ *
-+ * Check before adding page table mappings or other significant refcount users
-+ * to large pagecache folios (!hugetlb), to avoid overflows.
-+ *
-+ * Checking other folios does no harm.
-+ *
-+ * This check is an approximation; we leave some headroom such that concurrent
-+ * increments, batches and temporary references are not a problem.
-+ *
-+ * Return: True if the caller should refuse additional references, false
-+ * otherwise.
-+ */
-+static inline bool folio_ref_count_over_limit(const struct folio *folio)
-+{
-+	const unsigned int ref_count = folio_ref_count(folio);
-+
-+	if (likely(ref_count < FOLIO_REF_COUNT_LIMIT))
++	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
+ 		return false;
+-	page_ref_inc(page);
++	if (unlikely(folio_ref_count_over_limit(folio)))
 +		return false;
-+	return __folio_ref_count_over_limit(ref_count);
-+}
-+
- /**
-  * folio_get - Increment the reference count on a folio.
-  * @folio: The folio.
++	folio_ref_inc(folio);
+ 	return true;
+ }
+ 
 diff --git a/mm/filemap.c b/mm/filemap.c
-index 86297841f9955..920bbf86dfdff 100644
+index 920bbf86dfdff..8564165e224b3 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -3968,6 +3968,11 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
- 		unsigned long end;
- 		vm_fault_t map_ret;
+@@ -3094,9 +3094,10 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
+  * Return: On success, the number of bytes read will be returned and *@ppos
+  * will be updated if appropriate; 0 will be returned if there is no more data
+  * to be read; -EAGAIN will be returned if the pipe had no space, and some
+- * other negative error code will be returned on error.  A short read may occur
+- * if the pipe has insufficient space, we reach the end of the data or we hit a
+- * hole.
++ * other negative error code will be returned on error; -EOVERFLOW will be
++ * returned if the folio's refcount is too high and the caller can fall back to
++ * copying.  A short read may occur if the pipe has insufficient space, we reach
++ * the end of the data or we hit a hole.
+  */
+ ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
+ 			    struct pipe_inode_info *pipe,
+@@ -3168,6 +3169,10 @@ ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
+ 			if (writably_mapped)
+ 				flush_dcache_folio(folio);
  
-+		if (unlikely(folio_ref_count_over_limit(folio))) {
-+			folio_ref_dec(folio);
-+			goto next;
-+		}
-+
- 		addr += (xas.xa_index - last_pgoff) << PAGE_SHIFT;
- 		vmf->pte += xas.xa_index - last_pgoff;
- 		last_pgoff = xas.xa_index;
-@@ -4009,6 +4014,7 @@ vm_fault_t filemap_map_pages(struct vm_fault *vmf,
- 					   mmap_miss - 1);
- 		}
- 
-+next:
- 		folio_unlock(folio);
- 	} while ((folio = next_uptodate_folio(&xas, mapping, end_pgoff)) != NULL);
- 	add_mm_counter(vma->vm_mm, folio_type, rss);
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index d0e19d9e6b651..7cae95070841a 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1626,6 +1626,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
- {
- 	struct mm_struct *mm = vma->vm_mm;
- 	pgtable_t pgtable = NULL;
-+	vm_fault_t ret = VM_FAULT_NOPAGE;
- 	spinlock_t *ptl;
- 	pmd_t entry;
- 
-@@ -1662,6 +1663,10 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
- 		if (is_huge_zero_folio(fop.folio)) {
- 			entry = pmd_mkspecial(entry);
- 		} else {
-+			if (unlikely(folio_ref_count_over_limit(fop.folio))) {
-+				ret = VM_FAULT_SIGBUS;
-+				goto out_unlock;
++			if (unlikely(folio_ref_count_over_limit(folio))) {
++				error = -EOVERFLOW;
++				goto out;
 +			}
- 			folio_get(fop.folio);
- 			folio_add_file_rmap_pmd(fop.folio, &fop.folio->page, vma);
- 			add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PMD_NR);
-@@ -1688,7 +1693,7 @@ static vm_fault_t insert_pmd(struct vm_area_struct *vma, unsigned long addr,
- 	spin_unlock(ptl);
- 	if (pgtable)
- 		pte_free(mm, pgtable);
--	return VM_FAULT_NOPAGE;
-+	return ret;
- }
- 
- /**
-@@ -1759,6 +1764,7 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
- 		pud_t *pud, struct folio_or_pfn fop, pgprot_t prot, bool write)
- {
- 	struct mm_struct *mm = vma->vm_mm;
-+	vm_fault_t ret = VM_FAULT_NOPAGE;
- 	spinlock_t *ptl;
- 	pud_t entry;
- 
-@@ -1784,6 +1790,10 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
- 	if (fop.is_folio) {
- 		entry = folio_mk_pud(fop.folio, vma->vm_page_prot);
- 
-+		if (unlikely(folio_ref_count_over_limit(fop.folio))) {
-+			ret = VM_FAULT_SIGBUS;
-+			goto out_unlock;
-+		}
- 		folio_get(fop.folio);
- 		folio_add_file_rmap_pud(fop.folio, &fop.folio->page, vma);
- 		add_mm_counter(mm, mm_counter_file(fop.folio), HPAGE_PUD_NR);
-@@ -1799,7 +1809,7 @@ static vm_fault_t insert_pud(struct vm_area_struct *vma, unsigned long addr,
- 	update_mmu_cache_pud(vma, addr, pud);
- out_unlock:
- 	spin_unlock(ptl);
--	return VM_FAULT_NOPAGE;
-+	return ret;
- }
- 
- /**
-@@ -2095,6 +2105,11 @@ int copy_huge_pud(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
- 	if (page) {
- 		struct folio *folio = page_folio(page);
- 
-+		if (unlikely(folio_ref_count_over_limit(folio))) {
-+			/* Skip this PUD; it can be faulted in later. */
-+			ret = (dst_vma->vm_flags & VM_MIXEDMAP) ? -ENOMEM : 0;
-+			goto out_unlock;
-+		}
- 		folio_get(folio);
- 		/*
- 		 * TODO: once we support anonymous pages, use
-@@ -5215,6 +5230,16 @@ void remove_migration_pmd(struct page_vma_mapped_walk *pvmw, struct folio *folio
- 	if (!(pvmw->pmd && !pvmw->pte))
- 		return;
- 
-+	if (!folio_test_anon(folio) && unlikely(folio_ref_count_over_limit(folio))) {
-+		/* Leave the file mapping absent so it can be faulted in. */
-+		pmd_clear(pvmw->pmd);
-+		if (arch_needs_pgtable_deposit())
-+			zap_deposited_table(mm, pvmw->pmd);
-+		update_hiwater_rss(mm);
-+		add_mm_counter(mm, mm_counter_file(folio), -HPAGE_PMD_NR);
-+		return;
-+	}
-+
- 	entry = softleaf_from_pmd(*pvmw->pmd);
- 	folio_get(folio);
- 	pmde = folio_mk_pmd(folio, READ_ONCE(vma->vm_page_prot));
-diff --git a/mm/memory.c b/mm/memory.c
-index d33a2e1512f74..7e1cdaa80b75f 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1166,9 +1166,14 @@ static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
- /*
-  * Copy one present PTE, trying to batch-process subsequent PTEs that map
-  * consecutive pages of the same folio by copying them as well.
-+ * PTEs mapping an over-limit file folio can be skipped if a fault in the
-+ * child will reconstruct them.
-  *
-  * Returns -EAGAIN if one preallocated page is required to copy the next PTE.
-- * Otherwise, returns the number of copied PTEs (at least 1).
-+ * Returns -ENOMEM if the file folio refcount is too high and the PTE must
-+ * be copied.
-+ * Returns -EHWPOISON if copying a page fails.
-+ * Otherwise, returns the number of processed PTEs (at least 1).
-  */
- static inline int
- copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
-@@ -1186,6 +1191,16 @@ copy_present_ptes(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma
- 
- 	folio = page_folio(page);
- 
-+	if (!folio_test_anon(folio) && unlikely(folio_ref_count_over_limit(folio))) {
-+		if (dst_vma->vm_flags & VM_MIXEDMAP)
-+			return -ENOMEM;
-+		if (userfaultfd_pte_rwp(dst_vma, pte))
-+			return -ENOMEM;
-+		/* Preserve uffd-wp protection when faulting the page back in. */
-+		cond_install_uffd_wp_ptes(dst_vma, addr, dst_pte, pte, 1);
-+		return 1;
-+	}
-+
- 	/*
- 	 * If we likely have to copy, just don't bother with batching. Make
- 	 * sure that the common "small folio" case is as fast as possible
-@@ -1367,9 +1382,9 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 		/*
- 		 * If we need a pre-allocated page for this pte, drop the
- 		 * locks, allocate, and try again.
--		 * If copy failed due to hwpoison in source page, break out.
-+		 * Other errors abort the copy after releasing the page table locks.
- 		 */
--		if (unlikely(ret == -EAGAIN || ret == -EHWPOISON))
-+		if (unlikely(ret < 0))
- 			break;
- 		if (unlikely(prealloc)) {
- 			/*
-@@ -1399,7 +1414,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 			goto out;
- 		}
- 		entry.val = 0;
--	} else if (ret == -EBUSY || unlikely(ret == -EHWPOISON)) {
-+	} else if (ret == -EBUSY || ret == -ENOMEM || unlikely(ret == -EHWPOISON)) {
- 		goto out;
- 	} else if (ret ==  -EAGAIN) {
- 		prealloc = folio_prealloc(src_mm, src_vma, addr, false);
-@@ -2474,6 +2489,8 @@ static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
- 	if (unlikely(is_zero_folio(folio))) {
- 		pteval = pte_mkspecial(pteval);
- 	} else {
-+		if (unlikely(folio_ref_count_over_limit(folio)))
-+			return -EOVERFLOW;
- 		folio_get(folio);
- 		pteval = mk_pte(page, prot);
- 		if (mkwrite) {
-@@ -5752,6 +5769,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
- 	if (unlikely(folio_test_has_hwpoisoned(folio)))
- 		return ret;
- 
-+	if (unlikely(folio_ref_count_over_limit(folio)))
-+		return VM_FAULT_SIGBUS;
-+
- 	/*
- 	 * Archs like ppc64 need additional space to store information
- 	 * related to pte entry. Use the preallocated table for that.
-@@ -5806,6 +5826,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
-  * @page: The first page to create a PTE for.
-  * @nr: The number of PTEs to create.
-  * @addr: The first address to create a PTE for.
-+ *
-+ * For file mappings, the caller must check folio_ref_count_over_limit()
-+ * before adding the mapping references and installing PTEs.
-  */
- void set_pte_range(struct vm_fault *vmf, struct folio *folio,
- 		struct page *page, unsigned int nr, unsigned long addr)
-@@ -5972,6 +5995,10 @@ vm_fault_t finish_fault(struct vm_fault *vmf)
- 		goto fallback;
- 	}
- 
-+	if (!is_cow && unlikely(folio_ref_count_over_limit(folio))) {
-+		ret = VM_FAULT_SIGBUS;
-+		goto unlock;
-+	}
- 	folio_ref_add(folio, nr_pages - 1);
- 	set_pte_range(vmf, folio, page, nr_pages, addr);
- 	type = is_cow ? MM_ANONPAGES : mm_counter_file(folio);
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 092fca80927a7..153a93b0c38d7 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -385,6 +385,17 @@ static bool remove_migration_pte(struct folio *folio,
- 		    try_to_map_unused_to_zeropage(&pvmw, folio, old_pte, idx))
- 			continue;
- 
-+		if (!folio_test_anon(folio) && !folio_test_hugetlb(folio) &&
-+		    unlikely(folio_ref_count_over_limit(folio))) {
-+			/* File contents remain available for a later fault. */
-+			pte_clear(vma->vm_mm, pvmw.address, pvmw.pte);
-+			cond_install_uffd_wp_ptes(vma, pvmw.address,
-+						  pvmw.pte, old_pte, 1);
-+			update_hiwater_rss(vma->vm_mm);
-+			dec_mm_counter(vma->vm_mm, mm_counter_file(folio));
-+			continue;
-+		}
-+
- 		folio_get(folio);
- 		new = folio_page(folio, idx);
- 		pte = mk_pte(new, READ_ONCE(vma->vm_page_prot));
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 169f681f9849b..89853c157fa91 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -373,6 +373,10 @@ static int mfill_atomic_install_pte(pmd_t *dst_pmd,
- 		goto out_unlock;
- 
- 	if (page_in_cache) {
-+		if (unlikely(folio_ref_count_over_limit(folio))) {
-+			ret = -ENOMEM;
-+			goto out_unlock;
-+		}
- 		folio_add_file_rmap_pte(folio, page, dst_vma);
- 	} else {
- 		folio_add_new_anon_rmap(folio, dst_vma, dst_addr, RMAP_EXCLUSIVE);
-diff --git a/mm/util.c b/mm/util.c
-index 80f6c714844f2..a906dfa755ff1 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -791,6 +791,18 @@ int folio_mc_copy(struct folio *dst, struct folio *src)
- }
- EXPORT_SYMBOL(folio_mc_copy);
- 
-+bool __folio_ref_count_over_limit(unsigned int ref_count)
-+{
-+	if (ref_count >= FOLIO_REF_COUNT_ADMIN_LIMIT)
-+		return true;
-+	/* Background threads must not consume admin reserves. */
-+	if (current->flags & PF_KTHREAD)
-+		return true;
-+	/* Use the task's credentials, which filesystem overrides cannot change. */
-+	return !has_capability_noaudit(current, CAP_SYS_RESOURCE);
-+}
-+EXPORT_SYMBOL_GPL(__folio_ref_count_over_limit);
-+
- int sysctl_overcommit_memory __read_mostly = OVERCOMMIT_GUESS;
- static int sysctl_overcommit_ratio __read_mostly = 50;
- static unsigned long sysctl_overcommit_kbytes __read_mostly;
+ 			n = min_t(loff_t, len, isize - *ppos);
+ 			n = splice_folio_into_pipe(pipe, folio, *ppos, n);
+ 			if (!n)
+diff --git a/mm/shmem.c b/mm/shmem.c
+index be4ab228cf67c..6067b1de6417f 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3830,6 +3830,10 @@ static ssize_t shmem_file_splice_read(struct file *in, loff_t *ppos,
+ 			 * Ok, we have the page, and it's up-to-date, so we can
+ 			 * now splice it into the pipe.
+ 			 */
++			if (unlikely(folio_ref_count_over_limit(folio))) {
++				error = -EOVERFLOW;
++				break;
++			}
+ 			n = splice_folio_into_pipe(pipe, folio, *ppos, part);
+ 			folio_put(folio);
+ 			folio = NULL;
 
 -- 
 2.56.0
