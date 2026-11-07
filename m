@@ -1,93 +1,148 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 839C6606A33A
-	for <linux-mm@archiver.kernel.org>; Fri,  6 Nov 2026 23:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9301C606D81B
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=O+UuiM0f
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=go0ddtNk
 Received: by kanga.kvack.org (Postfix)
-	id 911B76B05B1; Fri,  6 Nov 2026 18:59:54 -0500 (EST)
+	id 821376B05B0; Fri,  6 Nov 2026 19:36:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C3696B05B7; Fri,  6 Nov 2026 18:59:54 -0500 (EST)
+	id 7D3066B05B1; Fri,  6 Nov 2026 19:36:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7B20A6B05B8; Fri,  6 Nov 2026 18:59:54 -0500 (EST)
+	id 6C0D26B05B2; Fri,  6 Nov 2026 19:36:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 48FBD6B05B1
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 18:59:54 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id CA89F1201E3
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:59:53 +0000 (UTC)
-X-FDA: 85406364666.15.CD0E8ED
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 3C133C0003
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 23:59:52 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O+UuiM0f;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 408E66B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:36:58 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C3B9A1A0210
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:36:57 +0000 (UTC)
+X-FDA: 85406458074.26.FD589B2
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 9C3B180002
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=go0ddtNk;
+	spf=pass (imf02.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794009592;
-	b=0qZqyUqPkTqijDq3LrZaSQg1MzA9TRUsclVsQ2lMpNtObHWZflKYUUEa/cLK4dyEw6jfce
-	6xNsUsFfxX1h4zasebXGbuoJQdvRGJcTIFPJ56ft+UP0fwzU2+Pjl5T13Qae2LWAxrMSSJ
-	IiA/SjL3Ve4NszLSYj0s+Jpx00+QpEc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794009592;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	arc=pass ("kernel.org:s=arc20260519:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794011815;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kSvS5npMsYGUescqYNHuwns+vY8BLGHpBcdfwZNgI9Y=;
-	b=aS6sFHlI7Uo4PjASAcZL6Q7PeNe9/zF+B24+leFQ2cftMGxH3gWmiqRwy+7XShp1CWZOVg
-	e+sPDzSVY7uFmD/IlKsVIdjyfkVYVPRRPcCOSotz+Fmym33uI7kZ5rGIAVrEn/nu6CK91g
-	Y+r19eIACX1S7a1dScoHlzBAb4Az7rI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=O+UuiM0f;
+	bh=bEFuudziwFSmGmTiu8EshfO7Ouxi+ckFIzuMTnn97HE=;
+	b=JnXE4rnOVinJwn0cLZl6Ft3Kcrt21UjJMFCWLRPzLiwBhkqkgTGxRcRWaBXaZh9FDw6C/i
+	hFPpudXJqQDrJZ4zIfpFiIm45RJqgjYLar6Z54tKeo61QqSo2Mju0tEbkwUkW5Mkf2lNP1
+	UtK/OFoEOz2hYTlAWhQLQwswdA6c7gg=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794011815;
+	b=f3qiZ9+/HUnUvC5khJHICDm6EJlJnT9+195Co1qQMJJZNa08zRjO8WtfaMPOAAMFjlxYSW
+	jihaNaSvcitpqPFx4vECbWiyneCmHlNigkJ6z7WmQuxOokKii7ym0ib6gijqO2FYKQi58G
+	VRB4eQ1Pp72Cn6zRDQmH/3Wh9nKQQqE=
+ARC-Authentication-Results: i=2;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=go0ddtNk;
+	spf=pass (imf02.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of yosry@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	arc=pass ("kernel.org:s=arc20260519:i=1")
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C5E6E60D09;
-	Fri,  6 Nov 2026 23:59:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B601F0089F;
-	Fri,  6 Nov 2026 23:59:50 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CD14B4195E;
+	Sat,  7 Nov 2026 00:36:54 +0000 (UTC)
+ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
+	t=1794011814;
+	b=sj3bO13uiJkgEDulNlXy/ux9ViLjXO+HPdg9em6EVKm0Iu82sEXOBSfCApOZc998lxqN
+	 RMFS0IQLqr0N4/n0MZ3tu/xktY9olsn3IuZ5KcLQlr5ha+9QtvnWyO1q/2pGRSSzlMkSr
+	 SreXShbV13UhSVWl5v06aVAfnswPvTni8qsENsDPO/ccHqjDSTq13l2r4aKPDAAUSg28R
+	 mWfIuvNEmrjnJezWcxhMGUHuWyvjHlNu9YeWq64tcQ0ROgHmdk+HyqkW+S7t/bVnaThoe
+	 z5bvhpPDorsqeZM8fi5b6whvIlrZaXzWkQFt0jxIpXWWL5LvDRLosfnkJ0Uqq+GdrRQ==
+ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
+	c=relaxed/relaxed; t=1794011814;
+	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
+	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
+	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
+	 X-Original-From:Reply-To:Content-Transfer-Encoding;
+	bh=bEFuudziwFSmGmTiu8EshfO7Ouxi+ckFIzuMTnn97HE=;
+	b=rguQEmboefWoUDAgqOpTNh6UUestJC9plg5ON/SpuVZwP4wddCAp3tpdLSAr4CaPfsgG
+	 CMUEbW4A+WZLtCE6bcFR2eE/o9zthvC9YiVHdCnVv5MoYHfaAq4SJuKs4ZVyFw9h5RvDg
+	 n4ygVX/uLtf8V/XUOfXOxyrsDCH9yLqNHeKJut42okwtet3mPKyk9fP4bwUe/MqyKIvOe
+	 +T2iaSEoFMPbIwbOkZGA8wnNEYdt0Kx2CmC9kSg4bkVC+2ld3DwVYxfO3zooFdVrk+iHT
+	 M0Wy/Q1stBEXWsd6pao+YBVXCpJ8BreQ4LlX4zpoqOT9QJYQEr/ARCLE3/f+TMMRSgw==
+ARC-Authentication-Results: i=1; smtp.kernel.org; 
+	arc=none smtp.remote-ip=100.80.115.77
+Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by smtp.kernel.org (Postfix) with ESMTPS id 558EE1F008A2;
+	Sat,  7 Nov 2026 00:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794009591;
-	bh=kSvS5npMsYGUescqYNHuwns+vY8BLGHpBcdfwZNgI9Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=O+UuiM0fK4oR8EZ2meSl5yH/TC+kEPKIlSb/W1Vwccx2Z1x/oaRBC0rUxhzH3Q1FI
-	 wRyLE3mJycmci5fqln5NuoRHSLuj6uxKspkUt30qVSe6ZMLC2t0HcSDa1QCk6rmUKv
-	 5/lxEFfmz9oieM+b0kn/ggjdQzHdPIreM/pACSH1F7tXbDeuJH50ISgWKKLkxqOgN5
-	 DVti3roP66ChIWz4VIi8l2vpKFLkTPWljvM1kRxcKDPLo7BRWmAUjYmgKQi8KzBLX/
-	 9JTm2A0Xd7dQPFJbfWN/sa7XazXvjBwFWbXK2Yf5UM55JxgnYaFUmLkHKXzbUi8eSy
-	 MAbKibWYgvpeQ==
-Date: Fri, 6 Nov 2026 23:59:49 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: "Kanchana P. Sridhar" <kanchanapsridhar2026@gmail.com>
-Cc: hannes@cmpxchg.org, nphamcs@gmail.com, chengming.zhou@linux.dev, 
-	akpm@linux-foundation.org, linux-mm@kvack.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rientjes@google.com, willy@infradead.org, senozhatsky@chromium.org
-Subject: Re: [PATCH v3 0/8] Batched zswap_store() framework with compression
- batching.
-Message-ID: <au5l3KEjG_mri-br@google.com>
-References: <20261106072412.7909-1-kanchanapsridhar2026@gmail.com>
+	s=k20260515; t=1794011814;
+	bh=bEFuudziwFSmGmTiu8EshfO7Ouxi+ckFIzuMTnn97HE=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
+	b=go0ddtNkzCV2U67JeVoRLFde0SDi29opIr8EGCo6XcYH7Dbs/0m+wpupMvakXqthE
+	 SF4TjHaTMADi2Caf62drH859H+H6S4kdHpeHoGdIhf+W6IT0Y+uWb3K5Y+CkbW49Je
+	 Ko9DnjHW5oUMUIpAHTpc+qbRC5yQjfPQx2mDk4dCYb0jK0sZbo/oxTY1sLoNxiIwA4
+	 EOoSlgptNRjkyFiNFLE7MQ3OIKifomPJyb0Eqv7/VQPX5dIZgTZWHYhyrvRGPJL7Is
+	 uFqzoi7Jc+VUxoaNzuIKJOIrDKb9vENFnyLL0Ci3fjeMpQZqtehgZjXBionEMfkyvn
+	 qZsu+8a377yvQ==
+Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
+	by lkml.kernel.org (Postfix) with ESMTP id CFEC94791D;
+	Sat,  7 Nov 2026 00:36:52 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Fri, 06 Nov 2026 16:36:36 -0800
+Subject: [PATCH RFC v3 02/88] KVM: guest_memfd: Route folio allocation
+ through native provider operations
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106072412.7909-1-kanchanapsridhar2026@gmail.com>
-X-Rspamd-Queue-Id: 3C133C0003
-X-Stat-Signature: uwxndwjapeci5dtammndopn8nbibbeg9
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <20261106-gmem-alternative-providers-v3-2-8484dde66a7e@google.com>
+References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
+To: Alexey Kardashevskiy <aik@amd.com>, 
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ Christian Brauner <brauner@kernel.org>, 
+ David Hildenbrand <david@kernel.org>, David Woodhouse <dwmw2@infradead.org>, 
+ Fred Griffoul <fgriffo@amazon.co.uk>, 
+ Jacob Pan <jacob.pan@linux.microsoft.com>, Jianxiong Gao <jxgao@google.com>, 
+ John Starks <John.Starks@microsoft.com>, 
+ Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Samiullah Khawaja <skhawaja@google.com>, 
+ Sean Christopherson <seanjc@google.com>, 
+ Suzuki K Poulose <suzuki.poulose@arm.com>, 
+ Tarun Sahu <tarunsahu@google.com>, Vishal Annapurve <vannapurve@google.com>, 
+ Xu Yilun <yilun.xu@linux.intel.com>, Fuad Tabba <fuad.tabba@linux.dev>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+ Ackerley Tng <ackerleytng@google.com>
+X-Mailer: b4 0.17-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=6480;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=bisyKn0RgaRZ0PVB2Mv7Pnld9GN7IV0HnU91kmdFLiQ=;
+ b=gq6xO1p0AW6HJ3a3hco1/15XJuwF8ZjJ6hMogM8wPoSZT5ideRsVOcsBUoit0RKHaoeSkjrj9
+ x79iD7DGzB/BxddlQ+r7/EdRnP+zfTYvaH2ez3FpXBJB2NJoqqgzTeQ
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9C3B180002
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794009592-521942
-X-HE-Meta: U2FsdGVkX190YaJGM4PT/rkIEddAAq2BBsYu1//vSLTmz/+L1z9q66c08gQH9p9kWyy2S+EtmT1Aw5DmjgyyUBe1rOeEE/njwQsZOeFSEPWnsCRvFfLBcGgKGTgskZw9mDuT/vZx9LpqTz1H96VBoJLyoz0nY8ftbBOjDpqN/F0POkdX6JVNfEnmBIiapGtU6f0lL4ljXmVm5e8ORZoho1wGtu/a+w5rsDaxI2gJ2/+/hPsX2onQ8l+SIRmzu9/tfmygpWbf/Tkk1RrKFEnJH2vNXu4iiGxrfSAgVxZwzh57uo0Q7YTfZUh15U+UwJAJ4NyYziVj2F4nxBkzq1pna86pjZWPRlq4thJyL5ddUMRZnXON9CjnFcNlznS8IsksWHCtOLPSjE8979xwsplb/68alUzbwTgmk8g641wAqPJRubjO0Ntyvd6snot4hkGbD+gSvAjAdcjsuE2brwx/A6Cp/YwjUaW5/XTNuo3V+jaNq/E8dHdjH3Fxk8foP/xla/VajAsbfSrBVTY8soxFk/TXEgBPOSWZzWiMXxSW7A3luQXfg7WyPzjzfBeoT3SMgMBkRBAnUwj73woivZxzJyeVHso6/OSvTeSsEUnrxjKADzivy5myFgdPFNAyrV8RScA0CxVPTgddJmHKaqDpOCti6se1RU0QDR2iQaeMR6MZuacb6u2BhAMIr7tupCsliz+8MbzG6Jghuv6BXrg7CT9pPtmWnlD6lzB5XbbwCgHTwluaw5f9ongNX4ytK1K2Wi5sbZav2Px8I25syeYk+SSldD3JV/bYmKOdSSxOsf+iBZ2SyMLk7EtgvMOSumcrQLjKYoqAoseDpunHztJj3QZ1QVVFXJ9iz/DxO77SlchJEh13+EkHzmsBmsyu4N3cpbT5sKVHwhm7QIo4tpfbEacC3eGe1+B3/4HKhmO5KGPzneqB5dTdu/4MujrkCAJhqqW9OOkb1L+ZChHB8ay
- JbPUFnVP
- so6HFifzfPmCtTGwO+79Za5FkFclwCMjIb+2uuw/Jpcu6YYguH+/C8gfMT0qLU602hGSa3Dzv5Cpws49GmDAKAMG7JAV96GUV4Z07j4ELXgXjSZJ8AsfwEN5xu7144V/uVGIs6pH+7hEJFem1akvBY94zQKBcdrlwMx4xzJmq3+Wno8T/eiIN1fMokuuyIRNNAXNsHWrLProZcLRnEPxsRr1yN1NR6MNT07ypwWgsu8zkfjOGf1tzforHSMTtTizcuboKO/g6Mui+0EgOVZDF8g2owWc3t6WCVyeQAyOH/+vMionI4sjEzDhzuYOYNrvPAePFIrXzUwCt+i88NtVTgxPpwzY/r2UMxivKDOKU/SKEjTqCcewHVU3wecYdZgAgEA0r
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: prnf6n47guzzmnuap8yt9rsydbm1gr86
+X-Rspam-User: 
+X-HE-Tag: 1794011815-899316
+X-HE-Meta: U2FsdGVkX19FVryPXA2RjRnlbfZ6tV2U3qD8YSCTe872sR8lPVp24ryEDgYNPo2YTI6lzVPgtBqeSl0mfOs/Yh+paVLlUS6t5fQn6mgHp3CNsM8xDbFVFm5tvtNwFTUdV9quf0p2CKwG3Oj2J6vpB8BHjDRlFvuFK9i/q/qsXCKt9eKDQNWw2uyWlyc5zxfkr1RLBLpRI/LPuLeO++4TrMptfJcNFXBX369I3Qt3VPgaXpUEW7Rrv0ZWUeBQmJ7rGJ3x2hkuukKFviFCy0r2R9n4oyD/tI5eV0maz+K/Q4XseKPfGl8E15kYpk9nL2MYHSccI9QkKx1v5Yr6kLmDA3KBcYZe1mSrHuMYpz6aR7O27DwCp9al3ZqmMsycQewnu1QwCLSdey6chINA1yGj6fUO5uXPn1Rr1IEiifhdFPQyQ5S3QMMknmnX0hJBC3pIZfoGOLvYY04gTbBy4hmqwbtgXFZjrMqfb1NE158ECmiLbEqhNyEVzD3G3YrHosRE8uPWlENOK3X0manpRghVdIRoX8h6U+2VxhEGSpXZG9FBlD7H4lPdge2xdm/8r9sTGdXMa8f9guuLfLMmrfS4MPzw+yvg98B/lsV3O7TBeL+WAwmcTH3XDL+yw6tknksv1SdfH3HoJy+zOLnbxSHQ6YroD4++HgJ0F/5lnbM9p9RDjMnVbzz4ofEOxsa+2Pjm8sjA8d/CtFjwOIYEAmSwfIL0zV98r79EIpH6lrvx+qVQmJIFQtPpi4kQuMoxXe9OdxrwLEACjaAUjhGBcXsDEEBSjycxzGJlafjSbdr3u1VdvgJ2R703Kvd5qT0sIEEhukcKwYTP/ierkxlJt+A/wz42CamkKhG9Ehjr0S/nQVi1tf+UlAlcHMqa1Ewcuxuv49+eY2rc4xXeMUYVRHdKBO/7VW5fUHb/X/NtRRCa6Yc77hN9Fa9cwdtaVsU/AiPnUzRpIJpvcaboRUKlHEP
+ woIHQaQ9
+ wxCi/Q4gQ4+c2d7QYvSUAO0DFXxO1juj/kgJ3Zmm+Wg576/j2JEXxcgAO4HaDcCVqxdiK6s5QK2ghzL7rMWYMCnfY0FfBa2ANyUHaaKNeV5UJAHoC3tcCSVHvRBfaqrZuW6pgpOkAzPAGx8nb5668QRxkYUB96RybQH8QP2vCCG/xUSYd9r2wX9oPuaxVy8VKnH3w0U9J7LwNQDWzPmU1JztWD8L6naZLJaYKN2CsQgc4KDCVrT/UrU7+ssBFuB43YaXpkpdnf9OQeuNm2zpBNOUHn7X1LFGUxbbCMmGtpBsMDMFa1mU8p/nXpeWCM6DG0pC1B9nwlPEmPptFy31LlLOFUlpmdYDCZlr2TjsZthW3jsP5Zvl+WlS3X/VQxN4pDAfieYaCz5HvM6e56kdWkJ5uMNbD2+OKfYo/ru65Pw1dRRg8FivyGkdOd6OUTYdwtCFAGW8e/OrJNJ0P1Mr8kaVsr/FEHS6GzumD3iyHr8m4YnjHBSMsxetUC2hn4Kz2WUULCUpsyMX+uu156h5NayiuXQgXwvQqqs5NSuAQq+ps3XPBPwkGLQDq7hfkRE1vE4p1siUknNfYxKa/8Z9fUCShpRp6SO00e9rdGWEdU6CjtGE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,64 +151,206 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 11:24:04PM -0800, Kanchana P. Sridhar wrote:
->  =============================================================================
->    usemem PMD THP BPFTRACE
->  =============================================================================
->            Baseline           zswap           zswap          Change    Change
->         mm-unstable           store        compress            with      with
->          10-25-2026        batching        batching        compress  compress
->                         (patch 6-7)       (patch 8)        batching  batching
->                                                                (ns)       %
->  =============================================================================
->   zswap_store_order0_folio (ns):
->  =============================================================================
->   p50        39,631          37,538          37,765          -1,866    -4.71% 
->   p95        53,088          49,690          49,349          -3,739    -7.04% 
->   p99        65,065          63,529          57,404          -7,661   -11.77%
->  =============================================================================
->   zswap_store_higher_order_folio (ns):
->  =============================================================================
->   p50    21,460,366      21,201,411      20,383,233      -1,077,133    -5.02%
->   p95    25,975,341      27,558,253      25,045,350        -929,991    -3.58%
->   p99    29,538,493      61,926,648      27,184,835      -2,353,658    -7.97%
->  =============================================================================
->   zswap_single_compress_per_page (ns):
->  =============================================================================
->   p50        37,545          39,320          37,218            -327    -0.87%
->   p95        51,549          66,503          51,481             -68    -0.13%
->   p99        89,866         134,854          87,091          -2,775    -3.09%
->  =============================================================================
->   zswap_batch_compress_per_page (ns):            
->  =============================================================================
->   p50                                        40,493           2,948     7.85%
->   p95                                        56,944           5,395    10.47%
->   p99                                        76,242         -13,624   -15.16%
->  =============================================================================
+From: Ackerley Tng <ackerleytng@google.com>
 
-As with previous versions, I cannot reproduce these results. I tried
-with a QEMU VM on a Cascade Lake host. I saw marginal improvements with
-patch 6 and no significant gain with patches 7-8.
+Conceptually refactor the buddy allocator providing guest_memfd with
+order-0 folios as the native provider.
 
-I noticed that you omitted high-level metrics (e.g. throughput), I
-didn't see significant changes in throughput, and I also ran a kernel
-build and saw a small regression in some cases (probably with order-0
-folios) and no significant improvement otherwise. Even if latency for
-some functions does improve slightly, it doesn't matter if it doesn't
-show up on higher-level metrics.
+Define operations with an alloc_folio callback for the native provider,
+which still uses filemap_alloc_folio to allocate folios as before. Also
+define the attach callback to establish provider context. Route folio
+allocation in the get-folio path through provider ops, and set up the
+native provider during creation using a sentinel fd and attach.
 
-It could be the difference in setups, or the overhead of bpftrace hooks
-for zswap_compress() might affect measured zswap_store() latencies, as
-you will have fewer zswap_compress() calls with patch 8.
+Attach the provider only after the entire inode and pseudo-file have been
+initialized. Exposing the inode to external providers before allocating the
+file or populating the file list risks race conditions and use-after-free
+bugs if an external provider immediately triggers operations on the
+guest_memfd inode.
 
-As advised previously, I would trim down patch 6 to the bare minimum
-(without all the scaffolding and prep work for patches 7-8), and send it
-separately (with patch 5), and we can check if it's worth adding, I am
-still concerned it might be adding overhead for order-0 to be honest.
+Now that the inode is exposed for other providers, add a write barrier to
+commit everything in the inode before the provider (and other racing
+provider threads) gets to use the gmem inode.
 
-I am questioning the benefit of batching here without HW batching, so
-far the results are more concerning than encouraging. I already spent
-too much time trying to reproduce the performance gains. Also, sending
-new versions without resolving discussions on previous ones is not
-really productive.
+Expose provider operations so external providers across the kernel can
+implement them.
+
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ include/linux/guest_memfd.h | 28 +++++++++++++++
+ virt/kvm/guest_memfd.c      | 86 ++++++++++++++++++++++++++++++++++++++++++---
+ 2 files changed, 110 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
+new file mode 100644
+index 0000000000000..218de509769c1
+--- /dev/null
++++ b/include/linux/guest_memfd.h
+@@ -0,0 +1,28 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_GUEST_MEMFD_H
++#define _LINUX_GUEST_MEMFD_H
++
++#include <linux/types.h>
++
++struct file;
++struct folio;
++struct inode;
++struct mempolicy;
++
++/**
++ * struct guest_memfd_provider_operations - Operations for external memory providers
++ * @attach: Attach to a resource file, perform filesystem-specific validation,
++ *          and return an opaque provider context.
++ * @alloc_folio: Allocate an uninserted folio for a given index and NUMA policy.
++ *               Must return a pointer to a struct folio on success, or an
++ *               ERR_PTR() error code on failure. Must never return NULL.
++ *
++ * Used by filesystems and device drivers that provide memory for guest_memfd.
++ */
++struct guest_memfd_provider_operations {
++	void *(*attach)(struct inode *gmem_inode, struct file *resource_file);
++	struct folio *(*alloc_folio)(void *provider, pgoff_t index,
++				     struct mempolicy *mpol);
++};
++
++#endif /* _LINUX_GUEST_MEMFD_H */
+diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+index f865fa0e46840..545c3e646e9c1 100644
+--- a/virt/kvm/guest_memfd.c
++++ b/virt/kvm/guest_memfd.c
+@@ -3,6 +3,7 @@
+ #include <linux/backing-dev.h>
+ #include <linux/falloc.h>
+ #include <linux/fs.h>
++#include <linux/guest_memfd.h>
+ #include <linux/kvm_host.h>
+ #include <linux/maple_tree.h>
+ #include <linux/mempolicy.h>
+@@ -35,6 +36,9 @@ struct gmem_inode {
+ 	struct inode vfs_inode;
+ 	struct list_head gmem_file_list;
+ 
++	void *provider;
++	const struct guest_memfd_provider_operations *provider_ops;
++
+ 	u64 flags;
+ 	/*
+ 	 * Every index in this inode, whether memory is populated or
+@@ -50,6 +54,65 @@ static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
+ 	return container_of(inode, struct gmem_inode, vfs_inode);
+ }
+ 
++static void *gmem_native_attach(struct inode *gmem_inode,
++				struct file *resource_file)
++{
++	return GMEM_I(gmem_inode);
++}
++
++static struct folio *gmem_native_alloc_folio(void *provider, pgoff_t index,
++					     struct mempolicy *mpol)
++{
++	struct gmem_inode *gi = provider;
++	struct folio *folio;
++	gfp_t gfp;
++
++	gfp = mapping_gfp_mask(gi->vfs_inode.i_mapping);
++	folio = filemap_alloc_folio(gfp, 0, mpol);
++	if (!folio)
++		return ERR_PTR(-ENOMEM);
++
++	return folio;
++}
++
++static const struct guest_memfd_provider_operations gmem_native_provider_ops = {
++	.attach = gmem_native_attach,
++	.alloc_folio = gmem_native_alloc_folio,
++};
++
++#define GMEM_RESOURCE_FD_NATIVE (-1)
++
++static int kvm_gmem_attach_resource(struct inode *inode, int resource_fd)
++{
++	const struct guest_memfd_provider_operations *ops = NULL;
++	struct file *resource_file = NULL;
++	void *provider;
++
++	if (resource_fd == GMEM_RESOURCE_FD_NATIVE)
++		ops = &gmem_native_provider_ops;
++	else
++		return -EOPNOTSUPP;
++
++	provider = ops->attach(inode, resource_file);
++	if (IS_ERR(provider))
++		return PTR_ERR(provider);
++
++	GMEM_I(inode)->provider = provider;
++	GMEM_I(inode)->provider_ops = ops;
++
++	return 0;
++}
++
++static struct folio *gmem_provider_alloc_folio(struct gmem_inode *gi,
++					       pgoff_t index,
++					       struct mempolicy *mpol)
++{
++	if (gi->provider_ops && gi->provider_ops->alloc_folio)
++		return gi->provider_ops->alloc_folio(gi->provider, index, mpol);
++
++	return ERR_PTR(-EOPNOTSUPP);
++}
++
+ #define kvm_gmem_for_each_file(f, inode) \
+ 	list_for_each_entry(f, &GMEM_I(inode)->gmem_file_list, entry)
+ 
+@@ -143,11 +206,10 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+ 		return folio;
+ 
+ 	policy = mpol_shared_policy_lookup(&GMEM_I(inode)->policy, index);
+-	folio = filemap_alloc_folio(mapping_gfp_mask(inode->i_mapping), 0,
+-				    policy);
++	folio = gmem_provider_alloc_folio(GMEM_I(inode), index, policy);
+ 	mpol_cond_put(policy);
+-	if (!folio)
+-		return ERR_PTR(-ENOMEM);
++	if (IS_ERR(folio))
++		return folio;
+ 
+ 	r = filemap_add_folio(inode->i_mapping, folio, index, GFP_KERNEL);
+ 	if (r) {
+@@ -996,6 +1058,20 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+ 	xa_init(&f->bindings);
+ 	list_add(&f->entry, &GMEM_I(inode)->gmem_file_list);
+ 
++	/*
++	 * Ensure all inode and file initialization (such as gmem_file_list and
++	 * bindings) is globally visible before exposing the inode to the
++	 * provider in ->attach().
++	 */
++	smp_wmb();
++
++	err = kvm_gmem_attach_resource(inode, GMEM_RESOURCE_FD_NATIVE);
++	if (err) {
++		fput(file);
++		put_unused_fd(fd);
++		return err;
++	}
++
+ 	fd_install(fd, file);
+ 	return fd;
+ 
+@@ -1355,6 +1431,8 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+ 	mt_init_flags(&gi->attributes, MT_FLAGS_LOCK_EXTERN | MT_FLAGS_USE_RCU);
+ 
+ 	gi->flags = 0;
++	gi->provider = NULL;
++	gi->provider_ops = NULL;
+ 	INIT_LIST_HEAD(&gi->gmem_file_list);
+ 	return &gi->vfs_inode;
+ }
+
+-- 
+2.56.0.455.g6c5a503b38-goog
+
+
 
