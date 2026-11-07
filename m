@@ -1,148 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CDA5606A32D
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:43:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PVuFSelh
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D3A606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 01:04:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B66A6B0639; Fri,  6 Nov 2026 19:43:40 -0500 (EST)
+	id 882F66B05B0; Fri,  6 Nov 2026 20:04:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93FC76B063A; Fri,  6 Nov 2026 19:43:40 -0500 (EST)
+	id 833CF6B05B1; Fri,  6 Nov 2026 20:04:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82DE46B063B; Fri,  6 Nov 2026 19:43:40 -0500 (EST)
+	id 725786B05B2; Fri,  6 Nov 2026 20:04:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BB196B0639
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:43:40 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E58581A027A
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:43:39 +0000 (UTC)
-X-FDA: 85406474958.27.620C282
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id BF4F040002
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:43:37 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PVuFSelh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf12.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794012217;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DaJbX9K47MPESvUexensq7JxY5C8QjJ+zVBZZpcUPTs=;
-	b=dmZEMjekw1IyIkFDfrKQmjBa4s8qAbhE22NidrornuluOsX8Bwq9sPZsu/k2z59PGQJ3Jb
-	wBwz1HQjVHKu/tCR2W4MHovNjX23vfgBTgVmDKJ6nTfONENEr2bDZF9MhE28jw0re97pcO
-	0pm4+XAU3r2s53T92e/qqiAOtQ4DP5w=
-ARC-Authentication-Results: i=2;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PVuFSelh;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	arc=pass ("kernel.org:s=arc20260519:i=1");
-	spf=pass (imf12.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794012217;
-	b=v4F1/rE9npQEYSoVA641IrXY0t+1jdKa+oZtVHUrdYEpOAN57lttMVfRwtDXqrQdwEj2AD
-	ekeRiQL8GyBTfOTwptEMTCTftQYS+qk2Y9kj6jVG/u2hH8xjEt95rLP1LNE29v1Yfl8A62
-	6uRjFmJEUMbZOe9bWs/h9/y8uz3HRGY=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id AFD6944061;
-	Sat,  7 Nov 2026 00:37:06 +0000 (UTC)
-ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011826;
-	b=01mHq1atVZc0f0vWEi2r4ZRQzEE699AClKhM6BPeVp4OlSW9MsF1eYd4jlSLbkUSJa5q
-	 30r4raq1LROomzfHxNcQ1WtvRykAn3Y1jRDLpUFJ3Zyq3cBQ8L7f6rIOvODTjDvnGkkPa
-	 qkiILmwTR2m5tdlLyG/jCKse53F/czHPf7/RoHSOShukxU4uFadWdQiOroLxKACi6rsD3
-	 w4oUigvARZNi8f+ma8Yk+KUkkan33ZM/OEDlJ1aW2L+bXe7Sg1WgfotHhZek7QZWc7sUc
-	 jOodTigjFrxybsVZvd4tApMe3l70ky8fhBjlGyHH28IfIBpCDJzmX1+uc/CEjr9aWow==
-ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011826;
-	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
-	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
-	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
-	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=DaJbX9K47MPESvUexensq7JxY5C8QjJ+zVBZZpcUPTs=;
-	b=NSqxf44OICTCE99rKU24QRVrnUfVu50jG8+MFsAKuxmmJd6ifxompgEJtC2/RP2EOlbH
-	 A1NjDMfvaZ0c1yEv0JIu9fdpQTEoI+leD3+Z0vmLaU5N7/qeRvceAAdxwk/dcyFlY3jC6
-	 Rkdfds46ag7kT3lEiaO1COMVWGGWilS7vHETMxDVLFPR9OC3d2Kd5PkQgCRKHz8fgLIu7
-	 QfwNRQAXz06UF+4bA6y9MZo+qB4YfqRBjp9Qg0I6Msgq+e6y65Cx3U9UgCUxr4jn5WkfZ
-	 S+aUT8epuzYUyRcMd+pCuSuIXXEYcjbsCvUOCsfhgEa2QzxF+PBbSMC35iwZ4X2yCmg==
-ARC-Authentication-Results: i=1; smtp.kernel.org; 
-	arc=none smtp.remote-ip=100.80.115.77
-Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id AB5171F00930;
-	Sat,  7 Nov 2026 00:36:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011826;
-	bh=DaJbX9K47MPESvUexensq7JxY5C8QjJ+zVBZZpcUPTs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=PVuFSelhrY8X2bDFgWb305cgCe+sfCI0wgiSp9B2Bv/jGanu75mGp4fJuwAW6M3NV
-	 4+tkzRnQaBu4DlYkCetufjeglvMhauEyYmPNNOs7JVhzSOjDlOzZ7JHTY6nK3XNvj3
-	 lKnbMTz3xn+dixlZxMCX2v0jFEB4XTJFFDSrMeHil8Ianq+37kCEQDpG9XU6JOWe0t
-	 dlFxClvgSuKJKgk8qRT5agK12cfj1LCtfa7iuHqBD1P3zTfjgokEl3LV7Y6MmxN1UA
-	 FSyS4fn/JIjLV0OBi/CKXQ+HIvUSqawsnfDyccI4Xkx//alyLJwJsGrJCmBe+m2Mf+
-	 O89+wH/8jIcVw==
-Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 35CF247996;
-	Sat,  7 Nov 2026 00:36:55 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:07 -0800
-Subject: [PATCH RFC v3 33/88] KVM: guest_memfd: Skip checking outstanding
- references in PFN mode
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 331786B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:04:49 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B14F2140252
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 01:04:40 +0000 (UTC)
+X-FDA: 85406527920.09.2145E2E
+Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com [209.85.210.71])
+	by imf29.hostedemail.com (Postfix) with ESMTP id F413A120008
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 01:04:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of 3JnnuagkbADEflmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=3JnnuagkbADEflmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794013479;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=aQAkv1Ch1hBWt9F5oKlCKZa1WGD0uucsNqTVeJRSM+g=;
+	b=l28w3xLxv5bw9arjGISvDZK1g5GhQhrjduLaZIKOXRVe3fZKOFtFJSe4qzVOMcd8JDFhaI
+	w+X8EgeLpyKXUoRA/y8ML+3vxkQ96pBIlfsQ8V/GbXD+8y5FgZwrwVUp6gDuKYbcqcQGsd
+	tFzhw8UK+L2nD9wTl3kSdhRew5NzP6I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794013479;
+	b=OOVQfO/0hI0wjCaTpT/dk+cytQAPwYE66Si6yWAvRhYRIndnRHJVxhAOwy1POHSHuJFhaS
+	2mgzRS2JubCurar5R65zrx6I4TIMR+BvSU1/VzywQzp3buVC3ZCnuiQQUY9TBxrRQNwRlq
+	878AZ99hX/+7SfwepQKr7akSpVzmIpM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=none;
+	spf=pass (imf29.hostedemail.com: domain of 3JnnuagkbADEflmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.210.71 as permitted sender) smtp.mailfrom=3JnnuagkbADEflmXNYYReNccVQ.TbbTYRhfRePbagRag.PbZ@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-ot1-f71.google.com with SMTP id 46e09a7af769-85d502ea62cso1737434a34.3
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 17:04:38 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794013478; x=1794618278;
+        h=content-type:to:from:subject:message-id:in-reply-to:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=aQAkv1Ch1hBWt9F5oKlCKZa1WGD0uucsNqTVeJRSM+g=;
+        b=tZtD0TCm/1c8A6cMKy6QzLpYT58Xxv96dHWwYZ+qdiAonKTJHLwdVd6YA+bK0/knf0
+         et3N69Rn5K/SvwXsBGQmLaA6RHSQo/ueB5x4ogxnQznvzIC/HsDbUxMC3xUH8VFBCdRX
+         kpXd708zdfB1RHgdwl47bRTurcf0NUe3pFRQK/eslXP20ITTC8qBmvsTCWy/HixTwzx9
+         ThkXwUqMVBwGoNDCCQI29G8Il+KNbOIs/ltJO7xI57zWVvjqCdjMEMf4M7sQwpFi1ZRo
+         iTmxFGPmcmNu/6DHRTMfqTaKzOUyEVzKBSfzSsH+r73WYZoUIHIMTIRFKt21UQUufUDF
+         CIMw==
+X-Forwarded-Encrypted: i=1; AKwUvBwP+/1Ig0ls6+TKg7hW3qNltMQlzQNkgpfQtcqpSNHkYARMdaTCVGiZx8hdDw31Z9CkchgtGU+CuQ==@kvack.org
+X-Gm-Message-State: APuU4Z9CunD3ns4QCUmdfFXJiQqKwd0VAsecuawQkEy0+rlp+iJ5Kvj/
+	CNFwPkAB8WF4+mQKOranPFCgb4fO0nO759WNQyjpHLwhg+9Ayc6+LqgJkuFIoC6GO2gdBwpaOs+
+	s2Gc1teMX/CuqsvnPW+4xnsd+snHkB4p23J5Lxa/kX+NLLB6jundEdkdUiX0=
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-33-8484dde66a7e@google.com>
-References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
-In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
-To: Alexey Kardashevskiy <aik@amd.com>, 
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
- Christian Brauner <brauner@kernel.org>, 
- David Hildenbrand <david@kernel.org>, David Woodhouse <dwmw2@infradead.org>, 
- Fred Griffoul <fgriffo@amazon.co.uk>, 
- Jacob Pan <jacob.pan@linux.microsoft.com>, Jianxiong Gao <jxgao@google.com>, 
- John Starks <John.Starks@microsoft.com>, 
- Michael Roth <michael.roth@amd.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Samiullah Khawaja <skhawaja@google.com>, 
- Sean Christopherson <seanjc@google.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, 
- Tarun Sahu <tarunsahu@google.com>, Vishal Annapurve <vannapurve@google.com>, 
- Xu Yilun <yilun.xu@linux.intel.com>, Fuad Tabba <fuad.tabba@linux.dev>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=1241;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=SnLBT6Q6uhpsf6Q3iw5E3T1UAAmiNXk2AxpRgy0J7g8=;
- b=m9e+oS/Q1dzTtHUoLjbiCU3McBzID8fswXgaOQ6OOb/+PCv1AALy1hietTiTiQekA2K0+q5jS
- PfF/iF2VW0uDRQyYKZTqF9IoXUfn0S6L2V5tqYieTA37ALBQJUJWn8L
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
-Content-Transfer-Encoding: 7bit
+X-Received: by 2002:a05:6808:1987:b0:4f4:d7:b15b with SMTP id
+ 5614622812f47-567e0997171mr3468472b6e.4.1794013478283; Fri, 06 Nov 2026
+ 17:04:38 -0800 (PST)
+Date: Fri, 06 Nov 2026 17:04:38 -0800
+In-Reply-To: <6aec6433.0ce67c00.35143.0001.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6aee7926.45cab1c5.12a849.0002.GAE@google.com>
+Subject: Re: [syzbot] [mm?] [fuse?] WARNING in shmem_initxattrs
+From: syzbot <syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, baolin.wang@linux.alibaba.com, 
+	brauner@kernel.org, fuse-devel@lists.linux.dev, hughd@google.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, mszeredi@redhat.com, 
+	syzkaller-bugs@googlegroups.com, syzkaller@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: F413A120008
+X-Spam-Status: No, score=-8.7 required=3.0 tests=BAYES_00,FROM_LOCAL_HEX,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
+	SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 1xaywntucbjbi6rysu3d5519ian5dajy
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BF4F040002
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 9gkgfs5hthe8qdd8js5qkq635cstqfy7
-X-HE-Tag: 1794012217-202630
-X-HE-Meta: U2FsdGVkX19LypEP5ogYOOIHp50MEfZX5slUZAiDjI4lT8ObxMXdvYJvdZJSnUCoctlRXs5H5jwxAsCtv6iXFJw99FXMwjD3P2CXu5erAqOgRKhaVWXoovvXSfXkN31R+UOKXmY70+Wh4QhdwvhfAihE/cdLIQWA2jnpGBOKEkuiQlMhjiHp+paHAeM3mxxj7gDp8i3vyVozBzamr67P8oagrgv57gEmYds7CK7A5gy9fpC2y5M8MHQ/8ogw6WoqKjlxAB/WlF/eqaFHMrdq7PaBOLa5lzdCmN6MCMIAElPCa0OrctwAu1Sme9VyVDTTTYfFrpDS+wgd2MxQvkyJsxNhatY8gv+fyN9vjQLc4SBQrGPlHFkVt7TbYrSFQiTKtLqG37KuFEssp0M1SvHBkVhdecGETVHvZMypy8Uhkar1TOvyLR04LXsX69KpUtQbf78KhKkO2eCLDeeE2fp8qF5PVilZUJxef7/Mhf+FzwaY5pkZDz5Ib4jcxQleObQ6BwvLDe17W4GksMX44640JFyrwmYv7CMdTJwY043/SkdFuzC20QJhCgEX7ZqQDc2JrEH4z7Aue0RCvGwZBof12bhuBSOrANnYIFYZoY8W7PcORauMHhHcdshcOjSSFnxcb8weDoawBtK/FqLxFAaE0XPoNd/OZiokixo9Hik7MepsQfRENcD+fpDcmB81IGu7x5HQnz8IoRCHq055E/AhIGGekonzeiAPlirXzcpMLkqbByDqGZXeoXTERf9ng/RJ0caWGcVOgkLgDU0/tOEXUY5LE4cN4iB+n9SivJhIBsaNm8APdPXH/+3uSggmZgi9jC5rlcJeYuV2e0n/MC1cxWc+WCX+TvGSM5386eGrbiuHPS4CSsmmEcXv3QDMhZR7bDpXz4IJVwK6GlZ7XyvVArgoujFleSUVSZvR49S3qMdYdCPVUbw/ELJ6jG+W5UXreVAqGqYii8xGozTXz5M
- jSUV38FI
- LbqIRqF5rJxuADOf0eRTbo67BaZ7K5CsyJtOzsx7znV+5or6wVMrlG+rh9os74wT5FqjgNBfdQRKX+iCKf53/+9aY5LZT2bGyXERM9fajniMLBVSTTHxpoxkCBiZQ7M0Jg67otJIdEGV+7FW9rGPCX+s4/Gj/eVq5dZOrvUCwS2qznTcYhauWOizN+0wl4TP30TUaUV2XrxvNvq8+E6EH2e38qq3Eo4vOGodQmNg3V2vFpXJiUW7hiJ0yQvlRUV0xp+kMG5hfmRwNVfoWVjcYSwsfyk1n66Blmx1Ha0yjqbClZm6+OhUTw7Dt4noLZAKPqUxGid/Xjs1QmLIQQRRE4UZKmuj/70mFbIgp5AzoJCplKQ9BE/CTN30uIemSlMdHt+HcaWz1WogUN020CxqiGrRUb+8ZfwlEzjnfIub917ZM/UFNHG3YG56a8Djvd7ZZyqLASelIsZgcXW5b30Fp+QvQcS89tzghm9Jn9dVwCU5HpTi7EEeCfsW6uCFFzkfnF/XP8j5oOPISyqZjETR0703OArbXc2X+t+jJuU3VF5cUd8J8VdOV9tiXwfpPUZ0CblERUyxpihyn2gLqqR/oVvTOvurQudIGGpy1
+X-HE-Tag: 1794013478-702114
+X-HE-Meta: U2FsdGVkX18dCWntgKTcxQyNGdftmpC0Cxjyn6pN/ZLPL2UWyCLdyk4aooXdE2dXqWPeqb0kMLi4vQyXkp0y6x6brwkCoUl/P1ty2bs0pEYUacAUqm/52TwG29A90veoFfk7NXSx5r6VEU0NbTwJY3TK3xaDX58RsXtdXMPrgA6jxHphMNoyHOmeSbb1BHiSo3XFDwy00nei2PvsRtyekZVydzlCxXj9QL3XXuNGS+wRElP1bS22PLNDTodknUbjf1UeVoVMUqZu0wF2YxVNgS6hMzmd5/51xhpyjQzlG+2xz7dhU1uaT8YQjah1EyVNcbYrEwu1rLdWo/cteNvigKK/UvI71LsQLtV2FzseIJnHhIu1oKe7hKZO0ygyxYN1jo45rEOF+Go2x3WR1Ef54noh/CRGnU58pG0kzUGX6c/tbu5EOEf77sT1lNunTgD/zylrc8DzYWRldx9gkwut19Qr9glh+HFMQrWzxWIbegjzPVW8o53C4Fu+YTjMs6TQfqDTvBGpJySbMjucNuH4MM3yAMlUElfH4bSYME3dBjGAIUCT0Tj8lHZCP1FD/nOIkXfdiBG419Els2DNBkNO8xOca1IQjKDWsSrsRawICXE3mGTeCOLUBxU/YtyFCVpT6hblWTiBzWKMoA4XDzAnFYUkMVK2NjLFrwOtTd5eWLQJ5bunDtLiZE662EG++Cu82n+hl2flt0n9aUyfRydX6L5ji2LxESIUcSGdJDZLXmqR0faRUGWonfH0TVbr0vAdC3KD4EAMN33AA2aYtPMDu7L63hNwWgOx+U8plVIYC/iApRle1Gke5iFDzrThWtCPHP06fLuTJt3AGLHHkyneW3Y8dxQlTIHdrfVf5RpqpfNVBxejeyMbAGsIKfGQn5j47Z4RmoJ/jtSWOrG8IzoogSLsqe/Sz4KAbAQHPNXSrIwpW+byyeZvhMSUzH4r8KMpWIlZ+7tOkhq9VF3woB5
+ Jfjir4QT
+ iy4XYWsai35qnbKprJXGge6fWBRDDHuoOeFn0eJ0OHo/jTSV7wnH1iPi3kKoXsN6Alj24qFUk4Zw7dgbaRPQb+mFSWJcFR5jncZUp/CfNahw+C9Aw1/1euLCpn1ldP/VAylgdAngJpEZUUZNrJkzTGu8Dg54XytYDvMa89rUDSnWAEXNf1owt1rJzugxPV6BlE8Kpqjr762pdmmnF+0iIbsvxuq5ISK4SYFEQTtEB2hn5HO6A+kJyrw8Onjy69zYz5096Bcl2huKpYgu4+7uR4fY+kB8fTNJCbq0hMP0J0DpsVl0+EHgnt2BQ5J+edQ/XI4lwvHGDUhoN1KIb+2EWXScJed5ssZaj9BDWsUCWugEYckK9IqHa4wAHju0xE+4uPrTcnrZplMgata2HlJmq0m/T9TOGGDYgWgG35Ua/uCTw4m0WFHBYJCZ3UN+2mbvJrP9d6DPmMZSqbwrKxrDWLKOZo7sjHb5RWdiDSwsfXSv3QhMLZ6w9fy/OXoEC74SNbzFYvGdI3CqbLTZX/9e+gHE7+WQMLfB/q+mDNFscQngzdGYK+pr48f0x1/TDxX8lqGQllgTTKK0LDJVntWD+bnJgV4GN7pEONpZWJdH/2K1m3q8v2QKfXMgP0kUKNaA7eTrBHH6iKn95meTug9/s6g2m2836ejVlBfLbMNKe44l6LuiUPo05i9PflEldLoQHbM0CuFcbfhWvn6wUE2+ldyrDNotB9ZHauSl4Jp/YUO9hqtEza7fNFTsTrNd0VAAXZ29BjwzTBEBFZGDbaPLdOtZ6sUkVOmOZslVwF0+nFRNm1ZS9qJCNWe9B0IQLQDp87Hj1EWydVdNUlt3hL7523/lzb+ryrwPAn/MLf4CqOU/8P9XFO6a1kT41Na9QbbeL1+pIzNoJzYoG+eRed/njsr9UElRbZ8ToJKecdKRxtly3Dwdf/jrguwEd6y20Rr5CkiRQT43/LmahujJXLBw6W5ObUDWc
+ RA/jc/1P
+ J5xEbG2k7cVu6xgRK2WvBOhMkVvzhItFMV+3PsTLia0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -151,40 +99,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Ackerley Tng <ackerleytng@google.com>
+syzbot has found a reproducer for the following issue on:
 
-When converting memory attributes to private, guest_memfd verifies that
-there are no outstanding references to folios in the page cache.
+HEAD commit:    f66469d9905b Merge tag 'net-7.4-rc2' of git://git.kernel.o..
+git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+console output: https://syzkaller.appspot.com/x/log.txt?x=110ad735580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=1cf189394a856f11
+dashboard link: https://syzkaller.appspot.com/bug?extid=4324f771847cecb27c54
+compiler:       gcc (Debian 14.2.0-19) 14.2.0, GNU ld (GNU Binutils for Debian) 2.44
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=13bb58d9580000
 
-For PFN mode, retain the part where memory is unmapped from userspace,
-since userspace should not be able to map private memory.
+AI-generated root cause summary:
+In mm/shmem.c:shmem_initxattrs(), the initial reservation of inode xattr space
+(ispace) from sbinfo->free_ispace is gated by 'if (sbinfo->max_inodes)', and
+subsequent per-xattr subtraction from ispace is also gated by 'if
+(sbinfo->max_inodes)'. Because sbinfo->max_inodes is accessed locklessly and can
+be concurrently modified to 0 during a remount (shmem_reconfigure() with
+nr_inodes=0), ispace can be reserved when max_inodes is non-zero, but fail to be
+decremented when max_inodes becomes 0. Consequently, after all security xattrs
+are successfully allocated and added, ispace remains non-zero, tripping the
+WARN_ON(ispace) assertion.
 
-Since memory was not mapped into userspace using pages, there will not be
-any other users that had GUP-ed the memory and there is no need to check
-for outstanding references (that indicate other users of the memory).
+full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=4324f771847cecb27c54
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+4324f771847cecb27c54@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+ispace
+WARNING: mm/shmem.c:4499 at shmem_initxattrs+0x3f5/0x650 mm/shmem.c:4499, CPU#3: syz.3.20/6999
+Modules linked in:
+CPU: 3 UID: 0 PID: 6999 Comm: syz.3.20 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:shmem_initxattrs+0x3f5/0x650 mm/shmem.c:4499
+Code: 03 80 3c 02 00 0f 85 5d 02 00 00 48 83 3b 00 0f 85 fd fc ff ff e8 eb 3b ae ff 4c 89 ee 31 ff e8 81 36 ae ff e8 dc 3b ae ff 90 <0f> 0b 90 e9 dd fe ff ff e8 ce 3b ae ff 4d 8d 7e 78 4c 89 ff e8 12
+RSP: 0018:ffffc90004fa7bb0 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: ffff888031a28818 RCX: 0000000000000000
+RDX: ffff88803397a580 RSI: ffffffff82603cc4 RDI: 0000000000000007
+RBP: ffff888037912b00 R08: 0000000000000000 R09: 0000000000000053
+R10: ffff88805aa5a973 R11: 0000000000000000 R12: dffffc0000000000
+R13: 0000000000000053 R14: ffff88805aa58000 R15: ffff888037912b30
+FS:  00007fd3ae9026c0(0000) GS:ffff8880d4775000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fcb0d7556c8 CR3: 000000001d7a3000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ security_inode_init_security+0x242/0x370 security/security.c:1384
+ shmem_mknod+0x2ce/0x480 mm/shmem.c:4087
+ shmem_mkdir+0x31/0x80 mm/shmem.c:4142
+ vfs_mkdir+0x36d/0x8a0 fs/namei.c:5428
+ filename_mkdirat+0x4c4/0x630 fs/namei.c:5461
+ __do_sys_mkdirat fs/namei.c:5482 [inline]
+ __se_sys_mkdirat fs/namei.c:5479 [inline]
+ __x64_sys_mkdirat+0x89/0xc0 fs/namei.c:5479
+ do_syscall_x64 arch/x86/entry/syscall_64.c:61 [inline]
+ do_syscall_64+0x123/0x790 arch/x86/entry/syscall_64.c:84
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fd3ad99fb19
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fd3ae902028 EFLAGS: 00000246 ORIG_RAX: 0000000000000102
+RAX: ffffffffffffffda RBX: 00007fd3adc26090 RCX: 00007fd3ad99fb19
+RDX: 00000000000001ff RSI: 0000200000000800 RDI: ffffffffffffff9c
+RBP: 00007fd3ada37b70 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fd3adc26128 R14: 00007fd3adc26090 R15: 00007ffcae78f808
+ </TASK>
+
+
 ---
- virt/kvm/guest_memfd.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index e94f2359b7c9a..ceef61cb63a0d 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -901,7 +901,8 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
- 		 */
- 		unmap_mapping_pages(mapping, start, nr_pages, false);
- 
--		if (kvm_gmem_has_outstanding_references(inode, start, nr_pages,
-+		if (!kvm_gmem_is_pfn_mode(gi) &&
-+		    kvm_gmem_has_outstanding_references(inode, start, nr_pages,
- 							err_index)) {
- 			mas_destroy(&mas);
- 			r = -EAGAIN;
-
--- 
-2.56.0.455.g6c5a503b38-goog
-
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
