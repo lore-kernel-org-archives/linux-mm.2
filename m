@@ -1,107 +1,89 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 998C1606A33C
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C54606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=laaaeGzM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lXOXgSf3
 Received: by kanga.kvack.org (Postfix)
-	id C3A9D6B05B3; Sat,  7 Nov 2026 02:06:59 -0500 (EST)
+	id 3E8036B05B2; Sat,  7 Nov 2026 02:15:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEDB26B05B4; Sat,  7 Nov 2026 02:06:59 -0500 (EST)
+	id 3BFE86B05B5; Sat,  7 Nov 2026 02:15:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B015D6B05B5; Sat,  7 Nov 2026 02:06:59 -0500 (EST)
+	id 2FDEA6B05B6; Sat,  7 Nov 2026 02:15:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 894E36B05B3
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:06:59 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 177F21402B9
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:06:59 +0000 (UTC)
-X-FDA: 85407440958.07.F2D703C
-Received: from mta0.migadu.com (out-24.mta0.migadu.com [91.218.175.24])
-	by imf20.hostedemail.com (Postfix) with ESMTP id E5C9F1C0004
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:06:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=laaaeGzM;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.24 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794035217;
-	b=4C3yn6DLDP5q9tMP2JDnlteJcVslw9xXvgOcK/PbPoWnYczF0suOrzTp/A1Q4cct/szvAg
-	iZ2UcHEG/KBY4ex9lAmgdkSQoucEmVaV/V+oM+kctoQ9Pf+uHB+pVJskpGTKMUTRpmpd5M
-	+oTPGbq8pNEGC59AvcLvjzeUSYtuz0U=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=laaaeGzM;
-	spf=pass (imf20.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.24 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 0906A6B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:15:38 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 778371402A4
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:15:37 +0000 (UTC)
+X-FDA: 85407462714.24.0818BC9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C3FAF20006
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:15:35 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lXOXgSf3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794035217;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794035735;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FQGgtDwWrS+TOjm+NTam7HXH9x/oZ1flKgXBC0MLbs8=;
-	b=B2AiEIg7Jgd0SEhwsTyktt84c+t9VVME6Z1Z573g2XjWkcUMyU+T7yCVnBaHTOBtDP1lTL
-	q0rHQUpLO+H3L8AEsyQcyRmLAePmorTkbz+++gShmIi7MsHa3nYKHwR7ghQSpvYFjifG0c
-	ItbZOIJ07y/AtuTcMD4WPTNJZJjxnWw=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=WA6DBOazilQWA0YBctLuPJvG7AIFId4vVmL0J8Gvwrs=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794035215; v=1; x=1794640015;
- b=laaaeGzMGg4t+lecIujlnzQeisTE9nvbBDsCu1Bil5VTtbW36bfPUrnWhXHZFfEszpdp+CJW
- 0aQ6ai2SyU4aMbwRCGD9pVbvG5evkYMwIO2BisdMx11yiEVQ/JqzOfspen8u75vuF93hCFEHE4A
- +xCCq96iQjLMHM9W9vC9cm5Q=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id edb96401be2ea3ce;
-	Sat, 07 Nov 2026 07:06:55 +0000
-X-Mizu-Trace-ID: edb96401be2ea3ce
-X-Migadu-Flow: FLOW_OUT
-Content-Type: text/plain;
-	charset=us-ascii
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH v2 08/20] hugetlb: Fully initialize tail struct pages of
- non-pre-HVOed bootmem folios
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261003002123.505555-9-jthoughton@google.com>
-Date: Sat, 7 Nov 2026 15:06:31 +0800
-Cc: Will Deacon <will@kernel.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Nikos Nikoleris <nikos.nikoleris@arm.com>,
- Linu Cherian <linu.cherian@arm.com>,
- Mark Rutland <mark.rutland@arm.com>,
- David Hildenbrand <david@kernel.org>,
- Ryan Roberts <ryan.roberts@arm.com>,
- Nanyong Sun <sunnanyong@huawei.com>,
- Yu Zhao <yuzhao@google.com>,
- Frank van der Linden <fvdl@google.com>,
- David Rientjes <rientjes@google.com>,
- linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-mm@kvack.org
+	bh=vzXZdhnaevFG7m6vfikATmsg/E5a/qIjqv85ia5RRoc=;
+	b=tNTaWzualLX+6VYmjJqmXHeEYm3aoG+LpbEfhIiaSQxHXBMnEfM/tGoKbs1nLkCuKmtTB/
+	rzsQxWXPM75q4GfJjXPBcDHgaW6n6Z4gTbOOBsWCz++PLKSP7e9siUkkFCOhqfGSTclX/G
+	bJuDnvIuc3ePoQt7Clz/pGygDiTii2c=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lXOXgSf3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794035735;
+	b=RBB2T5B10rHe+YpWGFzwgzOPTHWScnNVQiM1OBS8yZhBigiuuvjZ8/DFGSVnivSSw/Mcmg
+	KKxHf3uzuOqGvRIFgAiQfSvo6FZHGLL5EvcBJE1v/8qM562jVGSegGXobgpYMvseOccbB6
+	/lYKHOyRz1IjRDgoIhqKXCIF0vlUMCE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C9FAE437A3;
+	Sat,  7 Nov 2026 07:15:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2352A1F0089F;
+	Sat,  7 Nov 2026 07:15:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794035734;
+	bh=vzXZdhnaevFG7m6vfikATmsg/E5a/qIjqv85ia5RRoc=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=lXOXgSf3CTPIOLuzygqugyz/m3Kblgh8MJs48+8iMsrQjzG/qreHEh6jO47pbs2re
+	 3Uurw9Fnc9zQFse+AdXIM57kpmzdsdr1ooxzZqIvRiCYXeJlt07zQ8jYqlkv8E8OLB
+	 BUay2w1iDEsNeXgnApmBVX/YkfaRTnV5iO8RYzy2pKRTix0uDbT98nUisN3fax9Vm9
+	 AWVEq0WetPaNznRKVC8P1r3D+YP4JRnSVN+EpNFOKu1I600ottqeNwplAml/t5VSHC
+	 N0BsVidOkEyx3RLTv4wvcJq0/hAHxAWeZytzszlFcTY2vEhrcSIW2Q919aFyhUE1q/
+	 R2sd0rh6zc5tw==
+Message-ID: <sashiko-outbox-202683@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/4] riscv: Add support for kexec handover (KHO)
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Chen Pei" <cp0613@linux.alibaba.com>, pjw@kernel.org, palmer@dabbelt.com, alex@ghiti.fr, rppt@kernel.org, pasha.tatashin@soleen.com, pratyush@kernel.org, graf@amazon.com, shuah@kernel.org
+Cc: guoren@kernel.org, linux-mm@kvack.org, kexec@lists.infradead.org
+In-Reply-To: <20261106071459.2003-3-cp0613@linux.alibaba.com>
+References: <20261106071459.2003-1-cp0613@linux.alibaba.com>
+ <20261106071459.2003-3-cp0613@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <30822F0C-88B8-4ACD-A0CD-F889F438EDB4@linux.dev>
-References: <20261003002123.505555-1-jthoughton@google.com>
- <20261003002123.505555-9-jthoughton@google.com>
-To: James Houghton <jthoughton@google.com>
-X-Mailer: Apple Mail (2.3901.200.71.1.16)
-X-Stat-Signature: udopwf3rfgnuzd9y3fhmhhkiu584w1p9
-X-Rspamd-Queue-Id: E5C9F1C0004
+Date: Sat, 07 Nov 2026 07:15:33 +0000
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C3FAF20006
+X-Stat-Signature: bnm3wfawae8y13o4unc68d8m1ycfktgi
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794035216-133941
-X-HE-Meta: U2FsdGVkX197e2/6mo/ivrJ/tmwWlRXskZ/h45+s4kkovM4wad2cyJvunnabRjqHdFSFrgQJU67SuTrLIg7kPVDGMWLzn1vmRhC2Gc3ObQ/UCouHToxKZcvl4LKKwmYLWI2661aGoXiDRCWWTpedsGqDxRBzzfqtaWbNLUuywgEym+ysa8NNH4VsRgTHVEkaNwZTxbTqWjHBfz1aNqB5wmv22BCeUkM9jsy8RflDUbJJS814yzQQVk4T18GrbHxsqiJ/PLShsn65M9MZFfxgszjTrczECY0PHUrKlQzJwgT8pd5EUPvs8VI3qtwMuYRYEGpLqorI62TrR6gtgsbjrkYUxXBS4tLaGNdOXLGXApmVKtxP1v1gCtXY4MNpZ3hNI2w9dg+XWAJxpF6CTe6rzHCQ5y0F3KhCB4ars0wh0r5COikCqqRupMWUoUhbR6WYLS0AnhSIFCT29VfY1OQhfWfp5ZrRShw86zvHC6WDSyAUfRzTrX9B5oCFIBhmX5kLFOySWgnQdsngRekX/H713WNNru1lrGK1IMpmOTIBBPYLNGiexoIHOnt151KkoQ8zRrC+wm0GtmbwoL1K+iRBA7VedhXKanHSi5SNFBHHkvMtc82mGt/EOaWMB1iFfPEC1GjpVIryge6EJnSNjGiHROLg9bO2eU421cStqxd5YpRxf8qxrlGaQeUkJTwJTmLYmtHLWmLG7Np4E1AIh1eTtkWTmZMLaQLZC969wy8YrNkcP/G7mE8n3uzK9qglzqMOErgJFHX7Q2B7XkHGYGLwUU6tRgjl0ard3ekM9nJWzxjuI1Gs557BS0WqHPDZy6F6EoQb6CT3ubg9LZso4QF6qs8zGB7IHT5m7JPU9k4SxlYXJFsoLuH/eA4lNv5zAjxBY/kxcm9FUbzTkSaHfyx8e0Q1F6HoZeQJIl4DIyoow71Prl5bFLQ7Mr6BDZAH1nn/TUm4IovT2t8YJGe2iTt
- pUBgyMHz
- WQUb5a+Q1H8fDWZnugqIRciGPAT8zVyefYlYSqA8D45zbRVLKm4NC3Vq5z42Tx4ijZZ1YYVafvVWq/zYtUXGVktshOwhdG/egqnUHBA1O3HGKXDDi6ej1XZKL4b9VYrQjNq7CbMxQsW7SO3OXM++QGDn9H0NCBS9MRWjQPjBzrB0T9mHYEe7fKZBDTETEITohOe7X6SmOoj069R1yZIuW9VbEkYaJwvxGFz/oSsjk/iJ0JgT7RfKHSOdgMWmBQ/AdRyP9dq+vB69HcNRWtJE+qxvZbvUgdi9BECrbxFTb/WAc25wjveF9wdjSrd89CtGjD4Pka3fIc7mHylctd7evj6JueQ==
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794035735-527964
+X-HE-Meta: U2FsdGVkX19va43jQYSlUItqt0jhKN2ZY0sNhYgojITsUtAT+GpV1xD9MchxNJ3YNM5cFGpudjxCcZ/lxNufS/gLtz3+3yFr5ilzm9ka+W+Yc3TgZ3jsd/RtXtqDr2jVCBjU4lS6+LaSF+bbMXTSlbt5MIzckkaLsrPjTXDGUKKAtBGgfUq3EYFxZfMmut0d5YzNSOPBYYGQ8PKiTyaBQhB1eKKI4FrXaBjyZ0Ed9GE0chjAndVPLB6iTatK0HzwZER39M9GOUGuH/J++A7eactH7FEYW/YJW4UBcYABV2OvDT0nzhn4w5ogR3rKCWWgj9DMrFfrrrgvmrnprAotp18ifGcavoINxSE6n7dNOSdapQOe7lrTsA2ufAf6k9/lxqv73Wpe4CgrOauvrfqYlavLBxFiyP/lMwtE/txNyGQ80Blcmxe8lswJsa+AwzN46SMXaBbEdIt1Az8awSKaXBZmozc7RSpiF1HsKUrDHduJwCXMAIOEEZz0+g+r/+ALKi/fNzIgx0XYUtOo4qmZUmxW/HN0OaFarkRVKq/wJm7ZcdpS97TCdt1ZtYZrEuUXuliL5Cb1CBfmFfn65klWeao2RKIr1zx1IqvZEtzOS+KYrHlf63cfH8ok5AmiCqBnH/CD7kAHTr9xg+z0eGQniKxzDTsDGohtJMjVrRYSa04Y9dCR2vUBm0cB/yF7bsFC6drZ3jL8SdcsO3Bn5uWicVHVS0OIlKF59Sch8foyQViMeuHf4HWMNGcFWbjHKE3fmeonTGfOr4Fdua6rFwNCpWAuQpHiL7kYRuUKBA6xGGlds0Air7cK76vu+PYz+vb0Oj+zsChtiPW6yLGjRSL828g6pYohyriJe61ylzd7//e3hiYJ45o4nfPGsUmtg12NGoab5CghbORElX0NsX08/7D6VupbINxCnwDjqXb2dyjKgznCl8jQbK/YE6x5JaR7o5ACxtltVnwbiS56Xmd
+ mJ2c5c4r
+ A0M9VpAJNhCatFeZ3cmKGumMrLOqY7V3rYSyCHW6BnzuRz/NUqE77grgDBXgrEIg+aX8LkLgvluMhyf+4KSCHwI6hKk4HD+cc7hUOyAceuN3n0Na9yelavkRk4rKc9DI4KvZ/KJtCaXKF3gI1sZiQMt+TLSIaJTfWeUqoKqLA/jLysfE8ILysUVl5c4JgoUVLStkEF294Nvc51AL+HlW3QthRE8v6H73Sjin55g/r+W9Y0Rof4PzKRNTQIKOmsKIDw9zL+pwchlPvmEciodu2/Iq8Zix0WXyZBOh0+QmIv6bMy3zgCsKGFvTbUdZaNkSnCdt6a4IQH5b0xHDItoSUUCNf3sPFOSWMLxmtod42UFrn4u3dn5xU2hL217Sn3fBr3MZ1b/SPWfF2pYadi171oVoJab70o+CePN3LpduUgXV/forN+SvmEZux3n/kB8ZTqc3rm6sVAZeiVbBnvjTG6h1reQlSlmaPZphHk40D+fW5MFrhd5++gN3z2jmPczV4neqlmcoeRB20Itscw5GX++hVBbwxMuD2f5WNBRr0DmTRcTdctGjqwdQKhwuLzeBll0o1xuqIyk08DiOTJbpNCfO9vA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,139 +91,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] riscv: kho: BUG_ON() in linear_mapping_pa_to_va() during
+  efi_init()
+- [Medium] riscv: kho: kho_reserve_bootmem() fails when DRAM starts at
+  or above 4 GiB
+--
 
+commit 9359adbe095f746cadb4028ea618b75e0af09036
+Author: Chen Pei <cp0613@linux.alibaba.com>
 
-> On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> =
-wrote:
->=20
-> alloc_bootmem() marks all but the head struct page of a bootmem =
-gigantic
-> folio as noinit, and gather_bootmem_prealloc_node() then only
-> initializes the first HUGETLB_VMEMMAP_RESERVE_PAGES struct pages. The
-> remaining tail struct pages are initialized only if the folio ends up
-> not being HVOed.
->=20
-> This assumes that a bootmem folio is either pre-HVOed, or will not be
-> HVOed at all. However, hugetlb_vmemmap_optimize_bootmem_page() may =
-skip
-> pre-HVO because arch_hugetlb_vmemmap_optimization_supported() does not
-> yet return true that early in boot (e.g. on arm64, where support =
-depends
-> on a system-wide CPU capability), while it does return true by the =
-time
-> hugetlb_vmemmap_optimize_bootmem_folios() runs. Such folios are then
-> HVOed through the regular remap path with uninitialized tail struct
-> pages, which trips the PageTail() WARN in vmemmap_remap_pte().
->=20
-> Avoid this by initializing all tail struct pages up front in
-> gather_bootmem_prealloc_node() for folios that were not pre-HVOed. =
-This
-> makes the HVO-failure fallback in prep_and_add_bootmem_folios()
-> unnecessary, as pre-HVOed folios are never passed through the regular
-> remap path, and all other folios now already have initialized tail
-> struct pages. A failed optimization either leaves the original vmemmap
-> in place or restores the tail struct pages from the shared tail page.
-> Remove the fallback.
->=20
-> For folios that are not HVOed at all, this does not change the amount
-> of initialization work, only where it is done.
->=20
-> Signed-off-by: James Houghton <jthoughton@google.com>
-> ---
-> mm/hugetlb.c | 28 +++++++++++++++-------------
-> 1 file changed, 15 insertions(+), 13 deletions(-)
->=20
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 4dac7ed1df57..e971e2362412 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3303,17 +3303,6 @@ static void __init =
-prep_and_add_bootmem_folios(struct hstate *h,
-> 	hugetlb_vmemmap_optimize_bootmem_folios(h, folio_list);
->=20
-> 	list_for_each_entry_safe(folio, tmp_f, folio_list, lru) {
-> -		if (!folio_test_hugetlb_vmemmap_optimized(folio)) {
-> -			/*
-> -			 * If HVO fails, initialize all tail struct =
-pages
-> -			 * We do not worry about potential long lock =
-hold
-> -			 * time as this is early in boot and there =
-should
-> -			 * be no contention.
-> -			 */
-> -			hugetlb_folio_init_tail_vmemmap(folio, h,
-> -					HUGETLB_VMEMMAP_RESERVE_PAGES,
-> -					pages_per_huge_page(h));
-> -		}
+riscv: Add support for kexec handover (KHO)
 
-Just for your information, I also plan to remove those code, see here =
-[1].
-I need to push this patch along quickly. I'm confident it won't take =
-long.
+This commit enables ARCH_SUPPORTS_KEXEC_HANDOVER on 64-bit RISC-V systems
+with MMU support.
 
-[1] =
-https://lore.kernel.org/all/20260513132044.41690-15-songmuchun@bytedance.c=
-om/
-
-Thanks,
-Muchun
-
-> 		hugetlb_bootmem_init_migratetype(folio, h);
-> 		/* Subdivide locks to achieve better parallel =
-performance */
-> 		spin_lock_irqsave(&hugetlb_lock, flags);
-> @@ -3337,6 +3326,7 @@ static void __init =
-gather_bootmem_prealloc_node(unsigned long nid)
-> 		struct page *page =3D virt_to_page(m);
-> 		struct folio *folio =3D (void *)page;
-> 		const unsigned long pfn =3D folio_pfn(folio);
-> +		bool pre_hvo;
->=20
-> 		h =3D m->hstate;
-> 		/*
-> @@ -3350,11 +3340,23 @@ static void __init =
-gather_bootmem_prealloc_node(unsigned long nid)
-> 		VM_BUG_ON(!hstate_is_gigantic(h));
-> 		WARN_ON(folio_ref_count(folio) !=3D 1);
->=20
-> +		pre_hvo =3D =
-vmemmap_optimizable_order(pfn_to_section_compound_order(pfn));
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index bde1f1885038f..bffef6b903e13 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -1125,6 +1125,9 @@ config ARCH_SELECTS_KEXEC_FILE
+>  config ARCH_SUPPORTS_KEXEC_PURGATORY
+>  	def_bool ARCH_SUPPORTS_KEXEC_FILE
+> =20
+> +config ARCH_SUPPORTS_KEXEC_HANDOVER
+> +	def_bool 64BIT && MMU
 > +
-> +		/*
-> +		 * Pre-HVOed folios have their tail struct pages =
-mirrored from
-> +		 * the shared tail page, so only the first vmemmap page =
-needs
-> +		 * initializing. Otherwise, the tail struct pages =
-(marked noinit
-> +		 * in alloc_bootmem()) must all be initialized now: the =
-folio
-> +		 * may still be HVOed via the regular remap path (e.g. =
-if the
-> +		 * architecture could not determine HVO support at =
-bootmem
-> +		 * allocation time), which expects valid tail pages.
-> +		 */
-> 		hugetlb_folio_init_vmemmap(folio, h,
-> -					   =
-HUGETLB_VMEMMAP_RESERVE_PAGES);
-> +					   pre_hvo ? =
-HUGETLB_VMEMMAP_RESERVE_PAGES :
-> +						     =
-pages_per_huge_page(h));
-> 		init_new_hugetlb_folio(folio);
->=20
-> -		if =
-(vmemmap_optimizable_order(pfn_to_section_compound_order(pfn)))
-> +		if (pre_hvo)
-> 			folio_set_hugetlb_vmemmap_optimized(folio);
-> 		section_set_compound_order_range(pfn, =
-folio_nr_pages(folio), 0);
->=20
-> --=20
-> 2.56.0.rc1.315.gc6ed9934b7-goog
->=20
+>  config ARCH_SUPPORTS_CRASH_DUMP
+>  	def_bool y
 
+[Severity: High]
+Does enabling KEXEC_HANDOVER here hit BUG_ON(!kernel_map.va_pa_offset) in
+linear_mapping_pa_to_va() during early boot on UEFI systems with
+CONFIG_DEBUG_VIRTUAL=3Dy?
+
+In setup_arch(), parse_dtb() populates kho_in.fdt_phys, and then
+efi_init() runs before paging_init():
+
+arch/riscv/kernel/setup.c:setup_arch() {
+    ...
+	parse_dtb();
+    ...
+	efi_init();
+	paging_init();
+    ...
+}
+
+efi_init() -> reserve_regions() -> is_kho_boot() -> kho_get_fdt() calls
+phys_to_virt(kho_in.fdt_phys), which translates to __va() ->
+linear_mapping_pa_to_va().  On 64-bit RISC-V, kernel_map.va_pa_offset is
+still 0 at that point because it is not initialized until paging_init() ->
+setup_bootmem().
+
+[Severity: Medium]
+Can kho_reserve_bootmem() fail on 64-bit RISC-V systems where DRAM starts
+at or above 4 GiB?
+
+RISC-V does not define ARCH_LOW_ADDRESS_LIMIT, so it defaults to
+0xffffffffUL in include/linux/memblock.h.  When all DRAM starts at or
+above 4 GiB, bootmem_size_update() sets bootmem_size_lowmem to 0, and
+kho_reserve_bootmem() unconditionally calls memblock_phys_alloc_range()
+below ARCH_LOW_ADDRESS_LIMIT:
+
+kernel/liveupdate/kexec_handover.c:kho_reserve_bootmem() {
+    ...
+	size =3D bootmem_size_lowmem;
+	addr =3D memblock_phys_alloc_range(size, BOOTMEM_ALIGNMENT_BYTES, 0,
+					 ARCH_LOW_ADDRESS_LIMIT);
+	if (!addr) {
+		pr_err("Failed to reserve lowmem bootmem\n");
+		goto err_free_bootmem_desc;
+	}
+    ...
+}
+
+Because no memory exists below 4 GiB, the allocation returns 0 and aborts
+KHO initialization.  Conversely, when all DRAM lies below 4 GiB,
+bootmem_size_global is 0 and kho_reserve_bootmem() records a 0-byte entry
+in kho_bootmem[], which causes kho_walk_bootmem() to build an inverted
+struct resource with end =3D start - 1.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106071459.2003=
+-1-cp0613@linux.alibaba.com?part=3D2
 
