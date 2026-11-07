@@ -1,100 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD57606A32F
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:33:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2A1606A32F
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KG/smLcC
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ftQfmrgX
 Received: by kanga.kvack.org (Postfix)
-	id 81E0B6B05B8; Sat,  7 Nov 2026 14:33:27 -0500 (EST)
+	id D48346B05BA; Sat,  7 Nov 2026 14:33:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C8106B05B9; Sat,  7 Nov 2026 14:33:27 -0500 (EST)
+	id D20046B05BB; Sat,  7 Nov 2026 14:33:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DEC96B05BA; Sat,  7 Nov 2026 14:33:27 -0500 (EST)
+	id C34AB6B05BC; Sat,  7 Nov 2026 14:33:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E36D56B05B8
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:33:26 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id BAA6C1403BB
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:33:25 +0000 (UTC)
-X-FDA: 85409321970.24.B51D7B0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 1D6D640003
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:33:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KG/smLcC";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9B6C76B05BA
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:33:32 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D712A7F8E
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:33:32 +0000 (UTC)
+X-FDA: 85409322264.10.082ABFA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 65A16180003
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:33:30 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ftQfmrgX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794080004;
+	s=arc-20220608; t=1794080010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aUxj1eB/EyE2xuv+24/5uGP9CxShlT7sfivuJJSfDgY=;
-	b=RsWh5iOja4SLFGk1QR5XBnI/tR61rvpIpRkcwL2/mqjMYZEscraunkZTj15d816DvJ3wS6
-	xa6kQvW2mtF9xZF36y58gNhAVjqMBpvJds1lsbWT0LA9vCAfA3irC2wCzSy0v36xuFLXon
-	cPtplYtsoP0U6y9YLASkQUo8QxZt2VA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794080004;
-	b=zVaAfxmVH74KQn6G+3cDMVZfmgeEphq132csa/3iVJWoa/X4ZHpJsHb8bJpEQQVmA4MQvB
-	hXh4YpT8hGa9LSZynW71jMIesoOIVsYXiY17UvDghPUrL629ZUU1PPi4mUkoz0qQuWVk1f
-	kNqY6e2v09loSDJ7V3PFCP+vu+/XoR8=
+	bh=bdEnRhaq9naN/jfM+EgRhagkLAGd6elDVRBsfzO9N9c=;
+	b=pfCDBVYGYbUW0PO25q7P3/yLxGn+WHmOg2sNcoHBPShgkForcYL+P1SUxhPjfzYPIDgAeX
+	sXdDtpNPd1/zd5xusHbYSjv5WQ7OCQVQY0ardZ7p0b31/C/X3dfKM0+r1abQKYo2arWbbd
+	3uf9r6q/mpIXCL/nSgCOopmXtxtUiXo=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KG/smLcC";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ftQfmrgX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794080010;
+	b=Sm+d+8N6XHrrV31lfBtpYBLWy4x6V7m4+wL17FPSpztLLVEOuXKsEGL0FQpKgxvvvQyKe+
+	z4dpuiK9uwvR0NF2rckyo0MHobT2i/lioytTFaqNLEZPxSq7w2B8G82R9jpYB/STLTGNW3
+	mMF4sZAb013djADycBX7WtN9Hj4dahg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 332176111B;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9F4EE40126;
+	Sat,  7 Nov 2026 19:33:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C431F0089F;
 	Sat,  7 Nov 2026 19:33:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A691F0089F;
-	Sat,  7 Nov 2026 19:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794080002;
-	bh=aUxj1eB/EyE2xuv+24/5uGP9CxShlT7sfivuJJSfDgY=;
+	s=k20260515; t=1794080009;
+	bh=bdEnRhaq9naN/jfM+EgRhagkLAGd6elDVRBsfzO9N9c=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=KG/smLcCXGWOMAnnLNh8eHoPYGqC+IC2/UbAcIvjDWbG04Rqzmu46mOn1zJJJITkk
-	 fkaF1+q3DDz7vxdCQIH2nTmEj6QuRwsurtADWxrhtp9ubrZJreAa3wE2rs0cuieDW8
-	 KDQnhF2pPPrsmkmFEZqGJ1wubxJ9q9gySUKVoSpbLnbMrhLDIySYqA3SQP/PUkI99P
-	 z19RI2+L8N5+HXj+Ot49b6ln6loj6qHJC6YpmzVLXGZ5HaMlK3QfR6yoiVGpIJUjed
-	 i8/GQ4diTppsbv0VVh4QRG2q78RGw8vJZHWNdiFcTd3nGGt829JjzbvASidUdOH3jZ
-	 4MyoTSwlRuYTw==
+	b=ftQfmrgX0PTL6OyPr21ItVBP7iEotgJoBBodKYZzA9N+WTPgVMGgNEt7hRvo8RcW6
+	 aQ0PevE5CQFQNDEijOMftez1rUxlx71Q/4QI+2JjPZsru6Ascqo0HoBhrHkQjeoWn6
+	 tSejtejf+yz41ID74q+dJDLcq7PwtP0rNph9cqRo8zVJ/ANC37AuElytIy7b1KOj8l
+	 3u1PF4itd0zJ2DU0wEzj3v3dRa9voEvSE0mamgbMPpilnqGMl1YFM3pCr/8AhoBwVE
+	 60Fu6EBLAlsHK9iOoTf97nGo532cXVaNYsgqrJXZ+Md/QzdrUuMOU0CTtmEp+pGXal
+	 uxFoWTxTMFGig==
 From: David Hildenbrand <david@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- Hugh Dickins <hughd@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
  Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
  Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
  Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
- Kiryl Shutsemau <kas@kernel.org>, Zach O'Keefe <zokeefe@google.com>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
+ Kiryl Shutsemau <kas@kernel.org>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, 
+ Johannes Weiner <hannes@cmpxchg.org>, Ye Liu <ye.liu@linux.dev>, 
+ Zi Yan <ziy@nvidia.com>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-In-Reply-To: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
-References: <20261105-set_huge_pmd_uptodate-v1-1-a78d8a1b7117@kernel.org>
-Subject: Re: [PATCH] mm/khugepaged: don't map folios that are not uptodate
- in MADV_COLLAPSE
-Message-Id: <179407999817.4465.376927481020440241.b4-ty@b4>
-Date: Sat, 07 Nov 2026 20:33:18 +0100
+ stable@vger.kernel.org
+In-Reply-To: <20261106-fix-split_folio_to_order-race-v2-1-1b59c67b8af3@nvidia.com>
+References: <20261106-fix-split_folio_to_order-race-v2-1-1b59c67b8af3@nvidia.com>
+Subject: Re: [PATCH v2] mm/huge_memory: prevent losing PG_waiters in
+ __split_folio_to_order()
+Message-Id: <179408000316.4465.8734683078485520816.b4-ty@b4>
+Date: Sat, 07 Nov 2026 20:33:23 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
+X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 65A16180003
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: ux3ajptg8anuynrosw7ffmcdeuaojqz6
-X-Rspamd-Queue-Id: 1D6D640003
-X-Rspam-User: 
-X-HE-Tag: 1794080003-192745
-X-HE-Meta: U2FsdGVkX1+LuaZoWAGfQCiOdWGlRmq6MkkYCjyA9T5tPNgb6CcprRaPPDN58Tpy4amK9YFD/hxtAX3YE7Yc9k/zyb5BZe0DJZvCRVj64uXl5Djl8sisCU9uB83B/vfooTFr0seqgBwXTaasy7y5SlknIpsww0NpH5R57burcB4tBYJDR2fqLpB3MCiyQwuvByburQpt5V/dUSHhHZsYw0zBNqdP97DxxzzQF06COPwvbH88PsqbleuG3il5gFwNnwMb/UdCQfCbWCJ6osiwMLBtnioxVGc5H/7cjB+XzYzOi26M+EKZPb6ZGflH9clnJkRdUy1Pi5NsYX6mZ8C9BFwkbov+0KZYg2Nlo9DZd5gtXrO4yJ91lzuojgxShDY/HVHjNmJYsmNHf14nP/RZRstMdvwMmieUsVFmlpCe8thSHHQ7J3zS06q5lsp/lYZb1qyPgf1oGZ/jESmoUKHiRpi6Mn0D8WI6GmWflMkxd9LUKMtasJc94j1RVvLJNELD+jQFzw0gvajY0Ke+SHJzDti/ZS5f7aIgBs45YGG1Zatiy6rtJuXvTjGO4z3Cls4iQdb9lLPffDRtzNdFnYHipuqah94h9YQWNJp3fOp5W2pOvZMORdWpKdnol36dpDYSilzvqokl7kuy3Z/wQiBK9zV/bznVb5s5bG1VNPfjzt6n4WoHMH21tuKFJORcY6GMeLdSf+ejwxNWQ1yZuQuNkI3EyTROlPHVzkwqXl41BIjdm3DWEHwW7Nl11WYzZE+I6beZBTjxf18XRADnKEo4dgyjRE7uN9jCOtX/TdlGhdYhGUEaA8ObDx6mgwInVkVb1Xg/LSOPLp0bMKNCbgmcCpVwbNt2eILIcU7TWcKSNLVL70GLC1wplcUF4+l2+BXjbxj5ZRgTpd+r2LvqxKqjwBT+Nk4lhHuS53bAramkqlavtrMIRJVKrkbA7N3L1kWpeW0APTSkm/pR4ZwJEOJ
- d78Joz2s
- Gkn4PG0prXLplQR4kJFIVQgsHSQvDSERT+m7E2CPdqSZqKvO7bLmPc7w2cognS2NGYnhAEx0InHchc32Pl7ddLMxo5u5Hl4zP4NClTDgUPqnmRuZnhwpPu/urSZZbH5MeNqhRRiUUBwCxJD25mz0tCIlmrwhU8VsGaLL9EfB5m6UkJgqv9LAaEtbyf7sLBs/l5pIeWkDK8AwD89uMdgucsrin2necI4x9WLWH++HzijvvS0ZruRXZpq4C1xwCB4+hJQJihEOb+f302z9lxpTD7N5MDOYJMAfwxtT/
+X-Stat-Signature: ggcaw6rtuitq7ohjeckob3up5wfhxuto
+X-HE-Tag: 1794080010-594513
+X-HE-Meta: U2FsdGVkX1/6Fu+EdFEJ72oRUN7EzIozdY72O4X4TDm6LTmhGlI7ix8Al6vv3tlNFaUJ8UB8q0txd7cWxRIuA4jCDy3W2NLQhiWQHAaQ4SdXCe0wZ7X6NBrMoaq9ZuHTknorSStkVVbYmIFIz7WKzWtpAqml4liobiFtAE4vuN/vVcpo+tNynr5lAAdHtZNMCHjsHNKo4sSuBKpO993oLFDLp0XnBOqRkH8Haq0QGgjOLTC2r+GXjeLjw5G0INrHwYCcOlpxZB7hxc5o8sIqkFnnua6gaPbxTvU5e1UAZGrW4NxmpDbX9mRxPx1T09/TOYOTB71hSCzo0vrlvN6mTXajvawohgRwPEwfhVh2b/vE6XCRQ2fXunv5RHCUYAd3F6aasQbs9LUYZc0SuE3wJrvjCdWTxL+H/xD8nYTExpRmJOUGJuCvEPz/PbeztmFVWryBs9LreBw+GUxjfGwQs+16Q872W1vxbdexJPH8SxKJbwc/mi6m0MSDambopOY/ibVY7dStFlchSG0nwuUOoXZ9029EVgraUgpJRkkgcAvuDdtDA5Il4lpCScHM/s+yq3i7hC6NvXb9mr2u48ZDvRVpKoNvbOV2L3Q9bovkofWFEWqStT3/krt/rkIVCZMJ1JgGtaCaJZcHoep66RwQ9bFzd4ZPYqjrP5aTPyFz1yzTdLVUwmqPxeqzlhutSR4T6L+5LRx9phqVymGRlEetqibNlRoZQXqNNV4106iYq0YvXdDr1XMywI9Wiz1+qfZAmJdlvNfV9K/cWCkGT6rN9zDRMcZlROKGeAdCvYVGuPP6MwWCpxnYMFv3+1B3cVwJU44A+n5wvpCgSAKkwiXQT65BgS1b5aGlH99bsZt5l9nGNsomUR2oxkqUdH+AcKaQyLBRJzDYH+Xk9DqS6i4puOw4pom0w/OqiebHpPBeTENUyH6h+m/eHAUUPSxZma1u/9pXUc7OPatwbBhqoqG
+ LjJS52jK
+ pesO8ZvOVBVwDVfxTF4kYNQYeH8AlfQw5ChFw5nbrJyCt4RXHbHANWjE/g8BaIin/Ps66uD/HFR02+U2srQyJmqXidcSQxlAcL/U3y8e0QkG7hwpudE2QUe8Plt8MNfhBkGVtYyqA8MEgwzQXFIh/PvYzXRmBZPAYer5zRS1Ph0X2Fd/bbH2rZ69CPp4neNl+UT7T02SoVdu2GIzcnTKGWAxZ0yO9Uds8z8Hye1RTPXDt61eKN2SWMIQymN+zdXXka/LYm+A6lmI4cffVviAt+M4J3xVzbCFZs496
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,14 +107,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 05 Nov 2026 19:16:44 +0100, David Hildenbrand (Arm) wrote:
-> madvise(MADV_COLLAPSE) can map PMD-sized pagecache folios that are not
-> uptodate. For example, shmem fallocate() can put such folios into the
-> page cache.
+On Fri, 06 Nov 2026 13:28:46 -0500, Zi Yan wrote:
+> __split_folio_to_order() calls prep_compound_page() on each new head page
+> to create a compound page after clear_compound_head(). prep_compound_page()
+> uses non atomic __SetPageHead(). It is mostly OK, since the folio is locked
+> and frozen and no one else is supposed to modify the folio's flags.
 > 
-> collapse_file() already refuses to proceed with folios that are not
-> uptodate. Let's just do the same in try_collapse_pte_mapped_thp() and skip
-> such folios, leaving handling to the page faults.
+> However, code calling migration_entry_wait() can reach the folio by PFN,
+> then access its flags. It is because softleaf_entry_wait_on_locked() used
+> by migration_entry_wait() sets PG_waiters concurrently without taking a
+> reference and the frozen refcount during split cannot block it. Meanwhile,
+> __SetPageHead() does a plain read and write, so PG_waiters atomically set
+> by softleaf_entry_wait_on_locked() will be lost if the set happens after
+> __SetPageHead()'s read and before its write.
 > 
 > [...]
 
@@ -132,8 +141,8 @@ Note that commit hashes shown below are subject to change due to rebase,
 trailer updates or similar. Further, this is not a guarantee that the
 patches will go upstream. If in doubt, please check the listed branch.
 
-[1/1] mm/khugepaged: don't map folios that are not uptodate in MADV_COLLAPSE
-      https://git.kernel.org/mm/core/c/043a2260
+[1/1] mm/huge_memory: prevent losing PG_waiters in __split_folio_to_order()
+      https://git.kernel.org/mm/core/c/654fdaf4
 
 -- 
 Cheers,
