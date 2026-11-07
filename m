@@ -1,104 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE73606A81F
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C218606A829
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LN9e0/At
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PpFvUw8I
 Received: by kanga.kvack.org (Postfix)
-	id 872696B05E3; Fri,  6 Nov 2026 19:37:16 -0500 (EST)
+	id A6CB66B05E4; Fri,  6 Nov 2026 19:37:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8229B6B05E6; Fri,  6 Nov 2026 19:37:16 -0500 (EST)
+	id A445B6B05E7; Fri,  6 Nov 2026 19:37:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BEDF6B05E2; Fri,  6 Nov 2026 19:37:16 -0500 (EST)
+	id 86ED96B05E5; Fri,  6 Nov 2026 19:37:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 39D106B05E2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 531346B05E3
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:16 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D154E160210
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E40D114016A
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:15 +0000 (UTC)
-X-FDA: 85406458830.22.6C40C26
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id B979D40005
+X-FDA: 85406458830.07.3D157B9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id DB6301A000D
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:13 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LN9e0/At";
-	spf=pass (imf11.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PpFvUw8I;
+	spf=pass (imf19.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794011833;
+	s=arc-20220608; t=1794011834;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7u/xUqUjSpG1uHVLTmzq+uP5uQjAYFobNAgMRyNfitg=;
-	b=Ip5JeNCejIWMlLazhug0HVlLifLrqHwRGVWdGc31+W7E3R2Qe6gvgTKs+wWR1Lxx6qHf7c
-	DUGkws8/2mt3KLwE4Ug5Hp2/gWQJk2SLigkD8RR6HoUGfT2lxxFz7lCQd/ZAdW9JiQ1xlc
-	bm+2foHKeoPEYToaMQBflsj2GTmI5c4=
+	bh=TmrtUeRqg7PNOFUzBw0KGjO6eayo5TE17ZzIRnG1rFg=;
+	b=hpqpfHM08vDlaAKHQhizWXR6gKkQjaszAaDUc3ilPQf/V45IWpN/CpYjK5IZ7IJcjHkXJY
+	CsjNLySma8QTfZcwc6rOMFnUNZWWEzA7qsUzpH76B0IrZ+6YFU1qJGOk2brVMgAGFEGCiE
+	6kzBmawXdLoasN+/o980l521MC04lVc=
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794011833;
-	b=fwnabuzAYjHGsYtkBptkZnj2abxg5JcTfHkWzdb6VmyAgkSAv76tVDlfIVtHFZ/QSXWj1d
-	IEbwt59QLbP59YqK3IyykOhffv7ZThc2kpe6tkgoc8d0h8dJ6/BMhlsRkx9fjVbVXC9Rv0
-	OM0TkJOlhd1LXeEt0/yzCNxEYDlvtgw=
+	t=1794011834;
+	b=S9HXzeJyxeBgMfRQH3LnoBZr0z3c8MnEGFsDwxRrVFTwsvvLfVstv0cV+HltD4AY+rQ3IC
+	rlQWT/Ckdut244BrwoBfvDpBcmtjP3XhFiBnWgwVS30xyAx8YfFQTmlpd/duGD1xaab1l8
+	pTiuzjSWhwWQjd44QXMlkW0jFoJ07CQ=
 ARC-Authentication-Results: i=2;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LN9e0/At";
-	spf=pass (imf11.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PpFvUw8I;
+	spf=pass (imf19.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1");
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8CCE84017F;
+	by tor.source.kernel.org (Postfix) with ESMTP id 73A2F60D09;
 	Sat,  7 Nov 2026 00:37:13 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
 	t=1794011833;
-	b=KQ7Pa95P+RuYFA3R/MlXuUG5Q5TMXlvSi9HyCZkGFDaxYMVDSfsOYo7+p4BCGzsxML/z
-	 riiu48h7oL/qriWC3kOxA8VRK8/AN00iLh0k02dOF3mUUTTV3DqYF1ojctF+CAqgjGSiI
-	 8RcoHXeDtY2QP733RJ7p+3xtgcBj6VHeI+TC85O9uk0H0O4/86RgKjnvdm7/jV+teUTmQ
-	 vxJ+ACCT8gBSAq5+sxgVdMtnKgsQ/vQ1/RomkQXt5/1HIWyCjoxOZ2hsXjuhgDhYbkiMt
-	 OU4y6YAvDksK4gGJx/yDOiiRzTX7VkITKUBx2Fnzg7MNnB54hka/P+PsNAMJnW3rLNg==
+	b=pmBs4c4npqjzKE6M1rBYxQU9MJpNGg+HZ48YxljZxWO0ZU+xJT7J05zcxDRNK3pE3pAF
+	 gO3KmkMYi+JmCF/b2FjFx2Y34vA/wdUDurBZJx95SHLaAel4HV7MMfxAPaNYXVSEjUiY/
+	 TSbpp/Iz+j+Z+d3KXRIrmXMMEYqz0m0p59st4LzBOrbj0XlNCcrq04voYrQLtjC5eolVH
+	 30WPulrhDX2h+c2xTLopF8TAzvHiPpQKYdVEWMP03ZhLhr5cU1bCg03b4+VIAvvqAQyuC
+	 SNstjoxfldPs22KFnA9moiVBDKyGq9UZHEvMjEWVLo5OXvkjALskkR57u7jQTOHuQEQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
 	c=relaxed/relaxed; t=1794011833;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Message-Id:References:In-Reply-To:To:Cc:X-Mailer:
 	 X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To:Content-Transfer-Encoding;
-	bh=7u/xUqUjSpG1uHVLTmzq+uP5uQjAYFobNAgMRyNfitg=;
-	b=Anb/xznNcUqNJlEFcqOxyVh6fJ37SopfHjjqNViv1hlh3sFLz67CBkEIIOxow9ni5ra1
-	 7HOapqsPqrJ+WoHjm7uRrVxGHDgiMkVELPjwPMvzjUIujDkT8q310BwaAa9A9okRonEj4
-	 gZPNFmEO1N0dQMC4EddH1ZtKkpV/0AobthOKFXl6Hn+atVlz5NW6kJBsRByIzu00vvuQY
-	 HzS8IPea+WAKEKzZezOmOTZW9BTROhhhO8IY4sDDArVGic1wHB1FNn4GaNQ38hnuC4YK/
-	 6YajYahUOl5TxQAGEEneiOkPAbfaJm4D0Eidmj+nZA5CM6xJKLQthtj2wkF2lb7UtYQ==
+	bh=TmrtUeRqg7PNOFUzBw0KGjO6eayo5TE17ZzIRnG1rFg=;
+	b=ojY1UX8j8Fan7G2I0aO9foYknP17k+NMntmMCiNldQIIRjpPVxf2Zq7ZQfwnwDHpPCjd
+	 G1Y34YuTn4KyW+UI+tMFI11iZbiwfjqQ1qn6cjX8FWOoZ8k2T3TdVBmQBpM0Sa8bKDq/B
+	 J27fal414xBhp7xnGXHe8iiBM3n7l37Azwh3fJ4lOBq0DeS3IzWIpjIZZWNFoEGqoBmeU
+	 iYez0rbSAJM76Ba/YPGRJZm/UETyfrV3Af3wIxC7eq9xXFE4nQJIDYlFbn4+mmcLCc4Uk
+	 wc+kmMn5I1CJY8ZaCEYHZdCASNNWynCLaUx82k3gmhH1erXGX0oFX8RGX4h1Ub29AlA==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 7815C1F008AB;
-	Sat,  7 Nov 2026 00:37:09 +0000 (UTC)
+	by smtp.kernel.org (Postfix) with ESMTPS id 04F2E1F008A1;
+	Sat,  7 Nov 2026 00:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794011833;
-	bh=7u/xUqUjSpG1uHVLTmzq+uP5uQjAYFobNAgMRyNfitg=;
+	bh=TmrtUeRqg7PNOFUzBw0KGjO6eayo5TE17ZzIRnG1rFg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=LN9e0/AtB7Izb4lqha7xs8FLfETDMlx/1nrJ7pTkRXq1u+n8796yPJra24YFlq+3H
-	 vrD7PybLJjSPbpQe6+n+3qysUlG3Nbyu3iiLWC3574iW++Py0jeswshs5HwfBlr9Mt
-	 ZFmSxAh08jHjFZdem3eUeZqMPPCD/WKCqS1BaF9JoFUFROVo+W3zuvfEMJ+3D8XVE8
-	 dTpxXj/WlrnsY85LycQuNwE2nhfatfyBC7tsPuLkcf2kEW0LKF7EhOU2G3XGR+97y0
-	 VtsTIXhNAJKkbpvtW9DvrHZLicPC3uCO7bjMIi3z90JwTGcs41DlnehxcTJFfYYcXf
-	 m9KoJ1oheNBMA==
+	b=PpFvUw8Ij2hlXN/rTJjtjG5HETyrJIxnsjAgb1z50jOmZ7IMyxVnv/CFZIUldh4+d
+	 viGZpBtJRsvrQlIh9hdZxXcnIZRbf24fOtGY7Ixi7hHiPoV+UYGqZDthmb75yPM2Vr
+	 b3cN/Qo6H54aLQDSF+6+lO3aZwHEozxGcQgGPcExNF6N6yRDRBxL+CQYSYmD0QvYA8
+	 e7l+CnG0z0hYqZjdT3kYTTzH/ovTKUfcz76aYVmDDMFGZ2v3isF0jl2txCpAAC4y0a
+	 8QlZ3+6GkmH0SdQWpUdFV+cDxqJQt1ufPJP3Od0iFUKgXgblSypma+5U0LIxNGnti9
+	 agBYxqDCtRJlg==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id A5F77479E9;
-	Sat,  7 Nov 2026 00:36:56 +0000 (UTC)
+	by lkml.kernel.org (Postfix) with ESMTP id C59D24797F;
+	Sat,  7 Nov 2026 00:36:54 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:37:29 -0800
-Subject: [PATCH RFC v3 55/88] vfio: Track device file access mode with an
- enum
+Date: Fri, 06 Nov 2026 16:37:01 -0800
+Subject: [PATCH RFC v3 27/88] KVM: selftests: Test marking page ranges
+ read-only
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <20261106-gmem-alternative-providers-v3-55-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-27-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -119,11 +119,11 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011810; l=5176;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=3249;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=OPzfI8FY9YTnY7U//Qo2HO1R07AW0TxEMrDt75CQipU=;
- b=yxGBfLn330m/QlZKxV56D9+INpmu/vb92BX3fIJN1BHK07X4RoQNHQmNHqFgxcPEyc9f3OrFI
- TITTtiAfEvkBiWVgqH/0/MljlVFSh1dt4fWyaeiRAMfq00Gn4JmxuQ3
+ bh=XtGmSBvwOq6lpm/Qp7pMrqoe2YFfpDhrMdOnKzGerIY=;
+ b=RXpFZ/blAE/3OlyVi7XMW2Xei66nvIUzHHFOSfE75D2vfh85PBi5IfkkJ+1wpMS4aYJ6CUKUq
+ 34KHhBOxIVrCRV7i1xAF5/fCYc/JXC3BQwLYdYffAjRGjZyv6UyUMx4
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -131,18 +131,18 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 19mhgu7uqyp31n4ckf3h17nji79rdk11
-X-Rspamd-Queue-Id: B979D40005
+X-Stat-Signature: asmf7hxrw4ye4cd6qfwpw6cc5rbm66em
+X-Rspamd-Queue-Id: DB6301A000D
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794011833-598358
-X-HE-Meta: U2FsdGVkX1932I7dBHyZzduYEM00UsGirbCBtbzJJD7S2zkgZ29SnRQTnEs2dOzeNS1h+6dNaWvEJBssS36id/uz58XUq4F8YTE5ckTpwhoziVj8WDn3V4QZ745tTmQPE6V8uiG63/8uWojRDtsMUdpxMnv9H8WdhkGv8k8AyWfndFj1Ea/Y/q8XmbxxdwJGZ/gW4mtIJ+eLqOudF6Tf30z2q5QVqFFXWslD/mW1iAPmWtr0VA/CLkS3+1VRGEZ9+apR9UKj2ZCAWsAb/CQoKxrJb2jChTcJ1DfM9SRNmFUSs0QRLyNL2hMDYW2N9dlcQxWxzpLWjsnY5QxTdgNj2bl2h02ALS7/ogWFuR+NAoCe2wLy8/q+IjA/uxbkILJsaJx1G+KF/ClQcBgykmpVClQG5xNmbKYkmDTyx7G80KgB6foUWL5LKF/C8UPBZnct9iWN49YzyLkHhVaNWwCy62gT42rXx66i1JH0BJTd/Nk9lvAXuNnXLQg/IuJGGDuEHMXboxViD8R/ljv3nrhC1XOTb5rUCWMJiUOkEU6Wl+3GjhKds8/ieqKycvhRJIOmv7Q8sCW+dVUg2OgghrbExsEVcc1s6ucUiZixLMj63rUs4FE6f6/DFQeHnxL4F3quqIrniW7zbBZPAKQbERqqw5nLZWMsCG8sP9qrI3xgCj5PKLh4RZX5hRKcE+YC5tz5DL34jp360cQIhNvB4n/StSxeIHzO6McssxqwN7iXkuHlPwc8QSt19fgixhOAZ9T6cJTqP03Bctm7kNeOPG4CFIPUrkaRRd1jYalfedgP3qfZdxlXBYVUcxem3/mALBQBFDE5fHR9CrDeIf8gLscrGSCBS7G8NoYCWDTDfvAClVCCVPD5bJszqlHKD2lZSgmZo8yOw85R0uc8xkEhmMyNnz2qB6epGkdCx22QodxUJDr0FqUCh1MXq4O8i2XAoP8EMnZ1qYFqJNVoApAwynv
- KGtHElV2
- MFVRDv8HDN699lGK+SuUU6SiihjJYzccOrqLnmAIrQl3E1vqsG/kJuJFY7Ciy/r/O4tydethdHBuW3d6nMxuoKn8b682T4N262ny7SJ2wJ2EYrz5l5NweK2NGLVaTbyFn1/xFt4X3A3S/Ac5nQt1bzQbY22s4e2f/2qjr6KqRZnqr9Z+VHt2WJvKKG4Xmw6OpY2IdItasprzPbUZmf8FGLO+Mujw5vzbX3oRifsilNaIxXClxrWcOQqRYgD5PTAK+/uIx6cg4Cz9XO2EZRnDuH/zWUNSkpZU8FbPzaWYgU/niIscqqSKILDP4VLuPqAW/pJEWoqI7XKz1T3KGHL1Rv3v6JkWQnBCNuNbCRJ0WaQ+GHlxP2RFLmRHaXCsI/0PBuGJOKu6upG8pzYm7dB1Aj5kxoMISakan6Of9fuy19KpQduMUEQPlm/XVVK172kjr/k4/x7/cCM/IzIQXhgWDITajawTEoNA7tr2bMfRUpUvjqP8JZx4HfxZZpoUCd9ISKnpE+GxlhYV73H1QU+gclLI2Wf+x88ODjgNFArMocy1pkJGAcA1OU+FzlA==
+X-HE-Tag: 1794011833-389536
+X-HE-Meta: U2FsdGVkX1+bbc5OvwJUJLjOGenvu+scEbLjpYH4ls8fqbkff7edlviQuL92j8BzUp+Zu5mXyHNjaB/D9aEz7DC8TxuBrI3Jc8fjAme9uTAurXOYclP28O/Isl4KdLDbhnBzgurJXbkqwoc5DBFpDqHUHjLXTNxR7jEAxfuG2//yQkdNeiUVg/UDAPAnjFyu+EIXEI/EtZsVKzBGODmrE6K5LISTh5Y1n+miYvwbup9N94ALbNIpcS7TEfJmjWuiaqY/kvfpi/dw6nkvD9Sa/Slv8Yn0yBG8u79BbpqaEGOOrV/Y40jrYwzPi16fdjx0+RoVY9Uj9uVD/fdADQipyajj5FQ9Qd2aqh1+Yruy3SvikWQSTlmAVRXL1CbcvyUCkwgzIXRWLb7lCYu051i72zGaLBQlizFG287BIszR4z9dvUugqQZUTdmnPqfAmClieBuTtJG2onj4iKpMxiqTNuVn3lM6JjfAg3ezZLnOP6OZZvFBms0lwq/xKyhM5D60unJBDbxNimTPPf07pvw+DJlgc3gS8ydDvcW4bt9v+LUUOaE7Rw0nPgiqCIBjoggtemrtW2zqm/rrJ8llRdyusaKRy800CCl9BhQkVgo1LxG5PS1cSZ/x7ErxTZMxtEak7dTEiGu7WUGg/gyvfPf8KJ0ZY2l0ggM8jptkV2BXxq9EJNYsoy+2zJbrj63PJ5SM0A6lVS1hgbdmPZEFW0jAkSVBadTRmLFb6D+bqVRkY1O5ithG8oKcGp0R5Y/8k5A15dMIlAMjlkDUYxKpht4xXNBPDswCM65+7V/nluwqfY7VMqTGMbPlM6p1gHFxdFwPE9vfi1QofZklwtTChnz7qX6i9ZPFAxnKrztkJ9I+ijc32rRLZD4WP2gMjaGtbYKYNXyRz/Ra0zlEuqaAKWwq2Qaolxc7wUWVDd/RLUBU7p94gcuokb17+ZpBftUuzjhZ0I9nppTc2u6TbYisOAF
+ JDbkF/q4
+ ANG52PtF+fjOJku017iRC5c1BfsHmbDQb/FlA3Ev0v9oTDAleyPa5XPq4tVUmQ16q/kh9v2gcg15KMl1hzF/LlieN/Sznd7HppnLcjriFCcPsGfEQ0Be3MPW6tDzTCWvZNlTVTtsa3M4KB+ElWC4HjpCSA+3PqN8YWnu/Qk1SSELdclCjbZI1//I6OhbEOkESfKkznOcVzEnkTLwqVsQ+1Y6+GCBjFKXzC41k/H1ZZU+thNWpjdEmvnnLk22LWbSJ0S2o12NUbKCwqhEOKA3MEnG8hpaEL2WHOt7404hr9mN8vmPm8M56YjODeUSjpAJLrRrShxXY/olOn2hpNtd+pb3cDkaBXn+AH5TdE872jUW/5TZV5RjmwFlSjdNmzDD922au1DFuIUKvC7j5Z+4ssqT4XyIYoHX3shoxN56HQTxKeP2sGhXw6cQrZFUjLUkVFGhDkeWH8fYKcz7WcsEJgv20gW9dSd2tkU6UGNzr6KSjMAGU2+GTM6UF5pZlFmXvEylinFERR+LJZvwzpXNyJd5emfbpC7nCXBrLLVPJ+XKIcuScUrQtD4gaRg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,139 +153,100 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Device file operations currently track whether access has been granted
-using a boolean flag, assuming that binding a device always unlocks both
-control-plane operations and direct region access simultaneously.
+Test dynamically marking page ranges read-only and writable via the
+sample memory provider interface.
 
-Upcoming support for control-only device bindings requires distinguishing
-unbound descriptors from descriptors bound with restricted vs. full
-access, without introducing multiple flags that could get out of sync or
-represent invalid combinations under lockless release-acquire ordering.
-
-Replace the boolean flag with an enum representing the access mode so
-that the entire access state continues to be published and read as a
-single release-acquire value.
-
-No functional change intended.
+Verify changing page write permissions and ensure that read-only page
+counts in statistics reflect each change accurately.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- drivers/vfio/device_cdev.c | 8 ++++----
- drivers/vfio/group.c       | 2 +-
- drivers/vfio/vfio.h        | 7 ++++++-
- drivers/vfio/vfio_main.c   | 8 ++++----
- 4 files changed, 15 insertions(+), 10 deletions(-)
+ .../selftests/kvm/mem_provider_sample_test.c       | 65 ++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
-diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
-index c1c26d7a9aec9..19be3947fc74a 100644
---- a/drivers/vfio/device_cdev.c
-+++ b/drivers/vfio/device_cdev.c
-@@ -125,7 +125,7 @@ long vfio_df_ioctl_bind_iommufd(struct vfio_device_file *df,
+diff --git a/tools/testing/selftests/kvm/mem_provider_sample_test.c b/tools/testing/selftests/kvm/mem_provider_sample_test.c
+index 8fe634b0b4f2e..942c0519836de 100644
+--- a/tools/testing/selftests/kvm/mem_provider_sample_test.c
++++ b/tools/testing/selftests/kvm/mem_provider_sample_test.c
+@@ -136,6 +136,70 @@ static void test_set_present(int dev_fd)
+ 	close(fd);
+ }
  
- 	mutex_lock(&device->dev_set->lock);
- 	/* one device cannot be bound twice */
--	if (df->access_granted) {
-+	if (df->access_mode != VFIO_DF_ACCESS_NONE) {
- 		ret = -EINVAL;
- 		goto out_unlock;
- 	}
-@@ -163,7 +163,7 @@ long vfio_df_ioctl_bind_iommufd(struct vfio_device_file *df,
- 	 * Paired with smp_load_acquire() in vfio_device_fops::ioctl/
- 	 * read/write/mmap
- 	 */
--	smp_store_release(&df->access_granted, true);
-+	smp_store_release(&df->access_mode, VFIO_DF_ACCESS_FULL);
- 	mutex_unlock(&device->dev_set->lock);
- 	return 0;
- 
-@@ -185,10 +185,10 @@ void vfio_df_unbind_iommufd(struct vfio_device_file *df)
- 
- 	/*
- 	 * In the time of close, there is no contention with another one
--	 * changing this flag.  So read df->access_granted without lock
-+	 * changing this mode.  So read df->access_mode without lock
- 	 * and no smp_load_acquire() is ok.
- 	 */
--	if (!df->access_granted)
-+	if (df->access_mode == VFIO_DF_ACCESS_NONE)
- 		return;
- 
- 	mutex_lock(&device->dev_set->lock);
-diff --git a/drivers/vfio/group.c b/drivers/vfio/group.c
-index 185f359f75d38..0a33e0e025bd8 100644
---- a/drivers/vfio/group.c
-+++ b/drivers/vfio/group.c
-@@ -217,7 +217,7 @@ static int vfio_df_group_open(struct vfio_device_file *df)
- 	 * Paired with smp_load_acquire() in vfio_device_fops::ioctl/
- 	 * read/write/mmap and vfio_file_has_device_access()
- 	 */
--	smp_store_release(&df->access_granted, true);
-+	smp_store_release(&df->access_mode, VFIO_DF_ACCESS_FULL);
- 
- 	mutex_unlock(&device->dev_set->lock);
- 	mutex_unlock(&device->group->group_lock);
-diff --git a/drivers/vfio/vfio.h b/drivers/vfio/vfio.h
-index 2eeb526a8da58..af2b8158b40c0 100644
---- a/drivers/vfio/vfio.h
-+++ b/drivers/vfio/vfio.h
-@@ -16,11 +16,16 @@ struct iommufd_ctx;
- struct iommu_group;
- struct vfio_container;
- 
-+enum vfio_df_access_mode {
-+	VFIO_DF_ACCESS_NONE = 0,
-+	VFIO_DF_ACCESS_FULL,
-+};
++static void test_set_readonly(int dev_fd)
++{
++	size_t page_size = getpagesize();
++	uint64_t nr_pages = 4;
++	uint64_t file_size = nr_pages * page_size;
++	struct mp_set_readonly sr;
++	struct mp_stats st;
++	int ret, fd;
 +
- struct vfio_device_file {
- 	struct vfio_device *device;
- 	struct vfio_group *group;
++	fd = create_provider_file(dev_fd, file_size);
++
++	/* Initially all pages are writable */
++	TEST_ASSERT(!ioctl(fd, MP_GET_STATS, &st),
++		    "MP_GET_STATS failed: %d (%s)", errno, strerror(errno));
++	TEST_ASSERT(st.readonly_pages == 0,
++		    "Initial readonly_pages mismatch: expected 0, got %llu",
++		    st.readonly_pages);
++
++	/* Mark page 1 read-only */
++	memset(&sr, 0, sizeof(sr));
++	sr.value = 1;
++	sr.offset = page_size;
++	sr.len = page_size;
++	ret = ioctl(fd, MP_SET_READONLY, &sr);
++	TEST_ASSERT(!ret, "MP_SET_READONLY (read-only) failed: %d (%s)",
++		    errno, strerror(errno));
++
++	TEST_ASSERT(!ioctl(fd, MP_GET_STATS, &st),
++		    "MP_GET_STATS failed: %d (%s)", errno, strerror(errno));
++	TEST_ASSERT(st.size == file_size,
++		    "size changed unexpectedly: 0x%llx", st.size);
++	TEST_ASSERT(st.readonly_pages == 1,
++		    "readonly_pages mismatch after read-only: expected 1, got %llu",
++		    st.readonly_pages);
++
++	/* Mark page 1 back to writable */
++	sr.value = 0;
++	ret = ioctl(fd, MP_SET_READONLY, &sr);
++	TEST_ASSERT(!ret, "MP_SET_READONLY (writable) failed: %d (%s)",
++		    errno, strerror(errno));
++
++	TEST_ASSERT(!ioctl(fd, MP_GET_STATS, &st),
++		    "MP_GET_STATS failed: %d (%s)", errno, strerror(errno));
++	TEST_ASSERT(st.readonly_pages == 0,
++		    "readonly_pages mismatch after writable: expected 0, got %llu",
++		    st.readonly_pages);
++
++	/* Mark all pages read-only */
++	sr.value = 1;
++	sr.offset = 0;
++	sr.len = file_size;
++	ret = ioctl(fd, MP_SET_READONLY, &sr);
++	TEST_ASSERT(!ret, "MP_SET_READONLY (all read-only) failed: %d (%s)",
++		    errno, strerror(errno));
++
++	TEST_ASSERT(!ioctl(fd, MP_GET_STATS, &st),
++		    "MP_GET_STATS failed: %d (%s)", errno, strerror(errno));
++	TEST_ASSERT(st.readonly_pages == nr_pages,
++		    "readonly_pages mismatch after all read-only: expected %lu, got %llu",
++		    nr_pages, st.readonly_pages);
++
++	close(fd);
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	int dev_fd;
+@@ -144,6 +208,7 @@ int main(int argc, char *argv[])
  
--	u8 access_granted;
-+	enum vfio_df_access_mode access_mode;
- 	u32 devid; /* only valid when iommufd is valid */
- 	spinlock_t kvm_ref_lock; /* protect kvm field */
- 	struct file *kvm;
-diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-index ea8e6cc13c457..fe126e137d5ca 100644
---- a/drivers/vfio/vfio_main.c
-+++ b/drivers/vfio/vfio_main.c
-@@ -1349,7 +1349,7 @@ static long vfio_device_fops_unl_ioctl(struct file *filep,
- 		return vfio_df_ioctl_bind_iommufd(df, uptr);
+ 	test_lifecycle_and_creation(dev_fd);
+ 	test_set_present(dev_fd);
++	test_set_readonly(dev_fd);
  
- 	/* Paired with smp_store_release() following vfio_df_open() */
--	if (!smp_load_acquire(&df->access_granted))
-+	if (smp_load_acquire(&df->access_mode) == VFIO_DF_ACCESS_NONE)
- 		return -EINVAL;
- 
- 	ret = vfio_device_pm_runtime_get(device);
-@@ -1397,7 +1397,7 @@ static ssize_t vfio_device_fops_read(struct file *filep, char __user *buf,
- 	struct vfio_device *device = df->device;
- 
- 	/* Paired with smp_store_release() following vfio_df_open() */
--	if (!smp_load_acquire(&df->access_granted))
-+	if (smp_load_acquire(&df->access_mode) == VFIO_DF_ACCESS_NONE)
- 		return -EINVAL;
- 
- 	if (unlikely(!device->ops->read))
-@@ -1414,7 +1414,7 @@ static ssize_t vfio_device_fops_write(struct file *filep,
- 	struct vfio_device *device = df->device;
- 
- 	/* Paired with smp_store_release() following vfio_df_open() */
--	if (!smp_load_acquire(&df->access_granted))
-+	if (smp_load_acquire(&df->access_mode) == VFIO_DF_ACCESS_NONE)
- 		return -EINVAL;
- 
- 	if (unlikely(!device->ops->write))
-@@ -1429,7 +1429,7 @@ static int vfio_device_fops_mmap(struct file *filep, struct vm_area_struct *vma)
- 	struct vfio_device *device = df->device;
- 
- 	/* Paired with smp_store_release() following vfio_df_open() */
--	if (!smp_load_acquire(&df->access_granted))
-+	if (smp_load_acquire(&df->access_mode) == VFIO_DF_ACCESS_NONE)
- 		return -EINVAL;
- 
- 	if (unlikely(!device->ops->mmap))
+ 	close(dev_fd);
+ 	return 0;
 
 -- 
 2.56.0.455.g6c5a503b38-goog
