@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3578B606A331
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4951F606A32F
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 19:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bvif/XBB
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X35xwWRW
 Received: by kanga.kvack.org (Postfix)
-	id 2BD556B05B0; Sat,  7 Nov 2026 14:51:26 -0500 (EST)
+	id 5A6FD6B05B2; Sat,  7 Nov 2026 14:54:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2947D6B05B1; Sat,  7 Nov 2026 14:51:26 -0500 (EST)
+	id 557A66B05B4; Sat,  7 Nov 2026 14:54:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 184A46B05B5; Sat,  7 Nov 2026 14:51:26 -0500 (EST)
+	id 446A86B05B5; Sat,  7 Nov 2026 14:54:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB5406B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:51:25 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6CA0F80223
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:51:25 +0000 (UTC)
-X-FDA: 85409367330.21.582D0D6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B33AAA0002
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:51:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Bvif/XBB";
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1FEE76B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 14:54:10 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A61A6803BC
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:54:09 +0000 (UTC)
+X-FDA: 85409374218.05.4559584
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf20.hostedemail.com (Postfix) with ESMTP id D7B191C0004
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:54:07 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X35xwWRW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794081083;
-	b=IgPJWR+BB8lBTfpvFrJpmC/FhEhFN8MxSgCoX0Ikz5UZYP2KPk4li/luJq33BprXNGwA1m
-	3Zf7XlGiQB5DR/NJ9wAzJNtv0lHVPuS49k41HxsSp6rlEJ426yh9Zu8Bf+fHThbXfj+DI1
-	VJCWTd6cw1WavYJMqYiokT9S0vbPKlY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Bvif/XBB";
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1794081248;
+	b=CDvmrmZ8mbmr+s2wkmccwsjFCufA/naUmRztKdF4LcbciQaMdggGhywTReod4JujCBjYsv
+	gD4IxZxQiaR4aFSP483qezG509KTE5M77J6nL3C4K+tPW4F0tIUOld3VySGr8wNXh075s5
+	rSGuZfaYE3dL5urGepFqY1h/xxMtxwE=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794081083;
+	s=arc-20220608; t=1794081248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8NEcCG6Aq43ZRSmDhnrvufn3WG29LNvsLw98ja7BDX4=;
-	b=5wjO6SKohCLa+kTfx22CYwVSnhRuTHPrsRu5GY9JtF707P5/rMrN8dCAhks6ThFOnhztGY
-	sBcSIoZG3au3r2UQBIvTVC9MR/oe1S2NY7eQnhjlqzxkgSpnINRW05iswB6Stbb6bQpv4f
-	+ArIyKB7IpSvBdbLC5hdksoclfqVikk=
+	bh=Azk0M4+4kN+LKI92RpesCylB3qOSG44cG8TkMmyE5iQ=;
+	b=ymXT1qA08GB4dxbflgyE9pBwyZBR+sqPkX9rgxJlKJ0dDe4jR9NhUOd4lH3vncFlttvN7/
+	Mlnly2onM+UwcvyQ6RKOqBiKtF1ixppNlvwQo6xffsyjWuF6rucP6h7Vc6GHfi+cHMkiRy
+	lrYFUkA6TRwTefv3T1d6ImWBNF06cA8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X35xwWRW;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4908F61157;
-	Sat,  7 Nov 2026 19:51:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0097F1F0089F;
-	Sat,  7 Nov 2026 19:51:16 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 29F7143B3C;
+	Sat,  7 Nov 2026 19:54:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9BE31F0089F;
+	Sat,  7 Nov 2026 19:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794081083;
-	bh=8NEcCG6Aq43ZRSmDhnrvufn3WG29LNvsLw98ja7BDX4=;
+	s=k20260515; t=1794081247;
+	bh=Azk0M4+4kN+LKI92RpesCylB3qOSG44cG8TkMmyE5iQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Bvif/XBBoRKuYGbZ5ITkJSA5/rWfw2LbmlRX3olbvq6SZcfgljnv/7KDgflI2wi3m
-	 cuzA4GAU6SwVrcpUVv2P/vlyi6VovbWWLCXxKix+7fT7BP2+VgSdWEdGDRpstxEyE+
-	 Nerm2JJ7W46xycA3Rrw60HAi2meM9nxTmPj2FsgofK7ZHkPLcnM6rGUaSgBupNjn6p
-	 mVKYgWNT1RycwSVFbjcWczDXnVHM/wLtsSpZQ7dBOPnJbXbtgzxbiFcuddxHpL/stD
-	 tzK/gy7i3TJ/gQEPlZsiTtBZHqyaWS3yLWVgj590zCvAnv1kC4IqB4jYAHgBVpoZXQ
-	 sGjwFX5D8lxww==
-Message-ID: <7df793d7-55dd-40db-8455-1f22bb44193c@kernel.org>
-Date: Sat, 7 Nov 2026 20:51:13 +0100
+	b=X35xwWRWp1NJKDUjUGwu/dPhn1u2kLVBfKW5yRwfwaE8KVYkdjSh3+y4dkzuSMyrD
+	 UC6f82CYICCr6FtBDy3AGdO5/L3cxDqjOEP59rX44rd4pqW9ydC79cRLVXVLHnS/Hh
+	 VbGJ0mVhgah24nTHfkgrCnfUFnOeyyywupL6Eu73Kjj/SDlx/mnKMS4A1ftEDAqUNo
+	 xFOI9/8SXDYctP9TX3Ot/ZiCYNdwitNbu+6zVHhI31PwPpWK5srd16sfb11kfSSfPH
+	 eFznTuvk6MRc7KHP3RkQuTGYNcgEbDYSkl8hw/d6GgOebb3ilzVHB92t4ysP54Dtbz
+	 THwAOjxx1XRNQ==
+Message-ID: <e0a38b09-725f-4e60-8c53-e4605c36be78@kernel.org>
+Date: Sat, 7 Nov 2026 20:53:57 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/4] mm/ksm: align smart scan skips with the scan
- number
+Subject: Re: [PATCH v3 4/4] selftests/mm: cover merging KSM pages aged by
+ smart scan
 To: Qiliang Yuan <odys.yuan@gmail.com>,
  Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin@linux.dev>,
  Chengming Zhou <chengming.zhou@linux.dev>, Stefan Roesch <shr@devkernel.io>,
@@ -79,7 +79,7 @@ To: Qiliang Yuan <odys.yuan@gmail.com>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org
 References: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-0-16d5ce8b5fd6@gmail.com>
- <20261107-bug-mm-ksm-smart-scan-align-skips-v3-1-16d5ce8b5fd6@gmail.com>
+ <20261107-bug-mm-ksm-smart-scan-align-skips-v3-4-16d5ce8b5fd6@gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -126,21 +126,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-1-16d5ce8b5fd6@gmail.com>
+In-Reply-To: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-4-16d5ce8b5fd6@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: y1fdg73xxygo7z893pynk1ataifkeqo9
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B33AAA0002
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: D7B191C0004
+X-Rspamd-Server: rspam12
+X-Stat-Signature: dikjnx7gdwcwanzizxx8b53qikkp6zy3
+X-Rspam-User:
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794081083-285176
-X-HE-Meta: U2FsdGVkX19HL6KDczYwR601WZ2Tk2QoPkitrZn6rt3k//azm32BO/0LQfaTwFOrJG01vLtcImMyYsKXPvTmcO3i8Q757PzgPGxtpVkGR28DTPqfLojedCOKrMAfpk5Xd81FxQ0czagqks+SIB301Vg50o6wzWx5vgidwbsZtO3g9WwKdhktFzPouK37+hGCzSAgJqRzfg641joPyxAWDcxS2KTlssIY3H2AQDrCKDoG0MqaI77Ll98Hnh9qSm2EWIlAoKW7A7fmZJ36zBSk6nVb+j1UjowCesPEsaLQNjoIES0LhWv25TCxGMcaJXiFSBG9yMYsOGfeaFUp/hF2A6+dZjhWzE76nfjNMmiwkLLTOr0mpQeXlCrZKMrI4HzZCGCcZetbwXU9pdqcL5mbrQTKtifoWO3tgkGcFP4cJhIh+3GRI+qqReUi1kQb2waCd1NHqnAD/zvFd1XKGZYJ6ch591VHp8bgV5oyR1P8R2E4b6fyV9iRBWyR7pCdxKZTKV41eok0dWMisNWoSxpjLFduu4Jcl8nWO2sIL1k6Ry/saDUIP754yIiA6BUOj7stZ54GhN/hxmgk+UDD/HIVHRbttWfBFacf6Xta5en+UV5Bu2nSsAOpElNYkcJ6k1yqi+vDv5bLXX0ubvU/QWs/w7KRtYvZcscdY3asifHgIRMSgEYmfq/SxEQD+adpp+8ByRYqBPas4zUJBo39cn6bNf2TNAnxfsnepkag2koF0vOQwxUk4leYdpGKqgEXTV0CiR+/ClLNn21Zb0dwtAz/SrwLx6XgPWzdkdHj1oNMOGNslRbpGkjDNxvoZU3WA+uE9Ayl7FMuVSzr2+EItDAe1nmJsahuOhEpsCZersgKZFa5JIbF8MU2eQHqY86rYOjSecHmXlQP7BpulAEBCbbXXG9bj/zlk1AO5asV7cneNylHeWU589RjZ3iLg0v5Sfy1bywqlVczUHsEkeKGXFa
- TMKF+EGL
- Hdk9kB+lmRd5wdOHlALoWocCS9dHqccTqgacWIRoqX0QuA8tev6yrruHI3tVeVqy1jUhuiuBX2Xa2gQcFLdbuysqoHYyy9EIlnRwj916MqRZCw7M8uin80YgUqDFW959qJ02nUq5Lm4JRWxOhy1VpmMrxtTYii+NDEU7JnIPpvc6Z3LC8YUefqUQWTD8OS6pDG9WENEm0EvpeJQZS8V4B+mToG8VdlsbC+r8i+e3ZpjlLqpFny9Zt5q7VS6hNRNU/xjfaLhMOpLAWpVzEsk/cou8FCtCI3tPUNzMgxvt11B3vMIEGt/17lyIu68bkYsJUCV6kt14kZMpmxPI=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794081247-829325
+X-HE-Meta: U2FsdGVkX1/tDc97nHvh8JVJuimBVLiJw5Yr8ervRKB7IRamSAVqkrfqq4Q985KXyev/aooeMCefWRHundE6VP+pnA8WAMB2u3O2Xux40i+MAEmdgk5NxIP/2B79jUjfhlrEMRPbLucmoXAyCV84HpZ7jpZOKvrL7Y/DHABmGCMrHIETlPRjWpJBipfXS//2FZ0CBSlsUiZMcJbqnkRdSEU6nmtXzkOjZJrOb2m2DZxMFHQ0G/7sGXvP0ymeh9AsReKU23hFJBGoYOStobYlEh8/td8HHyFMs7IdHdevAMcNwIkrG3IsLl6WVMrlYDOmSPDG1H8Ej5j0eXgQqFpStQ5BRhsxKVLPsTpUC38OFpMOyWAsrMYs1SgshEvtGfUM8OIfsdLMZnhcKLFEHeAuzO9rqgAHbC5uJygGGs2xlSEQR87NWYCkaoW6FA6DRLyr+YifVSbEiREgVC2NM1s5E/M/GUz4WwKOe562UjEzx3ENJooFaTe18JXmlqXDnCa57gkJVTFKY/xzlT2NgVLI/HSJ9zI+y1G4gfSHyFUwrFg134Y8WeTKVTjb/iI+LGstLZIdrJygMvZSybWWB+fxZGEdkoLnmI2A3UVV4Gt/uc83OU25C4oCIVDKjiSsTSfOHEHvXzuVSa47TNAc2B6ouU4YXRvv7Q4ra/wIDuF1hF08GMXDa6NXec/B5NAs4TEDbi6A8kWW3+xhrnc0yra+MXnZSgO0CQNOTo4GISS7HSBxf5ph2of5ZnGYieRtKpinssNKPotAFokLCgd75oM6bD7UpKdrii0gG6bw2QGwDz4Rqhw5Qc9OMTAR4Bo55ggx02IX0qzPwZUzHV5Lu/47cfBzgSyaR3LFV3I2VxWnnxTIAcAQa+E/EMIm/VpV0nqPWpVRmrge1ZIGhHWZh4QDmbKq0oV42vEyERtzc+ThsIL5DIDwiSdHvVPtnOOD19tW4rgZ+W+J9U665gwAl7q
+ YHEDY4U9
+ b2/KsIWSTg5iOgU5LrbYlAvgrRjCo6oUEntNy+inXYKmYx6hzehnKIiQDDyWfATkji/WFhJsEu8b/TYORx5ZzakDrXIsWl5hIWYzgEM8lXxGr2m/+TDHkeGlnZTLA8+rqjkw8WqwDvck+t7MVM7Xrd+KH++Z74qSRJoGMhs/gF7rbsjl42S3gsF7EByQLMAw3s3Nu5pwhrEEWCWw0QjZLcj/uojaByOIvvaFL2Yx83ZayYOO6s+NV7TS6aQPcjOsFT1dpQBfZv4WKCd/vg9FL47TEkkEkwJPBU+IaIf5St9RzW+rRY+kOtorzdBEH4hYugOJ/rVYTmmUFObwpodhurR8wlwtEg4kBNEemnIwLaWb4OVX6TnYVgorZ+RaTHC0cIQPrVopJlK5Cb5BJ9q3gvMl88itxoxqgLm/9RFTjGFpwZJHLFNM/LrpXuWRB24zTsEcO1r/eRfHqFUnyW2/JrU/+7cyyAinufm9QItM1+JF3eqE+wk3vSINB3g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,40 +150,28 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/7/26 17:57, Qiliang Yuan wrote:
-> Smart scan skips pages that KSM has failed to de-duplicate for a while.
-> Once a page is three scans old, its rmap_item counts down its own number
-> of scans to skip, 1, 2, 4 and then 8 as it ages, so an old page is looked
-> at every ninth scan.
+> ksm_functional_tests checks merging and unmerging with ksmd's default
+> settings, but nothing there exercises smart scan, which skips pages KSM
+> has failed to merge for a while.
 > 
-> The unstable tree is rebuilt on every scan, so two identical pages that
-> are not in the stable tree yet can only be merged in a scan that looks
-> at both. Each countdown runs from when its own page became mergeable, so
-> two pages that became mergeable at different times end up on different
-> phases and, once both are old, may never be looked at in the same scan
-> again. They then stay unmerged for as long as they live. The pairs below
-> are counted by making a page mergeable, waiting for 0 to 20 full scans
-> before doing the same with an identical page, 20 times for each wait,
-> and checking the pair after another 64 full scans, on two boots per
-> kernel.
+> Smart scan used to time those skips per page, so two identical pages
+> that became mergeable some scans apart could end up never being looked
+> at in the same scan, and were never merged. "mm/ksm: align smart scan
+> skips with the scan number" fixed that.
 > 
-> Pick the skipped scans by the global scan number instead, with periods
-> of 2, 4 and 8 scans. The periods being powers of two, every old page is
-> looked at on each scan that is a multiple of 8, whatever its age, so any
-> two pages meet at least every eighth scan. The longest period goes from
-> nine scans to eight, so ksmd looks at more of the pages that never
-> merge. The rest of the table is measured on 64M of such pages, median of
-> five runs of 256 scans on each of three boots per kernel, CPU time from
-> schedstat:
+> Add ksm_get_smart_scan() and ksm_set_smart_scan() to vm_util, and a
+> case that enables smart scan, lets sixteen unique pages age for a dozen
+> scans, then makes a duplicate of each mergeable one scan apart, and
+> expects every pair to be merged 32 scans later:
 > 
->                               before     after      after/before
->   pairs merged (of 420)       361        420        116%
->                               334        420        126%
->   pages looked at per scan    1792       2048       114%
->
+>   kernel               failures, two boots
+>   before the fix       20/20, 20/20
+>   with the fix          0/20,  0/20
+> 
+> Signed-off-by: Qiliang Yuan <odys.yuan@gmail.com>
+> ---
 
-Oh, I was wondering whether this should actually go to stable? Do you think the
-above is rather an extreme case, and most users won't really run into it that
-severely?
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
