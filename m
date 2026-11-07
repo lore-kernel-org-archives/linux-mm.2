@@ -1,98 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABEA8606A32C
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 11:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8406606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 11:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=mlYJTTM6
 Received: by kanga.kvack.org (Postfix)
-	id D19556B05B0; Sat,  7 Nov 2026 06:08:42 -0500 (EST)
+	id 149036B05B0; Sat,  7 Nov 2026 06:21:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCAFB6B05B1; Sat,  7 Nov 2026 06:08:42 -0500 (EST)
+	id 0FB186B05B1; Sat,  7 Nov 2026 06:21:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDF166B05B6; Sat,  7 Nov 2026 06:08:42 -0500 (EST)
+	id 00F3B6B05B2; Sat,  7 Nov 2026 06:21:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E47C6B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 06:08:42 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 17F391402F6
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 11:08:42 +0000 (UTC)
-X-FDA: 85408050084.13.718735A
-Received: from spam01.hygon.cn (unknown [101.204.27.37])
-	by imf08.hostedemail.com (Postfix) with ESMTP id BF67D160005
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 11:08:32 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf08.hostedemail.com: domain of qiuzhiteng@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=qiuzhiteng@hygon.cn
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D1A4F6B05B0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 06:21:34 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 66AA9C0301
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 11:21:34 +0000 (UTC)
+X-FDA: 85408082508.10.D11A726
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C4703180005
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 11:21:32 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mlYJTTM6;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794049719;
+	s=arc-20220608; t=1794050492;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i6dE4Qc2basO/b0AjLfl4KhmoQ0CUlCYVpAq8NuxGkU=;
-	b=PQKwMzTTO07XO6MdjBKGqlQHTpmkKl3kKL0WOZAP3nCB07cfXuIGiSxf20It9jmdQ5snZK
-	3AryvSsOFvhMj46/e2hk9984SwEtTDaEZwFRzu+cQ8zKg7yEJds/XO/kmu7KaR+gxRQBe5
-	03hz0K+5y4TXkjAx4b4GKQjOCCJSWXU=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=hygon.cn;
-	spf=pass (imf08.hostedemail.com: domain of qiuzhiteng@hygon.cn designates 101.204.27.37 as permitted sender) smtp.mailfrom=qiuzhiteng@hygon.cn
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=V3pB3AGO9dEv86sJAhd4wOp/MO0lhLnyuc09qYLY7Pk=;
+	b=zfoPry51+5hVCFRUElaK4NTOpQgPLs6RierbYypeS7jrMICSZ0gvmhIoR1BLeFZlUeY06t
+	4xSix9cMi6gnyPzekJGklEzJN/xCiT3gIqGKBnT397wnrHDevtj3cNse9m+s7F2zIwebSy
+	FXvKCtqX5F+jza3Aj9eU/DpruWYw/3E=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794049719;
-	b=vcB4TazRfJENRkdvex5HMAweFJ0xOmkurWybLblKpOxzl3VsaPI5wCuwNIQtZg8Iv8LeOL
-	o1cfrpXm+Qco9p6JSVC2egij0pHhwySxOuXekOH+raPRjohxg4voawAfVLQdCh++zM+5mk
-	ICtTZ/VX7bwTqsRfdMttXT07TUupGaE=
-Received: from maildlp2.hygon.cn (unknown [127.0.0.1])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jMCvs55zMz22Pn0;
-	Sat,  7 Nov 2026 19:08:25 +0800 (CST)
-Received: from maildlp2.hygon.cn (unknown [172.23.18.61])
-	by spam01.hygon.cn (Postfix) with ESMTP id 4jMCvq3lVSz22Pn0;
-	Sat,  7 Nov 2026 19:08:23 +0800 (CST)
-Received: from cncheex04.Hygon.cn (unknown [172.23.18.114])
-	by maildlp2.hygon.cn (Postfix) with ESMTPS id 7517030A6439;
-	Sat,  7 Nov 2026 19:07:43 +0800 (CST)
-Received: from ws.local (172.25.64.90) by cncheex04.Hygon.cn (172.23.18.114)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.36; Sat, 7 Nov
- 2026 19:08:24 +0800
-From: Zhiteng Qiu <qiuzhiteng@hygon.cn>
-To: Ying Huang <ying.huang@linux.alibaba.com>
-CC: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@kernel.org>, Zi Yan <ziy@nvidia.com>, Matthew Brost
-	<matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul
- Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, Alistair Popple
-	<apopple@nvidia.com>, Xin Hao <xhao@linux.alibaba.com>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] mm/migrate: don't batch the TLB flush when there is
- nothing to batch
-Date: Sat, 7 Nov 2026 19:07:37 +0800
-Message-ID: <20261107190737.1538200-1-qiuzhiteng@hygon.cn>
-In-Reply-To: <87qzgxw2qx.fsf@DESKTOP-5N7EMDA>
-References: <20261106041628.1177963-1-qiuzhiteng@hygon.cn>
- <87zevmwbaj.fsf@DESKTOP-5N7EMDA>
- <179395975709.1235605.1971486611419119070@hygon.cn>
- <20261107015057.1328227-1-qiuzhiteng@hygon.cn>
- <87qzgxw2qx.fsf@DESKTOP-5N7EMDA>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	t=1794050492;
+	b=jMYHHBGMRy48z+RHF//eGXs/W4nBL7ZHaFqIHG8uKqHRP6gGcNZeAhgx7E6+LZHQsLtr4q
+	LHj8sDeVS3tDPAqZnY40LP503gi6z31inW+yNpQwnKOv9j17z+jdE0OCB2/HIh4BC1KX/A
+	PNuunEdSIcHs03ZaqGk5bGMCPKNYKJ0=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=mlYJTTM6;
+	spf=pass (imf06.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0813D42A5E;
+	Sat,  7 Nov 2026 11:21:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEA91F0089F;
+	Sat,  7 Nov 2026 11:21:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794050491;
+	bh=V3pB3AGO9dEv86sJAhd4wOp/MO0lhLnyuc09qYLY7Pk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=mlYJTTM6Xw2nBKlP+gXO2Hp2D+XyOgUpRQ6JiRXPPT+RbcytXScqI26d8Bzek+5A8
+	 bw5nI3gO2ndoS2lvagBOTCcgj5W27ibYNIZYaWV4GSeX9jPuodmnxXeKmJjCaKJwqb
+	 RWHmzDoyxFvi5REzuO9oQ6peV+04CAWtfs9B2nCFMyY6s1zctV7eVZRDsUllC8tBx/
+	 eJ7JiZ/V7Ezbm9bCaFQyYE08y7q9S0iGDqxI9MAF3T2JtutWBKTr+FkZ3wtB9Rfzq2
+	 BxWFRYFFGBD7rNpuSk9AJVgCIqRjx656y0FTSfzQgit3WFZbxWTPERrsNvDMsRHVqC
+	 Pg7wKFuoecNEg==
+Date: Sat, 7 Nov 2026 13:21:24 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Frank van der Linden <fvdl@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Ivy Lopez <skunkolee@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/cma: simplify cma_declare_contiguous_multi()
+Message-ID: <au8JtLx7T0r9ihPP@kernel.org>
+References: <20261106-cma-multi-v1-1-054eae6e2c1c@kernel.org>
+ <CAPTztWYzN1mkADOAJ3bskqpsv9c7qXNSMUdj_Ovg-aDQJDDmow@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-ClientProxiedBy: cncheex05.Hygon.cn (172.23.18.115) To cncheex04.Hygon.cn
- (172.23.18.114)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPTztWYzN1mkADOAJ3bskqpsv9c7qXNSMUdj_Ovg-aDQJDDmow@mail.gmail.com>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ux31i494wnruzs9thicoyz1rrxkafyan
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: C4703180005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: BF67D160005
-X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: nkf9mzmj9dkzno3cuh7eqzfb3c61ynkt
-X-HE-Tag: 1794049712-182819
-X-HE-Meta: U2FsdGVkX1+3fIGWY5IS3S9tS6zPZIfbF3KLwCBoYnqjnbESSUJmf4KB/xa7QjtjbrlyjBzzw5NL2KtfPxGtH+e4bLFo+loxaUAK5JFE5jNd9BDuKu8BbbO7A/12bKXqra4/lvdPAafdITMCwGSwzgz0XPgTHZZNW1gzv7oTSIoNLbG7DtU3a6mqjkxH6oYWciklEIK1TtbE08G0ULnrN/UIcuWu3bSHO+NlJYUE+pIwDRJk64fjsrKyt9tX2OgB7i9899chKEQwQDjl0Sl6RyZ8oX+W3beouYiYNCfc+9CcpbqgMAw6d4sr5nqMk9TzukapEeZBH5irT6U+UL9G0I93cnQbXqYcn2Dj3+TZC6iXtI5S62RDPCZxCjcPAT8Ajev6Pt9MZr9kYqQVgiMvqU5khRlE2taDP8hq6k9s0cZCIM+8DsM/Oksh2oXwpRZ+tpaC67UN5n3aAKNrjhad/EirbHujxOGatcf6xOxHPxPm/FGJoFb4SJawUYvIpW5b4reHgj6rAuaI8Wjrr7D7kgbNYS+iM5/zOBxQfNS0hUbMFfW11CUl3xR3fvgD7FjYF/gsCDlDBBcmRcnB3Htjey29TemDLc5nyy4PwBY31iTPR6gMxBZOllBw8felBufO65KucAfOc6ufigIVA49RU4W/ylBGlRW8QIuwLwyGETKlsNgrbvWQ4XDpg71DATgMY8QI2XKNXyJuI9R33X5dCZUNp1RyhsBTcz7yzkY53oulETK0dPWT1x05cbEzatQpGu2VJeIycJlgGu/wz7Dcm9J8LuI9ZsCHCSLRqPk8FCj8alxva3LUI3+M0dTe2r7v0VZW+AS3IT4BART26VZZwpJOQpJYKMB7i5G6nMWqdsMOykl/k66YdXWtDZ2rNSio+tHX0iIIXSSpuUybiSxXL1UsBteME52oYpLOEFfUgU1fZi7YCbQ1lnYOYvFd7Cra2eQmnUH8PLPF2q4ht7n
- UyDjqAWG
- hrW2dsN60qOCCwGlwARVmFq9OSCUt4ae4IeK9vbT+idbQQOvlSN51/O0nx4viEpa270+MW/YqKLMNgJ1oARYfKqqGjiLG0QVd9ho8VjMxFe0YM75Lnc5kTkjP/vCYEzWHlGwF1+mAvqNEWqu50WUyl+b3Br6BfifzUkCdOzRdRLxmm3Ykye/Mh5dKPmXGVNyz/cFb88wkhdbX9mvGML5GxrvGCodA1VZoTWb5EkILVy1NfZ6ZuyF2VchEUyJ0tY5JD6NVFFsk1wTvGc6M3pc6sPNvGw==
+X-HE-Tag: 1794050492-544283
+X-HE-Meta: U2FsdGVkX19Gg127Vsr83O67ygScBTaa6BsAAiG+v6eqBZ4GWzZTsYPkAGllvDvYWmfNsN3ZF+7JqvpT5tKdTb61S8/rjHHRXLRA3l0xTS7ljmqwXdpfwPK8mtNct4Ewwylv96gyCWqzA+IB21mGj+B6hCIZR3mYbsTE81t+vX+lW+AccMxxp7h86JVtKF5BGtk7FX3X+u1KlGbMcp91vt9xdDlukjWitH1CSfcNAs0D2IVawIVQKM0yBZrxbfdOpA1WQ/6HPQjB24niTNF0X3G721t+61PhWgr7L28KpuBqCjWieLYTxY+MBpDJwry3x0vY7pQ5K01IvZWA4HdnaW869Nyo65F0xGc5UIgPPYeujZD+hFI++HSNklpwJn+RngpXME6a0HurJyNVWhKJosAl5aB/eI4ZyEQb1BDP7ajVyruCnzr0v2kJZ/4Ng4qnFYNyg3VJKq8+Yj8XEgaL7qW6fXUPrBqcu7SJ+bYDbX4om019DAFRp/V4kChURbatzriCGdmy4OMcT2dUt8yUVEvjDVyH+wag4nmdzSsF6Lx5fb5xWPZinTlwK9cXa8FL9YXDfLxNwzQSuIERCbOs4sxAAFNcZVngIqSTFwsx4JtZAyY2jbzsJfGC/fR1YhLWwf2EQ4vs+zwZSBrZmipp8zERElvCKD1pDeRk9tRHjaJi05oPKb6FGhQlSSoz35UnwXO6PiiCextmvhRTnseLWkb+m4duH+Z2sK9fEIGK5DSKCqE7HcdKyPywcZaf4B2CLJ4HsSxv+xCDQKYcj8VoF1PZvjpov5zNLQOiXf/nQ6Y9O/oAKQe7qqRc+gf4deb26hh/Phdpf1oHgeNjFy7E2/BnZJ7XPlzILy1VUTUyOYTTlNEtH9mZiQs8U8gACA5Zsvro4R02Hc1/ve8OJkY/xQf1FsKSDBplbHT1KWtn+gmrTs3ipj+obUAscci3a7T40tRm8zIYARKkDsVG3mv
+ L6K66RNU
+ 3+ft+s/LaHkGqld1GM0setuM/x/0qVQSXE8xdpEmZ69LrKB2U/f5+baRhoL00danHFheD1bVxLg4UCDhreMGo2l3DYMqla4GDbxmJErxs6GHWMsO05LBYTjDszQKg/S5vzDgNSX1xDXN/dtScw/mEfw2ds2XKLxAeJ2OFNDpUBVufJ4MRcEjhzOekSLIJIIxnQV7bDmZXE3FGXo2W9+M4TVNzjA1jem/tm1T/oSA1zoP4UJ2vk9yzNOQnCVfW+bnJ6MCJkxoqFfJJhl7B3L39GFBONuSTTKwONMq3J7Z5yFaA8hFYadmMS33y2IKzRrATf40qY0/4DD5UCJDSVpWCPazjLhkul9z0TWwG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,67 +102,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Ying,
+On Fri, Nov 06, 2026 at 02:30:38PM -0800, Frank van der Linden wrote:
+> On Fri, Nov 6, 2026 at 4:56 AM Mike Rapoport (Microsoft)
+> <rppt@kernel.org> wrote:
+> >
+> > When cma_declare_contiguous_multi() cannot allocate a CMA area as a
+> > single range, it falls back to collecting a list of up to CMA_MAX_RANGES
+> > largest free ranges above 4G, reserves them in memblock and adds them to
+> > cma->ranges.
+> >
+> > Replace the current code with a loop that finds the largest free range
+> > above 4G, reserves as much of it as needed and repeats until the entire
+> > area is reserved or CMA_MAX_RANGES ranges are used.
+> >
+> > After successful alocation sort the cma->ranges by their base address.
+> >
+> > The new code scans free memory once for every range rather than once
+> > for all ranges, so it is slightly slower, but it is way simpler and more
+> > robust.
+> 
+> Thanks for cleaning this up. You're right, what I did with the list
+> sorting was too much, and it contained some bugs too.
+> 
+> Just one remark here: I don't think you need to sort the ranges by
+> base address at the end, I am not aware of anything relying on the CMA
+> ranges being sorted. The sorting was just there to mimic bottom-up
+> memblock allocations while acquiring the ranges, but the eventual
+> result doesn't need to be sorted. I'm not aware of any CMA code that
+> relies on this.
 
-> Have you adjusted the NUMA scanning parameters?
+The bottom-up was added by the commit df2ff39e78da7 ("mm: cma: allocate cma
+areas bottom-up")
 
-No.  All NUMA balancing tunables are at their defaults
-(scan_delay_ms=1000, scan_period_min_ms=1000,
-scan_period_max_ms=60000, scan_size_mb=256).
+	"... to guarantee that the compaction is moving pages out of the
+	cma area and not into it".
 
-The scan is indeed slow: 58 passes of 256 MB in 55 s, 89 ms each,
-about 9% of wall time.  But the hint faults are not spread evenly
-between passes: those 9% carry 33% of all migrations.
+I think sorting an array of up to 8 entries is not too costly to keep it
+that way.
+ 
+> - Frank
+> 
 
-The faults come from the scan, just not from the pass that happens
-to be running at that instant.  Of the migrations that happen
-during a pass, 60% are for pages in the 256 MB chunk being scanned
-right now; nearly all the rest are for pages scanned one or two
-chunks earlier (lower addresses, within 512 MB).  None are from
-addresses the scanner has not reached yet.  So the scan makes the
-pages PROT_NONE and the workload touches them again within a second
-or two, while this or the next pass is running.  The collision is
-not a coincidence between two independent events.
-
-Here is the sequence, one pass on the unpatched kernel:
-
-  CPU A (task_numa_work)          CPU B..N (workload threads)
-  ----------------------          ---------------------------
-  tlb_gather_mmu()
-    tlb_flush_pending++
-  change_pte_range(table 1)
-    PTEs -> PROT_NONE
-                                  access page in table 1
-                                  do_numa_page()
-                                   migrate_misplaced_folio()
-                                    try_to_migrate_one()
-                                     PROT_NONE, but pending set:
-                                     pte_accessible() == true
-                                     tlb_flush_batched++
-                                    try_to_unmap_flush()
-                                     full flush, IPI to ~380 CPUs
-  change_pte_range(table 2)
-    flush_tlb_batched_pending()
-      pending != flushed:
-      flush_tlb_mm(), IPI to ~380 CPUs
-    PTEs -> PROT_NONE
-                                  (same for pages in table 2)
-  ... 128 PTE tables, ~0.7 ms each ...
-  tlb_finish_mmu()                    pass took ~89 ms, not ~7 ms
-    tlb_flush_pending--
-
-Each table flush makes the pass longer, and a longer pass lets more
-faults happen while tlb_flush_pending is set.  With the patch the
-migration takes the direct path: it may still flush while the pass
-is running, but it does not bump tlb_flush_batched, so the scan does
-not pay per table and the pass stays at ~7 ms.
-
-> That appear too complex.
-
-Agreed.  I'll keep the change in migrate_folio_unmap() and put the
-sequence above into the v2 changelog.
-
-Thanks,
-Zhiteng
-
+-- 
+Sincerely yours,
+Mike.
 
