@@ -1,108 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E01606A32F
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 17:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A977F606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 17:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KolnCTI7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QPUqaHF/
 Received: by kanga.kvack.org (Postfix)
-	id 3C1B26B05B0; Sat,  7 Nov 2026 12:22:40 -0500 (EST)
+	id B68FA6B05B2; Sat,  7 Nov 2026 12:26:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3712A6B05B1; Sat,  7 Nov 2026 12:22:40 -0500 (EST)
+	id B19F36B05B3; Sat,  7 Nov 2026 12:26:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2878C6B05B2; Sat,  7 Nov 2026 12:22:40 -0500 (EST)
+	id A2FC56B05B4; Sat,  7 Nov 2026 12:26:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F33416B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:22:39 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 72FD71A03C8
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 17:22:39 +0000 (UTC)
-X-FDA: 85408992438.27.8183D5A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7D5056B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 12:26:40 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id F221A1403C8
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 17:26:39 +0000 (UTC)
+X-FDA: 85409002518.21.9B87FC0
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id CBE6C1C0007
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 17:22:37 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KolnCTI7;
-	spf=pass (imf20.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
+	by imf12.hostedemail.com (Postfix) with ESMTP id 56E8F40006
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 17:26:38 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QPUqaHF/";
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794072398;
+	b=tztgDVbSrcAqyW1GpZYq4EmYczccJ9+Fv5MP8X7zoTZDvZhBDbd6IgieJHCnNQ+ku6Qx2j
+	yCHh+5c+t+vnRNAYFGhLbXR+KtU93c2lIhyjI2xajcZH947m+GY/dDtyc4Pb7Pgn2Qhrq5
+	WJumFYnr3yd163d4FJXZfkaa/hr5610=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QPUqaHF/";
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794072157;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1794072398;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XmI8rWYPQf/Yk3+VD2zo2YslLq5vKVW6l7UCq9+Iu4s=;
-	b=t9oM642fUMrmACHdyDhJmrwKdJSBiPIiQ487DJK0BNRNaUnzBJc/v5kN56BUfskKsLztdg
-	TDFOO4irmG6DeuqKHnQba3zpUlMhyPhfxVAnqZwNosyt/WQFZtEsd4NlvUAOcGPCwhTVRI
-	DsBg/WuOZfgCXi4+DIkgab15d9wr6Ec=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794072157;
-	b=MXp5J9SUXrCkn9ia03bkNrX+nbgFt7xlCJIAloa0ysjRx3NAhEY1yr6CLqPghk5OGKSmkR
-	BisRXWASu5fkhsE045Md+sPvqErsWFjU0nPdB/r88RmviUX0kZSl6RH9bZL7Fq09mI154S
-	jHaz8rBdUN7tcw4TsJndrCdjMBb9DbI=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KolnCTI7;
-	spf=pass (imf20.hostedemail.com: domain of osalvador@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=osalvador@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Ry+MkwlQ/4sA2zfKwfD6o/IbNoH2lui5rOOvBIVk4/s=;
+	b=NtVd6vBE+V++6wtXknvBOTHAlBthSYx10xetNOQES9Y/rKzUmCUX8qkKvq8qNvCaNTVIq6
+	wjC4sAnw55y+Lv5qtVufGDOiYdiHdgZ/e8fs+vrVgkPSIuH1BV05ltWBXsluFFz9yQyMnj
+	+b77E1nxX3Ty476WozTqiEvKKWFgRDQ=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F243B413EE;
-	Sat,  7 Nov 2026 17:22:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FBA21F0089F;
-	Sat,  7 Nov 2026 17:22:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6FCB041A9E;
+	Sat,  7 Nov 2026 17:26:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412B11F008A2;
+	Sat,  7 Nov 2026 17:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794072156;
-	bh=XmI8rWYPQf/Yk3+VD2zo2YslLq5vKVW6l7UCq9+Iu4s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=KolnCTI7SaK31zca7v7wy2Mycrmz3EJfGWSoHQT+xw4wMvA5veAkZQyAzR0RHLf53
-	 7z0w2Y1hoaKGxi6XRZfkLKShmaUF9YXKLnTCvVHVorxctr/2riWCRhVYDHO6JUDsb+
-	 /txQnwAPITgzg67QQgZLuuhvC4TDhau41rQl1Dtom+Utzu4v7VHiNwoZu0/cn0y8/P
-	 PLwkFVCeoUea5WmCr0NKAudWsjpf99WGVzC3JmNDIMMiNqWVwtxCRaxhwoowmDT/Lj
-	 FsIWGLvtajb3oBbBnZA/TWCD+SHD/vs+w/hy5dKGnepbpDYnrmj8WXDbUyZV3nfOeW
-	 odC6ug+HnuAgA==
-Date: Sat, 7 Nov 2026 18:22:28 +0100
-From: "Oscar Salvador (SUSE)" <osalvador@kernel.org>
-To: Muchun Song <songmuchun@bytedance.com>
-Cc: David Hildenbrand <david@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Oscar Salvador <osalvador@suse.de>, Qi Zheng <qi.zheng@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv@lists.infradead.org, x86@kernel.org,
-	loongarch@lists.linux.dev, linux-s390@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] powerpc/mm: make
- vmemmap_populate_compound_pages() static
-Message-ID: <au9eVOrRrnRNLUZb@localhost.localdomain>
-References: <20261107043122.25650-1-songmuchun@bytedance.com>
- <20261107043122.25650-2-songmuchun@bytedance.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261107043122.25650-2-songmuchun@bytedance.com>
-X-Stat-Signature: qhdc1aoksddrxph5zhan8f5adrhj545j
-X-Rspamd-Queue-Id: CBE6C1C0007
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+	s=k20260515; t=1794072397;
+	bh=Ry+MkwlQ/4sA2zfKwfD6o/IbNoH2lui5rOOvBIVk4/s=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=QPUqaHF/RY/FvNLc4H3/JmhJCaEb8AL7k8ox/OVtFHCRzoyRDusjxLv6pPEGphQtF
+	 x9HB2QiorCor4QVg6qvvYM+kAVWR8sGIOAJMCmy6LK0Vq7z390PQhQ4AspdA7rmJj4
+	 nAApng664LIps1HTdzOsl5ubD//tAAwA2fOzatRTvBJBUmg2P0Ew6A3rg0YjFjs7Eb
+	 A2oTszvImvJmhQeCFk9id4dMjWTLxganIhDLiiFnngGNif/OuShi3t0o2mX9cxiuUc
+	 WU52DAzfp9KZ1AdlqDDI4knAc9vH1oRe6Hh/KydCFTeWRfhhWOys3G0NzAJRBvo51N
+	 AsSJtthhj2t5w==
+Message-ID: <sashiko-outbox-203102@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/2] mm/vmscan: consolidate promo vs. high watermark
+ checks
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Joshua Hahn" <joshua.hahnjy@gmail.com>, "Johannes Weiner" <hannes@cmpxchg.org>
+Cc: "Gregory Price" <gourry@gourry.net>, "Andrew Morton" <akpm@linux-foundation.org>, "David
+ Hildenbrand" <david@kernel.org>, "Vlastimil Babka" <vbabka@kernel.org>, "Lorenzo
+ Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Suren Baghdasaryan" <surenb@google.com>, "Michal
+ Hocko" <mhocko@suse.com>, "Brendan Jackman" <brendan.jackman@linux.dev>, "Zi
+ Yan" <ziy@nvidia.com>, "Kairui Song" <kasong@tencent.com>, "Qi Zheng" <qi.zheng@linux.dev>, "Shakeel
+ Butt" <shakeel.butt@linux.dev>, "Barry Song" <baohua@kernel.org>, "Axel
+ Rasmussen" <axelrasmussen@google.com>, "Yuanchu Xie" <yuanchu@google.com>, "Wei
+ Xu" <weixugc@google.com>, "Baoquan He" <baoquan.he@linux.dev>, "Baolin Wang" <baolin.wang@linux.alibaba.com>, linux-mm@kvack.org, kernel-team@meta.com
+In-Reply-To: <20261106172620.318113-1-joshua.hahnjy@gmail.com>
+References: <20261106172620.318113-1-joshua.hahnjy@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 07 Nov 2026 17:26:35 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794072157-458567
-X-HE-Meta: U2FsdGVkX1/0KY+aQiYJzB5sLe4vQKz+bfOwR6MJPC1tOOI9NQpdHWM548AAa0YQ/LpJZWvCAGmvp+5PqIBJSDZs0Sgb21rbiwRCLEWomUvVhCFIWRiyHDM+ZtWoC98eNI9dRhM+XjdKjIjRAMRyY4jgvp6/+Uk6h8wr4J4a6MDH0VWWp9+9bD4re8pQ2Y/hVu7bK6u9gSjxqmzMIKue0vV/4vD8ICJfmf1mUcDKvj9Drts4CkrxsueEFJ1SQ1BhNe8xHMY2Jg+eUriBcpuHsKK59eBEFpbjp2ga9WA3LFlwOSrudfUxjY5R8UtHMkcul5fW570ZGUMPFrQmtISMYIwo/Q4dHOI0Sq4hzd/S0DWqOkLAYt9dQZ6aL0FaQ5w7d5/NkqCjQYQcv0UGY0Lh5IFwHmANi8c0kWHsWx7Z+/ZCOil2Pd39MYjvOWMGQF0A2JOn0uwO24maIU4NouaeLR0sv4S/5i+wcl+3oji3hbRMBfVjPfmDtHityvFkQDjWiBfFIgOO0nkyKMT8Guvm0ynRm29ObY6/g8ev5Bs0sXTcKOGveqw6Ey2txpd5zrCrr6rYOtUg2f77RYVV1AQEh+T5eWm4tz7RYt2jXhCVSjGuRABPwAiggVBx19VWLmq/eaXTyAHB5tYMdsjqrCpiLAkcMYbD9wdHJtOtfFbvPyz8ctWluO2ngK7CtlJ+04U4FvUaWQcg+SQsOul0+lLNkkTdgQwJky39TQrgTd+7lofnJUDLmaIxgXpsNCvUCmTtpgp/sSBOSW6jFtLlWY8fA/sRESEi5uH/cfNskhaVAOnLHFALoGDI3Zy7CNgTt3GM8Fv84AdxGLny0lIApi33o1gpYnAukdxpBpKSUeoyjmiabf/2wq3F4nSwy1Djkf113etwE8DQzByTUilwT0tjKXJXUJv0AbgHh2aBs4cBFgjrafR/faq5YAeWa4/5mOxhLidkcvY0fMkF5CtRIvO
- 3DDr3zbe
- 98gZkXKz0m8LRf5R+iFB9t/k2Vjz7D42k5tQ2EdA6n7MG+Hio/WkSxfFCrN3wy8MYz6T3O/IX/pIyIqbdYFLFQC4kRaXgwM5bBOewn9U08gGWcFfPWxm87t44NJne0B+C449y0O2QTWBfIAWhC9WJmCGhp+ZjlrxYsMVgCU4lwgbKXrIqgMHDlFiPn42WAeaSF77rAadyQkCd02VeeSQPWOXg7GtCDEp8nDufhu8BVokodik+1QNRprw5/mQ5Tom0lhcNANBDtBKI/E5ZgILK5aYXi9f33TLMONglrZRImeU19FI/sWbTp/FQYwMiMzS51OVwfC9qMzLJoPZ3tUYeqTvRGg4GYq1KQ54/6HkvAYXm0VsnKULkW67RYDMLenV3D8z8
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 56E8F40006
+X-Stat-Signature: f3ww4au5mqukzcxpbne5yxiq9z3whwj1
+X-Rspam-User: 
+X-HE-Tag: 1794072398-68508
+X-HE-Meta: U2FsdGVkX1/y583RyLicn1b/yo6/CXkSnznaww1RAoWvl3pH4G32LLddW8IOho8bOGJtU/ghqCtTz1aCzESsh1zuRHRqtsJDFEGMKWouZkbDk4LyOKK4OlSqv4SsqBoGdtGdfDAfLAHBBQxdZEL1XUH41iOhZIfU+Y1t8DBOpqeT62bw0vPLaVHfE8/5v1W+/7cF9J2KDOzTqKRTZcWfGzAN47spXmfQZ3HYyofBC9iwLbZhlFZmnaCCBq3xNHRMyb5MfGFVdjo9NRQvcEv7tis2+V6OEVU7rs8rbS0DKUGsvf9kYdgrVAtTw3udmTvfpQZx9Q39oh8qx+h4Zxedx8yLsSE0TiCa/jFTtVKy9N3t9gzSKdjJgNg54/y8XjldmNOP4r68HmRP5IB9DzlzvQNxdKX9o9Ptw6zJarmHSFSHmv14+OkAK40cxdP8sYMCfLleJJm3R8ecewFKxQKSOoIN8NwU9AQawI9D0wSIieB9ygxqJXC7uY3X6BZJ/adKaE8jXvevKGIuStoDJSd4y3pNaf2NMNegn38PIN46xLj6qidozCXD7EhxA7D3f1iImfshhiq9XtJx5Fsi8bK+2RQiHdKm9YBqencgwYNJ4LQVLGe5M5054Q9uiKyEzFEjAqvePiP51cIZJtUJvPd0jJOt/N823eM9YmQMVI/rCOpSzT/1l7YvH9JRkPFSnoGKRic4m2uwRYt9tEps2v1ciff4SQu1wcPucxrf4HeTuUkiBntHVdeXDcWcAwVnnlE06eOwI92aJEpZmzhIs2IzJ3Wdj998P8oJzerBfQCA0+/4Gk59JI0m7hoY6tLsDBT3f7okq9P1yzEkgquPAv40ejY768rXmHOD/eb/XoUz0paGk22fz0NVih8jPcuuKdV0ykYhEiY6jWYakw7kioaoUH6u2Fv8bHuFdSUydaBut/A5S5xbJJAWMWN0DNELUEFf5wFiMARQw6AKdkqLFVP
+ 3N3zFBhM
+ q/iTt+WeeEQeaK0SOMTs4Ao3pdVt3LbiD2nX+08GUJnq6uBm7XtNNMhUM1D+NCHZtvuTVGw+n0OsbGH4bnDY1PItMhX8bCvzRIs3Ea9qF5nimRfDCod0FMH8lUxGgcX3KlVkq6qNR5FZZbQovru704Vh7qonM39PnbpJCKCgs1g/F0QI7s6DEvaV2HVkAZbU2SLeUHGbzynsCJUx0DEZBFofhX0rdIZmfhM+zA/Cn88UllDdclfy287XO2cz+uJF6QKFht+RMe6d7VMYzYyZWedDG7QgBw+4bCTtBk7tdsSaixmNAVw3PoJdB9dxzpJB4nW5HpPFn/zMYfzlzEe57Q/85woK+DeOW9mItFKHusJhkgL33QzcM7xeWYH/Z14kvKNxuPitTmGdO1HBmn9NMsGT/dzUEiv7y4PsOwy26hTLBzpRVDtsN3Y/fQt9/yic0pZ7QJYiQkRvCDA2Xw2FLeNvewU8rSYZPWQB4aIPsGkLKlaF76rwzdWQnxEFlrrj7t73Iv4nSXo3MxcPuC9QoNlKIxOa5qZup6qcFSEzf4DljPgGqh5liEy/wE8lQMD3+ToaOPt58U4fEBvs2yyWAPh12hgarTbo0n1g7EzyrPkEWLoVgz10fsuTP4s7/suXgQYK0KDp0dQuyYFYL2yLI4VvBBLtNDD2JTlUz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,23 +99,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Sat, Nov 07, 2026 at 12:31:18PM +0800, Muchun Song wrote:
-> vmemmap_populate_compound_pages() is no longer used outside
-> radix_pgtable.c.
-> 
-> Make it static and drop the unused dev_pagemap argument from
-> its only remaining caller to simplify the code.
-> 
-> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
-> Acked-by: Qi Zheng <qi.zheng@linux.dev>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Thank you for your contribution! Sashiko AI review found no new issues
+in this patch, but noticed 1 related pre-existing issue it does not
+introduce:
+- [High] mm: livelock in throttle_direct_reclaim() [1]
+--
 
-Reviewed-by: Oscar Salvador (SUSE) <osalvador@kernel.org>
+commit 577a3c6c5ce30c67e4a789965d099d1ca4f2b341
+Author: Joshua Hahn <joshua.hahnjy@gmail.com>
 
- 
+mm/vmscan: consolidate promo vs. high watermark checks
 
--- 
-Oscar Salvador
-SUSE Labs
+This commit introduces kswapd_wmark_pages() to consolidate the promo vs.
+high watermark selection in should_abort_scan() and pgdat_balanced().
+
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index 071a6eaef1a1a..97c5843e14f15 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+[ ... ]
+> @@ -6966,10 +6973,7 @@ static bool pgdat_balanced(pg_data_t *pgdat, int o=
+rder, int highest_zoneidx)
+>  		enum zone_stat_item item;
+>  		unsigned long free_pages;
+> =20
+> -		if (sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING)
+> -			mark =3D promo_wmark_pages(zone);
+> -		else
+> -			mark =3D high_wmark_pages(zone);
+> +		mark =3D kswapd_wmark_pages(zone);
+
+[Severity: High]
+This problem wasn't introduced by this patch, but can pgdat_balanced()
+livelock with allow_direct_reclaim() in throttle_direct_reclaim()
+[1] when a lower zone such as DMA has free pages above its watermark
+but no reclaimable pages while higher zones are exhausted?
+
+allow_direct_reclaim() skips zones that have free pages but no reclaimable
+pages:
+
+mm/vmscan.c:allow_direct_reclaim() {
+    ...
+	for_each_managed_zone_pgdat(zone, pgdat, i, ZONE_NORMAL) {
+		if (!zone_reclaimable_pages(zone) &&
+		    zone_page_state_snapshot(zone, NR_FREE_PAGES))
+			continue;
+    ...
+}
+
+When all other zones are exhausted, allow_direct_reclaim() returns false
+and throttle_direct_reclaim() wakes kswapd and sleeps on
+pgdat->reclaim_wait.  However, pgdat_balanced() does not skip that zone,
+sees its watermark satisfied, and returns true.  balance_pgdat() then exits
+without reclaiming or incrementing pgdat->kswapd_failures, so
+kswapd_test_hopeless() never triggers and direct reclaimers and kswapd
+wake each other in a tight loop.
+
+[1] https://sashiko.dev/#/bug/linux-b88b79bf-7e7f-40df-b7e7-7afea197c220
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106172620.3181=
+13-1-joshua.hahnjy@gmail.com?part=3D1
 
