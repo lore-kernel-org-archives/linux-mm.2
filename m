@@ -1,79 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0C2606A32F
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 18:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824E6606A32E
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 18:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C1sYa023
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R2iMOotS
 Received: by kanga.kvack.org (Postfix)
-	id 94F1C6B05BE; Sat,  7 Nov 2026 13:20:16 -0500 (EST)
+	id 661906B05B0; Sat,  7 Nov 2026 13:29:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 90EA36B05BF; Sat,  7 Nov 2026 13:20:16 -0500 (EST)
+	id 638446B05B1; Sat,  7 Nov 2026 13:29:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FF5D6B05C0; Sat,  7 Nov 2026 13:20:16 -0500 (EST)
+	id 54E296B05B2; Sat,  7 Nov 2026 13:29:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 527B16B05BE
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 13:20:16 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CE0A71C3788
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 18:20:15 +0000 (UTC)
-X-FDA: 85409137590.11.79478BA
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 08E511C0006
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 18:20:13 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C1sYa023;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 2932B6B05B0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 13:29:01 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A73C01C399D
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 18:29:00 +0000 (UTC)
+X-FDA: 85409159640.20.9CCCAFF
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id E4ACDC0009
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 18:28:58 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R2iMOotS;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794075614;
-	b=FClwbIXwdKvSaqL5IOjTavXawqcVWPeBgKpmPRQy4j5N/nDY6XZ59EhyZBhP9/7qqNcmvH
-	gWOKeFOzHrrcfOE13TLU1pndIEq3jGcn/4Pg3IKAKzl3B5IZcNPxfRyB+hb3ODSfO91Ulo
-	HQxwDpzYgH3//wY5/wii1KmWqsLvwnY=
+	t=1794076139;
+	b=Ms7+2etmCN9WHG/vx9rxLXPtgeupjhPQiPmc92n4voGwiHi+8ncSA56Mp7H3ZZR7C+8vSJ
+	q+N4k056PuG6HZy0kpPT72acAPxFekiVqfRZZ4D5RFOadnS9DdiGewir9KZnz5FgtZHtP2
+	pJBIu19/u5HPvUpxiVhIvLQtDE639FA=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C1sYa023;
-	spf=pass (imf20.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R2iMOotS;
+	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794075614;
+	s=arc-20220608; t=1794076139;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1pjnHje6Qb1kHlz8WaN4eNa2MT/clIj+haAeBAgYG+k=;
-	b=X+u73dkYdFd57u3EKTTdiLgsGQjQQGcOQOxfPK7yY+WZH/AAh0jlNUjLJCV0sSH5YLbXVK
-	mp5uingyEV3MtRBlGUISG9hhuJBOawfdqmXfcNvBMFEWZ/MOoZMCBisLr/v13VoYUsRG+z
-	Zk4VIUZsfCly3+krWGlBG4gxoqD4ibw=
+	bh=LGXiagM08efezuBP0xqW/LWFMWkLtnvBGQDX5/wtC+c=;
+	b=iQK894hvyGxS1gTjRw2vvFLjcKYa0a9lwema7I/GNho27b6PssBnxRBHODbCHTG/7amrtU
+	Cd8UECeeYqdcUrwTywGbZQkMSycE3ZmSuhBgLinQcuT22P3V9ikQThs0Y+CIYHsLH1VqrG
+	uPL2JIDsjoB59BQlocHRG9Qv+8N+vgg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F3DC7412C7;
-	Sat,  7 Nov 2026 18:20:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0C21F0089F;
-	Sat,  7 Nov 2026 18:20:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 65D1560D29;
+	Sat,  7 Nov 2026 18:28:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D470E1F0089F;
+	Sat,  7 Nov 2026 18:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794075612;
-	bh=1pjnHje6Qb1kHlz8WaN4eNa2MT/clIj+haAeBAgYG+k=;
+	s=k20260515; t=1794076138;
+	bh=LGXiagM08efezuBP0xqW/LWFMWkLtnvBGQDX5/wtC+c=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=C1sYa023IOebqDzktccEL/GnqdyMhlnIn18DNUC1Sgtp9yv+XhSCgYpBawdgnNPGJ
-	 1jmy08jxGm7xQR2DKYEEO9QPKbm2XQU3r1B6N5nBPd4HMWoU+CLSk9mGC3982NUaYj
-	 0WEc5R8QPvn/ArI2m14ey2IbiN5/k/GUKWBYoD7IV96S6YDdd3ctTYzroOtVACDTPn
-	 kCLsaKsYERXgamn3Tv2at/jQX1x0iPX4Pp8A4dLYVt25eXkKVSqioBAPcwYkpQgKy4
-	 PHJHTdaktocbt0gsWvH+P9L7jyt0OWP9th65AJD+QgiWizezgsGd0MHJDlQm91ilHr
-	 mScwirajJmJQQ==
-Message-ID: <af5ad990-bae9-4bdf-9109-1ac3e6c15e94@kernel.org>
-Date: Sat, 7 Nov 2026 19:20:03 +0100
+	b=R2iMOotSWuMMp0zdiocBhZWgrhbOFsljXCobnGesOH928+4b8x7OsbirJGbK6yFPX
+	 P1mRQohKBoRMhQKipTAc8TLbxy7w8kmtFWlMDcuPoTdQesRUKWRFUMB59lztDosB03
+	 9SvcV5/mn+eiAmCSL+hJg8JvV0QqMewL8pkc2youW0meQ7q9bkTUzeUmbr5Hu/89eI
+	 CSZk3GhFzAdvUm1CThHixQqnCr4RJ21hml49I8uRWv6VSRV63SDXS3p3bCq/ODycms
+	 BisJx6CmkKoqCPxkihUKimKOMforiCovpqvg10EtQhHoM+gYwz9u4RA+qsfFWfGcj+
+	 0oZtjGDmlHkuw==
+Message-ID: <899b1b2b-4f6c-45e2-abd6-a333ac77b23b@kernel.org>
+Date: Sat, 7 Nov 2026 19:28:50 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/migrate: fix softlockup in do_pages_move() with huge
- page arrays
-To: shao.mingyin@zte.com.cn, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261107213856462Jx8pIdgdtLvPLfOFTwV4X@zte.com.cn>
+Subject: Re: [PATCH resend] ksm: add merge_only_zero_pages to merge only empty
+ anonymous pages
+To: xu.xin@linux.dev, Andrew Morton <akpm@linux-foundation.org>,
+ Jonathan Corbet <corbet@lwn.net>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>,
+ Lorenzo Stoakes <lstoakes@gmail.com>,
+ "Liam R . Howlett" <liam.howlett@oracle.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, Huan Yang <link@vivo.com>,
+ Wang Xiao <xiao.wang@vivo.com>
+References: <20261106034841.233085-1-xu.xin@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -120,21 +122,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261107213856462Jx8pIdgdtLvPLfOFTwV4X@zte.com.cn>
+In-Reply-To: <20261106034841.233085-1-xu.xin@linux.dev>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 3nqyupigsgc65pseq6rick7mwdne6y5f
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 08E511C0006
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794075613-607418
-X-HE-Meta: U2FsdGVkX181K529rr3fhCBxxcfVLQpNL28qT6sME1B+m654Z5YAzMqSLyFIGWYsGzxiXqWtH81gY59+f3bB0BLirsC6TIHNKbsZsB2/5Rq15spE1vPzIEMkq68YyN7q5+8Zh+dKksXG5KlR6n7znic9z20IYriAl/SUbPpOpfp49QTiNYb25EP9+4LXWZ1O4lLFbPk8qVxxMiqjvEE5jgHz8KGip5lfDDKlO/fhWmUcmT1SPMvjySqb9upEvs8MvW3PAibsoB4h5O9BynLJBNB0+NoYWlFKki/Yg2TFUrwuhYUYeZqrl3RHKCjw4XbiXJ9iSMh64kTfgHG1/3DLTQSCM2zxbgehjXV12FFnurQr+/1SKvyC/T5jwVQfy4BXjz+IhdYzlc0eL4pU+aaPDBBlro5Yok4HO7kAGqcOt2HIeHorS+GZMym8RKHjPfvzvthsU0+A5PIpMXm7CAhy5RTyDVzOaEdNTlEgyoC2U8xEa5YytHbuG168DcN6Npx5uKDeJqlDKhhtCCNdVvqmVanIGq/miYqMjfL0hRtj7HLhnylrSlHytVjr6KpZ0lxBt4a6OwmhwP1Twy3DlP/jmZrIqq8yTDHYBxAd7HfyMcmMo6hJmAcBAGDwzLt7iW4NWN1Sz9SRuwv/7lLRE1KozsDoKqeWgfkNtqwDvC80Y2GqZK10Gyk6OKQdDoac+R7LZhPu+DAWvjz+hL6YmpKmc2sBS9AHoNxTZjBdgTVNYP4kjSXWgVhakGZOfTkw7SBi+BUF3ELudhJPru2cFXy/M08sYwB/eEwwXMBtCsFeNIvQv3agIVHXgbGv/jdQ6sGhfOezGX1tu/S4OrrP0d5CIaMVsVPwblnYk/j5dgacOpmoKEA/0G8eNOef0I8XLEvbwSWdE8dPhH3RakMZ2RQW3FySsMr/XT5niOcADzA/w5D9UBoAa4JzdVJUbXBp9+DL1k3u4kyIa6OjxMgRIRR
- U2ZEmY16
- VVeJyXsWup/lF53qSbqRpPW5uKmR/K1RESjuaPvK4RT+SLRbRl8OF/XRDUlCTUOph6ceA5hj+X++ZG0tJFzxvxcH7Mybr6VwVI3N58maWi7Z9LEYpE1pNXrutDbJNl2OnbJTe9ciIsaulJvVD3UdwSrFH3t3c9JwTFVBzUOMtlKH9y3udnE3wQUkevSY3zZGhy/ip8ux6QUQcLJRIc5azvSs3i8kbCHnwe2Deh71gYyJONu8EU+qrAYNxO9z4lWT3/8df4gMtBft1FUOflBon23IaPXK7uf1AwOfgTA0w/bObD7vFwuDTrG0yvzPVXhnuFh96zE02fo/XCFwtMry8ZAetc3/6wmiCUZ+qYo/96YibWsq9mEpV67qLnfI4yO90aHyCcXsxBNhoDZSJCoaY8F+WL2qV7Yuo5wibidRg6/UW82UD8RxK824rAVEaewT5Ke7Y
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E4ACDC0009
+X-Stat-Signature: iw6hnp9o7hsqxc6w1yswdjjp1oio8amy
+X-Rspam-User: 
+X-HE-Tag: 1794076138-609191
+X-HE-Meta: U2FsdGVkX1/9J78n/PCCeK6sr9i1I70Pe05npEvrB+DuC7dKlVjTuuO1iZ8+0Fk18XG/VbcQ/FFRe7+eAd8YgElazrP+gN6VVgWbfgxgb9WvWe0I6PoFr985qAJlNPwpo17XuHfdcwORTW7tlXGVrLUK6Nnbozx+tCA0gQHjYE80FDC1fb22t+IZ9ur+4pRhECS4v2COARasJCNJFDejsXUW+6P1Ecbor/zxY+/IsvjyaMdt1V+vmxY+Ecdu2CfW9lHEDZ0B0ic8rBjaxtVgDqWah7PmK6uCsPR6tjIXS0RrFkfDrYgOtJZMpFC0b4OPrpHR3Sh7X/7zRt4a6NmOQ2joh3MW8Y/cl08CLfc7oxxsZ5TCJgVv4ymWa8jcdWGAyGdu16GJzMwwmaPp1bpCSCD7QiLPq17xYN19FQzV6EEDNascFkJjwsfuEFh7K3n80DMnor7U6mZZ59NSrLeujkOmntqi4ndCPK1DYXNhMfzuvMZU5GeCWLW2iLq70CXC6yc3z5thbCwOouutdq4rUrE9nqdOSRH5sgFZcV+n2HWTEnJw8vNHY7djPPZIVattDNiQrzxX5Qxn/RO5wVlTrFMSucc7Ewu69YicGA+/1UEu1os6CvCxVDduuzQQfHxUE3cZAuVSNkp99zA6ynWZo4EWQM2dVrxh31BP7WR0aGyUoW79iiYzjXV5aT0QajZD+XT4izpBrYKFTv+Jcr338Oy38fVF8N7s0f9Hs4B+JmJLc6lGn7AreFMULKQdDXhsfeY0w1ssMdmUybb4mXmcoXTEIPiu4fynlF6kMfUAleSM+/rpV2F1Jxzfqc0VkpAFElWwbaYpK1T6bSjtFs/shSiqfWmK0eNVh6cu9X11/O9Vb44IoSoyQid1rTMI5uszRfv7+QGAiAz2W9hTQsjnJDHUrOC9hTDdX0PtAfsDgJv/QVLdsikFCaAGxF2JmDmVxyr/Fx1Ye6vDWldXLP/
+ 218sMwHc
+ a5RNCkC+L2ebLyG0HoUm5TVO2vhnmr6XABxNVEU4QLdgl9HV7zwKKIF5hfjY9trxEonfSp/pOOaolQtYj3zOAfEmAdCIN27MrFEcBLtc7RnaKcQuh5HiknSajXw2CNkVtrfUMKDskYLK2KqSyLBI/V/xJHCBmMROvgPHNxH81W1mtRSFOhVPVjnrCGF53CIIKse40X6Uxg1gbIX7gtUjAUfkdxl9MV1GpH7hsRb154bbrIokl/HaYj7cH7kd+6kG72+pxBHQH2Nncbl7+Rz2Mr2rfvfubhrRmzJHgyPQdA0mLj9vcJY3lKBxw1wFkNICbszzBFwRRNuXEM9I=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,29 +145,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/7/26 14:38, shao.mingyin@zte.com.cn wrote:
-> From: Shao Mingyin <shao.mingyin@zte.com.cn>
+On 11/6/26 04:48, xu.xin@linux.dev wrote:
+> From: "Xu Xin (vivo)" <xu.xin@linux.dev>
 > 
-> mm/migrate: fix softlockup in do_pages_move() with huge page arrays
+> Add a new sysfs attribute, /sys/kernel/mm/ksm/merge_only_zero_pages,
+> which, when enabled, makes ksmd merge only empty (zeroed) anonymous
+> pages with the kernel zero page and skip the stable and unstable trees
+> entirely for pages that carry data.
 > 
-> do_pages_move() walks the user page array one page at a time.  For each
-> entry it performs two get_user() calls, an mmap_read_lock()/unlock()
-> around a folio walk, and an optional store_status(); none of them has to
-> sleep when the arrays stay resident and the rwsem is uncontended.
-> move_pages_and_store_status() returns early while the page list is
-> empty, so an array whose entries all resolve to the same node can run
-> the whole loop without any scheduling point.  nr_pages comes straight
-> from move_pages(), so a huge array can hold a CPU past the watchdog
-> threshold on a non-preemptible kernel; with KASAN and function tracing
-> enabled, ten million entries can exceed it.
+> The attribute requires use_zero_pages to be 1, and the two are kept
+> consistent by symmetric constraints: it cannot be enabled while
+> use_zero_pages is 0 (-EINVAL), and use_zero_pages cannot be turned
+> off while it is active (-EBUSY). The new attribute can be changed at
+> any time and is only effective for pages merged after the change.
 > 
-> Add cond_resched() so that long calls yield periodically.
-> do_pages_stat() has the same problem and is being fixed separately.  In
-> current mainline only alpha, hexagon and classic m68k can still select
-> PREEMPT_NONE, and they cannot enable CONFIG_NUMA, so this mainly
-> targets pre-v7.0 stable kernels.
+> Benefits in three aspects
+> =========================
+> - Memory saving:
+>   On memory-constrained systems such as Android and embedded devices,
+>   zero-filled anonymous pages are the largest source of duplicate
+>   anonymous memory. They are produced by userspace allocators: the
+>   zeroing of freshly allocated Java objects and buffers in the ART heap
+>   (new byte[]/int[], Bitmap buffers), calloc/memset in native code, and
+>   preallocated media buffers. Merging them with the kernel zero page
+>   frees a significant amount of physical memory, which matters as DRAM
+>   costs keep rising. With this enabled, we measured 100MB–300MB saving
+>   tested with several popular applications on aarch64 (Android).
+> 
+> - CPU overhead reduction:
+>   Merging only zero pages also reduces the overhead of ksmd. A page that
+>   is not merged with the zero page carries data and can never be merged
+>   with the zero page, so there is no point in searching the stable tree
+>   or inserting it into the unstable tree for it. Skipping those tree
+>   operations for data-bearing pages reduces both the CPU time and the
+>   rhashtable memory footprint of ksmd, which makes zero page merging
+>   practical on low-resource devices where full KSM scanning would be too
+>   expensive.
+> 
+> - Security:
+>   Finally, this shrinks the KSM side-channel attack surface: only zero
+>   pages are ever merged, so the sharing status of data-bearing pages is
+>   no longer observable through KSM timing side channels.
 
-Please share a real kernel splat from a real system.
+Lol. Did you come up with that or an LLM :)
+
+> 
+> Note
+> =====
+> - Suitable for Android, embedded and low-memory devices, where zero-page
+>   deduplication is wanted but full KSM scanning is too costly, and reduced
+>   KSM side-channel exposure is desired. Many handset vendors may prefer
+>   this knob, which can be used as a default fallback policy.
+> 
+> - Not suitable for server and virtualization workloads containing many
+>   non-zero duplicate pages, where vanilla KSM provides better memory
+>   savings.
+
+I proposed something similar when I was still at RH. My concern back then was
+that we don't want/need all of the stable/unstable trees.
+
+IIUC that's all still in place in your implementation, right?
 
 -- 
 Cheers,
