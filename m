@@ -1,129 +1,126 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F4B606A339
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 01:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D49B606A32E
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 02:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HhPUsSs7
+	dkim=pass (2048-bit key, unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=Bk1gJL/Q
 Received: by kanga.kvack.org (Postfix)
-	id 376706B05B0; Fri,  6 Nov 2026 20:41:19 -0500 (EST)
+	id 5F8576B05B0; Fri,  6 Nov 2026 21:29:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 34E136B05B1; Fri,  6 Nov 2026 20:41:19 -0500 (EST)
+	id 5A7B86B05B1; Fri,  6 Nov 2026 21:29:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 264546B05B2; Fri,  6 Nov 2026 20:41:19 -0500 (EST)
+	id 46F946B05B2; Fri,  6 Nov 2026 21:29:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E48206B05B0
-	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 20:41:18 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 5AAEDC025E
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 01:41:18 +0000 (UTC)
-X-FDA: 85406620236.19.8AAD872
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	by imf18.hostedemail.com (Postfix) with ESMTP id D9F121C0006
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 01:41:14 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HhPUsSs7;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794015676;
-	b=dhP/d4OJ6xXQ9e5DWvDgY42kCqJ7D+xuIsvNYUYRLYiIxmmL8/uAeGDtzPxOHqQyjbzYed
-	OkKYUoamwpoDiDg5HomofUvGCnCi9EuUC0KWnvn0wmE5w+rEqohVSFGXuA+OFQ1Gi2Ehzy
-	3YvTbAYbJ86h+/4fx+e8supV28GAdUk=
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0FC676B05B0
+	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 21:29:16 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9403C16027A
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:29:15 +0000 (UTC)
+X-FDA: 85406741070.07.A796517
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 2FA0A1A0002
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:29:12 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="Bk1gJL/Q";
+	spf=pass (imf19.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794015676;
+	s=arc-20220608; t=1794018554;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lbyGC7nA73pUh7TjmjuuNPaVYbK+A9mHJCPy/Ni7H2c=;
-	b=KwSX2OFRo2Z4bpFn1CTZjAcS5m2Nrz+Z1K+uPhpZq+umaaC4YLKOBuOfzNgkjBOO+I91dj
-	/uIPrhR6ndWpk4/zDsH9XVUFva9jWb7fwcIJXdL34gqDGL3wIyseapsbVZ+evApk3yR/5N
-	mqCebPz8l1YKHt5w9fINCEDtc4PfwdU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=7sMnTr3y994wfcbimt+l9yBgD/ZKDtjQNzqbWZRRBzE=;
+	b=S998AQuxAir+4qa1/BTBr56V6OM+GSxmApoVEo0WrLZkZNAm49Ehb7of4eGMs+9FbRQG3A
+	qgEDZeRZjrp2x/FZMd0yWCnBIr7oCyb5h8GCLzpWbEOF8FT4GEydMGgDnvcZDOkShuHfat
+	9QiLCisZNolbo3T80FU3SJg/HLhRsJ8=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=HhPUsSs7;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf18.hostedemail.com: domain of lkp@intel.com designates 192.198.163.11 as permitted sender) smtp.mailfrom=lkp@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794015675; x=1825551675;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=aTkvPzAbJN4jNBu0r57eQZHavSgwUMEEjEAJtxIPKcM=;
-  b=HhPUsSs7skLtvLAqVaTnY2N+lzE6m90VEo9hzZn1s5fEltHHm/vWCBsc
-   VgvoMJrRRT7dewF6D972uvTob8DC+QDRHzgcJls5VbXcN0IKEuIkrscmC
-   Uq0ybEuknmbpc9RDrA6c8/srvJNR5tZ1jP6a02mrLheGiURgcODYS51vv
-   JwCQpvXPiTKWR6Hp+Q98PQXe1xE1RlyU9g0GLeqy9NwMmj9Ml2vQegU0u
-   xXxtQxmHbFLikvKPwFZrioFWRhMFQH0hT0OBHEeO8YpM+U8cdEQU5U2Gn
-   Jimd0vGbQibmERN+fodjoAhnho1LCFl5tCLwzl8vuv6ekX7fqn8s+hZ4+
-   A==;
-X-CSE-ConnectionGUID: Pm9oNLRJQbaMKtUbF2UY2Q==
-X-CSE-MsgGUID: ti9x0c5TQ2SN5mT0jc63LQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11958"; a="2751744"
-X-IronPort-AV: E=Sophos;i="6.27,199,1787036400"; 
-   d="scan'208";a="2751744"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2026 17:41:13 -0800
-X-CSE-ConnectionGUID: S7ZRecPUTOGgMLkqtEZAag==
-X-CSE-MsgGUID: 4WSfGiz3TyO7e25/Mxp73g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,199,1787036400"; 
-   d="scan'208";a="7567877"
-Received: from lkp-server01.sh.intel.com (HELO 0caa9d2d175c) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 06 Nov 2026 17:41:06 -0800
-Received: from kbuild by 0caa9d2d175c with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1xPVQV-00000000qCZ-0KhF;
-	Sat, 07 Nov 2026 01:41:03 +0000
-Date: Sat, 7 Nov 2026 09:40:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Michal Wilczynski <m.wilczynski@samsung.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org
-Subject: Re: [PATCH v2 10/15] lib/lz4: switch the compressor to the vendored
- sources
-Message-ID: <202611070943.EDg3udaH-lkp@intel.com>
-References: <20261106-lz4-vendor-upstream-v2-10-ee04c3f0d7dc@samsung.com>
+	imf19.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b="Bk1gJL/Q";
+	spf=pass (imf19.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.177 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794018554;
+	b=2mPcrRpjWiCfYO8FrUeaYKEYySyToPMoI3qVZWdjtPxXtXr7J6xxtX6B+6+ZDY84RCBaLU
+	eJJgYY8S8A63WhBVVpI4Hk5FblWXDL0E16eQrS/eUOsP1c98nDT6rU2hAhXDekqd5kCa/O
+	M1y8V/k4J7HWztXKfBX2I0aRdKTRPy0=
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-3712b6d9843so36621eec.1
+        for <linux-mm@kvack.org>; Fri, 06 Nov 2026 18:29:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1794018551; x=1794623351; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=7sMnTr3y994wfcbimt+l9yBgD/ZKDtjQNzqbWZRRBzE=;
+        b=Bk1gJL/QqTA/LQL58dCwhW5HN2P7wSD5yBKM+t5uwtA4xL/rnfsY9EaPd+CBMDVp55
+         LTfd5pq2rIZoPCYs6xBPSOQBpEvlGMX0LDIDHbhcwijtpDa+uNJ0tPcCu//M3LFEYBEs
+         ZCP1pGLEwt5EqcG5x6FlIdi07qujsY1JewjHXl42IEB+DmHQS+a0mj/2TiiJ8Vnud4nz
+         luU41s83BLY1zUxsFvUf0Cmr6bY8dt3WLruH6AZjd+J81RY3sBZ8bBarB/cearg49PlV
+         9f+ZN31Z4fCzyYhLz2kgP5wEZQ0tngruZ2XWLnBciq8tWSTpDVmZhn0Z2IrZmqNMdsOv
+         rxXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794018551; x=1794623351;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=7sMnTr3y994wfcbimt+l9yBgD/ZKDtjQNzqbWZRRBzE=;
+        b=ZCSoZMY1SSxzF811qUr1ByCFsUWWxOxz/rMKbDN+uJ4vIfNWz6w4qhSvRuel2rojLN
+         E6xQiyyViIaaImCtbxVgIETc7UIPDVAXO4qcrJFYLjBGjs3eWCVVcoGGxHzIMWlKCTkC
+         EpfN0/9XteKofxt1D4KBysoH6U0QOOvIaXWhj49ns2Suq17pakZokKl3zXCcVE3Q6lN5
+         YOg7s7JwLBNIByP7L35GzPGEoD2NeNyRXEavd1CBNXXhsIpZxSTlHEHDVxbYeLBV9McZ
+         gtLcJI0iTIIIXFv0b9SwNqtWg5d4Y03oA37wB9OUlma9aBWE4zryupiw5VC/Z3iExn36
+         NBhg==
+X-Forwarded-Encrypted: i=1; AL+hErHFBmqAN6vSbBa1v+twR7OwtiRzh9WrW1P44POuD2tGfQ720y/oiScERX+tisPX3t2+2fsKKnI2tw==@kvack.org
+X-Gm-Message-State: APuU4Z+FujMeVQEf0OHwlYymuB946WTFVudGyJjt7EwrXcGs9CcqUrzB
+	UDWDpAQob8R4reqRK8wgz6iJtrLv+ZmK4IBZDgT0wWRBh6inY9rpmwF3GTawE80jTV0=
+X-Gm-Gg: AYBFou0Y63ptBsUV4MBIZxkVwxdPnhFVd7nMfPSblCcxcWbdusF8Jn3sSsdx4p5nIPI
+	hhvn4Z1ECbxtGHuVXvutJvdezFv1g/1srMz1kO5IJdXrFJkDcHITrlQAa9Uz9EtQPmdlTm5Qlzs
+	ItXJQJmBhcZvZUL3NJBtNc5UrtLagN+Wsr0JeOGUQUg6gJNuhJLkChdk+BLoYtETQ5gAYX+AlYs
+	6vO3ygmMXt37d34Cp/Mx1Nwgx09uVIrzM1vwS4L02bNPxE8dWZw5i6cpOAzUpKYLQPSTox819T3
+	17jZBRevPAbX5PIRF6UVZyfjzXwXzemXM3SIWCGRoVQ2nEWQ/X0r+f9hxlkD3EiTlR/yba8Kg7/
+	c7pVeJTKKvWukv4HaHYyqoGlKlFgwj3Xhnr/kK7Skleh4684B5e0c2RgiJGKf/ACuZX2GM5AlK7
+	kOl3UhDVF6OjCAFILs8hxK4KCFvqfd8Zkhb4HRIsD8gpN0WH6IhCKzTvokAq7t2Okv3nwTJzKHn
+	kepstEuu+2zysI/aDWU21m+ua8KRGKlPqm61DDOdyBR3WljntRowe/KRKsohbiu0TwJNT0XKCqJ
+	NoLxNI8AA7ulf8Om5iCKhQ6ra92RwLHfTFoB5+btbS3MAQiXbhdti9GUz5vR
+X-Received: by 2002:a05:693c:88cd:20b0:370:1333:5e84 with SMTP id 5a478bee46e88-37013335ee3mr3852383eec.11.1794018550307;
+        Fri, 06 Nov 2026 18:29:10 -0800 (PST)
+Received: from G6L4RL2QG9 ([2409:8a00:1832:6900:c8de:13da:804b:a0fa])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36faa4b8aacsm10457077eec.23.2026.11.06.18.29.05
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 06 Nov 2026 18:29:09 -0800 (PST)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Oscar Salvador <osalvador@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: Qi Zheng <qi.zheng@linux.dev>,
+	Lance Yang <lance.yang@linux.dev>,
+	James Houghton <jthoughton@google.com>,
+	David Hildenbrand <david@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Yili Zhang <zhangyili01@baidu.com>,
+	Kiryl Shutsemau <kas@kernel.org>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH v4 00/13] mm: Decouple folio-based vmemmap optimization from HugeTLB
+Date: Sat,  7 Nov 2026 10:27:43 +0800
+Message-ID: <20261107022756.77731-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106-lz4-vendor-upstream-v2-10-ee04c3f0d7dc@samsung.com>
-X-Rspamd-Queue-Id: D9F121C0006
-X-Stat-Signature: ftdisk64nnxkwzw1mgpzu7uyuwmnayeb
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspam-User:
-X-Rspamd-Server: rspam12
-X-HE-Tag: 1794015674-353980
-X-HE-Meta: U2FsdGVkX1+/1pkQ/23S3UxT2dnCjFRHPhFNIbOLrgfmVyX0a5LHrFzQTs4EovXaTE4la5nMiFGWMu+lLrZGRwlpMpYC5BhipkswY6cu32dOsS7BVJ0NbhuzOlEulyshNlwynsqE3ChU2glz9Xy94hcuUYGnacAvjBqjaT0JmxEdd6z4fO5X7yu94fL3E5HWcSjk+exZ7vOubgPeOm5WM/m0ESxawuCTtulTAsylUAOKmKRxXC9Sf5/BJdjTEFqZX84arYTzdpr796H/lCAKJa71yM9NVea42xCZmn10ffIYo7Uddw3K/LW9l3YVUaKcNJE5doFdDzuUzcpI1Sbo/u6FGxdAOSTJ5+10QwYWed+BupOzXcbwXENdi6QCuN0HYWzTyalvKYWQAyWAZQovcre/fyJrk6linJEr/fm6PCIN0tdRPHdvIUF1IAhqUBq2ebk0U6Wr4KAKCW9tHQn+wNAs78iAtlPaEoxkqH8HtkUms94FVbdGQb9enOd6ABWIHtVRcICUieJQAPq/jiojEEKg7i5VXj3pi6Dd5YBU0DI3cNyGr2q4oR8y3jQi249cSuRYGdNdBlGPLCPBC6bmfZLC+wxS1cWwJ8p+2EZ0LToM0RL7y2Ud5i99LiDD7RsS7XAjP1iBpIv9noyiiJmpbB4Iy6TkQ/Z40QEHJeCdLeb/k0wdrv9kLueXqcKW53itnB+NqF2xq+SXx9I3gU8hD3SJccd2L/b9H/XO/r9wQJuO3qToZM4ArcxNhiYOpwLWbA2JTfFzWotwypZKY0SOVki2Jh7mKgpSfxuzhlQ3pJhbU6WeH6uGekXd6NRo8oWJpvWmieRX7qqN2eyUDRY6mXQVrFWg8N7O29KfXXMTy3msPg1nLgBpnhubf3UP5xyfaz57OB55iBVQCDUrJctPwSgkEj/3L14+UAqgTKgOkCTNx8ks5nwieHXb9sM3TbY+Fc2jLFVIy8rsAk8dJ6L
- bFwohltH
- 2NDqg5Hh1wERlQICWHJUS1Q3fEWHNDMmaEtTx8yc/dS254IQDTa2uylJiQamAxn5uqWQ9LPLMM8kV1hkR7CWP8iYeyN5smkE1Az8c2S2O2ne9lRdstTHy/V4cbWI7PGBVdRt2hQJBbN2uBHm4JAa9gGneyt4qcFXckrdIGCIglIX9a1+Cn2R3oyXlOQsr9Glw14LBdkabCi2bdJZnVja6W04ac/CKuFIZbrQ2J8Nype4XMtVJ/2vJ2c84y3C3LSOH+H5hoKrGIoRLV59tTcnBvCkwnSST3G3Zu9McRxp1uQdnKm8W3fVKlC5cDETemcub0s49kiJsdPYPaFGwrKEccQZCu8GIqVrXt1wHG7khNFgdVus7WymIbuoiG//tAC+qtqvGAJPWdUmf07ZphXYIAjgzcw==
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: qhegbknjtuj4gmjueymxfi4bfp9qurra
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 2FA0A1A0002
+X-HE-Tag: 1794018552-379766
+X-HE-Meta: U2FsdGVkX18exhUlVBlI/7uB9HGn/H/SRaQJTjFpWYnBeMEPnhPEdmdNpTpOjN3VLm2iMivOswcND2YCQYXPgZFikEzQ5XJSLSVj/deycypwNqQNh28lcqeJXF3hJBV6vvxj1WKVhjj/Z8OEs+jhOghknu64KKsE8eLRZQYnD2xUjMV2YGFtcwpwRMrz9UvF3afzCzxX0BlUNWJnY+8YudZGs6uCXFWin6F/o332xCZmZrAMJ+ljqxf4SfC1u3PcFkiC/lFc8bm0VrpRdlWCjWo1q0H5XNcytBYFosXkkLXPRR3y9MrxUbQzMc9qzVmhmsC2UhkkTcq8be4dcOXU6tmyO8W+UXRwXAPWfNe23BVg7nuWOLCbcHN10um+uvkxoPc/izAx6gxj1i/rnyXlSfrWL3N8O09ZlGi5+Re3L+UqQ1BcYu/OcgYkW0eoy7WWr1HT46swDqeK+5EGQNtwj69z6gZXP+kn8ZHqN0ZtWvXSqEXJd7K3+CHC9UD/HxmMmdMAhCBsPOe4hsmrhg4MWn+PduWIxInjNqcDwKxJeGNioAC93Ljx0enbcCxCobx3VPZmFkq4AHKSgSoRPTimd2JkkefPMGE7C3dZJLPAyktayG5Z0Sn1D6t62K+fFl0x+xhUdlzLt9KKJgY7Ato8dWX6JuMX1jXNrKimhSczZhelMUIKhBzOZOHfCvCF4bnNV7ty8TxyIAiJCwP3GOnA+YyfCq4q4VbObpBpO7d7SkUrkXySi/NJpU8cpS/GqA1Uog2AIWcMU5lRNRA5SVGMpWhfokgNXSgA9ugTPC3XFSeTKmKe4nF1i4DEfKC+HcSSgYnORGuRMhP6bmskYpXQzuo5DuPFuf6TjkdgXnMZNvbujsG/hwLJ1lW1ggt/F0I0V4sUVnzbzwpBXCIIU1hniw4i3j7kCj1oqegBfPjrmy+FHrQTLalsUZPKRGEf3JOam/zH+eViL7D+ZJj1J5u
+ Bfa0/g2M
+ ndAXYhTXILC8GlNEeB0YSQO8U6ZVw0wA9N7A0atILeTDVey91Nk2KzymOVRg/t2WstIiFguqnrdTN3ulvg4BHZ+AncFl2CLjg0YsQBWcRdgCnDntUJnXypqwcOEFvXJvGMVT+Kb+OMJG3SifRYc2lQKF7WSITwIU5U4uyRS5NobwNqBefdKNfwBLBqleN1bTGceDDEiRrukjoPnMfCKF1GECx8I1+8cdxRY+mEwUR4pV0ET6yhwF3+G0SNo0GS4gwU030/GoYS9h+F76zfEEcB+CZfWls/sRRWH02Ov/t6pIOV5n0iVcOvf5gi2LWWFtLNraNf+6Qh48TiuvolXVLhIKHBw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,232 +129,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Michal,
+Hi,
 
-kernel test robot noticed the following build errors:
+Section-based vmemmap optimization is implemented in sparse-vmemmap.c,
+while folio-based optimization currently lives in hugetlb_vmemmap.c.
+The latter is tightly coupled to HugeTLB-specific state even though the
+underlying page-table remapping operates on one folio at a time.
 
-[auto build test ERROR on 93f51579e7df248780214094418f205253383cc5]
+To make these interfaces easier to maintain, the folio-based remapping
+mechanics first need a boundary that is independent of HugeTLB-specific
+state and raw address ranges. This will allow the mechanics to be moved
+into a common vmemmap optimization layer alongside the section-based
+interface.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Michal-Wilczynski/lib-decompress_unlz4-use-LZ4_decompress_safe_partial-before-boot/20261106-154241
-base:   93f51579e7df248780214094418f205253383cc5
-patch link:    https://lore.kernel.org/r/20261106-lz4-vendor-upstream-v2-10-ee04c3f0d7dc%40samsung.com
-patch subject: [PATCH v2 10/15] lib/lz4: switch the compressor to the vendored sources
-config: arc-allmodconfig (https://download.01.org/0day-ci/archive/20261107/202611070943.EDg3udaH-lkp@intel.com/config)
-compiler: arc-linux-gcc (GCC) 16.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20261107/202611070943.EDg3udaH-lkp@intel.com/reproduce)
+This series establishes that boundary through three folio-oriented
+operations, each with a distinct role:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202611070943.EDg3udaH-lkp@intel.com/
+  - vmemmap_optimize_folio() optimizes the vmemmap backing of a folio;
+  - vmemmap_restore_folio() restores the vmemmap backing of a folio; and
+  - vmemmap_pteify_folio() converts the vmemmap backing of a folio to
+    PTE mappings.
 
-All errors (new ones prefixed by >>):
+Together, these operations encapsulate the address-range calculation and
+remapping mechanics for a folio. HugeTLB wrappers retain policy decisions
+such as eligibility, optimized state, batching and TLB flush handling.
 
-   In file included from include/linux/rcupdate.h:27,
-                    from include/linux/rbtree.h:24,
-                    from include/linux/mm_types.h:11,
-                    from include/linux/mmzone.h:22,
-                    from include/linux/gfp.h:7,
-                    from include/linux/umh.h:4,
-                    from include/linux/kmod.h:9,
-                    from include/linux/module.h:18,
-                    from lib/lz4/lz4_compress.c:29:
-   include/linux/sched.h: In function 'is_percpu_thread':
->> include/linux/sched.h:1860:17: error: 'current' undeclared (first use in this function)
-    1860 |         return (current->flags & PF_NO_SETAFFINITY) &&
-         |                 ^~~~~~~
-   include/linux/sched.h:1860:17: note: each undeclared identifier is reported only once for each function it appears in
-   include/linux/sched.h: In function 'current_restore_flags':
-   include/linux/sched.h:1918:9: error: 'current' undeclared (first use in this function)
-    1918 |         current->flags &= ~flags;
-         |         ^~~~~~~
-   include/linux/sched.h: In function 'set_need_resched_current':
-   include/linux/sched.h:2127:30: error: 'current' undeclared (first use in this function)
-    2127 |         set_tsk_need_resched(current);
-         |                              ^~~~~~~
-   In file included from include/asm-generic/bug.h:7,
-                    from arch/arc/include/asm/bug.h:30,
-                    from include/linux/bug.h:5,
-                    from lib/lz4/lz4_compress.c:27:
-   include/linux/sched.h: In function '__set_task_blocked_on':
-   include/linux/sched.h:2231:27: error: 'current' undeclared (first use in this function)
-    2231 |         WARN_ON_ONCE(p != current);
-         |                           ^~~~~~~
-   include/linux/once_lite.h:28:41: note: in definition of macro 'DO_ONCE_LITE_IF'
-      28 |                 bool __ret_do_once = !!(condition);                     \
-         |                                         ^~~~~~~~~
-   include/linux/sched.h:2231:9: note: in expansion of macro 'WARN_ON_ONCE'
-    2231 |         WARN_ON_ONCE(p != current);
-         |         ^~~~~~~~~~~~
-   In file included from include/linux/nodemask.h:92,
-                    from include/linux/numa.h:6,
-                    from include/linux/cpumask.h:15,
-                    from include/linux/smp.h:13,
-                    from include/linux/interrupt_rc.h:17,
-                    from include/linux/spinlock.h:60,
-                    from include/linux/mmzone.h:8:
-   include/linux/sched.h: In function 'alloc_tag_save':
-   include/linux/sched.h:2361:14: error: 'current' undeclared (first use in this function)
-    2361 |         swap(current->alloc_tag, tag);
-         |              ^~~~~~~
-   include/linux/minmax.h:308:21: note: in definition of macro 'swap'
-     308 |         do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
-         |                     ^
->> include/linux/minmax.h:308:52: error: assignment to 'struct alloc_tag *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
-     308 |         do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
-         |                                                    ^
-   include/linux/sched.h:2361:9: note: in expansion of macro 'swap'
-    2361 |         swap(current->alloc_tag, tag);
-         |         ^~~~
-   include/linux/sched.h: In function 'alloc_tag_restore':
-   include/linux/sched.h:2368:14: error: 'current' undeclared (first use in this function)
-    2368 |         WARN(current->alloc_tag != tag, "current->alloc_tag was changed:\n");
-         |              ^~~~~~~
-   include/asm-generic/bug.h:164:32: note: in definition of macro 'WARN'
-     164 |         int __ret_warn_on = !!(condition);                              \
-         |                                ^~~~~~~~~
-   In file included from <command-line>:
-   include/linux/rcupdate.h: In function 'cond_resched_tasks_rcu_qs':
->> include/linux/rcupdate.h:226:22: error: 'current' undeclared (first use in this function)
-     226 |         rcu_tasks_qs(current, false);
-         |                      ^~~~~~~
-   include/linux/compiler_types.h:682:23: note: in definition of macro '__compiletime_assert'
-     682 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   include/linux/compiler_types.h:702:9: note: in expansion of macro '_compiletime_assert'
-     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:36:9: note: in expansion of macro 'compiletime_assert'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |         ^~~~~~~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:36:28: note: in expansion of macro '__native_word'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |                            ^~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:49:9: note: in expansion of macro 'compiletime_assert_rwonce_type'
-      49 |         compiletime_assert_rwonce_type(x);                              \
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/rcupdate.h:185:35: note: in expansion of macro 'READ_ONCE'
-     185 |                 if (!(preempt) && READ_ONCE((t)->rcu_tasks_holdout))    \
-         |                                   ^~~~~~~~~
-   include/linux/rcupdate.h:197:34: note: in expansion of macro 'rcu_tasks_classic_qs'
-     197 | #define rcu_tasks_qs(t, preempt) rcu_tasks_classic_qs((t), (preempt))
-         |                                  ^~~~~~~~~~~~~~~~~~~~
-   include/linux/rcupdate.h:226:9: note: in expansion of macro 'rcu_tasks_qs'
-     226 |         rcu_tasks_qs(current, false);
-         |         ^~~~~~~~~~~~
-   In file included from include/linux/local_lock.h:5,
-                    from include/linux/mmzone.h:24:
-   include/linux/local_lock_internal.h: In function 'local_lock_acquire':
->> include/linux/local_lock_internal.h:48:20: error: 'current' undeclared (first use in this function)
-      48 |         l->owner = current;
-         |                    ^~~~~~~
-   include/linux/local_lock_internal.h: In function 'local_trylock_acquire':
-   include/linux/local_lock_internal.h:55:20: error: 'current' undeclared (first use in this function)
-      55 |         l->owner = current;
-         |                    ^~~~~~~
-   In file included from include/linux/build_bug.h:5,
-                    from lib/lz4/lz4_deps.h:18,
-                    from lib/lz4/lz4_compress.c:16:
-   include/linux/local_lock_internal.h: In function 'local_lock_release':
-   include/linux/local_lock_internal.h:60:41: error: 'current' undeclared (first use in this function)
-      60 |         DEBUG_LOCKS_WARN_ON(l->owner != current);
-         |                                         ^~~~~~~
-   include/linux/compiler.h:77:45: note: in definition of macro 'unlikely'
-      77 | # define unlikely(x)    __builtin_expect(!!(x), 0)
-         |                                             ^
-   include/linux/local_lock_internal.h:60:9: note: in expansion of macro 'DEBUG_LOCKS_WARN_ON'
-      60 |         DEBUG_LOCKS_WARN_ON(l->owner != current);
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/sched/mm.h: In function 'current_gfp_context':
->> include/linux/sched/mm.h:250:41: error: 'current' undeclared (first use in this function)
-     250 |         unsigned int pflags = READ_ONCE(current->flags);
-         |                                         ^~~~~~~
-   include/linux/compiler_types.h:682:23: note: in definition of macro '__compiletime_assert'
-     682 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   include/linux/compiler_types.h:702:9: note: in expansion of macro '_compiletime_assert'
-     702 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:36:9: note: in expansion of macro 'compiletime_assert'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |         ^~~~~~~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:36:28: note: in expansion of macro '__native_word'
-      36 |         compiletime_assert(__native_word(t) || sizeof(t) == sizeof(long long),  \
-         |                            ^~~~~~~~~~~~~
-   include/asm-generic/rwonce.h:49:9: note: in expansion of macro 'compiletime_assert_rwonce_type'
-      49 |         compiletime_assert_rwonce_type(x);                              \
-         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/sched/mm.h:250:31: note: in expansion of macro 'READ_ONCE'
-     250 |         unsigned int pflags = READ_ONCE(current->flags);
-         |                               ^~~~~~~~~
-   include/linux/sched/mm.h: In function 'memalloc_retry_wait':
-   include/linux/sched.h:170:17: error: 'current' undeclared (first use in this function)
-     170 |                 current->task_state_change = _THIS_IP_;                 \
-         |                 ^~~~~~~
-   include/linux/sched.h:242:17: note: in expansion of macro 'debug_normal_state_change'
-     242 |                 debug_normal_state_change((state_value));               \
-         |                 ^~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/sched/mm.h:293:9: note: in expansion of macro '__set_current_state'
-     293 |         __set_current_state(TASK_UNINTERRUPTIBLE);
-         |         ^~~~~~~~~~~~~~~~~~~
-   In file included from include/linux/xarray.h:21,
-                    from include/linux/radix-tree.h:21,
-                    from include/linux/idr.h:15,
-                    from include/linux/kernfs.h:12,
-                    from include/linux/sysfs.h:16,
-                    from include/linux/kobject.h:20,
-                    from include/linux/module.h:22:
-   include/linux/sched/mm.h: In function 'might_alloc':
-   include/linux/sched/mm.h:319:13: error: 'current' undeclared (first use in this function)
-     319 |         if (current->flags & PF_MEMALLOC)
-         |             ^~~~~~~
-   include/linux/sched/mm.h: In function 'memalloc_flags_save':
-   include/linux/sched/mm.h:334:30: error: 'current' undeclared (first use in this function)
-     334 |         unsigned oldflags = ~current->flags & flags;
-         |                              ^~~~~~~
-   include/linux/sched/mm.h: In function 'memalloc_flags_restore':
-   include/linux/sched/mm.h:341:9: error: 'current' undeclared (first use in this function)
-     341 |         current->flags &= ~flags;
-         |         ^~~~~~~
-   include/linux/sched/mm.h: In function 'set_active_memcg':
-   include/linux/sched/mm.h:499:23: error: 'current' undeclared (first use in this function)
-     499 |                 old = current->active_memcg;
-         |                       ^~~~~~~
-   include/linux/sched/mm.h: In function 'membarrier_mm_sync_core_before_usermode':
-   include/linux/sched/mm.h:543:13: error: 'current' undeclared (first use in this function)
-     543 |         if (current->mm != mm)
-         |             ^~~~~~~
+Patch 1 is a standalone prerequisite fix for best-effort HVO head-page
+allocation. Patches 2-9 generalize the underlying vmemmap remapping
+infrastructure by removing HugeTLB-specific assumptions and simplifying
+remap control and resource handling. Patches 10-13 then establish
+folio-oriented operations for optimization, restoration and PTE
+conversion.
+
+The implementation remains in hugetlb_vmemmap.c for now. A follow-up can
+move the folio-based operations into the common vmemmap optimization layer
+once the interface boundary is in place.
+
+v4:
+- Rebase onto mm/mm-new at f735a2c21aa9
+- Split the HVO head-page allocation fix into a standalone prerequisite
+  and retain Yili Zhang as its author
+- Add __GFP_NOWARN and pass caller-selected GFP masks through the
+  generalized allocator and folio-oriented helpers
+- Propagate alloc_vmemmap_page_list() errors directly (suggested by Oscar
+  Salvador)
+- Remove the redundant order check from vmemmap_pteify_folio() (suggested
+  by Oscar Salvador)
+- Collect Reviewed-by tags from Oscar Salvador and Mike Rapoport
+- Collect Tested-by from Andrew Morton
+
+v3: https://lore.kernel.org/20261104023510.260766-1-songmuchun@bytedance.com/
+- Rebase onto mm/mm-new at 74d73ffcffe0
+- Use two tabs for continued function parameters in modified declarations
+  (suggested by Mike Rapoport)
+- Rework vmemmap page allocation failure cleanup to free temporary pages
+  directly while keeping accounting batched (suggested by Mike Rapoport)
+- Collect Reviewed-by tags from Mike Rapoport
+
+v2: https://lore.kernel.org/20261102032525.3597743-1-songmuchun@bytedance.com/
+- Rebase onto mm/mm-new at d42dfde37af7
+- Rename the unified TLB flag to VMEMMAP_DEFER_TLB_FLUSH and clarify that
+  it defers only safely batchable flushes (suggested by Qi Zheng)
+- Update the vmemmap page-list documentation to describe its input/output
+  contract (suggested by Lance Yang and Qi Zheng)
+- Use page_address() instead of page_to_virt() when copying a vmemmap
+  replacement page
+- Collect Reviewed-by tags from Lance Yang and Qi Zheng
+
+v1: https://lore.kernel.org/20261020115306.813483-1-songmuchun@bytedance.com/
+
+Muchun Song (12):
+  mm: hugetlb_vmemmap: remove HugeTLB-specific vmemmap optimization
+    macros
+  mm: hugetlb_vmemmap: unify VMEMMAP_{SPLIT,REMAP}_NO_TLB_FLUSH
+  mm: hugetlb_vmemmap: simplify vmemmap head page handling
+  mm: hugetlb_vmemmap: generalize vmemmap page allocation
+  mm: hugetlb_vmemmap: unify writable vmemmap page preparation
+  mm: hugetlb_vmemmap: rename vmemmap_remap_pte() to
+    vmemmap_optimize_pte()
+  mm: hugetlb_vmemmap: simplify shared tail page handling
+  mm: hugetlb_vmemmap: move alloc_vmemmap_page_list() next to its free
+    helper
+  mm: hugetlb_vmemmap: make vmemmap optimization folio-oriented
+  mm: hugetlb_vmemmap: make vmemmap restoration folio-oriented
+  mm: hugetlb_vmemmap: unify vmemmap range restoration
+  mm: hugetlb_vmemmap: make vmemmap PTE conversion folio-oriented
+
+Yili Zhang (1):
+  mm: hugetlb_vmemmap: fix OOM during head page allocation
+
+ include/linux/vmemmap-optimization.h |  10 +-
+ mm/hugetlb.c                         |   4 +-
+ mm/hugetlb_vmemmap.c                 | 379 ++++++++++++---------------
+ mm/hugetlb_vmemmap.h                 |  10 +-
+ mm/mm_init.c                         |   6 +-
+ mm/sparse-vmemmap.c                  |   7 +-
+ 6 files changed, 186 insertions(+), 230 deletions(-)
 
 
-vim +308 include/linux/minmax.h
+base-commit: f735a2c21aa94b7b86a93d36f3b17eecc6d49aba
+-- 
+2.54.0
 
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  285) 
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  286) /**
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  287)  * in_range - Determine if a value lies within a range.
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  288)  * @val: Value to test.
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  289)  * @start: First value in range.
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  290)  * @len: Number of values in range.
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  291)  *
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  292)  * This is more efficient than "if (start <= val && val < (start + len))".
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  293)  * It also gives a different answer if @start + @len overflows the size of
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  294)  * the type by a sufficient amount to encompass @val.  Decide for yourself
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  295)  * which behaviour you want, or prove that start + len never overflow.
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  296)  * Do not blindly replace one form with the other.
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  297)  */
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  298) #define in_range(val, start, len)					\
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  299) 	((sizeof(start) | sizeof(len) | sizeof(val)) <= sizeof(u32) ?	\
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  300) 		in_range32(val, start, len) : in_range64(val, start, len))
-f9bff0e31881d03 Matthew Wilcox (Oracle  2023-08-02  301) 
-b296a6d53339a79 Andy Shevchenko         2020-10-15  302  /**
-b296a6d53339a79 Andy Shevchenko         2020-10-15  303   * swap - swap values of @a and @b
-b296a6d53339a79 Andy Shevchenko         2020-10-15  304   * @a: first value
-b296a6d53339a79 Andy Shevchenko         2020-10-15  305   * @b: second value
-b296a6d53339a79 Andy Shevchenko         2020-10-15  306   */
-b296a6d53339a79 Andy Shevchenko         2020-10-15  307  #define swap(a, b) \
-b296a6d53339a79 Andy Shevchenko         2020-10-15 @308  	do { typeof(a) __tmp = (a); (a) = (b); (b) = __tmp; } while (0)
-b296a6d53339a79 Andy Shevchenko         2020-10-15  309  
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
