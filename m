@@ -1,105 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6383606B753
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC4C606BFC8
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 00:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kwO3yy+d
+	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=cpHWLxJK
 Received: by kanga.kvack.org (Postfix)
-	id AC54F6B05D4; Fri,  6 Nov 2026 19:37:13 -0500 (EST)
+	id C1CEC6B05D7; Fri,  6 Nov 2026 19:37:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A443F6B05D7; Fri,  6 Nov 2026 19:37:13 -0500 (EST)
+	id BA30D6B05DE; Fri,  6 Nov 2026 19:37:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 896516B05DD; Fri,  6 Nov 2026 19:37:13 -0500 (EST)
+	id 9A9296B05D8; Fri,  6 Nov 2026 19:37:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 530E26B05D7
+	by kanga.kvack.org (Postfix) with ESMTP id 649D56B05D8
 	for <linux-mm@kvack.org>; Fri,  6 Nov 2026 19:37:13 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D651380269
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:11 +0000 (UTC)
-X-FDA: 85406458662.09.8433BE5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B175A20003
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:09 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kwO3yy+d;
-	spf=pass (imf31.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0760E8026A
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:13 +0000 (UTC)
+X-FDA: 85406458746.07.FE45763
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id EA01514000D
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 00:37:10 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cpHWLxJK;
+	spf=pass (imf09.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794011829;
-	b=tKWGyFfSz+2sU1lPy+8IAtRBcJnQ90En1zoel/cJPsBgxAnlwd15q6qxcGjGftAp4oO66c
-	OF/x0JwiMgCGzD1tai51B5GtxyxwbWJ+2/CE433OyLe4Ay73gKkZXHul9ucXRwNlyx6vyS
-	8EQwKuGXaYCCWPDLiysE2tRRYuANrEQ=
+	t=1794011831;
+	b=XyvDIx9vP2v0ha7fZFmywBgkyPUic18CQG0lCd7g3Z7gOwS9Vcn5P7zuhQsJzadhcETokQ
+	rWHb9+oqcIB1wK+ZEwcUuCdHKb3kSYkZiDOkLyG54lvYmnm5GY5ptqpea1yX1pzU43xAE8
+	9WAwRCUpJ+5vhNJfkwQuV++X+JxKMVg=
 ARC-Authentication-Results: i=2;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kwO3yy+d;
-	spf=pass (imf31.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=cpHWLxJK;
+	spf=pass (imf09.hostedemail.com: domain of devnull+ackerleytng.google.com@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=devnull+ackerleytng.google.com@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	arc=pass ("kernel.org:s=arc20260519:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794011829;
+	s=arc-20220608; t=1794011831;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U1Xg+Ovh6SABK55ACPtrHdOXD90IrQIkoxCH5viHnSQ=;
-	b=Uk5wjvBLxBOXRggO9/S3Qllqv8FkLdqmrpgV9KPKMUbIFUFaC8UR6vI3uNTdXwGv237Hco
-	+VGQ00UBrYKvYGaf4qWgJccBKV/y23GNPV6nRwpqlpaNtYrw3Iw0ZTVnmdpqKakfRAV08j
-	DQKZnhZBxrZG5BVmD6KoYrl7D9n2zaA=
+	bh=1pCSunxlZGtDuCXdYB75wFXTfLNCc/lfSGqnGUAN2tc=;
+	b=x4exIMgWnOSnJ16uBIEOlNDNMOdkuebS02+mgH6rp/fxUdXynxrMABw3JiNx+YLbU/OHVa
+	ubpCccyOmgN0iiUW9joAJ3AKTgQLiN4J3GnA3ZAi6ypj7/FfCBw7TwSPVc6lOXoCi0mhJn
+	eMfEy8uR8GdNNrR3t3qb9Gu1ucNSmqM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0B1A844520;
-	Sat,  7 Nov 2026 00:37:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8E4BE60E0F;
+	Sat,  7 Nov 2026 00:37:10 +0000 (UTC)
 ARC-Seal: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256; cv=none;
-	t=1794011828;
-	b=XMRKowyWMgLWEZmnbUUADVgocA9/c4gR2zKDICi+IGU+IWQPRsYimAJUhP+CgeIPQz52
-	 bbdIC6vkHFAgSEPd/LozGtyS6EibMutnBhmSXVgZUffaeq63lSQOAFxNZQa/oIn3YUL/x
-	 Zs+/zP/t1UBSxuQVF7dvqa2KhuJP1uoZCdbnuDgx0MRxkVLOx4gmSiH/wytJEq9zGUHf/
-	 lVtlanFHbRB7U0o/9GesqNWJH13Pmvz2IoYjn1Kk2tiqX2+2mfm2+tVdHESpBUFp0Xqts
-	 B07cgUwZA/d2gjSnieJNGNbjAcOAgp9buvpI+wIyG/3+I/3jF6+4AHkbVrJCSLZ6Mfw==
+	t=1794011830;
+	b=ZkBb4o1iDukY5E+BLQHTMaXApti41QAnALP36KbWvjpybrv2F0C8GmhS5XPWhJbsZqDw
+	 JG419A4C2Jwl6Fn8C72BAcOzHyOZxL+k07rvae/sS79kc79T3O5FAf1yVe7CkII0r2Nhx
+	 vaNuMs1n7SB7X5jNT77ErApOPzRUVNv9gyUfylJXUcnO5Fth5cr0xpW1i+F7nymzLLOQn
+	 tq4BPqwhZNs8yKuK+LNyYGKVKH26dglKHY5F9BhCkfIAH7NzeQzmUfX+6GBXIStlyk/+k
+	 OQO+o/36JHzV3KDBDNgIE3TAi6itva/YTRBYVISlrS/9m4ILgMNy/BBcPp29sxOqAvQ==
 ARC-Message-Signature: i=1; d=kernel.org; s=arc20260519; a=rsa-sha256;
-	c=relaxed/relaxed; t=1794011828;
+	c=relaxed/relaxed; t=1794011830;
 	h=DKIM-Signature:Received:From:Date:Subject:MIME-Version:Content-Type:
 	 Content-Transfer-Encoding:Message-Id:References:In-Reply-To:To:Cc:
 	 X-Mailer:X-Developer-Signature:X-Developer-Key:X-Endpoint-Received:
 	 X-Original-From:Reply-To;
-	bh=U1Xg+Ovh6SABK55ACPtrHdOXD90IrQIkoxCH5viHnSQ=;
-	b=ruDb9Sl5ebyFhGrVVaQJgDaGwuKpsF5n0yk08HD7nklnxKU/nGws8i8+k2Ra3HQ3I3xo
-	 RuDEMxqVrhzUkfx5n+oL16G4zdidCFDViHnjVI5l5FVMgQ1pSOu8vYSMLSDasYfj6Oq1D
-	 FtxmEKfsvAIOZFnRseLiIbSlAuCvVLY3tcFKtq8vfVrsFo1fcxR1XBp4tPWCvpByJTeoq
-	 LKU2fJ03y67d5bzo1969AoaUugaLXxzkM1ho2OS6dL26gC9XSp8gNGP4L96desbzTNke6
-	 GswPYpH0sM/FO7sJYz4gN1eYfWAdBkQF1UikhItetseuAJhCvdxdNQldUL2DnOzHdow==
+	bh=1pCSunxlZGtDuCXdYB75wFXTfLNCc/lfSGqnGUAN2tc=;
+	b=O6uZcIEiTTqBcu3V56RgohfosHZBNWytQs/76vOiSga+Pmqm6CzBqnrUqGBssA9RT9/y
+	 uIlFjuHDJziHxkiuNjBF4OI0RQ/cAzEAI165Nq6qzT+fEBjsVOethtNxXEiHUtFFOswGH
+	 +Qxktc1A5V41tTiIV8dSkMHJX+QjWpMv7E4UTZOXb3FOsf8ALxJ2OZdz3A53ZR2atbMTI
+	 rSY5EuK8YOgGLP0xw0dLPqNfBt9cxALhs8zR3mgY0qFmTWByuO1dKubE1tx+MH9MCCkUN
+	 lNoDfBHHoLcnFC6i8IJ1JDbvLSxjMmpvUK7AicllpnaalxGGCeZLFL/SiKVq1CyJrRg==
 ARC-Authentication-Results: i=1; smtp.kernel.org; 
 	arc=none smtp.remote-ip=100.80.115.77
 Received: from lkml.kernel.org (nexus.subspace.kernel.org [100.80.115.77])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature ECDSA (prime256v1) server-digest SHA256)
 	(No client certificate requested)
-	by smtp.kernel.org (Postfix) with ESMTPS id 879691F00922;
+	by smtp.kernel.org (Postfix) with ESMTPS id 4F3E31F00921;
 	Sat,  7 Nov 2026 00:36:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794011828;
-	bh=U1Xg+Ovh6SABK55ACPtrHdOXD90IrQIkoxCH5viHnSQ=;
+	s=k20260515; t=1794011830;
+	bh=1pCSunxlZGtDuCXdYB75wFXTfLNCc/lfSGqnGUAN2tc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To;
-	b=kwO3yy+dTQb5fpWMD6tGW89FR5gjzwDKZ3RVcPWrIfUXGwcBWgusNAHVnVwyKW058
-	 ghqY5RN1NInhvLD3gfLgmXY/326zHNpTiWD/JHNWkH4PN96R0i7QUt6/hRMxgykaex
-	 UI1eDR/rx5ltCZYEyytd/YQ+VJ3UXmhGF8MlyZ5Iwvk4VWGIDjRUn2wtA3YX+utC61
-	 LMLHyPCLLr5JcCd2OB4HEMqj0yjptyJraL7a+yb82tm+t09IyJCc4OtSSewcytLYRI
-	 BXBHR33xrTjpF7FfVRGUgv9ao51llPo+KVwZz98l1pGdYYZSUedDuwk/jmPNy9dng3
-	 zduz2aL3a4XZQ==
+	b=cpHWLxJKy3/cLvXieHb1nlxWpIcSIVE/RG/jpbZfdbKA4m6D8tG5NnR7LegC64l5k
+	 M7m2yZiHxEptu6las5yte/dyHT2buTNqQq8E99sj6BvOLhNr8RvlyA3dRm5STLaIxG
+	 xq0ayOTVP4CSeokCFeOAvOKNrrK/Do9BRDpkWbQJTR8iFHyaHfIw8i1uCipQjS/2GN
+	 jY47jPMVn06obn3D3ad4RQ0uHCYpWKz4ol2gKzwq69f5Cj+e0twjEwH+fbuHQuGNI6
+	 xO08LDIXC8TdBQvEc5MKXc7yDdnLqd6NDz4RydL46VTHirnNTLXhb0YSeHp/w5IFQP
+	 B57q4j8XVad+w==
 Received: from nexus.subspace.kernel.org (localhost [IPv6:::1])
-	by lkml.kernel.org (Postfix) with ESMTP id 7389C4796B;
+	by lkml.kernel.org (Postfix) with ESMTP id 55EDF47963;
 	Sat,  7 Nov 2026 00:36:54 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 06 Nov 2026 16:36:56 -0800
-Subject: [PATCH RFC v3 22/88] samples/kvm: Support marking page ranges
- present or absent
+Date: Fri, 06 Nov 2026 16:36:54 -0800
+Subject: [PATCH RFC v3 20/88] samples/kvm: Introduce memory provider module
+ skeleton
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261106-gmem-alternative-providers-v3-22-8484dde66a7e@google.com>
+Message-Id: <20261106-gmem-alternative-providers-v3-20-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 In-Reply-To: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
 To: Alexey Kardashevskiy <aik@amd.com>, 
@@ -120,29 +120,29 @@ Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.17-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=5672;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794011809; l=3200;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=2aAtvWaVMFLs1DyMSWgKDsrYTk08ExBkcEnGdMCup6U=;
- b=FN3YnHse9NNd00ZJ6tUEz14740WtwjgOvcKLw/xxizDGT5VgohtqpKNVY2qr8NW56Ydpsd95G
- R5y1ppau9KbCSiMoTgYL1snTpXD18XnCOj4rMX9lX962RMBGnVl6nTL
+ bh=nt2cs3RpI5IUFgJs4dsgiWZl0HfyGKiOhLkBsycGpfo=;
+ b=4cdyeAJ7HccYK8NGv9Q29bFTAR/IcMhIOFe8+7RU78D738bkU/WshB9UbwT/KAILWqam4ykOd
+ CO6Tw3GiatGC9mriP8x0CMuJxG1AZn5inkS4uDdxzwnFtZL/sbetXox
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
  auth_id=649
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
-X-Stat-Signature: zumt1ps1eag3r37eirx6a86jzhpbsgu7
-X-Rspamd-Queue-Id: B175A20003
+X-Stat-Signature: mk9kh9xs61upq8m5f7jro9kmkfputbye
+X-Rspamd-Queue-Id: EA01514000D
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794011829-29138
-X-HE-Meta: U2FsdGVkX18lXhzfZO2rniY7PriOx8fsLGphcBYZ4TxIfUI1b9Q9zLFZK4b3PYVoadYC1Xy8hiVyhRn9L3ZBRU9EhPjBKZiffbUsW9YFIHH6JhK+Ttp1rGwwMHWPxXQ/yw0oKgy+zo0ePD8+hBSwclmNtasc5jKZOWZCVrdlZH1uUf55cJSj0fpmhP02CFBAQywvdpSv8WOoSaWi1Y4wyGikwYknS4IXglKGcJUEQyt0N9YFeXYdp6cFCXDCnCvRqqvp7Ipw2dVqHaWzx82gosRCgoQge18c9JzII90grL9GRR80byWU/4m+w/eMU92KiiOItCFBRhgWk3n85U/oiGBoYU6KLKEaLyeSf735TA9Q2E+xc2HRI8qzPJVwvGg2ih4LDpo3R+BUVJ9N8pOVV9gLh/aLcGHpFjKUfQTkOQvEsweuhIU7kkDP4CXz0QuBBkCD2D4vTZVc8ZPJ6x0lAD3uOBVQ3sFexi45NipchpOvB/4buMOjVM2loCqPU2++eoZpoNV8W3G33LV8s4ZyXU722QqPDZM3m2Bcxa7xjOETh+2M00tLFK1eBdVklD4sQL3X0RbkH0UHO2vX0GvJHfjV/lHThxUr3puYAahxucMYgBDJPtHTRy0L8OaNs4CvP3/2SI691evMJ98dyclShT9hq7XDa3p389M6c4zQWJFoVDTbyA8ZXYNJ3KroIBD4Rkx/JLPAPf86dUasi8r+Nhp6knZ+wORcrL47r0E1fpQWxJ4C0hEuGNBkFlkBY3ffW5IdG+mCxZz6fovYhBEVqcJSk0bBYYDU0jPw4Fgpg5q7ZPbvva/yCQ7rlsOJLiTOhCUAsRF+vV5nvD8pHcc3V2/dslp+m1JAOVzjSqzkosyuwwK4VK+CWXz6BwYCXxLkgw8W5Z00qZKJLeKauysPx29bFtUtMnsoxZ7hsVuRhVnqyzgeZHRf01u/Yc5gLOoGcjoBjC9s53yEWXMJTwk
- bpXVYezu
- zlnwsPVKpj+Q7Dkak+fg1yAAJ+K3OeJgptpB8LGe96oXpSM0YzhvrFHNzgi4lJanqLErvPPMP6ge08+cwsbwCDZbXPybeWpY+mRqKyVVZpzWcczJl3lv+1FXVYj6cf82YkGCRvknC4H0X17qWTzR/NqZYSm7WRQO3qwsXt9v2DzDX6BVfhzgY02AZAGW9Bqnp99Ai2A8MsApMdrqKEgAk7ZkZPYsAQUSInQCBB+AXe3lYXfAnYYTXqKw6ornbKCaFL7E3vlpC4f7v3dxmtCcNIWz2pfvY6GnpuHWhsUeAoV/XUHBp/1MSjsJUYwIw9D8uND0zazxSBNMlvRorSTLK45/t+ACAlB+mDIbuip+rw54V1z4M+tcvRoM1QM5IIdZczK/W24aOiw4F5XMvwIRcpUt0q+t/jjHg6EVTOxQKb2SzmT00XTwi4szIbbOdXksw12Yxza9vAEJ9SeoHlD5kRnt8woABfWd6hnygTGn0XYKarxq6bFktcaNn6fmei97Z2zka+5VzsNzX6Vn/Qmm1CBdm80IYJOsjPsym0XRxNhn4puef1rH3JC6C/6kyq2OP1pm4ZnMDjRyO7zo=
+X-HE-Tag: 1794011830-470061
+X-HE-Meta: U2FsdGVkX18YfAK4eofHD78wujXl3qaTx/B0U3F0t0Bcxl0+cI3uGiQeKxkkR5eb7UMlXF8MHw2OWAIro1HCDbUrNRx3ZEQjkVA7J0c6FLGjKuomEKt5wnqQYAri9GbKfqWhWCbi8n7Geex0wffkZ+iGmC4T2E/wiElJqtYuZX6l1LkpRQHIVL6+4lENmoGUK5Hm5lPh8L1LaLw14dkpUPnYu4kJjIk5n1L69HUYbAGmptrBdQlSqFXQasBBfDtAtUoYGC4hEu3QkFjsGYyOp9L0Mh9/3XBybqc63XJqTSmttdz/azxZw3P7RHHuOSuOmxsxaWL+g+RBBzHqRvJb9osRKi3QCDgccAmQWbPCy1K54jcmjFzyxbkOKZ3zujtUkv+C4drHzaQMWbQiJTOfTbiRcDe5jLMiaOXGgLAN+ikfF+i+hv+V+soxyzfSGW6fVXwS+fLG43j/CrA8sX48ye7caLVSognaKmUhR1o2LPBGjTXmTRhgT1MGMjz8eBL20fidyvJvKZsY98fhj/EUd4tgV6f8Qx5jLTei3LUf7LSbViiwkCh/wQIaVLapXajaIFn6eDuNNBDfHfgYhTHwafTT7gDe98mA2CuTeXIyp5rwdasHrG7JrpUCdu98tlBiW/fPiP1tSDnfhV6xn6Lqri27UVhDHPJyVFRCvuyoTBJXpnm2MkiqfMUnD01SI0wxEeMkMCz5HWFf4b9kmS3UsHmz5GmCeuDzIMgTKB3GzuY/PvdjG6rbDp+P+cm9xsMEKhvBCt9zS/F9KMnJoh9h/dkGH1jB0sDp48Rk3E2CJUg5i3matxfjtzOwyUovl2/kCov3djPgg5jqBWXLcIjQTsRoef0HqfKHHOnOV6XODq+r1jUQo2bA2qU+80yIAYaF2a2lEf9YLxQ7KoH3NNaIOHcUZGrWeHO/s9lrc95q9/Re+DZpFrNW7ZCgRBiI4I78Ri4o3z46v+vXo/MfHdR
+ GC1rCdVJ
+ vlQ99YSVrYbDvmu6nXYOHnoWbn4VjeDldf0CfmdJcEtR2LICzJKF92KNTGDjUfPAr0Fiq2/nzOq8kwFWfgEQUH/oJXbdPbZv3xkCctK+t7mgCU4uEuaTQYNH3Cd/a7Yhk4/P+aj3Tp793vnvSkOLDjn4+W3YPpMM9Y3p5TvVF72dHoesuJHj14vVln+NK+j20PybJGojySp9ptEhJ/5SSb0eA1AGiS38lZStMTehe/tw+pXa9ITxtQKv+EaY5f+YsDe/ZFz3DUojtufT5adj1c9cb69Rn0LY2Yc+DjmE2zIaO97zu0aeNL3eHEa546R6xxQaKOEe7uJfg8rNm1cZGDuJWty6XrKGfwJFRA4vDNpm8iadyLWTRTAo8R0cVb+PsaouAmfPB2f7p5EGvGk8sDzGbrLj/TKfytp99lK2rPDOayGQdo/YAOegcX0sppyttL9jtPqFx5yvQHOWdTMMB7Ha90eYYKS12roaiDRUQhuZUNC0CrVBKWX6nuo0hvAcrPi+SQCBzrmW+WIix++qcTiSXuytkgTbiDTi5ZmWcZHr2+VYyXUe75T3646rJ0/OgRaYfy6212++W2Xk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,203 +153,105 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Fred Griffoul <fgriffo@amazon.co.uk>
 
-Support the MP_SET_PRESENT ioctl on provider files to allow userspace to
-dynamically mark page-aligned ranges of a provider file as present or
-absent.
+Introduce the memory provider sample module skeleton under samples/kvm/.
 
-Track absent pages using a zero-initialized bitmap so that the entire
-physical page range starts in the present state upon creation. Serialize
-bitmap updates with a per-file mutex so concurrent ioctl calls do not race
-when modifying page presence state.
+The memory provider module will serve as a sample in-tree memory provider
+for guest_memfd and iommufd. Register a miscdevice at /dev/memory_provider
+upon module initialization and deregister it upon module exit.
 
 Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
 ---
- samples/kvm/memory_provider.c | 83 ++++++++++++++++++++++++++++++++++++++++++-
- samples/kvm/memory_provider.h | 15 ++++++++
- 2 files changed, 97 insertions(+), 1 deletion(-)
+ samples/Kconfig               | 11 +++++++++++
+ samples/Makefile              |  1 +
+ samples/kvm/Makefile          |  2 ++
+ samples/kvm/memory_provider.c | 35 +++++++++++++++++++++++++++++++++++
+ 4 files changed, 49 insertions(+)
 
+diff --git a/samples/Kconfig b/samples/Kconfig
+index a75e8e78330da..d4e79e1a9286b 100644
+--- a/samples/Kconfig
++++ b/samples/Kconfig
+@@ -326,6 +326,17 @@ source "samples/rust/Kconfig"
+ 
+ source "samples/damon/Kconfig"
+ 
++config SAMPLE_KVM_MEMORY_PROVIDER
++	tristate "Build sample memory provider -- loadable module only"
++	depends on CONTIG_ALLOC && X86_64 && m
++	help
++	  This builds a sample memory provider.
++	  Its files can back a guest_memfd and be mapped by iommufd.
++	  It allocates a contiguous region with alloc_contig_pages()
++	  and carves out child provider files on the fly.
++
++	  If unsure, say N.
++
+ endif # SAMPLES
+ 
+ config HAVE_SAMPLE_FTRACE_DIRECT
+diff --git a/samples/Makefile b/samples/Makefile
+index 07641e177bd8b..3933ef6a323ed 100644
+--- a/samples/Makefile
++++ b/samples/Makefile
+@@ -37,6 +37,7 @@ obj-$(CONFIG_SAMPLE_TPS6594_PFSM)	+= pfsm/
+ subdir-$(CONFIG_SAMPLE_WATCHDOG)	+= watchdog
+ subdir-$(CONFIG_SAMPLE_WATCH_QUEUE)	+= watch_queue
+ obj-$(CONFIG_SAMPLE_KMEMLEAK)		+= kmemleak/
++obj-$(CONFIG_SAMPLE_KVM_MEMORY_PROVIDER)	+= kvm/
+ obj-$(CONFIG_SAMPLE_CORESIGHT_SYSCFG)	+= coresight/
+ obj-$(CONFIG_SAMPLE_FPROBE)		+= fprobe/
+ obj-$(CONFIG_SAMPLES_RUST)		+= rust/
+diff --git a/samples/kvm/Makefile b/samples/kvm/Makefile
+new file mode 100644
+index 0000000000000..9668dc57aa458
+--- /dev/null
++++ b/samples/kvm/Makefile
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0
++obj-$(CONFIG_SAMPLE_KVM_MEMORY_PROVIDER) += memory_provider.o
 diff --git a/samples/kvm/memory_provider.c b/samples/kvm/memory_provider.c
-index e89ce55a357c0..6b8364afc5ed9 100644
---- a/samples/kvm/memory_provider.c
+new file mode 100644
+index 0000000000000..d5272cb88b758
+--- /dev/null
 +++ b/samples/kvm/memory_provider.c
-@@ -6,18 +6,21 @@
-  *
-  * The control device /dev/memory_provider creates provider files.
-  * Each file allocates its own contiguous memory from alloc_contig_pages().
-+ * Pages can be dynamically marked present or absent.
-  * See memory_provider.h.
-  *
-  * Confidential VMs are not supported.
-  */
- 
- #include <linux/anon_inodes.h>
-+#include <linux/bitmap.h>
- #include <linux/file.h>
- #include <linux/fs.h>
- #include <linux/gfp.h>
- #include <linux/miscdevice.h>
- #include <linux/mm.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/slab.h>
- #include <linux/uaccess.h>
- 
-@@ -30,21 +33,88 @@ struct mp_info {
- 	unsigned long base_pfn;
- 	unsigned long npages;
- 	struct page *cma_pages;		/* from alloc_contig_pages() */
-+
-+	struct mutex lock;		/* the bitmaps */
-+	unsigned long *absent;		/* taken away by MP_SET_PRESENT */
- };
- 
-+/* Byte range [offset, offset + len) of @info as page indices. */
-+static int mp_range(struct mp_info *info, u64 offset, u64 len,
-+		    unsigned long *start, unsigned long *end)
-+{
-+	if (!len || !PAGE_ALIGNED(offset) || !PAGE_ALIGNED(len))
-+		return -EINVAL;
-+
-+	*start = offset >> PAGE_SHIFT;
-+	*end = *start + (len >> PAGE_SHIFT);
-+
-+	if (*end > info->npages || *end < *start)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static void mp_set_present(struct mp_info *info, unsigned long start,
-+			   unsigned long end, bool present)
-+{
-+	mutex_lock(&info->lock);
-+
-+	if (present)
-+		bitmap_clear(info->absent, start, end - start);
-+	else
-+		bitmap_set(info->absent, start, end - start);
-+
-+	mutex_unlock(&info->lock);
-+}
-+
- static int mp_file_release(struct inode *inode, struct file *file)
- {
- 	struct mp_info *info = file->private_data;
- 
- 	if (info->cma_pages)
- 		free_contig_range(info->base_pfn, info->npages);
-+	bitmap_free(info->absent);
- 	kfree(info);
- 	return 0;
- }
- 
-+static long mp_file_set_present(struct mp_info *info, void __user *uarg)
-+{
-+	struct mp_set_present sp;
-+	unsigned long start, end;
-+	int ret;
-+
-+	if (copy_from_user(&sp, uarg, sizeof(sp)))
-+		return -EFAULT;
-+	if (sp.value > 1 || sp.pad)
-+		return -EINVAL;
-+
-+	ret = mp_range(info, sp.offset, sp.len, &start, &end);
-+	if (!ret)
-+		mp_set_present(info, start, end, sp.value);
-+
-+	return ret;
-+}
-+
-+static long mp_file_ioctl(struct file *file, unsigned int cmd,
-+			  unsigned long arg)
-+{
-+	struct mp_info *info = file->private_data;
-+	void __user *uarg = (void __user *)arg;
-+
-+	switch (cmd) {
-+	case MP_SET_PRESENT:
-+		return mp_file_set_present(info, uarg);
-+	default:
-+		return -ENOTTY;
-+	}
-+}
-+
- static const struct file_operations mp_file_fops = {
- 	.owner		= THIS_MODULE,
- 	.release	= mp_file_release,
-+	.unlocked_ioctl	= mp_file_ioctl,
-+	.compat_ioctl	= compat_ptr_ioctl,
- };
- 
- static long mp_ctl_new_file(void __user *uarg)
-@@ -64,21 +134,30 @@ static long mp_ctl_new_file(void __user *uarg)
- 		return -EINVAL;
- 
- 	npages = nf.size >> PAGE_SHIFT;
-+	if (npages > KMALLOC_MAX_SIZE * BITS_PER_BYTE)
-+		return -EINVAL;
- 
- 	info = kzalloc_obj(*info);
- 	if (!info)
- 		return -ENOMEM;
- 
-+	info->absent = bitmap_zalloc(npages, GFP_KERNEL);
-+	if (!info->absent) {
-+		ret = -ENOMEM;
-+		goto err_free_info;
-+	}
-+
- 	pages = alloc_contig_pages(npages, GFP_KERNEL | __GFP_ZERO,
- 				   numa_node_id(), NULL);
- 	if (!pages) {
- 		ret = -ENOMEM;
--		goto err_free_info;
-+		goto err_free_absent;
- 	}
- 
- 	info->cma_pages = pages;
- 	info->base_pfn = page_to_pfn(pages);
- 	info->npages = npages;
-+	mutex_init(&info->lock);
- 
- 	fd = get_unused_fd_flags(O_CLOEXEC);
- 	if (fd < 0) {
-@@ -99,6 +178,8 @@ static long mp_ctl_new_file(void __user *uarg)
- 
- err_free_pages:
- 	free_contig_range(page_to_pfn(pages), npages);
-+err_free_absent:
-+	bitmap_free(info->absent);
- err_free_info:
- 	kfree(info);
- 	return ret;
-diff --git a/samples/kvm/memory_provider.h b/samples/kvm/memory_provider.h
-index 0bd9e250aeaf5..de07ffa482283 100644
---- a/samples/kvm/memory_provider.h
-+++ b/samples/kvm/memory_provider.h
-@@ -27,4 +27,19 @@ struct mp_new_file {
- #define MP_NEW_FILE \
- 	_IOW(MP_IOCTL_BASE, 5, struct mp_new_file)
- 
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * ioctl on a provider fd: SET_PRESENT on [@offset, @offset + @len).
-+ * @value is the present value (1 = present, 0 = absent), and @offset
-+ * and @len are a byte range within the file, page aligned.
++ * memory_provider - a sample memory provider.
++ *
++ * Confidential VMs are not supported.
 + */
-+struct mp_set_present {
-+	__u32 value;
-+	__u32 pad;
-+	__u64 offset;	/* bytes into the file, page aligned */
-+	__u64 len;	/* bytes, page aligned */
++
++#include <linux/fs.h>
++#include <linux/miscdevice.h>
++#include <linux/module.h>
++
++static const struct file_operations mp_ctl_fops = {
++	.owner		= THIS_MODULE,
 +};
 +
-+#define MP_SET_PRESENT \
-+	_IOW(MP_IOCTL_BASE, 12, struct mp_set_present)
++static struct miscdevice mp_dev = {
++	.minor	= MISC_DYNAMIC_MINOR,
++	.name	= "memory_provider",
++	.fops	= &mp_ctl_fops,
++};
 +
- #endif /* _SAMPLES_KVM_MEMORY_PROVIDER_H */
++static int __init mp_init(void)
++{
++	return misc_register(&mp_dev);
++}
++module_init(mp_init);
++
++static void __exit mp_exit(void)
++{
++	misc_deregister(&mp_dev);
++}
++module_exit(mp_exit);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Sample memory provider for guest_memfd and iommufd");
 
 -- 
 2.56.0.455.g6c5a503b38-goog
