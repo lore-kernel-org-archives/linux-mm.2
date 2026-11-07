@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC1E606A32C
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57B28606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 07:33:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OrpxnUKZ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Z7pu2Zcw
 Received: by kanga.kvack.org (Postfix)
-	id D09C56B05B0; Sat,  7 Nov 2026 02:33:52 -0500 (EST)
+	id 802036B05B4; Sat,  7 Nov 2026 02:33:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE1946B05B4; Sat,  7 Nov 2026 02:33:52 -0500 (EST)
+	id 78C1F6B05B6; Sat,  7 Nov 2026 02:33:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1FB96B05B6; Sat,  7 Nov 2026 02:33:52 -0500 (EST)
+	id 6C8566B05B9; Sat,  7 Nov 2026 02:33:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 92F3B6B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:33:52 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07656120274
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:33:52 +0000 (UTC)
-X-FDA: 85407508704.16.1F60D16
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 85DF7140006
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:33:50 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DF5086B05B4
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 02:33:56 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 575BE1A0253
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:33:56 +0000 (UTC)
+X-FDA: 85407508872.25.25EE7CA
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id B3096140006
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 07:33:54 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OrpxnUKZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z7pu2Zcw;
+	spf=pass (imf09.hostedemail.com: domain of jszhang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jszhang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794036830;
+	s=arc-20220608; t=1794036834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=YFZRmCfQkWp9l98IMbH5VkBf2tDBMZN1QOvzm/n0/Ek=;
-	b=EHZZ8oWqETTyjJyidm08WNZwv68kGtp7c79vF2RSI5KJ+TeBHlrlmHG05Xi3QO5dOgb2Y7
-	uekkpikQMNwFeXfr6G75LuVEHaaSoIRMWQP28OFtWi44bSwoQV+zDBHVloL6K8+8U594l6
-	+TZnkX+qb35DvUL73tYmKkcdNROggYs=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794036830;
-	b=i7GtVm9jhgYFtEIARKjq2mOxte6sdKh5pfQmAQqPQlnifa/JQkFQZfF0ZvH4IUp0vq7+O0
-	E6d/oRgA28uq+U8m59qS+rXBPZPOMvBfoVzfCyi8CYVx1sKQw1v+hLHOWBhtzG6Mu31RPF
-	DNRBDMFq2kS6kk3ZSv/M9Bb9FF07O7o=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=1o7E6/PEZfnHFqDMeLtzchjTUh2bQgzVUzqTp6fm5lQ=;
+	b=GlpMWwQoKpcR+D95ugeOqo7E/BNC6my27Dl9nIY0L7e590C+dRyWhjA0GRol86MdfrCi6K
+	STVs3gQeZqy+cNnzmqjKAx/hdENyijeav61p2wE/Ht4lzBgyGOxP542R4O58QBv7cydLKA
+	pgrJ57ihkEQwsEdua5s3Vx+dD8B62ZQ=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OrpxnUKZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Z7pu2Zcw;
+	spf=pass (imf09.hostedemail.com: domain of jszhang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jszhang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794036834;
+	b=dsz3XwUPWYy7V2NFfj8lxVTIrJ6aOFuITe1YTw9oQTg2/sg+nzy+3IrX6EXQHprUb0NfYa
+	yjmBZP6gcuvdaRVKcNMSl/lGWXYOzeCYZkCMnM2TjmQ7s/DgyBHNSPS0zCNHj3dV90sHwq
+	hPSdmOdFpLVlN46WOxV+PbZGUSJAoHw=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1226460A50;
+	by sea.source.kernel.org (Postfix) with ESMTP id E5DE543B18;
+	Sat,  7 Nov 2026 07:33:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D261F008A1;
 	Sat,  7 Nov 2026 07:33:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E091B1F0089F;
-	Sat,  7 Nov 2026 07:33:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794036829;
-	bh=YFZRmCfQkWp9l98IMbH5VkBf2tDBMZN1QOvzm/n0/Ek=;
-	h=From:To:Cc:Subject:Date;
-	b=OrpxnUKZ9n9S2pN6xJmZV65t8uBDUFiJ4lH0YwEi2xm3FWo8q+0fcd+4HzXfczeoP
-	 2uutuIREt3xoDSKJzOlrSJu2lZNdHg7uOQlMwzXOFkADgWCq3QCYGpCzHN2kNIAwdC
-	 15u3DioQMCR41YjiXY/FKcKdcshWKH6myFG2ziGYD4OadAFCOyPVBCA6eYv21eZrPw
-	 NMCP+FELW1efVOmW2gvhmW9pzkxozKYI6mjYSWgJkyJAcOXdNBt/s/cRPEl6TnKiib
-	 k1lqCbtLnrA7K4/gdFk1diN7VwBaFIp70t3VuFWeikG5C6o8kHcvRhPIGU7hgoHNEQ
-	 yFnbSQmlKpCqg==
+	s=k20260515; t=1794036833;
+	bh=1o7E6/PEZfnHFqDMeLtzchjTUh2bQgzVUzqTp6fm5lQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=Z7pu2ZcwoD9OUreYyHE8HU2dJMBtk1hv8qhGCbK5WFxTzxQ/fCQJIjX/XgtL/Z8ap
+	 6WtNwMVARJt+lSBu/3YH8/pFiFLqy8RG2C1/tpgIZgNG3WtpSZb2mpwfAYDn0XEqRI
+	 eJt5QT1QhFhprtJqgtS24CZEYz8bAzg5u24ARNVM/SJKCsUXyihBZZNYUD44XxHIkO
+	 hg5I19k3iUtXfRrjDCGwQ7fop2m8hCf4FsGkAMJNGnguVofPbfM8ntRTgnpveMAJYg
+	 dn3J713D3P9N/DmFjaCxDdpubU2gU9vDBy2vE2bgobq5YuoEYiZOCJf0EfY4KY54e2
+	 6i9qnERwrEMZg==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -76,25 +76,27 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	linux-mm@kvack.org
-Subject: [PATCH 0/4] arm64: Fix instrumentation escapes from noinstr path
-Date: Sat,  7 Nov 2026 15:13:35 +0800
-Message-ID: <20261107071339.17467-1-jszhang@kernel.org>
+Subject: [PATCH 1/4] arm64: percpu: Always inline helpers used by noinstr code
+Date: Sat,  7 Nov 2026 15:13:36 +0800
+Message-ID: <20261107071339.17467-2-jszhang@kernel.org>
 X-Mailer: git-send-email 2.55.0
+In-Reply-To: <20261107071339.17467-1-jszhang@kernel.org>
+References: <20261107071339.17467-1-jszhang@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: r43yenat188fjbha6kxnj9uwc5cti97a
+X-Stat-Signature: j9cawx91m8hitkxxk4zjg5yyhgw8434b
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 85DF7140006
-X-HE-Tag: 1794036830-762840
-X-HE-Meta: U2FsdGVkX19nFdu8u8lF7ITiGp9yOGQViTF9m5xSH0FKbrep80uVeoEF0dIGPKXb0x+0k0kdIXsx9GM9HONRNVs8QFuFoxA+mBQn4M48xNAYCKfpXEY5D7c8fdLqI+9SlkDnFKYguzrjnE60+3L1lbnUmTlzgrAe1nZpRlVBrq3KjXaJdEETxGrQbWmtb7I67VjmgYrBBG0d9YAVv5vPj0E+4++mZEu1DoVL9wcKG+GeaBDj0OfYg2HGx+YXpPeCzffL6hZsOqRv+h7h8N3xRpc1Cmp8ovhUyCvEx5PktqZDGSncD9kFXH37qNtRyNimZ6Lww9hs/B5gPa7zCTtSGGuL28vPX0UR0p8xSDwWii/VyU9/IAEqWj3QuRQKomMyeYdW9X8utd1IdWdu7FrWFHfB4E6uYB/hm/25ohnjY9rk+neAmU2V35qmoymywjxaLXEOEoOYos1Uoc1SOkBWhrug1NQLu1GxAPoii/xI52yOxLL8hx1QhuwGeS6hy1oBV1ORmasEIQG4FS2a+IljpwZ20tLQiNi9lywUusigfKsg0miqJAo82it22QtN+zL3HPMqvyCFO59B4WNYhVGdjVLPLyaGPuYQ0IjmGJ/uvTUWqmi9OnG8pH0rJemfivayqiS2hrC441aiPz2mZwqzVdkTrC95KFrLnwV7fV0I4YoSuvOMKNuFkImnYIS6tFHRJ3hCCJaLMvAk6cmaqXxE8XoF7k3oLYcE1mHldtXuPt0UDH9ONYSDKsY8RK2jPK39ejA/jlWS528CLG8mam3czrHqmYijcIRT0FyMr8TR3bc25lmzkG1g8gI95fJxFFTNTP8reLJZ/RhKkw3XnNpEbT7c2oAekdfiK+ZMo/JwK1CfceamPynwS9dULJnoQYxgfWZbyyGZ15SjPDMD5Mv3s8xRwV39Ai+WSDVJtzI1v3ekB4vbgiVO1m93xGWqtvw6JurKnvq1qzuEoi91tQI
- +mvxTPRs
- /mBJoXGW2j0AqAuJz56xV+OcQ6AEurLNmCzxgKAM5xk/MpkeJpeV7WNDc4iMtkrkxo4RXcWa64iSYBgdMBvLvlb0draqwEBgpVM7audqPYCH2Sz8gmG1CTppgHn295MtklT8zbliA6fB+rlhwcUNg7wqZLg/PKQHpjciNl2WJicOVOF52LFPDa7CTtxvqwFt7kV9DxHg5Z5MXKvCYAByBZXleoRG8AgSuwKyeh+CIZSSbgkhh0EYPXaCrgybMIGMoZPNSCk8EoNRDmwrYZAp77OPzny85BQZWwZtr
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: B3096140006
+X-HE-Tag: 1794036834-727451
+X-HE-Meta: U2FsdGVkX19lJJjc+xNSgj9TYVdjk0KP6Fg8LZG9JBsm9qUuTCtWWwSQJwENNhqjAZflAoZfyViNcwdeKdRStDyvU7y+oE8Rdj9fxUKlHHIP/Z/N3zhuym97NQ40yaERsslbvZUSaTebY+TBF0Bgbxyo0mFr6iZCC2iUE+nuBNNiN+bpndo7olGv+9R0Co4OwisBq/KgvkNUSAB+bn2O+y21/P+kzSFEMs8fHlMP9XsBZI7/G4NZyW1Z2EsTtQLRasNarj/Fg/Funp9tqiSeBrvdVBY285LWK+2cDHutG3qhwdsoAMLmVhKF8H46Retz3Yij2KV0ZHy+QMDddF76LVtxYQFnLDipCpZt7Se0yNSJOhqKxCg1RF4qMWqnsokhNYuFhuVr1LP/RUJgqYuq+x7c2xErcppnH3rSu3fMfv1HCdKatXymAA8DnmdSJvB5p30uuwQb48871KJA3xRKcSnQajencrKDoWe9Cks4pRB7TIB5pEt0lPWq3EEGHR+j2VIWtGIWZd9Fq3l5zdBclzEAux/sI/1LvER6Aisc1Xstqx1T1VzjWyaLW4H2LVBhFCGSZDU9ekEMDYXxOQNpDbNwM68pkPRcDypZrVWeUISbr0WptNz789mQRLGdo3DrYwhta4r19IeqT9UwDWzd0Qw6K7zM4M7eR03EM6cEACR6QEthv3ffh28b8dy6VP7WDNuWmBPD02hiQK15KlpzZUH4SBZ4rFaRhDprRWtVU4VTYHclfAPtxCzy791WKZw4gwNCagaHxKznAQyBaf/sI4R1uUWQHNiRPVbb1k5JE+e2OOCV3xS79jW1EdlF5NVDZzDkJ6U3/TVqnBavCnkS15jYST+PARq8/FTtidG02Dv/KJ4BEokw5lLdi6tHoeg2ax3zFkWMlo7ao5mB+vkoGrQwSWDK+o5ihJw1hV0BF6sZfzjhc2p9Y6r2hJQX4QRraqzKxU+NosVPC6+hi8n
+ mZKBgsoW
+ K5m0b4jNk4MWF75U+HBkYfLiJqBnJ+aF/CdhWV1F0u+3l1TOZas+AvAg2tYgioWZb/CFUPDKvrhXzgX5FlckqLQRgSYjaEBYfM7arFf59xIUUi2Gs0wphETdysdp5kOGXQsnyHQz2psBMU3skQduZheVTk9qFBi1xvXIYVn3CpTPJiFvjEMd+3KoEEsSsVPtXbStf2/pcNui+65ar/JMryuVlS6lwQhVRFnDEPymezPLxlOVpEmnYgYdKpG2/sgj+hqeQATOY126uHstqiM4TXFIMZP7HUd5UigbBN00zgMAWwaq9u79abXRLtw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,28 +105,55 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Code marked with noinstr can only safely call other noinstr or
-__always_inline functions. When reading arm64 source code, I found
-necessary noinstr markers is missing somewhere. So I asked AI to scan
-the arm64, this series is the result.
+The non-instrumentable entry and stack unwinding paths use the per-CPU
+offset and read helpers. Plain inline does not guarantee inlining, so
+these helpers can be emitted out of line without inheriting the
+caller's instrumentation restrictions.
 
-Jisheng Zhang (4):
-  arm64: percpu: Always inline helpers used by noinstr code
-  arm64: entry: Always inline helpers used by non-instrumentable paths
-  arm64: stacktrace: Always inline internal stack boundary helpers
-  arm64: alternatives: Make branch and ADRP offset helpers noinst
+In a GCC build with CONFIG_CC_OPTIMIZE_FOR_SIZE=y,
+__kern_my_cpu_offset() was emitted in .text and called from
+.noinstr.text.
 
- arch/arm64/include/asm/cpufeature.h        |  8 +--
- arch/arm64/include/asm/entry-common.h      |  2 +-
- arch/arm64/include/asm/fpsimd.h            |  4 +-
- arch/arm64/include/asm/mte-kasan.h         |  4 +-
- arch/arm64/include/asm/mte.h               |  6 +--
- arch/arm64/include/asm/percpu.h            |  6 +--
- arch/arm64/include/asm/stacktrace.h        | 16 +++---
- arch/arm64/include/asm/stacktrace/common.h | 12 ++---
- arch/arm64/lib/insn.c                      | 57 ++++++++++++++--------
- 9 files changed, 66 insertions(+), 49 deletions(-)
+Mark the per-CPU offset and read helpers __always_inline to keep their
+instructions within their callers.
 
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Assisted-by: LLM
+---
+ arch/arm64/include/asm/percpu.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm64/include/asm/percpu.h b/arch/arm64/include/asm/percpu.h
+index 3cc316091d66..7c344de5052d 100644
+--- a/arch/arm64/include/asm/percpu.h
++++ b/arch/arm64/include/asm/percpu.h
+@@ -23,7 +23,7 @@ static inline void set_my_cpu_offset(unsigned long off)
+ 			:: "r" (off) : "memory");
+ }
+ 
+-static inline unsigned long __hyp_my_cpu_offset(void)
++static __always_inline unsigned long __hyp_my_cpu_offset(void)
+ {
+ 	/*
+ 	 * Non-VHE hyp code runs with preemption disabled. No need to hazard
+@@ -37,7 +37,7 @@ static inline unsigned long __hyp_my_cpu_offset(void)
+ 		    "mrs " dst ", tpidr_el2",				\
+ 		       ARM64_HAS_VIRT_HOST_EXTN)
+ 
+-static inline unsigned long __kern_my_cpu_offset(void)
++static __always_inline unsigned long __kern_my_cpu_offset(void)
+ {
+ 	unsigned long off;
+ 
+@@ -129,7 +129,7 @@ static inline unsigned long __kern_my_cpu_offset(void)
+ #endif
+ 
+ #define PERCPU_RW_OPS(w, sfx, sz)						\
+-static inline unsigned long __percpu_read_##sz(void __percpu *pcp)		\
++static __always_inline unsigned long __percpu_read_##sz(void __percpu *pcp)		\
+ {										\
+ 	u16 *gprs = &current_thread_info()->pcpu_gprs;				\
+ 	unsigned long off;							\
 -- 
 2.55.0
 
