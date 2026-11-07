@@ -1,140 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FE1606A330
-	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 13:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B7C0606A326
+	for <linux-mm@archiver.kernel.org>; Sat,  7 Nov 2026 13:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=oKVdnlDk
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lJxfz6F4
 Received: by kanga.kvack.org (Postfix)
-	id 0D8A96B05C0; Sat,  7 Nov 2026 08:51:10 -0500 (EST)
+	id B6C966B05B0; Sat,  7 Nov 2026 08:57:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B0A86B05C1; Sat,  7 Nov 2026 08:51:10 -0500 (EST)
+	id B44666B05C2; Sat,  7 Nov 2026 08:57:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F08B36B05C2; Sat,  7 Nov 2026 08:51:09 -0500 (EST)
+	id A8BA36B05C3; Sat,  7 Nov 2026 08:57:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BED096B05C0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 08:51:09 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3EA99A031E
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 13:51:09 +0000 (UTC)
-X-FDA: 85408459458.11.D4B094F
-Received: from mail-dy1-f180.google.com (mail-dy1-f180.google.com [74.125.82.180])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 6CD8720008
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 13:51:07 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=oKVdnlDk;
-	spf=pass (imf03.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.82.180 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8913D6B05B0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 08:57:39 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1F1C040355
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 13:57:39 +0000 (UTC)
+X-FDA: 85408475838.16.5D05F80
+Received: from mta1.migadu.com (out-145.mta1.migadu.com [95.215.58.145])
+	by imf26.hostedemail.com (Postfix) with ESMTP id A8B7A140007
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 13:57:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lJxfz6F4;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.145 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794059467;
+	s=arc-20220608; t=1794059857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=baZEbrhbhDEpq9QKIXgzBR/d0LlM+jrSsgwjy5hT7Ro=;
-	b=PIttoHt0aAASbmDDdnMFOsXU+SF7iKS39OawgLnRx802INgonOXyHUOvFQ9ajjdEpgJJX3
-	SMon8ikzHDAcgysz5bSCSuA4h+KR+gTlqdBulyNhfdpwfnKcTYpPMyteBPfwZ8HmVH07+A
-	/T2RlqG1hYWVuVy8kGP+Qm5N+WgiF9g=
+	bh=bof9tUcTOZBXMkDJCDfY6C3YrCB7UvJznTngHIBFOlg=;
+	b=H+YidmgUhBwNXCQzOhiuXfWuF2aWp6CmOlkFVRFYafakzkNVESTfhDcK+TJyuSfV1F34s6
+	k60eg/JeZEaV6xMZ+imANcy7yi8bloHeJr8ElMi6t5TDItZ3ERqDtXAO8nHuIXpBE7Hzrf
+	lljnrNvHR7lkvtGQGKjxdEIkP2fE/Ec=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794059467;
-	b=1JBl0Lk/c02Wh1hOs4TADZyeHQgIvU5C6KiyO6ZLIGyDnJpQFwyFT6S9nJ6uMHWMiWhVH1
-	esFHFS0dM0E0iekZOTWRUDPrt3Vu3A9upNbJYMWKaMFqADGlPRxT8u5erGxPDY1mTpPVEa
-	FHULD0cEddrpk9YvS/LP4UZBuizK7+E=
+	t=1794059857;
+	b=pBzI/SR3DurImUZ36dRxCdI+TAOo3A618htWbvRISms0P/HKJT1zDF3MYEASYi3Eno3UY4
+	lkNE2MaAosIv1aj+nfYcLYIYfKccsZT/zGn9fLFpqqnNtteMnZSDV0vMPEJs96GQR4hSRT
+	xg/dAvQAb11MXKlyPPr0ZZI+W5dUWbQ=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=oKVdnlDk;
-	spf=pass (imf03.hostedemail.com: domain of jiangwenxiaomi@gmail.com designates 74.125.82.180 as permitted sender) smtp.mailfrom=jiangwenxiaomi@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-dy1-f180.google.com with SMTP id 5a478bee46e88-36cad25b8b0so2552101eec.1
-        for <linux-mm@kvack.org>; Sat, 07 Nov 2026 05:51:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794059466; x=1794664266; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=baZEbrhbhDEpq9QKIXgzBR/d0LlM+jrSsgwjy5hT7Ro=;
-        b=oKVdnlDkt3wRtn9gHk7uOUKi2P88+YKNwqsnk7kCL9JgPpXe7upItEewcg7nVTFGFr
-         27/i3n980+gOda5um7kcXc23iJWVp5y6Xi+XRJphOjk/TjAzQf5NNGdG2bFXxCe+Sjrj
-         A2mnFjfsAhIlB/c3gk24IYHW3ZIPgxaG7jD2wdKfhbgd/bqKh3M7kbFmm27FR2DAOaqP
-         F8ZW+T3K/5KxL2ReiiiGGxs6FNZ7S2GLNo6VwNUK8B3eBzhA1TzPK4QNRbB0/fhUX9tZ
-         krly8JanUXb6UOScXkAFrr4lVZqqDbV5A93tFHVSm4dUOV/3oBGg84TBZsNO3TXhPalf
-         AV2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794059466; x=1794664266;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=baZEbrhbhDEpq9QKIXgzBR/d0LlM+jrSsgwjy5hT7Ro=;
-        b=hyJgK8eNDIogILNvmraqI2gP0iKeV///+8CVLKsepl7NEzUZXT4qdduBkNaXQ0cymc
-         fAo08/mUS/aRZj+rYALVbgWPZzZxgw+Jus9zwUW8NpsbQIYMFJX3/8XFM0ttZH5Iv64q
-         02A6HDgtBhvSehc5BlW4aH8jBfbRYJvwytc616vaylOXgjWO6kPXwvGIv1wOdQZwdCpd
-         hlqSZ1LxjemSf9NL+C8JTzhN2UCnoJXw1ME5Wrs3UqJjOrvlITHUtq0N/dV/dFQ0IrfU
-         wkQU7zszjQ5hQkFnvm2kxFRd56JwKRf1GWwyHSvDbb9uNeyEqJb4nmmNKNfS3NNHL0zk
-         QFTw==
-X-Forwarded-Encrypted: i=1; AL+hErF5r1J93nsBv2yyLqfmWF3z/R4SQTK4Z4tRUw/uFq5HtjgA6WFWuZ1zsOgpv0WauoWWrVSkK5jMZg==@kvack.org
-X-Gm-Message-State: APuU4Z+OU06O+6cIgJRUbPVPK0BgF22fnfHCVDohM8UTlxsMH+ik/lAn
-	DKku8GBlXtnsCnc1OuTqgqPt5kh+UpHuCZu1PgMGF4b7JoEFxkdnxdiQ
-X-Gm-Gg: AYBFou03HjpDGE7z8lGyqVLwpb3TetNUQ4O3OJ0LJB1gMQMSwdor0tC5IDpsTA8yrTq
-	+aanVqNjbSm0iYMhDUsOxobideR1kkV0mORpcVbWTUHZisPXINJZBm61P+5lSqjco2De0iQ+oYO
-	t/P1P4kc5eToXVS6QLaEBJalSzNgmpMtV/1AXYX7J9rnec2r9j/v+ZuLG2HAd1GZyftB4SDbnQ2
-	kDP4z8IpiVaOfIPrZ4PhXY9tvRwmbeI/9bOMDPPjv62y1cokCuQOSw1n6mIWVbqfml2XbSuWMU+
-	ffhDseEsPP74+8/XDTgOYBO1LcuEVkMc+jESxhVTaQ7eCQ0IN/6zLwUQjXWALu27b0dzx0Ap3eK
-	0WeZ5NouE3uPlPT2pt0ricyGPLcOiEtM+k9hcytaIBbUAs9u1ONGHZ7UGaOEavnsVErtFDhgvH1
-	E5OfqUv2QRS+zSGsEVqY0I4FbXXCrdgbU1XFyuIlp9ViE3908fhnN/f05W8WLkYTA9DZpo7p2bu
-	//x4Jm8l9XjrchHpX5SbOsxfJyskElmCwkkHk+1WrGeISQIpHW0fFlVr7wFFfOTzlv8Sj8RrJqC
-	QUmKtg2IibgBmXhva3AjepKrvPuOLyC2G5OzwV3+/+0C8ej/fxCBmgmdcw==
-X-Received: by 2002:a05:7301:6486:b0:36e:97b4:1071 with SMTP id 5a478bee46e88-36f75b1f828mr7447409eec.14.1794059466185;
-        Sat, 07 Nov 2026 05:51:06 -0800 (PST)
-Received: from mi-OptiPlex-7060.mioffice.cn ([43.224.245.234])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-36fa922c6c7sm21280820eec.10.2026.11.07.05.51.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 05:51:05 -0800 (PST)
-From: Wen Jiang <jiangwenxiaomi@gmail.com>
-To: akpm@linux-foundation.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	urezki@gmail.com,
-	linux-mm@kvack.org
-Cc: baohua@kernel.org,
-	dev.jain@arm.com,
-	ryan.roberts@arm.com,
-	anshuman.khandual@arm.com,
-	david@kernel.org,
-	rppt@kernel.org,
-	leo.yan@arm.com,
-	xueyuan.chen21@gmail.com,
-	chleroy@kernel.org,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	ajd@linux.ibm.com,
-	jiangwen6@xiaomi.com,
-	jiangwenxiaomi@gmail.com,
-	linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v12 10/10] mm/vmalloc: align vm_area so vmap() can batch mappings
-Date: Sat,  7 Nov 2026 21:49:53 +0800
-Message-Id: <20261107134953.748622-11-jiangwenxiaomi@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261107134953.748622-1-jiangwenxiaomi@gmail.com>
-References: <20261107134953.748622-1-jiangwenxiaomi@gmail.com>
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=lJxfz6F4;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf26.hostedemail.com: domain of kaitao.cheng@linux.dev designates 95.215.58.145 as permitted sender) smtp.mailfrom=kaitao.cheng@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=a4WQjTS9cLmNAnAJkm3u/yMKK8cVrEp4RpmNfDVq90s=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794059853; v=1; x=1794664653;
+ b=lJxfz6F4qBNSR5tFla7gLu8C60Ut8j6sNhgl36PjYrBesekcQ460PWTFUBZKJBTXlOb167Cz
+ EYAxD+DU/YXTiDp0v0C46KCq/hhwcfZgC5Q+E2SOBt3QwWyB+hXy5CTC+iuQKMFnn9NMW+C4It5
+ ILQjSrkCXaBdr5OGpjI70qJg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id bb1f088a7420c55f;
+	Sat, 07 Nov 2026 13:57:32 +0000
+X-Mizu-Trace-ID: bb1f088a7420c55f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <fd7ed305-6192-46e8-a5bb-cc1ed8f12f74@linux.dev>
+Date: Sat, 7 Nov 2026 21:57:02 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/list_lru: Account node removals in isolation helpers
+To: Johannes Weiner <hannes@cmpxchg.org>, Dave Chinner <dgc@kernel.org>
+Cc: gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com,
+ brauner@kernel.org, cmllamas@google.com, aliceryhl@google.com,
+ nat@pixelcluster.dev, arunpravin.paneerselvam@amd.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.com, simona@ffwll.ch, viro@zeniv.linux.org.uk,
+ agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org, cel@kernel.org,
+ jlayton@kernel.org, cem@kernel.org, akpm@linux-foundation.org,
+ david@fromorbit.com, david@kernel.org, hughd@google.com, yosry@kernel.org,
+ nphamcs@gmail.com, matthew.auld@intel.com, matthew.brost@intel.com,
+ thomas.hellstrom@linux.intel.com, jack@suse.cz, neil@brown.name,
+ okorniev@redhat.com, Dai.Ngo@oracle.com, tom@talpey.com, qi.zheng@linux.dev,
+ roman.gushchin@linux.dev, muchun.song@linux.dev, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, liam@infradead.org, nico.pache@linux.dev,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org,
+ mhocko@kernel.org, shakeel.butt@linux.dev, ljs@kernel.org,
+ kasong@tencent.com, axelrasmussen@google.com, yuanchu@google.com,
+ weixugc@google.com, baoquan.he@linux.dev, chengming.zhou@linux.dev,
+ linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
+ linux-nfs@vger.kernel.org, linux-xfs@vger.kernel.org, linux-mm@kvack.org,
+ Kaitao Cheng <chengkaitao@kylinos.cn>
+References: <20261103045053.59548-1-kaitao.cheng@linux.dev>
+ <aupITfr9pBKPrU20@dread> <au3eyCrHiuhbJx3u@cmpxchg.org>
+From: Kaitao Cheng <kaitao.cheng@linux.dev>
+In-Reply-To: <au3eyCrHiuhbJx3u@cmpxchg.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: oq8c75z5ccfkgkb7k3fynskrowrhjjci
-X-Rspamd-Queue-Id: 6CD8720008
+X-Stat-Signature: g73zw6rho9kbk85yt6awppionqrap7n6
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794059467-968831
-X-HE-Meta: U2FsdGVkX1+M0nw8lP5z8aokzMFrbZZhO0amTTfS7HZkwKgpVCTuYjF9SsPXSZYXV8n9TGOJyZRj/C3rFj+UR1m9VSQ1W3wztDN+q81X9JuUbjvLC5a97tHcX37aNxdfAPYoVNRAPyDPqKgfb+xTxRvBc7uqSx7SMruDUEO3BN1NhnMC00KVgxJupU1JzPP0VeULfYcFkU55U0HHIOcAfL/3Z5zDbrETrj79zG5wSLZFjf3vWSWuFOCIpeVM0UFBGUQ6PZuJpchW3WsOAjAv+kwbtsBy15c9ZqZBQRWbMBL72eATAdHt/x+9r67CaZQwwHceUDrwFH7NW02ebHwhf8eulAFYixKJBYPHV95c+B2HJCSgEwqqNkW9rGp2DooCu3pQMF8LUoYVsp3jYb/uayU7pemMfOjt1RH8PLpycPd9PzNmuFYamb8nN/P8no6BhyOPMyorzJJ/OC67h0k+iInfc9Q7FF1k+Z/Gcew948+ea08CX7DDMjrONSn8rkNRlXuvS+q5/fGq1ZnYimo9+0wIma191Mb+25tQ7JVDkeImSSSm8Yrxoghn2c/2/pPx+dST6b/12ppQklDtUMM8m3jcOHTggkiZc5a3yfxcqtRZkcKIrRp7FmUiJFUxV91BuDlLIi4MTmUKBzZOXeRBK/1onieSKbz8mY42hrul6d9lzGvj/M7D2cGvQa4JCsIm8x9tekkhIeWeDfuIgXvDUwKom4g8M5zh507g3Jad0ZzR+OdkpHJX9ib0ma9AluQw2QlD5bqz1ok/ktGQvI4ywLT4kn3OISZbU257eo67NUKgLgXnoEcoApNwE/sWPCB7CD2lEAXo2KEJ/yDSnHvAxusTVF3MtdwirrGKC9xUJiZ35Sgkg+ERi0slQhbiFDpL0EuVR8nZTBY3wwyy89DokQh/KDI6192RDxBE18aCQlnFN2J1g7mNJkK4iiRk3AWby74/59PFdXgNnqBv2tc
- an1Hahdf
- WDNjZ0NxpHQLs4kPgeENVbz4Mcjv+x+pCPhyLg2dcW6fQX2Da/ObAsFk9EcmQ0tWMOIOvx2XtCY85cw3+iJzUq38O8I8ISUHm7L8Obj/yH/ze7lvYbm+TMt3xBcyJ+T+MtV3iyJDuDVpYNjZlXZ5mpX4Su+svP3ioC6ByEPCgSdD84kTFtV9Hfu2cMwkjtI4UTKgokxZ5KR/xmG2HLh553GOdR7Ef1COFlaDumQzciSLCgtC+lIwH+77UGvGwdO+53cn9ZbmN56phUAMpYvTf0AfKMgEg96+lRCjZNOJ9V5mju4eLouW/7ReifOhAHj1kAfKGqNtSiR01Br2X50JVWhxRMWd5aRKhUkh6ySv8oXde9hhOoGy4jHfh77XTmYAG+LN2N/7beD9qQgSTcA1H0Ua/Vg3i8IqnWvGIZFhKGzbbzxaYxifAwh4NHlydjbeAEmfDU6+eWdomUm1YrIk1wekiXg3ZgfCnRTFVEdc2T2yXLNdVB02O09BeQcajexFp5t3D6JFPE+/cPt6dY9E2NqTHmR95X7QcQYy1YPKa0cX1NqUG6eEdk5lIJdEcj8ijl8SLf4tm2IGIPtOXuoFuUTUVq30IHiQ6y+yBKabJIYGdBzV2igejSIyuQDAsdkcLMPxStBYjlCcV648=
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A8B7A140007
+X-HE-Tag: 1794059856-76127
+X-HE-Meta: U2FsdGVkX1+BjD5zpZwSn2DQgD5A5XKTYIV+t9lLHoa9Gf456ccr68zSZZUke9KSLH3zob7vMDVKcjIvnwgED4n9Zc7Ib0PxvBBmtHvQsJRHqtFOiML63jRXqGJE3Hr62pktYQJN1h8rgomMX2ZlqFGb8aVGdAE0fwOzEa4nSKuVOSTerEMZmDgtQA4ghNCTzIYi0Ua2P4H1xdaQ1fXAEqNUAf/9FdDyUZJU9g4RosnGEWXXZ8751U13nQY2hZsffP34E6toG/7xbUEAq+M777FfZkUM3b9EQ8JA0IqeVoWDdTXBguq0vsjP0VbtQMOq6SfRDghALB8D717LDiXeRKgOx3giR+PftqPVq8f8As859bpO44xLDSahaOpAKGCvjQ4OOwJcseij7ybVkonrjYc+gqYMGsw4SJXDIAcbZ2ergOeLqgRbxZ9v5FS2M0Hv+toTDl7kRGMQJ4uB8HNeBA8jvuODebpTGt5Rbh5OFhzTCp/RA197BDrdg8BwhVVAfIQ2GhNMjkQ5QN80vXfudshj5dH1mJbMprKtdFVtl2CUUpoZM0cw6eaXvn2hfQgmFR6bpIIZPQEHRDsAL9MqJEIWkSIdcCCpi1UuZjvsqdToFTZ8oW7wAUPW4VKpZfp5gEWYPFE5GYmzadM/k/O+Bc1zcv+Oz1FJl/5RZCNLneRL7VrY8ZPGmWmp6A1yXMKIsK+WJNhDaBAULC+pFBBZNKcPTCs5PUE+noASlqRgReZtZphyHEsxA4M5jqrVotLSZb1q5fW/dKy/S4Rg35q83RHUYqn27twAKtuflZp5xtTfRb3eCIPNjrqSDRvsVdX4HuBwtzRQD6pj4uHsBTU2+07TnO0Y7tGVaCpkEn5kT5VToM9pxCU+YKsOFZ/NPO7c6uCGBQjgNaUfWxWMsfDJGd/dMTkk++VHD9ZxkFoGPDfAXASxEDk1KbB1ovr5etk1gPxgDW/ZQvwfrDXxSDy
+ jwyUY9SJ
+ ktZdjHmxu99tGUgCpV9rc3dYW/d4VkFVnGbHbZdT8Ab0BnMvC5/OhBSMySQwUeLxZujS8ef+Kdle1IL3bO3IkRuMuIDqeu4HEbM5eMukdCt92wJIkLf/lj8MLBUnAV/o5SMb4wj3Twz1Mfx8V9NaLSA5QlkiUUWr0WyMSEp9qXB3LjP2Fbs5cwvfa5ctE9HCAiKkEgIgGJC6zIWshTy/Qe2o9PsvZQF5DVNIAeAWsZS1lXjOD1f2JxxPpVBE7uYb+gqR6lSArmjdhw237rZ8nU0+PZ+syOOtIqt0P6tMul4WEbg/ESNdXWHvKMF+HpPruBKi/TgjICgAELY7Re/Fq8KOz/uWbRwdTz8gRv2KPBODF/R9IhWoszjcaYCg5qEfZ+WBY2Se8BtowiAeuLbWstAxM100zY4JxY0YVNMHNcYRsIG12r9omfvTwDCbr/IV4tfJK1YXIpXbMioJRqB07HJmcJ5ap71oe8m3JWjpF7dnKIVOvEttEhqIaCg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,90 +114,68 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: "Barry Song (Xiaomi)" <baohua@kernel.org>
+在 2026/11/6 22:06, Johannes Weiner 写道:
+> On Wed, Nov 04, 2026 at 07:47:09AM +1100, Dave Chinner wrote:
+>> On Tue, Nov 03, 2026 at 12:50:53PM +0800, Kaitao Cheng wrote:
+>>> From: Kaitao Cheng <chengkaitao@kylinos.cn>
+>>>
+>>> Successful writeback calls zswap_entry_free(), which removes the entry
+>>> from the LRU and decrements both the sublist and node item counts.
+>>> shrink_memcg_cb() then returns LRU_REMOVED_RETRY, causing the LRU walker
+>>> to decrement the node count again.
+>>>
+>>> The affected call path before this change is:
+>>>
+>>>   __list_lru_walk_one()
+>>>     shrink_memcg_cb()
+>>>       zswap_writeback_entry()
+>>>         zswap_entry_free()
+>>>           zswap_lru_del()
+>>>             list_lru_del()
+>>>               __list_lru_del()
+>>>                 atomic_long_dec()  /* first node count decrement */
+>>>       return LRU_REMOVED_RETRY
+>>>     atomic_long_dec()              /* second node count decrement */
+>>
+>> That's a bug in the zswap code. You shouldn't be calling
+>> list_lru_del() from __list_lru_walk_one() context.
+> 
+> Grr, Kaitao you dropped the wrong thing that I thought had merit in my
+> proposal...
+> 
+> Dave, would you mind taking a look at my patch at
+> https://lore.kernel.org/all/auJkvb-Lq0M5Enkz@cmpxchg.org/?
+> 
+> Ignore zswap for a second. I know it has problems. Most of it stems
+> from the fact that we rely on the swap locking and do none of our own
+> locking/lifetime on the zswap entry. As a result we work around it in
+> odd ways. Sorry, you didn't ask :-) That's worth revisiting, although
+> it's likely more invasive work.
+> 
+> The observation that led to the patch above was a much simpler one:
+> since we now have the caller-locked __list_lru_del() anyway, the only
+> difference between that and the list_lru_isolate* is the
+> accounting. The patch is about one thing: removing the isolate helpers
+> entirely. There is then simply one tool for caller-locked list
+> unlinking, __list_lru_del(). It removes an avoidable distinction,
+> shrinks the API surface, makes it harder to screw up.
 
-Try to align the vmap virtual address to PMD_SHIFT or a
-larger PTE mapping size hinted by the architecture, so
-contiguous pages can be batch-mapped when setting PMD or
-PTE entries. We do not expect any significant overhead for
-this.
+I don't think replacing EXPORT_SYMBOL_GPL(list_lru_isolate) with
+EXPORT_SYMBOL_GPL(__list_lru_del) makes much difference by itself.
+The only reason I kept list_lru_isolate() in the current version
+is to avoid passing an additional parameter (nid) to the isolate
+callbacks.
 
-Add __get_vm_area_node_aligned_caller() as a wrapper over
-__get_vm_area_node() to simplify repeated calls with fixed
-arguments.
+I don't have a strong preference for the current approach. If we
+can reach a consensus, I'd be happy to send v3 with the proposed
+changes.
 
-Signed-off-by: Barry Song (Xiaomi) <baohua@kernel.org>
-Signed-off-by: Wen Jiang <jiangwen6@xiaomi.com>
-Tested-by: Xueyuan Chen <xueyuan.chen21@gmail.com>
-Tested-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
----
- mm/vmalloc.c | 36 ++++++++++++++++++++++++++++++++++--
- 1 file changed, 34 insertions(+), 2 deletions(-)
+> The zswap weirdness made me look at list_lru. Consider it a stress
+> test from idiotic code :-) But I would propose the list_lru
+> simplification for its own sake, regardless of what we do with zswap.
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 5b898da0826ad..6a150b11261a3 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3365,6 +3365,14 @@ struct vm_struct *get_vm_area_caller(unsigned long size, unsigned long flags,
- 				  NUMA_NO_NODE, GFP_KERNEL, caller);
- }
- 
-+static struct vm_struct *__get_vm_area_node_aligned_caller(unsigned long size,
-+		unsigned long align, unsigned long flags, const void *caller)
-+{
-+	return __get_vm_area_node(size, align, PAGE_SHIFT, flags,
-+				  VMALLOC_START, VMALLOC_END,
-+				  NUMA_NO_NODE, GFP_KERNEL, caller);
-+}
-+
- /**
-  * find_vm_area - find a continuous kernel virtual area
-  * @addr:	  base address
-@@ -3696,6 +3704,30 @@ static int vmap_pages_range_batched(unsigned long addr, unsigned long end,
- 	return err;
- }
- 
-+static struct vm_struct *vmap_get_aligned_vm_area(unsigned long size,
-+		unsigned long flags, pgprot_t prot, const void *caller)
-+{
-+	struct vm_struct *vm_area;
-+	unsigned int shift;
-+
-+	if (arch_vmap_pmd_supported(prot) && size >= PMD_SIZE) {
-+		vm_area = __get_vm_area_node_aligned_caller(size, PMD_SIZE,
-+				flags, caller);
-+		if (vm_area)
-+			return vm_area;
-+	}
-+
-+	shift = arch_vmap_pte_supported_shift(size);
-+	if (shift > PAGE_SHIFT) {
-+		vm_area = __get_vm_area_node_aligned_caller(size, 1UL << shift,
-+				flags, caller);
-+		if (vm_area)
-+			return vm_area;
-+	}
-+
-+	return __get_vm_area_node_aligned_caller(size, PAGE_SIZE, flags, caller);
-+}
-+
- /**
-  * vmap - map an array of pages into virtually contiguous space
-  * @pages: array of page pointers
-@@ -3734,8 +3766,8 @@ void *vmap(struct page **pages, unsigned int count,
- 		return NULL;
- 
- 	size = (unsigned long)count << PAGE_SHIFT;
--	area = get_vm_area_caller(size, flags | VM_UNINITIALIZED,
--				  __builtin_return_address(0));
-+	area = vmap_get_aligned_vm_area(size, flags | VM_UNINITIALIZED, prot,
-+					__builtin_return_address(0));
- 	if (!area)
- 		return NULL;
- 
 -- 
-2.34.1
+Thanks
+Kaitao Cheng
 
 
