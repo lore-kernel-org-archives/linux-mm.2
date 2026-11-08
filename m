@@ -1,135 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827F7606A31D
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 02:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 485B9606A31A
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 02:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=BsQfTe8u
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D7JQ8kG3
 Received: by kanga.kvack.org (Postfix)
-	id 75CA16B05B0; Sat,  7 Nov 2026 21:40:31 -0500 (EST)
+	id 340936B05B2; Sat,  7 Nov 2026 21:41:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 70D716B05B1; Sat,  7 Nov 2026 21:40:31 -0500 (EST)
+	id 318146B05B3; Sat,  7 Nov 2026 21:41:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FC4D6B05B2; Sat,  7 Nov 2026 21:40:31 -0500 (EST)
+	id 207576B05B4; Sat,  7 Nov 2026 21:41:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 339EB6B05B0
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 21:40:31 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF28340382
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 02:40:30 +0000 (UTC)
-X-FDA: 85410398220.06.AF159EF
-Received: from mail-dl1-f51.google.com (mail-dl1-f51.google.com [74.125.82.51])
-	by imf05.hostedemail.com (Postfix) with ESMTP id D7306100008
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 02:40:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=BsQfTe8u;
-	spf=pass (imf05.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E63D26B05B2
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 21:41:37 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7E87CA7ED3
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 02:41:37 +0000 (UTC)
+X-FDA: 85410401034.23.08C2AC8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D721A180002
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 02:41:35 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D7JQ8kG3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794105629;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794105696;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oKWYlAcY6So6bitWGtla4+mL7IVkoD8l6fm1ubuoUDc=;
-	b=gY5kQ6ufm38DZ/NoYaaH3616G9x/vJ1dzLsWyZ7yURJAE9K9G4NZR0KnOVdALDMknDLdfr
-	2Cjxjl57h9nOAJK2quR5ESYM0hSgnmNiGjMEdLF89TBwp3k9jhMY+Ou5BF4Svi5HGapGwp
-	FjkdWJjNsDF0/n6CmpCPGuXwvia8XyM=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=BsQfTe8u;
-	spf=pass (imf05.hostedemail.com: domain of odys.yuan@gmail.com designates 74.125.82.51 as permitted sender) smtp.mailfrom=odys.yuan@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	bh=k3bQGxK0eIsD8Is5s6TbrJM+F/ftHRub1Y+D2W3BrRg=;
+	b=k+9ZfVpUsP1LzTM89GAKQ6VYCfxnyBerwz+msaapKmNNzaGhm3ET2yUgBgVFq3zgasKwDq
+	Yf+bzgrji0SFvVV2kkYXkMyh23uqsA2NVwqK1pQcZYwTXwepjSrt/lA7GoAYR9Y9rXDpwp
+	kVWzM9N5/gVoIwTmxVfoKTyX7r3VqqQ=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794105629;
-	b=pbVb4eA7czQqpNnzsFJ07Tz/a4pJr1zj2XeJzwgRF/IKGZMYnWrCvuJouew2RnvcPAhVLQ
-	3W4prg223rO9NjdiXiP+EScSdrigpaM7qX/oKFBbbOeK/cs3mzCzIy/7BQPIUEB6abpRjY
-	x2pzPCOMHeHfVYACraNE9LMkhfu7uQI=
-Received: by mail-dl1-f51.google.com with SMTP id a92af1059eb24-14394530ec6so130686c88.1
-        for <linux-mm@kvack.org>; Sat, 07 Nov 2026 18:40:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794105627; x=1794710427; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=oKWYlAcY6So6bitWGtla4+mL7IVkoD8l6fm1ubuoUDc=;
-        b=BsQfTe8u+7keI5MFpauMly2ijTEfNVKv1Za5DuGUgG9zsg7t9S3eO7znFVn5prqQJ7
-         dWa/YThvX5oGJ+BHg2p8Wd/EJNfjIsbfuAO4sbYxSt5vU7GkTwl43N6BTT02v55PA6SW
-         bpvGE+96rbOAvqcM0I80lLWbgSFWgnzS1rp1CW4kuOdK5iLikuus1itIk7qEk/I7SUwE
-         eSLQBmXws7waE/E2VMtdqrobW89eoHOPuIU3EyftOvua8t8khFOBEO+mjuy6ACNNUak9
-         wX496n5BA1lmRaWwq5M+O7pqTuPsGbIsk2LVvWHk5Y8XbuH5Se3AMGQxZrZHYOD9UBkO
-         5C0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794105627; x=1794710427;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=oKWYlAcY6So6bitWGtla4+mL7IVkoD8l6fm1ubuoUDc=;
-        b=DbiJ0/Cs0dTnlZmh3dXsvcvqaCLjaweNvX25Fg88o/ih7bK2qRsljE6sCq/OXmQlBj
-         yvI+g/0UAbfTkQ5lutEwaA7gSD/E00Tc8nWVwFAZV8uOYKxfgCT106e/zK1wEyy9KUZS
-         xEzw4tqOuPsek9weV0v61Xqa58Nd+MpFNRnjGzqJpzwON4cTsNuXRnALMhlcKcKM4Zpi
-         aV9onqbEAm9ewD5TJDKZVW2c6s9ZOT2YAMJjnG8YWWocQ4hz+jhi6khaDtb2kgNs0599
-         CPRoVO5NscS3n0j+UzgNnI7bC9B4AFZ3OesAOEt9oVtsWksxc7VkIRRejqwbEQtEw3V2
-         z01A==
-X-Forwarded-Encrypted: i=1; AKwUvBzk/zslLCvnLnDgIL7exIgfkEoq1W2S3q/Bd8AOzY0YhHq2NzhEusVFLcNPZ9ehwwvXg+D4dn/W3w==@kvack.org
-X-Gm-Message-State: APuU4Z855HSKIJUBUaJWEBkoOKCx8WalzymifEL+CRNJSg0nwIrimbtD
-	EKwos+OfVhdN7iG5fuDHT4NzdC/WXoJgyehDDB5qhULoUgzAYslSsO2G
-X-Gm-Gg: AYBFou1/NJOTZpe+wP40gebyTczJxrByeY08y/D0iZHEGuDq+hVinuzCX+vJEgpfvtv
-	wuyoZIlJPQPhGv740PC8zvpl+p70moVGZNViGqKGyVP0+ZjQD5BtxVZuU7yF+Cu7tK9kMnMbX62
-	hGtQtoxgHBhud0NIlOabVhy5KfiQH1PylSS5KcNTk6Y1DO1/RuhYLbL8TYSXV3wUIEEok6f2f5+
-	VHv302AuQ0UvDtd3ux7g/SC9+bJo3MhOiSvIGGg1Abs4v6KmsMK4xB9MRUvGWe9jQCfVTLYpj1Q
-	DqIFvNyQh/eQrQCPjJQhaXIdyHMbZJ6BfC2mjkoj/DEPrY8kO//a+vtowE2IfODkIAnSHBUw4BR
-	IlBjeXf2vJOF16ehWoi/I2nKGlkawwYS0Ug9VEobSDPtQqT4bta0dCxa18ZJVOCeP6ggAMBYyLH
-	npH8q9q4dJ2zkFS9DPpCt7995WIlnoGKqzFaR9LPWtjzaRhcNi0qnRTfspBxlLvC2mZ06bjrn79
-	U8cBLI/ORLCVdSIVogrrmGAUEJ6N/V1cdoChVYMDqCAzFtC/q5v0HNS985JLEmj5NFl9MukkQkC
-	1x8HPBUoqF15nhKNxPoG
-X-Received: by 2002:a05:7022:29b:b0:182:6c6c:d876 with SMTP id a92af1059eb24-1b39fec1c25mr452900c88.8.1794105627500;
-        Sat, 07 Nov 2026 18:40:27 -0800 (PST)
-Received: from ubuntu.. ([23.254.208.9])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3771e5728sm2228842c88.16.2026.11.07.18.40.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Nov 2026 18:40:26 -0800 (PST)
-From: Qiliang Yuan <odys.yuan@gmail.com>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Xu Xin <xu.xin@linux.dev>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Stefan Roesch <shr@devkernel.io>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: Re: [PATCH v3 1/4] mm/ksm: align smart scan skips with the scan number
-Date: Sat,  7 Nov 2026 21:40:19 -0500
-Message-ID: <20261108024019.1195186-1-odys.yuan@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <7df793d7-55dd-40db-8455-1f22bb44193c@kernel.org>
-References: <20261107-bug-mm-ksm-smart-scan-align-skips-v3-0-16d5ce8b5fd6@gmail.com> <20261107-bug-mm-ksm-smart-scan-align-skips-v3-1-16d5ce8b5fd6@gmail.com> <7df793d7-55dd-40db-8455-1f22bb44193c@kernel.org>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8tmfhr47dmtph6qwx5ydj6fe3ye9gmpt
-X-Rspamd-Server: rspam01
+	t=1794105696;
+	b=PSwRqAFCT5cqcNFlJeOGl64e8t83DLOZ3pAW7/vQEM/tU32tYEbsCDzfnSbvrMoWDxim11
+	sWOmvJH/hZS834XdSqyOqmq8AzUG+524/q0DkQ0U1QpeN9JDmMAZ/bbJiDdSucV3VHtqRW
+	BqRBXY7IBJKfjlE5Ayujh4XdnhD31L0=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D7JQ8kG3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id F279F60A52;
+	Sun,  8 Nov 2026 02:41:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C870B1F0089F;
+	Sun,  8 Nov 2026 02:41:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794105694;
+	bh=k3bQGxK0eIsD8Is5s6TbrJM+F/ftHRub1Y+D2W3BrRg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=D7JQ8kG3YP1UfqZ8etYw4/3vP8myk+1N1XxGj4gPOZGo1NkB56TLcJlp+n8URTp6Q
+	 srFETKEq4vA8UUC/Ob6bxwPITLIYv8wLa53xsdIBU1WurHwLgAb1wymFK5fNLfUypf
+	 xLL3A/llQhvSK/HLzf+44j/Ot+K46MR+oaj4JFLvb4lk17erLPsSd0Z6+zz0QAtZQZ
+	 y5o20a9Pl8u83Mb+TKcCG/gPWVYQPpxvtnUyS51XpsVJODKjDNSeii7sVisnZLZkEK
+	 Qx1xbfd9xvWEc+6BwEbc7Ok4eITLW4qhCa4lKRR+LZyd+R5Au0+kq3yXNHGpxYHEYX
+	 Ty6hjrDzrM3jA==
+Message-ID: <sashiko-outbox-203522@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8 1/8] riscv: Introduce support for hardware
+ break/watchpoints
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Himanshu Chauhan" <himanshu.chauhan@oss.qualcomm.com>, "Paul Walmsley" <pjw@kernel.org>, "Palmer
+ Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>
+Cc: "Alexandre Ghiti" <alex@ghiti.fr>, "Jesse Taube" <jtaubepe@redhat.com>, "Oleg
+ Nesterov" <oleg@redhat.com>, "Kees Cook" <kees@kernel.org>, "Peter Zijlstra" <peterz@infradead.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Arnaldo Carvalho de Melo" <acme@kernel.org>, "Namhyung
+ Kim" <namhyung@kernel.org>, "Mark Rutland" <mark.rutland@arm.com>, "Alexander
+ Shishkin" <alexander.shishkin@linux.intel.com>, "Jiri Olsa" <jolsa@kernel.org>, "Ian
+ Rogers" <irogers@google.com>, "Adrian Hunter" <adrian.hunter@intel.com>, "James
+ Clark" <james.clark@linaro.org>, "Shuah Khan" <shuah@kernel.org>, linux-mm@kvack.org, linux-perf-users@vger.kernel.org
+In-Reply-To: <20261107023917.40606-2-himanshu.chauhan@oss.qualcomm.com>
+References: <20261107023917.40606-1-himanshu.chauhan@oss.qualcomm.com>
+ <20261107023917.40606-2-himanshu.chauhan@oss.qualcomm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 08 Nov 2026 02:41:33 +0000
+X-Stat-Signature: u5rbq3oswhpobknampwtbeteytqojqz4
 X-Rspam-User: 
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: D7306100008
-X-HE-Tag: 1794105628-897994
-X-HE-Meta: U2FsdGVkX196L4aEpyOlxk+phuKVQ5Vb2sTifJ3EtuwO+maZMFgZORJKSxpP/vQ27/wlm97EYW+LrlOJVBMPe4/wYGdfbr0EZSCRiuNhOiPdyUUz16qdyBEzwQ46EoVqk7AG8GXBlgc2L+1btVsgxg6wGFpBgVZMK0ig5A7pvJ0ZVixRBdPZR+wp5QoN+1/o+LW2+Qph+TZF5uyWfzKYQqzeBYWJ3+LOK/mqBmpvcNLc6bcRGqHAf+RPu+5YgSDUw6C2IzC1ingR/L/s/0f/9zQsY+WP2b0M03/I4Wd9CmJ9bNuIEnKhLSyDEv3xkXTen26we1YGJt6jrUq7dDBXBxkwqBefmp0Bd4aHu367ntbzGoL/pyePqnHf/cE3aXQpoZdQcqQTqjer+fbuA1xtxkELTAtKyv45Gni7V+lwEnNckd5eT3aNQ4921Wwd0JopU9YyEyyrld1gaoVzCjSqBpWHQfPVIEFl5bx2daCIq7aGAqf5rnE/rKjfEZ6p0Bz6dOgE19IdWUmaLg2e5s5GH+yhURol2fWBVEgvNgfGjDzJdSVxuWgvir2bpfC/pbwkYslTpXPng43qKjE17rlwseC2EHK4GkvyMQeDyIZymBRVAGEvCsJeyEklAskbtaxCtaXUBOyz5CfqYdYsMdvoLl36kvXZDUiGsJv7P0HEY1XVh8NYMhf7jnPIR90jzad0FjMqIbYG7PosYw1F/+JytMxo4gZz4AMIWIlEu7dIklxSEUF0dysoTyI4miyr7+o5QLaeWmPgNRBCksHibyBibxMgYZrfkYAOd87ERxlxi5Vn1/7zf+dux3MFUJfAd9oK86q7fkNmVcvzxgpr2frCF/MLAkYF+lh8pmKOaWtQE7dGiMnba6fkL0a8NiGocQSFqKRO1xEynoJHxCydq6Cm9PzfZ8iieWCNTiz5IGk2v3UuJEcpSb3GOA5cDPyRTngCRS+RqKcdJgOGSOe8ERm
- XKzAQgkP
- Lb62hkhHOeVUom6tZCtM5SFJSIkS0/G1FQ5gWdmM4vU6SCE6aYRqnSsSxLiKCdDaz/6hJLfiqFjdiJY3XwmgnM1NaM5Cq62K2Nh1LTkoJE+KhK3aQhirkYB45lLcl8/YUpZep/HcysyX40D7Q9VzLP9jcJFPc2HqW9ZbxjZTPZLyNKQOObOo0gOs1BN9vQeV3/+Kadfk2Hm3n967aLqsLdgyCyK/62gbZDLeJlW/OZS31jJ2s55olDPyMXhJR+NOkcWLsWF6/ShCf1fmU3xqI7T7o6njc7ZM8oJgEbbJTnMirdvaNdRngX+MTY2bQFuIYaGewEQtMINggsIBsXIDyzaZf9YN8vUYXA0bkihKkLU0hTPTyAlwtdYLDqKrQwNuWFA1FUi8p93EW/QZP1iOqoCGPExaoN965rNJjCC+6uZB+rTQ=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D721A180002
+X-HE-Tag: 1794105695-182538
+X-HE-Meta: U2FsdGVkX19t14qRuFJhgB8CUHx+6fz63eZwpabrHYf2QlufcaUKmxQ7kBX6wg1uccC87MVE0hbPjCxMEvbI20dxXStqOqngPckJLHJNtmWMOknmaNH/GQaYflJ/mvV8NrMlg6wqd9QhVnnnfKo8zHh59NLU/AWuYhUHjspKo8fGJrncbisDEbxHzugi76/C1R34MaiKDDeSl2aC+ly5VGAwFhR1BqwRIXE/6c3iFiSOoUXscquDJZ7vpzS4At3zvQp9y3O+5MfFo6IYFzreUOLSPhWWBLFvuuQMF52JQLuKua4X3Jfc85nwIu1uRbxFey9cvwsu2rm+gdOt+Od05+B13LhxjVevfw63xbjyBFZz1PyePyceWFsr8D+NYpOhjSY5RGNFLVg7YQs7a9h7TH2j2vRC5S3Lbg0SN4RAjTLJAaMlWcBGMboSzQkLgMI47uRh/WvBArayXBPlPXzheJHRkGB2TqX7UCJdwG5BUHUFPMQgUKKPwHQinwGkKCnBIThSNSL3GNbRqIFsP67ZrNk0TiOwgXTwVJjyt8YX7ev5coMz0Rri/+5BtjPBPu1a/galtgGM//glIOzKxWtYIjupaTO9AK0fAVr7TQ3D2xdoHoRRVa+TvWIg9kzAHes/Du0GzdxkRZyNi8Y6v/emmoNATFmbQ58tUgpzZozPhWEs8fCRylJC+jp285K8zzDRiw4yycCzyXjKAtx/9SaxiCjhwo8w2LUAZOcoXmKPPtRz59dw/Rtj+ECPEw7Og4ZBsrdjhrjXSzzmPvkR9B+XuKAEgaD2lBT2DmXV3eUTsimgeDKlzxe9o1LhaJ4ahLlLQtHlyFNbMk9bSw0yNhUQABW7NGB9uVZcsygbqzh4uI/UJTZfe7ub/SHAO/amZvFvPwC0k0woA3p+gpLWxJ+H2wchZI7ev1rnQRxC+I/JRhkWRDJRnbxzB2yw3tobueIacoMZ5yJBIJLuUdIKuU/
+ vKsxmMU2
+ txJcIvRt8R8ynGFCacuz+4ulb8s42qqyvEVpTl58JdgxogI489sIBATJL5jpMG21J1XhL0YAjWSkYov9GVierGCyegj0eL9lt+ShSWztPS5cs/rhNZQ+IUuqUCtuwbE9TBl+iW7w7M2B+ILJLuDXIcPWPSfDyAMZHCpn3I1xz0EBNjFExDh6a/Koa0oD0oRRXcGOJVPGCjtN4OEET9ny62U/xD5T0usD52BgNbQPUHvaZA92pE/GhLysR/UHSp/MkEV7aCJdb5LIBFH9wKyB09y6X4pV0jVdgGPofECjhxdP9i2XCHwnUkGoqks2EYPXJNnR6F7tv7kuq2Dp1gYRFrxakskleMVujTuMFTm7Nmz8VckdhjWYJHcqDoD5AhEOtQm0qojqFHvpg+j9NwFgKXJPzsO2pHs8xbFRgZGOg2BCbc9lrdl7apQumkud9moZxUIiFsG0i9uH1+ICfU7kqYmig2Glrxt9Ks5BtynId3V5bsLqtsVtZI8QBAHXw/xexzyflsADbGlLxoC0W3AAD2mea/lvt04arvjDs7oQoJjOpzb7gIvSqLudnXPRNty6plyFlOpgsn/BTIptTmFXzF//NP7cemfsZG7NORa/iqhnl2GEseuaGwDay3oK+OEC8Ra5k34tETAQo2ew=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,48 +99,461 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/7/26 20:51, David Hildenbrand (Arm) wrote:
-> On 11/7/26 17:57, Qiliang Yuan wrote:
->>                               before     after      after/before
->>   pairs merged (of 420)       361        420        116%
->>                               334        420        126%
->>   pages looked at per scan    1792       2048       114%
->>
-> 
-> Oh, I was wondering whether this should actually go to stable? Do you think the
-> above is rather an extreme case, and most users won't really run into it that
-> severely?
+Thank you for your contribution! Sashiko AI review found 11 potential
+issues to consider:
+- [High] riscv: hw_breakpoint: unconditional overlap match and early
+  exit in handler
+- [High] riscv/hw_breakpoint: handle_break() runs DIE_DEBUG with IRQs
+  enabled
+- [High] riscv: hw_breakpoint: missing trigger step-over in
+  hw_breakpoint_handler()
+- [High] riscv: hw_breakpoint: invalid bp_len handling and watchpoint
+  size programming
+- [Medium] riscv: hw_breakpoint: NULL sbi_dbtr_shmem dereference on init
+  alloc failure
+- [Medium] riscv: hw_breakpoint: wrong cpuhp state ordering for SBI
+  shared memory
+- [Medium] riscv: hw_breakpoint: missing ecall_lock in
+  arch_disable_hw_breakpoint()
+- [Medium] riscv: hw_breakpoint: stale slot pointer in
+  arch_uninstall_hw_breakpoint()
+- [Low] riscv: Kconfig: unmet HAVE_HW_BREAKPOINT dependency for mixed
+  breakpoints
+- [Low] MAINTAINERS: overbroad drivers/perf/ path and missing S: tag in
+  RISC-V entry
+- [Low] riscv/hw_breakpoint: sparse endianness mismatch on sbi_dbtr
+  shmem fields
+--
 
-I don't think it is an extreme case, and the test above rather
-understates it: it makes the second page of a pair mergeable while the
-first one is still young. The age of an rmap_item only grows, and is not
-reset when the page content changes, so on a long running system most
-unmerged pages are past age 8 and each is looked at every ninth scan, on
-a phase of its own.
+commit dde98179a500199d237defeb10f1d800c10ddb91
+Author: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
 
-To check that case, I let 1800 pairs of unique pages age for 32 scans,
-with the second page of each pair made mergeable 1 to 9 scans after the
-first, and then gave both pages of each pair the same new content:
+riscv: Introduce support for hardware break/watchpoints
 
-  kernel           pairs merged after 16 / 32 / 256 scans
-  before the fix    112 /  200 /  200
-  with the fix     1666 / 1800 / 1800
+This commit introduces hardware breakpoint and watchpoint support on
+RISC-V using the perf hardware breakpoint framework and the SBI debug
+trigger extension (Sdtrig).
 
-Before the fix only the pairs whose phases match, one in nine, get
-merged, and the others stay unmerged. Three more runs of 64 scans and
-one with 128 scans of aging gave 200 and 1800 each time.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 93abbb315065d..73b69e8dcba15 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -24163,6 +24163,15 @@ F:	Documentation/devicetree/bindings/power/riscv=
+,rpmi-device-power.yaml
+>  F:	Documentation/devicetree/bindings/power/riscv,rpmi-mpxy-device-power.=
+yaml
+>  F:	drivers/pmdomain/riscv/
+> =20
+> +RISC-V DEBUGGING
+> +M:	Himanshu Chauhan <himanshu@thechauhan.dev>
+> +L:	linux-riscv@lists.infradead.org
+> +F:	arch/riscv/include/asm/hw_breakpoint.h
+> +F:	arch/riscv/include/asm/perf_event.h
+> +F:	arch/riscv/kernel/hw_breakpoint.c
+> +F:	arch/riscv/kernel/perf_*
+> +F:	drivers/perf/
 
-It is limited to content that is not in the stable tree yet, since KSM
-pages are never skipped and later copies merge with them, and the cost
-is memory that stays unmerged. With smart scan on by default since v6.7
-and the fix being small, I'd lean towards stable.
+[Severity: Low]
+Should this MAINTAINERS entry drop F: drivers/perf/ (which claims the
+entire multi-architecture perf driver directory already covered for RISC-V
+by RISC-V PMU DRIVERS), include the required S: status tag, and be placed
+in alphabetical order before RISC-V RPMI DEVICE POWER DRIVER?
 
-I'll send a v4 in the next day or two, which also makes the new selftest
-helpers treat a short read or write of smart_scan as an error, and can
-add Cc: stable to patch 1 there if you agree.
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index e7891a2a89da6..2cfd9f3695346 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -173,6 +173,8 @@ config RISCV
+>  	select HAVE_FUNCTION_ARG_ACCESS_API
+>  	select HAVE_FUNCTION_ERROR_INJECTION
+>  	select HAVE_GCC_PLUGINS
+> +	select HAVE_HW_BREAKPOINT if PERF_EVENTS && RISCV_SBI
+> +	select HAVE_MIXED_BREAKPOINTS_REGS if PERF_EVENTS
 
--- 
-Thanks,
-Qiliang
+[Severity: Low]
+Does selecting HAVE_MIXED_BREAKPOINTS_REGS without gating on RISCV_SBI
+cause an unmet direct dependency warning when CONFIG_PERF_EVENTS=3Dy and
+CONFIG_RISCV_SBI=3Dn (such as on M-mode builds)?  In arch/Kconfig,
+HAVE_MIXED_BREAKPOINTS_REGS depends on HAVE_HW_BREAKPOINT.
+
+> diff --git a/arch/riscv/kernel/hw_breakpoint.c b/arch/riscv/kernel/hw_bre=
+akpoint.c
+> new file mode 100644
+> index 0000000000000..421ecd8549d94
+> --- /dev/null
+> +++ b/arch/riscv/kernel/hw_breakpoint.c
+
+[ ... ]
+
+> +	if (attr->bp_type =3D=3D HW_BREAKPOINT_X) {
+> +		/*
+> +		 * Userspace debuggers can request execute breakpoints with
+> +		 * bp_len =3D=3D 2 for compressed/non-aligned instruction
+> +		 * addresses. Program execute triggers with "match any size"
+> +		 * to avoid missing valid instruction fetches.
+> +		 */
+> +		hw->len =3D 0;
+> +	} else {
+> +		switch (attr->bp_len) {
+> +		case HW_BREAKPOINT_LEN_1:
+> +			hw->len =3D 1;
+> +			tdata1 |=3D dbtr_mcontrol_size(1, 0);
+> +			break;
+> +		case HW_BREAKPOINT_LEN_2:
+> +			hw->len =3D 2;
+> +			tdata1 |=3D dbtr_mcontrol_size(2, 0);
+> +			break;
+> +		case HW_BREAKPOINT_LEN_4:
+> +			hw->len =3D 4;
+> +			tdata1 |=3D dbtr_mcontrol_size(3, 0);
+> +			break;
+> +#if __riscv_xlen >=3D 64
+> +		case HW_BREAKPOINT_LEN_8:
+> +			hw->len =3D 8;
+> +			tdata1 |=3D dbtr_mcontrol_size(1, 1);
+> +			break;
+> +#endif
+> +		/* Set to match any size */
+> +		default:
+> +			hw->len =3D 0;
+> +			break;
+> +		}
+> +	}
+
+[Severity: High]
+Does programming attr->bp_len into tdata1's size field with match =3D 0 cau=
+se
+watchpoints in rv_init_mcontrol_trigger() and rv_init_mcontrol6_trigger()
+to miss valid memory accesses?
+
+In Sdtrig mcontrol and mcontrol6, tdata1.size filters the access width of
+the load or store instruction itself, while match =3D 0 matches only the
+exact address in tdata2.  A watchpoint of length N will therefore ignore
+accesses of any other width as well as accesses to non-zero byte offsets
+within [bp_addr, bp_addr + bp_len) (for example, a 1-byte store to offset 1
+of a 2-byte watchpoint).
+
+Also, the default branch accepts arbitrary invalid attr->bp_len values by
+setting hw->len =3D 0 instead of returning -EINVAL, which causes
+arch_check_bp_in_kernelspace() to check only a 1-byte range against
+TASK_SIZE.
+
+[ ... ]
+
+> +static void dbtr_encode_update(union sbi_dbtr_shmem_entry *shmem,
+> +			       unsigned long idx, unsigned long tdata1,
+> +			       unsigned long tdata2, unsigned long tdata3)
+> +{
+> +	struct sbi_dbtr_id_msg *id =3D &shmem->id;
+> +	struct sbi_dbtr_data_msg *data =3D &shmem->data;
+> +
+> +	/*
+> +	 * SBI_EXT_DBTR_TRIG_UPDATE takes the number of entries in a0.  The
+> +	 * trigger index for each entry lives in the first shared-memory word;
+> +	 * that word is named tstate only when the same union is used for
+> +	 * TRIG_READ replies.
+> +	 */
+> +	id->idx =3D cpu_to_le(idx);
+> +	data->tdata1 =3D cpu_to_le(tdata1);
+> +	data->tdata2 =3D cpu_to_le(tdata2);
+> +	data->tdata3 =3D cpu_to_le(tdata3);
+> +}
+
+[Severity: Low]
+Does converting these shared-memory fields with cpu_to_le() and le_to_cpu()
+trigger sparse endianness warnings?  In arch/riscv/include/asm/sbi.h,
+struct sbi_dbtr_data_msg and struct sbi_dbtr_id_msg declare idx, tstate,
+and tdata1..tdata3 as unsigned long rather than __le64 / __le32, so reading
+and writing them with cpu_to_le() and le_to_cpu() here, in
+mc_read_and_clear_hit(), mc6_read_and_clear_hit(), and
+arch_install_hw_breakpoint() mismatches restricted bitwise types.
+
+[ ... ]
+
+> +static int hw_breakpoint_handler(struct die_args *args)
+> +{
+> +	int i, bp_ret =3D NOTIFY_DONE;
+> +	struct arch_hw_breakpoint *bp;
+> +	struct perf_event *event;
+> +
+> +	for (i =3D 0; i < dbtr_total_num; i++) {
+> +		event =3D this_cpu_read(pcpu_hw_bp_events[i]);
+> +		if (!event)
+> +			continue;
+> +
+> +		bp =3D counter_arch_bp(event);
+> +
+> +		switch (event->attr.bp_type) {
+> +		/* Breakpoint */
+> +		case HW_BREAKPOINT_X:
+> +			{
+> +				bool hit =3D bp->address =3D=3D args->regs->epc;
+> +
+> +				if (dbtr_type =3D=3D RISCV_DBTR_TRIG_MCONTROL)
+> +					hit |=3D mc_read_and_clear_hit(i);
+> +				else if (dbtr_type =3D=3D RISCV_DBTR_TRIG_MCONTROL6)
+> +					hit |=3D mc6_read_and_clear_hit(i) !=3D
+> +					       RISCV_DBTR_MC6_HIT_FALSE;
+> +
+> +				if (hit) {
+> +					perf_bp_event(event, args->regs);
+> +					bp_ret =3D NOTIFY_STOP;
+> +					goto exit;
+> +				}
+> +			}
+> +			break;
+> +
+> +		/* Watchpoint */
+> +		case HW_BREAKPOINT_W:
+> +		case HW_BREAKPOINT_R:
+> +		case HW_BREAKPOINT_RW:
+> +			{
+> +				unsigned long stval =3D args->regs->badaddr;
+> +				unsigned long bp_start =3D bp->address;
+> +				unsigned long bp_len =3D bp->len ?: 1;
+> +				bool hit =3D false;
+> +
+> +				/*
+> +				 * Prefer tdata1.hit from SBI trigger readout whenever
+> +				 * possible. Fall back to address-based matching if HIT
+> +				 * isn't observed/supported.
+> +				 */
+> +				if (dbtr_type =3D=3D RISCV_DBTR_TRIG_MCONTROL)
+> +					hit =3D mc_read_and_clear_hit(i);
+> +				else if (dbtr_type =3D=3D RISCV_DBTR_TRIG_MCONTROL6)
+> +					hit =3D mc6_read_and_clear_hit(i) !=3D
+> +					      RISCV_DBTR_MC6_HIT_FALSE;
+> +
+> +				/*
+> +				 * Sdtrig may report STVAL as the lowest accessed
+> +				 * address while the watchpoint can match a higher byte
+> +				 * in the same access.  Check for full range overlap
+> +				 * rather than comparing only the two start addresses.
+> +				 */
+> +				hit |=3D ranges_overlap(bp_start, bp_len, stval,
+> +						      sizeof(long));
+> +				if (hit) {
+> +					perf_bp_event(event, args->regs);
+> +					bp_ret =3D NOTIFY_STOP;
+> +					goto exit;
+> +				}
+> +			}
+> +			break;
+
+[Severity: High]
+Does unconditionally ORing the hardware hit readout with software address
+comparisons and jumping to exit on the first match misattribute events,
+leave stale HIT bits set in higher slots, and swallow software EBREAK
+traps?
+
+When a trigger in slot j > i fires at an address within sizeof(long) bytes
+of a watchpoint in slot i (or with a different access type), slot i's false
+hardware hit readout is overridden by ranges_overlap(), attributing the
+event to slot i.  Because the loop then jumps to exit,
+mc_read_and_clear_hit(j) / mc6_read_and_clear_hit(j) never runs for slot j,
+leaving its hardware HIT bit set for the next debug exception.
+
+Furthermore, because handle_break() invokes DIE_DEBUG before checking for
+kernel WARN_ON()/BUG() traps and hw_breakpoint_handler() does not check
+that a hardware trigger fired or that user_mode(args->regs) matches the
+trigger's privilege mode, a user watchpoint covering address 0..7 will
+match stval =3D=3D 0 on a kernel WARN_ON() EBREAK and return NOTIFY_STOP
+without advancing regs->epc, livelocking the CPU on the same EBREAK.
+
+[Severity: High]
+In addition, how does execution make forward progress after a breakpoint or
+watchpoint hits?
+
+Both rv_init_mcontrol_trigger() and rv_init_mcontrol6_trigger() configure
+before-execution triggers (timing =3D 0), so the exception is taken before
+the instruction at regs->epc retires.  Clearing the hit bit and returning
+NOTIFY_STOP without stepping over the instruction or disabling the trigger
+causes sret to return to the same instruction and re-trigger the exception
+in an infinite loop.
+
+Even with commit "riscv: Add software supported single stepping with mc/mc6
+triggers" later in the series, when setup_singlestep() fails (such as for
+CPU-wide breakpoints where event->hw.target is NULL),
+disable_unhandled_singlestep() only queues asynchronous irq_work via
+perf_event_disable_inatomic() without disabling or uninstalling the
+hardware trigger before sret.
+
+[ ... ]
+
+> +	ret =3D dbtr_uninstall_trigger_locked(i);
+> +
+> +	if (ret.error) {
+> +		pr_warn("Failed to uninstall trigger %d.\n", i);
+> +		goto out;
+> +	}
+> +
+> +	*slot =3D NULL;
+> +
+> + out:
+> +	raw_spin_unlock_irqrestore(this_cpu_ptr(&ecall_lock), flags);
+> +}
+
+[Severity: Medium]
+If dbtr_uninstall_trigger_locked() fails in arch_uninstall_hw_breakpoint(),
+does jumping to out without clearing *slot leave a dangling perf_event
+pointer in pcpu_hw_bp_events[i]?  Because arch_uninstall_hw_breakpoint()
+returns void to hw_breakpoint_del(), the perf core still finishes tearing
+down and freeing the perf_event, and later debug exceptions on that CPU
+will dereference the freed event in hw_breakpoint_handler().
+
+[ ... ]
+
+> +void arch_disable_hw_breakpoint(struct perf_event *event)
+> +{
+> +	struct perf_event **slot;
+> +	struct sbiret ret;
+> +	int i;
+> +
+> +	for (i =3D 0; i < dbtr_total_num; i++) {
+> +		slot =3D this_cpu_ptr(&pcpu_hw_bp_events[i]);
+> +
+> +		if (*slot =3D=3D event)
+> +			break;
+> +	}
+> +
+> +	if (i =3D=3D dbtr_total_num) {
+> +		pr_warn("Breakpoint not installed.\n");
+> +		return;
+> +	}
+> +
+> +	ret =3D sbi_ecall(SBI_EXT_DBTR, SBI_EXT_DBTR_TRIG_DISABLE,
+> +			i, 1, 0, 0, 0, 0);
+> +
+> +	if (ret.error) {
+> +		pr_warn("Failed to uninstall trigger %d.\n", i);
+> +		return;
+> +	}
+> +}
+> +EXPORT_SYMBOL_GPL(arch_disable_hw_breakpoint);
+
+[Severity: Medium]
+Should arch_disable_hw_breakpoint() acquire ecall_lock with
+raw_spin_lock_irqsave() like arch_enable_hw_breakpoint() and
+arch_uninstall_hw_breakpoint() do?  Without it, reading pcpu_hw_bp_events[]
+and issuing the SBI_EXT_DBTR_TRIG_DISABLE ecall can migrate CPUs mid-call
+or race with concurrent trigger operations on the same CPU.
+
+Also, arch_enable_hw_breakpoint(), arch_update_hw_breakpoint(), and
+arch_disable_hw_breakpoint() have no callers in the tree, and the error
+messages in arch_enable_hw_breakpoint() and arch_disable_hw_breakpoint()
+say "install" and "uninstall" instead of "enable" and "disable".
+
+> +
+> +void hw_breakpoint_pmu_read(struct perf_event *bp) { }
+> +
+> +void flush_ptrace_hw_breakpoint(struct task_struct *tsk) { }
+> +
+> +static int __init arch_hw_breakpoint_init(void)
+> +{
+> +	unsigned int cpu;
+> +	int rc =3D 0;
+> +
+> +	for_each_possible_cpu(cpu)
+> +		raw_spin_lock_init(&per_cpu(ecall_lock, cpu));
+> +
+> +	init_sbi_dbtr();
+> +
+> +	if (dbtr_total_num) {
+> +		pr_info("Total number of type %d triggers: %u\n",
+> +			dbtr_type, dbtr_total_num);
+> +	} else {
+> +		pr_info("No hardware triggers available\n");
+> +		goto out;
+> +	}
+> +
+> +	/* Allocate per-cpu shared memory */
+> +	sbi_dbtr_shmem =3D __alloc_percpu(sizeof(*sbi_dbtr_shmem) * dbtr_total_=
+num,
+> +					PAGE_SIZE);
+> +
+> +	if (!sbi_dbtr_shmem) {
+> +		pr_warn("Failed to allocate shared memory.\n");
+> +		rc =3D -ENOMEM;
+> +		goto out;
+> +	}
+
+[Severity: Medium]
+If __alloc_percpu() fails here, does leaving dbtr_total_num and dbtr_type
+set allow later breakpoint registrations to dereference a NULL
+sbi_dbtr_shmem via this_cpu_ptr(sbi_dbtr_shmem) in
+arch_install_hw_breakpoint()?
+
+hw_breakpoint_slots() already ran earlier during perf_event_init() and
+cached the non-zero slot count, and the same NULL sbi_dbtr_shmem
+dereference can occur if an in-kernel caller registers a breakpoint between
+perf_event_init() and arch_hw_breakpoint_init().  In addition,
+init_sbi_dbtr() discards the total trigger count returned by
+SBI_EXT_DBTR_NUM_TRIGGERS(0) and bounds-checks recv->idx in
+arch_install_hw_breakpoint() against only the type-specific trigger count
+dbtr_total_num, which will reject valid trigger indices >=3D dbtr_total_num
+if triggers of other types precede them on the hart.
+
+> +
+> +	/* Hotplug handler to register/unregister shared memory with SBI */
+> +	rc =3D cpuhp_setup_state(CPUHP_AP_ONLINE_DYN,
+> +			       "riscv/hw_breakpoint:prepare",
+> +			       arch_smp_setup_sbi_shmem,
+> +			       arch_smp_teardown_sbi_shmem);
+
+[Severity: Medium]
+Does registering the SBI shared-memory callbacks at CPUHP_AP_ONLINE_DYN
+disable shared memory too early during CPU hotplug teardown and enable it
+too late during bringup?
+
+In enum cpuhp_state, CPUHP_AP_ONLINE_DYN runs after CPUHP_AP_PERF_ONLINE
+and CPUHP_AP_SCHED_WAIT_EMPTY on bringup, and before them on teardown.
+When a CPU goes offline, arch_smp_teardown_sbi_shmem() disables SBI shared
+memory while per-CPU and per-task breakpoints are still active on that CPU,
+causing trigger reads, updates, or installations before
+CPUHP_AP_PERF_ONLINE and CPUHP_AP_SCHED_WAIT_EMPTY to fail with
+SBI_ERR_NO_SHMEM.
+
+> diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
+> index f8292adda0999..1b9ccc0b6b8d8 100644
+> --- a/arch/riscv/kernel/traps.c
+> +++ b/arch/riscv/kernel/traps.c
+> @@ -287,6 +287,12 @@ void handle_break(struct pt_regs *regs)
+>  	if (probe_breakpoint_handler(regs))
+>  		return;
+> =20
+> +#ifdef CONFIG_HAVE_HW_BREAKPOINT
+> +	if (notify_die(DIE_DEBUG, "EBREAK", regs, 0, regs->cause, SIGTRAP)
+> +	    =3D=3D NOTIFY_STOP)
+> +		return;
+> +#endif
+
+[Severity: High]
+Does calling notify_die(DIE_DEBUG, ...) from handle_break() invoke
+hw_breakpoint_handler() and perf_bp_event() with local interrupts and
+preemption enabled on user-mode traps?
+
+do_trap_break() calls local_irq_enable() before handle_break(regs) when
+user_mode(regs) is true:
+
+arch/riscv/kernel/traps.c:do_trap_break() {
+	if (user_mode(regs)) {
+		irqentry_enter_from_user_mode(regs);
+		local_irq_enable();
+
+		handle_break(regs);
+
+perf_bp_event() requires local interrupts and preemption to be disabled
+(asserted via lockdep_assert_irqs_disabled() in kernel/events/core.c), and
+hw_breakpoint_handler(), mc_read_and_clear_hit(), and
+mc6_read_and_clear_hit() also call this_cpu_read() and this_cpu_ptr()
+before acquiring ecall_lock.  Running with interrupts and preemption
+enabled triggers lockdep and CONFIG_DEBUG_PREEMPT warnings and allows task
+migration or cross-CPU perf IPIs to race with trigger readout and event
+delivery.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107023917.4060=
+6-1-himanshu.chauhan@oss.qualcomm.com?part=3D1
 
