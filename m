@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AA8D606A326
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 00:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E3D2606A326
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 00:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Fiv9oq8y
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iMkhsrLB
 Received: by kanga.kvack.org (Postfix)
-	id 4FF436B05CF; Sat,  7 Nov 2026 19:44:30 -0500 (EST)
+	id 992466B05D0; Sat,  7 Nov 2026 19:44:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4AF086B05D0; Sat,  7 Nov 2026 19:44:30 -0500 (EST)
+	id 969EF6B05D1; Sat,  7 Nov 2026 19:44:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 39DF56B05D1; Sat,  7 Nov 2026 19:44:30 -0500 (EST)
+	id 859BC6B05D2; Sat,  7 Nov 2026 19:44:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id F0CD76B05CF
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:44:29 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 86CF4C0306
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CC916B05D0
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:44:31 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D5B761C3C29
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:30 +0000 (UTC)
+X-FDA: 85410105900.02.D34DA27
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 49D86120005
 	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:29 +0000 (UTC)
-X-FDA: 85410105858.23.1C0D159
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id E48A4180006
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:27 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fiv9oq8y;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iMkhsrLB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794098669;
+	b=2NFdCiuV/NWA/FI/vHDuwVpF+XqV+1LCcO3tdzMy96oFtaq6KCPdcGerDufQR4nf9+us+n
+	0LDFA5mqiTKpzFK0L95ftLnbq3o3MeGR5ygqRdXiBlbKhRXXbcC4rsfT940i4AQJRdqnkv
+	6VwzDCF4KUYoC0orU3V7gTXWHy9a6a0=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794098668;
+	s=arc-20220608; t=1794098669;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DQu96n0VZ/08CUzUzSjmxbmnQa9ZmqvzehBEI4XjsKY=;
-	b=X+HnRS9pVIzaLpHvvaft0rgvfWmxFLChGgQAoY1XlShWt6gnDUVxsIySN82tsGL0HiNDpa
-	PtxrseTnU7WdrvdsblA1ZqWnqY67pYckN1RGLpSW3/fHUtPUfhPGYDw6aXHSXKs6fTWpyT
-	ucU8/B77lPN8kI0BGLyfTO+5Ns7dt24=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794098668;
-	b=VR7mDoE6JSdWna7a0gjkEw7fZA+2JAdacEaWTk4WzGrIm5Y0l7XtUpEQ3CP9fIEkdBDOLP
-	hk72U171UAETunJOetNRSD15DI5rqI37QrmWnqLl9171PUYqfB77dm6xZ2Psw+8y9c3XJA
-	M6bxrcCRhrzM8cf4GF9hfAmHWYpX6B8=
+	bh=RN/YpW1d+rLEC4lvf1VLxyyCMB5R+rplHJxVFu1OKqA=;
+	b=RhYGKsnH5YMotubm7kAkt/I42FsIaY8igQzWGfEpWOqTN+Vg6tVLWboxvfZTjdHG/PmkJ8
+	RkKPAlPyHAtbpp5zVR5NCTV8Hup19nAz2/wlZdkY668aXBWab+kVEmoMC0jONehYBlUibi
+	j1lB3D5PrkzxpU6z0t+yV9cjgHg5hyI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Fiv9oq8y;
-	spf=pass (imf06.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iMkhsrLB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 431394244B;
+	by tor.source.kernel.org (Postfix) with ESMTP id DE771612A4;
+	Sun,  8 Nov 2026 00:44:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7491F008A2;
 	Sun,  8 Nov 2026 00:44:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264C61F0089F;
-	Sun,  8 Nov 2026 00:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098667;
-	bh=DQu96n0VZ/08CUzUzSjmxbmnQa9ZmqvzehBEI4XjsKY=;
+	s=k20260515; t=1794098668;
+	bh=RN/YpW1d+rLEC4lvf1VLxyyCMB5R+rplHJxVFu1OKqA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Fiv9oq8yYVP5vsgwiMw3nunwdAT/AWs8HCr72UJm/erbxLm1Pfefo8GZz58hglXk3
-	 xDY4c69FqIMHTYpIRodeBYxIwI+ULyjVMJIKE7VX9mZx+ptBhRWQ/PU70ZZwxU74Yc
-	 ArgoHqIqMBTOPtnt8KyBOUV2SXBpbuPL8lnaHF5PoLseHCQg8VX2o/rwTdtf6PrfPy
-	 H45JqQi7rMKokWHpw796b2FBNOY9SYVGG993iee+krSQUh7c7PtOvqANawc5imlmuW
-	 6iGrZ15T29nF4fCC1L/0595DJZmQao88t+LxK1Jl1vodEIBVeXIDCRaoKRVdXfWkFj
-	 TvG7r3IfoT5bw==
-Message-ID: <sashiko-outbox-203472@kernel.org>
+	b=iMkhsrLB8o4Trb6iqCaJNGzxbmt6R+q35jP5MuMx0T5I82qb/wgn4D2kHdk5mUQlV
+	 HqMWYiXFlfT4J8GVOczPfLs4UvpxCjUY0svkhvkvwl2i9pyVZky739BHNrbrwvfUHp
+	 bHEOmc5WbMj/CgjJGCtD9JPN/wNIjuCHKDTEzRlLo4IcowsSpYhqyf20CzW2WZaTiT
+	 VNkBSUmMIbR8nrDz9/+1teCxDvA4kPUEkBPnXONk7tkdG7wzawWQd/L2CYc4qRSbMP
+	 fqG1AMz8NeNpyRJ+CrzVB8WEdbTnRVG4NeB3pzsrVyB9tWvpWPm49Frc+HEkpcG49F
+	 luP18AUN43Eew==
+Message-ID: <sashiko-outbox-203474@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 61/88] vfio: Implement mmap provider op for
- guest_memfd
+Subject: Re: [PATCH RFC v3 63/88] vfio/pci: Implement check_set_attributes
+ provider op for guest_memfd
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -76,24 +76,24 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-61-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-63-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-61-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-63-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:44:25 +0000
+Date: Sun, 08 Nov 2026 00:44:27 +0000
+X-Rspamd-Queue-Id: 49D86120005
+X-Rspamd-Server: rspam12
+X-Stat-Signature: uobj1dbhueucabj4kyzkwcf6qi411c8q
+X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 1iym39a76k1xjekxmcoyfzo7dxwpu3r9
-X-Rspamd-Queue-Id: E48A4180006
-X-Rspam-User: 
-X-HE-Tag: 1794098667-274421
-X-HE-Meta: U2FsdGVkX1+K/yQMSYfiw36TmoILbyk608lXTv91bSSp7FDa6rRjNmKLS9ibIEObW+EIuMcaB/e4zydinW4EfgBjuifQiD+K6gei5jlidiOh+3M+U7a8yfNqpNmHMGDHqvkfctyJG6ut388eJPTg6BuvCNvyARn7cA/qEhxjFnvca0ATj3/th1pe3YpWJGJdPEgF/m8nqDKWGGbuNSp+r4T6xEpkLLlu1v1VTng6IjXaSYnBz68pHhdlB+Jw+c8CHelEbBNg9o2jYYrYZCpvH3BGVnyTnSiSSuLmaAXgXwp0j6YeuI9DnsocOghL+Bs3/QCp0tB3fv7klCHYtUAHLK34JXzaco12eqR0feew2+QfFEosKZVteoy8NbxUYnfjlcWbd3fPJIEmfl0f0eayZ2AnIA72LcMW0D3flNohXJ5DOhyd2vsdOXCm5E5OpVEj10nJblMJ00EPGrQ9m2nANHlKNkhmnQ+EHX3J+3A9r4YuNP6YKba5Qfh3TDHfab3Jam93oR0Y7Jx52R8isa3ZwoVQ7b3yvV84uPUvYLofNYIQXalaes3nuIO9y+nLomxFJdZPCnbmaIyMknbWEq35TBUQwRhQiyEglnaqllRvhcH1KHcr35xhev2czUH1imh9JWieah99v3EpdOvVBvKR+9rKwXXdnSkh1lUgvXgpc0kK1TKvU9R+u3OTCd/0/r2FWu4Eg73vUpdV4Oi0+Vs1t2dc3IXRMoO+QSNLbU3kHU9/wGsSDSUvcv1SRif3mC/RlTJ18nUDDrYxGOamihXYi84pnfYG/Paih/JzKGlYC4H7jvVmEqfbfruTYpAKKcBft4kfKQmNJDiOP5OPGwF8YSiTptcss3VT6Ny4nY15590sybQrui72HuA8P0p/p3A4u6TQ31+TXMIQrHBMwJ/5STlNuBnk5tXCGV85qJMc9iTpW4e9AKLsmetHMfjSbKhhIryUyV+ebvSHBI00CV0
- PGwEFvwE
- CDUV11OhN1PThFr2/0PPQ/kpXULG9bKZDLi2J+/KeffkyE2biRAQc9WIMEot+mFkXwp0tpZHhTxkl/OdIWGICXNaifeXGsLksMig3xqzC0H3kPoOsvgT7qBBOkAWmTO8Do2GYHp3nnFrojwTEYBQNtCbkhpbwkRgfX35FkW7Ej7+R0QAH4JqsnCWo1HlVQYgNF2WBmiqt7s8JIhGVGwj1mqaMdIrr3oP3lvMSbTC/q8cGmc/tdxMmvfURqh5ymvyyypDDJmusR48byVvbht5513HAPi2NWxFBUzMyMPgwQYXORstZdC5mP+dVSJUUz9Kf1dfh1wpbQw55p7hUgyi5DNpYyybU09zNyh8kGslnV7j0YNSa+xxMHtpxtpBc4n/Tc+leWrkTYyhY447BA4e9Y1Kwj1oODsb/tqbSgXDvpKPSGnXpSfeBdUEPNrUlG/wT6y5hLkqCWyGsAdWy/xGSh1rYX5YScXAlkeUBhUg7cehRn0hiEaEbGTc6J3OTgeD+0AOTacHbP5LXAdFaa+MOKAdm11jEj5+mPOpysp/N2UZITcuGK7ty0WtZnGpbeb8Mfts6Siyp/Wyp+rI72Fk0fcVs1Hy1Tsiz8gPNUG+PRWlnCY2TPPUepHorR56dqRvVyt6rVBOf5jeKI+CD1DBiAgESxo/W7un0Ppyf7sYXUVHUhGZFk5ysglfVezl2nGXautydvIT63THsT7qfC9+Gh5I4vQ==
+X-HE-Tag: 1794098669-79212
+X-HE-Meta: U2FsdGVkX1+vO3+xVN8k/nJ30nALOn9E71WjMiq+MQHxrsjBUJ+OwdSRq+S+hYs+1+kBxG99e4JHKt2TLGrG0ROyO3L1inlgLmu8g+Ku+HwBvIY6GCwnyLASLiY6mmnxUmseZO353okaNDVZ+i5xMN4Aw6Hc5RfQrxuySXyox9mpG+RgaT2nAxKGtrkqaOqNkLEcnwM5tSQPXfD1pqrtvRl0Wra93AsegkelPwoRWMuFzivzzR75avGFuRt0NnGQMXly+mL9DzKmFgKbhMEcmENLtJMvnVnxuOIGSUmhk+nhfsl6lSaLzroK5COnrkrI8ClPzuJYU1YJbkuceYEtUmSHfBIFR3ML3h2cC7FCbvGsjHQm6dBDwuxq2LziwsPK4j+nLghEsmml2heJjel01Mpg3sP0ZrBIUfq/hdwDOjHCq1DTCbfG/8JVFCVPzsotIXHcqbe+CrwtQKnN4v5AUvQko0Of3YP1Gy5ezM5UGejljDd8jAhv/b8zNrCcXbLsnFLpn0hcKG7ZIOatbQRV48bPnU3Zbyz43Vq8FQoviuAamM8mcc+qbE2E9Kudl0FQGLZnUiMa7zfJtxZ8VI0K0egGAL/aEuyyEwUVR4NYIvYUsSxgICh/Ckmfq0dL8SC+LdAHbWlKwD/rMzBgWnRGeFlXHMT7gzVQChDnfN5wZNyd4uuFBMngB6LgZ8KIWcXFluBd2npvLdSoe5l69DShZZbFN3SZFRJhbTpvV4aXLEHJUxW6Tuj1t/hsc5J8tGdqlvsCPiDng+jvPkKVCnoRyOqKuo6yJx2K4hE3ESUwJn4op53sXC68RNU6wQn0vQ2X3Wxdp6xqmmB4yEOnfwySkjgfWLoGoKIBWs1Vfq78RKs/M+wP3vRp74KRE5zkm3hpC9iJxRr4zdh5elHOByEFzaqOJJ0S/MMUa9D1rxOCsq8n4rPnnbsN1zPH6VeOFc7TTOrGG0fZ1N0+AseP6pB
+ ULI2vBqY
+ hGabR5NmSTSHs++fXGP0aBbL8NzaX9+WNpGA8kHeDZQCDg//JOF5sbWqkCogLPR9QKqxeIn8St5xlEyzbkiL3lO3Mv2tDFMjS0n13+p/7JtT7d3KDmPNVQUEjvcZNGdX/ksGid9elNz2mXPEsSmZNF5cSFRjCVF1SzWE0VcG96WNfS4mavivDtaGW1csXVXL2huMLZ/+oSCDZjob0+xRiNRXACQq7ffDXH0Jc6FUodnWdz3ObY3vxM8mlqrDWfTG8X6t0eZy6VsDsdpxE1pCXKs1NT+SQ/3vVPpLCk602+KakOF67UDc6HQfm4CIGqQUxQUp93AxDAGHNKGb9PtCdvsLl23xXMNr+qGbuibYQGSrfGCVTg91eDsrVXqA50b7WGNS7O/n7DicVRXlD6hqcUSSOoicMv+0tAFMxoEAoao/+0ElmhYspcz9dd463LJKh5gPmmxJtKkuVT9QQQ0ox042YnK1tiu+1nqK5vDGq9YfSExQ5K8johuJa+twnvfiB3kVn3jL1Kx/LSU9Fk0y2hrMujNowRPB39wvxeWx7NqwGddH0dK37Ol42bvGXy5gTstMvJ/OicXE0cf2GFYnLRytfzqjrNf5fCr6RFSukJagEaIvrvjRA0L6Jz5ce1Tfbbe5p1b79dZRkV1BuIJOMAQNumL8VqWjcaMP5DBzQcwtpNWeV9oli2bZ/D36gYV9FiiEFURMOmki4XvbpPu5lc8A3rgIcfCu52+JZbJG5hd/8GmUE95tzRAgiqQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,126 +105,124 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 2 potential
 issues to consider:
-- [High] vfio: uncached and decrypted vma->vm_page_prot lost in
-  guest_memfd fault
-- [Medium] vfio: vfio_device_fops_mmap() returns -EOPNOTSUPP instead of
-  -EINVAL
+- [High] vfio/pci: missing BAR checks in
+  vfio_pci_core_gmem_check_set_attributes()
+- [High] vfio/pci: unguarded linux/kvm_host.h include breaks non-KVM
+  arch builds
 --
 
-commit 6c78c8834b1a41506b88de16d4e56626d4ac8609
+commit 2255a7dd0042c189f9db1a91b5da96def65f3e26
 Author: Ackerley Tng <ackerleytng@google.com>
 
-vfio: Implement mmap provider op for guest_memfd
+vfio/pci: Implement check_set_attributes provider op for guest_memfd
 
-This commit extracts a vfio_device_mmap() helper from
-vfio_device_fops_mmap() and wires up the .mmap provider callback in
-vfio_device_gmem_provider_ops to forward guest_memfd mappings to the bus
-driver's .mmap handler.
+This commit implements the .gmem_check_set_attributes callback in vfio-pci
+to reject private attribute conversions on ranges overlapping the MSI-X
+vector table.
 
-> diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
-> index 93bd0a200ad22..979ed69c5ebf7 100644
-> --- a/drivers/vfio/vfio_main.c
-> +++ b/drivers/vfio/vfio_main.c
-> @@ -1503,20 +1503,25 @@ static ssize_t vfio_device_fops_write(struct file=
- *filep,
->  	return device->ops->write(device, buf, count, ppos);
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index 9551a067b5689..894b1332f8a0c 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/eventfd.h>
+>  #include <linux/file.h>
+>  #include <linux/guest_memfd.h>
+> +#include <linux/kvm_host.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/iommu.h>
+>  #include <linux/module.h>
+
+[Severity: High]
+Does including <linux/kvm_host.h> unconditionally break builds with
+CONFIG_VFIO_PCI_CORE on architectures without KVM support (such as 32-bit
+arm, sparc, parisc, or m68k)?
+
+include/linux/kvm_host.h pulls in <asm/kvm.h> and <asm/kvm_host.h>, which
+only exist on KVM-capable architectures; drivers/vfio/vfio_main.c guards
+this include with #if IS_ENABLED(CONFIG_KVM).  (A later patch in this
+series, commit "QUESTION: KVM: guest_memfd: Disallow private mappings of
+shared-only PFNs", removes this include, but intermediate commits fail to
+build on non-KVM architectures.)
+
+> @@ -2769,6 +2770,39 @@ int vfio_pci_core_gmem_get_pfn(struct vfio_device =
+*core_vdev, pgoff_t index,
+>  	return 0;
 >  }
-> =20
-> +static int vfio_device_mmap(struct vfio_device *device,
-> +			    struct vm_area_struct *vma)
-> +{
-> +	if (unlikely(!device->ops->mmap))
-> +		return -EOPNOTSUPP;
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_get_pfn);
 > +
-> +	return device->ops->mmap(device, vma);
-> +}
-> +
->  static int vfio_device_fops_mmap(struct file *filep, struct vm_area_stru=
-ct *vma)
->  {
->  	struct vfio_device_file *df =3D filep->private_data;
-> -	struct vfio_device *device =3D df->device;
->  	int ret;
-> =20
->  	ret =3D vfio_df_check_full_access(df);
->  	if (ret)
->  		return ret;
-> =20
-> -	if (unlikely(!device->ops->mmap))
-> -		return -EINVAL;
-> -
-> -	return device->ops->mmap(device, vma);
-> +	return vfio_device_mmap(df->device, vma);
->  }
-
-[Severity: Medium]
-Does extracting vfio_device_mmap() here cause a regression where
-vfio_device_fops_mmap() returns -EOPNOTSUPP instead of -EINVAL when a bus
-driver does not implement device->ops->mmap?
-
-Direct mmap(2) calls on full-access VFIO device fds for drivers without an
-.mmap callback (such as vfio-ccw or vfio-ap) previously returned -EINVAL,
-matching vfio_device_fops_read(), vfio_device_fops_write(), and
-vfio_device_fops_unl_ioctl().  Returning -EOPNOTSUPP changes the user-visib=
-le
-errno and makes a missing driver .mmap callback indistinguishable from a
-file descriptor bound with VFIO_DEVICE_BIND_FLAG_CTRL_ONLY.
-
-> @@ -1604,10 +1609,23 @@ static int vfio_device_gmem_get_pfn(void *provide=
-r, pgoff_t index,
->  					 pfn_attrs);
->  }
-> =20
-> +static int vfio_device_gmem_mmap(void *provider, struct vm_area_struct *=
-vma)
+> +int vfio_pci_core_gmem_check_set_attributes(struct vfio_device *core_vde=
+v,
+> +					    pgoff_t index, size_t nr_pages,
+> +					    u64 attributes)
 > +{
-> +	struct file *file =3D provider;
-> +	struct vfio_device_file *df =3D file->private_data;
+> +	struct vfio_pci_core_device *vdev =3D
+> +		container_of(core_vdev, struct vfio_pci_core_device, vdev);
+> +	pgoff_t bar_pgoff;
+> +	size_t size;
+> +	loff_t pos;
+> +	int bar;
+> +
+> +	if (!(attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE))
+> +		return 0;
 > +
 > +	/*
-> +	 * No control- vs. data-plane filtering is required because
-> +	 * vfio_device_mmap() already only allows mmap-ing the data plane.
+> +	 * Prevent private conversion of pages containing the MSI-X vector
+> +	 * table. The host kernel directly programs MSI-X table entries to
+> +	 * configure and mask interrupts; converting these pages to private
+> +	 * would cause host kernel writes to trigger fatal hardware protection
+> +	 * faults (e.g. RMP or GPT violations) on confidential compute platform=
+s.
 > +	 */
-> +	return vfio_device_mmap(df->device, vma);
-> +}
+> +	bar =3D index >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+> +	bar_pgoff =3D index & ((1ULL << (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT)) -=
+ 1);
+> +	pos =3D (loff_t)bar_pgoff << PAGE_SHIFT;
+> +	size =3D nr_pages << PAGE_SHIFT;
 > +
->  static const struct guest_memfd_provider_operations vfio_device_gmem_pro=
-vider_ops =3D {
->  	.attach  =3D vfio_device_gmem_attach,
->  	.release =3D vfio_device_gmem_release,
->  	.get_pfn =3D vfio_device_gmem_get_pfn,
-> +	.mmap    =3D vfio_device_gmem_mmap,
->  };
+> +	if (vfio_pci_range_overlaps_msix(vdev, bar, pos, size))
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(vfio_pci_core_gmem_check_set_attributes);
 >  #endif
 
 [Severity: High]
-When kvm_gmem_mmap() overrides vma->vm_ops with kvm_gmem_pfn_vm_ops after
-vfio_device_gmem_mmap() returns, does the guest_memfd fault handler discard
-the uncached and decrypted protections that vfio_pci_core_mmap() sets on
-vma->vm_page_prot?
+Does vfio_pci_core_gmem_check_set_attributes() miss checking that the BAR
+is valid and supports mmap, and that [pos, pos + size) fits within
+pci_resource_len(vdev->pdev, bar)?
 
-vfio_pci_core_mmap() configures vma->vm_page_prot with pgprot_noncached()
-and pgprot_decrypted().  However, on a user fault,
-kvm_gmem_fault_user_mapping() -> gmem_insert_pfn() recomputes page
-protections from vma->vm_flags instead of using vma->vm_page_prot:
+The commit message states that this function verifies that the targeted BAR
+is a standard memory BAR and that the range does not exceed the BAR's
+physical resource size, as vfio_pci_core_gmem_get_pfn() does:
 
-virt/kvm/guest_memfd.c:gmem_insert_pfn() {
+drivers/vfio/pci/vfio_pci_core.c:vfio_pci_core_gmem_get_pfn() {
     ...
-	return vmf_insert_pfn_prot(vma, vmf->address, pfn,
-				   vm_get_page_prot(flags));
+	if (bar >=3D PCI_STD_NUM_BARS || !vdev->bar_mmap_supported[bar])
+		return -EINVAL;
+
+	if (pgoff >=3D (pci_resource_len(pdev, bar) >> PAGE_SHIFT))
+		return -EINVAL;
+    ...
 }
 
-Because vm_get_page_prot(flags) derives a fresh pgprot_t from
-protection_map[], both pgprot_noncached() and pgprot_decrypted() are lost.
-On architectures without PAT PFNMAP tracking in pfnmap_setup_cachemode_pfn()
-(such as arm64), PCI BAR MMIO pages are mapped into host userspace as
-write-back cacheable normal memory rather than Device memory and without
-PROT_NS_SHARED, which can corrupt MMIO accesses or trigger synchronous
-external aborts and SError.  On x86 systems with SME or SEV active,
-vm_get_page_prot() sets _PAGE_ENC, causing host userspace MMIO accesses to
-unencrypted device BARs to be performed with the encryption bit set.
+Without those checks, non-mmappable regions and offsets past the end of a
+BAR can be marked private.  Furthermore, because kvm_gmem_set_attributes()
+only bounds the request against the inode size spanning the 40-bit region
+offset space and bar is decoded solely from the starting index, a
+KVM_SET_MEMORY_ATTRIBUTES2 range starting in an earlier BAR (bar <
+vdev->msix_bar) and spanning across the 40-bit boundary into vdev->msix_bar
+has bar !=3D vdev->msix_bar in vfio_pci_range_overlaps_msix(), bypassing the
+MSI-X overlap check and allowing the MSI-X table pages to be marked private
+and later faulted in one page at a time via vfio_pci_core_gmem_get_pfn().
+(Commit "QUESTION: KVM: guest_memfd: Disallow private mappings of
+shared-only PFNs" later in the series replaces this callback, but these
+checks are needed if the check_set_attributes approach is kept or when
+bisecting.)
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D61
+native-providers-v3-0-8484dde66a7e@google.com?part=3D63
 
