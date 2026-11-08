@@ -1,95 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE61606A323
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 11:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1C0606A321
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 11:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NjXUB23F
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S0cw5gtW
 Received: by kanga.kvack.org (Postfix)
-	id 6968E6B05B4; Sun,  8 Nov 2026 06:17:02 -0500 (EST)
+	id AECF66B05B0; Sun,  8 Nov 2026 06:43:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66EF16B05B7; Sun,  8 Nov 2026 06:17:02 -0500 (EST)
+	id A98A46B05B1; Sun,  8 Nov 2026 06:43:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5ABB56B05B8; Sun,  8 Nov 2026 06:17:02 -0500 (EST)
+	id 9B1476B05B2; Sun,  8 Nov 2026 06:43:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A4406B05B4
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 06:17:02 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B1D15C0412
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 11:17:01 +0000 (UTC)
-X-FDA: 85411699842.21.76C89C7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 1FCFEC0004
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 11:17:00 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NjXUB23F;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794136620;
-	b=uteEA/eohRuR8xvmv59o3MAXwjF74EnaRa07w2ozFvHfJYG6EKGNdqNlNmjCNK7Mc+vLPa
-	6WmlGUOIFh1Kv2Pikl0izx0OJiRTWLLG+FUemPq+6BdC501IvVatmeV8RRsjCGYV8Dmscj
-	EhSwQSEyBIXPXOjbEqxgVjNq5ALHdME=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NjXUB23F;
-	spf=pass (imf10.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 74EF06B05B0
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 06:43:36 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 69E3E1A01F2
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 11:43:35 +0000 (UTC)
+X-FDA: 85411766790.22.29D63B2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf11.hostedemail.com (Postfix) with ESMTP id DD42740003
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 11:43:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=S0cw5gtW;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794136620;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	s=arc-20220608; t=1794138214;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=18sr8SyzOZMx8xWY4iklgq0foK8c2ImoU5MT3WMNKwA=;
-	b=Ivxkac974J0LLFJ/57T38lTrUA1xAjGPGFAqFOzouHe4QNQoSPxjWx0qWfsRH8VGhS6Ljy
-	UEIFgj1y7iDo1XCaJK5HCcWiPCW6CSmVpLR8gYTQ+Q7aVfdlGWruAWDhyGPTAYQP+hrRbW
-	ydntOOxPm/v9RByWSidkEjkWMCsrBvQ=
+	bh=VwQGFsaaCoMROSPE2Da/1tMfn7BcmAloMkj2bJskjEI=;
+	b=GXnmTs3bHwVI9VvY3u4hHCRSoOZ2d7Qel6NsA2Z1Avby6BHDYmUMFhZKBrN9SEApU3maxq
+	V6F0UOtDFy4fZR08M5a0yGyt34yH3bVqYbEzmkCfr1CLJw6FUwyBKTk0fF6T7hK3fLK9iv
+	mUiiKlOCrq2wtYRcti81yM/hHyi2+po=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794138214;
+	b=G1i38N4SjPvvOxDusSGn0eK1JWJeCSEvGcNJzLzVBLgTxFfwTia4oLx3Z9OLz4L+9azTEZ
+	U86sRgThUfbrMI7y6Z4hFuOyq/TT65OIdzI7BzHLDfFGJO4EGpiQQy+B8Q7qydc+mDzeK1
+	bTUI/8CLn94Op2h67PojqAmD1SQvpos=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=fail ("headers rsa verify failed") header.d=kernel.org header.s=k20260515 header.b=S0cw5gtW;
+	spf=pass (imf11.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 70A56407F1;
-	Sun,  8 Nov 2026 11:16:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141BB1F008A6;
-	Sun,  8 Nov 2026 11:16:54 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D41016133E;
+	Sun,  8 Nov 2026 11:43:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8753C1F0089F;
+	Sun,  8 Nov 2026 11:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794136619;
-	bh=18sr8SyzOZMx8xWY4iklgq0foK8c2ImoU5MT3WMNKwA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NjXUB23FMioSLJAxJrR1OG2vEEyBmNcETTcQBhxP86pvaRAPQDlQDACTFYDEOBfsJ
-	 11lBYuNqO0IOkffu33mynJ/20vIUM0KoS156ybm1OCXxUIyBygpaUshG9fObmvaWE/
-	 wyJNv1Mps2MREvOQ1QmOLIux7m+ArsojvdXmRKJnNdYHlw4K//V+Fj5lxboeHhvgjM
-	 zS9SVK7FyN5UhOatl2m4+UXL/SB+vlhzFwy8x0/0rceaAje+z3fjL0pdGYWIFRBpZC
-	 jGDyUr1gkDM0g7LYgkHi0GhRNUg5vboazwgz7BnATIjKfYdop0i/A8Y8SrTd9wtAqf
-	 JO8PYjAJ+8QUg==
-Date: Sun, 8 Nov 2026 13:16:51 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Chen Pei <cp0613@linux.alibaba.com>
-Cc: pjw@kernel.org, palmer@dabbelt.com, alex@ghiti.fr,
-	pasha.tatashin@soleen.com, pratyush@kernel.org, graf@amazon.com,
-	shuah@kernel.org, guoren@kernel.org,
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
-	kexec@lists.infradead.org
-Subject: Re: [PATCH v3 4/4] selftests: liveupdate: Add riscv support
-Message-ID: <avBaI9bFdoOnZzGp@kernel.org>
-References: <20261106071459.2003-1-cp0613@linux.alibaba.com>
- <20261106071459.2003-5-cp0613@linux.alibaba.com>
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106071459.2003-5-cp0613@linux.alibaba.com>
-X-Stat-Signature: bagjdox9iffmcn5oem64oadex1jc3ath
-X-Rspamd-Queue-Id: 1FCFEC0004
+	s=k20260515; t=1794138212;
+	bh=VwQGFsaaCoMROSPE2Da/1tMfn7BcmAloMkj2bJskjEI=;
+	h=From:Subject:Reply-To:To:In-Reply-To:References:Date;
+	b=S0cw5gtW/h9wOfpi24c0z4XXuiTegGbNkIAjQrt++QxS99ghrd3J8Kjn2UokX7how
+	 K6pRsO6eavp4mb/tlvZYnEp+IavUbQOxbBMFR1UYa1Uk63F3i2fms+alNUOuGQ8ivO
+	 HW2uA/5z3dYQUubfN7n29Gyff6QIpuWu6ad1gJr21bN7rBsmEJ9CrZw58xOnEn/fVo
+	 l2P05CqSaYSPPGMGKhVDsHUGfGkYlahiE9mts6LvxG7V+G6w3RQi9ARq982fiiW34t
+	 pG64Uy9lv9nvE7RJMq28VoRTIvRDFkGkmACgsabYqrxFbMHFHLhpVGtKikFiIGFGa1
+	 uoONW16Tdyznw==
+Message-ID: <sashiko-outbox-203699@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v9 1/3] riscv: implement this_cpu operations
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yunhui Cui" <cuiyunhui@bytedance.com>, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, dennis@kernel.org, tj@kernel.org, cl@gentwo.org, ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev, eddyz87@gmail.com, memxor@gmail.com, song@kernel.org, yonghong.song@linux.dev, jolsa@kernel.org, bjorn@kernel.org, pulehui@huawei.com, puranjay@kernel.org, thuth@redhat.com, ajones@ventanamicro.com, ben.dooks@codethink.co.uk, rkrcmar@ventanamicro.com, samuel.holland@sifive.com, zong.li@sifive.com, conor.dooley@microchip.com, tglx@kernel.org, debug@rivosinc.com, seanwascoding@gmail.com, andybnac@gmail.com, menglong8.dong@gmail.com, cyrilbur@tenstorrent.com, wangruikang@iscas.ac.cn, atishp@rivosinc.com, apatel@ventanamicro.com, linux-mm@kvack.org, bpf@vger.kernel.org, arnd@arndb.de, nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, qingfang.deng@siflower.com.cn, dave@stgolabs.net, emil@etsalap
+ atis.com
+ , ihor.solodrai@linux.dev, broonie@kernel.org
+In-Reply-To: <20261108110406.97495-2-cuiyunhui@bytedance.com>
+References: <20261108110406.97495-1-cuiyunhui@bytedance.com>
+ <20261108110406.97495-2-cuiyunhui@bytedance.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sun, 08 Nov 2026 11:43:30 +0000
+X-Stat-Signature: jw4htug4wpt6utxj1aj5boeghat3x7gu
+X-Rspamd-Queue-Id: DD42740003
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794136620-717000
-X-HE-Meta: U2FsdGVkX1+lBi37ZTR0iu+b7Fyzi2BA6czgiXetMdk0gYI3cM36TVZcb76rtmWKaI50NoBO+P3oyQaiwBPyXmq65aFFIvw1QbUg6yyWbFpjGesjeJu7Jp9uw1TKMUaHIKqQ5WOt3ck3ZajmmDBYvzL1LuifWLhEd2LBuFdNr9MxSoSzBezcrH9tAn7W+ZPHbFCb6FidCrnLwXTPqY96UjZ3KRO8UHYBvhqB6NX8ZBjyKLFDbkjB0tcW/GO0zu5mtdamAOIZ43GXNN3/QUrsJfZcd70CSn7CiVmumiFc5SfQyROgXa18cJZCHxRWgzqg+Vc9KPlQj1+78RLYOLosn3CDy6S1FMXZmdtpnw3CNYdYcoJAjiJ2RF8lghCN8FsaHY0Lkt63/nTDF7Z89mmOa8oXn/tzpJDmUwdEqskjLSxCTYg9W8+XkxPIyzNPqdQ3P3yYfWB4c3ygWvaMINAbLtdDU08wW3CLVJvcOTXhF8JqEddb6WLkQO9Vj+dnSoimOmpbffd54a8c+5YU1rLERYrknZWO1Kc7fmFFnutkLvs3XzzfoU0VikyVh14mvQoQnIGThrbz8hORADRecjZarURfbB4mJ3evnbcopeMSCS/6aCPsp7ZsUhIgczCfdIFqaVbge1cjZ4QbXA2+y6ICbNiOOSShbSb0CME0Vpmlz1Y9QD63mlP2zYUx3H+SZEifgPQdySS411s0rW+5qgQQuDeCzWS0k4iycocCAU2WyHsvO35HpHQimGz/+6eQUJGIf7PR8TUVMSxuKQh7t7e5/tUcmETA+dZretEk+g+9yOR+AQKpznIig67mvhxL2uldVFsNkMiu8mXMJyu2dNgyLIlVktV4Ps7N/IINeqIOEMh01aCpjA0bYj38EGJabfOFxJF40T6ANDZwO0dRBpWgVPUGT0ne6ae4o1DgEW3pmX2Wu93Kb0D2R4Tx9Hx5BsrmNCEpnbWXzNVAWkYgW6Y
- sp2Lwcaw
- pa5KGqS+px6ka95B2RqECwX1Hm6fsV7L8DfnQzEmdIIf6zmQR80OES/9OXy0XeFYw9zEbZ1mrwufvnSxeYFM7X3rcxqTeyoOPG7v0rvrlUvEIAX9QoDrMh+4zucI8htC9954CHrXL05+LDkIFmwkkxDUW+Ud4ZFUKkUd6Fl8bY9/hvt+Aoqo2QgL8KBbbhgajUKF/qlcqUZT+sMYrJ7OwafIL5NkYb3QP89L4RLKvxlXFSD8/FvRyKG18xJFASIPiG28ip3FpcJ3G2QyZymF6GS0dgFYa5qJzPwA+IDF02n4ywZI=
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-8.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794138213-471475
+X-HE-Meta: U2FsdGVkX1/Z8ZUrkSI0pro+nYR1F+88tf0jQj7bfc5SwPsUZ7MfiQl3oFPVQTidrN/zkbSsZzY++MYlsk6TWbkB/lyS0vSljXQ5fY75X4QMVSllyHXucmzGEGAr0QxlU3swrr0s/bD2pMgq/0rV48PbKqISINPNg3yrMgg9KsWrN1fUCLjfMBgIYlWRnqYtlfwGFPAqTi8e4RSxl3QgYHEAaFLiCZeaFQgxIKUqXI8zVxHk8/aY+m55nyNT7Ey+wIiCxf8vm/OboojdDOhbuQZ3S5F373mAsb3OIkMtSMgh+ki/CYvvRybqM3efo3C9cUFdyv4gYUVcGsNldlyBReFrek8MS3Mt2a71ey788yRcGDDNRdYKLiorfKp9i8Zp/imAB2oC8Ir/sAv3RGwp8H8fYFosoJIaDSXKdOF2d/yCEjw8UrPaPQK8ByOMq7XzDUVMAE2Q7jqmWSfyma1Y70OMPbbM03C5rCMOHUDDf661+WBEVc4x8E6zrxccoy6ocPvay6vdkEpSw3G+WQGNVK3iyB+w4BzFaV7mkF69ndjAV8WbXHrkuOLmx5P0fsIURZ3Wtn3AlVXjbMq30xyPzVGMO6J9HWvrMBWRyDZUt5JT2WPdncVuOI3ETL5FCQhsatnhZC9CQwpsYyBOVgmJwZtf5v5575aQNbsERwhYzivLGKY+sfuWkdEduU5PT5Z6l2V4RW4ENNQJ5buceJ1C7O+BJqY0qDFOnHldwqDFCTkEg5PjEFZZfLNWKPM0edZvrxYx1iopmlEeYKDyqXHT5dxEyhkXQgtD0VlE+j7UA6/i5b5lTxB+qm3ILld37GZfggpl5GgLH42vtgjWgiX3g40VR+St5fI8DO+Li95VCgoLJKKx3+g5XWWfAuDs0WDei/cJ5yWcvOp3LIStvli3dU3G9gCoJrySe0sTuBpNmgSOHyXW05jGvNaFxCN/hK8eVukcNvYhUxL52A851OC
+ ki2QfBPL
+ u03yCdJ2GJZz4L0MXONbqpSpLF5bZenvZk4HqPgeyk0XAFv2kvCY9g1NusKTGpUU7amR0kcYwNFijgMO+1uFIfipGHTGpCOK42dPt3XtqiY5G9rDOyPu6Keb+DBnC1zBitZPVNw019tokomEu//PwZ0F4gdh+4oZiJS2kp/GMXlU3BGzYgXOU648irA5hRAa6OVjS48Y6ZaGnhkjIHFuIaN4dew9zPA7q0UkoD7pBkXeu/TcsOwQv5pShOV5NwCBrgWHvCOw5TNw+rXZsYBjl2bKoPxfEAOxGF7h7LBC1l5bGpxfBUNTnYVYeo2ML2k5FHGnx303zX/7GVu9n8XdlL1EGAtvtv5o5dW02uQgrkkTcT7b9E44a6DxIPWR/n5AmnQLaaTWEHXNqRpQYt7lTT6meqQ5W/8NHpz9hvUtFLZ5zgQqYj03UoExhKf2iD4SxiLaBCnBOitfP0k6lWn8W442hFCn24Oj9exK7CErhdSM+SC65GSCflvNvF1XtIeAD3eaTUsHpATqun8OSca2C19TIdTHPpqH/lTpjp67jTc7LWB1DOwn8V1rEw6OWuA4JsttSZm5De1B4dy2aWgY9Rm631WPkeERaFsP23Q4Y6O7TowcOa7WirP3yMrTyKngGuap0oeN335tQ/vZtVpWtkFpvGQQ9oEi7oIg/4GmRkXhVFzGeg21oxnFjkt3wG2OT6IOB7WiCAlSc8Z+MEdPM+WpGcEeFpE1+IOJf47P0D9vFJSgz0+HvAR3XXVEd/UrPipZufCgiPZQxKYAwheW89alZ7w7ozru+LAPfQ0TVDaBmSBsop2oQ/pe2zIti9/mcee0D6LwKm3Ayw00=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,25 +92,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Fri, Nov 06, 2026 at 03:14:59PM +0800, Chen Pei wrote:
-> Teach the live update vmtest runners about riscv64, so the LUO tests can
-> be run on this architecture.
-> 
-> LIVEUPDATE depends only on KEXEC_HANDOVER, enabled for riscv64 by the
-> previous commit, so nothing in the tests stood in the way.
-> 
-> Signed-off-by: Chen Pei <cp0613@linux.alibaba.com>
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] riscv: percpu: typeof(pcp) retains __percpu and const qualifiers
+  in locals
+--
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+commit 9753271dee3a084b7bff8ad7ad29d76cb64e49f4
+Author: Yunhui Cui <cuiyunhui@bytedance.com>
 
->  tools/testing/selftests/liveupdate/config.riscv64 | 3 +++
->  tools/testing/selftests/liveupdate/run-vmtests.sh | 2 +-
->  tools/testing/selftests/liveupdate/vmtest.sh      | 8 +++++++-
->  3 files changed, 11 insertions(+), 2 deletions(-)
->  create mode 100644 tools/testing/selftests/liveupdate/config.riscv64
+riscv: implement this_cpu operations
 
--- 
-Sincerely yours,
-Mike.
+This commit implements RISC-V-specific this_cpu operations using preemption
+disablement and relaxed AMOs (or 32-bit LR/SC for 8-bit and 16-bit accesses
+when Zabha is unavailable).
+
+Link: https://lore.kernel.org/r/20260826010748.zphu3wh2hlm4t4o2@offworld
+
+> diff --git a/arch/riscv/include/asm/percpu.h b/arch/riscv/include/asm/per=
+cpu.h
+> new file mode 100644
+> index 0000000000000..280b122b9fe69
+> --- /dev/null
+> +++ b/arch/riscv/include/asm/percpu.h
+
+[ ... ]
+
+> +#define _pcp_protect_return(op, pcp, args...)				\
+> +({									\
+> +	typeof(pcp) __retval;						\
+> +	preempt_disable_notrace();					\
+> +	__retval =3D (typeof(pcp))op(raw_cpu_ptr(&(pcp)), ##args);	\
+> +	preempt_enable_notrace();					\
+> +	__retval;							\
+> +})
+> +
+> +#define _pcp_protect_cmpxchg_return(op, pcp, old, new)			\
+> +({									\
+> +	typeof(pcp) __retval;						\
+> +	typeof(pcp) *__pcp_ptr;						\
+> +									\
+> +	preempt_disable_notrace();					\
+> +	__pcp_ptr =3D raw_cpu_ptr(&(pcp));				\
+> +	instrument_atomic_read_write(__pcp_ptr, sizeof(*__pcp_ptr));	\
+> +	__retval =3D (typeof(pcp))op(__pcp_ptr, (unsigned long)(old),	\
+> +				     (unsigned long)(new));		\
+> +	preempt_enable_notrace();					\
+> +	__retval;							\
+> +})
+
+[ ... ]
+
+> +#define this_cpu_cmpxchg128(pcp, o, n)					\
+> +({									\
+> +	u128 old__ =3D (o), new__ =3D (n), ret__;				\
+> +	typeof(pcp) *ptr__;						\
+> +									\
+> +	preempt_disable_notrace();					\
+> +	ptr__ =3D raw_cpu_ptr(&(pcp));					\
+> +	if (system_has_cmpxchg128())					\
+> +		ret__ =3D cmpxchg128_local(ptr__, old__, new__);		\
+> +	else								\
+> +		ret__ =3D __percpu_generic_cmpxchg128(ptr__, old__, new__); \
+> +	preempt_enable_notrace();					\
+> +	ret__;								\
+> +})
+
+[Severity: Low]
+Should _pcp_protect_return(), _pcp_protect_cmpxchg_return(), and
+this_cpu_cmpxchg128() use TYPEOF_UNQUAL(pcp) instead of typeof(pcp) for
+their local variables and pointers?
+
+typeof(pcp) retains the __percpu address-space and const qualifiers from
+pcp.  Because raw_cpu_ptr() strips __percpu via PERCPU_PTR() (since commit
+6a39fe05ecaa ("percpu: use TYPEOF_UNQUAL() in *_cpu_ptr() accessors")),
+declaring __pcp_ptr and ptr__ with typeof(pcp) * leaves them in the
+__percpu address space and triggers sparse address-space mismatch warnings
+on assignment from raw_cpu_ptr() and when passing them to helpers taking
+regular pointers.  Retaining const on __retval also causes a build error if
+this_cpu_read() is used on a const per-CPU variable.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261108110406.9749=
+5-1-cuiyunhui@bytedance.com?part=3D1
 
