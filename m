@@ -1,98 +1,168 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10E66606A334
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 11:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A29606A321
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 11:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Th5tIDew
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=SzGpWYaQ
 Received: by kanga.kvack.org (Postfix)
-	id D84816B05B3; Sun,  8 Nov 2026 06:05:25 -0500 (EST)
+	id 3E7E26B05B5; Sun,  8 Nov 2026 06:05:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5B7E6B05B4; Sun,  8 Nov 2026 06:05:25 -0500 (EST)
+	id 3C5326B05B6; Sun,  8 Nov 2026 06:05:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C71706B05B5; Sun,  8 Nov 2026 06:05:25 -0500 (EST)
+	id 2AF1F6B05B7; Sun,  8 Nov 2026 06:05:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E80A6B05B3
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 06:05:25 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECD9480474
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 11:05:24 +0000 (UTC)
-X-FDA: 85411670568.16.78C0B51
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 41706140006
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 11:05:23 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Th5tIDew;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794135923;
-	b=SYMMPupmjDP1yJMRZ2As1fALqu9VpC/Ewda6g+QRjTwi+QZaLbE2T/FgDjTeY5o9IO0gRt
-	Nl9pD7bLD2sz8pMRnL/mQQpDgjbvXgvVAGZdoNHUQNoCRyivYJfknqhH0VXH/fodhudVlS
-	B/pZk7+7cUleF07KVSceWsZ30QNV0DY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Th5tIDew;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 081FA6B05B5
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 06:05:45 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 89051140452
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 11:05:44 +0000 (UTC)
+X-FDA: 85411671408.30.95D8EE7
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0298DC0007
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 11:05:41 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=SzGpWYaQ;
+	spf=pass (imf10.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794135923;
+	s=arc-20220608; t=1794135942;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5GTPSw8yoiId+WhJTx6l9BtpcfJ94gwfuNXWiBrjWA4=;
-	b=fEXIGG9eH30oVgLa1o4VugWRPSt8p/TtTDrfPVO/m6HxaYpmL3fXnJy0h1ki6fxJGHMpXr
-	/ZtcI1TLwLoHYW7JVhfUSKylzJJ4gz3YfH1NPTKC+dMsZ4ppE3dwmMLa7wpwyKYB1TFuAO
-	a/Bt/JWC82/AIO74+UyxVyiZ+SOvpgc=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ACE1E42A06;
-	Sun,  8 Nov 2026 11:05:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7741F1F0089F;
-	Sun,  8 Nov 2026 11:05:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794135921;
-	bh=5GTPSw8yoiId+WhJTx6l9BtpcfJ94gwfuNXWiBrjWA4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Th5tIDewprZendX4fGigw2vL+8B1sr/APy/gtFAfVfQbS6Lk2IhTZpZA5WLxIvgtJ
-	 j/L5UqaKKe48k3fkMYGmV6bII35mRZZbn6CwZnuzuiCAzemSUUXvNoELHQ2ONuX4iL
-	 UTro6N5WVRrvVYbuoHwHPeoK3huWHGz9+LEO25VRTXpW3BkKMf5L0mJDWuZFvZCaLp
-	 rQIs2ITzWhuEBZJtF9A+ErJoBM+350SBMkJ6vpoNJHIa18H8plUq/3CaNZWmHMywZd
-	 VKrluIioL8pbB880mGbp917rCZDAWn59BtwIBa7rEcyQJRC3/MQeiSi2IX/BKMHJSb
-	 gTOT1W1JropBQ==
-Date: Sun, 8 Nov 2026 13:05:11 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Cc: robh@kernel.org, saravanak@kernel.org, akpm@linux-foundation.org,
-	david@kernel.org, ljs@kernel.org, liam@infradead.org,
-	vbabka@kernel.org, surenb@google.com, mhocko@suse.com,
-	m.szyprowski@samsung.com, robin.murphy@arm.com,
-	baoquan.he@linux.dev, pasha.tatashin@soleen.com,
-	pratyush@kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	iommu@lists.linux.dev, kexec@lists.infradead.org
-Subject: Re: [PATCH 3/4] mm/cma: reject CMA areas that overlap the kernel
- image
-Message-ID: <avBXZ8iW2XPyVbmF@kernel.org>
-References: <20261103162429.2053989-1-radhey.shyam.pandey@amd.com>
- <20261103162429.2053989-4-radhey.shyam.pandey@amd.com>
+	bh=moiGcSV9g6fEFglU5jjTd2VsTAmD/aUVb3CUOrfKCF0=;
+	b=xqtGxyAwTecY2Frv/6j5NJB1f2TJvQepPyTHkaSJ59nZ4sPheYp5+519O8qRhRhcHx6yj7
+	RdLYBMmgAi0czs0YPplO+hNlLlXfQJJ+1sqCbkJfr49MDRgSRwgTYKVzATBNv7b6rWt0DP
+	KWh7bU/+mQYzyJeK5rNOy/H+9C+dxGo=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794135942;
+	b=AAI4KAAQ31vRNGJ/HAHWX3NeBgY8w+peSldAEAUy9/Tv63gB4VPbOOwpzVKAcP1soHDIk1
+	WlCWDHv+0OEvGGi9DDMmXYXSpY1pNgVcgHmohmV0Qd7B2Md+LahRw/6dkKvanz1Ne/8sBP
+	NtOm/mgYMvGjsGo6Ya5wDV/Y5ICrTeI=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=SzGpWYaQ;
+	spf=pass (imf10.hostedemail.com: domain of cuiyunhui@bytedance.com designates 209.85.216.43 as permitted sender) smtp.mailfrom=cuiyunhui@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-3b08cf16decso20342a91.0
+        for <linux-mm@kvack.org>; Sun, 08 Nov 2026 03:05:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1794135941; x=1794740741; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=moiGcSV9g6fEFglU5jjTd2VsTAmD/aUVb3CUOrfKCF0=;
+        b=SzGpWYaQcrUra4LywWxkfXGPf8RPaV91QFb8E1LfrKU5GG7CK6fRZhhi53BoPY6xl3
+         xakCHcJX88DB25xrLLhw722Ry1/CGl/UWb7pkyAObOiLyFt92QELokCDcmv1Z4Y/o+uj
+         J5Ik8b8HzEW6Z1OyWnoWwVo0srltFH09pEhrTCQx4FwpGYxnEZJ8wEHq5kmpakrx/WZJ
+         gszKo/+HWayIUETkD0p0CY+S5fio+tjTNcEZyRICsXwCLTHDB4aRXCIYl9p8KEv0U0Of
+         LYd5bCxqOslRssCkWmC3Iffo4YeKVI3AxDXJmy+4BogS7c5SsuKWa5146jesrHnm2jHJ
+         w4PQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794135941; x=1794740741;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to:content-type;
+        bh=moiGcSV9g6fEFglU5jjTd2VsTAmD/aUVb3CUOrfKCF0=;
+        b=kESmkvofbA9smQ6Z6LcybQmeXw+Ogo7oC3kSmrQ8x5vl7sQcfEdktMZczdmpU4+dI1
+         SAmm+iJb21YdktPGqwyIqqjJ0DCTIQMeIb6MirVivJAXgpKXkj6blnGraxmZk2DLb+Yn
+         YS0qA0PI+ZzZLOp+3V0rUCQncjVSFwA/yH/SQHPG9Vuc65u8XYiToSQuD8aiy+cej8kw
+         0qCSZTegAxh/dhtusBOzkJS6Uy6nnAll1s8JFLzrPW/n27H38Q0SYsTWgw0l6Xw9JlCY
+         Y2mf8/+sZv8FIReNnWb62Z8Nq+hQF8fBl7ekFecvNDZuJIPvKCrsohIDuybMs6UeoFwY
+         CDeg==
+X-Forwarded-Encrypted: i=1; AL+hErEUHI89M3FLhMM/s1u0we8Vmca14m5atsdxEomxwnjehSZjKRJ6vtrZ6e3dnMxmZkrhKDNbYE/13w==@kvack.org
+X-Gm-Message-State: APuU4Z/NKtcI/J6DWty247gpXn2cYv8mNu8jBjsu4gOSSN7M4dMdFh7i
+	Y6n1yD1KkabMVs4lfRq/rtb2T4rHlC+r9FDLT+dDFUhXWC8Vxgpo0Rz2STL2GNZaarU=
+X-Gm-Gg: AYBFou0HtXtRAQLLZqPkllKUZHFwoYfT6gHWVtxLem804auSJ1NYIm6SoztrI/GK3ZU
+	ANPD4E+I37emRNW68qwvYQUwaIRjHGqTD/keKRnwJX2Jpoh8McJy1VSmFmLXFFGoNfFCFY4VVdg
+	uNYXPO4tiMQCIxPnLfB5fOSmGPAxvpfuEampdxS/VmBIuQwYbXDPOis5mgWP3XXRRJS2b6yLWbi
+	CtXLNyUDz/RHr0ZiOhoS6jgBfbZAmDiRavvA3xSQv2zJ21Y7rm3Ao9aYxE+O60SWrmtBjKtfY6A
+	vIf2Qv3SgHaTVCeh2hYmdzJ8d+Pn+h2PbpgtsRepGloh+SRWktNvr6ExNy8TUPn6GtMtLbyQCVa
+	93BwfsXJdScypbP/f/O1sahxc5g62u6jVW59KJ9V5C0sE4H4Icbdz/kWnswagF5qITpKr3jfmAE
+	qLMyKn9sNxJ8TQZJKchFVsJDNspd71YT4pgcDapWccNriahzHPztgGghh4WRrZI7u7t+q4kUkzY
+	JFHStzIyh4yJF4bVF0KAsJZJlZEs4LCKuTct0Sf69ODfHvXkPJKZeFdCmXWG74LRM9Mrmdziidt
+	qWOntD2UNoMbMq8tobBDRTQL0Qp+YMu3TBkgpjOR0OgEmCCAjb0DfRPd1ynFf2c=
+X-Received: by 2002:a17:90a:e7c9:b0:39e:4c7f:7308 with SMTP id 98e67ed59e1d1-3b12d37ecffmr886982a91.31.1794135940233;
+        Sun, 08 Nov 2026 03:05:40 -0800 (PST)
+Received: from localhost.localdomain ([139.177.225.233])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1278918f4sm2609818a91.6.2026.11.08.03.05.20
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Sun, 08 Nov 2026 03:05:36 -0800 (PST)
+From: Yunhui Cui <cuiyunhui@bytedance.com>
+To: pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	dennis@kernel.org,
+	tj@kernel.org,
+	cl@gentwo.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	memxor@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	jolsa@kernel.org,
+	bjorn@kernel.org,
+	pulehui@huawei.com,
+	puranjay@kernel.org,
+	thuth@redhat.com,
+	ajones@ventanamicro.com,
+	ben.dooks@codethink.co.uk,
+	rkrcmar@ventanamicro.com,
+	samuel.holland@sifive.com,
+	zong.li@sifive.com,
+	conor.dooley@microchip.com,
+	tglx@kernel.org,
+	debug@rivosinc.com,
+	seanwascoding@gmail.com,
+	andybnac@gmail.com,
+	menglong8.dong@gmail.com,
+	cyrilbur@tenstorrent.com,
+	wangruikang@iscas.ac.cn,
+	atishp@rivosinc.com,
+	apatel@ventanamicro.com,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	bpf@vger.kernel.org,
+	arnd@arndb.de,
+	nathan@kernel.org,
+	nick.desaulniers+lkml@gmail.com,
+	morbo@google.com,
+	justinstitt@google.com,
+	qingfang.deng@siflower.com.cn,
+	linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev,
+	dave@stgolabs.net,
+	emil@etsalapatis.com,
+	ihor.solodrai@linux.dev,
+	broonie@kernel.org,
+	cuiyunhui@bytedance.com
+Subject: [PATCH v9 2/3] riscv: store percpu offset into thread_info
+Date: Sun,  8 Nov 2026 19:04:05 +0800
+Message-Id: <20261108110406.97495-3-cuiyunhui@bytedance.com>
+X-Mailer: git-send-email 2.39.2 (Apple Git-143)
+In-Reply-To: <20261108110406.97495-1-cuiyunhui@bytedance.com>
+References: <20261108110406.97495-1-cuiyunhui@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261103162429.2053989-4-radhey.shyam.pandey@amd.com>
-X-Stat-Signature: ugea76cuegjwnffu1jee9mb9a55mnhxj
-X-Rspamd-Queue-Id: 41706140006
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: ye68oqcykays58kfs9k5hcyiy9qxz8y5
+X-Rspamd-Queue-Id: 0298DC0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794135923-260342
-X-HE-Meta: U2FsdGVkX19Sgn34SClH2+AqCj+YjSYCukypVoZ7FAyYfgo1IiE3ugjmEek7V9c6qVUCnui+JMy7prFd17Xfr7n+ZFbweiQ1Cm8zgBpJlgc6IkaOXEwT+uNfVKqDB3pQHSCXL7NtVj50n0ZtinZWW9zSlEpAQZC0ZQIo1OZPpqFogMxM7XHnYywTH1zub9SNKROh+m/Z9HCaqcV+Nu+F/TmobQOTSvf73MsSrAm4fAQxNgQa6YGU5tx6jDrhL5y7nQ6Odcf30kGRdFfsGhZ1TPTH+wJ4+nlQYIOs81BzUXmb7s9ud3nmgmTOYMbH/oFvB1O83tnOUdUczDNvvBqTf6Gz99jXXp6avfWsBoKroqYomaQXiVcLmZUd6N3QQ293mVMNil0HEdaxZq6j0LuY3fce0xChuoK07XhfrMJ9XnFokUCaEHbHYvcgJyLCR/L1C6v46KgtBXbSrbkqbSpW4rGzL9Wg8VI9bAO1/wtls+5xbQ+rF+F6eOmM5rYezWrz4pGVSK6PZivq17MzQlmVDdtyZ/uPYXizK2eWsC+LYY/C6mQu9qJRdR0BgcDWE1dpWuIp99TuFgWXaJYzGHwJZvCRrMdo7nQLKKtbUFH4WYH4rFkvbcnU9ImMqsmgJ7NjLbPUTxcrblJwGPRbyJcCErFUEpnpkngyaU5d5lBSbkl1JKaPqFXC3Gvqxb3RLkm/+vNWbZ5FLFspVAt+5ghtmBVKaATnFUMf7Jb7Ct2amogshD2jV5xitV0cWdLISYdhzzqjdYNhFZFf0kTjW+xQaNx3pIXELKgtk81CUboOmgmpYVxHCOhAQ287YwXjhadBKtET4wn4ak9+XTRQQ0AT+2hfdVa/Msv81Aa5uWZqsO9uRUI672kOHfBxd15JbHFEtevaKP+D5+5uBixhrYFUWexXI7JXJuElL4wwelU+dGK8Rk0xE4w+sQDaz6j+DT5S3OxDO3WItfcAHRbTcuK
- vxpioigm
- E4ycQTVL8HYnDHuW2bcV5F3R1DMS9kTOsPMvNPmocztK+rTsIVRBZfWe/lFUtJrq7mwnHE0qdr41OOfo6AAxKLo8jk3EHY3JjrHY1GsmWp+tUubKvgVzmeu9alAzEWbZxfOr8fr0TA4TKilsNtqhffL2RYz6g7/q+GRrHrVBuU9bIyvGpSIl+t3QWVrtHH2BpnfmB+UkHmt59MmF1lfoubN/b8j/ZBs9itsZS/gbApbUibhPhVG9VfgwU+VoK1H4yCuOFkGuairzLmSzeOM7mnDm2gA==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794135941-637983
+X-HE-Meta: U2FsdGVkX1+SibyoKoZM5522YuKotuuFLtRsXNQ8dOcrKfX2s/jlLETHxdYEQ6ojNc8iL3EPEiuMcnuX3zfM59JZQj9oV5FU5IYaGIJ8yFQLf5HRx74kMbp28PmZsfGrymJYqLvw7Pieovu1h3PvkdH/+jbvzm4XgRcnE8Z/oj8nKnZxMq9I9oPJgE32NPENoQ4QHFKOOOyMsNVodlg2KZMTkSlqhj1x24wymj7gMFS/mkDiwN7a/VWwAMGQ5oCd7hHTMXJOonrRpJblStZoLazlMeHycZLvGLYlv/ZvoHVnXfvj1t0pHrwt6f+lEBLwobHBQqOjM//0URGfzOxt0lFKWvLwfeoP0iZ8YTd84YPgs+B3vOlGBniw/3GQUnuPQdguOhvx1AErCJl3OXPIlDeC6VWFadpHusE3dNQ5BvRYIVwN6uOrDNxxX68sAEYTLoWotomKMQ6XC4sXclBntyP7pwOQRr7opETQUqQD8kDWcPBJNOeVavL694Z/UxU8VTySmvWmBXJgbzt2jVw+H0vyXFyOv4ku0W2HLSVMufbMPuSr5IIARPquKMfMNQEpo4/7cUWRKK42ZShaJ66m8iaETT7oUpyxPASi2opouWCXKFV3P6vKtFALFbyKisTWglcjcHxeHs9VkG4MG20BPSP3+Lh9A+HjafGWYqTbt3XXDQVyxctDTI9BmezcBGD9A6jyaBhN+q4UKkVon331LHlvkb5BkNzhMrXLq2px05K2xkKf5JzmMKl4uLtlNXaJCxgWwLSMTSPyYW+plb35wVfno7AqdNrMYj0hRDy5kE+eJCoyZ4XUWIU7FFPAQ2XVP+KhlOpkKWRp5/5BgGBD5tn8NWhfTQc+sWa4PaY1qxyJXupe9qPJ2wvaSlvwq94gi3bXiM3g8fTH2ITOQ2qPTSHwmFFClvyvohTjAo3DLpi2QtAN3v47Lt3ynWKlf3d84hRLHNS+eN01R5v6c8u
+ 1wE8/ykS
+ 5Fg0E2DMG871c41nzU0GcgTwYwdUVeO9Nr4fg8jsyyu10vUEBymR0IlfvkWz62PMCAAeID0AXAfU00tR5LaU8DBiVIAW4efLJKPmw/6kg/CR9G7xe62egxER36RMtOHYGT7JenFQuLKWRTvZ8hxqfHOB9k/Zj9jHrO5MyI+TFJLSG7V7A6/yfodXuIBpvkoIdHqraVyLU+yW/bFTlNV7XYY5flRHKl34rN81by5g8So23Hb7RI2s5d6oL8fU6ofHQNXaDj4q+RtJlmiUg789y/34y0h4nFUmamUdqi4bFIOLLDMsh+R16pIyrnLfldNxfoIDEHkimdvI+32nXlZ+RYhG2s/iJNqNEKJ4bIQ9EAtvBlI+bOjiOBJLokiuJAOVe4CUj7WqqQgFnc48RcK9txkbUdgP5S6jM32/xpjks9Yzd7gTE+lokdp6zdTTtGtJcsKOD+DPOq0Hjdcqf6Ayz6a4ti5i3RxfvqEdyUS+H2MbD1zybSNff5BxCq8yOhWtGpdrf8WdI3sueVS0PU49TuWn3w/p9e7LY8pvyaj2HIVqSTQQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,88 +171,196 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+RISC-V currently derives the current per-CPU offset from the CPU number
+and __per_cpu_offset[]. Cache it in thread_info so per-CPU accesses can
+load the offset directly.
 
-On Tue, Nov 03, 2026 at 09:54:28PM +0530, Radhey Shyam Pandey wrote:
-> cma_init_reserved_mem() takes a base chosen by its caller and only requires
-> that the range already be reserved, so an overlap with the kernel image is
-> indistinguishable from the normal case. cma_activate_area() then clears
-> PageReserved on those pages and frees them into MIGRATE_CMA, overriding the
-> memblock_reserve() of [_text, _end), so live kernel text reaches userspace.
-> kexec reached this until the fix this series builds on; a device tree
-> placing a shared-dma-pool over where the bootloader loaded the kernel still
-> can. Reject the overlap rather than let such a caller corrupt the kernel.
-> 
-> Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-> ---
-> Changes since RFC:
-> - Drop Pratyush reviewed-by tag as there were few changes.
-> - Trim the commit description.
-> - Drop the redundant comment as suggested by Mike.
-> - cma_overlaps_kernel_image() is kept as helpers in asm-generic/sections.h
->   are virtual-address helpers.
-> ---
->  mm/cma.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/mm/cma.c b/mm/cma.c
-> index 9c53b2b70dc8..3231a53161cd 100644
-> --- a/mm/cma.c
-> +++ b/mm/cma.c
-> @@ -31,6 +31,8 @@
->  #include <linux/kmemleak.h>
->  #include <trace/events/cma.h>
->  
-> +#include <asm/sections.h>
+Initialize the cached offset for the boot and secondary CPUs, and
+propagate it across context switches. Set it before each secondary CPU
+startup, including parallel bringup and CPU hotplug.
 
-You probably don't need this.
+Link: https://lists.riscv.org/g/tech-privileged/topic/risc_v_tech_arch_review/113437553?page=2
+Link: https://lore.kernel.org/r/20260826012457.ig3rfmji7vywf6kc@offworld
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+---
+ arch/riscv/include/asm/asm.h         |  6 +-----
+ arch/riscv/include/asm/percpu.h      |  5 +++++
+ arch/riscv/include/asm/switch_to.h   |  9 +++++++++
+ arch/riscv/include/asm/thread_info.h |  3 ++-
+ arch/riscv/kernel/asm-offsets.c      |  2 +-
+ arch/riscv/kernel/smpboot.c          | 10 +++++++++-
+ arch/riscv/net/bpf_jit_comp64.c      |  9 +--------
+ 7 files changed, 28 insertions(+), 16 deletions(-)
 
-> +
->  #include "internal.h"
->  #include "cma.h"
->  #include "mm_init.h"
-> @@ -68,6 +70,16 @@ bool cma_has_dynamic_base(const struct cma *cma)
->  	return test_bit(CMA_DYNAMIC_BASE, &cma->flags);
->  }
->  
-> +static bool cma_overlaps_kernel_image(phys_addr_t base, phys_addr_t size)
-> +{
-> +	phys_addr_t end;
-> +
-> +	if (check_add_overflow(base, size, &end))
-> +		return true;
-> +
-> +	return base < __pa_symbol(_end) && __pa_symbol(_text) < end;
-> +}
-> +
->  static unsigned long cma_bitmap_aligned_mask(const struct cma *cma,
->  					     unsigned int align_order)
->  {
-> @@ -295,6 +307,15 @@ int __init cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
->  	if (!size || !memblock_is_region_reserved(base, size))
->  		return -EINVAL;
->  
-> +	if (cma_overlaps_kernel_image(base, size)) {
-> +		phys_addr_t text = __pa_symbol(_text);
-> +		phys_addr_t end = __pa_symbol(_end);
-> +
-> +		pr_err("area %s (%pa, size %pa) overlaps kernel image [%pa-%pa]\n",
-> +		       name ?: "(unnamed)", &base, &size, &text, &end);
-
-We don't want to expose addresses of the kernel image.
-I'd drop text, end, and probably even base from the printout.
-
-> +		return -EBUSY;
-> +	}
-> +
->  	/*
->  	 * CMA uses CMA_MIN_ALIGNMENT_BYTES as alignment requirement which
->  	 * needs pageblock_order to be initialized. Let's enforce it.
-> -- 
-> 2.44.4
-> 
-
+diff --git a/arch/riscv/include/asm/asm.h b/arch/riscv/include/asm/asm.h
+index b8bf842d4c136..06ac38f733b0a 100644
+--- a/arch/riscv/include/asm/asm.h
++++ b/arch/riscv/include/asm/asm.h
+@@ -92,11 +92,7 @@
+ 
+ #ifdef CONFIG_SMP
+ .macro asm_per_cpu dst sym tmp
+-	lw    \tmp, TASK_TI_CPU_NUM(tp)
+-	slli  \tmp, \tmp, RISCV_LGPTR
+-	la    \dst, __per_cpu_offset
+-	add   \dst, \dst, \tmp
+-	REG_L \tmp, 0(\dst)
++	REG_L \tmp, TASK_TI_PCPU_OFFSET(tp)
+ 	la    \dst, \sym
+ 	add   \dst, \dst, \tmp
+ .endm
+diff --git a/arch/riscv/include/asm/percpu.h b/arch/riscv/include/asm/percpu.h
+index 280b122b9fe69..2a3ddc3538869 100644
+--- a/arch/riscv/include/asm/percpu.h
++++ b/arch/riscv/include/asm/percpu.h
+@@ -9,9 +9,12 @@
+ #include <asm/alternative-macros.h>
+ #include <asm/cmpxchg.h>
+ #include <asm/cpufeature-macros.h>
++#include <asm/current.h>
+ #include <asm/hwcap.h>
+ #include <asm/irqflags.h>
+ 
++#include <linux/thread_info.h>
++
+ #define PERCPU_RW_OPS(sz)						\
+ static inline unsigned long __percpu_read_##sz(void *ptr)		\
+ {									\
+@@ -557,6 +560,8 @@ static inline u128 __percpu_generic_cmpxchg128(void *ptr, u128 old_val,
+ })
+ #endif
+ 
++#define __my_cpu_offset (((struct thread_info *)current)->pcpu_offset)
++
+ #undef PERCPU_RW_OPS
+ #undef __PERCPU_AMO_OP_CASE
+ #undef PERCPU_8_16_GET_SHIFT
+diff --git a/arch/riscv/include/asm/switch_to.h b/arch/riscv/include/asm/switch_to.h
+index 123c89b694e87..b4a4d4a44f25d 100644
+--- a/arch/riscv/include/asm/switch_to.h
++++ b/arch/riscv/include/asm/switch_to.h
+@@ -89,6 +89,14 @@ static inline void __switch_to_envcfg(struct task_struct *next)
+ 			:: "r" (next->thread.envcfg) : "memory");
+ }
+ 
++static inline void __switch_to_pcpu_offset(struct task_struct *prev,
++					   struct task_struct *next)
++{
++#ifdef CONFIG_SMP
++	next->thread_info.pcpu_offset = prev->thread_info.pcpu_offset;
++#endif
++}
++
+ extern struct task_struct *__switch_to(struct task_struct *,
+ 				       struct task_struct *);
+ 
+@@ -125,6 +133,7 @@ do {							\
+ 	if (switch_to_should_flush_icache(__next))	\
+ 		local_flush_icache_all();		\
+ 	__switch_to_envcfg(__next);			\
++	__switch_to_pcpu_offset(__prev, __next);		\
+ 	((last) = __switch_to(__prev, __next));		\
+ } while (0)
+ 
+diff --git a/arch/riscv/include/asm/thread_info.h b/arch/riscv/include/asm/thread_info.h
+index 55019fdfa9eca..f10ba62b61016 100644
+--- a/arch/riscv/include/asm/thread_info.h
++++ b/arch/riscv/include/asm/thread_info.h
+@@ -53,6 +53,7 @@
+ struct thread_info {
+ 	unsigned long		flags;		/* low level flags */
+ 	int                     preempt_count;  /* 0=>preemptible, <0=>BUG */
++	int			cpu;
+ 	/*
+ 	 * These stack pointers are overwritten on every system call or
+ 	 * exception.  SP is also saved to the stack it can be recovered when
+@@ -60,8 +61,8 @@ struct thread_info {
+ 	 */
+ 	long			kernel_sp;	/* Kernel stack pointer */
+ 	long			user_sp;	/* User stack pointer */
+-	int			cpu;
+ 	unsigned long		syscall_work;	/* SYSCALL_WORK_ flags */
++	unsigned long		pcpu_offset;
+ #ifdef CONFIG_SHADOW_CALL_STACK
+ 	void			*scs_base;
+ 	void			*scs_sp;
+diff --git a/arch/riscv/kernel/asm-offsets.c b/arch/riscv/kernel/asm-offsets.c
+index a75f0cfea1e9f..f4f7ee976cd94 100644
+--- a/arch/riscv/kernel/asm-offsets.c
++++ b/arch/riscv/kernel/asm-offsets.c
+@@ -38,6 +38,7 @@ void asm_offsets(void)
+ 	OFFSET(TASK_THREAD_SUM, task_struct, thread.sum);
+ 
+ 	OFFSET(TASK_TI_CPU, task_struct, thread_info.cpu);
++	OFFSET(TASK_TI_PCPU_OFFSET, task_struct, thread_info.pcpu_offset);
+ 	OFFSET(TASK_TI_PREEMPT_COUNT, task_struct, thread_info.preempt_count);
+ 	OFFSET(TASK_TI_KERNEL_SP, task_struct, thread_info.kernel_sp);
+ 	OFFSET(TASK_TI_USER_SP, task_struct, thread_info.user_sp);
+@@ -50,7 +51,6 @@ void asm_offsets(void)
+ 	OFFSET(TASK_TI_A2, task_struct, thread_info.a2);
+ #endif
+ 
+-	OFFSET(TASK_TI_CPU_NUM, task_struct, thread_info.cpu);
+ #ifdef CONFIG_RISCV_USER_CFI
+ 	OFFSET(TASK_TI_CFI_STATE, task_struct, thread_info.user_cfi_state);
+ 	OFFSET(TASK_TI_USER_SSP, task_struct, thread_info.user_cfi_state.user_shdw_stk);
+diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
+index a9de2dae804c6..6431914d21165 100644
+--- a/arch/riscv/kernel/smpboot.c
++++ b/arch/riscv/kernel/smpboot.c
+@@ -175,6 +175,10 @@ void __init setup_smp(void)
+ 
+ static int start_secondary_cpu(int cpu, struct task_struct *tidle)
+ {
++	/* The idle task is reused across CPU hotplug. */
++	tidle->thread_info.cpu = cpu;
++	tidle->thread_info.pcpu_offset = per_cpu_offset(cpu);
++
+ 	if (cpu_ops->cpu_start)
+ 		return cpu_ops->cpu_start(cpu, tidle);
+ 
+@@ -190,7 +194,6 @@ int arch_cpuhp_kick_ap_alive(unsigned int cpu, struct task_struct *tidle)
+ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+ {
+ 	int ret;
+-	tidle->thread_info.cpu = cpu;
+ 
+ 	ret = start_secondary_cpu(cpu, tidle);
+ 	if (!ret) {
+@@ -208,6 +211,11 @@ int __cpu_up(unsigned int cpu, struct task_struct *tidle)
+ }
+ #endif
+ 
++void __init smp_prepare_boot_cpu(void)
++{
++	__my_cpu_offset = per_cpu_offset(smp_processor_id());
++}
++
+ void __init smp_cpus_done(unsigned int max_cpus)
+ {
+ }
+diff --git a/arch/riscv/net/bpf_jit_comp64.c b/arch/riscv/net/bpf_jit_comp64.c
+index 371405598faa7..fa6ce5613c4d6 100644
+--- a/arch/riscv/net/bpf_jit_comp64.c
++++ b/arch/riscv/net/bpf_jit_comp64.c
+@@ -1466,15 +1466,8 @@ int bpf_jit_emit_insn(const struct bpf_insn *insn, struct rv_jit_context *ctx,
+ 			if (rd != rs)
+ 				emit_mv(rd, rs, ctx);
+ #ifdef CONFIG_SMP
+-			/* Load current CPU number in T1 */
+-			emit_lw(RV_REG_T1, offsetof(struct thread_info, cpu),
++			emit_ld(RV_REG_T1, offsetof(struct thread_info, pcpu_offset),
+ 				RV_REG_TP, ctx);
+-			/* Load address of __per_cpu_offset array in T2 */
+-			emit_addr(RV_REG_T2, (u64)&__per_cpu_offset, extra_pass, ctx);
+-			/* Get address of __per_cpu_offset[cpu] in T1 */
+-			emit_sh3add(RV_REG_T1, RV_REG_T1, RV_REG_T2, ctx);
+-			/* Load __per_cpu_offset[cpu] in T1 */
+-			emit_ld(RV_REG_T1, 0, RV_REG_T1, ctx);
+ 			/* Add the offset to Rd */
+ 			emit_add(rd, rd, RV_REG_T1, ctx);
+ #endif
 -- 
-Sincerely yours,
-Mike.
+2.39.5
+
 
