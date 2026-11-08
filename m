@@ -1,74 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A16606A332
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 08:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7DA606A33C
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 08:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=m7sKL3ij
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NdrKiZAY
 Received: by kanga.kvack.org (Postfix)
-	id 547916B05B1; Sun,  8 Nov 2026 03:49:11 -0500 (EST)
+	id C74856B05B5; Sun,  8 Nov 2026 03:49:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F95F6B05B5; Sun,  8 Nov 2026 03:49:11 -0500 (EST)
+	id BFEFF6B05BA; Sun,  8 Nov 2026 03:49:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4389A6B05BA; Sun,  8 Nov 2026 03:49:11 -0500 (EST)
+	id B3C956B05BB; Sun,  8 Nov 2026 03:49:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E82C6B05B1
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 03:49:11 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9CBEC804E9
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 08:49:10 +0000 (UTC)
-X-FDA: 85411327260.18.B9727B8
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 87CB46B05B5
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 03:49:14 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0ECF91201EE
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 08:49:14 +0000 (UTC)
+X-FDA: 85411327428.12.50E81AC
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E142E1C0002
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 08:49:08 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m7sKL3ij;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf27.hostedemail.com (Postfix) with ESMTP id 6716240007
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 08:49:12 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NdrKiZAY;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794127752;
+	b=8f3ZMgRiWz8/EOfIff8b2a7InArXGrKxlFPokBT5fet0/55xoFSR+mQ6ZHZy92xw/K3KY4
+	/ygpWHlmMlVMGB0kTmUc+apmXqHUCD5KIvYCDVOOOKknwEAe2bBprIsNpUrgbwvxssC14L
+	frN7n19f6m2cZIM/HW+hDvhKAi+voTg=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NdrKiZAY;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794127749;
+	s=arc-20220608; t=1794127752;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9vCF5k78rkiAQGJjEpE8px/2xJwLOSb14zi+Ub19SbU=;
-	b=KiX0eKM23JNUvMao5D2n7V60xxA56mdyf7WgzcMqxJICEBmmMMIR8UAbqdRjeL4Ha+Aqnj
-	Bxk34ezV72wUR+mpqdNuYwQApmoqNdMRQR6Zq34X+wdxs64yBG90k+2ORBjwCI/6OQ8/s9
-	F5zc61NUgdzqvwjVXtfD8TyR5mTHOqw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794127749;
-	b=VFyyIlvI29SWp47IUIu904U1SkYcFlhfvFE0s5JPpUZWLmvM4w70ezfpMeB76i9CcxaAxK
-	oIqE6uAhWexJlWVHXKvire1fWadB+Bbfs8t3HyHQ38v8C9EqLxrfIuFzGHawTmFkiMVrfL
-	hdnNZilXQW6Ef9HNSWSxKcpx1pdYnkQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=m7sKL3ij;
-	spf=pass (imf18.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=fGNxBWkVhvnkoWITzYnArgAKYt5qHu8eAae1zejckKc=;
+	b=Ym1bpWIWUZw6BO+mAg9tmkg4ERiBnSJ1ENBxVTmtPqPWUOmzevE0QGz2Dmt5JZyx62FKT2
+	O8/GnU2JXcKMw+QLYw71BStQzx1FRpsVfSnm0D/7cQeAU0S2RbubngN5KlsPYqe++NJB/R
+	STSDboHlVriqEF3lwhJtnE+zGr/PJ2Q=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4049540B35;
+	by sea.source.kernel.org (Postfix) with ESMTP id B99AD43200;
+	Sun,  8 Nov 2026 08:49:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D15F1F0089F;
 	Sun,  8 Nov 2026 08:49:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E151F008A1;
-	Sun,  8 Nov 2026 08:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794127748;
-	bh=9vCF5k78rkiAQGJjEpE8px/2xJwLOSb14zi+Ub19SbU=;
+	s=k20260515; t=1794127751;
+	bh=fGNxBWkVhvnkoWITzYnArgAKYt5qHu8eAae1zejckKc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=m7sKL3ijuMxiCN4KBljYFZ4jfDx+8OwrmAzhjpzdOxERJ5fhUwGeGoaN28nsVVx5d
-	 M0Gh1a7ABrwYOrUh4ZIFHfUnB6vPmYrVaRa5nghTSf8i3sHnwHIJ4LjFFQVYGlDPXk
-	 A1AiuYKdUw/GULPXZfb69YhWrQxyrgQnPCthHkx53FdjGQjvHHjdu5MmR540QVQDuU
-	 i93q1Pl3aWsLWnRCWcsXaQiyaH/uFIBGb8QoNm7qyL93gBF+4kVRkE7fygLRGnjDsL
-	 gWN4tne3+Fx9t0iQ7SONlmf7NJHPquOjLTfOpWexeJOkxxvyf9WBCwtCsLW8ZUfWV6
-	 zKDeEbDYvKruQ==
+	b=NdrKiZAYWnQSggYG3kKUVOjbqpgcbntIBygXffutm+R+y7Iu8NnA+TW1MkLqaa8DQ
+	 zWSTXQrWrjNHAOmQg7gRQF4yNLmjeai/Llm40gbtfdh8NNUVSO8azsrdsaHRufpdh7
+	 1NqwUUnv5RBgC1TKurNFVIcfZrAvplYbJGxreDk2FGSxBzrWvnnuVQU3vq8EiMsE2l
+	 bm2vbPQuLQzr8J+MlJMCFhTiLbeNdSfe0fvUZv19yKrYJ0txC5SHGDjF6fTIIDfidj
+	 4HKvg7c1J96M+93FXMFLlOCYqnTT/fJV5FK6ewVD+GH9JYIFuJr+zcjNBEu6R7pQLB
+	 IUZysE8iju+nw==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sun, 08 Nov 2026 10:48:58 +0200
-Subject: [PATCH 1/5] s390/zcore: Replace __get_free_page() with kmalloc()
+Date: Sun, 08 Nov 2026 10:48:59 +0200
+Subject: [PATCH 2/5] s390/vmur: Replace __get_free_page() with kmalloc()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261108-s390-char-ready-v1-1-3db507722530@kernel.org>
+Message-Id: <20261108-s390-char-ready-v1-2-3db507722530@kernel.org>
 References: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
 In-Reply-To: <20261108-s390-char-ready-v1-0-3db507722530@kernel.org>
 To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
@@ -80,18 +80,18 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  Vlastimil Babka <vbabka@kernel.org>, linux-s390@vger.kernel.org, 
  linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org
 X-Mailer: b4 0.16.1-dev
-X-Stat-Signature: k1i7qcjntuuahor1z5b84esrcm3yteps
-X-Rspamd-Queue-Id: E142E1C0002
+X-Stat-Signature: 4d7gkdjmjyodocwb1ncubhbcfxs75y1z
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 6716240007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794127748-625433
-X-HE-Meta: U2FsdGVkX1+XpHJwoq41px5TL5hJzdwXpHZD9StLyZ9OgC7ln19TqYJ2uCj75TcEwNlgMY4miqsov86XRgZkTlcuMce+d8HQY+SfNzX8Rj5OlW0CAh1x5rAu7YLF/8aa8SCW7T6Mt2k8ubk6l8JRBrQkAhq1WtgJYPz2ywVKr6It/sa3lluaiZiIjjIi4NdAWn1lwnRhjzLdQhqfWF8wb41k8+jmxRifwX8267KQQX6DvmzrJ4W02iR+0LEgVcFHp3ddfLi0IIY0zxBDfBFbhFPEWfrbmT0WOLpxK1UZP/TSyCmaPPoyE+xTdglFdUzsldqU3GtKWfTqiZYb3TERLCFhva1chkAoLop4o0JYylBTjiSklH6G8SlWUdGDMOhPmaxwV3cnX1yDLJ+ChyxasY5ZecJBSQLjrZr/9sDh3D/051AdiFWBH5JDwR9WeX7w8JHDmghpWKNZbPjnmTdCn/nFIkB6rHgUsh0IzFITe01Ozv0Aavvr/CjRinVRSVgGwmU/SmvnUaGpTO1etnIRv4V5nDhY3EJQiuMaOSyAXhZKz0KCsOHEC6DgQ9M4i3aSchXS0tyCdkfordFJYCApSyUOqtkJzoico+Wlirv/AJs+pIBtTDqL2o6jSZ/ZVij0OJ2AE+fSexXPnouPga4TetObsqs8N+GvwUTNjtUt44Gk19Oewy/uHeqPb0kOIzFJGY4O+NwKleaKjfWRHtA+ayx6SJEtJMAuVyUSvXwoqNa6H5+I3DRKVlda7h4iJRrVfsx9NpotDzGg4aTSBD1XmYmpKitw2xqidiMiQaH8lcNV9Q6Pe6CYpBLsdaKccngIkRe0DDIZKmCS7Vn7igHorGjht6rplyDalroyqFUMPBVrzjyZLdtIxVMoeXWCTfHVLF57HhQCcouMuPGefekOaS9N7J2PT52h8WoF5zRsOeMx4rL1u6kFMORX5zebmPXfChRGM6ekj4yHvIwe43/
- Xb2lxsKt
- nxOttPwxOetFBB4q5ywNhCn4fXHvrtYOS5Yj6IRaCHsyer9/gNGnCoPxFfR0f/az/fKw3qhfAymLTU63rtB06WuCYw7z7uYRUJ1SxipcIpd89/jpgR9DHBxIBIGxWZn7pllyYqohVSO6n9pmHEmliLZdEtfXfi1wly8B2AJcGddxn4joqUfYzUeWIXxKRFfPcnHC9O4uH67cV5NXZ5csnfjhqkewXlFl1Ov8B2WMHHKPZAkxvlqC91aL3Ty1xephyHvQna11+UCrbQJvadrynPxdRVDeOJaCk64VCINmpXi7pKIyRINUzwqkU5GmVpMZ7c4tw
+X-HE-Tag: 1794127752-824599
+X-HE-Meta: U2FsdGVkX1/zcncSgaCxSqEIWwQvgN0GFshtJYeDShByx6wG/qMEWvA5dgAupJaTB9oexOJcqH3L6aIcuRHdIAD5sjZ9rO22uW11/IO17zyqUH4KrXh0/NljWYdc5g9ZIhZAoeVaDeRVz34Ipk7sLUwV3GunZsvTkSf4kb6S1v6s7zwmIf2BM1tjA9Wke8oO87e8ObGCaYT9ecUQ1K3uxYC5VUhZx1Zs+J1S3ch+LvUwRyGkWMVS2vhax2R0sqbQhidD3GmqqG1oU9M7VY8rPKqGLfRLMKNEJtuaDWHCYt1jJEKy+mUpimMg1b7L5N4TIpRbirzFN65d7XPJpkBlA4tw58qvCbmGq0bypLcRKHLzCjlPFl0+L7X8wkeUAGEN7P+yF8tByvE3z5yf278cHOXIPMTzkmIUGQcj0krh1maTE08+cWgTjAVaNS7MfBoO74/noENpgdQBLLiJ2Lb6bU/dbwEHYIkndpFfLafxaGJPx9XDZ48RvY7zsF+c934lOhv2hMZ9dabs7dFDqpSsF/Vv9hiqUXQhZq5G8fmoOc2CjPhpzvwfHVGxLkMqD7lvUxze8fZnSPmRqA9N4H2GIgrfcwAHMPUDwM1CZjMI46GexY2R6o3OJwu1wJQ88wiq7OcTZuIwipezImjfBlldHleCiwlKA+n8U2eivIfKhFbIhQ89q1I/zqBDCLduhvQUUwc59eXewHQ174gRAbYwnrzafkD7ZqMu3PJOMpNAP0TzLPQgXkySiUYzQ5rI50TLCnJLTqvOPYV8RvZkmdhDXIBWA2XCV9TC+wDt/r1Cf/7mOEMRfxq3/wJxOhD18Sa+5Yq1NRZnVDDZl0bgPCiHv97yuiMY9lgkJKdvl3r7ciJMPdyh3kEL8/qvB1rPvfju2XzFFq/NkP9hgrhhBgOvl4fTe4sa0ALHJy/22saIDd6AD4OOKiVMwtRIT1Wcm5SLSzSGcKQ0Fx/T5GBw3eN
+ sDKuQZr+
+ tB/RDV8x0+7H3upwJ+ExPgxVy0PYOdFq0hTPukbOGyS7LMVLB+qnKopLWtrGg4iAnshEs442jOqD+HsQ+HqsH90ol5nMq3P8+VU/0egBgm9IRwDabDEWEYNH77NbFTYDcE2dLp6wJtB0LEyX8NaxIB0CA4gNl+F47+iLTKg/7GtjF7dHJR+KZnI3kxaIs2aujQQzFaGwRbMZTGkU1XUlXoqJXAkACEBuZ6+JO5kMAv4gvWIL7CcRdm1xnid7SIFULt1tzJNvfgLrVI9ImniR4qMoiCMIa5/f9AMUvEdkQmVwRM4UYN41d0FKWIKSVpzVsTG2G
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,8 +100,8 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-zcore_reipl_init() allocates buffers that keep a copy of the IPL block
-and of the OS info structure of the crashed system.
+diag14_read() and verify_uri_device() allocate the buffers that receive
+the spool file data returned by z/VM DIAGNOSE 0x14.
 
 These buffers can be allocated with kmalloc() as there's nothing special
 about them to go directly to the page allocator.
@@ -122,49 +122,49 @@ kfree().
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/s390/char/zcore.c | 8 ++++----
+ drivers/s390/char/vmur.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/s390/char/zcore.c b/drivers/s390/char/zcore.c
-index 1ab7400a3c10f..92e31a8a7f242 100644
---- a/drivers/s390/char/zcore.c
-+++ b/drivers/s390/char/zcore.c
-@@ -224,7 +224,7 @@ static int __init zcore_reipl_init(void)
+diff --git a/drivers/s390/char/vmur.c b/drivers/s390/char/vmur.c
+index a47a40fac8483..a13839d70eb20 100644
+--- a/drivers/s390/char/vmur.c
++++ b/drivers/s390/char/vmur.c
+@@ -529,7 +529,7 @@ static ssize_t diag14_read(struct file *file, char __user *ubuf, size_t count,
  		return rc;
- 	if (ipib_info.ipib == 0)
- 		return 0;
--	zcore_ipl_block = (void *) __get_free_page(GFP_KERNEL);
-+	zcore_ipl_block = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!zcore_ipl_block)
+ 
+ 	len = min((size_t) PAGE_SIZE, count);
+-	buf = (char *) __get_free_page(GFP_KERNEL | GFP_DMA);
++	buf = kmalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
+ 	if (!buf)
  		return -ENOMEM;
- 	if (ipib_info.ipib < sclp.hsa_size)
-@@ -235,7 +235,7 @@ static int __init zcore_reipl_init(void)
- 	if (rc || (__force u32)csum_partial(zcore_ipl_block, zcore_ipl_block->hdr.len, 0) !=
- 	    ipib_info.checksum) {
- 		TRACE("Checksum does not match\n");
--		free_page((unsigned long) zcore_ipl_block);
-+		kfree(zcore_ipl_block);
- 		zcore_ipl_block = NULL;
- 	}
- 	/*
-@@ -244,7 +244,7 @@ static int __init zcore_reipl_init(void)
- 	 * to continue dump processing, considering that os_info could be
- 	 * corrupted on the panicked system.
- 	 */
--	os_info = (void *)__get_free_page(GFP_KERNEL);
-+	os_info = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	if (!os_info)
- 		return -ENOMEM;
- 	rc = memcpy_hsa_kernel(&os_info_addr, __LC_OS_INFO, sizeof(os_info_addr));
-@@ -266,7 +266,7 @@ static int __init zcore_reipl_init(void)
- 			os_info_flags = 0;
- 	}
- out:
--	free_page((unsigned long)os_info);
-+	kfree(os_info);
- 	return 0;
+ 
+@@ -556,7 +556,7 @@ static ssize_t diag14_read(struct file *file, char __user *ubuf, size_t count,
+ 	*offs += copied;
+ 	rc = copied;
+ fail:
+-	free_page((unsigned long) buf);
++	kfree(buf);
+ 	return rc;
  }
  
+@@ -621,7 +621,7 @@ static int verify_uri_device(struct urdev *urd)
+ 	}
+ 
+ 	/* open file on virtual reader	*/
+-	buf = (char *) __get_free_page(GFP_KERNEL | GFP_DMA);
++	buf = kmalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
+ 	if (!buf) {
+ 		rc = -ENOMEM;
+ 		goto fail_free_fcb;
+@@ -641,7 +641,7 @@ static int verify_uri_device(struct urdev *urd)
+ 	rc = 0;
+ 
+ fail_free_buf:
+-	free_page((unsigned long) buf);
++	kfree(buf);
+ fail_free_fcb:
+ 	kfree(fcb);
+ 	return rc;
 
 -- 
 2.53.0
