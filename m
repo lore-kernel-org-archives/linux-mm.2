@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E906F606A326
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 00:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FDD606A326
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 00:45:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ROnDo2up
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KyjKx80N
 Received: by kanga.kvack.org (Postfix)
-	id 1A37D6B05D4; Sat,  7 Nov 2026 19:44:36 -0500 (EST)
+	id 65F2E6B05D5; Sat,  7 Nov 2026 19:44:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 154836B05D5; Sat,  7 Nov 2026 19:44:36 -0500 (EST)
+	id 6368C6B05D6; Sat,  7 Nov 2026 19:44:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0918D6B05D6; Sat,  7 Nov 2026 19:44:36 -0500 (EST)
+	id 54E7D6B05D7; Sat,  7 Nov 2026 19:44:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C26366B05D4
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:44:35 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 577EBA7DAE
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:35 +0000 (UTC)
-X-FDA: 85410106110.11.78CD5E0
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 222146B05D5
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:44:37 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9DC6612024F
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:36 +0000 (UTC)
+X-FDA: 85410106152.20.931F31B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B5606140003
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:33 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ROnDo2up;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id 00547C0005
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:34 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KyjKx80N;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794098673;
+	s=arc-20220608; t=1794098675;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FYDflmfipi1PjLcDGCMu62uuoKoinLSLqz7eYoqq+KQ=;
-	b=iOU/xsa4ZG0g1pZzjHQ/MOUQnlWKfL+VF+L+S50rWzRVplnu77ttUCRvSCUUjzrjUU2ZAG
-	NKyncbYG7EOtdiANxEjqchwVPIhKNg6Y7jrOpQBCfwIQj/DJ9/f5uI8qW2WetXtOO9kQ+g
-	szYat6K0CA1LlvOonet+Xv2qCCDReK0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ROnDo2up;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=RmJ7M5blQgPkbOX5TxgxTr5nIo11N9om45iOa6C2Vkg=;
+	b=Tr0FQJdiPqFgM2W/8UszpRzlR6eTJcrxtx7W9RLGUmjGLGZZGgZaiBbbqU1bzvfyWC3mM1
+	7kjqcCJVbAx6HBNmU+5PUibUTVsBiMXWVUkCiZxTCunZ0rkXibN9Tey76zXyas9tLb9tjG
+	L8hL7/xl6FaI+cg39CxpcNFImN6spvo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794098673;
-	b=k8RiqBqLsIqP75TbzUAgMkl+HCMxdIr7npIVMR80/zdYG0iNJFAYBTgz6lms+SXkfzSnqw
-	NnIphxwLszsh5/intqipfHVJR2GcBVTPwMnnrIhlRua2IL7VkGaJEdZ722Fcwx2t5kqXFb
-	HJBU+jx7lIRiSW7W2lTPxjfrhh4z7WY=
+	t=1794098675;
+	b=uTMkPpxiUYN70U8QgMVkK9xRg1HH+qWobLyRSvryUrrRKEDWgU+TbzoFx42mdEGAPKYo/F
+	SVwyp4xNmSBt+g+pBlAsqPxbHVbj1CVbOUQwrqXphLpHmodxS9vZKk/ale/ZZjzr1r+qkO
+	NZ4Q0259BwIWY69T+bs6GCYIsPUaV7Y=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KyjKx80N;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F298341636;
-	Sun,  8 Nov 2026 00:44:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D031F008A3;
-	Sun,  8 Nov 2026 00:44:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6790C409CF;
+	Sun,  8 Nov 2026 00:44:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 657391F008A1;
+	Sun,  8 Nov 2026 00:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098672;
-	bh=FYDflmfipi1PjLcDGCMu62uuoKoinLSLqz7eYoqq+KQ=;
+	s=k20260515; t=1794098674;
+	bh=RmJ7M5blQgPkbOX5TxgxTr5nIo11N9om45iOa6C2Vkg=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=ROnDo2upa0yparepTbW0CMUrMFlVNDpAMXV4nnDDtZ5aSls0t0S4WbIrCopMEAQO3
-	 n4fcDVYvu2tYz31BvFH+Pz4lod5myGGr7GK1i2n2x6K5gvdN1GdaMDNmdoHGYx54aZ
-	 zpQ9R7gxyOMgEDpM5WYJXtsNDaPpiybZlN6pBC3Y+oen6u3Y93MhJL572CUBiW45i/
-	 SXfG4FPspabqXUCX655V3wv26QpLh2mY9o8eL313drTpnQH45ONM6zLHTjd7lO+pWV
-	 cnYZM5cnTje5SOd4Y+4YfjGLg6Yu6vM/alHVAgfKsfg13Tq9OpIh9CbTtMTUabOXid
-	 mdYE8LF6yNG+w==
-Message-ID: <sashiko-outbox-203479@kernel.org>
+	b=KyjKx80NzW7hR0AOJO5TecuHZDm4+kHqkWhd3wh/cikDNlwYq7UuehUENlT5VvGml
+	 51T6arQNg3tui+MEgdfVbZLsPAUKbhbjPxNEUAP2HSmD6YNMO228pR1/i9F3ZPcFlS
+	 8Ne1EuVQmlPDtlwwirP8xa91grh76JGNip1BTePfD3myMj1W14aKoNe1wHRx8L6Iu3
+	 ihwJLpdJmP/hP6iK71fRoJ5ls12dTAfLbKCvdUKUDuWGA0T0H0hnCFELotgiD0jjGa
+	 EtN2XJmsuubSnQOa0NPb+VUTiZe+s2VfnyK+Ody/GS0jkCXeFoUcGAhHQThU3PUiyi
+	 bniB0Jkhg+EEA==
+Message-ID: <sashiko-outbox-203480@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 68/88] vfio/pci: Use iov_iter for MMIO read and
- write
+Subject: Re: [PATCH RFC v3 69/88] vfio: Dispatch guest_memfd read and write
+ provider ops via vfio_device_ops
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -76,24 +76,24 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-68-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-69-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-68-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-69-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:44:31 +0000
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: B5606140003
+Date: Sun, 08 Nov 2026 00:44:32 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: yu8xa5eq4k1ctewa56pz1fpyeg7tugwd
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: 9trmjinwc99ifukfr9e3d9qd9xseqj13
-X-HE-Tag: 1794098673-273685
-X-HE-Meta: U2FsdGVkX1899LyHU7+vjgxboovsKqXRAVn1yCOQH8S+wddYrQPlhcxCa+y22eynWfKpw36Av56D6oPE7HPqi9sqHJpJMUgnOkfiz+BxI1ZozB9UJu06vZNigYQrDUoAXVNBlSBfepbnwFZ8IKpTZ/AjYLLW/4tB4nmHDZqHcTErH8Xl3TKTWAA9Y3KMHPUith37SZrImB9hiSsvWWSqEyFvXB519YvGFFg5kVS9Xskf38NWNxMDQxqqW7olWo6VGOJLzQOSt8NxHfF9A4a1SqzjJuj0aXa8iY6cmISNHE4xJoWae/fCyfUF2e5pfpBtkUMSQX1mEnqu23Q3FXApewlhK1v3ZVLKpmfo3Ga7kzBRRqHAIY5d1SF6vm/8EXgtiAvIkdH1dUd0jmiewlPMusw7QwIJw3SzlpEZEbv/agCqE4opWqHo1VRDcjpM2XJUTA9JPnT27Z3Z6ya08B/Az+oIFx7nakRX2CMEcxmZyFzbiPh2mxpOf/mOwX4N2HgMwmq/soKE1/TVb19lOsS6GO137mChrbeMSzJq1pbaoEBZp+P2K8S824kdpJ1LhNPRtQXak7i5nrLGwMvUsHCTULtG3iHpJhEEAwgUW2CnBTot+CSFjuupylwHBiYrQ8NTaNjFNP/hnknkBhulGRdwMw9wZXHmukXbV/v26yU+IyC9drzlCwGRdAxCBRVaywdKRmXpri8T9ZZcCXfM/LxMiYYG6pKgr+w8gE5ydk/b7OY3HJKhwh0SHi29GDbRVE9ajwrPePa2VZ06EOJ1VoF2NBu5psOoRtBXWS5+Rtq2Q2at1I1xYVb/BRU92blmZPQ10uRwdhKzHifO9P6xclM8WySpUddKmLu0etArhpTHl2Rfior7YSj+kjQBJk8X4fkCIazRDJp9Nbjm9hoCwKeFXlHGJEYPYfkvKXJAFCnnjc/8lhcd6zUeN4HridbYAVUG/2+EiT+ktx8S08t03yv
- NBLQf2+v
- fG6ApRygn2YRkjguoeb8mwUvUa0CDprgE0kXGBJwZ0xmMhO0YJs+6WnCKue8owz744KYsloo+UUugxWyRXKj7Pgf4xUjWTA6PS68gnvgW76lOyVrdZZwa6GECd8Mnxrk2aXPrz8rwPSJS/Z8oZaVm0Fq/Jut8LziLApf2FR684kG3jDPrjkTALw71REmM18HXWxgXt14GGsgzT+LXDbhfZ4WNdOve9PI8azOxomoHdqJSzC/lErtysDl5/eEYeSRRHdbdexZZY6vRjm80o8mbsJwm0tz5AunQBXO5QyfhzISzaS91bkeEBLjpOV8fMdUkU2st62pzVUOnGLg7E2iqSzS0Cjyk9gzKphZI5RfZuj68TozJh0g4R6WrkHYqlceh4wub5MwkCRDscxJ3U88MMSmTTPgCPNNbRbhdhnkUBGPtOIe2Yzb/4ZTsMfp0ux5Er18T9G3iguMzVMqK6D5/ylx+y5yPuisKfAfwCPibJZsYeWYkSZd1jFStzAgatBJAWJs0iMcrT6JLDKPl1xsKUVVOtr1RkiLZT/H+Bky7bN+9VVqVjl+sH7wbpjMlE7t92zMdiGi8KWisNu1w+V7bzM3bPNV/M+tRhQx9ZJ8pQiOdKuyJ0L4/Rb80jG+qC575BfTPYMA2ALT08mOmyjWEvdinVj0pJEltUbGPqiR3hH6r3y9qa3A48FsdKsC92OwRkw+ULZdffzJNms6zSgegNvpOuQ==
+X-Rspamd-Queue-Id: 00547C0005
+X-Rspam-User: 
+X-HE-Tag: 1794098674-244592
+X-HE-Meta: U2FsdGVkX1/RgFouu+e94reYNr/AfBegzcLVMp9wjnOfkgrJpsQdjBRdMgCgMKUnKn3VmCzHopQY/3NJDUYSthC+iQ0649nZGuo7XkGtpnqhqtfV0tGQLbhDoN++s1bXoNPdtsgfqBmSjO/ace79dgtq5vbKP+x1/62tcqcmgo1hsPc9fcxxljgKSb5EgpruxV52rNIxHmKI07fV7Olz++lvysm6cvol8elO8KQyWr5CpPAMFAY4pHsqxU8uHkLRRMKY+fLWbahkdCTYKfNWFnNPXe3SgQv1OW+gCnNvjM5KYXYhQMUwCr8uTDklZ3OluW9aBvU+17AxAy6R/5QEfHyhvoYMN9SnmauK4iWSJlQOAj2R5kS87/BYZyhOjHYaXXuH2ZeIwRIMTpbOWxFryjgXGTzMN89kFWYfqNauWJq0bdVwrHRVxSJkNOp3rLhIRJglxQlMWpiCyyX/ybxixhqAkHT8/ODWTUxspofpk9G69QDtjjn9BWAnVvCLB0dIeCVCCHJaScNuY5F5b2GFYucqd+nGCsmJFVuHNW8+eWWzEx+jH+GGjdiVGzg0ah/9Ro6i4gaQd5iJ+ehuTrCpHXxI1rrJw/2gj4cMMX0zcC8Zx0gdK4KUgtANzf9ti5RBvn0Nf4AHyFmx10kTRPFd7iezLqYhf5+2kUk5JSBhLpuIlvD7RLAI939atfa2rY6LiXvOYsBYKr4DBKXsrVkY+uonUW/ZbNeoRJm/cHdjAeUcK8nktcsBkT3xvT/e9iV6xw0s2jj/bQJBX9bcbYXiJecDdxqTHdVSwB6Ju8s9BMagxZjiXlQP19a6Vj449UnmVXcajTgT8+f6hML9XZAPj988YVNmFjvK6doSvWdoAx+Dsumnf1SJI2/ydaYQOtZZjQpydJ8BwVwQQBj5TFjwa1MlJqz6Kfex2+X21oLP/LPhHRzS9vWH4Y8P97fLjopaiZ0gS0axvVeVitGq6fL
+ HBzx/tb/
+ nnKFHY2sol3GH+ZTGxDgzpDEB4mMiZhHJRJQEDmCXwfpsnqwr4Ss4GgSXO83jKfqTxf0yNBPPG3CaBZg3OnBIVz25clcTX9pj+NWc1eHuIvMiIjhWcEvgTCmkT5LS6K4pPYdp80V45sIFq/jVdRvCyF1afDAsY24thSddPEZmAH6r4YNPVufIEfW2CgujcM1fwl6h+2MzC8D14P1ZG+MbjxpgTyRNffa/CaaKii18Ehjk4A8Fk3c/a0DVFFlFPwZO2EqUkdUBHXaikcJgyYHN1JrunIv3hNBBzEH2kBeCLktyLZPuzZlSbXAziqEywzITCfVXMxD3UunpH3vh2lZFGoik7xooiqNLZ0vIdqLXHfpg8iiBo8Xf3/0+0PEGNioOzHOAwn9dGOLY9Te20IKabA7u7tDdreAjfZfwxIA7xT+HqQqWGoEzINz9yKWTXTyAZjPCDN6/G7ESyMG+7cStGGo4F9yi6YWJBx0dQmVUvawrteXmQo/ecA0V5uHhhN3Ut27rZD2ygNbEwN1NVBMZvfb88YRoAePX56TZ7zgtTH7Gzv3uJgWOoxFN/8gwPP53mCLQ1PojPcfVFeDL3UhTbGwgtAoTX1oPARYLXJE1TuxQBRYDiXb7MnQEu/it2VJ9nOrLiMuef54ud/Njox6VzdrOg8gp7isVZmzA+37lp13wNyaOtTChFsPZ5RiHuA1D+eybeDGVC8E7MfJ664nWbUP32w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,120 +105,43 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] vfio/pci: missing linux/uio.h include in vfio_pci_rdwr.c breaks
-  build
+- [Low] vfio: missing kernel-doc for gmem_read and gmem_write in
+  vfio_device_ops
 --
 
-commit 857abb2cc1a3ab7c6f488750b101680f17be6f5d
+commit 1e0b7bdc6352dbf69f404e2847472ddba12fa151
 Author: Ackerley Tng <ackerleytng@google.com>
 
-vfio/pci: Use iov_iter for MMIO read and write
+vfio: Dispatch guest_memfd read and write provider ops via vfio_device_ops
 
-This commit refactors the internal MMIO read and write helpers in
-vfio_pci_rdwr.c to operate on struct iov_iter, while keeping
-vfio_pci_core_do_io_rw() unchanged by wrapping user buffers with
-import_ubuf().
+This commit implements the .read and .write callbacks on
+vfio_device_gmem_provider_ops to dispatch data-plane reads and writes to
+the bus driver's .gmem_read and .gmem_write callbacks on struct
+vfio_device_ops.
 
-> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci=
-_rdwr.c
-> index e5f1f60513709..cc64722d1ab9a 100644
-> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
-> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-> @@ -91,34 +91,34 @@ VFIO_IOREAD(32)
->  VFIO_IOREAD(64)
-> =20
->  #define VFIO_IORDWR(size)						\
-> -static int vfio_pci_iordwr##size(struct vfio_pci_core_device *vdev,\
-> -				bool iswrite, bool test_mem,		\
-> -				void __iomem *io, char __user *buf,	\
-> -				loff_t off, size_t *filled)		\
-> -{									\
-> -	u##size val;							\
-> -	int ret;							\
-> -									\
-> -	if (iswrite) {							\
-> -		if (copy_from_user(&val, buf, sizeof(val)))		\
-> -			return -EFAULT;					\
-> -									\
-> -		ret =3D vfio_pci_core_iowrite##size(vdev, test_mem,	\
-> -						  val, io + off);	\
-> -		if (ret)						\
-> -			return ret;					\
-> -	} else {							\
-> -		ret =3D vfio_pci_core_ioread##size(vdev, test_mem,	\
-> -						 &val, io + off);	\
-> -		if (ret)						\
-> -			return ret;					\
-> -									\
-> -		if (copy_to_user(buf, &val, sizeof(val)))		\
-> -			return -EFAULT;					\
-> -	}								\
-> -									\
-> -	*filled =3D sizeof(val);						\
-> -	return 0;							\
-> +static int vfio_pci_iordwr##size(struct vfio_pci_core_device *vdev,		\
-> +				bool iswrite, bool test_mem,			\
-> +				void __iomem *io, struct iov_iter *iter,	\
-> +				loff_t off, size_t *filled)			\
-> +{										\
-> +	u##size val;								\
-> +	int ret;								\
-> +										\
-> +	if (iswrite) {								\
-> +		if (!copy_from_iter_full(&val, sizeof(val), iter))		\
-> +			return -EFAULT;						\
-> +										\
-> +		ret =3D vfio_pci_core_iowrite##size(vdev, test_mem,		\
-> +						  val, io + off);		\
-> +		if (ret)							\
-> +			return ret;						\
-> +	} else {								\
-> +		ret =3D vfio_pci_core_ioread##size(vdev, test_mem,		\
-> +						 &val, io + off);		\
-> +		if (ret)							\
-> +			return ret;						\
-> +										\
-> +		if (!copy_to_iter_full(&val, sizeof(val), iter))		\
-> +			return -EFAULT;						\
-> +	}									\
-> +										\
-> +	*filled =3D sizeof(val);							\
-> +	return 0;								\
->  }									\
+> diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+> index 8022adedc26a6..012a233a375ab 100644
+> --- a/include/linux/vfio.h
+> +++ b/include/linux/vfio.h
+> @@ -130,6 +130,10 @@ struct vfio_device_ops {
+>  					 u64 attributes);
+>  	int (*gmem_lookup_pfn_range)(struct vfio_device *device, pgoff_t index,
+>  				     unsigned long *pfn, size_t *nr_pages);
+> +	ssize_t (*gmem_read)(struct vfio_device *device, void *buf,
+> +			     size_t count, loff_t *ppos);
+> +	ssize_t (*gmem_write)(struct vfio_device *device, const void *buf,
+> +			      size_t count, loff_t *ppos);
+>  	char	*name;
+>  	int	(*init)(struct vfio_device *vdev);
+>  	void	(*release)(struct vfio_device *vdev);
 
-[ ... ]
-
-> +ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool t=
-est_mem,
-> +			       void __iomem *io, char __user *buf,
-> +			       loff_t off, size_t count, size_t x_start,
-> +			       size_t x_end, bool iswrite,
-> +			       enum vfio_pci_io_width max_width)
-> +{
-> +	struct iov_iter iter;
-> +	int ret;
-> +
-> +	ret =3D import_ubuf(iswrite ? ITER_SOURCE : ITER_DEST, buf, count, &ite=
-r);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return __vfio_pci_core_do_io_rw(vdev, test_mem, io, &iter, off, count,
-> +					x_start, x_end, iswrite, max_width);
-> +}
-
-[Severity: High]
-Does drivers/vfio/pci/vfio_pci_rdwr.c need to include <linux/uio.h>?
-
-struct iov_iter, ITER_SOURCE, ITER_DEST, import_ubuf(), iov_iter_advance(),
-copy_from_iter_full(), and copy_to_iter_full() are defined in linux/uio.h,
-while linux/fs.h only forward-declares struct iov_iter. On x86_64 with
-CONFIG_IA32_EMULATION=3Dy, linux/uio.h happens to be pulled in transitively
-via asm/ia32.h -> linux/compat.h, but builds on architectures such as arm64
-(or x86_64 with CONFIG_IA32_EMULATION=3Dn) fail with an incomplete type for
-struct iov_iter and implicit function declarations.
+[Severity: Low]
+Should @gmem_read and @gmem_write be documented in the kernel-doc comment
+above struct vfio_device_ops?  Without descriptions for these new members,
+scripts/kernel-doc warns about undocumented struct members under W=3D1
+builds.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D68
+native-providers-v3-0-8484dde66a7e@google.com?part=3D69
 
