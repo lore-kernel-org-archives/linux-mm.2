@@ -1,97 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8443606A31C
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 17:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7210606A330
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 18:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QmLTW06v
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k5HTCQMy
 Received: by kanga.kvack.org (Postfix)
-	id A3E5E6B05B0; Sun,  8 Nov 2026 12:58:18 -0500 (EST)
+	id 872E66B05B0; Sun,  8 Nov 2026 13:07:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E6976B05B1; Sun,  8 Nov 2026 12:58:18 -0500 (EST)
+	id 8233F6B05B1; Sun,  8 Nov 2026 13:07:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FF716B05B2; Sun,  8 Nov 2026 12:58:18 -0500 (EST)
+	id 738DD6B05B2; Sun,  8 Nov 2026 13:07:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 66D396B05B0
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 12:58:18 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id CD9D9C04A6
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 17:58:17 +0000 (UTC)
-X-FDA: 85412711034.05.F55391E
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5612C6B05B0
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 13:07:15 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C622EA80F9
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 18:07:14 +0000 (UTC)
+X-FDA: 85412733588.08.FFF6F9B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 2A05B180004
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 17:58:15 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QmLTW06v;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 3129D12000A
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 18:07:13 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k5HTCQMy;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794160696;
+	s=arc-20220608; t=1794161233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3yNrGH+7MD7g2peNpAiNoMgnUZhFrksazqLFqyuuJY0=;
-	b=NiOe5N769B5D0IqGpOab8E2gP653bwEBHCcMA87+cDjfANJ6kxQURPgnLRQ5amARhYlU0z
-	dqNvLjgP5MSevIq+nUGT9G9+Z8bdkp8qbGDkJwnwDgmT3Um9VYEJrMWE7TkttEk+h1Fj++
-	B7/bQIoY553xDa/Vyd91yjDr9bbeUjc=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QmLTW06v;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=KZfft/vBOCrTOsCKT0dA/OkOOQlWI67PZFbELklrrjU=;
+	b=JUXv5d1xQyPYmz7hkvW6vICOKnD1cyuHjk8Q5KLWs7LkZQl6trN3fEWtRzJZx/W7zyH+Xx
+	Xo25B/6ZroFhLcQaAu4CeW9GJ+A9TsqFkqKWmiT7AS1bU1I127yM/mtq+u98010Dz+V2jd
+	hzsSbn28/wSxPvEHg/3hN4V+sI/UXWs=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794160696;
-	b=lvZ8gOMDosaKdEK8fCIBEQ7B9wVAU2AIsETeRPcVgFX4Nd7LFJSY7zjX39l/r8IVh+m99h
-	fpEuiuoHsPLj6J/eW7DlmWdeyoMSi9Fva08LWmi/LRLT3uckK14oqW4KcawNuAaiDv9xPJ
-	RJ3vbXeONmFEObubyMS+tckmn8jaTJ0=
+	t=1794161233;
+	b=IfoOErYY2NOFmWqKsYjltkijwiKAsCh/NWVWxNuN66lAPZBAZ0oGwRTFAXL7nS9Ls1nWZ4
+	avcw4C5cK1KEWIB9eQz/PQtjlhaj06DpgynTvH9ZZO5RkrxJzSbCvOTEDH9NV6yhYYDzop
+	muX5nTFLVJ+DfzrnOeucUQ4B5Vklj1c=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k5HTCQMy;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id F29A94022D;
-	Sun,  8 Nov 2026 17:58:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FDE31F0089F;
-	Sun,  8 Nov 2026 17:58:14 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 522724025F;
+	Sun,  8 Nov 2026 18:07:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08B221F0089F;
+	Sun,  8 Nov 2026 18:07:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794160694;
-	bh=3yNrGH+7MD7g2peNpAiNoMgnUZhFrksazqLFqyuuJY0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=QmLTW06vCK7JGjKpUs7lHZJh/niGMLMEpTh1l2EvrBm+QsSfrnL1GILxSrUKRTXqp
-	 ESTDJyOYNdEXxfGzKoQ1sNPYkJMw0nOzd/lzwiyu4AC4vx1ApGFNboKTCnS9m2qq1O
-	 55at46+B9nyvqfzWvK+ho8uGu5ouwYIybklCAJRFBWB+5Rn6TgvfEmY0Qas9BCfIlu
-	 YkrllIoxlF1Lvy40Vz2CyQYDGFG0awpdUCwamiuFUQ3kfMoFckuq5wzA0rD9awCDiU
-	 I7LeiZ8enwGnowmE3GTgZcIm+pKNpK80ZqCZEwWEtIADb81J0X9NEpxqhX8af6Swg4
-	 ipQI9U/cQ6wgw==
-Date: Sun, 8 Nov 2026 17:58:12 +0000
-From: Harry Yoo <harry@kernel.org>
-To: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Hao Li <hao.li@linux.dev>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Conor Dooley <conor@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Alexander Potapenko <glider@google.com>, 
-	Andrey Konovalov <andreyknvl@gmail.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, kasan-dev@googlegroups.com
-Subject: Re: [PATCH v3 06/10] mm, slab: make SLUB_TINY handling dynamic for
- sizing decisions
-Message-ID: <avC3UnTk21iV1i6O@minisforum>
-References: <20261105-slub_tiny_rework-v3-0-0484ce59eabb@kernel.org>
- <20261105-slub_tiny_rework-v3-6-0484ce59eabb@kernel.org>
+	s=k20260515; t=1794161232;
+	bh=KZfft/vBOCrTOsCKT0dA/OkOOQlWI67PZFbELklrrjU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=k5HTCQMyBjX1rKiwurPLmKN6EI2Yz0SbzSi+7Cj4goHw24jeNOV6dH6St1I18Ds2g
+	 qbqvwX5xj9gahLQ/esDyLQ4BpJrOd07miafD6CSSAlmiB9bYbTJWOf0lDsRVhfB6Fi
+	 AxBYCFoUxwS9bIGjXt++QVBuSAHPHW4MNGcTuRZZUh37ZDSbH2sodgAa2j7xsOS2Cf
+	 zs8Wlg4N4RpaSDNxMYL15RlGTBQ0RYiZJPabhQaR9WNDIN3QUEIRV//ejHsAX9G8N0
+	 2RbtsvBMFZXwDhLoWKp7OeIo0/tFchf54JxbZP00iTDXmH9q0AVpmm6vH7+YWGo0YV
+	 9QPA6xnefKq1A==
+From: SJ Park <sj@kernel.org>
+To: Aveline Noir <jm5905938@gmail.com>
+Cc: SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH] mm/damon/paddr: add KUnit tests for addr_unit conversion
+Date: Sun,  8 Nov 2026 10:07:04 -0800
+Message-ID: <20261108180705.107130-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261109-test-damon-paddr-addr-unit-kunit-v1-1-bd10bb87be98@gmail.com>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261105-slub_tiny_rework-v3-6-0484ce59eabb@kernel.org>
-X-Stat-Signature: j7wz1pjk7dk4ozdzzbdmna84i4iw3cah
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 4mhx6bd5zo7baiur793qwcwdh1e5gu9e
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 2A05B180004
-X-HE-Tag: 1794160695-354822
-X-HE-Meta: U2FsdGVkX1+vZ8NX2CyxT23LTN6kBBpOdThioSsu1ydFx+h0ScfDPhFmHdxGP1yJyM+2T/CodbUEVpqBZiULPSoCskjL9x86eNFuejhnTxu6uRgvbD8wxXJKZEiElxeVhvUBAjuhUSX0PPQAQAO4x/MSUZYyhSE91jRplpO+EbJPMhyjVtG+hXPWuUpk5CBfJpNaRbe8lvg8dJSexsl3Tzk5xf6cVvM4jVL7J4VJr6z/EM9OUb/JI7qVUqKDcvHzr8dJ6gn3ugr/3eVrqHpkXh1BatRsNcFrTrAO5dQPEhbptVdcDHSAm3wXLlkt0yKTG0walB4AVqLAvHSgq3b6uXSJjpKFLcbOnSy27dzgFqriO+3nzErYmxMRvmQdLnqetR3OL9PQT3/lQL8Jo9P9bezlrT73xil8h8S4u4bzEFlUxzuTlWR82CW1tEm6/hqm/xh4LlTZg3UEgbh3IX97JjBrEhugiMVW0CooHDXIwXNkQhPL2+C9XICaejFdz5k9ALGfxpPzsP2FwlXlavw9mAEWz6qm7HGXEfqIu2ginlPoxa39TJeCzTbWjmrZrKBpwtDjFbZ+5Q5kA/giIYT2iEU7y0u2GuCTgOHaYnp04wkBRk8zyBw0YUmcWvl5x89+kTS8T0Snog2VOp/CocieSH5uABZwlffV07+I4YNKdWrcVG95gW5jJGdWVcNScc90oBhdqmd9bFJBAnhL9MOn2VDsY9a0sPTWggeAAnQJ1ryGIznCDDqVg5rAoRfB4enZHa+idu45K3BV9eakEt61zDCx2UGBsDWmx09fO4bQWACGhc/4MajjmjdW6J+M+tBjpi1RSKlaYA4E545kEAEYt6JO2EIDon/cpmdo/5uUfnbzez7VeoN+RQgpISZK8gs/2NkXkGuZ3M2AJAO4X5LDumFpiJukRX34vE624jPKPFXaoBztHJZzJn9VbJkQgnCtc9m99K8/3kGyrGchHls
- 2xs950az
- BqtFyvCqVKJ2H22ckKQ8zp87hFs/svHnYVRwIecCI/w09SWE1khREIyyTrz/j4hkTOyeBzvULnMKnGDHdGkJI4420XWIJpgl+JEtfu9r3IPb4rPRr+beg+KNsN/jtlAfrK8qq0/F+PKDhNsVIv493ePszQRn0/galhqPwfpZxwE3oyJDCf7KvHiIu6EeIWs+UIpRiOFcHosFQW7ZuO2L7N1FivbQirbN6dnd3lBuZ0rrJ6Ujvpyyk+/yQtWIdukdYjlN2OfHsQE0rvnqw1uo0Pz3cPuZdrRrLakHR8Mfd5mZKi5ABm0QTcATmZ8o0deEJmBEGucRrIjFu2IAwYta3CD0nob91TZIbAGNPnUCmiHrQFSmJx1f3WoYMc0QWnAN+q9bN+j3aHIfDVQuV+E6n/yXqzg==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 3129D12000A
+X-Rspam-User: 
+X-HE-Tag: 1794161232-343564
+X-HE-Meta: U2FsdGVkX19TmSG/QJCdGk/xOhognCpdF234CEjnwNVGx3+P9oH1PNPyPAxfEJPYeEvGN/r6c+roIGkutd1IndhZCJV/4+vP7/ECMB67OuEjc0d9fh2f6+rMhyEFLwP/X2Quirz0MqDIQp4BxsLdnj8ZIsSO1YjcGgUCQ/k+q/cO6qprXx4/mFD2S6I9SimIaiaYi3600HB9C5Z2AYpo0noj2MHZmhMukqXevC6cNq6ClRVMiwaWVxk+D0UQTwVffCtSTTi16+BwkCzKG95+jLzAhpLH2XyiVNjKwscvFFGG9YkaoxdBROlwLPDhzpvnCEBVE60011sPfdowyS/S1wgsG08ww6E1BlthmNx7R8Qcvj6WjAut0B2x9GEBgiu0VS1wvRmkuRfnyz/NWDe14fI3AAW6Kn2eyLcwzS6Kv4qbWDewPq+n7SIa8X9XYso9iHg9GJkoEUTW9K2Zq5LGgh23tpq6naZjw9p1vQhrlHvsAcTxBReb+wiQ7++1UwcHYpXnNfmozj59rLStpjTGhyUJsE+XhsxiffnEyEqepl0hxd+X9QR03N3DERxNj6eM9sNnsptAkgBb8Rq1LJP/KgyH2i7w2kU3nTeFK8FVZL32Ff7CMI77GkevwFPCyId5jLiycOwHdgmVWoYcAjizZZL0tgUe58+uVIbf5xflII7P8NYSBl/36wE8YJNqV6EH+aYLtHwkPUQc6m2eBUHkIcvN3xLg8ugVStPfvg4GJ/ZbTtCkiIQ2UJ2dCURMoWLSGjZwswXks/I50KfhLblgC5xrhBGg8HKsJPrCp0Tq9+UE8gb1woaxymkgkuP5r6TS43+PLJqyV9aCFkYhEbwNsrTy1+c2HepiYF6T7srpRvsBddJk5+whdTzL1XakzkSV1A7VtDEHE8cTziLqlGfRA1zDdgbEMk/HFdoQVcASQDmBE6oBm+0e82/gQFkLZ2PhXzNykqVS1dR+/4/mJtk
+ TJvWMiuT
+ JvoT863Ve48IwPFyoD9YfjTCAKWHZNvaRFLiXyRcNfiEukddggm8S2QNDRFdcW8EKbhqq0gsjhPsayrN9AZIhV0tBN75vUALFxyPrZFEDJw+/rgi/t9c+ZMmbZdlx20vzPy6vrO3S/TigRF9TVoVMvG/uZC5reZt940vKHnZjBm/Q+TG5WgyoJgFsOiF99F8qnt5PG202scC5Z75VOwT4n2PF2VV0QZZPGEeQwOgfKjMy29mqgMDPU3oQ1XZm2VU1zMKf78k/M5l3KiXsWOLs5CHCmEpuFpopsxaoM0fQLEN6RuOEJNQJSNGkPLXHBAY6c7HAoe8cLtHEkn4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,40 +96,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 09:43:55AM +0100, Vlastimil Babka (SUSE) wrote:
-> Enabling CONFIG_SLUB_TINY results in the caches' min partial slabs
-> threshold to be zero, thus every slab where all objects become free is
-> freed immediately. It also sets the default slab_max_order to 1, with
-> the goal of reducing the potential of internal slab fragmentation.
+Hi Aveline,
+
+On Mon, 09 Nov 2026 01:23:46 +1100 Aveline Noir <jm5905938@gmail.com> wrote:
+
+> damon_pa_phys_addr() and damon_pa_core_addr() convert between DAMON core
+> addresses and physical addresses using addr_unit.  addr_unit lets 32-bit
+> kernels with a 64-bit phys_addr_t monitor physical memory above 4 GiB,
+> but no test covers the conversions.
 > 
-> Rework both of these decisions to be based on the newly introduced
-> slab_tiny_enabled flag instead of #ifdefs. It's still possible to
-> override the reduced slab_max_order with the boot parameter, as before.
+> Add a KUnit suite for both helpers, including a case for addresses above
+> 4 GiB that is skipped when phys_addr_t is 32-bit.
+
+Thank you for this patch!
+
 > 
-> Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
-> ---
->
->  mm/slub.c | 15 +++++++--------
->  1 file changed, 7 insertions(+), 8 deletions(-)
-> 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index a3ee1bdf0eb3..be4e1f193295 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -8027,7 +8021,7 @@ static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
->  	size_t size;
+> Signed-off-by: Aveline Noir <jm5905938@gmail.com>
+[...]
+> --- a/mm/damon/Kconfig
+> +++ b/mm/damon/Kconfig
+> @@ -65,6 +65,18 @@ config DAMON_VADDR_KUNIT_TEST
 >  
+>  	  If unsure, say N.
 >  
-> -	if (IS_ENABLED(CONFIG_SLUB_TINY) || s->flags & SLAB_DEBUG_FLAGS)
-> +	if (slab_tiny_enabled || s->flags & SLAB_DEBUG_FLAGS)
->  		return 0;
+> +config DAMON_PADDR_KUNIT_TEST
+> +	bool "Test for DAMON physical address space operations" if !KUNIT_ALL_TESTS
 
-nit: this change is not mentioned in the changelog
+The above line has more than 80 characters.  What about removing "space" ?
 
-Otherwise looks good to me,
-Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
+Other than that,
 
--- 
-Cheers,
-Harry / Hyeonggon
+Reviewed-by: SJ Park <sj@kernel.org>
+
+Assuming you accept my above suggestion, I modified this patch and applied to
+damon/next [1] tree.  I will repost it soon (~1 week) as an mm.git merge
+request.  So, no action from your side is needed for now.
+
+[1] https://origin.kernel.org/doc/html/latest/mm/damon/maintainer-profile.html#scm-trees
+
+
+Thanks,
+SJ
+
+[...]
 
