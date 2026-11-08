@@ -1,101 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E80606A323
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 08:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96459606A323
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 08:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=KkGdeozW
+	dkim=pass (1024-bit key) header.d=chrisdown.name header.i=@chrisdown.name header.a=rsa-sha256 header.s=google header.b=oHV+JEw5
 Received: by kanga.kvack.org (Postfix)
-	id AC2B36B05B3; Sun,  8 Nov 2026 03:40:47 -0500 (EST)
+	id AC30B6B05B7; Sun,  8 Nov 2026 03:41:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4D016B05B4; Sun,  8 Nov 2026 03:40:47 -0500 (EST)
+	id A756D6B05B8; Sun,  8 Nov 2026 03:41:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8EEB46B05B6; Sun,  8 Nov 2026 03:40:47 -0500 (EST)
+	id 967A06B05B9; Sun,  8 Nov 2026 03:41:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 635306B05B3
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 03:40:47 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0055616041E
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 08:40:46 +0000 (UTC)
-X-FDA: 85411306092.09.CEC17CC
-Received: from mta1.migadu.com (out-238.mta1.migadu.com [95.215.58.238])
-	by imf12.hostedemail.com (Postfix) with ESMTP id CC68E40002
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 08:40:44 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KkGdeozW;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.238 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794127245;
-	b=x10rZPeUZ46MGqHHiVeelT9QYusLIiyl3si6kgXymRCXMx59lvbzRySjNFhmuhXQWaNNfp
-	5poMgn25YOMSpwY2IvewPYKp0Gz6Iyr7QQtxr9oEvPmnoTjyFo+xK8CoH3Eyc4vhpycLEp
-	V3s138j9817Ya9A2rnEhMRyPw4O2CkY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KkGdeozW;
-	spf=pass (imf12.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.238 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 76CCD6B05B7
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 03:41:43 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 13840A0423
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 08:41:43 +0000 (UTC)
+X-FDA: 85411308486.01.BDDA5F4
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 2C0FC160003
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 08:41:41 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=oHV+JEw5;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf08.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.51 as permitted sender) smtp.mailfrom=chris@chrisdown.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794127245;
+	s=arc-20220608; t=1794127301;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aYoUmexxPLJigYcrWiTOVyZolQmaaSPk22SDsY8yV2M=;
-	b=eEqVxZYCi8CuI+Wsme3+5lmjpb4MnKl9K+fpaJqf+k+X5yVaozAnjRA2rebAIQ9CR/LODu
-	FZZocsVEzVTLdIP3ac/TmDHDXLJ3jPjJXqxWajakT/JIl3iJ0cRUto/nIG9F3v/HKttVn1
-	7NFx1TWvKoLqeqDSCB3Oal5It9p0GaI=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=BYyngODmPBf6+ONXmDqmz1GGGko3fLEGOZKdoUTwChM=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794127241; v=1; x=1794732041;
- b=KkGdeozWw6GzIN8/N1hxwiHvUcHndwbzmWMXS7USNunUJ+FeltMBIA61FH1QyV1noHYwTZaL
- lqQnkwuDy9gYU9aZHZ0BwPRLdCkrMG8Ryi4wOesGVzbn7U+RHJ+Ci/bcrIJGcab1pufAWsnLlyi
- gr5PHUZgMheMxtfRnWLaiPRI=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 8756b258539f3c21;
-	Sun, 08 Nov 2026 08:40:41 +0000
-X-Mizu-Trace-ID: 8756b258539f3c21
-X-Migadu-Flow: FLOW_OUT
-From: Lance Yang <lance.yang@linux.dev>
-To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	liam@infradead.org,
-	ljs@kernel.org,
-	vbabka@kernel.org,
-	jannh@google.com,
-	pfalcato@suse.de,
-	qi.zheng@linux.dev,
-	tz2294@columbia.edu,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mm/mprotect: don't skip uffd marker install when racing with PTE table reclaim
-Date: Sun,  8 Nov 2026 16:40:35 +0800
-Message-ID: <20261108084035.85404-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261107-uffd_shmem_marker-v1-1-91fa2d653cfe@kernel.org>
-References: <20261107-uffd_shmem_marker-v1-1-91fa2d653cfe@kernel.org>
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=04OWJWl0q4USzjLVzwemPm053ugbzZoSSOQ6EL5Fbvs=;
+	b=2b3IBLMuWk5z0G1UHkZF3MCTFJmYVOVfKciYX2bn505MEDZ9ytUlUj0Fg/BBHV4Em+sUj7
+	N/pkmqvyX0x0rbUf7ZCvx/yjZ1hkNgem4jsJoYDF5OfEnxKScLjry1enf6agxzbcdjLwWE
+	tiQm+hGC/dkNelij+6rxMCydwi1a1G0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=chrisdown.name header.s=google header.b=oHV+JEw5;
+	dmarc=pass (policy=quarantine) header.from=chrisdown.name;
+	spf=pass (imf08.hostedemail.com: domain of chris@chrisdown.name designates 209.85.216.51 as permitted sender) smtp.mailfrom=chris@chrisdown.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794127301;
+	b=iEf9HjIZUnnQ2oM2B1jEe8+vblZYBsqKDwbSkf2QI3L+Q0FIV5v6pxdNspmyTlQVTqlNDD
+	xhbYmhIV7X1kBXamrPoMkdun44I72h5ANrT8bfGJ5FQ2EnkhuEyLqNBSBFci5PGLPDeqc9
+	HYPgtZ+wTURFwfRzLKNUgtvcCPY4cJU=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3b0b3754f57so127766a91.0
+        for <linux-mm@kvack.org>; Sun, 08 Nov 2026 00:41:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chrisdown.name; s=google; t=1794127300; x=1794732100; darn=kvack.org;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=04OWJWl0q4USzjLVzwemPm053ugbzZoSSOQ6EL5Fbvs=;
+        b=oHV+JEw5Mn4CPBQmTrDWg6klXSN/1wQg2klfzOdIap6q8wGlB/nuGpUKE7pLgWzldx
+         z/mYEt5qv43fvbh4rPkmVKT1OCpqKW5ftZ7Igcd0r2UTBrlpkpYR2PvtS51W7pFpYdVw
+         e0A48ZkZa88HTa7vZ/LF2VBSTmiZP9KbozVm4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794127300; x=1794732100;
+        h=user-agent:content-disposition:content-type:mime-version:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=04OWJWl0q4USzjLVzwemPm053ugbzZoSSOQ6EL5Fbvs=;
+        b=zLs0tNvPzz4S5GSQEVwLCL0+bVMX4QzCPOCFGTkfmnSqYQWakfh2nM/Ag8Cc5AVv+4
+         wpe+E+17pkpqeMedm0my/LVwf1ixeR6prH4Eo4jL7qH71yk2XWRXTU+cMsKop9oOYND+
+         LXhRJTHIeARZEjsQmWRB6Q2ONUuY3OtBtdyNinpeLOfvcqaubctzDEb7Ce7HvlCsER7i
+         kLdmeV52/g34Jym4ps8vDZynQ8X0005aTHHfy9pa7mb9FXzcf47NImTT9LATHcV3VvFb
+         /dxeL0a2UfHbf0OmeLyKp1jcByaQuz9FwcPtw765vZAAd+BXDSen84e8fSe8OnyzY+Af
+         aveA==
+X-Forwarded-Encrypted: i=1; AL+hErGRuctm4vsfByxVtofqutWPCWviOFR8XB0UtPqoWAPpQ9blcQSZNSPCKz0Su7WZ+RYI12PVDlZ5IQ==@kvack.org
+X-Gm-Message-State: APuU4Z+tfWmSfSeQ7v2xbfv/yKzW6uP/ZfZE3fdAewsP5EpDHSS7pQMD
+	M3JVF9v+kfKB9wZwzt7YGFer8uB6xnW9Qs8Y0CMn9xdMsorAzijInBxPan7/uxcjPbs=
+X-Gm-Gg: AYBFou3Vib3l1opuJnx/O1/qcHv6yHpxzjFkma/M3ZMtKh4UZ9I8mmArLymGxMJjybq
+	Kf6AiLLkxIYHy6hTn7HDgG88+UpS8yWpoTnWXTJE0NaXEbvIje+0r80aUF+Je76wf+PeHOpNGAF
+	bm9Bs8h3hn21ZgFbeZwIOS7wMCnONtlcSM6I4C8hm7s5iSByXfInCeG1EE4PNDku1Ry3+zmRdaT
+	zgG1rOJvGzW8ix6QB2yqYBunSBSmbdH5DKjC19+YWp5oaLrmJD3mvnxc44QVb2iBZvIP7XoHDd+
+	/Um+9zHwB9k69F81zPlrg7gIQRXo3ojG9XxLDmPv2YPLBOeALwWO3g9K4PUdi+txtpZNwkyLEl+
+	sWGolB3k3c7fJdqpCbHQsO++BIoFeXm/Uysfq3bh1zqnJg03YjcmgP5+WXnKCl8WUOU8JYqET5t
+	qxm6M6Lwu8XeOYtlEO0nZtG37YLraFbBAJyjDGJOXq0n/rs9LEfRNKYKOtqJxuLk14j7rajGmRk
+	PLClszllHGS/zaNE5ABcme2wY9wGy4KfkdjbftoakJNLuC69jPANvmT0+pKIvgi/ORGLKLhzPpl
+	mYL5lPRBqgFglYQYbuXBVVRcECPtSTW1RyMVKjE7IdV6D9sN+3accyE/EbbAjtfJm894NfdSNRl
+	tZjD1DXLKtLBRcMS7JeHpTODHKZ3bGgxS2tLj2g+XCET1tfTlGM6E8UoD/sDXnNuWFhSJP0gPrw
+	x5kIlfdCLkU4NtPDDlq/cf9L82luI6hE/YTnNIr+9qs59rruP/W+Wm
+X-Received: by 2002:a17:90b:4b83:b0:3b0:ac2c:1619 with SMTP id 98e67ed59e1d1-3b12d3e713amr651515a91.39.1794127299954;
+        Sun, 08 Nov 2026 00:41:39 -0800 (PST)
+Received: from localhost ([50.175.87.158])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b101bc4586sm3906321a91.2.2026.11.08.00.41.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Nov 2026 00:41:39 -0800 (PST)
+Date: Sun, 8 Nov 2026 00:41:37 -0800
+From: Chris Down <chris@chrisdown.name>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Michal Hocko <mhocko@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Zhan Xusheng <zhanxusheng1024@gmail.com>, cgroups@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-team@meta.com
+Subject: [PATCH v2] mm: memcontrol: Don't lose track of exiting OOM victims
+Message-ID: <avA1wXhTMs9eY2NF@chrisdown.name>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: imcq37auhs3use3bz3aqeaj91k9symdw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/2.3.3 (9073d26d) (2026-06-12)
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CC68E40002
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2C0FC160003
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794127244-315177
-X-HE-Meta: U2FsdGVkX1+XlN7HE2pjsCcHyfPvONJiDg/LwarYiijrF04kYuc3za8TjHvKWoTE/JS/aQEmn4wgNLxjgDkV+TYcS5+ZQuZgQ2JzeNIC3w/vfuxYIbqGHEVWIho8eq27E6rqVLlKEO3q/ef6an1nRB9yJAhSDbp807UEPSgIS+F6KLiqeWRBlcmwqmP0U7Di5HgxS58E7elUlfgdaMnV7JU39yAy6eNAsscr+RgZcW3y0ADsakMCyP8p5kVS+rzZp4vIYPdBTSepcnsKO1STRl3XBmY8o+8EjskGoDpdwwG6Za2n0ATdGI4jDn0aCvSxNOropXmGvudOR6T9dlVH1xaLNv8o0j7h1lR/Qe61qK3dnSj/1XDsi6zAn8YWTW2NK9K5PgICeP4GygExp3GQyatkrHzqFsQYnum4tWHCoWpCPHe/rXolz5B5/Pg4IJ1WphUgPmdQ+Sg3RTpKviYiSQJOThbWLe1Qqtw4M0W8aNRFs7KTYJNlqsY2qZss8m1Kzbs5ufeTLGjvAIyFlcTPn+b+KktRTu4LNtF3hUkmHWcXrX81addGl+EsHxM48PVCk9QYWDK8yOe957/CYf2tqWyPePmsgIrQgsQKZVKnl6r+l9NdMEQduNS39J8grKc7dBJbnt4KuI5xYEjgWJv7sGZw3BiWvqPhHLOP0WUQ6mwlNp5TLlDz3vpl53Vp6I+mvBcDTakZn2odfJaAT/zsl0egmIuRZ0lNg0g+Vwp2td8ZHrWGx3cDcSRhtosrDxgBQzlOpeRhwUADbxF9MT6c1luUEVjm3kCYEQZAJPXjZaK8eobW4fpcwUqhmw06Xgfjz2OpLZrX0nJCsAz4K2WeSi+9y5uSftbppREzy80XnzbQZ0xGhLAb86vgG+vGcUQOatFjY79DsgJbJRm9UkjjaHf6yixfA5d3uyRv7n6pU9adIC/h/0X+jU7w2D1XlBctKwUuIEfEnKdUA6/1qmn
- H3KOy5J9
- oW7uGuh2wxYsmHy9r3bq2E4veP23Jt1eJT/OW8jorRlMyb0b8VhjVyzl0jpNneao6DCiLAEBJoHRGH7enRlfblWvRP+Xshz4ruJ9V7FeQ6Vi74jaxY3sF6QmkKlGrwT8xsxlViQf/d+rahdCfF4F3vtBuuFC/HfbW3sYfMIIsVwvlAvfvWIj8wtbaCW0AXrnHLvNQyXdvcLMiVISgthASbGum5UBaqK2n9cC0sMzNbZK+gKJax89IONcGZgivIaiHZ1LW
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: k9yn618zhu8fwfguugx1nt565y57xp9s
+X-HE-Tag: 1794127301-562327
+X-HE-Meta: U2FsdGVkX19cSAZJ6pCiA1BB/3r6sf7q8DyXoXWKCTxodl/NoHDlzqDJcY8aukWNem17iXsTujON7Q/C2q0cL7I1Pl+ZyKnCCRwi0Vn3yVEiJM2Sl365qP7i4Tmn92Gbt6dGnsAuf/flBWQZAnveW6XNoHoBUwL4D6OaUU3+e80aObBIx62ZgRtG9tJQ4g69GmiimZdY6OrDoNeY9UbpHB038IkMHtMfeawEKZbHuTKEVLLHqHgQ7LuXl8ashySi7rYss3oSHmhClIZKJscMk94zs5+7EvU3SE3B3aodRXk5RK2nLtW6u5vY7xrQvQeAIlVA7Ja1Kcan2qDwAUokRhm8H7u9jWPcf5GfN0r0gn4ARqTg+0p84JWmwsYkn9fXSjVEYHOquz64mKOxKbiMbPetCvehBYgSF0Xb3BhM86X86XdpY9obhJIpgCW/heqwTa7sEV7eXJmCE6YKWBNQo9wYy0/PBh0K+aCtXoDdL7dJfPZUEAyBMsSX/AX5Bmd8XrQcUJkqgIh4KiBw4VQssw7Tq0mn7CisWKsIvYsXmcHR04Jcu/UkhF2vgkdQkc+l+lJRpLW/FSlBVCVoQiST8N/SQ0KX2y19w6pyFJJvjbPlXd33AZxNoW5sPRZfLFiiv9TL2vWx6K/bbtTAbLMliwwjTl02DmFemlwXI4LF4g5524w5IN9jjIZndasKwPPhspJZwEpg2orPzcTn4CvEanVoykyctSpDvseZCXkhUQM1Abe2DyPo6SS1e3OuON+/knqu7pvT9Ul8JH+l1p3y4LmItsMUfHiFgLGAZS3ALcLk9mrvrRPZMG2NdAtIujFzRA/F/P2+WFGJpkjAwoL7aQIyMlj8Z/Q7DmFH/rzGmGIE9mDmzejsDz6Wj+5DpXpk17nJiGh2o3t33yun+m1b0X89Pwk2fxy8HlFjehi2ca2lUuem9tnT5FxcJm8+Y3EKpX6GRa1A5k4b2KVrXng
+ 5gwhZbKG
+ tSPXJeiMw87kimlAE8Mqu3rqsOsfnizv49QYgk4l/qZ0BJZ9BQSnqS0jPMD8ad0/UOVVe0gUP8J9gJ1HshFQs/FFMILRwo5xoihZOOlSjQuMC/07UJYP3/fbMJDg46SgpVEn7e7ntJ3evYeLj2FB7njQ6mQXbfVKXzjs0p9esWbU5TK85Fw0v04xILwkXRqIiFYGLdBlarRjuD6jpe3W6swEOk+NcMRs9wln8qyENrPJRV8ddblwYH6AdeiNyToNK/JkrU81nK5rUQWX6kcsNfTtkstRpPPIO28JcncqOS2No3DWm4NcngRgZdQ29IsmYNNgfl9VQWAUkChFpPIQcdsp2IZpGn2IvZ3PN2qrS0hIVpzebVeFkQjp5jehMNZYwD5dqX6iMFwnE/6ZUPHtW6AXg9YVih42lS3yydNOPoPEO3iGCXsEKMAEqiisJKzH11eiWWOTjVts0chIed025Os7oTa0bDIrAAC9D7vyy/+fadMU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,121 +127,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+When oom_evaluate_task() comes across a victim we've already killed, it
+backs off until the victim's mm has MMF_OOM_SKIP. This gives the victim
+a chance to free some memory before we kill anything else. However,
+since commit a72f73c4dd9b ("cgroup: Don't expose dead tasks in cgroup"),
+css_task_iter skips exiting tasks once signal->live reaches zero. That
+happens before exit_mm(), so a single-threaded victim can disappear
+from the memcg scan while it still has all its memory.
 
-On Sat, Nov 07, 2026 at 12:28:55AM +0100, David Hildenbrand (Arm) wrote:
->change_pmd_range() populates PTE tables before installing uffd-wp
->markers. An empty PTE table can be removed after change_pmd_prepare()
->returns but before the pmd_none() check.
->
->That check then skips the range, allowing UFFDIO_WRITEPROTECT to report
->success without installing the required markers. Subsequent writes by
->userspace to these areas will not trigger uffd events.
->
->PTE table reclaim during MADV_DONTNEED and page table retraction during
->khugepaged can trigger this.
->
->Retry page-table allocation in that case. Simplify the code, getting
->rid of change_pmd_prepare() by routing all code through the "again" label.
+This can kill another process when the first kill would have been
+enough to recover, and we've seen it happen in production. If the
+second victim is in a cgroup with memory.oom.group enabled, the extra
+kill can take down the whole workload.
 
-Cool, nice work1
+In tests I used a 64 MiB memcg with swap disabled. I started a process
+that faults in 44 MiB of anonymous memory, submits a 4 KiB direct AIO
+read to null_blk, and goes to sleep. I set null_blk to take 10 seconds
+to complete the read so the victim would have to wait for it in
+exit_aio(). Two seconds after starting the first process, I started a
+second one that tries to fault in 40 MiB.
 
->It's a small race though, so likely this is not very urgent.
->
->Fixes: fe2567eb5521 ("mm/shmem: allow uffd wr-protect none pte for file-backed mem")
->Fixes: 6375e95f381e ("mm: pgtable: reclaim empty PTE page in madvise(MADV_DONTNEED)")
->Cc: stable@vger.kernel.org
->Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->---
->I expect Andrew to pick this up.
->---
-> mm/mprotect.c | 48 +++++++++++-------------------------------------
-> 1 file changed, 11 insertions(+), 37 deletions(-)
->
->diff --git a/mm/mprotect.c b/mm/mprotect.c
->index e18d4e12fc341..ef4e7188e24da 100644
->--- a/mm/mprotect.c
->+++ b/mm/mprotect.c
->@@ -470,25 +470,8 @@ pgtable_populate_needed(struct vm_area_struct *vma, unsigned long cp_flags)
-> }
-> 
-> /*
->- * Populate the pgtable underneath for whatever reason if requested.
->- * When {pte|pmd|...}_alloc() failed we treat it the same way as pgtable
->- * allocation failures during page faults by kicking OOM and returning
->- * error.
->- */
->-#define  change_pmd_prepare(vma, pmd, cp_flags)				\
->-	({								\
->-		long err = 0;						\
->-		if (unlikely(pgtable_populate_needed(vma, cp_flags))) {	\
->-			if (pte_alloc(vma->vm_mm, pmd))			\
->-				err = -ENOMEM;				\
->-		}							\
->-		err;							\
->-	})
->-
->-/*
->- * This is the general pud/p4d/pgd version of change_pmd_prepare(). We need to
->- * have separate change_pmd_prepare() because pte_alloc() returns 0 on success,
->- * while {pmd|pud|p4d}_alloc() returns the valid pointer on success.
->+ * Populate the lower-level page table if marker installation requires it.
->+ * Return -ENOMEM on allocation failure.
->  */
-> #define  change_prepare(vma, high, low, addr, cp_flags)			\
-> 	  ({								\
->@@ -517,30 +500,21 @@ static inline long change_pmd_range(struct mmu_gather *tlb,
-> again:
-> 		next = pmd_addr_end(addr, end);
-> 
->-		ret = change_pmd_prepare(vma, pmd, cp_flags);
->-		if (ret) {
->-			pages = ret;
->-			break;
->-		}
->-
->-		if (pmd_none(*pmd))
->+		if (unlikely(pgtable_populate_needed(vma, cp_flags))) {
->+			if (pte_alloc(vma->vm_mm, pmd)) {
->+				pages = -ENOMEM;
->+				break;
->+			}
->+		} else if (pmd_none(*pmd)) {
-> 			goto next;
->+		}
+The 40 MiB allocation hits memory.max partway through and triggers an
+OOM kill. The OOM killer picks the first process, which has more
+resident memory. With the read still pending, the victim blocks in
+exit_aio() before it can tear down its address space.
 
-Previously, reclaim could clear the PMD after allocation and we'd just
-skip the range without installing the markers ...
+memory.events showed oom_kill 2 in three runs. In one of them the first
+process hadn't submitted the read yet when it was killed. The slow read
+just makes the window easier to hit.
 
-Now it's change_pte_range() -> -EAGAIN -> goto again (retry the same range)
+The cgroup iterator hides these tasks so that cgroup.procs doesn't
+show processes that waitpid() may already have reaped. That's fine for
+cgroup.procs, but the OOM scan needs to see a victim even after its last
+thread has started exiting. We already have CSS_TASK_ITER_WITH_DEAD
+for sched_ext, so use it for mem_cgroup_scan_tasks() as well.
 
-And yeah, that should do the trick ;)
+With this applied, OOM selection backs off while the first victim still
+has memory to free. The 40 MiB allocation completes and memory.events
+shows oom_kill 1 in three test runs.
 
-> 
-> 		_pmd = pmdp_get_lockless(pmd);
-> 		if (pmd_is_huge(_pmd)) {
-> 			if ((next - addr != HPAGE_PMD_SIZE) ||
-> 			    pgtable_split_needed(vma, cp_flags)) {
-> 				__split_huge_pmd(vma, pmd, addr, false);
->-				/*
->-				 * For file-backed, the pmd could have been
->-				 * cleared; make sure pmd populated if
->-				 * necessary, then fall-through to pte level.
->-				 */
->-				ret = change_pmd_prepare(vma, pmd, cp_flags);
->-				if (ret) {
->-					pages = ret;
->-					break;
->-				}
->+				goto again;
+Fixes: a72f73c4dd9b ("cgroup: Don't expose dead tasks in cgroup")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Chris Down <chris@chrisdown.name>
+---
+v2: Give more concrete details in changelog (akpm)
 
-And, after the split, we just go back to again -> allocate a PTE table
-if needed -> recheck the PMD.
+ mm/memcontrol.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-So, no need for that second change_pmd_prepare() ANYMORE :D
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 84f4a8fd4d16..cb7cfae9ce5a 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -1451,7 +1451,13 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memcg,
+ 		struct css_task_iter it;
+ 		struct task_struct *task;
+ 
+-		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
++		/*
++		 * An OOM victim can start exiting well before its mm is
++		 * torn down. Keep it visible so oom_evaluate_task() can
++		 * back off while there's still memory to free.
++		 */
++		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS |
++				    CSS_TASK_ITER_WITH_DEAD, &it);
+ 		while (!ret && (task = css_task_iter_next(&it))) {
+ 			ret = fn(task, arg);
+ 			/* Avoid potential softlockup warning */
 
-LGTM!
-
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
-
-Cheers, Lance
+base-commit: fa4ad798f6f681031775266044ba1b0cf3c670bd
 
