@@ -1,142 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2E5606A31C
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 07:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70ECD606A335
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 07:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nMR8+wvI
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kGnzMWBf
 Received: by kanga.kvack.org (Postfix)
-	id 8DA1C6B05B0; Sun,  8 Nov 2026 02:20:42 -0500 (EST)
+	id 629E76B05B0; Sun,  8 Nov 2026 02:28:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 864036B05B1; Sun,  8 Nov 2026 02:20:42 -0500 (EST)
+	id 5DA616B05B1; Sun,  8 Nov 2026 02:28:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72A096B05B2; Sun,  8 Nov 2026 02:20:42 -0500 (EST)
+	id 4EFB46B05B2; Sun,  8 Nov 2026 02:28:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 44A2F6B05B0
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 02:20:42 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3CCD6160253
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 07:20:41 +0000 (UTC)
-X-FDA: 85411104282.25.EE00804
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 41ED940003
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 07:20:39 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nMR8+wvI;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2F5696B05B0
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 02:28:01 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D0A21A0461
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 07:28:00 +0000 (UTC)
+X-FDA: 85411122720.19.3D224EF
+Received: from mta1.migadu.com (out-37.mta1.migadu.com [95.215.58.37])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 9ACD8C0003
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 07:27:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kGnzMWBf;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.37 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794122439;
+	s=arc-20220608; t=1794122879;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j18geaHLD1uUk2z5k4sfYhqgD5g0IHFNcch65ifUnps=;
-	b=fIJhm0mHbEmVT+/HN1d3NY/OxWDTuMKV1jDro5XDN/l3TKVuj8M8+WZYvaqkIKRa647mps
-	2erikCXaUPGVr5+wCU6tBwtIOLKJdq6q+ZFRUtpbNh5GZc8Aph0fylPAxKGXAwJt+JQrmX
-	z1U0K5t2+v2fL1ZClP7kOnlMn/1BwB8=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nMR8+wvI;
-	spf=pass (imf17.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=as9n+dNBfp1o44qNiI4p9jEq0z77VwxPRRD44uR3xLY=;
+	b=J5hXB2YaL5d8d8gu7c3DRF/rLAiVIkfRTViWTaxMbFLGFjeZrhMqOB8yk/TDeit3ggGbVR
+	JHRNq11RQWCmNs/rS5+L1Uxq/C3xFnT0QBbZ191iXda78y2DqO6DMvcDfMM3dbMNRb6pMX
+	N6oCqXKTv2TVyJ2Du7uUOwaBNaaSKgg=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794122439;
-	b=xQA9nRSLQ+tSRaXz/xC9Cdh32buNpBW0F1cKr4EKMcEIczTc4nJqdVVKyiHnaHOOIgRYF0
-	qOIzqscboIl5eE5WNJhcHcJG08ecnqQDyJY9KulXukOkSNBKm3I1zh6vWrUzfN7MUJu+36
-	gNXM6MJTlvxPMUMC47buCNtePQ/33Do=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13B8440DC9
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 07:20:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33701F008BE
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 07:20:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794122437;
-	bh=j18geaHLD1uUk2z5k4sfYhqgD5g0IHFNcch65ifUnps=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=nMR8+wvIKadhl0gb53COwD17VOLLA+rRcE4ZHBalTQd6dTblfN0N7okKJf7t+ZvYG
-	 i+1EPKK9teEdkZdwO91Euok2YuPx3bDEEyJZACadzh7IHZcjF1vei7j5i14ZyLr5ep
-	 VqIN9h39OurgetTUjWptuiHXXMyNj/ch3S+eFhG/T0fsNkyWJuX0YGPBQx6Lgex5/S
-	 FNRmmJykqrmIWyWTVXn405JXlsSS3qO9xBCUjnrmQGUYVaIl/HxcUmN8F/6FuB7OFc
-	 JL6U/ckBGoY/1PGMAYkrv+aSutNpdVyFBUeh4a+QlDevhJINYdHgtDXtuUo8725mbT
-	 sRhxrhcIRQeDA==
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-535179e995bso2888521cf.0
-        for <linux-mm@kvack.org>; Sat, 07 Nov 2026 23:20:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AL+hErH6bQCBMrpuNWDGwgahq00VC+WoFmXY+evc99iLaNmAckA9uTCWmE8NreaTp/TQK3FXM6Z/WK7s6g==@kvack.org
-X-Gm-Message-State: APuU4Z+H8iqgsKF6FnrKbuXcjLJRAkBEjutZjmZsPz+ZGvomrdC62se3
-	OP/GfAwztbwFoCo0aDCaBIDRZ+Uj2WX5nGzGVwQwzzTB8ivR33lAAxNsxBqDOhzqV0Om7lim//y
-	bZTa3+6yCw6oNvvoapr3t3D8Jl2Q0M8c=
-X-Received: by 2002:a05:620a:6190:b0:945:d7a2:4b58 with SMTP id
- af79cd13be357-9478427d0f5mr101426485a.65.1794122436125; Sat, 07 Nov 2026
- 23:20:36 -0800 (PST)
+	t=1794122879;
+	b=3z2ts9gfwFajx9+Gh+CSHxiHErTsZ1er2i/n9Nj9Hdu8zdi1Di830uAKEkFonXmHlh0v8p
+	ZnyLVAovROgN7l5LKRPy2E+WIsUzE4p4VTuUpjVYmsHxU9Ai0aVFlRl8ljDSSNYuH8GAIZ
+	c8D/2Y9XnIYo858XlZkMEvwKKggoZxw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=kGnzMWBf;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of zenghui.yu@linux.dev designates 95.215.58.37 as permitted sender) smtp.mailfrom=zenghui.yu@linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=4elqSwc3DAM5howwrqEHgu/Vk/FDsIcZJHWFPI3k6NI=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794122876; v=1; x=1794727676;
+ b=kGnzMWBfJQp2yk7gP3ByV94Oo30xQFkPnUMzpcRgIJvdiUTW9kyykkDH+8oZRtl+Tyn+HjvV
+ VeWkGBNVcS9QrhAD29IxJSX59Jok/a4o84XAcwElVSYYeLsp1ZF3NOXosZIkUiArfW0aJGHc1z6
+ LZyHphbVB6KgHSawy6iZBj7k=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 7e7fadc3522c9a21;
+	Sun, 08 Nov 2026 07:27:56 +0000
+X-Mizu-Trace-ID: 7e7fadc3522c9a21
+X-Migadu-Flow: FLOW_OUT
+From: Zenghui Yu <zenghui.yu@linux.dev>
+To: linux-kselftest@vger.kernel.org,
+	shuah@kernel.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	surenb@google.com,
+	hao.ge@linux.dev,
+	abhishekbapat@google.com,
+	brauner@kernel.org,
+	aniketgattani@google.com,
+	peterz@infradead.org,
+	thehajime@gmail.com,
+	Zenghui Yu <zenghui.yu@linux.dev>
+Subject: [PATCH] selftests: Add missing generated files to .gitignore
+Date: Sun,  8 Nov 2026 15:27:35 +0800
+Message-ID: <20261108072735.36842-1-zenghui.yu@linux.dev>
+X-Mailer: git-send-email 2.56.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
- <20261105-late-2026-vma-flags-v1-2-0d3cd15ab75f@kernel.org>
- <sashiko-outbox-200257@kernel.org> <au2_PPpdAMgRJZtX@gremlin>
-In-Reply-To: <au2_PPpdAMgRJZtX@gremlin>
-From: Barry Song <baohua@kernel.org>
-Date: Sun, 8 Nov 2026 15:20:25 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4yWQom=cG5vw2B-FR8+7wNU+rwZkvghjAxusym+3OH96A@mail.gmail.com>
-X-Gm-Features: AclHuK82gk7ruViNEj2rccGK1fXvxCJcs3PhbZ9Er7PSONJ4wRSmOw3bXHmiVAU
-Message-ID: <CAGsJ_4yWQom=cG5vw2B-FR8+7wNU+rwZkvghjAxusym+3OH96A@mail.gmail.com>
-Subject: Re: [PATCH 02/13] mm/filemap: convert fault and readahead logic to
- use vma_flags_t
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
-	Peter Xu <peterx@redhat.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
-	Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, Jann Horn <jannh@google.com>, 
-	Lance Yang <lance.yang@linux.dev>, Zi Yan <ziy@nvidia.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Baoquan He <baoquan.he@linux.dev>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
-	SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, David Rientjes <rientjes@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Oleg Nesterov <oleg@redhat.com>, John Johansen <john.johansen@canonical.com>, 
-	Georgia Garcia <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
-	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
-	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
-	Stephen Smalley <stephen.smalley.work@gmail.com>, =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>, 
-	linux-mm@kvack.org, kvm@vger.kernel.org, damon@lists.linux.dev, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
-	selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: ky5mg3a9mj3qiapkkc6yic1zyqk7mdzw
-X-Rspamd-Server: rspam01
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: d4eden8fuetooz3ji58xut8sfpp39jej
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 41ED940003
-X-HE-Tag: 1794122439-350764
-X-HE-Meta: U2FsdGVkX19HoOgovFWEF1b46KMJL9TjwPRpg3PtbJMLqorSBV86L4wOJXuu9D22NiC/W7d2smoZcGYXVjYHQDvBZ+RjwnHs+1Hi9tAWDyp6CNvUH16xcrH67jDuRlKFordg3QT10Ba/S6I2Kh9Ht6U1zGjF0+IrQuWG1C0g7vVPWGfHK4P0ANOB+vOqYiF11rguUaz6tkpiK6VPvNizCb2RWJ1FbUjTuD/YCxJHda+SBFJh+K5qxj4WzRC5cWf/7n7LZqp/UCDDptGXryk25kisNrscua7Zu99BCqENO33zvGTfqNqjrPa5lkTRcb1J8z5nfqJ9qQVo/5ytORKo1AAeH/6NGfXZTIcndHEdrvq/nexx9xXfYxmhLb1mwitnZ94HFQn1i4w/H8qMMbk40YEcmXfTxPbCLy5ja84wMob/AIUcqCgA6zgfyn/b1jIC/Ai8ZuK2eaV0sAeDlFMbrJLxni6xvnFFjSFjjj60FpzBcprfjff/QyTCWENwN3R+woqnvzKv3qZf3qpLwX04IB4hNybyOuCs0tocbVJdvdbmtrokV0FpSLpu7RSMcTdBiO0zl779DFFL4rfPQb5+llS9UFDUQij/j1DsUYwFVep/LqDW8bKao2vqZb+bX9KJYEwbpQ7licpVR8X0HdXym/8Ztl4y9Gl2xf1OarG0xaEGg7kl/GzrA5oKMAMKLB54hygJOZD4eVuUklIM162KZxiMAlTZC45HztKnFpLTbZQqHrujyHhQbnFw5Fys8djPPR6l1LeCzOLSJBrdMY8ZU12MWbpc3gab5ihajt48a+sLGalOsgVwIW9pUlBsDYeEcRnSFzQqDL4zMXD5AzU8FDbYxXK+TFh6Gr59vK6rVwAJA+oSbF/6ByYk/68qkSvXhB2nmTfgwtDkviVbfCZdTO10bzCkcTrwzFKQ7MErnByOtFS+e5pTplUVXDmWde6o17if/8xGTLrIDcDEgQF
- CJ/vMF7q
- hKDI7VRo5ArH+QufzT1FxJXdMg/gzVNkFl5/XaYdQkazLcoHqFkPR+IviZ/07y8r/xS7ssAsUtHt/U3+9SJJD9LemQSu7qOLP+FJZRf+t57YgiQrjTeEeZbCu95XbltoC/LUENaotF3fuHBJiRHb2vd0Xtz8DFUURxG0IR0VDmuILrOts4FL+zs0VS+QnzCzB5T2opMY3hNM7Z2akPaYCy6qG1bh/wdMgreZaDsLY3WbcDufnL76QcH3wA8S9VgRLvMbFRQPuPadl2s4jb804dPpz4+BhpguUi/w//80xGbdXfZHq39IyTUBU5uXUwEMCPF+pn4cl9cYlQkGq7NdOfojd7UWGBcDe86g9W8eo3mVhxFdqgaTE3XlydjGF2NEcJbpgL5UxvZYKXQFYe/bA+9mSmoCIaji0Fgu9vPG4QDGXLJWxtfL/nj0NR3JvXitaHL0zG4S4kbvbOgSbPIxOB2iD2qLM2sVxinI7Yrp+Ir4t7Rg=
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9ACD8C0003
+X-HE-Tag: 1794122878-993189
+X-HE-Meta: U2FsdGVkX1+TCRuf1veVt9Zhvm8e7BzB3WkOtpjQgSxludINWBS46qYpIgAxYtnJX5LIW4grh/NV53P+ySGCEW+mwj/J0Way5pGBArS2E/YvzR/vFF0LmaJ2bHAbRhsIxmuaWtPXCAS9WGYGczd2debQnJxrpqp7z/dxx5jzh2VTKIJUitR62CLTn72VveoASS67oh5PTZrZJcBxp43ooue0iloO7VntUbSlJ8TqNgBLDFfOpUzDg6oNEYUCPbTJFXKB0T3oPsrBruV2B22Pm0WKoJ1rVErM2gynBbXzdRDubC3y8EmlVAtlCg75L/dijF6uDo2ZvKaO2AkGbxykGV9i7XiL6Pc1A/2H3/IWNWh6wJzRRymLCe3272Xl9uyQqfHpH+gx7QOYIRHWBQhwUJH3xW1Y/F/bqGhWa77JWX/XzGKnw/511PmQXQ/Z8i4d2s4IgJwjYYzRD/Dlj8Gj8DrDlk9TKwYS1XHJ2rE4PumACEXorYaYo7sDyjGWJU3e4qi5tTMWYsZCYJX6bSF8dwzO4FOpomVdHhs7V1RtrF+gW/3Eri8MG4gqNrB2TwP/ooiRU/bR3ldggAe0cQwiHJjlMzrKdfzTGnxtllJkfWzPZ6zS/oeNS30tORYUZB1labU5GKEOodAzE1Y/dUOnRXvRAARFEOUd7YLNrWbF4J6wNaa3FWsGFcs0rQdTHk8WnM1UhIOtnF0Jga40CHLV72FMYd4P/afIhkM+l+z93WQFCVqaAgntdlVYaOmRQUcNagjIDHZdgwR4R1CHl2SzG2oq3HrBPKvE4fqTPdpRBfajw57+tr/bP0eYSjeiz3VWDmrh69n61hF1v9Z+72xlsgiN8T0Abrj0axm0W79XseZV1TP7DTkAZUur9b0Cv1OkrzXL7a4z5i5aJSs2Ao33FMlXaU5dKSd71ftmZBLC5/Kg8G8sIJHP+Ig1X6MD5lxKixTbCTx/zhPHnkWJRM7
+ i70npAEB
+ A1snOrUElOeWjP6grb7kxf3CceW/CCzACkMisTQsn0MPKFle7mJ4Kos/sO0En2KBN96Vy2/3igKAbdnPfsamflWcb6WUAFF99iw9lEpvEM1KJyK1sFdgJ6h1RH3adnqZnsZsKzG2DednOVHCT5maQ7uwjARGHUcka9U0ncY42bV1wihGQAuy+VjKQB58vdaXAbO+HN+GqGwJK7N86/fAKkpdLtiL6jUnQjiza
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,68 +98,76 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 6, 2026 at 7:53=E2=80=AFPM Lorenzo Stoakes (ARM) <ljs@kernel.or=
-g> wrote:
-[...]
-> > --
-> > Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261105-late-2=
-026-vma-flags-v1-0-0d3cd15ab75f@kernel.org?part=3D2
->
-> It seems these are valid, oops!
->
-> Andrew suggested a fix off-list, and I agreed to this as an in-place fixu=
-p to
-> avoid respin.
->
-> I have also updated the series locally to reflect this change:
+Add .gitignore entries for test binaries that are generated during
+a build but leave git status dirty, and add the missing .gitignore
+files for the alloc_tag and nommu directories.
 
-Seems like a reasonable fix. maybe_unlock_mmap_for_io()
-could have released mmap_lock, leaving the VMA
-unprotected. but  ra->size *=3D 2 is still going there no matter
-if the vma has disappeared
+Signed-off-by: Zenghui Yu <zenghui.yu@linux.dev>
+---
 
-For the original patch combined with the fix,
+These are all trivial one-liner changes, so I have folded them into a
+single patch. Please let me know if you would prefer it to be split.
 
-Reviewed-by: Barry Song <baohua@kernel.org>
+ tools/testing/selftests/alloc_tag/.gitignore  | 2 ++
+ tools/testing/selftests/coredump/.gitignore   | 2 ++
+ tools/testing/selftests/exec/.gitignore       | 4 ++++
+ tools/testing/selftests/membarrier/.gitignore | 1 +
+ tools/testing/selftests/nommu/.gitignore      | 3 +++
+ 5 files changed, 12 insertions(+)
+ create mode 100644 tools/testing/selftests/alloc_tag/.gitignore
+ create mode 100644 tools/testing/selftests/nommu/.gitignore
 
->
-> ----8<----
->  mm/filemap.c |    4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> --- a/mm/filemap.c~mm-filemap-convert-fault-and-readahead-logic-to-use-vm=
-a_flags_t-fix
-> +++ a/mm/filemap.c
-> @@ -3410,6 +3410,7 @@ static struct file *do_sync_mmap_readahe
->
->         if (force_thp_readahead) {
->                 unsigned long folio_nr_pages =3D 1UL << thp_order;
-> +               const bool random_read =3D vma_test(vma, VMA_RAND_READ_BI=
-T);
->
->                 fpin =3D maybe_unlock_mmap_for_io(vmf, fpin);
->                 ractl._index &=3D ~(folio_nr_pages - 1);
-> @@ -3418,7 +3419,7 @@ static struct file *do_sync_mmap_readahe
->                  * Fetch two folios so we get the chance to actually
->                  * readahead, unless we've been told not to.
->                  */
-> -               if (!vma_test(vma, VMA_RAND_READ_BIT))
-> +               if (!random_read)
->                         ra->size *=3D 2;
->                 ra->async_size =3D folio_nr_pages;
->                 ra->order =3D thp_order;
-> @@ -3438,7 +3439,6 @@ static struct file *do_sync_mmap_readahe
->                  * pad that might exist between sections, which would be =
-a waste
->                  * of memory.
->                  */
-> -               struct vm_area_struct *vma =3D vmf->vma;
->                 const unsigned long start =3D vma_start_pgoff(vma);
->                 const unsigned long end =3D vma_end_pgoff(vma);
->                 unsigned long ra_end;
-> _
->
+diff --git a/tools/testing/selftests/alloc_tag/.gitignore b/tools/testing/selftests/alloc_tag/.gitignore
+new file mode 100644
+index 000000000000..30fa3b6712c0
+--- /dev/null
++++ b/tools/testing/selftests/alloc_tag/.gitignore
+@@ -0,0 +1,2 @@
++# SPDX-License-Identifier: GPL-2.0-only
++allocinfo_ioctl_test
+diff --git a/tools/testing/selftests/coredump/.gitignore b/tools/testing/selftests/coredump/.gitignore
+index e32f6e9006f6..6a9460c4450f 100644
+--- a/tools/testing/selftests/coredump/.gitignore
++++ b/tools/testing/selftests/coredump/.gitignore
+@@ -4,3 +4,5 @@ coredump_socket_test
+ coredump_socket_protocol_test
+ coredump_signal_test
+ coredump_worker_test
++coredump_notify_signal_helper
++coredump_notify_signal_test
+diff --git a/tools/testing/selftests/exec/.gitignore b/tools/testing/selftests/exec/.gitignore
+index e42ecd4c908d..d39df26e5cf9 100644
+--- a/tools/testing/selftests/exec/.gitignore
++++ b/tools/testing/selftests/exec/.gitignore
+@@ -28,5 +28,9 @@ binfmt_transparent_interp
+ binfmt_misc_loader
+ binfmt_loader_payload
+ binfmt_loader_payload_static
++binfmt_bind_interp
++binfmt_misc_delim
++binfmt_misc_disabled
++binfmt_misc_selfpin
+ *.bpf.o
+ vmlinux.h
+diff --git a/tools/testing/selftests/membarrier/.gitignore b/tools/testing/selftests/membarrier/.gitignore
+index f2fbba178601..031920478205 100644
+--- a/tools/testing/selftests/membarrier/.gitignore
++++ b/tools/testing/selftests/membarrier/.gitignore
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ membarrier_test_multi_thread
+ membarrier_test_single_thread
++membarrier_rseq_stress
+diff --git a/tools/testing/selftests/nommu/.gitignore b/tools/testing/selftests/nommu/.gitignore
+new file mode 100644
+index 000000000000..37da7c4765cd
+--- /dev/null
++++ b/tools/testing/selftests/nommu/.gitignore
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++nommu_mmap_test
++nommu_mremap_test
+-- 
+2.56.0
 
-Thanks,
-Barry
 
