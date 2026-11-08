@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5FC606A326
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 00:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D03606A326
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 00:45:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S3zYLpBo
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QCkuDqb3
 Received: by kanga.kvack.org (Postfix)
-	id 5257F6B05C8; Sat,  7 Nov 2026 19:44:22 -0500 (EST)
+	id 3519E6B05CA; Sat,  7 Nov 2026 19:44:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FD226B05CA; Sat,  7 Nov 2026 19:44:22 -0500 (EST)
+	id 300FE6B05CB; Sat,  7 Nov 2026 19:44:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4414B6B05C8; Sat,  7 Nov 2026 19:44:22 -0500 (EST)
+	id 1A2B56B05CC; Sat,  7 Nov 2026 19:44:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EB276B05C8
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E51A76B05CA
 	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:44:22 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 15D19A03C8
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:21 +0000 (UTC)
-X-FDA: 85410105522.28.470275E
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 85F4E140430
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:22 +0000 (UTC)
+X-FDA: 85410105564.06.66B0274
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 8809F1C0006
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:19 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3zYLpBo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf10.hostedemail.com (Postfix) with ESMTP id EB43AC0004
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:20 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QCkuDqb3;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794098659;
+	s=arc-20220608; t=1794098661;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=agLjLqsWN6ZOjVtvgq5sywvqL9zG1p8SARsUTKFu1wM=;
-	b=kQuxGycOCUW5qSsiiJwQGOWVHydbQgsgYzep9e41BrOx2HwJdxLlm2BDu5bijNst68MBWA
-	q8mbTttosNMGqwvw/XcfsBnTGsyhKk4Cp/I3LfQ+JnUCYklLTfCb5GNk5q94OuNHEuDBA6
-	fuWLnZOuD/9XnZODZZPT8YTw0vg6En0=
+	bh=zEqwgXBUkUu4Dpqk2uwW/tQtSdU+sYZ8iNDY55vkAus=;
+	b=haC6/GR0jb9/igdAuS+ePGiVTvMdpdikupNs4K0/juFGORxe+A1h/n5b2Z2di7sljnCujY
+	CesZZCuHgNZmPBz/qdib2qEYFRy3amz1RHVWpaEoEF+O1xNd51qi/KNw4TMEFBCLf8P+Sb
+	cKZFddt6uoldUmKBzNEiXUfskmRKfy0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794098659;
-	b=k6qy1vl5wQWJ0Gdvt9agsgvG5ZamSEkZa3e+DbFChOG7WwryHV6cFJPF7EppgTytXbWc/5
-	OCoHuyqhtM82+M1XkWE5U2h+K4taHVep8YAAmHtkN/413wgO7PeBWohTXwQUDVpnwH1nW0
-	LmosGzAeA+GFqSL6+bdPSVajADZSk0Y=
+	t=1794098661;
+	b=0IqS4NYWTOYuvzxH+Qzd2Q6CqOyAR5BBc5lTf+1GgDAhLwiRD4POqa+xeDex8d6KoNC/vs
+	uipEoDfB2dVLbn13iymENYULmjrV7qP0XWhkowYD8lCjz9rfekAS2cOEBRd4zZybe1FJUA
+	4T86AtVSJMqodEcvh78bi/fFcDF4Rc0=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S3zYLpBo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=QCkuDqb3;
+	spf=pass (imf10.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2F9A96129B;
+	by tor.source.kernel.org (Postfix) with ESMTP id 899A7612A4;
+	Sun,  8 Nov 2026 00:44:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 592DC1F008A1;
 	Sun,  8 Nov 2026 00:44:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F981F008A4;
-	Sun,  8 Nov 2026 00:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098658;
-	bh=agLjLqsWN6ZOjVtvgq5sywvqL9zG1p8SARsUTKFu1wM=;
+	s=k20260515; t=1794098660;
+	bh=zEqwgXBUkUu4Dpqk2uwW/tQtSdU+sYZ8iNDY55vkAus=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=S3zYLpBoPX2iShJUAATU/qD0rEvlW89Ntfn9fHPVRE/YZGi3wp1cYfz2pIg73ZmDY
-	 C+CAq9K4qa+mfK2KBY4FxRRaffMtW6yancdnfW4FxuxjRJ4tCil6CAEmebZ7R1Jj3i
-	 dS2uY3hUk7XN5PBQWTbtWrfZz2e0zs4VN5utDesl80eKYn2pBKy+L4NdRqbRMiTEAj
-	 /8694E7n0tXGN4WDSGj9/MMzIzxasmRGlwrf4u8lh54NGcYRWrSeRG2zY8cYLxbMlb
-	 vSCQ20J4uerXbCasc2ZniMOqbIP65N3hmVO89Ajqo0tUBqK9pm5/hMV5QTyaw9xlPA
-	 3zsIUjCad7HMw==
-Message-ID: <sashiko-outbox-203465@kernel.org>
+	b=QCkuDqb3j2PdOcknM1a5laLqJTvBB0GsnOfqSVLeM8ElbY8GU3d4l+hjxxBJpMlcr
+	 E9wrWaJ6ih6PcaU+0zZ8z5uzFDCRmGYOfuOnnS63ZHbDDPDRHvzu1HmVudS3q8xvbr
+	 KF1P9nop0AiLgeLv9cLKJV35rAy9wIJnX6SuZ5fXEM8szUG/al/yWnhRNAtRZs205E
+	 18oER2IvlSYoozrfLJtEjPWgxIEfKBxASbWUxA+I3H8hJFJKffSzDpcK1hFhQl0DgA
+	 24BJtPhgCliROfn/LRDFKbXevhRq56BOM0wfM/ncSFM4umTU53AuGEGx3lDGSE3T7x
+	 h2wictlrvgXwQ==
+Message-ID: <sashiko-outbox-203467@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 54/88] KVM: guest_memfd: Support read and write
- operations and provider callbacks
+Subject: Re: [PATCH RFC v3 56/88] vfio: Support
+ VFIO_DEVICE_BIND_FLAG_CTRL_ONLY
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -76,24 +76,24 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-54-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-56-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-54-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-56-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:44:17 +0000
-X-Stat-Signature: w7ahty4wzcryif8eiar6sm5p8oxfnc5g
-X-Rspam-User: 
+Date: Sun, 08 Nov 2026 00:44:19 +0000
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8809F1C0006
-X-HE-Tag: 1794098659-819091
-X-HE-Meta: U2FsdGVkX18x542RuF2bBy5Cj/bfhckTNoYPvTKlgjv99BnWQ5KGjmf+hl9gOCjPlvCwagPO5q85xeO6ogUBYyPc97Qr3WuZ2Yr+hZB1iXXpW+/Nya/YRPC3z32azaj9stHu2VUMd32q6hR1Rp8SDBFqveGP8fk/uBpQ5fNE2AB1dHcAXLuAuVjRBRewD9xwDIG/caOxy6QBY7v5IK+DizLXINFrb78mUjazNP80c7mXlqfOh8X1n5KguetEQeHGCyJz0z63Tnzl+hknxsew8rNq0hYT54IicBYI8rLFX9NbhaA1lH53mnExUCVDmmytWBQlqCDcHGVnZ7Jn6qseNW15ATBSDMgUAP8/tA5cXHRm8hz5kzq0PbTuiOZZtxRPVWeS0DPk2cEe9wCn+ZRJ7EwhsMVkkQth2rzs7rR4mUhKmizTJcKtjEJ1hXV5wE9gf/UJc0HX6wpH5UTMmLoYFnSJCz+5Q9TBNQuEpghxgs/thSJ/Zbs62Wmput+M+On1leQcbwHqMi3Id3Vb2V12RgKpZP2T58nJEbUFT32sv8OHgRQW6xmOOxUlWyrg+Typv0AalHDfh/M4S/4qeinjyz+1QyhKKnI7dYzETE5i7nNb8ChmCCJ5AUb0RoezPiOEWNMUWAkbmrMycKx61mN22e70rFzpOKTgNNvMBTn8XcC2MjP2CWARP+i0i0wUzp9Spl8h1KRAXtQgdxh1Wp65Px9Hf4GYDYxRAer4/SteK0nI/lK5CgARy7fN5EcjA3+fOV2IkVdyIeyG7UHlQy/cU8VkuMBOwpJyWeydyPI6W8YCKuj/67HnTO2Zepc8JgI2cumANB0P6J8uzocPxpPeFZLh/rGKqJ0wdMNpWbGU5VmNmSBrUb6y0rtMHEdVVAWepMwaRXU00WkJF77XIo/2IzpEN+KBPBEWXRrIA2wgEmRr2JRpn0v+iSoDkUXEGvXb9HgjwbZ8tH1KWPdOryF
- CKFPSDDs
- whzNWxh9RLg0ztsc+YxaRL7EAp+yj1b9fy2Ka7+SCw85REIL7mz+pA/KRcfBisPKZQvZ/ukkaNeuDrphcgeDBr3lxP1NRQz+vSywFFFJRHJmKKjVpEU3FZvsWtog8kwuIvrXA6X20syHfSSZruYzS2Y1z9RNel+sGZc6+1fo0oH1cT4vfg7C7O1mykLGRGWxj9H9FD0y44Rz6x2Chr6LsHPNI1C8gn5FBErPsVvkfY0S92GwMSp5zE+syu4vbAtf9vhTtlwvWUaGOdU1YwRZ0gUb1TUeJwLawxqymrC2i7SduqSU4bBGirvdkSRruas9LQvX6kmyBu+ClHXIKagTfQ4Kdc/IIr/aiF+J7hQnJAHmfXjtVX+rdLEOBqga8nweuEp1ufzXg6LFvQsf8M4JxboJh+r1XrkwdOgsmrlrMHzPqkiLnlF3y/JhVdhDaWDCb2fs6lS6dWY2Aa4Ox4tzgWptLRuCPEiBCSjIdAAVQe+c/YRMeq9ulFGuHMOZn5+TniWGw6/2YfJRxYeQBOKUuINyaglZ/ceVeJPgG0Db0tphna38BjsByUS3hG0ZqbIa89CIMD5pAk8T8yGBzIFArYD3luxEXsse1VEL203M8OfMMeFUpx4LRHW6DwG6bFr/slGdXgAPyA4m5ZOP0/c5pu1Hw3TGopFsP8+dU4Zzoo/2JN/p9queGZmX+AIx8+30QBFiL/npv0iH57W97u0FKUXFL9g==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: c9oiyt9ib1c1rg4h4iydayyi96ieiuoa
+X-Rspamd-Queue-Id: EB43AC0004
+X-Rspam-User: 
+X-HE-Tag: 1794098660-383450
+X-HE-Meta: U2FsdGVkX18Up+LLoN82tS6Aa65h7Q9ecUVCimpY5eJjakS9Kz1iIlAQE7LMZj/F4lNGG5Kdpn3cutfnW36umm8btVsQHUpzmUlSCPNF369yAZKLnLOA2lX71+YOlLY2heY0J1UYMuzW327g4V//5UHMU0rlwl7HwEkxO1ziZj67HMXz3YUBLbEnrqSYGDaUsuky48yFHzD4mAz1g4I6jWeCe9qWBvVIhqViMzycdmyzpDT2iD3Mknhh7HRYfU8x19+ssdgjtQBmw3fsfvcuP/uc9aOEhrAEbd5OL/dcRjAzkNAHfZQ19J43O+qcaXEbdA27GCyFhR42jW2IEWeqiHIu4Ddr493Hb8IZpY/Qv2Fvq5CMZfuJGj+7nFwVH30A3Xe5ghKprwWTSdy79E+/IacgrPH6B10GUcIIzxqUD0f44SIfMo+5Doh9n+FzmXc8T7dU2qK+el1IE1uEUTNLzSOCAd6AgFQzs6s6sUc0F9V14HEA250gGLaQGK0BHjAsqJLH1zd6IiDuEYYIYyvS7iOMBCQOIDeLGqrGnsClzJQXkxtY8o/hMEqpq59q2mAOM684m0hnsMvGnev0gCSLd9MYRwEs8ogco5WFIAQTu0uSOU3GNUwLbgUhen30h+KKfXp+Y+RIu5oy/0Lotl4VqcLOs+shfz5Mt6549bpppPExdLfCWJ1k1+7Zg1VGeP6DhlqTrbCLdaMUiMnVdEzRU7vzfVKl3Tm+W3lyU42OUN8QXS1n2SKsg6fj9WeYSp77qMLCAZXASrT0b32fDhopGYEwKTQEjBNz9eBsc5iMWziiu+wRWOdGSm7wyg/Pe+34zFcfWdaZPktvoQw6HmA1HyS4PE7Du/OPMeqX+oItdAnWy/udPfSgeqpU23HRfiql15DavOq9lPUo8qCkwOh+ySb4vaD2NjUKeJ7MVc0LJ9rK6azhvZhcS3cj+OKJnCxIAhz4aqpP1/nsvEgb/df
+ q36NjAOi
+ aOlAlTK72WNgfrST+4jTsrQ6iLsrtFAqUejk1B1L1yCZNLIt/V9wdtv0L3qMN0oSywq2tZ1tAbtuaPVRvAlxTTfslAWR3EuueIAeWzhNl1E2CJ3FkMGIP0XwZe7xpOPnoshSrO/Mbuptu3AgSXNxwXJtK7t/+5TtS5FX0//SU+NWpcv1TIotOVr1LF4gR3A0yQwGJzJVvFyzFHgfm1WZpah2VNO8fMIzcnC1FZHhdxferSnvzJlDHCxHdVkPM9ZlcG6J/8DgPHjBipRnMI7euzUupoKEo//RrZ8qy4t5JucAjAelnq9C9fDlAcspuNynbreddMTOvfjbtC5L+p/UtQfU69i5KlppFaKcPM+3E0MEt7P0IGk8X9RaE2l//bQndzFA8RtIw0GBvum+TSFrKYY0cxAbVdhreIn701qorMXo0f1Lp6xX8zXGr9Gt7dxFKZtzREBGLt1XSTZ2+NQD/uy3VdxmSRPXH6MhW6vunHKu2ALx2uczcJXUSKOBlguNnzZ8u0/bPvTuw4vQ6MRjhFmsfpskyqeF8Ny69LV0PqoEMxHksUOZtAdiSqXi4q2b873wcXZYSL/D9efzxB3988nucngWhyaF2MY2/d4Sus9S8NCBqCKc14Au8symvIhfrjqwTOywXZD9chH1+QbkOVFntjaNnrPb72YP8C8Yl3j/ze44wtgSI0gMwF6Dz+4LVldsN5cofx2tHDbLtMOo7iUf8tQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,119 +103,48 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] KVM: guest_memfd: corrupt *ppos on copy_to_user() fault in
-  kvm_gmem_rw()
-- [Low] KVM: guest_memfd: missing kernel-doc for provider read and write
-  callbacks
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] vfio: UAPI comment for VFIO_DEVICE_BIND_FLAG_CTRL_ONLY documents
+  wrong errno for BAR read/write
 --
 
-commit e75034915fb7c05a994b62162e0f8d89c6caa18a
+commit 25f54ac99c18d430e01125c8ec278111ab821c3f
 Author: Ackerley Tng <ackerleytng@google.com>
 
-KVM: guest_memfd: Support read and write operations and provider callbacks
+vfio: Support VFIO_DEVICE_BIND_FLAG_CTRL_ONLY
 
-This commit adds read and write file operations for guest_memfd descriptors,
-using a stack bounce buffer to forward shared memory reads and writes to
-provider callbacks.
+This commit adds VFIO_DEVICE_BIND_FLAG_CTRL_ONLY to VFIO_DEVICE_BIND_IOMMUFD
+to restrict bound device descriptors to control-plane ioctls and non-mappab=
+le
+region reads and writes.
 
-> diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
-> index cd634576c9af8..c85594b58112a 100644
-> --- a/include/linux/guest_memfd.h
-> +++ b/include/linux/guest_memfd.h
-> @@ -113,6 +113,10 @@ struct guest_memfd_provider_operations {
->  				unsigned long *pfn, size_t *nr_pages);
->  	void (*put_pfn_range)(void *provider, pgoff_t index, size_t nr_pages);
->  	int (*mmap)(void *provider, struct vm_area_struct *vma);
-> +	ssize_t (*read)(void *provider, void *buf, size_t count,
-> +			loff_t *ppos);
-> +	ssize_t (*write)(void *provider, const void *buf, size_t count,
-> +			 loff_t *ppos);
->  	int (*check_set_attributes)(void *provider, pgoff_t index,
->  				    size_t nr_pages, u64 attributes);
->  };
+> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> index e41437fa17ad0..ea62d4e72d3bd 100644
+> --- a/include/uapi/linux/vfio.h
+> +++ b/include/uapi/linux/vfio.h
+> @@ -926,12 +926,19 @@ struct vfio_device_feature {
+>   * be provided the same token as VFIO_DEVICE_FEATURE_PCI_VF_TOKEN provid=
+ed to
+>   * the PF.
+>   *
+> + * VFIO_DEVICE_BIND_FLAG_CTRL_ONLY restricts the bound device fd to
+> + * control-plane ioctls and non-mappable region read/write access (such =
+as PCI
+> + * configuration space), rejecting mmap(), read/write to mmap-supported =
+BARs,
+> + * and all other ioctls or device features with -EOPNOTSUPP. This should=
+ be used
+> + * to prepare the device fd for attachment to guest_memfd.
 
 [Severity: Low]
-struct guest_memfd_provider_operations has a kernel-doc comment block above
-it, so adding read and write without @read and @write descriptions triggers
-scripts/kernel-doc warnings.
-
-Could the kernel-doc comment also document that these callbacks run under
-the shared filemap invalidate lock (so they must not take locks held across
-kvm_gmem_revoke()) and are expected to advance *ppos by the number of bytes
-transferred?
-
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 61a3ff7fcd84c..385b517b49ed5 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-
-[ ... ]
-
-> @@ -1204,7 +1239,86 @@ static long kvm_gmem_ioctl(struct file *file, unsi=
-gned int ioctl,
->  	}
->  }
-> =20
-> +static ssize_t kvm_gmem_rw(struct file *file, void __user *buf, size_t c=
-ount,
-> +			   loff_t *ppos, bool is_write)
-> +{
-
-[ ... ]
-
-> +	while (count) {
-> +		u8 bounce[256];
-> +		size_t chunk =3D min_t(size_t, count, sizeof(bounce));
-> +		pgoff_t start =3D *ppos >> PAGE_SHIFT;
-> +		pgoff_t end =3D (*ppos + chunk - 1) >> PAGE_SHIFT;
-> +		pgoff_t nr_pages =3D end - start + 1;
-> +		ssize_t ret;
-> +
-> +		if (is_write) {
-> +			if (copy_from_user(bounce, (const char __user *)buf + total_done, chu=
-nk))
-> +				return total_done ?: -EFAULT;
-> +		}
-> +
-> +		filemap_invalidate_lock_shared(inode->i_mapping);
-> +
-> +		if (!kvm_gmem_range_has_attributes(inode, start, nr_pages, 0)) {
-> +			filemap_invalidate_unlock_shared(inode->i_mapping);
-> +			return total_done ?: -EFAULT;
-> +		}
-> +
-> +		if (is_write)
-> +			ret =3D gmem_provider_write(gi, bounce, chunk, ppos);
-> +		else
-> +			ret =3D gmem_provider_read(gi, bounce, chunk, ppos);
-> +
-> +		filemap_invalidate_unlock_shared(inode->i_mapping);
-> +
-> +		if (ret < 0)
-> +			return total_done ?: ret;
-> +
-> +		if (!ret)
-> +			break;
-> +
-> +		if (!is_write) {
-> +			if (copy_to_user((char __user *)buf + total_done, bounce, ret))
-> +				return total_done ?: -EFAULT;
-> +		}
-
-[Severity: Medium]
-Does a copy_to_user() fault here leave *ppos advanced past the unread
-chunk?
-
-gmem_provider_read() updates *ppos by ret before copy_to_user() runs.  If a
-read spanning multiple 256-byte chunks faults in copy_to_user() after an
-earlier chunk succeeded (total_done > 0), kvm_gmem_rw() returns total_done
-while *ppos has already been incremented by total_done + ret, so ksys_read()
-commits the over-advanced offset to file->f_pos and the next sequential read
-silently skips ret bytes.
+Does this comment document the wrong errno for rejected BAR reads and write=
+s?
+vfio_df_check_rw_access() rejects non-control-plane read/write accesses with
+-EINVAL (as described in the commit message), whereas this comment states
+that read/write to mmap-supported BARs is rejected with -EOPNOTSUPP.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D54
+native-providers-v3-0-8484dde66a7e@google.com?part=3D56
 
