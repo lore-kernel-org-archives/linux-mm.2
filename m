@@ -1,95 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EC4606A31C
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 20:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91297606BA68
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 20:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ELqru6Ia
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=drJI3pUc
 Received: by kanga.kvack.org (Postfix)
-	id 531E36B05B2; Sun,  8 Nov 2026 15:25:38 -0500 (EST)
+	id CDD1D6B05B5; Sun,  8 Nov 2026 15:28:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E9BD6B05B3; Sun,  8 Nov 2026 15:25:38 -0500 (EST)
+	id CADE66B05B8; Sun,  8 Nov 2026 15:28:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F81F6B05B4; Sun,  8 Nov 2026 15:25:38 -0500 (EST)
+	id BF0966B05B5; Sun,  8 Nov 2026 15:28:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0302D6B05B2
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 15:25:37 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36FDB1204C4
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:25:37 +0000 (UTC)
-X-FDA: 85413082314.26.A9D807C
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8CD3A6B05B5
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 15:28:10 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 08AA21A04F6
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:28:10 +0000 (UTC)
+X-FDA: 85413088740.24.18D861B
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 81CB240005
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:25:35 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ELqru6Ia;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6C530120008
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:28:08 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=drJI3pUc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794169535;
+	s=arc-20220608; t=1794169688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lUqT5v8YaI9EUU1s6fZT3bdyN4xwYNxjDjc2jWcGBi4=;
-	b=VH2ICJeVdStSBM08rVyQ2gfbW4jdRMX2TL8KqUAmk12P9tiW75CW+IrqSggd5KUYnIm7gi
-	8UVQkqP9Brc1N8sd8ZcjX1HY88fk02rb1U7Fo80AEFaFRi70sAChavV3bZ7Xt777HfJrCp
-	nmKPoDKY7AgBvgJEAaZCF3Il3PEHsnI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794169535;
-	b=YY+2sY16ge3Vq/WoJXvzd8HY/tVCxybvwYFZ7k6KOS5Tiba4/a7NqAdQKD4So+xbbnonM7
-	xhZ1jfoErllYA3p0+ak8zCNxzY4UbAEt4FRpocO4o1YDWxLdsJRHmV/GgSEm4SjrBMX3Gj
-	3L7qP/3cKuGHdqWPVr1+iQY/cHTCA3A=
+	bh=5YaiTR6YvNrjuQTrS8BnXcbgh9AurDD3C2wJRI/aBVM=;
+	b=D7cSiBkdE8qtzMNHc3FmkBgXFtvuspr9lJgJyrp2NR/8CrFaZ9FXxZqVEFqCWY68naHwAI
+	wt/zigld82G/ydnf6SKYpyIteYgCegv1w7XAqAFlJx86lwILlM42m4H35PCIf5+eae2Djn
+	jbDq3x8364AXe0N2PVSMDeXlUXiNBeg=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ELqru6Ia;
-	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=drJI3pUc;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794169688;
+	b=5d0c9TsH+bpoMXuwQIzq9sge9Uw/Z39UohZuL/TL4L4wdOXFkDnb0yd0Z/i0x2ntbyiI/y
+	ebPBixbD/GqOGg1DLyokht9j19MypdyydElK5SUGBQH4AAhUGJ4xYd5cmXvOobtMIIKfm5
+	ua4x6KXv2lZQBL654vUgyC2nMTH/UGA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00C6261DC4;
-	Sun,  8 Nov 2026 20:25:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2601F0089F;
-	Sun,  8 Nov 2026 20:25:34 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id E0F9061DCD;
+	Sun,  8 Nov 2026 20:28:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B2B1F008A6;
+	Sun,  8 Nov 2026 20:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794169534;
-	bh=lUqT5v8YaI9EUU1s6fZT3bdyN4xwYNxjDjc2jWcGBi4=;
+	s=k20260515; t=1794169687;
+	bh=5YaiTR6YvNrjuQTrS8BnXcbgh9AurDD3C2wJRI/aBVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=ELqru6IaxAwNIZ8+Tc45OFVN6yyuai77lcJeNDhYMvPWKYrBGu4d41U3I/zY1ol0H
-	 WMPcex/20VhBcwadogTDxD8Bl3QS+LC7AjmMucLkiWPdGE3kO16JOiUnU+pdlkn8cM
-	 YRS4m0yD53aU2X4dmauwQ95vw053MS5vf45A2p+D/Zn1SvOowPTSpLD5g2AqdD1IgH
-	 vSS4uhrgAkqn/16fTmentlt99wBOnieuAnYB/j2JSWf5OqGRUMFhkZQnGBmtoZt9Oz
-	 4IbrqQzXlEqy+LzN9+rMAKRZurNCv/9w2LG6XJbbyBGM4wejSOUMOr+NIGlK17YjOR
-	 4S0Dur2/QI5dw==
+	b=drJI3pUcu28AmbrSo8Vp2Ld0QhvA3rTIT70Q7TlkET+5DSFDiSPMy2kwY7h7E+hjp
+	 3JZ8qRGYgwBa3/2PwT3JQ9jiN2GiESvI7N8pyEQ9fg4wQvdI0KK/t5Dnk1It2HouZU
+	 Fzxd8qKTTtguL4YRPBf8GyZdMrm9bMeZ6sXbB9nMQxirougefh3pMwmPCinLYkPB1P
+	 xMfKjDxcS/10JvYt55IS17I6ml3xRSxhOQvPwFj2KYqL8Hih6Fn0NxywxPxf1VFdEv
+	 /lxa+zT5XQAkaaeE8mYSDdxC/b5an/LHIUv/1D+Kiplz16EH8Yg9cqLiBBtbdoSmfC
+	 EqBEHhP3gIJ0g==
 From: SJ Park <sj@kernel.org>
-To: sashiko-bot@kernel.org
+To: stable@vger.kernel.org
 Cc: SJ Park <sj@kernel.org>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	"Usama Arif" <usamaarif642@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Usama Arif <usamaarif642@gmail.com>,
 	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 6.6.y 1/3] mm/damon/core: skip applying scheme if region split for quota fails
-Date: Sun,  8 Nov 2026 12:25:25 -0800
-Message-ID: <20261108202527.117086-1-sj@kernel.org>
+Subject: [PATCH 6.1.y 1/2] mm/damon/core: skip applying scheme if region split for quota fails
+Date: Sun,  8 Nov 2026 12:27:57 -0800
+Message-ID: <20261108202759.117377-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <sashiko-outbox-204013@kernel.org>
-References: 
+In-Reply-To: <20261108202759.117377-1-sj@kernel.org>
+References: <20261108202759.117377-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 4ptxtjk5n5q94zd5f3bro4iiokphqjda
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 81CB240005
 X-Rspam-User: 
-X-HE-Tag: 1794169535-515019
-X-HE-Meta: U2FsdGVkX185FcxObotux6utAmXvJZaH/KZOl/o849hyPPO3Vvr8658br0CB86McXGcu4tTd1CvzPVvPn0ePLpgZbQ2a4/Kw1bITxpuMirqXTtGSlSuFohr20GtXs4ePCow33e1i9MchFzKsCWS3aiGOBWzq+6x5Z2LrA4dnVQgd2CTEYNYNDQFbJbtu1d8BVJFerihZWFP3P+Vh0OgoxdzyZx+W4jZI0jlZ6z5Bt4AVcsMrj62kXqK7Qps0NDj8Rre58r9ArljUzj4ey9gNylWewaqDp15TYR4jR6nV4JTg+4WJ97WVUv3KB/rGv303OZYwWrt+2h6Z8/aQOciTd5jPBYABVZ2I5g2B+2ywDOSYHCby6Aad7FNOGr84QFOvHd1EVnR1HLX5hSDM0azJC1jdL+ODxjne+rQr5KlSVVwpQ9RLimim80lebk+2qYVs9K+1qyEJrjaQdABp2DRPUfeaCxVHMmy0mgMefemmzRnnYXXV1AcxjV8DaJT83mD5JOPqBPS7KzneTmiJHEOfrvOpC50/O+wV5/vtyJ6bsLRc6ZFyn52KDEyPF0LFpvEEWiwIP3tB9uGPCn1svi2O50wONeYGv9hlpqegu2cNW6DfaHbRrl2/cM5rx9wVY6y/I9yfGUADJltxvzp/OB0wJqP0TDjWyxM+L9MJ9j02vGdzrDFNu3CO21qw0oJGJwJosrr5Pq3jn20DTWXZtJWzypkyAsqQ+tn0KmPvtcUYEseYeG+nRA+cRyTczkvPpyl6FyeulOXkVblXKJGDqRXtSnXyfjRf1mkyvRcNg83MjpleYUT/EpdwStTyFOME54H5/AxypA2axkXI58WOWoy829jZ3J0fC+Mj81znIuAxT552fRlW/U3+V6BYjORe/JwyH8Sq1b4Dx5CSHsYtv5aJKCUv3qf2SDgwjYZiEdiMimshu+tW/CfWuuqWE/XphydoYBpl+5qeb6e/cEp+QYC
- 84S8BJqK
- luDnoa3ledYs3mlLqtF1lG1KkkDAHEqjXWCjx6e7GewHxMO5txn7Z3LEhHlVvDo+q98MB+kPen/3XWfxuvIMjbXZu6895BbVd3r0rmeT27J+KarkLI5jADhwb9H6ms+FoMuBzjr4410/BW+zKScUzHvK4YfjyZ0VrueSgJ2+PmBu6e7e6wuSVV16i6d+kn/qK8vOkmkfP53CyiJefTat3DJvEn3bo6NMm66MsLYXVAsha2MS7ia+VND4mbBGnXNTz5CrDRQn0gRQC8rmV9m3Q1OyLMMUO+NVo1eMCe2xoJUsxkFetqQXUC6baGi1WYga6lEUg
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 6C530120008
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: dq6ann3g1fpdp1ja69u1khqjxfp8yr53
+X-HE-Tag: 1794169688-334762
+X-HE-Meta: U2FsdGVkX1+7+1/Wt8P2H0l0yvaex7+HLPLEPVxOU5oYEbn4c9RAxcSLy+AJrC8bR0vqIUoqumVN3/xjK3EGVFLiHQCClJF+rr99/IVnD3yFP0Ywy6Xv2kTlN9cVbIa4I8HYgNWzNxsSJzfHBHzfJG0YIE4x+GZdUXa6LdGLyMN47pywsk6y++i7dzusCVazWVMf/4i5GE9KiMQxw+krUYEQrgd2O7MPMrURekDXgO32CCEsr9+gfsS0K6sesS4kDY//+iuCZMSUNATAf9pm5bR6APAGcUuStIXy9U/k+qEQlBHkAvPNH2G3jla93xo1dTAc3cciAiLYd9wVfp1bvldJOZo3In7MytMu2W1vIUMZPi7lJAb4bqqyhhcvNbtgiqbiUIH42IRwfNNClvhXUDq5c8SfkYQSHN9IKOgeMIwACUaEVwcO0CyEO2ivaUBoKevd9ox+3QraIHNCfDwf1UVeVxlm0suSy1IslGMlUPll36/GVbCLvdeUhLcgqa2HVAnRsPQ+KfO6+BiMjtiT5EzCjJrS5P2Y4J04nG7qo+pUf2cXIgVKJyvCPVjVwI/2iSn5EGmaKqLX/LLV9P77q7c6VNDbeB5CwUiAdQx8TbQ/DKaBcdJGS5qAKiUS5JNZkyiy25XZyaExlfLDuu96Nv+OMXz5dB7spPToS/X31uNVl/KZGX5XC+eDIInhAO51awrjgjmvxft10TSAvEgsGGToXObMKmuAPkE3rLsjD+j3uo2ervbljpkJGiRM/rSRIoLz3XqTRouY+mWHtFiaO58L9sAMhQNNzUzarGDHMf+8XtlhFib9iCoebdAx0hV34IUwncVWCUl8nGEA8Usm+R784GCa3JdD3sbeAwU3KcxUBFCijS0LQw0+702Ou8sIpEKvulORa/0tJAUZe1Cx6YacSNMi1/5JbODCWNECcYzpIwuXwG0/qUUjkc3VjdBAN5iOrX313/OT8SoWTgo
+ 0cxbyrrj
+ 2uJvty/SPsBjDUOzmr9isHuuDpb0gF1KjM/erAOPV5hGs44RjuD7qgnMqGqoUTBNl4hoXA+zWtj/CdDsVjMD1itprG4B1oKpuUlg0VnjFwhkYtQQy0XwKkLWBNs51w7HDTQJmkZGteXcXaFneezKf03IObD8UQN78ir1j6td/vD63yGRjQlXIh4C53/sZRn23CkPDQfYMrBroicbfxf56GAAOOtLb/o35Jj/5pb2Abafr6FhPGV8pBPHKYupk3G+/3CuNsMt/Bb/TPBlfQm/CYFRV172m/x8HZsFiJjY9FC/e9Owg4jBphvbMGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,66 +97,102 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 08 Nov 2026 20:23:37 +0000 sashiko-bot@kernel.org wrote:
+Patch series "mm/damon: fix DAMOS bugs in core, paddr and vaddr".
 
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] mm/damon: false tried stats on split failure in
->   damos_apply_scheme()
-> --
-> 
-> commit 17459070b1916b2d77f607f0fb7f0f9158e6224f
-> Author: SJ Park <sj@kernel.org>
-> 
-> mm/damon/core: skip applying scheme if region split for quota fails
-> 
-> This commit updates damon_split_region_at() to return an error code on
-> allocation failure and skips applying the DAMOS scheme in
-> damos_apply_scheme() if splitting a region to fit within the size quota
-> fails.
-> 
-> Link: https://lore.kernel.org/20260901131850.98037-1-sj@kernel.org
-> Link: https://lore.kernel.org/20260901131850.98037-2-sj@kernel.org
-> Link: https://lore.kernel.org/20260718171523.87547-1-sj@kernel.org [1]
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > index b5b6d00d7a3b5..9d4a78deaa06a 100644
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> 
-> [ ... ]
-> 
-> > @@ -1004,7 +1004,8 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
-> >  					DAMON_MIN_REGION);
-> >  			if (!sz)
-> >  				goto update_stat;
-> > -			damon_split_region_at(t, r, sz);
-> > +			if (damon_split_region_at(t, r, sz))
-> > +				goto update_stat;
-> 
-> [Severity: Medium]
-> Does jumping to update_stat here falsely inflate s->stat.nr_tried and
-> s->stat.sz_tried when damon_split_region_at() fails?
-> 
-> At this point sz is the non-zero remaining quota size, and
-> damos_update_stat(s, sz, sz_applied) unconditionally increments
-> s->stat.nr_tried and adds sz to s->stat.sz_tried even though
-> damos_filter_out() and c->ops.apply_scheme() were skipped.  Because
-> quota->charged_sz is not updated on split failure, every subsequent
-> matching region in the walk that exceeds the remaining quota and fails to
-> split will also add sz to s->stat.sz_tried again.  Returning early here, as
-> damos_filter_out() does just below, would avoid counting skipped regions as
-> tried.
+Fix misc bugs of DAMOS.  Patch 1 makes DAMOS less stress memory allocator
+under extreme situation.  Patches 2 and 3 fix wrong folios walking in
+DAMON_PADDR.  Patches 4 and 5 fix wrong folios walking in DAMON_VADDR.
+Patches 6-8 handle extreme and unlikely memory situations that can cause
+divide by zero and underflow.
 
-Trivial user impact.  The same behavior exists in the mainline.  No blocker for
-this patch.
+All bugs are discovered by Sashiko.
 
-> 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261108201456.116824-1-sj@kernel.org?part=1
-> 
+This patch (of 8):
 
+damos_apply_scheme() splits a region and apply the action to the subregion
+if it is needed for not violating the quota.  The split operation
+(damon_split_region_at()) could fail for allocation failure.  In the case,
+the quota could be violated.  From the user's perspective, DAMOS becomes
+more aggressive than expected under the extreme situation.  Handle the
+failure.
 
-Thanks,
-SJ
+The user impact is not critical.  The failure of damon_split_region_at()
+is unlikely since it is arguably too small to fail.  Also DAMOS being
+aggressive is limited to the single region.  Users can set min_nr_regions
+to set the maximum size of each region.  If it is reasonably set, the
+transient overhead shouldn't be critical.
+
+The issue was discovered [1] by Sashiko.
+
+6.1.y porting notes.  Modify damon_split_region_at() to return failures.
+It is a part of commit c60874860762 ("mm/damon/core: handle region split
+failure in apply_min_nr_regions()").  Without it, build fails.
+
+Link: https://lore.kernel.org/20260901131850.98037-1-sj@kernel.org
+Link: https://lore.kernel.org/20260901131850.98037-2-sj@kernel.org
+Link: https://lore.kernel.org/20260718171523.87547-1-sj@kernel.org [1]
+Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control")
+Signed-off-by: SJ Park <sj@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: Usama Arif <usamaarif642@gmail.com>
+Cc: <stable@vger.kernel.org> # 5.16.x
+(cherry picked from commit 90c2fa6adfed7abe0935506a43cdff3a05c1fff0)
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+ mm/damon/core.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index f0da5cb2b88a0..9206737d05ae7 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -718,7 +718,7 @@ static void kdamond_reset_aggregated(struct damon_ctx *c)
+ 	}
+ }
+ 
+-static void damon_split_region_at(struct damon_target *t,
++static int damon_split_region_at(struct damon_target *t,
+ 				  struct damon_region *r, unsigned long sz_r);
+ 
+ static bool __damos_valid_target(struct damon_region *r, struct damos *s)
+@@ -810,7 +810,8 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+ 						DAMON_MIN_REGION);
+ 				if (!sz)
+ 					goto update_stat;
+-				damon_split_region_at(t, r, sz);
++				if (damon_split_region_at(t, r, sz))
++					goto update_stat;
+ 			}
+ 			ktime_get_coarse_ts64(&begin);
+ 			sz_applied = c->ops.apply_scheme(c, t, r, s);
+@@ -1015,15 +1016,17 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
+  *
+  * r		the region to be split
+  * sz_r		size of the first sub-region that will be made
++ *
++ * Return: 0 on success, negative error code otherwise.
+  */
+-static void damon_split_region_at(struct damon_target *t,
++static int damon_split_region_at(struct damon_target *t,
+ 				  struct damon_region *r, unsigned long sz_r)
+ {
+ 	struct damon_region *new;
+ 
+ 	new = damon_new_region(r->ar.start + sz_r, r->ar.end);
+ 	if (!new)
+-		return;
++		return -ENOMEM;
+ 
+ 	r->ar.end = new->ar.start;
+ 
+@@ -1031,6 +1034,7 @@ static void damon_split_region_at(struct damon_target *t,
+ 	new->last_nr_accesses = r->last_nr_accesses;
+ 
+ 	damon_insert_region(new, r, damon_next_region(r), t);
++	return 0;
+ }
+ 
+ /* Split every region in the given target into 'nr_subs' regions */
+-- 
+2.47.3
 
