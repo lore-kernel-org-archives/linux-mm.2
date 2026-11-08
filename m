@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEFF606A31D
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 02:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 478E5606A31C
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 02:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Rf2twODo
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bB0NcMOt
 Received: by kanga.kvack.org (Postfix)
-	id 42A5B6B05B3; Sat,  7 Nov 2026 21:41:39 -0500 (EST)
+	id 626A56B05B4; Sat,  7 Nov 2026 21:41:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 402006B05B4; Sat,  7 Nov 2026 21:41:39 -0500 (EST)
+	id 5FF466B05B5; Sat,  7 Nov 2026 21:41:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33F076B05B5; Sat,  7 Nov 2026 21:41:39 -0500 (EST)
+	id 49F096B05B6; Sat,  7 Nov 2026 21:41:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id F3CA86B05B3
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 21:41:38 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 765011C2B63
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 02:41:38 +0000 (UTC)
-X-FDA: 85410401076.06.A9BD3BF
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DC706B05B4
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 21:41:41 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id AB4A080311
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 02:41:40 +0000 (UTC)
+X-FDA: 85410401160.28.4626DF5
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id CD5D240002
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 02:41:36 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rf2twODo;
-	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794105696;
-	b=R7XX/tBNu6DJ/uRtxrdSNuOmUXmdrZN/rRMgW2yNPxltf7SMIQX3vwJNcq90yyNu4qOPjd
-	U0OvExHcuJh/BRibIW1dHae/DSxHlNjEh1AYiXGyQA4s7eetc9Yij0DxWIM6OkeCXGDLdr
-	w8FzYICBBzBzCLR+UO3EmAJapdQ9oyM=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Rf2twODo;
-	spf=pass (imf17.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf02.hostedemail.com (Postfix) with ESMTP id 1A9FC80004
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 02:41:37 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bB0NcMOt;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794105696;
+	s=arc-20220608; t=1794105698;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TznJpNICz/LIXq1AT7iwPZHDzdZFY1wF9Y26YwnLGGE=;
-	b=5WbxOZcWpJKBaJoKAIItz8JqC7UB0+uOlzDvelh3EQRdxQw/2n/PfB5SOH0GkA5CaY6jjw
-	TqgYP90HEg+OphY697czz0rh19IabYlZqokedYUlM5mfnba3E/vYTiyLTTod8ouKbj/Ver
-	i4vYqjdG6npuIQBYHE+DT4CWmBHs8r8=
+	bh=Kf+6PZjys2Xut4mx+fifSXamBJdpHDZB6TJ36IBUsJ8=;
+	b=kiDv87KAY+Hvn45ZIgkV0Cvc807b26pyF4r4+A9eWEFh5HbeaJWfvpqFzr6DO7VbAwuEKZ
+	u6tjEWig+XBZRg3j88Ge1LlU77djZ9ycEh0QFBsv9col/K/G4dUB4Z9UeVwkTFoz/dsgur
+	qtRxpMbNrvCBUcB9qAWTDgNgfxEjciE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794105698;
+	b=gjJeEgthC2zazdMCVnqVG/yNHNnYdaUohBlzioLJkszyGTFLrBOQ+CkzvPdZa1YaVMcSfN
+	6uBMrY6nQy3vEqgLLh96IkBguvy4A1Bb71wA+2cbR30Wi41Yy2t8wOqB4t1OAeiQtQT972
+	pmCSuPOHKQMBAPK/tSAbWJNOr7rmy5Y=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bB0NcMOt;
+	spf=pass (imf02.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6186C6116E;
+	by tor.source.kernel.org (Postfix) with ESMTP id B545F612CE;
+	Sun,  8 Nov 2026 02:41:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C671F008A3;
 	Sun,  8 Nov 2026 02:41:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A45D1F008A1;
-	Sun,  8 Nov 2026 02:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794105696;
-	bh=TznJpNICz/LIXq1AT7iwPZHDzdZFY1wF9Y26YwnLGGE=;
+	s=k20260515; t=1794105697;
+	bh=Kf+6PZjys2Xut4mx+fifSXamBJdpHDZB6TJ36IBUsJ8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Rf2twODouX7b9MwgNziWRPHPVGPaBqamIg5vsbGkehiRUuNMRwe18X9F6lSBgvLhV
-	 7SnfBuLHCMJ1acCPr7WyNUC3P6d+sXvY1ssV/avNusvmcmNYpnxo89Lq14uAOIjuiD
-	 YUiQ6WWYxG0KNCtEg4GQFHOSEvsVHrH+46UFlB7nE5pGo15723jhpJVDGKPt1waZ/3
-	 E1HbQH3Wo93RxFa05adIPj63OZ90cNTGsJH+cTezTwcTtkcjgLNa3FoSBNVU1w2Vjs
-	 IenWdKgsZhnmAhc/wW9a18rCoNguzElSKq6AZRvio49KdOZsXCR8LnF2q4p47D3V87
-	 qQfhF42dtx57g==
-Message-ID: <sashiko-outbox-203523@kernel.org>
+	b=bB0NcMOt0s9iJy+XpzEpAzuBB9P70XuU28qNAL+49FZ85MslZnzbFBpSnHPjCLN5x
+	 gpMIFydbsNbuNsAAMik/mvRQexDj8oDK/cH3nmS1oAUYCwyXjErVXso6e8YzKllM+U
+	 dHwumESx/ACvXZasifg1muKOnO7OiiXAo4Gi3erlRcGZfmfet4tL5Nu77rGJ+VAugI
+	 LU61/wR6IT/Grzv4NGC/JhN4/vV/S4Su8DfVLzuzH4g6z0aN5pGjPi95ur4KSnusvx
+	 4aheXZsKKOKGGO/IFrpIwagRDWztEpwT1aDufgdd0ww8rERuc24vqDZmH1smMG0zkN
+	 hK5GSCon/ie3w==
+Message-ID: <sashiko-outbox-203524@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 2/8] riscv: Add breakpoint and watchpoint test for
- riscv
+Subject: Re: [PATCH v8 3/8] riscv: add ptrace requests for hardware
+ breakpoints
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Himanshu Chauhan" <himanshu.chauhan@oss.qualcomm.com>, "Paul Walmsley" <pjw@kernel.org>, "Palmer
  Dabbelt" <palmer@dabbelt.com>, "Albert Ou" <aou@eecs.berkeley.edu>
@@ -74,24 +74,24 @@ Cc: "Alexandre Ghiti" <alex@ghiti.fr>, "Jesse Taube" <jtaubepe@redhat.com>, "Ole
  Shishkin" <alexander.shishkin@linux.intel.com>, "Jiri Olsa" <jolsa@kernel.org>, "Ian
  Rogers" <irogers@google.com>, "Adrian Hunter" <adrian.hunter@intel.com>, "James
  Clark" <james.clark@linaro.org>, "Shuah Khan" <shuah@kernel.org>, linux-mm@kvack.org, linux-perf-users@vger.kernel.org
-In-Reply-To: <20261107023917.40606-3-himanshu.chauhan@oss.qualcomm.com>
+In-Reply-To: <20261107023917.40606-4-himanshu.chauhan@oss.qualcomm.com>
 References: <20261107023917.40606-1-himanshu.chauhan@oss.qualcomm.com>
- <20261107023917.40606-3-himanshu.chauhan@oss.qualcomm.com>
+ <20261107023917.40606-4-himanshu.chauhan@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 02:41:34 +0000
-X-Stat-Signature: 4hpqkdbgd76bbau1n34kgm48o53rhhd8
-X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: CD5D240002
+Date: Sun, 08 Nov 2026 02:41:36 +0000
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 1A9FC80004
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794105696-958849
-X-HE-Meta: U2FsdGVkX19g69ybwei6xfx1OsTljfIjAwKMFxjNJ/Bq6yA4ewmiVDigzEfodnDHPRJPXx52yqsHGqzbR1E7yZiRzOJ+fvheKrZdEQ7qLkgu615z6SP9kkJAwBBicseA2FGKfZEFvR8Viwy17i4xrxxTW2ajL7Ghv9hOREHGILZie0xB6f8h8Tcinau6XIQMm12Pdwine7jVwgE5K0m2roSYp/9yU+vnzTE9PZRvOKJN9bW1OuMZi+Up4WjULWsqo1AxzE4X0LGACinULrIkQ1l/3c2c7gGuL7HotiAo5lkXwQ0gssQo+ftrcWFtoAHwcMLC2ObKnriaQDr0xUKn/ulbWrpVPJSvK2b8FfwEapTuW+E7M1hp4P0iEj6QZ81fIHjuecoZsOlQKirgZYAdKUIM5GvgrrM6XcLsbbE3xOH0JJjVkQJ67xuw1yErwGGbMsUgBd/Uu4owZWWz36uwf3c01bULkVahax4oYBluUNGRTIcaID9cTySjbSJPS5tUGlPXPxfcZEklM0hOdlrd1pkiFg16ROXO8Nrv8UVTnrWnq5EiMThMQVL6AkLaqsLA68zJ/iWri8+X4lypRSI18hO6BudCcZ4zTg2ShNeumwHDrPkTMyLiWIzMA89woOjiEW1X/gO4YOURZ2UvQ0BFUut2QlR2NBDYf9nalDNI7OVOGcJsFHho7F/Z9aUeR6c7xQwh+jB65ctgWKy5swjhQWEVQXpA2PUH/fgK7cDint64aKdYH27fgLM4dRF6qKcqwhJkvNXWabbxVE14Aneqy7IptCmkHWWSTonQ2QNAdON/9MzLXtFsdr1YOsquPzSdIUMzwT6Q4qNW+Cd1A3Om8Ek8YvW1hi21pYFMYJRaUbBDECGyMrKAbt2i2RPzd/F26zE8/BVXqfjbC7ZaF2bbPrzI4MemyF3zMGvHVnXPv2u/gQhm03tANoFcd8WQMCvYhFNA1PouMbfLKlkDC/m
- MfGzgUQC
- 4eXwZUvIWIxDZCJmkZllE5hkMc5+OxrYP9jLcGheuMeVIMaIZYcsGbIAoLtbUvKWlhtqM5Oq4YIZuK8P6ZzqNavx4ObQ7NwoD0FtreSDvEGcCmpTFZs/YEpqmA1ot7VtHyfb54SGIArNPpiVyLueYez4PUxu5vYkQRIFZVkPJf14+ZEH+x2pE9iqvS6EOZvFnBRhYMFy4dNqRZRO/kpWkSsnIP9sMpughVOsUnKTFY4rbl3tjpWAbABr8O4g930zpyyTnDki8kZaIvfpaWQPRgqluHBHRzwKmqnKxwSUqY/iuyKxNVzl+aO1Kq1hq/LxrMHspHSTOpE5ESpj5oCbtuUk7M4zCJQRHeftKagXczsW0qc82+q4yN5HeImADHgnCHP2XvUYv4geKOXv7LvoBlD4PoPNKocPVYA0JpVkSXzXny4tHCadUj3ssrqvOGDX8W/M9BRhL2A5QMxRUYyc9I32JOUf0qs/iCUP4SOx545K0mXKak6W42wRrqrukl3QbkMGeguxGwDlcMD4LH8fP4Z/QTPT0Zs17jQQbY5veCmf+34CL+vVvtF6MR4lvaAp5M+xAxYirWonglfkGlKXKpCYyBZZueGfCA4PyWSchB/p/ja65NICVawCaZNh/rHJuImxK
+X-Stat-Signature: rciqgs6i6g8gu14kyxi8mzyfn9ka1df1
+X-Rspam-User: 
+X-HE-Tag: 1794105697-247312
+X-HE-Meta: U2FsdGVkX1/6jTAS4Nl1r+jj+qpwUBkJQa+NefwiyrV6BKTJ0Yiyvi5jHAMZz5iGuvfT+kBvYlLqZbsH9YioQf+yvvm8P6A6jULPNrYnCCLaC0JEjmxl++XqUoAWG3BlbanymYqQ6T8E7X0u7lDVWQ8+8BML9/ACuJJU91tBQMOuSykaXjLs4oNdUeS42dn04Z7rnjHb2mfLXiCLAFLLrUL7JzVz2QlC7bEYgQItVjM6izbmMbubknqSrSDWkFSRJ+O9t2CdQ8HCgY6gO7Q+sgKJ5Oma0GZ1Z+C3K2BZMvE3Mi9Hw2XOxsythfXWTGCbdZFf7FawnVAEwyCaoFbIMVirbjRKSzZja0uYeeDBAq1Tt9y4f3cJy5wK6/C/AfkmYVExG1bu8HrnIDJsf09vKFRhDDkLRMMg1HjzspoLvlpcGNqnFripHYtDw3DQYxaOhzXZGg5uffAeQFZWJZcwf4U4Ixneu4ckvWE36jX/ooKL+oZEMgxYpycjbN250pAU1TFuLJDw+Y6LxbSCVolzk7S3aVHi2v2+MpIDoyJnEAXBsUwhvhBrdi4I6Q6dIgnNlrmqOTZrcl6fuL3VzlJ9JL48KOE25eryhnHuK3Z089JjUzsjLq04GHYifDvq1y1RgYC/6IV6LMUpAkUWvllpJDiYmSfkwEusftTY0C3P+fAmZylAm3pMvPUeRm1s+PS93+uja9gqKeF+fyLvvPxcqjb4/SH/RNW4oSfCZvuQDHTlNEvH66MHZfq3qmwAViGeq9OxvH67nrzr9PG0NfmDrVySBmN/JZjdJny+LvtSMX01Loke80S3c52hMTtOr1Yk52QICjXCBxh6IpsITkY9NSrDVtETKKfI5fih69IW99pepq9fjRzx9q6CFXPSb5eM0VOF/AT62jDZ0QRR6Ka07xLGZiMYVzCTnbhpO3gGET81UBMqDZDNo/14PQ+aBkFAy+5KtCQmR0FUbi+Lp4M
+ Y2MGwovX
+ riamctVrYaKyTSocgcQv3Zi5ovQZLyDTHqt+ZCYUq8Uak+DVma++nsKyI9E48TSxNeMGdm7vShktQESVLTKcsDJ6gVfu6VO04ZIFzMIEbO7iEaN/zTRKxxgHJjSOkVoq2Wog58WvIwSflJT7u0uCH3/HNQEWuHPGEdsJVtEGLj67Gx5PJV/dtvs/hVF3iIL69m9PKwVWr/mn7LpJRXxqU6aRZKryPSJMKg1e+BuRwtrvoGtRnUpIvi/wIcs9ioZeCctwOvBSXReI+gpqBy6eATbuCGjD4mcmmevC0jjlCveuMp686T8T36aSoNLpv1zXjNPY1R8s8ZKpMLlJO9d60H75hxhb+2XGb8vOiZVf+1H4bYb+JfdWwJbUUevP9nKFVDof6rRc/AVNJVCcz7w4omksnOPijVzPfnPYzt7JW5jCN+ftu6jKIhlsvrcdPGz0+2aQE8X63gQT0KXmNAXtGHu04laHu6Wf+YbFGlSK1c8FXdlu2cHmcBplPCNYMZN5eJ4c6FB3yh/5vIAkLmtrw3XqLkeKDc7w1tDr+aM1fNTmRxZFSL6mwDbuzkZNO/ZJHNjpWhQ2rDVv5PBhdhMGlvhVc7A2G2/f9tP2ZEtsxlzUnlxTDs8eSoUS89TSvKm2KVxaG
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,229 +101,247 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 7 potential
+Thank you for your contribution! Sashiko AI review found 5 potential
 issues to consider:
-- [Medium] selftests/breakpoints: missing kselftest API and skip logic
-  in setup_bp()
-- [Medium] selftests/breakpoints: premature close(gfd) and dead store in
-  trigger_wp()
-- [Medium] selftests/breakpoints: non-volatile test_data in trigger_wp()
-  can be optimized out
-- [Low] selftests/breakpoints: forced -static CFLAGS and missing
-  .gitignore entry
-- [Low] selftests/breakpoints: commit message claims ptrace usage and
-  .gitignore misses binary
-- [Low] selftests/breakpoints: non-portable glibc macro
-  __attribute_noinline__ in test_func()
-- [Low] selftests/breakpoints: unhandled EINTR in wait_event()
-  sem_timedwait()
+- [High] riscv: ptrace: PTRACE_GETHBPREGS/SETHBPREGS collide with
+  generic SUD requests
+- [High] riscv: hw_breakpoint: duplicate flush_ptrace_hw_breakpoint()
+  stub breaks build
+- [Medium] riscv: ptrace: switching slot type in riscv_ptrace_bp_set()
+  fails with -ENOSPC
+- [Medium] riscv: ptrace: sleeping lock in riscv_ptrace_hbptriggered()
+  with IRQs off
+- [Low] riscv: unused clear_ptrace_hw_breakpoint() prototype and
+  debug_info fields
 --
 
-commit 1561777f5a1538f9c1adcbe99231ade440297bf1
+commit 99a21b5687d9bebf111bc51526d0fe5d8bd289d6
 Author: Himanshu Chauhan <himanshu.chauhan@oss.qualcomm.com>
 
-riscv: Add breakpoint and watchpoint test for riscv
+riscv: add ptrace requests for hardware breakpoints
 
-This commit adds a RISC-V kselftest for hardware execute breakpoints and
-write watchpoints using perf_event_open() and asynchronous signal delivery.
+This commit adds support for the PTRACE_GETHBPREGS and PTRACE_SETHBPREGS
+ptrace requests on RISC-V, storing per-task perf hardware breakpoint events
+and reporting hits via SIGTRAP/TRAP_HWBKPT.
 
-> Add self test for riscv architecture. It uses ptrace to ptrace framework
-> to set/unset break/watchpoint and uses signals to check triggers.
-
-[Severity: Low]
-As reported by Jesse Taube on v5 [1], does this test use the perf_event_ope=
-n()
-interface rather than ptrace?  In addition, "ptrace to ptrace" is a typo in
-this sentence, and the ptrace-based tests are only added later in commit
-"selftests/breakpoints: extend riscv test for ptrace hw break/watchpoints".
-Also, breakpoint_test_riscv is not added to
-tools/testing/selftests/breakpoints/.gitignore.
-
-> diff --git a/tools/testing/selftests/breakpoints/Makefile b/tools/testing=
-/selftests/breakpoints/Makefile
-> index 0b8f5acf7c78f..1f28f50e8f85f 100644
-> --- a/tools/testing/selftests/breakpoints/Makefile
-> +++ b/tools/testing/selftests/breakpoints/Makefile
-> @@ -12,5 +12,13 @@ ifneq (,$(filter $(ARCH),aarch64 arm64))
->  TEST_GEN_PROGS +=3D breakpoint_test_arm64
->  endif
-> =20
-> +ifneq (,$(filter $(ARCH),riscv riscv64))
-> +TEST_GEN_PROGS +=3D breakpoint_test_riscv
-> +endif
-> +
->  include ../lib.mk
-> =20
-> +ifneq (,$(filter $(ARCH),riscv riscv64))
-> +$(OUTPUT)/breakpoint_test_riscv: CFLAGS +=3D -static $(KHDR_INCLUDES)
-> +endif
-> +
-
-[Severity: Low]
-Will forcing -static without -pthread fail to link on build environments
-without static libc/libpthread archives or where sem_init(), sem_post(), and
-sem_timedwait() require explicit pthread linkage?  Also, the $(ARCH) filter
-omits riscv32 on 32-bit RISC-V hosts, and tools/testing/selftests/breakpoin=
-ts/.gitignore
-is not updated with breakpoint_test_riscv.  In breakpoint_test_riscv.c,
-ib_mtx, wp_mtx, and setup_bp() can be static, and bp_triggered and
-wp_triggered should be volatile sig_atomic_t since they are updated in sign=
-al
-handlers.
-
-> diff --git a/tools/testing/selftests/breakpoints/breakpoint_test_riscv.c =
-b/tools/testing/selftests/breakpoints/breakpoint_test_riscv.c
-> new file mode 100644
-> index 0000000000000..a8a94a788142d
-> --- /dev/null
-> +++ b/tools/testing/selftests/breakpoints/breakpoint_test_riscv.c
-
+> diff --git a/arch/riscv/include/asm/hw_breakpoint.h b/arch/riscv/include/=
+asm/hw_breakpoint.h
+> index dcce20ba3faab..6e8913d69df23 100644
+> --- a/arch/riscv/include/asm/hw_breakpoint.h
+> +++ b/arch/riscv/include/asm/hw_breakpoint.h
 [ ... ]
+> @@ -42,8 +49,14 @@ void arch_disable_hw_breakpoint(struct perf_event *bp);
+>  int arch_install_hw_breakpoint(struct perf_event *bp);
+>  void arch_uninstall_hw_breakpoint(struct perf_event *bp);
+>  void hw_breakpoint_pmu_read(struct perf_event *bp);
+> +void clear_ptrace_hw_breakpoint(struct task_struct *tsk);
+> +void flush_ptrace_hw_breakpoint(struct task_struct *tsk);
+> +void ptrace_hw_copy_thread(struct task_struct *task);
+> =20
+>  #else
+> =20
+> +static inline void flush_ptrace_hw_breakpoint(struct task_struct *task) =
+{ }
+> +static inline void ptrace_hw_copy_thread(struct task_struct *task) { }
+> +
+>  #endif /* CONFIG_HAVE_HW_BREAKPOINT */
+>  #endif /* __RISCV_HW_BREAKPOINT_H */
 
-> +int setup_bp(bool is_x, void *addr, int sig)
+[Severity: High]
+Does defining flush_ptrace_hw_breakpoint() here break the build when
+CONFIG_HAVE_HW_BREAKPOINT is disabled?
+
+include/linux/hw_breakpoint.h already defines a static inline stub for
+flush_ptrace_hw_breakpoint() when CONFIG_HAVE_HW_BREAKPOINT is not set
+(and declares the prototype when it is set).  Since asm/processor.h now
+includes asm/hw_breakpoint.h, any translation unit including both
+linux/sched.h and linux/hw_breakpoint.h (such as arch/riscv/kernel/ptrace.c)
+fails to compile due to the redefinition.
+
+> diff --git a/arch/riscv/include/asm/processor.h b/arch/riscv/include/asm/=
+processor.h
+> index e9d339bcb7e9f..a124ea48d8058 100644
+> --- a/arch/riscv/include/asm/processor.h
+> +++ b/arch/riscv/include/asm/processor.h
+[ ... ]
+> @@ -111,6 +112,19 @@ struct pt_regs;
+>  #define RISCV_PREEMPT_V_NEED_RESTORE	0x40000000
+>  #define RISCV_PREEMPT_V_IN_SCHEDULE	0x20000000
+> =20
+> +struct debug_info {
+> +#ifdef CONFIG_HAVE_HW_BREAKPOINT
+> +	/* Have we suspended stepping by a debugger? */
+> +	int			suspended_step;
+> +	/* Allow breakpoints and watchpoints to be disabled for this thread. */
+> +	int			bp_disabled;
+> +	int			wp_disabled;
+> +	/* Hardware breakpoints pinned to this task. */
+> +	struct perf_event	*hbp_break[RISCV_MAX_BP];
+> +	struct perf_event	*hbp_watch[RISCV_MAX_BP];
+> +#endif
+> +};
+
+[Severity: Low]
+This isn't a bug, but suspended_step, bp_disabled, and wp_disabled in
+struct debug_info, along with the clear_ptrace_hw_breakpoint() prototype in
+asm/hw_breakpoint.h, are never used in this patch or later in the series.
+
+> diff --git a/arch/riscv/include/uapi/asm/ptrace.h b/arch/riscv/include/ua=
+pi/asm/ptrace.h
+> index 3de2b7124aff3..373a1c14f2073 100644
+> --- a/arch/riscv/include/uapi/asm/ptrace.h
+> +++ b/arch/riscv/include/uapi/asm/ptrace.h
+> @@ -15,6 +15,8 @@
+> =20
+>  #define PTRACE_GETFDPIC_EXEC	0
+>  #define PTRACE_GETFDPIC_INTERP	1
+> +#define PTRACE_GETHBPREGS	0x4210
+> +#define PTRACE_SETHBPREGS	0x4211
+
+[Severity: High]
+As reported by Rui Qi on v6 [1], do these values collide with the generic
+PTRACE_SET_SYSCALL_USER_DISPATCH_CONFIG (0x4210) and
+PTRACE_GET_SYSCALL_USER_DISPATCH_CONFIG (0x4211) requests in
+include/uapi/linux/ptrace.h, where 0x4200-0x4300 is reserved for
+architecture-independent additions?
+
+Because arch_ptrace() and compat_arch_ptrace() intercept 0x4210 and 0x4211
+before calling ptrace_request(), a tracer calling
+PTRACE_SET_SYSCALL_USER_DISPATCH_CONFIG when CONFIG_HAVE_HW_BREAKPOINT=3Dy =
+is
+routed to riscv_ptrace_gethbpregs(), which overwrites the caller's input
+buffer via copy_to_user(), while PTRACE_GET_SYSCALL_USER_DISPATCH_CONFIG is
+routed to riscv_ptrace_sethbpregs().
+
+> diff --git a/arch/riscv/kernel/ptrace.c b/arch/riscv/kernel/ptrace.c
+> index a0055743d3ba5..be076865d02d0 100644
+> --- a/arch/riscv/kernel/ptrace.c
+> +++ b/arch/riscv/kernel/ptrace.c
+[ ... ]
+> @@ -380,6 +382,152 @@ static int riscv_cfi_set(struct task_struct *target,
+>  }
+>  #endif
+> =20
+> +#ifdef CONFIG_HAVE_HW_BREAKPOINT
+> +enum riscv_hbp_type {
+> +	RISCV_HBP_BREAK,
+> +	RISCV_HBP_WATCH,
+> +};
+> +
+> +/*
+> + * Handle hitting a HW-breakpoint.
+> + */
+> +static void riscv_ptrace_hbptriggered(struct perf_event *bp,
+> +				      struct perf_sample_data *data,
+> +				      struct pt_regs *regs)
 > +{
-> +	struct perf_event_attr pe;
-> +	int fd;
+> +	struct arch_hw_breakpoint *bkpt =3D counter_arch_bp(bp);
+> +
+> +	force_sig_fault(SIGTRAP, TRAP_HWBKPT, (void __user *)bkpt->address);
+> +}
+
+[Severity: Medium]
+Can calling force_sig_fault() from riscv_ptrace_hbptriggered() sleep with
+interrupts disabled on PREEMPT_RT?
+
+When a breakpoint triggers, hw_breakpoint_handler() -> perf_bp_event() ->
+perf_swevent_event() disables hardware interrupts via guard(irqsave)()
+before invoking the overflow handler:
+
+  perf_swevent_event()              [guard(irqsave)()]
+    -> perf_swevent_overflow()
+      -> __perf_event_overflow()
+        -> riscv_ptrace_hbptriggered()
+          -> force_sig_fault()
+            -> force_sig_info_to_task()
+              -> spin_lock_irqsave(&t->sighand->siglock, flags)
+
+On PREEMPT_RT (RISC-V selects ARCH_SUPPORTS_RT), sighand->siglock is a
+sleeping rt_spin_lock, so acquiring it with interrupts disabled triggers a
+sleeping-in-atomic warning and blocks with IRQs off if contended.
 
 [ ... ]
 
-> +	fd =3D syscall(SYS_perf_event_open, &pe, 0, -1, -1, 0);
-> +	if (fd < 0) {
-> +		printf("Failed to open event: %llx\n", pe.config);
-> +		return -1;
+> @@ -549,12 +697,173 @@ void ptrace_disable(struct task_struct *child)
+[ ... ]
+> +static int riscv_ptrace_bp_set(struct task_struct *child, unsigned long =
+idx,
+> +			       struct __riscv_hwdebug_state *state)
+> +{
+> +	struct perf_event *bp;
+> +	struct perf_event_attr attr;
+> +	enum riscv_hbp_type hbp_type, other_hbp_type;
+> +	int ret;
+> +	bool created =3D false;
+> +
+> +	if (idx >=3D RISCV_MAX_BP)
+> +		return -EINVAL;
+> +
+> +	idx =3D array_index_nospec(idx, RISCV_MAX_BP);
+> +
+> +	ret =3D riscv_ptrace_bp_type_to_hbp(state->type, &hbp_type);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* The legacy request exposes ctrl as a disabled/enabled boolean. */
+> +	if (state->ctrl > 1)
+> +		return -EINVAL;
+> +
+> +	other_hbp_type =3D hbp_type =3D=3D RISCV_HBP_BREAK ?
+> +			 RISCV_HBP_WATCH : RISCV_HBP_BREAK;
+> +
+> +	bp =3D ptrace_hbp_get_event(hbp_type, child, idx);
+> +	if (IS_ERR(bp))
+> +		return PTR_ERR(bp);
+> +	if (!bp) {
+> +		bp =3D ptrace_hbp_create(hbp_type, child, idx);
+> +		if (IS_ERR(bp))
+> +			return PTR_ERR(bp);
+> +		created =3D true;
 > +	}
 > +
-> +	fcntl(fd, F_SETFL, O_RDWR | O_NONBLOCK | O_ASYNC);
-> +	fcntl(fd, F_SETSIG, sig);
-> +	fcntl(fd, F_SETOWN, getpid());
+> +	attr =3D bp->attr;
 > +
-> +	ioctl(fd, PERF_EVENT_IOC_RESET, 0);
-> +
-> +	return fd;
-> +}
-
-[Severity: Medium]
-Should setup_bp() and main() use the kselftest.h helpers and skip via
-ksft_exit_skip() when hardware breakpoints are unsupported or restricted?
-On RISC-V platforms without SBI_EXT_DBTR / Sdtrig support or when perf even=
-ts
-are disabled or restricted, syscall(SYS_perf_event_open, ...) fails and cau=
-ses
-main() to fail the test run with exit code 255 instead of skipping, while
-printing pe.config (which is always 0) instead of errno.  Also, the fcntl()
-and ioctl() return values are unchecked, and in main(), if (bp_triggered) a=
-nd
-if (wp_triggered) only guard printf() calls, so main() still returns 0 if
-wait_event() succeeds while either counter is 0.
-
-[ ... ]
-
-> +static __attribute_noinline__ void test_func(void)
-> +{
-> +	test_func_sink++;
-> +	__asm__ __volatile__("" : : "g" (test_func_sink));
-> +}
-
-[Severity: Low]
-Will __attribute_noinline__ fail to compile against non-glibc C libraries
-such as musl?  __attribute_noinline__ is a glibc <sys/cdefs.h> macro; using
-__attribute__((noinline)) avoids breaking musl builds.
-
-> +
-> +static int trigger_bp(void)
-> +{
-
-[ ... ]
-
-> +	ioctl(gfd, PERF_EVENT_IOC_ENABLE, 0);
-> +
-> +	test_func();
-> +
-> +	ioctl(gfd, PERF_EVENT_IOC_DISABLE, 0);
-> +
-> +	close(gfd);
-> +
-> +	return 0;
-> +}
-
-[Severity: Medium]
-Does closing gfd here before main() calls wait_event(&ib_mtx, "Breakpoint")
-race with asynchronous signal delivery?
-
-Because perf event O_ASYNC signals are queued via irq_work, if signal deliv=
-ery
-is delayed past test_func(), close(gfd) tears down the perf event and its
-fasync registration before the signal is sent, or races with sig_handler_bp=
-()
-calling ioctl(gfd, PERF_EVENT_IOC_DISABLE, 0) on a closed descriptor.  Also,
-sig_handler_bp() and sig_handler_wp() call printf(), which is not
-async-signal-safe, and trigger_wp() never closes gfd before returning (note
-that commit "selftests/breakpoints: extend riscv test for ptrace hw
-break/watchpoints" later in the series adds close(gfd) to trigger_wp(),
-though still before wait_event()).
-
-> +
-> +static int trigger_wp(void)
-> +{
-> +	struct sigaction sa;
-> +	unsigned long test_data;
-
-[ ... ]
-
-> +	gfd =3D setup_bp(0, &test_data, SIGUSR1);
-> +
-> +	if (gfd < 0) {
-> +		printf("Failed to setup watchpoint\n");
-> +		return -1;
+> +	attr.bp_addr =3D state->addr;
+> +	attr.bp_len  =3D state->len;
+> +	attr.bp_type =3D state->type;
+> +	/* Enable or disable as requested by ctrl (0 =3D enabled, 1 =3D disable=
+d) */
+> +	attr.disabled =3D state->ctrl =3D=3D 1;
+> +	ret =3D modify_user_hw_breakpoint(bp, &attr);
+> +	if (ret) {
+> +		/* Drop only events allocated by this failed request. */
+> +		if (created)
+> +			riscv_ptrace_bp_clear_event(child, hbp_type, idx);
+> +		return ret;
 > +	}
 > +
-> +	ioctl(gfd, PERF_EVENT_IOC_ENABLE, 0);
-> +	test_data =3D 0xdeadbeef;
-> +	ioctl(gfd, PERF_EVENT_IOC_DISABLE, 0);
-> +
-> +	return 0;
+> +	/*
+> +	 * If the same index changed from breakpoint to watchpoint, or back,
+> +	 * clear the old opposite-type slot after the new event is valid so a
+> +	 * failed update does not destroy the previous state.
+> +	 */
+> +	return riscv_ptrace_bp_clear_event(child, other_hbp_type, idx);
 > +}
 
 [Severity: Medium]
-Can the compiler eliminate the store to test_data as a dead store?
-test_data is a non-volatile local variable that is never read before
-trigger_wp() returns, so under -O2 the store between the enable and disable
-ioctl() calls can be optimized away and the watchpoint will never fire.
-Qualifying test_data as volatile prevents this, and gfd also remains open on
-the stack address &test_data when trigger_wp() returns in this patch
-(close(gfd) is added later in commit "selftests/breakpoints: extend riscv
-test for ptrace hw break/watchpoints").
+Can switching an existing slot between a breakpoint and a watchpoint fail
+with -ENOSPC when all hardware triggers are already in use?
 
-> +
-> +static int wait_event(sem_t *sem, const char *name)
-> +{
+RISC-V selects CONFIG_HAVE_MIXED_BREAKPOINTS_REGS, so breakpoints and
+watchpoints share a single pool of dbtr_total_num slots in
+reserve_bp_slot().  Because debug_info splits storage into hbp_break[] and
+hbp_watch[], changing the type at index idx causes ptrace_hbp_get_event()
+to return NULL and ptrace_hbp_create() to allocate a second perf_event
+from the shared pool before riscv_ptrace_bp_clear_event() frees the
+existing event at the same index.  Modifying the existing perf_event in
+place via modify_user_hw_breakpoint() (or storing unified trigger slots in
+a single array) would avoid needing a spare hardware slot.
 
-[ ... ]
-
-> +	ts.tv_sec +=3D wait_timeout_sec;
-> +	if (!sem_timedwait(sem, &ts))
-> +		return 0;
-> +
-> +	if (errno =3D=3D ETIMEDOUT)
-> +		printf("%s: Timed out waiting for event\n", name);
-> +	else
-> +		printf("%s: sem_timedwait() failed with %d\n", name, errno);
-> +
-> +	return -1;
-> +}
-
-[Severity: Low]
-Does sem_timedwait() fail with EINTR if SIGIO or SIGUSR1 is delivered while
-wait_event() is blocked?  POSIX sem_timedwait() does not automatically rest=
-art
-when interrupted by a signal handler, so when the signal arrives during the
-wait and the handler posts the semaphore, sem_timedwait() returns -1 with
-errno =3D=3D EINTR unless retried in a loop.
-
-[1] https://lore.kernel.org/r/CADRr4bdFr+cu-1L0cSAJUwN-ehHiyb=3D4WHmwh3xS2s=
-6q33ZCVw@mail.gmail.com
+[1] https://lore.kernel.org/r/5a7c08bd-4313-4424-b649-a19ffe5242e4@bytedanc=
+e.com
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261107023917.4060=
-6-1-himanshu.chauhan@oss.qualcomm.com?part=3D2
+6-1-himanshu.chauhan@oss.qualcomm.com?part=3D3
 
