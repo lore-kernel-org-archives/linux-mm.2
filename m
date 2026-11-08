@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB00B606A326
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 00:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB814606A332
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 00:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iFI+icke
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q5jVzzqE
 Received: by kanga.kvack.org (Postfix)
-	id 992786B05C4; Sat,  7 Nov 2026 19:44:17 -0500 (EST)
+	id 06A856B05C5; Sat,  7 Nov 2026 19:44:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91CEF6B05C5; Sat,  7 Nov 2026 19:44:17 -0500 (EST)
+	id 042126B05C6; Sat,  7 Nov 2026 19:44:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80AB66B05C6; Sat,  7 Nov 2026 19:44:17 -0500 (EST)
+	id EC26D6B05C7; Sat,  7 Nov 2026 19:44:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 519BB6B05C4
-	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:44:17 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D81BF1A03BA
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:16 +0000 (UTC)
-X-FDA: 85410105312.16.DC2738D
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C9B516B05C5
+	for <linux-mm@kvack.org>; Sat,  7 Nov 2026 19:44:18 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6748CA7FB9
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:18 +0000 (UTC)
+X-FDA: 85410105396.17.7D9F013
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 3C2A6140006
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:15 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iFI+icke;
+	by imf12.hostedemail.com (Postfix) with ESMTP id B6B1B40003
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 00:44:16 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q5jVzzqE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794098655;
+	s=arc-20220608; t=1794098656;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3JfgPEX+gibV6cuYOvTDNUqQKlrInM+Bzq+kAGu3/K4=;
-	b=Bf7IYZ2EbOMVGAcsQmQDFHh5EZiKuPXZVJOmoIScw4d0wYynLSPDvDuUcKNjAPt7eQF7xL
-	MgNKBtZW8CwDZkr0TBJuBefLDOgOvduYEYgWg14Kpy+Lpv7BGmlZzsiIxxDE3LIIkmi/D7
-	pNW7Kc/AgePDJsFg3yYbKFky99oS9SQ=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794098655;
-	b=TIO25XyMoHsddAWFlfMJLd6zITMuKlMUSllghsF1atEvrgi+jXUWq657hbJcVPf4Xz0PvV
-	Fi5fhhJ5+NEwR8URxCsu98vBLvHd4yOt9ce/wThUYrtPNeFbDUbFQShLtT1SPCyyn6QQxU
-	eQkhyXOcWJ9HAHIOvg0B/t0pNirKTXM=
+	bh=mZgkdudxpriV0masBemQGPzPIFdk1tXutO3Xb2jyEGk=;
+	b=lrmQi+7ySIRLoaEKIyO0kRz8JijOPitV3SH+CUg5QNVHfB7NN6cIgmB3khreXAsxhrW/Nc
+	SZE6g5vXtnaQLBru7PeBx3UpCcm4lDPVkSsp3skI5SR/20lvkgleSj7LFgVwfCFutRUWP9
+	ZhZ2g3fHM9lXlRGpaWEiBZ5Pcdcqq7Q=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iFI+icke;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q5jVzzqE;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf12.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794098656;
+	b=Hje1rG6lE2XFAw8cjTXv9eKi0CeUg005im66pLmEU1kTDrD6nTSOGxkQpl28JWDe/VxGt0
+	5dIEjPNajGcebPXE53kq7Vz3YTbedHmS/DwlMvZqt3Vijnqt+nRB7YsaC09vYiDvWaIPjI
+	671kSwcIQ3jiXkMBLYBq1YGWrLZIVxU=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9A3E7409CF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 11AD340F81;
+	Sun,  8 Nov 2026 00:44:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F387B1F0089F;
 	Sun,  8 Nov 2026 00:44:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EC71F008A2;
-	Sun,  8 Nov 2026 00:44:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794098654;
-	bh=3JfgPEX+gibV6cuYOvTDNUqQKlrInM+Bzq+kAGu3/K4=;
+	s=k20260515; t=1794098655;
+	bh=mZgkdudxpriV0masBemQGPzPIFdk1tXutO3Xb2jyEGk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iFI+ickeMfbpjvlltARUblyw8Qp0gDO89iEfsq5irogDTnVOGRREK3b6wXSkXyP9X
-	 rjs0ODzh52mBmxd+ZBJHWL8G7fDHAfPyco5+ul19xzAGYDSHwbMCn88aw91RHdornG
-	 x3p6J5fzJtFkRTTgq63cNZxpvr7odKMWWlprjaTg0x5QlBd3MqHn95QM8SUbXZhdRT
-	 mQFSq5Yob7Ti74KbhiyougEGKDLcfAmqnK/aKc91z/8t07/Yp2pEoR7OBiF382TWlN
-	 LBlHhToR0XQUqVlGF6dWtoXdzk2W2MvybGBe7o0tv/LPKdONdy5M4xxOfJZ/EsYmEp
-	 nWyWhimrsNyIA==
-Message-ID: <sashiko-outbox-203461@kernel.org>
+	b=Q5jVzzqEwNnLB8CsKc0Gg/4VV0/zPTEwf3456HsVDiiLbKlWUDC3Ok29Q/qUqevcr
+	 PrXfSRHzX/OMvHwRWF/M3KeHlnShE2LQ2nAoS3sbhVwdOryPlEPCGawvgWOZeJz35O
+	 O8l4zxyjaD9RtiSRBMEF+QxgZXbT6wwYvwtQ8JLiorZ1ZwmO5J982vwAfimaHzMutH
+	 qmEiIPhmKfexz/XwfnC2CdZ8VXRnSL2W29p/M8c9UKTIkQoG8k2nATqdFMGRC0ceJ1
+	 d8GHmvw+KhgpVtBv3UBfnW98/+MGuoKDv1D3vDiAVfAhjzsQwnd1SXYWvjo/1zHoR4
+	 PJcKnoHgHmOcw==
+Message-ID: <sashiko-outbox-203462@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v3 50/88] KVM: selftests: Test guest_memfd
- conversions with sample memory provider backing
+Subject: Re: [PATCH RFC v3 51/88] KVM: guest_memfd: Support reporting PFN
+ cacheability
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com>, "Aneesh
  Kumar K.V" <aneesh.kumar@kernel.org>, "Christian Brauner" <brauner@kernel.org>, "David
@@ -76,24 +76,24 @@ To: "Ackerley Tng" <ackerleytng@google.com>, "Alexey Kardashevskiy" <aik@amd.com
  Annapurve" <vannapurve@google.com>, "Xu Yilun" <yilun.xu@linux.intel.com>, "Fuad
  Tabba" <fuad.tabba@linux.dev>
 Cc: kvm@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261106-gmem-alternative-providers-v3-50-8484dde66a7e@google.com>
+In-Reply-To: <20261106-gmem-alternative-providers-v3-51-8484dde66a7e@google.com>
 References: <20261106-gmem-alternative-providers-v3-0-8484dde66a7e@google.com>
- <20261106-gmem-alternative-providers-v3-50-8484dde66a7e@google.com>
+ <20261106-gmem-alternative-providers-v3-51-8484dde66a7e@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sun, 08 Nov 2026 00:44:13 +0000
-X-Stat-Signature: qtqsy3ybnigsegji8ns5sa14qc5h6jm6
+Date: Sun, 08 Nov 2026 00:44:14 +0000
 X-Rspam-User: 
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B6B1B40003
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 3C2A6140006
-X-HE-Tag: 1794098655-882066
-X-HE-Meta: U2FsdGVkX19UBa7iqXhtd50PrCLCh8XKHlN5Df17kQFZ3uEAH4LI9zzVetAvwxCBxcezgPZ7mzo49yXaH27zuV4BNWs8xHfweJ7AOk6aeTX42kG+yJQdmX2PjgatjFjIb6XJ4QukQEragfGY6uhyuqWbNqtA+Sv8fS2WETtdw1kKzYYTKjKtu9U5C6J9ueKol6nfuSSxH51UJ0KyNaC4SdgV82jKtdBcveD9dwkG1FPfCus6faiyrIibwbtEKDhmueuWgI3wlzpLbnhj0vJGngj61MOaYGxg9hNWqWle5nKvzooYzK/D8sSHzI2eobIiSzKbpZ25IOltXKnIU2pt8g70/DefyodnbZhj8s/JDC39NxOP9czZw6/CXFO4Ufb6qFxAf0qdmM/a16UxsWP67+FuApF4Fw3Tylb4ntO8+RgfPxfgHbSx71tBGYgTFDfAptu75BMbqXLUsfej5AHeJUYBqzvWa9BjXt8kXLd49a599cuSc+QjTG1z7NlvLNnt6ZP9+4g6wMEckt3xB2QkPMJAd3yuU29a/lOqe2fLIFnLXyQiuJ967mM175+MWzPQzWJW2plu8uMwyCVFIzNyjxlD0q3KgepSHxqtm5DwTif5mUw2tnkaJWbLP5/Sw+r6bY2UB6U1tMctXD4VpiN+mbhBWqdHcg5PfUT08NpBgjUsunAtIo6TFRf+T/Y0q635CrQpYbt57WsOGFypQunI/mTtmgyOzs7UBx40rjYrxKTyroXPLH3Im/r/T+hucPllSQCQyHOOSqWOGtUy7w0DyEWv8kd2yoWf2oAusRuV2v9yPVxmNXDzSg1WYFgGlrirGH591p/8s6XM3y9hIRlMxS9fz7DNNN9W0IyGwoQt+GW+uESNw+wy95DUySfJeGzDMYCWV+UT/EAtx6O3fdrIcz9gy/FVMTamOX+Vq50qfxRAtEAgq3nDDy7lD4cGm23vVcu71a60VdAn4f7ypW6
- roFYLAqV
- nL0nDOA64Uw2PKIy0JWBE1EzXTvcFLzndJ/ymXvpXSj/KG9t9VeLiK8Mf0+y6s92ztRdYQTEBoWFAjOhqVMb0DX2fhWFBe6qAqt08ctfkceCMJVR0ZWULzM8VOHeSj6XGoBIAmx2ffkLlhifmWKx9tqWQK37R5cDq7CYop9UfWZs7ChnNnT508mdejoDi6fbceqr0DT7XSvsaw4bLyqwopQtErYvLMbfmutv8fM+9R3LaERTyKG//xTHXOA6oSXgtwQwCjjioB2o3QpOU+huZkBD6ld41ba0VzfrAAkbRj5qXpcI8qA14pgrwJLo4MUdD1IDu+7YUuG/BLhOe2znF7JYzHHc365kRxPkj76T2/fdcRXRR+uc1A5PMmmTZy4LjH/+VQy7FwSYqmhy6/wQQpVG0VVdP/0hLlvVjclhUq+SdpRX1t5McjEhYiUYkIcQl3n1WuToUhgkoHggiWn4eKeB3rW2MVxZ19tVSiKKlc5idgu0FSl1dml39gA5ssvq3WKvFAs24Xj6S7UsH/59dSFMDT5Q1pDxRLhcJVmCUcIn5jKC5t+Osl89OKHQ/k+9/kdWhNO5lkGCQ2czxxTJPb4vgz8EBCzwqMn8wUtmLDlkW+p72887Zhu+Nfx2WeIJ0v9Sq0Jqd6+8vvY8h9jLGojOM+MMck47Hy0p4VngaEVHb6u0p41ZVz61TOjR48k41NHNgPSej9ZLpcyvFDxhNr5oChQ==
+X-Stat-Signature: b46kwhexjrjimk98suyzsg8q7gia7r7t
+X-HE-Tag: 1794098656-67420
+X-HE-Meta: U2FsdGVkX1+7zdCESIW+bHqQ/2otfb/KdxS274o43/XoH7Yr9fcaw4hlW+xillthdGsGcmqMMACEopxp34DgyRcgbtKFtW575Dj/6iwM0O8xepOnhhShNrmTCtY/vmZlApN2ddCynV73RVVdUAojZA9naAKhYZpV0wAN3y0pOg1CRdjXNyDO/fx0Zakapd1G/8K7E6E6sL6bcIzRX3ZK/Gnfv4sZP/DzTYlwMfsKxxOgWSPm/AAchzs8hmIvJapSy1QQ0zIY983ypq65NazmFEsD1edJK4KiTXYHdSBQx2oE0wWdQPl/Nx82AK0LH0uuLk4+u3oUVzudc7enFIl1KIRhGP42S9znOdr2sMv7jB5kmBG3C1V1L6LWPN738OrY8LrGxMVS7jeS0BQeRTITF/Qkmsw7AQ0PFKvt4ky8AvIymj2u+7ziBG98KGn3yBDAUnZLh4Ei1RJbmA+Zpbn/QMCY+kCMQNSTSbzJo9tjpuMhywfNIecw+66mYgyeyTUNp88/VBXrt4KX16GGaCTiUUtiD69RSj2SFbkXKdSDQorlXO+2ev4FsbW5/SnOU268n3oOXeW+8G60zn1UWhsMw3dKnsmb+8ZQG1qca+eu9NpGPihpqDWXDCFAH6uzkBwrUkRplmYtVsNMMvsdeIkDtcoNUcIp8X0AoMLZnJK8NFSi6IyNwxBllF+BsITiYSREFkGMxny7rKfXHhR3tPNWyzBkJXkt0mTbMZG1xe0taVy6vOpZHFjFAm4BRIJK2gZx4eB++d2zzC8u+uR7ZCASE9UcwLF+OJArvx0C8qXbPT7DPCF2u/8mS+XS2XMP7tQeOtnGL5i7JrfJHMfBQtbBbwlMHeTArBXsaD0eXOuq1bm9aEjigi+N+LQx0rSXnYtvAKtTjdghLrRfBp+J+m/ynXPrdwnCbZi7TW1pCGdc4ciIXPp71dpH27FQaHCtFaz2Ao33nrybUL2M7oF+n+P
+ LU/fEm4d
+ 3mN52WReNt/z7onmBg2afCOa0NYHaLsgL/N4klmY/dtFhpJlu86SptzU96hemn+9MRgQuBW4kd8pS8iGj2Mv0RWQf6t0xZb0mvNXQs060tS1oqFIChyb58HMjKz/6AIzN8bgiCyDlqjZpMyv5xCgPmW+GAjtHbomIO7NUSdS9+eDdvLZfUPFszCsV3FcTHXhyIYVPD4uADpCtFn8vdR74zhEzfIw2v3QIqKHFbiE2lexbxdCVojtyJ3CcfsXhDOLEqoyMHJ/dngB7pTYa0S2V/xRGY45dK1IVMWQOx1QuQpNRQOwNu9h4rWqPXkOsmpnsqFq8Cn7slg1DvUlNffxJXZmvX2QQ7Ymy6nzea6SAvw77NSv1Ek6gRX3Ln87zQ1/9R2o44bbumTA7wn7ghULYGYxk21INFfU09J+y6NPD7oSnugcwtcpeD9aJzhRTVPRU0Of8b1ZqpP91EpYKriDpeSIkFt1pl5DWk2XwG2kTfYKxD1HFcLbrdfiH8aFT7pK7OXpzGgIRTmKUWMd4j9uzD1HRb/sknUSDrDMM4AUI+lGpDqpQDMh4G5OzWJwu2Hblo3eeocfUngfOPRWt9FO5tYTUOcv14vxkZV32LIyZdFUz0LklrQas0q/gEHJY9hwmLeztbE0kUwR7eYaXQh7VeXKgg0IRN/MX4IAcJXmNaFuw9hL11NyTewPXvzsLStvqb9M7vbomc09Dmgw2whltMiSaXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,122 +103,93 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential
-issues to consider:
-- [Low] KVM: selftests: file descriptor leak of gup_test_fd in
-  __pin_pages()
-- [Low] KVM: selftests: gmem_fd leak in gmem_conversions_do_setup()
-- [Low] KVM: selftests: wrong relative include path to memory_provider.h
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [High] KVM: guest_memfd: gmem_insert_pfn() ignores PFN cacheability
+  attributes
 --
 
-commit 60d8850de9774956f2ff25264d606f044e04bb8c
+commit f25760b5d4313e6d13e16717d7b61b6d2b33bbac
 Author: Ackerley Tng <ackerleytng@google.com>
 
-KVM: selftests: Test guest_memfd conversions with sample memory provider ba=
-cking
+KVM: guest_memfd: Support reporting PFN cacheability
 
-This commit adds a fixture variant to guest_memfd_conversions_test to test
-guest_memfd conversions backed by the sample memory provider, and adds a
-__pin_pages() helper so the elevated_refcount test can check that pinning
-PFN-backed memory fails.
+This commit adds cacheability attributes to guest_memfd PFN attributes and
+handles them in stage-2 page fault, nested VNCR, SEV-SNP, and guest_memfd
+population paths.
 
-> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/s=
-elftests/kvm/lib/kvm_util.c
-> index d42e201eba763..9793818f54d23 100644
-> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
-> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-> @@ -674,7 +674,7 @@ int __pin_task_to_cpu(pthread_t task, int cpu)
+> diff --git a/include/linux/guest_memfd.h b/include/linux/guest_memfd.h
+> index fb2279a001ebf..8cdc334d1c9aa 100644
+> --- a/include/linux/guest_memfd.h
+> +++ b/include/linux/guest_memfd.h
+> @@ -2,6 +2,7 @@
+>  #ifndef _LINUX_GUEST_MEMFD_H
+>  #define _LINUX_GUEST_MEMFD_H
 > =20
->  static int gup_test_fd =3D -1;
+> +#include <linux/bits.h>
+>  #include <linux/types.h>
 > =20
-> -void pin_pages(void *vaddr, uint64_t size)
-> +int __pin_pages(void *vaddr, uint64_t size)
->  {
->  	const struct pin_longterm_test args =3D {
->  		.addr =3D (uint64_t)vaddr,
-> @@ -685,7 +685,12 @@ void pin_pages(void *vaddr, uint64_t size)
->  	gup_test_fd =3D __open_path_or_exit("/sys/kernel/debug/gup_test", O_RDW=
-R,
->  					  "Is CONFIG_GUP_TEST enabled?");
+>  struct file;
+> @@ -9,7 +10,33 @@ struct folio;
+>  struct inode;
+>  struct mempolicy;
 > =20
-> -	TEST_ASSERT_EQ(ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args), 0);
-> +	return ioctl(gup_test_fd, PIN_LONGTERM_TEST_START, &args);
-> +}
+> -#define GUEST_MEMFD_PFN_ATTRS_READONLY	(1ULL << 0)
+> +#define GUEST_MEMFD_PFN_ATTRS_READONLY		(1ULL << 0)
+> +
+> +/*
+> + * Cacheability attributes for physical frames returned by providers
+> + * (columns show x86 / arm64 memory types):
+> + *
+> + * Attribute                               | Host PTE       | Stage-2 PTE
+> + * ----------------------------------------+----------------+-----------=
+----
+> + * GUEST_MEMFD_PFN_ATTRS_CACHE_WB          | WB / Normal    | WB / Normal
+> + * GUEST_MEMFD_PFN_ATTRS_CACHE_UC          | UC / Device    | UC / Device
+> + * GUEST_MEMFD_PFN_ATTRS_CACHE_UC_ALLOW_WC | UC / Device    | UC / Norma=
+l-NC
+> + * GUEST_MEMFD_PFN_ATTRS_CACHE_WC          | WC / Normal-NC | UC / Norma=
+l-NC
+> + *
+> + * GUEST_MEMFD_PFN_ATTRS_CACHE_WB is 0 so normal cacheable memory is the
+> + * default when no cacheability bits are set.
+> + */
+> +#define GUEST_MEMFD_PFN_ATTRS_CACHE_MASK	GENMASK_ULL(2, 1)
+> +#define GUEST_MEMFD_PFN_ATTRS_CACHE_WB		(0ULL << 1)
+> +#define GUEST_MEMFD_PFN_ATTRS_CACHE_UC		(1ULL << 1)
+> +#define GUEST_MEMFD_PFN_ATTRS_CACHE_UC_ALLOW_WC	(2ULL << 1)
+> +#define GUEST_MEMFD_PFN_ATTRS_CACHE_WC		(3ULL << 1)
 
-[Severity: Low]
-Does __pin_pages() leak gup_test_fd when the PIN_LONGTERM_TEST_START ioctl
-fails?  In the elevated_refcount multipage test for the mp variant,
-__pin_pages() is expected to fail and the caller returns early without
-calling unpin_pages(), so each loop iteration overwrites gup_test_fd
-without closing the previous descriptor.  Closing and resetting
-gup_test_fd via kvm_free_fd(gup_test_fd) when the ioctl returns an error
-would avoid the leak.
+[Severity: High]
+Should gmem_insert_pfn() apply GUEST_MEMFD_PFN_ATTRS_CACHE_MASK to the page
+protection passed to vmf_insert_pfn_prot()?
 
-> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test=
-.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> index 023df9cb9d4a6..d0cbb1353d7ee 100644
-> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> @@ -16,11 +16,13 @@
->  #include "kselftest_harness.h"
->  #include "test_util.h"
->  #include "ucall_common.h"
-> +#include "../../../../samples/kvm/memory_provider.h"
+When userspace faults on an mmap()ed PFN-mode guest_memfd,
+kvm_gmem_fault_user_mapping() passes pfn_attrs to gmem_insert_pfn(), which
+only checks GUEST_MEMFD_PFN_ATTRS_READONLY:
 
-[Severity: Low]
-Should this relative path have five "../" components instead of four?
-Files under tools/testing/selftests/kvm/x86/ sit five levels below the
-repository root (like tools/testing/selftests/kvm/lib/kvm_util.c, which
-includes "../../../../../mm/gup_test.h").  With four "../" components, the
-preprocessor searches two levels above the kernel tree via
--I$(LINUX_TOOL_INCLUDE) before resolving the header through
--I$(LINUX_TOOL_ARCH_INCLUDE), which breaks file-relative lookup for tools
-and risks picking up a file outside the checkout.
+virt/kvm/guest_memfd.c:gmem_insert_pfn() {
+	...
+	if (pfn_attrs & GUEST_MEMFD_PFN_ATTRS_READONLY)
+		flags &=3D ~VM_WRITE;
 
-[ ... ]
+	if ((vmf->flags & FAULT_FLAG_WRITE) && !(flags & VM_WRITE))
+		return VM_FAULT_SIGBUS;
 
-> @@ -75,10 +109,12 @@ static void gmem_conversions_do_setup(test_data_t *t,
-> =20
->  	vm =3D __vm_create_shape_with_one_vcpu(shape, &t->vcpu, nr_pages, guest=
-_do_rmw);
-> =20
-> +	t->expect_pin_failure =3D variant->expect_pin_failure;
->  	t->resource_fd =3D -1;
-> =20
->  	if (variant->create_resource) {
-> -		uint64_t flags =3D gmem_flags | GUEST_MEMFD_FLAG_USE_RESOURCE;
-> +		uint64_t flags =3D gmem_flags | GUEST_MEMFD_FLAG_USE_RESOURCE |
-> +				 variant->extra_flags;
-> =20
->  		t->resource_fd =3D variant->create_resource(size);
->  		TEST_ASSERT(t->resource_fd >=3D 0, "Failed to create backing resource"=
-);
-
-[Severity: Low]
-Does gmem_conversions_do_setup() leak the local gmem_fd created by
-__vm_create_guest_memfd_resource() for resource-backed variants?
-vm_mem_add() duplicates a caller-supplied gmem_fd via kvm_dup(gmem_fd)
-rather than taking ownership of it:
-
-tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c:gmem_convers=
-ions_do_setup() {
-	if (variant->create_resource) {
-		...
-		gmem_fd =3D __vm_create_guest_memfd_resource(vm, size, flags,
-							   t->resource_fd);
-		TEST_ASSERT(gmem_fd >=3D 0, "Failed to create guest_memfd with resource");
-	}
-
-	vm_mem_add(vm, VM_MEM_SRC_SHMEM, gpa, slot, nr_pages,
-		   KVM_MEM_GUEST_MEMFD, gmem_fd, 0, gmem_flags);
+	return vmf_insert_pfn_prot(vma, vmf->address, pfn,
+				   vm_get_page_prot(flags));
 }
 
-Because gmem_fd is never closed after vm_mem_add(), the guest_memfd file
-and its attached backing resource (including the CMA pages allocated by
-the memory_provider module in the mp variant) stay pinned across teardown
-in multipage test loops until the process exits.
+Because vm_get_page_prot(flags) returns normal write-back page protections
+(and also overwrites any custom vma->vm_page_prot set during mmap), host
+userspace PTEs for GUEST_MEMFD_PFN_ATTRS_CACHE_UC,
+GUEST_MEMFD_PFN_ATTRS_CACHE_UC_ALLOW_WC, and GUEST_MEMFD_PFN_ATTRS_CACHE_WC
+frames are installed as cacheable on arm64 (and on x86 whenever PAT does not
+override the protection).  This creates mismatched attributes between host
+stage-1 and guest stage-2 mappings and allows speculative cache fills or
+write-combining on strict uncached MMIO regions.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261106-gmem-alter=
-native-providers-v3-0-8484dde66a7e@google.com?part=3D50
+native-providers-v3-0-8484dde66a7e@google.com?part=3D51
 
