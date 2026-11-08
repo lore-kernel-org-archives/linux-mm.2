@@ -1,93 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D13606A31C
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 19:16:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BDF606A321
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 19:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jLKdElFn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Gq5aVxEQ
 Received: by kanga.kvack.org (Postfix)
-	id 1AC266B05B2; Sun,  8 Nov 2026 14:16:28 -0500 (EST)
+	id 2EAFD6B05BA; Sun,  8 Nov 2026 14:22:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0E1EF6B05B6; Sun,  8 Nov 2026 14:16:28 -0500 (EST)
+	id 29B006B05BB; Sun,  8 Nov 2026 14:22:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E27436B05B2; Sun,  8 Nov 2026 14:16:27 -0500 (EST)
+	id 1D7E86B05BC; Sun,  8 Nov 2026 14:22:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 9623A6B05B4
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 14:16:27 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6021A1204B2
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 19:16:26 +0000 (UTC)
-X-FDA: 85412907972.30.35882EA
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EA6F76B05BA
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 14:22:31 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 5DA42A80B0
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 19:22:31 +0000 (UTC)
+X-FDA: 85412923302.13.2EE0984
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C4DA420002
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 19:16:24 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jLKdElFn;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf28.hostedemail.com (Postfix) with ESMTP id D9EC2C0004
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 19:22:29 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gq5aVxEQ;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794165384;
+	s=arc-20220608; t=1794165750;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HEvMyrDAXRSzNt1aAK2qvgfoj7RJAzXbHjO64hkCzVk=;
-	b=OxgTGX2kH5hPpxY5/RWAIPVXy5nqlUIHZJjJZNCbWdWOKHntWUI0PTt4OkjSS3gdCIdFv8
-	MPh0YjN8BIqf4596djvSWKkti2fX+s1+e8JoT+0p+Y1btAB4xAMTtlQ566SXLMWwh4RiKT
-	Z00Xx47F3KWDRnuJYSoswJnI1c1XFkQ=
+	 in-reply-to:references:dkim-signature;
+	bh=Ft3w4NHx2XhqSXh6hSv9Ma4EbAR6Gk/3pG2daDXPnLs=;
+	b=y5S83kpNKEvuUE6UmycNxu7m9I+DKVdpVd6n1oiaW482rf4IhzpF2CnjFTpxx1bA4Eq162
+	xGy1TOeEu8sD8XpbnFieTQpwn6Hm88Px6bXdhyFsSBwXheUkESzjBUnFQWMBRckYOCoHo7
+	y/Sbgsk1RS8zwWop0knh9M2z48EgMkM=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794165384;
-	b=kBiG8IdjVDJWNcABP5tmucvvvGCHJ1FvhPEeP94NzRRM/z/ZIZ/7XxEEZ5Cdpv7l88QwMS
-	n0be61tF4I/ftxEdziVX11E475RGrTUFfCFaXvbYfsnuzs94gKvuqn3KCp9IlhHCd6Uq2U
-	q7rc8UGe33Jvam3bS/knogUrMXkn1UA=
+	t=1794165750;
+	b=eTqT7FCnPBmk0m8XRtKpbD5yYeodnJG+e96coxqIk+nIDavS0fOqdfmpLxclCLIfYJEvTZ
+	cIB7ysHEGn2J4ZJzEidUVUgeE89Ogkjvo2Cc8X3B81mwGXQgkBcEcKT3pnsijpCJzCpewn
+	BqrEFDrmu1RB5qO0nDnYWqa/mPJvFU4=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jLKdElFn;
-	spf=pass (imf03.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf28.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Gq5aVxEQ;
+	spf=pass (imf28.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6A0076185A;
-	Sun,  8 Nov 2026 19:16:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003E71F008A4;
-	Sun,  8 Nov 2026 19:16:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 619D761136;
+	Sun,  8 Nov 2026 19:22:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB2D1F0089F;
+	Sun,  8 Nov 2026 19:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794165384;
-	bh=HEvMyrDAXRSzNt1aAK2qvgfoj7RJAzXbHjO64hkCzVk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jLKdElFnNCfmUnBn9aOOenl1weRXD/H6YbcpW9wA9WR+soFa28mHyOVI9iqQpBogp
-	 xayixgY7vJsymheXwiYrddX1JfqByf33rAfo/K2VN9+gSpioDzJ/LQbq586rvg/zIP
-	 8JtZ9o7HUjSKLW9/uQNEMWY8EZIwkypdIowsxiqNfq10XizgeISNYUbn0oAQDs12tE
-	 Ff7bM/EnJOHTKVjdHzTg77Hm0IyF6tYoxGMkZVIFCtfHFTLPfcOSl481JN2vIAgaBQ
-	 oYA2lb/PYqYcdGbUUfMDBryzhykLOfEEwsZbbSwtah9AHvfA93JEtBbXyfoAhnZWgq
-	 xZAMGIckEoepg==
+	s=k20260515; t=1794165749;
+	bh=Ft3w4NHx2XhqSXh6hSv9Ma4EbAR6Gk/3pG2daDXPnLs=;
+	h=From:To:Cc:Subject:Date;
+	b=Gq5aVxEQjhFtWKv0iJoeNxpWJQDtUdPV5yyZ/QQuKgYj1VH6s4vQyQix6AkWVDaXK
+	 EPmljqF9krYy8xFTo/OTXpWS9yrFIoZkoO4gzstKPL3LZQXkse4C0Q8ETMBdbhIBCz
+	 uX9MXecOUHM9o+8vSCzCq5Vd3Coe6RgpZzjIlrIgOj0JDhT2XtODCTkgtrAdIdYBuS
+	 daD4aUXMGHylY0KuETM/kXGJ8IZRuOPLMjJrH8RBHUbevI7B1dosksZvdEqqiSukb/
+	 R6CbE8l/04BqlzzUCPIzlhob94f07nzHP/sNbmsUqjfkJfPqtqMcA8bjcq5JfFJUWp
+	 pA2epMetNwbxw==
 From: SJ Park <sj@kernel.org>
-To: 
+To: stable@vger.kernel.org
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	Usama Arif <usamaarif642@gmail.com>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [RFC PATCH 3/4] mm/damon/sysfs: support LRU-activeness based DAMON filter setup
-Date: Sun,  8 Nov 2026 11:16:13 -0800
-Message-ID: <20261108191615.113362-4-sj@kernel.org>
+Subject: [PATCH 6.18.y 0/5] mm/damon: porting fixes that cherry-pick failed on 2026-11-07
+Date: Sun,  8 Nov 2026 11:22:15 -0800
+Message-ID: <20261108192221.114362-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261108191615.113362-1-sj@kernel.org>
-References: <20261108191615.113362-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Stat-Signature: ett6ouxqu9ty4ao9tdauk6ttrgodcf8f
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Stat-Signature: j7ecykga66d7te7im3u7zgaxsosuz18h
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: C4DA420002
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: D9EC2C0004
 X-Rspam-User: 
-X-HE-Tag: 1794165384-613520
-X-HE-Meta: U2FsdGVkX1/HEMuD+JtLQzR3719FowOF0Nq8ZsP6JeQxYxlOXwRBSFqWGRHyNagPwgqwpiznTb2fJQY9mEmWeaOONB/T8e6mZs6eIbJTY2/aQaypTKg/ifaer9Ogt+Z+ctx5Ues3BYK+Bbo8ZCsBkop+7NcnA637qYqHQmUzq3QbgDQuL7yqD3swLNSDk7jrAuogcuc8Sxd0CfCBf1JRy9b+QjXsc/TTz2IXCapyM6Xbmo6YpQ15SLCWewRrPE3ii0ylCLzCw250Rp7G6lpE9tsXTIW30VMVbcu13xBYI33qeNKwSTYcHpBu1eDGmsBF1u3jiY1qfgDRAvbIVhHqrfgFB0oedcmEDLXKqEgIWNmBlOylPTyyIPfVNE5MQxgjRHWRZGq1W0XOg+/j/x6N08MEWREZqfAozYfDLJ1OyetmCsRGAxUrWwn2WbxNail4iIM4qQeOvljoBIsEqarLKvLvujXj7M2jdwvA1qv0TaEC5mc14wWHB84H89j+rv1UMmFlJniCaAj5NYnjN6E9af893DpNsan5devJz8Y9gjr+i1jha9DWMyw5Jll07WQPFCOs5LNP5bXh5jyC8TK1ggCv78in6+GoXAgTPTx/TTE3AD/YrsPdFKOnVeMaLKEUtq3k1FhPaZbreVR0qVSrWYqb1lbnwB1Pj6PaU360N0b2hJzV57o5UQeVeqJ5SR3UVPmS0p0VDGktMDUbT6I8hDJWwLyqKpwNq4CT3OCExp7jUh+0ClnlX2UJTcEZ/vOwUo7KNr8aiX11B+AurJaL3PjMtcu7qxEFEHFkKHeE+LlSiDdpwOHbSnt6c+gQFhIMUf6t500U1zVmxirPnOdYXTtjIAx5VJJaJ8QQ7fPLOsy9Iud7Qm/px9hDHUpEmKkxURhIUpdh4oRtH9MYCc5z9XDRDmcd8/YqfINRNbzmTmcQUW+G4eoxYlohQpn3OmBJ+OtAghYZ3PN1J4Vdnzc
- MoDW2Da7
- 7M0bMp8zdQtq3++q8893279PVq+HkTN+EPZadoh0EuDKk3GP6As294FiNoiwzSGIdMRDJKVTEsGhrKMcYdub+xH7bH+tBYZpeoAhO8Mn1dYN+A2FTn+dD8CcGw+6w4GWngtrDMLdYXGN4Yx4coJGbSapEujgWK5ww7MkTePxxiNvmVzYm0n99lFEczbLjr/CPajTnN2CRmoIL+OVQitIWZe1BcWOyVDj27G+7To3Hh6RTs1I=
+X-HE-Tag: 1794165749-45890
+X-HE-Meta: U2FsdGVkX195tTIWlZv1o45BW5lUIeu31S1i4PPmg82z4q0xXKv3mc09QFz6ffIdaD103oxGUtkGfIoGkMPNr9uZKaOJ46Pgwe5CxCoGtynlODD8Sg878b6ZXinzlTGl7zDupliZ6Psq2lK5xQfWQz9uu03jOPDH6sT+OLkJrsUIhFIku2FMFdoO6oS/P29lneRhAzdOwU5k0yqgaJ5rdSA9SNJnPh78vcJ93VyfpNzlIIo3w/HOiYodn2tHjdF4HXuLKwaQEJwybP5+UrbmvmFlY3X3sT0W19kHRoPiBX4aWyCJVuZT0TEyWnDDz0pDPPJ4Vtl4Q+m/x09ER3PEtOYhyAl0KIqjZ96gy77pQ/H1KxrCtnofyBlG5cBG1KD6kU5i5sH3fOP3ZSRo8vWTotLDIFPhgUuUGvPJn6Dk/mXYkpW7PXuu9JoMayilR0c+gMDxgDkri5qu4L+hSxvOxKIPUlMHppTMKKt2ngQvPpKmjVFSYgOm6pv8ftQzX0prJ+W0XhE/Vr4V+ledHxSvMZjrenKFHJXqD1Yat6QPuammbG905swA5p119S9KZ/yyz0DXim7Ozkc6PEpGwYg1iVV3QpzCqdmk9vX5qk0zd/PPvKYx7RaOworyW6yi6501uEKy90UcP7Zy+gPkDDuhAUX1tiyYKUGWR36UT318IrAkS3bZptAuclzA2wFmGR5NsRu4kU+/CYuNtiFbNTn9Op4n3Xjsu2mIPdTcZaNhhvoErYHU2mUf7fksyz0IvPU5DLQk1ucjE9gDnmtI3d4EqtR4G75TFUNnDoMxY7yK52jNXZtfnGLYz7OG1nsOT9ppaYpiYt59mjtN1vKGUqZHZqD2O7HgUqGQxUTL6C3lN1FxLxPzAsbi6W+Kkuw4hN5S+iiljybdRi9/U2fbL34jyWj4W9MUnH4AkkMV4QmV/MtArBXvohQah+yOobhkIrxJOhWAiHLjFlT7eKsRoQc
+ NKA8QP8v
+ X8OT5wr+1VdZ9RzlWsV7EXAsOcSM2P2buvQ6Esuh7TjXulbppu/QC+/FSrJIge7PCKSWDuo0V56a0z5aNDhCuIEocZ+c/WkzMhPfH8VQ4auYuVSmO/fvFzrzinxALhlxkMHXOe92uAtEPcxySEeJzGZYkUEJA0NnWRuNYXGCTc2F6BJbBc6zxPZocatxLnWSrZXhxuKLi7QR0yMuTd2KgrdrqbaUlJSd2Q34SrzSzPvOOWOI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,31 +98,45 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Support DAMON sysfs interface based setup of DAMON_FILTER_TYPE_ACTIVE
-type DAMON filters.  For that, wire the type with a new user keyword,
-"active".  Users can set up the new type of filter using the existing
-DAMON filter setup interface with the new keyword.
+Manually port five DAMON fixes that cherry-pick failed [1-5] and turned
+out to really need to be picked.  Note that seven patches [6-12] that
+also failed in the same day were having wrong Cc:stable@ tags, so
+ignored.
 
-Signed-off-by: SJ Park <sj@kernel.org>
----
- mm/damon/sysfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Patches that this series is porting.
+[1] https://lore.kernel.org/20261107050847-failed-6.18-90c2fa6adfed@kernel.org
+[2] https://lore.kernel.org/20261107050851-failed-6.18-29c6084658af@kernel.org
+[3] https://lore.kernel.org/20261107051039-failed-6.18-af19aff38d6f@kernel.org
+[4] https://lore.kernel.org/20261107051438-failed-6.18-5695abc4e742@kernel.org
+[5] https://lore.kernel.org/20261107051441-failed-6.18-bbeec2d8324d@kernel.org
 
-diff --git a/mm/damon/sysfs.c b/mm/damon/sysfs.c
-index 70a4b64fb8ea9..779c98205a94b 100644
---- a/mm/damon/sysfs.c
-+++ b/mm/damon/sysfs.c
-@@ -1011,6 +1011,10 @@ damon_sysfs_filter_type_names[] = {
- 		.type = DAMON_FILTER_TYPE_HUGEPAGE_SIZE,
- 		.name = "hugepage_size",
- 	},
-+	{
-+		.type = DAMON_FILTER_TYPE_ACTIVE,
-+		.name = "active",
-+	},
- };
- 
- static ssize_t type_show(struct kobject *kobj,
+Patches that also cherry-pick failed but deliverately ignored.
+[6] https://lore.kernel.org/20261107050853-failed-6.18-df7d9a0f8d91@kernel.org
+[7] https://lore.kernel.org/20261107051022-failed-6.18-6f276422aded@kernel.org
+[8] https://lore.kernel.org/20261107051024-failed-6.18-1bfb9384ae0e@kernel.org
+[9] https://lore.kernel.org/20261107051027-failed-6.18-1d2397b2c414@kernel.org
+[10] https://lore.kernel.org/20261107051029-failed-6.18-cec08aad3def@kernel.org
+[11] https://lore.kernel.org/20261107051032-failed-6.18-a1c7fdaf1657@kernel.org
+[12] https://lore.kernel.org/20261107051034-failed-6.18-409d2ab6d982@kernel.org
+
+Changes from RFC
+- RFC: https://lore.kernel.org/20261107201001.206120-1-sj@kernel.org
+- None.
+
+SJ Park (5):
+  mm/damon/core: skip applying scheme if region split for quota fails
+  mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total
+  mm/damon/sysfs-schemes: read sysfs_filter->sz_range only once
+  mm/damon/core: remove unreachable damos charge_{target,addr}_from
+  mm/damon/core: filter out damos address filter-split failed region
+
+ mm/damon/core.c             | 63 +++++++++++++++++++++++++++++++------
+ mm/damon/sysfs-schemes.c    |  5 ++-
+ mm/damon/tests/core-kunit.h | 16 +++++++---
+ 3 files changed, 66 insertions(+), 18 deletions(-)
+
+
+base-commit: bd28b146e1b6b6048a00f4d240d0f6b2e1db6b3c
 -- 
 2.47.3
 
