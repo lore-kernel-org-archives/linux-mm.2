@@ -1,94 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38002606A33B
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 19:22:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3F0606A322
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 19:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JTBMMTbL
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=izPXfjvc
 Received: by kanga.kvack.org (Postfix)
-	id E3C6C6B05C0; Sun,  8 Nov 2026 14:22:33 -0500 (EST)
+	id 1FFE56B05BD; Sun,  8 Nov 2026 14:22:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDA616B05BF; Sun,  8 Nov 2026 14:22:33 -0500 (EST)
+	id 191B46B05BE; Sun,  8 Nov 2026 14:22:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4CB16B05BE; Sun,  8 Nov 2026 14:22:33 -0500 (EST)
+	id E33586B05BB; Sun,  8 Nov 2026 14:22:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 005336B05BB
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 14:22:32 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 227E71C27B1
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A11C36B05BC
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 14:22:33 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7C4FCA04D0
 	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 19:22:32 +0000 (UTC)
-X-FDA: 85412923344.13.161642F
+X-FDA: 85412923344.03.633D82A
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 654A4160003
+	by imf17.hostedemail.com (Postfix) with ESMTP id CF67140004
 	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 19:22:30 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JTBMMTbL;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=izPXfjvc;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794165750;
-	b=WLAIU0rr7xyUZUuoWwdiVMvJRnG0xUtw/2k0bh+S5py1uD3Vs5U2H/uaWtn6FljJzQLRO3
-	j40z0CPmQLb+C9AN1JD3OcVZjAAy6C91ILdJwJ23JdJXHJShoD5NKpBEj1qY5bY8Fg5WEV
-	sDQ8BGLT4MrpOPelWjclKiNhDFzgbO8=
+	t=1794165751;
+	b=YCXcZYQxNJoGEzuawGagFue6ngqe14dItkvgUbhCJezem+sBq0Pb19BzcKO8CbI4kFVNBQ
+	8UO6ZPi2UZauUZ46PV93K9Yav+XyD2ENMWFsWjvjct7QyWYbU2GBRDPIlCiWixJhc+g/KZ
+	6oHqFu9mv964uFGnP0nrSK4DbyJlRls=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JTBMMTbL;
-	spf=pass (imf08.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=izPXfjvc;
+	spf=pass (imf17.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794165750;
+	s=arc-20220608; t=1794165751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7xZ+n0JvDN3hrYenLHVXLkTjZ+lK0ATIB/YUR73+pmo=;
-	b=hcr53r+14ja/HAW/SCY2L12kCpwpz8oTyyYh24iH0C3ObD6mjT+Tc5UEKrRCWYhsuJvU2C
-	s0p1OoNmhJAlrSQP3GDCDFowLvdqNpO8PgP54fLuX0SGQz+w2mnO5UhtpjoQJGbZrC2zqh
-	/+x2zTav947xCFBDMj69/jldTvsk/CA=
+	bh=/7U2bcNPCrBwzjsXKuwnPci/B9bQIw0g0WjpcO31XJk=;
+	b=TI7kXdovNN5mcsOPh5FYqjMTT5F4ukTVgmPQR3DfNsQGPPgUDXm+UqRNWsGNxWn6cZQONS
+	r92dcKLRfGlnghduwy+fxoiv6HrnoM5TetRatOEKbN2QYPsDbD5a+TA7ePHfAmuvlESIKv
+	3KEgSdu2d4S+33dOC6BtOZeASIFBSB0=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 954B7434D4;
-	Sun,  8 Nov 2026 19:22:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A2B1F008A1;
+	by sea.source.kernel.org (Postfix) with ESMTP id 2886043CCC;
+	Sun,  8 Nov 2026 19:22:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A46B81F008A3;
 	Sun,  8 Nov 2026 19:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794165749;
-	bh=7xZ+n0JvDN3hrYenLHVXLkTjZ+lK0ATIB/YUR73+pmo=;
+	s=k20260515; t=1794165750;
+	bh=/7U2bcNPCrBwzjsXKuwnPci/B9bQIw0g0WjpcO31XJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=JTBMMTbLmUld9NcT0MS7oZ0BCP8jdLSQulpaGGpnXINKh66sW+/iol7TkF1T3exKz
-	 //Fu+UMBhlvYt1A50YESr532I14L6CUWHmrZvYGcCqIakeRopKz4ruUtOaUIePHsU3
-	 zc2c4mO3304UNg4o4VPPoGSfXBdvgARmm9JkH6Eu+TwQpTPbizhqCl45na1haSDuL/
-	 TVvif5LeaTXjBL0UllBP56f7WUpx3dWIpGomfHPj+alf7ack/dgXtu8h84cKRE8WWF
-	 7Vf7z4Er4lsuS6v9sa3ap3lSh9J1SHclSLbIgXTq60u/pSz9VBkUYghIJiuWoCj8wd
-	 HTA2n9CUrAFXg==
+	b=izPXfjvcy5Z5PTMH38DwbpHy37MdWD/Gkhk88EhMJudxjjtACII+bs3s6zLOwJ3sv
+	 Zt26IeV1JBnt5IwNa+m8IUZaiwVSM6O/QW9ZFUx/jdpqbBpaDRc9LrQQ+REej01Ky9
+	 FNBqLnGlV8lRntIiftb8DB2J2MfN49oh4h7HNs/GZnioMOBqmLKnWPIks506lDy+CR
+	 2McJfG0wkVATLszyZJzDBguxvFLYME7B9GnJbf31jM8QmsBCPTwDwcDAaL5pXCH1oP
+	 KC/x4lmo4TFG6LeBToeURAVFZisqeC6lLAC/bpSNgseI8pLyYEpVqrIk0hgerVE3mp
+	 h716kC/xToSqg==
 From: SJ Park <sj@kernel.org>
 To: stable@vger.kernel.org
 Cc: SJ Park <sj@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Usama Arif <usamaarif642@gmail.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 6.18.y 1/5] mm/damon/core: skip applying scheme if region split for quota fails
-Date: Sun,  8 Nov 2026 11:22:16 -0800
-Message-ID: <20261108192221.114362-2-sj@kernel.org>
+	linux-mm@kvack.org,
+	Lian Wang <lianux.mm@gmail.com>,
+	Kunwu Chan <kunwu.chan@gmail.com>
+Subject: [PATCH 6.18.y 2/5] mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total
+Date: Sun,  8 Nov 2026 11:22:17 -0800
+Message-ID: <20261108192221.114362-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261108192221.114362-1-sj@kernel.org>
 References: <20261108192221.114362-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: camst3ggr1id3tfmwhkrmh7j39cdh36d
+X-Stat-Signature: jdmdjgzwpyrg9omwt6874izjtxaest73
 X-Rspam-User: 
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 654A4160003
+X-Rspamd-Queue-Id: CF67140004
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794165750-210397
-X-HE-Meta: U2FsdGVkX19IPVI57zGWZzCu4+2psSgjLzFDUToM/6O85rKQjr67VLcI8vhyjJwMfzzUruT/cgsxO2cf/3kXa+3k/xzPzP2PdkE6PV24gKHPitcJ3FIU6Ni4xZbrwx7wWMwVQJNGnIqmNsWtgZhEWm4KLm2DFjP5uPi6w3kvtGeHgoeJ4F5dv0yGDebfOw0TlAuMgSFie+AZ6KkcvHdp71EKxvm1n00p9RsFHn0+GxE/VEV3QD1mSMZtWLmwODVGj9pJO8X6jB/unIBFLTbVRx0nwRQI4g0xC96kx03CEOq4btW7wCyVig4LOV9b9IAbRWBHAQH9KjEppz5hGVBjnxbYgCWHFm60pr3L+JZ578GHZv0fLr4+5CqaPehbUb23xROWXV3McKQ8Tq7wqqmFOqny+52MEpnpM0naWZ7oWQJkccv1ShzO4K9iSK07G9flOci2tgXETjbYxZbwe87gEdKrsPhwTn2slNboVgvna5RaYfbniY+Gn/ImYWRNW1MA2AfxZftHV+3gqR2aH0Jv4paYPiuQrDvt4fY7M1WgSFwXB71dpn/jGBV9UC1qys2Dh5n9X+BxMGdNpk28UxqA3nkd1epS6Vto+JG8vFKM57ko5tYTWLJSFmv4pQsQ27mGWtby0GsGWyaG9w2wI7Iq2K/Z0E7yD3xQzwgesmQ9n0oPvNb6hn0kWt6C+A6anvu05HuqkKGjvP/sBH58Fs7l5XUlKeCB/rw7/GDEjJdUSEVN4fO+YdBTs0ROM9z/aBysHbBKRLOJ1N67Lc8wvzRovi+a6813X7r5d6yo8EEpwWPmzy511sYUjm2AUTylPKlu84lOqCFY58c5oDdLcJO4K47K7R9XnemjL2gjyWeSC36cw26O54mMWMbWpHKHuYz4N7h4JAsNTGrb+jjGr91tUeUn3gAgTbSQ2s9dklyVYKb8Phylho9dB9pLUfuvtb97IyV8Ccl/Q8aIW+M5Id4
- Qz19PFdT
- /kfF9dD2evx92zNgXBF+N6zP3I2fCQu9QRkyZn0UEzzwy0qf+F19R3McBcEDY6np5kvlqzf2HmC4FcIncfmXMTxdp63+h17dz4P0HELuFtc/OQhYz3MIezgLrIQQ0nBVRrfTGM6w3oMvLibAfJxVIaCgybwUkacgtOgW9IcDqRd/5UOkdrgvil+PGeeLlGMt3xUEsb2mzmWgsf+IM9SSAKVEShoV7Pj6mDrJ96JMIgNTlHOvZSFn9iq86TEq+vSIspxyhUQXSfNYJ90uj6Hb8aazlK7E5i+jqsQHXHIyVd9EqyamoEIwzRfSZhg==
+X-HE-Tag: 1794165750-2748
+X-HE-Meta: U2FsdGVkX181SpbO4YPrULw1YIK3+Jyw1mgyKGIGvcbz3+DpIVCcitPyU+XeeQI6cHvN2Xc6wFJOG7kcDga+YL8M7D7jslFbnhyfd6UJdjsnuISOXrYwlYPp/6y9B84JixbMX5wBgB5CmXSnNUsvorfQm0wZbpNRw73Tmfb7M1oCziZFzN8dIH1++UcBWcSOclnpb3hPpOkuHXZgPcXsRq3ZNs561vFoA8nBgCWyNg7fecQuEY7t3+GpuncBWNa4n30f4LR9EH2tVP9Ty/QbxBSeFTY30r35qDh8Eh4yDaaef7Z7OqCmJJ6EvLU4Svc9aiCiPFfkMolayM/p5IUr53/DLqm0dDKCYCgxZuO45dfnTlAzXZmlSeEriZnTIDItEynVDJ+DDtB+vfbnpPqbEMedriHJssk9ytdATH4KOUACtLR8s4VbaUlJPz/Oy+dR1j2quECHjdrtmfSgnmKkqn0whPHNNU/14pHC/jSm10YHyR+dqS2+0KYseV/ZlEe6EyvpBzI+oWU0ipdzstAUDrX+gtCBVJLKz1Q7fDYy7woilV0hAmmbWcPvnoJvpDnE5k7kkN1tfQ+M3ixzjvtQMGTjlcr2cAg9/SoJHJnJmJecxOxw05drynRAadUj8n597qHtAbfmJar3fX7nkFPxa6aj6lnroN5CgnCcCumdjwW3VG8xbig9gAj8Bkn9wqQAkPl+6RmAB65XQyyYv5AKnP4jb8pVsQs2TLL7cIlkqbZq8LhA+liS2sc6qL8HQcifBtBQQ59nZl1GQKCKB2edNN66zxIEbGy0gVzkaw7861aH35bWXB0O6aBemHgcvuV6GTN4xYqmBMpEmvUO/4dtBGeB6vLcD4V/E5QUDnEu+wv/WQR8dIKAVefe/SqumDWiDFQdfmpWw4v0ShiqX1U+/IdH3GS3pr8/mQihaF9401r0l/VUYilxES9zvy4b9fpqaDDvnGdd8S1jUzwz2J8
+ u7fCYHt9
+ arkxTS7l1B6TMwCuf0OOxskPhAMJJ6ZawW2YW/gU9xEHcZ0WE8pk2rCklXZ+9cUrApsfHkuJtgM5MdQcieQCl9C5yWw0CrVkC69iU5Ksqd3EctQ+HJy5y4WXMFJYoJm/7EIlsfUJU+LH1qPYjm4Bgc/3A/Opc3QbcfxJIXjPspNtIcNbXNXl7+VWWzkqwu7MNmT+YgE9UN27OyoZyy7S066LDa7eVnNs7v4IKr07DQVnarDmv2CQId/ue2PKuyQqcRUPgJXqdbBviwNjawlSznoto/vmAFtt+T1RbrKdtN+DDxUysgeoAp7X3wi87USLf663s925aVavPMnLCY+STV1yIjy5oz0aOMguLN2t7UtylqRWXw5s7vr+NSjCgvL8Pca4U4AZsrnLSCIOyN5KS79ia2I5jVsY+G6HZzegwKLjanJuqINsilvPJJKPQUYCLaBKlfiPvmRjPhYVKiyRO7vWkUL0pabgWxwX4UMsbwcT40oR2uxqIxEmazYf0QBzTZhCQ/i8SPOkkb5A=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,103 +101,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Patch series "mm/damon: fix DAMOS bugs in core, paddr and vaddr".
+When DAMOS_QUOTA_SOME_MEM_PSI_US metric damos quota goal is set, the PSI
+delta for the feedback loop is calculated using
+damos_quota_goal->last_psi_total.  However, it is initialized only after
+the first feedback loop.  The first iteration of the loop uses the
+uninitialized value.  As a result, the feedback loop can change the
+effective quota in an unexpected way at the first iteration.
 
-Fix misc bugs of DAMOS.  Patch 1 makes DAMOS less stress memory allocator
-under extreme situation.  Patches 2 and 3 fix wrong folios walking in
-DAMON_PADDR.  Patches 4 and 5 fix wrong folios walking in DAMON_VADDR.
-Patches 6-8 handle extreme and unlikely memory situations that can cause
-divide by zero and underflow.
+The user impact of the issue is not big, because the issue impacts only
+the first iteration of the feedback loop.  The feedback loop also has an
+internal cap of the quota adjustment.  The wrong adjustment will soon be
+corrected over a few iterations.  For this reason, doing no initialization
+at commit time was intentional.  It is also explicitly commented.  That
+said, nobody likes behaviors that are unexpected or difficult to be
+expected.
 
-All bugs are discovered by Sashiko.
+Check last_psi_total initialization and skip the tuning round when it is
+not initialized.  For this, initialize last_psi_total with U64_MAX in the
+goal creation and the goal commit time.  U64_MAX means the field is not
+initialized.  The tuning round shows the value and adjusts it to guarantee
+the current quota is maintained for the round, and last_psi_total is
+correctly initialized on the next round.
 
-This patch (of 8):
+Before this change, committing a new PSI goal on an existing PSI goal with
+goal-only DAMON sysfs command (commit_schemes_quota_goals) just worked.
+After this change, the tuning round right after the commit will be
+unnecessarily skipped, because last_psi_total is unconditionally marked as
+not initialized in the damos_commit_quota_goal_union().  This is an
+intended tradeoff for simplicity.  Skipping just one round of tuning is no
+problem.  Meanwhile it makes both the code and the behavior simple to
+understand.
 
-damos_apply_scheme() splits a region and apply the action to the subregion
-if it is needed for not violating the quota.  The split operation
-(damon_split_region_at()) could fail for allocation failure.  In the case,
-the quota could be violated.  From the user's perspective, DAMOS becomes
-more aggressive than expected under the extreme situation.  Handle the
-failure.
-
-The user impact is not critical.  The failure of damon_split_region_at()
-is unlikely since it is arguably too small to fail.  Also DAMOS being
-aggressive is limited to the single region.  Users can set min_nr_regions
-to set the maximum size of each region.  If it is reasonably set, the
-transient overhead shouldn't be critical.
+Also update the quota goal commit unit test for changed last_psi_total
+setup behavior.
 
 The issue was discovered [1] by Sashiko.
 
-6.18.y porting notes.  Modify damon_split_region_at() to return
-failures.  It is a part of commit c60874860762 ("mm/damon/core: handle
-region split failure in apply_min_nr_regions()").  Without it, build
-fails.
-
-Link: https://lore.kernel.org/20260901131850.98037-1-sj@kernel.org
-Link: https://lore.kernel.org/20260901131850.98037-2-sj@kernel.org
-Link: https://lore.kernel.org/20260718171523.87547-1-sj@kernel.org [1]
-Fixes: 2b8a248d5873 ("mm/damon/schemes: implement size quota for schemes application speed control")
+Link: https://lore.kernel.org/20260902002725.108635-3-sj@kernel.org
+Link: https://lore.kernel.org/20260718005316.89585-1-sj@kernel.org [1]
+Fixes: 2dbb60f789cb ("mm/damon/core: implement PSI metric DAMOS quota goal")
 Signed-off-by: SJ Park <sj@kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Cc: Usama Arif <usamaarif642@gmail.com>
-Cc: <stable@vger.kernel.org> # 5.16.x
-(cherry picked from commit 90c2fa6adfed7abe0935506a43cdff3a05c1fff0)
+Reviewed-by: Lian Wang <lianux.mm@gmail.com>
+Tested-by: Lian Wang <lianux.mm@gmail.com>
+Reviewed-by: Kunwu Chan <kunwu.chan@gmail.com>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@davidgow.net>
+Cc: Quanmin Yan <yanquanmin1@huawei.com>
+Cc: <stable@vger.kernel.org> # 6.9.x
+(cherry picked from commit 29c6084658af41b5b1fefd873d26d441830ced34)
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
- mm/damon/core.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ mm/damon/core.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/mm/damon/core.c b/mm/damon/core.c
-index 8fa788b0d709c..4c536a9b958e4 100644
+index 4c536a9b958e4..f2666770b5436 100644
 --- a/mm/damon/core.c
 +++ b/mm/damon/core.c
-@@ -1700,7 +1700,7 @@ static void kdamond_tune_intervals(struct damon_ctx *c)
- 	damon_set_attrs(c, &new_attrs);
+@@ -348,6 +348,8 @@ struct damos_quota_goal *damos_new_quota_goal(
+ 		return NULL;
+ 	goal->metric = metric;
+ 	goal->target_value = target_value;
++	if (metric == DAMOS_QUOTA_SOME_MEM_PSI_US)
++		goal->last_psi_total = U64_MAX;
+ 	INIT_LIST_HEAD(&goal->list);
+ 	return goal;
  }
- 
--static void damon_split_region_at(struct damon_target *t,
-+static int damon_split_region_at(struct damon_target *t,
- 				  struct damon_region *r, unsigned long sz_r);
- 
- static bool __damos_valid_target(struct damon_region *r, struct damos *s)
-@@ -2000,7 +2000,8 @@ static void damos_apply_scheme(struct damon_ctx *c, struct damon_target *t,
- 					c->min_sz_region);
- 			if (!sz)
- 				goto update_stat;
--			damon_split_region_at(t, r, sz);
-+			if (damon_split_region_at(t, r, sz))
-+				goto update_stat;
- 		}
- 		if (damos_filter_out(c, t, r, s))
- 			return;
-@@ -2454,15 +2455,17 @@ static void kdamond_merge_regions(struct damon_ctx *c, unsigned int threshold,
-  *
-  * r		the region to be split
-  * sz_r		size of the first sub-region that will be made
-+ *
-+ * Return: 0 on success, negative error code otherwise.
-  */
--static void damon_split_region_at(struct damon_target *t,
-+static int damon_split_region_at(struct damon_target *t,
- 				  struct damon_region *r, unsigned long sz_r)
+@@ -798,6 +800,9 @@ static void damos_commit_quota_goal_union(
+ 		struct damos_quota_goal *dst, struct damos_quota_goal *src)
  {
- 	struct damon_region *new;
- 
- 	new = damon_new_region(r->ar.start + sz_r, r->ar.end);
- 	if (!new)
--		return;
-+		return -ENOMEM;
- 
- 	r->ar.end = new->ar.start;
- 
-@@ -2472,6 +2475,7 @@ static void damon_split_region_at(struct damon_target *t,
- 	new->nr_accesses = r->nr_accesses;
- 
- 	damon_insert_region(new, r, damon_next_region(r), t);
-+	return 0;
+ 	switch (dst->metric) {
++	case DAMOS_QUOTA_SOME_MEM_PSI_US:
++		dst->last_psi_total = U64_MAX;
++		break;
+ 	case DAMOS_QUOTA_NODE_MEM_USED_BP:
+ 	case DAMOS_QUOTA_NODE_MEM_FREE_BP:
+ 		dst->nid = src->nid;
+@@ -816,7 +821,6 @@ static int damos_commit_quota_goal(
+ 	dst->target_value = src->target_value;
+ 	if (dst->metric == DAMOS_QUOTA_USER_INPUT)
+ 		dst->current_value = src->current_value;
+-	/* keep last_psi_total as is, since it will be updated in next cycle */
+ 	damos_commit_quota_goal_union(dst, src);
+ 	return 0;
  }
- 
- /* Split every region in the given target into 'nr_subs' regions */
+@@ -2171,7 +2175,12 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
+ 		break;
+ 	case DAMOS_QUOTA_SOME_MEM_PSI_US:
+ 		now_psi_total = damos_get_some_mem_psi_total();
+-		goal->current_value = now_psi_total - goal->last_psi_total;
++		/* uninitialized last_psi_total; make no effect this round */
++		if (goal->last_psi_total == U64_MAX)
++			goal->current_value = goal->target_value;
++		else
++			goal->current_value = now_psi_total -
++				goal->last_psi_total;
+ 		goal->last_psi_total = now_psi_total;
+ 		break;
+ 	case DAMOS_QUOTA_NODE_MEM_USED_BP:
 -- 
 2.47.3
 
