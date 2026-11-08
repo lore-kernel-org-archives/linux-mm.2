@@ -1,104 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E76606A31C
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 09:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB26606A337
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 10:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=K82No4gD
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oJi7KdRq
 Received: by kanga.kvack.org (Postfix)
-	id 114E66B05B0; Sun,  8 Nov 2026 04:23:28 -0500 (EST)
+	id D83ED6B05B0; Sun,  8 Nov 2026 05:09:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 09F986B05B1; Sun,  8 Nov 2026 04:23:28 -0500 (EST)
+	id D14FB6B05B1; Sun,  8 Nov 2026 05:09:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA8E76B05B2; Sun,  8 Nov 2026 04:23:27 -0500 (EST)
+	id BFDF36B05B2; Sun,  8 Nov 2026 05:09:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C4DBA6B05B0
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 04:23:27 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FDD26B05B0
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 05:09:11 -0500 (EST)
 Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 551D3160421
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 09:23:27 +0000 (UTC)
-X-FDA: 85411413654.14.748DFF6
-Received: from mta0.migadu.com (out-247.mta0.migadu.com [91.218.175.247])
-	by imf11.hostedemail.com (Postfix) with ESMTP id A687240002
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 09:23:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K82No4gD;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 27C2D1A0341
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 10:09:11 +0000 (UTC)
+X-FDA: 85411528902.14.6FDA3CC
+Received: from mta1.migadu.com (out-240.mta1.migadu.com [95.215.58.240])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 0E3A1A0002
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 10:09:08 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oJi7KdRq;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794129804;
+	s=arc-20220608; t=1794132549;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5XXct/mS8QSJCzfaXHvfDvD/GjABqbPTOqaOMdXOtqQ=;
-	b=E83kUapjOmyUlb+srXyotQ6oFHz5IJBwowdkYHe8r1jgVg19mhyAQgwGv9OVyl89g4mavr
-	Xumj4tmJSF87UQrmsIpX4sV8bLlF7OFcqMlOq+lIeRVjNmQH6wB1nvwefodVIROGRiHBz0
-	WWbXnKz+5KBwuOI4Ci+QzMdbjhG0RUo=
+	bh=bMJlZTOTEJlmOuVWJz4GRAC6Q9ZXPrxhv+08R2sTA74=;
+	b=7vNNVNQ58q1ze8QU1cJ8dE0FeV3yVf5JVlh9Y0xY90/eIAdwprFykQNAQiyz1iLOfKzra1
+	w5Adjbh4bX7mP4feusXGvvCTEpm5vLQPeK2IJ1BcKwsiyU7TOmev1FsTXVm6bmEuY0vaxV
+	eN+cy6waQLECZx3YGdH4scB/FLIycz4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794129804;
-	b=cU08E7aJFg/vjwHF2IIraAkKhTCCHaZO2c59eo+SGmqnqMXX/iRfspuGnqNBaAzIjwiZS0
-	j2Woq8tt+1NugVNTPf//BkRe8andy9rt+R2rM+1YoBMhSRuN72hiN/iYF2E0OABGU7m5A8
-	tRZSh4u+XhsHy+dVjPwFCAfbhRbWAjU=
+	t=1794132549;
+	b=Qt2Xy2EeA0JouVmn232dysrVoib9tB546MuvEBygYzt7FCJMwZoUOcyhQyAkaoTaWTTxWN
+	IMJJhqChIKliF0msvUrsKhChtSEg9KuAdKM2P/2LVTyfSAAUHbxzwrd/Lkjj82fS148xme
+	N/AmFlg49m9Kr3y2v4KcD+xbh6QLuVg=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=K82No4gD;
-	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oJi7KdRq;
+	spf=pass (imf15.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.240 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=5XXct/mS8QSJCzfaXHvfDvD/GjABqbPTOqaOMdXOtqQ=;
+DKIM-Signature: a=rsa-sha256; bh=bMJlZTOTEJlmOuVWJz4GRAC6Q9ZXPrxhv+08R2sTA74=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794129802; v=1; x=1794734602;
- b=K82No4gD/U0EDL8G5b0U3E/LJ/m2ZvtIurq4uACX0LgP99VkFG0/tl/mLp9yB/4+LZc8Oqyx
- y91WHpBUYPqB+EC56RlWaLqSTWEwxtt9cN3p4O9UVS6Ss8cvT+MH9gSuujZ94cxLHGxpsZP3usU
- bGtGN4oEaj5k9niDGR5r6uZ0=
+ t=1794132547; v=1; x=1794737347;
+ b=oJi7KdRqKwDGAFpr7Bmv9zJzxhR4ofd/6SKv8EmW8rADUsNX2np1y5SzvNmn5z4ppLwGdrb/
+ KxVerOoFanoXU9/Vb9kHUjRBhpKKjfHm1sR0yFld2vc2O5vaimBScxbcCJH+/nS9tTBJnuoOJRb
+ fiaWVOj6l7ZrFkwFxkVXDI68=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id fe3ad667d8daeff1;
-	Sun, 08 Nov 2026 09:23:22 +0000
-X-Mizu-Trace-ID: fe3ad667d8daeff1
+Received: by smtp.migadu.com with ESMTPS id 2d28383a0356ad5a;
+	Sun, 08 Nov 2026 10:09:07 +0000
+X-Mizu-Trace-ID: 2d28383a0356ad5a
 X-Migadu-Flow: FLOW_OUT
 From: Lance Yang <lance.yang@linux.dev>
 To: david@kernel.org
-Cc: akpm@linux-foundation.org,
-	ziy@nvidia.com,
+Cc: hughd@google.com,
 	baolin.wang@linux.alibaba.com,
+	akpm@linux-foundation.org,
+	david@readahead.eu,
+	ljs@kernel.org,
 	liam@infradead.org,
-	nico.pache@linux.dev,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev,
-	usama.arif@linux.dev,
-	kas@kernel.org,
-	qi.zheng@linux.dev,
-	hughd@google.com,
+	vbabka@kernel.org,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	rdunlap@infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mm: don't allocate a page table under RCU in do_set_pmd()
-Date: Sun,  8 Nov 2026 17:23:15 +0800
-Message-ID: <20261108092315.89639-1-lance.yang@linux.dev>
+	linux-doc@vger.kernel.org,
+	stable@vger.kernel.org,
+	mason@kernel.org
+Subject: Re: [PATCH 1/2] mm/memfd: handle GUP pins more reliably when write-sealing
+Date: Sun,  8 Nov 2026 18:08:57 +0800
+Message-ID: <20261108100857.94336-1-lance.yang@linux.dev>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20261106-khugepaged_set_pmd-v2-2-d2457b5e377a@kernel.org>
-References: <20261106-khugepaged_set_pmd-v2-2-d2457b5e377a@kernel.org>
+In-Reply-To: <20261103-fixes_core_2-v1-1-f332954f1df4@kernel.org>
+References: <20261103-fixes_core_2-v1-1-f332954f1df4@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 8zx1yak6kyqm1iaiuizdindzdxprbfy6
+X-Stat-Signature: jrny543iiag8gp45wb1eruc695m9gj6h
+X-Rspamd-Queue-Id: 0E3A1A0002
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A687240002
-X-Rspam-User: 
-X-HE-Tag: 1794129803-638556
-X-HE-Meta: U2FsdGVkX1/bjkfaDOdX8g55Rlf/ODdMuNHVpoAC+WM2ZfVIrnusnRxWnh2dt+BPddWaqb0x6FOzTlbE7s9WX4eZ6HbZ1R/ptLInZV5KidkJ145oCa3xxoQOczEKo/bvwtGVhS/KqsGp1A1FMYMIjRZ0wRwxLrZRN3i0sl0kF6JT2d6Lgz74Y8y3SAlL2H1k2sQ1Q9moVt1rucjlcYTWZ/0V3iysSvQjYFOqKXGpdQZGfhGFK4hZMkTGlR+bod0ijewQAdwQf3mZYvNl0FhYKUUFw8buF8ON9KtNVsrRDW+pZj24s2FXpba9VOtXGfuSfcAB4sxeyUkH0h4W1WKcZidZ/4sV3GDmTG17pmcYBY16ZI0fu3p6lAW+tHbEuy8NsUlregguS9cMlaHz04F0CmP8ROrIk1pmzt5jh400tq9y8b1lcYpV1d8NM2OyLQMdLqbNM/1KjaoBtzq7Yf3wITky0Ztke083hrWrjO+CgBDmXeKfdsMNLBdY+NFenCtkRK8dAXpf7p1wd0ln/KxZ8wW2KR05Z9Zqmh/2iD90jPkeYhIOqrwdC95/w+BLlOVdUa1axp3osaa9pB3roliNYvBXRWsBzzE9H35Bbkfm10YPf2jaoc/9imrcyK6tXGQINI+WBlIngQtQctSKGOmhtGa7yltbuTlS04dllwsY/ZlZxPaMcJP51AX/rSJy8A2kfxTB0oLX/5OsPCiVcy0QU+hUgpanmxxCm+imUV7dLJ7Nmtbq5Mka+URD6Orz1CQdbSgQrkihtcyif5B41mh6O/oXMkINxG6QOcOQRc0xktsfK56E5i0XTKC5jlzlea9Xbl5/1JXFsbw1bFknSR+rc2EXvJGyJxi73b4oyg9hkvAJCIT0xHIgRJvtPZbzJE6EIyq2Zf+pQYtkXwLr5Oq9aVyfJA+Tzp0iZ0pKHHVTf+dpr6iHQ9Je90xcqpBnUxxZS7YBixwSEmT2K3NRqrN
- 5doT7S5A
- FcKp5F+MVwBfUAtLfzSDXau6TIbeZDEuCKqq6SKJZvHkpd8lC3Mqkha095qbo0z86B4r/u9J3MUo0NPpCiiFyY8lkhIt/gFYsBHzPJV/yUiUpy690dOcudQ2B6Xz+/B4p+ec9EU9Ut1wvgXSpHzGieOoSjQmvm080C/AT1FcMsO43rr6HnEFuS7Ev+DxCcQTo3C79URU+bfrHjUtNj6FEzOMFaJknhA1oVmuRvc5DFQZrMg6XnyAOkw6FcqOoz230J02m8sFicDUs2BbPW7LJwk1NM4hZ74nvgEWj7Ef+XU0cNyLA00hLdv+83Q==
+X-HE-Tag: 1794132548-499386
+X-HE-Meta: U2FsdGVkX18wYuVZdsawDRsSdl2+q3YrsPGMm41PAO+Ly8av7sK9QfyAApMPICYbcrHhie5kpDZ18MNSng17DvEy9s17qDrBxTbY2M9ELcTWtTtcmrBcx2uvRoXf3tRWrL6ZH4H00AcTibja99tdYjpAe4VAoq4J4Zbg54/JoOXCxnmu60SABECBCMYUYakM9XI27Qx/OEvP/2Acvb/XB7KvaLVJUSD9aXQmaeU8E6TzMDSIc0r3sbC5+efcsw9X8MWitwuO9MwBw7vmJUgTX83sJQ7quoV38+wTK/AdJ6iIlS366XTTLnEzCi8S+zVigzkRslqHbJROuow/DDOjTOKQ2jCE682afIlYPoUZRGniMVDSS6F5yeEn3k8qkkZRCKh177Ucbb40RpiGnavc70KB6iokr62MwYE0iUsjx/3WmDAEqQqidXrWgQSfKCg7AtSO4YkkGIv0+Jid0p/bSP1FJvqZ7qNZYyKsSOR56UpL6QKmTdtNChhDSl9vl3jSROngIYSovA4di9pZYvUj7qwMmYGXjICOj+Sn5qvdPgFVdIKyx1/2/5AJnmDH2KgzAwEp50jZNvD68ZFbhvLnOjYm3rowmIwx+xUz+1OKlIrb0mE4CNYPaeQhTBN3aGml/FiBP4v9XTFtcg2Cp0Qq9TU2iTbqXKNd/HxW71UuMXzjpepTgeTmClLWXHBmBKxICr++LpkFg6KAYj0GV8ZTp+ECGGVcpsI2XXuv2xj9AReG9GB2rAmHDD1MiCZyyokpGL0dOWCWIVDbSZ796RKVfoEIU1ipqQTpp7mhRis6b58qexZXe6y4zTbGQ3imKIPbeRrCo3kLaidE0HEoRIRo2a8Gm0X+RG4zv3JZOberiBOGfsRkMagk6o5lgJTNRMrA2a0nYWMj9uMX+EMAyMX6AfNISV6IENu5DvC3Z/Ztw8+NGivch31pVXBmjeIZwpvjIn9T9V0sEQXkAEon7Ai
+ mrZfvWH3
+ V1Yb+7R1+BjBVLW7AjntrJLuO9IQNHoao5yXIFrKCOcLay9srdTx1z3D7X+4w3DK3Y5/QzlB4OT3ZddPbwSMNz+EwJz2UT7IeXDsyqhfD/pwPA3p9xn2hptclH4me0J98O2fbRbCm9smavyuEB0T4BdUgI1cx5BLJdftQp/J0V4wWUFpzliSQQ/fxRaLeTYQ97x8EXa8/2ToadISIA2PjCun/LvuI6I1DHJQ+q2QwIiSi4dh7TbtbFfsa2NFzzxdeHyh/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,40 +110,33 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-On Fri, Nov 06, 2026 at 01:36:13PM +0100, David Hildenbrand (Arm) wrote:
->do_fault_around() skips PTE table preallocation when the PMD already points
->to a PTE table. A concurrent collapse can then retract that table and
->clear the PMD before filemap_map_pages() locks the new PMD-sized folio.
-
-Right, having a PTE table when we check in do_fault_around() doesn't mean
-it'll still be there later ;)
-
->filemap_map_pmd() can then call do_set_pmd() with an empty PMD and no
->preallocated table. On PowerPC hash MMU, do_set_pmd() then tries
->allocating a PTE table to deposit. But filemap_map_pmd() calls
->do_set_pmd() under RCU, so allocating from that context is not good.
+On Tue, Nov 03, 2026 at 07:31:44PM +0100, David Hildenbrand (Arm) wrote:
+>memfd_wait_for_pins() detects GUP references by comparing a folio's
+>actual refcount with its expected refcount. As spelled out by
+>folio_expected_ref_count(), obtaining the expected refcount when there
+>can be concurrent folio (un)mapping is racy.
 >
->This race became possible when retract_page_tables() stopped taking the
->mmap and VMA locks. Previously, those locks excluded retraction while
->the fault was in progress.
+>So it is possible that a changing folio mapcount can race with our
+>check for GUP references, and F_SEAL_WRITE might succeed even if there
+>are some, allowing file contents to be modified after sealing.
 >
->Add a may_alloc argument to do_set_pmd() and pass false from
->filemap_map_pmd(), so we can fail with VM_FAULT_FALLBACK instead of
->trying to allocate.
-
-YES, just fall back and let the regular fault handling take over after
-leaving RCU.
-
->This issue should be fairly hard to hit in practice.
+>For folios with a reliable pincount, detect FOLL_PIN references using
+>folio_maybe_dma_pinned() before falling back to the refcount comparison.
+>For small folios without that, the 1024 pinning BIAS makes it very hard
+>(although not impossible) to misguide the refcount comparison.
 >
->Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
+>This improves FOLL_PIN detection for folios with a pincount. Handling
+>FOLL_GET and small folios requires a more fundamental change.
+>
+>Fortunately, most interfaces that allow for GUP'ing such pages use
+>FOLL_PIN, in particular interfaces using FOLL_LONGTERM. However, we
+>still have some FOLL_GET leftovers ...
+>
+>Fixes: 05f65b5c7090 ("shm: wait for pins to be released when sealing")
 >Cc: stable@vger.kernel.org
+>Cc: Chris Mason <mason@kernel.org>
 >Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 >---
 
-LGTM1
-
 Reviewed-by: Lance Yang <lance.yang@linux.dev>
-
-Cheers, Lance
 
