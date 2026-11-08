@@ -1,122 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D5A606A332
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 20:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E942D606A321
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 21:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VZ9dr7Vw
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=BHvQJEZm
 Received: by kanga.kvack.org (Postfix)
-	id 421496B05B3; Sun,  8 Nov 2026 15:48:36 -0500 (EST)
+	id 0BDD66B05B2; Sun,  8 Nov 2026 16:01:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F9756B05B8; Sun,  8 Nov 2026 15:48:36 -0500 (EST)
+	id 0680B6B05B3; Sun,  8 Nov 2026 16:01:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 312D16B05B9; Sun,  8 Nov 2026 15:48:36 -0500 (EST)
+	id EC0746B05B6; Sun,  8 Nov 2026 16:01:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EEBAA6B05B3
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 15:48:35 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8FB871C363E
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:48:35 +0000 (UTC)
-X-FDA: 85413140190.21.83DC789
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id ABD6C20002
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:48:33 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VZ9dr7Vw;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id BB1236B05B2
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 16:01:50 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 438D51604D4
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 21:01:50 +0000 (UTC)
+X-FDA: 85413173580.30.DB2D300
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 93D321C0004
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 21:01:48 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BHvQJEZm;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794170913;
+	s=arc-20220608; t=1794171708;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=djErT1YvUu0mkM8hSl51RULADOIRnOJrc/Fo5hTxu3A=;
-	b=dDc5SLD1on+Pblp6ctEbaiAYGSrH0RuFdnHe3ot5djNc8VWv3DC0zddIY+jNM3RkkHToqM
-	D2owUNJVrcXKk7LnRLFue/6o5N4eteimAysI1In3tBGHwbkDwrmM4hgl+FpCGtVFOvhimZ
-	NOfhUM4MO+67s85ynmUcYVcvd75NddI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794170913;
-	b=ACxFxhdrYuHuZNgyzUSqUK5ffG1bP458r29YV8wtrXnnV820jpzuYF1tXpqcdvodlt6l/0
-	mPC1JthPp6dfTuhqFCsY/ahp6OA1EgJhAM/rdSZjZyaSL8LY8dJ9s6XfXXrXDSEZPcXmpb
-	2MivzAr5ALi2/5hG92jTEQHFen9ThSI=
+	bh=LlRw1T3EhDLk7qpw1Iv3e7L77NPv6Myz+uuZpVhsszI=;
+	b=cxTu9yv/e7+oTLpDmNIMY6s88FhZEUJfQ66REDACVWkwVvQLOmlYfThtdD2QrBnF6R6X1s
+	rvmIrREHgmLISsfu1lg9b0gQgqOxDvpmh+8E5ac13fIZGL2aBLDxYy9ukESrUB+GwC5+Ao
+	9cgP3fHCwNox2Dzi+R3tBeak9KODnvs=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VZ9dr7Vw;
-	spf=pass (imf03.hostedemail.com: domain of baohua@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=BHvQJEZm;
+	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794171708;
+	b=PGRIWwz5wjOgpyXzVHnfRE5OsN09RrMUwRpyxdbyviUeYpwhKEandbZqXQXhJ4hNnukiz6
+	gWH3hprwIg7IQ908LrU/2O5dEhwpioNlSZ/Edpfuk93cjC1MpP+pWe1THP0TxiHUSbfhco
+	JaHUwqcdJLT1xOMKU3mLEoV5dKAXjgM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2835744EC3
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:48:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF981F00929
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:48:32 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 462F260D0E;
+	Sun,  8 Nov 2026 21:01:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C728D1F008A1;
+	Sun,  8 Nov 2026 21:01:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794170912;
-	bh=djErT1YvUu0mkM8hSl51RULADOIRnOJrc/Fo5hTxu3A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=VZ9dr7VwZlMqRCf2cZMC4mKBGmvOV4lXJUDDdnwvlDhOR0IigvXaYtuZTIbgdtsNL
-	 f7i8FNCsRcbBGJJWx/OiQOMQIOi7j/NPX9ieTBzSWYw8PLgkFZkhiWP9IWO9uPxVdo
-	 tNh1aka09dtSXfHWJG2oEajh3/HV2MYm0oZh42efak/XWKeBLkvbqt62djOGExRmGr
-	 TS3Gf5XOK1gSeOnsmKJgoyrGsTNpYdAAgaGblzNlLLA22lCk7JlnYaKHuKIh3QNglu
-	 0sL4bJmxZmhPf+AS132DBPMHIJ87VEQIBjTBRbj5lwRegYRCHJvHxHdIxJnl3pRujR
-	 Jqo4EGqr3vFmA==
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-93cc1ab5f6cso32206285a.0
-        for <linux-mm@kvack.org>; Sun, 08 Nov 2026 12:48:31 -0800 (PST)
-X-Gm-Message-State: APuU4Z8wKG9eCZxCmV9xmtAAKctpSGne+K8QXMRO4esXwHmKAQDBlXCy
-	NiBA5ePYATK0vBkrUAmlYn2Nk84xIZNzMTZ4IyP89TVDQ60YeK/SEz6LjSY5pXqtrXTTW3Y/3EB
-	HQclyyvYcqiN99v05dBaJeSBGuwPp0yY=
-X-Received: by 2002:a05:620a:1706:b0:944:d7b:e7a with SMTP id
- af79cd13be357-9478427a79emr342902085a.52.1794170910757; Sun, 08 Nov 2026
- 12:48:30 -0800 (PST)
+	s=k20260515; t=1794171707;
+	bh=LlRw1T3EhDLk7qpw1Iv3e7L77NPv6Myz+uuZpVhsszI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=BHvQJEZm1OHVlrkHXPv0o9B3+mNxp6d8OeOu8Ms2swuGncA3vCencR/PNNlMeLHbS
+	 FTqXLaA31Q+LSWY0NZq6/xtPOa/7Y9LzeGnonavPI94pD7bAMm9Z2CjarWPQjLLE8t
+	 9c7jmyaWMvXYzsUqhwywIGmOTG+QDHV/QvovtcbNLnCGpYiUNNa+L7XGjaIWOhadFV
+	 YHo91DIFEGM8C/7m0NiLxQNJewxOmKBmcMBXgWOGWt72q23QgognUsvRTJYofz+Qwt
+	 8j6u5mVmzv/T2t/ya717XIuGYvd2AnyefCvwyhB52UxoIyi3nu+mAF2b9C8cHgzNrb
+	 3pcHTOnAozH1g==
+From: SJ Park <sj@kernel.org>
+To: sashiko-bot@kernel.org
+Cc: SJ Park <sj@kernel.org>,
+	"Andrew Morton" <akpm@linux-foundation.org>,
+	"Usama Arif" <usamaarif642@gmail.com>,
+	damon@lists.linux.dev,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 6.1.y 1/2] mm/damon/core: skip applying scheme if region split for quota fails
+Date: Sun,  8 Nov 2026 13:01:38 -0800
+Message-ID: <20261108210140.908-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <sashiko-outbox-204020@kernel.org>
+References: 
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com> <20261016-mglru-fg-v4-6-2106750c0bfa@tencent.com>
-In-Reply-To: <20261016-mglru-fg-v4-6-2106750c0bfa@tencent.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 9 Nov 2026 04:48:19 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4zQh0TnAxifWPo2+DcyFFOtpXM+2QW91A07oumfyrqVYg@mail.gmail.com>
-X-Gm-Features: AclHuK_zbDT_3bnI0_EC4q_0TU7opSFYKTqi1euA2GlbUa3wQRMNDwIK1fC-8Kw
-Message-ID: <CAGsJ_4zQh0TnAxifWPo2+DcyFFOtpXM+2QW91A07oumfyrqVYg@mail.gmail.com>
-Subject: Re: [PATCH v4 06/17] mm/mglru: move add/del LRU size accounting out
- of lru_gen_update_size()
-To: kasong@tencent.com
-Cc: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, SJ Park <sj@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
-	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
-	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
-	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
-	Kairui Song <ryncsn@gmail.com>, Xiang Liu <liuxiang.277@bytedance.com>, 
-	Ehab Ababneh <ehab.ababneh@intel.com>, zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, 
-	Lian Wang <lianux.mm@gmail.com>, Kunwu Chan <kunwu.chan@gmail.com>, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: ABD6C20002
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: wfr9tu7qq3cht8jxweyiftoe3aiq19jy
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: d1yd9qgxt94yqf4q87dn8ie4zxfpaeo9
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794170913-375929
-X-HE-Meta: U2FsdGVkX1/BLynwiwLS24dGPNLdoPiLsOxFFnxQLT39ITipvOK3X2Uytwmx373ez7UargOue9YmGs9ujJc888FOaU4ecCXGU3/CW/6baTsRk7Hw92Nf3r930BwmaYS8I6QNFXEW+c/TpHEiuE2u0RbAvbJSJTSV5AaR2iV/5x/AcLn9ddfENnMox/6bsIO3G2681h1KGc+IgAnRjy3XnSZ4qsx8auMvVT6pczvQCikZfLJ190goD8+scWejQaHt/MRxGRXcVlTSBcpSf/eYUzMsZv4fwLSr3N7UErFwogoL2+Gx5UURfi0TWK8SYYyCBcG7J67KtUWKa82V2uKOIY1MTNIkp3HSTBCbeKQKYTXuq92JTK6tE8Y9T4JJjtiSxApK4GJ6qSXeNPq+TZxVIvbXTmUfB+z98Id88h4989e33O9Z+OFWGaFDihAYE/15rAzdb2/GSz6IEYf5PCi5T7VW8ElZBC3GUWPET1Cr6gcC+vKyJzeFhPn0LH6CEwyuF9emqxRef6Z7ibkAFzbw8AKClYdsng2QB0HAfwP6VAafNMsLG/DYfV6Gh15Diy8Fuf7MXCmDfAgsWHWikk1XB1ewBJXTlNIy3vCarHqfvaBCNvbm580bej66MWfJ7RNx04tW15SiuRjT27WBiaR2LTaZu33xAvB5Cj0bRLIf7M9/9nrd1RHwnoNYcWEifCYEzi5SdwBliZMlQFRWFMo1xsytGgAz5Stg8RBPWwvl/12BmocxYQUhp4yE1niyLDyE7E7xYZFN+QPRIRSepbCBFE8J6RxdYnxFTeZyGZQAamp1GvAkTGlICQ5+7uVma2Fgmez7gKxuG/gApHLRSa2Oy/AHOvEthlBISF5dvYXWWE3l5NTn8clGJJ6qMu9NxEhQUR6QryWCQ8a5YVPupWUbO19I/CI94N+jA7/ButUIqGgcTxazAad4hjImJ9shBzouckIIuoeJqVly2XETzJZ
- WTm62Nw1
- 6PK3O43iln0IbQTo9pUv9nXadTVlUXYMkEPdEObS4DWVHS6H6wbeKjR77CTPnQdv8Z+OExjEIZoYNNjCFET14v/5RbkQWolu7fCH1yEj7nw/InHbUIh1Fn0qcZ2i50ytrdhtUmvsfhLkhcc9mgMEg+/WtGVXu8DgIY+FSqmi+026ZQJp4gtVRxHb2D2Ak90tVot18I4dJEohM/RepeKc0p9Zv6HkineP5DyevT68BvLM6HlQTThHBkPbs2xmay0RwV1awZ8TtrLkmPmY1qxwCTeZRXtFqGLM8xWUcvKEknhJPu0GZ9cR3ZbzWX/SwvRf/Nib8oCrEmlYp4p+TAc+xGBXxQI/J0OFNfhHmX30vFK/AJzvYRfePEuM79jBbtI4+A48DP/eNctMOqDFM9dx/lcM3GgTlsL73KnnDBOZ6HC/GQXxdoSZqCFMd1vSNnhi6ljZk01S8qE+RcDUIV1+FUFUKHrPzDAHSwwGtwSqqxgWmV1TMaCs0M8cNZgFAQEBGqEEPZpW9XMZ1wLM=
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 93D321C0004
+X-HE-Tag: 1794171708-725208
+X-HE-Meta: U2FsdGVkX1+bWEVgCWpeGP4PqBi0sfjSEXrvSk0pcd8qXuqzyVt9w4UaIZX8W62wY1AcaQ3BkGm7f+inXRVHY7dlwPyeYepw5F/2L6jXkllNecBfaVIAXKw8nK9vxizVRqzqDQdIJ91YNPH8ZX0bbbgK88GMjRoK9fBO103TygmVs7ze4xPCF1StMgUuVJb2Qhl9OozqrkW7eIgCWN9WYYRZ2ReakwuN1wO9dPZ6AH+qTlvJ2/0d0pFKeNMdJBuCdYwWymfukhN53hc9m1RZO5iW5pC3OO3si0Q4nKLw8Arg5G/+EEqf5kOhfzqauK8PXDEqYPKZs/EECCy1qSetLckE4VVG2AUqwCrMt9dFyvaqXvpkwNAzliu8Ri95XY1YGNxNpeUh5oDC3bYsC+YM+VMWnBcEEEUCDO4V5IuvK/JHAcZ2FM/nZvyk8sVfiJlGxKnkV+o6zjJxB7+n/v3z9vbhPgsRGnCACwoP+C66qcG5nkvXl5DbNW+ddMofFbLmcYIGwwiAGdfrx4Sl4ld7E8HoWqVoohUEw6HFIA5xVOBVn+PSeOwBj7XqL5pNIzZvG3LnkiVVYVfJTNKImLpfnTkHVCP5xzcL7B783nt9+XuMtgCzuVGBD2idZBL0jCWZz6oxi24Eumr/Yris0IQTCl7dhlzA4EfPrcaDIHxGEZK3OwOD0xwoKlfLdKj2TNg0Q9DjmR2TJAWT1X8jAdguDZvnKUIhXDQZNRRhfQyGEJRf9BTf1q+kHoEo2mpDrtXZwN72nm8qtb2AAW5Ms+VTL56+02O0q/RDcHgDwemLmFq4llbm4zYzdtVAl3pJ14xW9bOyPLwHOt8KnI7erkWuMNX4NAZVLw+Je9o7bO9fIEx5K9bgWw82+jf5WhK56YlesUv79t84pfJK5OoAeIgQQosm9RfPc9shIsi4oMECxQo5tk7OggWQo7sf/ZGN38oNibDa6AOL3lW9mroeZGK
+ q37OOaPM
+ ckg28jidSRSzqm7b2QEjOkMTW3Cr1uA9JOSYeFX+/MNjn67rvi2KmlkywpUsJj+UsUMbFMc6Nn2j8kKXtkz8LPPgcJM8cp5Op/31BQBYbAnjT/YlM2Vsx2H3PDvuE4EK0z361I7AsrvbokxFSkvs3TfatphYOkKemzKQOg+gRHdDJasOJ8cUNgStA8PoDW/QCIF6p5G3BiCl01npLkxaRn4aGg8hVfBg4lql1lpY+eKZ56/i5VbBT91088cpIHDpnV14zEx8+99+KEHH9u1Vct/ULAYO3fek0xHtFa0bLIlcYQJbtx6GokS9Le0ol9iNShJ8P
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,145 +98,73 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 16, 2026 at 2:15=E2=80=AFAM Kairui Song via B4 Relay
-<devnull+kasong.tencent.com@kernel.org> wrote:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Pure code shuffle, no behavior change.  lru_gen_update_size() now only
-> updates the per-generation counters plus the promotion move; the
-> addition and deletion active/inactive accounting move to
-> lru_gen_add_folio() and lru_gen_del_folio(), which know the generation
-> and can apply the active-window test directly.
->
-> The unevictable case is untouched: unevictable folios never enter
-> lru_gen_add_folio() and keep being accounted by lruvec_add_folio() as
-> before.
->
-> Tested-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
+On Sun, 08 Nov 2026 20:36:18 +0000 sashiko-bot@kernel.org wrote:
 
-The patch looks good to me.
-
-Meanwhile, I've been struggling with the names of
-__update_lru_size() and lru_gen_update_size() for a long
-time.
-
-Given that lru_gen_update_size() now only updates
-nr_pages:
-static inline void lru_gen_update_size(struct lruvec *lruvec, int type,
-                struct folio *folio, int old_gen, int new_gen)
-{
-       ...
-
-        if (old_gen >=3D 0)
-                atomic_long_sub(delta, &lrugen->nr_pages[old_gen][type][zon=
-e]);
-        if (new_gen >=3D 0)
-                atomic_long_add(delta, &lrugen->nr_pages[new_gen][type][zon=
-e]);
-}
-
-while __update_lru_size() only handles
-active/inactive accounting, could we rename them to make
-their roles clearer? For example:
-
-lru_gen_update_nr_pages()
-lru_gen_update_active_inactive_size()
-
-The names are longer, but the lru_gen_ prefix helps
-distinguish this accounting from the actual
-active/inactive LRU lists.
-
-
->  include/linux/mm_inline.h | 28 ++++++++++++++--------------
->  1 file changed, 14 insertions(+), 14 deletions(-)
->
-> diff --git a/include/linux/mm_inline.h b/include/linux/mm_inline.h
-> index cfcbe4a9aa85..65415eeac802 100644
-> --- a/include/linux/mm_inline.h
-> +++ b/include/linux/mm_inline.h
-> @@ -313,21 +313,9 @@ static inline void lru_gen_update_size(struct lruvec=
- *lruvec, struct folio *foli
->         if (new_gen >=3D 0)
->                 atomic_long_add(delta, &lrugen->nr_pages[new_gen][type][z=
-one]);
->
-> -       /* addition */
-> -       if (old_gen < 0) {
-> -               if (lru_gen_is_active(lruvec, new_gen))
-> -                       lru +=3D LRU_ACTIVE;
-> -               __update_lru_size(lruvec, lru, zone, delta);
-> +       /* return now if not a promotion */
-> +       if (old_gen < 0 || new_gen < 0)
->                 return;
-> -       }
-> -
-> -       /* deletion */
-> -       if (new_gen < 0) {
-> -               if (lru_gen_is_active(lruvec, old_gen))
-> -                       lru +=3D LRU_ACTIVE;
-> -               __update_lru_size(lruvec, lru, zone, -delta);
-> -               return;
-> -       }
->
->         /* promotion */
->         if (!lru_gen_is_active(lruvec, old_gen) && lru_gen_is_active(lruv=
-ec, new_gen)) {
-> @@ -381,6 +369,8 @@ static inline bool lru_gen_add_folio(struct lruvec *l=
-ruvec, struct folio *folio,
->         int gen =3D folio_lru_gen(folio);
->         int type =3D folio_is_file_lru(folio);
->         int zone =3D folio_zonenum(folio);
-> +       int delta =3D folio_nr_pages(folio);
-> +       enum lru_list lru =3D type * LRU_INACTIVE_FILE;
->         struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
->
->         BUILD_BUG_ON(BIT(LRU_GEN_WIDTH - 1) !=3D MAX_NR_GENS);
-> @@ -396,6 +386,10 @@ static inline bool lru_gen_add_folio(struct lruvec *=
-lruvec, struct folio *folio,
->         set_mask_bits(folio_flags(folio, 0), LRU_GEN_MASK | BIT(PG_active=
-), flags);
->
->         lru_gen_update_size(lruvec, folio, -1, gen);
-> +       if (lru_gen_is_active(lruvec, gen))
-> +               lru +=3D LRU_ACTIVE;
-> +       __update_lru_size(lruvec, lru, zone, delta);
-> +
->         /* for folio_rotate_reclaimable() */
->         if (reclaiming)
->                 list_add_tail(&folio->lru, &lrugen->folios[gen][type][zon=
-e]);
-> @@ -409,6 +403,9 @@ static inline bool lru_gen_del_folio(struct lruvec *l=
-ruvec, struct folio *folio,
->  {
->         unsigned long flags;
->         int gen =3D folio_lru_gen(folio);
-> +       int zone =3D folio_zonenum(folio);
-> +       int delta =3D folio_nr_pages(folio);
-> +       enum lru_list lru =3D folio_is_file_lru(folio) * LRU_INACTIVE_FIL=
-E;
->
->         if (gen < 0)
->                 return false;
-> @@ -422,6 +419,9 @@ static inline bool lru_gen_del_folio(struct lruvec *l=
-ruvec, struct folio *folio,
->         gen =3D ((flags & LRU_GEN_MASK) >> LRU_GEN_PGOFF) - 1;
->
->         lru_gen_update_size(lruvec, folio, gen, -1);
-> +       if (lru_gen_is_active(lruvec, gen))
-> +               lru +=3D LRU_ACTIVE;
-> +       __update_lru_size(lruvec, lru, zone, -delta);
->         list_del(&folio->lru);
->
->         return true;
->
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Low] mm/damon: inflated tried stats in damon_do_apply_schemes() on
+>   split failure
 > --
-> 2.56.0
->
->
+> 
+> commit 3b087258b4341cba87012b7cb96ed676fd164c12
+> Author: SJ Park <sj@kernel.org>
+> 
+> mm/damon/core: skip applying scheme if region split for quota fails
+> 
+> This commit updates damon_split_region_at() to return an error code on
+> allocation failure and skips applying the DAMOS scheme in
+> damon_do_apply_schemes() when splitting a region to fit the quota fails.
+> 
+> Link: https://lore.kernel.org/20260901131850.98037-1-sj@kernel.org
+> Link: https://lore.kernel.org/20260901131850.98037-2-sj@kernel.org
+> Link: https://lore.kernel.org/20260718171523.87547-1-sj@kernel.org [1]
+> 
+> > diff --git a/mm/damon/core.c b/mm/damon/core.c
+> > index f0da5cb2b88a0..9206737d05ae7 100644
+> > --- a/mm/damon/core.c
+> > +++ b/mm/damon/core.c
+> 
+> [ ... ]
+> 
+> > @@ -810,7 +810,8 @@ static void damon_do_apply_schemes(struct damon_ctx *c,
+> >  						DAMON_MIN_REGION);
+> >  				if (!sz)
+> >  					goto update_stat;
+> > -				damon_split_region_at(t, r, sz);
+> > +				if (damon_split_region_at(t, r, sz))
+> > +					goto update_stat;
+> >  			}
+> >  			ktime_get_coarse_ts64(&begin);
+> >  			sz_applied = c->ops.apply_scheme(c, t, r, s);
+> 
+> [Severity: Low]
+> Does jumping to update_stat on damon_split_region_at() failure inflate
+> s->stat.nr_tried and s->stat.sz_tried?
+> 
+> When damon_split_region_at() fails, sz is the non-zero remaining quota
+> size, c->ops.apply_scheme() is skipped, and quota->charged_sz is not
+> advanced:
+> 
+> mm/damon/core.c:damon_do_apply_schemes() {
+> 	...
+> update_stat:
+> 		s->stat.nr_tried++;
+> 		s->stat.sz_tried += sz;
+> 	...
+> }
+> 
+> Because quota->charged_sz remains unchanged, subsequent matching regions
+> can repeatedly add sz to s->stat.sz_tried if allocation continues to fail.
+
+Trivial user impact issue.  The same behavior exists in the mainline.  No
+blocker for this patch.
+
+> 
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20261108202759.117377-1-sj@kernel.org?part=1
+> 
+
 
 Thanks,
-Barry
+SJ
 
