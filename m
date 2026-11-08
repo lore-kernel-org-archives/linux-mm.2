@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4869E606A31C
-	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 09:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12C3606A31C
+	for <linux-mm@archiver.kernel.org>; Sun,  8 Nov 2026 09:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Q1Cj7oxG
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WCeeqjBD
 Received: by kanga.kvack.org (Postfix)
-	id 587926B05C8; Sun,  8 Nov 2026 04:05:06 -0500 (EST)
+	id 5AFA26B05C9; Sun,  8 Nov 2026 04:05:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 513D06B05C9; Sun,  8 Nov 2026 04:05:06 -0500 (EST)
+	id 5618F6B05CA; Sun,  8 Nov 2026 04:05:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38C616B05CA; Sun,  8 Nov 2026 04:05:06 -0500 (EST)
+	id 38BA66B05CB; Sun,  8 Nov 2026 04:05:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 110EA6B05C8
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 04:05:06 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 75005A8040
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 09:05:05 +0000 (UTC)
-X-FDA: 85411367370.16.D416BBD
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 162236B05C9
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 04:05:09 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95240160428
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 09:05:08 +0000 (UTC)
+X-FDA: 85411367496.12.D845082
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id B8C3740006
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 09:05:03 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1Cj7oxG;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf13.hostedemail.com (Postfix) with ESMTP id F0F9120009
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 09:05:06 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WCeeqjBD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794128703;
+	s=arc-20220608; t=1794128707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sgwy2sLBhkZKtiaNvP4HpJ9fzTrVK7TDxZafS5632ec=;
-	b=B3MATBoUI1CxNJI2d08l9pdoGbhcCaFVVyvKySJ8tQz8VzigajdEwmqrxVQrD5Y2ehRzHm
-	gpT1bcAQHEDy0VAsCrzBF4Tqg4ar2OdMlzvrWHZL/4ZUOtK2QUt/w7Q4nIo+ewZEPNp1S+
-	NdR5vxjnrx/UEbD4jeUgTz26sOX1b+M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794128703;
-	b=bYko0Q4xUHg1XP1f6OTaocpKdOaTP+9oi5NFfxX6V7fLuq2zWVC5dpUC0DJUavIVVIbQus
-	UXqNvhV/vH9vAiITHd+GHQqgB3yb59xuibHrW/q0A5AapIeYwr8Nwvswr0JRzj4fLIFeYT
-	PRJ/+Ux3melTbTDUXguxV+tif4WckT0=
+	bh=MlJKhaH/GHxHkRkI9LbPdsXIENTIT3s6EiTose+Eau4=;
+	b=r67VdaScs8DhkGZeNArOBzUOaPZz2Mbr5NYPF4XDslY6JsQ6ymnpQSviRUWONVcucXbO8c
+	i7xA98nMKN2lxs43kkNXqSw+01XpqXmyk4a3FFZ5fQzi7Y3OZG8zVSpS8opnAtUnej4FHe
+	s+TKgsm32TWeCFt0M+bDIn5+4nkTXcE=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Q1Cj7oxG;
-	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WCeeqjBD;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794128707;
+	b=Ia0O3GxQjtPZBO5ALOnQRqb26U3p7JS/FCJogh3p7lS/IGkEn30Hr0uYKzXqE9rupIVZwq
+	5uhiFr36SRYbGXtqi70R9Dz2E4bzwYYcgz4YEPeZ24GUerDvmHqnPGJ6l/Zdl/Z77tk/UW
+	9BMcTzaQhRnudGiL3bBh4+92qQfAXn8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 233704383A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 4A5BE44D0E;
+	Sun,  8 Nov 2026 09:05:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E571F0089F;
 	Sun,  8 Nov 2026 09:05:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6985D1F0089F;
-	Sun,  8 Nov 2026 09:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794128703;
-	bh=sgwy2sLBhkZKtiaNvP4HpJ9fzTrVK7TDxZafS5632ec=;
+	s=k20260515; t=1794128706;
+	bh=MlJKhaH/GHxHkRkI9LbPdsXIENTIT3s6EiTose+Eau4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=Q1Cj7oxGzsAhAnRq/ZhdMKBRRx/rWlaEbygQnZQSmH26OlI14AkTEH8dwlgMwJ+q0
-	 K7OzN0pyEdMwTbJ+4B7NHLxClYFCbms61qVOV7JlCNy02lDKnf2yoIRo6WSPhqZnAo
-	 Obqljd3Wk/Qk5EMgfnRs1acIwKigDQg2HVfA07l4ycO20UWsqYPSYeOMDi1wFbFByu
-	 wZf7CzCQ0i7ljYKkGF4YGOlt15keX29CRg6bnwPwVhvxjS03sSTqnPIN8PLHCX66nD
-	 b720SgkqEZZQnW08Ph+QQnEgIh6Ck260FbNWFlHkQLyi/4S277WgaGf6bTU+YW7uvF
-	 T+DR3tJdCeMpw==
+	b=WCeeqjBDCKOlD2WXTKgnOb3VpGFbNofzjKQQMSQA8lCURuGfKJMVpLm3Y399NtvoP
+	 /2bRS2AKpG+kHPeu6o6S2+vo45ObhufmljPhW5PpClFL4p0kRQm7frPug4C9M85pIJ
+	 NS5+7DdLc6NcDQQJIyEehkXcr5lqQnbX2xa9PJdPoa1JKp9L/ksnGe/Ehh4uTnFEUV
+	 mdyWG0tRI374Aq/FB1Ze4D6i+FAJMdbIVs5+CgB4Qakn/SCkd+ULmH4NJa1cnbVSAR
+	 MGtSzMOKQraUfVtftuvtW3OWSNrW+rf+WO6xihRsp2GQShCv0Fa7Ok+qdvfgYsvw2o
+	 wQzW3D/4aSAxA==
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Date: Sun, 08 Nov 2026 10:58:44 +0200
-Subject: [PATCH 13/14] s390/sclp_mem: Replace page allocator calls with
- k[mz]alloc()
+Date: Sun, 08 Nov 2026 10:58:45 +0200
+Subject: [PATCH 14/14] s390/sclp_ap: Replace get_zeroed_page() with
+ kzalloc()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261108-s390-sclp-ready-v1-13-3e7c90eb6676@kernel.org>
+Message-Id: <20261108-s390-sclp-ready-v1-14-3e7c90eb6676@kernel.org>
 References: <20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org>
 In-Reply-To: <20261108-s390-sclp-ready-v1-0-3e7c90eb6676@kernel.org>
 To: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
@@ -80,18 +80,18 @@ Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
  linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-mm@kvack.org
 X-Mailer: b4 0.16.1-dev
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B8C3740006
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: F0F9120009
+X-Stat-Signature: 1736nmzsu51y6e5xh1pdqdh3xdo45jdo
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: tubakbb5k3am4fiummrya7h3c5nsjdyr
-X-Rspam-User: 
-X-HE-Tag: 1794128703-251865
-X-HE-Meta: U2FsdGVkX1+VQkX6ZXSrqYe+f6vpjk/E9EOsLDo7EigDVhkm5WS/usaD9Ri4zgTCSM4KEfsdwE6y5XUqXXdUmzk0LEPUTYUAmvPNaFETzjB9vvC+Lj3xPIH9sGoULWdga08G+5zzoiIWyFP8saNl159vxp5SIjPEMk+Wz8PEOnFJLtRSQqjsWiUlkk2wVeOJadd9ouA0sw1rOxqRPUms/gWiilhKV+HG5rIoiD13ij5vMEcgm4tYvEPaP2gan+jplu8/K5x7JY6rZOHv2mFYiOhUGH5E3lUSGEIOo6uDMIzb50xD111Up6X5Fea66da9KOucjNYyaNuQoLDez8X8vzl+NQnWLLQUG79wuWRhFwo8N+eIuqkkD7yCcRt4+uJomnme1OxdSG3rYhdBg8/A79m8gTGnB7/oJ4KwVKHiiHO1pkJ9BxAMJmATliUhHUFYF4AlHtQwxg0icOfU2SansbVsHmEzM7bmGpLhQECioYmqknBb+15Mgek3PaieeqpQayuDopUGwV0FUH/sjnNBzGpIsmXgNJZ+52YWJEu/nzcFyZEGMjY32NNAPVvJH690XF91k/+w2SOtG6UsGoDTT4eW6h19zzvfPhZVdEMVFCprax0CrPqRAbiF5rRWcNS50ouZyJ9l0XM7tSLAKY9+EkkVnEArTC/YfxRXb8Ru2Z0pp539TWvyshxUJvWg+rorYWcXvNffpasswDJT4ERqlyj0/Kg6b+Z6NchpIVlrywNP1ZM+fOFVZfhwnP6DuCv4pPG4iR77XRxQYZY+neB5FKebP+AIxXsbdDWcFHBaGPbRgRDDyUy8sXDqOM8FECvTsHQDwDIKyWdJgLDWTK0EEqZrI72AVVltUscWjQmlZCGo2myCay1FzBTZroRCK2osE+ZfNE+TT1e4xu0fqav8O4DIy0MnVeylAJtMKW439XE9+S7mIjrZqaRgxI+oD9FsRXIKHS+NsBOTnqP5maV
- nwddwJbf
- /+T/Ct6my2kS88kTuU8m0J+8n4J0GLoK7dqzL91CRKu02UA/DhZRIJk20P9QVE9FuHMolcVDXgdb+IIIt9nL2N/1vnxYtHEZMKYFad3yiWwVWL0EPp5a9QA5ypu4iDuioE8tXt7EAjIk6xUBhrQ7TmJLkeSbmB1dvlr/Anp3G7NZ61EyOsKBK4AICNFoXYgpyS4Wyj6pr4RFOD1uZzwLlsAGU89vTe80zoy8hyJMzNNgEBPAg7OB3I++9+sT/cbqKm0krMw5zNezlgkVBbS4IxdVAwB5UrqCFFKq46WNrydv+1CngHNiVp2LCAx0Ho2X+PwNS
+X-HE-Tag: 1794128706-837816
+X-HE-Meta: U2FsdGVkX1/VTd+oCNiLhzxLqyT68MJQ0VKYyj/CV4t8JwAYNrp6ojMHdeqZDua/zYBAUN5S3zcXkPhbsr1q2j9P1cWIWfbMQanciRK6fxWrCsyN6oUbhxXoWuCKGJwbAhSWB7CU/ZZl5l5J5AfMrHz0IQQEhgGyPXlQSBEK7VxQ+hDvsZt/qJM/tZHA6kLVcrth9UCKLYfaCS28AhJ5fxpYPHWNFv4dJgPlkYt5fg4E3PrbiGDcQSrjXhKr+q02kOdqKPpneBq7V9Z6ygwqrbrNvc9EE/FGR9S+PTI1uQPs+uCplmtvpnRPmPoER29FRohEsRKJVZ+qVG9XYsjoeV15xhb3G2n2idBsif9cRZlt3duMtT7rw2FllKRjbTV0DRnh042n9vzGLpk/SL9z5km+goCgMcMloYHzkRmwV8pnhkqU2cnCHbuusZc40skw/7D/a6lwcdEgopcQ3JW4Jukvg4k4bYWz+BktWIbsV9XSTNvc1R13GOdO+fLpDetgBhzPefKNqrAmIoctboJZ8KH2ML0WLJj/PuZLcQimRD6ewnY92fe5DsRhIZCSgU8fkU477OanhACF5M3MFHDxWipveNbIV5GDgpD/0nF9gTcLQqe8mBy4Fwo4VeGBFR/jEIGvHtOeMwRWsy66G78wIFgaoOUJ64kVMFNW+XI+QDQ6DXj5w2FCyYgWU/QDOxXXPV75P7ve+j78MyfM5aE7fq7FpqIfKcfos6TYrz/Vys7GIRxH8F028On8rV3BOGGjukReG9VTAYL/KoWj4pJucCPZ2jINuEtSZdnDGiHyWq7RND0nbklqMZRdNSSh+PvqG4MqylATk11DH9TXEHW6NZCNi6ATa3XoH8/KbVOU+BAUeSBqpMUsviAz00xHpxr/lXvPz1x8B8Eq/UDQGQ2iBtrxBPQN8QE1CX9c7e8jfsFFjqRYmYkTWsATZcd+v4gtX3aVGJ2jAjl1+HZL/7l
+ 1nhRdaFR
+ iV2icCzv6fRcdlw0ao5CoO5NoKzlv8c41LvlSEuh1zn7kTt0XGLCGsCMOKfglulCq99plKw9tWFC3it2JBR02n+kfU1eNQ2m70wMgbGu1pKvntOIej24drXtz8nVsbdaDaMY7QMq2+/8r+z07W+P2koT622GKn38uw0BTjAFKrnPNdwsEe8LMKQHmjUSWwIbyQLSmuQLeI8i487Wb5xelq+tn7lCT4z14JFm7ZEmODEx6xZQfMTZPZKA5jvvPMfynIVMFtCXHa6F4Rc8QbQ11mywYtEXw5bbYI/SBWnh2QprB8KipOPszMdd/FUi0mAGnoS9l
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -100,11 +100,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-do_assign_storage(), sclp_attach_storage() and sclp_setup_memory()
-allocate the SCCBs used to assign, attach and query standby memory.
+do_ap_configure() allocates the SCCB used to configure and deconfigure
+AP adapters.
 
-These buffers can be allocated with kmalloc() as there's nothing special
-about them to go directly to the page allocator.
+This buffer can be allocated with kmalloc() as there's nothing special
+about it to go directly to the page allocator.
 
 kmalloc() provides a better API that does not require ugly casts and
 kfree() does not need to know the size of the freed object.
@@ -116,73 +116,37 @@ fast path allocations.
 For the slow path the performance is anyway determined by the amount of
 reclaim involved rather than by what allocator is used.
 
-Replace use of get_zeroed_page() with kzalloc(), __get_free_page() with
-kmalloc() and free_page() with kfree().
+Replace use of get_zeroed_page() with kzalloc() and free_page() with
+kfree().
 
 Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- drivers/s390/char/sclp_mem.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/s390/char/sclp_ap.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/char/sclp_mem.c b/drivers/s390/char/sclp_mem.c
-index 6df1926d4c62a..c28460598d385 100644
---- a/drivers/s390/char/sclp_mem.c
-+++ b/drivers/s390/char/sclp_mem.c
-@@ -84,7 +84,7 @@ static int do_assign_storage(sclp_cmdw_t cmd, u16 rn)
- 	struct assign_storage_sccb *sccb;
- 	int rc;
+diff --git a/drivers/s390/char/sclp_ap.c b/drivers/s390/char/sclp_ap.c
+index 18bb018b4e0cd..15dff5dc0cac5 100644
+--- a/drivers/s390/char/sclp_ap.c
++++ b/drivers/s390/char/sclp_ap.c
+@@ -26,7 +26,7 @@ static int do_ap_configure(sclp_cmdw_t cmd, u32 apid)
+ 	if (!SCLP_HAS_AP_RECONFIG)
+ 		return -EOPNOTSUPP;
  
--	sccb = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
+-	sccb = (struct ap_cfg_sccb *) get_zeroed_page(GFP_KERNEL | GFP_DMA);
 +	sccb = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
  	if (!sccb)
  		return -ENOMEM;
- 	sccb->header.length = PAGE_SIZE;
-@@ -103,7 +103,7 @@ static int do_assign_storage(sclp_cmdw_t cmd, u16 rn)
+ 
+@@ -45,7 +45,7 @@ static int do_ap_configure(sclp_cmdw_t cmd, u32 apid)
  		break;
  	}
  out:
--	free_page((unsigned long)sccb);
+-	free_page((unsigned long) sccb);
 +	kfree(sccb);
  	return rc;
  }
  
-@@ -130,7 +130,7 @@ static int sclp_attach_storage(u8 id)
- 	struct attach_storage_sccb *sccb;
- 	int rc, i;
- 
--	sccb = (void *)get_zeroed_page(GFP_KERNEL | GFP_DMA);
-+	sccb = kzalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
- 	if (!sccb)
- 		return -ENOMEM;
- 	sccb->header.length = PAGE_SIZE;
-@@ -152,7 +152,7 @@ static int sclp_attach_storage(u8 id)
- 		break;
- 	}
- out:
--	free_page((unsigned long)sccb);
-+	kfree(sccb);
- 	return rc;
- }
- 
-@@ -487,7 +487,7 @@ static int __init sclp_setup_memory(void)
- 	if ((sclp.facilities & 0xe00000000000UL) != 0xe00000000000UL)
- 		return 0;
- 	rc = -ENOMEM;
--	sccb = (void *)__get_free_page(GFP_KERNEL | GFP_DMA);
-+	sccb = kmalloc(PAGE_SIZE, GFP_KERNEL | GFP_DMA);
- 	if (!sccb)
- 		goto out;
- 	assigned = 0;
-@@ -530,7 +530,7 @@ static int __init sclp_setup_memory(void)
- 		insert_increment(0, 1, 0);
- 	rc = sclp_init_mem();
- out:
--	free_page((unsigned long)sccb);
-+	kfree(sccb);
- 	return rc;
- }
- __initcall(sclp_setup_memory);
 
 -- 
 2.53.0
