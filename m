@@ -1,118 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3486D606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 03:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A72606A323
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 03:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K+RvC28D
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=gtbDVREB
 Received: by kanga.kvack.org (Postfix)
-	id 426426B05B8; Sun,  8 Nov 2026 22:07:58 -0500 (EST)
+	id 367716B05B1; Sun,  8 Nov 2026 22:10:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D72D6B05B9; Sun,  8 Nov 2026 22:07:58 -0500 (EST)
+	id 3173E6B05B2; Sun,  8 Nov 2026 22:10:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C4FE6B05BA; Sun,  8 Nov 2026 22:07:58 -0500 (EST)
+	id 255896B05B3; Sun,  8 Nov 2026 22:10:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 043A66B05B8
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 22:07:57 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 840EF14059B
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:07:57 +0000 (UTC)
-X-FDA: 85414096194.02.FDA2D19
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A98D7A0005
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:07:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=K+RvC28D;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794193675;
-	b=1pMG61fO6SK6bf1wcSN6IKIMN3lS+XsxLSr+4GBTbCIQNJUZq0yGwiu2UhKLlTDZTmoXWV
-	XAn5jhzQkj5Dd74Cz/xzX5AlmabRA/+vcbgU4CBOs863/oR04c3OF8lhD0H73uW8VvHOyw
-	CdHCPxV6E40Y78cOS54Yzkv7fq+6E1s=
+	by kanga.kvack.org (Postfix) with ESMTP id 00C216B05B1
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 22:10:18 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 68726A8179
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:10:18 +0000 (UTC)
+X-FDA: 85414102116.01.F44D00D
+Received: from mta1.migadu.com (out-62.mta1.migadu.com [95.215.58.62])
+	by imf12.hostedemail.com (Postfix) with ESMTP id BB35740003
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:10:14 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gtbDVREB;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.62 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794193675;
+	s=arc-20220608; t=1794193816;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=7gH5bT2Vxt0gNrCEsgfTETROJ7GF5H5tMV5hP0235n4=;
-	b=Yv68BlPQFxkKDcP4RVz5fIMgBEBYjobxMxdG3/nBjOmpA8VIA+l2myYLKyRBuJs2dik1qK
-	r/LjtSjFE+2KYrmLq2Nv1G1lSlCFfBpqhQNJwm9iHjw6aNHetSQs2pHpDhmZtCHwywMOI3
-	ZXHkatp+tyNMmhdSEBoCu8nqtjtODPw=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=R7YFoYH+pqizVWJtbykpYVkcry3ho5h+U0NhjdmQOV4=;
+	b=w36CwFrDtg/lPUx1vzGZSzfmOaksA1R1/hDY9wUQOHpA8glXFKShvzwZodcuVCm2ZebfDy
+	hgXjc2qOU80Ml6MiQJ7zLyIHp6rqZi/TbLMZt+BGTj2TkTbVKvjWSAtzoc3Q2f866zyRmM
+	diQuQFm8gxiunU+LUjiPE1An+wJQbb0=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=K+RvC28D;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of yi1.lai@intel.com designates 198.175.65.21 as permitted sender) smtp.mailfrom=yi1.lai@intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1794193674; x=1825729674;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=qjDMRVpVkMF74tWTNfZVyzHe4W8bMwXwRyqoOCBYirM=;
-  b=K+RvC28D42ZrzN4Zb9oxQS9E+WRicsX67EOo6cLizBkSAnbkui0cpWS8
-   zMpv8uCsMDCLvYNAFxVlYO18FkBMoLesbmxBrvb1widvEF0WPL/c2yti/
-   0wpat6qsLREwcP2PbikCjgXdz5AuZoec9ZTI2+tD4c4+OwtggdpTfZEIP
-   NkwFQ5cMYd2iWQXpjf4sfyNL3+v5rQaaRgaxQ8cvvhbdpSiGDhPiuMbl7
-   NAoBAKg/kMUR6w76JYn3K5hTFzc0EvwT3bXwjA136BKdpTbI3iRI9Y7pa
-   AcFacdztQk4JrCu9/mUVwf4T2jGkbtVbJ4Ne0e+hlwB1pQfwgBRiZ5NuK
-   w==;
-X-CSE-ConnectionGUID: lrdI+Z0JTL6CwerQEpKRpQ==
-X-CSE-MsgGUID: 8sQTeo18T3Wf0IkuZO+yGg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11960"; a="3006326"
-X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
-   d="scan'208";a="3006326"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2026 19:07:53 -0800
-X-CSE-ConnectionGUID: UlLbedElT1KnOpMa1ixC7w==
-X-CSE-MsgGUID: i90PE10rQzWi5EpYC7Vy/g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.27,203,1787036400"; 
-   d="scan'208";a="7653164"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.182.64])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Nov 2026 19:07:49 -0800
-Date: Mon, 9 Nov 2026 11:07:45 +0800
-From: kernel test robot <yi1.lai@intel.com>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Yosry Ahmed <yosry@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>, linux-mm@kvack.org,
-	yi1.lai@intel.com
-Subject: [linux-next:master] [mm]  1e61c0bd82:  will-it-scale.per_process_ops
- 6.2% improvement
-Message-ID: <202611091011.f4668ccc-lkp@intel.com>
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=gtbDVREB;
+	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.62 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794193816;
+	b=xUt5ld1BTI11xh+1p+sviiF8bTrqbBfYrwT0TWX2lUfmxaos56budkQOMD/KoIYc/xlRgZ
+	E0XdU7CY0BLOSdoP0uwq828A51Lu+nGkgsCzS2/Ah0MzixqfLTsCBo3vsZZbAGL4UAlVEx
+	D8W8t+3SuorSc0WJTqq1kQmcat7KEV4=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=7Na7xjzcQd16juEXNoMu7pYk4KLFnTP5KHehCh6IFWE=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794193813; v=1; x=1794798613;
+ b=gtbDVREBKlXmZiiQn37nboEHI2/a0a20du9yKFge83pgGuSGnnJnWOdvyIUGVWhK9MPfmf8b
+ RX9ADc8PDttBKuZ8wChz8b+rwNyNdarOiNrWfZR3x4yHDAAzQhnU5Xp0wtDMKweiSWKCeHnDzs5
+ W45HOEGmg5bHLrY9e6j8bN9s=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 1ae66134428fd04f;
+	Mon, 09 Nov 2026 03:10:10 +0000
+X-Mizu-Trace-ID: 1ae66134428fd04f
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <423c9b28-ecf2-4fab-817d-2fb326690c73@linux.dev>
+Date: Mon, 9 Nov 2026 11:10:02 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Rspamd-Queue-Id: A98D7A0005
-X-Rspamd-Server: rspam12
-X-Stat-Signature: qi33rimsdanixz57o1bw51td6dxwzpu3
-X-Rspam-User:
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794193674-564016
-X-HE-Meta: U2FsdGVkX18XXNnVimb9y05c20/Rs2YatGKYrFIqjs7sfbCXqa5eS+czmuO786sAeRzCZZeKKgoi7UPCRJh6HlXiYZN0Z1ItEAaHtTNoPZwdIHsFmiFQ/LBckPP5Rmpaw+g3hbC4QpLznXy0V+wqDXQt6NvDqjYUN+1Wbf3QImOKjvMCHkY00XATrQiRHlc7S/N5wbCtug5iqux/KLmrw6j7NwvW2tgRr0QlwjAvOpk91KauqsfMxlBgz9ZjgA4u5/lDL6rf2giMyOoXwgrLa3uFuQ9UmvKgP1vgpfPq0QCk8ZY1dmwGY2pq45N5hcp/XkoFXG3zhaf/t+cXQfDFh5RzkYkxsg4TkHszEaBs6lHd8c14Ih3ZZmgZ4ZqB8PL5xhbI0jTTEQxAmifXPuYuqIukxvXmXZNJwHdwPdFcqUyvSxVUs1IqhkAkXXouSpUsjevpf3H1ddLXcYhM9IZBTGTiIFBtEepmQrNrdUCvw5ojNgyqZjgbZ2Yt145UNSYLg0N/0In4ivNNQ+2B1AzSqmgMpEOb8rQGBFQdkblqxI8W4ZwEaM2aaCVFhsLo0Ib8BUqo3Lh3uE2UJuCC63av7Cwkd7DZHsX9Du7MOBP9auXoKlMivspzylBdwPPFmr7GsSnFBgVl7I6ZvX/Fc5v7HspiBdL0Kvu2LaE3/1AKpvzqJV3MUt3Xnly/vszaSSXjmPIL/48yDr9mOqCvYO8hD6mHjmvLOEUsIwV47qEymNx0vti8AhUwIDtC1pOb6yFvQheyNidYpIlu+nc67GDmhJchndF6/34xQZyaOIf95tu4LxsnQXf5x7H7aHOKoPbBZjYR4z8Za3+QCe35CAtf1dpQUjduMZnFLe49clDpd0FPGzyg9WUEFEoDq5vM8WEDiGgv6gFsRFsk5IBG8zFxPuKflhBFGmAAdkDvnA4sOzUpOYxkRySN6+4nVBIercxJKrxo0Veo4NvbpXcJyrd
- F+hWsHz3
- IDOYzqlpFrqwMGfS9wukGrl1W/RrgTJxi0YWW+CQ8NO2JX8/7b89ZlXXVklNC8UHlCisEKiDsJpbjDP1YYO4msrv9SoFPnNGruBw/DXCuRqjEIzbgxKS8sdLkTlmYd1R7x2yt1rLf5UcZKNDpgGQtDTTPE/NRRP2V9468TVwgHVmYg5fVxVd9pqDb0umBmq9DlPvCsZ2QsB/eLJXLWlyUh/FBvZLhF6c6LQZUVq6hkxSMfX+ar37QaZNrPj2Wq4rdebJwnLHs2sfqLrtmTIS56YXiGcP9oH/k1Qz4oi83QLM5CRXYrVmxE989EMotxgQRZbvravfdUx0Ukx9BJY1+X8ihL5Kp9HIyJo69qqkeZD8YjbTbpevdPjoqNPNRWcBFvRRiNPHeMUFiXSMfEd3O13ZaqVfHu+3C3TArZL18Fzz6BRAHffYhY96tYU0fTjCdJliLQ6uTvUH8875oodQMsSAhURuAijq3semgaeTAxM84R5E=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/3] mm: gup: allow long-term pins of CMA-allocated
+ HugeTLB folios
+To: "David Hildenbrand (Arm)" <david@kernel.org>, muchun.song@linux.dev,
+ osalvador@suse.de, akpm@linux-foundation.org, azpijr@gmail.com,
+ lance.yang@linux.dev, Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+References: <cover.1794046188.git.zhengqi.arch@bytedance.com>
+ <586d6c53ab7e4c64d6e89ad3cf0cf7e07dabbfaf.1794046188.git.zhengqi.arch@bytedance.com>
+ <7abb3aa1-385a-422f-86bd-7aac9661c4d8@kernel.org>
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <7abb3aa1-385a-422f-86bd-7aac9661c4d8@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: cchqx44herir6ahccmtb4siioredx78a
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: BB35740003
+X-HE-Tag: 1794193814-448601
+X-HE-Meta: U2FsdGVkX1/N5qTh0pfPymVr21Ii5GqVZK5CP0ziHTGyRghB1mBXpjaR17wgzdlF7TAxTzHz+jbdr5JgIeo5WEEqpLslLMWDk/drmFdTomRoyPfnwY+baDx3C6mZ9yU9XM79uT9ymPsyZUwpW03mkxXaIwvryhJdUaQCh/f59RF/vMU95wK/M2KL2hhdPOHKb5e1tVAjmIeQWhBJjKlBIr7+yiLNPUOCXfXzRno/BBtx7dHWMQ7DtyH+SKKfBN6nr/rWY932lMTnnxsyH+a+OW9qPlK5Pn+qmYZAgFzVyWmScSGIeuFkAmwrOeKGz0p7jVcMbFJeCgc4Lhe9jklHQ3/h0nj1gTOSpbXYXkolKtOKZ8Itg2qqP3FWLUAwvqMkgqZEqoXCrOLhh/BKEktDrhYnvD6XdjBG8HKhxGOTN2K4Qj8Jj1pzRhHEeoFsk1FAmcm4QrlqhEsOt4U349rJx4XJeRuagTIDIuXDunMX55CAp/FTSZHm/6pV979ptXkkJR6L4MEzY7DvdIiVma4s917rqEEENAnuEjmMIVO42TrJ7w/4UfVRV3ze7SaDhzR6uILu0mYWE760lyuNkq9bb3zfeKdQLa8jcD6ZGPYjvwTvYpBaqRb+Z3NjjSbY1YBEOCAfuq23fqpktlxxKa3V+Rpg3WnbLo4sblYe32yadfKLoWb6JGbCFyOpVX11JOHDsDBvm9odcq66RW0UvIfVGbJlJBuX/RJv70pQtPEPZEC73N/y/Sjk0/WkLzD2dGDhTVDMacaRJ552GuraC7CHEFJL5IdUKWPf9fDqNYl60fVA1NVcz50M0ihJCNPF3KHMei111AIDaXyBpRFECvha8NaE79K4lUwtPop1cSwzAwCRu/svGH6q3zQ4YVf3vwL/jHb+9U+pTT77jPyvKQEfOyP5DM1g9XhH5GOv9qhIie2RZaRoI4reAbJ3rpkqNM7nhdovfY3a/1OOXEyCd68
+ Nrl/6xGR
+ V15Le75Oc4FfJ6s+VH8567KKRwuP1syXcDSNqf5eNrcoAjWOSUJoqBsDZqWAYUJpe6q8EU0Ew8SDXndC4sCmqYpywynhWcRK/HkYjULTEIWV+hjOazNAQ1IorpgSmi9wlF2XSuS/4w/AfucpBmvZPyEyEFYEVJe65CKcqg5ZFTKQnlm+wK9dAYH8EVfaWNgHN4YMvcI69enQ6ud+zeb7Vp0OtZPQfH7eusqluYALR6qmtqQX7VSoiNL0ckvzQsMcCCOKnVtZyOCGHgFV+y7LJFYLX8LRPNTBiWX4KvhPdzrTZvNYqpYDulL+dID++cV1kogMQnt/VtHPQ7d+EKePgufqQUDtL1Rk2S+Hd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,57 +100,130 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-Hello,
+On 11/8/26 1:58 AM, David Hildenbrand (Arm) wrote:
+> On 11/7/26 11:30, Qi Zheng wrote:
+>> From: Qi Zheng <zhengqi.arch@bytedance.com>
+>>
+>> Long-term pinning treats explicitly CMA-allocated HugeTLB folios as
+>> unpinnable, causing unnecessary migration or pinning failures.
+>>
+>> These folios already own their CMA bitmap ranges, and memory blocks
+>> overlapping CMA areas cannot be offlined. Allow HugeTLB folios with
+>> HPG_cma to be pinned directly, including in ZONE_MOVABLE.
+>>
+>> Fixes: cf11e85fc08c ("mm: hugetlb: optionally allocate gigantic hugepages using cma")
+>> Cc: stable@vger.kernel.org
+>> Suggested-by: Muchun Song <muchun.song@linux.dev>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> Acked-by: Muchun Song <muchun.song@linux.dev>
+>> Reviewed-by: Oscar Salvador <osalvador@suse.de>
+>> Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+>> ---
+>>   include/linux/mm.h | 29 +----------------------------
+>>   mm/gup.c           | 31 +++++++++++++++++++++++++++++++
+>>   2 files changed, 32 insertions(+), 28 deletions(-)
+>>
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 2d0b8a4c9974f..75dd40265d3f4 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -2975,35 +2975,8 @@ static inline bool is_zero_folio(const struct folio *folio)
+>>   	return is_zero_page(&folio->page);
+>>   }
+>>   
+>> -/* MIGRATE_CMA and ZONE_MOVABLE do not allow pin folios */
+>>   #ifdef CONFIG_MIGRATION
+>> -static inline bool folio_is_longterm_pinnable(struct folio *folio)
+>> -{
+>> -#ifdef CONFIG_CMA
+>> -	int mt = folio_migratetype(folio);
+>> -
+>> -	if (mt == MIGRATE_CMA || mt == MIGRATE_ISOLATE)
+>> -		return false;
+>> -#endif
+>> -	/* The zero page can be "pinned" but gets special handling. */
+>> -	if (is_zero_folio(folio))
+>> -		return true;
+>> -
+>> -	/* Coherent device memory must always allow eviction. */
+>> -	if (folio_is_device_coherent(folio))
+>> -		return false;
+>> -
+>> -	/*
+>> -	 * Filesystems can only tolerate transient delays to truncate and
+>> -	 * hole-punch operations
+>> -	 */
+>> -	if (folio_is_fsdax(folio))
+>> -		return false;
+>> -
+>> -	/* Otherwise, non-movable zone folios can be pinned. */
+>> -	return !folio_is_zone_movable(folio);
+>> -
+>> -}
+> 
+> Moving code while adding new stuff to it, please don't.
+> 
+> Move code first, then modify it.
+> 
+> I don't want to play "find the difference between two pictures" on a Saturday
+> evening.
 
-kernel test robot noticed a 6.2% improvement of will-it-scale.per_process_ops on:
+;), got it.
 
+I moved the code to resolve a build dependency.
 
-commit: 1e61c0bd822af6f9026c048d53fe8824881df8d7 ("mm: move LRU size stat updates out of lru_lock in folio batches") https://git.kernel.org/cgit/linux/kernel/git/next/linux-next.git master
+> 
+>> +bool folio_is_longterm_pinnable(struct folio *folio);
+>>   #else
+>>   static inline bool folio_is_longterm_pinnable(struct folio *folio)
+>>   {
+>> diff --git a/mm/gup.c b/mm/gup.c
+>> index 2b405cce2ca5c..f41701c603500 100644
+>> --- a/mm/gup.c
+>> +++ b/mm/gup.c
+>> @@ -2216,6 +2216,37 @@ struct page *get_dump_page(unsigned long addr, int *locked)
+>>   
+>>   #ifdef CONFIG_MIGRATION
+>>   
+>> +bool folio_is_longterm_pinnable(struct folio *folio)
+>> +{
+>> +#ifdef CONFIG_CMA
+>> +	int mt = folio_migratetype(folio);
+>> +
+>> +	/* These HugeTLB folios own the CMA memory, so they can be long-term pinned. */
+>> +	if (folio_test_hugetlb(folio) && folio_test_hugetlb_cma(folio))
+>> +		return true;
+> More hugetlb hackery ... don't like that, sorry.
 
-testcase: will-it-scale
-config: x86_64-rhel-9.4
-compiler: gcc-14
-test machine: 224 threads 2 sockets Intel(R) Xeon(R) Platinum 8480CTDX (Sapphire Rapids) with 512G memory
-parameters:
+Agree.
 
-	nr_task: 100%
-	mode: process
-	test: fallocate2
-	cpufreq_governor: performance
+> 
+> I think this just goes down to a problem we discussed a while ago that is
+> independent of hugetlb: we'd need some way to identify that the the page was
+> actually allocated by the CMA owner, and it's not just some other movable
+> allcoation that ended up there.
+> 
+> For something generic non-hugetlb thing, can't we call into CMA to ask whether
+> the current chunk is marked allocated?
 
-Details are as below:
--------------------------------------------------------------------------------------------------->
+The existing bitmap is set before allocation completes, so the range
+may still contain borrowed movable pages. A set bit alone cannot
+establish ownership.
 
+A generic query may need separate ownership tracking, such as an
+owned_bitmap recording successfully allocated pages. Its updates and
+lookups would also need to handle concurrency with fast GUP.
 
-The kernel config and materials to reproduce are available at:
-https://download.01.org/0day-ci/archive/20261109/202611091011.f4668ccc-lkp@intel.com
+> 
+> If that's too hard, we could add a temporary hugetlb hack.
 
-=========================================================================================
-compiler/cpufreq_governor/kconfig/mode/nr_task/rootfs/tbox_group/test/testcase:
-  gcc-14/performance/x86_64-rhel-9.4/process/100%/debian-13-x86_64-20250902.cgz/lkp-spr-2sp5/fallocate2/will-it-scale
+For this fix, I'd prefer to keep the current check.
 
-commit: 
-  25e9342d48 ("tools/mm/thpmaps: fix missing mapping names")
-  1e61c0bd82 ("mm: move LRU size stat updates out of lru_lock in folio batches")
+> 
+> But we all hate hugetlb hacks. :)
 
-25e9342d487fcfaa 1e61c0bd822af6f9026c048d53f
----------------- --------------------------- 
-         %stddev     %change         %stddev
-             \          |                \  
-   5750918            +6.2%    6109659        will-it-scale.224.processes
-     25673            +6.2%      27274        will-it-scale.per_process_ops
-   5750918            +6.2%    6109659        will-it-scale.workload
-  
++1.
 
-Disclaimer:
-Results have been estimated based on internal Intel analysis and are provided
-for informational purposes only. Any difference in system hardware or software
-design or configuration may affect actual performance.
-
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+> 
 
 
