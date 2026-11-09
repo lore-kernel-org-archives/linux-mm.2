@@ -1,91 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C04606A322
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 03:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66340606A320
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 03:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=m/M3nNSa
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=I0ZzmwaZ
 Received: by kanga.kvack.org (Postfix)
-	id 9BF0F6B05B1; Sun,  8 Nov 2026 22:01:47 -0500 (EST)
+	id 81B376B05B5; Sun,  8 Nov 2026 22:06:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9705C6B05B2; Sun,  8 Nov 2026 22:01:47 -0500 (EST)
+	id 7F0F06B05B7; Sun,  8 Nov 2026 22:06:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8862D6B05B8; Sun,  8 Nov 2026 22:01:47 -0500 (EST)
+	id 72EE76B05B8; Sun,  8 Nov 2026 22:06:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E3516B05B1
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 22:01:47 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DE513405AB
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:01:46 +0000 (UTC)
-X-FDA: 85414080612.02.C10356F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44E6A6B05B5
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 22:06:04 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B13DD1604E0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:06:03 +0000 (UTC)
+X-FDA: 85414091406.12.78428C7
 Received: from va-1-115.ptr.blmpb.com (va-1-115.ptr.blmpb.com [209.127.230.115])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A2D0B80006
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:01:44 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="m/M3nNSa";
-	spf=pass (imf02.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	by imf03.hostedemail.com (Postfix) with ESMTP id 14A8B20002
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:06:00 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=I0ZzmwaZ;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf03.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794193562;
+	b=2YvER3upswIf4laPZyP9HONqaHy5TRqHCyDm17zr/cWRA0zLqbNa+fZLPZ1AB+uaHz75kY
+	yKb8AQYkpFnCGBtN8x2jCpkZ2Ujg9t2bLkT7xpvcfISeHlJjYrt5sHCrKY3qLkyVgvYHLJ
+	FzLB0vo0YpqAfIMtf7UBM1EeGHL/XEo=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794193305;
+	s=arc-20220608; t=1794193562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1hRQQIAsbz+9/1zs9i6aKCxFWN+3vpkyx/yMvD7P5R0=;
-	b=qkd1nEP11gJ5g2D/0/xpFI18t/hkzGX1YNU/vjQFdeXaYbwx4bPQvXm4GduXAAngnz7uZG
-	1nuRzUOQ+QqJFkqdLCAMmQqCphO11seZuN0flpKEhrd8t91SKTkOCWWkMnBir3GhEjxWPN
-	8kOoKfo6gOjKJ5rxst7CfoOg9a35z34=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794193305;
-	b=u+U/e2KcaT7XY3qei05TYNvj2GafwyihxP8308BRWCbPKKqR3xSxg0jWQK9k+0TO5kfIOc
-	70yDOjeI2DQCiWZiIYZxcKfhRX0+JZl//O6p3dlvDQvY6iT8pFINWAQ/e1B2DOZQVln8cY
-	qeizjFLCxvgHRQu7yq+Gn2kfW3O/hd8=
+	bh=qQS78PCj6FfdbwzR1JAthRgqg3Mq39AopQfbYGKHtWw=;
+	b=cdbsh/K2tfw8Lb9s7yWrHImXr3EqmCX5weY5whAzc6j7lIy0mg1FDSCIuLPuwvG1kkLBuK
+	x7VvS8z8tqzkI2hjgkrBeZxh6j8dvb2zUSMMFSxU/4onH8B48OaP9PpNSbiMGTwu80wwb8
+	vnTqETuDCBICxAE4M6tSOQ7MK5oTx84=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="m/M3nNSa";
-	spf=pass (imf02.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=I0ZzmwaZ;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com;
+	spf=pass (imf03.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.115 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1794193299; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1794193555; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=1hRQQIAsbz+9/1zs9i6aKCxFWN+3vpkyx/yMvD7P5R0=;
- b=m/M3nNSaCgcFvkdm/HHNAAMt37vXUvpsM73KpNkVPbPSmtGywXj+ugLFJJa9jxCZuHhIgR
- npcEy8Iu5Ve50j8kMiadiWIuq6/GOFpXBysKFXaqZz6gQnj4579jgYwYDEeZ4W+Mv7YqCe
- bhNnBZbKO/GD/SeqQRlxRbTzAZ+jr/9JFHuoiwPPHVnwjABm3+ZPWNMHvtM7EUUeucHMOk
- CyAPPIeMorkQkfmYpaup6/nw5WPnbQ0L3bEMkplPRgYeq4BPk+iW5lJqicG0/CH2o/xsbV
- cv4wJOmyrDgKTgecpKGNWFizghBk/29pCOo1EK3WyMTMU7cvHt7BLzty9PqwrQ==
-Cc: <muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>, 
-	<akpm@linux-foundation.org>, <rppt@kernel.org>, <apopple@nvidia.com>, 
-	<linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+ bh=qQS78PCj6FfdbwzR1JAthRgqg3Mq39AopQfbYGKHtWw=;
+ b=I0ZzmwaZdQJGUoREKpE01kWH0DO5tLxj29dcLpp32kmORQyTXAo9P82ty2OqtLTEjQe7Z9
+ s2hONUeDfi/oI13aA8z18eEPurp70CnbVhlYnQ3lGETYaApjcxVFR6FvJufBzMOydTIN3V
+ A6ixzMrm9S9FgfGWZcFadGACnk5dVNvRyaH6EgcTCFMHyvRVfGZ57846vIWm9WaoVih7aw
+ sZIL6VOB/BVwFrV30YdG1rfuzY7OlziJlSrPBaPYWYx7PPwmxbjdCHtkIAsKdJbvqmdz0e
+ Kl06AXneBuO1g9DAkndd/4J33wsSg8mFy3RnV4bETlWKLUwAzAFaMfGmDdh81A==
 From: "Li Zhe" <lizhe.67@bytedance.com>
-Subject: Re: [PATCH 2/2] mm/hugetlb: optimize bootmem hugepage tail vmemmap init
+Date: Mon, 9 Nov 2026 11:05:36 +0800
+X-Lms-Return-Path: <lba+26af13891+698f81+kvack.org+lizhe.67@bytedance.com>
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+References: <20261105120615.16817-1-lizhe.67@bytedance.com> <20261105120615.16817-2-lizhe.67@bytedance.com> <au2tQaaMBg3umthq@parvat> <25a188bf-05e4-4f0e-b670-a9dc88195b21@bytedance.com> <f062d92e-a016-447f-926f-bd1b1ce7f106@linux.dev>
+To: "Muchun Song" <muchun.song@linux.dev>, 
+	"Balbir Singh" <balbirs@nvidia.com>
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 1/2] mm/mm_init: factor out memmap_init_page_from_template()
+In-Reply-To: <f062d92e-a016-447f-926f-bd1b1ce7f106@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
-In-Reply-To: <au2qhlsxQt3SRwIu@parvat>
-User-Agent: Mozilla Thunderbird
-To: "Balbir Singh" <balbirs@nvidia.com>
-Date: Mon, 9 Nov 2026 11:01:22 +0800
-Content-Transfer-Encoding: 7bit
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Message-Id: <ca38db3a-a8fe-47c3-8813-5c3b0ac4b7ac@bytedance.com>
+Message-Id: <2f9730df-fade-4c5f-a4fe-fd3d43eb8bba@bytedance.com>
 Content-Type: text/plain; charset=UTF-8
-X-Lms-Return-Path: <lba+26af13791+271c33+kvack.org+lizhe.67@bytedance.com>
-References: <20261105120615.16817-1-lizhe.67@bytedance.com> <20261105120615.16817-3-lizhe.67@bytedance.com> <au2qhlsxQt3SRwIu@parvat>
+User-Agent: Mozilla Thunderbird
+Cc: <osalvador@suse.de>, <david@kernel.org>, <akpm@linux-foundation.org>, 
+	<rppt@kernel.org>, <apopple@nvidia.com>, <linux-mm@kvack.org>, 
+	<linux-kernel@vger.kernel.org>
+X-Rspamd-Queue-Id: 14A8B20002
+X-Rspamd-Server: rspam12
+X-Stat-Signature: yy9uemt9h3psckmmxexod9qdwfsegb16
+X-Rspam-User:
 X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: e1i1gbpf3q3xz541s7wq1p4tysom4559
-X-Rspamd-Queue-Id: A2D0B80006
-X-Rspam-User: 
-X-HE-Tag: 1794193304-905416
-X-HE-Meta: U2FsdGVkX1/0b69hOc8gUrFnBFDx4tQcJGMAXR1R1as5hecfKTzA5n30vfUV6anFG3eeqMh/iMbLZtneXXjOkQWun8IDaMuT9mTHqg9YAyTbj8y7CuY+oovUTo8mu/ApE1kakKyud4/Eu+eMvkLnbS523fGA6+bkgAbJDQLxcJ+0+IIq1/5l1M6QEMO09CXwWL59P5Y1/0zLed8Z2WQFJxXW3mKAty0FLEF+2m96PM8o6XdJv4GTHadJPomyIn3aRNZSEAuDNHy67SnwWIUrz4kKsbCA7skkZFs/81vVwhCNdw/X+Pl+FLoIF3dnD+OWqF6JP02fUYxZAFm3S3ynil+aoKQNhOTSthxD2AEbuQVeBooIgHHuxMd6E8LTFeBQvpN+uqm7MQlSZ17/SXPZt5Q1t7TnTeDthY3VCWly7h1pFeR1XUA1X5WorCHtMwMQqwOQuTYkk4tFQgH1lDl1/bQPhFRwuTDDSAyruJB4rOd4kXblYxs1KJjNdnof6KBmN0/7FHOad/sGKeSGjB5n5raw8LNrQo4+AfUtnQam7vuYQmaD80025VqPPlaTIJXByZxb7Y1vfp0tyeypPatkyplQignERZHrFPQmw+tSoDTQXkUBMiQk3O70F4nEOC3l1VntFs4GelAARUm4GgkodX8OxfQMKceRXjnteyY7/pfRySzvqfdnma/enZk04Vn0tDwcxI90Fod4Rkm0MbZnsluDj5gMKW0lEUugtU1qBo6VROYQxTxMbczzigzR0fJGLG7oJMwnBkPSDZtIYaeW8OmNsBf+nX+41uUvMrGLmR9IwlVWUcMpyThHrc9/eUDZ33lb0LoWwkgYJEjJV6C2qi7EQfd+a5Bg0CO73qdIYYALfb2jeEwhUnSp0Ja52MCdP9bFZqt9ElHuSc5tvk+bZGwXtu9vzJtNW0PDGyKRGggnqZ4GbnzUkq7M57ZcPjTNEXeyd91oeQ6C1jmy4LC
- TlxZdz2S
- n8cmM21KEbdacq5tap5TwMHg9mxxblWhpm8EdDq5Gh9khSEUZOgeXqmFbVkYcg9QwVkFo628BTMRPuM2l30Xu8BjKdKtTQP2N12Nw0Nr3hcboQyqYxXBEfGCNkvhNNIk8wSFnF5E9L5ITdEHoJ9hiU7mQf3xC0RY4vnw9JYTH9fT+M0xBSDpxM5limiJ9mgRMRtevz5yztnZ+k8nhCVJhZgUPnf/Wul+bAF87aOvFTlE49EIbFPnlJaXcz4+SwmO6Et8ub8GPBhTB1pgyQkmL9XUa/CVKBzJ2lNx1bgGnkcXX8JxRaD++/DfGY7KMMOFWaGsi
+X-HE-Tag: 1794193560-916467
+X-HE-Meta: U2FsdGVkX1+XlQeIVrb4vZGaPR2ZxH8+SL6Phc/2f0yl7xN0XNIryzg5tdyZ/thLcGlrnBZPU/iiPUy8R3EBPqwqNvpIaRMoeFcQhW52U9cl52kum6tYW/g8LJHzSIN9345KjO4U9/BOOS1jRgq6q9YjLRgvtyGYsLnTiB++IMW1cGw0YHVhiUNrqXZilOPuiOCDqo56VqBjNr4mhTWO2vro+xAanAZtCh2AeOlkOHrmdNloWFbpOrfC+hNoI2zxWWBR/DhRktiy/5jTrYIUQxOU8kTX1w7NFFp52FY5+RhIWlB3ISjTw8Ak3S2N7vdkFGiitUEAPUrGnk2jq+Mxn88ZymyYM8OZIuqDFNd8mJ4vSDngsjQwURK/UYKKaDLNRBIqnHEcl74hB/o6W/YJbDI1YKPsSWSYcFL2iXNeV0Gu7mgiGn2mojgedBHIBQuTxdq5T2BW1+j6bjllMLjrVxSRDgEZ6UVhouHbr0yW+7GhkpM/NYZtYk8U5bnbmiYGoqBkskV8Vsm0xhbGgQSNwksdm5Qx9/HUAXOwQ65ApPForbGLB0R5V/CjxcaaKj553D5PUBcYX/m0Vo+kiiSsimopBUPL6UVP2d+KhQntqeMOJ8j0Nss1MuS7nOE2GMubTqO4NrdysWjW8hDOuVKrypCLQBMG4On1678QRIZ7DW7y89Ej32UxMs73qMMG7WEfLZNopvAaw1nR+fdTi2mkuf718ilxHanFvvlvkP6/TDaRtnatT+Sv0262JkBihsJ5Td0tce4KWdhC+AmKGJucUJFDJ0VrD8MFFvaF+E4OMqjcE7nWxAJ0Y8vmrU9wApn7CIRMxcbTNlitwdJ1oc0kPTGituuT0Bas35yqNck7jP/SO6LY9Hg7KEtzmaODJDRZGhIjzFHfBnx3KJP/VhhYd6FgHxW8bfE4iTNZMU0x5LVU23QtAR9+KwChgnXAv2gwItKV+CjhBb49y1QgSVZ
+ ObU3fHew
+ ZwoAXQ/7pzMNJiBrYetxF1MyAvvwwOUOxiy1ay/axxDK8WoQkxYznaRFMjpvkUq3XFKUIY26ZsC+MjNv56SQVOtHG2d7xdzgoboxQJNcCCqeuLKKX2XaqwK6OirlH/F7C04peK5S3Lec6YpBB23M3lprJebxpcAol0Js2aKyRYMwTDCL/2HXV44kT3AZkuzz776AGylNJh0hM9X3Iepsoi0gRIJ1gNNCkDSFQAyygpuyfn+2M+f+QsPSKHGlWIC8NU/JD0YTj0B6B2fOFOGlxQlcDYp3vNdCyjFXNj0eRrMEeigZnf/kbNQBic1mkhgmQtI8g7xLVqp5d8D62ekYEL9R00hDE42z9BPyHZ48tqMArS6NvoX9hqLkiaipvtIcNwggqReRcIIUe2MIMyDAbjF3ieHmIYVUJqVOJXh2K97EhvszHu+zr2K+bsCHc97dkhn5r/ryCvhuouJQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,96 +95,180 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 6:23 PM, Balbir Singh wrote:
-> On Thu, Nov 05, 2026 at 08:06:15PM +0800, Li Zhe wrote:
->> Boot-time HugeTLB allocation has to initialize tail struct pages itself
->> when HugeTLB vmemmap optimization (HVO) is unavailable or fails.  For
->> gigantic pages, this can cover a large number of tail pages.  Most state
->> installed by __init_single_page() and prep_compound_tail() is identical
->> for every tail page in the same huge page; only PFN-dependent fields
->> need refreshing.
->>
->> Initialize the first tail page normally, copy it into a local template,
->> then initialize the remaining tails from that template with
->> memmap_init_page_from_template().  This avoids repeatedly doing the full
->> __init_single_page() and prep_compound_tail() sequence for state that is
->> identical across tail pages in the same huge page.
->>
->> On an arm64 QEMU/KVM guest using 4K pages and 64 boot-time 1G hugepages
->> (HVO unavailable on arm64 in v7.4-rc1), the measured fallback tail
->> initialization time improved by 36.43%, measured with a temporary
->> jiffies-based printk modeled after the existing timing in
->> memmap_init_zone_device():
->>
->>    base:             318.4 ms
->>    with this patch:  202.4 ms
->>
->> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
->> ---
->>   mm/hugetlb.c | 23 ++++++++++++++++++-----
->>   1 file changed, 18 insertions(+), 5 deletions(-)
->>
->> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->> index da5d04edf7c1..987f16a5ea27 100644
->> --- a/mm/hugetlb.c
->> +++ b/mm/hugetlb.c
->> @@ -3219,19 +3219,32 @@ static void __init hugetlb_folio_init_tail_vmemmap(struct folio *folio,
->>   	enum zone_type zone = folio_zonenum(folio);
->>   	int nid = folio_nid(folio);
->>   	struct page *page = folio_page(folio, start_page_number);
->> +	struct page template;
->>   	unsigned long head_pfn = folio_pfn(folio);
->>   	unsigned long pfn, end_pfn = head_pfn + end_page_number;
->>   	unsigned int order = huge_page_order(h);
->>   
->> +	if (start_page_number >= end_page_number)
->> +		return;
->> +
-> Can this actually happen?
-
-
-No, current callers always pass a non-empty range. I kept this to
-preserve the old for-loop no-op semantics for an empty range, but it is
-not needed here. I will remove it in v2.
-
+On 11/9/26 10:57 AM, Muchun Song wrote:
 >
->>   	/*
->>   	 * As we marked all tail pages with memblock_reserved_mark_noinit(),
->>   	 * we must initialize them ourselves here.
->>   	 */
->> -	for (pfn = head_pfn + start_page_number; pfn < end_pfn; page++, pfn++) {
->> -		__init_single_page(page, pfn, zone, nid);
->> -		prep_compound_tail(page, &folio->page, order);
->> -		set_page_count(page, 0);
->> -	}
->> +	pfn = head_pfn + start_page_number;
->> +
->> +	/*
->> +	 * Seed a template from the first real tail page and refresh only
->> +	 * PFN-dependent fields before copying it.
->> +	 */
->> +	__init_single_page(page, pfn, zone, nid);
->> +	prep_compound_tail(page, &folio->page, order);
->> +	set_page_count(page, 0);
->> +	memcpy(&template, page, sizeof(template));
-> Do we need a separate template and page?
-Yes. page is the first tail page that has already been initialized
-normally. A separate template is needed so that later iterations can
-refresh the PFN-dependent fields before memcpy_nontemporal() copies the
-final state to each destination page.
+>
+> On 2026/11/9 10:51, Li Zhe wrote:
+>> On 11/6/26 6:34 PM, Balbir Singh wrote:
+>>> On Thu, Nov 05, 2026 at 08:06:14PM +0800, Li Zhe wrote:
+>>>> ZONE_DEVICE memmap initialization already uses a reusable struct page
+>>>> template when initializing compound tail pages.=C2=A0 The template mos=
+tly
+>>>> contains invariant state, but a few fields still depend on the target
+>>>> PFN and must be refreshed before copying the template into each
+>>>> destination struct page.
+>>>>
+>>>> Factor that operation into memmap_init_page_from_template() so other
+>>>> boot-time memmap initialization paths can reuse the same helper.
+>>>>
+>>>> No functional change intended.
+>>>>
+>>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>>>> ---
+>>>> =C2=A0=C2=A0 mm/mm_init.c | 29 +++++++++++++++--------------
+>>>> =C2=A0=C2=A0 mm/mm_init.h |=C2=A0 2 ++
+>>>> =C2=A0=C2=A0 2 files changed, 17 insertions(+), 14 deletions(-)
+>>>>
+>>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>>>> index 2a0e782a151d..495e20fbdec0 100644
+>>>> --- a/mm/mm_init.c
+>>>> +++ b/mm/mm_init.c
+>>>> @@ -625,6 +625,17 @@ void __meminit __init_single_page(struct page=20
+>>>> *page, unsigned long pfn,
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 vmemmap_optimization_verify_zone(=
+page);
+>>>> =C2=A0=C2=A0 }
+>>>> =C2=A0=C2=A0 +void __meminit memmap_init_page_from_template(struct pag=
+e *page,
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long pfn, unsigne=
+d long zone, struct page *template)
+>>>> +{
+>>>> +=C2=A0=C2=A0=C2=A0 set_page_section_from_pfn(template, pfn);
+>>>> +#ifdef WANT_PAGE_VIRTUAL
+>>>> +=C2=A0=C2=A0=C2=A0 if (!is_highmem_idx(zone))
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 set_page_address(template,=
+ __va(pfn << PAGE_SHIFT));
+>>>> +#endif
+>>>> +=C2=A0=C2=A0=C2=A0 memcpy_nontemporal(page, template, sizeof(*page));
+>>>> +}
+>>>> +
+>>> Can we make the template a const? Why can't we do
+>>>
+>>> void __meminit memmap_init_page_from_template(struct page *page,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long pfn, unsigned =
+long zone,
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct page *template)
+>>> {
+>>> =C2=A0=C2=A0=C2=A0=C2=A0memcpy_nontemporal(page, template, sizeof(*page=
+));
+>>>
+>>> =C2=A0=C2=A0=C2=A0=C2=A0set_page_section_from_pfn(page, pfn);
+>>> #ifdef WANT_PAGE_VIRTUAL
+>>> =C2=A0=C2=A0=C2=A0=C2=A0if (!is_highmem_idx(zone))
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 set_page_address(page, __va(=
+pfn << PAGE_SHIFT));
+>>> #endif
+>>>
+>>> That way we don't update template once it is set, if template is r/o,
+>>> then we don't need both first page and template in the caller to
+>>> be different.
+>
+> I used to think that too.
+>
+>> I kept it this way to preserve the memcpy_nontemporal() write pattern:
+>> update the PFN-dependent fields in the template first, then copy the
+>> final state to the destination page once.
+>>
+>> If we copy first and then update the destination page, the hot loop
+>> would do a non-temporal copy followed by normal stores to the same
+>> struct page. That is the pattern this helper avoids.
+>
+> After thinking it through, that should be the reason. To prevent
+> similar confusion for others, I suggest adding a comment here
+> explaining why this specific order is used.
 
-Thanks for the review and the Ack.
+Agreed, thanks. I will add a short comment in v2.
 
 Thanks,
 Zhe
 
 >
->> +
->> +	for (pfn++; pfn < end_pfn; pfn++)
->> +		memmap_init_page_from_template(pfn_to_page(pfn), pfn, zone,
->> +					       &template);
->>   }
->>   
->>   static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
-> Acked-by: Balbir Singh <balbirs@nvidia.com>
+> Thanks.
+>
+>>
+>> Thanks,
+>> Zhe
+>>>> =C2=A0=C2=A0 #ifdef CONFIG_NUMA
+>>>> =C2=A0=C2=A0 /*
+>>>> =C2=A0=C2=A0=C2=A0 * During memory init memblocks map pfns to nids. Th=
+e search is=20
+>>>> expensive and
+>>>> @@ -1073,17 +1084,6 @@ static void __ref=20
+>>>> __init_zone_device_page(struct page *page, unsigned long pfn,
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>>> =C2=A0=C2=A0 }
+>>>> =C2=A0=C2=A0 -static void zone_device_page_init_from_template(struct p=
+age *page,
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long pfn, struct =
+page *template)
+>>>> -{
+>>>> -=C2=A0=C2=A0=C2=A0 set_page_section_from_pfn(template, pfn);
+>>>> -#ifdef WANT_PAGE_VIRTUAL
+>>>> -=C2=A0=C2=A0=C2=A0 if (!is_highmem_idx(ZONE_DEVICE))
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 set_page_address(template,=
+ __va(pfn << PAGE_SHIFT));
+>>>> -#endif
+>>>> -=C2=A0=C2=A0=C2=A0 memcpy_nontemporal(page, template, sizeof(*page));
+>>>> -}
+>>>> -
+>>>> =C2=A0=C2=A0 /*
+>>>> =C2=A0=C2=A0=C2=A0 * With compound page geometry and when struct pages=
+ are stored=20
+>>>> in ram most
+>>>> =C2=A0=C2=A0=C2=A0 * tail pages are reused. Consequently, the amount o=
+f unique=20
+>>>> struct pages to
+>>>> @@ -1136,8 +1136,8 @@ static void __ref memmap_init_compound(struct=20
+>>>> page *head,
+>>>> =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /* Initialize the re=
+maining tail pages from template. */
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (pfn =3D head_pfn + 2; pfn < =
+end_pfn; pfn++)
+>>>> - zone_device_page_init_from_template(pfn_to_page(pfn), pfn,
+>>>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 &template);
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memmap_init_page_from_temp=
+late(pfn_to_page(pfn), pfn,
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 ZONE_DEVICE, &template);
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 prep_compound_head(head, order);
+>>>> =C2=A0=C2=A0 }
+>>>> =C2=A0=C2=A0 @@ -1192,7 +1192,8 @@ void __ref memmap_init_zone_device(=
+struct=20
+>>>> zone *zone,
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (; pfn < end_pfn; pfn +=3D pf=
+ns_per_compound) {
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 page =3D =
+pfn_to_page(pfn);
+>>>> =C2=A0=C2=A0 -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 zone_device_p=
+age_init_from_template(page, pfn, &template);
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 memmap_init_page_from_temp=
+late(page, pfn, ZONE_DEVICE,
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 &template);
+>>>> =C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 cond_resched();
+>>>> diff --git a/mm/mm_init.h b/mm/mm_init.h
+>>>> index 0034e37dbabd..22c465122b47 100644
+>>>> --- a/mm/mm_init.h
+>>>> +++ b/mm/mm_init.h
+>>>> @@ -111,5 +111,7 @@ void memblock_free_all(void);
+>>>> =C2=A0=C2=A0 =C2=A0=C2=A0 void __meminit __init_single_page(struct pag=
+e *page, unsigned=20
+>>>> long pfn,
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long zone, int nid);
+>>>> +void __meminit memmap_init_page_from_template(struct page *page,
+>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long pfn, unsigne=
+d long zone, struct page=20
+>>>> *template);
+>>>> =C2=A0=C2=A0 =C2=A0=C2=A0 #endif /* __MM_MM_INIT_H */
+>>>> --=20
+>>> Balbir
+>
 
