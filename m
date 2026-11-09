@@ -1,96 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB43606A325
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 02:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94E1606A330
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 03:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=I8byLkeK
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=J94oXTKr
 Received: by kanga.kvack.org (Postfix)
-	id 0B6C46B05B7; Sun,  8 Nov 2026 21:57:42 -0500 (EST)
+	id 94A3C6B00EF; Sun,  8 Nov 2026 22:01:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 066C66B05B8; Sun,  8 Nov 2026 21:57:42 -0500 (EST)
+	id 920F86B05B0; Sun,  8 Nov 2026 22:01:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E9B646B05B9; Sun,  8 Nov 2026 21:57:41 -0500 (EST)
+	id 7EBB96B05B1; Sun,  8 Nov 2026 22:01:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C3D476B05B7
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 21:57:41 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 628131405A4
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:57:41 +0000 (UTC)
-X-FDA: 85414070322.12.60BD6D8
-Received: from mta0.migadu.com (out-134.mta0.migadu.com [91.218.175.134])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 595B340004
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:57:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I8byLkeK;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.134 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794193059;
-	b=XnQ4Lmy1CzJnCP00C2+woJK88ocAXu7nJut4h7Fg6VvnUzEDUEiW0EPtPFpn5WOSOICWi8
-	kmDH7/slKePClMO0/VHpifHuySUbyZteUiagEVff3RZNKnR+pT6ibEdni+8B/NQPunPyWq
-	jP13JotNXDc1DG0QN/NjkDYCiHyZ55w=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=I8byLkeK;
-	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.134 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E4976B00EF
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 22:01:35 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0462A16057F
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:01:33 +0000 (UTC)
+X-FDA: 85414080108.20.1C0C2EA
+Received: from mta0.migadu.com (out-42.mta0.migadu.com [91.218.175.42])
+	by imf31.hostedemail.com (Postfix) with ESMTP id E52F220005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:01:31 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J94oXTKr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.42 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794193059;
+	s=arc-20220608; t=1794193292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dwJNxf5rCTAUship/jh+E19aKDon5spv76HcuaGEvU0=;
-	b=zoSAlBqpuf9NhbrKPo/J3uhM3DvA3uwVq3ygMEeO+MxsT6FhRQg47x0isviJgXRBMSnm7a
-	+bRTV70LAhYK6nkCOHlv0dJgt0gX3wn9LO5qauafa67B2lSKCZ983lo5TAziLPbmmuW1iC
-	813DPV+qhvA0KO8P3n6Y4oK4xqKNsxs=
+	bh=Y0cBsTfKr29EprWvRWdTno7HJ6tVflTBayogkYmKhf8=;
+	b=jp0pD5IOKFmOU2ljaj3S12M6bUfhhHSGW2ufgqf8c9xxoxXTp3yVj6+x1HuVQvAQN/DDAg
+	E5Xd2uo+0KB0d/lsFTpj+eFsT+bDOtaGhHZbDtbW9PM/DANEdzENP7I6zWShw9JlZrai8p
+	sLRuzCRz8mwRvGkw/U0pP6pNGtJ1z0k=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794193292;
+	b=ysnmbRdHhWtWOcwS0EhhSULZ4uziffnb6vDOszFSYz/5xU3rIJhZd21Z29wGd2BP0mMciI
+	Fxj4OKMs/OckZ3BgTQC7AqveuVnrSARmK8KUtIKTr4NY/ueAY9xftJcdmVwqkj5jGeseVu
+	jAGl9pm0XoWo0xE326IuC3VEu2rUBqg=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J94oXTKr;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf31.hostedemail.com: domain of hao.li@linux.dev designates 91.218.175.42 as permitted sender) smtp.mailfrom=hao.li@linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=u5WrG/yasaWjBHktQ78tjm0ZVxb5BYE57NobquyrXQE=;
+DKIM-Signature: a=rsa-sha256; bh=sPWwyCgiEM79EBArYvsUTzRVt5A3f2FMp+z7ozhU+4M=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794193058; v=1; x=1794797858;
- b=I8byLkeKV8e26R9x/axeTIC88d6JqAaJWmc2v1X3zNoSbxc5GzsqJ5RsezFM+BlRGgJzG/so
- naERNpQyMvNttHnnPVnld5pGPknHctfXbmAzh8w6NXRN6azXloAu2kOY+DQpKuSBiKw9EXbZrqx
- 25E6X3fkyWY89AK0Y8bHRFfk=
+ t=1794193290; v=1; x=1794798090;
+ b=J94oXTKrpISxrFZDMcsRTX8ndZq5TdkicIjyguqi0hP6sytimOkWguN6F5Vvk7D30cU4pugx
+ CrUzSTSlhyxjns081C0A19ec3Snfxuu6eg70ZFbZT5PmPZBXt6BzNaxUjS8jk/ATMbgY7UnYyeS
+ itaN52sRfHwWGwDs3m9slzQA=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id e5337828cc32e4d1;
-	Mon, 09 Nov 2026 02:57:37 +0000
-X-Mizu-Trace-ID: e5337828cc32e4d1
+Received: by smtp.migadu.com with ESMTPS id b7bc58d81506faf9;
+	Mon, 09 Nov 2026 03:01:30 +0000
+X-Mizu-Trace-ID: b7bc58d81506faf9
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <f062d92e-a016-447f-926f-bd1b1ce7f106@linux.dev>
-Date: Mon, 9 Nov 2026 10:57:35 +0800
+Date: Mon, 9 Nov 2026 11:01:24 +0800
+From: Hao Li <hao.li@linux.dev>
+To: Harry Yoo <harry@kernel.org>
+Cc: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Conor Dooley <conor@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC v2 3/8] mm, slab: rework KMALLOC_RECLAIM handling of
+ SLUB_TINY
+Message-ID: <avE01iTQccxQnhl6@fedora>
+References: <20261024-slub_tiny_rework-v2-0-bf1419ab5ffd@kernel.org>
+ <20261024-slub_tiny_rework-v2-3-bf1419ab5ffd@kernel.org>
+ <auHcj2G78VkXy-Vz@fedora>
+ <auycUvCC2mL_EQ1r@thinkstation>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/mm_init: factor out
- memmap_init_page_from_template()
-To: Li Zhe <lizhe.67@bytedance.com>, Balbir Singh <balbirs@nvidia.com>
-Cc: osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org,
- rppt@kernel.org, apopple@nvidia.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20261105120615.16817-1-lizhe.67@bytedance.com>
- <20261105120615.16817-2-lizhe.67@bytedance.com> <au2tQaaMBg3umthq@parvat>
- <25a188bf-05e4-4f0e-b670-a9dc88195b21@bytedance.com>
-Content-Language: en-US
-From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <25a188bf-05e4-4f0e-b670-a9dc88195b21@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: skgt8r6hftmfijadmhhbcgw8sbt5dkrg
-X-Rspamd-Queue-Id: 595B340004
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <auycUvCC2mL_EQ1r@thinkstation>
+X-Stat-Signature: digqpxcoaenwdab9qpi9r8yiyajo43nk
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794193059-13318
-X-HE-Meta: U2FsdGVkX19QIWfp2PtDoAM1n4pNwRUHKMwzL/IpIsVcLjk20NoFJnZT8pvtIZG9cWquiOTK1Wz3zfZEX7o/80+c8Dng5E45O9lUwX3ArFlLaswY/PJb0dxs4J3+BV0g4FKhMaLfZb8qVVdzMUlL6YJf4QWU9QAL9Hn2qZpxiUpUHy6rXuPCj0N3q1efhm6XbpEapN0SEdd9BSgUAXLwsuqd/kqUTtpOcphtH+nHvInOJhhiNMU8SR0rHFFOgHA86OkuHzxJaLaNKTAcYCEwQScgQHEf0MCmzGkZT39O2YHwPVd9xjJhfvhY6hucJnEts439G2UzRgO+RgJTHCi40kv9gqSGRcXZPcvCeP4MhoJvaq8Pd6Inet19rygOtUKIYGKMYCxZ+Z8YKaUxzVtNq7OEEgP9D18QyE9+BvIurbuGZhYGIqi0Wpi2fGSxAxSbH0HB1cuzq+LNPlsQVS6WeEYKJHkKMSMw3FSha2JtRC9Q1hHp0oGx+Qte+SBXYc+rAALtQpicE4PFt0OHygSRoebj9Q4jBNZsqJ4BCQpvn1uKMcYVJjSI0Jlc/Vye299f+GRNqMYFmjYzPM1FFDAGkbB/PX+S7Uhsv3JVRjzr6NUSAQ83nPfpnIITcjeph/aLP8mK8gWLubg3SlFbgtzW8TtPELO/EAmye+v/cwbmSrsiLdp59JRNodDkRocAax9GkOsrKmE3dsu9WLulAd/1LK/chjvsErTjxxn6SLI0dBdkwsxi/cwO7lq5fe3uVDEMa8BuZM/lww6KVg+gUeNidVkVe6iH4IgS016FV+y6/sPLcuy7fkAFtjfEdLtdcS8lKF+JKW1nVLYpEryFYe/KCW9+UI44wh1nCUnCGhNpz/J2r2FBy9lLa9kGWiYF2+6TiYYeLTDvO04ynpOHe79kvUtA4ssIyNtCHx/tpqBVoBv+D40166GjikwESKbMq2vuRSCeoiSv6wX4ENsxr++
- jU0mhb4i
- WFpw9pGy9IAhqlJreoQdEG2N5HMGUWbPlwnSejLgEOG+1CRbFnbiD3OnO1Wap9KvYpoDjRcPh1HZ4YHi7Yy4lIQE8akXIrDdTSBuXoJu6M7VTTXFo5IxUEXv5eb6UoniR3PLpABBG+MibAJsGaaK3CXaxot5aK15J3xy8BxjGV5jzFSfzF7AvwvVdurWbWa+SLPvEALcSGO4i+Kh9r3VSDsUfezc9Heye+85zcsV/goq6QJzaI0Nd0WbBy1NIBnkIgRnnVzE/ElWEFoMbuonwlknYo34eE//VokeEuuvSdLzg8B6HjQXVBWJndbLKG0vtKvNe5lu4eCXVx38B61uCM7mbmw==
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E52F220005
+X-HE-Tag: 1794193291-97297
+X-HE-Meta: U2FsdGVkX1+wig3oYuJOyxTNrhmG8dHWE607BzT+fpYNAkPmRH+EFLKfRtAEz8E4e/EYW0jLKnAczB36p1Dm1bjam/L9DALSLtRgAorR472liSlcs3iPdiN9j18y1UVvezH7Sm0Grml5DrL9hO1rOm8PPUMlyq6RWYpxxh1iB+X0LhP1c38AZr8sgKnfUq2ob6AFPx4mCDsXnwIIkkuDkcfrtXf3XlM1wtN3KmaS8pKaEAu1sJYGplOmaJsztQZdIwsx+qv9ZqLAlySq0dPHd5kT38oirrATDGsqmQQJK0Hn/dilnKF7KaTlONIjqLh8WUlNm8dD1jV6D4nnuG1hBgSiKOy9VukjN81B+HWxyXABmfVDrSzb57PqIMFXeFlPo7Rh6UkjTlrPG0IcQyRAeMxt/b+jC3K8jUqZepFS2VQDgHzPGlgAmTqZ3hWWlFe4A8hYXF8oXNHyRFGlcLCqbXIUtwWJxUPDWKQOFMh9fBVrujYaxyukiYnAkfT22npkhX3yWfCv9oB5MUnZjvfV2UsJI/7axBfiVtfQSmYKklGAt5+5LKVdRq51TIh4sVmXhIKfplq0r4H7Y2i4+ysv0FXtZ+CMrGtJEFSfjqaTCQdlEOga7CcvVHPb8F5Sy1dlqcZu2AHgTqvadD4zksXgQE/jCnzzaQf+DRMBaOAy89votT5rrtCFW1CwO6jk2Ie/nrITRPjCZinbmQBmKVbF/ZZ770wuEKdYKqfLSw8JcFTaZF/FcbXfm6fLesKqrDK97gB5/HsRGz+FN2kOoOOLkRcvOjtvYKB4IBBV/ci2ryhHTjygUpmLuwAZsXBf0qSFRATRe+vl2SJgtJJxlJprke8EzIDQaryvEfnUtXZXoqjuArpFrjHh8S53KaMfBHYlqZ91UXT+cIwJycdP+VrcdUq//ydes0UBcu3nmi/xntfmkrWM2f/kNc/6XYoakiJfz4Co8xPB/rWlFq/3nd7
+ 8eCVKbgN
+ FJ5fEgQ2JOXu2Bzd0rPYkHMTKKQdFbn4Cszp5nOFkD4V2ul0mJMRDC2eiWx4j+4EEDCikGyY6wDa1mL3fcN9YEvYQemnj0GetP+9tWhux4pEHku2oLhPw4xlKIOG1JuA6/+4q4264crhRYo7WiT2xT+No3Xv/2DhT23SoTXtpP9wjfSnmhhdozfD/p760z96RG3dm6Piw5bajgeX6ylDZaoXYa6J200god9DVcLUdKH093qjSJgsssfph5dUV5kML6iHYc8GbJG/Pi6UsSNpmYeGNiV36Nd9YsT0lXGTbvUGR0oE+RmDUkOvRAGVAlgKq1i68lmDHCP5silB4qxGjlzfEbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,139 +98,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Thu, Nov 05, 2026 at 03:19:01PM +0000, Harry Yoo wrote:
+> On Wed, Oct 28, 2026 at 07:43:14PM +0800, Hao Li wrote:
+> > On Sat, Oct 24, 2026 at 09:07:25PM +0200, Vlastimil Babka (SUSE) wrote:
+> > > One (relatively minor) aspect of CONFIG_SLUB_TINY is the assumption that
+> > > letting reclaimable and non-reclaimable caches merge will save more
+> > > memory, which is more important on small systems than the page allocator
+> > > level fragmentation (where distinguishing reclaimable slabs should
+> > > help).
+> > > 
+> > > For now that has been achieved by #ifdefs that result in making the
+> > > SLAB_RECLAIM_ACCOUNT no-op and aliasing KMALLOC_RECLAIM to
+> > > KMALLOC_NORMAL on the enum values level.
+> > > 
+> > > With the goal of converting CONFIG_SLUB_TINY to a boot-time decision,
+> > > rework this so that SLAB_RECLAIM_ACCOUNT and KMALLOC_RECLAIM are
+> > > distinctly defined always. Now, creation of kmalloc-rcl caches is
+> > > avoided by assigning a pointer to the normal kmalloc cache on the
+> > > kmalloc_caches array level.
+> > > 
+> > > To prepare disconnecting of this boot-time decision (and the evaluation
+> > > of the need for kmalloc_no_objext) from CONFIG_SLUB_TINY, introduce a
+> > > slub_tiny_enabled variable that's initialized to the CONFIG_SLUB_TINY
+> > > state.
+> > > 
+> > > There is one minor functional change for CONFIG_SLUB_TINY=y. Since
+> > > SLAB_RECLAIM_ACCOUNT is not 0 anymore, caches that differ only in that
+> > > flag will stop being mergeable. If that turns out to have a noticeable
+> > > impact on memory footprint, we can adjust the merging decisions to
+> > > ignore SLAB_RECLAIM_ACCOUNT when slub_tiny_enabled is true.
+> > > 
+> > > Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+> > > ---
+> > >  include/linux/slab.h | 10 ----------
+> > >  mm/slab.h            |  5 +++--
+> > >  mm/slab_common.c     | 12 ++++++------
+> > >  mm/slub.c            |  2 ++
+> > 
+> > [...]
+> > 
+> > > diff --git a/mm/slab_common.c b/mm/slab_common.c
+> > > index 02dfe4351e8b..33e76a0c3084 100644
+> > > --- a/mm/slab_common.c
+> > > +++ b/mm/slab_common.c
+> > > @@ -1009,7 +1009,7 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+> > >  	 * KMALLOC_NO_OBJ_EXT cache.
+> > >  	 */
+> > >  	if (!mem_cgroup_kmem_disabled()) {
+> > > -		if (type == KMALLOC_NORMAL && KMALLOC_RECLAIM != KMALLOC_NORMAL)
+> > > +		if (type == KMALLOC_NORMAL && !slab_tiny_enabled)
+> > 
+> > (While reviewing Harry's patch [1], I happened to notice a small inconsistency
+> > in the current code. Since these lines are being touched in this series, I
+> > figured I'd bring it up here, even though I haven't properly started reviewing
+> > this series yet :D)
+> > 
+> > IIUC, for both KMALLOC_NORMAL and KMALLOC_PARTITION_START + n, if gfp has
+> > __GFP_ACCOUNT set (and without __GFP_DMA/__GFP_RECLAIMABLE), the allocation is
+> > redirected to KMALLOC_CGROUP.
+> 
+> Right.
+> 
+> > This seems to mean that neither KMALLOC_NORMAL
+> > nor KMALLOC_PARTITION_START + n actually needs an objcg slot in obj_exts.
+> 
+> Right.
+> 
+> > Right now, KMALLOC_NORMAL already doesn't carry SLAB_MAY_ACCOUNT, but
+> > KMALLOC_PARTITION_START + n still does.
+> 
+> Ouch, good catch!
+> 
+> > Given that, would it make sense to
+> > change this line to something like:
+> > 
+> > if (type >= KMALLOC_PARTITION_START && type <= KMALLOC_PARTITION_END &&
+> > 	!slab_tiny_enabled)
+> 
+> Maybe you could send a patch as it's a separate issue from the patchset?
 
+Sure thing! I'll post it once vbabka's slab_tiny series lands.
 
-On 2026/11/9 10:51, Li Zhe wrote:
-> On 11/6/26 6:34 PM, Balbir Singh wrote:
->> On Thu, Nov 05, 2026 at 08:06:14PM +0800, Li Zhe wrote:
->>> ZONE_DEVICE memmap initialization already uses a reusable struct page
->>> template when initializing compound tail pages.  The template mostly
->>> contains invariant state, but a few fields still depend on the target
->>> PFN and must be refreshed before copying the template into each
->>> destination struct page.
->>>
->>> Factor that operation into memmap_init_page_from_template() so other
->>> boot-time memmap initialization paths can reuse the same helper.
->>>
->>> No functional change intended.
->>>
->>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
->>> ---
->>>    mm/mm_init.c | 29 +++++++++++++++--------------
->>>    mm/mm_init.h |  2 ++
->>>    2 files changed, 17 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/mm/mm_init.c b/mm/mm_init.c
->>> index 2a0e782a151d..495e20fbdec0 100644
->>> --- a/mm/mm_init.c
->>> +++ b/mm/mm_init.c
->>> @@ -625,6 +625,17 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
->>>    	vmemmap_optimization_verify_zone(page);
->>>    }
->>>    
->>> +void __meminit memmap_init_page_from_template(struct page *page,
->>> +		unsigned long pfn, unsigned long zone, struct page *template)
->>> +{
->>> +	set_page_section_from_pfn(template, pfn);
->>> +#ifdef WANT_PAGE_VIRTUAL
->>> +	if (!is_highmem_idx(zone))
->>> +		set_page_address(template, __va(pfn << PAGE_SHIFT));
->>> +#endif
->>> +	memcpy_nontemporal(page, template, sizeof(*page));
->>> +}
->>> +
->> Can we make the template a const? Why can't we do
->>
->> void __meminit memmap_init_page_from_template(struct page *page,
->> 		unsigned long pfn, unsigned long zone,
->> 		const struct page *template)
->> {
->> 	memcpy_nontemporal(page, template, sizeof(*page));
->>
->> 	set_page_section_from_pfn(page, pfn);
->> #ifdef WANT_PAGE_VIRTUAL
->> 	if (!is_highmem_idx(zone))
->> 		set_page_address(page, __va(pfn << PAGE_SHIFT));
->> #endif
->>
->> That way we don't update template once it is set, if template is r/o,
->> then we don't need both first page and template in the caller to
->> be different.
-
-I used to think that too.
-
-> I kept it this way to preserve the memcpy_nontemporal() write pattern:
-> update the PFN-dependent fields in the template first, then copy the
-> final state to the destination page once.
->
-> If we copy first and then update the destination page, the hot loop
-> would do a non-temporal copy followed by normal stores to the same
-> struct page. That is the pattern this helper avoids.
-
-After thinking it through, that should be the reason. To prevent
-similar confusion for others, I suggest adding a comment here
-explaining why this specific order is used.
-
-Thanks.
-
->
-> Thanks,
-> Zhe
->>>    #ifdef CONFIG_NUMA
->>>    /*
->>>     * During memory init memblocks map pfns to nids. The search is expensive and
->>> @@ -1073,17 +1084,6 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
->>>    	}
->>>    }
->>>    
->>> -static void zone_device_page_init_from_template(struct page *page,
->>> -		unsigned long pfn, struct page *template)
->>> -{
->>> -	set_page_section_from_pfn(template, pfn);
->>> -#ifdef WANT_PAGE_VIRTUAL
->>> -	if (!is_highmem_idx(ZONE_DEVICE))
->>> -		set_page_address(template, __va(pfn << PAGE_SHIFT));
->>> -#endif
->>> -	memcpy_nontemporal(page, template, sizeof(*page));
->>> -}
->>> -
->>>    /*
->>>     * With compound page geometry and when struct pages are stored in ram most
->>>     * tail pages are reused. Consequently, the amount of unique struct pages to
->>> @@ -1136,8 +1136,8 @@ static void __ref memmap_init_compound(struct page *head,
->>>    
->>>    	/* Initialize the remaining tail pages from template. */
->>>    	for (pfn = head_pfn + 2; pfn < end_pfn; pfn++)
->>> -		zone_device_page_init_from_template(pfn_to_page(pfn), pfn,
->>> -						    &template);
->>> +		memmap_init_page_from_template(pfn_to_page(pfn), pfn,
->>> +					       ZONE_DEVICE, &template);
->>>    	prep_compound_head(head, order);
->>>    }
->>>    
->>> @@ -1192,7 +1192,8 @@ void __ref memmap_init_zone_device(struct zone *zone,
->>>    	for (; pfn < end_pfn; pfn += pfns_per_compound) {
->>>    		page = pfn_to_page(pfn);
->>>    
->>> -		zone_device_page_init_from_template(page, pfn, &template);
->>> +		memmap_init_page_from_template(page, pfn, ZONE_DEVICE,
->>> +					       &template);
->>>    
->>>    		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
->>>    			cond_resched();
->>> diff --git a/mm/mm_init.h b/mm/mm_init.h
->>> index 0034e37dbabd..22c465122b47 100644
->>> --- a/mm/mm_init.h
->>> +++ b/mm/mm_init.h
->>> @@ -111,5 +111,7 @@ void memblock_free_all(void);
->>>    
->>>    void __meminit __init_single_page(struct page *page, unsigned long pfn,
->>>    				unsigned long zone, int nid);
->>> +void __meminit memmap_init_page_from_template(struct page *page,
->>> +		unsigned long pfn, unsigned long zone, struct page *template);
->>>    
->>>    #endif /* __MM_MM_INIT_H */
->>> -- 
->> Balbir
-
+-- 
+Thanks,
+Hao
 
