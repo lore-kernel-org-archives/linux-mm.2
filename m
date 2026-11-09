@@ -1,130 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51776606A331
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 17:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9FD606A32A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 17:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lkoDD4+/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Pek9s7zB
 Received: by kanga.kvack.org (Postfix)
-	id 5381E6B05B9; Mon,  9 Nov 2026 12:48:40 -0500 (EST)
+	id BA1896B05C6; Mon,  9 Nov 2026 12:48:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C18F6B05C4; Mon,  9 Nov 2026 12:48:40 -0500 (EST)
+	id B51956B05C7; Mon,  9 Nov 2026 12:48:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 362716B05C5; Mon,  9 Nov 2026 12:48:40 -0500 (EST)
+	id 9F3DE6B05C8; Mon,  9 Nov 2026 12:48:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F26BA6B05B9
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:48:39 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8B75E40788
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:48:39 +0000 (UTC)
-X-FDA: 85416315558.28.E96BCF3
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 70F7A6B05C6
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:48:58 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01414C0763
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:48:57 +0000 (UTC)
+X-FDA: 85416316356.11.40C0E88
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id A4EA114000A
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:48:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lkoDD4+/";
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf02.hostedemail.com (Postfix) with ESMTP id 33FA080003
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:48:56 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pek9s7zB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794246517;
-	b=k7C40GMhcJvJo0+xpGg5zZooRDrkR7Uykx/2VQhYaV/UecU0Gr4QRQYESqJ0t1b5e8Vugm
-	0+VKDKL8qUYVTBjBN5hOwHddWJ8ueUkqen08js6tLOzGzz9J7mQoyvcQ915XMwi1IaNJcH
-	ndAq473Lpqh2hcm/krsvqxOp6jEoJeg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lkoDD4+/";
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1794246536;
+	b=M/MYroM0Gwr9ILVXR19ldmbEiMlLorwfRN/9EqGmSJL4yUamlHhpnZVqHwKgpuf8xr7drJ
+	ytq6nCkPE7c/lrJeQvByKY8RALshGWSVqVq/AwhVDXEIvvND/haVOVqS3UQKFBuVQJxHHi
+	l6/wc/eQNLTcrwg72UROPzazv12iuaA=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794246517;
+	s=arc-20220608; t=1794246536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lcHVNb8h9ym/nW67h6wzRR7N7FkAfMPdvxxCwA8+c2g=;
-	b=zPzv06flsnicBBNFmH04aqCm/pnWHncXsUxOAoPfDlaghADpk41ghu6xctCI1fg/fGh0p+
-	Php4RIrvVHCdJm52Xlhs552HqD87eK3ejUKw0NS2zSZzqg7C7Y12dx6QhLZUJAyXKRZQTJ
-	inHghOqTBLfd0zXbS9hJ6p4tryYVMTE=
+	bh=dHxEdjexbDAxhEaz003lOiCE3vg4apNJPfNwG6nSAow=;
+	b=6t46cRadHUkpWbeqePMUHczSuzZ5Smhtu2WLPiOpZ9Frr4QHKbgdh+kyh46lk5wTNoX3t2
+	Eug+bqJGySSY0h4CjeFOtj5o9kP17m9RISh9Ar5k4Wu2Z+Qqj/H/yB4HKY0MyeCoydWDbm
+	IP7Fyzuq0gv5zcxgM4Gib4tVCQIRWnU=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Pek9s7zB;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CF5EA407B9;
-	Mon,  9 Nov 2026 17:48:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E011F008A6;
-	Mon,  9 Nov 2026 17:48:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 5BCBA40208;
+	Mon,  9 Nov 2026 17:48:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBE031F008A1;
+	Mon,  9 Nov 2026 17:48:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794246516;
-	bh=lcHVNb8h9ym/nW67h6wzRR7N7FkAfMPdvxxCwA8+c2g=;
+	s=k20260515; t=1794246535;
+	bh=dHxEdjexbDAxhEaz003lOiCE3vg4apNJPfNwG6nSAow=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=lkoDD4+/yYSc0TRRYBmcWMudLmbIzQucPBUxkh4qoyIWogL1k4ZeJA+sIZgycMJaJ
-	 GlsdpeGkUvFnUajiwqaUoJzGhzQuVetlT+Vq6veOeb4eAU7S3a6HiqmiU5g0S0xlzB
-	 wjdYEqzxdHWWUTKfYJfy1vP7iNTwNitM0eu6BzKkcVwU6aYWrBq1iNIah3D72sC3uz
-	 wje5C8DL5z63ijGwAdNFRfbDem0Cx73jwc1ZIG2bkF5gJhcGmBRBrRj6UqZaqvxmdz
-	 ngYOkuyKZKiwFL/4KsFYnAwB3QonHpvmWd2aCwhX+EZ+NLqV2Hb1a6cgFycRxnGaeS
-	 FGVPTL9jOHEOA==
-Message-ID: <ab4be2bc-8959-4c09-a120-37e216279dae@kernel.org>
-Date: Mon, 9 Nov 2026 18:48:07 +0100
+	b=Pek9s7zBH0iPwsSpcUG005YFC1HK89pX4jsQNNeogHCzt4HyJI7X/6lZf5+7iMxvc
+	 rXQIj8PlSNmYODFFj3rXKyfHyW2qPFSVPc8dbbTFYccpGhJtNDSawBiSC5j9x9sxed
+	 Olr2iyiFE3ie6Jw2rtzed5xGk2A9JiOt0cbquzPkVQSveOB7CQC1IJKgHX/L/OPmUh
+	 PKo0zYmMFGSKAJXUMd9+fwEbQ4vNbukBOV5EsWL3wuja6tSb4TAKLpxGLu1BYHQ3TR
+	 kjxMEhHWj/i76fDu4ytgwvqaaqRAlhaIncCx2xVGCxVf0hHuEl+L/KVequLYiOHkh7
+	 aEHPTMDRdPT4Q==
+Message-ID: <befbf3e1-d25d-42fc-86df-e4b695b017a2@kernel.org>
+Date: Mon, 9 Nov 2026 18:48:39 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/13] mm: continue vma_flags_t conversion
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+Subject: Re: [RFC PATCH v2 03/18] fuse: don't move a folio with PG_rcu_free
+ into a fuse file
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>,
+ Hugh Dickins <hughd@google.com>, Christian Brauner <brauner@kernel.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Harry Yoo <harry@kernel.org>,
+ Miklos Szeredi <miklos@szeredi.hu>, Miaohe Lin <linmiaohe@huawei.com>,
+ Naoya Horiguchi <nao.horiguchi@gmail.com>, Oscar Salvador
+ <osalvador@suse.de>, "Liam R. Howlett" <liam@infradead.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
  Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
  Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
  Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
  Shakeel Butt <shakeel.butt@linux.dev>,
  Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
  Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>,
- SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>,
- David Rientjes <rientjes@google.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, John Johansen
- <john.johansen@canonical.com>, Georgia Garcia
- <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>,
+ "Paul E. McKenney" <paulmck@kernel.org>, Pedro Falcato <pfalcato@suse.de>,
+ Luis Chamberlain <mcgrof@kernel.org>,
+ Ilya Gladyshev <ilya.gladyshev@linux.dev>, Jaegeuk Kim <jaegeuk@kernel.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, damon@lists.linux.dev,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
- linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
- <d0ea7929-7c12-4245-ba3f-6dd5c0269e6b@kernel.org> <au3r0-geuwtRYPiC@gremlin>
- <1c0b1368-a381-4b25-bba9-7a4f8e92b764@kernel.org> <au-DXpEi4wHwsz0r@gremlin>
- <93fef824-9f60-4940-9ee6-80c9c8e3f945@kernel.org>
- <20261109094434.d23a227a869e76455ddff3b1@linux-foundation.org>
+ linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
+ kernel-team@meta.com
+References: <20261104130118.2507513-1-kas@kernel.org>
+ <20261104130118.2507513-4-kas@kernel.org>
+ <f21433af-afc6-4a8f-8d2d-3a377cd3bd6e@kernel.org>
+ <CAHk-=whn=xc9J3qApHWRGTaBpwVRtGbvJ0LURGF=dqC9B3swUw@mail.gmail.com>
+ <CAHk-=whhp=Q8qR+wPoM9+mxYPQ_OXMOEoKmT7J0JZikFZusuqw@mail.gmail.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -171,21 +146,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261109094434.d23a227a869e76455ddff3b1@linux-foundation.org>
+In-Reply-To: <CAHk-=whhp=Q8qR+wPoM9+mxYPQ_OXMOEoKmT7J0JZikFZusuqw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 33FA080003
+X-Rspamd-Server: rspam12
+X-Stat-Signature: sen5yow8heaiyg7mczpgw3sbg7uozoph
+X-Rspam-User:
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A4EA114000A
-X-Stat-Signature: n9tpd6i4z44psam4rixjbyhan1y945w4
-X-Rspam-User: 
-X-HE-Tag: 1794246517-169212
-X-HE-Meta: U2FsdGVkX1/NsJD/cHmAhv3twQSTkL4pKNNuZO2lUwlBn883nJgmLDRBC77d9RIHb/d75yA3bC1ZZ5VzH6BP/oK+dHw9eM5zJzRTaTDoyZvsPFOXbSqw5x4nGIO+8mxoE3Hcj+a12DKGyK7u045u1awRPhYPqrRLpkBFv4g3/W0998VCpaB1vdpZd9vMjGG95pGijoQm32mJtduiQLQitp2puf/3zZpgbI8IzJzdKOrVwgzTM+djHVc1BiNtgccWknbdcLVfy472YzwRjvJyjMdmsupgZXeNZE0aRngCjutV6AVGYJ4+RjbYJ/0CUmXXa3gFi2syot4HN6Bd03jDuovEqEaxGaPJsdbstNlLoKAknPZBIvzVYh7Jhm0z0QaQ6C9kO5FA7ezpap0HuKABhWq8SIovGz/jlmvhxwWaVQ7Q7yyUBJkBYLnbeEVRuJX1RfcSZydPrcW+/UHFopjZBE5U3U00chG89fcxN18zgiXyi+3yGNLiFeqOHtMcxqcuifnvwfDd9eo2EJmdvGpp4fnuZV0srsdYw0kmXYzcvjz5of+txXbc3KC/fit3FLkjQpHOR+i9dIrtb8r6qbjVAvVO/7yYcAojQc9LOYIxb5WXNwL7BUOo1JR7nT7ccXmJBsMGUjDd/NgwaRYr59qDcp3thuPNgXTtJoHSKbtMZQktTRWAaYtlVaElnCWsu9fgFkiMzLe4iebhT/CF/H/7Fgq3ifVEPqhdUklH9vtXQHgRV4vdkQiU0AvyJKn0CHIQ6WGjokKM2S20J6tqcUUjQ48H1/CA7+KPj4nEpicn4/bnuu3PwhSsMCOStMPRksS5skYAEIxBT2yGDs/K0MAM5oQ1PG4OCwyi3YtzS+rhKnNdVAhPTe/W+nqcBoAi+vW3b8WsxUJJdOw67hRgx3TjWon4+ELLxRM2Q3/rRrjyukvSez+z3PtLouS71nnRTnE0LrO8WQDDHdYNRJ7XVGB
- 6zKFnbla
- p8eUCK+R+2NPeL83cbAxZYwlUdsT/8qarKLzcZUbeuTF1yN6RWssrHUwEEW8BYfT8NceAfKb+DJsRiS9HS079NNVfGcaNXck8zYU41kEtOlZMyLrCbnjALvlSZAHjOKPgB/ztbZCBbsJE5ZtsacE5TLh7ZpjCc45xwkzLTBKpto4REH83PAkjVCrkA6uYbccV3VJiMrNOOCpgUa1CxgNU3QojdZeTcbG6hdEOPp6JVskAey6v7iz4gigyuIBQOwJP0zVsrNfHQdWiQv3TGC1gIMscCPTkWM4K3lMgSSU9iCOLn/ijhIxRfND9EpHCXJakLM+5MgL8oq4j7xd0CMAZwEokr5CF9DqnlOlUtqEjqgj/A0K+7aJ+xFxBNppJtVooVJ3eSC/U7OyyIBv9ByPlcshrRQ==
+X-HE-Tag: 1794246536-438702
+X-HE-Meta: U2FsdGVkX1/Shsioaoxw0ubpPaT2toFONWUius6mf+aXxMiJfKMAQm/tmixn3lEDy3L6+IHmPdYA9N8l6RHMTKyPeFBEGmWVX8u+cKVTmakb26DiAp02uvOKnzsSfW6uOXeVArUSOiN4WeLNh/vTr2sNuwWx37ioVtWQyqrapHikcIX6YNAAnof/H+4fsNlbZOjGL01tR6bDYY5VlscvCMkxdPL2s3doiAimSZpZmuwoH4O7HgIPK0XsYxF0uYbiBjdgvkdEeveQrY5vvO+ftCXrtWQxzhsfcn3M2Hgb0+rg/QgkzCl+ksFVWcWLZSXZvn9q7Hxn/OgekXs7aBGDEGevBbqKXbeSkEyWsN9gMGBjGGzY8IhVZOGaBBLwmvaXw2woDte3kaIJtuvp7er53MPow2P9ZzyczMEp9cXaVdo1FMcD2HEPgllGX+LIjBQ46PVBVtSv3DG9mJNtoI9B02bhbBMZHDjdEOR2/qyFOBLfP8l0zecze9LMHggFtNznOOSTYsZBW5e/dp4RaQLLShuTuNgng0COegIpDEIDYyPEy9YO9xZXlFZlEAp1Mc+4Y1uDx//mgqzdHPIFbXPVIfqRZXeYMFD7F96qb6U7/XXI7HM3xvFRVceFZ3JrBt/TH4LzNUH+zs+ocCwzdBmUCOWK/gsLCCUZAEcFnPedw1eDNWX8Dhrbcdd9owcUXw7+25V65EfRPVsZ/6MDq/Xc5JlnKaM97fHeTzXttekUF7Oau0FgYuZCGhRoTq5XfGwkhjKbz0ryoIFUtwXfNH9X1yxKStlfultgFG50WW/YRj780IlIAzm4v2OANIkCCxlRuFREltEC7njgdpa8MF6a4rBsDcza+4CaPlTO3nFtwxVfAXudltvJNhpVo27agAP80hmTriTnUdEPZTSQB8dMkPk7J5k84D+uWkcnYe4L8FT2IICAGJrWlNsD24IwNF47qZYUURVjwPMpErWYIQq
+ kPz43F+L
+ VK+IHcamzJx/m4zOAcdDEQuoidgTX6JCei7y2W2wsQXAlxdg7uhuPlOCZM8TIHXy5J644uKd5WgyP+BF6/knBtfY0kmiWxL9Xj00U5ze3BDmdrDwHsExA5aKg2egCIXq2x+n7Jbgcu34MzgVYk5Qd/+s8dTm9pJOYRyke/XczIRlrVGaslWw1lOrxVlnndM7ILX8vXd9zjyUTmRS3qMyFafMFfoQ8jg6yDrhFyE2JDR+8ifR6B312QUmn7+Ivub6yqvawVUMHwXUcrVRdABOBveg6x5Xm+//gGp7IxsoeAR6LVoN+BzOnlLBmG10/RcsYiyX1h/kUNoA0Tox/fKTzQKBB6JT7+1XAH28s+v3exHwhNj8XXtWFkbvICxRixkGKk9QGSL/LSP6e8OfqskVv54tCORkyFkpFq1nzwkrXMwqJn1aPxXyqpDQHy+4GxwUVvc3Wim6NoRMSOgZAoavlR5B8a61ZOhQCz7SvCojmKTstLUtcMhoA0yMiF/SwXxE0vNu5gNy8K+xc+/3I9/gSdA7asOOwn+s4pRo4sqtLXk5vje0Bvyq8xxhwR4mm2M62FJkVBrteMXvTNQI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -194,41 +169,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/9/26 18:44, Andrew Morton wrote:
-> On Mon, 9 Nov 2026 14:40:48 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
-> 
->> On 11/7/26 21:09, Lorenzo Stoakes (ARM) wrote:
->>> I think we're slightly talking across purposes, so to be clear - I am totally
->>> fine with you taking any of this through your tree or whatever works for you and
->>> Andrew to avoid merge pain :)
->>>
->>> I was just talking more generally about how to merge series that touch a lot of
->>> subsystems and maintainers-who-may-never-reply, etc.
->>>
->>> These are the edge cases that make things... fun :)
->>>
->>> Anyway, I guess easiest resolution here is for you to take the bits that belong
->>> to your trees and Andrew takes the bits that belong elsewhere?
+On 11/9/26 17:35, Linus Torvalds wrote:
+> On Mon, 9 Nov 2026 at 08:28, Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
 >>
->> Yes, that's what I did now, applying #1,#3,#4,#5,#6
+>> On Mon, 9 Nov 2026 at 06:46, David Hildenbrand (Arm) <david@kernel.org> wrote:
+>>>
+>>> Could we get rid of fuse_try_move_folio() entirely?
+>>
+>> Please. That would be great.
 > 
-> Cool.
+> .. and in a similar vein, we should get rid of splice doing the same entirely.
 > 
-> I'll remove the whole series from mm.git immediately for
-> collision-avoidance reasons - let's sort things out later.
-
-The mm-next merge today still worked (minor conflict on #7 due to one
-unnecessary ksm.c hunk I commented on), so you could have likely just kept all
-but the above patches.
-
+> Kirly's patch to just remove page_cache_pipe_buf_try_steal() entirely
+> (ok, it was originally mine, but Kiryl took ownership of that series:
+> "Tag, you're it") is worth doing, but I think worth doubling down on.
+> I think we sh ould just get rid of 'try_steal' entirely. I don't think
+> anybody really uses it. I think it exists in fuse and in the virtio
+> console, and neither is worth it.
 > 
-> I'll get better/more accurate about this soon - I need to set up
-> infrastructure to fetch everyone else's trees, do test merges and
-> figure out what should be removed/fixed in mm.git.  I might just base
-> mm.git on everyone-else and always route its stuff ->david.  I need to
-> spend a bit of time on this and discuss with the mm-next peeps.
+> Removing pipe_buf_try_steal() would basically remove all of
+> fuse_try_move_folio().
+> 
+> Conversely, removing fuse_try_move_folio() would make
+> pipe_buf_try_steal() even less useful than it is now.
+> 
+> Just remove them both. Good riddance.
 
-Ack!
+Yes, that would be very nice.
 
 -- 
 Cheers,
