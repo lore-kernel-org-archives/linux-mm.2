@@ -1,202 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A417060A380E
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 19:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC8F606A321
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 19:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=selector1 header.b=j+txKzLf
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=XQA2qnnM
 Received: by kanga.kvack.org (Postfix)
-	id 7B8546B05B2; Mon,  9 Nov 2026 14:41:22 -0500 (EST)
+	id 024B56B05B9; Mon,  9 Nov 2026 14:48:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 741E06B05B9; Mon,  9 Nov 2026 14:41:22 -0500 (EST)
+	id F18176B05BB; Mon,  9 Nov 2026 14:48:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 631476B05BA; Mon,  9 Nov 2026 14:41:22 -0500 (EST)
+	id E2E446B05BC; Mon,  9 Nov 2026 14:48:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D4776B05B2
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:41:22 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A1C89807D0
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 19:41:21 +0000 (UTC)
-X-FDA: 85416599562.24.51F2AE9
-Received: from YT5PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11021142.outbound.protection.outlook.com [40.107.192.142])
-	by imf29.hostedemail.com (Postfix) with ESMTP id D04EF12000A
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 19:41:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=j+txKzLf;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.192.142 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794253279;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B85D36B05B9
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:48:46 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 120621C3C61
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 19:48:46 +0000 (UTC)
+X-FDA: 85416618252.16.CB66D90
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 44CD3100005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 19:48:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=XQA2qnnM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of skunkolee@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=skunkolee@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794253724;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zGiXObjqajzxHNSgI/jeYKfJRVDc/3Xvpwfjq2l+fcg=;
-	b=cFY2tNJYRcyc4Jeq7gHGBUEx+l1RqibgKbIR6uMV3udQ7zsf5Vyvikm69Ah/Sc28IyfZoE
-	FQF0/zeffFyEGydjsRcMDABmjNaaSq62Ouh2TxOfKvL6b9L0URe/cMloiBx42rUiymIDmO
-	nAYixxAFP+Oo5sAqeraUxM6kwcwN9K4=
-ARC-Authentication-Results: i=2;
-	imf29.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=j+txKzLf;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf29.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.192.142 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794253279;
-	b=V3NojJSw/damNegAIeTkHjOqeVtNNRTU5eoldmYr4PbI3ma8+8bcY7a92Q9q5cZ97o8rLa
-	NVInSeP/snXMKJv1BGlIMQNCAgycPCydzjz634TPM3SgwbdpquHEo1dZuoRXNqfia+9USg
-	LCUL/gp0vx1YVpX+sGf3o8py/CNuB70=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A7El65aV03cMWUn++LHHklHd4BHbz6xuNRlyhwwFxe/DksQR5jLxd0CBVF4s091qxUaoXqNwfR9c6GkFIdnpaoHW0PzNSskk0rxfJVzHNpklxxqTqm/Q8qm9uUKX95EBekL1A9dKAuKQn8/Rc/6lxtb+H9TftxBjCj6CmDPiUvgMJxpJUm5dIwGs4iug29uZ8ahjBhtIN8p6gnE4LOF20OsGYKc37f/SNpKgjA8ofBjFUt8zN5gZgdyAe8gw7ZluVJXFbqbdm43MmhbvhFzuNBoMU2AQKioY1jYDsp4JkJ4QEA731lXm3xIaYNkASTIahXN5qSSmBmhTtBd4OhfptA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zGiXObjqajzxHNSgI/jeYKfJRVDc/3Xvpwfjq2l+fcg=;
- b=rFsYhlPrlz5VgN0ZRUmLc2gcO1P4r0NT0wNjBdDjXOhB5XNWODwTclGTu7VJ3y+4joY1tIJPkmWhqTYSCLCGUVIoHxKlmcjkkchwoNAMQBZw1kKfPSZhN9PoJUq8ZjqkIqZginBR3Qh1b6pDlQfBEfAbybmlmrUH2srSxekrUkC9Z6BIoAXVcCOF6AIga1/m3m+lBqwVXRhFzNZ4NzYADHTkvADriS6GhEn7EAO0syhG6ssJwzXuyeDiEfUm3csAArdMVSQ28I4gKGLML66r19vcms4MejG81Fbu1I+TSd35a2xCllowiyMNbDIS7/FK61NvpQCvy2XoZMO2+XpAaw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zGiXObjqajzxHNSgI/jeYKfJRVDc/3Xvpwfjq2l+fcg=;
- b=j+txKzLfv3g58DfV/TecTdSXTdk/3+8MoNi+2U3FWWeABmA5eYN0tGbKVJs+K1QcVDifK42nalFNrkFCAoWeLxCUvNYxOu7GDMPmoVRzau4WHxgBPh2nIoqh4JDp2HGbTsRnGXpl3tK/8w1P9Jo67za/zyuh2Z95oj2uQk1wqTnvry2tE1K/HEyR7WdePdccef537VaLnqFluk3spDnI+EtlnJlLsiAoaHS9oWIXqQ3kGffqyd1VEesrrKKgg0CSWI9gTS6e6ICdv/Uej4fhDUwkJ53tQyHXzRhvTeey6r6CYrIZSavmoP+3turCVQQQQ+Xyam1BZAei8PFwPskyvw==
-Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:1d0::10) by YT5PR01MB261024.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:19a::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Mon, 9 Nov
- 2026 19:41:17 +0000
-Received: from YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6b9e:a901:67c5:7ddc]) by YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::6b9e:a901:67c5:7ddc%6]) with mapi id 15.21.0592.012; Mon, 9 Nov 2026
- 19:41:17 +0000
-Message-ID: <b7f754d2-ddbe-421f-9672-aa1176e89dc4@efficios.com>
-Date: Mon, 9 Nov 2026 14:41:14 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v24 10/10] lib: add a benchmark of hierarchical
- per-cpu counters
-To: sashiko-reviews@lists.linux.dev, David Hildenbrand <david@kernel.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>,
- Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@gentwo.org>,
- Martin Liu <liumartin@google.com>, David Rientjes <rientjes@google.com>,
- christian.koenig@amd.com, Shakeel Butt <shakeel.butt@linux.dev>,
- SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>,
- Johannes Weiner <hannes@cmpxchg.org>,
- Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>, Miaohe Lin <linmiaohe@huawei.com>,
- Al Viro <viro@zeniv.linux.org.uk>, Yu Zhao <yuzhao@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik
- <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>,
- David Carlier <devnexen@gmail.com>, Andrew Morton
- <akpm@linux-foundation.org>, linux-mm@kvack.org,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- Randy Dunlap <rdunlap@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
- <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
- Valentin Schneider <vschneid@redhat.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>, Kees Cook <kees@kernel.org>,
- linux-trace-kernel@vger.kernel.org, Jan Kara <jack@suse.cz>,
- Oleg Nesterov <oleg@redhat.com>
-References: <20261105203639.1459524-1-mathieu.desnoyers@efficios.com>
- <20261105203639.1459524-11-mathieu.desnoyers@efficios.com>
- <sashiko-outbox-202248@kernel.org>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <sashiko-outbox-202248@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBP288CA0023.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:c01:6a::19) To YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:1d0::10)
+	bh=Nsd1wsdgN72wtuhrUgUrRyzu9u6yO/lsXF2Q80nLfXw=;
+	b=fw+WP6NESmo4sxN0+X/tnEpjxOOJNnecRirMn2QEJtrb7Q8miOKPgwraGcZj8GQ1YhW4nb
+	HXdJtUQDPJd4gkmvq+eJ58E4mNfwvdMzyfZC6SWqmCuvL9mZ2i8XhqaTW+muBB9hkX1bpU
+	0M338+NJNVomNn0zxx7vaY5n4MLmJIw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794253724;
+	b=et3QqseUNFPXLuzpvMfeVEfmp1wveOyw8IHTZO1KWrjakpzGPO7QLOynM5b86qxX3Ltgef
+	PASNHxXw34qiOKbhO6mvnWBmoKqzxIEfZjfSJ0+4jC4ehkz5lLKKe8L/bN4/ZyDJMOZ1qR
+	jzmmqLzqPuQVN5j+XsSmyvr4cIrnLMU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=XQA2qnnM;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of skunkolee@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=skunkolee@gmail.com
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3b0b3438540so813842a91.0
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 11:48:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794253723; x=1794858523; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Nsd1wsdgN72wtuhrUgUrRyzu9u6yO/lsXF2Q80nLfXw=;
+        b=XQA2qnnMYUVCbvm9Yi0/PJa+5IFLpn7YOzqZxdG9mZ+G5QgToCO/5FcikfrDplsQHt
+         8amhGwm0s8ia8lpQl37WS/yntFzln07G6qxTCpzUT8OcXRRoiCMQJznOSc2Cvd7dt5Be
+         xKyr6ijrgsSN2huQtKOubUv8b7wAa7J0jFT6Q7c0gnPJh1A6PCeOES404SczO9p3gaoh
+         PN2ED3D2kN4WAx/9QnlXT0YqJdTy26r62QlBHm9O5rCFHsuQYgVyqlxPK8zASmEBu40X
+         xkMjhdC7iGvgLSgyDzwVxkdMOMamzPcCTVOq6zLXiZKjYHlv4HxNZ5XiRSh06WF3rES4
+         hsZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794253723; x=1794858523;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Nsd1wsdgN72wtuhrUgUrRyzu9u6yO/lsXF2Q80nLfXw=;
+        b=p/gutiONwSu1d343tG0pcfo0L1kFJo1Bot94yY40auZ1J8vO8YfgqX/GeeyFjkh5WM
+         3qJylzSR8c/wLkXcSICa1SmWt8duNxp7YRAoDR4zRPXog1DjTTI3r4nqSzY/raRr/mGt
+         fpGB/y1XqOGtWKbEqfC+V1byZNKR/5wrMip7BfFXoqoy7YOlfVl8O+CqO/Ve6XgNh8r2
+         465zhYMSTATWffbmjyIivz1vIsuGQqMj4VZUZjyNSHupEnzdtrkyBlswiUb08lijVgxH
+         w20f5wHXvpw+VJI0IrPoZWAS2NNYZoqlC5iw8s4+rd4/5UM1zS/TuudhJrb3lx9stPiN
+         F5xg==
+X-Forwarded-Encrypted: i=1; AL+hErGNNVS4DdFgNXTuuX13aqJH34Ftf3aB3yNuzswUQT1CdlTYEA7aN+0YwwCOAbINjGTUsjl5YT1CxQ==@kvack.org
+X-Gm-Message-State: APuU4Z8rrnDw43zr2aWXAJh6S8sijKEJVFAKO0+JyG5eZTxxvdVed9xe
+	AIIezJBz/RsZCQBAaREjEGsq8oqrlld6O7JuNeJC9Z4Wt9hwrxHNXr8X
+X-Gm-Gg: AYBFou3uVThxi+9WkoP63QsEbRDqUtVTnsgpRxvDQKv+2eY2UZkEsHhufhIZvFW7ota
+	BuWC1YF5S9sUxcIlTqvmyMYiwEcglUByML+Y28FTZs7MHgdJyWCb0/mqNiJA0XORgsdxkjKryzt
+	q/q1e62ISu6Q8EeSM5fAbOZD3RCeYjVzBQtkY9eoNRITOKYNa6n5f5xThL+REKE55R5UTcv0+Dz
+	yAzzYpPetPyYTvdPI97e1d+VQaBZ7T+Hycq8F/NxdD+t8UPDPVKPt40muojmh8+WN9AXC4P5Fct
+	4OBRtUBQZ4+0NjRiSC0ioabifkxhGxllNmMccqYYCvFCHOn1eQwa45B4yJGkVgh8giRjgZQOMZr
+	IsLkXxYuAAKgxRNe0gQXBQnI9Jr+SgQ39vl89lhqAGvVxy167zynGGV5zMqwftKy1UD3YlbuTCF
+	W7F3sGYHX/3bH7s1UXguq3GRzxCGKnwqoU/J0AqJCHfUnrjDSv6HCUHZEpbCEDYamni5FPmDMUg
+	PAWSXH7gbDuL/vsXuJGJecc2Vub4VF7ulmPQpWkrwNXiSvr5/DyPdi4JtWG8uOUgGMGtm1naYEW
+	c4r8d/1p8Fx5+dBS4qzx4QfxDeyz0GNeXkgGrdIDzz5/CPXAXkZNYVZswUeSOe18WDzBVAFTepc
+	0s8RczkUP3aVFT9OZc22QiDtydMKN
+X-Received: by 2002:a17:90b:3e44:b0:3ab:9c73:147 with SMTP id 98e67ed59e1d1-3b166cdeaf2mr592810a91.14.1794253722936;
+        Mon, 09 Nov 2026 11:48:42 -0800 (PST)
+Received: from bloom.localdomain ([2604:3d09:178e:e100::5567])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b167928684sm718358a91.10.2026.11.09.11.48.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 11:48:42 -0800 (PST)
+From: Ivy Lopez <skunkolee@gmail.com>
+To: rppt@kernel.org,
+	akpm@linux-foundation.org,
+	david@kernel.org
+Cc: ljs@kernel.org,
+	liam@infradead.org,
+	vbabka@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	fvdl@google.com,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/cma: simplify cma_declare_contiguous_multi()
+Date: Mon,  9 Nov 2026 13:48:41 -0600
+Message-ID: <20261109194841.18662-1-skunkolee@gmail.com>
+X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261106-cma-multi-v1-1-054eae6e2c1c@kernel.org>
+References: <20261106-cma-multi-v1-1-054eae6e2c1c@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT6PR01MB491026:EE_|YT5PR01MB261024:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3dd20bf7-f7b1-40d1-c34f-08df3e996b93
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|23010399003|7416014|18002099003|22082099003|10067099003|3023799007|4143699003|56012099006|261022075727099003|261009221227099003|261026121527099003|261009223027099003;
-X-Microsoft-Antispam-Message-Info:
-	dpeRUDXmelBvE9D+2jAwONE4n/hwgkaRUVHHuy1r6mFZHTBgY630EO46O/aDI/8p/d1/fQ4IGjjzA6wl+BmAnCn1fytQMsQ0e2E1yMEY+msgHwVRTbfPB+MCqu+5BVsL3XmmEy8m9/944G2VuWyvirEbquxQjA+a5bPKJmmiVPu2YPRQxMEFIH2QWwosI5+nnujBqcNo6FCIpnPcVstQBdtT8sHaXByobhmmWJ+1+uhErU8mfqHO0rtaLjdVDZu320bttVqyQWbFCduEd0dQWrvO2KPVMPiEM6JlauSWKkO2lV+T/zU9wcQFGGGzfCtQegcUU3c0TzVctXUbETkcevv9ZpvUMoK+4x6KCZsFykqa2lZV0f2jVdS43oiCRkvLvYRqhw0Vi6V3/GYOc1gxiuSUHForkD5Zej4MkcZpjqiLEWE2SuZKjWgsLqHfdS74Wk3s55DyUaHijMI1T4udtqV3+BjMn9sDL88oPDrZ31LDafeNq3AVjvMm5FsjNkhPesgQFTN9bU6FSlR8iD54PS8vJ5BAHWl382YGJfyzvo2y3LzTDtiE4GQ2IcHBkOPpouEXPxezNQI9DHTWT90RDCATTdMmTJzVJumFrt5PCxE=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(23010399003)(7416014)(18002099003)(22082099003)(10067099003)(3023799007)(4143699003)(56012099006)(261022075727099003)(261009221227099003)(261026121527099003)(261009223027099003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?LzJCMHBULzNhNHNTR2Y1TXNuNFJDZVQ2cHJOMFVQTU53U1lYYWxZcVVGcGh3?=
- =?utf-8?B?VG1NUGVvV3Y1aGRBU3V6UmdsY3VWU1o3aE5lMzR1djdHVHZOTWlWeHpYTmdG?=
- =?utf-8?B?Z0xSdUIxZzBWTDVaWXBvdnF4dGJwbHdzaHp4SWI2UFRralhPQnBCWElRb3Bv?=
- =?utf-8?B?RmdNUDhkMUtKNEMvVTdrbGZUU0RpcE5VZCtINDZjTHdoS0NSUVdvbjlKN3Bq?=
- =?utf-8?B?NnpVbVNIZzVwOVpJTUVHSWJ6QzJMSndoNGVqK09tVE5mSGFJVHZBRmk2Unkx?=
- =?utf-8?B?SEF2V0xBNzdkOUhNZml6bDFHZGttWkRmTjVwSlhIaW82M25Jc0EvZUhVN09V?=
- =?utf-8?B?aDZLZGlHVW5Wa3IvQjF3b05PRXdGa3dJVTUyRjYxVU5HQ3BpdUZXRHJoaVB5?=
- =?utf-8?B?aTl3cWorSEowdEdyOUhCSG1mS28vTndBZEhRV3ZMeUVCRkQvRlY4eDZvVmlR?=
- =?utf-8?B?MlpGcDA5YnFKVnhSb0ExV2VWZjQ5U0pEc1NHK1RBd0RRdWdjYkRTWWtld0Ja?=
- =?utf-8?B?bHRNOG1EVGZNM0haZk1pU0VSZ1F3bjc0a09ROGZnQjRHM2x1d29ZdDMrMkJR?=
- =?utf-8?B?TnZvZ2RHN3dPMzFGeU1RTGQrYkJOS0UzanFCK05MTHRSQXlvdU5YV3RTdnNU?=
- =?utf-8?B?clpDaUEwMzJvcDRlYWYvc0I1ZTE0cXl5eGVXSlh6b0NxdVZ4UFE1RElQOExa?=
- =?utf-8?B?K3hFdlU1U2JBQ2czU2VHT05XVHB1TC83K0twbmZBeWN6N0QwUjlPeUVzRHVl?=
- =?utf-8?B?cy9mZnVrbXRCazRmTWpkeFpUcTFwbE9mazZxL1ZzRWdOMWZiU01rV3dVS09x?=
- =?utf-8?B?bUpHM3M0ajE2akZET0dsRU0xVmYzUDI2QzRSZFphNVJiMGRpck5reXNqQlE1?=
- =?utf-8?B?M1Y3OHcxdHBteVpVODJ4Ly9jcUZRcFZxL3I3T2RSeHhkNHRKcFZKa2hubWQy?=
- =?utf-8?B?YWdVTUNENWFvVTNmT2MrZW1yeWdlZ3FVOGt1dmxZOWxmbVdhV1N4VndyeWNR?=
- =?utf-8?B?Wmk2ZkJKbVhNakh4RHpwV2VOKzJvOHZmV0hlajFCRWxPY2FEV3R0dnlCWE9F?=
- =?utf-8?B?dERjOXN4UVFYTmt3MFJYZUg2MkhWTUNvT3N3S3haWm50YlRPUFdJUllWam5J?=
- =?utf-8?B?bWxUNmJKSHZ3Z2Q2Ti9lZjJ5eVNKSUFYRWNiOHZDV0ZPc0xLMHMyRjBxVld6?=
- =?utf-8?B?MURseVplVzQzdlh2VmRpaWFMVnowbEhPazVyR1B1NUdnM2FFcmllWFhUMGZV?=
- =?utf-8?B?Q2lrN2xxTVN1eFRrRmRvY2tWVnlsRm1PUGRzbGMyenB3TkZQdnRYb05tbXBP?=
- =?utf-8?B?ZlBIaGl0cUhsZWJIdU1lbXFmNWJkNk1udTVURURqamJPSXhndTZlSXEzK24y?=
- =?utf-8?B?RklEUU5TM1F2MnhtUHB0NTdhR1pkSUdrT2JrYndqV0YzajVMZ0JPZGppbHZ0?=
- =?utf-8?B?cE9rS3pDSWJCVXd5K1lxZHNaZlJOSEppT0tSTzg4QktnTlJnY3pwcCtNYWh1?=
- =?utf-8?B?aDd3TFUyYi9FeXBsSWJBUVlHVkQvTDZGV1d1VDFIZDZZN2hGS0pJNnRUdXdn?=
- =?utf-8?B?YUF3WXFFQVJiMFBLRURRRHdST0tLOXFQbVdhbGZhektlQnlDa3pHMDdYbTZt?=
- =?utf-8?B?QUtGV00zNkxIZWhvdnQwNzJpWk1DbUIwUmRxMlhmTXpoYVpUWVJIejE5aGpO?=
- =?utf-8?B?Q21RNUgwTVlsd05YNytrd0dqUGcybi8za0pnVzcwU25sOWNGVExPN0NYTUFN?=
- =?utf-8?B?cU9BSnViSGdVU0FoUVFWSWIzck9zTWc5SjNVbHBnd0l0MDRtaHV0RXRESkps?=
- =?utf-8?B?dGdaNkxkTDNZUmVyYkZLZEx4VHFFYXllcks1aHdWRUY2MmdmYUhzLzVSM1NG?=
- =?utf-8?B?SmE2RzNreVZqMkIwWUVjc2FselEvc3c3cTIwQlJUQTRiTDRmU21UMk1YTTF5?=
- =?utf-8?B?anpEZ0x3Y0w4bDU2Y2VWRUd3a3ZhMXphdDMvYjVCQUMrZkd3YjRpWTk1ejlC?=
- =?utf-8?B?RGoyRmV2TW1MdHFadERrdEMyQjE2bFJGS3k3MldzYk9YdmhxQ0h0NmZSSFND?=
- =?utf-8?B?ckprOE5BZHlFU2VOeDVqTFExOFRvL1JUbzJ3WGQxcHlPVkhVMEFicFJzdE5U?=
- =?utf-8?B?dzNYTXdMNjE1TlpLOExieGxpb2FWelFRWjBDaytrQ05XUWE2QWphcU80dkpZ?=
- =?utf-8?B?cnBuL0JsOUx6ZVpSUVk4eG9FS0xqVzVIeHFSd09kMTBJOWJac0FCWUQwTTA3?=
- =?utf-8?B?OW5QREhNMHFqQlBmM1JGUkxUcE45Q2djTkpLallCVGJoYkdRV2xLVW81SlQ0?=
- =?utf-8?B?Tm1Ra01SaDJSR2JUU1VLNmRlSVFqN3lFVktZQ3BZWFdkak8rSUZkck1lU0ZJ?=
- =?utf-8?Q?rfIcmucdFnQIURa0YLJlZeUOnWtc9eXfVYKPt?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3dd20bf7-f7b1-40d1-c34f-08df3e996b93
-X-MS-Exchange-CrossTenant-AuthSource: YT6PR01MB491026.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 19:41:16.9674
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ordq+wixIJkXzmnaLdMDZFeNd/DwmEx7izR/g8NP/5OCnUm1C1cT/sLjcyrpTLy6ydO8fos0ApvldMuMT5nejGUD20pFRA5Kmx9yGJdoe38=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT5PR01MB261024
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: wbyqhu7sgek7fe343zmedrc45owibb9z
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: D04EF12000A
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: je7dxidmz7kdrh5p9pgz9b3qxizduo3a
-X-HE-Tag: 1794253278-13843
-X-HE-Meta: U2FsdGVkX1/I9mW5iK1C45kjAjqRRKqRUAnOCWtT5Q1unA+GD9gbqSW8EOg11YrxKMDMNI5Q3+Y36H98Tn2t6MfJj4LT1xVxxkbfISwdEEAvLFwOzrC8coY/JLFa3xTVU1Cd7ook5ZF66YdAEEXH8iIS1tqlaktpfSPvAzMRZ2Aik/p9LUX+KsJGRBjcwANskTTB8gzhbso3QzRKpwbAqwBdfEOtQnUqkjtFTo7M5k2+FhsAfKrps3ez5eCYdpUzhAbewZXFz6t3c8F/sUpyTj8d926uXl2ubjIYNwWtxuff+3MYHVTRucFUbA8Ou3cTonDQJed93Fef/ITkkgtuRmH519uzxL/TdHDfsHt5+fSU/VAECdyzATT26kHfLE1WbSp3Dic3mZ3nO/04hS/T5SggSbY6ITGeAgGxrHzeisFAaiOn27RvOhyg0eGh+lFzWn0kQ4XKLObnTtXfU2tnlHsj0JZ1qT0xGz8+vBbHTIpgNABz+yYomVPC3twDqezRxBIILKoZ8CGL0on3F0rHPoaOjMuZB7td7rP4An2cUucaCTVQ91mP5yF5D976rx/vUykT3E1JXIEAlqUnn+OYHqv4kjnF/g880IGdH+Xrow7u9/ZN06j3cT8FyFm+wE3OpxCj3JatEkp9vmJiuiuSSI3+EFS02W12i11hVLUuUCn/FWubE8DNLPNzLMYpgAzGYC5ZkjnN75joRgyjDWrO/0IuaIs0KypcLuyS81pqodIamXBiqWOGxPO4GppPvdVvvtYtMZ2LdvfSdFoQuL4jnKq4F2A4wYlreAsN0IDO43Jv8wagQz3AfkAhJ0GzJTYuanKmyv6R8cRHeX4e8oDZ2pyILDlYjtFtay43j+CXIhBoDF2BKO/Vu3CPv3gMILMMVFt/89yWWYwn7pXXnd3DHwMkL6toiyVsbwdEgUXR0ajRTjvCiuhYRuW4wJGzXSuWLd1JNCb5t8i633LTyeB
- LkooRne6
- 107jvlTjmc5nPAHnC85tYr41ZhCVSi5XAB4OwzRMw21MfCBcXr7eb/f3TkQEr2KMjxhX4Et413IHYiKH+OLkRXi2qQkxtD4XaIYbnipbj53f4TLnGb8P17zMp+A2D/+sVrDrrDUZbCh665GPALOC8uLWNjRQ+EW9ZsyRAotpcn7tZ6XTsT/7+DasphATd3iPNoBvPaXt2SL6N8v2Hqnne/1v8RZw6FNdzLLl0hg1YAXtoUCMaZlQoiX/KCuYOorLXb1480sSND+oKEayBBDtwpquuL59j8cK0z0QGfN28n9qz5If/M+fg3sZoOIZMlJpZdd8O/xhlkoHo+dvIZz8lZmlOT2Aikwr1xZ4m8ZHnyjAdIJY2q3KLw6LFiz/Q1jqvvJYC/+4gWBxwaHrkHPzOaEdPBjuiHSfXp3saGqKJHGEEPxDm4+w7ybst5sewyulwEN5wGPYbEfOOR7Sb3kuDK26948rEdRYuiiz5fqmGc3jH5ZOdtCBZ//M8pJDRS8eeqAy6l8a+cVTjFu4EfOtU7vUGJ8gI4Fn7QgJZ2CBZNiDbnsxD4YXlI1Nx2iSYIc2esxm/
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 44CD3100005
+X-HE-Tag: 1794253724-461399
+X-HE-Meta: U2FsdGVkX191eZwc0NkYV5XNlpL/dsiR6JCw/gto4twKLe2VAAYtakUQmaG9Ki3B14Y8kBvue2/QfZdXXZXlqsUPZ0vdXZPjrDp58dGapeMyFwY2XnOsNdTO5DJmCTuEh0djObHQz847sAJGUaHfN395nVn8DznRG/zJf8Fb8m0G5KwkhhSYesbN0uH3IRZVcpWlQveooQq+gt/EGrswotGze4dO4Jo1Td2tgHEVtOw0pMHmQQBBp61bA6Tf0O7jP2M4js2//wBXM8dJa6GkzH6f+VLNSUMfFeGkpCNj6yaEObw3Z+NeBH1TIqNHRqIC3qfT/J/Q2SdxQtHXN1dL5gtjLeLhV7qNvo6NmvbRf1AvLZdJOHDrds+z3CgC8Z1/BcjP3V0y2+o3qKmWUO3WpsSIQ7WsPSRutkdjBYt8Z8t5fA6iA5uWV4AjQRavjNTy4JTBO27hc2Y3WYOCuGq737BKhpCAEtlWDwhkfTK6XKknNF/ql0g/FdggIumacku8wFLoO8v5DRbOWJQCq/qfygnsFD7msccp1jy3L5iB69EegKu6vQBlmeLW5RL4qof2Wzw86Nzwpyw4aXvB4/yA4YQRqrL003rDa+x1ShmIBxtZWz5uhDxBUjM0a2vnYzGQREe2bTYhcldjuzJC541d4i3K92+GPmHzraG5q1lNLbCxoaZo8L658Gm29MmQ2AQEqTm3RsMxnSJhWHYo33iD0vbI4UzXy8CA8lrHg15uBWNDhEU05Lgm1hGh9qWBJMloBJlOFAXnjMC0Ye8ZCgPXUHZGW2BZDDNeFfbhG3biVP8oFAbGStj3ynT0w2bcX9Oqm5m9/2NZuti6wHpFK+JC5h768lpWymhyk6aeNmWxkfQPa7oMqV4F8iKQRAZamzsp4XsVtOnCOXcGZPFgk3ITNXjtFjctxSvWdvGjJwbGyh0PkQvKeww0Fe08B4krNtr+ygbljQMiMrJCHyG5qL4
+ qnXUTbHa
+ KfGyaJ9Kmij3REfyF5c0PmxF1kkyoOxEaPa9yQ3Xt8yy5LbnebbQDfj+FNg3z6Lt9lmM6ApQZl1ytjkazulIfpmE5ai68uz86vb0A/VXqILoWreJJt8R4FTRbrUjLAsAsCOOa9QwC+juhIW6ilql3VAaJKHlQ7sURa5LJhqSuVQLy+p6sSOB5aH//jifEJ34VaLRlNU4SzzKKrI4CRY/XyqtjJ6993Vc2fIleUWXvA9caBO45FbeRvo58yYzMBo4rkMsetC1fE6skacxLt+gqr/xpck8bs4uIRB1Oy9mU54R8kwptwJcFHRnQljgnCmMHyC2gKFjlXzdaK0xzryMDB7dlaY3T+jfMRNKSICOjGPutY0B90Xm5Wq+H+lhwCcH45SkJAkvGj6jNlmn92cIsXC3M95gtR5jDeanC9AhuZemCq7+T9FfRLiQsEBfSRCTsjLgXYX5uJTvDROviXKn9sep2+Hk3NnniRMU/
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -205,28 +131,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026-11-06 15:37, sashiko-bot@kernel.org wrote:
-> [Severity: Low]
-> As reported by Sashiko on RFC v23 [1], lib/tests/percpu_counter_tree_bench.c
-> defines the batch module parameter via module_param(batch, uint, 0444) under
-> CONFIG_PERCPU_COUNTER_TREE_BENCH,
+On Fri, Nov 6, 2026, Mike Rapoport (Microsoft) wrote:
+> mm/cma: simplify cma_declare_contiguous_multi()
 
-[...]
+Thanks, this supersedes my v2 series. Andrew, please drop it if it is
+queued.
 
-> Should percpu_counter_tree_bench.batch= also be documented in
-> Documentation/admin-guide/kernel-parameters.txt?
-
-No change planned, as for v23. kernel-parameters.txt does not list the
-parameters of test modules. For example, the parameters of test_vmalloc
-and test_lockup are not there either. The batch parameter is documented
-by its MODULE_PARM_DESC() and in the Kconfig help.
-
-Thanks,
-
-Mathieu
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+ivy
 
