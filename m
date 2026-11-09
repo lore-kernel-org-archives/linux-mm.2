@@ -1,129 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718B2606EEA8
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30741606A331
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=nPMc6AfL
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PVi9ExRv
 Received: by kanga.kvack.org (Postfix)
-	id 820AD6B05BF; Mon,  9 Nov 2026 07:35:06 -0500 (EST)
+	id 4A53C6B05B9; Mon,  9 Nov 2026 07:39:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7F8D76B05C5; Mon,  9 Nov 2026 07:35:06 -0500 (EST)
+	id 4556C6B05DE; Mon,  9 Nov 2026 07:39:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E7EC6B05DD; Mon,  9 Nov 2026 07:35:06 -0500 (EST)
+	id 344076B05DF; Mon,  9 Nov 2026 07:39:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BC3B6B05BF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:35:06 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 0A9E86B05B9
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:39:02 -0500 (EST)
 Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D00781C3FED
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:35:05 +0000 (UTC)
-X-FDA: 85415525370.03.A80D25A
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf29.hostedemail.com (Postfix) with ESMTP id EFDAC120006
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:35:03 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=nPMc6AfL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of smostafa@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=smostafa@google.com
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 95687160649
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:39:02 +0000 (UTC)
+X-FDA: 85415535324.03.4B946D8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id BABE716000A
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:39:00 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PVi9ExRv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794227704;
-	b=xv6FULWjlN3y3Pm6zDLx1WbxkHmLfgsA+4oauhyqOAn3t5lBtVkJ0Hp5d0E8vrEzc9dPI1
-	o2pBlrzzRjsKDchTD3d+6wtcqJLtxdK19TUjnFwMS9FcZaFMsVc38kqOX0CgbY+Yu11wJ3
-	ELEvCskLoadVMz7fe3Hj8w7r526xOTY=
+	t=1794227941;
+	b=A5GV7hcTXR1vitcxQdV2ZwNwMmnhsy5H6E77T0ACzYyuRIQt89iGWEUTCCGPe10h0MfvOE
+	8FTBmLptnjktJYnfhbf1a+W61we7/7LtjeJ0MLm63mV4YRtoZKJuy7J7lBAs4CZKFGmND7
+	UTelHComGQP2mDPdNJG93X1gtIZPs0w=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794227704;
+	s=arc-20220608; t=1794227941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WvzMdwDlo09mKx56WkMYCYECEOAz6fHhPR97cKN4r+Y=;
-	b=2LIAntbgDElbrhdhye9iZEVaAsqz+SaZSrZG6/FKCnCBD3/qLToD8DDRfIHgDCLTLqJ8b0
-	Kszk/AAX8NbfUHeYeOly2n1395YjfgWgx1REcweRI7VsCffVquvz45QvBG5r1RxlNQDy3Y
-	jpUL/JOBLA1z6cqnBR3vXrCQpdNDC48=
+	bh=7GTC++ZMMrh2UpAsBfysFwhgv6qa+5jYeQOMNhHNDPU=;
+	b=Ujotsrk20Px1Za1iAaWyF9W8tuxXnPrgvw1nHCXedjCV7LSAH7pWHn0jH4k7h++mMrq/tW
+	N2Jco0jAccNuTt4zTVqz0u4+vWkeBkGPATkJsdPuLtZYMUFUOf1RCUbZLgr1drkve/4tyK
+	fewLpHxSewGINszk7zWOh//AEHaj6tM=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=nPMc6AfL;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf29.hostedemail.com: domain of smostafa@google.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=smostafa@google.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4a018493d57so27255e9.0
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 04:35:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794227702; x=1794832502; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=WvzMdwDlo09mKx56WkMYCYECEOAz6fHhPR97cKN4r+Y=;
-        b=nPMc6AfLERAqT7tU3Bzpo46faawUOh9BT/2nV+4UA4Plz8yUlIMgO1Z8rDTLgmQ4j3
-         i//PGUaFHdDWQiszJ5aQY2/MuOCpqpuovfjRWNyjLYvC8Joc9XUXzeKpiwalG4Tipk+d
-         yg+pnijhL0h1hDc1p5hOQCP3vYbJ+tsFw7gZcrz03Q7b4NY0b4XjugmyJ+wdyNl74zMs
-         zHfMI06C2j4FKmAZb6yGOKtED0UZbdKe4pgec097yM1YxRq+XfOo/SIAIhSjolPc7sCL
-         NeUx3T1aYA/AmQxdkzbb27hxTOZwQjI3HYK28HCyK9tQWYFEAkl5EmceWH7sRBPvPaF4
-         RuqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794227702; x=1794832502;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :content-type:mime-version:references:message-id:subject:cc:to:from
-         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=WvzMdwDlo09mKx56WkMYCYECEOAz6fHhPR97cKN4r+Y=;
-        b=koFRvjRWYWWP4ZKcEhN8xqL0zRgP0s6DjocHapdW9YpXhEHd4C2sBbaLIA/3xvOKBt
-         +y7FpJ8OBnUX3evZDhzE2U3VUQ56oBuWRIiVjrNQDGl1CDc/Gr4zguXvGdlZson4Rlch
-         9ZcRVIQYlkLJEq6RTENcEGM0Ff/40NjoH+FHWikEix3AwA2SkBz5zGkWmJMWrhdEZD4P
-         xo/n1q+FlAhNty9jz59/lLOcbTVHSv1/CtVqa7GMlXq3FzGYKhzcen0uEcW0v1ZJ7Suf
-         zRI3X1WwzaOfxbmJNQZRVYfOIPaYQ53yi8EJhODxs6lIFct/8RccaTHk+iM8L8mGnkW1
-         AFhA==
-X-Forwarded-Encrypted: i=1; AL+hErH8A9Xqx4KRXrZHSDhi9PpsSH4w5czacMI6z3a50++J8KQy1IGY92f08XGQAXUwgdlAfxWN72MXDw==@kvack.org
-X-Gm-Message-State: APuU4Z/L85vMIxGbEk6/ohH4G1rIYn9mkY2LQJMYlhwNs1vgqq/BSBIX
-	KP/uo/KZrXEmTGPemzn4Sva9ExR46RJwcGdqncT5D7yTIX/tmGCuSD+y2D1MzTUF0w==
-X-Gm-Gg: AYBFou0c1o/mKHRW1JP4fKB3ogDig6GFB4kAcnOPyTebv9Jd1FQ0tRsqtkN0txqsl9a
-	WJ//pDkpTJWhyMTeG59+imbPnZTs1+ypyTlwp0Zk817avz1XOMHy4VA8hkjZkXy4Ue8DLaXgjTu
-	IRWiKxP25fxs+0s8/T95rA5wOFs3ckhqEzocvFWTcL/L1PIBnXC+20ktImStA2G1Z/TFTzJKIhB
-	iZCCf645U7YCKwHkEjiI1ognNLUIGPONt9a8q1TRVvxvVp8YZx2juWWmx5MUalyOCmnOFVK+hk5
-	yElxIPJzVMBV2bEDeXMjDajZc4se6zeVjMM8HsZvcFbvVi/EOlxAa8z0/lTkpq2WC8P90GA31wS
-	wGvrd1sjY9Z+SW4bv7i7KzkE7b1NceQ7XCknZRI+LnD2NGga69fyap3OhRXJRZOsC8XEPb4/S6/
-	SJXEfvDaG3S9lP9X4sl1KmRJ2lRd1yDlsNkH97ef7peae4Nv3k3sWvrG4THtxPSFI1bgDf+QnzJ
-	k72smxrmXPaOjP0Di2JNy1WPo3fXRAG631w+QnyO+U1gGAwTsRAFaE0/c0NVbJFq+IGWvh+mnFW
-	+MKwnB8h9SP2ctURBCJ6Sotofy3mWP5o+rc/Uf+2RyBKmEdg3VpVSMFLVhmfYU05XfF8ug==
-X-Received: by 2002:a05:600c:528f:b0:4b6:5035:d54a with SMTP id 5b1f17b1804b1-4b8aec15d44mr2319705e9.1.1794227701554;
-        Mon, 09 Nov 2026 04:35:01 -0800 (PST)
-Received: from google.com (160.193.189.35.bc.googleusercontent.com. [35.189.193.160])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-49597186ec5sm10010991f8f.33.2026.11.09.04.34.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 04:34:59 -0800 (PST)
-Date: Mon, 9 Nov 2026 12:34:54 +0000
-From: Mostafa Saleh <smostafa@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Daniel Mentz <danielmentz@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Logan Odell <loganodell@google.com>, iommu@lists.linux.dev,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 0/5] iommupt: Introduce IO page table shrinker
-Message-ID: <avG97sxE2NFZFtvE@google.com>
-References: <20261001230219.818128-1-praan@google.com>
- <20261002150844.GC3481470@ziepe.ca>
- <asMuigioXmHZmjO2@google.com>
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PVi9ExRv;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id E4AC942A56;
+	Mon,  9 Nov 2026 12:38:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70431F0089F;
+	Mon,  9 Nov 2026 12:38:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794227939;
+	bh=7GTC++ZMMrh2UpAsBfysFwhgv6qa+5jYeQOMNhHNDPU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=PVi9ExRvticpORWb6/lrgnxXQNgvHan2XkrmuNoaSfhsTKb3STay5n3vH75W1mtA+
+	 CImQUbnr+hZMm9l4iESygtu8k7SPlRxZjFCsarnVozOc6/UNn866lM1fY9zTfhvYf1
+	 geLJIS2bFQdWfYnSYwawzmGaeRLjjxWGNw3sF7ysNfZrf3flkzPleBoXwH2x809rgL
+	 VGgxXo68syutPo1OtpY1nENuTLZEVNWw39/VpiFoUR9RsZJoQealFXvPgOmm51pir9
+	 b7s9UND0Y6dyAj6yXfD5CrxnY3hOJwc9L4q7ha2EW82+AzWRqUK8xuEm9O9zJbSdhs
+	 RY0njpqqSLIQA==
+Message-ID: <8843ded2-70ed-4b8d-afaa-fcc330725931@kernel.org>
+Date: Mon, 9 Nov 2026 13:38:52 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/ksm: fix ksm_exit() deadlock on exec error path
+To: Jinjiang Tu <tujinjiang@huawei.com>, akpm@linux-foundation.org,
+ xu.xin@linux.dev, chengming.zhou@linux.dev, liam@infradead.org,
+ ljs@kernel.org, vbabka@kernel.org, jannh@google.com, pfalcato@suse.de,
+ kees@kernel.org, ziy@nvidia.com, gourry@gourry.net,
+ anthony.yznaga@oracle.com, linux-mm@kvack.org
+Cc: wangkefeng.wang@huawei.com, sunnanyong@huawei.com
+References: <20261106013906.2229780-1-tujinjiang@huawei.com>
+ <a712518e-e094-474a-b7c3-bb9723917960@kernel.org>
+ <3f2cefd5-837c-4d80-bd80-4590f1684383@huawei.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <3f2cefd5-837c-4d80-bd80-4590f1684383@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <asMuigioXmHZmjO2@google.com>
-X-Rspamd-Queue-Id: EFDAC120006
+X-Rspamd-Queue-Id: BABE716000A
 X-Rspamd-Server: rspam12
-X-Stat-Signature: 3jqjzcbq3nni5f5en8t7jtiot6wyospb
+X-Stat-Signature: 9useccosgq6x3hdro9pnpazqcdfcepnc
 X-Rspam-User:
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794227703-566283
-X-HE-Meta: U2FsdGVkX19o6m6jGqQznF65ReEG/xNNCrNye3gkDevDGnJPkZ2u7EA5Ccxn5BfGXZG24NCyGj+sk2P47HyiiAR8qBo2WZ1/W1cbaVGwOGNSNLwdNFaNO5ZUVLHxlfh2aUbWVn2TpYm9WVZZQhPAQZ7vR39aX8I5hi6sg/TDDRi5iTEGeKSqvR5YHsveEclsOFZVFXj/F+y5Q94ZtLb67X64YGlnX+CRriBheuyEVLjUIKMV2tB4CwxBnDvHQXYLUbFSiqp/5fqV/B6kW+B8WTbetPzr2HB8dvfaUz98YqxrUMwvloGVkJq+zqbUBRVnLUROPytAII/bbx+REMRcBysmBtWG7nUiDC4p5hWgNH687Vhqev/NTfGQq1gxWIFL2G6GBTImnFGccM+j0yeLCYGZZBo0X0n8rR20sten2ucEqjR+ErzbA0hKGTM+jpYWfC2cGJhN9xUdG4JjTDhdppoZZOb8ROsAuDk1pn2RWBjiilb4m9t0S60m4OuL6qHWk/av/kH7yzoLEnUusGW9FJ1jzR1qDQ4gLU6rKtGBvwR8lFS7Q4EJNg/Jy+q5noKikOjOXNBBJ9dad2YCkOvOWtD8LDnmTGYGjsHb2nCInbzqQzdRhxHtl63Z7xC4qihPlbkfwhYGCJqL/N8Gf7l0RkLOI1dODrNvbh7e5/pHfkwzGl8VLxzQ/LMOdvcLSxOtvO0HxZg4OPGIOHzHJ+3uFLyp9D+sXCighvElTPhkT3y+KsjIsfkYQ0wF3xhZUu4atWt9lm9yAOtvnEe64YAc7g2jWY1aWQMKzNM+KyUcF0r+sBSVXq0ZOLN2Ofs/22OJlfd3UaH18m7NHvnUVOxpaDy6pLj7yvZp3ijArW7sxnzsJ5sMyVYzIHQhsDrCsHyqNoIFbntsIB6nqQ6+VsopulBWcPI9x+FwUnB2DRtaMepydwnV+xliVCIvlbUsKthhfx6Ed3K/sbY9v8qk6dS
- mnZ76Zua
- moVwhAdhYqO74ucEJKhKTXxXhk6CDWNGH4HOPESfTGRVbNIbkCKyJEnDEcDnzUhCtUJTNvlna9K0cnVnKgbyOar/ULb27H26rbJFpZprucBj9UbJtSVaTC4xpVt1pNHL0hvqJdtCPl7R4PPDvvAL2P0ihMC3DmdJ9icTlTr6CsVpLD1BrZ5ycw+HHsITy7zzNnyspjQsrwnETC/hZsykZYHoMrFwInppcWtDNjMZF0uipoTXH5VyTyt4KFuCjz+dcieydUoRibDk1crI/r189jt/xbFcjXVdB8dVi2FpcOSdjxKeLlMKZVrxvCfaw6Fs2U+Hnd7gjO1NuADSi34QPOi0GyP8afVELQkKmF86FZ2hTIw9tSDBwYCg/XQwvp8h9bq9eQCaIGR38fBKH6phPklsqEzOzEwQCGVOn61j8zgXiC61sK8XWzI3wEfjXNEta0JvKNNxGIOZbNeMjYXLt4bOxOrBjiiQdrdZXiQdIVOd/gWpyp6EACgj+Qg==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794227940-885655
+X-HE-Meta: U2FsdGVkX18EWI458bkaxR0hC+M2OXfnEZX6Sosf7OyT75n/MLF2I0ofuaSGtMe/LovoPMchPALDx2vFdWjDg8zgJYh6f6vDYnfNrMayD9h2tXknYTYs2K4iJVpFmwMPk9whBYW968ZPSeXuzDeVAFrwwlkr+jcZaV0zcrntwMJ10lffmP+kd6xBXqfuaLF7b7VnIQe72u7uRz8QzSfhsXer89taldEX5rNWjdtb3Lx67ewwiekVofTXNPLgUAJo85dkOgp4ciTajWqPAdeDOwom4ocNH73nc+I9a3JqDJ0N6iwbmlyQC6kOgz/3hyE/PQr9yPsoS/Y+n1Px5SuaMZQ/5yctR1q2vQj9h5VBSOJIBrEDq5PeEPBT2f5N6wiNJ9IDVX39tWy/U/FAkx6HAu7/lmhE0DuUphx3oo9I3C26X+XMqSUqB0DL+3USKoKYYw+lkcPzEpQpEUaDgZC9vr4grlDV6J8BQqFIDXLpg2duLagRRusxhRPx9nVhwGPhqznFKTVh2ujdRwRJQ4/c43EhdvinxqAN3gchKDD0ex590Gpsfre1ByqOoP+bChD6y4s2ZdZTYORlyriXpnxH391II74mvPfZiWfgAmJVhVIiSvijEFLUar1vTyJZUFxou4osW7brtjoUa6LZFE8Sigzg6w1MLlSV4VBdQxpif3k8cR4ZHTz8XsUP1KpWaPCaJJpIKL+kWjKfxH6B5LxQp2PoX9mUsIWZuFtQsMHQRlz5RZ8kXl6hb3iuy9RwG2ohp95ZZcGMPUbKXRbzwgycY4IVx26y0EsCipcgn8PTrAsaWIM2n9gCBDDRhSEyvu/uKNXoaqOunvnbEAKLrt6d0cyqwTfMsF5/imaRPLEKOzIsQiQ944ZYO/IgK1FFR0qgHH4gPlbT5U3jEvaTLA5HQ/A3yxEROsnbwPsjSE96kZ6lcq3oLD3C0ySdUGMV48pWXo6vF1+p3BY9v4MtH1j
+ 0/YSZ9q9
+ 4nvvuWMQMVmo9uU58WiznyX0uCfxQUiAyiDGOk/kv6PCtHtZDiqQ+DrLCdiVDgIJAAtHfmRBSB6Bc9xnFdUmDDPwD8iU5MPE5yy1l4FnBpBAp4r0xutsoABmd70TkDQ2De6m6RLIDjsTkLvErm8d9aVk26LeRYJrmQXh26Y7xGj0NqjPE1sfaxqxWHJdNjGGa7hxfTi3UHoQnT0Sb5Rmikw4NOXozH8JjSzHgCIWBkeETNVGlvr2aelOnjU2Vw9xOIkTsnFraBK+nzogS9RXll2J7vrLnttnDZD3nkcNYYmxmR4qQPVh+Sxz1Bw+lcwYy8B7CzIfXEI5bwDfY2limUqkE244yZzg+JsXMAur0bZe4dAfPJjLFUDr8+dZIVjqbmYBtcp/mYueedkNU9TZX3M30/TcPfKIj/DSGxELK1KuUjZ0Pq8EcPORzfBhvbqePafbE7IDrhbFW4/e60nxGwGe1zQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -132,83 +145,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 05, 2026 at 04:58:50AM +0000, Pranjal Shrivastava wrote:
-> On Fri, Oct 02, 2026 at 12:08:44PM -0300, Jason Gunthorpe wrote:
-> > On Thu, Oct 01, 2026 at 11:02:14PM +0000, Pranjal Shrivastava wrote:
-> > > Introduce a lockless, deferred reclamation framework for IOMMU page tables
-> > > built on the generic_pt library. As VMMs and userspace drivers map and
-> > > unmap large, sparse IOVA regions through VFIO and iommufd, page table
-> > > directories are often left allocated but completely empty. generic_pt
-> > > frees a table when a single unmap covers it entirely, but tables that
-> > > empty through a series of partial unmaps stay allocated until the domain
-> > > is destroyed. Under memory pressure, this *stranded* memory cannot be
-> > > reclaimed and has resulted in OOMs.
-> > > 
-> > > This series refcounts leaf directories natively in struct ioptdesc and
-> > > registers a domain-aware MM shrinker that prunes empty directories under
-> > > system memory pressure.
-> > 
-> > We had talked about doing it this way
-> > 
-> > But I had proposed a different, and possibly simpler, solution that
-> > addresses *just* the iommufd use case.
-> > 
-> > After unmapping something have iommufd compute the gap in IOVA that
-> > contains what was unmapped and then issue a 'clean(gap)' operation to
-> > generic_pt.
-> > 
-> > This is the same operation as unmap, except we know now that the gap
-> > has no PTEs so all it does is clean up the table pointers.
-> > 
-> > This requires no special refcounting or anything difficult beyond
-> > some locking in iommufd to hold the gap stable while we clean it.
-> > 
-> > Would it work for you? It seems substantially simpler, but I never
-> > tried to implement it.
-> > 
+On 11/9/26 02:53, Jinjiang Tu wrote:
 > 
-> I was tempted to use the interval trees too, but I started thinking
-> about:
+> 在 2026/11/8 3:06, David Hildenbrand (Arm) 写道:
+>> On 11/6/26 02:39, Jinjiang Tu wrote:
+>>> create_init_stack_vma() registers the new mm with ksmd via ksm_execve()
+>>> while holding mmap_write_lock(), and calls ksm_exit() before dropping the
+>>> lock. When insert_vm_struct() fails, __ksm_exit() takes mmap_write_lock()
+>>> again when the mm is ksmd's current scan cursor, leading to deadlock.
+>>>
+>>> The early registration is no longer needed after commit 590c03ca6a3f
+>>> ("mm/ksm: fix exec/fork inheritance support for prctl"). ksm_vma_flags()
+>>> calls __ksm_enter() when the first mergeable VMA is created. Remove
+>>> ksm_execve() and its stubs.
+>> I assume you mean the
+>>
+>> } else if (mm_slot) {
+>>     mmap_write_lock(mm);
+>>     mmap_write_unlock(mm);
+>> }
+>>
+>> Can that actually trigger?
+>>
+>> IOW, can we have an slot, and the slot can already have a mm_slot->rmap_list?
 > 
-> a) Locking: For the gap to stay stable while we clean it, we'd need to
-> add some kind of serialization either through iova_rwsem or a dedicated
-> gap_lock to prevent a concurrent map to allocate IOVA from that gap. 
-> Thus, every unmap pays for clean under the lock. I haven't perf-ed it 
-> yet, but I'm not sure whether users/Guests using virtio-iommu, where any 
-> guest DMA unmap becomes an unmap on the host, would regress.
+> This doesn't need mm_slot->rmap_list != NULL.
 > 
-> b) Other users of IOMMU API (unmanaged domain) like the type 1 (which
-> was the one hurting our systems) and other in-tree drivers that use an
-> unmanaged domain and call iommu_map()/iommu_unmap() with their own IOVA
-> allocator. One of the goals was to avoid enabling the user-space or
-> in-kernel IOVA allocation (ab)users to cause OOMs via IOPT allocation.
+> In __ksm_exit(), if ksm_scan.mm_slot == mm_slot, will lock and unlock mmap rwsem.
 > 
-> > An alternative version is closer to what you have here, somehow
-> > connect iommufd to the shrinker and have it lock and walk the gaps
-> > cleaning them on shrink requests?
-> > 
 > 
-> I like this one better than cleaning on every unmap, since it keeps
-> the cost off the map/unmap path and only does work under memory
-> pressure. Although, it doesn't help type1 or the in-tree iommu_map()
-> users.
+>  mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+>  if (ksm_scan.mm_slot == mm_slot)
+>      goto unlock;
 > 
-> Would you consider those users worth covering, or would you rather
-> they track their own holes and call clean() themselves? Happy to dig
-> into this at the LPC session too.
+>  ...
+> 
+> unlock:
+>  ...
+> 
+>  } else if (mm_slot) {
+>     mmap_write_lock(mm);
+>     mmap_write_unlock(mm);
+>  }
+> 
+> 
+> `ksm_scan.mm_slot == mm_slot` means ksmd is currently scanning current's mm_slot.
+> After ksm_execve(), current's mm_slot has been added to ksm_mm_head list, and
+> ksmd could find the mm_slot in scan_get_next_rmap_item().
 
-I believe there is a value in supporting other users beyond IOMMUFD/VFIO
-(eg. DMA domains) or even outside of iommupt, I haven't investigated this,
-but it's worth looking into either integrating the "iommupt clean(gap)"
-idea in the IOVA allocator or more generally rely on refcounting +
-shrinker (or other method).
-That’s probably a lot of investigation, so I am happy to help if needed in
-looking into any approach.
+Right, nothing stops that from happening. It's all rather unlikely to happen in
+practice, but I agree with the fix (and it's an obvious improvement).
 
-Thanks,
-Mostafa
+I'll pick this up an CC stable.
 
-> 
-> Thanks,
-> Praan
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
+
+David
 
