@@ -1,127 +1,94 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2530E606A325
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 09:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B004606A33F
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 09:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=tm0+83a/
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=aeYA9o7I
 Received: by kanga.kvack.org (Postfix)
-	id 371C36B00EF; Mon,  9 Nov 2026 04:09:02 -0500 (EST)
+	id 942C66B05B0; Mon,  9 Nov 2026 04:11:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 323456B05B2; Mon,  9 Nov 2026 04:09:02 -0500 (EST)
+	id 8F34C6B05B2; Mon,  9 Nov 2026 04:11:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 211D86B05B3; Mon,  9 Nov 2026 04:09:02 -0500 (EST)
+	id 8084C6B05B3; Mon,  9 Nov 2026 04:11:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E162C6B00EF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:09:01 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 78985A817F
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:09:01 +0000 (UTC)
-X-FDA: 85415006082.23.422B6AE
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B6604A000B
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:08:59 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="tm0+83a/";
-	spf=pass (imf25.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id E7BD36B05B0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:11:11 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7D80F8061F
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:11:11 +0000 (UTC)
+X-FDA: 85415011542.01.0E9D9ED
+Received: from mta1.migadu.com (out-1.mta1.migadu.com [95.215.58.1])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C3431180005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:11:07 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aeYA9o7I;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of qiliang.yuan@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=qiliang.yuan@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794215339;
+	s=arc-20220608; t=1794215469;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pKCMQsA5DnpTSt9KpKYbpxlYWXML1e9U0EpHZz4hA90=;
-	b=McieQ2S3Cc/zV9Q1hw++Nt8IUWjUe1wQPW0FFOsqVTLEK9nPgTXLD7Q63ErK+VnfvJrXZi
-	heFI9lXQ2JKgqg7h82RTudxClMYtQAn3nLqjoZsMs2mHAFjdi9oivSdyIPbGyy3S12B6gt
-	fmnEAwD/6SvqSNsQP5X2KfwbPOI7I2Q=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794215339;
-	b=4qrhFgeTiuE0kU+Blh4m3emeXMY8u6HNJpiQfrdbWAf8PcbF58pZofaiM6XBA6OtR7Dh7c
-	gxd5XdXxTqMdaZvEV+WDntJrlPe+MRHEGUn4gVKY1L8+ziZcrlKK8UV/e9zRUm5lgqp+gN
-	dZo4odrPNUhQW0yr1TZeot/jJ15i4ao=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ceETPs2UDE7IxIJ30l+uzPMCZetkCltzW9DlghrZCVE=;
+	b=estqhf4hKdK+h8xeWYfBK6N/Wui9ey+GbHSGXqNXNO7AtHTYcc6wKgEtP6tTBMBfNBCXwT
+	zRq+OGaSNXx1Chv1HGg5rho2sMyA9HLLSuPNXbG9QW4oxaoj1nR+LYb3SuQ4Y5HwgRzEUi
+	6pSX6//fnTUEFt5cgNowX4LtMmaxhmk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="tm0+83a/";
-	spf=pass (imf25.hostedemail.com: domain of chenwandun1@gmail.com designates 209.85.215.177 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-cd3310348d2so288485a12.1
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 01:08:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794215338; x=1794820138; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pKCMQsA5DnpTSt9KpKYbpxlYWXML1e9U0EpHZz4hA90=;
-        b=tm0+83a/VL6Jw/MfJgb4RljFe3JFJUCp0uU+IJ8p9ui+dkj+hqjSxvVr4R0elz6r8T
-         tnTCvHYbg2hDiOCEXBjW4Sy5hFiQTsUuP6adH/K7M/RZ2PmCwUM4CppZhh8/KwpgLvy9
-         zuiDDFdBCGDfiF5R3uLMHHIAT6UIMF/eM2qXXfBu+eR2RnZsvyfH781aHD+0GQ1EdycA
-         pTgr3ip0hHerogtGw2sToptTehv3uQSWtMlUWSioqqtj04rW+nTB8W6Rpuup+pMju9jE
-         AorDr0Sd6/XBqZxMHk/jW5snAou5g6OqnnbAtLytAz62uS0whZAzWIbgcTpUukuPeWKI
-         fGSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794215338; x=1794820138;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pKCMQsA5DnpTSt9KpKYbpxlYWXML1e9U0EpHZz4hA90=;
-        b=M/AaWsea2JkSZfE713amTAcg05anXsyV0wHEsSZjW7gsbvf1BeJj+1hwZXeK+naLom
-         PrOhBO8dxZbii6rKLZ7RlOnkWy9WkxOzIDf8CAm3+bLvQs5H94jQCx4lD/BDoCkZBgvY
-         z7oWkQVrJXzLHw5aN38eh/B856+HTwn+eAZWDXPGqldsJbXWnLjVUgvRTZ/4NBGW6DA/
-         NKpD8BmD8UcaNul7bVZCgl/ros1Z95/vubxD1qKV1uMtUuozpsJlCBctXufug1NTY1PC
-         YbLjixdP9J7wXF1iqHt5/xUEFQGQEynViAYVrH83yS/rndSbqIg86o6jtzU5bGYq9zMY
-         Pszg==
-X-Forwarded-Encrypted: i=1; AL+hErE1EoHg8bJsNAWoEUa+2JBiMjqcO9Mr7csI2JvRttK5F8AaKwOdkOSh9F5UK6GP19EEPxXUlqxF8A==@kvack.org
-X-Gm-Message-State: APuU4Z8OqI29rEFQoPAP/1Pz0BJGeUI2pUgaRBpP3biute0p2nY0Wj+d
-	AoQBGIgxhtVDmTAclOU22nWapYWo/1RkDyvHgGi4vmkx+DhSSM5HuDj1
-X-Gm-Gg: AYBFou0ygFKY057GjNzcMdCQ0y/H7jDxeOq7ALYrlSWcYDdvTVOr+h8bgqQyRRO5KEa
-	ER6MDttR/Y0/+QYGYO6HuKYARNtfY/NUw4m2KGE48bvBsx5UgUK1qrXcRVudtphZibvCJnkgLU7
-	oEeX2vIXjKb4f2XvmaWMb+EKxoWTedcd/h6KdNG/NppUwfW7oPY3gcOfHVdPVV6eeviMqFeWo9p
-	6D3nqjtrRnGmuzy0WyGqDpdlQX26al54eECX6tWzoue6NOzVoO4uyGfPxLVHDGMIokk4SUdNeAt
-	CCWQLu7sERmOqldTjNLTRQVcEmnOXoogkHXzAT9SNcz1h7m8DF3/boNIgxCfQybQk83v1C4espm
-	Ty8sNa5xlnpIAU//i4uaadom8jGmk36beQtrVbAa6BSlFDU0NPFbucSrYZMAWgpQjcIrsxg7Lyo
-	/kb7qAuhYpGYYjvvfhbYtPr3F1CPymmHdK+hMofoCnVT4OsHJ9QWiNIhG0SjCNYiCWdjY0C7vIp
-	sLASpqvVHns3sa9weTGpoiLMs+OwsBY+epeP1AGasxfD8iza2rrJCVGRXtaHOvZmqj+uJ8gzLog
-	ZCRC2SKHOKYrKXD6w5EEnlSJ+xI6oBhc6PRxobgnfS47rbgPxD3TJ8dYtWdwyNA=
-X-Received: by 2002:a17:90b:1e47:b0:3ac:a6a5:5757 with SMTP id 98e67ed59e1d1-3b12d3fc296mr2297733a91.11.1794215338255;
-        Mon, 09 Nov 2026 01:08:58 -0800 (PST)
-Received: from intel.company.local ([122.11.210.25])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b12790befasm6031438a91.13.2026.11.09.01.08.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 01:08:56 -0800 (PST)
-From: Wandun Chen <chenwandun1@gmail.com>
-To: david@kernel.org,
-	hughd@google.com,
-	akpm@linux-foundation.org,
-	fengwei.yin@intel.com
-Cc: ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/migrate: fix mlock state loss when migrating PTE-mapped large folios
-Date: Mon,  9 Nov 2026 17:08:46 +0800
-Message-ID: <20261109090846.1068409-1-chenwandun1@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=aeYA9o7I;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of qiliang.yuan@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=qiliang.yuan@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794215469;
+	b=dWsWRtL0Vocm/r5TrQSgEnVNabS6CdCpLflqDz7ih+dyh/e4f2glPUBh0Ccm8Qv3AVQ00h
+	AG8DqDIXRpKPDoh7WR6J/Garl6VoxyPUALWLkR5M+UrfYGJ50/LkRuPEbjt7epm/QoRwfB
+	WddWqyQlUR4huWNlkrDu+gotqF6a4eg=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=WUpuYALlic5UCEqO8xHXvlvF5G6I45TQIvrJRccV9iY=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794215465; v=1; x=1794820265;
+ b=aeYA9o7IOM94e2cddbedQ0jaEEsGvDhlYUHbUfwWiOOH9ry/IOxTxIS/0F3pD1frKABfbmO8
+ tv7wXc7yWTWMdQkPwj3fxNY6evbj2c/01Xsy8kTbwlVxbErsBoYttk3lmIdsifCb4nBVyJwvvUS
+ 04QCLOxvVk7Lkagrou1LA3Ks=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id f507b16f9208fe5c;
+	Mon, 09 Nov 2026 09:11:05 +0000
+X-Mizu-Trace-ID: f507b16f9208fe5c
+X-Migadu-Flow: FLOW_OUT
+From: Qiliang Yuan <qiliang.yuan@linux.dev>
+Date: Mon, 09 Nov 2026 04:10:55 -0500
+Subject: [PATCH v2] mm/readahead: look two windows ahead for the hole on a
+ marker hit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B6604A000B
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: swn3t9jz5iu63j76yajkd68nixyeree5
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261109-bug-mm-readahead-async-overtaken-v2-1-06ead50562a2@linux.dev>
+X-B4-Tracking: v=1; b=H4sIAB+O8WoC/5WNQQrCMBBFr1Jm7UgzUCmuvId0MUmmbdAkktRgK
+ b27sTdw8+H9xXsbZElOMlybDZIUl10MFejUgJk5TILOVgZq6aJaItTvCb3HJGx5roOc12AwFkk
+ LPySgJjN2WqwwKaiaV5LRfY7Efag8u7zEtB7Fon7vH/KiUKFpO93bXluyfJs8u+fZRA/Dvu9fy
+ lw4OdAAAAA=
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Joanne Koong <joannelkoong@gmail.com>, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Qiliang Yuan <qiliang.yuan@linux.dev>
+X-Mailer: b4 0.13.0
 X-Rspam-User: 
-X-HE-Tag: 1794215339-587173
-X-HE-Meta: U2FsdGVkX1/W6sPtszVzu/UsVa5gu1P5LBSb215YZkE4+zv7BAV9kkW4gofMuWaZr9xGEGKpfOTKdRzi99maEvSKPJe45dyJC1Vpv8L/LJMhzwedoI0bM7n5twB+XzQJ2z5dI4GXurBUwLHrk5EYDbz+s0tkJyWqg3e9wq6ITswzlOaFnS3WgWD5QOxPY7ExeNKJBaqREY6GCtUT5yyPdY9JiVAotei32FGH8D+FVMri2qwoNo8hXEorL3sN4s5dwS5wsTeKXeqfi9VIdhdAvp1adLwA4dQ4OnTvHZuv8ZOi1pfKZcuLLQk586Y4FMd8VPQEM7akvbUmNNWbDM9qvxTfr2DSt/xCs7tSvbpnaoWWyiy6Mno2CSZ8ldEbyAfvj2fBiNduda0K3pkNbRLkAIhBYHFWB1oVLVzBAVUJyO/14Yu1QY5KO9u6/IxLxa2itJayExKsnwsiG7VKMSvTcN8fXqEl5fz06gqYbMkC9uXwxZLNox0bbzUV4g/llEUIPClFhXA49ur+AFN4xVVeUgA9He01NcqebIcHt2naa4spTprFM41OoSK0GPYEB95YbuvfNHV/eBBVWU8AojNdqwjA8YKQTSVHlTc1SwxdzSlPst3v27rdLN5JndP+G2E8W20CB8X7gETUfrPBgLoQ/VgXC6l+c5P22Y67tI2h9juXRaWXbWm8Ik3pgTCDVk3EkUI/dVniv/yry16XwzAQXLgnNkSxwiBvV8/j7iHGvIJfCUjvAjIiwFX+N3tN0zyhLXrpHUihJR/Ki3V0ueCb7qe0d3kE69M5RGmQNUW3adCIfCGkYUIujhEGgiLN2q8DCLHvl1M8rkFvCVBQYx6xykhOPQZd0WSEuTdDfS9+SBhnwd4J7SvEiwVp8FaFcOiI7WNbDBunwH0puHDKDQJiFKGjSoGE0O86lg+Q5OFeEIVhIpGp7ft0WL9ketU2b3rECUfTJIjaACkaVrHdYf0
- +Oclg2t3
- lYVqOifhe1RwCSxtDGnxr27OpnJmkGSOx1H9wmGip1ESYW0zYhKvmBEwZLBD9uAhcljKVQSyAccMtzG+rMjOUEGNSn8JojQysHF+QYTo6jlMbOX+eRNGyGVBF7asvuinzIpVH6f0wRcvlxbnKx/5zeSfIYRGw2M8J5vocbqUOzdF+LU8WwUkw3ncZdBeYB5vMaHJUXwdc3nI2VY9Wc6sWGUmous4TVnAjWawDR6IjxeR4/obMghqfVe/YIf4lOczog+ay4V49C9Q64wco6mG5xmM671Q9j6ikDIs7gSk6yFb7bmwD5MV2JiIwTqi1tWtMQNF9oldpUfje9IiIDC0NAz5s9CfaCKIPo0jaPEMemhxYeIKyzl5apyEF7ubcZTf2OpaViDX7oHsZNeAIYTI/tuYCOYxQ6DNVuFwLjmzVoL4PtMNCsAdp1BSZjTkxv8pX/SQ3s+w5dbpNBjbveGH5JOWo5MAJfb2oTAlR5VLB/KE4RFbkmoOfJI2LTlfUNjQb/XZGUbBE5rzg/T86iqKgjrrGsg==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: C3431180005
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: ixxsn5d8k5caip7fz178ayj6p596hdgm
+X-HE-Tag: 1794215467-47090
+X-HE-Meta: U2FsdGVkX193PbeZC0e5frF1tTYAa2Bqt/N3+j6Ko0C3PiCORflregYDO1GTbnsfkXH7dK8WJsGmqrenfnKziBFkar74ly9d0rI78cz+Ljjz0aSikjsFFgjy74QjfSu1u3TE/h4fF9Gs3WwsHuyhtrzFgCl3RLJByy+jfMSMdlTVSs5JSeyavirVjZgkL56XwKycUqXy2aJAu64eH8pSgNvmpYKS8P8yix8hDxaY9VhYGTpZZvEsIXAsonr0hrUfFZViBs7r944qiiOefOHUQbuIm0cZPdFi3aq+gEqjaSawsi4Q+YUh+ltCRCMpByXvNuTHc3Gf5zTDXG1TqyI5FUprqLtOGhXaaVyyfDf3whEFtvALWD5v67za5kRhTJMdkC9n3Kj8meq69OLKEyp4KR74d+P2e5do5TeheyExRRistEk0BHXpB9c63Boo2PyQhUf7KcStYOiypbhO97xs/gHPdOSZZNiQfJZzsBr/aPckiVkpP0NHXcsWuCtWkcUNSg7kRAFsJZOLAjhM8KPVcTLGRe5RLmkT3lsgfT/WWyt66Um7WBjvCmTLqUMGqlOe/FJUdco7hDQSAOvUToUSIsr6xD1xk2+acNtKqnQNnBpY12maM1NUVtQP/raMm9WT3nD9So4R9VZRQ7LXH0LHkT4czGNGFnllk7NpNc8bU+4eJQ+levKQW6pkVvShf33GQEanaojxkeDhK3Y9B4afwUlkKmM/LK87Z9PI2b18ITk7rSXcpJHq/Y/rw4d9NPexdRBp0puk/h7tXimszGgjoiTQ/fmtLO/1Fb5qCbYy+vtgQQS8aJCNo35zMC3FKmahw6qRKjy/5S80tT/J7V08tAmb6br5bm4TCje/t+npen4vM4fPLcgPZRp0xvMcoj3I9Ujy54Jeu6ZW8RkI/gKXiDP+OHeu66+xvjmexgBTH1+fQ/SFD66+rgcJvRo4yrLsmX/iqjVjnUmpgLFD7tl
+ UF5+XjYy
+ UO/3pDz6utKTHtmTrOKR/YHds+csZGjgzpi/QPebBb0RKgGfI2QpUXDBItQl1M30NFbVATqFuY4k9pqUcgxVnaE24+qs9/HwmjGWOFDDNtZwEm/0eqyVu9GF+f9rt0Y8pjbQ8PDuucc3KWT8uIJMvVwSC9FWioX1PDW+IRAI1GNQDSA+TI7aEmzfoki/9l+zD3Q8NRwroILJTnzqEx3Y8c9ySUMeVbgOvOStSLaLbYuhhWhhV/S/lA0QhUlRoW0QPMrXPJ0MxCb8aPUwyNg5vqV2+VicoGnFwAmJmNPhGTuYxEnZ8s3PK9uxY2A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -130,53 +97,139 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Wandun Chen <chenwandun@lixiang.com>
+When a reader hits a folio marked for readahead that the readahead
+state does not expect, page_cache_async_ra() starts the next readahead
+at the first hole within one window after the folio. If that window is
+fully cached, it reads nothing.
 
-try_to_migrate() clears PG_mlocked when unmapping the source folio.
-For PTE-mapped large folios, remove_migration_pte() restores one PTE at
-a time, but the rmap helpers only restore mlock for full-folio mappings.
-This leaves the destination PTE-mapped large folio without PG_mlocked.
+memcpy() in glibc loads the end of a large source before copying it
+forward, so a loader that copies a file mapping out in pieces of a few
+megabytes faults at the end of each piece first. mmap read-around then
+reads a window centered on that fault, which reaches more than one
+window past the readahead marker the copy has yet to hit. When the copy
+reaches the marker, there is no hole within a window, no readahead is
+issued, and the next piece faults on its end again. Every piece then
+gets a synchronous read-around of order-0 folios, and threads copying
+parts of one file also contend on the i_pages lock to insert them. A
+copy from offset 0 avoids this as its first read-around is clamped to
+the start of the file.
 
-Restore mlock once all PTEs of the destination folio are restored under
-a single page table lock.
+Look up to two windows ahead for the hole, which reaches past such a
+read-around, so the reader keeps an asynchronous window and its folio
+order keeps ramping up.
 
-Fixes: dc68badcede4 ("mm: mlock: update mlock_pte_range to handle large folio")
-Signed-off-by: Wandun Chen <chenwandun@lixiang.com>
+Copying a 16 GiB file out of a private mapping with memcpy() in 8 MiB
+pieces, read_ahead_kb 8192, cold page cache, 32 vCPU VM, mean of two
+runs:
+
+                                  before    after
+  1 thread from offset 2 GiB     7.62 s    2.00 s
+  8 threads, one range each      3.26 s    1.08 s
+  32 threads, one range each     4.05 s    1.34 s
+
+Random touches read the same amount, and pread() copies and copies that
+interleave 7 MiB chunks across threads take the same time within
+run-to-run noise.
+
+Signed-off-by: Qiliang Yuan <qiliang.yuan@linux.dev>
 ---
- mm/migrate.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+The program below copies FILE out of a mapping in 8 MiB pieces, each
+thread taking one range. With a cold page cache, run as "pcopy FILE 1
+2048" (one thread starting at 2 GiB) and "pcopy FILE 8" on a 16 GiB file:
 
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 94033c222e04..140e291d4587 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -353,6 +353,7 @@ static bool remove_migration_pte(struct folio *folio,
- {
- 	struct rmap_walk_arg *rmap_walk_arg = arg;
- 	DEFINE_FOLIO_VMA_WALK(pvmw, rmap_walk_arg->folio, vma, addr, PVMW_SYNC | PVMW_MIGRATION);
-+	unsigned long nr_ptes = 0;
+                        7be4bc52fd9e    patched
+  1 thread from 2 GiB      6.92 s        1.57 s
+  8 threads                4.00 s        1.04 s
+
+  /* pcopy FILE THREADS [SKIP_MB]: copy FILE out of a mapping */
+  #include <fcntl.h>
+  #include <pthread.h>
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <sys/mman.h>
+  #include <sys/stat.h>
+  #include <time.h>
+
+  #define PIECE (8UL << 20)
+
+  static char *map;
+  static size_t skip, per;
+
+  static void *copy(void *arg)
+  {
+  	size_t off = skip + (long)arg * per, end = off + per;
+  	char *buf = malloc(PIECE);
+
+  	for (; off < end; off += PIECE) {
+  		memcpy(buf, map + off, PIECE);
+  		asm volatile("" : : "r" (buf) : "memory");
+  	}
+  	free(buf);
+  	return NULL;
+  }
+
+  int main(int argc, char **argv)
+  {
+  	int fd = open(argv[1], O_RDONLY), n = atoi(argv[2]);
+  	struct timespec t0, t1;
+  	pthread_t th[64];
+  	struct stat st;
+
+  	fstat(fd, &st);
+  	skip = argc > 3 ? atol(argv[3]) << 20 : 0;
+  	per = (st.st_size - skip) / n / PIECE * PIECE;
+  	map = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+  	posix_fadvise(fd, 0, 0, POSIX_FADV_DONTNEED);
+  	clock_gettime(CLOCK_MONOTONIC, &t0);
+  	for (long i = 0; i < n; i++)
+  		pthread_create(&th[i], NULL, copy, (void *)i);
+  	for (int i = 0; i < n; i++)
+  		pthread_join(th[i], NULL);
+  	clock_gettime(CLOCK_MONOTONIC, &t1);
+  	printf("%.2f s\n", t1.tv_sec - t0.tv_sec + (t1.tv_nsec - t0.tv_nsec) / 1e9);
+  	return 0;
+  }
+---
+V1 -> V2:
+- Rebase onto v7.4-rc2, the patch is unchanged; the numbers are from
+  the v1 base, mm/readahead.c has not changed since
+- Send from my linux.dev address
+
+v1: https://lore.kernel.org/r/20261022-bug-mm-readahead-async-overtaken-v1-1-c05b8d8bd2da@gmail.com
+---
+ mm/readahead.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/mm/readahead.c b/mm/readahead.c
+index 6e5563290287e..d7a511a9fdcbf 100644
+--- a/mm/readahead.c
++++ b/mm/readahead.c
+@@ -696,12 +696,15 @@ void page_cache_async_ra(struct readahead_control *ractl,
+ 	 * E.g. interleaved reads.
+ 	 * Query the pagecache for async_size, which normally equals to
+ 	 * readahead size. Ramp it up and use it as the new readahead size.
++	 * Look up to two windows ahead: read-around for a fault further on,
++	 * such as from a memcpy() that touches the end of its source first,
++	 * may already have filled the next one.
+ 	 */
+ 	rcu_read_lock();
+-	start = page_cache_next_miss(ractl->mapping, index + 1, max_pages);
++	start = page_cache_next_miss(ractl->mapping, index + 1, 2 * max_pages);
+ 	rcu_read_unlock();
  
- 	while (page_vma_mapped_walk(&pvmw)) {
- 		rmap_t rmap_flags = RMAP_NONE;
-@@ -446,9 +447,16 @@ static bool remove_migration_pte(struct folio *folio,
- 			else
- 				folio_add_file_rmap_pte(folio, new, vma);
- 			set_pte_at(vma->vm_mm, pvmw.address, pvmw.pte, pte);
-+
-+			nr_ptes++;
- 		}
--		if (READ_ONCE(vma->vm_flags) & VM_LOCKED)
-+		if (READ_ONCE(vma->vm_flags) & VM_LOCKED) {
-+			if (folio_test_large(folio) &&
-+			    nr_ptes == folio_nr_pages(folio) &&
-+			    !(pvmw.flags & PVMW_PGTABLE_CROSSED))
-+				mlock_vma_folio(folio, vma);
- 			mlock_drain_local();
-+		}
+-	if (!start || start - index > max_pages)
++	if (!start || start - index > 2 * max_pages)
+ 		return;
  
- 		trace_remove_migration_pte(pvmw.address, pte_val(pte),
- 					   compound_order(new));
+ 	ra->start = start;
+
+---
+base-commit: 7475ea8b58616b33c04afb976cf0fbaad9dd63fb
+change-id: 20261022-bug-mm-readahead-async-overtaken-b2cf5bedea21
+
+Best regards,
 -- 
-2.43.0
+Qiliang Yuan <qiliang.yuan@linux.dev>
 
 
