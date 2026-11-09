@@ -1,126 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DA0606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 17:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0111B606A31C
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 17:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DaRj2WPE
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=U7k7USFh
 Received: by kanga.kvack.org (Postfix)
-	id 39D1E6B05B4; Mon,  9 Nov 2026 12:17:14 -0500 (EST)
+	id 1FD016B05B2; Mon,  9 Nov 2026 12:24:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 375C36B05B5; Mon,  9 Nov 2026 12:17:14 -0500 (EST)
+	id 1ADF76B05B3; Mon,  9 Nov 2026 12:24:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28C716B05B7; Mon,  9 Nov 2026 12:17:14 -0500 (EST)
+	id 0A2F26B05B7; Mon,  9 Nov 2026 12:24:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 01E136B05B4
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:17:13 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 98547A0783
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:17:13 +0000 (UTC)
-X-FDA: 85416236346.02.EAE2167
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 92986C0003
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:17:11 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DaRj2WPE;
-	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id DEDC76B05B2
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:24:14 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 65B3712075B
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:24:10 +0000 (UTC)
+X-FDA: 85416253860.08.866064A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 7E20040003
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:24:08 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=U7k7USFh;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794244631;
+	s=arc-20220608; t=1794245048;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hikr3NdZOFIV97qGG552H/Op66kxtcpyq5g4qXWJP2g=;
-	b=SDdTLm60rQ/6UJmFXfXBijyazh+ObNYqrmqim7VnaX3/WNaFNdJbP//9HYBBO1r0ztEMAl
-	JbySn0F88ofqC3GdwG1O0fEmg7GuczCHgyCGLCKRFoolLLJKZR9clgYjLxcmu4D2/2XupW
-	84vNFRBIVb3GjumhXTe+CggGLsrJ/Nw=
+	bh=eun4fonrA8YxuiXzX4G4XMpkIlQF/XMM49UglMMMiXw=;
+	b=vVP+5KeOXCsZkVc3iUhBQdgTg6mlH7aHwl70Md1qXhVnXPLQ75nE8eWVeIRrrLUPpZxQmh
+	jaQv7QoqF8VoBFmuC97Z6QE7+Gbl1IeLGDqfwzCiytneLjSOuzt5yn0dOKvDMlkf2KTZao
+	w3cKGdprSz0OrI8PNFUQ1QknIPxP9eI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794244631;
-	b=gbAgTgy6uIGtngaMXhwPghFjyHwZYJVgovfLjWVSQ8ZqmZFetm4DYMXOqDoUu2HWVrhqUI
-	S5WNS7uFMBNAZGnTyeJkTXUyTnxuilVw4GMI0TEqwNS0ulmLNDJVQK+eOOgwbjnIXx70H1
-	ejj+xqe3rTrOTOpHU91lgAa8vCWgGwA=
+	t=1794245048;
+	b=kekYPR+pU1uL6iVa8AT8yEcrEDvbjl6nYC1T3pinz7fxiwqrqCqm4ebpz5+KEYvoi2xSEi
+	wthUBzUguqXbPn7Zgj7amL0rX3AaA3eWYNYkkf+xfaXlBJS0XqpOYIP+1ZFj33w8IEySEs
+	EqYXAbXc923DFdNMd7ovHJ2nXN+/K6M=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DaRj2WPE;
-	spf=pass (imf22.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=U7k7USFh;
+	spf=pass (imf12.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2237863454;
-	Mon,  9 Nov 2026 17:17:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027C01F008A2;
-	Mon,  9 Nov 2026 17:17:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794244630;
-	bh=hikr3NdZOFIV97qGG552H/Op66kxtcpyq5g4qXWJP2g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DaRj2WPEDX6GjzLecC2leOw1e9m5ocwvoJlDHsfSD2+u84H2UKxC21aUfKVinanoA
-	 uQW5NTxN8UEZ90WGSWx9R087nby70dIuoPoBLg9mpNVkkamVbHKXfWe7di37Dm2/C9
-	 v9pQqOLa9AUjFcTe5E/zSMnvaHYrwui+3kGUY0iUSKcShswHIo1l7cuTnbRxiGaRJy
-	 aDeVeuEQr/N87OFQfEflecufBom5BvK3gw7c+ELFxq+0irHt8gxhFnp3hPLbazC0Zt
-	 PbNMLHLIpZMSmTjiY9Nmno8m8B20uPFR9i+1im9j+uYe0vWGiWoD+lA7ezFu7WCi7j
-	 s0pRktKCNBpZg==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.ams.internal (Postfix) with ESMTP id CBB7E1980050;
-	Mon,  9 Nov 2026 12:17:05 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Mon, 09 Nov 2026 12:17:08 -0500
-X-ME-Sender: <xms:EQDyal_E3i3-JOyrXgAel3XmchxyRy6dJKHmn0RHn09DQU2qOx53hg>
-    <xme:EQDyanWxemPQ8pkRZ3YIAgJXgCHOaoZyOyNuPrDU5zA2HaG5sWlsImUkQtTh6Bzdq
-    K_oRDDnMt_Uvxe17C4ltpB7ARntMwEY0niGeDEOzmakFyjqhWkQTuCq>
-X-ME-Received: <xmr:EQDyaqY-wXPnBLr-hCcdNW8K2xDebDgZ6hWdC4L97R30CLsRRXQaW2WkeWE>
-X-ME-Proxy-Cause: dmFkZTElZQIW6SWcaw1iguscu2eY5QRPkCI+Zh7YF9LAIl6Q6UDTQUJwYU5pgh0mTZpmF5
-    NxbI9uk32CzRVwmOylzVie+SWfDBrEYcRZ2p1j1AQ/MuQcSePoOec3dfy1ajnlOjYwO1hl
-    Xbo5hNTGbMq0y+sDiK+aCg9uHGvxRy7N3Vq+rRj2PhA2LLezz9+bkjEBvK8ETAnlSc5TZR
-    akrsVfCK2YDA101kRiLJ8f0MlU4hyylsv1fMuxTwHhQnwjjvVkpGCb5ees+82vtcTP3kO+
-    WocAA+bVDijg7kHIjKZXEn2dV9MY1IjQ8Sm1IF6WYExkFItyIcDhe9h9bl4fPV9mWjJUnY
-    DzCUMfJsGPdbDNKvpXAWZxzzlawuUdw6tZGAmgVqamoAzzCihQfFMmK/Zx8GOl68saGJIx
-    6YlurgnnIRLoX1tHfkwEq8INt3eSuOAdIsI/iT3mhaKEXxVCKwX8NxZFuTwdXRxAaaZWJd
-    Zo9dxHry3xUo1MsDZaFCB0yHpzXua+EIBPQ8zzN2OylaHG09yWtEzoLiEsGiz6/xOCNuqV
-    5X6xF4+kz8U9F8mw5cDCkCSf+2seoPzNTK2phXDxtLlectgNneWxA6GmVuDi6QtYrci6H0
-    UM1nBtG2OIZRUWr6iYNSsJ2OQk9fT/GmSreDs7XCkBonjX9IDZfzAYYaPTSQ
-X-ME-Proxy: <xmx:EQDyahqdwG4SwoeTcbhVCpgeaBptrobVJSl3lwLMRXXr7y3al7i06A>
-    <xmx:EQDyah74B5-hdy-JkxViNftHu2_nEgrX-ElvPBIxzsPbXPhDCq3aJA>
-    <xmx:EQDyarUZh4JrJRfeBxK_Z2rVLGPtiG7EZ0I-MBGqFaJZ79tOt2Cu5g>
-    <xmx:EQDyavvaWKiEUsAYuDF_q8xdT0s-OFkyeTI9FYlZDwxqsvbSi05JsQ>
-    <xmx:EQDyagrbS8mKwXtaEumhHAY747RpoQ1KmHErQTqj7u4kdzLNTLdfiGFe>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 9 Nov 2026 12:17:04 -0500 (EST)
-Date: Mon, 9 Nov 2026 17:17:03 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	"David Hildenbrand (Arm)" <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Hugh Dickins <hughd@google.com>, Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-	Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH v2 1/2] mm/memory: recheck PG_uptodate after
- ->page_mkwrite()
-Message-ID: <avH3L4ZbQC6fIt5s@thinkstation>
-References: <20261109120403.82361-1-kas@kernel.org>
- <20261109120403.82361-2-kas@kernel.org>
- <avHWhZzXE-ge6nU6@gremlin>
+	by sea.source.kernel.org (Postfix) with ESMTP id 6707941607;
+	Mon,  9 Nov 2026 17:24:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 924481F008A1;
+	Mon,  9 Nov 2026 17:24:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux-foundation.org; s=korg; t=1794245045;
+	bh=eun4fonrA8YxuiXzX4G4XMpkIlQF/XMM49UglMMMiXw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=U7k7USFh8CiH8yapE7FTZPIc3n7a1VfVrrw/hRpz7ZfmAvrqap3KqDfRs+5dgXjUg
+	 7b5GVFc0envv1FiTeaCTmMTZ66R7rrrr0X/aHT3OQaPAdaAd9AdSGv+gj/dkjcPbkm
+	 IviqjTERNDo2xLRDzAyJciW777BbRh6rtjEPsZg0=
+Date: Mon, 9 Nov 2026 09:24:04 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Leo Yan <leo.yan@arm.com>
+Cc: Wen Jiang <jiangwenxiaomi@gmail.com>, catalin.marinas@arm.com,
+ will@kernel.org, urezki@gmail.com, linux-mm@kvack.org, baohua@kernel.org,
+ dev.jain@arm.com, ryan.roberts@arm.com, anshuman.khandual@arm.com,
+ david@kernel.org, rppt@kernel.org, xueyuan.chen21@gmail.com,
+ chleroy@kernel.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+ npiggin@gmail.com, ajd@linux.ibm.com, jiangwen6@xiaomi.com,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v12 00/10] mm/vmalloc: Speed up ioremap, vmalloc and
+ vmap with contiguous memory
+Message-Id: <20261109092404.5441d8bf9c4494ed008162fa@linux-foundation.org>
+In-Reply-To: <20261109140206.GY9176@e132581.arm.com>
+References: <20261107134953.748622-1-jiangwenxiaomi@gmail.com>
+	<20261108230842.3a77b9fe2d4bfc2a04b355a5@linux-foundation.org>
+	<CAHKocdGWE9OVA5pJh33U-FYnNkUqRS0pzFt=rCwXWzY9w-QXyw@mail.gmail.com>
+	<20261109140206.GY9176@e132581.arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avHWhZzXE-ge6nU6@gremlin>
-X-Stat-Signature: rxssci8ktiuuy15xxyf5xh918p7stghr
-X-Rspamd-Queue-Id: 92986C0003
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7E20040003
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794244631-387841
-X-HE-Meta: U2FsdGVkX19sY82bG022dkOLqY7nSaYn6akf7DmeY+y+NICsLnIpomyobj0wvNN9ps0//Vnq2P+zgzM2MXSY5FQUzuCG282suukUZvWJmoFBNNIRXEJuGMvWnYknPR66dwuexfpds2IZsrFnC+mcRGfhkPBCP3BtU7O4MLCGlHimJIMBV1dNS95H3xz007NiBfkGEAHtLZwrr1c1QPZ3Gf52jw+7x30dHHmC7Hc6dBwg7TZf2dXo74MslB+3wtJG3oTH5k59CDDLshTLe2/3qFOa9Gkwq64cgFY2exIzy479pg2TCysk4AMBES4RgeHEgU2TxgDSNnz8hmgxBCvQtmEzIBmru5+N8euTVYRT29JApUWJIwA41nWfZr1m3tMuOBG+59xDYM25YlFHCZ5dI18JFMTExbe7c5Km7IS9VSQ8DpZqTclX19Z2WB2iCzRm9HOWpvubhKX1N2CjPBN+OUmM7PxSj01nOuaUC4Faj5L+l4ulDp+hKt5uXpk+2aGZsRCcR8psXH1Fl4NMe6gzKsKzPiamwA3d02OpYUe3sl8ohuCpmj1u9xHOloQbnBWpYg24sacBQwPnsjQyDvG3Trj9i06pUQTNCMUMBtdGf5ZxopBe8khKGOXRSwNPE3/4727ZPpwzCNls8zDTXxqdyR3NdktWMGt5b1Hldz9RXv9Mjv2XkM0Fy3Ga9XrtdaBH3Lau5B9jeIYgRZgZ1UCHcBMKg2eKDI42hG+w2RoEN4qleKBsyC2lt1FVSgutA9TZW0Y9ZNG7QYCk3wbIoQXCjlhrxKqFLIzmo65X/rbH6/u2eFvKlBKNRZsAqsp2UUVipEhCBQsfU6N7ZV6g7LHOPXl6Av9p6kQoZx7vZxrxjgv23evQhBzdtwn2CUGYzG/7tzGgAH5vRTOjKkbjBc9gVhd4+e5tcsZfQJ2TmYUrOM3mX4FKBKCyMxY20GI5VcuwY5GkGeA+9iGMk9EaQ9C
- v0+0Sn4d
- z1gHs21ei9RMRZD6gaRhHmlyL7HfJ5zxLM2kI+DykqCyzC5+26csnXDYbVJcQfuwDhiJG5FXkzpIyn3udEigz6JrxFvgXRnxSsx5HA29DhegbU4/tie1QBdy8GsdFCMxxn9h/UsesQWRzurmdhLkcou0J6G/kNUZFLJVWFaYebZ0mLsYQoV6YsPKuDOJnlmf1gLTPt6oMKKc61wvYnZLcJpsUxX9SdwKAs4GWB6iOfsah85SsyqRi5mPaWnr3kBWpr6wIMl44RkugjWTgQLZJsXB1EeqgWYUcVQi/aiSuE2TH59hcSSJ+0Mjj6EvJHAWOfWH0EahnGq5a59JmFwO5ys4rHDH5TOfGc7vV
+X-Stat-Signature: pprbi74i7ak796qfemtna3qcrdyqs3sw
+X-Rspam-User: 
+X-HE-Tag: 1794245048-712853
+X-HE-Meta: U2FsdGVkX19I96gnqDPGCR1dP+p1aBol9m4bxrz2GM/7GGBaAogqn9mt0TmUs+MMm8oc/w4tjx55jdDGp6nXdnw9n31dXhM97BHQGu6WlNdZ/m8ERYdetIw132dEn5zr8yllT3bAjmMrOb0k6A5GHhAoamvBvz16kor//Vu8I9wS8UpAsB5DskOY5kg0P2YjISoFy/LZEKhBfEMULRL4cxPzOYIlFWCZUIm3KUmhr/hqG1YqSb/ixP+gxWDmHOOQXFIgQ285hqez6Rpz9LMNLk2hCoHjnxYz9gI0TSNYrWsdrLWsgvTGhE/aMN7cCpdjYROwxPcaTBzagQJSUid6aA/yp/sLncuhoLSJNwwgLuR5aqO9SLHkdzMJgTp8/PihLLxpg6TglD8V6XTo+ODsu22lsPZZwuFPOKRYMO/GwfA44Tdtds2D5gadu3PJHHcBn2v1QAJ8Onx15RqWIAxiBFiWxeCpoj0zDHcpMZ3hThhHMorc1UQHP6vBmp6MaAsnaJ95qbeu+QzdMU5nXpQg6ko70NmE3Sxn/z35FmCd9DcFiuZaonPv61vnFXpnIKUVh9WZKDLEyf485sGzwwbSyTxlFrvLcK71iH8zedcR+dmNx0TwbARPsA5GQxotGxZ9w6yHVE4BrmmlV/3SEa1ki9XBfCA8xS8v/uGydx9FjxWP/alL6kLSgWIOCmTGzfT8r5gv78NsjcXgHVPdXixXfR/68D/8Ch6aKZNPHxcM+FHJWJA5ysNQL8b5n5P7bNDoQYzCjRJw0xkB61WWcCK2YLoLp+g3rX38g2YUBXCh7d4R5xGIY14HagprMEM5zDo9Xsau9B0G6pxlrg+LpM/lGPY8lEWUl3RtHT7QE2jQ3HB+iauigQ1mdXc5djFyoNlSyQJVVig4Uv6yD2+NhX1X+Ptde/zn1Ab7Uj2MPa+0lJPm2N4ToxkXwEAVocganTxOfwq7KtiFH3iWfr9vw/q
+ Dl+aQb0I
+ 52RTFlmwG5+X+S94dX4z5rJTWbI+SQyhV3NywaRHruB8222bpxqgeVn118O4LZGJygHPYqqefisXJfnMXj2I8YHLsbmL9VsnAXe6Joy5QtZtci7QakGBLCSbqAIr2WQLrnSdMCeOf7R9+JsTnUkTT9uBU2R9uD3hWVImiOWT8QrbbXPhCdWnHgk9t/YSKn9VqJ/XpeggMZv3P/ClhKNOpQ1SbjZ1hxmynnWTp0cdQzC5WwQCQ7og4y2AZ0Baa6bOsyn4nMUKadSSMQq8655YfPvyrbFZdUDJuqiX+Zmctpb6I8RU9xOoi2x44tq5d57Eynpo+pvXLG86cJvWCuwEaBeccW/+HyMRkRg19tfGJY52TrpdG67EqsRVsYop7MDWBDr6D
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,118 +102,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 09, 2026 at 04:11:40PM +0000, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Nov 09, 2026 at 12:04:01PM +0000, Kiryl Shutsemau (Meta) wrote:
-> > do_shared_fault() unlocks the folio around ->page_mkwrite(). Writeback
-> > can lock it in that window, fail, and clear PG_uptodate with the folio
-> > left in the page cache. ecryptfs_writepages() does this when encryption
-> > fails. filemap_page_mkwrite() relocks the folio and checks only
-> > ->mapping, so the fault maps a folio that is not uptodate:
-> >
-> >     CPU0                            CPU1
-> >     do_shared_fault()
-> >       folio_unlock()
-> >                                     ecryptfs_writepages()
-> >                                       folio_clear_uptodate()
-> >       filemap_page_mkwrite()
-> >         folio_lock()
-> >       finish_fault()
-> >
-> > The next read(2) or fault on the folio reads it in again from the file,
-> > over anything stored through the mapping in the meantime. Those stores
-> > are lost.
-> >
-> > Recheck PG_uptodate once ->page_mkwrite() returns with the folio locked,
-> > and retry the fault if it is clear, the same way filemap_fault() retries
-> > on a cached folio that lost PG_uptodate. Skip folios outside the page
-> > cache: driver pages from ->fault() never get PG_uptodate and would
-> > retry forever.
-> >
-> > The check stays out of do_page_mkwrite(): wp_page_shared() calls it on
-> > a folio that is still mapped, and a retry there would fault on the same
-> > PTE forever.
-> >
-> > Reported-by: Sashiko <sashiko-bot@kernel.org>
-> > Closes: https://lore.kernel.org/sashiko-outbox-202966@kernel.org/
+On Mon, 9 Nov 2026 14:02:06 +0000 Leo Yan <leo.yan@arm.com> wrote:
+
+> On Mon, Nov 09, 2026 at 07:07:23PM +0800, Wen Jiang wrote:
 > 
-> No Fixes? Sorry I may have missed context from v1 here :)
-
-The window is from 2007, when __do_fault() started to drop the folio
-lock around ->page_mkwrite():
-
-Fixes: 6967614761fd ("ocfs2: release page lock before calling ->page_mkwrite")
-
-Not sure how useful such Fixes is. It predates any possible stable tree.
-
-> > ---
-> >  mm/memory.c | 22 ++++++++++++++++++++++
-> >  1 file changed, 22 insertions(+)
-> >
-> > diff --git a/mm/memory.c b/mm/memory.c
-> > index fe72e66c9c2e..cc1d0b7d15c7 100644
-> > --- a/mm/memory.c
-> > +++ b/mm/memory.c
-> > @@ -5613,6 +5613,18 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
-> >  	return VM_FAULT_OOM;
-> >  }
-> >
-> > +/*
-> > + * A page cache folio that is not uptodate holds data that was never read in
-> > + * or cleared, and mapping it leaks stale memory to userspace.
-> > + */
-> > +static bool file_folio_not_uptodate(struct folio *folio)
-> > +{
-> > +	if (likely(folio_test_uptodate(folio)))
-> > +		return false;
-> > +	/* Driver pages from ->fault() never get PG_uptodate */
+> [...]
 > 
-> I guess you mean drivers that return non-page cache folios from ->fault()?
-
-Yes. How about:
-
-        /*
-         * ->fault() can also return driver memory that is not in the page
-         * cache. It never gets PG_uptodate.
-         */
-
-I would rather avoid "rmappable". These folios do get
-folio_add_file_rmap_ptes() in set_pte_range(), and the word reads like
-PG_large_rmappable. As you said, DAX never reaches the check, so "page
-cache" is accurate.
-
-> > +	return !folio_test_anon(folio) && folio->mapping;
+> > > Do we have sufficient ARM review?
+> > >
+> > 
+> > Thanks for picking this up.
+> > 
+> > On ARM review: Dev reviewed the earlier revision in detail and
+> > his suggestions are folded in. Leo Yan tested the large vmap() path
+> > on TRBE/SPE. We'd welcome more ARM review from Ryan, Catalin
+> > and others.
 > 
-> Technically folio_test_anon() can never return true based on where this is
-> called from right? Could this just be a:
-> 
-> 	VM_WARN_ON_ONCE(folio_test_anon(folio));
-> 	/* ... comment */
-> 	return folio->mapping;
-> 
-> Instead?
+> I confirmed that my Tested-by tag remains valid on the latest version.
+> The improvement is consistent with L2D TLB refill reduced from
+> ~16000+ to ~500+ across multiple runs.
 
-Right, all callers pass a file folio.
+Thanks.  I added your t-b to every patch in the mm.git copy of this
+series.
 
-I will make it an assert, but at the top of the helper, so it checks
-every call and not only the rare !uptodate one.
 
-> > @@ -6163,6 +6175,16 @@ static vm_fault_t do_shared_fault(struct vm_fault *vmf)
-> >  			folio_put(folio);
-> >  			return tmp;
-> >  		}
-> > +
-> > +		/*
-> > +		 * The folio was unlocked for ->page_mkwrite(). If it lost
-> > +		 * PG_uptodate meanwhile, retry the fault to read it in again.
-> > +		 */
-> > +		if (unlikely(file_folio_not_uptodate(folio))) {
-> 
-> As Pedro said, I think this unlikely() is probably unnecessary given the true
-> return case is implicitly unlikely.
+AI review found a couple of little things:
 
-As I told Pedro, I prefer it at the call site. That is where the reader
-needs to see that the retry is the rare path. But if you insist...
+: In [07/10], vmap_pages_range_noflush_walk() uses an int nr
+: index, now shared by the high-order mapping path. The previous
+: high-order path used unsigned int i, nr. Beyond INT_MAX base
+: pages the new index overflows and pages[*nr] can go out of
+: bounds. On x86-64/4K that means an allocation above 8 TiB,
+: within the vmalloc VA window but requiring a very large machine.
+: Please carry unsigned long or size_t through the direct walker.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+The vmap(8TB) limit is already well known, not sure that we plan to do
+anything about it(?).  But the patchset seems to drop that limit to 4TB
+for higher-order pages, which can't be a good thing.
+
+: In [09/10], nr_contig < 2 can be dropped: the loop guarantees
+: at least one page, and vm_shift(..., PAGE_SIZE) returns zero
+: for a single page. I withdraw my earlier NULL-page objection;
+: I could not establish a legitimate producer of that input.
+
+
 
