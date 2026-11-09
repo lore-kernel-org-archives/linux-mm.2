@@ -1,97 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297CE606A332
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 01:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B2C606A31C
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 01:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=PFk7jMUM
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=6APbNeQF
 Received: by kanga.kvack.org (Postfix)
-	id 4A3FA6B05B5; Sun,  8 Nov 2026 20:50:54 -0500 (EST)
+	id E6D476B05B8; Sun,  8 Nov 2026 20:53:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4557F6B05B7; Sun,  8 Nov 2026 20:50:54 -0500 (EST)
+	id E1DBE6B05B9; Sun,  8 Nov 2026 20:53:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 36AE06B05B8; Sun,  8 Nov 2026 20:50:54 -0500 (EST)
+	id CE5E16B05BA; Sun,  8 Nov 2026 20:53:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D6D96B05B5
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:50:54 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A9276140528
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:50:53 +0000 (UTC)
-X-FDA: 85413901986.27.D27780F
-Received: from mta0.migadu.com (out-247.mta0.migadu.com [91.218.175.247])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 8AA311A0002
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:50:51 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PFk7jMUM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B16116B05B8
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:53:32 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4307D1C1F2F
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:53:32 +0000 (UTC)
+X-FDA: 85413908664.18.0A00725
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2AE4420005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:53:29 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=6APbNeQF;
+	spf=pass (imf31.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794189210;
+	b=ZtPvOa3g100LN4ZkfF0mFvgXtte5pxSHXxg7nRO24VKxcrMLugQ87+6XTVnm0GnLXRWhBU
+	tUGK5jy7hefnC/odkqSi9AIqXKnMqqw9BPN4+Uhc01rqRQALQvgZmdRu1pSqfO3/BCiAnn
+	aDIds0n8aYhFUQCo/t+Di/2ipfT9YZI=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=6APbNeQF;
+	spf=pass (imf31.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794189052;
+	s=arc-20220608; t=1794189210;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=H7Bnt0oaHObCRAYHP9jDNv4qbPY14ASkahF3dtA4y2s=;
-	b=n/DgqeFggfrWbIgIhiP2S41bBJYyM/3UwelqLCZpWYNywslePfbFjq2ya+/TMXElT7rmPm
-	NiIwF/lFDYZMDO9k+HD6IAm9pfK/eyj2NOqC/lnFGtBjbedl2yTM5aw9LpTITtE30gHV80
-	S84mnz71EsgJqZU74SMzL/IAlGDoO6U=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794189052;
-	b=jZgZnE6fWKY89/ybFT2fOr5Dk5FTUcLZwnxiNfSXggHmVhCJjw3m660dxOxDjLsvsh7pqQ
-	Xh4E6uI7vpPPS1+ftsWO3KCIqQ7r7vMfSA9zVhqaAOGAc22VbvMksZgCs3abIYcHiANuA9
-	9y6cMWZhHuP95QqVRA+weY8mfgw08sY=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=PFk7jMUM;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf19.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.247 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=V8t2DsGsOlEEZeIAghkdXZSawCAIBraQf2pr/ZV9ZYE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794189050; v=1; x=1794793850;
- b=PFk7jMUMChfz9psSEwtr0OYbxIi9BbBbddxigtvq7g7LihnCOYef+y/9EwqQoQz3EbSKH+QB
- hive4t5oKHrdSFuFeVI4elLql9AeINrfw/RYJd6sb8nad3FMw8Nh6pt6tEydxxQYma+r6z9b4cU
- 2Nj2WjvZcoOjMDREb8OmFKD0=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ab26c670e0a08f52;
-	Mon, 09 Nov 2026 01:50:49 +0000
-X-Mizu-Trace-ID: ab26c670e0a08f52
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <04d2e2ba-e6d3-486e-bf38-7d6b1902eeb1@linux.dev>
-Date: Mon, 9 Nov 2026 09:50:39 +0800
+	bh=2nc0cbykH2c/mCQYtXun5pdfE/aQLdbexLHm6tfOEQI=;
+	b=7v4xY7kUuOIXWKKmsgHlg5wOmm5qKTaRYl7fa9YbpBv5Ap62Gg5W2XHrg+NBPvrNTmeHoO
+	B+Vx1eMhAT4rcdCl/VBsKagvI4hcez8VFv7+ZMzeAfAi0nACXoMw2vmZtU/MpqpKPV/Ysh
+	oDzkXUqWWzj3bgx4EA9Lh+x+3eyqSnU=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=2nc0cbykH2c/mCQYtXun5pdfE/aQLdbexLHm6tfOEQI=;
+	b=6APbNeQF1wiZEbIjn+DlBpeuY47yu5Y/ioU7l0JYf3WVd6lWzNNb4H/uVq19lsQgabbWnnikY
+	kA/QdaAK3nbe33xvDaa20Td3ApEx+6FqBMOC2TLatVtIPGoGsWEXCKyvooEQrj5Ti1hBzd0uF6+
+	SNsCdHDPjs0H3eMTT8L1kzM=
+Received: from mail.maildlp.com (unknown [172.19.163.104])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4jNCTn3h2yzcbP6;
+	Mon,  9 Nov 2026 09:52:45 +0800 (CST)
+Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
+	by mail.maildlp.com (Postfix) with ESMTPS id DD6674056E;
+	Mon,  9 Nov 2026 09:53:20 +0800 (CST)
+Received: from [10.174.178.56] (10.174.178.56) by
+ kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.45; Mon, 9 Nov 2026 09:53:19 +0800
+Message-ID: <3f2cefd5-837c-4d80-bd80-4590f1684383@huawei.com>
+Date: Mon, 9 Nov 2026 09:53:18 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftests/mm: pkeys: wait for the child in become_child()
-To: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>,
- akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Cc: dave.hansen@linux.intel.com, David Hildenbrand <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- hongfu.li@linux.dev
-References: <20261106164639.2959195-1-clopez@suse.de>
-From: Hongfu Li <hongfu.li@linux.dev>
-In-Reply-To: <20261106164639.2959195-1-clopez@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] mm/ksm: fix ksm_exit() deadlock on exec error path
+To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
+	<xu.xin@linux.dev>, <chengming.zhou@linux.dev>, <liam@infradead.org>,
+	<ljs@kernel.org>, <vbabka@kernel.org>, <jannh@google.com>,
+	<pfalcato@suse.de>, <kees@kernel.org>, <ziy@nvidia.com>, <gourry@gourry.net>,
+	<anthony.yznaga@oracle.com>, <linux-mm@kvack.org>
+CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
+References: <20261106013906.2229780-1-tujinjiang@huawei.com>
+ <a712518e-e094-474a-b7c3-bb9723917960@kernel.org>
+From: Jinjiang Tu <tujinjiang@huawei.com>
+In-Reply-To: <a712518e-e094-474a-b7c3-bb9723917960@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 81iobhdxzx174bjtw5dr5mbpbmemujeb
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemr500001.china.huawei.com (7.202.194.229)
+X-Stat-Signature: a4ip8yb9k6djomg4ct7iko3tc5s1garq
+X-Rspamd-Queue-Id: 2AE4420005
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 8AA311A0002
-X-HE-Tag: 1794189051-847312
-X-HE-Meta: U2FsdGVkX18ddCUCkxpXRH/YicdMbl0GvMGw9xdElOH56GYiBI6Lhuhpr12DjqOXp7bj0jtuBou5iYXYu7rKos/Q2qfT3xCLRgnF3WrQBIFXVXEcKNxfB3vm9a+L6esKkYSiB7jvSrVmVKch7qCWHRRvu3w1Picyvo1iBFglVhSuP+UeWxWF4VG4qFx/4g58Bq/NFIWEQl6Tz8W04dGQoQE9kNuMVuyYQIqw0HnECYaZfowjTi2EDdWHPklSMmU8xCZK7Tn+bd+BumBaPI6+jnnn+DHUq8i/1nNN90IKpUNKm/cUquLmX7yeD0X3SqJf2qfAdjh3vvdbZDUYeW8ZftLrpyfq2aG0J7bl1MyKdH7QAxaU8rtmmSDivCHeanQwFIsLojwlIyq5bXGicPRtVNjffxgFrWFJFYQ4b6ne4B/LGsl2iLwUZDb1JPfaLpNz9L7BMMtXLtlNJZ9+jGD9Xh5FX48IGH1DwUMyPuMRHQTJpBi4RuoGS9fHeHHUnTDGMTkZb1ngS7HNF4mI2x2Ds3vaRBzJNRisuPTq7cnVjBCXLDhbIZNSTaye7QjyA8Ac5f4eUIijc7VaVmw2fIjmhqaC5O7Lf73w/e1MzxyBwsW+axffkswtPOSWZ9T6zvH5W6aiUsaboSXBs8RN9THMvLppFoeNITP4N21sNv8XdCf0otBPYNYSP5uaZl8uGjjDmVt33ay0b2XzFayEY0EobZPHZLU4tc6M3LbGdKBO4XygY4GMpKJQxbFieXj6GAUteiNIn7fmNzfIAqh22aXz2cqjnd9uKnT4zmTgVR0u74PLTV4K/+NX0VXlWKVXCG5tMWCB2trV4g8x2dYzWtwoWQXPzPjSizL6P/ujx7WSRC245/RtMyn9TcvgXx7l6VeEUOFH2w5A/3SU7hS0EGt0c4zAZJNpsCghJQtrhOCx7C9/xwhZwE19GQyqKgdArKZll9RuKzlAzpt94iYb+SK
- IH3ujkon
- dgdmUGsBznaZFDUq1/500L7BNU/DxdqJt/alupQanN5F8ui0N4XAX4y81M1pd+oyqoBQof5ArxaUpX0aQKgtaASlQ7me3Lm3M/jXX0n89yUpez++rt1r1XcOIAmGMcXf2d0ghYd70yTfJCFaeJCpY2o0ksG9X5nPHvhfmYq+JRX22YTmwIwb+lHY6ATjyFICqWtdXHu6PDeD78lBTeNm+Dq10lbbC13oInC27TuwLeVKgTmzTPHwtOV+HvHK6qiSfR2pdkhP80dAaXz/xyGSkyQxrBXy6XYCAJz+LuaQXEPkS+3yHshvc5rYl10mzA0TH+M9srVoYCWzyupn5iHnhIxTYbTLtw4Z+3VxYb9qp/wN/Hm+ziJgzU5TRNrBr2mJ+B87lNoyf1psGyNK/9Uwoe+Y7zatpVaaBg/fa6e08PWd5r5AyTF08onfbkw==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794189209-70263
+X-HE-Meta: U2FsdGVkX1++KdAoE0amFOnvmltleMGJgmiWSdZwpJ7a/TGfMPtGZ4wXGOeOdGtmqsRWjIyTi6SZSjvRXkB9G3Ng6CYvMWfbb5fEvpQbxiiS7JhEaLPFvq5GJUkd4ECOST4mSEKEhJe1k/ILwddfc5Ph7AuY7Jnf1B2KCnzIZyw81Iki+pcYOQVIwXLsst1uEEaEBdPYCVXzRRDRAymb9OoUyTWRyCGfOGDc771BNE00o1OqGRzZM60J6D5ubmufej6Cslsp2b9TUsxijfzFnmJUOLzU0NM04F0ip70cNut6lNZPYkdOmysOQj4yWMHC2Kwmdkdy4TOz/vm3JM1RVrWoYMvMXonTEL678MgNVfKYbzG8U22bQ0M6NiRksvZBOyLvcPHeTyHyQsyh0UC89K82qGQE0RiAhQBLWJd9WqD37iywLFY4FKRUdNdmQ9ufZ04Jnp2FKi6d6es237Po9jNFH+5KOvf8F4Qfdd3DtIkpgQdihQP61CTrMNVFeRMGIrpTRHcojiukZO4lWAXjmHulMdsAXP/31g2oB53lQfhQ9uzDJw2fpQ7zEBrSk7icMU8pURT1QyP5M7haPDk4xsbNtkaI4xUkQjykRWJKlBs4SAIA+1XVITj2R40wJ/5aBmxaUmW3OgOOX02C+iwSorD5IeCz30hopB4UrjPAkOQWTnPXNNSTsb3vzQXOD3FQkMmZPIgXFHjuZeXaLue1wcu+tFvoUDnEx1K17oAcKgacV43qOQmkc8IgSSzvToK/WbdGQPu/vDGGLcorXFl5baPXz/FtQ5RsHVAz4ot1mD6rfSNkMdbu/BoEcJq3ewZlgnoQ6m1WseC1iceZqs+TwlOCcLlA00jEw83kt5uVmzX+/1F/QwUMX6aEs9nG/1n/slgbI0bhEeIAn6AfM02V3ZzMbBqX3AhTslrBMJGDrHMeUkDCPbr5uTANBxBEU0MtoVn5Y9DEEWhIzjQpxwi
+ 3reeFjIz
+ xYDzh43d+ubLKBo77qqt0r2uxl2Ws6Rf7RGmmaup8s5o2+jMf5tcDvIfwfMLgAOW8cMVboThVg414v74txuqq7iVjY9gdNb0sOz9kNUyAzS6+UlmlBZY8a4T/Wf3at2qe++Pbp6FY3spnFl+xXBg3JkbmJCwZieRBIxi5kfnChTm/NmzcbvKrP/9OwkATH/7yICGScAsq+QxHbHW4WaefH09FE7/tyi8AozJJIGq6LJY59m8DPTY8nDi35WXlNnvnhWCG+RYSU91dRgXSgB/+Dgo1aCwB12XrjGlMWZVEuoc/udVHkwmX3Jkjn61N7Wgxu+VZ9xHHsLA3AlZ34ke9EZYpzXOHeNHK9skdd4pwVUTU47c8eUbbTbamN6HEMv/ZVoqBHpCT/v5CQXc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,89 +104,51 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 
-在 11/7/26 00:46, Carlos López 写道:
-> become_child() forks during test_pkey_alloc_exhaust() and has the parent
-> exit, so that the remaining tests run in the child. However, the test
-> runner only waits for the original process, so it sees the test finish
-> early with a success status while the remaining tests keep running in
-> the background. Failures after the first fork are thus not reported in
-> the exit status, and the remaining tests overlap with the next selftest.
+在 2026/11/8 3:06, David Hildenbrand (Arm) 写道:
+> On 11/6/26 02:39, Jinjiang Tu wrote:
+>> create_init_stack_vma() registers the new mm with ksmd via ksm_execve()
+>> while holding mmap_write_lock(), and calls ksm_exit() before dropping the
+>> lock. When insert_vm_struct() fails, __ksm_exit() takes mmap_write_lock()
+>> again when the mm is ksmd's current scan cursor, leading to deadlock.
+>>
+>> The early registration is no longer needed after commit 590c03ca6a3f
+>> ("mm/ksm: fix exec/fork inheritance support for prctl"). ksm_vma_flags()
+>> calls __ksm_enter() when the first mergeable VMA is created. Remove
+>> ksm_execve() and its stubs.
+> I assume you mean the
 >
-> Fix this by waiting for the child in the parent and exiting with its
-> status. A previous fix avoided waiting, arguing that the parents would
-> keep holding their resources [1]. Particularly, the parent keeps the
-> hugetlb reservation of its test memory, so the child runs out of hugetlb
-> pages after a few iterations. Avoid this by freeing the test memory
-> before waiting.
+> } else if (mm_slot) {
+> 	mmap_write_lock(mm);
+> 	mmap_write_unlock(mm);
+> }
 >
-> Link: https://lore.kernel.org/all/20240419115027.3848958-1-usama.anjum@collabora.com [1]
-> Fixes: e1812933b17b ("x86/selftests/pkeys: Fork() to check for state being preserved")
-> Signed-off-by: Carlos López <clopez@suse.de>
-
-Hi Carlos,
-
-This is a great catch, thank you for working on the fix.
-
-I reproduced it locally: without the patch, a failure after become_child()
-is not reflected in the result and the runner still prints
-"ok 1 protection_keys_64"; with your patch the same failure is reported as
-"not ok 1 protection_keys_64 # exit=1". So the fix works as described.
-
-Tested-by: Hongfu Li <lihongfu@kylinos.cn>
-Reviewed-by: Hongfu Li <lihongfu@kylinos.cn>
-
-> ---
->   tools/testing/selftests/mm/protection_keys.c | 16 +++++++++++++---
->   1 file changed, 13 insertions(+), 3 deletions(-)
+> Can that actually trigger?
 >
-> diff --git a/tools/testing/selftests/mm/protection_keys.c b/tools/testing/selftests/mm/protection_keys.c
-> index b7882ab97683..5dece144ab95 100644
-> --- a/tools/testing/selftests/mm/protection_keys.c
-> +++ b/tools/testing/selftests/mm/protection_keys.c
-> @@ -1009,9 +1009,10 @@ static void test_pkey_syscalls_bad_args(int *ptr, u16 pkey)
->   	pkey_assert(err);
->   }
->   
-> -static void become_child(void)
-> +static void become_child(int *ptr)
->   {
->   	pid_t forkret;
-> +	int status;
->   
->   	forkret = fork();
->   	pkey_assert(forkret >= 0);
-> @@ -1021,7 +1022,16 @@ static void become_child(void)
->   		/* in the child */
->   		return;
->   	}
-> -	_exit(0);
-> +
-> +	/*
-> +	 * Wait for the child to finish the tests and pass on its result.
-> +	 * Free the test memory first, as it may reserve pages from the
-> +	 * small hugetlb pool that the child needs.
-> +	 */
-> +	free_pkey_malloc(ptr);
-> +	if (waitpid(forkret, &status, 0) != forkret || !WIFEXITED(status))
-> +		_exit(KSFT_FAIL);
-> +	_exit(WEXITSTATUS(status));
->   }
->   
->   /* Assumes that all pkeys other than 'pkey' are unallocated */
-> @@ -1060,7 +1070,7 @@ static void test_pkey_alloc_exhaust(int *ptr, u16 pkey)
->   		 * preserved across fork().
->   		 */
->   		if (i == NR_PKEYS*2)
-> -			become_child();
-> +			become_child(ptr);
->   	}
->   
->   	dprintf3("%s()::%d\n", __func__, __LINE__);
+> IOW, can we have an slot, and the slot can already have a mm_slot->rmap_list?
+
+This doesn't need mm_slot->rmap_list != NULL.
+
+In __ksm_exit(), if ksm_scan.mm_slot == mm_slot, will lock and unlock mmap rwsem.
+
+
+  mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
+  if (ksm_scan.mm_slot == mm_slot)
+  	goto unlock;
+
+  ...
+
+unlock:
+  ...
+
+  } else if (mm_slot) {
+	mmap_write_lock(mm);
+	mmap_write_unlock(mm);
+  }
+
+
+`ksm_scan.mm_slot == mm_slot` means ksmd is currently scanning current's mm_slot.
+After ksm_execve(), current's mm_slot has been added to ksm_mm_head list, and
+ksmd could find the mm_slot in scan_get_next_rmap_item().
+
 >
-> base-commit: 843c58022865a7b0f9743416c2b48bc2632da23c
-
--- 
-Best regards,
-Hongfu
-
 
