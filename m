@@ -1,132 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8EC606A333
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 22:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEBB2606A32A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 22:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=o2tEyI1X
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iOW+0cZp
 Received: by kanga.kvack.org (Postfix)
-	id 63A1A6B00EF; Mon,  9 Nov 2026 17:13:48 -0500 (EST)
+	id BD4D96B00EF; Mon,  9 Nov 2026 17:28:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5EAC46B05B0; Mon,  9 Nov 2026 17:13:48 -0500 (EST)
+	id B84D46B05B0; Mon,  9 Nov 2026 17:28:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 500B86B05B1; Mon,  9 Nov 2026 17:13:48 -0500 (EST)
+	id A762C6B05B1; Mon,  9 Nov 2026 17:28:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2C01C6B00EF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:13:48 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F1B11C40C1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:13:46 +0000 (UTC)
-X-FDA: 85416983652.15.D59FDAE
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7EB5EC0005
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:13:44 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BDCB6B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:28:08 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 065968080B
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:28:08 +0000 (UTC)
+X-FDA: 85417019856.05.E0C021F
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 54391C0006
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:28:06 +0000 (UTC)
 Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=o2tEyI1X;
-	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794262424;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=e9/dY28AbnB9XPn1NP4bpPoQIANiGH4RxOhNWOkNHmo=;
-	b=3NDb97k6NHdGNo+3nsHmrHJDQYmkMaPG0feJwAJtVw1EsqjNkfxUc4d4RFkcKjmkn92UAe
-	gVQ5FSxQOduK3rjGOeClkadKZ6ugrzHNnmh/cQMxNLrDuPx9+woNIxHZIZcmTWP7jjjpoC
-	hRHYTWVqVGRmhdqS7+AXkE7ugbrsHr0=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iOW+0cZp;
+	spf=pass (imf10.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794263286;
+	b=WXzZ+rQWxGU79ai12vC/ggUpGz5y8BeHp671QTF8VogS33bvlNjpLVelSzZcCyhl8MX6GI
+	dn7hPau4U2xlzwg0ukQfdC1RfE0qNYFhPxK01XNcVed7QpDX41uZGTu8ryP+TPnlSE7iZa
+	zOfGTRnKxpW2u9q4J6C+gOhoW8YFoGo=
 ARC-Authentication-Results: i=1;
 	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=o2tEyI1X;
-	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794262424;
-	b=dJzmg1DN35OvOeJdH58RuyvifBIT9glVr8iFzAn0ZOYT6wf5Vs9TqTE6vuxuDw60WhJIgr
-	rU1uTSDlvG6ZX2uWklKhHXdC91Wgwyix3NGaUoY0B1tmPLTzQMIGhlrRkLzQQ4OHYhuK3v
-	SVeepYs3/U8s/hqzh8iVcifGaF7JiqY=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8b66d1a08ccso1300165b3a.1
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 14:13:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794262423; x=1794867223; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=e9/dY28AbnB9XPn1NP4bpPoQIANiGH4RxOhNWOkNHmo=;
-        b=o2tEyI1XlXGseGQXg54QXdhGYSnuxY+7mAR0uJ62q9SVm83G3A4SXtm0bAyR5h+7ZX
-         TpxLWAOGp65sKwwkK3iv7fBrkQ7fNSVY3Jq26q4y3Pqqo41w4DWgygbClfVnCRoGuN9G
-         g5c3DTr9FlfF2x7iky7l2qlK4OTzpbdtJRexkDpzmRMe06+GtPCM7BvbSwTr+PM8TmTm
-         9VMT6/FDNTDZ3d7+RkcbfsIznELuAz62UHcq2Tbvul5ES6nLitHsBSNVmFi+RCKeL4Fr
-         4LdGARmf0Yq+uuIB+JBqs1kovcskJYmwrYOHBzRL0TDlCvSzpL3OvjGm024oE3LVfJFu
-         9xNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794262423; x=1794867223;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=e9/dY28AbnB9XPn1NP4bpPoQIANiGH4RxOhNWOkNHmo=;
-        b=UP2+OBnibO1R+eEBhc7ed97c3aYQd5V72uukqog+x8kzzkmTPge2m68R/BAUtGq02u
-         qLHJ+rz9XIxpMRbw8qkJ2LZGVEOnEdR8NctlPzSxCGDJPrST6Xu+9XR4QtRFp74m4D9U
-         uF3p15Z6Bg4peWLviXa4j9t96mCbGIsEJ06vRK7Zb/I6rTcXCHHeGtDWR9qq6ZT4dWtc
-         FZaZejSUbrYTDpSz/lEYDYttj3gR64UvrQTy7m0iP384WstCAfCwqWNcDcbp5f10aXLg
-         YB92jnwSJiq2PmeY7xEmOq56gr6S5ukWcrBHYqxlk+emIjYWrwZ8RTLMh9T4ZL/3ZZYR
-         bcww==
-X-Forwarded-Encrypted: i=1; AL+hErHYeKFP0v7kjDqYfjb+khnLIL0kQRl1wMiYFb2ui0FE2UbFejgQEj8ykKjikYqSpowJJjzIohqe8A==@kvack.org
-X-Gm-Message-State: APuU4Z9lwsaO3Zaxj4w4XnWqXe3W4iMLwHcbpiLl5fYBkl4/KatJT2Iw
-	J8Ni237BhiBHipxGi8/lgYXrpcSNH0C4TOG/VML7GM3WAhfeBtZBlmOj
-X-Gm-Gg: AYBFou3sdx6Ojx5W4yjjv/+KrhkFSjy9nrRD3+Yb/7MIVEpAU1MmFWN9beFAeRFwrg0
-	ufatiHNnnOTpXWZidO4syL2ycR/79SUBaCAfdPoNwKWLLLEg8kW8d8C34IKp8d+KOxa+Ca1wFIw
-	9G0jTfGf3t3731UMWEst2iPp0vrA4WuKJrmuuO17qhv3gf3vmcaaDjgRuzDY/t4zgjmavq83MnM
-	0tXSfaNWb8mZtYaYAdQ0I8d84Y3sjE0qQJM4qXQCU8wh4hPCy5krNQu68MQN3BR7as3Nehq9W9W
-	JL6qslsJKsSKc7NuVg1Z/dbXTZ4MPcV8ENbhsYzWtwTigtgBiGb5ncnpGxQKvuFogBVspY9vQ4w
-	n8sw0UdHnsoHrCwpTnCmnMF1Fa/1KZdfRNe+8/Q1TeTY8S0urGGdP2zla0ZaiHqyKMqdbR6fF9W
-	W+5gbRWMj8Hk9L+TDB96fAfXtrIra8NKOdOPns5QwvY+KDUje35wc2bf91oVK1lQK9n+zVfLsml
-	dof/ftcnjb/SazREfuT0lhMcFV8wUZIH+qxiVhC4NqSS+P9Y5BLQGd5+zlcHFQcV3WPaq/jh5TY
-	L7UG+nw06wsDacrYJo067mJL448sMC4Gq3YIgZgfjuCKCjhEcVUYlYfBrFFoNOrZPZ0DCYMsVIo
-	wAD92FA==
-X-Received: by 2002:a05:6a00:3c86:b0:893:8a6:3801 with SMTP id d2e1a72fcca58-8ba867aaca6mr859654b3a.24.1794262422762;
-        Mon, 09 Nov 2026 14:13:42 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:4a::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baab8dffb5sm132255b3a.55.2026.11.09.14.13.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 14:13:42 -0800 (PST)
-From: Joanne Koong <joannelkoong@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>,
-	Usama Arif <usama.arif@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Lorenzo Stoakes <ljs@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Harry Yoo <harry@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	SJ Park <sj@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	linux-mm@kvack.org,
-	Sashiko <sashiko-bot@kernel.org>
-Subject: [PATCH v1] mm/rmap: fix migration entries being treated as partial unmaps
-Date: Mon,  9 Nov 2026 14:09:58 -0800
-Message-ID: <20261109220958.2071687-1-joannelkoong@gmail.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iOW+0cZp;
+	spf=pass (imf10.hostedemail.com: domain of tglx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tglx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794263286;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=wc4/ml/eH1O4k3Y1BTYhWYiLh1fjGgzYV80i4p3jK2o=;
+	b=1dP8Xoo3qdD/wMkagU4hiCS2zN3UgbQ4RIAmHMe9iqygJtLx/dIri9qQnq1kD/K+HU3SYn
+	RWPP2jY3zO4HmiHFu4egWLEcemXeRvh6HIPPe2/7fbraLQTIYKG864qQQbOiQJQcIRl0qn
+	+qRcbZ9/Lu4WAll5EssXb3/w5193bIE=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 83CF3611FB;
+	Mon,  9 Nov 2026 22:28:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A821F0089F;
+	Mon,  9 Nov 2026 22:28:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794263285;
+	bh=wc4/ml/eH1O4k3Y1BTYhWYiLh1fjGgzYV80i4p3jK2o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=iOW+0cZp8ZdjOcgvFLbFD+uA/y2u0ZimDukX5XfB+ExEssnw8F1bq1kKoI/2ZVJpY
+	 rbMTfE8olAdPf/hq54a+GiYhF7qaSsw3xa+8SNgZmpY17+Q1mnxXKsLUWJQaEbP9zs
+	 0dzJ7ubdV4evJffpMob/nnc3cboCInYpRD1J/5uTE1+LiUmyKSRFLci9D+HKq/JJEu
+	 5wm9OuTG8htEB7WROWFNmXrXxuXlbIKT4u5t8gH9S0kh6t8x7jcedJ1JUlF/8JdNZb
+	 bpU6EVSOVm2hYAmPTiq5ue2/UrtMqKRZrNNkYnsXHFmeUdHRJ5iF2Vzm1Dxb8bPj22
+	 wxWFi6w7Rgl1g==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Aaron Tomlin <atomlin@atomlin.com>, pmladek@suse.com,
+ john.ogness@linutronix.de, rostedt@goodmis.org, senozhatsky@chromium.org,
+ mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
+ vincent.guittot@linaro.org, dietmar.eggemann@arm.com, bsegall@google.com,
+ mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+ akpm@linux-foundation.org, baoquan.he@linux.dev, rppt@kernel.org,
+ pasha.tatashin@soleen.com, pratyush@kernel.org, ruirui.yang@linux.dev,
+ david@kernel.org, ljs@kernel.org, liam@infradead.org, vbabka@kernel.org,
+ surenb@google.com, mhocko@suse.com, kees@kernel.org,
+ anna-maria@linutronix.de, frederic@kernel.org, mhiramat@kernel.org,
+ mathieu.desnoyers@efficios.com, brendan.jackman@linux.dev,
+ hannes@cmpxchg.org, ziy@nvidia.com, bigeasy@linutronix.de,
+ clrkwllms@kernel.org
+Cc: linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Subject: Re: [RFC PATCH v2 3/5] timers: Avoid blocking on hrtimer_cpu_base
+ lock during Oops or panic
+In-Reply-To: <20261103024453.922373-4-atomlin@atomlin.com>
+References: <20261103024453.922373-1-atomlin@atomlin.com>
+ <20261103024453.922373-4-atomlin@atomlin.com>
+Date: Mon, 09 Nov 2026 23:28:01 +0100
+Message-ID: <87y0b1tzbi.ffs@fw13>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: trib5qgwiw6d1xiasrouzijwt6wtskqx
-X-Rspamd-Server: rspam01
+Content-Type: text/plain
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 54391C0006
+X-Stat-Signature: czmj676fatptz5tszj8rzxpidbe6k37t
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 7EB5EC0005
-X-HE-Tag: 1794262424-813083
-X-HE-Meta: U2FsdGVkX1+9h4fLsCPnCg0VoYUFHrZcK6nLZW0vYVrEvnR/WhsS4kuIfFFgKEIePZOoYY8gpxkbLGwAVTkcy75PVFKV4kI9xA6PjxKXZVZsNjnL7ZxigD9CqYMHyAPNTZpo1CJFY8PtYhfJiA7mmcVoEufO6GXxJ9zDh74IcYrhBVAsP+dqLvGnftGV+ChBvHBqVFt4TyhiBOfb0xWAQGLnjab0Gop5fHYALg7Zqlr6Z8Pb+eqc30giKiDZizIy9hNqFEt46x4akhMOWhCKiYgKm29LqX9madW6YFYPgLM5/hr1m5uTHXUXu/O9BhbCs77Pttj/hT92cloNehvKRClEkAuxJT/Hsdsi/+wL0ydOXdDTb+3HKeTgV466Gmbs7yaMN75SGB2XAdBT2l+FpGljRJBS41ldHvLlMx0bChK7U7DXdyvXbbW025/p7ax5DXDwZkRrU+pdolr5BkRp1ksipJ+oOtTQc3Dct7UAXwwHo19uBV6usKk8xUOJOzusKSaXKWe/4wpLdfMoEDexqXlFqwIvrrxBjHWocQr+aKFa0dE4t9pq8DPE/4TzHKJXdS32zIbSJ/q2pDBkE550OQhAmTxRbOziEzyeha9Ao3S+urFUMndX0Sg2UfLcN5mq/agV+/b2qkXNiK/zIRGYYM35v3ko8B0zjBbXgpYPMDfMoqNBwFdslnU9mdqRdNYD99ZXiHvIn3LHRUOqs0Vu65AS1fbzzG7udA1SQjtGx1AQJ+m8EUqPVHmqk2XclJTVzavN58OIDEJNusUqRFkLFpLynfn+JO9plXDANrj3mKyM8Gu/GA8B0T+io51+nSunw6hUyyDYBGlGmF8Cx4wmp+wXev00vXWNKGfCDPArXRT/9ElXCRAKEVM3huQRIQOTyvXjpYhdy/2MGxyRYQkQX8SEGieFfMXi3v26rn2ZU1rmIOYNH2wi1crNSmR85tU+uENgEX8u9yb6hAkJN5B
- Ema4n+Ti
- Q/HJ7fueHRz5CNq9tA3LekdVGeY96mxCMWLXFLwBTJZB1T/nihrAdDc52r/53DR8tS7SRbwlmq5HyqqPYB0Eqp2eSsMHXpVq5Qg75+6xFIRi6dV1IAaxavVpPY8a1Kd1KDzNRZF4y3xqFIHpgGxtOpYeJvnPI0wxC0kXvF1O6P1exszCLQKlVXRsxUCFqTdBzSI2yiTbJmaAXMJOBJZD2y3akrM21Xo+Ih36MLlT7hkVCUrqwU06dwv3xIJ+8Pi3xso571VWMJlVPQ80DXbYpYb6QQLazgvQx3Ds7kWn196dpU1gAEfq4g0Pb8lKDAlM2b95mszfbTpKPPRqV8TnswvB4JLbxXsDUR9iVvf6rhJ5z7PkyV5NPYY/8OcQzWsqA9m+sVmjJtH1WuJXgcGEs6blvoI5vrx2zVm/fFUVdzy/4neV/9TSh4X5cXPiSdd6yLK+0ecIx3TRVuN8=
+X-HE-Tag: 1794263286-100536
+X-HE-Meta: U2FsdGVkX1+/oH7VR3P8K4y/Q+ms/eJI+FVGjRHvjTBARUU2kbMyrkb8B/eshWNT+LlGl1RZPds7BcYb/iBpiGpy0ubQvFfpohFLtS7f0WCGDVKHG24vqsh/GOj4JBw5lehwe4Q/vHOStPpf/RWexNXke+Jo31zm3hCNgS1+J1UVwphOTNLV7QwbxAs6ruABkraAs6GZNQjvCOlGoo5SIusGKcMpsA/9+qFje3t2OT1Lro/xqohc9VKjQoWL9oEZcR07inKfmSkrBUSFccTyiX7vkNRxwn4NdYg/bRKdU5t6DUY1QruuL9EypfSe4HKjh/7v1fLCKk4B/q49NLkE611+MomL/24iLG+m8FhFXIRybRNUcbYv9f6kO8luqKswV872NEcpcc3rYPqK1uDg3S8Un8ndrcjzyO8c/b7Mkg+egMBB83wVdNjCJGjwOkcf75WCr5PKsBqDPZcWwfjcGmZlc0wjvjs1pGJCMVoPGIY31s66+xPRbRfteVjgUYWFVLnbMz3TlDMLFFL05rgbA3dmaJWEJ+ZpRql+piKbpsaARbxwMu26HqYhKZSMNwPh1AI+RQha7p/SjHqZUjDb17HIP4Y1rdq9XOkpe9iFS6Cciswp8Bg9yt8Dbv0oeepFb1WOwsV4xJ4eDsd7DUAprLqLLzZcWYUNuYJ7C6xuj+6J9nwJiGm5Wqt62K13qu9LFLAOP+e5EfXcP/Rg05vwGm3QnLSSyzNkDavk1Fo76MRI1fJWyk1bCk6cq02NspOQOpOWNJhvIVCM2rCwxZxI4019FS8Z8NuuabQOP85WZgzXxruebpCi2RB0uhIiGKCJ42LC9G4/J7JRiG9cI+0VkJbEf4RVoaN+KoZpepYP2PWvt7w6M8EwpyWPR52Nsg50YQmfL5GXVj4LLVCMYejq6Mi7RAX0oT5hQYOSDTpmA2eNyUIpHwzLjk2GqHwjt+Jmqzr+2y5YWdbagwzLtys
+ J6ecgBQe
+ KcfsLR1VO/xaaDsc5A65U3QUaFIrToUZ41DkUsSQHOoC/CqOpH7iC7Zff3R65hOmoDrk11/jkX4b/rD2udzmKpqWUh8G7qf+7LaeRhDJIzgqncOwaqU897oznCYaltIcmVeGt7aT8Kve5vIMnGs48jZRD7XuD1/W94d+HB3JfSxHBKWvDIZZTpba/xeyfICi2+5CyvTp9wSn9fJA+3lAw4mM+/aeDfjhbRNV+Nv4yYp9ieI2UdbVkq4vIT85o4LGPbg0IWRr/+MGMyiD8hm9ch/0eH++gX77PLyUZj2TVkbyT/h0kePix6dEyoqpJQF0qo6o2Uo3igPg0acCm4tw71xYZ9zTErnf6BYcS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,161 +107,483 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When try_to_migrate_one() unmaps a large anonymous folio that is mapped by
-PTEs, it replaces the PTEs with migration entries one at a time and drops
-the rmap for each page with folio_remove_rmap_pte(). After the first PTE
-is replaced, __folio_remove_rmap() sees a folio that is no longer fully
-mapped but still has pages mapped, and calls
-deferred_split_folio(folio, true). That marks the folio
-PG_partially_mapped, bumps split_deferred and nr_anon_partially_mapped,
-and puts it on the deferred split queue, even though nothing was actually
-unmapped. The migration entries are turned back into mappings once the
-split or migration is done.
+On Mon, Nov 02 2026 at 21:44, Aaron Tomlin wrote:
 
-This happens whenever a fully mapped, PTE-mapped anon large folio is
-migrated or split. Its effects:
+> When sysrq_timer_list_show() dumps active high-resolution timers across
+> all online CPUs, it calls ktime_get() (which spins on tk_core.seq) and
+> print_active_timers() unconditionally acquires each CPU's
+> base->cpu_base->lock via raw_spin_lock_irqsave(). If invoked from an
+> Oops, NMI, or panic context while the crashing CPU or a wedged remote
+> CPU is inside a timekeeping write section or already holds
+> base->cpu_base->lock, sysrq_timer_list_show() will spin indefinitely
+> and prevent panic recovery or kexec from completing.
+>
+> Use the NMI-safe ktime_get_mono_fast_ns() helper in
+> sysrq_timer_list_show() and raw_spin_trylock_irqsave() in
+> print_active_timers() when in_nmi(), oops_in_progress, or
+> panic_in_progress() is active, noting any contended lock and returning cleanly instead of
+> deadlocking.
+>
+> Fixes: d999bd9392de ("panic: add options to print system info when panic happens")
+> Signed-off-by: Aaron Tomlin <atomlin@atomlin.com>
+> ---
+>  kernel/time/timer_list.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+>
+> diff --git a/kernel/time/timer_list.c b/kernel/time/timer_list.c
+> index 0406bf4488e9..4973650c4ae5 100644
+> --- a/kernel/time/timer_list.c
+> +++ b/kernel/time/timer_list.c
+> @@ -68,7 +68,15 @@ static void print_active_timers(struct seq_file *m, struct hrtimer_clock_base *b
+>  
+>  	touch_nmi_watchdog();
+>  
+> -	raw_spin_lock_irqsave(&base->cpu_base->lock, flags);
+> +	if (in_nmi() || oops_in_progress || panic_in_progress()) {
+> +		if ((!IS_ENABLED(CONFIG_SMP) && in_nmi()) ||
+> +		    !raw_spin_trylock_irqsave(&base->cpu_base->lock, flags)) {
+> +			SEQ_printf(m, "  [cpu_base lock contended]\n");
+> +			return;
+> +		}
+> +	} else {
+> +		raw_spin_lock_irqsave(&base->cpu_base->lock, flags);
+> +	}
 
- - Migrated folios can later be split for no reason. migrate_folio_move()
-   copies the source folio's deferred split state to the destination, but
-   reads it after the unmap, when PG_partially_mapped has already been
-   wrongly set. So a fully mapped mTHP ends up queued as partially mapped
-   after migration, and the shrinker can later split it without checking
-   whether it is underused.
+TBH, that's horrible and unreadable gunk.
 
- - split_deferred is overcounted. Every such split increments it, so the
-   stat counts folios that were never partially mapped.
+Clearly the approach of all of this is:
 
- - A folio whose split fails can later be split for no reason. If the
-   split fails at folio_ref_freeze(), the folio is remapped but stays on
-   the deferred split queue marked partially mapped. The deferred split
-   shrinker then splits it without checking whether it is underused,
-   breaking up a folio that is fully mapped and possibly fully in use.
+   1) Pick some existing code
+   2) Invoke it
+   3) Hope that it works
+   4) If not add bandaids to make it "work"
 
-Mappings replaced by migration entries are not really unmapped, so don't
-queue the folio for deferred split when try_to_migrate_one() installs a
-migration entry. Pass a flag down to __folio_remove_rmap() and have
-try_to_migrate_one() clear it for those PTEs only. PTEs that it replaces
-with a hwpoison entry or discards because they are unused are really
-unmapped and keep the current behaviour, as do all other callers.
+Seriously?
 
-One consequence is that if part of the folio is really unmapped while the
-migration entries are in place, zapping the migration entries does not go
-through the rmap, so the folio is not marked partially mapped afterwards.
-For a split this does not matter, as the folio is split anyway. For a
-migrated folio it means the destination is not queued until a later unmap
-notices it, which seems preferable to queueing every migrated folio.
+Each of the callers of sys_info() knows the exact context in which it is
+invoked, right?
 
-Fixes: 8422acdc97ed ("mm: introduce a pageflag for partially mapped folios")
-Fixes: a2e0c0668a34 ("mm: migrate: requeue destination folio on deferred split queue")
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Closes: https://lore.kernel.org/all/sashiko-outbox-198104@kernel.org/
-Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+So the obvious and clean solution is to hand exactly that context
+information into sys_info() and further down into the invoked
+functions so they can make informed decisions and eventually omit
+pointless information which is otherwise emitted in proc/sysrq-t.
+
+Something like the uncompiled mockup below should give you an idea.
+
+>  	curr = timerqueue_linked_first(&base->active);
+>  	/*
+> @@ -262,7 +270,8 @@ static inline void timer_list_header(struct seq_file *m, ktime_t now)
+>  
+>  void sysrq_timer_list_show(void)
+>  {
+> -	ktime_t now = ktime_get();
+> +	ktime_t now = (in_nmi() || oops_in_progress || panic_in_progress()) ?
+> +		      ns_to_ktime(ktime_get_mono_fast_ns()) : ktime_get();
+
+That's a pointless exercise. Just use ktime_get_mono_fast_ns()
+unconditionally. It's perfectly fine for the purpose of this in all
+contexts.
+
+Thanks,
+
+        tglx
 ---
-This bug was found by Sashiko in its review of the mTHP shrinker series
-(https://lore.kernel.org/linux-mm/sashiko-outbox-198104@kernel.org/). The
-migration / rmap code is still new to me. This patch is a fix with the help of
-AI, so I'd appreciate a careful look from people who know this code better.
-
-This was tested in an x86 QEMU guest with 64K mTHP. Splitting 64 fully mapped
-folios through the split_huge_pages debugfs file no longer increases
-split_deferred (was +64), and migrating 64 to another node no longer leaves
-nr_anon_partially_mapped up (was +64). split_huge_page_test, migration, and
-khugepaged selftests pass.
-
- mm/rmap.c | 29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
-
-diff --git a/mm/rmap.c b/mm/rmap.c
-index fa34e1ccbd8f..e5d17481c0c0 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1799,7 +1799,7 @@ void folio_add_file_rmap_pud(struct folio *folio, struct page *page,
+--- a/kernel/time/timer_list.c
++++ b/kernel/time/timer_list.c
+@@ -17,10 +17,16 @@
  
- static __always_inline void __folio_remove_rmap(struct folio *folio,
- 		struct page *page, int nr_pages, struct vm_area_struct *vma,
--		enum pgtable_level level)
-+		enum pgtable_level level, bool may_defer_split)
+ #include "tick-internal.h"
+ 
++struct tlctx {
++	struct	seq_file	*seq_file;
++	ktime_t			ts_now;
++	enum sysinfo_context	si_ctx;
++};
++
+ struct timer_list_iter {
+-	int cpu;
+-	bool second_pass;
+-	ktime_t now;
++	int	cpu;
++	bool	second_pass;
++	ktime_t	now;
+ };
+ 
+ /*
+@@ -28,35 +34,51 @@ struct timer_list_iter {
+  * to the console (on SysRq-Q):
+  */
+ __printf(2, 3)
+-static void SEQ_printf(struct seq_file *m, const char *fmt, ...)
++static void SEQ_printf(struct tlctx *ctx, const char *fmt, ...)
  {
- 	atomic_t *mapped = &folio->_nr_pages_mapped;
- 	int last = 0, nr = 0, nr_pmdmapped = 0;
-@@ -1888,8 +1888,13 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- 	 *
- 	 * Device private folios do not support deferred splitting and
- 	 * shrinker based scanning of the folios to free.
-+	 *
-+	 * Skip this if the caller is only replacing the mappings with
-+	 * migration entries. The folio is not really becoming partially
-+	 * mapped. Once the split or migration finishes, every migration
-+	 * entry becomes a mapping again.
- 	 */
--	if (partially_mapped && folio_test_anon(folio) &&
-+	if (may_defer_split && partially_mapped && folio_test_anon(folio) &&
- 	    !folio_test_partially_mapped(folio) &&
- 	    !folio_is_device_private(folio))
- 		deferred_split_folio(folio, true);
-@@ -1921,7 +1926,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
- void folio_remove_rmap_ptes(struct folio *folio, struct page *page,
- 		int nr_pages, struct vm_area_struct *vma)
- {
--	__folio_remove_rmap(folio, page, nr_pages, vma, PGTABLE_LEVEL_PTE);
-+	__folio_remove_rmap(folio, page, nr_pages, vma, PGTABLE_LEVEL_PTE, true);
+ 	va_list args;
+ 
+ 	va_start(args, fmt);
+ 
+-	if (m)
+-		seq_vprintf(m, fmt, args);
++	if (ctx->seq_file)
++		seq_vprintf(ctx->seq_file, fmt, args);
+ 	else
+ 		vprintk(fmt, args);
+ 
+ 	va_end(args);
  }
  
- /**
-@@ -1938,7 +1943,8 @@ void folio_remove_rmap_pmd(struct folio *folio, struct page *page,
- 		struct vm_area_struct *vma)
- {
- #ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	__folio_remove_rmap(folio, page, HPAGE_PMD_NR, vma, PGTABLE_LEVEL_PMD);
-+	__folio_remove_rmap(folio, page, HPAGE_PMD_NR, vma, PGTABLE_LEVEL_PMD,
-+			    true);
- #else
- 	WARN_ON_ONCE(true);
- #endif
-@@ -1959,7 +1965,8 @@ void folio_remove_rmap_pud(struct folio *folio, struct page *page,
- {
- #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
- 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
--	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, PGTABLE_LEVEL_PUD);
-+	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, PGTABLE_LEVEL_PUD,
-+			    true);
- #else
- 	WARN_ON_ONCE(true);
- #endif
-@@ -2516,6 +2523,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 	mmu_notifier_invalidate_range_start(&range);
- 
- 	while (page_vma_mapped_walk(&pvmw)) {
-+		bool may_defer_split = true;
+-static void
+-print_timer(struct seq_file *m, struct hrtimer *taddr, struct hrtimer *timer,
+-	    int idx, ktime_t now)
+-{
+-	SEQ_printf(m, " #%d: <%p>, %ps", idx, taddr, ACCESS_PRIVATE(timer, function));
+-	SEQ_printf(m, ", S:%02x", timer->is_queued);
+-	SEQ_printf(m, "\n");
+-	SEQ_printf(m, " # expires at %lld-%lld nsecs [in %lld to %lld nsecs]\n",
+-		(long long)hrtimer_get_softexpires(timer),
+-		(long long)hrtimer_get_expires(timer),
+-		(long long)ktime_sub(hrtimer_get_softexpires(timer), now),
+-		(long long)ktime_sub(hrtimer_get_expires(timer), now));
++static void print_timer(struct tlctx *ctx, struct hrtimer *taddr, struct hrtimer *timer,
++			int idx, ktime_t now)
++{
++	SEQ_printf(ctx, " #%d: <%p>, %ps", idx, taddr, ACCESS_PRIVATE(timer, function));
++	SEQ_printf(ctx, ", S:%02x", timer->is_queued);
++	SEQ_printf(ctx, "\n");
++	SEQ_printf(ctx, " # expires at %lld-%lld nsecs [in %lld to %lld nsecs]\n",
++		   (long long)hrtimer_get_softexpires(timer),
++		   (long long)hrtimer_get_expires(timer),
++		   (long long)ktime_sub(hrtimer_get_softexpires(timer), now),
++		   (long long)ktime_sub(hrtimer_get_expires(timer), now));
++}
 +
- 		/* PMD-mapped THP migration entry */
- 		if (!pvmw.pte) {
- 			__maybe_unused unsigned long pfn;
-@@ -2772,12 +2781,20 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 			 * No need to invalidate here it will synchronize on
- 			 * against the special swap migration pte.
- 			 */
-+
-+			/*
-+			 * The folio only looks partially unmapped while this PTE
-+			 * holds a migration entry, which is later turned back
-+			 * into a mapping. Don't queue it for deferred split.
-+			 */
-+			may_defer_split = false;
- 		}
++static bool lock_hrtimer_base(struct tlctx *ctx, struct hrtimer_clock_base *base,
++			      unsigned long *flags)
++{
++	switch (ctx->si_ctx) {
++	case SYSINFO_CTX_LOCK_SAFE:
++		raw_spin_lock_irqsave(&base->cpu_base->lock, *flags);
++		return true;
++	case SYSINFO_CTX_TRYLOCK_SAFE:
++		if (raw_spin_trylock_irqsave(&base->cpu_base->lock, *flags))
++			return true;
++		fallthrough;
++	default:
++		SEQ_printf(ctx, "  Unsafe context: Skip timers.\n");
++		return false;
++	}
+ }
  
- 		if (unlikely(folio_test_hugetlb(folio)))
- 			hugetlb_remove_rmap(folio);
- 		else
--			folio_remove_rmap_pte(folio, subpage, vma);
-+			__folio_remove_rmap(folio, subpage, 1, vma,
-+					    PGTABLE_LEVEL_PTE, may_defer_split);
- 		if (vma_test_any_mask(vma, VMA_LOCKED_MASK))
- 			mlock_drain_local();
- 		folio_put(folio);
+-static void print_active_timers(struct seq_file *m, struct hrtimer_clock_base *base, ktime_t now)
++static void print_active_timers(struct tlctx *ctx, struct hrtimer_clock_base *base, ktime_t now)
+ {
+ 	struct timerqueue_linked_node *curr;
+ 	struct hrtimer *timer, tmp;
+@@ -64,13 +86,14 @@ static void print_active_timers(struct s
+ 	unsigned long flags;
+ 
+ next_one:
+-	if (m && seq_has_overflowed(m))
++	if (ctx->seq_file && seq_has_overflowed(ctx->seqfile))
+ 		return;
+ 	i = 0;
+ 
+ 	touch_nmi_watchdog();
+ 
+-	raw_spin_lock_irqsave(&base->cpu_base->lock, flags);
++	if (!lock_hrtimer_base(ctx, base, &flags))
++		return;
+ 
+ 	curr = timerqueue_linked_first(&base->active);
+ 	/*
+@@ -83,51 +106,48 @@ static void print_active_timers(struct s
+ 	}
+ 
+ 	if (curr) {
+-
+ 		timer = container_of(curr, struct hrtimer, node);
+ 		tmp = *timer;
+ 		raw_spin_unlock_irqrestore(&base->cpu_base->lock, flags);
+ 
+-		print_timer(m, timer, &tmp, i, now);
++		print_timer(ctx, timer, &tmp, i, now);
+ 		next++;
+ 		goto next_one;
+ 	}
+ 	raw_spin_unlock_irqrestore(&base->cpu_base->lock, flags);
+ }
+ 
+-static void
+-print_base(struct seq_file *m, struct hrtimer_clock_base *base, ktime_t now)
++static void print_base(struct tlctx *ctx, struct hrtimer_clock_base *base)
+ {
+-	SEQ_printf(m, "  .base:       %p\n", base);
+-	SEQ_printf(m, "  .index:      %d\n", base->index);
++	SEQ_printf(ctx, "  .base:       %p\n", base);
++	SEQ_printf(ctx, "  .index:      %d\n", base->index);
+ 
+-	SEQ_printf(m, "  .resolution: %u nsecs\n", hrtimer_resolution);
++	SEQ_printf(ctx, "  .resolution: %u nsecs\n", hrtimer_resolution);
+ #ifdef CONFIG_HIGH_RES_TIMERS
+-	SEQ_printf(m, "  .offset:     %lld nsecs\n",
+-		   (long long) base->offset);
++	SEQ_printf(ctx, "  .offset:     %lld nsecs\n", (long long) base->offset);
+ #endif
+-	SEQ_printf(m,   "active timers:\n");
+-	print_active_timers(m, base, ktime_add(now, base->offset));
++	SEQ_printf(ctx,   "active timers:\n");
++	print_active_timers(ctx, base, ktime_add(ctx->ts_mono, base->offset));
+ }
+ 
+-static void print_cpu(struct seq_file *m, int cpu, ktime_t now)
++static void print_cpu(struct tlctx *ctx, int cpu)
+ {
+ 	struct hrtimer_cpu_base *cpu_base = &per_cpu(hrtimer_bases, cpu);
+ 	int i;
+ 
+-	SEQ_printf(m, "cpu: %d\n", cpu);
++	SEQ_printf(ctx, "cpu: %d\n", cpu);
+ 	for (i = 0; i < HRTIMER_MAX_CLOCK_BASES; i++) {
+-		SEQ_printf(m, " clock %d:\n", i);
+-		print_base(m, cpu_base->clock_base + i, now);
++		SEQ_printf(ctx, " clock %d:\n", i);
++		print_base(ctx, cpu_base->clock_base + i);
+ 	}
+ 
+ #define DIAG_READ(x) data_race(READ_ONCE(x))
+ 
+ #define P(x)				     \
+-	SEQ_printf(m, "  .%-15s: %llu\n", #x, \
++	SEQ_printf(ctx, "  .%-15s: %llu\n", #x, \
+ 		   (unsigned long long)DIAG_READ(cpu_base->x))
+ #define P_ktime(x) \
+-	SEQ_printf(m, "  .%-15s: %lld nsecs\n", #x, (long long)DIAG_READ(cpu_base->x))
++	SEQ_printf(ctx, "  .%-15s: %lld nsecs\n", #x, (long long)DIAG_READ(cpu_base->x))
+ 
+ #ifdef CONFIG_HIGH_RES_TIMERS
+ 	P_ktime(expires_next);
+@@ -141,13 +161,12 @@ static void print_cpu(struct seq_file *m
+ #undef P_ktime
+ 
+ #ifdef CONFIG_TICK_ONESHOT
+-# define P(x) \
+-	SEQ_printf(m, "  .%-15s: %llu\n", #x, \
+-		   (unsigned long long)DIAG_READ(ts->x))
+-# define P_ktime(x) \
+-	SEQ_printf(m, "  .%-15s: %lld nsecs\n", #x, (long long)DIAG_READ(ts->x))
+-# define P_flag(x, f)			    \
+-	SEQ_printf(m, "  .%-15s: %d\n", #x, !!(DIAG_READ(ts->flags) & (f)))
++# define P(x)										\
++	SEQ_printf(ctx, "  .%-15s: %llu\n", #x, (unsigned long long)DIAG_READ(ts->x))
++# define P_ktime(x)									\
++	SEQ_printf(ctx, "  .%-15s: %lld nsecs\n", #x, (long long)DIAG_READ(ts->x))
++# define P_flag(x, f)									\
++	SEQ_printf(ctx, "  .%-15s: %d\n", #x, !!(DIAG_READ(ts->flags) & (f)))
+ 
+ 	{
+ 		struct tick_sched *ts = tick_get_tick_sched(cpu);
+@@ -162,8 +181,7 @@ static void print_cpu(struct seq_file *m
+ 		P(last_jiffies);
+ 		P(next_timer);
+ 		P_ktime(idle_expires);
+-		SEQ_printf(m, "jiffies: %llu\n",
+-			   (unsigned long long)jiffies);
++		SEQ_printf(ctx, "jiffies: %llu\n", (unsigned long long)jiffies);
+ 	}
+ #endif
+ 
+@@ -171,129 +189,138 @@ static void print_cpu(struct seq_file *m
+ #undef P_ktime
+ #undef P_flag
+ #undef DIAG_READ
+-	SEQ_printf(m, "\n");
++	SEQ_printf(ctx, "\n");
+ }
+ 
+ #ifdef CONFIG_GENERIC_CLOCKEVENTS
+-static void
+-print_tickdevice(struct seq_file *m, struct tick_device *td, int cpu)
++static void print_tickdevice(struct tlctx *ctx, struct tick_device *td, int cpu)
+ {
+ 	struct clock_event_device *dev = td->evtdev;
+ 
+ 	touch_nmi_watchdog();
+ 
+-	SEQ_printf(m, "Tick Device: mode:     %d\n", td->mode);
++	SEQ_printf(ctx, "Tick Device: mode:     %d\n", td->mode);
+ 	if (cpu < 0)
+-		SEQ_printf(m, "Broadcast device\n");
++		SEQ_printf(ctx, "Broadcast device\n");
+ 	else
+-		SEQ_printf(m, "Per CPU device: %d\n", cpu);
++		SEQ_printf(ctx, "Per CPU device: %d\n", cpu);
+ 
+-	SEQ_printf(m, "Clock Event Device: ");
++	SEQ_printf(ctx, "Clock Event Device: ");
+ 	if (!dev) {
+-		SEQ_printf(m, "<NULL>\n");
++		SEQ_printf(ctx, "<NULL>\n");
+ 		return;
+ 	}
+-	SEQ_printf(m, "%s\n", dev->name);
+-	SEQ_printf(m, " max_delta_ns:   %llu\n",
+-		   (unsigned long long) dev->max_delta_ns);
+-	SEQ_printf(m, " min_delta_ns:   %llu\n",
+-		   (unsigned long long) dev->min_delta_ns);
+-	SEQ_printf(m, " mult:           %u\n", dev->mult);
+-	SEQ_printf(m, " shift:          %u\n", dev->shift);
+-	SEQ_printf(m, " mode:           %d\n", clockevent_get_state(dev));
+-	SEQ_printf(m, " next_event:     %lld nsecs\n", (long long)dev->next_event);
++	SEQ_printf(ctx, "%s\n", dev->name);
++	SEQ_printf(ctx, " max_delta_ns:   %llu\n", (unsigned long long) dev->max_delta_ns);
++	SEQ_printf(ctx, " min_delta_ns:   %llu\n", (unsigned long long) dev->min_delta_ns);
++	SEQ_printf(ctx, " mult:           %u\n", dev->mult);
++	SEQ_printf(ctx, " shift:          %u\n", dev->shift);
++	SEQ_printf(ctx, " mode:           %d\n", clockevent_get_state(dev));
++	SEQ_printf(ctx, " next_event:     %lld nsecs\n", (long long)dev->next_event);
+ 
+-	SEQ_printf(m, " set_next_event: %ps\n", dev->set_next_event);
++	SEQ_printf(ctx, " set_next_event: %ps\n", dev->set_next_event);
+ 
+ 	if (dev->set_state_shutdown)
+-		SEQ_printf(m, " shutdown:       %ps\n",
+-			dev->set_state_shutdown);
++		SEQ_printf(ctx, " shutdown:       %ps\n", dev->set_state_shutdown);
+ 
+ 	if (dev->set_state_periodic)
+-		SEQ_printf(m, " periodic:       %ps\n",
+-			dev->set_state_periodic);
++		SEQ_printf(ctx, " periodic:       %ps\n", dev->set_state_periodic);
+ 
+ 	if (dev->set_state_oneshot)
+-		SEQ_printf(m, " oneshot:        %ps\n",
+-			dev->set_state_oneshot);
++		SEQ_printf(ctx, " oneshot:        %ps\n", dev->set_state_oneshot);
+ 
+ 	if (dev->set_state_oneshot_stopped)
+-		SEQ_printf(m, " oneshot stopped: %ps\n",
+-			dev->set_state_oneshot_stopped);
++		SEQ_printf(ctx, " oneshot stopped: %ps\n", dev->set_state_oneshot_stopped);
+ 
+ 	if (dev->tick_resume)
+-		SEQ_printf(m, " resume:         %ps\n",
+-			dev->tick_resume);
++		SEQ_printf(ctx, " resume:         %ps\n", dev->tick_resume);
+ 
+-	SEQ_printf(m, " event_handler:  %ps\n", dev->event_handler);
+-	SEQ_printf(m, "\n");
+-	SEQ_printf(m, " retries:        %lu\n", dev->retries);
++	SEQ_printf(ctx, " event_handler:  %ps\n", dev->event_handler);
++	SEQ_printf(ctx, "\n");
++	SEQ_printf(ctx, " retries:        %lu\n", dev->retries);
+ 
+ #ifdef CONFIG_GENERIC_CLOCKEVENTS_BROADCAST
+ 	if (cpu >= 0) {
+ 		const struct clock_event_device *wd = tick_get_wakeup_device(cpu);
+ 
+-		SEQ_printf(m, "Wakeup Device: %s\n", wd ? wd->name : "<NULL>");
++		SEQ_printf(ctx, "Wakeup Device: %s\n", wd ? wd->name : "<NULL>");
+ 	}
+ #endif
+-	SEQ_printf(m, "\n");
++	SEQ_printf(ctx, "\n");
+ }
+ 
+ static void timer_list_show_tickdevices_header(struct seq_file *m)
+ {
+ #ifdef CONFIG_GENERIC_CLOCKEVENTS_BROADCAST
+-	print_tickdevice(m, tick_get_broadcast_device(), -1);
+-	SEQ_printf(m, "tick_broadcast_mask: %*pb\n",
++	print_tickdevice(ctx, tick_get_broadcast_device(), -1);
++	SEQ_printf(ctx, "tick_broadcast_mask: %*pb\n",
+ 		   cpumask_pr_args(tick_get_broadcast_mask()));
+ #ifdef CONFIG_TICK_ONESHOT
+-	SEQ_printf(m, "tick_broadcast_oneshot_mask: %*pb\n",
++	SEQ_printf(ctx, "tick_broadcast_oneshot_mask: %*pb\n",
+ 		   cpumask_pr_args(tick_get_broadcast_oneshot_mask()));
+ #endif
+-	SEQ_printf(m, "\n");
++	SEQ_printf(ctx, "\n");
+ #endif
+ }
+ #endif
+ 
+-static inline void timer_list_header(struct seq_file *m, ktime_t now)
++static inline void timer_list_header(struct seq_file *ctx)
+ {
+-	SEQ_printf(m, "Timer List Version: v0.11\n");
+-	SEQ_printf(m, "HRTIMER_MAX_CLOCK_BASES: %d\n", HRTIMER_MAX_CLOCK_BASES);
+-	SEQ_printf(m, "now at %lld nsecs\n", (long long)now);
+-	SEQ_printf(m, "\n");
++	SEQ_printf(ctx, "Timer List Version: v0.11\n");
++	SEQ_printf(ctx, "HRTIMER_MAX_CLOCK_BASES: %d\n", HRTIMER_MAX_CLOCK_BASES);
++	SEQ_printf(ctx, "now at %lld nsecs\n", (long long)ctx->ts_mono);
++	SEQ_printf(ctx, "\n");
+ }
+ 
+-void sysrq_timer_list_show(void)
++static void sys_timer_list_show(struct tlctx *ctx)
+ {
+-	ktime_t now = ktime_get();
++	ctx->ts_mono = ktime_get_ns_fast();
+ 	int cpu;
+ 
+-	timer_list_header(NULL, now);
++	timer_list_header(ctx);
+ 
+ 	for_each_online_cpu(cpu)
+-		print_cpu(NULL, cpu, now);
++		print_cpu(ctx, cpu);
+ 
+ #ifdef CONFIG_GENERIC_CLOCKEVENTS
+-	timer_list_show_tickdevices_header(NULL);
++	timer_list_show_tickdevices_header(ctx);
+ 	for_each_online_cpu(cpu)
+-		print_tickdevice(NULL, tick_get_device(cpu), cpu);
++		print_tickdevice(ctx, tick_get_device(cpu), cpu);
+ #endif
+-	return;
++}
++
++void sysinfo_timer_list_show(enum sysinfo_context si_ctx)
++{
++	struct tlctx ctx = { .si_ctx = si_ctx, };
++
++	sys_timer_list_show(&ctx);
++}
++
++void sysrq_timer_list_show(void)
++{
++	struct tlctx ctx = {};
++
++	sys_timer_list_show(&ctx);
+ }
+ 
+ #ifdef CONFIG_PROC_FS
+ static int timer_list_show(struct seq_file *m, void *v)
+ {
+ 	struct timer_list_iter *iter = v;
++	struct tlctx ctx = {
++		.seq_file	= m,
++		.ts_mono	= iter->now,
++	};
+ 
+ 	if (iter->cpu == -1 && !iter->second_pass)
+-		timer_list_header(m, iter->now);
++		timer_list_header(&ctx, iter->now);
+ 	else if (!iter->second_pass)
+-		print_cpu(m, iter->cpu, iter->now);
++		print_cpu(&ctx, iter->cpu);
+ #ifdef CONFIG_GENERIC_CLOCKEVENTS
+ 	else if (iter->cpu == -1 && iter->second_pass)
+-		timer_list_show_tickdevices_header(m);
++		timer_list_show_tickdevices_header(&ctx);
+ 	else
+-		print_tickdevice(m, tick_get_device(iter->cpu), iter->cpu);
++		print_tickdevice(&ctx, tick_get_device(iter->cpu), iter->cpu);
+ #endif
+ 	return 0;
+ }
 
-base-commit: b95f8bb86713c860ce8536d22a988b949b884d5f
--- 
-2.52.0
+
 
 
