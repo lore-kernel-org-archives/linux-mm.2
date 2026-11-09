@@ -1,104 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE72606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 02:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCB43606A325
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 02:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=dLqtx658
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=I8byLkeK
 Received: by kanga.kvack.org (Postfix)
-	id 8F16D6B05B4; Sun,  8 Nov 2026 21:56:31 -0500 (EST)
+	id 0B6C46B05B7; Sun,  8 Nov 2026 21:57:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C9436B05B5; Sun,  8 Nov 2026 21:56:31 -0500 (EST)
+	id 066C66B05B8; Sun,  8 Nov 2026 21:57:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DFC96B05B7; Sun,  8 Nov 2026 21:56:31 -0500 (EST)
+	id E9B646B05B9; Sun,  8 Nov 2026 21:57:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 60E736B05B4
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 21:56:31 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DD683805C1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:56:30 +0000 (UTC)
-X-FDA: 85414067340.19.104CDAC
-Received: from mta0.migadu.com (out-75.mta0.migadu.com [91.218.175.75])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9179D140002
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:56:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dLqtx658;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of mengmeng.zhao@linux.dev designates 91.218.175.75 as permitted sender) smtp.mailfrom=mengmeng.zhao@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id C3D476B05B7
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 21:57:41 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 628131405A4
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:57:41 +0000 (UTC)
+X-FDA: 85414070322.12.60BD6D8
+Received: from mta0.migadu.com (out-134.mta0.migadu.com [91.218.175.134])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 595B340004
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:57:39 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I8byLkeK;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.134 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794193059;
+	b=XnQ4Lmy1CzJnCP00C2+woJK88ocAXu7nJut4h7Fg6VvnUzEDUEiW0EPtPFpn5WOSOICWi8
+	kmDH7/slKePClMO0/VHpifHuySUbyZteUiagEVff3RZNKnR+pT6ibEdni+8B/NQPunPyWq
+	jP13JotNXDc1DG0QN/NjkDYCiHyZ55w=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=I8byLkeK;
+	spf=pass (imf04.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.134 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794192989;
+	s=arc-20220608; t=1794193059;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n+4TwEwtUO3KwUkahtVVwASlPtdRGoMNVNlYwVFyhNM=;
-	b=6XMNRtiybqK/zFdeG5Kg2DrH7d4fMzNIQWbNP5zpNdxj01kmEewsdFI9dQpRhblrr//Yfp
-	0KrrTX3gvIIQi9RMOAiSB+MIskSMmUN5yQOEt3zQLOZz/WVJApB6tB4ufuruvfk6b/y6A/
-	w/6KkgM1oAMJpwOYeuMORE848CX9ImI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794192989;
-	b=O2B4N9j5GY3tmvJe93sZ9I2kSmmMJrJO4EmQW5JhKtKpyDNYeX3p0NyqCsFGo2T5+ZHOrU
-	M6cGl32/fEq3nZts1mqPMNc3FVC4I6SIfIQJv61dRR/ugJ9mCgbnbrEI9OJIMrTgiFgC7q
-	jmXZLK8J4qq770CgB1P2Sw2Fj8xV2m4=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=dLqtx658;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf23.hostedemail.com: domain of mengmeng.zhao@linux.dev designates 91.218.175.75 as permitted sender) smtp.mailfrom=mengmeng.zhao@linux.dev
+	bh=dwJNxf5rCTAUship/jh+E19aKDon5spv76HcuaGEvU0=;
+	b=zoSAlBqpuf9NhbrKPo/J3uhM3DvA3uwVq3ygMEeO+MxsT6FhRQg47x0isviJgXRBMSnm7a
+	+bRTV70LAhYK6nkCOHlv0dJgt0gX3wn9LO5qauafa67B2lSKCZ983lo5TAziLPbmmuW1iC
+	813DPV+qhvA0KO8P3n6Y4oK4xqKNsxs=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=E6nbi2q9BWguhq7sUJJq5GhBbCo7Z1GUqwFoBaxZTl4=;
+DKIM-Signature: a=rsa-sha256; bh=u5WrG/yasaWjBHktQ78tjm0ZVxb5BYE57NobquyrXQE=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794192987; v=1; x=1794797787;
- b=dLqtx658wixUpSvGUIYbocKc3P4pgfJX8GTgBwqreDl3IuJU6xbu+Lu0V4Umg9JCwNa60YC9
- TXnhYXjCKoABDlBeUDyWdbEosq2Ehcab/fUJtYs9+j5MXJSm2RKsiD2PjThwK0KisbmXtWAPIOk
- Hcc2N5mMkDWoyD9t1jt7md5o=
+ t=1794193058; v=1; x=1794797858;
+ b=I8byLkeKV8e26R9x/axeTIC88d6JqAaJWmc2v1X3zNoSbxc5GzsqJ5RsezFM+BlRGgJzG/so
+ naERNpQyMvNttHnnPVnld5pGPknHctfXbmAzh8w6NXRN6azXloAu2kOY+DQpKuSBiKw9EXbZrqx
+ 25E6X3fkyWY89AK0Y8bHRFfk=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id f9c8e6b6d36b6895;
-	Mon, 09 Nov 2026 02:56:26 +0000
-X-Mizu-Trace-ID: f9c8e6b6d36b6895
+Received: by smtp.migadu.com with ESMTPS id e5337828cc32e4d1;
+	Mon, 09 Nov 2026 02:57:37 +0000
+X-Mizu-Trace-ID: e5337828cc32e4d1
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <f7f034f6-cc88-4f54-a37f-9e9fd2dbb62f@linux.dev>
-Date: Mon, 9 Nov 2026 10:56:11 +0800
+Message-ID: <f062d92e-a016-447f-926f-bd1b1ce7f106@linux.dev>
+Date: Mon, 9 Nov 2026 10:57:35 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 5/6] iomap: refuse dmabuf iterators on contents-encrypted
- inodes
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jens Axboe <axboe@kernel.dk>, Dan Williams <djbw@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, tytso@mit.edu,
- Andreas Dilger <adilger.kernel@dilger.ca>,
- Baokun Li <libaokun@linux.alibaba.com>, Ojaswin Mujoo
- <ojaswin@linux.ibm.com>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Zhang Yi <yi.zhang@huawei.com>, "Darrick J. Wong" <djwong@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, asml.silence@gmail.com,
- Anuj Gupta <anuj1072538@gmail.com>, linux-block@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- nvdimm@lists.linux.dev, linux-ext4@vger.kernel.org,
- linux-xfs@vger.kernel.org, linux-mm@kvack.org, Li Wang <liwang@kylinos.cn>
-References: <20261105065847.196540-1-mengmeng.zhao@linux.dev>
- <20261105065847.196540-6-mengmeng.zhao@linux.dev>
- <20261106104403.GC5668@lst.de>
-From: Mengmeng Zhao <mengmeng.zhao@linux.dev>
-In-Reply-To: <20261106104403.GC5668@lst.de>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH 1/2] mm/mm_init: factor out
+ memmap_init_page_from_template()
+To: Li Zhe <lizhe.67@bytedance.com>, Balbir Singh <balbirs@nvidia.com>
+Cc: osalvador@suse.de, david@kernel.org, akpm@linux-foundation.org,
+ rppt@kernel.org, apopple@nvidia.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20261105120615.16817-1-lizhe.67@bytedance.com>
+ <20261105120615.16817-2-lizhe.67@bytedance.com> <au2tQaaMBg3umthq@parvat>
+ <25a188bf-05e4-4f0e-b670-a9dc88195b21@bytedance.com>
+Content-Language: en-US
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <25a188bf-05e4-4f0e-b670-a9dc88195b21@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ebtshe88opas3g7auiirswxzknazxcc1
+X-Stat-Signature: skgt8r6hftmfijadmhhbcgw8sbt5dkrg
+X-Rspamd-Queue-Id: 595B340004
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9179D140002
-X-HE-Tag: 1794192988-581270
-X-HE-Meta: U2FsdGVkX19K6vqRwYaFtUpNB9+hHTCsmG5FfLN3bZRD+k/fgyVq4DRF3aM0qxQQ4attp/e1y2fY5ezmjJC6Fb3mCZOwKXWCDvfuzcQUzLbbV6z9k+RM6Fh0yNYrcXNQNtQIDHHUBPygErF33MrdWRaVwPnoE+avYeaOyhIGolRwPhuv+83tSN8xs7cXqB2RYtjrKny2XfSOOU/ko6HPOBEWhyDU5v7MC0bLuIYvVIcR9F9We8EuUhnqtHyVbjsDhHyVoeaQdRuQ+8OsIzPaD9A6GKO2+Cy9W8Bdx3ccNOIoYIYqkgboShqol7V1VPGOXXdBZ2mCSogswUVZdIaPZHg3590AbE9Kvq3qWCFlRBWlSOFcSrc3CHGydr3bQhgiskiI413temLmhfQWH9CsOb53655eWx9Mm7IgZMTUt+AYKmYq8CEGMvcGwSln01EZsNiUIjXZ0Di0/zK8dP/cUAMWDx1hpymJ/fsHPhUbVO31SVVRwwzUpNMbf3+BM/dUVSY8oYIIG7yt3sZe3/ulfuQQoyK6V42zJk25GHasGMc9uSEHp/mz+ZhZ33L5CEMO3/QpycRKhGSXxOf2cY+vURFyV5fIFBc1T1Fgov3DRuVlrq69EuLktrV2JXiWNYswL75KCMJhdst+bhHIytMfiqzvagF5c6vG5cdDNxMtZmTMOGVIYMTEdO2i5cY0S6anoP0WYnCp6np2WIntE3VB/3a/CIaSQTpCLDVZ4vYQW8xNhPFcDfGOhad20iy2lIvrkDH2E8QKYhUpW9c/ucqtp9+PnP1OtrBMW8436ZdkStP687XH4dZdrR8v8MnCytA152hi3khXNHS/4t1yk+8rnbWyseuXJBxqTvEGdDvHFhHOmc6viHmGKdIvbUt5sAWF3p4miNmC7heP5d0gTdy8UFmmMVzESVLtAxQxG/pLU86HBI6gdCW5a5PPpaWayFySvEznSY68gGxIGG1yt/v
- YdFFJJrU
- 25bME8bGJJsu2qRXLPE8ckRT4xGBWdbhpMlIpNa96Iia/t1lfM8AUPA8zXy+SlSDktzNA8EqgGvs9hX2+2DPzqIop6k8tHyTaMPF/hl7jOiNbiuXoKKGEoOUdvwTMS7JlIaeZXzTnX6eR75lRQbO+e6SMTGIFPCTB1l+iKluKzeRss6HBHoiVwUdIdeI6qhb1LvTqMskLRTW8Rj5EBR7+BdMOBO1VGitKYRvT2S/tOqH7zvIvlI5ps3gClzgiL+OEH4VrVvMF30exBtXXZ/c2CuVXK182WmjzOj278DOksIBXZGwO1gi/1IXv/9/Bx8b18WIsipGnpDazcT3Jwe2O3V/FcPs2bpcRD8xa
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794193059-13318
+X-HE-Meta: U2FsdGVkX19QIWfp2PtDoAM1n4pNwRUHKMwzL/IpIsVcLjk20NoFJnZT8pvtIZG9cWquiOTK1Wz3zfZEX7o/80+c8Dng5E45O9lUwX3ArFlLaswY/PJb0dxs4J3+BV0g4FKhMaLfZb8qVVdzMUlL6YJf4QWU9QAL9Hn2qZpxiUpUHy6rXuPCj0N3q1efhm6XbpEapN0SEdd9BSgUAXLwsuqd/kqUTtpOcphtH+nHvInOJhhiNMU8SR0rHFFOgHA86OkuHzxJaLaNKTAcYCEwQScgQHEf0MCmzGkZT39O2YHwPVd9xjJhfvhY6hucJnEts439G2UzRgO+RgJTHCi40kv9gqSGRcXZPcvCeP4MhoJvaq8Pd6Inet19rygOtUKIYGKMYCxZ+Z8YKaUxzVtNq7OEEgP9D18QyE9+BvIurbuGZhYGIqi0Wpi2fGSxAxSbH0HB1cuzq+LNPlsQVS6WeEYKJHkKMSMw3FSha2JtRC9Q1hHp0oGx+Qte+SBXYc+rAALtQpicE4PFt0OHygSRoebj9Q4jBNZsqJ4BCQpvn1uKMcYVJjSI0Jlc/Vye299f+GRNqMYFmjYzPM1FFDAGkbB/PX+S7Uhsv3JVRjzr6NUSAQ83nPfpnIITcjeph/aLP8mK8gWLubg3SlFbgtzW8TtPELO/EAmye+v/cwbmSrsiLdp59JRNodDkRocAax9GkOsrKmE3dsu9WLulAd/1LK/chjvsErTjxxn6SLI0dBdkwsxi/cwO7lq5fe3uVDEMa8BuZM/lww6KVg+gUeNidVkVe6iH4IgS016FV+y6/sPLcuy7fkAFtjfEdLtdcS8lKF+JKW1nVLYpEryFYe/KCW9+UI44wh1nCUnCGhNpz/J2r2FBy9lLa9kGWiYF2+6TiYYeLTDvO04ynpOHe79kvUtA4ssIyNtCHx/tpqBVoBv+D40166GjikwESKbMq2vuRSCeoiSv6wX4ENsxr++
+ jU0mhb4i
+ WFpw9pGy9IAhqlJreoQdEG2N5HMGUWbPlwnSejLgEOG+1CRbFnbiD3OnO1Wap9KvYpoDjRcPh1HZ4YHi7Yy4lIQE8akXIrDdTSBuXoJu6M7VTTXFo5IxUEXv5eb6UoniR3PLpABBG+MibAJsGaaK3CXaxot5aK15J3xy8BxjGV5jzFSfzF7AvwvVdurWbWa+SLPvEALcSGO4i+Kh9r3VSDsUfezc9Heye+85zcsV/goq6QJzaI0Nd0WbBy1NIBnkIgRnnVzE/ElWEFoMbuonwlknYo34eE//VokeEuuvSdLzg8B6HjQXVBWJndbLKG0vtKvNe5lu4eCXVx38B61uCM7mbmw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,16 +99,139 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 18:44, Christoph Hellwig wrote:
-> I think contents-encrypted should be content-encrypted.
-> 
-> But we really need to find a way to make these checks more
-> systematic instead of sprinkling them everywhere.  E.g. have a flag
-> in file->f_mode to allow it, which then only leaves the direct I/O
-> to buffered I/O fallback as a special case.
-> 
 
-Agreed, adding the check to every file system is quite tedious.
-We'll look into redesigning the implementation based on your
-suggestion. Thanks for your time!
+
+On 2026/11/9 10:51, Li Zhe wrote:
+> On 11/6/26 6:34 PM, Balbir Singh wrote:
+>> On Thu, Nov 05, 2026 at 08:06:14PM +0800, Li Zhe wrote:
+>>> ZONE_DEVICE memmap initialization already uses a reusable struct page
+>>> template when initializing compound tail pages.  The template mostly
+>>> contains invariant state, but a few fields still depend on the target
+>>> PFN and must be refreshed before copying the template into each
+>>> destination struct page.
+>>>
+>>> Factor that operation into memmap_init_page_from_template() so other
+>>> boot-time memmap initialization paths can reuse the same helper.
+>>>
+>>> No functional change intended.
+>>>
+>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>>> ---
+>>>    mm/mm_init.c | 29 +++++++++++++++--------------
+>>>    mm/mm_init.h |  2 ++
+>>>    2 files changed, 17 insertions(+), 14 deletions(-)
+>>>
+>>> diff --git a/mm/mm_init.c b/mm/mm_init.c
+>>> index 2a0e782a151d..495e20fbdec0 100644
+>>> --- a/mm/mm_init.c
+>>> +++ b/mm/mm_init.c
+>>> @@ -625,6 +625,17 @@ void __meminit __init_single_page(struct page *page, unsigned long pfn,
+>>>    	vmemmap_optimization_verify_zone(page);
+>>>    }
+>>>    
+>>> +void __meminit memmap_init_page_from_template(struct page *page,
+>>> +		unsigned long pfn, unsigned long zone, struct page *template)
+>>> +{
+>>> +	set_page_section_from_pfn(template, pfn);
+>>> +#ifdef WANT_PAGE_VIRTUAL
+>>> +	if (!is_highmem_idx(zone))
+>>> +		set_page_address(template, __va(pfn << PAGE_SHIFT));
+>>> +#endif
+>>> +	memcpy_nontemporal(page, template, sizeof(*page));
+>>> +}
+>>> +
+>> Can we make the template a const? Why can't we do
+>>
+>> void __meminit memmap_init_page_from_template(struct page *page,
+>> 		unsigned long pfn, unsigned long zone,
+>> 		const struct page *template)
+>> {
+>> 	memcpy_nontemporal(page, template, sizeof(*page));
+>>
+>> 	set_page_section_from_pfn(page, pfn);
+>> #ifdef WANT_PAGE_VIRTUAL
+>> 	if (!is_highmem_idx(zone))
+>> 		set_page_address(page, __va(pfn << PAGE_SHIFT));
+>> #endif
+>>
+>> That way we don't update template once it is set, if template is r/o,
+>> then we don't need both first page and template in the caller to
+>> be different.
+
+I used to think that too.
+
+> I kept it this way to preserve the memcpy_nontemporal() write pattern:
+> update the PFN-dependent fields in the template first, then copy the
+> final state to the destination page once.
+>
+> If we copy first and then update the destination page, the hot loop
+> would do a non-temporal copy followed by normal stores to the same
+> struct page. That is the pattern this helper avoids.
+
+After thinking it through, that should be the reason. To prevent
+similar confusion for others, I suggest adding a comment here
+explaining why this specific order is used.
+
+Thanks.
+
+>
+> Thanks,
+> Zhe
+>>>    #ifdef CONFIG_NUMA
+>>>    /*
+>>>     * During memory init memblocks map pfns to nids. The search is expensive and
+>>> @@ -1073,17 +1084,6 @@ static void __ref __init_zone_device_page(struct page *page, unsigned long pfn,
+>>>    	}
+>>>    }
+>>>    
+>>> -static void zone_device_page_init_from_template(struct page *page,
+>>> -		unsigned long pfn, struct page *template)
+>>> -{
+>>> -	set_page_section_from_pfn(template, pfn);
+>>> -#ifdef WANT_PAGE_VIRTUAL
+>>> -	if (!is_highmem_idx(ZONE_DEVICE))
+>>> -		set_page_address(template, __va(pfn << PAGE_SHIFT));
+>>> -#endif
+>>> -	memcpy_nontemporal(page, template, sizeof(*page));
+>>> -}
+>>> -
+>>>    /*
+>>>     * With compound page geometry and when struct pages are stored in ram most
+>>>     * tail pages are reused. Consequently, the amount of unique struct pages to
+>>> @@ -1136,8 +1136,8 @@ static void __ref memmap_init_compound(struct page *head,
+>>>    
+>>>    	/* Initialize the remaining tail pages from template. */
+>>>    	for (pfn = head_pfn + 2; pfn < end_pfn; pfn++)
+>>> -		zone_device_page_init_from_template(pfn_to_page(pfn), pfn,
+>>> -						    &template);
+>>> +		memmap_init_page_from_template(pfn_to_page(pfn), pfn,
+>>> +					       ZONE_DEVICE, &template);
+>>>    	prep_compound_head(head, order);
+>>>    }
+>>>    
+>>> @@ -1192,7 +1192,8 @@ void __ref memmap_init_zone_device(struct zone *zone,
+>>>    	for (; pfn < end_pfn; pfn += pfns_per_compound) {
+>>>    		page = pfn_to_page(pfn);
+>>>    
+>>> -		zone_device_page_init_from_template(page, pfn, &template);
+>>> +		memmap_init_page_from_template(page, pfn, ZONE_DEVICE,
+>>> +					       &template);
+>>>    
+>>>    		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
+>>>    			cond_resched();
+>>> diff --git a/mm/mm_init.h b/mm/mm_init.h
+>>> index 0034e37dbabd..22c465122b47 100644
+>>> --- a/mm/mm_init.h
+>>> +++ b/mm/mm_init.h
+>>> @@ -111,5 +111,7 @@ void memblock_free_all(void);
+>>>    
+>>>    void __meminit __init_single_page(struct page *page, unsigned long pfn,
+>>>    				unsigned long zone, int nid);
+>>> +void __meminit memmap_init_page_from_template(struct page *page,
+>>> +		unsigned long pfn, unsigned long zone, struct page *template);
+>>>    
+>>>    #endif /* __MM_MM_INIT_H */
+>>> -- 
+>> Balbir
+
 
