@@ -1,101 +1,145 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E68606A325
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 13:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1885B606A321
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aAyxcFZx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=CdZ/Cvkr
 Received: by kanga.kvack.org (Postfix)
-	id 88E246B05B1; Mon,  9 Nov 2026 08:51:35 -0500 (EST)
+	id 31B356B00EF; Mon,  9 Nov 2026 09:01:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8369D6B05B2; Mon,  9 Nov 2026 08:51:35 -0500 (EST)
+	id 2F2546B05B0; Mon,  9 Nov 2026 09:01:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FF336B05BA; Mon,  9 Nov 2026 08:51:35 -0500 (EST)
+	id 20BF66B05B3; Mon,  9 Nov 2026 09:01:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B5BE6B05B1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 08:51:35 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A6B61140691
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:51:34 +0000 (UTC)
-X-FDA: 85415718108.28.95F5790
+	by kanga.kvack.org (Postfix) with ESMTP id E56CF6B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:01:38 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7838FA8138
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:01:38 +0000 (UTC)
+X-FDA: 85415743476.30.8B9E972
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 158BF140002
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:51:32 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAyxcFZx;
-	spf=pass (imf23.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794232293;
-	b=1do+pX7uYThFG7ei8vhMYwgiuif0KAIOxKfydeLlCInN1ROfi44R8pEQiR1Sa9wpp+IGpV
-	nwr7vfg+9meRORp12UnywXxsdhh3gqCOAT7nyZQlgq7eIDKl+Zsxf9aaJp/mWYBGpqE67T
-	aLRZXL4NeJ0V53+J9Ld1LFRcv3LWYLo=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aAyxcFZx;
-	spf=pass (imf23.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id A408FA001C
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:01:36 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CdZ/Cvkr";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794232293;
+	s=arc-20220608; t=1794232896;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6YcYOdC7iHosICJsNPvA6c1/PmSp5VhjSW9aX6UnLmo=;
-	b=U5fuS7IGymBWntW+6xChIpg269U1NN4sob9HsZEkS6qr8F+Gt7WpeAWYX5x7UttGVSkU8D
-	QFGiFPc74+jbYqqghLfts+eX5VmTRhVB5/CPY42qr34E+u0FEIzzUzP0g7cSU2smfV1qzd
-	jxU2PBcgfWfLprUFS/Q0Y7lQULN58j8=
+	bh=WBa/P2Hn1G1AAcH5rTB5EEXlvsWzy0r8UioG7AFjED0=;
+	b=18H0QfvPCwcI1logCpVtFxuUNvpDh1RPk84/WAohUXaMy5LAdP//+cH/Ez63qDTaKjL3vf
+	Pe3GN2GDbCpgqIelXt3w7KMNHX7DqPHWZ4pdkptc6byhslXYXqGuXZH39N8tbDqBVdMw9A
+	Xaogu8KYgWZAksGunUiEw0hXeAp084U=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794232896;
+	b=YKk46aNN3ujB+qVHZ64AwtkUNRPpKIDNSQXd4jOCWl71ThP2wMMBMoK/nqy4FM4HB4yctk
+	Vk8on0CzFQm5hPKd9KPV+ldnbSe1IDuLfRcpIhOXzy/RW5NWJOwjxA7uMvYijc8KKRh8Uq
+	1fJEw+ENUC3OXwvKbEM81Zo1QroLxdY=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="CdZ/Cvkr";
+	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 59A4361417;
-	Mon,  9 Nov 2026 13:51:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C791F0089F;
-	Mon,  9 Nov 2026 13:51:27 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 235AC618B3;
+	Mon,  9 Nov 2026 14:01:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D321F0089F;
+	Mon,  9 Nov 2026 14:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794232292;
-	bh=6YcYOdC7iHosICJsNPvA6c1/PmSp5VhjSW9aX6UnLmo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=aAyxcFZx4CjOcZ9lwqhVvPvhAJ9SWod3FcQZMUQhUdwuQjNS/yhPOF8u894Qxd/Q4
-	 EglLqS7QJBn0G01aZn2nlWw6k0rpgMY1GwD/ce50b/82D6OayUUcv9KW2gc+x02ee3
-	 dAJfStZMCyQkgHtAR8aSKWPSo8cymgby0XFYMkIPsTnK3boYWaKmj9Y9neWRQxaOV2
-	 JR1NpakwROrC+QXRgxlLXusTIb93xnw9NAalDFvgKw1CQu8ADzRMmbnhPvwU+M3Xdn
-	 dmNaYtSAp4/GVxpjcWerxnVYzkoAd3Kk+TYXhvoOyDo9Vl3YDEuWvQCfuq30LPq8BD
-	 eYYWPHfQSg6Uw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy
- Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, Alice
- Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Danilo
- Krummrich <dakr@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Vlastimil
- Babka <vbabka@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Uladzislau Rezki <urezki@gmail.com>, Daniel
- Almeida <daniel.almeida@collabora.com>, Tamir Duberstein
- <tamird@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>, Onur
- =?utf-8?Q?=C3=96zkan?=
- <work@onurozkan.dev>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v3] rust: alloc: add per-task memalloc scope abstractions
-In-Reply-To: <DMQOAI3KE9UD.3KOEVJO02ENM4@garyguo.net>
-References: <20261109-gfp-noio-v3-1-a573e7be9c44@kernel.org>
- <DMQOAI3KE9UD.3KOEVJO02ENM4@garyguo.net>
-Date: Mon, 09 Nov 2026 14:51:22 +0100
-Message-ID: <87v766qfj9.fsf@t14s.mail-host-address-is-not-set>
+	s=k20260515; t=1794232895;
+	bh=WBa/P2Hn1G1AAcH5rTB5EEXlvsWzy0r8UioG7AFjED0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=CdZ/Cvkra7opLZYJNiSlo0fgWJuimpbJ7qpbNjAgFiNc1j0OO21mxfq8JgwmVOsCt
+	 k4bLCivYZrcFgv+truIgIUHM1bm8tR3zuqFt+DdYAWQTHqfyWtWhhltIOYiMy3TSaa
+	 CtRCcsw17zG69xtwy2ebFSDYdymU4x2i/PerH6oWYlCQ19IGoTQH08Djzcf3Tn9JbF
+	 s+2tM8HRMBkFLZOIdRSW2PNboOilsFVl8RGO2gcRH4m2RkLlS5eVR6npSG57D2fwN8
+	 faXNQaGPBLIQI+CEmqB/mfYpbz1a+qXOpPXajDQ/CWn+z615J2XoE9Av2ilSzj8PYx
+	 x+ebCZCSY2nNw==
+Message-ID: <8ffe5804-a8a1-4486-b5eb-7ce5f451b77c@kernel.org>
+Date: Mon, 9 Nov 2026 15:01:29 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: 6ggx9iwgb75h4opyedthjod814kx7a43
-X-Rspamd-Queue-Id: 158BF140002
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/3] mm/khugepaged: release contended mmap read lock
+ after scanning enough VMAs
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261105-khugepaged-latency-fix-v2-0-4384bbfe4606@kernel.org>
+ <20261105-khugepaged-latency-fix-v2-3-4384bbfe4606@kernel.org>
+ <au3CUJO9zBMHLx-B@gremlin>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
+ dBrn+lhhOYjjNefFQou6478faXE6o2AhmebqT4KiQoUQFV4R7y1KMEKoSyy8hQaK1umALTdL
+ QZLQMzNE74ap+GDK0wnacPQFpcG1AE9RMq3aeErY5tujekBS32jfC/7AnH7I0v1v1TbbK3Gp
+ XNeiN4QroO+5qaSr0ID2sz5jtBLRb15RMre27E1ImpaIv2Jw8NJgW0k/D1RyKCwaTsgRdwuK
+ Kx/Y91XuSBdz0uOyU/S8kM1+ag0wvsGlpBVxRR/xw/E8M7TEwuCZQArqqTCmkG6HGcXFT0V9
+ PXFNNgV5jXMQRwU0O/ztJIQqsE5LsUomE//bLwzj9IVsaQpKDqW6TAPjcdBDPLHvriq7kGjt
+ WhVhdl0qEYB8lkBEU7V2Yb+SYhmhpDrti9Fq1EsmhiHSkxJcGREoMK/63r9WLZYI3+4W2rAc
+ UucZa4OT27U5ZISjNg3Ev0rxU5UH2/pT4wJCfxwocmqaRr6UYmrtZmND89X0KigoFD/XSeVv
+ jwBRNjPAubK9/k5NoRrYqztM9W6sJqrH8+UWZ1Idd/DdmogJh0gNC0+N42Za9yBRURfIdKSb
+ B3JfpUqcWwE7vUaYrHG1nw54pLUoPG6sAA7Mehl3nd4pZUALHwARAQABzS5EYXZpZCBIaWxk
+ ZW5icmFuZCAoQ3VycmVudCkgPGRhdmlkQGtlcm5lbC5vcmc+wsGQBBMBCAA6AhsDBQkmWAik
+ AgsJBBUKCQgCFgICHgUCF4AWIQQb2cqtc1xMOkYN/MpN3hD3AP+DWgUCaYJt/AIZAQAKCRBN
+ 3hD3AP+DWriiD/9BLGEKG+N8L2AXhikJg6YmXom9ytRwPqDgpHpVg2xdhopoWdMRXjzOrIKD
+ g4LSnFaKneQD0hZhoArEeamG5tyo32xoRsPwkbpIzL0OKSZ8G6mVbFGpjmyDLQCAxteXCLXz
+ ZI0VbsuJKelYnKcXWOIndOrNRvE5eoOfTt2XfBnAapxMYY2IsV+qaUXlO63GgfIOg8RBaj7x
+ 3NxkI3rV0SHhI4GU9K6jCvGghxeS1QX6L/XI9mfAYaIwGy5B68kF26piAVYv/QZDEVIpo3t7
+ /fjSpxKT8plJH6rhhR0epy8dWRHk3qT5tk2P85twasdloWtkMZ7FsCJRKWscm1BLpsDn6EQ4
+ jeMHECiY9kGKKi8dQpv3FRyo2QApZ49NNDbwcR0ZndK0XFo15iH708H5Qja/8TuXCwnPWAcJ
+ DQoNIDFyaxe26Rx3ZwUkRALa3iPcVjE0//TrQ4KnFf+lMBSrS33xDDBfevW9+Dk6IISmDH1R
+ HFq2jpkN+FX/PE8eVhV68B2DsAPZ5rUwyCKUXPTJ/irrCCmAAb5Jpv11S7hUSpqtM/6oVESC
+ 3z/7CzrVtRODzLtNgV4r5EI+wAv/3PgJLlMwgJM90Fb3CB2IgbxhjvmB1WNdvXACVydx55V7
+ LPPKodSTF29rlnQAf9HLgCphuuSrrPn5VQDaYZl4N/7zc2wcWM7BTQRVy5+RARAA59fefSDR
+ 9nMGCb9LbMX+TFAoIQo/wgP5XPyzLYakO+94GrgfZjfhdaxPXMsl2+o8jhp/hlIzG56taNdt
+ VZtPp3ih1AgbR8rHgXw1xwOpuAd5lE1qNd54ndHuADO9a9A0vPimIes78Hi1/yy+ZEEvRkHk
+ /kDa6F3AtTc1m4rbbOk2fiKzzsE9YXweFjQvl9p+AMw6qd/iC4lUk9g0+FQXNdRs+o4o6Qvy
+ iOQJfGQ4UcBuOy1IrkJrd8qq5jet1fcM2j4QvsW8CLDWZS1L7kZ5gT5EycMKxUWb8LuRjxzZ
+ 3QY1aQH2kkzn6acigU3HLtgFyV1gBNV44ehjgvJpRY2cC8VhanTx0dZ9mj1YKIky5N+C0f21
+ zvntBqcxV0+3p8MrxRRcgEtDZNav+xAoT3G0W4SahAaUTWXpsZoOecwtxi74CyneQNPTDjNg
+ azHmvpdBVEfj7k3p4dmJp5i0U66Onmf6mMFpArvBRSMOKU9DlAzMi4IvhiNWjKVaIE2Se9BY
+ FdKVAJaZq85P2y20ZBd08ILnKcj7XKZkLU5FkoA0udEBvQ0f9QLNyyy3DZMCQWcwRuj1m73D
+ sq8DEFBdZ5eEkj1dCyx+t/ga6x2rHyc8Sl86oK1tvAkwBNsfKou3v+jP/l14a7DGBvrmlYjO
+ 59o3t6inu6H7pt7OL6u6BQj7DoMAEQEAAcLBfAQYAQgAJgIbDBYhBBvZyq1zXEw6Rg38yk3e
+ EPcA/4NaBQJonNqrBQkmWAihAAoJEE3eEPcA/4NaKtMQALAJ8PzprBEXbXcEXwDKQu+P/vts
+ IfUb1UNMfMV76BicGa5NCZnJNQASDP/+bFg6O3gx5NbhHHPeaWz/VxlOmYHokHodOvtL0WCC
+ 8A5PEP8tOk6029Z+J+xUcMrJClNVFpzVvOpb1lCbhjwAV465Hy+NUSbbUiRxdzNQtLtgZzOV
+ Zw7jxUCs4UUZLQTCuBpFgb15bBxYZ/BL9MbzxPxvfUQIPbnzQMcqtpUs21CMK2PdfCh5c4gS
+ sDci6D5/ZIBw94UQWmGpM/O1ilGXde2ZzzGYl64glmccD8e87OnEgKnH3FbnJnT4iJchtSvx
+ yJNi1+t0+qDti4m88+/9IuPqCKb6Stl+s2dnLtJNrjXBGJtsQG/sRpqsJz5x1/2nPJSRMsx9
+ 5YfqbdrJSOFXDzZ8/r82HgQEtUvlSXNaXCa95ez0UkOG7+bDm2b3s0XahBQeLVCH0mw3RAQg
+ r7xDAYKIrAwfHHmMTnBQDPJwVqxJjVNr7yBic4yfzVWGCGNE4DnOW0vcIeoyhy9vnIa3w1uZ
+ 3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
+ CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
+ qIws/H2t
+In-Reply-To: <au3CUJO9zBMHLx-B@gremlin>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A408FA001C
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794232292-623351
-X-HE-Meta: U2FsdGVkX1+CLJjmRKEpJmQG/YnLnPIzqfuLHNyjeaOenHD3ImlRJklnDp9BPSfTroeoG7l3UcfeRF+mV0SFyWJeiZh6UU/xd6l1kQ5T5CibRBrX50Y29jAt8fQjb0iC5gNyh6KWS3jSRNjijPJKdR1K1imzBwrzF/FsYERZCT35Dvdo8Xe5bKHAlT+Fl1UyfZCbuKUX6fNAUiNP0gmNUIwc8XXV1nGhN8qwYqzj4sFBdfl3HRD2gU7t9LoJlKogcPoWMWMk3l3t+m4TP+trP795PeAv1cdQ2tsdVRLQDCgiTgrtnyM3Bby6xKNs9cSYSWshGL/pITKQXW1SScxrd970fF5ZyzGPSOAvMHh7qsdNVu/Yj0T3yBg6hjKMp3ZqFJQ4KeFGQIomw8XuuYrW58AnaG54ssRTPN3ZOhRmzN9TsekXKvX5AlqXfUdHBvsHX1whgHyO/vSBOMhNj8k/OGPgZGZrI4XndNODi5rKrz+lzME+QziullHaP951B7afKyQkt87mA9GFdPntSQRIy2y7pAEr3Wydk4Q6eKKLBfAM9x+94n69u4TgYS+d6AYtEAVW78hC6G4h7SWpvn5xLL5rl6YYzQHpRGZ5Ng8flQC/Y2KK8qm0pMnNpQfbLdERw2+642JTs6Zn9aI/0KT/iJoiciYWOr9zXByEbyqgZMY2HpkR3vPzl0A5HTl1e5XfOe07MkUzAEi6+mxfOgQOq7m1bHYD89wIaflg43K2ea72KCuzGW6Ek6yeDN2o8U3nvDRy2PqW6dxqeC6dI0lu2A5jQm3/iHSX9wjylPhQTN5nxPf6pPbSey5i06x7jBLiGF5Xg9va4Euq0VxZEMPD+HEUKMUHp5T2DKKHFx5Fo5hroO7IEUJkgr9G22CHXIC6QDF4hE25ejc/33XI9hJFT5m7n591wNYVUNzQMygbZCOHLUe4i+kyOrXx1JPuyG3fPTDd0FN5Tse9WgztvjM
- K+6tcp1+
- RRSUtpodX2zjDvVi9PApS6qpvrl5B7P7UGPIAfb//aYWq7hhKE5EchXZnStYcWLOBfUoFFYsAeSNcv953luE2Q1rhdkdVcFiS58ilZWGY8AMc5d/6AR0/lenKIgjESv+vUvZe8v9EfN3wDJ3wF3X4ABn77grmU1XfK4EXzFb5eX9LM+AVcumGPHy+HShuySYUfMQIMrzp2NNpll7s8gfwn4uGgbuArXdFsOgUKUgW/pWJesogXlM/NTFg/4lYPxtdvhG+c5fc0J9ufXsBI9ZX2kTyP/tE0kAEIcyQawIaitueUiZkdXR2IAr4FFx3Kc1KoedUol2+d9J76b46W5ce66PpB0crfeGwHgZpcLY3jTkqK5hhQi8ZmrpRFA==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Stat-Signature: ngjf5rnzm5n7nxeuktg7b8o5kwdisxiw
+X-Rspam-User: 
+X-HE-Tag: 1794232896-695873
+X-HE-Meta: U2FsdGVkX18jFdinVqeduDpZdzW/48idfHw7hOr8TpJ2E/v7kdX976UoNAX33G2qjTUv6cIuy3FfZrHBVcYGKAjGcPmibklLEMM9InjqaNeeamV5wzx5jZ7gy8bB1reSN42LM8JVCGTdd0gP0uPxl9pGR8HV5XyuDqxNuQUed6HINPvAbkzdadneUhZFuK+5569bf7W84867ILSneuKW2dZTlP5P/V+EG+AweLgd/HEna2+TbMDxttDbyyyDrcnKXwLeBTZ+R7iluu5lNP4uwIcsCURPs84/8Ws/erB09v/0qHR8F9m3lUYLcyA9RQxo7WKHALxArv/Qv6bkmEZSZbc98ux6tDIA42U2rgCFG5r5N3FyMXR815Li64/ogYKmeG2JjremJkzj4dkHKnb1FCYs4nVFWAAtQGcKuCXQIPhH4jPBxn7ZrM9HKb78W9i+jEN6bnkZVdDLmjdxQC2khBpirpJHqxJrPJSfRe4DxLcnSS52dTYfvy34NVK9PiaCfxeIEqdJuxLfi97AxnhxcAsGLz9RQzntP9gk2KEsgapyffQ1iG4P9SVLvoLl1SaHfhit2Jou6uq952+j4sc6KEcuPAOFFJ5ij9ziu+5cqy+0OTT/jf2/OSLKk5zHPXJF5XN14qWA04M5Z3QFlL47a4Lgt8635i6V7WeCoo/s82I2fcD7Dv1Tx9pZgpMK/BKvfOYHrhNtYvWQBinaosiSufBgxKceZHqTJxVxDXjac0uFkSFWa6bbOcIF1Abi3KyC7DyXr4STsJmL2P2uQlM1IZCU4CBUVs6GGC2RvrDZuZbmiM65tsADYdNuZSuPbf4VuyF+0qN3zbkhReeIgjBmCSeREwtdMHu80dwSPWFxN6MHlHo3myc2CtxC7pi0/yh/v8i7WmDREqOMIuo0jhBSH30vNfgMtE7jXmIbrE5GAhWXxyJQlFOedHFU0vCvAVUlGF0O1fl9p/PZEVptbLU
+ 5fohZfi0
+ fsay9bmED5rthkLmgbgGIOFqgsg/aj/U0T4eotssNSNpQ7K/mInF7taHSFT6BsQK3Eaqe45LmVwHcVNEBTBpoF9NTj8gX8gyMXeRFwr03x4kQl4Zm49F0f1TPr+LjtRJGiQwth0k6X2i5Y7IxyGyJn2+ttMmNsn9bsS6k7A3ha2yTWp4Qb7tZPRqOVvV9A2Wf+ImXv8iAFwa8mACD75JkmSshyC8AClFdPJbDYh9g4IZ5cAGD6vMx7QYxObzC/kQO0Eeb6NXjig/DRKCEwSy2sWyG9oHj9RsXzk/N
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,174 +148,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-"Gary Guo" <gary@garyguo.net> writes:
+On 11/6/26 13:07, Lorenzo Stoakes (ARM) wrote:
+> On reflection, I think this would be better implemented as something like:
+> 
+> static void collapse_scan_mm_slot(unsigned int progress_max, ...)
+> {
+> 	unsigned int long lock_start = jiffies;
+> 	...
+>   	for_each_vma(vmi, vma) {
+> 		...
+>                 if (time_after(jiffies, lock_start) && mmap_lock_is_contended(mm)) {
+>                         mmap_read_unlock(mm);
+>                         cond_resched();
+>                         mmap_read_lock(mm);
+>                         lock_start = jiffies;
+>                         vma_iter_set(&vmi, mm_slot->address);
+>                         continue;
+>                 }
+> 	}
+> }
+> 
+> Which avoids magic numbers, and means if we hold the lock for 1-10ms (depending
+> on HZ), which is a long time in the kernel to hold a lock, AND the lock is
+> contended, we drop/reacquire.
 
-> On Mon Nov 9, 2026 at 10:37 AM GMT, Andreas Hindborg wrote:
->> Add an abstraction for the per-task allocation policies exposed by
->> the kernel through paired save/restore helpers in `linux/sched/mm.h`:
->> `memalloc_noio`, `memalloc_nofs`, `memalloc_noreclaim` and
->> `memalloc_pin`. Each pair sets a bit in `current->flags` and returns
->> the bits it added, which the restore call clears again. The pairing
->> assumes strict LIFO nesting; restoring out of order corrupts the
->> per-task state.
->>
->> Expose each pair as an implementation of a `ScopeKind` trait on the
->> tag types `NoIo`, `NoFs`, `NoReclaim` and `MemallocPin`. The trait's
->> provided `with` method saves the policy, runs a closure and restores
->> the policy before returning.
->>
->> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->> ---
->> Changes in v3:
->> - Rebase on v7.4-rc1.
->> - Replace the pinned `Scope` guard and `memalloc_scope!` macro with a
->>   closure-based `ScopeKind::with` entry point (Alice, Gary).
->> - Make the doctests compile and run under KUnit instead of `ignore`.
->> - Document that `NoReclaim` has no effect in hard interrupt context.
->> - Link to v2: https://msgid.link/20260605-gfp-noio-v2-1-cfa2e236c2a3@kernel.org
->>
->> Changes in v2:
->> - Rewrite the patch to use scoped allocation flags instead of exposing
->>   a `GFP_NOIO` flag constant.
->> - Link to v1: https://lore.kernel.org/r/20260128-gfp-noio-v1-1-9a808fc49b44@kernel.org
->> ---
->>  rust/bindings/bindings_helper.h |   1 +
->>  rust/helpers/mm.c               |  40 ++++++++++
->>  rust/kernel/alloc.rs            |   1 +
->>  rust/kernel/alloc/scoped.rs     | 171 ++++++++++++++++++++++++++++++++++++++++
->>  4 files changed, 213 insertions(+)
->>
->> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
->> index 3791af0aadc7..df21b5b129a4 100644
->> --- a/rust/bindings/bindings_helper.h
->> +++ b/rust/bindings/bindings_helper.h
->> @@ -86,6 +86,7 @@
->>  #include <linux/refcount.h>
->>  #include <linux/regulator/consumer.h>
->>  #include <linux/sched.h>
->> +#include <linux/sched/mm.h>
->>  #include <linux/security.h>
->>  #include <linux/serdev.h>
->>  #include <linux/slab.h>
->> diff --git a/rust/helpers/mm.c b/rust/helpers/mm.c
->> index b5540997bd20..1e490b57057e 100644
->> --- a/rust/helpers/mm.c
->> +++ b/rust/helpers/mm.c
->> @@ -48,3 +48,43 @@ __rust_helper void rust_helper_vma_end_read(struct vm_area_struct *vma)
->>  {
->>  	vma_end_read(vma);
->>  }
->> +
->> +__rust_helper unsigned int rust_helper_memalloc_noio_save(void)
->> +{
->> +	return memalloc_noio_save();
->> +}
->> +
->> +__rust_helper void rust_helper_memalloc_noio_restore(unsigned int flags)
->> +{
->> +	memalloc_noio_restore(flags);
->> +}
->> +
->> +__rust_helper unsigned int rust_helper_memalloc_nofs_save(void)
->> +{
->> +	return memalloc_nofs_save();
->> +}
->> +
->> +__rust_helper void rust_helper_memalloc_nofs_restore(unsigned int flags)
->> +{
->> +	memalloc_nofs_restore(flags);
->> +}
->> +
->> +__rust_helper unsigned int rust_helper_memalloc_noreclaim_save(void)
->> +{
->> +	return memalloc_noreclaim_save();
->> +}
->> +
->> +__rust_helper void rust_helper_memalloc_noreclaim_restore(unsigned int flags)
->> +{
->> +	memalloc_noreclaim_restore(flags);
->> +}
->> +
->> +__rust_helper unsigned int rust_helper_memalloc_pin_save(void)
->> +{
->> +	return memalloc_pin_save();
->> +}
->> +
->> +__rust_helper void rust_helper_memalloc_pin_restore(unsigned int flags)
->> +{
->> +	memalloc_pin_restore(flags);
->> +}
->> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
->> index 68d80f3fa6c8..5e4c142b5682 100644
->> --- a/rust/kernel/alloc.rs
->> +++ b/rust/kernel/alloc.rs
->> @@ -6,6 +6,7 @@
->>  pub mod kbox;
->>  pub mod kvec;
->>  pub mod layout;
->> +pub mod scoped;
->>  
->>  pub use self::kbox::Box;
->>  pub use self::kbox::KBox;
->> diff --git a/rust/kernel/alloc/scoped.rs b/rust/kernel/alloc/scoped.rs
->> new file mode 100644
->> index 000000000000..6745c06d6725
->> --- /dev/null
->> +++ b/rust/kernel/alloc/scoped.rs
->> @@ -0,0 +1,171 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +
->> +//! Scoped allocation policies for the current task.
->> +//!
->> +//! The kernel exposes several per-task allocation policies through save/restore pairs in
->> +//! [`include/linux/sched/mm.h`]: `memalloc_noio`, `memalloc_nofs`, `memalloc_noreclaim` and
->> +//! `memalloc_pin`. Each pair sets a bit in `current->flags` and returns the bits it added, which a
->> +//! later call clears again. The save/restore APIs assume strict LIFO nesting; restoring out of
->> +//! order corrupts the per-task state.
->> +//!
->> +//! This module exposes each policy as a [`ScopeKind`] implementation. [`ScopeKind::with`] saves
->> +//! the policy, runs a closure and restores the policy before returning.
->> +//!
->> +//! [`include/linux/sched/mm.h`]: srctree/include/linux/sched/mm.h
->> +//!
->> +//! # Examples
->> +//!
->> +//! ```
->> +//! use kernel::alloc::scoped::{NoIo, ScopeKind};
->> +//!
->> +//! // Every allocation inside the closure behaves as if `GFP_NOIO` were set, even though the call
->> +//! // site passes `GFP_KERNEL`.
->> +//! let b = NoIo::with(|| KBox::new(42_u32, GFP_KERNEL))?;
->> +//! assert_eq!(*b, 42);
->> +//! # Ok::<(), Error>(())
->
-> I think this usage looks a bit strange, especially that you have to import the
-> `ScopeKind` trait which is a bit awkward API.
->
-> Any reason to not just have API like this?
->
->     memalloc_flags_scope(MemallocScopeFlags::NO_IO, || KBox::new(42_u32, GFP_KERNEL))
->
-> Added benefit is that you can just define different scope kinds as bitflags:
->
->     impl_flags!(
->         #[derive(Clone, Copy)]
->         pub struct MemallocScopeFlags(u32);
->
->         #[derive(Clone, Copy)]
->         pub enum MemallocScopeFlags {
->             NO_IO = PF_MEMALLOC_NOIO,
->             NO_FS = PF_MEMALLOC_NOFS,
->             NO_RECLAIM = PF_MEMALLOC,
->             PIN = PF_MEMALLOC_PIN,
->         }
->     );
+That approach indeed sounds better to me regarding lock contention.
 
-Sure, we can do that. It's a bit long to write, but I guess that is OK.
+-- 
+Cheers,
 
-Best regards,
-Andreas Hindborg
-
-
-
+David
 
