@@ -1,126 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6492A606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 15:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0C7606A32A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 15:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=D63BpG3L
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZD2W6ANq
 Received: by kanga.kvack.org (Postfix)
-	id 7AF5B6B05B5; Mon,  9 Nov 2026 10:26:51 -0500 (EST)
+	id 178BF6B00EF; Mon,  9 Nov 2026 10:53:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 760176B05B7; Mon,  9 Nov 2026 10:26:51 -0500 (EST)
+	id 1512B6B05B0; Mon,  9 Nov 2026 10:53:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 64EAF6B05B8; Mon,  9 Nov 2026 10:26:51 -0500 (EST)
+	id 06A6A6B05B1; Mon,  9 Nov 2026 10:53:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C50B6B05B5
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:26:51 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B9D0C1606DE
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:26:50 +0000 (UTC)
-X-FDA: 85415958180.25.5490556
+	by kanga.kvack.org (Postfix) with ESMTP id DAA0D6B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:53:38 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7CCDA1C4013
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:53:38 +0000 (UTC)
+X-FDA: 85416025716.24.A221946
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf31.hostedemail.com (Postfix) with ESMTP id B187320002
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:26:48 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D63BpG3L;
-	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794238008;
-	b=5Jw61o0gcJSGqYZ4AuG88iLGoB5nfAGfoQ/hX8iBLQpMbGdnIU6M2bUN3tRcDmGZh3oxPY
-	gyY8gPpLpE+ZjJNltUvOjD4pKO5z7c4ZlhC449zsG4pv10z8rJD4pyn3GF6eoVxG3OSZmH
-	KddcNDNgha+7eN43LG3S1cDiuDseikY=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=D63BpG3L;
-	spf=pass (imf31.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf26.hostedemail.com (Postfix) with ESMTP id EB170140007
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:53:36 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZD2W6ANq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794238008;
+	s=arc-20220608; t=1794239617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=asWzf2+UXk4RswQoUFEg3HcDx7Ooefood5koUbks5Pw=;
-	b=VC749wkzrnPvVYXlURj2ur7UqcRev3GP0YtMXoAnLriyInhg2+IxrKBb5025grCsohsn7E
-	OrHESU8iuI1SMAKol6ZD4cBvMKn78StoNeT3AHV9wR651514YbvQ/lGqF3/tqGyL6fsdqn
-	B6R3C9XX6lC2T7hHj2AMly0KLToBiSQ=
+	bh=YbGDBqU4nxW38rvN5cjz46VE+ozOGhYAeWZw2r2wWtQ=;
+	b=Wu1baGLw9SCv+SWj01FVl2DBU+Isg9NfFjnPsTNjQHAxM/weDBBoqK86+jSIPFrhr2ZALz
+	drnoHXjIX6LRs3Cmn8iIMVhiu0GabbsRCdulhJYdKeN8Hv5RrUatRRFSaYE01ipJ8uXSVM
+	3QDGSgsIx0sMBIGDkcZ0aOzzJap2bw4=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZD2W6ANq;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794239617;
+	b=UCbW7fr+4bEqJpRnV8DAGf0e6LZIrIMdj2hAyq6iWz1sU5nuug+QAhE5W/dM1zUGkQvINV
+	G82qVMQNfaH3PKhE0+Re9rxxAlfI3jqMihy/Bb28hwRW9YmJDbHPEhlWLyZfxcU1D3V3fL
+	7AqaEnrb0TvUWHvcqd19GlbTjYUBtVg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E78E561183;
-	Mon,  9 Nov 2026 15:26:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4FC1F008A1;
-	Mon,  9 Nov 2026 15:26:46 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F78163379;
+	Mon,  9 Nov 2026 15:53:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78E61F008A4;
+	Mon,  9 Nov 2026 15:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794238007;
-	bh=asWzf2+UXk4RswQoUFEg3HcDx7Ooefood5koUbks5Pw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=D63BpG3LlxVxyNM9vrDuoWlOnfevHgN2GeyBpkEg4Nb2i8d0rtnvuBdKwx382gfiU
-	 L/VPXdlcMJCqd3q3arwoLzHEmP4/E0bNdoWsLuraMEvdWbs03Hhfb0wx+p2hwBh1Cs
-	 dNMvfrZ1CAK8+RtA+u17BVvq5cAL35cTdS2M5rbuOPmy3w1hu7GU0k5+gyldsI6tR1
-	 Z+L6URWnXctpBOlcs3Nv7TU/XP0/3drWDqhf7AV6PpUxnqAmEIPMKcqk9QeMLDdNOq
-	 WWNpEl4km/aENbJpOdAbTbhCL0VmFD1PfeQLusedm/RFZWpgXt9roJPrW4+k4fkxEH
-	 DH+J5ukDw5org==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 69F59198003A;
-	Mon,  9 Nov 2026 10:26:41 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Mon, 09 Nov 2026 10:26:44 -0500
-X-ME-Sender: <xms:MObxaj3HuNElXR88n2fGY8f18V5fMs1ReeNXEzVOb9TXJBRMa41jHA>
-    <xme:MObxarR4phJyHNKXVDt2aSVmBvW6TtWbJ95ey3izxgMxoL6hLgjIJXEZJUaYSnm2J
-    jueqem3Z_Sw8Ti13ZlFKFloQ42r6xxRc6GA7-Khl7spjGHpq__QawU>
-X-ME-Received: <xmr:MObxaoJPMHwFovSeKyBGLLIFqADFqQS4oqF7Xpk0wDfhd4ebAoMRPG3Kj5g>
-X-ME-Proxy-Cause: dmFkZTFsB1wl+SZijovTOdQmTWcJflC0w37VJalRRewiWniznqePFWh2dph+ba66rHa3rp
-    UY3KjOfMosjnWlCDYVkl/UEar8H8ytgzKVGrpzw3Oa05+uXuJKbkavCb6L4z4wwQg8jIQW
-    sOtqku/3BHy42OpLTIyypz9+RzjjkMPkx9ODI7ystBB193bd+XwdneWq6uyDZLqXUvKfE8
-    7ME4WecH9YMmoW/iNOZjEkz7yJhfjRyvyo8B1YMlgzL/mx+Nz1cZQDR/lvRr/b9xVeTaYF
-    51emEKpnAMhOLN9MQlOWZny+gEBpyGKNdafaxzSRx9xyfC4bJ4xinSD8o/kVCYE5dAUWRv
-    AyhC1+uSa51AGck/rdqkaCW02T0UqJeyvYprzmgmvtBiUpG8keo+fsSKuGnUpdy74zI4ag
-    4XhWnxgZK8a3kEpUPY5yIElxaLLfcM0pLElYTpPrDTef3C6R9SrpJ8z6h4yeidEB/nWtw+
-    XAGKEV1wCL5blcfEW0AHcy2bUnwrmD32nqhVhbrx4+wjSxf+Jjv5H+82io4DWhFpXG6pR6
-    I999cy/qGVf8apauXHSfT6SpErnDD3CUmuI7m01bz9u/iLOQXstE2Vgk1AL4hD/qhSOVOs
-    d2VdiHOyQyKuy4sFHwZ88yD4p+4xhOF0ekQ8FtAPMAL2+SuH3U9cS4qFZt1A
-X-ME-Proxy: <xmx:MObxaumoQF9TLCdX1x-FyLti5FLln9oZZnt1YgCkrKyWxjurK3R-2g>
-    <xmx:MObxahh4RDmzTkFCHQz3n4GQyl6RW_oRa46XL6f6plR1YcM9j0S-hw>
-    <xmx:MObxakqm3NwEiPt5uZoKeRrDj4NatGB_QI7McgERiudmtO--IDuNNg>
-    <xmx:MObxagvZSwSdkW63tN_kcHRVYFVWV1QGbfxl4ImgS7xUZaLb35pVZw>
-    <xmx:MObxases-Bn1IqbGqOJ1DEEhY1BxA3tWEgKS9lranEJGaC1CA7Z5lM0l>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 9 Nov 2026 10:26:40 -0500 (EST)
-Date: Mon, 9 Nov 2026 15:26:39 +0000
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Brendan Jackman <brendan.jackman@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Ye Liu <ye.liu@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] mm/huge_memory: prevent losing PG_waiters in
- __split_folio_to_order()
-Message-ID: <avHktSBkWvQSakji@thinkstation>
-References: <20261106-fix-split_folio_to_order-race-v2-1-1b59c67b8af3@nvidia.com>
+	s=k20260515; t=1794239616;
+	bh=YbGDBqU4nxW38rvN5cjz46VE+ozOGhYAeWZw2r2wWtQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=ZD2W6ANqH+nwDuzFgWpsFsA1zcRkNWiLxO/AHawwaWKnymA4Do/F+Yk/v4oqUYWjD
+	 v+fCAIHVschbqevMzl0HOkMedPkWkRMeOpbmBfb/l18Nz9xSx/doUHrxhU/N3FLJk3
+	 HUytSJv7gwmtQsUOPZjjZnZX/4XbF3JJqhZIabx3+AX2mJ7lieg0pupBpmIMIKMOha
+	 CDfeZgIMepWKOrYYoVVWxyuF+jyYn7+xYKKzdQ9FaMxOq4APVpl4yfCAPDmOVjPtKz
+	 4P3adLtS9aofXJYW+yUHUHfsRffabDS+NsC2T1ahdAYiX/1Yt6naGxIwEHJihk56M9
+	 NMk2DZfM1UNtQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	SJ Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@davidgow.net>,
+	Quanmin Yan <yanquanmin1@huawei.com>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Lian Wang <lianux.mm@gmail.com>,
+	Kunwu Chan <kunwu.chan@gmail.com>
+Subject: Re: [PATCH 6.12.y v2] mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total
+Date: Mon,  9 Nov 2026 10:52:51 -0500
+Message-ID: <2026-11-09-1-daily-reply-0009-damon-psi-6.12@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261109011347.92467-1-sj@kernel.org>
+References: <20261109011347.92467-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261106-fix-split_folio_to_order-race-v2-1-1b59c67b8af3@nvidia.com>
-X-Stat-Signature: s11w7pydx5cureiqw77tjbgxo4hcgax7
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EB170140007
+X-Stat-Signature: buffm5uqqc8dwpkgwwam8mu44w4xbu3a
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: B187320002
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794238008-117176
-X-HE-Meta: U2FsdGVkX1+I3QOYY6/Vp2vxDczr/UluRe2x6FE7wi8EM+6n+rigU/eZKv/8Ao/QUTmp/pnFoLevg88vkEZy9y+lXYL3F1VU3a1DcD924/rg/ldjjEwEGYsYsaBFlNPGT43NMQLykouNv5K2KlsQ6Z4QhpWUQD6NDXgdCVlMKEnRbx+gPA6Ji3rdD/CNZ4ESMxJu1czq/yhkPAc8pI2YKDrPGoifG24PPscrxzLM4v+PBxbHpp9fDZWTparBpFb12tbSq/NwDdrVEchdIUPCCl2yVcocQs7bnTyfOPrM3rinKpaS/bFbNlWNtWYTY2j2PYGDDgxP6YS40jSDVmG2H6wSLqn4W6yjvRX1+7vMZn+q92lgz1UsqPJ38sGOdLPw5jRZ00/4nN7yHRItdrLEMthM+qibHbG9bjKK0NwpqRj2DSvPXGFNOOXH1NoBz3DMX/qxN3OKisKb6K1BUOqe04zaqLNt/1rA0iNgMCG3fs0c4Xsc+6BYZZeGyZCnvO1/K7vavizEEGWw5QolqVG0Eym0t1ubcQA/ip8cD/VZfSlHCPycHg7xiRznnjyVbsc6+G1E26RhNmGSOjauhQH/kEnd5krjjDA9dv0a2pOApwrU9c+QRFZcgoGHAXd75XmftfTxTHHs8Cl9jUTvkk5PahGTXK9UEfAh7ZvmjWroiDTFctPc9nChpBY53Z/Fm0BDEzNU+1Rg1tdbN/QDjThUD3k02O1EDIV+X+D3NIsO75rakAsuyP7Ge2byHbLgjHUf++V2oz7i7Et5tufheJuz5mnC7FwfTAkzz+MpdfaBhwW8hiEtt34qDDHKW+zNmoLOcTtrvo41XHK5pxwuvhUe8j8joWIAQdgrKkQZDBDlKcg6VwAqQg8LtrCbq2g9XL35U/fnwW3lwXzL7RbbRCupBxmh4yJfyu0OBuirZ8R3BeAjJUi2YHxWO5LA/1QRflTQOYKQ/EAadh8mArEW8gd
- lWvJQeUL
- V25/mwRVq7kqYah3vjghkeLg4kc2GklFh3KnomxGDrPsbudY7cRlYVIQy9+MquJBge5RBokdw2Ir+NyqArsLPs7fqMvD6i72x3XCKCQedmxfKqrJOQAq3bN7Xyg88qqFpAGYbYK43Ujw/T/A/DsXsmkUnT6BsmZ9CjgYkMP71qSfjyj6AP2Oy5SdR6+RKh60JRYfCtYHHcMZeaotkfSjzNekCzw7jAZYMCz5FR+FqDkJnv7ELhIfMI1rdPu6BP+UvbHWd+15hFUdFGr9Av/huUEboRsP4QWs9pqFpNN/yYta6rBufdJ0A859Rj/PzACMyz13yq6ZpVxDE/zrkRFFGK6b4hPDV5mumVkCShZjUS8QGsdIz3JbbyPCKyQ==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794239616-560775
+X-HE-Meta: U2FsdGVkX1/0c79lUGXEbws5+2IRWJcCOc2YGz9WCkA4lGG+PoLpSsaOVl9mX3od+bXwAUppg4oTSbIl20quBUXFumoWj+jZcsVIzNlYmEg/zPXPF9meO0ikJLdSXGIqawtrMBFGdaMq+73dta5oY33/pJPo7XkkQTyoNAziHzJMw7AX64gkBTvjejVbc+iL2hBXcghoegZPb/xjCs0JgqQMB9gMmI5XKCExYgcQ6t2uTUrmNt/Z02lBXTab4HDrI/Spm8GayBWwSaafJDKxOR9Bi6IsO553pfYqoISGWrelAmA/mq1kur+xCCFZfzGONnJPV21iCrisaVUkBTBbEqtKUxzTUMZ8CJzpVTD4x3mrOIDu2jOuTCYZTYf8Rb0iYOKeELivvRe9ICHvKdOyz89187bfSJXagtEhM1CsuR5h2e6SdvBXXHKszEmLWbuFfLFwGhzjyb1r1+iTIw1Oh1nU8gHvsUyI0K+NER6mkT+ctYlDed4IMrDN3Skac0Lm00I87qVPb0l86TcntsGB+uBQQsHe6oPDHuIRKF5XXHyQxxYIgwO1p4xQnav1pBIxogC6q9gBNPHFGAxP9hDPzo5SrICLH3Nyy0cIgs+7Ema+9FkimkCMtzYO93Q3s1BCSuVHF49HCflZ21E325DKdJhjEOu4f1+p1SUt16fG0uMR1sq/o2K+7vNMlhLu7A4PHV7T1omq3113s8DIwKbh9vgddHsGtxJy3XUJQWlA5gW0HPOPwhKfh6e9/uekwkmh4Rx8vgRLe7OC7m9RDtTDbAxswCreNQH1dZQnGHKh8MtfqrXLtbSoUs6XTNjjcI2cBPSMsOzU80ZkHTRwQk9R9DyvPcXRsbM157W5M56F19h4wN8R9UDhYkliVw1R4rTba5fBPvFIgTCrjMS44QujBFNAexk57qjUslI3YS9YSEq84kIoqdKyV5mlifrUEs66JbJc1PaXawYJGdep38M
+ Qdq3FPzP
+ K1k+4VUpiGq5yP/RNXt/7Sb98TfkQXZHJSD1pNrXRgUMInk8P692VRpN43OWionGPDk9DMlgMKX8s7bPjjLcQBMInwHAry16GJumIkU8IWiz38vie/Scxsc759J0JjrNxq0Afrce25faCfdQVYUljVLHOUzKe9CQ2UPJDNopbqWAaET7d2WoNRfaY6BbhJBjmqRWH29GsOuZYudzhKc5PnQRRkjOGXdjNZQOlT3oshpV+rMiQevLB0eiEzct0asV8Vs+5DM+EOACsiZow9CP3rqbdcfU1/vk0kQswTYbyQ+sFbolXkmmnlBVA2iZYjXKfBp3sSXomBS+2Xb4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,179 +102,11 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Nov 06, 2026 at 01:28:46PM -0500, Zi Yan wrote:
-> __split_folio_to_order() calls prep_compound_page() on each new head page
-> to create a compound page after clear_compound_head(). prep_compound_page()
-> uses non atomic __SetPageHead(). It is mostly OK, since the folio is locked
-> and frozen and no one else is supposed to modify the folio's flags.
-> 
-> However, code calling migration_entry_wait() can reach the folio by PFN,
-> then access its flags. It is because softleaf_entry_wait_on_locked() used
-> by migration_entry_wait() sets PG_waiters concurrently without taking a
-> reference and the frozen refcount during split cannot block it. Meanwhile,
-> __SetPageHead() does a plain read and write, so PG_waiters atomically set
-> by softleaf_entry_wait_on_locked() will be lost if the set happens after
-> __SetPageHead()'s read and before its write.
-> 
-> One example code interleaving:
-> 
-> CPU0: __split_folio_to_order(new_order>0)  CPU1: do_swap_page()
-> 
-> 1. clear_compound_head(new_head)
->    new_head->compound_info = 0
->    (page_folio(new_head) == new_head now)
-> 
->                                            2. migration_entry_wait()
->                                              softleaf_to_folio(entry)
->                                              page_folio() -> new_head
->                                              (not the old head any more)
-> 
-> 3. prep_compound_page(new_head, new_order)
->      __SetPageHead(new_head)
->        tmp = new_head->flags.f  <-- load; PG_waiters == 0 in tmp
-> 
->                                            4. folio_set_waiters(new_head)
->                                              set_bit(PG_waiters, &flags.f)
->                                              enqueue on waitqueue, sleep
-> 
-> 5.     new_head->flags.f = tmp | (1UL << PG_head)
->        <-- store; overwrites step 4, PG_waiters == 0 again
-> 
-> Later, folio_unlock(new_folio) sees no PG_waiters, skips folio_wake_bit(),
-> and CPU1 can remain blocked indefinitely.
-> 
-> Fix it by adding the atomic version SetPageHead() and
-> prep_compound_page_atomic() using it. __split_folio_to_order() uses
-> prep_compound_page_atomic() to avoid the issue without adding an atomic ops
-> to other prep_compound_page() users.
-> 
-> Reported-by: David Hildenbrand <david@kernel.org>
-> Closes: https://lore.kernel.org/all/DMHE8BEEER1H.2BIY52NXATPIA@nvidia.com/
-> Fixes: c010d47f107f6 ("mm: thp: split huge page to any lower order pages")
-> Cc: stable@vger.kernel.org
-> Acked-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
-> The issue was raised by David when reviewing Ye Liu's "mm/huge_memory: use
-> READ_ONCE() when cloning folio flags during split" [1].
-> 
-> [1] https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331291c1@linux.dev/
+> mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total
 
-Sorry for late reply, I only now got to this.
+Queued for 6.12, thanks.
 
-Setting PG_head atomically on its own looks odd to me. The comment above
-smp_wmb() already says page flags must be visible before the page becomes
-non-compound. prep_compound_page() writing PG_head after
-clear_compound_head() is what breaks that.
-
-Can we build the whole flags word for the new head, PG_head included, and
-store it once before smp_wmb()?
-
-After clear_compound_head() only the tail and head setup is left, and it
-does not touch new_head->flags. Then SetPageHead() and
-prep_compound_page_atomic() are not needed.
-
-This was option 2 in your analysis[*] on Ye Liu's READ_ONCE() thread,
-but I don't see a barrier problem.
-
-PG_head gets the same ordering as the cloned PG_locked, and
-softleaf_entry_wait_on_locked() already relies on that through the same
-smp_wmb() and page_folio(). The new head carries PG_head for a moment
-while it is still a tail, but page_folio() only looks at compound_info.
-
-Reading the old head's flags with READ_ONCE() while building the word
-would also cover Ye Liu's KCSAN report.
-
-Something like this, on top of the v2 base, compile-tested only:
-
-[*] https://lore.kernel.org/all/DMHE8BEEER1H.2BIY52NXATPIA@nvidia.com
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index bd44d58e8684..53786b2abe89 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3714,6 +3714,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- 		 * Don't pass it around before clear_compound_head().
- 		 */
- 		struct folio *new_folio = (struct folio *)new_head;
-+		unsigned long flags;
- 
- 		VM_BUG_ON_PAGE(atomic_read(&new_folio->_mapcount) != -1, new_head);
- 
-@@ -3730,8 +3731,8 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- 		 * unreferenced sub-pages of an anonymous THP: we can simply drop
- 		 * PG_anon_exclusive (-> PG_mappedtodisk) for these here.
- 		 */
--		new_folio->flags.f &= ~PAGE_FLAGS_CHECK_AT_PREP;
--		new_folio->flags.f |= (folio->flags.f &
-+		flags = READ_ONCE(new_folio->flags.f) & ~PAGE_FLAGS_CHECK_AT_PREP;
-+		flags |= READ_ONCE(folio->flags.f) &
- 				((1L << PG_referenced) |
- 				 (1L << PG_swapbacked) |
- 				 (1L << PG_swapcache) |
-@@ -3749,7 +3750,16 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- #endif
- 				 (1L << PG_dirty) |
- 				 (1L << PG_dropbehind) |
--				 LRU_GEN_MASK | LRU_REFS_MASK));
-+				 LRU_GEN_MASK | LRU_REFS_MASK);
-+
-+		/*
-+		 * Set PG_head here, not after clear_compound_head(): from then on
-+		 * softleaf_entry_wait_on_locked() can set PG_waiters on new_head
-+		 * without a reference, and a plain write would lose it.
-+		 */
-+		if (new_order)
-+			flags |= 1L << PG_head;
-+		WRITE_ONCE(new_folio->flags.f, flags);
- 
- 		new_folio->mapping = folio->mapping;
- 		new_folio->index = folio->index + i;
-@@ -3779,7 +3789,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
- 		 */
- 		clear_compound_head(new_head);
- 		if (new_order) {
--			prep_compound_page(new_head, new_order);
-+			__prep_compound_page(new_head, new_order);
- 			folio_set_large_rmappable(new_folio);
- 		}
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index aeebb3e49ed1..4ce67ce2f3fb 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -807,6 +807,8 @@ static inline void prep_compound_tail(struct page *tail,
- 	VM_WARN_ON_ONCE(tail->private);
- }
- 
-+void __prep_compound_page(struct page *page, unsigned int order);
-+
- #if defined CONFIG_COMPACTION || defined CONFIG_CMA
- 
- /*
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 143776e671ab..37768fa5341b 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -683,11 +683,17 @@ static inline bool pcp_allowed_order(unsigned int order)
-  */
- 
- void prep_compound_page(struct page *page, unsigned int order)
-+{
-+	__SetPageHead(page);
-+	__prep_compound_page(page, order);
-+}
-+
-+/* Set up the head and tail pages of a page that already has PG_head */
-+void __prep_compound_page(struct page *page, unsigned int order)
- {
- 	int i;
- 	int nr_pages = 1 << order;
- 
--	__SetPageHead(page);
- 	for (i = 1; i < nr_pages; i++)
- 		prep_compound_tail(page + i, page, order);
- 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Thanks,
+Sasha
 
