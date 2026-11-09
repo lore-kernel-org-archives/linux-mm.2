@@ -1,71 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B23606EE82
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 16:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189E660A5BC5
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 16:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=d4mirWSg
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=TlZPPpIu
 Received: by kanga.kvack.org (Postfix)
-	id B72626B05BB; Mon,  9 Nov 2026 11:01:09 -0500 (EST)
+	id 04EEA6B05BC; Mon,  9 Nov 2026 11:01:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B228D6B05BC; Mon,  9 Nov 2026 11:01:09 -0500 (EST)
+	id F41496B05BD; Mon,  9 Nov 2026 11:01:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99C426B05BD; Mon,  9 Nov 2026 11:01:09 -0500 (EST)
+	id E09176B05BE; Mon,  9 Nov 2026 11:01:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 78E176B05BB
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:01:09 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0EA1DA072E
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:01:09 +0000 (UTC)
-X-FDA: 85416044658.29.4F080AF
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B23586B05BC
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:01:14 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 27B2F1C3F26
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:01:14 +0000 (UTC)
+X-FDA: 85416044868.21.9BEF005
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 20BC71C0005
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:01:06 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=d4mirWSg;
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	by imf07.hostedemail.com (Postfix) with ESMTP id 34E9F40011
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:01:12 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=TlZPPpIu;
+	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794240067;
+	s=arc-20220608; t=1794240072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ySuENrGpUqjNOnPLgMFrEVBetZNZ5PFApDQ/o4nKV7Q=;
-	b=pmVvRBTyiO6ZDPF4+QOsAJbv4OOK5WU4As4eyTHrPsrWp1hpZ/zF0zs6eTxCOZruqNn0K/
-	qdAD4whmL3zzd0VroM2ZU2ckaHoAKYjehBPv6WmNageKWSVlmqYlgQQV6N74+zZI5liBOE
-	GUDkDuxGnOQVVY6/f6Vmpnv1Jh+d5e4=
+	bh=btt91I3qkVKycKN2iTEdAlTvCKoqHGuYdHT3imsqzq4=;
+	b=zO1/lzYXlAGMMp+wwkF5dCyLl7XUCY5ZtpZaulAmQ3Sp+2vaRP8R32lvDJJNLps5Jqzkmd
+	H0GazpA9co9bKYwx6uJbbvLUDb9jwEsnAuSES4UQilD2Bb4ls0w/qog5NkU7TTjbuTSuPQ
+	sgf1Sj8z5Ge2Sh8LTHZbE5Y2iJ1gu6Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794240067;
-	b=z3ZHB1XraZd1aeyqCs9+LqdR80cHdhej5Y3ZkNE7tkakqumji8Ijt4a3IqTMba9/5Ydqof
-	omsHOuLnOWN0daFMyJf/ifeWuxygh6Rb8SfXcuyZ4EzOSJX211N/PDsGhoxvx3l1BrpF/C
-	zhjoMkZauh4bEAED0gCChzsc5tB4KfE=
+	t=1794240072;
+	b=NqK82lquZ5rzI8lIYYSAD0STmqYMPl+mkN8u4OD22T8yYRpssvpp+7n0IxpzufLtVx9dXu
+	nBRU+Ou/R2N02IkwHPv18P7sF8l/tfWM55FXzeG+3lJKE5e91QqSi29t4zWl70gl+xseTD
+	7T157IKPzX9NcrgKSlw4MMvF6jbL4BU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=d4mirWSg;
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=TlZPPpIu;
+	spf=pass (imf07.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2D08314BF;
-	Mon,  9 Nov 2026 08:01:03 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6469014BF;
+	Mon,  9 Nov 2026 08:01:08 -0800 (PST)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E7A73F632;
-	Mon,  9 Nov 2026 08:01:01 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 834683F882;
+	Mon,  9 Nov 2026 08:01:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794240066; bh=ME8w8wWVjC6kFFTloB33po9XzJ2RJqfmLmS2WG/lKf8=;
+	t=1794240071; bh=mOcsxuhd+SBVwiebOzIYBEP81ioeefXUqmJIoRAwM7k=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=d4mirWSgxEi/JKu2hm3pp69pzDfwTMhGF+FxTJjtWYJGttTFyyMTaLtQF/oOiyJn9
-	 h57+SBa9UM84EVZ5zS3Ap4mgf+iwD0lxSqxx1XC/tvqYGFdzzGa5mf+CX3SaCBrFAs
-	 nuOU8SkMYKk5YSjml0jU4OLWE+u4Rf23ebx0aWdw=
+	b=TlZPPpIuSAP4I+z+O/V0g8YhQgOIXJl6Swij87O2nM0jC0yFMqzP4RnfBDhA0K2Np
+	 zmenIGRDNNxgb7EkMlF/p+DzoptibtBufaC0+Z5nwO7L9q+HCuGpXOjPZRSyhynVh1
+	 hhvLy4QHJR7+kuEIs/mMW0IpVln0Rc0+cAtMCVYk=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Mon, 09 Nov 2026 15:58:31 +0000
-Subject: [PATCH RFC v10 06/22] arm64: Disable EL2 trapping of POR_EL1
+Date: Mon, 09 Nov 2026 15:58:32 +0000
+Subject: [PATCH RFC v10 07/22] arm64: Initialize POR_EL1 register on
+ cpu_resume()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-kpkeys-v10-6-aa6c4d9603bc@arm.com>
+Message-Id: <20261109-kpkeys-v10-7-aa6c4d9603bc@arm.com>
 References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
 In-Reply-To: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
 To: linux-hardening@vger.kernel.org
@@ -93,25 +94,25 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  Ira Weiny <iweiny@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  Thomas Gleixner <tglx@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794240029; l=759;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794240029; l=1238;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=ME8w8wWVjC6kFFTloB33po9XzJ2RJqfmLmS2WG/lKf8=;
- b=rL512vL81TftsgVlNw/YWtwNuWTlsI6Cej/ghKNCNj73xPNjGm4Cg71LdhCcqnj1mhqyTW3HF
- I/KR6KaqUYRBomiLeE6iHzlv6Nr+WcGKvkmbY0SilOz0QDq5L3+GWlM
+ bh=4EcOfPYkS35WfcSTzCjV7Pft44Nt32DKIqSeTlSaAlM=;
+ b=aF1hedIOdeeWnADYrxt7bKksACglTWRg1rdNE6Tt2euac3s0EchtRVpNYwIndfJ4IH5PknKuN
+ icAYPbNLp7LAakUjUWc2ZYtxrMWslhblR5VgrliKrZYqBjuZmpAYHAn
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 20BC71C0005
+X-Stat-Signature: ueq1t4ihm1s6jnj3ijyaq5gqx8n185i5
+X-Rspamd-Queue-Id: 34E9F40011
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: y98wo3rwck9x5inqy18twicyzzcxqz7i
-X-Rspam-User: 
-X-HE-Tag: 1794240066-415458
-X-HE-Meta: U2FsdGVkX19oAqxUYE/JdfmUIgKpNmPj/xlBAQdtVi5PlErENiJ/moOmgdeQ9HuBImlqoepR2xovGMar9/rIgRtjSZ+tzmle6MXrR29mL4dyVZTx3X6BJl1s5tJSWXDBD7KW7rgvfWLRXio7RZ/x7vmK6l7lqCk5e8SKFxAWfdv4xMYHbSpQ7yIGaNM+eDdLLd7gnOMoIxg65ZZeHmdFqBvgtw24AMJaLOPhhnFz5/3iRY7gqwESMlgn9q+hJlpf5N0oVQOG6494akjNUGU3gasCRo/wUHArdTjAWIToZsqVTx4cHQlEUHPZADAsaATJGCXe1mGR6gXicn/vmUPArO3q58TTaGJpkNCOlmiOROaB5EmYvcIxnFCsKYQQZAKVxwUzDRmx4mnUC2XeMU1INny/NW8LMgAKyckNGpe22vJm112DmcJLJuXZw4YeMkTAyeON1gXn/cMqYbp9ufa0ZgOr28sqHSBsjeUxixRP7ktggMBz23rTN99dKj4CA7pb83fT3DUZVsBKzhAETBbGYyNmzHvSDLPTQv6Dxac994tt8+4PRsjNCfaLehMJZVdTg4LJQzg2Av3ezab62uwju6EOXa3LThHkaKGNO80fsoyKokLe/qrFzp3gHYP6fmdWXEQ4iYsbJ04r1C5xKsGm4KPRh0AUOghJNZ4hDkqmDwTHiLyJMz03eVmwhwnqFLzBFnxKKxGhL6eEOMqUkRDwhhMLkpO4RMsZgtfQhryyGc5dhbyKQnFKuKQfwkrgsvqEMYEBM4795GifFSrYcjxZkPDWWhWKYAh6Pm9/Jw+Jq8IbpBGSjFFJoNr6tKlNnFNXq2aqlpLiC+J14tGs2wemNrsxLN8yUUpqFaC/LpAClrBFqO1TkBGPemlEIsYzBErHxeQ61qOrun9XsqhPcS7hG96ZsHKLlWOzSh8pJr3C77Bn+c4lc2+dz668rj4gXxI77J3qjaPyEz/+7edF43l
- aqPpofQW
- 3dvveinkc9u5d+TIT9NcozkUNAmnTIzn+GWAswvo6utxdpljSHki/q29/29kCxh6zY3yu/ry+vT6uG26kd5KywR7L5wvyP7m1QKbEKNKwjdBeNRMWzfTNwnis/DM5XGOf7JCNa3vfjovPnnAwfWKUv6WOnAXRVatau0TjdL78J+seLNnJ9LldFmhNH/ebEH10IhQ3o9yWlFufyzhAuy7xtB9QsBvFJz0OpkmsCVCUhiZ+nB58NW1oU47kYI9E0+wsfpWKpVDx8CBdi9BtwgsPVvgxaN3mYJd/vmo4/nV7Xr7Cv5IwyUhg7zw+GZEMyKPQ3QPE2pGEIMaOoEOUOFLyA6BjfHYYDniKOp5KB0+Ndn4x+OPTbVggHASEwfjtES1aDUHD/z+AkoxrGDcBQcfjdmUx29J4EptmtLma
+X-HE-Tag: 1794240072-227996
+X-HE-Meta: U2FsdGVkX19QHrd7RNPDdsXuWi+ZyaU1t8bW7rdrHNudF4IoSKPmA07qwXTeXPEGrTL0IzUqStVtl27k5zO3KNWmkNpXknwETGAT+m40o7kXANfc/YiRVp03x23/uErnRBNj9YXcmrUGGIbimOVQunmW7o61XBGT6T8B3F/JguCiP1ZjDfFvNIKeZ5Ifd1hUJ1ifvQqgtlsl9+XjpHFLUSCoNKNe2hevFFMBS1ABNV3MeUJhsykz8ULH2OdiBYhqQaFWS4jzE654UncdJd5bWPFMVFJugg5sOoysgyHnDqgqraNUqGPqyGA+EVq4ABPmpR3sQ7GnMM9jteAqJMUW4LjXOiHTU0tMznuaXqqB2Ljpi9kmMYURgB36VwpZLV9WN/xCRN8U6QQF5RvMb5DO2HND9D1EVhBgESlxYathYezwJ56B8zvUIhv1J7/EEQaEWDUu/ur/3rpV8zXMTskv0H6zgoeZB0fycZdAyaSkqeZOAr7CYWmXQh6bcSlvJipd3ws+ov7ewKg06gO8NnyurDiwFNlSE/Pk82nUConP9VApjdQtBO1ukiyGz7Qb0m/gveWCGpO6qGXAaQ2v/9UjnehYfxSe6BGKxo2IjkIWq16mdvD0dt6MZ3LqXGpYYFB/8KSPp/J9qz8ctFwDQ2UjGzv1m1UgZZ51ots1zEU/YdfAzf3QmtpQ9Tfg/RIgpJW4SlqiCx58vTaaj7oL6+H5YQ82p/gBY4iu9uoATe/3QeX5zm7TQvz2t82T339fQ+ha6q3fqJoZV0CdNttW47LGx7d3lNSEKuEzDLGh/WuuFgWkZLkePGUoiqtGvu4ICKoGscvBxNyQQKdHYimT2FCM6zh6xu9mhVFjCt4Pol/uDh8SEZk0LBlZuBDsvvwW+Hh28kxEO2SSXAqDV75zUEWHHH4DMf1cWHiGN0aRV5Yiabul4OY0pQfQrEGlWKN9h/Tc8jIqhCMCln4ScvmWxFT
+ LiOmAy9V
+ /uLhGHs5zZ0lVw/ua1hvqbzlT+qBDFcGKGeiD+JVlsS4o4Zr3TqotQyMmhaZwhvZ+bFmoYyrLP5XwLezKlfCSeA2HzT0Nhf+0DhQ/ZZb7WtkaAAz95BWro8zCvoln8XjaC2ALcGuHdWxhcNP/VH1dH/n2LfPulrLAaPK3uGFFOD4mWnioocNkj4pHmfP4JG8y0QQobE6Uc637pQeQVXjzgxLLPbJ/XkHZJkgfVfyuT39zEeIUltWG681pEnbw2iL1Fkk/lTmWfr0/Y7+Ehm2znKuUeA5wXh2nJHA12sO3zOdL54J0MzDt1gD43PXcsLAO1tYUjbvBs/6lygs9WOfWssXj1c9Ln0baeIyZXvT/Eo+wCdgYjdLanawtog09udTivUVe8YrovfeXQa1n4odjhtCCWj+/ZSN9Cead605C5wyAb0Np3yLwboCriYF+MPbvKPxg
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,28 +121,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Make sure EL2 doesn't trap kernel accesses to POR_EL1 by setting the
-nPOR_EL1 bit in HFGRT{R,W}_EL2.
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
+The POR_EL1 register is reset to an unknown value after cpu_suspend().
+Since POR_EL1 always holds POR_EL1_INIT when entering cpu_suspend(),
+initialize POR_EL1 with POR_EL1_INIT before cpu_do_resume().
+
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/include/asm/el2_setup.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/sleep.S | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm64/include/asm/el2_setup.h b/arch/arm64/include/asm/el2_setup.h
-index 12a500181291..a55e8d5f1eb8 100644
---- a/arch/arm64/include/asm/el2_setup.h
-+++ b/arch/arm64/include/asm/el2_setup.h
-@@ -380,7 +380,8 @@
- 	ubfx	x1, x1, #ID_AA64MMFR3_EL1_S1POE_SHIFT, #4
- 	cbz	x1, .Lskip_poe_fgt_\@
+diff --git a/arch/arm64/kernel/sleep.S b/arch/arm64/kernel/sleep.S
+index f093cdf71be1..e0a6ad85cd24 100644
+--- a/arch/arm64/kernel/sleep.S
++++ b/arch/arm64/kernel/sleep.S
+@@ -3,6 +3,7 @@
+ #include <linux/linkage.h>
+ #include <asm/asm-offsets.h>
+ #include <asm/assembler.h>
++#include <asm/kpkeys.h>
+ #include <asm/smp.h>
  
--	/* Disable trapping of POR_EL0 */
-+	/* Disable trapping of POR_ELx */
-+	orr	x0, x0, #HFGRTR_EL2_nPOR_EL1
- 	orr	x0, x0, #HFGRTR_EL2_nPOR_EL0
- 
- .Lskip_poe_fgt_\@:
+ 	.text
+@@ -134,6 +135,17 @@ SYM_FUNC_START(_cpu_resume)
+ 	/* load sp from context */
+ 	ldr	x2, [x0, #CPU_CTX_SP]
+ 	mov	sp, x2
++
++#ifdef CONFIG_ARM64_POE
++alternative_if_not ARM64_HAS_S1POE
++	b	.Lskip_por_set
++alternative_else_nop_endif
++	mov_q	x2, POR_EL1_INIT
++	msr_s	SYS_POR_EL1, x2
++	/* isb can be skipped since cpu_do_resume() will do it. */
++.Lskip_por_set:
++#endif /* CONFIG_ARM64_POE */
++
+ 	/*
+ 	 * cpu_do_resume expects x0 to contain context address pointer
+ 	 */
 
 -- 
 2.56.0
