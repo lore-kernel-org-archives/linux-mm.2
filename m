@@ -1,89 +1,78 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D86606A325
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 20:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE0A6606A334
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 20:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EefOnyi2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iDueje2g
 Received: by kanga.kvack.org (Postfix)
-	id 9A8776B00EF; Mon,  9 Nov 2026 15:36:52 -0500 (EST)
+	id 10F906B00EF; Mon,  9 Nov 2026 15:50:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97FD36B05B1; Mon,  9 Nov 2026 15:36:52 -0500 (EST)
+	id 0C0036B05B0; Mon,  9 Nov 2026 15:50:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 86FA46B05B2; Mon,  9 Nov 2026 15:36:52 -0500 (EST)
+	id ECAE46B05B1; Mon,  9 Nov 2026 15:50:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 607596B00EF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:36:52 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id F0A0C14023D
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:36:51 +0000 (UTC)
-X-FDA: 85416739422.18.E1D3B82
+	by kanga.kvack.org (Postfix) with ESMTP id C2C316B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:50:14 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4D0C8807EB
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:50:14 +0000 (UTC)
+X-FDA: 85416773148.22.255EE9D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 1984640004
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:36:49 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EefOnyi2;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794256610;
-	b=TJEZhMSl2eRe9P9BZ8Lk1CjRxnGmvM7L8Mh7qZi6S1ubkWbiBuyqYmuPH5de/mj2WZFee9
-	lMBQdsx6VhKE2S6bK80FfWUdYfpgFvwVkAmeM2Cuf0SEKBsNhx7BFS69qDJ0dxpsffnYMG
-	z9Dvp9ZGXnVmoxGTD8xiyJhkI9zuAT0=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=EefOnyi2;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 78F12180007
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:50:12 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iDueje2g;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794256610;
+	s=arc-20220608; t=1794257412;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9oF9audfKANIUeCSjRE2UxoYSJ8eZS3TN4Enjb9NBvA=;
-	b=XhmyDZGUdwz/dr3Ny6IC1ZX+/6F4WBHLa9/qLC1uMXIPlrfzOgpYzaIGfQSdeM9LnQ6Zd9
-	/DHQibeaXHFzp6WEKoHsxtRbjArCA1So+96ICgBOAvPAwFl2FLP6ob5ZFRXIvSeBQjxIOx
-	A+4ZYVBqH3v2wNYUBYF6nXrrhY8BL5w=
+	bh=+OMth3PG85AL4kECknkxpCnD4PaCA8VlkmtQ0uA4Vxo=;
+	b=vi8LELzCHz29QqQWY6uLzHVogPR/ebaH08c3zEx+tqnbl8SkIF8wdNmO/79KBekQFRsqmc
+	qzxiwQHuDs4cbGiU3at+9yz3nsS2zczrWxLJxgg0PDEmqFE/fsopWNyViCD2PPuCuNTscG
+	OdiAMbdLwCQ9nsRiFq4gjPqezC2qFms=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794257412;
+	b=WynvwZxxGlUb2PAfCTUt4Yw/jZRq3cCbghcdwocqKZ1rnjX9qYoD3gCW9MfZY+QjX1aLJY
+	GqMS2P/7+mWqpdDgXDBLmKqHPOm97l+5IJLsRJ4SeFHhCuYQyK9aOw6CUhn61CIXKTbTSt
+	cpGgrUcunycWwziIWBUzQstiSN1ZeKY=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iDueje2g;
+	spf=pass (imf06.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7C1F244F8D;
-	Mon,  9 Nov 2026 20:36:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459541F0089F;
-	Mon,  9 Nov 2026 20:36:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 944C443830;
+	Mon,  9 Nov 2026 20:50:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D582A1F0089F;
+	Mon,  9 Nov 2026 20:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794256608;
-	bh=9oF9audfKANIUeCSjRE2UxoYSJ8eZS3TN4Enjb9NBvA=;
+	s=k20260515; t=1794257411;
+	bh=+OMth3PG85AL4kECknkxpCnD4PaCA8VlkmtQ0uA4Vxo=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=EefOnyi2juZx4CLNe0tV/hc9vymdy866x18Xt0oh0y/RHhUiC1T/CW9gCl5MSPyyt
-	 bf9WQ0uqfn2sToC15cCy7r5Bpgb7yZAhbXviQsZDSb8Snt77HjRuBbGMQ51iw4pC56
-	 oBPeCrcM2GaD75nLGNISe9o9KeKQ/Ysd4A3crHHnGBXct/ilMTser/ljPM67RbVuO5
-	 GwWwD1mG0kaH2gncGE4ZZo80n8bW3zDa95/z85GZkgJqJExJlZssZjcxtQLmefRWTA
-	 2HtvvweWAAE5dQ9cqHshfsygxx8LjajMIFFzEQYTVLhmOuDgPmQqvQKtSQdJIQahuy
-	 mBAA7yyrGQMYg==
-Message-ID: <3a137aa0-d0b5-4267-b64c-d58ab4235603@kernel.org>
-Date: Mon, 9 Nov 2026 21:36:40 +0100
+	b=iDueje2gQCdXWNWbQrEXkn7wfOtQOBvJF3tKjNmoFN8dXBstJSwWREDHMX31AFHrK
+	 p/DKtQ6xOt3M5j/yTG6JT/oQyWiVzcQ94QuqgaEdoMAg5gyKl5ROwTiG4LLOB3vppg
+	 TyEWwcISD4aDsGU70Xupw18WZwQZM+kpYZ9yDIeXl2oFwS170JQo2tM9vGvMZfeQbh
+	 wnU6Mceyqr3y5/cLUWyKuV0v2pn0q2GMkl3nYGpu2FT9PdLKWn2bybPHFliWXlRpJe
+	 ZE+4IJeguIrIz5A1bc+7HK9FOAiBJFWHnIl+blYZoDCCQeHlgUc9/OxDiyEXoGPQKI
+	 nrf8U6+N/0keg==
+Message-ID: <e0374a55-a7ea-4ac9-a6d3-95ac9526be9b@kernel.org>
+Date: Mon, 9 Nov 2026 21:50:06 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/migrate: don't batch the TLB flush when there is
- nothing to batch
-To: Zhiteng Qiu <qiuzhiteng@hygon.cn>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Ying Huang <ying.huang@linux.alibaba.com>, Zi Yan <ziy@nvidia.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Alistair Popple <apopple@nvidia.com>,
- Xin Hao <xhao@linux.alibaba.com>, Dave Hansen <dave.hansen@linux.intel.com>,
- Yuan Zhong <zhongyuan@hygon.cn>, Shifei Ge <geshifei@hygon.cn>,
- Jianyong Wu <wujianyong@hygon.cn>, Shijie Huang <huangsj@hygon.cn>,
- Yibin Liu <liuyibin@hygon.cn>, Fengyu Wang <wangfengyu@hygon.cn>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261106041628.1177963-1-qiuzhiteng@hygon.cn>
- <20261107143456.1590658-1-qiuzhiteng@hygon.cn>
- <20261109122915.2150586-1-qiuzhiteng@hygon.cn>
- <ef12d685-d111-4a6f-b72a-77bbd1369548@kernel.org>
- <20261110001816.2186986-1-qiuzhiteng@hygon.cn>
+Subject: Re: [PATCH] mm: remove unused clear_flush_young_ptes_notify()
+To: Shivank Garg <shivankg@amd.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261109-clear-flush-young-notify-v1-1-b37fbafa2686@amd.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -130,21 +119,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261110001816.2186986-1-qiuzhiteng@hygon.cn>
+In-Reply-To: <20261109-clear-flush-young-notify-v1-1-b37fbafa2686@amd.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: m1ehqzrcuo8t5f35dp9xszreso1qwidj
-X-Rspamd-Queue-Id: 1984640004
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794256609-984330
-X-HE-Meta: U2FsdGVkX19pkh6Hk8kks3g1EpvPSjG0A4unVtiAgCeD0hF5gn8hhME47SaOE/RaJ9o5ojv8QCTbWivVqYsJZzzEjHSzocfLTvzsZgRIBY3M3nEAA24zeb1C/ox3/bx6hZhSEhkEWYGKzHUyZYXXmM9lmd5fAnI4nV4H+7w77EXNoicIHgCZELJ0e6aT0r9wXEu6kRebpCAj33emBvnkW9zbFHwgOT9Vk7l7YuUPo4uU8dZhSoPgNQj2iFCqb2L2Cdz9H4VrT0dynOfi1J4mQZoPBKvrhEYneQRdr5W8yZin+ZWOrObxb7UKeG5lvAE2N26fZ6hgJiK3Lp1ijp4GJp84tAUFgmRPmtUAzBYVqtFbnswHdPD14Xnn/xQEw4J1FaX0Gy9uwSUE5k7G8QeW8DFuJGk+hsFWXBTvhvmlCf21hRGBeucFMoCgUysBEB5RMNcVhe+QgEqqpA0DVrwEll/GeVDw99H2pae8Uic3gXa1nwBDq2W502m/YadCEY//T4cXiPYA8R+rnLTvEOuqM4h7akGQ7ZJvDj2Ylsn4el572ZkzIrCw2E19LxfW3RgF1qEku9S+TIqp2nbo0yub1d8oee3C6PlWrFsRqgrKVG1mSLcZwrPxxA7Bb18GoMcz/DXwnRyqtP4iYRFPG8dJRL5Nw7t3rZGqeD91637YqsSJVibOnLXSGehVTAm/9l+dnZjksixJhMczFGNN0zFkQEzR90O6vcstU+JpU6kbluxhNcIoOakTMl5WhvNwHqZ14n9ItpfNOe5Z04U5sJGoX2uInyzRpS3Ibl8EYzcXKhH6v4ixrJ6Z8YUCS1zuG6DlkmYF+hUXhXkrRk/1uwgsbGuBlTop4hIdm17NPvMiKHuXBOeMEM7lLNzWZmc4y7DRiC6PuJTCFw00Bfkea2Mk5v9RR6KYX8QkNs1YHWxjMVVQ2MHTASJ0QCKwcrjT1btDCRbU7pOi3VA7w5Ft2Rt
- ch9HuWwJ
- YE7FaNZf43CmavVzuRZ5q5uY4L4V/+AE4QGPXgzbeU1BhghBcQUuINZOJNBFMVvf92CnXvoTcfG0mqkpNCUTeISo8Sa2u1ISX7Vl84wUwatOK18ddIZ3gV7zov7zcLKO0sNhENMYXwh0aH8/weYqcxlgkfEHzrdaN53r1MUcs9WxGfCErbX458pEKsPzEKZnN/mcQNYmgr0zrU3E3OCWAczZ7pHX0I2LqwA58vvCo8VBkMDeOFI6o7C4+8/JPnUOg1oJgnlO7kyg3hl+9SeS9N5/lS+pFlFwNGMs8jEcASTa3C59JwOd4ZNiJHBC9657nUqlqpJj2n1ul+MxbBPBSrs9SPw==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: a7dcafuy9z939gk7c1339zkst5o9nxky
+X-Rspamd-Queue-Id: 78F12180007
+X-Rspam-User: 
+X-HE-Tag: 1794257412-339415
+X-HE-Meta: U2FsdGVkX18rRAYYRKt6v0wIxubnXxoejdw8rfD0cwBvVVbZw2xWsJ2Qc3S/RuPpSELp8SBfjZpeyFvV0D+9cphBZLVWPUG8el3ujhrLd9Sb2Z4dZee2n2IjKfMOMVsg8yJS606dfOvhTZY6v9oTWHyA0U/tgythDitrldLPa9Thi9RiWKIZCuV+XRpOD0oZ+/ddAoWOWPNLDRuE87PPdKmWfU2YMDCEXR18NG4gUFXXBH4UZN2qefHrzM8p8HKFt/wUiZi7WqvR+m9oJUPLD2Ft1WBAReNL8s2aLff9KveDmQrV1m+JA8H5njymDv70lMXOqNuyRGS+l04f7rlw73BkyHLB+DlcZIFh3ZrzrCMcDDxD5MTx50WCJ8rhIG7q01M5OttIhDjXBLhNlCJ+r2EUKQHC97d6+0rEuEC9UZEMzifbTkIxM3Wl0DG9lZAHTSvLGXQzmlnvbPZiEyr7ZtW2Nuvnrf/mLS3Pp7uWRjpFbPUCGRBf57HM/Y+C+Bs3Ju4Z4wb6gm+HDDOVOFWVmxHUBNwJoDs7GD7s5xT1DHsb9EtqwDgBrmZAyVmxXGhlS4TS8gXvq/1BJNzGgTCVY6KxJd5O9aTWfn06VX8zzNoFH9832NcTp4+BJHhkNmyiZGiSZqL41bnAfw6oB2b/Wrl85WxMk4+h8chgrTlxsb8rXyRSjXcmFA0LOmS8tB79LhLJ024I5seCo+2Jb7g23qXH48X6vpftKF+hUzd41T7S/87L6MuomJiAfeIR3Lmqm/r+/31Qwezo55+3HkGhLWVhQkmCI5bsqLUyoH1RHJ0m/yRL2+wn/zSDuH7I5YeqE6Cw0pME4BZPM9xb2M4UbR1tVecf19+lejYLp3jOw7zc03F9XFvAT+e+flb2zJ0Ef+UNmY88K2xUBPjnoJKK7I0aY2MbkAzkNu61z1ibebXRo55JF3hyQ7gQR5Rw/Nh7XDgo6D2aGteAf32acXH
+ 1ukTtRiX
+ mndk2gumlyanLDIGvZj4+4PU0WdMQkU5PB19kdE6uCobJlsMsvD+6gvzPwrhNCGej3mG/3uh0Vc+3+Jxys4BuGKA9MMz59iJagSxsW4bDRunnXiTzUm7lTM8kC3uZDq0cFLi8MLzL4l/8003nKOeluHTnd6zmqYwcdQWJEJWyVsuuLIRqRHp/ts0w1iyaO6TL2FxQfqjD7R9InyqEbuNfwOlJ34X5oqNDS+OiI4fvLydzzwrCE8WqPTzCdJvTj7z3/vwTMfqfo2wXscKtFhb59krn1Hjfe1gvQTYe9wcXf/dxQerrUA6KhaTxMsTS8nMYaw66dKloItEdj/sGWDlBVYufPRGGMTg2ucYd
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -153,40 +143,62 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/9/26 17:18, Zhiteng Qiu wrote:
-> On 11/9/26 14:07, David Hildenbrand (Arm) wrote:
->> For the future, please don't send new revisions in reply to old revisions.
+On 11/9/26 19:41, Shivank Garg wrote:
+> clear_flush_young_ptes_notify()'s last user was removed in
+> commit f3c493d2f42b ("mm/rmap: handle device-exclusive entries in
+> folio_referenced_one()"), which open-codes clear_flush_young_ptes()
+> and mmu_notifier_clear_flush_young() in folio_referenced_one().
 > 
-> Sorry about that. I'll send the next revision as a new thread.
+> Remove both the CONFIG_MMU_NOTIFIER definition and the
+> !CONFIG_MMU_NOTIFIER alias.
 > 
->> Is there no way to avoid that boolean?
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+> Applies cleanly on mm/core.git/for-next.
+> ---
+>  mm/internal.h | 12 ------------
+>  1 file changed, 12 deletions(-)
 > 
-> [...]
+> diff --git a/mm/internal.h b/mm/internal.h
+> index b129510b92e2..b1f3a1a59bc0 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1598,17 +1598,6 @@ static inline void maybe_rmap_unlock_action(struct vm_area_struct *vma,
+>  }
+>  
+>  #ifdef CONFIG_MMU_NOTIFIER
+> -static inline bool clear_flush_young_ptes_notify(struct vm_area_struct *vma,
+> -		unsigned long addr, pte_t *ptep, unsigned int nr)
+> -{
+> -	bool young;
+> -
+> -	young = clear_flush_young_ptes(vma, addr, ptep, nr);
+> -	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr,
+> -						addr + nr * PAGE_SIZE);
+> -	return young;
+> -}
+> -
+>  static inline bool pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
+>  		unsigned long addr, pmd_t *pmdp)
+>  {
+> @@ -1641,7 +1630,6 @@ static inline bool pmdp_test_and_clear_young_notify(struct vm_area_struct *vma,
+>  
+>  #else /* CONFIG_MMU_NOTIFIER */
+>  
+> -#define clear_flush_young_ptes_notify	clear_flush_young_ptes
+>  #define pmdp_clear_flush_young_notify	pmdp_clear_flush_young
+>  #define test_and_clear_young_ptes_notify	test_and_clear_young_ptes
+>  #define pmdp_test_and_clear_young_notify	pmdp_test_and_clear_young
 > 
->> This is all information the caller could provide, and the caller could just
->> provide the TTU flag then instead of passing a new "bool".
->>
->> Also, likely this check can be put into a separate helper function.
+> ---
+> base-commit: 2683df3b7eac1d91380194955ad0c9751454610c
+> change-id: 20261109-clear-flush-young-notify-dac8b5496ec4
 > 
-> Agreed. I'll move the decision into a helper called from
-> migrate_pages_batch() and pass the resulting flags to
-> migrate_folio_unmap().
-> 
->> I am not quite happy about the folio_mapcount() check, though: as soon as we
->> optimize try_to_unmap() to batch better for large folios, it would be just plain
->> wrong.
-> 
-> That makes sense. A large folio's mapcount alone would not tell us
-> how many separate flushes are needed once its PTEs can be handled
-> in a batch.
-> 
-> Would it make sense to restrict the optimization to a single,
-> singly mapped small folio and keep batching for all large folios,
-> as in the scope of v2? The changelog performance numbers were
-> measured with the v2 check. Or do you have a different direction
-> in mind?
+> Best regards,
 
-Likely best to focus on small folios first.
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
+I'll wait a bit and will then queue this.
 
 -- 
 Cheers,
