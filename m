@@ -1,153 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8133606A326
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 08:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6907E606A322
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 08:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=WgfpydSK
+	dkim=pass (2048-bit key) header.d=spicebrains-com.20260707.gappssmtp.com header.i=@spicebrains-com.20260707.gappssmtp.com header.a=rsa-sha256 header.s=20260707 header.b=azIbH2zJ
 Received: by kanga.kvack.org (Postfix)
-	id 94CDD6B00EF; Mon,  9 Nov 2026 03:35:32 -0500 (EST)
+	id 78CD56B05B1; Mon,  9 Nov 2026 03:45:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D8886B05B0; Mon,  9 Nov 2026 03:35:32 -0500 (EST)
+	id 764B26B05B2; Mon,  9 Nov 2026 03:45:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 778146B05B1; Mon,  9 Nov 2026 03:35:32 -0500 (EST)
+	id 654D06B05B3; Mon,  9 Nov 2026 03:45:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 35C1F6B00EF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:35:32 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id AC9C01C3EBB
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 08:35:31 +0000 (UTC)
-X-FDA: 85414921662.29.A4B21D5
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	by imf08.hostedemail.com (Postfix) with ESMTP id CB540160002
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 08:35:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=WgfpydSK;
-	spf=pass (imf08.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794213329;
-	b=Cq8KcRpgTNH3j9pG/onq+/829YTXi2QhuLRO9FWDy7qn3EYr9BWQC4ROoalsQAt/+FHPsx
-	4Uri5WWyC3ucYS+w6hy5EFrxsXu0iIqB26A/nFrTU1pZtLMLvsize9PVpvFypzMvsNfEOD
-	UovCI+8NHqZGGWCpZU9UiYfUKxfg9Fs=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=WgfpydSK;
-	spf=pass (imf08.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=azpijr@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794213329;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C7A36B05B1
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:45:55 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 99F02C05AB
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 08:45:54 +0000 (UTC)
+X-FDA: 85414947828.28.27E379B
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 9FDDE1A0005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 08:45:52 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=spicebrains-com.20260707.gappssmtp.com header.s=20260707 header.b=azIbH2zJ;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794213952;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6v/EUAzIuUZtunuZ0TzsEXeSSrt8us4QeYlPDnXiIyE=;
-	b=pJ053lwYTCnuSJyjItHBg0KT16aBNW1C7zABRP5npq9LnyOtUjqbhrS2svCKlqBD2UDVwA
-	FsUELS9evtyhjRVWEz+0cM6CWaxiZW50QrK+aRzO1tnUR6buyUzj2cQg/vwLd7S7Ic2U7G
-	AC7JAJlGzrJFf9CCktChF8ZwG4jPre4=
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-4b7252a32c8so5469895e9.0
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 00:35:29 -0800 (PST)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=C/umt9X7ORdASGrmB2+2iI7/93OEYSlXyO9e9iBJi7k=;
+	b=Iksr+l+QL/uovtkO4+yhqbuNC2CCtEmURxHWgPmBlqIBWuCt/8yQsbO9jn2IQBqGRat+AM
+	2UHuri73bMRIKWOfb6Mmbsy8La0l0MM2SI6Aj77CIcpaXUiDvZO/Lv7duzMbRUktQ4/W4u
+	tGfztxjLhsuDjNriN2LZM3MSqFrk2V4=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=spicebrains-com.20260707.gappssmtp.com header.s=20260707 header.b=azIbH2zJ;
+	dmarc=none;
+	arc=pass ("google.com:s=arc-20260327:i=1");
+	spf=none (imf19.hostedemail.com: domain of master@spicebrains.com has no SPF policy when checking 209.85.160.47) smtp.mailfrom=master@spicebrains.com
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794213952;
+	b=FRwRylw4cnVvxuIkFu/HycuRAcfo3/4h+v9jbfPn0ANK+oANOKj7rdNLhL1pV/Xf5nvOO+
+	TbyGUw3klDyykDmK2RnM1vY2gKVuGJq4vintB0RYipP+Tg6uG/z5Z98gM1y5kfETxAFge/
+	8hWOS+T9STF5qfC/xoGjfnKUFnjZxuc=
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-4adae187d94so352486fac.3
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 00:45:52 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794213951; cv=none;
+        d=google.com; s=arc-20260327;
+        b=mS2E8wMZUbgXqI6pH100NiAqhuH/4FhRNaPMe/J6RF7vp7KR+W9XzLyQldlK/ORbBc
+         Vqau9XjWk0abAM9g23Jas84xp5Vv882v3k+CE+4HzUHUTvigIiyGw6fqMOiDu3+oXzi4
+         Q+t0u5uBbpMxX9dTbGc9ByyoVQpywIneZTcjAOSFBPEs3Fc7xPoZvJ2jozDA60m32bkV
+         s7L00k7gzId2PP5FiyyEw8uEI9b9mJjBaDGIB5cMNlvllAYwKBfGT9hJOgoOxRkUq2kc
+         /R3KSy5gFkZw9P/k1p/4nB8+xWq+vB/at33oyy9jI+kYFvil5xBreMbyRwvr8Aevzpqk
+         rcew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=C/umt9X7ORdASGrmB2+2iI7/93OEYSlXyO9e9iBJi7k=;
+        fh=5R0ekKaEQK+iyeDQoXGfzPMltuaNkPRR8d1SpQbXtWk=;
+        b=ds2IVPrNByEnmBKtOBeKnG61yXoaA4QBXgVhA6dSYqM+I3qIYllUyygEje5d5P7dJh
+         2ishxq+q9DBzH/qZw+WG/f7H5uc7ui6+tv4BK+MQCtvt6Bzqv64C5zeddl7eruksBUxh
+         Mu9wO/Tw4hvr3dkHorprTp69QT7RAz/Ez9zSEc/w//JeyB1/kPUfzLlZfx2nCWxyiBh+
+         tdnX30IMzUvirpkAhAsqbQoZ5M6OqXWe0Sx2heVKQ84K5SY6gXWMIqT5sNjN77P9IIyj
+         +RNWBbi/9o5ymMx4w0jjtgvilrupGrS/ZkGDyiknA3RoYmn8Uxh7GpnILubgnQJO8g6K
+         kGow==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794213328; x=1794818128; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=6v/EUAzIuUZtunuZ0TzsEXeSSrt8us4QeYlPDnXiIyE=;
-        b=WgfpydSK2Z5Ivzl9VVNF99WQNRVqurETjT25itn/a0x356CQi1C/Nao/tFueIv+6fo
-         GXAdBq5XUU5GgkMNMwGapGkMR8r+U4ptEHvwqIrG6esdPiazt9CNpcsdyCLRQAOzzGAJ
-         Wh4dL8oW4V+O3q1OO7zS4pFBOKOP+v1x8PtcygFPEfqGYHAi8RQ0gQjVqyacc6Iz/GVQ
-         toLViR4Uqv7yC+/h4Sa8VH5yQ7arC7Fj0Lrm3UfPkVFF4F2gzHiRbOWcIEMve7ZGTzgw
-         +3PRWi1PVOj52UgORrtdPpQIz67bCvTuo83EXXlFsHM8CN67tUPb3DbOR6rkj2bXMxPV
-         LXcA==
+        d=spicebrains-com.20260707.gappssmtp.com; s=20260707; t=1794213951; x=1794818751; darn=kvack.org;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version:from
+         :to:cc:subject:date:message-id:reply-to:content-type;
+        bh=C/umt9X7ORdASGrmB2+2iI7/93OEYSlXyO9e9iBJi7k=;
+        b=azIbH2zJN9wQ05WEmShxD2QeiP5ZSHnM+P+yOYY8LE+RVemGUuiojONsTzbgKgihJh
+         bkxZ6/0xr+MM4TaCR39UUV9GlswAE1rgiAuMrivfVhhFEB+DKO3lMYHk1FCF78hiYNbg
+         IPSs3RV72xuWjuM/JwgdTappkdbwCooEugD8bq/3ZiTHtQb3JdzIVv1Z7OxGhx6CmX5A
+         DmKWb6Ej8qDSg7t8Vg14PxK8dDpP5CeUVov97Kn7U5AU7W7rYRdAgQt/9IRHdClSNSdJ
+         tr1NWP1cg1TwgS9W8lcg6L6Ktv9LvpIAR4NGnjagb6/vVqy8lUv2KFhM0Z2PRMsRhTPG
+         je7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794213328; x=1794818128;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=6v/EUAzIuUZtunuZ0TzsEXeSSrt8us4QeYlPDnXiIyE=;
-        b=rKNAYTyZuuJUEfMis2Q0pQ1+bCyUrEE2pFgpKFCwEcxemqOKGzi80BxHcGu/2vFugb
-         mfNWcUkXjAeYnPqxioXoLrA7YASc8iAIhuaU92zNacmpY6eWnbIYTaASayOCtPaYPdFr
-         StaTfDtmtR7mjNHSGuq+dboNyVgUgXkA09O/DLCr4/t5iEPXl6KrFsqoFJ/TBvNshVHn
-         uZQvdtawc4S5GFUWORJmKEaFQQn5hGgjONrMmKsdDS4mOdTur485+WHPC3IM6hu2lUIv
-         7ADxj862jQXVzXCH+W6JR6WA4dAOQg9kP0PCD7TWQm4N83h4zJgUba86nP7R3CYj7uCl
-         zA0A==
-X-Gm-Message-State: APuU4Z+MjgZGQHECZ/71Gr3NbPsRg5D1Buc0s/zIvNORjMFXbmtRrhFy
-	JxhHkkOwGnEic/O2CAKaBUvKJvGGqW3uCUB6haV08WKECSQ24tMkx5zS
-X-Gm-Gg: AYBFou3k2Ep7bwpCgAxPXDfynlqXCI3pWxD7kyxRzGh+hLXpCFdNnLBiOnS/ntoDlR0
-	FpkFXcUHgybN4UkDHlLlTkzOUidH8yuXeD8EygIKl7FFLiXpj/64KfnsQpLpykz/VTNwVyJQBWb
-	FodQ1RrOri/Lxqmm6miIbdvaQJQERjJ4WVCj7baARDuzt5Hw7igr0nXGc0ha/ZM7yJgkq6GCy0L
-	ARuD9t2PpmZDXqwT6LATp0CU8vSCZItTjjYvc+TLwHrb1L4tbWtJSTdUSGinZkd7JdWPHbj8VB0
-	rQYgg2ykRpr+dRXf7wu3zGvm1oDKP1x5GrY2xIE1V0G853Hl7zoIBojJV08zUULGCFImG/WuDWT
-	1E5/9xWjEhXbLij3FNEP+LjapmgwECb6bToTpSPHcfGwI5LUF8cd7ZPmRjNqxyJAv0J9AIh4am6
-	CwYCksp8Ek2TY3J8f5SdH7tFAetYPQOVHXFP/Osc/BdMoW68kQZk/qU6I0o+kkWefB+12ROH4sU
-	vRxzUdvRwwnVyiJNZCR2qRWJfRQyl1Ne2GoJWfk1EKuEvoV6p80bTOus+8NSWRWUyIGb47L1ZO/
-	3957HwkZzyzc831ZmBRrabb/P9K+GYZ6voaFdXMuMVuB
-X-Received: by 2002:a05:600c:37c3:b0:4a3:5991:718 with SMTP id 5b1f17b1804b1-4b963c87b5cmr58185485e9.16.1794213328165;
-        Mon, 09 Nov 2026 00:35:28 -0800 (PST)
-Received: from [192.168.1.22] ([83.231.69.9])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4b90ee1ddc7sm170118285e9.4.2026.11.09.00.35.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 00:35:27 -0800 (PST)
-Message-ID: <4bae9936-02ca-480f-b754-c7048702c667@gmail.com>
-Date: Mon, 9 Nov 2026 09:35:24 +0100
+        d=1e100.net; s=20260707; t=1794213951; x=1794818751;
+        h=content-type:cc:to:subject:message-id:date:from:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=C/umt9X7ORdASGrmB2+2iI7/93OEYSlXyO9e9iBJi7k=;
+        b=eem/1295AFyy8pb+9DneYBmGBNDyocrq3PtEuJdTF2HEptGSbwrt32aE6sBppL/H2k
+         ChvHqabf1YTTq4gPxqQgmSkCvmI4BffEl2naa2jE6EG/bns0nM3jjR1laLNg9NNnw222
+         9MTsdg2jXZOICBLZGMh8YmhEv9ChJJP/aBsKQKJP/x87a7iv6UgqTfB31tj9vT9e7+ci
+         VU/nBccaUyRdlEXpFt3/e8u5AW06nvdn0ImanSraC6zx051IZ+OCFRM8TS+lWXOGMW2m
+         md+ys8xOb6YdmEJMcMLGAhYEt0p0wNKRejnqKk2ek35sSzkoav7L0DDr5fGe/Fkl1yXu
+         K8Yg==
+X-Gm-Message-State: APuU4Z93Svsmzp6aI3qQ0NUqywk8EJiPMo7JgPjjNSo+zw71aCdfHvHW
+	CVPfZq3Jz4sH7I5l6uvKNAVdWxG5R47lvXDO1kVgghUCtRRAErJQEO3xczFTMPROUdRzQxk9qdX
+	HVo60/qXjrSTNUCxxgZVNdwX3n4yq13/88S7FjlGvAg==
+X-Gm-Gg: AYBFou0irCeQdAW08GiB8FC+BIm3xmKoEOhZwx+XAw7VzRSRr7JHTTD4l001xBC4V2T
+	2gcBpnwg5Kq6gT4N2u6H+5R/s/JSDrDixWA4JVXRqYQuKBzCEV6B5Fa6IhKsaNd2FBh9cDyc5Mn
+	5IEJUS16Fz3ZqA6f79tGJ0y22/fXVtka4aFgO37XqyTtiQu1AYGTekInz/egHeSR93LByKcHNbm
+	+/nfDaNSyM+WtQBx3yBJRqbCRpKnyIv368SskAfW2ekKp0j8PmB/bx4oz5YEP+Z66iiiEHdgtc3
+	ZSvKmNzTNUHtr7D1/b3mqwFEOgyUIphrVY8QvTxNSmmGHm/4j9g1YaRbWe1/dUtNUkoCfhSEZul
+	HE965w4yPZttnwZbh/pXeBOdqjdAqgoyjxN/uOSk=
+X-Received: by 2002:a05:6808:3208:b0:4f4:e649:b99d with SMTP id
+ 5614622812f47-568143f69a9mr1869305b6e.52.1794213951498; Mon, 09 Nov 2026
+ 00:45:51 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] mm: limit pagecache folio refcount when mapping
- pages
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard
- <jhubbard@nvidia.com>, Josef Bacik <josef@toxicpanda.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- linux-arch@vger.kernel.org, iommu@lists.linux.dev,
- Chris Mason <mason@kernel.org>, stable@vger.kernel.org
-References: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
- <20261107-refcount_overflow_stable-v2-1-c38f6809b106@kernel.org>
-Content-Language: en-US
-From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-In-Reply-To: <20261107-refcount_overflow_stable-v2-1-c38f6809b106@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CB540160002
-X-Stat-Signature: tec7spxwqwe4eigojpwej39bod8ysx9w
+From: Konstantin Yagola <master@spicebrains.com>
+Date: Mon, 9 Nov 2026 10:45:40 +0200
+X-Gm-Features: AclHuK9-Jdm55-GfmJKQN5riYtXI9Vg1FpJBsI7Elqw6eLyWaXKmcJAwS5bmTSM
+Message-ID: <CAPy+2=yCzFKxPgzgKw7uCfwpd0BqWk_Mf+DSBY=ydTr_pdHr9g@mail.gmail.com>
+Subject: [BUG] alloc_tag: GPF in __pgalloc_tag_sub() during hibernation
+ snapshot, page tag ref points into .orc_unwind_ip
+To: Suren Baghdasaryan <surenb@google.com>, Hao Ge <hao.ge@linux.dev>
+Cc: linux-mm@kvack.org, "Rafael J. Wysocki" <rafael@kernel.org>, linux-pm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9FDDE1A0005
+X-Stat-Signature: ftancpdnnwiwds663qe3esg9u3xitt8f
 X-Rspam-User: 
-X-HE-Tag: 1794213329-769733
-X-HE-Meta: U2FsdGVkX1/GRfMe0DBpCjhCpiiE55ekW7n/UUn9bzwTZPhYciwvautBNqF/ggIqvCkvv7DstNDHS3mK8Wx9k3GxUN1fg5pR6w5vUrc1W07xBPEOUi4K+aeXWXWo1qV1dXxiD4gbP4cq93DkWAurO4eZiBQsokgoMyuAyx9oeYPMWuzL2G1Agc1qZV5gB9VuM1+WIIite7njVw4+9T7ZbfBAQf97nXgZQgVLfd6hohYV9SA+xF/I3Kmul2S7Lg+FRiuiI0p63VA4WGFEnq5AvAbshegmIGZsgp6tUxxMm5va4RKmzXB9yf84f6kFxThkUdasXQQun+Wz0JnG0l1K+REyPU65ONvEoLb90uzTGbP4RBfzm5uxIEFBIfdbHZc9q6Wp+2nzyx29N479tgbQNoLsyfm47c7BUM9FGS1Is2jGvLnweNfur2ZQvixa26ZtMPugoDLZ1At353C0YQfhQuMn8lWX+PWXYqH1zrnddDzLWdAmMawRdFNKVMNN3ajzx9KWve85rhQ7t4Wn3uk+15J6E8BkFBT6dunHYvqWxf7F8k8sCkDHRKEpdPtMdzsoJoWiI31yOTGAFX3Bz7CH9CJOxnBKZQiDHJoQF1muCquiVImkG5547oyxu5WyawzCsm1rYsZf2ESGitbzIETiEiCB7IIOeOi4jkFucyKjwDs7e8sp0VCh6pBzqQ3+ml3jcFiv1trs2A2QdY9LlzvjG7GLgpwsbS5SzAKSY8gupWykUt0Ojki+POFThlyfwrfn5mFvsl73FZRm+K1FjWP0Mpx2rOFPcfMiNAVNVwzbZsOMUabEXoWE9pOUoZ8YWH/6vH1qFCQHCZjY9V7CAksuMFdLCW6ZhCHrkQgh0q/NV7Zlk6lVaE42aescWGjZzK/kncXuOeo3dJ5BdqynI/WOYSV1Evtng9UrM8jCQmOIUsVr4umCtRSjNtlJclINFZa9QaAR/WU7xkUFjmEnEyl
- BVrvBhob
- FrMeEruLpJyMA+Vj8JeD6OlUsZNLtxvO/0NECEVXIUZk4Z/BaLNNw9VXphTBGnquOXEroPOqxgGYq1k65ec4Moln/40XEXMr79px4tdxCnlsc0zXMA5iBU9aGr6EilVLHTgl066oVdUJfAdYSyzp5hdjf6gHqsGHWxcaBUoOHcGYs9Rev8p7wRvBiRUsFUSaBqoldra0RCr1SztIvithcwgfdP4hhyotTgUISZj804dDlnYSawRFexCB+tjA1wrQvDEG8QYycCB6yMDcrvpd0pUBOEvY5qJswLcu/a2uC0yEr5+mrZfBg5kXQJa24s8a2fjW44/6s/QxnjloBw7Sc1tXAyajbS2uNVw9hp+Kn5KJhgsyupq9BK8RNvuTHpqHj85x/a7YexSEp5flxyOwOCGnRW1GhNub0+f7vCySFv7shYjYLZwv3Ks8RDt/TTR/qriwgig+eXrLGUabHWYDlyCcLWLAZYA3/CMWCuJWhEn0/9xV/xtFXByRhVrpJHPf81Di/AZpkf2hX+ZSUajAGIusbDOuCc2RGxO+TzPfrrCA7fZQQAQGJ4m8vfQ==
+X-Spam-Status: No, score=-3.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794213952-557738
+X-HE-Meta: U2FsdGVkX19nZYuayuBGcfi9jl+9U0QE1aOGCo+pRxeCOFlyL/vg6uBpeRH6uh3xTHjzkGdgvymxokSyO2nlez1vaX/vFivo+rIMTJ/AT/4qyGM3F8quOAMufW3ya+plmh8zRp8AjGfk0POlCsBrh5eGU8qzCDyEt75HgBWOugEP6mPlv91NHEtJy/Gl2SuE3M9GOezSDqN1CWgvPSoLkShbjg1+a6ipLY6aIxdTEi4o5qU0XTcxhiYap5hE9hz9nQtNEGlOLFkUf8WQXT4L7K10LE31LfOqXEOtoTrULGVMoQkeAQ2P52MvBit9NRc64ta1QHwkw/g7yQjqGTe+hVk9Y3Lx9dZD8ZnAYg63pu4I4Gd5nSR9oqELjIIXh0eVUDT5WZ2zOkW+rD1beqTG/Mdm7itARV0/CaVOcLz46JoceVIecKevoTVR29EJsk2B4kgwmAPalXWU0XAYZsplO4oH5KfPoPQNwzwWABFh6qcKcxpiD9EhGpHOKVWf3szjFK5EiZVdsfB4O2XVIPl80k14bkzfhIAkXDk7UjdiV8spB1bDd5GxNxPhzXLNQrlm3FgSGPkr5H4rw5HooNlr0QycAbTgRY71H87FJmby9nve/FbOgoCaKuL0IMD7hLz+T6W7f6+Z6veBhOcQLa2eVEuPOelFAT1GXXWq6iUtZF8OnN6CCUw09BwkaG6gRfqAjPYrxCs9+aR3rxbbhzJNxPx34GPjUiPjKcSdnMv7bxc+rYKDS3USJZ4uIil7QH3PC4Ipv37WZjfCAJcVPT5ezW3zikQjEUCCFl9LRAwUr3CfE5Orr33Q1W/nTBzxaZQB1szigjtTDw725X7N8i9GA0Ex7tHJbYrZi1RufmxfBDP/sSuUJEKn3jdX0zGBT315MN+5KXFKATwcslDKvfjQIgeJg0HoGjo7/ggY3Zh5dajoAf4lCD3EY3dicy+u3aMIvIy1FAy7ZQ1NL9qPhik
+ q2TyJJhT
+ O6TUB0u8N0ZVLY3LlxIUmJjbDhr0TgDsZoTOi/QfVqzihiRrJcBXRXGzqdCFd8BfxLEc2zJWXllJWbDlYWvDBjzcwMkOJLvSLF6banbzQeXG+Ix7gdEUIRCjIx6eiK6ELuA/L/wY1Q9rlthL3JTpIvYxrA8VsTDmDTsHuxDhv4+boH3lR6G1xXYFvdU+6QV+MxsGveC65g8TAg/RgOWCj3/kExf+R/8O46xFXQeaXfyzXdeFFr782nFiLaemo1R91zIe0PZx46uFs9b/k245ZLjuEv6VogcbVOe597kBKV8MV5SabNCbATC68nw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -156,72 +131,104 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/7/26 11:23 PM, David Hildenbrand (Arm) wrote:
-> With large file folios, overflowing the folio mapcount and refcount
-> became possible. For anon folios it is currently not really an issue:
-> each large anon folio can only be mapped once into a process; on 4k
-> kernels it would be more processes than usually allowed on a system, and
-> on 16k or 64k kernels the processes alone would consume hundreds of GiB.
-> Something to be sorted out at some point, but it's not as urgent.
-> 
-> Being able to overflow the refcount is not really big news, but it's about
-> time that we do something about it because some modern technology might
-> find ways to abuse it :)
-> 
-> One of the enablers for that was commit ddc58f27f9ee ("mm: drop tail page
-> refcounting"), however, file thp support was added later.
-> 
-> File folios can be mapped multiple times into the same process, allowing
-> for processes to hold many references to the same folio.
-> 
-> As a short-term solution, let's introduce two folio refcount limits:
-> one for ordinary consumers and one for admins. Leave some headroom
-> before the refcount goes negative, which we really don't want (having
-> the mapcount go negative is also not expected).
-> 
-> Start reporting SIGBUS if we run into limits. When restoring mappings
-> from migration entries, instead zap the pte/pmd entry. We allow for
-> slightly exceeding the limit to keep things simpler.
-> 
-> During fork(), prefer not copying page table entries over failing fork.
-> Export __folio_ref_count_over_limit() right away as that will be needed
-> from fuse code next. Use has_capability_noaudit(current, CAP_SYS_RESOURCE),
-> so filesystem credential overrides do not affect access to the admin
-> reserve, and to not generate auditing messages simply because we access
-> optional reserves.
-> 
-> This is far from ideal, but better than all easy alternatives we can
-> backport comfortably. For now it fixes the big problem: letting
-> the refcount (+mapcount) go negative and cause trouble.
-> 
-> This is only a temporary fix, we'll follow up with something better.
-> 
-> Check order 0 folios as well for consistency: each
-> folio_add_file_rmap*() and folio_dup_file_rmap*() needs a prior check.
-> 
-> Also, just document -EHWPOISON for copy_present_ptes() while at it.
-> 
-> Note: When zapping file migration entries, uffd-wp is preserved using PTE
-> markers, but uffd-rwp protection is lost because there is no corresponding
-> marker. try_to_unmap() already has the same problem when unmapping file
-> folios, so we'll happily ignore it.
-> 
-> Note2: For now we don't let migration or PTE table collapse exceed any
-> limits. Admins can always refault, and if we are already operating in
-> admin reserves, something is already off.
-> 
-> Reported-by: Chris Mason <mason@kernel.org>
-> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+Hi,
 
-LGTM.
+my laptop sometimes fails to hibernate: the screen goes dark, the fans
+keep spinning and only a forced power-off helps. It happened twice this
+week on 7.3. Both times pstore caught the same crash: a GPF in
+__pgalloc_tag_sub() while hibernate_preallocate_memory() reclaims
+memory for the image. Both times it was the second or third hibernation
+of the same boot, after successful S4 resumes. It is not every time:
+one boot went through six hibernate/resume cycles without a problem.
 
-Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
+Taint first, honestly: P (nvidia), O (openrazer) and S (CPU undervolt
+via MSR). I know S makes any report suspicious, so here is why I think
+this is a software bug and not random corruption:
 
--- 
-cheers,
-jose a. p-a
+  - RCX is fe20d545fe20d545 in BOTH crashes, byte for byte, across two
+    different boots with different KASLR offsets;
+  - RDX (the codetag pointer taken from the page) minus the KASLR
+    offset is the same in both crashes: 0xffffffff835ac1f0;
+  - in vmlinux of this build that address is inside .orc_unwind_ip,
+    not an alloc_tag. The faulting code is
+
+        mov  rcx, [rdx+0x20]    ; tag->counters
+        add  gs:[rcx], rax      ; <-- GPF
+
+    so "counters" is just ORC table bytes read as a percpu pointer.
+
+So a page's tag reference ends up as a valid, KASLR-adjusted kernel
+pointer to the wrong place. My guess is that page tag refs get out of
+sync with the tags across a hibernate/resume cycle, but I have not
+verified that.
+
+Setup: Razer Blade 16 (RZ09-0483, BIOS 2.03), i9-13950HX, 32 GB RAM,
+NixOS, kernel 7.3.0 (nixpkgs build, CONFIG_MEM_ALLOC_PROFILING=y,
+..._ENABLED_BY_DEFAULT=y, not compressed, no _DEBUG), hibernation to a
+48 GB swapfile on btrfs inside dm-crypt, /sys/power/disk = platform.
+
+Workaround: sysctl.vm.mem_profiling=never on the command line. I cannot
+reproduce this on an untainted kernel: it happens about once a week,
+and with the workaround I will not see it at all. If there is something
+cheaper to collect (a debug option, a printk, a check right after
+resume), I am happy to run it.
+
+Crash 1 (2026-11-09), assembled from pstore:
+
+Oops: general protection fault, probably for non-canonical address
+0xfe20646ff042c545: 0000 [#1] SMP NOPTI
+CPU: 3 UID: 0 PID: 458460 Comm: systemd-sleep Tainted: P S         O
+     7.3.0 #1-NixOS PREEMPT(lazy)
+Tainted: [P]=PROPRIETARY_MODULE, [S]=CPU_OUT_OF_SPEC, [O]=OOT_MODULE
+Hardware name: Razer Blade 16 - RZ09-0483/SO690, BIOS 2.03 06/04/2024
+RIP: 0010:__pgalloc_tag_sub+0xcc/0x170
+Code: e8 79 f4 08 00 48 85 c0 74 eb 48 03 05 9d 09 d2 01 48 8b 10 48
+89 c3 48 85 d2 74 1b 44 89 f0 48 8b 4a 20 48 c1 e0 0c 48 f7 d8 <65> 48
+01 01 48 8b 42 20 65 48 ff 48 08 48 c7 c7 00 19 c3 ac e8 fb
+RSP: 0018:ffffcfcdc517b4d8 EFLAGS: 00010287
+RAX: fffffffffffff000 RBX: ffff8f220292fbc0 RCX: fe20d545fe20d545
+RDX: ffffffffac3ac1f0 RSI: 0000000000000001 RDI: 0000000002bafbc0
+RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
+R10: ffff8f299ed9d260 R11: 0000000000000000 R12: fffff39ed5d7de00
+R13: 0000000000000000 R14: 0000000000000001 R15: ffffcfcdc517b5e8
+Call Trace:
+ <TASK>
+ free_unref_folios+0x18f/0x830
+ shrink_folio_list+0x63e/0x1090
+ evict_folios+0x154/0x5f0
+ try_to_shrink_lruvec+0x132/0x260
+ shrink_one+0xc0/0x1a0
+ shrink_node+0xb9e/0xdd0
+ do_try_to_free_pages+0xbf/0x480
+ try_to_free_pages+0xf6/0x1f0
+ __alloc_frozen_pages_noprof+0xa00/0x18d0
+ alloc_pages_mpol+0xbc/0x180
+ alloc_pages_noprof+0x3b/0x90
+ alloc_image_page+0x2d/0xb0
+ preallocate_image_memory+0x30/0x64
+ hibernate_preallocate_memory+0x257/0x391
+ hibernation_snapshot+0x9c/0x4c0
+ hibernate.cold+0x10d/0x495
+ state_store+0xc3/0xd0
+ kernfs_fop_write_iter+0x18a/0x230
+ vfs_write+0x25d/0x470
+ ksys_write+0x73/0xf0
+ do_syscall_64+0x114/0x5c0
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ </TASK>
+Kernel panic - not syncing: Fatal exception
+Kernel Offset: 0x28e00000 from 0xffffffff81000000
+
+Earlier in that boot: "ACPI: PM: Waking up from system sleep state S4"
+at 28492 s, crash at 83620 s.
+
+Crash 2 (2026-11-07): same RIP, same RCX, RDX ffffffffbc1ac1f0 with
+Kernel Offset 0x38c00000 (same address after subtracting it), but this
+time in kswapd0, 7 s after "PM: hibernation: hibernation entry". Two
+successful S4 resumes earlier in that boot (121257 s, 192472 s).
+
+Full pstore dumps and the vmlinux of this build are available if
+useful.
+
+Thanks, KY.
 
