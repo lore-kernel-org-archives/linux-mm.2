@@ -1,98 +1,157 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99BC0606A321
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C583606A330
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=N4PYsCmc
+	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=RbP/W4Sa
 Received: by kanga.kvack.org (Postfix)
-	id AF1E56B05EA; Mon,  9 Nov 2026 13:41:46 -0500 (EST)
+	id 91FAA6B05F0; Mon,  9 Nov 2026 13:42:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC9546B05EB; Mon,  9 Nov 2026 13:41:46 -0500 (EST)
+	id 8F6B56B05F1; Mon,  9 Nov 2026 13:42:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A06986B05EE; Mon,  9 Nov 2026 13:41:46 -0500 (EST)
+	id 80D696B05F2; Mon,  9 Nov 2026 13:42:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DFE96B05EA
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:41:46 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0B71380774
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:41:46 +0000 (UTC)
-X-FDA: 85416449412.29.416F96D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 526E480005
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:41:44 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=N4PYsCmc;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794249704;
+	by kanga.kvack.org (Postfix) with ESMTP id 539116B05F0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:42:38 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 01A01A8350
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:42:37 +0000 (UTC)
+X-FDA: 85416451596.04.224C291
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013046.outbound.protection.outlook.com [40.93.196.46])
+	by imf28.hostedemail.com (Postfix) with ESMTP id A222BC0008
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:42:34 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="RbP/W4Sa";
+	spf=pass (imf28.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.46 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794249754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6KyvQTJzcbmQ4aop4C/wDl32TQvem89RduDDh7rd0ck=;
-	b=Z5oPMbMHv6C6yakPwwYunSwS75OVADTRDmoeIB+jG/gH8VmX/yrLs39m0rzvKySgVMCU7u
-	+/H2nYKa6jjLcnP6Hce2IQT4ACmVaj5FjTW3TefoPID4VOKZnUzHZrLYwdUN3pqqmoTwSz
-	IRfBalD84YOZs1KfZvM0sYv5vmTDZ3k=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794249704;
-	b=itpgIuTftFtloxgFIBrGkcg0cpJqon5qMFTttC1M5ibPK9+gQ0WB8o7w9d8eb6xuJTx7o0
-	qvL4HHorsPVKOaLa5j+WG6KuNBs2X2hX8NZNz8bdPurQukK33wwWswltO/hgcrTX29ptg3
-	72+ArDH4U5qd25si3eppNKcD+mFWIrw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=N4PYsCmc;
-	spf=pass (imf30.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D66F8613FA;
-	Mon,  9 Nov 2026 18:41:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F18A21F0089F;
-	Mon,  9 Nov 2026 18:41:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794249703;
-	bh=6KyvQTJzcbmQ4aop4C/wDl32TQvem89RduDDh7rd0ck=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=N4PYsCmcNhGd6lqTYimK+5S1xKYGvYtlUt01h5elvR/s1my1PY61eJeEVmWmH+83f
-	 R4grjYJTiZGg5iiOfmVqGVHBUF9OxSVoIVRLUP6/ks0u0FUZKr5qaUmteL9BfNZRCC
-	 hfFlIoWRamc89vgFsyQRq2qhb8xYkOcYfFfhwfrk=
-Date: Mon, 9 Nov 2026 10:41:42 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, Qi
- Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, Axel
- Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, Wei
- Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Michal Hocko <mhocko@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, Muchun
- Song <muchun.song@linux.dev>, Lance Yang <lance.yang@linux.dev>, Ridong
- Chen <ridong.chen@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] MAINTAINERS: MEMORY MANAGEMENT - MGLRU (MULTI-GEN
- LRU) update
-Message-Id: <20261109104142.c4e01c2e29ee9ead4056f354@linux-foundation.org>
-In-Reply-To: <20261109-maintainers_mglru-v1-1-c25e6de60bcc@kernel.org>
-References: <20261109-maintainers_mglru-v1-0-c25e6de60bcc@kernel.org>
-	<20261109-maintainers_mglru-v1-1-c25e6de60bcc@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=dlsxZYtEeSMnirE2Mvec6rLsfZCL6OAYGtkZw3q5YHk=;
+	b=3z2HcHt4do+jCKZih3Xfjrd1bk/7Koco6NXBRfIFOphsnafu7EdT+/Mxd/r7pkxM12A/i8
+	YKKT9MlACHJ4P16AI/6WS8CvXnBvXddGNv5eiSs/DEStpPSziJILBvofU4OapUNMNTc8RS
+	4Tge3VXcta6nRanf2WZRyHQOlANtiEI=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794249754;
+	b=UPNVOEjud9ecCnBOfdEasxDxFlcGdgyCkLcRGD9sK9M43olKL3/za77bIxTyaS3VXPUn2m
+	HsNA0mrZgAcvKGXVGrN6UYFXbKM49xsbpvfvjywUY0VIqwoK+Ft50sqHg/aJDcmA5pa2Xo
+	aC8/DgDz//vA+SwbG6DN2hu62T84LwY=
+ARC-Authentication-Results: i=2;
+	imf28.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b="RbP/W4Sa";
+	spf=pass (imf28.hostedemail.com: domain of shivankg@amd.com designates 40.93.196.46 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	dmarc=pass (policy=quarantine) header.from=amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Ops9pJpy0jxJvU2jf+uczuBQ+3P6eDwMoyIUGVfrZgwZ6ZgTdhgdeln1TV7w2wD/MnP2hMzn6Eo/23WmnFz8iRJJj9RnvCg2t8zzpThP6wMHZAd5EQbsYy2GY1gilFTHefIpBxgCqnuOVA1smOBDg2BYVbKLJqeVqR0KN0AOVdY8eJSkCdRMgU16qu/A+zBC0IoFyS3xL3j+mofCpYsJms2L3cpcutqSZhpY0AKEyQfgjXmIV5yWco/z/5ebk9PkxOch22R8Hfi4iiAKpeC7+QwkwQybOLSOujMK73AuFh1ZvEuF5UNr/QipRjoflzi9Y5+Dfp6uZhIiUUn1SYxPlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dlsxZYtEeSMnirE2Mvec6rLsfZCL6OAYGtkZw3q5YHk=;
+ b=q7DhnkB8VNh3lWi1e244Vy5TXm1Bhw4VDhmwKT1CbCHiZjv6N1qi3eYX9yBQQrzeJkNWySuHfdJDrj1QZSbSItGa0N+irrM+yLm77pU+b4cmuezoEzVN4II2Q3OJZoT6EPaFl5KKIim3fIAG47og7gXTLm39WYi6wwhTBvqpT59R+lIRw4FG2WDaqSKYquZ9pIbHwHA/s0XQfzXOvLhNfMtIhCjjckqzGAwAmO/6lIRIfYWY8NNl23CYEr87HMZhZO8TiVRBeNJrX9dDo0LEwdUV5E4VR6I30dGXF/+ghWME3NMNQOaiaWkXRkNf8e4ojHiNSK6XzZZa/lKB66WdFw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dlsxZYtEeSMnirE2Mvec6rLsfZCL6OAYGtkZw3q5YHk=;
+ b=RbP/W4SalaaKMrUzpJPYHeTS0WfHt0gGwx+LyiQwCu+4YagGIwy3Dw56CffEixCzNF0Nql8aIJqa0n9XHPLeppRk4rBhmEa4bJlqjI7f0m8vaK6b6MMVqbcvYINIQQHMaqmbXpXyTO7q8b2fYyU9naAiu7H/jFnDjrWWNB2nrl4=
+Received: from MW3PR05CA0010.namprd05.prod.outlook.com (2603:10b6:303:2b::15)
+ by SJ2PR12MB8011.namprd12.prod.outlook.com (2603:10b6:a03:4c8::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
+ 2026 18:42:26 +0000
+Received: from SJ1PEPF000037B6.namprd05.prod.outlook.com
+ (2603:10b6:303:2b:cafe::22) by MW3PR05CA0010.outlook.office365.com
+ (2603:10b6:303:2b::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.615.7 via Frontend Transport; Mon, 9
+ Nov 2026 18:42:26 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 165.204.84.17) smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ1PEPF000037B6.mail.protection.outlook.com (10.167.244.203) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.615.4 via Frontend Transport; Mon, 9 Nov 2026 18:42:25 +0000
+Received: from [127.0.1.1] (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.53; Mon, 9 Nov
+ 2026 12:42:22 -0600
+From: Shivank Garg <shivankg@amd.com>
+Date: Mon, 9 Nov 2026 18:41:55 +0000
+Subject: [PATCH] mm: remove unused clear_flush_young_ptes_notify()
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: qucymq45jj1cu7tj96es4131oeaog7mz
-X-Rspamd-Queue-Id: 526E480005
+Message-ID: <20261109-clear-flush-young-notify-v1-1-b37fbafa2686@amd.com>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MQQqAIBBA0avErBtIqciuEi3MxhoIDa0opLsnL
+ d/i/wSRAlOEvkgQ6OLI3mWIsgCzarcQ8pwNspKtEJVCs5EOaLczrvj40y3o/MH2wVmbbmpq1ZK
+ pIed7IMv3vx7G9/0AKsxO4moAAAA=
+X-Change-ID: 20261109-clear-flush-young-notify-dac8b5496ec4
+To: David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>
+CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>, Shivank Garg
+	<shivankg@amd.com>
+X-Mailer: b4 0.15-dev-47d62
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794249742; l=1810;
+ i=shivankg@amd.com; s=20260518; h=from:subject:message-id;
+ bh=wxWmapUOhxu/6jc9xLT927AsGRcrXYc4JFalOogWUCA=;
+ b=KNFZ6QCPOiqiQTec+hroRFvtSQKAt3Tdvy0kK6Aa9ax6/K2DFXn276d7XC9gCBt27DFYqJWsh
+ 23Kh92D7la+AoCZsfF1KYoKB6eegvHZ8VljYDcekOIGErW1AjuEfAtq
+X-Developer-Key: i=shivankg@amd.com; a=ed25519;
+ pk=2l2QGTeXuGkZTtfmx0nPQU8iFZfjYmX/ymMojitevx4=
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000037B6:EE_|SJ2PR12MB8011:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6015d7ef-cbcd-4cbf-6a93-08df3e91332f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|23010399003|7416014|82310400026|36860700016|260925021911599003|260925022911599003|260925021311599003|11063799006|261009223027099003|56012099006|261021123027099003|10067099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	CBZyXrba/nyf8Ab9uTTmPMGc4TJek4qyphphyzGMRIPtiAhXNDUxRhnvPBUNzMruBEBlLrDm931iapGOHoxjEaJqT2rQpCzL9xHgloHhSMRT1kplGhtRm9sQWqOvvClGRkmZt+AvJS4yM88FxVG2SQuUiz5k5RuWHKbdg0Xx5gEeCiJwKliBDmdnBFUwPcUUiZdyA4nON9y3vudMiNXdQ57hUR4T5K4axJp6fvPyK7U050vcc8lKpZ1JSA1llb/uRWXy1JbTtqBKTWgdVzdVKg2N8YSp5c/G0VYPB+a0qT367ny+jJBI/k+Ctz6BzFFUfgmxykbQt6ScaI3JeI5/Ps2NU7pKt83VPj+DCCKnHb/H+ZnBl0uc8MvD6CvL+/9424dQS0PzUYsa5SbD/ta82yPGTHaMPR0cSXzHBuEFhBu0ZX/VqwP6QGz3MpxDa8/OVSd77svI5Qg+vFuxlbxvWWD34wnaGB3EU35bHRh8Be41Vp1lBER+aUr5nwai/tL+mGDofQwqgCal5b430Mcw/752YtPYtxoIbOIZNobGWg8vgla/8Hky63XqnpgGYfipNClomNgZSfXq0btabemve3jxwEK4PGsYVL1gQdcpYFLAwDejL15gbFQw5ZbxUSSTSOuih+9xiyseenufjg9U6M41YH3bPWEvtppfT9DooJ0vtzxiSaFiK64cWdFuLjPLBPOLkbADjojZ08ovR4/uxQ==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(23010399003)(7416014)(82310400026)(36860700016)(260925021911599003)(260925022911599003)(260925021311599003)(11063799006)(261009223027099003)(56012099006)(261021123027099003)(10067099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	1c+tFXoHWa12xaB7bqQagnR0jcKlwCYEUj61S6SjHSyzwzwmZJ7FLP+wjXIQQJHoDr1OdJfkxaS75vFwPkwTXhobiDh7WL9Fxv774K9mJoU+5n7VAlYHzp6IeTDD9FQK13ety03vUdMH3h/RKw8zlOd0XeAwxNiC5dtjzLqyNhjz/9BheCPXaOjI+9MvG7xrY3AuYb6S6zFmAFeCDSBXU9E3z1MRaZlRYAPDS6p766w4QLs1WfP0PjMSynJZUN0ODwGkDJbUq6eWTYTRnoHjCycot4ocQEu8HxpCE80R1IfvvaPavZFAqz4I0SkOJXcoRxcMmtxMbN/WFRJtGBm0eyG9ijCgjVDIVtyNntXoVYSygC5dCo72musjDxeadqQFIWPk2f/DMgZm5L8CHQCUAn8yj2opygvYm1y9IETtvOCxDF6KMaDNY+XrwTtLpygp
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 18:42:25.8537
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6015d7ef-cbcd-4cbf-6a93-08df3e91332f
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000037B6.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8011
+X-Rspamd-Server: rspam06
+X-Stat-Signature: kj1mskaaj94ozzaj7da5g7sie1fh1xmt
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: A222BC0008
 X-Rspam-User: 
-X-HE-Tag: 1794249704-117054
-X-HE-Meta: U2FsdGVkX1+402kolWI0RQNJx9jnmXGX8E4/r8HGyhI64xmJgdXHkTS/It+FVBNWiC0sSEyBSL4+DMgCk8CjKaomYwSaJnIzlkiq8g+e2/tJoilakkRAOTCCTiQHP/gBl8XclhoeFNVJMpUXGohFwXyqmtO/q4/Y9OJ2787TldeHHMC0BabB7QTcvUVaktN7996kaqUWoYS8mIcYnhte96BH9xfy8zdI+hH9Gwx9uwO0/XtbdHYKfHVnp2t9vaXPSOeYzZFgxO6ao9zpVp3rLai7cy3pEZCwO158PYI2acn5TC1DIore8WOzHwkIYx7RpIGtp24+GL6l++40Qp54lsXMJsS9byRSY6KnieyR8P9d58MFOwBja6QxjHEyoYMofPZBuOIVovWayd/HUoa8bx7lbzikfxgQ2ymms47kFOOMoah3k0vDOi3qC/Y3K+mj1N0fEemBU/2meaVp44+nio05zQf9Vplo6T0AFAraKMXHqnrqDepOtauevxOzlJ9DN3WhQRB2MT2Ef2py8SI8exn8B66KlxxbMp2WlHS0XKaaEQCsBlSkxK0iZJwJR4FHDYgMvZoTEin3S7K256TVpw3ozYu/BmmpziSWI6hsy26czsZavPdNwy2P7PXWaSu/H6wzQ+RR+qFBYEFZCfBP0Gn8rvpwlLledDK54ZXbC/yVbkWgkLYZkQjAQ9wN4qah9JedNXG8TW+JyqFX40RG59RebswiTfeoUfEC+ZpOgB+LP90sBAVua2ynFgz/g9bH4mAAIR6JZNBRC+7VoZWQgm9FE69Yyc16NnJSGPkY3pYX5pgxjuPjvI73aDg1YIquBfmnhulyVY3B7Q3ymhU6UBn/qI8XbOFb0+O5nk+nAnVe1c+B4057Nyatw78whL7oqpqmp8I8Xh4lj08X4LLV2a6W+gBpVbq/43v0D4uvqYYIFVaz+c+6BI3jYULiLmR/8qCcXpNEPYDdgECp7EI
- JUIjgMcW
- mPVdljm4DYZU4U3Ordr5SAir3rC7mFjn1hSYjpFhPzgTXD+GbqQTGZyI2ich4w9pVYnvOmvS9i/JUh1+JqYRicgtwxCD/WOINy9Yim4biDCVWO9sXRJ5Qa1KeUyjYiAZ83pUjqjFrbHn3GuI8BQzUDf6TnoekiYgg5bzhITJw9Jq7G3lvRi/Aj8LTDuwZ4i6qlOWRrtypvmS/EvOWl1XEJeMyI10rHj1q/u3O8fInBT1u3i6XyJjh9u12m+SyBjB9svBUvXkuRmCFxubNoPMd97JAjo3pa7wF9EXqfApHNIIcakaVy+qTBeJyaJG71qInCCpk/CfwL84gnabi+7Dg2sHdsrnsDGo+9dlUeGSN6kmEWhE=
+X-HE-Tag: 1794249754-246391
+X-HE-Meta: U2FsdGVkX1+/b413JE459jzQkre3rPRnIlPygp7DJc9fYbjaEClSe3H96dtYw3btNg+eT59Ik0rBW5ow2A+JIUdH97lI+U7PPl3/tpLYSYssalAKM46aGmAw9jmAwhi6hV87ZP4P/jx0ewbqJi4sTexezX7plNwjJxAvgFgHeVcRPShFIp39Y04hqyvyYur4q8O1YelP90gaJGcjx2wnAKAIvkAF4clSbxHyTteIp+wNAzy10k5CryQbxB84/VQ86wwXdIWjJS+9QXpaB8ZKZ0we2tVGLeivTqBi+Qhn+vHaWhk2/0vNubZmh/EbXyK8MjEARCdGdebyYDHCxzAmf/vZ/VTm88Pozt9KIP3gm/TKIE/9gTu3cPPEIz0T9rubxaNmeD8+aXG0+/qqAVwWZ3JX9IwC/9bIJO2E1lNWLfti5F8iQ8elScQKPnsnrRhDflr5K16dNBHuzsgA06e88XcdCN6xVhFYFmLcv2P+26/ODUKq9rcOCwwGj4iez2XdjqsusMHQrdBRNUe6jw2T+Ud15krvc5jtc52B9eJRSqimsWvZdtEuLeatCOnowWbpqTGFvUoa+3LQSt0bjwt4vzNNDsuPcmb2aqb0VBYm54DaKzNP/SX5/4OcAYDOqnWtZf2zaQQG91FgeHOmkSvcW1qJSw9iG7XglKOss0CTROcZP2JvYdRKQWWHWwApdKlXE96oDUm31THKG/U3ROBglZQ3/sNVO3LnZj+Cok5Yo5J/tyIJ72X8bfhlAwZV5FqmXz1mM+tZU8yr034pEPgQDHAzBqteU/7Vmw8sXmH0l1hoT9ZgmirQ6Sdyqt1hLND02vlqItEEsXdlNsHtqRMUhycMhHWTJBClerd0VmwSmix0dR2oiYuUCLZIzoAmunvMoKQEeyK7GpPzR1RGuRW6DM4Ihz3gBnb0JjOl1TpisVurPXy9CJPVz+vaY7uoQ1ZsFk8BR675r65TfF6c8Ds
+ 7ua+AZzL
+ dn4fI0z6LdcLtH/fUKss9txnKriUMcpgDqpflaoluGj61cagSuWNCHxoABF6nNACK2keOz4lQ/twUrZwQOSX6jTQm27SNwMtOhppOmYDl2ViVkUecxS8j5H0dZoN9z7xP4/1WTYPkS4T1wEX/gizHpgGjqVpNZhUU0W0oQxmomxJi9tQ7+WSjmx07PN4G3LQYVoa8LxO+LfFRq5eAMyPLwyCkF3MV/QvZVHB0m7sBrRQmNtvqNePAOEG91zldRWpZOdWYvbdzQ0evSAExQOo3/HhujECqObCmu2l6wPa/Poo37br3uRbEi/IyjZIvmSwJAa3eY6CW3sY6YKMVeuZJtvW7Mmc6YLnGPVhBBtQx9hUT8D1RxUiFN/L8Go8YPWRyx9SJqerF24GxWYsRXRlaVHyc5UysqW3GtcI85lp01tqJU8WaSHxY8FqUCM7LB1CLsZx5LuyCS/KNLtGfvilVr6NUBqdYBqsd5LN3yyuTlnmTrRYixbrZiGp+H+S+a/jUzsXA
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,37 +160,58 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 09 Nov 2026 19:31:53 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+clear_flush_young_ptes_notify()'s last user was removed in
+commit f3c493d2f42b ("mm/rmap: handle device-exclusive entries in
+folio_referenced_one()"), which open-codes clear_flush_young_ptes()
+and mmu_notifier_clear_flush_young() in folio_referenced_one().
 
-> MGLRU is currently the only MM component without a dedicated component
-> maintainer. Fortunately, Kairui and Barry have been actively
-> contributing to MGLRU and have volunteered to take on more responsibility
-> by officially taking care of it.
-> 
-> Given that Kairui is already an established MM component maintainer in
-> a related MM component (SWAP), add him as an MGLRU maintainer right away.
-> 
-> For Barry, the idea is to transition him towards a component maintainer
-> role over the coming months, starting by moving him to the top of the
-> reviewer list.
-> 
+Remove both the CONFIG_MMU_NOTIFIER definition and the
+!CONFIG_MMU_NOTIFIER alias.
 
-Yay, thanks guys.  It's been wonderful to see the rebirth of MGLRU over
-the past ~year.
+Signed-off-by: Shivank Garg <shivankg@amd.com>
+---
+Applies cleanly on mm/core.git/for-next.
+---
+ mm/internal.h | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-When do we get to remove the legacy LRU???
+diff --git a/mm/internal.h b/mm/internal.h
+index b129510b92e2..b1f3a1a59bc0 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1598,17 +1598,6 @@ static inline void maybe_rmap_unlock_action(struct vm_area_struct *vma,
+ }
+ 
+ #ifdef CONFIG_MMU_NOTIFIER
+-static inline bool clear_flush_young_ptes_notify(struct vm_area_struct *vma,
+-		unsigned long addr, pte_t *ptep, unsigned int nr)
+-{
+-	bool young;
+-
+-	young = clear_flush_young_ptes(vma, addr, ptep, nr);
+-	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr,
+-						addr + nr * PAGE_SIZE);
+-	return young;
+-}
+-
+ static inline bool pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
+ 		unsigned long addr, pmd_t *pmdp)
+ {
+@@ -1641,7 +1630,6 @@ static inline bool pmdp_test_and_clear_young_notify(struct vm_area_struct *vma,
+ 
+ #else /* CONFIG_MMU_NOTIFIER */
+ 
+-#define clear_flush_young_ptes_notify	clear_flush_young_ptes
+ #define pmdp_clear_flush_young_notify	pmdp_clear_flush_young
+ #define test_and_clear_young_ptes_notify	test_and_clear_young_ptes
+ #define pmdp_test_and_clear_young_notify	pmdp_test_and_clear_young
 
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -17635,10 +17635,10 @@ K:	(?i:vmemmap)
->  
->  MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
->  M:	Andrew Morton <akpm@linux-foundation.org>
-> -R:	Kairui Song <kasong@tencent.com>
-> +M:	Kairui Song <kasong@tencent.com>
-> +R:	Barry Song <baohua@kernel.org>
+---
+base-commit: 2683df3b7eac1d91380194955ad0c9751454610c
+change-id: 20261109-clear-flush-young-notify-dac8b5496ec4
 
-Totally-Acked-by:me.
-
+Best regards,
+-- 
+Shivank Garg <shivankg@amd.com>
 
 
