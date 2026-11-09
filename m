@@ -1,189 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A426082BDC
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D461606D824
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bglofv8p
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=rOKNBjA0;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Gzy3PFy5;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=rOKNBjA0;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Gzy3PFy5
 Received: by kanga.kvack.org (Postfix)
-	id 54D936B05B7; Mon,  9 Nov 2026 09:10:37 -0500 (EST)
+	id 501D16B05B9; Mon,  9 Nov 2026 09:11:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FE926B05B9; Mon,  9 Nov 2026 09:10:37 -0500 (EST)
+	id 4B2A86B05BA; Mon,  9 Nov 2026 09:11:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3ED676B05BA; Mon,  9 Nov 2026 09:10:37 -0500 (EST)
+	id 3C8FF6B05BB; Mon,  9 Nov 2026 09:11:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 13CD56B05B7
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:10:37 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F416160687
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:10:35 +0000 (UTC)
-X-FDA: 85415766030.10.BA1A16E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5066D12000E
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:10:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bglofv8p;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794233433;
-	b=QpD0zwsezoEZJPQ6O41QlgoGajxsyQANmI9Z+dE15ZiHvrCKblnZD+DHUZrGmS+UBo2F99
-	2OC+3Q/63If8B+YCY4Cg97ce5RUC6PxMKsha6OP3imGQmWynx7Gm2RwAZg5yWFE/8MZdeQ
-	HNJRfBwOYNAfq3NqzsmMYkBs0rtO4GQ=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bglofv8p;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 1D3336B05B9
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:11:32 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D91F31C268F
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:11:30 +0000 (UTC)
+X-FDA: 85415768340.21.19440BA
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 9E5BC14000D
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:11:28 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rOKNBjA0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Gzy3PFy5;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rOKNBjA0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Gzy3PFy5;
+	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794233433;
+	s=arc-20220608; t=1794233489;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=myMKGYz65TX3ZV2HLEDYXummVbvvcxR6eJbeormWLNY=;
-	b=RUTlZhxK4rI2Qgu9JCRWmy8yNq6JXaFnmO9a82JAFN1Qx4AAz8O6UcSiQAEUyi7htsjMei
-	vUGFzCU7nnfZ6kASAs7PXZhqMjMdOVGNrkoaM61DX5lzrUyvnlORTB+D9bDGBkV0JK7iiY
-	UDLq6c0eUqNeqa9vo7+q49GPYQersNI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id BE72063373;
-	Mon,  9 Nov 2026 14:10:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12FC1F008A6;
-	Mon,  9 Nov 2026 14:10:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794233432;
-	bh=myMKGYz65TX3ZV2HLEDYXummVbvvcxR6eJbeormWLNY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=Bglofv8pDUgq9hvZ4rVha6IMx3/tuTzNQNjSHYP9CIWyepDI27syAaVFBas8f6RVD
-	 UVmdyKqTyz0b0NheG+FZ+AE2pIAr4hBiDl86UsGhA2o+J9ROCIUnuGugx2665zjVgQ
-	 TMdl9gtEp1MxF8F7yzZNtAdWogd9Qrd7XfK+Cn9/CyV+VmkQv5SDfWRp1jUA83/KWa
-	 0go/uTrk3kXniLmF1Y9T5JU/bstxbmS1HQc2z9qgBDZR2I/KcxQxVBiBGjfDxu/sgz
-	 lACX7WdmvIxb++wMDKFjor2fBrrIUzrhV7UHlSvhb14W9EZvqdLp4aUCwYHftZoSEC
-	 9xf7LvowSWk1Q==
-Message-ID: <65038fdc-f4a1-461d-b7b9-669885f15c3c@kernel.org>
-Date: Mon, 9 Nov 2026 15:10:12 +0100
+	bh=UixA2iMxrYGuaa7Tk4DCMrXBPONdRbn3XUlAnW90aew=;
+	b=p7DeVhszPyj1rmhGR0HqYh5Khx6E5vsFEUJ+YWdrTN0G9UC+QStTKaSVx8e+OtTTv0k/CY
+	dn8THsSdiczNENhNEmHAHudbNr+y3Q5bgXDACORa7ldWXBizeeAuPrQUSyQ0kYupsfI1cv
+	Xa0nUysbY/8lxHsiz/ozCQn9BCNyrIA=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794233489;
+	b=J+2sPKl3thWPitZ96TtOJNIKDFI1WtZQaYS1ZlhW4fIvSauoUxyo2Rs/Yc41kccBtuI3nf
+	9I/xgvyrimhwPcbDqW0cXqqOAkM5NDG0nfMyobyxqY7wNO88gurdcvxwBiE8zzukvhK/bz
+	Adusnkiy+fwCxuv7dZi48d/ta/C0d50=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rOKNBjA0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Gzy3PFy5;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=rOKNBjA0;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=Gzy3PFy5;
+	spf=pass (imf26.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id ECF22220BC;
+	Mon,  9 Nov 2026 14:11:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794233487; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UixA2iMxrYGuaa7Tk4DCMrXBPONdRbn3XUlAnW90aew=;
+	b=rOKNBjA0FSBris6AaCuG53CFa1lbSnDchdh4z5Qm9m+APT1ttY5nGS1/QFBpbbKbOF4fit
+	Qx5pilstG5yOIutRfIJpS19NHu2MBhVFFJtm7JYfwf1lqI1iDEkXmvpvi5Myfuq7i6WMrv
+	Gqx3KjRJ96W+IfjLqQ1q+wbsYuVilh0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794233487;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UixA2iMxrYGuaa7Tk4DCMrXBPONdRbn3XUlAnW90aew=;
+	b=Gzy3PFy52hA5KNQwVmyvZfo9FuqdMa803s8oS+B0tWdDGTH4N3v6HeWVDlo1Wm9ycM9lho
+	bx2oBjSOMngmjhBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1794233487; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UixA2iMxrYGuaa7Tk4DCMrXBPONdRbn3XUlAnW90aew=;
+	b=rOKNBjA0FSBris6AaCuG53CFa1lbSnDchdh4z5Qm9m+APT1ttY5nGS1/QFBpbbKbOF4fit
+	Qx5pilstG5yOIutRfIJpS19NHu2MBhVFFJtm7JYfwf1lqI1iDEkXmvpvi5Myfuq7i6WMrv
+	Gqx3KjRJ96W+IfjLqQ1q+wbsYuVilh0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1794233487;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UixA2iMxrYGuaa7Tk4DCMrXBPONdRbn3XUlAnW90aew=;
+	b=Gzy3PFy52hA5KNQwVmyvZfo9FuqdMa803s8oS+B0tWdDGTH4N3v6HeWVDlo1Wm9ycM9lho
+	bx2oBjSOMngmjhBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B0E2313319;
+	Mon,  9 Nov 2026 14:11:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FTbKH43U8Wo8VwAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Mon, 09 Nov 2026 14:11:25 +0000
+Date: Mon, 9 Nov 2026 14:11:23 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH v2 1/2] mm/memory: recheck PG_uptodate after
+ ->page_mkwrite()
+Message-ID: <avHULH5Irb3byJkG@pedro-suse.tail5790ac.ts.net>
+References: <20261109120403.82361-1-kas@kernel.org>
+ <20261109120403.82361-2-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/13] mm/madvise: convert madvise_vma_behavior() to use
- vma_flags_t
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
- John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
- Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
- Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
- Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>,
- SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>,
- David Rientjes <rientjes@google.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
- Adrian Hunter <adrian.hunter@intel.com>, James Clark
- <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Oleg Nesterov <oleg@redhat.com>, John Johansen
- <john.johansen@canonical.com>, Georgia Garcia
- <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>,
- James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
- Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
- Stephen Smalley <stephen.smalley.work@gmail.com>,
- =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, damon@lists.linux.dev,
- linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
- apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
- linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
- <20261105-late-2026-vma-flags-v1-7-0d3cd15ab75f@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261105-late-2026-vma-flags-v1-7-0d3cd15ab75f@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: q6yanwq1r451tc4i57khajb1xfdz6og1
-X-Rspamd-Queue-Id: 5066D12000E
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261109120403.82361-2-kas@kernel.org>
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spam-Score: -13.51
+X-Stat-Signature: we79j9xcbprccin9gxuhh8aksiqiyohp
+X-Rspamd-Queue-Id: 9E5BC14000D
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794233433-110137
-X-HE-Meta: U2FsdGVkX19IxF6GPJ0J1fitozirKsCcVEfRUGfltu1yJGeLSVQaFzCjqui6j6x/bi6G6UhCeLQTH82XKREo1dAj792TLKDOP0dT82QiqMMLSdi8R/HISHwBpcL5VGU1QsKa6lMLoD2UyJicxHTHoazW0hTSijbMhFz8Lq2TEC5BJZAGcEKcCDLq5hkOXSuf50YdCTjeF7l0K83MKSmkGj6RHVsRTbM2P3XV7fd9eTgqdvrRXRVPyK8O9hDTSgs+samyPoHuS/JMbGcP2SeaKc0gfd3KB+j6gqIKewezExBjHO3lFI8XA38IUgPugzaVlgTZpMwbU7hfrCDRpJRk0TuyjZCy5gfc71TiKG1fm73bUcJEtLMgVfekX0ERzU86B07ovwg84ZVqxPOJQgRFpMm5w6JhdxQIsTvxI8ZjN6THyF/XiAAkxREmc5cqNxcseLPOjm4utQPklL5DUhqhaFhV3LCQ+ufOY6LoD4ICFpQxpsG+wvXttDByjCOslM4HvGZ36qa+acWG+kwpzAEgFeGQQooxOBK1j/1JB842CVLyn2uZLTK7lQrG+AhnwkQ4AsgSg21e30+EKj2vQ5UEBxWiqlTjamgnHrF92uSC5CPweD7re/Qrd+RWNwLQgEQxmsDcUuZiI3hBifUX6oyQpcxCsRQJDYfFG1G99vvmQmgAmj5eN/5ZXXYKgKEXdf+TuwTSgnT3gqNv8W8vDqDEpSlqHSPrR6dhzi1kU1epFiNYv39L6hoEZllb+P4KNva0KdaVPJFq5DXyiJf3LL9mmB/WbJuqT3Ud7V7d+NImnbd3rlds527XcEI5uVvFntiH4Tckpj5QpEdPhF+Pe1VeOOYkuI+WNjsOwgAF+/ORfPvH4lQidgEPTD94D79s4bqaYX5IjOu8ZB3G2OPAvRc93WU0DeiYigahE+jqHL8gFubJGN3N1WkzYkw+8S/xX/wO70KiD9t/ZrcTxYk1AWH
- 8nWpspnT
- 91jjN3BIFD2MmoL4A6Ruckemhpxt3Nd3rT2Jmnf3rVGN7J3yfK2hE9PRYfciTU444bpL3dWrrHGl+kvSmlBuuxj88INvkbLxu/rVYNbfvev8EDNuBCGOFZxc/9WTNKTqdrr/k9JCLT55Le5fF62A7RNgt7m6EWEJ4/d+YmGnzu57H3Insnf8c3pyBJ+fK55AYNMvI0XeCNtRlGdy3U6I8KZz1ExaMmM5sD5zN3/P6GaEfWqpJe86sxnDF9praGhuoT7QrZZIlUU/C9euwL41n621cLjTyoIsNgC2lMfeE8u9akngH0zP6oFUHS1R389xmlPw1u6jfSb6xhRibOwpJHL/WBRnuG7xKVaOXxxVP9hhjVqlTCog6Oh/wbHYDRMnLVoMe
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794233488-558821
+X-HE-Meta: U2FsdGVkX1+IoxxE7d4uBrNtk/vzIFIGCa2egwMS9RbQP+CyFavvPC676RYmLQPykDwlQWxHViXzeSLJKLhtkC2w2wtqw7cDQvjE1jLz9a3k1eqo/bnKreiy1eI+odu02wJzNw4jP7uUGh8OD72clFPZZ1nS/sakFbqMEIwKsVqtRRRNsHA28/uIROmUlbCh8c1+pq9tn39kpNZU7rq7l9Wo2mgszlCOhw35vCxST/866tsVl7BqZSMte0aSmN3qTlHvgDr8HwUq9Yl0AQBFK5OXMHu00sY0K/dtPIMShL8g9tTQpzYjUOivvX4+9rLvC3b3ARdpw5jhDM3DmRGXoibi2gbdUrgVe9VieE4OrnHpQI/CXvyncNL1LHWz+VEEK5Pv1jOwyC5UM9JZavuD85WtYZKBT096hhIeuHN45Ji91E12ls0G8AOM2c4fr2eaLuXOVeCzcj4d5m/N+ZNReSJxXqFlUnl7e8LT/HRDeO160eLRmwKYbwToPVV/Js7wSUhVK87ylkIKm6BaTmeCdHpZeZJGz6nq/A0D113hE8NZhEqv7hp62fLcA7wDk0Ay6IUry+hS8HaOTRJTfQTxc0h+1kXrqZolCmt6rln2CdRmIReeJXxRl25E2nVHZiEOBFo27tkaQa+Ct31rOX6xuazFAw3upWYWwzWLTPwz2wkw2tQP4J0rveQT0TsvbxoBiUgAFJE9hFMwmQTu8uegecpDDPM9uzdjEKOBAPXEFq/NnwXmfhtCGVDPDQsiaEEaFtN2uzhczYdite2WR99m8iAq2un+K2sIq6P0owu6s+lO945UA/R7bIll1KLhKFJbWfHv3FMQv7374XsfT+7fsAEgTB3FPIfvLKqarS5iPo2JHIzFUjXTaKqDRpnJvn5fyyZfPzREenmc0eJ3hCJUzkxDhDFEp9QE7SLA7LlKql09rdePPOZ3XhLgfnYbMovwK/ZPSnrWDOSZMFqdZxQ
+ ARkDGT0T
+ 5o7Zb3uKGqH4t3gaVILwcvG2m92ByyhXOFmntpB0NMiHmzpqvlEN9HcnO3XqfjQzvnFlFd9NmxFl2bfy4xtN1XbxOhctG45bfxR3Xn23ihh02t4N3WiXosgq54QVSPnQSAvyJSw38aOcsKwLyoCrUI15TZrLt8eXqORMTGjyE0nEMif0Ig8nbSk5TBhoY5zlWXzY7fE8Ir4MCuM8iOVBoD+YfYzV7Ilanj4wn2OtzFezzYBHy77GTQt3GiEGbij/Y6HCN66/ho9pXvmpMu2/pl50FkgZWQTYnIKqhBdiA2Gv4fstqEYjYPw2Q3cZU4Z31eMBz/8A6+MCwIsEWXyx6LYrPbQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,25 +146,87 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -779,7 +779,8 @@ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
->  	if (ksm_test_exit(mm))
->  		return NULL;
->  	vma = vma_lookup(mm, addr);
-> -	if (!vma || !vma_test(vma, VMA_MERGEABLE_BIT) || !vma_has_anon_rmap(vma))
-> +	if (!vma || !vma_test(vma, VMA_MERGEABLE_BIT) ||
-> +	    !vma_has_anon_rmap(vma))
+On Mon, Nov 09, 2026 at 12:04:01PM +0000, Kiryl Shutsemau (Meta) wrote:
+> do_shared_fault() unlocks the folio around ->page_mkwrite(). Writeback
+> can lock it in that window, fail, and clear PG_uptodate with the folio
+> left in the page cache. ecryptfs_writepages() does this when encryption
+> fails. filemap_page_mkwrite() relocks the folio and checks only
+> ->mapping, so the fault maps a folio that is not uptodate:
+> 
+>     CPU0                            CPU1
+>     do_shared_fault()
+>       folio_unlock()
+>                                     ecryptfs_writepages()
+>                                       folio_clear_uptodate()
+>       filemap_page_mkwrite()
+>         folio_lock()
+>       finish_fault()
+> 
+> The next read(2) or fault on the folio reads it in again from the file,
+> over anything stored through the mapping in the meantime. Those stores
+> are lost.
+> 
+> Recheck PG_uptodate once ->page_mkwrite() returns with the folio locked,
+> and retry the fault if it is clear, the same way filemap_fault() retries
+> on a cached folio that lost PG_uptodate. Skip folios outside the page
+> cache: driver pages from ->fault() never get PG_uptodate and would
+> retry forever.
+> 
+> The check stays out of do_page_mkwrite(): wp_page_shared() calls it on
+> a folio that is still mapped, and a retry there would fault on the same
+> PTE forever.
+> 
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/sashiko-outbox-202966@kernel.org/
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  mm/memory.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index fe72e66c9c2e..cc1d0b7d15c7 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5613,6 +5613,18 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+>  	return VM_FAULT_OOM;
+>  }
+>  
+> +/*
+> + * A page cache folio that is not uptodate holds data that was never read in
+> + * or cleared, and mapping it leaks stale memory to userspace.
+> + */
+> +static bool file_folio_not_uptodate(struct folio *folio)
+> +{
+> +	if (likely(folio_test_uptodate(folio)))
+> +		return false;
+> +	/* Driver pages from ->fault() never get PG_uptodate */
+> +	return !folio_test_anon(folio) && folio->mapping;
 
-This change should be dropped form this patch IIUC.
+FYI you can wrap this line in an unlikely() and it has the same effect as
+wrapping every call:
+	return unlikely(!folio_test_anon(folio) && folio->mapping);
 
-It would have to go into the previous one (that I applied) but it's not actually
-required.
+> +}
+> +
+>  /*
+>   * Either the VMA lock or the mmap_lock must have been held on entry
+>   * (see FAULT_FLAG_VMA_LOCK) and may have been released depending on
+> @@ -6163,6 +6175,16 @@ static vm_fault_t do_shared_fault(struct vm_fault *vmf)
+>  			folio_put(folio);
+>  			return tmp;
+>  		}
+> +
+> +		/*
+> +		 * The folio was unlocked for ->page_mkwrite(). If it lost
+> +		 * PG_uptodate meanwhile, retry the fault to read it in again.
+> +		 */
 
-Unless I am missing something :)
+The "read it in again" sounds a bit too prescriptive but, apart from that:
+
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+
+Thanks!
 
 -- 
-Cheers,
-
-David
+Pedro
 
