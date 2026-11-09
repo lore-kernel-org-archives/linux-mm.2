@@ -1,140 +1,133 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131F5606A33C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5442606EEB9
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ut7+3u6S;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=SApFq5WF;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ut7+3u6S;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=SApFq5WF
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=A8AxYfty
 Received: by kanga.kvack.org (Postfix)
-	id 39A946B05C3; Mon,  9 Nov 2026 07:20:30 -0500 (EST)
+	id EC3C66B05B7; Mon,  9 Nov 2026 07:23:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 371A16B05C4; Mon,  9 Nov 2026 07:20:30 -0500 (EST)
+	id E9AF16B05B9; Mon,  9 Nov 2026 07:23:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 288596B05C5; Mon,  9 Nov 2026 07:20:30 -0500 (EST)
+	id DB0276B05C5; Mon,  9 Nov 2026 07:23:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EBC136B05C3
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:20:29 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BDF4160636
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:20:29 +0000 (UTC)
-X-FDA: 85415488578.15.3C3F273
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 68C2C20005
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:20:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ut7+3u6S;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SApFq5WF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ut7+3u6S;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SApFq5WF;
-	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B116E6B05B7
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:23:36 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4107F8067A
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:23:36 +0000 (UTC)
+X-FDA: 85415496432.26.DB30462
+Received: from mail-pj2-f7.google.com (mail-pj2-f7.google.com [74.125.227.135])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 40ACA100004
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:23:34 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=A8AxYfty;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.135 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794227014;
+	b=k0mYYCerwq2jXaclWiVj3qGouLgOj0AZyD2IBECnx5jDaUhoJKNXomIs/cumBq3gkzCKGO
+	HgvXsu+0LfZheNPYn+yA3mlGBq2iJAFQ68VlI0AgGBvu2xwsqhhkhGWTqY1oVuXWTYGI9u
+	V/6+qa+7r96MYwJ6F86R+RXrd5N6CS8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794226827;
+	s=arc-20220608; t=1794227014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YcGWRSLO8Yfbujxln+iu8vgkMzCPp+fOVFLW3VDJHEw=;
-	b=nGhZ9i0d1AyvCqmuhvC+kCJkjPQQMJG7h4NeFPukFdAXokLF1yqgWG0ZNKBd+t9/HjHIgO
-	txvR3bJu65J3cwd5WPRdJV95e/HRFajkSEa6RAJHlgqUFBLCH2gApmOzeOaViwJJvZr4/n
-	eZwFZSlfu9otZg5cH1G65mOebwLj3FE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794226827;
-	b=dgH3ejIMr/6ekSRguBma+2Pyd95W0UU/ekX0NNoNV96UZnLJrDDeHjlMvPOaKsjbirCftn
-	+STTku0FBvFbBDsEF9gwUG/bmuf6uyxBOzyXwI1eYW2s4hUV1pkTvtJ3HfjFtTWzjNC5+t
-	Ot7jihdBCMjCUqA8+HtR5UudNuy2pcg=
+	bh=+tF8l8wiFwVnoygmXpYnREIWubWMOLu/o49/XwgRJmA=;
+	b=XMRa6wsEYiz6DOqWaV9+vvHl+V+CKLIZvvK1mJazx7n6lHyHqXcmW4Vy0/g/GfO3IQC2rI
+	Ae1lM6k0g+StudhDu3SBgCX/o8d8j3UEQ2yXMdfmMknrPEAID9Vi6og2aR26QajSlC0cZJ
+	4V5VKh2zZBxg3DfZp26r7+NO8KM2CBQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ut7+3u6S;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SApFq5WF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ut7+3u6S;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SApFq5WF;
-	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9B4F11F7B0;
-	Mon,  9 Nov 2026 12:20:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794226825; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YcGWRSLO8Yfbujxln+iu8vgkMzCPp+fOVFLW3VDJHEw=;
-	b=ut7+3u6SWUn9H8Jk66vEquo6iEFh7zATkMxP+B0KrFpqdOTRAYkB5eSvqIDm4Rftcg06HF
-	f7tCAJLzEpBvUUmWwknN84Sa+PrtyJG9nxQ4uagQy4WqPiSGG6MhXP7Lp3Tpooe8AZqVzX
-	1EqRV98wGShKrD9PbU/12/Bb4A/d288=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794226825;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YcGWRSLO8Yfbujxln+iu8vgkMzCPp+fOVFLW3VDJHEw=;
-	b=SApFq5WFZKP1QJxdXVdmiFrXqZfJWpmJ9J498Q0lnZH6aJAC8jzrJFO5frmz50TRQOq2eL
-	BC6YY8lV1FJQEoCA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794226825; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YcGWRSLO8Yfbujxln+iu8vgkMzCPp+fOVFLW3VDJHEw=;
-	b=ut7+3u6SWUn9H8Jk66vEquo6iEFh7zATkMxP+B0KrFpqdOTRAYkB5eSvqIDm4Rftcg06HF
-	f7tCAJLzEpBvUUmWwknN84Sa+PrtyJG9nxQ4uagQy4WqPiSGG6MhXP7Lp3Tpooe8AZqVzX
-	1EqRV98wGShKrD9PbU/12/Bb4A/d288=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794226825;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YcGWRSLO8Yfbujxln+iu8vgkMzCPp+fOVFLW3VDJHEw=;
-	b=SApFq5WFZKP1QJxdXVdmiFrXqZfJWpmJ9J498Q0lnZH6aJAC8jzrJFO5frmz50TRQOq2eL
-	BC6YY8lV1FJQEoCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6BA5E13302;
-	Mon,  9 Nov 2026 12:20:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TyZzEYm68WqqXgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 09 Nov 2026 12:20:25 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id E3A9B21FF2; Mon, 09 Nov 2026 13:20:20 +0100 (CET)
-Date: Mon, 9 Nov 2026 13:20:20 +0100
-From: Jan Kara <jack@suse.cz>
-To: Hungyu Lin <dennylin0707@gmail.com>
-Cc: willy@infradead.org, jack@suse.cz, akpm@linux-foundation.org, 
-	lczerner@redhat.com, tytso@mit.edu, hughd@google.com, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm: skip empty finite ranges in
- truncate_pagecache_range
-Message-ID: <tbwekv4fqz3w74jgyy3pqvg3hvfi4erosgwnxwao5lwsrc7hp7@aaxxwdkkte4x>
-References: <20261027211505.22044-1-dennylin0707@gmail.com>
- <20261104182700.88789-1-dennylin0707@gmail.com>
+	imf14.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=A8AxYfty;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf14.hostedemail.com: domain of chenwandun1@gmail.com designates 74.125.227.135 as permitted sender) smtp.mailfrom=chenwandun1@gmail.com
+Received: by mail-pj2-f7.google.com with SMTP id d9443c01a7336-2ed14ad20b8so4294595ad.0
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 04:23:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794227013; x=1794831813; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=+tF8l8wiFwVnoygmXpYnREIWubWMOLu/o49/XwgRJmA=;
+        b=A8AxYfty5Yu7fVJVPk6QpbOuQTf2l3lbidABAWRpHNiHPMUI9j1vZ0fM5lsteBAhfW
+         gqxN0fExgVw2nnzHhQhEZDwpMDQFP/DCdOYaI4Tfc6QKN1yVp24lrSYaBb+sVOxWjLHn
+         TWLa7yje0XJn+OQJ0WMeoHYyiPNTfaN7S4vRR403m5nc2s+7E4CoVK4DBu5oaFxneYbL
+         2a6kxH2Cd4PEc+ulpYvaQMkro1jlDlrDTJOzsUJVPhm07LbL4Hs82r1G0UGRYeV45+fD
+         B9QmBYsK/PEl499MWsZ7SjoQ9wezJGm2JwWpVYpGC4hESNbQRynjfPGNgxpd1nh5TG2T
+         i8AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794227013; x=1794831813;
+        h=content-transfer-encoding:content-type:in-reply-to:content-language
+         :references:cc:to:from:subject:user-agent:mime-version:date
+         :message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=+tF8l8wiFwVnoygmXpYnREIWubWMOLu/o49/XwgRJmA=;
+        b=iubjvIR+5Em+jj3FNn0T2ckwvWxzTnOoB4IknhnIkFZ/QV9KXAq84ypFh+Z0ry0UzK
+         LECJe1ZdZnvxZcRtM5BhFyGzPqsKd9BVPPxzsiX+4kvsOoVKRA923mQY7PBCbNvtqKbR
+         +C2ROHA5+LnWrfQnmYqNq9N1HNCYwt40LXwj/5Po9AiMxthAu/cDBai1RXqd+DyTPoH1
+         t2YhQf03NbMPLMROyL8XmogaGEDugL4v3xyDzbt1TBc5/RLskMSd4RpO2u5r4sZDrN6X
+         c2y5Cwr239B9fBGonqxuamv91f7SwGaOnznTYsu/OLCs1RCTtZHj/xVWXyJO6Ow7s0dy
+         5P1Q==
+X-Forwarded-Encrypted: i=1; AL+hErFOGD8kMKfTJmZFRzG+OapHBTWPTP1dYr8UeSjTtyn5oJbXvQsnXlnMPmgWklZC7xVE1PdEdfjMJg==@kvack.org
+X-Gm-Message-State: APuU4Z8hgLfSxCbubG8MwlWo84rtr50RJCNk83vNJiw7R40b/tkqaida
+	mpsUwgNCcxFxwBo8xsnAskler9PNZ8s4r5TyQzedTk5BF70Qy0sQ5E1M
+X-Gm-Gg: AYBFou1flhgRci18YboQwO5lZFda2PpXDo5/EDnXjTGsTLPxOe7HO3w6TScmGn0xi+B
+	ejpxBfN+pedqhuz5Mu1t96hQADebQZUmcxJDUATox39XHtk76AZPv4tSI5lXQW/alk0OJEMfkMq
+	dhjuuOcYyhQZxXVTV2C1iAGUm13+FKeL9ajI0nqybBiAwK8efnG5ktZUkisPFZZ/kbAaAyOHp01
+	c5tUvL9MGooYAZAs8Nlo6ZmORVtprQIhGdiSjYoaeGjFdMxOEaZ8ozAESx4YGYZw0mWfuYp2ed1
+	40E6ZlQ2kAat2vM0wX0fWi/gHKO11qF2LRxoRwN6VDZHvqQnezJEd20bEFK09afSc1uFZwGs3RA
+	olfU48wA0EeRa/bZNjx6Xeo1xiNCN+HS3RVJxfauNpo5Oxsk/nttgUqSv8ZMUgXVXkM8KkNaPjG
+	PgLdZTiaDkKyluS321Lol7Tx7jFKy5ENC4h9N4Y7KelK53l3e8nan1QOmAcDR9r3aWxfLLiQH56
+	1ffA7nX4r6G+YENDyj/DqAGMe3JSNigrU/UlmNZzA5JLWgHyNxMYn+XNmKHpDEYJgoMqbPK4GhT
+	+B1JINx95Cmui1Lr2RP+5Z4nMeECEEFkldI=
+X-Received: by 2002:a05:6a20:7f89:b0:3eb:afe0:20aa with SMTP id adf61e73a8af0-3eed2e06bb1mr3837559637.20.1794227012895;
+        Mon, 09 Nov 2026 04:23:32 -0800 (PST)
+Received: from [10.125.112.22] ([122.11.210.25])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-cdb96816fc6sm1622392a12.5.2026.11.09.04.23.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Nov 2026 04:23:31 -0800 (PST)
+Message-ID: <7773d026-4aef-4169-866a-71ec9a91da21@gmail.com>
+Date: Mon, 9 Nov 2026 20:23:16 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261104182700.88789-1-dennylin0707@gmail.com>
-X-Rspamd-Action: no action
-X-Spam-Score: -13.01
-X-Spam-Level: 
-X-Rspamd-Server: rspam06
-X-Stat-Signature: jkbxy9peax4gddgtf71pnmph7bb4kwrj
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 68C2C20005
-X-Rspam-User: 
-X-HE-Tag: 1794226827-261366
-X-HE-Meta: U2FsdGVkX1+sXF7aHdORTfTYy/ej6qXmy978Ys1oj/tzDe/UMubfYYE6iOTBVotwhhSdapPDBPdRep/jxpX251O7uEPTidU6gBcGHUN614P4egk4TzbiA38OQ+GfLDPd+teKiohijBHDHEVgVZzCF0hWJxgj2e7aj7iLtwmoOJZR60nh53Eks76btW8s6Lng0t8dtzRVmsplKmda8YMD2U/c2BjkA1p2IAggfUITYmENRuHdUrsU/oKKXqOXGfSsZHTM2T78yJpcycH47OEE5DtZUbSw+DyaU+q07A52e3UPkvtqEnaI8AEGfhfaipECZ6uNvAxCUKq27GWhcXSerCLUxyaS7qmCgVbz5JWpoKM2pzgi+0dhGYUeeAeDUtL+4Yzq2AQa8NGDPt3KpdequZxCptb5HRKueolYQHvPS3pwVBeGORz3wn/HnZQpR1rkugWd+SIWJhag/kOzOIpmluYzB9fxq4JWP1FTbyi7DDEzOT8NdJSRT8DN+M1wBuCHcxApY2rgrirk85uGj4lmo8RTfnZjGIX2Hioy0N07ND/ZmhQqguCIFdpNv/PFBFZpwPbbq3A+2RXpeSUIOvN+0RLd6UM0WVFVgDCBxDp3a3ArA87TwhaSIHcB/VyH6QnvDWLORz0tLocZ0bFZgloJMUa3TgwmnVUzf8yyoxIbl8FBJBDZ+V9KKNfQ3YXsrpJk4kSIm8fUODstOjgisasAPMtNMNQQQ2Iq1GAhb4CAKef8wFQ3s7A8JkprD2oSDDfsLTFNjVPHqTpjWwIhBaKio0pqdnoOzYO34GToVPcU1fWtfFbJB2HxOTQ9LtqIu0FZtOl7NSGXzvIT9DcHhGuXQYoTUC5cuafsthobaL98ZbyucGSwSPrfb0yH8ixiqL5/8RRxLg+rfDY+gJ19GOy6dpeNhMkLAnyPJdgQ5Mf4eigKz+UEiJy4wZbtsyIejxDEpHiJUZffuAKPaKEWmKe
- fq5wqDVj
- i9eCCKth29wzI+1LGCV1GhQrx198upQNUzEXKB8aJ7lyMxdXQmtP317b0eaXYp/0UTGIxdLlvADL669JnCtkS3UYdIPG1eEfspW4UXNAY2u3z+WlhDH2QwDV7PUOJW8lSr2lWxynAoM6pkjECgAPRe9uS/ag0rdGb2TjhasIIO8Xqwcz8dodjj0AC9Q4pyl6aTfByZ9PYVosuSWFOd6JQlZk28XIcChvVVfPEuq4kKQ8qkur5vOQwB/+VDrPh0ecr6QWLUTX45Xj/pZxig+YEey0ur3q5oNomwog6s/SlKyBjPfW/kx7oT8sqSd7TE7u6CwU1qgqC8HqlLVd8r/jSuquAJZrloZGXqmEfhSB7NA+JsjFc1G8QsT6nQLM1v3dwtawE/4cgiFVs5Cg90kpYk1yI9T8OhIf0BDjrpGsv8n8FuFGAo7kbMchMGw==
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 0/8] kdump: reduce vmcore size and capture time
+From: Wandun <chenwandun1@gmail.com>
+To: robh@kernel.org, baoquan.he@linux.dev, rppt@kernel.org,
+ m.szyprowski@samsung.com
+Cc: catalin.marinas@arm.com, will@kernel.org, mark.rutland@arm.com,
+ chenhuacai@kernel.org, kernel@xen0n.name, pjw@kernel.org,
+ palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, tglx@kernel.org,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+ hpa@zytor.com, saravanak@kernel.org, akpm@linux-foundation.org,
+ pasha.tatashin@soleen.com, pratyush@kernel.org, ruirui.yang@linux.dev,
+ robin.murphy@arm.com, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-riscv@lists.infradead.org, devicetree@vger.kernel.org,
+ kexec@lists.infradead.org, linux-mm@kvack.org, iommu@lists.linux.dev
+References: <20261021083011.2170525-1-chenwandun1@gmail.com>
+Content-Language: en-US
+In-Reply-To: <20261021083011.2170525-1-chenwandun1@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 40ACA100004
+X-Rspamd-Server: rspam12
+X-Stat-Signature: fwccmcjsm9rfqfuk7as1sqhrt8syz77t
+X-Rspam-User:
+X-Spam-Status: No, score=-9.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1 autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794227014-137547
+X-HE-Meta: U2FsdGVkX1+KdVSxedRtcv1fUIiuktmjUtYhMy6/1fD+DrNuXwycmjqdMrIiAgFE5L5yDHVRUAUN1Nvz0I8tAI/Uf3dHjSBhg5Zwxqp1keOjsFFAP7moKdhwvPPsnX0mKqJQHWCTAnwkl8ZzSr5E+LtltS/gpL447kP9Z3K4K7e7+j4awq3bgpR4N1VwlHyFdagzLQNtgF5I7aK8hJsUn+/o3l/qSOuNGsPWWwxP0Yh5dJB0RX4HAM2xUNYA56AOeg/rlGxPQMHF73iNsbXamu7DxPJ/452aOUhGAR1R1z5Fn1XL7vrojDfC4Hf5gP4LqLOrDMjvMMJksZ/I1mHkwUNAcck5yhjLipa0QeiQ/w926OH34oab2bH2dRpVgLuDWNa9JwM25jzSS59tctisLdd9eUTY32WrE41MJKu/Ch/QFk5CAwkbhccNcj484X6KHn8y4mhdCQzryQU28CqE4GL2cQnOIEhDSdOxFGF9w7UmU6tVCWaXdm3Y5E0xxJSnZ0i4+Y4bfdlUXl1XxD0zvt65ucnVRb7YcNOYsJ68eOmvlKqL+Ve/Ug9mEpbrf+2C3dww8vNlh7SlTb8L66XjWInwx24h7BRPGgooPmQ8G38KkdO0J1p4qLvIh57qs1qzVRXVtT0NbhJyZq6ioHFURvNSrc/XhidajYCY85G+595jcrMDYsmPiScJCwvt71OO869i9MsopOsIVKqJ3mOBbYbEFc2PHwARPPLjpUNAECa9OvJ9aj+J2hs2Q/UxBDfJl4lZN2ZjB5fEHe36kQCqd/1YkEhYuBW+JkUh1THnu9wfU1HvZGuByP5BwI2xn8nQ1oJ17VNWSIaHlk3i8MtAkT3sJEEQlBQfXHHmEXTbFpV9Q0kV0vaocalMP+0b91QTxsJbjJLpPIYkONMBQP63NmOgarB6V9fVECMzdc0LLQdR2R7V6xr5+I01xAjSt3emjlR74YfQfL4khObnRbb
+ BltUW88c
+ s48+iBUWgfn7if0YLc3FI+/9D7pKEWKmgwB/5hi3Bz25E8XO3RI1FqySSh7z5J/VjXNUVqMTgTQ8NRcesETR0HpKKxsr9d0ZLs+OB+ZCcmrGkge1AutsBjk70gOS1j+csMJpNnkv8kjmqM3h1M2g+8lPVOb0+68afj0dAfodeB0t4b8wdJePJNtviZFDpRUcz3lylJpVkSqzYltFzw68C3pxaKscxL9ZxSxyxpbJebxxrBddsKiYVLlLwGdQOe7tYTu5RbbFfjDR/nWveFUhFnlwugOnxOgD1VFi/J8VlgwzN0KFJ8BS8RdRRwV+Q1JtzwQ8vNqYh8GgfaMKCzF4BRvZ1jrNDZrktqvC6wycU84j8qVIDe0VVZDo7RjPDl+wn43ePWLYk9byohs6LllpOUztb2rF50iJQQrxGvsYtDqPkCyRk5+B8OXEjZN694Ada2iU1OzoPv6U3y5Er5vQV4zJEaqOM6nMusnRD2/L9mg5LoalnKs7ulD0WajhVzEin1gBK1ce5bB2QodXFvNM34sJWdz3ysQgScU+zgscc3WG6Pkowe3TowuhowRAIz+EBjSX+r4YrKmHa4y90oW4/XuhH5MqtoHQgd1fRE1O+ZmvVS01LE4mlR551imrX/HFwdP7icuznZqYw1g4WMncilwOmdLRwktpSaai0omKmaJpk33Q=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,69 +136,147 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed 04-11-26 18:27:00, Hungyu Lin wrote:
-> For a finite range ending before the first page boundary,
-> truncate_pagecache_range() calculates unmap_end as -1. The unsigned
-> comparison then treats the empty full-page interval as nonempty.
-> 
-> For example, lstart == 0 and lend == 0 cause unmap_mapping_range() to be
-> called with a zero length, meaning unmap to EOF. Punching one byte at
-> offset zero in a mapped FUSE file can therefore remove mappings outside
-> the hole, causing unnecessary page-table work and subsequent faults.
-> 
-> Set unmap_end to zero for these small finite ranges so that the existing
-> unsigned comparison skips the empty interval. Explicitly handle lend ==
-> -1 and lend == LLONG_MAX with LLONG_MAX, preserving EOF handling and
-> avoiding wrapping in the endpoint calculation at the largest inclusive
-> end.
-> 
-> Suggested-by: Jan Kara <jack@suse.cz>
-> Fixes: 5a7203947a1d ("mm: teach truncate_inode_pages_range() to handle non page aligned ranges")
-> Link: https://lore.kernel.org/r/20261027211505.22044-1-dennylin0707@gmail.com
-> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
 
-Nice! Feel free to add:
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+On 10/21/26 16:30, Wandun Chen wrote:
+> From: Wandun Chen <chenwandun@lixiang.com>
+> 
+> On SoCs that carve out large firmware-owned reserved memory (GPU,
+> camera ISP, ...), kdump currently dumps those carveouts as part of
+> system RAM even though their contents are firmware state that is not
+> useful for kernel crash analysis.
+> 
+> ACPI systems already filter reserved memory out of the vmcore through
+> their existing path: firmware reports those carveouts as unusable in
+> the EFI memory map, they get MEMBLOCK_NOMAP set in memblock.memory
+> (is_usable_memory(), efi-init.c), and the ELF header builder has
+> always skipped nomap regions; only DT-based systems currently fail
+> to filter these regions, which is what this series addresses.
+> 
+> This series introduces a MEMBLOCK_NODUMP flag (suggested by Rob) in
+> memblock to filter reserved memory on DT-based architectures. A new
+> flag is needed because MEMBLOCK_NOMAP can only express regions without
+> a linear mapping, while MEMBLOCK_NODUMP can filter regions that are
+> linearly mapped. Reserved regions are marked MEMBLOCK_NODUMP by default
+> so kdump omits them; reusable CMA regions are different because their
+> pages are handed back to the buddy allocator and may carry crash-relevant
+> data.
+> 
+> Since the reserved memory regions are filtered out, the vmcore is
+> smaller in size and faster to produce.
+> 
+> The series is based on linux-next and is organized as follows:
+> 
+> Patches 1-3: Preparation and bugfixes: switch riscv crash_mem to
+>              memblock, fold the duplicated per-arch memblock walks
+>              into the weak defaults, and serialize crash header
+>              preparation against memory hotplug.
+> Patches 4-7: NODUMP infrastructure: switch crash_core to
+>              for_each_mem_region(), introduce the MEMBLOCK_NODUMP
+>              flag, add a dumpable flag to struct reserved_mem, and
+>              mark /reserved-memory entries with MEMBLOCK_NODUMP.
+> Patch 8:     Skip MEMBLOCK_NODUMP regions when building the vmcore
+>              ELF header.
 
-								Honza
+Hi all,
 
-> ---
-> Changes in v2:
-> - Compute unmap_end directly as suggested by Jan Kara, keeping the
->   original condition for calling unmap_mapping_range().
-> - Handle the EOF sentinel and LLONG_MAX explicitly.
+A gentle ping on this series.
+
+I'd appreciate any further feedback, particularly on the
+MEMBLOCK_NODUMP discussion and the issues raised in the Sashiko
+review.
+
+Please let me know if there are any other concerns or suggestions
+before I prepare the next revision.
+
+Thanks,
+Wandun
+
 > 
->  mm/truncate.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
+> v8 --> v9:
+> 1. Patch 7: Avoid a potential boot panic on SH when NODUMP marking requires
+>    memblock resizing before it is allowed, found by Sashiko in [1]. SH supports
+>    neither CONFIG_KEXEC_FILE nor CONFIG_CRASH_HOTPLUG, so skip marking when
+>    both are disabled.
 > 
-> diff --git a/mm/truncate.c b/mm/truncate.c
-> index 733d2713a87..2c1f4a6c336 100644
-> --- a/mm/truncate.c
-> +++ b/mm/truncate.c
-> @@ -945,7 +945,15 @@ void truncate_pagecache_range(struct inode *inode, loff_t lstart, loff_t lend)
->  {
->  	struct address_space *mapping = inode->i_mapping;
->  	loff_t unmap_start = round_up(lstart, PAGE_SIZE);
-> -	loff_t unmap_end = round_down(1 + lend, PAGE_SIZE) - 1;
-> +	loff_t unmap_end;
-> +
-> +	if (lend == -1 || lend == LLONG_MAX)
-> +		unmap_end = LLONG_MAX;
-> +	else if (lend < PAGE_SIZE - 1)
-> +		unmap_end = 0;
-> +	else
-> +		unmap_end = round_down(1 + lend, PAGE_SIZE) - 1;
-> +
->  	/*
->  	 * This rounding is currently just for example: unmap_mapping_range
->  	 * expands its hole outwards, whereas we want it to contract the hole
+> v6 --> v8 (v7 mainly tried to fix the initrd issue on release in v6,
+> that approach is superseded here):
+> 1. Stop marking /memreserve/ regions with NODUMP. v6 marked
+>    /memreserve/ regions with NODUMP. But a bootloader may specify
+>    a /memreserve/ entry for memory that the kernel later frees
+>    (e.g. the initrd), and those pages would then be wrongly
+>    filtered out of the vmcore after being reused as normal memory.
+>    The v7 fix (clearing the flag in free_reserved_area()) caused
+>    a lockless runtime mutation of memblock.memory [2]. Better solutions
+>    exist but need extra preparation, so temporarily dropped the patch
+>    that introduced the problem to keep this series simple in v8.
+> 2. Fix a build failure in patch 2 with both ARCH_KEEP_MEMBLOCK and
+>    MEMORY_HOTPLUG are unset. There the memblock arrays live in
+>    .init.data, and the weak defaults referencing them create section
+>    mismatches, which turn into build errors when SECTION_MISMATCH_WARN_ONLY
+>    is also unset.
+> 3. RISCV recently gained crash hotplug support, so adapt its handler
+>    like x86 in patch 3: use __crash_prepare_headers() instead of
+>    crash_prepare_headers() to avoid self-deadlock.
+> 4. Update the cover letter per review feedback: describe how ACPI
+>    systems filter reserved memory and why a new flag is needed
+>    instead of reusing NOMAP.
 > 
-> base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
-> -- 
-> 2.50.1 (Apple Git-155)
+> v6 --> v7:
+> 1. Fix a stale MEMBLOCK_NODUMP flag issue [3]. Memory reserved and
+>    marked as NODUMP may later be freed (the initrd, for example),
+>    so the NODUMP flag must be cleared accordingly. Since the fix is
+>    part of the NODUMP infrastructure introduced by patch 5, it has
+>    been folded into that patch.
+> 2. Drop the "generic" related description in the cover letter.
+> 3. Collect the Acked-by and Reviewed-by tags received during the v6
+>    review (thanks to Baoquan, Mike, Rob and Marek). Patch 5 is the
+>    only one without a tag, as its Reviewed-by was dropped when the
+>    fix was folded in.
+> 4. Drop patch 1 of v6, which has been merged separately.
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> 
+> v5 --> v6:
+> 1. Serialize crash header preparation against memory hotplug to avoid
+>    out-of-bounds or use-after-free issues.
+> 2. MEMBLOCK_NODUMP marking is now done after memblock allows resizing,
+>    avoiding a panic from too few regions before resize is permitted.
+> 3. Reordered the patches, put pre-existing bugfixes earlier in the series.
+> 
+> [1] https://sashiko.dev/#/patchset/20261016061549.4181390-1-chenwandun1@gmail.com?part=7
+> [2] https://lore.kernel.org/lkml/20260922090252.B01541F000FF@smtp.kernel.org/
+> [3] https://sashiko.dev/#/message/20260917220750.GA4013814-robh%40kernel.org
+> 
+> v5: https://lore.kernel.org/lkml/20260806093519.2907771-1-chenwandun1@gmail.com/
+> v4: https://lore.kernel.org/lkml/20260630074715.4126796-1-chenwandun1@gmail.com/
+> 
+> Wandun Chen (8):
+>   riscv: build crash_mem ranges from memblock instead of resource tree
+>   crash_core: fold duplicated memblock arch hooks into the weak default
+>   crash_core: serialize crash header preparation against hotplug
+>   crash_core: replace for_each_mem_range() with for_each_mem_region()
+>   memblock: introduce MEMBLOCK_NODUMP flag
+>   of: reserved_mem: add dumpable flag to opt-in vmcore
+>   of: reserved_mem: mark /reserved-memory entries with MEMBLOCK_NODUMP
+>   crash_core: skip MEMBLOCK_NODUMP regions when building vmcore ELF
+>     header
+> 
+>  arch/arm64/kernel/machine_kexec_file.c     | 29 ------------
+>  arch/loongarch/kernel/machine_kexec_file.c | 27 -----------
+>  arch/riscv/Kconfig                         |  2 +-
+>  arch/riscv/kernel/crash.c                  |  2 +-
+>  arch/riscv/kernel/machine_kexec_file.c     | 33 --------------
+>  arch/x86/kernel/crash.c                    |  2 +-
+>  drivers/of/fdt.c                           |  1 +
+>  drivers/of/of_private.h                    |  1 +
+>  drivers/of/of_reserved_mem.c               | 18 ++++++++
+>  include/linux/crash_core.h                 |  2 +
+>  include/linux/memblock.h                   |  9 ++++
+>  include/linux/of_reserved_mem.h            |  1 +
+>  kernel/crash_core.c                        | 53 +++++++++++++++++++++-
+>  kernel/dma/contiguous.c                    |  1 +
+>  mm/memblock.c                              | 16 +++++++
+>  15 files changed, 103 insertions(+), 94 deletions(-)
+> 
+
 
