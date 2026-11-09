@@ -1,94 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35B8C606A325
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 03:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A87606A322
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 03:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=LfbYkWDk
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UL182Ymp
 Received: by kanga.kvack.org (Postfix)
-	id 990D06B00EF; Sun,  8 Nov 2026 22:39:24 -0500 (EST)
+	id B482C6B05B1; Sun,  8 Nov 2026 22:44:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 941BE6B05B0; Sun,  8 Nov 2026 22:39:24 -0500 (EST)
+	id AFA016B05B2; Sun,  8 Nov 2026 22:44:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E3986B05B1; Sun,  8 Nov 2026 22:39:24 -0500 (EST)
+	id 9E8556B05B3; Sun,  8 Nov 2026 22:44:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 57AC16B00EF
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 22:39:24 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AC473A0571
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:39:23 +0000 (UTC)
-X-FDA: 85414175406.23.7CB4C8A
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 92540C0009
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:39:20 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LfbYkWDk;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 797236B05B1
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 22:44:33 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EBDB2C058A
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:44:32 +0000 (UTC)
+X-FDA: 85414188384.14.8FFCE8A
+Received: from mta1.migadu.com (out-136.mta1.migadu.com [95.215.58.136])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DF45D40005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 03:44:30 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UL182Ymp;
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.136 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794195562;
+	s=arc-20220608; t=1794195871;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ipzH5qd6kjldVL6ueBW7MvcsKXTNSFLFRFYQ19uyfag=;
-	b=s2WIkdQXrXk6C5qIuxwF69qopjLuKaWN/2YkuPJlWQy2vjc+Sjgbbu8nv/Awcm5AaZEOTm
-	GeU3fgiXCkCl2KqJVFRlXnO8uCkq/+pRBcdmlefqFPDFkdaDthK5CIf5qa46JU3GaPwdBN
-	K14Wtyy/p6/zbzFFQ03x7MyRld4GGro=
+	bh=JTiv2GRYKop7vCx/gXindWSFmU7+GmHnHjp+oJDyjUQ=;
+	b=wxrTsMns6AnfTaIcCpiUMkPlGUz9UgsKg5pbCfG0mdKYeNDGtRsZRlAoAHev4A8C0L/mgR
+	xc1sJ9jiXFUTuddYLCZFEL4gl/UrIUXDQuljZ6xWtYjWbLvB3dO69PQ3p7DZSNYF++wlcP
+	qh6dCxhUto6YF/psJuZR4yLWfaOjddA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LfbYkWDk;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf10.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.110 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UL182Ymp;
+	spf=pass (imf17.hostedemail.com: domain of muchun.song@linux.dev designates 95.215.58.136 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794195562;
-	b=A+SwfT7kQb9BFfU5wMKmZ57S4Zi0VEdeiTvfK+GYrK+7U5DnMCf8Fhh47O5g31TXjwsxO2
-	EemXzGKbDgVAfmG4VU1DBX3P6e/UHGPlEfkwQWFmGAkq2fA6q1Us5KhSKUJMcJeBCU+zUy
-	gLOMsC0JGEpIZAH4slKlTU31AAOCXVk=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794195558; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ipzH5qd6kjldVL6ueBW7MvcsKXTNSFLFRFYQ19uyfag=;
-	b=LfbYkWDkcY3S9P4Z93eUsjURfPXoHIl3oU9Yt5BYVZ6/K5nhF8hKha1jQJZhyCh16MRcKarc4T3vn5IXNvUIP00BpdNNx8vn5U5sIaAnCrTZsK5B3JQ6MU8S+lusXHOCvUlU6VDK49izY233PZ8oXRZ8YB2R+jt+QPsR52WzyCw=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=14;SR=0;TI=SMTPD_---0XEIHFYj_1794195554;
-Received: from 30.74.144.145(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEIHFYj_1794195554 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 09 Nov 2026 11:39:15 +0800
-Message-ID: <a069e3ca-6bbc-481e-acec-5ef21855b9ec@linux.alibaba.com>
-Date: Mon, 9 Nov 2026 11:39:14 +0800
+	t=1794195871;
+	b=tn7QSKJZ3dgrA+sdobiPj68xYCTd36yL9s0w83KV65+TBS+7h5G5jxJ6vzMIRChHNwwMiK
+	UWenlpKTtjG6ns5Kp38x9agDF6QeL3FVybzEvfStf99HFT8hEY5t1+W/+kwi7YRsfnbWdv
+	TnwhUJP0L/Re9MRRooCFICe1/UmS4ao=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=JTiv2GRYKop7vCx/gXindWSFmU7+GmHnHjp+oJDyjUQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794195869; v=1; x=1794800669;
+ b=UL182YmpeSX6nFVbBsJ7y8S/IyQUXmitlzi+JbC5w2Ptgjh/cWL19fCg1j4IPVm2/p8G8A3e
+ Zz3G2ydotNN5QvKRbPqEHUQIojBNTXxOPc1QrQFTI7OMGbxmf1kuKdNvyTzu1IW2fadxFyJ1+Lw
+ bRnzGF/XbnueIjXLpDOd5JWI=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id b7f753fb76ab6eb5;
+	Mon, 09 Nov 2026 03:44:29 +0000
+X-Mizu-Trace-ID: b7f753fb76ab6eb5
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: synchronize with PTE table reclaim for all folio
- sizes
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Pedro Falcato <pfalcato@suse.de>
-Cc: akpm@linux-foundation.org, ljs@kernel.org, riel@surriel.com,
- liam@infradead.org, vbabka@kernel.org, harry@kernel.org, jannh@google.com,
- lance.yang@linux.dev, qi.zheng@linux.dev, ayushr@modal.com,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <affd6da4e8d0de1424a4e0b3bafcd1324dfb6c97.1793847060.git.baolin.wang@linux.alibaba.com>
- <auxqWxUfRVvxnk_n@pedro-suse.tail5790ac.ts.net>
- <44740e38-77ae-457e-97db-d6e0a0149dc2@linux.alibaba.com>
- <4a64ea17-6ac2-406e-a432-b82c481a4f84@kernel.org>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <4a64ea17-6ac2-406e-a432-b82c481a4f84@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH] x86/mm: Tear down the direct map when memory hot add
+ fails
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <au_l5MRyDbYfsUVe@chrisdown.name>
+Date: Mon, 9 Nov 2026 11:44:11 +0800
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+ Andy Lutomirski <luto@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Lance Yang <lance.yang@linux.dev>,
+ linux-mm@kvack.org,
+ linux-cxl@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <681A0C48-AA5C-4337-8CD0-57FCB21D8D63@linux.dev>
+References: <au_l5MRyDbYfsUVe@chrisdown.name>
+To: Chris Down <chris@chrisdown.name>
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Stat-Signature: 8hzjdpkeicfh616eqjq5y8bedxc4gfsw
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 92540C0009
-X-Spam-Status: No, score=-14.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY,
-	USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=no autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: mtoyickwsmszbdyycpkkewmgjs5xosm5
-X-HE-Tag: 1794195560-42666
-X-HE-Meta: U2FsdGVkX1+I3Jz2TQf9hH1+/hKwNwSsGtSys9REmuDzYf65Wpxvh3e4u9pFue6yAYrGkH/g9MqmQAO2YMXypfxCm7YnbYDhzc+iW4K/xITaJfhCrzSo2bhyoQx8ytyJYfOR3Zm2YpdyqSaWMo6gbusX12/TBAhdg77UO6a2HbeHLQqTc9NUzISVxtkn+F/gfrrt+eHxHf5TqrhlFH+fYBfphmL49luVQubDIxDkxh+Oy7TyWl6y0D3I+IH0Rn5LThyRv62pBX7sOJrZk2pLKByhPk84a3gTeUHFmCTUlFYYP6+Z4CzaezBqJ6YQR2fZPBlSoUBp645kv2cbxq+LIcnOttHoLv1p+uNlDX4toiINllzdp+oG1d3tCxHv7Rui7Fb/fsc93oWMJGlEXRsUSUIdKKvjrDN6DB5whw/Y+LF1+IFA/dtfQHS+nSAGU6sNWQGil8ZafoDsAYHfvPOWrf4iayah4iaHJYLpo1rhKJ7XIpylfLxnIgUkd0CIsg1z0AT4f9fv4RhWLxTQqQK75aRVygUc4JrE8BXcwr9hY5dKKLqvOk7GCooZY78Cw01cybwy1LN1n7if16y6ED+ODXsn3mNLQEowyu3aF9VqVBDi5Jk7Z6RIBDZvv5uFn57Gq4wQwOSDlfgC4u8cWsPQrRGGSKep5ZwW6prDVkp/YkqZMNoRUi76xz56nVxi7v/xUtgFcG28M1X1xQstPkCkkd5Pi+ZS5OtC5oGeYWP62kpbUX+keT5u0h5UsGjmPoJOdRH4kZWbzOm9J7KbsAQAON4mjgIbaYFTbYXz1Q562lJbHGMpxUm+C20i/AeVbbE7TB+orFglsfS/JHgOvJ339Z7YUP5N1kxXpCCYlrWZ6EFogAW9zHlBOmBdAfdHtOME5domrO8hotIvFg6XZpRwtaHZtPYG7I58az2t8uZmr2dEzkurfK+aXkY1UEv5wQfCtEQHJEZmjQQivl0/FWU
- svqlvBRa
- FnwxsGPbbOOpF4h6Adf+QClbSgnmvbr7yJOdds8NkNOdkAZpWXCTprHFsKJAPrA8D4Ed278RurpFw/fAU3w5iL7NeYt+tl33QpzOpsqccVAkHgsWTw0mfti5Q2QX5DTwHe2kaePR8C6w1AEhKxdsh/WDtmf1GAxjWIZ69xx5MU3KYNiJUcm4wthOIZ+UEtBEloOQfW7053iRYE5gnjttxvCcK+9JX8Utf2qj3xiFyNu8kbj2q73anhwLtYpqAAHhwKp4qZDfJd3f5ZoRmU4x/legIaalfYVdKWyeNQa147GwuAurlSys2TtnhmNwqUmEoS8gk
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: DF45D40005
+X-HE-Tag: 1794195870-799239
+X-HE-Meta: U2FsdGVkX191dSyTfiOqsX+qmAvdNNvCzaIMk0NOiWBg14sRjIcjJItLM3LGplRrzgM+IS5pvXwMtp8f316opuoMIRVYynRah0WYjvxqYuF1Z4ARwtuY/G8D488uFFJVci2ZMy3mGR6hPuk7wnda7rFpG5ONPwNvph/IMvgUdH3ADlIG5oGhB6LCbo3BiWLhyskhahwYZyn2rLxu8OWGuQk7zNs1z1jh+7xRUS0pvfAQgcWj+5bo8MhMIcU68vcTmn7NQSiJXaxzbfWS9C13ubcp1XPOAFMmGHtoMY9+m21nFH/Skc+qfHKDMwpO+qjoh54RmHcx665hAk/YR0Cb5DxNFjbFIvyOEJrEvaOt2hCktXSkIvKWnczh77PPp5JzQSTgAtUsMuwBHdEOSYD3S2/5tWyCdOEEkK4nCz/f5daXBIp/tsBSQpABUX0MS0E3QK7LMvD1IGpIld6q4XN4mGbN6FvcyeH7JKnaxj+pQemwV38qTevHsQ7EUkOL0GpZ2Z6ZomnKbTqkjq6DXxJ28YlI/HoMuHOKVvd8rgXG30fUXixbSg+kQWvARLqQtHmuuwqI/y1nQZTqSQhgLcI8561ZNu92Ekv+y42UnPLCwAb3IzTV1UTpiBo9PoxZ+r3+X6iZ4Lpwc8Yw+lk9LiQiWbcTv8PoIDHG/h02axiZlRhTcEmDgIyddVkoPPUQX40vfBAhAcjK7HmArX9Td2n/h2S5r/4ihRAG56rD+xKXFKtKzrX6mh3jed6a6iT5n26xYNGh0MylSl+ADsYCrx6pSqauiuiao/gxN86IFMSX7rQyS8WPq+6bsEs3MPN+yMGLx/wp+GLQkuYM7dI4Uw/W9JcsSAeduswBf9d9qYQePWMTD4bxtRTaQIUGsTJfbUcyk//ifVF5W4dYFGot2Z6CTMeXR1r7NPN4BqcIgsuXEfeYADcB4LFeFoqkc6gxAWgOg4y5koTsM+TwN/lzZx5
+ 8uFzAPI0
+ yVBJjxhqYQPRJwREQ+i5OCYAAKpF2JHrfrBmTDI4O4vEjQ+IAvSIErV+rL+lMBE5V53g7uIgvxzqNg7jAGCIKX1CO92EiEpuv2O/6zwXOPgA/Yz06Nof9kOceIrWRlIb65aD/tQsyMw+h8+6Asd7RnLxVDtBJIk9aRgqsZAOGfzxDHPwDLiePsPROjBrDLTOvzwcZemy7+Ehc90fwu/jZWEdKWiux7gCPJi+CKizUfTA/kSVyQ5rjB9ChIix80ijWmuTKPJHUWNF0K60=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,43 +111,21 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 
 
-On 11/8/26 3:58 AM, David Hildenbrand (Arm) wrote:
-> On 11/6/26 03:12, Baolin Wang wrote:
->>
->>
->> On 11/5/26 7:37 PM, Pedro Falcato wrote:
->>> On Thu, Nov 05, 2026 at 10:56:28AM +0800, Baolin Wang wrote:
->>>> Similar to commit 243cf1f67b36 ("mm: memory: fix truncation removing mapped
->>>> folios"), the '!pmd_present()' check in page_vma_mapped_walk() can also race
->>>> with concurrent page table reclamation via zap_empty_pte_table().
->>>>
->>>> page_vma_mapped_walk() is used by many functions including try_to_unmap(),
->>>> try_to_migrate(), folio_mkclean(), pfn_mkclean_range(), remove_migration_ptes(),
->>>> page_mapped_in_vma(), and mapping_wrprotect_range(). Except for try_to_unmap()
->>>> and try_to_migrate(), the other callers do not perform post-walk accounting
->>>> checks, so the race has no observable impact on them.
->>>>
->>>> For migration, the race can cause unnecessary retries. For reclaim via
->>>> try_to_unmap(), the race can cause failure to reclaim a folio that is in
->>>> fact already unmapped (as shown below), which may lead to unexpected OOM
->>>> or increased refaults.
->>>
->>> This is very handwavy. Do you have numbers? Does this actually make sense?
->>
->> This is hard to measure in practice. But in theory, if we can't reclaim
->> cold large folios that are actually unmapped due to the racy checks, it
->> could cause cold/hot inversion (e.g., in MGLRU) and increase refaults.
->> In extreme cases, failing to reclaim unmapped large folios could even
->> cause OOM.
-> 
-> Yeah, but the question is if it really matters in practice.
-> 
-> I agree that page_mapped_in_vma() should sync properly, but the current impact
-> might not be as severe.
+> On Nov 8, 2026, at 11:00, Chris Down <chris@chrisdown.name> wrote:
+>=20
+> arch_add_memory() sets up the direct map before calling add_pages().
+> If add_pages() fails, the range stays mapped and any page tables
+> allocated for it are leaked. A later hot add can reuse the stale
+> mapping.
+>=20
+> Remove the direct mapping on failure.
+>=20
+> Fixes: 45e0b78b0532 ("[PATCH] hot-add-mem x86_64: use =
+CONFIG_MEMORY_HOTPLUG_RESERVE")
+> Signed-off-by: Chris Down <chris@chrisdown.name>
 
-Yes, what I meant is the theoretical impact. In practice, this race is 
-not easy to trigger with no real reports so far, or the impact is tolerable.
+Acked-by: Muchun Song <muchun.song@linux.dev>
 
-But I still think the fix is needed, as it matches the purpose of the 
-TTU_SYNC flag.
+Thanks.
+
 
