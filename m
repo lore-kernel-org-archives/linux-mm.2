@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B3A606A33D
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A02606A321
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R3j5M1Gt
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dz0LFd/6
 Received: by kanga.kvack.org (Postfix)
-	id DF4026B05B3; Mon,  9 Nov 2026 09:46:28 -0500 (EST)
+	id 7B5C76B05B5; Mon,  9 Nov 2026 09:48:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA5506B05B4; Mon,  9 Nov 2026 09:46:28 -0500 (EST)
+	id 78DD16B05B7; Mon,  9 Nov 2026 09:48:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C928B6B05B5; Mon,  9 Nov 2026 09:46:28 -0500 (EST)
+	id 6A2A66B05B8; Mon,  9 Nov 2026 09:48:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F7C76B05B3
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:46:28 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 974AAC06D1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:46:26 +0000 (UTC)
-X-FDA: 85415856372.07.6CE8F7A
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 39B186B05B5
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:48:36 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D78440630
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:48:35 +0000 (UTC)
+X-FDA: 85415861790.21.8FB9FC5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BF0DC2000C
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:46:24 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3j5M1Gt;
+	by imf03.hostedemail.com (Postfix) with ESMTP id 3579E2000C
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:48:33 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dz0LFd/6";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794235584;
-	b=mHPgEHQ9PDs+lvvuFBdCSYD/zPXl6Uj8o07ttkBhexVj5K9HW/x2v8qFoE8dRAFQsTt6Gb
-	VptThw6nWst/qwdDuALoV+vgq7Xl2DgaXHpNFFzarPdDnwXZboG52G9XgaDlgjzhTTdQd2
-	hsw240Efvjo9oDyntA/B+O7s7Rt2kA8=
+	t=1794235713;
+	b=0Am0BroNs1wmvVGjsufXERVUaAsW5CrE+kfp/nAmesEf442OUNCoKHVFCWjOTUSBqJWu+q
+	rAAm81v3TyFnbhqDIIvIFWZlND+/5cF8sqJqHGk3tLYsmPhw593+fG+kWTwP127BPfAbYZ
+	mMiSiFs+PGZLV+3IAoZWuD/NZLjYoKw=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794235584;
+	s=arc-20220608; t=1794235713;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=93AR0ixWRF7Xc+mKq42uEUHnh202mM0USTi6ybrtt/0=;
-	b=t4tHR/oPsFGUWH0bgK0INCKh0tFW7PUaNS7IJJVOAdgmV/LlIQd8mJ9/Uh2hOuDbEZqt4q
-	JXHC7k1sduhP50f94X7mKAqCfpVuYS7zcvs6TPsiGWkjjTWluWW0xx+uX7xw2epu4JQ6G7
-	zbdLxOpZvvbGFeVfaOOE2GhfZnzBfA4=
+	bh=eigh9zARB3K5Yks6WSGw85FtpjPdjIU2WFiM1YwX0hU=;
+	b=M34SfE66E2T1+6qvIF/T6k87yJ9P9Nyhr4RJp/CyHaPBncFWlN/5LSreaNh2YjPrNEMuRH
+	5CGwMc8YD1O9YeVkYiNdcNpx6zUZlheQKZxreQPm09zATruBxo21bDLHI8NAvsqzkAYTMs
+	pkmhx3UMrvJsD2sXaf/puJKa0zLBr4o=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3j5M1Gt;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="dz0LFd/6";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 13927447D8;
-	Mon,  9 Nov 2026 14:46:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620B81F0089F;
-	Mon,  9 Nov 2026 14:46:13 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 689234117F;
+	Mon,  9 Nov 2026 14:48:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA891F008A1;
+	Mon,  9 Nov 2026 14:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794235583;
-	bh=93AR0ixWRF7Xc+mKq42uEUHnh202mM0USTi6ybrtt/0=;
+	s=k20260515; t=1794235712;
+	bh=eigh9zARB3K5Yks6WSGw85FtpjPdjIU2WFiM1YwX0hU=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=R3j5M1GtbQ4HJLT7OhpTZEh2BryQV+uiLHfcysgIOQ1NFb5i4bak6X+eNkP0EAbZ9
-	 IQ85enPQ15w1I2aklY5dL5f+9UPF1nB4OWrbOipMU1EhxsV2QyXRhRi7HD89zlVrf2
-	 7dp+w/hxXIYXChRG6Ji8VoQrIx+r53F4pKdzVlHCKuMaMejkxQ+1tOSwdkAJ62sF6h
-	 C72/0kQZRLR+UgfMObni0YgD7P8W7VFoxpbK2xToMWavoQI7CPAdxeSX5jQMqY0cW2
-	 bIXVv9cTXdaGNcAZah1PVqO7mgk/LZXCLJk1Xgn4u2atOJoobfxWL1KjRB9VY6Ej/t
-	 Oj1Qw5V5yi4vg==
-Message-ID: <f21433af-afc6-4a8f-8d2d-3a377cd3bd6e@kernel.org>
-Date: Mon, 9 Nov 2026 15:46:10 +0100
+	b=dz0LFd/6XIMfjXdzs+pMzB67I9Ju7xSYoda8FIjhq3hedCPya74hwuKLSmcux9hke
+	 6TH+3UVTOwRz8fKDdsqMLSQDDkSZlwX6aRhNKVgCvN99mSdrpRqXTWHZiSjgZcO9jP
+	 0SbjrPQpABg4zHADLcge2uFRH4PwaEvCXZsZLjK2tg2cTX868lHeT1ruywvD7t6aOT
+	 FEwebnRCugED3YVOYErNDeUuKZ+HfkDBO9NVVSTZ7x8VZLeeLsxqsKcL4PiPPOMcQh
+	 4O99aONWfscqmDEjOPzUaMTCQic18AEhCdX2aou0OxNuFJB1wVMz9b1zzUb0DS5Eqk
+	 eQ9QZm32EzcVQ==
+Message-ID: <01605605-d6a9-44c6-a5b9-024f33d8c488@kernel.org>
+Date: Mon, 9 Nov 2026 15:48:20 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 03/18] fuse: don't move a folio with PG_rcu_free
- into a fuse file
+Subject: Re: [RFC PATCH v2 04/18] mm: count the pages waiting for a grace
+ period
 To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
  Andrew Morton <akpm@linux-foundation.org>,
  Linus Torvalds <torvalds@linux-foundation.org>,
@@ -96,7 +96,7 @@ Cc: Miklos Szeredi <miklos@szeredi.hu>, Miaohe Lin <linmiaohe@huawei.com>,
  linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
  kernel-team@meta.com
 References: <20261104130118.2507513-1-kas@kernel.org>
- <20261104130118.2507513-4-kas@kernel.org>
+ <20261104130118.2507513-5-kas@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -143,22 +143,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261104130118.2507513-4-kas@kernel.org>
+In-Reply-To: <20261104130118.2507513-5-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: BF0DC2000C
+X-Rspamd-Queue-Id: 3579E2000C
 X-Rspamd-Server: rspam12
-X-Stat-Signature: 489pdc95ab5634jm61i5r6ffnd48x3p1
+X-Stat-Signature: spz3tuy5dswbhe8m7xh7n3twzyry7a7f
 X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794235584-915509
-X-HE-Meta: U2FsdGVkX1/Uat6MUifOUAxVeq927zTo+8Hz/0xJzQP8HckXJuFRyjEzWx4bYbfHO0HGMi3MeaCrsGMQpFk2eJkROKurXDW8xlRGt0RX1Y2l1pzJtOM0mWv4HSzgemw/iP+RayZScacG88vUWSWUVk/Y/dp9fQJBy8r1Tip6piI7HbGb2Ib2qwVFuOPJ1bAiEOdHJT5uvpeqaoSaEotwFsU+EReps+Q6yFP8ot85UegBhZIFijrk6WNVhGlQTnNrZ93vwTuQpFmSsXcAOycJcLEx3zFIpSxrXTx/ymvmxISVDIOFaNc2MBDpqKYgf4huP7vv2qEXBIHGiyX7RzSluwqa3yem9mvOVeG36Ypn9UKWwsvqKsvBZxAHZxMXyPihBWjEUDDMoa2YJ4ncJsZ5+6ERJTRoP38YWprMksYOGmqqGgy3pjT33naAhVgUsKNBHQDmXor0w7dW+nYwO9vsuGn66oviHho4ZuPLN56AUrTbNF+/cohQETrjn+4UWd5Bt5GzaBW5Vg9tuLwmuVMczK+DFcfndCV8ne5Pgp/aD0AyJfpG2XJBGz7fPU38ny9XT7ULGPHZHHOUHNf5k0gxNk049Y22f4qQsjW9MWHjYzUnUhcIPKrrA0VigeXhv2GI00lYCkzXYp8H5kfjv9Zdhynsp0oKycA4lQ1pDk2XOcb31hODv3wh2lYC+ojaTPg0L6h7XIjp8acA0XwLkGiaejwl4rBH7Bxa9gRKUnNy/5KMbLKu25joD8Q6aALT0oCS3WT9IxEEfSpvdEziCFcYmJVDEjlWohYHNtZBS9qoICalWBpWuJ2G14ARTlnLrLBxmGGGNMsDbNm1NKweQHnhsm1P9Sl70447omu9YFtSn/eWqZZuUW1Hkhw2jHjcGntkuA0NOMhcueGJe2tSafbW6cSnbdl+K0PpUoE/pi5at3k1Iw0lKZyUOqruplxsnUphaHrw11qarGPRDNn/ox/
- fSdFGga+
- GyXxEyu3aZl/dyGhv8dKY0lJikklaLL+LlBi5O/5v665mN7NMG438l5xMc8zB6fDJByT/uNooFLgTEfIEBJ3U3wRHHYW8e895AH1ldtrkgHP8a75tHNrKnoXeN0WQlP2lPCcObIJvThXzLqHY5qSwebYMK7pLqH7XZ4epJe4oLgnSLn7ptDfXsGLK05MK+BqhXIu6LoXW9gaRVhTcq1I6uln/t2FtEUZamN4+uvSr3Oo4j8d8clmP8nWdt2+zNesa1CKkpoZQq5urh6p+VPDFbd4HKrN2mnjrI/oX6dxUq6DxYq/9fDHXkXm9clQAgMZwPRvxgGO5fqtSWbNYLsd++1fVsg3Z2PSmBDPqT0Ihr7hpge671eSi1hZRXNKOSLM+XAhpdJNPtd/6HYEnfIW9/crG4D6vsRsJHueiY8fjV1K/lLG2IE/7uugrouXuk04fjXY0JRBo8ABX1nOUReQwfPEDefkFMyVEzBHiIUciU1r7k1AOj+VxM/nzJWPE6YsqZgf/j0HzENv6K68=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794235713-243954
+X-HE-Meta: U2FsdGVkX1+3L6gPI3cAc6Y9KeP1AY/vtUiyWRZmT1UrBq2Nc69K1lU5jVuvwfP6PTXfjf+NCZm3yfSH6dO1eSJ4h0aVwDuKWZCA9TWIbmELjP0meaDJDwEwPtPXfGaMjuUB1kAkp/6tmESVbtFfMJk0pC64s0pGiMnELWvw3dizMKBc92NJTZ6WDKDv24zo/ZBAFlYJyNmG1qr+ePqXdaotCLJOcbaGreoJqnaZE32VfHl54r6cpj17OlPOOOE0NMWXYdaJIssCF+HAnmFSIveCjjXklL2nQ/wFW2JTaGMaN4kvRl0Ztwj6aZoiXPGIkpd5BJPxpKxPAOEFjZqXktTR3TCBqVyVPMGsMWbHmqmZKupMKCH5I7ZZyfbGeolshutePsc/izpQQ7XfNNP+GF/2EyJQeniOHvDLj70bLuUJ4SPtVZP6dyaQUCsWAtcrevKnbgzHo9xhJD6Ddn0+BDPn0UlMj8gyhcz59TEbsrPeqbNqoTmf8gvwdsDV2/nWAld+4Y8iz38Q/7YT/T7bSR1trTmvwPLEF6j87WCbUM3kFf4JfQILMkUE6C8EZAe5IDb3QafOlw6d1xxz5CDlx5KCPrm99A9CulT9Aj9kLEibyXksIWfnxJtTvy2VHDRs85OQJKsBxWaMqhD+41kKte1jzV5I7psYj96K75dNGstYdB9M5YgZ30lYw+1yQMOHauoG29A2Xky6CwNYCqAUgmfX4Zv7RJ5jswpQ+MFd6wBWNR0Cy///a5i85mzvKb/RNbBWDFTJemMrmebOA9oG/91Aq+qiVuq7IO0f2t4iFowL9eFLCHyMvrvKX4nFCO14DG3d9JehTx+SGPCWZHd0saEDKB2c3QDwTmgJmXlX4snIMjph8/ql7F3nrsAS7NQ9CSLHXucnWu8XBjGsYJY9f9b5VYxR+N1nh6RVdCa7O/VKV5F435mn3PqhsUBIo5X7P6H67t1Wk+IFbpb3O5r
+ LpMjvAof
+ 6Z9+1RSRd9TE79zxiN6QJYHiZgPVKEkQK/SrN3PubpuhQWsxQwnMIuK0WkD2RShp2En+MNaZn6JJN9aaQpg4P4Kr5J/+jUJ8t8VmZWsGC5DMdIjpdfuTwKPgsNiWr4+5g5A1ZfZM9GSk+qVAG+rhkREObpzNxGSIRKhwZnpK4vwRE/mY63Cgc4BS+Xp87n7j/aL9XUPf68ndxPuwc7KuPbT1MTa0nHgeduGUgP6ZIOBdc9ldN6uwwK/SiBQZLxReJ91lGi78UQViXb7AcMaNS+9DUaFI7eO0ZnaUKkNxN6JiNOE1suTWGCk9JIN6wlb4TKV7Gdl8x3npfmPzMbTodkLVH7HbbdTU26oDLT8okh8fqwilyYZo6YmXzVTG8lNVBd9lKFbQdMaKv0qbRaYwX57Tw5yjS/Rdtv3qglYGDYnqP71sAFMFU8wPms54qdzdsgEhQvjicVKcngfOD6kXT0Jc7g1G60Cxe3/4atC1VZAN3wOR98YE3D9KcUg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -167,46 +166,21 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/4/26 14:00, Kiryl Shutsemau (Meta) wrote:
-> fuse_try_move_folio() takes the folio of a pipe buffer and puts it into
-> a fuse file, where writes change it.  A folio with PG_rcu_free may still
-> be copied by a lockless page cache read that found it before it left
-> the page cache.
+On 11/4/26 14:01, Kiryl Shutsemau (Meta) wrote:
+> Deferred folios have refcount 0 and are not on the free lists, so no
+> counter shows them.  Memory that waits for a grace period is missing
+> from the free count and from every LRU count.
 > 
-> Such a folio reaches fuse when a mapped file page is gifted with
-> vmsplice(SPLICE_F_GIFT) and its file is then truncated.
-> fuse_check_folio() refuses it only because the flag is not among those
-> it allows, and with a dump_page().
-> 
-> Copy such a folio instead, as fuse does whenever it cannot take one.
-> 
-> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> ---
->  fs/fuse/dev.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-> index 4fec31fc0b84..526929c7b3f1 100644
-> --- a/fs/fuse/dev.c
-> +++ b/fs/fuse/dev.c
-> @@ -1152,6 +1152,10 @@ static int fuse_try_move_folio(struct fuse_copy_state *cs, struct folio **foliop
->  
->  	newfolio = page_folio(buf->page);
->  
-> +	/* A lockless page cache read may still be copying from it */
-> +	if (folio_test_rcu_free(newfolio))
-> +		goto out_fallback_unlock;
-> +
->  	folio_clear_uptodate(newfolio);
->  	folio_clear_mappedtodisk(newfolio);
+> Count it per zone in NR_FREE_RCU_PAGES: nr_free_rcu in /proc/vmstat,
+> free_rcu in show_free_areas().  Preparation for freeing the waiting
+> pages sooner when they hold back memory that is needed.
 
-Talking to Zi, it would actually be nice if we could disallow converting
-ordinary pages to folios and the other way around. That will be required for
-some future changes where we identify folios with a distinct PG_folio.
+Even if we switch to having this folio-specific internally, I think it will be
+the right approach to expose this as NR_FREE_RCU_PAGES. (not NR_*FOLIOS, for
+example, because we want the actual # pages)
 
-Could we get rid of fuse_try_move_folio() entirely?
 
-I think we'd just want to get rid of any such stealing if possible.
+Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 
 -- 
 Cheers,
