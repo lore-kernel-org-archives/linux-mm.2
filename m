@@ -1,75 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FB0606AFCB
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AE8606B58A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DJkEU9Rz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lfsy3Ze4
 Received: by kanga.kvack.org (Postfix)
-	id DC6E26B05E7; Mon,  9 Nov 2026 13:32:08 -0500 (EST)
+	id E146B6B05E9; Mon,  9 Nov 2026 13:32:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9D4B6B05E8; Mon,  9 Nov 2026 13:32:08 -0500 (EST)
+	id DEC256B05EA; Mon,  9 Nov 2026 13:32:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB3986B05E9; Mon,  9 Nov 2026 13:32:08 -0500 (EST)
+	id D01A16B05EB; Mon,  9 Nov 2026 13:32:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A88586B05E7
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:32:08 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 39F52C06EA
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:32:08 +0000 (UTC)
-X-FDA: 85416425136.22.809F0E7
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id AE34E6B05E9
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:32:14 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 39E2A1C415F
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:32:14 +0000 (UTC)
+X-FDA: 85416425388.19.B73C8C7
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 6DB1E1A0002
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:32:06 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DJkEU9Rz;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 4D0AA2000C
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:32:12 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lfsy3Ze4;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794249132;
+	b=GK5iOqf2bRIgeYqeaOYzJ/faCPUmDKl12bU+FislU1HKzrfqU9BZw5Lb70dESKPgs5GfZq
+	h8cDOKC3wV3CUYmNP5We77LQ/8WlOnaM8+Gx245P9F6/E/QD+7/T081IIS0Qf2q6jT0gwx
+	cmmsU+thcnxOq775GeJ/QPok0GHFjMc=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lfsy3Ze4;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794249126;
+	s=arc-20220608; t=1794249132;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A1bx3cQBNrnl/+bVhczOhkj1gBe4lxwMh5p/lPOBHw8=;
-	b=iXMHphGS1baRqPsNhoigvnFZ9UvIhZ6fmXFfTMKdu06NKNHN9Cm3xV8HgFuV+yTQsxeLUp
-	JscZKO0QBuzKddMbgszo/Hnc8DZuZHmzsvasKxjtY8/2v4hr/NJbtkUabDSe6/UWjTep9M
-	HRJk5tqhJJMbIeAbdySATpjoLa18SjY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794249126;
-	b=iKgTD7Z96/RvDf8cJe11kSck1fWj2EZOvFsJYa6NoAnkhOq5uCjR1it2WWSQ2+Pc0hOSYo
-	ttghbRcwDUwXfYLAqPqtGfBn4atW6jtc5EtC9GRLZSPAPQ0DyD51aRJ2/N/hJ+9SHMKAUb
-	rDdHz7E5bOEy0NWKEh1iOpgyoqJJP1Y=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DJkEU9Rz;
-	spf=pass (imf19.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=h/Bd473+Uax1ERBjRspXIJTjnfLx1UaFniL2HymVmOY=;
+	b=TqeO8vZyKudfK4PJmMydpDiI9GmSb5EoYuEHKu2DQWRLUVY0cgPhqpSPcwGYYoZTvDO8P6
+	RPT9Y6eWhwXjdM1K/WFX3Ce66GXkepe+I0d8Eq4+rLnGiLf4Pcg+9z3rn65F7x4c7CTSOA
+	y7gXOc2jWVmZDHbWYmhGgT+ABFLc5hM=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A093A44003;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9856E45980;
+	Mon,  9 Nov 2026 18:32:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039A81F008A1;
 	Mon,  9 Nov 2026 18:32:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4CF11F0089F;
-	Mon,  9 Nov 2026 18:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794249125;
-	bh=A1bx3cQBNrnl/+bVhczOhkj1gBe4lxwMh5p/lPOBHw8=;
+	s=k20260515; t=1794249131;
+	bh=h/Bd473+Uax1ERBjRspXIJTjnfLx1UaFniL2HymVmOY=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=DJkEU9RzMtvmKZEhK4grAJp69GoJfavwGia2y6elsvv3/QPwjrXNjprT+YRhg8e0Z
-	 WIvRQ5xlH2bDM01VN69+0ONW/Ielh37ZoYyzhlrXcvm/XbBPTyvhj2eLbQ5Vx2t+NO
-	 4f/eMQYdSQP8Opmu22YX+SD8pGdb+mBm7+UpniW+T/ReDZiFoN52WuJuBTiLfzrLjF
-	 l+yXgKSB12SWZrHdKPWG7zEBztfWvYeviTlMekgkuDCLwHCeXMTty4oGixEZOTGReg
-	 bZT+5iJ/EvrUTplu/UnmcWxl0DkQ6LDGZgLT5GDz2cR8MAwK3/nXLJ+ESfUaPg8rGj
-	 XgO9PSnKSLf9g==
+	b=lfsy3Ze4pC4fQ8Wju5XXWmBxzswRHlIyyZTxmTosI0btdYkO5uwTmDxGrDBiKgkNc
+	 m0HM+iuLsIzOA7K06pAX/SSKIPGqUPhWmZEStxE8e3fnArtQNJAz3zmx2tDHbt5Pv4
+	 5JaBlOhpsEXkkhk1nljU703ZLIsgbEiXPhKspk6NRySRH0CVzd1MO1PGGgSqcajd6h
+	 Mm/o1hsP9RwCNSu0P9adK4qBtsoTHct1oxVfxrxBuHwhmixPZXXZeExhdkpoZpNiyB
+	 inxb5/TzV25jAKbp1ug13oQkov+FcZWVSIubeDtyzYnbvvf8/Y4XB7+Zd75la76Zy1
+	 sugxpdzZjYqKA==
 From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Mon, 09 Nov 2026 19:31:53 +0100
-Subject: [PATCH 1/2] MAINTAINERS: MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
- update
+Date: Mon, 09 Nov 2026 19:31:54 +0100
+Subject: [PATCH 2/2] MAINTAINERS: remove myself from MEMORY MANAGEMENT -
+ RECLAIM
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-maintainers_mglru-v1-1-c25e6de60bcc@kernel.org>
+Message-Id: <20261109-maintainers_mglru-v1-2-c25e6de60bcc@kernel.org>
 References: <20261109-maintainers_mglru-v1-0-c25e6de60bcc@kernel.org>
 In-Reply-To: <20261109-maintainers_mglru-v1-0-c25e6de60bcc@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -85,26 +85,26 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
  "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1310; i=david@kernel.org;
- h=from:subject:message-id; bh=C4p8LDMbx+ZkjajJ+iKnXRHO7ncfgEapbAI+tnp46XM=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI+Cc7uWpa3WqFBat19o2T2C0prXJpXPrbllXrKFZDxR
- H9O0i3djlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDKEgYtTACaSo83wP3uBXMe9Xd5ht632
- xJksnWS89tbt3s+7OtYqeG3a1VX3O5mRYdGkizLl536nPVxbMtkh03v1mtd2HfxRl1nPJv389Wr
- SK0YA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=832; i=david@kernel.org;
+ h=from:subject:message-id; bh=oEU8IfcwSlE8hn8tOxT+a/rYJs7VL5OhvNpKJq1C9ZE=;
+ b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI+Cc725Lr5Xz84ZM6iFU9VFxU0m6gtYp2cE3KVZdvR+
+ r8BG2oOdZSyMIhxMMiKKbIEBd83ePlyXW21Gx8zzBxWJpAhDFycAjCR2MMM/wuDDi4sfzBzURjn
+ co/qvnC3uwLHNCS1T3/x9b56SDL09jKGfypeTQ0XOouXizF/ET/seiZjt1RHbuVCIc7j+hW5C2d
+ 1sAAA
 X-Developer-Key: i=david@kernel.org; a=openpgp;
  fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Rspamd-Server: rspam06
-X-Stat-Signature: kqr5stxpaj4tn13xo4cdzjik87mauimu
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 6DB1E1A0002
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4D0AA2000C
+X-Stat-Signature: s3n74o3h44gs55aaio5q4q7qak1dh47w
 X-Rspam-User: 
-X-HE-Tag: 1794249126-863711
-X-HE-Meta: U2FsdGVkX18rEypbkgt+dg7erE9dhAlxwAaTukhiESfrmdkz//PXjzWJO88b4fYVMrwyZ9+fvRkLdoAuoJAyTRk9NRISsJkHmAZ2A8hcJDZoItlmLgQo+96o1SdBsSY0lbclb9Vz0ycT1/3WrEdsUW/zgICTQzzGHLIok1dG39pug92rCTVm6uTKzXUehf4kWrNQbdSJYWVqiGizzEkZsFViY1/pojg3RcEhin2s/AtB1CLT09GJT33AlAVax99GYgd//a7IYC1G/v0M0rJQ67KFdhquxeanYQ2AznCR/pAC0bhb9NsR7XMQCu8cGPPSeSRQjSbxreajo/gbMeJ1i64soTukGiqQZ3uGvtvo2FIWYNKO/ayH2ukijBo4Y76utMREMN+hsZKRHnJmKVf2daKm8sA8uR+GjqTiuBiGh+VtstsGXp1F/0sxVyhpcG8RXhwVntsJI0KeqkSqDHVXtCOxe0ixVaVGb7/Yslh+OKedHlgdeVbIMAX5vN35emWQr29Q2VMXhKeyLBfEivMYxFd2CKBBE0MYjJ3CH7XHWEMUVmYQvT/TssvJxv39QkLacf71lz9HOkjW53RVET5V0z0zRKGVd/SvDgdZVR4T918cIxkFr3FQ/qmNL/sMODQ3eRTKFcHJz0o7UUPHTPGkSYtj1qP/yhF/dEkQ3AtLmFoIreNa31pxmyjSJij1iTyWBXZ1kS8KoAp+1NQrJBYMyDCE6gHLtoxYIDVXBfxTY0QnP/Nle9QPm9/kysGoRElU/d1OzowiEt+hBw86uuC07X8Ue2IFaJsLkjq+jzQT2VKqJ8UUILi73Zn5BjAeYXKY2r1DUM/jNzgBTOCd71YnBdIajCGqOwaH3xKf3GdT9Zj1MOSTvR/+Zc7k8LTXUWJpVkgQ95u9KSMZ7WUeYMKameXzEeIbfhquPuQyQMQG6lnolCDAXnSbgt0bWmCI3be4+BiJ/4RwOeZ2mRBTWG4
- acoUC1o2
- SY5yh/xxU+C77RHks+ZkZXUWmoHnSMq7r0LPPTUXPBJFxvATLPp12J+qleZP+d5YWuOuVwaSsg2hws+3vNaKTDug+B8R++klBpuqsbSWCCZMG9mtnUoljhWdfPnrHtjYBM6uqJUR4Rum0mO3NRXcPNRdxQUSsOG4yFGVkO49TZHCgl1F3fbcMOcV6a12LnRCUjycZFFJFINA1rZOzuWBU9SOodmidIxsYnuU0BnJ04WEyT/T8VWirBHv+MzcaYjVBaUQGDsLHGgoy6vPMQcnFNAIGr0g4GNootaE+vEGzfh6tuRlZwG1XV83wcjcPdqB9ygF6TZ8ypjuyogCTQtzAiOKTqFnRuYy1OFgF
+X-HE-Tag: 1794249132-431002
+X-HE-Meta: U2FsdGVkX18maHH3VsNgBVFCWIqvHjOeGTkMdZAzt8v5RZ9mg/D6pPB+VVDQafSiRIyoLFM6JaX9DY4KgnNaDLIXSG8fXnjA8VRa9gRK8aTMbS4Sxz4+g8NR7WdDhBoUVg3O5oimwpWWUMmtrbT/fk6jWngdLeSEvAb+9FvCjjOUCfLEdLs3DOCoOcay+EgQtCMkn2ASyzQghn34WP/WgmaBzwSapsgC1s7Lm3hH0XKqIQ49GEsHQpvplGoAtmslZs5O5erK/rEy0VKnenaPqLPH71Idrfy5YgJjQOLIzYhLzeiPEDDQFjpiZh8Bn6rJmGlHDTsci8U723lOOA1Bc3NVud1HEaruPdSGcQ10PDRPln8+OH+iq/BuxTlkhCvb6G2bAiXMWHKB/yoODYHHstxTE57vgRjw80O0cl8BzOT8mxnWhGwoMNhI892HH2PgTM1DT6r2WEiXAvxkkUikL+BR/sflbQRy3FoSXLwmF9UVVEtpV4q+MAx7VZvAgFtzg5oxBq6+UEWivzlTkgSGbeGjouJ+bcakDwhTqxMiSntLzLlziVS5iCczk//Wv+bajOQcBBaUnmZz5S7Hm4nhF2vqlE3I5JlMQVQ+aQ6FVfzdkIfXNYxglFqfEvuDtrYZXpHjp/QZIFFLwg0hfBEYv6DViERv2dwRGiBRgHIPxR4acxYGZEhr053TTW1TGu7Pbv+IKXJKp9+DabKrSfy3+fB3NPBkm5Y+x2/PIwCWdMcXfyKt5f3MVm0CDzMsrx+el2pxVOaxiOK70YEQSrnej16xNTJl4d+IGIO2uW0Fr+dnjf2baDdQcrpB+zPGl75SnXij8vHPAjuNAPa5YUfS0/Cic0Om2SfYtPlKppBE8ruvLEUGkFc7ofdWWw1Jb+bpt/kQk7dlQR9Gk13fhAVrux2p7rD5ZJtxW6sOf/69V2HOyHj49YPGIzVtpHIUB82zrjBG3KqfzNm960iFYF9
+ SxZ3xS+r
+ 4MvKFTLGKUegEHDn2LtKtwYZJcvk75PaX39JqoEUhRjnllEGa8PHlheh37EjqXZmFfNUItNx7e9Khh3eE3NDjxCal8+uRsHjHcH3BDq80WN/HErVQHGeWbCAqqMzMi4kQ2Cy64kJXNRLVDfGGc6Zf/53l7r6yoO+gkaqZEk1mydHcLAB9EIjfskWZEYYJqK7tDubO0w9CBYGpsZIVyeJsp7TKqo4sAfHIWlIjMuJKqIcM4BMj52eitjXF7VgxH5Y+WYReZWUUA9ppbvqD1etKEqdeMdk9wKKbrLPgrD1itlgu+i9P90rKUK/qRcC0aJuuvKlsjgXujNPPW2GT95SmeJPeUr7/oIJtyDb6P/lhljvRh+U=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,40 +113,29 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-MGLRU is currently the only MM component without a dedicated component
-maintainer. Fortunately, Kairui and Barry have been actively
-contributing to MGLRU and have volunteered to take on more responsibility
-by officially taking care of it.
+I don't really get to look at most reclaim related stuff. For things
+that are actually relevant for me, I'm sure people will CC me.
 
-Given that Kairui is already an established MM component maintainer in
-a related MM component (SWAP), add him as an MGLRU maintainer right away.
-
-For Barry, the idea is to transition him towards a component maintainer
-role over the coming months, starting by moving him to the top of the
-reviewer list.
+So remove myself from the MEMORY MANAGEMENT - RECLAIM section for now
+to have a bit less noise in my inbox.
 
 Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 ---
- MAINTAINERS | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 222b7fc2c3aa..e7ac319a570c 100644
+index e7ac319a570c..7dc8548236b9 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -17635,10 +17635,10 @@ K:	(?i:vmemmap)
- 
- MEMORY MANAGEMENT - MGLRU (MULTI-GEN LRU)
+@@ -17808,7 +17808,6 @@ F:	tools/mm/page_owner_sort.c
+ MEMORY MANAGEMENT - RECLAIM
  M:	Andrew Morton <akpm@linux-foundation.org>
--R:	Kairui Song <kasong@tencent.com>
-+M:	Kairui Song <kasong@tencent.com>
-+R:	Barry Song <baohua@kernel.org>
+ M:	Johannes Weiner <hannes@cmpxchg.org>
+-R:	David Hildenbrand <david@kernel.org>
+ R:	Michal Hocko <mhocko@kernel.org>
  R:	Qi Zheng <qi.zheng@linux.dev>
  R:	Shakeel Butt <shakeel.butt@linux.dev>
--R:	Barry Song <baohua@kernel.org>
- R:	Axel Rasmussen <axelrasmussen@google.com>
- R:	Yuanchu Xie <yuanchu@google.com>
- R:	Wei Xu <weixugc@google.com>
 
 -- 
 2.43.0
