@@ -1,111 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60ABB606A321
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E562606A330
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:19:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KyGYc/76
 Received: by kanga.kvack.org (Postfix)
-	id 82C7E6B05B0; Mon,  9 Nov 2026 07:19:49 -0500 (EST)
+	id 3E7AD6B05C1; Mon,  9 Nov 2026 07:19:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8044B6B05B5; Mon,  9 Nov 2026 07:19:49 -0500 (EST)
+	id 3BEA66B05C2; Mon,  9 Nov 2026 07:19:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 719DC6B05C0; Mon,  9 Nov 2026 07:19:49 -0500 (EST)
+	id 2D5536B05C3; Mon,  9 Nov 2026 07:19:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 49C0A6B05B0
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:19:49 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C03AA1204EC
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:19:48 +0000 (UTC)
-X-FDA: 85415486856.19.B8FF11A
-Received: from mailgw.kylinos.cn (mailgw.kylinos.cn [124.126.103.232])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3434620008
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:19:44 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	spf=pass (imf03.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0C00D6B05C1
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:19:56 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9B2AA1A068C
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:19:55 +0000 (UTC)
+X-FDA: 85415487150.20.F776294
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CB8754000D
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:19:53 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KyGYc/76";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794226793;
+	b=LVITLw0NnHJ3dr0b2i9toAuPOZevRx1xbnqmUJ4CgNL5y5GjLiUhSIreRxKSUX3Ja03Kdi
+	Db5xhdH0/wJYCr7bvqtJUHwvBos7ligtcuk8vvX/EJqZ3QCotis+sWfYElGYDBHE9HmsTd
+	KePX4tpQ5jtZXE+uFgvyxFvcXR84H+E=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KyGYc/76";
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794226786;
+	s=arc-20220608; t=1794226793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5JP4eF6mguHdDcK/HiEZCEolZOvhI3XY3/TZJENvHOY=;
-	b=zONbNyhty3+yxhruRa1v+FZPn93myzX0mD1zX/YTlh6egNMzXQ7AvDVkn2kfntMeCAX6N5
-	vFNSdkbWxNrqy6sF2dsIj/5zWJGGXhVLHBgbM3ZCd2cHU0LpBbnneGV4lpCZPmrC2QXX3O
-	9DTr2TWQVJd56+uplwj3aRmmFvXtUbs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of duanchenghao@kylinos.cn designates 124.126.103.232 as permitted sender) smtp.mailfrom=duanchenghao@kylinos.cn
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794226786;
-	b=PPzOmFFwNJKuFGYyEFFDqrOhnlYj42VPAg/GYcbwbHzALcdqLAOAORtBuy737i9ZI6YXnu
-	498zsR6AJSrQWGZ7Didam16V3vtHCs9ryMyYhXHojCN7+HhK4Is1P63z4/BihU9tR/IryI
-	n3E1EtIA+fKFmwUnxcwNdLn9+9DwqiI=
-X-UUID: 14fa1962dc3711f19a56ed5b684f684d-20261109
-X-CTIC-Tags:
-	HR_ERR_NO_COLON, IP_TRUSTED, SRC_TRUSTED, SA_TRUSTED, SA_EXISTED
-	SN_EXISTED, SPF_NOPASS, DKIM_NOPASS, DMARC_NOPASS, UD_TRUSTED
-	CIE_BAD, CIE_GOOD, CIE_GOOD_SPF, GTI_FG_BS, GTI_C_CI
-	GTI_FG_IC, GTI_FG_IT, GTI_RG_INFO, GTI_C_BU, AMN_T1
-	AMN_GOOD, AMN_C_TI, ABX_MISS_RDNS
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.19,REQID:a379fe88-ed4f-42f3-bda7-d60a1476168a,IP:10,
-	URL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:10
-X-CID-INFO: VERSION:1.3.19,REQID:a379fe88-ed4f-42f3-bda7-d60a1476168a,IP:10,UR
-	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
-	elease,TS:10
-X-CID-META: VersionHash:7db8b62,CLOUDID:b3a0003dcdb6d3612e3ec4920fd72aff,BulkI
-	D:261010210608FCZ9WBJC,BulkQuantity:11,SF:10|38|64|66|78|80|81|82|83|102|1
-	27|136|153|841|850|865|898,TC:nil,Content:0|15|50|99,EDM:-3|-100,IP:-2,URL
-	:1,File:nil,RT:nil,Bulk:40,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR
-	:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_OBB,TF_CID_SPAM_ULS,TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 14fa1962dc3711f19a56ed5b684f684d-20261109
-X-User: duanchenghao@kylinos.cn
-Received: from localhost [(114.244.3.119)] by mailgw.kylinos.cn
-	(envelope-from <duanchenghao@kylinos.cn>)
-	(Generic MTA with TLSv1.3 TLS_AES_256_GCM_SHA384 256/256)
-	with ESMTP id 603396441; Mon, 09 Nov 2026 20:14:15 +0800
-Date: Mon, 9 Nov 2026 20:14:12 +0800
-From: Chenghao Duan <duanchenghao@kylinos.cn>
-To: Luca Boccassi <luca.boccassi@gmail.com>, avagin@gmail.com,
-	pasha.tatashin@soleen.com
-Cc: jianghaoran@kylinos.cn, linux-mm@kvack.org, kexec@lists.infradead.org,
-	linux-kernel@vger.kernel.org, systemd-devel@lists.freedesktop.org,
-	rppt@kernel.org
-Subject: Re: Question about obtaining LUO session FD for non-systemd-managed
- service
-Message-ID: <20261109121412.GA1040902@chenghao-pc>
-References: <6ac99eb9.6b935c14.1905ce.7c50SMTPIN_ADDED_MISSING@mx.google.com>
- <CAMw=ZnTTUxO2ZCobEDTQUY7OZxmyJUQxg4DkhC9gTWXaDaK1dQ@mail.gmail.com>
- <20261013110237.GA836401@chenghao-pc>
- <CAMw=ZnTksVT1wuQwAjzz_2tYSCvLSxeUBa3mYQvCFuKUtcydaA@mail.gmail.com>
- <20261021103633.GA1324331@chenghao-pc>
- <CAMw=ZnRpDdqKDPbofeF=1U70Q0Ms0aniwA6OPF-paNZEb+k5bQ@mail.gmail.com>
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=TLrnHUnuKxQDgIYEl6JMV7NCbKmlJCyRBq3Hpd3l8qU=;
+	b=6HsJhftpA3edBM9AXDHCyVSImXj1YLDvbiSGR/uQUybOv75Nn9+oh4ng5iQASBzkjf9S1w
+	AktDYlZo2K+b5t9Uvciq4RREZpgolhe+N1mwhL1t3RTf+vKF9EZ+NUSVtec4ENQo0sqWqG
+	AfWO2gQhvThxddJmi0NjIJ6S994uwao=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 18BE063186;
+	Mon,  9 Nov 2026 12:19:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DD81F0089F;
+	Mon,  9 Nov 2026 12:19:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794226792;
+	bh=TLrnHUnuKxQDgIYEl6JMV7NCbKmlJCyRBq3Hpd3l8qU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=KyGYc/76GpP5BOnBgF73ZQIJKAkOkBJyhzHx4Ac3QfYr6X0EIaFq/auDlW7eisMMv
+	 CybW5T1K81veFCKgaLPoy6WKdB++hUXsaNGE5kWnUJNyTh2QL3ev2lQLGNKZVJEvIn
+	 wETeFrjSf1Ydu2J2NAK1Aou7oVmi2yQ8KBwOY33ZzcZxy+3+Ba9aBCFvBVikwfHPZv
+	 dT3Vn/aJa92pRJLx0VQvuoTBNNKGIankU5/+ElKinJYWWr0s7/HNpMR7uvxMU56sFr
+	 C0nmuzTLIore/qamzALbP8qReUp8QmrjqC5/c2IoWUfAxzG2TOWvfgqr96376iNFs/
+	 9amIjWQgqfyBQ==
+Message-ID: <3b00799f-2fef-44bc-b798-79273c5c0ca7@kernel.org>
+Date: Mon, 9 Nov 2026 13:19:46 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Description: 
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMw=ZnRpDdqKDPbofeF=1U70Q0Ms0aniwA6OPF-paNZEb+k5bQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] mm/migrate: fix softlockup in do_pages_move() with
+ huge page arrays
+To: shao.mingyin@zte.com.cn, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org, ziy@nvidia.com, matthew.brost@intel.com,
+ joshua.hahnjy@gmail.com, byungchul@sk.com, gourry@gourry.net,
+ ying.huang@linux.alibaba.com, apopple@nvidia.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20261108142831046W_fbNCAFfuY0BjHPCCHgi@zte.com.cn>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261108142831046W_fbNCAFfuY0BjHPCCHgi@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CB8754000D
+X-Stat-Signature: jpb5iwfwjt4oyiknzk1rnz6hbpuz4zeb
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3434620008
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,
-	SPF_HELO_PASS,SPF_PASS,UNPARSEABLE_RELAY autolearn=unavailable
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: p7ccgd4hmukkj13kk7168ndatfzr1anx
-X-HE-Tag: 1794226784-440810
-X-HE-Meta: U2FsdGVkX19OUXvr9MbTgOITHT2G6/mVmBeSt+s0aYWCqehicCjO9CajIgYR7EueCf7GflfQLsYBBer4U1a8KNyFmknVhWLmTTfIEE+PPAj+m8dzFVSRiiEFqlgZHujiCk/25Zy4s5LyVAK/VzAGLdf0I0NCuppJ341x6cfJiOzoJHYc+iDcoKF1ZliFImDvtMfgjEBApo4HUuDQNwml/hz2WPK3heB+XY+jlxx6JB20WtdSAJCEhnkI57ed2dAnhPiBy8FD12hK4u+89UkgYAhHYDHX6Oz8dG2bjNK3YCoDWWNHBgI7Fw0vDamxYWK0VNJUE1vACLNmtKmNXguu7v4afVQo7zng7jlFVaw1mKAHXo/3BEPYgNTYSlcQ1BBg94DPav/1I9RW1kUVZi3AZHhpc5oR8TC/TlhvIml6UptgydIsm1IH96GurIMj++Nfu635P4z7ldAbDmgAgi1HdDwLwSMrbyo4LLHmMQZXLI0u8fkZFOI3/wC4MVwrJhM8b7agJ7FMx5Ymmr2vXeaakdwsY5MiHIXUmDOlfAmqjNoWSdw3DYjDAlWy05K75+YYPxvMavs7WMdBcf7jW1Dpr+5TM4UxCK18e+oG//ht9R3r4YUFv3z6IZPZdwoc87UO/OXCpq7mMq61PnFOIapQhR1cDHgZRIe77G+RRU38osqrBuZsasQEli55Oj91IfI7PSCHaS816E4YP/h7E9HxQPxIJc3Jf+p9utmqutDBU4DdtIFvF0JneAcRw0NnhQ1bGR8FLPE3fARKfLkZ6ef6+csEoutdytQ+ggxZZ1OskJkh5uheklQdruYWAgIxSsYe35CzfLHBj+ctDGHsnnUWbZGkOBCo3FA6cKA/O9GWhfvgVDOkAJCnqAfwkqxOnIYfooEtDbFdaMvB4Qin2dNMwBr6UjoqLlOHmu5amuHa/W4uMvZeBBgwowpOxJxBMnaaQkN/S1uPkdOgvUZUw+b
- 8L36OgQp
- 4SWelG/6p0sbjtJtecHRo8BNw+0T1R3Ug8iBdJz2wFG5ylUZFxcD8w6NoYM3KoKxLFDffTmsUIEyiHH0LzLK+Em7cnzr0QeOC1RzzjTQh6xeYC3gaaQccbI2kUnAIxeKStG78qJRp4+EdRVH9M7qch/a1imO1IkSMzKt8klfiRAOoVCHfTBbPHSF0K2Z3716ClALfMjUvs78ot5halQa2EpyiZKr9CUod8RXB5/a9zyRzr6uIWSoW+hR+/lXkdxb3Uk+tHmOty05JbWcFRUA5Emb/IsxpsUmxDQ+rwwxWe1nxnq36wGtc3n5iFGrm3TrThebLAwP+WAUVpLxnSbF6N+Pv2FjW1cbWIzI5Whr8lSE9J/4DbvwX7kqB8LLhqa29AygbAinsnIrTV4uV2vVfyw53M6wWBCgaPZp3ykEaFlDJYDs=
+X-HE-Tag: 1794226793-850885
+X-HE-Meta: U2FsdGVkX19oi6R35/QE6qd/z0ZvldxIdFxOZdqMo7ASP44msZEKpweCiJPyEnSnGNb0usEYuTjE2s5JbR+3k66D+ACM5bTt1dcfxKA5XKq6Y9pr5pI2vI0OecEHZFtbspdKNt+IDDtwcwVFttzhv8DFiGKYuoe7dvHvBu1yO2B0SnCgWO8+UlOXht0SzWGJCORB7rDI6TXXLTzUw7vPOhfHpWxt32BAyzLnVkJeHuvd7yQZmAnO+LYFziv15ujpk4LUjQwiKXltjg77MRuziYTLdP8pZronWk8hGwZybqnLYYOt2HYUMpYKr3jRgjxyJL2GlWR0LvcEakdYWTpfkvwCfAeobf4830CRVnmQ94uq0+wiVoHbFwGDay54FwmODCPgBd8QVLQZFU/X/R+xyaKWCD6Nv6njcoDf6r/YU/Ym+cQD4WMoycNq+NSBA+TaaSc3scKwc+2EuiIstNAayBKR6C+Qo4tqQbP3mYnUvntzO9BcRrz6acKU+OX3Tez9nudi9B2Wz3WNITHpid3vXh6WXmjQZmxFgyLpEr2LYPWrTmGHcR38sb/pxI6olUQ02m5S6w12IbRrF0CR+J5u98Xn+bwaIfLQCCqvfTrJ+Ww2/J5UPwN7kDdaXUoOgytzFF4PywL0EMPbev+bK2ows+W0fKqbW77vGTxXAo+Snbo6wTzbPYy3uAKdjUWS2yPtXQfvXSLXc9oMJw5/arkRzR4pafUAls6TExKZHCpmYypGtpqd+ParZGtzCWQ0znYNTTsm+n9/J+doSAM0xprGcZo+Gbu27SlIH1XnceV+mAqahDVy3UljxedLZLUGBtT42CmOKNupgXTAJaGICKtwyRicVhyMLjcqBKKetZjimoI77w4+ZRGrkQ9FVCsgqj6NJhQqBO1M56ALM28+kfZx5jytRpi7WpRWvbSgEUd70i6fcFV1xcSp8aoNmoG6m6014pTw1PpDNTTqseYUHzR
+ QMs96k+F
+ qmXJDC4nedWZKwtdDGzNfMAsLPZT5NU3o1cWR3PuxsBkdTbE//Uym6QA8dC8PsyjcunFUNHFM/qnSVFaEqKwYgs0jSl4/OPb3tl3cdYxuiPbAuwItDbZhepm2zLtH3gQVqnx+M/JhkoZyMaMbDQP6745BBGSaleBPODwV5tJto7VXk6YV/aKiUERmmpA+V8mCYIUQa+sdx3tcv3+sT42AkXCh6j2+ngPU8aUzDeshV4N1kSHsenw2DusciSfTw4ydKAvB4CB3SRKDuOA6xYK2ZUu1yhoPxClPnPRpeBgA6NWADUTxVL73EASRSgtFxu7lRhcMQSnLw71xdBjr0WAcnzGkPJ6xNk0vjXF2wOQ4Mkv3RLGmCvwpiUYoJipv1LyQDriLpsfb1F4bJoR7qQxq9DaXrJigy7kTv5HPXWaOE64H7nUAFlnLcQ8YxA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -114,167 +143,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Oct 26, 2026 at 11:22:13PM +0000, Luca Boccassi wrote:
-> On Wed, 21 Oct 2026 at 11:36, Chenghao Duan <duanchenghao@kylinos.cn> wrote:
-> >
-> > On Mon, Oct 19, 2026 at 01:13:28PM +0100, Luca Boccassi wrote:
-> > > On Tue, 13 Oct 2026 at 12:02, Chenghao Duan <duanchenghao@kylinos.cn> wrote:
-> > > >
-> > > > On Sat, Oct 10, 2026 at 03:05:40PM +0200, Luca Boccassi wrote:
-> > > > > On Sat, 10 Oct 2026 at 04:11, Chenghao Duan <duanchenghao@kylinos.cn> wrote:
-> > > > > >
-> > > > > > Hi Luca,
-> > > > > >
-> > > > > > I watched your excellent presentation from the LPC conference in Prague.
-> > > > > >
-> > > > > > I have a question I’d like to consult with you.
-> > > > > >
-> > > > > > I am currently working on the `memfd_luo` feature in CRIU. My goal is to
-> > > > > > leverage the LUO capability to store checkpoint images inside memfds.
-> > > > > > After a kexec reboot, the image data will be retrieved directly from
-> > > > > > memory instead of from disk.
-> > > > > >
-> > > > > > Here is my pull request on the CRIU GitHub repository:
-> > > > > > https://github.com/checkpoint-restore/criu/pull/3152
-> > > > > >
-> > > > > > In the PR discussion, avagin suggested using systemd as the CRIU daemon
-> > > > > > to centrally manage LUO sessions and access to `/dev/liveupdate`. I have
-> > > > > > watched your talk and read parts of the systemd source code.
-> > > > > >
-> > > > > > From my understanding, systemd currently provides a unit‑based solution
-> > > > > > where child processes can inherit LUO session file descriptors. However,
-> > > > > > this approach requires the target service to run as a child of a systemd
-> > > > > > unit. As far as I know, CRIU does not run as a systemd‑managed service.
-> > > > > >
-> > > > > > So my question is: for services such as CRIU that are **not systemd‑managed
-> > > > > > child services**, how can they obtain LUO‑session‑related file descriptors
-> > > > > > managed by systemd?
-> > > > > >
-> > > > > > Thank you very much for reading this email. My knowledge of systemd is still
-> > > > > > limited, so please feel free to correct me if I have misunderstood anything.
-> > > > > >
-> > > > > > Thanks & best regards,
-> > > > > > Chenghao Duan <duanchenghao@kylinos.cn>
-> > > > >
-> > > > > Hi,
-> > > > >
-> > > > > At some point up in the stack, everything runs as a systemd unit, so
-> > > > > it's only a question of figuring out in your setup how to pass the
-> > > > > FD(s) up and down the stack.
-> > > >
-> > > > Hi Luca,
-> > > >
-> > > > Thanks for your reply.
-> > > >
-> > > > The `LUOSession=` configuration only takes effect for services managed
-> > > > by the system manager. If I run the CRIU command from an SSH login shell
-> > > > as I am doing now, the environment belongs to a transient unit under the
-> > > > user manager. In this case, we cannot use `LUOSession=` to obtain the
-> > > > LUO session fd via systemd. Does this mean the process needs to open
-> > > > `/dev/liveupdate` by itself to create the session fd?
-> > > >
-> > > > Below is the attached service of the process found via `systemctl status`.
-> > > >
-> > > > [root@localhost criu]# ps -ef |grep criu
-> > > > root       57589    7729  0 18:25 pts/2    00:00:00 ./criu/criu dump -D ../test -t 52922 -j --memfd-images -v4
-> > > > root       57784    7571  0 18:27 pts/0    00:00:00 grep --color=auto criu
-> > > > [root@localhost criu]# systemctl status 57589
-> > > > ● session-5.scope - Session 5 of User root
-> > > >      Loaded: loaded (/run/systemd/transient/session-5.scope; transient)
-> > > >   Transient: yes
-> > > >      Active: active (running) since Tue 2026-10-13 10:03:55 CST; 8h ago
-> > > >       Tasks: 4
-> > > >      Memory: 148.9M (peak: 1.3G)
-> > > >         CPU: 47.000s
-> > > >      CGroup: /user.slice/user-0.slice/session-5.scope
-> > > >              ├─ 7712 "sshd: root [priv]"
-> > > >              ├─ 7724 "sshd: root@pts/2"
-> > > >              ├─ 7729 -bash
-> > > >              └─57589 ./criu/criu dump -D ../test -t 52922 -j --memfd-images -v4
-> > > >
-> > > > I'm not sure whether my understanding is correct. Could you please
-> > > > provide your feedback?
-> > >
-> > > That's a user unit, and as per the documentation LUOSession= is only
-> > > supported for system units. So yes you have to provide your program
-> > > with privileged access to the character device and create the session
-> > > yourself, and then stash it in the FD Store as normal.
-> > Hi Luca,
-> >
-> > Thanks for your clarification.
-> > I now have a rough idea for the implementation: CRIU will leverage the
-> > FD Store facility to deposit the memfd into systemd’s file descriptor
-> > store. As FD Store is tied to a service unit, a criu.service is
-> > required. The unit file I intend to use is shown below:
-> >
-> > [Service]
-> > Type=oneshot
-> > RemainAfterExit=yes
-> > FileDescriptorStoreMax=10
-> > FileDescriptorStorePreserve=yes
-> > ExecStart=criu command
-> >
-> > Does this setup conform to the original design intent of systemd FD
-> > Store and LUO? Please feel free to point out any mistakes.
+On 11/8/26 07:28, shao.mingyin@zte.com.cn wrote:
+> From: Shao Mingyin <shao.mingyin@zte.com.cn>
 > 
-> That looks about right. If it's a user unit, also remember to enable
-> fd store preservation on the user session via a drop-in, ie the
-> user@.service system unit
+> mm/migrate: fix softlockup in do_pages_move() with huge page arrays
+> 
+> do_pages_move() walks the array one page at a time.  An entry naming the
+> node its page is already on is never queued, so the loop runs without a
+> voluntary preemption point on a non-preemptible kernel; the existing
+> cond_resched() calls in the migration code are only reached after a
+> folio has been queued.  nr_pages comes straight from the syscall.
+> 
+> A 6.6.60 x86_64 kernel with CONFIG_PREEMPT_NONE=y and CONFIG_NUMA=y
+> reproduces this under QEMU TCG: 50 million entries pointing at a page
+> already on the target node keep the CPU in do_pages_move() for 42.9 s and
+> trip the softlockup watchdog; with this patch the same call completes in
+> 44.3 s without a softlockup.
+> 
+> Add cond_resched() so that long calls yield periodically.
+> do_pages_stat() had the same problem; it was fixed by 8e934ab44389.  In
+> current mainline only alpha, hexagon and classic m68k can select
+> PREEMPT_NONE and they cannot enable CONFIG_NUMA, so this mainly targets
+> pre-v7.0 stable kernels.
 
+I hat that we have to care about this, and I'll probably increasingly hard push
+back against such effective stable-only fixes in the future.
 
-Hi Everyone,
+In particular if it wasn't even encountered in practice but required a QEMU TCG
+instance to even trigger it ...
 
-First of all, thanks Luca for your previous suggestions and for sharing
-your thoughts on the systemd integration.
+-- 
+Cheers,
 
-Following our previous discussion, I have continued investigating how
-CRIU could integrate with systemd's LUO session management.
-
-As discussed with Andrei in [CRIU PR #3152](https://github.com/checkpoint-restore/criu/pull/3152),
-one of the main architectural challenges is that `/dev/liveupdate` has
-exclusive access semantics. This raises the question of how LUO sessions
-should be managed and how session FDs should be made available to CRIU.
-
-Based on Luca's suggestion, my current understanding is that systemd
-could act as the central manager of LUO sessions, while CRIU obtains
-the corresponding session FD through systemd.
-
-I think it would be valuable to discuss this approach with developers
-familiar with CRIU, systemd, and the kernel LUO infrastructure,
-particularly regarding the following questions:
-
-1. Should systemd be the exclusive owner of `/dev/liveupdate` and manage
-the lifecycle of LUO sessions?
-
-2. Could CRIU obtain a LUO session FD through systemd, for example using
-the `LUOSession=` mechanism, without fundamentally changing its
-standalone command-line usage model?
-(I have already verified that CRIU can run as a systemd system service,
-obtain the LUO session FD from systemd, and successfully complete the
-checkpoint/restore process, with systemd retaining and restoring the
-session FD.)
-
-3. More generally, for standalone command-line tools that need to use
-LUO, are they also expected to run as systemd services in order to
-obtain a LUO session FD? Or is there a way for such tools to retain
-their standalone usage model while still obtaining a session FD managed
-by systemd?
-
-4. Is the existing systemd FD Store mechanism sufficient for this
-purpose, or would an additional IPC mechanism be needed?
-
-5. Are there alternative approaches that would better fit the existing
-CRIU and systemd architectures?
-
-My main concern is finding an approach that integrates naturally with
-both projects without introducing unnecessary dependencies or
-significantly changing how CRIU is currently used.
-
-I will continue investigating how CRIU could adapt to a systemd-based
-architecture. Any suggestions or feedback would be greatly appreciated.
-
-Thanks everyone for your time and guidance!
-
-Best regards,
-Chenghao
+David
 
