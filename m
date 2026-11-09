@@ -1,91 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DC21606A335
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 05:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E51E606A33D
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 05:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=eiB3Z7oc
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=MMq0OsFY
 Received: by kanga.kvack.org (Postfix)
-	id DD5486B05B3; Mon,  9 Nov 2026 00:41:11 -0500 (EST)
+	id 9EBCD6B05B1; Mon,  9 Nov 2026 00:48:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D85B66B05B4; Mon,  9 Nov 2026 00:41:11 -0500 (EST)
+	id 974F16B05B2; Mon,  9 Nov 2026 00:48:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9CC76B05B5; Mon,  9 Nov 2026 00:41:11 -0500 (EST)
+	id 83FAB6B05B5; Mon,  9 Nov 2026 00:48:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A5E386B05B3
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 00:41:11 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 36852160594
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:41:11 +0000 (UTC)
-X-FDA: 85414482342.09.B572223
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7B860180003
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:41:09 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eiB3Z7oc;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5900F6B05B1
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 00:48:35 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id C11381A05EC
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:48:34 +0000 (UTC)
+X-FDA: 85414500948.16.8239CB0
+Received: from mta0.migadu.com (out-57.mta0.migadu.com [91.218.175.57])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 26D5F140005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:48:30 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MMq0OsFY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.57 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794202869;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	s=arc-20220608; t=1794203313;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gh18oYDi0/D3vCx3r5khgR9nfMZ5vYV8YkdpupLcvRY=;
-	b=gnc7P8rEdrC7i6p06+k7Idhwv3QBNiKdsCJiiHeEqE7jFBhNNAJCTgAnii5rYyP01m5hAN
-	wgWsSSDhii8RdhCovRSCB8jP+LKSqMFA7ebaTQfh1CB5ythQ53iJuD0h/fCHBqK0tutHux
-	60HkT8/rMnY8HPELEpLoj/xZ/KKmc/c=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794202869;
-	b=8Nz/acQoeob5cMmtY/lc/wXHj0PXwyw51J18+2SAep4GiYweCU8vQ+sRc8uYGfqeUWIQmz
-	9NSM7VdkbFuJexN+S/G7O3+seL2NjJNU43jybfX07GzALE8CXzPFcJpeAjxrZFUunQ74hm
-	Ynl55NwuuKaNQX5yjB4pXg/PyA8vvuY=
+	bh=JSOyM4K5zrqmDFF61CwIn14s5ShEHbu2alo+0Cxugro=;
+	b=nG2/dS56bIb38oRqK3fJvNuX+ts8Xcch+7zmdaL/NJnXwYw8BZZ11zBXwlZ2mQmE3YDfgj
+	E7jcMafQAMYp+dKgwFjXGa+M7WL0zegt+QK7Hnp5G+5tFqPTTZv4oCW9p69FFTLGzpn/Ad
+	WDkO4l0ano1H1ayS2UEAZ8YPtxmgLi4=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=eiB3Z7oc;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6EE0644686;
-	Mon,  9 Nov 2026 05:41:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F081F0089F;
-	Mon,  9 Nov 2026 05:41:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794202868;
-	bh=Gh18oYDi0/D3vCx3r5khgR9nfMZ5vYV8YkdpupLcvRY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eiB3Z7oc3i5bmtbXIDuHZmK0k0BadEkoy765cFhMkVWRv2Bohp2cpMUiBk5n6qj14
-	 OYk1ujl3F/zSGvcEcVCwIC7tWOMzRoFN9dfwoNKkSxex+v9LkQm9wMYJLDU4LS9Zf/
-	 gwW4juJuN3PlNTj1baqw5ilUyPU9PAMnxhvPTiUKWkjAMNiGyr5WnSN8FTPFPnCDa/
-	 P+sxv9A7sfSMQMpNMQdxVUA3z0sCRraqkgCfy6dn4RY38cnHXsASbzs7up/1nqCRlH
-	 sE50f/3KMc2FR8tMIgLYydSVqzGrAwhP+r2tAOVijjbThsL0uLQmTZ+vkZguW2fBpJ
-	 rWkOfuHFzeRDA==
-Message-ID: <sashiko-outbox-204449@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm: memcontrol: don't lose track of exiting OOM victims
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chris Down" <chris@chrisdown.name>, "Andrew Morton" <akpm@linux-foundation.org>, "Johannes
- Weiner" <hannes@cmpxchg.org>, "Michal Hocko" <mhocko@kernel.org>, "Roman
- Gushchin" <roman.gushchin@linux.dev>, "Shakeel Butt" <shakeel.butt@linux.dev>
-Cc: "Muchun Song" <muchun.song@linux.dev>, "Tejun Heo" <tj@kernel.org>, "Sebastian
- Andrzej Siewior" <bigeasy@linutronix.de>, "Zhan Xusheng" <zhanxusheng1024@gmail.com>, linux-mm@kvack.org, kernel-team@meta.com, mkoutny@suse.com
-In-Reply-To: <avALaDR1_epaAfOp@chrisdown.name>
-References: <avALaDR1_epaAfOp@chrisdown.name>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 09 Nov 2026 05:41:07 +0000
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7B860180003
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Stat-Signature: oe63e9wahfy65xbcbbkmhbxcs5i7gisc
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=MMq0OsFY;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf09.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.57 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794203313;
+	b=bcsa6ZvxkAdE/BSn2pn1ouBLUWGUWJ4KgzYG5AST5HcexYQWA0aZoYz75d9nPiDupSesSR
+	cqgwPwaATz7ngg1toJ3HmCPK1pS1U0rjT85IRvFIpwtmje+lI8+xxhk8liniXVKK+D9kVc
+	6qqhwKVtFxkDyeSZ5vCi7IkW6fw4PLI=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=JSOyM4K5zrqmDFF61CwIn14s5ShEHbu2alo+0Cxugro=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794203309; v=1; x=1794808109;
+ b=MMq0OsFYOeDFfLKeanMq/JRW5emG22N+JN82VeucMQQPT+M2lExIrVamS+c7q+asXdJ1pdl2
+ 1X0kSw1FOEdPQI/obnIvW1WVZJsWlAMtC3SyfA526L1kdBXP241tfsR5N7B2uuz87yZGgwPpUpd
+ dE+PwLyiJkXRbdzGAO40uSAY=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id bae7ce2de6921a50;
+	Mon, 09 Nov 2026 05:48:29 +0000
+X-Mizu-Trace-ID: bae7ce2de6921a50
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: songmuchun@bytedance.com
+Cc: david@kernel.org,
+	maddy@linux.ibm.com,
+	rppt@kernel.org,
+	akpm@linux-foundation.org,
+	lance.yang@linux.dev,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	ritesh.list@gmail.com,
+	sshegde@linux.ibm.com,
+	osalvador@suse.de,
+	qi.zheng@linux.dev,
+	muchun.song@linux.dev,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	x86@kernel.org,
+	loongarch@lists.linux.dev,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH v3 4/5] mm/sparse-vmemmap: drop vmemmap_can_optimize()
+Date: Mon,  9 Nov 2026 13:48:23 +0800
+Message-ID: <20261109054823.45056-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261107043122.25650-5-songmuchun@bytedance.com>
+References: <20261107043122.25650-5-songmuchun@bytedance.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 26D5F140005
+X-Stat-Signature: zhuxoz3mqznfi3i8qj5r41srsubio91y
 X-Rspam-User: 
-X-HE-Tag: 1794202869-943891
-X-HE-Meta: U2FsdGVkX18Sv7N6O5vrAlFMREll869PtqNXV+qtLQ9I8xLpGetWrGsJweAe1JykbNr30iQSoKt5bH7CjcngZB0l+StOoFkoCkbhSbtsCZL8l+KvcOfZ3lsS2Azbp0nxmzHWoZ4UgyJe4z/i8ZUKwXI4G6hXEX9wo4/R0HjNp+UCuuGwXbKrgSzR/rA8WXoOKuVNgrbE5g4QZgExOQ08vWpxgFJi0G29IEOuHwMOEKVBNf4QevPaUOeQjr1ZQtAX2iaiMWkkqooogN4UAP120vxtxy8EtzIEYsiOOfBcDsU+o3AKUq9Y/ndmZ304eoHWpewFsqCguQ5LSJwCOquMJEEovbhwJwKRnrQN+gUWHgyIn9iKrjn7gug1+cdxBxe/NUo9VF/Rdxiq50j3eOp+88+MzxoapjxWNytYbfNe/YoXxZn1CcGBjO4P1afKNtZnvgC3BDuU4SCD5k2aJ4QxfViEgcnALm+vbtjvLeK8QU7Q6/dHH2AKwZQnfesopjW2yybLWqfn6cnWlSOsL+OBeH2TnCawjDQa/p5+l22VL5e/ZVQ3etBqpxH5XGx554cLgihgW8BHWSHwelWFkzeHt+gEolzqek9tmzFpA38ta+vk3/JziYW2rGwdm+O/mtUyqdVRLxM11qAvg5FbYO9Om/hpRgsUYTdbtVRQxu+NH+Wy1+w7FlI09RgZjEvywtsmvFHoPhcpJpDhS5mrJmqagWLunD9DihxgdNReOKm6Jh85DfhwcYWUOEd7CNbGro9Lq9aitvE6qTADuTpobSKqlFyeEzf0M2KR9b3zmAyoNaIelW4Ozgd2sYOIKT0VU64bwzDGrGGS8Xj2W1+SfxecRZvoRCPCRG9Ao4q32gBRdJ/SfXjd61/rJWJ/EdLvdgaDdsZ006S2Ny+VOnT4bGbln+1OD35g6C3XF8ITBfcfIhRHY+d9HDmK8KS9fUuZ7hU1YZyqCrfZcmf5KvJ9EXR
- ZaPF8tCK
- p/P5+CCbixqOn8ZeBDP1uBA3CZMkLtaD8DDiRQOMqcfxvS5XpIjIuPpsKK7a1Xn88+SC78k9QWZ/cfbWFjfkfTepjAo0IGj4HmDa7a5cQc7aCLTjqJQzNeJq9wFzdH/R/v9i4au0VkCItatBidQBwZpGQl7qYAHzToOGR6QBaGf/PSM11AndPZ/V5UitN6hiBYeD5KR6ehQ+8b6ORKn/9bkVURDiHTamh5FocbgyO61PwSh4LcYz8M64OTisel5gTLjtZvPh6l1M7UxRmnhEyhcgiBgJTNRMVVR9VIWrM9pMgHbp30orD41H4nBTUWz2OkEJZ4qagPhPlqaHN4CbLSJd3bTsc21LjKSPz3LlFe3lf/Y3ZDzhU6rYO8U7ZbmTr4umTFW3w5E/tjLmLpvCF8zwpHnoJkUQgZVzFrB6l8vsI5GwYQFILQGqlEhNi84mcttlEbeNLfVBbba+DKRpV/aNI00eta5tRr40rWDC46husKfeZuQFIqiYZaRS6q2AckzgRKIFvkvuzrVJxmbnKxL7IGVhzN9BfTZ8/+rILoIO/kAn2+F9ApMyu9Lx+87nKwFMs
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794203310-79054
+X-HE-Meta: U2FsdGVkX1/EavlbxUnyPzESo7ARtKg3i1KsnyUc6p8DWsTpmwYviLuxyw6sRzF5fGvXdGWWAJwxkJKych+BOyVrNFFniGcB9jiRaXd/pNDFlo14Ambf4vFlGBYY1ONdDbU/JhMyyJYwkXwZtmfecJT0kmvnYDUxXoUJdTlHdM/BC8skT4lsBRU4XLFLC7mKDeoWEmDf1+SPvrzzllutyuiqP1RUgAjd22O5f2XerU3Cb2QJSKObwr3bvWPgidAw9LIqqA2TskU/42mGOdZH7fsT0NC0UPyCMDjdUmizlcwSyC3UEpxmvgqPQau6yaUvUprjkDvZAfaGZqpuk5bIndQwUSHxMEoCuz4fk0N/rWJ2qkxFRtdSZDjWrTugOYPRgCpnvMk9W4uwfdbWVVy+v1z3Jsy03WxfEnHCLUqZBQLY9Fqag6El6yUGO8+ZUsQ7IQitdB6OScCC+pjx5QR1aiNaKI/dyvoJcoghslv993kE1/NXPC/PcPduK4eYJ762s9DBdCWu7Y2bM5DC1r2U162ba2Nwk9rlZdSzRbYUuGPhbAsyjPfm3NjIb9q1mjhv+80JVV3DEgA8UzE21C77w2nZZNbswlmetoAwQ9yoIG1a5ae6W3Uai3MPSqvYEIX2fzQNIO/pvAiVvuZSBwhXoNO14A4byNiML4i5X17ofhYwo94GtqWz7gzMPosKrNQD8ARTqwX79DZFwymK2ZB+6YKM1YRVBDKnmR0gLzFl/ajPUVeDCBAP41qYlRiLgsCBp9zCKe6f88ee7HTp5v6wVUnf0X+yhKCVWEU28XA7/STINp7l9h/iZ6kjD8AJx/pNZqsIa52rYpfJp1rrma+NE7lJGrWdojdq802SplLAhFhyCuEg2mDp9wGWndd0kft+zbchxu/CZQFU9TXNsj/EBq4n6i0hZOalP88zV04yND6v18mTBeQ4F+Nya8KtV0aOxC0gmrkBrgYYJaZS8z0
+ eq4AZRSU
+ B8Zyr0Flk85ie3Jysp0/PvfVtcKoD/a2bpBrmd0eUmYmIpHsDCWKnA3edHwTudI4VJjxASycAToYivXGeW8ydreNprRcoc1LyygAQeK+73R516H8ifAHLsWckwtrA22XU7N1Sr7ChtK/JxdN6HOQ6/eooYoHf73zLNzI2FXlyF4VAR11/WHCAntrUxTjo7buyXAl92R04LvQ9QGbnYCaXjaCm06q3I4DJAuqM3H9lKYuzAfYjTmpbIqwUiDc4bUZV94t6lAkMbTCQqSvlZLZm39pgU+pkfVdD5MZaXn767s/PY/gbZwz4CetGYkMW9y6pgZdoaxGMqSoPn7v2aAa/341/Hc31FQS8gehRg2xW3oGmk9hkgDz3OPExJjj769Xbfcq9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,73 +113,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found no new issues
-in this patch, but noticed 1 related pre-existing issue it does not
-introduce:
-- [High] cgroup: zombie leader skipped in cgroup_migrate_add_task()
-  breaks PROCS iter [1]
---
 
-commit c9380747740bff9194e7da450313ada190919d85
-Author: Chris Down <chris@chrisdown.name>
+On Sat, Nov 07, 2026 at 12:31:21PM +0800, Muchun Song wrote:
+>section_vmemmap_optimizable() can already decide whether a section uses
+>vmemmap optimization based on the section compound order. The DAX-specific
+>vmemmap_can_optimize() helper duplicates that policy, so remove it to
+>simplify the code.
+>
+>Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>---
 
-mm: memcontrol: don't lose track of exiting OOM victims
+With the arch fallbacks handled by the previous patches, we can just drop
+vmemmap_can_optimize() now ;)
 
-This commit passes CSS_TASK_ITER_WITH_DEAD to css_task_iter_start() in
-mem_cgroup_scan_tasks() so that exiting OOM victims remain visible to the
-OOM evaluator until their mm is torn down.
+Nothing jumped out at me, so:
 
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 84f4a8fd4d16f..cb7cfae9ce5a6 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -1451,7 +1451,13 @@ void mem_cgroup_scan_tasks(struct mem_cgroup *memc=
-g,
->  		struct css_task_iter it;
->  		struct task_struct *task;
-> =20
-> -		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS, &it);
-> +		/*
-> +		 * An OOM victim can start exiting well before its mm is
-> +		 * torn down. Keep it visible so oom_evaluate_task() can
-> +		 * back off while there's still memory to free.
-> +		 */
-> +		css_task_iter_start(&iter->css, CSS_TASK_ITER_PROCS |
-> +				    CSS_TASK_ITER_WITH_DEAD, &it);
-
-[Severity: High]
-This problem wasn't introduced by this patch, but can a CSS_TASK_ITER_PROCS
-scan in mem_cgroup_scan_tasks() [1] miss a migrated multithreaded
-process whose thread group leader has already exited?
-
-When a thread group leader exits while sibling threads remain alive,
-exit_notify() sets PF_EXITING on the leader and moves it to its css_set's
-dying_tasks list while task->signal->live stays non-zero.  If the process is
-then migrated via __cgroup_procs_write(), cgroup_migrate_add_task() skips
-the zombie leader:
-
-kernel/cgroup/cgroup.c:cgroup_migrate_add_task() {
-	/* @task either already exited or can't exit until the end */
-	if (task->flags & PF_EXITING)
-		return;
-    ...
-	list_move_tail(&task->cg_list, &cset->mg_tasks);
-}
-
-Only the live non-leader threads move to the destination css_set, while the
-zombie leader stays on the source css_set's dying_tasks list.  Because
-css_task_iter_advance() under CSS_TASK_ITER_PROCS skips non-leader threads
-and yields dying leaders while task->signal->live is non-zero,
-CSS_TASK_ITER_PROCS iterators on the destination cgroup (including
-mem_cgroup_scan_tasks() and __cgroup_kill()) skip the migrated process
-entirely, while iterators on the source cgroup continue to see and act on i=
-t.
-
-[1] https://sashiko.dev/#/bug/linux-5cd0ee80-1266-4ed8-90b6-cb34245e0333
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/avALaDR1_epaAfOp@ch=
-risdown.name?part=3D1
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
