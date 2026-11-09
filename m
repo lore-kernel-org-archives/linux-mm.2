@@ -1,93 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD28606A322
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 06:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B32D606A31C
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 06:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=TlkAUAYv
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=YdOHLkm1
 Received: by kanga.kvack.org (Postfix)
-	id 9CF876B05B7; Mon,  9 Nov 2026 01:15:54 -0500 (EST)
+	id 58ADD6B05B1; Mon,  9 Nov 2026 01:16:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A7736B05B8; Mon,  9 Nov 2026 01:15:54 -0500 (EST)
+	id 53B606B05B9; Mon,  9 Nov 2026 01:16:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8E3836B05B9; Mon,  9 Nov 2026 01:15:54 -0500 (EST)
+	id 4543E6B05BA; Mon,  9 Nov 2026 01:16:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6836A6B05B7
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:15:54 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 654DA405D5
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:15:53 +0000 (UTC)
-X-FDA: 85414569786.10.9D80AC6
-Received: from mta1.migadu.com (out-132.mta1.migadu.com [95.215.58.132])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 53B22C0002
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:15:51 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TlkAUAYv;
-	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.132 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 26E3A6B05B1
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:16:47 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 81E281A05E5
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:16:45 +0000 (UTC)
+X-FDA: 85414571970.15.AE55A82
+Received: from mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 7F6CF160002
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:16:43 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YdOHLkm1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794204951;
+	s=arc-20220608; t=1794205003;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6cnuEJnvW6lfgAkxwp5j4btXtUzOXabWpPgzUeOVG40=;
-	b=Aa5BF7tdMe/pC3DdLk8rL3KwVG7y8G++LyR7Oiy3Nc5LBkbo1Cm7VbYy5+RyVoHl1e1bJ5
-	YaJAxW5xQnInGnxAF/pbyaqnD2Lwd5hsGbAWTch2ejgJ4+ON6X0yq73HbRY5nNCjbVhONZ
-	NF4r8le++D99drRyRo9OxAOtLu8R9yY=
+	bh=rLoo3d8wA/2dmWzlOHmZSdy7DBfGYigRliA9FCVCD2U=;
+	b=jgT/P2EXAImiAXFNrQuXr2iX81TKmnTVFFSwj6w9S++uOiZMcKO9AQPLfyvBi5YgE1OTAL
+	PHwlznFQKOZ5JuO87pRUDhaOVH4x0IKwWvzpjKOMosCmFs3CNhM/N0pD4t6MSQ3CjPbEQd
+	/qo8ZdwFa/+/cC9SpM3vB3tRcE649F0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=TlkAUAYv;
-	spf=pass (imf10.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.132 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=YdOHLkm1;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf08.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.175 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794204951;
-	b=uSZsnJSCf1CFNE0Yx5vZUA2mPpBoxS8vww27vPIJ+EvHNHY16hSgr6I1tLzVedPPVtELHG
-	hVcL/XOM37TR27lQyfUWqFUX/ftHb8kW7mcNvBq2UoIMgzKnCr1d0pq6Sh2IfTBofsUmk4
-	Td3nSVXoWMPlPLyDNqr1bvaZz/x8UZk=
+	t=1794205003;
+	b=SCif4CF/+v+hgaWmyxNGjYYY8qHYOdueH2JcLKZXtG/fPY61xadSzYfjWD0MVBi1tfN8Sx
+	EK2EuIQzT5PsJurd5mWICTPyckoEKdqrpqNqqNz6O6zMkUMzKZ5sngplnOnkpcnSlHBMI4
+	UptiPxp72IZ9JuKG8iYUSY0X/SJCYiI=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=euyNRM4nzOyoMOPvqz19w86AtMhDDtspYlJVh4lVawE=;
+DKIM-Signature: a=rsa-sha256; bh=rLoo3d8wA/2dmWzlOHmZSdy7DBfGYigRliA9FCVCD2U=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794204950; v=1; x=1794809750;
- b=TlkAUAYvdtdt++B68DPxUwN7wGxgseOvJ/3q4RMTzqJRH+LWnuIaHWf6QhhrDXso2jIHcWXr
- EqyDuaSYqOeb4FQM6BMVrqlQQtK/RpLMTkA9EgwsbcvkmolDa92PvIckOPcgDZg0lzLSTvMen15
- 6a/7fkm41fNoWOCqQOAOZAjY=
+ t=1794205000; v=1; x=1794809800;
+ b=YdOHLkm18ej0NUagkOx5fL3TEOgHMQ4gnUIWPRRwP2usH38o0YIcXOhwUKSi9HBHrLmHN3CF
+ VnYMJvdPfaRR5Gnc4oHs25xqt4OL2JddMSYjRcOZQnm+keRRQyCMa8U5/cjU5k8uVN1qEiWUb8p
+ luxB4nmOtrLFMWZo/OoPRgjQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id 1d173c1a73d69c8c;
-	Mon, 09 Nov 2026 06:15:49 +0000
-X-Mizu-Trace-ID: 1d173c1a73d69c8c
+Received: by smtp.migadu.com with ESMTPS id b7a98a3c4281100a;
+	Mon, 09 Nov 2026 06:16:40 +0000
+X-Mizu-Trace-ID: b7a98a3c4281100a
 X-Migadu-Flow: FLOW_OUT
-Date: Mon, 9 Nov 2026 14:15:38 +0800
-From: Baoquan He <baoquan.he@linux.dev>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org, david@kernel.org, chrisl@kernel.org,
-	kasong@tencent.com, nphamcs@gmail.com, baohua@kernel.org,
-	youngjun.park@lge.com, corbet@lwn.net, hannes@cmpxchg.org,
-	chengming.zhou@linux.dev, kunwu.chan@gmail.com,
-	klarasmodin@gmail.com, linux-kernel@vger.kernel.org,
-	Baoquan He <hebaoquan@kylinos.cn>
-Subject: Re: [PATCH v5 00/19] mm, swap: extendable swap devices (xswap phase
- I)
-Message-ID: <avFlClZec9mNayjd@fedora>
-References: <20261109055455.536925-1-baoquan.he@linux.dev>
+From: Lance Yang <lance.yang@linux.dev>
+To: songmuchun@bytedance.com
+Cc: david@kernel.org,
+	maddy@linux.ibm.com,
+	rppt@kernel.org,
+	akpm@linux-foundation.org,
+	lance.yang@linux.dev,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	ritesh.list@gmail.com,
+	sshegde@linux.ibm.com,
+	osalvador@suse.de,
+	qi.zheng@linux.dev,
+	muchun.song@linux.dev,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	x86@kernel.org,
+	loongarch@lists.linux.dev,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH v3 5/5] mm/sparse-vmemmap: drop @pgmap from vmemmap population APIs
+Date: Mon,  9 Nov 2026 14:16:30 +0800
+Message-ID: <20261109061630.47601-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261107043122.25650-6-songmuchun@bytedance.com>
+References: <20261107043122.25650-6-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109055455.536925-1-baoquan.he@linux.dev>
-X-Stat-Signature: qu43qiu6w5nd157g6ob9mup944gw66ak
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 53B22C0002
-X-HE-Tag: 1794204951-617928
-X-HE-Meta: U2FsdGVkX19jh/meAqzbb3aa8oofANB3iB2K524oOSCcJUOMUBSbynzHLFS65wvEQLeoCta2hBVpoModP0olClQXJ7Qg2dmttYBIgW7c6JXbGBMXnfKb9InHTekJcD5xQQ0mQWQQkTWJAdqDN6gitmxNB9RdGo6A2sM6njDXGQ35b1ncN5cN6qafJxdtRdgUdTL96DLTV2QLP6g0YmsMdpxKwHbT0a0dmynkeMNP86CZHESzNUGR1mBHev7MPRg36YtBuNn3URrMJrdxQzOfxEpoQyB+fHQmZTVzPtbQ8+tIqmldAsfkRli6GOQKSRTuBwpTkN256iIHD7fVFHXd2CNJkstsNVQPMmDIbXYtzv2mwYr7RS5xv8DeYz3gBHp4jouJsSlOXqLmUmMuzIJO3kRiAWDVuIeBR3oSnan5qJkg0jK+wTjq6FsiPd+j6ddxdyGjYtllxfQRzLmVAfgxhcSTgmSw0rMXcRAsZy5L3fuEG5aeP556cQo1Ol2GhXGdFQArnqf2fem6+ZUxiUc99j5yNoFiJr4PCdtIQSIsTRfUJX6HtRtUxEeJoaRhOONoxsYcfHEfLjQFKUniXEOikQwXV53HpQePdtWfX9QV00p3lEP5Da2xy7k+e4XvFQxJRP7nO/yZVE8RPPTp/sCAuwRY3MNRDx7L2tNqwzG/njM6i23F58x6ENtKju7T5QNaYfdxfGespfZDwZ9BJGrv7H7fYMW0WXy18hgnIxd0QjIDCacWTrxuJtZE9JNhiiSUzSn9UPNTpmnJBSMBEo2dN+YL6X79NLTxfgPxmGjO9ff3pF4Lbb4Upqc/nqbFlVwT9VpMzEFr2Na2vlvNcyLrLvBOTaE+DakWjUEaRJ3pgvDMG2+355dJotw2Od7RUtGTfN+Ggz8pzYcnndS6+1ZFcHAEI8h1nq84+aUEnmIZCNNbI2i8cgL+IFIhbU9zSMlajNljNdS69/ql/Ogkk8m
- QbeikVYZ
- fZ+FCFTK7G779tlIOWfbf7e7d3lJeioO0O2yxPXWu88klTOKCawyCWfbyvwRwBR7UsEGeT7vlVv8d7BrkSLbZ49LU8k0klYbS84l2qXhhfm466HpXBSZTstfGBOQnOYIKfzVyJxvupqmkABJWKppLQeeU55DL9xHP7NYwAJifsrm7RBKA+1PmzrbQllXxsPCgtV7eTXZ+75/bxWO+JyMuLLeQUzFecnhFr+CJijMY/zr6szZRw4wa9vJ1exWbwaOWJBLxXQUkJxVgBNvRpeHIvfMLpI6gUz1Aui/muq0BBQJzCtgqjLlQhSUCkCIDy8YhrGrghxQDsTAEHplOlbUHPSeDyE1YP9wD6pPybqwXRJOUk42zIDRyIVu7gw==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 7F6CF160002
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: hsqetaghzo7feosx7gezc8r1mbtjgab9
+X-HE-Tag: 1794205003-963663
+X-HE-Meta: U2FsdGVkX1+A4cJbwOsOulXsn+VP6vkycbRS+kpc08h7aSab6VxHepCcZ6ziBHpx2zJEdzmNJnaoAuf+GxFYfo2LcYb5eabcJgYkp0BWw1AmB2h0ZexH/Q9b2krM6xBlzeMvlhnF5pat9E4fiGgOb7NT4LBxR1YjvIuY3ekIez47tJmEDkKIMim7Vuqg7Sr2xPhnYp43AOkuyKZIPQppnTVDQe0+HLFHof8n71lRWJsu3/uNBE4rJ1BerRzCNMFffwfOghK9stq2AZ+Giq7YCx1HWBsD05ajX/geHrKG2CIOsarVmL72tNGrV7h04zjthm7Yf/KKgv3+G3/wcKCgqcvPgFmMsdZrH9f8zjShmBSpP7RZNTNlQefsbhip1/7oCPqtP2N6p05yrpHUeNPmD0ntucm62Tk+yggg5cFll0+mGaGmPzGWLdsRSKMadlQ5J7aQWYhG9LGJfvYjgtRaPxcpGMYPHAOyEsnJvMnvN5Z1OQaeGpaLjEbZObb1yl3EYUGB3fJ6m3VzcS1BGrXb563aC/Nz1IK4bfd6JMzY+LXC9SdJwffdWl5bV5nsMjn4vIv1doF2Ny1WjDX0h/7ls7nLFTS9qN2MCp1zq2Rj8f2Tua3FjWO2OwBl64VDPV4fHtqqTtGTc/Z5qpneLskw3+F5xz1BBMTbXSYKzzMwTCOOefNBkeadUN5VJy1r6+QEQgFH/oGOojCvSrml5/inFBVxN3NeUBZHZ0sNSwZr2yxmOr8c1kjjfU+liGhfiieVVsxNs25N1WucmagB8hLJbTkkLuFT4zg2Znzfy5CQoMjhNhpptileGJIpVNuMhj8i+5A+GtRtrNDe9mxtSentgINKWch7zo/fsfXg8bWhgNQrX/JvOuJKlVz2GMpTQgFlfzOTtR8lVlnCEK+uXSij/k25s/KoXi1NViwMfx4N71MNJrO9+lP7/vLkJC98Lyb6qawdso2zfdLwQytu5rr
+ jKU7m5cF
+ IDZqvPVEOu/FwBS6Eplb4uX6KQukZfe6XMCCNnI9iqGQ2TGYf+/886jZmz4AWN1Vxw/rsGztT+68Q1+L0afUl3wGilyEc3D/op4bArDaEEZctF1T4KQlwhIF39g80qHtzu4q/0/Cd+JWiH+nyC185vCa9MnKidhkRhLEfTljjOXtxQnI0YC+1bi4D7yiGARisQjp0ulRvS/YQ/f62vEl8jfaUUlHKvdlX+K2qFpJJuTng6EUk1wwVjPTKDF0ea02ykIVSkrBq+UacEBtAO8ysvh8BOLlraZnYXRwf1v63qZP4jt2OCQmI/61ieQckhnY8MvvZtynP1dVj4p8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,97 +114,26 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/09/26 at 01:54pm, Baoquan He wrote:
 
-Forgot adding change history versions before v4, please refer to below
-v4 patchset cover letter if you want to check.
+On Sat, Nov 07, 2026 at 12:31:22PM +0800, Muchun Song wrote:
+>The vmemmap population and memory hotplug paths no longer need @pgmap
+>to decide whether a mapping can be optimized. That state is now carried
+>in mem_section, and the architecture-specific population code can make
+>the remaining decisions internally.
+>
+>Drop the @pgmap parameter from the vmemmap population helpers and the
+>related memory hotplug interfaces, and remove the remaining
+>dev_pagemap-specific coupling from those call chains.
+>
+>Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>---
 
-[PATCH v4 00/14] mm, swap: extendable swap devices (xswap phase I)
-https://lore.kernel.org/all/20261003003136.750633-1-hebaoquan@kylinos.cn/T/#u
+I had another another another look and couldn't spot a missed caller :D
 
-> Changelog
-> =========
-> v4 -> v5:
-> - Rebased onto the latest mm-new (2c5dafa7f289). 
-> 
-> - A device now has a stable id instead of exposing the swap type:
->   /proc/swaps shows xswap<id>, the debugfs file is named by the id and
->   prints the type as well, and destroy takes the id. The id is assigned
->   per boot and never reused, so a value read earlier cannot name a
->   different device.
-> 
-> - swapoff accepts the name: swapoff xswap<id> and swapoff -a tear the
->   device down, while a real file or directory keeps precedence. A name
->   that does not exist reports -ENOENT; the sysfs destroy keeps -ENODEV
->   for an id it does not know. The interfaces are now documented in
->   Documentation/ABI/testing/sysfs-kernel-mm-xswap and zswap.rst.
-> 
-> - CONFIG_XSWAP_DEFAULT_MAX sets the default size of a new device. It
->   takes a percentage of RAM, a size, or "max", and defaults to "200%";
->   xswap.max= still overrides it.
-> 
-> - The cluster_info accesses are RCU-safe: the allocation fast path bounds
->   a cached cluster against the mapped range, and the shrink drains the
->   per-cpu cache and waits an RCU grace period before unmapping.
-> 
-> - xswap_grow() now links the clusters it mapped even when swapoff has
->   already cleared SWP_WRITEOK, so a failed swapoff cannot leave them
->   mapped and on no list.
-> 
-> - swap_info_remove() skips the commit limit probe for xswap; real swap
->   devices keep it. See the overcommit note above.
-> 
-> - The cgroup zswap gate is checked again after the allocation when an
->   xswap device appeared after the initial lookup, so a slot is not kept
->   for a cgroup that cannot zswap.
-> 
-> - The patches are reorganized: the VM_SPARSE work is split into helpers
->   and the xswap use, the max/pages widening moves before the sysfs
->   interface, the shrink trigger now carries the workqueue deferral, and
->   the unmap helper is prepared for range shrinking in its own patch. The
->   series is now phase I of four, with the swap-table backend records as
->   a phase of their own.
-> 
-> Baoquan He (18):
->   mm, swap: refactor free_swap_cluster_info to take swap_info_struct
->   mm, swap: add VM_SPARSE cluster-array helpers for xswap
->   mm, swap: use a VM_SPARSE cluster array for xswap devices
->   mm, swap: widen swap_info_struct max/pages to unsigned long
->   mm, swap: add a sysfs interface to create xswap devices
->   mm, swap: refactor swapoff and add xswap_destroy
->   mm, swap: require zswap for xswap devices
->   mm, swap: use a stable id for xswap devices
->   mm, swap: let the command line set the xswap device size
->   mm, swap: add CONFIG_XSWAP_DEFAULT_MAX
->   mm, swap: let swapoff destroy xswap devices by name
->   mm, swap: add xswap grow trigger on cluster allocation
->   mm, swap: add debugfs counters for xswap
->   mm, swap: make xswap cluster_info accesses RCU-safe
->   mm, swap: prepare xswap_unmap_clusters for range shrinking
->   mm, swap: add xswap shrink trigger and defer it to a workqueue
->   mm, swap: do not give an xswap slot to a cgroup that cannot zswap
->   mm, swap: skip the overcommit probe when removing xswap
-> 
-> Chris Li (1):
->   mm: xswap support for zswap
-> 
->  .../ABI/testing/sysfs-kernel-mm-xswap         |   43 +
->  .../admin-guide/kernel-parameters.txt         |    8 +
->  Documentation/admin-guide/mm/zswap.rst        |    9 +
->  MAINTAINERS                                   |    1 +
->  include/linux/swap.h                          |   17 +-
->  mm/Kconfig                                    |   20 +
->  mm/page_io.c                                  |   19 +
->  mm/swap_state.c                               |    9 +
->  mm/swapfile.c                                 | 1569 +++++++++++++++--
->  mm/zswap.c                                    |   11 +-
->  10 files changed, 1593 insertions(+), 113 deletions(-)
->  create mode 100644 Documentation/ABI/testing/sysfs-kernel-mm-xswap
-> 
-> 
-> base-commit: 2c5dafa7f289d760f4492260b0988029aab478b0
-> -- 
-> 2.54.0
-> 
-> 
+Might as well stop passing pgmap around now that nothing down there uses
+it.
+
+LGTM1 Feel free to add:
+
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
