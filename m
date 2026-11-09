@@ -1,92 +1,130 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E769606A33A
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 09:52:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54F78606A335
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 09:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=iCtfqv/o
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=IFbGQTj4
 Received: by kanga.kvack.org (Postfix)
-	id 917186B05C4; Mon,  9 Nov 2026 04:52:48 -0500 (EST)
+	id 550DA6B05B9; Mon,  9 Nov 2026 04:58:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C86E6B05C5; Mon,  9 Nov 2026 04:52:48 -0500 (EST)
+	id 5014F6B05C6; Mon,  9 Nov 2026 04:58:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DECF6B05C6; Mon,  9 Nov 2026 04:52:48 -0500 (EST)
+	id 4174B6B05C7; Mon,  9 Nov 2026 04:58:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 60EBF6B05C4
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:52:48 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78D7BC0601
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:52:47 +0000 (UTC)
-X-FDA: 85415116374.12.8C7D16F
-Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D5950100002
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:52:44 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="iCtfqv/o";
-	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 131836B05B9
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:58:23 -0500 (EST)
+Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7AB64140616
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:58:22 +0000 (UTC)
+X-FDA: 85415130444.20.04E4265
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 995E940008
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:58:18 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=IFbGQTj4;
+	spf=pass (imf27.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794217965;
-	b=XhNTKui8PABjRXvCe+6vNrRmWQCUJpElxrsRzvoaxh5b8pMjyxUxW2mMmCn/hunEkA5XT6
-	NtiQWWXgJywwVG67OvMmEapsId1aWlIZFoRXLjccsSj83bjv72jsG46mYf5/uFrWEndATy
-	KiNXglGo3Dc+6xtUyi9NJ4fOZxDcV4E=
+	t=1794218300;
+	b=4EHQsH7NEA9JVcSCJ9e0mzJKrmh5neTsKCxS0C9O9NtNP3gJi/7Yy8EZY3F2Er9KU3G7GE
+	9RaDV8b/tp1yuBhDXseenbLEkqj/fJPLE/V0lZchAOGF/d2UbwOOEQoL3w0N4VXZvBJvl5
+	8MWvWoYepW/RSMXK5g/jKet6+1rxwPo=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="iCtfqv/o";
-	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	imf27.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=google header.b=IFbGQTj4;
+	spf=pass (imf27.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.43 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com;
 	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794217965;
+	s=arc-20220608; t=1794218300;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rMQ7EtDkYDjDl+za8vShzpqCW7ypnaRbeTrLqAXEDl0=;
-	b=1f90cf7vr4uZgyMj0odQQC69zO5DqWlqOPicmebGAWGR9PH06Rb0uQCdVGygFkeqoU9WPP
-	mHsLe0kfe9txr2LKYLiTGazYhzRfURMiPNAfyaTmnABLDaa2oePl17+YqYUX/ChcWcDwaT
-	hT3s5jTrb/2qQx5w1AQ+alQvJ4Jwf2k=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1794217959; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=rMQ7EtDkYDjDl+za8vShzpqCW7ypnaRbeTrLqAXEDl0=;
- b=iCtfqv/oPnFwF/AXfhIcnlCd+GyTk0CNAvfoxYr/JjSc/dXsoUkqPdAa57dpSGvsRmBVWd
- cCGHUDA7vm8Nr35HsTmyhIE4fgLxVYJQU72/3NxPWkE4OiHaAn72r5J6/b1N43RLQe+DmX
- 4gQdDUmkqQ6YreZyzVVtYQMpe+vtqEu2dd+eH89MmJgeXvUfebp+kVsbpKgtNrJpwUCie9
- EN7MhdNuHY0wxHdZZnbVypLKyGI0lLzqTr+1U0OS8kQ0zWXSmGUU9WeTKhcCmAwyCcAldp
- JEQIM5SWJ1HY1Em/PSK8yEf01AjT9DTooSHGFLCi7TQOW7zIXrm1gO1SGJYjDg==
-Message-Id: <ea9b76c1-ced7-4ef7-a428-7fb3db5c7f4c@bytedance.com>
-Content-Transfer-Encoding: quoted-printable
-Cc: "Balbir Singh" <balbirs@nvidia.com>, <muchun.song@linux.dev>, 
-	<osalvador@suse.de>, <david@kernel.org>, <akpm@linux-foundation.org>, 
-	<apopple@nvidia.com>, <linux-mm@kvack.org>, 
-	<linux-kernel@vger.kernel.org>
-Date: Mon, 9 Nov 2026 17:52:19 +0800
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-In-Reply-To: <avGVNISvj-v8IN3g@kernel.org>
-To: "Mike Rapoport" <rppt@kernel.org>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-User-Agent: Mozilla Thunderbird
-References: <20261105120615.16817-1-lizhe.67@bytedance.com> <20261105120615.16817-3-lizhe.67@bytedance.com> <au2qhlsxQt3SRwIu@parvat> <ca38db3a-a8fe-47c3-8813-5c3b0ac4b7ac@bytedance.com> <3e5a9f27-ea35-4557-95d1-70ce359e4c92@bytedance.com> <avGVNISvj-v8IN3g@kernel.org>
-X-Lms-Return-Path: <lba+26af197e5+98ed77+kvack.org+lizhe.67@bytedance.com>
-Subject: Re: [PATCH 2/2] mm/hugetlb: optimize bootmem hugepage tail vmemmap init
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=Kh6WS4JV09X5bkn+ckuHPEH2lqGAS0Kwa0bbH5KEGyg=;
+	b=OvI4swrCFPT9mUiTugTcoSX2Ffs7FyBlwAI8NoXLUJ6bG5tmdaqO31D0Eq9QKET0bpkI12
+	5n+30Q+t5b65nPGas57RbXkk1cRR1pA7D2G/ORxEoRV/G+xHN/BLwWjR6Ni/Yx2VPIoPoD
+	TPgWtm4yIQin3TlfEFY44olja7Kqht4=
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-15ea896ddc8so1283885c88.0
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 01:58:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1794218297; x=1794823097; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=Kh6WS4JV09X5bkn+ckuHPEH2lqGAS0Kwa0bbH5KEGyg=;
+        b=IFbGQTj4jV7aGAY1w0fPaVw+S9gxMWLOIe+xHO8727mRSb7hWQD7pYDhHqnBnushsU
+         Oo8iLljQogUJAM4u751MLz9jCeQS9uS1Wt6wiv19mw1TnWj8vNTx67M5kxm/OueCNQxi
+         H9I7dU7XyPu1nSHuZMZbnsRyCzZC7HFOcdL1rCN0e5PIuQeR1+FO6VgOwNl4F6dFbOI0
+         qcPTFUn5G6wLaLAkta3jP6HSgm2AVsetfqs9CZm1Lwd0OL1ZDJv2ao2CvI4fdZLlQ8EE
+         kMlOpKrKLTLGaurLj79xYtBrPaMnohz3tJ8xcWc3jn0y4TefucEletd0jr9B9A8oJmdD
+         ZcQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794218297; x=1794823097;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=Kh6WS4JV09X5bkn+ckuHPEH2lqGAS0Kwa0bbH5KEGyg=;
+        b=269lv+nFYasMwNlBvQS+VHqRjWhFRI2d/gr7E5LwaGQSeozn+2mKLpoiULcG3Vv2gN
+         SKxy1cqYcWhQk5pseEScLVyaZbuwxaoxr9QGa+hcShOasZS2XX4FtOFa2VRLkcDfpOSQ
+         ZgK44oAS03EK4Six8pVd3v6iKxKLaeRu9LXLG/jWG+0MQgaE0FIwl3cA3Fvw/drGoy/n
+         HcarjuZ2I88s/iu7y9GNeqN5fizwjzEAcrv1ximJlwMgS/aaVFbbHAypCqMmuq0wMo8p
+         9N6tT7+qDzAmcKDdL0jpZy8Vo7TnGuMrE2lYRAFDiMam+B6/5ODiwjEGTHoJgAtBgqgB
+         wJ5Q==
+X-Forwarded-Encrypted: i=1; AL+hErGZQ189bTskVOspG6oE+EgBixawH5znpTU7rqWU7J5FMGj5th8wLNhovvEmxS+tA3LwpUGe8YK2cA==@kvack.org
+X-Gm-Message-State: APuU4Z+cR/cZsT+eYIc1BVr/1szv5Aq5dHsrXxS6vytJ/8pn9ciSESy0
+	X5YWcbPTeLJvI6eCMGAmDNPUAjHdvaZ2S76JDnWUnSk91QpLHxUqLpu9l871/gNhcm8=
+X-Gm-Gg: AYBFou2esGNLG1Qxv47Bl+3U9o5qxRsFSDTPP8IbSb/XhCnh4LJOzazY+We+z+0qVGn
+	DNIN73rguyK81GJVJxi3xtfTmwL7AJohIMgo9YPoXtuwMDhV00pQjY9okhBS2QVmkNfXsZ2Na8y
+	AkcDiEmXKF/l4JHwIAFiAEPyiTprZqD9yfW+5fXO9jSf4kxaQBPaTDdPadAYVcRWOoMIXrgGQLF
+	4JonfClPqnd+lIVScp8R/CF8Gpqxt7g1xyRbGeycOpcoxBcTdXVD+LC24czt54tEEP3RSkkLt9h
+	ldQEJHF4v30gqNx6hAWmTNV/m97Y0tpek/QJR7IZSiMk7iM94DkzSw5HbpGIJAjZWh/YxfIaYPw
+	s6tDcy49YsXCwPJWawSFpfipdOAnzFdiXfgUbO7CiMg+mSaCkXPoHBjvpuloJ0TeaQukdOQmuGw
+	gcRcTd+RBcI4zHAMpyz5KU/K8UO3WrjRYL6vyBRzVEVp3XcZD5QsXEf+NrAPVoeyLZYF3deumLZ
+	6ERfA1Ks9dkYvZAVOOgYAzh1IBRpu5IBjy5sLZGMzbA3RCCcJgA5VHBsjxxBPTTTxdT9yZmC0bg
+	3pUiizQFYbd1hF7/fiyJLXZiPic+xfV5NAWTE0PQa3nZIU4nzQ1UDjqt2SR9/hRedC5foBAWv5f
+	n/Hm5bPE=
+X-Received: by 2002:a05:7023:884:b0:196:bf5f:8bb with SMTP id a92af1059eb24-1b39fecb7a4mr5891979c88.45.1794218296778;
+        Mon, 09 Nov 2026 01:58:16 -0800 (PST)
+Received: from G6L4RL2QG9.bytedance.net ([61.213.176.10])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3755e8911sm12841684c88.5.2026.11.09.01.58.12
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Mon, 09 Nov 2026 01:58:16 -0800 (PST)
+From: Muchun Song <songmuchun@bytedance.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Oscar Salvador <osalvador@suse.de>,
+	Mike Rapoport <rppt@kernel.org>
+Cc: Lorenzo Stoakes <ljs@kernel.org>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	James Houghton <jthoughton@google.com>,
+	Lance Yang <lance.yang@linux.dev>,
+	Qi Zheng <qi.zheng@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>
+Subject: [PATCH 00/11] mm: Unify memmap initialization for compound pages
+Date: Mon,  9 Nov 2026 17:57:55 +0800
+Message-ID: <20261109095807.41547-1-songmuchun@bytedance.com>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D5950100002
-X-Stat-Signature: g65o8j1p5gbyx6wt8x18g8x9mf77yd8p
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: mazuqpdyegcx1my34mgab6uegzr8u4o8
+X-Rspamd-Queue-Id: 995E940008
 X-Rspam-User: 
-X-HE-Tag: 1794217964-632426
-X-HE-Meta: U2FsdGVkX18qCEAWVYcN4nw7d0ygrFwlGmLZRmqZ2t/TcvBacTS+d0LrJtDMEDeENuUXf14Bvh6M6YcWEKSCHLqIRVH+q6Iy0C7kfPz26cr3CTTTex1LDbFQf2KvdjTuf3BZbuWmH4gHUa0xDF7ob/PAR10LeHPdVPDV4d/g5wt/sDRouYycP0YWYQkY25zVO+HzR+34YITkIGQDrsfBFtAl4l7uOevx5+ZuuSnynpRdJ9Pxu4B6a/EZRO1obG0rKWjkC+0f5q+YeliAJV+q1RY+J/ilytJrmIDgpmaP8jCmXgxpzTLoivvcatZdMnc6RwVi+BnCslMFUIkgAPUMwfU8ONiPx1LsSeYvas9KiBPhiU04IAlPq9lQpVGEk8a39ck70oHY0UL9IqcTi/7Tq8VJWO3X+ScLHI3O6TITWImO1LYNyCmM4Wz6aO21QqoX6wvp1TrYykklt2cQU5zhgz9bP9E1DFtfDwGbJIcs+Rm8fkmRky21dUhyL91CQMDSTNuKbcyxNNiwpz+JCnsr0VA1P4iOAFg+c8h5+FfVXLLjMoWMIq4JaPe0iTQ8BuvHAcazoaejtxgsZ9YNqKkKFAH/4OKoVDrV8mxwRtC3gz+4f58LkA96Dt7AHLwgWBdnhmZz3zY27iwFciXIl4VUQAg6AGr+VbOdeXG4Hak+0KoQiONZw8CvIHDEkDcbklBjwrQ6nMsweogXTuKE8PaJSyQ8PJUvG2rtc5bRfsEOiOa6XbdfI64RHwLCzI7SGG8y+Pn44VWYlbyzpyvmIzjUpz0nP6oI7XnlbDp/wEEssa8KS57n9kRDgnMluuKQ8vbcFktPf6bnOvQiZTqyC0dIuapDJApNN3FFYbvzNUmOOW4kA6Y62+dNDrQFAXGDNyy1oMwCjgJMLUFNH664nr3Xj4wTkCFsCVGMXmSSX97jHETFOhnii6h+E+hF4fFbKKaMiDSINBrajNLfn5gMS4d
- HpOxow0M
- 6xokKo7X5zAy6zeH5cGnVx+r35b4vsmDVAA95rNz4xzOg5KP85nNVF89vYs9bKXOvsDhY2/L7GgLBo9j8/kza0XCSoxAXEIr/r4FfnyvpKQ5ie8TIsePmqogpQe7XDH/Ki7dRSTaOEFwoqAUvrMCtDO5K6UdZraz9R62DQtg/+YzG8ahZaSAd3iDgr+pvOz87h8vMJuOjOBeJ/2FUKx5XA95cR860R74KlxaY2Kn4Rp4eqkpi6+ZvDx6jxl89ktJuAlKpphbYXSQDxwD/cSnYcxuY67eQ0l/CDfhlpFxXV721Tks=
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794218298-164154
+X-HE-Meta: U2FsdGVkX19zxo384mIJ66lc/2KOpxsB6x8olDRKA+5ZJztcXqDRTU/GW5hbIzEM6Yuq5+obNPPoHGtJvndBmcgDVNBkScW1slMOCxtxrq8WChnyh9+ApLKnn1wIS1XDqY6ZdlZ9qwPFDHFoghSGqfjrA2goW/+yhmNztC/soZroognHIlbjsj+M9mcgF/604FG9G3AhhjqSj1grQ70MhQ0EshooXVAvj90S6vlLK8pqwE8V0JcE+DgZ/cLab1xjL2UZ0QVdrYw2Gqb5yFN2dffFsel4QTsxjz3ANA0z+50e/6qSZzL093h00lyaGAv0abJu6Da/iTqFm8Zd8abisQ6GuQtfg6byhREedsoCvDoWB9ToJ3+AL8zN6L+E5ICGq9D8jxgKt6MZhixMo+a1c9sdeKcgghr+Viqwqlu6HCQQslboSH2wC0+fOyWjzzvZYUsfmJ8UhaBJSm7VkHn3brYH1mz188Gh1pMfc5QyS3A31PVwisETLkDxOneYUNV552YG/QuoFTEH1i31zP7jzoy/g7n9UCp/4H+5+dXVfeSMiEju02I87Kyx8KAkWqLt3YSaKwZUKEkMjo/G3NpNJT85fgJksP7GmMhT9TEqG0MHVTsSAL9OrzJp5WnA2IUr329v0gjBtRmzPqb4QeUJFdsh81MOqVgoaITjXxiC2E5IuaIVKMv0+3tC67y49uNacCcFY05g9cEEMAQTtIUu8U9AaxQ1+tNro7YC261dvPtFNAYPgxBYEj42oUnXmguFAtmBtiSYX67YLflxU/4a5G+HrQFtob/1gHQvu/uHg7r2mMlGc74RnJ2v2niE5DYISs4+PTjl3xT8ddgelsk3qgNtiB2WDRxBlFnCmh3EixBWbN2VVHr4+9s0m1fC4p7451T7hABRr/WCVpPi0ImbmvuDwBLm3zCQxRidy/dM0lf222Bt8PKpjafg/8p9YNLkgzR3oFlRCfJ2610X6xx
+ 8EDa5SWh
+ X7Xb/F3f4JHy9eCQ9Q9Pgae2NIkRtk4QnYtlRVtQ7EIwd7V46myCaZaF9E/bQHJYGQ9yIb8EClLwW1KvRE7bL1mxeWrxG/M/HswjYFCaAhmNHeYwgFC1U3ZEMgS991c7pokJTlavurX0b0b5SpYvV3LHT1eQeqzEqEVC6Z2p4CiRozeZLVlMm2RiuwU99h1SEUgYnb2NLm2RQrx4Qz5ZtSNf43epNNOxUhDEbP6b26yqpul7oSQ6hvEP/vX1IJEq0YWmhQ2iMPUbZ2qfdDqvvKw5jhXA9qn2+0iV+rv7WyvCVDHsAhL1LsW25C9PIrKg3UmITYsYzpxAG8TQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,107 +133,75 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/9/26 5:41 PM, Mike Rapoport wrote:
-> Hi,
->
-> On Mon, Nov 09, 2026 at 05:22:24PM +0800, Li Zhe wrote:
->> On 11/9/26 11:01 AM, Li Zhe wrote:
->>> On 11/6/26 6:23 PM, Balbir Singh wrote:
->>>> On Thu, Nov 05, 2026 at 08:06:15PM +0800, Li Zhe wrote:
->>>>> Boot-time HugeTLB allocation has to initialize tail struct pages itse=
-lf
->>>>> when HugeTLB vmemmap optimization (HVO) is unavailable or fails.=C2=
-=A0 For
->>>>> gigantic pages, this can cover a large number of tail pages. Most sta=
-te
->>>>> installed by __init_single_page() and prep_compound_tail() is identic=
-al
->>>>> for every tail page in the same huge page; only PFN-dependent fields
->>>>> need refreshing.
->>>>>
->>>>> Initialize the first tail page normally, copy it into a local templat=
-e,
->>>>> then initialize the remaining tails from that template with
->>>>> memmap_init_page_from_template().=C2=A0 This avoids repeatedly doing =
-the
->>>>> full
->>>>> __init_single_page() and prep_compound_tail() sequence for state
->>>>> that is
->>>>> identical across tail pages in the same huge page.
->>>>>
->>>>> On an arm64 QEMU/KVM guest using 4K pages and 64 boot-time 1G hugepag=
-es
->>>>> (HVO unavailable on arm64 in v7.4-rc1), the measured fallback tail
->>>>> initialization time improved by 36.43%, measured with a temporary
->>>>> jiffies-based printk modeled after the existing timing in
->>>>> memmap_init_zone_device():
->>>>>
->>>>>  =C2=A0=C2=A0 base:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 318.4 ms
->>>>>  =C2=A0=C2=A0 with this patch:=C2=A0 202.4 ms
->>>>>
->>>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
->>>>> ---
->>>>>  =C2=A0 mm/hugetlb.c | 23 ++++++++++++++++++-----
->>>>>  =C2=A0 1 file changed, 18 insertions(+), 5 deletions(-)
->>>>>
->>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>>> index da5d04edf7c1..987f16a5ea27 100644
->>>>> --- a/mm/hugetlb.c
->>>>> +++ b/mm/hugetlb.c
->>>>> @@ -3219,19 +3219,32 @@ static void __init
->>>>> hugetlb_folio_init_tail_vmemmap(struct folio *folio,
->>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum zone_type zone =3D folio_zonenum=
-(folio);
->>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int nid =3D folio_nid(folio);
->>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct page *page =3D folio_page(foli=
-o, start_page_number);
->>>>> +=C2=A0=C2=A0=C2=A0 struct page template;
->>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long head_pfn =3D folio_pfn(=
-folio);
->>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long pfn, end_pfn =3D head_p=
-fn + end_page_number;
->>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int order =3D huge_page_orde=
-r(h);
->>>>>  =C2=A0 +=C2=A0=C2=A0=C2=A0 if (start_page_number >=3D end_page_numbe=
-r)
->>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
->>>>> +
->>>> Can this actually happen?
->>>
->>> No, current callers always pass a non-empty range. I kept this to
->>> preserve the old for-loop no-op semantics for an empty range, but it is
->>> not needed here. I will remove it in v2.
->>
->> I need to correct this. A local Sashiko run pointed out that the bootmem
->> fallback caller can pass an empty range on SuperH.
->>
->> SuperH supports a 64M HugeTLB page size, and with 64K base pages
->> pages_per_huge_page(h) is 1024. HUGETLB_VMEMMAP_RESERVE_PAGES is
->> PAGE_SIZE / sizeof(struct page), which can also be 1024 or larger on a
->> 32-bit SuperH configuration.
-> If the only difference is unnecessary initialization of the template on S=
-uperH,
-> we don't care and you can drop that if.
+Hi,
+
+This series is based on the mm-new branch at commit b95f8bb86713.
+
+This series is split out from the earlier, larger series
+"mm: Generalize HVO for HugeTLB and device DAX" [1]. That series
+generalized vmemmap optimization across HugeTLB and device DAX. One
+remaining piece is the separate compound struct page initialization used
+by boot-time gigantic HugeTLB pages and compound ZONE_DEVICE ranges.
+
+The prerequisite changes already let both users derive their HVO layout
+from sparsemem section metadata and use the common sparse-vmemmap
+population path. Their post-population initialization still differs,
+however. memmap_init_zone_device() builds compound pages from reusable
+templates, whereas boot-time HugeTLB retains separate HVO fallback,
+compound-page, and pageblock migratetype handling.
+
+This series consolidates those paths in three stages.
+
+The first four patches make the generic memmap initialization code
+suitable for sharing. They add zone-consistency verification to template
+copies, factor the PFN-independent page state, simplify the ZONE_DEVICE
+template setup, and introduce a helper for initializing frozen compound
+pages.
+
+The next four patches simplify boot-time gigantic HugeTLB initialization.
+They make it rely solely on section-based HVO, mark the entire gigantic
+allocation as noinit so HugeTLB owns its memmap setup, and switch the
+retained struct pages to the common frozen compound-page helper. With the
+last external user gone, __init_single_page() becomes local to mm_init.c.
+
+The final three patches move initialization of early-reserved CMA
+pageblocks into cma_activate_area() and localize the CMA helper. This
+allows MIGRATE_MOVABLE initialization to move into the shared memmap
+helpers. CMA later overrides those pageblocks to MIGRATE_CMA during
+activation, while non-CMA HugeTLB and ZONE_DEVICE users retain the
+default migratetype.
+
+After this series, boot-time HugeTLB and compound ZONE_DEVICE ranges,
+including device DAX, use the same helpers for frozen compound-page and
+pageblock initialization.
+
+[1] https://lore.kernel.org/20260513130542.35604-1-songmuchun@bytedance.com/
+
+Muchun Song (11):
+  mm/mm_init: verify zones for template-initialized pages
+  mm/mm_init: factor out common struct page initialization
+  mm/mm_init: simplify zone device page initialization
+  mm/mm_init: factor out frozen compound page initialization
+  mm/hugetlb: drop boot-time HVO handling for gigantic folios
+  mm/hugetlb: initialize all struct pages for bootmem hugepages
+  mm/hugetlb: use common compound page initialization helper
+  mm/mm_init: make __init_single_page() static
+  mm/cma: centralize CMA pageblock initialization
+  mm/cma: localize init_cma_pageblock() to cma.c
+  mm/mm_init: move pageblock migratetype init to memmap helpers
+
+ include/linux/mm.h   |   8 --
+ mm/cma.c             |  24 +++--
+ mm/hugetlb.c         | 111 ++-------------------
+ mm/hugetlb_vmemmap.c |  17 +---
+ mm/mm_init.c         | 232 ++++++++++++++++---------------------------
+ mm/mm_init.h         |  14 +--
+ mm/sparse-vmemmap.c  |   7 +-
+ 7 files changed, 120 insertions(+), 293 deletions(-)
 
 
-It is not only initializing the local template. The code first
-initializes one page with __init_single_page(), prep_compound_tail(),
-and set_page_count(), and then copies that page into the template.
+base-commit: b95f8bb86713c860ce8536d22a988b949b884d5f
+-- 
+2.54.0
 
-So if start_page_number =3D=3D end_page_number =3D=3D pages_per_huge_page(h=
-),
-the old loop is a no-op, but without the check the new code would update
-folio_page(folio, start_page_number), which is outside the HugeTLB
-folio.
-
-Thanks,
-Zhe
-
->  =20
->> In that case the old for loop is a no-op. So I will keep the empty-range
->> check in v2, before creating the seed template.
->>
->> Thanks,
->> Zhe
 
