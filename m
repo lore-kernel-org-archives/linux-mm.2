@@ -1,91 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A7E606A321
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EA7C606A325
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lJYz2A0b
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=BPuMJIeq
 Received: by kanga.kvack.org (Postfix)
-	id A49916B05D6; Mon,  9 Nov 2026 13:56:29 -0500 (EST)
+	id 547596B05D2; Mon,  9 Nov 2026 13:58:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FACA6B05D7; Mon,  9 Nov 2026 13:56:29 -0500 (EST)
+	id 51C956B05D8; Mon,  9 Nov 2026 13:58:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 910E46B05DF; Mon,  9 Nov 2026 13:56:29 -0500 (EST)
+	id 45A266B05DA; Mon,  9 Nov 2026 13:58:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6B42B6B05D6
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:56:29 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC3071C4188
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:56:28 +0000 (UTC)
-X-FDA: 85416486456.30.347F841
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3CE4F40003
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:56:27 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lJYz2A0b;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CDCD76B05D2
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:58:58 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DB37C402BB
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:58:57 +0000 (UTC)
+X-FDA: 85416492714.21.BE39BC4
+Received: from mta1.migadu.com (out-152.mta1.migadu.com [95.215.58.152])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9EF501C0007
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:58:55 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BPuMJIeq;
+	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.152 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794250587;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794250736;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7IIG6gsWToOocYzMc8/wEygPBmXPfFlQcsTrLpdB5t8=;
-	b=tcWZs8gHV66hBdMQ/zrKOQv7O3t/v6D4WxoxDdMfZWeFdpptPzuBTRgWIMNQSLFJ83JlAw
-	8kSvXGO92ZwXyXg6dG/cB0dM58QDeJGxGDfRLAtc2DMm2xXmpN719U+gmUUHij6wF8uG7g
-	QyA2oLlc61bR5+xc+Y0hq0GbKqsV390=
+	bh=kScsvF5omIBGyCzx6Xt1u7IAsBNAtQ0U2ngEcowLFMQ=;
+	b=8TtlLG5J5C8Ex8cxtiLDKO7SDWpTY0YkQCCgzAhS0grEBx0GY6YQTsBD+RfDEUc6waoM2N
+	rS1YiRi417RR6WU6m6WebH3+nJXDWL94BBLPM+2V5BC5d+KXZp1m1eK96qHUqWaXIg1zSw
+	a3WAzxuACpfIQ0O+5XhOGCuvVUzYfh8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794250587;
-	b=YXibOIt9zF9fMqbGJU+KqsXHrfOLSH8QR8qygEPEPkfRq7HSfE6FYek0TkOFVxhiytdApf
-	AGfrRL8t+215gXfq2/z4PoY5Lwi3EvFrgZ8/Dygz1y1mTfrFLKD6LZ50wm0ZdThkymYUUV
-	sLD+rJ9GZ6EC0n16pgrhtYgl7QNNeHc=
+	t=1794250736;
+	b=c3AkonH/bUdiP8ae4cxFUoJXtOR7oFVoy6fA2TddDlq1P7pA7KwtrEaK2NOI5neKlkU8ft
+	1BdR2IjSxHtj/vbRC82Gs18ocs1PhgHNqGgEkA64KuhSo/W7WGHKVt0Hem2lsTKpZ3NeGy
+	alGJj6RIc+qFaHbSUhAB/qnw0X/1JJ8=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lJYz2A0b;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id ABCE541891;
-	Mon,  9 Nov 2026 18:56:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5281F0089F;
-	Mon,  9 Nov 2026 18:56:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794250585;
-	bh=7IIG6gsWToOocYzMc8/wEygPBmXPfFlQcsTrLpdB5t8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=lJYz2A0bPFvD255SXUbUBOlu51qDSwePKYo9MZK23qpyFOKd2/4kC59kwiP6JQ2WY
-	 jYC5Wq0L9db0MFa8yDrv3Sm6j9b7d6q/4w0pxI8dfHpZeJAmcT0hXSpIk6xG9lSJsC
-	 JWQqy2jAdVog8NDKn019bUPIJZCRLQlexEkhxKEJ/xrelawoXfLml8RUpEMakX0vJI
-	 jfhWoVzeDP94pvsi4JvVsU76JUhtohQ3TeqysfGZOiPwWfndrJqX33MTuWaKGJcMzo
-	 3s6L3UxE5yn+63CZRqw2BEsXtJ/5I1cP0dZrS4RXIC4XHdpyHDtqV4DmcntkGLtI8k
-	 KCbMfHVw8q0ww==
-Message-ID: <sashiko-outbox-205453@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] mm/filemap: let sequential faults restart mmap
- readahead
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Alireza Haddadi" <alireza.haddadi@it.uu.se>, =?utf-8?b?TWF0dGhldyBX?=
- =?utf-8?b?aWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Vishal Moola" <vishal.moola@gmail.com>, fujunjie <fujunjie1@qq.com>
-Cc: linux-mm@kvack.org, "Roman Gushchin" <roman.gushchin@linux.dev>
-In-Reply-To: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
-References: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 09 Nov 2026 18:56:24 +0000
-X-Stat-Signature: 3ews3h8ajeexta4qn57wiy4eetb3jfe8
-X-Rspamd-Queue-Id: 3CE4F40003
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BPuMJIeq;
+	spf=pass (imf21.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.152 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=5uFhdvDgxVAAgzuSFrp+bOOxogJv3XKqImRI03XYWSQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794250733; v=1; x=1794855533;
+ b=BPuMJIeqJI0F0ZsTQf9N6zhrjSoZXQ6AuCiqnXzcCbRNuzPNNq8GmwdKwxov4FcVS14JxzoZ
+ pT265pq9o/Mo+mhQgUCRKAQwiXc6f0SeUrOBMrrpXDyFxHwiK6d25wKcNUG/FZ5f06mWGsaTw41
+ /t2OpoR3568A+7iSQ74zE5FU=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 785622e6d21c5f4f;
+	Mon, 09 Nov 2026 18:58:53 +0000
+X-Mizu-Trace-ID: 785622e6d21c5f4f
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 9 Nov 2026 10:58:48 -0800
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Chris Down <chris@chrisdown.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Muchun Song <muchun.song@linux.dev>, Tejun Heo <tj@kernel.org>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Zhan Xusheng <zhanxusheng1024@gmail.com>, 
+	cgroups@vger.kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2] mm: memcontrol: Don't lose track of exiting OOM
+ victims
+Message-ID: <avIXz853VU6FSMX1@linux.dev>
+References: <avA1wXhTMs9eY2NF@chrisdown.name>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avA1wXhTMs9eY2NF@chrisdown.name>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 1fi1j3yoy557e4qrx9uxetx1rsb37k3y
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 9EF501C0007
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794250587-241497
-X-HE-Meta: U2FsdGVkX1/HAuiSUjtGkblmJtr6wjcWaCoQncjTbS3KiE7LvcKvknYd4X8K399DGflPdxfDMcuGgUN2Q7BoXe142S0AtTT01dFRb4ePG1gvfVI/4IJJELNdywDjPcbkUgSbQOochS4zBzoiaz1I2GzXbQP3TIW+HANA1NpLeCcQXnVOdZTssfQSZgAZ5flzLUBO/SR2l8oy7QypLmUOm6zEnXvcgdjEpsKAJk31Kt7c96CZ/m2kBYN4BARjgzZeHKYNRxVeqaeaTpgc5GIAok74TO6w8S+jv+n7XOilFjyvWXVQSUageCEfXo/hzM7Kia3xjpqZd8HZXRccGprkuI2J8L4dLPFHdxTUPHb/deM2F5jHBUqSjDJOXyf7XT+7wftaKLsdTWFkYE4xNrvrztWGNbIywlEQZRt/lUeYf1Wc9aa8CmeG9wOW/naRqeeqUPG0quN2ZK81PYySq0Y4KIO+iCHEX+CKEW74QSGxjPgtgE9kg/i1+X7Q7ZIxOql3Jgqc65PR62Oq+yrwIAZmLZpx0vHh7xhWqHIeSGyYV86riYw2uijFjfuL5FZ4o8wO/7m+62Z/SQJXBNzFoIjSUr0IiqDh9MVJKCgjbWKv8aM4qJBtRhofcjrbsz2Owe1GWGmTqU+R5JlZw0DUojejHorU1qgNKxrRWHBAmKaN/l+Rwp2PsIQjPOfGzNVcY/9nH9/5Xf3vO/jmgX0v4tzpC/tIJe9uNz8bpcDb0lCScGrlRzfgTzGfyxheDq5DoEnp4uMHsRY3fQ5SnWtKYTyPH3rG97s+jDXXM/5rE7CrqiYG5I+RyBZVmtTD3tzYSs2qpAKttZJzlc78svJMhDUL1crEjeqx/qZ678Jm48b57LFjmNnKHNHNuw1yPobMN7T5YdnaN2dVi23u9k3oqy6gJo7JnQiIma4TgcWNEtY+sFJXILat0bMNdQ8joaDDHkTGaKO6zR+xrgEAO98YdhM
- EW7GekWO
- MhHZWBw7OjF+PoQoOV0Pdc27w2kIdfoXpbbGyQp9LQaK8/wMrUt8uq63SsKe9Uq9qwUfU+k9cknjIl/pBb/PKul7V1cmHXMCfZDxiDdU9RYtxc7L+1u4L3Mz4StjQrsGYQeIORuAa07nuCGDoAPOzAb7FrKiARAkIa4f6K+9SHkTvahkAC6dAaEtVPYk2g2KM2fV0liObEqgG0GITP2CZCFV6smILVOKJrkayb5YMFho4KQV8bSIE0lBNtlkor2F+KBdqBwIgN6VahziKEGfyppWtICvH7LPdtJYNV2x2GkkFzWBVw/NH7j8MBEZ5J/CGlsQ2/38APwLNzRE4c15l9t7zd/vLYsqGtfjSbQehosWmE1z3CDKH4vGrfRvDeF1EYxzT9ZEfpP8RH71d9bo1YXrE8Dav+fB+jEvwFyUyIH8w103WhAvdA3Xdr6T+FBIPaBT+v5u8imvMo1RJvdQ+aHKY5dtswsGQr244LXgl5+PK+m3beZ+mbvcRnWcSOXT8bb3SNgrLssxlBGzPu4vt4UPTKhz3rEbCpt7VJXazVBDW48j6tHB0jnglz4XTrRcT5c4jwvocwGVFp0oRFMCPpJS84SnfklywRrSd5uDknXCpRy+8BeioLJ/P8nDyU9o8eSurGVkBfJqh2zlt8B+gPRgcAQO1KO7aw9V5FnoqMsbSlKs=
+X-HE-Tag: 1794250735-136135
+X-HE-Meta: U2FsdGVkX1+B6bzpbIrklf1OUMfePdRdZDGAbU/Q/bcVmKSauJktnTs2Ags8yY8vmLBkRBBhr55urvOsAL+sHmo38mu7Yad07CIA+luoXGItkhruobNWx3QRBkv9TjaMtzNkwgEDKdU5YQHTOx2KFqNh0ScW5McaTgwmaRsojS2oiMLWM/axykxa1G1QuaeuLA4gYawVbIULv7+gCUcGYa1VHDIXKwZ35l887YkqaiXvsxyTI+09nXRh/lE6Gwn9maDjZ6Bou7BCNe8O7Q6196nN3+7bkpfJnk88giBdRiXJSE+lHJVCI2XzUq6r1JGy2hj1FvpgeHVHwFP/AYW7smnA8xwvJpfqJzsJWno5ay+gjWi4Tq/OHbANAALUVNDXlhCkseEPrKO6B4YThefwnS+XXHzHzzRKzrHWVAqX6TbcxglF01XG4lBuulZ57rJqW3W1FJbYF+MZbea9xOINaWK9XrCSwg4M6GKrG2iSYeW30nGOy4Fsc2zl5H1/VumcVSmj2c+Of5p7deeUYDT90YdRmH+VBG2cCl/A6GZWR6oo/IUXY8td/mTzz2B7748++CAC3P7A4QyMVZxT+7Ho08ROVFMdoW3x0zpVKcpXpPvE4eJrDzZ0nU7hAuPvdXLR2IDMwmj3naiVdTVFDd6HMpHh1kWHDXAnnozCqGdZkrZcDgf9CCrpsgymwQTjZ8lqTuMMirgtgBzlxvx3IPK+WSPsR37VZyD3XVKkGQSuHt9Xx20xrJP5Q8uhv+hlNr0JUR6YUqaG5t34AoQ7TTlLtfOxUQHdM58n26tKpTjvoKbIbIjfYkT7lZexUSi4aOX6q6r2oHsfti5Ip7OcfxetnIXizM2bRzRrKyEtBAUivTLLwBn1CQ1apqAm0uq3MJHrU3D67wC8Pd1ZMRwyzjp5RnpxsZEY/KOuM47w0635swT7SIXT71FFHk6NtsUhaVvs4AoeSl1hhIIiMmsxvYO
+ QfxZ2gKZ
+ fmV5OYGeKSqKKzWiCDKos17r4hVgREChhiSFxMXsdfLvnh27AavTlyku2ArcQNRAvABOonTtyT/eFFd6w2IBV9a6hMuPzDdnUqRacPGF/sxWid8koQmGKthkWRpecNLGlfyBuGsg2gSvm2ZLO4W2jA7OiPr6OdC1g09fGBEuaNOIHJE9i1kpPgyt0Q315Y89Nib8a4ahBGTzJ0N3i5sS25SfCHtfvS99uJduufbAdn1Ommv3VN+m3rLDmXrRpkDk+DQ1a3q3wSbGYPCdo0UFp2wcgBAIcIK2VRfuoQqhWMXlbBU8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,96 +95,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] mm/filemap: do_sync_mmap_readahead() fails when
-  mapping_min_folio_order() > 0
---
+On Sun, Nov 08, 2026 at 12:41:37AM -0800, Chris Down wrote:
+> When oom_evaluate_task() comes across a victim we've already killed, it
+> backs off until the victim's mm has MMF_OOM_SKIP. This gives the victim
+> a chance to free some memory before we kill anything else. However,
+> since commit a72f73c4dd9b ("cgroup: Don't expose dead tasks in cgroup"),
+> css_task_iter skips exiting tasks once signal->live reaches zero. That
+> happens before exit_mm(), so a single-threaded victim can disappear
+> from the memcg scan while it still has all its memory.
+> 
+> This can kill another process when the first kill would have been
+> enough to recover, and we've seen it happen in production. If the
+> second victim is in a cgroup with memory.oom.group enabled, the extra
+> kill can take down the whole workload.
+> 
+> In tests I used a 64 MiB memcg with swap disabled. I started a process
+> that faults in 44 MiB of anonymous memory, submits a 4 KiB direct AIO
+> read to null_blk, and goes to sleep. I set null_blk to take 10 seconds
+> to complete the read so the victim would have to wait for it in
+> exit_aio(). Two seconds after starting the first process, I started a
+> second one that tries to fault in 40 MiB.
+> 
+> The 40 MiB allocation hits memory.max partway through and triggers an
+> OOM kill. The OOM killer picks the first process, which has more
+> resident memory. With the read still pending, the victim blocks in
+> exit_aio() before it can tear down its address space.
+> 
+> memory.events showed oom_kill 2 in three runs. In one of them the first
+> process hadn't submitted the read yet when it was killed. The slow read
+> just makes the window easier to hit.
+> 
+> The cgroup iterator hides these tasks so that cgroup.procs doesn't
+> show processes that waitpid() may already have reaped. That's fine for
+> cgroup.procs, but the OOM scan needs to see a victim even after its last
+> thread has started exiting. We already have CSS_TASK_ITER_WITH_DEAD
+> for sched_ext, so use it for mem_cgroup_scan_tasks() as well.
+> 
+> With this applied, OOM selection backs off while the first victim still
+> has memory to free. The 40 MiB allocation completes and memory.events
+> shows oom_kill 1 in three test runs.
+> 
+> Fixes: a72f73c4dd9b ("cgroup: Don't expose dead tasks in cgroup")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chris Down <chris@chrisdown.name>
 
-commit 6cc011b67fa27fb6f1bce2ab0a11aad698934f50
-Author: Alireza Haddadi <alireza.haddadi@it.uu.se>
-
-mm/filemap: let sequential faults restart mmap readahead
-
-When mmap_miss exceeds MMAP_LOTSAMISS and the page preceding the faulting
-offset is cached, this commit reads ahead one additional page and marks it
-with PG_readahead so sequential access can restart async readahead.
-
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 93db8fc60ae0a..0930aacee9fea 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3403,8 +3403,33 @@ static struct file *do_sync_mmap_readahead(struct =
-vm_fault *vmf)
->  		 * Do we miss much more than hit in this file? If so,
->  		 * stop bothering with read-ahead. It will only hurt.
->  		 */
-> -		if (mmap_miss > MMAP_LOTSAMISS)
-> +		if (mmap_miss > MMAP_LOTSAMISS) {
-> +			struct folio *prev =3D NULL;
-> +
-> +			/*
-> +			 * Nothing is read ahead now, so mmap_miss stays high
-> +			 * forever.  If the previous page is cached, this may be
-> +			 * a sequential read: read the next page as well and
-> +			 * mark it, so that async readahead, which does not
-> +			 * check mmap_miss, restarts when the mark is hit.  The
-> +			 * pages it reads then count as hits and lower
-> +			 * mmap_miss.  A random reader rarely has the previous
-> +			 * page cached and keeps reading one page per fault.
-> +			 */
-> +			if (!force_thp_readahead && vmf->pgoff)
-> +				prev =3D xa_load(&mapping->i_pages,
-> +					       vmf->pgoff - 1);
-> +			if (prev && !xa_is_value(prev)) {
-> +				fpin =3D maybe_unlock_mmap_for_io(vmf, fpin);
-> +				ra->start =3D vmf->pgoff;
-> +				ra->size =3D 2;
-> +				ra->async_size =3D 1;
-> +				ra->order =3D 0;
-> +				ractl._index =3D ra->start;
-> +				page_cache_ra_order(&ractl, ra);
-> +			}
->  			return fpin;
-> +		}
->  	}
-
-[Severity: Medium]
-Does hardcoding ra->size =3D 2, ra->async_size =3D 1, and ra->order =3D 0 w=
-ork on
-mappings where mapping_min_folio_order(mapping) > 0, such as large block si=
-ze
-filesystems?
-
-In page_cache_ra_order(), limit and mark are computed in base pages before
-new_order is clamped up to min_order:
-
-mm/readahead.c:page_cache_ra_order() {
-	...
-	if (limit > index + ra->size - 1) {
-		limit =3D index + ra->size - 1;
-		mark =3D index + ra->size - ra->async_size;
-	}
-	...
-	new_order =3D max(new_order, min_order);
-}
-
-When min_order >=3D 1, limit and mark both become index + 1.  The allocation
-loop then allocates only a single min_order folio at index, and
-ra_alloc_folio() rounds mark down to 1UL << order, placing PG_readahead on
-the faulting folio itself instead of a second lookahead folio.
-
-On the FAULT_FLAG_TRIED retry after maybe_unlock_mmap_for_io(),
-do_async_mmap_readahead() is skipped and finish_fault() maps all pages of
-that single folio at once, so async readahead never starts and mmap_miss
-stays above MMAP_LOTSAMISS.  Scaling ra->size and ra->async_size by
-mapping_min_folio_nrpages(mapping) and setting ra->order to
-mapping_min_folio_order(mapping) would read two minimum-order folios and
-mark the second one.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109-mmap-miss-=
-v1-1-8b44b33f3358@it.uu.se?part=3D1
+Acked-by: Shakeel Butt <shakeel.butt@linux.dev>
 
