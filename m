@@ -1,88 +1,128 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B6B606A321
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A426082BDC
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dZ5s8tEn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Bglofv8p
 Received: by kanga.kvack.org (Postfix)
-	id E6B066B05B5; Mon,  9 Nov 2026 09:04:42 -0500 (EST)
+	id 54D936B05B7; Mon,  9 Nov 2026 09:10:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E43556B05B7; Mon,  9 Nov 2026 09:04:42 -0500 (EST)
+	id 4FE926B05B9; Mon,  9 Nov 2026 09:10:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D31EB6B05B8; Mon,  9 Nov 2026 09:04:42 -0500 (EST)
+	id 3ED676B05BA; Mon,  9 Nov 2026 09:10:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD3A36B05B5
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:04:42 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 495FAA8335
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:04:42 +0000 (UTC)
-X-FDA: 85415751204.25.E3109C1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 529FB40016
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:04:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dZ5s8tEn;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 13CD56B05B7
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:10:37 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1F416160687
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:10:35 +0000 (UTC)
+X-FDA: 85415766030.10.BA1A16E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5066D12000E
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:10:33 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bglofv8p;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794233080;
-	b=7hejRRU5xsPIIYMoCHUF0tLSI87SO2jbeQyw7qrl7o0G9tJ1GNP9o41PZzbP1z4zkinJLT
-	82B6arSA43iNiFkCuDkWl1MzqTnoQo1hQ8BiSob4fmcdPJ48prVT9F4M5qsFfUAESr3kFT
-	53KObXtxPzArE3pgUhrqqijnfWg+0pU=
+	t=1794233433;
+	b=QpD0zwsezoEZJPQ6O41QlgoGajxsyQANmI9Z+dE15ZiHvrCKblnZD+DHUZrGmS+UBo2F99
+	2OC+3Q/63If8B+YCY4Cg97ce5RUC6PxMKsha6OP3imGQmWynx7Gm2RwAZg5yWFE/8MZdeQ
+	HNJRfBwOYNAfq3NqzsmMYkBs0rtO4GQ=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dZ5s8tEn;
-	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Bglofv8p;
+	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794233080;
+	s=arc-20220608; t=1794233433;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jVich8nvMx7lDX/pvruqVV2kTjm69QuzoBabY2+rHJM=;
-	b=S8U5O7Bwb281nOOcdc9nrMUsGWDdHhJcbN4LxpE6fdxySrsqoip5SvtfjOZ6bErz/aj2Ey
-	7kkST3Bz+W1vmsO4/m63ilfUqH9iirA1VR07t3L6TJGT1Ov3rny/B2vtQ0KbP1BJHneSOF
-	qnn8Ucft5tT+yP+wDUiLRad1Oo5iRDo=
+	bh=myMKGYz65TX3ZV2HLEDYXummVbvvcxR6eJbeormWLNY=;
+	b=RUTlZhxK4rI2Qgu9JCRWmy8yNq6JXaFnmO9a82JAFN1Qx4AAz8O6UcSiQAEUyi7htsjMei
+	vUGFzCU7nnfZ6kASAs7PXZhqMjMdOVGNrkoaM61DX5lzrUyvnlORTB+D9bDGBkV0JK7iiY
+	UDLq6c0eUqNeqa9vo7+q49GPYQersNI=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 881AE40C27;
-	Mon,  9 Nov 2026 14:04:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E7B1F0089F;
-	Mon,  9 Nov 2026 14:04:35 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BE72063373;
+	Mon,  9 Nov 2026 14:10:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D12FC1F008A6;
+	Mon,  9 Nov 2026 14:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794233079;
-	bh=jVich8nvMx7lDX/pvruqVV2kTjm69QuzoBabY2+rHJM=;
+	s=k20260515; t=1794233432;
+	bh=myMKGYz65TX3ZV2HLEDYXummVbvvcxR6eJbeormWLNY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=dZ5s8tEnCgkuCLHe+AvywXX9fW5er432fE+hmxcoFDxYSHquXibvyFXJr0HhTu9mF
-	 4QwK5+xM7VcwmJHm57PdFgBD2B6we8ooMUXjiECMKfp3miAjqB2dGJQ85D0lrF2W73
-	 BVdCrPfmMAhxOj8HZ6D0aZDvDiVX4Vvc7O/VQYV5M51wgVphwJPlc0j3N97zSSXeWh
-	 J70K2BmPVXxWZ8W6uCFLEnmTBW8/1QQ86Y1sm08JygPoGON0OUdoifusd7BpxxwrF4
-	 zfR3Upx2a3JvDlQ7m7+DvOseZuSCgYltHiqYyFIT/aQ2/TLqF1/omtYplSjvqnaC3E
-	 pL9rVav96wRxg==
-Message-ID: <763bd31e-789a-4cf5-9e84-d57a375d2d93@kernel.org>
-Date: Mon, 9 Nov 2026 15:04:33 +0100
+	b=Bglofv8pDUgq9hvZ4rVha6IMx3/tuTzNQNjSHYP9CIWyepDI27syAaVFBas8f6RVD
+	 UVmdyKqTyz0b0NheG+FZ+AE2pIAr4hBiDl86UsGhA2o+J9ROCIUnuGugx2665zjVgQ
+	 TMdl9gtEp1MxF8F7yzZNtAdWogd9Qrd7XfK+Cn9/CyV+VmkQv5SDfWRp1jUA83/KWa
+	 0go/uTrk3kXniLmF1Y9T5JU/bstxbmS1HQc2z9qgBDZR2I/KcxQxVBiBGjfDxu/sgz
+	 lACX7WdmvIxb++wMDKFjor2fBrrIUzrhV7UHlSvhb14W9EZvqdLp4aUCwYHftZoSEC
+	 9xf7LvowSWk1Q==
+Message-ID: <65038fdc-f4a1-461d-b7b9-669885f15c3c@kernel.org>
+Date: Mon, 9 Nov 2026 15:10:12 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm/memory: use pmdp_get_lockless() for the pmd read in
- do_fault_around()
-To: Greg Ungerer <gerg@linux-m68k.org>, Hui Zhu <hui.zhu@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+Subject: Re: [PATCH 07/13] mm/madvise: convert madvise_vma_behavior() to use
+ vma_flags_t
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>,
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>,
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>,
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>,
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>,
- Sam Creasey <sammy@sammy.net>
-Cc: Hui Zhu <zhuhui@kylinos.cn>, stable+noautosel@kernel.org,
- linux-m68k@lists.linux-m68k.org
-References: <20261104091050.117076-1-hui.zhu@linux.dev>
- <dec26f4a-138a-4cd7-b000-4bda7c61af82@kernel.org>
- <88a6bf17-2189-44a8-8255-50b7ee1d80f2@linux.dev>
- <e6ed4165-03fd-4204-b25a-bafc37c3930c@polyxeno.com>
- <f03d8a2f-7803-4503-9485-54a9ddcaf332@linux.dev>
- <6f01317a-1536-4747-ba11-23e27461a694@linux-m68k.org>
+ Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>,
+ SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>,
+ David Rientjes <rientjes@google.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Oleg Nesterov <oleg@redhat.com>, John Johansen
+ <john.johansen@canonical.com>, Georgia Garcia
+ <georgia.garcia@canonical.com>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ =?UTF-8?B?T25kcmVqIE1vc27DocSNZWs=?= <omosnacek@gmail.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ kvm@vger.kernel.org, damon@lists.linux.dev,
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+ linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
+ <20261105-late-2026-vma-flags-v1-7-0d3cd15ab75f@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -129,21 +169,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <6f01317a-1536-4747-ba11-23e27461a694@linux-m68k.org>
+In-Reply-To: <20261105-late-2026-vma-flags-v1-7-0d3cd15ab75f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: q6yanwq1r451tc4i57khajb1xfdz6og1
+X-Rspamd-Queue-Id: 5066D12000E
+X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 529FB40016
-X-Stat-Signature: mtz3pgsqgnzo1bnfp8ebjexryr1tzugu
-X-Rspam-User: 
-X-HE-Tag: 1794233080-35619
-X-HE-Meta: U2FsdGVkX1+nsh1GoWtuXCHFrXw98u7jLyKU3ebPErwygjcQuklV9kZW9V/Jy1UlOHaL4wzmDF1c3ckVurJyiuFz23jV33s4YBjXRCxLB3p0RY05P5ifWxAvkr1ZqakAhetK4I26vazVy7B6yWsNFmYfY/CnuWwl0lokBMrLHCgGzyW5QQhnw9tJmTOqOLaul5RGRklCgfsasScboSeu2Ae3OBs82peVoHaRgVeWbZ1JKJIAG/IVHp6gIyR04Pdiu2hCPeMG9Iuc9xE6L7syrwvQQ1dsCTyHmw2AM+YSfzpuFzNCh2xpgrjYk3ZRC8+jpyOEEo89EgczMe4WFYM3iIwKogMATAj//PTC/oRod0jR1JrrKHi8Qm10knhKRCdt7XUFxW67zOLw59T5kx0MA5CvjJAhMsdVJaue4KufiEfZirQjUfJrNevN9Htfz8CZEFMbqLRub3LDMHuROl6ts1gYld/6BhP8M5AU9dFVTkXdT3Pxtn5eEuxl8OVdhrckbx/2ZkMWh/gKRUe0t9bBho6NrESn0Hu3ZDxkQkw8JrnAe9+4C+honzFBdKeicnHU8gjvkJ9Tdbp2D6JlGvncIKZML8+IxlmGxGBu1mwOTkoVJBLzrf9dWGKXaKtet7jTo9h28EXaooHgUzOny57pP+9k8OVPfX7UDstx0AaewbdE7QeAd164vJniPrqeWWWTcHZvqQVm7TWL+OJ/eVa08Y/sXmQRQ1NQ7CZjM4acvAKJs9CRb7p8KWfsUXTWcBaLBx4tXX7JJ5pCM24s4DXcel71OnjiN4h2BgwOsNvXov7VH+yliiA+80+0Q2ajLUqp46UNep3PfoLSmRDqDLXx+vsa6tAFAQ6vKTE9FVC5Z9jrZyR5Emoc+/Fx+HJOvRLDUcMndhjmwNQGx2KeKp4+IxTTZpwBFtQjhUm6BGgj7KWe4bulAIMyti8/BS2S2s0WOI2mvy0pF0LixxoQ00x
- aNW/lPFE
- 7oKkULr2wwotn17xYHNb+9edCzhWk/rG9NhAgIDCXc3w5+KlxWXPxQwidN2NUifnQWGjn6Zm9U7noo0yo3yjn/7l2CRsqddz4EMf1nnAWjIZntPTmCA2Wp5Ran/zgQg+3H4Ct+d5iS5WiqAEYAFFsIRlhZAFnDL6zpkJ1flStWcbR36qaOliAj95H1afI+ZjkjohBbA9dNVR8jP4YjH/rsH0KJ1OH3fQYvto0zXOM0LAT/M3s0e1g8FbDEj3Cs8QPCSVzvYV3XxuXGXtMoUPX8XU3uPU8n2UwKGvYO/CngBSxnH01XJbAwjISQgZJQb+qFyzDJ03jxucnF3oSGOAnL5dwsTGW34w88lny4aYsvS9xr+bMLCONCHiL/cdF4o/P/IUnxpmKmg46jCPyGXUXyNRUzLy7VI9yxF0xD5aGz7/dV85ifwKNDQSd7aUdQro3wVXRZCHaes3Mh+FgG/Apcbqq3ARMeZDxJgQPnkWKlFiEpwgYfZUmImic3YiqD0ik5uFe
+X-HE-Tag: 1794233433-110137
+X-HE-Meta: U2FsdGVkX19IxF6GPJ0J1fitozirKsCcVEfRUGfltu1yJGeLSVQaFzCjqui6j6x/bi6G6UhCeLQTH82XKREo1dAj792TLKDOP0dT82QiqMMLSdi8R/HISHwBpcL5VGU1QsKa6lMLoD2UyJicxHTHoazW0hTSijbMhFz8Lq2TEC5BJZAGcEKcCDLq5hkOXSuf50YdCTjeF7l0K83MKSmkGj6RHVsRTbM2P3XV7fd9eTgqdvrRXRVPyK8O9hDTSgs+samyPoHuS/JMbGcP2SeaKc0gfd3KB+j6gqIKewezExBjHO3lFI8XA38IUgPugzaVlgTZpMwbU7hfrCDRpJRk0TuyjZCy5gfc71TiKG1fm73bUcJEtLMgVfekX0ERzU86B07ovwg84ZVqxPOJQgRFpMm5w6JhdxQIsTvxI8ZjN6THyF/XiAAkxREmc5cqNxcseLPOjm4utQPklL5DUhqhaFhV3LCQ+ufOY6LoD4ICFpQxpsG+wvXttDByjCOslM4HvGZ36qa+acWG+kwpzAEgFeGQQooxOBK1j/1JB842CVLyn2uZLTK7lQrG+AhnwkQ4AsgSg21e30+EKj2vQ5UEBxWiqlTjamgnHrF92uSC5CPweD7re/Qrd+RWNwLQgEQxmsDcUuZiI3hBifUX6oyQpcxCsRQJDYfFG1G99vvmQmgAmj5eN/5ZXXYKgKEXdf+TuwTSgnT3gqNv8W8vDqDEpSlqHSPrR6dhzi1kU1epFiNYv39L6hoEZllb+P4KNva0KdaVPJFq5DXyiJf3LL9mmB/WbJuqT3Ud7V7d+NImnbd3rlds527XcEI5uVvFntiH4Tckpj5QpEdPhF+Pe1VeOOYkuI+WNjsOwgAF+/ORfPvH4lQidgEPTD94D79s4bqaYX5IjOu8ZB3G2OPAvRc93WU0DeiYigahE+jqHL8gFubJGN3N1WkzYkw+8S/xX/wO70KiD9t/ZrcTxYk1AWH
+ 8nWpspnT
+ 91jjN3BIFD2MmoL4A6Ruckemhpxt3Nd3rT2Jmnf3rVGN7J3yfK2hE9PRYfciTU444bpL3dWrrHGl+kvSmlBuuxj88INvkbLxu/rVYNbfvev8EDNuBCGOFZxc/9WTNKTqdrr/k9JCLT55Le5fF62A7RNgt7m6EWEJ4/d+YmGnzu57H3Insnf8c3pyBJ+fK55AYNMvI0XeCNtRlGdy3U6I8KZz1ExaMmM5sD5zN3/P6GaEfWqpJe86sxnDF9praGhuoT7QrZZIlUU/C9euwL41n621cLjTyoIsNgC2lMfeE8u9akngH0zP6oFUHS1R389xmlPw1u6jfSb6xhRibOwpJHL/WBRnuG7xKVaOXxxVP9hhjVqlTCog6Oh/wbHYDRMnLVoMe
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -152,114 +192,22 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/9/26 15:02, Greg Ungerer wrote:
-> Hi Hui,
-> 
-> On 9/11/26 15:50, Hui Zhu wrote:
->> 2026/11/6 20:08, Greg Ungerer:
->>
->> Hi Greg,
->>
->>> Hi Hui,
->>>
->>> The m5475evb_defconfig is supposed to have MMU enabled:
->>>
->>>       $ ARCH=m68k CROSS_COMPILE=m68k-linux-uclibc- make m5475evb_defconfig
->>>         HOSTCC  scripts/basic/fixdep
->>>         [snip]
->>>         HOSTLD  scripts/kconfig/conf
->>>       #
->>>       # configuration written to .config
->>>       #
->>>       $
->>>       $ grep CONFIG_MMU .config
->>>       CONFIG_MMU=y
->>>       CONFIG_MMU_COLDFIRE=y
->>>       CONFIG_MMU_GATHER_NO_RANGE=y
->>>       CONFIG_MMU_GATHER_MERGE_VMAS=y
->>>       CONFIG_MMU_LAZY_TLB_REFCOUNT=y
->>>
->>> But something ends up disabling it when you compile.
->>> I'll fix this.
->>>
->>>
->>> You should not be able to set MMU=y if configured for the M5208.
->>> It doesn't have an MMU. You want the 5475, 5485 or 54418 to test
->>> valid MMU=y configurations.
->>>
->>> Regards
->>> Greg
->>>
->>>
->>>
->>
->> You are right on both counts, and that mail of mine had three things
->> wrong.
->>
->> 1. "No m52xx/m54xx defconfig enables CONFIG_MMU" - wrong.  I grepped the
->> defconfig fragments for CONFIG_MMU=y, but MMU is 'default y', so an
->> enabled MMU never appears in the fragment.  m5475evb and m54418evb
->> both give CONFIG_MMU=y, as you show.
->>
->> 2. My "m5208evb + CONFIG_MMU=y" test config was not a valid config.
->> M520x is 'depends on !MMU', so forcing MMU on leaves the SoC choice
->> unsatisfiable and olddefconfig silently drops it:
->>
->> before:  # CONFIG_MMU is not set / CONFIG_M520x=y
->> after:   CONFIG_MMU=y / CONFIG_MMU_COLDFIRE=y / CONFIG_M520x gone
->>
->> Please disregard the m5208evb row in my codegen numbers.
->>
->> 3. The "red herring" I flagged was my own doing, not a pre-existing
->> problem.  mm/Makefile has 'mmu-$(CONFIG_MMU) := ... memory.o', so a
->> NOMMU config never builds mm/memory.o at all; I asked for a target
->> that config does not have.  Sorry for the noise on that one.
->>
->> Retested with the configs you named (7.4-rc1 plus the do_fault_around
->> change plus David's cleanup, gcc-m68k-linux-gnu 13.3.0):
->>
->> m5475evb_defconfig   without David's patch: mm/memory.o fails at
->> mcf_pgtable.h:134 with it: full -j24 build ok, vmlinux 4215344
->> bytes, 0 warnings
->>
->> m54418evb_defconfig  without David's patch: same mcf_pgtable.h:134
->> failure
->>
->> So the Tested-by I sent covers amiga, sun3 and m5475evb.  It is
->> build-tested only - I have no m68k hardware here to boot.
-> 
-> Thanks for retesting. Looks good.
-> 
-> 
->> On MMU being disabled when you compile: I cannot reproduce that. Here
->> m5475evb_defconfig gives CONFIG_MMU=y, olddefconfig reports no change,
->> two consecutive defconfig runs produce an identical .config, and a full
->> build finishes with CONFIG_MMU=y and CONFIG_M547x=y still set and
->> .config untouched.  Two differences from your setup that might matter:
->> I am on a glibc toolchain rather than uclibc, and building out of tree
->> with O= rather than in tree.
-> 
-> I can't reproduce either now. I must have done something silly when
-> quickly double checking that config. Multiple configures and builds
-> and I think it is all doing the right things at configuration and build.
-> 
-> 
->> One observation, which may well be unrelated.  m5475evb_defconfig never
->> sets CONFIG_M547x - it only ends up with it because the "ColdFire SoC
->> type" choice defaults to M520x, which is unavailable under MMU=y, so
->> kconfig falls back to the first usable member. m54418evb_defconfig sets
->> CONFIG_M5441x=y explicitly.  If that fallback is what breaks on your
->> side, making m5475evb explicit would sidestep it.
-> 
-> FWIW, running "make savedefconfig" on a fully built m5475evb configuration
-> results in an identical defconfig to arch/m68k/configs/m5475evb_defconfig.
-> 
-> Anyway, I applied both changes and tested on real hardware. All seems to
-> work fine. So for ColdFire:
-> 
->     Tested-by: Greg Ungerer <gerg@linux-m68k.org>
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -779,7 +779,8 @@ static struct vm_area_struct *find_mergeable_vma(struct mm_struct *mm,
+>  	if (ksm_test_exit(mm))
+>  		return NULL;
+>  	vma = vma_lookup(mm, addr);
+> -	if (!vma || !vma_test(vma, VMA_MERGEABLE_BIT) || !vma_has_anon_rmap(vma))
+> +	if (!vma || !vma_test(vma, VMA_MERGEABLE_BIT) ||
+> +	    !vma_has_anon_rmap(vma))
 
-Thanks!
+This change should be dropped form this patch IIUC.
+
+It would have to go into the previous one (that I applied) but it's not actually
+required.
+
+Unless I am missing something :)
 
 -- 
 Cheers,
