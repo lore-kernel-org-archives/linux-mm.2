@@ -1,141 +1,183 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD67F606A32A
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 20:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88E960A260F
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 21:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YEkoK3pY
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=KKBVTxvI
 Received: by kanga.kvack.org (Postfix)
-	id BF0D96B05B1; Mon,  9 Nov 2026 15:56:29 -0500 (EST)
+	id D87AC6B05B3; Mon,  9 Nov 2026 16:05:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B7A6F6B05B2; Mon,  9 Nov 2026 15:56:29 -0500 (EST)
+	id D60896B05B4; Mon,  9 Nov 2026 16:05:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A42416B05B3; Mon,  9 Nov 2026 15:56:29 -0500 (EST)
+	id C27AC6B05B5; Mon,  9 Nov 2026 16:05:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 789BF6B05B1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:56:29 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0961CC073F
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:56:29 +0000 (UTC)
-X-FDA: 85416788898.05.38F8A96
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 2923F180003
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:56:27 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YEkoK3pY;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794257787;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 952826B05B3
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:05:34 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 24EAF407FD
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:05:34 +0000 (UTC)
+X-FDA: 85416811788.07.08DCFF6
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012009.outbound.protection.outlook.com [40.107.209.9])
+	by imf11.hostedemail.com (Postfix) with ESMTP id F2DA640008
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:05:30 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KKBVTxvI;
+	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794258331;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ZfwEzavV+xYJ/qlHoaoW30drhhxmWDviLHuBnnT384U=;
-	b=sGM123BK3sWzH++x28F+8e51PSfk1pZjvxbAjiO1TB9SyWQJ7j2n7hFR2QlS3mbRuZQjhX
-	A9YVUbc1EFYdH+NyNomYonXbfs5RP5ya0LkcX88ZWdRcA/1k9BywraeHU1MqyusLUbk5Ru
-	D+BQnXshg6gyMmYKnpytUBE5cPPiAZA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794257787;
-	b=23QNinoB1z/c3DlyqM235ByytYNGBBLuGWRGThEht1SA+wBYeUFNjYhrw5DCHLV34YVTpa
-	H/kwOp6ZMrrxfIl1wLKF3wzWKfViiWHXVeHtMH4amxctfaV0z0ZcytacnvtU5PdocC/ZRb
-	m8A0/M4nSAXOjrrs+P7Tmq8Y2lidABg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YEkoK3pY;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 64C7943957;
-	Mon,  9 Nov 2026 20:56:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA531F0089F;
-	Mon,  9 Nov 2026 20:56:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794257786;
-	bh=ZfwEzavV+xYJ/qlHoaoW30drhhxmWDviLHuBnnT384U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YEkoK3pYgClUuurovjn4IRR4mD2Txlxhmoqa/G7rZ2+e5q79pDBdqXxcOJ7krJoLC
-	 jU/pFUNYJBiw7JU7g2pDOSCZTuCE7qe+vtOQMrqMkhZ8UO1JaBM//NADZjubtzhhmv
-	 zuX6rFq4/4dua65IihVrqaX+thOtlpxYZ1+vU5U16Nw6379xCIiI7EtKdCxTWwj0lQ
-	 wBdd8qSxJu5v+k66EBIO4MvWDERzHQyBkSClYKFvY6K1ZrJoeW32j9b1/kJrUZTwPL
-	 X/N5Z3sj/QnUEQLZPqIyMu63iQGqFk6bauZjiaSYlpVwUhpncuvIorL9DzZQo0nrCU
-	 019r3x59lRrrw==
-Message-ID: <4acf6df8-8cdf-4f71-830d-9233db151b2a@kernel.org>
-Date: Mon, 9 Nov 2026 21:56:20 +0100
+	bh=nzMJrVMkxFSZcfvp0qaJ7qx6tfWpR7g7taw8ntN2cIs=;
+	b=WT8CsvPDkAJih+Z11TnlDWlqVYlBDsmj+rvXMOwnXNfNu2eKClZmd+/byLa5lVTvbr8F3s
+	IW+G/b33rNpqmThVKigzpTKTpXWSit99Xx59ITfb4woUw7ePTZWX++Hs6EhsFiOS9aqnT3
+	/cxBcYxCNtQwU++Fy4Dc/lXcTfnmlTc=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794258331;
+	b=DgleyP67pc9Oug9WEpQUaXzaaLd4aDH7y9dPi6LtW80ybE5FqLgJaTTLsb2n2eU7q/xpU4
+	0IO+emMRbiN32lNud0qC/ye6kITyAiy6KgbwGILGwdpYotbC+xbtNc3YatSSNktMzRHq9Z
+	KulHE4Y4iJWGa8E+q/f2CNH/xYgmCqI=
+ARC-Authentication-Results: i=2;
+	imf11.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=KKBVTxvI;
+	spf=pass (imf11.hostedemail.com: domain of ziy@nvidia.com designates 40.107.209.9 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=HMMfIDKaeeyX1j2/4seo+C8aTPhsdWr05TL6k6Yk99CGqXXnQOt9Jzpq6bLCJEtdfWH0fVL0mS7wDlwOobYm28i2PCmaqT9fWbdlilfjeDgaV35BNyO0G2owGWMms7bFZPTy1Ibn9D2gJU7ULixzBtUPQZxOdFv80aOMr9XeefvhUV6kbB7mu4thz9tCiFwyCh1EYK3s1A+4gFwmC2+mS/HdHu3o9W4jZqO9/E9bulgQm+vbx7+1bQjtIBZXjp8Wyw6V9oTR9T8htL2nJp1ddNAl8g7s4seFU7snrxZ/sEnEBBNNL4uSNGrBr2NgPuqkt5h2kLF/4dniEVQzn4dJHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nzMJrVMkxFSZcfvp0qaJ7qx6tfWpR7g7taw8ntN2cIs=;
+ b=SVU4tKADIZjlrQQ7YSs+ua3TuBd31fpWPeH7jEtlsvAVPq2YpJI6fRNoHhOTy3GPz6gL0KpNM0SENLb6KM1qhKt2Pd1s2mUpDJqXLhf5TP7nUNEoRP58CLUSDDB0UA8Dc6Rgg5iH240+RKlPCZqtUzp7LWV5WDzBB5T7l5VU3inqqtMos/efPqyoCB49t5lKZOnWfuR5VGyLZVyIDLpBX2HAQ59sYaEzqqOnon14sWNzKDkb5DnUqsyjTF2Uqc+F9spEpmKez5EtaEIQ5TJLqCwvOXoX19554F66uByyiYjiZ+3f2XNwZa2YRURTU+tfWRAMBf58RAD5RiKlsf7uDQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nzMJrVMkxFSZcfvp0qaJ7qx6tfWpR7g7taw8ntN2cIs=;
+ b=KKBVTxvIuxzjEc/5sRme0ooPYsOzTPFgvOwoDf+oErghSH2csaV0I6G7OETh80SIXC6Ei8eEKL1cU4u1PVEasHQMWEgo49JO3OoPo62Huehf1iFIM2/oP+41YJlmmLf81YW+8wDuUj9LY2ZKsg5tqyUJyuo0B9Oo5XsWcMeJkhx3t0xUeAaDXfpAT8kYhUhe43OBLPROA9kL0EBXx6ejgOJyj4HhoEPEcmBB5DGT26WcBiw5tOvhFezDNTYt+246yectJkBPlEaM26DUtJec4I5dhpHYoZdZwzM6kn5C1guIPenyC19YwpPi8/IC/lkf4RjBDfTAFsRF48IQa+lXMw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by BL1PR12MB5994.namprd12.prod.outlook.com (2603:10b6:208:39a::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.10; Mon, 9 Nov
+ 2026 21:05:23 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0592.010; Mon, 9 Nov 2026
+ 21:05:23 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>,
+ Brendan Jackman <brendan.jackman@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Ye Liu <ye.liu@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3] mm/huge_memory: prevent losing PG_waiters in
+ __split_folio_to_order()
+Date: Mon, 09 Nov 2026 16:05:21 -0500
+X-Mailer: MailMate (3.0r7038)
+Message-ID: <940CBBBB-D564-4D4F-9C8A-A9A272F08064@nvidia.com>
+In-Reply-To: <5a7bb477-5392-404c-a748-4748cec2c84f@kernel.org>
+References:
+ <20261109-fix-split_folio_to_order-race-v3-1-1cdc509e34be@nvidia.com>
+ <5a7bb477-5392-404c-a748-4748cec2c84f@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-MS-Reactions: disallow
+X-ClientProxiedBy: BL1PR13CA0349.namprd13.prod.outlook.com
+ (2603:10b6:208:2c6::24) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/cma: simplify cma_declare_contiguous_multi()
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Ivy Lopez <skunkolee@gmail.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261106-cma-multi-v1-1-054eae6e2c1c@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261106-cma-multi-v1-1-054eae6e2c1c@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: z5nbc1f5gpdzfa7taubhzfx365smgmny
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|BL1PR12MB5994:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a26ec4b-bc59-4f83-1a93-08df3ea52bb6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|1800799024|376014|7416014|10067099003|22082099003|18002099003|13003099007|261022075727099003|56012099006|11063799006|261009223027099003|4143699003|5023799004|261102123227099003|261026140227099003|261028144727099003|261021121427099003|261022105027099003|261021123027099003|261026121527099003|260925021911599003|260925022911599003|260925021311599003;
+X-Microsoft-Antispam-Message-Info:
+	DcbibuScmWmvbs84gf342zwv6z3857ssgdB5SEs53M5lq99Gwya+T1vTcSiUe3VvJM8HdjX5fC/oW/zo2Q+1/5KBbvITHku9i9TTR+4BUkcsChuQGJEX8W2vCMvHUfn62J7F9LjXD9yRK3he+sAkpYI5j+2d59RvfU0wqrulgDxsYgzy7c2wZB+JAQDGadru/aHO3I+lV2vDrvbjjY3/fI4tHgqBB5s10cj/NqV0XsZmjp4oqvk16j2SbfssHhtEWpHXAIPrW0zqyeKy4o3lwQamsakLCLGuU6CXJs6+IuCErT/kNJE+UOkOyzQ9o8PikvMSYcK7+Qsa1eOdaJ57bN4aj2Hpx7sYEWMjYeHf2gEK/x1xlIVPmFSnQIeGxamjNWxKD/ORAoWxfjYGXFf21WdaZR2ETLy1ILqaWdB2il4oZlZcpzgEezi+eTV94oj6+2WlchoF0wPKP+OX0emljfNX0WFwo2kJmUlNz4QtdebPncRKpdZwsDNnHilTztPqiaXqTGQONhRw7evayZLT2lOzHdyCsYo5jDzr5iuEdpIkEVvJZYUhCkwlYeEnOLPut8uHZU8YVFK5Y29x4bozw5LHMUIlKgiEIVQd8oogjeaIPf1I0kn4qp3k1blDxSXFs9SByvLcsUBpbBdCjef3aInXWPmgV2M5bLpwx6nRazs=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(1800799024)(376014)(7416014)(10067099003)(22082099003)(18002099003)(13003099007)(261022075727099003)(56012099006)(11063799006)(261009223027099003)(4143699003)(5023799004)(261102123227099003)(261026140227099003)(261028144727099003)(261021121427099003)(261022105027099003)(261021123027099003)(261026121527099003)(260925021911599003)(260925022911599003)(260925021311599003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dDErd0VCclloN3AvN0w1K0dUVWcwR1F5V0FUSUtxYi8zTW1pZWVxaVNzbGg2?=
+ =?utf-8?B?R2lFTHZhc2loTklvVThicVA0R3BqRVZCa2xBVlVNcmhwa2I2UVk3WHhqZjlS?=
+ =?utf-8?B?aWY4NlFxYXdmai83eHNJNysyb0kzNHhkMk1LMCtINk5vQTBOdmdLaWt3YWtH?=
+ =?utf-8?B?cDV4ZUZ2UWJCTEhpZzZpSUJodkQ4OW4xVXg3elFwY3ZCM0VqOThvNUc4ZWxJ?=
+ =?utf-8?B?cnBZWkF4MkorUFpPUGduV2JNWlFkZ0VyekVldUNYT2FickVFYUk5cHFTZzhl?=
+ =?utf-8?B?MFM3NDUzNjNTNE01UXg5L0RnSUR0aVV2SHdzdzhNaS82aGNPMmw3VlF0RXl3?=
+ =?utf-8?B?bDlaS0hicFdPMnBPREIrV2NmOUxYbURKdTcvZytQSjBXSk9FMHBCejFrUTI1?=
+ =?utf-8?B?V2pjaTZXZ2F2Q04yZWRQelJudjRUZHdFL29hSmFiSm1vVHFKVHdaYlFoZWhq?=
+ =?utf-8?B?My9MeUg1MmxlWXZYNmlNVUdzTkt1WkhqQVRwU3JpMFlSVXRMRE9qbXB4MGJo?=
+ =?utf-8?B?eGlqRlg0bmpLTTlXWmg0ZllQZTBCQmI4L0FOT0YxdG4vWUs3bFV2dERLS0ZK?=
+ =?utf-8?B?b2o2THpUeHhUUXVPdkN0b2JBZEtlL2YwNWw4Wm8yL0pEeXM0WlFacFRvVU11?=
+ =?utf-8?B?SUxIR3IxalBGOTd0OHo0NmNxWEczd2JHUjVleEs2bWgrdktTaFd0R0hmdHpu?=
+ =?utf-8?B?eldXWVlLSzI2ZWpvNHpNc3JhNjdwbGFrYU1CNG50dWV4Wjd3YnJ2T2I4YW9S?=
+ =?utf-8?B?N1FzdVJyQW9GdURWQ2FqNEJ6UEhXK1hSdEFUb1BQbTREM2xURFRMYTNZZG5u?=
+ =?utf-8?B?Q2NHaitSeUd5UzdWNWxLTXg2ZythYjBSTVpIVUl1RGN3YlpMb2VPREcwc3d1?=
+ =?utf-8?B?Z1lwak50SVJWSkFFMmlxK0tHNTVVeW8xRUhNWmlKK2MrMVpDZDd3a1ByM015?=
+ =?utf-8?B?T2g1WXh5WDF3SEF0eklXMVptL01lL2dpdTVwUHZhR25FZE9JQ05tSWlPWVZ1?=
+ =?utf-8?B?a2NwdENXc0xUT2ZMd3k0QW5TVEIrVkhicWJCci9BdTNEZi9tSHcwYStvQmNC?=
+ =?utf-8?B?MnJ3c0JHaFJ1d3QyRElRbDdkTmxwZlEzM2tsZG9YR2VWdytHUjBCSXZNc0VH?=
+ =?utf-8?B?WXVLTk04QndjZFpIaHJCdm42ZGVodUZadHVPQm9oZzNNc2h1Ukk1K0kvSm51?=
+ =?utf-8?B?cnhDOFliZUZ2MVZmYUZNaDBCbitHb0FtbW83MFJtdkhBejg4Ynl6TlFjVXFG?=
+ =?utf-8?B?L0NQa0hibGkyL3NSbVo0SDBLY25yNnJKUWpoc0Y5M2hXZXhCNFBudkF3WVpL?=
+ =?utf-8?B?VUE4cUhDVlFsNS8rMVJkcWhRb0dFODhtdDg2Q3ppNmllWkh6Rk9ZdnBweEJ5?=
+ =?utf-8?B?NVlGbmZ1ZjE2bTBRSzdHOTlTZk9iTllZSUFxVm5mRnZCeVcvZHd0VU9SbEtN?=
+ =?utf-8?B?WGhZRC9HSFYrSG9HZFBSUTJDOE1sRC9wUEZPWTlpaXNSaWYwaXZkdHZkZGYv?=
+ =?utf-8?B?b2szNWxBQ2tJOHVBS0hnYmZGYVVBcHp5T1FxSUdFV1cyOUR0aDNlRk9kWUkz?=
+ =?utf-8?B?Y25VYlVSVmRFL0YzS0hqMTBBRkxhd2gyc25PNzZpaGZRSmJvL2xnU08yTEU1?=
+ =?utf-8?B?R3dHN1B3NVM0VFZhZ3orWWdoMlhKU2RlcDNjdWthcXo1RkNVekVYK1JqWkp2?=
+ =?utf-8?B?UjA5VGFLWCs4eGxTTWhWNXJJVVRhV2RRR0ltSTgvejJEVkpiUDdtdjRMbjZn?=
+ =?utf-8?B?aDRqTmUrcDE5UU5pREloR0ZVQjBBbjZXS2RHZHNQUlAxWkxnaFVpVnJxS1BE?=
+ =?utf-8?B?UDB0Y0RSRmpwbHo0NjlPeDVKaFhsTWo3N2ZuOGN4SjI1b01idEJJNXZacVl1?=
+ =?utf-8?B?SlhqTDZZMXlTQnFXTVhkdXFRZWdXQ1BFZ1ZIQWlkeHJKT2dzaUF1emd0MHhN?=
+ =?utf-8?B?NWxOZnFMcXRzc0oyc3VSbklxWFNRZjVNcWVTNHZpRmdQOU5vTmQzMHZjakZF?=
+ =?utf-8?B?MXFpMk5icFRBOHZoU0U5NFZzZUpBOTQ0ZVZ5ODNuZ0ZqQnlqNnBGMEY2U0l5?=
+ =?utf-8?B?Z1U5NnNrVmJxdFVNYTlOZWVCb3Z5VkVPeURDWS9vWXI2aWNGVFZySktyVm1Z?=
+ =?utf-8?B?L1ZDRW5ld25xTmdsNzlsSTd4YU5Gb0xNR3FLOW5MTmVDZU9NUnpEV3lKaFZi?=
+ =?utf-8?B?ck9Pb1A3Z1ZzNHlqblJlai81cXRSSUVIQURYNHlmZW1FUDhxSUZHUXFib0R2?=
+ =?utf-8?B?MGZQQ0NYNElON0U3UFpPTWdYTU5CcS93SDIzM2hqdms0bHRIck1PMnJzYjlW?=
+ =?utf-8?Q?i9gg0xBpOEDyMzu4sU?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a26ec4b-bc59-4f83-1a93-08df3ea52bb6
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 21:05:23.5228
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pgP8LA9jB8/6v7VT33PEwfIvlvJ90IiwH3YvyovdzoOrpy2GkvcST/WlucDa5Oq2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5994
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 2923F180003
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: mha3p4epxp445jt74yrbtafxpyjpjhff
+X-Rspamd-Queue-Id: F2DA640008
 X-Rspam-User: 
-X-HE-Tag: 1794257786-693771
-X-HE-Meta: U2FsdGVkX19s5L13eomCqXnAMXUAHcpMIpGiZJETv0mnnStxx80fXMAfQpeOaadj8EdYp7mAYQ8jtLPE5nu7qaSg7dNkoEOTw260q+OvXP7qwMogkm79ghKxkvMiERBKMtzR8lRrdAe9UG5MyP3oXizZv9YrABibnPOmZzLXwMHmkANPztv95tPEPZgQw8hxiSuJTuHdEEeTkPAQrCJTcQHqb6I8JNcNWAykWeHDgSkEzQhpEGcUi1677nSYCvfYcw91YWHgkXqMYcpppUrMSg3U+4qe7HjoJ49RycYTXWfEA7c/jR69ur1kyIyy18RBBXXL3ckLfx0tLDIbU/Vmw2J8H0n45AYJUEUPsIL34Jg/9TCXBJ1XTA9ALJIZrlC7oojl1H+VS1wpEyQZr2z9Av7L3Hk+4RvnMdMPWGl+AMoigZbKyutT7w6rMDgfDvOZW89KwALsCWCEiLY8DTCca+XFVPXa6FIylhk+unUDsgcXvBTX55brxHj9FmlNBdp31nDPjU6WbLpf7qo/pOu5Hz7Duv54ahgfgcEk0/ptXAry2CZ2jKceuZKoX2vIkTNiWq0F7eJT4Gs5JG9JWwNCFBKFSK6KvNYY7JEbsIBEB0M3Ma8YR96Kb1dl/ogtgNFJotRlEZXS0iiZ88cYdg+0KlbGk4QI86Wsv9oy7TrYdkFN7Gr84x6FgjbdoeoR/mDOz18vRvRUY2LDUZVRJKOE/Fe6lqiXw80KBOC5bpsx6pL1QQnNEEnl7qmzgt8GJ+JcLljPCxzRfdq4BbKv2JMOX0XIvJbhgIPkGcQyvDM/pHhny/fpH1mOWIIgFwtTkkjTJU8LBG49Vcn74AkGXJjQVcpsHOMnZ2oPktBv9kMGbiDlrs+JzNV7544Bg4dYP8PpGb07QHz7tl2OmTnH1q4q2IH/fCcHzjIuJnIO+AkbdNHHSjRSeTISRN8q0pym7Swdwv4P0ljLSjPiZieaugd
- OPOpxuXF
- 8obIcQ+LPZMXh+B0wGFz63eaXqmEUoHX4y0rF+7tUdAj0MdlhdpLR599KZ7QmMsxB7n2ZFyWi7N74UlEAvhYcrBvi/rpf0nOtmO+88PZ9xwyXaJHOEpmOFrgrBIuX5TpVj1zBwqbm/IDIOCnKCYOFM6u8sdQyP3R7MWuC7eIFFqLR2GsBLNfnTCjPf7ayFX10tR4rf+oSVA5GPfhTIghuSvUTEqsABNfW0nBuB/xCDPINFV5CMkLGT4i0RRlMfTUpZ/aoQn6KgGCvd1wbFg3PA2fFlU5fRyVcxXuQdovgw2gf21i+K2B4cz00UU+0fQrTndHD4aPOmBdwVfs9LFCGKgw+RKmqfHdgQfO+
+X-HE-Tag: 1794258330-866750
+X-HE-Meta: U2FsdGVkX1+0TYxOIgY5QoNsKZrRcewmGPze94Rdr30dy6j0gm6sYe7qSWIaAFkNjbp5AkySbxnqQBpbx3fX05HQMKrUStJ9B9n0qVsX48VufZNR2XDxP8e2fJ+DIiWixRlnh7jEItt5TH22h/teVF/0S3kn2wwkEzmQs2MrTY58SQbMDv8neJQ9ppY3HgkbuwQ5jvyEFawigIbXJyV6sSp5oj8OHwwVwGKfih6hel8RwJiH6p9hXhdMQYeZCNNx/EGbc6Q4XIZmLigHPBaASxQoJ+5edu/UQZf2CazVoEOxcLY1n/VDL2Z3ClwZ8UlFff06Rb6NjMRF8hCUXgLoEOPAmu3t47p+tGpcyoSJh3CtJfkMtnO7W5c2+LJY/ox6bguHLYGsbRGmuEJzlwhCVGPy4lYqvCo68nLRjsURBvvDgOsV4SZY+9MNl8MhohgKwvsNZWx7hFfCwcxauVrWscWKst5S+bypPhqbhaLmdh0QTRLXCx2SqJQGsT9P9f0SFQ3PiyFky+gMcW74CnZJ6mMpdnjsHEkkCOH+pruXo/L6jtae0OGGFy6BERivJPRuRqfhyPJx44SO3L5LiqieQMwI3maBj7XYGiDSm1yKeFZlKfpZzfQB01w9fGarVhaifplbO6YxX6EYEusSYm0DtiXto7IZuJ9+RNce12H4/19ICAkxwLjFtmoBFGz30EEe6oBX9c6ZaZkUeXLN9b5BWfJG/NuHIitUbIwBGotnrSPPmL+ows5uImAsGF4rZ+Gi1OmeGrT+CONTESkk9Ivzn0oniN6/GZIYunHdJ69RVvPfykyFxGWtPKt7UqoF5qL1qGXoPwxGpVHgg4525yO4MmwMuejEJMh8jLD73v08SlHabMfe4kXY67bLEWR1zBpmx/64v+X90YBVmPz5DnYA0KcVzWhbrn+HutbHRvF28U0PD8jAx88XqSJh9uGcPNvWrqml4Fa17U9mQn3rFTI
+ ui7dxgfs
+ XMyDbVcmpTlunidK93LtCtPmGVI7yFnonJfMEQ2MGoNRSVX8tpuOnkLP7OwdPDtRXqzN0sny5XT7HoLLaMJsd/ymCQyGsySxbnZwJxmw26i8ZvfQzgDYwZPyH+C5EUUC4WNhqeU2J08OXUV+O5nDdKjicNe30Yimaz4fqOgXVr9QKKKnXoE2xpBaM7eNEgepHj7eroquruXRxHH5BVDlD6UchskYP6vKTs/whcU2gc0/kj35LLISyFES9tCUAqLrn5nfVsZc3luY3xyxm/sua5ByDGGfGnA7swc79a3X4ymZD4oBOozlHj4jaOdfleR4Dh4RbgekLYJ8keAMKkatOkcZPXhcqi2ZVuK2nEOrRzW8JWG/JvMt+Hanwhk3FEcoVrfNHNkiK3LxfMfyOAipxu6im8pKxsGLQWVn+P/Egc2m5PZgOCr0fv7g2o7jDC5hmSTDZbQAtq5LYTqOnp42pOtTuZmdP4FpUP7e5RyYGkiONz1QdMQsz+kBo4M1Mabel97RBBrk57xAAjUkbahw0vbKtA1qWnD5vq3sQ3+xlUY+odC5SCQRn+FitOSO1g/F2Y9RxEes4fZJknOc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,140 +186,188 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 13:56, Mike Rapoport (Microsoft) wrote:
-> When cma_declare_contiguous_multi() cannot allocate a CMA area as a
-> single range, it falls back to collecting a list of up to CMA_MAX_RANGES
-> largest free ranges above 4G, reserves them in memblock and adds them to
-> cma->ranges.
-> 
-> The list and subsequently cma->ranges are supposed to be sorted in the
-> order of base addresses of the "allocated" ranges.
-> 
-> This implementation has two bugs:
-> 
-> * The allocation may fail even when there is enough free memory because
->   list_insert_sorted() sorts the list in the wrong order.
-> 
->   When the list is full, the largest range is evicted rather than the
->   smallest, the final list is not sorted by address, and the smallest
->   ranges are used first.
-> 
-> * the function may report success while it reserved less memory than
->   requested because sizesum accounts for ranges that were skipped.
-> 
-> And overall it is a lot of list management and open coded range
-> selection for no real gain.
-> 
-> Replace the current code with a loop that finds the largest free range
-> above 4G, reserves as much of it as needed and repeats until the entire
-> area is reserved or CMA_MAX_RANGES ranges are used.
-> 
-> After successful alocation sort the cma->ranges by their base address.
-> 
-> The new code scans free memory once for every range rather than once
-> for all ranges, so it is slightly slower, but it is way simpler and more
-> robust.
-> 
-> Fixes: c009da4258f9 ("mm, cma: support multiple contiguous ranges, if requested")
-> Reported-by: Ivy Lopez <skunkolee@gmail.com>
-> Closes: https://lore.kernel.org/all/cover.1792032699.git.skunkolee@gmail.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
+On 9 Nov 2026, at 15:21, David Hildenbrand (Arm) wrote:
 
-[...]
+> On 11/9/26 20:32, Zi Yan wrote:
+>> __split_folio_to_order() calls prep_compound_page() on each new head pag=
+e
+>> to create a compound page after clear_compound_head(). prep_compound_pag=
+e()
+>> uses non atomic __SetPageHead(). It is mostly OK, since the folio is loc=
+ked
+>> and frozen and no one else is supposed to modify the folio's flags.
+>>
+>> However, code calling migration_entry_wait() can reach the folio by PFN,
+>> then access its flags. It is because softleaf_entry_wait_on_locked() use=
+d
+>> by migration_entry_wait() sets PG_waiters concurrently without taking a
+>> reference and the frozen refcount during split cannot block it. Meanwhil=
+e,
+>> __SetPageHead() does a plain read and write, so PG_waiters atomically se=
+t
+>> by softleaf_entry_wait_on_locked() will be lost if the set happens after
+>> __SetPageHead()'s read and before its write.
+>>
+>> One example code interleaving:
+>>
+>> CPU0: __split_folio_to_order(new_order>0)  CPU1: do_swap_page()
+>>
+>> 1. clear_compound_head(new_head)
+>>    new_head->compound_info =3D 0
+>>    (page_folio(new_head) =3D=3D new_head now)
+>>
+>>                                            2. migration_entry_wait()
+>>                                              softleaf_to_folio(entry)
+>>                                              page_folio() -> new_head
+>>                                              (not the old head any more)
+>>
+>> 3. prep_compound_page(new_head, new_order)
+>>      __SetPageHead(new_head)
+>>        tmp =3D new_head->flags.f  <-- load; PG_waiters =3D=3D 0 in tmp
+>>
+>>                                            4. folio_set_waiters(new_head=
+)
+>>                                              set_bit(PG_waiters, &flags.=
+f)
+>>                                              enqueue on waitqueue, sleep
+>>
+>> 5.     new_head->flags.f =3D tmp | (1UL << PG_head)
+>>        <-- store; overwrites step 4, PG_waiters =3D=3D 0 again
+>>
+>> Later, folio_unlock(new_folio) sees no PG_waiters, skips folio_wake_bit(=
+),
+>> and CPU1 can remain blocked indefinitely.
+>>
+>> Fix it by setting PG_head along with other flags in new_folio->flags bef=
+ore
+>> smp_wmb() and clear_compound_head(). The remaining compound page metadat=
+a
+>> is set after clear_compound_head(). In that way, after
+>> clear_compound_head() makes new_folio visible, nothing overwrites the
+>> PG_waiters from softleaf_entry_wait_on_locked() by modifying
+>> new_folio->flags non-atomically.
+>>
+>> While at it, use data_race() to suppress the KCSAN issue reported by Ye
+>> Liu's patch (the second Closes) on reading ->flags during a folio split.
+>>
+>> Suggested-by: Kiryl Shutsemau <kas@kernel.org>
+>> Reported-by: David Hildenbrand <david@kernel.org>
+>> Closes: https://lore.kernel.org/all/DMHE8BEEER1H.2BIY52NXATPIA@nvidia.co=
+m/
+>> Reported-by: Ye Liu <ye.liu@linux.dev>
+>> Closes: https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112=
+e331291c1@linux.dev/
+>> Fixes: c010d47f107f6 ("mm: thp: split huge page to any lower order pages=
+")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> ---
+>> The issue was raised by David when reviewing Ye Liu's "mm/huge_memory: u=
+se
+>> READ_ONCE() when cloning folio flags during split" [1]. This patch also
+>> supersedes Ye Liu's patch.
+>>
+>> [1] https://lore.kernel.org/all/20261029-data_race_huge_mem-v1-1-112e331=
+291c1@linux.dev/
+>> ---
+>> Changes in v3:
+>> - set PG_head before smp_wmb() like Kiryl suggested instead of
+>>   prep_compound_page_atomic().
+>> - used data_race() to suppress KCSAN reports while at it.
+>> - dropped Lorenzo's ack, since the patch is changed.
+>> - Link to v2: https://patch.msgid.link/20261106-fix-split_folio_to_order=
+-race-v2-1-1b59c67b8af3@nvidia.com
+>>
+>> Changes in v2:
+>> - renamed __prep_compound_head_and_tail() to __prep_compound_page().
+>> - added comments to prep_compound_page() and __prep_compound_page().
+>> - Link to v1: https://patch.msgid.link/20261029-fix-split_folio_to_order=
+-race-v1-1-a483c7451b0d@nvidia.com
+>> ---
+>>  mm/huge_memory.c | 32 ++++++++++++++++++++++++++++----
+>>  mm/internal.h    |  2 ++
+>>  mm/page_alloc.c  | 17 +++++++++++++++--
+>>  3 files changed, 45 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> index bd44d58e86845..99b48d7c988db 100644
+>> --- a/mm/huge_memory.c
+>> +++ b/mm/huge_memory.c
+>> @@ -3714,6 +3714,7 @@ static void __split_folio_to_order(struct folio *f=
+olio, int old_order,
+>>  		 * Don't pass it around before clear_compound_head().
+>>  		 */
+>>  		struct folio *new_folio =3D (struct folio *)new_head;
+>> +		memdesc_flags_t new_flags;
+>>
+>>  		VM_BUG_ON_PAGE(atomic_read(&new_folio->_mapcount) !=3D -1, new_head);
+>>
+>> @@ -3730,8 +3731,16 @@ static void __split_folio_to_order(struct folio *=
+folio, int old_order,
+>>  		 * unreferenced sub-pages of an anonymous THP: we can simply drop
+>>  		 * PG_anon_exclusive (-> PG_mappedtodisk) for these here.
+>>  		 */
+>> -		new_folio->flags.f &=3D ~PAGE_FLAGS_CHECK_AT_PREP;
+>> -		new_folio->flags.f |=3D (folio->flags.f &
+>> +		/*
+>> +		 * ->flags are stable since the folio is locked and frozen.
+>> +		 * data_race() is used because reference-less writers,
+>> +		 * 1. PG_waiters from softleaf_entry_wait_on_locked() and
+>
+> Hm? I thought that case would be handled by your patch? How can they stil=
+l write
+> to the page?
+
+This is V3 of the patch. Instead of using prep_compound_page_atomic(),
+PG_head is written before clear_compound_page(), after which new_head
+is visible to the reference-less writers.
+
+>
+>> +		 * 2. PG_hwpoison from memory_failure(),
+>> +		 * can still write to it.
+>
+> We lose PG_hwpoison left and right when racing with non-atomic updates. I=
+t needs
+> a fundamental fix. Is this really something we should take care of in thi=
+s series?
+
+IMHO, memory_failure()=E2=80=99s reference-less access violates the frozen
+page contract and should be fixed. But I do not think it needs to go
+along with this patch. We discussed HWPoison flag race with
+Michael S. Tsirkin and Miaohe before [1]:
+
+1. Miaohe proposed to reset HWPoison in memory_failure() as a best effort,
+2. mst used RCU for all non-atomic flag accesses,
+3. you also proposed to move HWPoison out of ->flags.
+
+So memory_failure() needs a separate and proper fix series after
+we decide the right solution.
+
+[1] https://lore.kernel.org/all/cover.1782676497.git.mst@redhat.com/
+
+>
+>> +		 */
+>> +		new_flags.f =3D data_race(new_folio->flags.f) & ~PAGE_FLAGS_CHECK_AT_=
+PREP;
+>> +		/* See above for data_race() use */
+>> +		new_flags.f |=3D data_race(folio->flags.f) &
+>>  				((1L << PG_referenced) |
+>>  				 (1L << PG_swapbacked) |
+>>  				 (1L << PG_swapcache) |
+>> @@ -3749,7 +3758,18 @@ static void __split_folio_to_order(struct folio *=
+folio, int old_order,
+>>  #endif
+>>  				 (1L << PG_dirty) |
+>>  				 (1L << PG_dropbehind) |
+>> -				 LRU_GEN_MASK | LRU_REFS_MASK));
+>> +				 LRU_GEN_MASK | LRU_REFS_MASK);
+>
+> --=20
+> Cheers,
+>
+> David
 
 
-Quite the simplification :)
-
->  int __init cma_declare_contiguous_multi(phys_addr_t total_size,
->  			phys_addr_t align, unsigned int order_per_bit,
->  			const char *name, struct cma **res_cma, int nid)
->  {
-> -	phys_addr_t start = 0, end;
-> -	phys_addr_t size, sizesum, sizeleft;
-> -	struct cma_init_memrange *mrp, *mlp, *failed;
-> +	unsigned long size_mb = (unsigned long)total_size / SZ_1M;
-
-Nit: could be const.
-
-> +	phys_addr_t size, remaining, size_align;
->  	struct cma_memrange *cmrp;
-> -	LIST_HEAD(ranges);
-> -	LIST_HEAD(final_ranges);
-> -	struct list_head *mp, *next;
-> -	int ret, nr = 1;
-> -	u64 i;
-> +	phys_addr_t start = 0;
->  	struct cma *cma;
-> +	int nr = 0;
-> +	int ret;
->  
->  	/*
->  	 * First, try it the normal way, producing just one range.
->  	 */
->  	ret = __cma_declare_contiguous_nid(&start, total_size, 0, align,
->  			order_per_bit, false, name, res_cma, nid);
-> +	if (!ret) {
-> +		pr_info("Reserved %lu MiB at %pa\n", size_mb, &start);
-> +		return 0;
-> +	}
->  	if (ret != -ENOMEM)
-> -		goto out;
-> +		goto err;
->  
->  	/*
->  	 * Couldn't find one range that fits our needs, so try multiple
-> @@ -572,151 +556,56 @@ int __init cma_declare_contiguous_multi(phys_addr_t total_size,
->  	 * aligned to @align, and a size that is aligned to
->  	 * both @align and @order_to_bit, things will work out.
->  	 */
-> -	nr = 0;
-> -	sizesum = 0;
-> -	failed = NULL;
-> -
->  	ret = cma_new_area(name, total_size, order_per_bit, &cma);
-> -	if (ret != 0)
-> -		goto out;
-> +	if (ret)
-> +		goto err;
->  
->  	align = max_t(phys_addr_t, align, CMA_MIN_ALIGNMENT_BYTES);
-> -	/*
-> -	 * Create a list of ranges above 4G, largest range first.
-> -	 */
-> -	for_each_free_mem_range(i, nid, MEMBLOCK_NONE, &start, &end, NULL) {
-> -		if (upper_32_bits(start) == 0)
-> -			continue;
-> -
-> -		start = ALIGN(start, align);
-> -		if (start >= end)
-> -			continue;
-> -
-> -		end = ALIGN_DOWN(end, align);
-> -		if (end <= start)
-> -			continue;
-> +	size_align = max_t(phys_addr_t, align, PAGE_SIZE << order_per_bit);
->  
-> -		size = end - start;
-> -		size = ALIGN_DOWN(size, (PAGE_SIZE << order_per_bit));
-> +	remaining = total_size;
-> +	while (remaining && nr < CMA_MAX_RANGES) {
-> +		size = cma_find_free_range(align, size_align, nid, &start);
-
-That's more a memblock helper than a cma helper :)
-
-[...]
-
-> +	/* allocate from lower addresses first */
-> +	sort(cma->ranges, nr, sizeof(cma->ranges[0]), cma_range_cmp, NULL);
-
-That's nice.
-
-Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-
--- 
-Cheers,
-
-David
+Best Regards,
+Yan, Zi
 
