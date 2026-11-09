@@ -1,102 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFCDA606A339
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 05:50:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D47F606A322
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 05:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UpNt+xLP
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=p3or/Anv
 Received: by kanga.kvack.org (Postfix)
-	id C87406B05B3; Mon,  9 Nov 2026 00:50:52 -0500 (EST)
+	id EB1926B05B8; Mon,  9 Nov 2026 00:55:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C385A6B05B8; Mon,  9 Nov 2026 00:50:52 -0500 (EST)
+	id E63786B05B9; Mon,  9 Nov 2026 00:55:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2CD66B05B3; Mon,  9 Nov 2026 00:50:52 -0500 (EST)
+	id D516D6B05BA; Mon,  9 Nov 2026 00:55:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 865536B05B3
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 00:50:52 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 05804C05B5
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:50:51 +0000 (UTC)
-X-FDA: 85414506744.02.CAF0281
-Received: from mta1.migadu.com (out-241.mta1.migadu.com [95.215.58.241])
-	by imf14.hostedemail.com (Postfix) with ESMTP id BA69E100003
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:50:49 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UpNt+xLP;
-	spf=pass (imf14.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794203450;
-	b=mqk+uCE+zt5IINzX9r750Yjwc7wWmm2oCC5FITix5y3LPEK/sPDO+KeH9D3XCBPKZdB8Cq
-	Pf2ebh1Mj3WN6YV2Ii5NEy+aCCCESpI1pinSnco9PMXAusirIS5OusTB9pQ2l9XE4YQBhl
-	MkyeGdFSYvJJslN7h7A39cyzgWnUO5s=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=UpNt+xLP;
-	spf=pass (imf14.hostedemail.com: domain of hui.zhu@linux.dev designates 95.215.58.241 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id AA8536B05B8
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 00:55:08 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 412081405B8
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:55:08 +0000 (UTC)
+X-FDA: 85414517496.08.98CBD78
+Received: from mta1.migadu.com (out-113.mta1.migadu.com [95.215.58.113])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 32353C0004
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:55:05 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="p3or/Anv";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.113 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794203450;
+	s=arc-20220608; t=1794203706;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MNwtJGlaqUCyQUQFpRisrhaSPNbClPkTOsfsk4c6288=;
-	b=StDBhcmVEYIIJzEUxiUIApc20IMopYKC9ZZgvdIUsHVOJiFNEfjHLy+a+4mOntXwfMTgqW
-	Bm5OnUYhZgceTKBGWDGYOdJyh57qp1c8krMNZwj/o6+c3Ha/rgcH/pxMwUkmaSMpfkiPvZ
-	7iyojjJCSAHauNNUfVw7wEwqPcwTgps=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=W/AjPF4lUvH2Tm2tPsJdtvyHfSlcx6yLvdL+dxtRtZY=;
+	b=ofzz+x9Ty7YFoQi85zqDEH3YxaAty8Ra4DtfIoF7FTSa0azfQDCIsdhZNemwTE6Aapo42h
+	b/KhrTjo46zTE7rXnSoIb04SUjVSQltsGNaSaQG85CE9oQX7eWfYggvWUv0KAaB5uU2m+V
+	mzxO2voHxXgz/9bioXtuXG056xbjYYU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="p3or/Anv";
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf28.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.113 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794203706;
+	b=knnwA6mArpzUCyCtpMw4c1QGIHoIPkAr1jafMHAeIkx79T3GhHwbTnSxsayXYcsPacGPqH
+	wIiG4wgRqkvAv7sccatK1WG7GA0iEuxe/7qNkMxh1zZladIKS2esUutRKsa8fYGR5HWQyq
+	sU1DB0iJymne3a0te9CsEFVQzoSMYE8=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=05YxRWNZJI30oJfOmyqMZX5TbgRYCDrZaXVZFkrDSX0=;
+DKIM-Signature: a=rsa-sha256; bh=MY4RYe2ggYDq1Sriom4d+L+Pul0dtqxzyvCW4eNUg78=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794203448; v=1; x=1794808248;
- b=UpNt+xLP4wHFET68R+zvjaQZyHcS+yE5UEzVYOILWclodaHHroQfBK3ir6+BfF8HYFKMc0na
- 8RTLf8bktd2k1+DmSgBoftOKZkUPuH8FkWCROqQw/HUKYo0gAXSHJl/9TdaRwRjNF6d+gVeD7WT
- hCwPZi+9YgjCKbjZQlVBahnA=
+ t=1794203703; v=1; x=1794808503;
+ b=p3or/AnvPrg8+P3hoZmkf1hdAJXVb4pvpO+U7/oBlhPwwuIRlgJxEFgavYzeABtbUepzkoSD
+ Q24dW18AXftUL5tb3erHvFcXyNg45jpAmYlQaD7aOW3Bm0Oda53lk86g/Rt6HrjhDMocJBy7/b1
+ YsyXbsWfVP4GBaKmU5zgyiy0=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id a9500b413c04da7b;
-	Mon, 09 Nov 2026 05:50:45 +0000
-X-Mizu-Trace-ID: a9500b413c04da7b
+Received: by mta10.migadu.com with ESMTPS id 1566e80ae3ec20ca;
+	Mon, 09 Nov 2026 05:55:03 +0000
+X-Mizu-Trace-ID: 1566e80ae3ec20ca
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <f03d8a2f-7803-4503-9485-54a9ddcaf332@linux.dev>
-Date: Mon, 9 Nov 2026 13:50:32 +0800
+From: Baoquan He <baoquan.he@linux.dev>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	david@kernel.org,
+	chrisl@kernel.org,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	baohua@kernel.org,
+	youngjun.park@lge.com,
+	corbet@lwn.net,
+	hannes@cmpxchg.org,
+	chengming.zhou@linux.dev,
+	kunwu.chan@gmail.com,
+	klarasmodin@gmail.com,
+	linux-kernel@vger.kernel.org,
+	Baoquan He <hebaoquan@kylinos.cn>
+Subject: [PATCH v5 00/19] mm, swap: extendable swap devices (xswap phase I)
+Date: Mon,  9 Nov 2026 13:54:36 +0800
+Message-ID: <20261109055455.536925-1-baoquan.he@linux.dev>
+X-Mailer: git-send-email 2.54.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (macOS/Intel)
-Subject: Re: [PATCH v4] mm/memory: use pmdp_get_lockless() for the pmd read in
- do_fault_around()
-To: Greg Ungerer <gerg@polyxeno.com>,
- "David Hildenbrand (Arm)" <david@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Geert Uytterhoeven <geert@linux-m68k.org>,
- Sam Creasey <sammy@sammy.net>
-Cc: Hui Zhu <zhuhui@kylinos.cn>, stable+noautosel@kernel.org,
- linux-m68k@lists.linux-m68k.org
-References: <20261104091050.117076-1-hui.zhu@linux.dev>
- <dec26f4a-138a-4cd7-b000-4bda7c61af82@kernel.org>
- <88a6bf17-2189-44a8-8255-50b7ee1d80f2@linux.dev>
- <e6ed4165-03fd-4204-b25a-bafc37c3930c@polyxeno.com>
-Content-Language: en-US
-From: Hui Zhu <hui.zhu@linux.dev>
-In-Reply-To: <e6ed4165-03fd-4204-b25a-bafc37c3930c@polyxeno.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: re46opqazab7e5mchzb6jw4ejhgg7ojq
-X-Rspamd-Queue-Id: BA69E100003
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 32353C0004
+X-Stat-Signature: zwkpae3z1uxk9139e9a5gmrogpw877w9
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794203449-244449
-X-HE-Meta: U2FsdGVkX19Fl5auW/nQKAQzI7HWUXJsc0JFHHf+Zt6V1snUbDCS5sPjaFySshfEKJi/ox8TO6hhuSPawmWxsCBLAXivFpEiZ+Qjm741dostf6AeIxjyoY9lBoJTdpqYP39QtdTZlaI0+sCfjOD7yNMmpKgI9UuIpcCouM1RKNuK8//8ZWyyVLpBQ6FGfVljHbV0f5MDHIwoomv9Bmu9Ny4fvTmJSqt2vHUtKJoVDgmSK2vc2qJuwlXN6ZYmQG+ym2gmsvK85O+k/z9jow8BJHJt9RPwtmuEQ6RriKX1Or8GN51mkihxsggBAOs+XppDOjrQSFZ3YkXEcydiX0/4wTNtv87bBUCQc3d0/CVo2EgZ064nfqg3r/V6ki1fasX8wetcbzXuWDbzDNH6xglhxC+A4EBpQGE20rkDMpdyCE7aPCpGeNEWKx96fVIA53u3BcM3GnDH8bM5Z30X4obp5LPic7HWPS68ZKNI/0AZD8+BNlT8nUxjaESYjbNNU7Sbr5i3W4bZ41upSyk88M5huqCkqLqUb3EgD2T9kGi/6rrG9vGL+Vxe5puxKCwE+9D0g1AIZar+/C4vlqxf8pkZoS+XLkae/bdLrfeqdHuR7cohD7ecxZHz4xAPtklHjYeyhT3KKuLy2K9vjAz0z1yzxo2ItMqmcGksX711q3awbr8A8dbGbQtnQFsB2c45q5kBg6QEYfhz4TktYjpbKtkMnVQIcir0JUrTqkVmuz6oWVnu2nL2PTid+hx6WS0ky0dd21hkEjcBDfePvvgwBeieuHn8wyrxAzizwlo/N1cdbeNMpBDD3j+nFhHB5M5hoFsL1SvSSmyUUzMIQj25bUR2OLJERbqOhF0eZPI6m41vbGgBn13tDTYo0P4a8LOgYZFYvMfF3K0c3SrwMnyLsAvImjwou1Y+1xYRa8W33gOzCLDGatr/A9bGyuYiqKv2t4ymit3Od2gfHrc9rqaPGI8
- ckLDz3HV
- 4DeAuCdwLOmk8EQvp8zquH18wEtgFs9xyy0zw0zSKDN3ccGOCKp1CpKj4tMM8CRUuAT5tngYokQi8Vd8KijPZI51IKsgiZRaAdxbEDavsIAp4X1xB0YHCeh6GVoVxoMOb7HyEM42f9G0EyKm0jH7fGRed8WM4iF/0+L7ifYZG5I9RajDxsqM68nbdcixMtX6hsYcCc+X6DHjHR7f0uVb62o7aLry1Qlwf6Jt7g6QZzzvnb/nKUbdRWUqkhlDpptct21ilnqkkJ+ski7OwTEgmzA1rj6qA7wuqDxuHHyn8oPBJ/YZ7Qlb1BzSXKrAs1LNC3HiRMc2AK1g41GyDNtd8v++0BsYwqABcjmzCSc+ob4O2JX+CQkY/wtrGzW77WIq1tO61S/xqtyuPjo4IR1b+dnWrjvrnOAbFy9tvGxUvAiSsyke2zr02/u2g8IAFGn2vC0Z1KA3TGXiuuCjquHVCUqN9F1svTelSPx/hMZREXHntq1A=
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794203705-797649
+X-HE-Meta: U2FsdGVkX1/FtXlyVW+JmcPwgjiHAKtU+1WCAnAiOhECJv9Y66C4aS3NoB58+aCJLWU7GaMGpjisXJtl8pu2T0CU09MN1bx2XiszDjoqfaXZD4vsiZhg5OabpNHHLqFCbkEazcD63Kcqm1e3V+t0weRyS3mIhjXc3gosKU+2Fms5E3quA7tkh0j349Vi9bghbfkov7u+d3lM9sZYlZcHIcVQQwPATVd6Fix4//tlvoS0Jqr79WsWGz5kl4Nh8j/S2XjbWFvpaaCI8jQ7gNoPBJhJ+jCmhlM2GA0+RPnOvuVuxHX+v3Dtlll9VcjaAmHgQW2YnekB1lzE9Kt0W7iflk8eJGhB876s+3G/VDyujyMC0CV8SLFi2LSNUYtu03FcP8NIklV98AE+IlcDS/9p0OEOHGLL1XClsAOtDED/xJ2j4liyl6onNyGW94/PFTeXdWNTFrHJveWSWbgGqrMKaRZ3rWBp/KhQIew/9+1p4+Okp37BOcxU+sKqYONJLDIwlf40Gf1+9ZNSPgQagVnqlI7+vW87zjoELX9nHbU8iLwSfCLudj82GvcliaS10CYZS2rsZ6wS+kLUrgecgf25lv+5cA/tGRP5pZFdTjhy7LIjz5CtlvESUS9X7uxh+qCVHStB3ferjsPPvaYz+QIUN/vS3JkYJxlzKSzGBnhZ67JL13rtD8LPcrDUEugbpmTT8qzVUUU85uRbKCibQtMm+IpKx7LMhOq4ThHIqIqHRUwZDYaATU5jpwwMcg3ZUgnyBdv+LRgPDevBBGoOvPfG2NyWjWsWcaEvJ20b8jS2VmgEprFPu/tulsdHBg2xEJrPXDdiBj4lHpdz1ULmQiOl3WOjcnezqdvMV8GHAe5ZChb1Ag6nwKxIsQtdQd9APamjeXHqzaSK1OlFCMYQp/IDTz4oE2iHDHFyEN39XOtNFj3iKqWWvEpBdt+vEDhZWR7Q7wc+Dfni1zmmtiZHKA6
+ +N8M59Hj
+ jrZt8aMkrLT3FM7QE4t7GwaKmCHY7Y3cP/t8ravMnQrSV9+SjRDn1Zhm1XWwtPzJykkUGKm3Oi3OlRWQ3jLc6swcU9jXTUkyiQyRIrtGcs9xZa+9t7AxkWsYREeiQNgumEHIURCFIF0G/HDnoT9DcuMc/eDbIWVH3Nj5Mzx3+bjiFLP1sfkxD+boc8pv7NdGD8OwZRKH3+ALj+0Z83qu+ygx+NU/oHtGgTWejSe9NKfDSiJkq7e9DvCTvRQgNoX/gdRAbQB33YRTqtccgnr5QkJ83NkLRPGv2gibHTFH/bq78/FB++uX19zzUCQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,358 +102,377 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-2026/11/6 20:08, Greg Ungerer:
+From: Baoquan He <hebaoquan@kylinos.cn>
 
-Hi Greg,
+A normal swap device has a fixed size, set when it is enabled. This does
+not fit zswap well. With zswap the swapped data stays in RAM in
+compressed form, so how much swap a machine can really use depends on how
+well the workload compresses, not on a number we pick before we know the
+workload. Make the device large enough for the worst case and most of it
+is never used. Make it just large enough for the average case and the
+machine runs out of swap while zswap still has free room.
 
-> Hi Hui,
->
-> On 6/11/26 13:03, Hui Zhu wrote:
->> 2026/11/5 20:00, David Hildenbrand (Arm) :
->>> On 11/4/26 10:10, Hui Zhu wrote:
->>>> From: Hui Zhu <zhuhui@kylinos.cn>
->>>>
->>>> KCSAN reports a data-race in do_read_fault / pmd_install; the same code
->>>> is in mainline:
->>>>
->>>>     write (marked) to 0xffff8d52a75fb810 of 8 bytes by task 27487 on cpu 5:
->>>>      native_set_pmd arch/x86/include/asm/pgtable_64.h:83 [inline]
->>>>      pmd_populate arch/x86/include/asm/pgalloc.h:84 [inline]
->>>>      pmd_install+0xe0/0x120 mm/memory.c:444
->>>>      finish_fault+0x5bc/0xb00 mm/memory.c:5204
->>>>      do_cow_fault mm/memory.c:5432 [inline]
->>>>      do_fault+0x5d0/0x6e0 mm/memory.c:5526
->>>>      handle_mm_fault+0x211/0x4c0 mm/memory.c:6218
->>>>      __mm_populate+0x144/0x270 mm/gup.c:2207
->>>>      __do_sys_mlockall+0x2cd/0x380 mm/mlock.c:764
->>>>
->>>>     read to 0xffff8d52a75fb810 of 8 bytes by task 27527 on cpu 9:
->>>>      do_fault_around mm/memory.c:5341 [inline]
->>>>      do_read_fault+0x162/0x670 mm/memory.c:5381
->>>>      do_fault+0x31a/0x6e0 mm/memory.c:5524
->>>>      handle_mm_fault+0x211/0x4c0 mm/memory.c:6218
->>>>      faultin_page_range+0x227/0x530 mm/gup.c:2156
->>>>      __x64_sys_madvise+0x67/0x80 mm/madvise.c:1479
->>>>
->>>>     value changed: 0x0000000000000000 -> 0x000000001386c067
->>>>
->>>> Both paths only hold mmap_lock for read, so do_fault_around() tests
->>>> vmf->pmd while pmd_install() populates it under the pmd lock.  The race is
->>>> benign: a stale pmd_none() only wastes the prealloc_pte, which do_fault()
->>>> frees again, and a pmd seen as populated only makes ->map_pages() find no
->>>> PTE and do_read_fault() fall back to __do_fault().
->>>>
->>>> The load still has to be lockless-safe.  The store side already is: on
->>>> i386-PAE, pmd_install() publishes both halves of the pmd with a single
->>>> cmpxchg8b.  The load side is not.  pmdp_get() is a plain READ_ONCE() over
->>>> a pmd_t that is wider than a word there, so it becomes two 32-bit loads
->>>> and can return the low half of one pmd together with the high half of
->>>> another.  Use pmdp_get_lockless(), the accessor for pmd reads that do not
->>>> hold the pmd lock: it re-reads until both halves come from the same pmd.
->>>> It is also what __pte_offset_map() already uses on this very pmd a few
->>>> instructions later.
->>>>
->>>> Only X86_32+X86_PAE and SH+X2TLB compile the retry loop, these being the
->>>> GUP_GET_PXX_LOW_HIGH selectors that have more than two page table levels.
->>>> mips32 with 64-bit physical addresses selects GUP_GET_PXX_LOW_HIGH too,
->>>> but is 2-level and so falls back to pmdp_get().  On every other
->>>> configuration, x86-64 included, pmdp_get_lockless() is pmdp_get(): the
->>>> pmd is loaded in one go, the READ_ONCE() silences the report the same
->>>> way, and there is no functional change.
->>>>
->>>> Fixes: 7267ec008b5c ("mm: postpone page table allocation until we have page to map")
->>>> Cc: stable+noautosel@kernel.org # KCSAN annotation only, no functional change
->>>> Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
->>>> Acked-by: Lorenzo Stoakes <ljs@kernel.org>
->>>> ---
->>>> Changelog:
->>>> v4:
->>>> Commit message only, the diff is identical to v3.  Spell out the affected
->>>> arches and add the lore links for v1-v3 (Lorenzo Stoakes).  Reword the
->>>> cmpxchg8b sentence: the store is already atomic, it is the load that tears.
->>>> Add the Fixes: tag (David Hildenbrand).
->>>> v3:
->>>> https://lore.kernel.org/all/20261103014749.96764-1-hui.zhu@linux.dev/
->>>> Shorten the comment to one line (David Hildenbrand).
->>>> v2:
->>>> https://lore.kernel.org/all/20261102093120.92654-1-hui.zhu@linux.dev/
->>>> Use pmdp_get_lockless() instead of pmdp_get() (David Hildenbrand).
->>>> v1:
->>>> https://lore.kernel.org/all/20261102031308.66177-1-hui.zhu@linux.dev/
->>>>
->>>>    mm/memory.c | 3 ++-
->>>>    1 file changed, 2 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/mm/memory.c b/mm/memory.c
->>>> index 0fb676dd2bd63..f25c2ce0ef153 100644
->>>> --- a/mm/memory.c
->>>> +++ b/mm/memory.c
->>>> @@ -6017,7 +6017,8 @@ static vm_fault_t do_fault_around(struct vm_fault *vmf)
->>>>        to_pte = min3(from_pte + nr_pages, (pgoff_t)PTRS_PER_PTE,
->>>>                  pte_off + vma_pages(vmf->vma) - vma_off) - 1;
->>>>    -    if (pmd_none(*vmf->pmd)) {
->>>> +    /* pmd_install() rechecks pmd_none() under the pmd lock. */
->>>> +    if (pmd_none(pmdp_get_lockless(vmf->pmd))) {
->>>>            vmf->prealloc_pte = pte_alloc_one(vmf->vma->vm_mm);
->>>>            if (!vmf->prealloc_pte)
->>>>                return VM_FAULT_OOM;
->>> Fun, this breaks some odd m68k configs because they do some legacy weird stuff with pmd_none().
->>>
->>> I'll throw in the following cleanup. CCing m68k maintainers: I would drag
->>> this along with this fix here unless you disagree.
->>>
->>>   From e3c739933a04743e3923f6f39a603e93f2700304 Mon Sep 17 00:00:00 2001
->>> From: "David Hildenbrand (Arm)" <david@kernel.org>
->>> Date: Thu, 5 Nov 2026 12:49:38 +0100
->>> Subject: [PATCH] m68k/mm: simplify
->>>    pmd_none()/pmd_val()/pmd_present()/pmd_bad()
->>>
->>> pmd_t on m68k used to contain 16 words. Commit ef22d8abd876 ("m68k:
->>> mm: Restructure Motorola MMU page-table layout") reduced Motorola PMDs
->>> to one word; Sun3 and ColdFire use word-sized folded PMDs.
->>>
->>> Use direct member access in pmd_val() and replace the Sun3 and ColdFire
->>> pointer-taking predicate wrappers with inline functions taking values.
->>>
->>> This allows us to write something like:
->>>
->>>     if (pmd_none(pmdp_get(pmdp)))
->>>
->>> While at it remove unused pmd_present2() and commented-out pmd_bad()
->>> on sun3.
->>>
->>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->>> ---
->>>    arch/m68k/include/asm/mcf_pgtable.h  | 20 +++++++++++++++-----
->>>    arch/m68k/include/asm/page.h         |  2 +-
->>>    arch/m68k/include/asm/sun3_pgtable.h | 23 +++++++++++++++--------
->>>    3 files changed, 31 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/arch/m68k/include/asm/mcf_pgtable.h b/arch/m68k/include/asm/mcf_pgtable.h
->>> index f45a882238dbb..4efa8e3e1e98a 100644
->>> --- a/arch/m68k/include/asm/mcf_pgtable.h
->>> +++ b/arch/m68k/include/asm/mcf_pgtable.h
->>> @@ -130,11 +130,21 @@ static inline void pte_clear(struct mm_struct *mm, unsigned long addr,
->>>      #define pte_page(pte)    virt_to_page(__pte_page(pte))
->>>    -static inline int pmd_none2(pmd_t *pmd) { return !pmd_val(*pmd); }
->>> -#define pmd_none(pmd) pmd_none2(&(pmd))
->>> -static inline int pmd_bad2(pmd_t *pmd) { return 0; }
->>> -#define pmd_bad(pmd) pmd_bad2(&(pmd))
->>> -#define pmd_present(pmd) (!pmd_none2(&(pmd)))
->>> +static inline int pmd_none(pmd_t pmd)
->>> +{
->>> +    return !pmd_val(pmd);
->>> +}
->>> +
->>> +static inline int pmd_bad(pmd_t pmd)
->>> +{
->>> +    return 0;
->>> +}
->>> +
->>> +static inline int pmd_present(pmd_t pmd)
->>> +{
->>> +    return !pmd_none(pmd);
->>> +}
->>> +
->>>    static inline void pmd_clear(pmd_t *pmdp) { pmd_val(*pmdp) = 0; }
->>>      diff --git a/arch/m68k/include/asm/page.h b/arch/m68k/include/asm/page.h
->>> index d30f8b2f15927..09a2c020ec992 100644
->>> --- a/arch/m68k/include/asm/page.h
->>> +++ b/arch/m68k/include/asm/page.h
->>> @@ -17,7 +17,7 @@
->>>     */
->>>    #if !defined(CONFIG_MMU) || CONFIG_PGTABLE_LEVELS == 3
->>>    typedef struct { unsigned long pmd; } pmd_t;
->>> -#define pmd_val(x)    ((&x)->pmd)
->>> +#define pmd_val(x)    ((x).pmd)
->>>    #define __pmd(x)    ((pmd_t) { (x) } )
->>>    #endif
->>>    diff --git a/arch/m68k/include/asm/sun3_pgtable.h b/arch/m68k/include/asm/sun3_pgtable.h
->>> index 704442a391fd7..5867d24032655 100644
->>> --- a/arch/m68k/include/asm/sun3_pgtable.h
->>> +++ b/arch/m68k/include/asm/sun3_pgtable.h
->>> @@ -109,14 +109,21 @@ static inline void pte_clear (struct mm_struct *mm, unsigned long addr, pte_t *p
->>>    #define pmd_page(pmd)        virt_to_page((void *)pmd_page_vaddr(pmd))
->>>      -static inline int pmd_none2 (pmd_t *pmd) { return !pmd_val (*pmd); }
->>> -#define pmd_none(pmd) pmd_none2(&(pmd))
->>> -//static inline int pmd_bad (pmd_t pmd) { return (pmd_val (pmd) & SUN3_PMD_MASK) != SUN3_PMD_MAGIC; }
->>> -static inline int pmd_bad2 (pmd_t *pmd) { return 0; }
->>> -#define pmd_bad(pmd) pmd_bad2(&(pmd))
->>> -static inline int pmd_present2 (pmd_t *pmd) { return pmd_val (*pmd) & SUN3_PMD_VALID; }
->>> -/* #define pmd_present(pmd) pmd_present2(&(pmd)) */
->>> -#define pmd_present(pmd) (!pmd_none2(&(pmd)))
->>> +static inline int pmd_none(pmd_t pmd)
->>> +{
->>> +    return !pmd_val(pmd);
->>> +}
->>> +
->>> +static inline int pmd_bad(pmd_t pmd)
->>> +{
->>> +    return 0;
->>> +}
->>> +
->>> +static inline int pmd_present(pmd_t pmd)
->>> +{
->>> +    return !pmd_none(pmd);
->>> +}
->>> +
->>>    static inline void pmd_clear (pmd_t *pmdp) { pmd_val (*pmdp) = 0; }
->>>      /*
->> Hi David,
->>
->> Thanks for picking this up, and for the m68k cleanup!
->>
->> Tested-by: Hui Zhu <zhuhui@kylinos.cn>
->>
->> Tested with gcc-m68k-linux-gnu 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04), on
->> three configs that between them cover all three m68k families:
->>
->>    amiga_defconfig                    Motorola MMU, PGTABLE_LEVELS=3
->>    sun3_defconfig                     SUN3,  PGTABLE_LEVELS=2
->>    m5208evb_defconfig + CONFIG_MMU=y  ColdFire,  PGTABLE_LEVELS=2
->>
->> Without your patch none of the three can build mm/memory.o, and each fails
->> at a different site:
->>
->>    arch/m68k/include/asm/page.h:20:27: error: lvalue required as unary '&' operand
->>    arch/m68k/include/asm/sun3_pgtable.h:113:33: error: lvalue required as unary '&' operand
->>    arch/m68k/include/asm/mcf_pgtable.h:134:33: error: lvalue required as unary '&' operand
->>
->> With it, all three build a full vmlinux with zero warnings.
->>
->> Two things that might save you some time:
->>
->> - m68k looks like the only arch with this pattern. Grepping arch/ and
->>    include/ for '(&x)->pmd' and '(&(pmd))' finds nothing outside arch/m68k/,
->>    and pmd_none2()/pmd_bad2()/pmd_present2() only exist in mcf_pgtable.h and
->>    sun3_pgtable.h. So your three hunks look complete to me.
->>
->> - No m52xx/m54xx defconfig enables CONFIG_MMU, so the ColdFire path through
->>    mcf_pgtable.h has no defconfig coverage at all; you have to flip it on by
->>    hand (scripts/config -e MMU && make olddefconfig) to reach it. That is
->>    probably how this went unnoticed for so long - my patch has been breaking
->>    m68k since v1, because pmdp_get() returns by value just like
->>    pmdp_get_lockless() does.
-> The m5475evb_defconfig is supposed to have MMU enabled:
->
->       $ ARCH=m68k CROSS_COMPILE=m68k-linux-uclibc- make m5475evb_defconfig
->         HOSTCC  scripts/basic/fixdep
->         [snip]
->         HOSTLD  scripts/kconfig/conf
->       #
->       # configuration written to .config
->       #
->       $
->       $ grep CONFIG_MMU .config
->       CONFIG_MMU=y
->       CONFIG_MMU_COLDFIRE=y
->       CONFIG_MMU_GATHER_NO_RANGE=y
->       CONFIG_MMU_GATHER_MERGE_VMAS=y
->       CONFIG_MMU_LAZY_TLB_REFCOUNT=y
->
-> But something ends up disabling it when you compile.
-> I'll fix this.
->
->
->> I also checked whether your patch changes code generation, by building the
->> same tree with and without it and comparing every object with objdump -d
->> (plain cmp is useless here, timestamps and link layout shift everything).
->> Counting only objects whose disassembly actually differs:
->>
->>    amiga      3733 objects, 0 changed
->>    sun3       3553 objects, 3 changed: mm/memory.o, mm/pgtable-generic.o,
->>                                        mm/vmalloc.o
->>    m5208evb    716 objects, 1 changed: mm/pgtable-generic.o
->>
->> amiga is the interesting one. It is the only config where pmd_val() itself
->> changed, and it comes out bit-for-bit identical, which also says the build
->> is reproducible enough for this comparison to mean anything. sun3 and
->> ColdFire differ because pmd_none() stops taking the address of its
->> argument, and the direction is an improvement. In mm/vmalloc.o on sun3 one
->> function loses a forced spill:
->>
->>    -  subql #4,%sp
->>    -  movel %d0,%sp@(12)     /* spill the pmd value */
->>    -  lea %sp@(12),%a1       /* &(pmd) */
->>    -  moveal %a1@,%a0        /* read it back */
->>
->> and turns into a 13 instruction function with no stack slot at all.
->> Instruction counts are otherwise flat (sun3 mm/memory.o 7373 -> 7373,
->> mm/vmalloc.o 5514 -> 5515), so it is not a size regression.
->>
->> Dragging the cleanup along with the fix sounds right to me. It is a hard
->> prerequisite, and sent on its own it would just look like a cleanup with no
->> urgency. I assume it goes in ahead of 6ab55cfd in core-7.5.misc, so that
->> linux-next never sees a broken m68k in between.
->>
->> One red herring in case anyone else pokes at this: m5208evb with its stock
->> defconfig (CONFIG_MMU not set) fails to build mm/memory.o for reasons that
->> have nothing to do with any of this - implicit declarations of
->> pte_is_uffd_wp_marker() and pmd_pgtable(), plus a parse error in
->> include/linux/mm.h. Pre-existing, and it goes away once MMU is on.
-> You should not be able to set MMU=y if configured for the M5208.
-> It doesn't have an MMU. You want the 5475, 5485 or 54418 to test
-> valid MMU=y configurations.
->
-> Regards
-> Greg
->
->
->
+xswap is a swap device with no backing file. In this phase its swap
+entries hold pages in zswap, and its cluster_info array lives in a
+VM_SPARSE area that is mapped a chunk at a time, so the device covers a
+large swap address space and costs only the chunks it has actually
+mapped. The device grows when the workload needs it and gives the tail
+back when it does not.
 
-You are right on both counts, and that mail of mine had three things
-wrong.
+This series is the device itself: the sparse cluster array, growth and
+shrink, and the interfaces that create and destroy one. It is phase I of
+four; the physical backend, the swap accounting, and the swap-table
+backend records (zswap w/o xarray) build on it.
 
-1. "No m52xx/m54xx defconfig enables CONFIG_MMU" - wrong.  I grepped the
-defconfig fragments for CONFIG_MMU=y, but MMU is 'default y', so an
-enabled MMU never appears in the fragment.  m5475evb and m54418evb
-both give CONFIG_MMU=y, as you show.
+Design notes
+------------
 
-2. My "m5208evb + CONFIG_MMU=y" test config was not a valid config.
-M520x is 'depends on !MMU', so forcing MMU on leaves the SoC choice
-unsatisfiable and olddefconfig silently drops it:
+In this phase the device is only an swap address space. si->max is set
+when the device is created and does not change for its lifetime; what
+changes is how much of it is mapped. swap_info_struct carries
+nr_clusters_max (the swap address space) and nr_clusters_mapped (the
+mapped prefix), and the two walkers that touch cluster_info are bounded
+by the latter.
 
-before:  # CONFIG_MMU is not set / CONFIG_M520x=y
-after:   CONFIG_MMU=y / CONFIG_MMU_COLDFIRE=y / CONFIG_M520x gone
+Growth starts when 85% of the mapped range is in use and maps until 65%.
+The call comes from the cluster allocation path. Growing maps pages into
+the VM_SPARSE area, and mapping can sleep, so it cannot be done inside
+the allocation that would otherwise fail: the swap-out path would then
+have nothing to fall back on. A grow maps at most XSWAP_GROW_CHUNKS
+chunks at a time.
 
-Please disregard the m5208evb row in my codegen numbers.
+Shrink gives the free tail back when the mapped range is at most 50% in
+use and stops at 70%. It is triggered when a cluster becomes completely
+free, from a workqueue, because it takes xswap_lock and sleeps in
+synchronize_rcu() and vm_area_unmap_pages(). Shrinking on a smaller drop
+is not useful: growth happens on demand, so the same clusters would just
+be mapped again, and every unmap also costs an RCU grace period. The two
+target points sit inside each other's threshold, so a grow cannot leave
+the range in a state the shrink would undo, and the other way around.
 
-3. The "red herring" I flagged was my own doing, not a pre-existing
-problem.  mm/Makefile has 'mmu-$(CONFIG_MMU) := ... memory.o', so a
-NOMMU config never builds mm/memory.o at all; I asked for a target
-that config does not have.  Sorry for the noise on that one.
+Configuration
+-------------
 
-Retested with the configs you named (7.4-rc1 plus the do_fault_around
-change plus David's cleanup, gcc-m68k-linux-gnu 13.3.0):
+The device is behind CONFIG_XSWAP, which depends on SWAP, 64BIT, ZSWAP
+and SYSFS. CONFIG_XSWAP_DEFAULT_MAX sets the default size of a new
+device; it takes a percentage of RAM, a size, or "max", and defaults to
+"200%":
 
-m5475evb_defconfig   without David's patch: mm/memory.o fails at
-mcf_pgtable.h:134 with it: full -j24 build ok, vmlinux 4215344
-bytes, 0 warnings
+  CONFIG_XSWAP_DEFAULT_MAX="200%"
 
-m54418evb_defconfig  without David's patch: same mcf_pgtable.h:134
-failure
+xswap.max= on the kernel command line overrides it:
 
-So the Tested-by I sent covers amiga, sun3 and m5475evb.  It is
-build-tested only - I have no m68k hardware here to boot.
+  xswap.max=8G          8 GiB
+  xswap.max=300%        three times RAM
+  xswap.max=max         the largest size the device can address
 
-On MMU being disabled when you compile: I cannot reproduce that. Here
-m5475evb_defconfig gives CONFIG_MMU=y, olddefconfig reports no change,
-two consecutive defconfig runs produce an identical .config, and a full
-build finishes with CONFIG_MMU=y and CONFIG_M547x=y still set and
-.config untouched.  Two differences from your setup that might matter:
-I am on a glibc toolchain rather than uclibc, and building out of tree
-with O= rather than in tree.
+"max" stops at the swap offset limit, capped so that a cluster index fits
+in an unsigned int. A slot is still a swap entry, so that limit applies
+even though the data never goes to a physical address.
 
-One observation, which may well be unrelated.  m5475evb_defconfig never
-sets CONFIG_M547x - it only ends up with it because the "ColdFire SoC
-type" choice defaults to M520x, which is unavailable under MMU=y, so
-kconfig falls back to the first usable member. m54418evb_defconfig sets
-CONFIG_M5441x=y explicitly.  If that fallback is what breaks on your
-side, making m5475evb explicit would sidestep it.
+The swap address space cannot move once the device exists, so the size
+is settled at creation. That is why this is a boot parameter and not a
+runtime knob.
 
-Best,
-Hui
+Identity
+--------
+
+A device needs a name that survives while it exists. The swap_info type
+is a slot in swap_info[] and is reused after swapoff, so it cannot be
+one. Each device instead takes an id from a per-boot counter, assigned
+at creation and never reused, and that id is what /proc/swaps shows:
+
+  Filename                Type        Size        Used        Priority
+  xswap1                  xswap       10485756    0           32767
+
+The same id names the debugfs file and is what destroy takes:
+
+  # cat /sys/kernel/debug/xswap/xswap1
+  type 0
+  clusters_max 5120
+  clusters_mapped 73
+  usage_pages 0
+  tail_free 72
+  grows 0
+  shrinks 0
+  # echo 1 > /sys/kernel/mm/xswap/destroy
+
+A file-less device has no swapon, so /sys/kernel/mm/xswap/create makes
+one. The only argument it takes is a priority; the size comes from
+xswap.max=. A priority can be given per device while a size cannot:
+
+  # echo > /sys/kernel/mm/xswap/create          default priority
+  # echo 100 > /sys/kernel/mm/xswap/create      priority 100
+
+The default is the highest priority, SWAP_FLAG_PRIO_MASK, so an xswap
+device is tried first, ahead of any ordinary swap device. Setting a
+lower priority is allowed.
+
+The teardown of a device is shared with sys_swapoff() rather than
+duplicated.
+
+swapoff
+-------
+
+sys_swapoff() opens the path first. An xswap device has no file, so the
+name shown in /proc/swaps cannot be opened. Only a -ENOENT from that
+open is taken for an xswap device, and the device with that name is torn
+down. A real file or directory keeps precedence: a path that fails for
+another reason is never matched. This is what makes both of these work:
+
+  # swapoff xswap1
+  # swapoff -a
+
+The name is matched exactly, and /proc/swaps prints the one to use: a
+path such as ./xswap1 is not the bare name and is not recognized.
+
+The device needs zswap. Without it swapout takes a swap entry and frees
+no memory, so creating one fails.
+
+Limitations
+-----------
+
+This phase has no physical backend. If zswap refuses a page, the folio
+stays in memory, so an xswap-only system can run out of memory once the
+zswap pool is full. Keep a real swap device on such systems; phase II
+adds the physical backend.
+
+xswap does not allocate large folios in this phase. The allocation walk
+stops at the first device for a large folio, and a new xswap device
+defaults to the highest priority, so the folio is offered to xswap,
+rejected there, and split into base pages; a lower-priority block device
+never gets it whole. Creating the xswap device below a block device in
+priority avoids this, at the cost of offering every page to the block
+device first. mTHP and THP swapout are both affected; the data is still
+swapped, in base pages. A bypass in the walk would avoid the split, but
+the next phase teaches xswap to take large folios itself, on a
+contiguous physical run, and would remove the bypass again; this phase
+leaves the walk unchanged.
+
+An xswap entry stored while no real swap device exists is not put on the
+zswap LRU, so adding a real device later does not make it reclaimable.
+Phase II puts every xswap entry on the LRU.
+
+Testing
+-------
+
+qemu KVM guest, 8G RAM, booted with xswap.max=10G. memhog is a small
+local helper: it faults <total_gb> of anon, fills it with a fixed
+pattern, and holds it.
+
+Set up zswap and create a device:
+
+  # echo 1 > /sys/module/zswap/parameters/enabled
+  # echo > /sys/kernel/mm/xswap/create
+  # awk 'NR == 1 || /xswap/' /proc/swaps
+  Filename                Type        Size        Used        Priority
+  xswap1                  xswap       10485756    0           32767
+
+An idle device maps one chunk of cluster_info: 73 clusters with the
+current struct size.
+
+Swap more anon than RAM through a small cgroup:
+
+  # mkdir -p /sys/fs/cgroup/xswap_limit
+  # echo 2G > /sys/fs/cgroup/xswap_limit/memory.max
+  # echo max > /sys/fs/cgroup/xswap_limit/memory.swap.max
+  # ( echo $BASHPID > /sys/fs/cgroup/xswap_limit/cgroup.procs
+  #   exec env MEMHOG_FILL=pattern ./memhog 11 600 ) &
+
+clusters_mapped grows to cover the pages that go to zswap (2,414,630
+pages against 2,038,301 of RAM in one run), while SwapTotal stays at
+10485756. Throughout, SwapTotal never moves and SwapFree stays in
+[0, SwapTotal]. Pushing past the size leaves the cgroup out of room and
+the OOM killer takes the workload, which is the pass signal there.
+
+Growth and shrink, measured with two cgroups so that one keeps its pages
+while the other goes away:
+
+  idle                           mapped=73    occ=0.000  grows=0   shrinks=0
+  2G in a 1G cgroup              mapped=657   occ=0.799  grows=7   shrinks=0
+  3G more in a second 1G cgroup  mapped=1898  occ=0.829  grows=12  shrinks=0
+  kill the second cgroup         mapped=803   occ=0.654  grows=12  shrinks=1
+
+The second cgroup is started later, so its clusters sit at the tail, and
+killing it leaves a free tail to take back. The first stays alive, so
+usage falls but not to zero: that is the state the shrink has to land in.
+occ (occupancy) is usage over the mapped range, which is what the grow and
+shrink thresholds are expressed in.
+
+With the first cgroup still alive, destroy the device:
+
+  # echo 1 > /sys/kernel/mm/xswap/destroy
+
+Also tested these, and nothing crashed or warned:
+
+  - a shrink racing a swapoff of the same device, 20 rounds
+  - a cgroup that cannot zswap: it gets no xswap slot, and the
+    allocator walk does not spin
+  - 2000 create/destroy cycles: no per-cluster state is leaked, and the
+    ids keep increasing
+  - destroy with the workload alive, and a recreate at the same size
+  - swapoff -a and swapoff by name both tear the device down
+
+The whole series has also been through the later phases' tests, which
+need the physical backend and the swap accounting; those results will be
+reported with the phases that own them. Nothing crashed or warned there
+either:
+
+  - a destroy returns the physical slots it handed out to their block
+    device, and a THP swapout leaves the xswap device and its backend
+    with the same usage
+  - a swapped THP reads back as one unit from the physical backend, and
+    readback through zswap and through the backend both pass a
+    byte-for-byte pattern check
+  - the memcg swap accounting, memory.swap.current against the backend
+    usage, holds across charge, uncharge and destroy
+
+Note on performance
+-------------------
+
+This phase is the device and leaves the swap store path alone: an xswap
+slot still goes through zswap's xarray. What it adds is covered by the
+growth and shrink behaviour above, not by throughput.
+
+When an xswap device exists, the allocation-time zswap gate runs on
+every swapout, including the pages that end up on a real device, and in
+this phase its cgroup check can flush the cgroup's zswap statistics. A
+later phase replaces it with a lockless check.
+
+The series as a whole (phase I+II+III+IV) has been measured on a 288-CPU
+server with 1.1 TiB of RAM. The numbers are repeated here only to show
+where this leads; each later phase will report the measurements that
+belong to it.
+
+  - Release path. usemem -O -y -x -n 1 20G, ten rounds, in a cgroup
+    limited to 14G of memory and 12G of swap. The swap-out volumes are
+    the same in both arms, 18,370,771 and 18,370,836 pages:
+
+      baseline kernel, zram device    1,067,082 us
+      this series,     xswap device     922,396 us    -13.6%
+
+  - Steady-state throughput. The same usemem runs. Per-run medians:
+
+      baseline kernel, zram device     338,260 - 338,760 KB/s
+      this series,     xswap device    340,997 - 341,885 KB/s
+
+    The two ranges do not overlap: every pairing of a baseline run with
+    a series run is 0.7% to 1.1% ahead, about 1% on average.
+
+  - General workload. A full kernel build, x86_64 defconfig and -j144,
+    five rounds per kernel, best of:
+
+      baseline kernel    2,572.6 s CPU (user+sys)
+      this series        2,577.7 s CPU (user+sys)
+
+    The 0.2% difference is smaller than the run-to-run spread of either
+    kernel.
+
+The large gain is in the release path. How it splits between the swap-table
+backend records, the device itself and the accounting is what the later
+phases report, each with the measurement that belongs to it.
+
+Overcommit
+----------
+
+An xswap device advertises its whole address space as swap: si->pages is
+what /proc/swaps and SwapTotal report, and what nr_swap_pages uses to
+decide that anonymous memory can be reclaimed. The backing is the zswap
+pool in this phase, and real swap devices in the later phases; the
+address space is not backing store in either case, yet it raises the
+commit limit that __vm_enough_memory() enforces.
+
+Which semantics this should follow is not settled here. Counting the
+address space lets a workload commit 2xRAM it can never back; not
+counting it changes what SwapTotal means. swap_info_remove() skips its
+commit-limit probe for xswap, so destroying a device does not fail on
+headroom the device never provided, and real swap devices keep the probe.
+The limit can then fall below Committed_AS; new allocations fail until
+Committed_AS drops. This is left to a follow-up, together with the rest
+of the swap accounting.
+
+Changelog
+=========
+v4 -> v5:
+- Rebased onto the latest mm-new (2c5dafa7f289). 
+
+- A device now has a stable id instead of exposing the swap type:
+  /proc/swaps shows xswap<id>, the debugfs file is named by the id and
+  prints the type as well, and destroy takes the id. The id is assigned
+  per boot and never reused, so a value read earlier cannot name a
+  different device.
+
+- swapoff accepts the name: swapoff xswap<id> and swapoff -a tear the
+  device down, while a real file or directory keeps precedence. A name
+  that does not exist reports -ENOENT; the sysfs destroy keeps -ENODEV
+  for an id it does not know. The interfaces are now documented in
+  Documentation/ABI/testing/sysfs-kernel-mm-xswap and zswap.rst.
+
+- CONFIG_XSWAP_DEFAULT_MAX sets the default size of a new device. It
+  takes a percentage of RAM, a size, or "max", and defaults to "200%";
+  xswap.max= still overrides it.
+
+- The cluster_info accesses are RCU-safe: the allocation fast path bounds
+  a cached cluster against the mapped range, and the shrink drains the
+  per-cpu cache and waits an RCU grace period before unmapping.
+
+- xswap_grow() now links the clusters it mapped even when swapoff has
+  already cleared SWP_WRITEOK, so a failed swapoff cannot leave them
+  mapped and on no list.
+
+- swap_info_remove() skips the commit limit probe for xswap; real swap
+  devices keep it. See the overcommit note above.
+
+- The cgroup zswap gate is checked again after the allocation when an
+  xswap device appeared after the initial lookup, so a slot is not kept
+  for a cgroup that cannot zswap.
+
+- The patches are reorganized: the VM_SPARSE work is split into helpers
+  and the xswap use, the max/pages widening moves before the sysfs
+  interface, the shrink trigger now carries the workqueue deferral, and
+  the unmap helper is prepared for range shrinking in its own patch. The
+  series is now phase I of four, with the swap-table backend records as
+  a phase of their own.
+
+Baoquan He (18):
+  mm, swap: refactor free_swap_cluster_info to take swap_info_struct
+  mm, swap: add VM_SPARSE cluster-array helpers for xswap
+  mm, swap: use a VM_SPARSE cluster array for xswap devices
+  mm, swap: widen swap_info_struct max/pages to unsigned long
+  mm, swap: add a sysfs interface to create xswap devices
+  mm, swap: refactor swapoff and add xswap_destroy
+  mm, swap: require zswap for xswap devices
+  mm, swap: use a stable id for xswap devices
+  mm, swap: let the command line set the xswap device size
+  mm, swap: add CONFIG_XSWAP_DEFAULT_MAX
+  mm, swap: let swapoff destroy xswap devices by name
+  mm, swap: add xswap grow trigger on cluster allocation
+  mm, swap: add debugfs counters for xswap
+  mm, swap: make xswap cluster_info accesses RCU-safe
+  mm, swap: prepare xswap_unmap_clusters for range shrinking
+  mm, swap: add xswap shrink trigger and defer it to a workqueue
+  mm, swap: do not give an xswap slot to a cgroup that cannot zswap
+  mm, swap: skip the overcommit probe when removing xswap
+
+Chris Li (1):
+  mm: xswap support for zswap
+
+ .../ABI/testing/sysfs-kernel-mm-xswap         |   43 +
+ .../admin-guide/kernel-parameters.txt         |    8 +
+ Documentation/admin-guide/mm/zswap.rst        |    9 +
+ MAINTAINERS                                   |    1 +
+ include/linux/swap.h                          |   17 +-
+ mm/Kconfig                                    |   20 +
+ mm/page_io.c                                  |   19 +
+ mm/swap_state.c                               |    9 +
+ mm/swapfile.c                                 | 1569 +++++++++++++++--
+ mm/zswap.c                                    |   11 +-
+ 10 files changed, 1593 insertions(+), 113 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-kernel-mm-xswap
 
 
->
+base-commit: 2c5dafa7f289d760f4492260b0988029aab478b0
+-- 
+2.54.0
+
 
