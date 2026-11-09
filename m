@@ -1,156 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31181606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 21:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28112606A332
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 22:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=dRj2hloh
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kAxaUji6
 Received: by kanga.kvack.org (Postfix)
-	id 2376B6B05B1; Mon,  9 Nov 2026 16:46:05 -0500 (EST)
+	id 425CA6B05B0; Mon,  9 Nov 2026 17:00:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E90E6B05B2; Mon,  9 Nov 2026 16:46:05 -0500 (EST)
+	id 3D6DA6B05B1; Mon,  9 Nov 2026 17:00:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0D6F46B05B4; Mon,  9 Nov 2026 16:46:05 -0500 (EST)
+	id 2A2956B05B2; Mon,  9 Nov 2026 17:00:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id D9CD76B05B1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:46:04 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 665A91407BD
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:46:04 +0000 (UTC)
-X-FDA: 85416913848.15.CFB4E26
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 80D2E20006
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:46:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=dRj2hloh;
-	spf=pass (imf13.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F37106B05B0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:00:20 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8B1A64080C
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:00:20 +0000 (UTC)
+X-FDA: 85416949800.19.C3F2C06
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A584D1C000B
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:00:18 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kAxaUji6;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794260762;
+	s=arc-20220608; t=1794261618;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=874yjmK9ypxK94+nKOJ/uR1d6HpqK0owgIThZQA8ZUA=;
-	b=g+eKWgP/C6NRFpaSNwzh07L68uWhqG++IaM6oCQJJqxfEYITI4LIvAWUXXvhg9sOLczizN
-	KNNt5tLZo58Sf2ikdHAbUEsgCdNmhWzILXe57M6nMqB60EzrX9dxkxEsQkO60t/EaNt2RM
-	bxDCdm3JmqvjjLl9DFJrnTGRx3d6s3A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794260762;
-	b=A5EnJ6qDNS9sD2tc/CwePXCP5yvkJgrj8leSNVNh4EM9u+jBcaObcOWzVjRvnUn/lHgvFz
-	Nhzyue8mp4OXGSSF9FGM5rpPuk/OOon7OuEXjnw+Mb+ChRrn699PdSMSLvZRhsllahNq9p
-	Sq12QPTe6pN10XQrB6QYTNN04/BkzKY=
+	bh=+uUNFNsJ/y/TsHe5tSEE2ggVSbT2u5FUwgZN1VUTMzo=;
+	b=HHYAhZmyJiBVZ53LTZA03BCF/TEilBB3pf9ZkoZhNy+96ykQqIci8kfZ/MZY7l0/U1rl+V
+	2HRk7iNN0dSxJ/PegMs5h70h6jF0rSd3TcLjLrJ2xK8vtymhJmXu8qE0Aogbk5BwEfoFFn
+	iQePXzOJDvNAuJt6xerSHaJv511Hc8E=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=dRj2hloh;
-	spf=pass (imf13.hostedemail.com: domain of david.laight.linux@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=david.laight.linux@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-490c1d337d8so966209f8f.2
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 13:46:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794260761; x=1794865561; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=874yjmK9ypxK94+nKOJ/uR1d6HpqK0owgIThZQA8ZUA=;
-        b=dRj2hlohCyQ01aqcOVrjbYmONiwgpEhcFnqasnoJ0rc4ugCHoZBS5nbC4A5CH6qvPK
-         n7tJBwLPC1+3OaRelAz7zrX0rO1eYSvf9A3jbAOGEyaOgUVOQfMzQlPQ+HMGNSsRtLfI
-         5bewHO4BlkrRqijvqIYSeJd7fX3InSEMyXiE6qsxfFLrL+K5qnSJ/jJ6xf3eF+3uc9Ew
-         uF73sDO3+6Xnn9BG/V2McaA4B2ZNW6j9NuqkaO7z/RTGfXP5vMTuTqvoSGS1xTqwzhaj
-         JFNzegmQXduOVzpWbiesj98nmEO24229GERWVG4X0cLZLQ6McTaTtFMV81mSQJ65/ID0
-         Ri1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794260761; x=1794865561;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=874yjmK9ypxK94+nKOJ/uR1d6HpqK0owgIThZQA8ZUA=;
-        b=JkU229IYlmu8l/xxQ1tRBbg5QwLBuJLPogEGSdHmN1xl/1JqqjazNIwGaUITCgobld
-         ebWHLWwZK6lmt2wcvACzBs5+FV017Xz1Zyv+qTUD4j7asHspciA1/LCR3RCPgwHQgtuj
-         2MFykbqIRIs5Rcg+FEYJi79GXwR90pcQAeVBY0pmJdMFRAa8OpDLfhYLxVR0E3h58etN
-         V0dhdUes3LccO1/QAKSf69gsTj4Hw3cLmMdVl1fz1ZH+atc0/RZfhk0cHH8mAn5MSkpn
-         KdFxt/5I8cA4mYxFuwHVWsMZd+laqFKwuPkk4V3sShbkn1dyiwE7GDFBSnl5lX427otF
-         z+JQ==
-X-Forwarded-Encrypted: i=1; AL+hErEnjhqYdR2+9OapcHjSCI+sMjcWCk5LSvAYGs5QMdWCUdAfcNvhgAH7Pc7AbSGhh+p+Zmb05iUQcA==@kvack.org
-X-Gm-Message-State: APuU4Z85M+BaZVsItUKyAbz2/J3jOKNg4Ip3G9vRxzLHZZTgCyORPClP
-	hplQqchrEdVAcch2JESbiLMdpIfcULnuB2srTpAoMEr+8GKtSG4kXl/r
-X-Gm-Gg: AYBFou3/fdmjQ1yzuB/L1frUIC4Ir28hVF3hNGDCozkY8tMm13vPgnAbUAYhHgPt5Z/
-	01XbD7LQupmVeB/z37YMUg+jQY1QJi+OCs4rAVilxjOLFxcq5iaiLRYsmywGk0pvugDIpAHlA/G
-	Rwse4hVd5jJOn1yOltNiDHfrf1iq1bZZTzxk2FqpCxfvtfiZtKRgruwDITsjDTEIvrXxiH/vgvW
-	QoXTeB6seyYHhxgZVWlRfsS7rZuw9YSKygbI8odTBNj6ijq6Ctsq8M4C18scR5oZ73DECSozXSo
-	a2IJFTN0ri6yH9c42EKNMCgTa8Q4ISX3VhYN20OBmTlU1RPtoDsT3noQ+I/4BGx8t3xz4rgX3M7
-	62sTR3D3w6WIALO/0xmuQ64ciyp/pD2zx37DnuhKG23RfAFE0pcb74ildaojwyn/h/wo7HNRaf3
-	Y+huO/pGD1jVHnry/ImQInFPKQeU3tneea4smTj+zL22aF1MZ/HBRwvWXXKZe1MplvOgIykn5DO
-	zatlHL+1y+WYi9vogCeiHSLb/2grwKkCcQLX0EFGl+8Lc7c/x0RShsZ3XXwN/Ifli7qNdHUbQix
-	hM06ntJ3jbO+jpDP7CFZDLJOP87Jl4lSH/6HojkoNLJo9hUtEhPwDM13mJiJkl9aOw==
-X-Received: by 2002:a05:6000:288d:b0:48e:25e1:5eb8 with SMTP id ffacd0b85a97d-4982b28aa42mr1487213f8f.3.1794260760763;
-        Mon, 09 Nov 2026 13:46:00 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4983585c4fdsm1213644f8f.10.2026.11.09.13.45.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 13:46:00 -0800 (PST)
-Date: Mon, 9 Nov 2026 21:45:58 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: Christian Brauner <brauner@kernel.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, linux-fsdevel@vger.kernel.org, Linus Torvalds
- <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik
- <josef@toxicpanda.com>, Chris Mason <mason@kernel.org>, Jeff Layton
- <jlayton@kernel.org>, NeilBrown <neil@brown.name>, Eric Dumazet
- <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Al Viro
- <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph
- Hellwig <hch@lst.de>, Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados
- <joel.granados@kernel.org>, Kees Cook <kees@kernel.org>, Jan Kara
- <jack@suse.cz>, Jan Kara <jack@suse.com>, linux-kernel@vger.kernel.org,
- linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-s390@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-um@lists.infradead.org,
- linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- netdev@vger.kernel.org, ntfs3@lists.linux.dev,
- platform-driver-x86@vger.kernel.org, coreteam@netfilter.org,
- kexec@lists.infradead.org, linux-pci@vger.kernel.org,
- linux-sound@vger.kernel.org, netfilter-devel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, ibm-acpi-devel@lists.sourceforge.net,
- jfs-discussion@lists.sourceforge.net, linux-alpha@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org,
- linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org,
- linux-mm@kvack.org, linux-sh@vger.kernel.org, linux-usb@vger.kernel.org,
- samba-technical@lists.samba.org, sparclinux@vger.kernel.org,
- linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org,
- linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
- Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org,
- linux-raid@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, Chuck Lever
- <cel@kernel.org>
-Subject: Re: [PATCH RESEND v2 14/23] proc: let procfs copy in writes before
- pinning the entry
-Message-ID: <20261109214558.0d9d5228@pumpkin>
-In-Reply-To: <alpine.DEB.2.21.2611090504170.17804@angie.orcam.me.uk>
-References: <20261104-work-procfs-core-v2-14-76ace653a773@kernel.org>
-	<CAMuHMdVfakapgBK6TBhO1iWX8qzvLDk8jzRS=t2MVa5G=MCUeg@mail.gmail.com>
-	<20261107-akteur-gemieden-eckdaten-21304d085e35@brauner>
-	<20261108185953.28054fb3@pumpkin>
-	<alpine.DEB.2.21.2611090504170.17804@angie.orcam.me.uk>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kAxaUji6;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794261618;
+	b=VDqB4SgM387h6+BuaPSS1/CCRvG2Hpquk84lhBAU51lZsWvyaPy5muBwleMF8YJkMSYA/L
+	VzE62ZbE3rzx0nN+e8XP+YtQPx1dlq679HGY4139x7YZS4eotLaAuNsOtURPpOIwmehlyX
+	65fbd+C9f3VYQflo+aLR7ZSxnfHwlUI=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9A52B43702;
+	Mon,  9 Nov 2026 22:00:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6216E1F0089F;
+	Mon,  9 Nov 2026 22:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794261617;
+	bh=+uUNFNsJ/y/TsHe5tSEE2ggVSbT2u5FUwgZN1VUTMzo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=kAxaUji6k2KW8rfSAvXJhJiuO/EZX60VCydj5QPGZtcNUy06hAoNW9MKWzQpV/4uY
+	 142BRjiWbeltdP+9LWvBZfp5X6D9yTvRt07tXHpQJQcdUSLNrdfPrpSOMbUAEzgqTJ
+	 HpoHuTXP9QBCPx6WtPB9860DKqnLXKCenm87BaDg/78/XEw1a1CZdxAudNjGgcTC0q
+	 a5a+b5trvcOnvtXTOE6cSO7RlzSheWSRnx8xcpPWyP7WaNq+puxs1zaPHfh94lUUPA
+	 vzgZD0i0Ir0h7TMIxXspZ4uUgVnKKFn5jCj1KLtemmJsQDjBdqPd4VXe2ZInUO7b9F
+	 xPh8W3FLuSQIA==
+Message-ID: <b47cc8f4-3f8a-4893-8a2a-f88dd5ab762d@kernel.org>
+Date: Mon, 9 Nov 2026 23:00:06 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm/memory: drop PROCESS_PAGES_NON_PREEMPT_BATCH
+To: Shivank Garg <shivankg@amd.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Ankur Arora <ankur.a.arora@oracle.com>,
+ Pedro Falcato <pfalcato@suse.de>, Peter Zijlstra <peterz@infradead.org>,
+ Borislav Petkov <bp@alien8.de>, Bharata B Rao <bharata@amd.com>,
+ Hrushikesh Salunke <hsalunke@amd.com>,
+ K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20261109-clear-pages-batch-v3-1-6693efe18dff@amd.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261109-clear-pages-batch-v3-1-6693efe18dff@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 9nbk6t5b6br4o3wm771m6nctjm1njrk3
-X-Spam-Status: No, score=-4.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_2 autolearn=no autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 80D2E20006
+X-Stat-Signature: q9g4xbg9mrsaykcgzs55adqhicbtpinb
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794260762-903274
-X-HE-Meta: U2FsdGVkX1/SL7ndod9tmWpoxcznJR4fU0lOspBFXuI3GmSUjZ8xxPe+AoGsFIQCrYa+N9EzYSDahVuZBzefoGK1Bfh3QeCwdm4XOG8tqgBMH/oqdtjw5CJNSNxot6F7wOwmWbKpGHsWbA7RQTYQm0Wiu67s1qBUe1yAv0j3sEtZEg6j44KcwAuG/YJeesfzLDBlyEKWBqZEGGaytCHCA5toli0cPfTTAh0/mijKwrvkv92cqGxabxJfPlOH2+fj1Rj5jZPK6lSsBFPPIFAP6kgjwG4ipjzP6IlrDhp2hv1bjR4yy5CjryjDDYnoXK/knkxKGsgAG2AIxNjDLdatlFBM8Ygw2X1Z2NnNxDlyhTYofKCAfuuuCSq8K63enDaUN4i8QuvAWN4C4H1r+vSGW/+X2MKBcyXbQ7gcQ8Lso0DBVXeoFnmnjrSvhQNvLN9HbqzfyjZvLgWg1OeOYE+RFdZj6Jg6TbT/bsxxotNc2B8O50jo9z/Zsn7ofQ2vLCLoqTYFw4XqR+SHwcZXwP4feF/ENFt70bx0hEJVq+tTKIk11B27s7BZx62dE6TDzV1vd+1ygRt+RvdzvyN9JYrNly3StaCQiO64IGQBT8swFnxsEDQkq6HfFb9G9xBdBP29hRLAjK2EOwNAPMJUve2lphLaquK1sGPCt6sah5/gMZHcGsDWO0rytSg6zQKH1JwNbe3RRrx+9wqk7Cu4NFg+dRxiHxMbb8oZsR154Qj6pOcPW1Sd5MtQvulKku+SQwgyNRfSEVyWxWyJZRmF7AdcrEe1tDIGui7w9VUvzVOiuulSh4MkdMYZNJtEkY5Ov0n3g8e46ZhliZvnu9E0IagjcSTfJQ2PA09Ff3vNGLxOFI1h0IMM4HZxKzpdRxhH/muqPbFcFojuaePzXNl308AOz7+7N9CnvBDsIGubL04Y8uJPomZHNCajLAYtXXP4bh0SnGluclDWbGN7pt44tY8
- KMptemjm
- krBV8bfrCHsGqJd7izHI9pIsEqWpqerjl9gi5Fzjsrv+rH/PmXyxTTKJM1RbBs8lf9W3Yt8efIu/BYLjZROKh7VJfzclo7i2O0JYd7P8yt01RsYHgGFCJ44fB6izDW9sLiqfuMSfceOfW/LDLvUQVH183jg+qONMouDRX3cm5vu5/8Atc+u4RCTioP/9zPsByytAieqWlUkXKCoFFZnRdqnLm9MIC8EE3xWfb/kccTvMUx4QnI/4i2mkCWou49w4zgjvaAnaBM1aQDrA7JmOTcuHFuN0NNe+sRfH00m26PqGsvQFXufydDoYPW/yn0qdrPJvsl72M06FZiTWJhltI9ScWPFVgQC2SyVMBwUXP8KwccNL7NLL7J+jAhoS7RuJGGPHTWsuzJbJbRtErrhX8VpKcBzc5ioGRyfP6Wk7ITYGqhVY2IO167cFyP/per7R9R0zpITG9lHYnHCA0/OD5hjG6mGJVWxbXXij2Fnz7ltP4r3fZGHbKdVLNGPDGj1xjcQ//xicajIwbaV0smdzyeIwCBA==
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: A584D1C000B
+X-HE-Tag: 1794261618-843939
+X-HE-Meta: U2FsdGVkX1+mwxpCcV56yCXID4hBTUSE5jkQ9kNtb+fbRItQS8gJDpJB1Ijv9I8m3N+GuMr6Uq7tT0er8Y0ED4qKaDaHDJgwmYBKzjlrmwCSSgfzlYwZ2gGBykKoa5KDrVFbwdPHMBQ2VAHe8w/QRTPXK8WqD5HeOjSnLDNE/0xjJ5ox0+qiw95jXbgoIOUwxP7vgMSXhVIb/qsQzRiH+VmO+95f8vDc9U+iAOITNwED0XhxqyGcuWGAo+SnaggY2YKorjqlUj14wuR1Nb3A0RfxvlLylguB+7D09XB6F5qXCeoabZ2NcdlzJHcpayHTGmWhEuzNUsTo2O4aL94DN3NYNbsz4lYDK7grtJLQLMNJPlD3aemCtLiCzduCqQtBOSLVvMF0cIx+DEuXOX/KZ/XYZXnI9K9j9lWNnmoICFM4GAaItbZHWT33hZ13/TQsw4vN5scuoSoJVslTwDYRBmmPTj8R2U19VH2u6scFfvHfxDYp4zBfApFgAtmG+rpJ5wAyN4muDwyTPdZXHhzxIAiM+YhLF0AvNvux351OCznCZHby7bTdwIZ+9kJ7K/MfykRqbt/6k+Jan2sGQfbg/5UFy9A8KNV0oU6w535L54uL/mzH0GRaD+ZGEBdI84eF8CDyychlQ+EGqiSNXOdBK14+0Glia5QdxiYycvDVM+rTD1J1XEe3l5NMHsJNRlXRszfYmvfkHgC39FxrGlfkCbFUbb6I9NKO3FTOTw3FjfVOycLe2rmlbfRtK9nuIRiO/NPPETDF+GykUCP7S55qeQqNaImpf8v1/SXHlpaKCUexL/UQedyQvjJVQoOvYvpKXUG1yBpId1HTMIkojQSwmLl+dFPtyB/MSk/CuEMwJTiIpfJOG1SYcfKRhWxqBSXlcB1vt9ZAEKLMjj+cLTlZy9lGcbRFanXq0yY5VXJALcbmTwNQ1JovSosJ+5VXkIMwW3VoQlCdAsfFIwiRqxC
+ OrpnoO0J
+ LAnQhqgxsztC4mx6BOrsSGvWqXvVGLT5e7L2lj2AJg2JIIlTgYinY46Sevt5St5bbUN1SDeBzQqpP3N10HqaWNdP+ugS6guwe7HojRbv9s2wFM3okfgBVhH0PG8G9/BfTgzYu9U5YAfmMqcAJy13oWOuLMRxDB3As0AUvvFzjxQwCcFKhv3KZhbxceV1shmuHfS4knyz/oL9QJBeSHR4+GRYWE0zlE6+vaY4Trs8OD045m3CEkktBPByBwATwy0PhbC3CtlASYfMF6ivNwKSSmok2DX7YsLeHY0EKmLAGLJT0vFEbtPoD7s8c6SBl3SRfzJzUg1JUrbKsrgq04GnL8qcsrBBAJ6yxhjB+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -159,32 +147,43 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 9 Nov 2026 05:05:57 +0000 (GMT)
-"Maciej W. Rozycki" <macro@orcam.me.uk> wrote:
-
-> On Sun, 8 Nov 2026, David Laight wrote:
+On 11/9/26 20:15, Shivank Garg wrote:
+> clear_contig_highpages() clears the whole range at once under
+> preemptible models. Otherwise it clears PROCESS_PAGES_NON_PREEMPT_BATCH
+> pages at a time, with a cond_resched() in between. The batch is 32MB if
+> the architecture defines clear_pages(), and one page otherwise.
 > 
-> > > > While at it, I think it would be good to use this conversion as an
-> > > > opportunity to replace "char *" by "void *", which will probably let
-> > > > you drop several casts from users.    
-> > > 
-> > > So I tried that too. The thing is it drops exactly one u8 * cast in
-> > > ntfs3's label write.   
-> > 
-> > Since char is now unsigned that one isn't even needed...  
+> Since commit 7dadeaa6e851 ("sched: Further restrict the preemption
+> modes"), architectures that support lazy preemption only offer the
+> full, lazy and RT preemption models, also with PREEMPT_DYNAMIC. x86 is
+> one of them, and it is the only architecture that defines
+> clear_pages(). So the 32MB batch is never used: whenever
+> clear_contig_highpages() runs under a cooperative model, the batch is
+> one page.
 > 
->  Please excuse me missing the context, but what circumstances does your 
-> claim refer to?
+> Make that explicit. Clear the whole range when CONFIG_PREEMPTION is
+> set, and one page at a time with cond_resched() in between otherwise.
+> Drop PROCESS_PAGES_NON_PREEMPT_BATCH, which has no other users.
+> 
+> PREEMPT_DYNAMIC kernels also have CONFIG_PREEMPTION set, and
+> cond_resched() does nothing on any of these kernels. So a build-time
+> CONFIG_PREEMPTION check is enough, and preempt_model_preemptible() is
+> not needed.
+> 
+> No functional change intended.
+> 
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
+> ---
+>
 
-Just that the cast would have to be:
-	u8 *foo = (u8 *)bar;
-where 'bar' is 'char *', and I don't think you need a cast there when
-char is unsigned.
+Thanks, I'll wait a bit for more review before applying.
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
+-- 
+Cheers,
 
 David
- 
-> 
->   Maciej
-> 
-
 
