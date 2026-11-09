@@ -1,98 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B89606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 13:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1303D606A323
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 13:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nfJm8OHh
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=moJaaXVs
 Received: by kanga.kvack.org (Postfix)
-	id B4D526B05B2; Mon,  9 Nov 2026 08:13:52 -0500 (EST)
+	id D68016B00EF; Mon,  9 Nov 2026 08:31:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B24076B05B3; Mon,  9 Nov 2026 08:13:52 -0500 (EST)
+	id CF1576B05B0; Mon,  9 Nov 2026 08:31:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9EDF16B05B4; Mon,  9 Nov 2026 08:13:52 -0500 (EST)
+	id B92126B05B1; Mon,  9 Nov 2026 08:31:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7077C6B05B2
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 08:13:52 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 8862C6B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 08:31:16 -0500 (EST)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id DAE841205DD
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:13:51 +0000 (UTC)
-X-FDA: 85415623062.26.1CD7150
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A5E01C4026
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:31:14 +0000 (UTC)
+X-FDA: 85415666868.26.0693977
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 29E1D180007
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:13:50 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nfJm8OHh;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf17.hostedemail.com (Postfix) with ESMTP id C1C894000B
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:31:12 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=moJaaXVs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794230030;
+	s=arc-20220608; t=1794231072;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7jQJsS30mfWqnutp4T/axVYFvwalLvCNK3lARAafv5M=;
-	b=F2GkaziaHMePTvxh3e8qu0ZaC9MsezWLclP+B7bz3sodvPZtTT9QFWvjg9k7E5/rryxAqg
-	kYN9MWOwHswJ1XHhj4pA++Ic+Ri7HHtIHweitbniYO5vAeYGSfY//8UEsY8vmOeVj/5cws
-	UWcX+Nv2T1fdjfWtNQOl+5wruR06b1Y=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794230030;
-	b=LAg2hKWFx3qjXV4RMll3FZb9pRowybcmzBFRYu5ddmIvUriyvW/FWJ7t8fcIzUk0PwRJvK
-	Q5DKeioTTH+wLI4DE2Bq7uFtoqSQZOmyN9FsHwg3VLptNcWUMTDicBLZttC4a1JEudSajo
-	6LiSIh41QOila7x8X2IWdhlOEvaASjM=
+	bh=HZb1ecY9gAspjaczVb/ho/JkduHza/gfWZak6QZzsog=;
+	b=8G0CQvOiTQhNePlec+RQiw35zwGDFtSxp0xHS87oOyVv+rWEv3oycKw9oA857VEub4QXa3
+	fFnrga4GtJEgVXdmcYGB5WEqVtqKy7tx0VAc6FWY3DzRrpe2sHB1jv6xy6fT7XbCNvUcUa
+	jXfxhsyOa3IFgtxu9VW0g061IG57m20=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nfJm8OHh;
-	spf=pass (imf06.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=moJaaXVs;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794231072;
+	b=wVqnSgV4PLS/+pkOyjpzc3krSj15MP2H7InxfZfMPw0MrmfLhV294QzdHOm9C0lc7MwSN5
+	qRvGEuLaXkuICfsYdYEK9OuVkur5yz/mzDog2WAOi2UXO2sfS6ujCBomOHlw0YLglP8vLe
+	o5yEIiLqGxtP5INLKFA8nYablOVbsxg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 28162402C9;
-	Mon,  9 Nov 2026 13:13:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3091F0089F;
-	Mon,  9 Nov 2026 13:13:48 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E5C5F40244;
+	Mon,  9 Nov 2026 13:31:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A331F0089F;
+	Mon,  9 Nov 2026 13:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794230029;
-	bh=7jQJsS30mfWqnutp4T/axVYFvwalLvCNK3lARAafv5M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=nfJm8OHhyNANdak70pijBgAfPa88EnbFGsqwMrmWGsIIpiZ9oe1IOmuKMfkZFtHIY
-	 l+EmlByl7y51Sjmkwawrghx/6hUDawrTZFLoQlCNN0lJU1ULlDME2LDFmpn+aBvtfG
-	 Mhi3qqSbWZXaybzsgN3VrlHVk6NeaEAfVxWXc0LRpcfE+77roaidWe151Bc1UoYOpp
-	 yJQjnoTQeWNQetvIJKRQvREGjwuYukX0EL8jxW9WdsuJGpMtyNnaV4643eo8tgitM2
-	 Tb4ftJXCww3eNUNKUyoh6Yt1ieWGe6+17QiBr8kpNPFnGOUg4x+BsX7p40GVd1EWk7
-	 kFZ4s4lbqwHtw==
-Date: Mon, 9 Nov 2026 13:13:46 +0000
-From: Harry Yoo <harry@kernel.org>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Zhan Xusheng <zhanxusheng1024@gmail.com>, vbabka@kernel.org, 
-	paulmck@kernel.org, qiang.zhang@linux.dev, akpm@linux-foundation.org, 
-	hao.li@linux.dev, cl@gentwo.org, rientjes@google.com, roman.gushchin@linux.dev, 
-	linux-mm@kvack.org, rcu@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	zhanxusheng@xiaomi.com
-Subject: Re: [PATCH 2/2] mm/slab: don't queue the page cache work under
- krcp->lock
-Message-ID: <avG1Yr9sjswFoJ9E@thinkstation>
-References: <20261028134647.3176080-1-zhanxusheng1024@gmail.com>
- <20261028134647.3176080-2-zhanxusheng1024@gmail.com>
- <au2fUYzBLv3uvj_2@milan>
- <au3ELzm_s9vhs7UO@thinkstation>
- <avGzD8CAgg9Hif__@milan>
+	s=k20260515; t=1794231071;
+	bh=HZb1ecY9gAspjaczVb/ho/JkduHza/gfWZak6QZzsog=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date;
+	b=moJaaXVsjzU7SL4CI8JBlVbPKjmyaTD3NHAgdTnwk/M1L60N+Lk5weuwkobiTd93C
+	 8s5kF6qwjOZc6FI/CH+6n9ves3n9Dt3ncPHme7MMz8CrOWrXu7GVA3alW12QVQxfFC
+	 dYdxN3at+z/1sifp3qbo3ReksK4F/0ytjastLvz2FzQpT5Hf4HIrH6DUDcYCRbwUm+
+	 dEj416YDQH6bI4b6I/NGuMzR1qG7vWeEqkoYkCakzFXeyTPSKb1bte6mOADwhhJ34m
+	 oj57425c6Psc1SXo2+31xoM4HAfQoI0isPU+xPj1eF0X/18EEWq+95be4Si8H/sog8
+	 62xe9bzzf6Bpg==
+From: David Hildenbrand <david@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, 
+ Rik van Riel <riel@surriel.com>, "Liam R. Howlett" <liam@infradead.org>, 
+ Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+ Jann Horn <jannh@google.com>, Lance Yang <lance.yang@linux.dev>, 
+ Zi Yan <ziy@nvidia.com>, Matthew Brost <matthew.brost@intel.com>, 
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>, 
+ Gregory Price <gourry@gourry.net>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ Alistair Popple <apopple@nvidia.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, 
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Xu Xin <xu.xin@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
+ Shrikanth Hegde <sshegde@linux.ibm.com>, Pedro Falcato <pfalcato@suse.de>, 
+ Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Leon Romanovsky <leon@kernel.org>, 
+ SJ Park <sj@kernel.org>, Rakie Kim <rakie.kim@sk.com>, 
+ David Rientjes <rientjes@google.com>, 
+ Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+ John Johansen <john.johansen@canonical.com>, 
+ Georgia Garcia <georgia.garcia@canonical.com>, 
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+ Roberto Sassu <roberto.sassu@huawei.com>, 
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ =?utf-8?q?Ondrej_Mosn=C3=A1=C4=8Dek?= <omosnacek@gmail.com>, 
+ "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ kvm@vger.kernel.org, damon@lists.linux.dev, 
+ linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
+ linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+In-Reply-To: <20261105-late-2026-vma-flags-v1-6-0d3cd15ab75f@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-6-0d3cd15ab75f@kernel.org>
+Subject: Re: [PATCH 06/13] mm/ksm: convert VMA flag tests to use
+ vma_flags_t
+Message-Id: <179423105176.12172.13163434370832642610.b4-ty@b4>
+Date: Mon, 09 Nov 2026 14:30:51 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avGzD8CAgg9Hif__@milan>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 29E1D180007
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: kepop9fm1qfowoeqi6phc9z3paxy3ppw
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.16.0
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C1C894000B
+X-Stat-Signature: 9m3rd9gt9mgrgaejfuww1nrr8hnhxkda
 X-Rspam-User: 
-X-HE-Tag: 1794230030-389108
-X-HE-Meta: U2FsdGVkX1/B5LANFDammg7nvBAr4Td9XOpoaHhosEo9kMDRhklO/eqK8zvU0phXtBXb0jYApH3a8Jnd2B4IefkwKwWR2gS/hBnNcsm4G5ss09pP4xJJ0eWD+c1DtIokelsWubtiVsl+x00aqYo4WHx3MYNmK7lkWfqFhOZ6+cpMd5MiR9LuNGGdRuYONMyPZfpYcX++ZaOTLAvI7vDIA1zy6XGntQLiIIWCgAlOMB/CUtl1G9dG70IPY0h/tr4FB6uCmd5Ko189TWxTWrjH8m4F3VKbyEwhcgsWS6ld0TiVdIZDEmp7mnB+HR3IdDrcDOTryIyJrCw3Hh+Xf9ltaRVPp2W8rcOJ4Dkm+uXg1t/fyGbsEFAwjNJ7u0JIzlMYvr+CQ/FVEm+ocq8ZsGndM3FjWOFdZunt8kgHv4cNLrvR89m86U28LV5nyXZ5bmhuDvjvAdE3uUU1rbpS8UxC5gciYGFkFifxOlm/1HH4JxacfK9tI68TLH5qdA9fbt+CAhNjedOStqjWEa2zzoJ/P/hdGp3TMUrA5yboeLsHHpcuOG1rES5hEgcWXqGmKaTIh2P0pCdERvpPB/7yUDzvHTzcXBebTtlGUJvDT0lgR8w9Q6s916UesiAP/I+0cuP/aPtTWReFIsGdTNBz7w+CT7D3lXNpXLvF6Igkh+MA3Uo7zw+awTFLwNfsFTQK5IIKG4Lu8rwfVSOSQ8+xjrnH7DmAgipW/uyztqc7vUzyEo1k+Nz9YuhATLtH1PfS1nyr8bo8dNnYKi1bo277I3AIkb7wRMCs28j0KanhCmJVDbjVuxo3pnJrPLbdc0MNrxhidhnWhMTf2PyjYMfVl6PgRTRNBw4ynGJcVD9ACIVOPhg8B9Ho698A5tUjL3dONEe8AsQj7EzuU1jqhKZrhTo8TXEyDM5fX7f6mLl0bz/C2ltMNeulrkxCTHqzfYrKwl15zFnLktnUzugYleEBMJC
- zrXslVVS
- Hsmveb8MbdF8wgBRrp4dr4XTRufL74xwxaQCqbpHDPqPZC6tARQp5kbd5uAvfgiQnz6MEN9rZAiMBEcZ175N8Stn+GAJmI8Sr/zKTeJ9gsxexGnyUt4NqnZ45+05REYRr70WV24d77kRlTYgNl/ZvonEkUKDLydTF4HnCgmf5pnpXkLMvE6iRlAJXS/aZuQucbMJzkuDOu1Rbzpwo+V/g/s2q/bc0yWN8IY8GUl1lUmwLeE7d4VZyDu2rFfCH6TcFGlFC/z1RJrjGFJDl68rMpviJFQ==
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794231072-674604
+X-HE-Meta: U2FsdGVkX1/BV2pBfG7XCleOND6NHRhfHktqpzGY6MG0zI3wEEMGFk8KWe2KeC/iyF0AnhNbvX5GKq7fUe6Sq5VggVqXsItbpseKtDsUqEy1psHhvOzVSFnoXyMKggpWsITMb981n+jvRtD5SsrZVTFXf+RbPvlRh/BN4PAa0NR+ISMW26yqhnZokS6VZBDYuew88qKJf7LmFXkPuKP1BbLi2PL1PnDsdZOmie/iU1DaINJcyAQP8LDJWowpiYISDs5SdosTFjLq7GKiC417OQ58KHJR0ajkxuSSp4iBTLNRZoQOIu3J/SqKOYAhbZN2LMDf/mfkYopB4Wz0x4PF1e7W2MlD9XMRiK2qoz0Zmu7s0oER0+FAK/5gkLkLbXE3KoUHCLkT62lWBaKHhaJP/uuWCXhjxcIeXTRVjkm/fVR1py9C2IFlnJepG7PTddHrClwbbRewi01/TXP1ddqwGYLBBwu0S7z/ABFm+ORNAIbQdRLaMJfw6zD7VDF1vqQRkkJnuzJDjstdTlqrOg+kxVo0ROijWXG8TXNwjWHZxjRqnmeRlueQ5UcmVPjpjS8Oqp/GOA2+t3Vkr0HvEzTZDdO4cayf20+i/MY3H+/GyNNDz26ai/ug0UscT4prXSLKnt08Z/rqtZZhXM22YJ+wS0UmwFfnhZmygvpNocMuDR3ocLehi/V5rJbiIgcr8rSZkV4HegpIDe6Co27BLMg+7bgRcgwMn8IhHKJr3r7fuBTcrnewHBxI+lPo63DFf1lLFiJ40vkcdnfLR1NOYwycVdE/+GqOD/grk3hbI7NwA8OefBk1Z3mE0/2QYMbiedv4C/2tSKLcXpXIk9jPg/VNsj8X+AYrpSiAxjIj0NqdK60CCMltu6ge+EImHIDBKZ3gn3iIGr3wRkzQiO75b4HJgC+O5I7eLgiw3edRPQMKhvegrSJOJICda0igo7CwIAQldoRMpld6ojojS4FhSay
+ PChG4LvK
+ F73hV06sABtWuRAd9F0fP/HSYawZLdh4y1Ai6gwb4A92PiMsf6NHa2dWbh6f2Fg+NQ+goSeiZ+Az3eL6airOInuQ9HtMxIGsAAOvmoBBPWPsrD7921iUmaRMGdcta4aPKQBWkwejEQ8LpYW57UjKPt42lJ5qKISNPhMapKQNREhzLYVBTIJCpEAcp9EbMt6aBNtpDXkGwYEMXsucbQlUJXrmUi5JtPfmPRq7V56OfTJW6/i/VFCM6Nmp3DZmym6cDzzGacMXgBLqOXae0BqnrdKn8Bf0qv2cJzseLDPNfE89CokJphdbxW0aG7PJUmKS8ihB5fnSFJT4yWsAb8lXZOjAm/XMlSlHJAZwFf+MX4cCQFw8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,72 +149,41 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 09, 2026 at 12:48:31PM +0100, Uladzislau Rezki wrote:
-> On Fri, Nov 06, 2026 at 12:21:28PM +0000, Harry Yoo wrote:
-> > On Fri, Nov 06, 2026 at 10:35:13AM +0100, Uladzislau Rezki wrote:
-> > > On Wed, Oct 28, 2026 at 09:46:47PM +0800, Zhan Xusheng wrote:
-> > > > From: Zhan Xusheng <zhanxusheng@xiaomi.com>
-> > > > 
-> > > > run_page_cache_worker() runs under krcp->lock, from kvfree_call_rcu()
-> > > > callers that may hold more, such as set_cpus_allowed_force() under
-> > > > pi_lock, so it kicks the refill work from an hrtimer.  Under memory
-> > > > pressure it instead queues the work with a delay of
-> > > > rcutree.rcu_delay_page_cache_fill_msec, which may be 0, and a zero delay
-> > > > queues it at once, taking pool->lock under krcp->lock.
-> > > > 
-> > > > With the delay set to 0, calling kvfree_rcu() on vmalloc memory under
-> > > > pi_lock after a drop_caches makes lockdep report:
-> > > > 
-> > > >   Chain exists of:
-> > > >     &pool->lock --> &p->pi_lock --> krc.lock
-> > > > 
-> > > > Use the hrtimer when the delay is 0.
-> > > > 
-> > > > Fixes: d0bfa8b3c411 ("kvfree_rcu: Release a page cache under memory pressure")
-> > > > Signed-off-by: Zhan Xusheng <zhanxusheng@xiaomi.com>
-> > > > ---
-> > > >  mm/slab_common.c | 8 +++++++-
-> > > >  1 file changed, 7 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/mm/slab_common.c b/mm/slab_common.c
-> > > > index 3729aa7a6156..ef5ff0a20249 100644
-> > > > --- a/mm/slab_common.c
-> > > > +++ b/mm/slab_common.c
-> > > > @@ -1987,7 +1987,13 @@ run_page_cache_worker(struct kfree_rcu_cpu *krcp)
-> > > >  
-> > > >  	if (rcu_scheduler_active == RCU_SCHEDULER_RUNNING &&
-> > > >  			!atomic_xchg(&krcp->work_in_progress, 1)) {
-> > > > -		if (atomic_read(&krcp->backoff_page_cache_fill)) {
-> > > > +		/*
-> > > > +		 * A zero delay would queue the work right here, under
-> > > > +		 * krcp->lock and possibly the caller's pi_lock, so let the
-> > > > +		 * hrtimer do it.
-> > > > +		 */
-> > > > +		if (atomic_read(&krcp->backoff_page_cache_fill) &&
-> > > > +		    rcu_delay_page_cache_fill_msec) {
-> > > >  			queue_delayed_work(rcu_reclaim_wq,
-> > > >  				&krcp->page_cache_work,
-> > > >  					msecs_to_jiffies(rcu_delay_page_cache_fill_msec));
-> > > > -- 
-> > > > 2.43.0
-> > > > 
-> > > > 
-> > > Can we just clamp this to 1 - 100 seconds interval?
-> > 
-> > You mean clamp to [1:100,000] milliseconds interval?
-> > 
-> Yes. It is now in milliseconds.
+On Thu, 05 Nov 2026 21:30:57 +0000, Lorenzo Stoakes (ARM) wrote:
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values where
+> KSM tests VMA flags directly.
+> 
+> The ksm_madvise() interface continues to take legacy flags for the time
+> being.
+> 
+> No functional change intended.
+> 
+> [...]
 
-Thanks for clarifying.
+Applied, thanks!
 
-> So starting with 1 - means that it can be configured at least from 1 msec
-> whereas 0 is forbidden. Also we can drop the extra "if condition" proposed
-> in the patch as it never can be zero.
+tree: mm/core.git
+branch: ksm-7.5.misc
 
-But can we explain why forbiding 0 msec can be justified (when there's
-an alternative approach to fix it?)
+Applied patches will appear soon in mm-next, followed by linux-next.
+
+Please report any outstanding bugs that were missed during review, so we
+can either drop the patch series or decide how to fix it up.
+
+It is encouraged to provide Acked-bys, Reviewed-bys, and Tested-bys even
+though the patches have already been applied. If possible, patch trailers
+will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. Further, this is not a guarantee that the
+patches will go upstream. If in doubt, please check the listed branch.
+
+[06/13] mm/ksm: convert VMA flag tests to use vma_flags_t
+        https://git.kernel.org/mm/core/c/4ec4530e
 
 -- 
 Cheers,
-Harry / Hyeonggon
+
+David
+
 
