@@ -1,171 +1,156 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B37D606A33D
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 11:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D1A606A31C
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 11:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V7BzJ8S0
+	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=qsTj4MUJ;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=FecShwTH
 Received: by kanga.kvack.org (Postfix)
-	id 516C66B05B0; Mon,  9 Nov 2026 06:53:18 -0500 (EST)
+	id 14FBA6B05B2; Mon,  9 Nov 2026 06:58:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C7AB6B05B1; Mon,  9 Nov 2026 06:53:18 -0500 (EST)
+	id 127E26B05B3; Mon,  9 Nov 2026 06:58:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38F3C6B05B2; Mon,  9 Nov 2026 06:53:18 -0500 (EST)
+	id 016AD6B05B4; Mon,  9 Nov 2026 06:58:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 115116B05B0
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:53:18 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 80B1D140658
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:53:17 +0000 (UTC)
-X-FDA: 85415420034.02.60C2C79
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id C4DF2C0002
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:53:15 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V7BzJ8S0;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id CC23C6B05B2
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:58:25 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 516241C3FBB
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:58:25 +0000 (UTC)
+X-FDA: 85415432970.07.7023DBA
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 2A9C420009
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:58:23 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="q sTj4MU";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=FecShwTH;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794225195;
+	s=arc-20220608; t=1794225503;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JoZ3JKHOn0R0njHxsO6/Qrtb22qc0xZhgECNmIgLvRg=;
-	b=p9lzeI1Yi4nsQ4bHZ572shGk5fnty1rIrZuJmZ1N5ClxVVHu0xAZvBvliINUU2R4txdta1
-	Psv8XHSbaMVLUHYaIKoRUeqxSEQ0QuE1+iSPa2KnpSk0SeMRxh3imI+Bo5nAeX+NQqd+8c
-	6XPJS1wbpa7y229RhoV2GGOAYMlewsc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794225195;
-	b=DuwAoKXGpeFKopdSHNOWY58Jzo9kaX0LCajpZkxDyGeKbck/qkqZP4toLoJVzRPzdFyr81
-	9HntT+vHj4GE6nFfeHoJ4bD3nYvOHZ2mfzxZ605GTxV1iL6likMSnB2vDmcOzV8ffIViZK
-	Zt/brYeb+RvHqZFi4Vb99YRVjK+ggAM=
+	bh=2f74xI8ENOaYm5Fxf2K0EU/+aEKl3TphPyCxFled6CU=;
+	b=PzE6Hwf2WkTIG84zqugTuaILFhmrMw6yWsJtoz9E9wFebmHSE072XBKTBI21DCoFy1AHlf
+	GHT4PEFOT1awemAzMg5675UitCqdnyx2xNOHrzc3022UMETMmxMmrEYnhQ3cDVI8AryqTm
+	IXedh4K143sArH0XC6Gb3mYEYFQvq8I=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V7BzJ8S0;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E3DEC63153;
-	Mon,  9 Nov 2026 11:53:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACCB1F008A4;
-	Mon,  9 Nov 2026 11:53:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794225194;
-	bh=JoZ3JKHOn0R0njHxsO6/Qrtb22qc0xZhgECNmIgLvRg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=V7BzJ8S07RSb3MVWSX5A3mbdbydBpHaRs75Gx8FoqdNI9rvRIUC/2Hhdy95BDtlLU
-	 6A90zI4LH+N8rPi52yQTMi9HirA5d/lkjGiWD92nXjl9V3/CLq2UgbCSWkQNpXZzuB
-	 Cunq+r5k1AYrwWV18+paxZbnuL4SpjKS07Hs9v/JQLeUbF2Ucgpr6CSp9RdbOwHM08
-	 WBF1Jjuz/y90oj6uKQvQUwCjhQ7BHkVaSU0rXqdI/CNNxlBFqwJ5jsjSsq0F4K1jIu
-	 eqFBvmGbIqxGkosJaV32QP2goyQtgAKf4lSlHEi9fkYzf9c46H2EaF3EwcNhI4pAW3
-	 5NR3fA883aOTQ==
-Message-ID: <66590b61-6538-4200-8de9-68b2e1d2c697@kernel.org>
-Date: Mon, 9 Nov 2026 12:52:58 +0100
+	imf31.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="q sTj4MU";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=FecShwTH;
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794225503;
+	b=5+BBnrX6oUkUCzYg+AvMBwnN30G6Np1SwEVpLEIb5D3xo2VwRIaERhfjIQSHXRAHbrb7HY
+	TylAg884BCJUvPdrgnYFcO7aHPb62cst+HO8Ktd3GT6PNXUmCHT5UqqShX4iwyT1Y/Ncqm
+	LO3bjaxJWLaAPXmTrC+g/rOfBuU/h0Y=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id 966331301FF5
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:58:22 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Mon, 09 Nov 2026 06:58:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1794225500; x=
+	1794232700; bh=2f74xI8ENOaYm5Fxf2K0EU/+aEKl3TphPyCxFled6CU=; b=q
+	sTj4MUJB9LnjMT9ddWekMI5rQ6MfnVa9ipVwS+H2fBwHe/DfEwD055meMlYZRstV
+	UAGGbZkvi7d97cf6EbLVgU3kEIIn8O0ofrC6csuxwMhHOwxJIHGi2vyt35TBZ41A
+	5O0Z15rOVt2B2fg93sTHnNf9BTeI3GJckezJ/SkLZjBdpzqIq7406ghqY8WJb4LO
+	bNfTuEWE5xZu5yd+gBJ5lNAk95qbu8PXOMulaniOQ2gVtvA9ekCvxtO7CaxNQlHT
+	7zWt6bleZgSWEHOp2orQYYTHUGsPII9mTXG/LfpfiZ9gvGiLyTCzcDDQZU+Y7hct
+	8LWtIkM2vDV7LIhB3fGiQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1794225500; x=1794232700; bh=2f74xI8ENOaYm5Fxf2K0EU/+aEKl3TphPyC
+	xFled6CU=; b=FecShwTHdhiR9AwHTjfsmdtyg5h1Xmh8oaoAgRhk9nikwOpQ51k
+	LataX+4L9yYZOox7XSrQiGm6SuIuNau6havAM2rF9Njpc/qbWfOmGC50v+ZSWCxC
+	uTGylQ++lirX9Lz/578E4XVhjMVbof1GBhuF2o0WE3z6Qbrk1LErac2n5T9Pyfug
+	xFkwSCBi33dmn/1h/96GNfGY9MF30A28wQU4W4XNQnFf/pZ+fd1M9MSrx8EgicVr
+	fqvjr6AUplf6wkK8k7T0jXqSmzmm5c/eU0ybMzWsxzCAsGJl7ogBZ5P9GncOUrdS
+	r4Txumvi1t785NDiaDkrINk7q+kswkT0Vyg==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794225500; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:ZXyGZ7W8gGCbqyXQRqqZgkN7F0qYbjxSgVmGxfHHQ3nuuDV
+	K28DpDXTQGirVz2dXYF6X/R3uj/+zeuhD5WLwrWYpfDU0eK+X9sf4wwnzn/LwK5X
+	yzdHukBcSjt1yoDGS9kGnO0jwmlAOYjT876U+FHi651pCH+eRCoAbSnaPzb8uav4
+	mld1ewW0D8rCGS9IJqxeMWLf98KrmrJatA23wDxltxcytHwfhGN2kISQ6Aww1MV4
+	C05X5loTUrNu9l+E9ZMJ0ljxbrDNtShyzNwe1eZ+WgJB2H1hvE0pNfbRFXT04+l3
+	r53Z1S3nUPq3iH4VxvUEEtEzwlONANpJFfh7V6w==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:DwW0TWkwnhBQyqz0EkCMgRSesyG8g63gT2ui/HE93d8=:t7q5gP6od/flbVtBtebQGEUZvnyLJolctkwjR3cAcMM=;
+X-ME-Sender: <xms:XLXxavxThDx3KML4QDtIECejD0S9tXBfXTiJ8QXjQjqqy7EcBd-2bw>
+    <xme:XLXxanYKJAr6bEhrXs5UnTKKqAjSLPPfkKPeneI_zBAPSkFQHP-JPJfcrHrN-Cni1
+    3jOU0-6CCJ0XpN0gJCF5Z01ssSJFLpNmQZRsC5nQ3fLgvIgsyOw144>
+X-ME-Received: <xmr:XLXxanLWXKbkj24EUk_fxFv76VYbPgBJtO85BMPETt66UGzQKHRfubil808>
+X-ME-Proxy-Cause: dmFkZTGkIihStJ7Mcmq5LDnjB5YEQJi8XMzYdh/yQxMmWscvf9u1zH1XQgYTPBth0AAHyQ
+    jdFCb38Zp3R4bTIZ3PY9QbSW4/pBhbNhPt+KrL3Zufep6BcNhf2o0JXIP4mv8moVDKFblQ
+    ATkO4XJ9KMx/diY4R/hBXfRI4w9nn/YxpX7bCaM+TvgIw8oCVLn6lx+Gr2Z5/hUXZpgE5K
+    fRnq5VAvcYh9GLbhZTTTnpe+DsJucZEHkYXfMfppUfx7Pld45PnirZQJNYRyzg9i9809qe
+    xHUNjsv1cyUV38v0nYt5Olfd1othXynNXM8dLj42EwQw+mYnQn5sj6/FKSyyzyoMH5mvKn
+    E2nQvEAMba1Lk62MwKexTtMKFdFXBRzSQRXfbejhGgy8vKNYNVZVzVLAPfjzfnkwntU7pC
+    GI4R5ezscLsCfBKfcbyhemZV7qJPLDJD6gGNFusgqBmhSPhq1puvBAKGCZWerShA6VYuos
+    26hdPy0OqkBjUyKAi59Jc8FW8YT4Ra0Jybpvroj9nEBVSIC/ktAAplF4kvRrx7eGoDOw7h
+    M2LiUMHq9NbUs4QjRarRzvhSRO1D77NBrt9mgMuupXWT25y5nKy4SWtSFXM+j7B/lalrYr
+    9VJ9oglTUl6fyoZ/EKmgfDxGRGil2+KR5B0+yMgmc/ZJ7ul4vqHvnLXVQC1A
+X-ME-Proxy: <xmx:XLXxatz5Pl_qRVcem_Qq7EaB1074dofQFkNj8LDUMQxASspbEhn2rg>
+    <xmx:XLXxavO4NZsSIauJudFLRbY2ZggTjnAfR-P6VI-3l7gwEgKBdL_Stw>
+    <xmx:XLXxahsFlEN-IlAZqgILwUNXPcxiXEcO4S87u9f9gna67o6_Q15w3Q>
+    <xmx:XLXxas2U8sQUZ9RTlUfgaW-IRBdQ3MfJjC_tc-L9P51HupgtLnn8DQ>
+    <xmx:XLXxat6y-Te_YlPNnU7x_VjMARnzSITKp35gE6pAZbz2hkd0Zf31Rx_0>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 9 Nov 2026 06:58:19 -0500 (EST)
+Date: Mon, 9 Nov 2026 11:58:18 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, 
+	sashiko-reviews@lists.linux.dev, Andrew Morton <akpm@linux-foundation.org>, 
+	Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
+	Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Hugh Dickins <hughd@google.com>, Chris Mason <mason@kernel.org>, 
+	linux-mm@kvack.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm/memory: refuse to map page cache folios that are not
+ uptodate
+Message-ID: <avG1Rg8OyP74VIFV@thinkstation>
+References: <20261106144323.3634477-1-kirill@shutemov.name>
+ <sashiko-outbox-202966@kernel.org>
+ <8cd50b75-0845-4e82-a8ed-acfd3a261a3e@kernel.org>
+ <avGvM5kpv_z2ezoz@thinkstation>
+ <avGwAfK4I31KAPHl@pedro-suse.tail5790ac.ts.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] mm: limit pagecache folio refcount when splicing
- into pipes
-To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard
- <jhubbard@nvidia.com>, Josef Bacik <josef@toxicpanda.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- linux-arch@vger.kernel.org, iommu@lists.linux.dev, stable@vger.kernel.org
-References: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
- <20261107-refcount_overflow_stable-v2-2-c38f6809b106@kernel.org>
- <a9fb2d3c-d518-49d3-9479-a25fa2cfc5b3@gmail.com>
- <8d23b1eb-72aa-479d-9486-dbfd86d8414c@kernel.org>
- <43fc45ff-8636-4961-a80a-29844c15d7a1@kernel.org>
- <aa6ea9df-f767-4092-ad8f-f10305e27c3e@kernel.org>
- <ad09d3f5-986b-4337-9e32-1de4e5b18d71@gmail.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <ad09d3f5-986b-4337-9e32-1de4e5b18d71@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C4DF2C0002
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Stat-Signature: odnqqqa7isx1pi3ndmerqqeqh3xrkka1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <avGwAfK4I31KAPHl@pedro-suse.tail5790ac.ts.net>
 X-Rspam-User: 
-X-HE-Tag: 1794225195-837107
-X-HE-Meta: U2FsdGVkX1+YyzSXqxu4kcUUZ476FzBA5OKPwonEC8BklzaMgMfu9Q3EDHWBNUU43Gpcp19iCJGhkm9icoi+QdzcWXoIM3Fezdg09svZwnaWlNCvNXMy91KToaILcMQh5q+GlCompFxteJVqLXdW7xj9DsbrWogT1XQHr0AFaB/aQ/DPCSDGnpKAUL4n+wp5e1lqD38k6o02XjF9MQVpEdQyhVJipWN3+M7iyIvOzdTGuBr9FNOLQ/+7KhTzLAIcAdWPSDJ1zBt+37rPILBuFqFXUvIOk3qUGolO+DP7koyWAFFvUEr3qx7ZWzpeHdpZs/kwm20QCjdxDXf/gXrL0EpkV6qi65QF6nikoH7ix3P56bSQ5sTf9w7xrh8oR7Si4+viXZed5i04iHnBRZ+wHyrEo32p1fKchGZtLvjzmlp06t8wqEsbZ4JckTO8rWfqkPGYOOHfvKFcW4woR/K/MbjYraE1iU4WN4oGamvK8N6GazWjK08i/88DhcHUBzpPNA4jWKqjxwdmQCsInB7KplVko6bhBJ6ujDP5LAXx3LK6OcXx5ToKYOTEO5QeZwNSElsKjGklGudeGXLGBLGp5rhv7NjSXT4eRHGjC24YN9iQ3ZuaFC14Nk4zxDRysBw+8nOOPwlvEcygW/zp30IP9QS/+qGrOXe1SumIyo8hIvj0+xMuq23LH+omOn7S45ruYSVUH33V2RIYMW1CzR6VonA4JcpscCPcwBnbYcA1WXmCfEKXDDxFuN0Jwmhk0K69H5oJzTPfge9wyxin81GyOqIBBZk9rcMHZLfdRCbxPgNSZFD9YOdLeLCyk2H4MdEuc8tnHBaX1exq7EfnmZ1pgPPNEpRF/FGF+jqjmp5sB+i3O0sBBHSRJad+F0e8/w3UJRWwPbC6djh3YKiiwsowTRkV0PcPuBcV7QKzIAj9DuGJVPP5e2IynE8dnc6UcBA6Cb4AQtb764W3mwgawzC
- h8rBrsho
- WEXLwTluBI4YjUOzIRKJuLWaFT0/m6QJ/xFaIwKEIbP6Fd5xZbp0Sf/ZcixbjU4MYD+Gry1bZ06GTnZvGOj/0MtCgLAuM70rKDfG7QUuuPZt3QQUeJgdMZ0G9BMTV9p/lFjLEs88VFkW/8Ig57f90hpXtBD4xSZPXZBUH0dYrQo2lroOLqAmoJjiCmf+vwhH3YGDjjudqwUJfqEmmt2vHcUzNTdeG0k2BS3X+7FJfREKQTSVQlaOCIo/6DB/Zn18LzqqnHxlZ5dvpdjO4O+4CF965fCDBsvjLbcS+dCYMaJAk43oVNiGfbfcdXVROy1mwULCCGQHTEzIcqg7rUhprcCU0ssjMAj6XMf/mm8TqbxVHV54=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 2A9C420009
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: q538zap7qgqg4f4ce4ewxrmrhggijbje
+X-HE-Tag: 1794225503-478322
+X-HE-Meta: U2FsdGVkX1+E5V8W9fAJ2vl9bLO7zip+EfTy3Sn8/u1fLlhMsv8jStA/1K9PEwRIXSVqmk1RtDtA4IJB8w6QwCk5aN0of5pki8brr0E7/L3t81mwFXsjab1nFQkfHPF1DUfETVYYUbZYfJbs7RvAVERbDvC0K1enSbw7qo6pndiW42dfGaEv6Ooa4q0aooZT3NNPBA7utKi9poViovNpXZCoa48abCWs4cIAHOkcmelMwnEm/GrgbljA58I9yuE+GyBOtuVQzC5pU/o+oNrZbT2iQtC13HxoHsMs9Rtw9wuiiRcERQwPGksCnMB8g8giQHo35+zDfAxrO1ktd8Ff8hikZ1RkhVoKiFbSFyFMRkART5x/xBObnUNYvi4O1+qQru9EVL7IcK4KK520qnZw1FLL94jkKz8maLkE6IgdfkFxX27MGvhLZi6OZ3VTyosVCmpVfS0xhKxGjJIdZQYffFW+edGXJgOWtnCVkTytwAF9vyenJ8drkHsP/2nPZrGJmMTeiYbnkiWakRgVGW9lxYJoPr7A6Hl4U+QCdSVapd+wmHAvyauYltAY9/s7hhbEwtDXHWzWS9e1ZUWk5F6Ns9Voz34v6pamph5usQDnlHctsJ/3TDUxAoExEhO1y1vLSbb9fL6dUXYwAepiW3nqM65yvOkG9YBZ3feSLQYO3Ivr0kaxFI+g1MdMsPOvtPnMlmUuxPoDaY1Do2I/LpxJ6U/UUu2hudJNsqR5Ts3gmH/Z8mABhnEDjPGtI+h+1pn+8nZLkhsHNl8ArHNo8s6SyCiLIpmMacmalcPVkYd+mqyrgONB2lBdlbwGfzMQNoVkSTThemftfgCo9a2X4l/Nx3JDzlsxhn+SQ4n3xEgCMNgrjJp+GpJ9gq242of6S9EbXScQYslEbLwp63vY9hU5Tuh7QK3bRupUM5C6nQIRUtfRUqX++KzJFIU6T2flo8SanPuiw/gooe3EokZBqP/
+ xZq1r+9l
+ 9rzWUfO011ypwGwhuQnLbVSpt9xPkNRUzSeqQ7JpMPLkjoN+Ep2ZEUDeJM34Q2G03+/BsJJ5iyCNOpxPgnVtTTAC4ZVMhr6WFTWsUtKpWKXxT6jTchrkwZ56Pykc7Io8xoOvQiTaUWFDuPLbuOq0JJJZ33miASxsttHSBeFcFWIscsivMrxAzsfItPf1uWrlLegefeuMz6vu+qtZP8VuCy04m/0mcnZfiEnM2tGdAKZGelmVmGZ68csHdlF4JU4h9xNstp/eBvvKlxMqYS7KJ7TLRmJWBPKYqA0+syIy4Mgwe8rKKAUl34/vGzc+4bMN7MQYuNKYKEwj0htUvgmGfgez+4xzBJTN+5ey/1Z7krtpdQeR445HjdhrrOaEghOwfLYUaryA0wJ9Al/r94yl4FTZvh0PA3HwuFUNWyxZRSSD3pN7usLTZcAdIbNqXpGrrxRnR0JVs9YSjlWKjHcZJDPLy6XdYspxogrRwYg6ZXCUzYCw3hzDy2+t7MPdUIuI8rL2nxxSwJtdfwPgg2WYRk0DYXqjpHAIvBReYDsIc+lUpOPpex3ZZtvWRnGOdGEgUqjyFwWyOUKDiS3ewQP5qhpP/jWKIEGzQSgZ5MBkI2ql2/iMyfEErmhEG1Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -174,173 +159,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/9/26 11:25, Jose A. Perez de Azpillaga wrote:
-> On 11/9/26 11:08 AM, David Hildenbrand (Arm) wrote:
->> On 11/9/26 10:49, David Hildenbrand (Arm) wrote:
->>>
->>> Double checked, claude managed to confuse itself.
->>>
->>> n_hdlc_tty_read() can indeed return -EOVERFLOW.
->>>
->>> I should just have let splice keep failing, dealing with copy fallback starts to
->>> get annoying.
->>>
->>> I guess switching to -ETOOMANYREFS should work (and might be a better fitting error)
->>
->> Yeah, the following should do I think, please double check:
->>
->> From 7ce030711737e8c26fb5500f2705940e93da0d44 Mon Sep 17 00:00:00 2001
->> From: "David Hildenbrand (Arm)" <david@kernel.org>
->> Date: Wed, 4 Nov 2026 19:02:48 +0100
->> Subject: [PATCH] mm: limit pagecache folio refcount when splicing into pipes
->>
->> Similar to mapping pagecache folios into page tables, let's reject
->> additional references when splicing folios into a pipe if the refcount
->> is at its limit, similar to how we handle it during GUP.
->>
->> This will prevent more cases of possible folio refcount overflows with
->> large pagecache folios.
->>
->> Let's keep it simple and check in the two callers of
->> splice_folio_into_pipe(). Return -ETOOMANYREFS if the limit prevents any
->> progress, so do_splice_read() can fall back to copy_splice_read() when
->> read_iter is available. This keeps sendfile() and other splice users
->> working when ordinary reads would still succeed.
->>
->> Also fall back to copying in FUSE when taking another reference through
->> fuse_ref_folio() would exceed the limit.
->>
->> Also check in try_get_page() to cover pipe-buffer duplication by tee()
->> and partial pipe-to-pipe splicing.
->>
->> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
->> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
->> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->>  fs/fuse/dev.c      |  5 +++--
->>  fs/splice.c        |  8 +++++++-
->>  include/linux/mm.h |  9 ++++++---
->>  mm/filemap.c       | 11 ++++++++---
->>  mm/shmem.c         |  4 ++++
->>  5 files changed, 28 insertions(+), 9 deletions(-)
->>
->> diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
->> index 3641abb90d6bb..4f6b7b42bfd3e 100644
->> --- a/fs/fuse/dev.c
->> +++ b/fs/fuse/dev.c
->> @@ -1265,9 +1265,10 @@ int fuse_copy_folio(struct fuse_copy_state *cs, struct folio **foliop,
->>  		if (cs->write && cs->pipebufs && folio) {
->>  			/*
->>  			 * Can't control lifetime of pipe buffers, so always
->> -			 * copy user pages.
->> +			 * copy user pages. Also copy folios at their refcount limit.
->>  			 */
->> -			if (cs->req->args->user_pages) {
->> +			if (cs->req->args->user_pages ||
->> +			    unlikely(folio_ref_count_over_limit(folio))) {
->>  				err = fuse_copy_fill(cs);
->>  				if (err)
->>  					return err;
->> diff --git a/fs/splice.c b/fs/splice.c
->> index e6d43329ed3f0..2fc1279628af5 100644
->> --- a/fs/splice.c
->> +++ b/fs/splice.c
->> @@ -956,6 +956,7 @@ static ssize_t do_splice_read(struct file *in, loff_t *ppos,
->>  			      unsigned int flags)
->>  {
->>  	unsigned int p_space;
->> +	ssize_t ret;
->>  
->>  	if (unlikely(!(in->f_mode & FMODE_READ)))
->>  		return -EBADF;
->> @@ -977,7 +978,12 @@ static ssize_t do_splice_read(struct file *in, loff_t *ppos,
->>  	 */
->>  	if ((in->f_flags & O_DIRECT) || IS_DAX(in->f_mapping->host))
->>  		return copy_splice_read(in, ppos, pipe, len, flags);
->> -	return in->f_op->splice_read(in, ppos, pipe, len, flags);
->> +	ret = in->f_op->splice_read(in, ppos, pipe, len, flags);
->> +
->> +	/* Fallback to copying when hitting folio refcount limits. */
->> +	if (unlikely(ret == -ETOOMANYREFS) && in->f_op->read_iter)
->> +		ret = copy_splice_read(in, ppos, pipe, len, flags);
->> +	return ret;
->>  }
->>  
->>  /**
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 3356f7a670d1e..dd50262a70758 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -2288,10 +2288,13 @@ static inline void get_page(struct page *page)
->>  
->>  static inline __must_check bool try_get_page(struct page *page)
->>  {
->> -	page = compound_head(page);
->> -	if (WARN_ON_ONCE(page_ref_count(page) <= 0))
->> +	struct folio *folio = page_folio(page);
->> +
->> +	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
->>  		return false;
->> -	page_ref_inc(page);
->> +	if (unlikely(folio_ref_count_over_limit(folio)))
->> +		return false;
->> +	folio_ref_inc(folio);
->>  	return true;
->>  }
->>  
->> diff --git a/mm/filemap.c b/mm/filemap.c
->> index 920bbf86dfdff..44b23c51ea45f 100644
->> --- a/mm/filemap.c
->> +++ b/mm/filemap.c
->> @@ -3094,9 +3094,10 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
->>   * Return: On success, the number of bytes read will be returned and *@ppos
->>   * will be updated if appropriate; 0 will be returned if there is no more data
->>   * to be read; -EAGAIN will be returned if the pipe had no space, and some
->> - * other negative error code will be returned on error.  A short read may occur
->> - * if the pipe has insufficient space, we reach the end of the data or we hit a
->> - * hole.
->> + * other negative error code will be returned on error; -ETOOMANYREFS will be
->> + * returned if the folio's refcount is too high and the caller can fall back to
->> + * copying.  A short read may occur if the pipe has insufficient space, we reach
->> + * the end of the data or we hit a hole.
->>   */
->>  ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
->>  			    struct pipe_inode_info *pipe,
->> @@ -3168,6 +3169,10 @@ ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
->>  			if (writably_mapped)
->>  				flush_dcache_folio(folio);
->>  
->> +			if (unlikely(folio_ref_count_over_limit(folio))) {
->> +				error = -ETOOMANYREFS;
->> +				goto out;
->> +			}
->>  			n = min_t(loff_t, len, isize - *ppos);
->>  			n = splice_folio_into_pipe(pipe, folio, *ppos, n);
->>  			if (!n)
->> diff --git a/mm/shmem.c b/mm/shmem.c
->> index be4ab228cf67c..0b30b1de81a7c 100644
->> --- a/mm/shmem.c
->> +++ b/mm/shmem.c
->> @@ -3830,6 +3830,10 @@ static ssize_t shmem_file_splice_read(struct file *in, loff_t *ppos,
->>  			 * Ok, we have the page, and it's up-to-date, so we can
->>  			 * now splice it into the pipe.
->>  			 */
->> +			if (unlikely(folio_ref_count_over_limit(folio))) {
->> +				error = -ETOOMANYREFS;
->> +				break;
->> +			}
->>  			n = splice_folio_into_pipe(pipe, folio, *ppos, part);
->>  			folio_put(folio);
->>  			folio = NULL;
+On Mon, Nov 09, 2026 at 11:37:42AM +0000, Pedro Falcato wrote:
+> On Mon, Nov 09, 2026 at 11:32:44AM +0000, Kiryl Shutsemau wrote:
+> > On Sat, Nov 07, 2026 at 07:17:52PM +0100, David Hildenbrand (Arm) wrote:
+> > > > - [Medium] mm: missing folio_test_uptodate() recheck in
+> > > >   do_shared_fault() mkwrite path
+> > > 
+> > > Kiryl, can you look into that?
+> > 
+> > Yeah, that's legit. Will fix in v2.
 > 
-> this LGTM :)
+> Related: https://lore.kernel.org/linux-mm/as-fqjiGj5T5NLOe@casper.infradead.org/
+> 
+> At some point, if filesystems can randomly clear uptodate as a way to signal
+> writeback failure (even without the folio lock!!), these kinds of checks can
+> become a bit too error prone.
+> 
+> Perhaps we need to address this problem first?
 
-Thanks!
+The clearers Sashiko pointed at (ext4, ecryptfs, ntfs) hold the folio
+lock. Which one does it without?
 
 -- 
-Cheers,
-
-David
+  Kiryl Shutsemau / Kirill A. Shutemov
 
