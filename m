@@ -1,139 +1,123 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79385606A330
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 17:11:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55005606A332
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 17:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=SsY3NZY5;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Gfs5si5n;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=1+XxaE5u;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=//9sHfMv
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=S5mnmvZ3
 Received: by kanga.kvack.org (Postfix)
-	id D56C66B05B2; Mon,  9 Nov 2026 12:11:25 -0500 (EST)
+	id 745346B05B0; Mon,  9 Nov 2026 12:16:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D2EB06B05B3; Mon,  9 Nov 2026 12:11:25 -0500 (EST)
+	id 71D696B05B1; Mon,  9 Nov 2026 12:16:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1D0D6B05B4; Mon,  9 Nov 2026 12:11:25 -0500 (EST)
+	id 634456B05B4; Mon,  9 Nov 2026 12:16:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 904EA6B05B2
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:11:25 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 103441A075F
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:11:25 +0000 (UTC)
-X-FDA: 85416221730.01.AC65E5E
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 9D5E620008
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:11:22 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SsY3NZY5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Gfs5si5n;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1+XxaE5u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="//9sHfMv";
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	by kanga.kvack.org (Postfix) with ESMTP id 440EC6B05B0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:16:39 -0500 (EST)
+Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CDFA21A072B
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:16:38 +0000 (UTC)
+X-FDA: 85416234876.27.2A1A245
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id C8E02180006
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:16:36 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S5mnmvZ3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794244283;
+	s=arc-20220608; t=1794244596;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gs6QBIGalAs9lEG41sgY64X7mlEyPCFXyN0vk0XfcLQ=;
-	b=d32GbjRpBeGls1p45mqVpsmQuGlvw8NHJIyPsY8nIKem7pzDsqwwbpx3hCTojceFOVjw1m
-	OXHxJhh5J7ccUjCRoSXoCSjbYOUslZk2YYb1U/AmlVi/EzDC7c/OGJoNtnQatWGAER9gHF
-	OS4Ay7diKw/zmyJr3nLC1VAnTHmMMWg=
+	bh=j6CW/1Tx0ekOFiRNdAR2OG0dMWkU4FJDAABQ/X0bHfs=;
+	b=UhG2HLMa3MFQZhfse2/80Ao4tp/NAV1sv1aFa0dHd6jyu7Yq3c5LqEIhpAuRFtFNLtu1XH
+	GT9svoixGalrHo1u9H3oWle+JtZffI5R/V8vREGfSBcQ06K/Lr5zraJV6NpykKAr3yF2/6
+	5Kk1aHfRYiA3DzHPb+UkmRYL5kt7LcQ=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SsY3NZY5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Gfs5si5n;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1+XxaE5u;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="//9sHfMv";
-	dmarc=none;
-	spf=pass (imf31.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=S5mnmvZ3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794244283;
-	b=Xy3Zx9fpPdz5Jur2BGBeL/rAlVWqrjPw90IoE9KgriVXQynBDfu4mDGA+8gzF/VXs0F1DX
-	S4lTl37T841ju+5EZ3G0D32hFvzZgYZGrXMvkBXZNOhQAXbr1Z8UYFCBg5/Q6wyYVrow2y
-	T/BA6paEP/f3ErfUI9nj6ISTGpUZjmw=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E62F41FB53;
-	Mon,  9 Nov 2026 17:11:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794244281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Gs6QBIGalAs9lEG41sgY64X7mlEyPCFXyN0vk0XfcLQ=;
-	b=SsY3NZY5sMQeTbtV7S8+yP3pq+ks38fZoFZm9Ebpm0CPO8jjwrVg7A5iHmX+4ahVUVYmPB
-	NqRcMBF5DCWpTf9drN2Y/vjh0NRxXclb1UOJvEQzuZWxVT9ccQIorovXRHIDiketABtJMF
-	S4PkgaVisKb5v9+OSS0MvXRJrlQp0Q4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794244281;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Gs6QBIGalAs9lEG41sgY64X7mlEyPCFXyN0vk0XfcLQ=;
-	b=Gfs5si5n9TEWpaR1fl2aMvru04EM9s6SJUkkHkAFcEK24xgXICLVSH6sce2/7k6TFzp5iR
-	8fwTLliGP0eUZTDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794244279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Gs6QBIGalAs9lEG41sgY64X7mlEyPCFXyN0vk0XfcLQ=;
-	b=1+XxaE5uo8TfQfC3A9/88to8Y9OLGLVLHci8k626/NbcbB6UC677xEhkEfF7ZHx4b4HfvE
-	xEB7IRobo3dqbXNYqpj4dLut9FDMIB1hx3z7EhYpbXWIFP9IWXLkX3hVMeGB+mL3uOg0BD
-	QoGIiDXJeXCcqvS8xjBzirpTGVxIELA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794244279;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Gs6QBIGalAs9lEG41sgY64X7mlEyPCFXyN0vk0XfcLQ=;
-	b=//9sHfMvBMOGxyFoizeJphQPIUv4nhiiueyDnbLr2//cxHGwfRkp1peTplCdyLnt3T3U3c
-	zUprmjIIQovyzMCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E43B913302;
-	Mon,  9 Nov 2026 17:11:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id py5/L7b+8WpAFQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 09 Nov 2026 17:11:18 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 150B622368; Mon, 09 Nov 2026 18:11:14 +0100 (CET)
-Date: Mon, 9 Nov 2026 18:11:14 +0100
-From: Jan Kara <jack@suse.cz>
-To: alireza.haddadi@it.uu.se
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
-	Vishal Moola <vishal.moola@gmail.com>, fujunjie <fujunjie1@qq.com>, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: Re: [PATCH] mm/filemap: let sequential faults restart mmap readahead
-Message-ID: <gewwqi2kcu4nsitueyw2nd6g6eqjb3wqh4mks5lqcbkc6re4sn@eaqpgn2hxls5>
-References: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
+	t=1794244596;
+	b=uZhv2rOmDfSTdb/YzKuZSvY/a6JiyEsmBgG0Ub++dRErBvQTWM6kUiEx7Xwq1Oa83+WvDE
+	BWICgBAz94IX6080Xm4ahz1VJJZIfD2dDnij8uaz8kAn9h64hU1WRwpsGh3DTqFBiMZWle
+	G8bbyuOEdC+XrrX3eCE6l6n5FB0G7pg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4EBB860145;
+	Mon,  9 Nov 2026 17:16:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A851F0089F;
+	Mon,  9 Nov 2026 17:16:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794244596;
+	bh=j6CW/1Tx0ekOFiRNdAR2OG0dMWkU4FJDAABQ/X0bHfs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=S5mnmvZ36QyMB3PKa1QOlaF8M6++BvEsviRir2wFFKZKhIGSfG7yw7wclXGxpDxxw
+	 EwNnTsa+biPnrA+66hoZnjS4wLEuYUh00iHBBHNmfL8Iv3m8wJJpuTLunscdf9mwSz
+	 iaiLjdRDkJas6Kb/uPRQXfibPZdu54Ivi7gdAhSxbViqX8bx8Na8CcbnurDXpPdCIY
+	 PHU04Qlq+IZSg2X2ag7KYYtpZWZZHFi5s6Ti9nb4+Iq4qLhfNf7TreGsfQ9LgyzfUv
+	 OERYrXHNd3uGl5kmdSnF6gdsFppUEr+eNJW5EEY8A66kbWUJirlf+YY0uL+KKXbea+
+	 o3ZQg3L8tBDgw==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id ED8A21980052;
+	Mon,  9 Nov 2026 12:16:30 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 09 Nov 2026 12:16:33 -0500
+X-ME-Sender: <xms:7v_xalaHW1t7fI0I_R3gU1CMnkRqpNp-XA0_0Fg4v6R8ft-Wq42eyw>
+    <xme:7v_xauuH0RV3MQ4Pb7C71_fo3nIvY8TKk73odKl0VDOnY6aGOxhGfw_G6R7EFVftK
+    PP7mjWjYSR9xtZ3dITdTypD8rckq-CevRhw78qxqEzbznFyCDKKkmQ>
+X-ME-Received: <xmr:7v_xampey70JtFaVA0GRMnJ_YQpvE6-UFpEySSD0K4td5NanbeGCdOUx6SQ>
+X-ME-Proxy-Cause: dmFkZTERlrsw/TgcMaQYagBEnXGdzeOR8l8ctOzfJRMC5gmxQrqcjviMIQVm5fCxzjFNKI
+    IeEbuGRKdFHZmLlvXbmrb9fzt7wQqlOtts94l4qY4D2oFWPXKUHMZO0fRI3X08tvy9QJCn
+    A02mYLG5Juy4RlqXdNpii+MXz8cX4yViexmP+/uUYcJ6+OgX4AckbkH8/NNN1SUFpaFgZD
+    n2e4j0GcraBJvUYshJyxQ7o0JndZ7qx7mMNaDnlKl5yzwxdTV0LKgn7Ck/ar5g7k/NnUdD
+    MQoixdGSru5Lk8amtpUzoV+E0VbdBuHQaAAffX2SmgNaVbFEpdrDauAk7bC3vfXTmEtfBI
+    Z73zrmDnsjHnFh3mBSDLndWiNeFU7k8H2Yaa0bbgNOzke45sxWlCdMDpPVJGhsVs2o3nmm
+    to4vqIxSuhz5nFQjAHiMRyRiVURSlMkn626DYbwDbLkPF3YJ0yGUiVkZZY7eXn+zv/VvZ/
+    v2z2cyJz8Kwk7XMhHpy+sRocofQ+UeNlH8ITiGkKN+VwZ08StrSHm1SiWOYvd7W1laHE46
+    lfRCr97z5nT70hUbQyd7NJTgfMpvQk2YnsBB7GYEoEPSKa/7QGHKzdfXTX60zC58DCBbio
+    kBeIOZFZ8Q8sdt8ykdj871CNWYVTKNOGXfcpp0XJASlbd0nOwFqrpV/YFP6Q
+X-ME-Proxy: <xmx:7v_xagmFT_VPHYNx8UGLXIzR-urF8KP1t2JDhY7f4OriXzqjVBNSjw>
+    <xmx:7v_xauTXPvS4e2WvouH9HmJdc4zo-6wYkBs5v3Fd4uebeTeLHRPMKQ>
+    <xmx:7v_xahR0uGKU3D4qmpVO7TuCxu9ooZh7OLQ9UBn4yl0t8vNU81R8mw>
+    <xmx:7v_xan56uCWHbpPe3MBvfmUB_jdX1viF3Wqyw4QjjNSZZa_xaiNR-w>
+    <xmx:7v_xanRDMpyKfqo0Gor9YLT1IUstCHJMDkz5hOoLDO4n7m0QQ0WqGX-c>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 9 Nov 2026 12:16:29 -0500 (EST)
+Date: Mon, 9 Nov 2026 17:16:28 +0000
+From: Kiryl Shutsemau <kas@kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, 
+	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] mm: don't allocate a page table under RCU in
+ do_set_pmd()
+Message-ID: <avH_38C4vO6BDywb@thinkstation>
+References: <20261106-khugepaged_set_pmd-v2-0-d2457b5e377a@kernel.org>
+ <20261106-khugepaged_set_pmd-v2-2-d2457b5e377a@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
-X-Spam-Score: -11.30
-X-Spam-Level: 
+In-Reply-To: <20261106-khugepaged_set_pmd-v2-2-d2457b5e377a@kernel.org>
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 9D5E620008
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 3ungasfuuf511q6hiy5fcpm3sw5i1ukp
-X-HE-Tag: 1794244282-979896
-X-HE-Meta: U2FsdGVkX18raF87CxuolzXesCoqeT4GRcP5voKVaO/XNQOzm/T/HzU9HKxkf1gBVYVxZ5TA4M7tDqeEJL0Aae77zSbnwVvsDIxlVQe2RYagJfDbQ33gYVjzAsJdnEGX0dABWI4mCMMxRNpPUdeoRtgsk73+KJG+z0wilrPqLE/HG3P/CJdTpn3tAIK0X1L84TnRRED2c5nwcUtLcR1Z9xT56rWeHNZKhFeaBEQmS/VdYfKhGBlO/Hpyd9Kvb4CKmnOicyoo8V/wwQmbxFyxluPNnv9X8Ickl0ivLC6tcn6CyDZGEL+L4dWeIG1BVB3YnfLkr3dpapKITKnEP2rnJwor4GP54t5WCeFIcFZZPSJLPZlT+XI4EnlLcXX3aSa7Ive4tWO79skn6rKgpxhuAzqA0WFYEkEIIHKhrsFj5iwA8+sSVv6tlb3R11akFINoeORY43NLxVPdoL9rt34WnCQJHVk1UwcLBJuXeQOs10w4QZZLtN5Fdbd8ZUOX48NqGiDs5ypmSePyjpcMeaFsSEz9EytY7K4/WJOEMjkzWDitaoPdbZ1ykkBffGoY1iWAYl3QBwfyqK6NTfkmylTqsHXXXP5gIonkW269WcPfYM6psYtE1aOe88dzcHqoF4jbYdTEL1LrMZowUj85hY0m1V+v3BSkoGnRhOgmkkbSKGm64mjxhtREBwxpecwPfhpidI3KErfrkTvquut6A/syluvAg89DVTHckSad7I4dOBedLxfHB+ntxkEENd/6TFpj8v9dacEZe4Hv+KBW8dgRzgLcAwuyCVwjEhGAtOIxcq8vlswHvU+LhbFSQvexuvEffpSIsmvkOTlOLW6TNvJdgCASz+AyYRU/Azaw03N04vPF9n3TNvdSHIQIpIcpyXp8yDEYSN9DekISSA8gSS9tAsp+ssU1dX8B9KjapVRh++J1tKle5nO8cFUHD9hO4oIjgrRZOOexwytUM7LHYQY
- XkbxxQ+n
- lgsc0ZZ2+CynxSI1TgtK4m/gyqYwLJoEJcZSfCHcOsPWIOpN5FZyTezwvG0R2WBe5wmonrTObxPYEPmL4mESbcxPGjlcJT8CuJgr4aURjKu9ksHXSZjj0KdzXEIIWM4xEPNwtjIzsj5NUoFpU1eODpVVafQYLxhUxJKqFlmT+ZiaYqoZymlz81QhXSfhPHc1FHPVsMZMaKd4Ft4C5AgMbesTaya5ga5ZDFnZud2rIIAxfCL0ITEZeNn/RAUF3ybTwTTqG7fqGIK6R/QGOf3ETEGKJJW3DhbF+QhzXLHJ8c+pZSJV7Ap35NO3njgTD0zsScSbzzFLb2RpBolDBLDm7o7hpdbmC4F8327kl+HLjD50+mTWQSmjArzfODnhySNdEIXQQSrV0Virft9yUiRfRn1c6VRzdP1IdpzrbxSMCtjCcd0yKJM/EgPSaZ+q2zBqeYvU260sWYOqYDeM5srm5B22WhAkmmycEIEjnvdFJqACG9JCN56v1Sz9Lc2WYDwLtYKQQ7Xx1aqy2LvY=
+X-Rspamd-Queue-Id: C8E02180006
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: t4g7ti5tcg9ix48oimhaejf5799k9uda
+X-HE-Tag: 1794244596-704211
+X-HE-Meta: U2FsdGVkX1/9x5qXZKX6QlqvThY5mrb0fsOrVB0zBGP34Gg8HPzDGJwNDAXHUOnszw9lL9jlqx9F0rNIX9+JzY9JZDZLj885NFku56zHRWr9IV2e44aWdRuIJMcILyO4MxSIeQNqAbRv8upm05vazl+TxEq6T0k4Woqerq3zS3g0bY3v4IG7dfcG2iZBCvJKvE4cwTeoVTZehjc4Vk9ouAJX0eryjC5pzCeUhKBygHxSMMWujzkVEenEUvW9LckeOanLJ+jn4K+g46EWJ2+aO7Nns8vrv+uXmV82zVNewp8+Oh4xeKny13tG/l0/eQSs/svXvjvj7QuZFqwoSMWvMlAJF1Zb/qZDvdlK+5/FehOSHptdCgxiehI7HX0Vk5CdJzYGm2vj8hmrpJcFBlLsD35qIrsknX3GZlvkQWAIPHgrP4WEul2Ls2cw0+PWeS9DW6l9JkY+WFBD6NkKc6RMQyMkYNdq2RaxQD/2Bh7vt9VI1PLhHySjGE75qeK/lprRzjUioNmcmF7Cix/H463ozSVeATZTcfFs3StHu0BnsU1WteLVXpj/1TG7ttgcHQ7zXjXbMdJT6+EeH1FgH1AbbQJqSwIkz/In99jxRcW5qe9YTqfDuCT5UwAzUOGlzZf2CmCKpXwvQAybr/zlLoce06u9JapcLkn2X0nALd65CpAURcwAHzdSdAJYbPqbPaXM62b6QX5ExD5GABGU1o1ikt9f4nphgnFS7RB/9tmFSDoWJTwn2VAIkyGCevZ7a9skCkywr/9rNrb1NAZ2p6CkzQbHjlSvsmrsg9ZKWaWzSnz2mMHCSue/S43ernAvftif+uNxyJAeeAzFkHUtn0NegvbnJjizywf2KpidWOqaiemPOm48OtL2+47E3/J7Dfymiu3yfCfvEy+taiv6hMrkiyspvzyLO/VF8dYtTMDE4gp/RbsLEZ0NDcpmXgg9vcKEQYR9U4IRXfaTbUzadZt
+ pq/VKZal
+ ZzxCxIjz6CE+bdLJ4b3RC8RJZjCl+tQyJsNXdDxkfOYX/XOQ+gEEDXdgDtvSCyZ4O5kyF39oTRD99eqrjYRMnrWPxxuiwOko4n7nKdtKyw4wqzXZ31uU2V7RgDfYZD4ki+lrKA21IDnhSd7GGRF7qMrP9YU1Yi87hWAlWKFh2Zga9BQH0u042n0ErgB/Gd//PmWbWmBjM8hicwrmsujVW0L2ykhc44Fvu2yflugBW6PXPCBR4KYb0z9jM0FvhlN5wK9q/f0DITKYXkdQv8OWHeGYdwFe+tdDipraEflkA3zvccCZ2PqSIusqVNsxrN7ozLbwkmgSpHUj6/+WRGckm/0p0QFEVkkqAdBrI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,188 +126,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon 09-11-26 15:23:24, Alireza Haddadi via B4 Relay wrote:
-> From: Alireza Haddadi <alireza.haddadi@it.uu.se>
+On Fri, Nov 06, 2026 at 01:36:13PM +0100, David Hildenbrand (Arm) wrote:
+> do_fault_around() skips PTE table preallocation when the PMD already points
+> to a PTE table. A concurrent collapse can then retract that table and
+> clear the PMD before filemap_map_pages() locks the new PMD-sized folio.
 > 
-> After commit 0b9c0aeba938 ("mm/filemap: count only the faulting address
-> as a mmap hit"), once a file's mmap_miss goes over MMAP_LOTSAMISS it can
-> stay there until the file is closed.
+> filemap_map_pmd() can then call do_set_pmd() with an empty PMD and no
+> preallocated table. On PowerPC hash MMU, do_set_pmd() then tries
+> allocating a PTE table to deposit. But filemap_map_pmd() calls
+> do_set_pmd() under RCU, so allocating from that context is not good.
 > 
-> With mmap_miss over the limit, do_sync_mmap_readahead() reads only the
-> page that faulted. Since nothing gets read ahead, no later fault can
-> land on a page that readahead brought in. In turn filemap_map_pages()
-> never counts a hit, and the counter never comes back down. From then
-> on every fault on the file reads only a single page, even when the
-> access has become sequential.
+> This race became possible when retract_page_tables() stopped taking the
+> mmap and VMA locks. Previously, those locks excluded retraction while
+> the fault was in progress.
 > 
-> I ran into this on v7.3 with llama.cpp, where a model larger than its
-> memory limit sometimes ended up being read 4 KiB at a time, but other
-> programs hit it as well. Anything that does some random reads and then
-> reads the same open file in order faces the same problem. I tested the
-> following:
+> Add a may_alloc argument to do_set_pmd() and pass false from
+> filemap_map_pmd(), so we can fail with VM_FAULT_FALLBACK instead of
+> trying to allocate.
 > 
->  - SQLite with mmap_size set, 300 random lookups followed by a full scan
->    of a 1.8 GiB table. The scan took 9.3-14.2 s instead of 2.1 s in 8 of
->    10 runs.
+> This issue should be fairly hard to hit in practice.
 > 
->  - numpy.memmap, 1000 random rows sampled from the first 75% of a 4 GiB
->    array and then the last 25% read sequentially, as a training and
->    evaluation loop would do. The sequential part took 3.3 s instead of
->    0.3 s in 5 of 5 runs.
-> 
-> Give a sequential reader a way back. When readahead is off and the page
-> before the faulting one is in the page cache, read the next page too
-> and mark it with PG_readahead. A sequential reader faults on that page
-> next, which starts async readahead. That path is not gated by mmap_miss,
-> and the pages it brings in count as hits again, so the counter drops
-> and readahead resumes. A random reader, however, rarely has the previous
-> page cached, so it keeps reading one page per fault, or at most two.
-> Forced THP readahead is left as it is.
-> 
-> This reproducer takes 100 random faults on a file of at least 4 GiB
-> and then reads 1 GiB of it in order:
-> 
-> 	#define _GNU_SOURCE
-> 	#include <fcntl.h>
-> 	#include <stdio.h>
-> 	#include <stdlib.h>
-> 	#include <unistd.h>
-> 	#include <sys/mman.h>
-> 	#include <sys/resource.h>
-> 
-> 	/* ./a.out FILE N: N random faults, then read 1 GiB in order */
-> 	int main(int argc, char **argv)
-> 	{
-> 		long G = 1L << 30, i, flt, size;
-> 		struct rusage ru;
-> 		volatile char *p;
-> 		int fd;
-> 
-> 		if (argc != 3 || (fd = open(argv[1], O_RDONLY)) < 0)
-> 			return 2;
-> 		size = lseek(fd, 0, SEEK_END);
-> 		posix_fadvise(fd, 0, 0, POSIX_FADV_DONTNEED);
-> 		p = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
-> 
-> 		/* N random faults beyond 3 GiB */
-> 		for (i = 0; i < atol(argv[2]); i++)
-> 			p[3 * G + random() % (size - 3 * G) / 4096 * 4096];
-> 
-> 		/* then read [2 GiB, 3 GiB) in order */
-> 		getrusage(RUSAGE_SELF, &ru);
-> 		flt = ru.ru_majflt;
-> 		for (i = 2 * G; i < 3 * G; i += 4096)
-> 			p[i];
-> 		getrusage(RUSAGE_SELF, &ru);
-> 		printf("%ld major faults for %ld pages\n",
-> 		       ru.ru_majflt - flt, G / 4096);
-> 		return 0;
-> 	}
-> 
-> 	$ ./a.out FILE 100
-> 	before: 262144 major faults for 262144 pages
-> 	after:       2 major faults for 262144 pages
-> 
-> I also ran the access patterns from that commit's changelog (random,
-> strides of 1021, 1024, 2053, and 4099 pages, and sequential, on a
-> 20 GiB and a 4 GiB file in an 8 GiB guest). With this change, bytes
-> read stay within 0.1% and times within 3% in all cases, so its gains
-> are kept.
-> 
-> Fixes: 0b9c0aeba938 ("mm/filemap: count only the faulting address as a mmap hit")
-> Signed-off-by: Alireza Haddadi <alireza.haddadi@it.uu.se>
-> Cc: fujunjie <fujunjie1@qq.com>
-> Cc: Jan Kara <jack@suse.cz>
-> Cc: Vishal Moola <vishal.moola@gmail.com>
-> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
+> Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
-Hum, this looks like an ellegant way around the problem so I'm willing to
-give this a try :). Feel free to add:
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
-> Tested on mm-new (x86-64):
-> 
->  - With the patch, no run gets stuck: the SQLite scan (10 runs) and
->    the numpy pass (5 runs) take as long as their controls.
->  - mm selftests: no new failures. droppable fails about once in 20
->    runs, with and without this patch.
->  - A KVM guest with KASAN, lockdep and DEBUG_VM ran the reproducer
->    above, strided and interleaved access, and a 4-thread test: after
->    200 random faults, 4 threads read the same file in order through
->    one mapping, so they all take the new path at once; the file is
->    twice the guest's memory, so this runs under reclaim. No reports,
->    with or without the patch.
->  - W=1 and sparse are clean, also with THP or LRU_GEN disabled.
-> 
-> The cost for random readers, once readahead is off: when every third
-> page is cached and each access lands just after a cached page, 1.77
-> pages are read per access instead of 0.89. Strided access reads the
-> same as before.
-> 
-> Forced THP readahead has a similar problem with mmap_miss. I left it
-> out to keep this change small and will look at it separately.
-> 
-> I can share the benchmark scripts (SQLite, numpy, the access patterns
-> of 0b9c0aeba938) if that helps.
-> ---
->  mm/filemap.c | 27 ++++++++++++++++++++++++++-
->  1 file changed, 26 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index 93db8fc60ae0..0930aacee9fe 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -3403,8 +3403,33 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
->  		 * Do we miss much more than hit in this file? If so,
->  		 * stop bothering with read-ahead. It will only hurt.
->  		 */
-> -		if (mmap_miss > MMAP_LOTSAMISS)
-> +		if (mmap_miss > MMAP_LOTSAMISS) {
-> +			struct folio *prev = NULL;
-> +
-> +			/*
-> +			 * Nothing is read ahead now, so mmap_miss stays high
-> +			 * forever.  If the previous page is cached, this may be
-> +			 * a sequential read: read the next page as well and
-> +			 * mark it, so that async readahead, which does not
-> +			 * check mmap_miss, restarts when the mark is hit.  The
-> +			 * pages it reads then count as hits and lower
-> +			 * mmap_miss.  A random reader rarely has the previous
-> +			 * page cached and keeps reading one page per fault.
-> +			 */
-> +			if (!force_thp_readahead && vmf->pgoff)
-> +				prev = xa_load(&mapping->i_pages,
-> +					       vmf->pgoff - 1);
-> +			if (prev && !xa_is_value(prev)) {
-> +				fpin = maybe_unlock_mmap_for_io(vmf, fpin);
-> +				ra->start = vmf->pgoff;
-> +				ra->size = 2;
-> +				ra->async_size = 1;
-> +				ra->order = 0;
-> +				ractl._index = ra->start;
-> +				page_cache_ra_order(&ractl, ra);
-> +			}
->  			return fpin;
-> +		}
->  	}
->  
->  	if (force_thp_readahead) {
-> 
-> ---
-> base-commit: b95f8bb86713c860ce8536d22a988b949b884d5f
-> change-id: 20261108-mmap-miss-bf5a501088eb
-> 
-> Best regards,
-> --  
-> Alireza Haddadi <alireza.haddadi@it.uu.se>
-> 
-> 
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+  Kiryl Shutsemau / Kirill A. Shutemov
 
