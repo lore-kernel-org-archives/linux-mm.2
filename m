@@ -1,101 +1,171 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F9FC606A335
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 11:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B37D606A33D
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 11:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=fjZWf2HJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=V7BzJ8S0
 Received: by kanga.kvack.org (Postfix)
-	id 515FE6B00EF; Mon,  9 Nov 2026 06:53:03 -0500 (EST)
+	id 516C66B05B0; Mon,  9 Nov 2026 06:53:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4C6FA6B05B0; Mon,  9 Nov 2026 06:53:03 -0500 (EST)
+	id 4C7AB6B05B1; Mon,  9 Nov 2026 06:53:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DCFC6B05B1; Mon,  9 Nov 2026 06:53:03 -0500 (EST)
+	id 38F3C6B05B2; Mon,  9 Nov 2026 06:53:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D40F6B00EF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:53:03 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 115116B05B0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:53:18 -0500 (EST)
 Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B3E5A16064E
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:53:02 +0000 (UTC)
-X-FDA: 85415419404.02.1705566
-Received: from mta1.migadu.com (out-233.mta1.migadu.com [95.215.58.233])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4ECC940006
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:53:00 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fjZWf2HJ;
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.233 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794225180;
-	b=zig9S9ubfDlFO6K3EnQ2gqfxXXeoX6ABKvxv9ZUAWfLs1KqpakQWIdEG19ANcw7NTh0Epi
-	I9Aq9xGRM9KNtX7VH/cfWgKWe5aXq0/TxSnuwojwxepAzMzO5WKVAxa/p1o+JK7HnrqAm8
-	mp/3zdL1s12+hwJZEbp/rPHgLHpclns=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=fjZWf2HJ;
-	spf=pass (imf01.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.233 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 80B1D140658
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:53:17 +0000 (UTC)
+X-FDA: 85415420034.02.60C2C79
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf10.hostedemail.com (Postfix) with ESMTP id C4DF2C0002
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:53:15 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V7BzJ8S0;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794225180;
+	s=arc-20220608; t=1794225195;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+NUMBjE4wBB/Q8mO02dBvrjk9d7DRztoNKoxB4KrfGU=;
-	b=BrhO8TCp1sb91sEcAfTlaAYPE4GXjXUZ3WnAOfpCZPy1svOO8LMvVRqjJZgEGtyLEiGyIK
-	7e9ds2q9EK9NKVdBTIHx1QsZ9gooC8dod/oAcS+LK9xYjdJSsxg2C7DPpsR1gB5tanabAb
-	PoSHZpR45qpGCUfZwvCrqIWB8zA248E=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=NR/9+ds+0qbFQbbZWnYyK+Ful0AYe2acx+nJjLHN/lE=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794225178; v=1; x=1794829978;
- b=fjZWf2HJD7A86dlOOGKc7YTE2TJXjn7KAT4Dlcw0GrCnYfmegMGlBh2rFWmbVlYwGROKfxG3
- c5oE6/S8UqkfbMR+L+hmdv8asxYwD/6KcJiuY2sKb4pm3TnONt6L/IIiXZfl0FPLqeGpbJJBRjY
- aFHHOznKvzoEosZpqn3Rg94g=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 47f3f8f417342a33;
-	Mon, 09 Nov 2026 11:52:58 +0000
-X-Mizu-Trace-ID: 47f3f8f417342a33
-X-Migadu-Flow: FLOW_OUT
-Message-ID: <7975c299-dcd3-4aee-8bcb-f3c0e8b8ce7a@linux.dev>
-Date: Mon, 9 Nov 2026 19:52:42 +0800
+	bh=JoZ3JKHOn0R0njHxsO6/Qrtb22qc0xZhgECNmIgLvRg=;
+	b=p9lzeI1Yi4nsQ4bHZ572shGk5fnty1rIrZuJmZ1N5ClxVVHu0xAZvBvliINUU2R4txdta1
+	Psv8XHSbaMVLUHYaIKoRUeqxSEQ0QuE1+iSPa2KnpSk0SeMRxh3imI+Bo5nAeX+NQqd+8c
+	6XPJS1wbpa7y229RhoV2GGOAYMlewsc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794225195;
+	b=DuwAoKXGpeFKopdSHNOWY58Jzo9kaX0LCajpZkxDyGeKbck/qkqZP4toLoJVzRPzdFyr81
+	9HntT+vHj4GE6nFfeHoJ4bD3nYvOHZ2mfzxZ605GTxV1iL6likMSnB2vDmcOzV8ffIViZK
+	Zt/brYeb+RvHqZFi4Vb99YRVjK+ggAM=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=V7BzJ8S0;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id E3DEC63153;
+	Mon,  9 Nov 2026 11:53:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACCB1F008A4;
+	Mon,  9 Nov 2026 11:53:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794225194;
+	bh=JoZ3JKHOn0R0njHxsO6/Qrtb22qc0xZhgECNmIgLvRg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=V7BzJ8S07RSb3MVWSX5A3mbdbydBpHaRs75Gx8FoqdNI9rvRIUC/2Hhdy95BDtlLU
+	 6A90zI4LH+N8rPi52yQTMi9HirA5d/lkjGiWD92nXjl9V3/CLq2UgbCSWkQNpXZzuB
+	 Cunq+r5k1AYrwWV18+paxZbnuL4SpjKS07Hs9v/JQLeUbF2Ucgpr6CSp9RdbOwHM08
+	 WBF1Jjuz/y90oj6uKQvQUwCjhQ7BHkVaSU0rXqdI/CNNxlBFqwJ5jsjSsq0F4K1jIu
+	 eqFBvmGbIqxGkosJaV32QP2goyQtgAKf4lSlHEi9fkYzf9c46H2EaF3EwcNhI4pAW3
+	 5NR3fA883aOTQ==
+Message-ID: <66590b61-6538-4200-8de9-68b2e1d2c697@kernel.org>
+Date: Mon, 9 Nov 2026 12:52:58 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/mm: Tear down the direct map when memory hot add
- fails
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
- Chris Down <chris@chrisdown.name>, Dave Hansen
- <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>, Oscar Salvador <osalvador@suse.de>,
- Andrew Morton <akpm@linux-foundation.org>,
- Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
- linux-cxl@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com
-References: <au_l5MRyDbYfsUVe@chrisdown.name>
- <4bfb6533-1e77-4150-9626-437678b1785d@kernel.org>
+Subject: Re: [PATCH v2 2/5] mm: limit pagecache folio refcount when splicing
+ into pipes
+To: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
+ Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Steve Sistare <steven.sistare@oracle.com>, John Hubbard
+ <jhubbard@nvidia.com>, Josef Bacik <josef@toxicpanda.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
+ linux-arch@vger.kernel.org, iommu@lists.linux.dev, stable@vger.kernel.org
+References: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
+ <20261107-refcount_overflow_stable-v2-2-c38f6809b106@kernel.org>
+ <a9fb2d3c-d518-49d3-9479-a25fa2cfc5b3@gmail.com>
+ <8d23b1eb-72aa-479d-9486-dbfd86d8414c@kernel.org>
+ <43fc45ff-8636-4961-a80a-29844c15d7a1@kernel.org>
+ <aa6ea9df-f767-4092-ad8f-f10305e27c3e@kernel.org>
+ <ad09d3f5-986b-4337-9e32-1de4e5b18d71@gmail.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <4bfb6533-1e77-4150-9626-437678b1785d@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <ad09d3f5-986b-4337-9e32-1de4e5b18d71@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C4DF2C0002
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4ECC940006
-X-Stat-Signature: b7zma91cxoa179yoz99kfk1mzaq6ey7y
+X-Stat-Signature: odnqqqa7isx1pi3ndmerqqeqh3xrkka1
 X-Rspam-User: 
-X-HE-Tag: 1794225180-574487
-X-HE-Meta: U2FsdGVkX1+SBRmFP4gTil2EMfhxxcxpDSsOq481ennYRTe2WhV8H2ZmSxKUPrEhLngoVVeGhbCUY9FtWwK2ClHOizE4frshtYSp5lZt2swoZl21eRFHlQti4W8uXUsDxZuiX+1sbXZ1f5w0ThR5mXFtk0l7zyuVuI44DRHfq+A0y7kd75QSRQfX7RZuAWBNXJcvqgQhneVN7uI6szcLaJDXJ67ua0NxQdEw18sM/uuPVsbyLm+5X/ZG1JNCJ4GP1aXIGbA+B8mASIUENDCcHabybY8fwWOi0gpTVGsyw2cejWW0K4oMFjPgjMaAnk63qDw1Q3Hyh38TfBmo4XVqWJbXlYL6SeHVxvl/VE7zcLafGHsoVfa4dS6oUC08F8KULFqrNq/+ZsRef1owsQ/GWG80rJSpk5YIQ37S78c2efX2L8YWig+P/JVv8ST735MQkEvDjDwJnZ9W5RaN9kwI6cUcDNaQb5TLtkNW0H9ghK4kJYHqRdgcOjgjENw7IPDVr/9bjIKkJq/E+idh+xSg4QWuY9cCM6fwwYQBCH6ZtTVt+jGmxkhi+cTd2oXZyFY5zPhjFgxaEYzF9iuzU6zu7d2B7v1r3w9t9VEyUwB1P0inMaxfebKXNEgrpAHRGUZgtkXXalUNU8bW1viWKyMzCODuaarHPui+hEkOZhhnfCqs+wlsXIqK6mMkecViaihkPsgwDUAokMKJ+RVVa0wHNvtcdesyHFZ6IAtVb6IodSsp6fFceOcQsvpHbd8DASWjr/Wz1NHPE/qllklo9IclsBtugfspz/K7SdKoH3Krst54cy2zWHroUK2Iv7KTDQAt1UOG7RgSJc0egfFHUO00uu8sNzQq696Nm/ZPE1uqoZZ7Uh7jtaN130yzRIMVY/Z5JdlfCifIpqxxodrB04LvLGtX0Pi3OikqZ+eJaiOIDY4SiSM70+g/prZI0xlvjyE/AaCiVLIFoWEvOclqfQ7
- 8atubs0m
- SL+iJqFCjS8GC1KzlNqfM36SrWcWb1Wd5fgsqSonm1GC6NFaZGPISRYDzAElgxQPuX0hAq5pKncnzWbpgRfYj1wV7E2CjQ04Via9odH8bJ4W09DVaX5totlS7YlfO7EV0QJ3kpOoXjsf4PMxIzn91grYs47xZVQkvpTyr052Ln2cv4ZY+nTeT9rKxXGJOhPlMtglpzumh5AM5Q8WRDL0mMG6AXqyiW7PIfDlwl5U/9kqJDXGUO6qNLE2M9VbIQsCda+hG2QmpFYe3zwuubpZFUB6KJVF9z3crkZn+ldnJ8D7vs/A=
+X-HE-Tag: 1794225195-837107
+X-HE-Meta: U2FsdGVkX1+YyzSXqxu4kcUUZ476FzBA5OKPwonEC8BklzaMgMfu9Q3EDHWBNUU43Gpcp19iCJGhkm9icoi+QdzcWXoIM3Fezdg09svZwnaWlNCvNXMy91KToaILcMQh5q+GlCompFxteJVqLXdW7xj9DsbrWogT1XQHr0AFaB/aQ/DPCSDGnpKAUL4n+wp5e1lqD38k6o02XjF9MQVpEdQyhVJipWN3+M7iyIvOzdTGuBr9FNOLQ/+7KhTzLAIcAdWPSDJ1zBt+37rPILBuFqFXUvIOk3qUGolO+DP7koyWAFFvUEr3qx7ZWzpeHdpZs/kwm20QCjdxDXf/gXrL0EpkV6qi65QF6nikoH7ix3P56bSQ5sTf9w7xrh8oR7Si4+viXZed5i04iHnBRZ+wHyrEo32p1fKchGZtLvjzmlp06t8wqEsbZ4JckTO8rWfqkPGYOOHfvKFcW4woR/K/MbjYraE1iU4WN4oGamvK8N6GazWjK08i/88DhcHUBzpPNA4jWKqjxwdmQCsInB7KplVko6bhBJ6ujDP5LAXx3LK6OcXx5ToKYOTEO5QeZwNSElsKjGklGudeGXLGBLGp5rhv7NjSXT4eRHGjC24YN9iQ3ZuaFC14Nk4zxDRysBw+8nOOPwlvEcygW/zp30IP9QS/+qGrOXe1SumIyo8hIvj0+xMuq23LH+omOn7S45ruYSVUH33V2RIYMW1CzR6VonA4JcpscCPcwBnbYcA1WXmCfEKXDDxFuN0Jwmhk0K69H5oJzTPfge9wyxin81GyOqIBBZk9rcMHZLfdRCbxPgNSZFD9YOdLeLCyk2H4MdEuc8tnHBaX1exq7EfnmZ1pgPPNEpRF/FGF+jqjmp5sB+i3O0sBBHSRJad+F0e8/w3UJRWwPbC6djh3YKiiwsowTRkV0PcPuBcV7QKzIAj9DuGJVPP5e2IynE8dnc6UcBA6Cb4AQtb764W3mwgawzC
+ h8rBrsho
+ WEXLwTluBI4YjUOzIRKJuLWaFT0/m6QJ/xFaIwKEIbP6Fd5xZbp0Sf/ZcixbjU4MYD+Gry1bZ06GTnZvGOj/0MtCgLAuM70rKDfG7QUuuPZt3QQUeJgdMZ0G9BMTV9p/lFjLEs88VFkW/8Ig57f90hpXtBD4xSZPXZBUH0dYrQo2lroOLqAmoJjiCmf+vwhH3YGDjjudqwUJfqEmmt2vHcUzNTdeG0k2BS3X+7FJfREKQTSVQlaOCIo/6DB/Zn18LzqqnHxlZ5dvpdjO4O+4CF965fCDBsvjLbcS+dCYMaJAk43oVNiGfbfcdXVROy1mwULCCGQHTEzIcqg7rUhprcCU0ssjMAj6XMf/mm8TqbxVHV54=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,60 +174,173 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-
-
-On 2026/11/9 17:34, David Hildenbrand (Arm) wrote:
-> On 11/8/26 04:00, Chris Down wrote:
->> arch_add_memory() sets up the direct map before calling add_pages().
->> If add_pages() fails, the range stays mapped and any page tables
->> allocated for it are leaked. A later hot add can reuse the stale
->> mapping.
+On 11/9/26 11:25, Jose A. Perez de Azpillaga wrote:
+> On 11/9/26 11:08 AM, David Hildenbrand (Arm) wrote:
+>> On 11/9/26 10:49, David Hildenbrand (Arm) wrote:
+>>>
+>>> Double checked, claude managed to confuse itself.
+>>>
+>>> n_hdlc_tty_read() can indeed return -EOVERFLOW.
+>>>
+>>> I should just have let splice keep failing, dealing with copy fallback starts to
+>>> get annoying.
+>>>
+>>> I guess switching to -ETOOMANYREFS should work (and might be a better fitting error)
 >>
->> Remove the direct mapping on failure.
+>> Yeah, the following should do I think, please double check:
 >>
->> Fixes: 45e0b78b0532 ("[PATCH] hot-add-mem x86_64: use CONFIG_MEMORY_HOTPLUG_RESERVE")
->> Signed-off-by: Chris Down <chris@chrisdown.name>
+>> From 7ce030711737e8c26fb5500f2705940e93da0d44 Mon Sep 17 00:00:00 2001
+>> From: "David Hildenbrand (Arm)" <david@kernel.org>
+>> Date: Wed, 4 Nov 2026 19:02:48 +0100
+>> Subject: [PATCH] mm: limit pagecache folio refcount when splicing into pipes
+>>
+>> Similar to mapping pagecache folios into page tables, let's reject
+>> additional references when splicing folios into a pipe if the refcount
+>> is at its limit, similar to how we handle it during GUP.
+>>
+>> This will prevent more cases of possible folio refcount overflows with
+>> large pagecache folios.
+>>
+>> Let's keep it simple and check in the two callers of
+>> splice_folio_into_pipe(). Return -ETOOMANYREFS if the limit prevents any
+>> progress, so do_splice_read() can fall back to copy_splice_read() when
+>> read_iter is available. This keeps sendfile() and other splice users
+>> working when ordinary reads would still succeed.
+>>
+>> Also fall back to copying in FUSE when taking another reference through
+>> fuse_ref_folio() would exceed the limit.
+>>
+>> Also check in try_get_page() to cover pipe-buffer duplication by tee()
+>> and partial pipe-to-pipe splicing.
+>>
+>> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+>> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+>> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 >> ---
->>   arch/x86/mm/init_64.c | 10 +++++++++-
->>   1 file changed, 9 insertions(+), 1 deletion(-)
+>>  fs/fuse/dev.c      |  5 +++--
+>>  fs/splice.c        |  8 +++++++-
+>>  include/linux/mm.h |  9 ++++++---
+>>  mm/filemap.c       | 11 ++++++++---
+>>  mm/shmem.c         |  4 ++++
+>>  5 files changed, 28 insertions(+), 9 deletions(-)
 >>
->> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
->> index 8b6d86fb5a42..846cb34b38dd 100644
->> --- a/arch/x86/mm/init_64.c
->> +++ b/arch/x86/mm/init_64.c
->> @@ -989,15 +989,23 @@ int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
->>   	return ret;
->>   }
->>   
->> +static void __meminit kernel_physical_mapping_remove(unsigned long start,
->> +						     unsigned long end);
+>> diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+>> index 3641abb90d6bb..4f6b7b42bfd3e 100644
+>> --- a/fs/fuse/dev.c
+>> +++ b/fs/fuse/dev.c
+>> @@ -1265,9 +1265,10 @@ int fuse_copy_folio(struct fuse_copy_state *cs, struct folio **foliop,
+>>  		if (cs->write && cs->pipebufs && folio) {
+>>  			/*
+>>  			 * Can't control lifetime of pipe buffers, so always
+>> -			 * copy user pages.
+>> +			 * copy user pages. Also copy folios at their refcount limit.
+>>  			 */
+>> -			if (cs->req->args->user_pages) {
+>> +			if (cs->req->args->user_pages ||
+>> +			    unlikely(folio_ref_count_over_limit(folio))) {
+>>  				err = fuse_copy_fill(cs);
+>>  				if (err)
+>>  					return err;
+>> diff --git a/fs/splice.c b/fs/splice.c
+>> index e6d43329ed3f0..2fc1279628af5 100644
+>> --- a/fs/splice.c
+>> +++ b/fs/splice.c
+>> @@ -956,6 +956,7 @@ static ssize_t do_splice_read(struct file *in, loff_t *ppos,
+>>  			      unsigned int flags)
+>>  {
+>>  	unsigned int p_space;
+>> +	ssize_t ret;
+>>  
+>>  	if (unlikely(!(in->f_mode & FMODE_READ)))
+>>  		return -EBADF;
+>> @@ -977,7 +978,12 @@ static ssize_t do_splice_read(struct file *in, loff_t *ppos,
+>>  	 */
+>>  	if ((in->f_flags & O_DIRECT) || IS_DAX(in->f_mapping->host))
+>>  		return copy_splice_read(in, ppos, pipe, len, flags);
+>> -	return in->f_op->splice_read(in, ppos, pipe, len, flags);
+>> +	ret = in->f_op->splice_read(in, ppos, pipe, len, flags);
 >> +
->>   int arch_add_memory(int nid, u64 start, u64 size,
->>   		    struct mhp_params *params)
->>   {
->>   	unsigned long start_pfn = start >> PAGE_SHIFT;
->>   	unsigned long nr_pages = size >> PAGE_SHIFT;
->> +	int ret;
->>   
->>   	init_memory_mapping(start, start + size, params->pgprot);
->>   
->> -	return add_pages(nid, start_pfn, nr_pages, params);
->> +	ret = add_pages(nid, start_pfn, nr_pages, params);
->> +	if (ret)
->> +		kernel_physical_mapping_remove(start, start + size);
->> +
+>> +	/* Fallback to copying when hitting folio refcount limits. */
+>> +	if (unlikely(ret == -ETOOMANYREFS) && in->f_op->read_iter)
+>> +		ret = copy_splice_read(in, ppos, pipe, len, flags);
 >> +	return ret;
->>   }
->>   
->>   static void __meminit free_pagetable(struct page *page)
->>
->> base-commit: fa4ad798f6f681031775266044ba1b0cf3c670bd
+>>  }
+>>  
+>>  /**
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 3356f7a670d1e..dd50262a70758 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -2288,10 +2288,13 @@ static inline void get_page(struct page *page)
+>>  
+>>  static inline __must_check bool try_get_page(struct page *page)
+>>  {
+>> -	page = compound_head(page);
+>> -	if (WARN_ON_ONCE(page_ref_count(page) <= 0))
+>> +	struct folio *folio = page_folio(page);
+>> +
+>> +	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
+>>  		return false;
+>> -	page_ref_inc(page);
+>> +	if (unlikely(folio_ref_count_over_limit(folio)))
+>> +		return false;
+>> +	folio_ref_inc(folio);
+>>  	return true;
+>>  }
+>>  
+>> diff --git a/mm/filemap.c b/mm/filemap.c
+>> index 920bbf86dfdff..44b23c51ea45f 100644
+>> --- a/mm/filemap.c
+>> +++ b/mm/filemap.c
+>> @@ -3094,9 +3094,10 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
+>>   * Return: On success, the number of bytes read will be returned and *@ppos
+>>   * will be updated if appropriate; 0 will be returned if there is no more data
+>>   * to be read; -EAGAIN will be returned if the pipe had no space, and some
+>> - * other negative error code will be returned on error.  A short read may occur
+>> - * if the pipe has insufficient space, we reach the end of the data or we hit a
+>> - * hole.
+>> + * other negative error code will be returned on error; -ETOOMANYREFS will be
+>> + * returned if the folio's refcount is too high and the caller can fall back to
+>> + * copying.  A short read may occur if the pipe has insufficient space, we reach
+>> + * the end of the data or we hit a hole.
+>>   */
+>>  ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
+>>  			    struct pipe_inode_info *pipe,
+>> @@ -3168,6 +3169,10 @@ ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
+>>  			if (writably_mapped)
+>>  				flush_dcache_folio(folio);
+>>  
+>> +			if (unlikely(folio_ref_count_over_limit(folio))) {
+>> +				error = -ETOOMANYREFS;
+>> +				goto out;
+>> +			}
+>>  			n = min_t(loff_t, len, isize - *ppos);
+>>  			n = splice_folio_into_pipe(pipe, folio, *ppos, n);
+>>  			if (!n)
+>> diff --git a/mm/shmem.c b/mm/shmem.c
+>> index be4ab228cf67c..0b30b1de81a7c 100644
+>> --- a/mm/shmem.c
+>> +++ b/mm/shmem.c
+>> @@ -3830,6 +3830,10 @@ static ssize_t shmem_file_splice_read(struct file *in, loff_t *ppos,
+>>  			 * Ok, we have the page, and it's up-to-date, so we can
+>>  			 * now splice it into the pipe.
+>>  			 */
+>> +			if (unlikely(folio_ref_count_over_limit(folio))) {
+>> +				error = -ETOOMANYREFS;
+>> +				break;
+>> +			}
+>>  			n = splice_folio_into_pipe(pipe, folio, *ppos, part);
+>>  			folio_put(folio);
+>>  			folio = NULL;
 > 
-> I thought we fixed that already, but I remembered
-> 
-> https://lore.kernel.org/all/20260930160432.5564-1-lance.yang@linux.dev/
+> this LGTM :)
 
-Ouch ... I missed the direct map cleanup in that fix ...
+Thanks!
 
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
+-- 
+Cheers,
+
+David
 
