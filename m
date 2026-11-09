@@ -1,71 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BE1606D817
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3176606A33B
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=VhodTs+A
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WkYzP4rt
 Received: by kanga.kvack.org (Postfix)
-	id 971526B05B5; Mon,  9 Nov 2026 07:26:25 -0500 (EST)
+	id 99A6E6B05C6; Mon,  9 Nov 2026 07:27:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 948A06B05C5; Mon,  9 Nov 2026 07:26:25 -0500 (EST)
+	id 94A006B05C7; Mon,  9 Nov 2026 07:27:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 85E7F6B05C6; Mon,  9 Nov 2026 07:26:25 -0500 (EST)
+	id 7EE1C6B05C8; Mon,  9 Nov 2026 07:27:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DC406B05B5
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:26:25 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 0623D803C9
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:26:25 +0000 (UTC)
-X-FDA: 85415503530.20.6311BD7
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 5EFEE100007
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:26:23 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 597126B05C6
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:27:26 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 01C721A0600
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:27:25 +0000 (UTC)
+X-FDA: 85415506092.01.F008137
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 54DFE100005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:27:24 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VhodTs+A;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WkYzP4rt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794227244;
+	b=WJFMAA0XbdBsbZ5agl9GBaTqU9hCaBi549nJeQ1rgfmwOK22br9DP30iVXS9xQldJo3k9g
+	Zwj1mBN56vm4QexXPAS9beqo5LaJ9XpS95eLcUCjfTvzxjDq/aCTbs/BwKoUIAWyeK2GSL
+	Ij8sF59WoUVuhVNhcbLeEAWPCfVQjiI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794227183;
+	s=arc-20220608; t=1794227244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6+EKYQdPiDyWXkzzfV/UN8vBxInBjW4N6ZELhlBfhOI=;
-	b=SXtohot3JcazGCjg6Vc9TtPg7ctC3uT7iCsMVcfuBj1KkSZ1K+xkXYDPMVqs9S5dvTdDBi
-	ShBtMRK476yHSp/mqBQkZ86QxZrVDIH5qhzm+cOoWAm7CYrIQUovk2TsLxh0BiZgYrLAf+
-	u8snEgJFPi+MaztEev9nDKDfqNYsGPg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794227183;
-	b=I0APOZtykxKKIsopGBrbZs9Jr0GgxPDvDeL/gO9UBXtPWDMF8/S0cGEnHWzOgBc8MegeR8
-	NqXR+GKTH8ydwSaSdCSS9yZKL7G/qXERaN7GONIcAARH2AiRUeUDepy7q0OE0k6cKaJbmj
-	ecnUVMGvw4Qeu4PnZ/78lS/j/IzPz9E=
+	bh=RYIcWcYzIUZ35LbYpg6XHYKMwvcMU7zN300uv/7AjsM=;
+	b=Ue2cDaujrMig6sKXRzN2J70tHK9VLT2PxoR4h5/qoM/zB73xHeAJc/+YSDYWTfEHwNAP7A
+	ZBNpdjmf9KoShz2a5RAaktjvFmuho4DPBXkoxyGTY8MH94PMYck0A0jJjqs7A2w6ImMnOQ
+	3TqJI9AS5diTC3yl8FvkwHM6BZw3N6E=
 ARC-Authentication-Results: i=1;
 	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=VhodTs+A;
-	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WkYzP4rt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 92A1F43D40;
-	Mon,  9 Nov 2026 12:26:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937971F0089F;
-	Mon,  9 Nov 2026 12:26:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BD78F62CCE;
+	Mon,  9 Nov 2026 12:27:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD0D91F0089F;
+	Mon,  9 Nov 2026 12:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794227182;
-	bh=6+EKYQdPiDyWXkzzfV/UN8vBxInBjW4N6ZELhlBfhOI=;
+	s=k20260515; t=1794227243;
+	bh=RYIcWcYzIUZ35LbYpg6XHYKMwvcMU7zN300uv/7AjsM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=VhodTs+AWpB6b78audXhz1hdToGnTfiqsIeh7C9iS51ypshI9FNnayYXFucaMgeLZ
-	 xeEIungcy0zjIPzwmpAqArp8eRXgn6aLR4nNmqHiWaRHWsbsQ7Qxh3+PgSaQmGodli
-	 iH97FzOVZfiuF5Da5WjkLmXe3XJknzf7SbtxrzdHDZZM2QKqqAHZOHOY4doionvKHw
-	 4h930muPKhPQSSHI+AAJgxUYDe3aTAGC8NAItOXceOH2dwmRr1lJ1teB6f1iCQBu+D
-	 7GUCaRQliXvLQza+jV5DiZhXeIr64nvzKuidlvAiLong4iDN+nDILPyMHrAS7gpG/t
-	 Sxhmv2E4eHoMw==
-Date: Mon, 9 Nov 2026 12:26:00 +0000
+	b=WkYzP4rt/AxJflSDY4QvHlo3QQtj+85opjVNNjFvMZqJZn+bBCQKsOR1Vc56wCsWw
+	 FHwDkIcJj0dA8rBrIwiablgEvMq9q7ucu+JfX5ZN/0yOM8xaxvKN1o/8G1XCL0eIBJ
+	 b0Cv7HUFzyyS7CUgxu7a5sjYbh8AKtzd//4hZ8f+wOi407hdVAolsL1UEeBF+yDk3z
+	 Cz0noIGTuP+nGcjHMqce1MVu5INeoK3aRdrWAaXkeN9Rfm7WjlKS4/wg/Th3S/XzAR
+	 k2GkQM8y0M0SzQ1l9cxFRP1xd1zIG5cLpSzvpH/O1BlNyrFDSrS7beg0mpHerpJWoL
+	 FtSvpRHC0A2SA==
+Date: Mon, 9 Nov 2026 12:27:00 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Barry Song <baohua@kernel.org>
-Cc: sashiko-reviews@lists.linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@kernel.org>, 
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
 	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, Peter Xu <peterx@redhat.com>, 
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>, Rik van Riel <riel@surriel.com>, 
 	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
@@ -75,7 +73,8 @@ Cc: sashiko-reviews@lists.linux.dev,
 	Gregory Price <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, 
 	Alistair Popple <apopple@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
 	Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
+	Barry Song <baohua@kernel.org>, Usama Arif <usama.arif@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Xu Xin <xu.xin@linux.dev>, 
 	Chengming Zhou <chengming.zhou@linux.dev>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
 	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
 	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
@@ -99,36 +98,32 @@ Cc: sashiko-reviews@lists.linux.dev,
 	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
 	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
 	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej =?utf-8?B?TW9zbsOhxI1law==?= <omosnacek@gmail.com>, 
-	linux-mm@kvack.org, kvm@vger.kernel.org, damon@lists.linux.dev, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, damon@lists.linux.dev, 
 	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Subject: Re: [PATCH 02/13] mm/filemap: convert fault and readahead logic to
- use vma_flags_t
-Message-ID: <avG7mvt0okaFGUT7@gremlin>
+	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, selinux@vger.kernel.org
+Subject: Re: [PATCH 05/13] mm: convert THP VMA flag tests to use vma_flags_t
+Message-ID: <avG7_rb_PtU1jsbH@gremlin>
 References: <20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org>
- <20261105-late-2026-vma-flags-v1-2-0d3cd15ab75f@kernel.org>
- <sashiko-outbox-200257@kernel.org>
- <au2_PPpdAMgRJZtX@gremlin>
- <CAGsJ_4yWQom=cG5vw2B-FR8+7wNU+rwZkvghjAxusym+3OH96A@mail.gmail.com>
- <CAGsJ_4zvRSUSspBe_hNwTYDjK3-TLuq6Mhi5gDyOPZGDXN8gDw@mail.gmail.com>
+ <20261105-late-2026-vma-flags-v1-5-0d3cd15ab75f@kernel.org>
+ <631047fa-8a19-44b8-9fed-6607ec79a1c1@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGsJ_4zvRSUSspBe_hNwTYDjK3-TLuq6Mhi5gDyOPZGDXN8gDw@mail.gmail.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: k37qaowckjp1rjr8a1gnt3un5pkzxmge
+In-Reply-To: <631047fa-8a19-44b8-9fed-6607ec79a1c1@kernel.org>
+X-Rspamd-Queue-Id: 54DFE100005
+X-Rspamd-Server: rspam12
+X-Stat-Signature: gzkygrartndaxfpwsgzmscxkbds36zfk
+X-Rspam-User:
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 5EFEE100007
-X-Rspam-User: 
-X-HE-Tag: 1794227183-624313
-X-HE-Meta: U2FsdGVkX1/ts8pRBR4JuJHbS3U8LF6XFIKWyzC6O6Kg90upzkWuF0CZW5yvJ+sz7GbqtJXbS395Y3wvBt6ED1pq/rLr3Nw9kyoA7WCFZqEelaHxHx+Wf3Ul9R9xjdlFzrp6TtLtEv93Y74r2zmYCFX8fCSwfYP4G9+gsB+LZd/NTR5ZXmba/76SD29/siRaf00aF3EgOFcG/WrMXtLJu7MvzYRBUX5yNWZyHM/MkeW+zmXZZXyl89s9t7OlXU6UVuseT6xbDXu5SkLcTSeWBdlLfwhADxZebmIKJSFk12AP1XeJ+hxAFhLqP9/mxiNqyDqjxzRWWbMO3pMR+ym3tppJLDI64Cgnk38Wqt86R1+FscJ+jseXfzi3X9eSsIl9mwqG35txqfCtMsskOK9/bRpCrnKgvSiyQ2kZFKR1YElcBvmSJeKqmvIk72+m/C7phiBenl1SAwlZeYBW2oRKgtJuvoHEScDzJHh7tE4+H9Tp6dQvdqI+KJYRBT/pNsrzs4PKgxMl4DGw2GDlWJxR2Mq+I6r3Xv25QcLIGTA/gpyUFaN9uzBJjtPoaT0bRyj21H05v5Aq0rAIK1ooQTMgeIOzC17W9nSB3paszHRHHQLjbl6JL9X9z8TYhUTO82BIYee68hBQaKPsKo1+tFpOVn/Z510nq3mlp3TO0cIbrAP6pslNaPK5yBcn1VlzQhh2KpyMW80tuINepggEa4rxafMXDcDKSTYi42hH3Ua2IIHVzD/XxU3JFlSEHaetBRsgkd52OKxgFMweU024MFEWjbb/lp1j9gy6bAoA9rL3UMtSfwe3tI/uJOOh0dHlZ29L7X6zXzTajmdzCC01EYSYvOe2+/CtjKiQK4wtk7wlee7XJwl11++nf/rrqELPvixBx5OQmpJ6DzboPjI7VxppLFdJR38jjPLNc4VFo0umSXFBuWYaqD4ZIMS82oYr6stT7dyQ/zC55QML8xgNIKO
- VTdKjCam
- D1RPKJheWRn8ESgfdlE4saY2k2hpvob/l1aMMNtKmLoOBf9DsscO0UAtqBz9hGDu7nDEYeHbRfMblfySkAhU39rDkpNoLYPPlFs1XGuOzwS9sMQXxTm3bt4ZUvJQ5bcx2mz7DGHs7BF8i3vk56JOIBrqKstC52YEBvgTOr3l3Hi5NA7KrffH6+yJwme5L967MQgCFFDwcf0EqLD6LocJFHKKo0vDAOmzOToUW5JSNya1kPFIQipsfXINUXiherCeghAQKXyl0BVd1tOENgAvFjyGEnCKUCcnC9jL2JxG7buWLVeBr2w7Tur7Eq87/RCJdVT8vnjmkzcAQtSeImAT68Uq378OXqVP8sI7A42sZ8FECaYDqzXfGUS+stex2lO+I13UVApXjJ203H6099UeHguFNY1AAC+5thmzRV4XpGC5cM2J6CWOcLAn4ju9bR2/9SSRGlbfU8oJqSa44DB1ZBGiI5SZsfjW4qvZO
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794227244-910162
+X-HE-Meta: U2FsdGVkX18kbhojAn0UUtaL2u+YrdImQWEgKhpFMQZdN/QP9y49SvQ2tIkBApH0hLkr8jhyR4Tkv879NFL/KSbrnv2PnvouYNXYLYL0i9B2NfDI7vJUL+V3oqw7C2LseRi3sTwYWS2scNKZQamprL8RADvb8asf8j6T+t1EJSgwVFzdk5FkYusCCZhrE+rdvJ5S08IVBuaZM5TPRCC3SGuHyvy5lm9DLhm3foAzbwNxO+2hJM7KuhZd99gaQsF1FyM3hsNhEmfSBlkwZZS9lHiuZHsYm+wUTaNxtEvJhKA5aO+wx15DjK+HSzQszbVra9CPeQ1YoYohXb+W8aDxgo4fXKgm6K0UYU5eAJjg+GIQTRFD4p0JzfsVJilnslRyVge3m6SyAQCGpAuRoNUiCw19wMCudr3/YC0Pf8xqGnB5XVWtq5vD2wmbHRc0dhHTuQx0mOwJX81mM08AWygzseKsT2jNri/Yfrpas5bA5D6tJQlROqIPoONM2ghBQ49Mml3Vlygaj9aCsEcDcHNQSQSkJJ3gul1461XUVmoZAFXpQyWozaLUipzm6MLwZ1w1I6gD3om8IHR/63MJav5n7CFNEPqh6QxwdQWcixYhy007R/JTAsI5CJtzCuzRXqF5uWXMdseHl1YFJT5eXWv+FxpmjTymHS3Uhen650dKsj21PWVnWll/GaliZQqgSbadkCJsH4pmzUjtTAnskBmpk1oVj3jOIgDJT6dKlbPIjtCDaFfKkzaeLCyAfk5CQCsjtBF6vhFAAwYZ4Wovc13v2PqDqLdkuuKVsXirEtBSUjB5LaRZE+Sj/ww/T2FQ/WvubjaZdRNgXIJFxcSBbsKCDRZ5uZ1hjledW1TT/T84JCYLEXr+B7ecGQU1h6JqegvCG4558sEmucv8F/iyMn+EoivzkVEcjbLO6gD+ZqyYEIdw2VgXZJaqBj1hTLlBwr96D4NmjjFfB9G8IWfw3pb
+ kOHR76qk
+ N1GoSEYHlIslR1XRc/yxg2CDjB9aIjHcm0SbSq37KsRb/ziLr71meNzg3dMi4ynq2ACwDP5EsWpbpZAYe8kFG/oRHoKfeQWoEbtmwP2r/q/Urjy7CDf1Dd/tyIzF1zPorff+IRFCZVxDbKg19tOumahGoj5Q6vhIqFuqy7PcyA/5ZWxs4fEoZUwrIFYNaBbdzxYkhKhWh8SJZAkonNLAee8oUakwlCda/QyQNk8m0VkC8XG7+8UYlwA2tXpxJXC/soi/AKvcY8pgYhXHiiimnByfN6M7p2sXzf8iy9nAH7tPG+sC4QH1xJYOQwNJXasxYQSDkhFcLm2GkMW+FG7V4JqudFopO2aEbCyIqxeFw9ihwUbNVPKLTkum3W4TqijSx2IcDHsfLOepxbLpAHco51LeV6g/z/0OrRUDT3XUtKLZShx6bLp1cZbdSrfP2XW5cHo5gW3bguEyufC+xtDcVk0Ud88fNrL475DQKqcSaTXp1pTU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,51 +132,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 08, 2026 at 03:42:36PM +0800, Barry Song wrote:
-> On Sun, Nov 8, 2026 at 3:20 PM Barry Song <baohua@kernel.org> wrote:
-> >
-> > On Fri, Nov 6, 2026 at 7:53 PM Lorenzo Stoakes (ARM) <ljs@kernel.org> wrote:
-> > [...]
-> > > > --
-> > > > Sashiko AI review · https://sashiko.dev/#/patchset/20261105-late-2026-vma-flags-v1-0-0d3cd15ab75f@kernel.org?part=2
-> > >
-> > > It seems these are valid, oops!
-> > >
-> > > Andrew suggested a fix off-list, and I agreed to this as an in-place fixup to
-> > > avoid respin.
-> > >
-> > > I have also updated the series locally to reflect this change:
-> >
-> > Seems like a reasonable fix. maybe_unlock_mmap_for_io()
-> > could have released mmap_lock, leaving the VMA
-> > unprotected. but  ra->size *= 2 is still going there no matter
-> > if the vma has disappeared
-> >
-> > For the original patch combined with the fix,
-> >
-> > Reviewed-by: Barry Song <baohua@kernel.org>
-> >
+On Fri, Nov 06, 2026 at 03:36:55PM +0100, David Hildenbrand (Arm) wrote:
+> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+> > index 0d3bd9e23613..a2c7c6a0768d 100644
+> > --- a/mm/khugepaged.c
+> > +++ b/mm/khugepaged.c
+> > @@ -640,7 +640,8 @@ static enum scan_result __collapse_huge_page_isolate(struct vm_area_struct *vma,
+> >  		 * If the vma has the VM_DROPPABLE flag, the collapse will
+> >  		 * preserve the lazyfree property without needing to skip.
+> >  		 */
+> > -		if (cc->policy.anon_skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
+> > +		if (cc->policy.anon_skip_lazyfree &&
+> > +		    !vma_test_single_mask(vma, VMA_DROPPABLE) &&
+> >  		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
+> >  			result = SCAN_PAGE_LAZYFREE;
+> >  			goto out;
+> > @@ -1683,7 +1684,8 @@ static enum scan_result collapse_scan_anon(struct vm_area_struct *vma,
+> >  		 * If the vma has the VM_DROPPABLE flag, the collapse will
+> >  		 * preserve the lazyfree property without needing to skip.
+> >  		 */
+> > -		if (cc->policy.anon_skip_lazyfree && !(vma->vm_flags & VM_DROPPABLE) &&
+> > +		if (cc->policy.anon_skip_lazyfree &&
+> > +		    !vma_test_single_mask(vma, VMA_DROPPABLE) &&
+> >  		    folio_test_lazyfree(folio) && !pte_dirty(pteval)) {
+> >  			result = SCAN_PAGE_LAZYFREE;
+> >  			failed_pfn = folio_pfn(folio);
+> > @@ -1948,7 +1950,7 @@ static enum scan_result try_collapse_pte_mapped_thp(struct mm_struct *mm, unsign
+> >  	 * So page lock of folio does not protect from it, so we must not drop
+> >  	 * ptl before pgt_pmd is removed, so uffd private needs pml taken now.
+> >  	 */
+> > -	if (userfaultfd_armed(vma) && !(vma->vm_flags & VM_SHARED))
+> > +	if (userfaultfd_armed(vma) && !vma_test(vma, VMA_SHARED_BIT))
+> >  		pml = pmd_lock(mm, pmd);
 >
-> BTW, one question is whether mmap-based readahead is
-> still worthwhile if the VMA is actually gone after we
-> release mmap_lock (or the VMA lock). Perhaps we don't
-> need to continue readahead in that case.
+> A patch in mm/core.git will remove that entirely.
 >
-> However, we don't have a reliable way to know whether
-> the VMA is really gone until the page fault is retried.
-> We release the lock to perform readahead, so in this
-> racy case, readahead might be happening for a VMA that
-> is being removed.
+> Right now it results in a conflict between mm-new and mm/core.git.
 >
-> I'm not challenging this patch, just leaving a note
-> to think about later :-)
+> Beat to drop this here entirely. (I can also drop it when applying)
 
-I suspect it's one of those 'not worth checking' situations, VMAs can come
-and go at will at any time and theoretically you can do useless work, as
-long as that's mostly not the case I think we're OK.
-
-And in general I think these code paths need significant rework before we
-revisit stuff like this, we always pay a tax for code complexity!
+Sorry I missed this, feel free to apply with this bit removed!
 
 --
 Cheers, Lorenzo
