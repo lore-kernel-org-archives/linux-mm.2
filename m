@@ -1,105 +1,154 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0CD606D819
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 11:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B36606A31C
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 11:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=qrhop0Mo
+	dkim=pass (2048-bit key, unprotected) header.d=shutemov.name header.i=@shutemov.name header.a=rsa-sha256 header.s=fm1 header.b=rXGQrCv9;
+	dkim=pass (2048-bit key, unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=rPkAaQQj
 Received: by kanga.kvack.org (Postfix)
-	id 9A3F66B05C2; Mon,  9 Nov 2026 06:29:23 -0500 (EST)
+	id 787436B05B0; Mon,  9 Nov 2026 06:32:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 955176B05C3; Mon,  9 Nov 2026 06:29:23 -0500 (EST)
+	id 737B76B05B2; Mon,  9 Nov 2026 06:32:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 845276B05C4; Mon,  9 Nov 2026 06:29:23 -0500 (EST)
+	id 626626B05B3; Mon,  9 Nov 2026 06:32:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 511226B05C2
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:29:23 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D612F160638
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:29:22 +0000 (UTC)
-X-FDA: 85415359764.18.44BEC5B
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5E150120009
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:29:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=qrhop0Mo;
-	spf=pass (imf29.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 328596B05B0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:32:52 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CA0D0A067E
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:32:51 +0000 (UTC)
+X-FDA: 85415368542.07.566E440
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 94A49160002
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:32:49 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="r XGQrCv";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=rPkAaQQj;
+	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794223761;
+	s=arc-20220608; t=1794223969;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iNIQPzmiHA+Cn4QbV05J8JBQ0a9SblQ7mMLGrBWZZV8=;
-	b=HJZkQbyhCz55EwNvt2+w9q8FJc+PEQyTpVxTFURq/6gQraq00LSSTeOhf7dfjHxhRHE3Dz
-	Gp+qeKvufAvHnWwRIFMyqhw9lQ0wDxXWnsIHPyR/WWHBxldavTqfQpbr/geU2JJG72f6eu
-	z1cdng9hUJ5k4S7P4JcFg1e3vxTDs/0=
+	bh=Xqdjx+sIoTks/glyMlCpkSxskUk/OBQ+eUU3z0s7uZI=;
+	b=cw2EUJ8ymHwqLZXY1ZOp+VfgVymuAzJgj19QC4Y5nIASqyexhigzx87x4pWlJDDwn1ZS3c
+	k66DNEUbxoHS5bfqT91x0bmG5mixlFIsl0LibRwMa7F/4EErLcEV45riFKWxIp2uGWdFRd
+	MMUinoMJ067CZ0s8snsB0o2bGqplgHI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794223761;
-	b=6Mjx9V1LoLi0vWKn1ZlHhoRS6WrIBLdjB7ZabiGtPIv+v0kLMWVd9hjEeDLoaDCgw5YApN
-	7e9X4NhBxSMFcXyiDFs3GgBzWsiSCWhRVV3eAydm87K855V7+6M//tCyxQUhbzcthyuZ3d
-	H25N+F/LD8s4YM25WDy6te5jJJ63PUY=
+	t=1794223969;
+	b=2qCk5mtE62cUk+0KBjd8ucnKZR97bEdzWX2+tzbnT8dgouFNnPPFh+Os9YaLr64wnC3jp/
+	LhT/ZEg/IQndKn6armYV4lT6ZnHFrmFbE+0hyinc21yXb2cxvIRQYZFDSXYCdypAYkM5FJ
+	LMS3PxIHd7TnWo5h/KGHKFJl84g08J4=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=qrhop0Mo;
-	spf=pass (imf29.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=iNIQPzmiHA+Cn4QbV05J8JBQ0a9SblQ7mMLGrBWZZV8=;
-	b=qrhop0MopnJVqAeskNwKNdYuRqPtbihLXMLRYIvTQfbbKX4d3ZoxmOtC3A3uAe98KjQWlk3yG
-	xZLWHWKjPTsN97vIoeLnnNeAN1zOfV7Tvm2k3+yivN1NceqcDzNFEnRup/D6Lq8ZB5U/mnBS8kO
-	a72qU2TTcukkQfRT4927994=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4jNSGg5qBzz1cySJ;
-	Mon,  9 Nov 2026 19:28:59 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1941F40586;
-	Mon,  9 Nov 2026 19:29:14 +0800 (CST)
-Received: from [10.173.125.21] (10.173.125.21) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 9 Nov 2026 19:29:12 +0800
-Subject: Re: [PATCH v3] mm/memory-failure: set PG_hwpoison of a non-hugetlb
- page under hugetlb_lock
-To: Andrew Morton <akpm@linux-foundation.org>, <mt4022@columbia.edu>
-CC: Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org>, Muchun
- Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, David
- Hildenbrand <david@kernel.org>, Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>, Matthew
- Wilcox <willy@infradead.org>, <linux-mm@kvack.org>,
-	<linux-kernel@vger.kernel.org>, <tz2294@columbia.edu>,
-	<stable@vger.kernel.org>
-References: <20261106-hwpoison-hugetlb-ro-v3-1-c11186963647@columbia.edu>
- <20261106143914.16a42b8cdf7436d045b85aa6@linux-foundation.org>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <82a31bee-983e-bd22-a162-7c708c8ad475@huawei.com>
-Date: Mon, 9 Nov 2026 19:29:11 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	imf08.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="r XGQrCv";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=rPkAaQQj;
+	spf=pass (imf08.hostedemail.com: domain of kirill@shutemov.name designates 202.12.124.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id CA24A130171F
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:32:48 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Mon, 09 Nov 2026 06:32:48 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1794223966; x=
+	1794231166; bh=Xqdjx+sIoTks/glyMlCpkSxskUk/OBQ+eUU3z0s7uZI=; b=r
+	XGQrCv9H1DQ1KeY0P5fWLxfWeX8av0naQqeAzEywS4e7cfuq+S3s08vT/AF9SJ8L
+	GEZCYmdSXm4Dn1JSqxQ07kNOUgPcQ2sAufxrZOgwkPU0i292RhfdDsnD5a/6n0A9
+	Orfq+kOpieCyhCQFfoLjcLFjzg40DqQm7Qg0h0AxQ6nW+JZ5QSzUgohtRs9GidBh
+	4xEmDJtvtUTinut9/QO/gV2uxBzrp43j8ICxWYl3usJGZznvcJIUJjuYYm1h+t7d
+	6IBmB4Pl/xqYgJblouLsB229SGtBZAp0p0iSFYiQcQOy2RiGY6qKZXgWtm9MZAa/
+	T7VgW2P8IFhITe9x7qWwA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1794223966; x=1794231166; bh=Xqdjx+sIoTks/glyMlCpkSxskUk/OBQ+eUU
+	3z0s7uZI=; b=rPkAaQQj3kfv1Es4CKUvFt36nHTZq53JmOG7vhYvZId/7PKFcWi
+	cDSPnbO1BlM0eOgWCT+U4PZfXxIVcK4Ft1PxvHPj3TCHyIFmm/0+KUGQZRkjtKEC
+	lJ3454PB8dh4AFURy6bMXcWcMcXTpn3zKymCmObIn6gGOx+z/HLy1NpjAEmk0qNc
+	dRr9BYMVup6V/3cvUsyHqa2vjmelckeCtkOEq8QdrZz3CNmY/ZMGsH/H0fGVgcA4
+	BevrM3R/ujM/GovJ3k9TCrYCfHwL7/FAfNugalQT1G8LEPHbvxn6iJzSf0vfEpL9
+	nIOxkoaCUCY8xJfL52ryyPU5yT/edFRnDNw==
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=sign d=shutemov.name a=rsa-sha256;
+DKIM2-Signature: i=1; m=1; t=1794223966; d=shutemov.name;
+	mf=PGtpcmlsbEBzaHV0ZW1vdi5uYW1lPg==;
+	rt=PGxpbnV4LW1tQGt2YWNrLm9yZz4=;
+	s=fm1:rsa-sha256:wLYjjXm7WzGy65YxaGr6qE96YehvN2m/UJbp5fdLCPx4m5x
+	a5o86A6gzWhXC0vY8TEK+RUd+ArUCEZQghu4A1rDMyMXXlh3JHyZyshxK1GHNXLH
+	O/2AsAK/PIC0KuSDQIxYSCmkw0LRGilfglL7PQC5c6Rfiex5wMOw3CgB0VRQ9QKX
+	g7XmEc+gWSxRoQ6MmX5b3XVzk8oMy6Hl19BkCu2IknALY5OgnPBMq+wgMEdMP8VP
+	dKhUmW99JCdltTPAtztOv61wzYRvVOfpJTaY8IkxX8iClHWnPfa2rIR5tJBGsbs0
+	P/jpLj4tE4OxO0fcmrFxfJfca34No5SqyvSv+dw==;
+X-DKIM2-Info: draft=ietf-dkim-dkim2-spec-09;
+	repo=github.com/dkim2wg/interop; date=2026-11-03; sw=lmtpprox;
+	action=mi-m=1; hc=12;
+	hn=cc,content-disposition,content-type,date,feedback-id,from,
+	in-reply-to,message-id,mime-version,references,subject,to;
+Message-Instance: m=1; h=sha256:dr10b/t5AE3MhAk2PKDxOtARndah5JsxsaedpnrJqhc=:QrUxDwEwfWH8+2Fn+5Ww/kuadmo18gKAm3XTyO4BCEI=;
+X-ME-Sender: <xms:Xq_xak8LSPQK9_NUmtqxHsELyPAPvGk9pbX43ABxur8o4Tbf8EjO6A>
+    <xme:Xq_xatcogKYCSsX_mBNL-dmhOg_Owem3pA_u3dtI_IH_bwOpGnNpZzCMtFlFPfhYY
+    mkGjgTsYix0-SFDXu8xSGk2NjmMQu5wQV_r1qSG4APzZfykz4WeBip6>
+X-ME-Received: <xmr:Xq_xat3Ma7USbjO2an7dj2YIaZRW15RWWnTU68NBBuj8Ma1kHl-t7raDW4c>
+X-ME-Proxy-Cause: dmFkZTEh6LlDTiUv7RQryEzVLCL8YJzMnu9yzeE7W0Ve4XNsg8Veu1FEmxD3SasTEZ8x8R
+    LcUsw+eRLyDC5m6FcUi7nJRPzWEBExUVIdgxGfcXD2LeT38moltTtc88L9QdZrsq60nzdy
+    ANotKCF7dkMgX99ligefAG3jJHapUzbyIHHq3sarW8DfCPycRmv040jfPW0ufbjSHFq4kV
+    ik6QMQnc8p1wmQbwaiEWSjMOwlIEzId1TN7cNbT5O8VtZXoxiNakqy6fZmokLISxiKsXjW
+    nGOkn6Ud/YEvA3lasQxI1f7v4ihmImhBBvjIUACmEppK452dKIGlAivfCV0ehVkqZIBABJ
+    68KGriS8PCKpVG8VlgWWzyDHt5UvaDNDvPVrHBYB61ZyTSu+jUfrLdIA27/lbBmPl1jfkA
+    8GRLltH5UfnN/ei2Z6mI2Ggzz2/Wo42DUR3FTsikofXBSJLGyqPG1vRGffc9WAR9ZmI2MQ
+    bf5+IxArlrGeSWdXw2jpTQNzpC94jjVrJQZ0lKfhC0+vuxTamLjeaVAY5dQ15cBHHRzCOw
+    SM7xkCd8ueN9ek5WZinFJhoTNziXiFQoBwilbQiFbdZ3vkSR8UncskzJLd4/ftREcw9I0r
+    YnoqOgYgbmY6HslKBRY0+s7MsX1ZdgNfcE6byY/4sdGIiwPBWpnE7EJy/bJw
+X-ME-Proxy: <xmx:Xq_xamB2yvQv2kVJZo6gBzyzKtCAp11tlpcb1cvN8Qw4t-QCRnU8xQ>
+    <xmx:Xq_xaoSalDB_1QevOHimosKvRYsQdPPACR9xBKDIdTa0BIlk9j07ow>
+    <xmx:Xq_xaoKIOv9ryFNrePBVB35-GHZXN1blMPmV4RKFd-8PTWo5JOP83g>
+    <xmx:Xq_xavHs-8_6jBvQTFvkkKySMaThcGUYNNCnthEm5JUWYpxR8VfUqw>
+    <xmx:Xq_xajw_Mbs-V7gw5z0MNhmjdbXgaWQgdEotdKoefhY3lGFd-6Pl7pqZ>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 9 Nov 2026 06:32:45 -0500 (EST)
+Date: Mon, 9 Nov 2026 11:32:44 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: sashiko-reviews@lists.linux.dev, 
+	Andrew Morton <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, Chris Mason <mason@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	linux-mm@kvack.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm/memory: refuse to map page cache folios that are not
+ uptodate
+Message-ID: <avGvM5kpv_z2ezoz@thinkstation>
+References: <20261106144323.3634477-1-kirill@shutemov.name>
+ <sashiko-outbox-202966@kernel.org>
+ <8cd50b75-0845-4e82-a8ed-acfd3a261a3e@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20261106143914.16a42b8cdf7436d045b85aa6@linux-foundation.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- whupemk100004.china.huawei.com (7.152.185.74)
-X-Stat-Signature: uofbtrmx4jsiejo81apir681an6db19k
-X-Rspamd-Queue-Id: 5E150120009
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-9.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8cd50b75-0845-4e82-a8ed-acfd3a261a3e@kernel.org>
+X-Rspamd-Server: rspam06
+X-Stat-Signature: nt1co77ynxstgoxtfy9gwcuazb9orfj9
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794223758-944814
-X-HE-Meta: U2FsdGVkX185ONy5OFDfjkoHakSIktHqTIsTTvYZ0dlc8Py/p3g6DttcTgCzBjIug0xv1zm2nXPbqC7sZLu9scaBQMcel+h2YWwpyHNPiEt/Z0D4tPIZwlq/z3Yq0IBNNyuEqOmWZR114CnoHH5+9flM4/TpjoIzAQepMiL8YcxO76Nt2j19fuItrmfxhllpJZ3aD3pZ/D4+AS/qZrWkZyKUhOB2xs3dWI5skHAP8/CMABquvGHC+59osovg9mdKM+EEj4uJTNw2MSWtXXxaJPzu3WL248Fqe2qj0dA+zP9pZ84fShEztb/Lqvz/8HAOoXWP4YmeNPnbxxOdPblnImZRUe9BtEuI/y0qYqcOkb6Muc1ZycbaVrZtFbZMGYXBZNioVEu+LfVmHEIJPdsBuSW2/9Y3TmD7oEujRrVpF+MNZPvXqiTjLTSvORllm0oCSucrDGMZuG55ZFqkIjt8/sOgANXXtDHKX0EBVHmqucO3ht6p1U1gJnpYJcv9VB0cyJJaXwv09M1f3GQ1L5bQGizDuBnpOMgI50rPWeP18JdbLhZ7Ylx9p4wJvQdCTepbKhjGbNx/jOtkfN669urmIdXzMcqltkSEO/HMrl3i4PIN07bQrSyMMrz6Jx1LBl7TgAZTOqVCKpbl0PmZ2aIFNuJCzPfMA4FwMAYNn6gGKsBsLyGpz+2qVL8u+3F3DyfYK+gYOGL82zk9yVZ++pTsb8wostKMPqsFvsnWlid1ox+qK56Vp9Fyfw7Xvwaphdywd6EF5ps8+JmQ28+S/wGMhmH4nIARR18T3LDUjc3b45PJoqa1skyX/XF/pED4w9ZK7YrqdqrGgxV/HNt2xEaWd2k9WF4SY2pT2kULo75dHyJiM/jJUXBsQQs6E/qgkWfAJAQyhViPKt7jAudPyMF7LAc+NeyAlPSiTLmsUwK4Qqshbu4P9zmZQlLjE9Qb6k4om0JJhTDBzDOLnR/vdxG
- p2+Ntril
- VGNWtG1heda9TS4E2JzJUZkq+B38/tD2wB570cukew+Ouus/g5Nz0hp1KX9win4u1FADUICO9kRwhkDrTWLN3OSouSiQ9I8zSGHzS1iCMsu+KBjI87mHebiKen0Ke/BEenltzthxu2WqLlIQ+CFSXrJpjvolqxmLNcnKVN2xUfJ3GK5IodC+NrVVdURS3KpDeKGVj7Npx6ifTkxqAnwJfcUuLcAZDfd3oXMRYfIiJM4ltZ5oDNl2R2sONRBIqACz5cRAAV55uMVkTYV0V9bvjoTPzSMFcwaWGWflXlvyGjlOW+/4vpW3ujT4g95Vi7iugoFlJGhqqhKZgNn6xMJTtLG0GpPvyii2JKWMarJIEUXUq9N/whaTYrYFmIHIOZgGJnFRnoxdh6yxImGi2EOD5FopBkLAsOWEJsf5zjqwByh3N9XopA6dqpz9VencbF7vk1JX9s9BF3doG0BwoWkSNn2jVwlLpzgkKUUc2
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 94A49160002
+X-Rspam-User: 
+X-HE-Tag: 1794223969-581212
+X-HE-Meta: U2FsdGVkX1+6NdvaVwdQyJBWqpav9qCWQ7xvK7MoZIlYgchBLET2ppw8BqpO9fE9NYT7jFDY65HqUW25hEwGcNBqOzb2aaFyhH0CaHsZaJ+ElUjSDkMJd+7fGSp9jMZyiBqNxt0YEk80iuNPZk8khQ94JB8l+xXObcO9yPTXNxYVbBDdhCFO3zNP7tUS7ipqQClDJQk25hgCr6u/oJfYyTQZRdHytvsAbeTnXyEkHwAqoeZdH/p9SZGWf0ocGn+B8meZFVgEk9NDZ5ol9HN/l5mILIUynGBoiV1MV6CV302PcP7U1p87IqdeqaDjoiwEzvCHbmVr3dXW7wtMBiFx1FCRvdUEFVn4Eu6WqCQVZ7tvp+g+oyN4lXyOWu5rHPnHJ3tR7u1yNN9rqmi+RM6x0Rx7B6G7lBHNZzlS8/ewByjpEj66lQIZSoqxX6Jdm2w853c6czSoNdV9j1Rc3gUS/ehNqNawFaHR5Rmf/1msV8zQW8+v6iSus2y21q9QBxecshbRZono3HhN9ga8eh9r5WiUJFofoTXh1+3E7PDEaX2Z2OXgiBDQe6V3O0BDsrt+VSAxJeufFKcmYURWjFNtSJm3GogWp4QFroeEzPkWuPrBMRu6uhNZ1RhtyBApXOyubWWcaxIBWvmu7kfI4X9x4gA1UzVMr3Oc3dLbADr1Dd0kC0g4Tl8GzV8TkblW9IPyOoAN4P9Cz5wJ1uatueT2sgNokTv3wDzULhwVaoU6fTptzRuszYNxKBcSnLuyRM8CrMES2ZAFTqOCGg0HKIR/GKu0qdA9DzVlU+N9H09hyozTYoSnAtAJm/5I6tHMBHSQR7MA6wcJAnH/7rRu0eW+5u5GJofpwe4TzX4lZWq4RcjHYXKVtD6hq7kUXMYIpFXtnaJpBU/T16ZO4bq0L5RTU732IUk4QvBDrDzr2WZ+N1fdEX2d4LJLz4qTTWXrcaE+qTCFPOGyl4jfkY746ED
+ nZ9uLWew
+ +wHQLZgeCDb3F2FE+BpaUdBmsivNeM7rV9C8ioHXXODN3zSCYLq2bRmC21tBgQDK72bFGdGAZU3KHQuBX+cLe4D4fJbWsZmgNsvMV7tvrueQOOP4DeBzWc/3SOxmKkVfMQy1SAkzX4DZQcknzgTNueWcugaIci/g/118gDBYilzkomiCFiQifdkv+KiwEM5BLHResuRghqAzqdI8R10jJKuyrBQI3mrZkABfAwFKksxPS9+U91PzQwAon4M6UnDt5bouShk38PPmw4OZxi7VBR8p8Pm6HAc+EZRHCXKvFjm71TVd2JLkf1BTXq0+Q33ELr41RQ4ny6+Abn2OsVE8KsLoI6UjPfn6VPM8Asmc3adlHpGCFAGkFhs58y/TL1vllRzebCIjRKYVROADSma1d3BhxDBO/X6uSRG7V39oKcmXL42PSA2NiXy48RjPPHV6nojO++oyySkbTPgaQo/jrcnYLcgA75/xUDxveES6UrYpEgbVwOvC2J6FXlqh7Yx2258rw
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,85 +157,14 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026/11/7 6:39, Andrew Morton wrote:
-> On Fri, 06 Nov 2026 11:09:50 -0500 Mani Tofigh via B4 Relay <devnull+mt4022.columbia.edu@kernel.org> wrote:
+On Sat, Nov 07, 2026 at 07:17:52PM +0100, David Hildenbrand (Arm) wrote:
+> > - [Medium] mm: missing folio_test_uptodate() recheck in
+> >   do_shared_fault() mkwrite path
 > 
->> From: Mani Tofigh <mt4022@columbia.edu>
->>
->> memory_failure() checks under hugetlb_lock that the page isn't part of
->> a hugetlb folio and sets PG_hwpoison only after dropping the lock.  The
->> page can become a tail page of a new hugetlb folio in the meantime.
->> With hugetlb_free_vmemmap=on its struct page then lives in the tail
->> page that all such folios in the zone share, so the flag lands on tail
->> pages of every one of them:
->>
->>   Task A (memory_failure)              Task B (nr_hugepages write)
->>   get_huge_page_for_hwpoison()
->>     /* P not hugetlb */
->>                                        alloc_fresh_hugetlb_folio()
->>                                          /* P becomes a tail page */
->>                                          hugetlb_vmemmap_optimize_folio()
->>                                            /* P's struct page now in
->>                                               the shared tail page */
->>   TestSetPageHWPoison(P)
->>
->> The error on P itself is ignored, while healthy pages of other folios
->> stay marked and are never reused once their folio is freed.  After
->> freeing the pool, /proc/kpageflags shows them as hwpoisoned.
->>
->> This is the allocation side of the race that commit 32c877191e02
->> ("hugetlb: do not clear hugetlb dtor until allocating vmemmap") fixed
->> for freeing.
->>
->> Set the hugetlb flag of a new folio under hugetlb_lock and set
->> PG_hwpoison of a non-hugetlb page inside the locked check, so that the
->> vmemmap can't be optimized in between.  The retry path clears it under
->> the same lock, unless the page has become part of a hugetlb folio in
->> the meantime and its struct page isn't in the first vmemmap page of the
->> folio, which HVO doesn't share.  The retry then knows the flag is its
->> own.  With the fix, no healthy page gets marked anymore.
->>
->> This bug was identified and confirmed with the help of a deterministic
->> hypervisor currently under development.  The C reproducer below however
->> hits it within about 35s.
-> 
-> Thanks.
-> 
-> So as I understand it, if a single 4k page turns bad at just the right
-> time, we can mark a lot of healthy 4k pages as bad (hence lost until
-> reboot) while the bad 4k page remains in use?  But that race is very
-> unlikely?
-> 
->> Fixes: f41f2ed43ca5 ("mm: hugetlb: free the vmemmap pages associated with each HugeTLB page")
->> Cc: stable@vger.kernel.org
-> 
-> I'm hoping we don't need to backport, because the race is so unlikely,
-> the consequences aren't world-ending and the backporting story is
-> messy.
-> 
-> But I don't think I'll get my hope, because the consequences of this
-> race are worse in older kernels:
-> 
-> In 6.6.162 HVO maps shared tail metadata read-only, so the misplaced
-> PG_hwpoison write can cause an oops.
-> 
-> Also in 6.6.162 memory_failure() still has a ClearPageHWPoison(p) in
-> its PageCompound retry block so with HVO enabled and
-> CONFIG_TRANSPARENT_HUGEPAGE=n, its compound retry can still reach
-> read-only tail metadata.
-> 
-> Miaohe, wdyt?
+> Kiryl, can you look into that?
 
-Yes, even though the probability is very low, it can still happen, and
-it may cause the kernel to crash or something like that, so I guess we
-have to backport it.
+Yeah, that's legit. Will fix in v2.
 
-Thanks both.
-.
-
-
-> 
-> .
-> 
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
