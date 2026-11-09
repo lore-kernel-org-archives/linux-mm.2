@@ -1,140 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E967606A330
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 10:12:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9BC9606A321
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 10:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=PwxPLG5U;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=7tbgkPtz;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=PwxPLG5U;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=7tbgkPtz
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Qt4xMok/
 Received: by kanga.kvack.org (Postfix)
-	id 56C7A6B05BA; Mon,  9 Nov 2026 05:12:21 -0500 (EST)
+	id D6C726B00EF; Mon,  9 Nov 2026 05:21:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 545BE6B05BC; Mon,  9 Nov 2026 05:12:21 -0500 (EST)
+	id CF57B6B05B0; Mon,  9 Nov 2026 05:21:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4353F6B05BF; Mon,  9 Nov 2026 05:12:21 -0500 (EST)
+	id BBDC56B05B1; Mon,  9 Nov 2026 05:21:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C4236B05BA
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:12:21 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B53ABA0641
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:12:20 +0000 (UTC)
-X-FDA: 85415165640.10.6D6618D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 81B6E1C0006
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:12:18 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PwxPLG5U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7tbgkPtz;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PwxPLG5U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7tbgkPtz;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 95CD06B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:21:18 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2F251C0538
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:21:18 +0000 (UTC)
+X-FDA: 85415188236.04.A2DA519
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 6395D140004
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:21:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qt4xMok/";
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794219138;
+	s=arc-20220608; t=1794219676;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CcNnVVf8GaxnGaipb5Ipmx75ZcIBQfMWDRTlKTdY4Y0=;
-	b=DEjXv5QIrOFkg03aAF15CqtqBFiIlibGJY4ayoKjTqfuuULVrf+lkcNcaz56vtIg49juFg
-	77FJI687M9PM2IX2Q3FsBsQa/1MPaalIBVeIjDAGgVKIWujUn1Vf+KTeUQcLYRhiXLsdjc
-	ZRlZvrN9sNH4pCdPiWe5tDQqJiLZ3uo=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794219138;
-	b=AIz+o3niArSVU59kzN9CIC30tfLLd8rnftOO8OjYVhLUFbjzHLoAO2hfOSguBHk/kWqVU2
-	P7B1/DguqkMT0BEPT8YcPe6cOoP9i9kEj/muF5dB1oIBE8UiSUTVy1j1GFuKGZF19re2ui
-	JIh7pOF1N90J38osBDaq7tRLgXQfeNc=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=LEE36WKHPllDbgW6toyyKwEMHeM9L2iqzDg0LSw7oBg=;
+	b=SZAsC19k9NJiCFGWL9s3NyfnIPHAxW5pzofTNA3M6Vb9fnrtkzZmQOXp46nS9Ob0pKdo6B
+	0CnywZwun1hnIQXbo4bKnD7b0+qeA6zsEu3l6Yf9pc+opZ6n8slufe1hHiQJyRkckZjzcn
+	OC32er6gorQFK5gEM6ZP4fbJ7++k8f4=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PwxPLG5U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7tbgkPtz;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=PwxPLG5U;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=7tbgkPtz;
-	spf=pass (imf21.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1F60821F99;
-	Mon,  9 Nov 2026 10:12:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794219137; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CcNnVVf8GaxnGaipb5Ipmx75ZcIBQfMWDRTlKTdY4Y0=;
-	b=PwxPLG5UHtTluzJwz9PeJgwQ1XCnDltU6H8jm39PKA8+7wwFU74rMssjdsBRKWsOrGIqWZ
-	Mc8HVSiF/2fLR7zwbKBzgbWe76rMiJ5Kr9e+cbi0wjMqr9VOr/rCWVDztFcA6Ucm1uHv4B
-	ASdH6bY1K0n7mY8IkCDXiX76LaJ+oDE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794219137;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CcNnVVf8GaxnGaipb5Ipmx75ZcIBQfMWDRTlKTdY4Y0=;
-	b=7tbgkPtzYszADqt4XU0z2mqJfahPafpXMV3iiA9q1E6AJJnGZoXd9dgyd3znwiolmfKTnV
-	kGvhHvYk/OpvvjDg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1794219137; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CcNnVVf8GaxnGaipb5Ipmx75ZcIBQfMWDRTlKTdY4Y0=;
-	b=PwxPLG5UHtTluzJwz9PeJgwQ1XCnDltU6H8jm39PKA8+7wwFU74rMssjdsBRKWsOrGIqWZ
-	Mc8HVSiF/2fLR7zwbKBzgbWe76rMiJ5Kr9e+cbi0wjMqr9VOr/rCWVDztFcA6Ucm1uHv4B
-	ASdH6bY1K0n7mY8IkCDXiX76LaJ+oDE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1794219137;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CcNnVVf8GaxnGaipb5Ipmx75ZcIBQfMWDRTlKTdY4Y0=;
-	b=7tbgkPtzYszADqt4XU0z2mqJfahPafpXMV3iiA9q1E6AJJnGZoXd9dgyd3znwiolmfKTnV
-	kGvhHvYk/OpvvjDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D96F613319;
-	Mon,  9 Nov 2026 10:12:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 0Q0dKX+c8WpKVwAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Mon, 09 Nov 2026 10:12:15 +0000
-Date: Mon, 9 Nov 2026 10:12:14 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Shivank Garg <shivankg@amd.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Ankur Arora <ankur.a.arora@oracle.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Borislav Petkov <bp@alien8.de>, Bharata B Rao <bharata@amd.com>, 
-	Hrushikesh Salunke <hsalunke@amd.com>, K Prateek Nayak <kprateek.nayak@amd.com>, x86@kernel.org, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] mm/memory: drop PROCESS_PAGES_NON_PREEMPT_BATCH
-Message-ID: <avGbPpm3-Yrapry8@pedro-suse.tail5790ac.ts.net>
-References: <20261109-clear-pages-batch-v2-1-2e62c4f84f94@amd.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Qt4xMok/";
+	spf=pass (imf09.hostedemail.com: domain of vbabka@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794219676;
+	b=XA//8GwVy4I2ytcQtaPnS+isuiLF1CJ7zcQS5kYEmdhqkTKQCZFU8mne50pe+MP5ErOTZU
+	3zfnHkwQlM7Ip8yVdT50AdQpgsINm3YYT1lcqtl4cyH0VrZsE2GG0oyfsp5ShJcoqO/WfS
+	1xxSl3AxOMVfc4A0ATN8bF7pw+N3RTY=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id C7DB74121A;
+	Mon,  9 Nov 2026 10:21:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A79F1F0089F;
+	Mon,  9 Nov 2026 10:21:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794219674;
+	bh=LEE36WKHPllDbgW6toyyKwEMHeM9L2iqzDg0LSw7oBg=;
+	h=From:Date:Subject:To:Cc;
+	b=Qt4xMok/6i9WJyzQgvcCCe5846EdlQheWoqjqy5zjZ+oHVk+OQ4qZUjgKxmmwhFkh
+	 Mx5uQ6SsxH8VDEhFF7u78hinQ4FWGsQyn5iq91phY8/g8hba6CJMY3KTZS06kVRjyR
+	 f83dEh5YTOZIv1uDZh1/Ggq4iZlB7tLjqPN0jG6BwXkrDxiyd4ovYTKkoWN2AC1+g2
+	 oDfMl9i96CQq6DMDJHZfZzUfecZMx85wCljTowP9wDq0uSox89yG+bKMsp22fJ3+hK
+	 rnUesbNTWlrLPK5CxSjYdm5edGRzHSwhThM+ps1OwBqcVEWCO8l6uqsRO2CbpbiUXr
+	 EEbfgm8rBz7rg==
+From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+Date: Mon, 09 Nov 2026 11:20:59 +0100
+Subject: [PATCH v2] mm, vmscan: make kswapd unreserve highatomic pageblocks
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261109-clear-pages-batch-v2-1-2e62c4f84f94@amd.com>
-X-Spam-Level: 
-X-Spam-Score: -13.30
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 8j4suytdfddxsh4kyf4fs5ske9yokifa
-X-Rspamd-Queue-Id: 81B6E1C0006
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261109-kswapd-highatomic-unreserve-v2-1-6587ca75c77f@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAIqe8WoC/32NSw6DIBQAr2JYlwaw0s+q92hcIDzl1RYMKG1jv
+ HvR7rucZDIzkwgBIZJLMZMACSN6l0HsCqKtch1QNJmJYEJyVjLax5caDLXYWTX6J2o6uQC5koA
+ eQUpxBi0rw0guDAFafG/1W/3jODV30OOaXA2LcfThs+0TX73fibPD31PilNPy1EDFmVSmra49B
+ AePvQ8dqZdl+QI+30mq2QAAAA==
+X-Change-ID: 20261030-kswapd-highatomic-unreserve-7e6629ec65d0
+To: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+ Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>, 
+ David Hildenbrand <david@kernel.org>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Barry Song <baohua@kernel.org>, 
+ Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+ Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ JP Kobryn <jp.kobryn@linux.dev>, Frank van der Linden <fvdl@google.com>, 
+ Thadeu Lima de Souza Cascardo <cascardo@igalia.com>, 
+ "Jose A. Perez de Azpillaga" <azpijr@gmail.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+ linux-kernel@vger.kernel.org, "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
+X-Mailer: b4 0.16.0
+X-Stat-Signature: 13hpsk8huza9up4uxfpgjn56utynnxzr
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794219138-495415
-X-HE-Meta: U2FsdGVkX19uifbOlNfCZK+KMNUzJDAFiFfd6zI+noq5xj8UxRuS37snGoNFdWzIDWGWJ/5mTBE3BwDPe3ZyVRQCUZteaahnA0nz2CPtZ0x7BYquQ/RAkadnh8uieI6NA31/7f9glLI1mzLpqH7n1ByWRY8Y7L4X2WT+HprsR01GDyyEnOrfVxfVgjvwJplX3w1/lc+NUTP3ykRrDNuY+dUvrW1NZl01YytY7tgp+YGG3cnlfbYsbZxenXMh/t2TDCpvBwmN0MBBppOWhsD32bzq++8SyBI5FkHDHUmLp3ZlN/OJqp3Lm0BlMLola2SRtqrKgrSF/6cHr+RazbLO1+fv5lsZKkrC8r/wDELEFRYPoGq2rgSKpixiEvCIODvtM/LI35jz9tqk5TyGkxycuBI38WpWp0vKAUqTQJ3TLfAFWdg4jGSCgxorFhWAqJ4sjLsBmQUOrA1yklV9Jvf+9h3tdel3DukUOmyorU7ogvbhWVVZE6E+uQqmomvQAGVA7B7dQ0NC2bKbEg4hHtZECOFRkhE5Xy3eOVdO33FKXMGqJpR+4oc/uHw2VlUYjHOit13leOuf1vw8OZliEGC4Xsc6toegdvEwAabcigiYFAdqd7P2pfAroYQ+9uVc5UnvMekKFxESTq55iJC9oKIQTV+GG/lRlmvfeKnmh35MU+DVBwMaB6cZEFBY7iz7BdNYFJxEwRw5/WXFG9qGECU93m/fo+xjm9p7ySb47xo4VU89VYQ5siqnEiQ9t8cGVeRc//o08Qvwt+0dhn8YLCSEcYUODhyOIlSSmTOjbQMpS4/+ogrXdeMpcUPnzCTduKCBRHmIJ1jBQpIC8nc6XJbGnKcRNwjWh5wumNKD0+V/SzKU0CQZwHdCu1FikYtd7ZaHlwarvcHNiiPV3lT8PALHd7DeUWWVzzbiWFSolxz/mVX97INbWUi1rdFmfNXNw37JaZJ7JJzW0dQnb+jEAie
- fQp5pfPy
- x4Lo9c+TZswedf+r/IlMmeofvdGm/Bj/iECXV1ZG0P30QbDsT8k5nr259/Imp1lHrYnBgb2fqIvr/XPNcsDKy8VGrsJqqu7BMzQKFwWomeQzboE+WTFVo5ycRqor11/yCcyTkNsnxs9VWPRyL8c/slUGkED8hcWHQHKMS8RSr33vg9baqr06eLISUAf4f1MumfJJuiHSYqGdOyhnVpTScVmSo5cftG2VqDDxQ8HAa/aQ7NDIMzqsV8V7E49J9g9oONdt//dqM2NLFLHyv7+QZBdatWmcCQjo+QaKkuqOX21sXHpbVZbYFYQkN0Y5Acy2xm7MmgquR/jlGbdEUi9SkKwD/sIBe+IPVzX+MJ2q681YHmwY=
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 6395D140004
+X-HE-Tag: 1794219676-273305
+X-HE-Meta: U2FsdGVkX1+6XKbd728uJxd5sbEkI8OqQ9SHnRCWxCKAFFN6CPwtONcCCiv/aE1gUQVY9cTpgv0ssDBYfnNcWfgQXV3uEldoa4sl2bTrudUBYdG52iFiX/V4DSNkeT7KXZuj1h1qB6vPEWzs7CXBsZr5Tw8ma/MRinigutuKzDaZBQcIPI3Ggaznm60HCFde48SYNC3UGVJzGSn1FpOnCtNxNOByc7BxNc+QNOiQ0pbQzehZXmVWZ7kdbHxtcfxn5I1FhWGB8xHQ2+M4EKAR3YanVbhNl17ubpZKP0rbIeJoAcDhgSIBJEPSc4SXB/FxEc6fYd8DsgZPwXysomlzIYCZ9YB32lC2Dey3Is0NzpLmmLo13LvdwqQ5UUHQ4r7TjyinQz0UZazwvR6cxV2pdqtC+fINLQ8jAUmyyXHvdDkanyONAUY9LIEqJDnF4EuvbC9NA7AosOPZHMZpBooHZtBLyjCYzeOXae7Ze8sh9tzUCV89lwcyM72bsbBWxuMwY26eesO9fYsayK3hM9kLjaSXUS43IgU+eaJxmfHTXO3S1UszSL7b00DfB3GcQLt94Sl5cCYfslbX9Y2B6LKmHiujyhk3OKPbtSFki3s40Helr6hiwC2xuY6kap0ZtbvOd3g3J3/mGGd1FRs7QRJLe8kt8Um2pe3oBs70sRWQms3Lu8+wX59lKGBQf0eez/FECu1l4cjEt8KNcXga5KhH2HiOioR2MXIMf1M1xWfvyvOnmdyyQoUy3jjkQ0lDMCHWTx9MK+pVC6DaSuxFlD/mChVj9cQxa7v+E8nO3oHqr3aRvC0n8PDfncLU1++3NMrgDcJt2BwC8kAfCh2As6xjm5zl4sNh28anu06f9q8EGorlZHXL3RdMvYYlRbhG/nCbnmopbyDn4V96cE+br39udnO09oiB4gAqIzB58ur0p4WICJtXhflKTEzG6kSx2QoYhXfEinq8Oyx+KGzP7tD
+ PQ0LpwFs
+ xYqWflBVpCjP4iS+rgWHr/A1bMjOHIFv8zwJTKMVV0q81ZxrG2qfmsVQcdvxTz0GmAqdApNPZE7ksZtxDOU71LEPscWzTb0r4fkYq1unMdkwTMyL76XoVkmwoBB5DeO2AwXG0Xa7t/O7A8w24WTUvVvNbVYYNbTMVVoUxJYGuQK43HL8d4Dm6YA/enPGILN34x7Gt7jMYliMbaFb5CsX0ROyUXRUux67Nu56rKqmKFxuAgkoWdmdIxqkq9taqPfQwTLWkIvIWRB+zyDdQm610I0n3Y42WizGtaEhXyx8+ZoEaUCKARewIB+IsTsZhYyHxDy9tfxZx/IReeSQ=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,152 +108,299 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 09, 2026 at 06:51:07AM +0000, Shivank Garg wrote:
-> clear_contig_highpages() clears the whole range at once under
-> preemptible models. Otherwise it clears PROCESS_PAGES_NON_PREEMPT_BATCH
-> pages at a time, with a cond_resched() in between. The batch is 32MB if
-> the architecture defines clear_pages(), and one page otherwise.
-> 
-> Since commit 7dadeaa6e851 ("sched: Further restrict the preemption
-> modes"), architectures that support lazy preemption only offer the
-> full, lazy and RT preemption models, also with PREEMPT_DYNAMIC. x86 is
-> one of them, and it is the only architecture that defines
-> clear_pages(). So the 32MB batch is never used: whenever
-> clear_contig_highpages() runs under a cooperative model, the batch is
-> one page.
-> 
-> Make that explicit. Clear the whole range when CONFIG_PREEMPTION is
-> set, and one page at a time with cond_resched() in between otherwise.
-> Drop PROCESS_PAGES_NON_PREEMPT_BATCH, which has no other users.
-> 
-> PREEMPT_DYNAMIC kernels also have CONFIG_PREEMPTION set, and
-> cond_resched() does nothing on any of these kernels. So a build-time
-> CONFIG_PREEMPTION check is enough, and preempt_model_preemptible() is
-> not needed.
-> 
-> No functional change intended.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
+A customer has reported excessive reclaim activity despite memory above
+high watermarks. Analyzing support data (including sar log) revealed the
+following scenario:
 
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+- the system has almost all memory reserved as 1G hugepages for kvm
+  guests, and operates normally
+- due to a spike of memory pressure from userspace, highatomic
+  reservations occur (probably due to e.g. concurrent network receive
+  activity)
+- on one of the 8 NUMA nodes, this creates a situation where free pages
+  are above high watermark, but when __zone_watermark_unusable_free()
+  considers highatomic pageblocks, the result appears to be below the
+  low watermark
+- pgdat_balanced() is false, kswapd hopelessly keeps trying to balance,
+  spending cpu time and disrupting the system. It has nothing to reclaim
+  because the node is filled with hugetlbfs hugepages.
+- since the overal memory pressure is under control again and there are
+  no allocations restricted to the affected node, they are satisfied
+  from other nodes without going through direct reclaim
+- since direct reclaim is the only code that calls
+  unreserve_highatomic_pageblock(), this never happens and nothing fixes
+  the situation
 
-with a question below.
+Note this was observed on a 6.4-based kernel and there have been recent
+fixes upstream limiting the highatomic reservation side, but I don't
+think they can prevent the same happening in mainline, only perhaps
+lower the chances. Nothing seems to prevent the issue completely.
 
-> ---
-> This came up in review of the copy_mc_highpages() series [1]. Pedro
-> pointed out that most architecture run with full or lazy preempt, so mm
-> does not need to check the preemption model at runtime or batch the copy
-> for cond_resched(), and a simple per-page fallback is enough for
-> non-preemptible models.
-> David suggested doing the same for the zeroing path, and this patch
-> does that.
-> 
-> [1] https://lore.kernel.org/all/20261019-batpagecopy-v2-1-d75e7d0dfaae@amd.com 
-> ---
-> Changes in v2:
-> - Rebased on mm-next/for-next, and drop RFC tag.
-> - Link to v1: https://lore.kernel.org/r/20261022-clear-pages-batch-v1-1-13d3bd0b876e@amd.com
-> ---
->  include/linux/mm.h | 28 +---------------------------
->  mm/memory.c        | 29 ++++++++++++++++-------------
->  2 files changed, 17 insertions(+), 40 deletions(-)
-> 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index d89e6f823c9f..59bc3685aac5 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -5242,7 +5242,7 @@ static inline void clear_page_guard(struct zone *zone, struct page *page,
->   *
->   * When running under preemptible models this is not a problem. Under
->   * cooperatively scheduled models, however, the caller is expected to
-> - * limit @npages to no more than PROCESS_PAGES_NON_PREEMPT_BATCH.
-> + * clear one page at a time and call cond_resched() in between.
->   */
->  static inline void clear_pages(void *addr, unsigned int npages)
->  {
-> @@ -5253,32 +5253,6 @@ static inline void clear_pages(void *addr, unsigned int npages)
->  }
->  #endif
->  
-> -#ifndef PROCESS_PAGES_NON_PREEMPT_BATCH
-> -#ifdef clear_pages
-> -/*
-> - * The architecture defines clear_pages(), and we assume that it is
-> - * generally "fast". So choose a batch size large enough to allow the processor
-> - * headroom for optimizing the operation and yet small enough that we see
-> - * reasonable preemption latency for when this optimization is not possible
-> - * (ex. slow microarchitectures, memory bandwidth saturation.)
-> - *
-> - * With a value of 32MB and assuming a memory bandwidth of ~10GBps, this should
-> - * result in worst case preemption latency of around 3ms when clearing pages.
-> - *
-> - * (See comment above clear_pages() for why preemption latency is a concern
-> - * here.)
-> - */
-> -#define PROCESS_PAGES_NON_PREEMPT_BATCH		(SZ_32M >> PAGE_SHIFT)
-> -#else /* !clear_pages */
-> -/*
-> - * The architecture does not provide a clear_pages() implementation. Assume
-> - * that clear_page() -- which clear_pages() will fallback to -- is relatively
-> - * slow and choose a small value for PROCESS_PAGES_NON_PREEMPT_BATCH.
-> - */
-> -#define PROCESS_PAGES_NON_PREEMPT_BATCH		1
-> -#endif
-> -#endif
-> -
->  #ifdef __HAVE_ARCH_GATE_AREA
->  extern struct vm_area_struct *get_gate_vma(struct mm_struct *mm);
->  extern int in_gate_area_no_mm(unsigned long addr);
-> diff --git a/mm/memory.c b/mm/memory.c
-> index c46482e35418..9bfd49ea990f 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -7612,27 +7612,30 @@ static inline int process_huge_page(
->  }
->  
->  static void clear_contig_highpages(struct page *page, unsigned long addr,
-> -				   unsigned int nr_pages)
-> +		unsigned int nr_pages)
->  {
-> -	unsigned int i, count;
-> +	unsigned int i;
-> +
-> +	might_sleep();
-> +
->  	/*
->  	 * When clearing we want to operate on the largest extent possible to
->  	 * allow for architecture specific extent based optimizations.
->  	 *
-> -	 * However, since clear_user_highpages() (and primitives clear_user_pages(),
-> -	 * clear_pages()), do not call cond_resched(), limit the unit size when
-> -	 * running under non-preemptible scheduling models.
-> +	 * clear_user_highpages() (and primitives clear_user_pages(),
-> +	 * clear_pages()) do not call cond_resched(). That is fine on
-> +	 * preemptible kernels, where the scheduler can preempt the clearing
-> +	 * at any point, so clear the whole range at once. Otherwise, clear
-> +	 * one page at a time and reschedule in between.
->  	 */
-> -	const unsigned int unit = preempt_model_preemptible() ?
-> -				   nr_pages : PROCESS_PAGES_NON_PREEMPT_BATCH;
-> -
-> -	might_sleep();
-> +	if (IS_ENABLED(CONFIG_PREEMPTION)) {
-> +		clear_user_highpages(page, addr, nr_pages);
-> +		return;
-> +	}
->  
-> -	for (i = 0; i < nr_pages; i += count) {
-> +	for (i = 0; i < nr_pages; i++) {
->  		cond_resched();
-> -
-> -		count = min(unit, nr_pages - i);
-> -		clear_user_highpages(page + i, addr + i * PAGE_SIZE, count);
-> +		clear_user_highpages(page + i, addr + i * PAGE_SIZE, 1);
+For example, while we limit the amount of highatomic pageblocks to 1% of
+the zone, this calculation does not subtract the amount of hugepages or
+otherwise permanent allocations, so the highatomic pageblocks can end up
+taking much higher share of actually reclaimable memory.
 
-I think we can use clear_user_highpage() here. I don't know if that's
-necessarily desirable, but it would make this a little simpler.
+The most targeted fix thus appears to be to allow kswapd perform the
+highatomic pageblock unreserve to match direct reclaim. It's also
+somewhat similar in principle to how kswapd reduces watermark boosting.
 
--- 
-Pedro
+Hook this highatomic unreserve to the moment we exit the loop in
+balance_pgdat() due to exhausting reclaim priority, which means pgdat
+was not balanced and the last kswapd_shrink_node() attempt returned
+false or failed to reclaim anything. Even if that last attempt made the
+pgdat balanced, kswapd was struggling enough, so unreserving is far from
+premature. This should be a more conservative variant of when direct
+reclaim failure triggers the unreserving. Pass force as true to make
+sure repeated failures fully unreserve everything. Also make sure we
+don't count kswapd failures until then. Don't restart immediately as
+the kswapd() loop will call balance_pgdat() again if the unreserve does
+not lead to a balanced pgdat.
+
+The only caveat is that direct reclaim knows which migratetype it wants
+to allocate and thus changes the highatomic pageblock to. Kswapd doesn't
+track that, so use MIGRATE_UNMOVABLE. Highatomic allocations usually are
+not movable, and this will avoid creating nominally movable pageblocks
+polluted with unmovable pages, so it should be the least problematic
+default.
+
+Signed-off-by: Vlastimil Babka (SUSE) <vbabka@kernel.org>
+---
+We interrupt the regular stream of AI fixes by something a bit
+different. RFC to get agreement on the approach. Haven't tried
+reproducing the issue in mainline, but it seems quite clear to me from
+the data I've seen.
+---
+Changes in v2:
+- Don't unreserve prematurely (Jose, sashiko)
+- Fix movable->unmovable in comment (Jose, sashiko)
+- Prevent exhausting kswapd failures (sashiko)
+- Link to v1: https://patch.msgid.link/20261104-kswapd-highatomic-unreserve-v1-1-38be5106adf5@kernel.org
+---
+ mm/page_alloc.c | 126 +++++++++++++++++++++++++++++---------------------------
+ mm/page_alloc.h |   3 ++
+ mm/vmscan.c     |  24 ++++++++++-
+ 3 files changed, 91 insertions(+), 62 deletions(-)
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index a8cac5e01066..785a13570788 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -3476,6 +3476,68 @@ static void reserve_highatomic_pageblock(struct page *page, int order,
+ 	}
+ }
+ 
++bool unreserve_highatomic_pageblock_zone(struct zone *zone, int migratetype,
++					 bool force)
++{
++	/*
++	 * Preserve at least one pageblock unless memory pressure
++	 * is really high.
++	 */
++	if (!force && zone->nr_reserved_highatomic <= pageblock_nr_pages)
++		return false;
++
++	guard(spinlock_irqsave)(&zone->lock);
++	for (int order = 0; order < NR_PAGE_ORDERS; order++) {
++		struct free_area *area = &(zone->free_area[order]);
++		unsigned long size;
++		struct page *page;
++		int ret;
++
++		page = get_page_from_free_area(area, MIGRATE_HIGHATOMIC);
++		if (!page)
++			continue;
++
++		size = max(pageblock_nr_pages, 1UL << order);
++		/*
++		 * It should never happen but changes to locking could
++		 * inadvertently allow a per-cpu drain to add pages to
++		 * MIGRATE_HIGHATOMIC while unreserving so be safe and watch for
++		 * underflows.
++		 */
++		if (WARN_ON_ONCE(size > zone->nr_reserved_highatomic))
++			size = zone->nr_reserved_highatomic;
++		zone->nr_reserved_highatomic -= size;
++
++		/*
++		 * Convert to migratetype and avoid the normal pageblock
++		 * stealing heuristics. Minimally, the caller is doing the work
++		 * and needs the pages. More importantly, if the block was
++		 * always converted to MIGRATE_UNMOVABLE or another type then
++		 * the number of pageblocks that cannot be completely freed may
++		 * increase.
++		 */
++		if (order < pageblock_order)
++			ret = move_freepages_block(zone, page,
++					MIGRATE_HIGHATOMIC, migratetype);
++		else {
++			move_to_free_list(page, zone, order,
++					  MIGRATE_HIGHATOMIC,
++					  migratetype);
++			change_pageblock_range(page, order, migratetype);
++			ret = 1;
++		}
++		/*
++		 * Reserving the block(s) already succeeded,
++		 * so this should not fail on zone boundaries.
++		 */
++		WARN_ON_ONCE(ret == -1);
++		if (ret > 0)
++			return true;
++	}
++
++	return false;
++}
++
+ /*
+  * Used when an allocation is about to fail under memory pressure. This
+  * potentially hurts the reliability of high-order allocations when under
+@@ -3491,70 +3553,12 @@ static bool unreserve_highatomic_pageblock(const struct alloc_context *ac,
+ 	struct zonelist *zonelist = ac->zonelist;
+ 	struct zoneref *z;
+ 	struct zone *zone;
+-	struct page *page;
+-	int order;
+-	int ret;
+ 
+ 	for_each_zone_zonelist_nodemask(zone, z, zonelist, ac->highest_zoneidx,
+ 								ac->nodemask) {
+-		/*
+-		 * Preserve at least one pageblock unless memory pressure
+-		 * is really high.
+-		 */
+-		if (!force && zone->nr_reserved_highatomic <=
+-					pageblock_nr_pages)
+-			continue;
+-
+-		guard(spinlock_irqsave)(&zone->lock);
+-		for (order = 0; order < NR_PAGE_ORDERS; order++) {
+-			struct free_area *area = &(zone->free_area[order]);
+-			unsigned long size;
+-
+-			page = get_page_from_free_area(area, MIGRATE_HIGHATOMIC);
+-			if (!page)
+-				continue;
+-
+-			size = max(pageblock_nr_pages, 1UL << order);
+-			/*
+-			 * It should never happen but changes to
+-			 * locking could inadvertently allow a per-cpu
+-			 * drain to add pages to MIGRATE_HIGHATOMIC
+-			 * while unreserving so be safe and watch for
+-			 * underflows.
+-			 */
+-			if (WARN_ON_ONCE(size > zone->nr_reserved_highatomic))
+-				size = zone->nr_reserved_highatomic;
+-			zone->nr_reserved_highatomic -= size;
+-
+-			/*
+-			 * Convert to ac->migratetype and avoid the normal
+-			 * pageblock stealing heuristics. Minimally, the caller
+-			 * is doing the work and needs the pages. More
+-			 * importantly, if the block was always converted to
+-			 * MIGRATE_UNMOVABLE or another type then the number
+-			 * of pageblocks that cannot be completely freed
+-			 * may increase.
+-			 */
+-			if (order < pageblock_order)
+-				ret = move_freepages_block(zone, page,
+-							   MIGRATE_HIGHATOMIC,
+-							   ac->migratetype);
+-			else {
+-				move_to_free_list(page, zone, order,
+-						  MIGRATE_HIGHATOMIC,
+-						  ac->migratetype);
+-				change_pageblock_range(page, order,
+-						       ac->migratetype);
+-				ret = 1;
+-			}
+-			/*
+-			 * Reserving the block(s) already succeeded,
+-			 * so this should not fail on zone boundaries.
+-			 */
+-			WARN_ON_ONCE(ret == -1);
+-			if (ret > 0)
+-				return ret;
+-		}
++		if (unreserve_highatomic_pageblock_zone(zone,
++							ac->migratetype, force))
++			return true;
+ 	}
+ 
+ 	return false;
+diff --git a/mm/page_alloc.h b/mm/page_alloc.h
+index e238ee91ed24..9fba6480b18d 100644
+--- a/mm/page_alloc.h
++++ b/mm/page_alloc.h
+@@ -282,6 +282,9 @@ static inline bool free_area_empty(struct free_area *area, int migratetype)
+ 	return list_empty(&area->free_list[migratetype]);
+ }
+ 
++bool unreserve_highatomic_pageblock_zone(struct zone *zone, int migratetype,
++					 bool force);
++
+ /* Convert GFP flags to their corresponding migrate type */
+ #define GFP_MOVABLE_MASK (__GFP_RECLAIMABLE|__GFP_MOVABLE)
+ #define GFP_MOVABLE_SHIFT 3
+diff --git a/mm/vmscan.c b/mm/vmscan.c
+index 9959ca158ce8..af3079c6e32d 100644
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -7317,6 +7317,7 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 	unsigned long pflags;
+ 	unsigned long nr_boost_reclaim;
+ 	unsigned long zone_boosts[MAX_NR_ZONES] = { 0, };
++	bool has_highatomic = false;
+ 	bool boosted;
+ 	struct zone *zone;
+ 	struct scan_control sc = {
+@@ -7342,6 +7343,8 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 	for_each_managed_zone_pgdat(zone, pgdat, i, highest_zoneidx) {
+ 		nr_boost_reclaim += zone->watermark_boost;
+ 		zone_boosts[i] = zone->watermark_boost;
++		if (zone->nr_reserved_highatomic)
++			has_highatomic = true;
+ 	}
+ 	boosted = nr_boost_reclaim;
+ 
+@@ -7478,13 +7481,32 @@ static int balance_pgdat(pg_data_t *pgdat, int order, int highest_zoneidx)
+ 	 * If the reclaim was boosted, we might still be far from the
+ 	 * watermark_high at this point. We need to avoid increasing the
+ 	 * failure count to prevent the kswapd thread from stopping.
++	 * We also don't want to stop unreserving highatomic pageblocks,
++	 * if there are any.
+ 	 */
+-	if (!sc.nr_reclaimed && !boosted) {
++	if (!sc.nr_reclaimed && !boosted && !has_highatomic) {
+ 		int fail_cnt = atomic_inc_return(&pgdat->kswapd_failures);
+ 		/* kswapd context, low overhead to trace every failure */
+ 		trace_mm_vmscan_kswapd_reclaim_fail(pgdat->node_id, fail_cnt);
+ 	}
+ 
++	/*
++	 * We exhausted all reclaim priority and didn't balance pgdat (except
++	 * perhaps during the last attempt, but it's unlikely), even if we
++	 * reclaimed something. If there are highatomic pageblocks, unreserve
++	 * some.
++	 * Convert them to unmovable ones as kswapd doesn't have a target
++	 * migratetype, and unmovable should minimize permanent fragmentation.
++	 */
++	if (sc.priority < 1 && has_highatomic) {
++		for (int i = 0; i <= highest_zoneidx; i++) {
++			struct zone *zone = pgdat->node_zones + i;
++
++			unreserve_highatomic_pageblock_zone(zone,
++					MIGRATE_UNMOVABLE, true);
++		}
++	}
++
+ out:
+ 	clear_reclaim_active(pgdat, highest_zoneidx);
+ 
+
+---
+base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+change-id: 20261030-kswapd-highatomic-unreserve-7e6629ec65d0
+
 
