@@ -1,133 +1,125 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B1C606A321
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B663606A335
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key, unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wx8dB1kn
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=AorOBiJ7
 Received: by kanga.kvack.org (Postfix)
-	id 9FD006B00EF; Mon,  9 Nov 2026 13:15:24 -0500 (EST)
+	id 617E36B00EF; Mon,  9 Nov 2026 13:25:16 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AD246B05B0; Mon,  9 Nov 2026 13:15:24 -0500 (EST)
+	id 5C92E6B05B0; Mon,  9 Nov 2026 13:25:16 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 89EB36B05B1; Mon,  9 Nov 2026 13:15:24 -0500 (EST)
+	id 4DE846B05B1; Mon,  9 Nov 2026 13:25:16 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 689CA6B00EF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:15:24 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CB130807B2
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:15:23 +0000 (UTC)
-X-FDA: 85416382926.08.EB85450
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 1A92C180004
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:15:21 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wx8dB1kn;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794248122;
-	b=sCY0xSTggKrvYy9e/hrpLrzIUuZMEXMJ0oTAq1WUdE3FtESKgA5RgeoHcECbP8w8aL043p
-	keiOFTLomdjf/SfvBPgzSUZ6RYRIlY8RductQPDju1X14q/qVuGUZpDtqrSBld1ZXnVE9E
-	NoSsLNrcP7RsRyOvwFyqjI6CdCkKlMA=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wx8dB1kn;
-	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 319706B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:25:16 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BB6DBA0696
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:25:15 +0000 (UTC)
+X-FDA: 85416407790.28.768D582
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	by imf16.hostedemail.com (Postfix) with ESMTP id EC97E180009
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:25:13 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=AorOBiJ7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794248122;
+	s=arc-20220608; t=1794248714;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=DvhcgTZcrkTnH28Ju08E5VEVg7jwb2jxxTwOX5xkft0=;
-	b=ku6xNMmBzdmF2Tg6kVJyis3eMBFxBNhYhuPYcFPgh55fQyVSCSt0RaS3n+LPAIFlFC+Ptr
-	TW6DqKaqUYIPcDFsOFLwm+OHg/ywEuSi9+K5qZkgQpuZ+4zZyHpf0tKMzdm9LMWtHepl6T
-	dT8vzOl4eUowqU6SGhRAgxJ/Bw7R774=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9C810612EA;
-	Mon,  9 Nov 2026 18:15:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A240F1F0089F;
-	Mon,  9 Nov 2026 18:15:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794248121;
-	bh=DvhcgTZcrkTnH28Ju08E5VEVg7jwb2jxxTwOX5xkft0=;
-	h=Date:From:To:Cc:Subject;
-	b=Wx8dB1knEZr4NSoFk8tLdva1Npsbq67GIgf+PEylNq8OvIpLP+eqNopEanaE+iREC
-	 6XEt41Hh74eonyySwlyLLMW7WgsNvrf+3QfFrrbx8a+jwFzQgPLnl6igUvEGlrPZck
-	 y70kBD5InBgfUagE4OoNHLkXn1aT4Sn+7sKpYMyY/jlDoBmDZ2VG1EBorS4itvFz6J
-	 G05s2IaTZ3jGI1wq5H20aiWRSvTzUIMQ0nL14q0duCVfNv6maqlr99AlxdnGPkY59a
-	 VApimUnjhTaJzEZJZOBdxh51gHYZWvfoMPrUteeduJ9hvZMVkDaCEhV6kblBUbyhMC
-	 vbE5rAX7U42vg==
-Message-ID: <a2f584f6-e382-4876-aa6d-d5a34de6ee59@kernel.org>
-Date: Mon, 9 Nov 2026 19:15:17 +0100
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=y4Cmesc6c6L7Z5O7qy6m8HiVqUJHOjQyHRE0+sJjwZY=;
+	b=hWUvuv68MO+7yxcf22enJ89OtRbGCfrC6PEZJvsboDeKsVkauXGIeEW/GmryuN7hTrBT5B
+	Vuz+qIa00Y1SXwawKMlXHFLdz9/2H+87oRz/Rm+ufdYzfDM0zhEx1ZKbsSgp97asUTOcwd
+	Qgxow9swmqmchsBofc1m7NXdpyV20E8=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=AorOBiJ7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf16.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.215.174 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794248714;
+	b=0b7UcMR1YMDkl9Lc0Vv4WTByZQYYYwtp3TF1p6z0NEceeBrf9jbNnZzVyDj0X2WooRI5h6
+	ffFFe74ELiPC7PkXQ5aL3oNgX8buzFgFmlYBqvXr7vk2YLxP/HaMb6jVjlcOLPkqEEaz7w
+	gMuBbV0mzMgP6TTMAptaKEPRZybcpoE=
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-cdba1b5ed8dso524038a12.1
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 10:25:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794248713; x=1794853513; darn=kvack.org;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:from
+         :subject:cc:to:message-id:date:content-type:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=y4Cmesc6c6L7Z5O7qy6m8HiVqUJHOjQyHRE0+sJjwZY=;
+        b=AorOBiJ73+DCIM2rFAjk0GcYC+DbACD07pqKISFHkVyAN2IO7/IuwjZhqVxYyegp3i
+         /VIUBRN6ohYj3xgozTaR4Pa0vIoPVkaIksO4qT++hDGEQMlr1+bzyWUwi8BNVq87/Gdh
+         /SgDE5/kO1Vwk+ZOGk/+OXZRvTNq0TuSso2rtV3yA+HjMDHFcbMX/pJNu6PN1tA5n2bn
+         JOARxtOHptEUs+ZDV9U7xPTQgR7yLqkV0wGr2dfABINxoYKsOq1V0Cbx6cqMzX0o6qfz
+         cM+ZhJY93EVBZoh8wk8RYYAyR1SBvRyIA+/HaYRQ1au25/4DBuPGVavoQZCj+bMZNwXD
+         eAtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794248713; x=1794853513;
+        h=mime-version:content-transfer-encoding:references:in-reply-to:from
+         :subject:cc:to:message-id:date:content-type:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=y4Cmesc6c6L7Z5O7qy6m8HiVqUJHOjQyHRE0+sJjwZY=;
+        b=Dn8ggwY6G3xduZrpyza2Q1ZrUPqLsTTEGhdkWXDafYAbhVBNtgxhuE43FoMvJVQIvv
+         LVAkI61tJXEBNkSK5je03dVwe6zzHsd6g3XV8YNQN13j0aQAuh2OK/0hJEIYA3LxpUPr
+         QySEweIcZ7QmcuvgM21de74Rl8wltRb+z9UzlXld2Df0QCCE24reVh3UQqc2jG7iraX3
+         INju+c/uO3+/JtKUC4/oG2XXlS4OAzk3vkVskcfznrwIaFfwaUeTfH7CKMQPNhTVCP0i
+         Zb0yjFi2eXkefAJ6m5LUG49QFuGmUOxFlUN7Et5ICFaheUlaJFplsTnBBCp+vLPV/Co7
+         mHFQ==
+X-Gm-Message-State: APuU4Z9TsY8DZdn45HRNSfSoLX00N1kw3w+ecoxq2qbdM6a+zidnX0dp
+	lNgi83ihXSLxxL6qiT+qFRyW+1rVV3kkcPbexf8Nsv58ULTaCuoyqV3/
+X-Gm-Gg: AYBFou1oTQAgmu900fBf+pYOXHpC4amVeoPdldAusc0EAQZzNSG2D6l19UsyCzCZfI6
+	2vMcLjcQm3qsv4zPqHe1tquSg8uaQVVmHXkbWMryO8O/XOLHbTs6oTm6PoU9+i53NMPKXCpp4vQ
+	5pQD1wddLYpv7pM4k2D2cCYMZ10PCO/ub/zt0F5goNNLptQzxSjpOFv7auyGEu6aMMwJEofkGkK
+	mq0W+5q/ruYzJLscHnNxUjVAp5OW98pr9MrPEcq4MNe+dAEjLRHGnlCdHLC7aR16Sxq0ERYv8MW
+	2PNALbaKbgFzIta+zYUfIOu7mlqJPdnrqnrQfoqpe0vL9zGZK84dZKSroSWwXCB3Q3M7f1i/Q/B
+	GWmIxZChQHF1LAL/B7naq7ENbLT7oEa53zKubGzUZtmhn4bo86gpUM+iS1Zpaz4Kngid27+TWQu
+	bdg3wd4+uL9n3lBNmkcQkKxiZnMAWqV3xgMmENs/eyVCWm+rbXQxFrhCCQLSWKSU5Oj8pXKa6J/
+	wex4LU9BIFpGxxsY7rpW7QY5GlmeiKoklzCTC+hn77rbMO4QZoe86xMZaC+6WSIDQC9iDx3yHb4
+	ZYRnbJ2bPQqjiXXOrOJArGbbSkBsBjewW884bPTCo5YYy1/X0xcZZy2uU1rE+x64RUDDGZRmA0w
+	rJ6zaO8wJZFBLYfJx93Pp9IGcmdUQnwOnF2w=
+X-Received: by 2002:a17:90b:4a46:b0:3b1:6689:a016 with SMTP id 98e67ed59e1d1-3b167931c23mr197925a91.16.1794248712676;
+        Mon, 09 Nov 2026 10:25:12 -0800 (PST)
+Received: from localhost ([153.61.198.249])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b1678d4e49sm436923a91.8.2026.11.09.10.25.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Nov 2026 10:25:11 -0800 (PST)
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Nov 2026 18:25:11 +0000
+Message-Id: <DMQW32TTNOPX.24GN6Q7VI6QJR@gmail.com>
+To: "Tiezhu Yang" <yangtiezhu@loongson.cn>, "Vlastimil Babka"
+ <vbabka@kernel.org>, "Harry Yoo" <harry@kernel.org>, "Andrew Morton"
+ <akpm@linux-foundation.org>, "Hao Li" <hao.li@linux.dev>, "Christoph
+ Lameter" <cl@gentwo.org>, "David Rientjes" <rientjes@google.com>, "Roman
+ Gushchin" <roman.gushchin@linux.dev>
+Cc: <linux-mm@kvack.org>, <loongarch@lists.linux.dev>,
+ <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] mm/slub: Genericize x86-specific cmpxchg16b comment
+From: "Alexei Starovoitov" <alexei.starovoitov@gmail.com>
+In-Reply-To: <20261109035906.10857-1-yangtiezhu@loongson.cn>
+References: <20261109035906.10857-1-yangtiezhu@loongson.cn>
+Content-Transfer-Encoding: 8bit
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-To: "linux-mm@kvack.org" <linux-mm@kvack.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Subject: MM: Firefighting mode
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: qdgnhf6oux65grs53jpby8sideghgro3
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: EC97E180009
+X-Stat-Signature: kzzjxdrj7bs8cd7euzxwu4irsw5bws5x
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 1A92C180004
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794248121-248709
-X-HE-Meta: U2FsdGVkX198CMga8IpKvZh5QO+a7SBVdLVrUA+fsr7XcScAZFQ7C3ZJWr2C0nRgCqK1zwqEPDWfAnTLeBwtAkB0gXf2rZ687n446IIvInFGWV11KymsdmkoX6/+OvqJ5GeAM1otaa+vfLpuaZj2Y0r5Ltgc4LxXegOVqCbWjtN6rbZPr8ftHPJ0EO/tPfYN6PRzJLkbFE1jJvjtEC3vN51rxonHYBSu/ViNI78SXuohjoJgpi6Bz44grmRAKvddGVqVirerXNLNUtVDESbjGznoRAMB/xqf8KwYl175WefTesvymPQ7ExvZdIoVtjjOU65Gw4+s6FtwZC9Z8fvqXW7ocl+qhOERs3XLGaczLdCBdefeImor/mfQICge8PFHS09nvBQyC1auKcd9CrC/IeKyVLgouNC5d00+4wEQczwhRi51ZFm1znDuDuYoTF4BKDn4zMqdz49eq4hBzHh9otVcz9sXVfnPnmZSC+j6TGnog+yxVE676aVOXgGR/PcxOdCq7xqdLBX323nuOikjv3w/SIPyQdLgia/70PqYiWSTp9ItyvEbocaIpYqDY7QNxJnkXtGgozQIz5QcwFHIA/NoKQ75iNcO3BO43XFIyLsD7pdz1LMMtiTRK5rj7reEasRXWjeHiitYYNmmhGuFFT/0yYZ3Pz1UhwSIugQ38qEVLVcbIGwfWLGNUWyuL2sil3kZPLK/Ts8SqwIksZ2LRFn8QgTKVxsjRreCllNy/nqrrWKoiMCwPjvGlWup9ViTfDB9ZsQaCR3BHU9aWfxlYvUtuaEvGNv65MGgUhzGhLbrDwp6uoG/duGLm3H/TrhFooRI1XGzUwQMxrvQf/fFoUdexxLYkxz1Dx4s3o1q4Zjtg6jvbAX8vo9jK1gg9qnP4IlOkDEpJNlZvXlwqHfqg/Oyqrx2cECfDdObFNirbuq95YuwM5wKCsEf/qczR+Vi6GDEMj16pGIm1XpzNPX
- 1wVWcqy8
- qJaRgzBzo2batnDVIuOpgHeM3VRJYbNeR374ALG5DADS79Zyt9ZwPnN1YqTt7XkhBydsG63JJwGUXXOL7bFT5FQDTsnHxQ4xZuZlLBMxBX3swUw9bewK47Bza9z8rLcuURSBge+euFkj3WcaUjtA8e+MXBm/vw1A3fuAuep003yf5aZ4hfK3bGXKnMiKedMV+VjUXvI76KDdIDxCcpMMOL1VsC319W2ZJZxrjugFXJoIjIr5lJJfXq+eZOoyqTGqJesFTjh8SEBpSdI4WkclgZ0RRDRw3WIvghhvnAhtF9hk4VWg=
+X-Spam-Status: No, score=-2.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794248713-626033
+X-HE-Meta: U2FsdGVkX1/dpfmSGEWlOW8qCPJxJIs3tNa3xL/WDDMuZL+xUVGco+3+D520An3QhlqaAmFpxEEyr5tD4pL5iF6OW+nsulTD+CaY7h4HPReYaxyX5xXuGfMGI37t2Cvbhluj5ow+6sHHOTao+KlRzF1vbPPrIYcSdsm5CtOrOFjOOSPVMvFlGcNebp6cKBGuI+gYV5T7VXZD2wlp7iRkfHaBbx3BvsuU1HjB2rgHPn91pTgNjtLVkfPax49ON9iHsTy/nLFnUmAn4vKNNojrmV0DNTqQQGa2oz5ll40H++LouU1Z2Eb3dYNgUBFsgiTkZ2IZy0a4yETmJpXkE2b1SFdm+TFhUPEDcMaFV/y/y9sc5CwvGEKAlh3PfB/QrEE2h2jLI4yVi3RcE1Ph8GQ2WwrERKgCA1Z0JlD5FW3lCaWiTcITru/CUO2dHvOs2gn2Fiwu/L289IVSw81Cx5XlOAiyONcqLoN5y+R1cWXpBaMdx1wpjEILdYwU5oMMUNV09Dz7UxVAAb56wRSumIqi+YzyVs/7rae/K4Heol734RhB0FUcrd6yiU57blcmVeOmNfCpHCCxx44daBqDaA6pnVWx3A3/DkuZ4rVAUeF9CLDs2hg1aA0/svfeMzgNhyM4Ym2LJ867g4TlpO1Kr94BkkhpYq6Q6cvOIwL6JYJhAoGgWzu1qPTfBGNkY1vO33V+SVYao2ZsSzMIkaTI9dxlW4HdydyVSvfIj/pBM2auFH/snZcDoCAdAL3poQDFBffWA6khJ48uGq4sxybQmDjuT/KRd1Q0XmABZaxSnoZxrYTFWIKblp+SvtWfpplA4neH0LiL8TR/3fb18S71fkSd6n4+JhVaiD71LSOwDBrJRj5aRDoj+em6lNyTxifpEeD0GGfiV6HeyZkLrRQBvC/1xNtJUUo5KMKfy/2+W2P/Th/9WLL6IQfr2yWl3KurZL1tITUmHYEeMSDnaDVYOWI
+ 2Uoq2iGM
+ 2nVJ+DowfHFgq6+zk23pfH/yxpDrptTWNPwZ2YDTBzi5YKGFd09dGUy3OILbmTv0a0r0M9ChRL2oZl+uuKq6AfFlA1I5c6p4kAxZZC7VMl6qDt/xRYU0WmsmogdvPlTwN1v89zFYYF2jH6vUrmSfvYJ6JZkr6kWBdNjI8AvpcGemVj43A7SWo08OkVTIymmcgVmgeGYTCryYeKnPohC202rMubfzG0i8iOF3otgzbzuxFE7RwNApxwgpuXVnEo61r76i8LpLEDKrmgfInTa1vc7D8RHOt7PRKFAIwNCtMvr9UNtjRMn+1ntGTCtsHr1ZYmHBgeiVZ36qlMKs5XH8XWn1frvz+u12QWWgsc1l1nKX6refWICXzw76+qJmHIAUOeU3bf0p1PtBYh6E3gFn5MyCxI0cAQXC0a1axovVTwIf1a6sjVrmc0FMN9krFQVR3o/HWAr4nUjH+uJ0/uzhe2z62utHH/j/ARNKR6zNApfvHA7UCmsKcJxC+4MrZN6JgoCL9k7Uccy6Rbi0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -136,43 +128,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi all,
+On Sun, Nov 08, 2026 at 07:59 PM Tiezhu Yang <yangtiezhu@loongson.cn> wrote:
+> atomic primitive is satisfied by different hardware implementations:
+> (1) arm64: satisfies it via LSE atomics ('casp' instruction)
+[...]
+> Update the comment to "double-width atomic cmpxchg", which provides the
+> following advantages:
+> (1) Accurately describes the cross-platform hardware invariant.
 
-  "Your message is important to us, please continue to hold. An MM expert will
-   be with you as soon as possible."
+You ignored Hao's point about shorter commit logs.
 
-I wanted to send this out last week, but somehow didn't manage to do it even
-after being reminded by Lorenzo (thanks!) :)
+I dropped all of your pending patches.
 
-If you haven't noticed, the MM team is busy right now either fixing bugs or
-reviewing these fixes.
-
-Or fixing bugs we found while reviewing fixes.
-
-Or reviewing fixes for bugs we found while reviewing fixes.
-
-Or ...
-
-Anyhow, our focus this cycle in MM is clearly on bugfixes of different urgency,
-and I'd like to thank all of our MM community members for helping out with
-fixing bugs or reviewing fixes!
-
-That doesn't mean that we should stop any other development. In particular, I
-want us to continue making progress on work we started in the last cycle.
-
-Removing code or nice (easy-to-review) cleanups are always appreciated.
-
-But be aware that we only have limited capacity for big, very complicated, or
-controversial things that need a lot of attention from MM maintainers and
-reviewers. In particular if it is low priority.
-
-So, some stuff will have to wait ... longer than usual.
-
-So if you feel ignored, it's just the MM team being busy fighting fires.
-
--- 
-Cheers,
-
-David
-
+pw-bot: cr
 
