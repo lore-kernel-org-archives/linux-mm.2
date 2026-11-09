@@ -1,99 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7AE5606A322
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 04:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724D8606A339
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 04:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=OPUUchvX
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=J+aTWeug
 Received: by kanga.kvack.org (Postfix)
-	id CFBD36B05B5; Sun,  8 Nov 2026 23:28:54 -0500 (EST)
+	id 84A706B05B8; Sun,  8 Nov 2026 23:34:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CAB486B05B7; Sun,  8 Nov 2026 23:28:54 -0500 (EST)
+	id 827546B05B9; Sun,  8 Nov 2026 23:34:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE94B6B05B8; Sun,  8 Nov 2026 23:28:54 -0500 (EST)
+	id 761636B05BA; Sun,  8 Nov 2026 23:34:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 877416B05B5
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 23:28:54 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 564526B05B8
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 23:34:00 -0500 (EST)
 Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0BAAD160586
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:28:54 +0000 (UTC)
-X-FDA: 85414300188.19.91917BF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2A6A7140005
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:28:52 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OPUUchvX;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794198532;
-	b=mSEgIv8Y/v9pOG699daEjneRkAfTtgvf+KnMtNkG70RT2vwm33TtEXR2wDYKa549VTZ8O7
-	b3uIoc4kBQ7vo0Q88ijVA7FadFF+84SAk+2l9VppR5Ou4cLUioqqFd5UlvgH1PINUiZrlS
-	msuE6Th1RsXMyBmRIqG4U4EvTbtvWDM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=OPUUchvX;
-	spf=pass (imf26.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C0D13C0294
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:33:59 +0000 (UTC)
+X-FDA: 85414312998.19.CD96E49
+Received: from mta0.migadu.com (out-128.mta0.migadu.com [91.218.175.128])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 93B50100003
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:33:57 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J+aTWeug;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.128 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794198532;
+	s=arc-20220608; t=1794198838;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FiUcCzz6eRwbUbbG4pYyGQ2qW/jd88V1nW8iaclZzQk=;
-	b=rpNOlD9i0r6pfez5OIKLemE0+hjY4eJVExPt5yzuaQ85GIBAnInj+pdBwAac9PU7u7fK69
-	rCw2Rzl1CgvvfHSV8Zy+KBH+v9ECHjH3U7VndFqZaiSHI6tVB0m37yCTefZb+Z9GcZWeTd
-	MfaUkB9Z1NQXEZzwrAsB+GTjjoCzlsw=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 371E64017C;
-	Mon,  9 Nov 2026 04:28:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 529EC1F0089F;
-	Mon,  9 Nov 2026 04:28:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794198531;
-	bh=FiUcCzz6eRwbUbbG4pYyGQ2qW/jd88V1nW8iaclZzQk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=OPUUchvXcqcg6udQdlvlPeSph4r8aU2+2h4HR8XyzRuZ/eKrMZHZfbOdvKwV7k+86
-	 IcDKpcF256QyOZ0wHoSH0TKevcbwSM+sE2tI//+lGGIfvXG2grY5nOy9xIK5gG8rsF
-	 ebk4yf4QP4sRcHLdKwW/IR1CO71muJK8RfYRrnRk=
-Date: Sun, 8 Nov 2026 20:28:49 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: syzbot <syzbot+73e34786d639a8eb1324@syzkaller.appspotmail.com>
-Cc: bsegall@google.com, david@kernel.org, dietmar.eggemann@arm.com,
- juri.lelli@redhat.com, kees@kernel.org, kprateek.nayak@amd.com,
- liam@infradead.org, linux-bluetooth@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, ljs@kernel.org,
- luiz.dentz@gmail.com, marcel@holtmann.org, mgorman@suse.de,
- mhocko@suse.com, mingo@redhat.com, peterz@infradead.org,
- rostedt@goodmis.org, rppt@kernel.org, surenb@google.com,
- syzkaller-bugs@googlegroups.com, vbabka@kernel.org,
- vincent.guittot@linaro.org, vschneid@redhat.com
-Subject: Re: [syzbot] [mm?] [bluetooth?] BUG: unable to handle kernel NULL
- pointer dereference in __refill_objects_node
-Message-Id: <20261108202849.2e5c40a630e66dd39334a915@linux-foundation.org>
-In-Reply-To: <6af144ed.f50b2b3a.2c0de7.0010.GAE@google.com>
-References: <6af144ed.f50b2b3a.2c0de7.0010.GAE@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	bh=4DN1Y+t6vujW8S/AQPbCJ490d9V4hkbmm812BgwtOTM=;
+	b=yzLmA7PDea98t9OTHbaf49i3DvD3oHtY11oNVS2s5zwkG46V9U6gjIv+gtd+pJ4+U9zg4l
+	OD27kJFxx++Chonby1xJVuvC+Aqqk2GkHl/pdBkkAAO6UCmCfTV++YjQTJNl34W9fV5bCa
+	Vhuphgql1lalY6V4p8x2bb++VNC89nw=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794198838;
+	b=WTryf2NdBaoXpi7FoAkXSQr+BTYwxOhcjdjLiRGRFRKvf4FTW7/5UUWLcDeUcF1Ex5J08q
+	ZSrTYBnCV/vvrns7e9WLhEB6iPg2Xx5phU6KCoADWN4P82amT9z6xFdiK1xQCM6LnQL7r1
+	1GDj8z4NBaJxTxiGW7Is2K603f0EcoY=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=J+aTWeug;
+	spf=pass (imf14.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.128 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Uhs7BWZm2N+gFKXL/TmYjVQYKnl8VlxGISFVM5NLm40=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794198836; v=1; x=1794803636;
+ b=J+aTWeugil4lbZaw86bysXlj72KJ1YDD/oBtNnrnxpwFt1Zv3v92oWKWjh4hCRQhawyW6UvD
+ SrnwHPTpMGnc32HdDCtbC3titUBPWUSWN+J0XGBgJevyXUJILOhMtgkDhR1TxBlSmyoG0ILcNWb
+ 71MK+oj5lMtq7adOxfFCoBjg=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id b7fb94620bed6bfe;
+	Mon, 09 Nov 2026 04:33:56 +0000
+X-Mizu-Trace-ID: b7fb94620bed6bfe
+X-Migadu-Flow: FLOW_OUT
+From: Lance Yang <lance.yang@linux.dev>
+To: songmuchun@bytedance.com
+Cc: david@kernel.org,
+	maddy@linux.ibm.com,
+	rppt@kernel.org,
+	akpm@linux-foundation.org,
+	lance.yang@linux.dev,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	chleroy@kernel.org,
+	ritesh.list@gmail.com,
+	sshegde@linux.ibm.com,
+	osalvador@suse.de,
+	qi.zheng@linux.dev,
+	muchun.song@linux.dev,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	x86@kernel.org,
+	loongarch@lists.linux.dev,
+	linux-s390@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] loongarch/mm: disable device DAX vmemmap optimization
+Date: Mon,  9 Nov 2026 12:33:46 +0800
+Message-ID: <20261109043346.38778-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20261107043122.25650-4-songmuchun@bytedance.com>
+References: <20261107043122.25650-4-songmuchun@bytedance.com>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: aiyhwwxets5gfqu7mgha98zepwazaadt
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6i7zhayifj5rosqpomigx16endw6pn81
+X-Rspamd-Queue-Id: 93B50100003
 X-Rspam-User: 
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2A6A7140005
-X-Spam-Status: No, score=-12.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,NICE_REPLY_A,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794198532-533139
-X-HE-Meta: U2FsdGVkX19Mu8Xy7T5R1uWb7qr9WKgY79/T6VuzjdsMOWWpE83HHT2KcsXfbJXhtZh6mpufj1kPLtyJd6cb9Ltp5ergAi9hZ31av8eqsBBnJLJCf31/Wnlw9kSVwMq8zgmDHprIcpD7PTKHXgTZ2hvmklf3+zR2dVFi3q3sj6bJ6tRg0KZOwnC2a+Bd8dzLoSxr13240UqpCCNk27k4OSbOKaEN4Bh2C4tofG18shxyikDWLzMEWCMX0e0Zsl/SR9tgtl7GNWtuBMQOJuSBS+Uh7U7jSHWu1XgehXkA3zG23VbGTRUUjiZ+8XUDHgBOlVrHBzB9BuGFnarJVXkPTQx4Zi9zirXDJsmKSJfovb6YFZX7+xLWp7CeG9IDYluyOGteNNtaYYWLNQuFp2gIojzTyCppcsr1mXKAeO338NsKBFhYVlCMLaWWyXMdOOgGmLKfiqgzA60MS0IdK7TgwL2tpL33jn5udB9FXiXsPZQwd9lB19JWbVRcdLBaSO052cRqmW+r2UffFP7bPoKkNjO2aKyMXZUmgMF4DR3RB31ej2zoV00H24U3R3bApXtCNXkKRGHnEaMPapcd2KdsuUND1QjMyvx6gl8J9anLyM9WAciNK0zDg5EksQu4hdrllJV0W8xTj65vIXg9NhXnrRgVqssNox2or8GAz1YTDTr2QBE+Yna42HNGnhzqPRFhoSeZZIni/F7QncmgaiDTU/hKNGYww37PrRNZfj+4etkaaAdYE1+pmtbDO04QsV2yVIjxBrNdYYTMGVv4o0L/bTE+914CVCH9LsyVMef8RTkcxteNEbv5lgXDuC0XUCGWs5Q4VcQPxHd6MrPp2HNDVzkdOXoWF/ft3krfXVGHFmirRvy+HqTXdzPW1+uPeptoG3JrrfAn/4+nfrt46emYLPu3pmnSkuLIP8SQSp46j3CtAi/YCyj8c6qSe2hTQBe7FQueUn13chqUCcudalV
- 86Vb+pmg
- nY4/rUK9IcXbDQqr0x26l8YIVpisoE+8KIsVZXSQo/EpOmfGX7BcQfgMWkm39VeBLkmTVb77ngSvecFSLAVMCjRCcM+UzqId0Xj56mH3y7uaz7u9oWLWfB9/y1bJbeI9fiMgeepv1yiy3E9tZ4Ptgb1oADDm3vk+p+4knrxPoNiZzUp8/B3bbJoKfhD9i2VBkTQLtFfR6khwEvS2R8vSRcaRLxkIWlIfk0nlhvyA1Ly3BH6BHJ1WQyletO7Mc+Y2zW1DR7Z/40rQi6jC63JpQEk+MDBeef/oQloe9/KLYHy49SdVG1paEr6ayHH4sCHcatXEdgHUbD/RHEaTY8BImON7aaGl3aNEP8Bc5SuirFyQgTIZG1DYtijqcZih0Zs5iC/VC3RPQQT2k9gGaA+adYmo5TMMwjRX/rHFgIcToUsgY5Ay0ZfH7evEClZUR6lmGf7/rfKSXqVu/MLLqnuO3PaWgX9Hz0CL5YZoSnygTw765ntvmYqvuWWDpdxItLGkw1d3AY4GR4w9+r/Wzy7Zdr46K7nZgxMKhwKj/dt5rNXurh5Y0swLSDpYYxxMaaHeg210TI5NqHi6hBAF5+Lq4rDGjbzSm/c9JDLoR6gsqNC88pqIqFF92fnBSRc3BPqAhsy2zu1CGui8DZOJJmFAqkbUIW5HKGybwGuRgKwXTgZ2fMelbecY6Py248YcwqG9THbPBzdz211T4CadKZipcUf6tSkdkIj6WxSFdWiZAk2ESsM9FbeGYAAZv4FHWW/DQWVa61hTuFobsaFU4zpIezQeJ5JpdW2YC/q9w8nl0508Ae3pUk4H+C0NGM/eYLtpdveZZ16LgVRixdBuXOzFnB5JFOG+zPAX6JKA4+03cuY5DYFlG+IOPAqxQoid7hFt6dx+CaC+DNVsmJCFiYFvD1X6FfruHNlcE/dFjzVo/sifXedj/rJRxKv/Nti7v1G9PfwtuOuVa3NHii06sIe4eEkesqApN
- BpKejKd/
- 4cW3WJY6hTCx6+VTxi7uCA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794198837-608841
+X-HE-Meta: U2FsdGVkX181NcVAN8HjYF1ZkYGCxvvdl+uC2Of2JIgZI/NTVVFnsix86/O1ve//EQFkpKkSExK6dKpU6gjd4StTHpJKPtMsvU2s0unP0mCbkKlTTZ6JmMjRAZX3ACfn+HUlsZ3Ev0wfF+egGGENEDFEruXAs3taC1nX3F/P9i0mpWGUk9wFKc0SLObPSZwRherp7139AV+SNkSjzXE+6VmRrY319Xy8d1J/usq72ZytXM6MDgRrUlPfjEUiSuz4YVHaGulcLH0apqh0QIoUjUij0XoFXZJrVwvfwf9+gldGjnOkZ/phVW+m3h4K2Z23OuZsq+rKyY+QLKak+qR8ICbBbQt/hBSgE7tm2sYlwsjen78BwwAN9g/GUAwGDMvPJMAuwIu0Rwht6cN296FIHNF12ptML8s/1kuyxh66sptiLb9qF3eTXDOMagey6poB7d9P+lW0VPrshGdp/vwIbpIoSNBaaACitqFSlCie+0l4/H/+MRJxBAUymksYSmO/Q/IWNJ0q152LsU3PxFprBOyUutIFlpEgE9Z4FZS+NwgVEmuNuVpNEiSS6ZOKRbIyjd8tX+03sR7yryVt+oogXGUDLpVUNHGp6BBtDwFYoG/NTGjEVP3rBxtX86XulmWJPOAwCSYPWcxJyHTbSznEles890VQ14XCTEWKwwHLDTkGdS/WUmHEYhNYJ0+WuU/fFzwdyURvXpa7EM5ELELb3WbgWdIvKEb+/OeJvsIRRDdA2IGuLQCin8GzVDQkXdE/zqV+4/6uG2UsFEHIIyORD2TQTOasskl7ZDeLIimLktSzydV3/bHf1ZvxFFXHUmU8XPy2pbHyR2hq6XjrxE5Mjus5dadaNovzWjKOD/aNbgs1FUPdDCLS0QkdjzsSXBIVsnA9LiZqj5Jl0jmYOB62W9ZAT/ihCOgj/eglJZ1mbCLM93OVTpuLUYBJePZXjYxDCssdqzER+zGu1IKlxOa
+ oYeHiKrw
+ ZJqvEg2Z1klYSaX06rSKuvyGRqi+ppgaNNYmImR3mH+86zhL9nWXvwk5OIQK3gntIs1j68IrIqiq1Evh3OOuDPxlb4fbZOC2Cyy3/cZPjA1egcZrQkUQHm+LvkJjMZmiMHBaO81qZcDXDvIsA53xE4ugQ0kVx9oQqjGr3VNvijMxPFBZZyinXPpFEbKova+hMH3+M3K2rIdMYZJQb0411wLbyBgjvoLlcVl83N+PsznphaJDUQKG4xvcrV9oNl+FZd1LVo/IPbuvD9/snSNSvcLno17xGW1ubJEoN119vOBUbjNh4h3pF3/w1vj18ap5A3NJs10/SYV9RK1G2K9fTK4vjcAEFzMnRtQMk2VZoITKBV+X+lf2Y8ZRA4A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,58 +114,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, 08 Nov 2026 19:58:37 -0800 syzbot <syzbot+73e34786d639a8eb1324@syzkaller.appspotmail.com> wrote:
 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    58c1eb84e977 arm64: sdei: Preserve the interrupted context..
-> git tree:       git://git.kernel.org/pub/scm/linux/kernel/git/arm64/linux.git for-kernelci
-> console output: https://syzkaller.appspot.com/x/log.txt?x=12d1d369580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=a58b6b4d667e7a61
-> dashboard link: https://syzkaller.appspot.com/bug?extid=73e34786d639a8eb1324
-> compiler:       Debian clang version 22.1.8 (1~deb13u4), Debian LLD 22.1.8
-> userspace arch: arm64
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1255c1a1580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/b1ec47537e12/disk-58c1eb84.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/3bca0c2b1169/vmlinux-58c1eb84.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/0a7c49594d5a/Image-58c1eb84.gz.xz
-> 
-> AI-generated root cause summary:
-> In mm/slub.c, __refill_objects_node() replenishes percpu sheaves by detaching a
-> freelist from a partial slab via get_freelist_nofreeze() and iterating through
-> the freelist pointers in a while (count && refilled < max) loop. Because the
-> loop condition only checks count and refilled rather than validating that object
-> is non-NULL, a prematurely terminated or corrupted freelist (where fewer objects
-> are linked in slab->freelist than the expected count = slab->objects -
-> slab->inuse) causes object to become NULL before count reaches zero. On the
-> subsequent iteration, get_freepointer() dereferences NULL + s->offset (offset
-> 0x400 for kmalloc-2k), resulting in an immediate kernel NULL pointer dereference
-> crash at address 0x0000000000000400.
-> 
-> full analysis:  https://syzkaller.appspot.com/x/ai_root_cause?x=73e34786d639a8eb1324
+On Sat, Nov 07, 2026 at 12:31:20PM +0800, Muchun Song wrote:
+>LoongArch selects ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP but not
+>ARCH_WANT_OPTIMIZE_DAX_VMEMMAP. Its vmemmap_free() implementation is also
+>empty, so it cannot tear down optimized Device DAX mappings.
+>
+>A later change removes the generic Device DAX architecture gate and lets
+>vmemmap_populate() decide whether a section can use optimization. Clear the
+>section compound order in the LoongArch path so Device DAX keeps using
+>unoptimized mappings.
+>
+>This does not affect HugeTLB HVO: LoongArch does not support gigantic
+>pages, so HugeTLB does not use section-based vmemmap optimization there.
+>
+>Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>---
+>v2:
+>- New patch using section_vmemmap_optimization_disable() to keep Device
+>  DAX vmemmap optimization disabled on LoongArch (reported by Sashiko)
+>---
+> arch/loongarch/mm/init.c | 2 ++
+> 1 file changed, 2 insertions(+)
+>
+>diff --git a/arch/loongarch/mm/init.c b/arch/loongarch/mm/init.c
+>index f801f7097f03..ea769e479241 100644
+>--- a/arch/loongarch/mm/init.c
+>+++ b/arch/loongarch/mm/init.c
+>@@ -15,6 +15,7 @@
+> #include <linux/memblock.h>
+> #include <linux/memremap.h>
+> #include <linux/mm.h>
+>+#include <linux/vmemmap-optimization.h>
+> #include <linux/mman.h>
+> #include <linux/highmem.h>
+> #include <linux/swap.h>
+>@@ -143,6 +144,7 @@ void __meminit vmemmap_set_pmd(pmd_t *pmd, void *p, int node,
+> int __meminit vmemmap_populate(unsigned long start, unsigned long end,
+> 			       int node, struct vmem_altmap *altmap)
+> {
+>+	section_vmemmap_optimization_disable(start, end);
 
-Thanks.
+Yeah, clearing the order here keeps Device DAX optimization disabled once
+the generic gate goes away ;)
 
-: This looks like a bad syzkaller test, not a Bluetooth bug. The
-: reproducer runs as root, opens the active PCI device's resource0
-: (mode 0600), and maps its register space writable. It then places
-: syscall arguments inside that mapping. On this GCE VM,
-: 0000:00:02.0 is the NVMe controller; its BAR contains live control
-: registers and queue doorbells.
-: 
-: Both crash logs show NVMe completion ID and generation-counter
-: errors immediately before the SLUB fault. During minimization, the
-: same program produced crashes in several unrelated kernel paths,
-: including runs without the Bluetooth operation. This points to
-: disruption of the active NVMe device and subsequent corruption,
-: rather than a demonstrated SLUB or Bluetooth defect.
-: 
-: The logs do not show the precise MMIO access or establish how the
-: freelist was damaged. Please rerun with the resource0 mapping
-: removed and the read buffer in ordinary memory. If the SLUB fault
-: persists without the NVMe errors, we can investigate it as a
-: separate kernel bug.
+Nothing jumped out at me, feel free to add:
 
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
 
