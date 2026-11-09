@@ -1,99 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11C88606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 01:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F559606A321
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 01:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jh3rk3Xp
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=W6MpHeay
 Received: by kanga.kvack.org (Postfix)
-	id BFF016B05B1; Sun,  8 Nov 2026 20:34:20 -0500 (EST)
+	id 48F496B05B3; Sun,  8 Nov 2026 20:39:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B87586B05B2; Sun,  8 Nov 2026 20:34:20 -0500 (EST)
+	id 43F506B05B4; Sun,  8 Nov 2026 20:39:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4F716B05B3; Sun,  8 Nov 2026 20:34:20 -0500 (EST)
+	id 356146B05B5; Sun,  8 Nov 2026 20:39:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7ADA46B05B1
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:34:20 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E8A4AC0555
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:34:19 +0000 (UTC)
-X-FDA: 85413860238.15.F7EC07A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 380E880005
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:34:18 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jh3rk3Xp;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 011926B05B3
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:39:53 -0500 (EST)
+Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4DB99C0529
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:39:53 +0000 (UTC)
+X-FDA: 85413874266.17.A096E96
+Received: from mta0.migadu.com (out-159.mta0.migadu.com [91.218.175.159])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 21E0720006
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:39:50 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=W6MpHeay;
+	spf=pass (imf03.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.159 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794188058;
+	s=arc-20220608; t=1794188391;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P9mIQUIH1/VtE8KssypL0uyUPENa+cPXNJRrVIDQBdY=;
-	b=5mpidLarX5nirR2QG4qGNkVfRSj20iDOGqGDAU4YnHCi6xKeCEN8xDlnYWPQy1BvEypS8D
-	obOi8d1NR/lhD8MITf1QnhYRL/X8aqaWdYo+r4Z7BTCF9dIkgGkzmsGnpUp2ZqcBLuiyhg
-	reDtPOn/yGTyvEPA+7VUoPAQSYviA+o=
+	bh=N2xK06hAlle1j90a3CpPJO7vvIwv6kxEANWMFayYuqs=;
+	b=Qv79we7e+PDNjndXm4e5JHaAEyM7s0x4QDHX9F8ZhfJHi1AF5EWzMPVMnrLD7PoE05dFAp
+	ZXgeQliPRhd9oN06rdfd10qkFHl0RuFNq9+kgqn3Cac6k2/GMVuUyN3TA33YjOTLw608JG
+	K5/5ruWDEUVotKEkPZBhdhNAlN5PVT0=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794188058;
-	b=k+bzx1MtBC8eh29STlvwDQb3/PfBZKLIKseYH/CFzXJW5z5ophmfw+o3qTYpiAc5ofuNkU
-	FN1/j8rLzuQIdoV13f5PyGS1TJoBeAKmgIlitHLx8ef4k+LIPukv2BwbCJrDJIEN8bO1vU
-	5OvrAPtorcuNZ3sSEN6LuVjbYMh3T/0=
+	t=1794188391;
+	b=FTt3m/2dn1RvoNizrLKHBBZ19k+cvq12gaIlQd13na0lWG97LSA1M9l+B1oa8Ilv9Jd/11
+	y7YJvV+OdCNsuYjYBopTPTJS+pv3OSxdfPcB6wJENTSrgWON9YTdIbAmED+j+6IYfvZSKb
+	m/Sw9U8N1P2RMVECc7go6gB4FW3KRXM=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jh3rk3Xp;
-	spf=pass (imf02.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 64D1041632;
-	Mon,  9 Nov 2026 01:34:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E351F0089F;
-	Mon,  9 Nov 2026 01:34:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794188057;
-	bh=P9mIQUIH1/VtE8KssypL0uyUPENa+cPXNJRrVIDQBdY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=jh3rk3XpcSN7vU4AXRgZkgo8yoWHwTmboSdc6Nyng88WPf7hzBQdEYoNFXwuSobIL
-	 cHceujZMIuWsYUi/UMNS/aqVOSWoWIQjhM+Cqo3IL7WVWUwOm68jySBJApVBGOdLMW
-	 1Yn+krmFbsI5UiVo4mkGvex25kezmH7uC8dX8LpqCJJXnPIdFDu7asazWtxwJFxFJY
-	 bmolrphjMZ7ZVtZWxa04UqHr05FhRMfvb6Kj5644DlI57GxUJ+WgjUE9rAStpsqHHm
-	 HzKpdDf/HeFAMdh1ei05mJfyvFK1ToO/mwEjFSI4EGXCCqeo6dN4Xnq6C3F6BTW5sc
-	 f+GDhSl2Uc49g==
-From: SJ Park <sj@kernel.org>
-To: sashiko-bot@kernel.org
-Cc: SJ Park <sj@kernel.org>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	"Brendan Higgins" <brendan.higgins@linux.dev>,
-	"David Gow" <davidgow@davidgow.net>,
-	"Quanmin Yan" <yanquanmin1@huawei.com>,
-	damon@lists.linux.dev,
-	linux-mm@kvack.org,
-	"Lian Wang" <lianux.mm@gmail.com>,
-	"Kunwu Chan" <kunwu.chan@gmail.com>
-Subject: Re: [PATCH 6.12.y v2] mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total
-Date: Sun,  8 Nov 2026 17:34:08 -0800
-Message-ID: <20261109013410.93127-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <sashiko-outbox-204294@kernel.org>
-References: 
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=W6MpHeay;
+	spf=pass (imf03.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.159 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=e/0Al7Jq6L2SmlHKUg46RwY+VbHjriaoTpVNtLR0LwA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794188389; v=1; x=1794793189;
+ b=W6MpHeayCZbzjlvQ0OSO4gVtStvURQRY2n5R2aLNua9loedlbM71B5O3kbUmU+kyDSu/YpNJ
+ LuaF90vm8YbEGDtICzIfmmEGUyqz7sl9ZBPEw0Vw8fDrA8nAZnLHLFN9+H7A+6OS5kh0e/EVGcE
+ j6VcxBpkRDEfzgA34mqRJ5As=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta10.migadu.com with ESMTPS id f7a6dd49fc22b4a2;
+	Mon, 09 Nov 2026 01:39:49 +0000
+X-Mizu-Trace-ID: f7a6dd49fc22b4a2
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 9 Nov 2026 09:39:39 +0800
+From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+	g@dgvxl46587.localhost.localdomain
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, Huan Yang <link@vivo.com>,
+	Wang Xiao <xiao.wang@vivo.com>
+Subject: Re: [PATCH resend] ksm: add merge_only_zero_pages to merge only
+ empty anonymous pages
+Message-ID: <avEkWyGoKsVlCCRG@dgvxl46587.localhost.localdomain>
+References: <20261106034841.233085-1-xu.xin@linux.dev>
+ <899b1b2b-4f6c-45e2-abd6-a333ac77b23b@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <899b1b2b-4f6c-45e2-abd6-a333ac77b23b@kernel.org>
 X-Rspamd-Server: rspam06
-X-Stat-Signature: ywsh6f68cs5n6zgpss8sggiomj6gerxo
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 380E880005
+X-Stat-Signature: 8x8f83k4xnn1aap9rb3mfbs8en7q5zru
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 21E0720006
 X-Rspam-User: 
-X-HE-Tag: 1794188058-942432
-X-HE-Meta: U2FsdGVkX1/rafxH52UMziC6rX34fWmN0TtHXszByBpsYWNM8tLIzq1eoSijqURRlnKtH+4MojqmHCdclqKrA7sRj1sqlTZfiuv2c/1aKvUXwZ/8jn8yJxYsib+1uIBRRNUBpMEfsQtcI6w7BSTMwuuv6I2pMhEsCil2hyGLyTXyHPcuHRBSA8yXA6sr5YyJRw1SfVmcDECIFsvr5LxzcKK+h+NCuzmcG2XAWix7mRfrgKAxcqjnwgyudkRz9tMzfzZy9Tmqi5hp9LzgUCpI/GTN9C/dCHamNKfsm0LKkI+8Tswnwz21F0Mgtd04tY7MQePrV2Xqmh8oQPAUHzh0tMqlWOIGFCj7/LBZCIxfUPyMpQpg0gC1AbR/q3IBTVMslG00mHNihlp4vykW0mYDG94n8MphUf/YTU37W/psfR2FYjd0BhyHc0F8YNuF1/I+n5bVXiuVF0MPlgk1O6CAZxom67y+iE9GhsddCn+ZEFv/TmxsiRwWtbHysypxCWhcYzFrNenYj0w80v8KccBH3eKgdo+as4Y1rDOGe/c8RuNgtxaDh/laRxKL1P3phUQSR7doeeSRgNaNcCmOCsNDxYwKz8Be7jILuELEIbOlinBO59LFeMCi+UhLn+wMOKxxejdm2q8UlFz2rhYSK4VCpgS0PC5obFMDpxXwmFY2BSRWXMl8Ga7yi4B5MCnuL+VUZdzWlRHZJGRe0z/SXJgcky6eNlbNG1EmPS1QXO/cpESj36rttuu5ANCrc0nD+MxH4Ez3c0X9KjoS9WsWNvyIS3mpJC9ScNr2Uz0n33J5GDkXnVORgSzUmB2DgIY9TUAV3A5PfVsYvYc3b8ufJmtHOgHnh3A7LcZvJKWJvtbmRJsDwYKpRWBskKIkNoImAupoLuaP5XoeIRFIOv0XZ2mLhGzodklqSyJb70YL0rUQoT/ytc0xaj7e/pOdR+HSQLTAw/zdhTYc7ccQaSB00IU
- c+cN19NV
- UVSpZkauH+VwoF6svxZqZIaERp8/yQPI/BXqtR/e/4PishAWssVkj/3f7fF/HDA7GG6AgtpAPpCgzA0rbdzqk3zJyESNPjccyj8EOeHilt4cVisDH09j5Ocp0Dk9In8w+MEvDUHafsfA6odiCUYcDYXF7/fYCj0OA97iET77+0h3HkFQ+9ISVJuNCPAPMsZb4qaoT+7tjJ7MQZXdHJ4TJAht7C/gQhN1kYCDk9pSRRVCwduxMASd7iRKT1Xbd/vRNQlw2CoddDpP/F0C8lOGgwdZt3tvo0OrOwccmJnih+CudSh3qin3qGWuDaDJDsmVN9uCBT2uDfsf+dODGZp3h8tE102E64Wh48dS+97icTL+ZbzgBdcjWlOzDuD6+7MYrmivibZ6Mr0hG1IoIfA7RCd3LOybkOjhwG3SFUBA4RTaWsHkptIg6Mz9OfPMnuVKZEnu9
+X-HE-Tag: 1794188390-199292
+X-HE-Meta: U2FsdGVkX1+3ZTI0BBuyVpdzorhv7BUn0/Ejuhi2v7CHLjQE5iKbT6WOR+K0X+SE2z2GXfXlcKq1XDrOlM6oCgYnG8w62epxOsaBZWi7OSosZBtENpF8SyMQgt+w5RfzCevKRaNYi/PkRYCfL4c/4psYZH7ERn81w2j1HxEpV3XDmc7qJIjXhvNRteTMmS1NtaHwmg2Nd4qaaRr1PgyPrsO3PYqrkfP+dQ0zFXUS5G4oXSl0JmREaY3V+TfmJ1Ae76fBSoWM36SOJUs2BJ3bayE0dQqoojviJEzFDCUBXfUIM77wFW+ueKVEKkYC+qxfNd17noV8u0AESZL5BXUvIYERYxxE3Be8m5zHySPJ/L8rohU6md1A6cvdkjqhXspXMoiBUr9TYR9NSOrkfHw0EClvXwaWi458nx3/ZTkm/XWrsMZNuCGPfYjeuqg9F2g+u5UpskVVpoqoWWtLoNXdWixKKikGepAJaW9obqSXrlwNzqztOvRXGU1PBug3ui7zx3eITELSRQHZsJ8yc3pChE3npM1vLrEbWdNFl4YDQvvxl8dmD1/BEgVkJ7nOhCrZ+mK1Q6pXA79c0RRR/fJ0c8EojCuwJazbjud01TcJr42EHjCLPNo5XbTL5YugIeZXwCmQz7uyZU8uv7XjrvEygsv6qUPs498KSDwOtubbpmya/swdirj+JiV76+gKeD8B6gTvdMGJoDAMrG53GyZhvskg3V4f20lZe46qcIRBHLUPeehJgbn1njjyjuXBamlB4za65zhoDRKmPiC7W/rvmez0rMcx4gGnFjRzheDBb6xy02mvy7lxgSpu+5Sgo1CQlL0KAa2WJb/WFG5llCZpz1t50DW4bIp/CVRlht9o1hG7WLELc5fTD24J4wGFsMVNvF9vJrYhyI8ZsOi2BykXOCt6OciTCUtQiQE6PM0NxQrh1rnhG0fbD+dphceNUSj+LUN29sJXKljqFcRh65j
+ 2ti5rcmJ
+ sGQBkQIA9dIr35DrRsb14yQOsnI4infA73hNU3gjns9FWgHXPP6xghyLXNLKIuCy91FAO3CW8iGE/mSbs6Pnh1Yil6Psb0UBYQiBnB6w6lXI/iovq+Bb3ZH8ut3DgDMYawVKnTdbw+cic278cKhcQ8pYlq4v3OJ6CzDPVlgaH6b2+aCaMeBXfbJeNOrxVoGnXUzmylxgf30kVvBEjsCJcfBdjRPHnL+EuvtzbeOE9u1NV2Qnt1duILxCQHI76ZcLh04et7j599qxqxGYc9Eh+WE6DOAANRFCNZ2X+MMays/bO9YDzlwRSNDoJ7g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,80 +101,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, 09 Nov 2026 01:28:24 +0000 sashiko-bot@kernel.org wrote:
+On Sat, Nov 07, 2026 at 07:28:50PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/6/26 04:48, xu.xin@linux.dev wrote:
+> > From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+> > 
+> > Add a new sysfs attribute, /sys/kernel/mm/ksm/merge_only_zero_pages,
+> > which, when enabled, makes ksmd merge only empty (zeroed) anonymous
+> > pages with the kernel zero page and skip the stable and unstable trees
+> > entirely for pages that carry data.
+> > 
+> > The attribute requires use_zero_pages to be 1, and the two are kept
+> > consistent by symmetric constraints: it cannot be enabled while
+> > use_zero_pages is 0 (-EINVAL), and use_zero_pages cannot be turned
+> > off while it is active (-EBUSY). The new attribute can be changed at
+> > any time and is only effective for pages merged after the change.
+> > 
+> > Benefits in three aspects
+> > =========================
+> > - Memory saving:
+> >   On memory-constrained systems such as Android and embedded devices,
+> >   zero-filled anonymous pages are the largest source of duplicate
+> >   anonymous memory. They are produced by userspace allocators: the
+> >   zeroing of freshly allocated Java objects and buffers in the ART heap
+> >   (new byte[]/int[], Bitmap buffers), calloc/memset in native code, and
+> >   preallocated media buffers. Merging them with the kernel zero page
+> >   frees a significant amount of physical memory, which matters as DRAM
+> >   costs keep rising. With this enabled, we measured 100MB–300MB saving
+> >   tested with several popular applications on aarch64 (Android).
+> > 
+> > - CPU overhead reduction:
+> >   Merging only zero pages also reduces the overhead of ksmd. A page that
+> >   is not merged with the zero page carries data and can never be merged
+> >   with the zero page, so there is no point in searching the stable tree
+> >   or inserting it into the unstable tree for it. Skipping those tree
+> >   operations for data-bearing pages reduces both the CPU time and the
+> >   rhashtable memory footprint of ksmd, which makes zero page merging
+> >   practical on low-resource devices where full KSM scanning would be too
+> >   expensive.
+> > 
+> > - Security:
+> >   Finally, this shrinks the KSM side-channel attack surface: only zero
+> >   pages are ever merged, so the sharing status of data-bearing pages is
+> >   no longer observable through KSM timing side channels.
+> 
+> Lol. Did you come up with that or an LLM :)
 
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Medium] mm/damon: integer overflow in damos_quota_score() on first
->   PSI round
-> --
-> 
-> commit 5e9b1f636c184ecf41e05d717ad5e0116b0fca20
-> Author: SJ Park <sj@kernel.org>
-> 
-> mm/damon/core: handle uninitialized damos_quota_goal->last_psi_total
-> 
-> This commit initializes damos_quota_goal->last_psi_total to U64_MAX when
-> creating or committing a DAMOS_QUOTA_SOME_MEM_PSI_US goal, and sets
-> goal->current_value to goal->target_value on the first tuning round so the
-> effective quota remains unchanged until a baseline PSI reading is recorded.
-> 
-> Link: https://lore.kernel.org/20260902002725.108635-3-sj@kernel.org
-> Link: https://lore.kernel.org/20260718005316.89585-1-sj@kernel.org [1]
-> 
-> > diff --git a/mm/damon/core.c b/mm/damon/core.c
-> > index 3142776e2e0ee..420ef0adaa7e3 100644
-> > --- a/mm/damon/core.c
-> > +++ b/mm/damon/core.c
-> 
-> [ ... ]
-> 
-> > @@ -1616,7 +1619,12 @@ static void damos_set_quota_goal_current_value(struct damos_quota_goal *goal)
-> >  		break;
-> >  	case DAMOS_QUOTA_SOME_MEM_PSI_US:
-> >  		now_psi_total = damos_get_some_mem_psi_total();
-> > -		goal->current_value = now_psi_total - goal->last_psi_total;
-> > +		/* uninitialized last_psi_total; make no effect this round */
-> > +		if (goal->last_psi_total == U64_MAX)
-> > +			goal->current_value = goal->target_value;
-> > +		else
-> > +			goal->current_value = now_psi_total -
-> > +				goal->last_psi_total;
-> >  		goal->last_psi_total = now_psi_total;
-> >  		break;
-> >  	default:
-> 
-> [Severity: Medium]
-> Can setting goal->current_value = goal->target_value here overflow in
-> damos_quota_score() when goal->target_value exceeds ULONG_MAX / 10000?
-> 
-> Unlike mainline where damos_quota_score() uses mult_frac(), this branch
-> computes the score with direct unsigned long multiplication:
-> 
-> mm/damon/core.c:damos_quota_score() {
-> 	damos_for_each_quota_goal(goal, quota) {
-> 		damos_set_quota_goal_current_value(goal);
-> 		highest_score = max(highest_score,
-> 				goal->current_value * 10000 /
-> 				goal->target_value);
-> 	}
-> }
-> 
-> When goal->target_value > ULONG_MAX / 10000 (for example, above 429,496 us
-> on 32-bit architectures), goal->current_value * 10000 wraps around and
-> produces a score below 10000, causing damon_feed_loop_next_input() to
-> increase quota->esz_bp on the first round instead of keeping the current
-> quota unchanged.
+Ha, fair question :) This came from our own investigation. We were looking
+into whether KSM can actually provide benefits on Android phones, and this
+observation came from real-world application workloads. To be fully honest:
+I did use an LLM to help polish the English wording of the commit description,
+but I carefully rechecked and verified every sentence myself..
 
-The issue impacts only DAMOS quota auto-tuning quality under certain setups.
-No blocker for this patch.
+> 
+> > 
+> > Note
+> > =====
+> > - Suitable for Android, embedded and low-memory devices, where zero-page
+> >   deduplication is wanted but full KSM scanning is too costly, and reduced
+> >   KSM side-channel exposure is desired. Many handset vendors may prefer
+> >   this knob, which can be used as a default fallback policy.
+> > 
+> > - Not suitable for server and virtualization workloads containing many
+> >   non-zero duplicate pages, where vanilla KSM provides better memory
+> >   savings.
+> 
+> I proposed something similar when I was still at RH. My concern back then was
+> that we don't want/need all of the stable/unstable trees.
+> 
+> IIUC that's all still in place in your implementation, right?
+
+We still keep the stable/unstable tree data structures, but zero-page merging
+does not participate in the stable/unstable tree search path. One more reason
+for keeping them is that merge_only_zero_page is designed as a dynamic knob
+that can be toggled at runtime, so when it is disabled KSM can fall back to
+the traditional full KSM behavior.
 
 > 
 > -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261109011347.92467-1-sj@kernel.org?part=1
+> Cheers,
 > 
-
-
-Thanks,
-SJ
+> David
 
