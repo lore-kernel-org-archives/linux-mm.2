@@ -1,124 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE37606EE99
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 09:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E769606A33A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 09:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ClskhasM
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=iCtfqv/o
 Received: by kanga.kvack.org (Postfix)
-	id DA8A66B05C2; Mon,  9 Nov 2026 04:52:02 -0500 (EST)
+	id 917186B05C4; Mon,  9 Nov 2026 04:52:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5AE66B05C3; Mon,  9 Nov 2026 04:52:02 -0500 (EST)
+	id 8C86E6B05C5; Mon,  9 Nov 2026 04:52:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4C5A6B05C4; Mon,  9 Nov 2026 04:52:02 -0500 (EST)
+	id 7DECF6B05C6; Mon,  9 Nov 2026 04:52:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9E5FD6B05C2
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:52:02 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F96D1A0636
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:52:02 +0000 (UTC)
-X-FDA: 85415114484.06.B19BEB6
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 4EBDAA0006
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:52:00 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ClskhasM;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 60EBF6B05C4
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:52:48 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 78D7BC0601
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:52:47 +0000 (UTC)
+X-FDA: 85415116374.12.8C7D16F
+Received: from va-1-113.ptr.blmpb.com (va-1-113.ptr.blmpb.com [209.127.230.113])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D5950100002
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:52:44 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="iCtfqv/o";
+	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794217920;
-	b=22zcJBes3cBVO1BW0ETlFZqgxBaMyVTEoNUkq3RKryXRueaAhzxkixa5PnhUwMk4uosITn
-	1vIsxb+7duLtJFeFYTF8XVHEFK5suv7dRoleIIX8v10nPXiVeyQi8pB3Rn5G2tj33NS6AB
-	4BttnRz4sBmel5z/Wiu4fBIkCTAJ0XU=
+	t=1794217965;
+	b=XhNTKui8PABjRXvCe+6vNrRmWQCUJpElxrsRzvoaxh5b8pMjyxUxW2mMmCn/hunEkA5XT6
+	NtiQWWXgJywwVG67OvMmEapsId1aWlIZFoRXLjccsSj83bjv72jsG46mYf5/uFrWEndATy
+	KiNXglGo3Dc+6xtUyi9NJ4fOZxDcV4E=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ClskhasM;
-	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf14.hostedemail.com;
+	dkim=pass header.d=bytedance.com header.s=2212171451 header.b="iCtfqv/o";
+	spf=pass (imf14.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.113 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
+	dmarc=pass (policy=quarantine) header.from=bytedance.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794217920;
+	s=arc-20220608; t=1794217965;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BPClaJ9k3pZ7M2HgIHwRGL9GY0oByLTbIb+UN2JvJdI=;
-	b=MUZPYNJJTlLBWo255dVvRxxwmt/JmnrwNbKTvY4jx5cC5Ni48rcIG+Rlu7ST/IyYiiXhSy
-	COsH9nBWNSLGBZiT/SeS6ITNCPOSCzJ8LTAUs7yUn6g7VISKurOJw3bCfBgvpff62hpL4k
-	tXmKfRlikh6JT8j3Bks/vdBk9wd9iho=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id D152963062
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:51:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7077B1F00930
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:51:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794217919;
-	bh=BPClaJ9k3pZ7M2HgIHwRGL9GY0oByLTbIb+UN2JvJdI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=ClskhasMy/BO/ZFdZwG+TW51LQNe0aK6dpQ2tXf3zXQZrXEHcm8neQwkSGJQK5bn8
-	 LSLm+/HBxMHZMxvoJu/FfopjGzpVjathiWg6LhLTjtHomqOV6NScv+voJMgOraZPB+
-	 /ycD4F1aoK068VBjmEHIzTpz6UCYVE334qo4AAnvYskYS657GvVKuV95oqJnh/isCp
-	 Ew07MQtp8jOpq34koBR4cll0v4jnwrIVmL3RYMomGUCU4+PMwbvb/yi5tiY3SPEdBZ
-	 YFw2QOk4Ib9EJpoMe7VKixgAJAlLv7+MJTeey2wVMPTTTLYNNHu/Q6loLUjbENBCIP
-	 uVqmfBr+FuxdQ==
-Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5eab93a9862so104155e0c.0
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 01:51:59 -0800 (PST)
-X-Gm-Message-State: APuU4Z8mm3e8ev4Fx9F6BVphfpZnIkYEMQ5/YFGaV99637v2MSIIUWdz
-	mcsSoyD1AQSCw2SWkGWqP5LHtyT03zoRnNItX3UCI1IF36/sKRTnwTkKkDtYHTnpqaYegU3v4c8
-	XDEEo5ZRnRbVgJVbMFHVidns8kYX0hGg=
-X-Received: by 2002:a05:6122:a012:b0:5ea:c9ab:bd86 with SMTP id
- 71dfb90a1353d-5edf9435d18mr565522e0c.21.1794217918356; Mon, 09 Nov 2026
- 01:51:58 -0800 (PST)
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
- <20261016-mglru-fg-v4-6-2106750c0bfa@tencent.com> <CAGsJ_4zQh0TnAxifWPo2+DcyFFOtpXM+2QW91A07oumfyrqVYg@mail.gmail.com>
- <CAMgjq7DeC23zak6Xur=E29qo7JPNvQUMtbbO34Y62jrQjQgStA@mail.gmail.com>
-In-Reply-To: <CAMgjq7DeC23zak6Xur=E29qo7JPNvQUMtbbO34Y62jrQjQgStA@mail.gmail.com>
-From: Barry Song <baohua@kernel.org>
-Date: Mon, 9 Nov 2026 17:51:47 +0800
-X-Gmail-Original-Message-ID: <CAGsJ_4w275Z8ruQHNMFd9uL+wJgAusU2+QN-cwS5mZcBrg9fRA@mail.gmail.com>
-X-Gm-Features: AclHuK-xWTO8SHWDNdqRk7rNXhHpJft0o90jKbimD22mK-2buKuHz7N9dEvOsNg
-Message-ID: <CAGsJ_4w275Z8ruQHNMFd9uL+wJgAusU2+QN-cwS5mZcBrg9fRA@mail.gmail.com>
-Subject: Re: [PATCH v4 06/17] mm/mglru: move add/del LRU size accounting out
- of lru_gen_update_size()
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, SJ Park <sj@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
-	Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>, 
-	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
-	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
-	David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
-	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
-	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
-	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
-	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
-	Kunwu Chan <kunwu.chan@gmail.com>, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org, damon@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+	bh=rMQ7EtDkYDjDl+za8vShzpqCW7ypnaRbeTrLqAXEDl0=;
+	b=1f90cf7vr4uZgyMj0odQQC69zO5DqWlqOPicmebGAWGR9PH06Rb0uQCdVGygFkeqoU9WPP
+	mHsLe0kfe9txr2LKYLiTGazYhzRfURMiPNAfyaTmnABLDaa2oePl17+YqYUX/ChcWcDwaT
+	hT3s5jTrb/2qQx5w1AQ+alQvJ4Jwf2k=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+ s=2212171451; d=bytedance.com; t=1794217959; h=from:subject:
+ mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
+ mime-version:in-reply-to:message-id;
+ bh=rMQ7EtDkYDjDl+za8vShzpqCW7ypnaRbeTrLqAXEDl0=;
+ b=iCtfqv/oPnFwF/AXfhIcnlCd+GyTk0CNAvfoxYr/JjSc/dXsoUkqPdAa57dpSGvsRmBVWd
+ cCGHUDA7vm8Nr35HsTmyhIE4fgLxVYJQU72/3NxPWkE4OiHaAn72r5J6/b1N43RLQe+DmX
+ 4gQdDUmkqQ6YreZyzVVtYQMpe+vtqEu2dd+eH89MmJgeXvUfebp+kVsbpKgtNrJpwUCie9
+ EN7MhdNuHY0wxHdZZnbVypLKyGI0lLzqTr+1U0OS8kQ0zWXSmGUU9WeTKhcCmAwyCcAldp
+ JEQIM5SWJ1HY1Em/PSK8yEf01AjT9DTooSHGFLCi7TQOW7zIXrm1gO1SGJYjDg==
+Message-Id: <ea9b76c1-ced7-4ef7-a428-7fb3db5c7f4c@bytedance.com>
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: b7rktastendgtuydpdeb6poy74acudgu
-X-Rspamd-Queue-Id: 4EBDAA0006
+Cc: "Balbir Singh" <balbirs@nvidia.com>, <muchun.song@linux.dev>, 
+	<osalvador@suse.de>, <david@kernel.org>, <akpm@linux-foundation.org>, 
+	<apopple@nvidia.com>, <linux-mm@kvack.org>, 
+	<linux-kernel@vger.kernel.org>
+Date: Mon, 9 Nov 2026 17:52:19 +0800
+X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <avGVNISvj-v8IN3g@kernel.org>
+To: "Mike Rapoport" <rppt@kernel.org>
+From: "Li Zhe" <lizhe.67@bytedance.com>
+User-Agent: Mozilla Thunderbird
+References: <20261105120615.16817-1-lizhe.67@bytedance.com> <20261105120615.16817-3-lizhe.67@bytedance.com> <au2qhlsxQt3SRwIu@parvat> <ca38db3a-a8fe-47c3-8813-5c3b0ac4b7ac@bytedance.com> <3e5a9f27-ea35-4557-95d1-70ce359e4c92@bytedance.com> <avGVNISvj-v8IN3g@kernel.org>
+X-Lms-Return-Path: <lba+26af197e5+98ed77+kvack.org+lizhe.67@bytedance.com>
+Subject: Re: [PATCH 2/2] mm/hugetlb: optimize bootmem hugepage tail vmemmap init
+X-Archived-By: <archiver.kernel.org>
+Mime-Version: 1.0
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: D5950100002
+X-Stat-Signature: g65o8j1p5gbyx6wt8x18g8x9mf77yd8p
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794217920-588986
-X-HE-Meta: U2FsdGVkX19dAHZ65oqfaz6dXqZpA9TitqgklhLTvuvby5o4+BZp5E8qRYqx9HBj4qe4tAeg5LnarvDHO6n6dJHmrx3+4Zi49w+1mD7hNVQElowwqvlV7fis0Acd7jPvsidgx5PT52MhwFmwRgd2Fpqx5DW7ff6io1j31s0unK6lXaQshHRtMWm0q7KTtxChL1TB3NZ94eq7g2Frs+v2wmlJBVlM7hIwCblXwV4yTY5EMOuT2zgKHZyGFMY0STzO5m+737eI6k0FAWBnN0x916FFkfiR/QLhCcJ5v6NQiwuW21TyMOEC9PTWW9EK88mt70CjaPR15zJjayX8mcD0KKUMc6WJG1OgHPcwW/DK5Qd4n1/0CqMjrF27n0wsiTvW6XuocQ6Hfq8VKs0Dw0MQ6GpzDkCohq3N8vNAhNidlU4GCnb+eNqiwzKe9k9wfTfkQzwbrcCO3xJC2Upi9ZtpskV5XaNHQ7pSf8jg0Bhqw8Dyrb1KdX9ghTazQa/he3ulGSURZIjhqcG8aZq1B7X8dmS+vJswygN5GijclJ4Jv7ZC/YcJ/41TlseDNwcQ2PqwDJ1LNF9EaVgd4wL/XI3RHR79eWaS1bCdL9i/a0Zvocysnbv06ijsSRzXQt6ou23DkAQWVh/pG5zWZ42m2fIA9nf692wV0xGiOZCtHuWqmLu1tOUeKz1XwuCUdrRDn7L6K9d8SvctkF+C7jcBZwLJGHhhMPeOskU6Z7QywnXcd1tQUxDnXpyQY9zHXJR2Rz6TpwBVC4vZjVR2OBcREOLBi6sZdnut3xVbEPFrtt4+AKLkQcDnNXQvE94u+Xvtxmf0f9rM+YN8v9rCmjMG/BZAX3Ll0uR/IXnL9fvDLooFNaZKgWYnX7aCOZgM7tIfHQ7o+U/4+grNn33qMCPWc7J4Z/0Jwy+jABFU532V/2Jacep/NBZDL7w7KTH+t1ba44RZRHeYOTbCodjViFE+eGJ
- L72uqxyV
- O3Q/eLZpBbzrWHDwsbby0t+C9RzW8jBhdLBsQMgUEKbLp2ki1K1RcmJRbxm4lCwKSX4kBHQ2JqAYUfkpLl87U6HBxKqqa+TLrh2+c62kgL5GWLkboltaiwjadA0K16GXyfBbNiQcWGWjKLAJScijv7Wrj2ydgaY0eej4zI41ruQTUi46Bkgm0SGpgItY0ak0+OD3ZFF+q6kQsgtV0BKZtfVFEdaE78txB2VxkGGbk5rRP1x89kmNduCHpN0CrntRWXQxSnPeYMKNJjOmM3x9aKd6rp52rKUOEpU2U/hz2vnqPJdHCh7JD6kZ2aNASxrtvc+d3moWuvvS3hXLrgnBRXAHCuLNge+LPVkE6ocONsz/WRgFs4YU2YF9cFZe+TheWSKHPaR/lsBu24HFmNXq8be2SGj8+PCFUVup/u3IrDi6/F1wZAbspEfIf6JYF/obfDDe0EWNmweh5LQfzB55uoOL+kL60Oaf4gc4PEhmiUYXT9eFTv7Eks67WJ0YiCSkhyXkKjd0H1KVMi3cmGud97Z7Wpw==
+X-HE-Tag: 1794217964-632426
+X-HE-Meta: U2FsdGVkX18qCEAWVYcN4nw7d0ygrFwlGmLZRmqZ2t/TcvBacTS+d0LrJtDMEDeENuUXf14Bvh6M6YcWEKSCHLqIRVH+q6Iy0C7kfPz26cr3CTTTex1LDbFQf2KvdjTuf3BZbuWmH4gHUa0xDF7ob/PAR10LeHPdVPDV4d/g5wt/sDRouYycP0YWYQkY25zVO+HzR+34YITkIGQDrsfBFtAl4l7uOevx5+ZuuSnynpRdJ9Pxu4B6a/EZRO1obG0rKWjkC+0f5q+YeliAJV+q1RY+J/ilytJrmIDgpmaP8jCmXgxpzTLoivvcatZdMnc6RwVi+BnCslMFUIkgAPUMwfU8ONiPx1LsSeYvas9KiBPhiU04IAlPq9lQpVGEk8a39ck70oHY0UL9IqcTi/7Tq8VJWO3X+ScLHI3O6TITWImO1LYNyCmM4Wz6aO21QqoX6wvp1TrYykklt2cQU5zhgz9bP9E1DFtfDwGbJIcs+Rm8fkmRky21dUhyL91CQMDSTNuKbcyxNNiwpz+JCnsr0VA1P4iOAFg+c8h5+FfVXLLjMoWMIq4JaPe0iTQ8BuvHAcazoaejtxgsZ9YNqKkKFAH/4OKoVDrV8mxwRtC3gz+4f58LkA96Dt7AHLwgWBdnhmZz3zY27iwFciXIl4VUQAg6AGr+VbOdeXG4Hak+0KoQiONZw8CvIHDEkDcbklBjwrQ6nMsweogXTuKE8PaJSyQ8PJUvG2rtc5bRfsEOiOa6XbdfI64RHwLCzI7SGG8y+Pn44VWYlbyzpyvmIzjUpz0nP6oI7XnlbDp/wEEssa8KS57n9kRDgnMluuKQ8vbcFktPf6bnOvQiZTqyC0dIuapDJApNN3FFYbvzNUmOOW4kA6Y62+dNDrQFAXGDNyy1oMwCjgJMLUFNH664nr3Xj4wTkCFsCVGMXmSSX97jHETFOhnii6h+E+hF4fFbKKaMiDSINBrajNLfn5gMS4d
+ HpOxow0M
+ 6xokKo7X5zAy6zeH5cGnVx+r35b4vsmDVAA95rNz4xzOg5KP85nNVF89vYs9bKXOvsDhY2/L7GgLBo9j8/kza0XCSoxAXEIr/r4FfnyvpKQ5ie8TIsePmqogpQe7XDH/Ki7dRSTaOEFwoqAUvrMCtDO5K6UdZraz9R62DQtg/+YzG8ahZaSAd3iDgr+pvOz87h8vMJuOjOBeJ/2FUKx5XA95cR860R74KlxaY2Kn4Rp4eqkpi6+ZvDx6jxl89ktJuAlKpphbYXSQDxwD/cSnYcxuY67eQ0l/CDfhlpFxXV721Tks=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,92 +95,107 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 9, 2026 at 5:34=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
-:
+On 11/9/26 5:41 PM, Mike Rapoport wrote:
+> Hi,
 >
-> On Mon, Nov 9, 2026 at 4:48=E2=80=AFAM Barry Song <baohua@kernel.org> wro=
-te:
-> >
-> > On Fri, Oct 16, 2026 at 2:15=E2=80=AFAM Kairui Song via B4 Relay
-> > <devnull+kasong.tencent.com@kernel.org> wrote:
-> > >
-> > > From: Kairui Song <kasong@tencent.com>
-> > >
-> > > Pure code shuffle, no behavior change.  lru_gen_update_size() now onl=
-y
-> > > updates the per-generation counters plus the promotion move; the
-> > > addition and deletion active/inactive accounting move to
-> > > lru_gen_add_folio() and lru_gen_del_folio(), which know the generatio=
-n
-> > > and can apply the active-window test directly.
-> > >
-> > > The unevictable case is untouched: unevictable folios never enter
-> > > lru_gen_add_folio() and keep being accounted by lruvec_add_folio() as
-> > > before.
-> > >
-> > > Tested-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
-> > > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > > ---
-> >
-> > The patch looks good to me.
-> >
-> > Meanwhile, I've been struggling with the names of
-> > __update_lru_size() and lru_gen_update_size() for a long
-> > time.
-> >
-> > Given that lru_gen_update_size() now only updates
-> > nr_pages:
-> > static inline void lru_gen_update_size(struct lruvec *lruvec, int type,
-> >                 struct folio *folio, int old_gen, int new_gen)
-> > {
-> >        ...
-> >
-> >         if (old_gen >=3D 0)
-> >                 atomic_long_sub(delta, &lrugen->nr_pages[old_gen][type]=
-[zone]);
-> >         if (new_gen >=3D 0)
-> >                 atomic_long_add(delta, &lrugen->nr_pages[new_gen][type]=
-[zone]);
-> > }
-> >
-> > while __update_lru_size() only handles
-> > active/inactive accounting, could we rename them to make
-> > their roles clearer? For example:
-> >
-> > lru_gen_update_nr_pages()
-> > lru_gen_update_active_inactive_size()
->
-> Hmm but __update_lru_size is also used by CLRU, so it's not a
-> "lru_gen" specific helper. If we can merge CLRU/MGLRU, then maybe we
-> can rename them?
+> On Mon, Nov 09, 2026 at 05:22:24PM +0800, Li Zhe wrote:
+>> On 11/9/26 11:01 AM, Li Zhe wrote:
+>>> On 11/6/26 6:23 PM, Balbir Singh wrote:
+>>>> On Thu, Nov 05, 2026 at 08:06:15PM +0800, Li Zhe wrote:
+>>>>> Boot-time HugeTLB allocation has to initialize tail struct pages itse=
+lf
+>>>>> when HugeTLB vmemmap optimization (HVO) is unavailable or fails.=C2=
+=A0 For
+>>>>> gigantic pages, this can cover a large number of tail pages. Most sta=
+te
+>>>>> installed by __init_single_page() and prep_compound_tail() is identic=
+al
+>>>>> for every tail page in the same huge page; only PFN-dependent fields
+>>>>> need refreshing.
+>>>>>
+>>>>> Initialize the first tail page normally, copy it into a local templat=
+e,
+>>>>> then initialize the remaining tails from that template with
+>>>>> memmap_init_page_from_template().=C2=A0 This avoids repeatedly doing =
+the
+>>>>> full
+>>>>> __init_single_page() and prep_compound_tail() sequence for state
+>>>>> that is
+>>>>> identical across tail pages in the same huge page.
+>>>>>
+>>>>> On an arm64 QEMU/KVM guest using 4K pages and 64 boot-time 1G hugepag=
+es
+>>>>> (HVO unavailable on arm64 in v7.4-rc1), the measured fallback tail
+>>>>> initialization time improved by 36.43%, measured with a temporary
+>>>>> jiffies-based printk modeled after the existing timing in
+>>>>> memmap_init_zone_device():
+>>>>>
+>>>>>  =C2=A0=C2=A0 base:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 318.4 ms
+>>>>>  =C2=A0=C2=A0 with this patch:=C2=A0 202.4 ms
+>>>>>
+>>>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
+>>>>> ---
+>>>>>  =C2=A0 mm/hugetlb.c | 23 ++++++++++++++++++-----
+>>>>>  =C2=A0 1 file changed, 18 insertions(+), 5 deletions(-)
+>>>>>
+>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>>>>> index da5d04edf7c1..987f16a5ea27 100644
+>>>>> --- a/mm/hugetlb.c
+>>>>> +++ b/mm/hugetlb.c
+>>>>> @@ -3219,19 +3219,32 @@ static void __init
+>>>>> hugetlb_folio_init_tail_vmemmap(struct folio *folio,
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum zone_type zone =3D folio_zonenum=
+(folio);
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int nid =3D folio_nid(folio);
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct page *page =3D folio_page(foli=
+o, start_page_number);
+>>>>> +=C2=A0=C2=A0=C2=A0 struct page template;
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long head_pfn =3D folio_pfn(=
+folio);
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long pfn, end_pfn =3D head_p=
+fn + end_page_number;
+>>>>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int order =3D huge_page_orde=
+r(h);
+>>>>>  =C2=A0 +=C2=A0=C2=A0=C2=A0 if (start_page_number >=3D end_page_numbe=
+r)
+>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
+>>>>> +
+>>>> Can this actually happen?
+>>>
+>>> No, current callers always pass a non-empty range. I kept this to
+>>> preserve the old for-loop no-op semantics for an empty range, but it is
+>>> not needed here. I will remove it in v2.
+>>
+>> I need to correct this. A local Sashiko run pointed out that the bootmem
+>> fallback caller can pass an empty range on SuperH.
+>>
+>> SuperH supports a 64M HugeTLB page size, and with 64K base pages
+>> pages_per_huge_page(h) is 1024. HUGETLB_VMEMMAP_RESERVE_PAGES is
+>> PAGE_SIZE / sizeof(struct page), which can also be 1024 or larger on a
+>> 32-bit SuperH configuration.
+> If the only difference is unnecessary initialization of the template on S=
+uperH,
+> we don't care and you can drop that if.
 
-I did a quick search in mm/vmscan.c and found that
-everything is MGLRU. But you're right, I missed
-update_lru_size(), which is part of CLRU.
 
-   1     62  include/linux/mm_inline.h <<update_lru_size>>
-             __update_lru_size(lruvec, lru, zid, nr_pages);
-   2    279  include/linux/mm_inline.h <<lru_gen_update_size>>
-             __update_lru_size(lruvec, lru, zone, delta);
-   3    287  include/linux/mm_inline.h <<lru_gen_update_size>>
-             __update_lru_size(lruvec, lru, zone, -delta);
-   4    293  include/linux/mm_inline.h <<lru_gen_update_size>>
-             __update_lru_size(lruvec, lru, zone, -delta);
-   5    294  include/linux/mm_inline.h <<lru_gen_update_size>>
-             __update_lru_size(lruvec, lru + LRU_ACTIVE, zone, delta);
-   6   3355  mm/vmscan.c <<reset_batch_size>>
-             __update_lru_size(lruvec, lru, zone, delta);
-   7   4101  mm/vmscan.c <<inc_max_seq>>
-             __update_lru_size(lruvec, lru, zone, delta);
-   8   4102  mm/vmscan.c <<inc_max_seq>>
-             __update_lru_size(lruvec, lru + LRU_ACTIVE, zone, -delta);
-   9   4632  mm/vmscan.c <<__lru_gen_reparent_memcg>>
-             __update_lru_size(child_lruvec, lru + child_lru_active,
-zone, -nr_pages);
-  10   4633  mm/vmscan.c <<__lru_gen_reparent_memcg>>
-             __update_lru_size(parent_lruvec, lru + parent_lru_active,
-zone, nr_pages);
+It is not only initializing the local template. The code first
+initializes one page with __init_single_page(), prep_compound_tail(),
+and set_page_count(), and then copies that page into the template.
+
+So if start_page_number =3D=3D end_page_number =3D=3D pages_per_huge_page(h=
+),
+the old loop is a no-op, but without the check the new code would update
+folio_page(folio, start_page_number), which is outside the HugeTLB
+folio.
 
 Thanks,
-Barry
+Zhe
+
+>  =20
+>> In that case the old for loop is a no-op. So I will keep the empty-range
+>> check in v2, before creating the seed template.
+>>
+>> Thanks,
+>> Zhe
 
