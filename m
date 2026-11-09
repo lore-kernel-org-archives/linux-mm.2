@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE4C606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94243606A331
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=N35wPGsJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EIiHA/jn
 Received: by kanga.kvack.org (Postfix)
-	id 294766B05BA; Mon,  9 Nov 2026 07:05:23 -0500 (EST)
+	id 7EC946B05BC; Mon,  9 Nov 2026 07:05:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26C156B05BB; Mon,  9 Nov 2026 07:05:23 -0500 (EST)
+	id 775086B05BD; Mon,  9 Nov 2026 07:05:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1A9F06B05BC; Mon,  9 Nov 2026 07:05:23 -0500 (EST)
+	id 68B296B05BE; Mon,  9 Nov 2026 07:05:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E9F386B05BA
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:05:22 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71F1CA069A
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:05:22 +0000 (UTC)
-X-FDA: 85415450484.20.E878467
+	by kanga.kvack.org (Postfix) with ESMTP id 4736A6B05BC
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:05:27 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8904CA0692
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:05:26 +0000 (UTC)
+X-FDA: 85415450652.01.0E31886
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CFC2BA0003
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:05:20 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N35wPGsJ;
+	by imf11.hostedemail.com (Postfix) with ESMTP id E1D0F40003
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:05:24 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EIiHA/jn";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794225920;
-	b=liwz2YF/Eb/QiyFOY0w6JojzQCDxG58456NCVgVZvJv3qJL62VlXgtod8NpvklH2fwuANP
-	TXQ+BtkhxDYYdFWQZEc6WTYqWhU30t3/FU9H7a+U1dFdo2Ij86DjGh3kXa7hSsa/i13f18
-	Yw138cQfVREFrpr5f+s4dooCrTL76Yk=
+	spf=pass (imf11.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794225920;
+	s=arc-20220608; t=1794225925;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KskkUGty1iNE6UcXC+HDPavjLCWymN3yFFfBa9g833A=;
-	b=HT53jfMfm/BXNft4mm/bJF6yzAPxZUlUr/BJMKGoZOqZNoeEIid0SE40sIwBuhRheKYXpq
-	gZ2Zsov0vsS76bmCbdaKIqur+FG8eGhwRGf/WfAwSAhchAAvtf6LgaP8k0GW3BmVLUSVp9
-	220Iv7oh5iI8rMYAdZVz+O1It2AA20o=
+	bh=RuOhAvZnPjP1XPHFbitmFrHHdHIPhu/o1Rlh2k3boNo=;
+	b=aPjNbmXA03ftD0lZHklULP7KylyFCPG8Vw0o1XCI3HcChcmSpftrkdB0aQDhS0g8sZJEpC
+	imYhDuIfy7e0SZ9ZQ0LN0hb3JPeiZYQJ+mY0fnzWUza4Fpt2C3deeJyjTOoaNPZB7dJJYX
+	YU9xMxjB5fkzTS7YsfHhdoGpvo1oTbU=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794225925;
+	b=a+CIzudDLaTHt95SnS7MEdEHWP47VMD3Ye2AGCMJuK5uRULO4InqgzwmXyMEtX+MTw6D5e
+	uLLSh5VxepEEkL4r+viI9rBs/pwzQCbPwvadR1RQ0lbRAzcHtoBhdgxj4FuIiC8ZcV+8KA
+	X+sB6zqMc1IOaTwkZ6WUNzNJiUH8Itk=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=N35wPGsJ;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EIiHA/jn";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+	spf=pass (imf11.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7166763175;
+	by tor.source.kernel.org (Postfix) with ESMTP id 8168A63193;
+	Mon,  9 Nov 2026 12:05:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9429B1F0089F;
 	Mon,  9 Nov 2026 12:05:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C9E1F008A3;
-	Mon,  9 Nov 2026 12:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794225920;
-	bh=KskkUGty1iNE6UcXC+HDPavjLCWymN3yFFfBa9g833A=;
+	s=k20260515; t=1794225924;
+	bh=RuOhAvZnPjP1XPHFbitmFrHHdHIPhu/o1Rlh2k3boNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=N35wPGsJeoWxIpoO2dJegT1A+/siw7F+lbw9O6kSfXRd8gTt3+YU2u7TBAAugmZZ4
-	 EpzNTiU1BYgnv1CkT4VxnMEuENCH/Xqm1/ZffZGSzbHea/e3a2QxXTt7/L7o88CHR8
-	 F7eH0ry+5GU2+UESUSIAmxBfG7gGLwwfd7eFKSmTbKZuZSNRCwLZTJ7GCW4Sj2zsv4
-	 b4sTpXn1ihwfIArihA+4swEoa1Kabiirwa/SRtMXCHZwuJX46cL1d3a9lTgpHuZxPg
-	 P8fNaPHNMnaZPhLsQEwJPkbRZFsjM7RD4CQ/QsStaCRpJmKK2aHLJWSHULGvVdzRUJ
-	 G5dPd1AnGBTXg==
+	b=EIiHA/jnHvo+Q4fpvT8AJOyb2hpOJY7Xo9vMny81pnTTP4xxoyuWC2gRSKz4nw+f7
+	 vZuiWM6/9cL7w6O9dQjHrrvVLyWmsheXkoPwm9iiXuOETC0zQurR5JjE2S4z8ASP7e
+	 rjU5+0PyNPxmONuxlmN+MbIrdWuSerwdAud1UIbuzvyn8mb50OOM8MPqN5eFkS+yrH
+	 BPd+uz+qRkC3tHmfgoyj3amIn3bnNLznREzxXgOyE8HLPQwMrXaT7Cc8kEpaLoTAY4
+	 z52qrphTGlnFIfOo54i5BRzjhKJFuLwz3foLVPpES4nlVrKmWlx/Naki/dR4qzP/ys
+	 c5V6fWR8imoJw==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -76,27 +76,27 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	linux-mm@kvack.org
-Subject: [PATCH v2 2/6] arm64: entry: Always inline helpers used by non-instrumentable paths
-Date: Mon,  9 Nov 2026 19:44:55 +0800
-Message-ID: <20261109114500.20298-3-jszhang@kernel.org>
+Subject: [PATCH v2 3/6] kasan: Always inline kasan_hw_tags_enabled()
+Date: Mon,  9 Nov 2026 19:44:56 +0800
+Message-ID: <20261109114500.20298-4-jszhang@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261109114500.20298-1-jszhang@kernel.org>
 References: <20261109114500.20298-1-jszhang@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: CFC2BA0003
-X-Rspamd-Server: rspam12
-X-Stat-Signature: zohsh79ectpi5kni5w19cgpcn7fry3gn
-X-Rspam-User:
+X-Stat-Signature: huhmtch193dhfijghu8otrkqm5kmxobq
+X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794225920-820336
-X-HE-Meta: U2FsdGVkX19UwO70Bl6Ce7NtZeSCFsejVZdDkGE+rYDVkJMceFWjaKL5NXY2TF7BsZUtCz3g6dVqnvtTdRu4rBRkritOgDVHTv5ewdVCZEd4NTOay3aqRq/C8Y0rnlJuIlZQ4N1YBM5KdGAEE1ZBzN8sUWRnlPQpg+stsfZ9a7/P54t+bBmZti9AG7dQ2x5I1vt+4X9m2OG6M7XW2TUT8BgaBYPwu7ljE4mCgA5/nGeZ4EkV3OV4AW/bCSztf7x+cZ7sIrLc1vAOkWQWnNuBFKvIuOQHLmGYmGhhuUwgKyjQ750vmouN0Rea+z4W1PEam/J9Zetu5A7vNip96viLc2XGPa59j2lSd81/1Irv+ecNTcMHyJhuJsivo93AgddRDaiqH9qpTTcR0yKPU2NsVbaFai58g1OvWbMmJa/T7TG+AeniJroklMGV1E+B2PU+VSjANiRNBMi/c4Clmf4c8WoSNqvuVv8bNZnBx20Vu1YJGxWa4boR75QRw/rzl6XvCvsrrVuN4r6QwYGAnF24k4QU4eT6aX58LMvqBUKRUZJYANvdkikU2Hs/mn7dGGPL9jXd0yUikz+4hqGrpVKItkO6KcJLkmG5gQ4z3zrWzAqC9tIfSm0Lc7agoZWXgILzENerq3jadl+EfGtGYp6RGOd32OuQBeqtHPnLQGk7xvTGxjeLSfg/ktqt3nMSpdAvY80qMuK0LvBkjRLIa0PUiJQtfOikOMO8u5x9UNqsa7c5bL6j5vDhotUziUttQ60s9rxhVYits55wwybi9wdywEtXhJsrn4JI3danEpcd6VvvSbsTsien5S9at054CAGmUYpXkZM7okX8duSNPX+wKlAe5JDZsaGynppkxzkVSfgNVQmRgF3r0hZ0GaU3NLQ9wMAezqFw9Q3DfoF+1ZEwgwpzhA+zMPlVjkNusUwOvubJ6rUf3zEy55+MUva84Ys/27bjxVEPOGJX9Q7/U+4
- nDCb8oT8
- poUzxeoW3HPoiwOk2XYt7tjSw0dGmf5vhta9H3CihvVKqYH8RBfxVVPN1a3TG7zE+4QfW5IUe5pixsiVIVZe42Jl4FRq8pZ+jU/KWj5NNi8R1RpEVymLzWbMXTdMlf1quMr6zMWhAOsUhUeWE0++5SIB2RIOo8exM6O8hwZvGZ6UVoZT00gqlFPT4GqM4MWPfQjOgO6sCDQEeFVSKUgkTlOfqa4eoGkJMw2klcfDi4Zh32OVpn5x0BKYoTiw4fMR+mk/sP03+doYIVkdjjvMGjRicWYFJvsOSgqp1gv9x80ziX5vrJt95XFKe8qEEHzN26HtuJ4wyhAkFDQHxVdNWyJZm7ruHFrqFGztmY4qusOQM434moU3hyKUDdyfgZGh+8ERhmfqlXrAmDjO0XxPqQ9SpJHtyXT6elA8sg8YxynhCufw=
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: E1D0F40003
+X-HE-Tag: 1794225924-937559
+X-HE-Meta: U2FsdGVkX1+6A5MqPo6f+ip/bbmX84KL3rgITb6qAEJe690ZPmRNqtpxNqIqLj8xeLExypZ+nxhay+ufTeyzM3D5vJ3c7ElFEvkpgKyQTd0s4OfvNaKYiy/7gR8x4oQ74auAR/RKr8foJ1lrm0K7XogaH/NpSBOGS+1bILLZfG6rmmrmAhi8RWfgskx2G7cz1mhRSurEHLOJFGK7+LJlYtqwPMH0nD+/+rTZTJjQIT+2TjzW2lh4jTRFiFP7biJ5ZGhetAn7LAr0lyexHke0Rzh/JcoGSckFys0fm/NCZoR8Po1rQMi8lFXhRhnN6F0kw4Abd6Qj3lAHYW+clmbQ95tkC6G8p2M36mXjwX9BE+5dednuPDax9vmA76XIxIDYYUKcbcplIptPWcwJzUzmuSkW/M9wRsnAfglBBmcGhSTlqRtp0d9XeRMsVeQLZDlO3n1jzYBZd4RHV8lt93C9uiqwTIojkDOMyE8g3IVJhNRllkzsv6Z8iXOQx/kdQ54d+7Sr2fWqAPZFssyORicmzSi3G4NPJPhkJrXwxIOxB4t7NCWVQWEWV3VDRfXIyrhHf1x4rsfnLF6tqy3RPkdT2319fU6ZHIyPTSGL5V2Y9SE1sZEAL4A4vVRJYmNm3266CRwCA++Y6n5iAtAKxJPs5dghtCT8EBPUPC6Abqyq9zMTnE48s5Duv108GMnu9uYeUPFLzaRmUFqzsU2TkUvNvFyyw84uYlXC8LYliG+bNYRJiUxp+2iFu3y8jCDJK874k0WywLRx8P36TNb8si/fAMZ/c8+Q4/EEHJcgDbLeCvOA293mkBWDys6c6uFl9HGt8nbqqoo7wnnhv/A/UkUn97VOBl7Dt8aczsl7cAtHtz6lB7dL95wn1OZLId5MBnsxUOcXiKFIp7w5B77coOdY54AtNpZ7oR1yNVeATJgqOrFfVVHo/BVo29ehylaPV3B6YgWA2iCUbZ0XTdka+5i
+ 6d/Nd+dj
+ KIGJJHY1JEPeJGMnGUVUYqi70xd3XBc/5kaclhX3XTNGrZUDo4Z2OelYS+CD/SrBAI0qGxP6BNO51831c8mRA8z6lHvoagPO5XEg2QiR2oNobMC1EVTvDqsPUAxoYp96bFfJOyo0cfzOuE+9s51rzfIFk0DVuIYF2EXJfAOdPcjHMKzhVexLmyRdU7fmbd+uH+HosHD597AKuSzBvzyBX9jj62NVi5DMo3YV20bBW12Py8KLh3FcTKgf1rKhPmSeYN0bAFznRCtx/XWUF9h3Ruf4CIqXtW9c8PgRaItvmgwJATTaG+xUgwHseHZYuWO6i3EI9jT2YGdAIJES5Sr1Zw/EaeiYGoF4Oz1S9
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,172 +105,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The noinstr entry and exit paths call MTE and SME helpers, CPU feature
-checks, and the architecture-specific rescheduling check. Several of
-these helpers use plain inline, which permits the compiler to emit
-instrumentable out-of-line copies.
+The arm64 MTE entry and exit helpers call kasan_hw_tags_enabled()
+from noinstr code. Although kasan_enabled() is __always_inline, its
+wrapper kasan_hw_tags_enabled() uses plain inline.
 
-A GCC build with CONFIG_CC_OPTIMIZE_FOR_SIZE=y emitted
-mte_disable_tco_entry(), sme_enter_from_user_mode() and
-sme_exit_to_user_mode() in .text.
+With CONFIG_KASAN_HW_TAGS=y and CONFIG_CC_OPTIMIZE_FOR_SIZE=y, GCC
+emits kasan_hw_tags_enabled() in .text and calls it from .noinstr.text.
 
-Use __always_inline for these helpers and their nested feature checks
-so they inherit the instrumentation restrictions of their callers
+Mark both definitions __always_inline so the runtime check inherits
+its callers' instrumentation restrictions.
 
-Also update sme_enter_from_user_mode() and sme_exit_to_user_mode() to
-use tif_test_bit(TIF_SME) instead of test_thread_flag(TIF_SME)
+Verified that the out-of-line symbol and calls disappear from the
+arm64 entry-common.o object after rebuilding.
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 Assisted-by: LLM
 ---
- arch/arm64/include/asm/cpufeature.h   |  8 ++++----
- arch/arm64/include/asm/entry-common.h |  2 +-
- arch/arm64/include/asm/fpsimd.h       |  8 ++++----
- arch/arm64/include/asm/mte-kasan.h    |  4 ++--
- arch/arm64/include/asm/mte.h          | 10 +++++-----
- 5 files changed, 16 insertions(+), 16 deletions(-)
+ include/linux/kasan-enabled.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cpufeature.h b/arch/arm64/include/asm/cpufeature.h
-index e3c8a1493dc8..c62949693b92 100644
---- a/arch/arm64/include/asm/cpufeature.h
-+++ b/arch/arm64/include/asm/cpufeature.h
-@@ -774,7 +774,7 @@ static __always_inline bool system_supports_fpsimd(void)
- 	return alternative_has_cap_likely(ARM64_HAS_FPSIMD);
- }
+diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
+index 9eca967d8526..14a9e9fd6c6b 100644
+--- a/include/linux/kasan-enabled.h
++++ b/include/linux/kasan-enabled.h
+@@ -35,12 +35,12 @@ static inline void kasan_enable(void) {}
+ #endif /* CONFIG_ARCH_DEFER_KASAN || CONFIG_KASAN_HW_TAGS */
  
--static inline bool system_uses_hw_pan(void)
-+static __always_inline bool system_uses_hw_pan(void)
+ #ifdef CONFIG_KASAN_HW_TAGS
+-static inline bool kasan_hw_tags_enabled(void)
++static __always_inline bool kasan_hw_tags_enabled(void)
  {
- 	return alternative_has_cap_unlikely(ARM64_HAS_PAN);
+ 	return kasan_enabled();
  }
-@@ -840,12 +840,12 @@ static __always_inline bool system_uses_irq_prio_masking(void)
- 	return alternative_has_cap_unlikely(ARM64_HAS_GIC_PRIO_MASKING);
- }
- 
--static inline bool system_supports_mte(void)
-+static __always_inline bool system_supports_mte(void)
- {
- 	return alternative_has_cap_unlikely(ARM64_MTE);
- }
- 
--static inline bool system_has_prio_mask_debugging(void)
-+static __always_inline bool system_has_prio_mask_debugging(void)
- {
- 	return IS_ENABLED(CONFIG_ARM64_DEBUG_PRIORITY_MASKING) &&
- 	       system_uses_irq_prio_masking();
-@@ -950,7 +950,7 @@ static inline bool cpu_has_hw_af(void)
- 						ID_AA64MMFR1_EL1_HAFDBS_SHIFT);
- }
- 
--static inline bool cpu_has_pan(void)
-+static __always_inline bool cpu_has_pan(void)
- {
- 	u64 mmfr1 = read_cpuid(ID_AA64MMFR1_EL1);
- 	return cpuid_feature_extract_unsigned_field(mmfr1,
-diff --git a/arch/arm64/include/asm/entry-common.h b/arch/arm64/include/asm/entry-common.h
-index 1905765159aa..4856bc453c01 100644
---- a/arch/arm64/include/asm/entry-common.h
-+++ b/arch/arm64/include/asm/entry-common.h
-@@ -27,7 +27,7 @@ static __always_inline void arch_exit_to_user_mode_work(struct pt_regs *regs,
- 
- #define arch_exit_to_user_mode_work arch_exit_to_user_mode_work
- 
--static inline bool arch_irqentry_exit_need_resched(void)
-+static __always_inline bool arch_irqentry_exit_need_resched(void)
- {
- 	/*
- 	 * DAIF.DA are cleared at the start of IRQ/FIQ handling, and when GIC
-diff --git a/arch/arm64/include/asm/fpsimd.h b/arch/arm64/include/asm/fpsimd.h
-index a67d5774e672..e7c881c1c1f7 100644
---- a/arch/arm64/include/asm/fpsimd.h
-+++ b/arch/arm64/include/asm/fpsimd.h
-@@ -749,17 +749,17 @@ void sme_enable_dvmsync(void);
- void sme_set_active(void);
- void sme_clear_active(void);
- 
--static inline void sme_enter_from_user_mode(void)
-+static __always_inline void sme_enter_from_user_mode(void)
- {
- 	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_4193714) &&
--	    test_thread_flag(TIF_SME))
-+	    tif_test_bit(TIF_SME))
- 		sme_clear_active();
- }
- 
--static inline void sme_exit_to_user_mode(void)
-+static __always_inline void sme_exit_to_user_mode(void)
- {
- 	if (alternative_has_cap_unlikely(ARM64_WORKAROUND_4193714) &&
--	    test_thread_flag(TIF_SME))
-+	    tif_test_bit(TIF_SME))
- 		sme_set_active();
- }
- 
-diff --git a/arch/arm64/include/asm/mte-kasan.h b/arch/arm64/include/asm/mte-kasan.h
-index de910f1c19e1..cc2151325eb0 100644
---- a/arch/arm64/include/asm/mte-kasan.h
-+++ b/arch/arm64/include/asm/mte-kasan.h
-@@ -18,14 +18,14 @@
- /* Whether the MTE asynchronous mode is enabled. */
- DECLARE_STATIC_KEY_FALSE(mte_async_or_asymm_mode);
- 
--static inline bool system_uses_mte_async_or_asymm_mode(void)
-+static __always_inline bool system_uses_mte_async_or_asymm_mode(void)
- {
- 	return static_branch_unlikely(&mte_async_or_asymm_mode);
- }
- 
- #else /* CONFIG_KASAN_HW_TAGS */
- 
--static inline bool system_uses_mte_async_or_asymm_mode(void)
-+static __always_inline bool system_uses_mte_async_or_asymm_mode(void)
+ #else
+-static inline bool kasan_hw_tags_enabled(void)
++static __always_inline bool kasan_hw_tags_enabled(void)
  {
  	return false;
  }
-diff --git a/arch/arm64/include/asm/mte.h b/arch/arm64/include/asm/mte.h
-index 83f3b05fc784..de71d3449064 100644
---- a/arch/arm64/include/asm/mte.h
-+++ b/arch/arm64/include/asm/mte.h
-@@ -222,7 +222,7 @@ static inline bool folio_try_hugetlb_mte_tagging(struct folio *folio)
- }
- #endif
- 
--static inline void mte_disable_tco_entry(struct task_struct *task)
-+static __always_inline void mte_disable_tco_entry(struct task_struct *task)
- {
- 	if (!system_supports_mte())
- 		return;
-@@ -245,7 +245,7 @@ static inline void mte_disable_tco_entry(struct task_struct *task)
- #ifdef CONFIG_KASAN_HW_TAGS
- void mte_check_tfsr_el1(void);
- 
--static inline void mte_check_tfsr_entry(void)
-+static __always_inline void mte_check_tfsr_entry(void)
- {
- 	if (!kasan_hw_tags_enabled())
- 		return;
-@@ -256,7 +256,7 @@ static inline void mte_check_tfsr_entry(void)
- 	mte_check_tfsr_el1();
- }
- 
--static inline void mte_check_tfsr_exit(void)
-+static __always_inline void mte_check_tfsr_exit(void)
- {
- 	if (!kasan_hw_tags_enabled())
- 		return;
-@@ -278,10 +278,10 @@ static inline void mte_check_tfsr_exit(void)
- static inline void mte_check_tfsr_el1(void)
- {
- }
--static inline void mte_check_tfsr_entry(void)
-+static __always_inline void mte_check_tfsr_entry(void)
- {
- }
--static inline void mte_check_tfsr_exit(void)
-+static __always_inline void mte_check_tfsr_exit(void)
- {
- }
- #endif /* CONFIG_KASAN_HW_TAGS */
 -- 
 2.55.0
 
