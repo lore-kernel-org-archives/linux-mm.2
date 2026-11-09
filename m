@@ -1,122 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1B0606A334
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 16:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E41606A31C
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 16:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.a=rsa-sha256 header.s=google header.b=R9wfvv+Q
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DYTWaPyk
 Received: by kanga.kvack.org (Postfix)
-	id 73B766B05DD; Mon,  9 Nov 2026 11:08:30 -0500 (EST)
+	id 988FA6B05B1; Mon,  9 Nov 2026 11:11:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6ECC36B05DE; Mon,  9 Nov 2026 11:08:30 -0500 (EST)
+	id 939E26B05B9; Mon,  9 Nov 2026 11:11:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D86D6B05DF; Mon,  9 Nov 2026 11:08:30 -0500 (EST)
+	id 853206B05BB; Mon,  9 Nov 2026 11:11:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 34AD36B05DD
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:08:30 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id C7DE31C4126
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:08:29 +0000 (UTC)
-X-FDA: 85416063138.10.E7CA3CD
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D6332100009
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:08:27 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=R9wfvv+Q;
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
-	spf=pass (imf14.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.219.51 as permitted sender) smtp.mailfrom=stern@g.harvard.edu
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5EE4F6B05B1
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:11:49 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C441880756
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:11:48 +0000 (UTC)
+X-FDA: 85416071496.03.5081E4D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3288740009
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:11:47 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DYTWaPyk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794240508;
+	s=arc-20220608; t=1794240707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4SBBPsSc3/Ep6nC8xR1PMHfDpiIh8UItfXg1xvFovQw=;
-	b=rUv60TJq7Ufzt1IRC+381u1mm/02PFKeGPywhSGMDJCeo0NbXhFkE+5GxDLTi8WW5bPegG
-	grForYQy8p33P3IbQYNIzGtEnkHcobHqADWCscSxa/kIlUmsNBu5G9g8PeNdElOSgNSkFu
-	Jki/AiY8L+yW+qw+qaY9Uiw8iQm+daw=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794240508;
-	b=tBZzizkzqSAegCArzsgy3WGPAEbkYjbDRNhVlmSiEWDgM1MpHXYAjGXdBLxG1OQj5JdB/x
-	kj4/y7WelGgh6IF7xNjVtw0uKEGTTrrdnPdPwg4K3dm3Nnlpluktz+u3zFdbrgm7LHplgO
-	i2lFhyo6kg0+qcCgI7dxTWOgYkR8nss=
+	bh=apKKuKLeW7fYkH3re1fsKWBUmMYFNZXZBCBlzYMpJB4=;
+	b=KCl0c57qncLL/NqTg/TVPueSUNYcn0fgV19gbPLlv8X3RjBLS+VZTo4hBBIp+s6ew5AjOp
+	SX8dTYXd7ZXCu5mmImSaBQKAzAbFT9cu6P+bc9mX5HHLFDPIVjgbkARESGya3BDG3Ht3kE
+	dafo/UuFT9AA+cnH2Iam9ShIzyNAqXk=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=rowland.harvard.edu header.s=google header.b=R9wfvv+Q;
-	dmarc=pass (policy=none) header.from=rowland.harvard.edu;
-	spf=pass (imf14.hostedemail.com: domain of stern@g.harvard.edu designates 209.85.219.51 as permitted sender) smtp.mailfrom=stern@g.harvard.edu
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-91ebdf1c2d1so11491936d6.0
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 08:08:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1794240507; x=1794845307; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=4SBBPsSc3/Ep6nC8xR1PMHfDpiIh8UItfXg1xvFovQw=;
-        b=R9wfvv+QrWLLRMGv4Ad1m3/X42eAIVgYt9vkLrUZz50ebwMN2FFpUYaZ2d+MpSBalc
-         +szYEF1p05YWgq4kNl11TGw2nvXrSXxGj7o8DX1YECMIqR5kMh5c64sEtVD0+N4ON3cH
-         axARl0Um4VKSBHEJkm/RYNwJ2HiK44RJp14BmL6YRg2Mr5Tv7lpu8mslJdrRijHdpmqW
-         mX00BwX6/y3KHX+JM9/MgEJSTcUii6QXcA1DJmbwyzu316JLB1jlJEOt0bJjqODp/+p1
-         1AYQSglYGUUWFN7Q2+xvIIh7UAfKX9y7Rd7HGkS1LCNhk9/YmC/sb1OUYqA3xn8VeasY
-         3/qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794240507; x=1794845307;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=4SBBPsSc3/Ep6nC8xR1PMHfDpiIh8UItfXg1xvFovQw=;
-        b=2kuD1gCnQNZUMfGkZmvZ9ZNL3loLQ7Peg/8iW4V8JPfA0VajaGeO0gSNtN/KzhjGvU
-         X2AM9VAht9XXLBc9Rr/5Qwk0olg6vumN+BI9yzrJF98++sW/egvjc1UDX+Xwbu1egnzz
-         +YJk1jmi65KBu2KuQzNwsEv+afqLVaJsFJeIyAKvi4TXI+IYNJyWRQFMAMAIF27/Y8gg
-         l2YPWcqYDgJV863QXLT0omhkHDcazk5+82tI72+xOcFCN+1foUT5hrdiLoacDY5XQJRn
-         VEjCLInXWM99jjRwd2CPDBOUE5UTzSW9+egvSQXpMGguZ43tO28eIjrWVJSaa6aUwbKd
-         qM9g==
-X-Forwarded-Encrypted: i=1; AL+hErHEPSJAktf4uk7hBkhA0K8Kuuq2He1RFQOzvThdPNg3iCv4Vpokkp8AqH0FoGildgsc8iDW3gOMAw==@kvack.org
-X-Gm-Message-State: APuU4Z+Ef38Yz/jPIOCqwCPePCMHVSYThpcU2QV47c6DnhoUDpqMUO88
-	V8rE8KdjMczbg7u6PeebWDLD36hqxkJJVHi0w7DHBJT6uonZcV6BWIoKcczDRSBHhg==
-X-Gm-Gg: AYBFou2qJCAC5jA+2XYBgYizC9+IXHP/nMxY96Cp/8YcNQ0bF566cdyb9wopmwGfNb8
-	ny9gK5qYU/onrPmCiDW2WVuDuVhpFAUrEkxZrloWGmRloDdUPl9j6VOxL4lTk/ZsdcAmCfKU3sq
-	+2/UsQb7BlZA33quFOc4myICuQr6zZPEgkvbPsoP9+SNCefeBYD0dAaFEWQrCvJE02BDyYDxGsQ
-	VP+Uh1QU5uCCxw7pPJ47XJY/ASpW+OBeBGon4Max8vnrT19zcvf7UPTF9IJ993UQrRCpbsLH6Vl
-	63LtIAtOSKvRlivoDjIAmnJPiBW//ZqJGDVSe+wwv+4Y+yiNYYRPGxQ88XXBBrrv43GCeUX+GC/
-	euyqCkV9mFsAFr4mtiDYXQmjNErvcehSm1pj5qV1qzJn3JTW0l1MmBZEEqaffFehLe/Aivr8rFl
-	WjRlLXWoodXuLY6/o1WbyU1c9+9xHl7X04bDzD2oqXvKk6EmVtxCPFKmaqdnWZclX7LeiWIZcVb
-	bLXHYiPESbWmHwWEAQNoXPN67/YC96NytBxkchDGL9EaCtf2dPlqxNzAurVgMwBWHEjTwB6RCBq
-	hFuSK0u3O+tRCUiwiDV9FHluvQk4
-X-Received: by 2002:a05:620a:440f:b0:93e:d5c1:da49 with SMTP id af79cd13be357-947842cc78cmr674785385a.82.1794240506826;
-        Mon, 09 Nov 2026 08:08:26 -0800 (PST)
-Received: from rowland.harvard.edu ([2601:19b:d01:d210::66b0])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-9479e61c333sm7310285a.3.2026.11.09.08.08.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 08:08:24 -0800 (PST)
-Date: Mon, 9 Nov 2026 11:08:22 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Vlastimil Babka <vbabka@kernel.org>, linux-usb@vger.kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] USB: usbfs: replace __get_free_page() with kmalloc()
-Message-ID: <b39fd45c-657c-46dd-94e5-af7d633d297d@rowland.harvard.edu>
-References: <20261108-usb-v2-1-c9209d527559@kernel.org>
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DYTWaPyk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794240707;
+	b=f1Al+U8Jmc09zhZONlN7eZaXatJR+Mtuf3VenZQav87NJHI2JIh1dXYZUheHf1liMgklhC
+	tqal5OyljWvRiDYGeNy74Ml1F4ojiOOT+hyZtES9Z0b5wzgjGweEPTMjV93LSRA0T26NEz
+	irrS+PkhHv/Nh8L9bzkuj3hDFvu9Xjc=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id A4A6360E07;
+	Mon,  9 Nov 2026 16:11:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51FE31F0089F;
+	Mon,  9 Nov 2026 16:11:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794240706;
+	bh=apKKuKLeW7fYkH3re1fsKWBUmMYFNZXZBCBlzYMpJB4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=DYTWaPykIpx6JkYTBw++lHZOecG26/qX/H5ir7r9wPn+ghcrQc51mpO5nyJBjswdE
+	 2CfWBYOijg97eQqEQ9UUErtUun8nYwhrrTi4/rdAWiqVFqED9q4yjqnLSFs8g9lbpJ
+	 XcOHjYSmqOVZxHRjLFVcsosDR2AJWhHkG8BReGvtnbErXGteX4+B2+z3n7z0Q4crq1
+	 sd4dtejnQqbwIWQC36hk1dmXJMFw5J9ksIvgmwogTeIqqWlRaVybtENmL3qlUyRGzc
+	 sx4IJJEx5i9cu0LI2yjNaF0Qv95aR08j8raojJJsjFQBdmOy0oYNyi11QeqpGh7UVr
+	 22E6X5TErFvgQ==
+Date: Mon, 9 Nov 2026 16:11:40 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	"David Hildenbrand (Arm)" <david@kernel.org>, Pedro Falcato <pfalcato@suse.de>, 
+	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Hugh Dickins <hughd@google.com>, Chris Mason <mason@kernel.org>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	Sashiko <sashiko-bot@kernel.org>
+Subject: Re: [PATCH v2 1/2] mm/memory: recheck PG_uptodate after
+ ->page_mkwrite()
+Message-ID: <avHWhZzXE-ge6nU6@gremlin>
+References: <20261109120403.82361-1-kas@kernel.org>
+ <20261109120403.82361-2-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261108-usb-v2-1-c9209d527559@kernel.org>
-X-Stat-Signature: ei4uq3b9xz169c1f3y43q57i6dw4xin4
+In-Reply-To: <20261109120403.82361-2-kas@kernel.org>
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 3288740009
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D6332100009
-X-HE-Tag: 1794240507-174352
-X-HE-Meta: U2FsdGVkX18CrrRLUFY/r15PaDBciS+iQb3do/VoROy6OlB8LnqqI18cNpwLh+I06kiTbJx9UzAfeV0p0WbUO910WwpMzSIUI1uhOqJOSL+28Gq5G3BNh0kuQZr4odol5qUjhJAGuwn6RVyKUc3bN9aV7tXLq9w7vEb7ecRPwLM3Cuxjuc1OXXK5pFrFlqjmbQcFHg6SvyMWVgP4XPdgsUcE/eCpHI4wSQB99YDPBIw6y0EzFV/pTDlLYa1sex9NSx/aI/Utj/PbO/8aKt2VQzXpkXdZZTftl9Mlx4ALrg1P38cNt4U7pZGmOZD2mxX7xS18CBhJ51kwR1r/iPF83D6m40LtbtCyvOJndMTQGJ0abBphvmRXcrYv/f/JqAaqwhcUNvK4QkPna2YRvdAAsKJSSOjkbOFaQIfZP+5AgmEynh3oJ4YWKKy7rgwjwuc6MrbECId9sejtL0aw8qGa+oL1X2XE/t9xnUzsH8FI9pvtPun7FVleEx60+2PmxNa1B3ig4FBBfBXGZlOCblOqGk+ZZEnJz4uW0jT6rzUzxDVE1E1rYsnwNfZsqaebEDzEzI7kCZmKig8t98OUaKLscV3zxHW3YSzMwbek13smZ2t0mF4cq655MW6s0ZCcpYM740o7+8q8w8iMy8qouUKK5gxGC1P13UENYb4fJ1SrN8pQF34+PJygS4twZIv43CVBFBccLa3YtytsQPwXmn01PzhkLLn0hJkMjIXKc76J7+GpSv14BCQgT9v7873il3kjznMC6mBNfMS0GmqbESMoonyhxLmr87dyVisoS0DoE2dyoEM1vjbyyYd29gT/1hrggSau15LvILf4vAcizrUe0I5qdUpcN2/hHH7BDrDiO3xjTcnx21GhYNw3JAbOPUL4Q15pfFv78TTkkydL9tzlMASPkPe/XsM5hQOIJLq7360fITtGg2hHUNT4WCiE4oGlhqQSuLt2fGGw8zLeBVD
- im2vQBSk
- uiVYbrXniwBszHg3Gt77RvdkqqwF4e8OY1r57tA3OLNfRb4aiMIhzJp82A9iCSIa+RTtS0jvulhCIiHQ5BykLs7l3CfqIUeU5wiJe7d2xQo4V9CbtUYpf41VvFmQGFlG028fWKPD1s4I5fJDbQwpt3IK1Z6RyhSDNqMFUjPerw6P2L28MJ+lSw3rxOwCB5FQu/jFlpagDtg6lI5Porj2njasERgh58f/WCqcwoj/So/PRGYJDngiyUYlfHginX3FDNHgvRawQeR1VTwHd3cFvj3/wMa5WUdDTIxWiM+SW373loVeHrqCigGXHIdA2gFJRJZLpqoew6lOy1FKsIxCnNSZWqiTKeEkS9KeAIkG8LPiR/osObhyQJkFpdLcNbWrFefazu1HxTLYnaVoJZJCLRua4mcTX1F8xFNsK3yDROZO9LB2vF7K35DD0I+g199azJ01LMEoRY3TWlwi+xiFZTQlP+rWSGn7NEywK5yicFTd0vadbjIBQRblQhbpMccLytXIpjouZUkPA2yRiWibhMX7Qqlt8T3qUJtiSp85cDhsy/+JxfUAATnIhOk0j5rkunwL24VDldzT8Xzg6du/hGdxG8uGR9xFtJPpnJIZ4d/UlqV+eUNTozCUnWE6OYjSPDahiq7YJyZpKDaoDh4cxjCr5X3Ua7fRhttRMGWNdFa3Xl43SIOIIKILzgANatKYSi3BmX3MPsleZkbYySXOqGRAz0Q==
+X-Stat-Signature: shonyw68t6dkr1s6f71o7rpk7tugu9wg
+X-HE-Tag: 1794240707-136789
+X-HE-Meta: U2FsdGVkX18zh3k5X5zQHKWwmKzYaRyaVO9eZONVF5q5D7LmD3MBAxbPS0muvluy8SGq27OEFSOBijcxSyI9hzk1UItiKSlpTbBCr/Qafnm7UBBePy3Lj0CuLHHsZWQ909vxad9kISre+hSTJDRFfNuD4jneFGAshI9NDmUyUFHAjOuh3inuC0eGjXvC4IttYnTDF88Vbx0/T4KKg5jTQnSzsD4QGv8GzVd2vYS+6udvOD1ia1t0vAv4TJIHRWWGanaiFBvTwvbFmxLieQOH593xzcMGlsRE+OuH/iq1gRniCZU5vlUSEJKHgNK/DZx6sPrLk8lulhtDRSLxf5iHGa3Bf5jL96iIIgo0nzCHnNgKqS6byJjOeWwAAnje6HFnfO/0dNAqy8a0Lk5hLQNkNDoJxHFjs2jR+K7Fjq5obzNuWs/6rAmcaXVf1iisR9q/A7xhbXUK1IuTKFihlIY9CcbO8uQlaUahCndkqIBDZhbQiMKn2p/EoDYITkNE+4dQTS1KhiWV7V12CMBChJryzIk3efYbfr+8SeQlEVlifnUKn/Lx4fH2jZnbcBLNJaB9MPLeesHdg+YUNEZ0EofyFhmIga5JwygvAJ7rDE736xw/4av6ZzvlBs31qQ366tGHvM7rFL23+lmjcB7Chb/XzL/9RplQXUJlFrfbX04YXxP7vrSE+NIAYDfEEChvShYPNkMZqeRtuUcQfLjJmpmuht2HMXhr/BgtCOh2h7ys1F4vO8madCYhc2wp4vju9Zh/1Tm8mIPQbV9uujiIaz3RXxtsDnPM7e2DD+rlLbIQ9oibrSjqjsmevEo67jTWWCPXxe+8oH6glP2poX7QpZVr5wQUy+8rKIu9OM+cCZcK5xm4WOSkHrxzvjI6YOD8/yz2A39/y3Wr93Pi1o6zeecXSjimSXaZnLirHRtLu/2Ht5FzSNL+jw6H6DrBSl7A+j4ABfc50Mf0QlfFftJTrUY
+ JIiIYGBT
+ L69BZu7UFRqMPAklXd2LRDwNol8QR+cw5j13Jfb3mkgkYBjVqOCoTXRDpZaHDdy3soSZseUvMHfCxroC/Ox4qvCYJqZEP0cZK0QMQxtkYDU8APpJhPfxQGqtZfwIVt1/09aUcMoU5nIFzFPxXHpklyH4qtku0YEMAi2djI6GvgeRrjyoiFO9ko/RR2qvICDz4gDrojQiZepDwb1Q2P2p/mxf17WjKC8kFw1jz0FvLLmEnp73D2gh0tdBAUorH/K+xhEV+FSjAKv8vQcgTprZtnAE5vZxDFjonCVtBvPDAcQNo/ZUlpeEjDX8nlFbWV6T5D+Ao
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -125,76 +101,125 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Nov 08, 2026 at 10:39:34AM +0200, Mike Rapoport (Microsoft) wrote:
-> do_proc_control() allocates a temporary buffer for the data stage of a
-> control transfer issued from userspace.
-> 
-> This buffer can be allocated with kmalloc() as there's nothing special
-> about it to go directly to the page allocator.
-> 
-> kmalloc() provides a better API that does not require ugly casts and
-> kfree() does not need to know the size of the freed object.
-> 
-> Performance difference between kmalloc() and __get_free_pages() is not
-> measurable as both allocators take an object/page from a per-CPU list for
-> fast path allocations.
-> 
-> For the slow path the performance is anyway determined by the amount of
-> reclaim involved rather than by what allocator is used.
-> 
-> Replace use of __get_free_page() with kmalloc() and free_page() with
-> kfree().
-> 
-> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> ---
-> This is essentially a resend of the "USB: usbfs: replace __get_free_page()
-> with kmalloc()" patch that fell between the cracks.
-> 
-> Alan and Vlastimil agreed on v1 that the kmalloc() overhead does not matter
-> for usbfs memory accounting:
-> 
-> https://lore.kernel.org/all/8cbe558e-7f53-4ce4-be8e-52fdba9105d4@rowland.harvard.edu
-> ---
-> v2 changes:
-> * drop already merged patches
-> 
-> v1: https://patch.msgid.link/20260830-usb-v1-0-aa349c302246@kernel.org
-> ---
+On Mon, Nov 09, 2026 at 12:04:01PM +0000, Kiryl Shutsemau (Meta) wrote:
+> do_shared_fault() unlocks the folio around ->page_mkwrite(). Writeback
+> can lock it in that window, fail, and clear PG_uptodate with the folio
+> left in the page cache. ecryptfs_writepages() does this when encryption
+> fails. filemap_page_mkwrite() relocks the folio and checks only
+> ->mapping, so the fault maps a folio that is not uptodate:
+>
+>     CPU0                            CPU1
+>     do_shared_fault()
+>       folio_unlock()
+>                                     ecryptfs_writepages()
+>                                       folio_clear_uptodate()
+>       filemap_page_mkwrite()
+>         folio_lock()
+>       finish_fault()
+>
+> The next read(2) or fault on the folio reads it in again from the file,
+> over anything stored through the mapping in the meantime. Those stores
+> are lost.
+>
+> Recheck PG_uptodate once ->page_mkwrite() returns with the folio locked,
+> and retry the fault if it is clear, the same way filemap_fault() retries
+> on a cached folio that lost PG_uptodate. Skip folios outside the page
+> cache: driver pages from ->fault() never get PG_uptodate and would
+> retry forever.
+>
+> The check stays out of do_page_mkwrite(): wp_page_shared() calls it on
+> a folio that is still mapped, and a retry there would fault on the same
+> PTE forever.
+>
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/sashiko-outbox-202966@kernel.org/
 
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
+No Fixes? Sorry I may have missed context from v1 here :)
 
->  drivers/usb/core/devio.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/core/devio.c b/drivers/usb/core/devio.c
-> index 101cb94254809..9a7cc7cdf00be 100644
-> --- a/drivers/usb/core/devio.c
-> +++ b/drivers/usb/core/devio.c
-> @@ -1190,7 +1190,7 @@ static int do_proc_control(struct usb_dev_state *ps,
->  		return ret;
->  
->  	ret = -ENOMEM;
-> -	tbuf = (unsigned char *)__get_free_page(GFP_KERNEL);
-> +	tbuf = kmalloc(PAGE_SIZE, GFP_KERNEL);
->  	if (!tbuf)
->  		goto done;
->  	urb = usb_alloc_urb(0, GFP_NOIO);
-> @@ -1265,7 +1265,7 @@ static int do_proc_control(struct usb_dev_state *ps,
->   done:
->  	kfree(dr);
->  	usb_free_urb(urb);
-> -	free_page((unsigned long) tbuf);
-> +	kfree(tbuf);
->  	usbfs_decrease_memory_usage(PAGE_SIZE + sizeof(struct urb) +
->  			sizeof(struct usb_ctrlrequest));
->  	return ret;
-> 
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 > ---
-> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
-> change-id: 20260829-usb-ad052ea1ffad
-> 
+>  mm/memory.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index fe72e66c9c2e..cc1d0b7d15c7 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5613,6 +5613,18 @@ static vm_fault_t do_anonymous_page(struct vm_fault *vmf)
+>  	return VM_FAULT_OOM;
+>  }
+>
+> +/*
+> + * A page cache folio that is not uptodate holds data that was never read in
+> + * or cleared, and mapping it leaks stale memory to userspace.
+> + */
+> +static bool file_folio_not_uptodate(struct folio *folio)
+> +{
+> +	if (likely(folio_test_uptodate(folio)))
+> +		return false;
+> +	/* Driver pages from ->fault() never get PG_uptodate */
+
+I guess you mean drivers that return non-page cache folios from ->fault()?
+Because the driver could return page cache folios there (e.g. shmem), in
+which case folio->mapping would be set (set on being added to the page
+cache).
+
+But also things are complicated by DAX (of course) which _does_ set
+folio->mapping but installs the folio itself so won't reach the test
+anyway.
+
+So I think 'rmappable' is the better thing to say given DAX and, given this
+is fiddly, maybe worth explicitly pointing out that ->fault might return
+non-rmappable folios, e.g.:
+
+	/*
+	 * Drivers which specify ->fault() might return non-rmappable folios
+	 * (in which case no PG_uptodate).
+	 */
+
+> +	return !folio_test_anon(folio) && folio->mapping;
+
+Technically folio_test_anon() can never return true based on where this is
+called from right? Could this just be a:
+
+	VM_WARN_ON_ONCE(folio_test_anon(folio));
+	/* ... comment */
+	return folio->mapping;
+
+Instead?
+
+(Note that __folio_add_file_rmap() asserts on folio_test_anon(folio)).
+
+> +}
+> +
+>  /*
+>   * Either the VMA lock or the mmap_lock must have been held on entry
+>   * (see FAULT_FLAG_VMA_LOCK) and may have been released depending on
+> @@ -6163,6 +6175,16 @@ static vm_fault_t do_shared_fault(struct vm_fault *vmf)
+>  			folio_put(folio);
+>  			return tmp;
+>  		}
+> +
+> +		/*
+> +		 * The folio was unlocked for ->page_mkwrite(). If it lost
+> +		 * PG_uptodate meanwhile, retry the fault to read it in again.
+> +		 */
+> +		if (unlikely(file_folio_not_uptodate(folio))) {
+
+As Pedro said, I think this unlikely() is probably unnecessary given the true
+return case is implicitly unlikely.
+
+> +			folio_unlock(folio);
+> +			folio_put(folio);
+> +			return VM_FAULT_NOPAGE;
+> +		}
+>  	}
+>
+>  	ret |= finish_fault(vmf);
 > --
-> Sincerely yours,
-> Mike.
+> 2.54.0
+>
+
+--
+Cheers, Lorenzo
 
