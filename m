@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541A0606A323
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 13:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5CA606A336
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 13:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mq/IF6nA
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KzZzxUcO
 Received: by kanga.kvack.org (Postfix)
-	id 30AC56B05B3; Mon,  9 Nov 2026 08:32:21 -0500 (EST)
+	id 83C636B05B5; Mon,  9 Nov 2026 08:32:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2BA776B05B4; Mon,  9 Nov 2026 08:32:21 -0500 (EST)
+	id 7EC7A6B05B7; Mon,  9 Nov 2026 08:32:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1AA906B05B5; Mon,  9 Nov 2026 08:32:21 -0500 (EST)
+	id 6DBA36B05B8; Mon,  9 Nov 2026 08:32:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E39F66B05B3
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 08:32:20 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 73927806B8
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:32:20 +0000 (UTC)
-X-FDA: 85415669640.22.3E70C76
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 32CA96B05B5
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 08:32:56 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 16D7E4067F
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:32:55 +0000 (UTC)
+X-FDA: 85415671110.11.A7903E8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A685040006
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:32:18 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mq/IF6nA";
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794231138;
-	b=2Wobu01n3y/toh+40LaSe2GxoT4Ryj+ogVpRJDNIwohnBO+FfcgFWpeaMxqSEG7HCFceXQ
-	2hBhuK9AYukRJDdfo+xRLftytNOB3lYXnobdDoaJkjc3nyw/DamdOcxiFVcq+c3QLA8iJM
-	m4uopyRyu8Bxi87dAhL4FBB/uLM7fyI=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="Mq/IF6nA";
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf31.hostedemail.com (Postfix) with ESMTP id 5B70D20005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:32:53 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KzZzxUcO;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794231138;
+	s=arc-20220608; t=1794231173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iEcip7tPdDxBNKjDoqV1dnIj6BkMr6G9KqwvTKyQBlY=;
-	b=TJufspXqMK6cr1JteCo+mSC08Kr+lE4oIIdGd0dzLC2X3utPej59fyyws1Iby9RtGPJU08
-	RHgltrW6asAb8jJTDazuH412J4w6JM5mz4OsiaCrkagUNi3FgQWmDQPR6nbR5peQkY9mg2
-	G+1cDcycG9n73RjSAf4xOwWCs6bVi0g=
+	bh=3kO+9xP9gHYxqDwN0M/HD3ySNAPtZoVrTYpd1QO/0hs=;
+	b=8EaOpbbwImPaFija52V06vTxlxidiueJ3z7E4BiEaahPmvUlpk9DcIZ6ni9yRasX3Ygz0e
+	sVAs3rrp7KKNQq4JRzETQlymcf2mBW2gAxLhYfYPpGDc8rSqGg5Ckjs+hzvKu4eRxHy7ll
+	YjC+2CW9mJWUnRTVg3jVRcI5jYX0H4s=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794231173;
+	b=uFweBxs29pB3eXsgx1jU+3xsSaGopUshJ8FlVveqUuhdgtfzkPrPlGXvHW5HbAgikKYUxN
+	r69xWLfkyw7PfI3Ju5FQCLmMB7GkcNOcRduSBVuLjpBbYCe7R/KkKTZYoU4LErILZ9QFmX
+	2JC16gZVVuyXo6vmA/DkkXle5jYfWCI=
+ARC-Authentication-Results: i=1;
+	imf31.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KzZzxUcO;
+	spf=pass (imf31.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9FAD54173F;
-	Mon,  9 Nov 2026 13:32:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE501F008A1;
-	Mon,  9 Nov 2026 13:31:56 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id BA00B4510C;
+	Mon,  9 Nov 2026 13:32:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8BE1F008A1;
+	Mon,  9 Nov 2026 13:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794231137;
-	bh=iEcip7tPdDxBNKjDoqV1dnIj6BkMr6G9KqwvTKyQBlY=;
+	s=k20260515; t=1794231171;
+	bh=3kO+9xP9gHYxqDwN0M/HD3ySNAPtZoVrTYpd1QO/0hs=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Date;
-	b=Mq/IF6nAMfmH60nLPc54eDBG30/vFlV8Nc7Dg4Qdvt7otaTrZadQW+QyVbbqiu8gY
-	 4wjvjbmFJe+KDJBHvPARyW3uVLXiix0Voc6pD380sc/TmGQR5tS8AC9B38beKlP/8e
-	 PQZ0OYnhYWGq55QhIxMvUrgcxbFkd0ZgwHoskTOXv5H640Dc2YEhrpmGX3a2SahkiK
-	 AhcKF6Ohn3DW5vnYoz7WjPduA9doZ/6OPl7rEKgwB+xIKz4DGTBJFBL0wGwe8D6ANH
-	 Qb4+q0i1Vi/h/SL2PgYtGHx57LE3bgVc37ngC0JaZNjvsDC5VMDtJUmD9dxhJvp3mQ
-	 mSjPAtwc28pfw==
+	b=KzZzxUcOxN+LUkJJbvaaWtgAg0Lr5n0Lq5msXujrfpHexbax+Q7MphMNrKT297nty
+	 Lgqf43fqFL3IaxYW4qsLltL1rfN+n7EKzp+quYJhHXOJf9EdP3tkJIZ/07lfxJ6QR5
+	 yMVW+5CfIRJchjav43ecF7/gIb/nUAMMMClY+lUKqmcbumcULnahrlJ2fMGe2TfNut
+	 CHcmFQaVPR97bHK/+Cf5PmZH+zHZWDepmd9kLxjjIuwDPYFFh46dEB0JJjZoWaLWmp
+	 3wVNxLys3qIdpG7dFxhjM07JWa3keQ6UCUpgwUbcazbFW8Qlf/49Zl3gWA1Y5pPR7k
+	 iNtqEsvwq1ZEg==
 From: David Hildenbrand <david@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
@@ -118,29 +118,28 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
  apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
  linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-In-Reply-To: <20261105-late-2026-vma-flags-v1-3-0d3cd15ab75f@kernel.org>
-References: <20261105-late-2026-vma-flags-v1-3-0d3cd15ab75f@kernel.org>
-Subject: Re: [PATCH 03/13] mm/rmap: convert remaining VMA flag tests to use
- vma_flags_t
-Message-Id: <179423111633.12539.3540482164681335432.b4-ty@b4>
-Date: Mon, 09 Nov 2026 14:31:56 +0100
+In-Reply-To: <20261105-late-2026-vma-flags-v1-1-0d3cd15ab75f@kernel.org>
+References: <20261105-late-2026-vma-flags-v1-1-0d3cd15ab75f@kernel.org>
+Subject: Re: [PATCH 01/13] mm/gup: convert GUP code to use vma_flags_t
+Message-Id: <179423115134.12726.17304494910149332848.b4-ty@b4>
+Date: Mon, 09 Nov 2026 14:32:31 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.16.0
-X-Stat-Signature: xmbpprjg87ipg3k9xrugmminr34z5zny
-X-Rspamd-Queue-Id: A685040006
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5B70D20005
 X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794231138-410081
-X-HE-Meta: U2FsdGVkX1+g1rL0YOcCWt7E8O9gIQ2cayhvMa3/pXX6TyyygD9qi7E5WkKk9HP85YPUGcR/YFqyhllIXxADAyGhxyH+evmqO76fLveQNrEpzPWEtcYjpowXXBFHeqrCzJYPOyEiPfeK1Y8LRnvg8gvbPY64hP8bx81u0vraGUaNCQrYnwrp5yDzt2VV/TfrR2al24Oc+JLnXPoDQFxGVFr9cDr8U4LHffByFKndlt6JcYYXXRfEYKVEGAxZ4APYxDpxec83I9eFbFdlKuCEp+RDiNAHIET8t8osbNu84B46d+x2XH8jPUospp3EdT4U3vEM4UYhoaHRgdZOztWI8J9p6jHz+ajWGUtreMQ2NEOKLcbfcLRwL57irSKZ55k77Pkk75g7c6NJO4dtxm/nmwiy/ccUJZqAkNKNoQ1ueGvbaYBqtTJM8PMbtePgQfu+toJF/4k7Nn4V7CeXw0bJiP3+rQf8UhZqynFwC/zAAsxbx7eaY63JxEHq8pcxHnc6wrNc31b0MZbnRSHrIlSPTlyragQIMuBKWD8nwwMHJOaQtkoWlvQz0QXLYPft3zgo70ZOjq6AZboc+2pyHMBl5kAliyFkij9bId5RS7tOhK0nSW/sPyfAfBbArW/Kg78CMkn1uefP202Pp/i9fOhZW96c4U932dERb8VyvvQ9VSUtrpQBXzFtIhdFPyUwBPmVtkr+xlNUdIDZ/CMcSLYXtox2mswf6w5kQFFF5IQhWviOv+Z9ZjPK0tFDG+UZ3iICcq4RTZFf7MWmHXN+3q5cu2iOycgz1ktN2gXoW9zBjBKFCzq5yGoGDCEjW26HmPgIyfReJWbDCUZeDGakJcZjFq8y3F6CaFXC+2ySpIThINKeuTi/mfvBmW5CTGkPKC9JoKwEYMe+Oy9lw6fq4zxNkcX05r15xw3E06pUkSt4wlU7KAOURXEd9OZmmHmVBUFHP1ZgQKgNHByryK+9pNc
- v0P3+QnT
- WSH+QCr4+CInMqqM93p8j2R1T9WIS8qYlZ5JuX3Gds0MPvBmBizlZobq64Ce1i4HKliS0kC6CJzNroyB5hZ/vEUq8H2pa6gkRCEDkM1BuJDAIsmcawEg02p12DiOHv7JuN/5GuePDFH8WAouDkWc3kWfYPxyrx66CP01obO45U/3dmuIGXaf2Us0rfBJWU8vUX3z4opVjo4NccK0dOdrw8IU9aUdFJrxGk/mr27/gmDMq6go3bCUlJZcZpMDZGn+QVtJqTIjgmpWrJ1DlhpsAl0LJmWyzvs42PsfOE6UB+qwU3MFgQMFTceJPhsfdTBqt+AzJjhgXsL37Gsyi1AnrQkL48RpIoo2ctdJgeUIzSPJ4YwE=
+X-Stat-Signature: 4zmux5pdp5a4ddihgajhpthcpe3hs3jj
+X-Rspam-User: 
+X-HE-Tag: 1794231173-791691
+X-HE-Meta: U2FsdGVkX1/4LAbOJRHUvGzMxuPxp+elrJNWaatp4iARh+I44IjjwJ0e28NZ4Dk9G6FhWawkxLIfmPqmuwWRA6WMiJbJDZzGhVwDrWy8bEcznoWAew0/n52BWRm2R++QEVH9GJuI5Bfh/MU4Xs3AWEbCO0VATSkfy0lSd3oE46/KQeiiGo/qv7XFPLtQ3Fe8Hj70pUimOQKbmvO3bFWhD7lKcUv39Z49DHkkhioh8EldWw8SFekZSyXRlahTak3sbhllX1tDr1HN3J/TwIHFcX87cAl3ANOaPE7gbuM71UVUR6uxrXk0H2mfp2dWYJQqXjYEREXIEKttSA3tz/0r1gbx1APQvlbO5xX1diRj7VSQ2x9NbTPdcLO/u8fI8Lx2KGFjuZXX0vNf3RsYiL8Cp0SHyEWZ5JYoNfi2AMB6KtAwsstTp0csATIkNqV4WRraZcPMAsLsJ4vsYHycoyDeH3SqKL/LwC3UiSsGnrtaTeTZQHPmUTEcPvo9O1hBvqUmsUH+zbg5PJmda1TswiiOBIzOjQswdT45o3eH2YSDBODPxQq6RQCrhN/t5q00mnUPmrFtz/QmMbqgZSvwiSD0Pqq7Ghem419lpS02S/zhuJ1dpfR1vvBaPKABb+8p3MUTuO4eUKJS04JG19Fys8gxy9gJ7iv5Q/ZVhljlrAGYBZQCkug+AYRNMLriHcQI6zEeRKlN0j4FHkWgnBE0Cxugh6W3A2/pW0gbMhTjLDQvgqh+9bbnWa/Hk4t6eWTKkQ36r+wHNGH5n3mMHiicQNdS/vNIDA9sAV8onEyr9yq4Arko1AxhF0Q6IqMPLOAWHTWwlb1K+47b0IFyssXmPYrBpFpZmEP9xcsceh8EeuEUmGjqlJkuNpz8OpmxPQdkRVsCHbH04oEuw282Tkjv/9Zs1Mrwk7Ggagf/ZSte0yjQCcH1NgmAnscJZTE6DVjxKyCA4svXXFs+1hN71ovhLDA
+ S+eUmZzr
+ N40tiQzmmSpMlpPxufgmGbOywqssOAjs91eP8adi1mvxxSd222m9r0zu49pkKuczWgTt3ZXOGLr42oKaIlhaTJl/g+5lmE2BqPXwwK5oWqsJc1YfDxCvLa4c/y4vlj+Qasvg3zy+xByChW81puvYQ6IHZx7NdNh8TghfM4s0XBP69/tUxoD/2nmHBYdmB66r9eRkLQAd3P8/uhN0IoeaKa8/+xiV2TPMj7Y7zMe96Lm7Mxgz8tAOAqW7f4v2HKyk1UuLS+Fa9UWBp1Gg+paESGmw4aoGpST52yfgDyrPkuPqSlvtRLiHApMmoz8OJHsIglQ/94j+AYXXyZjeCsu+XcjJXDOKL0/8C5B1Y2uq8LXGz9SY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -149,16 +148,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, 05 Nov 2026 21:30:54 +0000, Lorenzo Stoakes (ARM) wrote:
-> Replace the remaining uses of the legacy vm_flags_t flags in the rmap logic
-> with vma_flags_t values.
+On Thu, 05 Nov 2026 21:30:52 +0000, Lorenzo Stoakes (ARM) wrote:
+> Replace use of the legacy vm_flags_t flags with vma_flags_t values
+> throughout the GUP logic, both for the MMU and nommu variants.
 > 
 > No functional change intended.
 
 Applied, thanks!
 
 tree: mm/core.git
-branch: rmap-7.5.misc
+branch: gup-7.5.misc
 
 Applied patches will appear soon in mm-next, followed by linux-next.
 
@@ -173,8 +172,8 @@ Note that commit hashes shown below are subject to change due to rebase,
 trailer updates or similar. Further, this is not a guarantee that the
 patches will go upstream. If in doubt, please check the listed branch.
 
-[03/13] mm/rmap: convert remaining VMA flag tests to use vma_flags_t
-        https://git.kernel.org/mm/core/c/1c78523f
+[01/13] mm/gup: convert GUP code to use vma_flags_t
+        https://git.kernel.org/mm/core/c/87127ea3
 
 -- 
 Cheers,
