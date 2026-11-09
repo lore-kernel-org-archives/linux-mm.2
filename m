@@ -1,197 +1,124 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D305606A331
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 09:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE37606EE99
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 09:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bhqNNQOV
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ClskhasM
 Received: by kanga.kvack.org (Postfix)
-	id 655D06B05B7; Mon,  9 Nov 2026 04:51:40 -0500 (EST)
+	id DA8A66B05C2; Mon,  9 Nov 2026 04:52:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 62D576B05C0; Mon,  9 Nov 2026 04:51:40 -0500 (EST)
+	id D5AE66B05C3; Mon,  9 Nov 2026 04:52:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51EAE6B05C1; Mon,  9 Nov 2026 04:51:40 -0500 (EST)
+	id C4C5A6B05C4; Mon,  9 Nov 2026 04:52:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 298326B05B7
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:51:40 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C66D1C05FC
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:51:39 +0000 (UTC)
-X-FDA: 85415113518.09.7BC208F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 06738140003
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:51:37 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bhqNNQOV;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E5FD6B05C2
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:52:02 -0500 (EST)
+Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1F96D1A0636
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:52:02 +0000 (UTC)
+X-FDA: 85415114484.06.B19BEB6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 4EBDAA0006
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:52:00 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ClskhasM;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794217920;
+	b=22zcJBes3cBVO1BW0ETlFZqgxBaMyVTEoNUkq3RKryXRueaAhzxkixa5PnhUwMk4uosITn
+	1vIsxb+7duLtJFeFYTF8XVHEFK5suv7dRoleIIX8v10nPXiVeyQi8pB3Rn5G2tj33NS6AB
+	4BttnRz4sBmel5z/Wiu4fBIkCTAJ0XU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ClskhasM;
+	spf=pass (imf25.hostedemail.com: domain of baohua@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=baohua@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794217898;
+	s=arc-20220608; t=1794217920;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Evsm93Jf7an7afCmpYNcizJpvuoFJEVrWxhvJjq1VG0=;
-	b=02gGT03C/3L4ko9g4FMxQRzUzebQxjwW9Jovl2aGtiXkNFBrKSZgF+YXWS3GGvcZI5tnlX
-	vGPM8t5QYIGRjOvdlpNdhDdPecKSGidGq79hSSmEkZQ2ry5bTtSohhAxyExy76V6eaCQlI
-	shJAhZBjK4iST+Tv5xtE7c6lwzWK4EA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794217898;
-	b=oYDS37KNzUGX9t3GIv0czSBHKBamDxeqX32XJTDSwxlmNN+5tI3xq15Du9x/sC837UmycT
-	39AMYKZI/FkySc2THsThpiBmrqSY90QqXcVgqf+a05UEcZLArcMFDUXA0dqoJiZ0J7EFIP
-	KB9ngpLqJ5V0uJh7uPwGZkE2eXO8JFg=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bhqNNQOV;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=BPClaJ9k3pZ7M2HgIHwRGL9GY0oByLTbIb+UN2JvJdI=;
+	b=MUZPYNJJTlLBWo255dVvRxxwmt/JmnrwNbKTvY4jx5cC5Ni48rcIG+Rlu7ST/IyYiiXhSy
+	COsH9nBWNSLGBZiT/SeS6ITNCPOSCzJ8LTAUs7yUn6g7VISKurOJw3bCfBgvpff62hpL4k
+	tXmKfRlikh6JT8j3Bks/vdBk9wd9iho=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 20B1340790;
-	Mon,  9 Nov 2026 09:51:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398411F0089F;
-	Mon,  9 Nov 2026 09:51:23 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D152963062
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:51:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7077B1F00930
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794217897;
-	bh=Evsm93Jf7an7afCmpYNcizJpvuoFJEVrWxhvJjq1VG0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=bhqNNQOV9B10W1Kf+7AkY4klAiBwSyMS64uCIN5C2ry9FaHossio85/T+jcSxZFth
-	 zbBBi0sFWCFeSqS8KvSvajPokW1ehMJQfPzYOOyGXxzRPbsXl8EjF2/8ONP7xUM+XW
-	 sYwl2qRVwZseaif7xlBE9tCwEt6iL279YjBiJREbwO8R/mPiUOak4T7h/DbViQTQZg
-	 hXPJaTP8JI+Wj4hIFzuQ6JmkvfH1TEn65uzoxqrA6mEtLh5yvVX/D/he1p2v1Ocgin
-	 1AMXAeTnbw0i2zeG1M5YIXiTSUZdO4ESqh5MnIOOwJVmtGYcCZA38e8rLX9i1b48Ub
-	 rOqb9dsZR9vMw==
-Message-ID: <db93735f-2452-453f-bfe2-f1cef00f143a@kernel.org>
-Date: Mon, 9 Nov 2026 10:51:20 +0100
+	s=k20260515; t=1794217919;
+	bh=BPClaJ9k3pZ7M2HgIHwRGL9GY0oByLTbIb+UN2JvJdI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=ClskhasMy/BO/ZFdZwG+TW51LQNe0aK6dpQ2tXf3zXQZrXEHcm8neQwkSGJQK5bn8
+	 LSLm+/HBxMHZMxvoJu/FfopjGzpVjathiWg6LhLTjtHomqOV6NScv+voJMgOraZPB+
+	 /ycD4F1aoK068VBjmEHIzTpz6UCYVE334qo4AAnvYskYS657GvVKuV95oqJnh/isCp
+	 Ew07MQtp8jOpq34koBR4cll0v4jnwrIVmL3RYMomGUCU4+PMwbvb/yi5tiY3SPEdBZ
+	 YFw2QOk4Ib9EJpoMe7VKixgAJAlLv7+MJTeey2wVMPTTTLYNNHu/Q6loLUjbENBCIP
+	 uVqmfBr+FuxdQ==
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5eab93a9862so104155e0c.0
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 01:51:59 -0800 (PST)
+X-Gm-Message-State: APuU4Z8mm3e8ev4Fx9F6BVphfpZnIkYEMQ5/YFGaV99637v2MSIIUWdz
+	mcsSoyD1AQSCw2SWkGWqP5LHtyT03zoRnNItX3UCI1IF36/sKRTnwTkKkDtYHTnpqaYegU3v4c8
+	XDEEo5ZRnRbVgJVbMFHVidns8kYX0hGg=
+X-Received: by 2002:a05:6122:a012:b0:5ea:c9ab:bd86 with SMTP id
+ 71dfb90a1353d-5edf9435d18mr565522e0c.21.1794217918356; Mon, 09 Nov 2026
+ 01:51:58 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 09/47] mm/rmap: handle device-exclusive entries in
- folio_referenced_one()
-To: "Garg, Shivank" <shivankg@amd.com>,
- "pratyush@kernel.org" <pratyush@kernel.org>,
- "osalvador@suse.de" <osalvador@suse.de>, "xu.xin@linux.dev"
- <xu.xin@linux.dev>, "peterx@redhat.com" <peterx@redhat.com>,
- "aneesh.kumar@kernel.org" <aneesh.kumar@kernel.org>,
- "baoquan.he@linux.dev" <baoquan.he@linux.dev>,
- "riel@surriel.com" <riel@surriel.com>,
- "ryan.roberts@arm.com" <ryan.roberts@arm.com>,
- "mhocko@suse.com" <mhocko@suse.com>,
- "usama.arif@linux.dev" <usama.arif@linux.dev>,
- "hannes@cmpxchg.org" <hannes@cmpxchg.org>, "jack@suse.cz" <jack@suse.cz>,
- "pfalcato@suse.de" <pfalcato@suse.de>,
- "lance.yang@linux.dev" <lance.yang@linux.dev>,
- "shakeel.butt@linux.dev" <shakeel.butt@linux.dev>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "weixugc@google.com" <weixugc@google.com>, "kees@kernel.org"
- <kees@kernel.org>, "kasong@tencent.com" <kasong@tencent.com>,
- "jannh@google.com" <jannh@google.com>, "chrisl@kernel.org"
- <chrisl@kernel.org>, "liam@infradead.org" <liam@infradead.org>,
- "yuanchu@google.com" <yuanchu@google.com>,
- "youngjun.park@lge.com" <youngjun.park@lge.com>,
- "ying.huang@linux.alibaba.com" <ying.huang@linux.alibaba.com>,
- "joshua.hahnjy@gmail.com" <joshua.hahnjy@gmail.com>,
- "rppt@kernel.org" <rppt@kernel.org>,
- "axelrasmussen@google.com" <axelrasmussen@google.com>,
- "nphamcs@gmail.com" <nphamcs@gmail.com>,
- "gourry@gourry.net" <gourry@gourry.net>,
- "willy@infradead.org" <willy@infradead.org>,
- "baolin.wang@linux.alibaba.com" <baolin.wang@linux.alibaba.com>,
- "surenb@google.com" <surenb@google.com>,
- "qi.zheng@linux.dev" <qi.zheng@linux.dev>,
- "matthew.brost@intel.com" <matthew.brost@intel.com>,
- "minchan@kernel.org" <minchan@kernel.org>,
- "dev.jain@arm.com" <dev.jain@arm.com>, "will@kernel.org" <will@kernel.org>,
- "hughd@google.com" <hughd@google.com>,
- "nico.pache@linux.dev" <nico.pache@linux.dev>,
- "npiggin@gmail.com" <npiggin@gmail.com>,
- "baohua@kernel.org" <baohua@kernel.org>,
- "muchun.song@linux.dev" <muchun.song@linux.dev>,
- "harry@kernel.org" <harry@kernel.org>,
- "chengming.zhou@linux.dev" <chengming.zhou@linux.dev>,
- "apopple@nvidia.com" <apopple@nvidia.com>, "ziy@nvidia.com"
- <ziy@nvidia.com>, "vbabka@kernel.org" <vbabka@kernel.org>,
- "jhubbard@nvidia.com" <jhubbard@nvidia.com>, "ljs@kernel.org"
- <ljs@kernel.org>, "shikemeng@huaweicloud.com" <shikemeng@huaweicloud.com>,
- "mhocko@kernel.org" <mhocko@kernel.org>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>,
- "kas@kernel.org" <kas@kernel.org>, "jgg@ziepe.ca" <jgg@ziepe.ca>,
- "rakie.kim@sk.com" <rakie.kim@sk.com>
-Cc: "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-cxl@vger.kernel.org" <linux-cxl@vger.kernel.org>,
- "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "josef@toxicpanda.com" <josef@toxicpanda.com>,
- "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "usama.anjum@arm.com" <usama.anjum@arm.com>
-References: <20261031-fixes_core-v3-0-d6437171ecc3@kernel.org>
- <20261031-fixes_core-v3-9-d6437171ecc3@kernel.org>
- <50c50262c50da19f6a2b27f848324772b0e3c707.camel@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <50c50262c50da19f6a2b27f848324772b0e3c707.camel@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1uxqz5bddny6e7mw7jok1ex1fiusd1z7
-X-Rspamd-Queue-Id: 06738140003
+References: <20261016-mglru-fg-v4-0-2106750c0bfa@tencent.com>
+ <20261016-mglru-fg-v4-6-2106750c0bfa@tencent.com> <CAGsJ_4zQh0TnAxifWPo2+DcyFFOtpXM+2QW91A07oumfyrqVYg@mail.gmail.com>
+ <CAMgjq7DeC23zak6Xur=E29qo7JPNvQUMtbbO34Y62jrQjQgStA@mail.gmail.com>
+In-Reply-To: <CAMgjq7DeC23zak6Xur=E29qo7JPNvQUMtbbO34Y62jrQjQgStA@mail.gmail.com>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 9 Nov 2026 17:51:47 +0800
+X-Gmail-Original-Message-ID: <CAGsJ_4w275Z8ruQHNMFd9uL+wJgAusU2+QN-cwS5mZcBrg9fRA@mail.gmail.com>
+X-Gm-Features: AclHuK-xWTO8SHWDNdqRk7rNXhHpJft0o90jKbimD22mK-2buKuHz7N9dEvOsNg
+Message-ID: <CAGsJ_4w275Z8ruQHNMFd9uL+wJgAusU2+QN-cwS5mZcBrg9fRA@mail.gmail.com>
+Subject: Re: [PATCH v4 06/17] mm/mglru: move add/del LRU size accounting out
+ of lru_gen_update_size()
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, "Liam R. Howlett" <liam@infradead.org>, SJ Park <sj@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Muchun Song <muchun.song@linux.dev>, Qi Zheng <qi.zheng@linux.dev>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Chris Li <chrisl@kernel.org>, 
+	Baoquan He <baoquan.he@linux.dev>, Nico Pache <nico.pache@linux.dev>, 
+	Usama Arif <usama.arif@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Vlastimil Babka <vbabka@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Youngjun Park <youngjun.park@lge.com>, Zi Yan <ziy@nvidia.com>, 
+	Gregory Price <gourry@gourry.net>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Lance Yang <lance.yang@linux.dev>, Hugh Dickins <hughd@google.com>, 
+	David Rientjes <rientjes@google.com>, Yu Zhao <yuzhao@google.com>, 
+	Vernon Yang <vernon2gm@gmail.com>, Zicheng Wang <wangzicheng@honor.com>, 
+	Chen Ridong <chenridong@xiaomi.com>, Tal Zussman <tz2294@columbia.edu>, 
+	Xiang Liu <liuxiang.277@bytedance.com>, Ehab Ababneh <ehab.ababneh@intel.com>, 
+	zhaozhengzhuo <zhaozhengzhuo@uniontech.com>, Lian Wang <lianux.mm@gmail.com>, 
+	Kunwu Chan <kunwu.chan@gmail.com>, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org, damon@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: b7rktastendgtuydpdeb6poy74acudgu
+X-Rspamd-Queue-Id: 4EBDAA0006
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794217897-134413
-X-HE-Meta: U2FsdGVkX18/2mMoVSsQbpxwTXw4OzJY0duGvta0Ln2iWhssYiglHRLWrjYrpXAQ8/uQ9WGiGjPmfpoQZjGldsdOXbsPJCYtklus0xQTJaxT4axur9CG3mRuxWotwGswL6QQoPVSpZ2alMQcjDc/LYo3CRvw5vQcLK/ea+H4ueegqT3jvpQN7OvsjOc3yj6hor9MQoySG67DUI5rUXmdn9WMj25pznKXR/pRL1sv5QKbhV1rA+CVZk6V8snf08cBXteiy8BVSo0ZsHN57iElbZ6W+HdicyL70DZCvHwvHQSk1Lx/4wxF1NUgtU9KdXUSTLOZRdxReOxShQaYW5lliT6aqsNbTg4Ou51LAJHYsgXqSipay19daaIcFKAAc9wwgnOA0ZmCf0tAcDS/PMEjYLwWcQu5oBe1WtxXRX6Tobccoctvc7nP1lxs4XFzTo83Pwu0Mi1zCzyD0a8OkiDVK9h8kmITVRay0KYHIUfqrYRtK0QeKnY0Qr4ONIbtu8vvYKzbGdTjVKuX9HjyPYf3M++4ZMEUhMGj0QhK40NTgbdB/VaS3PaQQtguJme4O/thMjeeH9q1UDr4wdTtXlYAZu52GTHEtBZ34nsNz+WHVpHS+F4qa84atxDJ75W6f0VB1Dog8/7m74hinyzMiAVIvB1KMBf5rUCKYpl5CKAF7GUaLr2wp5bBBXJsLc5Ytnq1FYB6CkJQ/1RpRqxU0sUUwZ3viXgGaQO5TUDUj7thgFzQ/RckSf1jkuFya/8u3u8FF0E4lvM5QfqQFyoOL3uI7KNCX3LYwgrElYD9ksLhwAFn0KYQqKRFA3TTIy5MqeZ8OBzDH7J/NFl4aMbKLRS2cuQT5jjyXVNvWXFNjgMFN/x8S4ZepmVu3tV96h+mGMWaml62ceY8yUxcMZjkEKumzBe3l2798WX+gW2c1SE4oFYyiaxZWFrUmFMX4AUDuRe2VosZ+rWHjp+4hVBoH88
- Mjw0G6Kj
- 49T5iE21jWVHN4vFjF3oeNZiNGiVi5Iz440eH/UbMu+UAfQsLnmkF4L4H0YR2yb06+2hdeGoIAXefqPNWY/iRyvVEvBdRikcEr9wlJuSASy3mXgcjfXa03IjwbjZ/88BJnuv7RWSfZXWwRlr/rTyuLBLbr1C8eT6mcAK+V0MVtndPiWfSm9atnLn364uRETNpA6OrGiXm6ukcCSpBOGWkFhEWXdj6axYtE4WOk7uox1baIh+F7UJD61RFsNtVFX1CvURoSV7B9WpLQ+FHfNTvvj4XnTnZKFL+RuqQkDkX61fZIZRycIi66blDnWzMmWl8z9t+KdqfcgggMhj/ZPof5olUANS21iloAou/+lDgQ9M41Rpjcij1DlXF5QteLmQKUV68mOE/HPP8bwfFw+Luj3HkmYBOKbPG2ciRTmNUeWw6Dfu2KPY4SwF5zTEnfCVsaNAO1PS9c9OzpwP8CxprWYQ8IFJKCMJvXXzCpSnLzfDI5wXmG1kElBSHCL2ncRBUFh2r9rK8mFxC75WvaoyMPR97YYUiG6EG4dzvPcuXIRw10PD8Th9iORACgqc99316FzpXp1mLHKy3AOkH6qi19eTYzw==
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794217920-588986
+X-HE-Meta: U2FsdGVkX19dAHZ65oqfaz6dXqZpA9TitqgklhLTvuvby5o4+BZp5E8qRYqx9HBj4qe4tAeg5LnarvDHO6n6dJHmrx3+4Zi49w+1mD7hNVQElowwqvlV7fis0Acd7jPvsidgx5PT52MhwFmwRgd2Fpqx5DW7ff6io1j31s0unK6lXaQshHRtMWm0q7KTtxChL1TB3NZ94eq7g2Frs+v2wmlJBVlM7hIwCblXwV4yTY5EMOuT2zgKHZyGFMY0STzO5m+737eI6k0FAWBnN0x916FFkfiR/QLhCcJ5v6NQiwuW21TyMOEC9PTWW9EK88mt70CjaPR15zJjayX8mcD0KKUMc6WJG1OgHPcwW/DK5Qd4n1/0CqMjrF27n0wsiTvW6XuocQ6Hfq8VKs0Dw0MQ6GpzDkCohq3N8vNAhNidlU4GCnb+eNqiwzKe9k9wfTfkQzwbrcCO3xJC2Upi9ZtpskV5XaNHQ7pSf8jg0Bhqw8Dyrb1KdX9ghTazQa/he3ulGSURZIjhqcG8aZq1B7X8dmS+vJswygN5GijclJ4Jv7ZC/YcJ/41TlseDNwcQ2PqwDJ1LNF9EaVgd4wL/XI3RHR79eWaS1bCdL9i/a0Zvocysnbv06ijsSRzXQt6ou23DkAQWVh/pG5zWZ42m2fIA9nf692wV0xGiOZCtHuWqmLu1tOUeKz1XwuCUdrRDn7L6K9d8SvctkF+C7jcBZwLJGHhhMPeOskU6Z7QywnXcd1tQUxDnXpyQY9zHXJR2Rz6TpwBVC4vZjVR2OBcREOLBi6sZdnut3xVbEPFrtt4+AKLkQcDnNXQvE94u+Xvtxmf0f9rM+YN8v9rCmjMG/BZAX3Ll0uR/IXnL9fvDLooFNaZKgWYnX7aCOZgM7tIfHQ7o+U/4+grNn33qMCPWc7J4Z/0Jwy+jABFU532V/2Jacep/NBZDL7w7KTH+t1ba44RZRHeYOTbCodjViFE+eGJ
+ L72uqxyV
+ O3Q/eLZpBbzrWHDwsbby0t+C9RzW8jBhdLBsQMgUEKbLp2ki1K1RcmJRbxm4lCwKSX4kBHQ2JqAYUfkpLl87U6HBxKqqa+TLrh2+c62kgL5GWLkboltaiwjadA0K16GXyfBbNiQcWGWjKLAJScijv7Wrj2ydgaY0eej4zI41ruQTUi46Bkgm0SGpgItY0ak0+OD3ZFF+q6kQsgtV0BKZtfVFEdaE78txB2VxkGGbk5rRP1x89kmNduCHpN0CrntRWXQxSnPeYMKNJjOmM3x9aKd6rp52rKUOEpU2U/hz2vnqPJdHCh7JD6kZ2aNASxrtvc+d3moWuvvS3hXLrgnBRXAHCuLNge+LPVkE6ocONsz/WRgFs4YU2YF9cFZe+TheWSKHPaR/lsBu24HFmNXq8be2SGj8+PCFUVup/u3IrDi6/F1wZAbspEfIf6JYF/obfDDe0EWNmweh5LQfzB55uoOL+kL60Oaf4gc4PEhmiUYXT9eFTv7Eks67WJ0YiCSkhyXkKjd0H1KVMi3cmGud97Z7Wpw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -200,89 +127,92 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/9/26 06:22, Garg, Shivank wrote:
-> On Sat, 2026-10-31 at 10:39 +0100, David Hildenbrand (Arm) wrote:
->> page_vma_mapped_walk() can return non-present device-exclusive entries,
->> but folio_referenced_one() passes them to PTE young-bit accessors that
->> require present PTEs.
->>
->> We must neither call clear_flush_young_ptes_notify() nor
->> folio_pte_batch() with non-present entries. For example, clearing the
->> young bit on non-present PTEs can corrupt the entry: on arm64
->> PTE_AF overlaps the swap type, so clearing it turns a device-exclusive
->> entry into an ordinary swap entry.
->>
->> folio_pte_batch() will VM_WARN_ON_FOLIO.
->>
->> Apply the same approach as the previous fixes to e.g., damon_ptep_mkold():
->> treat these entries as old from the CPU's perspective and obtain their
->> young state through the MMU notifier.
->>
->> Skip PTE batching and MGLRU look-around for non-present entries, and
->> don't modify non-present PTEs.
->>
->> Fixes: b756a3b5e7ea ("mm: device exclusive memory access")
->> Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
->> Cc: stable@vger.kernel.org
->> Reported-by: Josef Bacik <josef@toxicpanda.com>
->> Reviewed-by: Harry Yoo (Meta) <harry@kernel.org>
->> Reviewed-by: Barry Song <baohua@kernel.org>
->> Reviewed-by: Dev Jain <dev.jain@arm.com>
->> Tested-by: Muhammad Usama Anjum <usama.anjum@arm.com>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->>  mm/rmap.c | 23 +++++++++++++++++++----
->>  1 file changed, 19 insertions(+), 4 deletions(-)
->>
->> diff --git a/mm/rmap.c b/mm/rmap.c
->> index 1131b76bbbc28..0faef46806e5c 100644
->> --- a/mm/rmap.c
->> +++ b/mm/rmap.c
->> @@ -924,6 +924,7 @@ static bool folio_referenced_one(struct folio *folio,
->>  	DEFINE_FOLIO_VMA_WALK(pvmw, folio, vma, address, 0);
->>  	int ptes = 0, referenced = 0;
->>  	unsigned int nr;
->> +	pte_t pteval;
->>  
->>  	while (page_vma_mapped_walk(&pvmw)) {
->>  		address = pvmw.address;
->> @@ -968,10 +969,12 @@ static bool folio_referenced_one(struct folio *folio,
->>  			return false;
->>  		}
->>  
->> -		if (pvmw.pte && folio_test_large(folio)) {
->> +		if (pvmw.pte)
->> +			pteval = ptep_get(pvmw.pte);
->> +
->> +		if (pvmw.pte && pte_present(pteval) && folio_test_large(folio)) {
->>  			const unsigned long end_addr = pmd_addr_end(address, vma->vm_end);
->>  			const unsigned int max_nr = (end_addr - address) >> PAGE_SHIFT;
->> -			pte_t pteval = ptep_get(pvmw.pte);
->>  
->>  			nr = folio_pte_batch(folio, pvmw.pte, pteval, max_nr);
->>  		}
->> @@ -981,11 +984,23 @@ static bool folio_referenced_one(struct folio *folio,
->>  		 * are. —they could be on active/inactive lists or on MGLRU. So the
->>  		 * simplest approach is to disable this look-around optimization.
->>  		 */
->> -		if (lru_gen_enabled() && !lru_gen_switching() && pvmw.pte) {
->> +		if (lru_gen_enabled() && !lru_gen_switching() && pvmw.pte &&
->> +		    pte_present(pteval)) {
->>  			if (lru_gen_look_around(&pvmw, nr))
->>  				referenced++;
->>  		} else if (pvmw.pte) {
->> -			if (clear_flush_young_ptes_notify(vma, address, pvmw.pte, nr))
-> 
-> This was the only caller of clear_flush_young_ptes_notify(), so this
-> leaves both definitions in mm/internal.h unused.
-> 
-> Would you prefer to remove them, or keep them for company with their
-> still used test_and_clear_young_ptes_notify friend?
+On Mon, Nov 9, 2026 at 5:34=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
+:
+>
+> On Mon, Nov 9, 2026 at 4:48=E2=80=AFAM Barry Song <baohua@kernel.org> wro=
+te:
+> >
+> > On Fri, Oct 16, 2026 at 2:15=E2=80=AFAM Kairui Song via B4 Relay
+> > <devnull+kasong.tencent.com@kernel.org> wrote:
+> > >
+> > > From: Kairui Song <kasong@tencent.com>
+> > >
+> > > Pure code shuffle, no behavior change.  lru_gen_update_size() now onl=
+y
+> > > updates the per-generation counters plus the promotion move; the
+> > > addition and deletion active/inactive accounting move to
+> > > lru_gen_add_folio() and lru_gen_del_folio(), which know the generatio=
+n
+> > > and can apply the active-window test directly.
+> > >
+> > > The unevictable case is untouched: unevictable folios never enter
+> > > lru_gen_add_folio() and keep being accounted by lruvec_add_folio() as
+> > > before.
+> > >
+> > > Tested-by: zhaozhengzhuo <zhaozhengzhuo@uniontech.com>
+> > > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > > ---
+> >
+> > The patch looks good to me.
+> >
+> > Meanwhile, I've been struggling with the names of
+> > __update_lru_size() and lru_gen_update_size() for a long
+> > time.
+> >
+> > Given that lru_gen_update_size() now only updates
+> > nr_pages:
+> > static inline void lru_gen_update_size(struct lruvec *lruvec, int type,
+> >                 struct folio *folio, int old_gen, int new_gen)
+> > {
+> >        ...
+> >
+> >         if (old_gen >=3D 0)
+> >                 atomic_long_sub(delta, &lrugen->nr_pages[old_gen][type]=
+[zone]);
+> >         if (new_gen >=3D 0)
+> >                 atomic_long_add(delta, &lrugen->nr_pages[new_gen][type]=
+[zone]);
+> > }
+> >
+> > while __update_lru_size() only handles
+> > active/inactive accounting, could we rename them to make
+> > their roles clearer? For example:
+> >
+> > lru_gen_update_nr_pages()
+> > lru_gen_update_active_inactive_size()
+>
+> Hmm but __update_lru_size is also used by CLRU, so it's not a
+> "lru_gen" specific helper. If we can merge CLRU/MGLRU, then maybe we
+> can rename them?
 
-Can you send a cleanup? Thanks!
+I did a quick search in mm/vmscan.c and found that
+everything is MGLRU. But you're right, I missed
+update_lru_size(), which is part of CLRU.
 
--- 
-Cheers,
+   1     62  include/linux/mm_inline.h <<update_lru_size>>
+             __update_lru_size(lruvec, lru, zid, nr_pages);
+   2    279  include/linux/mm_inline.h <<lru_gen_update_size>>
+             __update_lru_size(lruvec, lru, zone, delta);
+   3    287  include/linux/mm_inline.h <<lru_gen_update_size>>
+             __update_lru_size(lruvec, lru, zone, -delta);
+   4    293  include/linux/mm_inline.h <<lru_gen_update_size>>
+             __update_lru_size(lruvec, lru, zone, -delta);
+   5    294  include/linux/mm_inline.h <<lru_gen_update_size>>
+             __update_lru_size(lruvec, lru + LRU_ACTIVE, zone, delta);
+   6   3355  mm/vmscan.c <<reset_batch_size>>
+             __update_lru_size(lruvec, lru, zone, delta);
+   7   4101  mm/vmscan.c <<inc_max_seq>>
+             __update_lru_size(lruvec, lru, zone, delta);
+   8   4102  mm/vmscan.c <<inc_max_seq>>
+             __update_lru_size(lruvec, lru + LRU_ACTIVE, zone, -delta);
+   9   4632  mm/vmscan.c <<__lru_gen_reparent_memcg>>
+             __update_lru_size(child_lruvec, lru + child_lru_active,
+zone, -nr_pages);
+  10   4633  mm/vmscan.c <<__lru_gen_reparent_memcg>>
+             __update_lru_size(parent_lruvec, lru + parent_lru_active,
+zone, nr_pages);
 
-David
+Thanks,
+Barry
 
