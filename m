@@ -1,84 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE067606A321
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 15:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C6C606A330
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 15:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d/M47nMI
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SKgc2LkN
 Received: by kanga.kvack.org (Postfix)
-	id F209A6B05C0; Mon,  9 Nov 2026 10:01:04 -0500 (EST)
+	id 961EA6B05C2; Mon,  9 Nov 2026 10:08:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF7526B05C1; Mon,  9 Nov 2026 10:01:04 -0500 (EST)
+	id 9391C6B05C3; Mon,  9 Nov 2026 10:08:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E0D5A6B05C2; Mon,  9 Nov 2026 10:01:04 -0500 (EST)
+	id 84FD66B05C4; Mon,  9 Nov 2026 10:08:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BED986B05C0
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:01:04 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5BFC61606E6
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:01:04 +0000 (UTC)
-X-FDA: 85415893248.23.68C2A70
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 63C8DA0004
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:01:02 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="d/M47nMI";
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D6F36B05C2
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:08:37 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E83FE1206A5
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:08:36 +0000 (UTC)
+X-FDA: 85415912232.12.42CD30F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0DC86A0005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 15:08:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SKgc2LkN;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794236462;
+	s=arc-20220608; t=1794236915;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uh98auUTZPUD0WL8RdCfHHJjBpICoJEBbXmih9wp9i0=;
-	b=vN+kBxg067nPHXDmWOV9nyrsrTBIt+w9mvN42h8170A5J2mbi/S6Ke7jglbhezb7YspAI+
-	fohnvTCrM3I3orlFEcMpCHFcsLX+t9atO+F9YWmHQGwKuHcrvKFocY4WHbKvwqc8QUVIwG
-	I2pRlflCjRP72zHL55rJqhsXLOJQir0=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="d/M47nMI";
-	spf=pass (imf15.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=Sd2qM6+PDFRCO8BLs2DGMh7GhcX/ulkjEDLXnk+kxUA=;
+	b=UJsW9OS00IykvdVD8JcjHS2e6rwAKW3XPM+syvM3GAENgPDvGWQ5u8FGY2BquVzx20Wiur
+	3bOC9V4062D9bQDmRIhE2Pu+3C1qzWx6MSMPFf05DOXiGKPkZsTVkdIKdPAb7DE7Tr9fqt
+	bYHpt3ENJbuxGAumSexYC6v6+2V9bVc=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794236462;
-	b=xA1G3gspgzdb41C4RgNKEz0C+WCMGwXBUo7/NicU8YbUeK8B58oJf85kKC5TaILj5Z5xyr
-	wSm+xQpO2RlOsii50xG8gDBY1alk7zcL/xpduPrv6ZS9rxS2H0RzBjvmZuyaHZySBQXhlR
-	nX2k0MMFyS44jWSD+DGP2N6HGtzyiLo=
+	t=1794236915;
+	b=3alaKBYXZChnF5noIvtm69vBYmRFF+rOpi20fTSyBkOc7gQOOJEshXWMh68sZCmyGSNYKK
+	PoXX9QqOcrHq2YYbN22i4p9ZTSqSgohhH1uDyHEkeNr3OlTvhxZtkRuw7nFg6NVAYfPK9V
+	S/kFzEAjHM9VciCv+JG+YLv4SlC3qSo=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SKgc2LkN;
+	spf=pass (imf25.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id A693860E00;
-	Mon,  9 Nov 2026 15:01:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3FA1F008A1;
-	Mon,  9 Nov 2026 15:00:57 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 2CD794402A;
+	Mon,  9 Nov 2026 15:08:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430B91F008A4;
+	Mon,  9 Nov 2026 15:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794236461;
-	bh=uh98auUTZPUD0WL8RdCfHHJjBpICoJEBbXmih9wp9i0=;
+	s=k20260515; t=1794236914;
+	bh=Sd2qM6+PDFRCO8BLs2DGMh7GhcX/ulkjEDLXnk+kxUA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=d/M47nMIJR7aihTAaLZTBAlDzN54La0m6muqe34XXaAoUlvwToPrvviy1SqgkXLMc
-	 YPTGC8eDZspkkjxHE4mcuSsymqau53tKpMWsFYubYX1NKW3zQechkdk1CALfIaVZn0
-	 tHQEU3tcG89EfTeTfjio/VUFU3JPBIjNOGvuGJoxMIS6dTAI5c71rtjg3NblXoUdyE
-	 mbRVq454n0Tzo/+QEQg174qR/Lu+6SKfv3Fs72d+0wS56avAdt2JobeNrCvKfbXAp9
-	 pL69rUuWvwSjF4IN8k4YE2Apd1o3FAapcf+MukXRCqaKvadvemojGqRmqopClB7Ulh
-	 hWrqWiGrkS8dQ==
-Message-ID: <0fb93821-3449-44f5-936b-986b485b5f9f@kernel.org>
-Date: Mon, 9 Nov 2026 16:00:55 +0100
+	b=SKgc2LkNZGyEX0Gy5P7smNbb1wHNkIgKilphlpHL9cBlesnaHKPrBoPtYdYYGLKZ/
+	 S0LSKQGm4pCJ9h1Zwf/j5Ji8+pC/lndtFbwLRLaD0KKopxqSb1FlWv7Ap0BifOLzuD
+	 2KzrScbkVNr7CsD929bxREjX1DGHPcFSvId3xgjb0K389RsLtcds/kChaHNL2rH8gc
+	 oW+XTesVNeLK1htElh5LeJuJOB3illKFWZ6bRP9cvSBA2oz7gWIxoSRgqjdDsetXuM
+	 kn4T3SUUtb87c0Yh2lzEwYyDwa892/7hCZoRJfbByqgXFcnC6xr5IAu5/oiQDMfQUj
+	 Xr4Li0+udWeIg==
+Message-ID: <28b818cb-f038-43ce-a2e2-a9c97befba09@kernel.org>
+Date: Mon, 9 Nov 2026 16:08:23 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] mm/khugepaged: release contended mmap read lock
- after scanning enough VMAs
-To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, Kiryl Shutsemau <kas@kernel.org>
-Cc: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- Usama Arif <usama.arif@linux.dev>, Andrew Morton
- <akpm@linux-foundation.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261105-khugepaged-latency-fix-v2-0-4384bbfe4606@kernel.org>
- <20261105-khugepaged-latency-fix-v2-3-4384bbfe4606@kernel.org>
- <au3CUJO9zBMHLx-B@gremlin> <8ffe5804-a8a1-4486-b5eb-7ce5f451b77c@kernel.org>
- <avHUKAT7-H5Ov5RC@gremlin>
+Subject: Re: [PATCH 2/2] mm/khugepaged: check for empty PTE tables before
+ retracting
+To: sashiko-reviews@lists.linux.dev, Jonathan Corbet <corbet@lwn.net>,
+ Shuah Khan <skhan@linuxfoundation.org>, Randy Dunlap
+ <rdunlap@infradead.org>, Andrew Morton <akpm@linux-foundation.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Lorenzo Stoakes <ljs@kernel.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Jann Horn <jannh@google.com>,
+ Pedro Falcato <pfalcato@suse.de>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Peter Xu <peterx@redhat.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>
+Cc: linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>
+References: <20261107-b4-uffd_marker_loss-v1-0-82926b22704c@kernel.org>
+ <20261107-b4-uffd_marker_loss-v1-2-82926b22704c@kernel.org>
+ <sashiko-outbox-203403@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -125,21 +134,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <avHUKAT7-H5Ov5RC@gremlin>
+In-Reply-To: <sashiko-outbox-203403@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 7j9pii3g3m4rnm4thyib8ehi5e4kr4fz
-X-Rspamd-Server: rspam01
+X-Stat-Signature: bc9idwsncgbcdjf56zj9hiafnbiaaqqy
+X-Rspamd-Queue-Id: 0DC86A0005
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 63C8DA0004
-X-HE-Tag: 1794236462-642978
-X-HE-Meta: U2FsdGVkX19s+SVt6rhO42I0+plewemd/q/GdvIB5QEOkA+SmA8EmlINQboxjoIZAefpG6EbRiA8GEavXJJCUuccj8eoQ/LOE2mygQ+uw8DqJAZBazTWX9hX5YAB763GLfbRvYDOkaERvz6nKM7wVcefonOMclkFcdQ9cfoSf1sEYA1gH5cCIbmtj3aA26XpnqXJAkhOXk/IBfnKIlVWdQhw5OP+Ew+6NRtjMPSLym81Drim4Pnc2xPHX4aJR+XDwoTWjSZm2oKwxbk0i7kBRkQ2fMGxdBJhGiqKFUweb07gyr3BaTN6MApSs3/x904dPtCnFp6Y5P5TrDuErZxhlXA5IHKoCB5w10nfVFF7scS+vX7Hi+oSgwoKHhcNzXxySBp7WyRv9BAIrjqhbZnxprxpqY0/DfU0Pwm9uRbBZPYecm99Q15ELCwbHSLxVvRh06d+tZOh7ghujG+gT5AArElYpEqPiLYMpJ2hL1EzoIrEqsWACyZYepsbBTuDe/zh1UlRGQfnT/28XnkLnIyFObXvhvRc5D4g9wilkd2ZW4gcesgdpx/zFeAl3R8xgK4eOva/AvGVfmYCd3amP1sGTrnhh5BjUASO8C3a6ykzb32rT7nq6k4Y4rhjpDLeWrfubpsHj5W9BcJtEJU8OddllZAfOgG/LCB6iz81MDHm2oiNeA+SmQc7D45FtL5YZV6pS+MFL7OUZjxaAu8YuZW9IpJCTymuioXZVjegQygG0TK2I8fqqhm2UWZmtXCN89IGEdqxxbynHmeUSQ+KcvkmX+zMSYuQVRKiLNbtVJQTPs35ODjjnY3bSTVxaDhr0gpb3AWooZ53MvJ4yEYJxlYFhpc64m7ncVXWremWeHvUUXrgfwDpTA2AkmlblxX2FSqOrZLJHVhDf/1rIR8WpDJjE35mPK7FaBNSYpa1E7rc6DkMl0+ftic/Kup0bcIogx9Z6uKYGI43OvJZ8wMY7Zx
- I+qezV8w
- 1HPhSZ13euYF0F3hzjUcIGr6wMLQWL2BDDNM3LwUGesZSDTN9R6o4dkfTFOyV2vf73VZY0Nq5DzKokBwcyVkYm6SIzXppplFv4Bn0xfewZZFM+mi7Fp3svxxmsl4/h5t8Mn5vMDV5lCYQpjcA0JfQAQsYLV3zzsd2Ae2/ZMyayPnzXGjvc8Onyd1qmCgFT6kFRa6ihCQgdB4NRYmW8z7WMWjA31W3U1QZkCUglq9QdJddpAHFYCFEIXXgtbJK1xy4u+1W
+X-HE-Tag: 1794236914-996112
+X-HE-Meta: U2FsdGVkX18NivJ9F5sdXzSWdbeAQJeHKOb9/FpQcT1LjvC+wgLtmNoql+E6MUK7JuYLXq5X9jgTmugIb2gEogLUkm50PjlHLLnHtFXW1mvqKcujl11Q3ZSSW/4sgf+WLuAAceVDD5A1cL52dv0Ehp+6w3/cOfjrRgHvmHydWiTOgQ4gPuiCoqWiCiVfs1S1CGw7D2+fTTELOlloyO6RkFB0FjE/79Xkab4e/w2MZamb5Bw6cRoGGY5veTERMafB84ELhafpn9TtVN1n9yIdepsAAgMjKGXK703JH5wyGQO02i0I+nEyeehuL+wc6YCfZveEp3/ivTAGI964uzRJhoMDBVgmADa9Fp5vRpg+st5+AHr1W32SLsXR7AZ8S8ulsgFtR46oh+Qb7xkY4+QLlfx9ANiyUKwRo6lcepJRJCZ85AU6qfbQoc/aaMQ2Ys+2l1ojyRXq5dcg2FdSop+wA3Tg/asCuDSrZhnFj0koUSMxdwo/3EOu/k5Ixbo4UYsebVHIkhP07iYSlNYzPFCBi11HFDg7gU4mjPtJ/LMVuCOzJv5iOQs7suU9gA5V5NHGWw+OW3l6gI35tXAvMu6a1MffhsoWlcDF0BiMt7HvA806kihOKOL2dzWr3yhxriTJdZeU3wF57OudMcZ/ePZifuVNyBMNzM5n8CmD25/pteixkokYP7Bg7vHqw5H+lxWvXoXenwP3BBSbNlfwNOdnYD4D3aJndcAgi9kOf6FvxBby7jgVh/iac6Y3HWtMS/yWP9oVh8ViPhFnu0h8HtgjrxCwXPSSt35ADDXIRxbrA2y8MFW/8sD/4su/yAParD600PjFK+ocD7/PXMp68jVtcoBj4n0mWDUfzheco+F427kigmyNhcadleWkNdtPserZz3Z6RTjQM0gxAfoMAy+PG73zS/qPksw7+nJUlfn2dFU0D7dxFwX/C+L1YtQGSq/wIWvWDhz/neP0AJx610l
+ a+D6tfV2
+ G/Yd7jO3bSY59csJcUT5g3Q6Me/ngnUvnpTz/J+hpPuUDWN1ToZzVP5YDhwoo8kW2vlWbwnOH0IqmbcEL9JT8zb9McZ7Tv2FR6E3i/ZBKOeFeoK7Ndlm22mnVlXDVVGgqzihFqWhwnkPr6WVp27+mIwfNCMkKFxfjlry324S6pfr+0PTOfJaLEb6U0yYfDsHsqljIShDJVST/C6eAHMNbN93gyWK05dsLzEsGvxRleRtCDYgHZWlNeZ0nA5D2n5mh2Ii+VStKXepPuEE63S+7R7ZNX/wnH+2AZvUt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,100 +157,240 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/9/26 15:12, Lorenzo Stoakes (ARM) wrote:
-> On Mon, Nov 09, 2026 at 03:01:29PM +0100, David Hildenbrand (Arm) wrote:
->> On 11/6/26 13:07, Lorenzo Stoakes (ARM) wrote:
->>> On reflection, I think this would be better implemented as something like:
->>>
->>> static void collapse_scan_mm_slot(unsigned int progress_max, ...)
->>> {
->>> 	unsigned int long lock_start = jiffies;
->>> 	...
->>>   	for_each_vma(vmi, vma) {
->>> 		...
->>>                 if (time_after(jiffies, lock_start) && mmap_lock_is_contended(mm)) {
->>>                         mmap_read_unlock(mm);
->>>                         cond_resched();
->>>                         mmap_read_lock(mm);
->>>                         lock_start = jiffies;
->>>                         vma_iter_set(&vmi, mm_slot->address);
->>>                         continue;
->>>                 }
->>> 	}
->>> }
->>>
->>> Which avoids magic numbers, and means if we hold the lock for 1-10ms (depending
->>> on HZ), which is a long time in the kernel to hold a lock, AND the lock is
->>> contended, we drop/reacquire.
->>
->> That approach indeed sounds better to me regarding lock contention.
+On 11/8/26 00:51, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 2 potential
+> issues to consider:
+> - [Medium] mm/khugepaged: race between retract_page_tables() and
+>   copy_page_range()
+> - [Medium] mm/khugepaged: retract_page_tables() breaks uffd RWP on file
+>   and shmem VMAs
+> --
 > 
-> Unfortunately it makes things measurably worse (it's not fine-grained
-> enough). Trying to get a fine-grained timer will involve preemption
-> disable/enable pairs, so a no go.
+> commit 15ea4d4b6e2586260561871f9acd4c3bff3278ec
+> Author: David Hildenbrand (Arm) <david@kernel.org>
+> 
+> mm/khugepaged: check for empty PTE tables before retracting
+> 
+> This commit replaces the VMA flag checks in retract_page_tables() with a
+> scan under the PTE lock to verify that the PTE table is empty before
+> retracting it.
+> 
+>> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>> index 2a5ee8fc42335..f39ea3d076554 100644
+>> --- a/mm/khugepaged.c
+>> +++ b/mm/khugepaged.c
+> [ ... ]
+>> @@ -2081,48 +2082,6 @@ void collapse_pte_mapped_thp(struct mm_struct *mm, unsigned long addr,
+>>  	try_collapse_pte_mapped_thp(mm, addr, install_pmd);
+>>  }
+>>  
+>> -/* Can we retract page tables for this file-backed VMA? */
+>> -static bool file_backed_vma_is_retractable(struct vm_area_struct *vma)
+>> -{
+>> -	/*
+>> -	 * Check vma->anon_vma to exclude MAP_PRIVATE mappings that
+>> -	 * got written to. These VMAs are likely not worth removing
+>> -	 * page tables from, as PMD-mapping is likely to be split later.
+>> -	 *
+>> -	 * Can't use vma_has_anon_rmap() here as the VMA may be stabilised
+>> -	 * by the file rmap lock.
+>> -	 */
+>> -	if (READ_ONCE(vma->anon_vma))
+>> -		return false;
+>> -
+>> -	/*
+>> -	 * When a vma is registered with uffd-wp or RWP, we cannot recycle
+>> -	 * the page table because there may be pte markers installed.
+>> -	 * VM_UFFD_RWP ranges similarly rely on per-PTE uffd state
+>> -	 * and cannot be recycled to a shared PMD. Other vmas can still
+>> -	 * have the same file mapped hugely, but skip this one: it will
+>> -	 * always be mapped in small page size for these registrations.
+>> -	 */
+>> -	if (userfaultfd_protected(vma))
+>> -		return false;
+>> -
+>> -	/*
+>> -	 * Preserve guard and poison markers when retracting page tables.
+>> -	 *
+>> -	 * These flags are set atomically on marker installation under mmap/VMA
+>> -	 * read lock, and here we may not hold any VMA or mmap lock at all.
+>> -	 *
+>> -	 * This is therefore serialised on the PTE page table lock, which is
+>> -	 * obtained on marker installation after the flag is set, so this
+>> -	 * check being performed under this lock excludes races.
+>> -	 */
+>> -	if (vma_test_atomic_flag(vma, VMA_MAYBE_GUARD_BIT) ||
+>> -	    vma_test_atomic_flag(vma, VMA_MAYBE_UFFD_POISON_BIT))
+>> -		return false;
+>> -
+>> -	return true;
+>> -}
+>> -
+>>  static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+>>  {
+>>  	struct vm_area_struct *vma;
+>> @@ -2133,10 +2092,18 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+>>  		struct mm_struct *mm;
+>>  		unsigned long addr;
+>>  		pmd_t *pmd, pgt_pmd;
+>> -		spinlock_t *pml;
+>> -		spinlock_t *ptl;
+>> +		pte_t *pte;
+>> +		spinlock_t *pml = NULL, *ptl;
+>>  		bool success = false;
+>>  
+>> +		/*
+>> +		 * Skip private mappings that have been written to: we'll likely
+>> +		 * split them as soon as we CoW later. Use READ_ONCE() because
+>> +		 * we are neither holding the VMA lock nor the mmap_lock.
+>> +		 */
+>> +		if (READ_ONCE(vma->anon_vma))
+>> +			continue;
+> 
+> [Severity: Medium]
+> Can removing the VM_COPY_ON_FORK flag checks here cause retract_page_tables()
+> to race with copy_page_range() during fork()?
+> 
+> In dup_mmap(), the child VMA is linked into mapping->i_mmap and
+> i_mmap_unlock_write(mapping) is dropped before copy_page_range() runs.
+> vma_needs_copy() copies page tables not only when vma_has_anon_rmap() is set,
+> but also when VM_COPY_ON_FORK flags (VM_MAYBE_GUARD, VM_MAYBE_UFFD_POISON,
+> VM_UFFD_WP, or VM_UFFD_RWP) are set on a file or shmem VMA whose anon_vma is
+> still NULL.
 
-Ah. :(
+Ah, try_collapse_pte_mapped_thp() runs withe the mmap lock, whereby
+retract_page_tables() only holds the rmap lock.
+
+
 
 > 
-> This is the alternative I have locally which explains the number, puts VMA in
-> the name and it applies to _all_ VMAs as requested.
+> mm/memory.c:copy_pte_range() {
+> 	/*
+> 	 * copy_pmd_range()'s prior pmd_none_or_clear_bad(src_pmd), and the
+> 	 * error handling here, assume that exclusive mmap_lock on dst and src
+> 	 * protects anon from unexpected THP transitions; with shmem and file
+> 	 * protected by mmap_lock-less collapse skipping areas with an anon rmap
+> 	 * (whereas vma_needs_copy() skips areas without one).  A rework
+> 	 * can remove such assumptions later, but this is good enough for now.
+> 	 */
+> 	dst_pte = pte_alloc_map_lock(dst_mm, dst_pmd, addr, &dst_ptl);
+> 	if (!dst_pte) {
+> 		ret = -ENOMEM;
+> 		goto out;
+> 	}
+> }
 > 
-> Let me know what you think!
+> Because retract_page_tables() no longer skips VMAs with VM_COPY_ON_FORK flags
+> set, it can retract the newly allocated empty dst_pmd in the child between
+> __pte_alloc() and pte_offset_map_lock() (or across cond_resched() before a
+> non-empty PTE is copied):
 > 
-> The jiffies version would obviously just be this but with the above, but that
-> one results in max ~2 ms-level stalls rather than ~200us.
+> CPU0                                      CPU1
+> dup_mmap()
+>   mapping_rmap_tree_insert_after(dst_vma, ...)
+>   i_mmap_unlock_write(mapping)
+>   copy_page_range(dst_vma, src_vma)
+>     ...
+>     copy_pte_range()
+>       pte_alloc_map_lock(dst_mm, dst_pmd, ...)
+>         __pte_alloc(dst_mm, dst_pmd)
+>                                           collapse_file()
+>                                             retract_page_tables()
+>                                               pte_table_empty(pte) == true
+>                                               pmdp_collapse_flush(..., dst_pmd)
+>         pte_offset_map_lock(dst_mm, dst_pmd, ...)
+>           --> returns NULL
+>       ret = -ENOMEM;  <-- fork() fails spuriously
 > 
-> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> index 7d1414a9b2a5..59bbef61f104 100644
-> --- a/mm/khugepaged.c
-> +++ b/mm/khugepaged.c
-> @@ -66,6 +66,13 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
-> 
->  static struct kmem_cache *mm_slot_cache __ro_after_init;
-> 
-> +/*
-> + * The number of VMAs to walk before checking for, and relieving, mmap lock
-> + * contention. This bounds the maximum mmap read lock to an estimated ~100 -
-> + * 300us depending on hardware.
-> + */
-> +#define KHUGEPAGED_MAX_VMA_SCAN_BATCH 1024
-> +
->  /**
->   * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
->   * @slot: hash lookup from mm to mm_slot
-> @@ -2910,6 +2917,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
->  	struct mm_struct *mm;
->  	struct vm_area_struct *vma;
->  	unsigned int progress_prev = cc->progress;
-> +	unsigned int nr_vmas_batch = 0;
-> 
->  	lockdep_assert_held(&khugepaged_mm_lock);
->  	*result = SCAN_FAIL;
-> @@ -2942,6 +2950,18 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
->  	for_each_vma(vmi, vma) {
->  		unsigned long hstart, hend;
-> 
-> +		/* Relieve mmap lock contention after walking a batch of VMAs. */
-> +		if (nr_vmas_batch++ >= KHUGEPAGED_MAX_VMA_SCAN_BATCH) {
-> +			nr_vmas_batch = 0;
-> +			if (mmap_lock_is_contended(mm)) {
-> +				mmap_read_unlock(mm);
-> +				cond_resched();
-> +				mmap_read_lock(mm);
-> +				vma_iter_set(&vmi, mm_slot->address);
-> +				continue;
-> +			}
-> +		}
-> +
->  		cond_resched();
->  		if (unlikely(collapse_test_exit_or_disable(mm))) {
->  			cc->progress++;
+> On the parent side, retracting an empty src_pmd concurrently with
+> copy_pmd_range() can also clear *src_pmd between pmd_none(*src_pmd) and
+> pmd_bad(*src_pmd) inside pmd_none_or_clear_bad(src_pmd), triggering a false
+> pmd_clear_bad() report.
 
-Looks better to me than the original.
+Yeah, that would likely need a different handling.
 
-@Kiryl, we talked about dropping the mmap lock recently, would this create a
-regression for your scanning use-cases?
+> 
+>> +
+>>  		addr = vma->vm_start +
+>>  			((pgoff - vma_start_pgoff(vma)) << PAGE_SHIFT);
+>>  		if (addr & ~HPAGE_PMD_MASK ||
+>> @@ -2150,52 +2117,48 @@ static void retract_page_tables(struct address_space *mapping, pgoff_t pgoff)
+>>  		if (collapse_test_exit(mm))
+>>  			continue;
+>>  
+>> -		if (!file_backed_vma_is_retractable(vma))
+>> -			continue;
+>> -
+>>  		/* PTEs were notified when unmapped; but now for the PMD? */
+>>  		mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm,
+>>  					addr, addr + HPAGE_PMD_SIZE);
+>>  		mmu_notifier_invalidate_range_start(&range);
+>>  
+>> -		pml = pmd_lock(mm, pmd);
+> [ ... ]
+>> +		pte = pte_offset_map_lock(mm, pmd, addr, &ptl);
+>> +		if (!pte)
+>> +			goto unlock;
+>>  
+>>  		/*
+>> -		 * Huge page lock is still held, so normally the page table must
+>> -		 * remain empty; and we have already skipped vmas with an anon
+>> -		 * rmap and userfaultfd_wp() vmas.  But since the mmap_lock is not
+>> -		 * held, it is still possible for a racing userfaultfd_ioctl() or
+>> -		 * madvise() to have inserted ptes or markers.  Now that we hold
+>> -		 * ptlock, repeating the retractable checks protects us from
+>> -		 * races against the prior checks.
+>> +		 * The folio lock prevents file faults from modifying the
+>> +		 * page table, but other things (userfaultfd, CoW, guard
+>> +		 * markers) could have modified the page table until we lock it
+>> +		 * and check.
+>>  		 */
+>> -		if (likely(file_backed_vma_is_retractable(vma))) {
+>> -			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
+>> -			pmdp_get_lockless_sync();
+>> -			success = true;
+>> -		}
+>> +		if (!pte_table_empty(pte))
+>> +			goto unlock;
+> 
+> [Severity: Medium]
+> Does checking pte_table_empty() instead of userfaultfd_protected(vma) break
+> userfaultfd RWP (and WP) on file and shmem VMAs?
+> 
+> Unlike VM_UFFD_WP on write-protected PTEs, try_to_unmap_one() does not
+> install PTE markers for VM_UFFD_RWP (or for VM_UFFD_WP PTEs that are not
+> currently write-protected) when collapse_file() unmaps the small folios.
+> pte_table_empty(pte) is then true and retract_page_tables() clears the PMD to
+> pmd_none, even though try_collapse_pte_mapped_thp() still refuses
+> userfaultfd_protected(vma).
+> 
+> Once the PMD is pmd_none, the next fault in finish_fault() installs a huge
+> PMD before checking userfaultfd_armed(vma):
+> 
+> mm/memory.c:finish_fault() {
+> 	if (pmd_none(*vmf->pmd)) {
+> 		if (!needs_fallback && folio_test_pmd_mappable(folio)) {
+> 			ret = do_set_pmd(vmf, folio, page);
+> 			if (ret != VM_FAULT_FALLBACK)
+> 				return ret;
+> 		}
+>     ...
+> 	/* Using per-page fault to maintain the uffd semantics */
+> 	if (unlikely(userfaultfd_armed(vma)) || unlikely(needs_fallback)) {
+> 		nr_pages = 1;
+> }
+> 
+> When userspace later issues UFFDIO_RWPROTECT on that file or shmem VMA,
+> change_pmd_range() sees pgtable_split_needed() is true and calls
+> __split_huge_pmd(), which zaps the file huge PMD back to pmd_none without
+> populating a PTE table (since pgtable_populate_needed() is false for
+> MM_CP_UFFD_RWP), so RWP protection is lost and subsequent accesses fault the
+> unprotected huge PMD back in without delivering RWP faults.  Installing a
+> huge PMD also causes PAGEMAP_SCAN to report all 512 pages as accessed or
+> written after a single 4KB page fault.
 
+"Since pgtable_populate_needed() is false for MM_CP_UFFD_RWP" I think RWP also
+needs proper uffd marker support, independent of the change here.
 -- 
 Cheers,
 
