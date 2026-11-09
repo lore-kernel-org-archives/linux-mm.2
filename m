@@ -1,81 +1,81 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10312606A338
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0B3A606A33D
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fiRcdJU3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=R3j5M1Gt
 Received: by kanga.kvack.org (Postfix)
-	id 143AF6B05B0; Mon,  9 Nov 2026 09:43:14 -0500 (EST)
+	id DF4026B05B3; Mon,  9 Nov 2026 09:46:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11B066B05B1; Mon,  9 Nov 2026 09:43:14 -0500 (EST)
+	id DA5506B05B4; Mon,  9 Nov 2026 09:46:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 00CFD6B05B3; Mon,  9 Nov 2026 09:43:13 -0500 (EST)
+	id C928B6B05B5; Mon,  9 Nov 2026 09:46:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CA5496B05B0
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:43:13 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 629E51606A5
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:43:13 +0000 (UTC)
-X-FDA: 85415848266.03.78945FA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A3BCB100006
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:43:11 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fiRcdJU3;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9F7C76B05B3
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:46:28 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 974AAC06D1
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:46:26 +0000 (UTC)
+X-FDA: 85415856372.07.6CE8F7A
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BF0DC2000C
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:46:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3j5M1Gt;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794235391;
-	b=JwKicGnj7HqZI7/snxKD59fmB9QjhA8ZCsJrh6+GTdj28lUfOB4tj/XYm3ShL+GDq7UCGI
-	qZrAfblFX6jrCd+HCyR8/HBl3Qqux3xRcLc00CJuggglf3H9eY3B5xQHD46OTSSVNte6Bm
-	B8OMfnMHZZQbMyYjFTvjXWYoijuHxyI=
+	t=1794235584;
+	b=mHPgEHQ9PDs+lvvuFBdCSYD/zPXl6Uj8o07ttkBhexVj5K9HW/x2v8qFoE8dRAFQsTt6Gb
+	VptThw6nWst/qwdDuALoV+vgq7Xl2DgaXHpNFFzarPdDnwXZboG52G9XgaDlgjzhTTdQd2
+	hsw240Efvjo9oDyntA/B+O7s7Rt2kA8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794235391;
+	s=arc-20220608; t=1794235584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8xp9qI2Ok6sylEAN+gwDtNeJcQqJMD2By0aR3Vam4ic=;
-	b=tfzcKD8Xn9IlZxVE1JqLXuXnY+qkX8k48/PTafMwMj/QzLUoy0XfVnARdZG9Znv9JH1lnS
-	CQ1rZF5Tj5yuDcH/jLe/rwq8XY1l7Oro8jFR6qVYuHduaTde3o2C2Ezac3hExIrLKA43I6
-	tPkqtILArrAgCxzAWt0KJt//4CtmFyY=
+	bh=93AR0ixWRF7Xc+mKq42uEUHnh202mM0USTi6ybrtt/0=;
+	b=t4tHR/oPsFGUWH0bgK0INCKh0tFW7PUaNS7IJJVOAdgmV/LlIQd8mJ9/Uh2hOuDbEZqt4q
+	JXHC7k1sduhP50f94X7mKAqCfpVuYS7zcvs6TPsiGWkjjTWluWW0xx+uX7xw2epu4JQ6G7
+	zbdLxOpZvvbGFeVfaOOE2GhfZnzBfA4=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fiRcdJU3;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=R3j5M1Gt;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 27D386120C;
-	Mon,  9 Nov 2026 14:43:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71801F0089F;
-	Mon,  9 Nov 2026 14:43:00 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 13927447D8;
+	Mon,  9 Nov 2026 14:46:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 620B81F0089F;
+	Mon,  9 Nov 2026 14:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794235390;
-	bh=8xp9qI2Ok6sylEAN+gwDtNeJcQqJMD2By0aR3Vam4ic=;
+	s=k20260515; t=1794235583;
+	bh=93AR0ixWRF7Xc+mKq42uEUHnh202mM0USTi6ybrtt/0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=fiRcdJU3ll1oX0GL0kFkxzsBFsMHgUWajfOKORb5n5LGR0Ijd/a/ZTZV+msRt+7AE
-	 izmHSZ0aw7NmYNXW2GLtEsOVZAVfpyTgNpWMg0tnkNJIiyc5/KCWAsOooJ2agALkvo
-	 xMx1r2vihgzi5AJitWcAdZVUonHMXvaKgl9UVq27SVx9gYsvdThm6KBH+43D8zNpIr
-	 FMQ7SsNDb6DxIz8AlwOC0mr0jutSYBOHsbEGL+VL9IRKLrnSaOy3QQQC3fefk2V1Bc
-	 NeugOO2gVdweOhasQ4WB+Fp70fov7x2MciIpscO2WdjUB0pXFmsgdSIiWUkB+DBpqF
-	 g6u1UllN9MC0w==
-Message-ID: <aa2a1e32-9b1d-4545-b2e0-03d213593023@kernel.org>
-Date: Mon, 9 Nov 2026 15:42:58 +0100
+	b=R3j5M1GtbQ4HJLT7OhpTZEh2BryQV+uiLHfcysgIOQ1NFb5i4bak6X+eNkP0EAbZ9
+	 IQ85enPQ15w1I2aklY5dL5f+9UPF1nB4OWrbOipMU1EhxsV2QyXRhRi7HD89zlVrf2
+	 7dp+w/hxXIYXChRG6Ji8VoQrIx+r53F4pKdzVlHCKuMaMejkxQ+1tOSwdkAJ62sF6h
+	 C72/0kQZRLR+UgfMObni0YgD7P8W7VFoxpbK2xToMWavoQI7CPAdxeSX5jQMqY0cW2
+	 bIXVv9cTXdaGNcAZah1PVqO7mgk/LZXCLJk1Xgn4u2atOJoobfxWL1KjRB9VY6Ej/t
+	 Oj1Qw5V5yi4vg==
+Message-ID: <f21433af-afc6-4a8f-8d2d-3a377cd3bd6e@kernel.org>
+Date: Mon, 9 Nov 2026 15:46:10 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 01/18] mm: free PG_rcu_free folios only after an
- RCU grace period
-To: Kiryl Shutsemau <kas@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
+Subject: Re: [RFC PATCH v2 03/18] fuse: don't move a folio with PG_rcu_free
+ into a fuse file
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
  Linus Torvalds <torvalds@linux-foundation.org>,
  Matthew Wilcox <willy@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
  Lorenzo Stoakes <ljs@kernel.org>, Jan Kara <jack@suse.cz>,
  Hugh Dickins <hughd@google.com>, Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>, Harry Yoo <harry@kernel.org>,
- Miklos Szeredi <miklos@szeredi.hu>, Miaohe Lin <linmiaohe@huawei.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Harry Yoo <harry@kernel.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, Miaohe Lin <linmiaohe@huawei.com>,
  Naoya Horiguchi <nao.horiguchi@gmail.com>, Oscar Salvador
  <osalvador@suse.de>, "Liam R. Howlett" <liam@infradead.org>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
@@ -96,9 +96,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
  kernel-team@meta.com
 References: <20261104130118.2507513-1-kas@kernel.org>
- <20261104130118.2507513-2-kas@kernel.org>
- <ecad7b3c-7244-425a-9413-04d49f221057@kernel.org>
- <au2lsbDkyWt-To0C@thinkstation>
+ <20261104130118.2507513-4-kas@kernel.org>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -145,21 +143,22 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <au2lsbDkyWt-To0C@thinkstation>
+In-Reply-To: <20261104130118.2507513-4-kas@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: A3BCB100006
+X-Rspamd-Queue-Id: BF0DC2000C
 X-Rspamd-Server: rspam12
-X-Stat-Signature: ze89onek1wnfnxhfry9i4gghyyw3d98b
+X-Stat-Signature: 489pdc95ab5634jm61i5r6ffnd48x3p1
 X-Rspam-User:
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794235391-658329
-X-HE-Meta: U2FsdGVkX198ImGXF2xmJCqpP80hi5Rx4etVPbQ3IUuN9nr0YWLGFM7H+0vyiTyb1oml1toW+wll7XGZhq/zHhsXaFSXur8ZSZ8R0wNNmmBfeRlnLqlfWUYDuYRispZc3Zz2jO3hFU4EUGBAWmrtM/9u57TZ8iLG4BTpsXmc3ljnFMNOTr2cM7mNMER7EprsSrz2rPGsCtfOCsos6Ur0IaaiW5fioHcgzNT9X/2QOqEn7aeCl+PhiSSTC0ZxZ2230eJILMQqh8fixMi6eEl8FPdiZS9zYsj6EZIIns+VHsKYU0Ds1XgDGCP1r378GrUORWdV7pkZUGzBRUNyX3bdM0jS/B1uBPYnBsk3JXXfC7BKi6JlgyYDq3atZy2vYRVmMlfRMoXGRRXZ/5cQVyuADHtBB2i4XvGl4e/zk9QUY/LY7h+XsX6MqEVS+WkEXUy4OCtZ9JSt3AD0tkB1cpr5h6rSAit1uwLikx8wRK3nEdjiKYScBWCHDTVpSLxU5YQZZN6sn1Bg3IvOnHhVOOSDVA8TzComhKG8WrU2SK+o6ce7SUSvSq8con+CBPK8pKue6FYeaFw2iL/I+kFvjSljCdQQd1paZhmk3ESvm5BFNKvppKbUrXbbkX4XiyvVErOOmjKKxWDViAw62wNSMiM4Vp7pr2wH0LGShEzKrZ99SJ6QThlP1hM8iYpqywwsJtQ0+RpEIiY80kvZccQk2zJBADFrOFRLha06IcyevC9Up1FIR+3+3Yy5H45bbpq/uyzbDUV/AWmxJpL9bIB5TFaHRBFiGWTz7PYegFYlmjxOQl3/F6MTQvZFdl62gsLTvrIsGN7HcDCd2CTNopLg0+lNzS2nF4NB5sNEfM0ASUmAEvFfN54/NBC413iiaNyR1HUQXW+kWgP70bNBh+8Jj3xoXzOQg8JIpf7hpMiQ/qAV/J3Od3sLebQ43v2eugYy/6VFustk6GviVweYxi0OIsQ
- f4xRTKHM
- PkxTXrHLt63TTfpigAGNFVahGJ3vBR6lRD8m87bEmI7oe+emesMDmyaXM4UO7tmrTtixkwFR+5aPlRJlTf9+ESvsxDC2GOlqSVdK7Yw2xDkQoHs7rDJnHfw4XwOuNaPFPQ05v7tvjT19/jQ2gRXz5wif2NdVXOlkuL8gFQ8EhpKahui+NKK2BHPuCFU9s3VqmMDorSZEBbyLuZc9//N/Nm9zQCmFvb11Y+16KsXudE5zF/7AnEkpDlD931ypJg7o3WcVkAB0z41LeNWPzyTr1kc5gVeh6NcgR4WuIuUiLR/k3VUu7phPDilOBC8tv92EtuTUWVsLn68H0mbNK4mAw0omc5ai8WhUfZkAS3Wi30cEipBUsv5UXcdTEansxnQMacGRvVXOJ5VxwlRmXBqpSbYCyZLj9SbmG4KdUpKcKTW+gobf6RI5rRNw+Ws+YySj2wtSaU/jKsVXAeOLT82PulTJzBVTzHqgZrPFw3a0TvYxrlq3iuzkSMgfHCA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794235584-915509
+X-HE-Meta: U2FsdGVkX1/Uat6MUifOUAxVeq927zTo+8Hz/0xJzQP8HckXJuFRyjEzWx4bYbfHO0HGMi3MeaCrsGMQpFk2eJkROKurXDW8xlRGt0RX1Y2l1pzJtOM0mWv4HSzgemw/iP+RayZScacG88vUWSWUVk/Y/dp9fQJBy8r1Tip6piI7HbGb2Ib2qwVFuOPJ1bAiEOdHJT5uvpeqaoSaEotwFsU+EReps+Q6yFP8ot85UegBhZIFijrk6WNVhGlQTnNrZ93vwTuQpFmSsXcAOycJcLEx3zFIpSxrXTx/ymvmxISVDIOFaNc2MBDpqKYgf4huP7vv2qEXBIHGiyX7RzSluwqa3yem9mvOVeG36Ypn9UKWwsvqKsvBZxAHZxMXyPihBWjEUDDMoa2YJ4ncJsZ5+6ERJTRoP38YWprMksYOGmqqGgy3pjT33naAhVgUsKNBHQDmXor0w7dW+nYwO9vsuGn66oviHho4ZuPLN56AUrTbNF+/cohQETrjn+4UWd5Bt5GzaBW5Vg9tuLwmuVMczK+DFcfndCV8ne5Pgp/aD0AyJfpG2XJBGz7fPU38ny9XT7ULGPHZHHOUHNf5k0gxNk049Y22f4qQsjW9MWHjYzUnUhcIPKrrA0VigeXhv2GI00lYCkzXYp8H5kfjv9Zdhynsp0oKycA4lQ1pDk2XOcb31hODv3wh2lYC+ojaTPg0L6h7XIjp8acA0XwLkGiaejwl4rBH7Bxa9gRKUnNy/5KMbLKu25joD8Q6aALT0oCS3WT9IxEEfSpvdEziCFcYmJVDEjlWohYHNtZBS9qoICalWBpWuJ2G14ARTlnLrLBxmGGGNMsDbNm1NKweQHnhsm1P9Sl70447omu9YFtSn/eWqZZuUW1Hkhw2jHjcGntkuA0NOMhcueGJe2tSafbW6cSnbdl+K0PpUoE/pi5at3k1Iw0lKZyUOqruplxsnUphaHrw11qarGPRDNn/ox/
+ fSdFGga+
+ GyXxEyu3aZl/dyGhv8dKY0lJikklaLL+LlBi5O/5v665mN7NMG438l5xMc8zB6fDJByT/uNooFLgTEfIEBJ3U3wRHHYW8e895AH1ldtrkgHP8a75tHNrKnoXeN0WQlP2lPCcObIJvThXzLqHY5qSwebYMK7pLqH7XZ4epJe4oLgnSLn7ptDfXsGLK05MK+BqhXIu6LoXW9gaRVhTcq1I6uln/t2FtEUZamN4+uvSr3Oo4j8d8clmP8nWdt2+zNesa1CKkpoZQq5urh6p+VPDFbd4HKrN2mnjrI/oX6dxUq6DxYq/9fDHXkXm9clQAgMZwPRvxgGO5fqtSWbNYLsd++1fVsg3Z2PSmBDPqT0Ihr7hpge671eSi1hZRXNKOSLM+XAhpdJNPtd/6HYEnfIW9/crG4D6vsRsJHueiY8fjV1K/lLG2IE/7uugrouXuk04fjXY0JRBo8ABX1nOUReQwfPEDefkFMyVEzBHiIUciU1r7k1AOj+VxM/nzJWPE6YsqZgf/j0HzENv6K68=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -168,162 +167,46 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 11:23, Kiryl Shutsemau wrote:
-> On Thu, Nov 05, 2026 at 09:37:31PM +0100, David Hildenbrand (Arm) wrote:
->>> diff --git a/mm/Kconfig b/mm/Kconfig
->>> index 604c58199acb..6e5341b0bf64 100644
->>> --- a/mm/Kconfig
->>> +++ b/mm/Kconfig
->>> @@ -718,6 +718,21 @@ config PCP_BATCH_SCALE_MAX
->>>  	  latency.  This option sets the upper limit of scale factor to limit
->>>  	  the maximum latency.
->>>  
->>> +config PAGE_RCU_FREE
->>
->> I think we really want to focus this only on folios (like the current code does).
->>
->> FOLIO_RCU_FREE ?
+On 11/4/26 14:00, Kiryl Shutsemau (Meta) wrote:
+> fuse_try_move_folio() takes the folio of a pipe buffer and puts it into
+> a fuse file, where writes change it.  A folio with PG_rcu_free may still
+> be copied by a lockless page cache read that found it before it left
+> the page cache.
 > 
-> Sure.
+> Such a folio reaches fuse when a mapped file page is gifted with
+> vmsplice(SPLICE_F_GIFT) and its file is then truncated.
+> fuse_check_folio() refuses it only because the flag is not among those
+> it allows, and with a dump_page().
 > 
->>> +	def_bool y
->>> +	depends on 64BIT
->>> +	depends on !PREEMPT_RT
->>> +	help
->>> +	  Reads from the page cache can copy from folios that are read
->>> +	  again and again without taking a reference on them, so small
->>> +	  reads of one file from many CPUs do not contend on the folio's
->>> +	  reference count.  The cost is that memory freed from such
->>> +	  folios becomes reusable only after an RCU grace period.
->>
->> While that description is helpful, that's not really what this patch, or rather
->> the basic infrastructure in page_alloc, does.
->>
->> I'd suggest to have a dedicated FOLIO_RCU_FREE config and maybe another one
->> (that selects/depends on) FOLIO_RCU_FREE that actually enables the pagecache use
->> and documents the details.
+> Copy such a folio instead, as fuse does whenever it cannot take one.
 > 
-> I will make the help describe what this patch does.  The page cache is
-> the only user, and both symbols would be def_bool without a prompt, so
-> I would rather add the second one with a second user.
+> Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> ---
+>  fs/fuse/dev.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> Does that work for you?
-> 
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index 1e5d68acf62a..25082949a4ca 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -3743,6 +3743,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
->>>  #endif
->>>  				 (1L << PG_dirty) |
->>>  				 (1L << PG_dropbehind) |
->>> +				 __PG_RCU_FREE |
->>
->> That looks a bit odd at first, as it's very different to the other once. But no
->> easy way around assuming that the flag is not always around.
->>
->> Maybe we should just have this be a const mask constructed somewhere using BIT()
->> and __PG_RCU_FREE etc, instead of having this growing list in this user here.
-> 
-> Makes sense.  Something like the diff below, on top of this patch.
-> Introducing split_copy_flags would be a preparatory patch, and this one
-> would only add __PG_RCU_FREE to it.
-> 
->>> @@ -1327,6 +1417,19 @@ static __always_inline bool __free_pages_prepare(struct page *page,
->>>  
->>>  	VM_BUG_ON_PAGE(PageTail(page), page);
->>>  
->>> +	/*
->>> +	 * Not for a hwpoisoned order-0 page: it never reaches the allocator,
->>> +	 * and page_handle_poison() takes a reference right after this free.
->>> +	 */
->>> +	if (unlikely(folio_test_rcu_free(folio)) &&
->>> +	    !(PageHWPoison(page) && !order)) {
->>> +		VM_WARN_ON_ONCE(fpi_flags & FPI_NOLOCK);
->>> +		__folio_clear_rcu_free(folio);
->>> +		count_vm_events(PGFREE_RCU, 1 << order);
->>> +		rcu_free_defer(folio);
->>> +		return false;
->>> +	}
->> I'm wondering whether we want to intercept on the folio freeing path instead?
->> That would be __folio_put(), before we go into free_frozen_pages() used by other
->> machinery that does not apply (slab etc).
-> 
-> Not all page cache folios are freed through __folio_put().  Reclaim
-> frees them with free_unref_folios() directly (shrink_folio_list(),
-> move_folios_to_lru()), and so do folios_put_refs() and the LRU batches.
-> __free_pages_prepare() is the one place they all pass.
-
-Can we just rework that code first to have some clear folio freeing path, IOW
-doing this in a folio-specific helper?
-
-folios_put_refs() is just a specialized and batched variant of the __folio_put()
-freeing path in the end. So we can hook into these two easily.
-
-For free_unref_folios() would need another hook or a cleaner rework.
-
-
-> 
-> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> index a1e52a1f8a52..6d4e534c9ccc 100644
-> --- a/include/linux/page-flags.h
-> +++ b/include/linux/page-flags.h
-> @@ -1185,6 +1185,18 @@ static __always_inline void __ClearPageAnonExclusive(struct page *page)
->  #define __PG_MLOCKED		0
->  #endif
+> diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+> index 4fec31fc0b84..526929c7b3f1 100644
+> --- a/fs/fuse/dev.c
+> +++ b/fs/fuse/dev.c
+> @@ -1152,6 +1152,10 @@ static int fuse_try_move_folio(struct fuse_copy_state *cs, struct folio **foliop
 >  
-> +#ifdef CONFIG_ARCH_USES_PG_ARCH_2
-> +#define __PG_ARCH_2		BIT(PG_arch_2)
-> +#else
-> +#define __PG_ARCH_2		0
-> +#endif
+>  	newfolio = page_folio(buf->page);
+>  
+> +	/* A lockless page cache read may still be copying from it */
+> +	if (folio_test_rcu_free(newfolio))
+> +		goto out_fallback_unlock;
 > +
-> +#ifdef CONFIG_ARCH_USES_PG_ARCH_3
-> +#define __PG_ARCH_3		BIT(PG_arch_3)
-> +#else
-> +#define __PG_ARCH_3		0
-> +#endif
-> +
->  /*
->   * Flags checked when a page is freed.  Pages being freed should not have
->   * these flags set.  If they are, there is a problem.
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 25082949a4ca..44a1aaa3f834 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3689,6 +3689,23 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
->  	const bool handle_hwpoison = folio_test_has_hwpoisoned(folio) && new_order;
->  	long new_nr_pages = 1 << new_order;
->  	long nr_pages = 1 << old_order;
-> +	const unsigned long split_copy_flags =
-> +		BIT(PG_referenced) |
-> +		BIT(PG_swapbacked) |
-> +		BIT(PG_swapcache) |
-> +		__PG_MLOCKED |
-> +		BIT(PG_uptodate) |
-> +		BIT(PG_active) |
-> +		BIT(PG_workingset) |
-> +		BIT(PG_locked) |
-> +		BIT(PG_unevictable) |
-> +		__PG_ARCH_2 |
-> +		__PG_ARCH_3 |
-> +		BIT(PG_dirty) |
-> +		BIT(PG_dropbehind) |
-> +		__PG_RCU_FREE |
-> +		LRU_GEN_MASK |
-> +		LRU_REFS_MASK;
+>  	folio_clear_uptodate(newfolio);
+>  	folio_clear_mappedtodisk(newfolio);
 
+Talking to Zi, it would actually be nice if we could disallow converting
+ordinary pages to folios and the other way around. That will be required for
+some future changes where we identify folios with a distinct PG_folio.
 
-I was rather thinking of a
+Could we get rid of fuse_try_move_folio() entirely?
 
-
-#define FOLIO_SPLIT_FLAGS	BIT(PG_referenced) | BIT(PG_swapbacked) | \
-
-...
-
-To make this function actually shorter :)
-
-(ofc, you could also have a static const unsigned long, if that's what we want)
+I think we'd just want to get rid of any such stealing if possible.
 
 -- 
 Cheers,
