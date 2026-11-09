@@ -1,132 +1,155 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56E8D606A334
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 09:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7BE606D815
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 10:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=BkN+oTVC
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=paXZoEcf
 Received: by kanga.kvack.org (Postfix)
-	id 79BE96B05DA; Mon,  9 Nov 2026 04:59:09 -0500 (EST)
+	id A92E06B05BB; Mon,  9 Nov 2026 05:07:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 773FA6B05DB; Mon,  9 Nov 2026 04:59:09 -0500 (EST)
+	id A43486B05BD; Mon,  9 Nov 2026 05:07:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 689BA6B05DC; Mon,  9 Nov 2026 04:59:09 -0500 (EST)
+	id 959BF6B05DE; Mon,  9 Nov 2026 05:07:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F4DA6B05DA
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 04:59:09 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D94C7A7EA8
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:59:08 +0000 (UTC)
-X-FDA: 85415132376.09.0CC81EF
-Received: from mail-dl1-f44.google.com (mail-dl1-f44.google.com [74.125.82.44])
-	by imf28.hostedemail.com (Postfix) with ESMTP id F3E50C0005
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:59:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=BkN+oTVC;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf28.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A23F6B05BB
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:07:25 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E9FA40646
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:07:24 +0000 (UTC)
+X-FDA: 85415153208.11.85C226C
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B2B3B1C000D
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:07:22 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=paXZoEcf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794218347;
+	s=arc-20220608; t=1794218842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YPiscvubWXhHlJMFPIJv7vibxHEUj/a3SUt82Fx330I=;
-	b=iiPqewBOavrRzeOZTTVZEH6gx/W3Kb8st4AsbsofSnTTAJJY1dIVyKTIpVbXOoNWeHAlzR
-	MAOvt0SBS54gfjJ4r+Ay/REMjYA4sUlbW0LyKAj3nncqTaYxlQqgZcqenOgqezMuDDX6Ak
-	y5pzHnpC/ItisyDgfV2yJG9UOBPaTto=
+	bh=BCv0Nnsjb1CATtKd+NoK/9Eh7t2jtA8IE/DMvxos3og=;
+	b=emLaHgSMKLcwliAkc3oYJN3HhI+l7uIbWdHu117NyFEh6ked08L6h919KWAia8ViNo79eb
+	gbsx6aOI8JQ/mPJjkThVCs2xTmUNPpUqYIoZoEefYtHffF8oGkSVjJCio6VZWHT//HNSvs
+	paIftFR7+ZBXhsnzbV8i/Ty4TOu38KM=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=BkN+oTVC;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf28.hostedemail.com: domain of songmuchun@bytedance.com designates 74.125.82.44 as permitted sender) smtp.mailfrom=songmuchun@bytedance.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=paXZoEcf;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of azpijr@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=azpijr@gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794218347;
-	b=CWVg2sL1oIddNwZ8/gDD73WAAdhht+SkRu1wXFxeEfd024/6NQzA9XKKQWbe4i/gYUt8Be
-	4LxIql9vusZpXaFdMUQ7DYBVTXorriPgrOEMxy8ewhb9eqQBVDoNvRPO7SVwMwSbV1NN7C
-	Z3RecFxhLthvlob0St1ZX/8gUVK3VGk=
-Received: by mail-dl1-f44.google.com with SMTP id a92af1059eb24-1a8cc11ac42so484323c88.0
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 01:59:06 -0800 (PST)
+	t=1794218842;
+	b=ZcokeF002lUixZkFBrM5JRcxdzESYWWHsURts7xPbD1sKcpiBiq0pP0A+hjbbmOBDLojsP
+	AufFYImqNgwQ2Hdf/czk6Eud0B67BYgaGYF67YE/DC6VpG6K0TAuDD6RDjE983ne2Q5b6D
+	Ps8NHywU0s6Zb82sEleXLZtjnAW9Ue0=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4a214c5c4c0so6683805e9.3
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 02:07:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1794218346; x=1794823146; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=YPiscvubWXhHlJMFPIJv7vibxHEUj/a3SUt82Fx330I=;
-        b=BkN+oTVCdtJG4+yYV+M1UGmEB/1akcvGKHLxeVmDubIwiK9XD8deb6e5IpBhcgRFmn
-         0JQCTiORQz7qm3mCb1i6phCOV1qWgR0Y0bo1zwbEsFLW+AaPTttS4QFDyo3w7v/O6C8b
-         VUw0bzr7dQAEB1UrDogtgYR7bKpnaXBG8CwbsUiEqABRV4tccfUtq0yr0/7eqCyfH7dS
-         6D/gp8IDwOOChscxFfhBbXAjoUSoSHrKKpn3RZNFZg7KR7eNOvd/RXYaF2cVgL+JF3bt
-         q45q3Xt4wK1zKksqusd6ZOfCQhVfNEX1nQA+GvPnyp+X/kdhMEKFLqoG4V4jZgDi4m+Q
-         6dPA==
+        d=gmail.com; s=20260707; t=1794218841; x=1794823641; darn=kvack.org;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=BCv0Nnsjb1CATtKd+NoK/9Eh7t2jtA8IE/DMvxos3og=;
+        b=paXZoEcfZUzMb/FaG1UjpRZrY1jLhQLdKmdGGPTI8Ocno2xQRTljwM7ZUn6/tc4XoE
+         gqZiCZ1fgUN2EP82vlWsCcBO/vtLwobvQqVeUVNdHfl4eWk8UFuhQpMb9ZnNT5/Wp6eb
+         uhLbdcOV8uPogWVlDfDuh0BTvMGIrxzDbGeFWGk7Od+4aZmBHKeVlvYsKr7rT/Ye96tW
+         80i3Paid9zV5BwGUh7m2CvjFDPiDCbX8UaKlakV6TJkuFKeTnnWftxWoD/xMQyuLzIay
+         Z0AvrGtQawtoOi0XgG2MG050LOMXSlWhltj+A4Zu/RHFNOWI3xxTLAb9F2x3y4CzSAkD
+         rjuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794218346; x=1794823146;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=YPiscvubWXhHlJMFPIJv7vibxHEUj/a3SUt82Fx330I=;
-        b=inP5q04TSWOf7EW3ZVfbUg/1gA1kGd0Ig7l3JYGueRFWCawDWrjepAb0N3/vCrXlsO
-         a6PQEwuHXVY8YKgBhLrnxXmY77oC6RCfFfLg/+NdFRpBORFgQA4HjzHcyuYdegzcqGje
-         xrMrPxYXkWqzLhYOMpAFZVgdn+5fpBVXPoe8EwFqKQpOBx2FCzzOx8ZnYpSKV5YAH4Lo
-         59kuCUwB/cllT50zp0NJDyilDmeJkA3KkHIIrwoSmKv6i9aO3a+on3SwQbpd/su5CKZ0
-         4AvFUyPq+eFtvqdFJPwnTScUH7J9L/Oj5ak0MClY0OgMplRGYyFNMYODGl+nH3Ex9kEA
-         /6SA==
-X-Forwarded-Encrypted: i=1; AL+hErG2Xq5F2NZpbbWMnTTuCWGGFvpxHTpylUCVWDfridLLjL8MZIqjSCbsuxlm+C2sA3b7U/86ZAyBOQ==@kvack.org
-X-Gm-Message-State: APuU4Z+IzNPRm3s1HwfBRTqN3Al2xj4HhHgpF6DYWGQ3qTRlWJPPF+qZ
-	/KhseL4UsrAseehCq8ezD/bTvnjpD58Y8kDIcfIAbP9ae3C9c2hx73hEioeXZO6/bGc=
-X-Gm-Gg: AYBFou2ZBS+CRvmkSA4UIJkhey8xWhMyx/UDu9vrQUmkijpMzugeelmCIk6TXUOhROg
-	iTaI4KKfuSrB5LYO+UFh8VpgF5VYeorW0np/gXwrT77DzdLaIY4ieuMKP8//cmm4VT2Z6l2/eI+
-	smlmd/wSQRWbCFiXxQRaBlSB8O/hiuIlXRh5dM2eKH5d9ylfO6BQsj3IQUYsm17bTXPktLjYnvg
-	2SZdR+bVCZqMJhjr0wGxJz1R+vOjnCMFefndIryvoNVDuojTskBltDnzYZp74o3TTIs9iP81Sr0
-	tTRvTfkfBUukffeAtQViDwfLdorE6SDZ8HkwTBC+fAS0YV5oxXdfuYcTb8qTUgxE1vPaBimgGXw
-	FGsztptSomRNXjzjC5+U5c8I5n/82rbKJ0IqP12grL+W7WcCSEXIww//OGRzO81BPqlIgU+v8KA
-	chqQ6X0OUlplZGACTTDH4xlGA11v6g7IEhQ6VH7YSp9GAnG4N8/VIVuehYr58TfxBwA8AnhysEx
-	lAgL54JmT94SmVuv/6s8+/dZt+ZW1dgU9zepoxgdXGfSuojH12qAaY7UYbj2VW2ZqE8S/M0dHse
-	zXkqQOM0yd2qR6zWCogLZapc5g6hAM6VNG5uMmYlvKn45zGuueNNYM5xEriX5w==
-X-Received: by 2002:a05:7022:1505:b0:1b2:cb38:5412 with SMTP id a92af1059eb24-1b39fed4847mr6729682c88.42.1794218345436;
-        Mon, 09 Nov 2026 01:59:05 -0800 (PST)
-Received: from G6L4RL2QG9.bytedance.net ([61.213.176.10])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1b3755e8911sm12841684c88.5.2026.11.09.01.59.01
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 09 Nov 2026 01:59:04 -0800 (PST)
-From: Muchun Song <songmuchun@bytedance.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Oscar Salvador <osalvador@suse.de>,
-	Mike Rapoport <rppt@kernel.org>
-Cc: Lorenzo Stoakes <ljs@kernel.org>,
-	"Liam R . Howlett" <liam@infradead.org>,
-	Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	James Houghton <jthoughton@google.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Muchun Song <songmuchun@bytedance.com>
-Subject: [PATCH 11/11] mm/mm_init: move pageblock migratetype init to memmap helpers
-Date: Mon,  9 Nov 2026 17:58:06 +0800
-Message-ID: <20261109095807.41547-12-songmuchun@bytedance.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20261109095807.41547-1-songmuchun@bytedance.com>
-References: <20261109095807.41547-1-songmuchun@bytedance.com>
+        d=1e100.net; s=20260707; t=1794218841; x=1794823641;
+        h=content-transfer-encoding:content-type:in-reply-to:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=BCv0Nnsjb1CATtKd+NoK/9Eh7t2jtA8IE/DMvxos3og=;
+        b=uMz/KX0M1t8bfUQQLw4E6KII2lA65Z8ArjIAtQcD1NYWn2kOGkeXCoPlD6uM/cK6PH
+         hlkUknB5y8lh8/jYxIs+SZpKAV39StxusOGlOggI+B1dshd4aw17TLdraRIoetBvQTaz
+         acbi/hrqJ9RvHqlcya2YdPhCpvjz/RJxVVWx7yBLm14a7sWZH80XQMqGHeAo09L5+yuN
+         761gv7F+UdLKtKjrVWwfW9Y6FAeM+t/x2chVdSx88ahRxJCYg02ydDQ69cstJYrtupOT
+         F5lNBT0ZOdS/5HX+EakQvto8Uvyb8+3yrFsnyjvkg3O4j3d3MA1mRhoBYBUvAyIEdhRO
+         wPDA==
+X-Gm-Message-State: APuU4Z/yjrYyYHUzJNm+Ql1UXxMf9SUAACzEZa+10T4PoXXp5gNdLrYC
+	ldxrl0hF4smfo3j5vO4bNv/D/0SX+RruC1buTK4ZLPN5fPrG9n3z0UYf
+X-Gm-Gg: AYBFou15Qp5J+0dKUS3Qsp6Lc7TlxNsJvgM3dSHjbniMQkPW6CbfL9RxRDZ7j8J1fqF
+	G8LHcX2S+R0OAFsvVAGjpaTcLcTtic3dwZvGiBFIJD469UkCDANISK1EaJwgg3wa76dtsQCilb6
+	1iKf0r1HC/fH06cD1PSRRB6vH3L1Dypufag479DhPYql2wEgcchn317z/fSUxTNCSyGsYKq7np7
+	d4gmP5Z6MeEyDzF4ewpWQ6RT/N/4NXglklCrGNbnEvXAtQxzB0frgUKzq8Tul74hdcRlPT9JIAr
+	k3pWrHkvcyxtiUfuKN2Nder+jxmFGaDYqeBpvb5uQEQwD3p+1UfvJER5hMr9J+xQ2Qt8rdyjIXK
+	alvYNWOfBn0p26ELlOFa4wi1AJRx1t8pS3YoMQFNwldfGfFKdgKtWR22DlJ8bvF5xhDIqoh3KoX
+	7UkRneYcJnuJQjACvUFYBgB3drU3QrxJPNBd4/xXyynUc6ujCjMmtjLOrvV5KHKZsADd41qyGN6
+	mHEQZuGaF8FlIlHPBeoR4fi6ri/Ekfc1hAyls+j/7UYqf5vbl5w+4y5o/BBtjLqwP2A+S0TvmKx
+	jZhM6d1BJSEzoa5g9jZgGCc=
+X-Received: by 2002:a05:600c:46cb:b0:4a1:6992:f861 with SMTP id 5b1f17b1804b1-4b94d762ec2mr69628225e9.1.1794218840912;
+        Mon, 09 Nov 2026 02:07:20 -0800 (PST)
+Received: from [192.168.1.22] ([83.231.69.9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4959783f1d6sm8829668f8f.46.2026.11.09.02.07.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Nov 2026 02:07:20 -0800 (PST)
+Message-ID: <bb6fa14e-0a98-4b31-899d-0b1c883d0608@gmail.com>
+Date: Mon, 9 Nov 2026 11:07:17 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] mm: limit pagecache folio refcount when splicing
+ into pipes
+To: "David Hildenbrand (Arm)" <david@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
+ Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
+ Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
+ Gregory Price <gourry@gourry.net>, Ying Huang
+ <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
+ Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
+ "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
+ <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
+ Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
+ Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
+ Robin Murphy <robin.murphy@arm.com>,
+ Steve Sistare <steven.sistare@oracle.com>, John Hubbard
+ <jhubbard@nvidia.com>, Josef Bacik <josef@toxicpanda.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
+ linux-arch@vger.kernel.org, iommu@lists.linux.dev, stable@vger.kernel.org
+References: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
+ <20261107-refcount_overflow_stable-v2-2-c38f6809b106@kernel.org>
+ <a9fb2d3c-d518-49d3-9479-a25fa2cfc5b3@gmail.com>
+ <8d23b1eb-72aa-479d-9486-dbfd86d8414c@kernel.org>
+ <43fc45ff-8636-4961-a80a-29844c15d7a1@kernel.org>
+Content-Language: en-US
+From: "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
+In-Reply-To: <43fc45ff-8636-4961-a80a-29844c15d7a1@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F3E50C0005
-X-Stat-Signature: qgweraadkr54jjkpqbjdnt7pb8zyak1x
+X-Rspamd-Queue-Id: B2B3B1C000D
+X-Stat-Signature: 1i5qgf84u74wo7uqiz85cqpja9maiwgx
 X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794218346-813093
-X-HE-Meta: U2FsdGVkX19M3QJYtuoRTquQdHzY30zg1UwSDhKbTo+IZvkRUiEBeR8PCOfto7c2iDmnqGUtu+7sMSjplKVsMRWbyVTmu2T9XdiaEo7ZCEJfApC8aPfIK4HcJX7U/7Hq+d/cah/x8zW/4JdEvPMX4GQylk3zgfa9/41FY7GIES+g6+n/rtDoVCvJ70NY5+EcyrTRTqZxoU6LY5SeRl7ZL6cP2L/6k4UJUYVHpX8M9tNUnsGCW4gRLhrNQCX8zYu68qfxgeTieGsE8N2LW1LN90186cPOlFVhqPmZ9H+i0xwkNXwrtTCAq2eleUa3YJSNGTUtXctWdob2cKurQB3l8SoPtO3CB8zaMsTmFzEoH2btcisUgvKKYqM7sBAKaQlNtsyTdfxL8oRLAnrAGx+MelD9rrtrnlWjdX6UA+uwqbhFKkPlBUcOuc+z+CQ6WU8AAHIwOQpeScPdww13/wE6FaGUiMfN40y5IazyPFbyo8DPvNxPMBPGjjP5SMWH04EskBpqGOH2DbQbAFb3hwuv9/xg+GgpmIFMpT+GpOgD0kd5Rqclagguk4eWdeDdv5M+1joO40wjmhOMqDNE8nxcQjVLY7QxH0yPloJeSYbSOZX/XUKHmNN41yHB9dWglbMqA5KEHH63hdb1aZJpF8zBy3Hff2fM6OFhNyN5AfpwyDmZwUbuXQSMpTNPHGaoQZx4Nj907YjQn9Ck7Bt59HUAtC6IqMcL81N/ie0I2LhOR3NNDHk/YJMujiuMKzJ5Oo59Re2Vt9cqy6CFApr5JtxPYLsGSA0rrbJ0aAMEdVmDz0t6B0f+VTp2U2jPHEOzNvJtAoVRPm7dJlKLWQjvAq0jjIENmXPIkWy7ySuivlCvCoy8jdJcZQ4jQltG+P5gP8j0A07DCmVLbp78LHjYDFeb1x8E7myshOD1v6WMzwwPbWBhWxRZxfxwkJzjXS4+8ERFAoi1ZW5/TMpZtXnYQnT
- iOknbEaN
- rfZgRzwlDS5QGswchMDeBvwuWJ7b2dv2V5KcrTw8Or3nRMCowyt81ycJQPWrMWrkg49gipsH9gizcUY9SA8Rriqn/adnh2vc0fMXHpuQVRy9AOnmp7yqTMQ17mYXR9sscCXwwBURXU17Svj3K4Lf+3gYCMOOQa/ZrlaNyTgUOzV9dnRX2IYFaHONlh3M3RZcpDhCjinhE0l4g+W61mHN+WpmXe/01VVwl+VjulW4VLo/A/BskDODvOX84T2ehhaSuwmws3/UAZ4hatefMxYXVg3xYzp6ITlWrpSOOu9bpZrJHr5GooTXaS3MldN0jA30m8ZOZYazAXB/k0L8VKh6XZV6YBkK/AFKRZOZvZHVEogebMJU=
+X-Spam-Status: No, score=-14.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794218842-349862
+X-HE-Meta: U2FsdGVkX18voN1D3ZqRN9EcN7523uHrVfl+kKQMWU+xLHbBqmxrp7/GADsDjbhcg+tlb/cx3T/iX204xWVVk+PqZSBYvLv9SDTp73TGq8kzPGN+L91bvVC+OQWfgrQBONndt96ZTX7/q/HT3ptf9zUJJVZa2gYZTxiGrZHgZiWnJ+F8iXYUby+HiDIiqzL7sq0k9Gin79gNR7TcF4Z0teYJ/W4sffKhOeALQL23bsB4d/IkzqSoOLmWQHYODQxCnMqJyW/mOEjvVMy0ReXJgGSwZxOGd/pgKVy+f/ZHEPpPgmBqg4owKtEvOnS9a36atUfkTf9uq73lRkXZvN+K2ICTtOr0JtcoHxSH2LSqQF6FMIMBxHZluGKVtjUcvRn0GrbW/P/5trQmp3CdBWfBaWgD9P56ggACoz0phlpmR5YqJ50U7RRINs5MGNOL6YJ9Hw/5CLU+waVdlIL5nKm/Et9bZs1/N90QLeczkYtE1rWNzLPnC/9tMM8sUpmeh7NOciEQ1CIDagmii8gQPtTdyib7L7fVgCFCJZadSMIcZsmWO7HCZ+uGImSa/uoS8pZXsH1KX4pMMUcfR3y1BVonqpt9ihDK5+rGaSSV6obwHorU9+xUE+B3AmYEPbSIBl7dxj92PEBWVSBHZrtPhKdyPUGWY0dWPb3y+d413huN2rjTJ4MaGB0nsWQXNkftf2tsgZS+NbUBASEln8zY9CNqnq5iTLYTW9Ev9QRHuBcpnWPacbsnHOWdUXY3b9lyjR3pbP6EDYyITQtLHpGCRbzQcvKHjj+iLQ6fxptSaWJOkK1RoVapzgIySpuU9rSgAFQR/kR7PZj6UFti9c0uHayK++NsRAFi/SFh8XJ/niqTBeadnxqdmMzsylX7r7SVSAIlRmglQ2QGeMryaPAv9okmtNG+oHPHnRaQBJB6lJ1XEg/da/xlJRf+8VYryITRT9hD3ffC5S7BE0Fd/VbFgSU
+ PUTIv/fK
+ ThmA/T+3fmADJgcXbyb0H8DXNpxTlQGuGnBEIl07jkwxR3ZleS92rgn0+6G68wvjT17qBEm7AKr3D2Rdoc0SYmHyUxbXgNgB9xADXM7gleZlNPJVmY+AMc1aEk0G+lMz3G6F+nsl2fq2mnEiOemjMiJ4bijWkWgUGSqx5ALliTkd1o1GoB99fuyvI8OmvdyLfkHat6CBO/Hz+G5FjTzwPsCslDCfX+FXEyMB9Yis2FJduM/cWs6rbItJW63wdYUcC2RL6oGBbNdN6+ggpNBrs44ed8Jkawe3NEdHTJ7JhlQMXeikDB2WybNUG0ft6Nk/4SSEBB+ir/JsBdRan3Uc9X3eq+Ydt6SVY+bNhOfYemz3Q1YIgPdTZljoqOnLPROFATW/vNi8GR1UQeFsqYQIuT2GH+Xeyt32yHQGMl+FHJameUFC/NzPajM+D1pPRUrIjGEkGG7rT7PIRSJWmQC1C4R6qUov8GcapVBV2QNzI5289hxj8nUv9lOxc1ei+YrUcgvtl8PcjZhLG//n+/8PUIMmCeP67OmvoXnYt
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -135,110 +158,105 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-ZONE_DEVICE memmap initialization already initializes pageblock
-migratetype after all struct pages have been initialized, while hugetlb
-bootmem folios have their own duplicate bootmem-specific initialization.
+On 11/9/26 10:49 AM, David Hildenbrand (Arm) wrote:
+> On 11/9/26 10:30, David Hildenbrand (Arm) wrote:
+>> On 11/9/26 09:57, Jose A. Perez de Azpillaga wrote:
+>>> On 11/7/26 11:23 PM, David Hildenbrand (Arm) wrote:
+>>>> Similar to mapping pagecache folios into page tables, let's reject
+>>>> additional references when splicing folios into a pipe if the refcount
+>>>> is at its limit, similar to how we handle it during GUP.
+>>>>
+>>>> This will prevent more cases of possible folio refcount overflows with
+>>>> large pagecache folios.
+>>>>
+>>>> Let's keep it simple and check in the two callers of
+>>>> splice_folio_into_pipe(). Return -EOVERFLOW if the limit prevents any
+>>>> progress, so do_splice_read() can fall back to copy_splice_read() when
+>>>> read_iter is available. This keeps sendfile() and other splice users
+>>>> working when ordinary reads would still succeed.
+>>>>
+>>>> Also fall back to copying in FUSE when taking another reference through
+>>>> fuse_ref_folio() would exceed the limit.
+>>>>
+>>>> Also check in try_get_page() to cover pipe-buffer duplication by tee()
+>>>> and partial pipe-to-pipe splicing.
+>>>>
+>>>> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+>>>> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
+>>>> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+>>>> ---
+>>>>  fs/fuse/dev.c      |  5 +++--
+>>>>  fs/splice.c        |  8 +++++++-
+>>>>  include/linux/mm.h |  9 ++++++---
+>>>>  mm/filemap.c       | 11 ++++++++---
+>>>>  mm/shmem.c         |  4 ++++
+>>>>  5 files changed, 28 insertions(+), 9 deletions(-)
+>>>>
+>>>> diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
+>>>> index 3641abb90d6bb..4f6b7b42bfd3e 100644
+>>>> --- a/fs/fuse/dev.c
+>>>> +++ b/fs/fuse/dev.c
+>>>> @@ -1265,9 +1265,10 @@ int fuse_copy_folio(struct fuse_copy_state *cs, struct folio **foliop,
+>>>>  		if (cs->write && cs->pipebufs && folio) {
+>>>>  			/*
+>>>>  			 * Can't control lifetime of pipe buffers, so always
+>>>> -			 * copy user pages.
+>>>> +			 * copy user pages. Also copy folios at their refcount limit.
+>>>>  			 */
+>>>> -			if (cs->req->args->user_pages) {
+>>>> +			if (cs->req->args->user_pages ||
+>>>> +			    unlikely(folio_ref_count_over_limit(folio))) {
+>>>>  				err = fuse_copy_fill(cs);
+>>>>  				if (err)
+>>>>  					return err;
+>>>> diff --git a/fs/splice.c b/fs/splice.c
+>>>> index e6d43329ed3f0..df73a4e65118b 100644
+>>>> --- a/fs/splice.c
+>>>> +++ b/fs/splice.c
+>>>> @@ -956,6 +956,7 @@ static ssize_t do_splice_read(struct file *in, loff_t *ppos,
+>>>>  			      unsigned int flags)
+>>>>  {
+>>>>  	unsigned int p_space;
+>>>> +	ssize_t ret;
+>>>>  
+>>>>  	if (unlikely(!(in->f_mode & FMODE_READ)))
+>>>>  		return -EBADF;
+>>>> @@ -977,7 +978,12 @@ static ssize_t do_splice_read(struct file *in, loff_t *ppos,
+>>>>  	 */
+>>>>  	if ((in->f_flags & O_DIRECT) || IS_DAX(in->f_mapping->host))
+>>>>  		return copy_splice_read(in, ppos, pipe, len, flags);
+>>>> -	return in->f_op->splice_read(in, ppos, pipe, len, flags);
+>>>> +	ret = in->f_op->splice_read(in, ppos, pipe, len, flags);
+>>>> +
+>>>> +	/* Fallback to copying when hitting folio refcount limits. */
+>>>> +	if (unlikely(ret == -EOVERFLOW) && in->f_op->read_iter)
+>>>> +		ret = copy_splice_read(in, ppos, pipe, len, flags);
+>>>
+>>> here it can't tell where the -EOVERFLOW came from, if another file
+>>> returns -EOVERFLOW (i.e. tty_fops uses copy_splice_read, and
+>>> n_hdlc_tty_read() returns -EOVERFLOW after dropping the frame), it now
+>>> gets a second read.
+>>
+>>
+>> That's what claude told me during review, and when asked whether that actually
+>> happened in practice it said no ;)
+>>
+>> So is that actually a problem?
+> 
+> Double checked, claude managed to confuse itself.
+> 
+> n_hdlc_tty_read() can indeed return -EOVERFLOW.
+> 
+> I should just have let splice keep failing, dealing with copy fallback starts to
+> get annoying.
+> 
+> I guess switching to -ETOOMANYREFS should work (and might be a better fitting error)
 
-Move the MIGRATE_MOVABLE pageblock initialization into the frozen memmap
-initialization helpers instead. This makes memmap_init_page_frozen()
-initialize the pageblock for single pages and
-memmap_init_compound_page_frozen() initialize the whole range for compound
-pages, so the ZONE_DEVICE and hugetlb bootmem paths can share the same
-initialization.
+I agree with that :)
 
-The old hugetlb_bootmem_init_migratetype() skipped CMA folios via
-folio_test_hugetlb_cma(), but the shared helper always initializes
-pageblocks as MIGRATE_MOVABLE. This is safe because cma_activate_area()
-later overrides the migratetype for CMA pageblocks.
-
-Signed-off-by: Muchun Song <songmuchun@bytedance.com>
----
- mm/hugetlb.c | 25 -------------------------
- mm/mm_init.c | 11 ++++++-----
- 2 files changed, 6 insertions(+), 30 deletions(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index ee47a3b09df3..5dfe9091b5ca 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -3222,30 +3222,6 @@ static bool __init alloc_bootmem_huge_page(struct hstate *h, int nid)
- 	return true;
- }
- 
--/*
-- * memblock-allocated pageblocks might not have the migrate type set
-- * if marked with the 'noinit' flag. Set it to the default (MIGRATE_MOVABLE)
-- * here, or MIGRATE_CMA if this was a page allocated through an early CMA
-- * reservation.
-- *
-- * In case of vmemmap optimized folios, the tail vmemmap pages are mapped
-- * read-only, but that's ok - for sparse vmemmap this does not write to
-- * the page structure.
-- */
--static void __init hugetlb_bootmem_init_migratetype(struct folio *folio,
--							  struct hstate *h)
--{
--	unsigned long nr_pages = pages_per_huge_page(h), i;
--
--	WARN_ON_ONCE(!pageblock_aligned(folio_pfn(folio)));
--
--	for (i = 0; i < nr_pages; i += pageblock_nr_pages) {
--		if (!folio_test_hugetlb_cma(folio))
--			init_pageblock_migratetype(folio_page(folio, i),
--					  MIGRATE_MOVABLE, false);
--	}
--}
--
- static void __init prep_and_add_bootmem_folios(struct hstate *h,
- 					struct list_head *folio_list)
- {
-@@ -3253,7 +3229,6 @@ static void __init prep_and_add_bootmem_folios(struct hstate *h,
- 	struct folio *folio, *tmp_f;
- 
- 	list_for_each_entry_safe(folio, tmp_f, folio_list, lru) {
--		hugetlb_bootmem_init_migratetype(folio, h);
- 		/* Subdivide locks to achieve better parallel performance */
- 		spin_lock_irqsave(&hugetlb_lock, flags);
- 		account_new_hugetlb_folio(h, folio);
-diff --git a/mm/mm_init.c b/mm/mm_init.c
-index 61a720bb44dc..e05db8abde2f 100644
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -751,6 +751,9 @@ void __meminit memmap_init_compound_page_frozen(struct page *head,
- 	for (unsigned long i = 1; i < nr_pages; i++)
- 		memmap_init_page_from_template(head + i, pfn + i, zone, &template);
- 	prep_compound_head(head, order);
-+
-+	pageblock_migratetype_init_range(pfn, 1UL << order, MIGRATE_MOVABLE,
-+					 /* isolate */ false, /* atomic */ false);
- }
- 
- struct zone __meminit *pfn_to_zone(unsigned long pfn, int nid)
-@@ -1110,6 +1113,9 @@ static void memmap_init_zone_device_basepages(unsigned long start, unsigned long
- 		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
- 			cond_resched();
- 	}
-+
-+	pageblock_migratetype_init_range(start, end - start, MIGRATE_MOVABLE,
-+					 /* isolate */ false, /* atomic */ false);
- }
- 
- void __ref memmap_init_zone_device(struct zone *zone,
-@@ -1150,13 +1156,8 @@ void __ref memmap_init_zone_device(struct zone *zone,
- 
- 		memmap_init_compound_page_frozen(head, pfn, zone, pgmap->vmemmap_shift);
- 		memmap_init_zone_device_head_page(head, pgmap);
--		if (IS_ALIGNED(pfn, PAGES_PER_SECTION))
--			cond_resched();
- 	}
- out:
--	pageblock_migratetype_init_range(start_pfn, nr_pages, MIGRATE_MOVABLE,
--					 /* isolate */ false, /* atomic */ false);
--
- 	pr_debug("%s initialised %lu pages in %ums\n", __func__,
- 		nr_pages, jiffies_to_msecs(jiffies - start));
- }
 -- 
-2.54.0
-
+cheers,
+jose a. p-a
 
