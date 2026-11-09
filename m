@@ -1,144 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 080C6606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A7E606A321
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=LPmxC0XY
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lJYz2A0b
 Received: by kanga.kvack.org (Postfix)
-	id 13B766B05F3; Mon,  9 Nov 2026 13:48:49 -0500 (EST)
+	id A49916B05D6; Mon,  9 Nov 2026 13:56:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EC1D6B05F4; Mon,  9 Nov 2026 13:48:49 -0500 (EST)
+	id 9FACA6B05D7; Mon,  9 Nov 2026 13:56:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ECE3E6B05F5; Mon,  9 Nov 2026 13:48:48 -0500 (EST)
+	id 910E46B05DF; Mon,  9 Nov 2026 13:56:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id BF5366B05F3
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:48:48 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 46186C0746
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:48:48 +0000 (UTC)
-X-FDA: 85416467136.04.DD392D0
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 50A0614000E
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:48:46 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=LPmxC0XY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B42B6B05D6
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:56:29 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DC3071C4188
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:56:28 +0000 (UTC)
+X-FDA: 85416486456.30.347F841
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 3CE4F40003
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:56:27 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lJYz2A0b;
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794250126;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794250587;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DW4GqatymZdzrlfB6/YGHQTH2HKZTymQgY+Lx0UesPo=;
-	b=PSWhEHN8KUtx13VhgCqFzr69dz9DZ9sr9Owq7EbfgdOjzeNH94J6rbaEHLVnZCIuyzeI7n
-	gO3hSjGew83q3oahKAWFAVXPguePOPnpFcCHPaZ9zSr1dnfw4VC8XvaZSGNY4vOGw4IUKm
-	A74x0eOewnRTn9sIB5mrAnA+gu/o2Fc=
+	bh=7IIG6gsWToOocYzMc8/wEygPBmXPfFlQcsTrLpdB5t8=;
+	b=tcWZs8gHV66hBdMQ/zrKOQv7O3t/v6D4WxoxDdMfZWeFdpptPzuBTRgWIMNQSLFJ83JlAw
+	8kSvXGO92ZwXyXg6dG/cB0dM58QDeJGxGDfRLAtc2DMm2xXmpN719U+gmUUHij6wF8uG7g
+	QyA2oLlc61bR5+xc+Y0hq0GbKqsV390=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794250126;
-	b=aj5ZtRdmsc+lL2fG4Wv8lEueqYqTcOPRIEifnkB3n3tYqdgWGg+g7kEEvdBkZ8qWdBFrOy
-	WvzDVQApqOXbiHCWsZ6+QYId3MNo/OAGGBNFb1W54VzJ5fEpjUMAl1VOJVAHIr+LtkesLe
-	jC1dRl1JLpR3YBZ9IdVT99cP+j39/9Y=
+	t=1794250587;
+	b=YXibOIt9zF9fMqbGJU+KqsXHrfOLSH8QR8qygEPEPkfRq7HSfE6FYek0TkOFVxhiytdApf
+	AGfrRL8t+215gXfq2/z4PoY5Lwi3EvFrgZ8/Dygz1y1mTfrFLKD6LZ50wm0ZdThkymYUUV
+	sLD+rJ9GZ6EC0n16pgrhtYgl7QNNeHc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=LPmxC0XY;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf23.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.173 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-8b31fc13124so9312787b3.3
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 10:48:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794250125; x=1794854925; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=DW4GqatymZdzrlfB6/YGHQTH2HKZTymQgY+Lx0UesPo=;
-        b=LPmxC0XY4A1vuVRZ/sOHPi1sf66hAMfQQNEy2Jo8poEvHcM922DT/BDZvmnw9H7AlC
-         iDJn71TshHkEgECVCVzxJeE0Xq6qbeNA4nbn/6hBdwBhlKiJ548krEGBcXPMcQqqAkyM
-         QL68GUODWG+fcmh3C+8/WQwB8rr8ZnfPtqc1Xql99a5A1ZtChxKmMmkU1nyeQmzOyYBG
-         AEno5nJP1BSixebXqjeYew5zPtDGfnDqzec3H4+H2sD12z1D4c5yNehUGpluQQprdqHh
-         BntRiN+I3FnX5z9wGIjLt9ASPoQKDSwbZ1qYOxhPCNT0rcXLJGQ1qn9rRZ1lUtc57QDp
-         roKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794250125; x=1794854925;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=DW4GqatymZdzrlfB6/YGHQTH2HKZTymQgY+Lx0UesPo=;
-        b=hrSMkWfG2lg9PQycZUHw/tWXD/kmHKahrzRuH72M9RHd3N89OPahu5ncgC/F2rN/ri
-         WR3ZSPKvb//kVEfgu7e1hunHmCwkIDw8ZTpAijLBTptUkY6RHb17ahs8cc4RL9ym8Vfq
-         pzR8r8jJayTvZhiC9WPvFSJQTfFFFD0fFHxH38Aattxq8dSGAeIrqrdu3FSS0M5OqR5Z
-         UNw1cu0gyHTRAYkZQ/m+CjQzyWihrU57D1TAnqr976GFXGhMK0+4x4ite9MG3EHYtgaX
-         X90K11CavZtyrxxHrcW7HynvP85VFX+ajhzQzLuC+IikBCVfcwqDe5j3s2To96zVtyJ+
-         9vaA==
-X-Forwarded-Encrypted: i=1; AL+hErH1dgsOlz45adYLms+Ki0FfsG6Dr2r20jPTGltEd/eO+t70HEOXHIun4DNKRE1zw8EXYzvpV0WKJg==@kvack.org
-X-Gm-Message-State: APuU4Z88P6e/lK6mpP3iSWhIriFilwcM9OzVSbIz692KiVPfsl1A84Ie
-	sqp+hd/kAiAErRSDaJ4FySSVwLG5bRriL22j28gW+GECj4+GlEQZ9o88
-X-Gm-Gg: AYBFou3E1ILyYk8HEM7XMyAEgYb79B1dFWDCto460dMB3t3FPzoee7oBFx7jSF5vEa1
-	0TkN0K19abP/M2OZ6MEida4Hb4n5CUl04uhnZxEj1Wvjt2o0t1U56oxVUfkhrqKOh1h5KIdntay
-	4JIVTcQkn4KGsvzRqzXxAejDEqcb/OaosMVzPQ3zoh7/sm8QiIDFYpXQmKgY4IFahmsN18xrc4a
-	oUa+QzYUqP9XaKuS0z04I3rQbDNoxZ6w8a3U6IM+pacP3MDJRfO7fNBr78ubPCdiph1bxxJmKz6
-	CRMvLYOVsd5IiUUqbzUpoweFam9rMeuCFtoWBlr+kD2xl32RL9z6sg75ObOZGjrVMOxbZNswnwQ
-	Tw+QGZbf4LND1shTSEB3TuFjvTjE8MGyUas0j1hJFX8LDY4ngaBFvKMYEWUG3ojftzYIF84GcIH
-	U2pFEFX9gcvPA5H3sahXq9K/JtXdCzNI5DoUy/yYIYAhdJqDZTuBnLCyWB4J9zg9MRgluJ6Y4TQ
-	dlD0KP+mNhDUjIaEjxLS9AJJbM0OKzy0m8wWqlEHTbap5REEO8FJqbkimsJtFPKtMP5dU5xLZuX
-	er83lM1BkAIN47nriZvgOkwuMJZTR7IdrAWeLu72I6q/ktTVGQLcMMW9medI
-X-Received: by 2002:a05:690e:169e:b0:67b:f621:8d4d with SMTP id 956f58d0204a3-67c5673d88dmr413181d50.28.1794250125439;
-        Mon, 09 Nov 2026 10:48:45 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:17::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b39339cc9dsm831357b3.8.2026.11.09.10.48.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 10:48:45 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: sashiko-bot@kernel.org
-Cc: "Joshua Hahn" <joshua.hahnjy@gmail.com>,
-	"Johannes Weiner" <hannes@cmpxchg.org>,
-	"Shakeel Butt" <shakeel.butt@linux.dev>,
-	"Michal Hocko" <mhocko@kernel.org>,
-	=?utf-8?b?TWljaGFsIEtvdXRuw70=?= <mkoutny@suse.com>,
-	"Roman Gushchin" <roman.gushchin@linux.dev>,
-	"Muchun Song" <muchun.song@linux.dev>,
-	"Andrew Morton" <akpm@linux-foundation.org>,
-	"Kuniyuki Iwashima" <kuniyu@google.com>,
-	"Harry Yoo" <harry@kernel.org>,
-	"David Hildenbrand" <david@kernel.org>,
-	"Lorenzo Stoakes" <ljs@kernel.org>,
-	"Liam R. Howlett" <liam@infradead.org>,
-	"Vlastimil Babka" <vbabka@kernel.org>,
-	"Mike Rapoport" <rppt@kernel.org>,
-	"Suren Baghdasaryan" <surenb@google.com>,
-	"Maarten Lankhorst" <dev@lankhorst.se>,
-	"Maxime Ripard" <mripard@kernel.org>,
-	"Natalie Vock" <nat@pixelcluster.dev>,
-	"Tejun Heo" <tj@kernel.org>,
-	"Oscar Salvador" <osalvador@suse.de>,
-	linux-mm@kvack.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v8 7/7] mm/memcontrol: restrict memory stock to leaf cgroups on v2
-Date: Mon,  9 Nov 2026 10:48:42 -0800
-Message-ID: <20261109184844.1862780-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <sashiko-outbox-200379@kernel.org>
-References: 
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: fyqakgf9npoez1cxf4sqjubd6ynjb11a
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=lJYz2A0b;
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id ABCE541891;
+	Mon,  9 Nov 2026 18:56:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D5281F0089F;
+	Mon,  9 Nov 2026 18:56:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794250585;
+	bh=7IIG6gsWToOocYzMc8/wEygPBmXPfFlQcsTrLpdB5t8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=lJYz2A0bPFvD255SXUbUBOlu51qDSwePKYo9MZK23qpyFOKd2/4kC59kwiP6JQ2WY
+	 jYC5Wq0L9db0MFa8yDrv3Sm6j9b7d6q/4w0pxI8dfHpZeJAmcT0hXSpIk6xG9lSJsC
+	 JWQqy2jAdVog8NDKn019bUPIJZCRLQlexEkhxKEJ/xrelawoXfLml8RUpEMakX0vJI
+	 jfhWoVzeDP94pvsi4JvVsU76JUhtohQ3TeqysfGZOiPwWfndrJqX33MTuWaKGJcMzo
+	 3s6L3UxE5yn+63CZRqw2BEsXtJ/5I1cP0dZrS4RXIC4XHdpyHDtqV4DmcntkGLtI8k
+	 KCbMfHVw8q0ww==
+Message-ID: <sashiko-outbox-205453@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] mm/filemap: let sequential faults restart mmap
+ readahead
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Alireza Haddadi" <alireza.haddadi@it.uu.se>, =?utf-8?b?TWF0dGhldyBX?=
+ =?utf-8?b?aWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>, "Jan Kara" <jack@suse.cz>, "Andrew
+ Morton" <akpm@linux-foundation.org>, "Vishal Moola" <vishal.moola@gmail.com>, fujunjie <fujunjie1@qq.com>
+Cc: linux-mm@kvack.org, "Roman Gushchin" <roman.gushchin@linux.dev>
+In-Reply-To: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
+References: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 09 Nov 2026 18:56:24 +0000
+X-Stat-Signature: 3ews3h8ajeexta4qn57wiy4eetb3jfe8
+X-Rspamd-Queue-Id: 3CE4F40003
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 50A0614000E
-X-HE-Tag: 1794250126-388713
-X-HE-Meta: U2FsdGVkX1+OERznUX/1Wqcq6WIxhCfa5ZlqpkSqYNE1qcRaxoKfpPcz/5NGGzHqSORiHlL4rwjqGiYRpzVnduh8bKM/ZOKpxT0PQM+1+ffLTgXJur3+6ychIuFpLVtHyoRNn53TN46J8/8kbU0LCOg3e6cKUZ/hgqGAbPU7j2CTo/Angu7mDLqYhxm+2jjyNapnLuLb2kP/ufhBtnHYr656eW/0XMOG8dmcxpjWZ/mWVVNi5zUGZTw4ue1W+yC9nOUoRiaiTEZPdSX4mklJXFxq1lh+7FHok+lm0lM9yCkEocNLDBup5FBW9iwT4hRKfUq/wXirZskDwFSSOUJgttUyk2io1LKftljtYB8e/FExJ4Z4xjyq5l0tG8qFJFlYG2GjQOKVG90IoG0DPyeJ7/ZAGOLIBla5JDS7kuwA6SysI9twB4tqXVovCeLv786xB2w/oASa5jrb1qGopD4Q+lZSl2qiky9LUsN07DHbuG3qHeR9vc9Gpc8cSWgRXc4yW/xNKKv8fyaYe7alZ5Y2rqmMcLnIciUmyA99MhnBa3rbdS0zFcZNgcgb19N020wxGYwwIpsiMwAe1yViE8ot0Apa63L0/ZlJhak2+mo1vt7n5tSIXoEHY0Lr5G0h9u5Q/atYE7uXHOxt2nrnQFPkUxD+3WqrlAO9XLvkKkFRa+iy8k3e0vqyyp7R6QlHUF4wT5Ca9dsG2yRCkoDDTKRtoHYwDqlcHdQvjrYQJdBWZU7+ojVLodF4wsl62GCZlFQ6NdnLHerhN7FE0/RlrMiyxCDQtTfHR6mMfbE5+QIMGeIt+8T1X1lqy+Cgbu/Z8VjZ3iYYP7FxVa6O/boD3Ll3M2GgFw5Za8asPY9F0Lmcmmg06+m4qwOnSg9awyOiUtjjUt0Grf99/lmwv5BkmRzJoLnfUvvtCc7NIh0FbaHtr6h/cVi7ykke4nn00bkPhAZgpyBczyJtzJFtGxSN1X+
- wyT2Ppsj
- I+zrYe0mPYPg6pyo0GShYHuusFbLauP5phVfk1mab+nTwrdKILIWKe7ggwZrM1IXV6HreT7ih5Vie9nPRsoqZCboC18qgcR3yPGE0qI4P3S/Ev7Q7NhDZ18vY1/NGm7HsJm3+J9xmDnO45x89Uyu75mOOhF2wzQDdUcqmAg1xdcmqHUu1QMpYMyeChi2eG4SqvJHYSsaA6hfZogvIy+WbIpX6DB/RP4E0I0+M7JYrTzOTxZDtkdMKeGPL579S3rSCRXz05S+FzJBvLHMArof62vSZXqYnr1KKGt4ZWD6RncNgE2ed0xPcANzw/ygD3sfQtnOxDNQaNfXGstspVA5RjLdGOyoLO647fVVOSkP4eKNsFRlVv6SgEuqAHtXEyf7aUil6w5O/VCeTlv+d4j565gbNTDVbgGua3gehmDgCTUuTU10eOxxfSo94m7JYhutDG9jRQstBHAm2FtNnr7f5BXYsK7+XZlnU33tw4BGfFZ3MCPvjg4KqjPSnD5WCbhKlH/PhJjNCPlmh4QStWEF8ITG77ztps20KoJTn0Zsn8aVY/Jm1CX6Sl9kS66vkf/VDi1F1OKNipA0M/3g7eNP/WRE8PyWc2ZovwFZ9BP0MjZUHMuxICVRxbSsVc910f1xb/ii3K6GaiWiVa35bjoSjY9+LsH5bZo4xv6jJ
+X-Rspamd-Server: rspam08
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794250587-241497
+X-HE-Meta: U2FsdGVkX1/HAuiSUjtGkblmJtr6wjcWaCoQncjTbS3KiE7LvcKvknYd4X8K399DGflPdxfDMcuGgUN2Q7BoXe142S0AtTT01dFRb4ePG1gvfVI/4IJJELNdywDjPcbkUgSbQOochS4zBzoiaz1I2GzXbQP3TIW+HANA1NpLeCcQXnVOdZTssfQSZgAZ5flzLUBO/SR2l8oy7QypLmUOm6zEnXvcgdjEpsKAJk31Kt7c96CZ/m2kBYN4BARjgzZeHKYNRxVeqaeaTpgc5GIAok74TO6w8S+jv+n7XOilFjyvWXVQSUageCEfXo/hzM7Kia3xjpqZd8HZXRccGprkuI2J8L4dLPFHdxTUPHb/deM2F5jHBUqSjDJOXyf7XT+7wftaKLsdTWFkYE4xNrvrztWGNbIywlEQZRt/lUeYf1Wc9aa8CmeG9wOW/naRqeeqUPG0quN2ZK81PYySq0Y4KIO+iCHEX+CKEW74QSGxjPgtgE9kg/i1+X7Q7ZIxOql3Jgqc65PR62Oq+yrwIAZmLZpx0vHh7xhWqHIeSGyYV86riYw2uijFjfuL5FZ4o8wO/7m+62Z/SQJXBNzFoIjSUr0IiqDh9MVJKCgjbWKv8aM4qJBtRhofcjrbsz2Owe1GWGmTqU+R5JlZw0DUojejHorU1qgNKxrRWHBAmKaN/l+Rwp2PsIQjPOfGzNVcY/9nH9/5Xf3vO/jmgX0v4tzpC/tIJe9uNz8bpcDb0lCScGrlRzfgTzGfyxheDq5DoEnp4uMHsRY3fQ5SnWtKYTyPH3rG97s+jDXXM/5rE7CrqiYG5I+RyBZVmtTD3tzYSs2qpAKttZJzlc78svJMhDUL1crEjeqx/qZ678Jm48b57LFjmNnKHNHNuw1yPobMN7T5YdnaN2dVi23u9k3oqy6gJo7JnQiIma4TgcWNEtY+sFJXILat0bMNdQ8joaDDHkTGaKO6zR+xrgEAO98YdhM
+ EW7GekWO
+ MhHZWBw7OjF+PoQoOV0Pdc27w2kIdfoXpbbGyQp9LQaK8/wMrUt8uq63SsKe9Uq9qwUfU+k9cknjIl/pBb/PKul7V1cmHXMCfZDxiDdU9RYtxc7L+1u4L3Mz4StjQrsGYQeIORuAa07nuCGDoAPOzAb7FrKiARAkIa4f6K+9SHkTvahkAC6dAaEtVPYk2g2KM2fV0liObEqgG0GITP2CZCFV6smILVOKJrkayb5YMFho4KQV8bSIE0lBNtlkor2F+KBdqBwIgN6VahziKEGfyppWtICvH7LPdtJYNV2x2GkkFzWBVw/NH7j8MBEZ5J/CGlsQ2/38APwLNzRE4c15l9t7zd/vLYsqGtfjSbQehosWmE1z3CDKH4vGrfRvDeF1EYxzT9ZEfpP8RH71d9bo1YXrE8Dav+fB+jEvwFyUyIH8w103WhAvdA3Xdr6T+FBIPaBT+v5u8imvMo1RJvdQ+aHKY5dtswsGQr244LXgl5+PK+m3beZ+mbvcRnWcSOXT8bb3SNgrLssxlBGzPu4vt4UPTKhz3rEbCpt7VJXazVBDW48j6tHB0jnglz4XTrRcT5c4jwvocwGVFp0oRFMCPpJS84SnfklywRrSd5uDknXCpRy+8BeioLJ/P8nDyU9o8eSurGVkBfJqh2zlt8B+gPRgcAQO1KO7aw9V5FnoqMsbSlKs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -146,136 +93,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On Thu, 05 Nov 2026 23:31:05 +0000 sashiko-bot@kernel.org wrote:
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] mm/filemap: do_sync_mmap_readahead() fails when
+  mapping_min_folio_order() > 0
+--
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [High] mm: foreign slot drain on fast path in page_counter_consume_stock()
-> --
-> 
-> commit 4a3e7ea8b6bee1d8310dd3c42d8ad7c15aae3cf4
-> Author: Joshua Hahn <joshua.hahnjy@gmail.com>
-> 
-> mm/memcontrol: restrict memory stock to leaf cgroups on v2
-> 
-> This commit disables memory page_counter stock on cgroup v2 non-leaf cgroups
-> when they gain a child, schedules per-CPU stock drains for online CPUs, and
-> lazily drains any remaining disabled cached counters during stock consumption.
-> When a parent cgroup becomes a leaf again on child offlining, its memory stock
-> is re-enabled.
-> 
-> > diff --git a/mm/page_counter.c b/mm/page_counter.c
-> > index e1feb2bd1e225..7a3b7cea0ff94 100644
-> > --- a/mm/page_counter.c
-> > +++ b/mm/page_counter.c
-> > @@ -158,6 +158,7 @@ static void page_counter_drain_stock(struct page_counter_stock_pcp *stock,
-> >   * Consume the cached charge if enough nr_pages are present, otherwise return
-> >   * failure. Also return failure for charge requests larger than
-> >   * PAGE_COUNTER_STOCK_BATCH or if the local lock is already taken.
-> > + * Drain disabled cached counters while looking up the requested counter.
-> >   */
-> >  static bool page_counter_consume_stock(struct page_counter *counter,
-> >  				       unsigned long nr_pages)
-> > @@ -176,12 +177,17 @@ static bool page_counter_consume_stock(struct page_counter *counter,
-> >  	for (i = 0; i < NR_PAGE_COUNTER_STOCK; i++) {
-> >  		struct page_counter *cached = pcp_stock->cached[i];
-> >  
-> > +		/* Drain any stock that is disabled but hasn't drained yet */
-> > +		if (cached && !READ_ONCE(cached->stock)) {
-> > +			page_counter_drain_stock(pcp_stock, i);
-> > +			continue;
-> > +		}
-> >  		if (counter != cached)
-> >  			continue;
-> 
-> [Severity: High]
-> Can draining an unrelated disabled slot in page_counter_consume_stock()
-> acquire spinning locks from an NMI or alloc_pages_nolock() context, and also
-> add foreign cacheline loads to every fast-path stock hit?
+commit 6cc011b67fa27fb6f1bce2ab0a11aad698934f50
+Author: Alireza Haddadi <alireza.haddadi@it.uu.se>
 
-Hi Sashiko, this is true (more below).
+mm/filemap: let sequential faults restart mmap readahead
 
-> In mm/memcontrol.c:try_charge_memcg(), may_batch is set to false when
-> !gfpflags_allow_spinning(gfp_mask) so that charges from non-spinning contexts
-> such as alloc_pages_nolock(__GFP_ACCOUNT, ...) do not evict other stock slots
-> or take spinning locks:
-> 
-> mm/memcontrol.c:try_charge_memcg() {
-> 	bool allow_spinning = gfpflags_allow_spinning(gfp_mask);
-> 	/* Charges from reclaim or non-spinning contexts don't batch. */
-> 	bool may_batch = allow_spinning && !(current->flags & PF_MEMALLOC);
-> }
-> 
-> However, mm/page_counter.c:page_counter_try_charge() calls
-> page_counter_consume_stock() unconditionally before checking may_batch:
-> 
-> mm/page_counter.c:page_counter_try_charge() {
-> retry:
-> 	if (page_counter_consume_stock(counter, nr_pages)) {
-> 		if (nr_charged)
-> 			*nr_charged = 0;
-> 		return true;
-> 	}
-> }
-> 
-> For the counter being charged (counter == cached), the caller holds an active
-> CSS reference, so css_put(counter->stock_css) when depleting the matching slot
-> cannot drop the final CSS reference.
-> 
-> For an unrelated counter in pcp_stock->cached[i] (cached != counter) whose
-> stock was disabled via mem_cgroup_disable_stock(), the charging caller holds
-> no reference to cached->stock_css. If that cgroup and its child were
-> subsequently removed while its per-CPU stock slot remained populated (for
-> example on an isolated CPU where schedule_drain_work() returns false, or
-> after a racing refill or contended mutex_trylock(&percpu_charge_mutex) in
-> drain_all_stock()), pcp_stock->cached[i] can hold the final reference to a
-> dying CSS after css_killed_work_fn() completes.
-> 
-> If an NMI or non-spinning caller on that CPU then runs:
-> 
->   alloc_pages_nolock(__GFP_ACCOUNT, ...)
->     -> __memcg_kmem_charge_page()
->       -> obj_cgroup_charge_pages()
->         -> try_charge_memcg()
->           -> page_counter_try_charge()
->             -> page_counter_consume_stock()
->               -> page_counter_drain_stock()
->                 -> css_put(counter->stock_css)
->                   -> css_release()
->                     -> queue_work(cgroup_release_wq, &css->destroy_work)
-> 
-> wouldn't queue_work() spin on workqueue pool and scheduler locks in a context
-> where spinning is forbidden?
-> 
-> In addition, the commit message notes that lazy cleanup happens on the next
-> local stock miss ("The next local stock miss on that CPU scans for any stock
-> that has been disabled, and will drain its stock"). Because the
-> !READ_ONCE(cached->stock) check is placed before the counter != cached check
-> inside page_counter_consume_stock(), every fast-path stock hit at index i will
-> also dereference cached->stock across foreign struct page_counter cachelines
-> for slots 0..i and drain any disabled slots before i while holding
-> stock->lock.
-> 
-> Should the lazy cleanup of disabled slots be moved to
-> page_counter_refill_stock() (which only runs on a stock miss when may_batch is
-> true and gfpflags_allow_spinning(gfp_mask) holds), while
-> page_counter_consume_stock() only checks counter == cached?
+When mmap_miss exceeds MMAP_LOTSAMISS and the page preceding the faulting
+offset is cached, this commit reads ahead one additional page and marks it
+with PG_readahead so sequential access can restart async readahead.
 
-I think I will actually just drop the lazy cleanup. I don't think the
-drain is necessary eitehr since mem_cgroup_disable_stock() clears the
-parent's stock pointer and so the parent can't hold more than it already
-has. Any leftover stock that remains as a result of races and isoalted
-CPUs aren't consumed or refilled, and there is already an existing
-drain path like other stock (when the slot is reused for another
-counter, by drain_all_stock(), or CPU hotplug). 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 93db8fc60ae0a..0930aacee9fea 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3403,8 +3403,33 @@ static struct file *do_sync_mmap_readahead(struct =
+vm_fault *vmf)
+>  		 * Do we miss much more than hit in this file? If so,
+>  		 * stop bothering with read-ahead. It will only hurt.
+>  		 */
+> -		if (mmap_miss > MMAP_LOTSAMISS)
+> +		if (mmap_miss > MMAP_LOTSAMISS) {
+> +			struct folio *prev =3D NULL;
+> +
+> +			/*
+> +			 * Nothing is read ahead now, so mmap_miss stays high
+> +			 * forever.  If the previous page is cached, this may be
+> +			 * a sequential read: read the next page as well and
+> +			 * mark it, so that async readahead, which does not
+> +			 * check mmap_miss, restarts when the mark is hit.  The
+> +			 * pages it reads then count as hits and lower
+> +			 * mmap_miss.  A random reader rarely has the previous
+> +			 * page cached and keeps reading one page per fault.
+> +			 */
+> +			if (!force_thp_readahead && vmf->pgoff)
+> +				prev =3D xa_load(&mapping->i_pages,
+> +					       vmf->pgoff - 1);
+> +			if (prev && !xa_is_value(prev)) {
+> +				fpin =3D maybe_unlock_mmap_for_io(vmf, fpin);
+> +				ra->start =3D vmf->pgoff;
+> +				ra->size =3D 2;
+> +				ra->async_size =3D 1;
+> +				ra->order =3D 0;
+> +				ractl._index =3D ra->start;
+> +				page_cache_ra_order(&ractl, ra);
+> +			}
+>  			return fpin;
+> +		}
+>  	}
 
-So yeah, I'll just drop the lazy drain and rely on the existing cleanup
-paths, and I think that addresses all of your concerns.
+[Severity: Medium]
+Does hardcoding ra->size =3D 2, ra->async_size =3D 1, and ra->order =3D 0 w=
+ork on
+mappings where mapping_min_folio_order(mapping) > 0, such as large block si=
+ze
+filesystems?
 
-Thanks, Sashiko!
-Joshua
+In page_cache_ra_order(), limit and mark are computed in base pages before
+new_order is clamped up to min_order:
 
-> -- 
-> Sashiko AI review · https://sashiko.dev/#/patchset/20261104233029.3282438-1-joshua.hahnjy@gmail.com?part=7
+mm/readahead.c:page_cache_ra_order() {
+	...
+	if (limit > index + ra->size - 1) {
+		limit =3D index + ra->size - 1;
+		mark =3D index + ra->size - ra->async_size;
+	}
+	...
+	new_order =3D max(new_order, min_order);
+}
 
+When min_order >=3D 1, limit and mark both become index + 1.  The allocation
+loop then allocates only a single min_order folio at index, and
+ra_alloc_folio() rounds mark down to 1UL << order, placing PG_readahead on
+the faulting folio itself instead of a second lookahead folio.
+
+On the FAULT_FLAG_TRIED retry after maybe_unlock_mmap_for_io(),
+do_async_mmap_readahead() is skipped and finish_fault() maps all pages of
+that single folio at once, so async readahead never starts and mmap_miss
+stays above MMAP_LOTSAMISS.  Scaling ra->size and ra->async_size by
+mapping_min_folio_nrpages(mapping) and setting ra->order to
+mapping_min_folio_order(mapping) would read two minimum-order folios and
+mark the second one.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109-mmap-miss-=
+v1-1-8b44b33f3358@it.uu.se?part=3D1
 
