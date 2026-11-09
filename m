@@ -1,63 +1,63 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27FC606A331
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 05:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C5D606A321
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 05:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=rUz1yfxi
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=wgpy0rlx
 Received: by kanga.kvack.org (Postfix)
-	id BF7C56B05DA; Mon,  9 Nov 2026 00:57:32 -0500 (EST)
+	id 9D6596B05DC; Mon,  9 Nov 2026 00:57:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BCF7C6B05DB; Mon,  9 Nov 2026 00:57:32 -0500 (EST)
+	id 9AD866B05DD; Mon,  9 Nov 2026 00:57:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC0426B05DC; Mon,  9 Nov 2026 00:57:32 -0500 (EST)
+	id 876A26B05DE; Mon,  9 Nov 2026 00:57:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 75ED06B05DA
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 00:57:32 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BA626B05DC
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 00:57:39 -0500 (EST)
 Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F25341205B2
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:57:31 +0000 (UTC)
-X-FDA: 85414523502.20.84714F7
-Received: from mta0.migadu.com (out-218.mta0.migadu.com [91.218.175.218])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F40DBC0003
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:57:29 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rUz1yfxi;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.218 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794203850;
-	b=wELLxHddSAcY3BwrRipNb8xOfrqRjdnezfvzYdLA4d+dE0yoMY+RLjU+gucF5w4w5Zi9s7
-	5N8htMB4fVscSUGps1uyS5Aqe3/jmoRiVHTEJcM40WsksytSiiCEZ4gcJnR18pJZrJNPOx
-	YiVzvFfJ47638Ll5orJxauG1xhQB22o=
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC1691C3EB0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:57:38 +0000 (UTC)
+X-FDA: 85414523796.20.BE5DDB8
+Received: from mta1.migadu.com (out-47.mta1.migadu.com [95.215.58.47])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A93C5180004
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:57:36 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wgpy0rlx;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.47 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794203850;
+	s=arc-20220608; t=1794203857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dnOjQkGf+OqWoHyBwhap7n6DhGg6k/m4omFdcfbHAMc=;
-	b=7+jx9LC7ehG6JkbYTgLpT9eQUFr6JgruutWiTiZ0+CNzOds5XjX9atr85sS3HLZ2WQwmpc
-	rFVrFShNllCrW+db+MLiPQviZxOkxkS0Bd8LUdjwWGEmx4qCNNUQQagPLMxcGqdBU9xZry
-	LV87p5qVUFqllmat3+GsMq9NPm6ceGA=
+	bh=BH70BivN2GD0Klusjco0YU6q3vc8ILOcQiEUMI9oss8=;
+	b=eDQrnoPnWcldyJB9mvarPE+fW0lNYUH2VrTrCsu+wKQq1SmqwoZVSr4VlxD8W3qj7tMIm7
+	HKGC8n51gxNOrzUtenq/+MKuGYhHDEFumya2LerP9HBPgrxmB9+N+pksswAGmLrTR1E8g6
+	9QxWkH7Frk2ntcuBwMqMluJTuDQhiMc=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794203857;
+	b=PElPoP/WBhaotz74Y/XqFN5h9u9Sk6OUszMrJa7UN3MsjTmuYDC3UEoyODgRaMzwqYTMEZ
+	mxVMVmTlUE3EFYfSbsTZgYzE9FWClWaO80RPf/41Rv1jtpygciAfpob1H2d5QnVKWS4n2g
+	15GLRXiu/AH/J3wJ/qWK2M2J4YK+bpo=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=rUz1yfxi;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf22.hostedemail.com: domain of baoquan.he@linux.dev designates 91.218.175.218 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=wgpy0rlx;
+	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.47 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=SvxFMe5L6XVKLRk84yM/lIlWCQm7moIqgkfiHpPq+OI=;
+DKIM-Signature: a=rsa-sha256; bh=uVlH/XHtAK1ioth7PG9F5K6yxSpZvO+5NShBYbVvhrM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794203848; v=1; x=1794808648;
- b=rUz1yfxiGKy2+cjIw13wXGuOyZMAr0JxZ9wRZZ1pV0LI3ufyD2JRJIrf15/jxYQjI9o+PAGF
- dbmdqFO4BBjvNuzZc1HYHq+EGBLBleskGr9/f9tbwyfv1XDEjfJY5VwPD8UhICRi1rRst7v4JSH
- v9ANynbc6WOx9ey0kdaDVYKc=
+ t=1794203855; v=1; x=1794808655;
+ b=wgpy0rlxBY6e+IZWaoZIW4ozpKOvTFuebcNV2pV7IvwteCpy2jsJvnOELBgtZB8BlONknUbX
+ 7YCrp8S9kAUDxZ7GNnnLT/4XzoJIp9GOIp192zezQ1IGpZ98VJgSNxJWFkIJOFAZtrDhcaa3M5t
+ BY9uH+YULhknLDAD4IhE1cxs=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 58a4f13153733a38;
-	Mon, 09 Nov 2026 05:57:28 +0000
-X-Mizu-Trace-ID: 58a4f13153733a38
+Received: by mta10.migadu.com with ESMTPS id be7ce9f4d596a11c;
+	Mon, 09 Nov 2026 05:57:35 +0000
+X-Mizu-Trace-ID: be7ce9f4d596a11c
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <baoquan.he@linux.dev>
 To: linux-mm@kvack.org
@@ -75,9 +75,9 @@ Cc: akpm@linux-foundation.org,
 	klarasmodin@gmail.com,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH v5 17/19] mm, swap: add xswap shrink trigger and defer it to a workqueue
-Date: Mon,  9 Nov 2026 13:54:53 +0800
-Message-ID: <20261109055455.536925-18-baoquan.he@linux.dev>
+Subject: [PATCH v5 18/19] mm, swap: do not give an xswap slot to a cgroup that cannot zswap
+Date: Mon,  9 Nov 2026 13:54:54 +0800
+Message-ID: <20261109055455.536925-19-baoquan.he@linux.dev>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261109055455.536925-1-baoquan.he@linux.dev>
 References: <20261109055455.536925-1-baoquan.he@linux.dev>
@@ -85,18 +85,18 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F40DBC0003
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 8tk5ktf1z5o8s3zzhime6guw8ykjaw6h
-X-Rspam-User:
+X-Stat-Signature: 87nqeafdpir7hiey3yow534mrodyo1m3
+X-Rspamd-Queue-Id: A93C5180004
+X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794203849-540370
-X-HE-Meta: U2FsdGVkX18CwMPjn7ZQcEJXGJsYc6PZUh2LMgzJGfyY1mlWUGk0A4vReT+M/xsWcAl+bBJICUEBCDzZSkDOHpKH6gt7yxQd8YYnKOP8QeMJTFSTzTnMg/PWbAqmoIIBiU9B0qcNMT9etdbKNiuy0aPPVGBetbx5nuK9UP4X5CqxxgVJheNE87V5BxCfenjmAvJtWgFgpwCu+Zo59khfJqO4z80Q33qkqFl/lWghb3UAP4IBgZhZVioWWG+kp2ZHIxafQjCpHDHBGy2bXhFPWmndsHOiW9ABYWc++lamhaVTSsHuRKpkm51JuqoCzrj5jdmi/KOWQ/SKp4N2ECu4vCk4NurQgmc+CJEPm8UQNDFAMHrUsA/9KMOUIMQt+34r/cFct3ZMpjjcU0uFhWGTT3A+ONbVC5/VNh1GXQj7LZbJ7c8kucn7XXcO5nS/JJwwtl9sPQhXYKSi1GCa+gHZE9MEJddQ0FDbU5a81hQaFjfJ9qUUwYjDDL/EWz/fgjTj2vXkqO3HxizzMJdiaElnfL7uJMo0pTtCo0sjlp2vuPHKOpZH5sIOfD8bBfEruRKeqEJghCFwpMF/Z6+3W+UoK1r9ls62PbArAxiCLxObotc+UjuNMpyC278YRxKoBXMzgoGYEHxfYo+1mDpSqUaAn/rnN4htc6WzlI+6JeCeRWEKx40s6tg6i3W2O0Q5SWJjJ+TigBwocExWIOCzqSIa9qg07weB/PZqchM/YsmoOtRcCug/YEKgqxVihVbSSKFTskBt+9tqjKQnNiWVteef9xCGpuYxYScjXkCVcW2WIFTqLeS/dPj7RWu39CupRcYd8fK4jj9PvyroH8v+HGf8faU05CtpISTSWJ1q7yQQ5nTPHFsqe53QSFt/DPP2ZEE0MH7OYVBGw+zVdfEt7ZXQazPSIN7OlIWOppYSPq3lya3C5xyuilmNPMWhGW59rvfICmZk2ML4qqz50bxD3bw
- l5lOhrb3
- lgbSPnVYuL4nJbSU+A8oxJ/bF1S8KFrQOOBtPuEDPuVAJOu+PGP8riMGoH6gf6AGMWCCKrRxCI4v+IMCOIu0jHI/xGRfXAfTrKIy5zYJdcMFpiKvsWFoxJ2nNxwDM38QceTchuHlmwAhdKhF7cQkqApk62Pqskq7BCQqi/GqBX1WixiU5LcX17keAKwLaRZgnwsbCiQe7r2Skgn6SkCW0FZ28x+BwyShIfv3V9LeTI48WEHNoP8M4mkcyNJpYVBibuKG4lfgK9DtYShn58TJumioKWI0hrNUNzhydHpvzoE/366zkICX0O/tQkhejuYcKW360YuHYrKT/06qHbM4jj/EOxD+ATgBVGQHj7tuHGJsnFssBLoOw2bTJSRFGAXXfaUPmRwm1Rjb50M0BgjlGYQYCQ8RmO7/12FnRpf8OPSo0teOLvSK0o0Y+JSmn7KZzG/LUvjuDVxqd1TvwfzkCx6YNxv7ZItzmzI2q
+X-HE-Tag: 1794203856-834909
+X-HE-Meta: U2FsdGVkX1+eg1yARBr/2P16OnYOaHG0+8kKfuGYWYj1+8bmZFw1IXGeecU2vwWIZuqLlfix7CnowEhtJIGr0EmdCtsa7Nd3qdQy45EcypD2tS+m9YFuvUkM0bkT0aO7rmdmUB1zAYEkicRCfPBlqhrszj1XoBk8VAe9zgMi521cors5TnDQ+7BhRoloeVvzc6g9CZg8rNILi9I7AkqXUESIejrE79Rwr6kHu8aqhTkU2BoeoJUxkRF39Ih+J/cWWAXkwr8LrkGFsfbcu+buGyUwLOe6tNxXvhQPYba3fHIbtuyGmAaOZXQgsWLAaNlCuvnQS+G0XR1pPbzxB1izkvqeSVIZosbUYTaXfer/xZJAJ/iRfFwONQU+ZS5QjruJYb9TOWtzBFBubF9ls9F3Awj6WsxMAQx+2vZC8xJOMt2htLCeVjRuKq9tkAnAgpYcMoN0CWn2G2xlFo3XvlTklGToCM5clAKGegISboK4kue34KRPbw82FL9S5LbTih5pxX+Ck9PCS4bad02eeYk4kM72NEdxpzyazZjGignibQl81sRMipmRLdTYe53kmdYdqRp1vcgb+1JJS/fnKAx7wAHnnSv2TK40uln0JObhMATAK3M6MKxbZiRgdZt5ARNG4znB2mxzX2cRNB805Famef+ZSvu83lFa3U/nB0BjMyBBP9uhckNr7rzisMYilXgM5wikCPy+wRZKEFmSvKmNElV39qfGSlm+fXEoV/SxpY6anMm2Gx1GsAzDLt3T2IYh4xX4z4Bk1NETjqbpUpQlcAghQnecaajgNxOF0DoljiLjTbhuVcdx3XpcDgvgpJ0Ls0SAtkdMOPYNUsLOIqNWktW8OneCQ54sxFBwqBlSL+XWif2m8yXhnCJHZvSMgvCqZGTX0mw9Nj4r9ol5L6q+S0D7Vc6hqY0IIgCOX0zi0+KZPubeG3kuLumye7VkytBM7oOG3t3dDJgXX2zov3l
+ Rr1D7bIf
+ zVDh0mZGK9LDmGWkOW8s/EkFB7V5Lxj5ylMJTsrmzDD1FSfbsxpWKqGj2AX+cLugmpX52jlt6CdmiTqmkQx/31Ha8J0sq5fAWPvlj06o2fdDztYDFPWXBJpEj3EqyKd4W1ifc46jLpNWqbketrGKbMfCi0i2hzPAxp/YDy9iGmx2uopldRPRT7v2sSmFgAch5mxFiCbIbrHCzNTe36MtNu3XhFgbzQeI/zYi+YlvasOy09Kc03O+0IH+xtQgqjHV2t9TOQdId+fgMc905ofEZcsAr3Uj8BVbA51HOEcIWctf5cghA6Avg1jXU5Q==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,378 +107,188 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Baoquan He <hebaoquan@kylinos.cn>
 
-The shrink cannot run directly from __free_cluster(), because that path
-holds ci->lock.  xswap_try_shrink() takes xswap_lock and can sleep in
-synchronize_rcu() and vm_area_unmap_pages().  __free_cluster() schedules
-xswap_shrink_work instead, and teardown disables the work.
+At this point, an xswap slot holds only a zswap-backed page. It has no
+storage of its own. If the folio's cgroup cannot take another zswap
+page, giving it an xswap slot is wasted: zswap refuses the page and the
+slot cannot hold it.
 
-The shrink unmaps the free tail of the cluster_info mapping.  It costs
-two RCU grace periods: one after draining the per-CPU cache and before
-the tail is rechecked, and one inside the unmap helper.  The second one
-is needed because a cluster can be allocated and freed between the
-recheck and the unmap, and go back into the per-CPU cache.  xswap devices
-are SWP_SOLIDSTATE, so the per-CPU cache is the only one that needs
-draining.
+Skip xswap devices when the cgroup cannot zswap, and try a physical swap
+device instead.
 
-The unmap helper takes a wait flag.  The shrink passes true.  Teardown
-passes false because __swapoff() has already drained and waited.  The
-create failure path also passes false because it has no readers.
+The check is obj_cgroup_may_zswap(). It is false when memory.zswap.max
+is 0 anywhere in the hierarchy, or when the hierarchy has already
+reached that limit. So the routing follows how much the cgroup has in
+zswap, not only how it is configured. zswap_store() uses the same check,
+but it first tries to shrink the memcg. The allocation-time check does
+not try to shrink, so it is stricter.
 
-Count shrink operations in xswap_shrinks.  Initialize the work in
-xswap_create() so free_swap_cluster_info() can always call
-disable_work_sync().  Using disable_work_sync() instead of only
-cancel_work_sync() also rejects a schedule that read SWP_WRITEOK just
-before swapoff.  Then no work stays pending when the swap_info is reused
-and INIT_WORK() runs again.
+Count active xswap devices, and do the cgroup lookup only when one
+exists. Update the counter when the device is enabled, before a full
+device can skip the avail-list insert, so a full device is still counted.
+
+A device can appear between that read and the allocation. So if the
+slot the allocator picked is on an xswap device, check the cgroup
+again; when it cannot zswap, drop the slot and retry without xswap
+devices.
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- include/linux/swap.h |   1 +
- mm/swapfile.c        | 233 ++++++++++++++++++++++++++++++++++++++-----
- 2 files changed, 211 insertions(+), 23 deletions(-)
+ mm/swapfile.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 63 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 29623c5138ab..1e552a8b421b 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -247,6 +247,7 @@ struct swap_info_struct {
- 	u64			xswap_id;	/* stable id, shown to userspace */
- 	unsigned long		nr_clusters_max;/* total clusters in the xswap address space */
- 	unsigned long		nr_clusters_mapped; /* currently mapped cluster count */
-+	struct work_struct	xswap_shrink_work; /* deferred shrink trigger */
- 	struct mutex		xswap_lock;	/* serialize map/unmap operations */
- 	struct dentry		*xswap_debugfs;	/* mapped range and counters */
- 	atomic_long_t		xswap_grows;	/* grow operations so far */
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 097ed288b1ca..2e5383036fdc 100644
+index 2e5383036fdc..efb48ef71611 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -66,12 +66,13 @@
- 
- #ifdef CONFIG_XSWAP
+@@ -326,6 +326,8 @@ static DEFINE_SPINLOCK(swap_lock);
+ static unsigned int nr_swapfiles;
+ atomic_long_t nr_swap_pages;
+ atomic_t nr_real_swapfiles;
++/* Active xswap devices, as in nr_real_swapfiles. */
++static atomic_t nr_xswap_files;
  /*
-- * xswap: dynamically grow the cluster_info array via a VM_SPARSE area.
-+ * xswap: dynamically grow and shrink the cluster_info array via a
-+ * VM_SPARSE area.
-  *
-- * XSWAP_GROW_CLUSTERS is the number of clusters to map in one grow
-- * operation.  It is set to the number of cluster_info structs that
-- * fit in a single page (at least 16), so that the vmalloc page table
-- * overhead is proportional to the number of clusters mapped.
-+ * XSWAP_GROW_CLUSTERS is the number of clusters to map/unmap in one
-+ * grow/shrink operation: the number of cluster_info structs that fit in
-+ * a single page (at least 16), so that the vmalloc page table overhead
-+ * is proportional to the number of clusters mapped.
+  * Some modules use swappable objects and may try to swap them out under
+  * memory pressure (via the shrinker). Before doing so, they may wish to
+@@ -1519,7 +1521,9 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
+ 		lockdep_assert_held(&si->lock);
+ 		si->flags &= ~SWP_WRITEOK;
+ 		/* Count active devices, not merely those on the avail list. */
+-		if (!(si->flags & SWP_XSWAP))
++		if (si->flags & SWP_XSWAP)
++			atomic_sub(1, &nr_xswap_files);
++		else
+ 			atomic_sub(1, &nr_real_swapfiles);
+ 		atomic_long_or(SWAP_USAGE_OFFLIST_BIT, &si->inuse_pages);
+ 	} else {
+@@ -1558,7 +1562,9 @@ static void add_to_avail_list(struct swap_info_struct *si, bool swapon)
+ 		 * Count the device here, not after adding it to the list: a
+ 		 * full device is still active and skips the add below.
+ 		 */
+-		if (!(si->flags & SWP_XSWAP))
++		if (si->flags & SWP_XSWAP)
++			atomic_add(1, &nr_xswap_files);
++		else
+ 			atomic_add(1, &nr_real_swapfiles);
+ 	} else {
+ 		if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
+@@ -1682,7 +1688,7 @@ static bool get_swap_device_info(struct swap_info_struct *si)
+  * Fast path try to get swap entries with specified order from current
+  * CPU's swap entry pool (a cluster).
   */
- #define XSWAP_GROW_CLUSTERS \
- 	max_t(unsigned long, PAGE_SIZE / sizeof(struct swap_cluster_info), 16)
-@@ -82,6 +83,14 @@
- 	max_t(unsigned long,						\
- 	      ((XSWAP_UNMAP_BATCH_PAGES * PAGE_SIZE) /		\
- 	       sizeof(struct swap_cluster_info)), 16)
-+/*
-+ * Shrink thresholds, as a percentage of the mapped range in use.  The stop
-+ * point sits inside (SHRINK_WHEN, GROW_WHEN), so shrinking cannot leave the
-+ * range in a state that wakes the grow up.
-+ */
-+#define XSWAP_SHRINK_WHEN	50
-+#define XSWAP_SHRINK_UNTIL	70
-+
- /*
-  * Grow thresholds, as a percentage of the mapped range in use.  The target
-  * sits above the point where the shrink starts looking (50%) and below the
-@@ -100,6 +109,7 @@ static int xswap_map_clusters(struct swap_info_struct *si,
- static void xswap_unmap_clusters(struct swap_info_struct *si,
- 				 unsigned long start_idx, unsigned long nr);
- static int xswap_mapped_end(pte_t *pte, unsigned long addr, void *data);
-+static void xswap_try_shrink(struct swap_info_struct *si);
- 
- static int xswap_create(int prio);
- static int xswap_destroy(u64 id);
-@@ -866,6 +876,16 @@ static void __free_cluster(struct swap_info_struct *si, struct swap_cluster_info
- 	swap_cluster_free_table(ci);
- 	move_cluster(si, ci, &si->free_clusters, CLUSTER_FLAG_FREE);
- 	ci->order = 0;
-+#ifdef CONFIG_XSWAP
-+	/*
-+	 * Only xswap devices, and not while the device is being torn down.
-+	 * A racing swapoff can still clear SWP_WRITEOK after this check;
-+	 * the work function checks it again, so a late schedule is benign.
-+	 */
-+	if ((READ_ONCE(si->flags) & (SWP_XSWAP | SWP_WRITEOK)) ==
-+	    (SWP_XSWAP | SWP_WRITEOK))
-+		schedule_work(&si->xswap_shrink_work);
-+#endif
- }
- 
- /*
-@@ -3515,6 +3535,8 @@ static void free_swap_cluster_info(struct swap_info_struct *si)
- 	if (si->flags & SWP_XSWAP) {
- 		unsigned long nr_mapped;
- 
-+		/* A late schedule must not be pending when the work is reinitialized. */
-+		disable_work_sync(&si->xswap_shrink_work);
- 		/*
- 		 * Cluster 0 keeps the bad header slot, so it never empties
- 		 * and __free_cluster() never frees its table.
-@@ -3560,8 +3582,10 @@ static void free_swap_cluster_info(struct swap_info_struct *si)
- }
- 
- /*
-- * Called after swap device's reference count is dead, so
-- * neither scan nor allocation will use it.
-+ * Invalidate the per-cpu cluster cache for @si.  A caller that has not
-+ * already killed @si->users and waited must follow with synchronize_rcu()
-+ * before unmapping cluster_info, since a reader may already have loaded
-+ * a cached offset.
-  */
- static void flush_percpu_swap_cluster(struct swap_info_struct *si)
+-static bool swap_alloc_fast(struct folio *folio)
++static bool swap_alloc_fast(struct folio *folio, bool may_zswap)
  {
-@@ -3570,11 +3594,7 @@ static void flush_percpu_swap_cluster(struct swap_info_struct *si)
- 
- 	for_each_possible_cpu(cpu) {
- 		pcp_si = per_cpu_ptr(percpu_swap_cluster.si, cpu);
--		/*
--		 * Invalidate the per-cpu swap cluster cache.  Any reader that
--		 * has already loaded an entry is waited out by the caller's
--		 * synchronize_rcu().
--		 */
-+		/* Invalidate the per-cpu swap cluster cache for @si. */
- 		for (i = 0; i < SWAP_NR_ORDERS; i++)
- 			cmpxchg(&pcp_si[i], si, NULL);
+ 	unsigned int order = folio_order(folio);
+ 	struct swap_cluster_info *ci;
+@@ -1722,6 +1728,11 @@ static bool swap_alloc_fast(struct folio *folio)
+ 		}
  	}
-@@ -3681,6 +3701,15 @@ static int __swapoff(struct swap_info_struct *p)
- 	struct file *swap_file = NULL;
- 	int err;
- 
-+#ifdef CONFIG_XSWAP
-+	if (p->flags & SWP_XSWAP) {
-+		cancel_work_sync(&p->xswap_shrink_work);
-+		/* Wait out a shrink racing us from the sysfs write path. */
-+		mutex_lock(&p->xswap_lock);
-+		mutex_unlock(&p->xswap_lock);
+ #endif
++	if (!may_zswap && (si->flags & SWP_XSWAP)) {
++		put_swap_device(si);
++		rcu_read_unlock();
++		return false;
 +	}
-+#endif
-+
- 	wait_for_allocation(p);
  
- 	set_current_oom_origin();
-@@ -4317,9 +4346,13 @@ static unsigned long xswap_grow(struct swap_info_struct *si)
- 	return nr_new;
+ 	ci = swap_cluster_lock(si, offset);
+ 	if (cluster_is_usable(ci, order)) {
+@@ -1738,13 +1749,19 @@ static bool swap_alloc_fast(struct folio *folio)
  }
  
--/* Caller must hold si->xswap_lock.  Cannot fail. */
-+/*
-+ * Caller must hold si->xswap_lock.  Cannot fail.  @wait drains the per-cpu
-+ * cluster cache and waits one RCU grace period before unmapping.
-+ */
- static void xswap_unmap_clusters_locked(struct swap_info_struct *si,
--					unsigned long start_idx, unsigned long nr)
-+					unsigned long start_idx, unsigned long nr,
-+					bool wait)
+ /* Rotate the device and switch to a new cluster */
+-static void swap_alloc_slow(struct folio *folio)
++static void swap_alloc_slow(struct folio *folio, bool may_zswap)
  {
- 	unsigned long start_addr = (unsigned long)si->cluster_info +
- 				   (size_t)start_idx * sizeof(struct swap_cluster_info);
-@@ -4348,14 +4381,16 @@ static void xswap_unmap_clusters_locked(struct swap_info_struct *si,
- 		return;
- 	}
+ 	struct swap_info_struct *si, *next;
  
--	/*
--	 * A per-cpu cluster cache can still hold an offset in this range.
--	 * Invalidate those references, then wait out the readers that have
--	 * already loaded one, so that nobody can dereference cluster_info
--	 * past this point.  swapoff() needs the same before it releases.
--	 */
--	flush_percpu_swap_cluster(si);
--	synchronize_rcu();
-+	if (wait) {
+ 	spin_lock(&swap_avail_lock);
+ start_over:
+ 	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
 +		/*
-+		 * A per-cpu cluster cache can still hold an offset in this
-+		 * range.  Invalidate those references, then wait out the
-+		 * readers that have already loaded one, so that nobody can
-+		 * dereference cluster_info past this point.
++		 * Do not rotate a skipped device: the walk follows the
++		 * rotation and would spin forever.
 +		 */
-+		flush_percpu_swap_cluster(si);
-+		synchronize_rcu();
-+	}
- 
- 	npages = (vm_end - vm_start) >> PAGE_SHIFT;
- 
-@@ -4398,7 +4433,11 @@ static void xswap_unmap_clusters(struct swap_info_struct *si,
- 				 unsigned long start_idx, unsigned long nr)
- {
- 	mutex_lock(&si->xswap_lock);
--	xswap_unmap_clusters_locked(si, start_idx, nr);
-+	/*
-+	 * The teardown caller has already drained and waited in __swapoff();
-+	 * the create failure path has no readers.
-+	 */
-+	xswap_unmap_clusters_locked(si, start_idx, nr, false);
- 	mutex_unlock(&si->xswap_lock);
++		if (!may_zswap && (si->flags & SWP_XSWAP))
++			continue;
+ 		/* Rotate the device and switch to a new cluster */
+ 		plist_requeue(&si->avail_list, &swap_avail_head);
+ 		spin_unlock(&swap_avail_lock);
+@@ -2067,6 +2084,17 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
+ 	return err;
  }
  
-@@ -4413,6 +4452,153 @@ static int xswap_mapped_end(pte_t *pte, unsigned long addr, void *data)
- 	*mapped_end = addr + PAGE_SIZE;
- 	return 0;
- }
-+
-+/*
-+ * Automatic reclaim: leave one chunk of the free tail mapped as slack, so
-+ * that the next allocation has somewhere to land, and only unmap once
-+ * several chunks can go, so the unmap is worth the two RCU grace periods
-+ * it costs.
-+ */
-+#define XSWAP_SHRINK_SLACK	XSWAP_GROW_CLUSTERS
-+#define XSWAP_SHRINK_MIN	(XSWAP_GROW_CLUSTERS * 8)
-+
-+static void xswap_shrink_work_fn(struct work_struct *work)
++/* Can the folio's cgroup take another zswap page? */
++static bool folio_may_zswap(struct folio *folio)
 +{
-+	struct swap_info_struct *si = container_of(work,
-+			struct swap_info_struct, xswap_shrink_work);
++	struct obj_cgroup *objcg = get_obj_cgroup_from_folio(folio);
++	bool may_zswap = !objcg || obj_cgroup_may_zswap(objcg);
 +
-+	if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
-+		return;
-+	xswap_try_shrink(si);
++	if (objcg)
++		obj_cgroup_put(objcg);
++	return may_zswap;
 +}
 +
-+/*
-+ * Try to shrink the cluster_info tail: unmap contiguous free clusters
-+ * at the end of the mapped range.
-+ */
-+static void xswap_try_shrink(struct swap_info_struct *si)
-+{
-+	struct swap_cluster_info *ci;
-+	unsigned long nr_mapped, nr_tail, keep, nr_unmap, start_idx, i;
-+
-+	if (!(si->flags & SWP_XSWAP))
-+		return;
-+
-+	mutex_lock(&si->xswap_lock);
-+
-+	/* A swapoff raced us and is about to walk this mapping. */
-+	if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
-+		goto out_unlock;
-+
-+	nr_mapped = READ_ONCE(si->nr_clusters_mapped);
-+	if (nr_mapped <= 1)	/* keep cluster 0 */
-+		goto out_unlock;
-+
+ /**
+  * folio_alloc_swap - allocate swap space for a folio
+  * @folio: folio we want to move to swap
+@@ -2083,10 +2111,23 @@ int folio_alloc_swap(struct folio *folio)
+ {
+ 	unsigned int order = folio_order(folio);
+ 	unsigned int size = 1 << order;
++	/* True unless the gate below finds an xswap device to route away from. */
++	bool may_zswap = true;
++	bool zswap_checked = false;
+ 
+ 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
+ 	VM_BUG_ON_FOLIO(!folio_test_uptodate(folio), folio);
+ 
 +	/*
-+	 * Reclaim on our own, but only once the mapped range is at most
-+	 * SHRINK_WHEN in use: growth is demand driven, so reclaiming on a
-+	 * smaller dip would only map the same clusters again, and every
-+	 * unmap costs two RCU grace periods.
++	 * A folio that zswap will not take must not get an xswap slot. With
++	 * no xswap device to route away from, skip the lookup; a device that
++	 * appears before we pick one is handled after the allocation.
 +	 */
-+	if (swap_usage_in_pages(si) * 100 >
-+	    nr_mapped * SWAPFILE_CLUSTER * XSWAP_SHRINK_WHEN)
-+		goto out_unlock;
-+
-+	/*
-+	 * Count the free clusters at the tail of the mapped range.  Scanned,
-+	 * not tracked: the count must be exact to size the unmap, and an
-+	 * incremental count falls behind on out-of-order frees.
-+	 */
-+	nr_tail = 0;
-+	while (nr_mapped - nr_tail > 1) {
-+		ci = &si->cluster_info[nr_mapped - nr_tail - 1];
-+		if (READ_ONCE(ci->count) ||
-+		    READ_ONCE(ci->flags) != CLUSTER_FLAG_FREE)
-+			break;
-+		nr_tail++;
++	if (atomic_read(&nr_xswap_files)) {
++		may_zswap = folio_may_zswap(folio);
++		zswap_checked = true;
 +	}
-+	if (nr_tail < XSWAP_SHRINK_SLACK + XSWAP_SHRINK_MIN)
-+		goto out_unlock;
 +
+ 	if (order) {
+ 		/*
+ 		 * Reject large allocation when THP_SWAP is disabled. Check below
+@@ -2107,8 +2148,8 @@ int folio_alloc_swap(struct folio *folio)
+ 
+ again:
+ 	local_lock(&percpu_swap_cluster.lock);
+-	if (!swap_alloc_fast(folio))
+-		swap_alloc_slow(folio);
++	if (!swap_alloc_fast(folio, may_zswap))
++		swap_alloc_slow(folio, may_zswap);
+ 	local_unlock(&percpu_swap_cluster.lock);
+ 
+ 	if (!order && unlikely(!folio_test_swapcache(folio))) {
+@@ -2116,6 +2157,22 @@ int folio_alloc_swap(struct folio *folio)
+ 			goto again;
+ 	}
+ 
 +	/*
-+	 * Stop at SHRINK_UNTIL rather than at the end of the tail, or the
-+	 * range comes out full enough for the grow to be woken.  Below the
-+	 * tail everything stays mapped, and one chunk of tail with it.
++	 * The xswap gate was skipped because there was no device when we
++	 * looked. One may have appeared since; check before keeping the
++	 * xswap slot the allocator may have picked.
 +	 */
-+	keep = DIV_ROUND_UP(swap_usage_in_pages(si) * 100,
-+			    XSWAP_SHRINK_UNTIL * SWAPFILE_CLUSTER);
-+	if (keep < nr_mapped - nr_tail + XSWAP_SHRINK_SLACK)
-+		keep = nr_mapped - nr_tail + XSWAP_SHRINK_SLACK;
-+
-+	if (nr_mapped < keep + XSWAP_SHRINK_MIN)
-+		goto out_unlock;
-+
-+	nr_unmap = rounddown(nr_mapped - keep, XSWAP_GROW_CLUSTERS);
-+	if (!nr_unmap)
-+		goto out_unlock;
-+	start_idx = nr_mapped - nr_unmap;
-+
-+	/*
-+	 * An allocation can enter a cluster from the per-cpu cache without
-+	 * going through the lists, so drain the cache first.  xswap devices
-+	 * are SWP_SOLIDSTATE, so the per-cpu cache is the only cache.  Only
-+	 * then do the checks below hold: a cluster taken from a list takes
-+	 * si->lock, which is what the check holds.
-+	 *
-+	 * The unmap helper below drains the cache and waits again: a cluster
-+	 * can be taken and freed between this recheck and the unmap, putting
-+	 * it back in the per-cpu cache.
-+	 */
-+	flush_percpu_swap_cluster(si);
-+	synchronize_rcu();
-+
-+	/*
-+	 * Only shrink a run that reaches the mapped end; otherwise
-+	 * truncating nr_clusters_mapped would orphan the active tail.
-+	 * move_cluster() takes si->lock under ci->lock, so ci->lock is
-+	 * taken with trylock here to avoid the reverse order.
-+	 *
-+	 * With si->lock held, the writes below need no ci->lock: a FREE
-+	 * cluster leaves the free list only in isolate_lock_cluster(),
-+	 * every move_cluster() caller holds ci->lock (the trylock above
-+	 * catches one), a FREE cluster's count is 0 and only falls, and
-+	 * the drained cache holds no FREE cluster.
-+	 */
-+	spin_lock(&si->lock);
-+	for (i = start_idx; i < nr_mapped; i++) {
-+		ci = &si->cluster_info[i];
-+		if (READ_ONCE(ci->flags) != CLUSTER_FLAG_FREE)
-+			break;
-+		if (!spin_trylock(&ci->lock)) {
-+			spin_unlock(&si->lock);
-+			goto out_unlock;
++	if (unlikely(!zswap_checked && atomic_read(&nr_xswap_files) &&
++		     folio_test_swapcache(folio) &&
++		     (__swap_entry_to_info(folio->swap)->flags & SWP_XSWAP))) {
++		zswap_checked = true;
++		may_zswap = folio_may_zswap(folio);
++		if (!may_zswap) {
++			swap_cache_del_folio(folio);
++			goto again;
 +		}
-+		spin_unlock(&ci->lock);
-+	}
-+	if (i != nr_mapped) {
-+		spin_unlock(&si->lock);
-+		goto out_unlock;
 +	}
 +
-+	for (i = start_idx; i < nr_mapped; i++) {
-+		ci = &si->cluster_info[i];
-+		list_del_init(&ci->list);
-+		WRITE_ONCE(ci->flags, CLUSTER_FLAG_NONE);
-+	}
-+	spin_unlock(&si->lock);
-+
-+	/*
-+	 * A cluster can be taken and freed between the recheck above and the
-+	 * unmap, putting it back in the per-cpu cache.  Drain and wait again.
-+	 */
-+	xswap_unmap_clusters_locked(si, start_idx, nr_unmap, true);
-+	atomic_long_inc(&si->xswap_shrinks);
-+
-+out_unlock:
-+	mutex_unlock(&si->xswap_lock);
-+}
-+
-+/* Not an interface: how far the mapped range has moved, for testing. */
- static ssize_t xswap_debugfs_read(struct file *file, char __user *buf,
- 				  size_t count, loff_t *ppos)
- {
-@@ -4674,6 +4860,7 @@ static int xswap_create(int prio)
- 
- 	INIT_WORK(&si->discard_work, swap_discard_work);
- 	INIT_WORK(&si->reclaim_work, swap_reclaim_work);
-+	INIT_WORK(&si->xswap_shrink_work, xswap_shrink_work_fn);
- 
- 	/* Cluster-aligned, so no cluster holds a slot past si->max. */
- 	maxpages = rounddown(maxpages, SWAPFILE_CLUSTER);
+ 	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
+ 	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
+ 		swap_cache_del_folio(folio);
 -- 
 2.54.0
 
