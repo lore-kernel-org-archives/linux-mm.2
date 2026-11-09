@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FE1F606EEA6
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 16:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0C3B606EE93
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 16:02:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=MjOO+13E
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=iMDYvXpk
 Received: by kanga.kvack.org (Postfix)
-	id B97256B05D6; Mon,  9 Nov 2026 11:02:27 -0500 (EST)
+	id 0520A6B05D7; Mon,  9 Nov 2026 11:02:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B24C06B05D7; Mon,  9 Nov 2026 11:02:27 -0500 (EST)
+	id F1C7B6B05D8; Mon,  9 Nov 2026 11:02:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C5BF6B05D8; Mon,  9 Nov 2026 11:02:27 -0500 (EST)
+	id DE4EB6B05DA; Mon,  9 Nov 2026 11:02:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 720766B05D6
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:02:27 -0500 (EST)
-Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 101721C40F9
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:02:27 +0000 (UTC)
-X-FDA: 85416047934.26.84FD2C2
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B75476B05D7
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:02:32 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5199D80718
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:02:32 +0000 (UTC)
+X-FDA: 85416048144.04.D1F03E5
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2D771120016
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:02:24 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MjOO+13E;
-	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf14.hostedemail.com (Postfix) with ESMTP id 6BB8110000E
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:02:30 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iMDYvXpk;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf14.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794240150;
+	b=opyN0xyotq5q5nix+BAqcnnAfo8d0kIEj3v4JDvqaZl0X101oSVnlIvBXN8WFlVQZty1e/
+	yRe14sXMFJLcATBqQfiw5iJq48hzO1YR0W8cPw61MNKS/HCEYTcQPf65k63NPAjq+TAKJk
+	KWPVBd7KZShOnXvuWn7DEI0sQL58ZJI=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794240145;
+	s=arc-20220608; t=1794240150;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MPDGF6IXWrblzJC60iTMPME/YZHsX/XZwrmc6jtde8w=;
-	b=l6VYwoyFxzSh117rhEvB3pPE32BcqhcBsXBSr9anDN4xXkuwp+0SFGeCTq7qibkcyQHm8q
-	67y4JfflSRckziZDCfSJnbUDHvwbkcKCAy+Gj9Y3JhtAYX831+sMQ1266oiVDR+s9MdRfn
-	HkuMx0O+8P7eFS+6cVfz4AADm3Oo+Yk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794240145;
-	b=m3RliZJUCIUeqlAnvceAN3H35kjTtuycPLUj/oLQ2LRPOO3meyV3FoWAcqviI7NUdIVDLh
-	LwTdQACPXHgdLnDQFlfmVHaIonDuGg5YxHXLtBGtmBJPoGLxvr1aQKNBj/V46pWxhmjSLk
-	s6I2GUqVXn9PjqhrQFbxCAzaAVySO0c=
+	bh=KEIsFW9jH6gypon3gbKl/1F5oRxGR3xdBdmV6PMmfqQ=;
+	b=I/6pXUKbF+wpzRKpO/W8VkNgoJecLfItlX7fUiubq2H9feqMX8ABQT6VqXeURpwW9M3c7M
+	SyYYkIr+jLmq4mcsFt6F9F9ci3MIWj2X1DSVaQtPe/DoLeiwdvAL3O5MBUrS9MQenJLmL9
+	Ojg2s6ggSj2gFXvKQgSQCnqsPCPZNls=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=MjOO+13E;
-	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=iMDYvXpk;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf14.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 586202F;
-	Mon,  9 Nov 2026 08:02:21 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8B13A2F;
+	Mon,  9 Nov 2026 08:02:26 -0800 (PST)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C6A83F632;
-	Mon,  9 Nov 2026 08:02:19 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AE4A23F632;
+	Mon,  9 Nov 2026 08:02:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794240144; bh=7lQIZULh5J1Hl9TkWIvvH26oFjy2YjVKRIp92NAf5N0=;
+	t=1794240149; bh=whHNqvrgkNGDWhe3Qiyv8K8tTXQdyzS5DNMu5K3JCD8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=MjOO+13EDwQFxplh8y2zy9+3siFjwxsSmc+dzoPYHyKnmN1JvLNhY/W07LEnJC+1l
-	 sysFGL4K4QoHQg0D/keeeiYly5kz212yq/Zfq+xgd5tfW3DTl2WJg2hBWxPJCuMyqk
-	 naaRRee+6j6TbSnsP7JfOgtcwa0AEuecMqKJ48rw=
+	b=iMDYvXpkelxJePBSzgn+i0+x2akbCd3CBRy4l7OFEcb2EjWv+m/azm068BZjkdudw
+	 YKEYwtuM+C3x9QW+Yc1qQptt5HFwSwubGdIKbovaVUgFYoQpjw2zhHxQOKfFxessjl
+	 qlyJJr2NTrOl02unsu0tYLesKm6upWccZeB/WIuI=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Mon, 09 Nov 2026 15:58:46 +0000
-Subject: [PATCH RFC v10 21/22] arm64: mm: Map kernel image alias of
- init_pg_dir read-only
+Date: Mon, 09 Nov 2026 15:58:47 +0000
+Subject: [PATCH RFC v10 22/22] mm: Add basic tests for
+ kpkeys_hardened_pgtables
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-kpkeys-v10-21-aa6c4d9603bc@arm.com>
+Message-Id: <20261109-kpkeys-v10-22-aa6c4d9603bc@arm.com>
 References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
 In-Reply-To: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
 To: linux-hardening@vger.kernel.org
@@ -94,25 +94,25 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  Ira Weiny <iweiny@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  Thomas Gleixner <tglx@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794240029; l=3031;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794240029; l=8244;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=7lQIZULh5J1Hl9TkWIvvH26oFjy2YjVKRIp92NAf5N0=;
- b=LoDGFEClYfGo5mtYK/pK9ZnXOnv9T2HDXy6Aj90eQ6QdUKa6c5axkQLFxUd9JMNimrSP5Ydw3
- 0qkvhmxlsYxA3T1KVntwfvUbp5XSYIBU2rSgq697LjbRqZ4mmrLsYXT
+ bh=whHNqvrgkNGDWhe3Qiyv8K8tTXQdyzS5DNMu5K3JCD8=;
+ b=864d1s7mcMPTzdCv7ZDhpZX1q/RPNV085d42av0+370yfZpQDlIINNoHvAQ+w9IRHJ61oZ8JS
+ 4f2IZ8ZwfhmA+1swOc3JPZECBbVL4jaLroXdU6aJWI3is9jZl7ZvBf2
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Server: rspam06
-X-Stat-Signature: nppeaaho7z8m49qtdoa7pt7iss34hok1
+X-Rspamd-Queue-Id: 6BB8110000E
+X-Rspamd-Server: rspam12
+X-Stat-Signature: wst3izgrzdwyedm5r35irzyiwjfyo184
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 2D771120016
-X-Rspam-User: 
-X-HE-Tag: 1794240144-461030
-X-HE-Meta: U2FsdGVkX1+4wBplvc6zf3sAXKw7eemxN+fH5KWIUqMVmFT2tQBN6nzKBSite0V84P7LKuuey0yck9dIiIxt+P1iWZ+2tCst40ZSisuACcrV72L67Ho6QCy7myK5Uj+8ap6y8QwI1VG+OKy7V3Ne3JEeRmye7fWN3nfbc5GqyOk5mFZyImKqHCVYUcwwvxvx8I4FUlXu7SjZTzYYvmFKtfRT0CdaLcGK/W5VRzKQnTjSlGiTodo3EI1tYEqAAWXXZ1XFOQs6SODoSsLFPFXYalEbtiJQe7QU6bvEhE/zoXosq8zW1J+Tip8W9CbtiPAwHAKwmHWd0g+9ORRWEIC8fkm+1WO+2xPxXpQhjrGRcwRM2JTlw5PFddjO7pFV8PiduT38XloLNHiMwbaGVlb0rqKawOhsGoalRIW+vJvOgg+OCwbS87uBK73gI9Dg92n1IAiJqqpq1lxOn8i36bx9HkmoQ5a7DwK24SGNcdK/FOotC+mjksHkqhCDnG9Qpm0hvkdIFkYmdkujvDcQt5Sv+PU7eqh1MlRH+0t4DfZmxg9sWl+wGEiASkVT+xGOt2+xuRsGmrbcZmV2ZURFNNLiUcWqIkpkKjH8DzIaLF1AyGQTydCZXLMXsZsDT+GW2NQTZPs29xVeh3aQp6Dh0lcAaNKT/blnuLCm8uH+0A1XfRkrY96TzmThZ86hJMYs+aN0Lilv+AJAjiRELwm77qFLwa1BnAswiORBzm3aaQpPfeKMXkp/+BNP/AsJpMvgtfZBe9KLAjiso74FWF7mY6qTscil09DOuQkoSktoNh3cqMYvpKV1u4ay0EQv1zCy7PtDyRG6T6AxhYOhxjSKJSGDbbkuaZtxDwPV2po23zNcV84eFS3pdog1kr09M1sGP+C+xe2SOFz7enQLBeOgCo34ocj1Q3UUt6oTRYTlT2Yfzbo3kf79hqo7CIXglAaq0Ab+PCEowDK9ruA+XEohnEA
- bGgctI17
- 0YlqNxP6ygsqSYQiiMWMwzHToxwu9Yrdziy49Yy1fSjlsJkJSzzv3gPUKq2fcFA5OR7j1MMRrOhLfRgFrNPyovzH6ZyvWdUcIRAIVBx0M4OInJczUAqeHDz4i7gY42vd3xqS9bDZzoMcDUdbVTSe0nDXvRvxPGUeyrAGerwFpJQwGMiyOnBg3Wooovsm5uBGi+bYw611onG/E/FNa3xd760pb1T1+I6/jOgiPHpOL4Ja9FkeG/sNC/WbJETkDlCmcbtVzDXN7rcCu9FZXQC7XeRkIiTNKMWMpZzOA4bv8jzIsg4q6gArAF69F2h/KgxGWY2AIGy+22P86JAM44ybeGAIj7hGvhUb4oVOSGFS6Lmka5/vDh7Is8klbpjkxCE5qtGfUp0LNZVCIYoPmPf+9oxtGO2RoaKHTCGEm
+X-HE-Tag: 1794240150-949725
+X-HE-Meta: U2FsdGVkX1/TG1sgOTcTN5tecl5vHoIDsDZG70hnP+lLexDp4V3UKJ3EGawhiYiB8O31VQKu2/4ve0XIwCzKXr+mqdM1j7l9bHg4Y9by2zrQ8qgXUjY448aoCiFB/o0vJfnFzthhqiX53LCph9mevQ9ezDS7yZojcnT8ocixnh3ITwd2fRlWSipQNCip2NdEi2cjFL8QudRUgVfJ+Ejs0AaPWjTBgtDotkcvt/0qxoW9nZcwMm01fTzAt0MzoNdiwWhS//N5dZKpfQoobakiiGDDmOctXBQY6wNsrLBbxbPqn3pVPy7ETHwosN9Wqxul+TEjdQaEEGR8ZYrWAe1/rqXD85t2cLhZ5B4XSzrKlQ6rcwnfkJPwrWkY7u7Z9IzRHLTNzRhxTDAp7ORH9BJPO3YG9EMfJfqeaTehkol41dzEX+oW4PwibZOV5BjgvZ95i5UDVWcc5WsR9CDNLEFUTxMgikwjjybgH8+ZudoZkUp6aPNbvO2h20lOvo/Lua47B9EFRZkVKqKthepNUHlytoC/UaAAcaPXQTuo+Ioz5Rp7uHb2Z6fC6ED7/ifPdrYEKBVj+JlPMDqgADBj7IJn2QW+c5sheYDGZlORI4oBR0tixCcAJX7r7vBoImBh6klUsJuytvrJiW1I3mUG/u8Bk2rMu6utLY4lwozvwHUqKQqzNIypVYTQdJDR8+rKuYICgsXQ2Ac0eMF1y82JtFtZm0r7bYrmvJdPMZcCTdAXoa3EKa3SZ/rDd8tBu7JXnVkikS4kfmUv8ZWKpGVEGKBbdQGeaqh2/iF864qXS1/EKcg1jzM4sPi7YmL6zcfD53ulHvJxfeCWdmUK7psHzR/q68/6fFFebe91bjm6I8KxNuz7BYaMWYdQeE0wjA4FUrRie4wgJV9sOfkA4dLTwSuUeZavtqZhHp6FCjIVhzr4PjcujCLikZQXfO92NzsOM3keAS+gkVupaI8hFBTun9d
+ 9gEc0T05
+ w5NUSOPlwyJIECKLAPNgnU0SnlHQycoYO2INLKyOhfNWEZz7r0DbrPAMU4K+x71eU49VaudeenBA/V4tNhMx0P8ePjLiOvNggZ6sdmX50mMlxulG+wzD8R4Fm60Sl2R9j1ECReJ5gHUOx2zHQ5SqOAYNut1Wx2kStujuaw9kEM+S7bxMa5DyAbkTgLSYcxYvq2nVTbN82HmjUiCrolbr168Ld0UFZNQRCCcLWEIbLjsEM2o0ckyRcPvOzLnSERCPkw42ZqQCRRSS1ywErU8Hp8akR2fXlwbEYAJ20wDQXdGDqTKIvY0XFU8Ni4/w49WIbPJi8hiuTu9HmAnM1+sPreyzdxrPlEP460O9JOpbs8QemHEQmlOtstH4cAUTYKIIbFt002vl/OoDt+tMPx7nWC7DeBe0FOgJIpfTx2kBlvW3xvwzUlP20gbpLnl0jH/PTJid4wfbdXLbprQyhjHes7l9P6ocZNL21eJUhvr81SaIRJT8Ojzr9naLGQyA55EJQLO4qsz5XIcvoEWDnhSMlPrLpnA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,71 +121,263 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Page tables in init_pg_dir are always modified via the linear map.
-kpkeys_hardened_pgtables now prevents arbitrary code from writing
-page tables via the linear map; map the kernel image alias of
-init_pg_dir read-only to ensure that the kpkeys protection cannot be
-bypassed.
+Add basic tests for the kpkeys_hardened_pgtables feature: try to
+perform direct writes to kernel and user page table entries and
+ensure they fail.
+
+Multiple cases are considered for kernel page tables, as early page
+tables are allocated and/or protected in a different way.
+
+The tests are builtin (cannot be built as a module) because they
+refer to multiple symbols that are not exported (e.g.
+copy_to_kernel_nofault()).
 
 Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/include/asm/sections.h | 1 +
- arch/arm64/kernel/pi/map_kernel.c | 9 +++++++--
- arch/arm64/mm/mmu.c               | 8 ++++++++
- 3 files changed, 16 insertions(+), 2 deletions(-)
+ mm/Makefile                               |   1 +
+ mm/tests/kpkeys_hardened_pgtables_kunit.c | 200 ++++++++++++++++++++++++++++++
+ security/Kconfig.hardening                |  12 ++
+ 3 files changed, 213 insertions(+)
 
-diff --git a/arch/arm64/include/asm/sections.h b/arch/arm64/include/asm/sections.h
-index 51b0d594239e..dc961cf67168 100644
---- a/arch/arm64/include/asm/sections.h
-+++ b/arch/arm64/include/asm/sections.h
-@@ -23,6 +23,7 @@ extern char __irqentry_text_start[], __irqentry_text_end[];
- extern char __mmuoff_data_start[], __mmuoff_data_end[];
- extern char __entry_tramp_text_start[], __entry_tramp_text_end[];
- extern char __relocate_new_kernel_start[], __relocate_new_kernel_end[];
-+extern char __pi_init_pg_dir[], __pi_init_pg_end[];
- 
- static inline size_t entry_tramp_text_size(void)
- {
-diff --git a/arch/arm64/kernel/pi/map_kernel.c b/arch/arm64/kernel/pi/map_kernel.c
-index fb44cbdd2f29..81ca3e98f0f7 100644
---- a/arch/arm64/kernel/pi/map_kernel.c
-+++ b/arch/arm64/kernel/pi/map_kernel.c
-@@ -92,8 +92,13 @@ static void __init map_kernel(u64 kaslr_offset, u64 va_offset, int root_level)
- 		    __inittext_end, prot, false, root_level);
- 	map_segment(init_pg_dir, &pgdp, va_offset, __initdata_begin,
- 		    __initdata_end, data_prot, false, root_level);
--	map_segment(init_pg_dir, &pgdp, va_offset, _data, _end, data_prot,
--		    true, root_level);
-+	map_segment(init_pg_dir, &pgdp, va_offset, _data, init_pg_dir,
-+		    data_prot, true, root_level);
-+	/* Map init_pg_dir separately as we will remap it read-only later on */
-+	map_segment(init_pg_dir, &pgdp, va_offset, init_pg_dir, init_pg_end,
-+		    data_prot, true, root_level);
-+	map_segment(init_pg_dir, &pgdp, va_offset, init_pg_end, _end,
-+		    data_prot, true, root_level);
- 	dsb(ishst);
- 
- 	idmap_cpu_replace_ttbr1((phys_addr_t)init_pg_dir);
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index c1e3260bd0db..b6a4371dd03f 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1267,6 +1267,14 @@ void mark_rodata_ro(void)
- 	update_mapping_prot(__pa_symbol(_text), (unsigned long)_text,
- 			    (unsigned long)_stext - (unsigned long)_text,
- 			    PAGE_KERNEL_RO);
+diff --git a/mm/Makefile b/mm/Makefile
+index 07b67eaa1b3b..4acdd3c58b46 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -150,3 +150,4 @@ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+ obj-$(CONFIG_LAZY_MMU_MODE_KUNIT_TEST) += tests/lazy_mmu_mode_kunit.o
+ obj-$(CONFIG_MEM_ALLOC_PROFILING) += alloc_tag.o
+ obj-$(CONFIG_KPKEYS_HARDENED_PGTABLES) += kpkeys_hardened_pgtables.o
++obj-$(CONFIG_KPKEYS_HARDENED_PGTABLES_KUNIT_TEST) += tests/kpkeys_hardened_pgtables_kunit.o
+diff --git a/mm/tests/kpkeys_hardened_pgtables_kunit.c b/mm/tests/kpkeys_hardened_pgtables_kunit.c
+new file mode 100644
+index 000000000000..b6e1eba0d9b9
+--- /dev/null
++++ b/mm/tests/kpkeys_hardened_pgtables_kunit.c
+@@ -0,0 +1,200 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <kunit/test.h>
++#include <linux/mman.h>
++#include <linux/pgtable.h>
++#include <linux/set_memory.h>
++#include <linux/vmalloc.h>
++
++static void free_page_wrapper(void *ctx)
++{
++	__free_page((struct page *)ctx);
++}
++
++KUNIT_DEFINE_ACTION_WRAPPER(vfree_wrapper, vfree, const void *);
++
++static pud_t *pud_off_k(unsigned long va)
++{
++	return pud_offset(p4d_offset(pgd_offset_k(va), va), va);
++}
++
++static pte_t *get_kernel_pte(unsigned long addr)
++{
++	pmd_t *pmdp = pmd_off_k(addr);
++
++	if (!pmdp || pmd_leaf(*pmdp))
++		return NULL;
++
++	return pte_offset_kernel(pmdp, addr);
++}
++
++#define write_pgtable(type, ptr) do {					\
++	type##_t val;							\
++	int ret;							\
++									\
++	pr_debug("%s: writing to "#type" at %px\n", __func__, (ptr));	\
++									\
++	val = type##p_get(ptr);						\
++	ret = copy_to_kernel_nofault(ptr, &val, sizeof(val));		\
++	KUNIT_EXPECT_EQ_MSG(test, ret, -EFAULT,				\
++			    "Direct "#type" write wasn't prevented");	\
++} while (0)
++
++/*
++ * Try to write linear map page tables, at every level. This is worthwhile
++ * because those page table pages are obtained from different allocators:
++ *
++ * - Static memory (part of the kernel image) for PGD
++ * - memblock for PUD and possibly PMD/PTE
++ * - pagetable_alloc() (buddy allocator) for PMD/PTE if large block mappings are
++ *   used and the linear map is split after being created
++ */
++static void write_direct_map_pgtables(struct kunit *test)
++{
++	struct page *page;
++	unsigned long addr;
++	pgd_t *pgdp;
++	p4d_t *p4dp;
++	pud_t *pudp;
++	pmd_t *pmdp;
++	pte_t *ptep;
++	int ret;
++
++	if (!kpkeys_supported())
++		kunit_skip(test, "kpkeys are not supported");
++
++	page = alloc_page(GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, page);
++	ret = kunit_add_action_or_reset(test, free_page_wrapper, page);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++
++	/* Ensure page is PTE-mapped (splitting the linear map if necessary) */
++	ret = set_direct_map_invalid_noflush(page, 1);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++	ret = set_direct_map_default_noflush(page, 1);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++
++	addr = (unsigned long)page_address(page);
++
++	pgdp = pgd_offset_k(addr);
++	KUNIT_ASSERT_NOT_NULL_MSG(test, pgdp, "Failed to get PGD");
 +	/*
-+	 * Map the kernel image mapping of init_pg_dir read-only; it should
-+	 * only be written via the linear map.
++	 * swapper_pg_dir is still writable at this stage, so don't check it.
++	 * It is not protected by kpkeys_hardened_pgtables because it should be
++	 * made read-only by mark_rodata_ro(). However since these
++	 * KUnit tests are builtin, they are run before mark_rodata_ro() is
++	 * called.
 +	 */
-+	section_size = (unsigned long)__pi_init_pg_end - (unsigned long)__pi_init_pg_dir;
-+	update_mapping_prot(__pa_symbol(__pi_init_pg_dir),
-+			    (unsigned long)__pi_init_pg_dir,
-+			    section_size, PAGE_KERNEL_RO);
++
++	p4dp = p4d_offset(pgdp, addr);
++	KUNIT_ASSERT_NOT_NULL_MSG(test, p4dp, "Failed to get P4D");
++	if (!mm_p4d_folded(&init_mm))
++		write_pgtable(p4d, p4dp);
++
++	pudp = pud_offset(p4dp, addr);
++	KUNIT_ASSERT_NOT_NULL_MSG(test, pudp, "Failed to get PUD");
++	if (!mm_pud_folded(&init_mm))
++		write_pgtable(pud, pudp);
++
++	pmdp = pmd_offset(pudp, addr);
++	KUNIT_ASSERT_NOT_NULL_MSG(test, pmdp, "Failed to get PMD");
++	write_pgtable(pmd, pmdp);
++
++	ptep = pte_offset_kernel(pmdp, addr);
++	KUNIT_ASSERT_NOT_NULL_MSG(test, ptep, "Failed to get PTE");
++	write_pgtable(pte, ptep);
++}
++
++/* Worth checking since the kernel image is mapped with static page tables */
++static void write_kernel_image_pud(struct kunit *test)
++{
++	pud_t *pudp;
++
++	if (!kpkeys_supported())
++		kunit_skip(test, "kpkeys are not supported");
++
++	/* The kernel is probably block-mapped, check the PUD to be safe */
++	pudp = pud_off_k((unsigned long)&init_mm);
++	KUNIT_ASSERT_NOT_NULL_MSG(test, pudp, "Failed to get PUD");
++
++	write_pgtable(pud, pudp);
++}
++
++static void write_kernel_vmalloc_pte(struct kunit *test)
++{
++	void *mem;
++	pte_t *ptep;
++	int ret;
++
++	if (!kpkeys_supported())
++		kunit_skip(test, "kpkeys are not supported");
++
++	mem = vmalloc(PAGE_SIZE);
++	KUNIT_ASSERT_NOT_NULL(test, mem);
++	ret = kunit_add_action_or_reset(test, vfree_wrapper, mem);
++	KUNIT_ASSERT_EQ(test, ret, 0);
++
++	/* vmalloc() without VM_ALLOW_HUGE_VMAP is PTE-mapped */
++	ptep = get_kernel_pte((unsigned long)mem);
++	KUNIT_ASSERT_NOT_NULL_MSG(test, ptep, "Failed to get PTE");
++
++	write_pgtable(pte, ptep);
++}
++
++static void write_vmemmap_pmd(struct kunit *test)
++{
++	struct page *page;
++	pmd_t *pmdp;
++
++	if (!kpkeys_supported())
++		kunit_skip(test, "kpkeys are not supported");
++
++	/*
++	 * We just need the address of some struct page, so we can free the
++	 * page right away.
++	 */
++	page = alloc_page(GFP_KERNEL);
++	KUNIT_ASSERT_NOT_NULL(test, page);
++	__free_page(page);
++
++	/* vmemmap may use PMD block mappings */
++	pmdp = pmd_off_k((unsigned long)page);
++	KUNIT_ASSERT_NOT_NULL_MSG(test, pmdp, "Failed to get PMD");
++	write_pgtable(pmd, pmdp);
++}
++
++static void write_user_pmd(struct kunit *test)
++{
++	pmd_t *pmdp;
++	unsigned long uaddr;
++
++	if (!kpkeys_supported())
++		kunit_skip(test, "kpkeys are not supported");
++
++	uaddr = kunit_vm_mmap(test, NULL, 0, PAGE_SIZE, PROT_READ,
++			      MAP_ANONYMOUS | MAP_PRIVATE | MAP_POPULATE, 0);
++	KUNIT_ASSERT_NE_MSG(test, uaddr, 0, "Could not create userspace mm");
++
++	/* We passed MAP_POPULATE so a PMD should already be allocated */
++	pmdp = pmd_off(current->mm, uaddr);
++	KUNIT_ASSERT_NOT_NULL_MSG(test, pmdp, "Failed to get PMD");
++
++	write_pgtable(pmd, pmdp);
++}
++
++static struct kunit_case kpkeys_hardened_pgtables_test_cases[] = {
++	KUNIT_CASE(write_direct_map_pgtables),
++	KUNIT_CASE(write_kernel_image_pud),
++	KUNIT_CASE(write_kernel_vmalloc_pte),
++	KUNIT_CASE(write_vmemmap_pmd),
++	KUNIT_CASE(write_user_pmd),
++	{}
++};
++
++static struct kunit_suite kpkeys_hardened_pgtables_test_suite = {
++	.name = "kpkeys_hardened_pgtables",
++	.test_cases = kpkeys_hardened_pgtables_test_cases,
++};
++kunit_test_suite(kpkeys_hardened_pgtables_test_suite);
++
++MODULE_DESCRIPTION("Tests for the kpkeys_hardened_pgtables feature");
++MODULE_LICENSE("GPL");
+diff --git a/security/Kconfig.hardening b/security/Kconfig.hardening
+index 9a6f50103482..af0f83e3a19c 100644
+--- a/security/Kconfig.hardening
++++ b/security/Kconfig.hardening
+@@ -283,6 +283,18 @@ config KPKEYS_HARDENED_PGTABLES
+ 	  This option has no effect if the system does not support
+ 	  kernel pkeys.
  
- 	/* Map the kernel data/bss as invalid in the linear map */
- 	mark_linear_data_alias_valid(false);
++config KPKEYS_HARDENED_PGTABLES_KUNIT_TEST
++	bool "KUnit tests for kpkeys_hardened_pgtables" if !KUNIT_ALL_TESTS
++	depends on KPKEYS_HARDENED_PGTABLES
++	depends on KUNIT=y
++	default KUNIT_ALL_TESTS
++	help
++	  Enable this option to check that the kpkeys_hardened_pgtables feature
++	  functions as intended, i.e. prevents arbitrary writes to user and
++	  kernel page tables.
++
++	  If unsure, say N.
++
+ endmenu
+ 
+ config CC_HAS_RANDSTRUCT
 
 -- 
 2.56.0
