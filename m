@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06534606A335
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F180606A32A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 18:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=YOVULh/z
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=n37sYyMQ
 Received: by kanga.kvack.org (Postfix)
-	id F40A86B05C8; Mon,  9 Nov 2026 13:26:01 -0500 (EST)
+	id 46B506B05C9; Mon,  9 Nov 2026 13:26:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECA8B6B05C9; Mon,  9 Nov 2026 13:26:01 -0500 (EST)
+	id 3CE336B05CA; Mon,  9 Nov 2026 13:26:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB6B36B05CA; Mon,  9 Nov 2026 13:26:01 -0500 (EST)
+	id 295CF6B05CB; Mon,  9 Nov 2026 13:26:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A2FE26B05C8
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:26:01 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2981A160786
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id E9E2B6B05C9
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 13:26:02 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D5EF7C0767
 	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:26:01 +0000 (UTC)
-X-FDA: 85416409722.24.A257B3B
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com [209.85.208.72])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5221810000B
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:25:59 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="YOVULh/z";
-	spf=pass (imf14.hostedemail.com: domain of 3NRDyagYKCHwqwn44tlttlqj.htrqnsz2-rrp0fhp.twl@flex--lrizzo.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3NRDyagYKCHwqwn44tlttlqj.htrqnsz2-rrp0fhp.twl@flex--lrizzo.bounces.google.com;
+X-FDA: 85416409722.12.4F1EF3D
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 1C39E1A0008
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 18:26:00 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=n37sYyMQ;
+	spf=pass (imf19.hostedemail.com: domain of 3NhDyagYKCH0msj00phpphmf.dpnmjovy-nnlwbdl.psh@flex--lrizzo.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3NhDyagYKCH0msj00phpphmf.dpnmjovy-nnlwbdl.psh@flex--lrizzo.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794248759;
+	s=arc-20220608; t=1794248760;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+CkU7K8AN4V+yWUdhaz7RzC7M7eZI1Az06smW8kAgic=;
-	b=PYA6OmTOzA3C7tV6h/JHGyBYP6OmNvA3BJiqg/XWmh8iFD8vg9iZlYIOIgYC5xgoApkiJi
-	ZacJ8pxuEf7GNwrxvVahlmFOfy5jWm2/xGeRggdN8a3SyH8BY9iPv0CWsc99W2L80yzBTo
-	sWNybNmYwe6dixHZy6v8P12asZfy9EM=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b="YOVULh/z";
-	spf=pass (imf14.hostedemail.com: domain of 3NRDyagYKCHwqwn44tlttlqj.htrqnsz2-rrp0fhp.twl@flex--lrizzo.bounces.google.com designates 209.85.208.72 as permitted sender) smtp.mailfrom=3NRDyagYKCHwqwn44tlttlqj.htrqnsz2-rrp0fhp.twl@flex--lrizzo.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	bh=QwEhXQGhncgxAenLKf9FgZtSttnofeN4/QkcfEPx9jk=;
+	b=eXlWWEZi6xEsqKp4DpeHbwaXBlZrxHH2I7UZpaAHfShLoRE5VQfJNvBhyqBaPjcCP+iwy4
+	Nn7QJVB+BZn2NI8r/g08eG92MQXjwTbAFO1DUZUpIMI97UfeYbqDt2JpYgvA475QBxrfPf
+	N3Im9yIx9c1IoMdO5/65+UGSvvpZ6OE=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794248759;
-	b=6WyYKR5x7Sr2sjLRovzWtP2UXP2qGGPDO1JkQuBwEnJIsGdtO/pI2gKarHm6S1kiDJt5SC
-	ZUm9iFlHdiV1Q2d7WLXqmNijA0xgfuFB18jhGYK1C56PXGB4w/3XzGTXmF/MFFTyaAUYjX
-	kygCkItBmKMe2FgbXOAI/d9lK/1dveQ=
-Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-6a5d57a8d51so1402197a12.1
+	t=1794248760;
+	b=RI0qrUg9BDDyCzxoZgga4zPtEZjy6wsA97uyvoYSaeuCvinb2cPWHu/r7sWt/BuIDPsGAp
+	GHJHg/WFwCqj2549pCOMMP03aDbbJ/8cu7Iu7b5DwT4Fqbht8ZJ9ueAIu03N2KtSdWNtTO
+	t92P8j9SdOTbqJrrA4/8aKryJ0zlcZ8=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=n37sYyMQ;
+	spf=pass (imf19.hostedemail.com: domain of 3NhDyagYKCH0msj00phpphmf.dpnmjovy-nnlwbdl.psh@flex--lrizzo.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3NhDyagYKCH0msj00phpphmf.dpnmjovy-nnlwbdl.psh@flex--lrizzo.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c293e604f0eso114725266b.3
         for <linux-mm@kvack.org>; Mon, 09 Nov 2026 10:25:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794248758; x=1794853558; darn=kvack.org;
+        d=google.com; s=20260707; t=1794248759; x=1794853559; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=+CkU7K8AN4V+yWUdhaz7RzC7M7eZI1Az06smW8kAgic=;
-        b=YOVULh/zUV4ohRXp4dBSGALz4ZdFlikJLxwkSFUzqKaO8sTOxNl9/b7aK8TZtoWZZU
-         egp4dqG4ehcSYy49tiy0OqwRn4ssA/ssBi8Cpw4rc5oSHx27g6geUGmPum5ayknUbH7S
-         RAL2NW5dy3ec2SeRZ0RBJ/A2Ua5B6jRpRtOuOU1lpEOS4tYC2zMeK3MmwsGR+m/fQzem
-         qVLYDKIOQHRXnaRJUPvY7CbYhbKMrdabqzQ66J8bt1jDaSsAD3jD4+hJ3C0N45D4H5yO
-         wdYkfbRrDXCRm7W+131StlUXH1ANcVVigKtCby5VJ+AUF4dVYS126OmC7XMXsyZxz/rQ
-         D7dg==
+        bh=QwEhXQGhncgxAenLKf9FgZtSttnofeN4/QkcfEPx9jk=;
+        b=n37sYyMQa521Xz6vKIk359nIDMjXMxRJyb199fuLu1zEouMxPv0hfiBJ+exfKo7Z0i
+         IXiTQm6fv9fCcSIpIVC/x7UAG24+j1i7KzB+3LDzoT2vc/4mIVE7lJnPCJ8L/DSszURO
+         BR1iEjV1WJRVyaNZXs052TrESBaN8NscuWH7i++HjsAUN27neAy727KrnbZfqbb8OSxr
+         3s92XnxeSQJ09SLEgXa55t74vMKc+K8CVlhdZ4IEAypI1YXMmZ1tNkF7YLMuSPtI7usm
+         ZKYmgLKDPaEGLyyg8g0THfVv5WeM/XYaweUuZe74StK7bsP90zlckE7zFi6JsjoShwZk
+         B+zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794248758; x=1794853558;
+        d=1e100.net; s=20260707; t=1794248759; x=1794853559;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=+CkU7K8AN4V+yWUdhaz7RzC7M7eZI1Az06smW8kAgic=;
-        b=CvTScVGMDT4g66WlK7w4HHET9W1eifDFoIT+VcU0jonvqLg06pdhQz3Infylp1FHwQ
-         +GJuq+Ek2gK9MSDT7cMzQJfz9s68T6FeiWhq4tGXymQrF9dFhk4TQUqwkI9pXhk8wgOI
-         MoXUDj7E25vh5u3+Sw9ufC/zzfQ9dhs9ZOSi9sSAPzZC3lNa/6wh2rvCtB0ik5Vrr4B1
-         PBsJ0Xl1D7rXnb4ss2/bYuqaIN47UFrusYg9YAPbkXHlDiWhfba49lPRiIGxExsT2L6o
-         jEaIn6DqYJyF9KEpFkg3Z4j2qvvn4w1ecQzpJdE2dhGPKFK6y6is2T8UhAE5SO3mld/p
-         ncPQ==
-X-Forwarded-Encrypted: i=1; AL+hErFGTCJMSfJIIkkF31S2vtsQteLF1/yxT011UwNAyjOqc3eMKEKr04yTTbfTRzvt1Sa/Jx5ystr6Nw==@kvack.org
-X-Gm-Message-State: APuU4Z+IM5kDGZic0GUDAOxoBaxur+zKKrIEsa8UXV+N6KxApiTgHKKv
-	U5AoxQ/+g03DHP1MiCoAUO28quj5iV5vKM2SiXOcygqHk43qafeEF0BmxhR+F2wEnivasx4nEmG
-	pVpg8Bw==
-X-Received: from edqs3.prod.google.com ([2002:aa7:d783:0:b0:6b6:fa4d:3bb9])
- (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:1f05:b0:6b5:7872:3905
- with SMTP id 4fb4d7f45d1cf-6b756afbbd0mr357136a12.31.1794248757581; Mon, 09
- Nov 2026 10:25:57 -0800 (PST)
-Date: Mon,  9 Nov 2026 18:25:28 +0000
+        bh=QwEhXQGhncgxAenLKf9FgZtSttnofeN4/QkcfEPx9jk=;
+        b=qJ7/Jqd6rKbsLc+pxGtqcCRONAiOFVuTubHyOJxdDEX/kDUcmZm1ag/wNHrGvv3Rho
+         KXQIABywKudzl14SEuRi0noTzmRyUyHToVMplZxQJvB1twukoiZO/wmip6eRz/HNuWnH
+         Zz2kTFTcKbXjFhhR7DamDe1IcV3gECjBxc/7DepZZHL9VT/DPHLrpOaM9FdX6xz/j5Nn
+         Etx1ISqqCbKLE54K6qadKkZG/G4RPtLO8/a1G8Ouk1w6rF0OXzGCi2BjzYyTc/nzYOKg
+         6WIRmGGP5mjs9HSgyK6rPD9tWBlMQSqLokqoLI4IAwRdwnyme1akPXQAiD1srbZNV8Q6
+         fTyw==
+X-Forwarded-Encrypted: i=1; AL+hErGNnU4y2i8YeRyyUrVfVxahOMK+RptoyKZXm+JR3LONFf5yaMnpmE8ICCipWa/k/IVg6zsxFlwvdg==@kvack.org
+X-Gm-Message-State: APuU4Z9FkKTU/7dzlCdfSh5aA+zo7pcpiz9X5ZctJfMYtqKzUHWKfXUt
+	asUro0ftk1wOuA58NT1XpQ7yqXD3mmBb+nA0MsVsD3G9+XWzC9CI1JMt4o8ehpIvFNC7OsqqvjI
+	DFuzXGA==
+X-Received: from ejcxk8.prod.google.com ([2002:a17:907:d808:b0:c4d:1c8b:9299])
+ (user=lrizzo job=prod-delivery.src-stubby-dispatcher) by 2002:a17:906:2f06:b0:c41:5e31:5184
+ with SMTP id a640c23a62f3a-c504951eb65mr12737766b.13.1794248758596; Mon, 09
+ Nov 2026 10:25:58 -0800 (PST)
+Date: Mon,  9 Nov 2026 18:25:29 +0000
 In-Reply-To: <20261003212241.3432303-1-lrizzo@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261003212241.3432303-1-lrizzo@google.com>
 X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
-Message-ID: <20261109182533.3594984-21-lrizzo@google.com>
-Subject: [RFC PATCH v2 20/25] net/libeth: Use GFP_KERNEL when pre-filling RX rings
+Message-ID: <20261109182533.3594984-22-lrizzo@google.com>
+Subject: [RFC PATCH v2 21/25] net/gve: Use GFP_KERNEL when pre-filling RX rings
 From: Luigi Rizzo <lrizzo@google.com>
 To: Luigi Rizzo <rizzo.unipi@gmail.com>, Joerg Roedel <joro@8bytes.org>, 
 	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>, Christoph Hellwig <hch@lst.de>, 
@@ -105,19 +105,19 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafae
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Luigi Rizzo <lrizzo@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: yksboxfsyh57za4wx4keimuaxiztjy9t
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 5221810000B
-X-HE-Tag: 1794248759-88736
-X-HE-Meta: U2FsdGVkX1+XUUaVt4M6nrXhMR3hztQ3bohaNs8AGQFpmAQ9tj67UE836thhxGLg/ImOBDHNBqTrm5hI/h8FIL7MxU/RrziJPjqpe9IAoFZHULlsEAlsyW0ibsCNz/k8ndU38xzB7qDbNeQU57XrpGMrSYgKwjYGpSuUX2bwaNoBe+rDhcZDtKBpZDMshnQ/7F00QJRAK6eAAZkdO90KkxivonBALIzQHMj/J2JWosuWSd8csZ6SuGO3i7/7TwmMmIpZgEPcqcyllHIhMZJakxEYZFRtoAgVDAO9/Q/kNtQ+7cH31ullWFaWD9qrQNFp6zvjIbHKDvsABIiAdk4Vq5anKIEbergIjtrYXFV14ImPpQMAIMs6bmMpbSlFh0eLbTJoS6B/ADsHmLL+YzsNz5F/gKXxVTkRhw2U5jiXR99y5R0laF4DY9LAnL3hQ2z25IK6eQaAt1GTgrZcznHVZ0zrnBI3t+krnPXmkw1pSxYav0ZFfFJ+wVXTpH1NNkvxb+r0nejX1h9sA3KgCATG8/VjtSxwjQdAW07lYYnS06KM8EdbzpPayk9TxHq4+nMzuAPfgB772ClchvQ7iQBx+mvemFFcef+sdGq91P5f0AE2rIc/aU3Cpeu8qQNCuFRd1JKF8MOD1NT1Rd0NqRk3J/HrLgTLEB5UxWOenO8s0etbjK0wcBXINyiqIp4RWFAtgQPq3kknfYgbsg25x3+gk0ZbiFO+cdEqdBgyI32cOmO94+vix3780H31x2Zh0mqILdcp+w4qXgdYht2mfYFJc2gzKFAIoxFhBTX2DtD8Oz+uRvjXiGMXFi0NRZIhgIFeYvLyjRPsxnL5g7Bda+QkXv69kEhRz4ysbKD2uZ3wtIligPSZbvytyw1dmpw76yIfo6hbfn9S/c6pGjINsGY70sROlVFMMFSSnEl48wknGu6f7Ar1gdMOBr5rzWCMPVFE0YDdwSgWIjWgzie5b5+
- 2bp6MpbN
- AdOA+l1LjSU4j7/3bypa+o/7kjgjl8QntCySwZ5DK9BsCoiVvEXqmou1g6e5fQt62y9w2ZyhLcJcNxIETAnNz6lxqf6NhSj+Yp5UtvGH2HXMyC2TGIoSB350KG742e4VHzKGyYWeVbcpUTpDxqvqqOIK4gPQXDUpJAi2h3U/wy0o5NvZVeX0Js52tHwckLPpj7E35KNPpIJ8+QcJAj0KruadovdlBcpc7nhvBYYzyL0xQYkosw4gb9qcMswY9jym6CcOtCxOydNZCakksu2Oza2miLilTw3vPiuQBDkLO4iJzDwiHGcCSRsgMEyD9IXMq+3E6CBUxEyQpw/WNipIJWxpRo50uWOR2C3WAACXQJhAxsqK4P3hpTJpDBfx0f7qGGy1xwUuqsSp3ccWDh3oYBLRUv4zYWqjP0MAgs8rf5jn9u9XC48odZe/3ulMKk2Yg8HF84lf87IXEYYEM7iAIDbZw35z6i6ulz4G30+QgYrZ1EQWCSTV9ydgJ0Az5Bk6BrnPVLppm2VZcxiq/yXboqYiXh1KlNZgd833Jsbl29p2IHz7+fyWDDXZtTgJGDYN/s9xXo52S0w7SsyIjfTdVKWqNzbUANBL06qfCtvbDlh2e/EsIJU4yrM/sQo7R6lVd8LYPSC7ID9Kmj8N08PVm80qss06UYhyz4foB
+X-Rspamd-Server: rspam09
+X-Stat-Signature: e7bg1zije66iz1judeu1xfzcifiod556
+X-Rspamd-Queue-Id: 1C39E1A0008
+X-Rspam-User: 
+X-HE-Tag: 1794248759-278769
+X-HE-Meta: U2FsdGVkX19aRqjTI9YH5QOS1rIkfsK5rbJgqd971vCywUxSLLlW6CogHW0YI6IKSBwCoEPJRS/wCkyVJUhj/4bHMPMPYLNE9DxLf2vodwMweONO2om/atk3myYiHNmkmGehESYe7YJqwHH9pTgTxFYcH8fhAlbpEHaKyGVl2muz9f2y86zOEm81B4GbVzKrVMOdS9uVKm4tfBHJU0xiAwJBY+ToR45xiCY5aiEaIFfKkEcclh94rXshbu05a93U0/ADzA6g9gPb6q0ruwuAjYUdypPRCUUigK2p91yNXRYyrXXi3syM0ueuRgqSGvD+9lWs8EcGoknx2aTOifhqoPJqRl7eQNh0m6Dw7OqUHDmA2EXdQ+sIK73XSiATsA158J8r7p+p1avYLR514UNpvMsTspzzRkQNB3taJtL13Eyb8hff1Rk71vm/K1/j8J7ry24muX1ahcJVHhOzs0Jigy4i2Iju6iJRqg7M7gXOSRDkyJKFS2Ris+0FhFEwj2GpU8hTyWu58bYsnBWnqE3W0EtpyZ6AzAWDQ8/NEsB2psupH4DyT0v4Pz42s49gTTh7smgrUJqEO1aZ+KEQsbU4ujNjr1LmTILgbYM6Day3a3ckgVLXU/Ak72lJ7HURdV6ygpMiVb8aYnUk16XyTW1i7mgZx3Nsaggl5i1BRHoECgeKFSRFz0TpTTDZUThqM5vwCoHBk7Lr4j/zY2tqKwwG0r7qMtIj3cyu21luW6WxpP6KlDw83Ru87TTZS3mTPXhmMbc9IU3fnpuETa7sGByYv7m3Dowt48KIUB9QWmQUqYRsVqJwinuA+D9QOI//Pjgqbis0Hkv3rNKQwao4U8UWl/cV4PaGFVxtLpJMDdBKoBVDBwaSBpQGsjqtBHGoKV5xVhVK0/yduOPxVni8mM+7HxVTFPj1K1qAUlaG7QnLXxU9Y5G8V4RTmgwTdemTpBp9Iq04QJcUErr7cWkSHm1
+ JWPxbZVO
+ nEqzeOZJWdIFdTc3nOZgp6W1qi8oAweMFMYMfEqq5tUGCOwENeiK2GkmzYCZqa4t0tD21fOyxauzmJJ0xyt7OsMc7C2nwMKkA0hEAMt9HqQsBZY/kyFCHtSek/GfOCFHkygveDImUVorEFOtzggHBqOR8Mq7c7knYbZJTHom100C0cxWeAmtNmP8Q9/Q48p5d1a4k5hlwtvauhUcD03NMn+lRuTSw8rjNgBE5wPt0kTm32M330lyOaj6g2cypdZ4+hMTN+xpH5sdxn7Xq7JSho+PGbwqNmBng2WZ9QoVPPRyMNa5R/NtnLIBw7ApuX1qj99oBDhg/gVsHHGc+l4BoIiaoCqGA/becNtoc8S+2bTXPrFUHhGNftQDpao/w0rYE/8jzfi1eatLie2vAe/L89vRQ3/V3Rj3XxeK+cvVnMATMSN/FD978CGm6v+zT/1VVhByMXJ3tPd8ve8EkyS89eFxbXW3TNJIjNUbR0z2zTNsCd6wkcuId0t3grZDlLlI0OGod9x9huVG2Mtm4yxP7+3Tknr4hMWA6Z7nN5EMSqFfzEWCz3KlCaUrfWw3FtFzHaTP9r0KKCM8okECskQO253kZYPiQHGt6LrMtMwQmhRWs1gXwSu90g40oNLaJ3bAjpF3pXB9pjfxvhcocTZ9/3RBTur9TKiiFoLaH
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -126,43 +126,64 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-libeth_rx_alloc() is called both when pre-filling RX fill queues in
-process context (for indices 0 .. fq->count - 2, when buf->truesize is
-still 0) and when refilling RX buffers from NAPI softirq.
-
-Use GFP_KERNEL during the initial process-context ring fill so page_pool
-and PISA page allocations (including set_memory_decrypted() under CoCo)
-are not forced into GFP_ATOMIC context.
+When pre-filling DQO and GQI RX rings in process context before NAPI is
+enabled (e.g. gve_open), use GFP_KERNEL instead of GFP_ATOMIC so page
+allocation (and CoCo page decryption) can sleep instead of dipping into
+atomic reserves.
 
 Signed-off-by: Luigi Rizzo <lrizzo@google.com>
 ---
- include/net/libeth/rx.h | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c | 7 ++++++-
+ drivers/net/ethernet/google/gve/gve_rx.c              | 8 ++++++--
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/libeth/rx.h b/include/net/libeth/rx.h
-index 0e736846c5e8a..de1e5fe44aa40 100644
---- a/include/net/libeth/rx.h
-+++ b/include/net/libeth/rx.h
-@@ -106,10 +106,17 @@ void libeth_rx_fq_destroy(struct libeth_fq *fq);
- static inline dma_addr_t libeth_rx_alloc(const struct libeth_fq_fp *fq, u32 i)
+diff --git a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
+index 6880d1531ba5e..3b13aa4999ae5 100644
+--- a/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_buffer_mgmt_dqo.c
+@@ -223,13 +223,18 @@ void gve_free_to_page_pool(struct gve_rx_ring *rx,
+ static int gve_alloc_from_page_pool(struct gve_rx_ring *rx,
+ 				    struct gve_rx_buf_state_dqo *buf_state)
  {
- 	struct libeth_fqe *buf = &fq->fqes[i];
-+	/* fq->fqes is zero-allocated and pre-filled in process context for
-+	 * indices [0 .. fq->count - 2]; slot fq->count - 1 is first allocated
-+	 * in NAPI. Use GFP_KERNEL for initial pre-fill and GFP_ATOMIC after.
++	/*
++	 * Use GFP_KERNEL when pre-filling RX rings in process context (e.g.
++	 * gve_open) so PISA metadata init and CoCo page decryption can sleep.
 +	 */
-+	gfp_t gfp = (buf->truesize || i == fq->count - 1) ?
-+		    GFP_ATOMIC : GFP_KERNEL;
++	gfp_t gfp = gve_get_napi_enabled(rx->gve) ? GFP_ATOMIC : GFP_KERNEL;
+ 	netmem_ref netmem;
  
- 	buf->truesize = fq->truesize;
--	buf->netmem = page_pool_dev_alloc_netmem(fq->pp, &buf->offset,
--						 &buf->truesize);
-+	buf->netmem = page_pool_alloc_netmem(fq->pp, &buf->offset,
-+					     &buf->truesize,
-+					     gfp | __GFP_NOWARN);
- 	if (unlikely(!buf->netmem))
- 		return DMA_MAPPING_ERROR;
+ 	buf_state->page_info.buf_size = rx->packet_buffer_truesize;
+ 	netmem = page_pool_alloc_netmem(rx->dqo.page_pool,
+ 					&buf_state->page_info.page_offset,
+ 					&buf_state->page_info.buf_size,
+-					GFP_ATOMIC);
++					gfp);
  
+ 	if (!netmem)
+ 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/google/gve/gve_rx.c b/drivers/net/ethernet/google/gve/gve_rx.c
+index 81ea800e66e94..89f287b678bf0 100644
+--- a/drivers/net/ethernet/google/gve/gve_rx.c
++++ b/drivers/net/ethernet/google/gve/gve_rx.c
+@@ -161,12 +161,16 @@ static int gve_rx_alloc_buffer(struct gve_priv *priv, struct device *dev,
+ 			       union gve_rx_data_slot *data_slot,
+ 			       struct gve_rx_ring *rx)
+ {
++	/*
++	 * Use GFP_KERNEL when pre-filling RX rings in process context (e.g.
++	 * gve_open) so PISA metadata init and CoCo page decryption can sleep.
++	 */
++	gfp_t gfp = gve_get_napi_enabled(priv) ? GFP_ATOMIC : GFP_KERNEL;
+ 	struct page *page;
+ 	dma_addr_t dma;
+ 	int err;
+ 
+-	err = gve_alloc_page(priv, dev, &page, &dma, DMA_FROM_DEVICE,
+-			     GFP_ATOMIC);
++	err = gve_alloc_page(priv, dev, &page, &dma, DMA_FROM_DEVICE, gfp);
+ 	if (err) {
+ 		u64_stats_update_begin(&rx->statss);
+ 		rx->rx_buf_alloc_fail++;
 -- 
 2.56.0.542.g3ef89b7020-goog
 
