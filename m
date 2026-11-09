@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C16606D824
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8F16606D83D
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=nt6X1uQl
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=SYAFCRmR
 Received: by kanga.kvack.org (Postfix)
-	id D730E6B05CE; Mon,  9 Nov 2026 07:32:39 -0500 (EST)
+	id E375B6B05B4; Mon,  9 Nov 2026 07:32:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C88286B05CF; Mon,  9 Nov 2026 07:32:39 -0500 (EST)
+	id E0EBB6B05CF; Mon,  9 Nov 2026 07:32:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9D666B05D0; Mon,  9 Nov 2026 07:32:39 -0500 (EST)
+	id CD6C36B05D0; Mon,  9 Nov 2026 07:32:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9737E6B05CE
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:32:39 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 38E5E1C3FDF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:32:39 +0000 (UTC)
-X-FDA: 85415519238.10.59C6BAC
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A1F116B05B4
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:32:41 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 41EA7A0667
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:32:41 +0000 (UTC)
+X-FDA: 85415519322.01.0B2FF2B
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 138991C0008
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:32:36 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nt6X1uQl;
-	spf=pass (imf18.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id 6D9A6120008
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:32:39 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=SYAFCRmR;
+	spf=pass (imf29.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794227557;
+	s=arc-20220608; t=1794227559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FMMjg5Tb5QutiWvyksGb2lNhCLSGiUBKibO1R6YfCBU=;
-	b=MgYEC6Bi/mhI/PKoizjbP37i944vXrtOzKkLP0kse1o+X5LNRWMLiBslbnuR/eOgutvJf1
-	fVWCx9dXzIsU+0hppokySq01ehip0BIHeTxhjo5ItsoVVXylcfTy3RI7ztEWfoYBsm56pF
-	AuzRsZYyLaHwxmwZ8SWSSElsBoENek8=
+	bh=vmOohr0y2TE4TjPI/p+yd2G4mqQXEGFY5JLNeNktYvw=;
+	b=nEdjfsNLjNZsD5zAdqgmEhlHFArU33gXiO4Q7RGIJDtI05Rql5gTODKyxFHBv9Mc+KeiCQ
+	jPccbv5QXuXFrb6ZzK9ISJxODqvtohEs8lvNKmn6O2rxKyO0+2RK64uYwGEFhXq+7mkYko
+	BFXRtxLDkeUV0xEwwFCEkkXQWVOKn3c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794227557;
-	b=g9xo+csQjLkLpzIk80Z0ixSKYnrLJ7mhMO8hboshgCzTkz9TqbDKQlURNI4+lTgo6iUGEY
-	icPo7jbFfQB1DHkZ4LSG+hVRJpmj/bB2jRSNATyfOXDFOdpo0Rdmpe4bfbHSv3kGtZfKzc
-	yTwJw1Ei/7psbLm3fUCIf3NX9ip9k3o=
+	t=1794227559;
+	b=Gwoe1MbgjZdo/f00N6MQvBh367Qe2mORLawE8f0aAHJF13r5esSQeUjQoUM6U8dMkUeHE1
+	2iiLB6cta0PnSlXIv12hGc9PHtTiWpNJYV2lIZmwsIesEYCp9Jk/LeGwPK1Y5Xpn6wrNsD
+	lN8PUvCkKJf8F5PfaT3X8IS6eQsv6ek=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=nt6X1uQl;
-	spf=pass (imf18.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	imf29.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=SYAFCRmR;
+	spf=pass (imf29.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
 	dmarc=pass (policy=none) header.from=arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 29CA91576;
-	Mon,  9 Nov 2026 04:32:33 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5B23B1758;
+	Mon,  9 Nov 2026 04:32:35 -0800 (PST)
 Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2D8ED3F632;
-	Mon,  9 Nov 2026 04:32:34 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 781543F632;
+	Mon,  9 Nov 2026 04:32:36 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794227556; bh=wo2RMPDExcAkwy96P2D0uHY6dqGY6uIQRPmpWz0sV0c=;
+	t=1794227558; bh=kDQ/Cw8E4K7AyiySq43gJAAEkO7wMAGzc4Mi72irbQg=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=nt6X1uQlJNrlFb1A1X8e0d4wOQNnPCq9YA08w2E8SDR3QXzGBDnoBba1cpTgsjmyz
-	 npjSQLJXsnVyqkY5JQw87sMGb+MSa417Ja7lIYVXl/x+cZBHYEfNMYF8U+u1k7GJ7y
-	 DQjAjCEg2EqIi9cYEJpv0jaLkxj2YnukULBTlWEs=
+	b=SYAFCRmRZF5av8uUEMW1VHc8giB65KCiDRWB5ILYfuIy2ICAtkg2hoGijXazVkSD/
+	 0Dc1ll3Hnjcu1N/vrb2bh7egicr/wbGHESqmL9eXQ2T1cn4VpsSWo820SSeIdOw+vs
+	 6xpFVIvhJvDoCAOpXq4epLsJ2s/CNjmtCBhsVRCQ=
 From: Yeoreum Yun <yeoreum.yun@arm.com>
-Date: Mon, 09 Nov 2026 12:32:25 +0000
-Subject: [PATCH v3 1/6] mm: khugepaged: ignore MADV_HUGEPAGE for shadow
- stacks
+Date: Mon, 09 Nov 2026 12:32:26 +0000
+Subject: [PATCH v3 2/6] mm: gup: clarify a reason to check pte/pmd in
+ gup_fast_pte_range()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-refactor_gup_fast-v3-1-2aaef02df0e1@arm.com>
+Message-Id: <20261109-refactor_gup_fast-v3-2-2aaef02df0e1@arm.com>
 References: <20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com>
 In-Reply-To: <20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com>
 To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
@@ -76,34 +76,33 @@ Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
  Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
  Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
  David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
- Yuan-Hao Hsu <aa9736195201@gmail.com>, Yeoreum Yun <yeoreum.yun@arm.com>, 
- stable@vger.kernel.org
+ Yuan-Hao Hsu <aa9736195201@gmail.com>, Yeoreum Yun <yeoreum.yun@arm.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2250; i=yeoreum.yun@arm.com;
- h=from:subject:message-id; bh=wo2RMPDExcAkwy96P2D0uHY6dqGY6uIQRPmpWz0sV0c=;
- b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq8b1c1s12W6hVfBJ0af2H4ECDILxl5SXY0xgRk
- dMWbEcjOCqJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCavG9XAAKCRBt1cPRWsUx
- M5cCC/4whLG62aLd5wDKkGxX45q5wDXTgLQzStSXiohOrwsj5ie+SOSiXuQ49zjifts5Jsb1vzu
- GopB+twzLQxnHHdLg0EcWA3qQeihfZ2jgZ008vAaetQavRt7ElV+hQnaL4b3IU+k5QR2oJJdyaU
- mOvmBwHaB71miYhWLHW/SjFSg4Q1lgMeIct4w6rcuDQfvJJZ4PlTi1Cf4kBEGpef8OoWD7yJf7w
- Oxt+p43GHsCgXiNlY5fyLElkAKbpyeNy6mJUoCMyc4aM1tWdN5p5SOXbhmO+pylxqG6YV5q0hvv
- gkjGORrbcj39v+ipCRtL7+64ljESlq1uVcYAKNLwa5sgOnuc4m6vzOlzC/nbhaCL/LRQYU95DOh
- Gds4xFEgQKNo1QxIGou8OkWn6vNlsV0AHd4rzYfx+KAGEQlvJbnZ5W5B1r7tYdnzu6B3PEnr6F7
- aUaMwK74VC6idueVz2sP02KRWkGKL4SZNlSCXzVBHow6e/x+68N0WCDksj4n5IG51mgPw=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=951; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=kDQ/Cw8E4K7AyiySq43gJAAEkO7wMAGzc4Mi72irbQg=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq8b1drpWHASPRHYNJhjTpYT6414cQr+xJVq4uI
+ 5/OzAJYSKCJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCavG9XQAKCRBt1cPRWsUx
+ My6NC/4j+nQd/JxG2RfLWlUTYv7VYPCiN2mrXzJocDJRsKJMzD5BIUlz59oDWHU7PjBP78w+pu5
+ O3nkLGAW3+zpjXTDZpYoAbqCrqJzxppQ0hrf2aQG94xy3ssee4/dNgf6G08BZAlSsR6/ojqg+1w
+ TuVwjl6L719P1qemy84J+45X2ee2cPUYt/ok5WRn9t/XvLYTshm2se9xh3DEaRGMtwgBR3XDscx
+ ORY2qI0F6NIe7p9kz9+/B9iuKUWl65NE+Z+ekNu5tntJwAzHAkcNpMG0PssXp/a+gJSxqLWQO8t
+ HsdrTn6JgMlv2KpMygKxvCd0Z/4Tfd6yMtuInIQcny1E+YwmeX71kyQgSb+iJ2A3zomE56N6err
+ 7Dl35rVwofyUfN0lCalqDeBE2eCfXH0BfunbGCYtTBhyNrGkRBUlgGgXX6FOlPg0rW/GO1wqOCE
+ M8LiXDff8G6bUS53SAsfPbi4t/Rkk7107qpgy44pZn+7V7jjj3i03X9FwUbW18GQwIf8o=
 X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
  fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
-X-Stat-Signature: ffa3aibmderg35g6xd6rwt9q9eqqk7ax
-X-Rspamd-Queue-Id: 138991C0008
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam06
+X-Stat-Signature: j3reknu94deo4carqr8hubiaiaorfkru
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794227556-235870
-X-HE-Meta: U2FsdGVkX1+iRVN6/zj/R+brCSMlw9adGXfRDBadHHlp17Mi780xS/kyHVpJoBkHKkSSsISJfLwGkGtOMHvYdYYj/DyaMQAZ1uuzX4/518/HwwfURbg5Y9HWIT1fc5dGMhd2IFCtN6vTrAo7G5dmHubCspSvajTy9OW4Ig36uVJoz1j9VzxsJ244dwvmxVOXqW2HecTU6tfqrFlBjpmGom1KWk/hr/4kpghKZGI+ltZlKonh+zNOPLyfq0q5mx9Q/Z+nSNAXGoZzWmFfEosedi+g8aeGYY3DRIlheSXDd/9QNGf2PT8UOR+xaKqGVYxemmfMjy2fiS/eXvugV72mwepTniRWEfismud2j1+A+h0Lp6PIIs0LzgegDNp1MDLFiYrf7ANnDgAbL6eN+Z+5Dyus9VN3VG3esib1MYlvvbVxl127brFXks3gbwb0FCGogSXUia4gF3Rx+2B2+EOLhD1+EnSLYYugYfUUBHjZ7zVUGqdSWqc7U1x3Eh8CMF2HNBl8nsotpCiQVMhjCJIYO/V4E+2MJzOOXaE6NOt5Dp5oKCBDTv3m0ZcYCG+hRy44b/MNPINGE2td5LpOXDrxMSSHWc2UKOox/ye3Es0njdbg777YamU/jiUuuDmEZWxEt7nuPLE6GMVL6snS6oF1PqNUyck90YU4H9sGAzFa+PN+5sA0sGu21iF5S9UZkzELC0xDdy2u9j3iGjYVx5cgahIuLgFgKmXD9YG8eIJiL9TUHd+xU6KD1UW1vbViJ1AxgVinrbzqkSf5XwqL0aeah+huLrkIIxTog4DMc0y2DyIiKcdV3USAR+CYc6kPhJxT4Twx2E97zn5O4tJwMFHEbMo/N5MPwtjhvmAbpnMJiYX8bmVEvPbudXZdTuB+FeKUZ41w8uFHKc1q8r+BzYG5ACbbEFtdqWYw+4GM+1zYGgCoWFf5cjlzmDdPL7WtllPuXkhOduI1NSJQv4iPOai
- LM5kGZcW
- 3clg5L2uU2RcU4N5OglftyPXcny6GjJbP2w35hwb2YNKyHJE7qhMt4ed9Y5wKkfKVp+4agZTMcg5JA0WqWB/NBU9Qt3Rk2oApZf5YCFYZwqonQWfnUYurDOTOl3b/UMlPUvi+nJP8bEdae4V808VvlIsWppJKThFdZTAZ9xRWNX0YAqOMHpoykZ6EMiK/oCd9zJgYC7D9Hwhcq8Ld1c4GSls4iqF4nRs8lP12+7DfHcHUQHoeDuXhZtDf+t0V8tRGfd8Cr3IIabnBuLUbqAgVMDKLP4/BD2WmsAY0pmzYTxqBsgSpszznWbCqzm6LAVolnbKFFNhOx3mDJ2Y=
+X-Rspamd-Queue-Id: 6D9A6120008
+X-Rspam-User: 
+X-HE-Tag: 1794227559-45408
+X-HE-Meta: U2FsdGVkX1/L5BdtnLKqW7WTw0jtHC2JUMk7aZmwhaAcctiqJDaL/9jOJUlvxJgiC2/PaPua0kp2B5aYxnt1c1A6UtKi5yd87m7ln3v7Rdlv7GYjAFx6dLnXwFW7nu7Cr0HQD4FoJTlRVCXdE1wc4Fgm/UeV7C9KBhWbAFKQtIEu3SJyRXoqjyDEcLzasm3Ts/JsxLc/sqS3p0KXfww95jHqqYwCI5G59Pj/wERkfaGO0/UZmwbU6AXySwFRzgjs5tIw6+g5j05rbs5Ud0m55PE7jmORobhVdnXqtkEx3KZzaYL2PYH9xOh77n14vsd2rQbb25YmnnVxN5P2iHTnBdOCHEIDpKdda6nChd+3KM3D3gCytiFwcz23roRAtnQKuFhGEcTXJR/VhjksQxLH7WXUwl2GmG8cXZ5Qn0ZzSwL0sLZejW0qaRko39Ol733IV8+ljOeVqP7tBBaRY9RbqiLU86vlUe3mXzYMVZxaEdtOSxpPCWYcRyUEIHQMIBfJbywr5wjVrhsaO5fPINbXqvn3a3hqH6UR46E3Si/RxUs4SpiHifFNiNWahsY9TzNjc0qSAwoNBQ+ABBUdAFwgdgE44ufBJWfTBFACt52hfJs9ivRL73VLyTgLcslY8bd3v8SVoVKfNjSP0ur7sGqzVJqnSk09KEyfNjG8zMzjQrLoWJLygLBi6CyeMfChMjfS9FD72VOdPPYEjrCSJdvT/y1/6DrzaGF/9J4usX5Z3Z/iQAJF2OQxtoa+Y2x6SPzkd7POVJ9XgVms0vCdWPR7crZOa86QiVbwhAv6MdWMkVpYyjfk8TBNV7tVFbqM61LdByxF5oSa2dbwa6O9pTOCHUKOuBZSdN39klFUWq6QEIdYMkphr1NLgy+J2n+QSV+WvGMhA0oET40FePHDgTIIMujAyaAuC4tLNpmDRyBXJ6I99gwagFbRSyPwd6NUSEtB3H+TomYrgZ0JkFLqyGj
+ /MXaQif6
+ 8SDxCE4T71ryY+rVJnjNkM4q+vHaB9M0XL7lUUVjkA2Noq5LmSPEwF1iG2k0B5j75qQPbM8eyiYLmnm8KmXS3pLyRsMZiIO8D8xocBtKKBohKlFYfTSpAk1xqsriaHFXaDYozkqYQWXQNihlJlEdL475VgC8SOh7QNk3GwzH5DTseGEL2dtrXQNKnRMtl+wUZ06XV1GUbDsqEeE6aTsDQ1rudZldYahPOPbviCXuDvWU3GzJfjJHsk23M774wnEWnRvXsdzbv1AAuaewcd5SyNTvavVjDNb7GTyOVeulEJ3372c/QSUUXbLEAGpov76GoNmpFd3BiSt41CmE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -112,61 +111,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-commit 3efb9800557b ("mm: do not map the shadow stack as THP") makes
-shadow stack mappings default to VM_NOHUGEPAGE. However, userspace can
-still clear this flag and set VM_HUGEPAGE through madvise().
+Clarify a reason to check pte/pmd in gup_fast_pte_range().
 
-Allowing large folios in x86 shadow stacks exposes a limitation in
-folio_pte_batch_flags(). For example:
-
-  1. create a shadow stack mapping.
-  2. apply MADV_HUGEPAGE and populate the mapping with a PTE-mapped
-     large folio.
-  3. apply MADV_DONTFORK to the first base page of that folio.
-  4. call fork().
-
-In the parent, the first page remains writable and anonymous-exclusive,
-while the remaining pages shared with the child become write-protected
-and lose PageAnonExclusive(). These pages can still belong to the same
-large folio.
-
-On x86, writable shadow-stack PTEs have _PAGE_RW clear and _PAGE_DIRTY
-set. Write-protected PTEs have both bits clear, with the dirty state
-preserved in _PAGE_SAVED_DIRTY.
-
-When FPB_RESPECT_WRITE is set without FPB_RESPECT_DIRTY,
-folio_pte_batch_flags() normalizes PTEs using pte_mkclean(), which clears
-both dirty bits. This loses the distinction between writable
-shadow-stack PTEs and write-protected PTEs, allowing them to be grouped
-into the same batch. GUP-fast can encounter such a batch when walking
-across the VMA boundary created by MADV_DONTFORK.
-
-Since there is no practical use-case shadow stack with large folio,
-ignore MADV_HUGEPAGE for shadow stack mappings, preserving their
-VM_NOHUGEPAGE setting and preventing large-folio allocation.
-
-Fixes: 3efb9800557b ("mm: do not map the shadow stack as THP")
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: <stable@vger.kernel.org>
 ---
- mm/khugepaged.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/gup.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 40fad28c52f6f..51ec043fa26c3 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -367,6 +367,9 @@ int hugepage_madvise(struct vm_area_struct *vma,
- {
- 	switch (advice) {
- 	case MADV_HUGEPAGE:
-+		/* PTE batching doesn't work reliably. */
-+		if (vma_test_single_mask(vma, VMA_SHADOW_STACK))
-+			break;
- 		*vm_flags &= ~VM_NOHUGEPAGE;
- 		*vm_flags |= VM_HUGEPAGE;
- 		break;
+diff --git a/mm/gup.c b/mm/gup.c
+index 7d43ce717b246..7f9348c633d58 100644
+--- a/mm/gup.c
++++ b/mm/gup.c
+@@ -2881,6 +2881,14 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
+ 		if (!folio)
+ 			goto pte_unmap;
+ 
++		/*
++		 * Recheck the PTE after grabbing the folio to detect concurrent
++		 * unmapping or protection changes such as by KSM.
++		 *
++		 * Also, recheck the PMD: THP collpase can detach the PTE table
++		 * while its entries remain unchaged. Checking the PTE alone
++		 * would not dtect that we are walking a detached page table.
++		 */
+ 		if (unlikely(pmd_val(pmd) != pmd_val(pmdp_get_lockless(pmdp))) ||
+ 		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep)))) {
+ 			gup_put_folio(folio, 1, flags);
 
 -- 
 2.43.0
