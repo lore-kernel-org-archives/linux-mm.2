@@ -1,105 +1,142 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2ACF606A326
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 07:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1B6606A336
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 07:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=Ok0mOKSw
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=g6DzDdfc;
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=susede1 header.b=g6DzDdfc
 Received: by kanga.kvack.org (Postfix)
-	id DCF416B05B1; Mon,  9 Nov 2026 02:23:19 -0500 (EST)
+	id 41D3B6B00EF; Mon,  9 Nov 2026 02:53:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA6BF6B05B2; Mon,  9 Nov 2026 02:23:19 -0500 (EST)
+	id 3A6346B05B0; Mon,  9 Nov 2026 02:53:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE6906B05B3; Mon,  9 Nov 2026 02:23:19 -0500 (EST)
+	id 248516B05B1; Mon,  9 Nov 2026 02:53:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A03CB6B05B1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:23:19 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1E40C1C3D62
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:23:19 +0000 (UTC)
-X-FDA: 85414739718.15.6D0FCBF
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 3E243180006
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:23:14 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Ok0mOKSw;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf24.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id EC2686B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:53:23 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8D5EE1405E0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:53:23 +0000 (UTC)
+X-FDA: 85414815486.05.E505C39
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 4F64F40007
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:53:21 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=g6DzDdfc;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=g6DzDdfc;
+	spf=pass (imf27.hostedemail.com: domain of jgross@suse.com designates 195.135.223.130 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794210801;
+	b=BG6M1jZxRYmPz45HA32g0PcTLfcMhdcjQS83JkIUcsSL90lAijt4GOZxWRQgpuou7HYdUf
+	cBIhpm2wBUJtmaXpFF9GbsDivVF1LdErz4C+YJ0piwDbcY9b6mQakAhZvB9SVF+2qzuCtG
+	jiOiFgJLDIlsg+biIV4fIN/rU/wgEmc=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=g6DzDdfc;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=g6DzDdfc;
+	spf=pass (imf27.hostedemail.com: domain of jgross@suse.com designates 195.135.223.130 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794208997;
+	s=arc-20220608; t=1794210801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O6nDA8hzg87sYDX5sQcrthKtLXR/A+PBINKpoUvqpz8=;
-	b=nxiz+Q0yBMP+JvxDkJ50ms2wpyIYXgn7L2W/JgXK7beSze7FHn2Q5aPZ680kIuKv1OdBC6
-	0G2vLZXPDZqqfFacJk/BndFb/JLbgWEZktsK9r7WlrKVZjDizJyzAYZqK9ywJ5L+8pWnOq
-	Qe/zhoFEAuvUbll7aVZGa23X78TD+Hg=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Ok0mOKSw;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf24.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794208997;
-	b=jf0zUgrRqVX76hjkvvWp+AOd8gt0/gnDP2Kgc0lKPDq++qLpcGXKRbob2ERui0D8M1NLfi
-	wo5yGWtzGVWjSn6LOpmOtM3Ye2aFBYwGBzoMftiQG4VfFcYkNRYyiRC60HzJxCKk32rjdg
-	0oYKFjyiBGKKMN75gcuLzO9ZMIywCuA=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=O6nDA8hzg87sYDX5sQcrthKtLXR/A+PBINKpoUvqpz8=;
-	b=Ok0mOKSwR8Cru3XfkK6zIROH0UcJUWt2w63KV1+GT1p8Aql2wB3s0k3EBzi+9ZEqvW6gwtPWe
-	N1Cs1gQY8CEP5fufrfhbGJ1M2I/a1oEDi9bRw/TWbTNbIEUvvvURddISwnIZn5JbcY8bdQC0Zbl
-	qGOKr9ALMtYumQucHjMX1lE=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4jNLpg5r5XzLlSJ;
-	Mon,  9 Nov 2026 15:22:51 +0800 (CST)
-Received: from whupemk100004.china.huawei.com (unknown [7.152.185.74])
-	by mail.maildlp.com (Postfix) with ESMTPS id B2D434055B;
-	Mon,  9 Nov 2026 15:23:05 +0800 (CST)
-Received: from [10.173.125.21] (10.173.125.21) by
- whupemk100004.china.huawei.com (7.152.185.74) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 9 Nov 2026 15:23:04 +0800
-Subject: Re: [PATCH v3] mm/memory-failure: set PG_hwpoison of a non-hugetlb
- page under hugetlb_lock
-To: <mt4022@columbia.edu>
-CC: David Hildenbrand <david@kernel.org>, Naoya Horiguchi
-	<nao.horiguchi@gmail.com>, Kiryl Shutsemau <kas@kernel.org>, Mike Rapoport
-	<rppt@kernel.org>, Mike Kravetz <mike.kravetz@oracle.com>, Matthew Wilcox
-	<willy@infradead.org>, <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<tz2294@columbia.edu>, <stable@vger.kernel.org>, Muchun Song
-	<muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Andrew Morton
-	<akpm@linux-foundation.org>
-References: <20261106-hwpoison-hugetlb-ro-v3-1-c11186963647@columbia.edu>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <42a60f57-5323-f981-8ef3-2e5d67623902@huawei.com>
-Date: Mon, 9 Nov 2026 15:23:03 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=mtwimrsAGfjjluaZ29H+iIKzD9a3mq5Gyxp1CKu0/S4=;
+	b=gri6D1W/WJ25gvnDm1nvg9Buu2Hw78eqJjxk6AfkHyY+hU3l42WdPTdcn8Ag1FS64gL1cJ
+	hyr8RyGwlda7lMN0jZL5U7W5FgNpbffjDEGVWiIfVMZUvBuejgykse6+KXmV6Lb+eCJqXj
+	ekGfB5ueV3tnuuGYnIyHbVLG+8v37Uk=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C2F3F21F83;
+	Mon,  9 Nov 2026 07:53:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1794210799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mtwimrsAGfjjluaZ29H+iIKzD9a3mq5Gyxp1CKu0/S4=;
+	b=g6DzDdfcnRcM33YreK2ahQsBHkXEbLPIgPFv9GPVarTdwsPQr2CTIsF55ENSLzdf38DC5s
+	npi7JRAh/4EppTiPS1/9LSZ7QXBfih7Cv5u+iLWv04iPb2n9fQTbmef45IfBmsI1M9Pxsm
+	mGFFaqOrG219P4NlTHxK3DLrTjyISYE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1794210799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=mtwimrsAGfjjluaZ29H+iIKzD9a3mq5Gyxp1CKu0/S4=;
+	b=g6DzDdfcnRcM33YreK2ahQsBHkXEbLPIgPFv9GPVarTdwsPQr2CTIsF55ENSLzdf38DC5s
+	npi7JRAh/4EppTiPS1/9LSZ7QXBfih7Cv5u+iLWv04iPb2n9fQTbmef45IfBmsI1M9Pxsm
+	mGFFaqOrG219P4NlTHxK3DLrTjyISYE=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6749A13319;
+	Mon,  9 Nov 2026 07:53:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ZaOBD+978WrJRwAAD6G6ig
+	(envelope-from <jgross@suse.com>); Mon, 09 Nov 2026 07:53:19 +0000
+Message-ID: <7af392b9-0cf9-46fe-a820-c994942893fe@suse.com>
+Date: Mon, 9 Nov 2026 08:53:18 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20261106-hwpoison-hugetlb-ro-v3-1-c11186963647@columbia.edu>
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] xen/events: replace __get_free_pages() with kmalloc()
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: David Hildenbrand <david@kernel.org>, Vlastimil Babka
+ <vbabka@kernel.org>, linux-mm@kvack.org, xen-devel@lists.xenproject.org,
+ linux-kernel@vger.kernel.org
+References: <20261108-b4-xen-v1-1-76095f25cbf4@kernel.org>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- whupemk100004.china.huawei.com (7.152.185.74)
-X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3E243180006
-X-Spam-Status: No, score=-24.0 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+From: Juergen Gross <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20261108-b4-xen-v1-1-76095f25cbf4@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------wXW5pNoOVuHMY5I23DbFQuaD"
+X-Spam-Level: 
+X-Spam-Score: -9.80
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,
-	MENTIONS_GIT_HOSTING,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: 75mbbwgbgyici6doqq63c76izfxfejwz
-X-HE-Tag: 1794208994-93877
-X-HE-Meta: U2FsdGVkX1+kNLPy+J0wj/WUzJfn0j2G5MUfYY1E3fV6BU9Xv1Cmeap5j8m2ek2+zxiaOBWhDYORqRC9posQToA1V6O5jfICbGzhk1UHCcj8SiRW3GWmCyzlLslEVHaEEaAeKobWyt7aqJMz3xCGK1C1uYAnmQ/TmXb72K+aQ493eFBdpHWjVfJ+kLVtItcMQ3pvPR+9hcUNtylTEaztXt4Pp5tkYakGaL5JRX0tjkC+yc45f/g+WvZ+ltejZWuhNy3c3Rhriacp1Dr5GEmSGLkLGqpP1rsvxuJo1gRcLwxYeDnVDbXQp34TWZZxNw7fe/VzYQ1BpRnBXfh2sMVoeBgDKjmFkJhuLHdf+7qUwX/HR9kIdhn4V8TW4Hb4i4ahj+KZfxcrJpjdMT2XsQiXLqoSMLquOKp6maxSmNpSH70sAOFb+mchWHG25RWh2iWwoV51BWUL4lVJ1YokYpJ4qFwy1fsTLqhTp0yTN7ZcKTGfOrMa+bWVxRVu+HntZRoWy+YdB2NBMUxmY/aD/BCofTXmK0B2dE4DlcngiRq2GvY4q7lY0+TgGiM+qIeB5UtE6+7dNYi3CY3znX1keCANW//37IwKfbhk1CsjDzR0zDHabnisB08iGQREw3HRpknS4f9NbGEo2MyixIQxXu/ycdTggyKDVOiYKwpuhB09kuv2E7JLoFT9NBBaGggrfxedyYOM8Sl6prmPmfulk1TEM221G/txMFTrNFa4sq13h+JcKkWZGG6G15ox09jxohvTp7VBz13giMsX92fMrG8ZBxMFpXtG2E7rjwCaG7R/i8xDuUjuTzbmGO+MPE6asM0gQ+2+sDxxmtH86vWvR6ub6rRTKMXfnQebhvtZOl5z8tNMzWYrnh0mlx5+t2Mr4IoaX0Dru2W11YeyVqhvK9c1pcWFp3xd642Elzmi+EmT7NuUgyL8pcT11j23dD9XxPWQcpMOjrdUy3qMHLCZ2AO
- +DPx2wYi
- J+FtQ7QvmwzNJaJDpK0u5YQvqUL9kFTlWJD/Io9pqEp61a0q+nuo1X4HD8xjPxJbvAw1ZdY7+nRrcCJutGIiEUWnki/isvfXKmdKZQTcYSBTzTIN7p/8075gL9n2MLCh7vu7NHJs6cViF6Hwvqm5iIC5t7SaVnsQ3PzBkEBn+aTi9GTyi+IyvvXZkIIGn8aPwOzwL9zGstCEL+/FnN2YaVQPxyAsVeU4Yghjv1skcTGz51UF+cRyM1zdNzNbFVC10Ve9YvGQKph4av+km4eLj1PDd6OlhRqHY7j2+b6bB+jMnYblXO7rHQveJPwuuebBh9gdOoeEOwxcfDMRHwzwcBqWRk0U2PVg4/FhBF/G+cmZ709ipL4d8iePk8k7lXoyi2seJGl5fKGnSOSSZpNPw/khZmpQJ9FCMkgWJRyEPNCH5g0krCQNRm33477lyDuvE7ljMDndLTOYvol27f8aFaFpZlRoyh6obF903sKm/wjHgaPL1WmbXfqEvNHLn6bSUFGVVpAk3NurqLrG3yZNf/F6JRsqiqHqvN1MDJw2gxrO+uPuxS0av6UuDIABBJqRyHJgbdYKvGePBecqiqcoWE2Zd/w==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4F64F40007
+X-Stat-Signature: bo4oq733s7xzcy9mud49erxqmqgu1c87
+X-Rspam-User: 
+X-HE-Tag: 1794210801-443852
+X-HE-Meta: U2FsdGVkX1+LJZ8OTxOUFakPrFK56nTw0IQFHlozO4ElQcOWakztQRMR0cwKk5DV98dzhR/n0jc0scsow5xHluZJvf+QYZNI5psvQY1R1IFbU4lDQWRM+YFmQv1Ie+Bn3xeyZGR755SB36rqvR0nBPOhN5bDM8wfuBlX6izsAhzlqjS7gHUcuMCr+5rl4XaOq2u9ZnSv4wLDOz9odxO//NnE/HAoQiwBQ8+PdBDenBbyvh5Wpt1rK28O0zdh79RDp9EyojhUvNMBEvBNuWX2p8P7SBqYGnqS/+jI1ffH0ACfHzkMsXOgb+Qe9Sy15xFilc5P7Bu25a8jXc+UdHVQ1va+zhCXHqUbXgEpVbbW5wtpqhL9zAIY3x40f08SjekE7vKyNiPTXOrZXUIviTqnIGvLCarK0bV3ELXyXsj37VrPaJHMwCF2yEbAS2ig2eVu1je4qZzWHZgz6uCF1uNkuu+J87ze6WQyYwhgFGF7AmRAEalxRHrbV6jkYyP3LDsTMYAzW7MSbDVUC+9tiQVReHiOG0g5jwPkUVM+lE6a9jfH/Axam/i4FiEVvt2Au0zC7b0HiTSehJa12cra1dCairJNAgzOufDss1VufYg62giDmlrqdNFQnAxn3Ykpkc6OqeM8+M8kiN/8YFXNDg16uQHFZCw0T1FVNVtbECjRoz18bENAqhC9yjGnkbnDTg8bQ5VfChmFZQl9dGnCCCyPoHQjUWqpjkLXB62bULo80x5S6kRpWG6i8gdkyvITgQjXX5cbQgCyseuLcFbCUSBJChpANzjlzUyaU8yf0jXxkcClieYJkx4uSwVJcDbvDM5tzZlYwMSac3u1nLtEkmU4UXRZ32f70s6bsi4zDl59XiF67jJ2zcl5kz5tyFb7qMfhBZuQ4JIlmE0H1vr6Zii3j02Oc4s370beiQUR1KrTaqPwoo+0618M+smFN3R4l1i7yN9EbeOk+JNlrpvUnI0
+ 6ookPJR5
+ ESV6hsRyXCTY4+L1T4wolT81xo64qotY+GiL8eW1YwI0RTDj2c5QkwR+S+jg6x53qlgn4Ei2SKqWww055F68wPN4z7UiuMubVSg8Ly5srBwUjg+fwhQE1A7AMzY5s06bRKrTiUX5LqhuQq1r7Uwvb6jhDFgvLuBt35Nn+aCcSdgO6fLnxGU7zI/l/+3JaDsZGFJRPlki6PmIm3sd88vS+2Zm9D8Xk6smkdJ2SBK45sXW4CHZsnBiqhn0r2pVBQ3Y53za2E/Npquh4gTDISDS2ZcVRrLROAnnZFRQUkPMeiFY+kQURSzGq5QkGyl4wrgOhWWYXNplBMkI54FZ5ht0uuFwRmxjOloKYL6YrzPp1adCV8Y7T6/3WMaU+Y9Yw/iVX2EoGWavvi+ZoIHYVsc/2GsJ0623jtLATAVS9nLLxttHbRXoLcwjQVcjN1U3d+EYbWVTBa4fHp7iIo+MLBFaQWAetPv1mPaJd5Sfn+icYgMr4qXPGQugdzlcxZTJZ1sqPJz2lxoQJ78jgW+zFYjkrf8kZLFy6B2SchV7hfie2fY25xizV08jT+Dc5p24NMFgegm4puJ3oZyYn18gheSMaXY+XIvDCTD3r3MckuBAVZCOkjbeIHwuD9v7TMNMFUI/QKe+SrqvHdTOyIPu+2wHBAr0jdg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,217 +145,120 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 2026/11/7 0:09, Mani Tofigh via B4 Relay wrote:
-> From: Mani Tofigh <mt4022@columbia.edu>
-> 
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------wXW5pNoOVuHMY5I23DbFQuaD
+Content-Type: multipart/mixed; boundary="------------9CjsJxfyxMmK8BT64s75qaM0";
+ protected-headers="v1"; hp="clear"
+Message-ID: <7af392b9-0cf9-46fe-a820-c994942893fe@suse.com>
+Date: Mon, 9 Nov 2026 08:53:18 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] xen/events: replace __get_free_pages() with kmalloc()
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: David Hildenbrand <david@kernel.org>, Vlastimil Babka
+ <vbabka@kernel.org>, linux-mm@kvack.org, xen-devel@lists.xenproject.org,
+ linux-kernel@vger.kernel.org
+References: <20261108-b4-xen-v1-1-76095f25cbf4@kernel.org>
+Content-Language: en-US
+From: Juergen Gross <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20261108-b4-xen-v1-1-76095f25cbf4@kernel.org>
 
-Thanks for your patch. Some questions below.
+--------------9CjsJxfyxMmK8BT64s75qaM0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-> memory_failure() checks under hugetlb_lock that the page isn't part of
-> a hugetlb folio and sets PG_hwpoison only after dropping the lock.  The
-> page can become a tail page of a new hugetlb folio in the meantime.
-> With hugetlb_free_vmemmap=on its struct page then lives in the tail
-> page that all such folios in the zone share, so the flag lands on tail
-> pages of every one of them:
-> 
->   Task A (memory_failure)              Task B (nr_hugepages write)
->   get_huge_page_for_hwpoison()
->     /* P not hugetlb */
->                                        alloc_fresh_hugetlb_folio()
->                                          /* P becomes a tail page */
->                                          hugetlb_vmemmap_optimize_folio()
->                                            /* P's struct page now in
->                                               the shared tail page */
->   TestSetPageHWPoison(P)
-> 
-> The error on P itself is ignored, while healthy pages of other folios
+T24gMDguMTEuMjYgMDk6NDIsIE1pa2UgUmFwb3BvcnQgKE1pY3Jvc29mdCkgd3JvdGU6DQo+
+IHNldF9ldnRjaG5fdG9faXJxKCkgYWxsb2NhdGVzIGEgcGFnZSBmb3IgdGhlIGV2ZW50IGNo
+YW5uZWwgdG8gSVJRDQo+IG51bWJlciBzb2Z0d2FyZSBsb29rdXAgdGFibGUuDQo+IA0KPiBU
+aGlzIGJ1ZmZlciBjYW4gYmUgYWxsb2NhdGVkIHdpdGgga21hbGxvYygpIGFzIHRoZXJlJ3Mg
+bm90aGluZyBzcGVjaWFsDQo+IGFib3V0IGl0IHRvIGdvIGRpcmVjdGx5IHRvIHRoZSBwYWdl
+IGFsbG9jYXRvci4NCj4gDQo+IGttYWxsb2MoKSBwcm92aWRlcyBhIGJldHRlciBBUEkgdGhh
+dCBkb2VzIG5vdCByZXF1aXJlIHVnbHkgY2FzdHMgYW5kDQo+IGtmcmVlKCkgZG9lcyBub3Qg
+bmVlZCB0byBrbm93IHRoZSBzaXplIG9mIHRoZSBmcmVlZCBvYmplY3QuDQo+IA0KPiBQZXJm
+b3JtYW5jZSBkaWZmZXJlbmNlIGJldHdlZW4ga21hbGxvYygpIGFuZCBfX2dldF9mcmVlX3Bh
+Z2VzKCkgaXMgbm90DQo+IG1lYXN1cmFibGUgYXMgYm90aCBhbGxvY2F0b3JzIHRha2UgYW4g
+b2JqZWN0L3BhZ2UgZnJvbSBhIHBlci1DUFUgbGlzdCBmb3INCj4gZmFzdCBwYXRoIGFsbG9j
+YXRpb25zLg0KPiANCj4gRm9yIHRoZSBzbG93IHBhdGggdGhlIHBlcmZvcm1hbmNlIGlzIGFu
+eXdheSBkZXRlcm1pbmVkIGJ5IHRoZSBhbW91bnQgb2YNCj4gcmVjbGFpbSBpbnZvbHZlZCBy
+YXRoZXIgdGhhbiBieSB3aGF0IGFsbG9jYXRvciBpcyB1c2VkLg0KPiANCj4gUmVwbGFjZSB1
+c2Ugb2YgX19nZXRfZnJlZV9wYWdlcygpIHdpdGgga21hbGxvYygpIGFuZCBmcmVlX3BhZ2Vz
+KCkgd2l0aA0KPiBrZnJlZSgpLg0KPiANCj4gTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5v
+cmcvYWxsLzYzNTQwNWU0LTk0MjMtNGEyNS1hNmU3LWUwM2M4ZWEwYmNiZUByZWRoYXQuY29t
+DQo+IFNpZ25lZC1vZmYtYnk6IE1pa2UgUmFwb3BvcnQgKE1pY3Jvc29mdCkgPHJwcHRAa2Vy
+bmVsLm9yZz4NCg0KU2hvdWxkbid0IHlvdSBhbHNvIHJlcGxhY2UgX19nZXRfZnJlZV9wYWdl
+KCkgaW4geGVuX2luaXRfSVJRKCk/IEkgZG9uJ3Qgc2VlDQp3aHkgdGhpcyBpcyBiZWluZyBv
+bWl0dGVkLg0KDQoNCkp1ZXJnZW4NCg0KPiAtLS0NCj4gVGhpcyBpcyBhIChzbWFsbCkgcGFy
+dCBvZiBsYXJnZXIgd29yayBvZiByZXBsYWNpbmcgcGFnZSBhbGxvY2F0b3IgY2FsbHMNCj4g
+d2l0aCBrbWFsbG9jLg0KPiANCj4gTGFyZ2VseSwgYW55dGhpbmcgdGhhdCBkb2Vzbid0IG5l
+ZWQgc3RydWN0IHBhZ2UgKG9yIGEgbWVtZGVzYyBpbiB0aGUNCj4gZnV0dXJlKSBzaG91bGQg
+anVzdCB1c2Uga21hbGxvYygpIG9yIGt2bWFsbG9jKCkgdG8gYWxsb2NhdGUgbWVtb3J5Lg0K
+PiBSZW1vdmluZyBuZWVkbGVzcyBjYWxscyB0byBwYWdlIGFsbG9jYXRvciBoZWxwcyB3aXRo
+IG1lbWRlc2MgKGFrYSBwcm9qZWN0DQo+IGZvbGlvKSBjb252ZXJzaW9uIGFuZCBnaXZlcyBh
+IG5pY2VyIEFQSSB3aXRob3V0IGNhc3RzLg0KPiAtLS0NCj4gICBkcml2ZXJzL3hlbi9ldmVu
+dHMvZXZlbnRzX2Jhc2UuYyB8IDQgKystLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2Vy
+dGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy94
+ZW4vZXZlbnRzL2V2ZW50c19iYXNlLmMgYi9kcml2ZXJzL3hlbi9ldmVudHMvZXZlbnRzX2Jh
+c2UuYw0KPiBpbmRleCBmZDE2ZDY1MmM4MWYyLi44YzM3NzQ5MzQyOWI3IDEwMDY0NA0KPiAt
+LS0gYS9kcml2ZXJzL3hlbi9ldmVudHMvZXZlbnRzX2Jhc2UuYw0KPiArKysgYi9kcml2ZXJz
+L3hlbi9ldmVudHMvZXZlbnRzX2Jhc2UuYw0KPiBAQCAtMjMwLDcgKzIzMCw3IEBAIHN0YXRp
+YyBpbnQgc2V0X2V2dGNobl90b19pcnEoZXZ0Y2huX3BvcnRfdCBldnRjaG4sIHVuc2lnbmVk
+IGludCBpcnEpDQo+ICAgCQlpZiAoaXJxID09IC0xKQ0KPiAgIAkJCXJldHVybiAwOw0KPiAg
+IA0KPiAtCQlldnRjaG5fcm93ID0gKGludCAqKSBfX2dldF9mcmVlX3BhZ2VzKEdGUF9LRVJO
+RUwsIDApOw0KPiArCQlldnRjaG5fcm93ID0ga21hbGxvYyhQQUdFX1NJWkUsIEdGUF9LRVJO
+RUwpOw0KPiAgIAkJaWYgKGV2dGNobl9yb3cgPT0gTlVMTCkNCj4gICAJCQlyZXR1cm4gLUVO
+T01FTTsNCj4gICANCj4gQEAgLTI0MSw3ICsyNDEsNyBAQCBzdGF0aWMgaW50IHNldF9ldnRj
+aG5fdG9faXJxKGV2dGNobl9wb3J0X3QgZXZ0Y2huLCB1bnNpZ25lZCBpbnQgaXJxKQ0KPiAg
+IAkJICogdGhyZWFkIHdhcyBmYXN0ZXIgaW5zZXJ0aW5nIGl0LCB3ZSBjYW4gZHJvcCBvdXJz
+Lg0KPiAgIAkJICovDQo+ICAgCQlpZiAoY21weGNoZygmZXZ0Y2huX3RvX2lycVtyb3ddLCBO
+VUxMLCBldnRjaG5fcm93KSAhPSBOVUxMKQ0KPiAtCQkJZnJlZV9wYWdlKCh1bnNpZ25lZCBs
+b25nKSBldnRjaG5fcm93KTsNCj4gKwkJCWtmcmVlKGV2dGNobl9yb3cpOw0KPiAgIAl9DQo+
+ICAgDQo+ICAgCVdSSVRFX09OQ0UoZXZ0Y2huX3RvX2lycVtyb3ddW2NvbF0sIGlycSk7DQo+
+IA0KPiAtLS0NCj4gYmFzZS1jb21taXQ6IDY2MjhlN2Q0YzZiMjVjOGQxOGYxMzQ1ZTNhMjBk
+MjE4MjlhYWU3ZTQNCj4gY2hhbmdlLWlkOiAyMDI2MDYyNC1iNC14ZW4tYTFjZDYyOWNlOWY0
+DQo+IA0KPiAtLQ0KPiBTaW5jZXJlbHkgeW91cnMsDQo+IE1pa2UuDQoNCg==
 
-I have no idea why the error on P itself is ignored, could you explain that?
+--------------9CjsJxfyxMmK8BT64s75qaM0--
 
-> stay marked and are never reused once their folio is freed.  After
-> freeing the pool, /proc/kpageflags shows them as hwpoisoned.
-> 
-> This is the allocation side of the race that commit 32c877191e02
-> ("hugetlb: do not clear hugetlb dtor until allocating vmemmap") fixed
-> for freeing.
-> 
-> Set the hugetlb flag of a new folio under hugetlb_lock and set
-> PG_hwpoison of a non-hugetlb page inside the locked check, so that the
-> vmemmap can't be optimized in between.  The retry path clears it under
-> the same lock, unless the page has become part of a hugetlb folio in
-> the meantime and its struct page isn't in the first vmemmap page of the
-> folio, which HVO doesn't share.  The retry then knows the flag is its
-> own.  With the fix, no healthy page gets marked anymore.
-> 
-> This bug was identified and confirmed with the help of a deterministic
-> hypervisor currently under development.  The C reproducer below however
-> hits it within about 35s.
-> 
-> Fixes: f41f2ed43ca5 ("mm: hugetlb: free the vmemmap pages associated with each HugeTLB page")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mani Tofigh <mt4022@columbia.edu>
-> ---
-> Changes in v3:
-> - Keep the flag only for a page beyond the first vmemmap page of the
->   folio, and fix the comment that said a head page is never remapped
->   (Sashiko)
-> - Don't take a flag kept by the retry path for an earlier error (Sashiko)
-> - Rebase onto current mm-new
-> - Link to v2: https://patch.msgid.link/20261103-hwpoison-hugetlb-ro-v2-1-43876fc9eef1@columbia.edu
-> 
-> Reproducer: https://github.com/manitofigh/files/blob/main/linux-repros/hugetlbro.c
-> ---
->  mm/hugetlb.c        |  3 +++
->  mm/memory-failure.c | 47 ++++++++++++++++++++++++++++++++++++++++-------
->  2 files changed, 43 insertions(+), 7 deletions(-)
-> 
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index 4eb7a8c1f7f6..da4ae43de9f7 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -1792,7 +1792,10 @@ static void account_new_hugetlb_folio(struct hstate *h, struct folio *folio)
->  
->  void init_new_hugetlb_folio(struct folio *folio)
->  {
-> +	/* Pairs with get_huge_page_for_hwpoison(), see there. */
-> +	spin_lock_irq(&hugetlb_lock);
->  	__folio_set_hugetlb(folio);
-> +	spin_unlock_irq(&hugetlb_lock);
->  	INIT_LIST_HEAD(&folio->lru);
->  	hugetlb_set_folio_subpool(folio, NULL);
->  	set_hugetlb_cgroup(folio, NULL);
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index 78f0a13349cb..9795f07b26f5 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -61,6 +61,7 @@
->  #include <linux/pagewalk.h>
->  #include <linux/shmem_fs.h>
->  #include <linux/sysctl.h>
-> +#include <linux/vmemmap-optimization.h>
->  
->  #define CREATE_TRACE_POINTS
->  #include <trace/events/memory-failure.h>
-> @@ -1957,6 +1958,7 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
->  #define	MF_HUGETLB_FOLIO_PRE_POISONED	3	/* folio already poisoned */
->  #define	MF_HUGETLB_PAGE_PRE_POISONED	4	/* exact page already poisoned */
->  #define	MF_HUGETLB_RETRY		5	/* hugepage is busy, retry */
-> +#define	MF_HUGETLB_NON_HUGEPAGE_POISONED	6	/* not a hugepage, already poisoned */
->  /*
->   * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
->   * to keep track of the poisoned pages.
-> @@ -2041,7 +2043,11 @@ static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->  	spin_lock_irq(&hugetlb_lock);
->  	folio = page_folio(page);
->  	if (!folio_test_hugetlb(folio)) {
-> -		ret = MF_HUGETLB_NON_HUGEPAGE;
-> +		/* Mark it before it can become part of a new hugetlb folio. */
-> +		if (TestSetPageHWPoison(page))
-> +			ret = MF_HUGETLB_NON_HUGEPAGE_POISONED;
-> +		else
-> +			ret = MF_HUGETLB_NON_HUGEPAGE;
->  		goto out_unlock;
->  	} else if (flags & MF_COUNT_INCREASED) {
->  		ret = MF_HUGETLB_IN_USED;
-> @@ -2092,7 +2098,8 @@ static int get_huge_page_for_hwpoison(unsigned long pfn, int flags,
->   * PageHWPoison) should be done in single hugetlb_lock range.
->   * Returns:
->   *	0		- recovered
-> - *	-ENOENT		- no hugetlb page
-> + *	-ENOENT		- no hugetlb page, now marked hwpoison
-> + *	-EEXIST		- no hugetlb page, already marked hwpoison
->   *	-EBUSY		- not recovered
->   *	-EOPNOTSUPP	- hwpoison_filter'ed
->   *	-EHWPOISON	- folio or exact page already poisoned
-> @@ -2111,6 +2118,8 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
->  	switch (res) {
->  	case MF_HUGETLB_NON_HUGEPAGE:	/* fallback to normal page handling */
->  		return -ENOENT;
-> +	case MF_HUGETLB_NON_HUGEPAGE_POISONED:
-> +		return -EEXIST;
->  	case MF_HUGETLB_RETRY:
->  		if (!(flags & MF_NO_RETRY)) {
->  			flags |= MF_NO_RETRY;
-> @@ -2170,10 +2179,32 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags)
->  	return identify_page_state(pfn, p, page_flags);
->  }
->  
-> +/*
-> + * If the page has become part of a hugetlb folio in the meantime, HVO may
-> + * remap its struct page unless it is in the first vmemmap page of the
-> + * folio.  Keep the flag then, since the retry takes it as its own.
-> + */
-> +static void clear_non_hugetlb_hwpoison(struct page *page)
-> +{
-> +	struct folio *folio;
-> +
-> +	spin_lock_irq(&hugetlb_lock);
-> +	folio = page_folio(page);
-> +	if (!folio_test_hugetlb(folio) ||
-> +	    folio_page_idx(folio, page) < VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES)
+--------------wXW5pNoOVuHMY5I23DbFQuaD
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-I think we should clear the PageHWPoison flag we just set since the retry path expects
-we have cleared the PageHWPoison flag in the first round.
+-----BEGIN PGP SIGNATURE-----
 
-> +		ClearPageHWPoison(page);
-> +	spin_unlock_irq(&hugetlb_lock);
-> +}
-> +
->  #else
->  static inline int try_memory_failure_hugetlb(unsigned long pfn, int flags)
->  {
-> -	return -ENOENT;
-> +	return TestSetPageHWPoison(pfn_to_page(pfn)) ? -EEXIST : -ENOENT;
-> +}
-> +
-> +static inline void clear_non_hugetlb_hwpoison(struct page *page)
-> +{
-> +	ClearPageHWPoison(page);
->  }
->  
->  static inline unsigned long folio_free_raw_hwp(struct folio *folio, bool flag)
-> @@ -2451,12 +2482,14 @@ int memory_failure(unsigned long pfn, int flags)
->  try_again:
->  	res = try_memory_failure_hugetlb(pfn, flags);
->  	/*
-> -	 * -ENOENT means the page we found is not hugetlb, so proceed with normal page handling
-> +	 * -ENOENT and -EEXIST mean the page is not hugetlb and is now marked
-> +	 * hwpoison, so proceed with normal page handling.
->  	 */
-> -	if (res != -ENOENT)
-> +	if (res != -ENOENT && res != -EEXIST)
->  		goto unlock_mutex;
->  
-> -	if (TestSetPageHWPoison(p)) {
-> +	/* On the retry, the flag may still be set from the first try. */
-> +	if (res == -EEXIST && retry) {
->  		res = -EHWPOISON;
->  		if (flags & MF_ACTION_REQUIRED)
->  			res = kill_accessing_process(current, pfn, flags);
-> @@ -2487,7 +2520,7 @@ int memory_failure(unsigned long pfn, int flags)
->  			} else {
->  				/* We lost the race, try again */
->  				if (retry) {
-> -					ClearPageHWPoison(p);
-> +					clear_non_hugetlb_hwpoison(p);
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmrxe+4FAwAAAAAACgkQsN6d1ii/Ey9J
+cwf+L3XaMzorCG1a1NqCToQpyu0zZH4Y8kmNNW0/rOxHQHH3N6z1NjBS/4OA3dFxz/HgVZJG9fjN
+VpLu3NGawgxhx0kswckZeP0mL1qsTAJNqCJt2iR9xPBSQIhvWz2dTObySLv7i2AzzK+7Ker8V/A3
+l9M7wG9YjYC9c0fsPRcqtYFECiH8KZL47sOCGX+2mS5bn1lJG7U9/C1ODW3hmiTns3rdiYFg8TxX
+NFVkoo/VFf1nIjJtr4IVJsVNhyOsfTRRbbiy4eyb8RpYC5mCNK2t9k1m5Q/EN8ZvRlsG+EcptY/7
+VqBH+RbDz8HR65Q9mlfkxWSs8/m1rpk6XBRjjX7n+A==
+=sx3s
+-----END PGP SIGNATURE-----
 
-I suspect this won’t solve the problem. The below race might still exist:
-
-  Task A (memory_failure)              Task B (nr_hugepages write)
-  get_huge_page_for_hwpoison()         alloc_fresh_hugetlb_folio()
-    /* P not hugetlb */                  /* P becomes a tail page */
-  clear_non_hugetlb_hwpoison
-  goto retry
-  get_huge_page_for_hwpoison()
-    /* P not hugetlb */
-					 __folio_set_hugetlb
-                                         hugetlb_vmemmap_optimize_folio()
-                                           /* P's struct page now in
-                                              the shared tail page */
-  TestSetPageHWPoison(P)
-
-Or am I miss something?
-
-Thanks.
-.
+--------------wXW5pNoOVuHMY5I23DbFQuaD--
 
