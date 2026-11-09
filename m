@@ -1,139 +1,139 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B05606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 17:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79385606A330
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 17:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=kJ9QqZdW
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=SsY3NZY5;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Gfs5si5n;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=1+XxaE5u;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=//9sHfMv
 Received: by kanga.kvack.org (Postfix)
-	id F42136B05B0; Mon,  9 Nov 2026 12:03:14 -0500 (EST)
+	id D56C66B05B2; Mon,  9 Nov 2026 12:11:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EF35C6B05B1; Mon,  9 Nov 2026 12:03:13 -0500 (EST)
+	id D2EB06B05B3; Mon,  9 Nov 2026 12:11:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE31C6B05B7; Mon,  9 Nov 2026 12:03:13 -0500 (EST)
+	id C1D0D6B05B4; Mon,  9 Nov 2026 12:11:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B139A6B05B0
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:03:13 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 51F14C0756
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:03:13 +0000 (UTC)
-X-FDA: 85416201066.19.5D1058B
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B2321A0017
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:03:11 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=kJ9QqZdW;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of rientjes@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=rientjes@google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 904EA6B05B2
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:11:25 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 103441A075F
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:11:25 +0000 (UTC)
+X-FDA: 85416221730.01.AC65E5E
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf31.hostedemail.com (Postfix) with ESMTP id 9D5E620008
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:11:22 +0000 (UTC)
+Authentication-Results: imf31.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SsY3NZY5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Gfs5si5n;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1+XxaE5u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="//9sHfMv";
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794243791;
+	s=arc-20220608; t=1794244283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=EiCyFmyHns/6JeMiTgX99ZP7gU78wmi52w0Se9KfmH8=;
-	b=ZcU+LqPZiVS/9/3oohuB2rRK5ZhH4MgIpCpEJjmVkcOe80ARCGwJcOr1JhgnLQyYDvIUyg
-	3Ez9eipYNCqe0lA+To7l22f2/kTAzTjfYh6WCFDn6m4B5mRfElPdIwv9Y9CjwsM/kod+zM
-	Wu9sR9sFbuPRC6+AmsEVPZ3VqMweWr4=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794243791;
-	b=h4d5PouYO6ItvtMst3AeTrvUZwOG99+4BM9gauO8dJQsYVBA6xr8N0IxLqO/4FgdK/r5pK
-	K32KW8f8iGASNyLEgiqORskXoxHuozW3L8VFKniRxfKbXFoI1mWsOXFcNAzK9T4aQy9idM
-	aG8+U7B5SpOcC7BukPNXW0/fHUq50kA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Gs6QBIGalAs9lEG41sgY64X7mlEyPCFXyN0vk0XfcLQ=;
+	b=d32GbjRpBeGls1p45mqVpsmQuGlvw8NHJIyPsY8nIKem7pzDsqwwbpx3hCTojceFOVjw1m
+	OXHxJhh5J7ccUjCRoSXoCSjbYOUslZk2YYb1U/AmlVi/EzDC7c/OGJoNtnQatWGAER9gHF
+	OS4Ay7diKw/zmyJr3nLC1VAnTHmMMWg=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=kJ9QqZdW;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf15.hostedemail.com: domain of rientjes@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=rientjes@google.com
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2eb0a52d605so48265ad.0
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 09:03:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794243790; x=1794848590; darn=kvack.org;
-        h=content-type:mime-version:message-id:subject:cc:to:from:date:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=EiCyFmyHns/6JeMiTgX99ZP7gU78wmi52w0Se9KfmH8=;
-        b=kJ9QqZdW0DNPc4dvq44fyWucsXXFX851lHvMuUTtZYb6c97svePQWRuaGfCQw5kjH7
-         osXIedli0yr1hC+5cwPx9uguw6ozPN4GHeYx+EBvXa/mAxCAzoXpism7q6p58rfYUtiF
-         D/e1O4R6GPlQT21s1CE4hzXpb10ANd6SCgslGTi3iG+OQ72vjSVYOARm3dQsqnsP/SIA
-         8mCAozHLjtfmolOtVk9XJs5xwsY5XW/DivBKLDqLtkdzMCMSzRRnYWAJx38Dcsh0DXWQ
-         ya0ciefJg6SMpMWfYDW5YkWo9DpSDyeUUH4royXZP3jZ3gPSC6ACGuwMYiFwGN7OigEz
-         mYHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794243790; x=1794848590;
-        h=content-type:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to:content-type;
-        bh=EiCyFmyHns/6JeMiTgX99ZP7gU78wmi52w0Se9KfmH8=;
-        b=JJPRLdQ3yDImVZSJ2m1lRQXb/Y+ff1p/T6jvm79pfs++14ayFbx725a1NeatYvtJl6
-         K1i73Sbrjsg1Nn1e0C62FFW1ma+j/I7f2Az3kDeWDsGAqz2wyx5CzvyMx7HvYx8xVgkt
-         A1cB9TCO1UVpa7Mq1SWo5edu5WO9hnNr2YmDtTDiVJY3MKAnHopb2gN4hxgQH/ql2XRU
-         rRl9F+hiHARqhzrfxKV0Qi6oojp2LUFCRumxdSlivPd7X0K7lBleQfTU192YkcwV198B
-         nTQ1z4g3HGm0jMnJ9MixiXoD/u9Amp1H+Kblicwxicvtm520m0tgTS+cqu0iz4AiYK2N
-         Dxpg==
-X-Gm-Message-State: APuU4Z/hZbdlmLru1CNUzoOcW8NNNJSNshu1ZhEXuQGmrKGCzyFnOXh0
-	KKOjqjDvXQrgF5IzkZnhPyoOUJxrJjfc3VdcbbHh2oRFE3ATVjdLB4tJf1HVPVEgVQ==
-X-Gm-Gg: AYBFou0k76KJMwa/JcsSm1nvLdF6FhlR+CWEV9MmcN2iC3dqm7lw3aUUDA4h9STlF2C
-	KvBYSK3BZZXn44yGYTJ9EQTn8zyZXFHI7FSNUqjR/4XHkhslwZDXOigZCzcMpM/GHotMybxalYD
-	/tnjtXs49MJcfTYROKwd28qjzLGZz6mNVghB85zuou/fPiKPsLZ2PpIi9oefMVevL0VXe0APmta
-	YYxMpZfWji4JEuPZX1Y5ycjuUyLeIWiJAre5hnC03vG5dtTwvV4XH0ZVmHGrLUTeayR6YQDfWBk
-	S6N63SgR8BLFQ7bw9hizf49da2+gKjWJSoTOtUqBeuwJq7sTkWLAxsLC3lSbHpcw5t64B7uxqjr
-	5SVp3nYscK1Sn8Zs/ymdiudI88pD9KnJaBjf+7ne+YoSmvAsXx7bmO0g52WcwtURsY0JZHbjSgE
-	3FLIRVrprzB3ii0UiRcc0KsztxvAqkr5wHb6DQZmzDx7anMIZV7CPXAyG8p4HxBri4lLmM8XJ/0
-	SlkUgePyGAcooCYzdJAGI5mgNs1Rjb0He5ka2riC0V8MEkjgJ7WpRTLca2dT8bwjIY2incVoMqV
-	szNN2LdsNNUOvkztYlYLFyz/e4ZQoH9RDRtVnrbLxKiqk51VqxQR/h0pg/HxDSfmsNwck/TVOPJ
-	Ck4AN04/DRnjM2rN7mvz/B0oyFDSr4ePXTy++UBM6f1xJfDX5Djay5rphU3HKQ04zuBzZqfHmyE
-	6mCB6n9W2c7H4bKJlQSS0rdBp+VAsJDGu2jWmqMG8fC3ni
-X-Received: by 2002:a17:902:cf0d:b0:2e7:e742:8bb5 with SMTP id d9443c01a7336-2edb6ef6dc6mr223335ad.14.1794243789717;
-        Mon, 09 Nov 2026 09:03:09 -0800 (PST)
-Received: from [2a00:79e0:2eb4:9:d9d8:521f:5a01:aae5] ([2a00:79e0:2eb4:9:d9d8:521f:5a01:aae5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b16769b589sm179496a91.5.2026.11.09.09.03.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 09:03:09 -0800 (PST)
-Date: Mon, 9 Nov 2026 09:03:07 -0800 (PST)
-From: David Rientjes <rientjes@google.com>
-To: Amit Shah <amit@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, 
-    Aneesh Kumar <AneeshKumar.KizhakeVeetil@arm.com>, 
-    Christoph Lameter <christoph@gentwo.org>, 
-    Dave Hansen <dave.hansen@intel.com>, David Hildenbrand <david@kernel.org>, 
-    Davidlohr Bueso <dave@stgolabs.net>, Harry Yoo <harry@kernel.org>, 
-    Hugh Dickins <hughd@google.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-    John Hubbard <jhubbard@nvidia.com>, Jonathan Cameron <jic23@kernel.org>, 
-    Joshua Hahn <joshua.hahnjy@gmail.com>, 
-    Kirill Shutemov <k.shutemov@gmail.com>, 
-    Matthew Wilcox <willy@infradead.org>, Mel Gorman <mel.gorman@gmail.com>, 
-    Michal Hocko <mhocko@suse.com>, Mike Rapoport <mike.rapoport@gmail.com>, 
-    Peter Xu <peterx@redhat.com>, Raghavendra K T <rkodsara@amd.com>, 
-    "Rao, Bharata Bhasker" <bharata@amd.com>, Rik van Riel <riel@surriel.com>, 
-    Roman Gushchin <roman.gushchin@linux.dev>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, Shivank Garg <shivankg@amd.com>, 
-    Sterling Alexander <stalexan@redhat.com>, 
-    Suren Baghdasaryan <surenb@google.com>, Tejun Heo <tj@kernel.org>, 
-    Vlastimil Babka <vbabka@kernel.org>, Yang Shi <shy828301@gmail.com>, 
-    Zi Yan <ziy@nvidia.com>, Gregory Price <gourry@gourry.net>, 
-    balbirs@nvidia.com, apopple@nvidia.com, matthew.brost@intel.com, 
-    liam@infradead.org, alison.schofield@intel.com, osandov@osandov.com, 
-    osalvador@suse.de, ying.huang@linux.alibaba.com, baohua@kernel.org, 
-    tj@kernel.org, jgg@ziepe.ca, baolin.wang@linux.alibaba.com, 
-    npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-    lance.yang@linux.dev, usama.arif@linux.dev, muchun.song@linux.dev
-cc: linux-mm@kvack.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org
-Subject: [Invitation] Linux MM Alignment Session on Private Nodes and CRAM
- on Wednesday
-Message-ID: <4b2a7250-ee0d-74ed-2301-ca2f8f30f850@google.com>
+	imf31.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=SsY3NZY5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Gfs5si5n;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1+XxaE5u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="//9sHfMv";
+	dmarc=none;
+	spf=pass (imf31.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794244283;
+	b=Xy3Zx9fpPdz5Jur2BGBeL/rAlVWqrjPw90IoE9KgriVXQynBDfu4mDGA+8gzF/VXs0F1DX
+	S4lTl37T841ju+5EZ3G0D32hFvzZgYZGrXMvkBXZNOhQAXbr1Z8UYFCBg5/Q6wyYVrow2y
+	T/BA6paEP/f3ErfUI9nj6ISTGpUZjmw=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E62F41FB53;
+	Mon,  9 Nov 2026 17:11:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794244281; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gs6QBIGalAs9lEG41sgY64X7mlEyPCFXyN0vk0XfcLQ=;
+	b=SsY3NZY5sMQeTbtV7S8+yP3pq+ks38fZoFZm9Ebpm0CPO8jjwrVg7A5iHmX+4ahVUVYmPB
+	NqRcMBF5DCWpTf9drN2Y/vjh0NRxXclb1UOJvEQzuZWxVT9ccQIorovXRHIDiketABtJMF
+	S4PkgaVisKb5v9+OSS0MvXRJrlQp0Q4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794244281;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gs6QBIGalAs9lEG41sgY64X7mlEyPCFXyN0vk0XfcLQ=;
+	b=Gfs5si5n9TEWpaR1fl2aMvru04EM9s6SJUkkHkAFcEK24xgXICLVSH6sce2/7k6TFzp5iR
+	8fwTLliGP0eUZTDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794244279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gs6QBIGalAs9lEG41sgY64X7mlEyPCFXyN0vk0XfcLQ=;
+	b=1+XxaE5uo8TfQfC3A9/88to8Y9OLGLVLHci8k626/NbcbB6UC677xEhkEfF7ZHx4b4HfvE
+	xEB7IRobo3dqbXNYqpj4dLut9FDMIB1hx3z7EhYpbXWIFP9IWXLkX3hVMeGB+mL3uOg0BD
+	QoGIiDXJeXCcqvS8xjBzirpTGVxIELA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794244279;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Gs6QBIGalAs9lEG41sgY64X7mlEyPCFXyN0vk0XfcLQ=;
+	b=//9sHfMvBMOGxyFoizeJphQPIUv4nhiiueyDnbLr2//cxHGwfRkp1peTplCdyLnt3T3U3c
+	zUprmjIIQovyzMCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E43B913302;
+	Mon,  9 Nov 2026 17:11:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id py5/L7b+8WpAFQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 09 Nov 2026 17:11:18 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 150B622368; Mon, 09 Nov 2026 18:11:14 +0100 (CET)
+Date: Mon, 9 Nov 2026 18:11:14 +0100
+From: Jan Kara <jack@suse.cz>
+To: alireza.haddadi@it.uu.se
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
+	Vishal Moola <vishal.moola@gmail.com>, fujunjie <fujunjie1@qq.com>, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH] mm/filemap: let sequential faults restart mmap readahead
+Message-ID: <gewwqi2kcu4nsitueyw2nd6g6eqjb3wqh4mks5lqcbkc6re4sn@eaqpgn2hxls5>
+References: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 5ts31ghkzo7xsxnhicuhkybekk31d1rd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261109-mmap-miss-v1-1-8b44b33f3358@it.uu.se>
+X-Spam-Score: -11.30
+X-Spam-Level: 
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: B2321A0017
-X-HE-Tag: 1794243791-592419
-X-HE-Meta: U2FsdGVkX1+vKsVpTBlEq5gLaPHuPZf4ffIw2EdA2NOeQz/1jj08bBcVV5POJwcOsGuucDR1v9HS//yHAe2EZZQpXmtKQ+FyPF92eEWuY4mfjjYmLPkMtBIqFkDjqO7yMWRwwM5SSC4mZ+lhYkNEtB4V10R1rZt2642SSaqTuQGlXW/T89ccBllxSzcc4osBqtBz5btj6Xi/XmJdspOdNkV2a9YE7lvcp7+vM2RbvpweQ29zFmOTmKTNTkUKcSWH0wM6HURwwyEcRlqDehxb1a3yznlli6xl1xl84jUd7RXULHCCZHhJ+uefYaWAjWeCQjhstYDVVgzLAG9Jj8yi5OCSKKMJ5I33HJlEhNXqnlZYT9FvOQUBhog5QPK0YJHOZnQJt3bBhHbBtnwH+BvidjESQxoMv3tfU19PsCGh+Ro40qhDs8hg+GZ6vnS0TUHyCygI19isTJBIg7FnHJiyejQJWm3xDu5IFVbVZ836YdE3g25JgBGNbgKewAb2Ms8e8vcawg4hDkOSc7L0ATPnejfR+ljLggkH8gJdyVnrJ/B4vWttCmyEnVC0uKt9/tUnKIwC0sTdMpcwwWFfMcMjWwRE2wvrJ6kOOKFSel5mwWMwNPZt73ABKdRFeQVPVt/wBoJNlfcRAOcnV0vOpYkDo2MMPSkurNUGIDegEb7aaW0iIl+KiVI78Oo0B5bA939ExyfbTZ70XGCH4HNWt3mwl35BKG67oA7f5KxP3unTmsTUdVSfesHj81bncPsY6bIkNy4QWCa9s1SwEuSsMWFXjf4RkaCsBgR7dFzw4ai1kHz/1Mv2Q6kEOn5VnhO/A17iiclV3K3nSoEReu/Z5gFY5Hm4GsOoG0lkr8laYrMzWJD502jvmPPhlOq1ctMNYMq12wQA8e9pVgcCCH76bZb2Sm5ZeLNSt4RrW/FoF4SItbxtoIz1yrSx2k4jv9Q1TvNPvsTq8rqRnKAIohW8DDN
- FUgQ8eJT
- 4XqbdQj5uCg5bpWp+e5i8pKkYt34MMvB0SqnXGAm8m9nQgZOn5p2O5t885IR0FRRw8D4NcGtvsN6A8e1nk55C6zZDf+9jhVAVg4ZyJmGSgIeFZoIb/vFyy23ywG0wfswTO3+lFs8HfWBr53iDPXo0kNx+FdX+/adAxx90mTeXBeP14miZNOlqqB1lMHRxZutIqM+1oFHfga7wFizy+OJYTK8+nLCqj22S8dmMFzywlk0DQH8zyqRHveuLTBspoaUzy8nyK7z2GM0qScoebne+BqOM+/dlWcDfKwCBKNtMhYG3qG758qmPTduMp8hhMQXvWvefuy5DjVpx4sQ+6sa/fyI0DtV+pvdY1brmvbHrvuXqC07/ok0ENHkQfzla0rKsXMM7SSCESFe20eQjukwJr0QMxbRYWawFpk+FoFAXOae8VQb6b2/hdkVVH/x0yNWkVw3tTXgU7rCSKTVAxxjdu+AQHnGV3cHHMEjPTlAvBBIFsPR9ySqr1j/rKBa5iyuENkyIvxDE2DsUWIE=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 9D5E620008
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 3ungasfuuf511q6hiy5fcpm3sw5i1ukp
+X-HE-Tag: 1794244282-979896
+X-HE-Meta: U2FsdGVkX18raF87CxuolzXesCoqeT4GRcP5voKVaO/XNQOzm/T/HzU9HKxkf1gBVYVxZ5TA4M7tDqeEJL0Aae77zSbnwVvsDIxlVQe2RYagJfDbQ33gYVjzAsJdnEGX0dABWI4mCMMxRNpPUdeoRtgsk73+KJG+z0wilrPqLE/HG3P/CJdTpn3tAIK0X1L84TnRRED2c5nwcUtLcR1Z9xT56rWeHNZKhFeaBEQmS/VdYfKhGBlO/Hpyd9Kvb4CKmnOicyoo8V/wwQmbxFyxluPNnv9X8Ickl0ivLC6tcn6CyDZGEL+L4dWeIG1BVB3YnfLkr3dpapKITKnEP2rnJwor4GP54t5WCeFIcFZZPSJLPZlT+XI4EnlLcXX3aSa7Ive4tWO79skn6rKgpxhuAzqA0WFYEkEIIHKhrsFj5iwA8+sSVv6tlb3R11akFINoeORY43NLxVPdoL9rt34WnCQJHVk1UwcLBJuXeQOs10w4QZZLtN5Fdbd8ZUOX48NqGiDs5ypmSePyjpcMeaFsSEz9EytY7K4/WJOEMjkzWDitaoPdbZ1ykkBffGoY1iWAYl3QBwfyqK6NTfkmylTqsHXXXP5gIonkW269WcPfYM6psYtE1aOe88dzcHqoF4jbYdTEL1LrMZowUj85hY0m1V+v3BSkoGnRhOgmkkbSKGm64mjxhtREBwxpecwPfhpidI3KErfrkTvquut6A/syluvAg89DVTHckSad7I4dOBedLxfHB+ntxkEENd/6TFpj8v9dacEZe4Hv+KBW8dgRzgLcAwuyCVwjEhGAtOIxcq8vlswHvU+LhbFSQvexuvEffpSIsmvkOTlOLW6TNvJdgCASz+AyYRU/Azaw03N04vPF9n3TNvdSHIQIpIcpyXp8yDEYSN9DekISSA8gSS9tAsp+ssU1dX8B9KjapVRh++J1tKle5nO8cFUHD9hO4oIjgrRZOOexwytUM7LHYQY
+ XkbxxQ+n
+ lgsc0ZZ2+CynxSI1TgtK4m/gyqYwLJoEJcZSfCHcOsPWIOpN5FZyTezwvG0R2WBe5wmonrTObxPYEPmL4mESbcxPGjlcJT8CuJgr4aURjKu9ksHXSZjj0KdzXEIIWM4xEPNwtjIzsj5NUoFpU1eODpVVafQYLxhUxJKqFlmT+ZiaYqoZymlz81QhXSfhPHc1FHPVsMZMaKd4Ft4C5AgMbesTaya5ga5ZDFnZud2rIIAxfCL0ITEZeNn/RAUF3ybTwTTqG7fqGIK6R/QGOf3ETEGKJJW3DhbF+QhzXLHJ8c+pZSJV7Ap35NO3njgTD0zsScSbzzFLb2RpBolDBLDm7o7hpdbmC4F8327kl+HLjD50+mTWQSmjArzfODnhySNdEIXQQSrV0Virft9yUiRfRn1c6VRzdP1IdpzrbxSMCtjCcd0yKJM/EgPSaZ+q2zBqeYvU260sWYOqYDeM5srm5B22WhAkmmycEIEjnvdFJqACG9JCN56v1Sz9Lc2WYDwLtYKQQ7Xx1aqy2LvY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -142,48 +142,188 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi everybody,
+On Mon 09-11-26 15:23:24, Alireza Haddadi via B4 Relay wrote:
+> From: Alireza Haddadi <alireza.haddadi@it.uu.se>
+> 
+> After commit 0b9c0aeba938 ("mm/filemap: count only the faulting address
+> as a mmap hit"), once a file's mmap_miss goes over MMAP_LOTSAMISS it can
+> stay there until the file is closed.
+> 
+> With mmap_miss over the limit, do_sync_mmap_readahead() reads only the
+> page that faulted. Since nothing gets read ahead, no later fault can
+> land on a page that readahead brought in. In turn filemap_map_pages()
+> never counts a hit, and the counter never comes back down. From then
+> on every fault on the file reads only a single page, even when the
+> access has become sequential.
+> 
+> I ran into this on v7.3 with llama.cpp, where a model larger than its
+> memory limit sometimes ended up being read 4 KiB at a time, but other
+> programs hit it as well. Anything that does some random reads and then
+> reads the same open file in order faces the same problem. I tested the
+> following:
+> 
+>  - SQLite with mmap_size set, 300 random lookups followed by a full scan
+>    of a 1.8 GiB table. The scan took 9.3-14.2 s instead of 2.1 s in 8 of
+>    10 runs.
+> 
+>  - numpy.memmap, 1000 random rows sampled from the first 75% of a 4 GiB
+>    array and then the last 25% read sequentially, as a training and
+>    evaluation loop would do. The sequential part took 3.3 s instead of
+>    0.3 s in 5 of 5 runs.
+> 
+> Give a sequential reader a way back. When readahead is off and the page
+> before the faulting one is in the page cache, read the next page too
+> and mark it with PG_readahead. A sequential reader faults on that page
+> next, which starts async readahead. That path is not gated by mmap_miss,
+> and the pages it brings in count as hits again, so the counter drops
+> and readahead resumes. A random reader, however, rarely has the previous
+> page cached, so it keeps reading one page per fault, or at most two.
+> Forced THP readahead is left as it is.
+> 
+> This reproducer takes 100 random faults on a file of at least 4 GiB
+> and then reads 1 GiB of it in order:
+> 
+> 	#define _GNU_SOURCE
+> 	#include <fcntl.h>
+> 	#include <stdio.h>
+> 	#include <stdlib.h>
+> 	#include <unistd.h>
+> 	#include <sys/mman.h>
+> 	#include <sys/resource.h>
+> 
+> 	/* ./a.out FILE N: N random faults, then read 1 GiB in order */
+> 	int main(int argc, char **argv)
+> 	{
+> 		long G = 1L << 30, i, flt, size;
+> 		struct rusage ru;
+> 		volatile char *p;
+> 		int fd;
+> 
+> 		if (argc != 3 || (fd = open(argv[1], O_RDONLY)) < 0)
+> 			return 2;
+> 		size = lseek(fd, 0, SEEK_END);
+> 		posix_fadvise(fd, 0, 0, POSIX_FADV_DONTNEED);
+> 		p = mmap(NULL, size, PROT_READ, MAP_SHARED, fd, 0);
+> 
+> 		/* N random faults beyond 3 GiB */
+> 		for (i = 0; i < atol(argv[2]); i++)
+> 			p[3 * G + random() % (size - 3 * G) / 4096 * 4096];
+> 
+> 		/* then read [2 GiB, 3 GiB) in order */
+> 		getrusage(RUSAGE_SELF, &ru);
+> 		flt = ru.ru_majflt;
+> 		for (i = 2 * G; i < 3 * G; i += 4096)
+> 			p[i];
+> 		getrusage(RUSAGE_SELF, &ru);
+> 		printf("%ld major faults for %ld pages\n",
+> 		       ru.ru_majflt - flt, G / 4096);
+> 		return 0;
+> 	}
+> 
+> 	$ ./a.out FILE 100
+> 	before: 262144 major faults for 262144 pages
+> 	after:       2 major faults for 262144 pages
+> 
+> I also ran the access patterns from that commit's changelog (random,
+> strides of 1021, 1024, 2053, and 4099 pages, and sequential, on a
+> 20 GiB and a 4 GiB file in an 8 GiB guest). With this change, bytes
+> read stay within 0.1% and times within 3% in all cases, so its gains
+> are kept.
+> 
+> Fixes: 0b9c0aeba938 ("mm/filemap: count only the faulting address as a mmap hit")
+> Signed-off-by: Alireza Haddadi <alireza.haddadi@it.uu.se>
+> Cc: fujunjie <fujunjie1@qq.com>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: Vishal Moola <vishal.moola@gmail.com>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: Roman Gushchin <roman.gushchin@linux.dev>
 
-NOTE!!  Due to Daylight Savings Time ending, the time in your area may 
-have changed.  Please see the list of times at the end of this email.
+Hum, this looks like an ellegant way around the problem so I'm willing to
+give this a try :). Feel free to add:
 
-We host a biweekly series, the Linux MM Alignment Session, on Wednesdays.
-We'd like to invite MM developers to attend and will announce the topic
-for the next instance on the Monday prior to the next meeting.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-Our next Linux MM Alignment Session is scheduled for Wednesday.  The
-details:
+								Honza
 
-Wednesday, November 11 * 9:00 - 10:00am PST (UTC-8)
-https://meet.google.com/csb-wcds-xya
-backup: https://tel.meet/csb-wcds-xya?pin=1301132214803
-doc:
-https://docs.google.com/document/d/1QQfZFPHa-pGEGf4A06cSqS0jdJwuZ8ro9JU5H0YSUQ0/view
-
-This week's topic will be Private Nodes and Compressed RAM (CRAM) led by 
-Gregory Price.
-
-If anybody has ideas for future topics, please let me know and I'll try to 
-organize them.  We'd love to have volunteers to lead future topics as well 
-as requests for MM topics to be presented.
-
-Looking forward to seeing all of you on Wednesday!
-
-Time zones
-
-PST (UTC-8)		9:00am
-MST (UTC-7)		10:00am
-CST (UTC-6)		11:00am
-EST (UTC-5)		12:00pm
-Rio de Janeiro (UTC-3)	2:00pm
-London (UTC)		5:00pm
-Berlin (UTC+1)		6:00pm
-Moscow (UTC+3)		8:00pm
-Dubai (UTC+4)		9:00pm
-Mumbai (UTC+5:30)	10:30pm
-Singapore (UTC+8)	1:00am Thursday
-Beijing (UTC+8)		1:00am Thursday
-Tokyo (UTC+9)		2:00am Thursday
-Sydney (UTC+11)		4:00am Thursday
-Auckland (UTC+13)	6:00am Thursday
+> ---
+> Tested on mm-new (x86-64):
+> 
+>  - With the patch, no run gets stuck: the SQLite scan (10 runs) and
+>    the numpy pass (5 runs) take as long as their controls.
+>  - mm selftests: no new failures. droppable fails about once in 20
+>    runs, with and without this patch.
+>  - A KVM guest with KASAN, lockdep and DEBUG_VM ran the reproducer
+>    above, strided and interleaved access, and a 4-thread test: after
+>    200 random faults, 4 threads read the same file in order through
+>    one mapping, so they all take the new path at once; the file is
+>    twice the guest's memory, so this runs under reclaim. No reports,
+>    with or without the patch.
+>  - W=1 and sparse are clean, also with THP or LRU_GEN disabled.
+> 
+> The cost for random readers, once readahead is off: when every third
+> page is cached and each access lands just after a cached page, 1.77
+> pages are read per access instead of 0.89. Strided access reads the
+> same as before.
+> 
+> Forced THP readahead has a similar problem with mmap_miss. I left it
+> out to keep this change small and will look at it separately.
+> 
+> I can share the benchmark scripts (SQLite, numpy, the access patterns
+> of 0b9c0aeba938) if that helps.
+> ---
+>  mm/filemap.c | 27 ++++++++++++++++++++++++++-
+>  1 file changed, 26 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 93db8fc60ae0..0930aacee9fe 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -3403,8 +3403,33 @@ static struct file *do_sync_mmap_readahead(struct vm_fault *vmf)
+>  		 * Do we miss much more than hit in this file? If so,
+>  		 * stop bothering with read-ahead. It will only hurt.
+>  		 */
+> -		if (mmap_miss > MMAP_LOTSAMISS)
+> +		if (mmap_miss > MMAP_LOTSAMISS) {
+> +			struct folio *prev = NULL;
+> +
+> +			/*
+> +			 * Nothing is read ahead now, so mmap_miss stays high
+> +			 * forever.  If the previous page is cached, this may be
+> +			 * a sequential read: read the next page as well and
+> +			 * mark it, so that async readahead, which does not
+> +			 * check mmap_miss, restarts when the mark is hit.  The
+> +			 * pages it reads then count as hits and lower
+> +			 * mmap_miss.  A random reader rarely has the previous
+> +			 * page cached and keeps reading one page per fault.
+> +			 */
+> +			if (!force_thp_readahead && vmf->pgoff)
+> +				prev = xa_load(&mapping->i_pages,
+> +					       vmf->pgoff - 1);
+> +			if (prev && !xa_is_value(prev)) {
+> +				fpin = maybe_unlock_mmap_for_io(vmf, fpin);
+> +				ra->start = vmf->pgoff;
+> +				ra->size = 2;
+> +				ra->async_size = 1;
+> +				ra->order = 0;
+> +				ractl._index = ra->start;
+> +				page_cache_ra_order(&ractl, ra);
+> +			}
+>  			return fpin;
+> +		}
+>  	}
+>  
+>  	if (force_thp_readahead) {
+> 
+> ---
+> base-commit: b95f8bb86713c860ce8536d22a988b949b884d5f
+> change-id: 20261108-mmap-miss-bf5a501088eb
+> 
+> Best regards,
+> --  
+> Alireza Haddadi <alireza.haddadi@it.uu.se>
+> 
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
