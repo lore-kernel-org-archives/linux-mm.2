@@ -1,144 +1,132 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28112606A332
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 22:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8EC606A333
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 22:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=kAxaUji6
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=o2tEyI1X
 Received: by kanga.kvack.org (Postfix)
-	id 425CA6B05B0; Mon,  9 Nov 2026 17:00:21 -0500 (EST)
+	id 63A1A6B00EF; Mon,  9 Nov 2026 17:13:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D6DA6B05B1; Mon,  9 Nov 2026 17:00:21 -0500 (EST)
+	id 5EAC46B05B0; Mon,  9 Nov 2026 17:13:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2A2956B05B2; Mon,  9 Nov 2026 17:00:21 -0500 (EST)
+	id 500B86B05B1; Mon,  9 Nov 2026 17:13:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F37106B05B0
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:00:20 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8B1A64080C
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:00:20 +0000 (UTC)
-X-FDA: 85416949800.19.C3F2C06
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A584D1C000B
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:00:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kAxaUji6;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C01C6B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 17:13:48 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F1B11C40C1
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:13:46 +0000 (UTC)
+X-FDA: 85416983652.15.D59FDAE
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 7EB5EC0005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:13:44 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=o2tEyI1X;
+	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794261618;
+	s=arc-20220608; t=1794262424;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+uUNFNsJ/y/TsHe5tSEE2ggVSbT2u5FUwgZN1VUTMzo=;
-	b=HHYAhZmyJiBVZ53LTZA03BCF/TEilBB3pf9ZkoZhNy+96ykQqIci8kfZ/MZY7l0/U1rl+V
-	2HRk7iNN0dSxJ/PegMs5h70h6jF0rSd3TcLjLrJ2xK8vtymhJmXu8qE0Aogbk5BwEfoFFn
-	iQePXzOJDvNAuJt6xerSHaJv511Hc8E=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=e9/dY28AbnB9XPn1NP4bpPoQIANiGH4RxOhNWOkNHmo=;
+	b=3NDb97k6NHdGNo+3nsHmrHJDQYmkMaPG0feJwAJtVw1EsqjNkfxUc4d4RFkcKjmkn92UAe
+	gVQ5FSxQOduK3rjGOeClkadKZ6ugrzHNnmh/cQMxNLrDuPx9+woNIxHZIZcmTWP7jjjpoC
+	hRHYTWVqVGRmhdqS7+AXkE7ugbrsHr0=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=kAxaUji6;
-	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=o2tEyI1X;
+	spf=pass (imf10.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794261618;
-	b=VDqB4SgM387h6+BuaPSS1/CCRvG2Hpquk84lhBAU51lZsWvyaPy5muBwleMF8YJkMSYA/L
-	VzE62ZbE3rzx0nN+e8XP+YtQPx1dlq679HGY4139x7YZS4eotLaAuNsOtURPpOIwmehlyX
-	65fbd+C9f3VYQflo+aLR7ZSxnfHwlUI=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9A52B43702;
-	Mon,  9 Nov 2026 22:00:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6216E1F0089F;
-	Mon,  9 Nov 2026 22:00:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794261617;
-	bh=+uUNFNsJ/y/TsHe5tSEE2ggVSbT2u5FUwgZN1VUTMzo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=kAxaUji6k2KW8rfSAvXJhJiuO/EZX60VCydj5QPGZtcNUy06hAoNW9MKWzQpV/4uY
-	 142BRjiWbeltdP+9LWvBZfp5X6D9yTvRt07tXHpQJQcdUSLNrdfPrpSOMbUAEzgqTJ
-	 HpoHuTXP9QBCPx6WtPB9860DKqnLXKCenm87BaDg/78/XEw1a1CZdxAudNjGgcTC0q
-	 a5a+b5trvcOnvtXTOE6cSO7RlzSheWSRnx8xcpPWyP7WaNq+puxs1zaPHfh94lUUPA
-	 vzgZD0i0Ir0h7TMIxXspZ4uUgVnKKFn5jCj1KLtemmJsQDjBdqPd4VXe2ZInUO7b9F
-	 xPh8W3FLuSQIA==
-Message-ID: <b47cc8f4-3f8a-4893-8a2a-f88dd5ab762d@kernel.org>
-Date: Mon, 9 Nov 2026 23:00:06 +0100
+	t=1794262424;
+	b=dJzmg1DN35OvOeJdH58RuyvifBIT9glVr8iFzAn0ZOYT6wf5Vs9TqTE6vuxuDw60WhJIgr
+	rU1uTSDlvG6ZX2uWklKhHXdC91Wgwyix3NGaUoY0B1tmPLTzQMIGhlrRkLzQQ4OHYhuK3v
+	SVeepYs3/U8s/hqzh8iVcifGaF7JiqY=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-8b66d1a08ccso1300165b3a.1
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 14:13:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794262423; x=1794867223; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
+        bh=e9/dY28AbnB9XPn1NP4bpPoQIANiGH4RxOhNWOkNHmo=;
+        b=o2tEyI1XlXGseGQXg54QXdhGYSnuxY+7mAR0uJ62q9SVm83G3A4SXtm0bAyR5h+7ZX
+         TpxLWAOGp65sKwwkK3iv7fBrkQ7fNSVY3Jq26q4y3Pqqo41w4DWgygbClfVnCRoGuN9G
+         g5c3DTr9FlfF2x7iky7l2qlK4OTzpbdtJRexkDpzmRMe06+GtPCM7BvbSwTr+PM8TmTm
+         9VMT6/FDNTDZ3d7+RkcbfsIznELuAz62UHcq2Tbvul5ES6nLitHsBSNVmFi+RCKeL4Fr
+         4LdGARmf0Yq+uuIB+JBqs1kovcskJYmwrYOHBzRL0TDlCvSzpL3OvjGm024oE3LVfJFu
+         9xNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794262423; x=1794867223;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to:content-type;
+        bh=e9/dY28AbnB9XPn1NP4bpPoQIANiGH4RxOhNWOkNHmo=;
+        b=UP2+OBnibO1R+eEBhc7ed97c3aYQd5V72uukqog+x8kzzkmTPge2m68R/BAUtGq02u
+         qLHJ+rz9XIxpMRbw8qkJ2LZGVEOnEdR8NctlPzSxCGDJPrST6Xu+9XR4QtRFp74m4D9U
+         uF3p15Z6Bg4peWLviXa4j9t96mCbGIsEJ06vRK7Zb/I6rTcXCHHeGtDWR9qq6ZT4dWtc
+         FZaZejSUbrYTDpSz/lEYDYttj3gR64UvrQTy7m0iP384WstCAfCwqWNcDcbp5f10aXLg
+         YB92jnwSJiq2PmeY7xEmOq56gr6S5ukWcrBHYqxlk+emIjYWrwZ8RTLMh9T4ZL/3ZZYR
+         bcww==
+X-Forwarded-Encrypted: i=1; AL+hErHYeKFP0v7kjDqYfjb+khnLIL0kQRl1wMiYFb2ui0FE2UbFejgQEj8ykKjikYqSpowJJjzIohqe8A==@kvack.org
+X-Gm-Message-State: APuU4Z9lwsaO3Zaxj4w4XnWqXe3W4iMLwHcbpiLl5fYBkl4/KatJT2Iw
+	J8Ni237BhiBHipxGi8/lgYXrpcSNH0C4TOG/VML7GM3WAhfeBtZBlmOj
+X-Gm-Gg: AYBFou3sdx6Ojx5W4yjjv/+KrhkFSjy9nrRD3+Yb/7MIVEpAU1MmFWN9beFAeRFwrg0
+	ufatiHNnnOTpXWZidO4syL2ycR/79SUBaCAfdPoNwKWLLLEg8kW8d8C34IKp8d+KOxa+Ca1wFIw
+	9G0jTfGf3t3731UMWEst2iPp0vrA4WuKJrmuuO17qhv3gf3vmcaaDjgRuzDY/t4zgjmavq83MnM
+	0tXSfaNWb8mZtYaYAdQ0I8d84Y3sjE0qQJM4qXQCU8wh4hPCy5krNQu68MQN3BR7as3Nehq9W9W
+	JL6qslsJKsSKc7NuVg1Z/dbXTZ4MPcV8ENbhsYzWtwTigtgBiGb5ncnpGxQKvuFogBVspY9vQ4w
+	n8sw0UdHnsoHrCwpTnCmnMF1Fa/1KZdfRNe+8/Q1TeTY8S0urGGdP2zla0ZaiHqyKMqdbR6fF9W
+	W+5gbRWMj8Hk9L+TDB96fAfXtrIra8NKOdOPns5QwvY+KDUje35wc2bf91oVK1lQK9n+zVfLsml
+	dof/ftcnjb/SazREfuT0lhMcFV8wUZIH+qxiVhC4NqSS+P9Y5BLQGd5+zlcHFQcV3WPaq/jh5TY
+	L7UG+nw06wsDacrYJo067mJL448sMC4Gq3YIgZgfjuCKCjhEcVUYlYfBrFFoNOrZPZ0DCYMsVIo
+	wAD92FA==
+X-Received: by 2002:a05:6a00:3c86:b0:893:8a6:3801 with SMTP id d2e1a72fcca58-8ba867aaca6mr859654b3a.24.1794262422762;
+        Mon, 09 Nov 2026 14:13:42 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:4a::])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baab8dffb5sm132255b3a.55.2026.11.09.14.13.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 14:13:42 -0800 (PST)
+From: Joanne Koong <joannelkoong@gmail.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>
+Cc: Kiryl Shutsemau <kas@kernel.org>,
+	Usama Arif <usama.arif@linux.dev>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Lorenzo Stoakes <ljs@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	"Liam R . Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
+	Harry Yoo <harry@kernel.org>,
+	Jann Horn <jannh@google.com>,
+	Zi Yan <ziy@nvidia.com>,
+	SJ Park <sj@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	linux-mm@kvack.org,
+	Sashiko <sashiko-bot@kernel.org>
+Subject: [PATCH v1] mm/rmap: fix migration entries being treated as partial unmaps
+Date: Mon,  9 Nov 2026 14:09:58 -0800
+Message-ID: <20261109220958.2071687-1-joannelkoong@gmail.com>
+X-Mailer: git-send-email 2.52.0
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm/memory: drop PROCESS_PAGES_NON_PREEMPT_BATCH
-To: Shivank Garg <shivankg@amd.com>, Andrew Morton
- <akpm@linux-foundation.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Ankur Arora <ankur.a.arora@oracle.com>,
- Pedro Falcato <pfalcato@suse.de>, Peter Zijlstra <peterz@infradead.org>,
- Borislav Petkov <bp@alien8.de>, Bharata B Rao <bharata@amd.com>,
- Hrushikesh Salunke <hsalunke@amd.com>,
- K Prateek Nayak <kprateek.nayak@amd.com>
-Cc: x86@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20261109-clear-pages-batch-v3-1-6693efe18dff@amd.com>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261109-clear-pages-batch-v3-1-6693efe18dff@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: q9g4xbg9mrsaykcgzs55adqhicbtpinb
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: trib5qgwiw6d1xiasrouzijwt6wtskqx
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A584D1C000B
-X-HE-Tag: 1794261618-843939
-X-HE-Meta: U2FsdGVkX1+mwxpCcV56yCXID4hBTUSE5jkQ9kNtb+fbRItQS8gJDpJB1Ijv9I8m3N+GuMr6Uq7tT0er8Y0ED4qKaDaHDJgwmYBKzjlrmwCSSgfzlYwZ2gGBykKoa5KDrVFbwdPHMBQ2VAHe8w/QRTPXK8WqD5HeOjSnLDNE/0xjJ5ox0+qiw95jXbgoIOUwxP7vgMSXhVIb/qsQzRiH+VmO+95f8vDc9U+iAOITNwED0XhxqyGcuWGAo+SnaggY2YKorjqlUj14wuR1Nb3A0RfxvlLylguB+7D09XB6F5qXCeoabZ2NcdlzJHcpayHTGmWhEuzNUsTo2O4aL94DN3NYNbsz4lYDK7grtJLQLMNJPlD3aemCtLiCzduCqQtBOSLVvMF0cIx+DEuXOX/KZ/XYZXnI9K9j9lWNnmoICFM4GAaItbZHWT33hZ13/TQsw4vN5scuoSoJVslTwDYRBmmPTj8R2U19VH2u6scFfvHfxDYp4zBfApFgAtmG+rpJ5wAyN4muDwyTPdZXHhzxIAiM+YhLF0AvNvux351OCznCZHby7bTdwIZ+9kJ7K/MfykRqbt/6k+Jan2sGQfbg/5UFy9A8KNV0oU6w535L54uL/mzH0GRaD+ZGEBdI84eF8CDyychlQ+EGqiSNXOdBK14+0Glia5QdxiYycvDVM+rTD1J1XEe3l5NMHsJNRlXRszfYmvfkHgC39FxrGlfkCbFUbb6I9NKO3FTOTw3FjfVOycLe2rmlbfRtK9nuIRiO/NPPETDF+GykUCP7S55qeQqNaImpf8v1/SXHlpaKCUexL/UQedyQvjJVQoOvYvpKXUG1yBpId1HTMIkojQSwmLl+dFPtyB/MSk/CuEMwJTiIpfJOG1SYcfKRhWxqBSXlcB1vt9ZAEKLMjj+cLTlZy9lGcbRFanXq0yY5VXJALcbmTwNQ1JovSosJ+5VXkIMwW3VoQlCdAsfFIwiRqxC
- OrpnoO0J
- LAnQhqgxsztC4mx6BOrsSGvWqXvVGLT5e7L2lj2AJg2JIIlTgYinY46Sevt5St5bbUN1SDeBzQqpP3N10HqaWNdP+ugS6guwe7HojRbv9s2wFM3okfgBVhH0PG8G9/BfTgzYu9U5YAfmMqcAJy13oWOuLMRxDB3As0AUvvFzjxQwCcFKhv3KZhbxceV1shmuHfS4knyz/oL9QJBeSHR4+GRYWE0zlE6+vaY4Trs8OD045m3CEkktBPByBwATwy0PhbC3CtlASYfMF6ivNwKSSmok2DX7YsLeHY0EKmLAGLJT0vFEbtPoD7s8c6SBl3SRfzJzUg1JUrbKsrgq04GnL8qcsrBBAJ6yxhjB+
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 7EB5EC0005
+X-HE-Tag: 1794262424-813083
+X-HE-Meta: U2FsdGVkX1+9h4fLsCPnCg0VoYUFHrZcK6nLZW0vYVrEvnR/WhsS4kuIfFFgKEIePZOoYY8gpxkbLGwAVTkcy75PVFKV4kI9xA6PjxKXZVZsNjnL7ZxigD9CqYMHyAPNTZpo1CJFY8PtYhfJiA7mmcVoEufO6GXxJ9zDh74IcYrhBVAsP+dqLvGnftGV+ChBvHBqVFt4TyhiBOfb0xWAQGLnjab0Gop5fHYALg7Zqlr6Z8Pb+eqc30giKiDZizIy9hNqFEt46x4akhMOWhCKiYgKm29LqX9madW6YFYPgLM5/hr1m5uTHXUXu/O9BhbCs77Pttj/hT92cloNehvKRClEkAuxJT/Hsdsi/+wL0ydOXdDTb+3HKeTgV466Gmbs7yaMN75SGB2XAdBT2l+FpGljRJBS41ldHvLlMx0bChK7U7DXdyvXbbW025/p7ax5DXDwZkRrU+pdolr5BkRp1ksipJ+oOtTQc3Dct7UAXwwHo19uBV6usKk8xUOJOzusKSaXKWe/4wpLdfMoEDexqXlFqwIvrrxBjHWocQr+aKFa0dE4t9pq8DPE/4TzHKJXdS32zIbSJ/q2pDBkE550OQhAmTxRbOziEzyeha9Ao3S+urFUMndX0Sg2UfLcN5mq/agV+/b2qkXNiK/zIRGYYM35v3ko8B0zjBbXgpYPMDfMoqNBwFdslnU9mdqRdNYD99ZXiHvIn3LHRUOqs0Vu65AS1fbzzG7udA1SQjtGx1AQJ+m8EUqPVHmqk2XclJTVzavN58OIDEJNusUqRFkLFpLynfn+JO9plXDANrj3mKyM8Gu/GA8B0T+io51+nSunw6hUyyDYBGlGmF8Cx4wmp+wXev00vXWNKGfCDPArXRT/9ElXCRAKEVM3huQRIQOTyvXjpYhdy/2MGxyRYQkQX8SEGieFfMXi3v26rn2ZU1rmIOYNH2wi1crNSmR85tU+uENgEX8u9yb6hAkJN5B
+ Ema4n+Ti
+ Q/HJ7fueHRz5CNq9tA3LekdVGeY96mxCMWLXFLwBTJZB1T/nihrAdDc52r/53DR8tS7SRbwlmq5HyqqPYB0Eqp2eSsMHXpVq5Qg75+6xFIRi6dV1IAaxavVpPY8a1Kd1KDzNRZF4y3xqFIHpgGxtOpYeJvnPI0wxC0kXvF1O6P1exszCLQKlVXRsxUCFqTdBzSI2yiTbJmaAXMJOBJZD2y3akrM21Xo+Ih36MLlT7hkVCUrqwU06dwv3xIJ+8Pi3xso571VWMJlVPQ80DXbYpYb6QQLazgvQx3Ds7kWn196dpU1gAEfq4g0Pb8lKDAlM2b95mszfbTpKPPRqV8TnswvB4JLbxXsDUR9iVvf6rhJ5z7PkyV5NPYY/8OcQzWsqA9m+sVmjJtH1WuJXgcGEs6blvoI5vrx2zVm/fFUVdzy/4neV/9TSh4X5cXPiSdd6yLK+0ecIx3TRVuN8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,43 +135,161 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/9/26 20:15, Shivank Garg wrote:
-> clear_contig_highpages() clears the whole range at once under
-> preemptible models. Otherwise it clears PROCESS_PAGES_NON_PREEMPT_BATCH
-> pages at a time, with a cond_resched() in between. The batch is 32MB if
-> the architecture defines clear_pages(), and one page otherwise.
-> 
-> Since commit 7dadeaa6e851 ("sched: Further restrict the preemption
-> modes"), architectures that support lazy preemption only offer the
-> full, lazy and RT preemption models, also with PREEMPT_DYNAMIC. x86 is
-> one of them, and it is the only architecture that defines
-> clear_pages(). So the 32MB batch is never used: whenever
-> clear_contig_highpages() runs under a cooperative model, the batch is
-> one page.
-> 
-> Make that explicit. Clear the whole range when CONFIG_PREEMPTION is
-> set, and one page at a time with cond_resched() in between otherwise.
-> Drop PROCESS_PAGES_NON_PREEMPT_BATCH, which has no other users.
-> 
-> PREEMPT_DYNAMIC kernels also have CONFIG_PREEMPTION set, and
-> cond_resched() does nothing on any of these kernels. So a build-time
-> CONFIG_PREEMPTION check is enough, and preempt_model_preemptible() is
-> not needed.
-> 
-> No functional change intended.
-> 
-> Suggested-by: David Hildenbrand <david@kernel.org>
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Signed-off-by: Shivank Garg <shivankg@amd.com>
-> ---
->
+When try_to_migrate_one() unmaps a large anonymous folio that is mapped by
+PTEs, it replaces the PTEs with migration entries one at a time and drops
+the rmap for each page with folio_remove_rmap_pte(). After the first PTE
+is replaced, __folio_remove_rmap() sees a folio that is no longer fully
+mapped but still has pages mapped, and calls
+deferred_split_folio(folio, true). That marks the folio
+PG_partially_mapped, bumps split_deferred and nr_anon_partially_mapped,
+and puts it on the deferred split queue, even though nothing was actually
+unmapped. The migration entries are turned back into mappings once the
+split or migration is done.
 
-Thanks, I'll wait a bit for more review before applying.
+This happens whenever a fully mapped, PTE-mapped anon large folio is
+migrated or split. Its effects:
 
-Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+ - Migrated folios can later be split for no reason. migrate_folio_move()
+   copies the source folio's deferred split state to the destination, but
+   reads it after the unmap, when PG_partially_mapped has already been
+   wrongly set. So a fully mapped mTHP ends up queued as partially mapped
+   after migration, and the shrinker can later split it without checking
+   whether it is underused.
 
+ - split_deferred is overcounted. Every such split increments it, so the
+   stat counts folios that were never partially mapped.
+
+ - A folio whose split fails can later be split for no reason. If the
+   split fails at folio_ref_freeze(), the folio is remapped but stays on
+   the deferred split queue marked partially mapped. The deferred split
+   shrinker then splits it without checking whether it is underused,
+   breaking up a folio that is fully mapped and possibly fully in use.
+
+Mappings replaced by migration entries are not really unmapped, so don't
+queue the folio for deferred split when try_to_migrate_one() installs a
+migration entry. Pass a flag down to __folio_remove_rmap() and have
+try_to_migrate_one() clear it for those PTEs only. PTEs that it replaces
+with a hwpoison entry or discards because they are unused are really
+unmapped and keep the current behaviour, as do all other callers.
+
+One consequence is that if part of the folio is really unmapped while the
+migration entries are in place, zapping the migration entries does not go
+through the rmap, so the folio is not marked partially mapped afterwards.
+For a split this does not matter, as the folio is split anyway. For a
+migrated folio it means the destination is not queued until a later unmap
+notices it, which seems preferable to queueing every migrated folio.
+
+Fixes: 8422acdc97ed ("mm: introduce a pageflag for partially mapped folios")
+Fixes: a2e0c0668a34 ("mm: migrate: requeue destination folio on deferred split queue")
+Reported-by: Sashiko <sashiko-bot@kernel.org>
+Closes: https://lore.kernel.org/all/sashiko-outbox-198104@kernel.org/
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+---
+This bug was found by Sashiko in its review of the mTHP shrinker series
+(https://lore.kernel.org/linux-mm/sashiko-outbox-198104@kernel.org/). The
+migration / rmap code is still new to me. This patch is a fix with the help of
+AI, so I'd appreciate a careful look from people who know this code better.
+
+This was tested in an x86 QEMU guest with 64K mTHP. Splitting 64 fully mapped
+folios through the split_huge_pages debugfs file no longer increases
+split_deferred (was +64), and migrating 64 to another node no longer leaves
+nr_anon_partially_mapped up (was +64). split_huge_page_test, migration, and
+khugepaged selftests pass.
+
+ mm/rmap.c | 29 +++++++++++++++++++++++------
+ 1 file changed, 23 insertions(+), 6 deletions(-)
+
+diff --git a/mm/rmap.c b/mm/rmap.c
+index fa34e1ccbd8f..e5d17481c0c0 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1799,7 +1799,7 @@ void folio_add_file_rmap_pud(struct folio *folio, struct page *page,
+ 
+ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ 		struct page *page, int nr_pages, struct vm_area_struct *vma,
+-		enum pgtable_level level)
++		enum pgtable_level level, bool may_defer_split)
+ {
+ 	atomic_t *mapped = &folio->_nr_pages_mapped;
+ 	int last = 0, nr = 0, nr_pmdmapped = 0;
+@@ -1888,8 +1888,13 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ 	 *
+ 	 * Device private folios do not support deferred splitting and
+ 	 * shrinker based scanning of the folios to free.
++	 *
++	 * Skip this if the caller is only replacing the mappings with
++	 * migration entries. The folio is not really becoming partially
++	 * mapped. Once the split or migration finishes, every migration
++	 * entry becomes a mapping again.
+ 	 */
+-	if (partially_mapped && folio_test_anon(folio) &&
++	if (may_defer_split && partially_mapped && folio_test_anon(folio) &&
+ 	    !folio_test_partially_mapped(folio) &&
+ 	    !folio_is_device_private(folio))
+ 		deferred_split_folio(folio, true);
+@@ -1921,7 +1926,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ void folio_remove_rmap_ptes(struct folio *folio, struct page *page,
+ 		int nr_pages, struct vm_area_struct *vma)
+ {
+-	__folio_remove_rmap(folio, page, nr_pages, vma, PGTABLE_LEVEL_PTE);
++	__folio_remove_rmap(folio, page, nr_pages, vma, PGTABLE_LEVEL_PTE, true);
+ }
+ 
+ /**
+@@ -1938,7 +1943,8 @@ void folio_remove_rmap_pmd(struct folio *folio, struct page *page,
+ 		struct vm_area_struct *vma)
+ {
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+-	__folio_remove_rmap(folio, page, HPAGE_PMD_NR, vma, PGTABLE_LEVEL_PMD);
++	__folio_remove_rmap(folio, page, HPAGE_PMD_NR, vma, PGTABLE_LEVEL_PMD,
++			    true);
+ #else
+ 	WARN_ON_ONCE(true);
+ #endif
+@@ -1959,7 +1965,8 @@ void folio_remove_rmap_pud(struct folio *folio, struct page *page,
+ {
+ #if defined(CONFIG_TRANSPARENT_HUGEPAGE) && \
+ 	defined(CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD)
+-	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, PGTABLE_LEVEL_PUD);
++	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, PGTABLE_LEVEL_PUD,
++			    true);
+ #else
+ 	WARN_ON_ONCE(true);
+ #endif
+@@ -2516,6 +2523,8 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 	mmu_notifier_invalidate_range_start(&range);
+ 
+ 	while (page_vma_mapped_walk(&pvmw)) {
++		bool may_defer_split = true;
++
+ 		/* PMD-mapped THP migration entry */
+ 		if (!pvmw.pte) {
+ 			__maybe_unused unsigned long pfn;
+@@ -2772,12 +2781,20 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
+ 			 * No need to invalidate here it will synchronize on
+ 			 * against the special swap migration pte.
+ 			 */
++
++			/*
++			 * The folio only looks partially unmapped while this PTE
++			 * holds a migration entry, which is later turned back
++			 * into a mapping. Don't queue it for deferred split.
++			 */
++			may_defer_split = false;
+ 		}
+ 
+ 		if (unlikely(folio_test_hugetlb(folio)))
+ 			hugetlb_remove_rmap(folio);
+ 		else
+-			folio_remove_rmap_pte(folio, subpage, vma);
++			__folio_remove_rmap(folio, subpage, 1, vma,
++					    PGTABLE_LEVEL_PTE, may_defer_split);
+ 		if (vma_test_any_mask(vma, VMA_LOCKED_MASK))
+ 			mlock_drain_local();
+ 		folio_put(folio);
+
+base-commit: b95f8bb86713c860ce8536d22a988b949b884d5f
 -- 
-Cheers,
+2.52.0
 
-David
 
