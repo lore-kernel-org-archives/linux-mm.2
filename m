@@ -1,65 +1,65 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94243606A331
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7749606A325
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=EIiHA/jn
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Wi70OnYd
 Received: by kanga.kvack.org (Postfix)
-	id 7EC946B05BC; Mon,  9 Nov 2026 07:05:27 -0500 (EST)
+	id 6DAE86B05BE; Mon,  9 Nov 2026 07:05:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 775086B05BD; Mon,  9 Nov 2026 07:05:27 -0500 (EST)
+	id 6B23E6B05BF; Mon,  9 Nov 2026 07:05:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68B296B05BE; Mon,  9 Nov 2026 07:05:27 -0500 (EST)
+	id 5A0DD6B05C0; Mon,  9 Nov 2026 07:05:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4736A6B05BC
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:05:27 -0500 (EST)
-Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8904CA0692
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:05:26 +0000 (UTC)
-X-FDA: 85415450652.01.0E31886
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 384C06B05BE
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:05:30 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C61C4C0642
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:05:29 +0000 (UTC)
+X-FDA: 85415450778.28.9EF5C60
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id E1D0F40003
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:05:24 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EIiHA/jn";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2F46E40007
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:05:28 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wi70OnYd;
+	spf=pass (imf01.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794225928;
+	b=jNprWZO7t5CKzQjt1i8Ld6DXiqL5+xlG9zc+vW3JwztDaTzx9EF0oINnbONHIOOilzyHjM
+	GieWuR+k1a7AXO2RGgQX/ZDkKifc6gTjLhwjch8lxZwTAeh77+4E+JDMbPCaRpFQdO/ic1
+	z5smknXy+FrOVT8cFirQPAwJ4QTH7Ds=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Wi70OnYd;
+	spf=pass (imf01.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794225925;
+	s=arc-20220608; t=1794225928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RuOhAvZnPjP1XPHFbitmFrHHdHIPhu/o1Rlh2k3boNo=;
-	b=aPjNbmXA03ftD0lZHklULP7KylyFCPG8Vw0o1XCI3HcChcmSpftrkdB0aQDhS0g8sZJEpC
-	imYhDuIfy7e0SZ9ZQ0LN0hb3JPeiZYQJ+mY0fnzWUza4Fpt2C3deeJyjTOoaNPZB7dJJYX
-	YU9xMxjB5fkzTS7YsfHhdoGpvo1oTbU=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794225925;
-	b=a+CIzudDLaTHt95SnS7MEdEHWP47VMD3Ye2AGCMJuK5uRULO4InqgzwmXyMEtX+MTw6D5e
-	uLLSh5VxepEEkL4r+viI9rBs/pwzQCbPwvadR1RQ0lbRAzcHtoBhdgxj4FuIiC8ZcV+8KA
-	X+sB6zqMc1IOaTwkZ6WUNzNJiUH8Itk=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="EIiHA/jn";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of jszhang@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+	bh=bP0SvI1SyNFWGaznG9wghum5HnnqOxchfJ6Ki1mewRQ=;
+	b=Cllb+vcjuWkdt2Ep6dz0srry6IbDtCriqFCvKIMPSD3/9SEGRx9RSnPHHZJ9kwcq94XpED
+	lfLeDfjZI+4WCFIJWjDrxPnwfKLabEqQ33zqu70rGmjj4nFNEp+hp9D7F1NX8fJpnuhHSU
+	/HWHMqzikFoHta09km833+nCSUk2t5g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 8168A63193;
+	by tor.source.kernel.org (Postfix) with ESMTP id CB0F463175;
+	Mon,  9 Nov 2026 12:05:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A39FC1F008A2;
 	Mon,  9 Nov 2026 12:05:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9429B1F0089F;
-	Mon,  9 Nov 2026 12:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794225924;
-	bh=RuOhAvZnPjP1XPHFbitmFrHHdHIPhu/o1Rlh2k3boNo=;
+	s=k20260515; t=1794225927;
+	bh=bP0SvI1SyNFWGaznG9wghum5HnnqOxchfJ6Ki1mewRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EIiHA/jnHvo+Q4fpvT8AJOyb2hpOJY7Xo9vMny81pnTTP4xxoyuWC2gRSKz4nw+f7
-	 vZuiWM6/9cL7w6O9dQjHrrvVLyWmsheXkoPwm9iiXuOETC0zQurR5JjE2S4z8ASP7e
-	 rjU5+0PyNPxmONuxlmN+MbIrdWuSerwdAud1UIbuzvyn8mb50OOM8MPqN5eFkS+yrH
-	 BPd+uz+qRkC3tHmfgoyj3amIn3bnNLznREzxXgOyE8HLPQwMrXaT7Cc8kEpaLoTAY4
-	 z52qrphTGlnFIfOo54i5BRzjhKJFuLwz3foLVPpES4nlVrKmWlx/Naki/dR4qzP/ys
-	 c5V6fWR8imoJw==
+	b=Wi70OnYdXmU/O5nlE/GYtPpXZc8dZ424yjRjXLwEb6eTHY1K8E+36UyZSllQUnGCB
+	 WQkz5zKyd6wqkCbfXFNIXaR1/R90WpjbgNB1/01+YQkDQ2ANmTwfMH+5ifbsMrEb7q
+	 GkfDMhHXHhrpxrMVXW/sfzie1Hnru04kpBlgkiSA/Hs4JrAzE+/VqHiCLS+/RKB68+
+	 ZEfKMa+J6A2lPZa4UFALIHcd8Q5uR+b9B5Ojdt5CbuDb+VYE0CNOYysFUzkPlusF1Q
+	 hJ1tcHpm+kPyQtPHtcNolz6olZ7kUUl4DkKPFuTDs01ql81IZCQfXaj/i0bXkxpndd
+	 3/uFwMb3OWb3g==
 From: Jisheng Zhang <jszhang@kernel.org>
 To: Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
@@ -76,27 +76,27 @@ Cc: linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	kasan-dev@googlegroups.com,
 	linux-mm@kvack.org
-Subject: [PATCH v2 3/6] kasan: Always inline kasan_hw_tags_enabled()
-Date: Mon,  9 Nov 2026 19:44:56 +0800
-Message-ID: <20261109114500.20298-4-jszhang@kernel.org>
+Subject: [PATCH v2 4/6] arm64: stacktrace: Always inline internal stack boundary helpers
+Date: Mon,  9 Nov 2026 19:44:57 +0800
+Message-ID: <20261109114500.20298-5-jszhang@kernel.org>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261109114500.20298-1-jszhang@kernel.org>
 References: <20261109114500.20298-1-jszhang@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: huhmtch193dhfijghu8otrkqm5kmxobq
+X-Stat-Signature: 3tjrikzy4fdozke4ew537fz1q7yegdms
 X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2F46E40007
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: E1D0F40003
-X-HE-Tag: 1794225924-937559
-X-HE-Meta: U2FsdGVkX1+6A5MqPo6f+ip/bbmX84KL3rgITb6qAEJe690ZPmRNqtpxNqIqLj8xeLExypZ+nxhay+ufTeyzM3D5vJ3c7ElFEvkpgKyQTd0s4OfvNaKYiy/7gR8x4oQ74auAR/RKr8foJ1lrm0K7XogaH/NpSBOGS+1bILLZfG6rmmrmAhi8RWfgskx2G7cz1mhRSurEHLOJFGK7+LJlYtqwPMH0nD+/+rTZTJjQIT+2TjzW2lh4jTRFiFP7biJ5ZGhetAn7LAr0lyexHke0Rzh/JcoGSckFys0fm/NCZoR8Po1rQMi8lFXhRhnN6F0kw4Abd6Qj3lAHYW+clmbQ95tkC6G8p2M36mXjwX9BE+5dednuPDax9vmA76XIxIDYYUKcbcplIptPWcwJzUzmuSkW/M9wRsnAfglBBmcGhSTlqRtp0d9XeRMsVeQLZDlO3n1jzYBZd4RHV8lt93C9uiqwTIojkDOMyE8g3IVJhNRllkzsv6Z8iXOQx/kdQ54d+7Sr2fWqAPZFssyORicmzSi3G4NPJPhkJrXwxIOxB4t7NCWVQWEWV3VDRfXIyrhHf1x4rsfnLF6tqy3RPkdT2319fU6ZHIyPTSGL5V2Y9SE1sZEAL4A4vVRJYmNm3266CRwCA++Y6n5iAtAKxJPs5dghtCT8EBPUPC6Abqyq9zMTnE48s5Duv108GMnu9uYeUPFLzaRmUFqzsU2TkUvNvFyyw84uYlXC8LYliG+bNYRJiUxp+2iFu3y8jCDJK874k0WywLRx8P36TNb8si/fAMZ/c8+Q4/EEHJcgDbLeCvOA293mkBWDys6c6uFl9HGt8nbqqoo7wnnhv/A/UkUn97VOBl7Dt8aczsl7cAtHtz6lB7dL95wn1OZLId5MBnsxUOcXiKFIp7w5B77coOdY54AtNpZ7oR1yNVeATJgqOrFfVVHo/BVo29ehylaPV3B6YgWA2iCUbZ0XTdka+5i
- 6d/Nd+dj
- KIGJJHY1JEPeJGMnGUVUYqi70xd3XBc/5kaclhX3XTNGrZUDo4Z2OelYS+CD/SrBAI0qGxP6BNO51831c8mRA8z6lHvoagPO5XEg2QiR2oNobMC1EVTvDqsPUAxoYp96bFfJOyo0cfzOuE+9s51rzfIFk0DVuIYF2EXJfAOdPcjHMKzhVexLmyRdU7fmbd+uH+HosHD597AKuSzBvzyBX9jj62NVi5DMo3YV20bBW12Py8KLh3FcTKgf1rKhPmSeYN0bAFznRCtx/XWUF9h3Ruf4CIqXtW9c8PgRaItvmgwJATTaG+xUgwHseHZYuWO6i3EI9jT2YGdAIJES5Sr1Zw/EaeiYGoF4Oz1S9
+X-HE-Tag: 1794225928-766373
+X-HE-Meta: U2FsdGVkX1+FfZBj+t0Tr7na35cAssMGn/oIqWdam/x2pjJSKR5pzQhoD+WBLwHbNnH/iILwqLIpEAtXyuMSmFnZx+ur3BWh7GWLjXmKUzXtXtqLGy8wiXEwiDEl1entBLkXeYxyoIpQKnGag4jWkgfx6rlnn/PRQSjwqLTt1W6JSu8Yw1D9mEjWk1I3hniGnf7ZVyNs8SU4yaDHpgJVjbax8jwQ8vhBLDWdL9FkYcyzvUXOimPd/XCP58QA1InFQbxiiDprtPIuL2UsuzSEkaAIUe0JZmR6QhINWV8A641JRucoIbHfIV3ZqWt6uDOA9I/WXhynBgjbRnPsGYBHf7+M5svQ+y4N9jd/o/2AwI2NJhqBDQgSrMcqWUqg1wOHmhCwLeg0dv0eK2uv1dCtpOyHqDVtqJa9YIAiMqL0T93yMzQWIKxA5HFoUhOZAa+tIYBVuvxsbm9Rp6VPVHzxq3TfvQT/57GSyoOixX/5TzV2OMapQPtd5GbPMRIZq+IUKFmelWeXDjVDGLqGvDL3jILNmSWUm/c2FT0tPGx3qK0E7qpYNvOxJBOYyw9hQwF/hcHMgu5NVRW5n+bCiwsfR1fAyDF9iVfBVSwcpmlJRMz/iQB3B4H1srRmjqky453hERmE8qGgZqjhdJMhl81cP+pm38ezFduHDNF7m4FGY5y8LjB8xQsfmeHayEw1SWo5eKyQt5uXVZkslUYDK0YbaqASmdMQj3pjrl4qYZk5tAhEW5FXIsBNJhTrh0dXb9/F0Gff39R748hkkFnQSt2bS6xNk+3kt+uCXY1wSvgpdW70xwwhAhRZuXkeebyTX+VGAYk0Aym3Rw9+ljoSkU03p5C5wt7Tw6LsY60bnnTZOJGz/KfjSkCMceSqbv07a7Z7gg+kjvHwhp1t6A2RFeSdaZ7kSfUHZt42OvaRtw+Dm5VXOydKAv7t54aZbkyYf1u3oKOSMUwduyAueW8Yplv
+ 4+LiVCBR
+ AZpHdeCQYr4nDiU06hANjqg8tGGjHsg4QF8LdEta+LgT4ncicSeUmi7JuclX+FNbvKE6bSaWrKVBfC91VAxswFLRo46Dquu0Re5Wh/F+xtQc7a5YMGHI1iduRrBhwxaYuHuywpT8k3zwSBPHcYpaNG7bo0ECiHBpnbsDTsOlW+qWaFEYVxRkQ8TeGF2UhzOT8Jcn5U2mt9ZMhwXYMI87hd+fQBFoyX5qx3hJWqFUnnDUR5AVZ5KzsFvrg9SufjgAPlfy6+h+kqLnmLA9nqyAxi7o9uGjFu3DDrxEsE++gmnodstSuIAKUMOfSXQ==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,44 +105,156 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The arm64 MTE entry and exit helpers call kasan_hw_tags_enabled()
-from noinstr code. Although kasan_enabled() is __always_inline, its
-wrapper kasan_hw_tags_enabled() uses plain inline.
+The noinstr stack walkers reach the stack boundary and frame-record
+helpers through an __always_inline call chain. However, these shared
+helpers do not themselves guarantee inlining.
 
-With CONFIG_KASAN_HW_TAGS=y and CONFIG_CC_OPTIMIZE_FOR_SIZE=y, GCC
-emits kasan_hw_tags_enabled() in .text and calls it from .noinstr.text.
+With CONFIG_CC_OPTIMIZE_FOR_SIZE=y, GCC emitted several stack
+information helpers and unwind_find_stack() out of line in .text.
 
-Mark both definitions __always_inline so the runtime check inherits
-its callers' instrumentation restrictions.
-
-Verified that the out-of-line symbol and calls disappear from the
-arm64 entry-common.o object after rebuilding.
+Mark the shared stack boundary and frame-record helpers
+__always_inline to keep their instructions in the non-instrumentable
+walkers
 
 Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
 Assisted-by: LLM
 ---
- include/linux/kasan-enabled.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/stacktrace.h        | 16 ++++++++--------
+ arch/arm64/include/asm/stacktrace/common.h | 12 ++++++------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/include/linux/kasan-enabled.h b/include/linux/kasan-enabled.h
-index 9eca967d8526..14a9e9fd6c6b 100644
---- a/include/linux/kasan-enabled.h
-+++ b/include/linux/kasan-enabled.h
-@@ -35,12 +35,12 @@ static inline void kasan_enable(void) {}
- #endif /* CONFIG_ARCH_DEFER_KASAN || CONFIG_KASAN_HW_TAGS */
+diff --git a/arch/arm64/include/asm/stacktrace.h b/arch/arm64/include/asm/stacktrace.h
+index 6d3280932bf5..b370c0e1e337 100644
+--- a/arch/arm64/include/asm/stacktrace.h
++++ b/arch/arm64/include/asm/stacktrace.h
+@@ -22,7 +22,7 @@ extern void dump_backtrace(struct pt_regs *regs, struct task_struct *tsk,
  
- #ifdef CONFIG_KASAN_HW_TAGS
--static inline bool kasan_hw_tags_enabled(void)
-+static __always_inline bool kasan_hw_tags_enabled(void)
+ DECLARE_PER_CPU(unsigned long *, irq_stack_ptr);
+ 
+-static inline struct stack_info stackinfo_get_irq(void)
++static __always_inline struct stack_info stackinfo_get_irq(void)
  {
- 	return kasan_enabled();
+ 	unsigned long low = (unsigned long)raw_cpu_read(irq_stack_ptr);
+ 	unsigned long high = low + IRQ_STACK_SIZE;
+@@ -33,13 +33,13 @@ static inline struct stack_info stackinfo_get_irq(void)
+ 	};
  }
- #else
--static inline bool kasan_hw_tags_enabled(void)
-+static __always_inline bool kasan_hw_tags_enabled(void)
+ 
+-static inline bool on_irq_stack(unsigned long sp, unsigned long size)
++static __always_inline bool on_irq_stack(unsigned long sp, unsigned long size)
  {
- 	return false;
+ 	struct stack_info info = stackinfo_get_irq();
+ 	return stackinfo_on_stack(&info, sp, size);
  }
+ 
+-static inline struct stack_info stackinfo_get_task(const struct task_struct *tsk)
++static __always_inline struct stack_info stackinfo_get_task(const struct task_struct *tsk)
+ {
+ 	unsigned long low = (unsigned long)task_stack_page(tsk);
+ 	unsigned long high = low + THREAD_SIZE;
+@@ -50,7 +50,7 @@ static inline struct stack_info stackinfo_get_task(const struct task_struct *tsk
+ 	};
+ }
+ 
+-static inline bool on_task_stack(const struct task_struct *tsk,
++static __always_inline bool on_task_stack(const struct task_struct *tsk,
+ 				 unsigned long sp, unsigned long size)
+ {
+ 	struct stack_info info = stackinfo_get_task(tsk);
+@@ -61,7 +61,7 @@ static inline bool on_task_stack(const struct task_struct *tsk,
+ 
+ DECLARE_PER_CPU(unsigned long [OVERFLOW_STACK_SIZE/sizeof(long)], overflow_stack);
+ 
+-static inline struct stack_info stackinfo_get_overflow(void)
++static __always_inline struct stack_info stackinfo_get_overflow(void)
+ {
+ 	unsigned long low = (unsigned long)raw_cpu_ptr(overflow_stack);
+ 	unsigned long high = low + OVERFLOW_STACK_SIZE;
+@@ -76,7 +76,7 @@ static inline struct stack_info stackinfo_get_overflow(void)
+ DECLARE_PER_CPU(unsigned long *, sdei_stack_normal_ptr);
+ DECLARE_PER_CPU(unsigned long *, sdei_stack_critical_ptr);
+ 
+-static inline struct stack_info stackinfo_get_sdei_normal(void)
++static __always_inline struct stack_info stackinfo_get_sdei_normal(void)
+ {
+ 	unsigned long low = (unsigned long)raw_cpu_read(sdei_stack_normal_ptr);
+ 	unsigned long high = low + SDEI_STACK_SIZE;
+@@ -87,7 +87,7 @@ static inline struct stack_info stackinfo_get_sdei_normal(void)
+ 	};
+ }
+ 
+-static inline struct stack_info stackinfo_get_sdei_critical(void)
++static __always_inline struct stack_info stackinfo_get_sdei_critical(void)
+ {
+ 	unsigned long low = (unsigned long)raw_cpu_read(sdei_stack_critical_ptr);
+ 	unsigned long high = low + SDEI_STACK_SIZE;
+@@ -105,7 +105,7 @@ static inline struct stack_info stackinfo_get_sdei_critical(void)
+ #ifdef CONFIG_EFI
+ extern u64 *efi_rt_stack_top;
+ 
+-static inline struct stack_info stackinfo_get_efi(void)
++static __always_inline struct stack_info stackinfo_get_efi(void)
+ {
+ 	unsigned long high = (u64)efi_rt_stack_top;
+ 	unsigned long low = high - THREAD_SIZE;
+diff --git a/arch/arm64/include/asm/stacktrace/common.h b/arch/arm64/include/asm/stacktrace/common.h
+index 821a8fdd31af..7c502ae276b9 100644
+--- a/arch/arm64/include/asm/stacktrace/common.h
++++ b/arch/arm64/include/asm/stacktrace/common.h
+@@ -35,7 +35,7 @@ struct unwind_state {
+ 	int nr_stacks;
+ };
+ 
+-static inline struct stack_info stackinfo_get_unknown(void)
++static __always_inline struct stack_info stackinfo_get_unknown(void)
+ {
+ 	return (struct stack_info) {
+ 		.low = 0,
+@@ -43,7 +43,7 @@ static inline struct stack_info stackinfo_get_unknown(void)
+ 	};
+ }
+ 
+-static inline bool stackinfo_on_stack(const struct stack_info *info,
++static __always_inline bool stackinfo_on_stack(const struct stack_info *info,
+ 				      unsigned long sp, unsigned long size)
+ {
+ 	if (!info->low)
+@@ -55,7 +55,7 @@ static inline bool stackinfo_on_stack(const struct stack_info *info,
+ 	return true;
+ }
+ 
+-static inline void unwind_init_common(struct unwind_state *state)
++static __always_inline void unwind_init_common(struct unwind_state *state)
+ {
+ 	state->stack = stackinfo_get_unknown();
+ }
+@@ -70,7 +70,7 @@ static inline void unwind_init_common(struct unwind_state *state)
+  *
+  * Return: a pointer to the relevant stack_info if found; NULL otherwise.
+  */
+-static struct stack_info *unwind_find_stack(struct unwind_state *state,
++static __always_inline struct stack_info *unwind_find_stack(struct unwind_state *state,
+ 					    unsigned long sp,
+ 					    unsigned long size)
+ {
+@@ -99,7 +99,7 @@ static struct stack_info *unwind_find_stack(struct unwind_state *state,
+  *
+  * Return: 0 upon success, an error code otherwise.
+  */
+-static inline void unwind_consume_stack(struct unwind_state *state,
++static __always_inline void unwind_consume_stack(struct unwind_state *state,
+ 					struct stack_info *info,
+ 					unsigned long sp,
+ 					unsigned long size)
+@@ -142,7 +142,7 @@ static inline void unwind_consume_stack(struct unwind_state *state,
+  *
+  * Return: 0 upon success, an error code otherwise.
+  */
+-static inline int
++static __always_inline int
+ unwind_next_frame_record(struct unwind_state *state)
+ {
+ 	struct stack_info *info;
 -- 
 2.55.0
 
