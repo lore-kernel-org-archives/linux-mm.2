@@ -1,140 +1,140 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E562606A330
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 131F5606A33C
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KyGYc/76
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ut7+3u6S;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=SApFq5WF;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=ut7+3u6S;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=SApFq5WF
 Received: by kanga.kvack.org (Postfix)
-	id 3E7AD6B05C1; Mon,  9 Nov 2026 07:19:56 -0500 (EST)
+	id 39A946B05C3; Mon,  9 Nov 2026 07:20:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3BEA66B05C2; Mon,  9 Nov 2026 07:19:56 -0500 (EST)
+	id 371A16B05C4; Mon,  9 Nov 2026 07:20:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D5536B05C3; Mon,  9 Nov 2026 07:19:56 -0500 (EST)
+	id 288596B05C5; Mon,  9 Nov 2026 07:20:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0C00D6B05C1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:19:56 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9B2AA1A068C
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:19:55 +0000 (UTC)
-X-FDA: 85415487150.20.F776294
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id CB8754000D
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:19:53 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KyGYc/76";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794226793;
-	b=LVITLw0NnHJ3dr0b2i9toAuPOZevRx1xbnqmUJ4CgNL5y5GjLiUhSIreRxKSUX3Ja03Kdi
-	Db5xhdH0/wJYCr7bvqtJUHwvBos7ligtcuk8vvX/EJqZ3QCotis+sWfYElGYDBHE9HmsTd
-	KePX4tpQ5jtZXE+uFgvyxFvcXR84H+E=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="KyGYc/76";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EBC136B05C3
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:20:29 -0500 (EST)
+Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8BDF4160636
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:20:29 +0000 (UTC)
+X-FDA: 85415488578.15.3C3F273
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 68C2C20005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:20:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ut7+3u6S;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SApFq5WF;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ut7+3u6S;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SApFq5WF;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794226793;
+	s=arc-20220608; t=1794226827;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=TLrnHUnuKxQDgIYEl6JMV7NCbKmlJCyRBq3Hpd3l8qU=;
-	b=6HsJhftpA3edBM9AXDHCyVSImXj1YLDvbiSGR/uQUybOv75Nn9+oh4ng5iQASBzkjf9S1w
-	AktDYlZo2K+b5t9Uvciq4RREZpgolhe+N1mwhL1t3RTf+vKF9EZ+NUSVtec4ENQo0sqWqG
-	AfWO2gQhvThxddJmi0NjIJ6S994uwao=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 18BE063186;
-	Mon,  9 Nov 2026 12:19:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2DD81F0089F;
-	Mon,  9 Nov 2026 12:19:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794226792;
-	bh=TLrnHUnuKxQDgIYEl6JMV7NCbKmlJCyRBq3Hpd3l8qU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=KyGYc/76GpP5BOnBgF73ZQIJKAkOkBJyhzHx4Ac3QfYr6X0EIaFq/auDlW7eisMMv
-	 CybW5T1K81veFCKgaLPoy6WKdB++hUXsaNGE5kWnUJNyTh2QL3ev2lQLGNKZVJEvIn
-	 wETeFrjSf1Ydu2J2NAK1Aou7oVmi2yQ8KBwOY33ZzcZxy+3+Ba9aBCFvBVikwfHPZv
-	 dT3Vn/aJa92pRJLx0VQvuoTBNNKGIankU5/+ElKinJYWWr0s7/HNpMR7uvxMU56sFr
-	 C0nmuzTLIore/qamzALbP8qReUp8QmrjqC5/c2IoWUfAxzG2TOWvfgqr96376iNFs/
-	 9amIjWQgqfyBQ==
-Message-ID: <3b00799f-2fef-44bc-b798-79273c5c0ca7@kernel.org>
-Date: Mon, 9 Nov 2026 13:19:46 +0100
+	bh=YcGWRSLO8Yfbujxln+iu8vgkMzCPp+fOVFLW3VDJHEw=;
+	b=nGhZ9i0d1AyvCqmuhvC+kCJkjPQQMJG7h4NeFPukFdAXokLF1yqgWG0ZNKBd+t9/HjHIgO
+	txvR3bJu65J3cwd5WPRdJV95e/HRFajkSEa6RAJHlgqUFBLCH2gApmOzeOaViwJJvZr4/n
+	eZwFZSlfu9otZg5cH1G65mOebwLj3FE=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794226827;
+	b=dgH3ejIMr/6ekSRguBma+2Pyd95W0UU/ekX0NNoNV96UZnLJrDDeHjlMvPOaKsjbirCftn
+	+STTku0FBvFbBDsEF9gwUG/bmuf6uyxBOzyXwI1eYW2s4hUV1pkTvtJ3HfjFtTWzjNC5+t
+	Ot7jihdBCMjCUqA8+HtR5UudNuy2pcg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ut7+3u6S;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SApFq5WF;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=ut7+3u6S;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=SApFq5WF;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9B4F11F7B0;
+	Mon,  9 Nov 2026 12:20:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794226825; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YcGWRSLO8Yfbujxln+iu8vgkMzCPp+fOVFLW3VDJHEw=;
+	b=ut7+3u6SWUn9H8Jk66vEquo6iEFh7zATkMxP+B0KrFpqdOTRAYkB5eSvqIDm4Rftcg06HF
+	f7tCAJLzEpBvUUmWwknN84Sa+PrtyJG9nxQ4uagQy4WqPiSGG6MhXP7Lp3Tpooe8AZqVzX
+	1EqRV98wGShKrD9PbU/12/Bb4A/d288=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794226825;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YcGWRSLO8Yfbujxln+iu8vgkMzCPp+fOVFLW3VDJHEw=;
+	b=SApFq5WFZKP1QJxdXVdmiFrXqZfJWpmJ9J498Q0lnZH6aJAC8jzrJFO5frmz50TRQOq2eL
+	BC6YY8lV1FJQEoCA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794226825; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YcGWRSLO8Yfbujxln+iu8vgkMzCPp+fOVFLW3VDJHEw=;
+	b=ut7+3u6SWUn9H8Jk66vEquo6iEFh7zATkMxP+B0KrFpqdOTRAYkB5eSvqIDm4Rftcg06HF
+	f7tCAJLzEpBvUUmWwknN84Sa+PrtyJG9nxQ4uagQy4WqPiSGG6MhXP7Lp3Tpooe8AZqVzX
+	1EqRV98wGShKrD9PbU/12/Bb4A/d288=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794226825;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YcGWRSLO8Yfbujxln+iu8vgkMzCPp+fOVFLW3VDJHEw=;
+	b=SApFq5WFZKP1QJxdXVdmiFrXqZfJWpmJ9J498Q0lnZH6aJAC8jzrJFO5frmz50TRQOq2eL
+	BC6YY8lV1FJQEoCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6BA5E13302;
+	Mon,  9 Nov 2026 12:20:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TyZzEYm68WqqXgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 09 Nov 2026 12:20:25 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id E3A9B21FF2; Mon, 09 Nov 2026 13:20:20 +0100 (CET)
+Date: Mon, 9 Nov 2026 13:20:20 +0100
+From: Jan Kara <jack@suse.cz>
+To: Hungyu Lin <dennylin0707@gmail.com>
+Cc: willy@infradead.org, jack@suse.cz, akpm@linux-foundation.org, 
+	lczerner@redhat.com, tytso@mit.edu, hughd@google.com, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] mm: skip empty finite ranges in
+ truncate_pagecache_range
+Message-ID: <tbwekv4fqz3w74jgyy3pqvg3hvfi4erosgwnxwao5lwsrc7hp7@aaxxwdkkte4x>
+References: <20261027211505.22044-1-dennylin0707@gmail.com>
+ <20261104182700.88789-1-dennylin0707@gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] mm/migrate: fix softlockup in do_pages_move() with
- huge page arrays
-To: shao.mingyin@zte.com.cn, akpm@linux-foundation.org
-Cc: linux-mm@kvack.org, ziy@nvidia.com, matthew.brost@intel.com,
- joshua.hahnjy@gmail.com, byungchul@sk.com, gourry@gourry.net,
- ying.huang@linux.alibaba.com, apopple@nvidia.com,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261108142831046W_fbNCAFfuY0BjHPCCHgi@zte.com.cn>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261108142831046W_fbNCAFfuY0BjHPCCHgi@zte.com.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: CB8754000D
-X-Stat-Signature: jpb5iwfwjt4oyiknzk1rnz6hbpuz4zeb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104182700.88789-1-dennylin0707@gmail.com>
+X-Rspamd-Action: no action
+X-Spam-Score: -13.01
+X-Spam-Level: 
+X-Rspamd-Server: rspam06
+X-Stat-Signature: jkbxy9peax4gddgtf71pnmph7bb4kwrj
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 68C2C20005
 X-Rspam-User: 
-X-HE-Tag: 1794226793-850885
-X-HE-Meta: U2FsdGVkX19oi6R35/QE6qd/z0ZvldxIdFxOZdqMo7ASP44msZEKpweCiJPyEnSnGNb0usEYuTjE2s5JbR+3k66D+ACM5bTt1dcfxKA5XKq6Y9pr5pI2vI0OecEHZFtbspdKNt+IDDtwcwVFttzhv8DFiGKYuoe7dvHvBu1yO2B0SnCgWO8+UlOXht0SzWGJCORB7rDI6TXXLTzUw7vPOhfHpWxt32BAyzLnVkJeHuvd7yQZmAnO+LYFziv15ujpk4LUjQwiKXltjg77MRuziYTLdP8pZronWk8hGwZybqnLYYOt2HYUMpYKr3jRgjxyJL2GlWR0LvcEakdYWTpfkvwCfAeobf4830CRVnmQ94uq0+wiVoHbFwGDay54FwmODCPgBd8QVLQZFU/X/R+xyaKWCD6Nv6njcoDf6r/YU/Ym+cQD4WMoycNq+NSBA+TaaSc3scKwc+2EuiIstNAayBKR6C+Qo4tqQbP3mYnUvntzO9BcRrz6acKU+OX3Tez9nudi9B2Wz3WNITHpid3vXh6WXmjQZmxFgyLpEr2LYPWrTmGHcR38sb/pxI6olUQ02m5S6w12IbRrF0CR+J5u98Xn+bwaIfLQCCqvfTrJ+Ww2/J5UPwN7kDdaXUoOgytzFF4PywL0EMPbev+bK2ows+W0fKqbW77vGTxXAo+Snbo6wTzbPYy3uAKdjUWS2yPtXQfvXSLXc9oMJw5/arkRzR4pafUAls6TExKZHCpmYypGtpqd+ParZGtzCWQ0znYNTTsm+n9/J+doSAM0xprGcZo+Gbu27SlIH1XnceV+mAqahDVy3UljxedLZLUGBtT42CmOKNupgXTAJaGICKtwyRicVhyMLjcqBKKetZjimoI77w4+ZRGrkQ9FVCsgqj6NJhQqBO1M56ALM28+kfZx5jytRpi7WpRWvbSgEUd70i6fcFV1xcSp8aoNmoG6m6014pTw1PpDNTTqseYUHzR
- QMs96k+F
- qmXJDC4nedWZKwtdDGzNfMAsLPZT5NU3o1cWR3PuxsBkdTbE//Uym6QA8dC8PsyjcunFUNHFM/qnSVFaEqKwYgs0jSl4/OPb3tl3cdYxuiPbAuwItDbZhepm2zLtH3gQVqnx+M/JhkoZyMaMbDQP6745BBGSaleBPODwV5tJto7VXk6YV/aKiUERmmpA+V8mCYIUQa+sdx3tcv3+sT42AkXCh6j2+ngPU8aUzDeshV4N1kSHsenw2DusciSfTw4ydKAvB4CB3SRKDuOA6xYK2ZUu1yhoPxClPnPRpeBgA6NWADUTxVL73EASRSgtFxu7lRhcMQSnLw71xdBjr0WAcnzGkPJ6xNk0vjXF2wOQ4Mkv3RLGmCvwpiUYoJipv1LyQDriLpsfb1F4bJoR7qQxq9DaXrJigy7kTv5HPXWaOE64H7nUAFlnLcQ8YxA==
+X-HE-Tag: 1794226827-261366
+X-HE-Meta: U2FsdGVkX1+sXF7aHdORTfTYy/ej6qXmy978Ys1oj/tzDe/UMubfYYE6iOTBVotwhhSdapPDBPdRep/jxpX251O7uEPTidU6gBcGHUN614P4egk4TzbiA38OQ+GfLDPd+teKiohijBHDHEVgVZzCF0hWJxgj2e7aj7iLtwmoOJZR60nh53Eks76btW8s6Lng0t8dtzRVmsplKmda8YMD2U/c2BjkA1p2IAggfUITYmENRuHdUrsU/oKKXqOXGfSsZHTM2T78yJpcycH47OEE5DtZUbSw+DyaU+q07A52e3UPkvtqEnaI8AEGfhfaipECZ6uNvAxCUKq27GWhcXSerCLUxyaS7qmCgVbz5JWpoKM2pzgi+0dhGYUeeAeDUtL+4Yzq2AQa8NGDPt3KpdequZxCptb5HRKueolYQHvPS3pwVBeGORz3wn/HnZQpR1rkugWd+SIWJhag/kOzOIpmluYzB9fxq4JWP1FTbyi7DDEzOT8NdJSRT8DN+M1wBuCHcxApY2rgrirk85uGj4lmo8RTfnZjGIX2Hioy0N07ND/ZmhQqguCIFdpNv/PFBFZpwPbbq3A+2RXpeSUIOvN+0RLd6UM0WVFVgDCBxDp3a3ArA87TwhaSIHcB/VyH6QnvDWLORz0tLocZ0bFZgloJMUa3TgwmnVUzf8yyoxIbl8FBJBDZ+V9KKNfQ3YXsrpJk4kSIm8fUODstOjgisasAPMtNMNQQQ2Iq1GAhb4CAKef8wFQ3s7A8JkprD2oSDDfsLTFNjVPHqTpjWwIhBaKio0pqdnoOzYO34GToVPcU1fWtfFbJB2HxOTQ9LtqIu0FZtOl7NSGXzvIT9DcHhGuXQYoTUC5cuafsthobaL98ZbyucGSwSPrfb0yH8ixiqL5/8RRxLg+rfDY+gJ19GOy6dpeNhMkLAnyPJdgQ5Mf4eigKz+UEiJy4wZbtsyIejxDEpHiJUZffuAKPaKEWmKe
+ fq5wqDVj
+ i9eCCKth29wzI+1LGCV1GhQrx198upQNUzEXKB8aJ7lyMxdXQmtP317b0eaXYp/0UTGIxdLlvADL669JnCtkS3UYdIPG1eEfspW4UXNAY2u3z+WlhDH2QwDV7PUOJW8lSr2lWxynAoM6pkjECgAPRe9uS/ag0rdGb2TjhasIIO8Xqwcz8dodjj0AC9Q4pyl6aTfByZ9PYVosuSWFOd6JQlZk28XIcChvVVfPEuq4kKQ8qkur5vOQwB/+VDrPh0ecr6QWLUTX45Xj/pZxig+YEey0ur3q5oNomwog6s/SlKyBjPfW/kx7oT8sqSd7TE7u6CwU1qgqC8HqlLVd8r/jSuquAJZrloZGXqmEfhSB7NA+JsjFc1G8QsT6nQLM1v3dwtawE/4cgiFVs5Cg90kpYk1yI9T8OhIf0BDjrpGsv8n8FuFGAo7kbMchMGw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,37 +143,69 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/8/26 07:28, shao.mingyin@zte.com.cn wrote:
-> From: Shao Mingyin <shao.mingyin@zte.com.cn>
+On Wed 04-11-26 18:27:00, Hungyu Lin wrote:
+> For a finite range ending before the first page boundary,
+> truncate_pagecache_range() calculates unmap_end as -1. The unsigned
+> comparison then treats the empty full-page interval as nonempty.
 > 
-> mm/migrate: fix softlockup in do_pages_move() with huge page arrays
+> For example, lstart == 0 and lend == 0 cause unmap_mapping_range() to be
+> called with a zero length, meaning unmap to EOF. Punching one byte at
+> offset zero in a mapped FUSE file can therefore remove mappings outside
+> the hole, causing unnecessary page-table work and subsequent faults.
 > 
-> do_pages_move() walks the array one page at a time.  An entry naming the
-> node its page is already on is never queued, so the loop runs without a
-> voluntary preemption point on a non-preemptible kernel; the existing
-> cond_resched() calls in the migration code are only reached after a
-> folio has been queued.  nr_pages comes straight from the syscall.
+> Set unmap_end to zero for these small finite ranges so that the existing
+> unsigned comparison skips the empty interval. Explicitly handle lend ==
+> -1 and lend == LLONG_MAX with LLONG_MAX, preserving EOF handling and
+> avoiding wrapping in the endpoint calculation at the largest inclusive
+> end.
 > 
-> A 6.6.60 x86_64 kernel with CONFIG_PREEMPT_NONE=y and CONFIG_NUMA=y
-> reproduces this under QEMU TCG: 50 million entries pointing at a page
-> already on the target node keep the CPU in do_pages_move() for 42.9 s and
-> trip the softlockup watchdog; with this patch the same call completes in
-> 44.3 s without a softlockup.
-> 
-> Add cond_resched() so that long calls yield periodically.
-> do_pages_stat() had the same problem; it was fixed by 8e934ab44389.  In
-> current mainline only alpha, hexagon and classic m68k can select
-> PREEMPT_NONE and they cannot enable CONFIG_NUMA, so this mainly targets
-> pre-v7.0 stable kernels.
+> Suggested-by: Jan Kara <jack@suse.cz>
+> Fixes: 5a7203947a1d ("mm: teach truncate_inode_pages_range() to handle non page aligned ranges")
+> Link: https://lore.kernel.org/r/20261027211505.22044-1-dennylin0707@gmail.com
+> Signed-off-by: Hungyu Lin <dennylin0707@gmail.com>
 
-I hat that we have to care about this, and I'll probably increasingly hard push
-back against such effective stable-only fixes in the future.
+Nice! Feel free to add:
 
-In particular if it wasn't even encountered in practice but required a QEMU TCG
-instance to even trigger it ...
+Reviewed-by: Jan Kara <jack@suse.cz>
 
+								Honza
+
+> ---
+> Changes in v2:
+> - Compute unmap_end directly as suggested by Jan Kara, keeping the
+>   original condition for calling unmap_mapping_range().
+> - Handle the EOF sentinel and LLONG_MAX explicitly.
+> 
+>  mm/truncate.c | 10 +++++++++-
+>  1 file changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/truncate.c b/mm/truncate.c
+> index 733d2713a87..2c1f4a6c336 100644
+> --- a/mm/truncate.c
+> +++ b/mm/truncate.c
+> @@ -945,7 +945,15 @@ void truncate_pagecache_range(struct inode *inode, loff_t lstart, loff_t lend)
+>  {
+>  	struct address_space *mapping = inode->i_mapping;
+>  	loff_t unmap_start = round_up(lstart, PAGE_SIZE);
+> -	loff_t unmap_end = round_down(1 + lend, PAGE_SIZE) - 1;
+> +	loff_t unmap_end;
+> +
+> +	if (lend == -1 || lend == LLONG_MAX)
+> +		unmap_end = LLONG_MAX;
+> +	else if (lend < PAGE_SIZE - 1)
+> +		unmap_end = 0;
+> +	else
+> +		unmap_end = round_down(1 + lend, PAGE_SIZE) - 1;
+> +
+>  	/*
+>  	 * This rounding is currently just for example: unmap_mapping_range
+>  	 * expands its hole outwards, whereas we want it to contract the hole
+> 
+> base-commit: 05441d697f7f9a927264f4058cbbc6a03dfcac9d
+> -- 
+> 2.50.1 (Apple Git-155)
+> 
 -- 
-Cheers,
-
-David
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
