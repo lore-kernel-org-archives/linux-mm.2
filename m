@@ -1,103 +1,113 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 416FD606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 11:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606C4606D83B
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 11:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=htltHbUS
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=iU5O51DC
 Received: by kanga.kvack.org (Postfix)
-	id 614B56B05BE; Mon,  9 Nov 2026 06:22:16 -0500 (EST)
+	id 4227C6B05C0; Mon,  9 Nov 2026 06:27:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C5AD6B05BF; Mon,  9 Nov 2026 06:22:16 -0500 (EST)
+	id 3ACD66B05C1; Mon,  9 Nov 2026 06:27:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DC156B05C0; Mon,  9 Nov 2026 06:22:16 -0500 (EST)
+	id 2757A6B05C2; Mon,  9 Nov 2026 06:27:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 355866B05BE
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:22:16 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C46FC4064F
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:22:15 +0000 (UTC)
-X-FDA: 85415341830.08.A31D048
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EEE686B05C0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:27:40 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 040CF12062A
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:27:38 +0000 (UTC)
+X-FDA: 85415355438.12.030D345
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B9DB6A0004
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:22:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=htltHbUS;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5DE32A0007
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:27:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iU5O51DC;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794223332;
+	s=arc-20220608; t=1794223657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/EGlkjnTPXViKqQZVNQ5OhXpwdoUkAoPNRSYCRrjUm4=;
-	b=Qo1BweouFsNrr9rD/L79+yATz0FUaZ3vW6kOVrzb6+NUwMCM3kF2QKwMDOHk4b5u/8b2fi
-	xmDMajuVzBidEs+6ACibp427wEwmGmJBJ+dGWsw6kBQGrVjuLEsRQXXY2LUcycg/W0jhGu
-	MXe3ZPr4K5kwb9ERJRkUb6Ge2cYzuEg=
+	bh=GTe3rVqqBFubJwfvXPNDDRZX+sidHXepwnZzWomDy5A=;
+	b=ComcRHnt2eE9Ee7esPWlxvPEDXyMEdnSAaKyjHi9jwIQbXOKqgPOxvQZhi0Jqp6AK5jbgO
+	pnvnmrJZH++FySN3F6R7SBtfTI1wJp8gwBZBIgX56UzM1nLeIX21k62h52qF83XSeIq2NG
+	9eT6Sc0GNnXuj4IkFB+g0hLc32LEy+Q=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794223332;
-	b=4z+o1VpTeKTn+gcuCIz+nNJ98UHQNft68lBiCmDGJk37S76owItFm7K/+sig3Ggc67HXyq
-	RnoC1llyJFth1OhLgOq2JCUCxiscXeGMcKdKkWJQbT/NqXY9jR7qa2oTWmPEZ17arZvrRV
-	iqpxIdAitJQTDlUXFoJyPUcSnBd6Gds=
+	t=1794223657;
+	b=ZU9St6e5ecL65eDyhYwL3WUfykEndtU3FIxR4tLsVVmeNeEASvubQ+bbR7XUadB66Iqqwq
+	quZAo3ViFOiDZd4mpqsXtycTa8FnJ+391aFlpmNgqUG/nPcSDX3MIkR38qLaBaWUpyYkcL
+	HMnXmD421kSFiU/I9vpjh/fOo4pjkeo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=htltHbUS;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=iU5O51DC;
+	spf=pass (imf25.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 42F28613F9;
-	Mon,  9 Nov 2026 11:22:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931A91F0089F;
-	Mon,  9 Nov 2026 11:22:08 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id CF2E9630DB;
+	Mon,  9 Nov 2026 11:27:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96EA41F0089F;
+	Mon,  9 Nov 2026 11:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794223332;
-	bh=/EGlkjnTPXViKqQZVNQ5OhXpwdoUkAoPNRSYCRrjUm4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=htltHbUSacOuNqzjJ9rauWTrqcdykKX6USyqFGrUK9Xsa38SnEMQxb7T/ZjiCXkEa
-	 Q3m4xjJ9yNTSt0qsBs0OHMh2c3NiQTo/IkQbsECjBb82KMmTcgAvO/htFjpHzCaGRE
-	 Dr34Ia6Ph2F0gzzJYkwD9mERLqFmcNp0qIXlhazhqzYMvO6QdiHSxnhmhYnRS3wVX7
-	 aMdc9NiJL+XVYIbIVwTb5UEWJUq9mHr/u/UYPehQ14rEs0B4NUXfyGGzQsJQACdAUa
-	 SvBWUQdAlhi4419n9w5EnjfN/FsofQ4t5bL/MY/OybcPVK/0yI0aCReWdGkuwdNUco
-	 TSHC0IPQ2kIDg==
-From: Mike Rapoport <rppt@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <kees@kernel.org>,
-	Alexander Graf <graf@amazon.com>,
-	Changyuan Lyu <changyuanl@google.com>,
-	"Jose A. Perez de Azpillaga" <azpijr@gmail.com>
-Cc: Mike Rapoport <rppt@kernel.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	kexec@lists.infradead.org,
-	Mukesh Pilaniya <mpilaniy@redhat.com>
-Subject: Re: [PATCH v4] memblock: don't allocate new reserve_mem regions on a KHO boot
-Date: Mon,  9 Nov 2026 13:22:03 +0200
-Message-ID: <179422331231.3350534.16388829888932023722.b4-ty@b4>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261109075733.9051-1-azpijr@gmail.com>
-References: <20261109075733.9051-1-azpijr@gmail.com>
+	s=k20260515; t=1794223656;
+	bh=GTe3rVqqBFubJwfvXPNDDRZX+sidHXepwnZzWomDy5A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iU5O51DC6zVVQKzDHuys9tIxjfbSOhYw8z0UcE86pb//wkXavh32S2N8S2PUurU2A
+	 o1E3RopKG7W94xtmWo25LA834OkIsoplK5Zc5sWRxNqoMBKXFQxzncUeAVAHVqzYUN
+	 x0xzl99BebTVjgItzYyFM18S+rvSgi3xMyTZJ/jJZ69X0Gf56Vq2vszIAP9EEsAUq5
+	 YP1A5SHoyPmQVAQUq/DaV61yYmuj4yVaaeC+HIcZMJhadQiWUxN4AW86j7fp4xdZK/
+	 SKtdAofdOgM6AVAC0cEZ3+8Z/6By8LpM/kvwzBv9E4RtCHAt3TdDxZIlKuxADBPb0I
+	 863RWmyUQ6DWA==
+Date: Mon, 9 Nov 2026 12:27:22 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Kees Cook <kees@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Jann Horn <jannh@google.com>, Josef Bacik <josef@toxicpanda.com>, 
+	Chris Mason <mason@kernel.org>, Jeff Layton <jlayton@kernel.org>, NeilBrown <neil@brown.name>, 
+	Eric Dumazet <edumazet@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Jonathan Corbet <corbet@lwn.net>, Christoph Hellwig <hch@lst.de>, 
+	Greg Kroah-Hartman <gregkh@suse.de>, Joel Granados <joel.granados@kernel.org>, 
+	Jan Kara <jack@suse.cz>, Jan Kara <jack@suse.com>, linux-kernel@vger.kernel.org, 
+	linux-nfs@vger.kernel.org, linux-acpi@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-s390@vger.kernel.org, linux-scsi@vger.kernel.org, linux-um@lists.infradead.org, 
+	linux-wireless@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org, 
+	ntfs3@lists.linux.dev, platform-driver-x86@vger.kernel.org, coreteam@netfilter.org, 
+	kexec@lists.infradead.org, linux-pci@vger.kernel.org, linux-sound@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	ibm-acpi-devel@lists.sourceforge.net, jfs-discussion@lists.sourceforge.net, 
+	linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-cifs@vger.kernel.org, 
+	linux-fbdev@vger.kernel.org, linux-hwmon@vger.kernel.org, linux-mm@kvack.org, 
+	linux-sh@vger.kernel.org, linux-usb@vger.kernel.org, samba-technical@lists.samba.org, 
+	sparclinux@vger.kernel.org, linux-m68k@lists.linux-m68k.org, linux-doc@vger.kernel.org, 
+	linux-serial@vger.kernel.org, linux-atm-general@lists.sourceforge.net, 
+	Takashi Iwai <tiwai@suse.de>, linux-input@vger.kernel.org, linux-raid@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-modules@vger.kernel.org, linux-debuggers@vger.kernel.org, 
+	Chuck Lever <cel@kernel.org>
+Subject: Re: [PATCH RESEND v2 07/23] proc: let procfs own the seq_file of
+ seq_file entries
+Message-ID: <20261109-atemberaubend-begabung-bedienen-85aade0f99b4@brauner>
+References: <20261104-work-procfs-core-v2-0-76ace653a773@kernel.org>
+ <20261104-work-procfs-core-v2-7-76ace653a773@kernel.org>
+ <8A21EE2A-F392-40B7-9152-CBC440FDDA70@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: dmxp5q3ba65xngjzij51mqdpw533wy81
-X-Rspamd-Queue-Id: B9DB6A0004
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <8A21EE2A-F392-40B7-9152-CBC440FDDA70@kernel.org>
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,MENTIONS_GIT_HOSTING,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794223332-43107
-X-HE-Meta: U2FsdGVkX1+m3/fRTW/npxMli48vVk6bE+gdk0fbmsXKmvK9zsDruLUILWBFI+7rMAO8UH/0V5CoyuqHcl+0a73k6Bf/WBWf4hXfKAbkaUXO5/kGpWMLeNcopejzvSovAo38iLyqCtxibhm8rV1OfcR0RzPsnSSd2D+pTqu7jY860m3jhwpABD5rIH+kbB4en2ZnzxXzUOVGVJ0HkeiHY2x0ttz6OajqtDLbCDPTXJypa6SshUXuAoImf0Kq4qdiNUvjrOQe+wnejcIXYZBTMtnURnvuEDBX9Z7Shf1zsm1w/+E0zlXT0eBjwshTqnNhZPaAdvJmvtDcGK52TKKW9mXCPx3Yvi19SNvrD0HE7s8jRlrIKvqu1KdglAfF3EKL6Ta8dLF4287oZNmHUTyNC8NCPWe+5WTKRuQMwb1acggnxnLiLpIOFUIUbQHJK+Xdm26GJiMKFa2XJ1MlonuIlSWdA9eE3Ie4cK7wKQhxcR7KgroDlw9uXeDeatVgkrK907FkRcQDPtaCatGbO0V143Az6vHuXy9S/cCm+YJ+ul3YOwLWv3eyEIu8jVneQqGxMrshtoGE9Z7HeHQNSf1D1TFcl+x7danH1zh0dT6FCZapHgxLjQtIydUJS0Nfe6/q/WLKOzP3SVFKBv875bgGHcP5PQBSPqtGozd8til+hYXB2ic4XXWItsUZh47/4VtH4wI4U7jFVn9kMlcAAna0M/yQwGu3lNiXQEdJDUblGFau/qQ2D3Yis/nW+tvj2tPo0spc36SBJpc5tUaYMJ6PTdrEdQ6WspXs/9qrmQruZXbDlIVpd3Nes7kcmKycTPPKMjjCsjHjl8G2cdwEFpgg0s3jtFbLE0vG3CPAVC4kgKk/T2TSSUxbBFnjbcCnQHNNd4993iwYhGiwBX1IWNSTXv1XCa7re0Cff0RBlWMnDxbBDMZ6Q8KYjxDoZ675HMGZiPypxfHhRrFjgkJjjy0
- oFB74fAu
- H1G8yURtfBkAuAmvg02ibqB4e6YHXXzoSVfTgHeVEBFr57JK1HPBEAV7F0pU54BRaLAg9G72vEY9M0Ir6XRGcCwmqRtKWKaExzISvqZb58ljy8uIuPy52mn/nakblmJUjQhJG7euH0LWnrX95z/2TQ9089EihDmv2FEzPcWgjkqDB+qe6ooNr5BUFGCWFhfQYEGdOA/JfqezJzJAco0IlpllAQq7+FZvIwlWLaMS+rj0gBD+qIgrJJ08Mwatv6fFClCrIF53jvwiV3n8BW4rY5wxVOfVHffZySYrX
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: i9yp54sbf4ehgwfum4rfrew6tjwwboo5
+X-Rspamd-Queue-Id: 5DE32A0007
+X-Rspam-User: 
+X-HE-Tag: 1794223657-807461
+X-HE-Meta: U2FsdGVkX1+Nkr12lj1Kf2rIhSzobgq+UNX7Xqi52QLfTtTBg/6f3PDFpV1IYAVLlDKBMQd/Wb9aqZ3//m2GEOawQwTrhUTgdkf/C45b9MztiJ14tvnsp9lPrVQlw9/letRs6rKZgvxvYGLrwxDgx7AdDSXRZToxR3LxjpEb1ZJSd7+TBxR4fR+WXZ9g9MDzY3e2GQmUzM+OHUjJouOzP14vRzEQW/TGmNuJ99gJT18mkhLLG+SMpsTvZ97Y8pVqrp6kveFF/QQoOKObgwOHwnaAHaFOJTjgt+woSQzeUZo70a//dsQwPPkQpBjd0vBA5dYdw4rLwStoFB0XLNbNnB5YiIHW6y0TJGpgLj3c5sWGGZegEQMsaFjxrU/g41qA/DhmZbyxxDDcxrofZfdd207EDfysZNsZgSEFKgtIZpKIuLxrWnhKAmECgyofSu2HW1veRe7/X8x7WG0LM0t+82RTyTlGvRmbx7fLBE/KKzFfZTJl7gD1+14D/F91VwdznJQsCJFuakIftL8x+DPu2ulfLzHrjRJ5kQkjxEaVJOF9SRc0QmeBAezZnhHUoDLw9MCIIsx3AN4Q1gHmljBdOAtMRv+haI/P6kRORQK5Zzj8pkH1s8M4/Fq+pqs5mE8bUIH4jz1U3Vo1h2GoEb/EcAQjLCSnFdp/v9ha2GK1ik3WBa991aZKtLokPnFfEkvzvkBIExZDeV0dvPTk4WzQ+KFtllZAZAR7IHaGzUk9qEgMERgyAoVCvUbY1HJOIlpN9oA7zdDAfIPSMXULDrno1+y8VCmjeR8zgj/xJN4JtXSrJgu/yQG5wd4bxYG7+u12y5KD4AC7VycvL/RrDzkL7I4PJwD1w3AzG4gXt8haO+DT6F0BUKWsO2JO1hJibX0E9SHHnk3eeygIkb2tm3gkuloEH1va2N8M2SfuSUmvGRe+/SfWjy5u8hyeZ/y4tGYa4YZ2YQRCg3PMGsPMr0P
+ Ujw5IMMX
+ W5ZO8eoOYoWssrKC9H5VKw7MA0qpdEoPvN424Jfphz8qXKnIm+5dOHWMfCxjOsz9GbuTbcT/6qv0M0e3UTJnVi7h/Y9JYjEPqGPczkQJf6W3ZBynasflPxf1KLTL5NiXYXNOecJT6IRM3ExCIDfQBGvJlYmhJh/do5gi3SL6Ndhyn7f50ZytFpF36aQvjWi28c6a+AT+fhAqs7WKgNs51QntfV82UOeBe66r1GF+U/UYAOjt9BbjqINd/tn8oSscLSLZ8UiwdYcx9TvjW8Vq2G0UQvCsmCnZj0Z6ddBgPHcho2Tubi78w7u5NqqPFOjo3M0Glv+9CKD6hFTvFsd8mrLxJ2Ip3c4XV90F3HibuYTuosEDx93z76F1KXy9k5zOEwldN
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,29 +116,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-On Mon, 09 Nov 2026 08:57:25 +0100, Jose A. Perez de Azpillaga wrote:
-> On a KHO boot, a reserve_mem region that can't be revived is allocated
-> from KHO_NOPRSRV memory, which includes the bootmem the next kernel
-> boots out of. With CONFIG_KEXEC_HANDOVER_DEBUG, preserving the region
-> then fails:
+On Sat, Nov 07, 2026 at 08:10:28AM -0800, Kees Cook wrote:
+> Please use the new style typed allocation calls for objects:
 > 
->   WARNING: kernel/liveupdate/kexec_handover.c:1245 at kho_preserve_pages+0x168/0x180
->   failed to prepare memblock FDT for KHO: -22
+> ops = kmalloc_obj(*ops);
 > 
-> [...]
+> (This happened to jump out at me, but please check the other patches for this pattern.)
 
-Applied to for-next branch of memblock.git tree, thanks!
+Done, there are 5 of them in total:
 
-[1/1] memblock: don't allocate new reserve_mem regions on a KHO boot
-      commit: d9a27fa1050902a6e38bdb780b0277cbf1dfa5a5
+proc: resume readdir after the last name it returned
+-		cursor = kmalloc(sizeof(*cursor), GFP_KERNEL_ACCOUNT);
++		cursor = kmalloc_obj(*cursor, GFP_KERNEL_ACCOUNT);
 
-tree: https://git.kernel.org/pub/scm/linux/kernel/git/mm/memblock
-branch: for-next
+proc: sysctl: resume readdir after the last name it returned
+-		cursor = kmalloc(sizeof(*cursor), GFP_KERNEL_ACCOUNT);
++		cursor = kmalloc_obj(*cursor, GFP_KERNEL_ACCOUNT);
 
---
-Sincerely yours,
-Mike.
+proc: keep the open files of an entry in an open node
+-		dp->open = kzalloc(sizeof(*dp->open), GFP_KERNEL);
++		dp->open = kzalloc_obj(*dp->open);
 
+proc: own the wait queue of an entry with a ->proc_poll()
+-	on = kzalloc(sizeof(*on), GFP_KERNEL);
++	on = kzalloc_obj(*on);
+
+proc: let procfs own the seq_file of seq_file entries
+-	ops = kmalloc(sizeof(*ops), GFP_KERNEL);
++	ops = kmalloc_obj(*ops);
+
+-- 
 
