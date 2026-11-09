@@ -1,100 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B2C606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 01:53:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DF5606A326
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 02:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=6APbNeQF
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=QfsxkYUt
 Received: by kanga.kvack.org (Postfix)
-	id E6D476B05B8; Sun,  8 Nov 2026 20:53:32 -0500 (EST)
+	id 0C4026B05BA; Sun,  8 Nov 2026 21:02:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E1DBE6B05B9; Sun,  8 Nov 2026 20:53:32 -0500 (EST)
+	id 0755A6B05BB; Sun,  8 Nov 2026 21:02:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE5E16B05BA; Sun,  8 Nov 2026 20:53:32 -0500 (EST)
+	id EA5E46B05BC; Sun,  8 Nov 2026 21:02:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B16116B05B8
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 20:53:32 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4307D1C1F2F
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:53:32 +0000 (UTC)
-X-FDA: 85413908664.18.0A00725
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 2AE4420005
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 01:53:29 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=6APbNeQF;
-	spf=pass (imf31.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794189210;
-	b=ZtPvOa3g100LN4ZkfF0mFvgXtte5pxSHXxg7nRO24VKxcrMLugQ87+6XTVnm0GnLXRWhBU
-	tUGK5jy7hefnC/odkqSi9AIqXKnMqqw9BPN4+Uhc01rqRQALQvgZmdRu1pSqfO3/BCiAnn
-	aDIds0n8aYhFUQCo/t+Di/2ipfT9YZI=
-ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=6APbNeQF;
-	spf=pass (imf31.hostedemail.com: domain of tujinjiang@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=tujinjiang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id BC1A56B05BA
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 21:02:50 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4D91F1C3D96
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:02:50 +0000 (UTC)
+X-FDA: 85413932100.29.51CD48C
+Received: from mta0.migadu.com (out-85.mta0.migadu.com [91.218.175.85])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1A1E0140005
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:02:47 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QfsxkYUt;
+	spf=pass (imf09.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.85 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794189210;
+	s=arc-20220608; t=1794189768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2nc0cbykH2c/mCQYtXun5pdfE/aQLdbexLHm6tfOEQI=;
-	b=7v4xY7kUuOIXWKKmsgHlg5wOmm5qKTaRYl7fa9YbpBv5Ap62Gg5W2XHrg+NBPvrNTmeHoO
-	B+Vx1eMhAT4rcdCl/VBsKagvI4hcez8VFv7+ZMzeAfAi0nACXoMw2vmZtU/MpqpKPV/Ysh
-	oDzkXUqWWzj3bgx4EA9Lh+x+3eyqSnU=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=2nc0cbykH2c/mCQYtXun5pdfE/aQLdbexLHm6tfOEQI=;
-	b=6APbNeQF1wiZEbIjn+DlBpeuY47yu5Y/ioU7l0JYf3WVd6lWzNNb4H/uVq19lsQgabbWnnikY
-	kA/QdaAK3nbe33xvDaa20Td3ApEx+6FqBMOC2TLatVtIPGoGsWEXCKyvooEQrj5Ti1hBzd0uF6+
-	SNsCdHDPjs0H3eMTT8L1kzM=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4jNCTn3h2yzcbP6;
-	Mon,  9 Nov 2026 09:52:45 +0800 (CST)
-Received: from kwepemr500001.china.huawei.com (unknown [7.202.194.229])
-	by mail.maildlp.com (Postfix) with ESMTPS id DD6674056E;
-	Mon,  9 Nov 2026 09:53:20 +0800 (CST)
-Received: from [10.174.178.56] (10.174.178.56) by
- kwepemr500001.china.huawei.com (7.202.194.229) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Mon, 9 Nov 2026 09:53:19 +0800
-Message-ID: <3f2cefd5-837c-4d80-bd80-4590f1684383@huawei.com>
-Date: Mon, 9 Nov 2026 09:53:18 +0800
+	bh=XlBkNshnRvxJvLUnOog48HaeDLXWwV/RjD/R7Dtxa2c=;
+	b=PGVScPUhZymeY2AZBVbg4SjkpykN7IBUpWYMg5BxV+qTIM046iGX6hbjsbtGtRiCF7KXq6
+	El0v6yD5ihWVqgXzDc/jNFwszYeFuxOYr2GWfBbuGxAjtQcB58hfnMYXNk26hS6Tpiy/5x
+	pmvN0UVAyC57/1lsuto7/PBSxO+oC+M=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=QfsxkYUt;
+	spf=pass (imf09.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.85 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794189768;
+	b=KfOOWhYpU6HuhHhjVkkIqPbPRIk9NHTNUXpYWFp0PqeKrzEnteyPLt+1GTo9GC7jDaJbDz
+	Pd6ggELlwfP2yn9LruM+LaFbGGtha0DwurvNd4b5gGBICu73FJc81xPtYQ85xZWsYIbCaI
+	c2VC5vcPaKH2G1UZO2tiAr8YXRXQKD8=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=F+9QGNn78TE5UhAcrJSZwwSQiT+HhmNF2N5MpN7+7xQ=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794189766; v=1; x=1794794566;
+ b=QfsxkYUt8+Hrwi1g7IxsfMOz6RfW7IBYwMaMj66AQeL1EolLGytsakgcbGfvxn89SvYkCs96
+ Xksj7OWRhjcqLanQFxic96OMeXeYOq5mfvVZAhhUjuI8mKOwkLVoWaI5SWp84bf2bapegxuv6ht
+ bk4iUiPxyz+wh6/q2KNf/Rcs=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta11.migadu.com with ESMTPS id e9f324b00c252f44;
+	Mon, 09 Nov 2026 02:02:46 +0000
+X-Mizu-Trace-ID: e9f324b00c252f44
+X-Migadu-Flow: FLOW_OUT
+Date: Mon, 9 Nov 2026 10:02:26 +0800
+From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+To: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Lorenzo Stoakes <lstoakes@gmail.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>, linux-mm@kvack.org,
+	linux-doc@vger.kernel.org, Huan Yang <link@vivo.com>,
+	Wang Xiao <xiao.wang@vivo.com>
+Subject: Re: [PATCH resend] ksm: add merge_only_zero_pages to merge only
+ empty anonymous pages
+Message-ID: <avEpskVC/NRPFt4d@dgvxl46587.localhost.localdomain>
+References: <20261106034841.233085-1-xu.xin@linux.dev>
+ <2a642af6-b97a-4f24-9889-1844812de4cc@huawei.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/ksm: fix ksm_exit() deadlock on exec error path
-To: "David Hildenbrand (Arm)" <david@kernel.org>, <akpm@linux-foundation.org>,
-	<xu.xin@linux.dev>, <chengming.zhou@linux.dev>, <liam@infradead.org>,
-	<ljs@kernel.org>, <vbabka@kernel.org>, <jannh@google.com>,
-	<pfalcato@suse.de>, <kees@kernel.org>, <ziy@nvidia.com>, <gourry@gourry.net>,
-	<anthony.yznaga@oracle.com>, <linux-mm@kvack.org>
-CC: <wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-References: <20261106013906.2229780-1-tujinjiang@huawei.com>
- <a712518e-e094-474a-b7c3-bb9723917960@kernel.org>
-From: Jinjiang Tu <tujinjiang@huawei.com>
-In-Reply-To: <a712518e-e094-474a-b7c3-bb9723917960@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemr500001.china.huawei.com (7.202.194.229)
-X-Stat-Signature: a4ip8yb9k6djomg4ct7iko3tc5s1garq
-X-Rspamd-Queue-Id: 2AE4420005
+In-Reply-To: <2a642af6-b97a-4f24-9889-1844812de4cc@huawei.com>
+X-Stat-Signature: b5bsgtnbm1my74wz4sfke9j7dd5xtdzx
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-HE-Tag: 1794189209-70263
-X-HE-Meta: U2FsdGVkX1++KdAoE0amFOnvmltleMGJgmiWSdZwpJ7a/TGfMPtGZ4wXGOeOdGtmqsRWjIyTi6SZSjvRXkB9G3Ng6CYvMWfbb5fEvpQbxiiS7JhEaLPFvq5GJUkd4ECOST4mSEKEhJe1k/ILwddfc5Ph7AuY7Jnf1B2KCnzIZyw81Iki+pcYOQVIwXLsst1uEEaEBdPYCVXzRRDRAymb9OoUyTWRyCGfOGDc771BNE00o1OqGRzZM60J6D5ubmufej6Cslsp2b9TUsxijfzFnmJUOLzU0NM04F0ip70cNut6lNZPYkdOmysOQj4yWMHC2Kwmdkdy4TOz/vm3JM1RVrWoYMvMXonTEL678MgNVfKYbzG8U22bQ0M6NiRksvZBOyLvcPHeTyHyQsyh0UC89K82qGQE0RiAhQBLWJd9WqD37iywLFY4FKRUdNdmQ9ufZ04Jnp2FKi6d6es237Po9jNFH+5KOvf8F4Qfdd3DtIkpgQdihQP61CTrMNVFeRMGIrpTRHcojiukZO4lWAXjmHulMdsAXP/31g2oB53lQfhQ9uzDJw2fpQ7zEBrSk7icMU8pURT1QyP5M7haPDk4xsbNtkaI4xUkQjykRWJKlBs4SAIA+1XVITj2R40wJ/5aBmxaUmW3OgOOX02C+iwSorD5IeCz30hopB4UrjPAkOQWTnPXNNSTsb3vzQXOD3FQkMmZPIgXFHjuZeXaLue1wcu+tFvoUDnEx1K17oAcKgacV43qOQmkc8IgSSzvToK/WbdGQPu/vDGGLcorXFl5baPXz/FtQ5RsHVAz4ot1mD6rfSNkMdbu/BoEcJq3ewZlgnoQ6m1WseC1iceZqs+TwlOCcLlA00jEw83kt5uVmzX+/1F/QwUMX6aEs9nG/1n/slgbI0bhEeIAn6AfM02V3ZzMbBqX3AhTslrBMJGDrHMeUkDCPbr5uTANBxBEU0MtoVn5Y9DEEWhIzjQpxwi
- 3reeFjIz
- xYDzh43d+ubLKBo77qqt0r2uxl2Ws6Rf7RGmmaup8s5o2+jMf5tcDvIfwfMLgAOW8cMVboThVg414v74txuqq7iVjY9gdNb0sOz9kNUyAzS6+UlmlBZY8a4T/Wf3at2qe++Pbp6FY3spnFl+xXBg3JkbmJCwZieRBIxi5kfnChTm/NmzcbvKrP/9OwkATH/7yICGScAsq+QxHbHW4WaefH09FE7/tyi8AozJJIGq6LJY59m8DPTY8nDi35WXlNnvnhWCG+RYSU91dRgXSgB/+Dgo1aCwB12XrjGlMWZVEuoc/udVHkwmX3Jkjn61N7Wgxu+VZ9xHHsLA3AlZ34ke9EZYpzXOHeNHK9skdd4pwVUTU47c8eUbbTbamN6HEMv/ZVoqBHpCT/v5CQXc=
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 1A1E0140005
+X-HE-Tag: 1794189767-594369
+X-HE-Meta: U2FsdGVkX19X+PwLrnuOe5THVcpgEdbVgj+NRMbK6+DxnUG+r9Igtzo3jaALh1m6RfpQQMbvKYXAbA+2OCiZhnAnjkq1+6YYqdjnDTp5Txpf0zM1e3sWwoDRjYTNoOg6J7pQalKr3SQyiI8x8IDxxRZPPqKw6lVw4rTAHQjXV69nnsIW3H+SB2AxN7WmQYSNpGPXOoJC4VoWMtihW4ADOi1rqyiWkik9YkDFHzhFJK//USTPZ9Sq2k4I2Snezo/MJdoCDTeGZIJisP6h3C2aIQadshurJ474gjPGth0S+1D1Y8u7iYguj3/ll2dO5R41UiUmvyoX8ezkiLpgCOgE4HTeQOo3GZkff1bcthPCqMeXxavjJ0U5vICkEwLFEly6sCPCaBnG762sVaO7UlbzyYi/36aVwlAWWyd2YGfcLaYp++Af4uLN5ba+seQzbqeUM++4jkQ1GpjWahq6oaa9tNSIdNGLc1DEt/2yMffe1shTaW0SYhlMebGrI87R+2ljUHVtAFD7bmR8pJnwdJ/bd+QF3GL8EpFa2nyHATb2sv6vd68VXx+PFQBWZyiWWTTLErYneznKgcoH3Uv2ePAQsdigXNUPDimdQSYGGVco1n9i3jKexf+c5xX4ZYWzPuXUnQDzhR1mBwfT+6mLZyh5eAD+Si+DpvkL0qxSd52eB4fxDZp6SC2/8dy/2M54KUc6kysffeFXc7oBZ1DVmLvF2Jr6T4vwFvThYpngYstmP7mxXXztyF5n7BfgWFSTs/KoomnoiS57mS1IhkKSGc/CndkncX8vu8QzoFoPTSneFfNv5WxxF0+5GqT9ehx2I965pzzj228oC/RBgO7F3ret6TLkb4ZVBpqqLqo34rSpcrfAbev8RY3EGdavktDFUZ5g+30ELhsY2UhIZ2N2d2Kw733ZT0sEuPH83Y//iOYdYNFONpX9reSLif2+a7m+95j8ghJDOsMY6vAVYpCj01B
+ QT55G17j
+ blzr96zGVS0rJWsk2dF5v1lCXWSb5RK/LbOiSWTQk5UgPhB88I/lAdea0sxQkJGRH2mPP+4h/QGGpn3+jkXrCXii8V4nQAljT+dwS818Kgb35lxFiN9zpw4K1DQVlcD1MHYiS89Gsig6tNzx0nJ+lA2sQY2YK+mPnTHCtpovJ+hTyMT47uFjBhrEVIqlQdP7+rfXBXdMQg88x8anANZrV4PJmsHPtP+jyxShvNOYlX4/3c42+GUc5LF3xckThBYjg2fOSWxiem7yO5gnIjDEgCnvzdNp8Ox924bfaiUaZhGruZ6JLR+47XzNjyw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,52 +101,199 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+On Sat, Nov 07, 2026 at 04:13:40PM +0800, Jinjiang Tu wrote:
+> 
+> 在 2026/11/6 11:48, xu.xin@linux.dev 写道:
+> > From: "Xu Xin (vivo)" <xu.xin@linux.dev>
+> > 
+> >    KSM side-channel exposure is desired. Many handset vendors may prefer
+> >    this knob, which can be used as a default fallback policy.
+> > 
+> > - Not suitable for server and virtualization workloads containing many
+> >    non-zero duplicate pages, where vanilla KSM provides better memory
+> >    savings.
+> 
+> It’s a coincidence that I’m also working on similar optimizations.
+> In our scenario, we have a MySQL instance with over 700 GB of anonymous
+> memory. Most of this memory belongs to the buffer pool, which caches
+> data from storage; these pages cannot be merged. Of the remaining memory,
+> around 15 GB is consumed by hashtables, which contain many zero-filled
+> pages that are eligible for merging to reduce memory footprint.
+> 
+> When we enabled KSM for the entire MySQL instance, ksmd created rmap_item
+> metadata for each candidate page.The massive metadata overhead wiped out
+> any gains from page merging, and even resulted in a negative benefit.
+> 
+> For this reason, I’m trying to make ksmd merge only zero pages. The goal
+> is to have ksmd skip scanning non-zero pages entirely, thereby avoiding
+> the rmap_item metadata cost introduced by scanning non-mergeable pages.
 
-在 2026/11/8 3:06, David Hildenbrand (Arm) 写道:
-> On 11/6/26 02:39, Jinjiang Tu wrote:
->> create_init_stack_vma() registers the new mm with ksmd via ksm_execve()
->> while holding mmap_write_lock(), and calls ksm_exit() before dropping the
->> lock. When insert_vm_struct() fails, __ksm_exit() takes mmap_write_lock()
->> again when the mm is ksmd's current scan cursor, leading to deadlock.
->>
->> The early registration is no longer needed after commit 590c03ca6a3f
->> ("mm/ksm: fix exec/fork inheritance support for prctl"). ksm_vma_flags()
->> calls __ksm_enter() when the first mergeable VMA is created. Remove
->> ksm_execve() and its stubs.
-> I assume you mean the
->
-> } else if (mm_slot) {
-> 	mmap_write_lock(mm);
-> 	mmap_write_unlock(mm);
-> }
->
-> Can that actually trigger?
->
-> IOW, can we have an slot, and the slot can already have a mm_slot->rmap_list?
+Skip generating ksm_rmap_item for non-zero pages ? That dose make sense to me.
 
-This doesn't need mm_slot->rmap_list != NULL.
+> 
+> 1) Before get_next_rmap_item(), check whether the page is all zeros.
+> If not, skip it directly to avoid allocating an rmap_item.
+> 
+> 2) When walking page tables to find candidate pages in ksm_next_page_pmd_entry(),
+> check whether the first and last contents are zero as a quick filter.
+> This is intended to speed up page-table traversal.
+> 
+> Would you mind to collaborate? For example, by including my optimization
+> as the second patch in your patch series?
 
-In __ksm_exit(), if ksm_scan.mm_slot == mm_slot, will lock and unlock mmap rwsem.
+Happy to do it.
 
-
-  mm_slot = mm_slot_entry(slot, struct ksm_mm_slot, slot);
-  if (ksm_scan.mm_slot == mm_slot)
-  	goto unlock;
-
-  ...
-
-unlock:
-  ...
-
-  } else if (mm_slot) {
-	mmap_write_lock(mm);
-	mmap_write_unlock(mm);
-  }
-
-
-`ksm_scan.mm_slot == mm_slot` means ksmd is currently scanning current's mm_slot.
-After ksm_execve(), current's mm_slot has been added to ksm_mm_head list, and
-ksmd could find the mm_slot in scan_get_next_rmap_item().
-
->
+> 
+> Here is the diff. Basic functionality has been tested.
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index dbfb8f98b189..8a02976b0aba 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -296,6 +296,9 @@ static unsigned int zero_checksum __read_mostly;
+>  /* Whether to merge empty (zeroed) pages with actual zero pages */
+>  static bool ksm_use_zero_pages __read_mostly;
+> +/* Whether to merge empty (zeroed) pages only */
+> +static bool ksm_only_merge_zero_pages __read_mostly;
+> +
+>  /* Skip pages that couldn't be de-duplicated previously */
+>  /* Default to true at least temporarily, for testing */
+>  static bool ksm_smart_scan = true;
+> @@ -2524,8 +2527,42 @@ struct ksm_next_page_arg {
+>  	struct folio *folio;
+>  	struct page *page;
+>  	unsigned long addr;
+> +	unsigned int nr_to_skip;
+>  };
+> +static inline bool page_maybe_zero(struct page *page)
+> +{
+> +	unsigned long *p;
+> +	bool ret = true;
+> +	unsigned int last_pos = PAGE_SIZE / sizeof(*p) - 1;
+> +
+> +	p = kmap_local_page(page);
+> +	if (p[0] || p[last_pos])
+> +		ret = false;
+> +	kunmap_local(p);
+> +	return ret;
+> +}
+> +
+> +static struct page *ksm_skip_nonzero_pages(struct page *page,
+> +					   unsigned long *addr,
+> +					   unsigned long nr,
+> +					   unsigned int *nr_to_skip)
+> +{
+> +	unsigned long i;
+> +
+> +	for (i = 0; i < nr; i++) {
+> +		if (!*nr_to_skip)
+> +			break;
+> +		(*nr_to_skip)--;
+> +		if (page_maybe_zero(page + i))
+> +			break;
+> +	}
+> +	if (i == nr)
+> +		return NULL;
+> +	*addr += i << PAGE_SHIFT;
+> +	return page + i;
+> +}
+> +
+>  static int ksm_next_page_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long end,
+>  		struct mm_walk *walk)
+>  {
+> @@ -2563,6 +2600,13 @@ static int ksm_next_page_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned lon
+>  				goto not_found_unlock;
+>  			page += ((addr & (PMD_SIZE - 1)) >> PAGE_SHIFT);
+> +			if (ksm_only_merge_zero_pages) {
+> +				page = ksm_skip_nonzero_pages(page, &addr,
+> +					(end - addr) >> PAGE_SHIFT,
+> +					&private->nr_to_skip);
+> +				if (!page)
+> +					goto not_found_unlock;
+> +			}
+>  			goto found_unlock;
+>  		}
+>  		spin_unlock(ptl);
+> @@ -2585,6 +2629,14 @@ static int ksm_next_page_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned lon
+>  		if (folio_is_zone_device(folio) || !folio_test_anon(folio))
+>  			continue;
+> +
+> +		if (ksm_only_merge_zero_pages && !folio_test_ksm(folio)) {
+> +			page = ksm_skip_nonzero_pages(page, &addr, 1,
+> +						      &private->nr_to_skip);
+> +			if (!page)
+> +				continue;
+> +		}
+> +
+>  		goto found_unlock;
+>  	}
+> @@ -2609,6 +2661,33 @@ static struct mm_walk_ops ksm_next_page_ops = {
+>  	.walk_lock = PGWALK_RDLOCK,
+>  };
+> +static bool should_skip_page(struct ksm_rmap_item **rmap_list,
+> +				  unsigned long addr, struct folio *folio,
+> +				  struct page *page)
+> +{
+> +	struct ksm_rmap_item *rmap_item;
+> +
+> +	if (!ksm_only_merge_zero_pages)
+> +		return false;
+> +
+> +	if (folio_test_ksm(folio))
+> +		return false;
+> +
+> +	if (pages_identical(page, ZERO_PAGE(0)))
+> +		return false;
+> +
+> +	while (*rmap_list) {
+> +		rmap_item = *rmap_list;
+> +		if ((rmap_item->address & PAGE_MASK) > addr)
+> +			break;
+> +		*rmap_list = rmap_item->rmap_list;
+> +		remove_rmap_item_from_tree(rmap_item);
+> +		free_rmap_item(rmap_item);
+> +	}
+> +	return true;
+> +}
+> +
+> +
+>  static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>  {
+>  	struct mm_struct *mm;
+> @@ -2705,6 +2784,7 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>  			int found;
+> +			ksm_next_page_arg.nr_to_skip = 1024;
+>  			found = walk_page_range_vma(vma, ksm_scan.address,
+>  						    vma->vm_end,
+>  						    &ksm_next_page_ops,
+> @@ -2722,6 +2802,14 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
+>  			if (tmp_page) {
+>  				flush_anon_page(vma, tmp_page, ksm_scan.address);
+>  				flush_dcache_page(tmp_page);
+> +
+> +				if (should_skip_page(ksm_scan.rmap_list, ksm_scan.address, folio, tmp_page)) {
+> +					folio_put(folio);
+> +					ksm_scan.address += PAGE_SIZE;
+> +					mmap_read_unlock(mm);
+> +					return ERR_PTR(-EAGAIN);
+> +				}
+> +
+>  				rmap_item = get_next_rmap_item(mm_slot,
+>  					ksm_scan.rmap_list, ksm_scan.address);
+>  				if (rmap_item) {
+> @@ -2824,6 +2912,10 @@ static void ksm_do_scan(unsigned int scan_npages)
+>  		rmap_item = scan_get_next_rmap_item(&page);
+>  		if (!rmap_item)
+>  			return;
+> +		if (rmap_item == ERR_PTR(-EAGAIN)) {
+> +			ksm_pages_scanned++;
+> +			continue;
+> +		}
+>  		cmp_and_merge_page(page, rmap_item);
+>  		put_page(page);
+>  		ksm_pages_scanned++;
+> @@ -3674,6 +3766,28 @@ static ssize_t use_zero_pages_store(struct kobject *kobj,
+>  }
+>  KSM_ATTR(use_zero_pages);
+> 
 
