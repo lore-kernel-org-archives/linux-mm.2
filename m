@@ -1,71 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B5460A2623
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 16:02:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02729607360F
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 16:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=vbUKJvs3
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=GVdukjlx
 Received: by kanga.kvack.org (Postfix)
-	id 5F7EC6B05D2; Mon,  9 Nov 2026 11:02:17 -0500 (EST)
+	id 8B5236B05D3; Mon,  9 Nov 2026 11:02:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57F716B05D5; Mon,  9 Nov 2026 11:02:17 -0500 (EST)
+	id 818166B05D4; Mon,  9 Nov 2026 11:02:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4745F6B05D2; Mon,  9 Nov 2026 11:02:17 -0500 (EST)
+	id 6DE9C6B05D6; Mon,  9 Nov 2026 11:02:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 19A9A6B05D2
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DD9F6B05D3
 	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:02:17 -0500 (EST)
 Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57A6BA0760
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:02:11 +0000 (UTC)
-X-FDA: 85416047262.01.5F2295A
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C4C6D1206E9
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:02:16 +0000 (UTC)
+X-FDA: 85416047472.01.36DB45F
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 792FB1C0012
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:02:09 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vbUKJvs3;
-	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	by imf21.hostedemail.com (Postfix) with ESMTP id D51191C0010
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 16:02:14 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GVdukjlx;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794240135;
+	b=hZHuviLhm7iP1lfGbySQy6/eh0LSHfI4E0a0Loube9fVsLxIRe47RXenrfBEeHiZKYU1AJ
+	cz17gJMpWzqVgOrKzcdBEKv/lw8wgVSDUptGWIsBdwywzbVweg5k+wYru2j3VpUiPOXp9V
+	HFRhOArgE9KKnXX+uD8SIjv+PxWn2+o=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794240129;
+	s=arc-20220608; t=1794240135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a5aexMwK+2MFktlu7rHzowEh/NG7elaL0zrvutdRtI8=;
-	b=meQLwanP0tNI3e4pWavNzpPzo6Ssw0VaYZt+VIeaXF3Xm/UzwYOpu02DIVQXZNy/cdJ/NB
-	NuEuh6bIdXg4s5to2wDpLSZ5qL6PvVKfr7HyYZhKCq1vzOt31YcjKiU3fPpZqbwwW+HlHw
-	cQRPTpmuJHQSEt8wThqBiCXM1KEaMvE=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794240129;
-	b=FkUBG7coXPRbK1rzyjqW2F5GAJFPTxZKV1XrHM1Rizh/iY1drQbqje2dbTTI2teyJGW2lL
-	lLtS1uCDHiBkrBY1PlpbRWdXG5IptgDh7jzsJlsLtObWVX/RW+MI+CSebY3nKxiSaOH1zT
-	OF2Nv0GpPD/9olo1WThYbx4ETb8VS9Q=
+	bh=GTGmKFM4xFszxJT3yvxzfIEd2u2ou6U+2cFfGcbONdk=;
+	b=cYLfWQSmwZNa5fmW+DzG3d+RCXFJLnylkz1sbK/hxiH92pglpdFxEavA16TuZpbBYxOuZD
+	m4Fbp22Q5z9f1/3SL+eBeDGjP1csvTSiNqnmfcO0NIMnB1AEl0ZRF/7dXcXu01KiugpvfI
+	+9AnOhq0TOkCaqMYocndpbi1vgO0dUE=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=arm.com header.s=foss header.b=vbUKJvs3;
-	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=GVdukjlx;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ACD7B2F;
-	Mon,  9 Nov 2026 08:02:05 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DF5DC2F;
+	Mon,  9 Nov 2026 08:02:10 -0800 (PST)
 Received: from localhost.localdomain (e123572-lin.cambridge.arm.com [10.2.208.46])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D04EF3F632;
-	Mon,  9 Nov 2026 08:02:03 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E30A3F632;
+	Mon,  9 Nov 2026 08:02:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1794240128; bh=cUlLtdPRs8XVu22eeE08h4AwX9MJVfNOjzEFNCjlLx0=;
+	t=1794240133; bh=xf4mnCbgRoC4McQQdkoE98wQ+JFumNK4YzHFaYloEOc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=vbUKJvs3Qdz7D4NxK50Ih0d1cPV51KEXxUyloY50+aDWWwJhRrfUaay3bbH4LO0E2
-	 APQBVrEsm5vFl4V6V0bWwOAUCk5yKdsCeDwjC/t4h18LBIMif9t/QoAkawW5pH8UD3
-	 ap4+IAAV8sS/IJmkte/B7IjY3MHrIxVKHmz+wawE=
+	b=GVdukjlxt6BJwkZ8GSCwyaHoZsS5MHrj9UxdrQv4DpZ0VhH9HMytRJs38rarGnK4j
+	 OBxKYeC/zG2+fIYLmXWZGCRbr0d0+d9CFANUIsspLIWmtRkQefPXHSzO2Eoc6PQiQV
+	 tWWWmYdglDOQOBmXELlKZUa8M3SaMqzZwiKODvgc=
 From: Kevin Brodsky <kevin.brodsky@arm.com>
-Date: Mon, 09 Nov 2026 15:58:43 +0000
-Subject: [PATCH RFC v10 18/22] arm64: kpkeys: Guard page table writes
+Date: Mon, 09 Nov 2026 15:58:44 +0000
+Subject: [PATCH RFC v10 19/22] arm64: kpkeys: Batch KPKEYS_CTX_PGTABLES
+ switches
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261109-kpkeys-v10-18-aa6c4d9603bc@arm.com>
+Message-Id: <20261109-kpkeys-v10-19-aa6c4d9603bc@arm.com>
 References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
 In-Reply-To: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
 To: linux-hardening@vger.kernel.org
@@ -93,25 +94,25 @@ Cc: Kevin Brodsky <kevin.brodsky@arm.com>,
  Ira Weiny <iweiny@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>, 
  Thomas Gleixner <tglx@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794240029; l=4952;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794240029; l=4874;
  i=kevin.brodsky@arm.com; s=20260427; h=from:subject:message-id;
- bh=cUlLtdPRs8XVu22eeE08h4AwX9MJVfNOjzEFNCjlLx0=;
- b=MLBX1RjqBqwxlpGOI54Mr1paZcEmc9jPld6P5zWRz+PnxFR1FQTc2xDmuz69qpttX6tNinCHn
- 5BEIdJg46dPCu+KVbvQiJPmvNs4SJAjCE4dVZM5yyeijEXoc3MIqP4j
+ bh=xf4mnCbgRoC4McQQdkoE98wQ+JFumNK4YzHFaYloEOc=;
+ b=Gmrm9AOzE5rqNW6yMYk/EZ4iMTeukSeNRN048Oj3iqazwl2o/qZJ7PMOI+du48vXZZGmLoSb+
+ V8grDTumbALC+mu+7PvZ5/wbybQgeL9EMYZI23gO7yjsEiiXRrkqGFI
 X-Developer-Key: i=kevin.brodsky@arm.com; a=ed25519;
  pk=N2QG+eJKrvkNovwhhwJhnJ4+ScVfsGCHldmqLfcMTFs=
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 792FB1C0012
+X-Rspamd-Queue-Id: D51191C0010
+X-Rspamd-Server: rspam12
+X-Stat-Signature: qd9mis1br83yxihebq3fjd1xkg1f6da1
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: cj5ysswc1x1cecaptki9o5p3jc3kecc4
-X-Rspam-User: 
-X-HE-Tag: 1794240129-171458
-X-HE-Meta: U2FsdGVkX1/qJHbC7W0nZycRwbSlgqMAsvVtNTzFIktncZBDzEBrrqT+k2eCywlhvssdF/G5AaoeXRsSdazxRCNZFiR+PXBqdOBhF5h4rhiXDCKmvt1N+SVXGIx+yABl9uatwDXMNjCo9d4CFmFmEyZSx9yA/MqIFfr2vMRrrB/9KoilUmULAt28gVLNgXQKiF+zbi1FhOhrDNcg8botrIW8ErSVTkY1mW62U/a6RO8HoK2MajUO6G97OLPzZahAze8fwRE6cZwiCEi+LJMveVMnHbZsKjj+8QcB3jYssa+jWlv/+aPRZfdbl7OfF71/0bawfrol/qWgoie+pV1TlrZMsGuxXsgs2fyfy597dZQEbkwmF1d01j+dXekx3UtD8FxTDHE22hsMbh8D/bKQRaQ0pu8shmjpgu7BEF5Bo/o51wgKjcwk4X1A8Z+ouLWUQ5HC+ePNUHzJ8KSGTncJTo7uSBTFjNHYHMcOKq+mN4AXngRFQLk/S28KA92gNyls3qfxeUd3K6UoYZkToddAa770lVgqvStHQGBWQg8YnqS5ayPuJjYwaFVKqidX5WtB1mGA7kK0O9vg7t9GimP9AVAk1SBpZMshlTUi+7gy45++bNnF5V8H+UAkV6sEbJ9X7XuoOieHt0uX5gQCh2ozXImB+/TPNUDppM7vD58rD7G33w5ED0+PAnAz+3/k4HISsaAjfi17ByJCApxxbbgJe2AgoK+cSiVUnvGM4N1voMMhSulLKAKM3tqwF4sI6ZVWsCCyM5NoUEymTs+P31ERNkCxWDBvdk7ZJvYmG4jylaIFX4X4LZ6dL653FVv+aSQpQP3NJyWJzR9AXEGQ/6PIoGg5EvNugWLyrMOJkPpu3VuDrm9P8stFGKgK3JdZTxrg72iWLdrMKpkkLvckFDQm+O2XieBGDGxFi7EhRP3KgsWr4Fni7sGEXLDAgJ8DnMvrawRW1ZNnP53sb+zoGmF
- Ip8tC092
- dMeFRViP7SYVgYhI5Hg5iMOApndDo8FVJR72IUcxzdhgTOJgeTKj1BqXkiSP8qAS1PbC40vyQS/mmOhTNV1JhA+5f+LiAMNyIdYtvePQfEgs4OQtngM/JMbCTutUoryudldHHqMb8QaYIJXNKSFQbdOx4E83nQ45KLDv4AaknM0Qu2E5Zgu/bKRH5WDpZucM98xa1lX4uBDSkiLNYJ71jpof39pnO3wUnica/uhuGx8YxuMKaSusEgnsRRtjc3H8c60vnfx7XQ6DjdFsNpkbWt3+adksQ45OgevYgz2aMQ9yItecT6s3hahscYu+7wXkBBdD+g212Tcs72BoiU4wosEClml/HHDV0YahFiZIVVKI9tlM=
+X-HE-Tag: 1794240134-463778
+X-HE-Meta: U2FsdGVkX18TgMEgjSZYxr9kjKXmSaDNQezxNK58JAc5sDy9L789eQKImvl7hpaJYaNTUEKL6HS/1M6x8btmx9wWYsrva4c5+/BP+8dfH3BVx4ts2F/CgMrpaaxD62Aq9FgtKJ4StqkgoLwbeOfQgtSLNGTGYkygAuVxv5Z+XHJmnvmjsQr95rW7M1B2x0s5PgeuMSAgQl6+wQeSksr+0EZ3ZudH7wRSFkJKRqqW3g4dwhqy/TAAxUscji17DWJaeI7gq9oDZBUvzo86JmcWPqXK+DouER0unzgoahOdSLP/Qky5zQTok9/hKpwEiDGbrXhJmVT8xoHklfpMufWU9knPwy+o7fjPa9NuLqRT5H542+uciC3Qe2tlqK9Hn7tH+5nTFRJRUdmAfSCPaSLB9kPHtmr5OkNbACmBPctloicUusx6EMXmVxSyW8WJU0tj1d+e0pYIUIy6tVmqrglv5f9CvWqHHFpT93HZh2TaLRsbX7cjt6qy5yJq1MhSKuVNIEZgvRcF3pedkMNMfOoMxknmBz8FgYP3+rY+4Gdvh/LX7NYhbDmPtYWCu2TI+AE8Lx1T3my/hpJPyIP6vqEe0JvId0f44aucx3ztozXevBFg8oTfIOHATUpT6w9YLeiXy/zG7qjQ8/s6jYM+v2m+NPYgaAliVcXIW/bOxLazksW6YYyajNWQ7gad7y5O4+kDIoXT8QaAboQB2t5Qyf4NS2JHaf3o/H0jAbLVgrasfcfyFPU/1MbhzPUQoSn9WXgMHTbCjhR4YkLGXUyxCjr4dhodoIcXjhCRPt9GPwjvFL/ig/7kSNgLXX9lVKXH6SDYkMuVGPuCIT0HZcsT0bkqvM7K8tl82VBtcdDQA+hdKWZ6OnI8fMfSqv9Ktw5UNOaPrS/UIoaWFSLD5jWxMG92pr3JYNRh6BfSfaC7saov93a2xCzmVQ9dSFv79j96W9omE+PB8G1aKOjtNIYQlf7
+ +8bmYHbg
+ FPoSQ3M37RpahgdCCVvT6U5IqE0I3kKNDf8Nwiss/qjQFVHL0kKP2RwEJS+ZpqLCtLF1IebPNcilMnIMbW3QG+U+1EEWN6CUwdw3Y8fOIA8qsvPZg/PBeWzdnUeWoimAV34+K6xfYzxUunE7cQ3ug/3P5apItN3p5uv5/sG2J3Ugk0XWCSbgmueIFW2H2VRRJKFPtd/8NQX3Z/VQ21Jxb94YZ8wPyn0R26NVayfiyW4vQjb5PIsYtYDNS21stafrzplA6SZ0ufof8iP0ho+09m2UqeXfKt8to9KZmf5I1tJDFAsp/wyk8eCnb/Ofo5H07GsC4/bId1hCS8XbJoFderJ1bIFUrO0+swTIPs0ThH4hZI0Hc12cFz0IdNS0KyNjTKRdcI3PDwZzZHuWcTgweP4K8gDGpycXB1XehXRgLAL3n2Vah6J6ScdwhTAE+HbPQ8J/dhxsOEUEo8l4K/dgYJGUSwsmdhRgO7wsdKtqov867Aaa5Bp3yWftkJva3UTXUvShPWIQD8HgY546AlvbgJtlCPrj9dtmowlmE0WJVKoAqrTKExaIyHZzuqA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,166 +121,143 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When CONFIG_KPKEYS_HARDENED_PGTABLES is enabled, page tables (both
-user and kernel) are mapped with a privileged pkey in the linear
-mapping. As a result, they can only be written in a privileged
-kpkeys context.
+The kpkeys_hardened_pgtables feature currently switches kpkeys
+context in every helper that writes to page tables, such as
+set_pte(). With kpkeys implemented using POE, this entails a pair of
+ISBs whenever such helper is called.
 
-Introduce a kpkeys guard that sets POR_EL1 appropriately to allow
-writing to page tables, and use this guard wherever necessary. The
-scope is kept as small as possible, so that POR_EL1 is quickly reset
-to its default value. Where atomics are involved, the guard's scope
-encompasses the whole loop to avoid switching POR_EL1 unnecessarily.
+A simple way to reduce this overhead is to make use of the lazy MMU
+mode. We amend the kpkeys_hardened_pgtables guard so that no kpkeys
+context switch (i.e. POR_EL1 update) is issued while the lazy MMU
+mode is active. Instead, we switch to KPKEYS_CTX_PGTABLES when
+entering the lazy MMU mode, and restore the previous context when
+exiting it.
 
-This patch is a no-op if CONFIG_KPKEYS_HARDENED_PGTABLES is disabled
-(default).
+Restoring the previous kpkeys context requires storing struct
+kpkeys_state somewhere. POR_EL1 is a full 64-bit value so we cannot
+simply use a TIF flag. There is no straightforward way to reuse
+current->thread.por_el1 for that purpose - this is where the current
+value of POR_EL1 is stored on a context switch, i.e. the value
+corresponding to KPKEYS_CTX_PGTABLES inside a lazy_mmu section.
+Instead, we add a new member to thread_struct to hold that state
+temporarily. This isn't optimal as that member is unused outside of
+lazy MMU sections, but it is the simplest option. Nesting of
+sections is not a concern as arch_{enter,leave}_lazy_mmu_mode() are
+not called in inner lazy MMU sections (nor do we need to do anything
+there).
+
+A further optimisation this patch makes is to merge the ISBs when
+exiting lazy_mmu mode. That is, if an ISB is going to be issued by
+emit_pte_barriers() because kernel pgtables were modified in the
+lazy MMU section, we skip the ISB after restoring POR_EL1. This is
+done by checking TIF_LAZY_MMU_PENDING and ensuring that POR_EL1 is
+restored before emit_pte_barriers() is called.
 
 Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/include/asm/pgtable.h | 23 ++++++++++++++++++++++-
- arch/arm64/mm/fault.c            | 17 ++++++++++-------
- 2 files changed, 32 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/pgtable.h   | 50 +++++++++++++++++++++++++++++++++++---
+ arch/arm64/include/asm/processor.h |  4 +++
+ 2 files changed, 50 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index a474c9fb485a..5f46d4cb3882 100644
+index 5f46d4cb3882..5e958531e6ab 100644
 --- a/arch/arm64/include/asm/pgtable.h
 +++ b/arch/arm64/include/asm/pgtable.h
-@@ -39,6 +39,14 @@
- #include <linux/mm_types.h>
- #include <linux/sched.h>
- #include <linux/page_table_check.h>
-+#include <linux/kpkeys.h>
+@@ -43,10 +43,44 @@
+ 
+ #ifdef CONFIG_KPKEYS_HARDENED_PGTABLES
+ KPKEYS_GUARD_COND(kpkeys_hardened_pgtables, KPKEYS_CTX_PGTABLES,
+-		  kpkeys_hardened_pgtables_enabled())
+-#else
++		  kpkeys_hardened_pgtables_enabled() &&
++		  !is_lazy_mmu_mode_active())
 +
-+#ifdef CONFIG_KPKEYS_HARDENED_PGTABLES
-+KPKEYS_GUARD_COND(kpkeys_hardened_pgtables, KPKEYS_CTX_PGTABLES,
-+		  kpkeys_hardened_pgtables_enabled())
-+#else
-+KPKEYS_GUARD_NOOP(kpkeys_hardened_pgtables)
-+#endif
++static inline void kpkeys_lazy_mmu_enter(void)
++{
++	if (!kpkeys_hardened_pgtables_enabled())
++		return;
++
++	current->thread.kpkeys_state_lazy_mmu =
++		kpkeys_enter_context(KPKEYS_CTX_PGTABLES);
++}
++
++static inline void kpkeys_lazy_mmu_exit(void)
++{
++	const struct kpkeys_state *state =
++		&current->thread.kpkeys_state_lazy_mmu;
++
++	if (!kpkeys_hardened_pgtables_enabled())
++		return;
++
++	/*
++	 * We skip any barrier if TIF_LAZY_MMU_PENDING is set:
++	 * emit_pte_barriers() will issue an ISB just after this function
++	 * returns.
++	 */
++	if (test_thread_flag(TIF_LAZY_MMU_PENDING) && state->entered_context)
++		__kpkeys_set_pkey_reg_nosync(state->arch_state.por);
++	else
++		kpkeys_leave_context(state);
++}
++#else /* CONFIG_KPKEYS_HARDENED_PGTABLES */
+ KPKEYS_GUARD_NOOP(kpkeys_hardened_pgtables)
+-#endif
++
++static inline void kpkeys_lazy_mmu_enter(void) {}
++static inline void kpkeys_lazy_mmu_exit(void) {}
++#endif /* CONFIG_KPKEYS_HARDENED_PGTABLES */
++
++
  
  static inline void emit_pte_barriers(void)
  {
-@@ -360,6 +368,7 @@ static inline pte_t pte_clear_uffd(pte_t pte)
- 
- static inline void __set_pte_nosync(pte_t *ptep, pte_t pte)
- {
-+	guard(kpkeys_hardened_pgtables)();
- 	WRITE_ONCE(*ptep, pte);
+@@ -79,7 +113,10 @@ static inline void queue_pte_barriers(void)
+ 	}
  }
  
-@@ -789,6 +798,7 @@ static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
- 	}
- #endif /* __PAGETABLE_PMD_FOLDED */
+-static inline void arch_enter_lazy_mmu_mode(void) {}
++static inline void arch_enter_lazy_mmu_mode(void)
++{
++	kpkeys_lazy_mmu_enter();
++}
  
-+	guard(kpkeys_hardened_pgtables)();
- 	WRITE_ONCE(*pmdp, pmd);
+ static inline void arch_flush_lazy_mmu_mode(void)
+ {
+@@ -89,6 +126,11 @@ static inline void arch_flush_lazy_mmu_mode(void)
  
- 	if (pmd_valid(pmd))
-@@ -850,6 +860,7 @@ static inline void set_pud(pud_t *pudp, pud_t pud)
- 		return;
- 	}
- 
-+	guard(kpkeys_hardened_pgtables)();
- 	WRITE_ONCE(*pudp, pud);
- 
- 	if (pud_valid(pud))
-@@ -928,6 +939,7 @@ static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
- 		return;
- 	}
- 
-+	guard(kpkeys_hardened_pgtables)();
- 	WRITE_ONCE(*p4dp, p4d);
- 	queue_pte_barriers();
+ static inline void arch_leave_lazy_mmu_mode(void)
+ {
++	/*
++	 * The ordering should be preserved to allow kpkeys_lazy_mmu_exit()
++	 * to skip any barrier when TIF_LAZY_MMU_PENDING is set.
++	 */
++	kpkeys_lazy_mmu_exit();
+ 	arch_flush_lazy_mmu_mode();
  }
-@@ -1053,6 +1065,7 @@ static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
- 		return;
- 	}
  
-+	guard(kpkeys_hardened_pgtables)();
- 	WRITE_ONCE(*pgdp, pgd);
- 	queue_pte_barriers();
- }
-@@ -1254,6 +1267,7 @@ static inline bool __ptep_test_and_clear_young(struct vm_area_struct *vma,
- {
- 	pte_t old_pte, pte;
- 
-+	guard(kpkeys_hardened_pgtables)();
- 	pte = __ptep_get(ptep);
- 	do {
- 		old_pte = pte;
-@@ -1301,7 +1315,10 @@ static inline pte_t __ptep_get_and_clear_anysz(struct mm_struct *mm,
- 					       pte_t *ptep,
- 					       unsigned long pgsize)
- {
--	pte_t pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
-+	pte_t pte;
-+
-+	scoped_guard(kpkeys_hardened_pgtables)
-+		pte = __pte(xchg_relaxed(&pte_val(*ptep), 0));
- 
- 	switch (pgsize) {
- 	case PAGE_SIZE:
-@@ -1374,6 +1391,7 @@ static inline void ___ptep_set_wrprotect(struct mm_struct *mm,
- {
- 	pte_t old_pte;
- 
-+	guard(kpkeys_hardened_pgtables)();
- 	do {
- 		old_pte = pte;
- 		pte = pte_wrprotect(pte);
-@@ -1407,6 +1425,7 @@ static inline void __clear_young_dirty_pte(struct vm_area_struct *vma,
- {
- 	pte_t old_pte;
- 
-+	guard(kpkeys_hardened_pgtables)();
- 	do {
- 		old_pte = pte;
- 
-@@ -1454,6 +1473,7 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
- 		unsigned long address, pmd_t *pmdp, pmd_t pmd)
- {
- 	page_table_check_pmd_set(vma->vm_mm, address, pmdp, pmd);
-+	guard(kpkeys_hardened_pgtables)();
- 	return __pmd(xchg_relaxed(&pmd_val(*pmdp), pmd_val(pmd)));
- }
- #endif
-@@ -1784,6 +1804,7 @@ static inline bool ptep_try_set(pte_t *ptep, pte_t new_pte)
- {
- 	pteval_t old = 0;
- 
-+	guard(kpkeys_hardened_pgtables)();
- 	if (!try_cmpxchg(&pte_val(*ptep), &old, pte_val(new_pte)))
- 		return false;
- 
-diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-index b22736853fcd..37a4d8187aa1 100644
---- a/arch/arm64/mm/fault.c
-+++ b/arch/arm64/mm/fault.c
-@@ -239,13 +239,16 @@ int __ptep_set_access_flags_anysz(struct vm_area_struct *vma,
- 	 */
- 	pte_val(entry) ^= PTE_RDONLY;
- 	pteval = pte_val(pte);
--	do {
--		old_pteval = pteval;
--		pteval ^= PTE_RDONLY;
--		pteval |= pte_val(entry);
--		pteval ^= PTE_RDONLY;
--		pteval = cmpxchg_relaxed(&pte_val(*ptep), old_pteval, pteval);
--	} while (pteval != old_pteval);
-+	scoped_guard(kpkeys_hardened_pgtables) {
-+		do {
-+			old_pteval = pteval;
-+			pteval ^= PTE_RDONLY;
-+			pteval |= pte_val(entry);
-+			pteval ^= PTE_RDONLY;
-+			pteval = cmpxchg_relaxed(&pte_val(*ptep), old_pteval,
-+						 pteval);
-+		} while (pteval != old_pteval);
-+	}
- 
- 	/*
- 	 * Invalidate the local stale read-only entry.  Remote stale entries
+diff --git a/arch/arm64/include/asm/processor.h b/arch/arm64/include/asm/processor.h
+index 18424d91d8b2..e96c4d57d67d 100644
+--- a/arch/arm64/include/asm/processor.h
++++ b/arch/arm64/include/asm/processor.h
+@@ -30,6 +30,7 @@
+ #include <linux/build_bug.h>
+ #include <linux/cache.h>
+ #include <linux/init.h>
++#include <linux/kpkeys_types.h>
+ #include <linux/stddef.h>
+ #include <linux/string.h>
+ #include <linux/thread_info.h>
+@@ -196,6 +197,9 @@ struct thread_struct {
+ 	u64			tpidr2_el0;
+ 	u64			por_el0;
+ 	u64			por_el1;
++#ifdef CONFIG_KPKEYS_HARDENED_PGTABLES
++	struct kpkeys_state	kpkeys_state_lazy_mmu;
++#endif
+ #ifdef CONFIG_ARM64_GCS
+ 	unsigned int		gcs_el0_mode;
+ 	unsigned int		gcs_el0_locked;
 
 -- 
 2.56.0
