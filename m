@@ -1,102 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D67606A332
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAE0606A335
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 12:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RfxHncTq
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZHCnSDpN
 Received: by kanga.kvack.org (Postfix)
-	id 7292F6B05C1; Mon,  9 Nov 2026 07:05:39 -0500 (EST)
+	id 169C06B05B2; Mon,  9 Nov 2026 07:12:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 701466B05C2; Mon,  9 Nov 2026 07:05:39 -0500 (EST)
+	id 119FC6B05B4; Mon,  9 Nov 2026 07:12:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A17F6B05C3; Mon,  9 Nov 2026 07:05:39 -0500 (EST)
+	id 02FC46B05C4; Mon,  9 Nov 2026 07:12:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E3BC6B05C1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:05:39 -0500 (EST)
-Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C334B1405F7
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:05:38 +0000 (UTC)
-X-FDA: 85415451156.30.C070485
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 28ECFC0009
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:05:37 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RfxHncTq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of jszhang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jszhang@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D877F6B05B2
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 07:12:52 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 69510A069B
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:12:52 +0000 (UTC)
+X-FDA: 85415469384.16.8BBD8A8
+Received: from mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id EA7FEA0006
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 12:12:49 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZHCnSDpN;
+	spf=pass (imf25.hostedemail.com: domain of vadim.fedorenko@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=vadim.fedorenko@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794225937;
+	s=arc-20220608; t=1794226370;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mb6zscB9xA65zKWgADOGhrqsQ/nGHmGTb9eOGjPV3Qo=;
-	b=moi2MNv1NCuTSznL9HRrov9q/Z45ZpzRpcoPNnRi6dhC1PbXn71IcalNK4X4b8//rfYmVE
-	dhXRI7vsfrrAV5dtY/n+ZDWcE1A5Ne4g7dOIDv5INtPOq7XTlV8Oq7/ZdkVeAr8To66WiG
-	Duz4I8yvkCP9qFj0HMGfTq9NAlfcyk8=
+	bh=dYz5XasKnN4TugzUWfM3/cMdAY/x2jzfHlfhQ+galWM=;
+	b=dK6joCyrtsaY2hzKz6d+zpWR3Z4D+C3/ND0t9JAyFejbSA01xgKyXsgcA86DFrN73EMBLm
+	YxEtWw/AP9LMsZ0F1kKCBqx+3oF6U1YJCh47PaENB9Dlj+ZXsu38cK+XSDLZC2FYk/hPf5
+	kHxvBm3btJT5ogFLkCPEgiAifZqtEz8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794225937;
-	b=HGSPcxeIF9+3ovl/6pGnPORXDvI0WOk/j+sToXW98JmMEv8xVUBZxp1PwKRz5JbDPBoT6G
-	H5uaVantBxOmp9v8fmYuJ8gf0fKp6If+AacnFLYzADag4pXZdbiaHNUY9zHAQ4YXDRdNqv
-	trgUzuc0SOtXfKFkSHE+pmnDQk0KlfE=
+	t=1794226370;
+	b=jkEl0j/HxvXwxgFxqr487PjEtUpVysycdEnBufoJEdB6zpT0CEirDLmp66bwodEIGsx30t
+	hFFyglHX+I5rlpYVjybtdSkgDhyuKRLPTJAPP2ZVE53DLR779IYBW/VDqxDiLGPAj0wqpB
+	ezJqzXxgXClPstdf//5bLxrTRZ91Lyw=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RfxHncTq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf22.hostedemail.com: domain of jszhang@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jszhang@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 820BD4588D;
-	Mon,  9 Nov 2026 12:05:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26BA01F008A3;
-	Mon,  9 Nov 2026 12:05:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794225936;
-	bh=mb6zscB9xA65zKWgADOGhrqsQ/nGHmGTb9eOGjPV3Qo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=RfxHncTqGmZ8TCef+6tWTgry+fmHYOt1r113jnwW6tvWLT75/HuVzVwwM0rnYytjo
-	 YPyJowg1fiHxzT8NeyDJYnOgIvo9zkbN16X/iwJFDxb9lkdl2UXbNfnJw7CsxuLAhO
-	 6itAed9ea0+YQtKEGy/bcDnpws+CE01M/oVcdNG7IW4QzRZeB9b32E30RnzaeAy374
-	 34I+0+Hf4xVLb7QfnBaxFyVBHwynjfKxOpio5H/vyMD4IrX5cBHysT5Oxprv0cPb0G
-	 tFmSopTnbOnb8IkL5sezYF0q18gOBkkkrTFV04DBcvb1lzGRBJEo09Nwql+8wY4Nmt
-	 Ogrx3vqVJ1xhQ==
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Tejun Heo <tj@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org
-Subject: [PATCH v2 6/6] arm64: alternatives: Make branch and ADRP offset helpers noinst
-Date: Mon,  9 Nov 2026 19:44:59 +0800
-Message-ID: <20261109114500.20298-7-jszhang@kernel.org>
-X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20261109114500.20298-1-jszhang@kernel.org>
-References: <20261109114500.20298-1-jszhang@kernel.org>
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ZHCnSDpN;
+	spf=pass (imf25.hostedemail.com: domain of vadim.fedorenko@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=vadim.fedorenko@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=OUZK1hzYgJtzU4nG/ylLO2w+RnFmaiBPq0yD7tkY4Ik=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794226368; v=1; x=1794831168;
+ b=ZHCnSDpNkPq3NM5T6edR1zp/xB7qZJSfbdE8sV6x9s6+F6gMapAVhQb8vrotPpnBD7QpADkY
+ WTDu/1vlU/NAeAbMgHSb/JWlgZKrNLoD5WgTPisGLTBOMXWXkGpqqnnIybhgzxReRESxBteMwZa
+ yFsNK1ZMXAJwN7gJ12G0ML2c=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 84c5a36d145168ef;
+	Mon, 09 Nov 2026 12:12:47 +0000
+X-Mizu-Trace-ID: 84c5a36d145168ef
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <b2d2255f-c9f4-4c94-a739-b80f9bc49323@linux.dev>
+Date: Mon, 9 Nov 2026 12:12:47 +0000
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nwwsibjuyd17cfhoawomu1454m7o7mh4
-X-Rspam-User: 
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] ptp: ocp: replace __get_free_page() with
+ kmalloc()
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: David Hildenbrand <david@kernel.org>, Vlastimil Babka
+ <vbabka@kernel.org>, linux-mm@kvack.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
+Content-Language: en-US
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20261108-b4-ptp-v1-1-71160700886f@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EA7FEA0006
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 28ECFC0009
-X-HE-Tag: 1794225937-979903
-X-HE-Meta: U2FsdGVkX18VSB5I7YN6mIPZYBQ0TwCqecabN8Wh+KNjbRCEywtawTaFhjUYsXiJDK2ICEpT+Y7fY+2Slohsscs/n3nHa9y4HvSDS0WS3QrBCH9kS/9U1TOGQZs4RcxPZsFrLNPAQkvKdHqgQAj3adfYFWTtd6v99AX8rw54LDBhuNY9c/h8DpUOsarOXhZ8jQDtO4wxMPyG+/R4bYkPHIyfoXysfHHfxhNF46sygA4eabR4upPrS6qgUcztq5tD1ChvcDDCrPaPEUZmcrdrJHYTrUVJlf9scv53nvqq39SoB9O4jh9IHNHvNQewekFFtSm+sE8i1JDOvudo2bB/b9onZUMVWDgdcvh+RcfRSrgCvbR+7BWmpUo59+hZ7Ibss/26TUd6tuJvN5O6GNqJTPWkAG/+Q5fQJypKAdUfJBKdSkh09aqwJ/Tc/Ld/UJ9qB1pUkbxhlKJBfMSCB0sHAGzhMpAyyFYvfPMOPeXoLIXt+CrtQX1FqXRDlUeSFV50uJnKO2dTgQyIBUCUCxWw6ww9trdqnGi9M75hidXzWCJz6Vs2IPyEAnqGh3ZMqgCO+mlhWmxe696q5J+DMBBPT8G+SWyIkgS8lb4JQEjasnqJlapTFPT+m2oQ8lAmYm6tk38M75mGGw2nct9O7kFW9pVwf1fYCmsILshVOkptx0CG703xDeDCEd16YHbdD0+Ce8Sw1WJMrS9BFlRDM8446XjalQmP2KSodX64m5GJ2AmAVjyFZVWKeuWgxrnX5c7HR3SbuIcTJARCoq1V+27vyJIr978zVTGMqe2AZCVZqJXebPGmnrg7Ku5DEb4vtWUl1Bt2JBpxT2u6pqcotNYUSz8K9seSGNiyEq5DD2dJmOQtVqUZLxeXM2MrTXbNXNYU1sy7/uGM/1ViRoEUyI5b83gqfLS63Szpz4AzGbUtePlWSeK88EWT2WlyUe1xF7fp9XIOT7f8BPni+fn8WDb
- bOvHC3jq
- vGTXZGkxY1RxuBQxmTuQ6EXh+YJLgjMFUyexXSEsh3HX8XAc53jS5YPC/dLEPuoU17Twq8zxpY/AVnunvQ5RaDGZQ+/ZfEaZok0alln74EuE1w57M1Km9OXCIqDp/5waYj60gs13bRhNWWdXK42ixYTpRbERO9Iqa/P9HTB1/ls67Ln3HMYLRgP02WTqL7L5z3LAI9iJNE7xnG75P8UmvhEcluk/EMsVuDAyB5S6fNsAxEXdppNzvgImRqn8fBtkqNOyg9ZeIhIvlfYQt6tajlkF6IQptdtkTw9En9NHUntylOntDHAfyQOBt/Q==
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: c581uabpcbd6pkrep7sj6srak1skp8ts
+X-Rspam-User: 
+X-HE-Tag: 1794226369-84892
+X-HE-Meta: U2FsdGVkX1+ayb3W97QPbFMO77mJyKrg4GBp2llPFYrcuEjyON4vmlHA21eXCNuceQYj4AZe69CceQIXshwlgAw06vh860w8kf+X23Clt5nwSwLQGLzwpOvAFlEuwTytGXjkkBQWuC52JSgdGvXpaBnzT0b783O7k12/cGM+YuEHVcZKYLjVJyfP363NkNEeJJNXhrSxO31Ra+64QjsxTb5oN86vN6AHgFgX9Ghf6I3XNdCRTvvzz7L9bTBuM/27jxegt7BTld6Q7NameiKSkeZRKkm6bkWrsc9npmgrvjTnQYbb8MnOZW9k7RP0yr04OLdNu7WC6FlOXISgBth7HLnmqNTASk6hTR+PG5xSj7u6YKT173pObMo/iH4QX6UQkkYX4Nzq2Wlgz0v0uyCKhSdb09IfRO3dBf2vs55LhhdXNwqamYgO7nzovjnTEpwAM4Lj88eEruszfj8k62aeYStrNGHmw8W+oHEFuwOoEJ3TwMjVjpzUbe/zjwVCEzxDqeNmRarAlU5eipbsru49qQGlozIjZXnLdWjqXdhEHGgUJfbstf2KjrscHDHu8TJxiP2fkDs7EN7IV5k5o/Y89h+4VX7HJ6dgwW3eNM1Yk5MUSvlQwGhvyJAzuy5hwrAgqD+vX3HffbKBBnfuLSNXx2b1fkh0NxxpjH2Zoa9v8BZ2DSosmbKYEH/fpyCLAVnPMs5jkXosCw0v+VjaWlZ+sDGjy9lrNsp4hV9zxAZ2J0q/BH52GDWbrCn5qcHWvlC1cp3FA3E/FoFi4LjZ42pJ8VBzIyjyjrl9B3wVqh1dpbGmqor3g8aXRMQe8WBffrepqZHRc2NfFi6CGqXqXLgIX0cDo/R4DkSzPYh374rJ3zor0e1wFdCR4bMJZwMlwKyFPv9hj6aMwebBym+fFPt2brwtSckp1RczvdcJvPTXOBcFitm/3gs/0a2lcpt+EByfhw678dVIp4VgM1l3E42
+ /wFsX4IS
+ xWd5r826Yn2mjOoJlyTD8MP4O7SnoUQJ/vTDHvjrkFt+obb03JCKxeoXzQTWooaSzvdWZKkud5v7T3CIB7j632+OEumBJPS+yq/u7Yr6Gi6ZhIZVpA/8m90uIQHTXFO8Ml8LDFn7AQ8mA2pXq37QvzCVeg2mXslbIhCSLjqGYTn47PNvSJVGjugZxWasvKKwYhbRt0aVmKaRgxOHIUeuglU8yPK3vtrO6ICpdy/wUuVwHD+UBaTZj6CrCi6k01IJFCW3T62NscouQ4LPU98HGr5/C/tjThUgN9JoknWp958Y9/htEUU2QBZZ59qcf9kQFOzAkWt5WwBPsapSovpkqA8m9ADHV/sUN/izvOs3KkPL1/77SBnYg/L0FH3++QoKExQfE7nULhATWJ/Tj+PBdDpiHJrrcxzKdGgVKgGg2rnhjQJ+iAQ4UpY5pI5GJFvn74MIfV/8mkQfS9URPU2U8xBq4Ye2rNOmwDpUACEFgrviQ2AE=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,178 +101,80 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-patch_alternative() must avoid instrumented code while alternatives
-are being modified, before cache maintenance completes. However, its
-branch and ADRP offset helpers are instrumentable. A GCC build with
-function tracing enabled emitted ftrace patchable entries for these
-helpers.
+On 08/11/2026 08:40, Mike Rapoport (Microsoft) wrote:
+> ptp_ocp_summary_show() allocates a temporary buffer for formatting
+> PTP OCP device summary information.
+> 
+> This buffer can be allocated with kmalloc() as there's nothing special
+> about it to go directly to the page allocator.
+> 
+> kmalloc() provides a better API that does not require ugly casts and
+> kfree() does not need to know the size of the freed object.
+> 
+> Performance difference between kmalloc() and __get_free_pages() is not
+> measurable as both allocators take an object/page from a per-CPU list for
+> fast path allocations.
+> 
+> For the slow path the performance is anyway determined by the amount of
+> reclaim involved rather than by what allocator is used.
+> 
+> Replace use of __get_free_page() with kmalloc() and free_page() with
+> kfree().
+> 
+> Link: https://lore.kernel.org/all/635405e4-9423-4a25-a6e7-e03c8ea0bcbe@redhat.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+> This is a (small) part of larger work of replacing page allocator calls
+> with kmalloc.
+> 
+> Largely, anything that doesn't need struct page (or a memdesc in the
+> future) should just use kmalloc() or kvmalloc() to allocate memory.
+> Removing needless calls to page allocator helps with memdesc (aka project
+> folio) conversion and gives a nicer API without casts.
+> ---
+>   drivers/ptp/ptp_ocp.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+> index 625a85b2dc7e5..decc56892059b 100644
+> --- a/drivers/ptp/ptp_ocp.c
+> +++ b/drivers/ptp/ptp_ocp.c
+> @@ -18,6 +18,7 @@
+>   #include <linux/spi/spi.h>
+>   #include <linux/spi/xilinx_spi.h>
+>   #include <linux/spi/altera.h>
+> +#include <linux/slab.h>
+>   #include <net/devlink.h>
+>   #include <linux/i2c.h>
+>   #include <linux/iopoll.h>
+> @@ -5281,7 +5282,7 @@ ptp_ocp_summary_show(struct seq_file *s, void *data)
+>   	bool on, map;
+>   	int i;
+>   
+> -	buf = (char *)__get_free_page(GFP_KERNEL);
+> +	buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
+>   	if (!buf)
+>   		return -ENOMEM;
+>   
+> @@ -5497,7 +5498,7 @@ ptp_ocp_summary_show(struct seq_file *s, void *data)
+>   			   post_ns - pre_ns);
+>   	}
+>   
+> -	free_page((unsigned long)buf);
+> +	kfree(buf);
+>   	return 0;
+>   }
+>   DEFINE_SHOW_ATTRIBUTE(ptp_ocp_summary);
+> 
+> ---
+> base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+> change-id: 20260624-b4-ptp-ed56a38a6afd
+> 
+> --
+> Sincerely yours,
+> Mike.
+> 
 
-Mark the four offset helpers noinstr. Introduce private
-__always_inline immediate encoding and decoding implementations for
-their use, and force inline the immediate mask helper.
-
-The offset helpers pass constant encoding types, allowing the compiler
-to eliminate invalid-type diagnostic paths. Keep the public immediate
-helpers as wrappers to preserve diagnostics for other callers.
-
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Assisted-by: LLM
----
- arch/arm64/lib/insn.c | 57 ++++++++++++++++++++++++++++---------------
- 1 file changed, 37 insertions(+), 20 deletions(-)
-
-diff --git a/arch/arm64/lib/insn.c b/arch/arm64/lib/insn.c
-index e70ac0238515..b98610fcab32 100644
---- a/arch/arm64/lib/insn.c
-+++ b/arch/arm64/lib/insn.c
-@@ -21,7 +21,7 @@
- #define AARCH64_INSN_N_BIT	BIT(22)
- #define AARCH64_INSN_LSL_12	BIT(22)
- 
--static int __kprobes aarch64_get_imm_shift_mask(enum aarch64_insn_imm_type type,
-+static __always_inline int aarch64_get_imm_shift_mask(enum aarch64_insn_imm_type type,
- 						u32 *maskp, int *shiftp)
- {
- 	u32 mask;
-@@ -86,7 +86,12 @@ static int __kprobes aarch64_get_imm_shift_mask(enum aarch64_insn_imm_type type,
- #define ADR_IMM_LOSHIFT		29
- #define ADR_IMM_HISHIFT		5
- 
--u64 aarch64_insn_decode_immediate(enum aarch64_insn_imm_type type, u32 insn)
-+/*
-+ * Keep the immediate helpers inline so noinstr callers using constant encoding
-+ * types do not call instrumentable code, including the invalid-type diagnostics.
-+ */
-+static __always_inline u64
-+__aarch64_insn_decode_immediate(enum aarch64_insn_imm_type type, u32 insn)
- {
- 	u32 immlo, immhi, mask;
- 	int shift;
-@@ -101,8 +106,8 @@ u64 aarch64_insn_decode_immediate(enum aarch64_insn_imm_type type, u32 insn)
- 		break;
- 	default:
- 		if (aarch64_get_imm_shift_mask(type, &mask, &shift) < 0) {
--			pr_err("%s: unknown immediate encoding %d\n", __func__,
--			       type);
-+			pr_err("%s: unknown immediate encoding %d\n",
-+			       "aarch64_insn_decode_immediate", type);
- 			return 0;
- 		}
- 	}
-@@ -110,8 +115,14 @@ u64 aarch64_insn_decode_immediate(enum aarch64_insn_imm_type type, u32 insn)
- 	return (insn >> shift) & mask;
- }
- 
--u32 __kprobes aarch64_insn_encode_immediate(enum aarch64_insn_imm_type type,
--				  u32 insn, u64 imm)
-+u64 aarch64_insn_decode_immediate(enum aarch64_insn_imm_type type, u32 insn)
-+{
-+	return __aarch64_insn_decode_immediate(type, insn);
-+}
-+
-+static __always_inline u32
-+__aarch64_insn_encode_immediate(enum aarch64_insn_imm_type type,
-+			      u32 insn, u64 imm)
- {
- 	u32 immlo, immhi, mask;
- 	int shift;
-@@ -131,8 +142,8 @@ u32 __kprobes aarch64_insn_encode_immediate(enum aarch64_insn_imm_type type,
- 		break;
- 	default:
- 		if (aarch64_get_imm_shift_mask(type, &mask, &shift) < 0) {
--			pr_err("%s: unknown immediate encoding %d\n", __func__,
--			       type);
-+			pr_err("%s: unknown immediate encoding %d\n",
-+			       "aarch64_insn_encode_immediate", type);
- 			return AARCH64_BREAK_FAULT;
- 		}
- 	}
-@@ -144,6 +155,12 @@ u32 __kprobes aarch64_insn_encode_immediate(enum aarch64_insn_imm_type type,
- 	return insn;
- }
- 
-+u32 __kprobes aarch64_insn_encode_immediate(enum aarch64_insn_imm_type type,
-+					  u32 insn, u64 imm)
-+{
-+	return __aarch64_insn_encode_immediate(type, insn, imm);
-+}
-+
- u32 aarch64_insn_decode_register(enum aarch64_insn_register_type type,
- 					u32 insn)
- {
-@@ -1299,23 +1316,23 @@ u32 aarch64_insn_gen_adr(unsigned long pc, unsigned long addr,
-  * signed value (so it can be used when computing a new branch
-  * target).
-  */
--s32 aarch64_get_branch_offset(u32 insn)
-+s32 noinstr aarch64_get_branch_offset(u32 insn)
- {
- 	s32 imm;
- 
- 	if (aarch64_insn_is_b(insn) || aarch64_insn_is_bl(insn)) {
--		imm = aarch64_insn_decode_immediate(AARCH64_INSN_IMM_26, insn);
-+		imm = __aarch64_insn_decode_immediate(AARCH64_INSN_IMM_26, insn);
- 		return (imm << 6) >> 4;
- 	}
- 
- 	if (aarch64_insn_is_cbz(insn) || aarch64_insn_is_cbnz(insn) ||
- 	    aarch64_insn_is_bcond(insn)) {
--		imm = aarch64_insn_decode_immediate(AARCH64_INSN_IMM_19, insn);
-+		imm = __aarch64_insn_decode_immediate(AARCH64_INSN_IMM_19, insn);
- 		return (imm << 13) >> 11;
- 	}
- 
- 	if (aarch64_insn_is_tbz(insn) || aarch64_insn_is_tbnz(insn)) {
--		imm = aarch64_insn_decode_immediate(AARCH64_INSN_IMM_14, insn);
-+		imm = __aarch64_insn_decode_immediate(AARCH64_INSN_IMM_14, insn);
- 		return (imm << 18) >> 16;
- 	}
- 
-@@ -1327,35 +1344,35 @@ s32 aarch64_get_branch_offset(u32 insn)
-  * Encode the displacement of a branch in the imm field and return the
-  * updated instruction.
-  */
--u32 aarch64_set_branch_offset(u32 insn, s32 offset)
-+u32 noinstr aarch64_set_branch_offset(u32 insn, s32 offset)
- {
- 	if (aarch64_insn_is_b(insn) || aarch64_insn_is_bl(insn))
--		return aarch64_insn_encode_immediate(AARCH64_INSN_IMM_26, insn,
-+		return __aarch64_insn_encode_immediate(AARCH64_INSN_IMM_26, insn,
- 						     offset >> 2);
- 
- 	if (aarch64_insn_is_cbz(insn) || aarch64_insn_is_cbnz(insn) ||
- 	    aarch64_insn_is_bcond(insn))
--		return aarch64_insn_encode_immediate(AARCH64_INSN_IMM_19, insn,
-+		return __aarch64_insn_encode_immediate(AARCH64_INSN_IMM_19, insn,
- 						     offset >> 2);
- 
- 	if (aarch64_insn_is_tbz(insn) || aarch64_insn_is_tbnz(insn))
--		return aarch64_insn_encode_immediate(AARCH64_INSN_IMM_14, insn,
-+		return __aarch64_insn_encode_immediate(AARCH64_INSN_IMM_14, insn,
- 						     offset >> 2);
- 
- 	/* Unhandled instruction */
- 	BUG();
- }
- 
--s32 aarch64_insn_adrp_get_offset(u32 insn)
-+s32 noinstr aarch64_insn_adrp_get_offset(u32 insn)
- {
- 	BUG_ON(!aarch64_insn_is_adrp(insn));
--	return aarch64_insn_decode_immediate(AARCH64_INSN_IMM_ADR, insn) << 12;
-+	return __aarch64_insn_decode_immediate(AARCH64_INSN_IMM_ADR, insn) << 12;
- }
- 
--u32 aarch64_insn_adrp_set_offset(u32 insn, s32 offset)
-+u32 noinstr aarch64_insn_adrp_set_offset(u32 insn, s32 offset)
- {
- 	BUG_ON(!aarch64_insn_is_adrp(insn));
--	return aarch64_insn_encode_immediate(AARCH64_INSN_IMM_ADR, insn,
-+	return __aarch64_insn_encode_immediate(AARCH64_INSN_IMM_ADR, insn,
- 						offset >> 12);
- }
- 
--- 
-2.55.0
-
+Thanks,
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
