@@ -1,63 +1,63 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C5D606A321
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 05:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80493606A334
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 05:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=wgpy0rlx
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ITSh4BjZ
 Received: by kanga.kvack.org (Postfix)
-	id 9D6596B05DC; Mon,  9 Nov 2026 00:57:39 -0500 (EST)
+	id A50AE6B05DE; Mon,  9 Nov 2026 00:57:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9AD866B05DD; Mon,  9 Nov 2026 00:57:39 -0500 (EST)
+	id 9FB8A6B05DF; Mon,  9 Nov 2026 00:57:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 876A26B05DE; Mon,  9 Nov 2026 00:57:39 -0500 (EST)
+	id 937E56B05E0; Mon,  9 Nov 2026 00:57:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BA626B05DC
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 00:57:39 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BC1691C3EB0
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:57:38 +0000 (UTC)
-X-FDA: 85414523796.20.BE5DDB8
-Received: from mta1.migadu.com (out-47.mta1.migadu.com [95.215.58.47])
-	by imf16.hostedemail.com (Postfix) with ESMTP id A93C5180004
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:57:36 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wgpy0rlx;
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.47 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6A1D06B05DE
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 00:57:47 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F3C6EC05B6
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:57:46 +0000 (UTC)
+X-FDA: 85414524132.19.5CB9C3F
+Received: from mta1.migadu.com (out-60.mta1.migadu.com [95.215.58.60])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 154FC40006
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:57:44 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ITSh4BjZ;
+	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.60 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794203857;
+	s=arc-20220608; t=1794203865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BH70BivN2GD0Klusjco0YU6q3vc8ILOcQiEUMI9oss8=;
-	b=eDQrnoPnWcldyJB9mvarPE+fW0lNYUH2VrTrCsu+wKQq1SmqwoZVSr4VlxD8W3qj7tMIm7
-	HKGC8n51gxNOrzUtenq/+MKuGYhHDEFumya2LerP9HBPgrxmB9+N+pksswAGmLrTR1E8g6
-	9QxWkH7Frk2ntcuBwMqMluJTuDQhiMc=
+	bh=ebB8Hm9YJhqZLTIB/BIU80u2OvfAEgQxHB5v4VkTido=;
+	b=u8xStN2w+jheFSGJWgTD/NWqBEWrledBPo0SvISH0LIwBQIqQ8eMeiRHclGD3t6MZrIMkW
+	pA3B0sVUm5myArH8t7bdKjwOG6/Pn09Ba2Ma6todZ3IeaCuhJJOoHM5Aw8p/xZshiz4+x/
+	CwXMnD/W0CUJgFAhlFuTXJ4+7NBRZz4=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794203857;
-	b=PElPoP/WBhaotz74Y/XqFN5h9u9Sk6OUszMrJa7UN3MsjTmuYDC3UEoyODgRaMzwqYTMEZ
-	mxVMVmTlUE3EFYfSbsTZgYzE9FWClWaO80RPf/41Rv1jtpygciAfpob1H2d5QnVKWS4n2g
-	15GLRXiu/AH/J3wJ/qWK2M2J4YK+bpo=
+	t=1794203865;
+	b=pfHA1aEDtZw37Ez+eeQB7m+ayRc0E14MNmwj2FPsbSTMCbe9YMrrOR7lXZFO3zGcujU8C7
+	2hHDRBp9vE/DmSBXghh8bwW8Qd8H5//cDTYGjmQXMsdtGos3mhvBoEF17WQJqkb3Ko5YOf
+	Ogr+X8spj9FY10bAmnyCbT9HsJkHxss=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=wgpy0rlx;
-	spf=pass (imf16.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.47 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=ITSh4BjZ;
+	spf=pass (imf12.hostedemail.com: domain of baoquan.he@linux.dev designates 95.215.58.60 as permitted sender) smtp.mailfrom=baoquan.he@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=uVlH/XHtAK1ioth7PG9F5K6yxSpZvO+5NShBYbVvhrM=;
+DKIM-Signature: a=rsa-sha256; bh=ZTeW0ziV8/P/g9Y3o2HU3l2GCGlpCYxshzszGc/a3ck=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794203855; v=1; x=1794808655;
- b=wgpy0rlxBY6e+IZWaoZIW4ozpKOvTFuebcNV2pV7IvwteCpy2jsJvnOELBgtZB8BlONknUbX
- 7YCrp8S9kAUDxZ7GNnnLT/4XzoJIp9GOIp192zezQ1IGpZ98VJgSNxJWFkIJOFAZtrDhcaa3M5t
- BY9uH+YULhknLDAD4IhE1cxs=
+ t=1794203863; v=1; x=1794808663;
+ b=ITSh4BjZZSuTXFFlpt+NaWm8E8akqoztRa1SQh93VFJQaGTU9vGGyTXp2ywBWMIzooNC8buM
+ 4vs4ZadBTkhm2Pm8wOowr2iJIrbrne5Zx77MK/CyB+Wp8vkGFT2MWhW1NnpRqJbFO7QpDV3qDRV
+ 7LC8fHWUn7t/KC19+9BYyNMQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id be7ce9f4d596a11c;
-	Mon, 09 Nov 2026 05:57:35 +0000
-X-Mizu-Trace-ID: be7ce9f4d596a11c
+Received: by mta10.migadu.com with ESMTPS id 80b09a951c8e8f3b;
+	Mon, 09 Nov 2026 05:57:43 +0000
+X-Mizu-Trace-ID: 80b09a951c8e8f3b
 X-Migadu-Flow: FLOW_OUT
 From: Baoquan He <baoquan.he@linux.dev>
 To: linux-mm@kvack.org
@@ -75,9 +75,9 @@ Cc: akpm@linux-foundation.org,
 	klarasmodin@gmail.com,
 	linux-kernel@vger.kernel.org,
 	Baoquan He <hebaoquan@kylinos.cn>
-Subject: [PATCH v5 18/19] mm, swap: do not give an xswap slot to a cgroup that cannot zswap
-Date: Mon,  9 Nov 2026 13:54:54 +0800
-Message-ID: <20261109055455.536925-19-baoquan.he@linux.dev>
+Subject: [PATCH v5 19/19] mm, swap: skip the overcommit probe when removing xswap
+Date: Mon,  9 Nov 2026 13:54:55 +0800
+Message-ID: <20261109055455.536925-20-baoquan.he@linux.dev>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261109055455.536925-1-baoquan.he@linux.dev>
 References: <20261109055455.536925-1-baoquan.he@linux.dev>
@@ -85,18 +85,18 @@ X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 87nqeafdpir7hiey3yow534mrodyo1m3
-X-Rspamd-Queue-Id: A93C5180004
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam06
+X-Stat-Signature: tpqq8hnecez7a8tw5tf6jc1mf8hk3u9h
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794203856-834909
-X-HE-Meta: U2FsdGVkX1+eg1yARBr/2P16OnYOaHG0+8kKfuGYWYj1+8bmZFw1IXGeecU2vwWIZuqLlfix7CnowEhtJIGr0EmdCtsa7Nd3qdQy45EcypD2tS+m9YFuvUkM0bkT0aO7rmdmUB1zAYEkicRCfPBlqhrszj1XoBk8VAe9zgMi521cors5TnDQ+7BhRoloeVvzc6g9CZg8rNILi9I7AkqXUESIejrE79Rwr6kHu8aqhTkU2BoeoJUxkRF39Ih+J/cWWAXkwr8LrkGFsfbcu+buGyUwLOe6tNxXvhQPYba3fHIbtuyGmAaOZXQgsWLAaNlCuvnQS+G0XR1pPbzxB1izkvqeSVIZosbUYTaXfer/xZJAJ/iRfFwONQU+ZS5QjruJYb9TOWtzBFBubF9ls9F3Awj6WsxMAQx+2vZC8xJOMt2htLCeVjRuKq9tkAnAgpYcMoN0CWn2G2xlFo3XvlTklGToCM5clAKGegISboK4kue34KRPbw82FL9S5LbTih5pxX+Ck9PCS4bad02eeYk4kM72NEdxpzyazZjGignibQl81sRMipmRLdTYe53kmdYdqRp1vcgb+1JJS/fnKAx7wAHnnSv2TK40uln0JObhMATAK3M6MKxbZiRgdZt5ARNG4znB2mxzX2cRNB805Famef+ZSvu83lFa3U/nB0BjMyBBP9uhckNr7rzisMYilXgM5wikCPy+wRZKEFmSvKmNElV39qfGSlm+fXEoV/SxpY6anMm2Gx1GsAzDLt3T2IYh4xX4z4Bk1NETjqbpUpQlcAghQnecaajgNxOF0DoljiLjTbhuVcdx3XpcDgvgpJ0Ls0SAtkdMOPYNUsLOIqNWktW8OneCQ54sxFBwqBlSL+XWif2m8yXhnCJHZvSMgvCqZGTX0mw9Nj4r9ol5L6q+S0D7Vc6hqY0IIgCOX0zi0+KZPubeG3kuLumye7VkytBM7oOG3t3dDJgXX2zov3l
- Rr1D7bIf
- zVDh0mZGK9LDmGWkOW8s/EkFB7V5Lxj5ylMJTsrmzDD1FSfbsxpWKqGj2AX+cLugmpX52jlt6CdmiTqmkQx/31Ha8J0sq5fAWPvlj06o2fdDztYDFPWXBJpEj3EqyKd4W1ifc46jLpNWqbketrGKbMfCi0i2hzPAxp/YDy9iGmx2uopldRPRT7v2sSmFgAch5mxFiCbIbrHCzNTe36MtNu3XhFgbzQeI/zYi+YlvasOy09Kc03O+0IH+xtQgqjHV2t9TOQdId+fgMc905ofEZcsAr3Uj8BVbA51HOEcIWctf5cghA6Avg1jXU5Q==
+X-Rspamd-Queue-Id: 154FC40006
+X-Rspam-User: 
+X-HE-Tag: 1794203864-128251
+X-HE-Meta: U2FsdGVkX18pYXK2TBHkcgD6KJxQRqnI7R0W34z+kjpmMsXkZVx5X4+6rRaVPn57TnqOw5WT7OpV1uOUCLnRuS/c3cRR16sEziYey1imd72mfF/2P9PqwpQFnF32WfHufNJqmfUpCNB26mTSd49pV1YeyB/TZJDqWcS+bztQFjGppSMUU8C5V2iS9b5HcDmZ26GwVZaZGdaI5SnPT+HFv/gXVtKRl1ocPqAAbToFEjn4HbAZvedq3DAC3SWXaf6SGcRjRnGJRP2yKXzzCA7hhm3inJcdrShOuXbkjc1n4NJK7gFBNz1pzrW4YyO0fisVkKDvAp1t4TyxdOLjDZECh2DjQyktvx5ERp2k3InMxZach0fH1pL5Wy5f+GmbGf773LKum73YndxZrNw7Zsfu6t3+OZ+Np29cyHAb9QGx+Rhh+ILBvGXGdiY2D1dQNY3GjIaOUjMCoP9VFcqfiknZH0Ir9ATjUW4rRh8VkDcSNVb/4Azi/6Ocdh4g/JRqS4N6N07EFs33JdWDp1YJeQHarFUOszmeKHmWzlQI+e7pPhXA45QrQlk1RylwqA+/ccJcF3IT72NAUHJ/h3nKwv1vDToS6uL7CuXvKCL+es8GklAR2vF/0atptw7zW6n6PoAWRhl9jpnTjjO/VQgfADEUDFpeiP8jpFazZ3zvY/q250Jy6ZibBANmvE2wCQb3SHi61SxOYDCsdy5BTO+kRBWiiBEjL0wG+HoZDEfmTRmQK5SSHRzQ39tSfNqOsg7Jd/Ivz1hMAXnOMy3YccJsePcsQCGt4xxSrfT1W3J3o//qkyoW3EyS8jnStsRH9ypdRieI5qk9WwCW6AYETCUlVhOcH1s4q0H/qt3n1y789ZXjCREpvUizr/MwGD39epQtLqVOoSzjMsSZugnimDN6nh0iRTF5IaYTTombMgFQMkilcl4JTWSdoyBU76Gq7np4K2+4yMIUXixpUq2vxz2MKYa
+ /TPoZgdi
+ D49/sn9WbQ2+bKH4wnsAmhcyRyAyYIMVG/3qRgoUvxuIeEm5Z7fWAySnHKNoaj+RSrluHyNpi5GpYT7x8cwq/JaJWIJSQiEvJJRf+Y4UEG3H7+tPr+roOBlyP+ukd+5AfkGWFJDAGn1cXtscvaHSg9T0BQVF69oPnwBUGgPTyXNdfLf+S1MoGcMrVKZ/DbZ9kNKZT//Urwmo2sZz1vOycVGTQO4YMZjJDX49TrIBNDA5DMlA7X/hgJNfg+O/phxoMHUDsR3YlYp1V2g1fi39pUgztnh7Gwrrdo/pMthqBgKHLWzA=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -107,188 +107,46 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 
 From: Baoquan He <hebaoquan@kylinos.cn>
 
-At this point, an xswap slot holds only a zswap-backed page. It has no
-storage of its own. If the folio's cgroup cannot take another zswap
-page, giving it an xswap slot is wasted: zswap refuses the page and the
-slot cannot hold it.
+swap_info_remove() probes whether Committed_AS still fits under the
+commit limit left after the device's pages are subtracted. An xswap
+device's pages are its address space, not backing storage, but they
+raised the commit limit at creation. A workload can commit into that
+headroom, after which the probe refuses to destroy the device.
 
-Skip xswap devices when the cgroup cannot zswap, and try a physical swap
-device instead.
-
-The check is obj_cgroup_may_zswap(). It is false when memory.zswap.max
-is 0 anywhere in the hierarchy, or when the hierarchy has already
-reached that limit. So the routing follows how much the cgroup has in
-zswap, not only how it is configured. zswap_store() uses the same check,
-but it first tries to shrink the memcg. The allocation-time check does
-not try to shrink, so it is stricter.
-
-Count active xswap devices, and do the cgroup lookup only when one
-exists. Update the counter when the device is enabled, before a full
-device can skip the avail-list insert, so a full device is still counted.
-
-A device can appear between that read and the allocation. So if the
-slot the allocator picked is on an xswap device, check the cgroup
-again; when it cannot zswap, drop the slot and retry without xswap
-devices.
+Skip the probe for xswap until the overcommit accounting for it is
+settled. Real swap devices keep the existing protection.
 
 Signed-off-by: Baoquan He <hebaoquan@kylinos.cn>
 ---
- mm/swapfile.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 63 insertions(+), 6 deletions(-)
+ mm/swapfile.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 2e5383036fdc..efb48ef71611 100644
+index efb48ef71611..84b9a8dddff2 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -326,6 +326,8 @@ static DEFINE_SPINLOCK(swap_lock);
- static unsigned int nr_swapfiles;
- atomic_long_t nr_swap_pages;
- atomic_t nr_real_swapfiles;
-+/* Active xswap devices, as in nr_real_swapfiles. */
-+static atomic_t nr_xswap_files;
- /*
-  * Some modules use swappable objects and may try to swap them out under
-  * memory pressure (via the shrinker). Before doing so, they may wish to
-@@ -1519,7 +1521,9 @@ static void del_from_avail_list(struct swap_info_struct *si, bool swapoff)
- 		lockdep_assert_held(&si->lock);
- 		si->flags &= ~SWP_WRITEOK;
- 		/* Count active devices, not merely those on the avail list. */
--		if (!(si->flags & SWP_XSWAP))
-+		if (si->flags & SWP_XSWAP)
-+			atomic_sub(1, &nr_xswap_files);
-+		else
- 			atomic_sub(1, &nr_real_swapfiles);
- 		atomic_long_or(SWAP_USAGE_OFFLIST_BIT, &si->inuse_pages);
- 	} else {
-@@ -1558,7 +1562,9 @@ static void add_to_avail_list(struct swap_info_struct *si, bool swapon)
- 		 * Count the device here, not after adding it to the list: a
- 		 * full device is still active and skips the add below.
- 		 */
--		if (!(si->flags & SWP_XSWAP))
-+		if (si->flags & SWP_XSWAP)
-+			atomic_add(1, &nr_xswap_files);
-+		else
- 			atomic_add(1, &nr_real_swapfiles);
- 	} else {
- 		if (!(READ_ONCE(si->flags) & SWP_WRITEOK))
-@@ -1682,7 +1688,7 @@ static bool get_swap_device_info(struct swap_info_struct *si)
-  * Fast path try to get swap entries with specified order from current
-  * CPU's swap entry pool (a cluster).
+@@ -3736,10 +3736,17 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
   */
--static bool swap_alloc_fast(struct folio *folio)
-+static bool swap_alloc_fast(struct folio *folio, bool may_zswap)
+ static int swap_info_remove(struct swap_info_struct *p)
  {
- 	unsigned int order = folio_order(folio);
- 	struct swap_cluster_info *ci;
-@@ -1722,6 +1728,11 @@ static bool swap_alloc_fast(struct folio *folio)
- 		}
- 	}
- #endif
-+	if (!may_zswap && (si->flags & SWP_XSWAP)) {
-+		put_swap_device(si);
-+		rcu_read_unlock();
-+		return false;
-+	}
- 
- 	ci = swap_cluster_lock(si, offset);
- 	if (cluster_is_usable(ci, order)) {
-@@ -1738,13 +1749,19 @@ static bool swap_alloc_fast(struct folio *folio)
- }
- 
- /* Rotate the device and switch to a new cluster */
--static void swap_alloc_slow(struct folio *folio)
-+static void swap_alloc_slow(struct folio *folio, bool may_zswap)
- {
- 	struct swap_info_struct *si, *next;
- 
- 	spin_lock(&swap_avail_lock);
- start_over:
- 	plist_for_each_entry_safe(si, next, &swap_avail_head, avail_list) {
-+		/*
-+		 * Do not rotate a skipped device: the walk follows the
-+		 * rotation and would spin forever.
-+		 */
-+		if (!may_zswap && (si->flags & SWP_XSWAP))
-+			continue;
- 		/* Rotate the device and switch to a new cluster */
- 		plist_requeue(&si->avail_list, &swap_avail_head);
- 		spin_unlock(&swap_avail_lock);
-@@ -2067,6 +2084,17 @@ static int swap_dup_entries_cluster(struct swap_info_struct *si,
- 	return err;
- }
- 
-+/* Can the folio's cgroup take another zswap page? */
-+static bool folio_may_zswap(struct folio *folio)
-+{
-+	struct obj_cgroup *objcg = get_obj_cgroup_from_folio(folio);
-+	bool may_zswap = !objcg || obj_cgroup_may_zswap(objcg);
-+
-+	if (objcg)
-+		obj_cgroup_put(objcg);
-+	return may_zswap;
-+}
-+
- /**
-  * folio_alloc_swap - allocate swap space for a folio
-  * @folio: folio we want to move to swap
-@@ -2083,10 +2111,23 @@ int folio_alloc_swap(struct folio *folio)
- {
- 	unsigned int order = folio_order(folio);
- 	unsigned int size = 1 << order;
-+	/* True unless the gate below finds an xswap device to route away from. */
-+	bool may_zswap = true;
-+	bool zswap_checked = false;
- 
- 	VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
- 	VM_BUG_ON_FOLIO(!folio_test_uptodate(folio), folio);
- 
+-	if (!security_vm_enough_memory_mm(current->mm, p->pages))
+-		vm_unacct_memory(p->pages);
+-	else
+-		return -ENOMEM;
 +	/*
-+	 * A folio that zswap will not take must not get an xswap slot. With
-+	 * no xswap device to route away from, skip the lookup; a device that
-+	 * appears before we pick one is handled after the allocation.
++	 * The device's pages are its address space, not backing storage.
++	 * The commit limit it added may have been committed against, so
++	 * skip the probe until the limit stops counting that space.
 +	 */
-+	if (atomic_read(&nr_xswap_files)) {
-+		may_zswap = folio_may_zswap(folio);
-+		zswap_checked = true;
++	if (!(p->flags & SWP_XSWAP)) {
++		if (!security_vm_enough_memory_mm(current->mm, p->pages))
++			vm_unacct_memory(p->pages);
++		else
++			return -ENOMEM;
 +	}
-+
- 	if (order) {
- 		/*
- 		 * Reject large allocation when THP_SWAP is disabled. Check below
-@@ -2107,8 +2148,8 @@ int folio_alloc_swap(struct folio *folio)
  
- again:
- 	local_lock(&percpu_swap_cluster.lock);
--	if (!swap_alloc_fast(folio))
--		swap_alloc_slow(folio);
-+	if (!swap_alloc_fast(folio, may_zswap))
-+		swap_alloc_slow(folio, may_zswap);
- 	local_unlock(&percpu_swap_cluster.lock);
- 
- 	if (!order && unlikely(!folio_test_swapcache(folio))) {
-@@ -2116,6 +2157,22 @@ int folio_alloc_swap(struct folio *folio)
- 			goto again;
- 	}
- 
-+	/*
-+	 * The xswap gate was skipped because there was no device when we
-+	 * looked. One may have appeared since; check before keeping the
-+	 * xswap slot the allocator may have picked.
-+	 */
-+	if (unlikely(!zswap_checked && atomic_read(&nr_xswap_files) &&
-+		     folio_test_swapcache(folio) &&
-+		     (__swap_entry_to_info(folio->swap)->flags & SWP_XSWAP))) {
-+		zswap_checked = true;
-+		may_zswap = folio_may_zswap(folio);
-+		if (!may_zswap) {
-+			swap_cache_del_folio(folio);
-+			goto again;
-+		}
-+	}
-+
- 	/* Need to call this even if allocation failed, for MEMCG_SWAP_FAIL. */
- 	if (unlikely(mem_cgroup_try_charge_swap(folio))) {
- 		swap_cache_del_folio(folio);
+ 	spin_lock(&p->lock);
+ 	del_from_avail_list(p, true);
 -- 
 2.54.0
 
