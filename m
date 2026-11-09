@@ -1,189 +1,137 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0312606D807
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 10:56:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66425606A32A
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 11:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=zHnJfZ/5
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=zhaEFJmC
 Received: by kanga.kvack.org (Postfix)
-	id 858316B05B1; Mon,  9 Nov 2026 05:56:25 -0500 (EST)
+	id 68A4B6B05B4; Mon,  9 Nov 2026 06:00:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 82F346B05B4; Mon,  9 Nov 2026 05:56:25 -0500 (EST)
+	id 661C66B05B7; Mon,  9 Nov 2026 06:00:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71F636B05B5; Mon,  9 Nov 2026 05:56:25 -0500 (EST)
+	id 578136B05B8; Mon,  9 Nov 2026 06:00:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E6036B05B1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 05:56:25 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B35C2140632
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:56:24 +0000 (UTC)
-X-FDA: 85415276688.06.A2F51D9
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012042.outbound.protection.outlook.com [52.101.43.42])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9A71980004
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 10:56:21 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="zHnJfZ/5";
-	spf=pass (imf02.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.43.42 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794221782;
-	b=pmBFeOB5+ZS3LNqCb92aoo3DV1L3nmaniYnlrpP2cayyK+dIyR71tec76+Z3UkLqV45VrX
-	NfphrfZx2HShLDcFf3pIFJImo2ou8aSZUjLSFQdNSag04mRpRxaagARxot6rNZy84hn1lS
-	7VMCb6QGQT9GScFcERiDCUemmtK93e4=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=amd.com header.s=selector1 header.b="zHnJfZ/5";
-	spf=pass (imf02.hostedemail.com: domain of Christian.Koenig@amd.com designates 52.101.43.42 as permitted sender) smtp.mailfrom=Christian.Koenig@amd.com;
-	dmarc=pass (policy=quarantine) header.from=amd.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794221782;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 370C36B05B4
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 06:00:13 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCC911A0655
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:00:12 +0000 (UTC)
+X-FDA: 85415286264.12.4F0D643
+Received: from mail-dy1-f172.google.com (mail-dy1-f172.google.com [74.125.82.172])
+	by imf25.hostedemail.com (Postfix) with ESMTP id CE60DA0008
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 11:00:10 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zhaEFJmC;
+	spf=pass (imf25.hostedemail.com: domain of chenhongfeng0212@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=chenhongfeng0212@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794222010;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1G+4UQ7mHJ0FfY4QH361X/eCZ1GoBx6Ud/WEDTINhuA=;
-	b=FOviToNxRqH5M4aoHkQ7e2pqJR0GZEI05OHy73Po+gpf0/XbaHl3x+GnXZ4qMryBUJmhUF
-	VVjdP+DNWFjTXof5nOXrKeqGKjKLDbBUObyQVHHANUq2XZROQS/KbY7PrZfFGU8dCkh+uk
-	u6KAkLivEWk2D7HmmdWxUwdIsiSkjnE=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JNMhfjUgNLQAav9n5sMDVkPcAa8E3Dt9EkU6fjpcKxYCZ0FBAnkDum+qCwDlBedzvQEbgpuVd+l17oXVD9vTnnvPwSsoqILcWj9qpGeL0CIj6egyry3OokiZ5kgeFpzLVT1PEtptZxspBncmhHbIzyYCXoEKsrMgRmQLE6QZb7cPzeQTXKrSxsMOKqx+rboiT36dB6VQy1z2VqDlj/CE/3uJ1Zae5oUAG9ewJryyRtEfr2SINtMvLd7IZbX1dnkWano2f0wdrkHqf1CEzNLpqfJTu/RC95Pq5lprXHzmz31xFJf/ml4HkTRj6NgUSLUAhtzLbbmu+dXqPx8Uw0+HTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1G+4UQ7mHJ0FfY4QH361X/eCZ1GoBx6Ud/WEDTINhuA=;
- b=HXeZuWKmTjltPbLNtmREqIla7BZuNTjHnJdZ5vJe7AoPwKQS/34nOf0HBRbasEkE8xjBxm88gqfMTQOmQMhkVeWnZI6Y1g76mSSnHjSjb9pfpaa83H8Jp6Az+yHQMX5uK8KZFoh34rZj3fSJqducDfu1kRxgycR8ga6CSa7sZlNySTsdGP10TJI4T0OeHNyUvBBUmvXc0pLnScr+0RTpYX9WNeiEQbAfGFTwWfT1H29EFSU8sTmup0NgPOEmgqXuqp7aTc2hlYIHK+3FZdbYK7zmR+jlTtHHEzEkcU5PzTzXdCqG+JtOoyP1FibE8BrGLeBmxqO0M5DVKEmpbtC6jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1G+4UQ7mHJ0FfY4QH361X/eCZ1GoBx6Ud/WEDTINhuA=;
- b=zHnJfZ/56wlbK1rQwka4gYtup2ittnN9vy4rwhEhf3ibcStZHkNss0jRp0mdKhMSJJPAML3W4waxFabcBOHBfwt4K51nj4+cM5aMQAczi9jv4Mjfj+qLrWNxphyJDj0247IKIzv46qQBMT9O8K71T3MOOCVjcrFMIm0aDXTqRBw=
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by BL4PR12MB9535.namprd12.prod.outlook.com (2603:10b6:208:591::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.12; Mon, 9 Nov
- 2026 10:56:16 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::ce69:cfae:774d:a65c%3]) with mapi id 15.21.0592.012; Mon, 9 Nov 2026
- 10:56:16 +0000
-Message-ID: <b0f530ef-bbfd-4112-aa51-82fdad6c4ba2@amd.com>
-Date: Mon, 9 Nov 2026 11:56:07 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/7] dma-buf/udmabuf: account the page array metadata to
- memcg
-To: "T.J. Mercier" <tjmercier@google.com>
-Cc: Tao Cui <cui.tao@linux.dev>, akpm@linux-foundation.org,
- dgilbert@interlog.com, mkp@kernel.org, loberman@redhat.com,
- jmeneghi@redhat.com, kraxel@redhat.com, vivek.kasireddy@intel.com,
- mst@redhat.com, jasowangio@gmail.com, eperezma@redhat.com,
- stefanha@redhat.com, sgarzare@redhat.com, rostedt@goodmis.org,
- vdonnefort@google.com, mhiramat@kernel.org, jgg@ziepe.ca,
- kevin.tian@intel.com, axboe@kernel.dk, linux-mm@kvack.org,
- James.Bottomley@hansenpartnership.com, sumit.semwal@linaro.org,
- phasta@kernel.org, joro@8bytes.org, will@kernel.org,
- linux-scsi@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- kvm@vger.kernel.org, virtualization@lists.linux.dev,
- linux-trace-kernel@vger.kernel.org, iommu@lists.linux.dev,
- io-uring@vger.kernel.org, linux-kernel@vger.kernel.org,
- bobbyeshleman@meta.com, mathieu.desnoyers@efficios.com,
- robin.murphy@arm.com, mason@kernel.org, aesteve@redhat.com,
- harry@kernel.org, vbabka@suse.cz, Albert Esteve <aesteve@redhat.com>,
- cuitao@kylinos.cn
-References: <20261106131829.3228926-1-cui.tao@linux.dev>
- <20261106131829.3228926-3-cui.tao@linux.dev>
- <1e18fcfd-785d-43cc-afd6-d181bf8305eb@amd.com>
- <CABdmKX0nCB2hT+iMh=BB-nC=fUBPof8YvjvO-gtEw+zcHZgvZA@mail.gmail.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <CABdmKX0nCB2hT+iMh=BB-nC=fUBPof8YvjvO-gtEw+zcHZgvZA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR4P281CA0388.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:f7::17) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	bh=ElXE6Czu3kJtnBp4J8hepfVFWJpvs2+YyAeDoXoHd4Q=;
+	b=UOXIE/7fUdFaZzida1MtNRL6jeap1VvnRqAQDgDgg2P2u1QeOLGAYYVBJLFbteUZL7l+Ng
+	wCgBC0MwIEnZ88yFF4zkbpxQMvMxYuRWBeAK9IM7P09dp/w3qdTGcWQN+8LhvVvL8hZvDt
+	Fo+PGP1aorojy6fmdV9c6Bn86qGa7ng=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794222010;
+	b=DzEl6N9VwVD2fS4e+UKnoJKeAhLWgAgZpULi2VMSg34Rb56kJK/Lo6DNjrkKLU6yIEdxeh
+	1Cz+vjEWVu8azHh7EEImxvx/1Jo2XtVuGxkffHSRz42BPEqtz9b5fH+3mMvmFoFFnCZMSY
+	YezsAEExQq5KzXpaAxP6RdI6GX+MeTo=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=zhaEFJmC;
+	spf=pass (imf25.hostedemail.com: domain of chenhongfeng0212@gmail.com designates 74.125.82.172 as permitted sender) smtp.mailfrom=chenhongfeng0212@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-dy1-f172.google.com with SMTP id 5a478bee46e88-36f6295304dso831635eec.1
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 03:00:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794222009; x=1794826809; darn=kvack.org;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=ElXE6Czu3kJtnBp4J8hepfVFWJpvs2+YyAeDoXoHd4Q=;
+        b=zhaEFJmCZLQtVMHGjFajN3kpgLk1A2JNdGmhnupD2IWA/VSQpADR2jE6R/Ui8LvnAi
+         p3QtWofWllomLXu/G+9uOd0ebaD8gJbUg4YIGpQ9z0VxA7GA+K8SwdVlueo0sGReb/nh
+         EA4hDnsQlo0FrO3979V+X2VJG5gv/XIQZZeXVlSrjTNCtnNgJxfCH8tEhGgKkJiKrfcr
+         4EAxwNIyIRF5AEn4weSNJdg3H92/PECVCZNdocWUF2UVWq3YzIqOY5Mz9P3id0CNACdm
+         YWju8GcfDqJR6aqzwH40GYkBTOb0P1Lz1LjW1ADyoukVk4f2MuANW5UMJ8jD8N+NNdQy
+         74nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794222009; x=1794826809;
+        h=content-transfer-encoding:content-type:mime-version:references
+         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=ElXE6Czu3kJtnBp4J8hepfVFWJpvs2+YyAeDoXoHd4Q=;
+        b=OUwBcnQs+cRBOVb54EANh3kmpL0aLZ2smtujxJDZN/7yjkEpfSgnaarWu4GwRcvaKt
+         B+bMMZXNb2jemufD+6rNWjYkvtZBOjg635gyBcresuwZIuHy6tm3aEzybUoB3xRUaedY
+         QTzfTDwe6mmm0ZDhDmTUx4LvRZlPUFAoG9611/dWFyqeB55VXTM6c+kAru7ueSMElx0N
+         d/XUTpEweILdQDayq+k63bsY0U4SbhlrO44kD1UHa0MvZMW4qds+Z6/DSQi9E/56cmOK
+         wUpaRp0x8NunCqPLAGDGetmyHNW2TE4HQbBKlcy5nftK+KrvU3DjO9MhLxeXKwzP74vL
+         ys7w==
+X-Forwarded-Encrypted: i=1; AL+hErGmg19BuvngHLLjoNUoMl+dEQ8t5JmuqVT8TESQ0koES9v+QYqzO858OZeFqZkgKm9obcLWq9CNmA==@kvack.org
+X-Gm-Message-State: APuU4Z+MPBCgQ+iUN/QrHdMsV68Jhh1KjtRzA8B4pRQFzyDMI3JUApQO
+	KXZmeR9f5ZujPiSCO6yMVkiVjRqM3GDvtvvbc23idnEef0lFAZqPhnJM
+X-Gm-Gg: AYBFou1CNU1wpIaLBLSaPYKfHO1p8LQrSCr/TihZ6pUC6LViYYSWeXJt75gxqYaIGDj
+	e9Meqv9N6o6Sgrzqap460XCvTEFbL2qQ/uASo0lRpCEZ3OgedAnEc0Jupzi8Oyf6xvQZkrVFWd4
+	2x3T5BhuXgwX3gHkqJ1c15qtBAx84irTl268OgdxC8sB0g4o99a1eVKMZI5xGDMGxmePpt4YJfW
+	iGBJlmJxmq1PrWZlv+SMd0hnHSPRNYJMCvMckWWOwzMchiMDCrl/TrDjWfH4rLmNa26K355YL1v
+	hsLfOMbDV5hJh63QWH6+0sKh1JSSNFbCi6z0rWG5PFFt2eIX7hPDp7xcgBr7zvayGil2zmhozmU
+	w0QbyrknkIQGmnZ+Ag3dvi05drYw03Jr2e6uTnqQXAweF7ddTmovMSwdqaYLKKtMCqWNNq+fmTx
+	Id7LgFUrXC+qg6QZXejjqr7pDXQOQeRQysKmbmlfYNHgMigsOSrZ0GGu5ci5wGwDMt8n4LMLhEK
+	118boEDqXSDUlmAzO8wU5zp7bXdPVGztvsEOfthwtHkSnSKJMNpSZit9HVtjLFV177KUuRw5Vud
+	vg5THROq3BXMqCQlrgWZYeH+M3XLOJgCZx+GTznzdz62JTTPSQ==
+X-Received: by 2002:a05:693c:8808:20b0:36c:9e26:88b6 with SMTP id 5a478bee46e88-37256613f82mr6129121eec.9.1794222009245;
+        Mon, 09 Nov 2026 03:00:09 -0800 (PST)
+Received: from hongfeng.mioffice.cn ([43.224.245.240])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37265c06c61sm11832518eec.14.2026.11.09.03.00.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Nov 2026 03:00:08 -0800 (PST)
+From: Hongfeng Chen <chenhongfeng0212@gmail.com>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: Hongfeng Chen <chenhongfeng0212@163.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Barry Song <baohua@kernel.org>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Jens Axboe <axboe@kernel.dk>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Yosry Ahmed <yosry@kernel.org>,
+	Wenchao Hao <haowenchao@xiaomi.com>,
+	Wenchao Hao <haowenchao22@gmail.com>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	Hongfeng Chen <hongfengchen@xiaomi.com>,
+	Hongfeng Chen <chenhongfeng0212@gmail.com>
+Subject: Re: [RFC PATCH v4 0/2] mm/zsmalloc: defer object free to per-cpu batches
+Date: Mon,  9 Nov 2026 18:59:55 +0800
+Message-ID: <20261109105957.2577351-1-chenhongfeng0212@gmail.com>
+X-Mailer: git-send-email 2.55.0
+In-Reply-To: <CAKEwX=M4jTnxmq6cj115Gw4u5jdY7Ex65jPtVTEopW70jGzfuQ@mail.gmail.com>
+References: <20261016120927.3191690-1-hongfengchen@xiaomi.com> <20261023123736.1542117-1-chenhongfeng0212@163.com> <CAKEwX=M4jTnxmq6cj115Gw4u5jdY7Ex65jPtVTEopW70jGzfuQ@mail.gmail.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|BL4PR12MB9535:EE_
-X-MS-Office365-Filtering-Correlation-Id: d00351dd-fee0-4d66-2bf7-08df3e50140f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|23010399003|11063799006|4143699003|56012099006|261021121427099003|261022075727099003|261022105027099003|261026140227099003|261028144727099003|261026121527099003|261102123227099003|10067099003|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	k5v1S8AS4zWotcYJ/nhJUFg4E2b0rgmX98soCxjpcnO7LVlofM86eDQLP4BV5HvWVBiWWTYib6vjQ8X1m+5DqUqrWfIdK8R960upM5qh+mD7PMQCCSFABKj994zG11gP39ixXp1jegnhpUSXVtEf9r15avOTOAOwmJB0LXsWiQ8K7aGq1dNP4wd7o290cn6Xv3hrIIV+HkppZp3bpoAiNdF7RSStQxaY5KBpZOykFWHxisNUVjbpcXv/8KmTUrHWosSUSITyeBZW8N2l8+X7JakM30JdO/9VSg8BwHvwlm4Ff7rYaAD7ZNs2kN7yQNEcfJazxive+CJQ6Ur1P4m7RyTMuv3BHDjJBFqU7ZLjNDZlrKsUF3hx/1wQGMgDzQWuJsiVxp3+4SQ8kIOn7xurDrrYH6r1TMTepxbnIlXbWXypmKq8Jv7B0in4KPX+HAAj2SPvKYI5eRHb+zy9ArWd8Ki5ia5CowjVpk9B9IIJUjG20ENbJMattfthUl0gI+bZTNHxJ3sx+909NtG/IeG/snBShfeO9r5j/VmTAWiuRIXgZOH1QX6pb+hg1EW2SbNK8IKgNu1Tbup7ij4BqQUNcgwcUIARYEL7/6xS+NDT4a6u30xaYTghU4gKB10B997wqEK7k1nFelJIanAqJXjPvLwjoKSt+kHJD1ONYIPr78I=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(23010399003)(11063799006)(4143699003)(56012099006)(261021121427099003)(261022075727099003)(261022105027099003)(261026140227099003)(261028144727099003)(261026121527099003)(261102123227099003)(10067099003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RVUyZnJKLzRudFo4UVlUZUt6cmxnT3M0Y1pSazN0ZDkwTXBzK1cwV0N6VmpO?=
- =?utf-8?B?a2tNNzYxbmZXVWlGV2Y0UlpqaUkzT0ppOHpBWVg3c01vT2J4Wmd4ZWJHWTRP?=
- =?utf-8?B?Q2xVQmR2NnZFN2xnVjY3bzhJMjI0a2NRaFpUOWRjRGxJdVo0SWxYby80b0c5?=
- =?utf-8?B?TUlOcDBMeVJJWjR1WDhQbDNPOCt4SjBSOUtVWkNwV0Z4RDB1OGw1N3R6SU5m?=
- =?utf-8?B?ei9pUmV2SzUwY2JEdUFMWXZHU0VRM1AvSjVITUUwaFAxdDZIVGpXWU5KeXZs?=
- =?utf-8?B?ZnVKbDJQTU5OUjNEd3lIUFlzWmlIc3lPdnJpaHhNK2RlZVFRSjMzdGo3Vyt2?=
- =?utf-8?B?RHRyMnMzUVVvK2NUZjg1b3o5VGdKdkwvaWNkNWlBUXBFeVJURitrdDFzQW95?=
- =?utf-8?B?djgwaTNIaVFkeVpuVG5OVWZVMytJY0xaRFloQmxLaDZmbmhHQzlWaTd0cVc1?=
- =?utf-8?B?VlUwMjFVRGRyMkRBa1Fmd3UrcW9PdWVMMGo2SFM1blVGU2UycUNoZDBNeDFI?=
- =?utf-8?B?RytqTGxmMmZqcXdTdUcvRjZ1bEkxMWpTb08wVUc2bllUVER3d1ZUUVdDT2lu?=
- =?utf-8?B?VjRpRmNBWFB0ZGJFd1VJVWFna0xhM0ZiVUJUaTRkcjBySFpadm82N20wcXAw?=
- =?utf-8?B?Q0JuUUpkeE8rSkkvZVA5R2c1cGhDdllaUU9ybUV6MFI3RUNmdC9wMFNWaXRv?=
- =?utf-8?B?dGNNTTE5VVhOSjBrY2NJOGxmb1FJY2tnMnBPRkd6MS9YZEtWdXdIU3liV1RI?=
- =?utf-8?B?ZWpLeUxSc1A1Z3cvYjA1NThMSnNNSGNpQmlNZjZoNld2aXJkUkxzSGZmWFEy?=
- =?utf-8?B?Mk4wNnZ2eDZKRTlRODdNcG52b1FzQncwZ090OUNKTkJyRTh5ZmJ0NkdnVVFG?=
- =?utf-8?B?T1VQT3BHYW9Rdm5oeUNpNWxycjA1Q0VoVzV0cUp0MWJVYlRHbHV0KzJBRnMx?=
- =?utf-8?B?TW45NEFKT2lFNUhHUElCWWdhaXQ5VzBmcDhUVXB4Zy9RenhXNFg4MVpRV0hz?=
- =?utf-8?B?eG9uVGhEcEJUTDFQSzc2RE9rY2JTVnQwTGV3bGs2dnk4ZFdXRHVBRk55QjBI?=
- =?utf-8?B?U2JuUHpWS0xLSS81SnRDTy9mU2tTamF0RTNDNEZuLzl3NGk2aW85OHVXWFor?=
- =?utf-8?B?aEFZSk1IUWNVNmduY24zNEZMWHpNdGNYLzh4Ynd6clhnVk95NlVoSk9mZlFS?=
- =?utf-8?B?NElTTWdoTEwyT0VlV2g5UFlHZGhQVkRlbjZsaFZ1bW9pUDhNZFNRbGMweVJZ?=
- =?utf-8?B?aEJzOWNadDVOditZcWIySURYaEE4R1JzTHBLdUJsdUNlMFp2eHBmckdrOTcz?=
- =?utf-8?B?Slh6WCtOUHFsaVE4cmNLM2t4U3o3ZFhDZ3JFVnJmNFZZcTV0QVc3TEc3MS9y?=
- =?utf-8?B?K1duNmdPaEc5MEhPRTlUN0t6WEpYTHY5QktBOHRZYUlmR1lMZVR1MjRVSzAz?=
- =?utf-8?B?ZFp0M3FMMGxhM05TQ2RoamlUR0VRL1ZZOEl2aE5FZm0vRlA1YSt2VmhmaXRw?=
- =?utf-8?B?Uis4eE9XQy9yM0VBcmdZcDV6K2xaYTQvNHZZWktBNXdvNkdxaFhqNzhHTXJR?=
- =?utf-8?B?NFoxelJObE5ZSDYyQUtZTXVyQXBHL3lybHowc3o2RHhlaVNQbUNoUytIcVJx?=
- =?utf-8?B?a1FJTHFucXF5UkNOVktSdTRpNU1ZL1V4TXBadmhMaG5yYUpxSWp0Z0JXUEli?=
- =?utf-8?B?NXJoOEVZanJ1bkFRWUpHZFpZRmJCZ3JGKzczSXBsNkp3TWJEdVA3cDh4bGRo?=
- =?utf-8?B?aVExVmVNQVdWMEdCZ29HYWdnbjVnc2c3K2QzZjE4bmtXSDFmTEtnRDM0VDJN?=
- =?utf-8?B?MXQrcDNmcmh0dTZHTzZ3MFZsdExvTXVUbURLVE5kelBqK3lYRnViWHBkSnBL?=
- =?utf-8?B?eFhKbEp6VStadXVWeUJva1lJUldZTW1iMndIejRXL3VTMUNGb2tKbmk3eXJ1?=
- =?utf-8?B?bWUraDdTZUE4dmV3elpsRjZzN3N0UCt6Z0hmd3ZNZmRkbGxScXlzdFUvanFK?=
- =?utf-8?B?a0JKSENtWmRwQXZhWUhObURhNG1BKzdxL0U0Nlo5T3lGcVZxVUtzR2lmcWJj?=
- =?utf-8?B?LytveVlzSWJOMVVaM1N2UzhIb0pFUnU3azVkenhpNVRKU0pNcjFrc3BiT3FH?=
- =?utf-8?B?bkhYdmk2U2RHM1RqUWc4djVjRGRjektKL2hLMGV6VXYzY3krRjhSaWprSDN6?=
- =?utf-8?B?VjhwQ1NrVkJPYXl3OFBkMFIrYzRxL1Jjc2k2YTRQZVM4bjVaTHJ2cW5yc281?=
- =?utf-8?B?RG9lWUV1U3lJQnB3QjJ6eU5TTnJ5UERscUdqc2NtSTF5cFR4Nzh3YjQ2M3RJ?=
- =?utf-8?Q?BmNGAbaK237SDbqCFw?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d00351dd-fee0-4d66-2bf7-08df3e50140f
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Nov 2026 10:56:16.6770
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 4vDIN17QFG/90J4re2i0bT4E7MPnbihJnG+VSBsBN8eORLYlUUoSjrmJOTMD5Nb8
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL4PR12MB9535
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 9A71980004
-X-Stat-Signature: mqafikdcxobnju5txbuci7c5cz9beh5q
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: 31u8wnibof7ki91j696hdfag8duhf98d
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: CE60DA0008
 X-Rspam-User: 
-X-HE-Tag: 1794221781-609397
-X-HE-Meta: U2FsdGVkX1+negUd9YIYvI14GE8+bnrBK9l6GdV+LXlaVgUZbOKl6QJA2TYyNGP/5VibvXo0TwxUuj3LqYZdPQeokHo/e1hwWzZFv34UnCHmEtvEU0SoP8PUouE8y4YB7r+/1KoTUsxOTqQ4BAZMFjT636vxfJgyzk2tByn+RBpbxQca0yHKsvvneZaxcMeRrhxbhtIIOlwDZs+1jfbxzuFQTdFDH7itLL16cpNkzi0C5Go72rOGOjwn1PfzJFUYFtq8k0CXZZ1FgaPlbb+fLxeEnBo3zIPh+X1tH/+iIRfz1jxEHLCG30BaCg8ZkACrI0VLEJe8kTMBCfhMGU40KEdRlsmsCi/D/K46F2QNK+wclKjvOOVPMdWCsCHM2SH1pf+ILoBXuBsKCilxKwmbY+Cf4bz4eiCEKbXjYZqoWyOv8MpDzbPFLyF7C4hsgdMdTP+Zk4Us1aPAADQY0Mg22UsDlebe+zw9fZ2Vr6RXO7BNuyXYBkX0K7zpV0+kn32RNsWGpqq0ugNZV/w2g9egNrYl8J03lVVDfWEdDP7ub4S1IeeQatbCB9bUzDwTWhCeOviuvTUpAWpM6lSIPh40iFd9jJM/b48gWIfpfb05VEdsf8FS09elqqnwoPFyipR0aC1R/CoImUTEL7TBpKMLBXSuLgfcvaZur/1N+tNUi4T9JTmPs66aap3Y/ToIQ3xZfGnsaKBOmVWXkaSEjhy1/WwF7rHONOP25ug1jtX+pH8FP5aSVuGY5QXXiuGHv0kRRwzCNQSI6DK2YAw5DMiTat6uYUba7SQ9a4ruAzVu42zgvDxDh5ijWbMFfs3B6tuUNcUuJql5m2gzG30D9SyLw5tfPrXQpiL8THrAkGwsTzdfe0YKdKe4mUO+mA/1H2I/Mu16dSZgaXPFEsOP6DCbeEUDltXe5PinqLlQWPbWMrIjLa+cJujdJDKmFdrAGhcpz+NhoTm1OQ7c80c6lNH
- sGLDawGL
- KGXif1ZZVcCgA6QoVLlFZrsb0Bv7VjBnqPyw8snuxej9F37mNaillvdp3cTOEt4T/uTwsknVsJIiJx7XIy8OhHPOMwlGm9QnrbWCTm3K8ebBQn0hQ0y2/2q4qi2+L7A8dZOMiDxHwptkxoEG4n3pNaAAJUl7acjqaSNMXffKQXrEfaqaxFHbaWSGgDk4tvYuarKk8Ihs69Mj4lexCXLekaJD+9SCtmfkixI3XlFzxS6vdQhbE71DffkYhSBq1IQU8dLUaDsmr6bQiGLDna9ZLBS4Gwvv6tehdLtqwrJiZ6tT1AMEJPJP8lJFH4Q432OpRO9sJ/E3t0V27sbINAZgH7vKf2I5rqRE0P39/Ka4PP9zbZEm9juKOxQkAA8U/B0Qics6yJA2Gp7QrIS3Z1JFZoJfApSDmT+v70LS4aPbL22V5lgM6554wJBYp58/a+O+TcTX9MAQSJxgnlmZ/MsKztlfWDq2Xn9xvC9HLy//hdNOt2IloiB4yJjBZFtk1XyaEpBfniR6wHFfFVULw25i/kycQZgeP/1NpdXvsDAUZNhGoarokaob8g/ADbidrusDvxfOi
+X-HE-Tag: 1794222010-325168
+X-HE-Meta: U2FsdGVkX1+S8q8PjpKURKb0+9QTyaUOKoYU0Su0jXsvpDx5yESSZ9K8kE9/zXc6zIwMimutda/arypoRwaEQu18QAPrgf02MbCaO+TBvtZYEJ8dO6WkQUTKyV80Sotfxwo4np0J0SF2pUWpmUla+mCIepF0DQsPD62iH824yANVOnBDTN2fNcGCqtOssh+mkFcj3J/1PXOJ3OnKYZynaqpWDHTWYQyH9xvBVz+8WvNFAFijVVsafgVCbtJzqzP1Obp+yaWIiOX/AHUOoDa/0CyhQLhQoAJGrCCvWdEDaGj8YWON7U79Tf1zvxup/36v4aiaooEXSglT85t2uMDw7AhBHXHMsPqQgHNxoSOyFnqts5S/ElwYWTp40nByxAPoaCUn0COWch8/Q4SMvQPYhsre4yfvWoVvj3gF76c8/RoPj/lIZhH6aeesZeLT95ET0GIkNcEhNyCFL0cn0Y73cSSezqcN15KfHjJSW4uks7olL1KBGbhyBKyQ3uNAKdP+hVc6xWw7KmWmffYLNwtUJqtY/KG6rbrP9vPVRjiJ48TJjKQXW3/BG1J7AGL1uFSmCIqPiq03Qm+T0Sc44IzXBqfmNQqqawE4t8fGD08YL6e2JcRijG4GRjth4xmUHcB/tT8jXI4GsG375C8LlSknv8CLBGJLySoHUWKDVrIqLLblqW/Iyoj+Io1aSKKHbSsOPsZRZVeo5MtJw9SZobc+zlJlu0zfZdFp4P2XSHnnmGfi3odtwQ0cUA9L1WU6PsVVK0mRnLPW1gb/QfVLJmqH/n/D9a+whlkx7mSnVGb/XMLKAA5qUGyA0ymCkfH6g2ls9Qp1bSwafohL35sMACqoAxELDaTcjwcDb/veL4oIkKvfa+tLeproOvPy2LUsT4DKHaiX/zQ6pZxGRD9tI2kq5kJvLmDXzEQ+49K7FNx/fbjKKLH0doEl9ulDxooHUMGBnb39TgM2fpTmCZSL5Um
+ NGgSgsZJ
+ O/Lb/AZ/CGR9lB03g3aHWviCGg2uhhMxqTmb8kFjcYLaB6AN2lsZYGf7WahGuhhPVWX2toHILpi3mO3AmyN9stD8vO99hgLkSjE91D38QWLkRH2n7hXNM6xgVhDAnhfaart5QbuRG8TK7FkEze3w8go2vAb+fMEBU2+ci0DOxE6x+fVol/EWoKPsdJg2cAloY5YorNzk/+S7tvnH+qK4fKIm881VhzwvnieXPJuZAvHTrw49UKqcqqPXMKN1yP3zSBe4r8ZE4ev8sqB6Li3FJkHoEI9Gmfi5HuYiTYfw4P2V5GpUkqeLfjRhKCO7ahwYnUMCe/CLcv4kKq2wcroU9+qKQrs37utxy0M9uxueUUBpfVQz9ebbPqLvkoIBFhIeYPeIKdhA5HOeXfES9qF/nlSgGEb7fhdp56HzQtPdru/Ozyfy17joH9CVwDvYg8d8yfy2VC//Sk5uGB/9EA6crvLin7w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -192,73 +140,74 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 18:25, T.J. Mercier wrote:
-> On Fri, Nov 6, 2026 at 5:23 AM Christian König <christian.koenig@amd.com> wrote:
->>
->> On 11/6/26 14:18, Tao Cui wrote:
->>> From: Tao Cui <cuitao@kylinos.cn>
->>>
->>> udmabuf pins the pages of a memfd and hands them out as a dma-buf.  The
->>> data pages keep the accounting of the memfd they were instantiated in,
->>> but the bookkeeping around them does not: the page pointer array and
->>> the pinned_folios array, both sized by the buffer page count, plus the
->>> transient folios array sized by the memfd folio count, are plain
->>> GFP_KERNEL.  A 1GB buffer costs about 4MB of uncharged SUnreclaim
->>> memory, and size_limit_mb defaults to INT_MAX.
->>>
->>> Charge the three kvmalloc allocations so the creator pays for the
->>> metadata it induces.  The system heap in the same subsystem already
->>> accounts its buffer allocation;
-> 
-> Only if the mem_accounting param is set to true. We (Android)
-> currently depend on it being disabled because system heap buffers
-> don't have a single owner for their entire lifetime (ownership often
-> changes immediately after they are allocated), and the kernel doesn't
-> have the ability to switch who is charged for the buffer memory quite
-> yet. Albert is working hard on it at the moment.
+From: Hongfeng Chen <chenhongfeng0212@163.com>
 
-Good point, making sure that Albert is on CC as well.
+On Fri, Oct 23, 2026 at 11:19 AM Nhat Pham <nphamcs@gmail.com> wrote:
+> Is there any more juice we can squeeze from zsmalloc in that case?
+>
+> It would be nice if you can perf zsmalloc freeing. And yeah, maybe we
+> can't optimize any further, but let's eliminate that first before we
+> rely on offloading.
 
-So basically we not only need to charge the backing store of a DMA-buf to somebody else, but also the housekeeping overhead.
+Here is the perf breakdown of the free path:
 
-Mhm, this here also complicates the charge transfer Albert is working on.
+zram:
 
-@Albert not something we need to take care about now, but please keep that in mind while working on that stuff.
+  __swap_cluster_free_entries        90.28%
+    zram_slot_free_notify            86.01%
+      slot_free                      74.15%
+        zs_free                      56.01%
+          __free_frozen_pages        19.85%
+          kmem_cache_free            10.15%
+          _raw_spin_lock              5.53%
+          fix_fullness_group          3.31%
+          dec_zone_page_state         2.43%
+          obj_free                    2.17%
+          trylock_zspage              2.12%
 
-Regards,
-Christian.
+zswap:
 
-> 
-> Could you update the message to note the mem_accounting param pls?
-> 
->>> the data pages here stay with the
->>> memfd.
-> 
-> memfd / udmabuf is a little special because it uses shmem for the
-> backing store, which is already tracked by memcg under all conditions
-> (except hugetlb). We don't currently use udmabuf, so the lack of memcg
-> charge transfer for udmabuf is not an issue. But once we get charge
-> transfer working for the system heap it'd be good to follow up with
-> udmabuf.
-> 
->> T.J. needs to take a look here, but I fear that this might break uAPI.
-> 
-> Thanks for looping me in Christian. The buffer allocations cost
-> gigabytes, but these metadata arrays are only 4MB per 1GB of buffer,
-> so I don't expect charging them to break anyone. Leaving them
-> uncharged is an accounting gap though, since someone could spam many
-> udmabufs from the same memfd and only pay for the memfd pages once. So
-> this change is ok with me.
-> 
->> A lot of the DMA-buf resources are intentionally not charged against memcg.
->>
->> Regards,
->> Christian.
->>
->>>
->>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
-> 
-> With the commit message updated to mention the mem_accounting param:
-> Reviewed-by: T.J. Mercier <tjmercier@google.com>
+  __swap_cluster_free_entries        94.30%
+    zswap_invalidate                 93.49%
+      zswap_entry_free               73.76%
+        zs_free                      34.03%
+          __free_frozen_pages        11.13%
+          kmem_cache_free             5.57%
+          fix_fullness_group          2.66%
+          _raw_spin_lock              2.45%
+          trylock_zspage              1.75%
+          dec_zone_page_state         1.67%
+          obj_free                    0.96%
+        obj_cgroup_uncharge_zswap    13.90%
+        list_lru_del                 11.73%
+        kmem_cache_free               4.62%
+      xa_erase                       19.27%
 
+Most of zs_free() is returning memory: empty zspages, handles and
+zspage slab objects. So returning memory cannot be avoided, it can
+only be batched or deferred.
+
+In zram, zs_free() is 56% of the time, so deferring only zs_free()
+can speed up munmap() by at most about 2.3x. In zswap, zs_free() is
+34% of the time, so the speed up limit is about 1.5x.
+
+That leaves two places to go further.
+
+1. Async freeing at or above __swap_cluster_free_entries()
+
+Deferring at or above __swap_cluster_free_entries() covers zram and
+zswap with one mechanism.
+
+2. Optimizing zram alone
+
+For zram I would rather go back to v1 [1], which defers in zram. v1
+also uses a single gc_work per device to offer a best-effort service,
+which greatly reduces the impact of the unbound worker on other
+tenants.
+
+
+[1] https://lore.kernel.org/linux-mm/20260412060450.15813-1-baohua@kernel.org/
+
+Thanks,
+Hongfeng
 
