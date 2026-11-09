@@ -1,72 +1,72 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4A7606A330
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162E3606A31C
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 14:27:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DMOktpQ7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=C3H8wQYE
 Received: by kanga.kvack.org (Postfix)
-	id 1C15F6B05B2; Mon,  9 Nov 2026 09:26:19 -0500 (EST)
+	id D34C06B05B0; Mon,  9 Nov 2026 09:27:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1720F6B05B3; Mon,  9 Nov 2026 09:26:19 -0500 (EST)
+	id D12256B05B1; Mon,  9 Nov 2026 09:27:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0610B6B05B5; Mon,  9 Nov 2026 09:26:19 -0500 (EST)
+	id C22696B05B5; Mon,  9 Nov 2026 09:27:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D58DE6B05B2
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:26:18 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C3B0120656
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:26:18 +0000 (UTC)
-X-FDA: 85415805636.07.7E7D840
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 90EAB6B05B0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 09:27:24 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 16E1416067F
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:27:24 +0000 (UTC)
+X-FDA: 85415808408.04.A1A48A8
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 8511214000B
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:26:16 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMOktpQ7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4C071180004
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 14:27:22 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C3H8wQYE;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794234376;
-	b=N31osXMxasTArJEPfr9B+tOftd4acz3QG5Ix+rZh7M5PA2FzBieTkCmfvJDCORN6wJF2vU
-	hc+H1uT76RNP+/xO/bAjal+jsmZw2JDmxFY7O5tWLrSndDwPuBAw/bFlhaYQpZ4gTYE4GX
-	wFpHt7HXwcbUag0Gutgeszp2hYBlyyw=
+	t=1794234442;
+	b=liSN3iwk4q0fzWjYPEFgWsyZKV00b/L/u+wRCeTIDAuG7p52TvCo3+/hbG4xc+f0WX5QsE
+	o+iIO33jigmpKmnrbxDt8E4RWYUOPk6lTK5ANOPiC1Y5IvePZvlcVFzCa7VpZkiPIYyHct
+	qiTyYFeWGICTZ6GceRJoQYyzSOqw6J4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=C3H8wQYE;
+	spf=pass (imf24.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794234376;
+	s=arc-20220608; t=1794234442;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B9llKXUjtBg6NYHrvZa2RZ0JKeiVE2awkqQc7/d86Ts=;
-	b=VmDWuvlgY65nCUOFluIYnNbPvhk+MytBMtDKTvhA9clx58VyLrVQVOzNbbk5KVgRwrstRd
-	F0Gdj4UWqcAOmDAgpz1zId5hO9vY/+9LvkhrIN4Wu8xZiio1O6bF0xO5+3CVHnwLxsuz69
-	ADDEylUX1pJc5VKvzI3oi3Xl7XkojVY=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DMOktpQ7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	bh=DQBR/dBCMcYTXkdOeOOog1rJR98U8AmPJCb23jPzIvA=;
+	b=ZN564M4p5J34grcZRieVG21VSnxkuTc1q41Qhs5NdhUsSqSc+an8uNVAOZSduBNRFVp4md
+	GVuMMk9xut2Hxfb4aXRo1ayfpk1qq5cZwhtxEDx4B/4sObtbeJoFtgPyWEHJRJ1Ts06jNv
+	RxSfE1+SjogZeHUjenz70FRWUxkuz+g=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id E039B406FA;
-	Mon,  9 Nov 2026 14:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7199F1F0089F;
-	Mon,  9 Nov 2026 14:26:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 804D340E56;
+	Mon,  9 Nov 2026 14:27:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E83B31F0089F;
+	Mon,  9 Nov 2026 14:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794234375;
-	bh=B9llKXUjtBg6NYHrvZa2RZ0JKeiVE2awkqQc7/d86Ts=;
+	s=k20260515; t=1794234441;
+	bh=DQBR/dBCMcYTXkdOeOOog1rJR98U8AmPJCb23jPzIvA=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=DMOktpQ73zOGC8v05iI/+U/1YfqHpq9vNS608Oycv4UNs8X1mYegSrCtypjvxWnF6
-	 L4DV3s1GLDSfcLfCzBFgTmIIEfFwCXb5WYu+pWDZsjFgBHslsKmwVy831p+zDvPFnU
-	 zGRlYzuxhnJnMZ2V0bJYk3maeqoanOEScQayztjdOZsLdbkhgHFf1RXkus0Vpczaft
-	 mGnaoV5SYoXQUWqb4GQ+UkRlNz0iMVjc9vlSolytFBzEM6yxdlx12vvU+ctoUAKATB
-	 +9Wc5UDGNQzrPuPHc2NvGxxYeTpI0F7H5ZizL2UrMXvVw4NIfnZ7n/opOWFU9rjEu4
-	 8qPoSrS3USUTA==
-Message-ID: <788856b1-754b-44cb-a5ca-676400d29a76@kernel.org>
-Date: Mon, 9 Nov 2026 15:26:10 +0100
+	b=C3H8wQYEaereW5Y+ykz1l50Et0cRmZvNz5OyubO8k6Mzm3JRcJ8ZwAzbIpn1O0VnW
+	 WoQZamewYE3OxZzQIlKv3AdsQpU4iqUvDUDOUFFBxGhaas9ujo4Rviw5CnK1wasFNZ
+	 BUbvNzWWpx8nshdFgRq/q4q6yeNnrkSKKxHXxuWA1lNtb1Qdi219igtdjcLi+Ld4bM
+	 PZPeinVRzFXxJ1Ls9Oa8cCwUWPLcmMFskJLS5DmV9kGsMA4Qcpf6ev0HbUWLZBFjBw
+	 eLU5zsQLYsYo7mXGzMGvrSGOBEjSMBn1GmAXyNmOInW70mml0WujDbfWK6rByi2MN5
+	 ZGKuwK5yM2DAw==
+Message-ID: <07b298ca-d258-4cda-b5ae-0231ec39e033@kernel.org>
+Date: Mon, 9 Nov 2026 15:27:15 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm: free unused page table allocated by
+Subject: Re: [PATCH v2 2/2] mm: don't allocate a page table under RCU in
  do_set_pmd()
 To: Usama Arif <usama.arif@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
@@ -77,7 +77,7 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
  Kiryl Shutsemau <kas@kernel.org>, Qi Zheng <qi.zheng@linux.dev>,
  Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20261106153414.2938216-1-usama.arif@linux.dev>
+References: <20261106155604.3999641-1-usama.arif@linux.dev>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,22 +124,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261106153414.2938216-1-usama.arif@linux.dev>
+In-Reply-To: <20261106155604.3999641-1-usama.arif@linux.dev>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8511214000B
-X-Rspamd-Server: rspam12
-X-Stat-Signature: 813dp1g9zikgghnwccosyzzr3hnbqipb
-X-Rspam-User:
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794234376-423166
-X-HE-Meta: U2FsdGVkX1+P6p2wE3VwwYk3bGG2BKAEX0Y2QCCRjPVnBg9ceIn3M9KqDz9qSB76YMp5DHYho4GhBtHv8NzGTE1y8kf8Qtj9C3Cn76lPeNdb5RAzjso6b0ujXykjonZtZsfvlIjkJyyOP9WUyRCsr52ikrJa+t/PBELymxs14+XE0X8kf3nPhAStrf9DEPhQ7wh9JUm/LHuiZ4tw9ndyYn+J9ZAVFOgsb/6A2nPsRceIsFNgSw9D1mzEbEFTLTaVIuRUBUiSQ/WobIbLciTQ6o8IvH9bZfDYpTyqY9blhaKk3/WI3EXd7Qf/pnTd8uuTDkAEt2KFzRpInlxiZL/o9RPaIVoHfBDHCu6uHNUSvDt87Chu4pHJ6MlP/p4Vy7+FSs/HS20AM1yjmnKTxgAQDvklkN+UROqAJO4yeqcGuycnXc1RtEWjQMGAvkJCGkVS/yOPofFaMHYM7eQZD8CMDK8Ro0FWpyPo12rfdWJ0Dm2QeNpztrs/M0/3gb6M8KQMzpgaZEDVtnhs5yu5R2crn1g21BMblF0vHUgSRCCaXpjRNpzUuIFGOw1QZ5Y5w70qalJzvsdQfLoJ+gddypL9tg+bzfiWuNtrTIhE1e6sgH5T4+bMhHw/uJYbeRrwITfJhDQoGvGZMmrt+rYf0bm7Ib2gElCPkPj+1Vmoksbwr+gv+0rLJgV3/TNpiRzS9pBkd1F6kJsjnr9jPg2RX+Kr/XeNdpZjFqdPpL03ooWy4Fd5xDyUDeQ6GAyEB8/ZZH9BBiKW21GwFbNCd+kCruGdGFXW2nFUWLAzu5db3Qz3Rk2/xmMabporgy90ZJGVY78ZufBpsr9x9XuQTPRws4PEd9hJL29oAjg+CrVU7shy6vGw0C61XV5JvK1jFggIkabzG3sKYLI1s6Iea+L3dfXECYviV/Hhj32WPetYXnS1dWjRu8csuVrr7yz/Ye+de47VMYCzSEIeM0JXIFtMYmI
- 02f0XoM1
- O8eTBS2Ml/FbXAik0vpeTWr5wit/sVQgOXcPZvTQrUp0YFXBn/Lnv8PnwrlbPmlmuS1YMzDo4foXYsg0/JD9cNU0F8vz6oNAcnZM54Uu1t1w103gM7jlQAO0fN1U75sK9IngiPLsEWqYVYBLfMJ+2gzgskPyHacN1qaDPylBPv8EtrJdrmucCoAIza2N6ON/QhQ973coe/Hs/BgzuJ2N04FVY5BDYajv/CmRcFU+TpCniqLR4Ll4u5beyKcj1hyPHI1NT8+V+JvEIErGCrzCVmwDYX8F5f8sQM6xKHRQY3X1sW14KlNt/BwKVNnWIWApOiag62x49p3/TNc8EWneHjpA8NiZiGeLYPUlGBeJ8u0NCttlfka8NMFPqnp9/ij+J4nsAPnMO6g2bnsie8aCPMf/hG7QZhCENXUERijmt7IXO222oYFmSlHhrAXhI4lFr/HSQ
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4C071180004
+X-Stat-Signature: n8yd5nbhcmzz9kda7pfg8zzxegaasjqc
+X-Rspam-User: 
+X-HE-Tag: 1794234442-356272
+X-HE-Meta: U2FsdGVkX192RLOF3o28nOhEU3qIPs7eqa0tZoO8Vz/Tsl7d01qHJYFPCX4CE8RaiCnilS2aOjzAuzWvCY0evTxQ5xKczCBxXVJV46eLdfzXVmCZ08eU2aSxqX841MwaiQUEkScfLnQgaZhZIKZ9qcCd8l3CxddTNAouZX9hfoVrAF60Qk+4Yy4DN81TZ/YIEe5plbsmtHfDF3KATfA8Tj5mwJS4tp4aOvqKWb9BMY1ZKJy2eML/MgoBFHoEc3Lkb4UDuMKf3ZApT9MPovoFbtEq+PnFunROToTXveAVosvMo1fF5PKPqQIbw1ppsnZ9JXq6KVegFo0b7HtsL7eMKb/2uOxJlAwzDrUWFxB9ZRj6ub0hOkj3rvkwFFZpQhNAhfTmapPxHDYK/OHN0iJPrCNtqzSq0lHq+RjzS7rPsv48ZFK1nxc5M8iqHUM0qkyUEsge6pg6kkHucjNqjlIDgGphxp1QFJ7DAotcczqdcWpLJgq58DYUUFcvDhh6UgPnpeyZQA2/HGzv3e2S3gq4JM67/mfcId008z4JGL6/G0VBr4Y/9kQj9XjqTpPmFeOjeAuToOmAop4CbDhUw+R1oseL+e22PtFFKQqpzu2lZ3yoWXRmPIbgr7gvDLJzrsAaUSFtdUNXkyENArhwEiD7GRhCwnOpbvbSdCnh1k/ac/YGTR/6PwQZMxAc99jTzfzPIuXOvK0jI5wrpDBxsm/g3JnJUTJdj6n/gMs5dB/7ZxggMkLTYeJZeNsC4sa3eqhBUVMAsR5inmFfo6CYfkuupsxqOxfFi5NEHbo0OZd/qnFEv9D6kbQdNU/c64ZtI5UaTQBLnN9FlK7k51vFmps2yPiW3l8YoBbQuORjBMMCik3qmd5LJPZuho6+AsbT2urreJS8v85T26romA1ohwhvYzgUp1QAj6obGRsYKhQa5QXxN0t1gt0CtFN/KGZyYnVMHBXI0900pN84Aazn43A
+ CdYyg8+z
+ WP77nst9v/tNx8wskWJ87dNYuXuowKDUqRh0vaWTDnWtW+aM2HcFb6mp9qZ5nc3u/TA0XygBAmr8KzXpHGFIRcRezhCcWH0hO4mdZBeO8oTleSEHRRdIwrLClWUlklK3r4HF5RXjGLAOr57N750IqU2VAjE2No7ypXSF1nkD1/24eYB9B8Y7r9bZZEt/spM/YwX4ri5bj9MhCKd5+io94AueVVfwiXwV/TULKrTxX0v/RqepdG04Jdb/g+olaRCB9Z3aRCm7P7SzeSTiOkMB3IebYotaZm3i5YzyvCMTc+HsrRJeXbk7PAR/pUUeLqiu2D2crwIY8ZCq5qsk=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,41 +147,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/6/26 16:34, Usama Arif wrote:
-> On Fri, 06 Nov 2026 13:36:12 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On 11/6/26 16:56, Usama Arif wrote:
+> On Fri, 06 Nov 2026 13:36:13 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
 > 
->> do_set_pmd() can allocate vmf->prealloc_pte on architectures that need a
->> deposited page table, such as PowerPC with the hash MMU. If the PMD is
->> no longer empty when it takes the PMD lock, it returns VM_FAULT_FALLBACK
->> without consuming that table.
+>> do_fault_around() skips PTE table preallocation when the PMD already points
+>> to a PTE table. A concurrent collapse can then retract that table and
+>> clear the PMD before filemap_map_pages() locks the new PMD-sized folio.
 >>
->> Since collapse_pte_mapped_thp() uses mmap_read_lock(), a concurrent
->> userfaultfd operation can install a PTE table before taking the folio
->> lock. If that races with set_huge_pmd(), the unused preallocated table
->> is lost when its local vm_fault goes out of scope.
+>> filemap_map_pmd() can then call do_set_pmd() with an empty PMD and no
+>> preallocated table. On PowerPC hash MMU, do_set_pmd() then tries
+>> allocating a PTE table to deposit. But filemap_map_pmd() calls
+>> do_set_pmd() under RCU, so allocating from that context is not good.
 >>
->> Track whether do_set_pmd() allocated the table and free it after dropping
->> the PMD lock if it was not consumed. Preserve any preallocated table
->> supplied by the caller for PTE fallback. Successful PMD installation
->> consumes the table and clears the pointer.
+>> This race became possible when retract_page_tables() stopped taking the
+>> mmap and VMA locks. Previously, those locks excluded retraction while
+>> the fault was in progress.
 >>
->> Returning without a preallocated table matches the existing behavior on
->> architectures that do not need a deposited table. All callers
->> already handle that case.
+>> Add a may_alloc argument to do_set_pmd() and pass false from
+>> filemap_map_pmd(), so we can fail with VM_FAULT_FALLBACK instead of
+>> trying to allocate.
 >>
->> Fixes: 1043173eb5eb ("mm/khugepaged: collapse_pte_mapped_thp() with mmap_read_lock()")
->> Cc: stable@vger.kernel.org
->> Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
->> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
->> ---
->>  mm/memory.c | 6 ++++++
->>  1 file changed, 6 insertions(+)
+>> This issue should be fairly hard to hit in practice.
+>>
 > 
-> Acked-by: Usama Arif <usama.arif@linux.dev>
-> 
-> Reminded me of lazy pagetable deposit series :)
+> Yes, I imagine it was very difficult to reproduce, doing a sleeping
+> pte_alloc_one() inside filemap_map_pmd()'s RCU read-side section
+> when a concurrent retract_page_tables() empties the PMD. Only
+> possible on PowerPC.
 
-Not just you. haha :)
+Yes. Did I express how much I hate us having to support this ppc handling?
+
+I'll buy you a double digit number of beers if you manage to rip that out ;)
 
 -- 
 Cheers,
