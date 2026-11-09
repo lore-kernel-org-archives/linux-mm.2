@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39A7606A31C
-	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 02:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798F5606A323
+	for <linux-mm@archiver.kernel.org>; Mon,  9 Nov 2026 02:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kA66ix4o
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=XL2WHWTD
 Received: by kanga.kvack.org (Postfix)
-	id B3C326B05B0; Sun,  8 Nov 2026 21:35:50 -0500 (EST)
+	id 749056B05B4; Sun,  8 Nov 2026 21:37:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B13CA6B05B1; Sun,  8 Nov 2026 21:35:50 -0500 (EST)
+	id 6D2126B05B5; Sun,  8 Nov 2026 21:37:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A54056B05B4; Sun,  8 Nov 2026 21:35:50 -0500 (EST)
+	id 599D06B05B7; Sun,  8 Nov 2026 21:37:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B7EF6B05B0
-	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 21:35:50 -0500 (EST)
-Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D3EB580279
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:35:49 +0000 (UTC)
-X-FDA: 85414015218.16.D7F6930
-Received: from mta1.migadu.com (out-247.mta1.migadu.com [95.215.58.247])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BE5B6140003
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:35:47 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kA66ix4o;
-	spf=pass (imf23.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.247 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 257BF6B05B4
+	for <linux-mm@kvack.org>; Sun,  8 Nov 2026 21:37:58 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9A5F040597
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:37:57 +0000 (UTC)
+X-FDA: 85414020594.04.1A60E6F
+Received: from mta1.migadu.com (out-54.mta1.migadu.com [95.215.58.54])
+	by imf19.hostedemail.com (Postfix) with ESMTP id A34EC1A0006
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 02:37:55 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XL2WHWTD;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.54 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794191748;
+	s=arc-20220608; t=1794191875;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D8KACQV8GEkM7sg/l0LY+n4eIcnrDwVtQhDVvbChlsc=;
-	b=Jwg35mitKCKZQs6XqwIyRpM40n1Rjymu0WMmOtH2q4Jmd/toiErESpijDIwEvklnhMwkG2
-	7/Smv54Yho6YorWXRwhQ2r59vn0oSJdPZsAR8w8v+xCkHafoJmvwQN9L+9rC5WvCD0iXji
-	lgjjJtPhP6WyW9ThJnXWow8wEJV0WfY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794191748;
-	b=4MeHUAsGhiyZpnjWMk2U8eA2/21UTRk5cQPcMWSALKo1oXxiON/Tw+nldpYVXNw+pPhUT/
-	8c9T8wuogZoHCcMOLLVMFGC+C0y5GhNCJOv6NkqGBYOOZlYem9IDsXQZKNiTdo9PpHOalZ
-	bNCbhEuQfi18EZyxzD6oN3tXMExf7u0=
+	bh=AEGX0/KL7mXbSaJY8zHxrw7A5L4IFOgbizn++kyw2IE=;
+	b=Q5f2Tl00bhTfPdcT/zco5k2PeDVKqS7Z17d0B1Lage2VEV7nnGlSgNgNPCQIccqSfAUh1Q
+	NALsAOrVYHD420oukywF+fmnERlBmpmgzSPDqXssZEKsNNKQIWmtwDQsAbrYRyAIFAdfET
+	1nS8O8I10Z3ilJ/gT8dDCU4+MbUZPHA=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=kA66ix4o;
-	spf=pass (imf23.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.247 as permitted sender) smtp.mailfrom=cui.tao@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=XL2WHWTD;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf19.hostedemail.com: domain of cui.tao@linux.dev designates 95.215.58.54 as permitted sender) smtp.mailfrom=cui.tao@linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794191875;
+	b=EsWZAldOoWcAEP5jOzO2laxw+glnGi/woxJht9rSu+JxDRMms7t2EULZPpWlQhyFxX4cDC
+	bZgiTlfyaw7++shojhkEn6ayLbE+SigLW3CPpp58Kj6YxjlvoX/rS/NoxYl+f4nTudq+zZ
+	lK28ABaO4BfAn/EjWJ8mAaKDsNRYQIA=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=sahaBfdN8dM3MC+nyYsLDXJ4FM7JRPlU6iwwEbjUDHg=;
+DKIM-Signature: a=rsa-sha256; bh=BSLLWUjqysUniWqaKos+1oTfbUDYuJJnNJuIc0pgFwo=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794191746; v=1; x=1794796546;
- b=kA66ix4oBjp4zQg4b2a4lEPHHzpy24nuFI7y8yO2hI6FUE4lwNDQ4yKfibzsxPzpKvAAm4HC
- QpvzQ7yTyFe49ekLtwGNhR3XsjclCoZHSbmaKqV/VIQni7chUMraprKVvYsByyjWC7eHBibwRYi
- l0GmyOWDwLf66w6+eS5BO6OY=
+ t=1794191871; v=1; x=1794796671;
+ b=XL2WHWTDldq8dc4J+S5VCwQikjlgRsEG8sCdf/g6J4yLzejet5DgbiFD8IVyo9je8po4cF2p
+ Jw0384EKoWqB18dC453JHT0pAHeiO2yXJCNMIF2qCFTC5OabTZPbEg7Hh2R6YOb90xpbTCYbOwD
+ wx+r2xZlOW1wCBc0dsFb6yJU=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id ccc0e3a2462894c9;
-	Mon, 09 Nov 2026 02:35:24 +0000
-X-Mizu-Trace-ID: ccc0e3a2462894c9
+Received: by smtp.migadu.com with ESMTPS id d646f8317d3d17bd;
+	Mon, 09 Nov 2026 02:37:50 +0000
+X-Mizu-Trace-ID: d646f8317d3d17bd
 X-Migadu-Flow: FLOW_OUT
-Message-ID: <f10075aa-0917-472c-855d-afabbc9697ff@linux.dev>
-Date: Mon, 9 Nov 2026 10:35:12 +0800
+Message-ID: <16b5464d-d4a2-420e-9de0-2ccddb860e3b@linux.dev>
+Date: Mon, 9 Nov 2026 10:37:34 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
@@ -74,8 +74,8 @@ Cc: cui.tao@linux.dev, linux-mm@kvack.org,
  robin.murphy@arm.com, mason@kernel.org, aesteve@redhat.com,
  tjmercier@google.com, harry@kernel.org, vbabka@suse.cz, cuitao@kylinos.cn,
  media-ci@linuxtv.org
-Subject: Re: [PATCH 4/7] tracing: account ring buffer pages and trace_array
- metadata to memcg
+Subject: Re: [PATCH 6/7] io_uring: account the ring context and SQPOLL thread
+ data to memcg
 To: sashiko-reviews@lists.linux.dev, akpm@linux-foundation.org,
  dgilbert@interlog.com, mkp@kernel.org, loberman@redhat.com,
  jmeneghi@redhat.com, kraxel@redhat.com, vivek.kasireddy@intel.com,
@@ -84,24 +84,24 @@ To: sashiko-reviews@lists.linux.dev, akpm@linux-foundation.org,
  vdonnefort@google.com, mhiramat@kernel.org, jgg@ziepe.ca,
  kevin.tian@intel.com, axboe@kernel.dk
 References: <20261106131829.3228926-1-cui.tao@linux.dev>
- <20261106131829.3228926-5-cui.tao@linux.dev>
- <sashiko-outbox-202921@kernel.org>
+ <20261106131829.3228926-7-cui.tao@linux.dev>
+ <sashiko-outbox-202923@kernel.org>
 From: Tao Cui <cui.tao@linux.dev>
-In-Reply-To: <sashiko-outbox-202921@kernel.org>
+In-Reply-To: <sashiko-outbox-202923@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 4udfugp44n4o8tegj7mpoitm5jrgesqy
-X-Rspamd-Queue-Id: BE5B6140003
 X-Rspam-User: 
-X-HE-Tag: 1794191747-720145
-X-HE-Meta: U2FsdGVkX19bpg5DQe+hrRpw4TmvOFaayfi2n4oOwz2Pu/LJDfmwTPwH4R7PdjMMRRwD3nJkiFkk/8CnRzpTEM2R4UykhgdQS1u5TIF6Fl83DNwjxLMd/7yPF4ioN+KY8v0wwrKmrZYQ1cWeMug93hvZfKAKlXFgh32UIR7WU+Y/ddGtZSZNtyYyHtTMF5/mqDSxn6oOUXzGWszT3+WP+JcPrA230y8dqucjUmtIYuHzttz25KL/vQY9XIqsbKWkFFuYVBXLE6tfcK9i/8isdKRyryr07/sv6p947qoy2Z/PAebTP3NrOwG57Cui8YQOamscyJ6CmfP4FmSC1Xu9DwGjFu972RR87z1halr0jc/FlNwX4dMoyTS7dtmbWqe3fpYI2hINCI/ZwU5n8E+MWY5fxUb068TxwV04mR/+6X/zM8MonKkH8FEjR/AqcW5fsFTRDPnXgUGlVSB6bMYfR5sOmPfeGI1j4i02mPDBp32ZmSTx12K7ozXkUJ8cflRtd3lGlnMl4XnWG8wg8/BcLiWM9DQZej+A8LE2DrBdHGUvLrRqG9eMAlM78BRlNGpI4BqbOYmxwkzhKW6CGZbeDm+mX9vrIDNmJizAw5JqF7qqKWu6Dk+BPx6b43RQk+U61iMXKVlt1aIFZxU7uaIBMKvqrQlYbvFgaMdQXvNa5CMAXFppOtUtgSZiKTl8CO3aaRUUzqhr3dn9mreehmAiqvokNyhoXB8KegocOqVBjt5KOyeaFNmpg1CC1oNhIuCfJBlEHS7vdP3XM1esiYf6br8Ci7cqR2hLMYK9eTtygRh0Rf1Nb/3R1WRmDEUW4DuLJ1/EY+NaBeqgw6gxLyKMgiJ8AvHdAu9ix2zI/rRVLi0WwfHFDknKJBdz88GmUfFbPv+7yIgoZwL4u38zUWx23sk0WFjEY44Fl9cxOe9/6joY/Q2w86Sc9jRAorCiXmR+OP3YMcSCbFzqdmP/Ssv
- XQO7EVI/
- yZt5OsCukp3Lv06zDNb6Fq63rlgAIZd0XqDIqhTv9Yz7cXkq0y6Car7c+YwFa5XIDr9Xvmrk8xyEOQqTWMkUnnluhzb0hXRzoY1kwyG8MQx4ByzLfpZyXTX3fjFIh4BAQQpqBPczKoln+vfLZFnZHExjIx+tVfuRchMMq7Yib2U61ANxzu8rl+blrAguIYE3Ix9x5vCLLakMY6evt0utJ1+9MqQ89pOD8GntsWwaPdXLZiODx4qi4+q91wTU780HSw63EUpdroEWaWkQy2W9ts5F7jIHDgjOHAaLqHWXvoL6Cg0nrPcmAcYXb/8hztBc6mCUyVGu8W5M1WKLzrP2Ln7XYYQ8T/VYx7ZX0y0UjL7Tc7VrtDHyZ/6BGQixcQB3EAPKzX7bgEiCjN9dSXGHXNgZdYW0umqvazR6td0VNsnMmqKtTgPeStUgjgv+3IgvgMJVMXyxoOGoZk435quea59Il0No6cS4Ri6u7JZ9cxh/eyiceAI5icZEtCHK10thDkPaK
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: A34EC1A0006
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 5ubpjqr8ndtww6szfnyfzrn9f7s8p8wy
+X-HE-Tag: 1794191875-513727
+X-HE-Meta: U2FsdGVkX1/oEUk4L4gXZfV1zDvfVfkYEmPQlO3sRTGRVzM6mgxvN6qKWQdMaqfqS6zc1L6NW+zZCZ1tJhD1Idi0dL0wrGMgCIn+uSvx78DX2eNRcald/P/j+XZfH/AN+wzwTHm2HJ1zOAz/VHQldhfAh2bEk9DQeQDGuIabRDCOaMKSEa1bLF/1ZAESSfzjGqUexJIbwWX16gPzLl53Fvm1jQOk7mbzD+UkWNbOGMUSQeczFZm3eeYtzmkO6IZiauZqj//TyZp7999q9mOjnJxmi/r2coWiiTCWkkEDkasV2x072xwH8a0jTb9bZXl4QoXhKnnhmnvEh5mCn9wkXZfpYs88Es4aYiBiXpAQ76ckp2wySxJjkDfxPqBx4bCrBVAu8kqlFc50jx4PnW87gAM98fGaRzWeSTydd73udVKNyRYVlpAGXWeJnEwBX6Ijc69aPvcwSYIk0UH1UGduNk8zeBLhbB0DSQBgw4yJvA4uNdFhn0eMRuPsfLeOfVruLMaat9teR+fBBdAwaR1S9nIh+TvOp1EE4HAVdq77whZNSrTo53gLYTaiVPYkyytuSReWY00vkcUyOIV2HB/BTitmVtpgGXyadpIuKh12o+WDMNtpYJpVKImqqL7omzQjE13KX6fYC3z6MWdqmH0oJ5XTGe4LHIxSwnLhtGNMcQsQl504kx4O/iEQ84PB1FEBt6lV9ymOpF2yLPDJAxVKE3k3U4AS2PylKcePHwRo6L/NGqmpbIDuR0W80ioAaVAKCJ3w/HWhSQEVNT8D1kZyXNtO6laS0QIFurRRgWLGDetpBIKkd0jehDrqna5y47SNMEayRc3r4FMya/heSePcBUxvO4cBjJ4buCeornsNaIk3Bytd7CM4Vk0sSS1taxU4rONpdI3X+fezzDKEHqfJf68W5QK5yvpcdh0XQFKwoQKVybK3PG006rzprd1ElatHGX/0/zo7wM3jjGNuec0
+ j8grJ+/O
+ xgaKqyZhu6O3wMmuIqaytFwlYoLnFiXRFmlRrG+ZX/4l9Gh2aiHJF6SBo9yOccZ1jNz2ZsLBtH3XlNrf/YFDK3lEUDdwpMLUg4HSs/yE+8n/oM/ybJuq9HGjI7IZGJ5F/Y+eHHaJVHxmNXzPJfV/lVcuE0uP3IDofF708Y8/qoZIvoquVlluLSfVqGpd794xKDvmC0XDCY+cntOC6e8MY+4TbRV8NFPiJoVBrt6TgU+PAin81XKeViMDHtNAYqs4VRAgyb2IoZAWwckAHu5MEzBXu7rR8H0vHVLsxM1rsHSF8GLLR0SNidOSjRRYZ8uImXD8N6SCGzsp93Qcv4V1fEa/99PrRUv/wvqP+FMsgV9N2CXvMIAcWibCC4XYeFEAxbE4tUpdqte2Acc6pU0tRM+VyA1fspUQzz0RuWFBul8NEUPkm84kL+/crRsXUHUZAdu1C
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,182 +113,71 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 Hi,
 
 在 2026/11/7 21:27, sashiko-bot@kernel.org 写道:
-> Thank you for your contribution! Sashiko AI review found 3 potential
-> issues to consider:
-> - [Medium] tracing: alloc_cpu_data() mischarges global_trace and
->   read-page swaps
-Correct.  Charging alloc_cpu_data() unconditionally pins the global
-trace buffers to whoever first triggers the lazy expansion, and the
-read-page swap can move charges between the reader's memcg and the
-ring buffer.
-> - [Medium] tracing: alloc_cpu_data() memcg limit triggers
->   trace_rb_cpu_prepare() WARN
-Also possible.  With __GFP_ACCOUNT, allocation failures from memcg
-limits can now reach this path as well, making the existing WARN()
-reachable from a constrained memcg.  I'll avoid charging allocations
-performed from the hotplug prepare path in the respin.
-> - [Low] tracing: inaccurate snapshot size claim and inconsistent
->   GFP_KERNEL_ACCOUNT use
-The snapshot size description in the changelog will be corrected in the
-respin.
-> It also noticed 1 related pre-existing issue this patch does not
-> introduce:
-> - [Medium] tracing: memory leak in trace_array_create_systems() [1]
-That one predates this series as well.  I'll investigate it separately
-and send a dedicated fix if confirmed.
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Low] io_uring: commit message omits rsrc and tctx changes and
+>   uncharged allocs
+Thanks for catching this.
 
-The v2 respin narrows the accounting.  Only buffers belonging to
-non-root trace instances will be allocated with __GFP_ACCOUNT (via a
-new RB_FL_ACCOUNT flag).  The global trace, read-page pool and CPU
-hotplug allocations will remain unaccounted, and the changelog will be
-updated accordingly.
+You're right that the changelog should better match the actual changes.
+Besides io_ring_ctx and io_sq_data, this patch also switches the
+allocations in io_coalesce_buffer(), io_init_wq_offload(), and
+io_uring_alloc_task_context() to GFP_KERNEL_ACCOUNT.  I'll mention
+those explicitly in v2.
 
-Thank
+You're also right that "the last per-ring allocations" overstates the
+current state.  Patch 7 still leaves some infrastructure allocations,
+such as the percpu pieces and the io-wq cpumask, unchanged.  I'll drop
+that wording and instead describe what this patch accounts and what
+remains.
+
+As for commits 075d5837bafc and 0b34e7b20a48, this series is based on
+linux-next (next-20261104), which already includes the
+io_uring-7.4-20261029 tag containing those commits.  If the review is
+performed against a tree without that tag, those objects will indeed
+still appear uncharged.
+
+Thanks,
+Tao
 > --
 > 
-> commit a11da3138f9fda850c1b05bae82b0be7e738b994
+> commit 3d47975c4208930279f98824279734ca99b5e9bd
 > Author: Tao Cui <cuitao@kylinos.cn>
 > 
-> tracing: account ring buffer pages and trace_array metadata to memcg
-> 
-> This commit adds __GFP_ACCOUNT to ring buffer subbuffer allocations in
-> alloc_cpu_data() and switches trace_array allocations in
-> trace_array_create_systems() to GFP_KERNEL_ACCOUNT.
-> 
->> diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
->> index e760d2fe386fb..f925936378639 100644
->> --- a/kernel/trace/ring_buffer.c
->> +++ b/kernel/trace/ring_buffer.c
->> @@ -441,7 +441,13 @@ static struct buffer_data_page *alloc_cpu_data(int cpu, int order)
->>  	 * gracefully without invoking oom-killer and the system is not
->>  	 * destabilized.
->>  	 */
->> -	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO;
->> +	/*
->> +	 * The subbuffers are charged to the memcg of whoever caused the
->> +	 * allocation: the creator of a trace instance, or root at boot for
->> +	 * the global trace.
->> +	 */
->> +	mflags = GFP_KERNEL | __GFP_RETRY_MAYFAIL | __GFP_COMP | __GFP_ZERO |
->> +		  __GFP_ACCOUNT;
->>  
->>  	page = alloc_pages_node(cpu_to_node(cpu), mflags, order);
->>  	if (!page)
-> 
-> [Severity: Medium]
-> Does charging every alloc_cpu_data() call to current's memcg misattribute
-> global_trace subbuffers and swapped read pages?
-> 
-> At boot, tracer_alloc_buffers() keeps global_trace at its minimum size
-> (ring_buf_size = 1) when ring_buffer_expanded is false.  global_trace is
-> only expanded to trace_buf_size at runtime in tracing_update_buffers() or
-> tracing_set_tracer() when a task first enables an event, sets a tracer, or
-> loads a module using trace_printk().  With __GFP_ACCOUNT in
-> alloc_cpu_data(), those global_trace pages are charged to whichever cgroup
-> triggers the lazy expansion and stay pinned to that memcg because
-> global_trace is never freed.
-> 
-> In addition, ring_buffer_alloc_read_page() calls alloc_cpu_data() when
-> reading or splicing from trace_pipe_raw, and ring_buffer_read_page() swaps
-> that reader-allocated page directly into reader->page while handing the old
-> ring buffer page back to the reader to be freed:
-> 
-> kernel/trace/ring_buffer.c:ring_buffer_read_page() {
->     ...
-> 		dpage = reader->page;
-> 		reader->page = data_page->data;
-> 		local_set(&reader->write, 0);
-> 		local_set(&reader->entries, 0);
-> 		reader->read = 0;
-> 		data_page->data = dpage;
->     ...
-> }
-> 
-> A host process reading trace_pipe_raw from a container's instance will
-> replace the container's charged pages with uncharged pages and uncharge the
-> container as the old pages are freed, while a cgroup task reading
-> global_trace will swap pages charged to its own memcg into global_trace.
-> Similarly, trace_rb_cpu_prepare() during runtime CPU hotplug allocates
-> per-CPU buffers for all existing instances in the context of the task
-> onlining the CPU.
-> 
-> [Severity: Medium]
-> Can hitting the memcg limit in alloc_cpu_data() during instance creation
-> trigger the WARN(1) in trace_rb_cpu_prepare()?
-> 
-> When alloc_buffer() creates a ring buffer, it allocates the first CPU's
-> buffer directly and then calls
-> cpuhp_state_add_instance(CPUHP_TRACE_RB_PREPARE, &buffer->node), which runs
-> trace_rb_cpu_prepare() for each remaining present CPU:
-> 
-> kernel/trace/ring_buffer.c:trace_rb_cpu_prepare() {
->     ...
-> 	buffer->buffers[cpu] =
-> 		rb_allocate_cpu_buffer(buffer, nr_pages, cpu);
-> 	if (!buffer->buffers[cpu]) {
-> 		WARN(1, "failed to allocate ring buffer on CPU %u\n",
-> 		     cpu);
-> 		return -ENOMEM;
-> 	}
->     ...
-> }
-> 
-> Because __rb_allocate_pages() only checks si_mem_available() against global
-> memory, a cgroup with enough headroom for the first CPU (~1.375 MB) that
-> hits its memcg limit on any subsequent CPU in trace_rb_cpu_prepare() will
-> trigger this WARN(1) and crash the host if panic_on_warn is set.
-> 
->> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
->> index 08614af8fad1c..fd1cfd1f66fbe 100644
->> --- a/kernel/trace/trace.c
->> +++ b/kernel/trace/trace.c
->> @@ -8677,11 +8677,11 @@ trace_array_create_systems(const char *name, const char *systems,
->>  	int ret;
->>  
->>  	ret = -ENOMEM;
->> -	tr = kzalloc_obj(*tr);
->> +	tr = kzalloc_obj(*tr, GFP_KERNEL_ACCOUNT);
->>  	if (!tr)
->>  		return ERR_PTR(ret);
->>  
->> -	tr->name = kstrdup(name, GFP_KERNEL);
->> +	tr->name = kstrdup(name, GFP_KERNEL_ACCOUNT);
->>  	if (!tr->name)
->>  		goto out_free_tr;
->>  
->> @@ -8692,7 +8692,7 @@ trace_array_create_systems(const char *name, const char *systems,
->>  		goto out_free_tr;
->>  
->>  	if (systems) {
->> -		tr->system_names = kstrdup_const(systems, GFP_KERNEL);
->> +		tr->system_names = kstrdup_const(systems, GFP_KERNEL_ACCOUNT);
->>  		if (!tr->system_names)
->>  			goto out_free_tr;
->>  	}
+>> io_uring: account the ring context and SQPOLL thread data to memcg
+>>
+>> The io_ring_ctx and the SQPOLL io_sqd are the last per-ring allocations
+>> made with plain GFP_KERNEL.  The larger surfaces around them are
+>> already charged: io_mapped_ubuf and io_rsrc_node since commit
+>> 075d5837bafc ("io_uring/rsrc: charge buffer arrays and nodes to memcg"),
+>> the tctx node and its XArrays since commit 0b34e7b20a48 ("io_uring:
+>> charge tctx nodes and personalities").
+>>
+>> Charge the context and the SQPOLL thread data the same way.
+>>
+>> Signed-off-by: Tao Cui <cuitao@kylinos.cn>
 > 
 > [Severity: Low]
-> Should the alloc_cpumask_var() and zalloc_cpumask_var() calls right between
-> tr->name and tr->system_names, as well as alloc_cpu_page() and
-> alloc_cpu_buffer() in ring_buffer.c, also use GFP_KERNEL_ACCOUNT?
+> Does the commit message match the actual changes and current tree state?
 > 
-> Also, the commit message says creating an instance immediately allocates a
-> full ~1.375 MB per-CPU snapshot buffer, but trace_allocate_snapshot() passes
-> size = 1 when allocate_snapshot is false (which is always the case after
-> boot), so snapshot_buffer only allocates the minimum pages until a snapshot
-> is armed.
+> Alongside io_ring_ctx and io_sq_data, the patch also switches new_array in
+> io_coalesce_buffer(), ctx->hash_map in io_init_wq_offload(), and
+> io_uring_task in io_uring_alloc_task_context() to GFP_KERNEL_ACCOUNT without
+> mentioning them in the subject or changelog.
 > 
-> [Severity: Medium]
-> This problem wasn't introduced by this patch, but in
-> trace_array_create_systems() [1], does the out_free_tr error path leak
-> tr->tracers when trace_array_create_dir() fails?
+> The changelog also says these are the last per-ring GFP_KERNEL allocations.
+> While commit "io_uring: account the remaining per-object allocations to
+> memcg" later in the series converts io_alloc_cache_init() and io_wq_create(),
+> percpu_ref_init(&ctx->refs, ...) in io_ring_ctx_alloc(),
+> percpu_counter_init(&tctx->inflight, ...) in io_uring_alloc_task_context(),
+> and alloc_cpumask_var(&wq->cpu_mask, ...) in io_wq_create() still use plain
+> GFP_KERNEL.
 > 
-> trace_array_create_dir() calls __update_tracer() -> add_tracer(), which
-> allocates struct tracers and struct tracer_flags entries on tr->tracers.  If
-> a later step in trace_array_create_dir() fails and jumps to out_free_tr,
-> nothing calls free_tracers(tr), leaking the entries already added to
-> tr->tracers.
-> 
-> [1] https://sashiko.dev/#/bug/linux-9449d18e-1233-4181-9199-09eaead7b576
+> Finally, the cited commits 075d5837bafc ("io_uring/rsrc: charge buffer
+> arrays and nodes to memcg") and 0b34e7b20a48 ("io_uring: charge tctx nodes
+> and personalities") are not present in the base tree, so io_alloc_imu(),
+> io_rsrc_node_alloc(), io_tctx_install_node(), tctx->xa, and
+> ctx->personalities remain uncharged.
 > 
 
 
