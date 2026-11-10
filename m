@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7FCA60A380A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E743C60A5BEB
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=u1+vQ+IH
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OL68jl5e
 Received: by kanga.kvack.org (Postfix)
-	id C2D1B6B05B3; Mon,  9 Nov 2026 20:22:52 -0500 (EST)
+	id F13E36B05B5; Mon,  9 Nov 2026 20:22:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C05C56B05B4; Mon,  9 Nov 2026 20:22:52 -0500 (EST)
+	id EC36A6B05B6; Mon,  9 Nov 2026 20:22:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B451B6B05B5; Mon,  9 Nov 2026 20:22:52 -0500 (EST)
+	id DB2B96B05B7; Mon,  9 Nov 2026 20:22:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F6EA6B05B3
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:22:52 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1414340852
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:22:52 +0000 (UTC)
-X-FDA: 85417460184.19.943013D
-Received: from mta1.migadu.com (out-5.mta1.migadu.com [95.215.58.5])
-	by imf19.hostedemail.com (Postfix) with ESMTP id DC7A51A0005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:22:49 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=u1+vQ+IH;
-	spf=pass (imf19.hostedemail.com: domain of vineet.gupta@linux.dev designates 95.215.58.5 as permitted sender) smtp.mailfrom=vineet.gupta@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794273770;
-	b=If/PpHb78i4X7kDvx7hOA60yKq7KhfO3JmCK9jM8ycJdxo2Glccvxx01/1Jz5j72iuc0mU
-	r+NaQ7rEJUItvjEtcBcnppnvICvvt54uh8AI7ixIasLc4QwWamgTzMrDXSyfsj2nWjWCnZ
-	bc+7LIIdteuqu2SphY81Uf/8oCZTYOI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=u1+vQ+IH;
-	spf=pass (imf19.hostedemail.com: domain of vineet.gupta@linux.dev designates 95.215.58.5 as permitted sender) smtp.mailfrom=vineet.gupta@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AF8B16B05B5
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:22:57 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 364A6C0812
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:22:57 +0000 (UTC)
+X-FDA: 85417460394.10.18298FC
+Received: from mta1.migadu.com (out-12.mta1.migadu.com [95.215.58.12])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 13F9040008
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:22:54 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OL68jl5e;
+	spf=pass (imf01.hostedemail.com: domain of vineet.gupta@linux.dev designates 95.215.58.12 as permitted sender) smtp.mailfrom=vineet.gupta@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794273770;
+	s=arc-20220608; t=1794273775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=D+N2QRZvzfe+CFAvIEo6YK7+9V99UHaC8NPIhonyKWI=;
-	b=7/tg0BvgJ20TWLUImiGswSCDKN4E45WFinisr54+EWbLdG9lOitzLR9VZf/lb92QWWAzFQ
-	aurbTWnYZj/w6heWMYhZRxM0wTukh9mGk4enJZIa+1dA361wIhXNxHMZ/g2pJcI8oO6Vau
-	3gmvCGDN2oS9arF0/V93fjn1Hst9O+8=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=yIKtvc1ZmRXWfGxWgiVO8Ns8HZpEqAzhWlHpQ46fpV8=;
+	b=tYCOjCCFyANjpr5t6HwJfb+mMtEyY8BpMDR6KWlom2IpZsXDKu0mZce3Q8Dn/BJsH1AJJG
+	UT8VgBgbRJyYNZmgk8FEo0219cMeSjMUaX0rXDr6wMblqpfF0g3B3tOnhlS29IHV7xwc63
+	3VRM0BI2YPigeJw0c4sVSlf2EbIw1ag=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=OL68jl5e;
+	spf=pass (imf01.hostedemail.com: domain of vineet.gupta@linux.dev designates 95.215.58.12 as permitted sender) smtp.mailfrom=vineet.gupta@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794273775;
+	b=o5UbjxJLffqqvYjtkFXde561DkJkxyLI9irY0f9npEZl277eS80NidWr81LmWP2QLIjXMD
+	SzFavc5w3/ANCjxCtrsRZlCop2zjHiYIo4m7GKGEW2Q8uyNOQYgeCBShV49X2RYUzn/imR
+	qrnX9J7QOwnxbfZocnY90J9abhUU8sw=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=aonwTnaVCS6JFQJm6qDOQX7pACUW5lsxK/707tA3EJM=;
+DKIM-Signature: a=rsa-sha256; bh=omlSFSzGf7aOUZjYbn/5+K5lXnf2XWvd5GZpuA4NvOM=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794273768; v=1; x=1794878568;
- b=u1+vQ+IH3bB2gezV08+6cO0uTX02FrG5KALC3OLqIChFlm8vuk21aDXD+6oeTBssKnxOW+i+
- qjAAhymLdXgIkC5wBC6nlSHSmDRWMakSPkb9JFUpSBqCRy0ybrqgdpdos6hjbN1gUkKybsZ0UvR
- jQdHrphNv/s7dyerw+L1geAY=
+ t=1794273773; v=1; x=1794878573;
+ b=OL68jl5eOqQZJ8A9g06Dd+WgTgxJL2Uk13W8O4uZ8gCgG7u7mC5vZa0rgv/TC/y59jdd0B4e
+ 98g5lAgc1CnXpqmBJ+TTw6PkiaVSTjM07JhLHtpkacUSfhiaHGLZQzg9Ag0u/I/X1uxhVACOSll
+ U/WNubHTjqr+do/A+UucvENs=
 X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 5640507009fcdc41;
-	Tue, 10 Nov 2026 01:22:47 +0000
-X-Mizu-Trace-ID: 5640507009fcdc41
+Received: by smtp.migadu.com with ESMTPS id 0dd2321632bd0456;
+	Tue, 10 Nov 2026 01:22:53 +0000
+X-Mizu-Trace-ID: 0dd2321632bd0456
 X-Migadu-Flow: FLOW_OUT
 From: Vineet Gupta <vineet.gupta@linux.dev>
 To: dennis@kernel.org,
@@ -83,25 +83,27 @@ Cc: longman@redhat.com,
 	justinstitt@google.com,
 	llvm@lists.linux.dev,
 	Vineet Gupta <vineet.gupta@linux.dev>
-Subject: [RFC PATCH 0/2] percpu, local_lock: drop btf_type_tag where no compiler records it
-Date: Mon,  9 Nov 2026 17:22:33 -0800
-Message-ID: <20261110012235.1024461-1-vineet.gupta@linux.dev>
+Subject: [RFC PATCH 1/2] percpu: do not put btf_type_tag on per-cpu variable declarations
+Date: Mon,  9 Nov 2026 17:22:34 -0800
+Message-ID: <20261110012235.1024461-2-vineet.gupta@linux.dev>
 X-Mailer: git-send-email 2.56.0
+In-Reply-To: <20261110012235.1024461-1-vineet.gupta@linux.dev>
+References: <20261110012235.1024461-1-vineet.gupta@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DC7A51A0005
-X-Stat-Signature: bsm96m7mk3b7n6qpt4gyi8cyn68t7m9g
+X-Stat-Signature: w1i3fa7zmgd4cf5b3is36yngr7uu3gdi
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794273769-705153
-X-HE-Meta: U2FsdGVkX18gsbCMCgDjyDyZTXaFiKgkYM4PnVXyPuqY2sVjRocAhNsHEmU8Pq7PULNF24umMMt61haqcbttXaldrX0OsU7rKPwyCsiRp3g9Cdv0hAh511ErD4l6m3FVQjX68O75VAKDcuUFTnDY5J+99hYZZ6EX4VOMtBSgzyBYgH2+K12EsEHLwFsTOGZPElS61bC9U9mtAnNXjvv/DtO3jFZJ5IR5hUQu9hTCheBp8hknH49Zxt50xYJUl11f92GHxjHUNX5aiTiXrM0m9/LX8aqog77h/oDYNImzmFKegryxu3RC1FuwlvZyzOhjzkjjXdmvqwKHtnx03yjv4/gxOalLnVQJR8XURG15eFl6nAEr02DPtE8E1slRgg+xKBnuy3jXHP+SPCsvM9P22C1aHTuCqT9yY0r+PPB5T1XK2Bi9ETpwp7UrxwwbVbMo7oOD4l7fjpDm8VmeJQwLod7nQpcZVyTU+zwagdWQ0N5crLL/Qn7hSqCKKYh7J1rpwKdp9RrED0ORiKxvGpi7HjhOF1H3eJPRVZLSoMD5EUzW8NNIlynB/cuc9N4pyRLHgbihSE0tOBxLpQ9ShdBjUdBhjKUwOtD5Rv4SAVA4cfx15l0kun3Nk4J0x8hd1Afpd/R9+Im2VfB68dalcvGzLixK9g2FxUp+Z9XtaGnlC0aAeg9X0hdSOPvf+L3eG+QuOeQmkPqBiEVP3I5HIzM5xAAghNQJJhUUJvbk42lguTroPOqQZhIQbP3SMGvUltYrhloq9T6HM6425H2500iVke+4fWf1iwEoSNctcV9z+nK4akhKiIcKZ4YsFTwSie1XyX1RaDcttZJu+o5LnXG8fku3f4jxL96FEHyz9j7+0SZEjPCpoVXCcV2AXNx/i3oY0a2HLsEFSWZvi6l80X8c7/kOswdEgeXX3BPDTR+/OxDovrOgCbDFyP6thnbeevfkWOdaO28/g5uSyReA9A3
- Tw/Qg++h
- 8cGfinMIys0rHXnYxKp0zT246q1jbEvRg5eT/POw27D0N0uOLMpB/efu7ESLG+LUxNga5M/g8NuM8G+McBekRUJUxV5zaX1LPJURL0eBjLUa4sIzo/KSN5U8UxrZuARWA01U0gRGEfFzax+TBZ45kQwEVyyailVquUy/01lxB5gI9yTZ1YQugG5QtyupnUctXfoBrMNmgBmDe1jxfvODOryBbBUf4tAwCMDmFQAx64HaSPMeYEdfo30j1OKG/W8u2alE+pu81k1NSKB0/In04aeSKsRNONgsDQqZv3abzSNGWNATfnG3LTo+MfzC0kCPfU9vncBNiwydHyuVI6uSumYCz3g==
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 13F9040008
+X-HE-Tag: 1794273774-96540
+X-HE-Meta: U2FsdGVkX1/RSgR2kDAxuFy5WiMUGQndGshUcyJbLpWRA7zhLNeC4zh6xN/cB1AI6jBslIHMA06vsBS1TgAO3wFmzktlnPPyGBcihBOqITwJ/KuP8ttE8J8oG3rkpIH/9iv+fnqN182x96/nHtWuRC8EEj9hEZnxvgZqgsdJ+cxHpm60b93SsQCgdYseGmcCeK31tLD+DzGFjKSIgBjrtlXTZrv0379xl0nseCc6JoplE8Cz0u/uJs7oEkZ44TLp5q4Bjxvj3BzzFxc/bwhnFMUzc3QIh3ROazN38sKkoWRZu3MY2S+n6TTa2wK2UTOyI/vOjp/N4EcPSBNjW64+vC5TbDAE4EWo7DTqs/WZcxYyWxrZU9xA1XJ6mrUxe1OGV7W5hdSgeMBSRMx35yCMR7Ppz03HYESRgFaxjnw3moLaJdV4oun7mZrCV6fV8ikZghs0TiZtmSrmjt9pQ8ihCqbiSIDhWxYdOBGHm05MhQlFNQVnzSbRiuopQVwGEy4Ytx9/COMQo8A4LTQ83hFb5o6z22TJYIuCtTLrbrOeTUGXKYWoiKnVgUOfuO7w6ovCYDFcYJyP6PAqZRCfxKmgch6hWhQ+miBUhlVX7Xvf7Vq+nmGCnCvtqwR/nHStd1ArorwwrQo/IbS3BPKmlaDzNFJYh+Dcb2LseXjZSxLP4S3XkeWQZLnunGZpr1IfObKwuA2sTQkdcbLmIgjO/S7PoJ1k6A2qhRKY/og84fhORdg13uSmHqA6XQ1HRBMoUVTWlxriq+gNUIgOh1WHpgXkl0ihXZ6mOUx9xzgApSFhQkm43SZt+D9QC+VBCTcJELgQiq1p/fjSgm1Tc0GmNEG3Dsb9enf3JuqUsDxVAaZmP01RPn9x6vrYjQreC0X4IvVKEyHSfKKZUmdR0P3Oh1IsRibHhWzg58FcMY4ki7xvPBgOwVslZn6G1e0XmBQgTtKAMmU7HcfU+xpBgfHd6IQ
+ x/iAbq1v
+ 7QBysFdkt4TEHBPXs44xJdfIvVPN7mu3kFxXSPkhltVvW2+TjMWV9L3d1qa0xb2pDWKq7RrU4vIMw9DTEropjoceRx7nGlRSrlIfuzqDlnRL+Kl/mNrWAycPRVvoA48WFplOg6ZNe7ymcw2VB8xWR7C4cXwjZJJ50201a/FndfVnT8EBB6yBn+xwItermM/WSSDutR7E7PVKzxw+0XS65eJIzmJsVq4r7W8U9/TPHPDAYwjAAtz4zNm/ogsDLbeW9nDsVTQENdglYeBAhG4wyMCceLg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,77 +112,117 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi,
+__percpu carries BTF_TYPE_TAG(percpu), which records that a pointer
+points to per-cpu memory. __PCPU_ATTRS() applies __percpu to the per-cpu
+variable itself, so DECLARE_PER_CPU() and DEFINE_PER_CPU() put the tag in
+declaration specifier position on the variable's own type.
 
-Currently PAHOLE_HAS_BTF_TAG is gated on CC_IS_CLANG and the goal is
-to allow CC_IS_GCC. There are GCC fixes (PR128479, PR125991) in the
-making [1] but despite all of them an x86 defconfig still emits ~40k
-instances of spew like:
+arch/x86/include/asm/processor.h has
 
-  arch/x86/include/asm/processor.h:232:36: warning: ignoring attributes
-  applied to 'struct cpuinfo_x86' after definition [-Wattributes]
+	DECLARE_PER_CPU_READ_MOSTLY(struct cpuinfo_x86, cpu_info);
 
-where one is enough to break a -Werror build.
+which an x86 defconfig preprocesses to
 
-Making GCC stop warning here was proposed as PR128480 and rejected:
-the suggested answer was -Wno-attributes, which the kernel would not
-accept just to suppress this noise.
+	extern __seg_gs __attribute__((btf_type_tag("percpu")))
+	__attribute__((section(".data..percpu" "..read_mostly")))
+	__typeof__(struct cpuinfo_x86) cpu_info;
 
-And even if warnings were to be ignored, the build would still fail
-with 33 hard errors from a separate GCC bug, PR128477,
+and GCC warns:
 
-  include/linux/percpu-defs.h:216:45: error: initialization from
-  pointer to non-enclosed address space
+	processor.h:232:36: warning: ignoring attributes applied to
+	'struct cpuinfo_x86' after definition [-Wattributes]
 
-These come from the same tag on the same declarations, so this series
-removes them too.
+which -Werror turns into a build failure.
 
-The root cause is where the tag is applied. BTF_TYPE_TAG(percpu)
-records that a pointer points to per-cpu memory, but two places apply
-it where the thing qualified is an aggregate, which no compiler can
-tag (GCC or clang): every variant of an aggregate shares one DIE,
-so there is nowhere to put it.
+The message is confusing: this is a declaration, not a definition. But
+the compiler is right to object to a type tag on the aggregate, and the
+issue is fundamental: every variant of an aggregate shares one DIE, so
+there is nowhere to put it. clang drops it silently and GCC warns.
 
-  - __PCPU_ATTRS(), so DECLARE_PER_CPU() and DEFINE_PER_CPU() put the tag
-    on the per-cpu variable's own type;
-  - the type argument of DEFINE_LOCK_GUARD_1() in local_lock.h, which
-    cleanup.h turns into "typedef _type lock_<name>_t".
+The tag is meant to record that a pointer points to per-cpu memory, and
+cpu_info is not a pointer.
 
-Nothing reads a tag in either position. The verifier matches "percpu" in
-btf_ctx_access() and in the member walk in btf_struct_walk(), and both
-check btf_type_is_ptr() first, so it only ever sees the tag on a pointer.
+And this gets worse: for a pointer-typed per-cpu variable GCC attaches
+the tag to the pointee, so
 
-The aggregate case is the only one that warns. Where the per-cpu variable
-is a pointer there is no diagnostic, but the record is wrong: GCC puts
-the tag on the pointee, so
+	static DEFINE_PER_CPU(struct bpf_hrtimer *, hrtimer_running);
 
-  static DEFINE_PER_CPU(struct bpf_hrtimer *, hrtimer_running);
+comes out as PTR -> TYPE_TAG 'percpu' -> struct bpf_hrtimer. The truth
+is the other way round: hrtimer_running lives in per-cpu memory and
+points at ordinary memory, while that record says it is an ordinary
+pointer to per-cpu memory. clang emits no tag there at all.
 
-comes out saying hrtimer_running is an ordinary pointer to per-cpu
-memory, when in truth it lives in per-cpu memory and points at ordinary
-memory. clang records no tag there at all.
+Add __percpu_var, which skips the btf tag (__percpu under sparse) and
+use it in __PCPU_ATTRS(). The cpu_info declaration above becomes
 
-The following two patches address this:
+	extern __seg_gs
+	__attribute__((section(".data..percpu" "..read_mostly")))
+	__typeof__(struct cpuinfo_x86) cpu_info;
 
- - 1/2 provides a new variant of __percpu, __percpu_var which elides
-   the btf tag. Switches __PCPU_ATTRS to use it.
- - 2/2: Applies __percpu_var in local_lock code.
+The pointer spelling, T __percpu *p, is unchanged and keeps its tag.
 
-Binary impact, x86 defconfig built with clang: patch 1 drops 280 BTF types
-(140 TYPE_TAG and the 140 pointers carrying them, none referenced) and 3360
-bytes of .BTF, with .text unchanged. Patch 2 changes nothing at all.
+Before this patch the tag also qualified the variable's type, so &var
+had type "T __percpu *", and a pointer does have a DIE of its own:
+pahole emitted PTR -> TYPE_TAG 'percpu' -> T for each one.
+this_cpu_ptr(&var) is that shape, and that is where the records came
+from.
 
-[1] https://inbox.sourceware.org/gcc-patches/20261109213600.772524-1-vineet.gupta@linux.dev/
+Those are the records an x86 defconfig built with clang loses: 280 BTF
+types, 140 TYPE_TAG and the 140 pointers carrying them, with .BTF
+shrinking from 6831660 to 6828300 bytes. They are the derived pointers
+-- clang never recorded the declarations themselves. None of them were
+reachable: a record points at a type only if something is declared with
+it, and nothing is declared with these. The 794 places that do declare a
+"T __percpu *" keep theirs -- the tags reached by a STRUCT, UNION,
+ARRAY, FUNC_PROTO or another PTR number 117, 6, 3, 39 and 5 before and
+after. .text is byte-identical.
 
-Vineet Gupta (2):
-  percpu: do not put btf_type_tag on per-cpu variable declarations
-  local_lock: do not put btf_type_tag on the lock guard type
-
+Signed-off-by: Vineet Gupta <vineet.gupta@linux.dev>
+---
  include/linux/compiler_types.h | 8 ++++++++
- include/linux/local_lock.h     | 8 ++++----
  include/linux/percpu-defs.h    | 2 +-
- 3 files changed, 13 insertions(+), 5 deletions(-)
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
+diff --git a/include/linux/compiler_types.h b/include/linux/compiler_types.h
+index c5921f139007..0a18b3f10675 100644
+--- a/include/linux/compiler_types.h
++++ b/include/linux/compiler_types.h
+@@ -50,6 +50,7 @@
+ # define __user		__attribute__((noderef, address_space(__user)))
+ # define __iomem	__attribute__((noderef, address_space(__iomem)))
+ # define __percpu	__attribute__((noderef, address_space(__percpu)))
++# define __percpu_var	__percpu
+ # define __rcu		__attribute__((noderef, address_space(__rcu)))
+ static inline void __chk_user_ptr(const volatile void __user *ptr) { }
+ static inline void __chk_io_ptr(const volatile void __iomem *ptr) { }
+@@ -68,7 +69,14 @@ static inline void __chk_io_ptr(const volatile void __iomem *ptr) { }
+ #  define __user	BTF_TYPE_TAG(user)
+ # endif
+ # define __iomem
++/*
++ * btf_type_tag records "points to per-cpu memory", so it belongs on the
++ * pointer spelling only. Declaring the per-cpu variable itself puts the tag
++ * in declaration specifier position, where clang drops it and GCC attaches it
++ * to the wrong type, so __percpu_var leaves it out.
++ */
+ # define __percpu	__percpu_qual BTF_TYPE_TAG(percpu)
++# define __percpu_var	__percpu_qual
+ # define __rcu		BTF_TYPE_TAG(rcu)
+ 
+ # define __chk_user_ptr(x)	(void)0
+diff --git a/include/linux/percpu-defs.h b/include/linux/percpu-defs.h
+index dbe3267a0a13..f53fc430aaad 100644
+--- a/include/linux/percpu-defs.h
++++ b/include/linux/percpu-defs.h
+@@ -45,7 +45,7 @@
+  * that section.
+  */
+ #define __PCPU_ATTRS(sec)						\
+-	__percpu __attribute__((section(PER_CPU_BASE_SECTION sec)))	\
++	__percpu_var __attribute__((section(PER_CPU_BASE_SECTION sec)))	\
+ 	PER_CPU_ATTRIBUTES
+ 
+ #define __PCPU_DUMMY_ATTRS						\
 -- 
 2.53.0-Meta
 
