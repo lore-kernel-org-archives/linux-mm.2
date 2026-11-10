@@ -1,124 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971F060A261A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A95606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=ZcYSNki/
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=OHmvt/Dt
 Received: by kanga.kvack.org (Postfix)
-	id A90F06B05E2; Tue, 10 Nov 2026 00:09:49 -0500 (EST)
+	id B0C9D6B05D1; Tue, 10 Nov 2026 00:17:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A61836B05E3; Tue, 10 Nov 2026 00:09:49 -0500 (EST)
+	id ABD7E6B05DF; Tue, 10 Nov 2026 00:17:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 977956B05E4; Tue, 10 Nov 2026 00:09:49 -0500 (EST)
+	id 9FA446B05E4; Tue, 10 Nov 2026 00:17:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD1B6B05E2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:09:49 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E4A9F14050E
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:09:48 +0000 (UTC)
-X-FDA: 85418032056.20.FF89AAB
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 111911C0006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:09:46 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="ZcYSNki/";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7FB576B05D1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:17:13 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id F0A42408CF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:17:12 +0000 (UTC)
+X-FDA: 85418050704.09.A026CD6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 324D420002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:17:11 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="OHmvt/Dt";
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794287387;
+	s=arc-20220608; t=1794287831;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9nI/EA+STEPCGq9S2NlF86HxTqJD0H0ath9HnAszLms=;
-	b=1VNOojsVLMctKlzrhpWOeUzO8RXgRQk3mwpYJzPSdcesB9za03bg0Z51LMPjFPKJP36+5G
-	pAk9se6vUA9LxUQ4U1Ki5z/HVPmTHeD2/4w2MPqYei+2iLUuZLdh+X7buk2mpgvBbWW9DK
-	rHBw0Q1P5LyQNC2eBxVucnA0GH2s7M0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794287387;
-	b=YiihHc0LPMJ3qWIGFmy8xgwsmACQw6z0xZE+ePmWtGGgq28YQoq8vPbULBZ9vP6qFWCZWp
-	edmRIlYWYAsy+lTdA1RwIrhwa8fSJC2/4sjeanXUJL9nrUSYT0KqyZbLHTgadXIGoufVn9
-	U6m5zsssxopncY1yeTqk6dLsfd1/HNc=
+	bh=hJUKVOXw+rsYg0Fl10Dji6GuiYtz/4hFo7JB2GRgOYo=;
+	b=DJEk9jKUx9oEhynt7pA67jpzXIW2lfiZRjydNDe3Sx+J7nPRyzJFj0PdjCPpAPUQsXLFQN
+	35hNa3m9/N2Y5ZChTSCreVXaRj+IgsgmaL2etK4q/dS+3m7Ll3ZGIepRF1iX92eCa9TyOB
+	Nr3eaAh9uSC7ia0LjedSaYEznfDSaH8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b="ZcYSNki/";
-	dmarc=pass (policy=none) header.from=chromium.org;
-	spf=pass (imf21.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.172 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-8b612fd74e1so570618b3a.0
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 21:09:46 -0800 (PST)
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="OHmvt/Dt";
+	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794287831;
+	b=qi8VNO47Bqi8FUP6aXUllBgZrjtGRpouBETSK45yZgaPfJwHTd6nbzym4Mn6Kc/PBj1ReA
+	TcWElyu1Fm50hU4yQ4y++RhiN+55zgtEAGQ4S2DKudcX7qHzt61kTpZ9osCPQ/ga4rP6Cf
+	Qg0rkuWyxAkEqnI0C8dtuALntKDP7Bg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 682BC61154;
+	Tue, 10 Nov 2026 05:17:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019051F0089F;
+	Tue, 10 Nov 2026 05:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794287386; x=1794892186; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=9nI/EA+STEPCGq9S2NlF86HxTqJD0H0ath9HnAszLms=;
-        b=ZcYSNki/7/4SzGvBdPxOSGmMpA8vjdNBjunTr/r6ENxqDWkIz9DMz0eaVkynbIqDh9
-         NHJifNZZepOHsxfPLzEW2g6GVM0CRFP+omOZaVRPYUJ6JXBzGjisInm1KidK3rGrjOfH
-         aD8AZgakOA1OM+7yOzfKZfay5DVlESc4DP754=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794287386; x=1794892186;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=9nI/EA+STEPCGq9S2NlF86HxTqJD0H0ath9HnAszLms=;
-        b=KTHSUtoXXDahseAZDOO6s5WKcFcYPjvW2ELT+PCORAHBGtCxV6jgpEl6hE2WniOSsn
-         +zQ7WYlFoTjjmP+xWbvtnPNFM6trZWOdbRuB8wqbh1JMpu8q2Y2IVKs04QZMP3vlaNRS
-         Xtw/wQrvGflIik1GChNUVY+n7+GJveQ3DFzWaFXXVbZfumwApdFl+qJsPEu/W31OdayI
-         4n9lYN8V0rUHa3jwVNNz0yCtFNWhbbZo+TAjIwTLp+FfbN6rCuzcE5++fiamu1PRENLI
-         JSQKrDlfqmXA91xULEi6DKleSfPrYgC2kT+c3E4AeSXC57ahjwuP9EG8uTj9pnbwKwes
-         OsBQ==
-X-Forwarded-Encrypted: i=1; AL+hErElfzWgdSCppy40mi3hJpuyG9fLS39QvfBL98s2TW1ZuIl0GeIEk6FaixrDWuN+XluVVSLxxMlRwQ==@kvack.org
-X-Gm-Message-State: APuU4Z9NIHo3Y1CK8yHN6EQOWtXqIEuMhWQCzzi6e9WGoEXO55VU06m4
-	4ZxuRTR+X1ZSed+M2PyQN+9vvl2XlKtpBe6qV1uwqspkch1cOlt3+6mYEuqRNVXi5g==
-X-Gm-Gg: AYBFou3IMhUwqWAkF15uX/VC5rIm7/gkXaA6wiFbxGn+XN0p2EtFWNCYibBg2pcXjwR
-	nj1hCGYNDr6Kxv/kkZ05Co/MBdeSRi349ah6kfUQ+DE62zogCw/7E97Ncw5syMfJGOfnf6IF8IN
-	YTj6cpR+4b0KWfUEByfPsd7sSNU66mUQXhcF22nd8xv5oq+O7asMkmgBch/+KoLghtT/upZM5xW
-	hrdRRRUJEfOdvGWPEYvxZGgeFCjQBObEwNKZEUaJGUaDgCzLF167TM0d+kQXm1zNdqVuY3daumE
-	Xx7gjqtVxVlQh/QtYlzbxaZkArJ5Pi9C5ikJRV7adELTL95MtNc9vz+eKe/Asua1Gl8Nz1c+ggi
-	BuZGGDqsvhDY1HoaEAI/IuRlCuil2E4mpWhUrD/eM0adR8/41/7PoXVAKLR9DJgvht/Qo/maVDk
-	XIGR6r5imL/W1HAZ4PsK7gO2IYHCkvLG8x/voDEq9O/95tLgbvqnCBoPI/3JIUJEJr/RsrHRssn
-	6xPR8prFC3/UjVoPttaxFqkM34uBZjruGtgdEDYznNqi9kBS7iimSizqSwfsq3m61D058LAc/bt
-	CfmGsu39jN+4vF4s8itA6GXepSb01uTm+w4B0zT53fpVD2U2++4/MiSILWkXBQbv4MCJgw==
-X-Received: by 2002:a05:6a00:3692:b0:880:849d:c07c with SMTP id d2e1a72fcca58-8ba8590318fmr1720593b3a.25.1794287385925;
-        Mon, 09 Nov 2026 21:09:45 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:e137:9384:7cd8:6e40])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baab4fc2b5sm384573b3a.50.2026.11.09.21.09.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 21:09:45 -0800 (PST)
-Date: Tue, 10 Nov 2026 14:09:41 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH 6/7] zsmalloc: fold zs_obj_write() into zs_store()
-Message-ID: <avKkvXNesmBRORnn@google.com>
-References: <20261105044752.1997895-1-senozhatsky@chromium.org>
- <20261105044752.1997895-7-senozhatsky@chromium.org>
- <auy6wQIz89NxpskT@google.com>
- <avKFDz0PGwkbwNgz@google.com>
+	d=linux-foundation.org; s=korg; t=1794287830;
+	bh=hJUKVOXw+rsYg0Fl10Dji6GuiYtz/4hFo7JB2GRgOYo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=OHmvt/DtePgbTU+VOoheC8pijLTPtihzRe2VU2S7xY68oADyVHeSJ0+6zjB5vuhRk
+	 gNZrALJn6f8nyM+4RwDQMibH4qvZC+jQE3kTRXpnJp/0QbRtOA1peLP4M+RTC+Fa6U
+	 RYRAVYwpzMaR/9fTcpx2vv43kiBRNr+TOvtpCh6A=
+Date: Mon, 9 Nov 2026 21:17:09 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Weilin Tong <tongweilin@linux.alibaba.com>
+Cc: catalin.marinas@arm.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] mm: kmemleak: avoid long RCU read-side sections in
+ reports
+Message-Id: <20261109211709.133122f9f10091f06c4acbc1@linux-foundation.org>
+In-Reply-To: <cover.1793871596.git.tongweilin@linux.alibaba.com>
+References: <cover.1793871596.git.tongweilin@linux.alibaba.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <avKFDz0PGwkbwNgz@google.com>
-X-Stat-Signature: 4kr1deajmfztd4mbut46g4uh3e3mfowm
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: yk33qydcbomngt3s5eycq1fuouu79kxy
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 111911C0006
-X-HE-Tag: 1794287386-656636
-X-HE-Meta: U2FsdGVkX1/HEcO0nLRiCbVurUsCLyshfmPb4uNvsMuL3GugFnJ+v/L4eXG/H8H+u597uz+xFGsbeF6/XEZ/Wki/6lvePcz2NZ9ujRb0ZtIo1GSKgzdkgxGzhMrJO0oMUlbHfANw11fTqfQ2YGv9BKItQhz20H18m+SsxKIMloKfUPDOhHFIH/HKpCPbidX+xUSDfbbikKUVKwtYHiAOiqMBseasudaPa6Tq1NP7cjUemAD096zftiBA/mSoQnPtyH21N9LK9LaTraR/L2lKRT+KmhkHxK+oPtfFscwXb+x5t7uO3uqVVp+hv52vCpuDGsYjMDdNnaa2BirfR5LvZ8H1g/+7Alq3G3IEVqTviNdEdEI1IfZOqnHOxsxWH1M7U+YgRDPKvrD12VmnpZH/eKiUav0xQ2r6nGvFJL6U2+GcKNXs1x7wTQnURc872upPiq7ETV5wD+9TbN7a/9p7BrlYSTxzmzmhQ1nK4HnOpIH0+DA0nexFD/7FMgC6N7uP2OQ6nFEQ5U875QOxV2Uh/pBMis2INPeMw1H2s8d5uQGw3dkVfZlcy9VRoJjGRbS1afzPkJKG9k9WpEQLSVgg4JXst/VWF77+BAYwagVh/c4f8RaTA1nsqUzQjbSwpRoj69XOMedeQOR0pjh43SOJfkOlZjoUHiYBhRfJXR893UHc07bkmFnikJ1iZ2/4kcfj/kiftVfm1ROXtXxKdFxoWUWKhkWMQcbSdWifjiGzayDgv5faTEfG+lu4QetoHulEqr66i2f+7AkFEyxlRlKkMpjwShM/VlisFupOzFdMvB/3yb4DaBeOYsZl2osxhvoMLMqe1/MlFoUwbO1Xek+5VLsHdokSdO2UAxkRoEX4WhOt7KxIv64sSYsfKLMF6Ti9sFaWDZ/GT3gDt5NbCBWfSDmY5O9h66T+YVZDTs12ZjMpKhx5fWudLxeR+oh8AAt5M78ZrZq04mX8Gs6OEVJ
- fdln3nWN
- 4p69slhL/OavSD4z4irrS8xz5qv1kIwCCPDz1kxNlY/d78DzX/NfykVNyYsBFQ/VDuTFbIe8FX2fcsn0p5wc1tVYpzFVTovpjOW14ysqPHWncv8tx0lgduuUh+PhX1wRY7B3LLDqzj6LUefxVnc+bE1RVnWo75vfrfFujorZJ533X9Nb+Sr5AH7NTfk+grZOnwYnPEYN9G4M+76UMyUaPAaFQZA7g0lQq/6B1xvLG8W+lM1SX1EZK9QtgukCEndcNm9RkA99hJtwPvQ2IkCkUwjoMh1kk81oDMev9r7gEpRXmvYsk4ADrNWZoRsoRruG0tgsB7kNn8JNFXLTUEeIdNkA9JZHZv22ZndfPNdjLXKhr7X6xgqY7i1EhtavefZsP6RTQpwiAJtuQiV/Hyy7N4W4Ouw==
+X-Rspamd-Queue-Id: 324D420002
+X-HE-Tag: 1794287831-872193
+X-HE-Meta: U2FsdGVkX1/7AwegDOAogZJRh96QQIT5b78WzSk0aGTdqHuZa8J9QhHJGybWik9x6ZyRFiN0z0yl6unGDH5jx+U45rL6RYHeJCno0+e6rAd8M1Ed1BvhwaKKMR5OYabU91bCGdryvMyqQ7kp+31XvKKOWM9kQ29sYtUux7rgjDkdwo7Vpv6FXxC5LNKa6juoI3K2IeqGEtsBZQLKMUEGB887yLgArL5X4q6ZVgyPjr/MTCeXYJbd9ufaMeOjhf1a2sHfE/XU/HFhohX2eVnbx5Xy2czCjygL6EAbOtT3u4cjI+TyLggNzQkoBjuwYGalg+IUft4SRLS6j0S7naWuG2whuS+4Yhe8CfGTLIl+JxoSJlk+YBdFGf0gy+i0S4LL+CQbTmIU+kR9OhCKss2S5UOH12UPjHMI8Oy0Ejrw0ldVxTxPESFPIlx8LI4v8kn2EJcjdzYbuhTrNyra/ewrcAsJZmoe+Pq9a429nfMs0LK5XHgSRWeRkrGF0IOeKOCC6vIETp7zSlDTp/cSB3yD/uN10uKFuc6YX9rCQ0NSAPgvc5WP1JzN12eXFfHi0QYKM4hQAjqEnfJa+aTkUlLWcB7kWXqNZ/xfyWA0yX76kLn/5ZsnNnElzbG7Y1BazwU+PjrwlugKEkFTOVkXIlwjTkg/q2hSvqSReIN4RdgIXahbqZiJirY7Y1gdkl9EdMhJxaHIFdi5WcxvIg0t56ndZi9etXxVwFZI8LQYsET5Gu1VXTEZ2AYYAxOBhN7TuC/bNiDxSHgGdT4NdhCH5T83JvJflIqv+o7T7p4TE82Phj/RG8SFI3UZDGy9WLVmWcxgQ3gALO6fcS/gluZ16l0TrN9mztBzE2GMhIUYVSJYdwmJdkspR70jN3j+ZqxEBWo+NVeEiElQ6GDBwGyM3nOMXKFubwOIQaD/9BcQXwbi8Bi0oBPsydGlCnja0NhrtXR378bHPsE7axIBdgCdtK8
+ dr+GeWAU
+ Puc/mZBSpZWVqvVg2oQo8HPJrJR2DaJIcXwTJQBP9UjKc6sfeJHUKgD4/raly5RgNbLo5jIXMFhowtLkvZyo4f7GQUN71A0JXEo7SYSjO2Zby/5HbYL8imOkOqErve/3Ijuld8hXDS/VPKdatJ6QoTgh8T/KjUEA3xdjjGetTGvONl8nhqV3TNRvRRoVajads0pf4uZeLk32F475w0Y2idvsrW17CQlytnHZWGec6/L7aeMo42ZkmrPSf0maWdUo5+BH4MjgRBBpHD2c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -127,35 +93,23 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/11/10 11:45), Sergey Senozhatsky wrote:
-[..]
-> > >  	spin_unlock(&class->lock);
-> > > @@ -1332,8 +1324,14 @@ int zs_malloc(struct zs_pool *pool, struct zs_handle *handle, size_t size,
-> > >  	if (!zspage)
-> > >  		return -ENOMEM;
-> > >  
-> > > +	/*
-> > > +	 * New zspage is not in class->fullness_list or movable yet, so we
-> > > +	 * can allocate the object and copy data before taking class->lock.
-> > > +	 */
-> > > +	obj = obj_malloc(pool, zspage, handle);
-> > > +	obj_write(class, zspage, obj, src, size);
-> > > +
-> > >  	spin_lock(&class->lock);
-> > > -	obj_malloc(pool, zspage, handle);
-> > 
-> > Should moving obj_malloc() and obj_write() outside class->lock (and
-> > skipping zspage_read_lock()) for new zspages be split into a separate
-> > patch on top? AFAICT, it's a separate change from merging the
-> > interfaces.
+On Thu,  5 Nov 2026 17:52:48 +0800 Weilin Tong <tongweilin@linux.alibaba.com> wrote:
+
+> Reading a kmemleak report can traverse all tracked objects in one
+> RCU read-side section and cause a stall.
 > 
-> Let me take a look.
+> Serialize disable-time cleanup with clear operations and report readers,
+> then use kmemleak_cond_resched() in both report traversal loops to let RCU
+> progress safely during long reads.
 
-I like the idea.  At first it looked like we might have a tiny corner
-case is when N tasks attempt to allocate in the same size class, that
-has zero empty zspages, which now potentially can result in N fresh
-zspages added to the size class, each having one object allocated.
-But the reality is that master does that already, so nothing new.
+Thanks.  Has this been demonstrated?  Are there real-world reports?  Or
+is this a theoretical thing from (LLM assisted) code inspection? 
+Please do share such details, they matter.
 
-Maybe something to look into separately.
+In [2/2], *pos does not advance while kmemleak_seq_next() skips objects
+whose get_object() fails.  If *pos isn't aligned to the 256 boundary
+and preemption clears need_resched(), a long deleted chain gets no
+periodic RCU break.  Seems the code could tighten and simplify the "once
+per 256 operations" logic?
+
 
