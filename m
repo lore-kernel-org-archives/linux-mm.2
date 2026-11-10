@@ -1,145 +1,96 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71B0606A33D
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29D1260A2604
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=yFWPS09P
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=DIrrzKib
 Received: by kanga.kvack.org (Postfix)
-	id CFD096B05B2; Tue, 10 Nov 2026 12:42:35 -0500 (EST)
+	id 4757F6B05B1; Tue, 10 Nov 2026 12:44:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CACF96B05B4; Tue, 10 Nov 2026 12:42:35 -0500 (EST)
+	id 44C1C6B05B6; Tue, 10 Nov 2026 12:44:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9CF76B05B6; Tue, 10 Nov 2026 12:42:35 -0500 (EST)
+	id 389166B05B7; Tue, 10 Nov 2026 12:44:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C9386B05B2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:42:35 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 42E8A160A02
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:42:35 +0000 (UTC)
-X-FDA: 85419929070.05.9C004A1
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 40507C0008
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:42:33 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=yFWPS09P;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794332553;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 0B3856B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:44:17 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9C2AFA8648
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:44:16 +0000 (UTC)
+X-FDA: 85419933312.13.991C08C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id EF86D140009
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:44:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DIrrzKib;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794332655;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Km/1n1LHhDr02ASZV9qn8VhaPAsioBtH6JYVLmDFnWQ=;
-	b=UuqvKqRL+9UjxzFKxq26CSL4tI9Z2SFYB8g2RcywQIO9zCU7bogch9sQnmJmyxBDgMO61H
-	3/GpuuFquGu3F93yfqFTe/f6gQt1CjCq1mKPw1xTb9pjCoIN7Soofi2olyfGhmn4GtG09U
-	xZ3hQkg0ijlgvGCSV2kvzekgJz9AvE8=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794332553;
-	b=N4EO4znbLmkSzdVnw1U8yVurGkguX3yA0rANcEWekMwmqGCILOWy5k+YuFBM8RVJ73pUYD
-	IEnhV6dibgmMxEWY7DY1gG1MKvx3lL6BhpO3TGWiest+kLrtHRq81MFZgM3MBUPAuhoe7O
-	mrGq0qYI53q3+Lwlul7JE/EG0xSfuGI=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=yFWPS09P;
-	arc=pass ("google.com:s=arc-20260327:i=1");
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.174 as permitted sender) smtp.mailfrom=nphamcs@gmail.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3ac97e45a79so18518561fa.3
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:42:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794332551; cv=none;
-        d=google.com; s=arc-20260327;
-        b=bfRAfC3DYZkftM473tHhk2mQ6qnMhQHYzFLZELnDFiDfdupWzws+qKjQweIPxoySDn
-         DaRi9ngCLjc6BP9qEtMGmxKB5wl0Se4LzYId8NxRHSg/DdbdQGOF3a1EDpKsyrjSZPcE
-         9Q5hvWVN1Cf1O5or0ssAgWhwayiBH715w3tqqiDu7hgoBZ3gPmWv1q3r/Un4LyOg8a9N
-         aynF9jenninLK2nQFkCUW0QZQbH1GO0EJPJONbnEcFofZcMl3mbqWQ3fhEjY0dO2eS18
-         +hKNiH5J8QeHBVqzjB1/q8iyL75hVV+cDWs2m8gmJPFQ9TrTrH++fUtdjiSJ6R9UHrdj
-         bC5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Km/1n1LHhDr02ASZV9qn8VhaPAsioBtH6JYVLmDFnWQ=;
-        fh=KjaCmCTx+BhaXXIIBoyFFQAnGG1s8ENzMXBIuT1qH5A=;
-        b=A5mgO5l9hrR87y9/Qp4KFsvZdn6TXB4ed6L00wrJ0zQXsPSgbKO894KVm3x1XHVDdV
-         jHkrr7E1Udivc9d+b8HHoy1xMiqeXK7yjzZSi/ri6HTRVavCEUWyHgJeGLL+6ZOCzC7/
-         zykALS9zutnzS77hQ6I+DADiW4Ymb3Nkn8HCEhH2wVYUHbxRY8YCCM8HdhKa6SeacdD8
-         Sgmu9W4QwCIHNg+HbViTBJ8AWeF+fgjPIK3lFg/cnasV4kYkWFdtpTTgKm44Cf9UGodk
-         iGwjWH0dTOty9F1ngqsJy5vKY4MrE8CyYblCE6a+4UnBY32YiSCNIOhyaJcrFUOFQWWX
-         Ws7g==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794332551; x=1794937351; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=Km/1n1LHhDr02ASZV9qn8VhaPAsioBtH6JYVLmDFnWQ=;
-        b=yFWPS09PC9ARmlJcia0tcmzn6VY0IN7rNqHUKJVR3MmLlj647w6LCwCrGMopo4HmVM
-         tFmZi+0Q72PSORugwpQ3fjB+YWqZWauYYJvCBR94LsKLyJZF6nz6XZyyLpnlkfzBDpv+
-         9+LjrumDfakbL2rbca0035b3ynt1LN9/+GWg07H1rtlllOMp9HQ7+uNmOmCzq/3Uft4y
-         iYFBvuoo6MrAKBn7Cfzfw2ygNcUv81K38TUgFpJNJz6M/k0QY4n86Bx29uZ0OM+PETff
-         Yf/qnT3BeN2OeGHxSpaPVWJbXP57j+8L7wjLB+TotAjWHlF0G8WKPRbkLPxUZiinsVjl
-         CnXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794332551; x=1794937351;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=Km/1n1LHhDr02ASZV9qn8VhaPAsioBtH6JYVLmDFnWQ=;
-        b=qj7mI8iyXZ96B/cTEX8AUX+m+TPOCvFhCmnYOWBSOcAyd6Gi1VAzjGGJQuwICvJrcY
-         VMxO/UWIJlzDfAPfdi7yEgk2uHz7Ec9nfnTzQIaDIUbY9u1u7bpkWbU1kaT9FjdQr/Yv
-         1j4/TqwntfN+ROz/SIRyLDJiuHbK5OysGjVd/MnprOfnVY+X2WA9XbkUVlqk61hfcp/6
-         1aA9rubsYVEuh48+g244ejamoxFqkSv6hRuLZiGFoYhAOrhW63mX1r4I8jQr4vrdJiOG
-         pdrEq4cENmyuwCPBYFXgcSzxMFEHINwgx4C4swpZSXLQvobFl4TADNvUtpMsCzLOuNTs
-         yfwA==
-X-Forwarded-Encrypted: i=1; AL+hErEh1P4nRBzhYsBMaJLUV3fxZSQtkgEPzaiNv76hWgg+uwHupU3z0cVqpMo09nP2J0gF2/m2UTaYJQ==@kvack.org
-X-Gm-Message-State: APuU4Z/V8mZKMZoP6IP/7MQF8l6HNNAmO2k5XG5tlFABaXPZNXcUEDwb
-	7af2BP7E4KBX6cUZRfieyUhnC5pjm4/XdqLfuGFSEkwF0D25a+jRtGGOgxEqUtYgYeQDTpUz5cI
-	74yfG6h0moziSFQObCipY7QdxJ/YE2PQ=
-X-Gm-Gg: AYBFou2+0g3nEMNi+3s2OBxyvi0OZYNF646zxxjqCX83vu8ujQWO5hWyTJtdUboDSGf
-	7WZg9gg8L9zAsZdIB0Jr76oo+bmbKl/MasXBxQ0fMuiCh+ohAJg2MR6tRe5xRe8bYj4oG75sg87
-	x2JQY8yJlX/d0ZkrIn4t3YbUAGXeiY5809Ct/49w9N4sAHHGzewhvXNw8s45NDgT2L5XrcaebIo
-	QayvqhQhWdytC2qfFD9fSKPj8sE+h5oPdjJrQ0B+awcKzBwE75ymZRy87NiWPJRVyBbkqEciGUT
-	bIhtLS6C+OBIGIZsu0dFsRuVF1+uQRagTHqkQRZeD1DXF2bcWL0qpz05A5FfW7BT1QMmelDjCr2
-	h7Uloc70CL5S2Mj/iWv0ihmYTiZZMR+A+diBg96Y1prBcXV6MNui9IROa+YV5DdaO140FvuKA07
-	wFADyIijbhNB9ZVxyy7AR6i0nqpPt6KxENG5dqlNmYhzYrZ4mce3+h
-X-Received: by 2002:a2e:a5c8:0:b0:3ac:e4b6:b93d with SMTP id
- 38308e7fff4ca-3ae0960e26amr7913321fa.8.1794332551177; Tue, 10 Nov 2026
- 09:42:31 -0800 (PST)
+	bh=Fulrg35l8yGwvpvq8cPY9YnUHn/OJvxhodbRy0q5+gI=;
+	b=nB1xqCgWfPNGT1BvsAXDoMcj2XcBN0oQkIMQbmwFQDaF5uHHFADtHg6lU1ipFE0UKg795J
+	RMMctPMvWEp4WvT/8k5w1aiP/XDmqv04tIGGvaargmG5h0m5Bnivtx56sotuyv/M/kyVFH
+	yruEcVRwIvnYJ1gjFLHIfJZ4o7b15+I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794332655;
+	b=xgaRk+retmidhGsOWkVLsdl3laptpXMv+9rW42LFI1qNq3FfxW11+yhw+3KEY2/TO4SOE1
+	Jzg1XDxnjY8KkvKYXfUGM0lPnSHoDgKzJEf9V6lOMnjT7mKCqWDNAUSCTz1vBNK+g5Exnz
+	1biCqTE9ucNY1vSxRTskzTRje0UBPDE=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=DIrrzKib;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 26AF543802;
+	Tue, 10 Nov 2026 17:44:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B35D1F0089F;
+	Tue, 10 Nov 2026 17:44:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794332654;
+	bh=Fulrg35l8yGwvpvq8cPY9YnUHn/OJvxhodbRy0q5+gI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=DIrrzKibIe7LMcyHZ/CBt/f3kkB050KIX7QvR3SdZ/cydQJymBTzfBKZobEaAU9FS
+	 AQPpwd69AgUgqddeKluymH1MgZworh5C2kzPXb6ipLMj/S8C8n11LY31oO8mmXtFk8
+	 mh9nvu5cYFu2ZpOei+19puwSA8Lg7RWpYU/MqCIGxMwgs/XYzlxP5SYfd5ULfBsH0p
+	 ctMi4gIX0c6ZTJPwKz/6fT4a9RnBFgdnOz0HtRmxlhqxOJwyPgWMmUf9I+6B4RF2o5
+	 7R/d3E4EMW1XJeNCFKrx0V8ozF9R+YgZkiLrad7/FCRWMAbMLWn8ioq+EhBII0BH5n
+	 oZ5+J1fIzQxHA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Mike Rapoport <rppt@kernel.org>,
+  Andrew Morton <akpm@linux-foundation.org>,  Samiullah Khawaja
+ <skhawaja@google.com>,  kexec@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH 2/2] mm/memfd_luo: keep memfd frozen until finish
+In-Reply-To: <179373810485.663454.3013535045194073890.b4-review@b4> (Pasha
+	Tatashin's message of "Tue, 03 Nov 2026 15:35:04 -0500")
+References: <20261103181916.2462825-1-pratyush@kernel.org>
+	<20261103181916.2462825-3-pratyush@kernel.org>
+	<179373810485.663454.3013535045194073890.b4-review@b4>
+Date: Tue, 10 Nov 2026 18:44:11 +0100
+Message-ID: <2vxzo6bwh990.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261110054836.1515030-1-senozhatsky@chromium.org> <20261110054836.1515030-8-senozhatsky@chromium.org>
-In-Reply-To: <20261110054836.1515030-8-senozhatsky@chromium.org>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 10 Nov 2026 10:42:18 -0700
-X-Gm-Features: AclHuK_zSUkyB2sjWErWCiaaONj2fSjizGjk85ueR6Sb_actx7ETkPPr0xK7p08
-Message-ID: <CAKEwX=OtCcMak2gshXXDpiXiVK7v0H+gXQpQ-4D4BNvWSbvWHQ@mail.gmail.com>
-Subject: Re: [PATCH v2 07/11] zswap: do not free the entry if its pool is NULL
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-mm@kvack.org, 
-	Yosry Ahmed <yosry@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: rhjayjy1iyxn64f45pd13hm9mnwgat3q
+Content-Type: text/plain
+X-Stat-Signature: egm5mirgi46cg9b9zhuop4ncsad35t9x
 X-Rspam-User: 
-X-Spam-Status: No, score=-6.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 40507C0008
-X-HE-Tag: 1794332553-973518
-X-HE-Meta: U2FsdGVkX18jl96OOKHYBLQUlAYcTnFDkmMT7YEn040tFVnNqjaA92IchPp6byvjVMcsSMPH656f8TPk4tGYR93p2T5YxknV09wRAo1bzPkuSE20AdfYgM4Ld8U/ll0REH3blcIs08U0PFIqCe3wrZqHrY50AgtxT6AhLnJbS/Hy/WiLh1+r1xtwwOSpbFkYrBSYR1XHeZrbxZ0+GFvKXIz4fgX+K/U35UlLdhExFizOGTlbO+XwvpuMXhw33cgHLXGxm3hhBKYxu2HvBn/sCBMpa8fxyoojny8lLCKfw/H7bF1f01bV7zczcV83WhJrx8ZXQ3wsMOQa5uzKEb+YZaZA/bTCb+zyi44Nrwp+i16b8jYeQWF0hqxBv9e8R5KnzdVUZ34qd+P8uo5h4qvXJ69NXiYSPpGEVvMbGU5Gl4q1Ucd4OW2i2CgUb7wcv0XtFOpzh4k6Xfz1HUtAZ/PLKSTdwtspCeXL2WFJ6EHpqVSAUsBXcixuopSPEkLfDDWn/1iDwRsx0oWjrZY7EuxeTvAXoSrf7KV4mCpALweyCVt/LeXMGKFr8QDMC9JkaTMMJwE0CEHy+Sh7z5KCGdHuCGScVFuAYWnzwWQ5CUvlsimT7+zT6BBHGTh8veR+KmS7RWHI0izriOooXFIIblx2f/lMSLGsMiNkLcH+PcLcAohlDgCPrijfcURKU5cVVwWrISjGpSvYSFUrGdqMcrk0EOcwQcpIaewazxTryl/xloagin+OARu8Wsu2r6AYonKoawXYaufZ5X+3y0Si2QGdUnKrpp3TLMdjXYFJOPnhX90mDsgJKcxxwx8uSLmOCK+Fil6/JJ0n48wiMsp/Jm30GAYvyYlYkyKXSxOsjaaDKpz7+EaOSI0nvniLo77GDp0w/0PiO4xI9M+HDq5U4CRZR2Iq1Lf6MCZ2qeFniRjjP1m9ztQWNzVCtDVFqWJG8VZCBgxPIrlcXdp4RQCIfOH
- BpfnTjUb
- ZreMgcbGBoVXrG5kjQlJWmNCCUwmXI3KlEtCdPOCydTO1VNJO8ksSf5VA887pDSzsgfBGyjrvW4VFD3qpTWrXxQMNSCI6Ht033UPXLiOpB6sD7G5aDdWYxoqVIiytmya/VXf2ixaW6ZJubYphLZQx9jthQ4N7hHLlhUKR+OIXKpaNPvQYCpjCNGwS7Y7ZVXinvNeeFiwmYo2ebZrSppxI9Mvy4gm+ob4DlffzHR3TmqoXQh0DV5C87VOLZravttEmsrqQZ5sjAa0/pRIx4g9p21kJuimznZ+/tdKoWoXMNKNYc7fSaEAi1OdbO5MBJIktyc80bzgC6PE3Do9Hcn/lFcfhH42Hj2TQj8tybY7VeNA9Mlt3STtT9j9uhGDYhBS3jvXOG1b3K3eNevFwjr86NCHPn9ZsrYYrltZ3UsytOIKza/nmX/OCkfBLU5SJz963XKFbBpGKVz4jKe8ECneawQLyEXpxu0R0RtcSVLIKa6Ce7Nr0AJ2Qav9kVw==
+X-Rspamd-Queue-Id: EF86D140009
+X-HE-Tag: 1794332654-712295
+X-HE-Meta: U2FsdGVkX1/LWiU7RsLKcQ/tXnRyfCQs6ZEYd/Iace5e+Krhrnx6AUvh1UhnGsp6MatsRNMrn2ha0Lf4pPFjLS75npv/BCRQiDJ8J4thBf2D2ygw+y6rvyHfDXaMjTvrZCv97WGPQq2E7TLrXMIldKUcbrAgHZbB5dsIUPW0LgYGCNZcI9+3Pg1J3IJde8C4026Py+SF4lp+RT9L01J3r5reIo1BjfhufPwpUBvC2Tzxy/u5uqf/ik2KGEpSGGt/YaSjGzeGR8YU054LYVGq7dj1aqL4xwmPmrozMRm0xc305d28h7dDAMNgLQ5TqlCT4vXseuztEzFUC7d0/jtH5pGH8uJoppYPZ1l6Y0GHXyAoLpWOaPsUFg5csosaR095UGUYT9LBITA+flj1HGeqaEX1676FqfQ7AoD50MJ2/Fp4FPXe2be+OgY2NM4Y8StX/MJPeC7LjjrM2euUFhSgX5yA/0I5eLCsU1uAtCNLGP54rb62IXo6yC1KjEc6jopYrlO712V+BVwwOAENdHYnNmSZG9L88TQDZJz8v2dW2uMWxmtb3DBcwRrmqgFGwCal4y5FFwkFSIpslkEuzSFntJdX70wa9s06pTAoOS98/DabRaj4DZwKy5yzvJX9SFlFHE5/a4/V3dvQj0r6rqpnL1QGkyGYsZIZ+X543UZoug8SjCkaL3qL7oW7vWxVJAuhfr1itjIGELzEp4JyKGUssGCj8M+w0APYsFAplZPrQp3EThKKCiaX5n96rfRiPXl6D72QA8h7gg+z006y6E5n08MW5cFzKkhOhoxJx/j/dxErTrApe2Vc/SU4CsO7HmLMH3CM1BBFkuQ8xSl8GoWNcgfG88s0FY8jU9FuvHrqk5MzShLYfPVkGSY2in8WBIzi0bv5kW79Djylpjqf4HTg2xi+GS6LAt01vLReR5CNHMKB3wIlckOX7YBAahXkjayrHE0I9KWCkmGh4m1rCub
+ f2AQjmrB
+ j0hwHrbYikk5tohVt5wE71f3XPwDlEub4Vtw4KoYRGcrZxGzRsauEKDr9e6Ut0CKQcBSzXMEECDSOzlNuZktJLD/wRU2i85rdq3tQOhHMePlkb+/WkZtfPyJKwceEFPjadtE1T7jS7yh902dwqeVmM1kq7UrFa/0qVMD+LcJW7NHpA2Eb+nJ7iwkyJOTlAJ0Lj8VWw5JvXBABtA3MJV5MvYei16fmHQJjFqQMxy5MJ1b2W8/6un5X1VMtBavzpl9uNQRaLLzJqc7kmcFyadgAaz8QalYY5EwxPhlEuUCbqO3e0NGqPjqz41bc8rIuvN5RQUl0iiMleQ4fHxTsxH3I6XnHO/i1MtrmaYeUVslGiw80S1WbLO3IsfeaUqqCj88s64ck4ugImxi0xO2dE5xt0kZC6YE8RqwulPI3/W1bN+bWvvg=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,19 +99,124 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 9, 2026 at 10:49=E2=80=AFPM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> zswap_entry_free() warns if the entry has no pool (which should never
-> happen), skips zs_free() and then frees the entry.  A subsequent patch
-> embeds zsmalloc handle into zswap_entry, so zsmalloc object will point
-> to the entry, and we cannot free the entry while the object is still
-> there.
->
-> Bail out early and leak the entry, its cgroup charge and stats instead.
->
-> Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+On Tue, Nov 03 2026, Pasha Tatashin wrote:
 
-Acked-by: Nhat Pham <nphamcs@gmail.com>
+>> After a memfd is retrieved, it immediately goes back into "normal"
+>> operation. The file comes back unfrozen, and its pages can migrate, it
+>> can be truncated, and so on. If the memfd is depended on by something,
+>> like iommufd, that can open a window for folios to move around before
+>> the consumer can re-establish its references.
+>> 
+>> Finish is the conceptual point when a retrieved file can start to behave
+>> as "normal". So take an extra reference on the folios and freeze the
+>> memfd on retrieve until finish.
+>> 
+>> Suggested-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+>> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+>> Link: https://patch.msgid.link/20261103181916.2462825-3-pratyush@kernel.org
+>>
+>> diff --git a/mm/memfd_luo.c b/mm/memfd_luo.c
+>> index 6b68220275eb..5abb9c0956af 100644
+>> --- a/mm/memfd_luo.c
+>> +++ b/mm/memfd_luo.c
+>> @@ -55,6 +55,14 @@
+>>   *   Only seals known to this LUO version (see ``MEMFD_LUO_ALL_SEALS``) may
+>>   *   be present; preservation fails with ``-EOPNOTSUPP`` otherwise.
+>>   *
+>> + * Restrictions
+>> + * ============
+>> + *
+>> + * While a memfd is preserved, and after it is retrieved until the session is
+>> + * finished, its size can't be changed and holes can't be punched in it.
+>> + * Operations that would do so (``ftruncate()``, ``fallocate()``, writes past
+>> + * the end of the file) fail.
+>> + *
+>>   * Non-Preserved Properties
+>>   * ========================
+>>   *
+>> @@ -383,33 +391,56 @@ static void memfd_luo_discard_folios(const struct memfd_luo_folio_ser *folios_se
+>>  	}
+>>  }
+>>  
+>> +/* Drop the references retrieve() holds on the folios added to the file. */
+>> +static void
+>> +memfd_luo_put_retrieved_folios(const struct memfd_luo_folio_ser *folios_ser,
+>> +			       u64 nr_folios)
+>> +{
+>> +	for (u64 i = 0; i < nr_folios; i++) {
+>> +		const struct memfd_luo_folio_ser *pfolio = &folios_ser[i];
+>> +
+>> +		if (pfolio->pfn)
+>> +			folio_put(pfn_folio(pfolio->pfn));
+>> +	}
+>> +}
+>> +
+>>  static void memfd_luo_finish(struct liveupdate_file_op_args *args)
+>>  {
+>>  	struct memfd_luo_folio_ser *folios_ser;
+>>  	struct memfd_luo_ser *ser;
+>>  
+>> -	/*
+>> -	 * If retrieve was successful, nothing to do. If it failed, retrieve()
+>> -	 * already cleaned up everything it could. So nothing to do there
+>> -	 * either. Only need to clean up when retrieve was not called.
+>> -	 */
+>> -	if (args->retrieve_status)
+>> +	/* If retrieve failed, it already cleaned up everything it could. */
+>> +	if (args->retrieve_status < 0)
+>>  		return;
+>>  
+>>  	ser = phys_to_virt(args->serialized_data);
+>>  	if (!ser)
+>>  		return;
+>>  
+>> -	if (ser->nr_folios) {
+>> -		folios_ser = kho_restore_vmalloc(&ser->folios);
+>> -		if (!folios_ser)
+>> -			goto out;
+>> +	if (args->retrieve_status > 0) {
+>> +		/*
+>> +		 * Retrieve was successful, release the folios and unfreeze the
+>> +		 * file so it can be used normally.
+>> +		 */
+>> +		struct inode *inode = file_inode(args->file);
+>> +
+>> +		folios_ser = args->private_data;
+>> +
+>> +		inode_lock(inode);
+>> +		memfd_luo_put_retrieved_folios(folios_ser, ser->nr_folios);
+>> +		shmem_freeze(inode, false);
+>> +		inode_unlock(inode);
+>>  
+>> -		memfd_luo_discard_folios(folios_ser, ser->nr_folios);
+>>  		vfree(folios_ser);
+>> +	} else if (args->retrieve_status == 0 && ser->nr_folios) {
+>> +		/* Retrieve was not called, discard the preserved folios. */
+>> +		folios_ser = kho_restore_vmalloc(&ser->folios);
+>> +		if (folios_ser) {
+>> +			memfd_luo_discard_folios(folios_ser, ser->nr_folios);
+>> +			vfree(folios_ser);
+>> +		}
+>
+> Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com> 
+>
+> Side note (pre-existing, not an issue with this patch):
+>
+> Initially, I wondered whether we should disallow auto-finishing an 
+> unretrieved memfd, in case a preserved device still had this memory 
+> mapped for DMA. However, if we reach this point, can_finish() has 
+> already passed for every other FD in this session, which means any 
+> possibly dependent FDs (e.g. iommufd/vfio) have already determined that 
+> this FD was not needed to be retrieved for their states.
+
+I think that is still a problem in a different path.
+memfd_luo_retrieve_folios() frees all the folios on error. I think it
+should hold them until finish(), which would give IOMMU or other
+dependents a chance to block the finish.
+
+But yeah, that would be a separate patch.
+
+-- 
+Regards,
+Pratyush Yadav
 
