@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0DA7606CFA6
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 09:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B47E160A3816
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 09:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YSj0RR1a
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GRiIgHwN
 Received: by kanga.kvack.org (Postfix)
-	id 201FA6B05EC; Tue, 10 Nov 2026 04:20:00 -0500 (EST)
+	id D24D66B05EE; Tue, 10 Nov 2026 04:20:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D95D6B05ED; Tue, 10 Nov 2026 04:20:00 -0500 (EST)
+	id CFC0D6B05EF; Tue, 10 Nov 2026 04:20:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0EFCA6B05EE; Tue, 10 Nov 2026 04:20:00 -0500 (EST)
+	id BEB1D6B05F0; Tue, 10 Nov 2026 04:20:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E64E96B05EC
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:19:59 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 809531C401E
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:19:59 +0000 (UTC)
-X-FDA: 85418662518.13.FDCD57F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C3E03180009
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:19:57 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YSj0RR1a;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 9D0276B05EE
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:20:06 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 40076804E8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:20:06 +0000 (UTC)
+X-FDA: 85418662812.10.C5812FD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 802D5C000B
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:20:04 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GRiIgHwN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794302397;
+	s=arc-20220608; t=1794302404;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qJiFf9w4hToXcclP9ppmON8B46ZerQobJ1F8sM9X2a8=;
-	b=4iB5gZ4pavJAb9i02oh5K4V7FJP5lQ6uAFLcgJfHsqPc/qqmj4iFJjCCB4c2sIgw/L46ll
-	HjO6puMjQHrZQ7d8R5FR7YhxzOUWn72nszF4MhEtachpLuroKE/7bfKVn4YxehRjHnTVDh
-	AQzsjL0hkYUQ9EJu4hyBQyNArMB4Byg=
+	bh=E+IOyvszTPpv67WVfApXcw8urPUkzwLhKXwxrxd5Q2U=;
+	b=VTwEPUD8byMX7/ujhUtTJhrSyEL4mLIn+oWgEqm1StS7EsgBpSr14Ywh/uL9ug2zDiHJGJ
+	gA/tC0JJrhKN0lZcfjk4KFpz3GQxvIb5iLuvn3EThV46R4X2Kpts4W8SjCIz6Os1oK9htN
+	NlxSAbWeFiRYI+5MCGB4maudFMTNHZY=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794302397;
-	b=DpoMI5YfW+dyIhiZbdw9j1LRtW5/b+YQ3Q3RBLeKTU7g46utP/RQ2CQEMVQyVsbHeo8ZTm
-	y6F1n0VYuoJuYOKy/xkoowYhDn/qLYvdmvwvykYa49VnIocXhUeMiUIGTKrTjT0/zwU7vZ
-	uCZUQaZwFRuOcpGgk6FPLOUHg0OfKbA=
+	t=1794302404;
+	b=FiCAxfW2IWsPcCsuL/pJfFIEl7deUhe7zXB0RxdLZLc+tqbyZCGSaE71/ume9IGt9WuaQL
+	GHuHTHqj7plpsa7/SunIYHZcQgXAZpo9TcdTS59L93gEwfWTgF+SKaSQ3AihNMgOl6+UdD
+	b/eAtmvUZajrJmJcWsTgE/zVKd0xqlo=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YSj0RR1a;
-	spf=pass (imf06.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GRiIgHwN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0712846B0B;
+	by tor.source.kernel.org (Postfix) with ESMTP id 270A66381F;
+	Tue, 10 Nov 2026 09:20:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5968D1F0089F;
 	Tue, 10 Nov 2026 09:19:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F39D1F008A1;
-	Tue, 10 Nov 2026 09:19:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794302396;
-	bh=qJiFf9w4hToXcclP9ppmON8B46ZerQobJ1F8sM9X2a8=;
+	s=k20260515; t=1794302403;
+	bh=E+IOyvszTPpv67WVfApXcw8urPUkzwLhKXwxrxd5Q2U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=YSj0RR1aG6qNPyxHpaLvknjLVj91ILD+92zWFulNcS/9GzuRoaQHatZawU0nYbR8y
-	 wus7ohgAGQBai1txsuKrJnXmIbOHGPu8ofJJf/FVDtHI8ClyJKzU7qfsjBbW0aZ+ce
-	 zWv3AeSLtwvY+Mjd5A9NqJjMByywMDui/mH5eL6dgY9srHxtjNOSh4WuAXPTmUK3oc
-	 rj74FmSQAg97IU/fPvixOSTy1hGHbrW8yJHlHbDd2o5Lngy9Nmbmsk6Ah2dyvn2OaD
-	 xaVAA8ELW3uvaLp+l18HV1m2/38wuA8CuBANF9a3ezWOwggIRGtvqG3gki5e2MoaKT
-	 vZL834m+QNo/A==
+	b=GRiIgHwNZvImcyL7ZrhwcHTim1Tcg8ha0BAVLvCt63eibDuBdqoGnn3+IZ3T7OBIq
+	 kT6r8YMuTD7me3jVVO4LuvwQYkPqosPEVX8f4q9eZuJZsQvKrNsIgO5JMMLqqeNIuC
+	 5Cpr1r58rbzBBX6KMjeREg5OUsa/9eOU65Z5i70WZg176K2uk1tQ1kAhA4U0o0Rctw
+	 xZ/y1A7h5XbjDTP8H3oewDpTzB4kJ0kw8bjZG9JUpDxnNRmZc91S3mqwbwSIu6bKQ1
+	 710KWpylBRJOXcVv5bGIBzE03omQg/l6rlLylLNvB6cAWjRRFZkeN1M+920TaGjY0B
+	 2UXvy+J5ImDmQ==
 From: Christian Brauner <brauner@kernel.org>
-Date: Tue, 10 Nov 2026 10:14:51 +0100
-Subject: [PATCH RFC 35/41] zloop: refuse zone files on pseudo filesystems
+Date: Tue, 10 Nov 2026 10:14:52 +0100
+Subject: [PATCH RFC 36/41] nvmet: refuse files on pseudo filesystems as
+ namespace backing files
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-work-loop-pseudo-v1-35-4c998976c6c7@kernel.org>
+Message-Id: <20261110-work-loop-pseudo-v1-36-4c998976c6c7@kernel.org>
 References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
 In-Reply-To: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
 To: linux-fsdevel@vger.kernel.org
@@ -89,26 +90,26 @@ Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>,
  linux-kselftest@vger.kernel.org, 
  "Christian Brauner (Amutable)" <brauner@kernel.org>
 X-Mailer: b4 0.17-dev-ce4c1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=822; i=brauner@kernel.org;
- h=from:subject:message-id; bh=li+gC8cc0Mt1bD1j4gMcmL8SOHESlN2++n5Uf9tP8Fo=;
- b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9erDHcu21pTOZuhx19nwxdyrrCmUMb3503015p6SPw
- 76FMcqxHaUsDGJcDLJiiiwO7Sbhcst5KjYbZWrAzGFlAhnCwMUpABN5bMvwv9AwrjaFoTvl5SXZ
- U7d+5SbufCNqdW372nkxojHPVJnq7Rn+R03u+RT9ITNnZY8fx/JF32OmNseuuiD0fVMyz/+nq9X
- nMAAA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=834; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=agqenJdWQq7gypo76jkCFbW4mXy4h6l0lNCXX+ASm3g=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9erDvm3yLxwpNhn3Vf/xC/LZIi53fJ7yLL7tHITliz
+ 91kU4+kjlIWBjEuBlkxRRaHdpNwueU8FZuNMjVg5rAygQxh4OIUgIm8FmJk6Auyf5jNeWOi0OnH
+ C2RnbHW9nXtha/oTsYTE2efzD909cIzhf93azF97BBdfrrbP5nki8XXrjrDbU/+oPHgTKJzVsWp
+ jPzcA
 X-Developer-Key: i=brauner@kernel.org; a=openpgp;
  fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-X-Stat-Signature: 5475zc5wz1kuyi7cxga5fwg7zdmst4cz
-X-Rspamd-Queue-Id: C3E03180009
+X-Stat-Signature: aou66bek5335cjpkqxwbkkro3xh4bdw8
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794302397-602108
-X-HE-Meta: U2FsdGVkX18m375/UcFZ6cBuYZFNlKBsRpTMG+LshFvWhteETErIUjp8IvCIqPTZoZvO3xxHuqGkmCtaqW5msE9JJh7iychswjef/rX81LNQzvGCGyAMo9DNEzeI/pOjB0kftKiZP1p3QQsGgQq1MDIGl1h+rJXWCTtuiMTojNfWPKAnPPQnqamZpudgGdXKEiRgQVFx6n03/tOzhCvtixFT94dLlRuHaCniYXgY1GPaZdP5PdbOBjc71Y5UoyaFzCS4NKFdwv4gXdqpklEbtFa7/bCsPm/U393a/3wy4zthtd3HYOFBPPzq/UWGaayb62sapEDzfoaH0PhUMjeuaWdLQ2LK8YGClZdUKbLNedbz9AUB98c65iSQyRkvwyUvtTjw84SSvTpwfM631Q4jrzjE8Y71hrgvr001EMQoryX3RNRXC/yZr2lio7yHvaWXp9q0axDRhq2CI2QIKC8++6aBkLiaIZWEUCvx+jELOh4YCGEL1tkt65KHCuUiC273lyZJtdEeT6pH/Amr/fxwQUb6d7yxxcHy8XsOqsJipfhKijseNX3tVSH27w0LjtIUvA2dy3RMfeWK14AX3uiPTj6jP4UjV6yLpIdsHuj7Yll8rxx+yCKfCVGpUZ6lOe/LQGws+Xnaoki+h3hbzFdEbJBXAaRelaptulmWOpNN/g7NDZRhitwlm+5YmOcqCHUkauhAoOhvkQR/0DyPbuxJ1iFyMyXYxppFnx6pBHWGhruBW+dXsoW6Xr3BklrqCp0kgovL2t1/A1sDfann8ZL3380d6pMUmBi3fOnhZUCxUfrssLh1VxnS/9QLelea0UgMtXdMnxalwEHmHOxVJ0BfzXNQzA8FjN20jRXXYTHNjTahWowPSK23vcvtVPj0Z0NlBleB+L5HhQSPYypJX82UFUG78bk6NjJlIevzLip9e1KF5+KcxN9M6WLOj7XZlKOuwSHSs9v2VkGBLbKGcxe
- 4lF5I6yz
- 0GPRzqyGVkZka0yOnHs/27UG92Wz66HAaRy8ORvhUHThw8Jc/vRFr32UPQ7pKLhIGQ2BNbiBkSwR0MsNhQ4+sTXeNY6GIw+Tf5nCxlpL/DkEMRAqmS5d+IHiOQy/cplWUWf07qC1Mp9n2PBRaHS3dTPf1XERP45JgZMnbyXdBuncw8j9VTjNaHEpISLIDduv7+lTR95I1mkkYbe7gLhOWupZTHSq332EvExqwIyIZrz15NGTGIlagFTFVGw==
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 802D5C000B
+X-HE-Tag: 1794302404-20652
+X-HE-Meta: U2FsdGVkX1/5gj0WMjHWV/CQAykw6vXT09lZ/5NaLoYv3B+Yr5sSgL2NOqZvxw+9TAxkBaIwjex+62mtmB/OW5esINHVMuF3uBCRT1s/C1WWu+GN132rOWCkokZp2NdcyJCRNQL98wOCZjG/tGwaUJf7MU4IQ3VNqBxOi8UCVGbVx+RmANfbNYorCqNA736QXD/I9HbWs7OoMaoRzuY9UW4k9P0PGpWD3EysHte6d6TVE6DRvju0xcuVW1lLLf51z2LKGr6m9rybKGWW76kYluygY2uXXGXFPYmEgwv7kwRkwZKDb6UOOlulkI/c/dB2L88XsvDpxhk2eeYkH7CvRKYtpCFj1x+2A/TKeVZXIhn6SPZr8zPhqwZdUr9ZHYoGs6PngtubtMRt3dJySB2MqmdM4EZ9rAUtFwrz7WGYqVs/Ir5CtUlZv3oGsUDPDXyikKfdB4axwm08unRAjY1MqVcLXd8coUt6gL+oIAL6LEIB4xaOG08JCEuZLNoNAV1GVjCzsm+UtLEufJMCsA1DvNYoTVLEaLhJDgBRCEaXLOAkFJW5pY6uNZELH4ZixmAtCoxwDpS7tSezJp4sYREmmh5eF+0zVAoqwNnbNexssm+d1rhEXvCMbZjD6NKD8YYFynK4bbCf7ULOTE6B7ork9NejiOOhHRzHA/TaI0wpBCc4DFiEW1A+u0PyBMZbXWzInfJ8tqYJDXHiYQKkjFnuQUC99FylaVTgndjor3u3r+IBWADqAohbE0JoJnTIyCDqYgxsuJBRyS/FP20LpmEU704szL5UlW8Kj+YIN7CdpDUVf5DIFU888K4ndm8SXaq/EdlFptMDLvnhmBs6kq4TbTFpTsAV/nQX0D3J6RELvZrA331horW/DEA7hb/9I9A+FJDv/EKlUHf4G2UpMv1A4xUBrBPfu3iQfPHmTk6vzutDXuO8md9tbea0jM5S7dijG3WdHcRv4sgjtMqQrZG
+ IjOZPgZ3
+ t9LAJW63/gaDa5vbDvlekF7gAlliQwDQGJjzCCOtDdLUfrLgCVjodM9tEAh0HDegUC9zvu5PPi++MRjSsKWt2lGksfLsZUcjjp4+f/VLnWFzLypWh8GVB+hnfnRXpA7M7a1Pc7SkZwpYfIl6E47YILqBr8NgMcpSt+CG8fDD0uSd9ZpcHqOUBQYY521JSwlo6VgXYuUR26XFDlzTVJ3SxEYx0GNl4COBHOR5zWrvwddipu6wTg6KpLrD77g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,31 +118,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-zloop opens its zone files by name below the base directory but a bind
-mount can put any file there, including a procfs or sysfs file. Refuse
-files on pseudo filesystems as zone files just like loop does.
+The file backend takes any path that isn't a block device. With
+buffered_io=1 that includes files on procfs or sysfs which then get read
+and written by a kernel worker on behalf of the host. Refuse files on
+pseudo filesystems just like loop does.
 
 Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 ---
- drivers/block/zloop.c | 5 +++++
+ drivers/nvme/target/io-cmd-file.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/drivers/block/zloop.c b/drivers/block/zloop.c
-index 65634a39b0bf..dcc06dd47b04 100644
---- a/drivers/block/zloop.c
-+++ b/drivers/block/zloop.c
-@@ -1137,6 +1137,11 @@ static int zloop_init_zone(struct zloop_device *zlo, struct zloop_options *opts,
- 		goto out_fput;
+diff --git a/drivers/nvme/target/io-cmd-file.c b/drivers/nvme/target/io-cmd-file.c
+index dfa8aa46188c..71c69bac5394 100644
+--- a/drivers/nvme/target/io-cmd-file.c
++++ b/drivers/nvme/target/io-cmd-file.c
+@@ -52,6 +52,11 @@ int nvmet_file_ns_enable(struct nvmet_ns *ns)
+ 		goto err;
  	}
  
-+	if (file_is_pseudo(zone->file)) {
++	if (file_is_pseudo(ns->file)) {
 +		ret = -EINVAL;
-+		goto out_fput;
++		goto err;
 +	}
 +
- 	if (zlo->block_size) {
- 		ret = zloop_get_block_size(zlo, zone);
- 		if (ret)
+ 	nvmet_file_ns_revalidate(ns);
+ 
+ 	/*
 
 -- 
 2.53.0
