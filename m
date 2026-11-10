@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B251B606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09867606A33A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=lUDBEP95
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=QgtuWbdw
 Received: by kanga.kvack.org (Postfix)
-	id 60DF96B05C3; Tue, 10 Nov 2026 00:02:22 -0500 (EST)
+	id A054C6B05C4; Tue, 10 Nov 2026 00:02:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BE3C6B05C4; Tue, 10 Nov 2026 00:02:22 -0500 (EST)
+	id 98E796B05C6; Tue, 10 Nov 2026 00:02:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45F2C6B05C5; Tue, 10 Nov 2026 00:02:22 -0500 (EST)
+	id 808A16B05C7; Tue, 10 Nov 2026 00:02:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 199E56B05C3
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:02:22 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 90C421208A4
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:21 +0000 (UTC)
-X-FDA: 85418013282.17.AC1DE58
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com [209.85.218.70])
-	by imf22.hostedemail.com (Postfix) with ESMTP id CF971C0006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:19 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=lUDBEP95;
-	spf=pass (imf22.hostedemail.com: domain of 3WqXyagkKCM0CtAD6Bt0Dz77z4x.v75416DG-553Etv3.7Az@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3WqXyagkKCM0CtAD6Bt0Dz77z4x.v75416DG-553Etv3.7Az@flex--tarunsahu.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794286939;
-	b=O8tXmzpSujAyxKbCGMja0xgmQuVhC3n4LMhRboIMQp6risiS9QnG37uY/2NiHqZaWC0lEt
-	9wZrkiYNsQFVbEgUCCmvsaF0Gm9e6ttsLZf8hgJjUTp8zZAJpeQW8JlDm0OOGPDJD03dcu
-	QPUvDiKU0U/irLY+suMXGgGtHe1smtE=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=lUDBEP95;
-	spf=pass (imf22.hostedemail.com: domain of 3WqXyagkKCM0CtAD6Bt0Dz77z4x.v75416DG-553Etv3.7Az@flex--tarunsahu.bounces.google.com designates 209.85.218.70 as permitted sender) smtp.mailfrom=3WqXyagkKCM0CtAD6Bt0Dz77z4x.v75416DG-553Etv3.7Az@flex--tarunsahu.bounces.google.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E7096B05C4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:02:23 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9F7D4A08CF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:22 +0000 (UTC)
+X-FDA: 85418013324.16.A8E013B
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com [209.85.218.69])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E9F931C0004
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=QgtuWbdw;
+	spf=pass (imf20.hostedemail.com: domain of 3W6XyagkKCM4DuBE7Cu1E08805y.w86527EH-664Fuw4.8B0@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3W6XyagkKCM4DuBE7Cu1E08805y.w86527EH-664Fuw4.8B0@flex--tarunsahu.bounces.google.com;
 	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794286939;
+	s=arc-20220608; t=1794286941;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jomqh3EBPc599hlxv7mE3jDDZh0m6vOE0Julqd7EtAs=;
-	b=Bldg73WMhl0CFkcB/KqXMiotwtmYYyqJRRYrUXfX57rzRo2Bqy2XyYajQ8QWc5bGLxrlO3
-	I9SKmggVHOqXD5snkNRHpzf6kpFup2nh6vnrnw4f4EjATXMM1V1uxljLqF/rKjFlURC2e3
-	15Qup0Pa+hQG+3sU1wIf1DMEbmIw8Sc=
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-c40285df2a0so96845166b.2
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 21:02:19 -0800 (PST)
+	bh=hqbeun0C1/XgWjYnTEG1QqOg75mMAInimMPRhrMj/I8=;
+	b=YHrJQOGkSAfOFEltEEc1n39xeEpTdsjiqs8c6uvkZDJNbM6p9SFdltIpcJeFn3PFRiuda1
+	hGEiGEVhGzkKGKmcUkuHSuhIgEuEC3aR7XcijWa/xI7CbFCnMiD5yWYGJENVIk0MGdkaPU
+	LF2Un+ZmIiJcUKHILrnSez11YOawiJ8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794286941;
+	b=yN/42ovkMzrRcWVhrfY6mEpAALuabl9V5su+VZHOdfXqkTWkUDTQYaGwiXQrtiRdC2mk5M
+	64Lk0chtZawgq0wIHFDmrc6RwuS5ghSc8XVQnQpPd+CEtNTuK1JFtaXZg4CDj5Kk9cc6dh
+	1KxieZEJJfpIeQUE81RRV/clGMo5Q6w=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=QgtuWbdw;
+	spf=pass (imf20.hostedemail.com: domain of 3W6XyagkKCM4DuBE7Cu1E08805y.w86527EH-664Fuw4.8B0@flex--tarunsahu.bounces.google.com designates 209.85.218.69 as permitted sender) smtp.mailfrom=3W6XyagkKCM4DuBE7Cu1E08805y.w86527EH-664Fuw4.8B0@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-c4048584447so134549866b.1
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 21:02:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794286938; x=1794891738; darn=kvack.org;
+        d=google.com; s=20260707; t=1794286940; x=1794891740; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=Jomqh3EBPc599hlxv7mE3jDDZh0m6vOE0Julqd7EtAs=;
-        b=lUDBEP95OzOcPrKi+rRqnu9tocWAxLyW1If12ZtygOtd7/25aNS4jLVknwOX8st1e+
-         wm2fbHAb7qm9xs354YRvNZrtm1YqwqyJvQzkT3xHBaM6EpomDzkJU1dzq/9DymZVWcaP
-         9++PbBZ6FGFN5rV+MpkkSlFNnJHwgz446ImJND/M6pKLW8omrH2MaK5NkR2R1SCMfnCc
-         vwnr+N9dvdXvEed3ZtzFFnq4UPQC1aC1zoJXvQ7pjETgLXwqBwI6MOdfiipIvATAynmQ
-         P6Akb5qpVr1U6Z9Gu+yUuqcw+rxeEBcLBgVdAK3mJ4FfFeiBVJmfgnDhPWxEuB60n2bO
-         Hnlw==
+        bh=hqbeun0C1/XgWjYnTEG1QqOg75mMAInimMPRhrMj/I8=;
+        b=QgtuWbdwYf+ss69jysGyKfffma91La66y2CfnU3YJZ3mXvVINMJOOk0sB/J7fJGPHH
+         mFn5+rJRpT6bgHodfNud8LBDCJuIM4g+4wZWrzPcIbDcPV6qkZUNkdt3ey2g+B3T6YpW
+         tvuC9Ltca0Zf4/lea9DZaFHtiuS4z6ZAfoncoFeJF29WDAPKtjfppVaJZ9uX0SX6EVLw
+         LhDUjntn8ktzbClAUCAgevhq06OsXl1otPD+4xol7gIuqzqqXUwJ6QagPD6SR+y0j1v9
+         YCVSPXn36RRBfj5vKl/cF+jEPP7x/3CJfIZ49+BBD69Gr+JFsGChhcnIHzig7FJO05/8
+         mvBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794286938; x=1794891738;
+        d=1e100.net; s=20260707; t=1794286940; x=1794891740;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=Jomqh3EBPc599hlxv7mE3jDDZh0m6vOE0Julqd7EtAs=;
-        b=udo8j+ZzaGiD2tnYB7t/VFG5GiNzSQvhRLdYnXOfgQ4xjeiT15ZkaTh9oLI0fOTmu5
-         lkxXI56XBzgiRIYPdwDKM0Mlq3+CQYA0FnO3o8o/Y9eD4ETesv/UI8Nk5VGrHvvZO+s8
-         rGNoSrrmLpteZ+V6nPPSvd5FoRx+N4uxsxFIvdwnfstLLgVdQw8ky4B0MXuSfzc4xE1R
-         EJLVgj2UHwpy2R60YDLgo2YSZDyI0zMSz1rhfxa66LUknVKMTkrMwdy9KkpwdOtyp6PO
-         gRouA/lcHqOc3rKrKRy24HIoA55KjO0lK3Pq7TH3ECIFor+C/7GmYflysQ2LLWkl0Chw
-         npQQ==
-X-Forwarded-Encrypted: i=1; AL+hErHDDSsRwHUmjzbazXFmpGnmn6SI4Zw1ox/W8xvlvep4WgVhbvRTBVsIOvPLJEmGMvO+tS58iQq6mA==@kvack.org
-X-Gm-Message-State: APuU4Z+LTz5x04N8hEmlh9voU7213za3EYr0viwuUXZnBXLCu/oeLHYT
-	FihEGyESyugjuM+zDxb1Td2jDAbHxpc7sI3py8pnkcxwd2pzRsAQI8auf3nT1kyJcTzoi2/Fmmi
-	G7KMnjFrJ3mkWOFoFPg==
-X-Received: from edzg2.prod.google.com ([2002:a05:6402:902:b0:6b5:8540:2bf])
+        bh=hqbeun0C1/XgWjYnTEG1QqOg75mMAInimMPRhrMj/I8=;
+        b=E+cz4OQHjnqMn72Ne5tVb8w2nuWMSAFQX597iCPp4lTKMlWvZGcHgumitAjhV0RrkT
+         Z2E5AejC0z8vOPOpnIjAde/sjW+lLDQchAmkXQ4X8aPMazXqCAytBjZWoVC/dw8aG8G0
+         naLqoRlVQh+6MOgPp7COlVRuzytnY7eFkytHDAHslzt6zBoXWJ0R7Y6OtorD7wuHSBhP
+         61Qscf6TQNIsTl+LaDOS9JXSxR2zBua/uxvKOc/rTGGjU9pXq3PoRELe18rN7oGbzOcA
+         09+O0lSTjJir+gT8TeUlovTKDIjCPQfnVlZyS004sBsSwQ6VA2nOy5Nnfu/cU7m8Sfgx
+         dWYQ==
+X-Forwarded-Encrypted: i=1; AL+hErESc7Q5knTQUwg5YWcrfq7ECQZlToJw6Xv9KBCPpylKK1OJG1wXwBE+rVXBmpClq1+IReLoCsPApw==@kvack.org
+X-Gm-Message-State: APuU4Z8Yu+QN49U4r4Egz5eaNgBCPkRoRAtb7wnfJ+a2q7Qj5V8np6p4
+	B3jh+utCjYTkQYm9gaX9T8lgknOnqfZMhb6PPbFofqANob6hnPDUK3YIxSxf2y1wzehhNuH65nn
+	SeBOPsQPTpN/+6/FsVw==
+X-Received: from ejqs13.prod.google.com ([2002:a17:906:454d:b0:c3f:2fd1:c5c])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3d8f:b0:c48:a838:c16d with SMTP id a640c23a62f3a-c5049629dbbmr100182566b.30.1794286938072;
- Mon, 09 Nov 2026 21:02:18 -0800 (PST)
-Date: Tue, 10 Nov 2026 05:01:55 +0000
+ 2002:a17:907:6d0d:b0:c41:e0c0:e6b7 with SMTP id a640c23a62f3a-c504951cddfmr104842866b.12.1794286939400;
+ Mon, 09 Nov 2026 21:02:19 -0800 (PST)
+Date: Tue, 10 Nov 2026 05:01:56 +0000
 In-Reply-To: <20261110050202.529473-1-tarunsahu@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.56.0.506.g506a7eabc5-goog
-Message-ID: <20261110050202.529473-13-tarunsahu@google.com>
-Subject: [PATCH v4 12/19] liveupdate: Add feature header to struct luo_file_ser
+Message-ID: <20261110050202.529473-14-tarunsahu@google.com>
+Subject: [PATCH v4 13/19] liveupdate: Add feature header to struct luo_flb_header_ser
 From: Tarun Sahu <tarunsahu@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
 	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
@@ -102,19 +102,19 @@ Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: knurqkf315p4ugoy9mfpgyxwsfoiatoy
-X-Rspamd-Queue-Id: CF971C0006
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam06
+X-Stat-Signature: gabxqptepcgiejx5sijgpcupjyrtbo5i
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794286939-111843
-X-HE-Meta: U2FsdGVkX19o/kJL8UOSGkfh82TonMHuAOBR4VlmrJRqKg8xV526CDhbzsYYfloilFQ4Ksv1AKvANvNLu2ZMu7s7M9GI7Nq6Dezz09YAH7xdvLlflE7YwDydwTQGxNQeTRhA3e0TV5IBc9NdXTGDC5HWLyS3CFuzmyzTbaRL1x9BPg0PJ00G+yIfJ1LR91Et5WPTTPRD6HvH9QMG1LZXcbkspnLzOCk7tqK0XbiCagG2h8svY2uWM2VR/24BVKyNvl/icLWymOyvp+RTqny7+qAMpCP4fdOSAoVezi6HYslqpILosi+YOkYKcnCEZVzhS0fUae5LOHHs0yl0EhOVfRyWVDXfrCDaINcUbE8RoVLpPKy67/go3n7mCzXyXP0eH3RQAQQLCAnU9N0IlHyTXMIj62t5gGF/nWzB49F99jwWI6zc8nc6jTBafzQW/K7UFkS5S99KKLQBUvW+G/3a1wFfMGlxZZSmgSa4jrD1crgnY/W13A7JCnDzZMXw1E8B4Y6FbIP3+Z4kb4dYjDA1FOvKlN+1hUJdouLAgZ/M8R2Ezn1K2H/6cFzsREARt1+kb2SnmW1dT/RJvsRmjHoCjbJzduFCRKVwEXxjcP3cipAbOkPFWxLhbNVrjrcFYLJ64/UaJKxUaWu7yiMjI71p5TtzB7EstyuJ640TbxVRytzY5jiscAk3SxJxSttPjnkYZ4L2dQ9I4JoZ+aKQ0Cm66YmJz/hsw3tNDtI2koMKWAzwdcdF+1e/iZOtrsX5dUHPPwQev5fv7yLjleRayZ8l1FIqUVtD8gxkch4bbfnjYAHktUSemKwdW/6S4W7oCS7lhvQjiSZwxZEoOQ5i3cWZsx7K6pDuPyiJn8zVowXrp9VBvJvdrqbd36uIhd8GggnrTvmQR/xhDZVSofQC2Ou5Umvyxmz+A7GAx2ok4ELJRA0UM9jOGXK3W4sdPuSgoDiK1wWJWqvDIVdJF5KhOyo
- kX26dsGV
- f2uAsgNMy8WJe9FKyqMBhfenJaSsPGbSKmkxugRKpsrfxf9P5dGY3TSHe1Agqayws394+B7316m0XTdmMZ6tZrKkB+dLiYPlrASlBWWYBvQPbteNT5B0JVcNmtDZSGqZRPgh+BNRbGyWcgOAFfDQPc3sfFCgU5GDxYWe5tb+Wp+eSjL+JNXfKdj5Px4xQ8CI8f3mlGhSaNREGt+tKYf6lXj7QVdeqzk8sRr84QPg0TzEh/9fJ3SUMYuG7C6NPCR+coB4V0ujJI9fdn0DElz6qhBTyfGWMSwZHpr2xZLVSbyu393LF5wcMVard+GyF9HdroE3aOFxFA4Tillks5sC0TUnCm26oqhpDi2V40A80zVV3jocQrfGsJUXMkt/PiGej7avB2i+t2e+VghVLssFzsWqNX8Jyj8MPio3YmMpDpB0Rt12cxiBvSknyzZBIdEAMH17BdL+4CEbI4vFHuSRXf/WNn4ZoiLC+1GsV1kH7er3eLS6a0GzmAkrPVpt2gqCDcBTSCa4OdzcjRcpOI+Wmz1DRqPVN6HDJ5iErvfebUiqiru8XDrBEVUzOrmlXK8yn3YOlJyfv4Sldm77q4zAc/Oy7JQGLVgJUdm4bF3VJFqH9OcoyKhbRDV9BiVIIDQ7u/Lh239Ud8q1VYzYm83rjvcfmTg==
+X-Rspamd-Queue-Id: E9F931C0004
+X-Rspam-User: 
+X-HE-Tag: 1794286940-996765
+X-HE-Meta: U2FsdGVkX19uRlsukT6TZ1LjLjuBgAt09N+DRHh+KnjhjKllTdZoVgtLaIAohCYr1tRmDnjomaSF9ok/4qQoEcZ1PMczzrvNvy74OF7soJa1wg1FfFGdPg2i99So3Pky59yQwiKQ/PTYaagewHjmgdXwjm25i46UTaztm63V/7ZqQtTr/CvI3274kgT5LKGOpJG8VeHPj3IPeNsrIRdn0QnpP8SlikRHSjTrIYShyMXxY7ZTdMadpkl2Ug1DbVqUWCItgkiVB6CtdZECQXfXfFdx2YhryNXAYchluPnYzcXkfPhkOHO/R3nqWz4zZrs9gMFGpO7QsFtQUINvEez6C+o+cLCaTd9Ama7IeUJXUOcFFiUGcaWuVFuixbhg36o23NWIWQrBcRRzvpXn3GJwwyxyF1US4muPtwl3rqbnfXtcyQDu2gmbZUZbwOOus7w0gJpBPNV1hiNqiQBkyXXiq5QQSDX4kKERUjZc9Jsbm47z3i5Lmt69aJadI+TPbMmNDKANPWtzo3xxbvwMdsMBxj2/wfGAa9mFzbiTc+nO5BggnR4MA5N/5kfT4tZRCkOyCqxlnEUTqR+9p5Wbj4rht+Q1NVKXBr8OajhfMYdarEQ51qcwjUq1VpTXbYqe5Sb7sGlqEz7g9HvctUDpbGu0eQ9FYikTvCh2AhwRwxj187tDfqYJzF+gk6hE1AxS3yye7TDkQFN57FLwj8dO1RNaG0l+vtJN15vxmC6Ou6rRjDqPfa0e7wa/CC5Ij2L/RcsM97fE8vNJSPnLUFh1UGEfE0vc3Uyb8Th87BiNP0x1laGVdruyCPAFojRP25autEjyLQVVVwh5we52rg8mumHVgK49oGf9fy3QHZ1RvOIauoUM3ILqhhxc9/qazkcBOa9BqENcU2o+YY2bvLub7qhLvlYnS5QU7E7vntt4ToTiSUl24cnJS6xC38/8Q2AFHf6YJxmcNqpMJLAAt5tKsl8
+ XKv6vHbH
+ hMG7eYS64sOLG/GuIdldCPH9zKR+NVlSj3y3qiyI4loamoLtjv4+f2C7LjBRsRX6owZPL/HR6LUUGcCdTojYci8Bf7D11QOpSdfZyhAmZKEHCShJ7/rNaeH/WCQq0s8UqsCkyxMGisaJoI0XnWYqZO8LPHuJIMMNdgGNL1GVZmo7CXrprAn/SfZPfA53oS9Fo9Ho6M/75iTQkujezalTKA6sWLdTfVGKHPBqFCZofg7dSDe1/yVm60yb6TLEXp2QDfecu0LQkLQ1kB7w7N7Ow/mn5F5YtwIyUiktxrGU+rRW0yKRbnOi/61eweogjv5AjbVPL4W6pQxN2e/Eiu3/mVnkFwPgB6zgCMJeGG5RydkmvlVXoipaESQ/2g/YR5Oal7mUKV4EJnswepictxWcvT247AiACQUjuksXiTyn4jdYhKjGyW6F5NhVrtrUCQwNVb5UcNhFM0F5G0tXdDFO9MNdjlk++c65yCvWrplBVY4nrhsGp4qpZ1+KjYNkpyQ3Ecn6uiAafz2+nArxiAhBmgTvcoblPMY/vIrRS99iM3Ob0z5OlBuc+KNk8riiek/XBCqsNjpxI3TmGj65b1vh0mLM0QcHFp5HLkmA6t6QN3OCmqsjqF7tsVBOd7bA51LPu3FI8bRGfMXRu1Fy0m95oEfht8A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,124 +123,147 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Precede each serialized file entry in a LUO file set KHO block set with
-struct kho_ser_hdr via DECLARE_KHO_SER so future per-file metadata
-features can append fields to struct luo_file_ser without breaking
-compatibility between adjacent kernels.
+Precede struct luo_flb_header_ser with struct kho_ser_hdr via
+DECLARE_KHO_SER so future File-Lifecycle-Bound (FLB) header features can
+append fields to struct luo_flb_header_ser without breaking compatibility
+between adjacent kernels.
 
-Initialize file set block sets with kho_ser_size(luo_file_ser), initialize
-each entry feature header in luo_file_freeze(), and validate the incoming
-feature header in luo_file_deserialize_one() before accessing the struct
-luo_file_ser payload.
+Initialize the header in luo_flb_setup_outgoing() and place the outgoing
+entry array immediately after kho_ser_size(luo_flb_header_ser). On the
+incoming path in luo_flb_setup_incoming(), validate the feature header
+with kho_ser_validate() and locate the incoming entry array at
+fhdr->size so entries remain properly aligned even if the source kernel
+serialized a different header layout.
 
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- include/linux/kho/abi/luo.h  |  6 +++---
- kernel/liveupdate/luo_file.c | 26 +++++++++++++++++++-------
- 2 files changed, 22 insertions(+), 10 deletions(-)
+ include/linux/kho/abi/luo.h      |  6 ++----
+ kernel/liveupdate/luo_core.c     |  4 +---
+ kernel/liveupdate/luo_flb.c      | 36 +++++++++++++++++++++-----------
+ kernel/liveupdate/luo_internal.h |  2 +-
+ 4 files changed, 28 insertions(+), 20 deletions(-)
 
 diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-index bd19211c64e1..38b4658183a2 100644
+index 38b4658183a2..4913707ba0d3 100644
 --- a/include/linux/kho/abi/luo.h
 +++ b/include/linux/kho/abi/luo.h
-@@ -92,6 +92,8 @@ DECLARE_KHO_SER(luo_ser, 24, 0, 0);
-  * @compatible:  File handler compatible string.
-  * @data:        Private data
-  * @token:       User provided token for this file
-+ *
+@@ -157,16 +157,14 @@ DECLARE_KHO_SER(luo_session_ser, 72, 0, 0);
+  * This structure is located at the physical address specified by the
+  * flbs_pa in luo_ser.
+  *
+- * If this structure is modified, `LUO_ABI_COMPATIBLE` must be updated.
 + * Preceded by &struct kho_ser_hdr.
   */
- struct luo_file_ser {
- 	char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
-@@ -99,9 +101,7 @@ struct luo_file_ser {
- 	u64 token;
+ struct luo_flb_header_ser {
+ 	u64 pgcnt;
+ 	u64 count;
  };
  
--static_assert(sizeof(struct luo_file_ser) == 64);
+-static_assert(sizeof(struct luo_flb_header_ser) == 16);
 -static_assert(!IS_ENABLED(CONFIG_64BIT) ||
--	      __alignof__(struct luo_file_ser) == 8);
-+DECLARE_KHO_SER(luo_file_ser, 64, 0, 0);
+-	      __alignof__(struct luo_flb_header_ser) == 8);
++DECLARE_KHO_SER(luo_flb_header_ser, 16, 0, 0);
  
  /**
-  * struct luo_file_set_ser - Represents the serialized metadata for file set
-diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
-index 02d09a80d785..2da327f8bdae 100644
---- a/kernel/liveupdate/luo_file.c
-+++ b/kernel/liveupdate/luo_file.c
-@@ -486,10 +486,12 @@ int luo_file_freeze(struct luo_file_set *file_set,
- 	kho_block_set_it_init(&it, &file_set->block_set);
+  * struct luo_flb_ser - Represents the serialized state of a single FLB object.
+diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
+index d0f72f27001d..79bb5f64bfac 100644
+--- a/kernel/liveupdate/luo_core.c
++++ b/kernel/liveupdate/luo_core.c
+@@ -131,9 +131,7 @@ static int __init luo_early_startup(void)
+ 	if (err)
+ 		goto out_free_ser;
  
- 	list_for_each_entry(luo_file, &file_set->files_list, list) {
--		struct luo_file_ser *file_ser = kho_block_set_it_reserve_entry(&it);
-+		DECLARE_KHO_SER_HDR(luo_file_ser, *fhdr) =
-+			kho_block_set_it_reserve_entry(&it);
-+		struct luo_file_ser *file_ser;
+-	luo_flb_setup_incoming(luo_ser->flbs_pa);
+-
+-	err = 0;
++	err = luo_flb_setup_incoming(luo_ser->flbs_pa);
  
- 		/* This should not fail normally as blocks were pre-allocated */
--		if (WARN_ON_ONCE(!file_ser)) {
-+		if (WARN_ON_ONCE(!fhdr)) {
- 			err = -ENOSPC;
- 			goto err_unfreeze;
- 		}
-@@ -502,6 +504,8 @@ int luo_file_freeze(struct luo_file_set *file_set,
- 			goto err_unfreeze;
- 		}
+ out_free_ser:
+ 	kho_restore_free(fhdr);
+diff --git a/kernel/liveupdate/luo_flb.c b/kernel/liveupdate/luo_flb.c
+index cd715a7c1d99..a8dcdb8456fd 100644
+--- a/kernel/liveupdate/luo_flb.c
++++ b/kernel/liveupdate/luo_flb.c
+@@ -53,7 +53,7 @@
  
-+		kho_ser_init(fhdr, luo_file_ser);
-+		file_ser = kho_ser_payload(fhdr, luo_file_ser);
- 		strscpy(file_ser->compatible, luo_file->fh->compatible,
- 			sizeof(file_ser->compatible));
- 		file_ser->data = luo_file->serialized_data;
-@@ -742,11 +746,19 @@ int luo_file_finish(struct luo_file_set *file_set)
+ #define LUO_FLB_PGCNT		1ul
+ #define LUO_FLB_MAX		(((LUO_FLB_PGCNT << PAGE_SHIFT) -	\
+-		sizeof(struct luo_flb_header_ser)) / sizeof(struct luo_flb_ser))
++		kho_ser_size(luo_flb_header_ser)) / sizeof(struct luo_flb_ser))
+ 
+ struct luo_flb_header {
+ 	struct luo_flb_header_ser *header_ser;
+@@ -559,33 +559,45 @@ int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp)
+ 
+ int __init luo_flb_setup_outgoing(u64 *flbs_pa)
+ {
++	DECLARE_KHO_SER_HDR(luo_flb_header_ser, *fhdr);
+ 	struct luo_flb_header_ser *header_ser;
+ 
+-	header_ser = kho_alloc_preserve(LUO_FLB_PGCNT << PAGE_SHIFT);
+-	if (IS_ERR(header_ser))
+-		return PTR_ERR(header_ser);
++	fhdr = kho_alloc_preserve(LUO_FLB_PGCNT << PAGE_SHIFT);
++	if (IS_ERR(fhdr))
++		return PTR_ERR(fhdr);
+ 
+-	*flbs_pa = virt_to_phys(header_ser);
++	kho_ser_init(fhdr, luo_flb_header_ser);
++	header_ser = kho_ser_payload(fhdr, luo_flb_header_ser);
++
++	*flbs_pa = virt_to_phys(fhdr);
+ 
+ 	header_ser->pgcnt = LUO_FLB_PGCNT;
+ 	luo_flb_global.outgoing.header_ser = header_ser;
+-	luo_flb_global.outgoing.ser = (void *)(header_ser + 1);
++	luo_flb_global.outgoing.ser = (void *)fhdr + kho_ser_size(luo_flb_header_ser);
+ 	luo_flb_global.outgoing.active = true;
+ 
+ 	return 0;
  }
  
- static int luo_file_deserialize_one(struct luo_file_set *file_set,
--				    struct luo_file_ser *ser)
-+				    DECLARE_KHO_SER_HDR(luo_file_ser, *fhdr))
+-void __init luo_flb_setup_incoming(u64 flbs_pa)
++int __init luo_flb_setup_incoming(u64 flbs_pa)
  {
- 	struct liveupdate_file_handler *fh;
- 	bool handler_found = false;
-+	struct luo_file_ser *ser;
- 	struct luo_file *luo_file;
+-	struct luo_flb_header_ser *header_ser;
++	DECLARE_KHO_SER_HDR(luo_flb_header_ser, *fhdr);
 +	int err;
-+
-+	err = kho_ser_validate(fhdr, luo_file_ser);
+ 
+ 	if (!flbs_pa)
+-		return;
++		return 0;
+ 
+-	header_ser = phys_to_virt(flbs_pa);
+-	luo_flb_global.incoming.header_ser = header_ser;
+-	luo_flb_global.incoming.ser = (void *)(header_ser + 1);
++	fhdr = phys_to_virt(flbs_pa);
++	err = kho_ser_validate(fhdr, luo_flb_header_ser);
 +	if (err)
 +		return err;
 +
-+	ser = kho_ser_payload(fhdr, luo_file_ser);
- 
- 	down_read(&luo_register_rwlock);
- 	list_private_for_each_entry(fh, &luo_file_handler_list, list) {
-@@ -810,7 +822,7 @@ int luo_file_deserialize(struct luo_file_set *file_set,
- 			 DECLARE_KHO_SER_HDR(luo_file_set_ser, *file_set_fhdr))
- {
- 	struct luo_file_set_ser *file_set_ser;
--	struct luo_file_ser *file_ser;
-+	DECLARE_KHO_SER_HDR(luo_file_ser, *fhdr);
- 	struct kho_block_set_it it;
- 	int err;
- 
-@@ -848,8 +860,8 @@ int luo_file_deserialize(struct luo_file_set *file_set,
- 	 * reliably reset devices and reclaim memory.
- 	 */
- 	kho_block_set_it_init(&it, &file_set->block_set);
--	while ((file_ser = kho_block_set_it_read_entry(&it))) {
--		err = luo_file_deserialize_one(file_set, file_ser);
-+	while ((fhdr = kho_block_set_it_read_entry(&it))) {
-+		err = luo_file_deserialize_one(file_set, fhdr);
- 		if (err)
- 			goto err_destroy_blocks;
- 		file_set->count++;
-@@ -883,7 +895,7 @@ int luo_file_deserialize(struct luo_file_set *file_set,
- void luo_file_set_init(struct luo_file_set *file_set)
- {
- 	INIT_LIST_HEAD(&file_set->files_list);
--	kho_block_set_init(&file_set->block_set, sizeof(struct luo_file_ser));
-+	kho_block_set_init(&file_set->block_set, kho_ser_size(luo_file_ser));
++	luo_flb_global.incoming.header_ser =
++		kho_ser_payload(fhdr, luo_flb_header_ser);
++	luo_flb_global.incoming.ser = (void *)fhdr + fhdr->size;
+ 	luo_flb_global.incoming.active = true;
++
++	return 0;
  }
  
- void luo_file_set_destroy(struct luo_file_set *file_set)
+ /**
+diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+index e22a8cf39d91..df8306d73768 100644
+--- a/kernel/liveupdate/luo_internal.h
++++ b/kernel/liveupdate/luo_internal.h
+@@ -121,7 +121,7 @@ void luo_flb_file_unpreserve(struct liveupdate_file_handler *fh);
+ void luo_flb_file_finish(struct liveupdate_file_handler *fh);
+ void luo_flb_unregister_all(struct liveupdate_file_handler *fh);
+ int __init luo_flb_setup_outgoing(u64 *flbs_pa);
+-void __init luo_flb_setup_incoming(u64 flbs_pa);
++int __init luo_flb_setup_incoming(u64 flbs_pa);
+ void luo_flb_serialize(void);
+ 
+ #ifdef CONFIG_LIVEUPDATE_TEST
 -- 
 2.56.0.506.g506a7eabc5-goog
 
