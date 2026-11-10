@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EE4606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 14:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCB5606A334
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 14:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MaVc7TlE
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=I9Xjpiw6
 Received: by kanga.kvack.org (Postfix)
-	id A84256B05BA; Tue, 10 Nov 2026 09:53:03 -0500 (EST)
+	id 9E7866B05BB; Tue, 10 Nov 2026 09:53:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A35116B05BB; Tue, 10 Nov 2026 09:53:03 -0500 (EST)
+	id 998AB6B05BC; Tue, 10 Nov 2026 09:53:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 860D66B05BC; Tue, 10 Nov 2026 09:53:03 -0500 (EST)
+	id 812736B05BE; Tue, 10 Nov 2026 09:53:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 57F626B05BA
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:53:03 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E55631608DB
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:53:02 +0000 (UTC)
-X-FDA: 85419501804.03.9974D29
+	by kanga.kvack.org (Postfix) with ESMTP id 530636B05BB
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:53:10 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id DA7911C4320
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:53:09 +0000 (UTC)
+X-FDA: 85419502098.04.9220355
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id EF432C0004
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:53:00 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MaVc7TlE;
-	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf08.hostedemail.com (Postfix) with ESMTP id D9B19160003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:53:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I9Xjpiw6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794322381;
-	b=EBPZ+RhBG9KhaPxtxbjeLun1l7TLSxg8ueJBw8foS+jnbejvmZIzkvBVc12iXeQw3GTk8c
-	MYNX264M99XDoQWMSFMOA0SaD+SCgSzppWP/LymwNVDiBIs0/IR46PK5uiB0ECq4jR0dQZ
-	hwuLuwFmtWGQCxB6fKAWOGD9Hbjdccc=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MaVc7TlE;
-	spf=pass (imf28.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	t=1794322388;
+	b=T8IDZGRu5t89a1LrzriKPWt2tyrSxdSgqUc19+A6vsU7SZFQI0b6VJ3B2hCRXTIxrCuEY/
+	FJRoPsTdVshvvELjcxEHnUl5YQ5qqM8mjpCecofRa8FGChiJmRru62SEHNiyysFiwLm6rN
+	ug2TJia03qmQBYwJGH8MDDJcdpOuKrc=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794322381;
+	s=arc-20220608; t=1794322388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7dG4/NDMTYOYfl07jMa01MQBiiZoMUtqo8N33muHYAI=;
-	b=vkF+FoMZQZHe6vp0FeRCkZw/xKy4IPF+9Hf7fSUIF50mYMgolHGJf9yOvHI3e6N068P0PC
-	nZ0GxuRYkK9KTSUJExy4JquA5DFI113xBsoFxDH/b38uBFlM43X0tspzdXW/wT8SfY97NN
-	qkp7yMzCqMH68OYULft1KgTerm6F2MU=
+	bh=vXJnmnfnsr5eWSeHa0K3etqyrfF8UK36NYjgCdOCC6k=;
+	b=T34ZzH+0REIfkzoRii3uVKRlRlbk5jz/x2KcO8swAii+1N4vRxtnZwx5tMRvWjormr7UqC
+	MUp2goqvUHGySoZzJYd2nPSpJeAanFJ3z4v840yPinJAwQ803fOzWOft1DFWLG6TnM33z8
+	4OgUpBCz3qqYK2LHuodNkd+lKE8PUno=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=I9Xjpiw6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=kas@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 874D6639C5;
-	Tue, 10 Nov 2026 14:53:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D068F1F00921;
-	Tue, 10 Nov 2026 14:52:58 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5F565639DE;
+	Tue, 10 Nov 2026 14:53:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215FF1F008A3;
+	Tue, 10 Nov 2026 14:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794322380;
-	bh=7dG4/NDMTYOYfl07jMa01MQBiiZoMUtqo8N33muHYAI=;
+	s=k20260515; t=1794322387;
+	bh=vXJnmnfnsr5eWSeHa0K3etqyrfF8UK36NYjgCdOCC6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=MaVc7TlEOKGMYyp+hro+is1cMFWWsQ1mP4Z33ryMG5SeYZDAv77/D8RAivjUXEY+l
-	 IJjZKLaDeXSfzj6xZc4o/Klw1iQ1LkD7NNtrCkvjgDJZShbuc2rOApDAGgeh6Io//f
-	 SeBysUEGC28DxZ9Tt7O9gmno2DoiJ9kU1/FaELdE6CVhMHA2lwaJ7aViS+oGeF3OxP
-	 jUPG4OiepIoac/3JZseXB/U3iot0hBF8gyt5lhrRPgB6mgmY2/CGrQAQBcH5ZRdYbp
-	 m0a4kFd304p+BzTfhP4d7J26+hUi8JYvousrkQxODU1FggZHIWL0lRLPO/3KYSzThf
-	 r3NjKIte+vuXQ==
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 3A5AF198003A;
-	Tue, 10 Nov 2026 09:52:55 -0500 (EST)
+	b=I9Xjpiw6mMCtqOn6JafQqIZNr7WC2/X6o4WJDWoWVS02Fg/zBIfpzEBr9JKov7hTc
+	 O3lTCpBwtSfMNReSrYM4yIB5Cc9qh7GfKLAemkRH+LpJSaLSmYTfbPnT6yGmEuqeSf
+	 DNGVk/N3rT9mG5KLO3TRWNVbszknRqDAIAudq15qH89Ke0T01umNepyKAQSYjfPZfc
+	 kooQPH81UeicnuU2kpQONTkx5kpc6F0trXEurBI+XYaSmdQ1gsQm62uLkJnBRXTVzQ
+	 MKvDxZ9aNCaiRuGtoXEr12r0nQAcqS1Y7sPKft8lZfN23MReCzKSboXLMYFsyBztYS
+	 selurofTKxY7w==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 7977D198003A;
+	Tue, 10 Nov 2026 09:53:01 -0500 (EST)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Tue, 10 Nov 2026 09:52:57 -0500
-X-ME-Sender: <xms:xi_zagw4WeoYpxRyKBG5JZTaEX29ChjFEI59znsedEAc3LYj5hyZCg>
-    <xme:xi_zalADPv68oVaOAVGw5tl2Ou0YxpafEENitIenkz_8bjZqDcqAWfzGWycbtaHjs
-    AtVobY2cHx7VmZ35zeJqFJejqmqM8fTRbMuQaFrt1BUx2-Dr4ELVI0t>
-X-ME-Received: <xmr:xi_zamKIFvn3P3iGzSafumQB-MOW2ZBt9Fx-Z9bfUgnZXXzJuuu3NT-CNPg>
-X-ME-Proxy-Cause: dmFkZTGzAp0d7QCfANqgQV3SqAp9E3ejIU9CgJIjCZNQC1XPJVWn299uIoWq4HTg3uzxou
-    VcW2In1RCBXXfbaT64IHfNVL8IBe90aLZXPZKpuK00ekN93xm+yjIlb6e6DzLr1dadDNTL
-    pUkdrsXoUEMfiTtQnxAyyQ0eJ6q/OsKkRQ9xLALi4ea4xcyA+sruGqyPJEK3OWAd7CNanm
-    odUqpeCSt6F+Go5ECG7Cz90wDg2pJfzb9Ccu6bVw8aYM0JyamtNvp9lurJaDNl8eJFbh1V
-    ko1vPHhx8+RdtVZUlhBMGeLGAiga+Rb5lbdz3EkPt25TpPWaMyowzruv5FR075oM4YDUa6
-    rYGZyw4IYKVsckzU8fgaq6pUh8faEdD9I3N0UE68ZxVuRGAwNzkAYO/Gye1Jes917hAELm
-    RGMZfRd1Uh0YW7ruwWWq5zr3FNdgnpbpw36QomassbtsIjFBFgb2Eg5i9+DukDRCE9PHrL
-    BFN+GnVuaq9RI7/e4rBfrsQPtwCOb3R3KycgE0QgHlq8NSC1NqQZXoYRw5APt/zC4sLp1H
-    j6xNcZBB1kglc2io+pF0mzdYu4L6zcFekBHuespvioNgqulJYwWwi4T+UoaiYpOuyPeIdN
-    DA9Hk+cRFtfteOoKSoGjJ7InvVIckFMDMBSMBh0M6hjb//ZKUzFS6lrcHVkg
-X-ME-Proxy: <xmx:xi_zagHMkV3r6iVolBMKoRfZ4hPtYzWv6mdjqzmGhlpxIlvpVbPkDw>
-    <xmx:xi_zahG2znIN_v8oKray1c3P3x3Mi6_VXCx6SjomduusVLimq8KjCQ>
-    <xmx:xi_zaovxtBLV6WnQmGL-Tyd9AqmYyT17gX3knxxhVLYyDQkjO8Dxew>
-    <xmx:xi_zasa7xLcJjqmjeF92WMbv35c2pqYAbn-tmlGXXTQK1qHsEBWvtw>
-    <xmx:xi_zaqOCwFluxmMIitwg4mkwzwgGBhbUAUj_ZcLWqRfNNFLKr3f9kxba>
+  by phl-compute-05.internal (MEProxy); Tue, 10 Nov 2026 09:53:03 -0500
+X-ME-Sender: <xms:zC_zaqZXFU9ML_bS7mx31XWkHiww2uG0JAbjFyQbB-NPJhHKaDFCbQ>
+    <xme:zC_zathV5QfNoiX2k2VV96fpe4j3dOyTFM5jvc-e4ePAodG6M2Wp7Stv5q-JWq1Bu
+    -UZJBNsXnA1ubHmTSDJrjpo9x4AGsesjnh0EPj-g-2sBruOCcU_FGTK>
+X-ME-Received: <xmr:zC_zaiz7u9XI2O067oEfveMVTpu4dBPddCS_TM-NaqhBPi6IzlLG7jWzO6o>
+X-ME-Proxy-Cause: dmFkZTGD2sTgrJUeTY5UcgQtCaOBePSxscDWD3Hg3oyfWkWZonwghfagdzUPwpVCo6p+ah
+    RPmbT5HJNOBS1cmURZXQtNYzp7RHrFIqZQP96bnLeib/vXY8/REq7nsdxdpuBWCbMDGPTb
+    FktBomwyaihaoKdDGEcRKsKGV+6EYT3RxVWJHcIW3Q3ySxF0ktWMVgCokqtSVFi27eYANM
+    a8zLiO3aRBy/cKXa+4f1bKxtIEOKQb9XFI0nrKxhax8VK6C0orRCguRo9T3MAbkGZcM/hW
+    mAxjBlTWoBm0WeONWPq1dKUqXpH2G9SamTboeusXlryn9XtW7zeqoRzwm3wi+AVgZZ5EdV
+    6wlWwJRjBZ61I9QlU8hJxshsh34VH1K+iczyhZTmKB3d6ZEFJgcUVZNJ8rPfemQNpbTJ2F
+    2HiOp3YNEt6353xL8uicY7nOWs/T4bqkD4BGuMV2nvfr3gnWAqgzu+zf2GrYGqzwQG+HbI
+    FPVG41GeoSMDQRm03XwJKHk1994K9HdlITbbse4N7vOnz0+PhTqfjxDjUaPBv7divmc1C4
+    X6gTBJFDV6vNcPfGBL76ldBsZCWNnYAEeXxQNsf6tCv6qnDgmqeD05sPAvXsASLGlbF6Li
+    lMXbNKJ85kQH1bySDDxpiHkdrh4obfRB16fQZ+MLohXdq6MPSY+uiTyqMIyQ
+X-ME-Proxy: <xmx:zC_zag65OC2Ibj5MLnzk8YnSMXHK8DjYWaEtOiR88dOVvBWSOyrZtg>
+    <xmx:zC_zaj0Na04-fv6euV9fuOyHoExP76s_xkq16RfsNbyiGudeYAKAag>
+    <xmx:zC_zap1kO1t5IxSA7yo_NL68nk-U8gav2ioSHHb1gwIp7Lqwkdo2kw>
+    <xmx:zC_zaicL3f4ZAzh49E22639SWmm-YQLSfvmhfsMOUJ9dAYYCqstOhA>
+    <xmx:zS_zajLLqS8rB4BMbxqVzg7ON77bvaADrtHgPbRcI67m0Xo0qRq6lWtf>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 10 Nov 2026 09:52:54 -0500 (EST)
+ 10 Nov 2026 09:53:00 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Christian Brauner <brauner@kernel.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -116,27 +116,27 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH 2/4] fuse: don't move pipe buffers into the page cache
-Date: Tue, 10 Nov 2026 14:52:37 +0000
-Message-ID: <20261110145241.536019-3-kas@kernel.org>
+Subject: [PATCH 3/4] splice: remove pipe buffer stealing
+Date: Tue, 10 Nov 2026 14:52:38 +0000
+Message-ID: <20261110145241.536019-4-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
 In-Reply-To: <20261110145241.536019-1-kas@kernel.org>
 References: <20261110145241.536019-1-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 8k1sce6y55xrd7fn6qskkiu4e5hkwazn
-X-Rspamd-Queue-Id: EF432C0004
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: D9B19160003
+X-Rspamd-Server: rspam12
+X-Stat-Signature: u6x4kb3c51nyrhf3xbxdr5z7odxjdbey
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794322380-319203
-X-HE-Meta: U2FsdGVkX18hc5iXvbuc8S2fumjGGfsXfEc05+XdSWF/Ojbv5Ri97r+qneKn++HlC7H/ySTEodCrjQDaNlVa/1mKd7XMwbPZlcLIq69W2lvFVhmlo/iqxg4hamNEguzeZC4Pz1XZBH/5NxMQ8ztNFHgr/q28Z/ehIso5D3J+ouenAtF/v2XB9t+kfFSHM5zY2eR9Fto8Ep6yXgRi+AddjQvFWtB3++DAxJjG6hZU3hIIpBbThKuNEHmD2n0WPhKFHxgEIufbbyqukfdw2Vv4lFkFbhT2R+cx9nhEzYd+fOxTo8IUktDr1rUZnGe4CRS/h1sTFisAoPh+AubFJZSicsGEex/UPreJ9kDVcezU8s+iO/UhuflqiiyJiwhQiBWTNrSSzX8AHF5IB2Ke/N4Ah7XUUrDgV5ZR+8WSJLrNER7+8HpNhEg28QvXvZojMDfJnNlYqa38wViCdOZ+kMufVZHlgnjITO2IZU8WRbM/90oSJC0gzZ4TNSuJa5znO8kVSURasVL6BGHraVhpD74MVQiR/E/VppuVls7aM2J5lroOdRVGl8hPLsNpKrqx8JcTnqy1ZdSlbO+MBX7ySo26mTmoCkn1GROe5zAJ1OEqGy/wrnJ33OqExb1YOzMaz/xA9sjeXBGXPLgOam5rLEyf0NA7rXk/Z3oZqcwp464vkqgNUngNxWrGifMxL2//0Vt1rnzge61oMOyG8V7/3peYi62wF0YtEgvPzQlvOKQIUu3i/0Vy1SMe4r+QbCEUFziv5E0n6/1vRldesOM7LDnA6WFeSbdehmcPqFlgV2euVVsL8LQzwHudySiwyjjY9R/ebsvZTTyiPeYBY92ffmoytGrLMqX9vIo9A/WOh/kuYR/UTfsheh+XKNIQNXaHKoAoBZFkzYhKwis0w1lGhg4S/pC4Y1ZVX32jPPOgHxGmDV/6Nq/o4sT4mMg3LUywq2ZOs7bGgvS/bmvuc2MnxhL
- 1tw+wZ/1
- kJ2v0Ccdo1v15E7/Sget/BgMTkMMawvNRh1HMSytqWxz9mY1ry3Zqr86BcVQY2FReQKIQg7+UkbDJTWTarQjzNjcoaLG/64jPuR5TDGYe0tY9dv7/7gDe5FK4bq2QbxmSrKpQClP773BmseVi2+4f2u34KlFw44pNx1c9i/ue5ZTCLQ+0+iW5UeIQbENfpLmBlOrbwvwIEFGn4t39d+dT24lBh4OBsIbpGlxIXtNyWpcGRPiF503Qt+rS7ApQSce2TupAdIR/dj0p73xHDKVkFGfZP2hJcYJSC61A/w7Yz56C+EtIPETyJ0FiBGOIow7TI5nU
+X-HE-Tag: 1794322387-828518
+X-HE-Meta: U2FsdGVkX1/j6ehFQWGkqoFlT1zUh9Gkt/Uj8347BxzN7vwsZ5dlQPgX4X+eomFV0LHO+RJw5COmNBJ9PxBkSs/KdnWpzXTTThUUOc1I7jMfbfFveLq+leJM0R4U6MFxjEsFEY319mpajRCjiKzBTNyRJV5X+Hc+x3xL7AqdAuQaifalA6AE+3yp24XytFy+p4+owWkO5HG/RBYa/tQW/drtdq66ygGr9q2F3RQsj7IrSOe2zO+JEIg/9Vjmo0iXitQ7Zy8tCU+oMCNSmjmY8xewHGJqkpfkgEJDA1ZF7M+QhC72AguE2ykFeNWBIQzBYr7vvmwJ8wvhUB06jq1DvcdMKmVvLAbAGGbV2BI2WFxQlpaBMyk65nEJSmEmZdtbcYHNPfnLv5fDEW7FRWHjMVoG+TgrQFJkiUAoH/Re+Ufg4D7CwCyilPpNeBMOXKc5LungaKMOUWG3EMbE8A4ZuLeG1UOlI5XKwjRl9Z03mdnB+ihUOsXiBxj2NqPZfqlc2MrlQvcr770RTQqKlKKQomKJ/DblkbFkE0ipj2EtPXxuR8zUt9BawGkUo4AmpzdR5tIqRQdnqxzTB2yFXvWWLtyCbCD7Gl+/9fm9aFOZJySHY3dj8UDNMN/oPrH9t6w7V5t14yAB16gn2JnalMt0Jfn8hITZ6HIwwQATZySwgdtzpFvGaTXzV00pKPTqLjcgFy9P1OvCEibmnGXpcX6i0UYfbsGlY8IijqST7nmfl+fzyP3yclr1YMnljCJeSv0d8q/d/XWFXpyaE3zOdztLLS0Go2C6kPRI+VVLye9z5sd6DnO35CLrTYTTnmUKEWNWKNDsFN4CwFrnfsS/sBQ/OR3nLVX1bh4zNCD7GVQXdba9Q083ukk++UfuDO22oEct5dnefnUWffcHUuKkSy6u78WaTNSKXeWxjiwKHuEq3eMGZGGyqu3cTrSVVyplExy9cehfQm+1jfYc2dEkF6w
+ GHXbvHKk
+ wCSI1EEEsmNWENKXdxU1WQqxRqzJI7dKxSAOsysLgVToHhfHgU1V5XeBKazJkAKq5f1ub3uCOpvxY+vhRLbH8SGnhCdaWh6SkjxHmEh77dHEoM9ho+d43P/iMhddYNAwPMPPVLcyNU2JXCUgT5kpk2K28LeFTLqlbyaqef+G68w7FpjdS9Y8+FNWQhbln7aLNmRdu0f4NauDZqVnklWfA8rClAmJ1EpxMSAFL6jbx1//2W/pr+0/Tax5YoXBoF6pdlSY9yGzoHOEMrTh+nxLslEmWuoTS30o0etU/O6vmNrIWM0oFL+g03RcRL7lYkqlXHsAs6FLFlmFS8U9dOWM6XBkXxm+nU/ybmLRu2oGVbxvbUsUqO1Rl/30m7ENPznztBVMbEot1UK0tY+Jz+J9p7i/rtelqhO6qEujG2PXzgSZAejhF7zfwO6DGeCA6AG76jkK+jDUxpm7RMQN6i2+JUxO3tw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,256 +145,366 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A splice() into /dev/fuse with SPLICE_F_MOVE lets the reply to a read
-request steal full pages from the pipe.  Each stolen page replaces, in
-the fuse file's page cache, the folio that the request allocated.  The
-page can be a page cache folio of another file, a page written into the
-pipe, or a gifted user page.
+Nothing calls pipe_buf_try_steal() any more.  Remove ->try_steal() from
+struct pipe_buf_operations, its implementations and the exported
+generic_pipe_buf_try_steal().
 
-Always copy.  The server sees the same data, and the move was a hint
-that splice() never promised to honour.
+PIPE_BUF_FLAG_LRU and PIPE_BUF_FLAG_GIFT were set only for stealing, and
+go too.  page_cache_pipe_buf_release() did nothing but drop the page and
+the LRU flag, so page cache and user page buffers use
+generic_pipe_buf_release().
 
-Keep advertising FUSE_SPLICE_MOVE.  libfuse fails the mount of a
-filesystem that asks for a capability the kernel does not offer.
+vmsplice() still accepts SPLICE_F_GIFT, and splice() SPLICE_F_MOVE.
+Both were hints, and nothing acts on them now.
 
-Preparation for removing ->try_steal() from pipe buffers.
-
-Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
 Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
- fs/fuse/args.h       |   1 -
- fs/fuse/dev.c        | 144 +------------------------------------------
- fs/fuse/file.c       |   1 -
- fs/fuse/fuse_dev_i.h |   1 -
- 4 files changed, 3 insertions(+), 144 deletions(-)
+ fs/pipe.c                 | 43 ------------------
+ fs/splice.c               | 96 +++------------------------------------
+ include/linux/pipe_fs_i.h | 36 ---------------
+ kernel/watch_queue.c      |  4 --
+ mm/shmem.c                |  7 ---
+ 5 files changed, 6 insertions(+), 180 deletions(-)
 
-diff --git a/fs/fuse/args.h b/fs/fuse/args.h
-index 5173264a1261..36ef0c6d5999 100644
---- a/fs/fuse/args.h
-+++ b/fs/fuse/args.h
-@@ -36,7 +36,6 @@ struct fuse_args {
- 	bool user_pages:1;
- 	bool out_argvar:1;
- 	bool page_zeroing:1;
--	bool page_replace:1;
- 	bool may_block:1;
- 	bool is_ext:1;
- 	bool is_pinned:1;
-diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-index 3641abb90d6b..e7238eed21fb 100644
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1099,128 +1099,6 @@ static int fuse_copy_do(struct fuse_copy_state *cs, void **val, unsigned *size)
- 	return ncpy;
+diff --git a/fs/pipe.c b/fs/pipe.c
+index 4fa69192e6fb..4c1122597a3c 100644
+--- a/fs/pipe.c
++++ b/fs/pipe.c
+@@ -222,48 +222,6 @@ static void anon_pipe_buf_release(struct pipe_inode_info *pipe,
+ 	anon_pipe_put_page(pipe, page);
  }
  
--static int fuse_check_folio(struct folio *folio)
+-static bool anon_pipe_buf_try_steal(struct pipe_inode_info *pipe,
+-		struct pipe_buffer *buf)
 -{
--	if (folio_mapped(folio) ||
--	    folio->mapping != NULL ||
--	    (folio->flags.f & PAGE_FLAGS_CHECK_AT_PREP &
--	     ~(1 << PG_locked |
--	       1 << PG_referenced |
--	       1 << PG_lru |
--	       1 << PG_active |
--	       1 << PG_workingset |
--	       1 << PG_reclaim |
--	       1 << PG_waiters |
--	       LRU_GEN_MASK | LRU_REFS_MASK))) {
--		dump_page(&folio->page, "fuse: trying to steal weird page");
--		return 1;
--	}
--	return 0;
+-	struct page *page = buf->page;
+-
+-	if (page_count(page) != 1)
+-		return false;
+-	memcg_kmem_uncharge_page(page, 0);
+-	__SetPageLocked(page);
+-	return true;
 -}
 -
--/*
-- * Attempt to steal a page from the splice() pipe and move it into the
-- * pagecache. If successful, the pointer in @pagep will be updated. The
-- * folio that was originally in @pagep will lose a reference and the new
-- * folio returned in @pagep will carry a reference.
+-/**
+- * generic_pipe_buf_try_steal - attempt to take ownership of a &pipe_buffer
+- * @pipe:	the pipe that the buffer belongs to
+- * @buf:	the buffer to attempt to steal
+- *
+- * Description:
+- *	This function attempts to steal the &struct page attached to
+- *	@buf. If successful, this function returns 0 and returns with
+- *	the page locked. The caller may then reuse the page for whatever
+- *	he wishes; the typical use is insertion into a different file
+- *	page cache.
 - */
--static int fuse_try_move_folio(struct fuse_copy_state *cs, struct folio **foliop)
+-bool generic_pipe_buf_try_steal(struct pipe_inode_info *pipe,
+-		struct pipe_buffer *buf)
 -{
--	int err;
--	struct folio *oldfolio = *foliop;
--	struct folio *newfolio;
--	struct pipe_buffer *buf = cs->pipebufs;
--
--	folio_get(oldfolio);
--	err = unlock_request(cs->req);
--	if (err)
--		goto out_put_old;
--
--	fuse_copy_finish(cs);
--
--	err = pipe_buf_confirm(cs->pipe, buf);
--	if (err)
--		goto out_put_old;
--
--	BUG_ON(!cs->nr_segs);
--	cs->currbuf = buf;
--	cs->len = buf->len;
--	cs->pipebufs++;
--	cs->nr_segs--;
--
--	if (cs->len != folio_size(oldfolio))
--		goto out_fallback;
--
--	newfolio = page_folio(buf->page);
--
--	if (folio_test_large(newfolio))
--		goto out_fallback;
+-	struct page *page = buf->page;
 -
 -	/*
--	 * This is a new and locked page, it shouldn't be mapped or
--	 * have any special flags on it
+-	 * A reference of one is golden, that means that the owner of this
+-	 * page is the only one holding a reference to it. lock the page
+-	 * and return OK.
 -	 */
--	if (WARN_ON(folio_mapped(oldfolio)))
--		goto out_fallback;
--	if (WARN_ON(folio_has_private(oldfolio)))
--		goto out_fallback;
--	if (WARN_ON(folio_test_dirty(oldfolio) ||
--				folio_test_writeback(oldfolio)))
--		goto out_fallback;
--	if (WARN_ON(folio_test_mlocked(oldfolio)))
--		goto out_fallback;
+-	if (page_count(page) == 1) {
+-		lock_page(page);
+-		return true;
+-	}
+-	return false;
+-}
+-EXPORT_SYMBOL(generic_pipe_buf_try_steal);
 -
--	if (!pipe_buf_try_steal(cs->pipe, buf))
--		goto out_fallback;
+ /**
+  * generic_pipe_buf_get - get a reference to a &struct pipe_buffer
+  * @pipe:	the pipe that the buffer belongs to
+@@ -297,7 +255,6 @@ EXPORT_SYMBOL(generic_pipe_buf_release);
+ 
+ static const struct pipe_buf_operations anon_pipe_buf_ops = {
+ 	.release	= anon_pipe_buf_release,
+-	.try_steal	= anon_pipe_buf_try_steal,
+ 	.get		= generic_pipe_buf_get,
+ };
+ 
+diff --git a/fs/splice.c b/fs/splice.c
+index e6d43329ed3f..ba8f6f9aa3f0 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -55,63 +55,6 @@ static noinline void pipe_clear_nowait(struct file *file)
+ 	} while (!try_cmpxchg(&file->f_mode, &fmode, fmode & ~FMODE_NOWAIT));
+ }
+ 
+-/*
+- * Attempt to steal a page from a pipe buffer. This should perhaps go into
+- * a vm helper function, it's already simplified quite a bit by the
+- * addition of remove_mapping(). If success is returned, the caller may
+- * attempt to reuse this page for another destination.
+- */
+-static bool page_cache_pipe_buf_try_steal(struct pipe_inode_info *pipe,
+-		struct pipe_buffer *buf)
+-{
+-	struct folio *folio = page_folio(buf->page);
+-	struct address_space *mapping;
 -
--	folio_clear_uptodate(newfolio);
--	folio_clear_mappedtodisk(newfolio);
+-	folio_lock(folio);
 -
--	if (fuse_check_folio(newfolio) != 0)
--		goto out_fallback_unlock;
+-	mapping = folio_mapping(folio);
+-	if (mapping) {
+-		WARN_ON(!folio_test_uptodate(folio));
 -
--	err = lock_request(cs->req);
--	if (err)
--		goto out_fallback_unlock;
+-		/*
+-		 * At least for ext2 with nobh option, we need to wait on
+-		 * writeback completing on this folio, since we'll remove it
+-		 * from the pagecache.  Otherwise truncate wont wait on the
+-		 * folio, allowing the disk blocks to be reused by someone else
+-		 * before we actually wrote our data to them. fs corruption
+-		 * ensues.
+-		 */
+-		folio_wait_writeback(folio);
 -
--	replace_page_cache_folio(oldfolio, newfolio);
+-		if (!filemap_release_folio(folio, GFP_KERNEL))
+-			goto out_unlock;
 -
--	folio_get(newfolio);
--
--	if (!(buf->flags & PIPE_BUF_FLAG_LRU))
--		folio_add_lru(newfolio);
+-		/*
+-		 * If we succeeded in removing the mapping, set LRU flag
+-		 * and return good.
+-		 */
+-		if (remove_mapping(mapping, folio)) {
+-			buf->flags |= PIPE_BUF_FLAG_LRU;
+-			return true;
+-		}
+-	}
 -
 -	/*
--	 * Release while we have extra ref on stolen page.  Otherwise
--	 * anon_pipe_buf_release() might think the page can be reused.
+-	 * Raced with truncate or failed to remove folio from current
+-	 * address space, unlock and return failure.
 -	 */
--	pipe_buf_release(cs->pipe, buf);
--
--	*foliop = newfolio;
--	folio_unlock(oldfolio);
--	/* Drop ref for ap->pages[] array */
--	folio_put(oldfolio);
--	cs->len = 0;
--
--	err = 0;
--out_put_old:
--	/* Drop ref obtained in this function */
--	folio_put(oldfolio);
--	return err;
--
--out_fallback_unlock:
--	folio_unlock(newfolio);
--out_fallback:
--	cs->pg = buf->page;
--	cs->offset = buf->offset;
--
--	err = lock_request(cs->req);
--	if (!err)
--		err = 1;
--
--	goto out_put_old;
+-out_unlock:
+-	folio_unlock(folio);
+-	return false;
 -}
 -
- static int fuse_ref_folio(struct fuse_copy_state *cs, struct folio *folio,
- 			  unsigned offset, unsigned count)
+-static void page_cache_pipe_buf_release(struct pipe_inode_info *pipe,
+-					struct pipe_buffer *buf)
+-{
+-	put_page(buf->page);
+-	buf->flags &= ~PIPE_BUF_FLAG_LRU;
+-}
+-
+ /*
+  * Check whether the contents of buf is OK to access. Since the content
+  * is a page cache page, IO may be in flight.
+@@ -154,24 +97,12 @@ static int page_cache_pipe_buf_confirm(struct pipe_inode_info *pipe,
+ 
+ const struct pipe_buf_operations page_cache_pipe_buf_ops = {
+ 	.confirm	= page_cache_pipe_buf_confirm,
+-	.release	= page_cache_pipe_buf_release,
+-	.try_steal	= page_cache_pipe_buf_try_steal,
++	.release	= generic_pipe_buf_release,
+ 	.get		= generic_pipe_buf_get,
+ };
+ 
+-static bool user_page_pipe_buf_try_steal(struct pipe_inode_info *pipe,
+-		struct pipe_buffer *buf)
+-{
+-	if (!(buf->flags & PIPE_BUF_FLAG_GIFT))
+-		return false;
+-
+-	buf->flags |= PIPE_BUF_FLAG_LRU;
+-	return generic_pipe_buf_try_steal(pipe, buf);
+-}
+-
+ static const struct pipe_buf_operations user_page_pipe_buf_ops = {
+-	.release	= page_cache_pipe_buf_release,
+-	.try_steal	= user_page_pipe_buf_try_steal,
++	.release	= generic_pipe_buf_release,
+ 	.get		= generic_pipe_buf_get,
+ };
+ 
+@@ -400,7 +331,6 @@ EXPORT_SYMBOL(copy_splice_read);
+ 
+ const struct pipe_buf_operations default_pipe_buf_ops = {
+ 	.release	= generic_pipe_buf_release,
+-	.try_steal	= generic_pipe_buf_try_steal,
+ 	.get		= generic_pipe_buf_get,
+ };
+ 
+@@ -1469,12 +1399,10 @@ static ssize_t __do_splice(struct file *in, loff_t __user *off_in,
+ }
+ 
+ static ssize_t iter_to_pipe(struct iov_iter *from,
+-			    struct pipe_inode_info *pipe,
+-			    unsigned int flags)
++			    struct pipe_inode_info *pipe)
  {
-@@ -1275,16 +1153,9 @@ int fuse_copy_folio(struct fuse_copy_state *cs, struct folio **foliop,
- 				return fuse_ref_folio(cs, folio, offset, count);
- 			}
- 		} else if (!cs->len) {
--			if (cs->move_folios && folio &&
--			    offset == 0 && count == folio_size(folio)) {
--				err = fuse_try_move_folio(cs, foliop);
--				if (err <= 0)
--					return err;
--			} else {
--				err = fuse_copy_fill(cs);
--				if (err)
--					return err;
--			}
-+			err = fuse_copy_fill(cs);
-+			if (err)
-+				return err;
- 		}
- 		if (folio) {
- 			void *mapaddr = kmap_local_folio(folio, offset);
-@@ -1920,9 +1791,6 @@ static ssize_t fuse_dev_do_write(struct fuse_dev *fud,
- 		if (!smp_load_acquire(&fch->initialized) || !fch->connected)
- 			goto copy_finish;
- 
--		/* Don't try to move folios (yet) */
--		cs->move_folios = false;
+ 	struct pipe_buffer buf = {
+ 		.ops = &user_page_pipe_buf_ops,
+-		.flags = flags
+ 	};
+ 	size_t total = 0;
+ 	ssize_t ret = 0;
+@@ -1564,10 +1492,6 @@ static ssize_t vmsplice_to_pipe(struct file *file, struct iov_iter *iter,
+ {
+ 	struct pipe_inode_info *pipe;
+ 	ssize_t ret = 0;
+-	unsigned buf_flag = 0;
 -
- 		err = fuse_notify(fch->conn, oh.error, nbytes - sizeof(oh), cs);
- 		goto copy_finish;
- 	}
-@@ -1966,8 +1834,6 @@ static ssize_t fuse_dev_do_write(struct fuse_dev *fud,
- 	set_bit(FR_LOCKED, &req->flags);
- 	spin_unlock(&fpq->lock);
- 	cs->req = req;
--	if (!req->args->page_replace)
--		cs->move_folios = false;
+-	if (flags & SPLICE_F_GIFT)
+-		buf_flag = PIPE_BUF_FLAG_GIFT;
  
- 	if (oh.error)
- 		err = nbytes != sizeof(oh) ? -EINVAL : 0;
-@@ -2068,7 +1934,6 @@ static ssize_t fuse_dev_splice_write(struct pipe_inode_info *pipe,
- 				goto out_free;
- 
- 			*obuf = *ibuf;
--			obuf->flags &= ~PIPE_BUF_FLAG_GIFT;
- 			obuf->len = rem;
- 			ibuf->offset += obuf->len;
- 			ibuf->len -= obuf->len;
-@@ -2083,9 +1948,6 @@ static ssize_t fuse_dev_splice_write(struct pipe_inode_info *pipe,
- 	cs.nr_segs = nbuf;
- 	cs.pipe = pipe;
- 
--	if (flags & SPLICE_F_MOVE)
--		cs.move_folios = true;
--
- 	ret = fuse_dev_do_write(fud, &cs, len);
- 
+ 	pipe = get_pipe_info(file, true);
+ 	if (!pipe)
+@@ -1578,7 +1502,7 @@ static ssize_t vmsplice_to_pipe(struct file *file, struct iov_iter *iter,
  	pipe_lock(pipe);
-diff --git a/fs/fuse/file.c b/fs/fuse/file.c
-index d5e1cb53d86a..ab955e4c3e5d 100644
---- a/fs/fuse/file.c
-+++ b/fs/fuse/file.c
-@@ -1096,7 +1096,6 @@ static void fuse_send_readpages(struct fuse_io_args *ia, struct file *file,
+ 	ret = wait_for_space(pipe, flags);
+ 	if (!ret)
+-		ret = iter_to_pipe(iter, pipe, buf_flag);
++		ret = iter_to_pipe(iter, pipe);
+ 	pipe_unlock(pipe);
+ 	if (ret > 0) {
+ 		wakeup_pipe_readers(pipe);
+@@ -1839,11 +1763,7 @@ static int splice_pipe_to_pipe(struct pipe_inode_info *ipipe,
+ 			}
+ 			*obuf = *ibuf;
  
- 	ap->args.out_pages = true;
- 	ap->args.page_zeroing = true;
--	ap->args.page_replace = true;
+-			/*
+-			 * Don't inherit the gift and merge flags, we need to
+-			 * prevent multiple steals of this page.
+-			 */
+-			obuf->flags &= ~PIPE_BUF_FLAG_GIFT;
++			/* The page is shared with ipipe: don't append to it */
+ 			obuf->flags &= ~PIPE_BUF_FLAG_CAN_MERGE;
  
+ 			obuf->len = len;
+@@ -1956,11 +1876,7 @@ static ssize_t link_pipe(struct pipe_inode_info *ipipe,
+ 
+ 		*obuf = *ibuf;
+ 
+-		/*
+-		 * Don't inherit the gift and merge flag, we need to prevent
+-		 * multiple steals of this page.
+-		 */
+-		obuf->flags &= ~PIPE_BUF_FLAG_GIFT;
++		/* The page is shared with ipipe: don't append to it */
+ 		obuf->flags &= ~PIPE_BUF_FLAG_CAN_MERGE;
+ 
+ 		if (obuf->len > len)
+diff --git a/include/linux/pipe_fs_i.h b/include/linux/pipe_fs_i.h
+index 6402930282e5..fb6570e80d01 100644
+--- a/include/linux/pipe_fs_i.h
++++ b/include/linux/pipe_fs_i.h
+@@ -4,9 +4,7 @@
+ 
+ #define PIPE_DEF_BUFFERS	16
+ 
+-#define PIPE_BUF_FLAG_LRU	0x01	/* page is on the LRU */
+ #define PIPE_BUF_FLAG_ATOMIC	0x02	/* was atomically mapped */
+-#define PIPE_BUF_FLAG_GIFT	0x04	/* page is a gift */
+ #define PIPE_BUF_FLAG_PACKET	0x08	/* read() as a packet */
+ #define PIPE_BUF_FLAG_CAN_MERGE	0x10	/* can merge buffers */
+ #define PIPE_BUF_FLAG_WHOLE	0x20	/* read() must return entire buffer or error */
+@@ -127,16 +125,6 @@ struct pipe_inode_info {
+ #endif
+ };
+ 
+-/*
+- * Note on the nesting of these functions:
+- *
+- * ->confirm()
+- *	->try_steal()
+- *
+- * That is, ->try_steal() must be called on a confirmed buffer.  See below for
+- * the meaning of each operation.  Also see the kerneldoc in fs/pipe.c for the
+- * pipe and generic variants of these hooks.
+- */
+ struct pipe_buf_operations {
  	/*
- 	 * Don't overflow end offset.
-diff --git a/fs/fuse/fuse_dev_i.h b/fs/fuse/fuse_dev_i.h
-index 4b412a76225f..a90ce26ded31 100644
---- a/fs/fuse/fuse_dev_i.h
-+++ b/fs/fuse/fuse_dev_i.h
-@@ -326,7 +326,6 @@ struct fuse_copy_state {
- 	unsigned int len;
- 	unsigned int offset;
- 	bool write:1;
--	bool move_folios:1;
- 	bool is_uring:1;
- 	/* set when the payload is zero-copied. folios are filled in place */
- 	bool skip_folio_copy:1;
+ 	 * ->confirm() verifies that the data in the pipe buffer is there
+@@ -153,16 +141,6 @@ struct pipe_buf_operations {
+ 	 */
+ 	void (*release)(struct pipe_inode_info *, struct pipe_buffer *);
+ 
+-	/*
+-	 * Attempt to take ownership of the pipe buffer and its contents.
+-	 * ->try_steal() returns %true for success, in which case the contents
+-	 * of the pipe (the buf->page) is locked and now completely owned by the
+-	 * caller. The page may then be transferred to a different mapping, the
+-	 * most often used case is insertion into different file address space
+-	 * cache.
+-	 */
+-	bool (*try_steal)(struct pipe_inode_info *, struct pipe_buffer *);
+-
+ 	/*
+ 	 * Get a reference to the pipe buffer.
+ 	 */
+@@ -304,19 +282,6 @@ static inline int pipe_buf_confirm(struct pipe_inode_info *pipe,
+ 	return buf->ops->confirm(pipe, buf);
+ }
+ 
+-/**
+- * pipe_buf_try_steal - attempt to take ownership of a pipe_buffer
+- * @pipe:	the pipe that the buffer belongs to
+- * @buf:	the buffer to attempt to steal
+- */
+-static inline bool pipe_buf_try_steal(struct pipe_inode_info *pipe,
+-		struct pipe_buffer *buf)
+-{
+-	if (!buf->ops->try_steal)
+-		return false;
+-	return buf->ops->try_steal(pipe, buf);
+-}
+-
+ /* Differs from PIPE_BUF in that PIPE_SIZE is the length of the actual
+    memory allocation, whereas PIPE_BUF makes atomicity guarantees.  */
+ #define PIPE_SIZE		PAGE_SIZE
+@@ -335,7 +300,6 @@ void free_pipe_info(struct pipe_inode_info *);
+ 
+ /* Generic pipe buffer ops functions */
+ bool generic_pipe_buf_get(struct pipe_inode_info *, struct pipe_buffer *);
+-bool generic_pipe_buf_try_steal(struct pipe_inode_info *, struct pipe_buffer *);
+ void generic_pipe_buf_release(struct pipe_inode_info *, struct pipe_buffer *);
+ 
+ extern const struct pipe_buf_operations nosteal_pipe_buf_ops;
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index 453dcf613205..e2bdd5fb0db1 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -77,13 +77,9 @@ static void watch_queue_pipe_buf_release(struct pipe_inode_info *pipe,
+ 	generic_pipe_buf_release(pipe, buf);
+ }
+ 
+-// No try_steal function => no stealing
+-#define watch_queue_pipe_buf_try_steal NULL
+-
+ /* New data written to a pipe may be appended to a buffer with this type. */
+ static const struct pipe_buf_operations watch_queue_pipe_buf_ops = {
+ 	.release	= watch_queue_pipe_buf_release,
+-	.try_steal	= watch_queue_pipe_buf_try_steal,
+ 	.get		= generic_pipe_buf_get,
+ };
+ 
+diff --git a/mm/shmem.c b/mm/shmem.c
+index af21a89abb0f..4a9440a1e1f8 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3655,15 +3655,8 @@ static void zero_pipe_buf_release(struct pipe_inode_info *pipe,
+ {
+ }
+ 
+-static bool zero_pipe_buf_try_steal(struct pipe_inode_info *pipe,
+-				    struct pipe_buffer *buf)
+-{
+-	return false;
+-}
+-
+ static const struct pipe_buf_operations zero_pipe_buf_ops = {
+ 	.release	= zero_pipe_buf_release,
+-	.try_steal	= zero_pipe_buf_try_steal,
+ 	.get		= zero_pipe_buf_get,
+ };
+ 
 -- 
 2.54.0
 
