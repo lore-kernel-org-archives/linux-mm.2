@@ -1,94 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BD0C60A2623
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD77760A2630
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=i1SkZeEE
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=sYozmqnT
 Received: by kanga.kvack.org (Postfix)
-	id 2B80A6B00EF; Tue, 10 Nov 2026 11:36:03 -0500 (EST)
+	id EDF016B05B0; Tue, 10 Nov 2026 11:36:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 240A46B05B0; Tue, 10 Nov 2026 11:36:03 -0500 (EST)
+	id E76DF6B05B1; Tue, 10 Nov 2026 11:36:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 130836B05B1; Tue, 10 Nov 2026 11:36:03 -0500 (EST)
+	id D66E46B05B2; Tue, 10 Nov 2026 11:36:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E1FE76B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:36:02 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B528F6B05B0
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:36:22 -0500 (EST)
 Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 344C4A805D
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:36:01 +0000 (UTC)
-X-FDA: 85419761322.26.4931951
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 84AAA1A0007
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:35:59 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i1SkZeEE;
-	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57399A09A4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:36:22 +0000 (UTC)
+X-FDA: 85419762204.26.118C060
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6C5BF180004
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:36:20 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sYozmqnT;
+	spf=pass (imf06.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794328559;
+	s=arc-20220608; t=1794328580;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6B8q2oqRr8i13Z8GdT5dzIPKIxv4OsmoKM7uYVudI50=;
-	b=0SUFZaYUe4zW9WGO3tqysEsmM/aarcMG2RevDq4OCbSU2WqttfxAI7DvVL7kY5zE7+SFoo
-	jKFygx7bXFKKL6DtQcK6m5v2mwRmtSsUw3gpId3515QGn5FPZ8l+oGUw9jQJUwvoCku8EX
-	tGSVOfXlyXWxysNPHdgtFORMyO4KCAA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794328559;
-	b=b7bbiJFIfsO9oGv8us8tDmotboVAWeIfdEK558R0Uoy6iVusSl2iFEfN4Xhja2SBDnzuxv
-	9/J7aXwkfsYZjrVqYhCk9uo/vy+LzqVg7BqpMEFON1/F3CGSjtWxTnlglVQ5oCGfhboz1K
-	zlQh2H9rFFsT7Caqo3f9lp4rH+wm0Fs=
+	bh=/2IklnXQ8VDOasmnc4s8LlsX94sJzF0TyhpWpFGrd40=;
+	b=6xyPs448FX74BWfpXP85yQsxRKwIG4EuPPwVIKD8AsFNwYIImZCedwZDu+JgL+E3dn8WYz
+	DFVMPuu4S6hQuQ/l/DaiiC0LcDwzFMva5EGLyZZMYYdCYQ2zPhyFfkh+lKmHVokO+A8Lxl
+	06M8nDSlw9vcChV3lFuz6rDJDnpi1SQ=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=i1SkZeEE;
-	spf=pass (imf19.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id BEA2040E0B;
-	Tue, 10 Nov 2026 16:35:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387081F0089F;
-	Tue, 10 Nov 2026 16:35:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794328558;
-	bh=6B8q2oqRr8i13Z8GdT5dzIPKIxv4OsmoKM7uYVudI50=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=i1SkZeEE/TPAW5CajYVIcy1XUV71QNqZ/NtonNl/JIuGfqXNpd5ZkIpdShFMEMPCx
-	 DiMXSUPKxkADORb0WktAtloGnZRbhr+Jev/m0tgRTdTNJ7PdUOwuEP0t3ljK/Qaa2q
-	 fo9yav1hYqrRUI6iF6tvMsAcfp1GrsGx0eFuO3WP7FrPWSik4KGbI8artMgSLDspQX
-	 mPVcEra8EiNHoueCe6T77cKuNXFZpww1Ypfd1KKFzRbHBpannY520Unq/gAYwfYZnX
-	 ++YkJ8Dz0kwAL46lQ4cRe+mlFkudAZ22c+90UEV0FGE+NQNPavpAy229+cAJCJ9tBk
-	 iFWkTl3boMCXg==
-Date: Tue, 10 Nov 2026 16:35:56 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 04/11] zsmalloc: switch handle type to struct zs_handle
-Message-ID: <avNHoaIU-RV8_fEG@google.com>
-References: <20261110054836.1515030-1-senozhatsky@chromium.org>
- <20261110054836.1515030-5-senozhatsky@chromium.org>
+	imf06.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=sYozmqnT;
+	spf=pass (imf06.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794328580;
+	b=VBWaPlFMNxd08eI+deWz8j96wRgVhk4BKVCCKtSLv+uKafFa9pXcCyYAyGqK3wvaaLuj8/
+	aB8nj6GHFpOORhq+5a6OObtR0qADcWMa4z0cbUkLH0Lvdwuuj9nXusRMQ4vHT8rLoQnp1e
+	RE5B7IhGQVmpCOsqlkWJLgXLkBeUwNs=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3924B1477;
+	Tue, 10 Nov 2026 08:36:16 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 234893F85F;
+	Tue, 10 Nov 2026 08:36:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794328579; bh=W93zuHvv0B3GjuQYbnfR2B0hYUYTD/1HhAutAvOyHc8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sYozmqnTmmj1HDyt+LmelivUTXfURzy4ZuotqpQSAnyER6/dyDFtKIFkVkn0SmpO+
+	 O+RU5XZyaIzhycu65Pmw23utreNYCUqv9PnuZP1DrGLbr5D7k6uP7oHKi7dXqKJdYN
+	 CbmlR/v3UEIQ3c8AHIpFUW0pKrLveLcUhkh7pNdA=
+Date: Tue, 10 Nov 2026 16:36:12 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-hardening@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ard Biesheuvel <ardb+git@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Maxwell Bland <mbland@motorola.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pierre Langlois <pierre.langlois@arm.com>,
+	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [PATCH RFC v10 07/22] arm64: Initialize POR_EL1 register on
+ cpu_resume()
+Message-ID: <avNH_AdvK9AqvfF7@e129823.arm.com>
+References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
+ <20261109-kpkeys-v10-7-aa6c4d9603bc@arm.com>
+ <be361be8-c5ad-4ff7-a6db-7b0815bfe1d0@sirena.org.uk>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110054836.1515030-5-senozhatsky@chromium.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 4dtbuzxm463e4rk5d5yrhdbbz59i9p5u
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 84AAA1A0007
+In-Reply-To: <be361be8-c5ad-4ff7-a6db-7b0815bfe1d0@sirena.org.uk>
+X-Stat-Signature: ck4i14u54h7yc8bq7jw4s37dpqp5ouan
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794328559-909623
-X-HE-Meta: U2FsdGVkX18vaHAjslbVUNf5/Kc58YZlZvDuSB0XWftRG+1Pk9L9XGKY55iqTnWBvWar4J8r03uZLhshkN7CUIVlcKM/jX6XeT4+pZeoPVm6wWeAkTHvZMVqc3E7UQKiumynN0t+ZJ/F6Sx+uTo/n2dcfzmpqlMkFRkhQs5vGnVKxy4J2oxxRfC4hMGVKws8MsFNfKjmISxyKFHABmLiyRu/ImACyjhFhTucPkDdXxaGTynH0jkz+f6BVe7OlnmWw5MWDHOVVeITLQ3DF0d9F2MtOhl6Nm1LcESiejYrW5FyKghJXWP5qSYxs59gSDD27UzflI7uoV40e3/uTmlfU/VNeyG9BSvMyQVw1Wpv5mbOywwLevdcLc1fbUeBH0+HEnKDxdIMtUURsY2K1+w3vqVcaZ9d/iZd5nGdciNEGiBphh6LCpV0EPKqEhri4OStnLwW4x0oJLZ8GcuhTObwJCTJnuB7OVVxL0WXGc3+88/TA9y5t+4Ou6UHe9kP1i/2JVQxv0om+NEZuLJYgUECkqGHFhAzfLWBaFNS0/CX/kp9b+LTu9jiz1Bpa2H/dRpGKfEiVvU+NSNMbR7iV/Bez7S/o3C5HauvOncEZd2W8RL5RINZ++wCJqbDg51ToN44LT5lWEw/23aomvoXRlrXIgRuU01e/CeVqjzjMYNc4CFgovsVWu9CdZze1c3G8TQVmZ50IRdOv3obCCyLP6t/jwMT4pvftRkmxFI48fnigVcPAAUSjGOM44QRW8ZZ0Neav410Qe0i5m8cHAgxUEkmDJOKH3/QYccZ2moaz60rhUUJkfmzacDMsu8PZvvG11XM8/2TKqZZfxs7fNmr4hf3NKbvVgqvc2tB3mqHrNN2zt9I309QaG0YWkjGfGpabqwZG5RFcomGxhgRqdfyHfztrCwVg5pbdYQHuBAPHt7R7KWAXjdCfRzVfxHmfvUG1vusWnyNOnt6ROJ3v/K86f2
- o1teUUTm
- g2Ug93C1t1rtdith6oOxJv6MC1ER+3Isw6xkfzCR+QFqaFWehLkRya34KdSIsHAlWEfJ41LXZDRi4IlycXdP9xui140slK2uWS57/LPzzz9gjOqSu75LrsSqLXuikF6r3HHd25hmmHV/XYm+/NojRMfHGDpCtfkMOQuc3U1cgm5Bv7KCAa43LRrxVGkWnS2fN4D9L0gK/UuAa4PoH+iA+TLPJpGv0G5kSCwDBCMNsR5a0UFY6h+vB1L57Fv1ZtZr1bBoiPUkOKtSahESHMi/f4PIY3HhVQSeBEPi+PdmlbfbZRZeAwOHcTXa6rQI7OIZCRylbQBHAJQrjJ3FAUB41t5TvIw==
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 6C5BF180004
+X-HE-Tag: 1794328580-440432
+X-HE-Meta: U2FsdGVkX19Wl+PmoUhu1jKZhpLFR42kFkgDj67kXsyzapP8gscJ2nmVsI+Cz4sQ6p3P2Q85h40R6EO1RrFC8tRA8diwd/w27bfAl3Ttfirv9H88UHu3vooXV4IMOJAwunWlQX8Z08CRDgPcsr8fncrrvv94JNHsyPJZZS04h1Uey7vUtl417zv5yiyHWxTdYrKdYhuJ1GhmW19kM+LEJYzWfSjt4Xp4mfnRU+Y3GZWloeohAR2RIZSq+WOyYRSpS2sgJRVO0W94noxJh3w81RS+T5nEw9OaVrXAigmwy2D02G/IPkYVHoX0guafnGWu7DXf1UNcjRXJqelRbuJLzmUHSSW3xGSAKkLoo4UaRmzwbTWG+2+YsPrbJAMr8Zyj8c+o/EqAc4/zpo8SHfxxpYbJxPvUuElh3Us9qodOd5vfPdAvCCu3Gz+U4fgxG8kgw9oIsURcxzkyL1WFnCl4v+cZP3rV7oWazl19fYHDRMoydOFMIjlTQTDhcEkaMOXPfRxLzfLXhEqLO0EUxCgN7ww9+RCDL28zF6WBq+poTh28IT7x/41hzStFrM9Txg6i1QToI3ypCmWeSiktEffdJdd/A5CbYhWKOOWtetH9bFKR0X9wsYQwgILGOu700THSHGO7NPDA1kdMxD9jcmy3bocOq2s67Op99POFZ6g3zIlQf25vO5rS1pxTyw+d+DCdLe9N4yULvvvl1oGLKgMsnpNtAbzmqmACggWnOYmlC+zGN6Ph0Z1NhhCCp1RcThvUgYWYm4MA4pdeBX7M0cTFRUgrhx/EyX5n4QPQQpdxZnvGTSdrUYvWTW+ne8T06igzRr+SE8xO1pUH3FfLCSSq5c4oJfOzqhwJK32kaXH9u5kVGQ3JqhODJtg351/HwIAgAxB2K5Alm1s62AcWZP28eHVP5QXT19xTfJ5YP13zgRL2rZnv/Ck3RPD/hMLGldghDY5M4QRHvvm0Hl16WXq
+ 8hSi9Lnf
+ Pcv+J+bhwRo870NlFYspC1jjvPwozz7R8Yq8XXwE03R+xEcbM5mouSMd+p8CSNTQD7ez1Ygnb1lcyj5bLZ3TznE5g63suFf9ND817NCxEmYLPJHQFz1xvZmT7GxoGVTRrZrFyWfptjs97O84Uivj8Fd3wx5nrnqpQvZJ1z6mhy1f7Hcx+gNT8rPp/GQZqMcnMpz7RK1b0i0AviZ10g5FCiTJBhxvDhB/twBTXthSbZjxYo5fLncjhvJAGwi6dEIUmOyBSCDojTJ+oug8a3SBIgsZeGOsRlun35M+sE3FyR/mPJbgB6u49mt8QyghmBi5M9dvS/M9pNj0wpLVRXgcknXlcXj2BuGQvVXVqi5d1CRDcVqugy6Trpa4qEmg6AO8I124GVDyotMgn8kz5pOdrUL0cdGN65UhCexW8yw4hE/KG+xqC6akgi2KGEiQVD4CXj47M
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,41 +117,30 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 02:48:09PM +0900, Sergey Senozhatsky wrote:
-> zsmalloc handle is an unsigned long that holds an address of a
-> handle_cachep object, so zsmalloc and its users have to cast it
-> back and forth.  Introduce struct zs_handle and switch zsmalloc,
-> zram and zswap to struct zs_handle pointers.  Functions that only
-> read the handle take a const pointer.
+On Tue, Nov 10, 2026 at 03:53:30PM +0000, Mark Brown wrote:
+> On Mon, Nov 09, 2026 at 03:58:32PM +0000, Kevin Brodsky wrote:
+> > From: Yeoreum Yun <yeoreum.yun@arm.com>
+> > 
+> > The POR_EL1 register is reset to an unknown value after cpu_suspend().
+> > Since POR_EL1 always holds POR_EL1_INIT when entering cpu_suspend(),
+> > initialize POR_EL1 with POR_EL1_INIT before cpu_do_resume().
+> > > +#ifdef CONFIG_ARM64_POE
+> > +alternative_if_not ARM64_HAS_S1POE
+> > +	b	.Lskip_por_set
+> > +alternative_else_nop_endif
+> > +	mov_q	x2, POR_EL1_INIT
+> > +	msr_s	SYS_POR_EL1, x2
+> > +	/* isb can be skipped since cpu_do_resume() will do it. */
+> > +.Lskip_por_set:
+> > +#endif /* CONFIG_ARM64_POE */
 > 
-> This is a preparation for embedding struct zs_handle into zram and
-> zswap entries.  No functional change.
-> 
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> ---
->  drivers/block/zram/zram_drv.c | 28 ++++++------
->  drivers/block/zram/zram_drv.h |  2 +-
->  include/linux/zsmalloc.h      | 13 +++---
->  mm/zsmalloc.c                 | 85 +++++++++++++++++++----------------
->  mm/zswap.c                    |  8 ++--
+> cpu_do_resume() will update TCR2_EL1 to enable POE again, a sufficiently
+> unhelpful implementation could potentially decide to do that before this
+> POR_EL1 value takes effect AFAICT given that there's no barriers.
 
+Thanks. seems required to isb() after initialising SYS_POR_EL1.
 
-zsmalloc and zswap changes LGTM with a small nit below:
-
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
-
-[..]
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index dab71f582103..3a6a7253fd01 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -264,6 +264,10 @@ struct link_free {
->  	};
->  };
->  
-> +struct zs_handle {
-> +	unsigned long __private obj;
-> +};
-
-nit: Update the definition of ZS_HANDLE_SIZE to sizeof(zs_handle)?
+-- 
+Sincerely,
+Yeoreum Yun
 
