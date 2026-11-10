@@ -1,79 +1,77 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70409606A320
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7287C606A333
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U4WktlZd
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=lgJA/pqD
 Received: by kanga.kvack.org (Postfix)
-	id 777886B05BE; Tue, 10 Nov 2026 12:19:25 -0500 (EST)
+	id 926936B05C0; Tue, 10 Nov 2026 12:19:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7298F6B05C0; Tue, 10 Nov 2026 12:19:25 -0500 (EST)
+	id 8D62D6B05C2; Tue, 10 Nov 2026 12:19:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6175B6B05C2; Tue, 10 Nov 2026 12:19:25 -0500 (EST)
+	id 79E8F6B05C4; Tue, 10 Nov 2026 12:19:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B54A6B05BE
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:19:25 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AAAAE1609CB
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:19:24 +0000 (UTC)
-X-FDA: 85419870648.28.2232469
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AE306B05C0
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:19:29 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BF684A0A42
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:19:28 +0000 (UTC)
+X-FDA: 85419870816.24.1C59654
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id DC81340004
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:19:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U4WktlZd;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id EAF54180006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:19:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lgJA/pqD";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794331167;
+	b=2cWKJr00/gLEUcaHyfrWM7SoCTvZ9jf61WHRlfNtSKaZ33NVapWIqW0ztttpRnoTm+na8o
+	l+ed+5qYveasKYYyk/WJNbPqG+fUWoyO+2sOK34ThNCqhZgEsIt3QGXmISVImZuc2/yVNV
+	5fPENqOCxDG81qBNbHusAu/73o5Ziok=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794331163;
+	s=arc-20220608; t=1794331167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=zbj2//T84I89RHJJWMcBH8ord+kaFBlmckmGd9rh3BE=;
-	b=3vE8LIgaqT87nkeMfi5fC4hBjgkix0YpfzjGbAv0tHe1cVLVQxrGuHgDN+bEz37AQCAGx1
-	25U9VRK6jh3dZd9fGiUFCjFL527QiQ/6glAcMcYdp2uJbyIrMvICpZJJ+CVMFH/JClFMia
-	6titQa2kF19gbh2MXNuoXeAkcvXT5YY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794331163;
-	b=V97IyPjZ+lN2d1+07Gg66JhNKdeNlp5EUUclFoRWRYrltNo2KQs95xR0YZ/6DaoGK5ck+A
-	rWWSOvgdVjiAEBs3TwTH9igoBK7M9wCRjqUrXyWps0of4udJ13eq/+Bc2RYpSjXi2J4jDY
-	lj1kPMSgkuSeeebwLwQAQahvkgozsss=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Q08LJgBXqC70Kqo0f8ZLQKUivwcGqkAeqrOIIemSoaw=;
+	b=Z9tWR322z5WNndqK62ZgLCFROB8jFPGQ8LmJ8Z2x2UfUhJHr1N7t+3O2S5Gw83rdQEkCoO
+	p/ZnZRDcqZh8pBpddzPeCn+54Wdr1mr9cV1hfGtguZqnhORP+q3S7JnBC6PHRFBiM0JhDW
+	NjUzO8iqMvmUCnPc2I2c85wnmPNPaPo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U4WktlZd;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="lgJA/pqD";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id C94C841883;
-	Tue, 10 Nov 2026 17:19:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8ED51F008A5;
-	Tue, 10 Nov 2026 17:19:17 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 30D4945603;
+	Tue, 10 Nov 2026 17:19:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4F51F0089F;
+	Tue, 10 Nov 2026 17:19:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794331161;
-	bh=zbj2//T84I89RHJJWMcBH8ord+kaFBlmckmGd9rh3BE=;
-	h=From:Subject:Date:To:Cc;
-	b=U4WktlZdYCYdRsuEkyoJvtLa+HHPN/UpP5smyZy5n8ffm0cLHbR4uWHPH51o9JKtR
-	 mtT+wQHrPPOdJPPWwRpxXS+43t+hx8TZJtIF8JVrQdSI6gJJ+vd5y9LJ5xrv1MLYck
-	 24RFrVIgPhDinv3GEHan2JfzxfD5jPqflf4JHWqdth/sFHLYg3opwxo3Jxr4Q0mHy+
-	 TZHl6SdiZRhGJ6AaiJ3jRhF8VkrMznyuxldIDGgnqSpCX5f6TBlhs/kHDJf06I1FWj
-	 rqeQfdRteqqhAvpIqlnrBfo49KG1MDg4L1kBenp6kzRNqf3zjMFmpSpvMK8ZS3mm2Q
-	 xBzIN2sbGhOjw==
+	s=k20260515; t=1794331166;
+	bh=Q08LJgBXqC70Kqo0f8ZLQKUivwcGqkAeqrOIIemSoaw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=lgJA/pqDt9ZXlQMB1lpweF4fOIjhAzvoQvaSENR1T918mJzYbS99/E+N+41gGzUee
+	 /iMs1AedXwbAcNbaw5P59wOxnX7RN8qus55EB/UOIXZIYUQPTAEdZ3Ir2PfTGJVV56
+	 qCcA+sz5pEFu0ijD3jwNCDajjm/fS0U8G/LW4AjzItVnOricy985GkzN48v/duEmBq
+	 GzZ/W9y3VAkOYHLulVAgb+ahSFuU2xhFeQH1zF7HUlE7zSulE1cDIkfRNKp5lHZQt+
+	 +sgCrDeCIafN/akMXdSL+Ibtm+hYj2quYExWcY5QwZKnLmD0Xi0vHlvyNkRMg0HekF
+	 DrR39lPXZJkQA==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Subject: [PATCH v3 0/3] mm/khugepaged: bound mmap_lock hold time when
- walking an mm's VMAs
-Date: Tue, 10 Nov 2026 17:19:10 +0000
-Message-Id: <20261110-khugepaged-latency-fix-v3-0-6eea743cf9a3@kernel.org>
+Date: Tue, 10 Nov 2026 17:19:11 +0000
+Subject: [PATCH v3 1/3] Revert "mm/khugepaged: remove definition of struct
+ khugepaged_mm_slot"
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XNQQ6DIBCF4asY1qUZEKm66j2aLlBHJBo0YEmN8
- e5Fu2kXLv+XzDcr8egMelImK3EYjDejjZFeElJ3ymqkpolNOHDJgBe0714aJ6WxoYOa0dYLbc2
- bChBF1kiJKgMSjyeHcT7gxzN2Z/w8uuX4E9i+fkkG6RkZGAWq4KYqJlWdS7j36CwO19FpspuB/
- zrZqcOjI9JcVFWLQoL8c7Zt+wBn4xH3BQEAAA==
-X-Change-ID: 20261029-khugepaged-latency-fix-40495d66ea50
+Message-Id: <20261110-khugepaged-latency-fix-v3-1-6eea743cf9a3@kernel.org>
+References: <20261110-khugepaged-latency-fix-v3-0-6eea743cf9a3@kernel.org>
+In-Reply-To: <20261110-khugepaged-latency-fix-v3-0-6eea743cf9a3@kernel.org>
 To: David Hildenbrand <david@kernel.org>, Zi Yan <ziy@nvidia.com>, 
  Baolin Wang <baolin.wang@linux.alibaba.com>, 
  "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, 
@@ -85,26 +83,26 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>, 
  "Jose A. Perez de Azpillaga" <azpijr@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3543; i=ljs@kernel.org;
- h=from:subject:message-id; bh=frmUoMWw/pesiZEDvVRHRiCCGgqcEy/Ev4fY2Sa4j3w=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI+Bwl9cG78PWfppZNfGibtOJbe1y/gvrYx1yBGyClN4
- P6eS9ZPOkpZGMS4GGTFFFmefxHfHyQSNq/zgr8bzBxWJpAhDFycAjARs8UM/2y9aqa/KXJ93mLY
- zb7k6gvJuyfsDOv6Nl+qOioeX6orms3IsH9pmrl7ZWSXzT7PlAn3X69ZsOWhid6yjGfHgpk+2we
- qMQIA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7074; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=0UZEhupM8Hvng7+lLXwSgnWUGWUT6iuTlrA4ZmSC5gc=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI+B4lW9PUemae/3M5kX6/S3sdbk/U3Mc1/qW+7M+EZ+
+ 0ZuXY+AjlIWBjEuBlkxRZbnX8T3B4mEzeu84O8GM4eVCWQIAxenAExEgoHhr+jlvISzX047vwrn
+ 41Mqez915bnNCkYsG1bydtgdW13vtYzhr4ykjtuh5PcbbokVzPAOrc872tbfkh/5Z+LTa0qJj15
+ psgAA
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: fbogamwksg8aa78swebxc5i871b8ye5j
-X-Rspamd-Queue-Id: DC81340004
-X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: EAF54180006
+X-Rspamd-Server: rspam12
+X-Stat-Signature: 4zxamuf87ny1izp7n1rip9q1tiudz8wa
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794331162-806881
-X-HE-Meta: U2FsdGVkX1/uZiXdNXPLGf24Ct04eATbBm90ydEUGUvnBv2XpcjaFYYesHUGhUtL+qTQmJxa547MlU8RLptchzfVF2C98lgn7TUEywuVFGaUCCQiwhAYDtlsS8Zar6ZJGCC5ZLR8u7n8CwdQqMbAyQQJv8ENY+bBQAaRHV9N6amZnZdZUK21YLrj+bSF4R3GWM6QSU4U09xwoGSh08RnPBsjM8o31O1QeGqYRPqC0F760CweGulwNz03rdsO3bdCHAo71IRpiU7YhLBPdHzekvWQ8Awqt1rWjTF8YTtxiLO0Pvbsq1LvjaQKcExqaxDUM1szC6Q/PAyUBEHKchBFiRmy4PFWl4ex5mJO/IoeBh8uE8dIc9F+WmiT16HFjg5bU6aebOY4fEB86z9dVVgLt4szhED+uYTdYlKbuRz0YRiPMdN07+g3CbUZMcjyluklG6cOLYFicAkrrVAqZBScd2Avi1Nx9Sd9d6JjHOE30xZ8xThL51AmK1GS22b565+eaa3Zx8bo+ZAhZkFewrUFbOVXTTvPnWuIqOys23gB+OUHr1O4lB6lbb1bDoe2xwq3Sf+2Nxz+2vCckFFhcj8u6NBcmfLeUPPnt4IqcQttGvt4xUQHE+tlxD5vPDC/zMmMYAiMw9rdaxCX+Q6mVm40sLIU/U+WeK1fWljagvz6U+IJGiW16iYwsWjmlewYT1D+0u/S6/IALtSyvKxpo0z1Lgo8Wqd3eK2KlUAWG3tIyif2S3WyXCKzQ4lI3h49GBo9tLrMj1cPmHglgWEeNdDl/i/3Vt3IkXGr21RmNzP53exONDkrvM7s5OvUBETWKEK1N6s4iQ2fNzAwySaKcE0VJ6RM9aJ/ZRAWuXZwYU7xxMKm/xsQvttWBR5ViPt3Oe5f64+f1cCdy3+2Q2B/VN5mg7MlN8bEAkpKUG7J1LirQfOaLb6sN9S0OIiAsK7MquaAwXLwo7ikGFProUiLMLW
- UFX63yS7
- 5Q/cdZJoLF5AuWpUAwttGQq8YMngZwtBbyxdGsbb5pTOlbnZ0JQCj5TxSyyBZYs5huNI/Tq6MpWSacsRIUKb4IH+cTxnbhQcwjzgUd6qmpNwOT517VcFMO114UVjGZVHJxuDjJlK/HCigjcmqU2ZBJVMNXMV9PiM2GzpUI4Osc+DrVUYudbmJXzeETk8tqcVZCZXC9vZT8/JPmnJgjlp7vaGX98rWfRKHcCPNF8i8h+QL+D6Mc+UClAD1UHrLRvJ4/QKqBenBMasT/sipgrpELBXwKXG0jNean1RN
+X-HE-Tag: 1794331166-586912
+X-HE-Meta: U2FsdGVkX19W6jk/bHFIozizHc6MDvMSrnbWo/B6M1DAhCt+flD2ckgqKcv6/Ctw9HFDnQIpqhYgySXSlngSdmhhPdoNlKg30T75wz2fNduly3TuR2cWFPjh8dSjLri+f2U3HrNPmYCqEKeglnbERs1JV78QYOEfjTZeci8raI732DXBendwDc9Uss+9C2hCX9E3V9kkUz0+4XWbVm4OknnsLfqie51W+jaA7mKXvvxHabzEp6LMlGm/PygSeQnisyyhY8XZoZCcMeIKJ+pkAFVgAX2hrIKr0xPKpRKHkqqY0lG53YivPgZTQ2Vy8upPmsRiqWcX1PhhUQutf7HTEZvV4w9xCstTFFToiZy4H+dkQ2wuGGSXogY+Il+W3QbXGAnU8CnZTQxpVSfBiPszev3ceu78Dw4shqLG0VSLPCbQ2d46+hokdgpzgaTI5mxk0IdiPCKrz0jle+wUUt4fM49T9CEQp0aOoRoXQYDnj0MUUZfyh7FdDt/URiegscc9pICbpVXU/ZGxcFOqiV8ny1SKRPA7AESGqrsnrNHAJSbhdfLNz/+Qfocm1SMIfh71e6sGF5+78Nn/K1t8iJfTxYzL8NwnaxUmOIX1JcXKforPcM2MYW89a0HDUElsKg+Jsoq2mSAjYx0FOo8gLMBhuvLrf/JI0s6Z8GHq8k/Ep10u60TOEMS7cw3oIEzi1jU3FmU7Pdh76MyJLOxr56W9VyqiNYvCmE9d5UpM4KbuxZLKUM6muzJDjXx5fe/wZALBDgOuLnytTJqqt5SoqIgoBepKev0OmO2fg9G3X8sM/oWMpmmojfGJNwUN6189AVTSCr+gmTp+9mYrkMYooy7+nSR9rU/ukkb5Asf1Qy1sfFQMpb7LIDt9VzuEkI3zjD74c479XTPPB4OB5YLv7Bl4AcEZJKSaczepSC6Zahhi56grrZDrddm6HI0a15ujCWJbQnnRHFvPaubZUV9MYYK
+ Vi4j4qX+
+ bolNyZZu69AxabfE/pyuo2/5UHvtnpGCgS2XoughgdKKEDSuujZsPxaU9qNEskuitOhi3qpP8SHroQzGiy/aQd3LwX4Xw45inuqm5udCTT+rbklAz6U+Po5yPPYv5kAmEO4f1Rlw2/W9GbGSr3gHFIgqSIKlHUTPE7rQdEhviJfeauWbwnF5di149mtqZvoSLCm2ev1JcqqXwxQDCklrnd3mCDwyPAajt5mWx2hiZFtHUol/4Jigtet+uyd6CH94hpsTIQCRqXSz914rdi1R/D85RaWVY5JokApnkh5Pr+EJC4v3nwVHRvOyse/Iqd8cRPMlV2fIXrLZV2iZ8QGQyZlBm4ZGSAHpyIbCw0WpafjLGKQR1cVTmtRwTJ7FM7BJZCndjGsfR40BIg5yt/SLiY6jda+k4sKyuJzRZi09arSpJ88ThjO90mQ1m1toTucRFRalHYs/gr4kkyoF2eB/kc0LYwWsMTEpalKgMZ0gIWaNRYBfA6QQZaw3emA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -113,83 +111,225 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-This series introduces a couple small changes to khugepaged to improve its
-behaviour both in the face of mm->mmap_lock contention and to reduce that
-lock contention when possible.
+This partially reverts commit b4c9ffb54b32 ("mm/khugepaged: remove
+definition of struct khugepaged_mm_slot"), as a subsequent commit needs to
+resurrect this type to store additional data alongside the mm_slot.
 
-Looking at the first change - if the mmap lock is contended, an attempted
-mmap trylock in collapse_scan_mm_slot() will result in the scan being
-aborted wherever it happens to be, and when next the mm is processed it
-starts from the beginning again.
+The stated intent of the commit was to address a NULL check in
+__khugepaged_exit():
 
-If an mm has a lot of ineligible VMAs and is undergoing significant
-mmap_lock contention, collapsing the eligible VMAs there can take a very
-long time.
+	mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
 
-Patch 2 of the series fixes this (patch 1 is a prerequisite) by keeping
-track of where khugepaged was in the mm before aborting the scan.
+slot can be NULL and mm_slot_entry() is an alias for container_of(), so
+this is container_of() a NULL value.
 
-This issue was noticed during some work in which an mm was instantiated
-with a large number of small VMAs under significant mmap_lock contention,
-during which collapse was observed to take 10.8s. With this patch applied
-it took 3.6s to collapse the same mm.
+This was benign as there was only 1 field in khugepaged_mm_slot (offsetting
+NULL at 0 results in NULL), however it was right to fix this, so retain the
+fix.
 
-Finally, patch 3 uses this to have khugepaged release + reacquire the mmap
-read lock if it is contended after walking a large number of VMAs.
+It also unwrapped KMEM_CACHE() in khugepaged_init(). This was a mistake,
+and was itself reverted in commit c14bdcc9f274 ("mm/khugepaged: use
+KMEM_CACHE()"). Therefore, retain the KMEM_CACHE() form in this revert.
 
-This was also observed as part of the previously mentioned work in the form
-of mmap lock stalls, which patch 3 resolves. The reader stealing the lock
-back from a queued writer on re-acquisition is addressed separately by the
-rwsem change at [0].
-
-Importantly, none of the changes introduces any regressions for khugepaged
-anywhere. It is all upside, and implemented conservatively.
-
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+Reviewed-by: Lance Yang <lance.yang@linux.dev>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Reviewed-by: Jose A. Perez de Azpillaga <azpijr@gmail.com>
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
-v3:
-* Moved hunk from 3/3 to 2/3 as per Baolin.
-* Switched to using a declared KHUGEPAGED_MAX_VMA_SCAN_BATCH constant, as
-  per David.
-* Updated commit message to reflect this, and added link to rwsem patch.
+ mm/khugepaged.c | 57 ++++++++++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 38 insertions(+), 19 deletions(-)
 
-v2:
-* Removed mmap_lock_nosteal patch (was 3/5) and sent a general rwsem patch
-  separately, as per Peter.
-* Removed what was previously 4/5 as with 3/5 gone it was no longer
-  necessary.
-* Put 2/3 commit message on a diet, as per David.
-* Updated 3/3 to count every VMA rather than only skipped ones as per David.
-* Updated 3/3 to use a sensibly calculated maximum VMA scan count renamed to
-  KHUGEPAGED_MAX_VMA_SCAN_BATCH as per David.
-* Updated 3/3 to only release the mmap lock if it is contended.
-* Updated 3/3 to resume from the per-mm cursor after re-acquiring the lock
-  rather than the now stale VMA.
-* Updated 3/3 to treat a VMA whose aligned end wraps the address space as
-  the last in the mm, as per Lance.
-* Fixed 3/3 KHUGEPAGED_MAX_VMA_SCAN_BATCH to derive from the pages_to_scan
-  budget passed to collapse_scan_mm_slot().
-https://lore.kernel.org/r/20261105-khugepaged-latency-fix-v2-0-4384bbfe4606@kernel.org
+diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+index da91762f6358..aad8797f8d5a 100644
+--- a/mm/khugepaged.c
++++ b/mm/khugepaged.c
+@@ -66,6 +66,14 @@ static DEFINE_READ_MOSTLY_HASHTABLE(mm_slots_hash, MM_SLOTS_HASH_BITS);
+ 
+ static struct kmem_cache *mm_slot_cache __ro_after_init;
+ 
++/**
++ * struct khugepaged_mm_slot - khugepaged information per mm that is being scanned
++ * @slot: hash lookup from mm to mm_slot
++ */
++struct khugepaged_mm_slot {
++	struct mm_slot slot;
++};
++
+ /**
+  * struct khugepaged_scan - cursor for scanning
+  * @mm_head: the head of the mm list to scan
+@@ -76,7 +84,7 @@ static struct kmem_cache *mm_slot_cache __ro_after_init;
+  */
+ struct khugepaged_scan {
+ 	struct list_head mm_head;
+-	struct mm_slot *mm_slot;
++	struct khugepaged_mm_slot *mm_slot;
+ 	unsigned long address;
+ };
+ 
+@@ -386,7 +394,7 @@ int hugepage_madvise(struct vm_area_struct *vma,
+ 
+ int __init khugepaged_init(void)
+ {
+-	mm_slot_cache = KMEM_CACHE(mm_slot, 0);
++	mm_slot_cache = KMEM_CACHE(khugepaged_mm_slot, 0);
+ 	if (!mm_slot_cache)
+ 		return -ENOMEM;
+ 
+@@ -446,20 +454,22 @@ static bool hugepage_enabled(void)
+ 
+ void __khugepaged_enter(struct mm_struct *mm)
+ {
++	struct khugepaged_mm_slot *mm_slot;
+ 	struct mm_slot *slot;
+ 	int wakeup;
+ 
+ 	/* __khugepaged_exit() must not run from under us */
+ 	VM_BUG_ON_MM(collapse_test_exit(mm), mm);
+ 
+-	slot = mm_slot_alloc(mm_slot_cache);
+-	if (!slot)
++	mm_slot = mm_slot_alloc(mm_slot_cache);
++	if (!mm_slot)
+ 		return;
+ 
+ 	if (unlikely(mm_flags_test_and_set(MMF_VM_HUGEPAGE, mm))) {
+-		mm_slot_free(mm_slot_cache, slot);
++		mm_slot_free(mm_slot_cache, mm_slot);
+ 		return;
+ 	}
++	slot = &mm_slot->slot;
+ 
+ 	spin_lock(&khugepaged_mm_lock);
+ 	mm_slot_insert(mm_slots_hash, mm, slot);
+@@ -504,12 +514,15 @@ void khugepaged_enter_vma(struct vm_area_struct *vma,
+ 
+ void __khugepaged_exit(struct mm_struct *mm)
+ {
++	struct khugepaged_mm_slot *mm_slot;
+ 	struct mm_slot *slot;
+ 	int free = 0;
+ 
+ 	spin_lock(&khugepaged_mm_lock);
+ 	slot = mm_slot_lookup(mm_slots_hash, mm);
+-	if (slot && khugepaged_scan.mm_slot != slot) {
++
++	mm_slot = slot ? mm_slot_entry(slot, struct khugepaged_mm_slot, slot) : NULL;
++	if (mm_slot && khugepaged_scan.mm_slot != mm_slot) {
+ 		mm_slot_remove(slot);
+ 		free = 1;
+ 	}
+@@ -517,9 +530,9 @@ void __khugepaged_exit(struct mm_struct *mm)
+ 
+ 	if (free) {
+ 		mm_flags_clear(MMF_VM_HUGEPAGE, mm);
+-		mm_slot_free(mm_slot_cache, slot);
++		mm_slot_free(mm_slot_cache, mm_slot);
+ 		mmdrop(mm);
+-	} else if (slot) {
++	} else if (mm_slot) {
+ 		/*
+ 		 * This is required to serialize against
+ 		 * collapse_test_exit() (which is guaranteed to run
+@@ -1773,8 +1786,9 @@ static enum scan_result collapse_scan_anon(struct vm_area_struct *vma,
+ 	return result;
+ }
+ 
+-static void collect_mm_slot(struct mm_slot *slot)
++static void collect_mm_slot(struct khugepaged_mm_slot *mm_slot)
+ {
++	struct mm_slot *slot = &mm_slot->slot;
+ 	struct mm_struct *mm = slot->mm;
+ 
+ 	lockdep_assert_held(&khugepaged_mm_lock);
+@@ -1790,7 +1804,7 @@ static void collect_mm_slot(struct mm_slot *slot)
+ 		 */
+ 
+ 		/* khugepaged_mm_lock actually not necessary for the below */
+-		mm_slot_free(mm_slot_cache, slot);
++		mm_slot_free(mm_slot_cache, mm_slot);
+ 		mmdrop(mm);
+ 	}
+ }
+@@ -2891,6 +2905,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 	__acquires(&khugepaged_mm_lock)
+ {
+ 	struct vma_iterator vmi;
++	struct khugepaged_mm_slot *mm_slot;
+ 	struct mm_slot *slot;
+ 	struct mm_struct *mm;
+ 	struct vm_area_struct *vma;
+@@ -2900,12 +2915,14 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 	*result = SCAN_FAIL;
+ 
+ 	if (khugepaged_scan.mm_slot) {
+-		slot = khugepaged_scan.mm_slot;
++		mm_slot = khugepaged_scan.mm_slot;
++		slot = &mm_slot->slot;
+ 	} else {
+ 		slot = list_first_entry(&khugepaged_scan.mm_head,
+ 				     struct mm_slot, mm_node);
++		mm_slot = mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
+ 		khugepaged_scan.address = 0;
+-		khugepaged_scan.mm_slot = slot;
++		khugepaged_scan.mm_slot = mm_slot;
+ 	}
+ 	spin_unlock(&khugepaged_mm_lock);
+ 
+@@ -2981,7 +2998,7 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ breakouterloop_mmap_lock:
+ 
+ 	spin_lock(&khugepaged_mm_lock);
+-	VM_BUG_ON(khugepaged_scan.mm_slot != slot);
++	VM_BUG_ON(khugepaged_scan.mm_slot != mm_slot);
+ 	/*
+ 	 * Release the current mm_slot if this mm is about to die, or
+ 	 * if we scanned all vmas of this mm, or THP got disabled.
+@@ -2993,14 +3010,16 @@ static void collapse_scan_mm_slot(unsigned int progress_max,
+ 		 * mm_slot not pointing to the exiting mm.
+ 		 */
+ 		if (!list_is_last(&slot->mm_node, &khugepaged_scan.mm_head)) {
+-			khugepaged_scan.mm_slot = list_next_entry(slot, mm_node);
++			slot = list_next_entry(slot, mm_node);
++			khugepaged_scan.mm_slot =
++				mm_slot_entry(slot, struct khugepaged_mm_slot, slot);
+ 			khugepaged_scan.address = 0;
+ 		} else {
+ 			khugepaged_scan.mm_slot = NULL;
+ 			khugepaged_full_scans++;
+ 		}
+ 
+-		collect_mm_slot(slot);
++		collect_mm_slot(mm_slot);
+ 	}
+ 
+ 	trace_mm_khugepaged_scan(mm, cc->progress - progress_prev,
+@@ -3090,7 +3109,7 @@ static void khugepaged_wait_work(void)
+ 
+ static int khugepaged(void *none)
+ {
+-	struct mm_slot *slot;
++	struct khugepaged_mm_slot *mm_slot;
+ 
+ 	set_freezable();
+ 	set_user_nice(current, MAX_NICE);
+@@ -3101,10 +3120,10 @@ static int khugepaged(void *none)
+ 	}
+ 
+ 	spin_lock(&khugepaged_mm_lock);
+-	slot = khugepaged_scan.mm_slot;
++	mm_slot = khugepaged_scan.mm_slot;
+ 	khugepaged_scan.mm_slot = NULL;
+-	if (slot)
+-		collect_mm_slot(slot);
++	if (mm_slot)
++		collect_mm_slot(mm_slot);
+ 	spin_unlock(&khugepaged_mm_lock);
+ 	return 0;
+ }
 
-v1:
-https://lore.kernel.org/r/20261103-khugepaged-latency-fix-v1-0-a07ab16ac860@kernel.org
-
-[0]: https://lore.kernel.org/all/20261105-rwsem-dont-steal-from-queued-writer-v1-1-275e070f426f@kernel.org/
-
----
-Lorenzo Stoakes (ARM) (3):
-      Revert "mm/khugepaged: remove definition of struct khugepaged_mm_slot"
-      mm/khugepaged: scan mm's more efficiently under mmap_lock contention
-      mm/khugepaged: release contended mmap read lock after scanning enough VMAs
-
- mm/khugepaged.c | 121 +++++++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 85 insertions(+), 36 deletions(-)
----
-base-commit: 34f88a114888c9dba49e45f2b0c2a3e83c4c871c
-change-id: 20261029-khugepaged-latency-fix-40495d66ea50
-
-Cheers,
 -- 
-Lorenzo Stoakes (ARM) <ljs@kernel.org>
+2.56.0
 
 
