@@ -1,29 +1,29 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF67606A33F
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD58A606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dh2V6PGU
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=RQ7GIrC6
 Received: by kanga.kvack.org (Postfix)
-	id 50A5D6B00EF; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
+	id ECE186B05B1; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BA026B05B1; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
+	id DE20E6B05B2; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F6506B05B2; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
+	id D1F9D6B05B3; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 178D16B00EF
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A67816B05B1
 	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96100A75FC
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:06:08 +0000 (UTC)
-X-FDA: 85417418016.28.408B4D3
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 1AD38120868
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:06:09 +0000 (UTC)
+X-FDA: 85417418058.30.109BDF3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id E1FEAA0007
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:06:06 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dh2V6PGU;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf06.hostedemail.com (Postfix) with ESMTP id 77D13180005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:06:07 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQ7GIrC6;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794272767;
@@ -31,63 +31,68 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IaqtXb4shYGXU3OlBPma0gsoGJmW9Ovcsn7uO7R5/hM=;
-	b=1FGNU/UNqBQjnWNCH9hf+i1o/n5NBkpD48UxkEkE82ihfyT6L+haIFIojnQtwEhXuc007O
-	YgfWOVdd3YFjSo762ravB+Tk8yzfbsTTFxkkFHm/0nLmGClxYVxLj/cN+QwHr7NDcTYEp8
-	q7bs+9se00Y6dt3UG1jXMSi0/Q3E9Os=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dh2V6PGU;
-	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=WnZqF6L3cakkpOkBPQ3GBgvr6hmKQH8Z7qMlUUiyM4U=;
+	b=ov8wRP8NUsgVsokjDiGBHg/LWH6qsOGH+LXIY3aYGjDq4etQ3lHE6/JQzLGCnWaCzyqPuX
+	T35C326HdCvEyUonz5+aXbb3gLSsHj0S37j40eFwZLLP1w/xrP8qhGWr9/g3RVznTadVqJ
+	eA9baZXE+Ibx+NxePdFLFCCQBgdyLag=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1794272767;
-	b=rfrPTG6LXJYhNCTuhyoRSKDeVU0j08+ntH3D3pA1gRICSXhPyRgsjKYIit2+0/L8HqrDXh
-	YX7JdvjF0X6D6+7TQ+6J+/eaQb10T3lSAXgfkjcn/s57wrB/bWp9J9RDQZBMP1kC3xNcKx
-	3epMIO+YIS0N1yl/7Ry69h9K4eUTSps=
+	b=Lh1JUk8f+NXEdssTbHF5U8cFQ2H7uenXlH/DBAJ51eq+kPmqXW9iM5NGTv6zFoTLxFAakM
+	ut7LCd/0ujJdvkVeIHM2iZu5JS/+VeZSyLAon29gB+dllM4K3OHKq4qYfi313zYWx3YbnX
+	Wggzzb3gBqedRM3eulJFo9DLyfC+V3o=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=RQ7GIrC6;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 37E3D45C09;
+	by sea.source.kernel.org (Postfix) with ESMTP id BDFC045C05;
 	Tue, 10 Nov 2026 01:06:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8251F008A2;
-	Tue, 10 Nov 2026 01:06:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 425151F008A4;
+	Tue, 10 Nov 2026 01:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
 	s=k20260515; t=1794272766;
-	bh=IaqtXb4shYGXU3OlBPma0gsoGJmW9Ovcsn7uO7R5/hM=;
+	bh=WnZqF6L3cakkpOkBPQ3GBgvr6hmKQH8Z7qMlUUiyM4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dh2V6PGUWulUa8ThTycgn1OccsBy/dik+PQbHjhi/G9GKGlFgdI4i/xkKdNuIXbla
-	 GiKlPNTpVbwlnOjEkUPJwmD64BQlEqaVe+NeS/tW1alC39C+jDDaOx4sVhPeduY0Dw
-	 Z1V7E8chFZcQXFPa5xvOhWXipZ1vNhAaeJl9HW7RFMbJgOqoJlGN5Jkrn5Mih8M0bA
-	 sF30AeBSuTERVAiHlGSvZ9gte5FjR/lNCMJCSCXWyiRKhARUACxME9iQXEWiqBIh2t
-	 MruiGM6AiWR09vS9bG0iVQy/a44zAq1KZUOFJpYb/+NgjFDRaQu6MS5HX61Fc5/yBg
-	 ukAKRenSjF4FQ==
+	b=RQ7GIrC6oQitZJAS2Cilru5She+e9VUU9yjN58IVZ8n2zsdlYUvQqqYuHEWBQbnCD
+	 b3MHGaB24x5nPUUeUJrls3KIDZX/YPf25eF32VjoO99Vy12dnKbENksWixVcZeed2N
+	 UpNF2TRN+95z8Ep2ilNoG9UEiLwtODLFR5JdN02vupSxq9NyfycpQiG+2AcUPvyJT5
+	 cgkp8p4Jv6ymVWkzMNT6fq7JT7VNVpc4wr2d6ui/+U2tRZUoJbpNt2FrXRWy9lqlej
+	 46BiC9eIEPa2UyWlEPpoqeJTdUZDOWRS8523zAxG/LasRcwGBHDnwK54OScaT9gCT/
+	 VCw9s0O+WBIDQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Enze Li <lienze@kylinos.cn>,
+Cc: Manuel Ebner <manuelebnerli@mailbox.org>,
+	Aveline Noir <jm5905938@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
 	SJ Park <sj@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 1/2] mm/damon/core: use list_{next,prev}_entry() in damon_{next,prev}_region()
-Date: Mon,  9 Nov 2026 17:05:56 -0800
-Message-ID: <20261110010558.104905-2-sj@kernel.org>
+Subject: [PATCH 2/2] Docs/admin-guide/mm/damon/reclaim: improve language
+Date: Mon,  9 Nov 2026 17:05:57 -0800
+Message-ID: <20261110010558.104905-3-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261110010558.104905-1-sj@kernel.org>
 References: <20261110010558.104905-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: pmaqqoy3teoasrxooek3ink9zy1peb11
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: E1FEAA0007
-X-HE-Tag: 1794272766-775324
-X-HE-Meta: U2FsdGVkX1+KjPmVarRSehCTOv4BnypfT5yFthdBxtb10+51UUpYKhglssfPH/rht8Hw8N7yxYFqlyfMzJjCFXZHpQeToKluSTbOechkzZWKGFdH/eeQpO9iL7UcSE2sj3IVxvBgJH2xHvXwzVpNWk0DEXhKUgDbK+CU/GJJYTBNQOt+wI7H2zK1MiYFA+uv87fVBFpVS2RVGtwSDvekzjxEwzOJYiq82QmOiEYwXop9BSl10Aq46Yy96DQIa+lluA6QUG+FdQB0l5CciTWR0FNXdAHFK3QSmbolibXvg3maRrSM3uaMWCEdHc6vaG4jrip/Adjsus4GU3XG4VXqVISn8lOFIzkrLqeLSI8eaFZTkYz44EzfvItKaOed/990JjJHEk9fClyB61WLw9zsj2EYGnDSaC4o3/KQfm9WsmWRNCHBLSkQhZoFsK67ByRcXQR58tHxfeB5PnXay063SXc3d+R3NOsJkBa4re2zlGWUzX72uMv73AhgcUxDcs5a/M3F8l99qnPG5qvXcGJdjh/cW7khl2yXByChV+ZLXtSR2mNe9dN7hHW2iWx05cYLvK0MAUb51hJ65I23eECqMJQNr2DWUj0/GiPf6rhlx5d4nLQscY3cEi3PZ8SMRVll6RTmcs0H0jrazAs3ESoZ7THxtIOpSktcl+lMSGu6Aix8TC9zs9TlP8jjmIVp33TOKqEvZq+l6b125sLZxz8jlra8p25mcicnDUcJ3nIyg2HnXfZNI4UA3u2OjDw53P03LdqGvRjzhufE6PK4t4Gl1nJx4mvVl4kB+TZoL8+SX0r69zZBmpkk5Rx8YSR+3LxFJKzMd2ZZ+BBox9M6ey9Fifv8NBNx73niBKtZcKVj5E5YGNKg4R5ZPIa9ZuQjCsp8P+Sq+ou7JiJg4Hoz/hK5FrP5VDKy3Em24xRQx3MiY07KnAO70J+m6J/dkXZXCNCLJBO2CzrOaPNGJKMaG+S
- nKA5/mlk
- 2DQOcNobaFx9S/R0idRMWw7RDRSPp8dq9GJBK1PflZ2RnAQftavfOJ1X5AvmATDm01GKqg5WhbH+TFnnU/NdbL/uCK+LRaNT3xdkNCpLkyWbhqyxTC6Wk/IP1EFolr2j5WuEV8q/v3ISSA7vIhCkEyrKtGPWq8IHALe65fwKyr7sXF8DIghI+byxGNYSLrFljNZ1UJ07sk077al1KrPqqbZVkrI5X9EfdSYmpAfnmtmIgr4g2SooUo45ZNFOMvSrFJ+yR4jmoOai565NG56DVgqYfWw==
+X-Rspamd-Server: rspam09
+X-Stat-Signature: wr6radn3r99hmmmydqsr9rfzweap4r7d
+X-Rspamd-Queue-Id: 77D13180005
+X-Rspam-User: 
+X-HE-Tag: 1794272767-957389
+X-HE-Meta: U2FsdGVkX1/b73fJVIUVBYwf+/JQDDwZyCKhaH8vadvor23eZrH0zkLPEO5by9228E+k0787TF28T49IxY8i6DCPm/ZUqnEcyGrWclFA28e/v0ksV3dbq+zyla9ihoKwmmsXrHm1nJ6ruc5ZYwPVp0TFbeAKZdJF1TpZ0ksPx1DVGR0HW0CH9UY/CLcDmuF6To3HcxmmMWmERHVEUzsKDq27YC/Vi8/2w+I6B2+580o2us6cYMBTDYf9Y6fjszFBOIF69O2+P5cdBWRfBnl9aKGIQbXWEm8PeRzHhXyJLnN7koWKuUo9EEcDebdMk737p3AcPnariPalJFzYblVWWdIW49onw7wEhRmYx/UFqOLDFAHC7iEXzsoJVnOFTKocf/z1oLqrK8MOwZQq0SvHwUPpZpfw3YD7xx1h8/J7qzyPjRXZryTXLv2sEoihxx/3PFr84z2ig9wbVi9UysQfOs1kVeMvp9KvSQ0ZslVwHf5Kmg50NEUv2pVgk8sH42ctd+54m+2gIKQpvo9ePwswlrcfkVx1QhWtnBCP8jih83dfh9KH6B9+PqqqeEEAhL1+ksi74pYAjv6W6Bko0gjktbqK58OOfEhEAyntXNOga4beKYhKRqLeqR/t5JlrEgYkF/GYF3p7HANMwqfUBOJbnpPyHz6xE0XU/KNw2jiG6V4KcYzmjTXO8Kl1DHwp3SHLSM5nKrFEPsHvoKdK/F/E4Q91kqPSlPeZMWIzIgGfpo2VSIlC8GrHiDO6TC5QXU2TvztQvIWit0t1NmdiCiXGvmSKrCgN9NXD89sJK+aCVv5SYbZ2WrbqPW1/KNK5Gob9Zx3o1GLKMKA7L8vDevWLaIpQ1cGnLaXRcqf6Am8ugx6s17b7NshL0raPCaBvyL2ydww/B3UAceHqxqwhBgqQs4R/PtX4NErJsM981qpCD5JhJsa6Fu1cG7/Z5dLmJ72cw8qR9dL28jD6BSo1T3M
+ lrI+Dm/+
+ KgNJAx7iO6qM0pB4ghU+mlN65oJsg5gNwiCufvDSGAVXdHdhr5kYiCfCUmqmC7zsaMFhGJ5agabAR8Oigjev7RJngWEnNwcx2UCzNmSIQCIAnzLLyMhRAXjlrOCqqDd1U5A1GAsHtSUbnNdEkVdBGMJVI9O0wbT5PW7HiHGNTq/Xinr359jJPfYp/Ir1X3wDGu6YTp/niu9opSeeWedgZh2uQw4jUvm743MmPMNta3PRShoMv1YjskjL4Lx85Xh+Tr0ft7qH1ettIRnT6logyE6hDHAXVM8ETWEmST2tE09huETdPVNUizWndRmdA4YhaVJb8opD1adD81stq/OWTcSf07A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -96,44 +101,165 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Enze Li <lienze@kylinos.cn>
+From: Manuel Ebner <manuelebnerli@mailbox.org>
 
-damon_next_region() and damon_prev_region() manually do container_of()
-type casting to fetch the next and previous region from the linked
-list.  Use the dedicated list.h helpers, list_next_entry() and
-list_prev_entry(), as damon_first_region() and damon_last_region() do.
+Fix upper case.  Fix tenses.  Replace 'set as' with 'set to'.  Add space
+after sentence to make it double space.  Rewrite and refine complex
+sentences.
 
-Signed-off-by: Enze Li <lienze@kylinos.cn>
+Cc: Aveline Noir <jm5905938@gmail.com>
+Signed-off-by: Manuel Ebner <manuelebnerli@mailbox.org>
 Reviewed-by: SJ Park <sj@kernel.org>
 Signed-off-by: SJ Park <sj@kernel.org>
 ---
-Changes from v1
-- v1: https://lore.kernel.org/20261103100714.70742-1-lienze@kylinos.cn
+Changes from v3
+- v3: https://lore.kernel.org/20261103120043.100887-2-manuelebnerli@mailbox.org
+- Apply two Sashiko suggestions.
 - Collect R-b: from SJ.
 - Rebase to the latest mm-new.
+- Wrap commit message for 75 characters limit.
 
- include/linux/damon.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+[v3]
+ Combine both patches into one
+ Incorporate SJ's feedback
 
-diff --git a/include/linux/damon.h b/include/linux/damon.h
-index 1302ffb6f0bcb..c32ef79c3acea 100644
---- a/include/linux/damon.h
-+++ b/include/linux/damon.h
-@@ -992,12 +992,12 @@ static inline unsigned long damon_rand(struct damon_ctx *ctx,
+[v2]
+ https://lore.kernel.org/all/20261027185938.2526259-2-manuelebnerli@mailbox.org/
+ Include suggestions from SJ and Aveline
+ Split [v1] into
+  [1/2 v2] Docs/admin-guide/mm/damon/reclaim: improve grammar and style
+  [2/2 v2] Docs/admin-guide/mm/damon/reclaim: rewrite complex parts
+ Fixed an upper case and a missing double space -> [1/2 v2]
+
+[v1]
+ https://lore.kernel.org/all/20261015080623.808458-2-manuelebnerli@mailbox.org/
+
+ .../admin-guide/mm/damon/reclaim.rst          | 45 ++++++++++---------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
+
+diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
+index 028947f5da8ec..0ef784df98680 100644
+--- a/Documentation/admin-guide/mm/damon/reclaim.rst
++++ b/Documentation/admin-guide/mm/damon/reclaim.rst
+@@ -4,7 +4,7 @@
+ DAMON-based Reclamation
+ =======================
  
- static inline struct damon_region *damon_next_region(struct damon_region *r)
- {
--	return container_of(r->list.next, struct damon_region, list);
-+	return list_next_entry(r, list);
- }
+-DAMON-based Reclamation (DAMON_RECLAIM) is a static kernel module that aimed to
++DAMON-based reclamation (DAMON_RECLAIM) is a static kernel module that aims to
+ be used for proactive and lightweight reclamation under light memory pressure.
+ It doesn't aim to replace the LRU-list based page_granularity reclamation, but
+ to be selectively used for different level of memory pressure and requirements.
+@@ -30,12 +30,13 @@ guests could mitigate this problem.
+ How It Works?
+ =============
  
- static inline struct damon_region *damon_prev_region(struct damon_region *r)
- {
--	return container_of(r->list.prev, struct damon_region, list);
-+	return list_prev_entry(r, list);
- }
+-DAMON_RECLAIM finds memory regions that didn't accessed for specific time
+-duration and page out.  To avoid it consuming too much CPU for the paging out
+-operation, a speed limit can be configured.  Under the speed limit, it pages
+-out memory regions that didn't accessed longer time first.  System
+-administrators can also configure under what situation this scheme should
+-automatically activated and deactivated with three memory pressure watermarks.
++DAMON_RECLAIM finds memory regions that have not been accessed for a
++specified period and attempts to page out those.  To avoid it consuming
++too much CPU for the paging out operation, a speed limit can be configured.
++Within the configured speed limit, it prioritizes regions that have been
++idle longer for reclamation.  System administrators can also configure under
++what situation this scheme should automatically be activated and deactivated
++with three memory pressure watermarks.
  
- static inline struct damon_region *damon_last_region(struct damon_target *t)
+ Interface: Module Parameters
+ ============================
+@@ -55,10 +56,10 @@ enabled
+ 
+ Enable or disable DAMON_RECLAIM.
+ 
+-You can enable DAMON_RECLAIM by setting the value of this parameter as ``Y``.
+-Setting it as ``N`` disables DAMON_RECLAIM.  Note that DAMON_RECLAIM could do
++You can enable DAMON_RECLAIM by setting the value of this parameter to ``Y``.
++Setting it to ``N`` disables DAMON_RECLAIM.  Note that DAMON_RECLAIM could do
+ no real monitoring and reclamation due to the watermarks-based activation
+-condition.  Refer to below descriptions for the watermarks parameter for this.
++condition.  Refer to below descriptions of the watermarks parameter for this.
+ 
+ commit_inputs
+ -------------
+@@ -66,9 +67,9 @@ commit_inputs
+ Make DAMON_RECLAIM reads the input parameters again, except ``enabled``.
+ 
+ Input parameters that updated while DAMON_RECLAIM is running are not applied
+-by default.  Once this parameter is set as ``Y``, DAMON_RECLAIM reads values
++by default.  Once this parameter is set to ``Y``, DAMON_RECLAIM reads values
+ of parameters except ``enabled`` again.  Once the re-reading is done, this
+-parameter is set as ``N``.  If invalid parameters are found while the
++parameter is set to ``N``.  If invalid parameters are found while the
+ re-reading, DAMON_RECLAIM will be disabled.
+ 
+ Once ``Y`` is written to this parameter, the user must not write to any
+@@ -88,10 +89,10 @@ identifies the region as cold, and reclaims it.
+ autotune_monitoring_intervals
+ -----------------------------
+ 
+-If this parameter is set as ``Y``, DAMON_RECLAIM automatically tunes DAMON's
++If this parameter is set to ``Y``, DAMON_RECLAIM automatically tunes DAMON's
+ sampling and aggregation intervals.  The auto-tuning aims to capture meaningful
+ amount of access events in each DAMON-snapshot, while keeping the sampling
+-interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this as
++interval 5 milliseconds in minimum, and 10 seconds in maximum.  Setting this to
+ ``N`` disables the auto-tuning.
+ 
+ Disabled by default.
+@@ -113,10 +114,10 @@ quota_sz
+ 
+ Limit of size of memory for the reclamation in bytes.
+ 
+-DAMON_RECLAIM charges amount of memory which it tried to reclaim within a time
+-window (quota_reset_interval_ms) and makes no more than this limit is tried.
+-This can be used for limiting consumption of CPU and IO.  If this value is
+-zero, the limit is disabled.
++DAMON_RECLAIM charges the amount of memory which it tried to reclaim within a time
++window (quota_reset_interval_ms) and stops trying to reclaim memory when this limit
++is reached.  This can be used for limiting consumption of CPU and IO.  If this value
++is zero, the limit is disabled.
+ 
+ 128 MiB by default.
+ 
+@@ -137,7 +138,7 @@ quota_mem_pressure_us
+ 
+ Desired level of memory pressure-stall time in microseconds.
+ 
+-While keeping the caps that set by other quotas, DAMON_RECLAIM automatically
++While keeping the caps that are set by other quotas, DAMON_RECLAIM automatically
+ increases and decreases the effective level of the quota aiming this level of
+ memory pressure is incurred.  System-wide ``some`` memory PSI in microseconds
+ per quota reset interval (``quota_reset_interval_ms``) is collected and
+@@ -223,7 +224,7 @@ monitoring.  This can be used to set lower-bound of the monitoring quality.
+ But, setting this too high could result in increased monitoring overhead.
+ Please refer to the DAMON documentation (:doc:`usage`) for more detail.
+ 
+-Note that this must be 3 or higher. Please refer to the :ref:`Monitoring
++Note that this must be 3 or higher.  Please refer to the :ref:`Monitoring
+ <damon_design_monitoring>` section of the design document for the rationale
+ behind this lower bound.
+ 
+@@ -267,7 +268,7 @@ This parameter is for setting and getting the :ref:`address unit
+ 
+ ``monitor_region_start`` and ``monitor_region_end`` should be provided in this
+ unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
+-``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
++``monitor_region_end`` are set to ``1024``, ``0`` and ``10``, respectively.
+ Then DAMON_RECLAIM will work for 10 KiB length of physical address range that
+ starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
+ 
+@@ -284,7 +285,7 @@ skip_anon
+ 
+ Skip anonymous pages reclamation.
+ 
+-If this parameter is set as ``Y``, DAMON_RECLAIM does not reclaim anonymous
++If this parameter is set to ``Y``, DAMON_RECLAIM does not reclaim anonymous
+ pages.  By default, ``N``.
+ 
+ 
 -- 
 2.47.3
 
