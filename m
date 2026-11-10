@@ -1,96 +1,151 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4A5606A32E
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 21:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88DA7606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 21:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oC9iFwgo
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=dlC55e67
 Received: by kanga.kvack.org (Postfix)
-	id 37D106B00EF; Tue, 10 Nov 2026 16:48:36 -0500 (EST)
+	id 751EA6B05B1; Tue, 10 Nov 2026 16:50:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 32E136B05B0; Tue, 10 Nov 2026 16:48:36 -0500 (EST)
+	id 729D56B05B2; Tue, 10 Nov 2026 16:50:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 244576B05B1; Tue, 10 Nov 2026 16:48:36 -0500 (EST)
+	id 63F726B05B3; Tue, 10 Nov 2026 16:50:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 08D316B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:48:35 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9B1061C15BD
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:48:34 +0000 (UTC)
-X-FDA: 85420548948.18.348017C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 0EE0B100006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:48:32 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oC9iFwgo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794347313;
-	b=kwie0P5ofyfz+Ye5h3jNWQyL6rz2ztOmOpuhxh+6Yr7rvivo62kMXDdQ3/pjnxUGSKHfBy
-	LWqpU/F5iZBY5Pyx1h9Zgt0ua0ILNbiDHueLRRwrLF3Zijb8WoWD3VVZCC0uqXhWnh6fnd
-	OQLl0hVQ+3BGRenNPQIdSYWX2TXVqcc=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794347313;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 362DE6B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:50:44 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id BA2484013D
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:50:43 +0000 (UTC)
+X-FDA: 85420554366.24.AC9FD59
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	by imf15.hostedemail.com (Postfix) with ESMTP id A1661A000E
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 21:50:41 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=dlC55e67;
+	spf=pass (imf15.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794347441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=S2pPMf68MKLxuySWp5Wno+q1xTo+NPVvk6DAmNFSvFk=;
-	b=1bsVDlBd6ZXDbEOI6bev3QBCZJprlhU6KApc/pUq5zNLZju4pF2Yc/MucnpQrFS6l5bKct
-	WMXbyLlHxq3U1rZP8la/g45d3lp6QpmezLIpB3TPLOd7boMSJmzYbZMjulM/w1tddz8wGY
-	Yc9XTQ+pi4owYHJBjohSJNXYXUTMCh4=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oC9iFwgo;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3DFDA61300;
-	Tue, 10 Nov 2026 21:48:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688451F0089F;
-	Tue, 10 Nov 2026 21:48:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794347312;
-	bh=S2pPMf68MKLxuySWp5Wno+q1xTo+NPVvk6DAmNFSvFk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=oC9iFwgoyNF0avpSzP+LujPrHBL55F0iQ1+eh40/xaQGCsUJwyZj2fPS30ujin4Dm
-	 SVnQqpZ2SjogMiMYXPEzvfYKJzVMoBv+Df3csdKCA801hOuiWqyDvQl/FCA1PveiKn
-	 dlzsj5berdJeLTvrfRf1tn+APYZX4HAekqypgq7yh7KMtnngVzBJ7X+HDQSs3Y/Ves
-	 YrQKw6AR2dcxgAuVjhMouKyxBmBPILui/uSJqFha6vIpd35V81aHP3IEK9IhKRSlAC
-	 hI/LC3SWGPGbDDIpo82LOorhqYu1cfTQEirY6vqyc6wT1nSwBig0OETsSsx225pPq2
-	 gh4ZaFXCqLkVQ==
-Date: Tue, 10 Nov 2026 22:48:26 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.com>, 
-	Al Viro <viro@zeniv.linux.org.uk>, ecryptfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	jfs-discussion@lists.sourceforge.net, linux-nilfs@vger.kernel.org, exfat@lists.linux.dev, 
-	linux-mm@kvack.org, ntfs@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
-	linux-btrfs@vger.kernel.org, gfs2@lists.linux.dev, linux-efi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH v2 03/34] fs: add a generic emergency read-only state
-Message-ID: <20261110-person-fischen-gutmachen-7b04d2256799@brauner>
-References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-3-2f44f64f0b66@kernel.org>
- <gm5ays7o5ps2gcokxw6giymwwalixk6dychwlqfgx4brjohfth@cyrrjbycqjnj>
+	bh=D3u20IW39Ayj138ZJ7povoBycZBaxSeSoBrzGBgSB34=;
+	b=KRSQubhKdtKE7B4ROzBgyrC0r6tOYA35gzofcu1vY0TK6hc0WMP2j1cX1zBaORICJY9reM
+	x8ncbDn0HQeRfaGnjdV7fItVVhJ8TBYASgfCyBQWAUX9u75vPAGzYVSyP8yDtf9sYi8Jpk
+	JWDx8/qLFCPm8oO30hP+KjIuYAV74vo=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794347441;
+	b=5DiRxECXrEhJKJdorZUdYVzA2sfhIR9P/kY413nvAwm7yNac5995JYW6ELsWFXGYVdou3N
+	ERN9h4axn2OZ3EW8AzTowkBpdeTGG3mAfexMf/K8Aqj3WbPfC7L7+NBoluLpvJqZcyTWo6
+	VcXdi6A79GoS0jg6dt04RHbiPw5/kqU=
+ARC-Authentication-Results: i=2;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=dlC55e67;
+	spf=pass (imf15.hostedemail.com: domain of jthoughton@google.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=jthoughton@google.com;
+	dmarc=pass (policy=reject) header.from=google.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-c3f04e0e65fso369978466b.2
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:50:41 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794347440; cv=none;
+        d=google.com; s=arc-20260327;
+        b=YW3f2E//KSj51Z/b9ekJp29wxwRI4qhDePB9WbgPjZk9u//PyuCbxLZtl3ULHeIjQZ
+         ICko8DXb1QaBNwzs8EAfj5UlahlgUlh704SpwQO/jMkHwm3EzSttVWmm0e01W8a3C0Ed
+         PIX9nZfjHOpJQ4RZLnobdPFr0z9BhOC0fH3DzrF/bqf1iAJAEHblCk8VYeNwvNEdws9g
+         6QvMJ8pk8bRqx5VJC8RnkOOUDu20/QZeM35Hw+VuMDrCmtY4gaPpQOigUeTXBzZ4NjWg
+         9jPHhX3aoIhYW1hGnRI/LnHzdn/n66gcOHB8s/KqCRfFRGie2Byy2VAqAoy8dI8LFUb+
+         d5PA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=D3u20IW39Ayj138ZJ7povoBycZBaxSeSoBrzGBgSB34=;
+        fh=ozuXoEePzvkJg/BroG6iwoqPJmgz/TBDtqIPJ6pe2fc=;
+        b=oXXYSah/T4w42AvAmvzBWxCtLP/koaDREBQi6j3BkQnap+BPfVoTq7X1hieQClWhTf
+         nU34CXhHrpZNGmgCugWuSUE5WRDyHg6krXXnLEC/Tzgu0bfXNTAtgYkXEL+nI1J4VOyG
+         HKpCmNQxcrpD7r5Uz2PYRC1EUqndVu5xAe+fA/R5XUIiyU1EsiWRIADuwioCkEDp43WJ
+         pGkA0sVT+glTO4GDhrUFrxmwGrDL3P0OvAhKZSDP6by3iHU+SrLVSJkaD/fv6mET7paO
+         TwsIJQXTM7B+SQ80NBNubOpmTo79Xn++kFq8n5zMeESkC1x0G7iWPAeJYGSnBTslVgfG
+         D/TQ==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794347440; x=1794952240; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=D3u20IW39Ayj138ZJ7povoBycZBaxSeSoBrzGBgSB34=;
+        b=dlC55e67Hn1rXNHSPTNqPbjFrnYLg/XHLkTeK0t7P8fXnM7hO/5N7lgjGJc4NKjw6V
+         gJgGyfW3lF74b00qadVxViek43qkxwlTjXwrOdZiWcoiMRKe0KYTWrtacNckrFftmNkq
+         D4bpIGnRdIpxJgVSt0ApKrui1K/TY4vAZSHfho7DZBf75QozZfIiV8C021rr2YVUA3iZ
+         lonkuXM4jwPlNHg32b6Q4SdfItksAVioFYpeAfgD6Sq91nEY2WgAg1nl9o24SvG0aB5d
+         jM1nVrGrXty00x/IQD0pHIpnExYBU85gjzcoKlSz/mAQumqiRcvo6kIog+xySv+poyvZ
+         +QQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794347440; x=1794952240;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=D3u20IW39Ayj138ZJ7povoBycZBaxSeSoBrzGBgSB34=;
+        b=NN8XsAyJMk/HvhuR17YZosWFc1J2u8tmvla1P6efMSUc1m/9ZVA3nTm9ZqSm4zvDDM
+         hR2BRuA1i6jBstEMUagu2ehzUb2LCMlhuKxJ1JD3fxYaem3oBm3ysftuYe2hFxEtd5UU
+         18cNfPJL6LwmEQNVSnKgwuUicH0G5gc4x6KpvsM37znOIjEDlJHDUkNUkRmBHuuGn7td
+         M2ZzVmmbMZjWQ7/S7z8rncCHx9nC8ipjyZZ58X1ABw2U+Mx97WTITErgtHBGc4VMpjah
+         vT7IzfL5fcqZyOiUPvfN1oKeD7Q/VIhcCXLWGA+i8q4idLsI64TkgLoFL+J47vxZAr75
+         wnKA==
+X-Forwarded-Encrypted: i=1; AL+hErGnEHnnJJIXR/7qe8KhSMnrkPg3cPqHvGGVhl3KfBhRIEgAWlkwY4jm6XDbwc/zmejS2bE7C26C9w==@kvack.org
+X-Gm-Message-State: APuU4Z9ZtGjomZGAGxDGesfR8SKWEwlMjqnEd8wF7gW7qmnZor/nkvpQ
+	LWSKvugTNhGpXja8mEmRFaie2yzl7OGWbceK/73I1cr1lKSOWf9Sb9Bd+dTGgNxKsmboFv7+Xzi
+	hTlHB0udy2d7WxrZ1YH49dP5B/0CErgI0Ac8c5/rt
+X-Gm-Gg: AYBFou1FL9VGZ3e/WBMCOcABuO6Y4CFfZPLBQQ6W51FD9yMy/DItLtzpaJPNPHJzS9V
+	mj2OdBA6CReQoVwPOqW15cMEHRMl8Be2m+TNsuj5wVqaA+p9znxlZFkjYbiuraWwzFueNIGleXb
+	Bb9FB/jly4Vo8mBBfykFFnOvueap6PaN27ohnMpnWlt87JN2OUQVrHwRx1F0tUS2CswyRbYMH6k
+	vHPqj+wmnwDn/RzVI2Maz4wLmgTkGtfETMtTT3jOoM1W3NrIx1umsmBzG4zfeSKtmQoUj50uOsV
+	OLYmY4aoTbwLgqHEa0I6vg+rnLZJkUZPKlKQGvUWlKi0+qubkDh2onFFo0RHPmSPWCZ2TYrp4XO
+	DuGGIFKPivYuX7RawR3qiMSIY8ehqgzACyaw10/1D1XrMrm90662UK8Iltwvx0mwHVPI/+fRglG
+	A7ACW8i628yS+YV0pDUh5tbDg+XAzttv6eTPEvuUhf+GNjP8+N3Paha6iZwRuDjvb+d1D/BmE12
+	eA6BE3mXm+Xakx6udNFQOZYZIrOng==
+X-Received: by 2002:a17:907:a805:b0:c40:36ca:9d1b with SMTP id
+ a640c23a62f3a-c5066d6ae19mr29991866b.40.1794347439526; Tue, 10 Nov 2026
+ 13:50:39 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <gm5ays7o5ps2gcokxw6giymwwalixk6dychwlqfgx4brjohfth@cyrrjbycqjnj>
-X-Rspamd-Queue-Id: 0EE0B100006
-X-Rspamd-Server: rspam12
-X-Stat-Signature: u3cfrm8kxdor8b46m3kstucfe9xhbga8
-X-Rspam-User:
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20261003002123.505555-1-jthoughton@google.com>
+ <20261003002123.505555-8-jthoughton@google.com> <2122761A-45AD-4AEC-AE88-B51E92E2CA40@linux.dev>
+In-Reply-To: <2122761A-45AD-4AEC-AE88-B51E92E2CA40@linux.dev>
+From: James Houghton <jthoughton@google.com>
+Date: Tue, 10 Nov 2026 13:50:00 -0800
+X-Gm-Features: AclHuK_v1agZ1dKpXc45zZ0c0gP5C_c2fyQg4NGg-Zs5GxvQBSCvkFuzEUTM21I
+Message-ID: <CADrL8HWOPP6PLUVvL+v0-UA6YMG-o4p7dY6UmWif1aDCDgscoA@mail.gmail.com>
+Subject: Re: [PATCH v2 07/20] hugetlb_vmemmap: Disable HVO sysctl if arch
+ doesn't support HVO
+To: Muchun Song <muchun.song@linux.dev>
+Cc: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Oscar Salvador <osalvador@suse.de>, Andrew Morton <akpm@linux-foundation.org>, 
+	Nikos Nikoleris <nikos.nikoleris@arm.com>, Linu Cherian <linu.cherian@arm.com>, 
+	Mark Rutland <mark.rutland@arm.com>, David Hildenbrand <david@kernel.org>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Nanyong Sun <sunnanyong@huawei.com>, 
+	Yu Zhao <yuzhao@google.com>, Frank van der Linden <fvdl@google.com>, 
+	David Rientjes <rientjes@google.com>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: A1661A000E
+X-Spam-Status: No, score=-23.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794347312-808649
-X-HE-Meta: U2FsdGVkX19VnGri79BFFKorFp7SMF9TRnNGU89QuDnKCtSxaDV3IYfLSg04/lV2FF1VdqjZxZR4UYXGjOL6V3cMtUsGTwpiZGrDUbuMEbdJ0bgpp8BP7AUXhxzVHCh36XbCuKAcfkR0rwYWjhjXukGHu2Dxz/np0G4qB7mKRas7Q9vZsFQUOx8tyWIqPMAt5By856nVBD3lMM9WCatuI+s8CxzQaL9Zh9ueugG9C6kFxUcMWhV1IZVuutafneNQ8vbcAu2RFpW4f6AVa8glOBdLYu6qD8gXWImf7npa1eaDrNEfqTWd9XpnYmhve6rHMfP6TzT0DE2tZ/ollHmLk/LP0fBsmm0QoKU06JynusNKfvg9ookCphrifBb01BVWlMFdIunfN8uZ0BaM2J3rBtiIrhu4ntN5gYjyZpwGb8b2S9O3P+ac243ZtkQyRjpZ2gnM2soS8+Nu/py1l+/38jIudW0HNAVP62aqGtYUJyyRM9wV12vkWYT5ovMYkI/n6bsBQCpIoEiDIbfKTxYr1WwvGraIU99ZwlPIQjIxaxSWPLT86G6xvfh0Zg8ITv8MIw/bhv2gRJEMxcWpTnqpXPBWefkl/D2rUIU5TIn03NEcNYrnhBW2a43GFI/UqLDa1X7IKaVi9VGJN/9c6jqKDYjrjfpQ3AB4XCuZEkP5jUp0wLvz7HQbukOW09yWXv2dIZkw+14iiZ/UwRNB4A+I2frQIQt/kVUEDfcH8bLSosQKIMeRPo5iRZdEKFBvHDmuGQ1LuhWDK/dMgDS4Lyxb4IpHmU+WAJ4ISYN7kJXYeLpiWO6EucAdBS5piG3WsymanCjukpN/+hD5+ro+GfuXH3S+sZZI6TFXhVz8UL1QCkbWOAFFziVPnzT0IJAUhXuWB7emBsb5xvWN9r+uJmtH2AYFH3YkObfkW8IXvQZxyhm3jXWXll/4N/lYXEU7ivCaccqM1HKVwGbkCLOLaKD
- 1ESnhavE
- GcJbyobHDXOjrJ2Dz3NqtypogeMw7yZRf1FEDxFRzKC0iF0C0tSGPMrusIFPNZcC3c+H4GJgBGPtcdq0Z7/y5Bo/U2kGRY7uMzheRD2V8tkWXZb/46inVfxu7RlNjOSCxYgThk0HCGE2vcBq5Pr99TsN+EUO2jqazwXEVNl6cYobGLio23vOmMMBIFDehBHitPMrE2kAOvBBJtk+C4gzopv/86TZXpLxaQpEqhNbdZe1fut7CkKLT/z6XrzIxRZUzc0O1l4S9mACbZLb1kXVdlcE3mNzhdfQIKLGFZTjGgIFJrcUx9HBi8iCxO04cjsiUTnQvpOHSWBqe1iU2cernfeC800p+//5TFvxERMUaH74mBHVip1HXVZ0xrUITvUa/2AoNsh5M6k8dlvzHe/t3GsUBg/u4LDa8rH7LyizLx2MVTpPTdrlb6FS794WBYWpZ7ZaDhMjYxA7Gja9Pc1rQSAvk8mylatfbEMj5FrSJ66maTGvnfWoXVGBgSw==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Stat-Signature: c5eupaqxbrkpqqce1gnwq1a7uoyy4irq
+X-Rspam-User: 
+X-HE-Tag: 1794347441-400622
+X-HE-Meta: U2FsdGVkX18jwkX+9DTaOKs9ArqSWqlorbesNHY0/gbqlWRXC3OLn/nUQNe66Yyr4M4oU01Od+B5hD6iu64xRvaNx/RAW71fjPggHz0JKT2UgrtE1QtZY3S8Y7bFeLeR9Jh4lr4RZoe2XYoE9nOMIgfoT56yPXN6NwndCsWk2ydOhvyf+lXOlnYVZQy66pRwMQFZ/azAqeLRQiD94wGfqFsP088+OKdXWsHSJOWSZSJs1+Fswl12+xDWIKr6dIlpWZaURqZKuNuodYP7qzmf7zNMWQXJZR+1YzlPVhysrwvSpO0eXVDek7vgLYbKpo8CE735pSrHKhI0i6SIKQ3gelurnz+5a+gEj2xfYlKMmAYm5w7gmGeDBgZy5cU86bur08Ow/8I6AIDHMqaM85XuPyRX7n6dTvnX+DG4xtUYyLpsXqr9y8xaSoffDU/ppdOAYJkBdgmr0AjHQiNgxlxmhs8+P+GPOMiDJoYIqbbbkC7w7CVd3oEs41EJBZMTia/N3RUxeOF9CqxGf0IuTt0bvmfTfglsKy10xe7RLahxMcfCpH/Z1hcfqcuyyhyRAuNlDkVdHUtaGWMNkJwlgiX/Azt7vc006MbQjefLeuCEBVVYjxHBUvkairAC2Hx6m5Y0zpcj70NTwGBRyeZDFIJyrxakIreKV4DZm2+0IvgRIrgu5vmmkIJe6QeAElQ+RlJ/Y6QBIwE7y4htjTsodCgFBTkj8oNVp/39RnNokW/3wDzhwWnfR6K3T9c3wmPdMRTtUnd2INejex4jqL5hXuDi5LbRYcvjdJUw5SPWQj/Sy7hPSZ5JtN+od3RY67jL8KvWo4NBlELboKvy6rilwSQhC8tNzPL9O9ko28zm8vh0pwHoMOyM17Ryp7+TqQ4ukEXNJgnN7B7xsL007tfZKStEcdpInPZYwx23xsNXcvWbfBUrRi0p98sAE0tYr3RBxS8QfvaUk6/rs1IA1rSigBY
+ P2JRY0TP
+ 9Ir+l5/STZe6n8ihrop374HgMzc3adz5Vcotc9Dno8BMxjf/nPu68KXW7PUC1IT/5XHCWohAtpDTG0i2/PAu+Ngs1Z1XgkEhnPlxR0R9zNO7cUfqCPVx4pTyTq1ebkGwNclgj7jYzY0y6siHGMfXfrzWFzcHqUGk0eche5MtdXZ8iYH2LV310idwmVA38KnNY5sUt+dMtvx7XTE+5lCj8Xt8iQPzSoRoW/qsyGfAsVdSTE3TkN+Atr7nvc7vTVbhK/xBev7Em9QxSupdc3tvrM5eLwRwQeCVGv8zU/syJ+A0XzJbX6/aMYaoj1A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -99,10 +154,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu, Nov 05, 2026 at 10:00:02AM +0100, Jan Kara wrote:
-> Maybe it would be good to mention here that anything that goes through
-> mnt_want_write_file() or mnt_get_write_access() is treated by these changes
-> as well (due to the __mnt_is_readonly() change).
+On Fri, Nov 6, 2026 at 11:02=E2=80=AFPM Muchun Song <muchun.song@linux.dev>=
+ wrote:
+>
+>
+>
+> > On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> wrote:
+> >
+> > Do not create the vm.hugetlb_optimize_vmemmap sysctl when the
+> > architecture lacks support. This serves only to avoid confusion for
+> > users.
+> >
+> > arm64 support for HVO is conditional on certain hardware features being
+> > enabled for all online CPUs. By the time hugetlb_vmemmap_init() runs,
+> > all secondary CPUs will have started, and the system feature set will
+> > have stabilized, including HVO-through-BBM, which
+> > arch_hugetlb_vmemmap_optimization_supported() checks for.
+> >
+> > Signed-off-by: James Houghton <jthoughton@google.com>
+> > ---
+> > mm/hugetlb_vmemmap.c | 15 +++++++++++++++
+> > 1 file changed, 15 insertions(+)
+> >
+> > diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+> > index 8596a462fee6..817ce39d4cf3 100644
+> > --- a/mm/hugetlb_vmemmap.c
+> > +++ b/mm/hugetlb_vmemmap.c
+> > @@ -763,6 +763,21 @@ static int __init hugetlb_vmemmap_init(void)
+> >       /* HUGETLB_VMEMMAP_RESERVE_SIZE should cover all used struct page=
+s */
+> >       BUILD_BUG_ON(__NR_USED_SUBPAGE > HUGETLB_VMEMMAP_RESERVE_PAGES);
+> >
+> > +     /*
+> > +      * Architectures that need to probe CPU support for HVO have done
+> > +      * such probing now. arch_hugetlb_vmemmap_optimization_supported(=
+)
+> > +      * will return the correct value.
+> > +      */
+> > +     if (!arch_hugetlb_vmemmap_optimization_supported()) {
+>
+> I'm wondering if we could put this architectural check into hugetlb_vmemm=
+ap_optimizable(),
+>
+>
+> > +             if (vmemmap_optimize_enabled)
+> > +                     pr_info("vmemmap optimization not supported by ha=
+rdware\n");
+>
+> then, we do not need those code. If the current kernel does not support H=
+VO,
+> then the sysctl does not exist. It's already a common case when the size =
+of
+> struct page is not power of two. If users really want to know whether HVO
+> is enabled, they can check via this sysctl file. Therefore, we don't need=
+ to
+> print a log line.
 
-Agreed.
+Yeah, I can put arch_hugetlb_vmemmap_optimization_supported() into
+hugetlb_vmemmap_optimizable(), that will make the diffs slightly
+smaller. And yeah I can remove the print. I put it there mostly
+because it can be confusing. A command line that gets you HVO on one
+arm64 host might not give you HVO on another arm64 host, and the print
+would give a user a clue as to why.
 
