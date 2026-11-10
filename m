@@ -1,94 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB4A8606A32E
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 06:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86EFF606A332
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 06:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=rJSKN2bX
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=LNL3ving
 Received: by kanga.kvack.org (Postfix)
-	id DFA166B05B6; Tue, 10 Nov 2026 01:01:43 -0500 (EST)
+	id 59F296B05B1; Tue, 10 Nov 2026 01:06:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D83AE6B05B8; Tue, 10 Nov 2026 01:01:43 -0500 (EST)
+	id 550016B05B3; Tue, 10 Nov 2026 01:06:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9C0D6B05B9; Tue, 10 Nov 2026 01:01:43 -0500 (EST)
+	id 43F626B05B7; Tue, 10 Nov 2026 01:06:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A2F7D6B05B6
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:01:43 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 363D71A08C7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:01:43 +0000 (UTC)
-X-FDA: 85418162886.11.CB1B47E
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	by imf24.hostedemail.com (Postfix) with ESMTP id A7A8818000A
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:01:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rJSKN2bX;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1ACFF6B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:06:11 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A2BEC408E3
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:06:10 +0000 (UTC)
+X-FDA: 85418174100.10.3BD8194
+Received: from mta0.migadu.com (out-82.mta0.migadu.com [91.218.175.82])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 614D040006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:06:08 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LNL3ving;
+	spf=pass (imf27.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794290501;
+	s=arc-20220608; t=1794290768;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JmICRKQID+0ulQo3yfMRoaH0uyFxjYtLwmbQRsLy1kA=;
-	b=sYAQNN7YQtbi0ykkqhNc1fiCPGNze7ro9+i8vwA67t+To3gQ9KaqrgwFFi/0LmjQiXp0Gz
-	z0tinjwBZUCExxfW+tj176mWLxQQTqo7F3wz10hZraXVDxOuWGPIjIkBhgzDhXumwS7IMZ
-	UH9KBpGh4KM/ZYlf/2agIBig/yx82Hg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794290501;
-	b=dBL6bA/iW2hetET489JMZCSrW09d0ZgFZNrtm3FbfSNNXUelCDzsh/B3MNZhvczI5KrC4t
-	xnjZNa3yxypwLr5VTFimmsfwmMC3S5rP1qjW0CZb1WihMOTbVZImhjNSURaq1oKy1H7jad
-	fk1GNtD4TOrtX2W5KBMd5fpAm0LKFyE=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=782GmxyFzfSf9cS8To0AwNPsA3l9Ic+2fBQKfnHkhgs=;
+	b=QQayEpq65x/bqv2eKOVRDYyvpO9qRJhgUlMQ7G319PAl9upb3JNxaNJbRrc4GQBLkPCFhd
+	OEi1vc6BFHDvK1eJcV8sJ/umzqLFwm6jPEUe/+30gg4QUosYaHCdE/3ET+hhF0KvEMs+tB
+	V5VcMUN99p6MICqS+E3ut74boTwkSpw=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=rJSKN2bX;
-	spf=pass (imf24.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.98 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1794290493; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=JmICRKQID+0ulQo3yfMRoaH0uyFxjYtLwmbQRsLy1kA=;
-	b=rJSKN2bXx0z0PtNbJWzlnVpzKNAwJzofMyRXq5hR3tbcFuYAygIfKqnxD+EgIz+gEqysnoUG2n6h/vUEyHcqpq5D6GfOc5lsTMdWcImXNx39D661eAVFJh87RLLrD1VXGbOoxxBU1Gvz7swwrN/QtmdowoGC+bcM1Y8r2g22GVM=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R541e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=23;SR=0;TI=SMTPD_---0XEUDAMA_1794290490;
-Received: from 30.74.144.136(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0XEUDAMA_1794290490 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 10 Nov 2026 14:01:32 +0800
-Message-ID: <cb36df5b-ef41-4a2b-b8a9-848d5c12e44c@linux.alibaba.com>
-Date: Tue, 10 Nov 2026 14:01:29 +0800
+	imf27.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LNL3ving;
+	spf=pass (imf27.hostedemail.com: domain of hongfu.li@linux.dev designates 91.218.175.82 as permitted sender) smtp.mailfrom=hongfu.li@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794290768;
+	b=i/gDFjOmQlwC6YYu2cgat6eNEHBALqTPeRXgK7wF5DT/IywK0DED+atpq56Lir3Q+98441
+	D29AE6PoxdLri7JdKgRV9au0vrU4ynjBtC0/K7RJiZphiOIWo5Hz8/o7izx0QmoB5/gLE+
+	3J6+hVXJrY4sTcrUrob7wTzJA0k10b0=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=Qn99IbL0tjCg14t3VJn4RbTaLqaX5gh8tDLA/0sbaFA=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794290762; v=1; x=1794895562;
+ b=LNL3ving+fxbEK9pr8Ym7VT41SGSHfO6hW43i4RWxp10cdVP85ocYorX7C1VsZANtL29sEmF
+ c3OUG+OaNVUQKdf4o+dJ3kZj56lx3j0zLHFvykdw4mT/S8H4n2wdV44p/Y4cOvVuNO7f+Wv9k/+
+ Vg3hfSPxXPDnSJvDTgjwOJnc=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 0dab969928a6af50;
+	Tue, 10 Nov 2026 06:06:02 +0000
+X-Mizu-Trace-ID: 0dab969928a6af50
+X-Migadu-Flow: FLOW_OUT
+From: Hongfu Li <hongfu.li@linux.dev>
+Date: Tue, 10 Nov 2026 14:05:34 +0800
+Subject: [PATCH v2] mm/hugetlb: charge hugetlb cgroup and memcg in
+ alloc_hugetlb_folio_reserve()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm: vmscan: allow writeout of swapcache folios
- without anon mappings
-To: Nhat Pham <nphamcs@gmail.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
- axelrasmussen@google.com, baohua@kernel.org, baoquan.he@linux.dev,
- brauner@kernel.org, chrisl@kernel.org, david@kernel.org, hannes@cmpxchg.org,
- kasong@tencent.com, ljs@kernel.org, mhocko@kernel.org, qi.zheng@linux.dev,
- shakeel.butt@linux.dev, shikemeng@huaweicloud.com, weixugc@google.com,
- willy@infradead.org, youngjun.park@lge.com, yuanchu@google.com
-Cc: stable@vger.kernel.org, ryncsn@gmail.com
-References: <20261106160432.2552507-1-nphamcs@gmail.com>
- <20261106160432.2552507-2-nphamcs@gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20261106160432.2552507-2-nphamcs@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-19.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	UNPARSEABLE_RELAY,USER_AGENT_SANE_1,USER_IN_DEF_DKIM_WL autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: 8jy4ewf1b1xg7nz6hugezzzcrnk8atib
-X-Rspamd-Queue-Id: A7A8818000A
+Message-Id: <20261110-for-alloc_hugetlb-1109-v2-1-25795ce44f80@kylinos.cn>
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXM4QpAMBSG4VvR+W21rQi3ImmOg6Nl2pCSezf8f
+ L763gsCeaYAVXKBp4MDuyVCpwngZJaRBPfRoKXOlZKlGJwXxlqH7bSPtNlOfLNENJgVlJe9gnh
+ ePQ18fuG6+R32bibc3hrc9wOwAr27egAAAA==
+X-Change-ID: 20261109-for-alloc_hugetlb-1109-0ccac58e69d1
+To: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+ David Hildenbrand <david@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ Gerd Hoffmann <kraxel@redhat.com>, Dave Airlie <airlied@redhat.com>
+Cc: hongfu.li@linux.dev, Vivek Kasireddy <vivek.kasireddy@intel.com>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ Ackerley Tng <ackerleytng@google.com>, Daehyeon Ko <4ncienth@gmail.com>, 
+ Hongfu Li <lihongfu@kylinos.cn>, stable@vger.kernel.org
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794290755; l=4187;
+ i=lihongfu@kylinos.cn; s=20260915; h=from:subject:message-id;
+ bh=+K2qRQIWYp4nrXE3VguRotyo4IOkkSIXCtrdykxyQqY=;
+ b=GIgizEEZ8nTXph1cEv8EAm4eZob/if3HWtcDVOQuQ8Y1ipBOyHd1Ve5iF5KaqD2pZBsnrHSQt
+ GVWYlvdbewwAQxFS6W9BWVtRueBeUwMacw9TH+qNQmisMWHLXl3N+eP
+X-Developer-Key: i=lihongfu@kylinos.cn; a=ed25519;
+ pk=rUpDSpB3neoNZRlGG6dHlFb3RepiJakcev+ucyqaZzw=
+X-Stat-Signature: a4wtjxfcg7bbeskpb7am7r5o19wk7jfd
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794290497-347427
-X-HE-Meta: U2FsdGVkX18s9wDcvuYmE0bHr0i5GBGwlmITFHW0Ukx0f118AIs10+KRZ6wD13II3rdOXszih7V4XLhWH1aok3+UItJNui0CrTt7uNtx6QGuJR2KZe1n+V/EAsJIdjOrGd/XWEAK24WOsP7jaZYRbBvw8G9nWIgVTkyoaP1EuDjP3kCK0LWcQ/eqgn+NrzID6J+AkD68/GVFzpnpXrk2zexQQrljbLpRwbYtf+daZOUbc5zLkKb23XZUmLeTf7GutjrxBAQXL5RGAO8WwQNN9j+rhkYGduCLQ6GI5wcJomsaJAablATXCHvAGmkKR/YSyzx5QPVjeogWsI6QKnNMYI5g+Jn7yq5Fr5YdT4TeflnpHnZE4MLrHzhPT1v9OOldYNzaVomwZ1QSFIgnTDbUKWO55ImQwg4u5GnqfaLeO5qiUDHtxMUyikuecbnBB1TmZ1mpVd2+tZ1r49ENBXfZY4B0WK2zk//CJV6Vbmsr48SCrrDeUp/qwF6BaAyTncpy2ITqmFG6SP3LgI3WXi+/cqhgin9PFef+smGspyv9/VCZLlgERXU+JGgJGzBX857a735X1WW9LHPkyJ9FG1/HvMn/dvHT5K333flq+RtuGL3lv3AoLkkU3oli3xgHJEK8xoW6Rs1CWilLcmhmpKVCyy1HYkdAp5ttTCFxn/LfTUZAJZxOkJxxWe87V2R10XvV0dL6QY0QqwUM8cwIJbss+XyEHftn/AwY0+QL7Y3wASgjq2FOmhMz3VG3+CqRmhP7aen1t5qkZunKift232umz4nUhGGyEYgyFbVwNF5bXSfwxHe4/67TGKwtIoWTliTHLejGqpztIiYTLWQQ81bvHt0JZN54aQ79Tgr6qjMRcrl+EcLnoesm1J5oSg2krhT/yEeHaPyQxbrGkRXnJvCVcWxKQ9o1xvW63MkL8VBCv7QOH4NmdcEj9LDN/EJ2X0YDYUMorUehn5XULocdm4q
- gx1FbjKW
- TdVm6x8bLiGkPkx9RljoMc6CegSEwrry0CJMH7PjbaAgPieyBVwbWteHlYMQ9wY34vpbO5jbz2W6GZrSvdrvB4vgag9ExF/b8BQjJeCQ5rld57lWFPevsWaxIMe1BRaFY768+OVYCckpgL08qqwtW7U34w9AJCqnKB8ErH03ejbkP0gUhiuFTpbYO2nl5AXiYwTxbq9FgaS3DNvr41I5iXEfV00qRLLdvMlJ6KcZigOA7Kjim/sx/H+JmzvMqsxr1DVMjk6KbMlU5yM6i4ieEq5jvFRbQKChZ0E/2gYFYFCr8rh1s5jYy5jTvHukwLl3Yk+vaAk3qP/EV11KlVlePdV3Th49td3pRl9tA
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,LOTS_OF_MONEY,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 614D040006
+X-HE-Tag: 1794290768-729703
+X-HE-Meta: U2FsdGVkX19PVDealxF6Qkg/WvNieXSKi22gPAFUhreia8HrtAkXq6u4h5/FDuNU9PZT9hYHFjOEgBOytVSSH6muKOIrD/pap2q2P/VU9+TMHdZ/6Lwcb6EV7voPAih+fudtPmaJkf3HWq4kIF6ltsHFwQLNTcG+hcZ5dGbb3bVgA9H17VIK+WjsO9/vPzXStRFknaCGEsbMqi2lE2/8gT2sdE+/t1dpraGAj6KCHbDFPOpikdyEibfHOoOEPiK6KBrlYDYjD4NzUGpK3tKXk/AyONItJDE64D4VlyaKtSOVMq/ZU4d+Wmzw/3Q1bPFcHcAsGUNU5hi/rt0VHi9yWW2wRkSsuPQ2MtFlgCQmIv4drXqtyu2jT+ep8NCxgH8v7m+DXf5b8+oeiLfoJ1R0mA86X8K2fhlY0VHAObh4CoGWzuH6YqgosrRhzz883p0j9PmjMcijnf/YT0E/Or59tIabrrznc55RlxtCxwhg6UBOtAXf1VL7A8hVIwV0f3qPqEaySxyz37mBYNCFWi5sPUKYss4ve+i0SXe19ZD+Tt9AKcqk40805S3RldUNaAFJKat41I1g2KRqhBL7uVpy0ji8irTpH02pBCqMtix2epslvpmz/n8ewReOyVzGAvLTj+O5+UiZYk2LY3l6PpoBMALJ4XSZ09izbd0SOdk5rmCiinFhVqWbKPUV3xUDKhzFSr5aFoVS2gB4jJWlcH0LO+1BJejjsdv2zNXMcJek8jJUQAcRYrIgXWwSPiwzR4FwVhWu7U5Ld4WaVmhN54NVx93lGHbRB56hwwaOqDJcLQvU3LYKLpN8k5M/1XateJWAILCW9hY+LIHmakCZfJpkQes1a5eK/67BNdfkxpQ2Tc3UpnY8DiCzykIedX2gq3hST53iT1hjzcn5HLA6uDFeT4WC22JzsdDFu7gz+jvZIv2l+m9rWygctJMnjrWlOgolL38Q81iUCLVkn5k4K5B
+ eWYI+Dc/
+ iEjNu3PYlNYbv/w9gvj3vO+xuhDJel3FVPKeCDs0L78DiwxtVkkLP+J5ZOs1VjkENV4JlwIlHOR8pwojzP4Ur57xnf+eDetQkb+H8zU9liREx8S4o8upitFqj+aE1PKzZMTlYJFBevaUeMvNH3Xs9dBJ7lMRjlJr088/pDmPMEdpFuigWPru6IIFX4rPZLN5a2JihEm420P7mRFAXCTUd4v4H4XpYhywaxZkZyeww239HLFzn3ZVt9+2lOwI5Yn0VQeRrUffW62erf0qfX86zHtmP907/HgzaSdla8iB/w8yop0k8c03k1yuDRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,25 +108,130 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+From: Hongfu Li <lihongfu@kylinos.cn>
 
+alloc_hugetlb_folio_reserve() hands out a folio from the hugetlb pool and
+consumes a global reservation, but unlike the fault path it never charged
+the folio to the hugetlb cgroup or to the memcg.  Folios allocated for
+memfd_pin_folios() through memfd_alloc_folio() were therefore silently
+bypassing the accounting: they are never charged to the hugetlb cgroup
+usage counter (hugetlb.<size>.current or hugetlb.<size>.usage_in_bytes),
+so the limits (hugetlb.<size>.max or hugetlb.<size>.limit_in_bytes) are
+bypassed.  In cgroup v2, with memory_hugetlb_accounting enabled, these
+folios are also not accounted in memory.current and are not bounded by
+memory.max.
 
-On 11/7/26 12:04 AM, Nhat Pham wrote:
-> Unfaulted zswap readahead folios can be dirty and in swapcache without
-> an anonymous mapping. pageout() rejects them before swap_writeout(),
-> so reclaim cannot write them out while their swap entries remain
-> referenced.
-> 
-> Allow swapcache folios through the filesystem folio check. They already
-> have swap entries and can use the existing swap writeout path. Anonymous
-> folios outside swapcache have no mapping and already return PAGE_KEEP.
-> 
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Link: https://lore.kernel.org/all/sashiko-outbox-181078@kernel.org/
-> Fixes: 84798514db50 ("mm: Remove swap_writepage() and shmem_writepage()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-> ---
+Charge the folios to both the hugetlb cgroup and the memcg, just like
+hugetlb_alloc_folio() does.
 
-LGTM.
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Test with a process that creates a hugetlb memfd and pins pages through
+UDMABUF_CREATE. The counters were read while the folio was still pinned:
+
+Before this patch:
+$ echo $$ > /sys/fs/cgroup/test/cgroup.procs
+$ ./memfd-alloc-folio 1 &
+$ cat /sys/fs/cgroup/test/hugetlb.2MB.current
+0
+$ cat /sys/fs/cgroup/test/memory.current
+1351680
+$
+
+After this patch:
+$ echo $$ > /sys/fs/cgroup/test/cgroup.procs
+$ ./memfd-alloc-folio 1 &
+$ cat /sys/fs/cgroup/test/hugetlb.2MB.current
+2097152
+$ cat /sys/fs/cgroup/test/memory.current
+3313664
+$
+
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hongfu Li <lihongfu@kylinos.cn>
+---
+Changes in v2:
+- Rebased on a tree that includes Daehyeon's "mm/hugetlb_cgroup: prevent
+  use-after-free during cgroup offlining", as suggested by Andrew Morton.
+  No functional change.
+- Since 268d64fabbf1 ("mm/hugetlb: fix NR_HUGETLB accounting for surplus
+  folios") reworked the NR_HUGETLB accounting, use mod_hugetlb_memcg_state()
+  instead of lruvec_stat_mod_folio(), called after a successful memcg
+  charge.
+- Return early once a folio has been dequeued, instead of falling
+  through to a shared return.
+- Corrected the Fixes tag to 89c1905d9c14.
+- Updated the commit message to qualify the memory.max claim: only in
+  cgroup v2 with memory_hugetlb_accounting enabled.
+---
+ mm/hugetlb.c | 33 ++++++++++++++++++++++++++++++---
+ 1 file changed, 30 insertions(+), 3 deletions(-)
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index da1c17f14a62..256bb2095b59 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -2223,12 +2223,19 @@ struct folio *alloc_buddy_hugetlb_folio(struct hstate *h,
+ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+ 		nodemask_t *nmask, gfp_t gfp_mask)
+ {
++	struct hugetlb_cgroup *h_cg = NULL;
++	size_t nr_pages = pages_per_huge_page(h);
+ 	struct folio *folio;
++	int idx = hstate_index(h);
++	int ret;
++
++	if (hugetlb_cgroup_charge_cgroup(idx, nr_pages, &h_cg))
++		return NULL;
+ 
+ 	spin_lock_irq(&hugetlb_lock);
+ 	if (!h->resv_huge_pages) {
+ 		spin_unlock_irq(&hugetlb_lock);
+-		return NULL;
++		goto err_uncharge_hugetlb_cgroup;
+ 	}
+ 
+ 	folio = dequeue_hugetlb_folio_nodemask(h, gfp_mask, preferred_nid,
+@@ -2236,11 +2243,31 @@ struct folio *alloc_hugetlb_folio_reserve(struct hstate *h, int preferred_nid,
+ 	if (folio) {
+ 		folio_set_hugetlb_restore_reserve(folio);
+ 		h->resv_huge_pages--;
+-	}
++		hugetlb_cgroup_commit_charge(idx, nr_pages, h_cg, folio);
+ 
++		spin_unlock_irq(&hugetlb_lock);
++
++		ret = mem_cgroup_charge_hugetlb(folio, current->mm,
++						gfp_mask | __GFP_RETRY_MAYFAIL);
++		if (ret == -ENOMEM) {
++			folio_put(folio);
++			/*
++			 * Skip uncharging hugetlb_cgroup since the charges
++			 * were committed to the folio and freeing the folio
++			 * would have cleared those up.
++			 */
++			return NULL;
++		}
++
++		mod_hugetlb_memcg_state(folio, nr_pages);
++
++		return folio;
++	}
+ 	spin_unlock_irq(&hugetlb_lock);
+ 
+-	return folio;
++err_uncharge_hugetlb_cgroup:
++	hugetlb_cgroup_uncharge_cgroup(idx, nr_pages, h_cg);
++	return NULL;
+ }
+ 
+ /* folio migration callback function */
+
+---
+base-commit: 2c5dafa7f289d760f4492260b0988029aab478b0
+change-id: 20261109-for-alloc_hugetlb-1109-0ccac58e69d1
+
+Best regards,
+--  
+Hongfu Li <lihongfu@kylinos.cn>
+
 
