@@ -1,167 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3C90606A325
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 10:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7190A60A2602
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 10:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YjtELPH7
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=0TJM8m6Z
 Received: by kanga.kvack.org (Postfix)
-	id 022B76B05B4; Tue, 10 Nov 2026 05:38:59 -0500 (EST)
+	id 8D64E6B05B7; Tue, 10 Nov 2026 05:39:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F15106B05B6; Tue, 10 Nov 2026 05:38:58 -0500 (EST)
+	id 886026B05B8; Tue, 10 Nov 2026 05:39:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDC796B05B8; Tue, 10 Nov 2026 05:38:58 -0500 (EST)
+	id 7755F6B05B9; Tue, 10 Nov 2026 05:39:48 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B3BD46B05B4
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:38:58 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 467CF1404EB
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:38:58 +0000 (UTC)
-X-FDA: 85418861556.23.3DFA2F8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 6C69616000A
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:38:56 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YjtELPH7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4ABB86B05B7
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:39:48 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E86F0A04E4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:39:47 +0000 (UTC)
+X-FDA: 85418863614.03.19FCA53
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8AF51C0004
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:39:44 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=0TJM8m6Z;
+	spf=pass (imf28.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794307136;
+	s=arc-20220608; t=1794307186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=023i2+dmwmesxURH+DXS8VlOtNZE9VJsDp+NWBjJ6ZU=;
-	b=Sa3cF9Ov4kqm6sPNErv3nYDU0DaBz2Ko8cHfXGwS0H47R4M2Jhcxn/QO/PpxPevUXqPqM6
-	jhFOUb9PMkpFXjv1mqNAG9mjDwrYeaADXtQNSsR2+m+0ms4hFCx3FeXNJF3PE5KbSG81+Z
-	nNDLX84xMN4OHnhLI48Fa2zRGFl2kls=
+	bh=V93bLP8gitFVjdbD9n5f5D3hXtOS1ernEzFrniNePIQ=;
+	b=iqFtmKyHxK3d/ff/0JjGU9Ap0Uy7+wIsD28eDYMEqziHLuxkbqIzgrk80q4Kz22nUlvbA+
+	nOBjfxoYlE9C3gK9kP6Jz8G1CFhHqFkpfPTwO+jY6E11eQ34cf4MJUQbZkBthA2g2Bwz0U
+	+sXPKJ8nXl+Bm1i1yaXYeAF0zTHFgjo=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794307136;
-	b=JE6DYsAh7fmPl10O0Acg/ZrGKsF10AL9XqFe96SEBoB6SORyNrO/JnQ+JPeTtLG2B4Y9rI
-	La0nq6YEITvSxtXnX8p9v4o9pxc0rVZJEVnIURYE75ALHGVBLik/6ByrfI5U6YaYIqPXCl
-	wzQl7VX/c8mnfRWBsI205dHu6xOn8Hk=
+	t=1794307186;
+	b=HFWLK5JQjR4Asy4v5VQTuP5aFOhRTGcst39G75JHIwPFDKjyKFK9o5LrRZ1NAhxajMLtOe
+	JNFN3WvX43BSHJifzWw9jHQC2OunBuXZp5+teXm5hGb8X0J0FMDZr4BH5qLnA2ZV3IeGwC
+	XoNuN19zD6G//k3VtrmSpWgfGM7xx1c=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=YjtELPH7;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00CC262C67;
-	Tue, 10 Nov 2026 10:38:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BDBE1F008A3;
-	Tue, 10 Nov 2026 10:38:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794307135;
-	bh=023i2+dmwmesxURH+DXS8VlOtNZE9VJsDp+NWBjJ6ZU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=YjtELPH7ceqREpK01mrgwYINdmit7Nc6FazA2KMh42Y2fQivlCCTZvXa3NBYX4LE9
-	 tJvuAY3NUF1xRV2GvwgYgVu1HJkCSxFo8SdqSecuchD99X0otGjfMpd2mtaZbcJDXg
-	 v4wRN7kHl4YIwQeVByP/Xt+Adkmjz9J8X9AJcFuetMyjOtp8DyoEVgdDIMtCXldDXQ
-	 x9RpxGFwj9od0iSBv9SKQsYAZ7HrAUnfMo96dH4oQfG9wjQn1M2/dqofT8KVchQYsw
-	 BNtEAb0fk57KYgxrL5HTD5muQ/7uTfbWMc7umRN8QM5h4kkT/KOiMq+rAwg7mO67dh
-	 Mt/stp0jFeRCQ==
-Message-ID: <c8dd3102-38f8-4972-ad2d-97545fd8c8d4@kernel.org>
-Date: Tue, 10 Nov 2026 11:38:39 +0100
+	imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=0TJM8m6Z;
+	spf=pass (imf28.hostedemail.com: domain of ruanjinjie@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=ruanjinjie@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=V93bLP8gitFVjdbD9n5f5D3hXtOS1ernEzFrniNePIQ=;
+	b=0TJM8m6ZTU3EPOTVyrznExjVRfXRocvEgm9LOD+3+Z0TAxdKN4YtNfrF3zgQHCeHQTjbjh5sP
+	MHiU2QVTHe1t59r/ZTNl9qvLNBFkXj1K7f2KwN7XJT4lzlyNprzJQSUVc0WtBeEvPnZDRXRAdls
+	3V7jAnaocPS/FJKKw6zMymg=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4jP36V4sDszcZyY;
+	Tue, 10 Nov 2026 18:38:58 +0800 (CST)
+Received: from kwepemk200008.china.huawei.com (unknown [7.202.194.74])
+	by mail.maildlp.com (Postfix) with ESMTPS id 8D241202E6;
+	Tue, 10 Nov 2026 18:39:36 +0800 (CST)
+Received: from [10.67.110.68] (10.67.110.68) by kwepemk200008.china.huawei.com
+ (7.202.194.74) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.45; Tue, 10 Nov
+ 2026 18:39:35 +0800
+Message-ID: <9d2d6f81-ceb7-48a7-99a0-18a0bb8c504f@huawei.com>
+Date: Tue, 10 Nov 2026 18:39:34 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/5] mm: limit pagecache folio refcount when splicing
- into pipes
-To: Lorenzo Stoakes <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Jan Kara <jack@suse.cz>,
- Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>,
- Kiryl Shutsemau <kas@kernel.org>, Matthew Brost <matthew.brost@intel.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Byungchul Park <byungchul@sk.com>,
- Gregory Price <gourry@gourry.net>, Ying Huang
- <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Song Liu <songliubraving@fb.com>, Rik van Riel <riel@surriel.com>,
- Miklos Szeredi <miklos@szeredi.hu>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
- Hugh Dickins <hughd@google.com>, Will Deacon <will@kernel.org>,
- "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, Nick Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Arnd Bergmann <arnd@arndb.de>, Jason Gunthorpe <jgg@ziepe.ca>,
- Kevin Tian <kevin.tian@intel.com>, "Joerg Roedel (AMD)" <joro@8bytes.org>,
- Robin Murphy <robin.murphy@arm.com>,
- Steve Sistare <steven.sistare@oracle.com>, John Hubbard
- <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
- Josef Bacik <josef@toxicpanda.com>,
- Linus Torvalds <torvalds@linux-foundation.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, fuse-devel@lists.linux.dev,
- linux-arch@vger.kernel.org, iommu@lists.linux.dev, stable@vger.kernel.org
-References: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
- <20261107-refcount_overflow_stable-v2-2-c38f6809b106@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20261107-refcount_overflow_stable-v2-2-c38f6809b106@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: zrqwk57fj593u8k1te6j8apd6qbg3ars
-X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+Subject: Re: [PATCH v2] mm/hugetlb: allow crashkernel to reuse hugetlb CMA
+ memory
+To: Usama Arif <usama.arif@linux.dev>, Andrew Morton
+	<akpm@linux-foundation.org>, <baoquan.he@linux.dev>, <rppt@kernel.org>,
+	<pasha.tatashin@soleen.com>, <pratyush@kernel.org>, <ruirui.yang@linux.dev>,
+	<corbet@lwn.net>, <skhan@linuxfoundation.org>, <rdunlap@infradead.org>,
+	<muchun.song@linux.dev>, <osalvador@suse.de>, <david@kernel.org>,
+	<jbohac@suse.cz>, <sourabhjain@linux.ibm.com>, <leitao@debian.org>,
+	<linux-kernel@vger.kernel.org>, <kexec@lists.infradead.org>,
+	<linux-doc@vger.kernel.org>, <linux-mm@kvack.org>, <kas@kernel.org>,
+	<hannes@cmpxchg.org>, <riel@surriel.com>, <shakeel.butt@linux.dev>,
+	<zaslonko@linux.ibm.com>, <brads@mainlining.org>, <kernel-team@meta.com>
+References: <20261106165142.2847916-1-usama.arif@linux.dev>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
+In-Reply-To: <20261106165142.2847916-1-usama.arif@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk200008.china.huawei.com (7.202.194.74)
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 8AF51C0004
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
 	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6C69616000A
-X-HE-Tag: 1794307136-878502
-X-HE-Meta: U2FsdGVkX1/9EaUkWAXPE4kCQoNoMMZN/E4UnPYqHOWs7og7mJWKFr5vDPTMTNN3OE+xeAemMio0u9rDbE9YRDy1B8z4pZ826q+NoU4z6VYgpj5uV/rLTblC2Wh+kFWGf5UJqj5OWf9k9poGcfTM4IiBRwQmfGwi7mOH+SelQL1pC5uzf+6tM5hf01AdtKLv5xrr4wQKoufs3mGrRggou3t4mZWsIcryMhZZ/1qmX9SCehb2FMlo/L834NcjWvtl16BMau1tInD+uu7QHdc616mj5/m7DPQY8DxSu5MvyZCQAWVloVI847KJXZAk34njQBomVNoFe4CNGOKOOab1Pf4NCeOLIFsPqjGM1Lyv2oXa9LH/If6x8IqykQ4wNItHGt19nRmIstiVpARNnNzGYR63I27jhXgLEXeBQIw27dPuqLDvPMpUqm7H+VIHeFo+qv/NrY0Nq+2kBK2VJYRVh2aOKD2ssSU+17XAtNNxKPlSmq1og0RS9vZtWmjSleeCS6RxKFdrd24azYPUdy/NKdZsU5Ric6PCfHoNc7TdjgMrefMty9H1PP7Mv97BplR83rgVYux1ZNrbjekjukMqhrX57Q6y3UpCvuvinXGqhf7l3z9rVCRVFt9xwPpdpyauHm53CMkWM0TfSHTA+4Zf4GoLGuQTHwjcZzUlfdLzWkOU++/ssZN5NqemeWOMN5QvWpgkp2uMXn2MubEyR2ebwVZsnexLkU5FueyV6EbWUZ8r+WR0D10xjuiDli7X7DIZ8Qrw6UDVexL8ht+0q8L/YdkYDK9MltP0o8z1hY7Tfy36Wzsy33KL71vz9V+pVHiq7etqDYIoa1hA8q7QoNHLMtLIku2ShRKl+/KBzov/zqkKxetWOBetEQdK3HUR+kYrAq0aKDsPE54FGlYn0bBFnjAHuADIXx/Wg51jOlm6PPCizHUhwDPHx8Scm65iXda4a2iSkScFoRvEd7jl+SD
- VMDg8EkR
- 5we2xRKkFMQK51Kn0kGDZX4C1cvAMZFSDcRDYeCJP3E36LNO6WUP6lU2rpKkCiPv6g1SYvp17aGy5/wg0xu1Luq+llRvtqJIOaskRkR8DD2sUKvRzXCFTu5vrbmW8YKMBRyCrGhDeDFpXmu4SxGoeMSNpDJODzU3cX93oZFeErQb0IpdEPWIDiqzaKWeF3vRFEqAgKiEi0SKTog9qsWkan8GYxHLzIRIctA6Mj/y4JqXgPEV+/0MAuXQXly8JdshB3bBI3qlgf33FsePPP7w9nBkDQldZoB7aOaoAajGXz95U/0pIMcLBrnlr4FrRA1V002+AYrXuF/w9ae9a727Ekg2aoFhjIMdxqZ+cYeCqL/o4h2I=
+X-Stat-Signature: h8u9b9q9g98wws5384rgr1jtqc5zi7ti
+X-Rspam-User: 
+X-HE-Tag: 1794307184-825636
+X-HE-Meta: U2FsdGVkX1/zCig5SgNFESrilSze/0UA2UEY+kRprszFuaQHdn3dhkeH6I0rXQgAGOvV8PyZ5I5AcE2RP8v+9Ma1iWZpz7zl7jj/3WvEVVosZALtXJ7FbJRSMnFmQNAnwpHD0EyIMDS18Zn3KmUDVd4X5QYt1AVP/z2cEstugiVT8yFBylWUEQzJfu0slxOABB4J1afTrWclOAYZzWgApt9st/XCk+3+Ku7JDlNZUjHQq+Nf5MeO6bjme/4yGHD4476HKULuTyNjdexHN0IwJXI3VrfYX2y7rzAg681RznpuYC/Xv1YstROP5OzvF6wm+ie9r/YZr09StYnJ//R+/9PxPrjT7KcVz+nWjTQrICYOrlto7XyTdAF2cl3qd6L2npWuHdxAadDrwxPLfGGYWPoRWpOiEw4PO7895rq08JbriuxvopsRXLeGOKu/EEF641THorlEM3nbY9WsvInGQSb6n3Rg6y5ip9J8nUWFzQryo/VQdfLfgp3tj92dYA5cZK0D3W6Y2pInT9EB3xgjf8W7JKUNIGI1lsvxZFPFiWUM6YmqYQxYHfmcmgj2cZ3+UImilkZScf9d/w/aLCTlDfWtumHsRGGp5q87H3V3eXxgIHUh6bdkQ0A9EBrOTfXwwqeWxUTYIQ4bCdHfgrk9Ta//CUtxkb9YBKBppRyEu3KBXuE05k5A9rFQlINCAZkCQCfdnvXEoqnyIRU0gqcObNj/M4SIVjkK0+4GZAevRVgrFuJdk2lTj/NloYDCfzKfuoH4ttJwxrbY0I6y7KJiYbGYCaL4B7HVgDd7JXm51stZ0sFDts0hOPn9XCMalGG8jYIxQqV0aU39Uev3O3upD3LqIJtbfgH5OouQzhqml3joFNR5h4CThff8azGEsx4JqfUiyNlT0gBZqNOPWhGHY0rXOrJf6OR/LiugQjwXTtJ/A081VreTCHktnYNgqaQ7DsJxZ7WTJMCTJIwQa9D
+ 5H5o29GQ
+ 4oU9b5qTKIwe5tqzg9Bxul7JvcfOBcq8vtdYMBg9Xbll9l5zD7/pmZtwHoevcl4LWlh81E0hEtmMPEU6OmyPiWO6ffysUGCZrBYSohbohU9XR1Pz56tOFxVqnsNhSWCvF4fJKoP9VjjLXnDSu9p+4xVg3q67RBI5GBl4cUsx/m3XyLDkYwUemJuHAYfWXCs1Bh9b5aHoWXOGdyCbHEXi0FrTdu4eSvgV8Jnpvi6mH3BCExdRG6OCW5tG8a1G7L2U8Xpe8i7H/yDcscgnzo8RNNeis0GskAlyG9FgJ7iHvAodb4CykD3Lo90Dj7QfCWvrxnvYgdUamfPnVtHOXZ1RrS8JkBgInEO8qMblRcMcRc6ogyu1d+QJPfuBdLYE31KZBBpeFMUcWZD1XT8c=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -170,306 +108,511 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/7/26 23:23, David Hildenbrand (Arm) wrote:
-> Similar to mapping pagecache folios into page tables, let's reject
-> additional references when splicing folios into a pipe if the refcount
-> is at its limit, similar to how we handle it during GUP.
+
+
+在 2026/11/7 0:51, Usama Arif 写道:
+> crashkernel=size,cma reserves a separate CMA pool. On systems that
+> already reserve several gigabytes with hugetlb_cma= (which is common in
+> the Meta fleet), the crash kernel cannot use that existing memory as
+> part of its working set. With hugetlb_cma=6G, requesting another 2G
+> with crashkernel=2G,cma brings the total CMA reservation to 8G, none of
+> which can serve unmovable kernel allocations.
 > 
-> This will prevent more cases of possible folio refcount overflows with
-> large pagecache folios.
+> Use existing HugeTLB CMA memory first for crashkernel=size,cma and
+> reserve dedicated CMA areas only for the remainder. With hugetlb_cma=6G,
+> a 2G request reuses 2G without reserving more CMA. With hugetlb_cma=2G,
+> a 4G request reuses 2G and reserves another 2G.
 > 
-> Let's keep it simple and check in the two callers of
-> splice_folio_into_pipe(). Return -EOVERFLOW if the limit prevents any
-> progress, so do_splice_read() can fall back to copy_splice_read() when
-> read_iter is available. This keeps sendfile() and other splice users
-> working when ordinary reads would still succeed.
+> The full HugeTLB CMA pool remains available to HugeTLB and movable
+> allocations during normal operation. After a crash, the capture kernel
+> can use the selected ranges as working memory. The conventional
+> reservation is still required to hold the kernel image and initrd.
 > 
-> Also fall back to copying in FUSE when taking another reference through
-> fuse_ref_folio() would exceed the limit.
+> The ,cma option already opts into excluding userspace memory from the
+> vmcore. This includes allocated HugeTLB pages in the selected ranges,
+> which the capture kernel can overwrite. The existing dump completeness
+> and pending DMA risks apply to these ranges as well.
 > 
-> Also check in try_get_page() to cover pipe-buffer duplication by tee()
-> and partial pipe-to-pipe splicing.
+> Have architecture code record the requested CMA size and perform the
+> reservation in mm_core_init_early(), immediately after
+> hugetlb_cma_reserve(). The HugeTLB CMA areas are then available for reuse
+> while memblock can still reserve any remainder.
 > 
-> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> Use the existing four range slots for both reused and dedicated memory.
+> Limit reused memory to the page-aligned request, account for dedicated
+> CMA alignment, and report any shortfall. Ignore malformed optional sizes
+> and reject requests that would overflow page rounding.
+> 
+> Suggested-by: Breno Leitao <leitao@debian.org>
+> Signed-off-by: Usama Arif <usama.arif@linux.dev>
 > ---
->  fs/fuse/dev.c      |  5 +++--
->  fs/splice.c        |  8 +++++++-
->  include/linux/mm.h |  9 ++++++---
->  mm/filemap.c       | 11 ++++++++---
->  mm/shmem.c         |  4 ++++
->  5 files changed, 28 insertions(+), 9 deletions(-)
+> v1 -> v2:
+> - Use existing HugeTLB CMA memory first for crashkernel=size,cma and
+>   reserve dedicated CMA areas only for the remainder. (Kiryl)
+> ---
+>  .../ABI/testing/sysfs-kernel-kexec-kdump      |  3 ++
+>  Documentation/admin-guide/kdump/kdump.rst     | 22 ++++++--
+>  .../admin-guide/kernel-parameters.txt         | 16 +++++-
+>  arch/arm64/mm/init.c                          |  2 +-
+>  arch/powerpc/include/asm/kexec.h              |  2 -
+>  arch/powerpc/kexec/core.c                     | 12 ++---
+>  arch/powerpc/mm/mem.c                         |  6 +--
+>  arch/riscv/mm/init.c                          |  2 +-
+>  arch/x86/kernel/setup.c                       |  2 +-
+>  include/linux/crash_reserve.h                 | 14 ++++-
+>  include/linux/hugetlb.h                       | 12 +++++
+>  kernel/crash_reserve.c                        | 51 ++++++++++++++-----
+>  mm/hugetlb_cma.c                              | 50 ++++++++++++++++++
+>  mm/mm_init.c                                  |  2 +
+>  14 files changed, 159 insertions(+), 37 deletions(-)
+
+Should it be separated according to the architecture and framework code?
+
 > 
-> diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-> index 3641abb90d6bb..4f6b7b42bfd3e 100644
-> --- a/fs/fuse/dev.c
-> +++ b/fs/fuse/dev.c
-> @@ -1265,9 +1265,10 @@ int fuse_copy_folio(struct fuse_copy_state *cs, struct folio **foliop,
->  		if (cs->write && cs->pipebufs && folio) {
->  			/*
->  			 * Can't control lifetime of pipe buffers, so always
-> -			 * copy user pages.
-> +			 * copy user pages. Also copy folios at their refcount limit.
->  			 */
-> -			if (cs->req->args->user_pages) {
-> +			if (cs->req->args->user_pages ||
-> +			    unlikely(folio_ref_count_over_limit(folio))) {
+> diff --git a/Documentation/ABI/testing/sysfs-kernel-kexec-kdump b/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
+> index f59051b5d96d7..9197cbbcbe7c8 100644
+> --- a/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
+> +++ b/Documentation/ABI/testing/sysfs-kernel-kexec-kdump
+> @@ -58,4 +58,7 @@ Description:	read only
+>  		the Contiguous Memory Allocator (CMA) area that are allocated
+>  		to the crash (kdump) kernel. It lists the start and end physical
+>  		addresses of CMA regions assigned for crashkernel use.
+> +		This includes existing HugeTLB CMA memory selected with
+> +		crashkernel=size,cma. These ranges remain usable
+> +		by the running kernel and are excluded from the vmcore.
+>  User:		kdump service
+> diff --git a/Documentation/admin-guide/kdump/kdump.rst b/Documentation/admin-guide/kdump/kdump.rst
+> index 7587caadbae1a..91779205d1456 100644
+> --- a/Documentation/admin-guide/kdump/kdump.rst
+> +++ b/Documentation/admin-guide/kdump/kdump.rst
+> @@ -313,9 +313,25 @@ crashkernel syntax
+>  
+>  4) crashkernel=size,cma
+>  
+> -	Reserve additional crash kernel memory from CMA. This reservation is
+> -	usable by the first system's userspace memory and kernel movable
+> -	allocations (memory balloon, zswap). Pages allocated from this memory
+> +	Reserve additional crash kernel memory from CMA. Existing HugeTLB CMA
+> +	memory is used first, and dedicated CMA areas are reserved for any
+> +	remaining amount. For example, this reuses 2G from the existing 6G pool
+> +	without reserving additional CMA memory::
+> +
+> +	    hugetlb_cma=6G crashkernel=256M crashkernel=2G,cma
+> +
+> +	With a smaller HugeTLB CMA pool, the remainder is reserved separately::
+> +
+> +	    hugetlb_cma=2G crashkernel=256M crashkernel=4G,cma
+> +
+> +	This reuses the existing 2G and reserves another 2G of dedicated CMA.
+> +	Both kinds of area use the same limit of four physical ranges. If there
+> +	is insufficient memory or too few range slots, the kernel reports the
+> +	shortfall. Normal CMA alignment applies to dedicated reservations.
+> +
+> +	The selected memory remains usable by the first system's userspace,
+> +	including HugeTLB allocations, and kernel movable allocations
+> +	(memory balloon, zswap). Pages allocated from this memory
+>  	range will not be included in the vmcore so this should not be used if
+>  	dumping of userspace memory is intended and it has to be expected that
+>  	some movable kernel pages may be missing from the dump.
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index 0b3c140babd94..a1fb40e500097 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -1100,7 +1100,21 @@ Kernel parameters
+>  			or memory reserved is below 4G.
+>  	crashkernel=size[KMG],cma
+>  			[KNL, X86, ARM64, RISCV, PPC] Reserve additional crash
+> -			kernel memory from CMA. This reservation is usable by
+> +			kernel memory from CMA. Existing hugetlb_cma memory is
+> +			used first, and dedicated CMA areas are reserved for any
+> +			remaining amount. For example:
+> +			  hugetlb_cma=6G crashkernel=256M crashkernel=2G,cma
+> +			reuses 2G without reserving more CMA, while:
+> +			  hugetlb_cma=2G crashkernel=256M crashkernel=4G,cma
+> +			reuses 2G and reserves another 2G of dedicated CMA.
+> +
+> +			Both kinds of area use the same limit of four physical
+> +			ranges. If the available memory or range slots cannot
+> +			cover the requested size, the kernel reports the
+> +			shortfall. Normal CMA alignment applies to dedicated
+> +			reservations.
+> +
+> +			The selected memory remains usable by
+>  			the first system's userspace memory and kernel movable
+>  			allocations (memory balloon, zswap). Pages allocated
+>  			from this memory range will not be included in the vmcore
+> diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
+> index 4e7682dfe366c..a781cc60b4282 100644
+> --- a/arch/arm64/mm/init.c
+> +++ b/arch/arm64/mm/init.c
+> @@ -114,7 +114,7 @@ static void __init arch_reserve_crashkernel(void)
+>  		return;
+>  
+>  	reserve_crashkernel_generic(crash_size, crash_base, low_size, high);
+> -	reserve_crashkernel_cma(cma_size);
+> +	crashkernel_cma_set_size(cma_size);
+>  }
+>  
+>  static phys_addr_t __init max_zone_phys(phys_addr_t zone_limit)
+> diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
+> index e02710d6a2e1a..d3b5028102cdd 100644
+> --- a/arch/powerpc/include/asm/kexec.h
+> +++ b/arch/powerpc/include/asm/kexec.h
+> @@ -117,11 +117,9 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt, struct crash_mem
+>  #ifdef CONFIG_CRASH_RESERVE
+>  int __init overlaps_crashkernel(unsigned long start, unsigned long size);
+>  extern void arch_reserve_crashkernel(void);
+> -extern void kdump_cma_reserve(void);
+>  #else
+>  static inline void arch_reserve_crashkernel(void) {}
+>  static inline int overlaps_crashkernel(unsigned long start, unsigned long size) { return 0; }
+> -static inline void kdump_cma_reserve(void) { }
+>  #endif
+>  
+>  #if defined(CONFIG_CRASH_DUMP)
+> diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
+> index dc44f11be353e..1b70eb10beac2 100644
+> --- a/arch/powerpc/kexec/core.c
+> +++ b/arch/powerpc/kexec/core.c
+> @@ -62,8 +62,6 @@ void machine_kexec(struct kimage *image)
+>  
+>  #ifdef CONFIG_CRASH_RESERVE
+>  
+> -static unsigned long long crashk_cma_size;
+> -
+>  static unsigned long long __init get_crash_base(unsigned long long crash_base)
+>  {
+>  
+> @@ -107,6 +105,7 @@ static unsigned long long __init get_crash_base(unsigned long long crash_base)
+>  void __init arch_reserve_crashkernel(void)
+>  {
+>  	unsigned long long crash_size, crash_base, crash_end;
+> +	unsigned long long cma_size = 0;
+>  	unsigned long long kernel_start, kernel_size;
+>  	unsigned long long total_mem_sz;
+>  	int ret;
+> @@ -115,7 +114,7 @@ void __init arch_reserve_crashkernel(void)
+>  
+>  	/* use common parsing */
+>  	ret = parse_crashkernel(boot_command_line, total_mem_sz, &crash_size,
+> -				&crash_base, NULL, &crashk_cma_size, NULL);
+> +				&crash_base, NULL, &cma_size, NULL);
+>  
+>  	if (ret)
+>  		return;
+> @@ -133,12 +132,7 @@ void __init arch_reserve_crashkernel(void)
+>  	}
+>  
+>  	reserve_crashkernel_generic(crash_size, crash_base, 0, false);
+> -}
+> -
+> -void __init kdump_cma_reserve(void)
+> -{
+> -	if (crashk_cma_size)
+> -		reserve_crashkernel_cma(crashk_cma_size);
+> +	crashkernel_cma_set_size(cma_size);
+>  }
+>  
+>  int __init overlaps_crashkernel(unsigned long start, unsigned long size)
+> diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+> index b617b69452cd6..d6e84dc1e24c5 100644
+> --- a/arch/powerpc/mm/mem.c
+> +++ b/arch/powerpc/mm/mem.c
+> @@ -272,12 +272,10 @@ void __init arch_mm_preinit(void)
+>  {
+>  
+>  	/*
+> -	 * Reserve large chunks of memory for use by CMA for kdump, fadump, KVM
+> -	 * and hugetlb. These must be called after pageblock_order is
+> -	 * initialised.
+> +	 * Reserve large chunks of memory for use by CMA for fadump and KVM.
+> +	 * These must be called after pageblock_order is initialised.
+>  	 */
+>  	fadump_cma_init();
+> -	kdump_cma_reserve();
+>  	kvm_cma_reserve();
+>  
+>  	/*
+> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+> index e822fce0af4b0..194045dc3fed6 100644
+> --- a/arch/riscv/mm/init.c
+> +++ b/arch/riscv/mm/init.c
+> @@ -1357,7 +1357,7 @@ static void __init arch_reserve_crashkernel(void)
+>  		return;
+>  
+>  	reserve_crashkernel_generic(crash_size, crash_base, low_size, high);
+> -	reserve_crashkernel_cma(cma_size);
+> +	crashkernel_cma_set_size(cma_size);
+>  }
+>  
+>  void __init paging_init(void)
+> diff --git a/arch/x86/kernel/setup.c b/arch/x86/kernel/setup.c
+> index 19fc8e1714e64..8848e207780b5 100644
+> --- a/arch/x86/kernel/setup.c
+> +++ b/arch/x86/kernel/setup.c
+> @@ -627,7 +627,7 @@ static void __init arch_reserve_crashkernel(void)
+>  	}
+>  
+>  	reserve_crashkernel_generic(crash_size, crash_base, low_size, high);
+> -	reserve_crashkernel_cma(cma_size);
+> +	crashkernel_cma_set_size(cma_size);
+>  }
+>  
+>  static struct resource standard_io_resources[] = {
+> diff --git a/include/linux/crash_reserve.h b/include/linux/crash_reserve.h
+> index 30864d90d7f50..b11d7814979cc 100644
+> --- a/include/linux/crash_reserve.h
+> +++ b/include/linux/crash_reserve.h
+> @@ -5,6 +5,7 @@
+>  #include <linux/linkage.h>
+>  #include <linux/elfcore.h>
+>  #include <linux/elf.h>
+> +#include <linux/range.h>
+>  #ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
+>  #include <asm/crash_reserve.h>
+>  #endif
+> @@ -31,7 +32,18 @@ int __init parse_crashkernel(char *cmdline, unsigned long long system_ram,
+>  		unsigned long long *low_size, unsigned long long *cma_size,
+>  		bool *high);
+>  
+> -void __init reserve_crashkernel_cma(unsigned long long cma_size);
+> +#if defined(CONFIG_CRASH_RESERVE) && defined(CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION)
+> +void __init crashkernel_cma_set_size(unsigned long long size);
+> +void __init reserve_crashkernel_cma(void);
+> +#else
+> +static inline void __init crashkernel_cma_set_size(unsigned long long size)
+> +{
+> +}
+> +
+> +static inline void __init reserve_crashkernel_cma(void)
+> +{
+> +}
+> +#endif
+>  
+>  #ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
+>  #ifndef arch_add_crash_res_to_iomem
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 58f755e70e966..69732e4cc03e2 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -1349,12 +1349,24 @@ static inline spinlock_t *huge_pte_lock(struct hstate *h,
+>  	return ptl;
+>  }
+>  
+> +struct range;
+> +
+>  #if defined(CONFIG_HUGETLB_PAGE) && defined(CONFIG_CMA)
+>  extern void __init hugetlb_cma_reserve(void);
+> +unsigned long long __init
+> +hugetlb_cma_add_crashkernel_ranges(unsigned long long size, struct range *ranges,
+> +				   int *nr_ranges, int max_ranges);
+>  #else
+>  static inline __init void hugetlb_cma_reserve(void)
+>  {
+>  }
+> +
+> +static inline unsigned long long
+> +hugetlb_cma_add_crashkernel_ranges(unsigned long long size, struct range *ranges,
+> +				   int *nr_ranges, int max_ranges)
+> +{
+> +	return 0;
+> +}
+>  #endif
+>  
+>  #ifdef CONFIG_HUGETLB_PMD_PAGE_TABLE_SHARING
+> diff --git a/kernel/crash_reserve.c b/kernel/crash_reserve.c
+> index eee37a11380ce..53d76ba6b3c31 100644
+> --- a/kernel/crash_reserve.c
+> +++ b/kernel/crash_reserve.c
+> @@ -16,6 +16,7 @@
+>  #include <linux/kmemleak.h>
+>  #include <linux/cma.h>
+>  #include <linux/crash_reserve.h>
+> +#include <linux/hugetlb.h>
+>  
+>  #include <asm/page.h>
+>  #include <asm/sections.h>
+> @@ -340,9 +341,9 @@ int __init parse_crashkernel(char *cmdline,
+>  	 * optional CMA reservation
+>  	 * cma_base is ignored
+>  	 */
+> -	if (cma_size)
+> -		__parse_crashkernel(cmdline, 0, cma_size,
+> -			&cma_base, suffix_tbl[SUFFIX_CMA]);
+> +	if (cma_size && __parse_crashkernel(cmdline, 0, cma_size,
+> +					    &cma_base, suffix_tbl[SUFFIX_CMA]))
+> +		*cma_size = 0;
+>  #endif
+>  	if (!*crash_size)
+>  		ret = -EINVAL;
+> @@ -470,21 +471,41 @@ void __init reserve_crashkernel_generic(unsigned long long crash_size,
+>  }
+>  
+>  struct range crashk_cma_ranges[CRASHKERNEL_CMA_RANGES_MAX];
+> +static unsigned long long crashkernel_cma_size __initdata;
+> +
+> +void __init crashkernel_cma_set_size(unsigned long long cma_size)
+> +{
+> +	crashkernel_cma_size = cma_size;
+> +}
+> +
+>  #ifdef CRASHKERNEL_CMA
+>  int crashk_cma_cnt;
+> -void __init reserve_crashkernel_cma(unsigned long long cma_size)
+> +void __init reserve_crashkernel_cma(void)
+>  {
+> -	unsigned long long request_size = roundup(cma_size, PAGE_SIZE);
+> -	unsigned long long reserved_size = 0;
+> +	unsigned long long cma_size = crashkernel_cma_size;
+> +	unsigned long long request_size, reserved_size, reused_size;
+>  
+> -	if (!cma_size)
+> +	if (!cma_size || crashk_res.start >= crashk_res.end)
+>  		return;
+>  
+> +	if (cma_size > ULLONG_MAX - (PAGE_SIZE - 1)) {
+> +		pr_warn("crashkernel CMA size is too large\n");
+> +		return;
+> +	}
+> +	cma_size = roundup(cma_size, PAGE_SIZE);
+> +	reused_size = hugetlb_cma_add_crashkernel_ranges(cma_size,
+> +							 crashk_cma_ranges,
+> +							 &crashk_cma_cnt,
+> +							 CRASHKERNEL_CMA_RANGES_MAX);
+> +	reserved_size = reused_size;
+> +	request_size = cma_size - reused_size;
+> +
+>  	while (cma_size > reserved_size &&
+>  	       crashk_cma_cnt < CRASHKERNEL_CMA_RANGES_MAX) {
+>  
+>  		struct cma *res;
+>  
+> +		request_size = min(request_size, cma_size - reserved_size);
+>  		if (cma_declare_contiguous(0, request_size, 0, 0, 0, false,
+>  				       "crashkernel", &res)) {
+>  			/* reservation failed, try half-sized blocks */
+> @@ -500,21 +521,23 @@ void __init reserve_crashkernel_cma(unsigned long long cma_size)
+>  			crashk_cma_ranges[crashk_cma_cnt].start +
+>  			cma_get_size(res) - 1;
+>  		++crashk_cma_cnt;
+> -		reserved_size += request_size;
+> +		reserved_size += cma_get_size(res);
+>  	}
+>  
+>  	if (cma_size > reserved_size)
+> -		pr_warn("crashkernel CMA reservation failed: %lld MB requested, %lld MB reserved in %d ranges\n",
+> -			cma_size >> 20, reserved_size >> 20, crashk_cma_cnt);
+> +		pr_warn("crashkernel CMA reservation failed: %llu MB requested, %llu MB reused, %llu MB newly reserved in %d ranges\n",
+> +			cma_size >> 20, reused_size >> 20,
+> +			(reserved_size - reused_size) >> 20, crashk_cma_cnt);
+>  	else
+> -		pr_info("crashkernel CMA reserved: %lld MB in %d ranges\n",
+> -			reserved_size >> 20, crashk_cma_cnt);
+> +		pr_info("crashkernel CMA: %llu MB reused, %llu MB newly reserved in %d ranges\n",
+> +			reused_size >> 20, (reserved_size - reused_size) >> 20,
+> +			crashk_cma_cnt);
+>  }
+>  
+>  #else /* CRASHKERNEL_CMA */
+> -void __init reserve_crashkernel_cma(unsigned long long cma_size)
+> +void __init reserve_crashkernel_cma(void)
+>  {
+> -	if (cma_size)
+> +	if (crashkernel_cma_size)
+>  		pr_warn("crashkernel CMA reservation not supported\n");
+>  }
+>  #endif
+> diff --git a/mm/hugetlb_cma.c b/mm/hugetlb_cma.c
+> index cd6a64986278a..cd6f64da31a2c 100644
+> --- a/mm/hugetlb_cma.c
+> +++ b/mm/hugetlb_cma.c
+> @@ -11,6 +11,8 @@
+>  #include <linux/memblock.h>
+>  #include <linux/math.h>
+>  #include <linux/math64.h>
+> +#include <linux/range.h>
+> +#include "cma.h"
+>  #include "internal.h"
+>  #include "hugetlb_cma.h"
+>  
+> @@ -387,6 +389,54 @@ void __init hugetlb_cma_reserve(void)
+>  		hugetlb_cma_size = 0;
+>  }
+>  
+> +/**
+> + * hugetlb_cma_add_crashkernel_ranges - share HugeTLB CMA with the crash kernel
+> + * @size: maximum number of bytes to share, aligned to PAGE_SIZE
+> + * @ranges: crash kernel memory ranges
+> + * @nr_ranges: number of entries already in @ranges, updated on return
+> + * @max_ranges: capacity of @ranges
+> + *
+> + * The shared memory remains available to the HugeTLB allocator until a crash.
+> + * Only physical ranges belonging to successfully reserved CMA areas are added.
+> + *
+> + * Return: number of bytes shared.
+> + */
+> +unsigned long long __init
+> +hugetlb_cma_add_crashkernel_ranges(unsigned long long size, struct range *ranges,
+> +				   int *nr_ranges, int max_ranges)
+> +{
+> +	unsigned long long shared_size = 0;
+> +	int nid, i;
+> +
+> +	for_each_node_mask(nid, hugetlb_bootmem_nodes) {
+> +		struct cma *cma = hugetlb_cma[nid];
+> +
+> +		if (!cma)
+> +			continue;
+> +
+> +		for (i = 0; i < cma->nranges; i++) {
+> +			struct cma_memrange *cmr = &cma->ranges[i];
+> +			unsigned long long range_size;
+> +			struct range *range;
+> +
+> +			if (shared_size == size || *nr_ranges == max_ranges)
+> +				return shared_size;
+> +
+> +			range_size = min_t(unsigned long long,
+> +					   PFN_PHYS(cmr->count), size - shared_size);
+> +			range = &ranges[(*nr_ranges)++];
+> +			range->start = PFN_PHYS(cmr->base_pfn);
+> +			range->end = range->start + range_size - 1;
+> +			shared_size += range_size;
+> +
+> +			/* Keep shared pages reserved if CMA activation fails. */
+> +			cma_reserve_pages_on_error(cma);
+> +		}
+> +	}
+> +
+> +	return shared_size;
+> +}
+> +
+>  bool hugetlb_cma_exclusive_alloc(void)
+>  {
+>  	return hugetlb_cma_only;
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index a9d848c92678b..2367af05570bd 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -28,6 +28,7 @@
+>  #include <linux/swap.h>
+>  #include <linux/cma.h>
+>  #include <linux/crash_dump.h>
+> +#include <linux/crash_reserve.h>
+>  #include <linux/execmem.h>
+>  #include <linux/sizes.h>
+>  #include <linux/vmstat.h>
+> @@ -2686,6 +2687,7 @@ void __init mm_core_init_early(void)
+>  	free_area_init();
+>  
+>  	hugetlb_cma_reserve();
+> +	reserve_crashkernel_cma();
+>  	hugetlb_bootmem_alloc();
+>  
+>  	sparse_init();
 
-Linus points out off-list (thanks!), that fuse_ref_folio() should have
-really used try_get_page() right from the start.
-
-And that we should just not fallback to a copy, in particular,
-if the refcount is invalid (<= 0).
-
-So the following is what I have for now. Once we remove the limit
-handling again, that code won't change, which is good.
-
-I went back and forth with folio_get_checked() naming, but decided to
-not mix in the "try" as that just reminds of our speculative refcount
-handling. (folio_try_get_checked / folio_try_get_referenced)
-
-I'll send a cleanup to rename try_get_page() later.
-
-I played with using the new helper (folio_get_checked()) also in patch #1,
-but it resulted in too much churn for something that is supposed to
-be a temporary fix, so I'll leave that in place.
-
-
-From 00e58e422e28126cfa381d4b877ccd488f4e5609 Mon Sep 17 00:00:00 2001
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Wed, 4 Nov 2026 19:02:48 +0100
-Subject: [PATCH 1/1] mm: limit pagecache folio refcount when splicing into
- pipes
-
-Similar to mapping pagecache folios into page tables, let's reject
-additional references when splicing folios into a pipe if the refcount
-is at its limit, similar to how we handle it during GUP.
-
-This will prevent more cases of possible folio refcount overflows with
-large pagecache folios.
-
-Introduce folio_get_checked() for checked reference acquisition when
-the caller already holds a reference. It warns and fails on a non-positive
-refcount and rejects additional references at the limit.
-
-Use folio_get_checked() in splice_folio_into_pipe() and
-fuse_ref_folio(), returning -EFAULT on failure, like we already do for
-pipe-buffer duplication. Similarly, make try_get_page() use it instead.
-
-Likely try_get_page() should be renamed (or removed) later, as it doesn't
-match the folio_try_get() semantics and is confusing.
-
-If we hit the limit after splicing some data, return the number of bytes
-already spliced. Teach the callers to handle errors, and stop
-filemap_splice_read() if we only spliced part of a folio, so we don't
-skip ahead to the next folio.
-
-The check in try_get_page() also covers pipe-buffer duplication by tee()
-and partial pipe-to-pipe splicing.
-
-Note that we deliberately will not fall back to the slow path of copying
-the folio, particularly as the folio might have an invalid refcount. If
-it is ever really required, we can revisit.
-
-Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) FS")
-Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
-Cc: stable@vger.kernel.org
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
- fs/fuse/dev.c      |  4 +++-
- include/linux/mm.h | 26 ++++++++++++++++++++++----
- mm/filemap.c       | 26 ++++++++++++++++----------
- mm/internal.h      |  4 ++--
- mm/shmem.c         |  7 +++++--
- 5 files changed, 48 insertions(+), 19 deletions(-)
-
-diff --git a/fs/fuse/dev.c b/fs/fuse/dev.c
-index 3641abb90d6b..50f41bb28783 100644
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1230,7 +1230,9 @@ static int fuse_ref_folio(struct fuse_copy_state *cs, struct folio *folio,
- 	if (cs->nr_segs >= cs->pipe->max_usage)
- 		return -EIO;
- 
--	folio_get(folio);
-+	if (!folio_get_checked(folio))
-+		return -EFAULT;
-+
- 	err = unlock_request(cs->req);
- 	if (err) {
- 		folio_put(folio);
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index cccc786465a7..c1baeb7823ee 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2287,15 +2287,33 @@ static inline void get_page(struct page *page)
- 	folio_get(folio);
- }
- 
--static inline __must_check bool try_get_page(struct page *page)
-+/**
-+ * folio_get_checked - Try to acquire a reference to a live folio.
-+ * @folio: The folio.
-+ *
-+ * The caller must already hold a reference to @folio. Warn and fail on a
-+ * non-positive refcount, and refuse additional references at the limit.
-+ *
-+ * Use folio_try_get() for speculative reference acquisition where the
-+ * refcount can legitimately be zero.
-+ *
-+ * Return: True if the refcount was incremented, false otherwise.
-+ */
-+static inline __must_check bool folio_get_checked(struct folio *folio)
- {
--	page = compound_head(page);
--	if (WARN_ON_ONCE(page_ref_count(page) <= 0))
-+	if (WARN_ON_ONCE(folio_ref_count(folio) <= 0))
- 		return false;
--	page_ref_inc(page);
-+	if (unlikely(folio_ref_count_over_limit(folio)))
-+		return false;
-+	folio_ref_inc(folio);
- 	return true;
- }
- 
-+static inline __must_check bool try_get_page(struct page *page)
-+{
-+	return folio_get_checked(page_folio(page));
-+}
-+
- /**
-  * folio_put - Decrement the reference count on a folio.
-  * @folio: The folio.
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 0f6d57432a7e..e6e73e37f3ea 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3047,10 +3047,11 @@ generic_file_read_iter(struct kiocb *iocb, struct iov_iter *iter)
- EXPORT_SYMBOL(generic_file_read_iter);
- 
- /*
-- * Splice subpages from a folio into a pipe.
-+ * Splice subpages from a folio into a pipe. Return the number of bytes spliced,
-+ * or -EFAULT if we cannot splice from the folio.
-  */
--size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
--			      struct folio *folio, loff_t fpos, size_t size)
-+ssize_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
-+			       struct folio *folio, loff_t fpos, size_t size)
- {
- 	struct page *page;
- 	size_t spliced = 0, offset = offset_in_folio(folio, fpos);
-@@ -3063,13 +3064,15 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
- 		struct pipe_buffer *buf = pipe_head_buf(pipe);
- 		size_t part = min_t(size_t, PAGE_SIZE - offset, size - spliced);
- 
-+		if (!folio_get_checked(folio))
-+			return spliced ? spliced : -EFAULT;
-+
- 		*buf = (struct pipe_buffer) {
- 			.ops	= &page_cache_pipe_buf_ops,
- 			.page	= page,
- 			.offset	= offset,
- 			.len	= part,
- 		};
--		folio_get(folio);
- 		pipe->head++;
- 		page++;
- 		spliced += part;
-@@ -3094,9 +3097,10 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
-  * Return: On success, the number of bytes read will be returned and *@ppos
-  * will be updated if appropriate; 0 will be returned if there is no more data
-  * to be read; -EAGAIN will be returned if the pipe had no space, and some
-- * other negative error code will be returned on error.  A short read may occur
-- * if the pipe has insufficient space, we reach the end of the data or we hit a
-- * hole.
-+ * other negative error code will be returned on error; -EFAULT will be returned
-+ * if acquiring a folio reference fails and no data has been spliced.
-+ * A short read may occur if the pipe has insufficient space, we reach the
-+ * end of the data, hit a hole or hit a folio refcount limit.
-  */
- ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
- 			    struct pipe_inode_info *pipe,
-@@ -3154,7 +3158,7 @@ ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
- 
- 		for (i = 0; i < folio_batch_count(&fbatch); i++) {
- 			struct folio *folio = fbatch.folios[i];
--			size_t n;
-+			ssize_t n;
- 
- 			if (folio_pos(folio) >= end_offset)
- 				goto out;
-@@ -3170,13 +3174,15 @@ ssize_t filemap_splice_read(struct file *in, loff_t *ppos,
- 
- 			n = min_t(loff_t, len, isize - *ppos);
- 			n = splice_folio_into_pipe(pipe, folio, *ppos, n);
--			if (!n)
-+			if (n <= 0) {
-+				error = n;
- 				goto out;
-+			}
- 			len -= n;
- 			total_spliced += n;
- 			*ppos += n;
- 			in->f_ra.prev_pos = *ppos;
--			if (pipe_is_full(pipe))
-+			if (pipe_is_full(pipe) || *ppos < folio_next_pos(folio))
- 				goto out;
- 		}
- 
-diff --git a/mm/internal.h b/mm/internal.h
-index b129510b92e2..08e259758937 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1276,8 +1276,8 @@ struct migration_target_control {
- /*
-  * mm/filemap.c
-  */
--size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
--			      struct folio *folio, loff_t fpos, size_t size);
-+ssize_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
-+			       struct folio *folio, loff_t fpos, size_t size);
- 
- static inline bool vma_is_single_threaded_private(struct vm_area_struct *vma)
- {
-diff --git a/mm/shmem.c b/mm/shmem.c
-index be4ab228cf67..8b94877c36c1 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3751,7 +3751,8 @@ static ssize_t shmem_file_splice_read(struct file *in, loff_t *ppos,
- 	struct inode *inode = file_inode(in);
- 	struct address_space *mapping = inode->i_mapping;
- 	struct folio *folio = NULL;
--	size_t total_spliced = 0, used, npages, n, part;
-+	size_t total_spliced = 0, used, npages, part;
-+	ssize_t n;
- 	loff_t isize;
- 	int error = 0;
- 
-@@ -3837,8 +3838,10 @@ static ssize_t shmem_file_splice_read(struct file *in, loff_t *ppos,
- 			n = splice_zeropage_into_pipe(pipe, *ppos, part);
- 		}
- 
--		if (!n)
-+		if (n <= 0) {
-+			error = n;
- 			break;
-+		}
- 		len -= n;
- 		total_spliced += n;
- 		*ppos += n;
 -- 
-2.43.0
+Best regards,
+Jinjie
 
-
-
-
--- 
-Cheers,
-
-David
 
