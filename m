@@ -1,95 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DD1606A335
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 22:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDA8D606A337
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 22:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JVycrJem
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.a=rsa-sha256 header.s=amazoncorp2 header.b=Bivh2x29
 Received: by kanga.kvack.org (Postfix)
-	id E8E936B05BD; Tue, 10 Nov 2026 17:00:08 -0500 (EST)
+	id 1E5456B05BF; Tue, 10 Nov 2026 17:00:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E65696B05BE; Tue, 10 Nov 2026 17:00:08 -0500 (EST)
+	id 1BC346B05C0; Tue, 10 Nov 2026 17:00:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA31B6B05BF; Tue, 10 Nov 2026 17:00:08 -0500 (EST)
+	id 0D26F6B05C1; Tue, 10 Nov 2026 17:00:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B915D6B05BD
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:00:08 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0F653A014D
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:00:08 +0000 (UTC)
-X-FDA: 85420578096.06.E23EA63
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5F55C1C000D
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:00:06 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JVycrJem;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DD3B96B05BF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:00:57 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 690AD160151
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:00:56 +0000 (UTC)
+X-FDA: 85420580112.29.2453262
+Received: from pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.68.102])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 10B4B12000C
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:00:53 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Bivh2x29;
+	spf=pass (imf29.hostedemail.com: domain of "prvs=767c605bb=mkbund@amazon.com" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=767c605bb=mkbund@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794348006;
+	s=arc-20220608; t=1794348054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gSi1Cem5uo/nHM5eotKecOrdsXKahxKBDl5fLDSMhvk=;
-	b=EdIiXSGksKMFXwiHJLG+JDVx7bhKhlYYBn2zDaoZD/iP3RiasEhUQFnTo18NZp9WLatr5Z
-	t9zB2qTqS3OnWdc6Iz/NB0tcuzi6bVq3oPzQAV0Uc+yjD2uIAfjg8woa8xSihkTKF9QT0i
-	6zPRXJWaoDW7eZj31UNZT3nHKGR3iDA=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794348006;
-	b=i7j70alepEbOkhHdeRRcOWfy5nQUIGdz6BbG5lBseBOjklJ0qoTjZfpvtgf5sz/PPtiW7G
-	inXsYOnzXUrIU0iVTKCsZIttBdLU5eVo5shpt46J2sl3obcS1uvoU+wCXcaAzWJZRsXgBm
-	vcY3MbZbZ5Mu25cdDFsZ3RRzOEzninQ=
+	bh=Vv7dNVzIrUILO8od8syEGQggxT4QfI/iKHG9PeOeLsw=;
+	b=SgME3eVKdNqk5bg/aN32WM5Bzvo4kjJ1zSIhs2ZfZ/HPthRtyYOZdlJ9aay8fxCzJfiVgC
+	ox6sO3hbQm0/UsvDRZYvNIpsAu5CFiSEG5Xflya5HX49qQBx7N3QnQT7zUZB4iJiok1XJx
+	A1Gnp15ozvv629FTfgzH7DbnAin/nCU=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JVycrJem;
-	spf=pass (imf21.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id E3E8C637BD;
-	Tue, 10 Nov 2026 22:00:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA391F0089F;
-	Tue, 10 Nov 2026 22:00:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794348005;
-	bh=gSi1Cem5uo/nHM5eotKecOrdsXKahxKBDl5fLDSMhvk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=JVycrJemQMYteTNBsZxUIffQQQPnmrdfGKeARGla+1IErQkChKMhQGOQqlFsfFuhx
-	 iwIJoL9qUTODeU6AXawH9JQNrAydyCRqIIZbUIV5s97GSGrL10gNf3kHcDT+5OUruy
-	 Q4A/l5PfIpgDURJVTAxCGWrV/XmVD6HaFcN4brBwt1NHeMAiye9Wr1IJu70oJjCdtn
-	 XPSDMt6ALnAU6hffPYN51LzE3iM3nlgmmW4NNuqk/GDMMyDuPDB0Rj+b81J7Eztgj4
-	 4mfjQRZL094u1Ft6gJOZoWL8bPLzEMTw7x7xlRLHKixpz8bS4+KWY7fDcq9FGXfsPL
-	 m+JbHKkaOL78A==
-Date: Tue, 10 Nov 2026 23:00:00 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: sashiko-reviews@lists.linux.dev
-Cc: Jan Kara <jack@suse.com>, Al Viro <viro@zeniv.linux.org.uk>, 
-	linux-ext4@vger.kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org, dsterba@suse.cz, tytso@mit.edu, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>
-Subject: Re: [PATCH v2 09/34] exfat: don't set SB_RDONLY after filesystem
- errors
-Message-ID: <20261110-kundgeben-charakter-womit-db0a0035bb5e@brauner>
-References: <20261029-work-fs-sb_rdonly-v2-0-2f44f64f0b66@kernel.org>
- <20261029-work-fs-sb_rdonly-v2-9-2f44f64f0b66@kernel.org>
- <sashiko-outbox-191228@kernel.org>
+	imf29.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=Bivh2x29;
+	spf=pass (imf29.hostedemail.com: domain of "prvs=767c605bb=mkbund@amazon.com" designates 44.246.68.102 as permitted sender) smtp.mailfrom="prvs=767c605bb=mkbund@amazon.com";
+	dmarc=pass (policy=quarantine) header.from=amazon.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794348054;
+	b=u9qkNuYKvPUSIfEevXH1hZqDqGls6nW0+HiNapSuIIqfhhYpUiJnjdDC41FIBg7y0vy70m
+	PMMfiFFiFkPMC4X50oqnU5Kobk7/cmMkwI+eB7/Lqkiqi7nMgMbN2tvbF8qN4yBy7jE9xj
+	DFTIgzdd3zH+FHBVULfLXgAiCkcd3g4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1794348054; x=1825884054;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Vv7dNVzIrUILO8od8syEGQggxT4QfI/iKHG9PeOeLsw=;
+  b=Bivh2x29KBte+O8TffY3qLG0OnCD0wO0X7SB6lKSd0znswtGqxn6OGup
+   LrrsPKkB5RrYJYFlU+TjIDlXRVKc01NFZn3Sf6VD413Lyo58lnpmn3vD2
+   q/j5ivNKMB3EUFfrLDvNf3ZAY+3LOUPqG39Fr/qoZL2KIk8WbvcbthJJX
+   zsuKzXviM2DmgE/8cZu6UkONd1mloIMHCTIsh6On2QXKNlprIkH8XLLzc
+   49AGqo0TH5S7X9646uMvAOGqX+i5nVq+qrXv8VXd3QQg6pTZcrVv0V5Dx
+   O9P9XG9ygqujyx2+3oBP22RJwtd5Jsrq9h9IilIqOieJKOJC08aBGKguJ
+   A==;
+X-CSE-ConnectionGUID: IdC9D2Z7Ra6h0t7Z84UEHw==
+X-CSE-MsgGUID: 132yf6aPRSi14wuzQIGaSw==
+X-IronPort-AV: E=Sophos;i="6.27,206,1787011200"; 
+   d="scan'208";a="33576604"
+Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
+  by internal-pdx-out-003.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Nov 2026 22:00:52 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:10595]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.227:2525] with esmtp (Farcaster)
+ id a47f0fa5-7764-4648-99ce-99640a84f1d6; Tue, 10 Nov 2026 22:00:52 +0000 (UTC)
+X-Farcaster-Flow-ID: a47f0fa5-7764-4648-99ce-99640a84f1d6
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Tue, 10 Nov 2026 22:00:52 +0000
+Received: from dev-dsk-mkbund-2b-9ea2efba.us-west-2.amazon.com (10.2.100.138)
+ by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.56;
+ Tue, 10 Nov 2026 22:00:51 +0000
+From: Mark Bundschuh <mkbund@amazon.com>
+To: <stable@vger.kernel.org>
+CC: <sashal@kernel.org>, <linux-mm@kvack.org>, <david@kernel.org>, "Mark
+ Bundschuh" <mkbund@amazon.com>
+Subject: [PATCH v3 6.12 0/2] mm: replace free hugepage folios after migration
+Date: Tue, 10 Nov 2026 22:00:04 +0000
+Message-ID: <20261110220006.3259056-1-mkbund@amazon.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <2026-11-08-1-daily-reply-0005-hugetlb-6-12-v3@kernel.org>
+References: <2026-11-08-1-daily-reply-0005-hugetlb-6-12-v3@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <sashiko-outbox-191228@kernel.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 4qyom9ffmtaxqaitadu4uugy9kwa9xdc
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 5F55C1C000D
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D031UWC003.ant.amazon.com (10.13.139.252) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+X-Stat-Signature: trgh33ur74p3497qqqh3dog6zs7oio58
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794348006-894703
-X-HE-Meta: U2FsdGVkX19+ZbP4YajhuSzExLZXBoTkG/HpiGV1avS69iMrlLBYzudn7iWiIXzc9rwAMUlNS6gzCzMhq+0SINSQKjb8k1jbhaFO/d1YeQXerfQzPt7dGC/JOY1sFQhR/xiOqNl3jtQTyt6rtUpboRMlO7AWRBoIoTvQiP0suAIIn5NeG9Dx4VKaXSFj5uMDCaBRM/80Uw3aQ74dRYwFXosNxSmvUrDAQHh6JjsvKNu2UU9V3p6RGs7+tispGgniuqQYERoWPGBiZaaGPhIaKbgMDNc2pqbmve2cFiw81SNAmXfsGozmyLqMJegkUxfUrmxYupWGscCPrKWstgwoUbpLQbXi1v9WhvFQCZCDzq88y+RIKLkIVkC/JBM160odwCeWa8Ol4y5IdKJ89h59vCzrfNgMkbyO7zfBkp8GyhcbYVuuKXq25/2ysGONnRIu9tMXDk086XzDM7I2wtvvOEV+oV+YXSqJo0/CwHpACXAHI16tifW+GVAELk0bdvl9fICgYcBd0CqfqBZuvuJomKqrhtBgGJDi0unMabDwU4bq4JUGRJ2FONTtBOJo8rmQzaNAS147BYicUxQkDwIi3OWnsC+OY7aZMmeI1X2SE7uo869r2Ox9o2gLiWlgOz5pZIU9TZXNWBoIkVMCI/wpo3KS2zPes6Vj7Lhw0L1Dqh5SDaeGCwjCATvi7IXSCxK4kHtGxYtQOEFJgvb5hKqDkbWIYq+VYFxIZ/wX0rwGGJPLwekeSYBIIqfhsx8tO+C9vWOB3P+vxEVYWoEqkzRf1JJuV/PWjsKJpngPe2qTe6sIriYnQrgKDwwnMJRGLWC4KgWZIIY84EH5zjExANBehEi/bxaaDs1IAHETXCIaIElD9TO74NoyEmeW8sgu2BdlZ/sN7K0fent3LB3Yn/i0QmPAQRgyM+Ue/gx++jDjTzRgHdIw3688awQ3gAOuP8AaCx0/AYwq4KxyObxECc2
- KFAty38j
- ZhtSx9ZZn2IUw7rfkEcamFHavtSQU9XnlykIrpj+HowZ8nx6C5C34Yj2FVflWNcPyM5AIem8q+SzsG4Zt9tfi61dFz5nlW0PLdLml1VwoqsExVmFN4N3+yFSFrUOsPsYp/P9q2BceI3fQevvPKVtTF98S5X04gqvDR+B3va+SazM/7dYROECbiDaKtGGzXXAy7RTpSRizfYxuT2sAnw448m/0SufVcQksyha/SVj+N7ZInZf3yNcsHnBNXT4Kb4mATgUwq+LEXTJaFEQEs3uoXEfGHAb0EWPOHYGRYl8sbG+DqjRlswNAdQmeC9WWtCRKJV0WV7t5xgQI8wSDdRqNva1q6unBLkDuYyi6wOJu1Tz54rDEpLsNbUvNpxBdQSP+bvrZy+qnE8Yo3o8=
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	UNPARSEABLE_RELAY,USER_AGENT_GIT autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: 10B4B12000C
+X-HE-Tag: 1794348053-168989
+X-HE-Meta: U2FsdGVkX1+Z6GN7JcMXa0yX0KwCl+DSY2MHYMeuK8IVwmBj1v2K8Dpsa11ocpR0SZCXPoeTazQSXTrdbO6ncDLaZ+4Y7HdGRtfIdspResmO0BeYewUNDEN0JYoCjTC3VAhZ+XINxNbblsasFvi5N5KczJcTOymT+6sfLVFofeUzvcAsm1OVThVr4T/xZ/KmjcywdZf6901GAllw/6LLNDy0QA5LUILmsGDgTuXdhLtkogsHxMjiR96iuBk/bGi9kJ5AeM9/2RCf7X7t2hAV88NPtrGlgxJavzcQ6jR4lDPbsRVltCB5dHTWupjO49dUsl/kJZHeMV7zNAkDpF9SHD6oJcXhuCFfeQRi4TJDXC8rOyFdFhP2JvU7hDUVBmPB9DuikFWsG8n4V3l5YFxF47nkEeEEfLBNG/UL1nJNtZuYiSvek318AvML5t4kWNmooFo7M40XalXHTHAAbW20PlQkOiJE6cF7jPm4qg/Axxav07AjNPsKPzuyusrDMRj0CCNkeB1XNfBpHghv/KmMXGBFFqCp8AZtuhJ7Yvq3M9JqVK6aEdYlrzEeqxd9JLucA7YT7yL5N5g/0zs8G3oQ0U0IGcaqFEkNj9259kTiiIr/YL/7gz/WWAEMa5s9p3m4acCat/0T7RRBA6uEFW/IvnJjJ14bwDO/9iLh3WqyaoqrI+Z6VopFk4UKGelk7dMd9xoGvzCU7PjGtEQnEc+YPQ6JBlW2Fx5KTAYv+O6VyVl3kdF0L8/55tKiYGzLK74k5ASUWb0eO4Q0UxPyRbj4Zb57sHZSguZnfOdT2o/kgjlG8gBMmefQZs7jXJQCbtf+e2zR42Mbnf1o8RX6YGZvuZGbNmlbMwGbvcyh2AZcZJ6RQEmJR4VL48b8EiASLLxY6ElMcvT+UwX7vue1y4AQkSqWmgun+flUJDoi25kgRACDATi2pnqwCNZwV7zqsULFzMCMoIwM7Cp7pL90AQU
+ cL3vfhVf
+ lZgl7Mr1KVZmO22WSEeZjR5I7MqnDFGWuHphP8dDVBJnoheNIwqGEY98hdOap7K7LPEyocttGjSHmenc6TJrF84gTgCXs51k/tZxaOFF9gZaeV4uGx3SxSLXi43N1ZX6zpaa18cBx/X72dNJWyYz6+8drll4WtrlFy/gu7DUvCewSGffM9Isr150XYd0TMzESnD8FQlcdiaytQRd+4hLV99j1aZ1MgwyGo/XKOBE84QG44iZmloNCgagiFz6wlHjDe1it+7eNN6ho5lqL837MKs9mZngBWipMMQSM/2RCSGyNqI7tNjxZMDo/+YNgO05/a7fAidD8jeWvGHmpt8lcxVZK9T2Az9aC6k8ucs97/PIrw2yQ4pe/ei3pPP8ZmomKOu6Ycd4hu0fqfhwD8mLl0jcdlLd/BMzwK5zgEDAs54DKrIpSVcOjNnCKMeNfh75rrhjB17/AiUchaAwshtzES5JBmMjMbCVVCZFySKLb2Ug32Vrd64IT6GO1r/mo/CXzfnVlBBSDqrpW/pTaAL1fYRbZRImyk3cjZWxUoX/iA71JQD0d3iBzh0LXC8zyHBcEu6Cqp8E4X6d9i6GWqmJita6Y7mAaAqk+7Satm2y3ik4SNDtKS5MgaIg/Jcb8KsTOxVj9NLPVdftwI6viXg1bv8Mw/wYsKEFzHVKtPPIB6WXhUbnu9DGl4GlIGpN1OTbHaYu+dtaUuwbjX1MQ8J/qKbN9/g==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,12 +114,25 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Fri, Oct 30, 2026 at 04:09:55PM +0000, sashiko-bot@kernel.org wrote:
-> Can __exfat_truncate() and/or exfat_evict_inode() check
-> exfat_emergency_state() to prevent metadata modifications and discards after
-> the filesystem enters emergency read-only state?
+Full backport of 04f13d241b8b ("mm: replace free hugepage folios after
+migration") with its fix 113ed54ad276.
 
-Pre-existing.
+v3: rebase on the current 6.12 queue (Sasha)
+v2: https://lore.kernel.org/all/20261106220835.2878368-1-mkbund@amazon.com/
+
+Ge Yang (1):
+  mm/hugetlb: fix kernel NULL pointer dereference when replacing free
+    hugetlb folios
+
+yangge (1):
+  mm: replace free hugepage folios after migration
+
+ include/linux/hugetlb.h |  7 ++++++
+ mm/hugetlb.c            | 50 +++++++++++++++++++++++++++++++++++++++++
+ mm/page_alloc.c         | 12 +++++++++-
+ 3 files changed, 68 insertions(+), 1 deletion(-)
 
 -- 
+2.50.1
+
 
