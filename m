@@ -1,95 +1,143 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63B9606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1CA606A32D
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=WDEC3wKQ
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=Jal3kjoU
 Received: by kanga.kvack.org (Postfix)
-	id E7AA56B05D4; Tue, 10 Nov 2026 12:38:12 -0500 (EST)
+	id 4E2CC6B05B0; Tue, 10 Nov 2026 12:41:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E039C6B05D5; Tue, 10 Nov 2026 12:38:12 -0500 (EST)
+	id 470356B05B5; Tue, 10 Nov 2026 12:41:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1D166B05D6; Tue, 10 Nov 2026 12:38:12 -0500 (EST)
+	id 334C56B05B8; Tue, 10 Nov 2026 12:41:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A0BCD6B05D4
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:38:12 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 221991A0A77
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:38:12 +0000 (UTC)
-X-FDA: 85419918024.02.88D5654
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6733E4000A
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:38:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WDEC3wKQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794332290;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 070606B05B0
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:41:01 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8332C140A27
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:41:01 +0000 (UTC)
+X-FDA: 85419925122.07.1229DFF
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 861DD180003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:40:59 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Jal3kjoU;
+	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794332459;
+	b=vjExyZS3smbUFA2qsjHi1R3iRHBIYMMuvx3Tbnptv38uLQk8ghGFOFTbnIj3vucVxjOgxi
+	PH1FFLSNenD9fnQRw3pHhKFzBtx4MENXvQt28RhfyWavovQMTDiIsmaevK95esMqGa7oPF
+	Sm/vAfGq1GtDl+ijDt7lELnIknxo7EE=
+ARC-Authentication-Results: i=2;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b=Jal3kjoU;
+	spf=pass (imf16.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.167.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794332459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6/eB+/CH5yaEpI1uhM4dFjSsW0sUvRV8va2xHbNL6Kg=;
-	b=fPL1Qk+3dlbRIULAe2K/Z9XRuyIj4i7FHJJakJ7NbHKq8D30p5d42GJvU1OA/tm1ovOQLU
-	VjKoCK6HUD6SY9KuEI4Vm56rbrXvicYwotvrTBMGtVbVE2j5rvo+YAXfGVth+SX61husAy
-	Chvn4f0VL+6NLMrdvJHk+I/5h7y4r+M=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794332290;
-	b=LElnEPCAhtp4+GPjhFjk6R3OuJ36/kqT5pCTe1RMzBPPp3msXdYOG9Vr+NTzzf3RO2ooy6
-	uwzyNyQ6V50O7/GlNDN6dOj8109L3X1MWei6++XojvfMGfS3HSYvSuGyzbHdUzuYpnGoM5
-	UFutU8TTIwsB4K7PIOgm209vzBv0gdE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=WDEC3wKQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9A9D44088B;
-	Tue, 10 Nov 2026 17:38:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 392F71F0089F;
-	Tue, 10 Nov 2026 17:38:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794332289;
-	bh=6/eB+/CH5yaEpI1uhM4dFjSsW0sUvRV8va2xHbNL6Kg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=WDEC3wKQyX0hwMUN7w0VPurSY8Nvo/ERaH/+f4RahK/VRm8DW4X2gwlvhh7KTVPcD
-	 M1BCzIkLVMIL9ZJYaGK3hVB9BiyTYIK8mAg88QneuGhyvFPARVRjC6tIdUJJ8BPvBH
-	 txO0v2O2BXqcz5yMfuH0485bf+bmK8ZDLA4Z+ynQioxlG/HCoIBIpUfLW1Nr9AKDC+
-	 PzWNOAj5G3lN37XjPQeNeEtRlMi8Oc9OwVJT0CsDSxxdAIrbUy+//RaNdNL+a6YfzG
-	 EEUQ1wiGUUPMeoXetkDh3OZ/8xOdTkUCqOpfLg9RMsOYCt2JFmSKHxZKJ8EOM6H9Sv
-	 Q1oK4bFpBW/TQ==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  Andrew Morton <akpm@linux-foundation.org>,
-  kexec@lists.infradead.org,  linux-kernel@vger.kernel.org,
-  linux-mm@kvack.org
-Subject: Re: [PATCH v2] mm/memfd_luo: don't use memfd_pin_folios()
-In-Reply-To: <179381215936.28814.9050829645096838793.b4-review@b4> (Mike
-	Rapoport's message of "Wed, 04 Nov 2026 19:09:19 +0200")
-References: <20261103172251.2348370-1-pratyush@kernel.org>
-	<179381215936.28814.9050829645096838793.b4-review@b4>
-Date: Tue, 10 Nov 2026 18:38:06 +0100
-Message-ID: <2vxzse18h9j5.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	bh=QgcKWslE/fvIIVroU82DW+IQYjBmplAQL93Fdoq2p50=;
+	b=6JTi8CPKUQi4TZIbK6019MoAD5krXhziJbXYbtMeBb7nekKQM1Ub4LEtWAdD0rs3K6M8QQ
+	uAn3ktbWarUpoB4CCBMuHLl3REu/JKd9EVZH3se9X/LFYxsrs8qMK+QXV3KfjLKbxF9+e0
+	68oOl6T57TZVqE2BATHppfhpIBCxXDs=
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5c14f3dab0cso1756343e87.1
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:40:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794332458; cv=none;
+        d=google.com; s=arc-20260327;
+        b=c0gQV+JXVN1168Rv05J8qB10ZDLC5O17pOQ9uQ4kx7GSmHguWjnEZa/ISCTwxzzq42
+         35mAaaTMxE5ui2e15+DB+ofZrCq7Lq1PTbJDigzeedDVqpjw3xxIiMcoGxLkMnLxTyNb
+         QghRLVAcStVku0M2kjP9nrgVz3xQDZKLnelW12klOGXETp9KfSAkCDio2QLbapgx5Mu9
+         dvEPQTJGufFXR0b8vVH1UKvRF9jfLv3rp+rVS8mCe+mP5cync+5PnVUHvQhsLeEiY2fL
+         Wxn4Q0oGAYVVWvaszcquiGSJ9oxfYZ5LdOMyiMl85BKDorxuGJmjHu4ulcLu1NxkWn1O
+         P/VA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QgcKWslE/fvIIVroU82DW+IQYjBmplAQL93Fdoq2p50=;
+        fh=7P4XXX61oKeZjXEYBPA+jLTElUkt+VTSy/ZDSeLnGvs=;
+        b=jn7uiw48stQ7itLKyFbylFTTr6BcFe4AGKbiIRScCdxyozcXhy+P4UN5XkqW4TyHnN
+         k63FUhdubNLaK308Y3SMP2gdFUYYNn8tzRkw51E7w1mgpKwntbBrPNYHgjE6q3ECdaL8
+         xP1llw7+5Budwv0V01/90g3tTIG3omS1Hg8XNmoHCX5OkHlrpI13Bemn3AUfJO2HLh6D
+         Ol5wtKKYTleYEmi5aWdKQjHh9yVHhB01lNSrYOo+QQfhzTFxu//IxWWG4o682fIvvn7i
+         GhxVJYVcDVPsOgYPKO43aFmYhgoTuZmjrSkYeQ+EeENyI0zSCibECso09n/lCIcc+Du3
+         fyxA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794332458; x=1794937258; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=QgcKWslE/fvIIVroU82DW+IQYjBmplAQL93Fdoq2p50=;
+        b=Jal3kjoUcn8hfVl+VL8oVzFpCAjfZxyujsMo5sFiNMyObmhqotAGrHVgfZj0Q3NKn3
+         WXagh30Ay7ak9UHqcQRihFJhtgm+cpCAUJlg5ilw+tK3Ewwdpts5QGaRzhSGjD2h6Rr/
+         is7e4Uhx5JlX6mdiahj4EqHpHeW18jhRIb6eLEn4/+VyTuqp0vdvnNPz0fvANw8zqB5s
+         7pZT4yHlNeHS4dvcGXpeEcebMSqd7U/X+iuEFDwUcRi2DIo6AzJabq1UsND5i2mzCz71
+         IpSm3v85ZEgsObYTCoCaSlPEze+/U4KXA45+guXiw9gFpQGKOBvYrwruVj/rY6MOXqtZ
+         parQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794332458; x=1794937258;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=QgcKWslE/fvIIVroU82DW+IQYjBmplAQL93Fdoq2p50=;
+        b=lEVcg8gQgack2vZrckdl40ZIcAWcqEY6cuATF6O+bFmBX+6PfCclEdG83ggDUbNlq9
+         7KH1xnwQASsQ8xBcMqKw0cX0GaI6IrQ9nzwkf1a945tpZFYJJIUfwDGTj/AzIEs5dOHN
+         Lzaz66Ofn7Ada8b5FyoMyqHrv9GcvCag32qqjpkvM+hfONmKxHEWrtFpIuoRIOeFrJ8u
+         /LPKvN3YSSHhwwE/HSDX7R+brwlTbxfIGZJG2tvpE64ynqsSCmnhJ1cwD+s+Lp0oAzo+
+         /HWsEUIXbT1YBNBJuqB97Y6jbnQsGfCPWnwCrTqvhpAKwb+sycXrIV0MAJqXB5mM9Q2I
+         WrvA==
+X-Forwarded-Encrypted: i=1; AL+hErHY14BdT6HlRIXO1BhDprqmFAf2ZcJA2CKLXWvTxvdESzdB8nNFAaUbiowU0AAyHm7zCXBXT6GIfw==@kvack.org
+X-Gm-Message-State: APuU4Z+w7KgxNz/xlRWJ1EytBLDcfKs1ZoYDMPtBZxgMJVB/OhPYmxfa
+	p8mm31LW/9qHdDu7yzknf3kn8B60bv3t+GyutrzeAuoHwEkruZ3bvqRA9GjHTrkZRgLxK9oV9Zv
+	NhK/OQoOrH/G5ZMDKi2NFAnQxwguoc2Q=
+X-Gm-Gg: AYBFou0YVZWEN3MOjSBb2mV8CUrQPmFdh4p3RAsbDgk9p7LekY9aYb18W7Z9G/+XLGT
+	KXrXx3Lkvzs05K1/8ghjAoDD5o9Q9riPmtWICT9ZXrU0LKhitwfuYnonjaEZXjAiAW7NvFhFcoY
+	7ppaO/GUe0BF2KUZ4N+zV7Y5Jo4+JIa88Fy+LsS21qPgefjo1iXHZiGKCS4V+hmCO5xvPpUASMk
+	+SSIAPXhkw3ctF7tlnBCi1pThQR+fnOQIBgKcN3gdUtQh6ziUiJ/dkNnbcNE9GuUXU0xpXp0ttt
+	69r4nhmuQSptncrern0b7G1do9cVwUnOX7OB59Kang1AuxzUqLBQry43yBvXJ4HSvET/nO3Qou/
+	qMULmSU26T0Yqx4JdzDfcMCXDXHq7xyj7wa5aHB9c56h0yzmfNpmLEQjaT/flcUytac2m4OmO4B
+	x3hqcDoTWBlzWE3Ww11rxM4EZT9ZNaKBuNo9HSRCfDOOiQ8oM5Rw3q
+X-Received: by 2002:a05:6512:1256:b0:5c1:4bbc:45cf with SMTP id
+ 2adb3069b0e04-5c156ed1806mr917830e87.48.1794332457809; Tue, 10 Nov 2026
+ 09:40:57 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Stat-Signature: 9oy149oqaypt99uzet69wxiwpudrojuy
+References: <20261110054836.1515030-1-senozhatsky@chromium.org> <20261110054836.1515030-5-senozhatsky@chromium.org>
+In-Reply-To: <20261110054836.1515030-5-senozhatsky@chromium.org>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 10 Nov 2026 10:40:45 -0700
+X-Gm-Features: AclHuK9g-rt6zF29XhO_FN13akwxVP6MwcYrtYAv2oyltJQHd3ALM1tNti6L_YM
+Message-ID: <CAKEwX=MWLim2q7RaSchFRZ215avMfW161hKAKhxs888NgRRMOw@mail.gmail.com>
+Subject: Re: [PATCH v2 04/11] zsmalloc: switch handle type to struct zs_handle
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: i913g8kdsr4kjsnugd469n8p1k4pftzu
+X-Rspamd-Queue-Id: 861DD180003
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6733E4000A
-X-HE-Tag: 1794332290-826238
-X-HE-Meta: U2FsdGVkX1+HcHrb9mH9/gLn6XRRJ/sdNkSizoCqpfHRi/NY4z0l3caP8rbz/bHVzrAW7mDJfWVvamFE+P+3k7tIVuskTlPxnTNpVv7V/ytOJwUJfs3TK22/+erbFaKH9rhBlI6AjZ140fnLC/DIUC8YshzGmmYCydhqeIFwOXQ7cmj3aBsYC+3xOTyL/X7ILPWXB4GctVsQp3iWj2msCWZKYAxmhzUD4tnXl0IM8jnZUFJITRpz9SyUn4JQpkS7D6HjMzThtwpUBPKe1cs27yjmSBAupyLI5zBWG15/3kx26H0p+KouuYC0juvhmjWYJPLp4TjwuZEOo2hPIL4jITGyrb4kJX+8CNiGxoU9gRYw7IlehgysRd/NjvZ14UCq0JuvGTSHt3a8rihQWWuRfKUinzx8Ru8PgEC6aEsfL5rpoFFcW/m6aGctV9EsPhkYy/kzNtLIM8T76P6zJeK98Ns6XLOw8SoIO9rUGW8fQt5dOIhOd9RzEfgUFMtXHm8kssuli15zKNGMlwari/QH8Uqq/q7XVgu59/C73o+m/1kDwlBJSEHCq923iOCTO7yPi7oXLk/xNWlqdV12nF9yGOxc9IBvYdhB/A941EvgYeT4SOW1y93nKVXcGG2f82WoTyP7X98I6UEi8f78GeoTMxjgmX9gU1UKeh7loPhGlBILTsfG1TSvqlSxx0YoKo8Mz7rPgd0s5HDtCBpqm9hR/bYgHVAwb32zmWi3W+jUuW5ug+THyWPu6pxRT8PhlBtIcvLZOApzn4WNo9vt3TBC1Obc4cK8Sv4jNxnMeP3EjQQ1SfQw8v5aLKtIkfOUMvurZB8DAToofZ//L+8M4dvuxNcQgKPbBQoYLyht540NYO4oDz8ehzQOeGj2VyDqrJLAPgjBIYxCwyBPkqZC/6/h9iscW54+lXEsiD12xsU4kVOQ35FfdDus/ZLh/RK1J0/s4O8GoF4b8VaX08WYzpI
- 5GuHWZb3
- jfTikrpAUdQe8BrFcbnDtkff7o3TlEWb9nVtI8pXKlOCRzWUHCYhEdlZRIBHegGZkOXTdVT4HTkF5tDWsgfgEwXod6+wEulWGsQHnYbkAO3ijJzz30Nrxg9x6gK3+kfg1+5DUlB0I2m43w3wlYi9m7Qv0/p7du83W15AJEhaiIDZLNCrqOUDMygL9Ok5y9kDOqUBiR49SjDXsdmk05rQKSW/Dos0bDO8RVj5r8NaSy5sw2MyXN558imZbr4MyBujdnvBBU6RSxG0XQSGwXlYQh5G4OqvHb3hcV3kSqOFakA3r/vRAU8RX7bpZBE4YuZsnnN+9y+8MYp3EIB+odWYa3YeYnQ==
+X-Rspamd-Server: rspam11
+X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794332459-589266
+X-HE-Meta: U2FsdGVkX189QAaW+oTOunqvvoOkpopUBm7INgERy3Q2oKAzYEX411FmO/cR41kWdp11zRfTph3doP3/G0IA3ospAl/YB83t+KCYTDLTpoGWmTX8TXmsEb/2G/grjFDcQsIVsc4iT973FyMpHCUmM2DDXldSobP6WhxkBkzHv5r5CM7SllqZzsHUw71gjs4X0Jd02PHRvkcd7l7TV11R2wwz5HdqtiOEFpsfsRafmvxZY/JxZZnoK+7sc6y6WBVaLN5OqPumnJbOx+qiS9ouOExsrwMEgC5gPM6HPcgwB+Boat5k5F/GXdKMnCsmcX+vvYd9gvjdNVzBrjKOvBOFpvRtlW8FGucXwVubruwSeOWzj7/YEfS36ziZpJFM4bzNpAaK1d7Nl0CFcW7MESdqE0575flE4hsySDxWINFeqeVxgaqd8KNVuuzTamkxjpCuu6kSvT+C7u8zeSO7CJtyzLDpmZN8296OeZJTOaeYmb/DAoJvv45plJwEMonqnCoiD+yedvyVC769SjzZN1n9rvhN3Ojmn96vjXRXJo2WC96sRAqvuXwg8v+WVBKLUDT62Sv6ttzIqxUTtR+a4XgcSc381HU9wMVcPEOL/dC9j3cL+/tTa/bsapOpLvYKhGz49JQ9m1KcC1/AyC2jEVx4xUhAJfe9XBaPEmqjwDVPSfj11pz39w/sVbE22+saAzn0K32RtWLALDyfdaHpUBmQUkdkp5vb9wHW15ijLzNSVkqXUwykMVcDvFHvakB68HoyArMYBBCmV8877eJXYrMNWH+saFKK7dEuFGYu8WNsioWnsSzs4w7LxG9OlRMf5lMXe22i7cIAhSCY7OqwYUspj6AvBg0I1yBTxviVdUueBjap0seE8/IaS9G26tjAAVNsMwvw6sGsUO+jOtpMpHYqOEpbif380fP+cP9lIMzlfW6WC4hAfHnSVUaW6LNDaP/6vijCYo4xfOe5LU7jUbd
+ XghVOI7X
+ XSnRf6/WwGOJD/UQl4EnatDUxUV4vq12tjsT+8CUf/v1StJpL84xkFoYjZzJ26wQzjrEJCZXCsU47XjmV4b5hRwkjNbMRkGXNSsAl85BUYdxW0hc11GQJQ9/+fEswqOhXj5+k+4aD6Dqo/5YvGMplMYJwlTOM+5aSmzcGHkTfKAronLdRt6mG2dirC2ZwQNboJxaJ5JwdfgbXJrjhBDYpaWxXDA+hFVIn9HvaxLdxPZxbF/4eda7pPC6j8G+0fEJYhT4cZDWMS3cUATN41nVQ+R1HJziYtW1URo2IK21/lLbXw3HniT5CeFwJctfkKIQgwrShQXaYarWQNNr9f1+bYIwuISc/WkCVh0KXwNnFjpykXD5XlCPgC8jsnyn70uM2LPYScrgNrLo+OjzEfyeGTBrYZO39nG+UbzcCyd/hCgFA0g6klfTRAZsGVct2xNSgtlrJKbd9MtTcxmQp2Zf1qGIYHH92dFDqaI3CmZrnKGurmPXDT+ksGac6lg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,143 +146,19 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04 2026, Mike Rapoport wrote:
-
->> memfd_luo takes a snapshot of the folios in the file's mapping. To make
->> sure the snapshot does not go out of sync, it pins the folios in the
->> file via memfd_pin_folios(). The pinning also migrates the folios out of
->> MIGRATE_MOVABLE to make sure doesn't land in KHO boot memory or in a CMA
->> region.
->> 
->> memfd_pin_folios() does not lock the folios. So it can race with
->> shmem_writeout(). A folio returned by memfd_pin_folios() might already
->> be in swap cache. This happens to work but is fragile. memfd_luo looks
->> at folio flags and index on a folio that isn't in the memfd's page
->> cache.
->> 
->> In addition, memfd_pin_folios() needs the caller to allocate an array of
->> folios. memfd_luo does not really need that since it will vmalloc
->> folios_ser and store the information there anyway. The folios array is
->> unnecessary overhead.
->> 
->> Finally, memfd_pin_folios() fills in holes in the memfd. This makes
->> preserving sparse memfds very expensive in both compute and memory.
->> While this patch doesn't yet stop filling in the holes, it sets up the
->> infrastructure to make it simpler.
->> 
->> Fix all this by walking the page cache directly using shmem_get_folio()
->> with SGP_CACHE. This returns a locked folio with an elevated refcount.
->> memfd_luo holds that reference until the memfd is unpreserved. This
->> blocks compaction, migration, etc.
->> 
->> There is still a need to migrate folios out of MIGRATE_MOVABLE page
->> blocks. This is because those might be CMA or KHO scratch. memfd_luo
->> will hold a longterm reference to the folios so it will block migration
->> in that pageblock. Introduce memfd_luo_migrate_folio() to do this.
->> 
->> Also factor out folio unpreservation logic into memfd_luo_put_folios()
->> and use it from memfd_luo_unpreserve_folios() and from error paths in
->> memfd_luo_preserve_folios().
->> 
->> Since shmem_get_folio() always returns uptodate folios, drop the folio
->> zeroing logic.
->> 
->> This change also improves preservation performance, shown in the table
->> below.
->> 
->> |------------------+----------+------------+-------|
->> | memfd            | baseline | this patch | delta |
->> |------------------+----------+------------+-------|
->> | 4K pages, 32 GiB | 748 ms   | 600 ms     |  -20% |
->> | THP, 4 GiB       | 0.59 ms  | 0.59 ms    |    0% |
->> | THP, 16 GiB      | 2.99 ms  | 2.61 ms    |  -13% |
->> | THP, 32 GiB      | 4.83 ms  | 5.21 ms    |   +8% |
->> | sparse, 32 GiB   | 8695 ms  | 7269 ms    |  -16% |
->> |------------------+----------+------------+-------|
->> 
->> Acked-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->> Signed-off-by: Pratyush Yadav (Google) <pratyush@kernel.org>
+On Mon, Nov 9, 2026 at 10:48=E2=80=AFPM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
 >
-> With a few nits below
+> zsmalloc handle is an unsigned long that holds an address of a
+> handle_cachep object, so zsmalloc and its users have to cast it
+> back and forth.  Introduce struct zs_handle and switch zsmalloc,
+> zram and zswap to struct zs_handle pointers.  Functions that only
+> read the handle take a const pointer.
 >
-> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-Thanks!
-
+> This is a preparation for embedding struct zs_handle into zram and
+> zswap entries.  No functional change.
 >
->> +/*
->> + * Move a folio out of ZONE_MOVABLE or CMA, so it can be held until the next
->
-> "held until next kernel" - here and below - I feel that something is off
-> here, but can't pinpoint what exactly.
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-Hmm, perhaps this:
-
-    Preservation holds a longterm reference on the folio. This would
-    block migration in ZONE_MOVABLE or CMA. Move it out.
-
-?
-
->
->> + * kernel. Called with a reference on the unlocked folio, which is always
->> + * dropped. The caller must look up the folio again afterwards.
->
-> I'm having hard time parsing "called with a reference" sentence :)
-
-What about this:
-
-     Must be called with folio unlocked. Drops the reference to folio.
-     The caller must look it up again.
-
-?
-
->
->> +/*
->> + * Look up the folio at @index, allocating it if needed, and make sure it can be
->> + * held until the next kernel. Folios that are not longterm pinnable are migrated
->> + * out first, retrying a few times if someone else has them isolated.
->> + *
->> + * On success, returns 0 with *@foliop locked and holding a reference.
->> + */
->> +static int memfd_luo_get_folio(struct inode *inode, pgoff_t index,
->> +			       struct folio **foliop)
->> +{
->> +	int err, busy_retries = 0;
->> +	struct folio *folio;
->> +
->> +	for (;;) {
->
-> Won't
-> 	for (retry = 0; retry < MEMFD_LUO_MIGRATE_RETRIES; retry++) {
->
-> look better and the body simpler?
-
-Right, good idea.
-
->
->> +		err = shmem_get_folio(inode, index, 0, &folio, SGP_CACHE);
->> +		if (err)
->> +			return err;
->> +
->> +		if (likely(folio_is_longterm_pinnable(folio)))
->> +			break;
->> +
->> +		folio_unlock(folio);
->> +		err = memfd_luo_migrate_folio(folio);
->> +		/* Someone else might have it isolated, retry a bit. */
->> +		if (err == -EBUSY && ++busy_retries < MEMFD_LUO_MIGRATE_RETRIES)
->> +			continue;
->> +		if (err)
->> +			return err;
->> +	}
->> +
->> +	*foliop = folio;
->> +	return 0;
->> +}
->
-> .
-
--- 
-Regards,
-Pratyush Yadav
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
 
