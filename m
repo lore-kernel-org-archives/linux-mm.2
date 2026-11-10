@@ -1,126 +1,111 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F70606A33B
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 22:44:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B3F606A32E
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 22:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=FH8yPKmg
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=PLJx5l0t
 Received: by kanga.kvack.org (Postfix)
-	id CE1456B00EF; Tue, 10 Nov 2026 17:44:36 -0500 (EST)
+	id C7C4A6B00EF; Tue, 10 Nov 2026 17:53:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C92AE6B05B2; Tue, 10 Nov 2026 17:44:36 -0500 (EST)
+	id C2C9A6B05B0; Tue, 10 Nov 2026 17:53:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B81346B05B3; Tue, 10 Nov 2026 17:44:36 -0500 (EST)
+	id B434D6B05B1; Tue, 10 Nov 2026 17:53:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8335C6B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:44:36 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 1A2691A0188
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:44:36 +0000 (UTC)
-X-FDA: 85420690152.23.E51B855
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 5BAC6120008
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:44:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=FH8yPKmg;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8BD696B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:53:15 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E9056C0180
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:53:14 +0000 (UTC)
+X-FDA: 85420711908.30.F4B93CE
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C1CDB10000C
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 22:53:12 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=PLJx5l0t;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794350674;
+	s=arc-20220608; t=1794351193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=pW9oDqWW/PRcNxLLod97kMD+KHWBIi6BHP/J0nIg8/Y=;
-	b=uUHmGSQApDp//gTJxvdWq7cec6qDTabhYRmmgaeTDdZI9YSj2xsCe6bJkwCO/NVKEkiEvN
-	4NqyGghBd95ugNP5/j+0QPksJ0e+dem14NcdUjiWkOrse8wpHcprPG7LeSaqUdppwRrAwI
-	YeadIBqWYt5rullG5H9xD1T8OnbSPg0=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=FH8yPKmg;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of joshua.hahnjy@gmail.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=joshua.hahnjy@gmail.com
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Vk+N/BR3oq3dOLJw2HOby4lRjZ68GbiZNocZF2b8xsM=;
+	b=uOWjWOb1Gcyo+sVouoLFIPP3/7V9uzarrFX2Ynz/MOedRBn2/qKk7wMAx896gTCKRuz8Q3
+	0l0anyPuTzH6w/OWfcuYjj31z2T/vDMh98PxoqVy6P/Du2LvBRrlo3WlijpQH+SKIj6EcG
+	wQVhN5a36usoA2SrI1KfVWCHZAcTXU8=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794350674;
-	b=mhAnz4sh6+gfJRc2RRtL0J5NThQakUQQRV0xYZWL9gCqf49cji/DHqmQnnzI1ub33pAqQu
-	9VAalsMM3bZfIzfpypXH5PvdB4nhkFGPr4cgPr6p+84HwKPAvigENlJkqhX6oIZGgJuEZu
-	A56yrjGpzM8YfJoMbjc6CE0cAeKKFmU=
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-8b331cad3cfso21280127b3.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:44:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794350673; x=1794955473; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=pW9oDqWW/PRcNxLLod97kMD+KHWBIi6BHP/J0nIg8/Y=;
-        b=FH8yPKmgYQQYgqyT6FL7tgEer6BQBYdXmxgOrH9cSXWQsCDnB9ocLNK1yOLN5jHZ5h
-         iDflIOmdJMVX3S9Vxdo8mNRgeCVd6lgEKIhasZMPEgjNzRoIfzyJisp0nSc869TftbJC
-         qiOtKpQ1bk6i3yUbsBOtA/jfi6IluUA1MkyZ2JAPrKhlLKxbgpAZlW0RYzfNK1l8SrqV
-         P3zoja44wdDLz+rkXOorsdYU+wsmGpxP3w9U0u68G82qXhSy4Rhk8HLuAu2vC/Mztf9g
-         SSTK+WxrUAMlAaKbJ0UpOgIDzAM1dxdx+aAEUj9Cs1gUulnOoxhapIdfTP560/oNK+Nb
-         vy2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794350673; x=1794955473;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=pW9oDqWW/PRcNxLLod97kMD+KHWBIi6BHP/J0nIg8/Y=;
-        b=TWtz8evKRedZtp9NTmE/1qKMF7HgncF8t+0VAh7MhxOtTC/jUwQ+36eqF+2B/NzC+b
-         APts9O/lfsHGZrWOQg4hjmvS36OFHSDBE4mhp8TNdftfM4TnQmaotEYmiObjsuxDrUWt
-         mrg01uCnhIITOk753RWG9LBxKkoLqy7y6+1uOkKowPZPC9n6w6mNgRkwMXkoHMbGHWCD
-         xc8wHAoGQNjD3wk99zyS8jWCw95q/rVOWFYgEZmYcHG6rZ9v+Oep3mfAQI7khi1AlyQy
-         kAR1BVfXa+XaOqjb4tpy+7zoU/CHa0g6PlkqM5CPo7QK9RF+S0QIOflNAftaD0zYBGab
-         Mc8g==
-X-Forwarded-Encrypted: i=1; AL+hErGWF6SFrSM6/4RSMY24ktYivb3DXF1xcbvPUBC6yPocsY/2tQLcgkhMvo4ekdmwI2RdilPhRCU5sA==@kvack.org
-X-Gm-Message-State: APuU4Z+kM5HdAaDSTLiI5j3AvhylELMjRO7NVk0clS9x/EiCOzRXNZbG
-	qmxNIVy3rrElBrcghECFqfCM7Xwk01562r8po40akSe5sL6Eqdi0kQJo
-X-Gm-Gg: AYBFou3B1jAX1Rp6IhWTUai3xWanVKJSigzpL5eQcO7o4JKQaUzhhUSjLsAmhQo3hYz
-	zpr0SfVHFsbR1g0jU9EOfh0tbzGuDS4JSIZQlfIzwST99puD4XIiYx63/AAoftfSIAgGJjMYSf4
-	5QK3Y2vi2K8G+M0zey9UMLgJQRM5hXvZ8xGsy3+z9tvpv5yEDCpogfRMHD8dfSOQ0rWg5AWcym4
-	LieB/oQNA9BUmQ2M/J8Ui+JX3Xz0k/5MzvmuupuTWfqG/yREpqhebpfzAbMSLP0A3sDMKkX9ceb
-	LU0SzYMXiMjhr8KvGz0FT9d1pKGIPqBMyaUQtr+xjiS/39U8CjbL87VCdxVKm3Lip2YwOCcnQhk
-	WPyVYnk9WZrsmlIYYG81JufsAkT02ZSFM4pm/M3sqtkQRQpRz29fQzxAUHlXuJElcX2QnqHIklI
-	bXgxrtcMYbR7oZPPcPUd7rJ8oc5FSECUjF+mfG24IzQ+C3+ah8ekOq9ytgxQ/gS4qIEmLqWgLEk
-	ayoaYCD0YVMzfQoF98VcjfTBFptDeYBgcAmli1cDWMhfHg19mWRz4fmHc02ynAAYVrX7GlGl4/Q
-	IvITXj6iZHjogVyKei8JOat4v3FNh4c8KoR/oZEk+UU1GNH3elTmSh5v6+gT
-X-Received: by 2002:a05:690c:9e:b0:8b1:233d:7054 with SMTP id 00721157ae682-8b3a817a567mr6432867b3.32.1794350672973;
-        Tue, 10 Nov 2026 14:44:32 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:49::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-8b3933a06cfsm30224987b3.7.2026.11.10.14.44.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 14:44:32 -0800 (PST)
-From: Joshua Hahn <joshua.hahnjy@gmail.com>
-To: Johannes Weiner <hannes@cmpxchg.org>,
-	Gregory Price <gourry@gourry.net>,
-	"Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Cc: Vlastimil Babka <vbabka@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	kernel-team@meta.com
-Subject: [PATCH v2] mm/page_alloc: only skip kswapd nodes below their kswapd watermark
-Date: Tue, 10 Nov 2026 14:44:31 -0800
-Message-ID: <20261110224432.2347606-1-joshua.hahnjy@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	t=1794351193;
+	b=sjw7eaADvLRW9cI7lJpNnpsh+oYryqrf7tyPG4NIs0g2trk1BRVwfEfdx3DH4eW+c+egNf
+	W5//uVirdfVCVRP/0Py525vC75SSXeT71PK6B2f4ksDse1uogVguABGrjVtNgkX+T1AXK6
+	kSQ11JlXFTZYhINKEFje3vrfJx4K3V4=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=PLJx5l0t;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8D0A51477;
+	Tue, 10 Nov 2026 14:53:08 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4406F3F85F;
+	Tue, 10 Nov 2026 14:53:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794351191; bh=QOvNQt7N495bFF4N6iQj4KiaBeii7WdXwg+ytvNzrWw=;
+	h=From:Subject:Date:To:Cc:From;
+	b=PLJx5l0tOqXX0R0L7sLJugk1Cw7QKcW5WN8nKQkRpIp332VdWteDv9BHVxJ9e7HDm
+	 TJtio1zYRZUtbVw7xOhZnSqQ38AwDVy4fEDobpDbZKd8oWibr5W3WfctpbSgoFJad9
+	 XNwEko7cmSOSeO4nYBZkT+57PJp1AhVftjuvdCks=
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+Subject: [PATCH v4 0/6] mm: gup: batch PTE-mapped large folios in
+ gup_fast_pte_range()
+Date: Tue, 10 Nov 2026 22:52:50 +0000
+Message-Id: <20261110-refactor_gup_fast-v4-0-e779a7674274@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEKg82oC/33PwU7DMAwG4FeZcibITua05cR7IDS5qbPlsHVqR
+ gWa+u64Q2IgWo5O/P3WfzVFhizFPG2uZpAxl9yfdNg+bEw88GkvNnc6GwcuICDZQRLHSz/s9m/
+ nXeJysS2R+ESN76Iz6s66kt9vmS+vOh9y0f2P24kR59f/0ka0YL2gJKIq1CE983B8jP1xjv5yD
+ tZcTE3lsOEu+LjgcM0BELPXGoT01/nVewGqtgJPtYZ/u7nz6O499W/JO/VtRI6Adaz99rf3P32
+ z5L16xywJXJdA8O6nafoEqEgWxNgBAAA=
+To: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+ Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+ Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, 
+ David Hildenbrand <david@kernel.org>, Rik van Riel <riel@surriel.com>, 
+ Yuan-Hao Hsu <aa9736195201@gmail.com>, Yeoreum Yun <yeoreum.yun@arm.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4597; i=yeoreum.yun@arm.com;
+ h=from:subject:message-id; bh=QOvNQt7N495bFF4N6iQj4KiaBeii7WdXwg+ytvNzrWw=;
+ b=owEB7QES/pANAwAKAW3Vw9FaxTEzAcsmYgBq86BR1knAjC59wruT++kV/bxr6upRF/f2+ltxo
+ RrraiQUjkWJAbMEAAEKAB0WIQQtg+CS3QUzuFh1pJ1t1cPRWsUxMwUCavOgUQAKCRBt1cPRWsUx
+ M5x0DAC/qwxIFe5vjUZkBHSXyu0tm2VuSW1bcyDPWN3fAFQmAYSz7Zl95yoXv53Wpuvf+/TcPH2
+ VRF/P2yqrfp3Cu5PoqI8fBD3tx5fhOURvp0c+fzVo5NW58v31+iLxpscD8lbAwu23QABBrFKzIV
+ EonpsO6m8rLfj+DjmfcjdVh0zRqgcAZ69GzbscuAoKtHo5A7fZPilIiteAY16WmGBxjCJ4oZY7t
+ Br0I3vE/WprrRsxCi4Fby2i5hJN214MpAc/zKxNqrywdRSN6okV7eyTC9+1ID3XrFnt1+jYN92q
+ XzwpQMrPNtjHHKrHHpAXTjq8FJB8RVXL0Hh27D+evRa3o0gbB3XyIqhf3bt9K9ri/I+QgkfCZ4k
+ 5ZG9DbessJ5uqwuh4R6m5xTGe4AAWPsH309H6DxkoXQ+we432Iz46CD9qOF7ZPCOgmSFbU9Zpgf
+ xfs7wPQd4EWbYskMa9Z5KOeVS8opojMr23HYasBD8MwtULT9MCY4KQ+BXk6onWwh+LAzE=
+X-Developer-Key: i=yeoreum.yun@arm.com; a=openpgp;
+ fpr=2D83E092DD0533B85875A49D6DD5C3D15AC53133
+X-Stat-Signature: m9icedafxh5si5ffopsd9gaiprufyart
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 5BAC6120008
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: gyfyheyomh3t145xd6gunbi393wj6ure
-X-HE-Tag: 1794350674-285318
-X-HE-Meta: U2FsdGVkX19WJZdTwNgETtAcEcPjuUS1dF3ORL6ZlIuPVepOPXRdxNiL18esUcJzG+iozkLwESzLkbi7YLG0sATtf53MGWmREIFarBv9F+fmeo5wVfwMq1c0q00vOrhbxC/o7iNYW9H3KQzsbHX6dKorcdKovQIvYS1JBTHwjddgO7QvKsQvPHPEh88EQ5ZhB+OHsyD3SZXapTPNf+ULP8RSVZKJ2wh09wmPt/ACwwU7CP98mirlmFcz/NYe8RB+Eg/8qWhRVSxt2kW0Updrat1s/d1SYr7ZSgiMDRz6Mv/+2IoLizrFcGVSgmxNTcn3BuuvjZFJ6EzvE3+vHf3ylTiL+z+FtXirWlQPDuabpqEsBLWW4Dd5aK9EQIZARjer9bJYyRrYK8bLrqlThNGf/GnY0yLFKBIwOLVnjZczgNyp1USTyr49BmUhwiK+O5ln+pa0ZIquffRS79kzxwEgjvKUPZcj3g7uevy7nPur488LtKlN2cIl3XOxTen+uWk8M9/35WNhmFWj8C64wlVaj7a5ZPSzWCx3e3jJV55xg9rNNnbrYa5cvkZDFbKdZ2zKAiBAGZ/CFVwurzTJA1OXzlXxnB/z5ySguzeGxeu6Y/z4TvGZUDU7yi49sD8BlObyH2C+1EzJQKwnhtlpY/Nou1GrdvxRVIz+AeDnI2uWHdPOgKb1YKm0W9v4bjwz5xKcmE6hCC3yZK40LtvuJRuyjjoYilQr//MPLI2VLUDTEJa6ssMljrdxOZDk2Y1lwT3Pg4vWJ1R+1767R73117LG7nsUKNry4jUWa+feeL2TgF1uDby+m8NI+4pE7gtbiollqs1v4Rxkgc586f/a8aOm+/xrxOMf5vRH4vmFru7CXbqzzqHJ0+t4q4TKgZ6EWGKY1j7NpqBpJSKMQOWpC3aFpP4bdwVZdbZJZSxgct4hkKafLUgMcq/EmzHEIz8KxMfCMJP0r9rs7oHIwyde1dS
- wf/0kyEx
- q5a21Lex2JPSouKEhIsdq03YlCGD7O8G8HvmOp2kcnUfNdPeFypW8IbjEGtTPr49lmfi+vB/AtfoJhxzpE/+PWK8n2vRJQ7mh7UxquR2pmXEYeAx476+5GhRC9JVc3CrZ3RDmimF5R9M6OZe4nbh/TwxMLYGEfQ9ugO8/+ipOTzDTXgJdpYkL0GqXwg33g5uGAnVJf5UI+THRje5LXCH00ubZxachs5SlPEBVZjNBwpj85bRxJlqKAuwSkmozGnSJdvZlU3PI+6qaay1az3J1/epwbBiERL2GYMo40WFSpNarPWBPg41/sC4NlS1uJSirjfH4Y9z02EwzxflCj078MalyqSOIamLmILQMe7JHycoYjwX93IMuHJbUkIr2CMCb507TfyFPkoV61G4+jEKq52bjK7+3ZhLPSjTY7v+Omo9nrWndQ5OiOzx2P24G1ib1uSei7ZOFfyGAi7oVGKK9oPh0e8oacoFInAXVxzNtCwj2tw/Er/GP/NzvRFQdk9yrEmd5xykThJivXDKBXhhy+8fd047g4TDcazqjsP6qFyXbxuYHRhWrI3AlWRt9L1DomsKh4gyRJGYa7ZmjNVWt5RNiXGHW+Q4VsiJYOlr4axmsbw+X795mRWX9btQJIEeuWI5sI5Q3gKTVd9xkLKTEvjqlnIsI6BcUE2hPv7bTPmHLdbIwqurAjhk9wdqlwx7CP+pP
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C1CDB10000C
+X-HE-Tag: 1794351192-280600
+X-HE-Meta: U2FsdGVkX191p6rWpvQc5fKqmQp/lUaYwDih0CohKgjElAtGQGanwoRubN3eItjNL3jpfV/HT5R0gGLfdD7rdE5AqeLUv/hxNeFcBSyQcGTD0+G/0WpYNJPeCIeiSxTKWIWy13+3GpJjucgzeBTOBpz0D9rEOn/DYsqcwl/30M7AGQ5Nn5eFC9JU775V/MUWHOaYA6/m22Yery6yJwP2Ae1mZLl8ysc0zgrnIVlKmY4MTLbdLm3uJim3v1qqPGmAMpbv8F6Go+lI1WqdqZifVWYItHpKfhwlkdvqnWBezniwEm4PquKYou4dlBFzubQGq2vWzXJFNy65F54imkN++2aCztRNNt4V8gq9yImrXKwkXOYhaHTz5XmnpEjpeEh6gMEw5AGxbiF7cpO1+jzNGyHE5LLJ4l/mnw5OuDPdGWQe/POuxREG1k/FOnFGRAZtG4ULA1f8rUwrUJlz00u6DEoEKXEKxUpdk17Q2l7vOcSy396Ty0iukRNC6u7EWWh+XpER8bv+iarvjpX6OyuTCI8MrneOiwBtytd9XlWjx7REb2/WEY1Vg0y7CPlTmIlTmIvF6/zjF7ROaA3HqgRwieefzG/J2E7DORpuzvWaAhxcxmEX1PoDusgeXmVAoLPN3OgvPOX69ZY1ff3URENANl4xKsX/7YxmU6qenGQOIQpAQfCVymIH9eg50kLGztmadWyVrS2ixmiIQsZfoCvk9wKvOVl6ZZOttDtWMAC/wNVgca1T/ul5cfCh/ZDiEH7aDVXXyBQWv5bSJgll7UnGsqHWm1vKHp/sgSE3In3blbKUdmneluxOReFI8kD8IaTEoTK9rs0knZVVNQu0smKY6wQiZD9JQ+CzFybe/bPqsOmxEXKw1fpamsbYWCQbBBA7Gm2yoyoYUA7m9G31GzmbB8m7M3emqtvzQwJrA1VNe3C/aOmtv2GckVetMBq2LLT9/Vzff/Ydrv5/IycX4sH
+ ZCg0zGrV
+ eXxsAk0kB66AlJ/v5sA08O/PHmaqDqIeNkYS0SmFO6kSlDFDEa2zO+v/C85OYaVoMHxXPiW3Vn+/a7eDEv/6hH6duufhqbikSPO/7MSxjbPWgsESnJvHdvk9iaFT7T6izLayCb9cg4ovzzXh2aEhQijScyW5+I9juEsP41qmu4okN6+Qj6tXjpMxBDvma4Qaz4Nlv5szJ0f0Br2pNX9mJchdO0A0IiTFa6j/PNR90j3JWqMtuAWd9vrJTPsIdP6x6Tidg0mBg1bTFcUgcqG7S6Yq+TUbn+x4qwKf5isH4plCCx1Ilbsw1UHwCMpdbDvfEwcEUyxv9kS2aZ2ULsaBIZBpZyCjLxqG9VBF2
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -129,118 +114,106 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Commit 19c5fb83f2a4 ("mm: page_alloc: avoid kswapd thrashing due to
-NUMA restrictions") makes get_page_from_freelist() skip any node with an
-active kswapd on the first pass through the zonelist, so unrestricted
-allocations don't immediately consume the memory kswapd is freeing.
+GUP-fast grabs a PTE-mapped large folio one page at a time.  Every PTE
+costs a try_grab_folio_fast() (a refcount cmpxchg, plus the pincount
+atomic, a full barrier and a node stat update for FOLL_PIN), a
+gup_fast_folio_allowed() and a folio_set_referenced(), so a 64 kB mTHP
+pays sixteen of each and a PTE-mapped 2 MB THP pays 512.
 
-But kswapd is also woken for high-order requests. With THP defrag set to
-defer, each THP fault that fails on a fragmented node wakes kswapd at
-PMD order. kswapd reclaims a batch, wakes kcompactd, and sleeps until
-the next failed fault, so it stays awake much of the time even on a node
-with plenty of free order-0 memory. This means those order-0 allocations
-get directed elsewhere.
+The users are the hot ones: iov_iter_extract_user_pages() pins every
+O_DIRECT buffer through pin_user_pages_fast(), io_uring registers its
+buffers through it, and so does RDMA memory registration.
+With mTHP those buffers are PTE-mapped large folios.
 
-This was observed on some Meta production workloads running on 2-NUMA
-systems, where processes with a preference for node0 allocations
-continuously allocated order-0 pages on node1, despite node0 having
-hundreds of GB of free memory.
+After the head page has been grabbed and verified, extend the run to the
+following PTEs that map the next pages of the same folio with the
+same protection bits, take the remaining references for the
+run with try_grab_folio(), and fill pages[] from the run.
+The PTEs of the run are read while the reference on the folio is held,
+so the folio can neither be collapsed, freed nor split underneath the scan.
 
-Only skip a zone with an active kswapd if it is also below kswapd's
-target watermark.
+A read-only run of an anonymous folio stops at the first page that
+gup_must_unshare() rejects, so the per-page exclusivity guarantee for FOLL_PIN
+is kept.
 
-On a 2-NUMA VM with a 60G node0 and a 20G node1, with THP enabled=always
-and defrag=defer, I ran a process that prefers allocating on node0.
-With a fragmented node0:
-- Before the patch, 68% of pages were served from node0
-- After the patch, 100% of pages were served from node0
+folio_pte_batch_flags() does the scan.  It reads the entries with
+ptep_get(), which is not safe without the page table lock on
+CONFIG_GUP_GET_PXX_LOW_HIGH (x86 PAE, mips32, sh) or with arm64 contpte,
+and GUP-fast reads every PTE with ptep_get_lockless() for that reason.
+Add FPB_LOCKLESS to make the helper do the same; it is inlined per call
+site, so the other callers do not change.
 
-One remaining gap is that since this uses kswapd's own threshold,
-unrestricted allocations can take what kswapd frees above the target
-watermark. The current code already lets such allocations drain from the
-high to the low watermark while kswapd sleeps.
+The order-0 path keeps its instruction sequence.  The folio flags are
+tested before folio_set_referenced() on purpose: a load of the flags
+right after that locked instruction cost about 25% on order-0 pages in
+the gup_test benchmark below, and reading them first brings that path
+back to the baseline.
 
-One potential solution, as hinted by Johannes in the discussion from the
-original fix [1] is to add some kind of fudge factor (for instance,
-wmark_pages + high_wmark_pages - low_wmark_pages).
+gup_test ioctl over a 256 MB anonymous region, FOLL_WRITE, 65536 pages
+per call, median of 15 runs, two baseline boots / one patched boot, on
+an x86-64 VM:
 
-But in tests that I ran in a VM where the allocation demand outpaces
-kswapd, about 4% more pages landed on the busy node and kswapd reclaimed
-about 15% more, but kswapd still finished and slept. So let's hold off
-on the fudge factor until it becomes an observable issue in workloads.
+                       get_user_pages_fast()   pin_user_pages_fast()
+                       before       after      before       after
+  4 kB pages           849/789 us   783 us     1174/1138 us 1094 us
+  64 kB mTHP           812/811 us   126 us     1215/1113 us  188 us
+  1 MB mTHP            799/774 us    59 us     1185/1077 us   64 us
+  2 MB THP, PTE-mapped 803/786 us    57 us     1159/1120 us   58 us
+  2 MB THP, PMD-mapped  42/40 us     40 us       46/41 us     42 us
 
-[1] https://lore.kernel.org/linux-mm/20251001164131.GB1597553@cmpxchg.org/
+fio O_DIRECT randread of a null_blk device (CPU bound) with the I/O
+buffer in 64 kB mTHP, median of 15 five-second runs:
 
-Fixes: 19c5fb83f2a4 ("mm: page_alloc: avoid kswapd thrashing due to NUMA restrictions")
-Suggested-by: Daniel Hodges <hodgesd@meta.com>
-Signed-off-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+  bs=1M psync                 126.2/125.6 GB/s  ->  220.6 GB/s
+  bs=1M io_uring, iodepth 16   71.2/71.6 GB/s   ->  112.1 GB/s
+  bs=64k io_uring, iodepth 16  50.2/50.7 GB/s   ->   60.1 GB/s
+
+IORING_REGISTER_BUFFERS of 1 GB, median of 15:
+
+64 kB mTHP           6179/5998 us  ->  1599 us
+  1 MB mTHP            5790/5801 us  ->   893 us
+  4 kB pages           7173/6741 us  ->  6763 us
+
 ---
-v1 --> v2:
-- Added a Fixes tag and separated this from the other cleanup patches
-- Check zone_watermark_fast with no flag to match the call in
-  pgdat_balanced().
-- Calculates mark outside the zone_watermark_fast check to match the
-  style for the other zone checks.
-- Wordsmithing commit message to explain the unaddressed gap.
-- Yes, this is ugly. I have another series to clean this code up but
-  I wanted this to be a feature-minimal patch so that it could be
-  easily backported. Things will be much prettier once those are landed.
+Changes in v4:
+- add r-b / a-b tags.
+- rename gup_unshared_page() to gup_pages_not_requiring_unshare()
+- Link to v3: https://lore.kernel.org/r/20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com
 
- mm/page_alloc.c | 23 ++++++++++++++++-------
- 1 file changed, 16 insertions(+), 7 deletions(-)
+Changes in v3:
+- move gup_must_unshare() and INTERNAL_GUP_FLAGS from internal.h to gup.c
+- drop the folio_pte_batch_flags() patch for shadow-stack.
+- ignore VM_HUGEPAGE for shadow-stack via madvise().
+- add r-b / a-b tags.
+- Link to v2: https://lore.kernel.org/r/20261102-refactor_gup_fast-v2-0-bc1ac018c834@arm.com
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 8532af052d74b..56121c3f9c4a7 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -45,6 +45,7 @@
- #include <linux/mmu_notifier.h>
- #include <linux/migrate.h>
- #include <linux/sched/mm.h>
-+#include <linux/sched/sysctl.h>
- #include <linux/page_owner.h>
- #include <linux/page_table_check.h>
- #include <linux/memcontrol.h>
-@@ -3799,6 +3800,9 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
- 	struct zoneref *z;
- 	struct zone *zone;
- 	struct pglist_data *last_pgdat = NULL;
-+	enum zone_watermarks kswapd_watermark =
-+		sysctl_numa_balancing_mode & NUMA_BALANCING_MEMORY_TIERING ?
-+		WMARK_PROMO : WMARK_HIGH;
- 	bool last_pgdat_dirty_ok = false;
- 	bool no_fallback;
- 	bool skip_kswapd_nodes = nr_online_nodes > 1;
-@@ -3866,16 +3870,21 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
- 		}
- 
- 		/*
--		 * If kswapd is already active on a node, keep looking
--		 * for other nodes that might be idle. This can happen
--		 * if another process has NUMA bindings and is causing
--		 * kswapd wakeups on only some nodes. Avoid accidental
--		 * "node_reclaim_mode"-like behavior in this case.
-+		 * If kswapd is already active on a node and the zone is below
-+		 * its kswapd watermark for this request, keep looking for
-+		 * other nodes that might be idle. This can happen if another
-+		 * process has NUMA bindings and is causing kswapd wakeups on
-+		 * only some nodes. Avoid accidental "node_reclaim_mode"-like
-+		 * behavior in this case.
- 		 */
- 		if (skip_kswapd_nodes &&
- 		    !waitqueue_active(&zone->zone_pgdat->kswapd_wait)) {
--			skipped_kswapd_nodes = true;
--			continue;
-+			mark = wmark_pages(zone, kswapd_watermark);
-+			if (!zone_watermark_fast(zone, order, mark,
-+					ac->highest_zoneidx, 0, gfp_mask)) {
-+				skipped_kswapd_nodes = true;
-+				continue;
-+			}
- 		}
- 
- 		cond_accept_memory(zone, order, alloc_flags);
+Changes in v2:
+- fix exceptional case for shstk on x86.
+- remove redendant check for pmd change in each pte barch.
+- Link to v1: https://lore.kernel.org/all/20260917083747.786-1-aa9736195201@gmail.com/
+
+---
+Yeoreum Yun (5):
+      mm: khugepaged: ignore MADV_HUGEPAGE for shadow stacks
+      mm: gup: clarify a reason to check pte/pmd in gup_fast_pte_range()
+      mm: gup: move gup_must_unshare() and INTERNAL_GUP_FLAGS to gup.c
+      mm: gup: introduce gup_pages_not_requiring_unshare()
+      mm: gup: batch PTE-mapped large folios in gup_fast_pte_range()
+
+Yuan-Hao Hsu (1):
+      mm: internal: introduce FPB_LOCKLESS for folio_pte_batch_flags()
+
+ mm/gup.c        | 185 +++++++++++++++++++++++++++++++++++++++++++++-----------
+ mm/internal.h   |  78 +++---------------------
+ mm/khugepaged.c |   3 +
+ 3 files changed, 159 insertions(+), 107 deletions(-)
+---
+base-commit: 93d7a816a2df3e907e2719bd12b0073f1285fc5c
+change-id: 20261015-refactor_gup_fast-b55e3f593dc2
+
+Best regards,
 -- 
-2.53.0-Meta
+Sincerely,
+Yeoreum Yun
 
 
