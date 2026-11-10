@@ -1,104 +1,102 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BAAC606A8A4
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E59606A881
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:33:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=faMHSEj8
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mi6pzJbm
 Received: by kanga.kvack.org (Postfix)
-	id 53B496B00EF; Tue, 10 Nov 2026 15:33:29 -0500 (EST)
+	id B08676B05B1; Tue, 10 Nov 2026 15:33:38 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 513116B05B0; Tue, 10 Nov 2026 15:33:29 -0500 (EST)
+	id ADFCD6B05B8; Tue, 10 Nov 2026 15:33:38 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4020A6B05B1; Tue, 10 Nov 2026 15:33:29 -0500 (EST)
+	id 9F5CF6B05B9; Tue, 10 Nov 2026 15:33:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 11C4B6B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:33:29 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8987E1A09CA
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:33:28 +0000 (UTC)
-X-FDA: 85420359696.19.D45EAF9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf14.hostedemail.com (Postfix) with ESMTP id C05A4100005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:33:26 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A9A86B05B1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:33:38 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC3FB140AA7
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:33:37 +0000 (UTC)
+X-FDA: 85420360074.21.1BFCDE8
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 30B7F100003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:33:36 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=faMHSEj8;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mi6pzJbm;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794342806;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=HNkHh8576R9yenj6hZR3ukTbtfxm+sK5xBh0AHQFgqo=;
-	b=khqF+fV3UXodeTwBNLve1TxD9PYYbAdqZLIoQSDu5uxo46Lf2IXhYLx88EvSKi4Qkz17b4
-	I8/hCfrIQAS2hZbFp82qAX+JdHkRPrCmGtOCsGwuqCj8YOhf0XywtOtXkl8nM/v2xJ9GWl
-	RO711M7MCNHLGiwdFePOeeczvXca3Uc=
+	s=arc-20220608; t=1794342816;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/8ocYQBe3YFFmUUoCd3DPsEeCobQ/m4s1lpafYEhyRg=;
+	b=KP2V3ing7Q23avT+Jh2eSNgI/Q85WJBjknGRK2IwZFWWqSciJWbnVZKAqq6Mqu5dsKqk5j
+	yNHo9OSs5Q/WNvx6edudMy7zw9LNr9jGAT9WYVvduLk0L69r2drhZ3yq3SJRZzqRNiJthM
+	tPd4Y0P3wA0UUVXj2qifusDeF51os0A=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794342806;
-	b=PkggXHsZW/NWDpmwgQpLRxiQ+o+M4v/bkjyo8ySflWVzo92gM/lh3dY7uWrwyTc+wdq7iR
-	CxpL155Z6qQYeXf6ZXzG0Etx/sWLTcSwbs/Cs/BK9DUHy/P2oKXDyFJ4FYuEwh4v0OkUMA
-	AZ3qgenKK/aTt8d5clIrlfNJpsfUrZU=
+	t=1794342816;
+	b=RLAQ7iUFLCOgHQWtTOfkKleKQgRfa4Ae/bt0UsxLflGyOLz8BzguulA6pTpST8TE6H1Rlx
+	M2h6Q3cXLclAmLeYYYp0k4FExLztq8GF8yCDgsMyxJvN9JZEDyQgXzTeB9vJBZFH0fkKIp
+	hfzEl3J5pzsJc3hN6/m4B7/8d2v9oVI=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=faMHSEj8;
-	spf=pass (imf14.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mi6pzJbm;
+	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 48BBF62FD1;
-	Tue, 10 Nov 2026 20:33:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D423A1F008A1;
-	Tue, 10 Nov 2026 20:33:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 524EF474E7;
+	Tue, 10 Nov 2026 20:33:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FAE1F0089F;
+	Tue, 10 Nov 2026 20:33:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794342806;
-	bh=HNkHh8576R9yenj6hZR3ukTbtfxm+sK5xBh0AHQFgqo=;
-	h=From:Date:Subject:To:Cc;
-	b=faMHSEj8UOEq56lelMECdxXPosfoDrSmgupOG1ETLfm4s/3RSRQbWnwEO2YuWM/7o
-	 dmvKVtzQ6CUh3/qK0bKxwIxZ4CxZnXNghLCj/+N5VKaXGQ+S6vb48mZc+rCQaovFzA
-	 fKHHKewXX3EiL693xJoDj4nixSbxG+ILn5SFAPqTt6yCBbW2M9pj8sJvfQkDwrknjN
-	 lqKgQ1wb5erbceCc9bmLoWvqgj0SOf0MZ4iPOqdaZ8BHNYWRLB0jIBXJEqO2dmIsoh
-	 w7r1dGCWLtOSxfhnYv7h5R7wm+yc8RMvKwInddNOaWkifRhKkkT2xfUXMGCOBJ+svQ
-	 r/GWXEbl0wTOQ==
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Date: Tue, 10 Nov 2026 21:33:12 +0100
-Subject: [PATCH RFC] mm/filemap: fix lseek() skipping a new large folio
-X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-lseek_hole-v1-1-c089c960b846@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAId/82oC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzNDQ0MD3Zzi1NTs+Iz8nFRdk0TL1CQTU4MUE3NjJaCGgqLUtMwKsGHRSkF
- uzkqxEMHi0qSs1OQSkDFKtbUAZorfanMAAAA=
-X-Change-ID: 20261110-lseek_hole-4a9eb450d473
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>, 
- William Kucharski <william.kucharski@oracle.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
- linux-kernel@vger.kernel.org, Chris Mason <mason@kernel.org>, 
- "David Hildenbrand (Arm)" <david@kernel.org>
-X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4173; i=david@kernel.org;
- h=from:subject:message-id; bh=X++bvNWUrEFTrfv+bufHFUKamza572buPbl4/CTqBK0=;
- b=owGbwMvMwCF2/OVpCdfQ3ZWMp9WSGLI+1/cxbPvE+j1D/eEZu9grzhmFD/alMGdsl37QLiJZ/
- KjVd+6ljlIWBjEOBlkxRZag4PsGL1+uq61242OGmcPKBDaEi1MAJiJ5heF/+M5Zfhv1b05LfcKm
- d/eLrM6M5ByjxT+W6nftT4teeoCnm5HhqOm8SHsngVql4xs2W/y/IaU0Sdjs8xGZ5Obpdtsagrz
- 4AQ==
-X-Developer-Key: i=david@kernel.org; a=openpgp;
- fpr=1BD9CAAD735C4C3A460DFCCA4DDE10F700FF835A
-X-Stat-Signature: arw5u5d9379347wo6gh4cxuxzkyjg8bh
-X-Rspamd-Queue-Id: C05A4100005
+	s=k20260515; t=1794342815;
+	bh=/8ocYQBe3YFFmUUoCd3DPsEeCobQ/m4s1lpafYEhyRg=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Mi6pzJbmGbk+Y7lwP1y+fgu4twMGHVAMHHT1GHNSzeJCGFPvQY06WGUh0F8gG2d9B
+	 /46tdmMsmHUyjAa5hnJT820kJxQZpxX3Op1/JyjtNwjI1DdQs62lE+2EBrNXcaitWH
+	 voiG/bXJV3FyiQ3xLYvqu8YrDTYvbmT6E3mNzNYEfh1ZGZyOJPFQ5SN3KXspVAvYbe
+	 C8VwynMbJH3tkME+dSdl17rZ1/txeiLoBCXe9GCVQQ6+b7Q/MFDHi+WSvNvKCLJfOW
+	 EvgMKyHovR3fJ2W47FvmVHz8977Xi3TqMnyedOdXiIFANjpHXT33kCvtB1UL1Epsw/
+	 PIkgit8f9BXUg==
+Message-ID: <sashiko-outbox-207712@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC PATCH v3 1/6] docs: security: Describe the Kernel
+ Assurance Plane design
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "HARIHARA SUDHAN. R" <harisudhan@armoriq.io>, linux-security-module@vger.kernel.org, "Paul
+ Moore" <paul@paul-moore.com>, "Kees Cook" <kees@kernel.org>, "James Morris" <jmorris@namei.org>, "Serge
+ E . Hallyn" <serge@hallyn.com>
+Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Jonathan Corbet" <corbet@lwn.net>, "Randy
+ Dunlap" <rdunlap@infradead.org>, "Peter Zijlstra" <peterz@infradead.org>, "Ingo
+ Molnar" <mingo@redhat.com>, "Steven Rostedt" <rostedt@goodmis.org>, "Liam R
+ . Howlett" <liam@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Vlastimil
+ Babka" <vbabka@kernel.org>, "David Hildenbrand" <david@kernel.org>, "Mike
+ Rapoport" <rppt@kernel.org>, "Michal Hocko" <mhocko@suse.com>, "Mel Gorman" <mgorman@suse.de>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Ben Segall" <bsegall@google.com>, "Dietmar
+ Eggemann" <dietmar.eggemann@arm.com>, "Juri Lelli" <juri.lelli@redhat.com>, "K
+ Prateek Nayak" <kprateek.nayak@amd.com>, "Valentin Schneider" <vschneid@redhat.com>, "Vincent
+ Guittot" <vincent.guittot@linaro.org>, "Shuah Khan" <skhan@linuxfoundation.org>, "Ketan
+ Bhardwaj" <ketan@armoriq.io>, bpf@vger.kernel.org, linux-mm@kvack.org
+In-Reply-To: <20261110202246.274-2-harisudhan@armoriq.io>
+References: <20261110202246.274-1-harisudhan@armoriq.io>
+ <20261110202246.274-2-harisudhan@armoriq.io>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 10 Nov 2026 20:33:30 +0000
+X-Stat-Signature: bfrftqhhsppe8igqsx9ge6rebz3ptety
+X-Rspamd-Queue-Id: 30B7F100003
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794342806-11663
-X-HE-Meta: U2FsdGVkX1+TcHSFSXjzdHyUIMC0qGYTQATtGtWy1F4hXqDVkHhALC3ytDy2Qenwy5f/eS5OYzf//HggaGKsAsPQC4AZuO2f2v1SlK9uJxXe76bLn59W/8lgCkmYClWH4qg993FrXQnyeyW8rJ++ajtTqSpUq5qJT5dQDSESrggz4FdP3DVRAUtdOV2ebbdOCdtb1XMQAd2evB7x6ZGXC1wBJpuZhOyZaergf/JR4A4UVVQ3ph7QT0SGiqIW46bPaL5OVdqi1zzO3YUhuEJhOcGI0cIvZbvKAtNAZFYwgo0AIHU81yoCT7HFfj0iQiqxF5xoeNxyGPQtUG+kbbeETFD/idFp88por8q+Y7+I00Xr5/RF3x6A9rIlGXthrNutWItqZusSOiD85xKJAs8S3RzpylgsF7U6A+U9CqJLo1efBML7Y2k+PGKXUq4fWGvNbl3OH2oGJiI4/L/vbeBM4E1Xam3XwmF1Nrfcwjgl2p52e2P+LulpZvBKPFIDr6SyKY/OXniLegfXxMh8RJRuBgk3lwUqDK9pMgikwk7cXCSHNIPxqx5CEYEranFq8SmpbnWo48TND4e7lebmB6W3kKxFnCmalpRLND5zd4H/OOF4f68oTBDQ4Wo63P2lwfvU6rB1mMTG/ZO+0Rj1y6AYi33N/dASnMyQENmrsTCAuQOcIQmMtJpyRiiAI/U+3dmJiGCEYoBkybgoh5JELB/J+HNwdlrj5ciU0B7eX3O+LRYtd0S+NtDveUNiH2LyqFAfGLFIVwShgcJ9rxky9e6rIxSLnQC4rZz1+M1fTZOJGuoeFbHjPYnoALsPvrAw8qP2qBWa2NqN9iTlboMoqDuo0DNbC2Fd9StobiBraISE3537WH1qD7j37hwIUZAiybd45KHaG6Lwn0L8qdSphamGm1lDTxZ79RcHMpW0Yc15qOdFPFzwpqrpqH/toB1lTU2MX9WI3aYTjoui1DiD8sv
- 3SZX4KeA
- 1zZtb+rVJUhRxZRuRVaJUM4he+0hito7NYdgPmzL6NhSpTP26Xi4IT0HRwDKK/m0GPg7hZpVQvXAKEiVkB7wypHARDac0SGQYi/1cL80oxhNkpNyIZPe3aFskMxsPlsQVOPx41FmXmaChQDvWb+AWFzbp/Y6NIz44YMScdgW5tb++MKmsnUXe+BOuFfHnMxOmXLayEzTBNxInp97u2kwUyS/nortGr/r5NAfSmBvYLOitFT79JWkdN2VT3w==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794342816-991780
+X-HE-Meta: U2FsdGVkX18DvYrdI/lWPqX9apy0P+ybh21gXKke4RkZ9Oqo2FKFt4JdDeQ7Rc+1VzRdzAdCCdOqJCx7ws2HI6rMgBzcHFAKAhcO87l7NcfxMEH7xqT0eUrRw6zicsPds3xSFqB8aHewcn5bwoD1jHCxwjsrCmo9JNXYVRmI9mWoQU34DIKqvEDxsm2/K0LNwZ5ApBdC1eQgakFwTMyJi2qOzlHzz+C/OkqSqmxdwZHFFFsjIrjpQTcd0rrvRYHhT1WrJ9adq44FqvW4N4EgzXIDcv2jwIiFRWNwj8e/X04cRheRimoyR7UW60q4mIoTQ5speZ9LddIwl5j6qmsbvlIRDagOJ6hQqbtGPfO8Qf8cEivU8daYXLTywYMvCusIioPS8WaFdOMMJ1qRq/qgFzY8t7PFgWOOkzBj4JpAknrVzq/VKBiiqK2dWVmy0pp9l8oc6O6VvJubhpT4jQ2rcvbVPJQFEeGEhoMOpo5uc4YPFoZ2RRLJ7ojUE1gmGBMR9Z45jagniwBVretmrQl0XWjGDNY+rl0QHLzu7TUK+NOTaf1tx25zZTN3HjsiA7ihcl3vLj9cvx0D4mTKGPanP7V1b6LqiJ7aylLxT6qlN7XVVbHMRsrbkvUA57tgYdvFKu6tjAZkNTCIH0qLE2WmbIq9CliyYs47l7AWckgGg5xUqtVZdOgOj7FBlsHi5A63Stmeca/7JTPDxrHku37wrSDFZV3pWp3peT/+gHa8cK24aGt7DszJMtPd7V/G7H6RXnCQXZWSP3RnuyC/DHnCn+3GHmDXS29jt5jbahku3fqyJdNKW/ZbyJLqUeFL8wKJ1HyrP23d2RT+umF0HPWDabKT8mVRXVCp7574FBfjPB/2PzjuZ6QTW6YFFgK4VvhBXk/Q1dlO3WgnxE3RRa95ELALYQlzsj9/dSWZVku5mWN3cl+QM+HNeQEvztarRw/VK1VGRF7885BE8EJHFO2
+ LJ1NY4Jc
+ FntyPDslxeubllGBKZFlULdjD/i70zWf9bVzPQBV2pOvlylAM8rmtc38KWstNx4FxFG7/RJ0/7RhKrbCTVMkcHPKYPu3YDYQZ3hs4h/L4dwjIpGo3GKSP8mXMleINpl/GiRJjPjTXeq/kJtSDaZls4qL7sFDYoN5c18fWoh3JdVQ4dNx/aXsJcVvF4m2xJgxlfQ9ZHQyIuX8IxuKJzkjlcaz03j+Je6rGPXM412AtOn66GsdvTIpm9llJnMHLRvZYn9UexWLD1MgTTGRMHSieQxPGJOhmuEAosfYZvcvOOSYwYxsfZrnEShYwuHWuGhDLdh+RkX5Ir0w+4Ff0aqCbSr4qU/3ZVPkkUCEAcd+wCBe7rTwK1G3sM8vF8lwZx6ggtv+KybYBAQEatGejDNvlEpvQsn/neixalXc1IFusOuAhdB4zi5nV4I8FhVQi+lFiE+ThXbhipDoGkzU7eFhN/hK1Lk7hGJxHTvGJSaxGD1eQe1NOPTOC1zMjrEEy/ydDA9R0P4QKfw+xX7dAH9vycIneY8Z5zAG/gJINFb7m0fce5oy4N0aoOenrSLUHpDYA8yyz
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,122 +104,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-mapping_seek_hole_data() walks the page cache under RCU and only calls
-xas_set() after entries larger than a page. Between base-page entries,
-it continues the walk with xas_find(), which skips sibling entries
-to return each multi-index entry only once. If a large folio replaces
-small folio entries between iterations, the slot holding the new folio
-can lie behind the cursor. Skipping its sibling entries then skips data
-that has not yet been examined.
-
-On tmpfs, SEEK_HOLE can then return an offset inside existing data.
-SEEK_DATA can skip data after a fallocated page that is not uptodate.
-
-For example, assume a 2 MiB tmpfs file backed by 4 KiB pages on x86-64,
-with page index 63 fallocated but not uptodate and all other pages
-uptodate. Index 63 occupies the last slot in the old xarray leaf. A
-SEEK_DATA starting there can skip that page, then race with collapse of
-pages 0-511 into one 2 MiB folio. The next xas_find() moves past the old
-leaf and skips the new folio's sibling entries in the parent, returning
--ENXIO instead of finding data at page index 64, or 256 KiB.
-
-The inode lock held by lseek() does not exclude collapse or swapin.
-
-Restarting the xarray walk after every entry fixes this, but increases
-SEEK_HOLE time about 24%, when scanning a fully written 1 GiB memfd backed
-by base-page folios in an x86-64 microbenchmark.
-
-Instead, use xas_next() for adjacent indices. Restart the lookup from the
-root at the requested index if it returns an empty slot or an internal
-entry, including a sibling entry. Also restart for nonadjacent indices,
-invalid iterator state, or failed folio validation. This avoids skipping
-unexamined data without restarting each lookup during base-page scans.
-
-Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
-Reported-by: Chris Mason <mason@kernel.org>
-Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
----
-I'll be more than happy if someone of the pagecache folks wants to take
-over ;)
----
- mm/filemap.c | 38 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 35 insertions(+), 3 deletions(-)
-
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 648f783454c3..87c583509567 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3233,6 +3233,40 @@ static inline size_t seek_folio_size(struct xa_state *xas, struct folio *folio)
- 	return folio_size(folio);
- }
- 
-+static inline struct folio *seek_get_entry(struct xa_state *xas, pgoff_t index,
-+					   pgoff_t max)
-+{
-+	struct folio *folio;
-+
-+	if (!xas_valid(xas) || xas->xa_index + 1 != index)
-+		goto restart;
-+
-+	/*
-+	 * A lookup within a multi-index entry can leave xa_offset at its
-+	 * first slot. Restore the slot corresponding to xa_index before
-+	 * advancing.
-+	 */
-+	xas_advance(xas, xas->xa_index);
-+	folio = xas_next(xas);
-+
-+	/*
-+	 * A concurrent collapse can replace the next slot with a sibling entry
-+	 * referring back to the slot holding the folio.
-+	 */
-+	if (!folio || xa_is_internal(folio))
-+		goto restart;
-+	if (xa_is_value(folio))
-+		return folio;
-+	if (!folio_try_get(folio))
-+		goto restart;
-+	if (folio == xas_reload(xas))
-+		return folio;
-+	folio_put(folio);
-+restart:
-+	xas_set(xas, index);
-+	return find_get_entry(xas, max, XA_PRESENT);
-+}
-+
- /**
-  * mapping_seek_hole_data - Seek for SEEK_DATA / SEEK_HOLE in the page cache.
-  * @mapping: Address space to search.
-@@ -3263,7 +3297,7 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
- 		return -ENXIO;
- 
- 	rcu_read_lock();
--	while ((folio = find_get_entry(&xas, max, XA_PRESENT))) {
-+	while ((folio = seek_get_entry(&xas, start >> PAGE_SHIFT, max))) {
- 		loff_t pos = (u64)xas.xa_index << PAGE_SHIFT;
- 		size_t seek_size;
- 		u64 next;
-@@ -3286,8 +3320,6 @@ loff_t mapping_seek_hole_data(struct address_space *mapping, loff_t start,
- 			goto unlock;
- 		if (start >= end)
- 			break;
--		if (seek_size > PAGE_SIZE)
--			xas_set(&xas, pos >> PAGE_SHIFT);
- 		if (!xa_is_value(folio))
- 			folio_put(folio);
- 	}
-
----
-
-base-commit: 93d7a816a2df3e907e2719bd12b0073f1285fc5c
-
-change-id: 20261110-lseek_hole-4a9eb450d473
-
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Low] docs: security: kap: contradictory epoch semantics for bound
+  tasks
 --
 
-Cheers,
+commit 77da64268c0c9921ecf4f2c4a0222c86b4687cb2
+Author: HARIHARA SUDHAN. R <harisudhan@armoriq.io>
 
-David
+docs: security: Describe the Kernel Assurance Plane design
 
+This commit adds security documentation and securityfs ABI documentation
+describing the Kernel Assurance Plane (KAP) design, Intent Lineage Groups,
+and control plane files.
+
+> diff --git a/Documentation/security/kap.rst b/Documentation/security/kap.=
+rst
+> new file mode 100644
+> index 0000000000000..e002a081c6607
+> --- /dev/null
+> +++ b/Documentation/security/kap.rst
+
+[ ... ]
+
+> +O1 finishes its first stage. The controller advances O1 to a new authori=
+ty
+> +generation that is narrower: no package cache, no network. It writes the=
+ new
+> +authority and a higher epoch to O1's igroup. O2's igroup is untouched.
+> +
+> +From its next check, an already running O1 worker is held to the new aut=
+hority.
+> +It cannot reach the cache or the network even though it could a moment a=
+go, it
+> +was not asked to drop anything, it was not restarted, and O2 is unaffect=
+ed. If
+> +instead the controller revokes O1, the next O1 check fails closed.
+
+[ ... ]
+
+> +``epoch``
+> +  Monotonic authority generation. Installing a higher epoch fails every =
+task
+> +  still bound to an older one closed from its next check.
+
+[Severity: Low]
+Does advancing an igroup's authority_epoch hold already-bound tasks to the
+new authority, or does it cause them to fail every check closed?
+
+The motivating example above states that writing a new authority and a
+higher epoch to O1's igroup holds an already-running O1 worker to the
+narrower authority, whereas the epoch definition here and the
+kap.authority_epoch entry in Documentation/ABI/testing/securityfs-kap say
+that installing a higher epoch causes tasks bound to an older epoch to
+fail KAP checks closed.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110202246.274-=
+1-harisudhan@armoriq.io?part=3D1
 
