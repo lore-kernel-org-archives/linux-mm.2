@@ -1,68 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CED0606A320
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC6F606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=E3iMyEM+
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bAFr4ZXC
 Received: by kanga.kvack.org (Postfix)
-	id 92FA66B05C0; Tue, 10 Nov 2026 11:02:50 -0500 (EST)
+	id CB3706B05C2; Tue, 10 Nov 2026 11:02:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 906946B05C2; Tue, 10 Nov 2026 11:02:50 -0500 (EST)
+	id C89B46B05C3; Tue, 10 Nov 2026 11:02:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8449B6B05C3; Tue, 10 Nov 2026 11:02:50 -0500 (EST)
+	id BA0966B05C4; Tue, 10 Nov 2026 11:02:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 670E06B05C0
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:02:50 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E95C4A0992
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 922926B05C2
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:02:52 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8D3FD120951
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:02:51 +0000 (UTC)
+X-FDA: 85419677742.08.5E3FF2B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id C1EA940015
 	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:02:49 +0000 (UTC)
-X-FDA: 85419677658.24.C84A384
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 2AB15160004
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:02:47 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E3iMyEM+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bAFr4ZXC;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794326569;
+	b=PnXU8Qor1HSzvBUMuN7AC1IdMOSiOjLU1xDafg5JTcl6bxCMlXlBsA7PS5s8X3DctV/xUQ
+	nDaEaPBFC/EL6n13jlKfOe/8NYOXxOPJTKaxlQuZsGTSRLyMsehwhgCgZFqJ+h+cqjmlDc
+	FCA9h8enYDGWhq5bjeuaMbeI3A0k4pw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bAFr4ZXC;
+	spf=pass (imf04.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794326568;
+	s=arc-20220608; t=1794326569;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DXq8PDNIQrZeyWBnmLP8bhjWVYFr4ZgQ1bg8o/V0OUI=;
-	b=c6pbN0eeTQvQhFfk3qXtIz3dvptxRuoFnKuZ1/ExSKTk27QBtfLiRW8hbcPzBWrZAZ9hzf
-	21iByEzCGL2vkYQgVYYrm2Vf1vkG5YZgOHfho3LMHQT5/zHN8yFX/u/7PTtalYOSJnkK61
-	Y9kz8Pg739iqeblWDzfftil5Nt0B9qY=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794326568;
-	b=ULZbQrX9tmIfBaS3CLZM1t9lde+YzVd5tmD4pxciuEYc6wet3Nk0bON0UlgZdeKF8CZe1v
-	nFAw/njay/IrMeNMn9s6eYhhvS7qpQTJhYH81I2+dyvtnqDnZ5GTkoekY7s/3geTNCVmZ/
-	240WUMOo+1xFOvL2Y85u4AqeSrjNZ/I=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=E3iMyEM+;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=rRdlngYCbpP7+D/8MWAcEfmgNsifvh1ppWHXoqoj5yc=;
+	b=aQDjZ/TU4J093sLlGlyoEtW9KZIEhiAdX5f0UtSQGbr80ZhUaeVMNcCUNY/Ndu8O5JMVUO
+	tKIyLCvaDz6BuCwRXgZiVZ9YQSM0cl37vjeGGsEgNYf20al1HXDZK8aQEOPyR62OMHlcDO
+	BsAdHdMOYYR2H8HLUR+RbRM+lc6DUjA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 159C0411DF;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4CABB63A53;
+	Tue, 10 Nov 2026 16:02:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735C21F0089F;
 	Tue, 10 Nov 2026 16:02:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6765C1F0089F;
-	Tue, 10 Nov 2026 16:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794326567;
-	bh=DXq8PDNIQrZeyWBnmLP8bhjWVYFr4ZgQ1bg8o/V0OUI=;
+	s=k20260515; t=1794326569;
+	bh=rRdlngYCbpP7+D/8MWAcEfmgNsifvh1ppWHXoqoj5yc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E3iMyEM++8A/YraFrygM+SpA2oJaibi92VQ9t7HskiO9vJDagsvpk6fe5ECIaFfOl
-	 62PmTJr2kModstUVUCWrML/VVvfJdcWbmHoPT32ORhYJpAPTMJW860p3KECVtBGRGM
-	 e2a2sB2CFIMDn20uZFnohMqs7kzrKH1d/CKJoaUoBlO1r5kkdYPZ3VdVJt+S2Lqfuw
-	 UfLm5T749CskwTnoQJxyR76fCkrmSnCNgbK/mHzn27LJcp3bVPAA+SxmNrB34RMavn
-	 jNg4B+tTqcgluAFcIo2g74s2UI5t+qJS59JdUwqjE5NRXBc9CnrM13qIfgBAqYwytZ
-	 jtJjuQJ/BiRIg==
-Message-ID: <sashiko-outbox-207315@kernel.org>
+	b=bAFr4ZXCG8GnWFkUHAfQN3J+08BStKdPuw2n2AGhIH+oanzLqgAg/5XII5soTHE0T
+	 RzEQzgOg0a4XNG45epLMr8XG4x3TVXXtjJ1cUWQPoJf9cgAnRkbNm9NteS27b0xeFq
+	 itVsgY8U8IRwEAFAw+gd+3JC7BrU0ehUXa42WE/vjRsRdNFQ02QJ4jwDUnaKN/7M2M
+	 4G+pPgmupWqEN9igTDKu9r+cKhl7CRtiAdArOIMTBFKDydVVXEsYajZFWxDcC0iMc5
+	 T/D2GwJmpXkd5fWPEmuZIYFxvXKQx3hHwuU5/ltFCpEk5n6fvIY3YmiVUJDNGwBu1Y
+	 6MWW6htDElP+Q==
+Message-ID: <sashiko-outbox-207318@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v10 01/22] mm: Introduce kpkeys
+Subject: Re: [PATCH RFC v10 04/22] arm64: Implement asm/kpkeys.h using POE
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Kevin Brodsky" <kevin.brodsky@arm.com>
 Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Ard Biesheuvel" <ardb+git@google.com>, "Andy
@@ -80,24 +80,24 @@ Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Ard Biesheuvel" <ardb+git@goog
  Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Yang Shi" <yang@os.amperecomputing.com>, "Yeoreum
  Yun" <yeoreum.yun@arm.com>, linux-mm@kvack.org, x86@kernel.org, "Ira Weiny" <iweiny@kernel.org>, "Lorenzo
  Stoakes" <ljs@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>
-In-Reply-To: <20261109-kpkeys-v10-1-aa6c4d9603bc@arm.com>
+In-Reply-To: <20261109-kpkeys-v10-4-aa6c4d9603bc@arm.com>
 References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
- <20261109-kpkeys-v10-1-aa6c4d9603bc@arm.com>
+ <20261109-kpkeys-v10-4-aa6c4d9603bc@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 16:02:44 +0000
-X-Stat-Signature: c6s79jhc3drbhmfic9knbgmbp5aeubka
+Date: Tue, 10 Nov 2026 16:02:47 +0000
+X-Stat-Signature: qyimd3ktxus19hc1ptrjkx4sa1eus8ta
+X-Rspamd-Queue-Id: C1EA940015
 X-Rspam-User: 
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2AB15160004
-X-HE-Tag: 1794326567-988948
-X-HE-Meta: U2FsdGVkX19WWt6FF9S6A6Gi7emoXfHxHBB6fR0I11NK0Uzywe6k8BUdkhOPmTtmmhOmEkmdmD9lWXng+jvchsvh/s3XE7jxtX/yj5qRqU33h1iyKrxocThhQHlCzjKW88In5gpQsG+3gt/2JpsAPJWH1SzC/cqmP2OI2T2/b6j6ycqauGe2oB6/JVCkQCIQEtwypAzzoT1gxRgTL8t9eMdmHyQTdF5jg4DqCF9ivMsGkxiLiPoSTAAAQ+2oX3xDuEKeRklREvMHirVFr4NQdO3oNruRp7o/IwMN/bHSoAJOo0SOxVferQMF9xl1w0vCSBsidmja47ZFriMW6iaACNdMdQNq9Eog025REaTtQEuuaXYGa3Usy8zzjr1bImQrAqD1hn1Fa0R6l8vwPgAaxjQjImnZQKw6LvavQVuqOW+MnNlM5675rWYzcZqG7nBqcHegiD42LuBcZQcbisK5GFe8QP+KrI84XWx7VZeQzfj/3GV8iztO+7POPY5yv8lMHXYqDzkqn8DD3CcgGqhAFCTvtlr3HE58IbO5XgmG9bxUNyBf074UNqwRQthNFFPv1wsukuijBHL3dxkPgqPW5iqpFCE4laCAWUf6aiPe+UpDwaYvczVjpjbJ4QjiDF3vKLje6+GF7uXF91yi35PD77Gj2k9FEvEbMk4+yZlpw2/H+chw240q+c99BnxchbifwMnz6Gs1rVZgjp+8/Uicdc+rJglc8rBQQa0/PBhdlC7D9Il/pb7CeGlZOwkOV7UaX7XWdyBww638JXsJNKgK/yAgOu4wnvgccOpqgbFMX+/uKi6F6oH/ANo8p4veBMJbKJsxQZO/7LQgAfhwbFNeBLsFDvN7yWHHDqpOKYifof4q6nJRlQHv1IqNZAvJ1l+GxYdjikS3v/g6ufMaCJz2f+0038Lk9+cooMQPIu/merWy+aVk8gFuhVlDPpMdbcY8GDaKq2gDenjqRyBtvrl
- sJvprSx8
- aaMoarxhjOVbjorRWVX5I/TcJ6I6IsSHHUPyp/kzeZm6fZVmmsaCtPBWERIwP9tS+xCyu029kO25LyFDpswcfoMVdETpJN0h7k3SqKSgL5jlmSvvZFsjclKh6cmUKC970h4bynJ4agdkC/S1EeJJ+V8Pznj35iWOprLmAo2FS8fR4drQayq4x5+4fFjma6cp7yPLHicfy4bvYiMH1ZRcgMecv0JGNJxIOKHdwfBqk76eoDBZ2EbZG9AFE/i5zoWs9i2SYS/c8ihRz+XlKeXX1eiIo81WArNYPXBfnqoYSgks8jAI1gi1e0pzAmOcGK5xB8Hq6Gf8PCCvR55x9Q8sCqaUJLSipwuG+z4ku0CuwjlLOatml/+0QMS+ddTQtvixkF34XbJ6DdY6mszfe4hrhDlf+KGzXS8s8ilDou/MLgw31uyGgd6at1iMkMvK0CzDqbYJUPh2MoGBGrHhEjSVItt+kJlxcNGVBO7nV7FEZHVKiNjyM8316RXtu7yEEcJgsKq21cqS4OP7IjXJquqEvhMTypiq92erRzbp0xF/bfaBQwMZXoaOSHK928tOxlGlH5JZhoz902dWd7/IDZRr3fya+fHbRsVs4Xs9TO4vFMOFVDb2xTrKGO0+qqDB7ZBoMulv0wSEQd1/lOFvnKMRo5/RGxKSNIQN/fD7bkJfaL9XmgpFI2sqjcTQfzD900ONEqA46z+vZ4XOfaPmAtOUGpV+VSUpN5JCTDpbqd5Q28gztVfI=
+X-HE-Tag: 1794326569-569087
+X-HE-Meta: U2FsdGVkX18HOLnOu9dyTA7ciOXLQe1CtE3uyHzNxh34aJ4ZEuNDoP6J+XGps73WJPIrub/3zX/+Md8T3phmkcwePjKBjT63vqPzwteJ/xFJgRLuH//0YOUbxZDpWiA4rU03o9P2E9LWtFrGKdiQZQ+Lgs/ZD58U+ph+ROQfbq0Ow6NEzpS16xUcCJJSD0WiqD6BT1Lyh6z0DCEBSM8HcN4hZs/rROF7ekeAhUUqRzRSz74nD6SmxoHUD/87jnCy6z3HYFCCU+iOPkxb+W8oEDjXbjHUPZ6vQMV2Y6wEwpuSS1Kf3FG3mUcqjL6bVGMqYC/i0bgr+1iY4DFzVNjG78mjdJy3fS5LBYDIW4R5imUCOiiqsExL5KJUic52WlgNzw/OTzN/BBZNW1CShhsQvXBepyT7HnFgNwdlsn2hB/6ofau3u08WIbmVkbniBsEi0PmsYGih1vCqlfNkN9WfegaScxsVGqCmQau9Ml6cnSBFQj9b8zCatR+mJrRL6PCJ1vKND8ynuYgmHuTLaTefCDbJ9iyoa9K6iG92rc0gjmU4tGtrV3ryBGweyAnoCQNXCSAi2/BkcyBMKAPFjArLMijhrrE1pDD8XkM62dy+aajxcP1lz1CspVmfWVnbKHD7cyKq2CaoTafSXZ/4tZH0cLCeOMSo5P0FlI3vKpYiJkc8bXZtMEywBmjOre1MUAnasuQN5TZ9gYVwyMLt+VOKo63K/TgEcXXRK7pOXwdZlt2BknVcv/uHXCJNeN+iCc3tXojJEilvCPcA9QB/sX0ZISMLXuVdacFFgjJPTz89WN6CUjLTya5zgFQBU0BBVnkZmLWgSfHZOGSAwUFx6A4Ba9AvKe9km0pR8c1+VEw44yf4mYwjghLgFG2omqS4W6+7yi3qdcPVgUjGdnKqlLUmf8Tif0rjVJGCEliZb55Euy8k+kY4Nr4UUMUJKDxjBuZgAw1I4ct/9JjAuMfEMqP
+ phvsQFEe
+ Dcx3JPXuCxTgd3e7k1OP0gcMa50HdMMDnleNiS+9JqsqfgDBTgyjV65+NHlrByUBsQtGyHupMwvPEY380/E0pLkxkellWVsCrbqEQi7OWA+Ot0MzeBGcCfkVCB4WgFBcWYQiAhoPeTnbdO7rkjb1o3UQfFKriYs6d0aYwD2SEbF3m1FjMJEfK1lJshN8UQuF3Otz6IEdnHiFnlzHKlmzkg2Ci7JiLyHcTNpRAr41sMtd0Jl1iVLO3r3yf4YGSvNzIezcQI41lFThz/0dJ+a2hT53rJTcpaJ0wz1meFrUHXtrcZf//3FvpGkGbfX9ugvImvW89vIwsnvee66Emmq5hgSoBGMG57aHssmupApJ/AHE2N1CPTL3WUeOFNn/FxTcpqVAhEm/xw9QFTJkqEg3LyfzXLYgmUVkGPBLjwpy4x0SItZ75Yeas2BiZn6p3ibSUmJQgspallijiKYVhlRUwIIpHRuBIU4YS9qzP+zmtkOTB8nESPjmOCfMttx2tvYu3n3fWbrt76+E5Rqb5lhf2yORzURA0439nKNEGLwcQMrNOo56QXmZDHc7PHz5cZmebu8akOQkJ+9CBW6dg60jb6o6M1DdmJ8RYKtyQlmFtIQK8WB4PH4i9cWeZg6dsxqlKDpreORIOBnVJBjQQoeycu9RtWt5aeYS9b/nesrA2mVZNuv0vAZY/tnncmxpWjjoZ8riUCvzjPAzfSauR/nTJeT2oXKKd6nEpP+rt7uE/2lUGLhc=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -109,63 +109,109 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] mm: kpkeys: use DEFINE_CLASS_IS_UNCONDITIONAL() in KPKEYS_GUARD
-  macros
+- [Medium] arm64: kpkeys: mismatched CONFIG_ARM64_POE guard in
+  asm/kpkeys.h
 --
 
-commit fedb14faa9a0bdbbf2b6d66e78122c92692259b9
+commit 6f45a834f4b090307d508db166b798a5f825afea
 Author: Kevin Brodsky <kevin.brodsky@arm.com>
 
-mm: Introduce kpkeys
+arm64: Implement asm/kpkeys.h using POE
 
-This commit introduces the kpkeys header API, context switching helpers,
-and guard class macros for kernel protection keys.
+This commit implements the arm64 kpkeys headers and context-switching
+helpers using the Permission Overlay Extension (POE) and POR_EL1.
 
-> diff --git a/include/linux/kpkeys.h b/include/linux/kpkeys.h
+> diff --git a/arch/arm64/include/asm/kpkeys.h b/arch/arm64/include/asm/kpk=
+eys.h
 > new file mode 100644
-> index 0000000000000..69ec4808d850d
+> index 0000000000000..4f9bdb369b47e
 > --- /dev/null
-> +++ b/include/linux/kpkeys.h
-> @@ -0,0 +1,107 @@
-[ ... ]
-> +#define KPKEYS_GUARD_NOOP(name)						\
-> +	__DEFINE_CLASS_IS_CONDITIONAL(name, false);			\
-> +	DEFINE_CLASS(name, bool, (void)_T, false, void);		\
-> +	static inline void *class_##name##_lock_ptr(bool *_T)		\
-> +	{ return _T; }
+> +++ b/arch/arm64/include/asm/kpkeys.h
+> @@ -0,0 +1,73 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +#ifndef __ASM_KPKEYS_H
+> +#define __ASM_KPKEYS_H
 > +
-> +#ifdef CONFIG_ARCH_HAS_KPKEYS
+> +#include <linux/kpkeys_types.h>
 > +
-> +#include <asm/kpkeys.h>
+> +#include <asm/barrier.h>
+> +#include <asm/cpufeature.h>
+> +#include <asm/por.h>
 > +
-> +/**
-> + * KPKEYS_GUARD_COND() - helper to define a guard type that conditionally
-> + *                       switches to a given kpkeys context
-> + * @name: the name of the guard type
-> + * @ctx: the kpkeys context to switch to
-> + * @cond: an expression that is evaluated as condition
-> + *
-> + * Define a guard type that switches to @ctx if @cond evaluates to true,
-> + * and does nothing otherwise.
+> +/*
+> + * Equivalent to por_set_kpkeys_context(0, KPKEYS_CTX_DEFAULT), but can =
+also be
+> + * used in assembly.
 > + */
-> +#define KPKEYS_GUARD_COND(name, ctx, cond)				\
-> +	__DEFINE_CLASS_IS_CONDITIONAL(name, false);			\
-> +	DEFINE_CLASS(name, struct kpkeys_state,				\
-> +		     kpkeys_leave_context(&_T),				\
-> +		     (cond) ? kpkeys_enter_context(ctx) :		\
-> +			      (struct kpkeys_state) {}, void);		\
-> +	static inline							\
-> +	void *class_##name##_lock_ptr(struct kpkeys_state *_T)		\
-> +	{ return _T; }
+> +#define POR_EL1_INIT	POR_ELx_PERM_PREP(0, POE_RWX)
+> +
+> +#ifndef __ASSEMBLY__
+> +
+> +static inline bool arch_supports_kpkeys(void)
+> +{
+> +	return system_supports_poe();
+> +}
+> +
+> +#ifdef CONFIG_ARM64_POE
+> +
+> +static inline u64 por_set_kpkeys_context(u64 por, enum kpkeys_ctx ctx)
+> +{
+> +	por =3D por_elx_set_pkey_perms(por, 0, POE_RWX);
+> +
+> +	return por;
+> +}
+> +
+> +static __always_inline void __kpkeys_set_pkey_reg_nosync(u64 pkey_reg)
+> +{
+> +	/*
+> +	 * Writing to POR_EL1 potentially affects all memory accesses, so
+> +	 * use barrier() to ensure load/store instructions cannot be reordered
+> +	 * past the write.
+> +	 */
+> +	barrier();
+> +	write_sysreg_s(pkey_reg, SYS_POR_EL1);
+> +	barrier();
+> +}
+> +
+> +static __always_inline
+> +bool arch_kpkeys_enter_context(enum kpkeys_ctx ctx,
+> +			       struct arch_kpkeys_state *state)
+> +{
+> +	const u64 prev_por =3D read_sysreg_s(SYS_POR_EL1);
+> +	const u64 new_por =3D por_set_kpkeys_context(prev_por, ctx);
+> +
+> +	if (prev_por =3D=3D new_por)
+> +		return false;
+> +
+> +	state->por =3D prev_por;
 
-[Severity: Low]
-Could KPKEYS_GUARD_NOOP() and KPKEYS_GUARD_COND() use
-DEFINE_CLASS_IS_UNCONDITIONAL(name) after DEFINE_CLASS() instead of
-open-coding __DEFINE_CLASS_IS_CONDITIONAL() and class_##name##_lock_ptr()?
-include/linux/cleanup.h already provides DEFINE_CLASS_IS_UNCONDITIONAL() for
-this purpose, avoiding reliance on internal cleanup.h helpers.
+[Severity: Medium]
+Should this block be guarded by CONFIG_ARCH_HAS_KPKEYS instead of
+CONFIG_ARM64_POE?
+
+include/linux/kpkeys_types.h only includes <asm/kpkeys_types.h> (for
+struct arch_kpkeys_state) and defines enum kpkeys_ctx when
+CONFIG_ARCH_HAS_KPKEYS is enabled:
+
+include/linux/kpkeys_types.h:
+    #ifdef CONFIG_ARCH_HAS_KPKEYS
+    #include <asm/kpkeys_types.h>
+    #endif
+
+    #if defined(CONFIG_ARCH_HAS_KPKEYS) && !defined(__ASSEMBLY__)
+
+    enum kpkeys_ctx {
+    	KPKEYS_CTX_DEFAULT =3D 0,
+    	KPKEYS_CTX_COUNT,
+    };
+
+Because CONFIG_ARM64_POE is enabled by default on arm64 and does not
+select ARCH_HAS_KPKEYS until the later commit "arm64: Enable kpkeys",
+when commit "arm64: Context-switch POR_EL1" includes <asm/kpkeys.h> in
+arch/arm64/kernel/process.c, the build fails with incomplete type errors
+for enum kpkeys_ctx and struct arch_kpkeys_state, breaking bisection.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109-kpkeys-v10=
--0-aa6c4d9603bc@arm.com?part=3D1
+-0-aa6c4d9603bc@arm.com?part=3D4
 
