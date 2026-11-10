@@ -1,90 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59961606A33A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 13:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B763606A326
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 13:37:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=fer0wfte
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=QRR/ihPC
 Received: by kanga.kvack.org (Postfix)
-	id 70F346B00EF; Tue, 10 Nov 2026 08:35:41 -0500 (EST)
+	id ABF686B05B7; Tue, 10 Nov 2026 08:37:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6C0646B05B5; Tue, 10 Nov 2026 08:35:41 -0500 (EST)
+	id A95E16B05BA; Tue, 10 Nov 2026 08:37:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D6836B05B7; Tue, 10 Nov 2026 08:35:41 -0500 (EST)
+	id 9AE066B05BB; Tue, 10 Nov 2026 08:37:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3DD596B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:35:41 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C9343A08F5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:35:40 +0000 (UTC)
-X-FDA: 85419306840.24.3648806
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 329B34000A
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:35:39 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fer0wfte;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 775A16B05B7
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:37:37 -0500 (EST)
+Received: from smtpin01.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 11D9E808EB
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:37:37 +0000 (UTC)
+X-FDA: 85419311754.01.2AF54FD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 66CC940004
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:37:35 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QRR/ihPC";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794317739;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794317855;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v4ESPDJdrgBgcp+gpUd/piYwjuXvI0MjBHYFD6vGX5w=;
-	b=KDg/udSc5cJXJDEC3ZHNcllmuS9AtFVMZ7+qXILpu55+Y8IzaxJX6wYKpclyFUNjaoytlW
-	FkSofUikLrAGmWjyAT+s+MRwqTgHFrQiPSqt7XqZHxmLxOOujIaNyTqtdWULhs8EVXh2p5
-	rxt6pOBlWabW3UCb8QHnakh2AgL3uMA=
+	bh=mZHrabfWk4S2HUCqdB68Rskp0Af4pRxUMfzSm1U1JdE=;
+	b=u1z8ufriXMLTWIhTChK7yhYR7+YOLHJgPgRPbsjn1RwVtmQb/XO5P9ZGJB3diTD/vBI4QA
+	Tt0GaniGB8IrLiLr7MbwjQ765tRKVZVgoZkj81s/TbmKfoRBdEodnAeS70leTdzFK2rcKw
+	0vnCyc4iHUAkBxMoMBy5n10VHW+PVxM=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=fer0wfte;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="QRR/ihPC";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of harry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=harry@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794317739;
-	b=piT97a7Bf48gEa1pYmglOBMIO05qFPTBB73n0wPW8ZcOhO3HWySdoFxrZRKPRM2afHgO+5
-	7LgVS4X8JTBJr/TaVJihZJidIOdyB/u35zve5WIHEPJ9g4yhKWhW2FZZHy0eEawbJadNyc
-	uUQ93HOTAr9qmKNtB+Hjmd2KutXGOCc=
+	t=1794317855;
+	b=dcuIQiKLfRr7gKNWsXMnCa3RvZrXYucIc0SdIKa1r5UwBR14bMhujOTgeZuyuZhWMS6JXp
+	qd64k8bHVRAWtHxfU0k9VABrf6YxIQJU9emPXpApPgiGmlqvgcJCLFsMzn1TBm4MVFi7vZ
+	IeY39KyjF6XNFjGaHibu8ePBF6KznKc=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id EBC4561147;
-	Tue, 10 Nov 2026 13:35:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305101F0089F;
-	Tue, 10 Nov 2026 13:35:37 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A3FD641A0A;
+	Tue, 10 Nov 2026 13:37:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0880C1F0089F;
+	Tue, 10 Nov 2026 13:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794317737;
-	bh=v4ESPDJdrgBgcp+gpUd/piYwjuXvI0MjBHYFD6vGX5w=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=fer0wfteEYjcxo7hQaLIxSVq0hZuGyKdnDqnkmEagX6n1SjCh7CTZYsRoKmvUE//R
-	 D2jrqGr4ucz18d4vCBYp8hLVyh64ReaP/A6kdQ51ruhhIn14agdoFSGbq30SQVikAf
-	 zKSQ1jTBKU4t7Zp1t0PpmDBO8TrcggUZdJpi4oJvCfaCOhMnNomyCuUsKve2vBSiOS
-	 nY9WpGnkOw36wzDwbi96s8btEgb/PatZm0p5fZKuFHhiiuMa1TVDStHtBzYnm8gBDv
-	 xVdSQoMlUIeq22dPIUQLPdc+XOtn5TJJSxOqmVKf4QdhygUhsPYJOB9O9Hecy7Cpat
-	 IexS0soRmVjNg==
-Message-ID: <sashiko-outbox-207133@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/2] mm/hugetlb: optimize bootmem hugepage tail
- vmemmap init
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Li Zhe" <lizhe.67@bytedance.com>, akpm@linux-foundation.org, apopple@nvidia.com, balbirs@nvidia.com, david@kernel.org, muchun.song@linux.dev, osalvador@suse.de, rppt@kernel.org
-Cc: linux-mm@kvack.org
-In-Reply-To: <20261110114859.76343-3-lizhe.67@bytedance.com>
-References: <20261110114859.76343-1-lizhe.67@bytedance.com>
- <20261110114859.76343-3-lizhe.67@bytedance.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 13:35:36 +0000
+	s=k20260515; t=1794317854;
+	bh=mZHrabfWk4S2HUCqdB68Rskp0Af4pRxUMfzSm1U1JdE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=QRR/ihPCYTxS6rbD4+czUP/fyN+1My280e+0RDFv1ILWSPIXy1e6pJYallZfxpona
+	 s42yRP8xnZvKzdGEmaJCk2DcEvbHjBAgm8/f8HaKuLgmmYNe+L8dJHUaeBqvWxr/jm
+	 xv5n9hPYyaO4TQwWp8bBoY3qYs+VgmlrnhG2vwQVQm07tVfa8ovhpXCb/y7PCt+Gso
+	 rbmI7FpZKlcDmugp0tBK/vzVs+RJxcZCFy9BDNNz8NXUeu2tdZM3QEL5KLqN18Ja1t
+	 QTIlEJMQWFHCd2kjHbierwai3L+jWV7ydbgQn2hRhaqZxtylTaE3km5aTKDNhQGbeL
+	 Y5Cmf+C+N7FVg==
+Date: Tue, 10 Nov 2026 14:37:32 +0100
+From: Harry Yoo <harry@kernel.org>
+To: Sang-Heon Jeon <ekffu200098@gmail.com>
+Cc: Vlastimil Babka <vbabka@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Hao Li <hao.li@linux.dev>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Roman Gushchin <roman.gushchin@linux.dev>
+Subject: Re: [PATCH] mm/slab: remove outdated comment in
+ create_kmalloc_caches()
+Message-ID: <avMdQuXxfqMCBbBA@thinkstation>
+References: <20261104144753.2266231-1-ekffu200098@gmail.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261104144753.2266231-1-ekffu200098@gmail.com>
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 329B34000A
-X-Stat-Signature: hg64khtkckggkjmc71dozswmc4ewpt64
+X-Rspamd-Queue-Id: 66CC940004
+X-Stat-Signature: c869muhcqkwyy41pgwtr8p4xeodix9bf
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794317739-282592
-X-HE-Meta: U2FsdGVkX18FUj/20IBK1PU9kB/7vhkHiXAJhQBh963cKfLmR/CNOeBBVJsw3jtHclCvsLM/bOBNJKscwXLKEoGu+traD1+NFDrX3ksSSKvfbKRC8McfjkpaQpAEpzzbjDCv1Xk/mnkeiEZ6ainTXBQy7LkeZadlwAa2H5y0EUBu92dxWbCpUZJDGNctmY2dXHr7vm2U0uoYtOhh/58vfgSuXEUQb2/RJX79kXL6cOih/8UgPTVTTYuVorBmVqNAYYp9J/KtFULRjytwxbctOg/tR+c1LSCYluDJ99my4/juYZTm2hR0bMkRVFXO8JNSOHfray9tw1wKhDbepYAHcxDefHFO8wReTssn4LEsQkq6Oy/Yq7SxGQo8ddrRO1Um5HS5NOG9Wk0UdiTPapVMLC8DXQ4VRUMyDl0lnYXyMjkf73bXL5/ulOkqNv1EnXtZT+eQn9rGzrl4lxG2SkehIbm8wJb3JOB7WYTPoR3L4/xnGDz2Pkj2DjX3Gr0Yy851QMXyOfmUGGU5eN1N3sixEFnrOliNvgnkC6b32zRTlUJ8/WaqgbNOnBjiILAGaiOZ7SPx28fm/hUHED+j0qrqx8WUeXCVQupFOdSfcovKSnS2G3e1gsdwl5F4aFcDp3qtTLJ2ghrAU9U6sZULx1KNFXzL/JbAEI6b4Tib9HmMjI30sbWMuEvl2yrzzh3N8c02qVeGl7BZCPjYhGo2f5R1ERQ7vsLArFBil73WoLpgG0T9l0VGAPBOUJ1VynHCWjwL6ZnJ9uEGZwffyhH+3zgDIWN6C6IC9WZaMkkoM0xCY+zyBpiZgQdAHK9nFDF4/i/vtG1iGoXDe4G54zPl+PKpaQ6ogIhZT5qmtp328tBErmr7rlGRKcLzfn/pODDKE5t+8luydnbPX/RTxNDeV0NLtMI5uyVKjRVvSOdtOgsRjoWiPcZIFb3rvga3ORC5BU9SwxmOEr/7HMC8/cd9iUW
- zAYLq8Gx
- MZnLpHSF9BtM6KluwH43iuCGsZyJB/m6X+Y88Tjp/4Y5m2AIcEx/HP0CAETkHn1S7nTK2vk8rsDDGC7nlerxmE1mu1Tkxh4YGuws38AvGqEAf7YuX8nCy5zWKyr5ef4tmAL39j7XbcDPc81tkfdEfov7nLDiY6uyqJG7C7iLS7Re2jrJUaLs+r26f3XoMVD9O5+mIfmfF4O04qZhKJEpfYNpRlbGPrYWuE+x5sxfLMHgcjlVoVMvT34J+u0Jay6deQX4wbuMoSiNEVifcAIM/+AvoIF9CFUEuG24nfGo2ED7E9RfLFa/SGJy/XvZfxYYihCEduHRTsAI7bZKX5GtyqhZW7v4P16mg4vV0tJInXNUBXYQXXPQ3BKWB8GEaN91mEilGu8qBgF669HZAOl3bOcjjKaYod49Yn7jeKV/v1DUOjjHQI0hODsuol6f5SCIQ+L98p0rojXYI8e1MvPUFAIsV5USFrsvCkjIpqhg/vlWCTjdxCfsu8SvP1xY9G7hpGwac0pkQtT43mXlFNqWWPZc4QIoWabXb1dEKn+lsCFzmsbaUrqr+ol3JdlgmSq5MsdbUMxklgwOCchNpnk5klrgYhQ==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794317855-629319
+X-HE-Meta: U2FsdGVkX18i/rSy93FPQIYxGwmT977he2stXITBZRivF5tJ4Nx+bj+6o4FyeBAtGqlYcuCJtwhyCQEzNU0uTiKVHrQqYwAp2SZedcT8kMNS/C35+k0H3nC8tz3nNuEwKFYg1Zbzx1S4GaKZqkOBLmcl5HfVItfQ0/eoD3V1jFjgh7JO1MvUX9THTDQPPLCpAckq0DYkiVVsJrUYg/8XtiCNzcuNcUaBxHlnfEvIbp30qjkhlf05ilVHOmKAkwZY/qbrh/FRa9wYy42qnwGzlVZRdmVEjG/S/xLVx6gp/9oSKj10J0o6hyL2BrN45simk5zxek2bIOftDqq0eKshafzJFvtDgbBK7KkZe8mGkmz4rs0VW6dSrnZVnPlCR3D2D0Dz1pX2nl7l3FmF1O5TMXwEmxnRxPkHiN4gGiGO2klRBqkh/aP3kfmS2Je35/9YGEXnwo5fqu6xZEMzZJRYLnoMlqwUsZkYd7XbBoc4BrSGq8ylA7Qde/tcjjoDK6Ss0kYHXow8YLGUzQ2GBkrzVD6OO8YnFp9HXdHwOgoNkvJGWvWcqIjE8ZBqrCydJUr8RCqm//MfGzQ0QLQzS6Pp+xVuWufxS2wMr0K9eAzMAv9OD0N6b50fjzvvK0ACYf/JMovhRwZ+CNaguAg3Xaqf8+NWIOEjte6GOZ7iBrrenriesg4SR3o/a/jYJWV1z1PxjJBvlQVkvewTYybEJf1zqnF07LZebU3+dMr990p7TPzaIw+j7A02in1KeiL47ps1WUGQBSIgR9t906SqKdwpSzjMmHq2wO0DdxetgUQCixhQmxt+7SX/1mwg/eYnsB2oUf3zR6lss30/U457348v6W4jakfspqGcLyAir7ZR6eQASMQzjdVd3xZEI/qpXhxk1+TcI0MCxkx92XnJIrzZlcoHDU5lH5C/Htmy7Uowv0U3bsEs+gtDy95TbiGQNcDe5XYqkKNFAauCgPs89IQ
+ cf3XCDRK
+ tAlgQVA4uDtQ/PIkimAfDeFYJ3Sx76kD8fkGCwweEHulm+N47UGmbDY09+4mj4P0QUfM8dc+O8sGJbnQFsC0q2uNC7P+5EPnIcPYpN8AaGaLdaPRWVHX2oVf+B6HnxsZaC+SlQ3OzNWNQvYwofu25pdaKPAPOSx/PN+CQwCE+GjAuOXcoez7EIbZlD93lWy7Gt59pO3aCxjQmXeXov5HO2Kk8rssfSSPDqE+uKGPvGMfDtvYY/928BJBL9svcyMUPeE2nL8Klo5CZMBz2x+0dQtg0xqIyJwBkjSkz7577Hnq/iosRmVKL9na6OHP9rpCswuoi
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -92,82 +95,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [High] mm/hugetlb: out-of-bounds write in
-  hugetlb_folio_init_tail_vmemmap()
---
+On Wed, Nov 04, 2026 at 11:47:51PM +0900, Sang-Heon Jeon wrote:
+> Since commit 16a1d968358a ("mm/slab: remove mm/slab.c and slab_def.h")
+> removed SLAB, no kmalloc cache is created before create_kmalloc_caches().
+> 
+> So remove the outdated comment.
+> 
+> Signed-off-by: Sang-Heon Jeon <ekffu200098@gmail.com>
+> ---
+>  mm/slab_common.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index e66c0778ee98..c4a386f0dd90 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -1029,9 +1029,7 @@ new_kmalloc_cache(int idx, enum kmalloc_cache_type type)
+>  }
+>  
+>  /*
+> - * Create the kmalloc array. Some of the regular kmalloc arrays
+> - * may already have been created because they were needed to
+> - * enable allocations for slab creation.
+> + * Create the kmalloc array.
+>   */
 
-commit 5be89b38412d58045fd600596787f54c7559d32c
-Author: Li Zhe <lizhe.67@bytedance.com>
+LGTM, but maybe let's just drop the comment?
+The name "create_kmalloc_caches" already covers
+"Create the kmalloc array"
 
-mm/hugetlb: optimize bootmem hugepage tail vmemmap init
+>  void __init create_kmalloc_caches(void)
+>  {
+> 
+> base-commit: d15d7703166daf7bd62c844a3cb1b3a6279adb4c
+> -- 
+> 2.43.0
+> 
 
-This commit optimizes bootmem hugepage tail struct page initialization by
-seeding a template from the first tail page and initializing the remaining
-tail pages via memmap_init_page_from_template().
-
-> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index cb2de24affdc4..6ae5d2679e3aa 100644
-> --- a/mm/hugetlb.c
-> +++ b/mm/hugetlb.c
-> @@ -3239,6 +3239,7 @@ static void __init hugetlb_folio_init_tail_vmemmap(=
-struct folio *folio,
->  	enum zone_type zone =3D folio_zonenum(folio);
->  	int nid =3D folio_nid(folio);
->  	struct page *page =3D folio_page(folio, start_page_number);
-> +	struct page template;
->  	unsigned long head_pfn =3D folio_pfn(folio);
->  	unsigned long pfn, end_pfn =3D head_pfn + end_page_number;
->  	unsigned int order =3D huge_page_order(h);
-> @@ -3247,11 +3248,20 @@ static void __init hugetlb_folio_init_tail_vmemma=
-p(struct folio *folio,
->  	 * As we marked all tail pages with memblock_reserved_mark_noinit(),
->  	 * we must initialize them ourselves here.
->  	 */
-> -	for (pfn =3D head_pfn + start_page_number; pfn < end_pfn; page++, pfn++=
-) {
-> -		__init_single_page(page, pfn, zone, nid);
-> -		prep_compound_tail(page, &folio->page, order);
-> -		set_page_count(page, 0);
-> -	}
-> +	pfn =3D head_pfn + start_page_number;
-> +
-> +	/*
-> +	 * Seed a template from the first real tail page and refresh only
-> +	 * PFN-dependent fields before copying it.
-> +	 */
-> +	__init_single_page(page, pfn, zone, nid);
-> +	prep_compound_tail(page, &folio->page, order);
-> +	set_page_count(page, 0);
-> +	memcpy(&template, page, sizeof(template));
-> +
-> +	for (pfn++; pfn < end_pfn; pfn++)
-> +		memmap_init_page_from_template(pfn_to_page(pfn), pfn, zone,
-> +					       &template);
-
-[Severity: High]
-Can peeling the first iteration out of the loop overwrite the struct page
-past the end of folio when start_page_number >=3D end_page_number?
-
-Previously, the loop was a no-op when pfn >=3D end_pfn.  Now, when HVO does
-not optimize a gigantic folio, prep_and_add_bootmem_folios() calls
-hugetlb_folio_init_tail_vmemmap(folio, h,
-VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES, pages_per_huge_page(h)) after
-gather_bootmem_prealloc_node() has already initialized the first
-VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES pages.
-
-On configurations where a gigantic page has pages_per_huge_page(h) <=3D
-VMEMMAP_OPTIMIZATION_NR_STRUCT_PAGES (for example, powerpc
-mpc885_ads_defconfig with 16 KiB pages, MAX_PAGE_ORDER =3D=3D 8, and 8 MiB
-gigantic hugepages of order 9, where both values are 512), this
-unconditionally initializes folio_page(folio, start_page_number) and marks
-the adjacent physical page's struct page as a compound tail of folio,
-corrupting mem_map.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110114859.7634=
-3-1-lizhe.67@bytedance.com?part=3D2
+-- 
+Cheers,
+Harry / Hyeonggon
 
