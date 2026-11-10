@@ -1,62 +1,62 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604D7607623A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 07:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3953607555A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 07:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vlqCJjlJ
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hGLOrTkN
 Received: by kanga.kvack.org (Postfix)
-	id 62EB06B05BB; Tue, 10 Nov 2026 02:45:27 -0500 (EST)
+	id CBEBC6B05BD; Tue, 10 Nov 2026 02:45:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DF536B05BC; Tue, 10 Nov 2026 02:45:27 -0500 (EST)
+	id C6FC36B05BE; Tue, 10 Nov 2026 02:45:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 51D016B05BD; Tue, 10 Nov 2026 02:45:27 -0500 (EST)
+	id B5F5F6B05BF; Tue, 10 Nov 2026 02:45:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 323006B05BB
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:45:27 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 970351C42B4
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:45:26 +0000 (UTC)
-X-FDA: 85418424252.28.0B173A6
-Received: from mta0.migadu.com (out-238.mta0.migadu.com [91.218.175.238])
-	by imf25.hostedemail.com (Postfix) with ESMTP id EFE7FA000D
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:45:22 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vlqCJjlJ;
-	spf=pass (imf25.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.238 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 892636B05BD
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:45:45 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2EB4FA085D
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:45:45 +0000 (UTC)
+X-FDA: 85418425050.16.F966206
+Received: from mta1.migadu.com (out-97.mta1.migadu.com [95.215.58.97])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 33F0740002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:45:42 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hGLOrTkN;
+	spf=pass (imf17.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.97 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794296725;
-	b=PTSeSqj0P/cQmZoiffm78H437lYVp+kopkACN23lxdzTcdXvsmLGp7wZwLYgar8brLbJKO
-	LI6EVkU7CFyzK5lywMDNVi70s+J1hhTOJTQrbljSNHdgwrVgZJK5L4n5eKq6W5Jq3sJs5i
-	FB0KWP0Tdz9FEUz7qgI5sC5XAA+RU3U=
+	t=1794296743;
+	b=5vuJbQKqigfO5rXcRFSzr5tnITOSfQMrhR7swMwRHxzxwwDCOryQ1456dWbWVZbOzjpF/R
+	b7arVhgisYxXrg52TEnUHEE40vptkQULC3o4iQV1ZfQZQCw3+0Qx3uDDB40cnAYRYQ9EU1
+	cQRilhq3oNvwHuETwpFZxhkbF7lhz1w=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=vlqCJjlJ;
-	spf=pass (imf25.hostedemail.com: domain of xu.xin@linux.dev designates 91.218.175.238 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hGLOrTkN;
+	spf=pass (imf17.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.97 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794296725;
+	s=arc-20220608; t=1794296743;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bYjIYJm+n4nfDEAiZsWWktm7zzoyMcwgpbOm01w6spo=;
-	b=rhfrftvfZ+4EZ5r8sc4iJeX5+BH2ICx4n4f1y3AxgXyppesUKC0Mesxhsx8IuAqzj+WeG6
-	V2mf7cNHiYOG6OvDwN4Obn7me7lGBuMprIuWB3+aoSNBlnf+dIVZWJWymmueomtxno8G0N
-	NdGM9Liim6HQbpIzX0665/InVZ2pZ3o=
+	bh=J/UcQFN1fT4xKZkZ8LLvoG6TGQaSTpYGVdEtojnOZAc=;
+	b=usWVXtdCX9OJx2gAUYC9a//rTrPNghfvBeAziDAESjTNiYsZiZX7pTJTz3E53/rxSNQGV1
+	QHsN4Na5LfJZqzmxtq9cGYuhgfUT0p5yLqYyxAbyo6F0sfJTb+nEGZmeyTMdpb0+WLupqA
+	1/wW0iRBmbrUdFUMrQgdoC6U9OpIJeU=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=eY4VzD6wuof/JGdxP9nVKDJYmUFOxcoqpj+Y4Rp/P/w=;
+DKIM-Signature: a=rsa-sha256; bh=ltueAResg7nQ5h4N2uZJoyGUbiD7RPPYBW6X+pD3324=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794296721; v=1; x=1794901521;
- b=vlqCJjlJyhHO7JNbh8wajhkg5NO2nXDKM909lNOFUfkvgpW5VMjfwx25/Ij7r4IAoc3qN9jO
- pvKoFU0KTLNqAH5FS6p7MEbW8dboYwgKqMDNyHnEDT077oFgIzFKurSY4FboJMkAIQaAG2+6jjm
- Wzn+O01jdKSBSvqiJwnfISLo=
+ t=1794296742; v=1; x=1794901542;
+ b=hGLOrTkNtVDCRVp0cyzkHifJmElg80y14hV6JM3WDP18ctmttS0g93cczYi/tmnwtFZXwL/2
+ BKZ+r8+pV20A3at5nmYOWaSLYK8qH+AfKMnwBvKK1BVJNQYYeopD5BuDhD1CjZ5gCy3MaN7izCu
+ 9ddvsSi+oLmjg16qgBWCaiHc=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id d048f83d76d25cf6;
-	Tue, 10 Nov 2026 07:45:20 +0000
-X-Mizu-Trace-ID: d048f83d76d25cf6
+Received: by mta10.migadu.com with ESMTPS id a3f2b9640a841c13;
+	Tue, 10 Nov 2026 07:45:28 +0000
+X-Mizu-Trace-ID: a3f2b9640a841c13
 X-Migadu-Flow: FLOW_OUT
 From: "Xu Xin (vivo)" <xu.xin@linux.dev>
 To: xu.xin@linux.dev
@@ -76,9 +76,9 @@ Cc: akpm@linux-foundation.org,
 	tujinjiang@huawei.com,
 	vbabka@kernel.org,
 	xiao.wang@vivo.com
-Subject: [PATCH 2/4] ksm: skip rmap_item allocation for non-zero pages under only_merge_zero_pages
-Date: Tue, 10 Nov 2026 15:44:49 +0800
-Message-Id: <20261110074451.220524-2-xu.xin@linux.dev>
+Subject: [PATCH 3/4] selftests/ksm: consolidate ksm_stat readers into ksm_get_self_stat()
+Date: Tue, 10 Nov 2026 15:44:50 +0800
+Message-Id: <20261110074451.220524-3-xu.xin@linux.dev>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20261110074451.220524-1-xu.xin@linux.dev>
 References: <20261110074312.219847-1-xu.xin@linux.dev>
@@ -86,18 +86,18 @@ References: <20261110074312.219847-1-xu.xin@linux.dev>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: gkq7df7ozucdz3x5ixx7sm3uwg59nabb
-X-Rspamd-Queue-Id: EFE7FA000D
+X-Stat-Signature: 4kqkf5ywn3371xtwkermfj4nsecuet4n
+X-Rspamd-Queue-Id: 33F0740002
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794296722-16840
-X-HE-Meta: U2FsdGVkX18Behtq/Uhs1gvb0VePdjPZMmpuACxwxZTLcTKsHE3psaiy3H4gyb8lfzzPmEeasjQvIwJmk6Ao7Kh9zoyRTWHvL14Ih+17eNhnD2FnTF6/CtdGDYnDpQ/PwUR5CMmDagVTv1Ae37sUyqZb7zfvIwsj4R0iUagOpBMJJkxt6VNxzOyy7UY2N0yr5uLh8Godv6C5LGBPTEMZT5XaVvtivOQsHcbGoOhovMIgal7Mk9Xqgg7YPAcMRwGK3jy18QzKJZnsO+ToK6WOWrRmMwSoXWa4oMeFNzs92+qCe5OH7jXFdtRHotyZiOlclRXzNh4Ec+gFL6aOMYdOQKOaGkPeal+d6i+6kyrPTHzWjnZyfaYkWMRoa6QG78K01ZnhZqjo4lfib7LLTCvUxaQCM4kfjeDa4nqneRxPkxRhYIfJAlbdF81ne52GB/pGyYA3QnI9R5buJe4R/wJzv6JlBwu+3aSXJm7XmojngXruPIcP9CxsddgduPzZgDFeWp0T8xs+PJnbAdR7E4tNTnk6h5j3odzW0mYnfIJZmWk+bv4+or/QAyNl7/gceq3whAvkrlMPGHar9VfPqmaqQDdirpcjWNvKZqGXX498iy604T+36OJq3BY0IzugxEUjNIhoQJ7PISmsxQ4aOjMMhbhBrCvnMlgGfLjJorr9pUhFO3BoA0KGvDZpUgc54L755sQpw/oH4r18UPeS/7oZqTFVej1LZx70wPgvK2TmETgPK9hjRlMxtrx9GGXIDyiWUx9XJJ0qfVczj8wZ81482CBBEuEo6RFM4yktaVdZMsw8xspMYsBIlGNT0ntQySLoyNdJ8bgQ2vJqiy082WSmMns4xYiKpDDxZhPkhWJA4z/mO0LKNHS9avhS2mMC3FCeG4Jp4THWj3TuJQ2oanZcZdMnRpf+cJSG/8GoiziIcaB+RuWJVanaW4tJ6MEYKCBwiRMLQCogC26MRCxNOSc
- 16a6UJKB
- L1W19Al2ODmxu6yoNK6oP7D8xQVpNaCOLsLRfHdvVjgLlpmWTpoIn88zeCEaAZoOFYsdx9gceHymE0AJoE8zO74r63VivRx5FxE8GhWTnczTA6XBt3DutQnt/y6z/NhmUzNY2LnFhCvuZxyujMVtvpK8xwrpzDSxM0BPfJ6pbKteb0NndW/vsKC8U2lZ+dqpZpUwWx0kVgiiYx4t7KvrSxhYIkpS0c1rCBglmzfSybDFb/T1ClSw1PZTQBsFkdzl8mwpxs8uOVmFfM/W8v/T8XtqgWt6LIo3bo51BDFXT0G113u4cK+4GB9tII09hN9x4HCUCY27AHomw5+1meyaEGFUaxfeldF48EIwdSeGF1NG71Y63kjtAh4WBpQ==
+X-HE-Tag: 1794296742-709878
+X-HE-Meta: U2FsdGVkX1+TpeAJaH7vFulD9lQHIxMwWOPcblzsEMt4Jt2htTb1PhBtBC+9r59rdchYLkMyOR4mKzxxPaUPolSOVL5j7EeHeu3ndCzruRBqduwSujZFG5KUviqxCuS0yQDEDj0GGulK9gen39RnCZYiBTR6jMhoPpBW3ofctLke13lsOqV31wijNSvlzDKC0n6TiA3b16C6Kkok7buLxnfZtXWp+PfVMNZz8Ssd5tMR86LR3JC5I+K9ZxQr7vp7KkN3QX75ynHxXcNTh9K7E/zBQqn9YUbXIqaYnAB6gGJSo5FwO2SCig6eQTSHR339fTiL3V5AdKPfkzaPsDKmRSk4ibZiVNBvbteQGSNo2XcusYPK0UENJRv8guAB7iitPJocUU+2cakfyygeuCdPh/ghoEDD9PgoCc4c9nIiTe5y2R0keAJAuWekGZlKJeorKGUQyhhp8Q1F9OnBWTosOHMe3mjbDyF+EJpD5ZjhdSJXH7Xb04wBYLqVWjQlFLPVZ8rX0VToiDy/1VmJ28vKztmqz1TMaVH4jRnyyVVvgosjiY3OTzTvxZkrqRFuNaMWq31pgG1e2PlRYjNbN4EKAcmihtDQRz4A0Gx0BhqoTGgb4obfsI2rSS6HGujbsgRJE2ZxaH40GdMk4FQZdOQM7XksybTeQqwtJ5xqAEvPGGINuOC0zD2Y4apKveoEL1k8TCdUKCy3exoZMRzwOOsniPdo8p4sNcux6rrEgUaI+n0m5emU7H0fFmOnUwl+4KsfqSH1vjL9YnDwPdN32l3KQel/EZv3onSJvhzYO0vGeET1jYeax95lSSQy6Wum1jORCJRUcLskYGOL0rBDUcqIEhhbSFjBOiN8jt3LkEhVkQbhupc+e6zMR5PhLrYQL3OApnhES0WaggichgPCs8Dkd4kKHDHkhpNUNMAoeRE3ppqjh3KFv26PQ1KsTRZHtdb7BFH4SIFFZPU+lIo/xJP
+ 4V/5j+O5
+ rFaF7ehYvz15HNYdd5o3vwuU/QNZn/3Xk2aL4DHlkNXUe+HlSRZNWaSk4DphCy6IKWgMl3TK3Gsf1WiGF1L8y/24lrVZIgIxM8NFLl3LHbJIKO2IOD2sMsuCWafoypYQ/yFERFZrsvGuziYmtKcnafblA0oAqIKcPLE/QWhvVP0C5K/ENw6hB1FCsO0ItiUD+UbvQd1odMPIe9IhPUSc8awZyz1SRdFWUvb1A30oWAvnp4uvKDeI4zfYbUodoQi4yL8+Y5Q+wpTSGST3Kk/YCjcpcJI4R4QQhSNrjh7y0COyzMs6CClc/h6vLCkz0OTRJ5LkEyAQwRPXDwp4+zxc03p7n+9ugwHgrOAaj
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,154 +106,189 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-When only_merge_zero_pages is enabled, ksmd only ever merges empty
-(zeroed) anonymous pages with the kernel zero page. A page that carries
-data can never be merged, yet the current code still allocates an
-rmap_item for it in scan_get_next_rmap_item() before cmp_and_merge_page()
-decides to skip it.
+ksm_get_self_zero_pages() and ksm_get_self_merging_pages() both read
+/proc/self/ksm_stat and differ only in the key they look up. Replace
+them with a single ksm_get_self_stat(key) helper in vm_util.c, which
+reads one value from /proc/self/ksm_stat by key name and accepts only
+the keys used by the tests.
 
-On workloads with a large amount of non-mergeable anonymous memory this
-is a real cost: every scanned non-zero page pays for an rmap_item
-allocation, and the rmap_items accumulate in the per-mm pending list.
-For example, a MySQL instance with hundreds of gigabytes of anonymous
-memory (mostly buffer pool pages that cannot be merged) ends up with
-ksmd creating rmap_item metadata for each candidate page; the metadata
-overhead can wipe out any gain from the zero-page merging and even turn
-the net benefit negative.
+This is a pure refactor with no functional change; it prepares for a
+new test that also needs to read ksm_rmap_items from /proc/self/ksm_stat.
 
-Add should_skip_non_zero_page(), called in scan_get_next_rmap_item() before
-get_next_rmap_item(), which, when only_merge_zero_pages is enabled,
-checks whether the candidate page is all zeros. A non-zero page is
-skipped entirely: no rmap_item is allocated for it, and any stale
-pending rmap_items below it are freed (as get_next_rmap_item() would).
-The page is reported back to ksm_do_scan() as ERR_PTR(-EAGAIN), which
-counts it as scanned and continues, so the pages_to_scan budget is
-preserved.
-
-The all-zero check (pages_identical() against the kernel zero page) reads
-the whole page. For a non-zero page this is a net win: the extra page read
-is cheaper than the rmap_item allocation and the stable/unstable tree
-operations it would otherwise trigger.
-
-A page that is zero now but is written before cmp_and_merge_page() runs
-is still handled correctly, because the checksum-based decision in
-cmp_and_merge_page() (added by the previous patch) is the authoritative
-one.
+No functional change intended.
 
 Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
-Co-developed-by: Jinjiang Tu <tujinjiang@huawei.com>
-Signed-off-by: Jinjiang Tu <tujinjiang@huawei.com>
 ---
- mm/ksm.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+ .../selftests/mm/ksm_functional_tests.c       | 18 ++++-----
+ tools/testing/selftests/mm/vm_util.c          | 40 ++++++-------------
+ tools/testing/selftests/mm/vm_util.h          |  3 +-
+ 3 files changed, 22 insertions(+), 39 deletions(-)
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 49f3728a3d03..e641c37ee096 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2535,6 +2535,69 @@ static bool should_skip_rmap_item(struct folio *folio,
- 	return true;
+diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
+index 135191f99962..2ffb97ae3120 100644
+--- a/tools/testing/selftests/mm/ksm_functional_tests.c
++++ b/tools/testing/selftests/mm/ksm_functional_tests.c
+@@ -85,7 +85,7 @@ static char *__mmap_and_merge_range(char val, unsigned long size, int prot,
+ 		return err_map;
+ 	}
+ 
+-	if (ksm_get_self_merging_pages() > 0) {
++	if (ksm_get_self_stat("ksm_merging_pages") > 0) {
+ 		ksft_print_msg("Still pages merged\n");
+ 		return err_map;
+ 	}
+@@ -144,7 +144,7 @@ static char *__mmap_and_merge_range(char val, unsigned long size, int prot,
+ 	 * Check if anything was merged at all. Ignore the zero page that is
+ 	 * accounted differently (depending on kernel support).
+ 	 */
+-	if (val && !ksm_get_self_merging_pages()) {
++	if (val && !ksm_get_self_stat("ksm_merging_pages")) {
+ 		ksft_print_msg("No pages got merged\n");
+ 		goto unmap;
+ 	}
+@@ -204,7 +204,7 @@ static void test_unmerge_zero_pages(void)
+ 
+ 	ksft_print_msg("[RUN] %s\n", __func__);
+ 
+-	if (ksm_get_self_zero_pages() < 0) {
++	if (ksm_get_self_stat("ksm_zero_pages") < 0) {
+ 		ksft_test_result_skip("accessing \"/proc/self/ksm_stat\" failed\n");
+ 		return;
+ 	}
+@@ -221,7 +221,7 @@ static void test_unmerge_zero_pages(void)
+ 
+ 	/* Check if ksm_zero_pages is updated correctly after KSM merging */
+ 	pages_expected = size / pagesize;
+-	if (pages_expected != ksm_get_self_zero_pages()) {
++	if (pages_expected != ksm_get_self_stat("ksm_zero_pages")) {
+ 		ksft_test_result_fail("'ksm_zero_pages' updated after merging\n");
+ 		goto unmap;
+ 	}
+@@ -234,7 +234,7 @@ static void test_unmerge_zero_pages(void)
+ 
+ 	/* Check if ksm_zero_pages is updated correctly after unmerging */
+ 	pages_expected /= 2;
+-	if (pages_expected != ksm_get_self_zero_pages()) {
++	if (pages_expected != ksm_get_self_stat("ksm_zero_pages")) {
+ 		ksft_test_result_fail("'ksm_zero_pages' updated after unmerging\n");
+ 		goto unmap;
+ 	}
+@@ -244,7 +244,7 @@ static void test_unmerge_zero_pages(void)
+ 		*((unsigned int *)&map[offs]) = offs;
+ 
+ 	/* Now we should have no zeropages remaining. */
+-	if (ksm_get_self_zero_pages()) {
++	if (ksm_get_self_stat("ksm_zero_pages")) {
+ 		ksft_test_result_fail("'ksm_zero_pages' updated after write fault\n");
+ 		goto unmap;
+ 	}
+@@ -671,7 +671,7 @@ static void test_fork_ksm_merging_page_count(void)
+ 	child_pid = fork();
+ 	if (!child_pid) {
+ 		init_global_file_handles();
+-		exit(ksm_get_self_merging_pages());
++		exit(ksm_get_self_stat("ksm_merging_pages"));
+ 	} else if (child_pid < 0) {
+ 		ksft_test_result_fail("fork() failed\n");
+ 		goto unmap;
+@@ -771,7 +771,7 @@ static void test_merge_aged_pairs(void)
+ 		goto unmap;
+ 	}
+ 
+-	ksft_test_result(ksm_get_self_merging_pages() == 2 * pairs,
++	ksft_test_result(ksm_get_self_stat("ksm_merging_pages") == 2 * pairs,
+ 			 "Pages aged by smart scan got merged\n");
+ unmap:
+ 	ksm_stop();
+@@ -793,7 +793,7 @@ static void init_global_file_handles(void)
+ 	pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+ 	if (pagemap_fd < 0)
+ 		ksft_exit_skip("open(\"/proc/self/pagemap\") failed\n");
+-	if (ksm_get_self_merging_pages() < 0)
++	if (ksm_get_self_stat("ksm_merging_pages") < 0)
+ 		ksft_exit_skip("accessing \"/proc/self/ksm_merging_pages\") failed\n");
+ 
+ 	pages_to_scan_fd = open("/sys/kernel/mm/ksm/pages_to_scan", O_RDWR);
+diff --git a/tools/testing/selftests/mm/vm_util.c b/tools/testing/selftests/mm/vm_util.c
+index f26f9e4bfdbe..8f1ee1f81e36 100644
+--- a/tools/testing/selftests/mm/vm_util.c
++++ b/tools/testing/selftests/mm/vm_util.c
+@@ -904,14 +904,20 @@ bool detect_huge_zeropage(void)
+ 	return enabled;
  }
  
-+/*
-+ * Determines whether a candidate page should be skipped entirely when
-+ * only_merge_zero_pages is enabled, before an rmap_item is allocated for
-+ * it.
-+ *
-+ * A page that is not all zeros carries data and can never be merged with
-+ * the kernel zero page, so there is no point in allocating an rmap_item
-+ * for it. Skipping it here avoids the rmap_item metadata cost that full
-+ * KSM would otherwise pay for every non-mergeable page.
-+ *
-+ * @rmap_list: head of the per-mm pending rmap_item list
-+ * @addr:      address of the candidate page
-+ * @folio:     folio containing the candidate page
-+ * @page:      the candidate page
-+ *
-+ * Returns true if the page should be skipped (and any stale pending
-+ * rmap_items below @addr are freed), false if it should be processed.
-+ */
-+static bool should_skip_non_zero_page(struct ksm_rmap_item **rmap_list,
-+			     unsigned long addr, struct folio *folio,
-+			     struct page *page)
-+{
-+	struct ksm_rmap_item *rmap_item;
+-long ksm_get_self_zero_pages(void)
++long ksm_get_self_stat(const char *key)
+ {
+ 	int proc_self_ksm_stat_fd;
+ 	char buf[200];
+-	char *substr_ksm_zero;
++	char *substr;
+ 	size_t value_pos;
+ 	ssize_t read_size;
+ 
++	/* Only the keys actually used by the tests are accepted. */
++	if (strcmp(key, "ksm_rmap_items") &&
++	    strcmp(key, "ksm_zero_pages") &&
++	    strcmp(key, "ksm_merging_pages"))
++		return -EINVAL;
 +
-+	if (!ksm_only_merge_zero_pages)
-+		return false;
-+
-+	/*
-+	 * Pages already merged by KSM are handled by cmp_and_merge_page();
-+	 * do not skip them here.
-+	 */
-+	if (folio_test_ksm(folio))
-+		return false;
-+
-+	/*
-+	 * An all-zero page is exactly what we want to merge with the kernel
-+	 * zero page; process it.
-+	 */
-+	if (pages_identical(page, ZERO_PAGE(0)))
-+		return false;
-+
-+	/*
-+	 * The page carries data: free any pending rmap_items that are below
-+	 * it (they are stale, as get_next_rmap_item() would), and skip it so
-+	 * no rmap_item is allocated for it.
-+	 *
-+	 * Compare the masked address, unlike get_next_rmap_item() which
-+	 * compares the raw rmap_item->address (which may carry the
-+	 * UNSTABLE/STABLE_FLAG bits). That is intentional: a pending
-+	 * rmap_item at the same address as a non-zero page is stale and must
-+	 * be freed here, not returned for processing.
-+	 */
-+	while (*rmap_list) {
-+		rmap_item = *rmap_list;
-+		if ((rmap_item->address & PAGE_MASK) > addr)
-+			break;
-+		*rmap_list = rmap_item->rmap_list;
-+		remove_rmap_item_from_tree(rmap_item);
-+		free_rmap_item(rmap_item);
-+	}
-+	return true;
-+}
-+
- struct ksm_next_page_arg {
- 	struct folio *folio;
- 	struct page *page;
-@@ -2737,6 +2800,16 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 			if (tmp_page) {
- 				flush_anon_page(vma, tmp_page, ksm_scan.address);
- 				flush_dcache_page(tmp_page);
-+
-+				if (should_skip_non_zero_page(ksm_scan.rmap_list,
-+						     ksm_scan.address, folio,
-+						     tmp_page)) {
-+					folio_put(folio);
-+					ksm_scan.address += PAGE_SIZE;
-+					mmap_read_unlock(mm);
-+					return ERR_PTR(-EAGAIN);
-+				}
-+
- 				rmap_item = get_next_rmap_item(mm_slot,
- 					ksm_scan.rmap_list, ksm_scan.address);
- 				if (rmap_item) {
-@@ -2839,6 +2912,15 @@ static void ksm_do_scan(unsigned int scan_npages)
- 		rmap_item = scan_get_next_rmap_item(&page);
- 		if (!rmap_item)
- 			return;
-+		if (rmap_item == ERR_PTR(-EAGAIN)) {
-+			/*
-+			 * A non-zero page was skipped under
-+			 * only_merge_zero_pages: it was examined but not
-+			 * merged, so count it as scanned and keep going.
-+			 */
-+			ksm_pages_scanned++;
-+			continue;
-+		}
- 		cmp_and_merge_page(page, rmap_item);
- 		put_page(page);
- 		ksm_pages_scanned++;
+ 	proc_self_ksm_stat_fd = open("/proc/self/ksm_stat", O_RDONLY);
+ 	if (proc_self_ksm_stat_fd < 0)
+ 		return -errno;
+@@ -925,34 +931,12 @@ long ksm_get_self_zero_pages(void)
+ 
+ 	buf[read_size] = 0;
+ 
+-	substr_ksm_zero = strstr(buf, "ksm_zero_pages");
+-	if (!substr_ksm_zero)
++	substr = strstr(buf, key);
++	if (!substr)
+ 		return 0;
+ 
+-	value_pos = strcspn(substr_ksm_zero, "0123456789");
+-	return strtol(substr_ksm_zero + value_pos, NULL, 10);
+-}
+-
+-long ksm_get_self_merging_pages(void)
+-{
+-	int proc_self_ksm_merging_pages_fd;
+-	char buf[10];
+-	ssize_t ret;
+-
+-	proc_self_ksm_merging_pages_fd = open("/proc/self/ksm_merging_pages",
+-						O_RDONLY);
+-	if (proc_self_ksm_merging_pages_fd < 0)
+-		return -errno;
+-
+-	ret = pread(proc_self_ksm_merging_pages_fd, buf, sizeof(buf) - 1, 0);
+-	close(proc_self_ksm_merging_pages_fd);
+-	if (ret < 0)
+-		return -errno;
+-	if (!ret)
+-		return -EIO;
+-	buf[ret] = 0;
+-
+-	return strtol(buf, NULL, 10);
++	value_pos = strcspn(substr, "0123456789");
++	return strtol(substr + value_pos, NULL, 10);
+ }
+ 
+ long ksm_get_full_scans(void)
+diff --git a/tools/testing/selftests/mm/vm_util.h b/tools/testing/selftests/mm/vm_util.h
+index ab1325dc6580..2b25a9eab30c 100644
+--- a/tools/testing/selftests/mm/vm_util.h
++++ b/tools/testing/selftests/mm/vm_util.h
+@@ -159,8 +159,7 @@ static inline int sz2ord(size_t size, size_t pagesize)
+ void *sys_mremap(void *old_address, unsigned long old_size,
+ 		 unsigned long new_size, int flags, void *new_address);
+ 
+-long ksm_get_self_zero_pages(void);
+-long ksm_get_self_merging_pages(void);
++long ksm_get_self_stat(const char *key);
+ long ksm_get_full_scans(void);
+ int ksm_wait_full_scans(long nr);
+ int ksm_get_smart_scan(void);
 -- 
 2.34.1
 
