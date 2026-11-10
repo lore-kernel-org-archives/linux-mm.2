@@ -1,69 +1,68 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4E59606A881
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97B0606A325
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Mi6pzJbm
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AZNk0F2A
 Received: by kanga.kvack.org (Postfix)
-	id B08676B05B1; Tue, 10 Nov 2026 15:33:38 -0500 (EST)
+	id DCB9D6B05B2; Tue, 10 Nov 2026 15:36:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ADFCD6B05B8; Tue, 10 Nov 2026 15:33:38 -0500 (EST)
+	id DA6EF6B05B4; Tue, 10 Nov 2026 15:36:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F5CF6B05B9; Tue, 10 Nov 2026 15:33:38 -0500 (EST)
+	id CE0156B05B6; Tue, 10 Nov 2026 15:36:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A9A86B05B1
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:33:38 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC3FB140AA7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:33:37 +0000 (UTC)
-X-FDA: 85420360074.21.1BFCDE8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 30B7F100003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:33:36 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mi6pzJbm;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AD7F66B05B2
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:36:10 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 5406AA0A80
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:36:10 +0000 (UTC)
+X-FDA: 85420366500.16.209C56D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id ABF5B1C0008
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:36:08 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AZNk0F2A;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794342968;
+	b=I5EpoAO/oHEuycDzzsCpdNKDyYdjly92oUzxgDi0WWFKvt1qOSGmB6mfPrrnYjNkodO3Pw
+	PzsmMMALHFdIrKpL9uL2dH/i6eBP6GR6t3+XO1YYg123oZpipE7tNgYCzecsVHw1sYDv9G
+	s4xlhXb0jDSB379XRWW1/ZYmxObZZwQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=AZNk0F2A;
+	spf=pass (imf18.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794342816;
+	s=arc-20220608; t=1794342968;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/8ocYQBe3YFFmUUoCd3DPsEeCobQ/m4s1lpafYEhyRg=;
-	b=KP2V3ing7Q23avT+Jh2eSNgI/Q85WJBjknGRK2IwZFWWqSciJWbnVZKAqq6Mqu5dsKqk5j
-	yNHo9OSs5Q/WNvx6edudMy7zw9LNr9jGAT9WYVvduLk0L69r2drhZ3yq3SJRZzqRNiJthM
-	tPd4Y0P3wA0UUVXj2qifusDeF51os0A=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794342816;
-	b=RLAQ7iUFLCOgHQWtTOfkKleKQgRfa4Ae/bt0UsxLflGyOLz8BzguulA6pTpST8TE6H1Rlx
-	M2h6Q3cXLclAmLeYYYp0k4FExLztq8GF8yCDgsMyxJvN9JZEDyQgXzTeB9vJBZFH0fkKIp
-	hfzEl3J5pzsJc3hN6/m4B7/8d2v9oVI=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Mi6pzJbm;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=ZUgz3Zj4l1X+7pLJOjMeK6znxMPodZgNhJVee3GIBpY=;
+	b=HDk/bdH/Bl32+PuQhtem9+y/wrDPMeiJJaYOkYlepWpd5YF3ItMqxL2tAwC0dLz6JbmcGQ
+	zKvRN7JZCGomXljIZbL5j0r0CTSzran+iXpTkrktWYejh7ZJ+6FBxUD5pZ68CY4XMz8wZZ
+	aiw9Ez0zwBlL2sUBmO8DWXmgYIaBEHA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 524EF474E7;
-	Tue, 10 Nov 2026 20:33:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FAE1F0089F;
-	Tue, 10 Nov 2026 20:33:31 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 34CBC601C2;
+	Tue, 10 Nov 2026 20:36:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A6D1F0089F;
+	Tue, 10 Nov 2026 20:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794342815;
-	bh=/8ocYQBe3YFFmUUoCd3DPsEeCobQ/m4s1lpafYEhyRg=;
+	s=k20260515; t=1794342967;
+	bh=ZUgz3Zj4l1X+7pLJOjMeK6znxMPodZgNhJVee3GIBpY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Mi6pzJbmGbk+Y7lwP1y+fgu4twMGHVAMHHT1GHNSzeJCGFPvQY06WGUh0F8gG2d9B
-	 /46tdmMsmHUyjAa5hnJT820kJxQZpxX3Op1/JyjtNwjI1DdQs62lE+2EBrNXcaitWH
-	 voiG/bXJV3FyiQ3xLYvqu8YrDTYvbmT6E3mNzNYEfh1ZGZyOJPFQ5SN3KXspVAvYbe
-	 C8VwynMbJH3tkME+dSdl17rZ1/txeiLoBCXe9GCVQQ6+b7Q/MFDHi+WSvNvKCLJfOW
-	 EvgMKyHovR3fJ2W47FvmVHz8977Xi3TqMnyedOdXiIFANjpHXT33kCvtB1UL1Epsw/
-	 PIkgit8f9BXUg==
-Message-ID: <sashiko-outbox-207712@kernel.org>
+	b=AZNk0F2ArbqLF1NOLT+6cm2uesJciY53GvhbThDnVJqf1bZG2MCJ5/Nrvy7loZ1gW
+	 C9022AnNNRoYBC7ugXktDd2Ax7Ds7ztythfHq4vhKFNW/pTR6kxv1Y+P0P+iGmikmf
+	 WJvHD+eaEiquCd2Hf97MvozEmhoE0Um3tZRf45KlTN+rQgn3TuUunqH2NEQ2aE01wn
+	 yvFqIIAs51d+VKHVl5fKqUVNcqsC0W+3NNc1LgmpPs48SxghJ6AhbdkBq7ZaHF6JKr
+	 ozcEymvuAGr3RILoBqmRXXhSrMbt/S3EWqw9rb2DmvT5Dp8eo73DjBgL4tWEVE4wkU
+	 s85LmRmmAK0Qg==
+Message-ID: <sashiko-outbox-207715@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v3 1/6] docs: security: Describe the Kernel
- Assurance Plane design
+Subject: Re: [RFC PATCH v3 5/6] kernel: add KAP checks for unshare and setns
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "HARIHARA SUDHAN. R" <harisudhan@armoriq.io>, linux-security-module@vger.kernel.org, "Paul
  Moore" <paul@paul-moore.com>, "Kees Cook" <kees@kernel.org>, "James Morris" <jmorris@namei.org>, "Serge
@@ -79,24 +78,24 @@ Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Jonathan Corbet" <corbet@lwn.n
  Prateek Nayak" <kprateek.nayak@amd.com>, "Valentin Schneider" <vschneid@redhat.com>, "Vincent
  Guittot" <vincent.guittot@linaro.org>, "Shuah Khan" <skhan@linuxfoundation.org>, "Ketan
  Bhardwaj" <ketan@armoriq.io>, bpf@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <20261110202246.274-2-harisudhan@armoriq.io>
+In-Reply-To: <20261110202246.274-6-harisudhan@armoriq.io>
 References: <20261110202246.274-1-harisudhan@armoriq.io>
- <20261110202246.274-2-harisudhan@armoriq.io>
+ <20261110202246.274-6-harisudhan@armoriq.io>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 20:33:30 +0000
-X-Stat-Signature: bfrftqhhsppe8igqsx9ge6rebz3ptety
-X-Rspamd-Queue-Id: 30B7F100003
+Date: Tue, 10 Nov 2026 20:36:04 +0000
+X-Stat-Signature: w5i9wz7a87kezhu5t8rwrjiys6oqaqp7
+X-Rspamd-Queue-Id: ABF5B1C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794342816-991780
-X-HE-Meta: U2FsdGVkX18DvYrdI/lWPqX9apy0P+ybh21gXKke4RkZ9Oqo2FKFt4JdDeQ7Rc+1VzRdzAdCCdOqJCx7ws2HI6rMgBzcHFAKAhcO87l7NcfxMEH7xqT0eUrRw6zicsPds3xSFqB8aHewcn5bwoD1jHCxwjsrCmo9JNXYVRmI9mWoQU34DIKqvEDxsm2/K0LNwZ5ApBdC1eQgakFwTMyJi2qOzlHzz+C/OkqSqmxdwZHFFFsjIrjpQTcd0rrvRYHhT1WrJ9adq44FqvW4N4EgzXIDcv2jwIiFRWNwj8e/X04cRheRimoyR7UW60q4mIoTQ5speZ9LddIwl5j6qmsbvlIRDagOJ6hQqbtGPfO8Qf8cEivU8daYXLTywYMvCusIioPS8WaFdOMMJ1qRq/qgFzY8t7PFgWOOkzBj4JpAknrVzq/VKBiiqK2dWVmy0pp9l8oc6O6VvJubhpT4jQ2rcvbVPJQFEeGEhoMOpo5uc4YPFoZ2RRLJ7ojUE1gmGBMR9Z45jagniwBVretmrQl0XWjGDNY+rl0QHLzu7TUK+NOTaf1tx25zZTN3HjsiA7ihcl3vLj9cvx0D4mTKGPanP7V1b6LqiJ7aylLxT6qlN7XVVbHMRsrbkvUA57tgYdvFKu6tjAZkNTCIH0qLE2WmbIq9CliyYs47l7AWckgGg5xUqtVZdOgOj7FBlsHi5A63Stmeca/7JTPDxrHku37wrSDFZV3pWp3peT/+gHa8cK24aGt7DszJMtPd7V/G7H6RXnCQXZWSP3RnuyC/DHnCn+3GHmDXS29jt5jbahku3fqyJdNKW/ZbyJLqUeFL8wKJ1HyrP23d2RT+umF0HPWDabKT8mVRXVCp7574FBfjPB/2PzjuZ6QTW6YFFgK4VvhBXk/Q1dlO3WgnxE3RRa95ELALYQlzsj9/dSWZVku5mWN3cl+QM+HNeQEvztarRw/VK1VGRF7885BE8EJHFO2
- LJ1NY4Jc
- FntyPDslxeubllGBKZFlULdjD/i70zWf9bVzPQBV2pOvlylAM8rmtc38KWstNx4FxFG7/RJ0/7RhKrbCTVMkcHPKYPu3YDYQZ3hs4h/L4dwjIpGo3GKSP8mXMleINpl/GiRJjPjTXeq/kJtSDaZls4qL7sFDYoN5c18fWoh3JdVQ4dNx/aXsJcVvF4m2xJgxlfQ9ZHQyIuX8IxuKJzkjlcaz03j+Je6rGPXM412AtOn66GsdvTIpm9llJnMHLRvZYn9UexWLD1MgTTGRMHSieQxPGJOhmuEAosfYZvcvOOSYwYxsfZrnEShYwuHWuGhDLdh+RkX5Ir0w+4Ff0aqCbSr4qU/3ZVPkkUCEAcd+wCBe7rTwK1G3sM8vF8lwZx6ggtv+KybYBAQEatGejDNvlEpvQsn/neixalXc1IFusOuAhdB4zi5nV4I8FhVQi+lFiE+ThXbhipDoGkzU7eFhN/hK1Lk7hGJxHTvGJSaxGD1eQe1NOPTOC1zMjrEEy/ydDA9R0P4QKfw+xX7dAH9vycIneY8Z5zAG/gJINFb7m0fce5oy4N0aoOenrSLUHpDYA8yyz
+X-HE-Tag: 1794342968-278918
+X-HE-Meta: U2FsdGVkX19jD+3puoVsXEfAmXncpoFUDsRmPdQu1OP5GtOAKnZOI5cpKX3pEq8i7sbKMTMSh6apGf3411u7dVdSS9sKENwYjoZqDrxdtrubGTE13XsxzB+DBOHroherbRU4+pUZ5fJGdKQV8+V+r73F9Rm5YOzLk5Zj220bXjr2CA8FJfr3bIhFTTEVpHVqaZzIkTLyQAAqreYfRclXog8t6MAS8jggRH4c7za5N5jGp7qWEBLE8myYQYFYrSqKgnAfRIangfxmgJ+/BK4d9RfCnI+hTwukYuBjT1Q4s9+lDnoK+FlKsLZTW91Ig69F88apiW2CbuSgb/eUNH+nB2DTKgW64codIIz0nytPpbjXzqRNvJ0v5VzRueUAYLxMImQH68D92kr194cMYwq79m/wMkM9GI1X6B+xW78UcZcG+ziZZBUfAbkYj1qCrQX2QLS24NhLlTOmZO3qzDPaZtb4TTnlCxgltmJuSScPdZ5ixqlb3qmWNb9E+/lUCuBIIB0AVUR4z9iTRD20qY3HKXLo0K7AwkDm7GrKSddffAWcGMBvWK4Tv209+xDAdwy3MPRpcP1IfkcVHoT5ugTkJFq9eE6xV0u/m1MpHRHg08SiXiuuHKgsBEN80FeaOk//ywtgfx83BTEOwEDKGr/KvtfuqcKg8kUM8Opj5J8+EuBkoyJ2fdOgy2CK/zDHChk0gmp2hMsbhUVc0b1MJSoIEytNwoWpoOLRhvi9a6RY+psN9pP7mtGrQYoxFQvEzc4H43Hrc9J+cHHyBtmNXnekiXZQb2IsgfOEmp53HMl/jvozHPAepFtA/6siHTpLXe438qZXpjr1V34Nkacx/HQK3Nr3e4l37q9dIUFn3tGSttbQA2fdlljNnOWy7qT3cpAl+ihFmwKxeUzTZ8LH7UWihkK25+9eAqnLj31W46Odg412+9KhaLoQcaSSKR+lVh8K69nPlJmyyUY7zzzPRd0
+ rraWbZ+C
+ 5uAJqYcLvJqp7zJwZ3jFa2O9guroX03LRa+swYGXeK5s6e3ZfdEjfPlzeSrW1VDgrjS+lwAe08Ifsf0/HHIYIwny+cdg8xjQ/B3H0E0gh7b+GFh+XUnpL1gidU1uTxLE+eY0YQhYn6RQJOo/YIR8WEzu1ZpzTF+NvYBGmwJNZg0Qvr//3QxIp4x6z1cq0Jw8h/2QUhzEcsYJaHNmzgtHwQGjKIw7D6cmyHtiuOAdg8xNm5D52xJt3McK3QU63Fmt9lgXM+CNmoDYwkXPCHFEYgknWFXB2PKg1I1aJMI/y2P92/Y2Opr06WmWRvM/dyJaeKsU5j0jG/b2Vxs+X4nqp9ZLVrYTElIhAuIcPc2Yw2blg3+DMaUrY+EGyIZ7yWm6EdbKuyh1o7qvKqvW80O5OhL1SEsu4gyrtEJOynmFfrwo0+iSsWsbGs9oAnsc4pAYyanGr6AxNiekuEDIzVOeO/oWoSl7vGbHQ9zbcIYRr1LiJw2cVGMN777CVBVw8XHD79P8SyxXMhYFCfzGk3HUIKTEZhkdsvIuX8+M0IxmC/Fnufsl433c4i/AKcg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,61 +107,56 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [Low] docs: security: kap: contradictory epoch semantics for bound
-  tasks
+- [High] security: kap: CLONE_NEWUSER skip in
+  kap_check_namespace_flags() breaks user:unshare rules
 --
 
-commit 77da64268c0c9921ecf4f2c4a0222c86b4687cb2
+commit 9adc8e1a3a53f48cafa9cf1ec8d4bd24d0a65150
 Author: HARIHARA SUDHAN. R <harisudhan@armoriq.io>
 
-docs: security: Describe the Kernel Assurance Plane design
+kernel: add KAP checks for unshare and setns
 
-This commit adds security documentation and securityfs ABI documentation
-describing the Kernel Assurance Plane (KAP) design, Intent Lineage Groups,
-and control plane files.
+This commit adds KAP namespace flag checks to ksys_unshare() and the setns
+syscall.
 
-> diff --git a/Documentation/security/kap.rst b/Documentation/security/kap.=
-rst
-> new file mode 100644
-> index 0000000000000..e002a081c6607
-> --- /dev/null
-> +++ b/Documentation/security/kap.rst
-
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 33760ece3bb30..3dda9f211ceae 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
 [ ... ]
+> @@ -3286,6 +3287,9 @@ int ksys_unshare(unsigned long unshare_flags)
+>  			 current->fs !=3D current->real_fs);
+> =20
+>  	err =3D check_unshare_flags(unshare_flags);
+> +	if (err)
+> +		goto bad_unshare_out;
+> +	err =3D kap_check_namespace_flags(unshare_flags, "unshare");
+>  	if (err)
+>  		goto bad_unshare_out;
+>  	/*
 
-> +O1 finishes its first stage. The controller advances O1 to a new authori=
-ty
-> +generation that is narrower: no package cache, no network. It writes the=
- new
-> +authority and a higher epoch to O1's igroup. O2's igroup is untouched.
-> +
-> +From its next check, an already running O1 worker is held to the new aut=
-hority.
-> +It cannot reach the cache or the network even though it could a moment a=
-go, it
-> +was not asked to drop anything, it was not restarted, and O2 is unaffect=
-ed. If
-> +instead the controller revokes O1, the next O1 check fails closed.
+[Severity: High]
+Does kap_check_namespace_flags() fail to enforce "user:unshare" and "user:*"
+predicates when unshare() is called with CLONE_NEWUSER?
 
-[ ... ]
+security/kap/kap_lsm.c:kap_check_namespace_flags() {
+	...
+		if (kap_namespaces[i].flag =3D=3D CLONE_NEWUSER &&
+		    strcmp(operation, "setns"))
+			continue;
+	...
+}
 
-> +``epoch``
-> +  Monotonic authority generation. Installing a higher epoch fails every =
-task
-> +  still bound to an older one closed from its next check.
-
-[Severity: Low]
-Does advancing an igroup's authority_epoch hold already-bound tasks to the
-new authority, or does it cause them to fail every check closed?
-
-The motivating example above states that writing a new authority and a
-higher epoch to O1's igroup holds an already-running O1 worker to the
-narrower authority, whereas the epoch definition here and the
-kap.authority_epoch entry in Documentation/ABI/testing/securityfs-kap say
-that installing a higher epoch causes tasks bound to an older epoch to
-fail KAP checks closed.
+Because kap_check_namespace_flags() skips CLONE_NEWUSER for "unshare", the
+check is deferred to kap_userns_create(), which passes the bare target stri=
+ng
+"user" to kap_check_static_target().  In kap_string_match(), "user" does not
+match "user:unshare" or "user:*", so allow rules using the documented
+TYPE:OPERATION syntax reject unshare(CLONE_NEWUSER) with -EACCES, while deny
+rules for "user:unshare" or "user:*" paired with a broad allow rule such as
+"*" are bypassed.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110202246.274-=
-1-harisudhan@armoriq.io?part=3D1
+1-harisudhan@armoriq.io?part=3D5
 
