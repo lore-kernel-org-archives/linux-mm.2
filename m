@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B94D606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33584606A32A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KcOCCYWA
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IXzdUAM8
 Received: by kanga.kvack.org (Postfix)
-	id 52DA76B05BD; Tue, 10 Nov 2026 07:04:39 -0500 (EST)
+	id 973986B05E3; Tue, 10 Nov 2026 07:04:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E5086B05E3; Tue, 10 Nov 2026 07:04:39 -0500 (EST)
+	id 923B26B05E4; Tue, 10 Nov 2026 07:04:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3F4866B05E4; Tue, 10 Nov 2026 07:04:39 -0500 (EST)
+	id 7EBA76B05E5; Tue, 10 Nov 2026 07:04:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 146C76B05BD
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:04:39 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 572786B05E3
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:04:40 -0500 (EST)
 Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A4C0B16061B
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:04:38 +0000 (UTC)
-X-FDA: 85419077436.25.53B0709
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id EA4EEA0344
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:04:39 +0000 (UTC)
+X-FDA: 85419077478.25.E380EDA
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 0E3FA1C0006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:04:36 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KcOCCYWA;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 582522000C
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:04:38 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IXzdUAM8;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794312277;
-	b=48/5X4aqV12FjXldrys6J5YJ32XT0Le4keqwozk2csA/j8YnJRHd/pdVj5aFqn6BHaYi8R
-	4mKw20envzyhcghs5E9TWAjKBDqiCet5RfUDRMGLIGsqGNxjnGK4eNa2kB0teSGyVKIiWO
-	ptFpjWlqpWb4ImVmDXlom+8QVIzVdqA=
+	t=1794312278;
+	b=DPlzcCzFcB1VgswfOyCQy0F1ZeOaXtPCydc4LuTUPd2aMN7p5xe4eXbfT+oOi8dzW4GYt+
+	4T3La0drXYN+rneUEA66feDrg58wLshxkXzoY2uHIxq9AR6Fl4U91RVqyCHAkcCBdf20WF
+	sbxVJc6nsv+cFW5jytx5bIartBNmdkA=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KcOCCYWA;
-	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IXzdUAM8;
+	spf=pass (imf13.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794312277;
+	s=arc-20220608; t=1794312278;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jrygS1/RGf9WTTPg4mDCAkP4sfA4sEob9F/O4w3E0hk=;
-	b=H9HkjSyaBP/DnT9q9RSNR2SavE/oDQo3ahgFpHbtZ76njVQ6C9QBOID+MUZEfRsAgzVu1W
-	lNtArYTJXYYPwlKF4o08phxIGsgTzI4PeErVsSx00xWR9MeL0OQEAnlabgbo+fdqI6C7xz
-	NrhYAl63ExsnoqtbBMBoVLAh1BKDk4A=
+	bh=0aSoJsBiqEIUd5UKMI0ygCRRPttcqSGpsbYPXvmzyAo=;
+	b=TIZ6/U2VpiCSNfnmePDAXPbGy8ZMNt6GaFplxybTsoW62kAIazm36162P8L+9HlnQL/Lzt
+	/VFtzD0/8rGsXeQ8a3xab9DDrQnVRvdhWYRChGVrBK5kwq++t5kXXrH9ftMXNOaayENj+v
+	PRfK4Wa/zp9zFenaL0qEu6NO84Hb8e8=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 630A641800;
+	by sea.source.kernel.org (Postfix) with ESMTP id A4CF142B6B;
+	Tue, 10 Nov 2026 12:04:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09941F0089F;
 	Tue, 10 Nov 2026 12:04:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE2D1F0089F;
-	Tue, 10 Nov 2026 12:04:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794312276;
-	bh=jrygS1/RGf9WTTPg4mDCAkP4sfA4sEob9F/O4w3E0hk=;
+	s=k20260515; t=1794312277;
+	bh=0aSoJsBiqEIUd5UKMI0ygCRRPttcqSGpsbYPXvmzyAo=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=KcOCCYWABoQtL9shv6zPEwfz36Q9vRKXw6kS6PUCkAF29BUIifBZeJ3ZX1ZSu2M/H
-	 A9E58n2FVlp8ZuKlB+OxwSeA5yfk3por7FvaXW67VvLcYF0WC/YVoLmcgoWKju/Dzt
-	 ngn/x6YEp3sYFKPyRTzy/+bdA6T67d+Jdi9F+SRc/o0H6uJGGQKMDd6chbYAVvjmBL
-	 UnojlpFZBqADtU2Z81mFRSeFnazfmFeDvaP5iPRQg1/WHGEZuXYBt7aKSvdB/yp6c5
-	 QtU4TBeyxdDgh+vnFkG7GvcfiHWoxEw34GifTgEEcQA7Q8/G2uuxm7E9aC4d9zedCT
-	 tjtEPbqWuOFaw==
-Message-ID: <sashiko-outbox-206973@kernel.org>
+	b=IXzdUAM87+XzkIRHiRfpnvI2s+xEs0XGnrwwoMUMnPUBZ8y0t2iWRV2E02ewXhHVA
+	 NGTQQWa9XUk+/jgWgg4UYrVMxgZ8twmDATpIgz+WtIg+U1h7AQNywdERSmLtdwu+1p
+	 1yJ/Cnggr377uFPGHBsUD8zjEVac0UROMkRTam4odzqIalGQdG1mQOIz2x0Jmt6Wre
+	 bQCax5zsRZeqSQ/zocON828Sb0iSGXeoba6O9YjJ4RcTJXeZX0kiYGeqWNnHm032xd
+	 BHE14V34Hfg4Q5jswGMHLXEN0FNixHLqCYMQ9LhWCI+ppV7sE74UNHdfgauG7hJlTK
+	 mcgceR6ybYdxw==
+Message-ID: <sashiko-outbox-206974@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/2] mm/memory: recheck PG_uptodate after
- ->page_mkwrite()
+Subject: Re: [PATCH v2 2/2] mm/memory: refuse to map page cache folios that
+ are not uptodate
 Reply-To: sashiko-reviews@lists.linux.dev
 To: =?utf-8?b?S2lyeWwgU2h1dHNlbWF1IChNZXRhKQ==?= <kas@kernel.org>, "Andrew
  Morton" <akpm@linux-foundation.org>, =?utf-8?b?RGF2aWQgSGlsZGVuYnJhbmQg?=
@@ -73,24 +73,24 @@ Cc: "Lorenzo Stoakes" <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, 
  Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
  =?utf-8?b?TWF0dGhldyBXaWxjb3ggKE9yYWNsZSk=?= <willy@infradead.org>, "Hugh
  Dickins" <hughd@google.com>, "Chris Mason" <mason@kernel.org>, linux-mm@kvack.org, kernel-team@meta.com
-In-Reply-To: <20261109120403.82361-2-kas@kernel.org>
+In-Reply-To: <20261109120403.82361-3-kas@kernel.org>
 References: <20261109120403.82361-1-kas@kernel.org>
- <20261109120403.82361-2-kas@kernel.org>
+ <20261109120403.82361-3-kas@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 12:04:35 +0000
+Date: Tue, 10 Nov 2026 12:04:36 +0000
+X-Stat-Signature: t778syq6nps4huq1wgo1otm8777yecag
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 582522000C
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 0E3FA1C0006
-X-Stat-Signature: 9fdhjchzrru65a57udx5rojdtgwjpgjp
-X-Rspam-User: 
-X-HE-Tag: 1794312276-38768
-X-HE-Meta: U2FsdGVkX1+NSelg/fSG/TAv5z6z4FyhlCk1FsfnwlNqqVKNRlDcrxdHTqbwDc+Z9RBTSxuBhxj9Xu1AcJ2nu0UryR+o37KgpUrRxwiRG7krMSqUdJBPEyRloGOTsmsy5ej2nTkxaQP7PpB4V6xM5mdYmIDu/ZWJhjUsGm+w7CxPOY0jZ08UGeuQpPfALhtSCt2Y6rNhfqfh2fd7P/v7Poyq81q7UBioNAMIFMRva2H7r1j1nym3yAniF3s8fbqt8RD9dqq9n8Y9PLU2ujCUJXeUn6miaMemZYHVProBNRqFkqpDZvTWYFaQ8O5CYkTFyaDmO9k0d0n1rHks9/kTBPaoA28K4nDyB8jNE43B0IIPaLjL/dw6vVmECBWs5pI6/fxTxbpPyHiF1yANaspdIaIABVg9lZPCOgISHBMC5vBW92k2p8lzdqKBy0uZ19GKWegJ4UkSDhG7kAEVpMdvHp0cdTMLTLM7ikNEcGG4Hvy79lGaOS6OCkdOEg+fSIP8HEMEIBRaQEWPx/SyFdjozGp9mJmKdHd4eaduJgqPDAIoyR4/MNHpGxCChgX4oi+oE6jjmhSa8eMI2fY6YCYfmyj9FMCVxAtjBtO7dGnsbJdx7aLwgDMdVy/XtpDut2dXhKIkz1sPSwxESpe+t5MsN975kGVb6yiq4DRTQjSjzKkI5xr14t0Oqsm0or9xOrrYHefx6kiaGNnOg8cxSrMkTH4TAAzSe43m8YNr/EkbE/W/pFQIf+tF7OUXZUdpqTokVFz0ZqoFmLVxIhva0+FckXtJasSmmFwCWTYstCCU8KK8BGxx4H6VFNUpMSjYX0Pr2x12G4IH4lyHV+cA2HzwNloZ7ME4PeEdc8G6O+XVMwCEgD8JsoNvD6kMUjSXMrsANnYhg1tToBvPDI6e3064ooueE1enp2emMS+R9V1+SZRdWPpHLFHo0TCxZniHnpKa4ykAzuoq6ificu1W0W8
- 876Rz8TZ
- 7Lf9RDG+qdjo4zxi5A5ZY4YfC5aaHUll8PzDnmEFWfGDUHbSp+X91wfwXKtEF58yFF5Q/+ZfhfOxE3FfOUErQRu5T9UukPX05V0u1nI9//EuCnED+ZF5YXLqinwdt8YcuLzNP8KB/LVL2slZr8RdupVX3nvLDrj3NuQN4HsRutEBIfTnWxHl6kRyzqz9NgNjZTReCfQ+rAT4gVC7Aw4NchgZKzLVT0lUM8KqPT2EccTpYvQY8miLk2a++UNYviEOEWSqrl4knClD7SHsize8gKTzerVUj7VRIKoLudvQD4sVznUEIZxuR4uiL1nUHQeioLkzAT/RehT/kCD2g0f3HdpUVwGYk2lmrHGUHlt4pA78fr8/Fc/HHBwy+Gx2jzlyUY7AXV5UMQC1ingyKHV6fwQo0HqBtDRD5MG57Qfcx+iBq3AqO1c8LFJA29l/GWRCfndJ+CqS5DulCoTn1N1iTFczm/xnSzMitsY9R1Be9BqYvvxaHZp+1gBcDrtHnF4mRhqyriGXnfRXeLXd0rEbdW39/GiPVWU2442qZ/UeF2B7X830VZGyWHOwQ8cpinlge/PgqxHW9rOGzDWhxgODWIAbZ0FzJ9hF8e3J5S3dTv7ZPxSp90wte8LQOJBzk9r6ug51aTJ+irG8zwr2Wyww97VaLqC1NK0XriJTkZfgURO3J4QNxNWxBWYdYAUPdI7p5GphKExgWIfmDBsB0emhmTdmE+w==
+X-HE-Tag: 1794312278-503985
+X-HE-Meta: U2FsdGVkX19etYZYM728/BjCQW2f5lfb7GAu9TMCdL5ubUk4rK4pvNLkMg/Amy/A9RO+ovKOQJRLoiG2t8+kp4NxpFqE0xcadO4nl+RGncmTvXJgEU/1Z1neF3ioi1n5mZCuF6wFbK+HP+POM75/N0q4TgETiWu9P0pSqH3adBkzG+2RQERb2MU48/kjUzGVcUiy4XJ31tkWB3AqPuK8bxJ+uhYD7tuILay0rsbywGqnHep/EyW/Ruvv5ZWY64g+Y5kasVkCJbc9XGCvyS1HT0VUSyptRR0OnuqtxObZLAo5LirP+7gULAKJUUQILmL72Kgc9C2qxfhun7BeRSRJZVxhKpcWG/cjCSA0LoOIiJ4yeYTArcJqhyqk6bS+0vm7rWLjRp3HQagGGGxSqbMOP/2KOwjHXXzJG7Zc7IV6TOQqV10Ek/RiBx03zkR9xEGdoY6hzeTH5P/ylrxcSlNCeiKVFgcCHhi51hUM8Qf8jdUXnPIhUZsnQjfHATREwzS+zamM9PIaT3T79o5KJtWWK8tMGDdP8+ez/veHwT0CftYeHySyEX42pVJUHyKJv8r4KvPIsrMD1KuBvWwLBCVFqOpcyaMFFLsMboifwNDNZKHjU6nMSHuDhwGBa2eZqIGzGhRFzeCNFBBcMiTrACErPJmpi9u88gwP4xicp0GBRxPCCKYviud/Mxlmt0yjxjPaPu5W4UGHdFnwtL+byFW9Hdq5ny23pTR1nSJaQ7iMAMMkPwKgXqLh8hE2J5PEcpvgkW+IG2JYz/kOOwblM5I+0f+Nx7g8pOtm6zUhIHs/qe8HJLpPMQ0GNUsnOKFpDZYirFk5TMPjOD4Vnj6PZWj0PCl2uEKX48IRJCk0wWX8aJE0++aM8jXgFNkJKMZXE//tfDtlqB366g/x/0pDjeUTdi9DSbYbXfdlQ3baL8mx6BAp07GRMW/tncCcsfWDxPIShXQEdPd/kXMcVNY5PEO
+ zpEVllvW
+ P+VjHu21BZ6CfRBpawgKxqbPLXQoeMHUVOSs3D3DSeqgaUJ+pHofzcJRginf+Vs+B6V94QwTLiT2bUxDjpwX7l6Un0a2TkBLs236VJmzzCMQOBDEWbSW6dvd3843vinfT8x96P0QEbC3/VPFEarRN8/dnnQT3JkZag/kJNS60OVkNr9Vyax7Rh9NIfGuCbHt0yaIQRIwkL1/pb5W9AjXspbo999bnGOUz+TptjA7T+bADt/8QVdccYdG1CQ1b/i3chrVJzykWxIJmg1jcFMkJ6NK4Mk9n334wVlQY6uhD3/vKV38qs32/4k+fJ6+zgzWWc++fo3J++werokWiVJasdS7lBc6rzFak+omZrM1XzxBex4rObvWFxpBbWBlYYVyXy/+inywBLTjhdz0m/foU4vo6zRtpKAXF5BCz47ypQZH3cG4h+hUZ0b+QS+VOk0QvVg82gbpxtArONFqOO4c6XBDcBr7yRPVTARVHsmWmn7lhY+jHqTmizFPZQfoC45zVHBu2pU9wzjQ7Blce3mpj9bW1l6wANhlPfmgHAXpv16nQ0i0A4naMIc5ldnIFx6CXdE5NG0Y8jP0Tmj1G8f3LKi8Sd3qyro0Sw6uHZoUB454CdUf377feAsJB/YtQHct+mPEs6nMmAGtOH2yOxSHiWfxD8aGW4B/3NAg3Zm26t9ZXAVU=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -102,90 +102,65 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] mm/memory: PG_uptodate check in do_shared_fault() runs after
-  ->page_mkwrite()
+- [Medium] mm: reachable WARN_ON_ONCE in do_set_pmd() via MADV_COLLAPSE
 --
 
-commit 700a620ccdd59b966f387e178bdcded1ac07e9a0
+commit 46c971cfbe24534d9e4da886ac3a3c5691497ddc
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-mm/memory: recheck PG_uptodate after ->page_mkwrite()
+mm/memory: refuse to map page cache folios that are not uptodate
 
-This commit rechecks whether a file folio is still uptodate in
-do_shared_fault() after ->page_mkwrite() returns with the folio locked,
-retrying the fault if PG_uptodate was cleared while the folio was unlocked.
+This commit adds WARN_ON_ONCE(file_folio_not_uptodate(folio)) checks in
+__do_fault() and do_set_pmd() to refuse mapping page cache folios that are
+not uptodate and return VM_FAULT_SIGBUS.
 
 > diff --git a/mm/memory.c b/mm/memory.c
-> index fe72e66c9c2ee..cc1d0b7d15c75 100644
+> index cc1d0b7d15c75..2324c04d632f5 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
 
 [ ... ]
 
-> @@ -6163,6 +6175,16 @@ static vm_fault_t do_shared_fault(struct vm_fault =
-*vmf)
->  			folio_put(folio);
->  			return tmp;
->  		}
-> +
-> +		/*
-> +		 * The folio was unlocked for ->page_mkwrite(). If it lost
-> +		 * PG_uptodate meanwhile, retry the fault to read it in again.
-> +		 */
-> +		if (unlikely(file_folio_not_uptodate(folio))) {
-> +			folio_unlock(folio);
-> +			folio_put(folio);
-> +			return VM_FAULT_NOPAGE;
-> +		}
->  	}
+> @@ -5727,6 +5734,9 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct =
+folio *folio, struct page *pa
+>  		return ret;
+>  	page =3D &folio->page;
 > =20
->  	ret |=3D finish_fault(vmf);
+> +	if (WARN_ON_ONCE(file_folio_not_uptodate(folio)))
+> +		return VM_FAULT_SIGBUS;
 
-[Severity: High]
-Does checking file_folio_not_uptodate(folio) after do_page_mkwrite() run too
-late once ->page_mkwrite() has already dirtied the folio or set PG_uptodate
-back on it?
+[Severity: Medium]
+Can an unprivileged user trigger this WARN_ON_ONCE() via madvise(MADV_COLLA=
+PSE)
+on a fallocated shmem THP?
 
-In the race with ecryptfs_writepages(), writeback clears PG_dirty via
-folio_clear_dirty_for_io() and then clears PG_uptodate when encryption fail=
-s.
-When filemap_page_mkwrite() runs next, it relocks the folio, checks only
-folio->mapping !=3D mapping, and calls folio_mark_dirty():
+shmem_fallocate() inserts PMD-order folios into the page cache with
+PG_uptodate clear.  When madvise(MADV_COLLAPSE) runs on that range,
+collapse_scan_file() sees a PMD-order folio and returns
+SCAN_PTE_MAPPED_HUGEPAGE without checking folio_test_uptodate():
 
-mm/filemap.c:filemap_page_mkwrite() {
+mm/khugepaged.c:collapse_scan_file() {
 	...
-	folio_lock(folio);
-	if (folio->mapping !=3D mapping) {
-		folio_unlock(folio);
-		ret =3D VM_FAULT_NOPAGE;
-		goto out;
-	}
-	/*
-	 * We mark the folio dirty already here so that when freeze is in
-	 * progress, we are guaranteed that writeback during freezing will
-	 * see the dirty folio and writeprotect it again.
-	 */
-	folio_mark_dirty(folio);
+		if (is_pmd_order(folio_order(folio))) {
+			result =3D SCAN_PTE_MAPPED_HUGEPAGE;
+			failed_pfn =3D folio_pfn(folio);
+			/*
+			 * PMD-sized THP implies that we can only try
+			 * retracting the PTE table.
+			 */
+			folio_put(folio);
+			break;
+		}
 	...
 }
 
-Before returning to do_shared_fault(), folio_mark_dirty() ->
-__folio_mark_dirty() triggers WARN_ON_ONCE(warn && !folio_test_uptodate(fol=
-io))
-and tags the non-uptodate folio PAGECACHE_TAG_DIRTY.  When do_shared_fault()
-then aborts with VM_FAULT_NOPAGE, the non-uptodate folio is left unlocked a=
-nd
-dirty in the page cache, where writeback can pick it up again or reclaim
-cannot evict it.
-
-On filesystems whose ->page_mkwrite() goes through block_page_mkwrite() or
-btrfs_page_mkwrite(), block_commit_write() and btrfs_folio_set_uptodate() s=
-et
-PG_uptodate back on a full folio without reading from disk, so
-file_folio_not_uptodate(folio) returns false and the invalidated folio is
-still mapped into userspace.
+collapse_pmd() then skips collapse_file() and calls
+try_collapse_pte_mapped_thp() -> set_huge_pmd() -> do_set_pmd(), which also
+does not check folio_test_uptodate().  This hits the WARN_ON_ONCE() and
+makes MADV_COLLAPSE fail with -EINVAL instead of instantiating the
+fallocated THP.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109120403.8236=
-1-1-kas@kernel.org?part=3D1
+1-1-kas@kernel.org?part=3D2
 
