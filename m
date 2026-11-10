@@ -1,147 +1,110 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8AA606A337
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 14:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E82560A260D
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 14:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jir9xEzU
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=oA7y27wc
 Received: by kanga.kvack.org (Postfix)
-	id EF8E16B05B7; Tue, 10 Nov 2026 09:14:04 -0500 (EST)
+	id A42426B00EF; Tue, 10 Nov 2026 09:15:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED02E6B05B9; Tue, 10 Nov 2026 09:14:04 -0500 (EST)
+	id A19B76B05B8; Tue, 10 Nov 2026 09:15:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DE6076B05BA; Tue, 10 Nov 2026 09:14:04 -0500 (EST)
+	id 922C46B05BA; Tue, 10 Nov 2026 09:15:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B50EC6B05B7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:14:04 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B69F31608A5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:14:03 +0000 (UTC)
-X-FDA: 85419403566.18.0A317A5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DCB8F80008
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:14:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jir9xEzU;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B69D6B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:15:54 -0500 (EST)
+Received: from smtpin30.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 67D08C08AE
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:15:53 +0000 (UTC)
+X-FDA: 85419408186.30.C600548
+Received: from mta1.migadu.com (out-104.mta1.migadu.com [95.215.58.104])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 07AB840013
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:15:50 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oA7y27wc;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.104 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794320042;
+	s=arc-20220608; t=1794320151;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ivmt603po3d3E2NVVoR2W5ORstU9Dg9rTKeWn3hg5so=;
-	b=i1H7tgDsSfzjL6xe/yYxMEuAq6QfqaGcdhP3BA5WiKgpqUBEGGcTSUIt1DINYAxxmnGcpR
-	UHhBtSW+FPsS58VgrO/U6/H3HqblEvwrzmVqJaXi3JbriFJ90BSNe8w1W9d8wgh0ZvY2dE
-	PMcGpElTWfHLwgI04q8pPtfOWC8pw3E=
+	bh=Ds7kNgZUPfXWm6W3cqj/9lr9L7V5tdvs1wli0L1Uyho=;
+	b=Jcf8mnJR446uU8ix7zJs4Wo0l7CTBP/F2gyXJwKAS6BBQQN4cl+u1J668G7segKNWGMToN
+	CVI3K3EaZJsf9JHXCd8GWcudjdEflSKw5eXRAsWgFGKKWyoTJlsL1WFh1MzCLEEsiOTtws
+	hKSh2Q2XUG9vBOHVvLMfPiSWM3HzwcI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794320042;
-	b=z0TqpLLHOvw1XYp6fXgIsTf3yzqHKNUJRJWu4VyTXXi1uVDXsP5t3s80gsersMEJfrxEV/
-	vHXJuo7bVrgXqM0kYnKJeFMVVmWdJ7KTiqgcVYnA7xl7zODga2StNhfX6QdzpkchZG/YBE
-	53FYvHJiFLfewTCT/tlLCcCe7GBS5HA=
+	t=1794320151;
+	b=bHNWy0iayCmMIxlfWpGkVDE/gxXVi0pXqemMHC0TXAmMDbbOjyNh1YX9TlEiBCeJ7kY/xR
+	T4woMLJGdAI8wpNBu8B7tDaT31LXu35QwaGTwEo3XZ0lYfiGQVm/l3m9q9RIoX92BeaWgP
+	KC+nYeW+PteDCQyBpylelpVW8ZGy+j4=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jir9xEzU;
-	spf=pass (imf30.hostedemail.com: domain of vbabka@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=vbabka@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 64C9D6399D;
-	Tue, 10 Nov 2026 14:14:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABAB1F008A2;
-	Tue, 10 Nov 2026 14:13:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794320041;
-	bh=Ivmt603po3d3E2NVVoR2W5ORstU9Dg9rTKeWn3hg5so=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=jir9xEzUa4uLP6tZoo+roz29YPgHORGT7V/V/D0xiwZU22ph1bKqdE78bL0dNUGNn
-	 lFjpngEiey7fMGra+q9S1NVnzbVDfEa7ZX6SIR4ff+lX3FoZSGG3Puhw/Xfa6DNGRQ
-	 LotPXVBtzyYJp6lYcrWSWcqKarHVtWVzf0rqc9qS3upIUt3nohdWAqM4PwxQc1V6SM
-	 +19rn4gp0RTNUmTnPFVJwmO3t84ctQpVwvZKxojsQG2ocpZume8rk9otqAe2Ew5pgr
-	 ZWh+i2qSW2Us59HlS0PjLklxdNYwS2RSwuT7xFbetacDE/MWvsUkxPw6o3gdc9TcPd
-	 fPf9OqmV1ukyg==
-Message-ID: <0a850ec1-d45d-463e-829a-e782290ef864@kernel.org>
-Date: Tue, 10 Nov 2026 15:13:53 +0100
+	imf11.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=oA7y27wc;
+	spf=pass (imf11.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.104 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=nbIdV6Ekrwky+WTmgp4OyxXE9Kai2xeE0z34n5bAiq4=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794320149; v=1; x=1794924949;
+ b=oA7y27wcHOORrMchFx1gImknWxCyRBj4zZOzjxhpduQBTjb9Y8dCA3MSvBMq4+0s57v/3jnZ
+ qIp76t1EzxXvxr3G7ov2JoE3oEnfVmLgeA3gPJLODOh2jMo5S4QOGMm2qDjFr53Logq2MWvLRKG
+ ALCbDYbHOLwbfqWXONSMqu9g=
+X-Envelope-To: linux-mm@kvack.org
+Received: by smtp.migadu.com with ESMTPS id 3f650de13b867266;
+	Tue, 10 Nov 2026 14:15:49 +0000
+X-Mizu-Trace-ID: 3f650de13b867266
+X-Migadu-Flow: FLOW_OUT
+Message-ID: <323e1f32-4127-4121-a1d1-3a7e43ca5ce6@linux.dev>
+Date: Tue, 10 Nov 2026 22:15:27 +0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] mm/compaction: stop repeating failed async
- compaction on every THP fault
-Content-Language: en-US
-To: Qiliang Yuan <qiliang.yuan@linux.dev>,
- Johannes Weiner <hannes@cmpxchg.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Kairui Song <kasong@tencent.com>, Qi Zheng <qi.zheng@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Barry Song <baohua@kernel.org>,
- Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>,
- Wei Xu <weixugc@google.com>, Baoquan He <baoquan.he@linux.dev>,
+Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
+ entry for THP
+To: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, "Liam R. Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>, David Hildenbrand <david@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Mike Rapoport <rppt@kernel.org>,
+ Boqun Feng <boqun@kernel.org>, Alexandre Courbot <acourbot@nvidia.com>,
+ Suren Baghdasaryan <surenb@google.com>, Danilo Krummrich <dakr@kernel.org>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Tamir Duberstein <tamird@kernel.org>, Trevor Gross <tmgross@umich.edu>,
+ =?UTF-8?Q?Onur_=C3=96zkan?= <work@onurozkan.dev>,
+ Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
+ Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>,
  Baolin Wang <baolin.wang@linux.alibaba.com>,
- David Hildenbrand <david@kernel.org>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Brendan Jackman <brendan.jackman@linux.dev>, Zi Yan <ziy@nvidia.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org
-References: <20261102-bug-mm-thp-async-compact-defer-v2-0-b407e974db54@gmail.com>
- <20261110135824.3264904-1-qiliang.yuan@linux.dev>
-From: "Vlastimil Babka (SUSE)" <vbabka@kernel.org>
-Autocrypt: addr=vbabka@kernel.org; keydata=
- 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
-In-Reply-To: <20261110135824.3264904-1-qiliang.yuan@linux.dev>
-Content-Type: text/plain; charset=UTF-8
+ Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ rust-for-linux@vger.kernel.org, Daniel Almeida
+ <daniel.almeida@collabora.com>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Benno Lossin <lossin@kernel.org>
+References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+Content-Language: en-US
+From: Lance Yang <lance.yang@linux.dev>
+In-Reply-To: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DCB8F80008
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: yfn4prdpwzekwtwth9ismqfr91gqqkyj
+X-Rspamd-Queue-Id: 07AB840013
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 19qqwtzswh675hkpgn5n1izu813m395o
 X-Rspam-User: 
-X-HE-Tag: 1794320041-964861
-X-HE-Meta: U2FsdGVkX18BCve58SoyfFFrJaifgRvLD4gN8Xl3sWUMnSFcsi+V3XdLbUWvTNoHv3yKmXzFDV/4N+K6tH/15UywhR9IaJvz5g+oKhpwgfD4L6Ipo1zuTFevzTP8wCR1akKw4ZVk3GzpEe4l4f01r1uYhol8hoFnR0UO/BuR8gEVWh8TuwMNXH4EmSnG7ly9XL5kQEsUXCqrl4EY4fUKDntdrW3/HHRAumFhbykdo8WDl5EdTGqkqDSX64TArXrhE4sCsKYqi53H1tu8YL5Dke5MCG8KTl+YgFT2s7t6VsERN4vcKd9aED7u/Piti8pf+mfrzP23CK5PidrZ5cAyvJJTGzxInyAj/YO8nzc68Vmo7tFRQl///BhPprWLtBsK7JqNY2mXgsSogJHxvduixc6gOmRsfYjzGJOdHQRp+pe912lNkzrn1jlUcQ2cmID2LJS1Wf+vSHbNbM5gM3XZth4jJc+Z/5bcvmZ2Xjoa+WAAvfiV3tl0avTnmCB4Or5y6UnBYbkU7rXM/gkbWbmnd3edJ+Bp5Wsoy+hNXEC/q5L/bU95YKK8EHxmzeWN0uJ1R1ce/FTUXC2fL0ul6M4eI5aI1Zs4rRQZQGCSWglY1kFtx0BXHDTvsmMApI00TYjkTpLgD/bmjrNK1YCItp7oJ13RHH2i44X80DpA5jQzXDYh5oDBbOr83QgtTkT3m4qiMkiVsGFYG5l2ADwpd40pKXzqobs2WYiHwFSWVWiPZKsbP/EhU6H+E1co7jtQT15bD1QBdPRzOBhCTU9/JD4TX17zCTbZYypxLWS751UmiJ7bAkIChol+Sl9bfm4kidR3yAla1Qs/P/XggEsN0kLJYPvuprBx04RDeXaEAC7t7HVopEk4tyg/5yOyhSVVW72Jldpx/+N/11cJx/KbZa9h7sS6IdzteFIlgZc4OAcucy3xg4lpqbeAXTMFCiQw5bz1ZqGL8CkLSEBef+tUsRM
- Mv1WlqDP
- mpR8fNxaGfIpG+G2Ia+U2Rir0KYgo4JjrVAOuBEKog7RBYuorXRwVhrQdKgVMD6JQNnRRu1j6I5Tc0qpZcZTLHreyRDjhZmq3F3vwAIQpbJNpMnV/WrnIcYZN+XafX+syJOsZRkDWsXj/5SOhNM+mVRW/NwLqpaB20UaqnteV7Q6/R3fwi2QDeNJ35oj1FA8a2vFIa1MHODeLyqcwkwmfDOFDsjrWeky1LvgxTIE3s/8EtPBBgQp7elkTfv+2mCTOyf7RMERRqPKm286fb/4EfSX/1Q==
+X-HE-Tag: 1794320150-926884
+X-HE-Meta: U2FsdGVkX1+VKwRyYbzoXsfUrv+RqqG47kOP5aj4eNxF9LWQ4wO+QfacmxnsVC+YbZWNSKTqsvlqtQUHhlo+2j9OBAD/oZ/es2Ucw1DbmO6/N5m5WTVv1Ql9jcV9aVbHMcOUU2gFhPVv6wI61BmuqhrDv7Hw85m3o06xRdZByF3fuQd74avI6+RTNS6vIHVMZK35uFg9ek9DW/CFyZjp0tzbzGfQ5YrPft3XmgnnLaRCDHLuBx8gZL1KG1W4XOI/pF3rG/QkKDwvOi7KaFjyhtMCgFp/KE1WjHvucPDvY5wG+Ifr++M10t7K0cpDIomHPOXGpwlhm6PuLQhNCEVuxOmIk29pPJaiB/1kKZsdOkRUCsKa+3x8w/KChlzSMeUZUAYnhGjimYYfZKs8HeY4r/FSt+q86ngbZoQxew1j4LH+tZw1f5stEzdgcHfJpec+TmxQCjhtza5plORzA6Z2Ac+5uzNNI2LEhIERqP9nqAOg+9pxBY9HRsB2MdEgbtI2sFm/PFgh8xar+6no/enSXq6+YDr2kqHcizOmiRX6VHUmpb7sfNF5eYERp2Q9SpD+m7IVjkXZXK8YdB5DEydh5Hu63O1WMctYPGF+UuWkEk1SLRI+IV5MqhBdUhojIl54fKDSgcKKrcIwpoCp62eHzsjbJ0kxzeMS2bZhYGWssahUNsfo82P82lCJ4OARnTtUorN7fzQ+edgMKQAgr+aQV6+4pnAi72l1TAqTIoX3AQDZbEDz883Tv2gtczE/NdXxeuqRmIJfQBgLrAvjVcZMNMBFrHXGBeKKRm1GTt4TIltTI0Mxj2EsavZLf6wgnHrJszp4CxkdkoFAj+ab7bct5IQAPOMFCoVCLmwrUhn5sdEQaezNDJSZMx09/MHc6WXwYr5W1kmT9VKQ7DTOrq72vcdBnJuuMAJrE93r5wbsUtqkB6MwqUavQEn/rkxiZgox1+v038sT3VLcdxleYI0
+ GuECgM5N
+ Gb7gVouISSsmX6A2XCpOTGWzAORQMF3XwM4kQbkUbwni59f1i2cD3tRCWeXMhYLMDwRVr8sg7X7QG5UJMRQJNeceeZ/JpD9PNfsvvv6tzNh25FvIbBu59sUofrm+SO51ztNqfeZGdDbixjSFnpeZ+4UDGN9deDABZpeMh5f8rlIKtaEmTJ9XzOL2OWnNBczjPM1sMyL0LY8E9q8wr77WUpMplwB7j+uufKveMT8mdkVNjDA15wbQpFOs4Vmp6Ai2DKS+jMLzuaIPvTkgKivRXPc5kAw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,25 +113,27 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/10/26 14:58, Qiliang Yuan wrote:
-> Hi Vlastimil, Johannes,
+
+
+On 2026/11/10 20:03, Lorenzo Stoakes (ARM) wrote:
+> Given the current throughput in the kernel resulting from AI-generated
+> series, I unfortunately lack the bandwidth to generally be able to offer
+> review except in those areas I maintain.
+
+yep, with the AI flood these days, inbox zero just isn't happening :(
+
+> I have separated the patches into areas maintained by David, Andrew, and
+> Alice + Danilo, so each can take the patches relevant to the subsystems,
+> for convenience.
 > 
-> Could you share your view on this series when you have time?
-
-The series was nacked twice by senior maintainers. Due to dealing with
-urgent issues [1] we might perhaps find time later to see if it reports a
-real issue, and in that case fix it ourselves. We have currently no time to
-help those who need AI assistance to contribute instead of having own knowledge.
-
-[1]
-https://lore.kernel.org/linux-mm/a2f584f6-e382-4876-aa6d-d5a34de6ee59@kernel.org/
-
-> One known issue in v2: the cc->mode != MIGRATE_ASYNC check added to
-> 2/2 blocks clearing stale skip hints once sync compaction is fully
-> deferred, so local THP may not recover after the pins are released.
-> I'd drop it in v3, but won't send one before hearing from you.
+> Apologies for doing this, but given the current trends I'd like to do
+> something to make my inbox a little more manageable :)
 > 
-> Thanks,
-> Qiliang
+> Also add a CREDITS entry for THP, as, since Zi's rightful and well-earned
+> appointment as co-maintainer there, I have no fear of needing to step in
+> there, and so would like to record my time in that role.
 
+Thanks, for real, you've done a ton for THP, and it shows :D
+
+Acked-by: Lance Yang <lance.yang@linux.dev>
 
