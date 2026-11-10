@@ -1,74 +1,75 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243AA606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 598FF606A33A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=JCZx8O4M
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dhq7JGJZ
 Received: by kanga.kvack.org (Postfix)
-	id 330886B05CA; Tue, 10 Nov 2026 07:03:46 -0500 (EST)
+	id 755A86B05CF; Tue, 10 Nov 2026 07:03:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2E0FF6B05CB; Tue, 10 Nov 2026 07:03:46 -0500 (EST)
+	id 6FF976B05D2; Tue, 10 Nov 2026 07:03:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1D0306B05CC; Tue, 10 Nov 2026 07:03:46 -0500 (EST)
+	id 5EF2E6B05DA; Tue, 10 Nov 2026 07:03:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E18F56B05CA
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:03:45 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D8130C05BB
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:03:44 +0000 (UTC)
-X-FDA: 85419075168.17.3B4A714
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 39E5F6B05CF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:03:54 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9D8C5A85BB
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:03:53 +0000 (UTC)
+X-FDA: 85419075546.21.0BF1D91
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 25EC32000A
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:03:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JCZx8O4M;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf29.hostedemail.com (Postfix) with ESMTP id BE46612000F
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:03:51 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dhq7JGJZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794312232;
+	b=dPwguSJmHMWbc2IZlU8Od2VJAb7o+Jmf09C4pCiM+cQSjWndn+ycroe9Uy1aUV9eiA1iaa
+	xM2MnMDyvM8YlxjNsE3EzNQd6GM96z+KnWZBxJ2KMLHgegIBT9mxO15gfV3Ddewwd+e26p
+	LHhtekVYpddOTPKTrs5rbrCnKTJRXf8=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794312223;
+	s=arc-20220608; t=1794312232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JqBx0yzByauj+DMV1nyno17Po8meeyCDbZXiNPgYBhk=;
-	b=iTH2wStpA/rStjyqQTJdD+DGprBjPgOLrhkPgSPIZfB/geO+uTO7xsxkxPoibpQzIKblPm
-	lJ+W0c0OusidRV7rXLG+lGBsroaCXW9znF8fGFp8DzpTc6skfT3he8IPcAdNYSilDHA9F4
-	YWEMm1xKFNguct1zE/TQhH/sf85hVR8=
+	bh=L2M4EXk08YUv56ylnMGx7FsGu77v6rwhJJTJynAxVPI=;
+	b=V9JJHbbBWHbFlcYBHy5XuQ4CE9WBmSRPFsTVs4TDGFVuqAilOCk+5LYh34xgmyvo4A0abY
+	es0kTPu42e9nPnQoUVwBlfpe9XG93yPlUwGZWY3wxB2zq1e/eyVYjOWAmAQYDIOmbK9/vu
+	98gvcBr7VmuyhDA7dddJIiUdyKfPHHE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=JCZx8O4M;
-	spf=pass (imf03.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794312223;
-	b=UCIZiJHdP/9nu0f2qSAzICYfCYM5FKnL/ZPN/5K7Y/IqCFnynNRCmNdq6fdcdW8aliYFKE
-	Ps4rpWWH31FIb2ewaYMYC7g6XuvdyjRQF74EyfR2CWXdfBBB+y2MUdFXDZOpl0W3dKnYA/
-	p0BmCnN2LOjSVBXmCk+nt5TGaGTABoU=
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dhq7JGJZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf29.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2F6A8429FE;
+	by sea.source.kernel.org (Postfix) with ESMTP id 13F27408C5;
+	Tue, 10 Nov 2026 12:03:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9492D1F008A3;
 	Tue, 10 Nov 2026 12:03:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD4671F008A2;
-	Tue, 10 Nov 2026 12:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794312222;
-	bh=JqBx0yzByauj+DMV1nyno17Po8meeyCDbZXiNPgYBhk=;
+	s=k20260515; t=1794312231;
+	bh=L2M4EXk08YUv56ylnMGx7FsGu77v6rwhJJTJynAxVPI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=JCZx8O4M4hGc/8Bn7L3F9RADLN5n41NYkCJfUUO/4rhPpwAJzQTHSmU6bnD9GZ/hI
-	 2evHiCX3cUjXiwsXUB/m0GiauxaQSWbJ2ssp+bCCKTirVgKSpJ746kJTEYAEeptLyY
-	 l9xD32bY7sy2enVtJOdq1kZGceBgSELpIL/Riod2QdyPaHMkWbO5LCDmU24qInzg3Q
-	 EFAdtlF8XgRZjlVeSDcUx1cLNaeX2Dytc9cbqQUzsYW2+hB6y9HDoSqni46UGC/uev
-	 dgfxWC7crqTjYAk6lz9ccOfur9hTEkuhg2LQqZU9AXYAOGpVIRN3Ur+uqVKRUs5YD0
-	 FNDctkE4t7Cxg==
+	b=dhq7JGJZXHoS9o+c1poKZEOjkBCjeuLZ7zX0hWccAVH9FM/vbRYmoGxUbJc0+Ffr0
+	 hmQgfHpG3UpvN/hh2P97fLWG662h+/x0JYn7dfCMMne8jz1B6S0CJe1DJm2SEtJh3A
+	 0NYzpZ7h/c+8fKelWNpvFEuprtJX+udzRRnAI9c79CnbWM6SbpLrsMe1qlMK1BmqRA
+	 q55c91k2o8T94srkDOFb5sWfABmWlZg+/N7zyGIianev7d+Abz2RvZlMVj0xgXwXu/
+	 BE4CbgGhYb/8Y1WpdQ8rdU6TqHCNY0Iz10PTfem2DOuPVPpCgP7CxDdsyzd+XpFVqa
+	 fBhcRPq7UqNXw==
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-Date: Tue, 10 Nov 2026 12:03:07 +0000
-Subject: [PATCH 1/4] MAINTAINERS: Remove myself from MM core reviewership
+Date: Tue, 10 Nov 2026 12:03:08 +0000
+Subject: [PATCH 2/4] MAINTAINERS: Remove myself from MM misc, reclaim
+ reviewership
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-drop-reviewerships-v1-1-07c2f06e8dfa@kernel.org>
+Message-Id: <20261110-drop-reviewerships-v1-2-07c2f06e8dfa@kernel.org>
 References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
 In-Reply-To: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
 To: David Hildenbrand <david@kernel.org>, 
@@ -95,26 +96,26 @@ Cc: "Liam R. Howlett" <liam@infradead.org>,
  linux-mm@kvack.org, rust-for-linux@vger.kernel.org, 
  "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=752; i=ljs@kernel.org;
- h=from:subject:message-id; bh=OH5BliIH94nkWp/ohQ8/EQpKL0UvlMGgtBbAdMYML5E=;
- b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI+c3AnCZdKP99y2aHkfh9Dotz+NPGfjbFWIleZWxQYZ
- +3Zv/ZmRykLgxgXg6yYIsvzL+L7g0TC5nVe8HeDmcPKBDKEgYtTACbyqZiRYQ+n27HlXRsr/ie6
- ZuXU7BL/mxJy3Nxk54HyCI3nx5unBjP8Ztmcyveh4XPSETWB3WqL3jzKr38Txr9uRrf87pe3mno
- dWAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1099; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=roYoGbyVnDWW90pYgEiUQSVn7qwiybj3V0PXh4TisIM=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI+c3Cri32+NDurrEV3baKCf3ejhl9bKKfnN8e+Pcp6T
+ f/VDe90lLIwiHExyIopsjz/Ir4/SCRsXucFfzeYOaxMIEMYuDgFYCLbjBn+Gf7TqtqXrMz5Uu9M
+ yHI7eybTlMnyX6xnhVyP6qrdt8Z4GcP/Sv/Ioknl8rPCkr/cW33YUnnRxYY5T8NyFvez1N068/c
+ 1OwA=
 X-Developer-Key: i=ljs@kernel.org; a=openpgp;
  fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
-X-Stat-Signature: xjz99ffpobatw5pr6p83qeq387hswkuk
-X-Rspamd-Server: rspam01
-X-Rspam-User: 
+X-Rspamd-Queue-Id: BE46612000F
+X-Rspamd-Server: rspam12
+X-Stat-Signature: tbsfhyxnsqjjfrdnqowpaexah4qj9jzm
+X-Rspam-User:
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 25EC32000A
-X-HE-Tag: 1794312222-680594
-X-HE-Meta: U2FsdGVkX18Xf6QWQZtQ4l7l/f8vaHLpQCAx5xZ41v/xQT8oXq0e0w6CIRnHoKb4Txy2wMWudGAT2E9hSJ3fLMaT0tY87X7SJXRJEAXEj2kpPuCV9FzcLqL/nz45uKQq3IOwzSOzi/dPK+JegPyakZb32JF0qINkY2ypyNgT5OFwtxA0nknIDrPwBYfP5/COuWjDrY1nhq2Hkkv9zCqFYFU0gj5301x8HfU/+2kMqZBvGrzhAfBNBWw8UxstxyKJ/HwrS7ZCNMZQyKE9bSchWc1cVnL/Fd+NccVH/WB0YQMjlEU7Ag6j5ekzUXWythb/Yy/6rub+AlOpBo3450wFTNGT0JxX+ot3p/iCLSLT/nR6bbL0M5uNSuNRtGfAd24cDZI2Vj/1bhhVL+8CQ1Rrq/+97ymkdiycnQdQk+aJhR8uke2qGxKyeo/NGG/a0N1mtRdqum3vnCKRmKPcm3xRALwERCdgM8V8dkkSKg/OnX3N/ztmmN3o26Ak2gPZeI/vcVU5kwMfdVJHPZJR54+P1+dGvCUlJ8KHPwkjVk47ZaXHG4IMlGA6Tlgkf0/Zrk4sZDTXvOtrDTjuc8HLYygstq2gka39uEISGejWtZpY69qZV6r0oyVxg55liWpmx72jq75sWoMzr2bEKhM6524l2fsMtithnjRIZwG1h+2NOKLG5TW77tTctqcUlIXhlEQ3OSW3MCqtv5hIcfMkuFbFsleu1AA8z4qxqvgWoRJnmNCcXdOuaaeVUl8P1phCPzpVt9LGDxU7keCC8fkeoIZvtQA+ebSKP2Tzbb8pyOaaQW4IsbN1qECb1/csj5pV+i63JhRxiV5IcjRbbf5ES9Nyjdor9lBXoNSxca4j/4j5upyp+KVxDVSzpWySdUtrJjxid9NO0GrKLO8x7bq1jscwKkmA0e1JnGERgJTTQTQ+upNFHIRKrKi7qjriGhvFgoj3p5MQ5tf0RPOT3HLlZPh
- K7ClEd2V
- LkNlEhSPADB3CA+3iA8HyvCJErzU0JKbGB3eD3F2ypJOCpcoM1ibYOoLG3T3IDX1nvrACSGZRiamFMJMKgTx4hZa8dgGd/04UssLk43MyIR1TcFr2wmfDNxJO5Hy1pY8SSuMDCdoOP0jZsc5fFuK9YTBe+GViQ2SDqR4lwXGY0O5fVRx4n344PdDBIx0S43OpBPMdAuAiFQ5SgAZo9YJ6UJOAP7KOG4x3BaO8+CGrjAKm65aD8MfCfbOngT9YrnILkVICCV3vw168+qVaIf9QtxHXfEhSSRDHWEKsgacDSjN1Y2LuH2bNLQQVsQ==
+X-HE-Tag: 1794312231-645262
+X-HE-Meta: U2FsdGVkX1/axkxjep2MF+ZVA+pHeJblqOrYY+82tWYRkRtTjyoorXIdZX6BT5rk4ZqYiIujckvN2NWrQ1QygBacE6d3/wVRcdLkebQBn1IWUvmVzjrFbs/9/LxBcaMzxsbwV2jY+yizufBbHYV4LWHG+N3EEddB4WZP/9dgh+5aj+779VVAZSWeTZZIZCOqm1++/XD/VsJfbJPqhGcoH42WgZo41LOJeZWRzA26MmGnZpiKtUmJDZpnsq1Iz1+JFC97raZ+RMw+5jHf17cXyqym0bKfdmCCZgmMqm8khB5WV/ileB9NceVDZQcEYynoOsQBV7K9PfmZ67pws05tdEyyAL3ArhLm8nWFPfdoJrlI4CbdpzIE0w4PLFg0GeRuUKAzw5uTxNYpBXNR3FPXFiooHI4Dsjp1JgmM13RE16E//GMKbhPWCQJ9tm6Pk6VOi3CuQplSXpCicRVExtBuSWDYKSGS4aNLPBEg+8Ou7Ug5DH49bK8yamo29mEcndnmKRYf/OCgWBYYoFXtIk5nLrOidxa+A0mJ0TDcotIwg4fp7DYVK3whJVE1JQRSLVGt3Lvt3qAC0U9NtFBK1QtpjZmvC63+4sc6JasM+HssmcON5Kl/+EmN1AjyuSAX/JEhp0JRJiz3bFjOlZwbQD06aUlwe77/C65+tMGf52Qk/fJ3VyrMeZF7OJ4vumgQ4tSo+qjYUjBANUNm1tlXA3603aTX5hVFv+9rdwWxKfe5XCL2/ty5C+vg2vjmr7zc0hG69f7TLVSzELfl37/3DSiI0mfcPSWRsPnpJygEjt3Ddvu6vPBW/0sNQTyOL2rCd3ikz7DGFA568zASiflgeJ0c4sO1KF6rRphk4UqdWCCcn8GRj3+qAcH9AJmfuEKAkdpmJ/CawQB/fMfjiRUwCDzHfuMrHGeKFHHBkZMDjMKjLx/eD02nmVqhubkueD6dH9csfCY16xFWuNdojaer7vA
+ 0Ae+aOyt
+ Z6kF611/n+/0m7skV7zHS7CshsQVawkbYJnt7xQjeNJLsRgNLUnYia1grfKjjke1RUbghWLS5L/0D221SiNnSOGl4tzbN2E7lGF6lrhnDmgk88BuYLd9BK8pd4gpUMC2WizkXB1s/Xo0FmcSTHeeQdNPPBZdaf4UdFsbSnW+cAIx8t4shyIc0t0r3ti+Lm87D/Jzy0vPuvmVCv0dqsrcdrY5rzRvVc/k4zrvL+QRWrD3KgQ8VvAlV+0/0VZIgAHykmKpatAGynBtC4LM/A+28j506qGz6LtdwsUy6mM0Tu291TqMhT2AnTzDkSz7rZqMvaI3CumhM2kd+pdJaNhW36/ivaWYMgUjvmuV0NSeXWYQSpd8KW/JHcVyP+XDeAK5CaKmXEX/PVGBWwfkHjut3QDYp/bbCwTk5GxhBg3xI+TmV1IPcMAK2aNFptHm9n/BIvmcL4eeNBCvqYz7XiGZVfP9Hy3mjDFpSLrkoWAFYh2DFEDx4+hpycTrx3UBo1600aBFtTZsj/2GGNeuEK3yRKlMZh9HptxvalWDsMMh8jkeLFJL47aqKlN30xw1P9bHRdJ6p
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,21 +132,29 @@ Therefore, remove myself as a reviewer.
 
 Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 ---
- MAINTAINERS | 1 -
- 1 file changed, 1 deletion(-)
+ MAINTAINERS | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 222b7fc2c3aa..c2f7fed0d850 100644
+index c2f7fed0d850..bb4f973b195f 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -17505,7 +17505,6 @@ F:	mm/balloon.c
- 
- MEMORY MANAGEMENT - CORE
+@@ -17675,7 +17675,6 @@ F:	mm/migrate_device.c
+ MEMORY MANAGEMENT - MISC
+ M:	Andrew Morton <akpm@linux-foundation.org>
  M:	David Hildenbrand <david@kernel.org>
 -R:	Lorenzo Stoakes <ljs@kernel.org>
  R:	Liam R. Howlett <liam@infradead.org>
  R:	Vlastimil Babka <vbabka@kernel.org>
  R:	Mike Rapoport <rppt@kernel.org>
+@@ -17811,7 +17810,6 @@ R:	David Hildenbrand <david@kernel.org>
+ R:	Michal Hocko <mhocko@kernel.org>
+ R:	Qi Zheng <qi.zheng@linux.dev>
+ R:	Shakeel Butt <shakeel.butt@linux.dev>
+-R:	Lorenzo Stoakes <ljs@kernel.org>
+ L:	linux-mm@kvack.org
+ S:	Maintained
+ F:	include/trace/events/vmscan.h
 
 -- 
 2.56.0
