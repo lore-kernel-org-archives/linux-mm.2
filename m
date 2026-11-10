@@ -1,92 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D9C606A33A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 02:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5FA606A321
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 02:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=2212171451 header.b=gCUC3LYO
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IOGLKWu6
 Received: by kanga.kvack.org (Postfix)
-	id AC0246B05B0; Mon,  9 Nov 2026 21:16:10 -0500 (EST)
+	id 1F5816B05B3; Mon,  9 Nov 2026 21:23:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A71386B05B2; Mon,  9 Nov 2026 21:16:10 -0500 (EST)
+	id 1A64B6B05B4; Mon,  9 Nov 2026 21:23:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 987016B05B3; Mon,  9 Nov 2026 21:16:10 -0500 (EST)
+	id 0C3436B05B5; Mon,  9 Nov 2026 21:23:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 69F106B05B0
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:16:10 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C271D120884
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:16:09 +0000 (UTC)
-X-FDA: 85417594458.11.D1D16C5
-Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 50FADC0006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:16:07 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=gCUC3LYO;
-	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D7DE76B05B3
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:23:50 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C2CAA036E
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:23:50 +0000 (UTC)
+X-FDA: 85417613820.19.78B96C6
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D34EB140003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:23:48 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IOGLKWu6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794276968;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20220608; t=1794277428;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9HIPwNYvbOarmnCqPR7DA23o7bO4fjUXE8B8nsiUVuw=;
-	b=ACN7vAbTn4D0VhYZyE3Cj8b6Y8+hWNerSrg2gkUOsgKHhL4gCsV9maw5TjBEAQArSztdWt
-	87yKUzGrJrdFMLhLjGsfjTfSByCt9IRx/znKgZjmTRqTCcSE3IrhsJQQVriKP4pNrWM5uh
-	K4nySfeWjXi3vcP3hFTCtFZL3EsE4m8=
+	bh=A+lzFeOLtG99Ghw9rX8G9p1QUCxnDj5eZlO4QzFSIas=;
+	b=we80cwOXVbO/9eJ8UlhGzkKIbksoWHVGdTLb/phykxF2wqhLAnaOCSPGX9yTxp6vB9pyN/
+	S2athUwEOiCZXKdeYBDkGO5mFBUjUz9DN7q5mNTlTiWWsyNHRdszDHzEA4RWZDlJXzQpuB
+	xPwFdcyTjCJgygEJq55CjVLsAXS0C7k=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=2212171451 header.b=gCUC3LYO;
-	spf=pass (imf22.hostedemail.com: domain of lizhe.67@bytedance.com designates 209.127.230.112 as permitted sender) smtp.mailfrom=lizhe.67@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=IOGLKWu6;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794276968;
-	b=23cKE0XviPamF6wmKO9CglDAUaZyMd4C7towvu7d9IaIc4W1LQmP0RqIpdhskWDfkMEDQA
-	KUaYapIzbIjz0CTx+csJWw/IDs71o7Z7v+mq+7Ka30oX4VPx0c7SfXG5H+LvB4UHvnhmpo
-	1Qk5fv4Hn3WxuKmE+U5Qy0lpmnUKJAs=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1794276957; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=9HIPwNYvbOarmnCqPR7DA23o7bO4fjUXE8B8nsiUVuw=;
- b=gCUC3LYOsR+wYxX/DzTp99RfgGOUN0Yg5EZV0Aag13kLWls0TEv2azhQ34y62yh4khWxEI
- s5e3+F580AOsIhYrktNRcEP5dgGTO4VExo7pezOxN2JT7pmqOFupUEEcqyUfYOdAXd/czW
- Zx+NfmJhL5fB5nuygggfn9/jmE30HyOlyubB9M24g8byqtBcC6h/xWo4ejkddacVa3r2WF
- c3xGV3+gji+yc/nxjlvqgvzM5GiF6627AnqD5GIgD2xRbuY952JvGCsun1JSSftfgSiNto
- vACtI4TlJkRwh73CO7Drfgz2WSQVtWiPklhZ5Xt6EkaeXSq5RkD3+jTu3ATUrw==
-To: "Mike Rapoport" <rppt@kernel.org>
-Date: Tue, 10 Nov 2026 10:15:39 +0800
-In-Reply-To: <avGvlDENwtgUWv-4@kernel.org>
-References: <20261105120615.16817-1-lizhe.67@bytedance.com> <20261105120615.16817-3-lizhe.67@bytedance.com> <au2qhlsxQt3SRwIu@parvat> <ca38db3a-a8fe-47c3-8813-5c3b0ac4b7ac@bytedance.com> <3e5a9f27-ea35-4557-95d1-70ce359e4c92@bytedance.com> <avGVNISvj-v8IN3g@kernel.org> <ea9b76c1-ced7-4ef7-a428-7fb3db5c7f4c@bytedance.com> <avGvlDENwtgUWv-4@kernel.org>
-Cc: "Balbir Singh" <balbirs@nvidia.com>, <muchun.song@linux.dev>, 
-	<osalvador@suse.de>, <david@kernel.org>, <akpm@linux-foundation.org>, 
-	<apopple@nvidia.com>, <linux-mm@kvack.org>, 
-	<linux-kernel@vger.kernel.org>
-X-Original-From: Li Zhe <lizhe.67@bytedance.com>
+	t=1794277428;
+	b=6/HPvoUO9gvOliOoHHSjaNU0x3LcnRAw0AMjG/n8z1+BOIemSS6e4rS8gaKr9Wr47QBJiM
+	4cyYuifaOvYrplCypvWGI5wVl3sJpOJuytbxEWa4/IgWQDdwrgJbvcyCueyxIralHS2Jz1
+	QQgSzpEIR33IRLr8Tu4vs5OPtZIfvTU=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 3477C61264;
+	Tue, 10 Nov 2026 02:23:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA141F008A1;
+	Tue, 10 Nov 2026 02:23:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794277428;
+	bh=A+lzFeOLtG99Ghw9rX8G9p1QUCxnDj5eZlO4QzFSIas=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=IOGLKWu6U2jlr8eViXU1gCgBZA8adj0frtLiodU/busKR5eEm5s6yfDZntS5oxw6c
+	 NTfF9gLWvfACN3wq8trUkbz5JkiasKDhu92o9cmXGRd2kHKWedzv84gLjkectZajP1
+	 TGMINjX+nnRDMcp8Z9RUAnmT88gYhyBvqtZTmPZOPyuhdfU+//TY0AttNs6DIZJ0fd
+	 ocCkl5A3JKkRdJd8WOskeeu2B4AY3n1bGDOxFhOTY7KBvjjIMnT/soj4hny6bpfSNH
+	 cHdA+8LpZNYZH3jerZnhS3V+OSgnJpCVH2KMfP2H53J/ZwxcVATC4effDDlfdIm72L
+	 IST5UC/5nfBtA==
+Message-ID: <sashiko-outbox-206041@kernel.org>
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 2/4] mm: memcg: read root lruvec stats from the node
+ counters
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Joanne Koong" <joannelkoong@gmail.com>, akpm@linux-foundation.org
+Cc: yosry@kernel.org, shakeel.butt@linux.dev, hannes@cmpxchg.org, mhocko@kernel.org, roman.gushchin@linux.dev, muchun.song@linux.dev, nphamcs@gmail.com, chengming.zhou@linux.dev, sj@kernel.org, david@kernel.org, ljs@kernel.org, linux-mm@kvack.org, damon@lists.linux.dev, tj@kernel.org, mkoutny@suse.com
+In-Reply-To: <20261110015321.611093-3-joannelkoong@gmail.com>
+References: <20261110015321.611093-1-joannelkoong@gmail.com>
+ <20261110015321.611093-3-joannelkoong@gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Lms-Return-Path: <lba+26af27e5b+7e9f15+kvack.org+lizhe.67@bytedance.com>
-From: "Li Zhe" <lizhe.67@bytedance.com>
-Message-Id: <c82be2c1-b890-42dd-9966-72e6c7a95b25@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Subject: Re: [PATCH 2/2] mm/hugetlb: optimize bootmem hugepage tail vmemmap init
-X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-User-Agent: Mozilla Thunderbird
-X-Stat-Signature: ctqzwqa3g1uukpmsz1s1otptwqe1a4kd
-X-Rspamd-Server: rspam01
+Date: Tue, 10 Nov 2026 02:23:46 +0000
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 50FADC0006
-X-HE-Tag: 1794276967-695189
-X-HE-Meta: U2FsdGVkX18fI7S2FVzd9QoNCnY8Mp0CkTpqUXF7fjBWGG8fj/08/HKeHTUWtYsQDXv6kU6azMrqlgnXDemWGnzKY4N7mUqc6A+f+tjTHyzvC05vrsWuUNP/wXHyysL/EJj1kqV3wDbCVLT1wO3R3uK7t8tfHaOJpjtSXVebRy695Bnh1G8nv/bUJhGsCvlQSwklHkJkDisvrx8KWqNA6f3f/HNo0HK/n5+OlPWQ/h6DWKgqAn7us1o2H+idHwsJnfpyfk31cA5xejmtymHLVB+c661Qsqg004vKs8n6oaUJfj35dH12dyPyqsWsR1XhTL+KcjJeqgMg4mbXvFs43V/F0UU4TuB2IbgVYh6pmy0xEE6nWWGwFXj/hrnUR1Gd+qcAxS/4YlYTE10Fc0Xm4XBp4nS8K8vwBG1T6NwnEqmZ5JRrbOaGWHz0IQ87f68KItfSXqSO3y7X5sehKerFQSm/Gu26z6pbv5NHRPrrepCBKKi4Zaa5k6M6TBkwwaH637LadbC3y0YHSWOHTfWDz/K8T1oKSllFfkHOhnosJSxkP1O2waEQ9X+tBF635+vgUFWUvO4yFEZAj4ZTjMWowQa1bMEweSZFwKIo5+OS3YfZbnyjg2d31kL2VWAz7Rnkomi779YY+izdQhzvQa0GfNCuiTkhL7IO8cvDMZvOxxSpYaPXdgYeTpFH8f1AS0nbSANokrAS1BQh2MeNxXRaN2brtPbQSpcReltYzyxD8Ez5PZDjvUALbLcUOJx8AGw2SH6cdeD2nXV3dXtQmnXxbNv8OrAQZbJWlzhbXcdxwl4/BwoPyNebEujN/NTKj/9DxZZ+8+NFi0aK90NoXu+SHB9+NhvLb38sgKz3AHp93SJLXgv/cN7Wc4YqXXaihkuuZfO4bKEudtvWm6KIQcm2zw6yJHUS59UdH/rEuafmjLMJ/zFsuXUyD4gJKfgkO6S4cOU9oRPcCNTmM33G327
- vQBfzKG9
- nDyB50PV0SuyLFal50ig4lAissrG7rcbp/EiYGfUVo5OKqvgztql5/0Uwu6KIMi8l8O9RCCTNS2qmrEj2QWcOJ1hAQy/bp4cV/y8ABq7nmDGSQlb/mCl7IWQe/ddh4N7JXBR9XzFtBxfIWE8vwwtb3wO4aMMue/BK7Gx45l325wu6Sw210ECm/hTu65L1hg8j11uJeCdvQ2t9rprCeAynkj1WvH4FcAM5jCGK5DVUBGtZ98qnpqX4L17INwlU7gRE7vRaRpJfps/PnqFkbAf3e4iBn6zfLEdsr1jT6fHKeZFqMSM/YxQl5eyYpsyF/HDLG9a6
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: D34EB140003
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-Stat-Signature: k11wti69zimjge6hhwap13ar7ekwsd3s
+X-HE-Tag: 1794277428-841237
+X-HE-Meta: U2FsdGVkX18obAvQb1fB1P2ib2j+ELeIMaS7gj+1DDoRPMDFwAl7GViw2ZE71P2XvWwmpzKrmJNPBTe4LYPMZBQaaDAQA1We8gyBdYJKf34/RC7NMhOD3jsmYa50+7wi3CnpGibMcNg1G70AzupBVmZNzoyKnZQUzyrR6xJANNfjpIlkFJAIN8bFwSLhEmI3uuFCLAjrpqi6MC3Lldfcda0SGeVGHxypGY+FNjfiRd/5d4+P8donuxNJJCnVgtwoE8VAaqTTKile1sUA1jZko3ogat251jB1mrI0OOF4R/wXH3ghMY3vpL7YTE6Ci1Rzebg4y7LbuZsemoBsZtmKZu7QYo/yI9JHBQBD7pf/rEhJ+wj6UyUCN2KqJjHWtbi6u7Afo54LqRjFbbE5si4BDOnuYUfGOmOhZz9ixqp0DxBYhIVfjQcVD5U9X6jPlirGIumfnPIkxhYj9krOUOWMPKl0mg/wfx6ZpgSemVIr2cHMA2pk8WJDQinAqBFZE9uB7DzbxH6HZui7FccjCO397IaeinsPjmVadEiP6/Omi+dMkQdmMo+UYbkncUrnWdf51QZn1ZyO5Hbu4nUpyOAcr2Rk73u/FyKW0lXckRrTT0vFLYUsbBJz8j/DFeJl8/hVCkNQ0v9Ujz2vHxzca4lkNtzyrENpJ3Z/VV9em81lD53RommbwkRaSH5Rrpyf5/g3Z8N0+RV2NkvMOCUzO53eY5P3JqIaa0iHrnxpn1+WFfaJB5KQl6w+85mRTMPsywJXTqY58x+OU1Ar5hEfuaYrEupNo7bHoejblIh+1BRSgln9SHtoBuRpr6yjyuqi2SZY9av9RrsSMWXtI6fVmxEqBwDHkVZB14Lr7hwEUxH1ah7mLsU5CVTrzA99h/WlNF0z7thCwCf+lq4cYh/ELF8pV71Z7aNPy8SwFD0gDn6nhgfi2zy3Mx+q0RQUZ0TxGxoLhakWZrm6DhThGJ9WVox
+ Rt8l4hdq
+ Qp+9diO6EdDGng3Dl8fnJYi+jsFsnllsZSkgCXn2nLYXjmbd8vyJsDUJs5zAtFxJOp517NsG0whmUpqNv5lhJnunkGHMox48BNGM/C+FsHbybME5KhxxU+k/6OvaqwM/FLlGbeU2UQjGwrLLXqpnY0Jhnw61ZQjG1aDPDl0X6Jqjq/IfsJF+PtkyvHLZatTz3DJ3LFaMF0sJjlQXYtUecHQUzuPvheG+wMCJzNfIPA1NyzYC4+hsKOTV4BR8YYsf4mFc8fzibDSVVJfBDSIn8oRFKf4kqrkX0YXNxWd6ho+d3XDueZEQHd93EnB7RjFVXiCbwIXu7CoGjmdz2wu3cxOrHDG/BifSOzyNH6eJzEXdtnQ8W2Zs6TAbZvowvhEV2kntwtAmerdEwn9rvICNMoJ6hcgG9FH84JvApi+gekiOo9tme0pBO/07vTj3JpsakL/rIUFWYYwt8vy/KCjI4YyOb5vvuDQmOrz0EElHbe0CEnru1+3rxlkO1sbMLhZ4+N74hetD9Gzjjvm0WsMaP3MaRmDKQVpU65Ck7QOcfF+ivjgtzifOyktlHgiRX7rzYpjb48Xru+dSvTipsungmSHWhhw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -94,122 +92,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
+X-Archived-By: <archiver.kernel.org>
 
-On 11/9/26 7:33 PM, Mike Rapoport wrote:
-> On Mon, Nov 09, 2026 at 05:52:19PM +0800, Li Zhe wrote:
->> On 11/9/26 5:41 PM, Mike Rapoport wrote:
->>> Hi,
->>>
->>> On Mon, Nov 09, 2026 at 05:22:24PM +0800, Li Zhe wrote:
->>>> On 11/9/26 11:01 AM, Li Zhe wrote:
->>>>> On 11/6/26 6:23 PM, Balbir Singh wrote:
->>>>>> On Thu, Nov 05, 2026 at 08:06:15PM +0800, Li Zhe wrote:
->>>>>>> Boot-time HugeTLB allocation has to initialize tail struct pages it=
-self
->>>>>>> when HugeTLB vmemmap optimization (HVO) is unavailable or fails.=C2=
-=A0 For
->>>>>>> gigantic pages, this can cover a large number of tail pages. Most s=
-tate
->>>>>>> installed by __init_single_page() and prep_compound_tail() is ident=
-ical
->>>>>>> for every tail page in the same huge page; only PFN-dependent field=
-s
->>>>>>> need refreshing.
->>>>>>>
->>>>>>> Initialize the first tail page normally, copy it into a local templ=
-ate,
->>>>>>> then initialize the remaining tails from that template with
->>>>>>> memmap_init_page_from_template().=C2=A0 This avoids repeatedly doin=
-g the
->>>>>>> full
->>>>>>> __init_single_page() and prep_compound_tail() sequence for state
->>>>>>> that is
->>>>>>> identical across tail pages in the same huge page.
->>>>>>>
->>>>>>> On an arm64 QEMU/KVM guest using 4K pages and 64 boot-time 1G hugep=
-ages
->>>>>>> (HVO unavailable on arm64 in v7.4-rc1), the measured fallback tail
->>>>>>> initialization time improved by 36.43%, measured with a temporary
->>>>>>> jiffies-based printk modeled after the existing timing in
->>>>>>> memmap_init_zone_device():
->>>>>>>
->>>>>>>   =C2=A0=C2=A0 base:=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 318.4 ms
->>>>>>>   =C2=A0=C2=A0 with this patch:=C2=A0 202.4 ms
->>>>>>>
->>>>>>> Signed-off-by: Li Zhe <lizhe.67@bytedance.com>
->>>>>>> ---
->>>>>>>   =C2=A0 mm/hugetlb.c | 23 ++++++++++++++++++-----
->>>>>>>   =C2=A0 1 file changed, 18 insertions(+), 5 deletions(-)
->>>>>>>
->>>>>>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
->>>>>>> index da5d04edf7c1..987f16a5ea27 100644
->>>>>>> --- a/mm/hugetlb.c
->>>>>>> +++ b/mm/hugetlb.c
->>>>>>> @@ -3219,19 +3219,32 @@ static void __init
->>>>>>> hugetlb_folio_init_tail_vmemmap(struct folio *folio,
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enum zone_type zone =3D folio_zone=
-num(folio);
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 int nid =3D folio_nid(folio);
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct page *page =3D folio_page(f=
-olio, start_page_number);
->>>>>>> +=C2=A0=C2=A0=C2=A0 struct page template;
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long head_pfn =3D folio_p=
-fn(folio);
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long pfn, end_pfn =3D hea=
-d_pfn + end_page_number;
->>>>>>>   =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int order =3D huge_page_o=
-rder(h);
->>>>>>>   =C2=A0 +=C2=A0=C2=A0=C2=A0 if (start_page_number >=3D end_page_nu=
-mber)
->>>>>>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return;
->>>>>>> +
->>>>>> Can this actually happen?
->>>>> No, current callers always pass a non-empty range. I kept this to
->>>>> preserve the old for-loop no-op semantics for an empty range, but it =
-is
->>>>> not needed here. I will remove it in v2.
->>>> I need to correct this. A local Sashiko run pointed out that the bootm=
-em
->>>> fallback caller can pass an empty range on SuperH.
->>>>
->>>> SuperH supports a 64M HugeTLB page size, and with 64K base pages
->>>> pages_per_huge_page(h) is 1024. HUGETLB_VMEMMAP_RESERVE_PAGES is
->>>> PAGE_SIZE / sizeof(struct page), which can also be 1024 or larger on a
->>>> 32-bit SuperH configuration.
->>> If the only difference is unnecessary initialization of the template on=
- SuperH,
->>> we don't care and you can drop that if.
->> It is not only initializing the local template. The code first
->> initializes one page with __init_single_page(), prep_compound_tail(),
->> and set_page_count(), and then copies that page into the template.
->>
->> So if start_page_number =3D=3D end_page_number =3D=3D pages_per_huge_pag=
-e(h),
->> the old loop is a no-op, but without the check the new code would update
->> folio_page(folio, start_page_number), which is outside the HugeTLB
->> folio.
-> A recent patch to arch/sh indicated that hugetlb is never used on sh:
->
-> https://lore.kernel.org/linux-mm/auJI2blzfpFD9yLe@kernel.org/
->
-> And it seems none of upstream sh defconfigs can hit it.
+Thank you for your contribution! Sashiko AI review found 1 potential
+issue to consider:
+- [Medium] mm: memcg: node_stat_includes_unaccounted() omits file and
+  writeback stats
+--
 
+commit d2ba314724a8ba015e3bf2a30f155f1beba25a8c
+Author: Joanne Koong <joannelkoong@gmail.com>
 
-Thanks for the information. I will drop the empty-range check in v2.
+mm: memcg: read root lruvec stats from the node counters
 
-Thanks,
-Zhe
+This commit changes lruvec_page_state() and lruvec_page_state_monotonic()
+to read per-node vmstat counters instead of rstat values for the root
+memcg when querying stats that only track memory charged to a memcg.
 
->  =20
->> Thanks,
->> Zhe
->>
->>>   =20
->>>> In that case the old for loop is a no-op. So I will keep the empty-ran=
-ge
->>>> check in v2, before creating the seed template.
->>>>
->>>> Thanks,
->>>> Zhe
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 1ebc9330aeae5..2575bf2ba0ea6 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+
+[ ... ]
+
+> @@ -504,13 +511,52 @@ struct lruvec_stats {
+>  	long state_pending[NR_MEMCG_NODE_STAT_ITEMS];
+>  };
+> =20
+> +/*
+> + * Whether the node counter for @idx can also count memory that isn't ch=
+arged
+> + * to a memcg (eg kernel memory that isn't accounted). For these stats, =
+the
+> + * node counter can be larger than the root memcg's value, so the root m=
+emcg
+> + * has to read its rstat value instead.
+> + */
+> +static bool node_stat_includes_unaccounted(enum node_stat_item idx)
+> +{
+> +	switch (idx) {
+> +	case NR_SLAB_RECLAIMABLE_B:
+> +	case NR_SLAB_UNRECLAIMABLE_B:
+> +	case WORKINGSET_NODERECLAIM:
+> +	case NR_VMALLOC:
+> +	case NR_KERNEL_STACK_KB:
+> +	case NR_PAGETABLE:
+> +	case NR_SECONDARY_PAGETABLE:
+> +#ifdef CONFIG_HUGETLB_PAGE
+> +	case NR_HUGETLB:
+> +#endif
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+
+[Severity: Medium]
+Should node_stat_includes_unaccounted() also include NR_FILE_PAGES,
+NR_FILE_MAPPED, and NR_WRITEBACK?
+
+For NR_FILE_PAGES, swapcache operations such as __swap_cache_add_folio(),
+__swap_cache_del_folio(), and __swap_cache_alloc() update NR_FILE_PAGES
+only in the node counter while accounting swapcache in the lruvec under
+NR_SWAPCACHE:
+
+mm/swap_state.c:__swap_cache_add_folio() {
+	...
+	node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
+	lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
+	...
+}
+
+Reading node_page_state(pgdat, NR_FILE_PAGES) for the root lruvec
+therefore includes all swapcache pages, which inflates the "file" counter
+in the root cgroup's memory.numa_stat (double-counting swapcache alongside
+"swapcached") and causes it to diverge from memory.stat even after a
+flush.
+
+Similarly, __folio_mod_stat() -> lruvec_stat_mod_folio() updates the node
+NR_FILE_MAPPED counter without updating memcg rstat whenever an uncharged
+folio (folio_memcg(folio) =3D=3D NULL, such as a driver mapping or a
+root-cgroup __GFP_ACCOUNT kernel folio) is mapped into userspace, and
+nfs_folio_mark_unstable() and nfs_folio_clear_commit() update
+NR_WRITEBACK only in the node counter for unstable NFS pages awaiting
+server COMMIT.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110015321.6110=
+93-1-joannelkoong@gmail.com?part=3D2
 
