@@ -1,115 +1,117 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E6C606A32A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:27:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C921D60A2605
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:29:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=OR+qLhkt
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TSJs0Dw0
 Received: by kanga.kvack.org (Postfix)
-	id A75676B05BB; Tue, 10 Nov 2026 10:27:42 -0500 (EST)
+	id F33DC6B05C6; Tue, 10 Nov 2026 10:29:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A4D3A6B05BE; Tue, 10 Nov 2026 10:27:42 -0500 (EST)
+	id F0B736B05C7; Tue, 10 Nov 2026 10:29:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98A636B05BF; Tue, 10 Nov 2026 10:27:42 -0500 (EST)
+	id E48B46B05C9; Tue, 10 Nov 2026 10:29:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C64B6B05BB
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:27:42 -0500 (EST)
-Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 209241A094B
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:27:42 +0000 (UTC)
-X-FDA: 85419589164.03.EB029B2
-Received: from mta0.migadu.com (out-7.mta0.migadu.com [91.218.175.7])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D789E1A0005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:27:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OR+qLhkt;
-	spf=pass (imf19.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id C28426B05C6
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:29:24 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CC6821205EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:29:22 +0000 (UTC)
+X-FDA: 85419593364.24.D31F678
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 2D43D80009
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:29:21 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TSJs0Dw0;
+	spf=pass (imf02.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794324460;
-	b=ZB74Pgexz3Wt/NEy5+6BktweA1lpP0SpIR6uGgDj6ECX51aMR0DWv8SeUd3PkVIsPPx3ce
-	ItJpu1p+WReCNFD0MCxBn4JEtFbA119z+UrNiO5I79gviJ8thLIcdo1JMi7VgqBX1ySyRb
-	YIkKvVNPfXrGHgD31GNUM3I6YNi+Y70=
+	t=1794324561;
+	b=msIdm4Widtk4h5aK8AhmgQGt70vvbQP/eg7ObZX7o6Lt+KXPl11dTDa4qnFnu8jzK6lyF3
+	aNH09NaK4UIn8c5XRSHoIwCEbS2vAW1jS9f6q5oTGQ9mB04LsGM0gsIeow4aCbwhXSGV8v
+	CU7W+OKONDpzOLTzN5PzlO0uMMxjO+s=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=OR+qLhkt;
-	spf=pass (imf19.hostedemail.com: domain of usama.arif@linux.dev designates 91.218.175.7 as permitted sender) smtp.mailfrom=usama.arif@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TSJs0Dw0;
+	spf=pass (imf02.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794324460;
+	s=arc-20220608; t=1794324561;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aBOpD08FcZgUdX6sSVHpe8Q+9Wl4ICsDP/3Nx2bwfmI=;
-	b=CTROr2vdqgderbJLIeDc4rauKtf6xltkKyCwojiGrhA+ULf9zpkDr0dfnBa+v8Mhw9uaZs
-	op058Edmg6O/UF+29iinDx1ep5PQFWKNaCc/MD6myKua76Z+PwE6vRofRwO0V3FqIcIvEt
-	xyDS2x2jH4NVapicIjeRDw/yAgPetIg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=gvY+EFrn3LUi+QbgDmol5Cy3h4iylPle2lZKtkPoW2c=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794324458; v=1; x=1794929258;
- b=OR+qLhktr1EIyaPLVAyrm/NiuXlWjGdVW7HFby/zGsMn7+heEFKgnhY5oqQIGGm8Uv2LKXJR
- 3aLuSxxJcdB+NuBSZ8sLXvUyyMOxxUn9ohJwpqP8f7n+m3AtTmK+o4t5UG3iAPP9WeWKkhCQvpA
- RJ6Ak9Vea2mgI0vDcg/HGq8A=
-X-Envelope-To: linux-mm@kvack.org
-Received: by mta11.migadu.com with ESMTPS id dddf5df93d8bee57;
-	Tue, 10 Nov 2026 15:27:38 +0000
-X-Mizu-Trace-ID: dddf5df93d8bee57
-X-Migadu-Flow: FLOW_OUT
-From: Usama Arif <usama.arif@linux.dev>
-To: Jinjie Ruan <ruanjinjie@huawei.com>
-Cc: Usama Arif <usama.arif@linux.dev>,
+	bh=Bt4p16M4Hn7px1KF+H5JB36BxwFxJbfBsjU1XaPYy7I=;
+	b=hwXZLiNPuIFStx7BzXZbIwDfbbT9Ut7w6779InBh6vgq5Hd9Avk/NlBHcimKefeujIAs2J
+	inaXwfvmLy81Bo3PPRu/HSNvJMsi9xtEDtzpdXsRHk3H5PNdXQ+N9vpes2GSbZUZ2tRLKK
+	/hDweOJnIFPzuzIeXvmGlngUxak53TM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 6013443BD7;
+	Tue, 10 Nov 2026 15:29:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F8D1F00900;
+	Tue, 10 Nov 2026 15:29:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794324560;
+	bh=Bt4p16M4Hn7px1KF+H5JB36BxwFxJbfBsjU1XaPYy7I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TSJs0Dw0xyOaRnZl088l0F3yIjGw4rU/H2At2c8xdDHdp8SerI4hF6PCuWS3HEruj
+	 fQCx/eJIQmjee38K0kl88oaP09m8oPFuWfb0SN2hdJzERKh8HBENPPbNq39MNh2UPZ
+	 6LUEoOgWA4i1YTnY9oJO82udks6VcVjN25+VrrtAMglfx6zUadZkKlzvwnivvOYNaB
+	 65uMmDKxwsnbXEjB0BONIyAxG3GTaI7iSmzK/z4wlqJSwCXkSd0psBWDyBjr1GYhQD
+	 0+xb/kDbfockIG1X6kXknznczMF7Drsf/dASORnmaQY6SbL3ZRlz28lUCakAsVrTFc
+	 ordjZse33Ca5g==
+Date: Tue, 10 Nov 2026 15:29:10 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-hardening@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	baoquan.he@linux.dev,
-	rppt@kernel.org,
-	pasha.tatashin@soleen.com,
-	pratyush@kernel.org,
-	ruirui.yang@linux.dev,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	rdunlap@infradead.org,
-	muchun.song@linux.dev,
-	osalvador@suse.de,
-	david@kernel.org,
-	jbohac@suse.cz,
-	sourabhjain@linux.ibm.com,
-	leitao@debian.org,
-	linux-kernel@vger.kernel.org,
-	kexec@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-mm@kvack.org,
-	kas@kernel.org,
-	hannes@cmpxchg.org,
-	riel@surriel.com,
-	shakeel.butt@linux.dev,
-	zaslonko@linux.ibm.com,
-	brads@mainlining.org,
-	kernel-team@meta.com
-Subject: Re: [PATCH v2] mm/hugetlb: allow crashkernel to reuse hugetlb CMA memory
-Date: Tue, 10 Nov 2026 07:27:29 -0800
-Message-ID: <20261110152731.2841707-1-usama.arif@linux.dev>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <9d2d6f81-ceb7-48a7-99a0-18a0bb8c504f@huawei.com>
-References: 
+	Ard Biesheuvel <ardb+git@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Maxwell Bland <mbland@motorola.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pierre Langlois <pierre.langlois@arm.com>,
+	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [PATCH RFC v10 06/22] arm64: Disable EL2 trapping of POR_EL1
+Message-ID: <3500936b-4177-4ba0-a9df-7eb9d9d75b0a@sirena.org.uk>
+References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
+ <20261109-kpkeys-v10-6-aa6c4d9603bc@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="nrZdJCOCfevRaauL"
+Content-Disposition: inline
+In-Reply-To: <20261109-kpkeys-v10-6-aa6c4d9603bc@arm.com>
+X-Cookie: You can't take damsel here now.
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D789E1A0005
-X-Stat-Signature: zb4mr6kgm7q5r9opx6rat3mrfecaep3m
+X-Rspamd-Queue-Id: 2D43D80009
+X-Stat-Signature: bzfp49dg11brp9ag6ziyjnk9yj7jt58x
 X-Rspam-User: 
-X-HE-Tag: 1794324459-481830
-X-HE-Meta: U2FsdGVkX184D+DJVGf4fKhypUDGQq3G9mBrPyaWFn2Fl8lAuyiWXO0mojj7csqVNBUAuyRlnvQ9PeDxoac8f/fOCZ+87Xf/KtgmwTlyzepx+vIcWMBoPCtq0AhVpKnhair4gYTN20JDOhcHp3eVjKcyj/BC/0m4K+zQza8pSXGCYBPMP+qnMxhhTlrI6IcjVy3e0e7g2sIY+SvhLYQBZgMC/jooLnHVLMigJKeeYXBxsloTElMstIh8KTpN6SRENoPv4ojbztqx/kvvZEiEoTYIIpuWh87eFuXtRXTYZBjXfxOPlO+EbO9BqnlriPSQAegwRQsDsjwSYvvPV6w5nzmLbNPGVxMdyIQqPifwzijM7fGaqDPhXmGBvES3q0F6JfZk93oI9x75qBXfzxa2Y5+u9ilzQT6JGKadTpxD9R/tvsNGaqZDyT/pO1rjdunRf1JRWnwqXfLAqiKzUaQ2nbq5IqYci+dTAPLHs4EpDYXritr7dvObuR5pmiba00RVAbUedQ5OqgDEersYzKHzHAIdcx0cg0IAx/7uBDHkgtNOf10Jer8GwbCcF2TjLIT+tx3VabVjfo5gY/Xv2RXM6hBBi7ZKedJSGxd1srL+PtjyPeNXSIT3+GtsWUd2XeDx69MY59h//W3KuIZWMQqAsTANNSAuBajY0s4bdczmMubADGylaRUE0lPlbL/rjiH9asdihcevYwljpIt1qneZMzgxB/dka+8Mw74BXXOp6UJw1qkoFg++YUBnqpmFdq2nYMXadIxrxFToc7Akmw2AYxCpyPbQ1cqt5X+yJlzyDsVzbci2kDTqPNaqUrJYBk/0Sj5PwpWqwpo1lWPuAxf65nY0mqFDBPKP8waojMohitU6Sj3j8eOdA6kWlkdOs+ActNTWZ1e/QA1Ml5uqoDvojRDO5zpJyjzqozZSaUmk6052QLR6BT4IEhdTe7o3AiUK8fy10QK6X/Rv7m5HL9Y
- F6TRBiXs
- 1MOtURepNuj4osj150c+c2udRCR1QI5lx4nCpkEO/ZEmZ70b2XJXlUsrIAv2GCXFb6Xomo9UNpTAI0tA2aAjDd3l8SpYF/beh/wiwKmPHOT0M9arCaSH2H/Ajn5+dV2NXIcDs0snXWg5cZyAX0wInKtrqNpxT56f6x88V1XEv+z4XNXx3QY2GeGxk8CxO3T3I9Vb3VRyMaJGEkA6npqwT2uV9tqD7C8amB9jzw+tn5Jq+U1Ym2q2iqNX7ZAfwZoA6iQV0m6Oz/eGNICgZFnBEoIVrp3n5UxBk2p+I/gx7njgAJFMjaznwbgD7WQ==
+X-HE-Tag: 1794324561-160102
+X-HE-Meta: U2FsdGVkX19uZWaEuNTxTsVPkrYGAdvwOWhGFGbQj/xnd7bXMoe4fVI19Snu0B1shAEDmRYcPX0QD7MKFgyVORlHmVf/QPzK5U5BLQRYxmDwPukvYpxfUkxmBL+Z9uOD2tUsxHmzFIYsTZA2p5fBy7oxBz1yN6u2Zb5ppeAvff1NT/UwizYJJ++6rrAuZ/3mer8h6hZrplYKAQQyDUQau7f7tFb1hCe1uYwT3jkwEmD4mB0o0f+E9UL0i1iorAPG7hI6pjyzVa659jkEV9SUCiCREmXWAaULoiDvfx0e3kZjw2PJJFWePfCDdckkhE1IWdClSQ6U8iP0X1+7Wt1n6yjPkGhPEbaoLxIKBRhi1pCXd804lGt5QKLEqFwnDh58KukZp+zRgUXltKhzgnMXCsarQE71aFg8BvOgi+G35942b2/Z84H0gDhkNzJ/vREp+zZjvgZBQQnJK8sgBRfUvfTu4TB6OXLxv2Y0wX72DhHMev79lzDwdQGpy9QozPDA89VKWdMo3rt4kP7uurPkjpbMh+6ExKksg9NvHSgFyQnfSRH16Wivn91gDpWh81vLHOvM/l5EnBBOtaozUja5t2tREGzv8gtGLcFVZ9VCG/7h4UQAqe36+2zsTAkFKcYD9vaTteZpIc1a36GG9geragRtKWil5ouDhTQth9a7+rjKt/3ueatU5Eyb7N7MZpxQmPn8bGIy+J5KnpkVCXomik8w/uMrOD6sZPnA/UGTNNqgN8oCvJNeOD2mH7IpFAjrt9pvhtad3Tw/aY5JfMwoxDYpwcOwZCXBJv+QAthqwbx99y3D9LmfmJfZ8EIVZXWuE7VrJ+R2wIHo9n9QCiVxCxFf4zHg753aqYFtHCKysth1B6Gtj3gBQecHzK2GqAYpxSJOKwRKYiyXD+26GSAnv1SMfkvtamhp+xp91Y0897m0NZHcQDZzZFfw2ejnK9/H8wEQ5sy8+rvOgGa/h7T
+ 8enjgxaK
+ nSWhzd5AhNXNpp9ldo5AcwweW0Uj7KL0/VRV10gIHYf8GybxRTOc29nAZJxUD/j5zjuRKJ0m4RT17BZkMVxUS1MC3IjNSTLbqCLR4nG/KkC/FZYmIWv3zJ12oXiVbrsg0sKJLod5B1oEFO1Da6Czj68L65nMmMr4Vq8/3sZPiVWRDUj0SYtQRRx3Tai4T5WAgx6Vtus5zJDgjOVjdtzGF1Bs7jcQNeYg7kRcWdby5h5uH4jl8KiPp3CczZTPdwe2vvcLWKSfrJklv3mHuY47jKSB1w0sa0LIJ2UMlJH5Gtuk3jbTt05vyy4l+FxC+wpYjgG49G+kRFNM8pPohDobpzIaiOdhPgTfqFCAPldooImrjyvzAZ1rZ7JFwMmUpNM9rDdMEMinVWeyJjUdS6BXUTEy/w+hmNEatbwOxvI5ZXLj+AvoMTlZB7VP3VJcMNeE7+UdQv//+DPxt7NsPNXhNeiVUeg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -118,71 +120,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, 10 Nov 2026 18:39:34 +0800 Jinjie Ruan <ruanjinjie@huawei.com> wrote:
 
-> 
-> 
-> 在 2026/11/7 0:51, Usama Arif 写道:
-> > crashkernel=size,cma reserves a separate CMA pool. On systems that
-> > already reserve several gigabytes with hugetlb_cma= (which is common in
-> > the Meta fleet), the crash kernel cannot use that existing memory as
-> > part of its working set. With hugetlb_cma=6G, requesting another 2G
-> > with crashkernel=2G,cma brings the total CMA reservation to 8G, none of
-> > which can serve unmovable kernel allocations.
-> > 
-> > Use existing HugeTLB CMA memory first for crashkernel=size,cma and
-> > reserve dedicated CMA areas only for the remainder. With hugetlb_cma=6G,
-> > a 2G request reuses 2G without reserving more CMA. With hugetlb_cma=2G,
-> > a 4G request reuses 2G and reserves another 2G.
-> > 
-> > The full HugeTLB CMA pool remains available to HugeTLB and movable
-> > allocations during normal operation. After a crash, the capture kernel
-> > can use the selected ranges as working memory. The conventional
-> > reservation is still required to hold the kernel image and initrd.
-> > 
-> > The ,cma option already opts into excluding userspace memory from the
-> > vmcore. This includes allocated HugeTLB pages in the selected ranges,
-> > which the capture kernel can overwrite. The existing dump completeness
-> > and pending DMA risks apply to these ranges as well.
-> > 
-> > Have architecture code record the requested CMA size and perform the
-> > reservation in mm_core_init_early(), immediately after
-> > hugetlb_cma_reserve(). The HugeTLB CMA areas are then available for reuse
-> > while memblock can still reserve any remainder.
-> > 
-> > Use the existing four range slots for both reused and dedicated memory.
-> > Limit reused memory to the page-aligned request, account for dedicated
-> > CMA alignment, and report any shortfall. Ignore malformed optional sizes
-> > and reject requests that would overflow page rounding.
-> > 
-> > Suggested-by: Breno Leitao <leitao@debian.org>
-> > Signed-off-by: Usama Arif <usama.arif@linux.dev>
-> > ---
-> > v1 -> v2:
-> > - Use existing HugeTLB CMA memory first for crashkernel=size,cma and
-> >   reserve dedicated CMA areas only for the remainder. (Kiryl)
-> > ---
-> >  .../ABI/testing/sysfs-kernel-kexec-kdump      |  3 ++
-> >  Documentation/admin-guide/kdump/kdump.rst     | 22 ++++++--
-> >  .../admin-guide/kernel-parameters.txt         | 16 +++++-
-> >  arch/arm64/mm/init.c                          |  2 +-
-> >  arch/powerpc/include/asm/kexec.h              |  2 -
-> >  arch/powerpc/kexec/core.c                     | 12 ++---
-> >  arch/powerpc/mm/mem.c                         |  6 +--
-> >  arch/riscv/mm/init.c                          |  2 +-
-> >  arch/x86/kernel/setup.c                       |  2 +-
-> >  include/linux/crash_reserve.h                 | 14 ++++-
-> >  include/linux/hugetlb.h                       | 12 +++++
-> >  kernel/crash_reserve.c                        | 51 ++++++++++++++-----
-> >  mm/hugetlb_cma.c                              | 50 ++++++++++++++++++
-> >  mm/mm_init.c                                  |  2 +
-> >  14 files changed, 159 insertions(+), 37 deletions(-)
-> 
-> Should it be separated according to the architecture and framework code?
-> 
+--nrZdJCOCfevRaauL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-IMO, the commit and change ins small and simple enough that it doesnt need
-to be separated into different commits.
+On Mon, Nov 09, 2026 at 03:58:31PM +0000, Kevin Brodsky wrote:
 
+> Make sure EL2 doesn't trap kernel accesses to POR_EL1 by setting the
+> nPOR_EL1 bit in HFGRT{R,W}_EL2.
 
+This wants a matching update in booting.rst as well for when the kernel
+is booted at EL1.
+
+--nrZdJCOCfevRaauL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmrzOEUACgkQJNaLcl1U
+h9Ag0gf/f9f5XP+mPu/qkq9MsiAddVfTPO5cBvZan8qUxzXzuilhA54mF0WCZWl8
++Fmzl+Q0J4gwxCKcr+yCLoOyMvLGiUCFQVnPcJT7wMBqrZ5DA5f/OW6YWx6uMZyT
+ExUsefodnzmOczU+s41SARPFGFuRuJsT756diQQYF/IlO8wq0GJ8mWoBGKf6H3OR
+BKFwnc4Cda3sUrlQ5UU1Y5DRXoHpQJe2+dz013uXt14vDmtxE8P0840PIRU+Y/F2
+zhXRtj08uReTLuyfCpkD2RuiPx2DKigEDjHND7yPRfuiA/qskHTAtBBtxtRcXoNc
+7EjgnbeiJeosuSBYcCi5CS+h/Sh4Jw==
+=osnL
+-----END PGP SIGNATURE-----
+
+--nrZdJCOCfevRaauL--
 
