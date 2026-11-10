@@ -1,128 +1,106 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409A460A3803
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 03:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF60C606A331
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 03:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=T5NfUtG9
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=UDtQZH6p
 Received: by kanga.kvack.org (Postfix)
-	id 2412F6B05B1; Mon,  9 Nov 2026 22:22:41 -0500 (EST)
+	id EA4D36B05B8; Mon,  9 Nov 2026 22:24:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 216B86B05B7; Mon,  9 Nov 2026 22:22:41 -0500 (EST)
+	id E750E6B05B9; Mon,  9 Nov 2026 22:24:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12D156B05B8; Mon,  9 Nov 2026 22:22:41 -0500 (EST)
+	id DB3A96B05BA; Mon,  9 Nov 2026 22:24:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id CD47D6B05B1
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:22:40 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4F215160863
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:22:40 +0000 (UTC)
-X-FDA: 85417762080.20.CB5928F
-Received: from mail-dy1-f179.google.com (mail-dy1-f179.google.com [74.125.82.179])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 79F154000B
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:22:38 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=T5NfUtG9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id ADD916B05B8
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 22:24:14 -0500 (EST)
+Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4ECDFC085D
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:24:14 +0000 (UTC)
+X-FDA: 85417766028.19.55ED8D9
+Received: from mta0.migadu.com (out-195.mta0.migadu.com [91.218.175.195])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AE4CBC0002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 03:24:10 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UDtQZH6p;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.195 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794280958;
+	s=arc-20220608; t=1794281052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=W/wp6KJO63iMMRJlz6HcbO/i7czGvSk/CyVD5tv8Mv8=;
-	b=zk/+tfs4/i7hvP/dlMrrOqocwGm93KUYNteYf6aQ1o5svRg17z+XBYUcVKB2Bt2nY/wu3M
-	6d3ePMrbhfsEU0i7kkCFwgCFfdg808oUc+3UST2WVH8w7qVNGv7ty4Z5tCIEC97BTGKymU
-	C4iHo2oAhLIrVmVKLlrxsp2mLBrtQRo=
+	bh=0zxg/oHV6c7bTdjTEStCmT/9znR1pi4716FSd95ju8o=;
+	b=ZVDlayBGWG1rhke52G4AKT5L2QPwCaLiWYbe1QkIENzjMNW4UMWyu6XECvnR06gn1ZKUu/
+	MkO63Y7bDMTGazy042U42d3dnnftwFkzp9x7GtBlsIgAaAvuaPkRQAmugJqDgHTCCnKW7Z
+	2w4CYOmwfxurob6C46XPPPSukUJYEw8=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=T5NfUtG9;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of ritesh.list@gmail.com designates 74.125.82.179 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=UDtQZH6p;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf10.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.195 as permitted sender) smtp.mailfrom=muchun.song@linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794280958;
-	b=2FvMN/HRfSNO+s33qxE/Kqvx79guVAJ75j8I6kFycVPcR0wfBUYgNjuAD9xy9B2vwdicjc
-	UcVyuWCVlVMQfj6ALNQ2DD5DTWhVnTemDvu+Gu83MQ2XkI1D8I+pc+5lqYEc6scqpVgWTX
-	bPaVVWOrcx18TR9Cm1RVVnXINaxeQ90=
-Received: by mail-dy1-f179.google.com with SMTP id 5a478bee46e88-3700ed8dbe3so2105405eec.0
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 19:22:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794280957; x=1794885757; darn=kvack.org;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :message-id:date:in-reply-to:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=W/wp6KJO63iMMRJlz6HcbO/i7czGvSk/CyVD5tv8Mv8=;
-        b=T5NfUtG9Qb1tv28NwHwA0jVyJgRU31/gNKJzyL5jRdeC2wOdFFbpWktSiY7+HkWonS
-         +Gitzza7sU/l7ihn0nWN7URPuLlZQ2sz/Go1i/JNgj45354NcS+C6Z75/ZzVauZRJrsH
-         FR0A2MkaSxKOI/bYf3vZZx+NZqG4EnGyu/ii3L8Vx252fRLrIyuTzoASrP4Ka+yymqxQ
-         laQ49v/cTz/hl74a/ihvouR+Uowt0fTP1jbTMB0so6feIdH02K91Sy6nWJxdz3XhbNLU
-         bDtKF5Vpcrus41z/OQBgsk7C2pVHOpvaeDCD1tHXpRBD2o5+hr7RRYovszeFdWqckXHl
-         Lxiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794280957; x=1794885757;
-        h=content-transfer-encoding:content-type:mime-version:references
-         :message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=W/wp6KJO63iMMRJlz6HcbO/i7czGvSk/CyVD5tv8Mv8=;
-        b=O4co+4UIUHxDAyLkbeOMk+lG7WAmMGRx7noDI41XUthMn6wNPeIpVOAFW0L+gvdEaM
-         BCj3qodmFU7tZuZBFjWKmqZr+6YSfTscpzXwZkNo7ikE//OI5HzYhwAy0AE3XFqQkb3B
-         vWCFuDHvhp3GnB63+taX8fuD5xBpqbtJbs16mc4feRr4ynjRX7CZNVl2jDeZ8QRO9UVR
-         zq/M4UR72XrBR6AF617Cy102ibfRExjE44JR4DvSIe/POkeQOAz7x5HHa1An2vIhjdkf
-         uNKGyYFlYP8YbTz8RP+fr/pjb6c80fg9JrgCeKpn/8aY98o7aNT6ckZQ2VWSwlRTkd7r
-         wT8Q==
-X-Forwarded-Encrypted: i=1; AL+hErH8Z0t2ybLi8E7M5+MDIX7rsR9DKe9w8eq+WnSDjnvhgDOIjL7+odzFMRVTykVG0V+1ijfO255wTw==@kvack.org
-X-Gm-Message-State: APuU4Z8dP0q2xB25aZfca6lXciVsASdVNBudbjppCcTuDjaotDuUXEpf
-	7pdB9G6aTgvTRv+FoFNoOKYfx6nkUvCYU7wj/ueijRcL1xTIfJOPl98/
-X-Gm-Gg: AYBFou3xtbyKV4OBED2r+GoQOLfq6oKFfId+TpN96xHsszBwIjNBe8nLwPeyQAZrhPr
-	KH+yUllqIRyD3bnNzlsYkvPvpH1Afv2N041iLBL2TwdgeMyf6qGpGdSycimCHoQUzJS2kuR0p4M
-	yhP0d71sUdw9RyvLPBZ3IOynHK10aZ//xzOoH9vydvnnnzqsrzEBws40t8I5jz20i8F4x/woWzz
-	yLMlZyCfkfCKAfvWvP6d9wrBg4cV+eYm5mnA3aw8AkJxHBUpeAjFzJF7WE/KzMVZOEVXWclg/LH
-	0yX7dmGM22Hj3iVKZ13nYNzeF7zb35xG1RRweiKKKd1KnRlAvAeL7pRiLzKEn/XZcTn0PG0/Ma+
-	GJDlGY+5aIalCKJ3wBJayVj2DLIOHKEp2K3VBlIkpY37fefJml1ulCH0Y/vbIv7yrExHQvOCJZL
-	qsAY7+jybnvTtrUOit4NNhMi9T+cHoVXCvINiKTRJO7cLxKdXTy7Ai09SXf7GnxgDr0ivxxIprI
-	hiGcVnmafg4FOz91+AX0yuiSk8tsw82bCikulmKwVzU6621m6f8UTQHU5r9LXD6BiL+7BgYuu+y
-	dB9YdKHbyALejXkOA0lA/XbaVxEH
-X-Received: by 2002:a05:7300:3b03:b0:366:2893:7421 with SMTP id 5a478bee46e88-3751e6acd4cmr2378114eec.10.1794280957102;
-        Mon, 09 Nov 2026 19:22:37 -0800 (PST)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-37520bf3e18sm4159008eec.16.2026.11.09.19.22.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 19:22:36 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Konstantin Khorenko <khorenko@virtuozzo.com>, Andrew Morton <akpm@linux-foundation.org>, "David Hildenbrand (Arm)" <david@kernel.org>, Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <liam@infradead.org>, Nico Pache <nico.pache@linux.dev>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Peter Xu <peterx@redhat.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, =?utf-8?Q?Lo?=
- =?utf-8?Q?=C3=AFc?= Molinari <loic.molinari@collabora.com>, Lorenzo Stoakes
- <ljs@kernel.org>, Shuah Khan <shuah@kernel.org>,
- linux-kselftest@vger.kernel.org, dri-devel@lists.freedesktop.org, Madhavan
- Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org, Konstantin Khorenko
- <khorenko@virtuozzo.com>, Jason Gunthorpe <jgg@ziepe.ca>,
- stable@vger.kernel.org, Sashiko <sashiko-bot@kernel.org>
-Subject: Re: [PATCH v5 3/4] mm/huge_memory: read a special PMD under the lock in copy_huge_pmd()
-In-Reply-To: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-3-c56d0d26f970@virtuozzo.com>
-Date: Tue, 10 Nov 2026 08:30:44 +0530
-Message-ID: <pkwd8k6b.ritesh.list@gmail.com>
-References: <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-0-c56d0d26f970@virtuozzo.com> <20261104-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v5-3-c56d0d26f970@virtuozzo.com>
+	t=1794281052;
+	b=2EEZuHJ8cEe9cFSXkY7HZdgTx6lRUZ5RP4jTkylyWpTVfGz2zOSY0V6p1xk7dF40tA1cNR
+	+eXj79+rOb+F3PQgVrn7CAdXWX6byVI38fH4Vp0k0xMGfSVajX374evMjf/XW5tGtLAy5m
+	lFsW4Fzv3l8Glf6N9JuMJsLhO61gZ8c=
+X-Envelope-To: linux-mm@kvack.org
+DKIM-Signature: a=rsa-sha256; bh=AOwIJhgzOk7txoq52yOkZ0HGi+vTCQjqFm7cTO02lc0=;
+ c=simple/simple; d=linux.dev;
+ h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
+ t=1794281049; v=1; x=1794885849;
+ b=UDtQZH6poI6uKc9PBSA7zBkug/rsyHxmlpAm1bxuO52q3FmBOJtGqyL0N6xYSmd/1nbqi82u
+ Ed75jq8nw2GHFHymGG/axmW8r5qEnU02KMymEOqm1aXNuN/91qlV9LaovMO1a9QF5F6Qyx84jnU
+ n4Ip9kwIiNXN4i5hnEgCpfa4=
+X-Envelope-To: linux-mm@kvack.org
+Received: by mta12.migadu.com with ESMTPS id ca01e065db3b1e04;
+	Tue, 10 Nov 2026 03:24:08 +0000
+X-Mizu-Trace-ID: ca01e065db3b1e04
+X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain;
+	charset=utf-8
 X-Archived-By: <archiver.kernel.org>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 79F154000B
-X-Stat-Signature: nrqfxukosajnwcp59d5ibwcrdoc8dwb9
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
+Subject: Re: [PATCH 06/11] mm/hugetlb: initialize all struct pages for bootmem
+ hugepages
+From: Muchun Song <muchun.song@linux.dev>
+In-Reply-To: <sashiko-outbox-204840@kernel.org>
+Date: Tue, 10 Nov 2026 11:23:51 +0800
+Cc: Muchun Song <songmuchun@bytedance.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@kernel.org>,
+ Oscar Salvador <osalvador@suse.de>,
+ Mike Rapoport <rppt@kernel.org>,
+ Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R . Howlett" <liam@infradead.org>,
+ Vlastimil Babka <vbabka@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>,
+ James Houghton <jthoughton@google.com>,
+ Lance Yang <lance.yang@linux.dev>,
+ Qi Zheng <qi.zheng@linux.dev>,
+ linux-mm@kvack.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <2C89ED4A-9709-42AC-8DF2-3D7691475239@linux.dev>
+References: <20261109095807.41547-1-songmuchun@bytedance.com>
+ <20261109095807.41547-7-songmuchun@bytedance.com>
+ <sashiko-outbox-204840@kernel.org>
+To: sashiko-reviews@lists.linux.dev
+X-Mailer: Apple Mail (2.3901.200.71.1.16)
 X-Rspam-User: 
-X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: AE4CBC0002
+X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_PATCH,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794280958-450594
-X-HE-Meta: U2FsdGVkX18KUnBkhnHUF15I3zFSbfxuzX5e8X0mHtNF0vNVw0xD5+27lYdP00qx4Y1cXw5X7xG0Yb5CcsLbYh0sZGzX2AbdtX1OtEhIgzhzYso5llFO+QQyaOFMVap7Tf2lr0gg5iL7sB9Dz2jcKD5862BO8q/GOBS1EHXoxW5uPy2lpyxNmR0oMQXoWW5d9v5FY5u0v5ogXh0rvb70mxLKTfQMFNhlfbi1aC4iACuoAqNX4nu8GhQzMuLvB4HD3tKINET144o8p8zl+BFB9Vvr4+WrKM6MoO12/QEWRlPH6eewBrT5e3X12Caolp3kcwNm+LVWbfDakDeiuJtPowoZH2ZScdlksSOpFq62Q1MaWaNe3T3JZ0niRocL6m8M6WZmagGYTi/+U3ibFaheaepoUjZisYgqW2PuP1I+ZlqSbgYSrRwq2BN+c4IzJi/dHu65GAcOs1TZE/sKdYgBK/q6PJQzAKY4tSRSwznc90xkmyTvty2GCgbvMexjyNUttumv0H+Qfkyq8dumDmLoDBcYVvDRir1b44WbHIQC91ZaVAWdnozTocueeD/Sh6zRTQ9elKFVcd64AE8OFT1FblKq8kzhQ5DAQPyQb4ou/elaWjU3z8GqQ28OrQHouqoxgU2iD8jsEm7Sl0lr7B4isd/ICiUIjLS02FsITrIOGYMQyTfgaTopbp0Mhw6YBFe6Mq9XJKIBKraqxTQyRSwNa2soan1Dpit301iql1S/QSQ+REfq4YsSb9GQTgfwUST70QEIq2mGjYS7LvPbb2LMhaC6moe67aDoht9Gp6/BdLH94pBAIz2sL543cIubUjXVOEa+a5hWeY0BHKHFVJMQqb3C9WoX2BzQf1fYirrvdOp73jah7fgPKRkSd8jaSawC5Qyva+hSX23L6UwKcZ2r8POFcraHUD0lHZA6dFCSci7drRWdi5aqvSnOvA2mCAmKbpneGJ+V3R1KrrT3soN
- oRSUkoCS
- 5z+ncLeR1Fv3OCYTYiW8YJYsEColbbnuBiY2mSQ+AXvxxscu0/LrLzlfnyJ6d6jzlgJb8TsuuEl/rl0qKz0d0EXDquBszbtIHuokBiNU2od3E6VbpmhD5DJ3Vlo/g4F6qQolBEm+ldwCCGEWfXsRuxGz0E2Z0aJBWCK/0EDXK0NtT+qnu3qnjDdtbEden3yzSUc8U44i7QyZLlI6fZo5y1p9wQqqXL+lFN0gcW8bNv6q/gdL5ysXWf7aKmTnzoWQJFp62ntvHMoPOCUoxM30fhkpZooHrGz9sUrlLu/+BlaKCb0rHAGR/QARzXrvNQ19YToksO2/356PGbOu6LDJnWnlsCEjeSnXJAuopZ5YQNk2skKYKj4sBcEneI/1SEFtgnrdoz92rFk+jgUc6KZCOAijyNpgnPRb3jW4Dsw/+4ynCU78FS+33yRNT25PmhFW4FX61sk2coz+3BDx1cQRa4xgrlxwnoBI3FHaa/XvdGoAKxZTsYJ06xBx4BWXkC7l07dvASs75rjVSoTdHpfhL7wyMi4CkonhidQLdKwVee7Fym6DoVI9+CvtlUo6/0pcNRUXoQiDgvktswPUI54RO22U7UcEdaxdLLQhmlnMVl3rqqjWmLwYjFDv9qrN3+0XneFRL2oAU6tVPlwVnMTtMVTdfYN2G0ouedAPHym411wcRezdWfqofFVYuTdPiiIwfRorcrcWBGVwl4v3+1AjiXBu10g==
+X-Stat-Signature: frtoczhfhx3uttqeath9tnt4x3gzbeo1
+X-HE-Tag: 1794281050-776291
+X-HE-Meta: U2FsdGVkX1/uaFNzZqUpMXkmnCuuXcOwU1YiOF2CEGjXB0znaiv+RpX0VophyG46wNhmgzBQo+G1CKkPVqQSQi/2/H1TqfXyEItdQS2InCV8v9mnhDUU/Lfy01vFqeclU6LJbf+VoktJQDMrpH1OOu6fNmIaMbK1awtDyJEb8zL4jvFkVFeElAROzpz6ZyvovsU0FRrVnqIsEZP1wzb0SD9/S6w8STv7T9Hz3J0xdCShSlWkCHs5QK5SiqMvhiCh16KufTSDswJgl88FvHkJWgr/eCyegKhnB25IDV4O9wPUBs1aSMsi2Xfc22QGbvICyTvq6RGG/qEkaen4h1rSxxQrhhGtNp8vlOHmj5jOodWbxl4JlVDqX9RS+TbkAZ2cYPRi5lXlINDbG/PkttMW5YXVaXQwE7kv6FTqgGZcFnBTqZhKEeBH+sJ1tycrLQBqggGEqJVl3kFl9qXvdP2ZqKoXx/v3tQFO7Sb4vhDJyIrQAQ6mxAlpx53IGI9XyHBu6SxRoQUDK2XyuwxeF920ThXDYAsLsIgyPJ87b61+eBDY9sqZZo4d7S3RKYds6/hWZGtj6XWT1qxjeJkyAoOkbY4PSuDx12OMXWMcZ9dSkLdRyxs1/FlM0YqlyfeJyiT1q5MZAzrRj9Zd3/Jhj03zDSYkvcWetScRW46cz4up/LYjOZl8+bpd0fN8qwhzzbyAuVAr7LeklN/rXwlwmcxSw8XQAJocsnD2+lT/5DlVBnkgMUSC75w1wwTQI9ilha+Anfgm3/hQLQFFCRGnPCCyl+LM7RUq8BY0nPC5Ww51ZcFOVGMYPFTnlOpSP96mw1AR7VdJMfZUF0hIkGAA4YYsZ/axi5QMsJXkq1POCAgSZ0TIJtfem2Hr4MxEGOHZe7LiliUeZrwQv/iYKtW8BJXoD1BX1Enh2hBao0hpzBplyLo8u7/bVQKE38oRE+weFRo4lWtEDyc0IBwLjASGMm5
+ 8UdHZ1UP
+ RcbvdHqxoN661hCyuwPr3aksny3SImxCQanFhljc/8EXIcgD3lyqojyWE1J5fa1zROx1GCqv6dhqQpcFSeQ5TvyqwWFmTKV6pKjJ+ipzJoMgeVrKe9ncGFquV9SVLBNVrh6HTqkvP9XbZPMOvjlsw1zRC9ubHanrvcHbBMaZuN2xtE0ZjhtDkSCYUklzs3b+IcM5HNnU2+cW1dsgC5s++TeAGY6kWoCD43hLrRFxv0DQ/3AWF/x530V4pbgKTLBmZjOp6fOoAPndmacC+9TZD095wzsadOTId+RxCLClPnMHtxQnTh7e5r+ZhfXjDUgtC40/DHW54jRJUbmXlREbVcoMttz6BveeK41xB8wZ5cEL/NoGzWHlxRVDyfA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -131,139 +109,139 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Konstantin Khorenko <khorenko@virtuozzo.com> writes:
-
-> copy_huge_pmd() reads a special PMD without the page table lock and
-> copies that value to the child. The mmap write lock held by fork does
-> not stop unmap_mapping_range(): it zaps under i_mmap_rwsem and the PMD
-> lock.
->
-> The zap visits the parent VMA before the child's, as dup_mmap() links
-> the child right after the parent in i_mmap. If it clears the parent PMD
-> after fork has read it, and passes the child before fork copies it, the
-> child keeps a mapping the driver has revoked, for example:
->
-> - vfio-pci: the child reaches the BAR after the device memory was
->   disabled or the device was reset, instead of getting SIGBUS;
-> - panthor: the child maps the pages of an evicted buffer object after
->   the driver has released them.
->
-> The same branch deposits no page table under the copy. ppc64 in hash
-> mode keeps the hash slot array of every huge PMD in that table, so the
-> child dereferences a NULL table on the first hash fault, in
-> __hash_page_thp(), and on the zap, in hash__pmdp_huge_get_and_clear().
->
-> Take the locks first and let vm_normal_page_pmd() tell a PFN mapping
-> from a folio under them, as copy_present_ptes() does with
-> vm_normal_page(). The zap clears the parent PMD under the same lock, so
-> either fork finds it none and skips it, or the copy is in place before
-> the zap reaches the child.
->
-> The copy of a PFN mapping then goes through the same tail as a folio:
->
-> - it gets a page table where the architecture needs one;
-> - in a shared mapping it is marked clean in the child, as a PTE is;
-> - in a CoW mapping, which only VM_MIXEDMAP allows, both sides are write
->   protected instead of a warning being printed.
->
-> Fixes: bc02afbd4d73 ("mm/fork: accept huge pfnmap entries")
-> Fixes: d1503aa9ab80 ("powerpc/64s: Add support for huge pfnmaps")
-
-Thanks Konstantin, for fixing this. Without this patch I can reproduce the problem on Hash
-on Power (on my test dev setup), after fork(), when child touches those pages.
-
-[   62.543247][  T242] Kernel attempted to read user page (0) - exploit attempt? (uid: 0)
-[   62.544992][  T242] BUG: Kernel NULL pointer dereference on read at 0x00000000
-[   62.545335][  T242] Faulting instruction address: 0xc0000000000a0ee8
-cpu 0x0: Vector: 300 (Data Access) at [c00000002035f9d0]
-    pc: c0000000000a0ee8: __hash_page_thp+0x218/0x560
-    lr: c0000000000a0e14: __hash_page_thp+0x144/0x560
-    sp: c00000002035fc70
-   msr: 8000000000009033
-   dar: 0
- dsisr: 40000000
-  current = 0xc00000001fb08480
-  paca    = 0xc000000005010000   irqmask: 0x03   irq_happened: 0x09
-    pid   = 242, comm = vfio-fork
-enter ? for help
-[c00000002035fc70] 0000000000000000 (unreliable)
-[c00000002035fd30] c000000000098a40 hash_page_mm+0x688/0x8d0
-[c00000002035fe10] c000000000098dc8 do_hash_fault+0x140/0x368
-[c00000002035fe50] c000000000008be0 data_access_common_virt+0x210/0x220
----- Exception: 300 (Data Access) at 0000000010001b60
-SP (7fffde6dd7b0) is in userspace
-
-With this series, I see that the issue is fixed. Thanks for helping in
-fixing it. Please feel free to add:
-
-Tested-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> #PowerPC
 
 
+> On Nov 9, 2026, at 18:43, sashiko-bot@kernel.org wrote:
+>=20
+> Thank you for your contribution! Sashiko AI review found 1 potential
+> issue to consider:
+> - [Low] mm/hugetlb: hugetlb_folio_init_vmemmap() wipes KMSAN metadata =
+on
+>  head page
+> --
+>=20
+> commit e4e80712cfb9bd9a2f1df0a9b2aae1625edb6829
+> Author: Muchun Song <muchun.song@linux.dev>
+>=20
+> mm/hugetlb: initialize all struct pages for bootmem hugepages
+>=20
+> This commit marks the entire boot-time gigantic hugepage as noinit in
+> memblock and initializes the head struct page alongside the tail =
+struct
+> pages in hugetlb_folio_init_vmemmap().
+>=20
+>> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+>> index ff6f837b6df01..d2aaad235458e 100644
+>> --- a/mm/hugetlb.c
+>> +++ b/mm/hugetlb.c
+>> @@ -3216,15 +3216,7 @@ static bool __init =
+alloc_bootmem_huge_page(struct hstate *h, int nid)
+>> 		list_add_tail(&m->list, &huge_boot_pages[nid]);
+>> 		m->flags |=3D HUGE_BOOTMEM_ZONES_VALID;
+>> 		hugetlb_vmemmap_optimize_bootmem_page(pfn, =
+huge_page_order(h));
+>> -		/*
+>> -		 * Only initialize the head struct page in =
+memmap_init_reserved_pages,
+>> -		 * rest of the struct pages will be initialized by the =
+HugeTLB
+>> -		 * subsystem itself.
+>> -		 * The head struct page is used to get folio information =
+by the HugeTLB
+>> -		 * subsystem like zone id and node id.
+>> -		 */
+>> -		memblock_reserved_mark_noinit(__pa((void *)m + =
+PAGE_SIZE),
+>> -				huge_page_size(h) - PAGE_SIZE);
+>> +		memblock_reserved_mark_noinit(__pa(m), =
+huge_page_size(h));
+>> 	}
+>>=20
+>> 	return true;
+>> @@ -3255,22 +3247,23 @@ static void __init =
+hugetlb_folio_init_tail_vmemmap(struct folio *folio,
+>> }
+>>=20
+>> static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
+>> +					      unsigned long pfn,
+>> 					      struct hstate *h,
+>> +					      enum zone_type zone, int =
+nid,
+>> 					      unsigned long nr_pages)
+>> {
+>> -	int ret;
+>> +	struct page *head =3D &folio->page;
+>>=20
+>> 	/*
+>> 	 * This is an open-coded prep_compound_page() whereby we avoid
+>> 	 * walking pages twice by initializing/preparing+freezing them =
+in the
+>> 	 * same go.
+>> 	 */
+>> -	__folio_clear_reserved(folio);
+>> +	__init_single_page(head, pfn, zone, nid);
+>=20
+> [Severity: Low]
+> Under CONFIG_KMSAN=3Dy, does calling __init_single_page() on head here =
+wipe
+> head->kmsan_shadow and head->kmsan_origin after kmsan_init_shadow() =
+has
+> already populated them?
 
+This is a pre-existing KMSAN issue introduced by commit fde1c4ecf916 =
+("mm:
+hugetlb: skip initialization of gigantic tail struct pages if freed by =
+HVO").
 
+That commit already reinitialized the tail struct pages after
+kmsan_init_shadow(), potentially clearing their KMSAN metadata pointers. =
+This
+series extends the same behavior to the head page. I think the complete =
+KMSAN
+fix should be handled separately for both head and tail pages.
 
+So, I will not fix it in this series.
 
-> Cc: stable@vger.kernel.org
-> Reported-by: Sashiko <sashiko-bot@kernel.org>
-> Closes: https://sashiko.dev/#/patchset/20261014-b4-prep-vstor-149847-copy_huge_pmd-recheck-special-pmd-v1-1-d225c60bc316@virtuozzo.com?part=1
-> Suggested-by: David Hildenbrand (Arm) <david@kernel.org>
-> Acked-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-> Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-> ---
->  mm/huge_memory.c | 24 +++---------------------
->  1 file changed, 3 insertions(+), 21 deletions(-)
->
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index e00632edb3856..9cb5f99aba87f 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -1961,25 +1961,6 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->  	int ret = -ENOMEM;
->  	bool writable;
->  
-> -	pmd = pmdp_get_lockless(src_pmd);
-> -	if (unlikely(pmd_present(pmd) && pmd_special(pmd) &&
-> -		     !is_huge_zero_pmd(pmd))) {
-> -		dst_ptl = pmd_lock(dst_mm, dst_pmd);
-> -		src_ptl = pmd_lockptr(src_mm, src_pmd);
-> -		spin_lock_nested(src_ptl, SINGLE_DEPTH_NESTING);
-> -		/*
-> -		 * No need to recheck the pmd, it can't change with write
-> -		 * mmap lock held here.
-> -		 *
-> -		 * Meanwhile, making sure it's not a CoW VMA with writable
-> -		 * mapping, otherwise it means either the anon page wrongly
-> -		 * applied special bit, or we made the PRIVATE mapping be
-> -		 * able to wrongly write to the backend MMIO.
-> -		 */
-> -		VM_WARN_ON_ONCE(vma_is_cow_mapping(src_vma) && pmd_write(pmd));
-> -		goto set_pmd;
-> -	}
-> -
->  	if (vma_is_anonymous(dst_vma) || arch_needs_pgtable_deposit()) {
->  		pgtable = pte_alloc_one(dst_mm);
->  		if (unlikely(!pgtable))
-> @@ -2021,7 +2002,9 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->  		goto copy_pmd;
->  	}
->  
-> -	src_page = pmd_page(pmd);
-> +	src_page = vm_normal_page_pmd(src_vma, addr, pmd);
-> +	if (!src_page)
-> +		goto copy_pmd;
->  	VM_BUG_ON_PAGE(!PageHead(src_page), src_page);
->  	src_folio = page_folio(src_page);
->  
-> @@ -2061,7 +2044,6 @@ int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
->  	}
->  	if (src_vma->vm_flags & VM_SHARED)
->  		pmd = pmd_mkclean(pmd);
-> -set_pmd:
->  	pmd = pmd_mkold(pmd);
->  	set_pmd_at(dst_mm, addr, dst_pmd, pmd);
->  
->
-> -- 
-> 2.43.0
+Thanks.
+
+>=20
+> During mm_core_init(), kmsan_init_shadow() allocates and installs =
+KMSAN
+> metadata for all memblock.reserved ranges, including =
+MEMBLOCK_RSRV_NOINIT
+> regions:
+>=20
+> mm/kmsan/init.c:kmsan_init_shadow() {
+> 	...
+> 	for_each_reserved_mem_range(loop, &p_start, &p_end)
+> 		kmsan_record_future_shadow_range(phys_to_virt(p_start),
+> 						 phys_to_virt(p_end));
+> 	...
+> }
+>=20
+> When page_alloc_init_late() later runs gather_bootmem_prealloc_node() =
+->
+> hugetlb_folio_init_vmemmap() -> __init_single_page() ->
+> memmap_init_page_common() -> mm_zero_struct_page(head) (and similarly =
+via
+> memmap_init_compound_page_frozen() in commit "mm/hugetlb: use common
+> compound page initialization helper"), the entire struct page is =
+zeroed,
+> leaking those shadow and origin pages and leaving head->kmsan_shadow =
+and
+> head->kmsan_origin as NULL (extending the existing tail-page behavior =
+in
+> hugetlb_folio_init_tail_vmemmap() to the head page).
+>=20
+> If the bootmem gigantic folio is later freed to the buddy allocator at
+> runtime, kmsan_free_page() hits KMSAN_WARN_ON(true) and subsequent
+> allocations from the first pageblock cause a NULL pointer dereference =
+in
+> kmsan_alloc_page().
+>=20
+> --=20
+> Sashiko AI review =C2=B7 =
+https://sashiko.dev/#/patchset/20261109095807.41547-1-songmuchun@bytedance=
+.com?part=3D6
+
 
