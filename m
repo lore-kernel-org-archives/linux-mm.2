@@ -1,147 +1,144 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7955606A772
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 13:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF7F606B2D2
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 13:06:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=nU4XxgAL;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Mnc4QrSZ;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=nU4XxgAL;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=Mnc4QrSZ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OFjB3ecx
 Received: by kanga.kvack.org (Postfix)
-	id ACD936B05DD; Tue, 10 Nov 2026 08:03:23 -0500 (EST)
+	id 2BCF96B05B6; Tue, 10 Nov 2026 08:06:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA4BE6B05DE; Tue, 10 Nov 2026 08:03:23 -0500 (EST)
+	id 247166B05D4; Tue, 10 Nov 2026 08:06:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 993EE6B05DF; Tue, 10 Nov 2026 08:03:23 -0500 (EST)
+	id 115796B05DA; Tue, 10 Nov 2026 08:06:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 770D46B05DD
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:03:23 -0500 (EST)
-Received: from smtpin27.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1530CA0875
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:03:23 +0000 (UTC)
-X-FDA: 85419225486.27.F8805AF
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E44ECC0002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:03:20 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nU4XxgAL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Mnc4QrSZ;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nU4XxgAL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Mnc4QrSZ;
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E25E66B05B6
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:06:32 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 79741A8225
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:06:32 +0000 (UTC)
+X-FDA: 85419233424.10.C39AD1E
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id B2702140007
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:06:30 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OFjB3ecx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794315801;
+	s=arc-20220608; t=1794315990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l0P34w8QQvLO5YW5vCLMJ84QpfDMX9/Bu1FrRmyy2v8=;
-	b=P2YYqdRnJNXpQf1kIMutR8iKFaiauw40tJN5o3Evsj/6BZjvEgm8OFcOMYvaxsJRKZ8g7o
-	pMsWiTV5iLmZ3KL2z68i2FJHDUoA6IBNBu3dsXCP+M3mslOMnPkH1UY1tUntmolQ2K/ByM
-	cOC1t0X5D2L+0RCC+VSGLKVAipz9MZw=
+	bh=/Ss5SZp6AbzZf0QMiHXB9m8r1DMlRHB70XqYyD/5vww=;
+	b=uuOE8qH1sSWrJZuzMJ/Ei2v/AOGCMVNHf5G2GoxPGsMpt9/4mrsQvT1cgaGW5d0vPky4g6
+	0lupBg4LC7i8FtLRjuKJIwBKZ6WpYQ2lFHboDvBRmrYaIBrBzZGCQxd+ao3cnb+KUXh7lS
+	fstBdj3Xw9letDRVuXov6ilg8YBF2g0=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nU4XxgAL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Mnc4QrSZ;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nU4XxgAL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Mnc4QrSZ;
-	spf=pass (imf10.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OFjB3ecx;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794315801;
-	b=8DgGPwyYQhIfdNOa/GR2mnUBIDjogV2ndsQEP1srISJC7O5d5j8ham1ek6xrcWEnESOc/0
-	4FpM7fAe5bF1XFTtuo4qxEEqhnc3Ef+vCmk7tRg2R2y5pUYb2Cz7puHqmIXE8I+B+NbUfB
-	AslSvFrIH5/yLOlHO+NYds89IsH4G/8=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C0D9421F77;
-	Tue, 10 Nov 2026 13:03:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794315799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l0P34w8QQvLO5YW5vCLMJ84QpfDMX9/Bu1FrRmyy2v8=;
-	b=nU4XxgALhU6j4K3Mxr5ngQH1kaedGJkQyEqwlGUplEx9hMxQ3fo4McMmOwr1ERv3Mkpxw3
-	gLCfI+EWYKzq/l9mRzhXb6GJ0h3nlI+5tsg9MpjQ2PJDBC1XC/U5s6EqGl5dlEXIEKPAnz
-	BBcKQlac9Q1+gcOvfNs3dKHhhfnARxs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794315799;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l0P34w8QQvLO5YW5vCLMJ84QpfDMX9/Bu1FrRmyy2v8=;
-	b=Mnc4QrSZrRmpafaJe4iOnLi1RuOTcqJe/GGSNdftVub9UNeD+cHjavH2Su/fUJ6PuunSLs
-	aVyAWefkY3MWbuCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1794315799; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l0P34w8QQvLO5YW5vCLMJ84QpfDMX9/Bu1FrRmyy2v8=;
-	b=nU4XxgALhU6j4K3Mxr5ngQH1kaedGJkQyEqwlGUplEx9hMxQ3fo4McMmOwr1ERv3Mkpxw3
-	gLCfI+EWYKzq/l9mRzhXb6GJ0h3nlI+5tsg9MpjQ2PJDBC1XC/U5s6EqGl5dlEXIEKPAnz
-	BBcKQlac9Q1+gcOvfNs3dKHhhfnARxs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1794315799;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=l0P34w8QQvLO5YW5vCLMJ84QpfDMX9/Bu1FrRmyy2v8=;
-	b=Mnc4QrSZrRmpafaJe4iOnLi1RuOTcqJe/GGSNdftVub9UNeD+cHjavH2Su/fUJ6PuunSLs
-	aVyAWefkY3MWbuCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 960C61339F;
-	Tue, 10 Nov 2026 13:03:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id e3rfGxcW82q6SgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Tue, 10 Nov 2026 13:03:19 +0000
-Received: by quack.suse.cz (Postfix, from userid 1000)
-	id 35CB1224F7; Tue, 10 Nov 2026 14:03:15 +0100 (CET)
-Date: Tue, 10 Nov 2026 14:03:15 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
-	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
-	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
-	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-nfs@vger.kernel.org, netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
-	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
-	Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC 34/41] loop: refuse files on pseudo filesystems as
- backing files
-Message-ID: <xlql7gc5uyvehjvin4ls3okfnv32xxdj45bjvamf2vdkrakvjx@u4iwy4ydmphs>
-References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
- <20261110-work-loop-pseudo-v1-34-4c998976c6c7@kernel.org>
+	t=1794315990;
+	b=vwqz7AP8ua4kFyUuvZylE1VVpPZJAEOIIJH0J7JtxGmDgXUBNP486Cjs/Ittdqk8Pmtmu9
+	PEmgYkOKUJQmxYcb17Uf7TMV6aKYuiVJ2lwkIstI1atlmRjWdBIRIDaAcOLysG8DhpuMzl
+	wuV6u5A+O7eIpoUJL6WSq/KPLuqSjmM=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 38FDD6337F;
+	Tue, 10 Nov 2026 13:06:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9E91F0089F;
+	Tue, 10 Nov 2026 13:06:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794315989;
+	bh=/Ss5SZp6AbzZf0QMiHXB9m8r1DMlRHB70XqYyD/5vww=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=OFjB3ecxYngOo0b+pMl92LqbwrOyoUX3eXL6vkaSGjtkybyELg8tj3YuMgUWjydFN
+	 WeE5IdDajyyW33aWwGVE9U/BqLx7Pu9W7s7P5HjyIi8BQavYgF1ZmTUFIhGU+eVqzI
+	 hCpVoZ1np/YCM9BfAu484TDGZef5wY/rvFtbnoSSPuNltd1WuEXUlUZYyiDLDt3spB
+	 OlHvIRXn1UTb4JQ5LE8FQsOxNi7nR2VkVNI2oiW9cA45w5u9jJyDZlZE6JjfWxNZOi
+	 gtOMznbd7chtWx7n1tQ74/BO11E6IiaOcQnx7cjd7dBln+EkLhCJJZ6E9cyEWUlgZO
+	 FZ25Ss9ldjPdg==
+Message-ID: <32632bac-2cca-4341-8fa4-f5565b56b851@kernel.org>
+Date: Tue, 10 Nov 2026 14:02:26 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110-work-loop-pseudo-v1-34-4c998976c6c7@kernel.org>
-X-Spam-Level: 
-X-Spam-Score: -12.80
-X-Stat-Signature: mjrub6pf9jonmjgwoemwafijm5kn8db4
-X-Rspamd-Server: rspam01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 3/6] mm: gup: move gup_must_unshare() and
+ INTERNAL_GUP_FLAGS to gup.c
+To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+ Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
+ Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Rik van Riel <riel@surriel.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>
+References: <20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com>
+ <20261109-refactor_gup_fast-v3-3-2aaef02df0e1@arm.com>
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20261109-refactor_gup_fast-v3-3-2aaef02df0e1@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B2702140007
+X-Stat-Signature: 3okht1wfdbdmd8pwxm7pwpq93ix1uzx9
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: E44ECC0002
-X-HE-Tag: 1794315800-262198
-X-HE-Meta: U2FsdGVkX1+1wmvRFSiWjzICajyyIpLrKLKOHR/mdi0SloaArd7G6XidGmYgYmbQGng0BjXvLWxVIjBpaTURNOVlaHtOjHMxZY/GlJca7vKz/ahd6aMrF+TwmsJV3x1sce1UH7rhtTB8mhx2nS5B7Bh1D1AKGDQnZJ7wiQh3VNz7zEI+nUU5bKiteQeo/mjYfzMhnCWPdHniUR184OL/uN3MQvvPM9lB391NnKF6ZJrkTRRDAYd6f4D3G+BFBdJEkpKMGwIXbyjCtd8WyGay0vvUsIpBjVmrTfjD2YwV2NpReLID8wc8FNCXjehiXGOIvtpBuyxXoTPU40lpVDLuEHshu8YRTzMJv4hpOiiWyTFv4XBgzSxOAccvJBcfcSuUfn4O2cQBSx8CYganKD5Dw7Lx5CvIDJ75xHn3VNECkOg8em86OZpMK/zqgvgT2nqMHjt5Lh6i4iF1uDkBr///W4Tf+8pW+yhxxPw+Wr0lPpUbqFv6PZs/wU98BxSbg7mTBBEDEKAkP8oIyLCzD2bU1hO5xMMsVzZn5erax2hbM9lGTS/5ENcmIHR3okxkjQra9x4VghX+QzgpvpXJSU2EhVBG3OVgajIdfjxqkfXfbJaeDWr3UQ4mybdYeTrb9rpgCoDNdZQGvbeqol48X1oswHm//Esf7vrQ7wJg54ZnIizS9Wc/xP8z16DDJnjbOC0SwX+t2+Vkgnqnwx01UtPT0KnhOhYZVVxhnlpBQFX01OpcEDzY6cmSnzbES+n3zlJW9yt5enQnkSYZUo+xLJQvZGxukdWMCAFUctpJZBvuRgb7CRPmLkGAs/Zqn2CGxhGUoaLrG/WqNI/zs3ezufeGn+Fa1AnOBigy6GQwnOJfbJe3WM+5THw3Gc7nfeLzZA2bktE2W/u9LQ8xENJB55mySTF37wO++cOdFO5tpWa3tBZ/5ux858Evnj++LpzQ+2oPzAwgHVWLQLY/fhgvkoB
- mqyoPFCk
- GF/czmg5sq0C6PWl/uobYMwo0+c3teHhlaC7m153O4+MD9txbarIts45wc+haqNJieg4vlr7nUNAeKQyrIFAyX3bqHbC2oEJm3aeSYNS7tup/EMDnRyOqthyULGS0FUZf357JpAFC0+WSBLA7Cu4XMVoBMmoHxNDDl6iLaANAtJYj8mQcvXKEtRy4Cu4Kzk4wgX/XSkabDAK10JYFboGFiykq/IxNPXrU+NF2nNhAW+jbq7pK/4VyeRCDd6wNHCRZ9gGZrCpM+gp447ORfoZeNtA6DsxIc3CyLlHmcVjnbObb+ciODhhT/ql8bupFHUP8SmWvw5rjwhHkyVxIUI6eXSgF1cYqlNZd0zbhCMMrl0EemwAa/URfMsctNw==
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794315990-263350
+X-HE-Meta: U2FsdGVkX19SQdgggERAxJ0wdQ6ztCFF3j4bNysEfMLCsPe63Wp+wVtihNEAQVTOeT7ytMWX7oo6YI0L2lVoLAw6AF3FupY8zShGEVfw68gQkuwP8kz3t849FOXgRRUyPt4s+BmaqWrttse5TG+C0iTsmh7KZnZH5BVaAsWk+Qx0KJWpZ2Y1RYXdq8SNbJ2tGubR0MnLfE4YJBcrwyamdljw2a5XhJi5GBBx64n2scc8VxD3WUOfk2EBwOcNJCgr7QZlmSqDEw+ppEY+gT4ZEkInwYmjAKxo/B6lqQY3Q+KoTIkGLp5GtDKYB1sEPKv1TNjA3ewpeC9rxlxp7JuosVhQgLG10fh3MEUKLKGseTKMpWcvaI/Qfm5/SDHmPwis4nG7MtHwmzhA1TtL7a/f+ZqHMBJouckEsh6k5VIg8Ty8W820F4hT+jjk4RxFQoClmhN+otfi71QxbZTZ5be3wGH1ekbA9Gw/m+5kQGqU1U3y/r+kpQ50i3+ZniElRIaqyF3o6c0Y2NzbSIb8YLcqD6Sd/nJop4MlWdauXJimeYrnL+8Mvel0bWtRLy94v3PfOoHDbcFvfBHAoB823Fr0+KWkWaxNcxuhaMq/mAF5fJy85UjUX8V86ysLRK6S7XxSA0Zc4JFS0LEvn3Po9ZZjU8guzDhmjYNhPy8vPHnF3wTyCwFj7xoBrBofoi91A8CGfPMuTcS2KpgespGECyV6XywFm2HodnNYQmCLC0M9nV5oSawikROjQ73W34mFoDQGWh0A2CKOf1Qejn6mt2zTYrlxmWoshARtLdCExFOp2C57pvdmPycP1aRG26gqeiSy7lQ+W2stXozoAChD9DXzNMQ0v6Hhznaajk0ZUuwIJE9F4/VmqZ37qDp9iV48xZ+gXgyqmPSpSc3rZ/M++Oic0qIw40YodCABQQPdLTQH9ULs9PFjgbtBG4wds6KoPVKCLOzNID8SLsdF1Kl5apF
+ DMrC2kCn
+ QVSVq6Z1YIRIyJm4clps/3WbAyXCB6ObDCMGgwUcWuUKPzOPKr3syWd60yeE0mD7sh9ZgzCrC9qUlpfTU59yx3RD1KFJvQ7xqOUzF1+vTpafIU07Zqn9XYLQp6z+KrJWgFVJBd0BJYmuu7JOWrx3zmG50djTEIbJxpSA9uY6cU9MGJbdvSQe7aIpQNRjoIUWqdPAWFSHBHNc+axY6RL4zubrOu8J/IVgoNgkIfeP/1QcXPf1Cn8pGDU1TXt1N01BPitcUOdwuXWFNLamtsRjbdCTXrmmJGSC+/PQP8vc/+H+1+Nt10SuSUuL68ebZ3WIkwhH+yLjg3Yn0JfQ8gSSlg3854dV+Sp54UIQKvRk8P6VwpLLfL3jMEE7cUDO7I0a3HGWlbZYsI9NH4FY=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -150,76 +147,17 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue 10-11-26 10:14:50, Christian Brauner wrote:
-> Currently loop accepts any regular file that implements ->read_iter() as
-> a backing file and any that also implements ->write_iter() as a writable
-> one. That includes files on procfs, sysfs and other pseudo filesystems.
-> For example, /proc/kcore attaches read-only as a loop device the size of
-> the kernel's virtual address space, 64 PiB with 5-level paging. sysfs
-> attributes attach read-write as 4096 byte loop devices. Writing a block
-> to the loop device of /sys/kernel/mm/transparent_hugepage/enabled
-> changes the THP setting.
+On 11/9/26 13:32, Yeoreum Yun wrote:
+> gup_must_unshare() and INTERNAL_GUP_FLAGS are used in gup.c only.
+> Move gup_must_unshare() and INTERNAL_GUP_FLAGS from internal.h to gup.c
 > 
-> That's not just nonsensical, it can be abused. Loop calls ->read_iter()
-> and ->write_iter() of the backing file directly from its worker which
-> runs with kernel credentials. But pseudo files enforce part of their
-> access rules at read and write time against current. Dozens of sysfs
-> ->show() and ->store() methods call capable(). Behind a loop device all
-> of these checks are done against the loop worker instead of the task
-> that opened the file. And setting up a loop device requires no
-> capabilities, only access to the device nodes. So on v7.4-rc1:
-> 
-> - uid 0 without any capabilities can't write to /sys/kernel/reboot/mode
->   as mode_store() requires CAP_SYS_BOOT. Writing "warm" through a loop
->   device works.
-> 
-> - uid 0 without any capabilities can't read the files in
->   /sys/firmware/dmi/entries/*/ as dmi_sysfs_attr_show() requires
->   CAP_SYS_ADMIN. Reading them through a loop device works.
-> 
-> - An unprivileged container that was handed a loop device can't change
->   gro_flush_timeout of its own network devices as
->   gro_flush_timeout_store() requires CAP_NET_ADMIN in the initial user
->   namespace. Writing it through a loop device works.
-> 
-> The same goes for hard_offline_page, the md and sd attributes, rfkill
-> and others.
-> 
-> Refuse files on pseudo filesystems as loop backing files. Note that
-> file_is_pseudo() looks through overlayfs so stacking overlayfs on top of
-> sysfs doesn't get around this.
-> 
-> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
-
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
+> Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 > ---
->  drivers/block/loop.c | 3 +++
->  1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-> index c96e35c3ef42..1482580a1979 100644
-> --- a/drivers/block/loop.c
-> +++ b/drivers/block/loop.c
-> @@ -537,6 +537,9 @@ static int loop_check_backing_file(struct file *file)
->  	if ((file->f_mode & FMODE_WRITE) && !file->f_op->write_iter)
->  		return -EINVAL;
->  
-> +	if (file_is_pseudo(file))
-> +		return -EINVAL;
-> +
->  	return 0;
->  }
->  
-> 
-> -- 
-> 2.53.0
-> 
+
+Reviewed-by: David Hildenbrand (Arm) <david@kernel.org>
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Cheers,
+
+David
 
