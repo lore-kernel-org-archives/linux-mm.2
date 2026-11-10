@@ -1,103 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A76560A6F6E
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 07:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70452606DF5E
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 07:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CGkBLCdy
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=Bt11K0DF
 Received: by kanga.kvack.org (Postfix)
-	id A9CA26B05BE; Tue, 10 Nov 2026 02:45:54 -0500 (EST)
+	id 883E36B05C1; Tue, 10 Nov 2026 02:51:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A743D6B05BF; Tue, 10 Nov 2026 02:45:54 -0500 (EST)
+	id 834CD6B05C2; Tue, 10 Nov 2026 02:51:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 98A1C6B05C0; Tue, 10 Nov 2026 02:45:54 -0500 (EST)
+	id 74A476B05C3; Tue, 10 Nov 2026 02:51:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7E3166B05BE
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:45:54 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 0D12AC07E8
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:45:54 +0000 (UTC)
-X-FDA: 85418425428.29.A6CA951
-Received: from mta1.migadu.com (out-109.mta1.migadu.com [95.215.58.109])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 16095140007
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:45:51 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CGkBLCdy;
-	spf=pass (imf26.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.109 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 4F2C96B05C1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:51:08 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4D93A085C
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:51:07 +0000 (UTC)
+X-FDA: 85418438574.25.A80DF1C
+Received: from mta1.migadu.com (out-229.mta1.migadu.com [95.215.58.229])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AE16440006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:51:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Bt11K0DF;
+	spf=pass (imf17.hostedemail.com: domain of atish.patra@linux.dev designates 95.215.58.229 as permitted sender) smtp.mailfrom=atish.patra@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794296752;
+	s=arc-20220608; t=1794297066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=97mnfbHxocAhpCaQIusVnq6M8kRtn24K9aSi/cKW7BI=;
-	b=1V+B+8WdZrNeusbUtgO5XuJdJ3SRn821GC0RXOcqEkrW40lyki5UOfCozMnj+/DqiYrMVD
-	m4beYEKzooSU5encEeIZT8Vxln7qsq+6ebk3poLthknfWVmxTq80F3wME8g2Sb+ZilHv/l
-	l4LTofL0iRUpGJmMl+2e6o3jof0lsTk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794296752;
-	b=TcHI7ATc77KCYWOk0Dgichmxy8+kLhQUnr2EmzGaMRcmCaKdIx3stgyhnRL5BLlcoKD4ys
-	lutWslkcafKHXAHCUMfYXPg3sdxcxPGpzA9EbPiwaUEe9C9Lnk0ZtQomCN5pw3fkag0XCf
-	StKcSqK8Q6UZoBqrtwrqKOLScWSjJCE=
+	bh=oCAnq9Ydyn9pzFtWZAL2uoxXAv5DcpFwU0HVA55B7zc=;
+	b=Et4zsVV2SE4jITGNzYRsxI9K52mARArlE7bguO7xg7VmZiaXjlxmoh6PIw9EGTX5eczEa+
+	uzLBC5t0FEnXawJAYAez1b3BtVGwubvDhY6Q4Vxpx4gHY3p1IY7JUX9YMU7Sp6NhadxkGg
+	XrZMhi3TAb0mnE8KvaKyXgtDwUh7TJk=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=CGkBLCdy;
-	spf=pass (imf26.hostedemail.com: domain of xu.xin@linux.dev designates 95.215.58.109 as permitted sender) smtp.mailfrom=xu.xin@linux.dev;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Bt11K0DF;
+	spf=pass (imf17.hostedemail.com: domain of atish.patra@linux.dev designates 95.215.58.229 as permitted sender) smtp.mailfrom=atish.patra@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794297066;
+	b=QPw1wcPYTdMkRXzG6HN0IUE4ezXNKWVMtL7x4DDyDkId+KxpAMsuc4UwwJ9wjtVRvxArTv
+	MBsIC7wfKgVYy/a0D12+iCjO4jJayCIG2Bv6ZMAHVlc6+cgmg0PpDZX4Iw+yJil8u8joTV
+	q5+1SEukBa26JG2LtQ7TVjItuw1x7E8=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=1opsdpS+bzNavYjufxeQTvMtfH316Seppf9uslprEeo=;
+DKIM-Signature: a=rsa-sha256; bh=VEYHcJJXdTr+sSu/VkSL5rhEFuBwOC/PnaSfhFDxgH4=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794296750; v=1; x=1794901550;
- b=CGkBLCdyeAdmRQaMpYwOsFXQLR9CJ6tNn0SgokvVmqCHlrJNmlAeu0kPYyUKT7nJ2O+nRkEN
- xbm8PFIKoHAso4/v468DBUq8GxVQhz8qFDOOVXo3k9ax9eBrq9KLzP8HiPX/P9BE2cf80gcQ2b2
- 3Mye2KctND06Vm86NdcDvAP0=
+ t=1794297064; v=1; x=1794901864;
+ b=Bt11K0DFsGKbjUzn/HQN5vSqRNQbCITQzMqgzZSVPTK8Ks7/8ZCi1hZYj1vCJlS1KNqzmK8h
+ OnM+Gmbeo3EQyaa0Oy2n0daXlzBnGKD1O6EN2UuNgZywnsbzN9SrVCZBp0/kkowynQkgbfCxr9b
+ bZoVt616m4e1laAF5GMWGFnQ=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta10.migadu.com with ESMTPS id 8b40bb022d5288ba;
-	Tue, 10 Nov 2026 07:45:50 +0000
-X-Mizu-Trace-ID: 8b40bb022d5288ba
+Received: by smtp.migadu.com with ESMTPS id d983afd97fe96bab;
+	Tue, 10 Nov 2026 07:51:04 +0000
+X-Mizu-Trace-ID: d983afd97fe96bab
 X-Migadu-Flow: FLOW_OUT
-From: "Xu Xin (vivo)" <xu.xin@linux.dev>
-To: xu.xin@linux.dev
-Cc: akpm@linux-foundation.org,
-	chengming.zhou@linux.dev,
-	corbet@lwn.net,
-	david@kernel.org,
-	link@vivo.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org,
-	ljs@kernel.org,
-	odys.yuan@gmail.com,
-	rppt@kernel.org,
-	surenb@google.com,
-	tujinjiang@huawei.com,
-	vbabka@kernel.org,
-	xiao.wang@vivo.com
-Subject: [PATCH 4/4] selftests/ksm: add test for only_merge_zero_pages
-Date: Tue, 10 Nov 2026 15:44:51 +0800
-Message-Id: <20261110074451.220524-4-xu.xin@linux.dev>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20261110074451.220524-1-xu.xin@linux.dev>
-References: <20261110074312.219847-1-xu.xin@linux.dev>
- <20261110074451.220524-1-xu.xin@linux.dev>
+Message-ID: <9c767bbc-3189-429b-b008-021306426b7e@linux.dev>
+Date: Mon, 9 Nov 2026 23:50:58 -0800
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: pjcjrjadj7rkuthuq6firm3tyy44xhit
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/Kconfig: enable ROX cache in execmem when
+ STRICT_KERNEL_RWX is set
+To: Mike Rapoport <rppt@kernel.org>, Peter Zijlstra <peterz@infradead.org>
+Cc: Borislav Petkov <bp@alien8.de>, Dan Moulding <dan@danm.net>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>,
+ "H. Peter Anvin" <hpa@zytor.com>, Thomas Gleixner <tglx@linutronix.de>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+References: <20250716075410.82578-1-rppt@kernel.org>
+Content-Language: en-US
+From: Atish Patra <atish.patra@linux.dev>
+In-Reply-To: <20250716075410.82578-1-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: oes83eco4qohudwo5xmkfsiz197dhoj9
+X-Rspamd-Server: rspam01
+X-Rspam-User: 
+X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 16095140007
-X-Rspam-User: 
-X-HE-Tag: 1794296751-215354
-X-HE-Meta: U2FsdGVkX180Pi0W6m9dnPjWQXeWO62F/dtdwLrtMjuaubPmMcH9re6XOcXJ1mEOTsH0xIFX1zrGb/jmU6pWyw13Vwmz46e7vJzK1E2uCpjdezFCFs1iAw52FReACW83p38Ks8whK4IbZl6tlk8ucTkUe/vd4Ja8rqE0uK3n3vV6OFBZVu7a/BOAdLwIyTRdew25QGkwzIHw7zRB1k1dE5JxNkBeo40TXDM/RJw3if7JsCld/jf4zYFM6LDBSH3C3pVLDhd7yQDdetGnvAwvTHvWgeGxiZa6sRM/C6hStRRK1j3t/6AG/SZOZ8MRvmXNqHbRPYB/xIOntDkrZVL8ZiKQtMXWzKcN+Tt45pK58fzg8gle80AXrhyiTIFdK9iz0NZfC9M2Ym+VLV5YWh8sIaAcAOgn33bRFhF5cv02G2fVxBJl7cXUu/AuTPeM/rQdPPgzbh7W+9lA7XV4CIHTigDLVLaz0itlEysztU12gcJlM12h4Q+a8c0Z0lFeTuse6rrBaI1c1Bg6uPwfgmc2+9kNAebRpM5yMmTTeeRXK1J+x/ZS+eoFhvDoKNLH40SUUauOk7KOdc9ey9R9Ai/wfYKVfBrBv9oo+DfKFyF5oL/4YyFVJ8fHZ3lIBlwKhL6rQl71OMCL+qg/Lu0iVADomhZjestN6rFcoBQp2kbxq8Kj6OEafRKCmrXswBTescGa96UYRyTwnd29k8GzLUpDAAYlDdtnfEhq5BPOtIxqoJqQqJVWmyD5qFIFcysDbyR/5v8jGUcaZT6OSxge3pKcXCe+4xD7LQfFrlCjEQbUoUCAwmrTvVbdnztrtemM/cCC+fdCNwzFqMGNrgmv93R222ZhGQaSJut7F70c501LquYlGJA9ePYjeWMR+5G/pAoZSjHPz8KHIO8Wb8W9xfrq7Z/Pb6o4Ne3Nznz6JTMYvQofFPy9DGECRWsMduK38qeGA/DP9S3tky/t94NJfdR
- 3H+/WsvA
- GMaRO5L3A7PeMBKKXr+baCPr+V2HmmTwcYlqTQ+dfU8+jnQVsMEoJv32q+V/Mrq4vyVCQ7ufkyi+cnGQzYGZ0fGJwESkGO4hTy53Xil8UKpZG+wiry4WNXXxfSkTbJ3O0w7qYkEdKFNuUrIcPEgCTKavO2iVLjsBxOAEZNALyz2Vwi9Xfz0llRI++oQiQ5zoaY30io8qyNp+HwZHOyt1rwSq0qljf/MR4uxu1ebOlYR4LZl7yhMk0qtmy5RJxRMGFfqnDDH+j8V9b32oBK6HDTO4RktY12GI4hzSSrzUBBtFCNb1O4Pr5pJMve89vN8lPRCPqWpsv40CuBrGdWLbaqwneqS7+Gi6S2CFP
+	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
+	version=4.0.1
+X-Rspamd-Queue-Id: AE16440006
+X-HE-Tag: 1794297065-63565
+X-HE-Meta: U2FsdGVkX19QJnRir80CoGJO0V4VqJHmlc1pbpYzVk6Qc1LQURkyMXGYezWuZgg/6gVLLheYArZcde+LUN+48EIsnjNBS4uTOImPxR6JzHJZKmElyZMrplyeupnsZcaiGobiCFcQamDijsnD07ELxrrbAzi+maprC/OTQPC97UhlbLiLNW1eYue01HcDmG3N+fz7hxX6L1ElaYAjnJlq8SkThTaLnx7fJ04UFs8EDy7m/2C57XevhgrzBeBFwG25AwfKLCr0CQAyKMilBwmnuc2D8APJaD6emrL9pMA0GGMK63qj4YZsZfdJX+Gwc+5rWb186DB6rImeSlw2AlZF63cyVfenwMG3IiTLyMyJvs26k5de00aUnUJiEjxUPwqsh7ZlIue4B3JLVRlFrp2aix21iM/APTBqe67MVsRCA7Vy6Iy/IDRgmEtEKGCJ4Y7CaDm78ER7UCYwfDmNGXOtFifdOxboaNma1wwHAjaKl9ikktIsNu8PZc29Or2sQ0jugcWuekb9OEt1rAfQWs2d1eVNI/D91t7T6xEVl/BupgcYcyk+jKIGR0ZTcf6D/WPubwK0/AR/UKPmb2gLkLA9A1kHvT9Z8knpl9lD8Kw2GIulTQC4ozWXYm9bJ2Fs8th00Dl8ANlOwd7+c1+zLr8OWJPAIpwAl+an66naGgu/dRGygAP2hVIH2pulB5m6cbiyyp9pVr+wooZv2M1yMXQQV4u6h8nUD3neMtxhyLJJRgPTEQLraLdroo4IJCfrIgHLPp4YPE3/XKJ14A6DK8bZqGVQTokA6d3a90U5ota1uDI817NFef5sG6KEdug6CuuISU8nkNmVsMfQAL3QRh2Ik8CZKTEF7ONYt1ZO0GFfn4KfkRBffLT/GxOvt4fIEe6TmqerXRIhq62FMd1qFw5kLzlSsmgJTGzX88FEKik/6xISWaXURmmaf0n2bWaAqRRVz52c8c/zPGtdBQ2CzQr
+ T1LM/DKO
+ Ifmz9RS5LX4TqlNQTYA05ETPfoSL4tbZXvc1xe6pAa8xZbT+kkXoXfbd37tSUZTUegdKHYmDiDULxv30ITXGJg6MJi06wk5LodPwVrGec3EZUtmC04RHbDvBXin1B2yQyserM8X6lU1hi/dsVbKnKGHGBpbh52xjQJqtBjPwI4YvAKyYtT1PYE+DUICgWh/THSy8qag2krmoqYpMY/3kAeJoZEm14GzLO31hX4HM3fLM+UwwvYC35SMtMFy/OVmQK3Xt8JRyCvl8NPhw2Z2O8IiZIzDxpG79i0IARjBRjXUQJlP/mdkY7e5GcQ4fnXN5N9SPvqG47ffalxl0jEz+OMzTGC+fszSWAVhIkDveJWkpUan6v46F3RwL+bTxpiXFJJDaFBkhA2AlBNtEXtnR72R/URL4O3bgSsDD/BfEH0CdrCSIV2o/O8j4GjAtqXFd69em9iNf80OWowlo0GG5rx8pPlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -106,161 +98,63 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Add a functional test that enables use_zero_pages and
-only_merge_zero_pages, maps a 2 MiB region with the first half filled
-with non-zero data and the second half with zeroes, and verifies that
-after KSM scanning reaches steady state:
 
-  - ksm_zero_pages equals the zero half (merged with the kernel zero
-    page)
-  - ksm_merging_pages is 0 (non-zero pages never reach the stable tree)
-  - ksm_rmap_items is 0 (non-zero pages are skipped before rmap_item
-    allocation, and the zero pages' rmap_items are freed once a scan
-    finds the merged pages are no longer anonymous)
+On 7/16/25 12:54 AM, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+>
+> Dan Moulding reported that kernel configured without modules produces
+> "Found insecure W+X mapping at address 0xffffffffc0247000" warining:
+>
+> [    6.022847] ------------[ cut here ]------------
+> [    6.023020] x86/mm: Found insecure W+X mapping at address 0xffffffffc0247000
+> [    6.023200] WARNING: CPU: 5 PID: 1 at arch/x86/mm/dump_pagetables.c:246 note_page+0x6ec/0x790
+> [    6.023381] CPU: 5 UID: 0 PID: 1 Comm: swapper/0 Tainted: G                T   6.16.0-rc6 #1 PREEMPT
+> [    6.023558] Tainted: [T]=RANDSTRUCT
+> ...
+> [    6.031153] x86/mm: Checked W+X mappings: FAILED, 10 W+X pages found.
+>
+> The 10 W+X pages are the pages allocated for ITS thunks. With
+> CONFIG_MODULES disabled, CONFIG_STRICT_MODULE_RWX does not exist and ROX
+> cache in execmem is not enabled so execmem_restore_rox() becomes an empty
+> stub.
+>
+> Enabling ROX cache when CONFIG_STRICT_KERNEL_RWX is set solves the issue and
+> makes ITS thunks memory properly protected.
+>
+> It also ensures that memory containing ITS thunks is mapped with 2M pages
+> for kernels compiled without modules.
+>
+> Reported-by: Dan Moulding <dan@danm.net>
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>   arch/x86/Kconfig | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 8bed9030ad47..d6d8050683ae 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -89,7 +89,7 @@ config X86
+>   	select ARCH_HAS_DMA_OPS			if GART_IOMMU || XEN
+>   	select ARCH_HAS_EARLY_DEBUG		if KGDB
+>   	select ARCH_HAS_ELF_RANDOMIZE
+> -	select ARCH_HAS_EXECMEM_ROX		if X86_64 && STRICT_MODULE_RWX
+> +	select ARCH_HAS_EXECMEM_ROX		if X86_64 && (STRICT_KERNEL_RWX || STRICT_MODULE_RWX)
+>   	select ARCH_HAS_FAST_MULTIPLIER
+>   	select ARCH_HAS_FORTIFY_SOURCE
+>   	select ARCH_HAS_GCOV_PROFILE_ALL
+>
+> base-commit: 347e9f5043c89695b01e66b3ed111755afcf1911
 
-The test skips if the only_merge_zero_pages attribute is absent.
+We recently hit this issue after changing CONFIG_MODULES from y to n in 
+our guest kernels.
+Did this patch slip through the cracks last year ?
 
-Signed-off-by: Xu Xin (vivo) <xu.xin@linux.dev>
----
- .../selftests/mm/ksm_functional_tests.c       | 117 ++++++++++++++++++
- 1 file changed, 117 insertions(+)
+Could we get it merged?
 
-diff --git a/tools/testing/selftests/mm/ksm_functional_tests.c b/tools/testing/selftests/mm/ksm_functional_tests.c
-index 2ffb97ae3120..764ead3425cb 100644
---- a/tools/testing/selftests/mm/ksm_functional_tests.c
-+++ b/tools/testing/selftests/mm/ksm_functional_tests.c
-@@ -257,6 +257,122 @@ static void test_unmerge_zero_pages(void)
- 	munmap(map, size);
- }
- 
-+/*
-+ * Enable or disable /sys/kernel/mm/ksm/only_merge_zero_pages. Returns 0 on
-+ * success, -errno on failure.
-+ */
-+static int ksm_set_only_merge_zero_pages(int enable)
-+{
-+	int fd;
-+	ssize_t ret;
-+
-+	fd = open("/sys/kernel/mm/ksm/only_merge_zero_pages", O_RDWR);
-+	if (fd < 0)
-+		return -errno;
-+
-+	ret = write(fd, enable ? "1" : "0", 1);
-+	close(fd);
-+	return ret == 1 ? 0 : -errno;
-+}
-+
-+static void test_only_merge_zero_pages(void)
-+{
-+	const unsigned int size = 2 * MiB;
-+	const unsigned int half = size / 2;
-+	const unsigned int half_pages = half / pagesize;
-+	char *map;
-+	int i;
-+	long zero_pages, merging_pages, rmap_items;
-+
-+	ksft_print_msg("[RUN] %s\n", __func__);
-+
-+	if (ksm_use_zero_pages() < 0) {
-+		ksft_test_result_skip("write /sys/kernel/mm/ksm/use_zero_pages failed\n");
-+		return;
-+	}
-+	if (ksm_set_only_merge_zero_pages(1) < 0) {
-+		ksft_test_result_skip("write /sys/kernel/mm/ksm/only_merge_zero_pages failed\n");
-+		return;
-+	}
-+
-+	/* Stabilize accounting by disabling KSM completely. */
-+	if (ksm_stop() < 0) {
-+		ksft_test_result_fail("Disabling (unmerging) KSM failed\n");
-+		goto restore;
-+	}
-+
-+	map = mmap(NULL, size, PROT_READ | PROT_WRITE,
-+		   MAP_PRIVATE | MAP_ANON, -1, 0);
-+	if (map == MAP_FAILED) {
-+		ksft_test_result_fail("mmap() failed\n");
-+		goto restore;
-+	}
-+
-+	/* Don't use THP. Ignore if THP are not around on a kernel. */
-+	if (madvise(map, size, MADV_NOHUGEPAGE) && errno != EINVAL) {
-+		ksft_test_result_fail("MADV_NOHUGEPAGE failed\n");
-+		goto unmap;
-+	}
-+
-+	/*
-+	 * Fill the first half with non-zero data (all 0x01) and the second
-+	 * half with zeroes. Under only_merge_zero_pages the zero half should
-+	 * be merged with the kernel zero page, while the non-zero half must be
-+	 * skipped entirely (no rmap_item allocated, no stable-tree insertion).
-+	 */
-+	memset(map, 0x01, half);
-+	memset(map + half, 0x00, half);
-+
-+	if (madvise(map, size, MADV_MERGEABLE)) {
-+		ksft_test_result_fail("MADV_MERGEABLE failed\n");
-+		goto unmap;
-+	}
-+
-+	/*
-+	 * Run KSM until steady state. Each ksm_start() waits for two full
-+	 * scans: the first records the checksums, the second merges the zero
-+	 * half with the kernel zero page. The second ksm_start() waits for
-+	 * more scans so that the rmap_items of the (now merged, no longer
-+	 * anonymous) zero pages are freed and ksm_rmap_items settles at 0.
-+	 */
-+	for (i = 0; i < 2; i++) {
-+		if (ksm_start() < 0) {
-+			ksft_test_result_fail("Running KSM failed\n");
-+			goto unmap;
-+		}
-+	}
-+
-+	/*
-+	 * Expected results (steady state):
-+	 *  - ksm_zero_pages: the zero half (size/2 pages) is merged with the
-+	 *    kernel zero page.
-+	 *  - ksm_merging_pages: 0, because the non-zero half is skipped before
-+	 *    it can reach the stable tree, and zero pages are accounted in
-+	 *    ksm_zero_pages, not ksm_merging_pages.
-+	 *  - ksm_rmap_items: 0. The non-zero half is skipped before
-+	 *    get_next_rmap_item(), so it never allocates an rmap_item; and the
-+	 *    zero half's rmap_items are freed once a scan finds the (now
-+	 *    merged) pages are no longer anonymous.
-+	 */
-+	zero_pages = ksm_get_self_stat("ksm_zero_pages");
-+	merging_pages = ksm_get_self_stat("ksm_merging_pages");
-+	rmap_items = ksm_get_self_stat("ksm_rmap_items");
-+
-+	ksft_print_msg("ksm_zero_pages=%ld ksm_merging_pages=%ld ksm_rmap_items=%ld"
-+		       " (expected %u/0/0)\n", zero_pages, merging_pages, rmap_items,
-+		       half_pages);
-+
-+	ksft_test_result(zero_pages == half_pages && merging_pages == 0 &&
-+			 rmap_items == 0, "only_merge_zero_pages: zero half merged, "
-+			 "non-zero half skipped\n");
-+
-+unmap:
-+	ksm_stop();
-+	munmap(map, size);
-+restore:
-+	ksm_set_only_merge_zero_pages(0);
-+}
-+
- static void test_unmerge_discarded(void)
- {
- 	const unsigned int size = 2 * MiB;
-@@ -827,6 +943,7 @@ int main(int argc, char **argv)
- 
- 	test_unmerge();
- 	test_unmerge_zero_pages();
-+	test_only_merge_zero_pages();
- 	test_unmerge_discarded();
- #ifdef __NR_userfaultfd
- 	test_unmerge_uffd_wp();
--- 
-2.34.1
+I have verified the fix on 7.4-rc1 in a KVM guest running on an Intel 
+Cooper Lake host.
+
+Tested-by: Atish Patra <atishp@meta.com>
 
 
