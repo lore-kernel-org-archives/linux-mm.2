@@ -1,118 +1,151 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3A2606A33A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 07:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69831606A335
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 07:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=CEzYY/Lc
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Y3f74oLq
 Received: by kanga.kvack.org (Postfix)
-	id 4C5706B05B1; Tue, 10 Nov 2026 02:18:20 -0500 (EST)
+	id 521596B05B3; Tue, 10 Nov 2026 02:26:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 476E06B05B2; Tue, 10 Nov 2026 02:18:20 -0500 (EST)
+	id 4D2696B05B4; Tue, 10 Nov 2026 02:26:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 38C926B05B3; Tue, 10 Nov 2026 02:18:20 -0500 (EST)
+	id 375EE6B05B5; Tue, 10 Nov 2026 02:26:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 19D036B05B1
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:18:20 -0500 (EST)
-Received: from smtpin17.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 9E482408B6
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:18:19 +0000 (UTC)
-X-FDA: 85418355918.17.6475A38
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 7D53D40004
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:18:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b="CEzYY/Lc";
-	spf=pass (imf12.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DFE06B05B3
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:26:05 -0500 (EST)
+Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 86BA71C42AE
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:26:04 +0000 (UTC)
+X-FDA: 85418375448.29.BC3D81F
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 554E6A0005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:26:02 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Y3f74oLq;
+	spf=pass (imf25.hostedemail.com: domain of jgross@suse.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794295098;
+	s=arc-20220608; t=1794295562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AdAheHZEWha9dAehEUE3zXja1Ighlj9AsimpUr1pvrE=;
-	b=SLTADZKLsWdB2MC0tESj2rvimN3w6FMon/J8Cph6pCYZzxPLBS/rXygaO4hW7X6rmHgjtW
-	gbW9SeA5kunVYx09i/W61wf7mnKyzkEyRautrpBK+5QiEpSrJVXYUHTJUwEUDjw1RBC0wS
-	6ER82k6ruXkNTjAz7CXrr43Eiel6Nkg=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794295098;
-	b=PfTSY0eMNG6E7jCYHRYWtfZ2DV0Y9feUB3PUpoB3Qhdqtp8WYFL7hzq4fKEBddWJisk1Xp
-	9E52hq2EZrw4DDvs3MmMwOUNQ2I4aFXi8vqEf08E1LlpPXDgBJOSKc0aMs6G+++i5lgbZy
-	uiguJc/a0Po2LJi/n17F7CpdvtcozAs=
+	bh=OVur5LhTJoFv66K/FHeEGJ1JCwZsBRUToYym0WGroXg=;
+	b=I42HiD13SsZNkNwB3CMng25TAdHlVzzJnCoMjekyrpiDAIwD2gO3dbRLD8BN61n9PqSPK7
+	+pHXJ0+jP4K7unBcEKo+xSCTVFbrX5tjPmlru68AxzT8msFBEAbY4m/nOlQxZyEbDdt2w6
+	wA7sll6XCeL2hPUKw3UUojXQeMgyNPY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b="CEzYY/Lc";
-	spf=pass (imf12.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
-	dmarc=pass (policy=none) header.from=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B57BD40E02A0;
-	Tue, 10 Nov 2026 07:18:13 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id PDmFULynP60D; Tue, 10 Nov 2026 07:18:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1794295089; bh=AdAheHZEWha9dAehEUE3zXja1Ighlj9AsimpUr1pvrE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CEzYY/LcNnV752DyANYxRYqCdiauzIqFBIGjeUo6JWwRh0ZEG4G+xwcjd/4/pwNlo
-	 SgC1zKTOZB8iZj1SDS/bnq28O2g1F9OToZcFVfOsDk8XmfPS4hbGyaDCsf+j3VDwre
-	 cIfNdj6mhAsI24JcKwHYZRwtrzkX5OPIMiEOADgkoVPYE9kyOQhQHapkSWS6Vl7i6M
-	 mb5gY8CoaZdZ+voHzb/N0bjI2U7yLfFgJwC+Gorbiw+wNd1dF19wLP2Chvvb6iL4ZW
-	 9G/rstRfW2ee3NRHfVRqPxakhc8UEc+U9wzDzhMh7s2y43/WqXjxNLE9DfrkXcFmm3
-	 cCGJh6S/X2KwesElRDcS4WRX6Ho6mvJpKvlvmqzdXrIgJ9Gt2l1tE0zlAdHPQIPHiB
-	 U9FLw9v+3qrMxvthlBcLQDnBeR0RC0+p+Z3OzvQvyoOZPyaPIfRb8jbAK6UhPmAKE/
-	 LgZhE85VY0O4WoaZPUllv4W5DulETM1Liy93VIjPi59oGnTu843OfF/+B48AnUfFEh
-	 O8hFwxXE1ucYYRjs3Za94QTMFgl2E3vClWk4TvxxyPp/8j9fkibhVMuffhAaw/WGm2
-	 zXb+zSbVyNXx9YL5sBT3MTKOfRUbrPaxHE1wMGKsAUGzY2OwEj5uSsnEy0Vaw0avhv
-	 beFVzWRvzbf05CqvkRyxK/f8=
-Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00::42])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A105A40E0255;
-	Tue, 10 Nov 2026 07:17:32 +0000 (UTC)
-Date: Mon, 9 Nov 2026 23:17:29 -0800
-From: Borislav Petkov <bp@alien8.de>
-To: Shiju Jose <shijujose2008@gmail.com>
-Cc: rafael@kernel.org, akpm@linux-foundation.org, rppt@kernel.org,
-	dferguson@amperecomputing.com, linux-edac@vger.kernel.org,
-	linux-acpi@vger.kernel.org, linux-mm@kvack.org,
-	linux-doc@vger.kernel.org, tony.luck@intel.com, lenb@kernel.org,
-	Yazen.Ghannam@amd.com, mchehab@kernel.org,
-	ashok.raj@oss.qualcomm.com, jic23@kernel.org, linuxarm@huawei.com,
-	rientjes@google.com, jiaqiyan@google.com, Jon.Grimm@amd.com,
-	dave.hansen@linux.intel.com, naoya.horiguchi@nec.com,
-	james.morse@arm.com, jthoughton@google.com, somasundaram.a@hpe.com,
-	erdemaktas@google.com, pgonda@google.com, duenwen@google.com,
-	gthelen@google.com, wschwartz@amperecomputing.com,
-	wbs@os.amperecomputing.com, nifan.cxl@gmail.com,
-	tanxiaofei@huawei.com, prime.zeng@hisilicon.com,
-	roberto.sassu@huawei.com, kangkang.shen@futurewei.com,
-	wanghuiqiang@huawei.com
-Subject: Re: [PATCH v23 2/2] ras: mem: Add ACPI RAS2 memory driver
-Message-ID: <20261110071729.GIavLFCfLKzPx8R0i0@fat_crate.local>
-References: <20260726212812.89266-1-shijujose2008@gmail.com>
- <20260726212812.89266-3-shijujose2008@gmail.com>
- <20261017055852.GBatMOnEl66YObvU5k@fat_crate.local>
- <CAG4KcR+NOKHNzg6FN-oLLHgUxeitZHKXg9cN7dz24+Ap=RrwSA@mail.gmail.com>
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=Y3f74oLq;
+	spf=pass (imf25.hostedemail.com: domain of jgross@suse.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=jgross@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794295562;
+	b=kAW4cX8scXF8rh98t1FFSEOa1PgNSA35/Nto/kQI/skS07ffBVMV103qIVK1P3++KiUU4q
+	9sd4FrLqbq/pkOdA0BjGWWNd3EZ2N7ACc2Z8q1smn79R/iy1EXr9sE1yQssk9sTCpYGllU
+	weuwunajbqvN+y+4ZnvbaAdjSY5sSAg=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-c4697404c2bso228583966b.2
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 23:26:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1794295561; x=1794900361; darn=kvack.org;
+        h=content-type:in-reply-to:autocrypt:from:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=OVur5LhTJoFv66K/FHeEGJ1JCwZsBRUToYym0WGroXg=;
+        b=Y3f74oLqtwHNE/bmxw7kdNjK/8Xn5oXzee3B9q25WCYU9eCIgsRcwccDSVhpGhrm6U
+         VronjCgfkRMsGbFIfQg8TsUP0zOS/nlAnsIEfXnuR17zDnrumMzLG4H36srkfFPo8vsJ
+         FWQfnlC37DzcPtKQ6CgwqUkN9QJLxSm7e8KWgyvH0EJUljNc7F2jCUOXsnhG02Lc1rLZ
+         AAV/85PmKTP6RbU1oBOXwm8GYLn7BjSqnGcmivrHVQlAOaXCt6YajYEtBlSdrq2fmzxd
+         wvZYg0mkedZwuNYLzs7H/dJI5VMRfqRr066kQDFB5luVymjEe9K2YSkaS40uz5OrKRd3
+         v2Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794295561; x=1794900361;
+        h=content-type:in-reply-to:autocrypt:from:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=OVur5LhTJoFv66K/FHeEGJ1JCwZsBRUToYym0WGroXg=;
+        b=P54j7PL+LSYLS9W3oq5aEGycEHneSgMITP1jXcNeHdGmqHqcfO+dVyI7QUMBgQPOJK
+         Jg1Lem87hENSqy4wsEUd1LKMiXaO6N3jyZ9YvizNrfDa2Js9tht1RmDLLLzErIQpfENr
+         C1pDPaqucREcDxdKzcDRs+ifeVlFKTTtTUiY8e6rQp5JzkHyuDy/5ySYM+UoylheRhSZ
+         kmlnQmByGpElFCWlY7LZkgIJ+e7YTxr3hhe3hkBy2WKjHVi7ILAQrxMXV8PEjBYE5tdp
+         vNjvFO0cyIM8Vb3RzvmyJAgZElNpmAqglGssFeyNGvai2W4NuTCgozuxhqIm1wP9UaIz
+         r48w==
+X-Forwarded-Encrypted: i=1; AL+hErG9pAypirJI0TP/T2pwKYFx2U4NzcDo61G1rfQhsYyDbyQRCmmODcKZdETWw4cGNfsxbmyYy0La8w==@kvack.org
+X-Gm-Message-State: APuU4Z8dK/xNjezF76R71tkHcIcKY+uJQljSwVuKq5VqCbIoiLQZRlDd
+	zNgE+mXzGUGdttpeJCaWd2hNFWfdS/152/XY2gW/qpQLU2WbPifQ0i5UtAhvitZOaxU=
+X-Gm-Gg: AYBFou3cYPDok0l8c17NHsaUBNmim3293OfDcOol57lbkZaGeAnxuYS31KzRS7noUDY
+	3VQZQU2DV1OhozfIaXGp4GSIUkneh81ykWzc847yhEaFERwStnV9GOvgkduvZKRkwpQC9V5KiNm
+	EZVdE1QZ1A+hxxjSK8kLS7ZVU/EjsyhOH4/OOlHdJ90vXUUgIotG196FQu8NXLhzMRkY0gWoOwx
+	cfO71LknwNmTIGRVf3xneG345yepUsKsvwrAxtu3bSFFbACF/7mi3v2nKnOU0OhwXAeIdHb7E91
+	v0qOfCcwiZMBWBYWduPBz08ccLDS0hW1x67rMuTLaSEX3Zadhjkcwb4M4yX9zdFCFA9RiFxLlN7
+	ho1c351m5jpgI75dMOpNWcVIpLBNxf9Coziy7hjC2V/V1KcOx327E3T3YA1Y+yMhAF5Zin2BU3r
+	hKltACfIHPeNayrFWAVHUdHYh357XCQyxYJ0wkZ3XVqfq4OOD25QmWwl78lct1qQN9XzN8v0Jku
+	DKRJIW2MOyMPdCaHC0SMytaRSsqOQvx8Wt07JcdCnXcOso1HUACiun88jFmEe1dZiPhiFW0lzub
+	iRfJYiJ9bsQCCzGsgou+rRI7EV2XF8PYXtTjt+DpiddAHbMkxWaZCIG5BZFwUZjDnMD4+tof/MS
+	XVGmeXQDqah89n9j0AUqxqCQKPzBAEBw6rXILW3tNyeFHOMhG6zrpKNqrKbaLWDg1QWb5ve7A
+X-Received: by 2002:a17:906:eecb:b0:c40:4965:72bd with SMTP id a640c23a62f3a-c50494e70c5mr127676966b.19.1794295560623;
+        Mon, 09 Nov 2026 23:26:00 -0800 (PST)
+Received: from ?IPV6:2a00:12d0:afa3:c01:92cc:e257:77ba:97a1? (2a00-12d0-afa3-c01-92cc-e257-77ba-97a1.ip.tng.de. [2a00:12d0:afa3:c01:92cc:e257:77ba:97a1])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c504a593b5esm76107766b.34.2026.11.09.23.26.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Nov 2026 23:26:00 -0800 (PST)
+Message-ID: <b67abdc3-f234-49ce-b463-1e06e87eccf8@suse.com>
+Date: Tue, 10 Nov 2026 08:25:59 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAG4KcR+NOKHNzg6FN-oLLHgUxeitZHKXg9cN7dz24+Ap=RrwSA@mail.gmail.com>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: hnk8bj4foqnohcxn1yo54ehyyshhpbqm
-X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
-	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 7D53D40004
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] xen/events: replace page allocator calls with
+ k[mz]alloc()
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: David Hildenbrand <david@kernel.org>, Vlastimil Babka
+ <vbabka@kernel.org>, linux-mm@kvack.org, xen-devel@lists.xenproject.org,
+ linux-kernel@vger.kernel.org
+References: <20261110-b4-xen-v2-1-21ece28be7d4@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20261110-b4-xen-v2-1-21ece28be7d4@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------EM4uW1evflvUIpHMy0e9UjZp"
+X-Stat-Signature: iikf4bgbg1ci18ptieofpmz3k8whimna
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-HE-Tag: 1794295097-613737
-X-HE-Meta: U2FsdGVkX19vcwAE/GJjXTUSI+zGnZsbfmJXX+oybSUVcEbzqioORv+VtQ+XUkSlROsx4K8n2qCSw9JsH5otrxM/dMnpGGNteyg1RSunqbSddM3ZsM5cEP5BWDd/SHz++6jugzamfhMgbJQGrx0BsTSaIgBktngeEOVfPbxCWeNczQGFRkwPrlDZMrGMVOmednrSIvzebyERyvMQNa1mSGcat1uYI93K1frdlWv6QkDkXb2w5etmBWWMtPzBuPQWUDxKKj/FGny/ybzQIoX9j7LLV3zHhg4JHZUcXRq/GMzNBVWuedVnPWxtIpAxBmJmcCNsOvfnB5mscJqGYcqrwdJlNW6kjE171J6e9qilHEj7u0Euy2lmEOggbuvqfgASmqcqeUHSSGjwSl2bM0BLpaVgi1e9YU/GJbVFf3S/3RHNg551sF63/ILdj6XwAcJ1Rx5XUW4oEgCV/Xyrby6OEMwIw61BBPXwv1f1tw9/wJs71LFvEYmhliMVf63baRBLBDTKI+riwBzDsOazM5Obs11u0eC37bK/21XnDyWrdtvydNQGA2cyF7+KE8zSsEWCD5lrWPxPkvh7T6wxYehyOEVDyoqd2PVDCn+sk34kpDp1PQ2h/x1ZkI5PLSbU34+I4iZeVdq/0HXpi06LIuuipx2BcR8ZzJzBRawEbwbyLHAjwYUUozXKx+gPkt0nZbMjLT5J10pOmJnyjj0jcntdyG+qazwZM2FE8WlcczwiXIS6eLcrgDEaVJsiPD2GuvR1vBMFgJ/TGWp6v3YfTcQeOZnKoS1Wk6mO/klkj+Os+kMeq4RPzIeR3XXLVZnzPP1oixULWQ6nYrCMVwPlSQShjeF2bobgImE9+dV5l314zVyYIRDoWk49KewojAUxeYh8Nlkr7khMqnc5+vJLBzZyfPFBKhZXgOnN3JVHsrDVbyVPSp93lxU2PlyX263uk0UTaX762xVAd3UKAbvr9Jo
- /8qNs4MR
- Nxg+y989FBN3cWT9zlumszO+UrP4n+RuuYj8tZKEmqzTbgyoicVdpfUrcwfVOLuJ3jwsBLRd07dxOrCFWohF5m/1EYLjeibk7/zOaU99knftbxIn/46EFBjrGxDuivpnrEbsO0APlTkkvZfv9A66z5B2kPpbuGxi1dtAQTdvXSf1T+BRa3PdkvkrlzYxn0b1j1/zAjFO6MDFQKYP47Gv1AynOLrCSJMO/rz4GJ58XtQRK611RECSsJuzYzvjqNblsn9HJKUY6nzRnhpKLt5ryIGnVd3EoRhJqwax/ukjTFVJx6316vxFkWjritsPFA0F6UyibOt5HiJ89AYwYjbSwPvDY0VAmLWLX+wvDMgRsRpSJjiHK9/ec7K78O1+u6QidUsWUBqlGqwEt8FyY73y615wkELozIPcc5NRFvhG2vjNri/Up5mJU3Y7FI40SVl520evyr8/notrLo4E=
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 554E6A0005
+X-HE-Tag: 1794295562-601596
+X-HE-Meta: U2FsdGVkX1+/Jm1mHZd+SyToG0DZ2DTaIywUVA31tFvANEVuneYNeEspq7s9eZ/0Aj6WqqVGhkN8+b0zgDAGHoVOptbcbzD95mV/LYMudlUs4lTLy489+RbNALxF0dUeULyszhYDj5KKBJJfHvKz84rxbqEtYB9QQbRvxHhDtzVp2oZEnlO0t5iFm44Gt/yc91hERvYfkdlkOnP9m3t0FVvw8Wy53SJkSmbpMwrqa6TpXDcN9dJLmA6e3E84esco+Y/sjnlJGgkyG+5Ka25d3a63XMTtSiYl2m0/HnDhrZQIRBm6jLNZTLv/7siyoxILVDEdsj/JrjyBabQoIHLTn64QBpobkyZKBcOGOWpQ5kckahPm9FPNHta90FzsYApv9SzGX8mLCvlS5h0GigdBXdE+ORLukDyAKTVNZML44dm5PAPmuGHDG6+6IHkEAKVtUhDYgMIehqDXbQTeYfA6KA82igP+gMnBWxbqTXJYRUZTbb4AUA29Us4hNZ/xJIjyks5UP9/MsqyBON1EQ9l47SDxor7ZrcPkwG9gqeSYtPEXBinU88k28bssm76Lhnn4Lxk2MSHpdWEU3f2EZG+QnHm4aq9eTCR3LeWUiOE7OFcS7Ck12aA1Sck+k+l4KBB/QrHA6lRGyTDRq++oZbt3UMgX3nzV1pJfGbpLUEDlrru6gHH0qd//Tm/UCVMBubct9m6zqgu0iuBdlbLzMzyAHOcBJTVcpNQxN7+TqIUp73IC6n6AX2oM8dmlJmZg4GKCFcFmCK7z7mHh/U+rIfXEw8y1/iM55LaQeG/V09bsaxtpDkyUpuYbgcOaIq73gMvNWuvUZoAdS/BGpbHa8vlZIHeV4pRUkJGQ5/betjBfuMnr0WMUl0Uryg58r/c0YutJY1M6jWzvyfdj746RtNZzBbR8m87H0i6hyrYqmaTvgC3uOSzGjym90u8eYN1Z4M36mcMXVG2ihV6z2gnjV/C
+ Hbs9Y72I
+ DAdvLJqc9SmhDd/jNsMEZYhuP8ETR/zcasGOLffbyZnGlR9yeaiKAsiX7LdZ9AbRoUu8zrZwvwBijx/6FGPD6uSp19TzucNCIJ807cvttxmpLAp6pw4WA2V47EMHORNaAiz6UCQU3CQUMqSx3RUfqqqg+sca+ufMbtrQchf8rvgu70ALHfjSr41gPuYXcA8Gk2RaW1U+qAkPyWpReciW5U6gh97Cs5af2qTjKe0YtUDuwLmmN1Fp9DTDImFGTpohwQXWJth4fUGJm69DxmLPu4rfUsT5AKpvP8cggONgx0O54wiLukJp6Bm3/9Q9hFoozRqf9/JPpZ9Fb4QzCczdBr2KmoeBJoGRDcww7yhZulpGYil+0egb7UqnSMX8C+zkkhEjCFf8BLKuIAH86MtI8KxXDtaUCfh1hSRGSytCUf1cvkMMj1sxQYCrGOSIC1VnoQ5Y0V+Vb8ZXe/erFTTUiMaNd1Ph9dzIjzXAT9RQuErIthIfSiZThmAFRtfGuP8MrjfjTbk220F9NB4m9iRMNbIyI/cwRqavBFtg5E3tw5/+OSuK9L6bu5ZEGl4MlWwbiT3mOKZxJQT8HBwM2srIVBSN+Udotm0ZZwLFpq0OG7wpGIJieB3OD3NuRzl9Z9j1+Vluo6XfOnqlnk/kPZhxMwIiZFtJpmBm4uSr5SOfBf8nPfcwy8jGVSrEXogClB5dIUbvBP3qA9bm++zoZn4E1szS2EHYMx31/wgDuWA54SzZWltpXsz0JJFJgwVjNnbDSc74AgSVs++/P7xCTD1bI+N1aug==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -121,48 +154,98 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Sun, Oct 18, 2026 at 11:56:22PM +0100, Shiju Jose wrote:
-> I have got an arm64 setup only, did not try to build for X86 recently
-> after adding the following change
-> of using iowrite64 and ioread64 as suggested by
-> https://sashiko.dev/#/patchset/20260325165714.294-1-shiju.jose%40huawei.com
-> 
-> Following change is required to build for X86_64 build when using
-> iowrite64 and ioread64, while it was
-> fine for the ARM64 build.
-> Note: I'm not sure whether RAS2 is needed for the 32 bit build or not
-> and the result of the 32 bit build.
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------EM4uW1evflvUIpHMy0e9UjZp
+Content-Type: multipart/mixed; boundary="------------Yi2633bQOqoh05egSSnPXUpZ";
+ protected-headers="v1"; hp="clear"
+Message-ID: <b67abdc3-f234-49ce-b463-1e06e87eccf8@suse.com>
+Date: Tue, 10 Nov 2026 08:25:59 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] xen/events: replace page allocator calls with
+ k[mz]alloc()
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+ Stefano Stabellini <sstabellini@kernel.org>,
+ Oleksandr Tyshchenko <oleksandr_tyshchenko@epam.com>
+Cc: David Hildenbrand <david@kernel.org>, Vlastimil Babka
+ <vbabka@kernel.org>, linux-mm@kvack.org, xen-devel@lists.xenproject.org,
+ linux-kernel@vger.kernel.org
+References: <20261110-b4-xen-v2-1-21ece28be7d4@kernel.org>
+Content-Language: en-US
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20261110-b4-xen-v2-1-21ece28be7d4@kernel.org>
 
-I'm not sure iowriteXX/readXX are needed here at all.
+--------------Yi2633bQOqoh05egSSnPXUpZ
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
-Documentation/driver-api/device-io.rst talks about all those different options
-and the most generic ones are readq/writeq().
+T24gMTAuMTEuMjYgMDg6MTQsIE1pa2UgUmFwb3BvcnQgKE1pY3Jvc29mdCkgd3JvdGU6DQo+
+IHNldF9ldnRjaG5fdG9faXJxKCkgYWxsb2NhdGVzIGEgcGFnZSBmb3IgdGhlIGV2ZW50IGNo
+YW5uZWwgdG8gSVJRDQo+IG51bWJlciBzb2Z0d2FyZSBsb29rdXAgdGFibGUgYW5kIHhlbl9p
+bml0X0lSUSgpIGFsbG9jYXRlcyB0aGUgUElSUSBFT0kNCj4gYml0bWFwIHRoYXQgaXMgcmVn
+aXN0ZXJlZCB3aXRoIHRoZSBoeXBlcnZpc29yIGluIFBWIGRvbWFpbnMuDQo+IA0KPiBUaGVz
+ZSBidWZmZXJzIGNhbiBiZSBhbGxvY2F0ZWQgd2l0aCBrbWFsbG9jKCkgYXMgdGhlcmUncyBu
+b3RoaW5nIHNwZWNpYWwNCj4gYWJvdXQgdGhlbSB0byBnbyBkaXJlY3RseSB0byB0aGUgcGFn
+ZSBhbGxvY2F0b3IuIFRoZSBQSVJRIEVPSSBiaXRtYXAgaXMNCj4gcGFzc2VkIHRvIHRoZSBo
+eXBlcnZpc29yIGJ5IGl0cyBmcmFtZSBudW1iZXIgYW5kIG11c3Qgb2NjdXB5IGEgd2hvbGUN
+Cj4gcGFnZSwgd2hpY2ggaXMgZ3VhcmFudGVlZCBmb3IgYSBQQUdFX1NJWkUga21hbGxvYygp
+IGFsbG9jYXRpb24gYXMgaXQgaXMNCj4gbmF0dXJhbGx5IGFsaWduZWQuDQo+IA0KPiBrbWFs
+bG9jKCkgcHJvdmlkZXMgYSBiZXR0ZXIgQVBJIHRoYXQgZG9lcyBub3QgcmVxdWlyZSB1Z2x5
+IGNhc3RzIGFuZA0KPiBrZnJlZSgpIGRvZXMgbm90IG5lZWQgdG8ga25vdyB0aGUgc2l6ZSBv
+ZiB0aGUgZnJlZWQgb2JqZWN0Lg0KPiANCj4gUGVyZm9ybWFuY2UgZGlmZmVyZW5jZSBiZXR3
+ZWVuIGttYWxsb2MoKSBhbmQgX19nZXRfZnJlZV9wYWdlcygpIGlzIG5vdA0KPiBtZWFzdXJh
+YmxlIGFzIGJvdGggYWxsb2NhdG9ycyB0YWtlIGFuIG9iamVjdC9wYWdlIGZyb20gYSBwZXIt
+Q1BVIGxpc3QgZm9yDQo+IGZhc3QgcGF0aCBhbGxvY2F0aW9ucy4NCj4gDQo+IEZvciB0aGUg
+c2xvdyBwYXRoIHRoZSBwZXJmb3JtYW5jZSBpcyBhbnl3YXkgZGV0ZXJtaW5lZCBieSB0aGUg
+YW1vdW50IG9mDQo+IHJlY2xhaW0gaW52b2x2ZWQgcmF0aGVyIHRoYW4gYnkgd2hhdCBhbGxv
+Y2F0b3IgaXMgdXNlZC4NCj4gDQo+IFJlcGxhY2UgdXNlIG9mIF9fZ2V0X2ZyZWVfcGFnZXMo
+KSB3aXRoIGttYWxsb2MoKSwgX19nZXRfZnJlZV9wYWdlKCkgd2l0aA0KPiBfX0dGUF9aRVJP
+IHdpdGgga3phbGxvYygpIGFuZCBmcmVlX3BhZ2Vbc10oKSB3aXRoIGtmcmVlKCkuDQo+IA0K
+PiBMaW5rOiBodHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvNjM1NDA1ZTQtOTQyMy00YTI1
+LWE2ZTctZTAzYzhlYTBiY2JlQHJlZGhhdC5jb20NCj4gU2lnbmVkLW9mZi1ieTogTWlrZSBS
+YXBvcG9ydCAoTWljcm9zb2Z0KSA8cnBwdEBrZXJuZWwub3JnPg0KUmV2aWV3ZWQtYnk6IEp1
+ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT4NCg0KDQpKdWVyZ2VuDQo=
 
-About those you're using, it says:
+--------------Yi2633bQOqoh05egSSnPXUpZ--
 
-"ioread64(), ioread32(), ioread16(), ioread8(), 
-iowrite64(), iowrite32(), iowrite16(), iowrite8()
-        
-  These are an alternative to the normal readl()/writel() functions, with almost
-  identical behavior, but they can also operate on ``__iomem`` tokens returned
-  for mapping PCI I/O space with pci_iomap() or ioport_map(). On architectures
-  that require special instructions for I/O port access, this adds a small
-  overhead for an indirect function call implemented in lib/iomap.c, while on
-  other architectures, these are simply aliases."
+--------------EM4uW1evflvUIpHMy0e9UjZp
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
 
-and I don't see anywhere that you absolutely need those, judging by that
-explanation there. But what do I know.
+-----BEGIN PGP SIGNATURE-----
 
-Unless there's a real reason you cannot use readq/writeq()...?
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmryxwcFAwAAAAAACgkQsN6d1ii/Ey+K
+AAf8C1MTN/9OTck7FwQ3t4PikfL6XxlBCTguh5pnn+XNtKkgbFvaAl26KbqsNDq4Egql3ZmgZZWC
+paO5EYc8G75rASCelZYAQfSQKB3nTpgwiayf5hMeng2ctPr5OIgyyyio+dv/1CxtW/LHXR9KLfVw
+5R+HkZRUjZ1yHvS5+lVN15yGXa93Ieul1NfGzmjSPBKfNobHPKLiUo3QIu8s+KTPcSDmaktt99lr
+iH738+5hCNflKljXbvBlxRByHIlTSQ6UgINKd3G8zwt1cRPf+4wMgtJ0d2riY2wAq7K9pg23xMsp
+1BbUY9oLWgVcH0jorlzfwPHe7TUbICLgc3iQLsAopg==
+=dDBY
+-----END PGP SIGNATURE-----
 
-But those should give you the same fixed endianness when accessing little
-endian ACPI so...
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+--------------EM4uW1evflvUIpHMy0e9UjZp--
 
