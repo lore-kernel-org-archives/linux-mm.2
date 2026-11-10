@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BF7F606B2D2
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 13:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BE0606B2E9
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 13:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=OFjB3ecx
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=U6Qgm6Zg
 Received: by kanga.kvack.org (Postfix)
-	id 2BCF96B05B6; Tue, 10 Nov 2026 08:06:33 -0500 (EST)
+	id 5D0D16B05E0; Tue, 10 Nov 2026 08:06:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 247166B05D4; Tue, 10 Nov 2026 08:06:33 -0500 (EST)
+	id 57A626B05E1; Tue, 10 Nov 2026 08:06:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 115796B05DA; Tue, 10 Nov 2026 08:06:33 -0500 (EST)
+	id 4697C6B05E2; Tue, 10 Nov 2026 08:06:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id E25E66B05B6
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:06:32 -0500 (EST)
-Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 79741A8225
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:06:32 +0000 (UTC)
-X-FDA: 85419233424.10.C39AD1E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B2702140007
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:06:30 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A6C96B05E0
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:06:37 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id ACD521A019E
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:06:36 +0000 (UTC)
+X-FDA: 85419233592.12.2B1640F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D9EA7140003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:06:34 +0000 (UTC)
 Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OFjB3ecx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U6Qgm6Zg;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794315990;
+	s=arc-20220608; t=1794315995;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/Ss5SZp6AbzZf0QMiHXB9m8r1DMlRHB70XqYyD/5vww=;
-	b=uuOE8qH1sSWrJZuzMJ/Ei2v/AOGCMVNHf5G2GoxPGsMpt9/4mrsQvT1cgaGW5d0vPky4g6
-	0lupBg4LC7i8FtLRjuKJIwBKZ6WpYQ2lFHboDvBRmrYaIBrBzZGCQxd+ao3cnb+KUXh7lS
-	fstBdj3Xw9letDRVuXov6ilg8YBF2g0=
+	bh=TolNyDhrdN2HSm/G0psLOeOyGTSERcb3rDpVQV092Rg=;
+	b=KhL8riKsoADZMzlAUgnu0tXXJE5g/y3+L+YWpw594inec9Qk0ZX9/jyq+k6mlFE9ksB5T8
+	l/zzCz/ms+ib6pl468H6n772puEd4UvcVtU/tF+51Z8kZBN6J5HVcLbW74DpX2hxKhsWGV
+	WB7+xyMYx7cxMF9LpkbBExnaiAxzuKI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794315995;
+	b=NTqWfu8ygHN8+mh0gnyLsT9i+5QBwVGI5P7rXisGkwcYipi5lHVCRBoB2cfQ+xY3RJDMXW
+	r1cTH0iAd0OKoHzfUvD3fSjmyl2oVcpASU2KQxlX0jQEii79nZca0EK2lgx6t0ja/lA1EA
+	U5rvzqdRwq9nDaD34l4u7UAyIZKPeNE=
 ARC-Authentication-Results: i=1;
 	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=OFjB3ecx;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794315990;
-	b=vwqz7AP8ua4kFyUuvZylE1VVpPZJAEOIIJH0J7JtxGmDgXUBNP486Cjs/Ittdqk8Pmtmu9
-	PEmgYkOKUJQmxYcb17Uf7TMV6aKYuiVJ2lwkIstI1atlmRjWdBIRIDaAcOLysG8DhpuMzl
-	wuV6u5A+O7eIpoUJL6WSq/KPLuqSjmM=
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=U6Qgm6Zg;
+	spf=pass (imf26.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 38FDD6337F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 11D3B471BF;
+	Tue, 10 Nov 2026 13:06:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 669C91F008BC;
 	Tue, 10 Nov 2026 13:06:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9E91F0089F;
-	Tue, 10 Nov 2026 13:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794315989;
-	bh=/Ss5SZp6AbzZf0QMiHXB9m8r1DMlRHB70XqYyD/5vww=;
+	s=k20260515; t=1794315993;
+	bh=TolNyDhrdN2HSm/G0psLOeOyGTSERcb3rDpVQV092Rg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=OFjB3ecxYngOo0b+pMl92LqbwrOyoUX3eXL6vkaSGjtkybyELg8tj3YuMgUWjydFN
-	 WeE5IdDajyyW33aWwGVE9U/BqLx7Pu9W7s7P5HjyIi8BQavYgF1ZmTUFIhGU+eVqzI
-	 hCpVoZ1np/YCM9BfAu484TDGZef5wY/rvFtbnoSSPuNltd1WuEXUlUZYyiDLDt3spB
-	 OlHvIRXn1UTb4JQ5LE8FQsOxNi7nR2VkVNI2oiW9cA45w5u9jJyDZlZE6JjfWxNZOi
-	 gtOMznbd7chtWx7n1tQ74/BO11E6IiaOcQnx7cjd7dBln+EkLhCJJZ6E9cyEWUlgZO
-	 FZ25Ss9ldjPdg==
-Message-ID: <32632bac-2cca-4341-8fa4-f5565b56b851@kernel.org>
-Date: Tue, 10 Nov 2026 14:02:26 +0100
+	b=U6Qgm6ZgqMvD0OvAuYw9d6FLDoQwiyZQGJbdR0yVWPeYtHcLytJsVvjLgMVY/sMbg
+	 0M5MRkowIO8ssPRC6p2Qmpef23bMv4cxXgiIIRbQIMyxXube2pMdi/0Sf0N4JSkTxh
+	 +kasDrmI7MvnOnF8/WrFFn1H55lmSWxwb07HqbMln+brD4f+2pP5FMXymMRCG84B2P
+	 SKbKgpogUok58cPpqapFPkXRLMiGQtXPxlJhT5aPz/lKEIbNk+5/L6Iz5Z3DRqbEKg
+	 86rOA2H/TYVsQ5erFwIP01rNsDo3nTGBdMyPAVoAcNcyhp3fHy9m3ZipzMybGAZNBA
+	 /hceDbuVlAogg==
+Message-ID: <315c0415-0271-4f16-9986-cd5363159f44@kernel.org>
+Date: Tue, 10 Nov 2026 14:02:45 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/6] mm: gup: move gup_must_unshare() and
- INTERNAL_GUP_FLAGS to gup.c
+Subject: Re: [PATCH v3 4/6] mm: internal: introduce FPB_LOCKLESS for
+ folio_pte_batch_flags()
 To: Yeoreum Yun <yeoreum.yun@arm.com>, linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
@@ -77,7 +77,7 @@ Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
  Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
  Rik van Riel <riel@surriel.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>
 References: <20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com>
- <20261109-refactor_gup_fast-v3-3-2aaef02df0e1@arm.com>
+ <20261109-refactor_gup_fast-v3-4-2aaef02df0e1@arm.com>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -124,21 +124,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20261109-refactor_gup_fast-v3-3-2aaef02df0e1@arm.com>
+In-Reply-To: <20261109-refactor_gup_fast-v3-4-2aaef02df0e1@arm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B2702140007
-X-Stat-Signature: 3okht1wfdbdmd8pwxm7pwpq93ix1uzx9
+X-Stat-Signature: 7zwu9hfrpmbrt5jq46mx6ew81wmr1tnr
+X-Rspamd-Queue-Id: D9EA7140003
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
 	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794315990-263350
-X-HE-Meta: U2FsdGVkX19SQdgggERAxJ0wdQ6ztCFF3j4bNysEfMLCsPe63Wp+wVtihNEAQVTOeT7ytMWX7oo6YI0L2lVoLAw6AF3FupY8zShGEVfw68gQkuwP8kz3t849FOXgRRUyPt4s+BmaqWrttse5TG+C0iTsmh7KZnZH5BVaAsWk+Qx0KJWpZ2Y1RYXdq8SNbJ2tGubR0MnLfE4YJBcrwyamdljw2a5XhJi5GBBx64n2scc8VxD3WUOfk2EBwOcNJCgr7QZlmSqDEw+ppEY+gT4ZEkInwYmjAKxo/B6lqQY3Q+KoTIkGLp5GtDKYB1sEPKv1TNjA3ewpeC9rxlxp7JuosVhQgLG10fh3MEUKLKGseTKMpWcvaI/Qfm5/SDHmPwis4nG7MtHwmzhA1TtL7a/f+ZqHMBJouckEsh6k5VIg8Ty8W820F4hT+jjk4RxFQoClmhN+otfi71QxbZTZ5be3wGH1ekbA9Gw/m+5kQGqU1U3y/r+kpQ50i3+ZniElRIaqyF3o6c0Y2NzbSIb8YLcqD6Sd/nJop4MlWdauXJimeYrnL+8Mvel0bWtRLy94v3PfOoHDbcFvfBHAoB823Fr0+KWkWaxNcxuhaMq/mAF5fJy85UjUX8V86ysLRK6S7XxSA0Zc4JFS0LEvn3Po9ZZjU8guzDhmjYNhPy8vPHnF3wTyCwFj7xoBrBofoi91A8CGfPMuTcS2KpgespGECyV6XywFm2HodnNYQmCLC0M9nV5oSawikROjQ73W34mFoDQGWh0A2CKOf1Qejn6mt2zTYrlxmWoshARtLdCExFOp2C57pvdmPycP1aRG26gqeiSy7lQ+W2stXozoAChD9DXzNMQ0v6Hhznaajk0ZUuwIJE9F4/VmqZ37qDp9iV48xZ+gXgyqmPSpSc3rZ/M++Oic0qIw40YodCABQQPdLTQH9ULs9PFjgbtBG4wds6KoPVKCLOzNID8SLsdF1Kl5apF
- DMrC2kCn
- QVSVq6Z1YIRIyJm4clps/3WbAyXCB6ObDCMGgwUcWuUKPzOPKr3syWd60yeE0mD7sh9ZgzCrC9qUlpfTU59yx3RD1KFJvQ7xqOUzF1+vTpafIU07Zqn9XYLQp6z+KrJWgFVJBd0BJYmuu7JOWrx3zmG50djTEIbJxpSA9uY6cU9MGJbdvSQe7aIpQNRjoIUWqdPAWFSHBHNc+axY6RL4zubrOu8J/IVgoNgkIfeP/1QcXPf1Cn8pGDU1TXt1N01BPitcUOdwuXWFNLamtsRjbdCTXrmmJGSC+/PQP8vc/+H+1+Nt10SuSUuL68ebZ3WIkwhH+yLjg3Yn0JfQ8gSSlg3854dV+Sp54UIQKvRk8P6VwpLLfL3jMEE7cUDO7I0a3HGWlbZYsI9NH4FY=
+X-HE-Tag: 1794315994-664151
+X-HE-Meta: U2FsdGVkX196F13+pK79EoqM1HREnD5m3XvB1yBy7Q/88I1w2URjO+D5PCVNQbejjfJG/E4XEP+H8jMLvLaS/sWoI6H1G72FmI7M+ymDODssQ6fRNQD0q3h+gvYyI9DdEOaBsx4HPUhLRzo7kTenc+HGfoptTBICyAijzpiWUf93k6xcJcnxoWpQjr1VRMBhGEKCeAKvp6thx3cqs3MZ7/gjAIkJG2SCYFUHg6a9kyTqLTnrxl9ZVSkJ2EkMoCp1uNlO/lUKljKyjx4DoGSUJXHSNO2AOyyrnIlVljNjRDdVo1xwVqSEjp+0gl4OeyT9TLRvz5WWoxUh4P0oaS3yzD4hmGULhBNOveEGP7WGSP2rAPJ+P3rUQg3LJ+soAvdQDgt7IRInAPaMXNwnNzIcnD4FqjxTJmsnHmPqr1ESjvDCglFFZU/XLdeoAGSY7It326ERX+rQThKip0/s+wRgWb+m6DbghVhm8RjiBh4jekm/86fqN5iPEWPmO7gEjELxP6HtQJ7LRcPB+rcEaKVD/Vo/HOLK1XnuAJsPr5DtBYIpADbZOckC9/4Wm+sPtHewxMcSzWHQvr/VKEpiUAEHB/Ew+BWciK+n1JuUWU2Yu9WPE6XPRkApEc2m5x+fp9d9HWFaG1Ub+4KvwrvTKM5HGqUK3ZGXX6qlIC9XEpYtHkw23elg8R3GNJ0XLO9dz6Yi9ncChev5qQdOzIUFinDkJG4he6wc7njDmGCXhS32qyzvDYkTtOEzez8Jnia84gXLmENjD3x4kErN0hqP+P/rKtdC/FulbL216p1p7IM0uexVq29FAH9oJGwLoze7xXnzwBnt+FWY9rbRCLOHOQVez6hrqPTVXDwOM5ue/f1+ybIgd16Z40kELNtd802jRS6eAep0RaKiW8+2uiS7CDcQZYugpSDeAM2LQKWvyKP3SoodvsYCwlrSuOVT/ZVWDZ8U50GoF+2CR3XS5PXY5NF
+ S9OTQuwh
+ DCQJftRYXCs4WM4NFikEqkiQ8bX0rcesrnh2xDu8vIGC6hrzoP/VHOqBvTRigaicDNk158MIsQeaTqBmr1i5Fi8gAZPQlP04s7pIXoR/d0VeaYiH6gUhCzEL4NJOfzD506d3fdqVRwQcrQ4t7X5m2bI3M33X4XmijnyYQGFSpmF8Tf+rOahaQL2rrhPcb7n+a7ESR7hQrd1wXVTLG+WUycPVt5mqs4JI/RQhJ6M4RNqH3s7cUsQO2wtAKAVdCOwOk8eVdvU5odCIuME3+iNfJvonG7eTDFqndYnhzSn/dpGK45aZ3IJp6K+TcK9uUy5C2QNLZePlGW9bEQz8odyOKdHjNeM+Ku4gGNUkTYAX1ZZUrMirdOfeMxiHRsAx/jd35hsjOZ/YJLqAkepvvGn/JT3NIKGKPmm3/uq9J
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,9 +148,17 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
 On 11/9/26 13:32, Yeoreum Yun wrote:
-> gup_must_unshare() and INTERNAL_GUP_FLAGS are used in gup.c only.
-> Move gup_must_unshare() and INTERNAL_GUP_FLAGS from internal.h to gup.c
+> From: Yuan-Hao Hsu <aa9736195201@gmail.com>
 > 
+> Add support for calling folio_pte_batch_flags() in GUP-fast context when we are
+> not holding the PT lock. Instead of reading PTEs through ptep_get(), we have to
+> use ptep_get_lockless().
+> 
+> Specify the new behavior through a new flag FPB_LOCKLESS. We'll make use of this
+> functionality for batching PTEs in gup_fast_pte_range() next.
+> 
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Yuan-Hao Hsu <aa9736195201@gmail.com>
 > Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
 > ---
 
