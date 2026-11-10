@@ -1,107 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88E14606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:46:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DCD60A2614
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=GCDwX14v
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=AAx1o/KF
 Received: by kanga.kvack.org (Postfix)
-	id 5F4366B05B7; Tue, 10 Nov 2026 07:46:52 -0500 (EST)
+	id B2E7C6B05B9; Tue, 10 Nov 2026 07:48:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A43D6B05B8; Tue, 10 Nov 2026 07:46:52 -0500 (EST)
+	id AD7C26B05BA; Tue, 10 Nov 2026 07:48:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 46CA66B05B9; Tue, 10 Nov 2026 07:46:52 -0500 (EST)
+	id 9EE5F6B05BB; Tue, 10 Nov 2026 07:48:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1C68D6B05B7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:46:52 -0500 (EST)
-Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id ADE89A85D7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:46:51 +0000 (UTC)
-X-FDA: 85419183822.18.2B2F73F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 1E8261C000B
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:46:49 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GCDwX14v;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 797286B05B9
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:48:39 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 205128071A
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:48:39 +0000 (UTC)
+X-FDA: 85419188358.28.649D073
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 8BDC7A0007
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:48:37 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AAx1o/KF";
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794314810;
-	b=WK9oC3+gH8ysCdEhfQ3PsEf3Cjcc8Z/O+qJgV/eTxo4/D3Prxi/JPPbBLuD874vkuR/ZUp
-	OIDtxHUJZ8ZyhNVtFQur7A9VNY8NuCOS5TujDbqT/J3UbtFrySNjwKk+bDIX8Y0W1dVHcw
-	bDthjXsTKYZyd/PkkM8hT382knqCOO8=
+	t=1794314917;
+	b=ZozyjuuTcZd3xIKha4B3GoSoe+khsHrqIjxr6mLhp/tk0jYc5cBVepgK4RpCaGupApT0rC
+	K3LZ25+xZ/krS1R0cIvuCZRR/SbL+LorYt+QTyKfLEYhS+OCaEHV07HQFUu06UrYHzWqtu
+	ZvmQByFaMoatojqcMqfqafP1nq3BkEo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=GCDwX14v;
-	spf=pass (imf21.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="AAx1o/KF";
+	spf=pass (imf25.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794314810;
+	s=arc-20220608; t=1794314917;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Iadron3w0mtp6FUOIlxkmVN3eT1tt34wJC4l9phyJAw=;
-	b=RBbsi+kwuCj3gZHnco3L2AfVjswJMvbQQNBM9GpNlCx0Yc9gPiAgI8WPfaL8l+MYfrxyxJ
-	bF6x3+4AoS+raYTgLjk2NjuZySJAddrlNPiRLbBj5BhbsIXPzMw7HnfeowC5HRg9qk+dXR
-	EDz0+CKi6djJJO7G2F3O5huZncG3STI=
+	bh=UT6I9hqZhU12+F1jokRg3E4wTJM57aYHZingagyig8Q=;
+	b=w3I421x3vnOVQA+37BhPiWcxzQCeChrZgrydxtPtbscrbHcUv0j743nxCMMxOA1XuecGZ1
+	C3RPZ2PFPNbOmVEmlg40ljO0OMA7QdA9N/uV7z2zjLZXtlAQeWpxqjC2rkOH8Yw6QJ/SaZ
+	MGXi9RvxwqVXCukqVW6jZxMwSXpme9M=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4CA2140AE8;
-	Tue, 10 Nov 2026 12:46:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C8721F00900;
-	Tue, 10 Nov 2026 12:46:39 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F029F6185B;
+	Tue, 10 Nov 2026 12:48:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DB9B1F0089F;
+	Tue, 10 Nov 2026 12:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794314809;
-	bh=Iadron3w0mtp6FUOIlxkmVN3eT1tt34wJC4l9phyJAw=;
+	s=k20260515; t=1794314916;
+	bh=UT6I9hqZhU12+F1jokRg3E4wTJM57aYHZingagyig8Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=GCDwX14v21WbLajB2krTKYrET/K+N61tHnKhsWXud1ti9u60OCiTW5U1YiOLKl+79
-	 cRfsMDlqLKMteU8ZF8SIcjuKSEXCrHFqpqXb+CzVAdfBfUt7tgmKmxsZg1J5rf6QjU
-	 vhoO3l5RHIcd6zeTRltf01kH5JNxY3cs9lnTBmDlY9SFnlNbkkJQYYPz1GM/0b+yF3
-	 DOFL52/UerZ+0bck/E59XBGVrT8iuMFDs+iPGfbM8Wd/wIpWHE1h48068QUX0UdXLa
-	 XiKG51ZqsgY2iChGwRIxH3edF7xYm+yOINlp4helsaQqqv/DbAZHLrSiQOyBISslxu
-	 6Mg8xCAWlc/PA==
-Date: Tue, 10 Nov 2026 12:46:37 +0000
+	b=AAx1o/KFG7JNNHGjjXHOpcfX2vMXAWZuDpuK0GZFrj70Oj/t2Uxmoe9rPJCBfYHXV
+	 WNsvgrAbH/i6qdGNKGKqqQexkRAsxolMBA/yV9/FUIcwBjJmoAGqFyKZDH9m62qKNK
+	 O6lG1z/4+UbshgPZJ7t69ACJHYtk3lo5j2xxQ2+ek8+wDQHQLhacBBZu22+xpo35fI
+	 r5XCp81wfJQiE/fAeu7IGffZTpwdy4dOKIh3Cd2C/U91SiloRQ5FEsbjdqQxbN5TQj
+	 A8XAeIHK8mVoDRewuJXe18vW+JzWS7aLCgv2xzAOdmg81aKTyRbVV1ZTrGO2Ia4o6J
+	 EEN2Gctu5fdQA==
+Date: Tue, 10 Nov 2026 12:48:30 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Danilo Krummrich <dakr@kernel.org>, Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
+To: Shivank Garg <shivankg@amd.com>
+Cc: David Hildenbrand <david@kernel.org>, 
 	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
 	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
- entry for THP
-Message-ID: <avMR7WWJ2nis94vG@gremlin>
-References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
- <e1b0d6b4-f7ec-44df-a9f0-0e3a3722a973@kernel.org>
+	Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm: remove unused clear_flush_young_ptes_notify()
+Message-ID: <avMSmWU4JYReUAB9@gremlin>
+References: <20261109-clear-flush-young-notify-v1-1-b37fbafa2686@amd.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e1b0d6b4-f7ec-44df-a9f0-0e3a3722a973@kernel.org>
-X-Stat-Signature: axa5f3d3d1deoacb7j5ae6jkh1aqtxmp
-X-Rspamd-Queue-Id: 1E8261C000B
+In-Reply-To: <20261109-clear-flush-young-notify-v1-1-b37fbafa2686@amd.com>
+X-Stat-Signature: 66jrmtctsrofbmox1k5a7h7tkoig5691
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 8BDC7A0007
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794314809-863507
-X-HE-Meta: U2FsdGVkX1/KIBTNG4cRvStRMpjOWYeDRLRFhC0iI+36gkp+MjRE6iyeQvpDmhHpoB23z3mPLGqgOCU/1abdYs2CVMMIgnR0svKx3NQ3ikReX0luXANXa7j0RExNF+01SS9vs85ZAOLJEX5nQV9j4MPKHoCk9HsYfXT4EL+6VUJpzqjZrFiNx5szusiHDRTPq6z/zvSHBX3Udw00PaT15TgugIOfhCHEwdLv+R6jJgaLvWChz5++TvNeW8yi+Nl8+u+C0Vuu7ObV5EeYZXsk/1ucoXcrw0FTh/dmBInGymVFSH/nPjyaXNdPNvA1kSnuh770JQbaQnI9WRsUsSbTDQ2onpjQnPbf2vAuSkhYNMcV4UXj4WC+kjHX+ph9lKw7DUWMgVfkIPd/Px7j2l8MPNl/9CUSed5nhxFjQZNqvLQU4OKe5SFMlrFKWkUwLDH7R5KRVDrEwGnidMNlOLVCp/IKVYBu6T2njbRmTbRQaM3yqxaykUxwIcQ7tL06FQt0gbZQkpFtfsRpI6lyLYJE5jO/KdHerHBvxB6BlLodPpxH8QmUtOMs3DxQtY8gT4WuOCmD0Do0UfKao/EdopUXRsPB6/AMJWKY+T0gQaYUEKavqeKnmPK2eM35pSD5XGitHyTsXNJYQWOu1w4XzRzmH4fvgGyzUZyktJU9PThQaTLHwgoO+BfyCPSdT1rYCV148QyuDaX1tfip/EQscbdMyDelJ4gwgUVfuhrhxeNMzDBfrbPYlNnWD65UYcEbM4JCgYGWz94V3QvBVT6Nad3DMycarKSXejEK/d6UOZ/K0UjJX5uwgjLKfPYlcDa7WLyLFSuBw7Q3ijY7syWiI4XO1b0gYEYTpJf23vai4lpsD9CU/cpD5TvYhH+NUW3EUPDR8Cfk09hE7DvgPL+1tgbmXx8SDuGjbYeiz+OTx1G3iuKG8E3FAMgudQ10dMJmT11FRgnNRmRICtYK2K/su6l
- 3bVzPocu
- 0Jy/lS4RFMKLFZHzjshzK/Q50cdolJQe3M8PscS8W9lCBMyXt2LyFMMndXDqd9CrHkqDYimqkzkYRYceGtI1PRL4f3TetPdyakprA03yFrVNt9brYtrhR5vc+4C9Yg+sY6IbRHNK3mzY0nnNsrcsokLJGPLggHiRs6PWSjGmLTk4+X6ixInL/3ZAFHkNLTCqQ17lE4TVT1ZVfhkUVH2m5B9vMyUq25B/hCymygg/sAcq2z0xSrCDP9i0o9EbLrVhTeg1XnMCoOPH5DRwb+WwZQ28cqA==
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794314917-682256
+X-HE-Meta: U2FsdGVkX1/0hnlUvcdHmtSUCUr+ck2y3M9i/ZJdqtK3LMaJ/bzNEijrOEf0NqsDB/eGvG/PI2MCp9A5kvlc9zdjRTmNnQ9m9u5z89jXDQ095xuiF08SnR3bMbjjlS4CUUgzOcfEFhiXC4Klg0RW32+YCvruka0m5c7BNHPpO4INTorQMcy/MBxkwff9sOY4KqgfZ2GX7+8BvGdeBqhdgZd/7yAAO+Hhkn3mMy9O7YGUQ93dWDqwpKLoF09j5pD/5LVcZbt2tMko2191c/2jVZ8gUAK1KWYNxiSU2AJrmXzUlYeexkb7asHu6lfSC0A3ao/XoQsLJhdhWp9ujed/ds7nYRggqWxApd0xS9j9Yc9dmFaubRDWlhsrsBeWws9diuG+fBoOiCj+N497KOlEZHTDNY4DzjKnMNC+YenUed8VvelhjriKL4XGnUFRBXFK8okdeHAnkjqmljUOofXtpaklPwCrXW4X3u0TNzVH8hhrvCMIxiAQP1Bb/MBzFHULg3S2t+oANwHh3ecOZaegcDEMvl7Q4ulCVeiBoweltXGactN0NEiETotoAzjJWcWnao1nDUTxADH0G2Wyr1SLm0n9HNB6u/3UkRQs8zMYaHJO+Pr/ctYogFMYsTs3dtX6GHtKb6idDBxlYEX8w1469GDv+5tht7AvkFyHxaoLaVANJpv90756LIlIme+g7diqz5PIcZ7rpNw8uBbeyapfpc7cEvjd3yWDG18ps5iSPNL5HWmYRmEBq/oYH3kpJ7Zx5rl/QCO0PBjUHFewxyfNQnzr+RBd6D3ifJWlwE72QUBKplJ9HKIZZkoMs8fS5tjRHBi104pwfEKWdVhhwlNJHCDTXCV0bUTRfR9C2259JZAVog0j/klbowZPOb/WH1UEKPprguot5R70lDbdSdtU6oKAC1Uqnq5K/A1x6/33yL/PNDGeK6UXORGb6VctjZXPbvnGbMWl6fwOS0Ecclh
+ fydFHPm9
+ dY0owPq5dlNlvghYMkWSgMxfChmF1+Y+CK4unHAfN1StrdJqQLqmMbhAnD296KS54zIjDDZwNTAN8LBLiHiH8/xIusOhlAvQjrFv6vttaVUwd/3fGNFjb5oOioZ7jGdyASBsxtV2HYY2/j+dpP22P54Ysk8wnDGftY5/SsX5V5kZ5pRBBQV3iMu9PMB3g6QqbMLWh/gHb7pmMseZIfgTAnvQFM3Fr19+duJ4+vcBnsX5ILbHU9+rswELfoi92eLtIw3hgHXjpFOJ/1xktDmbPvDNZPeZw9GCdNk6vSa7F5AZu7oy1RYxkvSW9Sa1REuozCiRX44ychZ8RVHu6hCYSd1Exlg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,36 +96,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 01:06:52PM +0100, David Hildenbrand (Arm) wrote:
-> On 11/10/26 13:03, Lorenzo Stoakes (ARM) wrote:
-> > Given the current throughput in the kernel resulting from AI-generated
-> > series, I unfortunately lack the bandwidth to generally be able to offer
-> > review except in those areas I maintain.
-> >
-> > I have separated the patches into areas maintained by David, Andrew, and
-> > Alice + Danilo, so each can take the patches relevant to the subsystems,
-> > for convenience.
-> >
-> > Apologies for doing this, but given the current trends I'd like to do
-> > something to make my inbox a little more manageable :)
+On Mon, Nov 09, 2026 at 06:41:55PM +0000, Shivank Garg wrote:
+> clear_flush_young_ptes_notify()'s last user was removed in
+> commit f3c493d2f42b ("mm/rmap: handle device-exclusive entries in
+> folio_referenced_one()"), which open-codes clear_flush_young_ptes()
+> and mmu_notifier_clear_flush_young() in folio_referenced_one().
 >
-> Yeah, it's crazy.
+> Remove both the CONFIG_MMU_NOTIFIER definition and the
+> !CONFIG_MMU_NOTIFIER alias.
 >
-> Thanks a lot man!
+> Signed-off-by: Shivank Garg <shivankg@amd.com>
 
-Thanks, I'll still obviously help you out wherever needed! (I will still of
-course send that fix series I'm working on now :P)
+LGTM
 
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+> Applies cleanly on mm/core.git/for-next.
+> ---
+>  mm/internal.h | 12 ------------
+>  1 file changed, 12 deletions(-)
 >
-> Andrew can just queue the whole series I guess.
-
-Ah no need to split then :P still perhaps reasonably logical to break out by
-maintainer anyway!
-
+> diff --git a/mm/internal.h b/mm/internal.h
+> index b129510b92e2..b1f3a1a59bc0 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1598,17 +1598,6 @@ static inline void maybe_rmap_unlock_action(struct vm_area_struct *vma,
+>  }
 >
-> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
-
-Thanks!
+>  #ifdef CONFIG_MMU_NOTIFIER
+> -static inline bool clear_flush_young_ptes_notify(struct vm_area_struct *vma,
+> -		unsigned long addr, pte_t *ptep, unsigned int nr)
+> -{
+> -	bool young;
+> -
+> -	young = clear_flush_young_ptes(vma, addr, ptep, nr);
+> -	young |= mmu_notifier_clear_flush_young(vma->vm_mm, addr,
+> -						addr + nr * PAGE_SIZE);
+> -	return young;
+> -}
+> -
+>  static inline bool pmdp_clear_flush_young_notify(struct vm_area_struct *vma,
+>  		unsigned long addr, pmd_t *pmdp)
+>  {
+> @@ -1641,7 +1630,6 @@ static inline bool pmdp_test_and_clear_young_notify(struct vm_area_struct *vma,
+>
+>  #else /* CONFIG_MMU_NOTIFIER */
+>
+> -#define clear_flush_young_ptes_notify	clear_flush_young_ptes
+>  #define pmdp_clear_flush_young_notify	pmdp_clear_flush_young
+>  #define test_and_clear_young_ptes_notify	test_and_clear_young_ptes
+>  #define pmdp_test_and_clear_young_notify	pmdp_test_and_clear_young
+>
+> ---
+> base-commit: 2683df3b7eac1d91380194955ad0c9751454610c
+> change-id: 20261109-clear-flush-young-notify-dac8b5496ec4
+>
+> Best regards,
+> --
+> Shivank Garg <shivankg@amd.com>
+>
 
 --
 Cheers, Lorenzo
