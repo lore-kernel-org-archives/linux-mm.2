@@ -1,125 +1,197 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C9D606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 02:51:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C71D60A261E
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 02:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=fpuoEYb5
+	dkim=pass (2048-bit key, unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=LfA38yFt
 Received: by kanga.kvack.org (Postfix)
-	id 7AA416B05B6; Mon,  9 Nov 2026 21:51:31 -0500 (EST)
+	id 2F33A6B00EF; Mon,  9 Nov 2026 21:53:10 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 781546B05B7; Mon,  9 Nov 2026 21:51:31 -0500 (EST)
+	id 2A3956B05B0; Mon,  9 Nov 2026 21:53:10 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BF706B05B8; Mon,  9 Nov 2026 21:51:31 -0500 (EST)
+	id 146FB6B05B2; Mon,  9 Nov 2026 21:53:10 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E9F26B05B6
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:51:31 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C6750A076B
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:51:30 +0000 (UTC)
-X-FDA: 85417683540.05.5262380
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf05.hostedemail.com (Postfix) with ESMTP id E6AFC100005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:51:28 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=fpuoEYb5;
-	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794279089;
-	b=fDcnF84GvJL6PxIlJ5Jm79Qmd0Ju8Vt3XREkT6LCFPP2jqvcP8jkGmy78yBcNeOW1F6Flh
-	4SOTC/NYSl//zUDRPRavrBU7VzHg/XEkkiX+3vg8Yc6sbJ4TcoqUnLVIHgW6fJOIQ7ym0D
-	JbopQFmuumlQahSHDmEAZRvZW6XCkn4=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=chromium.org header.s=google header.b=fpuoEYb5;
-	spf=pass (imf05.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.210.182 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org;
-	dmarc=pass (policy=none) header.from=chromium.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794279089;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C472E6B05B0
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:53:09 -0500 (EST)
+Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 505561A0882
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:53:09 +0000 (UTC)
+X-FDA: 85417687698.21.CC376CE
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010068.outbound.protection.outlook.com [52.101.85.68])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 5EC6C140002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:53:06 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LfA38yFt;
+	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.68 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794279186;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rbLMU1pYfk4pMCO3YrPvND96KRltx8I0UXJznwRM32s=;
-	b=stnlbtP3+QJU2PwQ1ZHjB/uydxi7UF5kWHOc1wJPk8jcS2aezQNHzGl0mLGZqSYaKntLvW
-	C3kQXLu1IzPDFMdBccc3V2eo1GXudMiMVz5ZSraIsE+r23X///IOCOhc4oHLTJNYXPS/Yv
-	dcdstJLNsooJFkRmATmauOv6iFmmldQ=
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-8a4c72951b8so938327b3a.3
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 18:51:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1794279088; x=1794883888; darn=kvack.org;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=rbLMU1pYfk4pMCO3YrPvND96KRltx8I0UXJznwRM32s=;
-        b=fpuoEYb5vJmR8cWazU476OHEdqNOf1nQqe41fP/INEMI5Z7X1POuDfrHi+CRrZ4/7w
-         cAf5t2Nsbz43C8I+rcgx7uTvndnBz6JanV0yHZqeNlNAl0/lvB0HAWDI8HQ07Ii/v3Pe
-         BqRpi6tzeHP4FWReIM+ysUvUfCwfOxM3/ENiA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794279088; x=1794883888;
-        h=in-reply-to:content-disposition:content-type:mime-version
-         :references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=rbLMU1pYfk4pMCO3YrPvND96KRltx8I0UXJznwRM32s=;
-        b=vYtStUzICjXBcRnw6kSdwFWNt86i618nDDqkecDWhmR2gG1iEvqbuJ0BT8g2jVdI2I
-         qFlMeduBNxAgx5mnPoB9Eop/JVGvQrAy8PkZaLLYPsTlhGibSkBge1n11W/EOhX3A75D
-         LZHl3GIMjF8G7yAZlFWCum059XdgxSw0dtSjqCuHAJghMs8fqsC2x/Go7ycN4uChI3RQ
-         kIOX8Tlu3PE51Fwrbz0I5PbWxCZZV+zXyEHJh0MJd8PiBe6X/4b7X948hYsQ/vhwGrNa
-         rm4v0lRXY8Hq2k1YtYSNHSmICdJ/teDhlwd9X5bjld+0PGKgSEGJ1GbbERmVgpukyCNJ
-         IUVw==
-X-Forwarded-Encrypted: i=1; AL+hErGtNkT6U6mGuQI0KHM+XBQCTmLLJwVuhbpayTP+1h2zGEoJMgOdx3POah4w5zrh7FiV4tD+l9SwoA==@kvack.org
-X-Gm-Message-State: APuU4Z8B1OGKHYPiiWNUsFwfXyIXdFeBAH0dtgNPMFJ0kriSKS6KoKA6
-	Cq/hWLx0MAVR7LzEwnAPsB6IZa/jxOGhpU7c+XTNlVVfdl7zAs4qZKLmOLtgboXUiw==
-X-Gm-Gg: AYBFou1gFtOC7t0NUyySHp1IBFPhgIrt7N+cYFCCA5zNtvVt+cTeNebZmvMBHRXvS9w
-	ALi2FRi34Ybqf3gNxPfSNAV+kLb9g1XbUASwIyWYIUsoIyTHIHEpKv32c6LnmV6cle4Wjg9cD8z
-	RLPY8ot2gGdkc2vTwDD2s1lXNgPZgr6aBG79u0g5+SanKygnmyvChUxc05GZZEw4BfHpZMRoDKu
-	mBm/RbS5nbVmF8VIhwdHvB3yJxEDJwcROqrgSpdUfk724LobW49I1AhycNH3slIEYAn29Qot803
-	nktCuAZ8vMG50JfwrEoaKMlDCpHMQkf1Q0MnFSrFn7VAiwBTCuepL1bFIO9bFMcGUBS2IyaYqFb
-	+5T6Hymn39h4sZWaHEjRZwqY+n9Bu3sKtGLdKpXF0ZrixEpava3T7glchVlXFuDVOTs8D4uAiRM
-	Gu52U+lZyu9Ik2K1qejUD0CYkCnTWsfGxdJe07n7ktoAh/zt4bawEzCYI7a4jo+ZZRYGCS0A8Fp
-	DwTVWVCHivDjinEvgUUdyA/0eK8QycOENmObGOUHnnwBRkXLUa+sGYZiVb5xOeEGue+z7r4Ln0i
-	eKuRNiM7cXUN+hXMSYvOHNv3th+93LfSyYl5GcVaPQ1Gdzl3SByReLwBZAALHNsiE4UPe4C6FVG
-	CpGOkIebcx4L7vYU=
-X-Received: by 2002:a05:6a00:1249:b0:89f:3053:9af2 with SMTP id d2e1a72fcca58-8ba860cdac1mr1637379b3a.12.1794279087731;
-        Mon, 09 Nov 2026 18:51:27 -0800 (PST)
-Received: from google.com ([2a00:79e0:2031:6:e137:9384:7cd8:6e40])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8baaa2a7fbesm298559b3a.11.2026.11.09.18.51.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2026 18:51:27 -0800 (PST)
-Date: Tue, 10 Nov 2026 11:51:21 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Brian Geffon <bgeffon@google.com>, Minchan Kim <minchan@kernel.org>, 
-	Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: [PATCH 5/7] zsmalloc: embed struct zs_handle into zram and zswap
- entries
-Message-ID: <avKFc82JS4R9yU-N@google.com>
-References: <20261105044752.1997895-1-senozhatsky@chromium.org>
- <20261105044752.1997895-6-senozhatsky@chromium.org>
- <auy22TkX0ADxP9WR@google.com>
+	bh=OZAdhiCpZpKsu9HyEjwrULwfk2OLKc74szWYYCdFA7Q=;
+	b=ATSnb+HX+gULlbu/XQwC3cjYQhPcC2VKJ4T5n3EMLAIYAFfXwqTlmKl/fkuQ5flLSpsMII
+	4NNZ4L19HoXTLFUyodin37GfmEFVa6c52oiczwGuEnc6+1hBmdioc+4vzHHHvwNO/yhGeT
+	6zt4r/r2SfodYDaLngps5nYgSP8R93I=
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794279186;
+	b=QcIgTqBnWfvWDhINOTpvO5LJaPOg/JEYYOp0wn7hSNLvwc5yP0bJ6gXjO4UNzR/vAT46M8
+	L2oC1UDYGHfYLuSky4xzMN0f/Fz1+HytJFubO/MEJfN6BvUHmkopFSs9dm5W/cc6CS6JkO
+	ztZyBRpPBsRrkx6veghMdPmmTqjFR78=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=LfA38yFt;
+	spf=pass (imf23.hostedemail.com: domain of ziy@nvidia.com designates 52.101.85.68 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fu5Uig5kqbV2nt08K0YFAP+s2Bu4fbwj2Tb20rQvhuhdWp0koJfODSvbqgE5U6S8c2eQU07PLWRbR7U4ibJRkGv49DMvbAAsbGO+TM+GmwcAgwUFAqM6wBCDT0riOyrHmZKFse+nU78qYc5n+REViLXKaz8DBXqpkq07atgdVSi6qxaLpnw9k0jYKbLeyQdI/qPSaNmt0OAB6zL0vEI/DplEEGTqrJSYs6WF9yymDxmhQ1ugJ4XBHBzM+GzQdw1qon3SSJL3u88IHT1Fq0GB6BJsBA9tGJ3JrYVHI/0VDtUf5YSSbqLPZh2/WFvCpCjEE4qMlbhHEnKtN7KD0yBwsg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=OZAdhiCpZpKsu9HyEjwrULwfk2OLKc74szWYYCdFA7Q=;
+ b=f9I0UHPoM58HW0MOzcRIjpKfZLjXKS8tsXWAl1tZWaIjEycYzeu2Dgisntd8x5KBVeGVjM2kciqR7qLAEhiIUgrJ+8kZYqDLJVuTAeF5/AdRlxT5xaDPBY+IAzpuN5s4ZnXKwYqLLbhFna9WhBEajlJ4LpLsw7LEEBOYUkGNo9A+Y9SsaQw8yLHRgrhH0okAM2fv3Bdyds0ELmm5a2/xvsOVVPssGcp9LZsdvY0aV86eZrvJ8E9fB4oDbSUlrg4bwuhmLl+Oblu003xorcEZG65XUtu9LnJ8AEmYK78GCKKAApHwm5NADyC/owejVlCqAGR74b8RqENZQTdTaLbH4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=OZAdhiCpZpKsu9HyEjwrULwfk2OLKc74szWYYCdFA7Q=;
+ b=LfA38yFtq/x0nyYUbfT10gZrMhQZtMf3Wga60WE4rlaCbdxzuwiC2APUBuCZOIIiQvmJ4zmoJqcZGpj8Tgm+TqeKeiB5MVmUnoIOaRSCi+vIj8jtvvwm7N0A8gYmaRy77H/A3FA9b3cn2h3Rv5A0bpi44rmzxQdvhpOugdoijzrbe3JY5h2o4grZ8Atb8d4huWiGbSeIpzgZrs5k5NjPeAyT6OFCjnjISeBEbpdDK200r61stvxTr5sdNatSwGM4hMwq1PStvBKde4wBoxu6tfm0Q9NJYTRWNzCGKe2ygg4zvxiUbNugKkWfwSm32Y2QLcZjJpToojb14gCPjhqQBw==
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com (2603:10b6:208:40e::7)
+ by SACPR12MB439974.namprd12.prod.outlook.com (2603:10b6:806:540::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.592.13; Tue, 10 Nov
+ 2026 02:53:01 +0000
+Received: from IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16]) by IA0PR12MB8374.namprd12.prod.outlook.com
+ ([fe80::d85f:4c87:ae84:3f16%6]) with mapi id 15.21.0592.010; Tue, 10 Nov 2026
+ 02:53:01 +0000
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Nov 2026 21:52:58 -0500
+Message-Id: <DMR6VVEKW3XN.23D8JAIT65YIU@nvidia.com>
+From: "Zi Yan" <ziy@nvidia.com>
+Subject: Re: [PATCH v2 1/5] mm: limit pagecache folio refcount when mapping
+ pages
+Cc: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
+ <linux-fsdevel@vger.kernel.org>, <fuse-devel@lists.linux.dev>,
+ <linux-arch@vger.kernel.org>, <iommu@lists.linux.dev>, "Chris Mason"
+ <mason@kernel.org>, <stable@vger.kernel.org>
+To: "David Hildenbrand (Arm)" <david@kernel.org>, "Lorenzo Stoakes"
+ <ljs@kernel.org>, "Liam R. Howlett" <liam@infradead.org>, "Vlastimil Babka"
+ <vbabka@kernel.org>, "Mike Rapoport" <rppt@kernel.org>, "Suren
+ Baghdasaryan" <surenb@google.com>, "Michal Hocko" <mhocko@suse.com>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, "Jan Kara" <jack@suse.cz>,
+ "Andrew Morton" <akpm@linux-foundation.org>, "Baolin Wang"
+ <baolin.wang@linux.alibaba.com>, "Nico Pache" <nico.pache@linux.dev>, "Ryan
+ Roberts" <ryan.roberts@arm.com>, "Dev Jain" <dev.jain@arm.com>, "Barry
+ Song" <baohua@kernel.org>, "Lance Yang" <lance.yang@linux.dev>, "Usama
+ Arif" <usama.arif@linux.dev>, "Kiryl Shutsemau" <kas@kernel.org>, "Matthew
+ Brost" <matthew.brost@intel.com>, "Joshua Hahn" <joshua.hahnjy@gmail.com>,
+ "Byungchul Park" <byungchul@sk.com>, "Gregory Price" <gourry@gourry.net>,
+ "Ying Huang" <ying.huang@linux.alibaba.com>, "Alistair Popple"
+ <apopple@nvidia.com>, "Peter Xu" <peterx@redhat.com>, "Johannes Weiner"
+ <hannes@cmpxchg.org>, "Song Liu" <songliubraving@fb.com>, "Rik van Riel"
+ <riel@surriel.com>, "Miklos Szeredi" <miklos@szeredi.hu>, "Alexander Viro"
+ <viro@zeniv.linux.org.uk>, "Christian Brauner" <brauner@kernel.org>, "Hugh
+ Dickins" <hughd@google.com>, "Will Deacon" <will@kernel.org>, "Aneesh Kumar
+ K.V" <aneesh.kumar@kernel.org>, "Nick Piggin" <npiggin@gmail.com>, "Peter
+ Zijlstra" <peterz@infradead.org>, "Arnd Bergmann" <arnd@arndb.de>, "Jason
+ Gunthorpe" <jgg@ziepe.ca>, "Kevin Tian" <kevin.tian@intel.com>, "Joerg
+ Roedel (AMD)" <joro@8bytes.org>, "Robin Murphy" <robin.murphy@arm.com>,
+ "Steve Sistare" <steven.sistare@oracle.com>, "John Hubbard"
+ <jhubbard@nvidia.com>, "Jose A. Perez de Azpillaga" <azpijr@gmail.com>,
+ "Josef Bacik" <josef@toxicpanda.com>
+X-Mailer: aerc 0.22.0
+References: <20261107-refcount_overflow_stable-v2-0-c38f6809b106@kernel.org>
+ <20261107-refcount_overflow_stable-v2-1-c38f6809b106@kernel.org>
+In-Reply-To: <20261107-refcount_overflow_stable-v2-1-c38f6809b106@kernel.org>
+X-ClientProxiedBy: YQBP288CA0045.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:c01:9d::7) To IA0PR12MB8374.namprd12.prod.outlook.com
+ (2603:10b6:208:40e::7)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <auy22TkX0ADxP9WR@google.com>
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: IA0PR12MB8374:EE_|SACPR12MB439974:EE_
+X-MS-Office365-Filtering-Correlation-Id: e865cef2-296b-4478-9cec-08df3ed5bc30
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|23010399003|366016|376014|7416014|1800799024|18002099003|22082099003|6133799003|3023799007|921020|4143699003|11063799006|56012099006|10067099003|261102123227099003|261022105027099003|261022075727099003|261021123027099003|261021121427099003|261026140227099003|261009223027099003|261102130727099003|261028144727099003|261026121527099003;
+X-Microsoft-Antispam-Message-Info:
+	UDDX70LXrzHA1+rHkGFUYD/esW77XFEgIrrQRAT+Vk8DSD+yHOaye0eyC/OlPflNzMZ/6qENqEA0ym2VyeeTFQncRAuBI/io9ldhBcN75QHrRpqjiLh0r2ywEf5a+DNm2z/ONdOCdEEu9a+tA+PgJ+1Q8DalclOqZ591qjSfO9UmeB3Zxlc4LzvHhhypvDZovh4nXe9CebjJc2aJrjbkABBJvBor0D0H1B5d6KJzl4yH03CeWIZWywAefY49wN6rzosmn8ywkILKNLRD55PBur4n/FlADA020pU5iMpuOBR9fPM5h4G3cSXapsHypwz6shuCqP0dyl28mtLQ9nvzJcp4My5lKqhJb30RaCCukVHCQgGxR8yJkJIIcq1K7/TA8EdnTUrqecdsEpbuIEffMERVJgN9RtcUIzPsAdYTVSw8DJCzUEj7pnt8lOD1uE90GcBqZNICepe7RndIrN9dT55jSe0twy3YkKAW7jJv3QxqjKyqy1X7vY3VHTbCxDW2I+MxYplpuGeOuunMY6UvtuByhdPNHVd+eHdwE3qrrL7SVeHpTBj4xhY94s6bO2gkzq+mFMFoc788LiJOA64KRABUkmbpVP1LnraO/Vz/NxxP+DfueFF4VTpofD9ub0USmesNGCrD7bTTbeiNBTKtzMaz4KgV1omdQEpP82I1Pzn83qFcJQGxpStkJkyIlMxJiwWcHSVk+GBJhcSpCjywWg==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA0PR12MB8374.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(23010399003)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(6133799003)(3023799007)(921020)(4143699003)(11063799006)(56012099006)(10067099003)(261102123227099003)(261022105027099003)(261022075727099003)(261021123027099003)(261021121427099003)(261026140227099003)(261009223027099003)(261102130727099003)(261028144727099003)(261026121527099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WHlzL1Z5RG10dU1id0l2eUlLUEViVjdvSG0rN05NM3FNRGpTZkhmQWNNUkxh?=
+ =?utf-8?B?RjFoeHRNemlrdlVPYmZsTGhaUG1UQlg1N3N0Q0p4b3JXMW5OUEo0ZllVWERy?=
+ =?utf-8?B?S0h2MWhOS3ZUakJjM3IvM3NGalVpNGtKc3FYcEhTL2FNUGtMTDBHc1hIWGh5?=
+ =?utf-8?B?VTRSYWt1c0tWMWt0b2tVRi80VTVRaWpqS21ZYVpJZnFIeDArcWk5NFlvQ1ll?=
+ =?utf-8?B?SkhPSHhqVHBSTkJNYWxCUlVDWko0SjFaSDZFTUVyZHVQNjZ1Nm1NRFJzejlT?=
+ =?utf-8?B?bms3cC8rK2I2ZkMxVlZvbndtUjR6b0JlVkY3VSttN2JiNklpTldXZkxwdGNw?=
+ =?utf-8?B?ZlpCSmJaOFZhcXBScVc4NmYzcWw4RFFEc3FYdWkyVFBGVVRUWk5lMjBZZkd0?=
+ =?utf-8?B?WjZxVUZ5VXQ3T0h2Nmc2ZnhQTGw0ZHV3Yi9hcld4OS82blF1azJkMDFPVmxj?=
+ =?utf-8?B?Y1hCWm1zcnNCZERlcVFyNG1Ic0FabW1QR29WczQ3WklEZWdkQU9GWmJTMFJT?=
+ =?utf-8?B?WEpYYldTT3dDUUdxQllhZ0RmMnBmRzJ4aWFVNWl0QWc4Tkg0TjloSkdUM2Fk?=
+ =?utf-8?B?cTVBV2hNU1lYR1hiL293TEFBT2pWekZKNFgwQS9zVEwwRlZaeGVDYWVjSWx5?=
+ =?utf-8?B?UGlFamVHQ3FBTE8rbWlILzhpeDBQUlB0SWlId1hQdi9UV0I3UFF3SmNMNS94?=
+ =?utf-8?B?dm9CVWdaVWFBcjB6MHBmc0dtV1NSNlpiS0RDRmk5bnBEVjNMQXcyclBpT3pt?=
+ =?utf-8?B?TlVxbmJQclNlZUtoVCs5N3lpM3hWU29mMzRLU2ZSTUxIQU9SYTIyaVF3ekcw?=
+ =?utf-8?B?THFkUlB6M0dHUzlUMS9hVUtZWHhZM3FyeU8rcDZ6cGFmTGRNeVFrZ0xQaXMw?=
+ =?utf-8?B?VFIyVisxU3plcmhFQXkvSFpVd1NDaldBUGgya00yekhZT1dwb21lTGV0NS9q?=
+ =?utf-8?B?Vmo3WDVHdU1BSjZUNjAxSG9hekI4NTZzZTJldURPOEg4QmRqdERSSllQeERv?=
+ =?utf-8?B?SWhjRjVVeTBJZ0FSZWFBNlVWdkpXeG1iWU5NaDRPODJDTFJSK3kySWdHU0pa?=
+ =?utf-8?B?NG5jR3BTZkFoeElZNjJ0WHptMG54VDYwKy8zVHpGVUdmUmFwWHowL2M3aWMz?=
+ =?utf-8?B?UlBhWWJFSThsV0x6ZXBOVTBodGRnWUhFRVU2bGRmeUh6RGkyTWlsMXVjR0s1?=
+ =?utf-8?B?bHlTME82ZkN2UzFMeU5WSEJCQnQwbWFrVkVZeGRSRnpKVzN5eXlBcEVQcHBE?=
+ =?utf-8?B?aUpVdnZKTmpQWDA4aDRKbzlpcVBQSkJTTG1TNU1UMURYbVNQQlhFcTM3dU9O?=
+ =?utf-8?B?S0l1Z2hDR3FUNUZFOXNxeUFjbnhxRi9lNUZyL1ZlSHN1emMwN2I5NjQxbHc2?=
+ =?utf-8?B?VjRCN1k4blc0MmNhYTBMNzNKMnBDZGVmNHZnVFZRMTNYYVZObVgzSzFYU3hD?=
+ =?utf-8?B?bkpNbXdwdlVjZTR3amxuT2EvckF0RzhkSDlNd0hSSXlrZlo2LzlndWN0TDdv?=
+ =?utf-8?B?RmdRZEdlWkFSdEtQM1p6dTgvNkhWVXljODYwaDlIazlTemYxclpTMXZCV2RM?=
+ =?utf-8?B?LzZ1RGdPbjM3Y2lOTXNNUG5tM3JrTVNCb3huOGw4VjM3ODFjamY2c2FybkhS?=
+ =?utf-8?B?bHJ5aTNabXc5U2JtSXpnTVZIZW9DY3BLWDBqdTFCdGsxRFJJTlY0ZHBuNExq?=
+ =?utf-8?B?SHhNR1lhQjhkZnorM2wzU0VnTFhWc2tjMzNzdENvc1JoRWJlbkJzSG50T1Y4?=
+ =?utf-8?B?cmI2YkE0SUFIZllHTHJHVGhPUkIrVklzRTNsUGZINTd0cFZHVmRKS1lhMEFS?=
+ =?utf-8?B?SzRiTklkbkhTNVhhYkNXTVczTFV1cEhhcElQbmtKRW1BcXZGV2dMUjBNZWI0?=
+ =?utf-8?B?YVFVU1BpeHcyNDRNRVBrUjJCc2VjTkRNenZIdkkvUFQzckxKM1FCMHdzMjNW?=
+ =?utf-8?B?MVNpbFhsR0FaMmM1WnRnK1ZXRHBjY2dmVFpnUEdaTGxQemtpbVhnMHcrRmMr?=
+ =?utf-8?B?bWk5YUZpSW5nd2hRUXF2YzQzUWk5N1FSL052KzdidEpvNUFuOXdlT3dsV3BH?=
+ =?utf-8?B?TVkwK00wZ1JqMFRzMTB0R3FOb1pJRmJ6Vm5QVmcza3dydGJuVGhyMFNMQnR2?=
+ =?utf-8?B?dEZsaGYzeS9BVkZhVGtpRzk3ZW14MWVJZWdQenZ5aHRxMStuRkVOdDV1NUh6?=
+ =?utf-8?B?RFdUSTdDa0g5TFlyT05rVUtxUGpSLzlveElBcWxwMmZqQXZmSTZodHZwSk5l?=
+ =?utf-8?B?b2ltV2w1QXcwclp6V2h6T0tGNU9GbVlsY1NxWXJZQzhnOUNhbTBIWDZtb3dW?=
+ =?utf-8?Q?9ktksxT72WfLn8GXGm?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e865cef2-296b-4478-9cec-08df3ed5bc30
+X-MS-Exchange-CrossTenant-AuthSource: IA0PR12MB8374.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2026 02:53:01.7445
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Y6khoUyqXNsaifahNTZy+BhFA2PIIOVmUSLhCQvA7CqdLrFkSgN7xood9JmRaW6M
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SACPR12MB439974
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5EC6C140002
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: E6AFC100005
-X-Stat-Signature: 8djrac7znexncghrhgjyrgymxwxao7pq
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: dkkhgcsf3gqrxod4buoxs9j5hgr9hz34
 X-Rspam-User: 
-X-HE-Tag: 1794279088-892261
-X-HE-Meta: U2FsdGVkX1/IFCERWhwtw46fn8Q0o9Q76lLFEKXr2C9hyYNN/ClEk3L+yC/4Ib0X4gSy8uT5FYoYAPKWYKHhusEf6PodH9WNfWG5VSzzhv/l9mxPtlcS7ooHCRvxYcplF9uK0OLlI5zobi0UtCLlEP6bkXtPcH+GHJLw1v7zebVemaeo5ewJZrn3pYo6CFBMGmnPJ+gAAj0eFb6Q6l+bbkQHPrrFwxliRYtXalFOaiUqRInHnHwQgxL4X8The8gxxLXOe655GA/1mW0Lv12tTeiE2FxWvfX8yuVeML/fvIRe5nYqgNkPjfCp7zus9REBCFSc7U1zi5Zhg993w/U8lvm8sNXnq86DHP7TM2pAlQ1RitfCLWwFX5f4hnukie/xpHzcI4nogZqlWA7VPD38TPD7TjZ/cZhsnQnJc6uKhs41rZotoU8AEtMv+mJhP6QBdd5gXniSs69KueKhDtMhkQbV4P5UxHZlytj8J7Y1zsinN9UM4DDNDfOV1knAdAAAZ0KxE9SdVtMj2S73s46fMM3jPPdhOC+8zt+nqJ0Iu97C4clfrjdt5qtdVw1wG90EErGBz1YeMjniGLNDMitWvtJ1piot163+YlTNyFOH9R+RCXCVuouwyh9pqdUm/Ga6RmYooF2VxqtJo4x3mL4ktyVmqXmsTSbcGqY01CDvggNb2FCkvXtUNb4zZaaXS9aYPHO08yJn414b4EUvbGLW3bOZhwY5QRLo/D4KOupE52d1Axd5rssAdGbt+QyGbWy4HswS3Idrd3giom5/OCsAY0lg4413Ew8thxHWPWOLU0Q8Y5fVlFnDIUb7EjnCaHkmb6zr9GcFAWoTMEajNysRLfW3FqbR9LnNGIRgf8W85iNZ0vhaZziBHcDK2fJCnkt1XjVvv93iCeV6E2fqmQ1xgUAZ8YyoNfwn2fLimNvzdw0CHyAAOLfu/htQzRvVHCcJWZBl2fZNeQA4q5FpnVG
- hx31iz+5
- 81KDnQSvoN7ZArXVG4tvQw6dtUK9zRS+golzWTpUYHaZKB0HuCa5kvCvRhdiePMFxWYtKamB4nLHmZr2fjEue0pYZ5nKxOQXdORNm8zLSWnZLklGSR/NnAmKRU+5hOF8iaNwi2TbOmyh8RCu58HeS+onJ8sateOiBWSKpQmEUXyoANm+d0tY+mrsIUYCgdp6VKxmVOZTe165DxGGKHNAiA0UoW99aADEoEnTnBxCojODySFq8ffcQYI/cU7CZVJ12ekZkC13ea50E/F5wCJ5FRllV5JUrg5OWrmq+ya6DlvqD1dsSKtbNOdX3sGHKjsWwGx64mlEFqiSJ+xTQogbbTn4zQtYs4gQd/wz5FUoPM/KZ3PDj86aiOjZrdMDHxQMjzfBXf22k4wcwDQ3EitU7hcvCWDzn7esVIVJd
+X-HE-Tag: 1794279186-219277
+X-HE-Meta: U2FsdGVkX18sQAIwrBaw1QsdfVCoMSlXIraOvomYBSz/gTkqL+KFTOyBlpFw0Gn4pgedUfjrR7Ngh9CxfwAk6Pj+oVgr79OsXPb19IgnAtfgHhbfs30fF4Tzq7xx6Pjr0VxnvO75Up3gk0y8ml3I22vbMB7akW747zpQ627eZIm9kcS3AdZ+EbsC60ElvuiJHI6NzeCsQZRkD3nen0H2VvVhTA21AX2L8Xh3Uo4/RXmk4X7wrO4gDfaY/xmPcQhhlWoXmqY+8OxXa2TBWmNVGknz/04AKkwpkq/zbgbXDeUmm1M4TnQQpin2ITKlVFdVI1MxeYYAgxph1HmBTs+dvKa1jOvlRptfREV4ohY0bxvBYZ74wJ7HVyyD3IlPJm/gjexXm1qGzwdqRZ51QIK6MTilFPtd/VZDTuTWjmdrYgNduyOdFilFecXEkGopbl/Na4OKLO66K9ntEtZtWKRSMc5Yb5gXLfiiKHygbf4nPgYLImiW8eFL6lhVc4aoGkxrHf+XgWzMvkHKprW6ORAYLU+2ypQpmOP34QqP+I2lEBhzuSNxT99xwcCQZpCHgO/YMnqpYFOKgScVD5oDMTkQnFpLCuMdRhdC1GlrmX/AP7NxDUY9Cc132uLU6F6FwFMvWlpzY1COQpi8TCzWclY6LraqGQO+J/W8AtQ7zEK70zaG/zTN0rmXN+iLq/kkaTYq5eeDs8Yd+RU+y5YS+WzFsRovlBz/lAoVRUuu4Jw0WcNYwv3kJTnfwO/LBwPSiKfc/4EcY84UPPRCLAM/WCCb/HSvB4KZXklQERYB1pu437gAQrLOtLktagQGcMnQx65R+xySzPhMjFPDV72ys8nc5jr4Tqq8tI6L7m96jK8UBYzwtdP9N3fryNOwHw6m3mSRf8HUqoZK5C9d+0MlzU4KmDyZditzhd4yBi9dM5TJR0AF4UquUbtP7+uNxo2moZHpz2N12KbX5tkfbGf5u9R
+ X+vDpgFC
+ WpYaLqoyB4PNNKgT2TesutbU1lOu2CXcQoJXbnhZpJXDGKHzCKxBut7lByP+m/jS27BIwHvrY1qQsF7AzGJrHw0NpwPBPQ4sE57OKArb0Pty1JF0UNOnWzj9tWYCtgPRh6mEPM78+3zP37PS0hcoTp+lk4/537mgw14aiLyGwl/WHyn4huJTU2RWhDaMv87JBbBbs8WoXoCgnL21Lem5C5FZKIm2YiAfwpcdY5VuUSWWt2fZ1qe1N1BBE7CObH4ZEP3npi6HgRVse7vqGmmc2QOI/OixsLHIsoLJmWljG0U9syqhELlMdHYk8biRNzvHqceSdJ8+DJ5n8d1vx0XbNFCp845VM9tLdxBtwvB+3kQpPfrJjrHiAKtFlMm/T3dsJHCINdllkS+CR7Hhr7ho4AboXiKXqzzlgy4xwYnloVfjalDk+kczwljKeyfMxiBAasbSnxbiDKfGB80B6JtpBQeZSt+T5hKN6GfnDwjWHt207TTg5HbQutjgN5A==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -128,149 +200,91 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On (26/11/05 17:19), Yosry Ahmed wrote:
-[..]
-> >  Additionally, zs_malloc() does not return a dereferenceable pointer.
-> > -Instead, it returns an opaque handle (unsigned long) which encodes actual
-> > -location of the allocated object. The reason for this indirection is that
-> > +Instead, it stores the encoded location of the allocated object in the
-> > +provided ``struct zs_handle``. The reason for this indirection is that
-> 
-> Should we explicitly call out that zsmalloc will keep a back pointer to
-> the handle and update it asynchronously, so the owner shouldn't modify
-> it, and should keep it allocated until zs_free() (or rebind)?
-> 
-> Probably somewhere in the code comments too?
+On Sat Nov 7, 2026 at 5:23 PM EST, David Hildenbrand (Arm) wrote:
+> With large file folios, overflowing the folio mapcount and refcount
+> became possible. For anon folios it is currently not really an issue:
+> each large anon folio can only be mapped once into a process; on 4k
+> kernels it would be more processes than usually allowed on a system, and
+> on 16k or 64k kernels the processes alone would consume hundreds of GiB.
+> Something to be sorted out at some point, but it's not as urgent.
+>
+> Being able to overflow the refcount is not really big news, but it's abou=
+t
+> time that we do something about it because some modern technology might
+> find ways to abuse it :)
+>
+> One of the enablers for that was commit ddc58f27f9ee ("mm: drop tail page
+> refcounting"), however, file thp support was added later.
+>
+> File folios can be mapped multiple times into the same process, allowing
+> for processes to hold many references to the same folio.
+>
+> As a short-term solution, let's introduce two folio refcount limits:
+> one for ordinary consumers and one for admins. Leave some headroom
+> before the refcount goes negative, which we really don't want (having
+> the mapcount go negative is also not expected).
+>
+> Start reporting SIGBUS if we run into limits. When restoring mappings
+> from migration entries, instead zap the pte/pmd entry. We allow for
+> slightly exceeding the limit to keep things simpler.
+>
+> During fork(), prefer not copying page table entries over failing fork.
+> Export __folio_ref_count_over_limit() right away as that will be needed
+> from fuse code next. Use has_capability_noaudit(current, CAP_SYS_RESOURCE=
+),
+> so filesystem credential overrides do not affect access to the admin
+> reserve, and to not generate auditing messages simply because we access
+> optional reserves.
+>
+> This is far from ideal, but better than all easy alternatives we can
+> backport comfortably. For now it fixes the big problem: letting
+> the refcount (+mapcount) go negative and cause trouble.
+>
+> This is only a temporary fix, we'll follow up with something better.
+>
+> Check order 0 folios as well for consistency: each
+> folio_add_file_rmap*() and folio_dup_file_rmap*() needs a prior check.
+>
+> Also, just document -EHWPOISON for copy_present_ptes() while at it.
+>
+> Note: When zapping file migration entries, uffd-wp is preserved using PTE
+> markers, but uffd-rwp protection is lost because there is no correspondin=
+g
+> marker. try_to_unmap() already has the same problem when unmapping file
+> folios, so we'll happily ignore it.
+>
+> Note2: For now we don't let migration or PTE table collapse exceed any
+> limits. Admins can always refault, and if we are already operating in
+> admin reserves, something is already off.
+>
+> Reported-by: Chris Mason <mason@kernel.org>
+> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+> Fixes: 99cb0dbd47a1 ("mm,thp: add read-only THP support for (non-shmem) F=
+S")
+> Fixes: 793917d997df ("mm/readahead: Add large folio readahead")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
+> ---
+>  include/linux/mm.h | 30 ++++++++++++++++++++++++++++++
+>  mm/filemap.c       |  6 ++++++
+>  mm/huge_memory.c   | 29 +++++++++++++++++++++++++++--
+>  mm/memory.c        | 35 +++++++++++++++++++++++++++++++----
+>  mm/migrate.c       | 11 +++++++++++
+>  mm/userfaultfd.c   |  4 ++++
+>  mm/util.c          | 12 ++++++++++++
+>  7 files changed, 121 insertions(+), 6 deletions(-)
+>
 
-Yeah, perhaps.
+LGTM. I wonder if we want to add a VM_WARN_ON_ONCE() refcount check in
+__folio_add_file_rmap() and __folio_dup_file_rmap(), so that no new
+caller will not miss the refcount limit handling. That also requires a
+reproducer for verification, but it might be hard to trigger all
+possible code path. Anyway,
 
-> >  zsmalloc does not keep zspages permanently mapped since that would cause
-> >  issues on 32-bit systems where the VA region for kernel space mappings
-> >  is very small. So, using the allocated memory should be done through the
-> > diff --git a/include/linux/zsmalloc.h b/include/linux/zsmalloc.h
-> > index 693c9484b638..6c76fd10344e 100644
-> > --- a/include/linux/zsmalloc.h
-> > +++ b/include/linux/zsmalloc.h
-> > @@ -14,6 +14,7 @@
-> >  #ifndef _ZS_MALLOC_H_
-> >  #define _ZS_MALLOC_H_
-> >  
-> > +#include <linux/compiler.h>
-> >  #include <linux/types.h>
-> >  
-> >  struct zs_pool_stats {
-> > @@ -21,16 +22,39 @@ struct zs_pool_stats {
-> >  	atomic_long_t pages_compacted;
-> >  };
-> >  
-> > +/*
-> > + * zsmalloc writes object location into the handle and updates it when
-> > + * the object moves (compaction, page migration), so the handle must not
-> > + * be on the stack and must not be copied.  Use zs_rebind_handle() to
-> > + * move an object to another handle.
-> > + */
-> > +struct zs_handle {
-> > +	unsigned long __private obj;
-> > +} __aligned(sizeof(unsigned long));
-> 
-> Is alignment guaranteed even if this is embedded in a packed struct? I
-> wonder if we should have an explicit alignment check in
-> zs_malloc()/zs_store(), and probably rebind too?
+Acked-by: Zi Yan <ziy@nvidia.com>
 
-I guess only run-time check will work.  I can add those.  I wonder
-if we actually need to worry about this, neither zram nor zswap use
-packed entries, but I think it's cheap enough to make sure in run-time.
+--=20
+Best Regards,
+Yan, Zi
 
-> > +
-> > +static inline void zs_handle_init(struct zs_handle *handle)
-> > +{
-> > +	ACCESS_PRIVATE(handle, obj) = 0;
-> > +}
-> > +
-> > +static inline bool zs_handle_is_allocated(const struct zs_handle *handle)
-> > +{
-> > +	return READ_ONCE(ACCESS_PRIVATE(handle, obj)) != 0;
-> > +}
-> 
-> Can this ever give a false negative?
-
-That's a very good question.
-
-> I believe that's only possible with pfn=0, I don't know if this can be the
-> case on any architecture. Should we use something like OBJ_ALLOCATED_TAG?
-
-Yeah, I don't know, I guess would be better to not rely on "pfn cannot be
-0".  Let me look into this.
-
-
-> > -struct zs_handle *zs_malloc(struct zs_pool *pool, size_t size, gfp_t flags,
-> > -			    const int nid);
-> > +int zs_malloc(struct zs_pool *pool, struct zs_handle *handle, size_t size,
-> > +	      gfp_t flags, const int nid);
-> >  void zs_free(struct zs_pool *pool, struct zs_handle *handle);
-> > +#ifdef CONFIG_ZSMALLOC_REBIND_HANDLE
-> 
-> FWIW, I don't think this is buying as much. It's one function that is
-> only called by zram anyway.
-
-Ack.
-
-> > +void zs_rebind_handle(struct zs_pool *pool, struct zs_handle *dst,
-> > +		      struct zs_handle *src);
-> 
-> A few comments in zsmalloc.c mention zs_free() reading the handle
-> locklessly, do these apply to rebinding as well?
-
-Let me take a look.
-
-> > +#endif
-> >  
-> >  size_t zs_huge_class_size(struct zs_pool *pool);
-> 
-> [..]
-> > diff --git a/mm/zswap.c b/mm/zswap.c
-> > index 397b06c9f33b..f28a46cae1e1 100644
-> > --- a/mm/zswap.c
-> > +++ b/mm/zswap.c
-> > @@ -215,7 +215,7 @@ struct zswap_entry {
-> >  	unsigned int length;
-> >  	bool referenced;
-> >  	u8 pool_idx;
-> > -	struct zs_handle *handle;
-> > +	struct zs_handle handle;
-> >  	struct obj_cgroup *objcg;
-> >  	struct list_head lru;
-> >  };
-> > @@ -769,6 +769,7 @@ static struct zswap_entry *zswap_entry_cache_alloc(gfp_t gfp, int nid)
-> >  	entry = kmem_cache_alloc_node(zswap_entry_cache, gfp, nid);
-> >  	if (!entry)
-> >  		return NULL;
-> > +	zs_handle_init(&entry->handle);
-> >  	return entry;
-> >  }
-> >  
-> > @@ -787,7 +788,7 @@ static void zswap_entry_free(struct zswap_entry *entry)
-> >  
-> >  	zswap_lru_del(entry);
-> >  	if (!WARN_ON_ONCE(!pool)) {
-> 
-> This check is mostly defensive, and if the pool was ever NULL it
-> prevented a NULL deref, and potentially leaked the underlying zsmalloc
-> object, which is mostly fine as the pool being NULL points to a larger
-> problem (e.g. corruption).
-> 
-> However, if that happens now, the handle pointer in zsmalloc would point
-> at the zswap entry after it's freed by zswap_entry_cache_free() below,
-> potentially causing a UAF. It's arguably fine as it's just a cascade of
-> corruptions, but I wonder if we should just bail early and skip all
-> cleanups below if the pool is NULL.
-> 
-> We'll leak the cgroup charge, stats, and the zswap entry itself -- but
-> that's arguably the safer option if we already have a corruption
-> problem.
-> 
-> We can also just delete the NULL check, but it's cheap to keep and I'd
-> rather have it tbh.
-
-Sounds good, let me reshuffle the code a bit.
 
