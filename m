@@ -1,95 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4049B60A2604
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DF67606A33F
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k0yl27VA
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=dh2V6PGU
 Received: by kanga.kvack.org (Postfix)
-	id 2BF656B05B0; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
+	id 50A5D6B00EF; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 249FA6B05B2; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
+	id 4BA026B05B1; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 139D06B05B1; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
+	id 3F6506B05B2; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E9D5F6B00EF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:06:08 -0500 (EST)
-Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79CAB40852
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 178D16B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 96100A75FC
 	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:06:08 +0000 (UTC)
-X-FDA: 85417418016.14.0FA9766
+X-FDA: 85417418016.28.408B4D3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id E3DE4180009
+	by imf25.hostedemail.com (Postfix) with ESMTP id E1FEAA0007
 	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:06:06 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k0yl27VA;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dh2V6PGU;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1794272767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=svcdg7pOCEwVyv3Iw1ihpH3E5YTHskd9wIRcOX+vFpg=;
-	b=s/Mw2cUqObf61QBvkFvsqNbcFHkDtLfMFrfAuUgsE7DXmYwYF+TAwkKCo0ILF9U9/CMqzT
-	8OyzK32KtjevEy+mVhjJ5s1AV9MHJrDDzGx4K9/6P7rUonITgnROyWgqYnpYGz3l71wqb1
-	6V4/Qg4LgY2gAFN0LBs0GO13MnlAtz4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=IaqtXb4shYGXU3OlBPma0gsoGJmW9Ovcsn7uO7R5/hM=;
+	b=1FGNU/UNqBQjnWNCH9hf+i1o/n5NBkpD48UxkEkE82ihfyT6L+haIFIojnQtwEhXuc007O
+	YgfWOVdd3YFjSo762ravB+Tk8yzfbsTTFxkkFHm/0nLmGClxYVxLj/cN+QwHr7NDcTYEp8
+	q7bs+9se00Y6dt3UG1jXMSi0/Q3E9Os=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k0yl27VA;
-	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=dh2V6PGU;
+	spf=pass (imf25.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
 	t=1794272767;
-	b=A59/dom65Jk2xfxaGlEmn4n7MHO2NSlNG+RJUqjyJwECQRNiZ+iEUEIZKmuZZQUSSdKCez
-	eIoeyC2EDbRpEkQhua+kqIYtNqNMSEHR2Xx2sW5qa6oCG8cDIUIL5pBRtB3/blTIWdjXf3
-	P1o5z+qJDCGIXuNuCSyyrjRSLykX78I=
+	b=rfrPTG6LXJYhNCTuhyoRSKDeVU0j08+ntH3D3pA1gRICSXhPyRgsjKYIit2+0/L8HqrDXh
+	YX7JdvjF0X6D6+7TQ+6J+/eaQb10T3lSAXgfkjcn/s57wrB/bWp9J9RDQZBMP1kC3xNcKx
+	3epMIO+YIS0N1yl/7Ry69h9K4eUTSps=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id D669945C04;
-	Tue, 10 Nov 2026 01:06:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673801F0089F;
+	by sea.source.kernel.org (Postfix) with ESMTP id 37E3D45C09;
+	Tue, 10 Nov 2026 01:06:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF8251F008A2;
 	Tue, 10 Nov 2026 01:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794272765;
-	bh=svcdg7pOCEwVyv3Iw1ihpH3E5YTHskd9wIRcOX+vFpg=;
-	h=From:To:Cc:Subject:Date;
-	b=k0yl27VAI1cV8UUWay7UD6tBKAG9upe0pA3a9yev6uGADzdj2zfshNuizFmmokQYX
-	 /jNPOLFIS+ww7R64X14VP2EEAiL/bJ33Mfvg6jYkvWN7zp/R3bdGRV57XouMuvMxaw
-	 cLVr71mADLHgKb4RNLkA5CMkYrsckKBIZ43RhglzYilRCJIjQ7gzgd4UP16i22ygiY
-	 rQx04fHJs8bMWr7vZcTAHCjiaXrH6k+mSIxuSHGoraJ+eKI5g5c/4waQyAjBo5Ezib
-	 XW7fpvvrno2zJy980Lb/Cb0A4qRNZGP6JmKGQDdwjUBBuHJDkUYgvy4YFUtxOb5jYY
-	 75DCFhP2fkj6g==
+	s=k20260515; t=1794272766;
+	bh=IaqtXb4shYGXU3OlBPma0gsoGJmW9Ovcsn7uO7R5/hM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=dh2V6PGUWulUa8ThTycgn1OccsBy/dik+PQbHjhi/G9GKGlFgdI4i/xkKdNuIXbla
+	 GiKlPNTpVbwlnOjEkUPJwmD64BQlEqaVe+NeS/tW1alC39C+jDDaOx4sVhPeduY0Dw
+	 Z1V7E8chFZcQXFPa5xvOhWXipZ1vNhAaeJl9HW7RFMbJgOqoJlGN5Jkrn5Mih8M0bA
+	 sF30AeBSuTERVAiHlGSvZ9gte5FjR/lNCMJCSCXWyiRKhARUACxME9iQXEWiqBIh2t
+	 MruiGM6AiWR09vS9bG0iVQy/a44zAq1KZUOFJpYb/+NgjFDRaQu6MS5HX61Fc5/yBg
+	 ukAKRenSjF4FQ==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SJ Park <sj@kernel.org>,
-	Aveline Noir <jm5905938@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+Cc: Enze Li <lienze@kylinos.cn>,
+	SJ Park <sj@kernel.org>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/2] mm/damon: cleanup region iterator and damon_reclaim user doc
-Date: Mon,  9 Nov 2026 17:05:55 -0800
-Message-ID: <20261110010558.104905-1-sj@kernel.org>
+Subject: [PATCH 1/2] mm/damon/core: use list_{next,prev}_entry() in damon_{next,prev}_region()
+Date: Mon,  9 Nov 2026 17:05:56 -0800
+Message-ID: <20261110010558.104905-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261110010558.104905-1-sj@kernel.org>
+References: <20261110010558.104905-1-sj@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: d81kgizhepc5qd1qoouutc8sah5mm4h4
+X-Stat-Signature: pmaqqoy3teoasrxooek3ink9zy1peb11
 X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: E3DE4180009
-X-HE-Tag: 1794272766-820511
-X-HE-Meta: U2FsdGVkX1/p4qA9eFmIfzSfmd7TNjPEWtR2VggCgAu76uJqyhMoQ9oy+aFqsv3lGHkQgTbd31AYJr6EZt5J0ufx8u3Qf2dCMlztdnTIGF/DRgUyGJnddyBtPtu8JJBTL6jeO0aFzsTX0bhuu+XVCrMt9Y3VCwiTQmb4+7M3ARre7SLthIMfK3GLNKLnO0/XO9hRUxVKZPPpFVNWQfED0Wy1NBxE0K/Z62XzXcZFgfW899ufVIfUY994vgl3KLtSQrAxxg0jW38ZI2E3S7Uv0+XwJFx0/rA/bKXIUDHetxjU40D32xEID99ZpUG0l5ZdbRlYNErWxA7DtEhJJrv+WTX9f469ghQ5/BSdTIXWLj61DsxmUlyJPzxZMEyLOdVelfd9VBca3SnKqVrMRukHPlZj5tiNTU5Clw5nfcuPNU1tXv90gNH7GBnTuRWCCXbVZnV7KFBSLEuRQgnFzJXs+NRu7tkEgHgzv+H+xX+3lF+BhIR+WqtmfobL/LqFpGxKgZDMhimqnu3jB4tVboP8NJYmxapy0BvQSUlNZHNIceoupn0FA9bLVptqApQldiNQ0KScIUXRgOGHEAclpsDrEuAfnpZ8efQFVETv6PZ1pjLt5VGZZIl7RksHg/OuQUT7EF7JYA1BngiVEifccq05XgkLzY6CmPScEIMwX7GBqF3sXEK93haZAkVUJcMNRhBlSOHWNXOCr9SiuuUQyiExpnKlzTz4BMcXP/Qf+0Yc3Wv3wmPknarE4n10szzTJoKOs5Xq9Dwg2h82/8i5WbOrMdS7uFsPsER1cvbfRy2hX9mTlATNuTiwTjF3o0iP3/swBhGKQKRePFsreWxVWBrLjirxLT7rKC+TQmHcKMkR5Ok/lb2nZQen+iSeUjLJfWeUqRKJrnSOlzmhWKDEEHV9oEL68sPMr4Ah9KCzR24zyh7OQBCoKDEIdAON+nTBMX3e4Qkeh/YZIuZi8AvPsvd
- ay5lDz6p
- JYmb373sLh7XtzskaO5DuA25uoLKfIPnKXaZUzUhq384PPUNjqH6sE2C5klKsQg4O8cgQGA5Rfv3mjo1tD1vWib7pnAUT9ZFAIFPZRsW8dqqheIxdh5YJkcxpLO1CxLnZphrhR9TP/OjUQkXusuK4H2TzMzSURceVtAFmFVjejijNURWqf6LtGi9gF82GRqju1I4looT/yZ0pFR/6H6XMxpnut98K5+/njgrJadF5UMFA/PUDJ/OY4sjvcslCWuWUsi9B
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E1FEAA0007
+X-HE-Tag: 1794272766-775324
+X-HE-Meta: U2FsdGVkX1+KjPmVarRSehCTOv4BnypfT5yFthdBxtb10+51UUpYKhglssfPH/rht8Hw8N7yxYFqlyfMzJjCFXZHpQeToKluSTbOechkzZWKGFdH/eeQpO9iL7UcSE2sj3IVxvBgJH2xHvXwzVpNWk0DEXhKUgDbK+CU/GJJYTBNQOt+wI7H2zK1MiYFA+uv87fVBFpVS2RVGtwSDvekzjxEwzOJYiq82QmOiEYwXop9BSl10Aq46Yy96DQIa+lluA6QUG+FdQB0l5CciTWR0FNXdAHFK3QSmbolibXvg3maRrSM3uaMWCEdHc6vaG4jrip/Adjsus4GU3XG4VXqVISn8lOFIzkrLqeLSI8eaFZTkYz44EzfvItKaOed/990JjJHEk9fClyB61WLw9zsj2EYGnDSaC4o3/KQfm9WsmWRNCHBLSkQhZoFsK67ByRcXQR58tHxfeB5PnXay063SXc3d+R3NOsJkBa4re2zlGWUzX72uMv73AhgcUxDcs5a/M3F8l99qnPG5qvXcGJdjh/cW7khl2yXByChV+ZLXtSR2mNe9dN7hHW2iWx05cYLvK0MAUb51hJ65I23eECqMJQNr2DWUj0/GiPf6rhlx5d4nLQscY3cEi3PZ8SMRVll6RTmcs0H0jrazAs3ESoZ7THxtIOpSktcl+lMSGu6Aix8TC9zs9TlP8jjmIVp33TOKqEvZq+l6b125sLZxz8jlra8p25mcicnDUcJ3nIyg2HnXfZNI4UA3u2OjDw53P03LdqGvRjzhufE6PK4t4Gl1nJx4mvVl4kB+TZoL8+SX0r69zZBmpkk5Rx8YSR+3LxFJKzMd2ZZ+BBox9M6ey9Fifv8NBNx73niBKtZcKVj5E5YGNKg4R5ZPIa9ZuQjCsp8P+Sq+ou7JiJg4Hoz/hK5FrP5VDKy3Em24xRQx3MiY07KnAO70J+m6J/dkXZXCNCLJBO2CzrOaPNGJKMaG+S
+ nKA5/mlk
+ 2DQOcNobaFx9S/R0idRMWw7RDRSPp8dq9GJBK1PflZ2RnAQftavfOJ1X5AvmATDm01GKqg5WhbH+TFnnU/NdbL/uCK+LRaNT3xdkNCpLkyWbhqyxTC6Wk/IP1EFolr2j5WuEV8q/v3ISSA7vIhCkEyrKtGPWq8IHALe65fwKyr7sXF8DIghI+byxGNYSLrFljNZ1UJ07sk077al1KrPqqbZVkrI5X9EfdSYmpAfnmtmIgr4g2SooUo45ZNFOMvSrFJ+yR4jmoOai565NG56DVgqYfWw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,28 +96,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Two simple cleanups.  Use dedicated next/prev list entry accessors in
-damon_{next,prev}_region() for code maintainability (patch 1, Enze Li).
-Fix typos, grammars and improve overall readability of DAMON_RECLAIM
-user document (patch 2, Manuel Ebner).
+From: Enze Li <lienze@kylinos.cn>
 
-Reviewer notes.  This is a batched mm.git merge request-purpose repost
-of DAMON patches that was sent by individual contributors.  For
-changelog, refer to those in each patch.
+damon_next_region() and damon_prev_region() manually do container_of()
+type casting to fetch the next and previous region from the linked
+list.  Use the dedicated list.h helpers, list_next_entry() and
+list_prev_entry(), as damon_first_region() and damon_last_region() do.
 
-Enze Li (1):
-  mm/damon/core: use list_{next,prev}_entry() in
-    damon_{next,prev}_region()
+Signed-off-by: Enze Li <lienze@kylinos.cn>
+Reviewed-by: SJ Park <sj@kernel.org>
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from v1
+- v1: https://lore.kernel.org/20261103100714.70742-1-lienze@kylinos.cn
+- Collect R-b: from SJ.
+- Rebase to the latest mm-new.
 
-Manuel Ebner (1):
-  Docs/admin-guide/mm/damon/reclaim: improve language
+ include/linux/damon.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- .../admin-guide/mm/damon/reclaim.rst          | 45 ++++++++++---------
- include/linux/damon.h                         |  4 +-
- 2 files changed, 25 insertions(+), 24 deletions(-)
-
-
-base-commit: 7564fa11d57d7be37aaf791ff683099098dd2e39
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 1302ffb6f0bcb..c32ef79c3acea 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -992,12 +992,12 @@ static inline unsigned long damon_rand(struct damon_ctx *ctx,
+ 
+ static inline struct damon_region *damon_next_region(struct damon_region *r)
+ {
+-	return container_of(r->list.next, struct damon_region, list);
++	return list_next_entry(r, list);
+ }
+ 
+ static inline struct damon_region *damon_prev_region(struct damon_region *r)
+ {
+-	return container_of(r->list.prev, struct damon_region, list);
++	return list_prev_entry(r, list);
+ }
+ 
+ static inline struct damon_region *damon_last_region(struct damon_target *t)
 -- 
 2.47.3
 
