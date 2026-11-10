@@ -1,114 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9276606A338
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 13:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DBB8606A33C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 13:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=hsvLCxY6
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=foss header.b=Bo+daxnJ
 Received: by kanga.kvack.org (Postfix)
-	id DA2B46B05B6; Tue, 10 Nov 2026 08:58:43 -0500 (EST)
+	id 603BA6B05B8; Tue, 10 Nov 2026 08:59:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7B1F6B05B7; Tue, 10 Nov 2026 08:58:43 -0500 (EST)
+	id 5DD536B05B9; Tue, 10 Nov 2026 08:59:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB9926B05B8; Tue, 10 Nov 2026 08:58:43 -0500 (EST)
+	id 5174F6B05BA; Tue, 10 Nov 2026 08:59:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A9EC36B05B6
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:58:43 -0500 (EST)
-Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3C77DA0918
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:58:43 +0000 (UTC)
-X-FDA: 85419364926.12.35CFE3E
-Received: from mta1.migadu.com (out-1.mta1.migadu.com [95.215.58.1])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2456B4000C
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:58:40 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hsvLCxY6;
-	spf=pass (imf04.hostedemail.com: domain of qiliang.yuan@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=qiliang.yuan@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A1F76B05B8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:59:02 -0500 (EST)
+Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B5AB31408CF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:59:01 +0000 (UTC)
+X-FDA: 85419365682.13.F70208F
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf27.hostedemail.com (Postfix) with ESMTP id E06E840009
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:58:59 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Bo+daxnJ;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794319121;
+	s=arc-20220608; t=1794319140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4AuBCb/I7k73HlQgjzDYi07i0QVcp76kIK/7/UWRP9M=;
-	b=35Mtg/xdoluJDEA12BUDLxquAfimGgOfMdEKvJx0wRGllwUaaf+E62FdzGdbMfzCZGqlkc
-	dzYTlb/EsNQ+BkDHhrhJqPdC5/zztY+Z5oNrGgYguFPDjYB0cyHfCqUI6GjTzIV+edkz+B
-	lrQ9n9fXZhjgfO/S+IqIYOx0/oBjPCE=
+	bh=McJ7EzdjpZoZ9QnIZAXd1sj3iExgLNGvctdfccvpYpM=;
+	b=oni6pZRm4xoXGbVBRmoIckhK3I2DczFEL0BUtc3BRcVchp5hd1pMG394JmF87C3YgfzLYa
+	p34ztPLQ8AMexzwbuVxTKknn+g+knfoaMdc5Hz8oJ/rKS4YzeI5pmiMSmFxT7tPRHjfipt
+	W/794Af7IX2BsOm8C9yoVATbpn017q4=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=hsvLCxY6;
-	spf=pass (imf04.hostedemail.com: domain of qiliang.yuan@linux.dev designates 95.215.58.1 as permitted sender) smtp.mailfrom=qiliang.yuan@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	imf27.hostedemail.com;
+	dkim=pass header.d=arm.com header.s=foss header.b=Bo+daxnJ;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf27.hostedemail.com: domain of yeoreum.yun@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=yeoreum.yun@arm.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794319121;
-	b=tXCXvWc3EBgqO5B9wGxif/FXSL+wuGyVSQU5hi+DmMSlFRmWmPiREhDmynseHA72LpqqaC
-	H9f9Gxoh8WCYy6i5/spKqHNtVhAmHSfq5QPcb4sTq04MR8TcM+XM0xGjNBGboHS8jhOBkb
-	0F81GhIS2gghdmFr6JwR1/7h1hkZWcg=
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=4AuBCb/I7k73HlQgjzDYi07i0QVcp76kIK/7/UWRP9M=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794319119; v=1; x=1794923919;
- b=hsvLCxY6r99RkLOOur29/ut9GZYcgjhbe98kOeDegndbF5xsvHPU4dT7WUBQRlIoTSeU1kqE
- sceJK6OQTU2tPZU4ffffyCXGkebtTETZ7/z7OYsrVEzvCjB6ESel1NtJnBmQk8XSTaQYvRga8uX
- ZTPjJ5D2KVJkLQ9QIZCJIIWk=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 68181a37af8247a7;
-	Tue, 10 Nov 2026 13:58:38 +0000
-X-Mizu-Trace-ID: 68181a37af8247a7
-X-Migadu-Flow: FLOW_OUT
-From: Qiliang Yuan <qiliang.yuan@linux.dev>
-To: Vlastimil Babka <vbabka@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>
-Cc: Qiliang Yuan <qiliang.yuan@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kairui Song <kasong@tencent.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Barry Song <baohua@kernel.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>,
-	Wei Xu <weixugc@google.com>,
-	Baoquan He <baoquan.he@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <ljs@kernel.org>,
+	t=1794319140;
+	b=sBDwyeLsAfUm7zLK7xeiilFy6dJQ5xdRvir0ijV4ubWiWxSmEMRzPl56tBE/Ck0yusZ/zN
+	zryhL0siui0M8IBiw0w+McvVoxvPKB/YVSgv0OpZgNsW/H2rbb9WsWFnvtYC+mOHj6EvUK
+	A23WcDezzAgy3fvfSXT4G6sK1vnItMs=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE22B143D;
+	Tue, 10 Nov 2026 05:58:55 -0800 (PST)
+Received: from e129823.arm.com (e129823.arm.com [10.2.213.3])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 664113F632;
+	Tue, 10 Nov 2026 05:58:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1794319138; bh=Stqf/UeMkAaff9pue0Ee0wx6NrZ9dhCynge/n1sKPss=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Bo+daxnJU7wVO39qjldL1mCt8K2l43nW8A4EEFDG2BDw2X9yQ4sVkQEEnUQJeGIth
+	 seQjpsPN0+sL7sV49A5Wzf5Cf5Eiyuca3I6uLoZrElWR2oFoxcmnHu64gcmo+CFsRO
+	 nXgKaFX1Y2fv6Z4E5kUG1KcyVND612FsKVUjed0k=
+Date: Tue, 10 Nov 2026 13:58:53 +0000
+From: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "David Hildenbrand (Arm)" <david@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>, Rik van Riel <riel@surriel.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
+	Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
 	"Liam R. Howlett" <liam@infradead.org>,
+	Vlastimil Babka <vbabka@kernel.org>,
 	Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Brendan Jackman <brendan.jackman@linux.dev>,
-	Zi Yan <ziy@nvidia.com>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] mm/compaction: stop repeating failed async compaction on every THP fault
-Date: Tue, 10 Nov 2026 08:58:24 -0500
-Message-ID: <20261110135824.3264904-1-qiliang.yuan@linux.dev>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20261102-bug-mm-thp-async-compact-defer-v2-0-b407e974db54@gmail.com>
-References: <20261102-bug-mm-thp-async-compact-defer-v2-0-b407e974db54@gmail.com>
+	Andrew Morton <akpm@linux-foundation.org>,
+	Yuan-Hao Hsu <aa9736195201@gmail.com>
+Subject: Re: [PATCH v3 5/6] mm: gup: introduce gup_unshared_pages()
+Message-ID: <avMjHS81ani_PtQ6@e129823.arm.com>
+References: <20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com>
+ <20261109-refactor_gup_fast-v3-5-2aaef02df0e1@arm.com>
+ <7627c0d90188b581e7740bf8d17c8dd07b460f89.camel@surriel.com>
+ <avLqwIWHa5CAbHO2@e129823.arm.com>
+ <aa227fea-d22b-4c0f-bd11-bf9ec36b0767@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m4bxh1ue7831pmdjzgyhpk1t5yx8y69a
-X-Rspamd-Server: rspam01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa227fea-d22b-4c0f-bd11-bf9ec36b0767@kernel.org>
 X-Rspam-User: 
-X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: E06E840009
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 2456B4000C
-X-HE-Tag: 1794319120-341406
-X-HE-Meta: U2FsdGVkX18vtpc+3Ev2cz1AB4xuVrMsv8f6xhm5nU4+WJ+X2XRJmdGjSB63dx8a7KBLuoecxEERvA6raXSXqCifnX5FN9ZJFyBRPpHH3IkRmVpNcH8mVgbsnpf2fwUrx0CTGOKqqagtcVIXcHyM/Ic5Aff3jojmN03pwJ488JI/KJFUW7M2aMfdR35GzycyCfDIZiWQL+zFDpEWkCQNVn7js66Etun9jpyw72XHXNTmtpCyh8IRnLT8JTpRAWXGEqeerm1c2f9/NsPB70+wuxSbVOIcEnP2qCzXdJwMBYvgV/oWFRCS5op9unihQzg/pnoAYlVp2R69PtUNHo1yj/V/LLWkH9q8Uw/HShP7NecT5X79tclFQ5fpV0Xe8FaSZ6jZrX1XjLpBCDcJwIB807yXZk5M8Ps0GakOeraCVoUjMj/vFoKv/OV9nrLDlPgUtaR07ljs7qCwAFNQtxUJc9ymqoWjU7jlkdav+89ATdaWgaZZ5TkWHmm44oY8LAUmD4pnSP/mKoJcDJAa+NxmXYAjl9YFF0oVzTnoFKapDY5iapg/7wZJ5/pCJLSRjq2mtQlcrQN9KrTYFWFru+0K0cEifESvns1A7IMLb+HuGw6PUSJlsragzAjDpnKUefF3K3l0/HK8uPAjUbWsw858XmM+EKvCr3ULutl1J85/xE6gXYlKLikVkBpULHqcoHdNx8XqHyuBhvnDgOS7rTkDErDdJQKd0ZJ6Jp03oTqSaFbbkiHLoD9R1q02iC4MBjEpqxcofvPy3xEz1338gETguIoQeAs3eiHSC+okONdE2g7fRmmCtkY1unZLkK2jgS55Xx9jB8humZ/bRhlpTYEHB/f2jLxJ04gkSaemq5hLlAv6lx65cMJ5RbCTsbJ1y6CxcKRIvkqk9/sUYcDJIDLYmaRgd0Zk92/jtHhUD/DswOtrrccPSgOgTghYk1+QhiOp4ytadSYnGylSWX+DUQN
- 1Mp7KIe4
- 2+j3Zc2NE/4Qhm0jq0bGjbi/l7ppJUV2qkL6DWggYT1Hb20Rw9Qn9NeIAXvpB7h28uZINO0Xb7ucX/xpTaeDlgLGD9r0/taaWc1cmVA72P/9IpDOjB0UPZ8XZur4FXb3KKGOypPgLtFZB7zNxVz8jZldZn2H71VVyJ5vzbT7EiOkPqroM9ba9R8ggaJGldbVxD9KsZhXXvbAtYupSBXxnYPOz2l/t9qx5hXGvKI9By2S+u9o=
+X-Stat-Signature: qgb5yk69pwyrbmmgtau7s7xet4619n9d
+X-HE-Tag: 1794319139-650447
+X-HE-Meta: U2FsdGVkX1801v38ryDvsVsuaOJOOOHumn4nGo3XssaBI0HHWAWBM6WPDCnnBZmaWdrKcrh9mjgDziMW0kncf74IkrbIyEgxGRcD+j8PLP+9kbV7R5/rmeShnT+BnjoVeZaKRPtx1PoHFY9Ozwooe9pAny6YIICa89BP+9CLjel/fQfvhAlQzgvxh5reN5x37SXEXKylLYYFmcd47muTg/ny0mgrJpu5KyZ59SE31Nl3GSYZFmbVqnOsC05ygRed8pNOKj9VPyNI5ZpcNnGi5KzuzVNNdmxjpW+mQryiKw6P0gO+/U9XNtssdAgUFGcvX2wtbcxNHh4NwOyotAzSv9aaRZ+IJexyhPFrhtgjRTLgXdkYx9n8g0FvBvu8/Ru7XSZKPAVsTSMVTT68Tknrb3m8Dw6LUw2bORc5Pplgo6eTjl01FDzU4VrsYtykg40ncteup7WtqAkKZknhHojWHo07NO0B/HXdFCmynobZrdwYFPAu2P2bRma7Oa0BhvjFwLJDYrAxhFpSWy9Ogrg6QOYQgyOqeBcYo0f4UBkalyPry64arA69em9POuVKgPNdX1uR88HPPofwgQonfNG47xU/4/UhebQhsXrq444Bv8nluZ3qfLxezobaKSTtKLaZTkbRm6NdHjEpo/qZ1chZzrsfJRWAyLifmD490ObZpRTjniq5sycF1eQbEHu4ayHmuTMsJTK9PPcOLWIvGrSMNwWDaUuAohpd4jPdYlLq1DfP0nTjyiWdfLCMBRCMHsTMxV4UstraWAKRBLNl+cUw05tEYcGgKzk1ijqCp2N5UYiCUH+botO2HB/hEaB1UzOTKajJDoeJzMDv9JbKRhJQtBMKuQOzW3G7W9YfzDkhgujmYJQiTSvFIkzdd1JdHkq2/yXExFpXHO1FxAmvdWEe5ssvWS3nS6RwiS1x76m+SLDLtYhXqzDptFw3X+71XMr3l4g5fsQ3ExwJVEreFEw
+ EWREZyjx
+ IVPvVONFUpyHt2MW4DX+vNgAe/D1ahHtS89g1EHQboWK9TK3v1EgzsZdW3QHe7fAdhz2Jl3QIBM1xcFu3rqVEJqYyzcL1mS2lZaIZ6ZMVCXLJYqLZ8kHhXzrMAgirQGG6AutYln1NC7WysEvbkv10tm4HOpET0J4TgP8EZGjMB6KVaNLtLLJeFuNmy3PNQ4JhWKRBOOCTHefqsx7xnoABY81DWynMg2bgyKxXWzFklkHMoB1g7nmp6yFfSF3bbOceFpDAgIb3lSD2r/L1QWdDkUUDn1Ltg7CPhrYZ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -117,15 +103,33 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-Hi Vlastimil, Johannes,
+On Tue, Nov 10, 2026 at 02:04:43PM +0100, David Hildenbrand (Arm) wrote:
+> On 11/10/26 10:58, Yeoreum Yun wrote:
+> > Hi Rik,
+> > 
+> >> On Mon, 2026-11-09 at 12:32 +0000, Yeoreum Yun wrote:
+> >>> This is preparatory patch to make gup_fast_pte_range() batchable.
+> >>>
+> >>> Introduce gup_unshared_pages() to count consecutive pages within a
+> >>> folio
+> >>> that do not require unsharing, and use it to implement
+> >>> gup_must_unshare().
+> >>>
+> >> Could gup_exclusive_pages() be a better name?
+> > 
+> > Yes. This seems much better for me. I'll change it in next-spin.
+> 
+> Not quite the right semantics. For pagecache folios we simply don't need
+> unsharing in MAP_SHARED VMAs. That does not imply that these are exclusive.
+> 
+> So it's all about "number of pages that don't need unsharing".
+> 
+> Any idea for a fitting name ? :)
 
-Could you share your view on this series when you have time?
+Might gup_pages_without_unshared()..? otherwise I couldn't image 
+better name than origin...
 
-One known issue in v2: the cc->mode != MIGRATE_ASYNC check added to
-2/2 blocks clearing stale skip hints once sync compaction is fully
-deferred, so local THP may not recover after the pins are released.
-I'd drop it in v3, but won't send one before hearing from you.
-
-Thanks,
-Qiliang
+-- 
+Sincerely,
+Yeoreum Yun
 
