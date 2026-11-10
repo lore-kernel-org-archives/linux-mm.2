@@ -1,90 +1,98 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A95606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2ECE606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=OHmvt/Dt
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=T5/HMq9H
 Received: by kanga.kvack.org (Postfix)
-	id B0C9D6B05D1; Tue, 10 Nov 2026 00:17:13 -0500 (EST)
+	id DB49E6B00EF; Tue, 10 Nov 2026 00:24:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ABD7E6B05DF; Tue, 10 Nov 2026 00:17:13 -0500 (EST)
+	id D63746B05B0; Tue, 10 Nov 2026 00:24:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FA446B05E4; Tue, 10 Nov 2026 00:17:13 -0500 (EST)
+	id CA0786B05B1; Tue, 10 Nov 2026 00:24:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FB576B05D1
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:17:13 -0500 (EST)
-Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id F0A42408CF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:17:12 +0000 (UTC)
-X-FDA: 85418050704.09.A026CD6
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A70296B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:24:14 -0500 (EST)
+Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3FDE214051E
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:24:14 +0000 (UTC)
+X-FDA: 85418068428.05.189F812
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 324D420002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:17:11 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="OHmvt/Dt";
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf10.hostedemail.com (Postfix) with ESMTP id 80287C0002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:24:12 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="T5/HMq9H";
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794287831;
+	s=arc-20220608; t=1794288252;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hJUKVOXw+rsYg0Fl10Dji6GuiYtz/4hFo7JB2GRgOYo=;
-	b=DJEk9jKUx9oEhynt7pA67jpzXIW2lfiZRjydNDe3Sx+J7nPRyzJFj0PdjCPpAPUQsXLFQN
-	35hNa3m9/N2Y5ZChTSCreVXaRj+IgsgmaL2etK4q/dS+3m7Ll3ZGIepRF1iX92eCa9TyOB
-	Nr3eaAh9uSC7ia0LjedSaYEznfDSaH8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b="OHmvt/Dt";
-	spf=pass (imf03.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	bh=tql7eR5er24MenGv5PCYQqqSyChkhlwFStj9pdPekzo=;
+	b=KDU8fJbj6fhN/pNasZMBeIhkaqLJJ7iB+6Pz1tkg2QL2xVIFL+NVoeEMNdD9nxEGhWRHYs
+	CCNRheV3hxKPr70aWiEQ3xEDA3MnOkCLZBZymh3PMk2mJNQzNhOk8vwuNjZk0/udaHTW/1
+	SY6Aq8Gr8WhGVVE/ISiQoaHywz3O700=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794287831;
-	b=qi8VNO47Bqi8FUP6aXUllBgZrjtGRpouBETSK45yZgaPfJwHTd6nbzym4Mn6Kc/PBj1ReA
-	TcWElyu1Fm50hU4yQ4y++RhiN+55zgtEAGQ4S2DKudcX7qHzt61kTpZ9osCPQ/ga4rP6Cf
-	Qg0rkuWyxAkEqnI0C8dtuALntKDP7Bg=
+	t=1794288252;
+	b=HMWLRT3UrFVxqTIzpsfRR5lK+Vqar6oAE6KfoYe9+nv6NP2LS896oJ8GenTcogPdwsjJ+O
+	jvvc1DP7QsPQ15ZDePCqyOMW0H7GLAM35GhpnHYOKj8wXgwHybGZk2AWcZaDoPaCEUn9DW
+	U5wVKK8TIdwN/jyzl+PDpxJN7hTfkrE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b="T5/HMq9H";
+	spf=pass (imf10.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 682BC61154;
-	Tue, 10 Nov 2026 05:17:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019051F0089F;
-	Tue, 10 Nov 2026 05:17:09 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 926B860AAB;
+	Tue, 10 Nov 2026 05:24:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D101F0089F;
+	Tue, 10 Nov 2026 05:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1794287830;
-	bh=hJUKVOXw+rsYg0Fl10Dji6GuiYtz/4hFo7JB2GRgOYo=;
+	d=linux-foundation.org; s=korg; t=1794288251;
+	bh=tql7eR5er24MenGv5PCYQqqSyChkhlwFStj9pdPekzo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=OHmvt/DtePgbTU+VOoheC8pijLTPtihzRe2VU2S7xY68oADyVHeSJ0+6zjB5vuhRk
-	 gNZrALJn6f8nyM+4RwDQMibH4qvZC+jQE3kTRXpnJp/0QbRtOA1peLP4M+RTC+Fa6U
-	 RYRAVYwpzMaR/9fTcpx2vv43kiBRNr+TOvtpCh6A=
-Date: Mon, 9 Nov 2026 21:17:09 -0800
+	b=T5/HMq9Ho6wBHSn2SyLD+V0y7apDVcIEcxsAbM9bnQuCbLvHw6LbrS3L8oQWoJdLS
+	 xDaM8FBlCgcuAoUBNXFa7Xb8i2/V+MMB+YSg/oc1v0bC6dFoqwUkeA+EGUyi4PZaBm
+	 fJDST0/5AG8QCpg5dZFPoHB52xvaiVPnB2IDMaeQ=
+Date: Mon, 9 Nov 2026 21:24:10 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Weilin Tong <tongweilin@linux.alibaba.com>
-Cc: catalin.marinas@arm.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/2] mm: kmemleak: avoid long RCU read-side sections in
- reports
-Message-Id: <20261109211709.133122f9f10091f06c4acbc1@linux-foundation.org>
-In-Reply-To: <cover.1793871596.git.tongweilin@linux.alibaba.com>
-References: <cover.1793871596.git.tongweilin@linux.alibaba.com>
+To: Mingyu He <mingyu.he@shopee.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner
+ <hannes@cmpxchg.org>, Michal Hocko <mhocko@kernel.org>, Roman Gushchin
+ <roman.gushchin@linux.dev>, linux-mm@kvack.org, Muchun Song
+ <muchun.song@linux.dev>, Yosry Ahmed <yosry@kernel.org>,
+ cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+ littleswimmingwhale@gmail.com
+Subject: Re: [PATCH] memcg: keep propagating stats updates to ancestors
+Message-Id: <20261109212410.ca24bffef1abcd50b3f58c13@linux-foundation.org>
+In-Reply-To: <CAAoBcuRfhFf4p5qfWZnNs5=4foeE6jtGFggG5XHmMi6cXwje9w@mail.gmail.com>
+References: <20260911032905.63683-1-mingyu.he@shopee.com>
+	<aqRXqcynCx88D2QK@linux.dev>
+	<CAAoBcuS=sqOAPFr9Gda9aTwuCMHMPzBMEee8qvPNHtNxrRWKuw@mail.gmail.com>
+	<asy_L2s1TNcN7bOK@linux.dev>
+	<CAAoBcuS5VJwsYyw9=77SaBUf3N1hL8NfRtGwpBhmyUUhT4+T8w@mail.gmail.com>
+	<CAAoBcuRfhFf4p5qfWZnNs5=4foeE6jtGFggG5XHmMi6cXwje9w@mail.gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: yk33qydcbomngt3s5eycq1fuouu79kxy
-X-Rspamd-Server: rspam01
+X-Stat-Signature: k4rq3umsnjef1j1jkh851mktdccqax6k
+X-Rspamd-Queue-Id: 80287C0002
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-7.5 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,SPF_HELO_PASS,SPF_PASS autolearn=no
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 324D420002
-X-HE-Tag: 1794287831-872193
-X-HE-Meta: U2FsdGVkX1/7AwegDOAogZJRh96QQIT5b78WzSk0aGTdqHuZa8J9QhHJGybWik9x6ZyRFiN0z0yl6unGDH5jx+U45rL6RYHeJCno0+e6rAd8M1Ed1BvhwaKKMR5OYabU91bCGdryvMyqQ7kp+31XvKKOWM9kQ29sYtUux7rgjDkdwo7Vpv6FXxC5LNKa6juoI3K2IeqGEtsBZQLKMUEGB887yLgArL5X4q6ZVgyPjr/MTCeXYJbd9ufaMeOjhf1a2sHfE/XU/HFhohX2eVnbx5Xy2czCjygL6EAbOtT3u4cjI+TyLggNzQkoBjuwYGalg+IUft4SRLS6j0S7naWuG2whuS+4Yhe8CfGTLIl+JxoSJlk+YBdFGf0gy+i0S4LL+CQbTmIU+kR9OhCKss2S5UOH12UPjHMI8Oy0Ejrw0ldVxTxPESFPIlx8LI4v8kn2EJcjdzYbuhTrNyra/ewrcAsJZmoe+Pq9a429nfMs0LK5XHgSRWeRkrGF0IOeKOCC6vIETp7zSlDTp/cSB3yD/uN10uKFuc6YX9rCQ0NSAPgvc5WP1JzN12eXFfHi0QYKM4hQAjqEnfJa+aTkUlLWcB7kWXqNZ/xfyWA0yX76kLn/5ZsnNnElzbG7Y1BazwU+PjrwlugKEkFTOVkXIlwjTkg/q2hSvqSReIN4RdgIXahbqZiJirY7Y1gdkl9EdMhJxaHIFdi5WcxvIg0t56ndZi9etXxVwFZI8LQYsET5Gu1VXTEZ2AYYAxOBhN7TuC/bNiDxSHgGdT4NdhCH5T83JvJflIqv+o7T7p4TE82Phj/RG8SFI3UZDGy9WLVmWcxgQ3gALO6fcS/gluZ16l0TrN9mztBzE2GMhIUYVSJYdwmJdkspR70jN3j+ZqxEBWo+NVeEiElQ6GDBwGyM3nOMXKFubwOIQaD/9BcQXwbi8Bi0oBPsydGlCnja0NhrtXR378bHPsE7axIBdgCdtK8
- dr+GeWAU
- Puc/mZBSpZWVqvVg2oQo8HPJrJR2DaJIcXwTJQBP9UjKc6sfeJHUKgD4/raly5RgNbLo5jIXMFhowtLkvZyo4f7GQUN71A0JXEo7SYSjO2Zby/5HbYL8imOkOqErve/3Ijuld8hXDS/VPKdatJ6QoTgh8T/KjUEA3xdjjGetTGvONl8nhqV3TNRvRRoVajads0pf4uZeLk32F475w0Y2idvsrW17CQlytnHZWGec6/L7aeMo42ZkmrPSf0maWdUo5+BH4MjgRBBpHD2c=
+X-HE-Tag: 1794288252-716799
+X-HE-Meta: U2FsdGVkX1/xPWYoG6kbhLBdi9i2JB1XjqC4DSLpwyoYVrwRBrAScBlyuJny19AVUX7XOpf5S9HmQwJUtCBOxDjMS1B+l5eTl9wlcXySw8kmUVQEV9w2J9fMLehVk4aFMnmE01H1zbm/5jX+fXqK16P06naulqsQKDxaXub1GUAQuIH7qtLLqRxJpNfiZeTNXEWuuOTqA1JkKbwq8UugycOIbxvAdp0j6Im1+6yFs/2GI3P5h5t1njzLEzyqQGmNYCMEiPt/4YYKTy8L56OJznn7KLzqSyTYL8LPZw2f5yLGuF3sC06w+IxI2dfbVk7YdQb/WrkoX/32CsB105RTR2p4xg3bYcOndky9TT/Rq64IIsgX3kXnS8sJZFsc4e6fIiR/oa5Xo0angQgam9oD6+X+zrb7AbqccVlRpepXCONb2x1bZFCCoQrWg8fn/+UAKq82mggFcByF9q7F9Fvgw8KSlcyzm1bpiYq1uKRYepYZvcy4dx4RBBq6QccTAgU7OhhyACNKIOgFbBC5O9UveAVYkFYWOo0OtwRN1eeMePZreERAdJzRTGZ5ISqBpHwRnJHKe2Vzjxk9NlmYDCaOGAB+DzyvENrAMfTPNSbLHLlKH+RGrkcpXArCLA4STIriIiL3x5YYFKyi3GdjuFXEch2HEjRT0BaPrabcxWitDJFc4akYkZF6kcI68W3uxsNnpccBaSr9l8Hia9x+HUdnygwkA51AJiQ66L4Q4r31mLKLLb88qh4reDJyr79oehc6lqrBSaXxBDNcgohVf8OaNX/U8JAHCOMQI4JvpLYj7KWjW7+sSycIwuRdh5mf+aSpOOSCb9bk5aj+oQnwnfAB4wHNpc7AVV3sszRHpKsdqJmVWGrRWtwvgx2q9KFVL0Z0wILvqyOMynpqcWca/l4wU4FxHtveTsMAMMuRmIKe3xEguEDU9VCxv/ZSXPvnh1PyfC7PDkZYe/JgeAL/A3U
+ GZTeXO4M
+ E5hDHI67D5YWFt6r7DMYXYo/n79/RsA74qC/NrW+0c0OdqOVF3tVStgE5O0lW0RIOLGWAcW+SNBK219wKfTGVsZPkwA19+zsN167vpQRTEmDOharnIqUxHGaoZe1gRS6+7hCguZNh1aID1SCrb8HbGdAwrgt9+KdNjhzW5EawcDAepqzO9fPfmWA03uUSNg7tJZRYLMG8ZoHy1n34A19YI+NCVEjLO6gD+2pkJWEQT8mtPPVvOFIuVez0qRRmeli09P6ntNwULVmNvOxlLCxTSOv/sxr9YQ8s02EQCbr208G0zdy7fNss8wde+DoriSkh1d7FZ1XR/y4GpOI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,23 +101,12 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Thu,  5 Nov 2026 17:52:48 +0800 Weilin Tong <tongweilin@linux.alibaba.com> wrote:
+On Tue, 10 Nov 2026 11:17:37 +0800 Mingyu He <mingyu.he@shopee.com> wrote:
 
-> Reading a kmemleak report can traverse all tracked objects in one
-> RCU read-side section and cause a stall.
-> 
-> Serialize disable-time cleanup with clear operations and report readers,
-> then use kmemleak_cond_resched() in both report traversal loops to let RCU
-> progress safely during long reads.
+> hi, gently pin this email.
 
-Thanks.  Has this been demonstrated?  Are there real-world reports?  Or
-is this a theoretical thing from (LLM assisted) code inspection? 
-Please do share such details, they matter.
+I think Shakeel is suggesting that the bpf caller be altered to also run
+css_rstat_flush() regardless of the update threshold.
 
-In [2/2], *pos does not advance while kmemleak_seq_next() skips objects
-whose get_object() fails.  If *pos isn't aligned to the 256 boundary
-and preemption clears need_resched(), a long deleted chain gets no
-periodic RCU break.  Seems the code could tighten and simplify the "once
-per 256 operations" logic?
-
+Your custom in-kernel caller would need a similar alteration.
 
