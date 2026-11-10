@@ -1,75 +1,74 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3544160A2623
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 14:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF9760A2628
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 14:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=d92FgsfQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=MGMx1MEc
 Received: by kanga.kvack.org (Postfix)
-	id 064276B05B0; Tue, 10 Nov 2026 09:45:41 -0500 (EST)
+	id 657BF6B05BF; Tue, 10 Nov 2026 09:45:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 03B9B6B05B4; Tue, 10 Nov 2026 09:45:40 -0500 (EST)
+	id 62F856B05C0; Tue, 10 Nov 2026 09:45:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E94086B05B5; Tue, 10 Nov 2026 09:45:40 -0500 (EST)
+	id 51E0B6B05C1; Tue, 10 Nov 2026 09:45:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id BEE396B05B0
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:45:40 -0500 (EST)
-Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9BD0B1608DC
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:45:39 +0000 (UTC)
-X-FDA: 85419483198.07.2689CB9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id BFF3180008
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:45:37 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d92FgsfQ;
-	spf=pass (imf02.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794321937;
-	b=XOLs1l+dT0Vu7aGVzKe6kOgES7YGO9JnBDuDx4zwCtdB3iQvIsviVLNIXytfJ3bFsHKZnx
-	5tHUXLfToW50UEl31z1h8iG7JyhEzzfOr6CDrfcsJGW9eXy8RIVbvR1u43HdEpo1ETXHAf
-	GhQTuL174VYt6aCPgK+6BlLJo3/sB1E=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=d92FgsfQ;
-	spf=pass (imf02.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 229A46B05BF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:45:46 -0500 (EST)
+Received: from smtpin09.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A4D5380914
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:45:45 +0000 (UTC)
+X-FDA: 85419483450.09.9E19B53
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id AE41910000B
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:45:43 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MGMx1MEc;
+	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794321937;
+	s=arc-20220608; t=1794321943;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XPqP3AioUFfQKztBBWV3IZAPOrIVFlq4HM+xiknXRb4=;
-	b=J9j+b1RwEiqIJT9LlyjjL55RUHwijlTn/lbR0yjeaNeYXjqlcF6MRQGNcYUB1drbgc3M4O
-	bsIoqXQzrpNtIsP8gPVy/jSH9Yh1Lhyn80yM9Ufflp2X7sULXniaBoZESHX7HOEUZ5/+Lc
-	yEVHwZISOlLDkcy+iHhM8rZkrYXXFjg=
+	bh=An+UoRcLcybFqNhUI1VVYZuVSsp+y+lorKmzt3et7Ns=;
+	b=XnLW6M08Q9eiJ7jg7XIKZk1Xp8x0kykwoWC5SqVmWlPYy6M4XzMGCiZIcfdyt9sMUnKc29
+	ZJR3+JUifHrqNrjofGEtI0IeXZnrSeejCPW5UgDyDg93u0Zu603SsMJlUy8Hm3rQKLz8Mx
+	YzGgtwMO8StiCJh1z01mYIgZX0Urvd8=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794321943;
+	b=20YUh+8FqHfezNch0d6BNZMIZIlV2+pp4F2o8DHH3HRISCOmI6Ydp08Gcg7jfsyq09Sbjk
+	tyqpG/IKnIpHJ1bGKT41ZL3druDSx13Hw5dAbpG//Hv7zZPICUyIufDo2G30k7mTwYdyGB
+	rQZhPRDxGfDTzCTTCibYslItKc96Pxk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=MGMx1MEc;
+	spf=pass (imf05.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3EFD9639D2;
+	by sea.source.kernel.org (Postfix) with ESMTP id 7D42C40B6C;
+	Tue, 10 Nov 2026 14:45:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B861F008A1;
 	Tue, 10 Nov 2026 14:45:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21EE71F008A1;
-	Tue, 10 Nov 2026 14:45:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794321937;
-	bh=XPqP3AioUFfQKztBBWV3IZAPOrIVFlq4HM+xiknXRb4=;
+	s=k20260515; t=1794321942;
+	bh=An+UoRcLcybFqNhUI1VVYZuVSsp+y+lorKmzt3et7Ns=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc;
-	b=d92FgsfQ06bGMIRNBBVMq++CZTOjMikIQlWl9oCUQKAZURpASTlq4Z6F+6Y55qQ53
-	 TFDjAVtcmEcwCR/quqLIvgyzzlaVUNLseK8Cuzx0IP4uN9arM4rhYWQHBrwE70a0Xh
-	 PJjE5M8TV/rEkU7o7JYVWRdWtzZkE6LNIbK9nAWFIdtt1/vR9XXihTbYFPItJGfzpl
-	 C5vEYkGY6P5YWPbDhdB1yfbP4pHpOCIBWaQYrpiGlVDZaO5u1z8suH5gBcSdQzzAVk
-	 6JhMMUhk5VarccDQ03OTalYm0gVddNWNfb204yQ3TwdLIjdKz7zk64+slhRAUeQQ1O
-	 4mu+jhTQVo3Bg==
+	b=MGMx1MEcAJ02/s0uZKDaJPBGmlNnl7Xe5abC+V05BkKzNvOlPRaRgXr/qjLtzKBic
+	 6+lQFkBXjcHNgbXJ55Js6Gl5KeqEAJbz57XF0OKtxX/Of7+BXdkT+CMBrP10Mj5/L9
+	 RIIhJne3dh1syLZu3Lhpe6Olsuf6AGFnvz4rrTA/wWNPApf4d0FwLlXJ140fnTqmyk
+	 36V3TbugSZ1WAtGIVOHN84kX5e8qHyofRilwd8pjC7/PtqiZ5E4j1gCJhCj6ARPSpn
+	 9I9sp0028Ed7JDHwSvsz6wknf6RP1Sclsh0pK+50bN6Vc8ScwO/ydC+zaMs9oBFV0z
+	 5ZrdWHshIRH/A==
 From: Andreas Hindborg <a.hindborg@kernel.org>
-Date: Tue, 10 Nov 2026 15:44:21 +0100
-Subject: [PATCH v5 3/4] rust: io: copy `SysMem` with
- `atomic_per_byte_memcpy`
+Date: Tue, 10 Nov 2026 15:44:20 +0100
+Subject: [PATCH v5 2/4] rust: sync: atomic: add atomic_per_byte_memcpy
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261110-page-volatile-io-v5-3-a91ef252c24b@kernel.org>
+Message-Id: <20261110-page-volatile-io-v5-2-a91ef252c24b@kernel.org>
 References: <20261110-page-volatile-io-v5-0-a91ef252c24b@kernel.org>
 In-Reply-To: <20261110-page-volatile-io-v5-0-a91ef252c24b@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>, Lorenzo Stoakes <ljs@kernel.org>, 
@@ -88,34 +87,34 @@ Cc: linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org, driver-core@lists.linux.dev, 
  Andreas Hindborg <a.hindborg@kernel.org>
 X-Mailer: b4 0.16.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3338; i=a.hindborg@kernel.org;
- h=from:subject:message-id; bh=ZejpXXvNrU6pIH9Vpp03LpzkAZScISJJ50Lu4nFvg7c=;
- b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq8y38NrwaBIi3FYNgiPYhzvrryZVoOEERHn96/
- NBPqcWfqEuJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCavMt/AAKCRD6UCkIqsW9
- 0EneD/4w6Y1oEGE5aD6xSAKHWCYv47PTVWmiGhedDPkieHTXGQBpadKBP2IHkYy6JdDJK6HibVl
- N9K8HYtNYMGe/vVcmrpiQPgO0H9cEIyPB58Fy07U34N5AiumBgwzQoNx976zBlAsoxniod7pB1I
- 8GZ5YkoS/0cdYxrIM64zZ1Lx6/us5BN6t0c1HmNgj7DRtW4MC5zS+ZdIX5/2vLi+QWDpRvoaSrj
- w/7V6QbpRflEQQBTAvhsvZY1zabrOTXYAsfoYw0GOBidAtcJti2KJDY72f04aDGBNzFar5pcy3C
- 29Cmh9dQ/x2IqVTFp7rPHJfM0AhEJrEIe8qR+YM1+RRA3RuFlJL/gBF7PRSLceMwy2Gwg1FZLkd
- olyWcGytdvG0zs/dxRLuS0fxGVkL1vvPUcVRbbm4VHwt44322BQvTTWGuk+uHKXoTTPHV4dCLDt
- vX8LwtlO7uCcWL76rbopVIAO0gnFQ5Lw61QFuIpqZEhq4xf65xDN77YfFYS7a6JwrFKrdWB25df
- c+8mE57hyPOspEYjZ4JN+jYJeyBIo4rshIaTdUtcut8xTzJBZ6kPwlpBHu1NXpmG7O64J9Jsa60
- sgBRnazS/th+CpJS3ENdS07gLYRiuFW7xmMEOVSd8ErSVbUFKn/DUfxcj80bTumOxwGYQ4VeBsF
- uWzR1608VBa1DEQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3203; i=a.hindborg@kernel.org;
+ h=from:subject:message-id; bh=tp52aAy+Z9rAYPQRdCxlgmWEe36E+phNN7n1uPpdvBk=;
+ b=owEBbQKS/ZANAwAKAfpQKQiqxb3QAcsmYgBq8y37IKKLgvx5fqPNBPuoiU4OEBMG4lqThQRZP
+ lvpw/uEHfqJAjMEAAEKAB0WIQRXitnI2WZ2JirAaob6UCkIqsW90AUCavMt+wAKCRD6UCkIqsW9
+ 0BOdD/9VeKOwu5P6ufuouj286hXDgR1+enxQQwIIjBFPmpdiJ59HrJFYd7YHhHlJW00gFgfzb8U
+ 6m1K7p4or46AkJqBHSJwJ+3KvowOvVzsrG7ZJKY3Z3U3ecjUFRzOwZQj6jVBddVNXjLdepxPQK6
+ 2mHh3aAaEJ5/GFg3LeSIKJrYjg2DO52aD6Lsj6v16mYdBYZttxJUWZ4GV4FZ7Jlj6qCBhFkZDzs
+ XDti1gKrv0rpkVRKzK1bNgFX9K5JzG1dv/gTcf2GPyp54QAsz9h7IdQM60Iwj9cxVgYEy6w0RxH
+ Ij/zQ8YT2Ls0qSnBVldf43gOoNRRqDAnM4jwd0OESLXa9C59q1WMANNAIHMXxEF/x+63VYvKxR5
+ 59uI/VQ8Xe9C67YeZ8pWZnO2XqKq3YzUk2/utI54CkV4gTpysYHSqluH8+nHQMRXxpOLCP+0JA/
+ thyhckgKTGWKOvsLVY8jJkIXbbbGXGBJ+JtkGgDe7V1NglzyrjAY59xsHop4ZBKGZSS43jvJCtn
+ NOKTt++5YkVvI9PBK6O6kM9iQvKIAgwFF+Yky8fgB6ntVlp+L1CmXLa/TkQ3DFoN/mqvLITwLx0
+ uJGH7tK8lSv7qbrt8xeh21vsd3R6An4Bi8JCVTJ5d2zTo3UiJILb3VZqs/qWmPKnlz8paxcbOfv
+ KwskIu09jtvi77Q==
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp;
  fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-X-Stat-Signature: uyntkysgxxzoiwj44gw81jjod8iko14h
-X-Rspamd-Queue-Id: BFF3180008
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: AE41910000B
 X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794321937-831347
-X-HE-Meta: U2FsdGVkX1/ZFBo+EAa7c2+dOQkyQVtty4MofCnMOOdvyt5BeLNENn0bzT+xD7jJ3vjR1bduSL+FmKum9zH77lfcZ3iGa/1LLKanHbN/V0l33Q7Aoz9DA5Pr00JCMc6PAYinP74/BGrGzrLGfQvhGpXx7BJWeRKYHDvYlQxcEHDqKZ5sbwPlTtlepAQlJIg9vws5tGrkbs9jh8Pb64ex+h44yo8M97yRy1wcw101HccXg7XYtcb1NOX3ItwYb91pUCtrrHJ/VZWdiQ6nfx2J6w7GnT5f7abw6v6OLgwQ+ZLU5ftIapv4FqXEP5jo59VmlGfb6nJ0NUxDBm54sPSyh4n+yjXwSh97g+zmYjz4qJt+qnawE7Mp8o9Bb1ivmJEQuNqMmQPea4mI5GrT6OjjtHHonFP7ByZfdZXuGXL3zHQtGsYkfXOcaI2h2g7GQkNx37GG3iS+VQSkHHP9IkyUNeYG5h/h2RPH8ygCNz803BZMR+kdvxg968aQqwUG58Tziy/W5vGBVLOQysDiod7QbH0aLWxg3sCzGriBXz2Un5H2ISWr4i0IEdxZwYaA2l+V5/8bdDf7AMWJC9eRJ+tGclSxMT3i+hm2wLhkpKRbSQMPXwX0jG+rKlzNWu1ADNPb9a5+3jEKKFIDxlOEpCcJeWvwyhkcEMxnnW+Vvwp/bP9SurE7qkSMF8z2nuS9/YMZGBQNePD7y4m/AvIzJvQfBGbuAFVfdbCBmMLNrsVR0QIGIoEs3Shj4UTZFAHmcc29mPZvkuRi33Qo5wajmV0H7YZ2hPtJnnmEDoUD0MZZ67cG20T7OJ0Sefv7xQJgLhg78XHz/oH+SHCMHsIfoI+yqCytUbbOddX6e/dgrKUDk+0NIDeT6nlJkg2zWlDB83v5WT04s3Dh7kIPz44qUKidPSk/k0k0k129DXeazC5m5934qHIfR04WEz+LUbZfoyJMsWixlFOY7QoXcSwawFp
- 0+ZjMiZV
- 3PkEBfRm4LX+BJQq03PQplgnm33Mu4TcUwVsfcqsMe0lcpc71+/QKzDIucguFvC8WEF5Qd5Be+75fp4TlpUTOOQq2s1JZTja6qwqEpTucUgNuHUeNLHwlWJSARyw7+UzgQ29FQo/JNWz4b/UfIIbgFEwPE51zx6eYnPmvZyC/Ve7zxDZ9cei7p9QPuQyBL5z1JPtaeC9Vrhb+avZUjL5UttMHbZhXITpqFsjlfV7/2J6rvQOEXOUYN/wRAWXcuqpmXDNHElMm6fGFXkxSojcJMIIPYOsxq4zryGn8
+X-Stat-Signature: k5zo3snrkjynks8gr6fo7hwhdwssi9en
+X-Rspam-User: 
+X-HE-Tag: 1794321943-960741
+X-HE-Meta: U2FsdGVkX1/VCOcj+STVuBzmiaJMnpG6pqgD6g4sz1gwV0hLJb9Tu9tRE86fV6+EA7fRSfdDGaPnJsiB3sA3eZKtpCQ6z6gnDylBVlnRHJfE2L9efWQZOpQnb5ZEn/GxbgQSucC9nxAlIlY3ykSkm4AMxxvohKbxyzrnQ2h8yD561FJGcl4mwl1rUJPpKz7DbHabXAGefq6MxSV3/W39bsPx5FGi/HiVnfWy0x0vZ9oPz6W2aUyOYBH/BoU38HLrr9N/6QDskc0mzhDT5POFxYgbrVQxISKO7XB0XRt5cSb/W3VG3wngY8EdQE4oA+NFHv2uxu7z66i2WB5MOJ1TFbmtpuqYo/UnDPWAuhso8zHUYRqXtsJjrlIsSHIBeeLW896YeedACyODBiVZJJxrBRF6UOnpZ0+xbRBjy9g7G0xMpRFxWAUupZhQLNcrbOl6+CA3Bx8gZGu8SB/I+wSFdrsIXrtoX8vmJ21Jjc9cSGV74mZAFkAIg1Ce1hpRkXRPB5LtFTlwRw2inQwaaHLj0UZuY5QJAvpLVobdll55Szsm1M6T041s3y5FNuhwd6cEcFjRScZHAIn1eO1q/FI3eQN1g4IG2hTWzndM7o5RtPuoNKpYhqs+jcB+mr6VK1upv7lgqtFAyeSaqVoGb8uxmKKwiNmQ4KdlPszr25aIn0hoFYMCWI1Tpj6V32tNY7FsZsYjuxLXpHp2YgBumFki7iWAfhFBi0hymdqDbSwedRDwQCpgs/H9DF90yddYc7GjghMe0H0pw8aXo0bfdI6hOqclBEcmC57y+wA2s5adLt1vtYA6+xnGSXWGXH9l1TwdFap2QLofWs2cdO/bHoBRb8ZSYlt3220Bna6RtBaI/v+lqhmwcs3u/CgrnxlV3UZh+nBooLAOtR7tui8KSNE3kEmvHvz/uKPwb9yE0N6vqyZZG6Y1/103euNhAX3y9b60wjZJtFjHjiGEzuKfd0O
+ P8vqWGRF
+ PhPk7NomWEhAz5jvogsy8/QllSJl3hs+XNZzgNajAbQeHAvbttrWSlfhjqwKTurF8YrHb9Kpr7AfLZeX6gOOGrWT5y1fr0/ueWgd8+3zsCRZn9My1dLauKyWPV0CXotrVZKoi23rX9IJSmsnDH+R9uapvEjZ2UQA62t0dtsZco/nWoZ/Lkzfcj1ViG9a304+NW8K9chcZt4CM/WKXxsnoSZs6IvG4Ay278vGd2HgPWZ+w1Sz1iV+G6Mv5L6hMitfXdbnh1euuBsE3OmeMtxeZ3WohjTWCWOxltEHMYVF1plh4iIp5AC8i8/vHA8YGnPHh4Z+sWxF/Pv7IEf4=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,71 +123,71 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-The `IoCopyable` implementation for `SysMemBackend` calls
-`bindings::memcpy()` directly. The comments say that this is done "for
-volatile", but the requirements of the call are not stated anywhere. The
-reason the call is sound is that the kernel's `memcpy()` is byte-wise
-atomic, and that neither side of the copy is subject to plain accesses.
+Add a helper to copy `len` bytes from `src` to `dst` using byte-wise atomic
+memory operations. This is the concurrent-safe counterpart of
+`core::ptr::copy()` (the equivalent of standard C's `memcpy()`). Because of
+the atomicity at byte level, when the copy races with another concurrent
+atomic access (or when a normal read races with an atomic read), or with an
+external access (from DMA or userspace), the behavior of this function is
+defined: the memory is copied at (at least) byte granularity.
 
-Call `atomic_per_byte_memcpy()` instead, so that the requirements are
-spelled out at the call site and checked against the invariants of `SysMem`
-and the safety requirements of `IoCopyable`.
+The helper is the building block for higher-level copy operations that need
+to remain defined under racing accesses, such as the `SysMem` I/O backend,
+which copies to and from memory that may be shared with hardware or user
+space.
+
+The implementation forwards to the kernel's `memcpy()`, which is
+implemented in a way that byte-wise atomic memory load/store instructions
+are used.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/io.rs | 26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ rust/kernel/sync/atomic.rs | 35 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/rust/kernel/io.rs b/rust/kernel/io.rs
-index 3bc4be35e355..b51cfc04e3ca 100644
---- a/rust/kernel/io.rs
-+++ b/rust/kernel/io.rs
-@@ -21,7 +21,8 @@
-     ptr::{
-         Alignment,
-         KnownSize, //
--    }, //
-+    },
-+    sync::atomic::atomic_per_byte_memcpy, //
- };
- 
- #[cfg(CONFIG_HAS_IOMEM)]
-@@ -1500,20 +1501,27 @@ fn io_write(view: SysMem<'_, $ty>, value: $ty) {
- impl IoCopyable for SysMemBackend {
-     #[inline]
-     unsafe fn copy_from_io(view: Self::View<'_, [u8]>, buffer: *mut u8) {
--        // Use `bindings::memcpy` instead of `copy_nonoverlapping` for volatile.
-         // SAFETY:
--        // - `view.ptr` is in CPU address space and valid for read.
--        // - `buffer` is valid for write for `view.size()` bytes which is equal to `view.ptr.len()`.
--        unsafe { bindings::memcpy(buffer.cast(), view.ptr.cast(), view.ptr.len()) };
-+        // - Per type invariant, `view.ptr` is a valid kernel accessible memory region of
-+        //   `view.ptr.len()` bytes that is free of plain accesses, so it is valid for atomic reads.
-+        // - Per the safety requirements of this function, `buffer` is valid for volatile writes for
-+        //   `view.size()` bytes, which is equal to `view.ptr.len()`, so it is valid for atomic
-+        //   writes.
-+        // - Per the safety requirements of this function, `buffer` does not overlap with `view`.
-+        unsafe { atomic_per_byte_memcpy(view.ptr.cast(), buffer, view.ptr.len()) };
-     }
- 
-     #[inline]
-     unsafe fn copy_to_io(view: Self::View<'_, [u8]>, buffer: *const u8) {
--        // Use `bindings::memcpy` instead of `copy_nonoverlapping` for volatile.
-         // SAFETY:
--        // - `view.ptr` is in CPU address space and valid for write.
--        // - `buffer` is valid for read for `view.size()` bytes which is equal to `view.ptr.len()`.
--        unsafe { bindings::memcpy(view.ptr.cast(), buffer.cast(), view.ptr.len()) };
-+        // - Per the safety requirements of this function, `buffer` is valid for volatile reads for
-+        //   `view.size()` bytes, which is equal to `view.ptr.len()`, so it is valid for atomic
-+        //   reads.
-+        // - Per type invariant, `view.ptr` is a valid kernel accessible memory region of
-+        //   `view.ptr.len()` bytes that is free of plain accesses, so it is valid for atomic
-+        //   writes.
-+        // - Per the safety requirements of this function, `buffer` does not overlap with `view`.
-+        unsafe { atomic_per_byte_memcpy(buffer, view.ptr.cast(), view.ptr.len()) };
-     }
- 
-     #[inline]
+diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+index 6d27898add42..cbcb081d8674 100644
+--- a/rust/kernel/sync/atomic.rs
++++ b/rust/kernel/sync/atomic.rs
+@@ -848,3 +848,38 @@ pub unsafe fn cmpxchg<T: AtomicType, Ordering: ordering::Ordering>(
+     // per LKMM.
+     unsafe { Atomic::from_ptr(ptr) }.cmpxchg(old, new, o)
+ }
++
++/// Copy `len` bytes from `src` to `dst` using byte-wise atomic operations.
++///
++/// This is the concurrent-safe counterpart of `core::ptr::copy()` (the equivalent of standard
++/// C's `memcpy()`). Because of the atomicity at byte level, when racing with another concurrent
++/// atomic access (or when a normal read races with an atomic read), or with an external access
++/// (from DMA or userspace), the behavior of this function is defined: the memory is copied at
++/// (at least) byte granularity.
++///
++/// Implementation note: this is currently implemented by the kernel's `memcpy()`, which is
++/// implemented in a way such that byte-wise atomic memory load/store instructions are used.
++///
++/// # Safety
++///
++/// Callers must ensure that:
++///
++/// - `src` is valid for atomic reads for `len` bytes for the duration of the call.
++/// - `dst` is valid for atomic writes for `len` bytes for the duration of the call.
++/// - The memory regions `src .. src + len` and `dst .. dst + len` do not overlap.
++pub unsafe fn atomic_per_byte_memcpy(src: *const u8, dst: *mut u8, len: usize) {
++    // SAFETY: By the safety requirements of this function, the following operation will not:
++    //  - Trap.
++    //  - Invalidate any reference invariants.
++    //  - Race with any operation by the Rust AM, as `bindings::memcpy` is a byte-wise atomic
++    //    operation and all operations by the Rust AM to the involved memory areas use byte-wise
++    //    atomic semantics.
++    //  - Copy between overlapping regions, which `memcpy()` does not support.
++    unsafe {
++        bindings::memcpy(
++            dst.cast::<kernel::ffi::c_void>(),
++            src.cast::<kernel::ffi::c_void>(),
++            len,
++        )
++    };
++}
 
 -- 
 2.54.0
