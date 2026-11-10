@@ -1,91 +1,90 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47665606A31C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0754A606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=HWaQVkY/
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=onyVj77v
 Received: by kanga.kvack.org (Postfix)
-	id B5BEF6B05BA; Tue, 10 Nov 2026 00:58:04 -0500 (EST)
+	id A98BB6B05BC; Tue, 10 Nov 2026 00:58:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B328E6B05BC; Tue, 10 Nov 2026 00:58:04 -0500 (EST)
+	id A216D6B05C4; Tue, 10 Nov 2026 00:58:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A48556B05C4; Tue, 10 Nov 2026 00:58:04 -0500 (EST)
+	id 95E276B05CB; Tue, 10 Nov 2026 00:58:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 84B606B05BA
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:58:04 -0500 (EST)
-Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1A62814087F
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:04 +0000 (UTC)
-X-FDA: 85418153688.25.522CE29
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 76C20140002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:02 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HWaQVkY/";
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	by kanga.kvack.org (Postfix) with ESMTP id 782966B05BC
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:58:05 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 235BD14087F
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:05 +0000 (UTC)
+X-FDA: 85418153730.10.C1D134C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 87A211C0004
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:03 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=onyVj77v;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794290282;
+	s=arc-20220608; t=1794290283;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ccFem5fUCNTnnJPcQ9K4zOCY/Mnf1A8NVlL2cj+A0ys=;
-	b=CoxTGLoQyVmguQz8csCmCI2qMol+CqCtMX63fQxFWAALQcEe1r3TTLQRDUyXfgKDORd0NH
-	kEoxmmMb2bYQty/4bdK/uE2ou1801MtpKVH8VIe+S6Ex6r3aF1pcahEzCyglKFYPyy1OWf
-	q5dns1i6/w8sq9Zh7ZO35Cqtc3oxrdM=
+	bh=ftN8clTyx7M0uKnbE5qzzg/XNyWcJ/PQXvDRxAVfxQ0=;
+	b=2eskWmKrASNGUpOh15mILW6G0c8ZmhxJwstpcpwzqfNFJ1YkTCwTE0KRFrPcRDy0UFS5yA
+	J0KoJkPgnT8R4jjmWj8g3YlplReq01qVQrwdarv8Ga4mvG5VwNXuKVScePb+pDMhR1TKlr
+	aa90X6pmKP+j/BjD05CIIGsdoL/jm+c=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794290282;
-	b=uVUipLiSwBHW7UsC8jQD8S1YsdkkqqBin7GJJLOVf41pixMwqkw3TWmm777JjZQ5ge8h7g
-	DSroG6+u3eZAhO7Jm1iA7aKkf3hOvAlfMDdLXidBp2M33EsT+3VTdFj7qVx5NsTdScPhjd
-	dOlc3EkgtA9kHvejVoX+H39ZlwW39BQ=
+	t=1794290283;
+	b=OYNQmhd0BZF34gc6vvzXmYkzvf56YBGniQOXiYksTgwpc8sEVc4bQUwwgZ3e+wTfg21hsR
+	Y1FtP0bfS96QsWSnAxx0AjI8go0EYPjWIzebF8Qj/27fKWfWi20v+dzv/umCBcXgKBq3V9
+	fyK7gkySaneyGr18DcDAGijtWLmiS+E=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="HWaQVkY/";
-	spf=pass (imf23.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=onyVj77v;
+	spf=pass (imf21.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C531463595;
+	by sea.source.kernel.org (Postfix) with ESMTP id DC74446974;
+	Tue, 10 Nov 2026 05:58:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 068D01F008A1;
 	Tue, 10 Nov 2026 05:58:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BFB1F008A1;
-	Tue, 10 Nov 2026 05:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794290281;
-	bh=ccFem5fUCNTnnJPcQ9K4zOCY/Mnf1A8NVlL2cj+A0ys=;
+	s=k20260515; t=1794290282;
+	bh=ftN8clTyx7M0uKnbE5qzzg/XNyWcJ/PQXvDRxAVfxQ0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HWaQVkY/FTCaYW5+BmTLeYV1ptXpHTy658fLjfZd3/paTTAqFZXxFU6dkmMdT6QgJ
-	 7lFFdVb7JsBqttfiWJS+SWF7dYpOm0BbCn5B4MzKVg1Q10B8S98Ub5/f0Tp3I0v+wT
-	 rKI4Y0JMUmIttVpPNR9w1cwdVeEd0jKV4ShezWA+rsAP/HV8oTlIFG+WOFu+jPlt1l
-	 6RDycyNnnKUCwewmRUYDVb6MoEeMe17NMiApuCpKjmbfJhSnJM0gM9oMjdHJihTiLf
-	 5Gc+DHisj2NcMPxLE6PaSw+g/+mL0FTejsI5rruy+mQmmo0xPu1hxL3sox8RMqitcp
-	 +cFOLMHVf+NHA==
-Message-ID: <sashiko-outbox-206363@kernel.org>
+	b=onyVj77veORD7XJ0xbFeeWnlI832hoPOrLcxxgeAsT9EWPPWtirMDUaLCqV/WOUXy
+	 /AL0RDTLO5YZ/as/eaayO43S4/50SI9QP0I46ZJ/HVB1dvRbrQWQ8ZvOhZChl1VDLM
+	 pKtQFd8rzLzixHXcgyrc8jccCBndMUF9r789WRBx/LVYdQvUYNn8BNVC/GjszQm86/
+	 sCfC+IemK+/EtkhfjmNDoi9KgRA3+UduJryKOFBGbzVuUF8ilimMxmBJg6OUWnjBVR
+	 cMv61Bd7Y5mpqZd6G6CMcCgDosLv1ius8v1DcQj71xTn82YGsto9gBbECD8Ji1GRJI
+	 taQ8nx/wK0h6g==
+Message-ID: <sashiko-outbox-206368@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 04/19] mm, swap: use a VM_SPARSE cluster array for
- xswap devices
+Subject: Re: [PATCH v5 09/19] mm, swap: use a stable id for xswap devices
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Baoquan He" <baoquan.he@linux.dev>, linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, david@kernel.org, chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, corbet@lwn.net, hannes@cmpxchg.org, chengming.zhou@linux.dev, kunwu.chan@gmail.com, klarasmodin@gmail.com, "Baoquan
  He" <hebaoquan@kylinos.cn>
-In-Reply-To: <20261109055455.536925-5-baoquan.he@linux.dev>
+In-Reply-To: <20261109055455.536925-10-baoquan.he@linux.dev>
 References: <20261109055455.536925-1-baoquan.he@linux.dev>
- <20261109055455.536925-5-baoquan.he@linux.dev>
+ <20261109055455.536925-10-baoquan.he@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 05:58:00 +0000
+Date: Tue, 10 Nov 2026 05:58:01 +0000
 X-Rspamd-Server: rspam06
-X-Stat-Signature: wf71iqfihdr41op8gdnq7fjipnfkm91k
+X-Stat-Signature: ti7pmgxq7xogqsekatm4x47xbw97im1b
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 76C20140002
+X-Rspamd-Queue-Id: 87A211C0004
 X-Rspam-User: 
-X-HE-Tag: 1794290282-866769
-X-HE-Meta: U2FsdGVkX1/2+RyJrSsHSzwT4YDpPfmQlUua7RLiqjsxyo3eY3yfJnoru0aszJvFa6LTrc7E+4RtiJzQXG2TPXzin1JNaBnbnN8iWaBlFJyz0TpyNgPtg89HviHy94thXl7KDco9yopr3rHxO3dZAzSg+W1b/XixlpPQUOKdXxFsGl0hWFrwem/PPi3j+uTaj2Fwg9FiDs8g5ccQufjfYsBDKf+aQAhVLQooBN6P0v/dmmQAIUr1il+WGGLUeyKRMljaC7DfXCV2kroMncYk3E4On3GbJvLPtgJwnwwwwqG99QSMBTEgJNKPN5F5/lh6eycSPMvFRPlqxxk0SY/tX5oZ3jdVzEG6U/I7NUsYIQfW0LsWX1KvMG/uPXhehOsralWbHoY/ROJS+E8kSfNBkTI/bivlGuvab/XzvuPfw2FSmGqAKlmX7N/OJm29mb35yNEx2V636pUN98+N7Ig8aRFiuzDSAzDBYZchrr0dlbf2TrirCUhkK5r4/8IqV8S+JH4Rh4cMIIq0hzoNle00rmYRLsoB+ffNhR2jadNLWa+1oKREwFEIeLwUil1iH7p49jhaxRerh3PMtgtNCBISnOiVAnBTa38+37lcifep1hxfY+ONAQt9DwOLTC38h5hFh/zfPS0G3BnvATPre0OVm+iuN0ugfTqWHsBqZWSQIKBkUAmra4u7vR83TTQnV9T8fZKF88k8cqrFoiqlikl87ufht9rThb40Dr0MnBjg2t1fT+uvfSgTOug6hS3vcEiJjcFPQdxP7xxRuWpBfVY8cPgh/7crPL3zV6X9exMUXt/eMgWjt5/uP8SrmN/Gukui+1V/pK4aop5faJvmPPW0spF8V3Y8B/W1ZJ88SFtJfJEiP9xKDvhUYoFzSCivSlCTAAAJd1byZSRmEXxsDQlaVuqN/P/BUgY1qtP4aN/hLAsDho+HMfLtaXKky/qV5ikmkqszT0pgpj66+UI7DJg
- iFytrmCO
- nGiZfIWNqE97LTsvIxy3PJM3rp+xgsu41q3A/qQ6gMfdMYXi9mP77iMC8YYxOd/XxsOO47qxBeDD/4paY4q8/LzgG7wJbRsnssNMfXk+TPcMjOJ2oF+DdZLOSSUEBlUBsZCquN0DJhOZGRNjBAiOhyu6vt4v/XUGA9TQO2tolZ4TVSUfor3siF/R1gb7BGE0WmAHl5YEwBVVFdjvV1hBYpGQbE91gkE8qCUtBjsrbZ85i+fUub1029Qay3CarDI/nv0DXfYdLihIf+h8ECjNER8AkkXrX7QCK+JdnqlAgTTvD6mP08WQVet94vb98Bg4J78hBR25CPguq16QivOfDdvtgpd++lf21Qo+mfq7HIqRX7CweSsxGL9c7hhwzv/BjHIkUEZxsYlgVVlHBuNq59qA6A3p5h8Z381s+Zd8i7qZrvGuwZ7/IW/Pi74J7/gBGuq+LcGZvpiOdqRjyN2oAavCJMmJT2DKbWK3hJ2Y0XMM3gjNg6moX/4rGYQxMT7xIAmX/FmP3Zw2COwQGNL9k8En7wkFUjkDfiAix5swwBCzPH43ykoJz1rAd6aM0+I+ppWfFqbwFmsAvjIiZk9l/dj3mcmvNiDn2kgpF7YPT4+C7cpNLVPUu89jAg2SUax/dXJdYqWALgMwyV/ZbaiWsuklz80GDx5b9Xed0nbr6kxwkTczT35nqIWyvkw==
+X-HE-Tag: 1794290283-213390
+X-HE-Meta: U2FsdGVkX1+yTqKBPza7qVFp3izjeQXP7VgTPvDbAWaHli1sMIQ+Yd+AQjD2iAMPOyd9C1nIubEQqlnRNJbUBiFsXKJRFn2oVNc0lD1PxJqpWn8SdefCYNhmYOCpwob2J8VfaRyaIDn5rIbmk4a5m/WnphVakHvbCwVU1ccN6y8ZmWIkfDhoUy+BmeEhBHq5ytj12i133sG5h6yDHlLpbE5b26ZUv+jUOKLJ3Z96HoiJMM+sWKuPX7gEQs1EYmYbkRN3TGkIf97eRWRSIHrq3NMUMarvOpU+ft++FUY7exK2i8V3Dx1fVhOWkgVnTqBXmPmbVK3O7WECs+lw01bOt6yNo3FaxKQxRAZ+YB+xRVuzETwqQ/EhyVjR81IqK/RNjj+c1Tq1Kh7lyRJMAIM4d95M5lF9Lsh2CxPSzVdbOlvDbXFoaeChKylwR+zHFyEBaueTH1BUk5znQ0GiYc0fzvvnjU9h5HwkJcfon+DrcMUCu8ZQavUmph+EvQYYCj6xxCwgZQll6as/2KgF5kTrIOGMoaqBqZdhhOhqcULHn58KU5OEF4S6FQsgLwoquatOMt8yp1plmCkXJtyRCwSyOdo5dFgGbqB2gELsKRDS+vpxfEAQ8s7QIhGRhAZncPYBB1WFygLjT6kYTjaMJm5uwTl/Sw5WfMdsjLjEa7Dikb2dhRpEri4JjpMKXcgKxqgMdlD0ciqXedewhyCrYZ5TtEQeSX5rlwU7vNcfNQCO8kTu9cPBFiyUGK39XMF1LwEsVnNZIkWANAQgRkYrkY3acs5bCK8NkBj0GmYZ7vEq75GOQ42YD2GucYH3NwTeUbGQve1v8AYzDiVTWMJZtHm4ZD2ueSZumpIqdbpqQOHnMex1B9IO9Vf+CSBM2EwLonooVuYRDzccs0FSdQ0G1XVb5q7eja3oFyWu3I6K573xUzlai02uRNBYIhO9v0fZ01YtcuoVnmzDbpVO+KvIFtj
+ 3P8XTSVN
+ tLU5ZVb3w+nIeGGa31CxzQoAjLSApkQuhlRTQcxwR0A0sIoFK6/3pcf9eXVV5EjbSCPfccNTRkdi/mfQr1B01FbxENP0e4aufIs5SI1QvyDgKkVLvLS7h8lAT7pu/GzDiCTfiA23HAeVlRth7jQRp1W556LLbhfDsRw0v2otHA63CX1EjjhPvXXOkpicYO5s//2ydjCpGhOi4unDS5c0xOIc1zbSm9gXz8AOurzMMpIX3gKSPck1Mvl47VNK9u3ghXKHlKilunrAWIZS6FjZBkwW/IOsVKQv0cErYRvotmgiy1mA+IebJlcgyPOroEnRkPxgYLpJb6fo38Fd9R97DsRhylnx1fY7YtLLLpVWbc+i8FwSdtlPZCwYY6KMw809EQa5wm7n0gpRa9AXitDCjd0/BZ2gJMsPcjJ/og0ugwgH5mq2UqRCuyHTTCCfe8/J3zsoZmzQONz6LX1zUzleZHkwLQTk08ayhwm5fTpq/kl4h7dg6RuHJkLRfHR4haBDtuunkkGUoFsaJyianAduubkNErKnqXZVbU+fdbjFlY/NRoh5Nytl8gbXzdma0WcxWFMQ/pBZ88HELladf7Y22h2rZfyZb9BnOmn06zWHRMZ3x0biSpHsLWkiMcsoA6RBa+Xhd/pgh4GHvmg8=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -97,81 +96,45 @@ X-Archived-By: <archiver.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential
 issue to consider:
-- [High] mm, swap: missing nr_clusters_mapped check in get_swap_device()
+- [Low] mm: commit message claim about swap type in dmesg contradicts
+  xswap_create()
 --
 
-commit 59c7799e61f59ce4eb079135f6f31b57258c37bd
+commit 46956dad40c329833b6eaa3cc452fe974e0d5929
 Author: Baoquan He <hebaoquan@kylinos.cn>
 
-mm, swap: use a VM_SPARSE cluster array for xswap devices
+mm, swap: use a stable id for xswap devices
 
-This commit backs si->cluster_info for xswap devices with a VM_SPARSE
-vmalloc area mapped initially to XSWAP_GROW_CLUSTERS clusters, and bounds
-the cluster walks in find_next_to_unuse(), wait_for_allocation() and
-free_swap_cluster_info() to si->nr_clusters_mapped.
+This commit assigns a monotonic 64-bit xswap_id to each xswap device for
+use in /proc/swaps, debugfs, and xswap_destroy() instead of the reusable
+swap type.
 
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index afd0e87185447..00c7b398bafec 100644
+> index 35c8aac1e25d2..44b54118d10a5 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
 
 [ ... ]
 
-> @@ -3902,6 +3969,69 @@ static int setup_swap_clusters_info(struct swap_in=
-fo_struct *si,
->  	int err =3D -ENOMEM;
->  	unsigned long i;
-> =20
-> +#ifdef CONFIG_XSWAP
-> +	if (si->flags & SWP_XSWAP) {
-> +		unsigned long size =3D PAGE_ALIGN(nr_clusters * sizeof(*cluster_info));
-> +		struct vm_struct *vm;
-> +
-> +		vm =3D get_vm_area(size, VM_SPARSE);
-> +		if (!vm)
-> +			goto err;
-> +
-> +		cluster_info =3D vm->addr;
-> +		si->cluster_vm =3D vm;
-> +		si->nr_clusters_max =3D nr_clusters;
-> +		si->cluster_info =3D cluster_info;
-> +
-> +		/* Must be initialized before xswap_map_clusters() locks it. */
-> +		mutex_init(&si->xswap_lock);
-> +
-> +		if (xswap_map_clusters(si, 0, min_t(unsigned long,
-> +					XSWAP_GROW_CLUSTERS, nr_clusters)))
-> +			goto err_free_vm;
+> @@ -4316,8 +4328,8 @@ static int xswap_create(int prio)
+>  	si->list.prio =3D -si->prio;
+>  	si->avail_list.prio =3D -si->prio;
+>  	enable_swap_info(si);
+> -	pr_info("xswap: adding extendable swap type %d (prio %d, %lu pages)\n",
+> -		si->type, prio, si->pages);
+> +	pr_info("xswap: adding extendable swap device xswap%llu (prio %d, %lu p=
+ages)\n",
+> +		(unsigned long long)si->xswap_id, prio, si->pages);
+>  	mutex_unlock(&swapon_mutex);
+>  	atomic_inc(&proc_poll_event);
+>  	wake_up_interruptible(&proc_poll_wait);
 
-[Severity: High]
-Can a lockless swap lookup fault on an unmapped page in si->cluster_info
-when offset / SWAPFILE_CLUSTER >=3D si->nr_clusters_mapped?
-
-setup_swap_clusters_info() maps only the first XSWAP_GROW_CLUSTERS
-clusters while leaving si->max at the full device size, and
-get_swap_device() only checks offset against si->max:
-
-mm/swapfile.c:get_swap_device() {
-    ...
-	offset =3D swp_offset(entry);
-	if (offset >=3D si->max)
-		goto put_out;
-
-	return si;
-    ...
-}
-
-Callers such as do_swap_page() read a PTE locklessly before calling
-get_swap_device(entry) and re-verify the PTE under the page table lock
-only after looking up the swap cache.  If a stale PTE from a prior swapoff
-and xswap activation (or after tail clusters are unmapped by commit
-"mm, swap: add xswap shrink trigger and defer it to a workqueue") has
-offset < si->max but offset / SWAPFILE_CLUSTER >=3D si->nr_clusters_mapped,
-get_swap_device() succeeds and swap_cache_get_folio() ->
-__swap_offset_to_cluster() dereferences an unmapped VM_SPARSE page in
-si->cluster_info.
+[Severity: Low]
+Is the commit message statement that "The swap type is still used inside
+the kernel and in dmesg" accurate?  Here xswap_create() switches the dmesg
+output from si->type to si->xswap_id.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109055455.5369=
-25-1-baoquan.he@linux.dev?part=3D4
+25-1-baoquan.he@linux.dev?part=3D9
 
