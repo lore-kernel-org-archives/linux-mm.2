@@ -1,107 +1,120 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F6360A2630
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71847606A33A
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=d42QnZwE
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZWIygTuW
 Received: by kanga.kvack.org (Postfix)
-	id CD2276B05B2; Tue, 10 Nov 2026 06:24:36 -0500 (EST)
+	id 8DA416B05B4; Tue, 10 Nov 2026 06:24:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C83756B05B3; Tue, 10 Nov 2026 06:24:36 -0500 (EST)
+	id 8B3366B05B5; Tue, 10 Nov 2026 06:24:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B98326B05B4; Tue, 10 Nov 2026 06:24:36 -0500 (EST)
+	id 7C75E6B05B6; Tue, 10 Nov 2026 06:24:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AF6F6B05B2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:24:36 -0500 (EST)
-Received: from smtpin29.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4081F1A059E
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:24:36 +0000 (UTC)
-X-FDA: 85418976552.29.7FE564E
-Received: from mta1.migadu.com (out-77.mta1.migadu.com [95.215.58.77])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 3F256140003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:24:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=d42QnZwE;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.77 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794309874;
-	b=l5r/VKSXpDGkZgQLGyZnN23JA9xqveJWYY/bdsYOdzDlUc0GxriUdzkMuby76XmLZoId8L
-	PB3RZ802HhIgBRGLQAl/6IP52JU+HTxnyuSMPmUbpTWylkqshqYsXjoKVz4NwDjlFcGD3v
-	lY68Ub+/DSXNXVd3gPCXtJAal3CIiKM=
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 589946B05B4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:24:40 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C9D0C140337
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:24:39 +0000 (UTC)
+X-FDA: 85418976678.02.AFE8025
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 24FD440005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:24:37 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZWIygTuW;
+	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794309874;
+	s=arc-20220608; t=1794309878;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6ZVwT9JPvcRTq2+d66tI0z/MQ/l0urBNTSlvpkLaL2M=;
-	b=yZH2tJyd3QEBCueejyc0sLUa3F6+7ilLf5TaMDyWqqjRXC8O6vPE+I4qy761FBxIaypy+A
-	jYDo9RnRxPbiJPNu13A2m20Jqs6z23/Q3x8PsRYnVeJ2ktrQYcvzS1xXrCM1M7Y7viaVbM
-	8ywkeAu0z07s+XvwY2dx984bQJD/0MI=
+	bh=gtytf2wOlGKlE0TlreFVP+6q1oQ0wXhrbpcwMFr2kqE=;
+	b=Ls0jwoM2Sf1VqGY7GIxJ1xy4hnW+/oKL6/1ze5+wB5lZ42goBUhawDx0llNzKqOrfWyN/G
+	HQvcxU1sAFaUOCZIlcaG09G25U0gzkx5z1KvU3nbf4+D8G0CGWpQHrD6QHahjBebrtpm/x
+	b244hyCJ/Xfh+eb8n067WbqBkFgAT0I=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794309878;
+	b=61cU+0BeOaEgN+sImw3jAhG6IdF4o22QNg8cgvKHh8AZpvYD5hKPHdzWOOzkyqNOK7sbxp
+	IlK5r1ao7Sbj9f+CukP2365vHE7Y5T2OjhJ0WIsEgksS4hpR9ewHVLPJgbClyMYfoQXMKx
+	ol1YpluQ4IvXelYV1DthmVqYV4bLZwQ=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=d42QnZwE;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf26.hostedemail.com: domain of hao.ge@linux.dev designates 95.215.58.77 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=jkqaTN7aNaAhIxRpBgAN2fcj9pQU8jMWqyvdyAyPO+g=;
- c=simple/simple; d=linux.dev;
- h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794309872; v=1; x=1794914672;
- b=d42QnZwE/WUex9hyCFK+onRk/zm7eIFT8JL5ZzEBQjF6wv/5LUNkcW1452q7+jBGpM/61zy8
- 2qFjJD3ycPtGdP2Xu80odf+Qi8AJqkOVIRJjw1M7QfoacnfSGPaHXvRiIZR7lhUddg/s8e1KheQ
- ZcmADtPZGwdbi19tOnzD2V9Q=
-X-Envelope-To: linux-mm@kvack.org
-Received: by smtp.migadu.com with ESMTPS id 272fed88d5b8e528;
-	Tue, 10 Nov 2026 11:24:32 +0000
-X-Mizu-Trace-ID: 272fed88d5b8e528
-X-Migadu-Flow: FLOW_OUT
-From: Hao Ge <hao.ge@linux.dev>
-To: Uladzislau Rezki <urezki@gmail.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Suren Baghdasaryan <surenb@google.com>,
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZWIygTuW;
+	spf=pass (imf11.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id EC78941B63;
+	Tue, 10 Nov 2026 11:24:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADD91F008A3;
+	Tue, 10 Nov 2026 11:24:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794309876;
+	bh=gtytf2wOlGKlE0TlreFVP+6q1oQ0wXhrbpcwMFr2kqE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ZWIygTuWyMwrCCyWkgY7RsSrCDlQmRHjE9kDJJY9fgSKkW2X7Pzbdk/3g7E0JGGJj
+	 mqde4QNo0dOhsy/Gn071pmagJMcFwkMHNEXlNvvPDwwp10eksS4IhEBAyNpcUUHNdg
+	 03xRBW6p5vKfHW+VjaiwWf0yMYhOG5dztiwt7IvW67IkhnjAYpK1fJnR6QatxQkKpc
+	 Z9tzO6sREiDZhnO+fEx9KNcU9tT1MGR+831DZvlJFymsBcBH7mSmiB/bkiRKz0KB+8
+	 QOgrK4FV4ntU7mrjA9MLzJxXq9gTVW21ij/97aJSimoh+G1ihBNJeSIJ5pl1uTAFQi
+	 BezOJm2/uzfMg==
+Date: Tue, 10 Nov 2026 11:24:20 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-hardening@vger.kernel.org,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Alexander Potapenko <glider@google.com>,
-	Marco Elver <elver@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@gentwo.org>
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com,
-	linux-mm@kvack.org,
-	Hao Ge <hao.ge@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 1/9] mm/kmsan: undo the shadow mapping when the origin mapping fails
-Date: Tue, 10 Nov 2026 19:25:38 +0800
-Message-Id: <20261110112546.261415-2-hao.ge@linux.dev>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20261110112546.261415-1-hao.ge@linux.dev>
-References: <20261110112546.261415-1-hao.ge@linux.dev>
+	Ard Biesheuvel <ardb+git@google.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Jann Horn <jannh@google.com>, Jeff Xu <jeffxu@chromium.org>,
+	Joey Gouly <joey.gouly@arm.com>, Kees Cook <kees@kernel.org>,
+	Linu Cherian <linu.cherian@arm.com>,
+	Linus Walleij <linusw@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Maxwell Bland <mbland@motorola.com>,
+	"Mike Rapoport (IBM)" <rppt@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Pierre Langlois <pierre.langlois@arm.com>,
+	=?iso-8859-1?Q?Pierre-Cl=E9ment?= Tosi <ptosi@google.com>,
+	Quentin Perret <qperret@google.com>,
+	Rick Edgecombe <rick.p.edgecombe@intel.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Vlastimil Babka <vbabka@kernel.org>, Will Deacon <will@kernel.org>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	x86@kernel.org, Ira Weiny <iweiny@kernel.org>,
+	Lorenzo Stoakes <ljs@kernel.org>, Thomas Gleixner <tglx@kernel.org>
+Subject: Re: [PATCH RFC v10 22/22] mm: Add basic tests for
+ kpkeys_hardened_pgtables
+Message-ID: <717cccfe-81d6-4e09-a466-5361ae27776f@sirena.org.uk>
+References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
+ <20261109-kpkeys-v10-22-aa6c4d9603bc@arm.com>
+ <2d13fbb7-b5b4-446e-8709-5b43349ff19a@sirena.org.uk>
+ <9e59fd71-97e7-422c-a7dd-bc23c6e6a852@arm.com>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 3F256140003
-X-Rspamd-Server: rspam12
-X-Stat-Signature: msf99xe8mpxrwmbzuo3snjd974xx6yum
-X-Rspam-User:
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794309874-322202
-X-HE-Meta: U2FsdGVkX18aKP1VkxEsthEZjO8RFejY6LSuW8ekCg5dnZ0o/cK5neaHsZh9xEKK4fOLbq6sQliWzv42V+HIwEV7e+fsLwwts90rphyYgVTJuigWUt9K3aMBhBgwL2+tIzQWvuWt/81obPEMoG7zeqPq+slVoWN9y7iErZK0YkrWp8nY2zXq9CZmmFin+TBo9rdK0YfJXJGq9CcA4/MQGAv0ZmS5k/vvApdCyRneGw5LamX7MPW97T7XZx+LmIKb98LqrCsY30EUwkPJRmdu5dA9Gwu6r+I8Vxndj/dgUKVn0BqkqIZ9VbJiworfCIX5H/xPwbOD4ODUdLBkcKT5glDF6CnSY7vyVZJHAsU2eN5vU36mhVUR74PDvZIFMAnKAS76x1y97LSVwNDforVawz7kXi6f3Ij67GLp1MbMCAeBkjK5B33JuaTg8vBhQOK8/JfRFaUU7y4sB8db6VKtCoum+2AvAb0D4n/yovv9dPgLNgaKOBYDwyT1ydm+iI/jiHSGyM9+tmbTGW8i3w1M5JfvDshlFovTCZDHvhykdNrYe7tx+4roIrg94bMY2+HP1hqOX6Cmxi5bkPczJepWEyAABRFW4CFoP4M2xsh0uyTffcqyYx7nWKFtadWxLgm+iHIW9mXbJNCC+tXCjiiu+bQ/QPYLiow2exuy14s5A2DOao7KJFGg2DbqAZZ80DcjPt18sleVqVyg3qOK05/nYFjAwXtcoLQgtZVolKP79QHtQj84Byirhu0iYplpOBaoQXFzsivteXPbPd5063drGrhf6FkeRUEM/0uiHpDbCpfF4Aq1XmaFTsim8LUfGr4kCarWtJgtaSicQ0hW5iCojSCXkF6L8OEGaUd/tRedbISinZieCL8cERav7licMDjyYzRsk3KHZUpIC0zMRqIHuFAA5t+WAUWOLO+O+B5PECX4x8WI9eQFP6TnYYs8HAojF3xxRTOY/hwvYZx+f8W
- TM5mYn74
- qPmEymiOwvgWqxkUCWIHjkUWzS0DlmFTOVilQo0sxF51jqGV9x4k1jxxaYcYSKRLUH33/RkblTZ9atCFGRIGU6encjQoMQFPVED+qX1mDy3Iz1bogCs9v8ks/DH++XO0DGtJitpwIJqWydCal6TT3B1UHVpBpgd/d4GCn8gbbjoS6+7WTtiBJjFb3iBH+FZ9nQ41zED0EIrL0uKyXb5phtI8tkog11h+Nq3jIpXvl6kFQwjk8KHujCCwz14s0mB7Iv+ApdFz+UMgcOAszzdqFFzzeVQIjFQvKI6/lN1c31oLrNJD+/+RLtjzkAIGB/SXc8NYZ5Q/MqUzKuytgZJAdYIbkvdziOV6exejfBwCkOOZ6wqQlP52+9/AriM5gUPZ+jfZ/j6eWfjkYZnSo7vcDuQIdNRRde0YcSdLEUMNbgxeaSpAx2mQBFlaLhNeIAz2fEtvzbal3QIoiJAbIYie72V2ueV9G7RyoROtPkKFiHcKcQKnIwmlSAknzN6tC2yNgoJ+pJqpVZiKin+SyjrXKYMUwpVbTBsgYPXHzEd6i8c6HWkl0Ein3bga/akiItXhfTHHCDL8fnT+nPaEYeC3jFY0nTL6yqegnItHv+Z/scEDoPQk=
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qb3IpGrfHJvhxTh/"
+Content-Disposition: inline
+In-Reply-To: <9e59fd71-97e7-422c-a7dd-bc23c6e6a852@arm.com>
+X-Cookie: You can't take damsel here now.
+X-Spam-Status: No, score=-5.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=no
+	autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam09
+X-Stat-Signature: dise54hsfgtfkadzzkzmzcpzz4n8usr1
+X-Rspamd-Queue-Id: 24FD440005
+X-Rspam-User: 
+X-HE-Tag: 1794309877-896498
+X-HE-Meta: U2FsdGVkX19tFXHYy+SOe0XKSXcrDmmQppLnI5M2/2xPIW1z7pzpSikjcad1TGQDI5NSqDDt/UEDqlMi3JB0sAbiRW+Z3txoS6XRjjMlHrdksc/eBp8CGcJfolpPlvtoESGi2MOqY88PRHLSXbu3//T7Xlgm8MygzYaL6QFltGecXQzzwHUgGMErPcgUZcBXJ9lOC16Usnv24P5Yt2Pk22u1jHuFwN/BeV3ukTB/9RHg4BhrgKoT8fzuF+f6/2k0bpxe8yaJDFbbh3Rp+IVrqP4dHUKFljo7LtM6v3X7L8SV0vXRFwbT8kEJd7s6h7C/tmKqcACaLyVFRc7XhgTEiUK+mkRCtk4lq7I+ziP2hrNB4f9if6+chcX/wnwlj9IfIhFXZXvILY8NteslmcRDHaDhA0kIrS/Wik7gSIiJxK5ETvZum6B9TwDemO1GaMC0gDRUBbNTiEE+jEybVgoRb589XzYKTkx1UWZ6ibk4EU+4hz4dNKSRHjH9V3NNQIimnV+Ywi9/Mu95PxeDdIHIqg32J8djfTOmWQps+nFmcRy0URo5OsT8rfE/brn0SpDgsWSV8cn8/a2yLzz1/ZZW6kyafItkOIoLP5q2/x9T3+DIGwIFcwNNYoxmjLhX3Bly3GaBO4UvcAcke1Nq83zP7BQ/KstbP68GXokvca8iFOrkN6Kvtnm3ho6HcqqcHZI5We95yCkS8iYXaN/01d6pkpcbey+QgZCkZ7Kb3M0uFK8esC/Ej+tHZKEPnYyy6z7xoMjooROu5Wk0W9TN3zzeWGDRbD0ee8RFR0steSmh3g7grUDCprtHU8GRRecvIa3ccs0bBM3K+HSCrOgetoGWtXpc1dusT1ZULVHMHugaL+aCEsUxWE9Tc3Sn1Ui5ZtoNJLueiWx3bBXQLKVX9Bw1XCqG+Hp36rQxT/1CHIjD8pTBOZS0DqyfawscXXUylTtMOhjmUnv9QjxmLVFEvjO
+ Rsi3TslJ
+ A8Suqn//S0GxHMQJmYrc+DwqAinj95Q3oc/cqRPpS0Hy/BU/rhp8fx1jU47aL/2uNAYOjC6sm95rjnXH06x391ZLwuc+VLB/JWvB3vjrNNdxy83LxmiFwiFhKIggakXxLinXqSrl6Jj5ois3VtMRSqPZ8eo2+XvqmgqYNny55ZLEHHN4CSErTWkreO1629HsYhem6jPVOYcy+1PeG2VLq6paKQyWfWeiLtzO5q+4O3jdbhJMtyq8YD96CMOBHJGEdHNwPrD3W0RQTwj9IYEEX2tYyVEFUM9AXBxAXFKA1pRBwczVbQpCp+Mkf0KwrMWZX79avz1i5xvJKblxElnr4rD/TPyX7lgDItGIQfmsCz3obEBorKlHpPNqvnu9BWFQN2U2UXMLn5wg/6ButVeEPYGf7ZAoBYTYf0ynAngbEHB52wBTioncimRilDaASK4OP2/WCAWRQQAL18QqtDnfpA+G8qw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,42 +123,37 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-kmsan_vmap_pages_range_noflush() first maps the shadow pages and then
-the origin pages. If the second mapping fails, the first one is left
-mapped, and the callers do not roll it back. The next vmap of the
-same metadata range hits the stale PTEs again and fails with a
-WARN_ON() and -EBUSY in vmap_pages_pte_range().
 
-Undo the shadow mapping on that error path, the same way
-kmsan_ioremap_page_range() cleans up after a partial failure.
-__vunmap_range_noflush() only clears the PTEs; nothing has touched
-the shadow mapping, so no TLB flush is needed.
+--qb3IpGrfHJvhxTh/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Fixes: 47ebd0310e89 ("mm: kmsan: handle alloc failures in kmsan_vmap_pages_range_noflush()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Signed-off-by: Hao Ge <hao.ge@linux.dev>
----
- mm/kmsan/shadow.c | 4 ++++
- 1 file changed, 4 insertions(+)
+On Tue, Nov 10, 2026 at 10:01:36AM +0100, Kevin Brodsky wrote:
 
-diff --git a/mm/kmsan/shadow.c b/mm/kmsan/shadow.c
-index 0c88d89bf0d6..2166086d3dc3 100644
---- a/mm/kmsan/shadow.c
-+++ b/mm/kmsan/shadow.c
-@@ -258,6 +258,10 @@ int kmsan_vmap_pages_range_noflush(unsigned long start, unsigned long end,
- 					    o_pages, page_shift);
- 	kmsan_leave_runtime();
- 	if (mapped) {
-+		/* Undo the shadow mapping set up above. */
-+		kmsan_enter_runtime();
-+		__vunmap_range_noflush(shadow_start, shadow_end);
-+		kmsan_leave_runtime();
- 		err = mapped;
- 		goto ret;
- 	}
--- 
-2.25.1
+> Do you mean adding the dependency KPKEYS_HARDENED_PGTABLES=y to
+> tools/testing/kunit/configs/all_tests.config? Indeed that would only be
+> meaningful on arm64 (for now). That said it wouldn't hurt other
+> architectures, so happy to add it there if you think that's worth it.
 
+Yes, or something like that - unfortunately KUnit checks to see if the
+config options appear in the configuration so something that vanishes on
+other architectures causes issues.  Perhaps the default for the config
+option ought to depend on KUNIT_ALL_TESTS?
+
+--qb3IpGrfHJvhxTh/
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmry/tcACgkQJNaLcl1U
+h9AxJgf9HO+bESqmb7Zyf8xVpU39o1ESgrk4qSe8omR1YVn15bXCLHubG4BA7k39
+BBRjIUd0oKzcXxtFkuIyZLiQ194uaRe6MuOfoI+Ruzd2qjgzTlq18s/CUQYd23um
+xjtw1Rb5Vj5ruXGAwkuBosPG2vqzM/kA0ruLkQQ1lknx0wrk4buAsFjcNPjsddup
+ZjuRO6lSuXkDYGYG8l64ReC2hWfMTDKifeFbf0EMisifvHZ0dEmDf5Y+uJiG8l0v
+fQU+vj+TzA5V1SPmj9DpyTfm2wWwqpbBgxyuE1eOOj5Cj7wZ4Pz+fHhnfcmklIiL
+arkt18G1049QM3sfXwdWCKF3B89YVw==
+=yf2T
+-----END PGP SIGNATURE-----
+
+--qb3IpGrfHJvhxTh/--
 
