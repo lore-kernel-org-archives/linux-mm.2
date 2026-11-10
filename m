@@ -1,144 +1,93 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2174C606A219
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8535560A2600
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=fdDoWSfJ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=T6KcfDPv
 Received: by kanga.kvack.org (Postfix)
-	id 306A56B00EF; Tue, 10 Nov 2026 12:57:44 -0500 (EST)
+	id A0F556B05B3; Tue, 10 Nov 2026 12:59:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B8006B05B2; Tue, 10 Nov 2026 12:57:44 -0500 (EST)
+	id 9984D6B05B4; Tue, 10 Nov 2026 12:59:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 180496B05B3; Tue, 10 Nov 2026 12:57:44 -0500 (EST)
+	id 8B0C36B05B5; Tue, 10 Nov 2026 12:59:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EA8226B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:57:43 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8ACBCC0994
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:57:43 +0000 (UTC)
-X-FDA: 85419967206.11.E477493
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 9C72B1C000C
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:57:41 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fdDoWSfJ;
-	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794333461;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 63B756B05B3
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:59:07 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 004C8140A37
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:59:06 +0000 (UTC)
+X-FDA: 85419970734.14.66B74A3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 76FD840002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:59:05 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T6KcfDPv;
+	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794333545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I9He/fnvIveKiIdStskM2jtFd2W+NnS+TFAR9JUlqKA=;
-	b=toZOntWkCStuv5rgcchCm6gZMtqjdUlmRNJYxNMeuBO/kU42goo/liGTZQtcD1xKJxVCEM
-	qJAWN+rRgyAoqJrzHuNzF46u0kb4lw3S2zkE7achvsOx/p79j4tf93lsdlMmvMM1OPKKcB
-	MjT2nOsaaSVkyNHGxqRUClsHIwhGLro=
-ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
-	t=1794333461;
-	b=swq53r2WpyogS2IHhIXMV41flDZucauuAdNoBhm9l9osJ8uwKNqRJ0llBxSdvGPiWNKIOc
-	Q2Wd4H6WA4kKRU5mggwiCz109NInPeEzT+xNpe9LbCdpudfLaYI4UjsXBcf6RISKx3uF3D
-	2PYBTi0JG+AuxIDR3uXFCAIF78sxFwM=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b=fdDoWSfJ;
-	spf=pass (imf20.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.208.173 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	arc=pass ("google.com:s=arc-20260327:i=1")
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-3acd239776cso17182351fa.0
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:57:41 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1794333460; cv=none;
-        d=google.com; s=arc-20260327;
-        b=T1dWzVyaXPIEz3ShqmDwX3L5/Jm1Uv0ACOl5sFP/KVQBoPb5HNcPrTCMspEhyNVo72
-         qFR85UuqHu9OhBI+Pbg950e4zDoTKVSH1h3+W6VU8/hAiSIqqM5Gi5iH6zNrbwbMOFL/
-         5Hy5QHE3NzJwwDz7XYmMEEUMuQZnDbb8/MOqv5n4LboqX0laJLx8oJDsiM6j1xVmCT2Y
-         5IGA7GF3w8COtHJAH/ng2aQ+CjLTL5h9JyMxalOiYphskPqhT/yAuGPTtT93k9+4WzKB
-         UP5HtKRL/lmwd4HZtX1YnZ58RDMpHNd3HZle0hRbPZdYzU8s+bmsqXgj3JupT4yyQnOu
-         P0Yg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=I9He/fnvIveKiIdStskM2jtFd2W+NnS+TFAR9JUlqKA=;
-        fh=n4C5mzEIiqlo2Y5aAuomFYSuf4qj5+WkaN8lHFDh7hU=;
-        b=VeNdsr1LfhmPnM8HvVZVY629yuQy6338wOdjlMSdx2tQLRVVRkCjKrJSU89yXSAP4A
-         JPg4gxwTWmQTCV11hhpryhOz6NVtArEAQl32HCHecb9UZD9AavYL/NWpvTwpPeipHQVB
-         cJX6lXjzMAMpcVSKfDeELpPTfCNLwm1AmW+dVkj7Hq7rUl29LB5o/DOVh+bmmXv8KWIX
-         BWOF7xGe608MVVMqShP2RA2AFGRJZsdQdh6AD5SRaaHEPUW0pm9B6RBKhA8NZKJ8Crub
-         5HJxNKpraFy8Vemql/rYqG4G+oBFPFdkJNufHW1DH22py+3FXqaiynlQ23Ze8DVXi6TU
-         7LwQ==;
-        darn=kvack.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794333460; x=1794938260; darn=kvack.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=I9He/fnvIveKiIdStskM2jtFd2W+NnS+TFAR9JUlqKA=;
-        b=fdDoWSfJk+OAJLGA8NIV41ZATCcpTuXrme8Gn/rTi/nVuwGkegGYnthlwl8MyQf0qR
-         1Xc9lcGYD1AGM8r9r/UKJDJyVGCSfaC49YP04AWNKvQ4ZZ2xATETyk4VImN85BnjbREf
-         9qzholWTLIBHT9HwGSgqQd5S8/BR0b/hNUydOzraOe9wtuX1SYUuxKYP06jw5VS7wHVo
-         S53mSbOSoZfTbs0FTr2j3a8eptn+geX1HNNjISuUUFax03eTJ9AI8p1BnARqWZ3e2AED
-         0EDrrKndMNP92Cuz6gV8L/gm3B1cVT41F580AsWzfLA6pYP8SRoLmDQev1+EYhdq6bpd
-         Qz+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794333460; x=1794938260;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=I9He/fnvIveKiIdStskM2jtFd2W+NnS+TFAR9JUlqKA=;
-        b=htHD3FGy5H1biYWL8dHQ1IUykY9Z4+RoaRxL3o7aJGzrAIbYMydgA171JeGIo4SzIo
-         qnb3kUBLH+n2L3gkL7aI/l3V/8OjW8sW3nf65T1FsSFt5UjNz9YqOTOY76uTySLJ24yh
-         1IXr0Kp5TetehaoNp/nvi10eKDqZs6gKKi0AUANBK46yZybf1pUCxThKXZpsCBlHyXxB
-         eD5y66sgushwAgOPDGTdIVWahA07J8vbMD7LmLzm2WwfJoH/A3QhddZKOQWkfLQEpSq9
-         C3DNFKTqp9UHpzUTvDhb5plqgl7Lv/a+Iy8ExRuUo/eqx1+shS0VmmYNke8d4wGu6BNG
-         VUsA==
-X-Forwarded-Encrypted: i=1; AL+hErHMF+Nyg3eaKq26bfmfRAT5yCR8O12woMOY23Gl+QuE2iSFejyMUvJkLHE6KUJt+ItGazjAupXP5Q==@kvack.org
-X-Gm-Message-State: APuU4Z/zy/64E+bqZsuPKIYVJaSK6VN/SD76CldY/duUzlpTDsIeX3VV
-	zNDPxbRLLpPXuUiASpcO4bEjv1nyL4TwCKdsb7IT3uPCcONcm1Istm3Zt/zKruWj62Ov/F5ujLD
-	QNqBRfmuG0S/4RXkhK138z8qUjwGSUMNBc2reuBg=
-X-Gm-Gg: AYBFou1yOJ03CluOjWYbCSdhOf8ZqdDiBidOtbX7w07gqYVWvKPC6XMZUZEt4GX46uf
-	BdGFsY/5b4VMFPbhPVy07QWFjz8hDsMnglpx51XOtYBJ9PXm8a2zUCHnH/dgArZPKqQ/czTU9Ig
-	UzC73OndjTwWsy7gk5XJJ9N/xzBJfwC9IvWbViqb9qBGMEyrprNPUEwWjhdWUBTGJIQfA/kMS1K
-	SJCx9tCwynZdgfmKucTt5TEIyLhbuybb6lxYn7YcykXYX5A/N3WG7YaT80Rbzd/l24hgbLFeYcp
-	wclMiM15KZSxatZlafROizGmti6teYCdwvz4RbnbkZTczP7w+OFdLGv+V0q/FP+xcVLHryRHcHX
-	3qnUcM53llI0IC5FPjjrRMNzjEc6ofIMb0+tbxHBRdspVVmiGQBckDi/st7RCKhcKQe+UGQ7nOb
-	pvndtuQ5ohet72bvzoOiY1u1Fa5c5Xw/ytL04461ZuyTZ5tl3FKp2j
-X-Received: by 2002:a05:651c:158e:b0:3ad:f0bb:344c with SMTP id
- 38308e7fff4ca-3ae0961f342mr5818461fa.10.1794333460012; Tue, 10 Nov 2026
- 09:57:40 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=UdWoH3rxAMjJSmiMO2Z1kLng6PSZrZDHaGMrDeYLQBM=;
+	b=lQyjO/5fQgwi4P2IXdQeb0Tvvv+HXitc39quWV6YQPfbeivujMx0Aeo3grKRLiQ3fOv39V
+	3XwlcVciyyHlat+WOc80iwNk1G/G2h71DFuWqFELYsx1F2EeeeiUppmAk3WZIBIBk5o56P
+	nUHuIY3hC/4INRNQMUG+J3PbcmjSGiI=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794333545;
+	b=h3I7EOe4JDIYKN2Z623Im/G4QuxBZ4FNvL1KoKPVZcsJuskSoKOPKk5JmipOt2xL78KAGL
+	RjQ6I66bMIWDvE6++x8TVEhyLWGBXv5iHJ5YKE6ImhjaPmWx2O8xAaiU9fFL/l32mq3fGL
+	iOCi3LC4gDhQ8Oxya06/aNBRXM4c3/U=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=T6KcfDPv;
+	spf=pass (imf07.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id EDC3E63ABF;
+	Tue, 10 Nov 2026 17:59:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4101E1F0089F;
+	Tue, 10 Nov 2026 17:59:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794333544;
+	bh=UdWoH3rxAMjJSmiMO2Z1kLng6PSZrZDHaGMrDeYLQBM=;
+	h=From:To:Cc:Subject:Date;
+	b=T6KcfDPvuvhcTh5izdDR0sRVp1z64wkzniIfscq3Bjhm8Xpamtaq1jCi92FDfB945
+	 U9Fn9MGufVqP1b3mA5j4TaX3UcqvQVa+PmVM/elB57keiEcmVGrmFPefDWP8V/My/+
+	 LNqjiNLKRInYv5ofbJ8G4HO5WgsGAAKoN0HsixJRw1zSfWthS5OEojSb7BOOwXRoYZ
+	 QU7QMW11vn7ZPWqk39nQqauKgvlzzoD3p92E73oVIq1Hds6Z9C5kdsRaBDTT1hJh8D
+	 AZHDC4uUgeZbI4K2M0OmYN+5wyVW3NwVI8oGHCgGa5ZETSEpNij4PTIR3RDPYY8iiJ
+	 PvFbFJ2F8krxA==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Samiullah Khawaja <skhawaja@google.com>
+Cc: kexec@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v2 0/2] memfd_luo: keep memfd frozen until finish
+Date: Tue, 10 Nov 2026 18:58:51 +0100
+Message-ID: <20261110175855.2437084-1-pratyush@kernel.org>
+X-Mailer: git-send-email 2.56.0.542.g3ef89b7020-goog
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-References: <20261110054836.1515030-1-senozhatsky@chromium.org> <20261110054836.1515030-9-senozhatsky@chromium.org>
-In-Reply-To: <20261110054836.1515030-9-senozhatsky@chromium.org>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Tue, 10 Nov 2026 10:57:27 -0700
-X-Gm-Features: AclHuK8pPFE0hpuvuz_PzsjrrD8lcbAsp3pcgD0h8PmRUyeyRyhQq1XIFPx1444
-Message-ID: <CAKEwX=OhvH80f-6emK0fBhbm2d4Er0rQ8oXX=FmfG0vrTdvZdA@mail.gmail.com>
-Subject: Re: [PATCH v2 08/11] zsmalloc: encode 1-based obj_idx so valid obj is
- never 0
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, linux-kernel@vger.kernel.org, 
-	linux-block@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Stat-Signature: 7uxbw58mwkcyh5f5wr5gttkbya4tqx4e
-X-Spam-Status: No, score=-7.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,
-	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 9C72B1C000C
+X-Stat-Signature: 9xeciwewdsmnzyux93h64kmuqm4nuoka
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=unavailable autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: 76FD840002
 X-Rspam-User: 
-X-HE-Tag: 1794333461-855156
-X-HE-Meta: U2FsdGVkX1/ZHr4FQkisPV/P65J7mwQ4gmjxUWhEBB7t/AxqzmLeH19mjabNHhXeTdjgPwPFvensEa5hlTHDrR63zD8fLAXgcb5Yc37Uzcl2Tn/lscTKgKjXPqoxogEizzVPGgG/Qz5L3+QVD1xYQAwBkOlPQFfJmJZIQ+21u+BknZAy8jXPY7s3lXUevb4B5btAp8c7/cXbR7iihnS+Z4i2kqK3wCrNo0NniRqnNqvorIPWWsbdlwFi8fUpoyH4V3zqSCzwdmhPNnBKuzlLmqgamMVUg5uYtsorx81czE8rPzE+ZKrS+neLjdZcfyiXJKLQ8LwpnE7At+5gbWXf15/JSjQfcIClk/53rZXy1bJV+TOqJTSVvhiK47xVDFF8rE/2xzDwVMWup44aKsEiS6lf9vUv8u2WNRi8DCS1IV76lCpa90WAlnlr9KmJJ6jk3XnATllbkCiCQKoSjbfKNw930cRC/G4GR8bmy+3ntYFP99Ul3eToYupkxVpoJ90XYLeIMTklsAq+DWZtdEOcS5PoIBuoGtQXCMuz332eFA7LWrIThRmrfD+wkXUZBGqGJy1L7N1yq6rXpXbt1VSaWYnWkc/4XSihVvBgz+PBZWhPa7udnlNb0lFwLy8K47ih23zOtCys2siXNDiys6mvBBIzEheG8J1dkOr2FxYfAk2SKYvTzyneINxHv5nWPYsm/ZzktWNLDzFJbuqPzviV2FC/wMDyYZthwj137De6VnYVIj4ozS2tB9gbTN9z+TzdaduBI7eFzhRT9/VuKe8NmCyMV+OxfaWHu1L3Acn+dKlhTaLEE3uRFYSL5CdP7yqkSy/V0J+XzU4rwz5SvhJTSbO6obraBLrlA1EwIJ/uGbwuFWpcnjs0RDz99QkqcwXtXDJndNCgLANsLJFiJdsp21Avdw2JFmQlRO/qENW43nG0HItwtWrgOFE/PMeWjKVHQGudUNv9DTMQlHCZCEe
- r0etRbSM
- 8OEvBpBhcrzXF0//X9cywEIz+cbrDeNukp9URIzEtW7vT3ITIP673hbzMbbAxxP2x0K62YxveNgbxJ//ejFuWknwf72gNZn0r20yEpdZ0dWPNH+Rwz8JQBtMpPi7TlQb0FbI4p6+TjfBLActI4NnX04tdnELWRPMMWjsjfzFGnCfVu2dQkfnJaOQ6u9OsWkETYWS2kEQ4oxVzKD8h8oAm0/FS7hgX9w4CvRGDFxHthQRl2eHYcFj74mgiLsoSz2AhuJ//ibQb24SvMq999rNYxFOzfrJ8MsOmb7SX2RfdmXj7Q0etOgR5oMRK/3eJos3/t4Kbnw3t0RdSmOFVydq84FqCEAdxND41uwyU0B0JXNtts/yh3ZTzs9z8BRMUIMxDLFswLJtNW63K0dsSKjvyeoKaP8oJOcsgE6ZA0O2EvgZk4UIstsApola/jZ1PYRMF9Y+wUD1a6gPSCUaTmViDuLYgDDZV8d5nl0dgSWFXiX+jFFG70SdLJ1Z+OA==
+X-HE-Tag: 1794333545-93502
+X-HE-Meta: U2FsdGVkX1/va1I/3WeMCPvdj9NXRaqLpib8CyfSxf0IoRn2GWzJP55+xTLfVML1ChH1j7zhqBWdOnnCaCRyTBdk6lQ8WpqP5HlapaB+KaYhw0ulZCwJbhiMMlTBTihD4w7OFZa7L1o+QRFnCPsPHBwci4KHVqlbEE7S0xoEQK6P0ZfYv3iYjxFXh9kewawOkQdEwn86qzezyhL79FJ7apY+DSD+PaiR4eLF0/0WJGajj6C5kOz+C4iT29vAsbGSP/cw4J1Tor7d7IVnufHM6snM+gmMLdnL2YRiq7Lmfw4v5AFsvpUL4Ktg2ALQgIglxovbOg506bBQRZryYmaX6276p0kOSr2QC2hSSnpPV+vKTm60nH+4sZ+nrD5KqNnOyvE6hHBw5kz7qYjw4TGMvI8P1ts2fvud8su3DEiqIvT+BlG4CmXXZkee0DcqhS/HbhI94sCUFcKGUVlbFf3+kiJcynoU3LuuNTnJ0bccdH9SFk5G0BYR2cfiGGSPffxqLlItEkNN4wDGh4j/XQVegxZqJwGPcOtbzG2VpQSRVxdo/K6Ns4LoF6kGaBV/mbN3/zIyorNyUkmQ/fpTRhBAgO/rrt5Ob6RO0x7gq5T2Rve7yOw+ycUxwjP8tX0dRxEI1OSpCshzz9P64auyKAxdws7m2zbR7f+KDKRUeY5trOiBPzijCysB0SpXEi5SYwFuqbHm+BoZbw3VRamvxEJe6cpMrYHCVQfb/hO3QUVpXxVThKaoBX6Q1UPqQXU//zNCfDVzhF4nV04cTPOq5xP5dmrPmkPkA3MbaXTGNPSgR7/r1zzqMeSBZ9wTIeCgDavWLoCiBbLD+lKcYKPbdu2FCtArUCqbmVT2ITZKHYiiFJYajF6Rjkx1LpQULgtUVIA+1p+u8JVKS2IFzydGxa2v0TgoPYuB9u5hklYmx1gYbskOomSHvyYhpUwBfgKUBCZKTpWQWKbPM47IJiCvPvs
+ ubPXqLgI
+ pHIRS3QCEdGXjd/vBFXReBU9FytNfrNsKIZxjx5xfbuP0I7Xo/8/a7OHxOYdGlUINf2cOyc0egbsijrws5Wwuf5d1gQdJDuIpoxhvladDGsuMyjav6bB0yBg2jGhi4U+aW/pdGac1MEGo21IAz7DFoK7UxC9lEhaAcAAlREXdnBqAEd8cFgLPcLlQ9sUdEZbU8f9QnCUJ3t682xeU4DxKtqJL5L99FlMpJBJLfJj16kRZbp1aWmHCuNnBUG6MSo3Onw0UGu/VYIewBxcOZBTkZStfRw==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -147,25 +96,47 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Mon, Nov 9, 2026 at 10:49=E2=80=AFPM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> The next patch embeds struct zs_handle into zram and zswap entries,
-> and a handle is considered allocated when its obj is not 0.  But obj
-> can be 0: object 0 of a zspage whose first page is PFN 0 encodes to
-> 0, and some platforms do give PFN 0 to the page allocator.
->
-> Store obj_idx + 1 in obj, so that a valid obj is never 0, and adjust
-> ZS_MIN_ALLOC_SIZE so that the largest index still fits.  Unlike a
-> separate tag bit, this doesn't take any bits from obj.  zsmalloc did
-> the same before handles moved to handle_cachep, see
-> commit 67296874eb1c ("staging: zsmalloc: Ensure handle is never 0 on
-> success").
->
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: "Pratyush Yadav (Google)" <pratyush@kernel.org>
 
-Bit convoluted, I assume the this is so that we can use obj's 0 value
-to mark unallocated state?
+Hi,
 
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+This series keeps a retrieved memfd frozen until finish. The main
+motivation is to let dependents like iommufd have a chance to acquire a
+reference. It also fits conceptually: finish is the point when the file
+should be back to "normal".
+
+Patch 1 allows keeping private_data from retrieve to finish. This is
+needed by memfd to keep hold of folios_ser, which it uses to give up its
+pins.
+
+Patch 2 does the main change.
+
+The series is based on
+https://lore.kernel.org/kexec/20261103172251.2348370-1-pratyush@kernel.org/T/#u.
+
+Changes in v2:
+- Replace the stale reference to the 'data' field in the struct
+liveupdate_file_op_args kerneldoc with 'file', 'serialized_data' and
+'private_data'. (Pasha)
+- Collect Reviewed-by tags from Pasha.
+- Rebase on the latest liveupdate/next.
+
+v1: https://lore.kernel.org/all/20261103181916.2462825-1-pratyush@kernel.org/
+
+Regards,
+Pratyush Yadav
+
+Pratyush Yadav (Google) (2):
+  liveupdate: luo_file: allow keeping private_data from retrieve until
+    finish
+  mm/memfd_luo: keep memfd frozen until finish
+
+ include/linux/liveupdate.h   | 11 +++--
+ kernel/liveupdate/luo_file.c | 11 +++--
+ mm/memfd_luo.c               | 87 ++++++++++++++++++++++++++++--------
+ 3 files changed, 83 insertions(+), 26 deletions(-)
+
+-- 
+2.56.0.542.g3ef89b7020-goog
+
 
