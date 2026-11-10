@@ -1,102 +1,149 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC810606A321
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 23:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BFAB606A320
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 23:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Yb1gq23E
+	dkim=pass (2048-bit key, unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=GPPpWhI/
 Received: by kanga.kvack.org (Postfix)
-	id 4D7B76B05BC; Tue, 10 Nov 2026 18:12:22 -0500 (EST)
+	id 7FFEC6B05B2; Tue, 10 Nov 2026 18:26:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B00C6B05BD; Tue, 10 Nov 2026 18:12:22 -0500 (EST)
+	id 7D7246B05B4; Tue, 10 Nov 2026 18:26:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C6826B05BE; Tue, 10 Nov 2026 18:12:22 -0500 (EST)
+	id 6ECDA6B05B5; Tue, 10 Nov 2026 18:26:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 01F7B6B05BC
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:12:21 -0500 (EST)
-Received: from smtpin05.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7AA76A01AF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:12:21 +0000 (UTC)
-X-FDA: 85420760082.05.813EBC5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D2B29C0006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:12:19 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yb1gq23E;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794352340;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 391F36B05B2
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 18:26:18 -0500 (EST)
+Received: from smtpin25.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B1AB5801A1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:26:17 +0000 (UTC)
+X-FDA: 85420795194.25.316865E
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	by imf25.hostedemail.com (Postfix) with ESMTP id AAE98A000B
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 23:26:15 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="GPPpWhI/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+ARC-Seal: i=2; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=pass;
+	t=1794353175;
+	b=G9Qx2RA1BCA9yD3vn7Py5dqHIF1i/wMkOrBU4xjAqkEqThYY+aIDoJW77FSgvA0qSD2eZq
+	b8O/x45DJNXzUv1TdXNDHfhAYcFruTSc4WZL2rCmchSSDqdCcl8xBvAqazLq6a22giGjZM
+	SBHS9H+pvO4I7LgKXtxXccInEiZrCb8=
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1794353175;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rndOsQi425xgDTsXXY5I0ThFNzqgz5wZx+Izz6WvZP8=;
-	b=PaXkz6dx3tHYJcyLC0yjIVGBZDk5GfQQZA6SS+JcQT3eqpw9TtcdDoG6/2R+yEx/iNbu5Y
-	dH/0f9szMmwbGAUO2D6viZthIcb+FmPcow8MizorfLnL/SPKPZLc6L/YBwaVwiKQmfslQa
-	PmA04LN9uR6u/M1mBIekrwbJ+CIoxPk=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794352340;
-	b=eLTWXQq99Xnj6W+Ac7XR4qqgBGpwUkqC6jad4PbEdkcuv7Gric1eG4Kap4PflzSEPZnnl/
-	kI4axibvhIzDkkJoSlnsUForQ1cKjXF5ThmMy3yCoYn2DDGBhY4JQWBzLz1WNd/8tt33Rw
-	itQ2Y6yFnGp65Ae75xaUKkbMPDJtjDA=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Yb1gq23E;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2B7B94234C;
-	Tue, 10 Nov 2026 23:12:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D8E1F0093C;
-	Tue, 10 Nov 2026 23:12:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794352339;
-	bh=rndOsQi425xgDTsXXY5I0ThFNzqgz5wZx+Izz6WvZP8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Yb1gq23EVRXbdLpbvOzd7GAtNe1L00Gj9dbFywk9/sWh7PpxiXnLQ+T7KIGI1T3so
-	 t9zd0pwsHfKy2jP+uUo5QIoBVWBZkvBo71yQAcx49bIXughw1f1maZHoGeUS9RqQue
-	 MBz4egN6l4writFLSe/CMHAL6ZgRYsv48TgCwQvSpTYVesmJVpB6naX0YzmN90/C2P
-	 ZuNeZ/6WwTIJQvmrj0wXj7JHhG1u5zX+/RgrfTVUx6v71Ymv+yCSpAay5RYAWkV826
-	 1iVkFBLxsT4ehAOOvO3RUsCj/N4AFQK/iNdUhzmjIF/G/fxW42XWNoxWlQB9EyIoZj
-	 yl8PSYpaRH9qw==
-Message-ID: <sashiko-outbox-207866@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [RFC PATCH v2 11/25] iommu/dma: Add per-CPU block caches to
- PISA allocators
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Luigi Rizzo" <lrizzo@google.com>, "Luigi Rizzo" <rizzo.unipi@gmail.com>, "Joerg
- Roedel" <joro@8bytes.org>, "Will Deacon" <will@kernel.org>, "Robin Murphy" <robin.murphy@arm.com>, "Christoph
- Hellwig" <hch@lst.de>, "Marek Szyprowski" <m.szyprowski@samsung.com>, "Andrew
- Morton" <akpm@linux-foundation.org>, "Vlastimil Babka" <vbabka@kernel.org>, "David
- Hildenbrand" <david@kernel.org>, "Jens Axboe" <axboe@kernel.dk>, "David S .
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@kernel.org>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>
-Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J . Wysocki" <rafael@kernel.org>, "Danilo
- Krummrich" <dakr@kernel.org>, "Jonathan Corbet" <corbet@lwn.net>, "Matthew
- Wilcox" <willy@infradead.org>, "Lorenzo Stoakes" <ljs@kernel.org>, "Jesper
- Dangaard Brouer" <hawk@kernel.org>, "Ilias Apalodimas" <ilias.apalodimas@linaro.org>, "Willem
- de Bruijn" <willemb@google.com>, "Kuniyuki Iwashima" <kuniyu@google.com>, "Joshua
- Washington" <joshwash@google.com>, "Harshitha Ramamurthy" <hramamurthy@google.com>, "Alexander
- Lobakin" <aleksander.lobakin@intel.com>, linux-mm@kvack.org
-In-Reply-To: <20261109182533.3594984-12-lrizzo@google.com>
-References: <20261003212241.3432303-1-lrizzo@google.com>
- <20261109182533.3594984-12-lrizzo@google.com>
-Content-Type: text/plain; charset=utf-8
+	bh=g0g+GUjuFGWMtETfij1vLH1PWtxhKw/vsoOibkr4iiw=;
+	b=nKiiXSw1i6jwjsKoAZ1PBqDoG7sZ6B6Vwu63Jcpa3JkowU1NY9gPOX7EzF+SI1LAD+lUcA
+	uCbR2ZANdW3RZQD7x+A05Ra0hyQ0iR1Ul5lChOB8y5P7lbQRpf3Ur0v4zjP2o1kWDhqhbR
+	P5NLjZWMLniHFMogPCIegrXX9MnWcUY=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20260707 header.b="GPPpWhI/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of joannelkoong@gmail.com designates 209.85.128.48 as permitted sender) smtp.mailfrom=joannelkoong@gmail.com;
+	arc=pass ("google.com:s=arc-20260327:i=1")
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4b467581b98so24373565e9.0
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:26:15 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1794353174; cv=none;
+        d=google.com; s=arc-20260327;
+        b=jCrXHsQjIkBy8enVrlTlSANmNAD118x3nIgl7lM/Et6XE13+QytcQKBPt/98MlIzd3
+         TeJic/9lIQYtFvwn9JlxjSJMhiIHbPWsloEpDRQf9NvHMmhIvbbXAF1TQu09a2+LaFo9
+         laxmw+zm7yOPjibi4pzv5xfLzuf77bMC4DYlFDbGlJAeljT32f2JEcvBZAKVrUIgMQtL
+         f0F/ZSIb/9qoV0vtqw6u6VtihBAopNQmcrTHkvZ/vMkyNv5vN9V/DoEId/SUvNlvhUpW
+         AFOnZkf4mA+JMCyq+1BIzhDGMepRb9eN6Ps2e5NfASzEX8EKkDwW6E3kwNHDbrbpQQse
+         S4Cw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=g0g+GUjuFGWMtETfij1vLH1PWtxhKw/vsoOibkr4iiw=;
+        fh=gHvim6T26GBcMMqtMA4DahHHC+txpSId4KMeAWFazM0=;
+        b=R8zTXfK7VJxxI46+7+Ahb8787QEdR5uxhCZET+2/uWCzzsZQy3/ikDqCb8inCH6zGy
+         rIVsogAgVZS6X4eBHg2iSdCgPgZE6mWq0fYKw2byraIjCEfBNbaSIDow3hSyLx5UKYTk
+         rdTIGwO5fF1hSkqqcsr4+57bltNmmNHGb60jWnUiJxhsfwJSlA/n1VtDHBpEnlsaSxJU
+         Wg/LWsijssbVMzBikG229KDsLhwmd460h1K/PH90ddaL6IBjubQvsli3bOQf8XUQ7mW6
+         +m8B7mfWCb/sOO+EOekvWC45Yin0CRHgiGP13hlJEhDu1IpFJEMeaP3S9Mak/swuaB9i
+         iCdA==;
+        darn=kvack.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20260707; t=1794353174; x=1794957974; darn=kvack.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=g0g+GUjuFGWMtETfij1vLH1PWtxhKw/vsoOibkr4iiw=;
+        b=GPPpWhI/tFzTg04TflOXazejPoCbSwkAE5d0Itq2vMDIOMFtDVtagdlmp6HmKkGYfm
+         kYDeJ9hN/X6km7uViBbK1s02MxjrZ0PURVvaOejL/5gtHNdBUa2c6zUzhmxyUTs7YO3r
+         ykcGQD+muj9TyZjmzW1vhRxIV1fCTWCjRLANzhvf9nhJ6oLo+25LUoEJyp9ur+euiufK
+         kdo8ite6oWXNaf9kfPVWSstuZy1BGpeM+eHhM1KAwRK1MrKYgmC45SmwBqCcqJ/ncQ3v
+         rf9xraQKdg5wP3m3b/6a/eYZCsv7WwvXmLjzvXWWevq1sCv2BeFmDC0AX7LrOAQEozYX
+         ootg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794353174; x=1794957974;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=g0g+GUjuFGWMtETfij1vLH1PWtxhKw/vsoOibkr4iiw=;
+        b=1S0TVbsCU/HiiXAJzzZApkAs2gE36XMJEZwteS3DXED1B8hZ6n995wRwpIBwOB/aSx
+         PjJUNdvJiAdtwv+WuQvDF5Ph5ZBoTaKIzsSW5vd8alGtI8fc317IM2kFO/bSwhkFL5Uz
+         2yqzcDTeAT09Q1QxWitAhSjWZEvyR42Q7RQ8OboTdRbRpjZvEDviIKPWd5STSkloOK0m
+         JgwkPbGCF3Xp/deD2yt9rMy1YP+e9ntmGG+47mRGUIIg86bymv/zGKkIZCzJ6GrvA6fS
+         INBnKeUY3Z5hmRAtyRchuQxVOBKQCngHLyUvCI1wigdGQBr3vL6fZVf2uapGHyR2zi4f
+         Rguw==
+X-Forwarded-Encrypted: i=1; AL+hErGVnNMlcvgyrR5nPwOECqdeucS8Jg3dzqCYZGzY6F+J9FFXXrDxW+hYFtsfbQW5xQQwaL6SknI7cA==@kvack.org
+X-Gm-Message-State: APuU4Z+9ilzWo0juqqi6AmMctUBYj3/WsUdCoyMiHz+WVJGcLABvNgm8
+	bD8FBtPJr6abkzCvt1Osor2tS7TRfDZEdtwUEGvJf7jLVqFWvTb6jAHhd//1YG62yAHa8BiE1NY
+	E+9WVbVvL+whwJyMskIKym28ZhsJ37ng=
+X-Gm-Gg: AYBFou2W6ktqte2u/i7Ojsml+ZKocs8fqmoBCYeJtkZKBjD/a1qPChKLU4JjvEbFNOI
+	938InWOENjqKk5LZ+mmIoNxj/x3Qq6KXsVbxQCs+LPufMwcxNmNHW967dYEtrFMV1dAGR6v6iMP
+	EX1sfnwZaleltic3toxT03SKfCqzfzkBppx2lxsivd8YvYd5IR68A915/bhzrvckfzKLjoTze0t
+	PeapzgpPdPJiEGZSzp2HIstI3RaICyuR7e/Xu5dgzbWFjQwS3x9NYY5rgMHG2OspcyrArVu7yyI
+	6DHEfm/6IOtDtI2YLeVwpimrjZJ9hOoklaMLBOT2e0PET5+nNg/D3d4IKrizZ8a9AtPMj60iIpY
+	+rb0639Iu9weB3tTWlEHkRzEYs9EWdRum6AkiWOxQLD0vdhLsOkChdJzu9gwCCfcjaDsZBPXurL
+	KTVZvBaL5tbJQ3lmU8jg==
+X-Received: by 2002:a05:600c:4f4a:b0:4a1:7e76:d02f with SMTP id
+ 5b1f17b1804b1-4ba0938a45bmr10883095e9.14.1794353174119; Tue, 10 Nov 2026
+ 15:26:14 -0800 (PST)
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+References: <20261109220958.2071687-1-joannelkoong@gmail.com>
+ <07a8ffc3-1f71-4e41-aa83-424e267ee48f@kernel.org> <CAJnrk1Zn4xvO2ySmmgk3vqXUKwz5TPHMWtRdKgma8icWsug9Vw@mail.gmail.com>
+ <520a5027-8c46-4111-b6f5-44ee15c1a267@kernel.org> <12D9952F-7AD0-4D55-8E74-603418C4C29E@nvidia.com>
+In-Reply-To: <12D9952F-7AD0-4D55-8E74-603418C4C29E@nvidia.com>
+From: Joanne Koong <joannelkoong@gmail.com>
+Date: Tue, 10 Nov 2026 15:26:02 -0800
+X-Gm-Features: AclHuK82zKfv57_3FzoQqQr9fM4ukyLmkckjBULwVbmv7FkWrQZ5BSPT8VS2Lik
+Message-ID: <CAJnrk1YxOUidqtNehoPL-_DknyT10BUWU_5GBJfg=amY0OAMwQ@mail.gmail.com>
+Subject: Re: [PATCH v1] mm/rmap: fix migration entries being treated as
+ partial unmaps
+To: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Arm)" <david@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kiryl Shutsemau <kas@kernel.org>, Usama Arif <usama.arif@linux.dev>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Lorenzo Stoakes <ljs@kernel.org>, Rik van Riel <riel@surriel.com>, 
+	"Liam R . Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, Harry Yoo <harry@kernel.org>, 
+	Jann Horn <jannh@google.com>, SJ Park <sj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	linux-mm@kvack.org, Sashiko <sashiko-bot@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 23:12:17 +0000
-X-Stat-Signature: rbmqm91gy17tcdbbj1d9dh7spyjkihtf
-X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: D2B29C0006
-X-HE-Tag: 1794352339-778977
-X-HE-Meta: U2FsdGVkX1/KIatBgEMANOALw8Z9wMrxPrYo6YKPk1QxJ+azH83TjjhtiFT3HHFmkHew25UiPhwc70WOVB3nh7RWQEBTQZJJsBwlGPA0Nfvxf8YxlOLBhO3+8SlMlRJhkI+VkfSeRy7+SAMyE+7FPCT0Affc5xOdcKC4LAopksDRE4Wr6poDko8bNW8wR6Xq6UCmDodE8HrrZhz0O6Cc0BvP5TKD7HwijnhsveEvKHLrFHb8SkGDxmhEhSnIVk1zHMsJpsgGf1qGpdtBvolHqsX9qSAnJ0ooB1+AR+UQhZYvjD/Ya7Gx+RqgnWl2p4M/WzM4THfiMqc6dL8C/Aei1nGliZSceVKA0xTvcx/tyBILtZkTGi+1U/T4a51qG3MUaE8yG447Ri2uMDZL+FT05Br84z1kfVgnBlQBOzw1XospKOdHtZN3OlA/T4HZiSTd99pOA07kHNa35AMHpiK5gRgStHxyFnYwp+RkQQSkxzHoprW3ov9H5ISQYubPz6+myPOxhUBSC3aBLdmoM+oTF5GIa1MO17F10GsJYOotgfNniKu/CGLMRmHduBn972fWb1SRzIR4LqZgfc6JPQcCBKKG/oFgjyRHl0VAWi70Sbetd6fOTl8ThxIgeQixSJxiTIqTG9UQPnyvwmAdt2mQuEhSHH6UxlnKRBtRLMh1fmoK4QvlKt/u6AeRNx+NbmVW8yNuf3ekAvQLkKjzoKObGh0ftQW620jpYYKacZrk5RWHRENxvKWZgVNT3KdPa+ZDKzcR8v++IJlDbBYqeE3kc7ilxJF4Er8/Mke9gAlfY5VM1iM2z0LHYEyAh2S5hrTTgGaszmedYXbYCQPCvR5CvtZRVf01QMzBJ/n5SV4/BgQZAOGOPgP2gxbc2SG6dJonIaFWMO1n1BNI6hVqkecDlo5XOQuLWt+Jnq5SzftbJFo5seW6g0CjEhTd3IB9c+AULkTZxZT53HVuBxfQEma
- 71wGedRK
- bKIaoo4iobTlYPgfmUDYYCF/tbAEf6dR5nSelcYSIjVDN7pFk/i++kTzZh4UxHSmgOyfBHYK3p81C6r3qGBFHTSj0ZcE2wgkL5aTW2TtHAMouFd4X0WMc018CCqpHDFadfA6dwktYSCvwCWibt1m+Sa4d4Gxk9b0ip5rAabsJFpdRO8lcUhTW6GN/p3TR96Xt5hrQGdajM3GGRoXW33e00mgjwzCtIXDZGf6EeJSai96uW/oEgFBlTcbg5beY5vEtz8IUu2eXwxATLBHeNOp+64XEMEPoHZsgQz4f8Em+j9BZLnBbZ/ueCQkNOIXeJ9pZxFZw63pyl79AH1XQQ4Uk6Z/BbFA9RJz5oSg2Wzk8D8RknR/igljUOaUWVkUrSB+bmX1GqoFO+g1gKD48Hd5uh/Voc3pCulJqx46M37/wofqP9/gPTK/lbaWowDqu8xvmDUmnGeKrPiikAshIIzpHRSPzH+JeHpytLwPkRRby4yGqQos0vaS7d6L38KgC7Il87RWs79q9FYpVhNkQYDWxLu0GesjKQR1WYFN6sM9nOpj/LE++yy+GoVmn1aiUuGLjjWHONDg+8yJuYXuL4OLnds4NXxyeJA9KAz4Z9CtcXfAFCxqF5RREhf/J9JgFVRSy61eI+vCR37fh6ebwUU3FBYEyNGb+By0hlorXOiHDep58tsk=
+X-Rspamd-Queue-Id: AAE98A000B
+X-Rspamd-Server: rspam12
+X-Stat-Signature: w1zihxez16u74aydpyqidihqqn1ezf8x
+X-Rspam-User:
+X-Spam-Status: No, score=-12.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	autolearn_force=no version=4.0.1
+X-HE-Tag: 1794353175-276330
+X-HE-Meta: U2FsdGVkX1+FifYLUQdsNxEt9bczF++S1k5RtcGdmi4XfZJJ55IWATsjNkJC8NxmDJ6hYYvb7X131j6Nc/2z+7rOfJgMOy12/WWEF3okw5xBIHDqgvtLNwtB7rPLPPeD+/xI2HmQAbd6yz6Z5PQHVJOSBCFguc4MNW4xhHkXya1hoGnd4+7tACw5rVdY+GNBDlTdFFYEE28ZTqq0PA79PWTDgNnxfJjXo4XgPhS0DZPHLLgg2w5499InVsu+4dHZ76YB7BpgDJ/xQnVjqSlYxENwKJ3eJUBTnu313LmXdxwTrv0XcRlz3bccbm4hDQbKwPDle5ze0rp1AQWt+dU84RhunU6+6/JAlwqF73at0fhNWsimSfD1Ihe1wsZsRu4n1O3S9yZAVYaW5Bl2/Xdb+m5Pp4lGKyLqth8OcwmYqst2HszFxRNZFoaiieHa1dfBQ8R+3iVlgU8u8MsXY8LEL+r7d6uiVJsNZgrUA2FW2RgFQMHaE53JTkwUDHz7/5C7u2NtFum9cN9u+2qqEQ3Ea7qar1rQNt1g5KBcOQ+kiwxCb2uywMqyezhjaw9a8Vcq2etCGXB6coZ0RMKGEuzG1wExapBHNnSOrWhOafmwLTcKAVGFBiuLoD6XPsQtjsZxBuhqQsvTg8soZzT9XEiQMB6iJ39Ol6VfsJPSVFezA5RMRfQLx+/2IUaHaRtY2EWbeSMNsf6pWIVDBkBkvwaLLgKyWFALlIqd6hkezjaWcy+PeSMi+u7vhIoLlmprwcDewuC0UGKmsHJuq1gNCxj7+9igWBwtfx3m6XZeqxXxBjT/XBfIxlSJIG3e+MLIiSOV5Su+LBQOBB4/U1MCm3Koq2MgwJz00LjMsdk2ntOxtq8tRA+keFd2Sfp93CJoGQXar4KBkyDKsnx1FSgXwWVqPK0XclI59l+W7Oc3e7LpbUAxoBfAVlxQ1OmLaoqEBSYAEZHwXOrD+U4aetnzp/M
+ 8RkV4qCq
+ zm3Atg6JXKtig3HVmA+MbW72peO3z2IR/hVLjaukMxh+akmgSecVRh0JwC+keZLlqMxGTX9Sw5DLSjMmQZnGlt9t3nzg7IwoDcBoTNrudRSUZWK0bcTBtq65fJaZ7VVp+zmEaow/kIzr8gFGy1IOv8WOWTXDHTyfk81woKZJj3JnEsOeNovub0bgvww6sa63dLKAHFxFwfaQkz9GjkfcHSiRqQy8YYHqdKNzbedKU37Ens1L+1I5WUFX5elD0M1y2NwJi8Nbwpa7+BjmfmR0VaKA5fDLnOhrPb/qJlwjuw8+b/sw481UFW8X1VFL+xVB6AbckVb0WzKDNYYT8qNlgqRkB0IJEYclL+UK+i/JFS29px/oyYfhldqYQHMq8+kMgQ9YCAYoeT75bK03q5LIWp5ogIqr7aNlpnFwEJCQnANuqXrgfC2SHKYrmc6ey6cqNs7NwXZ85GtLz6RL1gGp60ILR1amnMPDeTyPRLbYz2S2nAKt5Ez9nz0/Z53Mph/dgMBZdF4wUOkdvJwtuMgXDQH29vyv4Ua8mZoNvO5bz+KkTSdrEq3uK9ltN4pngAU4ljCvsjXh59E1P/6MimgeKDhKM2aPdtP/zx0TUggz9JBRdAlsl609YK9PBtrzDL+viDPGvv5mhGTiFJgA4QReVwV1sZVOwVvT2IBU6
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -104,204 +151,183 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
-issues to consider:
-- [Medium] iommu/dma: cross-node per-CPU cache refill in
-  pisa_alloc_bulk()
-- [Medium] iommu/dma: hardcoded order 3 in test_gfp_pisa() fails on
-  16K/64K pages
-- [Low] iommu/dma: changelog omits pisa_page_can_recycle() and
-  pisa.compact
-- [Low] iommu/dma: short allocation in pisa_pcp_alloc() on poisoned
-  block
---
-
-commit 6d45ca2b93f2e0d3d72f8ae4375bcf8901944ad1
-Author: Luigi Rizzo <lrizzo@google.com>
-
-> iommu/dma: Add per-CPU block caches to PISA allocators
+On Tue, Nov 10, 2026 at 1:05=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
 >
-> Every block allocation and free takes the allocator's lock. Highly
-> concurrent users e.g. socket tx fragments, can cause significant lock
-> contention.
+> On 10 Nov 2026, at 15:55, David Hildenbrand (Arm) wrote:
 >
-> Add pisa_enable_pcp(), an opt-in per-CPU front cache, similar
-> to the page allocator's per-CPU lists:
+> > On 11/10/26 21:21, Joanne Koong wrote:
+> >> On Tue, Nov 10, 2026 at 3:49=E2=80=AFAM David Hildenbrand (Arm)
+> >> <david@kernel.org> wrote:
+> >>>
+> >>
+> >> Hi David,
+> >>
+> >> Thanks for reviewing this.
+> >>
+> >>>>  - A folio whose split fails can later be split for no reason. If th=
+e
+> >>>>    split fails at folio_ref_freeze(), the folio is remapped but stay=
+s on
+> >>>>    the deferred split queue marked partially mapped. The deferred sp=
+lit
+> >>>>    shrinker then splits it without checking whether it is underused,
+> >>>>    breaking up a folio that is fully mapped and possibly fully in us=
+e.
+> >>>
+> >>> This is a similar problem I raised in last year's LSF/MM:
+> >>>
+> >>> https://share.daveh.de/s/bQsDpD7xigJ6wD8/download?path=3D&files=3DLSF=
+_MM%2726_+Deferred_folio_splitting.pdf
+> >>
+> >> Awesome, I'll make sure to add in a link to this presentation in the
+> >> cover letter of v2.
+> >>
+> >>>
+> >>> "
+> >>> 2. THPs erroneously detected as partially-mapped
+> >>>  * Failing migration/split/eviction after stepwise unmap
+> >>>  * Remapping the folio will not fix this up
+> >>> "
+> >>>
+> >>> The news here is that we now copy the state to the new folio and can
+> >>> consequently split the new folio.
+> >>>
+> >>>
+> >>>>
+> >>>> Mappings replaced by migration entries are not really unmapped, so d=
+on't
+> >>>> queue the folio for deferred split when try_to_migrate_one() install=
+s a
+> >>>> migration entry. Pass a flag down to __folio_remove_rmap() and have
+> >>>> try_to_migrate_one() clear it for those PTEs only. PTEs that it repl=
+aces
+> >>>> with a hwpoison entry or discards because they are unused are really
+> >>>> unmapped and keep the current behaviour, as do all other callers.
+> >>>>
+> >>>> One consequence is that if part of the folio is really unmapped whil=
+e the
+> >>>> migration entries are in place, zapping the migration entries does n=
+ot go
+> >>>> through the rmap, so the folio is not marked partially mapped afterw=
+ards.
+> >>>> For a split this does not matter, as the folio is split anyway. For =
+a
+> >>>> migrated folio it means the destination is not queued until a later =
+unmap
+> >>>> notices it, which seems preferable to queueing every migrated folio.
+> >>>>
+> >>>> Fixes: 8422acdc97ed ("mm: introduce a pageflag for partially mapped =
+folios")
+> >>>> Fixes: a2e0c0668a34 ("mm: migrate: requeue destination folio on defe=
+rred split queue")
+> >>>> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> >>>> Closes: https://lore.kernel.org/all/sashiko-outbox-198104@kernel.org=
+/
+> >>>> Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+> >>>> ---
+> >>>> This bug was found by Sashiko in its review of the mTHP shrinker ser=
+ies
+> >>>> (https://lore.kernel.org/linux-mm/sashiko-outbox-198104@kernel.org/)=
+. The
+> >>>> migration / rmap code is still new to me. This patch is a fix with t=
+he help of
+> >>>> AI, so I'd appreciate a careful look from people who know this code =
+better.
+> >>>
+> >>> Don't we have the same problem for try_to_unmap() in some remaining c=
+ases?
+> >>>
+> >>> See below.
+> >>>
+> >>>>
+> >>>> This was tested in an x86 QEMU guest with 64K mTHP. Splitting 64 ful=
+ly mapped
+> >>>> folios through the split_huge_pages debugfs file no longer increases
+> >>>> split_deferred (was +64), and migrating 64 to another node no longer=
+ leaves
+> >>>> nr_anon_partially_mapped up (was +64). split_huge_page_test, migrati=
+on, and
+> >>>> khugepaged selftests pass.
+> >>>>
+> >>>>  mm/rmap.c | 29 +++++++++++++++++++++++------
+> >>>>  1 file changed, 23 insertions(+), 6 deletions(-)
+> >>>>
+> >>>> diff --git a/mm/rmap.c b/mm/rmap.c
+> >>>> index fa34e1ccbd8f..e5d17481c0c0 100644
+> >>>> --- a/mm/rmap.c
+> >>>> +++ b/mm/rmap.c
+> >>>> @@ -2772,12 +2781,20 @@ static bool try_to_migrate_one(struct folio =
+*folio, struct vm_area_struct *vma,
+> >>>> +                     /*
+> >>>> +                      * The folio only looks partially unmapped whi=
+le this PTE
+> >>>> +                      * holds a migration entry, which is later tur=
+ned back
+> >>>> +                      * into a mapping. Don't queue it for deferred=
+ split.
+> >>>> +                      */
+> >>>> +                     may_defer_split =3D false;
+> >>>>               }
+> >>>>
+> >>>>               if (unlikely(folio_test_hugetlb(folio)))
+> >>>>                       hugetlb_remove_rmap(folio);
+> >>>>               else
+> >>>> -                     folio_remove_rmap_pte(folio, subpage, vma);
+> >>>> +                     __folio_remove_rmap(folio, subpage, 1, vma,
+> >>>> +                                         PGTABLE_LEVEL_PTE, may_def=
+er_split);
+> >>> We will not add such magical boolean parameters. I have a patch to ju=
+st pass the
+> >>> rmap flags for a different purpose.
+> >>>
+> >>> But the whole thing is rather ugly ...
+> >>>
+> >>>
+> >>> You should probably look at
+> >>>
+> >>> commit 354dffd29575cdf13154e8fb787322354aa9efc4
+> >>> Author: Barry Song <baohua@kernel.org>
+> >>> Date:   Fri Feb 14 22:30:14 2025 +1300
+> >>>
+> >>>     mm: support batched unmap for lazyfree large folios during reclam=
+ation
+> >>>
+> >>>     Currently, the PTEs and rmap of a large folio are removed one at =
+a time.
+> >>>     This is not only slow but also causes the large folio to be unnec=
+essarily
+> >>>     added to deferred_split, which can lead to races between the
+> >>>     deferred_split shrinker callback and memory reclamation.  This pa=
+tch
+> >>>     releases all PTEs and rmap entries in a batch.  Currently, it onl=
+y handles
+> >>>     lazyfree large folios.
+> >>>
+> >>> Batching resolves the problem in the common case. For the remaining p=
+arts, we
+> >>> should likely just check in the deferred split handler whether actual=
+ly
+> >>> partially mapped to then clear the flag if not.
+> >>
+> >> This sounds great. I'll look at Barry's commit and rework this patch
+> >> to batch the unmap, and I'll add a patch for the check to cover the
+> >> edge cases.
+> >
+> > Take a look on the list, we might have already had some attempts to bat=
+ch in
+> > there (we just lacked the capacity to review them). But maybe I am dayd=
+reaming :)
 >
-> - Each per-CPU cache keeps up to 64 free blocks, and refills it from
->   the main allocator in batches of 32.
-> - returned blocks belonging to the local NUMA node are kept in the local
->   cache.
-> - returned blocks belonging to a remote NUMA node are returned to the
->   proper per-node allocator.
-> The cache is fully integrated with the shrinker and CPU offlining to
-> drain the cache.
+> You mean the last patch from Shivank[1].
 >
-> Enable per-CPU caches for the per-node order-0 RW and SKB_FRAG_PAGE_ORDER
-> RO allocators.
->
-> Signed-off-by: Luigi Rizzo <lrizzo@google.com>
+> [1] https://lore.kernel.org/all/20260813-migrate-rmap-batch-v2-7-3c5424c5=
+55c7@amd.com/
 
-[Severity: Low]
-This isn't a bug, but this patch also adds and exports
-pisa_page_can_recycle(), the pisa.compact module parameter, and the
-per-allocator block and page accounting used for soft compaction, none of
-which are mentioned in the commit message.
+Thanks for the link, Zi! I'll follow up on Shivank's series to ask
+whether there's a v3 planned. In the meantime, I'll work on the
+deferred_split_scan() check.
 
-> diff --git a/drivers/iommu/pisa-alloc.c b/drivers/iommu/pisa-alloc.c
-> index 25e4645310678..913706a503341 100644
-> --- a/drivers/iommu/pisa-alloc.c
-> +++ b/drivers/iommu/pisa-alloc.c
-
-[ ... ]
-
-> +/* Allocate @nr_pages blocks through this CPU's cache, refilling in batc=
-hes on miss. */
-> +static unsigned long pisa_pcp_alloc(struct pisa_alloc *pa, gfp_t gfp, un=
-signed long nr_pages,
-> +				    struct page **page_array, bool frozen)
-> +{
-> +	unsigned int pcp_batch =3D READ_ONCE(pisa_pcp_batch);
-> +	unsigned long got, n, i, j;
-> +
-> +	got =3D pisa_pcp_pop(pa, nr_pages, page_array);
-> +	if (got < nr_pages) {
-> +		if (nr_pages - got >=3D pcp_batch) {
-> +			got +=3D __pisa_alloc_bulk(pa, gfp, nr_pages - got,
-> +						 page_array + got, false, true);
-> +		} else {
-> +			struct page *batch[PISA_PCP_BATCH];
-> +
-> +			n =3D __pisa_alloc_bulk(pa, gfp, pcp_batch, batch, false, true);
-> +			for (i =3D 0; i < n && got < nr_pages; i++)
-> +				page_array[got++] =3D batch[i];
-> +			if (i < n)
-> +				pisa_pcp_push(pa, batch + i, n - i);
-> +		}
-> +	}
-> +
-> +	for (i =3D j =3D 0; i < got; i++) {
-> +		struct page *block =3D page_array[i];
-> +
-> +		page_array[i] =3D NULL;
-> +		/* Poisoned while cached: leak it, as pisa_scan_bitmap() does. */
-> +		if (pisa_block_poisoned(pa, block))
-> +			continue;
-> +		pisa_block_prep(block);
-> +		if (want_init_on_alloc(gfp)) {
-> +			memset(page_address(block), 0, PAGE_SIZE << pa->order);
-> +			if (frozen) /* Order zeroing before caller publishes the page. */
-> +				smp_wmb();
-> +		}
-> +		if (!frozen)
-> +			page_ref_unfreeze(block, 1);
-> +		page_array[j++] =3D block;
-> +	}
-> +	return j;
-> +}
-> +
->  /**
->   * pisa_alloc_bulk - Allocate up to @nr_pages blocks from @pa
->   * @pa: Allocator to allocate from
-> @@ -681,11 +952,16 @@ unsigned long pisa_alloc_bulk(struct pisa_alloc *pa=
-, gfp_t gfp,
->  			i++;
->  			continue;
->  		}
-> +
->  		/* Fill the run of @n NULL entries at @i. */
->  		for (n =3D 1; i + n < nr_pages && !page_array[i + n]; n++)
->  			;
-> -		got =3D __pisa_alloc_bulk(pa, gfp, n, page_array + i,
-> -					want_init_on_alloc(gfp), frozen);
-> +		/* Pairs with smp_store_release() in pisa_enable_pcp(). */
-> +		if (smp_load_acquire(&pa->pcp))
-> +			got =3D pisa_pcp_alloc(pa, gfp, n, page_array + i, frozen);
-> +		else
-> +			got =3D __pisa_alloc_bulk(pa, gfp, n, page_array + i,
-> +						want_init_on_alloc(gfp), frozen);
->  		i +=3D got;
->  		if (got < n)
->  			break;
-
-[Severity: Low]
-If a block popped from pa->pcp was poisoned while cached, does
-pisa_pcp_alloc() return fewer than n blocks without refilling a
-replacement?  Unlike pisa_scan_bitmap(), skipping the poisoned block after
-the refill stage causes pisa_alloc_bulk() to see got < n and abort the
-allocation early even when healthy blocks are available.
-
-[ ... ]
-
-> @@ -876,6 +1158,17 @@ bool __pisa_free_page(struct page *page)
->  	if (want_init_on_free())
->  		memset(page_address(page), 0, PAGE_SIZE << pa->order);
-> =20
-> +	/* Pairs with cmpxchg_release() in pisa_enable_pcp(). */
-> +	if (smp_load_acquire(&pa->pcp) && pa->nid =3D=3D numa_mem_id() &&
-> +	    page_to_nid(page) =3D=3D numa_mem_id()) {
-> +		if (pisa_page_can_recycle(page)) {
-> +			pisa_pcp_push(pa, &page, 1);
-> +			return true;
-> +		}
-> +		if (this_cpu_read(pa->pcp->count))
-> +			pisa_pcp_drain_cpu(pa, raw_smp_processor_id());
-> +	}
-
-[Severity: Medium]
-Can pisa_alloc_bulk() -> pisa_pcp_alloc() populate pa->pcp on a CPU where
-numa_mem_id() !=3D pa->nid?
-
-__pisa_free_page() only pushes freed blocks to or compact-drains pa->pcp
-when pa->nid =3D=3D numa_mem_id(), but pisa_alloc_bulk() calls
-pisa_pcp_alloc() without checking whether the current CPU belongs to
-pa->nid (and __pisa_alloc_bulk() can also sleep and migrate the task
-before pisa_pcp_push() runs).
-
-On a multi-node NUMA system, a cross-node allocation refills 32 blocks and
-leaves up to 31 blocks cached in that remote CPU's pa->pcp, where normal
-frees never compact-drain them and CPUs on pa->nid never pop them, pinning
-their backing 2MB PISA pages in pa->blocks_in_use.  This also causes
-test_pcp_cache() and test_alloc_and_recycle() in drivers/iommu/pisa-kunit.c
-to fail KUNIT_EXPECT_PTR_EQ(test, p2, p1) whenever the KUnit kthread runs
-on a CPU with numa_mem_id() !=3D first_memory_node: p1 =3D pisa_alloc(pa, .=
-..)
-refills 32 blocks into the remote CPU's pa->pcp and returns batch[0],
-__free_page(p1) bypasses pa->pcp and returns p1 to the bitmap, and
-p2 =3D pisa_alloc(pa, ...) pops batch[31] from pa->pcp instead of p1.
-
-> diff --git a/drivers/iommu/pisa-kunit.c b/drivers/iommu/pisa-kunit.c
-> index 72ee8986b4802..5bbb540eb505e 100644
-> --- a/drivers/iommu/pisa-kunit.c
-> +++ b/drivers/iommu/pisa-kunit.c
-
-[ ... ]
-
-> +static void test_gfp_pisa(struct kunit *test)
-> +{
-
-[ ... ]
-
-> +	p_ro =3D alloc_pages(GFP_KERNEL | __GFP_COMP | __GFP_PISA_RO, 3);
-> +	KUNIT_ASSERT_NOT_NULL(test, p_ro);
-> +	if (p_ro) {
-> +		KUNIT_EXPECT_TRUE(test, is_pisa_page(p_ro));
-> +		KUNIT_EXPECT_EQ(test, pisa_meta_of_pfn(page_to_pfn(p_ro))->prot,
-> +				IOMMU_READ);
-> +		__free_pages(p_ro, 3);
-> +	}
-
-[Severity: Medium]
-Should test_gfp_pisa() pass SKB_FRAG_PAGE_ORDER (or 2) instead of
-hardcoding order 3?  pisa_init() only creates read-only per-node
-allocators for orders 2 and SKB_FRAG_PAGE_ORDER, and on arm64 with 16KB or
-64KB base pages SKB_FRAG_PAGE_ORDER is 1 or 0, so order 3 has no read-only
-PISA allocator and falls back to the buddy allocator, failing
-is_pisa_page(p_ro).
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109182533.3594=
-984-1-lrizzo@google.com?part=3D11
+Thanks,
+Joanne
 
