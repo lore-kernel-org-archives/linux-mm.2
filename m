@@ -1,73 +1,73 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD50D606A33A
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 02:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D6AA606A337
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 02:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ZAZNT0gB
+	dkim=pass (1024-bit key, unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=bCC6XhI+
 Received: by kanga.kvack.org (Postfix)
-	id EAC1D6B05B7; Mon,  9 Nov 2026 21:30:30 -0500 (EST)
+	id 0D0636B05B9; Mon,  9 Nov 2026 21:33:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E5DC76B05B8; Mon,  9 Nov 2026 21:30:30 -0500 (EST)
+	id 059DF6B05BA; Mon,  9 Nov 2026 21:33:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4EB26B05B9; Mon,  9 Nov 2026 21:30:30 -0500 (EST)
+	id E657A6B05BB; Mon,  9 Nov 2026 21:33:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BA2CE6B05B7
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:30:30 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4A2CD12064E
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:30:30 +0000 (UTC)
-X-FDA: 85417630620.11.DBF2CC2
-Received: from mta0.migadu.com (out-221.mta0.migadu.com [91.218.175.221])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 3EF4640004
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:30:28 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZAZNT0gB;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BDF066B05B9
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 21:33:13 -0500 (EST)
+Received: from smtpin16.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5500D140630
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:33:13 +0000 (UTC)
+X-FDA: 85417637466.16.857AF46
+Received: from mta0.migadu.com (out-252.mta0.migadu.com [91.218.175.252])
+	by imf26.hostedemail.com (Postfix) with ESMTP id E3C7D140007
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 02:33:09 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bCC6XhI+;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.252 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794277828;
-	b=gtcnjL6f44tFyXTNr4kTAPPCjicWMUaabS4kDmrMDH92sALUoIh4Ecszy+bK4lDeQaOZwP
-	FEZLJVmTAVzG5GyYq8MNBwoRrC8t9mawnHEf6rk/qYWLzVWh7BoVK9Y+gieQlofJE7wl9w
-	Ue5WSjOk8djprG85apICnoldye64zyI=
+	t=1794277990;
+	b=n4XICSmQwNbNz0Xi/7b3c2Vvtgdmb3uU/O1tESnHHnCLWbQC1jrc86eYpDchNpeOgvZGVM
+	bjyE+ZQlTOO+lXpXWPttk/9N8x2m7UKIL75b7HzdtaQ5gmpDHSXoVSGlPnwhN/LUakJ83q
+	20K0aMU2YmBgA7x9fvxDAjaXzMnyNpE=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ZAZNT0gB;
-	spf=pass (imf07.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.221 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bCC6XhI+;
+	spf=pass (imf26.hostedemail.com: domain of muchun.song@linux.dev designates 91.218.175.252 as permitted sender) smtp.mailfrom=muchun.song@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794277828;
+	s=arc-20220608; t=1794277990;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V/gmZjOtCuDSQAnk9X0MMdk2XbOQ83sIc3JPpm8qHkQ=;
-	b=GaCc3By61dxRFSERZCutkB1hwR8+p2XMqU1FZY4JbIlp4YHnLbw2rDaJfGes4X3ZsZCTI/
-	XOtrczTZFU2MFsSPhtQ5HduARGPNaWrBsJwlUSi5O0uCNV4VU9pbyth4G467xkEdyPDth0
-	2+3oXtI5tcfF7HX6cUs8M/1Gy9GYHUs=
+	bh=GXTpqnKMRF2UhXCAIWMIqEeS5u8oD4PTX7PXriEks2c=;
+	b=mBEnxo7RkEICkEb9f2CgN/9xKcg4OcR5GMPo78ne15yNydoAwgsWSvQTM7G8h8C6qfizsn
+	uCj7OqI1BctOd/FcaaznwskkfCpTvx6xhjN3eLQjvLQJJeuOh7ce1onhBKw2v46Ks+KDZM
+	N/lRhQas5p6nUf6PphiwYn2lkcRSVnU=
 X-Envelope-To: linux-mm@kvack.org
-DKIM-Signature: a=rsa-sha256; bh=V/gmZjOtCuDSQAnk9X0MMdk2XbOQ83sIc3JPpm8qHkQ=;
+DKIM-Signature: a=rsa-sha256; bh=GXTpqnKMRF2UhXCAIWMIqEeS5u8oD4PTX7PXriEks2c=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1794277826; v=1; x=1794882626;
- b=ZAZNT0gBMQr2NNUxNVF02MOkUv7IbfR8h75a7UYqFmtAPeGXD+OBPuUusqaRcsU1xnUHpoVx
- TNJyW/VnxNI0kCvdO4pD3fvaCw9mo2PSD7O9pnXzucMC3dWbLYOKno5IiTAEjKvLpuiY22GYsWm
- MiIY50Dpih0tF52PCiKTS+4Y=
+ t=1794277988; v=1; x=1794882788;
+ b=bCC6XhI+ltgfCDsf/yk7F4CyGxAl/gCpe87iypya3QEAuULhSPaST+YpcdHmlKmUk0i/ULYe
+ mGg/+3kuRKtpsDDiX5OsEJwj+AjIKaxzynS4Sdz5oLLaQIn74HmTmlsfqzaEA/70RGPZNbGQaES
+ UgrteXZg6P2tnQHPlEsQt17Q=
 X-Envelope-To: linux-mm@kvack.org
-Received: by mta12.migadu.com with ESMTPS id fb7a0a4d731dd829;
-	Tue, 10 Nov 2026 02:30:24 +0000
-X-Mizu-Trace-ID: fb7a0a4d731dd829
+Received: by mta11.migadu.com with ESMTPS id 9b9f986477d9f7b2;
+	Tue, 10 Nov 2026 02:33:07 +0000
+X-Mizu-Trace-ID: 9b9f986477d9f7b2
 X-Migadu-Flow: FLOW_OUT
 Content-Type: text/plain;
 	charset=us-ascii
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3901.200.71.1.16\))
-Subject: Re: [PATCH 1/2] MAINTAINERS: MEMORY MANAGEMENT - MGLRU (MULTI-GEN
- LRU) update
+Subject: Re: [PATCH 2/2] MAINTAINERS: remove myself from MEMORY MANAGEMENT -
+ RECLAIM
 From: Muchun Song <muchun.song@linux.dev>
-In-Reply-To: <20261109-maintainers_mglru-v1-1-c25e6de60bcc@kernel.org>
-Date: Tue, 10 Nov 2026 10:30:08 +0800
+In-Reply-To: <20261109-maintainers_mglru-v1-2-c25e6de60bcc@kernel.org>
+Date: Tue, 10 Nov 2026 10:32:47 +0800
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Kairui Song <kasong@tencent.com>,
  Barry Song <baohua@kernel.org>,
@@ -86,23 +86,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  linux-mm@kvack.org,
  linux-kernel@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <592C1134-FBA5-41B4-AB79-D6BF5B4883D8@linux.dev>
+Message-Id: <105EC3D5-3A72-4617-A6AA-9E37EDD836DC@linux.dev>
 References: <20261109-maintainers_mglru-v1-0-c25e6de60bcc@kernel.org>
- <20261109-maintainers_mglru-v1-1-c25e6de60bcc@kernel.org>
+ <20261109-maintainers_mglru-v1-2-c25e6de60bcc@kernel.org>
 To: "David Hildenbrand (Arm)" <david@kernel.org>
 X-Mailer: Apple Mail (2.3901.200.71.1.16)
+X-Stat-Signature: k1djs5gkwrm9s8w9h8ezq8zzs4rc43db
+X-Rspam-User: 
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E3C7D140007
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
 	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3EF4640004
-X-Stat-Signature: 3k1au39zgbyxnge6u69f5d3j5tfckhxd
-X-Rspam-User: 
-X-HE-Tag: 1794277828-634374
-X-HE-Meta: U2FsdGVkX1+JY4BWp0VY6IPciYr/f3Ut9Pwz562d060zJH0zfgnwOlGS1N2pD/ExVGLM5n6n2q1gPUzcKE3aYXPEZysLPM3Gnf+2bH1fMzK0klMxxysp3rVKaCbEPWNW3KUkixarqk72zKtrM5MOltgfVp3k/OaKQjOnyIPiqYhO0fz7RR/G7VL7krepthFCcBBHQyTWmmzg1khNrcjgrCfInvLz7eInR6HrhiVkIGYODJ5rLezUF2NmXIXOyRpcgXgwhe2PSJS7jeD8QOGuevuirDjFyhtqbq4+R3rEs5VSTsE0IWIEvPChMaOK9TclQleN7/eR2s/MLv5QS00+8+Y26+DAQ3p8Xp/xFa86BgDdlocmssX8oFXApErdPKBe3BJGHNAYWu/3nnEwETsZ1emIcotCqq6mZ+T8O71nFPUn+p8OC12uQo9OhbAeDmRNbL2dM6Fmgcc7bcbfe+3GESl68UsjF8s0ks1uw4Qe7Y8jBmaSYGB86SLLeTH//qIfkNd2QwqX8FxB8sg1aLUib04BQ/kd2Cu6MxDjcq3tMqnzzJNrRjVgTCUJmOUew1c3lhM/SqSQKBeDEs8qieUGF7a9jKUEvbKzmbbUA51Q0noWdeFRIIKiiZb8hozca875U6vCFq6KOb7JdUS+FNcnwMMj7SjXr5v3u+HY6M1TJ6QJ5d2pH3ElDDwJQEY9hmJZRwLw3skzfU04S4kKdZesKfaUcPf4rO0DIHbsqJaMv215puQWYUr17NAinwmxPy3JPQCbZdU3c1zUbYDe27SdTVstpr1iQW+lXylDI0bmImbRj/Ak9M+cqDc6I+tz6xBSqqKa6u/bCtsuD+qJKuFRPE8fLH/YPsM4RPCDdWqDNw3Qg7HfK9iHyKh5CGXxf0/QerC3X3xFv0MaHaDNh0IY6gOQUdNUzd3+tWa19AIboOUlmr2QphF4Jc6D64YkjkGJaaqXBAENyeGNx1dIhy5
- YdTWw06D
- GdH1sf7dM3VQBO6VyYfZ7ADC003E326HhXw6L3TjxCQKyT4KjBOnkwnnicTBYWJP6EF4guF9B2JAxq92VYLiKJAO+x/1OqxxZmr3CryBrZq+Rmu94ySQT1ZQBcZiZRmmqZyWGeUhUk6GaQ9J1+dXpjDFugCx97iCZhoP1Q5/09y/U7oy/kJ8ENeEOAnVZOdxVFBIfVlVarUtJAO7ICt2X4JGKBpXxkT+WxI2RnvVrjRZMKpATt2scZVupuE+eOkQFdCLyUuo61uL/cJ9jFmp4ffap+XDKl/koqlWY
+X-HE-Tag: 1794277989-610054
+X-HE-Meta: U2FsdGVkX1+EutHtclqVOK4n5GodwbB70HGhzbCG+kWU1XdjMvrf5bw4kuePCCqau7hHvhRDt7sVP1nLv/lZOTn73zPltzPwql7HeqJ/K15bDFEKjocD2FcWh2n3Szre85qmRCypSNL6qjHpqDqXkkPqyNMHm9+i2TsnAty/SjVNNWVAtW5rSGYmgU7TiiL4HlvYPuXDvYK/Ij0UUi7VYCTx+uJ8sh56NQMuzIf3QgJrdJuMo+ZmrXr9qmtAG5gBKrA54IVek4o+GEeE+S0hrQjroCYHFB78nL61NJv/lSkb8Rk5cilA9ZRH6FKh5lmNC/uyqwNDBJzOL1LLFCT49Q7bfje/N/+ye8M1HjaMHSXSQTCGTpKrz/OcviAamco0k7Mk+EJizKalWMazI7+PEp86m+AMcSxeD5vyHAEVDDLg80AFDDoxuih5wW0EICAcqsfur9bNCfNse/yJepmyYKkDBs6LiTLgXNHcP3cWqW2WtfWr2BirQGuu1n0KLNuHExAf0R0X2+ncci1GgWgGu4sdfg6xSiUV6NQ6aM8JT2pzyRZkPK498Xd0I8o+bl2l5Ge+qBVF5dYxiT95Eq70jpBq5Ss3uJGmxX8Iaeaypprc6anoMqGP9sJBe9uZZ0/XK6Eo82g3w1HNZR+2br6Smktcov6UTdyfloXzK2d3tyS+rp+WksgmVkjtddADrInAAW1jNJnNIheTvMtwbFdpEk04wzvdmDbRTTgWZdn2J1r9P/6X4YOlfSmVJyj/2YcJ3IJNW6+D7RJAQSIl68zW/+32vVb/gB0cMZMcjo8KaaqXk/Lmh+bbE9hxD49JS9K49yDbSfAMHtWM2twmn28++YCiaB2ehPZnDDErQoi12rbbkDXZy6mx12ixGGW3VdbaZJIKrOAMSqQXoRTHUP1C5rNZ/FdS3Nk1IyT2MzZ9vQPXEQAlzG9jP0zzHG4WeC72GIQYIwLE2EGiweCtbGg
+ OOUfEtc4
+ vV/QphXfmFulEpmQ6l/KPUWlQSGhfHnH+0SwfD2SC/8Ry4dPkphnwtFCc2ijI/g3Hi6FLdV2U+XlpHHXWr2gE2Hgx4EFbXyuth5Hn0UDPiAmI1s8/PC7iLR/x/S018fPsbA2NzsgsgYuHbzU7FQ6/AFYao8GIz9zbsSi2XnKt0SsAQppjgQFS1I04KWGH6cTqAUIKlERdgON0+N9Ifx4ezRe1gVA8qIvHs9ECSlYZNbuLD23lImvn2GUf3FzGBNYr7qFJFHvMFBXeszEni3H3w7hqHBnxv4LrRvB7
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -116,20 +116,11 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 > On Nov 10, 2026, at 02:31, David Hildenbrand (Arm) <david@kernel.org> =
 wrote:
 >=20
-> MGLRU is currently the only MM component without a dedicated component
-> maintainer. Fortunately, Kairui and Barry have been actively
-> contributing to MGLRU and have volunteered to take on more =
-responsibility
-> by officially taking care of it.
+> I don't really get to look at most reclaim related stuff. For things
+> that are actually relevant for me, I'm sure people will CC me.
 >=20
-> Given that Kairui is already an established MM component maintainer in
-> a related MM component (SWAP), add him as an MGLRU maintainer right =
-away.
->=20
-> For Barry, the idea is to transition him towards a component =
-maintainer
-> role over the coming months, starting by moving him to the top of the
-> reviewer list.
+> So remove myself from the MEMORY MANAGEMENT - RECLAIM section for now
+> to have a bit less noise in my inbox.
 >=20
 > Signed-off-by: David Hildenbrand (Arm) <david@kernel.org>
 
