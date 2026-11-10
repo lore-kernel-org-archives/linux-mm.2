@@ -1,145 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A83606A335
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 13:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D78606B2F1
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 13:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZQRh1AAf
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=RB4Gi6He;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QMFLKGZG;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=RB4Gi6He;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QMFLKGZG
 Received: by kanga.kvack.org (Postfix)
-	id 0672B6B05D9; Tue, 10 Nov 2026 08:00:18 -0500 (EST)
+	id CB6016B05C6; Tue, 10 Nov 2026 08:01:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0179C6B05DA; Tue, 10 Nov 2026 08:00:17 -0500 (EST)
+	id C76216B05D1; Tue, 10 Nov 2026 08:01:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E232E6B05DB; Tue, 10 Nov 2026 08:00:17 -0500 (EST)
+	id B8C776B05DB; Tue, 10 Nov 2026 08:01:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C47DB6B05D9
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:00:17 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 69E6E1A0709
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:00:17 +0000 (UTC)
-X-FDA: 85419217674.02.EEA3712
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 77227140007
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:00:15 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQRh1AAf;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AE616B05C6
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 08:01:30 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C8E501606DA
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:01:29 +0000 (UTC)
+X-FDA: 85419220698.10.8B8E8F5
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8E43940006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 13:01:27 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RB4Gi6He;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QMFLKGZG;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RB4Gi6He;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QMFLKGZG;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794315615;
+	s=arc-20220608; t=1794315687;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ikrAtB1/8BC2L8FEqSsF9Mnw9ArFG46n+a0Hts48VzQ=;
-	b=SMT36mECRYpd4C148lJhQeK9Oxugj5rRt2QsrTd/XzawnzfTXr7KTIbmH7KUuPMLCu6YSE
-	BEbujrA0QWUE0qsWlcf9vdcz3XDUxvRcmusUePkclizCKLnIo+qHZd4IzFvcgIVe7xIKqF
-	QzqzSMPEpQTDDyN3+47Q4m8Gx11t5Qc=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794315615;
-	b=eP5m823gCMx1zhIRCeAxxuZ0AgykOv6TjKvPN3t8qibnMiFxtP3PQffpJGoAVp14VJR/sD
-	phXGHk8xWbxRVdi0U6g6lYtVUuRKxE4ifSsilZONy7joN3WWe3c5AVrr1L4rOGUhxY95AX
-	GaGDurKigwVcUdoCeAqFIntbJT58u2c=
+	bh=D2v39D546EgtBEUxd0H/nXHWdpp+WjM1EXJHBDXXhZg=;
+	b=45955ndtAuvezHs0IJAIiRWC2l7IHOOLwQLfeQq/C9ZMlEcAF/DeBqUjJDT8O5NTIGKH/R
+	DsCl4jrWBw0wIPQWZ53UV6vgzO9JGluXaQmUq52iF1X5ccLpj5wtOWAFPHDSGRudOAEjrs
+	NKbJ2+6Ew9QwIpIrVSHOanGOVqG447E=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZQRh1AAf;
-	spf=pass (imf23.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id A4E60457FB;
-	Tue, 10 Nov 2026 13:00:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4580B1F0089F;
-	Tue, 10 Nov 2026 13:00:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794315614;
-	bh=ikrAtB1/8BC2L8FEqSsF9Mnw9ArFG46n+a0Hts48VzQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=ZQRh1AAf2mH4+nBlxyXJRlURkhAjeZzhqgklXvdm14VqM9E0SeMytPl/xoIM13LkW
-	 fCsS1d/F789U9mDULd1DvmSQPiB2RDSbMw6lcY2Tu/0YEev2KVy12ZtCj+kzHQGwzj
-	 Och7eItQFHJ33XEiOjPHYIf6QhmGeXz3wJjKQOEapcAvpF6LxpvxIPeGV0lE3zDW+S
-	 yEJ/7PYsbG7rKl64/ywdKQtrh0Uak4KFG/+ixohDdaqjYvdVw+p5P6lyJYsxoBXd6G
-	 rqMGtp8knYd8pEulfrGD3pFZGJzI7VvdyRgmGpGet+5pimvjVNCPF+n4bipns6rC09
-	 asM4fY5N8BiUA==
-Message-ID: <5500d8d0-53ac-4f82-9d1f-f59140b69d0a@kernel.org>
-Date: Tue, 10 Nov 2026 14:00:08 +0100
+	imf01.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RB4Gi6He;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QMFLKGZG;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=RB4Gi6He;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=QMFLKGZG;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794315687;
+	b=3dxjg/5P5Sg2pnqBEnxiCLK9Zz8OWvtu9f76rxCiD2xFnZeHLBjcTYChSgKfwRwMfR2RyY
+	1SuinCNy8ndj90qAchnN42RcfFvxV2qy9v4DZMVqdmJ9nDQkdxYp+aQmpHmj74MPZZzjLh
+	pkBXVupOPb+chz/elXC2YzN+cIUHGog=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5BDE721EA6;
+	Tue, 10 Nov 2026 13:01:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794315686; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D2v39D546EgtBEUxd0H/nXHWdpp+WjM1EXJHBDXXhZg=;
+	b=RB4Gi6He2tOUNMy6bJ00Z+v0V8KBcoceupgbTjR0W9JRUotJXCO22uGnREICS5iWEx7X0U
+	0IVV7m7jzO3SjxV/YRQ64cvorbwE4hatCdNNKs+HWfoWzBZSpCG4wvirvsVGvpDlswb0vl
+	KcHcL0cPLfF1+mgGlKlCLvj6g90mp8U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794315686;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D2v39D546EgtBEUxd0H/nXHWdpp+WjM1EXJHBDXXhZg=;
+	b=QMFLKGZG2/0yvUwt73PA3Kt1faHu2V/ZbQg11OX2y8poQHVD2y2CgIBv6al9zzMKJr2g2c
+	lv9nmQzfSnMd0CCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794315686; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D2v39D546EgtBEUxd0H/nXHWdpp+WjM1EXJHBDXXhZg=;
+	b=RB4Gi6He2tOUNMy6bJ00Z+v0V8KBcoceupgbTjR0W9JRUotJXCO22uGnREICS5iWEx7X0U
+	0IVV7m7jzO3SjxV/YRQ64cvorbwE4hatCdNNKs+HWfoWzBZSpCG4wvirvsVGvpDlswb0vl
+	KcHcL0cPLfF1+mgGlKlCLvj6g90mp8U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794315686;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D2v39D546EgtBEUxd0H/nXHWdpp+WjM1EXJHBDXXhZg=;
+	b=QMFLKGZG2/0yvUwt73PA3Kt1faHu2V/ZbQg11OX2y8poQHVD2y2CgIBv6al9zzMKJr2g2c
+	lv9nmQzfSnMd0CCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3299E1339F;
+	Tue, 10 Nov 2026 13:01:26 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id pQ1HBqYV82oESQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 10 Nov 2026 13:01:26 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id C0977224F3; Tue, 10 Nov 2026 14:01:25 +0100 (CET)
+Date: Tue, 10 Nov 2026 14:01:25 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
+	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
+	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
+	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
+	Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC 28/41] ocfs2: use fc_init_pseudo() for dlmfs
+Message-ID: <ubsk5hvk6rl3woji3mwix2l4hwfcp3s2q3m2g7llo4yozmi4qf@vnfosiawowxo>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+ <20261110-work-loop-pseudo-v1-28-4c998976c6c7@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/6] mm: gup: clarify a reason to check pte/pmd in
- gup_fast_pte_range()
-To: sashiko-reviews@lists.linux.dev, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-mm@kvack.org
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
- Peter Xu <peterx@redhat.com>, Lorenzo Stoakes <ljs@kernel.org>,
- "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>,
- Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Rik van Riel <riel@surriel.com>, Yuan-Hao Hsu <aa9736195201@gmail.com>
-References: <20261109-refactor_gup_fast-v3-0-2aaef02df0e1@arm.com>
- <20261109-refactor_gup_fast-v3-2-2aaef02df0e1@arm.com>
- <sashiko-outbox-207030@kernel.org>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <sashiko-outbox-207030@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Stat-Signature: qq5ju9wao666d7639xrakafwfxezsap9
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: 77227140007
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110-work-loop-pseudo-v1-28-4c998976c6c7@kernel.org>
+X-Spam-Score: -12.80
+X-Spam-Level: 
 X-Rspam-User: 
-X-HE-Tag: 1794315615-614381
-X-HE-Meta: U2FsdGVkX1836ey5JVGGI0tfNw7NYOX/ABfDRPsrSTJbsUsvZMlZYGBximfmCB2DG0vSTLwTDhKUjJ0ZlAkZxYLkmE7/4kX1JuSj9RdwGEhYlQuYiTSOyCLkf3tNl7EjwPvWdy55+bCT5uExXs6aQJzGTB4jzqDD6h50lozAmWER7Eln351nM1TUjSWZpfVStziILNRWNN3XCWXK0BxIEMOVDH1pm//QEzROgD9xLNq36H8NlD1UGMDnvHS+ZV4ctylE9o2LtugjTupjGjIjPF1f8RFngt77RR98vkRUoHzWTrDrPhbJQPEQxoN5FTePGcPMFVhPyOT0iPi6dgtaC+SbqlDwen2myfo4fJ1XdRj30p7GGg43ZirDp3hfy4mP3xOKYqfPE6RsAJbP0jCQ0TTQiPYDW+2nkOp3sc1N1Br9OxtyoV8GibVPcuZ6KeUlOwtI+IskuprKcD/4QVF2XHstKP6MY27PlSNRW2k7v2R63oxwVgcS+JV5L8rwK7TaFYmlMdfvX6Chxj/v4GXGuDbsmr8/cTVFz++YfMJvSarYVQnD20WYirds1n18UiYSTuAchUVosXlIhDCzpdp97Vjg8DiT2pqxZU+7uHUC6VGCUNHIhEpitlDwH84OLZrqA7Uj5GA9VpZLzlwHQax3oArCLSVjrtF0IwPoY7VjhYuZBa6yRuNnKvD7HusBKr9TrElvpihSiqDqo/KybiEGUF5p+8zTmnN43dcXICpwJBhwqdEZdKw/rOnPMU3CWH80rWOSikE1VUim+2XrmZR9g0yXTLHNxPDH7VmeHSAOl+lVEfQ+IK0j0zP2y4y47ySP6eUmaUFd3/Mt8C+a2+uUYI9GabHf7O0qDkiw7cpMl0jOXnzeOLANmMgkt7LA9rfWFU1h8Mg491/ZffaQKAve85ajsf0E3wqfg8yS/m+SRchLEjZYmC8eNQJKSdPDWt6qIDKu/GFVRtnwRgPSSaK
- 5Q2yjLVe
- ni5W5fIF7gccuZc6urm1NiSEwUnlGmBiMNOYnGKCguaL8G9UK8ZXTQcvwOqQa/OcZUV/gQhbQbfGeQK6tmyqf8EBn9DBf+9qFMVf/E7M+xMFziCwytYiPGzlAGE3qUiFZUdTnASfafuV3Cs85ri7zENPcoqylHPZxgFJasZFkZH+3ngWPWoi2Pqg2z3cDeB7LxI1GuZxjm9yi8+4H6RxC8UWxC3SzW6+Fcjh7bI6w9tXYhBgHnjgKM4OcStb2QyhNgwv/0/K0RSBZ9NkpW+XNxsK0QjVLqPDdeGtNoFPj3YEurxPxVdfC+ZZVAlZQAzWZh5l+ojVCiiXXS/vzJCGtiGxCAZxQSiVsFbw5APDQRuh6vwPe37EZ2VmcF0k2X5CBMTKnex/Co+mmx8Y=
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 8E43940006
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
+X-Stat-Signature: 3qsyoies3ane3ofeu1pwtkxkz18xbsty
+X-HE-Tag: 1794315687-373449
+X-HE-Meta: U2FsdGVkX18hoxiqY4BIDGsDLHElin7F7HUW3K3hHj4OdOvob96F/A3G+bPIk3nediFa57VRFJVz7difKkoyRg0poKj010ULWvaDlN6mc7PusYv7HedLhviMXx9WXOppF6ZN0q0n0uhvk/4cC2hH7Hf9YuM+fgmXwIplOXjWkFgsC2NpJyjyqC8F1+/OBH1mHvoMrt7/jZARxRXNDyXYlhCMOBDgDu6xoj/+S88WqtiIbIxXmXwYNPrxWLt07Z2vpjOraQocL2JvBXURay04HK8byi8yA9SPraFBnwQF+2jlQ8FWPYfVvM3u0rVHORtBmwO12w/4uwgzepMpPHFfDltlTUUd7bTg9pWICXY1gPdXbKev7xALnnpcYIUQL5QKkvuM0gIZuDYFHMHZVD2viqeQf2szEyp53p/xjzd60CZOIr1E8kT0ANVNWczoyNtD2FoVElLoXTz4xtwSsvdjLmlodDROrOI/nOppkuayxJk+k248azW/0LLYnKq/Axf4Q3v/x5NP/Udl0JyYc37kA8pP2tI+mgWTdB8GTFsy8daX+AztETuJ1FSFtQ3Ds4YTm6NFLeo64tRcv78s7Wreak2rk2Sz+zX9Q7dembtsANR5rNq4/SUeDtGUPabsi/vOIEMkkXNSPNm7usCFsgmG0VzVhWxvfBNu6FQBBtKW0WCdtYMfPJ8CHfdCOPhkBQsjtqrnCAa0kVGf3h/6Uq7t9aHB+3PXJu/AdGTdqP43EpPus3HdV4j0z8BDiFXNA9GXWID/AQg30juiErq5Mt/4K7yrCA1jo7SuxGzTysc8qJdyXQYKXANeVJXyMjUHfjyrvG+7zJOb13LuA52kmo8QnGdEUrpBg3lI0SseiFG+qceF5eQvl2Co4XTG2UviVsXrN/An4sGr62kLDPwjp8yWcfALClKkIcTd234ZpvkkOmEqcSKxL09+PrAI+t21eHSl40ZbbD1TbPjSeJtHaKx
+ KIFB7F2W
+ x7tdqZhJ5lPx9t6XCZ8KJh0ul1yeOx6W+NjubJgvc4BxMb8ZTANSxGfVIZ3TN43ORyiDVHdmidaoJE+fbbC1NFLkS2VS6cGSFlg+FbCRm5g1EGWU4wIdxMuhdVWbvZw+gzcFhkVyD/d9P0ViIvIqi4NxdiR4W2cNKWZucpOQ7MeuJZfJCLotqMKg2qAmQtSb/NugPW5Xe9ex7JqaV59Jhz/11Wua8F6aw1qRhaKeRkYfysw+sLGtQS+58N8ft+TEDQKWaLcTzOJ9E5ZA0J84BHEFopSgJRlfq4EdwwF9zpvQZQmT5rqlFidDLZZ+StuKI3qkmMpE3SLYnvf0+Tk7C/dqwJiek21BC6BO7ptieaHIS7f7y5+UBtPQ074sOMJJZov860qDaEbIQgwc1RtnuhLzb2joSSv4/2c8k
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -148,64 +149,48 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/10/26 13:33, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential
-> issue to consider:
-> - [Low] mm: gup: duplicate comment with typos in gup_fast_pte_range()
-> --
+On Tue 10-11-26 10:14:44, Christian Brauner wrote:
+> Initialize dlmfs as a pseudo filesystem. This raises SB_I_PSEUDO and
+> also SB_I_NOEXEC and SB_I_NODEV. dlmfs never holds executables or
+> device nodes.
 > 
-> commit a105945d4180d981c8509ad500ce443d7fbb662c
-> Author: Yeoreum Yun <yeoreum.yun@arm.com>
-> 
-> mm: gup: clarify a reason to check pte/pmd in gup_fast_pte_range()
-> 
-> This commit adds an inline comment in gup_fast_pte_range() explaining why
-> the PMD and PTE are rechecked after grabbing the folio.
-> 
->> diff --git a/mm/gup.c b/mm/gup.c
->> index 7d43ce717b246..7f9348c633d58 100644
->> --- a/mm/gup.c
->> +++ b/mm/gup.c
->> @@ -2881,6 +2881,14 @@ static unsigned long gup_fast_pte_range(pmd_t pmd, pmd_t *pmdp,
->>  		if (!folio)
->>  			goto pte_unmap;
->>  
->> +		/*
->> +		 * Recheck the PTE after grabbing the folio to detect concurrent
->> +		 * unmapping or protection changes such as by KSM.
->> +		 *
->> +		 * Also, recheck the PMD: THP collpase can detach the PTE table
->> +		 * while its entries remain unchaged. Checking the PTE alone
->> +		 * would not dtect that we are walking a detached page table.
->> +		 */
->>  		if (unlikely(pmd_val(pmd) != pmd_val(pmdp_get_lockless(pmdp))) ||
->>  		    unlikely(pte_val(pte) != pte_val(ptep_get_lockless(ptep)))) {
->>  			gup_put_folio(folio, 1, flags);
-> 
-> [Severity: Low]
-> This isn't a bug, but does this comment duplicate the existing block
-> comment directly above gup_fast_pte_range()?
-> 
-> mm/gup.c:gup_fast_pte_range() {
-> /*
->  * GUP-fast relies on pte change detection to avoid concurrent pgtable
->  * operations.
->  *
->  * To pin the page, GUP-fast needs to do below in order:
->  * (1) pin the page (by prefetching pte), then (2) check pte not changed.
->  ...
->  * For THP collapse, it's a bit more complicated because GUP-fast may be
->  * walking a pgtable page that is being freed (pte is still valid but pmd
->  * can be cleared already).  To avoid race in such condition, we need to
->  * also check pmd here to make sure pmd doesn't change (corresponds to
->  * pmdp_collapse_flush() in the THP collapse code path).
->  */
-> }
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Nothing wrong about spelling it out once more at the relevant place IMHO.
+Looks good. Feel free to add:
 
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  fs/ocfs2/dlmfs/dlmfs.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/fs/ocfs2/dlmfs/dlmfs.c b/fs/ocfs2/dlmfs/dlmfs.c
+> index d3bfcada3e3b..1789ec96dc13 100644
+> --- a/fs/ocfs2/dlmfs/dlmfs.c
+> +++ b/fs/ocfs2/dlmfs/dlmfs.c
+> @@ -21,6 +21,7 @@
+>  #include <linux/module.h>
+>  #include <linux/fs.h>
+>  #include <linux/fs_context.h>
+> +#include <linux/pseudo_fs.h>
+>  #include <linux/pagemap.h>
+>  #include <linux/types.h>
+>  #include <linux/slab.h>
+> @@ -563,6 +564,7 @@ static const struct fs_context_operations dlmfs_context_ops = {
+>  
+>  static int dlmfs_init_fs_context(struct fs_context *fc)
+>  {
+> +	fc_init_pseudo(fc);
+>  	fc->ops = &dlmfs_context_ops;
+>  
+>  	return 0;
+> 
+> -- 
+> 2.53.0
+> 
 -- 
-Cheers,
-
-David
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
