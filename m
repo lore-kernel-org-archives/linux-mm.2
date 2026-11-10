@@ -1,142 +1,100 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8F7606A32D
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:14:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9E660A2612
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:15:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20260707 header.b=0vFeiW/K
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FgheBFY3
 Received: by kanga.kvack.org (Postfix)
-	id F3E7F6B05B4; Tue, 10 Nov 2026 10:14:19 -0500 (EST)
+	id 6DCEB6B05BB; Tue, 10 Nov 2026 10:15:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC7CB6B05B9; Tue, 10 Nov 2026 10:14:19 -0500 (EST)
+	id 68DAA6B05BE; Tue, 10 Nov 2026 10:15:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D69AB6B05BA; Tue, 10 Nov 2026 10:14:19 -0500 (EST)
+	id 555AB6B05C9; Tue, 10 Nov 2026 10:15:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9B3A76B05B4
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:14:19 -0500 (EST)
-Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1906340945
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:14:19 +0000 (UTC)
-X-FDA: 85419555438.24.7A0061C
-Received: from mail-yx1-f48.google.com (mail-yx1-f48.google.com [74.125.224.48])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 31DDF1A0011
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:14:16 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="0vFeiW/K";
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794323656;
-	b=aXxsBz65I5ymRW0/Ure3rbFOc2jbPmTysLa6LrozxYAg5ntoclHt3vv261Aq2ipQ6L6cKc
-	2fM6shHNBRAEVBlnqGJbI23n7RPMl9w9JC1f3hulWe398ErG0AMz3BZKWIWByRzHhngZX/
-	7qnwSn8QR/UgT0Q4FF8wV7B8UJjQ4AA=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20260707 header.b="0vFeiW/K";
-	spf=pass (imf19.hostedemail.com: domain of nphamcs@gmail.com designates 74.125.224.48 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FDDB6B05BB
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:15:26 -0500 (EST)
+Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 34AFB140922
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:15:25 +0000 (UTC)
+X-FDA: 85419558210.22.BB39E97
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 7A3EB80014
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:15:23 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FgheBFY3;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794323656;
+	s=arc-20220608; t=1794323723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C7mcOM+n5OQpUfop9CP8BUGmScJoc5ssQWRuOnotN9Q=;
-	b=m7oUvGgsm/Z6/jfeWrQHSG+nJ8G0G+Nz71um40EAS6ZvfYxrNbX8tuObQy1ZXngXlNKFQK
-	KbDb9Yhy6r9GjLGE/YdI1+hPIT5mRwmKX25W5vMPue7Lyu1EX+nDPh2o/DKWOeWSmQSHTY
-	DGmugi/B19VM4DowOaLjlFRlpwoOUxc=
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-67c11318ad1so1304290d50.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:14:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20260707; t=1794323655; x=1794928455; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=C7mcOM+n5OQpUfop9CP8BUGmScJoc5ssQWRuOnotN9Q=;
-        b=0vFeiW/Kq5NT4RrM4SB3KL9sKLt6yZqMWwgvfIMswEEQHvy8gT/Jv/hRON5Gg9gOAA
-         doppMkMeC8FfuTHT1kfAvs2kJmur/yxJYd7X/QhvBysWhAZUvjxWjd/ralKLV14FS4GC
-         CNdkol/4B11eajwJtE1u/5174JDLcMGyffU54WoFZVtG+87gWhLVIxNp54CSmEM/Et7a
-         LaXiS5jxbRfUts+ChvYql9Je7rYYrJWascp8cPjKEhbLCO0250v0K7p+7mqzwLfSiTf/
-         O1RMNiE/C04pZhHtzYwPpfsIo4iFXFaSWZuj8bqNu9TtbL9s20qok5rhWGJ0/i7G3z6M
-         9y+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794323655; x=1794928455;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=C7mcOM+n5OQpUfop9CP8BUGmScJoc5ssQWRuOnotN9Q=;
-        b=mZnV5OJDjcSTwVfMijK+iekdI2/GAmFM0pf4icHP6FsRfcSbqaUuILx43IgXaB8Vcw
-         H3GuVnJiBD+OwSQeFx/k0k272Qfxy1hyx3HmHmNU4Aj4jV0uwfmoxWcvtWx1l3oo1C/P
-         UmtMyEtp2AywJxhIgYd/ncV7MoSakFdtwnrR5NZ4xxZOeUHRztyL702zx/LohZYqMBUv
-         YrpTlMi7xCKmns2o092Q/qBofePQDsXBESnACu/MO5DbFLsKqvXgMXm4Y3hPl2jMnics
-         6fDpf/odd0tdQr+pnguB76YAcYz0CPIYJRBGgR2MXM5BcLITxGwOC2usW9LPYQYyAdBu
-         WxUg==
-X-Gm-Message-State: APuU4Z+97ejRRw/kVQeUXrGj72eqFdan7sHjIUybTey/rPVhbkzsfgJt
-	W36HcCuveEBmKJmmKxl02YHyI14cs9bpgZDPAuUNC3L/d2rYEn7855+qm8wqK/ym
-X-Gm-Gg: AYBFou3X9drbG6KUNVXLO72I9Mvs5uDWjlIUpWZ/DPQs5au+tMLrx9DdSERqKejJisq
-	hyvdYMDJFt5/RTFQl4f+Am03T4BcxCsNGS30CF4ewh8TNmpo+YQ+EotPqyoypoBBgafrdTK1sTX
-	prAejITeIm4trJJExBvZzcQf0N7IWAUIOyo7lelFPRr4ubhVqvowS7McVYtdOfrKQsS350zi5P3
-	+yS6tudsxTJ1J0JIhxvPr1qJK884Z4LCjWazUgE2x1vLP/WZhKuEI9EQz2MeUr1psevpS7WBN4C
-	DM3F7QqmGzde4CHl27yHS747RdfIOllVgWPkRxJv8DKAZKZ/YCwAQ72cm2fd5Xl70+LZ/fSKPKl
-	q3uIVQrgtfs3EDOS32hNupOa72miJ6PRmJCz2Ly2OWPp9o61eqR+z8i6rhuVXEd2e2VcQIC/80E
-	Mh46CMNyo+cCyU/VwWot7nNS/nBoREcuuPqyZLxF6aX8XEeuhHrn6UMYgy5zAazgbYdgB6NBuCk
-	PL2U4CMox1qQnEgbyX79Zc5JEtmVzm1PFRlj3hNUTOq4i67YMUd5W2P5KsRBMPFHw0nsipOzozw
-	ulhKUg09WsYkR7ehhto6PVAtzshZPuZG/8Pwbhdx/jHAAfuuZfbU5PZzKG3HefKvq0W48SuHWKB
-	G9qJQOlBJM04zBLRUzhi2cPfTlyAKabsGcToR
-X-Received: by 2002:a05:690e:480f:b0:679:b86d:6977 with SMTP id 956f58d0204a3-67c568b644emr1317770d50.73.1794323655270;
-        Tue, 10 Nov 2026 07:14:15 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:a::])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-67c58a1f11esm2086933d50.20.2026.11.10.07.14.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Nov 2026 07:14:14 -0800 (PST)
-From: Nhat Pham <nphamcs@gmail.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	hannes@cmpxchg.org,
-	david@kernel.org,
-	mhocko@kernel.org,
-	qi.zheng@linux.dev,
-	shakeel.butt@linux.dev,
-	ljs@kernel.org,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	baoquan.he@linux.dev,
-	baolin.wang@linux.alibaba.com,
-	willy@infradead.org,
-	brauner@kernel.org,
-	linux-kernel@vger.kernel.org,
-	chrisl@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	youngjun.park@lge.com,
-	ryncsn@gmail.com,
-	sashiko-bot@kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 3/3] mm/swap: skip relocation of tableless clusters
-Date: Tue, 10 Nov 2026 07:14:07 -0800
-Message-ID: <20261110151407.789960-4-nphamcs@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20261110151407.789960-1-nphamcs@gmail.com>
-References: <20261110151407.789960-1-nphamcs@gmail.com>
+	bh=EDKPQGe+tcB83Gs3w6L12JnJZcjoeeHi9cz6bG12yVY=;
+	b=cJH5aXyzqTCScZSWj6qvWQdBd43r8M2/79Y/gNOXDLGpwUboIbymVpYalq8pe1WL89NYVw
+	EZ4RFJSh/ht0F1TdIevSmgkMkrR/u2928+Liq23CIqp129vTCMj3FGH6+ZRFiGEQ+bhuqk
+	MY0vkGx0Jq4MDgm3np5VZQRvhCCl1xs=
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794323723;
+	b=V1E1Xgf6hVTok5NVVauA403b4Dz07I5ukg0VsRMj5ykrqCDyITIVsxgwSc6yTvqauM1/Ki
+	LMUyR5PqUobiVR4DNT0ow5lBErnwCsC511nNiiEGb/tjtEvs5m97CrW9IIaPToGfge6zTk
+	fO+6rEy69DlIQ+1ibYD3QEZvsjBFmF4=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FgheBFY3;
+	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 9F93C44842;
+	Tue, 10 Nov 2026 15:15:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7AE1F0089F;
+	Tue, 10 Nov 2026 15:15:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794323722;
+	bh=EDKPQGe+tcB83Gs3w6L12JnJZcjoeeHi9cz6bG12yVY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=FgheBFY3GQOc/VIc4WFDSA+6EXBzYHSGFEpP2p9ihpidCpJN1y1AGj3uWpUGA2atu
+	 LjVtZg5CrpOdgJgxaI1HSlchN3kJIeZxl4qAbVDtpZmqVvq/kDbGsBRAkp0LnanRaH
+	 d0YlnHjI9Eq8DFMW4nFOY9naqiPWRetATDUUK9KkKVi93MJzjfAY9g8aDOXvZ7pyfJ
+	 ndYnyFpUyKD84G63bnGdwAnGS+HxAg+aHiTsAa8M2RmgDV6nGNDJSC2GV0KlCUsN86
+	 GlpeEG1Bv09QsznI0CtSahkW+zo+z0IrlchZUgwm4l1oB+DTtw3w7PiYSm4Jrlhrc4
+	 AHOO47KqfLGrQ==
+Date: Tue, 10 Nov 2026 15:15:09 +0000
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+To: "Gregory Price (Meta)" <gourry@gourry.net>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
+	akpm@linux-foundation.org, david@kernel.org, liam@infradead.org, vbabka@kernel.org, 
+	rppt@kernel.org, surenb@google.com, mhocko@suse.com, peterz@infradead.org, 
+	juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, 
+	rostedt@goodmis.org, bsegall@google.com, mgorman@techsingularity.net, 
+	mingo@kernel.org, vschneid@redhat.com, kprateek.nayak@amd.com, ziy@nvidia.com, 
+	baolin.wang@linux.alibaba.com, nico.pache@linux.dev, ryan.roberts@arm.com, dev.jain@arm.com, 
+	baohua@kernel.org, lance.yang@linux.dev, usama.arif@linux.dev, kas@kernel.org, 
+	joshua.hahnjy@gmail.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com, 
+	matthew.brost@intel.com, byungchul@sk.com, apopple@nvidia.com, jannh@google.com, 
+	pfalcato@suse.de, hannes@cmpxchg.org, osalvador@suse.de, raghavendra.kt@amd.com
+Subject: Re: [PATCH v5 7/7] mm: use VMA flag helpers in NUMA balancing
+Message-ID: <avM0EbXsE7WyIPJE@gremlin>
+References: <20261110150446.2452975-1-gourry@gourry.net>
+ <20261110150446.2452975-8-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,INCLUDES_CR_TRAILER,INCLUDES_PATCH,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
-	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 31DDF1A0011
-X-Stat-Signature: s9tffe5rtid8h5j98oy4tregzs84x9fk
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110150446.2452975-8-gourry@gourry.net>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7A3EB80014
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: qz6moeg9wzyhsg6s317jim1dffxfyjuj
 X-Rspam-User: 
-X-HE-Tag: 1794323656-468796
-X-HE-Meta: U2FsdGVkX1/uWcATCg76YDhpHd3TJIU7TEz5Nz2IKfP5zJynTwrTRAFCnF0JwXEMeUzx9mf60DFikdEN8uMuk/l7Woks8+6l7gC9NOIivpNpNATMD+cswgAawD5aj1yF1ujYRJlcVLw7lEgh2TI0yONPO7bHp9rLRA9OJWbR1HC534YEdOxMH4CwVSfac20lNF1HMVYEBpcRRoIMKMLGbZ5e8e1JCBegDUi6jNTz2ZYRTUrU/6ZcTgrpXZRZruLUnUP/ib5c8BZvBydcn0P7uBXOmxKHxpKavp/5roaS0lKjmGJhDpSxF2nOTQhBBf8Z5vGh5Edh/euGAjmM1KTng9H5ZMevAtTM3esZ7cAdpXjCVfDl7wInwdVdsbJ4Lsf2TQZo6iCdaSGGznre0XVCWKVngWYRRbG9E/CuTkBl79h4SVAUSzWlpFkRr2iguz4tSYi0POsfo04+fGitLLtwCVaj4vsFFShPVpuokd5mvKrcsJIyneXt6Da3k2Y9w4SKeb2Wp7GBZNHcjbTeNYyqdd3Qw1WgzQErYSoMcZrEU7ziRcHgAtXNcfAbrug7ajKuQaUcImfyw9S+ospnTWysB8i+lPRA1ra1gIt1o8bfyRHOPsiF+vwWxIckuWthJZra/2vJ7k3XOnolhOnweAyCUBiEt5J0gHBOOBwpilSbXIireMKszsPG35MaaKAjzqQOdHBMNnBSPPQFXdjFnuZjPut2WiBQhb9ID9wmVBzmh7GQ+SBqYs3I3dJV5tA6F8+u62FfXHBRAQxDVeq4JT9u5YULHwA7mbx5z2W/OLCd+DVDmue6djtLVxWrJhm0gTwgdnqygLOVDH59UW4BNmk2CELQiEESvX2nbEX8n2XGtFv5vgfLUsLG/FAhTHoomVBkNhfOEeKKcd/qH6S+FGjYMLUcsNQnBgh9klzibKiqOr/1FYnXkm9zuAbyJFKH3OLgfUkX9MvHJ4iJX7+1ADD
- yNj3IkI2
- AJ3qbj9Vsjk0huy4m3v2hMCrS52D3DHfUOO8UkutU9Zljjj8GXF07T5st5i4e9yXst5vXVkDHHUS94Flzn8XtKFb4nHJpbz3yJAjwFivufrUIfadbsp/be9ROGakwFzLOhn9HhGh2qeZKxs7Jz5EsBHipYTVske5PWMWoSmea6Vc7fJ9uWmvhETH7l0zRqoIPSvnr8trQgg7yxkO8S0XlA0RR2qWMI+tJyWeViuebiG5qqvlncUDLfnI/w7OCeBs+1qz5m4CWIOcliGCqNbljL1HY9tusHHwE8rnJq/RqY+m3X8nWKjmyyVRqQLY2HAzoJivYT3vabYkcH92XORqrhaTGpjUwlhkSL+GLbhBwqudGCIqNayCLuyrDr1eRkBnmSRY0hc/4zGhWG2Fy99kdqiglIv1i+J5uTiiYPTZo4hLnO/S4EcGixbl0dkL2mkjdw+UqIYsAmI1S16XR053w9admCK3rbcqFHlDQ3MuEHr58B3Y=
+X-HE-Tag: 1794323723-896175
+X-HE-Meta: U2FsdGVkX1+hFwrgSEZP/+raPNJRPfKSG/nAA5ABWmyRV21Cyeq4U3Py9yKQK7g3E7jMWQQ9ZFkYoTtZSSiBDYKPuCwULOdHCkC3lQ95aLAt2zbN/LP5aD3Dwt7tMYP0F2bsfauiSAjWIjTC6yV43xxv9MdOw+zZ0AAiHrS+LcZn2CglQ/sOnGjOD6mbX8G3LB19HhZPO0rlLCkIx7v3ohkglBEKSUP2RqxvHAGEmnQXjDipAyxy4XGBoo7CJZcAupxOhJWXtE9ZhwXgpy0Sw+WWcHAuXKFSumnNmKEE4HO1UpjtuPzW1kiCfSAh9D4j0d6WwBCIbHAJW57b9/5qO6eU94O3Ifgugllwv58Z5mWySd8jjppHKZwZLWZh4PsTgQ3PC6mbt1XsFu0uLCarXqGHXliJXzydXFmuTdWNaxa3BhFdFLKjVq4kczMqM0Kk3W7aPIb+HIYEFE7puEUAyRR5D0R8qTcwfZI0Uu/x9ufzhTEEug77tgJd+PGsw6gnu9wLxGQ/wjJ3kJ2lRBxvGlCbw1juxUUQNBO3sZjH84eRmQzsMpEPYjLuKZWVa/I2ZBtOXqoo4PaUJvXpiVFCVS0zGVAh9ipFasf2prgnqVqzkzVLdzrq4a4/JzFt0FVSp2G/brSUrlgml9YZx5OaLe7LI638DMQ6em2JIJnXfSnEq4b0oQPPPdrHq2rklAKe4T+3a86kpa1MgIQc9lldR9fsuFq9T2B/dVPdhRE7XM2EcqTR1SZvVJ/0Xa8iCnOYWWxARJNMnphCRX4Ko6v0a5w1HruRU712tfU4Bvtf4+5GvLFkpnaA7sqP46eTz79sxEfEFCypHUTEgzshvoMHM7T/q4NS6wdG4KdR5QZIHn+/rMrImA4zGpaekk3MHNAiMHJV+dLWssHQycYtN+FqL6/civODpIZaqdPAUPoVFIE3dK1K+QkeNg118zxynFwwUAZOVPh2I+pe8isIHPX
+ BCtPQFSQ
+ jYFvganN6uidYKrLZ38wIipXu2wMfefjjBQDavWGUV3w8kU/A9vM5sYAB7TW7d9MEXLZY8Uj5TxTsp0JifUEpv2It4Ro0R7B7ZWKRwe0EvWeHvVAolNYjtLrZOq232CJLOHtxWwVbGRetzpP3nwxVG7/0Fv95J1xhq7e+5socuqt8C36qje6e5hD6HMPntbiLd1/dClndvJTvRO6HHIpFfk2CxTA7u6p+WwBtBZ+EkuD7c+riwq2v5E3ViTuhUieDUzchTdiF4NoJ0ySwg7HSt9A6YdaZv6A5UeySHHIbVitWhEr/6pT3o5wjbeC9FtARg15hBswF1eM1FgXAHjyPRDkr7f/7EZPfHFkt9apfglaN28E6jcnPSJJP9HMHdTtAx5H9Ewvz743nkLBHSIEMZgRavGL1oM75n1ZI
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,70 +103,82 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-A stale reclaimer can reach relocate_cluster() after another allocator
-re-isolates an emptied cluster and drops its locks to populate the table.
-The cluster has zero count, CLUSTER_FLAG_NONE and no table, so relocation
-can free it again and dereference NULL in the DEBUG_VM empty check.
+On Tue, Nov 10, 2026 at 10:04:46AM -0500, Gregory Price (Meta) wrote:
+> Use vma_test() instead of accessing vm_flags directly in the NUMA
+> balancing code touched by the preceding fixes. Keep the existing flag
+> predicates unchanged.
+>
+> No functional change intended.
+>
+> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
 
-    CPU0                                    CPU1
-    Reclaimer                               Allocator
-    alloc_swap_scan_cluster()
-      cluster_reclaim_range()
-        spin_unlock(&ci->lock)
-        __try_to_reclaim_swap()
-          swap_cache_del_folio()
-            __swap_cache_del_folio()
-              __swap_cache_do_del_folio()
-                __swap_cluster_free_entries()
-                  free_cluster()
-                    __free_cluster()
-                      swap_cluster_free_table()
-            swap_cluster_unlock(ci)
-                                            isolate_lock_cluster()
-                                              swap_cluster_populate()
-                                                drop ci and outer locks
-                                                swap_cluster_alloc_table()
-        spin_lock(&ci->lock)
-      relocate_cluster()
-        free_cluster()
-          __free_cluster()
-            swap_cluster_assert_empty()
-              __swap_table_get()  /* NULL table */
+What a legend! :P
 
-Leave tableless clusters to the allocator under ci->lock. This also stops
-a stale reclaimer from returning a cluster to the free list while table
-population is pending, avoiding the resulting FREE-to-NONE state cycle.
-The existing cluster lock serializes the table check and relocation with
-population.
+> Link: https://lore.kernel.org/r/aq1FDhy00epXXtgd@gremlin
+> Assisted-by: LLM
 
-Reported-by: Sashiko <sashiko-bot@kernel.org>
-Link: https://lore.kernel.org/all/sashiko-outbox-203018@kernel.org/
-Fixes: 07adc4cf1ecd ("mm, swap: implement dynamic allocation of swap table")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
----
- mm/swapfile.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+This tag is no longer required, in fact I think checkpatch should moan about it
+now.
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 32639f65f13c..9fd62e4ca7a0 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -815,6 +815,13 @@ static void relocate_cluster(struct swap_info_struct *si,
- 	if (cluster_is_discard(ci))
- 		return;
- 
-+	/*
-+	 * An allocator may still be preparing the table.
-+	 * Leave the cluster to it.
-+	 */
-+	if (!cluster_table_is_alloced(ci))
-+		return;
-+
- 	if (!ci->count) {
- 		if (ci->flags != CLUSTER_FLAG_FREE)
- 			free_cluster(si, ci);
--- 
-2.53.0-Meta
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
+> Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
 
+Of course, LGTM ;)
+
+This clashes with my latest VMA flags series, but the resolutions should be
+trivial.
+
+Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+> ---
+>  kernel/sched/fair.c | 2 +-
+>  mm/internal.h       | 2 +-
+>  mm/migrate.c        | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+> index 279bf12b74b64..cf3e3657e9533 100644
+> --- a/kernel/sched/fair.c
+> +++ b/kernel/sched/fair.c
+> @@ -4378,7 +4378,7 @@ static void task_numa_work(struct callback_head *work)
+>  		 */
+>  		placement_scan = balancing;
+>  		if (placement_scan && vma->vm_file) {
+> -			if ((vma->vm_flags & (VM_READ | VM_WRITE)) == VM_READ)
+> +			if (vma_test(vma, VMA_READ_BIT) && !vma_test(vma, VMA_WRITE_BIT))
+>  				placement_scan = false;
+>  		}
+>
+> diff --git a/mm/internal.h b/mm/internal.h
+> index 6e7c247781a16..7fc34d084697e 100644
+> --- a/mm/internal.h
+> +++ b/mm/internal.h
+> @@ -1248,7 +1248,7 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
+>
+>  static inline bool vma_is_single_threaded_private(struct vm_area_struct *vma)
+>  {
+> -	if (vma->vm_flags & VM_SHARED)
+> +	if (vma_test(vma, VMA_SHARED_BIT))
+>  		return false;
+>
+>  	return atomic_read(&vma->vm_mm->mm_users) == 1;
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 50a0a2e11a353..796d98d1c116c 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -2715,7 +2715,7 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
+>  		 * See folio_maybe_mapped_shared() on possible imprecision
+>  		 * when we cannot easily detect if a folio is shared.
+>  		 */
+> -		if ((vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio) &&
+> +		if (vma_test(vma, VMA_EXEC_BIT) && folio_maybe_mapped_shared(folio) &&
+>  		    (!folio_numab_promotable(folio) || !node_is_toptier(node)))
+>  			return -EACCES;
+>
+> --
+> 2.53.0-Meta
+>
+
+--
+Cheers, Lorenzo
 
