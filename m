@@ -1,81 +1,86 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F331E606B584
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E53606A9AE
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 11:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=oae+OodQ
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=PvPHTv4u
 Received: by kanga.kvack.org (Postfix)
-	id 208D36B05B0; Tue, 10 Nov 2026 06:51:50 -0500 (EST)
+	id DA62A6B05B8; Tue, 10 Nov 2026 06:54:28 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E0A96B05B5; Tue, 10 Nov 2026 06:51:50 -0500 (EST)
+	id D56126B05B9; Tue, 10 Nov 2026 06:54:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F6566B05DB; Tue, 10 Nov 2026 06:51:50 -0500 (EST)
+	id C4C6E6B05BA; Tue, 10 Nov 2026 06:54:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E01BA6B05B0
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:51:49 -0500 (EST)
-Received: from smtpin15.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F32B3120516
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:51:48 +0000 (UTC)
-X-FDA: 85419045096.15.18758D1
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 9FCA26B05B8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 06:54:28 -0500 (EST)
+Received: from smtpin10.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4818D1A03B3
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:54:28 +0000 (UTC)
+X-FDA: 85419051816.10.11FE4C5
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 3F68340008
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:51:47 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oae+OodQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 7BBAAC0005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:54:26 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PvPHTv4u;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794311666;
+	b=kpH17+QMNG1Pyt0CCiIhfarPdUKBYb1WgcYA7pFd4RGNMznCSXGXV30h+WwghZxlqiRaYu
+	phDUfYjOFdrule5Mjtjtpwaw834gtA47oEuuZrqAFEG9lhEb22+ScuznGzhgZQVXeAxTcO
+	5oGQLWhJ7dWklrfuQ1SwAZgn+qxhBxw=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=PvPHTv4u;
+	spf=pass (imf22.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794311507;
+	s=arc-20220608; t=1794311666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=O6X3Z9fBtxilcMGd2LjGjP2OdK0/6YVs2YfALZnX1Y4=;
-	b=UiGPN1wIuZ2q9qM95FErs7TMQLJGif7v0IDpniBRVwaHeS0UvAD9MSkIRD6Xc6vHdTszsw
-	O90zsYJl95/7oA/3nsc1gT2aEkvxlolWFbnQSmNwbxJfqN8WGZcCv4OTmznRzWcc/2vWnG
-	z6yahu0UQ119fpnp6WLfSN9NrDNywN0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=oae+OodQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794311507;
-	b=5fDX/d4MKqnd0utvomZZ8dqsOHERD8jauLTvcNQg/Fv7Kk+F2E69jfJcOT7+YYUTSs0iO7
-	i71h3Ld9jBct1wXyg17cnnr29rt+dpk8PhuJHUeNxAFI6rn1OkgXudlR0ni68coFuMJBPJ
-	/nURN3EpiMMO+CkvnEwx2FHq+j6a4pw=
+	bh=7WXfVCVuf8uXYy2DZQnojC5ljvRy+PP3sdHEmJdjQAk=;
+	b=LYbDpu4Cr716emkJopEHbj/CuD8vUiwX8WF5tkzqaar8gLnqpprzsQznP1+CXr6qwmLJWr
+	Qww3Do9H6mp5tjy9THGCIHGBx8BXP7K7rvIDVc7f9kQ3cqJmXSXXTHgMSk3Zv7wZLP8VJe
+	flg2Sa1fkMQ0KBchADruoTf4rxEBOcg=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7AD5941490;
-	Tue, 10 Nov 2026 11:51:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AF371F0089F;
-	Tue, 10 Nov 2026 11:51:43 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A86E046A38;
+	Tue, 10 Nov 2026 11:54:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC03D1F008A1;
+	Tue, 10 Nov 2026 11:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794311506;
-	bh=O6X3Z9fBtxilcMGd2LjGjP2OdK0/6YVs2YfALZnX1Y4=;
+	s=k20260515; t=1794311665;
+	bh=7WXfVCVuf8uXYy2DZQnojC5ljvRy+PP3sdHEmJdjQAk=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To;
-	b=oae+OodQ78mRo/uzxIlp3uK3oFdwp52ecWXJSOmm/c62ef4MUimKFBNXtSOohv7gJ
-	 7cQBQu13y+Ijgpl4UpJX4dZYBQA3QxmmEUygGTvVzHunGnk4oEjGV0w8OJa9EskmKe
-	 6UIWD73lnNe9RAsFl9T3k+3G0Ieajp+GtzFfa/4f6ljg9oJxqcArHpC9rDL3qnvhtm
-	 6TC0eVHmZ/HvD/5ruz0+S01wKOwrpb9McGIUsVjVTkus4D4oPprh0Mc1nuri07smtB
-	 2kOQULzo4VTmgO1t4AHUN6ryMYO41DUj6dqEprjJ/Fkor+qX6s9Dk5jxC5Hexp7enl
-	 SEK+cjTRPm2nQ==
-Message-ID: <895188b0-b79b-49c0-aba8-c04cb3292e10@kernel.org>
-Date: Tue, 10 Nov 2026 12:51:40 +0100
+	b=PvPHTv4u5XDMIkz+tNdsAkpxlI2GSaLdB22KQ+CkbqmoSCOTtaX4li1Civgvbq8Da
+	 5H3WjEDe60cW/mOlTXgGA+4yAPTafLe/cRIi7Qh3X13H3heCRD8AMdPo68Dh60az+Z
+	 NAYSda3bbR01apCSJ8seyXFtpysD41xR0nnbz4luv02FolbQOPXoR9jPsBYPpuujY6
+	 n5B0C5fCF3nlI1iLxaQLsLH6ViDBFWsAJX1VaZVAbhDD1+ULOBrrIwHSz6HNYboTZv
+	 BX5keLxP55jUMWXuESmgjQV1fame0xkhVbDp/iL+5WeYpPiYzWyunb5LynRubfkCpQ
+	 2uLi4apjTLjRw==
+Message-ID: <c092dbef-515b-4575-8669-efef8ebb6e29@kernel.org>
+Date: Tue, 10 Nov 2026 12:54:19 +0100
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [SECURITY] mm: split file arm of unmap_folio() drops RWP PTE
- state
-To: n3rd <18670333770@163.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Cc: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "ziy@nvidia.com" <ziy@nvidia.com>, "ljs@kernel.org" <ljs@kernel.org>,
- "kas@kernel.org" <kas@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- "peterx@redhat.com" <peterx@redhat.com>,
- "security@kernel.org" <security@kernel.org>
-References: <3f250fc2.bbe22.1a1c5441381.Coremail.18670333770@163.com>
+Subject: Re: [PATCH resend] ksm: add merge_only_zero_pages to merge only empty
+ anonymous pages
+To: "Xu Xin (vivo)" <xu.xin@linux.dev>
+Cc: g@dgvxl46587.localhost.localdomain,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ Chengming Zhou <chengming.zhou@linux.dev>,
+ Lorenzo Stoakes <lstoakes@gmail.com>,
+ "Liam R . Howlett" <liam.howlett@oracle.com>, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, Huan Yang <link@vivo.com>,
+ Wang Xiao <xiao.wang@vivo.com>
+References: <20261106034841.233085-1-xu.xin@linux.dev>
+ <899b1b2b-4f6c-45e2-abd6-a333ac77b23b@kernel.org>
+ <avEkWyGoKsVlCCRG@dgvxl46587.localhost.localdomain>
+ <3e126b7a-d7d9-4a8c-9c83-b6fbf5bf1539@kernel.org>
+ <avJ0p8ZfjZc9EewW@dgvxl46587.localhost.localdomain>
 From: "David Hildenbrand (Arm)" <david@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=david@kernel.org; keydata=
@@ -122,21 +127,21 @@ Autocrypt: addr=david@kernel.org; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <3f250fc2.bbe22.1a1c5441381.Coremail.18670333770@163.com>
+In-Reply-To: <avJ0p8ZfjZc9EewW@dgvxl46587.localhost.localdomain>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 5wy5npb8nrnxwgdo1uka7i9e87m49yy6
+X-Rspamd-Queue-Id: 7BBAAC0005
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3F68340008
+X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
 	autolearn=no autolearn_force=no version=4.0.1
-X-Stat-Signature: qqnb6pb1tb6i1tghmudxy35xwxxg49e9
-X-HE-Tag: 1794311507-953944
-X-HE-Meta: U2FsdGVkX19P4AGq/4jUHMKP26M2rZyKXGvbqxcyxSHjf9Nge3IHVr9Kfk8WluYapnbtBPLOL1F9C2q5uROsvsF5UqzVowf8PATaJ1sfu5y7FcaZV/0x9iBG+Q9+bfzfl7GckFJcFEVkz54bFXpIlv2fNM9NOdOqOFYtTVZr/juj4os9dO6u1ifI8ZVF7GFBbZ2R7cNyktWZCCeyn4ECrU3H164sjgtfiioZ8y2Lua+wCKft2yjOVSW9eyaMuAHhurqzEVPIUbu5+vY1UGxJ641cJiqDiu2mAnpW2MGusnMtJEPc2AiEsUAuS7yj+hZislAoKPLsvS+xRkMInd1MCGzWB48GBnEjaUYI9dUu/SDBtS1L2koZ7/yngKwXW9/B8qbfwI8GI4MYSOLLhQFdtxm4+yFBP7aadEzeoovjdnK/N62V/lSh/64qPGD+sA/9TIBtRyGj4p/esVy1f8fqZOtP1goaFYFhRfOkDb8flokilLYATjZrvDf8PeVGIOwK+qm0toWrRolP5omL4hWWLHjPBKqm6eMj8MH+7w41quFeSvDi2uHeE5lPc5//YZXTTUSlUA33rhdksAvwwgntm1aVHVJG4gWC2ZijEDq5mpRHoSAz6E4x2GOPv85hO7LJBlKq9LL3RAmEOE8U9wA72eL+4HWZpJvMr8jMQsKabgFmFcW4Fc0OagJ6S5Yi1wJ6HvPTd2rg9MOLBhsjX+Zt9N9gy6PPnnxsGXmCTL0KjPw9Rxbw8tQqwMqdIoUDE+bgEUvN/H5o98WFhX1+t8Zafn6A5WZfLm6/ntefXdKe5FRM6JPVcXzc+Czgb5LTF304B3WrrRBTIytTLegYfZxTVX1tt+JbpgKC+YsTQ4z9SYxyjnGvP/9FCnUA0vF+9sC98v1s61PkuCj/4H+RlmcbFCaEPZvPH/SmspuaokD75Rl0hlr39RO/jSa+V1mh+CFtZcVtHi5hYY448+gnsgk
- dO1uB79i
- SjgZ2sS7a8z7kMtG4iOxni7C/oDSYa5rTmW/tat2HrlehX9z/JGn5bFlRLkkx2k8gxzGN0w+3hl0pShEHwm0wlkZ1BgKJazLrsE2Dj516/r/BIsX3xmDV7HhHi39yaYiJkdUtUa9/WCLBQIA5MRtnQXGfsxPq/aVRNMDGyAXXu1dmL3kFDCbZlRKZMqsYDeKVZ94c6ETFIKiSesXCxCShakalaEARprcKHvArR/OdASdWenz4z3Wi6SwI1v2cpGZZvMZpuk8jwE+wsVPuyyxTyguotXG9OnbrqEfFDQkR8VZaqu6C8/Ns5DTi82UHxdBQeYfXln4//h/w/h6PvkvcDcvOf3o573eqWpjCJsIAA7aDNgAxEh87Y1RQfA==
+X-HE-Tag: 1794311666-8661
+X-HE-Meta: U2FsdGVkX19B30Cvf3coUtasY8ZFPYjxRJ+ZN2cCfoLimgoMaRL9pdGSu5UxvOFeeO2XRaqofMmc5osvuMI6/yywiieqnHvWeAhi2FqRnVYMmHBlwStTj7jLrwNQ/VuU5DH0duDT9wXVDcFiesQYyS80t8QyvYBauCy7XFx0q7etwCntBd5jsUUAHd7/Py989PEjdeouVffwa8Fts4pUhzJLGYf9yR8Lc/ee/qtkTq4QqR91AkvJEJImdnixdzw+rRwn/cmW8SI0oMQnq0CI7vn1TWRYoUwgTOVGhCazTi/v3XBOAzU5A7jy4EciuIhEw90lLMVGhjXp2oZ+04uJuv9M/ZrweikdOgeUpUSpsyPlC2EKnJoWXSgD4Q8Z+RrcwCh9lBHPngoG85T+OP/9bsQRytXeuyjrf8IRlwnrt7ROBY2C/M1Z9n3Y9sVXlhmVxHXmkMtTzPfReNCA5CzC5SXiTHK0kSaNOmvS9r1m5UnLPnW1+I1XemmXosTEtRSbS0Ql5v9ULRdgjrpOoqV1DIDRluS052bJg0I3QZIEqVMPoBncNEC3ABW8/77Mc7wWmhRKYAgUgEj9JBkNqrVi9oII16jAv7XBht+kIJ5A6GYgzT6rwLOwqYG5X9g/hYdSt2ufMIQDLhY2ivQb03Oh79ufhiJzhNXMTx3Faenn2XAhzf1LLN1ANTpofiL1HSz6lpOtZvjJ42PCueyKgKZBM/+huiLfObV20Fm3beI/6UsxwmOQA6qz4lXUZahyBZOBBhLWyJRy6vK/yvptuGS6JOFL0as+RoOTVmyyT/x5LQcukGNJOOlZFNWCTasYC2gs6TzHRTwgjAhBbzx4B4xTMe7BFcPWGKG7Lvyxh7uINQz8MuF8gCyMeHMbuUs2NIefRVeZgOrVgd4aw+f34YCcI5lVhA5U4TfI/g0R5s7wkV39qF2vKKnt/KVg19POOVW2CWdMUeWOHVgFwwh+MEv
+ hxzvfU13
+ +Y1vRayimwXYOIj6nEdUrZ/t30q6kXp7rAKGYaKJhvticOTsmYpkWszXzvhPpB4vOaztt1ZERYYwxgtFrYqI0LRGaKNDORIS6anhkJAFZ3H/zWiy0hCx/0BRgAKTlHNCsmYWzINuADeCZ2msv27/VzauxOcGXuGFM8BQL0fjgG1rScgnU2pnaGmNMWdfhEb/o5C2oqRFHN1pTi0EDQiaw7Vvt8nAWFDlP8bGpQ9+rTnkYestm2U2+6IiXc3Iasw0SjfzROIUPip3NydZDit2mu6MEplYnH+A0XgLhoNG8lGUlSPqspe0YjwmvPeiftvSdKuWlOkiyRGB173Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,23 +150,51 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On 11/10/26 12:42, n3rd wrote:
+On 11/10/26 02:34, Xu Xin (vivo) wrote:
+> On Mon, Nov 09, 2026 at 06:41:39PM +0100, David Hildenbrand (Arm) wrote:
+>> On 11/9/26 02:39, Xu Xin (vivo) wrote:
+>>>
+>>> Ha, fair question :) This came from our own investigation. We were looking
+>>> into whether KSM can actually provide benefits on Android phones, and this
+>>> observation came from real-world application workloads. To be fully honest:
+>>> I did use an LLM to help polish the English wording of the commit description,
+>>> but I carefully rechecked and verified every sentence myself..
+>>
+>> The reason why I ask is that this effectively disables most deduplication where
+>> KSM was originally invented for: VMs running the same kernels, libaries,
+>> executables etc.
 > 
-> Hello,
+> Yes, it closes the original scenarios like KVM, so I wrote a Note to say that in
+> commit description and Documentations. But it opens up some new application scenarios
+>  — scenarios with high security and low cpu-consuming requirements, where merging
+> zero pages alone can already bring benefits.
 > 
-> I am reporting a security bug in the Linux kernel.
+>>
+>> So yeah, disabling most deduplication shrinks side-channels ... by disabling the
+>> core functionality of KSM, to dedupicate pages with the same content :)
+>>
+>>>
+>>>
+>>> We still keep the stable/unstable tree data structures, but zero-page merging
+>>> does not participate in the stable/unstable tree search path. One more reason
+>>> for keeping them is that merge_only_zero_page is designed as a dynamic knob
+>>> that can be toggled at runtime, so when it is disabled KSM can fall back to
+>>> the traditional full KSM behavior.
+>>
+>>
+>> What's the memory overhead from keeping these datastructures in the
+>> merge_only_zero_page-only path?
 > 
-> 1. Affected kernel versions
-> Linux v7.3-rc7 (mainline, built and tested as 7.3.0-rc7) is affected and was
-> reproduced on two fresh boots. v7.3-rc6 carries the same code and is affected as
-> well. v7.2.9 does not have the RWP feature at all, because UFFDIO_RWPROTECT,
-> UFFD_FEATURE_RWP and VM_UFFD_RWP were added in v7.3, so it is not affected.
-> Triggering additionally requires CONFIG_TRANSPARENT_HUGEPAGE for the PTE mapped
-> shmem big folio and CONFIG_USERFAULTFD_RWP. There is no upstream fix as of v7.3-
-> rc7 and no CVE has been assigned.
+> In the merge_only_zero_page-only path of current implementation, the main memory
+> overhead comes from the ksm_rmap_items for non-zero pages, RB trees of stable and
+> unstable, and mm_slots.
+> 
+> If the allocation of rmap_item can be avoided (following Tu Jinjiang’s idea), then
+> only the stable_tree and unstable_tree remain, which are basically empty, and these
+> overheads become so low that they are negligible. The mm_slots are essential so can't
+> be avoid, but won't take up much memory.
 
-Please don't indicate uffd problems where we lose a pte bit as a security
-problem. It's not.
+Okay, so that's the right approach then.
 
 -- 
 Cheers,
