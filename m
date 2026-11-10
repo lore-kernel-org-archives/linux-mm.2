@@ -1,69 +1,69 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B587F60A2623
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5396A60A2633
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=X+rANZFM
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=gzvLDpAn
 Received: by kanga.kvack.org (Postfix)
-	id 86BE56B05C7; Tue, 10 Nov 2026 11:03:00 -0500 (EST)
+	id 4747A6B05C8; Tue, 10 Nov 2026 11:03:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 845A66B05C8; Tue, 10 Nov 2026 11:03:00 -0500 (EST)
+	id 44C586B05CA; Tue, 10 Nov 2026 11:03:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70E346B05C9; Tue, 10 Nov 2026 11:03:00 -0500 (EST)
+	id 38E106B05C8; Tue, 10 Nov 2026 11:03:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3AF426B05C7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:02:59 -0500 (EST)
-Received: from smtpin06.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9D8B912094F
+	by kanga.kvack.org (Postfix) with ESMTP id F2B0A6B05C8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:03:01 -0500 (EST)
+Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 816451206C5
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:03:01 +0000 (UTC)
+X-FDA: 85419678162.08.5DD81B1
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C66DD40006
 	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:02:59 +0000 (UTC)
-X-FDA: 85419678078.06.FDA570D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CFEC740011
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:02:57 +0000 (UTC)
 Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X+rANZFM;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gzvLDpAn;
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794326578;
+	s=arc-20220608; t=1794326579;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2J0bHwo7Nm+XHd7c/BVtqZ3FQ1emJddLNsYAfeJ6ojA=;
-	b=KhS8ns3odBQlpVqJ+VYe+n73A0h1gLapzhB1naQVc7t1kpwW8I8iBkZiWptBIPHbZS0G2/
-	mNeb2cOppfBDw/CvDQhIIrvCp1TH3CCMijvJsPxlXwdZ4+B5WTx6VsOl4akBnE91gvLxkg
-	JgCwZGpykMC0ZDl6JkhNEJdXS5glopM=
+	bh=oTzeWNwlBTUA3lRT6EanNeBOdseQbnbeg2md+jYWsZ8=;
+	b=rB2buFbZ1qC5AmxAvphjjR94mVvSjc4sIndACwvbs23A8TSFFDOgHSu22LE6wDzW1Q9opZ
+	GOxkiB2/rZAM6+v0LyTkS/MrYabmaQB2DUCD8SQE37V6fNMnJWHAT2qrvPv7UE8RtSaLxc
+	6wgczMd9Lu3eWXvrHZN8iyWefdUdw3Y=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794326578;
-	b=xYhf1O1VrOY4+wPdM2/8oxvnBWExKr8f4NsBC9Mij/Lku97Y9BXTSyVqW96dBpSOHZDk58
-	N1mdoUwwCfGn6mz4/7hEX3K0QnT3niNPw8J4gLRALM9EAe9UDEUY7CQcV85i75EtreLWXk
-	0iyRKWijF+P6ktUSz+jlKaHsJYQoGvY=
+	t=1794326579;
+	b=QrbVBVm9yJJpIcADGuszaTfYiZyteFEaRl+GllC2miX/o3jBezBJJtfSJKpv3qBVPWpjlq
+	L0vSwBdmnyhKvtEeDp2EV/jmN8qSOODljZxD7c/phqsEpAr+sBUlp7cV53mGWRAIbdDRMZ
+	KBZtBvedaQcwx8Pjbg/7ayaNUC5bHF0=
 ARC-Authentication-Results: i=1;
 	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=X+rANZFM;
-	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=gzvLDpAn;
+	spf=pass (imf07.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1827344F77;
+	by tor.source.kernel.org (Postfix) with ESMTP id 4C13363A57;
+	Tue, 10 Nov 2026 16:02:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78AD81F0089F;
 	Tue, 10 Nov 2026 16:02:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6051F008A1;
-	Tue, 10 Nov 2026 16:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794326577;
-	bh=2J0bHwo7Nm+XHd7c/BVtqZ3FQ1emJddLNsYAfeJ6ojA=;
+	s=k20260515; t=1794326579;
+	bh=oTzeWNwlBTUA3lRT6EanNeBOdseQbnbeg2md+jYWsZ8=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=X+rANZFMBgkBXGJj82318D+O7DqgGdQIEVbu4tyCPmOIydqYiPM9cSeAE5n+Co4UF
-	 n6S6efAo+Uf/Kihg/kEFqrImLqC5XPHBifb/1M6zQdhxbQtYT4CueEW5Jo1GGVnDLV
-	 Z/VgawhlHyO9PkysB+dbJJPlxd9h5Edn2U30svbVb/lFPgJ719xOozaEvWYxrwaa9Y
-	 IGTGmZjfY+n0ZaLUbo6mShQPqk/LRMfsNimvFte2M7n0mXUF/BNPuF66wdzcR6j9cG
-	 RsE7mi5Vc18MpIvXaEVhFOIgJLrBQer35ZBoZBL1w/yZuvIzNKEoaASq0cufPCUjZ4
-	 JCsH/lEpBdxQw==
-Message-ID: <sashiko-outbox-207333@kernel.org>
+	b=gzvLDpAnBpjn0n9vNUDHcZ+dogtUFFcvWODxsMFmVD9t6feYlYsg716Q6/gdP010j
+	 UsuAQqotmmYOpnLwORVjRvXHfxpO+leW+40XdrcRWBP9vVIrXC9o0iIjZA/BfI9SdB
+	 YTTXxDacHnYWqjZ0YY0YrpMQdzyTeVwkuHw9XzSmb9O1BnXFxAWaU2TtEVxLV5xzE6
+	 21noKNNkv7CQNx+Nz0n9OX4WMM9dE5yiom+oWtMheHunILoj4Np4i4u9PrYNYhBzGc
+	 pBp6pESN5YBmHQj11cAaLv+67Rci6rxpoQyF4fSKic959blS41vX4GgzbUK2hhkFSX
+	 FxaPOlwEtR97w==
+Message-ID: <sashiko-outbox-207334@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH RFC v10 19/22] arm64: kpkeys: Batch KPKEYS_CTX_PGTABLES
- switches
+Subject: Re: [PATCH RFC v10 20/22] arm64: kpkeys: Enable
+ kpkeys_hardened_pgtables support
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Kevin Brodsky" <kevin.brodsky@arm.com>
 Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Ard Biesheuvel" <ardb+git@google.com>, "Andy
@@ -81,24 +81,24 @@ Cc: "Andrew Morton" <akpm@linux-foundation.org>, "Ard Biesheuvel" <ardb+git@goog
  Babka" <vbabka@kernel.org>, "Will Deacon" <will@kernel.org>, "Yang Shi" <yang@os.amperecomputing.com>, "Yeoreum
  Yun" <yeoreum.yun@arm.com>, linux-mm@kvack.org, x86@kernel.org, "Ira Weiny" <iweiny@kernel.org>, "Lorenzo
  Stoakes" <ljs@kernel.org>, "Thomas Gleixner" <tglx@kernel.org>
-In-Reply-To: <20261109-kpkeys-v10-19-aa6c4d9603bc@arm.com>
+In-Reply-To: <20261109-kpkeys-v10-20-aa6c4d9603bc@arm.com>
 References: <20261109-kpkeys-v10-0-aa6c4d9603bc@arm.com>
- <20261109-kpkeys-v10-19-aa6c4d9603bc@arm.com>
+ <20261109-kpkeys-v10-20-aa6c4d9603bc@arm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 16:02:55 +0000
+Date: Tue, 10 Nov 2026 16:02:57 +0000
+X-Rspamd-Server: rspam06
+X-Stat-Signature: ty3jx8hk9ymjg6xm8cn7unosy5p3pj8a
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam09
-X-Stat-Signature: r899ejs4q156qji6cye65zf3wyxm18k7
-X-Rspamd-Queue-Id: CFEC740011
+X-Rspamd-Queue-Id: C66DD40006
 X-Rspam-User: 
-X-HE-Tag: 1794326577-838220
-X-HE-Meta: U2FsdGVkX1+YMhwp0VJcf5b3At0vWlIEi7zmTSJl0O/aIL3wKSGvyTE0Oo775wf13zzw/seXW/LlcnfIAseOXgPXOcdKfmz/ydx9pV//jzEUaZFinm2MGr/dttbmv2k3UsyNUofxDnRfq5br3MWjutxEnC7ywDeWUJtidjKbIp/SdfmXL5NSjH9G+i5M6+1mZxj6Y+nIND8sVG8yfrYkwMIrZH0tFcGT8GvrdPulsnkvGhafpFHF0sG81WNpTj4y4pzY7vc6F9K0AYymHcyCTUq63t6/10sJi8NroxCjWEND47FWD4zLhszKiQ4sZyjAU+fWXklvqgihtTIG4yODsCg6jZrE9/e8ZjLCVbHc5JQYkQpnOut+OlSEQLhh6lkc7gf4HkfZhA7Qm9rIhfEd8ZJbOx666ZY9DX6qLCw63fZ5QGm4gLrIK3oQIowPsnBBzmvIEUeta1vUnk3BqafAyz/udc+6v9Tdyx1sQT/dDb6JvCl8FDaEWhBvSKRINTksYE3Ttu+sOk09P8TBvA+PKzw2mzByLHPayRNzgceyDZxCYZSDW6uRuKaZj+9+1yfrVrQca/tf/i61KTwkRN4EtgsccErKyTxDzF4U3b02734zAHFTZSjyjyFKbiNDXHAII4o6tOsiX6oZP15/b+gFN20Vpbyb/pqMqHjx05imYCCa57MEfMx0H4kOh8WVknqn1TBlYFlHs9dgfv89p4vQ3m2+ZBLMfkpqqe3oALy08pL0JFyE5Q6aBPWS/FzHjgXOkkoBA3nlp5NHitHjbCSkpbqKhH8YziRQ0pRU8S7dhYpBprRlQ/Q8pDKub+/ajac9LtjNYLJv+tHqmt6l1BiXTUPjtW6e9dg4t07gSx2qWT7aKO6X6ZDSDBvs7qbFr6DIfXhBFaMpjLReSNOFGCOAskExfk8f0d+0AywJ/4fwoTKmvtzcl8o7+XKB4zCkAp19ZMOGVLv7zwMWSg/w6HG
- M59ACuWY
- mtVzzvKZRZvg2CHVz8GyLIGVDgU0HFd7pkUKOTe2L3osVOtCY97Jv+arjvRGrFc6wd5vZvIH0hgA3daGZb553L16yTfbiU8kPN0mVJxAbicgGlmWfdvhxhZt5/trPJGJWxX8sfYoPZ46n/5eahi3fn65eTKebczWB/ELTExoBJiMIx2lhaymKkVsDtFTPMz4Ae1c1ABEW/VnlOsIHh1HZypMzB7Yt1VpYgHyRdKswAEiJ2sk44ahjzjU3VTOLNEuh2s1tauIhtCxWIqeChvpHozdugg5XV8fRhWk3JURdvKzxMcmzXrE3Cdxsm1PqoGHVn516v8ElWJr5MyB+7MCE2TvodM/MX9VEYUFWJAXqTVWkeoataAOJUjwwfYBRswE/0fOTtM1O/H+Ioaiyq4GzqH3o+Bq78F5XW1iqdJmdRx5FpWmWlZ+IzR99oaB59pzwRnUljURfWkW/qwPwwwkWOhHms6ilD5cjw1eB4IZFA2zs19C+WJ1r1MLQx+vaXs8Ndrs5AbWQWRk54/GkBsVyZHz/kOrB7y4tnXm73FAMiBI05uO2N5KlJN+k7MTHLikTeY2gRW48FJJ78OBj8JSoFFv8Ap8CeOT1QSCiHCYGKplXz6qI0rkSR9c/uzZ/hDCbTTiZrsimW7p94JvL80ej/ksIrAS5hJRJknvJwkatWbDe2vHxHbPkNbkqAaGl996ALub3JRHOga7TL301yKTVFPnEakd3lQ25qFw6A7uadepVKBTIFd/k5awZ1frEfCs72cxWy3kMY2BH375zEbilQxt99A==
+X-HE-Tag: 1794326579-459233
+X-HE-Meta: U2FsdGVkX1+3l5rEA7RZvw3IP8Qvx/JJA/oe469V/aWe4yI9ACiwW/p/QQ90OTalQckK3eMZ6yxWcqg6v69jqU3AxAVVWpvT4FienIfTFHgiza0/wEIoQA2owOgGM5GW43LMbuLwLwcS3hAMWlpbOY7ssGCSXL+sv8HbVjOkE1bdoSC/sD1PMHVHrSOqfho4sNZM0J9BiAksfSZACp0ayYXNWgvKJSk1Vg6BhGZOJu65N9LlQMsHe0/7bRc59vwvQdSlCYb8SgFYtT0guIq7A8BC4m2Po4o/b41/0Tg+6z0vXIevKPxzNs4dtN4HaSSsV8IZIgCJbgkDQbpUuKRsdA8t3uFeTFCfZvUHPCiGhDVIX6w0pN9yttxA4yzv/2J69Kzge8R4bislbddsDvVl8Uc+4lpYlow6+7ArctIgEUA3EIXhkrGU/2k+J+jsghE7PbJmxRh2BYqRvPjjeFVxpKgyNrR7TRj5NHJRb2ketplfwRL05KtLPtXlDLlFv4FKMEzbFcBA+VCvMhD7olTldYcf0s/cxsrLTnHnbtwsGN4tqMUB6sWR0dGHZyC3qOZ4hh/alYYo8CrXuE5apXFxdBKcyntR14Io88ZgkcyPHTSpUQfbRDLqtTIMG2BG+wLOTXHLCHp+ehNkkEtn/vWfwz9k5NmwbsJdtAjgWDgdCmEAelcasFE5LATIn6Nez9F2o6Mmkt1oNz5wSeB15deolang3AHzcf+078ldKjFklPc42CE5j3rCK9eEHVHTbMH7Fn58dK2UB266X3jsTTcp8OFNSqmm/6BJS7XXsZpAPOFtfh6VM1SmUUY1Zmgnu3ikGSXVo58x4upDPrbagKeSGRtm/4XXLneMAgtuy0ZOV9pXW+Jb2nDQZzUM2obWyyn8EJaaUQNUCZCb3veV0sc+JN27cN13509KMZbZITv9FntOL+L0yOhpfRp2HKoyF398HlDJwjjuvtRqXt+TL05
+ LVaTsh4V
+ XBI63sNN1cIPWQdAiRJF3e9b8J/TArRnavLkEBTvnkjsteQS78twF0Ust3LOGAKp2ctMfqRgsjFtFlth+az1s1IgbOXBCGtyJ5DamYv1C8LV2oXata7lre/OzXyfo7We4MQj9Qj763F/8qjVKXq91B+3OsyhJFEHdTaK4NYm9bUOmQ+Jhagc4tDsjR0mi+YtJag7SkcoGXypdYn1BM8LbEpbuRkV8Elnr2tPrNF+sleNlIEqcjya/e3txIsJfVkyoBI5XtfmV+6sfi5tC0n9UHhEX9AKj87okDEjDgV5RirLMgT6phIhX+cC4x00Y3mNkD81b+VVxvMcXuhDBlo+UlzU88ylBeSosXhdvkbe01qdAY9zMdArmQtw/Idzm01osHSZ6EMPPe3brzuhNvxTasPlk5X+kno/8tDhYDsi/1azdPwUF5YnA/Nq5E6X6+GupCdP4SFr1t73vaV/gXtr9EPMbDWQuDGdaLO4iI/Aev98/c8eBVRssu4o9Kkve1imqOP3v0BvXNJi4hYkejrmc65wc5yqcXyixWY1ThhI3hR0AUl7F2UQ9yKC0Bmb9ebC8lGtfRtxrty6yFuSpbasOnmMNpIVpTIUjh8puRrNMOGG1XsWj0YpOibeqBFL60pTP/8U63r6/19Ou2ldDepjFhJojERr0RzxgJAWJ4tnG6pY0TV9Ks7X8nOenOzfrQCmsp8Ks5Pljo0jr0wW3NrorWuWv35i/Wb3cOvPbvwn6NFtrAD6hpk6nlx2DioRfPwq6e1g7dL9Oazm6yBGzqVal4vEqTA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -108,88 +108,79 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential
-issue to consider:
-- [Medium] arm64: kpkeys: POR_EL1 desync with is_lazy_mmu_mode_active()
-  on entry/exit
+Thank you for your contribution! Sashiko AI review found 2 potential
+issues to consider:
+- [High] arm64: mm: preserved pkey in trans_pgd_create_copy() faults on
+  kexec/hibernate
+- [Medium] mm: kpkeys: redundant KASAN shadow walks in
+  protect_early_kernel_pgtables()
 --
 
-commit 1b260fb8242fe345fd5e4bdc00ba9a4272383991
+commit 974504a027662a7ee9def760c6976edfcfbc634c
 Author: Kevin Brodsky <kevin.brodsky@arm.com>
 
-arm64: kpkeys: Batch KPKEYS_CTX_PGTABLES switches
+arm64: kpkeys: Enable kpkeys_hardened_pgtables support
 
-This commit batches KPKEYS_CTX_PGTABLES context switches across lazy MMU
-sections by switching POR_EL1 when entering and leaving lazy MMU mode and
-skipping per-write guard switches while lazy MMU mode is active.
+This commit selects ARCH_HAS_KPKEYS_HARDENED_PGTABLES under ARM64_POE to
+enable kpkeys_hardened_pgtables support on arm64.
 
-> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pg=
-table.h
-> index 5f46d4cb38828..5e958531e6abe 100644
-> --- a/arch/arm64/include/asm/pgtable.h
-> +++ b/arch/arm64/include/asm/pgtable.h
-> @@ -43,10 +43,44 @@
-> =20
->  #ifdef CONFIG_KPKEYS_HARDENED_PGTABLES
->  KPKEYS_GUARD_COND(kpkeys_hardened_pgtables, KPKEYS_CTX_PGTABLES,
-> -		  kpkeys_hardened_pgtables_enabled())
-> -#else
-> +		  kpkeys_hardened_pgtables_enabled() &&
-> +		  !is_lazy_mmu_mode_active())
-> +
-> +static inline void kpkeys_lazy_mmu_enter(void)
-> +{
-> +	if (!kpkeys_hardened_pgtables_enabled())
-> +		return;
-> +
-> +	current->thread.kpkeys_state_lazy_mmu =3D
-> +		kpkeys_enter_context(KPKEYS_CTX_PGTABLES);
-> +}
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index f7e4ffbc07ac2..28023dd0fd4b0 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -2301,6 +2301,7 @@ config ARM64_POE
+>  	select ARCH_USES_HIGH_VMA_FLAGS
+>  	select ARCH_HAS_PKEYS
+>  	select ARCH_HAS_KPKEYS
+> +	select ARCH_HAS_KPKEYS_HARDENED_PGTABLES
 
-[Severity: Medium]
-Can a synchronous exception between updating current->lazy_mmu_state and
-switching SYS_POR_EL1 cause a fatal permission fault when writing to page
-tables?
+[Severity: High]
+Does enabling CONFIG_KPKEYS_HARDENED_PGTABLES cause hibernation resume and
+kexec relocation to fault when writing through the transitional linear map?
 
-lazy_mmu_mode_enable() and __task_lazy_mmu_mode_resume() mark
-current->lazy_mmu_state active before calling arch_enter_lazy_mmu_mode():
+When kpkeys_hardened_pgtables is active, linear-map PTEs for page table
+pages carry KPKEYS_PKEY_PGTABLES, which is read-only under POR_EL1_INIT.
+Both swsusp_arch_resume() and machine_kexec_post_load() call
+trans_pgd_create_copy() to build a writable copy of the linear map so
+swsusp_arch_suspend_exit() and arm64_relocate_new_kernel() can overwrite
+existing kernel memory, including page tables:
 
-include/linux/pgtable.h:lazy_mmu_mode_enable() {
-    ...
-	if (state->enable_count++ =3D=3D 0)
-		arch_enter_lazy_mmu_mode();
+arch/arm64/mm/trans_pgd.c:copy_pte() {
+	...
+		__set_pte(dst_ptep, pte_mkvalid_k(pte_mkwrite_novma(pte)));
+	...
 }
 
-On arm64, synchronous kernel exceptions (such as kprobes or KFENCE page
-faults) do not set NMI, hardirq, or softirq bits in preempt_count(), so
-in_interrupt() remains false and is_lazy_mmu_mode_active() returns true:
+Neither pte_mkwrite_novma() nor pte_mkvalid_k() clears PTE_PO_IDX_MASK, and
+POR_EL1 remains set to POR_EL1_INIT during the copy.  Any store in
+swsusp_arch_suspend_exit() or arm64_relocate_new_kernel() to a destination
+page that was a page table when trans_pgd_create_copy() ran will trigger a
+fatal synchronous EL1 Permission Overlay fault with DAIF masked.  Clearing
+PTE_PO_IDX_MASK (or setting the default pkey) in copy_pte() would avoid
+preserving the read-only overlay in the transitional page tables.
 
-lazy_mmu_mode_enable()
-  state->enable_count++ (0 -> 1)
-  <synchronous exception, e.g. kprobe / KFENCE fault>
-    ...
-      __set_pte_nosync()
-        guard(kpkeys_hardened_pgtables)()
-          is_lazy_mmu_mode_active() =3D=3D true  <-- skips POR_EL1 switch
-        WRITE_ONCE(*ptep, pte)               <-- unhandled EL1 permission f=
-ault
-  arch_enter_lazy_mmu_mode()
-    kpkeys_lazy_mmu_enter()
+[Severity: Medium]
+Can protect_early_kernel_pgtables() hang or trigger a soft lockup at boot
+when KASAN or runtime-folded LPA2 is enabled?
 
-Because is_lazy_mmu_mode_active() is already true while SYS_POR_EL1 still
-maps KPKEYS_PKEY_PGTABLES as read-only, both a nested
-lazy_mmu_mode_enable() and guard(kpkeys_hardened_pgtables)() skip
-switching SYS_POR_EL1, and the page table write faults.
+On arm64 with CONFIG_KASAN_GENERIC or CONFIG_KASAN_SW_TAGS,
+kasan_init_shadow() populates multi-terabyte shadow regions before
+mm_core_init() using the shared kasan_early_shadow_{p4d,pud,pmd,pte} tables.
+When kpkeys_hardened_pgtables_init() calls protect_early_kernel_pgtables(),
+walk_kernel_page_table_range(PAGE_OFFSET, ULONG_MAX, ...) does not skip
+these shared KASAN tables, so protect_pte_table() calls
+set_direct_map_pkey() and broadcasts a TLB invalidation on the same
+kasan_early_shadow_pte page for every 2 MiB PMD slot across the shadow
+range.
 
-A symmetric window exists in lazy_mmu_mode_disable() and
-__task_lazy_mmu_mode_pause(), where enable_count or pause_count is updated
-before arch_leave_lazy_mmu_mode() restores SYS_POR_EL1.  A synchronous
-exception in that window that enters a nested lazy_mmu_mode_enable() sees
-SYS_POR_EL1 already set to KPKEYS_CTX_PGTABLES and overwrites
-kpkeys_state_lazy_mmu.entered_context with false, causing the outer
-kpkeys_lazy_mmu_exit() to leave SYS_POR_EL1 writable.
+In addition, when CONFIG_ARM64_VA_BITS_52 is enabled on hardware that falls
+back to 48-bit or 47-bit VA at runtime, PAGE_OFFSET is _PAGE_OFFSET(52)
+rather than _PAGE_OFFSET(vabits_actual).  Because pgd_none() returns false
+when folded and pgd_to_folded_p4d() / p4d_to_folded_pud() aligns down to the
+start of swapper_pg_dir, walking from PAGE_OFFSET re-walks and flushes the
+entire swapper_pg_dir 16 times on 4K pages or 32 times on 16K pages.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109-kpkeys-v10=
--0-aa6c4d9603bc@arm.com?part=3D19
+-0-aa6c4d9603bc@arm.com?part=3D20
 
