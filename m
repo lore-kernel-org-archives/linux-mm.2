@@ -1,98 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BEAF606A204
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:40:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7700606A334
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=NiJHgmnD
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SkODUEqk
 Received: by kanga.kvack.org (Postfix)
-	id 8B23E6B05B8; Tue, 10 Nov 2026 11:39:59 -0500 (EST)
+	id 031556B00EF; Tue, 10 Nov 2026 11:44:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 862E66B05B9; Tue, 10 Nov 2026 11:39:59 -0500 (EST)
+	id 008066B05BA; Tue, 10 Nov 2026 11:44:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79FDB6B05BA; Tue, 10 Nov 2026 11:39:59 -0500 (EST)
+	id E617B6B05BB; Tue, 10 Nov 2026 11:44:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AD9C6B05B8
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:39:59 -0500 (EST)
-Received: from smtpin08.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 77340A09BC
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:39:58 +0000 (UTC)
-X-FDA: 85419771276.08.A715C8A
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id C9B706B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:44:42 -0500 (EST)
+Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 665FDA8689
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:44:42 +0000 (UTC)
+X-FDA: 85419783204.11.AE6C354
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id C30D64000F
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:39:56 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NiJHgmnD;
+	by imf23.hostedemail.com (Postfix) with ESMTP id BBD18140005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:44:40 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SkODUEqk;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794328796;
+	s=arc-20220608; t=1794329080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=V3wQUDCbz5WGhoG/NeGMkM84FaWuj5GPriNi9gVRFwY=;
-	b=JmFNoMyEVgien81o1K3QBCMLtfluklpSootPCNbCCpFNymO8HH/Pt77GxeNqYMRdgxnJFb
-	uxHy9F5XLSX2W+7NxdW/vRZPd2NZW0Vxd9c2eW4ImrS02IcquSEsu5zv/5KTVpX0wJUs1E
-	YsNrtJ0OSNBLnNTBpYU94hQv8Voy/iw=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=NiJHgmnD;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org
+	bh=8/qfX2R+fE5TFU8gL1lYbWbnT1+3dpcnTBXBU/PkfAg=;
+	b=12KbsrghUqa7w5oEiopNtlR/VvJ6NWWa/uJQSZJ6DrriehJnNm2JIf/CiVQZ4OS8Qpp+u2
+	FSvi6ZjohjjRZwqZ+/LCPSry6YC47z9rOiDQSAXhdztqnzgdgGy4ILo/QV3ysm7Qr9U97v
+	u3z7b+nWzc7ftTynH63Jo7WoAUbxgWI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794328796;
-	b=jyvxvRg+5AlhSR/prOfuGyB9op2ee1yONNP3CuSpfTanB99M8IDmpGczbjdg2oEOU0rv1R
-	AQWYt84DqXWscKJi+teePUyN7g5mJX0AMGn/1Kt2HxgXkbDpI4jkIvAK0qEWTvi1OwNsu7
-	EFFzB8dtDlrbnaYmsWOP3/Tq5U8JvGQ=
+	t=1794329080;
+	b=OXWTsJYr19MP9vC2jT4/CdOSW05tTdJRhPhz6sMCnB0eRLWyIerLu480zznl0/d7A6bpIC
+	fN6xI2XSRauSSlBv9gGa1XXI/kiMXBirHMutpKRyTIMpsb8f52O8YCQWhEBCvmhDnTUCb7
+	JgrRs5Z0cgMhcwXT2Dz1Cm3ZJVOHrrU=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SkODUEqk;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1E95140759;
-	Tue, 10 Nov 2026 16:39:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776DE1F0089F;
-	Tue, 10 Nov 2026 16:39:52 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id CFD8B41FD8;
+	Tue, 10 Nov 2026 16:44:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2931F0089F;
+	Tue, 10 Nov 2026 16:44:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794328796;
-	bh=V3wQUDCbz5WGhoG/NeGMkM84FaWuj5GPriNi9gVRFwY=;
+	s=k20260515; t=1794329079;
+	bh=8/qfX2R+fE5TFU8gL1lYbWbnT1+3dpcnTBXBU/PkfAg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=NiJHgmnDww74FAeFIsbv4+tq/EeqvYG+bZKAr4d7/8YSmGKoSpdpPG46ETzA2ilqj
-	 BHJSMVjnk/ffP59J5e5O7zGbra0IqtWpvbgdixT1oxlc1Tze8jUeTqK7xtlaWgzhK0
-	 nlhUfVr5HUKmeVQG0WLvjudr7aFN5fIFomHIFhNjZr1Vv7rcUejmTvJPYIhWKqSBu1
-	 hKrv+R/btHRAOY/cmSi7m8uxPaCRBPILRcWeXcMhyhuIwXzLy1sVnsYy0ThUI4qTEU
-	 Gd3UM5JJowmSARk8hKzP4SdkuwFWhn2G7rSCLtMwRgMSEOjgFZRqGZlszEgEfhu7Fl
-	 gfQ2UurT2EyKw==
-Date: Tue, 10 Nov 2026 16:39:49 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>, 
-	Suren Baghdasaryan <surenb@google.com>, "Liam R. Howlett" <liam@infradead.org>, 
-	Vlastimil Babka <vbabka@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Lance Yang <lance.yang@linux.dev>, "David Hildenbrand (Arm)" <david@kernel.org>, 
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	Seunghyun An <san55@wisc.edu>
-Subject: Re: [PATCH] mm/vma: predicate vma_assert_stabilised() on
- CONFIG_DEBUG_VM
-Message-ID: <avNIEdpUbihHULcm@gremlin>
-References: <20261110-vma-fixup-debug-asserts-v1-1-0b2e0680cd7e@kernel.org>
- <avNAgtDzM0MYevV8@gremlin>
- <avNDjxZ9jeYiwdVh@gremlin>
+	b=SkODUEqkvlyRvjcJwC5tU5BtqWCLFI5gGvgOPIh2pyDmhkOdp/P/T5DOaOp25rRUJ
+	 vO+TIZGOcCm/WHRu9EEVtaII891yWB5GQ0VQmiX+taYdFzXLQtYBUdKSqBqOuktSmh
+	 GvKIdZFVmH5iBQAWt5dQC3Qmmx8Wb345AfHpR/Y+0c+iNKca/ey6QlAnjxQ0QVMMcT
+	 y8Cddppsk6vxAy0cJZL0TZ9AdCD/mNiWC1VHwhPdksGr56t4kprZxbf9TC/0oPZ2cc
+	 HfoScmF1jA13vzAW+bzN5kbXosGepqZt+NnybIWXuZwyXGD9z6qweyIGN22iUGdgfs
+	 S7Kxs08xIWFPg==
+Date: Tue, 10 Nov 2026 16:44:37 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
+	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 08/11] zsmalloc: encode 1-based obj_idx so valid obj
+ is never 0
+Message-ID: <avNJ0p1v6FZ-wnQE@google.com>
+References: <20261110054836.1515030-1-senozhatsky@chromium.org>
+ <20261110054836.1515030-9-senozhatsky@chromium.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <avNDjxZ9jeYiwdVh@gremlin>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: C30D64000F
-X-Stat-Signature: 7br1ubw1q71r4yhqxxs8zbmtnhusef5g
+In-Reply-To: <20261110054836.1515030-9-senozhatsky@chromium.org>
+X-Stat-Signature: y35nyjmbazm8wyfetjkshkh9cx1uenhp
 X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
-	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794328796-931157
-X-HE-Meta: U2FsdGVkX19xaszixHCdr6ZmBwHh9Z9RY8vGz3lnQ8ToZjHvvnWaWHDHk9EyxtuzB8tPh3D5cSXv8ms62DhqLMuIUWDUzEqgILsFvwUL5ePJfZxRT2DPEdSgk+F3gppMaPthdCV10clU0MSC7IrhYrH+Xfh1fw8vWZHywfTvp7ApDtRL0OrKAInWnZljAVCTefODYFfuixCV7Ei6BUEBko402KioCdO1IzWDVN9jf4b0t6KPN7g0yXyDGDiLVc3Xf3EioXJtrXMBO1CQy4b7JgVb2Uex0NMLhGb8puFIgPvBtybEQZR/n021Yn7EZdt9D4hJ0cdUC9aQdOvrpnJLPMywOcgs2A8sElVHaJToGSwfE2AXPQiDLfP9wcObnFIICZrrhvRuvfYo/QgCEL1FPRISIceRwBJDwclvMAZ2HYvb0COAnwUBb+Dl0NFhdJ7hUTPHW+HnyZpUQaQPhWP7+agyy8BYzRJhVZcqprLJsHGO7cKA7OzbaIE1TqLJ4iGue5cLRJ6K0glsHKmteZB2+Qe/mFmjS47Zxt7is3TBnO1njFuJHVBAHHndkdvpzs3jDaOVyibDaf7bxYarO3bNSk2sSFCjMdmgD85t2VLZWwy73xbAp2VKKkBZ/Z0PNoApDROKVq5CFVOzmiO2bHzxvi9Xy9IMhUk+wA6xSYgU5bcg4ukyB5DFFdGMedO+fOWl4Dk4vsT/Pa/Vzx/0KHcLybhtCQ2A5r3mojoHD2icToeKF11jDw/f3RDvYwiKxSb11+skjt8+K0Kdw5aT0F3ZIDzrFsyhd74Ys1MdWoF4dlXQaDRV9fLbqlKjhn3xjJF7rEZMZePuVwIaZZonAvSgmIu4YjfB6yugny2XRl9cKPZFhonzf4qwT2eYB4U2pkAE9s3fbOXMwGYbKxC08CMsfSBcg8CVShXGzgDE1wvMT9coAwhTTK3uZrlS68pQEa3HYbEiN9Ga0JbucaAokGm
- dFEDPip1
- zbYuxY8j2IwXVhGRSL3yI0OVWP9jn1PWRMsstXS94HIn9eCs4lWQfx9MYLug3JHmmb3c9Pdq24byMGX2XSPoFo+PDoUEorIaDKEgBPmNguQYnm9Q+FD+NIHM7YT2wy6hgLvoDVL9ueawm+cZ4JV4n9ft9PtFrTuSJ1BjtYm5G3Pw3GHnCPcpPxHpTtOTghtyc3SBlCiFdE98xwL0gv15NLBuWzPCTx4QH2Nwo8U26zZ3eirfc+mqQXtgPc7X2rvjNW2l8E6g6MXzE6pOn/hfPdv4iUDskKc8Az3krQNGUo4BO7u8=
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BBD18140005
+X-HE-Tag: 1794329080-572384
+X-HE-Meta: U2FsdGVkX1/Q2PjCf9Z3SzUcn7ehh1TkF8jwnVFT2zdcABgO8McmAxCaE0AvcYuddVVcBeE+b7P3Y9qrVPx1EAT/Im4Wp9K3GSJ/Li1abOgoMq4LiYYYx4aIPNcCpp8mIn/Hzm32cGjtJ/2AZ0cdUd3WsntHr8vUJg9HgQA3I0VecR+3KX+lXhlUdvlyoDMiEBugqGZXjMXeTU+fANe1amzMmxktuLVsGDzRU83GKxCL2Ny1Vmd4ozLJj2dmQ7GZuPHIM3HUoULVrr2Dx0iZWLH57pZfRDC9GoLnkkM7QWPoPIfa5nWYUFU3z22t7KlL7TVt2pk+b7g2hYvcnYh0w2xBWHn9RTK96xMJmBGTzvLAOH6iAGS4pfrjIOyo9OZo3bgMcKOFvpSz892CnJF6PaBGS0CZZyhK2L/6OmkXCAu19kphYj97Yx2nIp36AxPlGZj3AAKZSRk7mX0G7gqGhNG7kbUXFMGhUImWCD3/HCML6Aso4Tv8ueKzjqQ5w66J8KH9tjUBBjZjND+/jbhfAi49q5eSLPHg/cVh3u2gEq/bXnAkOrbHwvshGdQ7qA1znyNtJD524CUkyTlwt6XwIWTEa2/6qwjOPS65Sub4n73Vi7RrsnlER+alOOnZnjKjxnAMp+fkV4okmsiXYdKYpG2MOFSrBbB3IayfQp6LAycMBrSnG3zPt8Ch8bg6bGZeYGc3QR7oe0q0xgjx/g+yjrKdQy2ukgZIse/Ro1/oI2/9LNxtfJfWJCY3PbHAsyg7eHzZWOYK+ALPBL2DOtHBmNPfvHCKByhHtR5PKhzvSlxQ6C6Oi7YEA4/wB9wBZ6UNUyDSsTdocQiRWSPz9vnxBVmVdHxi9HNWFbfX9+ZU/QDwKTgQrcUm5ZnmbrIQO71MDs5DbYfkgNUCc7CgaQxy1HDs7HMYKLeBd1dmliKfU3rxsVBtMAQNu8AM/CEh+2HqUHhW2d06p8vDxiMOlbu
+ W9m4I+Q4
+ LwUg6FsVEDSbSapchIE2XKjOQjeWbrXh/Pa2ReLLPNDfULHLnz8QBkYFzLBmJ1LRdilxPqHMwIkvUsgYT0TUm46hl8i6CktKsEN1MvVIqVfS7pjK4KvwIcn6CiUYnIjuu8qCwQyChn2Jr1bJfAgbCw6gFoE3MbLo7pQgP8f6PdpVLF5tEAGJDE/hK29Pcbbuolk/IEm1PBpOpcJP9nO07BsT7keL76z1jW5Vks3l3uWs88wqsFlFfLB82uWTN4CZsVFPq+xRiLdFpq6txeRt/q93hzSlvL5bnZUx3IPPQnTgTwAtZV5K8wUe5ybv3m/hdrLzS5AKjrqUS2OnQx90ZIzg4NeWAO9vCcLDvVlE9R3ppFZ0=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,78 +98,36 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 04:18:35PM +0000, Lorenzo Stoakes (ARM) wrote:
-> On Tue, Nov 10, 2026 at 04:07:48PM +0000, Lorenzo Stoakes (ARM) wrote:
-> > Andrew - could you update as below?
-> >
-> > Thanks!
-> >
-> > On Tue, Nov 10, 2026 at 03:10:40PM +0000, Lorenzo Stoakes (ARM) wrote:
-> > [ ... ]
-> > > diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> > > index 9ccbbcbd7aca..9c3a9c6525c1 100644
-> > > --- a/include/linux/mmap_lock.h
-> > > +++ b/include/linux/mmap_lock.h
-> > [ ... ]
-> > >  /**
-> > >   * vma_assert_stabilised() - assert that this VMA cannot be changed from
-> > >   * underneath us either by having a VMA or mmap lock held.
-> > > @@ -418,9 +423,18 @@ static inline void vma_assert_locked(const struct vm_area_struct *vma)
-> > >   *
-> > >   * With lockdep disabled we may sometimes race with other threads acquiring the
-> > >   * mmap read lock simultaneous with our VMA read lock.
-> > > + *
-> > > + * Assert only if CONFIG_DEBUG_VM is set.
->
-> Also this should say:
->
-> 'Assert only if CONFIG_DEBUG_VM or CONFIG_LOCKDEP is set.'
->
-> > >   */
-> > >  static inline void vma_assert_stabilised(const struct vm_area_struct *vma)
-> > >  {
-> > > +	if (!IS_ENABLED(CONFIG_DEBUG_VM))
-> >
-> > Actually I think this should be:
-> >
-> > 	if (!IS_ENABLED(CONFIG_DEBUG_VM) || !IS_ENABLED(CONFIG_LOCKDEP))
->
-> Sorry this should be...
->
-> 	if (!IS_ENABLED(CONFIG_DEBUG_VM) && !IS_ENABLED(CONFIG_LOCKDEP))
->
-> (I have a bit of a fever today, can you tell? :P)
->
-> Thanks!
+On Tue, Nov 10, 2026 at 02:48:13PM +0900, Sergey Senozhatsky wrote:
+> The next patch embeds struct zs_handle into zram and zswap entries,
+> and a handle is considered allocated when its obj is not 0.  But obj
+> can be 0: object 0 of a zspage whose first page is PFN 0 encodes to
+> 0, and some platforms do give PFN 0 to the page allocator.
+> 
+> Store obj_idx + 1 in obj, so that a valid obj is never 0, and adjust
+> ZS_MIN_ALLOC_SIZE so that the largest index still fits.  Unlike a
+> separate tag bit, this doesn't take any bits from obj.  zsmalloc did
+> the same before handles moved to handle_cachep, see
+> commit 67296874eb1c ("staging: zsmalloc: Ensure handle is never 0 on
+> success").
+> 
+> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+> ---
+>  mm/zsmalloc.c | 19 +++++++++++++------
+>  1 file changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
+> index 3a6a7253fd01..aa436df0cc4d 100644
+> --- a/mm/zsmalloc.c
+> +++ b/mm/zsmalloc.c
+> @@ -61,7 +61,8 @@
+>   * Object location (<PFN>, <obj_idx>) is encoded as
+>   * a single (unsigned long) handle value.
+>   *
+> - * Note that object index <obj_idx> starts from 0.
+> + * Note that object index <obj_idx> starts from 0, and is encoded as
+> + * <obj_idx> + 1 so that a valid encoded obj value is never 0.
 
-OK OK actually. Sorry. The change isn't required, it's fine :P
-
-Please leave the patch as it is.
-
-If !CONFIG_DEBUG_VM but CONFIG_LOCKDEP we don't actually assert anything.
-
-Since this:
-
-	if (IS_ENABLED(CONFIG_LOCKDEP)) {
-		if (lockdep_is_held(&vma->vm_mm->mmap_lock))
-			return;
-	}
-
-Is the only thing that would run in the functino and early-exit if the condition
-is hit.
-
-Then it defers to vma_assert_locked() which then reaches:
-
-	if (IS_ENABLED(CONFIG_LOCKDEP)) {
-		if (!lock_is_held(__vma_lockdep_map(vma)))
-			vma_assert_write_locked(vma);
-		return;
-	}
-
-And vma_assert_write_locked() uses VM_WARN_ON_ONCE_VMA().
-
-(flu vaccine on sunday, seems to have impacted my brain :P)
-
---
-Cheers, Lorenzo
+Well, this may be a stupid question, but why not make obj_idx start at
+1?
 
