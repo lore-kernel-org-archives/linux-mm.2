@@ -1,66 +1,66 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9E660A2612
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A12C6606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 15:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=FgheBFY3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=YI6k6/kp
 Received: by kanga.kvack.org (Postfix)
-	id 6DCEB6B05BB; Tue, 10 Nov 2026 10:15:26 -0500 (EST)
+	id C375A6B00EF; Tue, 10 Nov 2026 10:17:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68DAA6B05BE; Tue, 10 Nov 2026 10:15:26 -0500 (EST)
+	id C0EA16B05C9; Tue, 10 Nov 2026 10:17:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 555AB6B05C9; Tue, 10 Nov 2026 10:15:26 -0500 (EST)
+	id B24716B05CB; Tue, 10 Nov 2026 10:17:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FDDB6B05BB
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:15:26 -0500 (EST)
-Received: from smtpin22.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 34AFB140922
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:15:25 +0000 (UTC)
-X-FDA: 85419558210.22.BB39E97
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 969736B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 10:17:15 -0500 (EST)
+Received: from smtpin07.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1D23C1608D3
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:17:15 +0000 (UTC)
+X-FDA: 85419562830.07.78F3A5C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 7A3EB80014
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:15:23 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FgheBFY3;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	by imf18.hostedemail.com (Postfix) with ESMTP id 72F121C0006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:17:13 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YI6k6/kp";
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794323723;
+	s=arc-20220608; t=1794323833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EDKPQGe+tcB83Gs3w6L12JnJZcjoeeHi9cz6bG12yVY=;
-	b=cJH5aXyzqTCScZSWj6qvWQdBd43r8M2/79Y/gNOXDLGpwUboIbymVpYalq8pe1WL89NYVw
-	EZ4RFJSh/ht0F1TdIevSmgkMkrR/u2928+Liq23CIqp129vTCMj3FGH6+ZRFiGEQ+bhuqk
-	MY0vkGx0Jq4MDgm3np5VZQRvhCCl1xs=
+	bh=DrnlJCczTM/MuGJVa3hJuzHOi7kI8idb71E/ayOYKUU=;
+	b=qgPcVRdT7U2FkIEuMZf1l7s+UD5me0U9yWo4xC7w/vNo59JyR/o6J3OX/QS4343RyeeiYV
+	O59yRAliguGPkD9PWPqxFdmJgHWn/bHPtt7xqUygP8tdnobSPpKucT4bsL20pDzHJXQTVv
+	fPHqHz0r4y8nbqsbJsDAy0NNU2OXIqA=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794323723;
-	b=V1E1Xgf6hVTok5NVVauA403b4Dz07I5ukg0VsRMj5ykrqCDyITIVsxgwSc6yTvqauM1/Ki
-	LMUyR5PqUobiVR4DNT0ow5lBErnwCsC511nNiiEGb/tjtEvs5m97CrW9IIaPToGfge6zTk
-	fO+6rEy69DlIQ+1ibYD3QEZvsjBFmF4=
+	t=1794323833;
+	b=RpKGFZHaUjmzZCC5uuBJ4MsirXrnT+yDShTSHZAEeRNzABsCeEzFMl4yXMEV+ROT+984/o
+	80ccnuwp5ssJKzAvOPGtHpQkgIoLGs3WBXbY3cQOf3nLgqaojtKOieIxAJjYkmwF/9ubWH
+	M1uFnSmR5W5WKOs4FpaETCLkcGT1Coo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=FgheBFY3;
-	spf=pass (imf02.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="YI6k6/kp";
+	spf=pass (imf18.hostedemail.com: domain of ljs@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ljs@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9F93C44842;
-	Tue, 10 Nov 2026 15:15:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7AE1F0089F;
-	Tue, 10 Nov 2026 15:15:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9429743489;
+	Tue, 10 Nov 2026 15:17:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C2F1F0089F;
+	Tue, 10 Nov 2026 15:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794323722;
-	bh=EDKPQGe+tcB83Gs3w6L12JnJZcjoeeHi9cz6bG12yVY=;
+	s=k20260515; t=1794323832;
+	bh=DrnlJCczTM/MuGJVa3hJuzHOi7kI8idb71E/ayOYKUU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=FgheBFY3GQOc/VIc4WFDSA+6EXBzYHSGFEpP2p9ihpidCpJN1y1AGj3uWpUGA2atu
-	 LjVtZg5CrpOdgJgxaI1HSlchN3kJIeZxl4qAbVDtpZmqVvq/kDbGsBRAkp0LnanRaH
-	 d0YlnHjI9Eq8DFMW4nFOY9naqiPWRetATDUUK9KkKVi93MJzjfAY9g8aDOXvZ7pyfJ
-	 ndYnyFpUyKD84G63bnGdwAnGS+HxAg+aHiTsAa8M2RmgDV6nGNDJSC2GV0KlCUsN86
-	 GlpeEG1Bv09QsznI0CtSahkW+zo+z0IrlchZUgwm4l1oB+DTtw3w7PiYSm4Jrlhrc4
-	 AHOO47KqfLGrQ==
-Date: Tue, 10 Nov 2026 15:15:09 +0000
+	b=YI6k6/kpdsOZXv6TVGy+1NgyuveofbEgWqWrX8bvrAXNAz2RP6yNfZCwNBpusDfqo
+	 3VVbO7y9AmERmV4cR66tvWcbuAQvZjn7e1+KIl1FsvO32qXVKHhxbs7xRE/RwlYsQy
+	 cf+0bvO0hyA7Yr7hPCbqbc1DRxor9IYmCJ9cMegkWVcXrhdph95lruauvRixTRwxux
+	 4NQOTOpU+31DqIaBudOyc1XsDStPZqgCxoEnCaDGb8vXbZhkJwlBgm9Rx40dOSlZmk
+	 p0TgXiSnvffuH3ilakdF3E6gzIQgb6Q1npb9zKoaSGLe2fHk+3Y5liFSpyZOaaHUrE
+	 KK4TxbZKj0Dyg==
+Date: Tue, 10 Nov 2026 15:16:59 +0000
 From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
 To: "Gregory Price (Meta)" <gourry@gourry.net>
 Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
@@ -74,27 +74,27 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
 	joshua.hahnjy@gmail.com, rakie.kim@sk.com, ying.huang@linux.alibaba.com, 
 	matthew.brost@intel.com, byungchul@sk.com, apopple@nvidia.com, jannh@google.com, 
 	pfalcato@suse.de, hannes@cmpxchg.org, osalvador@suse.de, raghavendra.kt@amd.com
-Subject: Re: [PATCH v5 7/7] mm: use VMA flag helpers in NUMA balancing
-Message-ID: <avM0EbXsE7WyIPJE@gremlin>
+Subject: Re: [PATCH v5 6/7] mm: use BIT() for change_protection() flags
+Message-ID: <avM1ZOdjf3w7yJjl@gremlin>
 References: <20261110150446.2452975-1-gourry@gourry.net>
- <20261110150446.2452975-8-gourry@gourry.net>
+ <20261110150446.2452975-7-gourry@gourry.net>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110150446.2452975-8-gourry@gourry.net>
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 7A3EB80014
+In-Reply-To: <20261110150446.2452975-7-gourry@gourry.net>
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
 	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: qz6moeg9wzyhsg6s317jim1dffxfyjuj
+X-Rspamd-Server: rspam09
+X-Stat-Signature: bdeewb593goty7pkh88bsh55cw3qb5ra
+X-Rspamd-Queue-Id: 72F121C0006
 X-Rspam-User: 
-X-HE-Tag: 1794323723-896175
-X-HE-Meta: U2FsdGVkX1+hFwrgSEZP/+raPNJRPfKSG/nAA5ABWmyRV21Cyeq4U3Py9yKQK7g3E7jMWQQ9ZFkYoTtZSSiBDYKPuCwULOdHCkC3lQ95aLAt2zbN/LP5aD3Dwt7tMYP0F2bsfauiSAjWIjTC6yV43xxv9MdOw+zZ0AAiHrS+LcZn2CglQ/sOnGjOD6mbX8G3LB19HhZPO0rlLCkIx7v3ohkglBEKSUP2RqxvHAGEmnQXjDipAyxy4XGBoo7CJZcAupxOhJWXtE9ZhwXgpy0Sw+WWcHAuXKFSumnNmKEE4HO1UpjtuPzW1kiCfSAh9D4j0d6WwBCIbHAJW57b9/5qO6eU94O3Ifgugllwv58Z5mWySd8jjppHKZwZLWZh4PsTgQ3PC6mbt1XsFu0uLCarXqGHXliJXzydXFmuTdWNaxa3BhFdFLKjVq4kczMqM0Kk3W7aPIb+HIYEFE7puEUAyRR5D0R8qTcwfZI0Uu/x9ufzhTEEug77tgJd+PGsw6gnu9wLxGQ/wjJ3kJ2lRBxvGlCbw1juxUUQNBO3sZjH84eRmQzsMpEPYjLuKZWVa/I2ZBtOXqoo4PaUJvXpiVFCVS0zGVAh9ipFasf2prgnqVqzkzVLdzrq4a4/JzFt0FVSp2G/brSUrlgml9YZx5OaLe7LI638DMQ6em2JIJnXfSnEq4b0oQPPPdrHq2rklAKe4T+3a86kpa1MgIQc9lldR9fsuFq9T2B/dVPdhRE7XM2EcqTR1SZvVJ/0Xa8iCnOYWWxARJNMnphCRX4Ko6v0a5w1HruRU712tfU4Bvtf4+5GvLFkpnaA7sqP46eTz79sxEfEFCypHUTEgzshvoMHM7T/q4NS6wdG4KdR5QZIHn+/rMrImA4zGpaekk3MHNAiMHJV+dLWssHQycYtN+FqL6/civODpIZaqdPAUPoVFIE3dK1K+QkeNg118zxynFwwUAZOVPh2I+pe8isIHPX
- BCtPQFSQ
- jYFvganN6uidYKrLZ38wIipXu2wMfefjjBQDavWGUV3w8kU/A9vM5sYAB7TW7d9MEXLZY8Uj5TxTsp0JifUEpv2It4Ro0R7B7ZWKRwe0EvWeHvVAolNYjtLrZOq232CJLOHtxWwVbGRetzpP3nwxVG7/0Fv95J1xhq7e+5socuqt8C36qje6e5hD6HMPntbiLd1/dClndvJTvRO6HHIpFfk2CxTA7u6p+WwBtBZ+EkuD7c+riwq2v5E3ViTuhUieDUzchTdiF4NoJ0ySwg7HSt9A6YdaZv6A5UeySHHIbVitWhEr/6pT3o5wjbeC9FtARg15hBswF1eM1FgXAHjyPRDkr7f/7EZPfHFkt9apfglaN28E6jcnPSJJP9HMHdTtAx5H9Ewvz743nkLBHSIEMZgRavGL1oM75n1ZI
+X-HE-Tag: 1794323833-421208
+X-HE-Meta: U2FsdGVkX1+MEAhpTx/1g/+jv4DqE4B+FAHishw0BBZ67FAFMeHSh7FTD8y3ji6LnDMvU/f47LWvecqb6tG94LFeQW10B7jgDxZNWGgfOOhOVs1YVhv1Ul26AlwE5/Rhfz3STb9kKsc3P+IzztKlEixDgzQ/KpFh7D//nHMQU6hGyZXzoIbcI1KG0KvVa19Mpbqgz1G37Z1e0K4YMb+vd/iJZ8N2zVmXo3QMzo+S25csFfHFkHe91u+dN1jIZ9yuLnbqJeOJbabWKdJmQsU7p//kiIKMs6fpvlMlqqNYz8i6qw8iqQV1cQrJpOBECg85UxgENpAF1njckEbd2LFjvQj7FbCAj5bFza8lJEJKoglDFtrvK+C3BWoa8CnfMzO91D+7/0zos3gxwXRLBrNXrodz01EphEAy+XvRcUPm57SgZgq6O+nVp4JQe5nHtUqYzH/GTQPhha4tpCKvAadAXSPOY4VgliQ3bfUZGYCI5T2H88nb8xiDqMHL3Hc+TCD69xj/0xhupMzXBLCUE75QYr0ZSis3KynwyMmszwShlKg/MLCoJf0cvkg063rZelv0tdffSZFnd8XHT39nBmuH2bNKdpk4pNDMLl2B6aF8YapnREMhQ0gFmTu3rc3MUQ1ErgBsvrPVruNRrG4mAx6Rx3Y1lJWZEjH81XrYXLiQ/eY6sEnBjCYiUbLorHYZhkz2oPBD6OyXyN+sliLwMW1+z67pf9p7qlfRsCH1Sp0/pP71HoRk6uVWyTFAbIoc+21koMrfqTCMES24cY5MS/pT5oEEoiOWYwXu4/0+u1aY1TlZaV0FIG4/q0vfPQVJvvip+LmKFaaqZNFXs5i3AZfGSXHFK1/+kaOyJClWb7lgupXLdYxa+U+Q/IpE2+06B6HTKUD0I3h8g5Ut3uWEJTKrHVZC2cTymNufP3frfV/92p7KENXueKP5QmWVYwFEAYexzbRsR3cz4wuUq7J3PSG
+ jk8HUf2D
+ ywa+58inbziVb0g7b8E+3J/CnLPb06HElTTpIB97w7OZBz7NIe2hJBupjTpmeXbUPHyMalECAlvIPlNL2/slboJAAqEGymx2N7Ysppz9aF4t2ruyizlc9dkrAMFa5d5ZsmFEbySDL7JIb2M0MSHQggKMFkCh/J0lcQa4CpP014LeNskb2wI6QQOjn3qcUH1M9ewYn35j/JgWrTTV3tv/U9p5V1tAQcrDVkLE/wojwYmQF2cXfVgUhs+gn/flNWcrMEYjWBikkmljbIRLWgh/AUCMqlUeWitoJPuHErAMLu0oyKaHhJKyKkLIHdpUDurlUDYbNnico3IZunXiEWLsj05itTsG4rOIL/IdKud33lfCNBHh378F5qLMCSHJySBWZqVtOyyzsARZw9H50sMacE90cALUwVjon+3+uiN7WG0/z+SVf1uGVTRDITxMCD7Z0JS44/NoLQOwxcQI=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -103,78 +103,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 10:04:46AM -0500, Gregory Price (Meta) wrote:
-> Use vma_test() instead of accessing vm_flags directly in the NUMA
-> balancing code touched by the preceding fixes. Keep the existing flag
-> predicates unchanged.
+On Tue, Nov 10, 2026 at 10:04:45AM -0500, Gregory Price (Meta) wrote:
+> The MM_CP_* flags are individual bits expressed as open-coded shifts.
+> Use BIT() consistently for the complete block.
 >
 > No functional change intended.
 >
-> Suggested-by: Lorenzo Stoakes <ljs@kernel.org>
-
-What a legend! :P
-
-> Link: https://lore.kernel.org/r/aq1FDhy00epXXtgd@gremlin
+> Suggested-by: David Hildenbrand <david@kernel.org>
+> Link: https://lore.kernel.org/r/9b5e1573-6fd8-48a5-a274-a6e7ff83d2fe@kernel.org
 > Assisted-by: LLM
-
-This tag is no longer required, in fact I think checkpatch should moan about it
-now.
-
 > Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 > Signed-off-by: Gregory Price (Meta) <gourry@gourry.net>
-
-Of course, LGTM ;)
-
-This clashes with my latest VMA flags series, but the resolutions should be
-trivial.
 
 Reviewed-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
 
 > ---
->  kernel/sched/fair.c | 2 +-
->  mm/internal.h       | 2 +-
->  mm/migrate.c        | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+>  include/linux/mm.h | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
 >
-> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-> index 279bf12b74b64..cf3e3657e9533 100644
-> --- a/kernel/sched/fair.c
-> +++ b/kernel/sched/fair.c
-> @@ -4378,7 +4378,7 @@ static void task_numa_work(struct callback_head *work)
->  		 */
->  		placement_scan = balancing;
->  		if (placement_scan && vma->vm_file) {
-> -			if ((vma->vm_flags & (VM_READ | VM_WRITE)) == VM_READ)
-> +			if (vma_test(vma, VMA_READ_BIT) && !vma_test(vma, VMA_WRITE_BIT))
->  				placement_scan = false;
->  		}
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 55817dea7307f..da22750faddbd 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3572,21 +3572,21 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+>   * because something (e.g., COW, uffd-wp) blocks that from happening for all
+>   * PTEs automatically in a writable mapping.
+>   */
+> -#define  MM_CP_TRY_CHANGE_WRITABLE	   (1UL << 0)
+> +#define  MM_CP_TRY_CHANGE_WRITABLE	   BIT(0)
+>  /* Whether this protection change is for NUMA hints */
+> -#define  MM_CP_PROT_NUMA                   (1UL << 1)
+> +#define  MM_CP_PROT_NUMA                   BIT(1)
+>  /* Whether this change is for write protecting */
+> -#define  MM_CP_UFFD_WP                     (1UL << 2) /* do wp */
+> -#define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
+> +#define  MM_CP_UFFD_WP                     BIT(2) /* do wp */
+> +#define  MM_CP_UFFD_WP_RESOLVE             BIT(3) /* Resolve wp */
+>  #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
+>  					    MM_CP_UFFD_WP_RESOLVE)
+>  /* Whether this change is for uffd RWP */
+> -#define  MM_CP_UFFD_RWP                    (1UL << 4) /* do rwp */
+> -#define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* resolve rwp */
+> +#define  MM_CP_UFFD_RWP                    BIT(4) /* do rwp */
+> +#define  MM_CP_UFFD_RWP_RESOLVE            BIT(5) /* resolve rwp */
+>  #define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
+>  					    MM_CP_UFFD_RWP_RESOLVE)
+>  /* Whether a MM_CP_PROT_NUMA change is for promotion only */
+> -#define  MM_CP_PROT_NUMA_PROMO_ONLY        (1UL << 6)
+> +#define  MM_CP_PROT_NUMA_PROMO_ONLY        BIT(6)
 >
-> diff --git a/mm/internal.h b/mm/internal.h
-> index 6e7c247781a16..7fc34d084697e 100644
-> --- a/mm/internal.h
-> +++ b/mm/internal.h
-> @@ -1248,7 +1248,7 @@ size_t splice_folio_into_pipe(struct pipe_inode_info *pipe,
->
->  static inline bool vma_is_single_threaded_private(struct vm_area_struct *vma)
->  {
-> -	if (vma->vm_flags & VM_SHARED)
-> +	if (vma_test(vma, VMA_SHARED_BIT))
->  		return false;
->
->  	return atomic_read(&vma->vm_mm->mm_users) == 1;
-> diff --git a/mm/migrate.c b/mm/migrate.c
-> index 50a0a2e11a353..796d98d1c116c 100644
-> --- a/mm/migrate.c
-> +++ b/mm/migrate.c
-> @@ -2715,7 +2715,7 @@ int migrate_misplaced_folio_prepare(struct folio *folio,
->  		 * See folio_maybe_mapped_shared() on possible imprecision
->  		 * when we cannot easily detect if a folio is shared.
->  		 */
-> -		if ((vma->vm_flags & VM_EXEC) && folio_maybe_mapped_shared(folio) &&
-> +		if (vma_test(vma, VMA_EXEC_BIT) && folio_maybe_mapped_shared(folio) &&
->  		    (!folio_numab_promotable(folio) || !node_is_toptier(node)))
->  			return -EACCES;
->
+>  bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+>  			     pte_t pte);
 > --
 > 2.53.0-Meta
 >
