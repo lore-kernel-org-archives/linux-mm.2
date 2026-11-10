@@ -1,91 +1,99 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F17606A338
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECAE60A2603
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 20:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=aM6nEZLq
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nlM5W3Mz
 Received: by kanga.kvack.org (Postfix)
-	id B80D16B05BE; Tue, 10 Nov 2026 15:56:53 -0500 (EST)
+	id 0B0CC6B00EF; Tue, 10 Nov 2026 15:59:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B58476B05BF; Tue, 10 Nov 2026 15:56:53 -0500 (EST)
+	id 062036B05B0; Tue, 10 Nov 2026 15:59:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A46786B05C0; Tue, 10 Nov 2026 15:56:53 -0500 (EST)
+	id EB9096B05C3; Tue, 10 Nov 2026 15:59:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 766176B05BE
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:56:53 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 182311A0115
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:56:53 +0000 (UTC)
-X-FDA: 85420418706.20.56BC44E
+	by kanga.kvack.org (Postfix) with ESMTP id C8A666B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 15:59:44 -0500 (EST)
+Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CA0B91A00E9
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:59:43 +0000 (UTC)
+X-FDA: 85420425846.28.D1FAFBB
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 7D4AE180007
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:56:51 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aM6nEZLq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf21.hostedemail.com (Postfix) with ESMTP id 3D75C1C0005
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 20:59:42 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nlM5W3Mz;
+	spf=pass (imf21.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794344211;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	s=arc-20220608; t=1794344382;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=l77mzptpwFPR69Saw7xaFPb7rD+qcd5bq8eRbzHKKIY=;
-	b=lW8AwoI+DAMeEMwXX1d3UHpK2JgL7TMPyG2aUVpyr2FvD09uYs70jVgXnXxAitiwQMlGjL
-	DqDC312A0dIisbS05Pfx3somJOHy6NUwDxd2JBJ42af7pJdjra9RgLq0AhXVKkvwsB3NTq
-	Dvua0NmLro368ddNNZ4mTNypO2q1jrQ=
+	bh=bRLf2eJN5BnQ1Rs/bcxgd+v8VFy6BbzXvv2K0AmYCKg=;
+	b=zCi4H2oUZhZFN1bdpNLHSKqCokPK4paz73h3VYj6NtEwj/WvHoTVSHDrEZBE3ZeFnu/3X7
+	KJVkBg8n0LUnA1OP/PDcrRzXMz2md0b5RoMXCK0G5xwoJPuwmn+qFBS8oSjX7RzkYynfp/
+	RSOconpb8r1a+CYxzKwtLbfnth5fGsI=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794344211;
-	b=CF/gEWkXf0fDepufDvb5tFQY7Is6cf2eWIP6fEig8OdqcLtMw5HMDhQ5rF7PkZ3NSFOugF
-	TlsC8snddrZ1IaFwV9rqf67UqBq0OXYoVxn5hKbzCDUvGADzraoECVOecx6Mcj65N4FDWm
-	pyhO0kZSCDL7GWIOe3yJ6rtaPQ6Lm9U=
+	t=1794344382;
+	b=p+yGzkreRXp/liqfOcsp9mZKsgudcCaEkXZV6R62olwPYgdv24EU7/fSu6ugl+kboZ0/AE
+	3v8VNZYTW1/FgO966+C17Xpi96eDLFlIZ8N+jUMrOwfYsHOLkxs4wk1M5J25ctXQRAE9b1
+	tiRTgZ1g1QrWhVa8/dQ4+Rm4ZVas+Bw=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=aM6nEZLq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nlM5W3Mz;
+	spf=pass (imf21.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id C640060A00;
-	Tue, 10 Nov 2026 20:56:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EC11F008A1;
-	Tue, 10 Nov 2026 20:56:47 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id B4BCE61DFB;
+	Tue, 10 Nov 2026 20:59:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 389351F008A1;
+	Tue, 10 Nov 2026 20:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794344210;
-	bh=l77mzptpwFPR69Saw7xaFPb7rD+qcd5bq8eRbzHKKIY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=aM6nEZLqP70IOJ99Bu2pJZi/7lfHToUXB+dYLQ2QGxfipdJuUBqzmAiUHUaLUw3Bf
-	 8ZDgpZcQfLoMrZox+KbAi48AKhuyqSWz3hs/0E/wTcLDwoNhCuKTEOECYTKSB0nic4
-	 gjy0bSaWHnmMfWuAZU/E2vkqO4pKWnkR4OlvLmnDiIH/zGOw3aMXMwP2Lv5JhXSFEe
-	 Q++f7GCMO8RyC6IJtX+a07TD1von15A0EQFYZyLSwLOzoHvii0Uc8P5YaMHX8RM1Hd
-	 aryutegQu/Iy3N6b8K7kY1Qq60h0eNJ23rQChiNXGq6qDxnkvd2lg9OHDN/m0BQJuL
-	 Twt52rwHwDt2Q==
-Message-ID: <sashiko-outbox-207752@kernel.org>
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 15/15] mm/mglru: Avoid scan anon while swapcache is
- low for GFP_NOIO allocation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: =?utf-8?b?QmFycnkgU29uZyAoWGlhb21pKQ==?= <baohua@kernel.org>, akpm@linux-foundation.org, linux-mm@kvack.org
-Cc: axelrasmussen@google.com, baolin.wang@linux.alibaba.com, baoquan.he@linux.dev, hannes@cmpxchg.org, hui.zhu@linux.dev, kasong@tencent.com, kunwu.chan@gmail.com, liam@infradead.org, lianux.mm@gmail.com, liuxiang.277@bytedance.com, lyugaofei@xiaomi.com, mhocko@kernel.org, mhocko@suse.com, qi.zheng@linux.dev, ridong.chen@linux.dev, rppt@kernel.org, ryncsn@gmail.com, shakeel.butt@linux.dev, surenb@google.com, wangzicheng@honor.com, weixugc@google.com, yuanchu@google.com, zhangbo56@xiaomi.com, zhuhui@kylinos.cn, sidchintamaneni@gmail.com, "Kunwu
- Chan" <chentao@kylinos.cn>
-In-Reply-To: <20261110202025.25736-16-baohua@kernel.org>
-References: <20261110202025.25736-1-baohua@kernel.org>
- <20261110202025.25736-16-baohua@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 20:56:46 +0000
-X-Stat-Signature: jjgijhhzq94166w1b8ny84grahxi3ni6
-X-Rspam-User: 
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	s=k20260515; t=1794344381;
+	bh=bRLf2eJN5BnQ1Rs/bcxgd+v8VFy6BbzXvv2K0AmYCKg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=nlM5W3Mz7qJXbzXx+vZqRsw7/wYbIpJjW9CVOWIElD2gFAzHeGVdC3miiPm60ZYd2
+	 yysxsqTt2svLatsCIvl1eKxOT6xEE55TJIX3kMDWCll7w6A8sAQzmD5BY9pjyHesC/
+	 GLvjcxlUpHEPLybSF2JtQwHkTzs72dGROkS5tND0AWjvlPX6SEM8O/u3jpfP/Su2g+
+	 oSh7ZohunDzJRGuH81LixqMm13wLh1Qkf/5NIWnTY1g8+VmbnojQTN2cE37piI3rD9
+	 ALTwJWhYqsc082U3k2/nSs+52KPp6sbJTpIkRV0F+4SV30kTdjQADQ0AVr3xLU8Tst
+	 OnNBSRP3E0ZIg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Sasha Levin <sashal@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ran Xiaokai <ran.xiaokai@zte.com.cn>,
+	ranxiaokai627@163.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Michal Hocko <mhocko@suse.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Mauricio Faria de Oliveira <mfo@igalia.com>,
+	linux-mm@kvack.org,
+	Hamid Nassiby <hamid.nassiby@nokia.com>
+Subject: Re: [PATCH 6.12.y] Revert "mm/page_owner: fix memory leak in page_owner_stack_fops->release()"
+Date: Tue, 10 Nov 2026 15:59:04 -0500
+Message-ID: <2026-11-10-1-daily-reply-0008-page-owner-revert-6.12@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20261109141509.2880440-1-hamid.nassiby@nokia.com>
+References: <20261109141509.2880440-1-hamid.nassiby@nokia.com>
+X-Archived-By: <archiver.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Stat-Signature: twkb36pnya66m9shhse8f7z9mbgwky43
+X-Spam-Status: No, score=-8.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_GIT autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 7D4AE180007
-X-HE-Tag: 1794344211-676235
-X-HE-Meta: U2FsdGVkX1/VP8Gnrz+iHvXfttZrrUXyWeFyhm+TlpX6G92k4xo8DjvX+zAtk2lw+uma9V396EyKChknb5afidsPnjNF7X+Qqqtqqh6oO0taYsGDdYzx5ZDrtZJrTQx9zIUqF1wb9ZExxGmr6uD65mOwEc5I/HqcIrmbwTKPIvH9TawGC0v7/yZXNO4OVc6BuWRiHMNyrML5D4hlO9JccntAwsP7RDHehA0J5KmZpCXJ/jidet9oZR0tZqRuqIsE/8KZILL2zPC84EcRuSbX/cTaIeMjmqrkz34Y1HiBBT6U5cg7l/jODd/BzC8A+3lysfradhrN50LqF4OOs2Y093GfGf2gGrvXMy7LG3JUS8zqYJsFZN45rNjemaJmwxjMPSpa4Fhh+gUlRrAsJQyjqYJKO6noTeTkPjaf40OaMlytleysjA8L+kC/ocKPkC8RpTuxr2l3jrFFOGAbEkeTMTypeI6dzgIYtYaEKg9CYf/0EA5I6uSWN2RdePaCCZgcICCXhzXb2QwuWHmfIbcqbnhC68r0BJ6CPWx9X6lDtt5GEc+7uN2XuBlIiAHExhpy1ZPoOsUs9CaJu8CHAYVxV3yCTiwfIhD05EBvAhEgZKQjDnsXrVD1OUSTten3ud9LlV+aIR41nsgJkJKoUJc2nXJfPy5K3RUT2Slcpl94REZ1zB0u9n0DLAxTRkZfnCx5EbfnyniUD0H/itjvWAPOPe0+u1Wvi/obm/8dPZb2Eu8MxJvK6eOs4a7dvVvPG2nOYO9dJY8OIyMs0mGNtdbKJ7JGFBJGIOAfGSigMujNpsn9UNYCGXwOb39QYx/2Sq8dx1jHq+oz7YB0mzV18iGRjpIaX6jCd9iBO0tX8IOdr2CMgSc8MPVdsGWm1rmRKvdH5jMMwFPvKnT/GEAr/6H6z/QXjNGG+U5icImhBV9hqgRpFTz2vNJyl4OIqEJIQDrIuALiAhD79wn/VPjPB9u
- rwc43F26
- zlirIy9vCFdcUsrPmALCh84qOpocUkDYo+KsoIt3PXf7nG74hNw9FDu33ET+dc/l2wcx3F9CGmDQfSnjaKgFcxZtrR0UF/b1aUqYYh8a32Ff2aMc18uDXHT/R1cpuiPSXdyUVk1cUkRoeYWQ4bYBVXg+mEpQd8TFz/LCIpxKbpFRp08G7i0UHf329Hl8UvJktk5njIzVqOOwPClGdCc8p2QNt/DLjP4ugr1Jrux4qLYnLvF0bkD+TFh9W0+D9qtgpa0VPiActb0XxYXHsfrBJvAcurKJ0UXdNfgfVxuM9DgG/YwQxZMRlmbYpYjETEbD5IuFEaX5c0KmvSidqQVZ2lWV/aekdtXV4w/T1wPlUh9d9NBq3dN65DSjlsI9XWU6t6gL57B/OG+hLcJl4tz7GeO5eDW1XWz6zAhY7SyBVFv1OuHL2v5wuufu66cJkE16twvqetlTuZgd4vHSRJOZ9oLlpNlqNgr2pRgyi46tRQiXs68/lqsb7IcW9mtof6X0N/Mk4Qdluxuqv9pSFYMtuGkYQFEHA3aNldzYNAtVIKGpqxRRCMaUKDLhjiMeLkks0svhikGjzjZdvYhJ8x3m0wi4FBX/zzNFwz8N2nlEE3ZyM4Y9vcy4BUBhbTTsBCj2x4gU0lupuJ3OCbxp4ZYa7meLGblwgHcOr3LzUz6VmfeqQErwWc40RRp08RD9FW5K9x0UoMgMu+ZnsOSA9K/28lBT3EMbjAfC2Ac4wDEZOeUHiy6lFUPkzsCBkIkXLJrjIQMrjdgYUzJTFcSk=
+X-Rspamd-Queue-Id: 3D75C1C0005
+X-Rspam-User: 
+X-HE-Tag: 1794344382-969240
+X-HE-Meta: U2FsdGVkX1+4JjrXhFdjPC5frsq3+4Yp6c7Nb7ZuPQlCjtgGnAm2zn/Ahh9x7xuj841cKRVUKOoZ8cSBNFvxqm+4BMrW4BZtufJqy16/iuFtJIrkww86nPGHHclm94e/qD2Ghw9ZBRwiiEBcb6xboYPVg8mUB9ciTIUNRrNqCFsQd2mNxZ4jFMN5vrfe1ywi79CYmbE6Mo/zF5hsf0Woq5tKNHiUmoObaKnqmbI2at6sGTAXPMJk2Cu4fMYvt+EiNJr/y5s6wCs0wzNBKBs/To1iKx6aN/n95OU1pWwFzeMh/Ae9/ufbTF3RNdajcodchwQD0M+MAOF7en98AwP9p3dDKDCKTdQQxMILRVrG3CjMmDmxlNxEuuCGT+HjTF/qpULE6doeTC56U1Uk6rnSjjURs7Nne4gPQNCUAILCp7xDD6bqgNJBLuqFATGE1lj/1O1NgwNUv2+fAm36mj3U+vA+IbCzDHAAybLW2nTxSpbLvNF1vrs8ZB3C2SdMCyQb1tFzjwDzapOg/HIJUZHajY+fnKirs4CKdHp7ePnt0MtOmX8447R83gruAeNdCbkZGNWS9n6yl1mHfc+XJz7Yt3iT3HUgMcptev9muaXBdkxeiDHFb2Au4hmJ1mSwD3xQyDoW17UycL1ukKGcX4YiIneuXCv6VkD7DxuOnii7A0BekiD4tzbjZD8Y/WuK/aO89CkUi9uYTPbyIt3sHz+Yb4kmemb7bvLM3Snji3w3q5/bI7zSSAR4j6Tk248IfmL15jWb1QbyqsEyPs3ocbOmPz3EN660BoKhIiHcUZR+1wtFwAK4Ig9tRkyFiVG3RlzvBuiY0HoZD/VL42jNUDIV8gnP6blkUgIMf/xuK4fd7iMYc22BTyuOhFtlmaBaM9UOApY9Q/iLFweZgCv/kgm8saGeOhVBgQAaZYdzxeKmB3z7ItTCHjJomCeg7sDe2n6TP6Hmjrw+jj1LXR8sCkZ
+ XGXzI97Z
+ JmmD01sqoGw3iftzwIuDlrgKheazTF76zrj9jTidxMQ9HEhZiWIs+S6SCoh/fzY5kIwPdxjWO3YZ2H+WOCO5t7AXwD/256o0h0UxlAzpPCFMxbdSMOAfAVQ/5XovRzz/mKV9+gKNt8KkHRZDvAquuo30Vem2hN+0nPtCGjtoDwKA2291Vat57irHrf8cg26H2pV16bxpEPVkI8hTQbTb8wb4Bfq9J49LkCo7fPDZLfTBWZS7/aiL887OQd2oSuFyYfxo+
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,150 +101,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
-X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential
-issues to consider:
-- [Medium] mm/mglru: stalled GFP_NOIO aging in should_run_aging() due to
-  min_seq clamp
-- [Medium] mm/mglru: should_run_aging() calls reclaimable_anon_is_low()
-  directly
---
+> Revert "mm/page_owner: fix memory leak in page_owner_stack_fops->release()"
 
-commit bc0f15f68a4ac3f563747aa1e1cc7d4d0f14a37d
-Author: Bo Zhang <zhangbo56@xiaomi.com>
+Queued for 6.12, thanks.
 
-mm/mglru: Avoid scan anon while swapcache is low for GFP_NOIO allocation
-
-This commit skips anonymous generation scanning in MGLRU during GFP_NOIO
-reclaim when swapcache is low by excluding unreclaimable anonymous pages
-from lruvec_evictable_size() and adjusting lru_gen_balance_scan() and
-should_run_aging().
-
-> diff --git a/mm/vmscan.c b/mm/vmscan.c
-> index 3793392208781..fa0245a07caa6 100644
-> --- a/mm/vmscan.c
-> +++ b/mm/vmscan.c
-
-[ ... ]
-
-> @@ -4206,12 +4199,14 @@ static void set_initial_priority(struct pglist_da=
-ta *pgdat, struct scan_control
->  	sc->priority =3D clamp(priority, DEF_PRIORITY / 2, DEF_PRIORITY);
->  }
-> =20
-> -static void lruvec_evictable_size(struct lruvec *lruvec, int swappiness,
-> -				  unsigned long nr[])
-> +static void lruvec_evictable_size(struct lruvec *lruvec, struct scan_con=
-trol *sc,
-> +				  int swappiness, unsigned long nr[])
->  {
->  	int type;
->  	unsigned long seq;
->  	struct lru_gen_folio *lrugen =3D &lruvec->lrugen;
-> +	struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
-> +	int nid =3D lruvec_pgdat(lruvec)->node_id;
->  	DEFINE_MAX_SEQ(lruvec);
->  	DEFINE_MIN_SEQ(lruvec);
-> =20
-> @@ -4219,6 +4214,8 @@ static void lruvec_evictable_size(struct lruvec *lr=
-uvec, int swappiness,
->  	nr[LRU_GEN_FILE] =3D 0;
-> =20
->  	for_each_evictable_type(type, swappiness) {
-> +		if (type =3D=3D LRU_GEN_ANON && !can_reclaim_anon_pages(memcg, nid, sc=
-))
-> +			continue;
->  		for (seq =3D min_seq[type]; seq <=3D max_seq; seq++)
->  			nr[type] +=3D lruvec_gen_size(lrugen, type, seq, sc->reclaim_idx + 1);
->  	}
-
-[ ... ]
-
-> @@ -5113,12 +5106,19 @@ static bool should_run_aging(struct lruvec *lruve=
-c, unsigned long max_seq,
->  			     struct scan_control *sc, int swappiness,
->  			     bool do_balance)
->  {
-> +	struct pglist_data *pgdat =3D lruvec_pgdat(lruvec);
-> +	struct mem_cgroup *memcg =3D lruvec_memcg(lruvec);
->  	DEFINE_MIN_SEQ(lruvec);
-> =20
->  	/* have to run aging, since eviction is not possible anymore */
->  	if (evictable_min_seq(min_seq, swappiness) + MIN_NR_GENS > max_seq)
->  		return true;
-> =20
-> +	/* run aging when GFP_NOIO limits anon reclaim with few swapcache folio=
-s */
-> +	if (swappiness && min_seq[LRU_GEN_FILE] + MIN_NR_GENS > max_seq &&
-> +	    reclaimable_anon_is_low(memcg, pgdat->node_id, sc))
-> +		return true;
-> +
->  	/* try to avoid aging, do gentle reclaim at the default priority */
->  	if (sc->priority =3D=3D DEF_PRIORITY)
->  		return false;
-
-[Severity: Medium]
-Can min_seq[LRU_GEN_FILE] + MIN_NR_GENS > max_seq ever become true here
-when LRU_GEN_ANON has four generations?
-
-Under GFP_NOIO with low swapcache, lruvec_evictable_size() skips
-LRU_GEN_ANON while get_swappiness() still returns a non-zero swappiness in
-[1, MAX_SWAPPINESS].  Because LRU_GEN_ANON is not scanned, its oldest
-generation is never emptied and min_seq[LRU_GEN_ANON] stays at
-max_seq - MAX_NR_GENS + 1 (which is < max_seq - MIN_NR_GENS).  When
-evict_folios() empties the older file generations, try_to_inc_min_seq()
-clamps min_seq[LRU_GEN_FILE] to max_seq - MIN_NR_GENS:
-
-mm/vmscan.c:try_to_inc_min_seq() {
-    ...
-	if (swappiness && swappiness <=3D MAX_SWAPPINESS) {
-		unsigned long seq =3D lrugen->max_seq - MIN_NR_GENS;
-
-		if (min_seq[LRU_GEN_ANON] > seq && min_seq[LRU_GEN_FILE] < seq)
-			min_seq[LRU_GEN_ANON] =3D seq;
-		else if (min_seq[LRU_GEN_FILE] > seq && min_seq[LRU_GEN_ANON] < seq)
-			min_seq[LRU_GEN_FILE] =3D seq;
-	}
-    ...
-}
-
-With min_seq[LRU_GEN_FILE] clamped to max_seq - MIN_NR_GENS,
-min_seq[LRU_GEN_FILE] + MIN_NR_GENS > max_seq is false.  At DEF_PRIORITY,
-should_run_aging() returns false and scan_folios() scans 0 folios from the
-already-empty file generations.  At lower priorities, evictable_min_seq()
-still uses min_seq[LRU_GEN_ANON] and lru_gen_imbalanced() still counts
-unreclaimable anonymous pages in old[LRU_GEN_ANON], stalling aging across
-reclaim priorities.
-
-[Severity: Medium]
-Should this check !can_reclaim_anon_pages(memcg, pgdat->node_id, sc) and
-swappiness <=3D MAX_SWAPPINESS instead of calling reclaimable_anon_is_low()
-directly?
-
-When CONFIG_SWAP is disabled, the reclaimable_anon_is_low() stub
-unconditionally returns true even for __GFP_IO reclaimers:
-
-mm/vmscan.c:reclaimable_anon_is_low() {
-#else
-static inline bool reclaimable_anon_is_low(struct mem_cgroup *memcg,
-		int nid, struct scan_control *sc)
-{
-	return true;
-}
-#endif /* CONFIG_SWAP */
-}
-
-On a !CONFIG_SWAP system with NUMA demotion enabled (or on a CONFIG_SWAP
-system during GFP_NOIO reclaim where can_demote() is true),
-can_reclaim_anon_pages() returns true and lruvec_evictable_size() includes
-LRU_GEN_ANON, yet should_run_aging() treats anonymous generations as
-unreclaimable and forces premature aging at DEF_PRIORITY whenever
-min_seq[LRU_GEN_FILE] + MIN_NR_GENS > max_seq.  In addition, not bounding
-swappiness <=3D MAX_SWAPPINESS allows SWAPPINESS_ANON_ONLY to trigger this
-check even though file pages are not evictable.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261110202025.2573=
-6-1-baohua@kernel.org?part=3D15
+-- 
+Thanks,
+Sasha
 
