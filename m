@@ -1,91 +1,91 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B9C606A325
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DD9606A31C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=IoE8/4G1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=bqob7FZ9
 Received: by kanga.kvack.org (Postfix)
-	id 875036B05CD; Tue, 10 Nov 2026 00:58:09 -0500 (EST)
+	id 47DB16B05CE; Tue, 10 Nov 2026 00:58:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84C286B05CE; Tue, 10 Nov 2026 00:58:09 -0500 (EST)
+	id 454D36B05CF; Tue, 10 Nov 2026 00:58:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7639F6B05CF; Tue, 10 Nov 2026 00:58:09 -0500 (EST)
+	id 36C5E6B05D1; Tue, 10 Nov 2026 00:58:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 474476B05CD
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:58:09 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D01CF808C5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:08 +0000 (UTC)
-X-FDA: 85418153856.19.BBF02C3
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id F421E6B05CE
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:58:10 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 7C4BBC0891
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:10 +0000 (UTC)
+X-FDA: 85418153940.03.49315A2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 27056100002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:07 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IoE8/4G1";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id D5C7A20002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:58:08 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bqob7FZ9;
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794290287;
+	s=arc-20220608; t=1794290289;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:  content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2Mfv6lL9c6W2XR34Izu44gTl4LnL4rYgjG/0Cb55EdM=;
-	b=iah/BI4PyvRNEhNTflzPxeWPKCCjtM770foiu/r/3NFPUjej/1a+jibbEgeU5WkdP9y5Bk
-	fftrftlU0HgUwbUttDbc+9zrg6pUPVfLpt85ehEdDKHVfS1/w4Jw59wsodzuBjdH7MRln8
-	CxSgAC4zqcN/QalVJBmqSbKPIUhNEQg=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b="IoE8/4G1";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org
+	bh=DPYJPMP/BH6aE3WYr34n15K2lh6Wwe+ptchX1xfAWSA=;
+	b=3jAB1TNTRdbIGjezbbyLItT13Z+NH4L4UJxQMVDUPTRC+G57voDirTDpb9jnJZ26NAakgR
+	nggeNN6OrQxApM30mPiPr9ZB6izHwIwOrSgYpakkSghKyy2/dbHS3kOuCbnqMO2c+XRL+e
+	4LdFPA+jEblU7J4f+3qx/6t+gqqc+pk=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794290287;
-	b=KRWVTq1KG2FJouv6FEHX/j0se1xyKKa5ognP/pWvWc+YrTac5Gxu0vhg+BCwvyHdwIdAX6
-	17u/Txp3492dkGon0GzPiOnh8Sw99STI9lrpl0a1Sl2eWdthyPpfEcQJjvoJCAVuOevOJS
-	2Ry/xWhYRPOU1BeregbXwg54owJosl0=
+	t=1794290289;
+	b=gzWruRCx6cN6AQ1/VqVNabCETvkg7vbDSZ6APx019u+QT0Zd230leNwUlfhWDOK2e/4r1f
+	ZoHHgF/uVmqi+dnB/2ls+Dv1td5/RjEYpNqcRi4y7rLRheM5AvpfJUGryIxzYVp7UwGkKz
+	f5rmi56toacDnLWzaCtYa+KZauG88C0=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=bqob7FZ9;
+	spf=pass (imf03.hostedemail.com: domain of sashiko-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sashiko-bot@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7620E469AA;
+	by sea.source.kernel.org (Postfix) with ESMTP id 3107341278;
+	Tue, 10 Nov 2026 05:58:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD891F0089F;
 	Tue, 10 Nov 2026 05:58:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B073E1F0089F;
-	Tue, 10 Nov 2026 05:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794290286;
-	bh=2Mfv6lL9c6W2XR34Izu44gTl4LnL4rYgjG/0Cb55EdM=;
+	s=k20260515; t=1794290288;
+	bh=DPYJPMP/BH6aE3WYr34n15K2lh6Wwe+ptchX1xfAWSA=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=IoE8/4G18+6Hp1zoMvGdqUAygWMDYwbBKGVHDoQOfGrZ2iKxAwalFoAx5xKQqWFCr
-	 1YPUHwGuqdIARqmVnYBj/STcorzM5TJ5nvx5A/lCorZD/hD7yDXDC/69a7yiSe04eD
-	 3P8bGworAJ3Wk5NopK3AgtyI39rR56NpYfM/EcfnfMh++tNhbFb6N/jlW1LPAj2fNK
-	 LbhXjkFNKgagVq8Ls5+ToI31azdC6N7h64pEIvwkG2WK/iVQ5rq1uYQgVFrrDrnO2+
-	 D0x/Id4fxvOj8GI90u+sok2vhLqiKKGsj3DS5jLtdivvVkVBCV+YnZs4YTClrHeBua
-	 KKXOZSafbKFMA==
-Message-ID: <sashiko-outbox-206374@kernel.org>
+	b=bqob7FZ9IvoDgHK/KwGpHdROeAAYANmEnwfe5pV36e5UuVT5DVAL5rfXY0WO4zWrq
+	 /UNWavKfbgMImLAjeuhhtNSfOq1Y34ATl9+PuparRFVoJ2Bn3LhU6z5wUHZE/wzSOf
+	 X18XQfKhFASjX+G9KugUCYtGtgFHvzqEjsP592iIz2+rEg6myEYh2huFGDtDpnLQqc
+	 M3z3D6OoGfCe+yU6/UgS5bBmUIokV9xJ75IqC9Ph8Vkc2tqVA91CPJEoZTYuOn7xVi
+	 4fRz5cxczUbx98W3Um6aw4wuJfNhCAtV1sm/WEOcnZXH+2CrMMVfUAAmXQBzMZlMW/
+	 84H27CXLXXMUA==
+Message-ID: <sashiko-outbox-206376@kernel.org>
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 15/19] mm, swap: make xswap cluster_info accesses
- RCU-safe
+Subject: Re: [PATCH v5 17/19] mm, swap: add xswap shrink trigger and defer
+ it to a workqueue
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Baoquan He" <baoquan.he@linux.dev>, linux-mm@kvack.org
 Cc: akpm@linux-foundation.org, david@kernel.org, chrisl@kernel.org, kasong@tencent.com, nphamcs@gmail.com, baohua@kernel.org, youngjun.park@lge.com, corbet@lwn.net, hannes@cmpxchg.org, chengming.zhou@linux.dev, kunwu.chan@gmail.com, klarasmodin@gmail.com, "Baoquan
  He" <hebaoquan@kylinos.cn>
-In-Reply-To: <20261109055455.536925-16-baoquan.he@linux.dev>
+In-Reply-To: <20261109055455.536925-18-baoquan.he@linux.dev>
 References: <20261109055455.536925-1-baoquan.he@linux.dev>
- <20261109055455.536925-16-baoquan.he@linux.dev>
+ <20261109055455.536925-18-baoquan.he@linux.dev>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 10 Nov 2026 05:58:05 +0000
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 27056100002
-X-Stat-Signature: ouk9b7o1mnjzunuwf3bqqr7o5981848d
+Date: Tue, 10 Nov 2026 05:58:06 +0000
+X-Stat-Signature: she3twugsfa4gwqt4ue4cj8yn4di75nj
+X-Rspamd-Queue-Id: D5C7A20002
 X-Rspam-User: 
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS autolearn=ham
 	autolearn_force=no version=4.0.1
-X-HE-Tag: 1794290286-770968
-X-HE-Meta: U2FsdGVkX1+PhHDkaYqPiFxD5m3CamT3lx/QCfsOaSYqbtOr5oCjhqHEooyz943lfDOFBJlKrelvU5mYmMtz2ghjMZRI3u/we+rITC5f2IN9FjSZJBtUzuggxJmx6gL5xnseof1/bMSEsZIlV+qmdXJECoqjyDhan0trp/fmLGTiN555OfyrH/HaSgu/ZLnxXM+Q2otGOOzPwO3witSlfxOpcJUltleM+mrwDOi+jYF5tPrul3oEo1qHYa1KTJiwpxwri8HxbQBaC0r/0SiPZwruHzLPKfl/Pr91c7O8oFs2bLcVoa78zaz5I9KYUd35j5fWU8P3PgXnY2oKRxpg0hMh43oS/AK/wHSbG80nM3wzgfQrS+pUKymqiiraunH2H3OAoUg6ZRvB1viFvTwG3nJNrRnXt+LrqfxmS1LlH68WWLfC55w5IJJj/w3APmjT4+2771tDmYWPwJpg09y2mER9Kuhc/4uMp/UuwHS5OQAHMfjPeJT4HgiWPHs2GyGbAwbFruG2KKTbA7UB0nXZBzh5t4FfGiGFxdGuyDsfKjuOIR+senCi9X2YNGvvxLCSTmoxoI/OSnY6uQdmMOMp8WScpT0iwMjKhO+HsKK/AF1OvaWwbgcYrHLG0t0XVxSjuUvrkF8abO3B1pOvOAdpujPN1JlVICO/1xJPJTY2VK2rpF9vyysZq33SmVI3wmp3tW17on+pK0k/iQqWiM/FKelNiI5Q7LWqwVQVfcpZpryDUhXqg5aD6WepF9OB+vCaOyZ1gnxhmzcJv8i+Q9ZWO/tMJwy+gjOJfIXRcCcEjz22sIA+NDKle7T2B/xgk4/zTji26+0CUxV2eQD1M1g7z1KanDiP5ggZ0bAD3bLfCTalflDgnIQnGGAazDZ67J8DvYEEu7zoH0qK+2NINEKUVIbXhXsWOqWM1baRgu31OmIm9THU18Aj0w0F3iBvlYpmueeou51AsyPRe8IvyYb
- KWjQ2oBJ
- KyXx1PbhpXaf+koFEaIXiwyfzBERpbDdyxDP4E+MIjvhzJwf4HflB02wQB4AEqhAQd55DlZjjdhbOtETAs2zoGp0mJKs4jdnFnwNDBAbMcdPqJIqF1uMg5IXyZK/AhzhmapJ9sYfq+vWdzDv1DaWCJbmHm1zBHImZzfFsuAUFfTBEy5XjM4+AkQ51VhOL01O9+lLFLLfuvjSr9hGwzG2K5N/Gf5ECxNvg0X2Vli0Wsp6wV7gl+ESY2bThNKBXPf0BW6lyumH2vTN0vodaUbqhsSosSttrYZ6wJ4xI1+rURrR707ByoenAUNFOFb29CwKUmFBnkJ8edNvrJh3cw+0KD9dfrC7rtTa1zekKiaD5h/Px3JP5MQVX3k2joH+jaTnh1ttdIZPzGS4bOMcKA+EC1uOw4ns77BG+p/m8n6wTb1gbbqoyWbrmqvLsAd8CSi8kPsKNnaEKsI0EcJ8MXtHRytAOcwqSiKiIwzNzY5Slwje7v/+2ZuMTGR2QMJtBhM8kMABDsvIfbIG5R0WMmNSZ707IbMI+pjYwqx0SgX2MHVNdZTqvLxIDVxwVZ41XhRpi0g0W0ZpEtfnDw08CGB3KA/bMMZhJH5IwJkjU3yGdSeAwDtZXeiIhKXmWvqsCs3MaGaF1+Y5/+X6kvZHA6U575rJo9yv1dBIrOZk612EMB9Ez/OZLglncs5EhvA==
+X-HE-Tag: 1794290288-173014
+X-HE-Meta: U2FsdGVkX1/FgsZveLmH7A+JBr9YESMOuOb1n8UnJUN7gjc2TewmEpoA8Q4MFmwXR3SpsVK2Gc7BKRX0J5ARpK1qJpIT190/fY3xFmRdrzoT5RIaf4M4RG18rvWTaFt+BKDBNjYXrzkns0ytl1CsAL0BZkCkUaJTl3+RRJ2u7tqxvc3NlQWOzbDfvX1FSxcWm/lqmnwrYvQrMJq7eZ4be8vOZdyV+wdv4iWhjLqpqy88MZW7RPK1oVnexEYV6fko+NqNQihziCtNXHh0RzHubmWiGVOhCz5+BwNdkTNm685mrOYSwxAc1MhOZWR8Q+dJIEAczekw4F3q2w4QLsLQvbFQF+9jZQjCH4p9TDtdN66B2Qpl6Zc3uXYYn+XAPygsz2oJ/j2cBGmS9JQ7GbJ9smzQ4N3RHDoTCLMkYSnpQIWCFc6CKGO0wb3FQTrZS5vHysCYYU3ANa5FVIAlTyCrxBj9Nl9DGxzA0jd8f/1onXK621hLavaBjAKauGnDANzqi+ib2W7VbCtMv3iOczUXztX4n9EIjFGERxcpe9Ea79H7TE1ApRroRokdfTfLls8ImGsJ9melmtIlu3ncww3/EDS7uXZE2C4aOr94Dc9yVYmQ/OPSQ62NgaUh3JATDiDpIi1Okr6ToNACwWcZRXpAk6axWr/tsY7dHY6LB//1aomHJTSkkqF8blmjmxRVAo7gRItBdMa/xQW4huWATaxa4lrXSaU/PiMAuC9EbXSfk+ycM8GYHarkqUPi2Qz0IFaD8XCCgBw1iAp3mqAOacCTcjTXBvzd+Z7aMYbrT/AHlGLbkCaWcn2RJqdl14l8jO9CF8492kF4cKBE5vlu6F/GbzoXfXED+CFQFxVTPepF4b0K47tUbWc8zvhe2QAqe8zJHtyZnQmJ32wj4+nBqlbTdYzgJKWwZjGIhjd6VAQFlZscrRqlu/nGKuDEXVsq9aY48pnh8GxPUNlZAHLEmZT
+ /J3Ofrxf
+ Xye5xZJ0Z7QNh/QR3i2NgJuoUrDoo++tmsVPVzZ+A9VbZKPd6iFQdb0pafjNSJOyFC/53e711aC/DhU7s8/es6gglIvfVwKi2a/Gct/HLNHAFmZ8gGM/5VNZoz3JHrwh2Pgbl8wHFx7yEgyfkzPpJPU5cNI6ckkZr1ckQVcN3zPrOVFd+sjo2SnnFxAFlw43TwKaXgtPa/YV//gndSFXx+sibsPdVQPu8YKEOC7UKr+dtvW7Oc2h3OkN49aKYQVWgDsVoiFdpJ/M5/g6vzIFJvbMh9nRVVj7ZxT5tw/KO6K870p9xAb9hAbA5Pg6wndoaZ+UPrn879+8wj/c0Pu6x4cM6OI82Hi0mn+AFzf9yXumqLq8QzNoaqwKePpSFJS5P0wiLFvmLXVqprc9bBM+ZdS1Hii7+BMqVl2+yzoebKB9AVi/TcNg7rn6ZcoxOR83+H6wM2kiIqYvFixPGmOLbDJPurAHs62uckdFz+/7+7yvZySV1ZxvefsD+SbYQMD7buaVVe+Mzo037R5t3jRdW52jf3eDiFKB08TLfaax9vZnKo58lrcIKTOWGupWsSTwVVaix8VfMugK4Zb4V79Q8oHICmnxA4Y59lHMJedDIPkaU1eFr4YXZlx+qok7zeL4GGvJfooi24RWdNDs=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,115 +95,150 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 X-Archived-By: <archiver.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 4 potential
+Thank you for your contribution! Sashiko AI review found 3 potential
 issues to consider:
-- [High] mm, swap: missing RCU protection in swap_put_entries_cluster()
-  reclaim
-- [High] mm, swap: xswap_unmap_clusters() skips RCU sync when vm_start
-  >=3D vm_end
-- [High] mm, swap: relocate_cluster() after lock drop re-adds freed
-  cluster
-- [High] mm, swap: unmapped xswap cluster_info access in swapin and
-  table alloc paths
+- [High] mm: use-after-unmap of cluster_info in swap paths when
+  xswap_try_shrink() runs
+- [High] mm: race in xswap_try_shrink() setting CLUSTER_FLAG_NONE
+  re-adds unmapped cluster
+- [Low] mm: redundant xswap_lock acquire in __swapoff() for non-existent
+  sysfs shrink
 --
 
-commit 167e6417672879cf6894286f3431ad8960ae663b
+commit ff41ecd0448adc3f4a51da2b8b59751cd899add3
 Author: Baoquan He <hebaoquan@kylinos.cn>
 
-mm, swap: make xswap cluster_info accesses RCU-safe
+mm, swap: add xswap shrink trigger and defer it to a workqueue
 
-This commit adds RCU read-side protection, per-CPU cluster cache flushing,
-and acquire/release ordering on nr_clusters_mapped so that runtime xswap
-shrinking can safely unmap cluster_info pages.
+This commit adds deferred shrinking of the xswap cluster_info VM_SPARSE
+mapping via a workqueue scheduled from __free_cluster().
 
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index 2624233b4fc28..bc30ab42203cc 100644
+> index 097ed288b1ca1..2e5383036fdcb 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
-> @@ -1239,6 +1239,9 @@ static unsigned long alloc_swap_scan_cluster(struct=
- swap_info_struct *si,
->  	lockdep_assert_held(&ci->lock);
->  	VM_WARN_ON(!cluster_is_usable(ci, order));
+[ ... ]
+> @@ -3681,6 +3701,15 @@ static int __swapoff(struct swap_info_struct *p)
+>  	struct file *swap_file =3D NULL;
+>  	int err;
 > =20
-> +	/* ci is used without ci->lock; an xswap unmap waits for this. */
-> +	rcu_read_lock();
-> +
->  	if (end < nr_pages || ci->count + nr_pages > SWAPFILE_CLUSTER)
->  		goto out;
-> =20
-> @@ -1267,6 +1270,7 @@ static unsigned long alloc_swap_scan_cluster(struct=
- swap_info_struct *si,
->  out:
->  	relocate_cluster(si, ci);
->  	swap_cluster_unlock(ci);
-> +	rcu_read_unlock();
+> +#ifdef CONFIG_XSWAP
+> +	if (p->flags & SWP_XSWAP) {
+> +		cancel_work_sync(&p->xswap_shrink_work);
+> +		/* Wait out a shrink racing us from the sysfs write path. */
+> +		mutex_lock(&p->xswap_lock);
+> +		mutex_unlock(&p->xswap_lock);
+> +	}
+> +#endif
 
-[Severity: High]
-Can relocate_cluster() re-add a cluster to si->free_clusters after it was
-freed and isolated while ci->lock was dropped?
-
-CPU0                                  CPU1
-alloc_swap_scan_cluster()
-  rcu_read_lock()
-  cluster_reclaim_range()
-    spin_unlock(&ci->lock)
-    __try_to_reclaim_swap()
-                                      /* last slot freed */
-                                      __free_cluster()
-                                        ci->table =3D NULL
-                                        ci->flags =3D CLUSTER_FLAG_FREE
-                                      /* shrink or swap_cluster_populate()
-                                       * isolates ci from free_clusters */
-                                      ci->flags =3D CLUSTER_FLAG_NONE
-                                      xswap_unmap_clusters()
-                                        synchronize_rcu()
-    spin_lock(&ci->lock)
-    /* !cluster_is_usable(ci) ->
-     * *usable =3D false, goto out */
-  relocate_cluster(si, ci)
-    /* !ci->count &&
-     * ci->flags !=3D CLUSTER_FLAG_FREE */
-    free_cluster(si, ci)
-      __free_cluster(si, ci)          <-- NULL deref or list corruption
-  swap_cluster_unlock(ci)
-  rcu_read_unlock()
-                                        vm_area_unmap_pages()
-
-When __free_cluster() runs a second time on a cluster whose table is already
-NULL, swap_cluster_assert_empty() dereferences NULL under CONFIG_DEBUG_VM,
-and move_cluster() links the isolated cluster back onto si->free_clusters
-just before its backing page is unmapped.  swap_reclaim_full_clusters() has
-the same issue at the end of its loop when checking ci->flags =3D=3D
-CLUSTER_FLAG_NONE without verifying cluster_table_is_alloced(ci).
+[Severity: Low]
+This isn't a bug, but is the p->xswap_lock acquisition here needed?  There
+is no sysfs write path that triggers a shrink, and cancel_work_sync() has
+already waited for xswap_shrink_work after SWP_WRITEOK was cleared.
 
 [ ... ]
-
-> @@ -1310,6 +1314,9 @@ static void swap_reclaim_full_clusters(struct swap_=
-info_struct *si, bool force)
->  		to_scan =3D swap_usage_in_pages(si) / SWAPFILE_CLUSTER;
-> =20
->  	while ((ci =3D isolate_lock_cluster(si, &si->full_clusters))) {
-> +		/* As in alloc_swap_scan_cluster(). */
-> +		rcu_read_lock();
+> @@ -4413,6 +4452,153 @@ static int xswap_mapped_end(pte_t *pte, unsigned =
+long addr, void *data)
+[ ... ]
+> +	spin_lock(&si->lock);
+> +	for (i =3D start_idx; i < nr_mapped; i++) {
+> +		ci =3D &si->cluster_info[i];
+> +		if (READ_ONCE(ci->flags) !=3D CLUSTER_FLAG_FREE)
+> +			break;
+> +		if (!spin_trylock(&ci->lock)) {
+> +			spin_unlock(&si->lock);
+> +			goto out_unlock;
+> +		}
+> +		spin_unlock(&ci->lock);
+> +	}
+> +	if (i !=3D nr_mapped) {
+> +		spin_unlock(&si->lock);
+> +		goto out_unlock;
+> +	}
 > +
->  		offset =3D cluster_offset(si, ci);
->  		end =3D min(si->max, offset + SWAPFILE_CLUSTER);
->  		to_scan--;
-> @@ -1334,6 +1341,7 @@ static void swap_reclaim_full_clusters(struct swap_=
-info_struct *si, bool force)
->  			relocate_cluster(si, ci);
-> =20
->  		swap_cluster_unlock(ci);
-> +		rcu_read_unlock();
+> +	for (i =3D start_idx; i < nr_mapped; i++) {
+> +		ci =3D &si->cluster_info[i];
+> +		list_del_init(&ci->list);
+> +		WRITE_ONCE(ci->flags, CLUSTER_FLAG_NONE);
+> +	}
+> +	spin_unlock(&si->lock);
 
 [Severity: High]
-Does swap_put_entries_cluster() need the same RCU protection around its
-__try_to_reclaim_swap() loop?
+Can setting ci->flags to CLUSTER_FLAG_NONE cause a concurrent reclaimer to
+re-add an unmapped cluster back onto si->free_clusters?
+
+Both swap_reclaim_full_clusters() and cluster_reclaim_range() (called from
+alloc_swap_scan_cluster()) isolate a cluster with ci->flags =3D=3D
+CLUSTER_FLAG_NONE under rcu_read_lock(), temporarily drop ci->lock around
+__try_to_reclaim_swap(), and then re-acquire ci->lock and call
+relocate_cluster():
+
+CPU0 (kworker)                    CPU1
+xswap_try_shrink()
+  flush_percpu_swap_cluster(si)
+  synchronize_rcu()
+                                  swap_reclaim_full_clusters()
+                                    rcu_read_lock()
+                                    isolate_lock_cluster()
+                                      /* ci->flags =3D CLUSTER_FLAG_NONE */
+                                    spin_unlock(&ci->lock)
+                                    __try_to_reclaim_swap()
+                                      /* frees last slot in ci: */
+                                      __free_cluster(si, ci)
+                                        /* ci->table =3D NULL */
+                                        /* ci->flags =3D CLUSTER_FLAG_FREE =
+*/
+  spin_lock(&si->lock)
+  /* sees CLUSTER_FLAG_FREE,
+   * trylocks ci->lock */
+  list_del_init(&ci->list)
+  ci->flags =3D CLUSTER_FLAG_NONE
+  spin_unlock(&si->lock)
+  xswap_unmap_clusters_locked()
+    synchronize_rcu()
+                                    spin_lock(&ci->lock)
+                                    if (ci->flags =3D=3D CLUSTER_FLAG_NONE)
+                                      relocate_cluster(si, ci)
+                                        if (!ci->count &&
+                                            ci->flags !=3D CLUSTER_FLAG_FRE=
+E)
+                                          free_cluster(si, ci)
+                                            __free_cluster(si, ci)
+                                    spin_unlock(&ci->lock)
+                                    rcu_read_unlock()
+    /* unmaps and frees ci pages
+     * while ci is on free_clusters */  <-- use-after-free
+
+Because xswap_try_shrink() overwrote CLUSTER_FLAG_FREE with
+CLUSTER_FLAG_NONE before waiting out the RCU grace period in
+xswap_unmap_clusters_locked(), relocate_cluster() sees !ci->count and
+ci->flags !=3D CLUSTER_FLAG_FREE and calls __free_cluster() a second time.
+With CONFIG_DEBUG_VM=3Dy, swap_cluster_assert_empty() immediately
+dereferences the NULL ci->table; otherwise move_cluster() links ci back
+onto si->free_clusters just before its backing pages are unmapped and
+freed.
+
+> +
+> +	/*
+> +	 * A cluster can be taken and freed between the recheck above and the
+> +	 * unmap, putting it back in the per-cpu cache.  Drain and wait again.
+> +	 */
+> +	xswap_unmap_clusters_locked(si, start_idx, nr_unmap, true);
+> +	atomic_long_inc(&si->xswap_shrinks);
+
+[Severity: High]
+Can unmapping cluster_info pages at runtime while si->users is live cause
+a kernel page fault in swap paths that access si->cluster_info outside
+rcu_read_lock()?
+
+Several swap paths rely on get_swap_device() pinning si->users to keep
+si->cluster_info mapped across preemptible or sleepable sections where
+neither ci->lock nor rcu_read_lock() is held.  For example, in
+do_swap_page() -> folio_alloc_swap() -> __swap_cache_alloc(), or in
+swap_put_entries_cluster():
 
 mm/swapfile.c:swap_put_entries_cluster() {
     ...
-	if (ci_batch !=3D -1)
-		__swap_cluster_free_entries(si, ci, ci_batch, ci_off - ci_batch);
 	swap_cluster_unlock(ci);
 
 	if (!need_reclaim || !reclaim_cache)
@@ -212,120 +247,37 @@ mm/swapfile.c:swap_put_entries_cluster() {
 	do {
 		nr_reclaimed =3D __try_to_reclaim_swap(si, offset,
 						     TTRS_UNMAPPED | TTRS_FULL);
-		offset++;
-		if (nr_reclaimed)
-			offset =3D round_up(offset, abs(nr_reclaimed));
-	} while (offset < end);
+    ...
 }
 
-Callers such as shmem_free_swap() -> swap_put_entries_direct() invoke
-swap_put_entries_cluster() in preemptible context outside RCU.  Once
-__swap_cluster_put_entry() drops the swap count of cached slots to 0 and
-swap_cluster_unlock(ci) releases ci->lock, concurrent reclaim can free the
-swapcache folios and empty the cluster, allowing xswap to finish
-synchronize_rcu() and unmap the cluster_info page before
-__try_to_reclaim_swap() indexes si->cluster_info.
+Once swap_put_entries_cluster() drops ci->lock in task context outside
+rcu_read_lock() after decrementing a cached slot's swap count to 0,
+another CPU can reclaim the swapcache folio and free the tail cluster:
 
-[ ... ]
+CPU0                              CPU1 (kworker)
+swap_put_entries_cluster()
+  /* decrements swap count to 0 */
+  swap_cluster_unlock(ci)
+                                  /* folio_free_swap() frees last slot
+                                   * in tail cluster -> __free_cluster() */
+                                  xswap_try_shrink()
+                                    flush_percpu_swap_cluster(si)
+                                    synchronize_rcu()
+                                    /* unlinks FREE tail clusters */
+                                    xswap_unmap_clusters_locked()
+                                      synchronize_rcu()
+                                      xswap_unmap_range()
+  __try_to_reclaim_swap()
+    swap_cache_get_folio()
+      __swap_entry_to_cluster()
+        swap_table_get(ci, ...)   <-- page fault on unmapped cluster_info
 
-> @@ -4289,12 +4333,33 @@ static void xswap_unmap_clusters(struct swap_info=
-_struct *si,
-> =20
->  	mutex_lock(&si->xswap_lock);
-> =20
-> +	/*
-> +	 * Publish the smaller range before its memory goes away.  Readers
-> +	 * that use nr_clusters_mapped without xswap_lock pair with this
-> +	 * store using smp_load_acquire().
-> +	 */
-> +	smp_store_release(&si->nr_clusters_mapped, start_idx);
-> +
->  	if (vm_start >=3D vm_end) {
-> -		WRITE_ONCE(si->nr_clusters_mapped, start_idx);
-> +		/*
-> +		 * The clusters sit inside one page that the preceding
-> +		 * cluster shares, so there is nothing to unmap.  The page
-> +		 * goes away with that cluster; publishing the smaller
-> +		 * cluster count is still correct.
-> +		 */
->  		mutex_unlock(&si->xswap_lock);
->  		return;
->  	}
-
-[Severity: High]
-Can returning early when vm_start >=3D vm_end allow a subsequent xswap_grow=
-()
-to reinitialize ci->lock while an earlier RCU reader is still using it?
-
-CPU0                                  CPU1
-swap_alloc_fast()
-  rcu_read_lock()
-  mapped =3D smp_load_acquire(
-             &si->nr_clusters_mapped)
-                                      xswap_unmap_clusters(si, start_idx, n=
-r)
-                                        smp_store_release(
-                                          &si->nr_clusters_mapped, start_id=
-x)
-                                        /* vm_start >=3D vm_end: skips
-                                         * flush_percpu_swap_cluster() and
-                                         * synchronize_rcu() */
-                                      xswap_grow()
-                                        xswap_map_clusters(si, start_idx, .=
-..)
-                                          /* page already mapped */
-                                          spin_lock_init(&ci->lock)
-  ci =3D swap_cluster_lock(si, offset)  <-- races with spin_lock_init()
-
-Because struct swap_cluster_info (40 or 48 bytes) does not evenly divide
-PAGE_SIZE, shrinking a range that shares its page with start_idx - 1 takes
-the vm_start >=3D vm_end return without flushing percpu_swap_cluster or
-waiting for RCU readers.  If xswap_grow() maps those clusters again while a
-reader from before the shrink is still in flight (or using an unflushed
-per-CPU cache entry), the mapped: path in xswap_map_clusters() runs
-spin_lock_init(&ci->lock) concurrently with that reader.
-
-> =20
-> +	/*
-> +	 * A per-cpu cluster cache can still hold an offset in this range.
-> +	 * Invalidate those references, then wait out the readers that have
-> +	 * already loaded one, so that nobody can dereference cluster_info
-> +	 * past this point.  swapoff() needs the same before it releases.
-> +	 */
-> +	flush_percpu_swap_cluster(si);
-> +	synchronize_rcu();
-
-[Severity: High]
-Can swapin and extend-table allocation paths still dereference an unmapped
-cluster_info page across sleeping allocations where RCU is not held?
-
-CPU0                                  CPU1
-do_swap_page()
-  pte_unmap_same() /* drops PTL */
-  get_swap_device(entry)
-  ...
-  __swap_cache_alloc()
-    spin_lock(&ci->lock)
-    __swap_cache_add_check()
-    spin_unlock(&ci->lock)
-    folio_alloc_mpol() /* sleeps */
-                                      /* entry freed (e.g. MADV_DONTNEED) */
-                                      __free_cluster()
-                                      xswap_unmap_clusters()
-                                        synchronize_rcu()
-                                        vm_area_unmap_pages()
-    spin_lock(&ci->lock)              <-- page fault on unmapped ci
-
-get_swap_device() only pins si->users, which does not block runtime xswap
-shrinking.  Once the PTL is dropped in do_swap_page() (or the xarray lock in
-shmem_swapin_folio()), a racing thread can free the swap entry and allow
-xswap_unmap_clusters() to unmap the cluster_info page while CPU0 is
-preempted before swap_cache_get_folio() or sleeping in __swap_cache_alloc().
-The same race affects copy_pte_range() -> swap_retry_table_alloc() ->
-swap_extend_table_alloc(), which drops the PTL, performs a GFP_KERNEL
-kzalloc(), and then takes spin_lock(&ci->lock).
+The same window exists when __swap_cache_alloc() drops ci->lock to sleep
+in folio allocation and then calls spin_lock(&ci->lock), or when
+swap_extend_table_alloc() sleeps in kzalloc() before locking ci->lock, if
+the swap entry and its tail cluster are freed concurrently.
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20261109055455.5369=
-25-1-baoquan.he@linux.dev?part=3D15
+25-1-baoquan.he@linux.dev?part=3D17
 
