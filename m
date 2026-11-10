@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F53760A380B
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 14:52:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E4960A381D
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 14:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=TtLwZxeY
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=LX1qXbg/
 Received: by kanga.kvack.org (Postfix)
-	id F3DFF6B05B7; Tue, 10 Nov 2026 09:52:54 -0500 (EST)
+	id 3099B6B05B8; Tue, 10 Nov 2026 09:53:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EEECD6B05B8; Tue, 10 Nov 2026 09:52:54 -0500 (EST)
+	id 2BA806B05B9; Tue, 10 Nov 2026 09:53:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB7156B05B9; Tue, 10 Nov 2026 09:52:54 -0500 (EST)
+	id 10CF46B05BA; Tue, 10 Nov 2026 09:53:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ABE6F6B05B7
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:52:54 -0500 (EST)
-Received: from smtpin20.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 32121C08B3
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:52:54 +0000 (UTC)
-X-FDA: 85419501468.20.F293D91
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CCA6C6B05B8
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:52:59 -0500 (EST)
+Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BA359A8616
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:52:58 +0000 (UTC)
+X-FDA: 85419501636.04.2F821E1
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 3F53E16000B
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:52:52 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TtLwZxeY;
+	by imf01.hostedemail.com (Postfix) with ESMTP id AE77B40006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:52:56 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LX1qXbg/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794322372;
+	s=arc-20220608; t=1794322376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=6N4yimoRtRyrI1TQXjE1WplbXHKcJsyASw66CLWCFAw=;
-	b=E2l++rIOwKfR/1spNw9P4tdiIL6+oe5Q1h4ajEsytUXvyhYSlJGecHpMUcGa7mCOHOKfJ5
-	K/1rEw5W93GQ8Jw9Z0i7sHV1PaedqclkTCORReKEse7k0opMhYjkt09frHpfmBVnP2pI6Y
-	25SsG5WCzSkoy5tnEJdlSBPgxxRLURE=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BwatasSyxzcSR5rQ2WiN2NCOOtGU337FRGLRO/rHFE8=;
+	b=sxGsIQKZdx5B7VfQJl/SZ69M3yKVYGekCAVf2d3HmnRg5/5oY+KmccsvPFylY0mInXwm8D
+	sU0Ok6W4xAEeNmI4Spu9WivOEE8YoBIdlPwbZlw4ha54Nq/OAs6+/3POolghHhJ1ybKQNN
+	Qs/+RHgi3Z1pWljNhx/xIdfv8Dk1zaY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=TtLwZxeY;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b="LX1qXbg/";
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
+	spf=pass (imf01.hostedemail.com: domain of kas@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kas@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794322372;
-	b=gFD2dFGIijieowijuHXDjf5RTSkg/Q2ffKvfumKH+0bc2UVQRiP5lhZNvRxIeLk+oV+5up
-	ARiGN4iU8mJZcS/VfSnCyh7pAByqP7otbd0ZaHUeIH7IoUpFmoJxubH3SwN7FIpQMYrzGi
-	qiBUFCoBT1zw0Xy9b9Vzekn6LKLpbjI=
+	t=1794322376;
+	b=idDYB9E7Xmm4ml0S0ofvh2WgjSRiSu07BtNwYjt06Xwtj2cyZGCUcEuEmiFyq5ntT9+dMh
+	Hy3Ab+4IdEk3DgEnMUMbuiE/i/jfH9QlYhd6MKpeC7hjijwZC/Qq+bJ1S9Zv6dhKIdn+iX
+	IBpTnAmrdqzNc0h7jrKjwGtEkKs7gVA=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71648472B9;
-	Tue, 10 Nov 2026 14:52:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CDA31F008A3;
-	Tue, 10 Nov 2026 14:52:49 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0076041473;
+	Tue, 10 Nov 2026 14:52:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2752D1F008A6;
+	Tue, 10 Nov 2026 14:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794322371;
-	bh=6N4yimoRtRyrI1TQXjE1WplbXHKcJsyASw66CLWCFAw=;
-	h=From:To:Cc:Subject:Date;
-	b=TtLwZxeYlUL/uDig4AnOw7rT4j0pf0Bak5Zr3u0S5zTys5YkIoPrnv9mBzydgUDJR
-	 On67jGO2QQzV5z+3BX4xd9xVR6kgN4SfMcVizj7y1yV+IcVeZrhW92RKqE7op1sKqP
-	 t2cn7SrK3DDQL+W4xaYF/GXwLJ9rRO9HkXB9vmta8hNCtQ2ARlz+KxUMV+hCxuHvb/
-	 OFUr555Lx1yLSJejgL5jMpyc8Jzpm74bixxM0dZqF4aANNx7YtDsYeyc8g7qKuwlt2
-	 QMisPDertw3NnI30MjpsSEQYjQnX2kVGccfEN+zJrQF801rvtKiS5ZKS5kwStB6gDa
-	 oF7o2xZjVxqEw==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.ams.internal (Postfix) with ESMTP id 7194E198003A;
-	Tue, 10 Nov 2026 09:52:45 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 10 Nov 2026 09:52:47 -0500
-X-ME-Sender: <xms:vC_zamIrxbPFlMqmqdH87bJ8oVb5OH4j-5QKaD2odtGRa378W4aMGw>
-    <xme:vC_zau7iG6U6GWcxc4P6mny-A7p4SJoQZrrZvLs_mDvoGLiGsjZdk7uYTCRpA3s_1
-    1pDVm15b8ig9mTHOvvB25nR04H1HdRS1wor-wiM5JgX1_RSKuuh0TDA>
-X-ME-Received: <xmr:vC_zaqiyHoZbN0j8GQiEZphmP5JdoK7rL96QJ0IeJMI6ShVZYYp7Y01GchU>
-X-ME-Proxy-Cause: dmFkZTGWr3Bol1il49kOQEDKgAYHsyZ47Yj7fzpOlw8TiM0gPuvQ5jH8a26arj7fWVWo8c
-    uYSQI4gF+J/q2fS951R4MAEK6NSyHihCKPc8gs/Smt0oEHe2/ZNkgA1wFpTMe1NCyEh3Js
-    2sOQFQl2u0oaCfgohyCrCmhrDmMmEdzNJMC3F6GAOQKLThCibPUBlYSTA6wtUNMKpaxtaj
-    dGOb/Rq6NmezBvNu+QpQUTiCikoSwAPnJ0sPDBsm+TwW/3NvGIqVnTQzL+rnl9P96FOaud
-    9QVmodzVH6f2pAiYKwBUmVjS32P99W7X/ARoxC9GGJiRXhxnK3ET71I2aLak1E7ScHgDGB
-    Br2DNeeEux/MRQtpQWpWckTmepF25FWbH2zpcxILcX3v8zdpDpYA0mKU3vXWDmGveVY8nP
-    Jm3J83mZ9Lzll07xzIjyxfcPXPgd0/Nl+jFRI2+Ps8w1WUGCVSC+Ut/B8cfsovYNhH4FfM
-    k/Da/LpZE9KdncQ/IkxzRgPzAfcg2vDaR6C/9iYGSWEekPdaxHtpQSOVK/9sa+vHbA7FJH
-    s4s9wxDy2pCNAajnA0e1t+EjuXIj13ZxLczwVQd1kW2RXOeKrM2qibYR+HQPyAAkmPdBjS
-    nHeTjt+6RUR2pf7R3gO/B/J8SGsz4FV0ldaAoXhphfAKjj/wvDFOSNFZBPAA
-X-ME-Proxy: <xmx:vC_zas-vjmx1sNJQtDUEDCM8_lWziIyZYE-z3yUvQdabh6AxgB9Tag>
-    <xmx:vC_zasfIDq80AsPowkfGGXRBwH16uZwrkWAbUbUZRtxhVWFNuI1ChA>
-    <xmx:vC_zagltlF42Dg5urBmLLPqDKIpm3LcoDVOkzIAZZ9nRyQsHR1qlxQ>
-    <xmx:vC_zamyEB-uOy-v3wawnd3EFx3P_SgwV_COkCOJlzzDK6HB-7NVFeg>
-    <xmx:vS_zalEVfRoL663tcZdP2A-__TD09DaIKUUbjs8zEKw0ZUSkCtuNvFAc>
+	s=k20260515; t=1794322375;
+	bh=BwatasSyxzcSR5rQ2WiN2NCOOtGU337FRGLRO/rHFE8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=LX1qXbg/O3SqIsVhXX5dPqCS13Wb9i92E6l1n17yBCB4OnnKsvUxOGHeu81PxeX7o
+	 o9eck8S+w+0r5NELLlXM4xl7NZV8dRxCp6ToE00Tw5D+Z7Tui/RG4GWwu2JFsQFsJi
+	 uxbQdEwE3QStUrUSmR6bKmEHkVfiMqG400XCA+HN4MOHgsqkF6inqyAQrHYqbxl8v9
+	 pyqST8S0AxK1Q0GMPTycGbw8HLqOelVkDpZSS+JeCHLv7YU8w2YUcHPczuyTWknQZL
+	 102gRAvIHoDGXCB3L+qju6iBqqo+ljQiWDMkM08229BdRSA4bVXnDoy5uAnuHsigSx
+	 Kegoc9W2ZZabg==
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfauth.ams.internal (Postfix) with ESMTP id 663A11980047;
+	Tue, 10 Nov 2026 09:52:50 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 10 Nov 2026 09:52:52 -0500
+X-ME-Sender: <xms:wS_zak2W15IeFWn6kiyZTKk_0WwBxL9eKgrsBBFJORWUCTtbi7-08Q>
+    <xme:wS_zavMM2PnWiv-kvgrNmh_7ZbXZrCvUZjOBqfMrGl5_tizfJQ5VrbbI9PHrD3z4m
+    IEBWjWChULmn7DArkv60t8ZxFGiLMayYZZYDsbqkXHbzP3bozL9XrCo>
+X-ME-Received: <xmr:wS_zaqszeiG2xVxpOI5pnM0D7M68peht3izRM5FN63Gqq2bMAt2oxnowDvE>
+X-ME-Proxy-Cause: dmFkZTF+Cn+fSgda5ibRlg8z0HHd47AdQqgPs/uBN4NgEssRGADLpXszo7EdJ4hc6xz2Ef
+    EUmaDyZaXcY+YL0D35VcXklWSGO8Ug1cC0CybUOo3mwF9pj0hl/2YQ82hQmzmrFF0mRvwv
+    gl679KsfUxnSOavz6lY9EBi8U3CsSXr4Qnl0BS5Rjmt6ZpTTzNrlaWD4twI7L0h6db8KXe
+    hL7mENu+NTXE/lgl7zKZ9G10X0CMpXoxVLVIFrzoEBolZB0xMHBwNm+EeoQ0TpWfQSdq79
+    aWiko1YyVPAhQzDQdIdJfHn8x09SHcsYyBmY2iIQ7sfSmOyy2AqqhOBitTCqCwP/4fGaI0
+    XAaUzKekg4g5tv+R3G/J8OgkJRg9K6kNgoFNH+6Oy5Q7CcgTDen2gesRc62jCx+fjrLQ3K
+    2exx18ViYCt6lbV6J24anM3UtlAkUjkngmjn9FUZijG1U2klJLxsqPn/kUMOUAEGiFpYrj
+    OmRQdmGlCGksTx5ePE0T6RF2aRHEPgskEVJZXZpTlDZPiTuaoAqQfRkg7/Bg14Z7++dpwB
+    SbwlTGt4xiBzrauvN2gFWqvxlrwBjsEu+xnbV+fNgH9vS87ZH0+8a558EIaVVvFotxIcgc
+    ipM7UkzR4MenaTa2sJ5cP+Rz55HMVinydGQ70cCSY6Q3tFL4HhSWy9nTppMw
+X-ME-Proxy: <xmx:wS_zaiHhDIsmgyNP81PC0H1Q7IfNyS-g10JBq9zAvIUESBWt-MKB8w>
+    <xmx:wS_zalQvRUnfbzsKrRN4lLJsJkcphv-zz0_tiCgtm4R_d7bHP_bY8Q>
+    <xmx:wS_zamiS8IMRsBzbbfQ1rdhM9UuJzkM474EIMj--zuKpuwNHRR--2g>
+    <xmx:wS_zapbsSVzo7a-eRELIHRz4o6nUtAzAPgYE_RcXz3jFzrJe0NQdaA>
+    <xmx:wS_zanWB491OLGGbLJ0DXsP-bXV7GHeVBZEJMR_pyA8jGu0_H-ow4j2u>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 10 Nov 2026 09:52:44 -0500 (EST)
+ 10 Nov 2026 09:52:49 -0500 (EST)
 From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 To: Christian Brauner <brauner@kernel.org>,
 	Alexander Viro <viro@zeniv.linux.org.uk>,
@@ -116,25 +116,27 @@ Cc: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	kernel-team@meta.com
-Subject: [PATCH 0/4] splice: remove pipe buffer stealing
-Date: Tue, 10 Nov 2026 14:52:35 +0000
-Message-ID: <20261110145241.536019-1-kas@kernel.org>
+Subject: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
+Date: Tue, 10 Nov 2026 14:52:36 +0000
+Message-ID: <20261110145241.536019-2-kas@kernel.org>
 X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20261110145241.536019-1-kas@kernel.org>
+References: <20261110145241.536019-1-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 3F53E16000B
-X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Queue-Id: AE77B40006
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: b4hhs4iknmx3uyw1u38anesmpywj93pg
-X-HE-Tag: 1794322372-487123
-X-HE-Meta: U2FsdGVkX1/L2qJaun7WUBvgsvt0m5NNeGA+mz+2iU7rAc+/klUBQoOm8F3y00ilz+aUgot/G687ffUcktKqbNvlbQ+wuQCea51/OXH4xAHos+22H3bomH8ysASAgtkMRs3EkkJe3nMg6/Ojb1SBnwy/PQf4IaSbDl4cvlHulgN1B5ERax9YYF7GypMukTWXV6AIUkLb0nLOWf1ZGXfoSZtsLTd2kPIxW/wbklsG6R3gDfMSHTzHggq3AhhcejkkVHkIP0LafuOJdLq+cscsWGmRfIfHOCLFuxPqOwuR3wd2gAhe1fKW/ubbfebZGcg5eThImWXu+Vencsm8SRYmd3FPmZ8MY3T0DVagf8RfgVrtRrYkJ2nLLyk4OujV3l6KydSReOruS0R7Bpan9Ij5doLMgGzJuZnFWR3K4Wrf3fbkTki+ThS0UOUxG8LIkn20qkUiAOYtL5JwmObcOsTRDxBKt3nhnHHLuhBoUjw298HsHqRYrex9vjUYHc9p82+TrL6rBRuamfbDC7ZM6MYSo1AGXroCZ/DRKAfDaJDIsM0476F0gRWAeVpARtTzxDN2nlvdPL4xnlWdrHvqfDnwrjGVYDCQg5UQkxHuRyO/qY3887X+01gXc+Pn3Oe0U+fz3j4XFKlbtoba21cBHaL8hmzO0yUmBaLahEsP9A9Gqjww8UxqHWPytZPWWzlxsFl7aI3Wq1I7FOTyofVWKlcZ9dKDSyjB4oYtJquaSj1+atVNZS8oUJiNapy/TPhSSFSR0rPyjkO+WrYggCM+eOogp+M5sQtQUow157nuHXY9taSqgWfqZ745LRsAKFBHkXKgdBurUNm2PIkMbG18zda+aGXep0Qx/waZXEdDx8X8ExCsByKK4BIZeDHITzLxqtLw/B9S2IdVvtbvbnV1d/k2ydiNIGXNq64ea1/3jW0AKXby3Qqloz1UptREmfkrNN7m4xca4ABVVFU4lZEOJS6
- Zqx3eYFT
- hDUmHO6z0XZuElO4EN5pxReoy+rzWtexabL5+TewM4gfYv1HBrLJAq9xTn4WxZDNSH18ifmyDumpq7tDtFjcGRg8S6tXarHdMcuPUhAm/aGtDv9SubZfebs1RPMwr0l7QI2gDGRBAYmnZnUgWVhfGU18vNS5eul56G0LH7Jp4ZV+WXWusk6nR/O2B0TjygBNTC/34xMmVPR+ECuYZmDwaMG0j5Z8CQ4OfrSnr7wiKCruWdmQwtlqYgXJIJZdHCEnn/5Tycn6mvEKhzi1xTCII2sIWNrs4IxGYoEz9
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: gaeeb5skwn73oapfube7mq7p6fs47pwo
+X-HE-Tag: 1794322376-162471
+X-HE-Meta: U2FsdGVkX1/XX/92dLXRoqDOuBL/9zMmXfL0ECxl1+MUC5gQdlRquhEfN9pOWlqiPZ9rF8fvRNp20BqBneKEM0UwGpFyWXhJ+0nFG0NnK7i3usvgY1enTfllcc/QVf+ItzZF2u8INMfuHf5IJeN01rZ3QNc1ZMuXKQTaNtoFPXIZ9Smo57SEEECliaS50snumjn11I5deM2cxzBITYu2C2VrY2Ipxq9i8W7kkBDBw1UHdWGu/EpkLadLf2CXVGWNImlkBPovVKCQDasCBqIbAZQ6LLAE4REVp5/UQPIep9Q1jzORdP/3imFS9B6ekUrDrQQ0DQnDKByFzV0rlurmsN9qKdcSrZtNB8kQHvGizpoa/JL3jEc/b0G0cy7B064ZoHPcd1yCCn8sN8cBVFxTHxT9SCw4FbRSdzFlaFx0ytlOGzxLLi1F9GJhGcKpMByufm4pxI3jhj4R18UgStJl/DiqC3YDrU9efpYD0XvylpgTTwOxZAE8mVTUa6IIv+Pb8Ui7pduU+IrHkDlYWuYyDq1Y3OBbj4oLq7IorKRhQcyvJ/VF5qEcIIdBbPuZW71CPnXHswcocPU+1HLDFJOb2GvLZrisOo6A+JeXUFXq+Ca+NJno/0YnBySocSTrUar/nivgtcmS67eriC4XU9M949/u9onar+7/d+cuEzrchekwFSnq2effSzQ39WsdXrYFG5tj7nWDgYzP+DvkH+A6knCnrigsWVrU6MtHFlQ98pYsgDYznUhXFerFuVRxBaNgIS8jzZAY4nS/9vsByq9aHsehZJ1h045+xvTZbXZal5xWO/EXzSFh8DPRB09Qf12mNQntQAMD7tja8qMzG5JK/c/wTc31mo8dTPxidyWHgIa4JjpbkP5toM47joaMKrkzCjHtBnEG57hDw+vmHnGYfR33BIli5H//UQvDeRSod4WXEaA0+PbfJPJ6CQcQ3z4JCtyKzMG9U2FEgkTnFbp
+ Gxvrk7Bu
+ dqc8DbkMOUCNA2aixVMNLXm4/3ivVu8uGlXhZaPruLTEJsHBg8ht7jiCthevOfkCs4scD4ipqIjq2jaehSQKBSaPuEwoEIF6HJBPAF626Be85HLJKVfi5xCSSZ0fDmL7HJiQBG5l3prHnog25dNQr7Dsc9hKBFG4vidyqMgsspK4nsnYJFP5UXrdtz0xLB577EVvrOhaCIw8bLWI6jnel0oLeY0J4IlbOGa3LdJzkrU6Xkxc+2/A008LNNdORREKxu810903mXxCAjXiZTioHeEl/a03HWJLEELUmXHX8WKNi0gANpt9mabqHmZx9C0QEHOFq4venxha79gM0aPWJr4OASME21IupCOEBh9HhbMVDipDcRlBC01hw2w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -143,73 +145,88 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-->try_steal() lets the consumer of a pipe buffer take its page instead
-of copying the data.  Two consumers use it:
+pipe_to_sg() tries to steal the page of each pipe buffer and pass it to
+the host as it is.  When the steal fails, it copies the data into a page
+of its own.
 
-  - fuse, when a server splices a read reply into /dev/fuse with
-    SPLICE_F_MOVE: the page goes into the fuse file's page cache;
-  - virtio_console, which passes the page to the host.
+Pages written into the pipe with write(), gifted user pages and page
+cache pages can be stolen.  The ftrace ring buffer pages that
+virtio-trace splices cannot, so that in-tree user always gets the copy.
 
-The page can come from the page cache of another file, from a write()
-into the pipe, or from vmsplice(SPLICE_F_GIFT).  Stealing it takes page
-cache folios out of their files, and turns pages into page cache folios
-and back.  That gets in the way of reading the page cache without folio
-references [1] and of telling folios apart with a PG_folio flag.  It
-works only on pages that nothing else holds, for fuse only on clean,
-unmapped, order-0 ones, and it has needed fixes again and again:
+Always copy.  The data that reaches the host does not change.
 
-  32f98877c57b ("fuse: don't check refcount after stealing page")
-  b89ecd60d38e ("fuse: ignore PG_workingset after stealing")
-  712a951025c0 ("fuse: fix page stealing")
-  59ba47b6be9c ("fuse: Check for large folio with SPLICE_F_MOVE")
-  15c20483d915 ("fuse: validate folio state before pipe_buf_try_steal() in fuse_try_move_folio()")
+Preparation for removing ->try_steal() from pipe buffers.
 
-Linus and David suggested removing it [2].  Both consumers already copy
-when a steal fails; with this series they always do.  vmsplice() and
-splice() still accept SPLICE_F_GIFT and SPLICE_F_MOVE, and fuse still
-advertises FUSE_SPLICE_MOVE, so that servers which ask for it mount as
-before.
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+---
+ drivers/char/virtio_console.c | 39 +++++++++++++----------------------
+ 1 file changed, 14 insertions(+), 25 deletions(-)
 
-Miklos, Amit: do you know of users of the fuse move, or of virtio_console
-splice, that depend on the copy being avoided?
-
-Without ->try_steal(), nosteal_pipe_buf_ops is the same as
-default_pipe_buf_ops, and the last patch keeps only the latter.
-
-Tested on x86_64 with a FUSE server that answers reads by splicing the
-page cache pages of a backing file into /dev/fuse with SPLICE_F_MOVE.  On
-v7.4-rc1 how much moves depends on folio sizes: with order-0 folios on
-both sides, one read of a 16M fuse file took 3968 of the backing file's
-4096 pages out of its page cache.  With the series nothing moves, and the
-data read through fuse is the same, also when the server reads its
-requests with splice().  A virtio-serial port fed by splice() from a pipe
-and from a file, and vmsplice(SPLICE_F_GIFT), SPLICE_F_MOVE, tee() and
-AF_UNIX socket splice checks also give the same data before and after.
-
-[1] https://lore.kernel.org/all/20261104130118.2507513-1-kas@kernel.org/
-[2] https://lore.kernel.org/all/CAHk-=whhp=Q8qR+wPoM9+mxYPQ_OXMOEoKmT7J0JZikFZusuqw@mail.gmail.com/
-
-Kiryl Shutsemau (Meta) (4):
-  virtio_console: copy pipe buffers in splice_write()
-  fuse: don't move pipe buffers into the page cache
-  splice: remove pipe buffer stealing
-  splice: replace nosteal_pipe_buf_ops with default_pipe_buf_ops
-
- drivers/char/virtio_console.c |  39 ++++-----
- fs/fuse/args.h                |   1 -
- fs/fuse/dev.c                 | 146 +---------------------------------
- fs/fuse/file.c                |   1 -
- fs/fuse/fuse_dev_i.h          |   1 -
- fs/pipe.c                     |  43 ----------
- fs/splice.c                   | 104 ++----------------------
- include/linux/pipe_fs_i.h     |  38 ---------
- kernel/watch_queue.c          |   4 -
- mm/shmem.c                    |   7 --
- net/core/skbuff.c             |   2 +-
- 11 files changed, 26 insertions(+), 360 deletions(-)
-
-
-base-commit: 6628e7d4c6b25c8d18f1345e3a20d21829aae7e4
+diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
+index 019bcae81af5..b1b1aaf43e07 100644
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -891,45 +891,34 @@ static int pipe_to_sg(struct pipe_inode_info *pipe, struct pipe_buffer *buf,
+ {
+ 	struct sg_list *sgl = sd->u.data;
+ 	unsigned int offset, len;
++	struct page *page;
++	char *src;
+ 
+ 	if (sgl->n == sgl->size)
+ 		return 0;
+ 
+-	/* Try lock this page */
+-	if (pipe_buf_try_steal(pipe, buf)) {
+-		/* Get reference and unlock page for moving */
+-		get_page(buf->page);
+-		unlock_page(buf->page);
++	page = alloc_page(GFP_KERNEL);
++	if (!page)
++		return -ENOMEM;
+ 
+-		len = min(buf->len, sd->len);
+-		sg_set_page(&(sgl->sg[sgl->n]), buf->page, len, buf->offset);
+-	} else {
+-		/* Failback to copying a page */
+-		struct page *page = alloc_page(GFP_KERNEL);
+-		char *src;
++	offset = sd->pos & ~PAGE_MASK;
+ 
+-		if (!page)
+-			return -ENOMEM;
++	len = sd->len;
++	if (len + offset > PAGE_SIZE)
++		len = PAGE_SIZE - offset;
+ 
+-		offset = sd->pos & ~PAGE_MASK;
++	src = kmap_local_page(buf->page);
++	memcpy(page_address(page) + offset, src + buf->offset, len);
++	kunmap_local(src);
+ 
+-		len = sd->len;
+-		if (len + offset > PAGE_SIZE)
+-			len = PAGE_SIZE - offset;
+-
+-		src = kmap_local_page(buf->page);
+-		memcpy(page_address(page) + offset, src + buf->offset, len);
+-		kunmap_local(src);
+-
+-		sg_set_page(&(sgl->sg[sgl->n]), page, len, offset);
+-	}
++	sg_set_page(&sgl->sg[sgl->n], page, len, offset);
+ 	sgl->n++;
+ 	sgl->len += len;
+ 
+ 	return len;
+ }
+ 
+-/* Faster zero-copy write by splicing */
++/* Write by splicing, copying the data from the pipe */
+ static ssize_t port_fops_splice_write(struct pipe_inode_info *pipe,
+ 				      struct file *filp, loff_t *ppos,
+ 				      size_t len, unsigned int flags)
 -- 
 2.54.0
 
