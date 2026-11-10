@@ -1,92 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DCAA60A2602
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D743606A33F
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 05:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=hgyo74ux
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=UmKduHwW
 Received: by kanga.kvack.org (Postfix)
-	id 830EF6B05C0; Tue, 10 Nov 2026 00:02:19 -0500 (EST)
+	id 5BFB86B05C1; Tue, 10 Nov 2026 00:02:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E19B6B05C1; Tue, 10 Nov 2026 00:02:19 -0500 (EST)
+	id 549036B05C2; Tue, 10 Nov 2026 00:02:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A9936B05C2; Tue, 10 Nov 2026 00:02:19 -0500 (EST)
+	id 410BF6B05C3; Tue, 10 Nov 2026 00:02:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FD0F6B05C0
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:02:19 -0500 (EST)
-Received: from smtpin13.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 93B3D808B3
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:18 +0000 (UTC)
-X-FDA: 85418013156.13.AC6AA46
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com [209.85.218.71])
-	by imf25.hostedemail.com (Postfix) with ESMTP id CD634A0003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:16 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=hgyo74ux;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3V6XyagkKCMo9q7A38qxAw44w1u.s421y3AD-220Bqs0.47w@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3V6XyagkKCMo9q7A38qxAw44w1u.s421y3AD-220Bqs0.47w@flex--tarunsahu.bounces.google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 0AEC36B05C1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:02:20 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6DA30A85E1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:19 +0000 (UTC)
+X-FDA: 85418013198.18.DE21702
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+	by imf02.hostedemail.com (Postfix) with ESMTP id A921D80002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 05:02:17 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=UmKduHwW;
+	spf=pass (imf02.hostedemail.com: domain of 3WKXyagkKCMsAr8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3WKXyagkKCMsAr8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794286936;
+	s=arc-20220608; t=1794286937;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KlBTWBMpEbDIIvafpldBklRCZ2ctie9uKxzA73glXH4=;
-	b=L1VkEZHM/HEDA6DjGBzdmCNysF1NMfFL4U5cV7QTuZtZsoxkr+qrwNlJrYBhcHpSXDnidn
-	dQnDP0nSATCnefd608A0/fsuMrZUUcaLjr1oicALwaGQ/Cm5s4f0ji7TBFWj1Ek2SUYyDZ
-	E1TtGb200JmtbuIqxOUSVdrdppWElfM=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20260707 header.b=hgyo74ux;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of 3V6XyagkKCMo9q7A38qxAw44w1u.s421y3AD-220Bqs0.47w@flex--tarunsahu.bounces.google.com designates 209.85.218.71 as permitted sender) smtp.mailfrom=3V6XyagkKCMo9q7A38qxAw44w1u.s421y3AD-220Bqs0.47w@flex--tarunsahu.bounces.google.com
+	bh=QH3sulygYhhWPnxKAIiCVfW20U0EPZtpLbJ/h67Rp6Y=;
+	b=lNQEuMjCWJNjgCMEenntDrOjKIOaXey9UEPmrkqwa6GBhfSJ6BRH5O7eaa7iILKwt5lh/r
+	lt7eEgxgMwomvFNnAsS+D4NjLBjpMyb72xf2IHWsPM5OyIayamE32DCugW2yKctxr8Nw7q
+	ofA2ckQ2Te9ejUOBo37hHrVLgpmG61I=
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794286936;
-	b=UWTiTlujuP+d7IcXZ9YQCFxsXSF6AdrGiyhKDbvveLlMPxzIhABhXvVzqcVd3UqRkIPva7
-	DkBVjPZLRTt1TM5P9GvtJz1nrd2VqHI/iIWtbvGeFKBatID9gHGPX8i4aJkcqb0S94CdEF
-	Yd9J8MLzh6hU/9kqkM/IsGaIjlc/1rM=
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-c42f98f354fso137719566b.0
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 21:02:16 -0800 (PST)
+	t=1794286937;
+	b=WednW4Q2FxpHkDlMuIwhMkhQvM2ACkhGsnuuz/FSfLsu1bLAwDC/ZHGADLEIOqghJX9qjh
+	vtapFjNcACm7UPcblSY4EC0g8gsV+WqR8vkUAF/s+QyroQuJoCjAur/NdIQVC5NciwJv08
+	eFEdQQWrYO5ILNnz7Z+49BChVsPz9CI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=UmKduHwW;
+	spf=pass (imf02.hostedemail.com: domain of 3WKXyagkKCMsAr8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com designates 209.85.128.71 as permitted sender) smtp.mailfrom=3WKXyagkKCMsAr8B49ryBx55x2v.t532z4BE-331Crt1.58x@flex--tarunsahu.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4a359b714f8so11744045e9.2
+        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 21:02:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20260707; t=1794286935; x=1794891735; darn=kvack.org;
+        d=google.com; s=20260707; t=1794286936; x=1794891736; darn=kvack.org;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=KlBTWBMpEbDIIvafpldBklRCZ2ctie9uKxzA73glXH4=;
-        b=hgyo74ux9SkBjayV7foFhUKyRN0sFFaj9zzQsJIF8I7P4P2WFV9hyJ0bW+K51OEXdO
-         TDhCslp1Emc9zeZs7YEi1O0aH1J4Vz7AtFfgHuNGdtoUvobydHQzXsbJ/RTNrqsWirgb
-         VWTeWfGjGY8CpRLs9QgmnkYLzMPKJlj1w2jvj9VLzO8oBNn0zMxDPyqNE3OIY8oNqxR0
-         22GD6yvuv1VSmR++vpf8JVIRh/sUA5QgDWzgbtk/e6aTRcJDVbWaALBaDb44ImpVaQyW
-         qjBcP8iyqwDUbcXOXiy4cLcPHrkQzut26xp8lTH1BibfKwRUzC0qMPNQUsqr7vt4+lkn
-         0/ng==
+        bh=QH3sulygYhhWPnxKAIiCVfW20U0EPZtpLbJ/h67Rp6Y=;
+        b=UmKduHwWze9wCPYpyqMnni4AQGyYJa3UveN2T04zgpA6CEfOi9mgYfEy7/rGVysUm6
+         8PJ/JbGQnzGRwDaKtU03XxSTdCR6pblS5BsAaYtnGj1EBNhy9z3+CV0J9a8TxHDAi3pT
+         NbglPFrJCeDOCJeDJYPBYMatfCYDgEm0l0L8z2+u8rCzIRjB5Oed8hleHrV5XlGmUoXF
+         MN0q1DSJmxpm425pjyZncJ72WCzY+3wWMdgrlLVdfVS/nCXNpjMdDof6IcRMsjYnQvA7
+         sGMs62D9IHeCn1a5y3nJV7wAZvEcoQoGupCweM1yDvIGDqN7g25CWUyASwK2V8uhjEtU
+         OTqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794286935; x=1794891735;
+        d=1e100.net; s=20260707; t=1794286936; x=1794891736;
         h=content-type:cc:to:from:subject:message-id:references:mime-version
          :in-reply-to:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=KlBTWBMpEbDIIvafpldBklRCZ2ctie9uKxzA73glXH4=;
-        b=gnVzB4mQRJ7mNFTCfAc7k2OJp0oZEcVwK43A0ROk1g+ps+Hauvb3Pq63ZUJxWXRVBL
-         LXsPoEIek0vCxrUUcCsXr0Pgv5DjmF5d6UPwqrcmGsWIeNatP2KmqFgZtIj9mn4FJXT6
-         7Wzw3rxTiTQU7MfRaA4nFsqK2VAhuELuiB7aSgIZcM6PgJVqnjHKaHdL1qYs+JXhf/hb
-         eCCiRY809a+QVUbFUIPfk4pc1p5bw42borNUre7Ms1VpYUsm7vzy8WQGMwNIYmOtYCEM
-         FADN6CgXp4ghNTAq45/2F0hx44kYFpn5dpf5H3kBW6qlgR1MoBtetFGrMQMcrcSDC2j1
-         azLg==
-X-Forwarded-Encrypted: i=1; AL+hErEhKfldALdGskovaUphohpZ0+rPFl5f1V5KQRcUd9mUf89mfWp0MsqsYFhAldM+1Wjgd0pjClHNSw==@kvack.org
-X-Gm-Message-State: APuU4Z8V5O6zFvTtJi8yS+C3Mb83T6ZR9J5gAJ3yg52eKTLvvtCqLu6M
-	6PqrdHMxmpHqIDMYUuNuqKjQyNAEgU+s8D4usQ2W73QvJMiDOMqgr4g+i3cF/e9zvZTPinAtSN9
-	69Q8h+Paz26GOqoWebw==
-X-Received: from ejpg24.prod.google.com ([2002:a17:906:7c58:b0:c3f:eea3:d5e9])
+        bh=QH3sulygYhhWPnxKAIiCVfW20U0EPZtpLbJ/h67Rp6Y=;
+        b=SSaKDI4CEag7+4vXip5e424+8XjGFmSwfXEt15dfQACXa5k2Sz0EOFfxH1NSpQk6o1
+         /DIlSJ9BmAW6rrmwd4subp6wQ6S9uTAhow0u2yJ2WCuWB78IiW65K2HqM8XQDWeT7Dkz
+         H0zM3PHI3oJ+iBtPbOlAnocSMGEKK4ipDiZFspWhjtpZOOKXJ0a72qdOzGc0d3XgbWRl
+         G/ZEHLzPpcidtALcrS/wZx+Hgp6QONXUD1j0eKF8GXhob2r09lgaG6Wp4kL0a8/vqlCb
+         loMdHD0WbdpCc62+1GKdyk5DiF0OYkXf6BQ+nMwotU3wQUueRiSWqxszSS1zRflpl1Rg
+         c1xA==
+X-Forwarded-Encrypted: i=1; AL+hErHEQIJVdd22ugKq22/YRY39cIRAoUO/bWbAKu+ZiCMBzjqMqY65pnjeG+XbqTxZVNzkZbdLX8ozMQ==@kvack.org
+X-Gm-Message-State: APuU4Z89GDwFsvfCaHWpKMgqHyAMeVEWXcLrHZjHAoB4L02dBskKUynL
+	m2kzrn6efLL3yDqrImAXxK/1RYpcPlHlgC32Tvr8wa7gxpLdn7/G9HerdSdz1QRABS0z0+0SjMv
+	HvC1iMtckV7WzscKcgQ==
+X-Received: from wrvd15.prod.google.com ([2002:a5d:538f:0:b0:48e:1449:1f6c])
  (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:907:3d8f:b0:c44:9a32:b27 with SMTP id a640c23a62f3a-c5049623935mr98305266b.25.1794286935134;
- Mon, 09 Nov 2026 21:02:15 -0800 (PST)
-Date: Tue, 10 Nov 2026 05:01:52 +0000
+ 2002:a05:600c:3b9b:b0:4a5:a5ca:de1d with SMTP id 5b1f17b1804b1-4ba023577bfmr24128895e9.30.1794286936085;
+ Mon, 09 Nov 2026 21:02:16 -0800 (PST)
+Date: Tue, 10 Nov 2026 05:01:53 +0000
 In-Reply-To: <20261110050202.529473-1-tarunsahu@google.com>
 X-Archived-By: <archiver.kernel.org>
 Mime-Version: 1.0
 References: <20261110050202.529473-1-tarunsahu@google.com>
 X-Mailer: git-send-email 2.56.0.506.g506a7eabc5-goog
-Message-ID: <20261110050202.529473-10-tarunsahu@google.com>
-Subject: [PATCH v4 09/19] liveupdate: Add feature header to struct luo_ser
+Message-ID: <20261110050202.529473-11-tarunsahu@google.com>
+Subject: [PATCH v4 10/19] liveupdate: Add feature header to struct luo_session_ser
 From: Tarun Sahu <tarunsahu@google.com>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>, Mike Rapoport <rppt@kernel.org>, robin.murphy@arm.com, 
 	maz@kernel.org, will@kernel.org, David Matlack <dmatlack@google.com>, 
@@ -102,19 +102,19 @@ Cc: kvmarm@lists.linux.dev, linux-pci@vger.kernel.org,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	Tarun Sahu <tarunsahu@google.com>
 Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: c1zykzgieyrux4fe5bworayoqaeqrrpm
+X-Rspamd-Queue-Id: A921D80002
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: CD634A0003
+X-Rspamd-Server: rspam08
 X-Spam-Status: No, score=-26.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=unavailable
+	SPF_PASS,USER_AGENT_GIT,USER_IN_DEF_DKIM_WL autolearn=ham
 	autolearn_force=no version=4.0.1
-X-Stat-Signature: byt9jnqn1obhwes75hrb9xtucr4wdgz4
-X-HE-Tag: 1794286936-266426
-X-HE-Meta: U2FsdGVkX19DwkHNTGMP72Sh6USddHcwJwplqBvdDG8NsbIemtV6Hr8+xu6g7H5QaEnddrow0Z2/NuFm/GSW6Sh49+UVjdD/8PF/OrOvk7nGWYExsHbdzlpnQpI+2td7/bAL+6N+4H/rBVTfpVfzeg6fHded4GsjC671P6jF7GOoFudeceFIVFZrlAPwucuAhxONkreE1NI0v4gzIajEjluytmP5p+P4oVH9+ufQKk3ePJlisfiVSbIxguxkRKPrxPldi/m7yBUvTLJwSsgdCwYc8Mfp5yk3Q60urfL7uQqssDTQVUf1gzNZWeeWVE8wrd2yqmo8chPBVDnCPxED4r6fthkvIaErXsQtpAruZAvxyr8G8zGWhnI/iZMgFR0T1gVxOceq9cI4yKJN1vuAlof37QcZR9sxhHXMg+tIYIlPy5DcNZ9otmpfGmEOW0pRWfJ9QepG5mjffxUUw+HGU1dQoPVxI2FlNLyMC1X0XgMAQmi1o0DX5yGBlU2ABayy6CVCXAA1aB6bdUipLT3eiACriJUOSwe/98tqK4UCruJBh8ZdindefKkECGQpzd8+YyKBeOZvwrOGBJrbemr1d/H+C+zvCpBW7EmhvrQpRq1NqFcFEI1Yu50qhaS4HfHmhd3coXyiOpClIWNwi6fiFFYm3FE5XkVLwdUYGde7i0zMRp3ssoOXFYsokqaP+3BQBRklX+H/0sWNMHqCqH8JB5b4Uz+aiASeqe2dMlIlirQTH6gZh/NgwRYJUjTNNybaaQH7ERwoZUekCS6Kns2GAty+mMDIXvOWnZs1c2X6uUq6wa9hYk+6gbChBrDnnsZTwg4/PYsabyjdNRXaQ7wbLpjZTkEDLGcQWyJex2SnVtglAv4HPWwhGdzN/ZYR3G0tfL3VVTXyrBN2pZCigVxjoML9MarCSY3vcOLbO6YOKjvlozlEMBe4D7p4p46OW77W7HzHiha7KO8IvbZy2HT
- GFakr3D1
- TGY7Y4/RDZrE6/rptOcAF2tVRIe/spllN4CaVhurEzBm7nhfObv6Oa5QJPfxetnS7XTyvRqCmNjp61ERd3NH2LsMDSHROFGrU8r0iejqOkbPen7nNl/lKrdVfCpqwjPV3EM/XWuSlhmFxDIJakZVuXn6NMhV7VSggfWiFzqOB83FW6SRi66F0SLFdpYbywxlM2nTRU1IENuVpX1j0c7GCQW7dZEcUZau14SO6OGZpUUmSvNJ8l7WKWyYzWqFjxHm/G6TeA9fP/6248n/yz/g1OsdjckbFaqG/LjLs5t5gGd0o0J1ZcDWifeU0C7YuFUwr2jqbdLRrqZRp2USOfLKAu7J2c7ZFIwVGpVkZYzec8iin+d8KEsbyYi5TKWR3cK4nv2NK4oLK+lR/lGJp7NG5Fu+7oqH2P0nxSQFXgEJyIdNuzBqhWmqTbSz/vuwwlxGTIDK4n/Blomu8xpcGtBp8NjKehqtPEgja6d8Co/QjqGbcoUvlhNX9ZNgA7pTo3aomdUrCznub7k62/al2dODQHwlQZn6pEhawxskMy0HIiDqZf9A4AbwqwxrGIP+o5KhP8j+L2V2jie3irI5U5x/+c4aVON6AT6zsuXSOfJZGa+LYyiWmsfjnTD+VKM7BgTby2KPChYH5tyJy2LqAlsHOcfsxDA==
+X-HE-Tag: 1794286937-379452
+X-HE-Meta: U2FsdGVkX1/j18uMfdE3iRKUePa7Gd0k5Ld370RXKuKlftI0mozKVARzHBcB/MRw7E3xe3RPv583M631LuskcMlCPCNf8AJxyIr7jZH/nEhb9x6nGR1tZDQszpsC4dXOAjuSa5aN5bb49e9pBYDJKmEV27VopHJZnS6PVllC/rs0lX+oJosGOhry4f5s2B/PC4y0BSAxr82MezpodrD5qFWHbmSohf+Jgw6IkcVyF/uX10Kj2tAuwEMXBChuxG4dWX56pgFaq+yNONOFVu8Xlq/a7olDJkjLAqftbmZwz1DZCtDxAFOYqWKUsz1jpE/bqkq/6mRkWfpn4ot6f1sAb301R4UN9xfdtKxrYQZAAtTwzArR4uexOzcopQdldoHoKQgRKp+NRla5Jbrq+KWer1Qv2ZHHM/0wgsqq8dnQPNPwccsXCzSjO9bfuFjpIX3PH6VCVc+GjSM7GFGAuq7KqfOgrU0NgevbbaOuob8zWlrUz36SO5kx8mEeyBKxiSJ84jbKBjjVOf2wkSKBL0qMWz3qeYQetr1WEemtWlRQd+9eEG5njIDmgR344GagtncPYNDoUEODgEj9+sD610hQmOwuBwhqe4ceUkg2eNpi10XMDDJBLSpKw4F6kL06/rRb2rLf6Ia+pZRacl6JN0xk2FFHFqgqWVrChh/Dm83W9erjfZAEIyKfaEjFV1RzccNXDup71vBEe0f6CL8zEg6F3HkipG67sRT94lhiPeGmJV68ADfSjI8jMYXvGEiMj13M6VgS0sndRkye+zCIQ4ABNKARhR7POeNYbvlSsqL9lgvX1RpSrhJC1CiNo2k/ainvND6vxfMpEfrtbG2ZB9t9vhsaBLx8QzBqwTjGJi9eARnAbkC281cmOjoqK0EQmjHACcqQMRDblLg9D6O6eZNXaO9dO182e08/q2VQd4AO8LFc/u45IuabD2ZzUnLc+hQCCKGhZvWYBizWHmCi+Qw
+ 7WBEICq4
+ rgNwlrSDnsZ/VKQcV2iXbvAlR7YP3xR8NNC53X3vQRBWg7bLFPDEFpAs0sEnLMyaFaYF95s3uQmOWIccCbiJg6mhPXEfJEhB/jtgbA3wAqlJBshRNDxwh6Y9NkH10dtxxbeuqnZbfaaaN8iMYNPiUx4BmqMTs2bdM5KIriiimTapdT/leJiIK2uN8L137pC+O9orLMvilJ8mRkQwgTZqHgCoRsxWOzEXgeFZixTSZfBB0VSoGWMBqmbDEdUSilKlhe/qwWqtklgH8C88hfJhZs57V5eIZxR/C0RCel476goF0hMWnOftCEvH4IrBkmyFVqKMEhMbjUkajs07rT6hKREKIBy1mLsHvU9yTglJk/rz12n2nEfgCYUdFReeEE9gKSgJ7OA96GjI5VS1I/LflJJAz64MGafhAcvL1vbzbg3b382CMPvfDWOL+X7RTn5BId+eLL/lnpyXVOsbZ5FPR8UL3u0MvLWwEV+94Fu3IDSdx6rMh7/Lqvkr12pMxKnnjVkQdHJVqrChFsV/+XnEJEWcZ5gcWqeoZkUMeD/NcJlKX39KOBTC7cE+Io4GAflfCZ8+enAO0D2KikjiyVhmmUsjcvNtlIp3SRrAqyitn8hhMS1uUik0e5u7c3ys6CsKMLERd+C+1e41wK15ks5NiK8ZW5w==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -123,279 +123,148 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-LUO and its file handlers currently rely solely on coarse-grained
-compatibility strings (such as luo-v6 and memfd-v3) to validate
-handed-over state across kexec. Because compatibility is checked only
-at the whole-structure level, any change to a serialized structure,
-even an optional additive field, requires bumping the compatibility
-string and breaks live update between adjacent kernels.
+Precede each serialized session entry in the LUO session KHO block set
+with struct kho_ser_hdr via DECLARE_KHO_SER so future session features can
+append fields to struct luo_session_ser without breaking compatibility
+between adjacent kernels.
 
-Precede the centralized struct luo_ser with struct kho_ser_hdr using
-DECLARE_KHO_SER. Subsystems can now evolve their serialized state at
-per-feature granularity. Each subsystem groups the fields of its
-serialized structure under feature indices, starting with index 0 for the
-base fields. When a subsystem adds a new capability, it appends any new
-fields to the end of its payload structure under a new feature index.
-Retired fields are kept in place so existing field offsets never shift;
-if the type or format of a field needs to change, the existing field and
-feature are kept intact until retired and a new feature index with an
-appended field of the new type is added. Only when a change requires a
-complete break in the serialized layout or semantics that feature flags
-cannot handle, a new handler can be introduced with an incremented version
-number in its compatibility string.
+Size session block-set entries using kho_ser_size(luo_session_ser),
+initialize each entry feature header during luo_session_serialize(), and
+validate the incoming feature header in luo_session_deserialize_one()
+before accessing the struct luo_session_ser payload.
 
-Signed-off-by: Logan Odell <loganodell@google.com>
 Signed-off-by: Tarun Sahu <tarunsahu@google.com>
 ---
- include/linux/kho/abi/luo.h  | 64 +++++++++++++++---------------------
- kernel/liveupdate/luo_core.c | 39 +++++++++++++---------
- 2 files changed, 50 insertions(+), 53 deletions(-)
+ include/linux/kho/abi/luo.h     |  6 +++---
+ kernel/liveupdate/luo_session.c | 38 ++++++++++++++++++++++-----------
+ 2 files changed, 29 insertions(+), 15 deletions(-)
 
 diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-index f1152470f71a..dfa7ea434d0d 100644
+index dfa7ea434d0d..425c52c494f1 100644
 --- a/include/linux/kho/abi/luo.h
 +++ b/include/linux/kho/abi/luo.h
-@@ -9,29 +9,26 @@
-  * DOC: Live Update Orchestrator ABI
-  *
-  * Live Update Orchestrator uses the stable Application Binary Interface
-- * defined below to pass state from a pre-update kernel to a post-update
-- * kernel. The ABI is built upon the Kexec HandOver framework and registers
-- * the central `struct luo_ser` via the KHO raw subtree API.
-+ * defined below to pass state from a source kernel to a target kernel.
-+ * The ABI is built upon the Kexec HandOver framework and registers the
-+ * central `struct luo_ser` via the KHO raw subtree API.
-  *
-- * This interface is a contract. Any modification to the structure fields,
-- * compatible strings, or the layout of the `__packed` serialization
-- * structures defined here constitutes a breaking change. Such changes require
-- * incrementing the version number in the relevant `_COMPATIBLE` string to
-- * prevent a new kernel from misinterpreting data from an old kernel.
-- *
-- * Changes are allowed provided the compatibility version is incremented;
-- * however, backward/forward compatibility is only guaranteed for kernels
-- * supporting the same ABI version.
-+ * This interface is a contract. `struct luo_ser`, and the serialized state
-+ * of each file handler that uses it, are preceded by `struct kho_ser_hdr`.
-+ * See the KHO Serialization Feature Header ABI documentation in
-+ * include/linux/kho/abi/feature.h for the header layout, the feature rules
-+ * and validation.
-  *
-  * KHO Structure Overview:
-  *   The entire LUO state is encapsulated within a single KHO entry named "LUO".
-- *   This entry contains the `struct luo_ser` structure.
-+ *   This entry contains a `struct kho_ser_hdr` followed by the
-+ *   `struct luo_ser` payload.
-  *
-  * Serialization Structures:
-  *   - struct luo_ser:
-- *     The central ABI structure that contains the overall state of the LUO.
-- *     It includes the compatibility string, the liveupdate-number, and pointers
-- *     to sessions and FLBs.
-+ *     The central ABI payload structure that contains the overall state of
-+ *     the LUO (the liveupdate-number and physical pointers to sessions and
-+ *     FLBs), preceded by `struct kho_ser_hdr`.
-  *
-  *   - struct luo_session_ser:
-  *     Metadata for a single session, including its name and a physical pointer
-@@ -40,7 +37,7 @@
-  *
-  *   - struct luo_file_ser:
-  *     Metadata for a single preserved file. Contains the `compatible` string to
-- *     find the correct handler in the new kernel, a user-provided `token` for
-+ *     find the correct handler in the target kernel, a user-provided `token` for
-  *     identification, and an opaque `data` handle for the handler to use.
-  *
-  *   - struct luo_flb_header_ser:
-@@ -57,39 +54,36 @@
- #ifndef _LINUX_KHO_ABI_LUO_H
- #define _LINUX_KHO_ABI_LUO_H
- 
--#include <linux/align.h>
- #include <linux/build_bug.h>
- #include <linux/kconfig.h>
- #include <linux/kho/abi/block.h>
-+#include <linux/kho/abi/feature.h>
- #include <linux/kho/abi/kexec_handover.h>
-+#include <linux/types.h>
- #include <uapi/linux/liveupdate.h>
- 
- /*
-  * The LUO state is registered under this KHO entry name.
-  */
- #define LUO_KHO_ENTRY_NAME	"LUO"
--#define LUO_ABI_COMPATIBLE	"luo-v6"
--#define LUO_ABI_COMPAT_LEN	ALIGN(sizeof(LUO_ABI_COMPATIBLE), 8)
- 
- /**
-- * struct luo_ser - Centralized LUO ABI header.
-- * @compatible:     Compatibility string identifying the LUO ABI version.
-+ * struct luo_ser - Centralized LUO ABI payload.
-  * @liveupdate_num: A counter tracking the number of successful live updates.
-  * @sessions_pa:    Physical address of the first session block header.
-  * @flbs_pa:        Physical address of the FLB header.
-  *
-- * This structure is the root of all preserved LUO state.
-+ * This structure is the root payload of all preserved LUO state, preceded by
-+ * &struct kho_ser_hdr.
-  */
- struct luo_ser {
--	char compatible[LUO_ABI_COMPAT_LEN];
- 	u64 liveupdate_num;
- 	u64 sessions_pa;
- 	u64 flbs_pa;
- };
- 
--static_assert(sizeof(struct luo_ser) == 32);
--static_assert(!IS_ENABLED(CONFIG_64BIT) ||
--	      __alignof__(struct luo_ser) == 8);
-+/* Register luo_ser with KHO serialization accessors */
-+DECLARE_KHO_SER(luo_ser, 24, 0, 0);
- 
- #define LIVEUPDATE_HNDL_COMPAT_LENGTH	48
- 
-@@ -98,8 +92,6 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-  * @compatible:  File handler compatible string.
-  * @data:        Private data
-  * @token:       User provided token for this file
-- *
-- * If this structure is modified, `LUO_ABI_COMPATIBLE` must be updated.
-  */
- struct luo_file_ser {
- 	char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
-@@ -138,10 +130,8 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-  *
-  * This structure is used to package session-specific metadata for transfer
+@@ -132,15 +132,15 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
   * between kernels via Kexec Handover. An array of these structures (one per
-- * session) is created and passed to the new kernel, allowing it to reconstruct
-- * the session context.
-- *
-- * If this structure is modified, `LUO_ABI_COMPATIBLE` must be updated.
-+ * session) is created and passed to the target kernel, allowing it to
-+ * reconstruct the session context.
+  * session) is created and passed to the target kernel, allowing it to
+  * reconstruct the session context.
++ *
++ * Preceded by &struct kho_ser_hdr.
   */
  struct luo_session_ser {
  	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
-@@ -180,13 +170,13 @@ static_assert(!IS_ENABLED(CONFIG_64BIT) ||
- /**
-  * struct luo_flb_ser - Represents the serialized state of a single FLB object.
-  * @name:    The unique compatibility string of the FLB object, used to find the
-- *           corresponding &struct liveupdate_flb handler in the new kernel.
-+ *           corresponding &struct liveupdate_flb in the target kernel.
-  * @data:    The opaque u64 handle returned by the FLB's .preserve() operation
-- *           in the old kernel. This handle encapsulates the entire state needed
-- *           for restoration.
-+ *           in the source kernel. This handle encapsulates the entire state
-+ *           needed for restoration.
-  * @count:   The reference count at the time of serialization; i.e., the number
-  *           of preserved files that depended on this FLB. This is used by the
-- *           new kernel to correctly manage the FLB's lifecycle.
-+ *           target kernel to correctly manage the FLB's lifecycle.
-  *
-  * An array of these structures is created in a preserved memory region and
-  * passed to the new kernel. Each entry allows the LUO core to restore one
-diff --git a/kernel/liveupdate/luo_core.c b/kernel/liveupdate/luo_core.c
-index 1b2bda22902d..d0f72f27001d 100644
---- a/kernel/liveupdate/luo_core.c
-+++ b/kernel/liveupdate/luo_core.c
-@@ -66,7 +66,7 @@
+ 	DECLARE_KHOSER_PTR(file_set_ser, struct luo_file_set_ser *);
+ };
  
- static struct {
- 	bool enabled;
--	struct luo_ser *luo_ser_out;
-+	DECLARE_KHO_SER_HDR(luo_ser, *luo_ser_out);
- 	u64 liveupdate_num;
- } luo_global;
+-static_assert(sizeof(struct luo_session_ser) == 72);
+-static_assert(!IS_ENABLED(CONFIG_64BIT) ||
+-	      __alignof__(struct luo_session_ser) == 8);
++DECLARE_KHO_SER(luo_session_ser, 72, 0, 0);
  
-@@ -83,6 +83,7 @@ early_param("liveupdate", early_liveupdate_param);
+ /* The max size is set so it can be reliably used during in serialization */
+ #define LIVEUPDATE_FLB_COMPAT_LENGTH	48
+diff --git a/kernel/liveupdate/luo_session.c b/kernel/liveupdate/luo_session.c
+index df667fe15fb2..641bd67ce76e 100644
+--- a/kernel/liveupdate/luo_session.c
++++ b/kernel/liveupdate/luo_session.c
+@@ -131,7 +131,7 @@ struct luo_session_global {
+ 	struct luo_session_header outgoing;
+ };
  
- static int __init luo_early_startup(void)
- {
-+	DECLARE_KHO_SER_HDR(luo_ser, *fhdr);
- 	phys_addr_t luo_ser_phys;
- 	struct luo_ser *luo_ser;
- 	size_t len;
-@@ -107,17 +108,21 @@ static int __init luo_early_startup(void)
- 		return 0;
- 	}
+-#define LUO_SESSION_SER_SIZE (sizeof(struct luo_session_ser) + \
++#define LUO_SESSION_SER_SIZE (kho_ser_size(luo_session_ser) + \
+ 			      sizeof(struct luo_file_set_ser))
  
--	if (len < sizeof(*luo_ser)) {
--		pr_err("LUO state is too small (%zu < %zu)\n", len, sizeof(*luo_ser));
--		return -EINVAL;
-+	fhdr = phys_to_virt(luo_ser_phys);
-+	if (len < sizeof(*fhdr) || fhdr->size > len) {
-+		pr_err("LUO state size invalid (source kernel header size=%u, KHO len=%zu)\n",
-+		       len >= sizeof(*fhdr) ? fhdr->size : 0, len);
-+		err = -EINVAL;
-+		goto out_free_ser;
- 	}
- 
--	luo_ser = phys_to_virt(luo_ser_phys);
--	if (strncmp(luo_ser->compatible, LUO_ABI_COMPATIBLE, LUO_ABI_COMPAT_LEN)) {
--		pr_err("LUO state is incompatible with '%s'\n", LUO_ABI_COMPATIBLE);
--		return -EINVAL;
-+	err = kho_ser_validate(fhdr, luo_ser);
-+	if (err) {
-+		pr_err("LUO state feature validation failed: %pe\n", ERR_PTR(err));
-+		goto out_free_ser;
- 	}
- 
-+	luo_ser = kho_ser_payload(fhdr, luo_ser);
- 	luo_global.liveupdate_num = luo_ser->liveupdate_num;
- 	pr_info("Retrieved live update data, liveupdate number: %lld\n",
- 		luo_global.liveupdate_num);
-@@ -131,7 +136,7 @@ static int __init luo_early_startup(void)
- 	err = 0;
- 
- out_free_ser:
--	kho_restore_free(luo_ser);
-+	kho_restore_free(fhdr);
- 	return err;
+ static struct luo_session_global luo_session_global = {
+@@ -557,23 +557,33 @@ int __init luo_session_setup_incoming(u64 sessions_pa)
+ 	return 0;
  }
  
-@@ -153,16 +158,18 @@ early_initcall(liveupdate_early_init);
- /* Called during boot to create outgoing LUO state */
- static int __init luo_state_setup(void)
+-static struct luo_session_ser *luo_session_ser_init(void *mem)
++static struct luo_session_ser *
++luo_session_ser_init(DECLARE_KHO_SER_HDR(luo_session_ser, *fhdr))
  {
-+	DECLARE_KHO_SER_HDR(luo_ser, *fhdr);
- 	struct luo_ser *luo_ser;
+ 	struct luo_file_set_ser *file_set_ser;
+-	struct luo_session_ser *ser = mem;
++	struct luo_session_ser *ser;
++
++	kho_ser_init(fhdr, luo_session_ser);
++	file_set_ser = (void *)fhdr + kho_ser_size(luo_session_ser);
+ 
+-	file_set_ser = mem + sizeof(struct luo_session_ser);
++	ser = kho_ser_payload(fhdr, luo_session_ser);
+ 	KHOSER_STORE_PTR(ser->file_set_ser, file_set_ser);
+ 
+ 	return ser;
+ }
+ 
+ static int luo_session_deserialize_one(struct luo_session_header *sh,
+-				       struct luo_session_ser *ser)
++				       DECLARE_KHO_SER_HDR(luo_session_ser, *fhdr))
+ {
++	struct luo_session_ser *ser;
+ 	struct luo_session *session;
  	int err;
  
--	luo_ser = kho_alloc_preserve(sizeof(*luo_ser));
--	if (IS_ERR(luo_ser)) {
-+	fhdr = kho_alloc_preserve(kho_ser_size(luo_ser));
-+	if (IS_ERR(fhdr)) {
- 		pr_err("failed to allocate/preserve LUO state memory\n");
--		return PTR_ERR(luo_ser);
-+		return PTR_ERR(fhdr);
++	err = kho_ser_validate(fhdr, luo_session_ser);
++	if (err)
++		return err;
++
++	ser = kho_ser_payload(fhdr, luo_session_ser);
+ 	session = luo_session_alloc(ser->name);
+ 	if (IS_ERR(session)) {
+ 		pr_warn("Failed to allocate session [%.*s] during deserialization %pe\n",
+@@ -606,7 +616,7 @@ int luo_session_deserialize(void)
+ {
+ 	struct luo_session_header *sh = &luo_session_global.incoming;
+ 	static bool is_deserialized;
+-	struct luo_session_ser *ser;
++	DECLARE_KHO_SER_HDR(luo_session_ser, *fhdr);
+ 	struct kho_block_set_it it;
+ 	static int saved_err;
+ 	int err;
+@@ -635,8 +645,8 @@ int luo_session_deserialize(void)
+ 	 * reliably reset devices and reclaim memory.
+ 	 */
+ 	kho_block_set_it_init(&it, &sh->block_set);
+-	while ((ser = kho_block_set_it_read_entry(&it))) {
+-		err = luo_session_deserialize_one(sh, ser);
++	while ((fhdr = kho_block_set_it_read_entry(&it))) {
++		err = luo_session_deserialize_one(sh, fhdr);
+ 		if (err)
+ 			goto save_err;
  	}
-+	kho_ser_init(fhdr, luo_ser);
+@@ -665,15 +675,17 @@ int luo_session_serialize(void)
+ 	kho_block_set_it_init(&it, &sh->block_set);
  
--	strscpy(luo_ser->compatible, LUO_ABI_COMPATIBLE, sizeof(luo_ser->compatible));
-+	luo_ser = kho_ser_payload(fhdr, luo_ser);
- 	luo_ser->liveupdate_num = luo_global.liveupdate_num + 1;
+ 	list_for_each_entry(session, &sh->list, list) {
+-		struct luo_session_ser *ser = kho_block_set_it_reserve_entry(&it);
++		DECLARE_KHO_SER_HDR(luo_session_ser, *fhdr) =
++			kho_block_set_it_reserve_entry(&it);
++		struct luo_session_ser *ser;
  
- 	luo_session_setup_outgoing(&luo_ser->sessions_pa);
-@@ -171,16 +178,16 @@ static int __init luo_state_setup(void)
- 	if (err)
- 		goto exit_free_luo_ser;
+ 		/* This should not fail normally as blocks were pre-allocated */
+-		if (WARN_ON_ONCE(!ser)) {
++		if (WARN_ON_ONCE(!fhdr)) {
+ 			err = -ENOSPC;
+ 			goto err_undo;
+ 		}
  
--	err = kho_add_subtree(LUO_KHO_ENTRY_NAME, luo_ser, sizeof(*luo_ser));
-+	err = kho_add_subtree(LUO_KHO_ENTRY_NAME, fhdr, fhdr->size);
- 	if (err)
- 		goto exit_free_luo_ser;
+-		ser = luo_session_ser_init(ser);
++		ser = luo_session_ser_init(fhdr);
+ 		err = luo_session_freeze_one(session, ser);
+ 		if (err) {
+ 			kho_block_set_it_prev(&it);
+@@ -691,7 +703,9 @@ int luo_session_serialize(void)
  
--	luo_global.luo_ser_out = luo_ser;
-+	luo_global.luo_ser_out = fhdr;
+ err_undo:
+ 	list_for_each_entry_continue_reverse(session, &sh->list, list) {
+-		struct luo_session_ser *ser = kho_block_set_it_prev(&it);
++		DECLARE_KHO_SER_HDR(luo_session_ser, *fhdr) =
++			kho_block_set_it_prev(&it);
++		struct luo_session_ser *ser = kho_ser_payload(fhdr, luo_session_ser);
  
- 	return 0;
- 
- exit_free_luo_ser:
--	kho_unpreserve_free(luo_ser);
-+	kho_unpreserve_free(fhdr);
- 	pr_err("failed to prepare LUO state: %d\n", err);
- 
- 	return err;
+ 		luo_session_unfreeze_one(session, ser);
+ 		memset(ser->name, 0, sizeof(ser->name));
 -- 
 2.56.0.506.g506a7eabc5-goog
 
