@@ -1,107 +1,105 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9ABA606A323
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 19:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2908606A33D
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 19:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=jlA4Tqbo
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=b8wcirio
 Received: by kanga.kvack.org (Postfix)
-	id D64BB6B05B2; Tue, 10 Nov 2026 14:18:57 -0500 (EST)
+	id 130D56B05B4; Tue, 10 Nov 2026 14:19:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D3D536B05B4; Tue, 10 Nov 2026 14:18:57 -0500 (EST)
+	id 109BA6B05B5; Tue, 10 Nov 2026 14:19:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C81556B05B5; Tue, 10 Nov 2026 14:18:57 -0500 (EST)
+	id 0462C6B05B6; Tue, 10 Nov 2026 14:19:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A67066B05B2
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:18:57 -0500 (EST)
-Received: from smtpin19.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4538E1A0AB6
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:18:57 +0000 (UTC)
-X-FDA: 85420171914.19.D775523
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf06.hostedemail.com (Postfix) with ESMTP id A4704180003
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:18:55 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jlA4Tqbo;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E07336B05B4
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 14:19:42 -0500 (EST)
+Received: from smtpin26.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 813211C4099
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:19:42 +0000 (UTC)
+X-FDA: 85420173804.26.EA0B45D
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 39D28A0003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 19:19:40 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=b8wcirio;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794338335;
+	s=arc-20220608; t=1794338381;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EJk3YmOxg0lJBokWvd1lYbv0iZ6w5uZScCFE1jaF0zg=;
-	b=VgHG3ePbfNQrKb9DZrisZ6feWdiiINQPEqTipuzwN3ADEn3huOrRX5U9m+7xsQ+cN0oFuU
-	gy4Q5hWBgVESGRLPJ6LYkSPg1wn4I5soLRxXqPJ4bIrVZ1mQhLawEDD1ZWJ2PAcpQJr0SJ
-	sQWGWO01YBByVhU1ShCYWScVJlvdkd0=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794338335;
-	b=h4LTLwHV+p2dp7fhf1El4UESyFDDKeS7EUh7T/8UcM58MpHnr2JT0BrdPXyeWvsmC3oeto
-	sxNheCsFwEJyNJGgtiPw1sHmOLK+J7iE0aQMc707+3K+Ze9Wdm8gEJSQ7YqnVq/OOSPSV+
-	K8gSnbnRsMDORHI6UmjrztNi2zhPG08=
+	bh=lgBsX/4ajBlOSJuEQTW3U4syAbk3rWHkGnOmGP2zj/M=;
+	b=Q4nZUrOPPWzmeFuUWA3yqNfyJITknAIjnuq7OsndRtXjVd2klx7an7aP/dd6gOIJBHkc7q
+	jYQUNQthFVpOyuHFdiy9Fcuijo26hTJJWiaTW7F0JdHBe3iZ6SeIWvsINDwI/yTC+gajCS
+	e2fWsY+MGKoz5CW236n8WSaLwxhq2lM=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=jlA4Tqbo;
-	spf=pass (imf06.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by tor.source.kernel.org (Postfix) with ESMTP id 28D7861336;
-	Tue, 10 Nov 2026 19:18:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF34B1F0089F;
-	Tue, 10 Nov 2026 19:18:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794338334;
-	bh=EJk3YmOxg0lJBokWvd1lYbv0iZ6w5uZScCFE1jaF0zg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=jlA4TqboaRmQqFcwJxLUB0Xjiny3+yZ2Gw4htr3kCUa9BKK3RwtSjicIXi71bQzIL
-	 pln6NHDgcYKn/fycKT1oNaV5BQnj0eGWSPyMP2h91MRWkV89byoERa5AhdUYefPjPW
-	 1esKXgmfPWasQH1b5ahQF4d2XJeK24eAYBB4RCRPZI/g6u36mSRDazWI7ifq4tzl6R
-	 SkVel42DVjWCaeSjnlACzY4zmk+uQiOheNZOttg4oe4Q4YXi3lznEMgBHTDtiyVwC7
-	 9eHWYNPI0sfgU3c7fJcI9Z06vh5LIoXNlsO8Di/42cf72IOyoKWMtEILX3u/0v8tBW
-	 iPUMzMt0rswKA==
-Date: Tue, 10 Nov 2026 19:18:44 +0000
-From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, 
-	Boqun Feng <boqun@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <lossin@kernel.org>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Trevor Gross <tmgross@umich.edu>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Tamir Duberstein <tamird@kernel.org>, 
-	Alexandre Courbot <acourbot@nvidia.com>, Onur =?utf-8?B?w5Z6a2Fu?= <work@onurozkan.dev>, 
-	"Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Uladzislau Rezki <urezki@gmail.com>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <nico.pache@linux.dev>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Usama Arif <usama.arif@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/4] MAINTAINERS: remove my reviewerships, add CREDITS
- entry for THP
-Message-ID: <avNsYKFvA5u46us3@gremlin>
-References: <20261110-drop-reviewerships-v1-0-07c2f06e8dfa@kernel.org>
- <20261110105430.54c7a914e163250222151d69@linux-foundation.org>
+	imf25.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=b8wcirio;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=pass (imf25.hostedemail.com: domain of willy@infradead.org designates 90.155.50.34 as permitted sender) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794338381;
+	b=PRr+ZviGu9nxvxtkn1sHHdPu7Gk8h9JOBVsLSH9FK6DLd60jE8GX6rxZiwe+6k3uWlIHea
+	PAn9d0hdo9qr6xcGOn/IGY4DX/FB9YvSTxzuxrlI+ZUUo7FRKa6pf4Dc7uoKGltVeRR3/m
+	AuTttdT6rxNUEYsag+izgpcGvwSMYqg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lgBsX/4ajBlOSJuEQTW3U4syAbk3rWHkGnOmGP2zj/M=; b=b8wcirioktk1V+I6cLxgnytfHt
+	s+1gNzt+oNaj/8v1dB/y2ooHBs+sOIEHLV1guXHLK59Y0ipc+WH3YGXTdpmoCXAVaPIlKaFOebP9x
+	Q5IjU/RAw03kchBuA4YhIuHn67fv4DvrG7GM8mSEoFF6gG8Ec3W2gJu2wrjCdEdxI6RsFxbL/xc8a
+	rV8WT7MV79m+BKLbPEao/T/+olEtQaSWrcoxh4kWVD6r5loEe6lhcQZCaufTxfC9qjGpluQcQn8/D
+	cRSHrQc9aTr9kcCKqogmnDRYf/CTOej2gLRp010jpVxxjtaJOi3Fc/5efWuKRC+T0KSc9Jq8nypQT
+	BOKCuF3A==;
+Received: from willy by casper.infradead.org with local (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xQrNT-00000000PMy-0Ax1;
+	Tue, 10 Nov 2026 19:19:31 +0000
+Date: Tue, 10 Nov 2026 19:19:30 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Miklos Szeredi <miklos@szeredi.hu>, Amit Shah <amit@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	"David Hildenbrand (Arm)" <david@kernel.org>,
+	Zi Yan <ziy@nvidia.com>, Bernd Schubert <bschubert@ddn.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, linux-fsdevel@vger.kernel.org,
+	fuse-devel@lists.linux.dev, virtualization@lists.linux.dev,
+	netdev@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 1/4] virtio_console: copy pipe buffers in splice_write()
+Message-ID: <avNuQqLf9CG9dSsE@casper.infradead.org>
+References: <20261110145241.536019-1-kas@kernel.org>
+ <20261110145241.536019-2-kas@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20261110105430.54c7a914e163250222151d69@linux-foundation.org>
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 3ptt1c8tzkn9pbnmedes8n41tr3hzmbg
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A4704180003
+In-Reply-To: <20261110145241.536019-2-kas@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 39D28A0003
+X-Stat-Signature: yw5gmnah9ukdjcbmrfkizkk8rsbjz8hw
 X-Rspam-User: 
-X-HE-Tag: 1794338335-83655
-X-HE-Meta: U2FsdGVkX1/Rwk3s/1phxs/KFZLc3p1biIdmL3Y7V85boja+MkwkLnQt+0LQvDwsUViU5EYODOmFPScaW55R25kb2fM4H0PgFFLjjX6ZK9jNoZbo54MwNjoEr2b4rBHWyhN/Om63hMubOU+sN3QwronPcBcvASWV3tuqqmxO/v92IH0KESIEyKk1q077+bBn+bFQXWg6gsW5B+xs+Kvnji/fy3JMgIk/jbfr3mSOfeSs4gyYa4UY1oY1IwB6MdAGbsR1+Jy4Bcse+Oc8w0uFRrp+pCSvYNZKurtgXqP2ohBi+RUeZmjyvw5iP9EYqmApscEhjudA/vx9Qqk6+nkEKfF25o21mhb7O0fwJz+x0Oj2zmwtnMhLvV7oFt7t55dKnJdLl/0s5/04VpCE8z7tmzaSQSHfeg6W4vzf5sV2iNRt6l/zbOJA2/UjWkcRjhe9QdHkljZ12pjxtJxzDGomMnhZgp4ElHkb2r4fgs6xOxflTRvuqkx96Y8gHS8+T5de6vTl5ulWilXVaJ58heueBj8Si9xTcaHh40Z2tTG7c86Q+QnnXUgE7l41LvH8qCXcYmXjWpd8eGmtw4Gt/Vq5Wza14fkyA1KYyW1yKdvEV3XbHeaUYBRdKFQwVDlHHME5zPtddURRF9wvCZpppPEIfXwVoobJugLFVonVWvNRVJHfyuRP6FUeyVNrIcFSlrvEl/UNPUhSmw7qKt5Ly2S21UFFQq6+yEaVWqjRraoYSsfiVXU+p82x7wDLkYxxjebnoStE8kLnLnkUXHBWuNQmTFL18rEHKDkzEh6ICm3gU+kXRyueq3RGk4DpvZqVqBR5snTAE5WmjDuskTsfznc9ScS46PiTczz6cvH5lo2f5b3pe8jQU1rCDh77nmO6+6xQJftm1LCqo8zSdKLHdpMQmZdLQHmBqHMhU+0eJIWVB2fzT+IFWufx9/GRvo2lZUnPxbGoD736+TXA3sbmGIf
- yxUzxm+d
- brgZQrgpnT9pRDsDk3A3CuLRwZBWyexmdpSMFxb8w9Jbld2i6X17sjnhawXqpw7kQBqunwyS0nqglipMRgkipy8waXsYYKdP5lB48pARx/k1fIQqleCVJQaH7Zor6dwwFcDR+sxt6nxflGfvQaGkOHl6+Iu7vR9Sq1DtqWw60cUWvD0lDX13clVd7/V5iJz1NKKfVscsV2xGx8FQ65w+BjSQ7XPTsSA8Bzl5QAZB+gxzJpd8FVAAgDbAtPyDwWi3TOtLQmECqSvSSnQH2NxdbaeCgpYQGkbKU4SFyeRxhUK2MH0fhMzZyZctYKcM8d0Hm3ZyRb8Tz2jHD+rIuaODD/SHm5A==
+X-Spam-Status: No, score=-3.6 required=3.0 tests=BAYES_00,DKIM_INVALID,
+	DKIM_SIGNED,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	SPF_HELO_PASS,SPF_PASS autolearn=no autolearn_force=no version=4.0.1
+X-HE-Tag: 1794338380-952302
+X-HE-Meta: U2FsdGVkX1+2EmPHskNXHr6QCFzR9Fds68VqFAbNpkyRIelv+7An773SwNmFVl83VWrPDrIr9lLTfHkPVxgCRGwLq560WyPTWlte01EFTgTkB8mrfr/MQXzJoWKHJHNLfyox3GwYatW3O5Y5Xv3Dk3SBlRg2wuntevihwsKYwF2h6h5f3KUfAvrsEKTlU2ymwWaIeXjXXKmnOXWdlNgIK8aE2/oUHExBC9KaUKHYfD5oAobGzansIQADzX6ilD7mpMa7dW1BNksBTG0iZYJHrgnO0++e3GWGmPoWYb6kE1BicA0TTek46XoyFIXwMaKfH8fUWcXPD/hpWl9yx7EKukJV/2m087ghv5K40VYzxMRhC/o0qznMuBNRQeQstjDI7ZiNcdp6DYVlJRWVX3kwqvKaByfxKDDq6/fUOrryMezthU4hM0EVPXcLzBcKBYlEFtB/vfpADoGRdE10USVfixIr3u6P5BB8SeKBX0s6yhU3NOF9a2bps0oEU4O/Czx/RG3UYwR4kCbLhF/f7UPRp1Gs62GCar5yu7ZFRjD11PseqHS9cD/ldK9fmTVRD9WvdgDD59opeDZWpaLhoa9i/6z14xSC1+3TLB/rOUPcPmQW+7uVTvin2rg5oZYWnGRi+Js4Ijz0I7Hk6VgDE/PZy3bzQOIuHHn4DHSVj2cR11FWjCC70fKlHGLq86DU0u64v1GkNMjyQyiyIUc1yZ3BIpB9HolBXXuvnxO08MMHNmlrLYnrCvWpRT+i6pjTZRszzCce4NwEnrsfwWrZcN2CnvNS0yw608z/KHjNCtFYFyn64K4TUp0wKB/PqMtiBJvbW6LmTwsnrNtThooaGUZ/UUY7YCALUAWh9bk2OAC5T1McjETVUPXqgE9GCfohjQZZ9aGiGq7w80jEGT7MLZu+fA0BVMaJ37CjkhWpEzVvGAd11w34IbBEM+Zk2db885fHDhqO9rsTfgyw+6rPenc
+ U7HxCO2G
+ s+5rnjkyoohHy3AnUf6I5i+JIelkEgwo5zR5lZv6n0D1oDCHBXDgKp+5V/fSQRpyysKJlWskg55oua1lQKH2wuvg62HCZBSDueAKuicRJG7l8tCyocZlFaR0Gm16D4lPLTvYB9oIYRFIIF0TR/f/qDBA9qZo/6J7FxJwPSs2H3PFKrs6aH3dsPOvnrxf2GRjNWr35xhYiGsEDqzHZ2r2cemrOKO1p0Q9HqYTN6aRMjo80sDHnUgTFiJ20oV4g6J4zsMau6Us/vq0vSRT1HYD2xnL2eDUND3DmDAQQ
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -110,43 +108,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 10:54:30AM -0800, Andrew Morton wrote:
-> On Tue, 10 Nov 2026 12:03:06 +0000 "Lorenzo Stoakes (ARM)" <ljs@kernel.org> wrote:
->
-> > Given the current throughput in the kernel resulting from AI-generated
-> > series, I unfortunately lack the bandwidth to generally be able to offer
-> > review except in those areas I maintain.
->
-> Sigh.  Is
->
-> 	Nacked-by: Andrew Morton <akpm@linux-foundation.org>
->
-> allowed?
+On Tue, Nov 10, 2026 at 02:52:36PM +0000, Kiryl Shutsemau (Meta) wrote:
+> +	page = alloc_page(GFP_KERNEL);
+> +	if (!page)
+> +		return -ENOMEM;
+>  
+> +	offset = sd->pos & ~PAGE_MASK;
+>  
+> +	len = sd->len;
+> +	if (len + offset > PAGE_SIZE)
+> +		len = PAGE_SIZE - offset;
+>  
+> +	src = kmap_local_page(buf->page);
+> +	memcpy(page_address(page) + offset, src + buf->offset, len);
+> +	kunmap_local(src);
 
-I appreciate it :) but sadly not!
+	memcpy_from_page(page_address(page) + offset, buf->page, buf->offset,
+			len);
 
->
-> Thanks, hang in there.
-
-Thanks :)
-
-This is mostly about cutting down the noise in my inbox. And likely the premise
-is false and I'll end up reviewing all sorts still, but I would like to be less
-subject to being self-nerdsniped into reviewing things unrelated to my
-maintainerships :)
-
-Of course the AI wave has been horrible, and is getting significantly worse.
-
-At first it was once in a while that I'd see slop.
-
-Then it was at least once a week.
-
-Then every few days.
-
-Nowadays it's pretty much half of what I see, if not more.
-
-There still plenty of great people in mm though, regardless :)
-
---
-Cheers, Lorenzo
+> +	sg_set_page(&sgl->sg[sgl->n], page, len, offset);
+>  	sgl->n++;
+>  	sgl->len += len;
+>  
+>  	return len;
+>  }
 
