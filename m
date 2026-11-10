@@ -1,95 +1,135 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63514606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 079F7606A332
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 17:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=h9xiN3w6
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20260707 header.b=CRxphTxS
 Received: by kanga.kvack.org (Postfix)
-	id 6483B6B05B5; Tue, 10 Nov 2026 12:03:31 -0500 (EST)
+	id F01EB6B05BF; Tue, 10 Nov 2026 12:03:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5F8716B05BE; Tue, 10 Nov 2026 12:03:31 -0500 (EST)
+	id EABD36B05C0; Tue, 10 Nov 2026 12:03:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E7CF6B05BF; Tue, 10 Nov 2026 12:03:31 -0500 (EST)
+	id DC45E6B05C1; Tue, 10 Nov 2026 12:03:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 30E3C6B05B5
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:03:31 -0500 (EST)
-Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2DDAB1C441C
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:03:30 +0000 (UTC)
-X-FDA: 85419830580.23.EF67E2B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 894E31C000F
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:03:28 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h9xiN3w6;
-	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A97B56B05BF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:03:54 -0500 (EST)
+Received: from smtpin03.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3AD9E809F2
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:03:54 +0000 (UTC)
+X-FDA: 85419831588.03.511FD4D
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4086040006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 17:03:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=CRxphTxS;
+	spf=pass (imf07.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794330208;
-	b=rVHLc42LlmhZjJjcz8h9+h2Avesb+hl7lR1RkujvqvXdz2lgU4p+43bVRA97mzAwdHfzk4
-	S0lhW+VbkHWlOOf0JkJU6EdLhJ2lJONEmdWbfY8I9c8UHlfezWps0VjxwDuivAKKyLy0FY
-	8FCACk8A8yVYsEPbn72/rbyfV7AmKw8=
+	t=1794330232;
+	b=u9AMXacMG24dgvrCQvPZtBoaGIb5wu3rPI63q2+4gN/a6oyZ+WTwS3if8Ye8j5ZQosE00p
+	LR/8qsRnAteRhc8ibZ1RvDbHHLCPwWvqfuoiM67XJh3mcKx5pIBt74BbBjq6s+qA225OCy
+	b3VYgC1fc+HU3cHrNZrMrx0yw9samTk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=h9xiN3w6;
-	spf=pass (imf21.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20260707 header.b=CRxphTxS;
+	spf=pass (imf07.hostedemail.com: domain of dmatlack@google.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794330208;
+	s=arc-20220608; t=1794330232;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OYBNS/wIwETszXOBgNpLsMvPx95qdQbX+4kEObkSrd4=;
-	b=Rl+zxIw8LcMtkt4O6JRJcWnAMLmdqhp/T7uV9oJyh1CiByOUcnFn1aY3Lz0LOTiAsGqx1q
-	8YT6WeQtMXbkinxkZvdQeKGn9xW7AalMT8y0tEdVdZAQp6mIdFdxPLlKqIbt/eilNZXlnc
-	Eqyd26jwwzoAkwFf1lCt3vrlK/V9QI8=
-Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id B99B34741C;
-	Tue, 10 Nov 2026 17:03:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CD81F008A3;
-	Tue, 10 Nov 2026 17:03:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794330207;
-	bh=OYBNS/wIwETszXOBgNpLsMvPx95qdQbX+4kEObkSrd4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=h9xiN3w6tQaZmnlGlFXHoQYdpAhIdrU1SCwWBhN4fRfNjkM+xDQIPj2Pba9imBt8x
-	 SrGL0Hayefiwa7HkLpIrlkOPy4h09Ukw3bDyV8IpF+nGgbb9hZNWvmEkP1GbwkYUsl
-	 wB5jx8genrtWxC5qMhpd3wEXiP7cpXpn/Cj7Zt3eSdLoqW3fSoHZyJlQ2fEPRvz1gI
-	 PVDFENGYdlYYuvtD6FgjB5EscgrFiYvWXUrcpjr1ASmO9dE+/N31CsETmVpuRSraZP
-	 8pO4w/TgE2wcEn82+N9jJoSQP9WPVgUBlZmOLJmDPZPHKRlsmuYX4fSfJL8a1NmcfC
-	 2rJqxQ61582SA==
-Date: Tue, 10 Nov 2026 17:03:25 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 11/11] zsmalloc: populate new zspage outside
- class->lock in zs_store()
-Message-ID: <avNOUwojK5x8IkOm@google.com>
-References: <20261110054836.1515030-1-senozhatsky@chromium.org>
- <20261110054836.1515030-12-senozhatsky@chromium.org>
+	bh=vqBeli1UK7UsB0colEXax3/fZJsEEio4CkgX2Fv7UF4=;
+	b=Qq/bisfwVQRWWMdDQ31GoABgscMmJMJewZDUsrYXm38mljJtHW2zRO6jTCm33L/jPD6TAg
+	0SYP17BNKGv4jR6Ms6U3UT6Wb0AEDfSvAE0a98HTiO8hIo2WKaNYPUjV7KlP9eaNHe2uKr
+	sQ2iqj4+37bFYQz3SMITFx3EF1RSCs0=
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-cc751eddf25so1173980a12.3
+        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:03:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20260707; t=1794330231; x=1794935031; darn=kvack.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=vqBeli1UK7UsB0colEXax3/fZJsEEio4CkgX2Fv7UF4=;
+        b=CRxphTxSKht68usCMZOdpMMSvK0IK3OEXh/+KtZSogHPUcbsK2QteWM4vdCUEZRgEF
+         f2DhRtHm9AvFQY4UKp+yAGfTKjy3lrevEUSGjcO0xpSGipKz9VcQdpnStH7KNu6OANTN
+         4Ol/Mb149JHR4y3keKeqsru6zR4iZU0SlCzVaqr+B2PakDPJRspsFmuSxsZbH2C5Qn5H
+         IHa++/r5CpvBkofK1EYM0jsXZaQpBuZK2Cxn/fhj2x288sCeAwS5hfpObW2rrVfOmQAe
+         MGibWeNaCHvUdRx/MscfGQ4l4FIsqNkiYTr6sed47TdIqt+KWUxDZaOhxi/1rKvlk2ZW
+         tr6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20260707; t=1794330231; x=1794935031;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-type:content-transfer-encoding:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=vqBeli1UK7UsB0colEXax3/fZJsEEio4CkgX2Fv7UF4=;
+        b=KW+F23WBcL71pLGbk/QW8pJzP0fqgUL3fhCtj1hf4oaFlUkR0LD1lyzp7X0Mv5c+4X
+         87KhLscaGT2CHhORBstEVmXqFQTTS3Y0dwtX2Wa4jRQ8qE0DHjRUq2QrJRq7DbCR64b0
+         cXzD0wbh0xS7ejcv+Wxmtb3R24ULq8nIrGPWfvdhVEvM79d+GBrqGoiv2fzVXWzW5oZO
+         9ofhadGlvuIM5j4uX+0wPMEvka/lNmiHCSIUUKF7MqgnC3xG3fro12BZYgZjeZYMo9nD
+         0GSSNC1OWSpZstWbjucHy/uTiJNRpV9sWt3ukxSLVbJp1Y8typdV9JKPwNh9ZZMpHQkq
+         zHhQ==
+X-Forwarded-Encrypted: i=1; AL+hErGIeb2AB2sMHKyy1+/bNhchA37PbcVyOdIMas0kMrOUee7uQQy+Q2/qVvfcf3DLt7WvQw+TH2vEmA==@kvack.org
+X-Gm-Message-State: APuU4Z9WHOnQ6qQgfatD1QW/7fkRicE37mundENB068t2gYHkiezix6N
+	iRw5km0Zwe8o76Qw/MtSkMzJkF7nrvKYczl85fm1dqaa92IYkL7wXn5c4BHOTumCBQ==
+X-Gm-Gg: AYBFou2WNITvp9cVKYB0WMEXnlqFnl/ZwqBup7xL9Qk1L8Zrpvf954A7/AKZl2iLlme
+	QWacckzo9L71NeOqHi09YxVnkLdRI4uMHa+yh/OM9/7fLc8JeVxF9xaAzrEvbnGCSg4Mg6qvpeg
+	xyVNS7JZfAI7mKAmeHnLjgYm4FE7kQzTM1kPX2xVMdW6PmIbsyN7lvemxqFnNRNt328NCAv8ac0
+	x8eVbdziAMAG4iwPNw9FAJ9ZNTjYtKz+m7KEInRcJHw4yd29tNa//BaoSGdrrFLTXaNxVvFFvAV
+	506gVCkXYMrNlkyxmJKpBim+BnKcLA5C1CnCmBTTYunLkhg3leMy9uH94PRsZUZfvFfN0/44gkV
+	NSbDjHglZ2qw/S8HMw/CgxpuastUqRM+vzQSxVIv67zSO11YLPtMGCWOqGkdehMuRgiUnT92KzM
+	LpvxByqTcTjt4MbFJzZSTRSZZY7IxEwj9lrerm/3fXNQ6uK/Pp1N7uasHv0pVyyh5/ZRIyAkwIX
+	R26HXTJSdBYHmeMrl73Au19JBiP3m64d9B2DjQbnuPbfXZqMr451TgHJNgdkPTPF/WlaXFOWTRR
+	bNYYCxwrVzZKCnO1W90wvVvJx6opcnmkwEurD0aj5rs8RI1pnmWj4LUAOl0OZIof
+X-Received: by 2002:a17:90b:524d:b0:3a6:e901:e79b with SMTP id 98e67ed59e1d1-3b166cc14bamr3213232a91.15.1794330230055;
+        Tue, 10 Nov 2026 09:03:50 -0800 (PST)
+Received: from localhost (33.79.127.34.bc.googleusercontent.com. [34.127.79.33])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3b17db85a9bsm514293a91.14.2026.11.10.09.03.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Nov 2026 09:03:48 -0800 (PST)
 X-Archived-By: <archiver.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110054836.1515030-12-senozhatsky@chromium.org>
-X-Stat-Signature: zcfbp3wbdkrt83go9rkrsehg3i7ddt77
-X-Rspamd-Queue-Id: 894E31C000F
-X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Spam-Status: No, score=-10.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 10 Nov 2026 17:03:48 +0000
+Message-Id: <DMROZB8DPEWD.W2BFC7JIBVZP@google.com>
+Cc: <kvmarm@lists.linux.dev>, <linux-pci@vger.kernel.org>, "Pratyush Yadav"
+ <pratyush@kernel.org>, <kexec@lists.infradead.org>, <kvm@vger.kernel.org>,
+ <iommu@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+ <skhawaja@google.com>, <sagis@google.com>, <linux-arch@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v4 02/19] kho: block: Record the entry size in the block
+ header
+From: "David Matlack" <dmatlack@google.com>
+To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin"
+ <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>,
+ <robin.murphy@arm.com>, <maz@kernel.org>, <will@kernel.org>, "David
+ Matlack" <dmatlack@google.com>, "Alexander Graf" <graf@amazon.com>,
+ <seanjc@google.com>, <jgg@nvidia.com>, <loganodell@google.com>,
+ <arnd@arndb.de>, <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, "Bjorn
+ Helgaas" <bhelgaas@google.com>, <oupton@kernel.org>, <alex@shazbot.org>,
+ <gle.com@google.com>, <pbonzini@redhat.com>, "Andrew Morton"
+ <akpm@linux-foundation.org>, <kevin.tian@intel.com>, <joro@8bytes.org>
+X-Mailer: aerc 0.21.0
+References: <20261110050202.529473-1-tarunsahu@google.com>
+ <20261110050202.529473-3-tarunsahu@google.com>
+In-Reply-To: <20261110050202.529473-3-tarunsahu@google.com>
+X-Spam-Status: No, score=-13.3 required=3.0 tests=BAYES_00,DKIMWL_WL_MED,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS
-	autolearn=ham autolearn_force=no version=4.0.1
-X-HE-Tag: 1794330208-224803
-X-HE-Meta: U2FsdGVkX1+8wDO1xQOW8GaLs0XR2qSPGDsqcpsW2yShO4qyr/hJTIs7tGhGihbxyzWKXu+3WiVhdfo5eqWCweAlKVliF7VLY1xYnM8eyMY02CYcei0VWKSmOrrv8pqMg+AAKsExUt5/gUfPh9DnneND9Ex0NcBKq80Xog8FFan05Wxp2uRBaXhZ4/7ATZIzIM71vUrJcd9kTxhSxq7NlGUfqSK+E2fku2ICq1yPWHhj8vegRURD7au0PhDWdzChl/SlRLwHRbybBSVNWunZgGywhbbbc8Dhymm0k92dzTgbe03BoTZCp7hp23VCyayQmxbtZHL/9Ma2bkPdjd53p5QneIURk5HtM+3D90sc3AsHfAG3Hje2+6hKyvRX8fnhYRWpsNMLnySxu6qPb+AK2oSWlEcd1WI7/RnbSY8bAvcjqU3Zv1CpDugMe00OqUzjbSmsmpU+fNU4NpI5a7r5oJ9jR0yWySMQifbN0p/T0lcJdTPcjlnhlfc3JqgtvR7+SuG9esWqfDKCjQMFNaptkmwhTdho+/4gDik96oDURRC1PgWIjFuWPeKmlfAUqIe7Qqhjk/0EO4ASbilDLdotou9TDeMOIs5RMPyBHUJt9B5wnzK/GeIZc0twS+O4hT/XI1hzqHcZRLB4+lzJq6GuyJyODiFKPEL+bPBWxC6MPNJK8NV6lvabQ8giZ/casIAzN5vdJHpp0f4uA1JwHWxpV91xb4bhtYBJEDjvPgXJDAFmduGVG+g6Z1c/QhgxTpnVIcwt9clc7uRo9+Ef3JztI+I7qOg3ltoenLR0H7wEl0c/+aFHIFDk1pFoAgDm3/lAKw5EooK6oSkOaGeNKJmbfehZG8Yyh7gflGBDmLqFQ0UphqtM/L6p1T6kDnVqQp9FWUgV71GkzMxzcDqzVpU9ReCY5eu9BthdTPl2G4lz1dpHRIn5BU5NhdFSWiM8a5/5ThgNNC4P4hroj75Ox/y
- qAEbizgp
- NNaIaxO4X338GvFZ72gO7NWPJqPxvz3kO9nWlKKixaFH731aQAFRdJLaH6zB6LlqYY3cjoDZyPKLbFcL8Y5cwa663OITcf0F1tWTWzaR2zZLGzWiRD4RwQgyG/iBkhAgHtVog7KJ/kdD2IY84KQ8fTzvKo9ExLKaBjxohg7yWqbvHJesp3s5FYz1pCw8hxIwsKD3pvWQLKBsLbUXoUeaqU0rw5Uv4AuEHve+Ry7pZ7A/Daf57BCQ+duG0g/layw096yVvm/69RqSjbSkB/RYyKdKFaiwlT69Oqci6yJNvMTMxzSZ23M8NjpX+bHBDZD0PH4W2XkoQsFaOkPjtSsb7sZ/04Q==
+	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL
+	autolearn=no autolearn_force=no version=4.0.1
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 4086040006
+X-Stat-Signature: uommwgmzsiqn3owof6trx75tppqfc8yj
+X-Rspam-User: 
+X-HE-Tag: 1794330232-848013
+X-HE-Meta: U2FsdGVkX18GTNEWkedLM5/xnwVdUNE8yNt7Bik9d4X6moF3rE9b3R+Si+HRk2OL5PGvaGWqRZ1JJahp1zdatd86+invU/fXcncHrYC+5rXBd+PyCjtSSzX55QBVOQA0k6xVNGqmHURsBOa/0sVArTqJ//Y2qE/kymyb5FuVziCDx0lqJg0/VT/uBq9LcOE0tsNknj9eYHqX+1m745ZW/JBr6b2lyXurSUXTAqadbLjbWzKaX6t4EDojG1NFa/NlIoQ0MAU4PFXZBahM0AG0qSAz8QkajyhM4oW/lWqhP3l2DnC+ESgYFCPiAsa6cklYmjrncmWA6IPhMft4GUzaLXbcPjZN5udRoUzVu2VavjL4TLqCMMlBw7XM+0pgyljX2MHyFKLxa/4tLv+HZVQ41hcvTcMbHr3e1FZgsQPgU9LpSENltjuhw6OssT53EAxCCS6GjKf4cOBh7t17ThlsxXwTLB73YsmopeSJs95xFl1jJsZzK4J3EPl4ibU7phrb5oqHQP2eRx4KR+b0UtDMx1dEyktL4UnQL4rvl0Cxt7uwiOLQYVcpCWpK90IP7EVtwLQyWYVLgQMOwGZR4CAl3A6gVRnj05+e8Helena2MCEOxchRC0Ut978/eOXdUI5naBwKTRL5z6Yzt5ziThawGMKxup9DQ6d05rgXF+76pN6S5ri7CzC1gsPR/WXK4hSE3SyFEa1aM9VOVR8+88wXnU7rsU+K9Lo9N6PjLiywaE64Cxtll/BGirU8G9WTIO9H09dBc9vn7cIC9b3P7KLV7ePIKvkyafrUawR9wFvHsGDkc1qVa2RPfL9RwanqcHFQCU2NK58HWEGd0qdra+Kz0/ClYoO2oXmbpUf/1NI4YNTb/j2R3Zqibw38pppSXYpOn9MkSfxdOCNRvLxzMWEgmZ008dgeYfqQxUjcjISlI29e1tLVZofxmdEX4zlz3aSoBWsYNRsl3sGl+gVpR7E
+ HilEckAR
+ 3YxU6DjTFGJGiaomQtxei9iA3jSXzHf0AhYe3MTaYUN1suJeaM+fWUagzuX4H9od6gQjDxac3iHaO1odl2B94T3qvLLjAVKki9PKK9FIaW3lbagO+CpGQdRpyK0y6USwwxsS4pwh1rgxZnJ8mi7ycYo2eMBD5tPtJCQJ6tmbWp3NJc/6LNWpMoXCY258zQ/b4xPq2MutelPYOMdIbXhnoa073bHJhgx/nkXub15hub4iMNW7s3jCHVp5oWT/ccqranz8xxTF5Fz60mrYDvtu6taNfNQjOcLVUpj6B9WG1ZHfKE/g4HJ7UmAOxi6/8zreus7JSYjJMeUL9X/o3S1CwsltbfAdv7VbxaDakSmyph8iyQeqd+2OMrANGyTlQhV5UoSmN5LlGCT5Rvm5+3185/j5dyA==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,20 +138,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 02:48:16PM +0900, Sergey Senozhatsky wrote:
-> A new zspage is not on class fullness lists and is not movable until
-> zs_store() calls insert_zspage() and SetZsPageMovable(), so neither
-> other zs_store() callers nor compaction and page migration can see it.
-> Nobody else has the handle yet either.
-> 
-> So for a new zspage allocate the object and copy the data before we
-> take class->lock, and don't take zspage read lock.  This makes
-> class->lock critical section shorter and saves a zspage lock/unlock.
-> 
-> Suggested-by: Yosry Ahmed <yosry@kernel.org>
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+On Tue Nov 10, 2026 at 5:01 AM UTC, Tarun Sahu wrote:
+> Add an entry_size field to struct kho_block_header_ser. On the outgoing
+> side, record bs->entry_size into every block header during allocation.
+> During restoration, derive the entry stride directly from the block
+> header instead of relying on caller-supplied dimensions. The
+> kho_block_set_init() interface remains unchanged. A zero entry size,
 
-LGTM:
+Since the entry size now comes from the block headers, incoming block
+sets should not take an entry size at all. I pointed this out on the
+PCI patch (16/19) as well. As is, every incoming path still calls
+kho_block_set_init() with this kernel's (outgoing) entry size, which
+kho_block_set_restore() then silently overwrites. That makes the
+callers (e.g. pci_flb_retrieve() and the LUO session/file restore
+paths) read as if they iterate incoming entries with the outgoing entry
+size. kho_block_set_restore() should initialize the block set itself
+from the incoming block headers, and the incoming paths should drop the
+kho_block_set_init() call.
 
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+Please also add an accessor for the entry size, e.g.
+kho_block_set_entry_size(). Users of the block set need it to check that
+incoming entries are large enough for the fields they read, and that
+the fields of a feature are within the entry.
+
+[...]
+
+> + * Each block header also records the size of its entries. A newer kerne=
+l may
+> + * append fields to an entry, so the kernel that writes a block and the =
+kernel
+> + * that reads it can use different entry sizes. The reader steps through=
+ the
+> + * entries with the recorded size, so every entry is found, and it does =
+not read
+> + * beyond the recorded size of an entry.
+
+KHO blocks can't guarantee the last part. The iterator returns a void *
+that the caller casts to its own struct, so it is up to the caller to
+not read fields beyond the entry size. Please document that callers must
+check the entry size before accessing fields that may not be present.
+
 
