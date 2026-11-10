@@ -1,108 +1,114 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9B80606C654
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 09:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922A4606C66C
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 09:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.a=rsa-sha256 header.s=dkim header.b=V0JuNsqt
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=nXwsv5rT
 Received: by kanga.kvack.org (Postfix)
-	id D6E716B05BF; Tue, 10 Nov 2026 04:16:48 -0500 (EST)
+	id 6DCF76B05C1; Tue, 10 Nov 2026 04:16:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1CCE6B05C0; Tue, 10 Nov 2026 04:16:48 -0500 (EST)
+	id 68EF36B05C2; Tue, 10 Nov 2026 04:16:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C334D6B05C1; Tue, 10 Nov 2026 04:16:48 -0500 (EST)
+	id 52E8E6B05C3; Tue, 10 Nov 2026 04:16:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 90E1E6B05BF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:16:48 -0500 (EST)
-Received: from smtpin04.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 156421C3F1F
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:16:48 +0000 (UTC)
-X-FDA: 85418654496.04.F7211AE
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 77A6A12000D
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:16:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=V0JuNsqt;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf29.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2374F6B05C1
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:16:55 -0500 (EST)
+Received: from smtpin23.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A262F4014D
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:16:54 +0000 (UTC)
+X-FDA: 85418654748.23.B3EDD5C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E41301C0006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 09:16:52 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nXwsv5rT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794302205;
+	s=arc-20220608; t=1794302213;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BvvMubdD0ab9qXTzvi78Wzx6n/mu2aOjNES6c6xFfUo=;
-	b=MXn1QCjHXVvOIv56T90zRbRN3RA9irLVpWQCiTSws4cWEN1er0854RuHQoZaLLYjtkJUGj
-	8TTyrs+SpnRBnbx+Mwb6Hexm6n+AreIL9Qs9ecXkzwx76NdV+UUIARCqUhpiygB6RpFThl
-	N7Jh3+1c+7FgWcVY9wG5K66gt7Q79M0=
+	bh=rTt9ZODnqMGXt2QPWO0j4LWRDHe8dvGNICyHTYt985E=;
+	b=KziduDtphqwqa2DDrC5X7fiKmilAbbjgR+fdpA1mPO7ugeVm8ac1nOPoHIMajIrEloEWPc
+	pEOguo99kkxQHppkdOQEY5vY12meNMp2Y8mN20Alq462rmX6RzG6XJaZhb+CTn30JFO6FH
+	fI4SfINZpbH1vKBQ3EeH7aZPd7cKyJs=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=V0JuNsqt;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf29.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=nXwsv5rT;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794302205;
-	b=YH9fL6qJwW9b8niRYcuYlYiGz3NFPX32ub2nLRFnUnHyoFdHrQ0ePmS/NpWA5100CqbArL
-	Un8317o8HDaMT/cEkYK/SuTTn+GEbwARsUWfBl1zmflmrrYSTVkbpiJlZs5tAl6KSjfyYH
-	XP2JCSosc33fsZR+djmJPUCwhwELCaI=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=BvvMubdD0ab9qXTzvi78Wzx6n/mu2aOjNES6c6xFfUo=;
-	b=V0JuNsqtcvHvWZar8RQGhcZaYErUdAWqJ1nV312WRgaycNnJ1zsFEq4gL5SRY2frvA0hfpC1l
-	+o01tk/z0saf3sDH7onJDGrLuaaZUu7YfpRbV38fFrR23kuY4Ztb4i1hCOOJLP9hHD2sNLbaSku
-	cALfpikEjxvECDHlXpMIiVM=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4jP1HL05wvz1K96b;
-	Tue, 10 Nov 2026 17:16:30 +0800 (CST)
-Received: from kwepemk300003.china.huawei.com (unknown [7.202.195.93])
-	by mail.maildlp.com (Postfix) with ESMTPS id A668140561;
-	Tue, 10 Nov 2026 17:16:38 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- kwepemk300003.china.huawei.com (7.202.195.93) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.45; Tue, 10 Nov 2026 17:16:37 +0800
-Message-ID: <3a66ba8f-96dd-4215-8c4d-0cc3c286375a@huawei.com>
-Date: Tue, 10 Nov 2026 17:16:36 +0800
+	t=1794302213;
+	b=yapVVEqnsxigf5XyJ7SJPwHZUbByMn8NNX9vc4yT/LwH0FyJ7IvMi6r9SQEaGPA6RPhec0
+	ExaK1msYIeKAtA+BYY8yybggrKMFdfsdZzPQ0vCIkvaXBbCHNeey5fPvlsTLHNGZBSHSNG
+	2kFDjh8c22hKqyrnU8Q7gzdEaryeDPk=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by tor.source.kernel.org (Postfix) with ESMTP id 78A176021E;
+	Tue, 10 Nov 2026 09:16:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49B51F0089F;
+	Tue, 10 Nov 2026 09:16:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794302212;
+	bh=rTt9ZODnqMGXt2QPWO0j4LWRDHe8dvGNICyHTYt985E=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc;
+	b=nXwsv5rTzvrG122CXPiddOJ0ugXqcsoi/AaGfNNbu7zvGK8mvUz48SAGlBU/zLVkz
+	 LooUWqRoN/4S8I3xcJYcAEFNAJv7CmbUQiM+ChF5ZHpfxf63bNo7Z0QdCAiOO59dr1
+	 8fhU2KVqLBCjOH3X9bxaSSk/C75cMEo2HD2kESGJ6Y10yT4ZTrwrUuApzZmSmAZkyq
+	 7KypYuKqM5Pjoxx7X2T/0YDQPSzhDhTa8yf55w0TWoYWrEVFZ6el7TpOiZWeC8kVq8
+	 oCDfcYgrQZNoq58895X8dxus9Cy79YWYO/viOCOJpKnTNCeln3Zt2fAQjdrWaXV2Jd
+	 BAdVF5Rtw3JRQ==
+From: Christian Brauner <brauner@kernel.org>
+Date: Tue, 10 Nov 2026 10:14:24 +0100
+Subject: [PATCH RFC 08/41] mqueue: use fc_init_pseudo()
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 13/20] arm64: Support hugetlb vmemmap optimization
-To: Muchun Song <muchun.song@linux.dev>, James Houghton
-	<jthoughton@google.com>
-CC: Will Deacon <will@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
-	Oscar Salvador <osalvador@suse.de>, Andrew Morton
-	<akpm@linux-foundation.org>, Nikos Nikoleris <nikos.nikoleris@arm.com>, Linu
- Cherian <linu.cherian@arm.com>, Mark Rutland <mark.rutland@arm.com>, David
- Hildenbrand <david@kernel.org>, Ryan Roberts <ryan.roberts@arm.com>, Nanyong
- Sun <sunnanyong@huawei.com>, Yu Zhao <yuzhao@google.com>, Frank van der
- Linden <fvdl@google.com>, David Rientjes <rientjes@google.com>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mm@kvack.org>
-References: <20261003002123.505555-1-jthoughton@google.com>
- <20261003002123.505555-14-jthoughton@google.com>
- <CAF9824D-CDC5-48E6-A1F6-840CB299EADB@linux.dev>
-Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <CAF9824D-CDC5-48E6-A1F6-840CB299EADB@linux.dev>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk300003.china.huawei.com (7.202.195.93)
+Message-Id: <20261110-work-loop-pseudo-v1-8-4c998976c6c7@kernel.org>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+In-Reply-To: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+To: linux-fsdevel@vger.kernel.org
+Cc: Jann Horn <jannh@google.com>, Chris Mason <mason@kernel.org>, 
+ Josef Bacik <josef@toxicpanda.com>, Christoph Hellwig <hch@lst.de>, 
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, 
+ target-devel@vger.kernel.org, driver-core@lists.linux.dev, 
+ linux-mm@kvack.org, bpf@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, selinux@vger.kernel.org, 
+ apparmor@lists.ubuntu.com, linux-nfs@vger.kernel.org, 
+ netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
+ linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, 
+ ocfs2-devel@lists.linux.dev, linux-s390@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
+ Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Christian Brauner (Amutable)" <brauner@kernel.org>
+X-Mailer: b4 0.17-dev-ce4c1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1198; i=brauner@kernel.org;
+ h=from:subject:message-id; bh=McdhKaZYT4i07Xats25HT8jpBIeYReCKfIiqQkLDh7c=;
+ b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWR9ejDXp05OOqNfiGfutU+mD244ZPwWu6w2Ner6mY67a
+ 1N9rz580VHKwiDGxSArpsji0G4SLrecp2KzUaYGzBxWJpAhDFycAjCRz8EM/8zfXf24LmZt6Maf
+ 748F7bqwrvMdv95q947nnlLsuYdn/j3N8JvF0yvka11ts23/pvzN+To/re7tc+Vlrptwd4bj6ob
+ /3vwA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp;
+ fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 77A6A12000D
-X-Stat-Signature: 9y6d3ca6a9pcntfn4ztxsq7apfqg4e49
+X-Rspamd-Queue-Id: E41301C0006
+X-Stat-Signature: rcmu7mmnts85cxyyoh5m1owidtn3ke5r
 X-Rspam-User: 
-X-Spam-Status: No, score=-17.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_SANE_1 autolearn=ham autolearn_force=no
-	version=4.0.1
-X-HE-Tag: 1794302203-689112
-X-HE-Meta: U2FsdGVkX18baBeZYUij2WLxOssuLeYBCcXs5ubHzIHC4c2NFRODHNq7XXq4LIJm6MlbQPmhHcQJzH7yvPYt6lEEeXGN5fKTKxQ0TkGl5Z47loqGHJGZjWHZYI/z+U9ACJHtKUqCWXqZHmkXtSj8oeqnmHe8LU1qsXWWU9iMugDFlw5aAcgmx+mDyPUiqzPdwzO4+ZMQIM/Eb6NRSH1ZmVRry8Bm1GLu8Tsh79i7f/sJVPMyj0ioiJdHNetfA+SVx7TflwdNxWMqp1oWkNH8vyHGWyN8m6qDc/mMsQCHuU6IjprCPXHd4/CyPuFyD081xFAUcnlgfBZQgUGr2Jiuolv80fpLMcQ7TZO4Fd6bdx9Zs00b5+Rz8ckPmOurSXOo+R7w24eAV4yg6D6g2r0oTLBsi7EDvpp2S9KAP8qjWaH2agTG8f3ns7YN9cPAz2z4U5pRjdpXbO9Jso5/yg/S6fbWxUwhVebbEQcALa/ulgQbxXoNU2oksrT/T9yY9oLBXCYAh+O0+k3c5+U5kSuCgoQ0wC+OaB4zICpAXLr/EXGuFp3WIHCvJQ+q/UjiVrJdwlJp9e5HZAn7p3658GSGa3IKZ3HMRgWrfK6mNp/nlPEkEMW+PH9pkjVAzfrCwS4Y3q6A0emQ8xIU+1rVumv2Ci23Jl7qEhgwqrw6+TuQBk7tFJVrmzmQUI/zMPh3hN6U0b4MjP7wv4usqYTEAO/7HL4w4CYar7y+69l2SnMkoQEQDhNcSexGwJEljg+JE5aiXNm5zAKBAAIRKm6/SR6+TSZmtHTQoGK2guyAYFgolrkXmIIo7fRU4qiv9Soig4o+7cCYoYhM1L38u9pq2TEkji4FEIGkXeElCooUe2nGiJFFBOaXKmoV+ceiBCqC4lX/o/C6n2COQqZtsfRRdS5XSmY0bXjev9Pe22hmYgrg7oYIihtFaSEnjYhICDu6ovZSENkajhsaUOZyJLbJJNa
- 07Jr3nQl
- cZugdaALi16e4hNkWWknbyQiZWDi1gNdxYuD9xMD0jkLYnoQdsLtFK8iVGdbGMvkSmzRN0XIiO15idgfsTNyRW24U7mdZ3TwuNv33vq+wZa1/rc9vF0CD8z+6jHD6hEZCue9QdmujNREaqQ9k9kShdlErBFGglCwgmjWiPOrd1DjDooRFJvi2ZrKc5yKoPOBRCl632TsWIvvcv+XS5ag/DabSGX7SbZElw+axSgnOXz2hD38ZuREdb06hNv6w4MygqHKL7WFWpgyVgBB6m5aYo+ZYieIWAHlEtoy6q290pPPHILy09v8LTlEzQ6W70xHBBHweI0PO3LXSIu+dUfGQfiiaGQ==
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794302212-677000
+X-HE-Meta: U2FsdGVkX1/maotNDbRM2s++sJNK4qWQ1e5/2rJ+Tn4FgaxWPoYKQ4ke+ZxGXp5V9Fo3dnMm1kEkWxK34xXLrl0me4pPZPt1h4x2LMypV97VltYlbq4LRU5Tz7mu8uAVkdNe+wFtY5okpbzMivmtUs4nS7tsl7FOVaJ7V37aZGGRzMU7/cplbW8kb7qTpOovrAlTQOPnYb2GGzaNuR/XE3VlVQjJYpPT088nkBX4NeZEx5kaVg1IEISZzDphmWDpH6Z8hWE8/A3GjUqmo7bpsfLTrnHXUt1cpuwl2qRmw1r5XZP7/ybFHL2Ult4hBg64jf/Aw2Xtbdnw0inG0edzZU7bMys5mbIOkJ/i6qTrm6ujO8HPw2OY3uSI6d4cK1YG+JGquUFkleRtcKO2ufqlxCcPhx2/sOBgMadWHuKf3atc5z2Yvw0IzJFGKXhSSqGkLsCUJDGf6BexfUMYnIGs547U06dxf2LvcuqpH7zd+WUSlxu2HgvCIizVi1eustV/3MxdWmFkYlixhlVY6mWoXpX474zxM0hvnlDRNXf7nMY7L+f/fWq/vL6VYRbCydZP2oq+1IAPBdc23B/oEk3VCzyq1+oe4b2wzTj/Gp4i/wYgT2FV5TrH3ZKB9D7YdPM87ohgISj8j2baj0fEk6xUbO5iAjHYqB5Xb+6oBKKApffDa1y8VJJDasj+77629nUC9oW94Dv5taP89FJiwKDTZLOScfXYRs8KD5cRJ6wwjVK8nTzDkNZ7SIeBtztz1GxETJs8slER94zwY2ejvbgIFLHvaggYN6I24u1QdggCYSWTtM4+5BvhcKGw0sPU3GdhrqqmNXe/L5tjhS/N87VH/O+A1YssmOSQGvX4y+pKrx20QjM0LH51MjDUfIU7z0ykNnwIyQddm5Xt0RLEV+98mbbxt1TWZDpZVfaTl5naT83Nys56uBfEeu4E1/FGSQf1lAS/td06Z+W0UHjo396
+ 5LbZxrGz
+ CKQYCU7faENT3DjR0ksdSHYBo2+GPgN24S3NSi3C9uXfe5CTmNSSkIWWr5FE6F7FM8Q2II0kX+r9NXwTz1Rrf6GKPDym2x4N686rTADYI1PPHov9qgAkEmqaJujfYEqtTyLIwNWM7T+GtvKBPxLZYVRrtQPC/5RkbfGqM3prwQ4QJxxTxWzgZhj0iCHOIkZj2Zvc0IB6OP+0Kek7PL95aLh3asklQkfsTH32m+xK9S81uk7b2u9NlLDmlFeOsj9lMW+vYXgDfnGdgdDWJduwW7VioxdRdNF1948oG5T5ma11NQWFdBocVJGPvveM4Ud00s8xBMDqggUmv55Y=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -111,80 +117,44 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+Initialize mqueue as a pseudo filesystem instead of raising
+SB_I_NOEXEC and SB_I_NODEV by hand. This adds SB_I_PSEUDO.
 
+Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
+---
+ ipc/mqueue.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-On 11/7/2026 2:45 PM, Muchun Song wrote:
-> 
-> 
->> On Oct 3, 2026, at 08:21, James Houghton <jthoughton@google.com> wrote:
->>
->> Support HVO if HW AF and BBML3 are supported. These are the required
->> features for the vmemmap to be modified in place.
->>
->> On arm64 systems that do not have the required hardware features to
->> support HVO, the HVO sysctl will not appear, and any attempts to enable
->> HVO (either via the command line or via
->> CONFIG_HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON=y) will have no effect.
->>
->> Signed-off-by: James Houghton <jthoughton@google.com>
->> ---
->> arch/arm64/Kconfig               | 2 ++
->> arch/arm64/include/asm/hugetlb.h | 7 +++++++
->> mm/hugetlb_vmemmap.c             | 4 ++++
->> 3 files changed, 13 insertions(+)
->>
->> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
->> index b51d23a62c92..e4c87487bc7f 100644
->> --- a/arch/arm64/Kconfig
->> +++ b/arch/arm64/Kconfig
->> @@ -92,7 +92,9 @@ config ARM64
->> 	select ARCH_WANT_DEFAULT_TOPDOWN_MMAP_LAYOUT
->> 	select ARCH_WANT_FRAME_POINTERS
->> 	select ARCH_WANT_HUGE_PMD_SHARE if ARM64_4K_PAGES || (ARM64_16K_PAGES && !ARM64_VA_BITS_36)
->> +	select ARCH_WANT_HUGETLB_VMEMMAP_RO_AFTER_INIT
->> 	select ARCH_WANT_LD_ORPHAN_WARN
->> +	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP if ARM64_HW_AFDBM
-> 
-> Because vmemmap optimization depends on compound_info_has_mask(), before
-> enabling HVO on arm64, its vmemmap start address needs to be aligned to
-> MAX_FOLIO_VMEMMAP_ALIGN. Therefore, a prerequisite patch is required.
-> 
+diff --git a/ipc/mqueue.c b/ipc/mqueue.c
+index 322c3dd98c44..8bbe32d0881f 100644
+--- a/ipc/mqueue.c
++++ b/ipc/mqueue.c
+@@ -18,6 +18,7 @@
+ #include <linux/file.h>
+ #include <linux/mount.h>
+ #include <linux/fs_context.h>
++#include <linux/pseudo_fs.h>
+ #include <linux/namei.h>
+ #include <linux/sysctl.h>
+ #include <linux/poll.h>
+@@ -405,7 +406,6 @@ static int mqueue_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	struct inode *inode;
+ 	struct ipc_namespace *ns = sb->s_fs_info;
+ 
+-	sb->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
+ 	sb->s_blocksize = PAGE_SIZE;
+ 	sb->s_blocksize_bits = PAGE_SHIFT;
+ 	sb->s_magic = MQUEUE_MAGIC;
+@@ -457,6 +457,7 @@ static int mqueue_init_fs_context(struct fs_context *fc)
+ 	put_user_ns(fc->user_ns);
+ 	fc->user_ns = get_user_ns(ctx->ipc_ns->user_ns);
+ 	fc->fs_private = ctx;
++	fc_init_pseudo(fc);
+ 	fc->ops = &mqueue_fs_context_ops;
+ 	return 0;
+ }
 
-Agreed, we tried to enable ARCH_WANT_OPTIMIZE_DAX_VMEMMAP[1] on ARM64.
-If the alignment is not performed, a warning will be triggered with
-DEBUG_VM, see sparse_init(). The same issue applies to 
-ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP.
-
-
-[1] enable ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 1075bc661833..649244e55c4b 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -94,6 +94,7 @@ config ARM64
-         select ARCH_WANT_FRAME_POINTERS
-         select ARCH_WANT_HUGE_PMD_SHARE if ARM64_4K_PAGES || 
-(ARM64_16K_PAGES && !ARM64_VA_BITS_36)
-         select ARCH_WANT_LD_ORPHAN_WARN
-+       select ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
-         select ARCH_WANTS_EXECMEM_LATE
-         select ARCH_WANTS_NO_INSTR
-         select ARCH_WANTS_THP_SWAP if ARM64_4K_PAGES
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 4e7682dfe366..6808529873a9 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -91,11 +91,9 @@ phys_addr_t __ro_after_init arm64_dma_phys_limit;
-   * has a direct correspondence, and needs to appear sufficiently aligned
-   * in the virtual address space.
-   */
--#if ARM64_MEMSTART_SHIFT < SECTION_SIZE_BITS
--#define ARM64_MEMSTART_ALIGN   (1UL << SECTION_SIZE_BITS)
--#else
--#define ARM64_MEMSTART_ALIGN   (1UL << ARM64_MEMSTART_SHIFT)
--#endif
-+#define ARM64_MEMSTART_ALIGN                                          \
-+       max_t(u64, 1UL << max(SECTION_SIZE_BITS, ARM64_MEMSTART_SHIFT),	\
-+               PFN_PHYS(MAX_FOLIO_VMEMMAP_ALIGN / sizeof(struct page)))
+-- 
+2.53.0
 
 
