@@ -1,184 +1,92 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81C84606A325
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 00:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE190606A326
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 00:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=pps01 header.b=jOCviDoU;
-	dkim=pass (2048-bit key) header.d=columbia.edu header.i=@columbia.edu header.a=rsa-sha256 header.s=lionmail header.b=C2Opkp9E
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ecr7oeSg
 Received: by kanga.kvack.org (Postfix)
-	id 8E1096B05B3; Mon,  9 Nov 2026 19:27:37 -0500 (EST)
+	id A186D6B00EF; Mon,  9 Nov 2026 19:48:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 86BB16B05B4; Mon,  9 Nov 2026 19:27:37 -0500 (EST)
+	id 9A2326B05B0; Mon,  9 Nov 2026 19:48:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 70C2B6B05B5; Mon,  9 Nov 2026 19:27:37 -0500 (EST)
+	id 891546B05B1; Mon,  9 Nov 2026 19:48:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E5EA6B05B3
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 19:27:37 -0500 (EST)
-Received: from smtpin28.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9C2121C426C
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:27:36 +0000 (UTC)
-X-FDA: 85417320912.28.129351D
-Received: from mx0a-00364e01.pphosted.com (mx0a-00364e01.pphosted.com [148.163.135.74])
-	by imf17.hostedemail.com (Postfix) with ESMTP id A57EE40006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:27:33 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=jOCviDoU;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=C2Opkp9E;
-	spf=pass (imf17.hostedemail.com: domain of mt4022@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=mt4022@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C9EE6B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 19:48:27 -0500 (EST)
+Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id C5B99407CC
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:48:26 +0000 (UTC)
+X-FDA: 85417373412.02.67DA743
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 39F2120006
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:48:25 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ecr7oeSg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794270454;
+	s=arc-20220608; t=1794271705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R0bTkl0ZeS10Rc1qvdgpvqwy+jnWQCRdinOmlNk+hTA=;
-	b=KMGKXjFIpm8lAVRtn3mSbMajdqBsxVApkhTavZAI1mQm2e7zOQrSVk+VawA58IB5bDt+AU
-	7PEMBggRDdy3hHHdqQ7TKoTW8pZFu+BfIz9VF1mebRX8DfFyhGiHzY7vabb8n5Zu5yaoGn
-	guy1aSHzOzyFY4gnfeLgw2dX2Tj+E+w=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=3Xo6pRfKtJUGUHdPK++9LnJKDE8puj/5ez9TES0+7xw=;
+	b=2wCPU5UXbI/ZwSHYaIhwtohE3Hpa0uTtGLMGQRqWuCCEs35qDjBk92xsScP+pMXLA8y1Jo
+	jL0iMjQywhx1blVBzZsFh9/63pt4RIuLVUHtatK+8UWe3PNF89zAEj8OBN9mtXfHMUO8Vf
+	BloQvWBom5hhWfUDdIjrlYz720UhNdk=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=columbia.edu header.s=pps01 header.b=jOCviDoU;
-	dkim=pass header.d=columbia.edu header.s=lionmail header.b=C2Opkp9E;
-	spf=pass (imf17.hostedemail.com: domain of mt4022@columbia.edu designates 148.163.135.74 as permitted sender) smtp.mailfrom=mt4022@columbia.edu;
-	dmarc=pass (policy=none) header.from=columbia.edu
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ecr7oeSg;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794270454;
-	b=Esz0/3aF4Z3WOaKx9dE+GABpEKd/I94nvxFwA3UdSQPDj7BA2n/YVLqoQDx5/J87rYfZPP
-	+BmbhHuUPJ1IpedHvoeAB6jGpBq7bwdB+QMA3JbyK73aiMMaA1DoSZWEKlzjxgbW9gdREw
-	zgB+5BN248SDZA4xAJvboyD/Z+025kc=
-Received: from pps.filterd (m0167068.ppops.net [127.0.0.1])
-	by mx0a-00364e01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6A9NZ9wE3830559
-	for <linux-mm@kvack.org>; Mon, 9 Nov 2026 19:27:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=columbia.edu; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pps01; bh=R0bT
-	kl0ZeS10Rc1qvdgpvqwy+jnWQCRdinOmlNk+hTA=; b=jOCviDoUV/d+SBS9+iko
-	Dp+sdqHEyd8SiXDTjRw3mosnYhHzzqA94GjHpHpXbj2rXDHIWgTioMoMgs1G0vx4
-	yYqCJ3+A5N6xVan0OOtxwO8f1H+vX/+MkPsPQJulZtzLXUWsW0C2Iie93T14f1Fx
-	UTOxKmkFqDk68PQ6FgUd17ny5o83+WVj4trMpGfmWZwucNvgIbUr9sVuy0NEBT98
-	CqbC/arbYfWLUWP3CaPG9vKS4HgBNz6ZZpWbS8gl+xVoa5F9YitxG9nKwg7xRjBF
-	Uf6eDeUFBvgVzo7KYOjH7cW8NXmfp+RdKdjwggD8VbBFbCRBMlF4F3VV9d3EfhIR
-	ww==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-00364e01.pphosted.com (PPS) with ESMTPS id 4hupvugrw2-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <linux-mm@kvack.org>; Mon, 09 Nov 2026 19:27:32 -0500 (EST)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-53664911d46so29816721cf.3
-        for <linux-mm@kvack.org>; Mon, 09 Nov 2026 16:27:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=columbia.edu; s=lionmail; t=1794270451; x=1794875251; darn=kvack.org;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=R0bTkl0ZeS10Rc1qvdgpvqwy+jnWQCRdinOmlNk+hTA=;
-        b=C2Opkp9EjF8xF8Ab5sd7SQdvEVwaRhQKrtt9P8CL1CIsLgkpRU3grZVIYMxCpBbLd4
-         TmqoW4eEBCufCaRnYGTTf08uBD924+iYkaPgJli1uDRG51weD0h/YdJo7jn+szgZCC+a
-         WfUfklxM+RwZjBMLxbAh+izYLAMv6U4Q2oWHBRhbrP265Bds1CV4eFizSg9nKGaLcjwH
-         hT3xLX33xsxiTLBfwEBCZt3c3D/53nqt4tfQWDxLgnWzMeXfVapNyQEGOXK4DS795ffH
-         fZ55E1g/QqETJHuojunvJDpVCaItHY09VkM3MOdZ3ms8aj2pgyJyl1VWt95SkQwnZfO1
-         cSnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794270451; x=1794875251;
-        h=content-transfer-encoding:content-type:in-reply-to:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=R0bTkl0ZeS10Rc1qvdgpvqwy+jnWQCRdinOmlNk+hTA=;
-        b=XAbs8Z0dCDu6hVU4qflHbSQ2aX7U8FPMauZNs1A/i24UFbzoObwsqqPSSnCNrri/W6
-         jNlDB81s9bnQp5A8w3AUNoLoNggW2ufa4P+LwVe8RMbZeCYNeFicbXaIHMjigcnIKP7i
-         6I9FhpwK22p3lCkZ8YwIYel08sQEVcxu1pifja5z8Ft4g1ETc+mmxlhoNi5GjK0Zrv/8
-         FoDnBnblL7NIJN5i96arJrkcoWpHF0gEOMRjCJpwLf8hFqger32HKhYNdNVdWai+wTSV
-         QPe7y7+mS9jHXmpM1e5JCTHqG4TAchRkVxcYk40+03pwXG3F6DivdLFOWSRt4LavJhPm
-         t9Iw==
-X-Forwarded-Encrypted: i=1; AL+hErEapsxUdqup8P/eA14NFrDG0+X+BVeuz9CvuFmbef4+tr9n18jUNulbmzazzFFwazYQgP6ZDifrlQ==@kvack.org
-X-Gm-Message-State: APuU4Z94/Sor0Rkwu/jX7r5qmzh7zWWa84tJCrXrgdn5OPeEWv2rXw2K
-	rQ1j0RDqHcoOmaIDnnDQJMXxHUTCaxufEoVRvzJWjB89ggBJFf2cbLs3rv35YL//hPUZIYM+SjU
-	zXlQUne8JXkhzJE32vyyf44txJKguAg8/5vb7BMVvLocauqLW
-X-Gm-Gg: AYBFou0XU1nQ0gMWHrI9Wso3RhimiQENTzeM2YBbvlmddMUsYfOn5HuNnqaLZEcQpOn
-	8uE0yUdUxNQF+9CeBnkHNvF0SOhkW0SAr9vGMC7sGZZK1vdXuYJp+OV/3eZb+xZO0e1zD6ZNjNp
-	CPRSxinQ+1Egdm77m1mBBFYfDcfhkKitH2YgsGBDfEHsRxQSF11wYoQ5VQ6tt62b3w7t8Gsz8/Q
-	IDpF6R3XUHBWun3Onopqp8EffK0qWWFeEdKnbtJ3/9IBEvmgVXDcMIuGbeGM/6Vot28O5I724bU
-	MRjC8tZlHXVkyhVj6U7GVb+dNDKqi37siA+tl2YOrVqjZ0rJnKwxjybdBMOtyXpmMZh2r78MBgC
-	LthqjgOOe0WtMyB0r6VgAmKAKhYn23NIXyUjqGlVRG44/0dsNtVk+BUoiPgpULOWES0PPd7DvVw
-	nDKsymIqPxnY2fDhkdUD2S2hNh8CrJlPtRtsiN1xwsflPMVJ8iPb+WNTod28ypHSKAcvTtlITse
-	G5kccAlZMGVUmPv4QPOPxZawReMg7M36HJYHtU+iElbUW0OCpZJzDuggtMQdEAKgz2Va4y1lQOl
-	q205UKxxwwZVPeaDu9AH8w==
-X-Received: by 2002:a05:622a:2a10:b0:536:e29:e774 with SMTP id d75a77b69052e-555293bb0e6mr16117001cf.77.1794270451580;
-        Mon, 09 Nov 2026 16:27:31 -0800 (PST)
-X-Received: by 2002:a05:622a:2a10:b0:536:e29:e774 with SMTP id d75a77b69052e-555293bb0e6mr16116841cf.77.1794270451295;
-        Mon, 09 Nov 2026 16:27:31 -0800 (PST)
-Received: from [192.168.0.76] (dyn-160-39-51-212.dyn.columbia.edu. [160.39.51.212])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-555091eb801sm10414481cf.2.2026.11.09.16.27.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Nov 2026 16:27:30 -0800 (PST)
-Message-ID: <0bf0a413-7f7e-4701-8907-cc44dba4509f@columbia.edu>
-Date: Mon, 9 Nov 2026 19:27:30 -0500
+	t=1794271705;
+	b=BAWrwvg6SH/EDCz8WvlbQbCTr288IYpsBl548ykgj4V1cpoRnjVkqVQ8bpHVtXISUtfKnt
+	LZJEyrwhwycRk0vvr0+uEm+tzjMEB7ZxQaMF0I6dIuD2T4bymy9aHhBkxNJso9ytgIRcKv
+	24po7GcWEAZOawls257+21yoISDRlRg=
+Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
+	by sea.source.kernel.org (Postfix) with ESMTP id 480474249A;
+	Tue, 10 Nov 2026 00:48:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53451F008A1;
+	Tue, 10 Nov 2026 00:48:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1794271704;
+	bh=3Xo6pRfKtJUGUHdPK++9LnJKDE8puj/5ez9TES0+7xw=;
+	h=From:To:Cc:Subject:Date;
+	b=Ecr7oeSgvsJKzDeMDBpc7QEOPzDe6UTbRKUtx0+XnFGQ4sMMlyG5Nopq9bwUm46VP
+	 cLnLW9iB5UycYapqZA0RFitW0YvfVm4VzBfKhoU/MWtwFHVTRP66MBiD5Bh8cl6T+R
+	 vugK3lQjpmOcfTxaiqonolaKG219lLKHAfC/GeZSsOHEl7xG1j23C4G4KP9TwI1dF2
+	 b7pX8nfG4A3dFRdyWW0ftaayxauJ94zTFXlHxndzj6mYjMb8BlNyKL5yOcB3MB1B2P
+	 rFIzvAGNm0UVDoUiQ5UX6lKvxtRECMn6HWJk6eXH+NUUFjuuFRjGuFwuHZRo4HJOWa
+	 vLH5y4vEcl+Pw==
+From: SJ Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Wang Guangke <gkwang@linx-info.com>,
+	stable@vger.kernel.org,
+	SJ Park <sj@kernel.org>,
+	damon@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH mm-hotfixes-unstable v3] mm/damon/stat: avoid overflow in estimated_memory_bandwidth calculation
+Date: Mon,  9 Nov 2026 16:48:14 -0800
+Message-ID: <20261110004816.100066-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/memory_hotplug: don't offline a hwpoisoned page still
- in the page cache
-To: "David Hildenbrand (Arm)" <david@kernel.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>,
-        Naoya Horiguchi <nao.horiguchi@gmail.com>,
-        Vlastimil Babka <vbabka@kernel.org>, Gregory Price <gourry@gourry.net>,
-        linux-mm@kvack.org, linux-cxl@vger.kernel.org,
-        linux-kernel@vger.kernel.org, tz2294@columbia.edu,
-        stable@vger.kernel.org
-References: <20261101-memhp-hwpoison-pagecache-v1-1-ed8785ca44eb@columbia.edu>
- <1b6a6d13-8a01-414b-9bbe-cd194af1f539@kernel.org>
- <a002901b-715a-4adc-bdcb-7a6fcda67711@columbia.edu>
- <a2ec6814-d3d3-425a-b379-f99b219aa55e@kernel.org>
-Content-Language: en-US
-From: Mani Tofigh <mt4022@columbia.edu>
-In-Reply-To: <a2ec6814-d3d3-425a-b379-f99b219aa55e@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYxMTEwMDAwMSBTYWx0ZWRfX/9CAQx+1eBTh
- 7wX1XLphA6CMnU75A9lshHJ+25zqcI7pOrP3RP80Z6kTdo3EXw0A3iLBPrQOmG8wUzyTcB2QHo8
- r44Sp/8NA/eRziLsF3TFfQLhiv4CvyB8WDDCmFlC5Na8vIpUT8SdnngD6Ww9YBpbta8rU3IAD6j
- rdxjPRsg143hy+ep8ldZZZgh/D17oVr+tEMb7/BA+E+Akqlv6RKfcBsni5eILxJpvCHmMQcYD7a
- 5taRWd2IBE4cw9HF3cGlcq+GxZ5ZfKBqIXPOKe7SmBwWEVtSSPO43JF3h0+EOO9hGLByfo4UMUE
- LZFveT4m4mZjDwah6KMXpqQkxu5G1RF33Fzp8B94TuvYis159bTn7xNQz1/IIkzUSWdHvTKH3R1
- OKkr6rFhvW1UbL3yW5G+KibMF5Um+gWAkRoYKnlySywthgk/obWL0hIcqIfg4ybBXsScjddJi0e
- w3JrOXrpfd5YRg3ZZhQ==
-X-Proofpoint-Spam-Info: AW1haW4tMjYxMTEwMDAwMSBTYWx0ZWRfX/OoBWnA/GgmO
- I9vK53c2gyPma9fR10OXIUI56tlb0SOIoW751hDuBb+VFfX5AGS0xTeZKSWWHKeLxXeb1bhqOqU
- zyvs29TGFkWX/jenHJvAXrL/cFvbzfOUG7NBzeNWOhuBJnYXMlIE
-X-Proofpoint-ORIG-GUID: 1j9kVJpnCdoHFWOdFRHLg7JD11XYAiQ3
-X-Authority-Analysis: v=2.4 cv=fcA4WEQF c=1 sm=1 tr=0 ts=6af264f4 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=l9izRfKDRJJ6Wn/vzKnQSA==:17
- a=IkcTkHD0fZMA:10 a=zJRp6_cAMcgA:10 a=x7bEGLp0ZPQA:10 a=A0y_DWxS2BwA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=Da8U98TiO7q1upZEImrf:22 a=usPcmh10W0ubT8QP8_c3:22
- a=C_JoN6WlG-creS2BCkQA:9 a=QEXdDO2ut3YA:10 a=QYH75iMubAgA:10
- a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-GUID: 1j9kVJpnCdoHFWOdFRHLg7JD11XYAiQ3
-X-Proofpoint-Virus-Version: vendor=nai engine=6900 definitions=11961
- signatures=596817
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 malwarescore=0 suspectscore=0 impostorscore=10 adultscore=0
- priorityscore=1501 phishscore=0 clxscore=1015 bulkscore=10
- lowpriorityscore=10 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2611040001
- definitions=main-2611100001
-X-Stat-Signature: f541f5argcdz3ctu6w3ruw4rwkdts3zy
-X-Rspamd-Server: rspam01
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Spam-Status: No, score=-7.3 required=3.0 tests=BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,USER_AGENT_SANE_1
-	autolearn=no autolearn_force=no version=4.0.1
-X-Rspamd-Queue-Id: A57EE40006
-X-HE-Tag: 1794270453-986480
-X-HE-Meta: U2FsdGVkX18Xnutitkx8ZHCPL1J5C4a5O35Ej4IPi9qndZihnzgCT0u3GGIVikZsMx7PWtz4OADZ6t6t/3tY0eyzs1hx4Dn3FG7kEM1mXUvwzjmlSX9zpbjRVTI4hvdjkzI+vk5oUrsuDjEyfln4pEsRHAHfVJpmhvjDgLu9PKj07SG/D4S1OeSsbqvd4ELP8Bba6lJau5zVjNdSwL5zSh4IqZAgufs9wEnzeAc7QZmtWos8jKjbOJbNLiNeL7CPQpqICDioTShT+19B/ATd/q4x14cPeUFPaw5PdxCHGBwKY83YuFpg2vblEqKhp6MeIQW7tPfd0fEj211WGBY2A6N7de/zfNn59x/RtULz1nbJKaAuoyiFqovlUART+YA12sEYgl/wAGi1ZaWWznlEvH+hADo9WvlD/hwDm3hThljF2hWwHYAymlpUtAKPriKU+8li+oM+7Gzrn/YJ9maB7bwJipA0C5wsACBJvP+1DiUshTehcWnMnD165nV5IOw660cHEv6kRcg6ylRdY0dUvfzPmnAzcajTRPGzqX/mMfZOPYwfYcNk9Ah5nS6pFdMVNmPUNOwrVdIqnKDYAWCvQv9hSenq4JdnXNtI25Q8wD3PcJTFnT+Zxn4yAqPn+aCL1w/oT2hPROXlfcl6cDljRuVPu6twz14QUuqyDNvm0a1JPjHBQNoUevhuqfAaiII599b0Ksafi6xpylhP5YF9/7SIGrXPjBGiTodpYrB+PDNEis4jgJphda2yGG5fL4HVdQWF14i4gd3Gu4skXcYyUvRjTKdpNJNv3jWKbvTnlFq9S0/SQV3Mn9uis/0r+T6Md2ygkOVubj8z6n0uIBb7pKnM5cbrndl63MVlr3/66ar6aICfoxITim7ZvPhSY2iT8JGORfD1ulXtgIjUM4NPLUWqeGndv9Q1CaUvDzddqwTPF+oyzqGVdcgq7WZZPNY0F7ZdxOguQNGH9vN0x9A
- KkT7HylJ
- FngheoZpbNquSERyTaYK+qj6rTEMoYMvCXzvy1gVSJANxVzsWkXUIZ/bON0Pez2RUYk6KMTyVjkAShxFK5tTEXZ8CcBUXY5yl0xyMslvXA1QW9xywmbKl66AJLEZSvVff1eCw5o4hHdY3O+/jjD7QJfp+XamfP2JcpVYML4HkmlGWrK5fFFiwjaydirfJQoWoXHaBh2wFFVv/HAEEcYAo9n29/Hdv7wfWny1wpixMzQrW+Fd0h6M5HmhdTODRwW5DG+iu+GO02Uqh5ni+5+W9sDV0gGKO8RY8VOr2qRhHauq3KtMQt11f2YIRzFWcz4HAtT0RUsfx9USuymR3dfzOMqHdQBBUlz2MtSNiUDYf24PgWCGIK+cm5FcU8SgmW488A7z+Rhu1Zc36V2ehkxJmW9m1T6ADnpRsEomtVI9scClzIG39+ajKL0kdllWqTXIqXhxO5CYC07qGN0739+hAObAR8zxNscNbFqDlWIDvH+qTVawbbIn25m1ExL09i+XYuYSoYFNjtMxgSqW2FyzkDd3iYN1BivMnOkBFqyqkt/ITtCiCP5qFf2Wi2Q==
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: 39F2120006
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: ny9dszxikbi5n93cjddjo5nyk9f7n61b
+X-HE-Tag: 1794271705-7043
+X-HE-Meta: U2FsdGVkX19tDFHYr7GfvILHAP7bly08YrXZC4xQ86v7X2aKU6FnPzhDmQ/URn1oySkLtmMQbGrVegodYuZH/8Tyf9N331XBek5J7bAGNdmrLZe0QS52fkZRii4mLPLPm+MNaaIBMdvjrrMx2Up+djn0uqyarwPKriHjAb3qjeuzIZb/KXaNs2yVGOQ1fBHm1QA0BzoX8RF+OuUnphWQmFMtq+N8qXoPL59s3qjGDcg9Cnm7f6P2LESQefY1fmSj8jQW8o4Ou2rHtAFpUyb6WDcqvnUi14M+2R165PAMfmIxDGeqeox5wPwPFBJtq8fhVrfXwyd1a5N4Dk0UJYKvXtOaMiV9UeMPfj6jsl7n2dTd8Vux8pJ1Bf3prvpPl/ZtlxbsmRVwo0Bs+RRYCMletfE69QQYMmxgEs2iDEA4IauXkpDw0SL2sok2Shjn88yx4RszeoEnFsf3DT1tZGfO4x/g6idKfd82c8F2QHAqUmc/Ylv0q4fe3Ft3pJt7bUsoXEsIq7GcRedsDci2SauxGebqGdOLEpihAALbfp0ZSrZBgPp/HGymYinPrJujrhd1fjCrXIuYdX4QI76u8rbNv+wkzWLRRhPQ/ED85OHwkXUdA9Km0lhDA1w3QnO6BJSsJ3Ku9WP+oXNxoHlYphF+yaJJPbvU1/inVCg0uDGkoZ30LR6tRtq51MP6jm92f6J2bnoeg5U26AwUYIzAxstuWnBNun1WXfidl457QW8Ug4s9Hk3pSd/SHMacebzg5IwUT83N85jFaCRQWLT2NQuW4ODg4LF9FPChJlcTYG10vUpdvpORsUuYPeJgYf3FIWEigpXlDIb+nOJcjRJt+JIMTI7/Vow+kN3DblTaSNPpO4YTicnl70gMeZRMWy0KNKHKH2/KK1YklnRMrREQDmA5+BkdJIrlEs0vXXXGH4E0RtrgMvS4XlEMmc7U+9Q9LT0SYozoKDpPIfIsLMS2NJC
+ CQ++/YlV
+ d+XsMjI3YEvTeQkvN3qQWLiPkGhujkRqFI4QYs3u+grrGYvOIvFNp0+K2ttwnXM31ohItUAx/d1XwbaDIFwX4B0hejbyi1W0Bcl/mSmeFbW39NzFHQ8JqGDgi1J0Cq9INY1OwTgNAK7aD7G5Xfliz3m39fW9tzp3Co+c/8LKmTfpaVFM7eSQcMnE+BskpGjX1Hg756rwevVglPlCOl8WPWkURzFBUeedZrDN5JUcenNPXtS7lzhGmGYTNHXl6FluILKNZoL3Al+zTqL18RvrgXtXsZzV51iiMWtTNrSro70eBe0MxC+IZvYC/eGDXag0vBv5YS2uBhEFlKjKiKA4AXxTUSg==
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -187,19 +95,84 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
+From: Wang Guangke <gkwang@linx-info.com>
 
+estimated_memory_bandwidth is calculated by access_bytes *
+USEC_PER_MSEC * MSEC_PER_SEC (= USEC_PER_SEC) / aggr_interval,
+and users read it via
+/sys/module/damon_stat/parameters/estimated_memory_bandwidth.
 
-On 11/7/26 2:41 PM, David Hildenbrand (Arm) wrote:
-> 
-> So the right fix is to fix that then.
-> 
-> We'd need to sync memory_failure() with memory offlining, correct?
-> 
+On 32-bit systems, access_bytes * USEC_PER_SEC overflows unsigned
+long once access_bytes exceeds about 4294 (U32_MAX / USEC_PER_SEC),
+so users get a wrong value.
 
+Fix it by doing the calculation in 64-bit and splitting the division
+into quotient and remainder.
 
-Yes, I'll rework it that way.
-Also sorry for the early v2 :)
+The issue was reproduced on a 32-bit system (qemu-system-i386): the
+parameter estimated_memory_bandwidth reported 362 instead of the
+expected 1926150; with the fix, the value matches the expectation.
 
+Fixes: fabdd1e911da ("mm/damon/stat: calculate and expose estimated memory bandwidth")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Wang Guangke <gkwang@linx-info.com>
+Reviewed-by: SJ Park <sj@kernel.org>
+Signed-off-by: SJ Park <sj@kernel.org>
+---
+Changes from v2
+- v2: https://lore.kernel.org/20261103034034.7978-1-gkwang@linx-info.com
+- Collect R-b: from SJ.
+- Rebase to the latest mm-new.
+Changes from v1:
+- v1: https://lore.kernel.org/all/20261101180001.167198-1-gkwang@linx-info.com
+- Clarify the issue and its impact on users.
+- Add Cc: stable@.
+- Rename variable bytes_per_interval to bytes_per_us.
+- Use USEC_PER_SEC instead of 'USEC_PER_MSEC * MSEC_PER_SEC'.
 
-Mani
+ mm/damon/stat.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index b05b68f73e10d..e44f5bf3645cc 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -32,8 +32,8 @@ static bool enabled __read_mostly = IS_ENABLED(
+ module_param_cb(enabled, &enabled_param_ops, NULL, 0600);
+ MODULE_PARM_DESC(enabled, "Enable of disable DAMON_STAT");
+ 
+-static unsigned long estimated_memory_bandwidth __read_mostly;
+-module_param(estimated_memory_bandwidth, ulong, 0400);
++static u64 estimated_memory_bandwidth __read_mostly;
++module_param(estimated_memory_bandwidth, ullong, 0400);
+ MODULE_PARM_DESC(estimated_memory_bandwidth,
+ 		"Estimated memory bandwidth usage in bytes per second");
+ 
+@@ -55,15 +55,18 @@ static void damon_stat_set_estimated_memory_bandwidth(struct damon_ctx *c)
+ {
+ 	struct damon_target *t;
+ 	struct damon_region *r;
+-	unsigned long access_bytes = 0;
++	u64 access_bytes = 0;
++	u64 remainder, bytes_per_us;
+ 
+ 	damon_for_each_target(t, c) {
+ 		damon_for_each_region(r, t)
+-			access_bytes += (r->ar.end - r->ar.start) *
++			access_bytes += (u64)(r->ar.end - r->ar.start) *
+ 				r->nr_accesses;
+ 	}
+-	estimated_memory_bandwidth = access_bytes * USEC_PER_MSEC *
+-		MSEC_PER_SEC / c->attrs.aggr_interval;
++	bytes_per_us = div64_u64_rem(access_bytes,
++			c->attrs.aggr_interval, &remainder);
++	estimated_memory_bandwidth = bytes_per_us * USEC_PER_SEC +
++		div64_u64(remainder * USEC_PER_SEC, c->attrs.aggr_interval);
+ }
+ 
+ static int damon_stat_idletime(const struct damon_region *r)
+
+base-commit: 09f140d2cb078edfcd08a40a23ead0bdceea30a4
+-- 
+2.47.3
 
