@@ -1,92 +1,95 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE190606A326
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 00:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4049B60A2604
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 01:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=Ecr7oeSg
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=k0yl27VA
 Received: by kanga.kvack.org (Postfix)
-	id A186D6B00EF; Mon,  9 Nov 2026 19:48:27 -0500 (EST)
+	id 2BF656B05B0; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A2326B05B0; Mon,  9 Nov 2026 19:48:27 -0500 (EST)
+	id 249FA6B05B2; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 891546B05B1; Mon,  9 Nov 2026 19:48:27 -0500 (EST)
+	id 139D06B05B1; Mon,  9 Nov 2026 20:06:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5C9EE6B00EF
-	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 19:48:27 -0500 (EST)
-Received: from smtpin02.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C5B99407CC
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:48:26 +0000 (UTC)
-X-FDA: 85417373412.02.67DA743
+	by kanga.kvack.org (Postfix) with ESMTP id E9D5F6B00EF
+	for <linux-mm@kvack.org>; Mon,  9 Nov 2026 20:06:08 -0500 (EST)
+Received: from smtpin14.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 79CAB40852
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:06:08 +0000 (UTC)
+X-FDA: 85417418016.14.0FA9766
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 39F2120006
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 00:48:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ecr7oeSg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf16.hostedemail.com (Postfix) with ESMTP id E3DE4180009
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 01:06:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k0yl27VA;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794271705;
+	s=arc-20220608; t=1794272767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=3Xo6pRfKtJUGUHdPK++9LnJKDE8puj/5ez9TES0+7xw=;
-	b=2wCPU5UXbI/ZwSHYaIhwtohE3Hpa0uTtGLMGQRqWuCCEs35qDjBk92xsScP+pMXLA8y1Jo
-	jL0iMjQywhx1blVBzZsFh9/63pt4RIuLVUHtatK+8UWe3PNF89zAEj8OBN9mtXfHMUO8Vf
-	BloQvWBom5hhWfUDdIjrlYz720UhNdk=
+	bh=svcdg7pOCEwVyv3Iw1ihpH3E5YTHskd9wIRcOX+vFpg=;
+	b=s/Mw2cUqObf61QBvkFvsqNbcFHkDtLfMFrfAuUgsE7DXmYwYF+TAwkKCo0ILF9U9/CMqzT
+	8OyzK32KtjevEy+mVhjJ5s1AV9MHJrDDzGx4K9/6P7rUonITgnROyWgqYnpYGz3l71wqb1
+	6V4/Qg4LgY2gAFN0LBs0GO13MnlAtz4=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=Ecr7oeSg;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf16.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=k0yl27VA;
+	spf=pass (imf16.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794271705;
-	b=BAWrwvg6SH/EDCz8WvlbQbCTr288IYpsBl548ykgj4V1cpoRnjVkqVQ8bpHVtXISUtfKnt
-	LZJEyrwhwycRk0vvr0+uEm+tzjMEB7ZxQaMF0I6dIuD2T4bymy9aHhBkxNJso9ytgIRcKv
-	24po7GcWEAZOawls257+21yoISDRlRg=
+	t=1794272767;
+	b=A59/dom65Jk2xfxaGlEmn4n7MHO2NSlNG+RJUqjyJwECQRNiZ+iEUEIZKmuZZQUSSdKCez
+	eIoeyC2EDbRpEkQhua+kqIYtNqNMSEHR2Xx2sW5qa6oCG8cDIUIL5pBRtB3/blTIWdjXf3
+	P1o5z+qJDCGIXuNuCSyyrjRSLykX78I=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 480474249A;
-	Tue, 10 Nov 2026 00:48:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E53451F008A1;
-	Tue, 10 Nov 2026 00:48:23 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id D669945C04;
+	Tue, 10 Nov 2026 01:06:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673801F0089F;
+	Tue, 10 Nov 2026 01:06:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794271704;
-	bh=3Xo6pRfKtJUGUHdPK++9LnJKDE8puj/5ez9TES0+7xw=;
+	s=k20260515; t=1794272765;
+	bh=svcdg7pOCEwVyv3Iw1ihpH3E5YTHskd9wIRcOX+vFpg=;
 	h=From:To:Cc:Subject:Date;
-	b=Ecr7oeSgvsJKzDeMDBpc7QEOPzDe6UTbRKUtx0+XnFGQ4sMMlyG5Nopq9bwUm46VP
-	 cLnLW9iB5UycYapqZA0RFitW0YvfVm4VzBfKhoU/MWtwFHVTRP66MBiD5Bh8cl6T+R
-	 vugK3lQjpmOcfTxaiqonolaKG219lLKHAfC/GeZSsOHEl7xG1j23C4G4KP9TwI1dF2
-	 b7pX8nfG4A3dFRdyWW0ftaayxauJ94zTFXlHxndzj6mYjMb8BlNyKL5yOcB3MB1B2P
-	 rFIzvAGNm0UVDoUiQ5UX6lKvxtRECMn6HWJk6eXH+NUUFjuuFRjGuFwuHZRo4HJOWa
-	 vLH5y4vEcl+Pw==
+	b=k0yl27VAI1cV8UUWay7UD6tBKAG9upe0pA3a9yev6uGADzdj2zfshNuizFmmokQYX
+	 /jNPOLFIS+ww7R64X14VP2EEAiL/bJ33Mfvg6jYkvWN7zp/R3bdGRV57XouMuvMxaw
+	 cLVr71mADLHgKb4RNLkA5CMkYrsckKBIZ43RhglzYilRCJIjQ7gzgd4UP16i22ygiY
+	 rQx04fHJs8bMWr7vZcTAHCjiaXrH6k+mSIxuSHGoraJ+eKI5g5c/4waQyAjBo5Ezib
+	 XW7fpvvrno2zJy980Lb/Cb0A4qRNZGP6JmKGQDdwjUBBuHJDkUYgvy4YFUtxOb5jYY
+	 75DCFhP2fkj6g==
 From: SJ Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Wang Guangke <gkwang@linx-info.com>,
-	stable@vger.kernel.org,
-	SJ Park <sj@kernel.org>,
+Cc: SJ Park <sj@kernel.org>,
+	Aveline Noir <jm5905938@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	damon@lists.linux.dev,
+	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH mm-hotfixes-unstable v3] mm/damon/stat: avoid overflow in estimated_memory_bandwidth calculation
-Date: Mon,  9 Nov 2026 16:48:14 -0800
-Message-ID: <20261110004816.100066-1-sj@kernel.org>
+Subject: [PATCH 0/2] mm/damon: cleanup region iterator and damon_reclaim user doc
+Date: Mon,  9 Nov 2026 17:05:55 -0800
+Message-ID: <20261110010558.104905-1-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: d81kgizhepc5qd1qoouutc8sah5mm4h4
+X-Rspamd-Server: rspam01
 X-Rspam-User: 
-X-Rspamd-Server: rspam02
-X-Rspamd-Queue-Id: 39F2120006
-X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-13.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
-X-Stat-Signature: ny9dszxikbi5n93cjddjo5nyk9f7n61b
-X-HE-Tag: 1794271705-7043
-X-HE-Meta: U2FsdGVkX19tDFHYr7GfvILHAP7bly08YrXZC4xQ86v7X2aKU6FnPzhDmQ/URn1oySkLtmMQbGrVegodYuZH/8Tyf9N331XBek5J7bAGNdmrLZe0QS52fkZRii4mLPLPm+MNaaIBMdvjrrMx2Up+djn0uqyarwPKriHjAb3qjeuzIZb/KXaNs2yVGOQ1fBHm1QA0BzoX8RF+OuUnphWQmFMtq+N8qXoPL59s3qjGDcg9Cnm7f6P2LESQefY1fmSj8jQW8o4Ou2rHtAFpUyb6WDcqvnUi14M+2R165PAMfmIxDGeqeox5wPwPFBJtq8fhVrfXwyd1a5N4Dk0UJYKvXtOaMiV9UeMPfj6jsl7n2dTd8Vux8pJ1Bf3prvpPl/ZtlxbsmRVwo0Bs+RRYCMletfE69QQYMmxgEs2iDEA4IauXkpDw0SL2sok2Shjn88yx4RszeoEnFsf3DT1tZGfO4x/g6idKfd82c8F2QHAqUmc/Ylv0q4fe3Ft3pJt7bUsoXEsIq7GcRedsDci2SauxGebqGdOLEpihAALbfp0ZSrZBgPp/HGymYinPrJujrhd1fjCrXIuYdX4QI76u8rbNv+wkzWLRRhPQ/ED85OHwkXUdA9Km0lhDA1w3QnO6BJSsJ3Ku9WP+oXNxoHlYphF+yaJJPbvU1/inVCg0uDGkoZ30LR6tRtq51MP6jm92f6J2bnoeg5U26AwUYIzAxstuWnBNun1WXfidl457QW8Ug4s9Hk3pSd/SHMacebzg5IwUT83N85jFaCRQWLT2NQuW4ODg4LF9FPChJlcTYG10vUpdvpORsUuYPeJgYf3FIWEigpXlDIb+nOJcjRJt+JIMTI7/Vow+kN3DblTaSNPpO4YTicnl70gMeZRMWy0KNKHKH2/KK1YklnRMrREQDmA5+BkdJIrlEs0vXXXGH4E0RtrgMvS4XlEMmc7U+9Q9LT0SYozoKDpPIfIsLMS2NJC
- CQ++/YlV
- d+XsMjI3YEvTeQkvN3qQWLiPkGhujkRqFI4QYs3u+grrGYvOIvFNp0+K2ttwnXM31ohItUAx/d1XwbaDIFwX4B0hejbyi1W0Bcl/mSmeFbW39NzFHQ8JqGDgi1J0Cq9INY1OwTgNAK7aD7G5Xfliz3m39fW9tzp3Co+c/8LKmTfpaVFM7eSQcMnE+BskpGjX1Hg756rwevVglPlCOl8WPWkURzFBUeedZrDN5JUcenNPXtS7lzhGmGYTNHXl6FluILKNZoL3Al+zTqL18RvrgXtXsZzV51iiMWtTNrSro70eBe0MxC+IZvYC/eGDXag0vBv5YS2uBhEFlKjKiKA4AXxTUSg==
+	INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Rspamd-Queue-Id: E3DE4180009
+X-HE-Tag: 1794272766-820511
+X-HE-Meta: U2FsdGVkX1/p4qA9eFmIfzSfmd7TNjPEWtR2VggCgAu76uJqyhMoQ9oy+aFqsv3lGHkQgTbd31AYJr6EZt5J0ufx8u3Qf2dCMlztdnTIGF/DRgUyGJnddyBtPtu8JJBTL6jeO0aFzsTX0bhuu+XVCrMt9Y3VCwiTQmb4+7M3ARre7SLthIMfK3GLNKLnO0/XO9hRUxVKZPPpFVNWQfED0Wy1NBxE0K/Z62XzXcZFgfW899ufVIfUY994vgl3KLtSQrAxxg0jW38ZI2E3S7Uv0+XwJFx0/rA/bKXIUDHetxjU40D32xEID99ZpUG0l5ZdbRlYNErWxA7DtEhJJrv+WTX9f469ghQ5/BSdTIXWLj61DsxmUlyJPzxZMEyLOdVelfd9VBca3SnKqVrMRukHPlZj5tiNTU5Clw5nfcuPNU1tXv90gNH7GBnTuRWCCXbVZnV7KFBSLEuRQgnFzJXs+NRu7tkEgHgzv+H+xX+3lF+BhIR+WqtmfobL/LqFpGxKgZDMhimqnu3jB4tVboP8NJYmxapy0BvQSUlNZHNIceoupn0FA9bLVptqApQldiNQ0KScIUXRgOGHEAclpsDrEuAfnpZ8efQFVETv6PZ1pjLt5VGZZIl7RksHg/OuQUT7EF7JYA1BngiVEifccq05XgkLzY6CmPScEIMwX7GBqF3sXEK93haZAkVUJcMNRhBlSOHWNXOCr9SiuuUQyiExpnKlzTz4BMcXP/Qf+0Yc3Wv3wmPknarE4n10szzTJoKOs5Xq9Dwg2h82/8i5WbOrMdS7uFsPsER1cvbfRy2hX9mTlATNuTiwTjF3o0iP3/swBhGKQKRePFsreWxVWBrLjirxLT7rKC+TQmHcKMkR5Ok/lb2nZQen+iSeUjLJfWeUqRKJrnSOlzmhWKDEEHV9oEL68sPMr4Ah9KCzR24zyh7OQBCoKDEIdAON+nTBMX3e4Qkeh/YZIuZi8AvPsvd
+ ay5lDz6p
+ JYmb373sLh7XtzskaO5DuA25uoLKfIPnKXaZUzUhq384PPUNjqH6sE2C5klKsQg4O8cgQGA5Rfv3mjo1tD1vWib7pnAUT9ZFAIFPZRsW8dqqheIxdh5YJkcxpLO1CxLnZphrhR9TP/OjUQkXusuK4H2TzMzSURceVtAFmFVjejijNURWqf6LtGi9gF82GRqju1I4looT/yZ0pFR/6H6XMxpnut98K5+/njgrJadF5UMFA/PUDJ/OY4sjvcslCWuWUsi9B
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -95,84 +98,28 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-From: Wang Guangke <gkwang@linx-info.com>
+Two simple cleanups.  Use dedicated next/prev list entry accessors in
+damon_{next,prev}_region() for code maintainability (patch 1, Enze Li).
+Fix typos, grammars and improve overall readability of DAMON_RECLAIM
+user document (patch 2, Manuel Ebner).
 
-estimated_memory_bandwidth is calculated by access_bytes *
-USEC_PER_MSEC * MSEC_PER_SEC (= USEC_PER_SEC) / aggr_interval,
-and users read it via
-/sys/module/damon_stat/parameters/estimated_memory_bandwidth.
+Reviewer notes.  This is a batched mm.git merge request-purpose repost
+of DAMON patches that was sent by individual contributors.  For
+changelog, refer to those in each patch.
 
-On 32-bit systems, access_bytes * USEC_PER_SEC overflows unsigned
-long once access_bytes exceeds about 4294 (U32_MAX / USEC_PER_SEC),
-so users get a wrong value.
+Enze Li (1):
+  mm/damon/core: use list_{next,prev}_entry() in
+    damon_{next,prev}_region()
 
-Fix it by doing the calculation in 64-bit and splitting the division
-into quotient and remainder.
+Manuel Ebner (1):
+  Docs/admin-guide/mm/damon/reclaim: improve language
 
-The issue was reproduced on a 32-bit system (qemu-system-i386): the
-parameter estimated_memory_bandwidth reported 362 instead of the
-expected 1926150; with the fix, the value matches the expectation.
+ .../admin-guide/mm/damon/reclaim.rst          | 45 ++++++++++---------
+ include/linux/damon.h                         |  4 +-
+ 2 files changed, 25 insertions(+), 24 deletions(-)
 
-Fixes: fabdd1e911da ("mm/damon/stat: calculate and expose estimated memory bandwidth")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Wang Guangke <gkwang@linx-info.com>
-Reviewed-by: SJ Park <sj@kernel.org>
-Signed-off-by: SJ Park <sj@kernel.org>
----
-Changes from v2
-- v2: https://lore.kernel.org/20261103034034.7978-1-gkwang@linx-info.com
-- Collect R-b: from SJ.
-- Rebase to the latest mm-new.
-Changes from v1:
-- v1: https://lore.kernel.org/all/20261101180001.167198-1-gkwang@linx-info.com
-- Clarify the issue and its impact on users.
-- Add Cc: stable@.
-- Rename variable bytes_per_interval to bytes_per_us.
-- Use USEC_PER_SEC instead of 'USEC_PER_MSEC * MSEC_PER_SEC'.
 
- mm/damon/stat.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/mm/damon/stat.c b/mm/damon/stat.c
-index b05b68f73e10d..e44f5bf3645cc 100644
---- a/mm/damon/stat.c
-+++ b/mm/damon/stat.c
-@@ -32,8 +32,8 @@ static bool enabled __read_mostly = IS_ENABLED(
- module_param_cb(enabled, &enabled_param_ops, NULL, 0600);
- MODULE_PARM_DESC(enabled, "Enable of disable DAMON_STAT");
- 
--static unsigned long estimated_memory_bandwidth __read_mostly;
--module_param(estimated_memory_bandwidth, ulong, 0400);
-+static u64 estimated_memory_bandwidth __read_mostly;
-+module_param(estimated_memory_bandwidth, ullong, 0400);
- MODULE_PARM_DESC(estimated_memory_bandwidth,
- 		"Estimated memory bandwidth usage in bytes per second");
- 
-@@ -55,15 +55,18 @@ static void damon_stat_set_estimated_memory_bandwidth(struct damon_ctx *c)
- {
- 	struct damon_target *t;
- 	struct damon_region *r;
--	unsigned long access_bytes = 0;
-+	u64 access_bytes = 0;
-+	u64 remainder, bytes_per_us;
- 
- 	damon_for_each_target(t, c) {
- 		damon_for_each_region(r, t)
--			access_bytes += (r->ar.end - r->ar.start) *
-+			access_bytes += (u64)(r->ar.end - r->ar.start) *
- 				r->nr_accesses;
- 	}
--	estimated_memory_bandwidth = access_bytes * USEC_PER_MSEC *
--		MSEC_PER_SEC / c->attrs.aggr_interval;
-+	bytes_per_us = div64_u64_rem(access_bytes,
-+			c->attrs.aggr_interval, &remainder);
-+	estimated_memory_bandwidth = bytes_per_us * USEC_PER_SEC +
-+		div64_u64(remainder * USEC_PER_SEC, c->attrs.aggr_interval);
- }
- 
- static int damon_stat_idletime(const struct damon_region *r)
-
-base-commit: 09f140d2cb078edfcd08a40a23ead0bdceea30a4
+base-commit: 7564fa11d57d7be37aaf791ff683099098dd2e39
 -- 
 2.47.3
 
