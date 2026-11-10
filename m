@@ -1,98 +1,104 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C524360A6F4C
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A592606A833
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=UHn0uj+s
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=ZVw6VuAb
 Received: by kanga.kvack.org (Postfix)
-	id BB65E6B05B3; Tue, 10 Nov 2026 11:55:11 -0500 (EST)
+	id 245C46B00EF; Tue, 10 Nov 2026 11:57:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B8DFA6B05B4; Tue, 10 Nov 2026 11:55:11 -0500 (EST)
+	id 1CEF56B05B5; Tue, 10 Nov 2026 11:57:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A7CEB6B05B5; Tue, 10 Nov 2026 11:55:11 -0500 (EST)
+	id 0971B6B05B6; Tue, 10 Nov 2026 11:57:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8D4906B05B3
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:55:11 -0500 (EST)
-Received: from smtpin21.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 34A401C435C
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:55:11 +0000 (UTC)
-X-FDA: 85419809622.21.D218AC6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf31.hostedemail.com (Postfix) with ESMTP id 8D22120002
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:55:09 +0000 (UTC)
-Authentication-Results: imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UHn0uj+s;
-	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id D88376B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:57:54 -0500 (EST)
+Received: from smtpin24.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 749201C43D9
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:57:54 +0000 (UTC)
+X-FDA: 85419816468.24.7B11EB4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B20AA40003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:57:52 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZVw6VuAb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794329709;
+	s=arc-20220608; t=1794329872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fX75Z40RlddIrDkoWsoAk3U6fOiHoJGDsJ5/Aw5b1AE=;
-	b=HqOj0Dfw+7h7tslpMkfbzTt5AHSz40sLewhAWgW5C2sjnMHENIVr/hdI4/M38j9HoB609z
-	YsN+CndtaNmVWjkdMcoAsLI9Njruu2Sy0aiquY02N/WxpfebsFbygMmWGx57W7+1B7GsJf
-	KlO/AuJDn6Cwvdxo0RJSwTZ47252iC8=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794329709;
-	b=eykl3h7k9CDLGo0ft3fBMlENNsSnPNvBga/zw1ou7849oGbVRQACga5mb9of76+mwG2oie
-	FB1RU1jdLpcJzv61/PLjtHj1yLxD3wK7CYhV38PcwDps0aaswLlkq4LR6+uTGz4Vky6+wF
-	xEkASV7a94879JvbS0UC4pjqBf6Qi98=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=yX9hjizhMmy5s5UE+lA9T2wHanfAnmcASyLGAaLx7sc=;
+	b=7VpXjGTFzBc6HEO8V3PWH0+019M11aEPoh56C1Q1UKi5pBRh7ZPcjYcvVhoFlIscR0g1iH
+	NvwSPTvpiRBdrqV5ZAUOFd4QycKih8IDQaGtvcrfKQqmpE6GmURJzN9vaTSNQj/0KpoFRI
+	Nqm1yctNxg1xza7V5QGhZEAYWdMOB78=
 ARC-Authentication-Results: i=1;
-	imf31.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=UHn0uj+s;
-	spf=pass (imf31.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=ZVw6VuAb;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of ljs@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ljs@kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794329872;
+	b=YnN3KEaHebg2IJjZOv9W/rURdlvoLQj+IpsZjvZTR6BrzKcI/2Fw5EjIhJzsreMsn8Khap
+	d3uF5L0NYwE8oQbsFY23Hn//87VLpcEBKTJXaFAJXnNIxHVP6MwEsvYJLFEG3xVTyeGr9k
+	ViOg8ueSXGMVtoOQCmxIDXkyRCEJCbE=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id 75F5247298;
-	Tue, 10 Nov 2026 16:55:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEFF1F008A1;
-	Tue, 10 Nov 2026 16:55:06 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1DBC3631AF;
+	Tue, 10 Nov 2026 16:57:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9FD91F0089F;
+	Tue, 10 Nov 2026 16:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794329708;
-	bh=fX75Z40RlddIrDkoWsoAk3U6fOiHoJGDsJ5/Aw5b1AE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=UHn0uj+sFtGKGaLst/9muipxKqjAxKUpZ+JoQnL+duqe8G78dsi/abK5ag6CP9hJm
-	 OP5wzOYOlDurhfr842HXp3hCAWB8YDNogKdbp/kzN6pDU7wNgpzn5749pSO1boCZlt
-	 6wKejwWgFp+/su6c8JaDG20/CEgau226J8buSe7UDs9TKi6Sya0uZAbn2NkUxGa0fo
-	 Et6Ef7UU2hOmBhoAKI5VBA2QYe5TXWmSOwZBsfBCWaIAh+OEfwpcnPN03mNODB/uDY
-	 ZVJy6DuuviuuIuoQaLsxRS67TEQW/x2dI791szWv2aYwJ9hb0qxQUwxo47LjbLxQwd
-	 9MBtuukDIdtTw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
- <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  Chen Pei <cp0613@linux.alibaba.com>,  George
- Guo <guodongtai@kylinos.cn>,  Kexin Liu <liukexin@kylinos.cn>,  Sourabh
- Jain <sourabhjain@linux.ibm.com>,  kexec@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/3] kho: skip zero-sized lowmem and global bootmem
- areas
-In-Reply-To: <20261104-kho-bootmem-sizing-v2-2-b0d1a834780f@kernel.org> (Mike
-	Rapoport's message of "Wed, 04 Nov 2026 18:50:10 +0200")
-References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
-	<20261104-kho-bootmem-sizing-v2-2-b0d1a834780f@kernel.org>
-Date: Tue, 10 Nov 2026 17:55:04 +0100
-Message-ID: <2vxzy0b0hbiv.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=k20260515; t=1794329871;
+	bh=yX9hjizhMmy5s5UE+lA9T2wHanfAnmcASyLGAaLx7sc=;
+	h=From:Subject:Date:To:Cc;
+	b=ZVw6VuAbWRO78atvQnc91ZRY4BJ+7QWDZCtCUZwD5jEVfpwEFaAffbw83L2cC1yGS
+	 VKSN1m6CUvoWVZ3eLjKlsbIJoqMPQ6hA3qxvPaOpRUeZCya9oOB2ASD0MtrohvW6eg
+	 d0vak2WgAM2ebTXLVS2Ite2zrZqGceW1wc6nvpTiEzA+shFb4sHoeR96Og7o66VSka
+	 wge3RV1uFUttG+sGo0w8Z1MWguZPhgq4JAZOAhHsjMyjUd5cUXbQKSrL/TokKmscE9
+	 jNKyKk8y0aPo1Rne3FvNjaHTiHtFtqpcSHC54OUAsKCw3gTMl16CE+uQ+ntkDzs3Jg
+	 AxQgxChbkUsKQ==
+From: "Lorenzo Stoakes (ARM)" <ljs@kernel.org>
+Subject: [PATCH 0/3] mm: only assert mmap and VMA locks if CONFIG_DEBUG_VM
+ is set
+Date: Tue, 10 Nov 2026 16:57:42 +0000
+Message-Id: <20261110-tame-vma-asserts-v1-0-be293ff499a7@kernel.org>
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam06
-X-Stat-Signature: 9jus9je3g58qobd7gd8hhg7fgi419m6x
-X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
-	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
-	version=4.0.1
-X-Rspamd-Queue-Id: 8D22120002
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MMQqAMAxA0atIZgNtkSJeRRyCppqhVRopgvTuF
+ sc/vP+CchZWmLoXMhdROVML23ewHpR2RtlagzPOW2sN3hQZSyQkbfRWHEZDa/DE7Aw0dmUO8vz
+ Lean1A7kYkSNiAAAA
+X-Change-ID: 20261110-tame-vma-asserts-480acf6aee20
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Suren Baghdasaryan <surenb@google.com>, 
+ "Liam R. Howlett" <liam@infradead.org>, Vlastimil Babka <vbabka@kernel.org>, 
+ Shakeel Butt <shakeel.butt@linux.dev>
+Cc: ljs@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2282; i=ljs@kernel.org;
+ h=from:subject:message-id; bh=l5iwL7Qd+mX6ZPWsXKwr0c6XQr5oPSXtaBAMqHbTYcA=;
+ b=owGbwMvMwCV2fu7ZrsZH9SKMp9WSGLI++/IclC+d4SBazfRe7PastMRCw0B1u/P9wdcOzPrEc
+ rZlW2ttRykLgxgXg6yYIsvzL+L7g0TC5nVe8HeDmcPKBDKEgYtTACby6SPDf4fYQ39UapuEjI6a
+ TmH6MKfq/CnRyokfmu6seix3wchwYjMjw1fV6ddD7SyWvt8r7t7xNGbKU/NYpXz/xVZPn3XfkHk
+ TzAEA
+X-Developer-Key: i=ljs@kernel.org; a=openpgp;
+ fpr=E7F417BF5214569E89D04F46CF9DCD8A81E27F14
 X-Rspam-User: 
-X-HE-Tag: 1794329709-959111
-X-HE-Meta: U2FsdGVkX1+LflujlOxZRH4R1K6F2ZAu0rrUqZ3nwX1x9MPSqnP7eQFZYxh7ovybq3FAtuQV6657lAzJVih8XRonNG8zpQg6lI9KsoYCaRmOQO31Rn/OEs5AS1zwi0ZHpCDJSeiJSyRkBX5edn4bQJKRXNs0bHiD1gFA964wAsaKNa2WvMGYKnSaxcubVcqh0W2AQSOfbTspJbx9IcoRR22+8Bc5K5xnbfBWL1Qgxm6pMH230ztkDZXWCogQPE18PBaGGo8cOhKGYKn8SCvkrR3sXk+TNp6I+s2SRSqPCBmyXTdrdn7DI0EQa+IV0kETJtF5XJ/kRLCIIfUqiwz6sQi/5p+V1XmDMEwjv+j0v+Z+YKK/fgvUJruxuWPap5OtUT66Pk8AJu2sZ/ze53SFBRp+vZHkfgpAAOJCZyTomsk/Vd7l2JTD+q9RUXSCvuMh2+G9dS5QygzNf98V6/RG26RP8cWLhAoqkP7EO7ZOyjlE0BcnjsmUS16NMApY0uHgfpOVG1ssyLA7Y43MEI+0FuamqRzrd+q5GUjW6lOtJmbV5BdYV/rcVa2F5ui0L2oPOc8a6JWK0ZZbIoqIZnAyk6PsN/79y8IEUTlLNUMGoLfc2qrprSKQ/idAk07Cz6W/V3b0zCdhp+oYrhoZwMndKMbY0zvXGLoc9YqeZREH1RN+L7q8w9KOUI5lUqnLcRXIIzsdOvSui0R2o0DDy73ANYRvPuRLutRyvzGLLyOv36yiWCdFUYOvN7RnTVmFCS6Fc2PI53LC0yv+/Y4W6TqrETAwrqR6SHHitl5c/JoHdw8oTG/z4JgmKZ4Hj2Kr0FLb9RgeYt1HtqyyyUmB6FAJSD6iR5ZJZhr/NCc78H8rdrFW/eTZP+aFK+hnT542SidGkkQczwiMzu+kWSkDSDYXvRAORvkPwm+QwIxjRX3yOHH+oXm3kQINHL+Nyxdsbz9Vhy6lGxUB7vMVXIxRxAe
- 5xNhVgJC
- 3yK03FW1mcvSbo8c83NRCiaptAsu1VUQ9PNSHiZGGLm0fqlCHl9RJM/3an0ysSoU0DhbhyS4L7p43S9PigPduQW+qgJ5qpQHK1cvsFUCH1Nj9qQOE+m3YkS1PNX2Ymo12BzZ7N8j4tg+imoYLwN+LXX91wAHsuIuShlx3WEGf6ofOWubQwfqY2UvyLZ/IA7A/k0kGTwqxAQq0yNnt8pyjKdNDvRK9RmLshMJaLPUOe4iERkOy6Xg4XvFYDcKvIrP06B+H
+X-Rspamd-Server: rspam02
+X-Rspamd-Queue-Id: B20AA40003
+X-Spam-Status: No, score=-18.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
+	SPF_PASS,USER_AGENT_GIT autolearn=ham autolearn_force=no version=4.0.1
+X-Stat-Signature: 5ijhnseg1ugkeaagdei8whrkzwgkiynn
+X-HE-Tag: 1794329872-416456
+X-HE-Meta: U2FsdGVkX1+4XTZMzt2G6J/xl2w6hdeCOgvHiKbLggw/g2bjn9N5HO8QywDsVsl9LFj6JcnG9pThn61usq0E83olfBUmYSz8jPRoTKr96DawDKOs6ae824DjuLlLbx7v+Ft5hefs4MNm72ujBPC6yHLA98FGVPgzLFF+nPN0iOm+m1egKKND/RO/19lfZM0XP8qCr7fKnp5z79/VnILLZFiJnC11Tlwj+Hj4V6iEIzSYfkZRvx3qxvMN/jPM2/L6uhl7d36Be/aUYuFX/iWYzXtTeTwlf2+OFFDgUzv/O1EU7RbF4qUgRa2Ty4+/xAmrE7UbaltoDKx5Gu7pkTY0BKTTcAzSb5ch92ecP6Nz99avUd4Q8la2/XUey/mJkDOgDtzxAria/Zz9fmXkAA6bH1Pph+2Q4xtykKtJGLD957ux+XCIdpRPv6XmS9bYLO9uN/UeO3V8+A/N4Ou+WFaBOprGt+rZeM996GGMpGRAJ//BqWQ1xkUtv+AIaFU4i2EJiaNUNGn0HnNluSyaAEXpF3L4b7qnsgV8D8DdukP8WmJtjuu8UnRTTQ8ucVoLvgBA5xya5nNHzo5P4634zvu9DNA9+/cvNbKhJLtD9a5oFLeBytqJjYNSfyAnllzvOuU4FEgRy44HTLK73cckUtse9eDZf9NKNDD26Xo+++4DcNjxf5hSCha8pNW+Yi8xOKTpDiGn5pP8vr2TGxBttgdd7wHIiav3xwb/dKzCMyrIFTZpxt02J1B/tZ0fyQNGVBUjijYmTR5zFRr3rwottc0JXGFSpquFHgKA73bi028DYgz3+QJZI8Fx9ODdEWCFXSPuxkmM2lmdHg+5ASLhVIfusDe+0uXky4dJ67lWRMkC1gKZy+jt/DaVnBb5jqMZf9fGF5pZfNP4KO/CL/6eJLeLTe4tE7iTJj8U+1yQayFjhiBeMPOdMsE7qEdzTL+lCbqwVvZVLdJr52wPm1JngOQ
+ 7wsmSect
+ u/naKvF89W1v08aXWmOQ+8bzMDSo6V6blsyiFr5YR1Y65TmNjC7SxChQmBxLqbsDFwydRdfs5rA2rfJvt5DqFq71vmcLGjZ54zErycvKbSujgVI+BGGz3uCx9aFI0DHSgppUhmbjlrmemhdOkP78Jog8/G3xE3zEAcgfoIa+XCuBoYUMp3AxxiS3dyxQ4u57JK7ioZDVZW9SQwGOnbXFpbb2x5XNSyoNJ83EuKDGmQ00RXTel2nPkPPluHwvkMpTTtzGWNrqbxAwejnJl7+i43NBdfTt89+zlnCjC3AHSesi8ET21ajpUnd13rymgk9vXS7AVGXM6UV1Z1o3BbpVvao3poJzoseg0uu1lFQyIgRvg8b6egWSB5iDx/UVpB1RXUKl4ux176f2uyJIC7yxip3RhgO8I06QFIkH8xnTUgE+llHLh76DJJDPIppHYa0smu1Ru4wWL+tyVErMGtx7Gd/IVS9l5rQt/icCYL/UymLz3yjw=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -101,31 +107,61 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Wed, Nov 04 2026, Mike Rapoport (Microsoft) wrote:
+Currently these asserts are all performed at runtime regardless of whether
+or not the kernel is intended for debugging mm code (i.e. whether or not
+CONFIG_DEBUG_VM is set).
 
-> The lowmem and the global bootmem areas can have zero size, for example
-> when none or all of the memory is below ARCH_LOW_ADDRESS_LIMIT, or when
-> either of those areas is explicitly set to zero with kho_bootmem=.
->
-> For a zero-sized allocation memblock returns an address without reserving
-> anything, and that empty area is recorded in kho_bootmem. If there is no
-> memory below ARCH_LOW_ADDRESS_LIMIT, allocation of the empty lowmem area
-> fails and KHO gets disabled.
->
-> Extract a helper that checks for zero size and allocates memory from
-> memblock, and use it to skip empty areas the same way as empty per-node
-> areas are skipped.
->
-> Fixes: 3dc92c311498 ("kexec: add Kexec HandOver (KHO) generation helpers")
-> Reported-by: Chen Pei <cp0613@linux.alibaba.com>
-> Closes: https://lore.kernel.org/all/20261026131851.9942-1-cp0613@linux.alibaba.com
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+These are explicitly programmatic checks - that is, checking basic
+correctness in mm code which interacts with these locks.
 
-Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+The problem with this is that checks like this are generally asserted in mm
+code using VM_WARN_ON_ONCE() and similar, and thus only checked if
+CONFIG_DEBUG_VM is set.
 
-[...]
+So having some assertions which are unconditional and some not without it
+being clear, creates something of an unintended two-tier system.
 
+Since what is being asserted in these cases is exactly the same kind of
+condition as those asserted in VM_WARN_ON_ONCE() assertions, simply
+predicate them on CONFIG_DEBUG_VM.
+
+Retain assertions for mmap lock asserts if CONFIG_LOCKDEP is specified in
+order that expected lockdep assertions continue to function.
+
+The VMA lock implementation already performs lockdep tracking regardless of
+whether CONFIG_DEBUG_VM is set or not, so no changes are required there.
+
+---
+Note that this series assumes [0] has landed and builds on it. That patch
+is the uncontroversial bit, this series contains the bits that are slightly
+more controversial (but not really :)
+
+[0]: https://lore.kernel.org/linux-mm/20261110-vma-fixup-debug-asserts-v1-1-0b2e0680cd7e@kernel.org/
+
+To: Andrew Morton <akpm@linux-foundation.org>
+To: Suren Baghdasaryan <surenb@google.com>
+To: Liam R. Howlett <liam@infradead.org>
+To: Vlastimil Babka <vbabka@kernel.org>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
+---
+Lorenzo Stoakes (ARM) (3):
+      mm: only assert mmap locks if CONFIG_DEBUG_VM or lockdep is set
+      mm: only assert VMA locks if CONFIG_DEBUG_VM is set
+      mm: convert WARN_ON_ONCE()'s to VM_WARN_ON_ONCE() in VMA lock code
+
+ include/linux/mmap_lock.h | 23 +++++++++++++++++++----
+ mm/mmap_lock.c            |  6 +++---
+ 2 files changed, 22 insertions(+), 7 deletions(-)
+---
+base-commit: b82f7651c53524960fe38a54aa69677dcddff655
+change-id: 20261110-tame-vma-asserts-480acf6aee20
+
+Cheers,
 -- 
-Regards,
-Pratyush Yadav
+Lorenzo Stoakes (ARM) <ljs@kernel.org>
+
 
