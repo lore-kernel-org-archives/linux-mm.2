@@ -1,95 +1,97 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7700606A334
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC282606A320
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 16:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=SkODUEqk
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20260515 header.b=KQ1mHGE8
 Received: by kanga.kvack.org (Postfix)
-	id 031556B00EF; Tue, 10 Nov 2026 11:44:43 -0500 (EST)
+	id E22566B00EF; Tue, 10 Nov 2026 11:52:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 008066B05BA; Tue, 10 Nov 2026 11:44:42 -0500 (EST)
+	id DF9CF6B05B0; Tue, 10 Nov 2026 11:52:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E617B6B05BB; Tue, 10 Nov 2026 11:44:42 -0500 (EST)
+	id D37546B05B1; Tue, 10 Nov 2026 11:52:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C9B706B00EF
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:44:42 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 665FDA8689
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:44:42 +0000 (UTC)
-X-FDA: 85419783204.11.AE6C354
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BC8BA6B00EF
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 11:52:21 -0500 (EST)
+Received: from smtpin12.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE0C2C0965
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:52:20 +0000 (UTC)
+X-FDA: 85419802440.12.88B8C74
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BBD18140005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:44:40 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SkODUEqk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	by imf30.hostedemail.com (Postfix) with ESMTP id 27F8680003
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 16:52:19 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KQ1mHGE8;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
+	t=1794329539;
+	b=PpbFxmBK5V9urjoJQmpM0mCIJiHMbmyIhRetMRG0TmvSprA5A6x5kKRosW3ZtF18Irgb/N
+	0O5FY6Z2XBFS2Anz/k/0xSmFdP7D2CeIEjmk47T48i+R57iiziLp6hrxPBHHnA3k20mdej
+	yTiw8aNMJTObJFODkvdePtV60ugsWRQ=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20260515 header.b=KQ1mHGE8;
+	spf=pass (imf30.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794329080;
+	s=arc-20220608; t=1794329539;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8/qfX2R+fE5TFU8gL1lYbWbnT1+3dpcnTBXBU/PkfAg=;
-	b=12KbsrghUqa7w5oEiopNtlR/VvJ6NWWa/uJQSZJ6DrriehJnNm2JIf/CiVQZ4OS8Qpp+u2
-	FSvi6ZjohjjRZwqZ+/LCPSry6YC47z9rOiDQSAXhdztqnzgdgGy4ILo/QV3ysm7Qr9U97v
-	u3z7b+nWzc7ftTynH63Jo7WoAUbxgWI=
-ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794329080;
-	b=OXWTsJYr19MP9vC2jT4/CdOSW05tTdJRhPhz6sMCnB0eRLWyIerLu480zznl0/d7A6bpIC
-	fN6xI2XSRauSSlBv9gGa1XXI/kiMXBirHMutpKRyTIMpsb8f52O8YCQWhEBCvmhDnTUCb7
-	JgrRs5Z0cgMhcwXT2Dz1Cm3ZJVOHrrU=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20260515 header.b=SkODUEqk;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of yosry@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=yosry@kernel.org
+	bh=RwKYe1FZ8TSRCRSLvx8CKLmwrOieUAZJ4xTeOLFE+8c=;
+	b=zdHkhh8/Qa068YZcv5M92MAfUURdXzZnfrVAntmhIEiEuLHxg/XuWIDt9h+7Q04JufvkuO
+	H8Czau+rWaCxdPsg4NAAUeedAQussQ6iu/p/9q4vjU/bAxgJA0a7gJJPgjZ/BCA4TNIwb+
+	pOh/J7AXXhziXj/2k/Ca/E0XHf1yFmk=
 Received: from smtp.kernel.org (quasi.space.kernel.org [100.103.45.18])
-	by sea.source.kernel.org (Postfix) with ESMTP id CFD8B41FD8;
-	Tue, 10 Nov 2026 16:44:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E2931F0089F;
-	Tue, 10 Nov 2026 16:44:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 536AA408D4;
+	Tue, 10 Nov 2026 16:52:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168DC1F008A1;
+	Tue, 10 Nov 2026 16:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1794329079;
-	bh=8/qfX2R+fE5TFU8gL1lYbWbnT1+3dpcnTBXBU/PkfAg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=SkODUEqkvlyRvjcJwC5tU5BtqWCLFI5gGvgOPIh2pyDmhkOdp/P/T5DOaOp25rRUJ
-	 vO+TIZGOcCm/WHRu9EEVtaII891yWB5GQ0VQmiX+taYdFzXLQtYBUdKSqBqOuktSmh
-	 GvKIdZFVmH5iBQAWt5dQC3Qmmx8Wb345AfHpR/Y+0c+iNKca/ey6QlAnjxQ0QVMMcT
-	 y8Cddppsk6vxAy0cJZL0TZ9AdCD/mNiWC1VHwhPdksGr56t4kprZxbf9TC/0oPZ2cc
-	 HfoScmF1jA13vzAW+bzN5kbXosGepqZt+NnybIWXuZwyXGD9z6qweyIGN22iUGdgfs
-	 S7Kxs08xIWFPg==
-Date: Tue, 10 Nov 2026 16:44:37 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Brian Geffon <bgeffon@google.com>, 
-	Minchan Kim <minchan@kernel.org>, Richard Chang <richardycc@google.com>, 
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v2 08/11] zsmalloc: encode 1-based obj_idx so valid obj
- is never 0
-Message-ID: <avNJ0p1v6FZ-wnQE@google.com>
-References: <20261110054836.1515030-1-senozhatsky@chromium.org>
- <20261110054836.1515030-9-senozhatsky@chromium.org>
+	s=k20260515; t=1794329538;
+	bh=RwKYe1FZ8TSRCRSLvx8CKLmwrOieUAZJ4xTeOLFE+8c=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=KQ1mHGE8yDsko9wqUMNuJqUyMQU4njRf7yvHVhukpRSCc6PfyquBs5m7hxr5sSArv
+	 Tz8v81Y+mNybeIkmWrNBMgDD9oQ10c/9DglWEo/UyBsKq6CBzKGGuoTcSIsqaaE3QR
+	 gVzEFTQlk6hiVis6FVdj/oDJDlYfn5eWHLkvd8qT1JfzgN47Pw+nI4hgwwz12QLrhx
+	 qS9fzK0IwYyzeuJLa1vs0fum+PP8qXejEMm2XhWTfYuirC0gKU49ervzU1QbDPfflC
+	 3b+22qhaH+s1qqA4SNiPRV9k0uOtKXH2ZOvAWqhCJ5Ddns6r6RDq7kEEJwT7QHNe6o
+	 Wo8L2+30e0TbQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>,  Pratyush Yadav
+ <pratyush@kernel.org>,  Alexander Graf <graf@amazon.com>,  Andrew Morton
+ <akpm@linux-foundation.org>,  Chen Pei <cp0613@linux.alibaba.com>,  George
+ Guo <guodongtai@kylinos.cn>,  Kexin Liu <liukexin@kylinos.cn>,  Sourabh
+ Jain <sourabhjain@linux.ibm.com>,  kexec@lists.infradead.org,
+  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
+Subject: Re: [PATCH v2 1/3] kho: walk bootmem areas in address order
+In-Reply-To: <20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org> (Mike
+	Rapoport's message of "Wed, 04 Nov 2026 18:50:09 +0200")
+References: <20261104-kho-bootmem-sizing-v2-0-b0d1a834780f@kernel.org>
+	<20261104-kho-bootmem-sizing-v2-1-b0d1a834780f@kernel.org>
+Date: Tue, 10 Nov 2026 17:52:14 +0100
+Message-ID: <2vxz7bikiq81.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Archived-By: <archiver.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20261110054836.1515030-9-senozhatsky@chromium.org>
-X-Stat-Signature: y35nyjmbazm8wyfetjkshkh9cx1uenhp
+Content-Type: text/plain
+X-Stat-Signature: 6mm74a4bf8o77a6hgrenpu9ym7u13z6e
 X-Rspam-User: 
-X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 27F8680003
+X-Spam-Status: No, score=-12.3 required=3.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BBD18140005
-X-HE-Tag: 1794329080-572384
-X-HE-Meta: U2FsdGVkX1/Q2PjCf9Z3SzUcn7ehh1TkF8jwnVFT2zdcABgO8McmAxCaE0AvcYuddVVcBeE+b7P3Y9qrVPx1EAT/Im4Wp9K3GSJ/Li1abOgoMq4LiYYYx4aIPNcCpp8mIn/Hzm32cGjtJ/2AZ0cdUd3WsntHr8vUJg9HgQA3I0VecR+3KX+lXhlUdvlyoDMiEBugqGZXjMXeTU+fANe1amzMmxktuLVsGDzRU83GKxCL2Ny1Vmd4ozLJj2dmQ7GZuPHIM3HUoULVrr2Dx0iZWLH57pZfRDC9GoLnkkM7QWPoPIfa5nWYUFU3z22t7KlL7TVt2pk+b7g2hYvcnYh0w2xBWHn9RTK96xMJmBGTzvLAOH6iAGS4pfrjIOyo9OZo3bgMcKOFvpSz892CnJF6PaBGS0CZZyhK2L/6OmkXCAu19kphYj97Yx2nIp36AxPlGZj3AAKZSRk7mX0G7gqGhNG7kbUXFMGhUImWCD3/HCML6Aso4Tv8ueKzjqQ5w66J8KH9tjUBBjZjND+/jbhfAi49q5eSLPHg/cVh3u2gEq/bXnAkOrbHwvshGdQ7qA1znyNtJD524CUkyTlwt6XwIWTEa2/6qwjOPS65Sub4n73Vi7RrsnlER+alOOnZnjKjxnAMp+fkV4okmsiXYdKYpG2MOFSrBbB3IayfQp6LAycMBrSnG3zPt8Ch8bg6bGZeYGc3QR7oe0q0xgjx/g+yjrKdQy2ukgZIse/Ro1/oI2/9LNxtfJfWJCY3PbHAsyg7eHzZWOYK+ALPBL2DOtHBmNPfvHCKByhHtR5PKhzvSlxQ6C6Oi7YEA4/wB9wBZ6UNUyDSsTdocQiRWSPz9vnxBVmVdHxi9HNWFbfX9+ZU/QDwKTgQrcUm5ZnmbrIQO71MDs5DbYfkgNUCc7CgaQxy1HDs7HMYKLeBd1dmliKfU3rxsVBtMAQNu8AM/CEh+2HqUHhW2d06p8vDxiMOlbu
- W9m4I+Q4
- LwUg6FsVEDSbSapchIE2XKjOQjeWbrXh/Pa2ReLLPNDfULHLnz8QBkYFzLBmJ1LRdilxPqHMwIkvUsgYT0TUm46hl8i6CktKsEN1MvVIqVfS7pjK4KvwIcn6CiUYnIjuu8qCwQyChn2Jr1bJfAgbCw6gFoE3MbLo7pQgP8f6PdpVLF5tEAGJDE/hK29Pcbbuolk/IEm1PBpOpcJP9nO07BsT7keL76z1jW5Vks3l3uWs88wqsFlFfLB82uWTN4CZsVFPq+xRiLdFpq6txeRt/q93hzSlvL5bnZUx3IPPQnTgTwAtZV5K8wUe5ybv3m/hdrLzS5AKjrqUS2OnQx90ZIzg4NeWAO9vCcLDvVlE9R3ppFZ0=
+	INCLUDES_CR_TRAILER,MAILING_LIST_MULTI,SPF_HELO_PASS,SPF_PASS,
+	USER_AGENT_SANE_1 autolearn=unavailable autolearn_force=no
+	version=4.0.1
+X-HE-Tag: 1794329538-299197
+X-HE-Meta: U2FsdGVkX191gbYHDWTIKeof23zn8dWIaJwDZKYSSNTrr/2x478VhmI7PTS1a2M5A71B01yqxcIc9mCoEQ7DInOUoK5F7UjCLTR66ZDYXfRso6UYBMpylPsOouL89K0dq1ua/1E5RNC23B7klxtslwPluqUvekzsc8jE00FNue+oZzArC9DpRe6aehrYrY2+FhVzyK1ZoDnabHxPr/UOTw7nApAawKw6C40U17VpgGid7Q+9dt4a5Zf36i2mI1ckXRG/2oki5tkmKAw2iAgxjcUgHTtaYKNnHOZNzwTXbKD4Y4U0E80KpymJgYpeAI6LINGwzDyR6V2yobCQBvS+eAsrAbvpamRrB0YtkXTVGfW2DNqTMHrszYO9aAoM7qCwC7bjkDtdpdz1LJ2HPFHUMpvsAQ7faMoWU9QSBBf5IEwjbyl/1Fq5R5c7x5XHxvCI+lhImJvwfvMpFHqqTHuZYtL6O37l6xJz4NT+hlnvOIxNKEndDcG9MxaQMLhx4CSOvarLRycjeq4zrL7HnriLX9mJiJzEr1OpnQ+S/p4kyzVU28LeOgPNRBruwgLBlBRCIFIjoteuxgk+7nlEWpNpModZJsMgSBd01rwKZvKkhV3uwM8xhgTLN2KyhL/4pkT24SJSz1yOPUK51X9pldiuzGATANOdDiDkuHvgxWtcTf17Rzf/EDuuXAzXf7sempPw0YBoLkIrQVF+d98UuXuGJP19gWmxPm6KniaUdP7pLA5zjia9OHnC5nUrVpeVOn07NFQ6mXcAlLP0AWvKJapjybERWoXnqVbS5zYuuWbwpDjMR1zqxwPqCcoQ4FETbh8vIWB8b70jgQD1goHrIlvdgNAC+w0ZlSjsMPJoT7Utx8pH43XNYHBsDOQsP/8WwGRyBTY+42opvYBaYQtqY6lZ/gy4EdLn5ummLKirLUeOjyQiZLJviCETaDiCuFyyox8zKQXAaXM+PQ6R5hwqBau
+ DKNqnqnQ
+ SnhY+T6YPfpwONpnFL9R6hQa/cwDrYmTfW441UFit8xmp3cDIritY2mSzkTsKmqt2EQZ88KUts53+whkmOUiQwX2kT5xrEoIt9ULSfdp8XL2aQ6YJ8n3grS6CukreV0IscP9tVGAj8hFZqZZ1PJsIqgc72Spm+a1uLefKH9x0UY/TGmQMdpXvWfgSQWYRkZW2CxVQT8nJx6jlGD10Dbqxr8Wj+xCiRtvKVo1c/cCAW/pr68o=
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -98,36 +100,32 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue, Nov 10, 2026 at 02:48:13PM +0900, Sergey Senozhatsky wrote:
-> The next patch embeds struct zs_handle into zram and zswap entries,
-> and a handle is considered allocated when its obj is not 0.  But obj
-> can be 0: object 0 of a zspage whose first page is PFN 0 encodes to
-> 0, and some platforms do give PFN 0 to the page allocator.
-> 
-> Store obj_idx + 1 in obj, so that a valid obj is never 0, and adjust
-> ZS_MIN_ALLOC_SIZE so that the largest index still fits.  Unlike a
-> separate tag bit, this doesn't take any bits from obj.  zsmalloc did
-> the same before handles moved to handle_cachep, see
-> commit 67296874eb1c ("staging: zsmalloc: Ensure handle is never 0 on
-> success").
-> 
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-> ---
->  mm/zsmalloc.c | 19 +++++++++++++------
->  1 file changed, 13 insertions(+), 6 deletions(-)
-> 
-> diff --git a/mm/zsmalloc.c b/mm/zsmalloc.c
-> index 3a6a7253fd01..aa436df0cc4d 100644
-> --- a/mm/zsmalloc.c
-> +++ b/mm/zsmalloc.c
-> @@ -61,7 +61,8 @@
->   * Object location (<PFN>, <obj_idx>) is encoded as
->   * a single (unsigned long) handle value.
->   *
-> - * Note that object index <obj_idx> starts from 0.
-> + * Note that object index <obj_idx> starts from 0, and is encoded as
-> + * <obj_idx> + 1 so that a valid encoded obj value is never 0.
+On Wed, Nov 04 2026, Mike Rapoport (Microsoft) wrote:
 
-Well, this may be a stupid question, but why not make obj_idx start at
-1?
+> kexec_add_buffer() users may depend on the order in which memory holes are
+> searched. For instance, arm64 places the kernel bottom-up and then
+> requires the DTB to be above the kernel.
+>
+> kho_walk_bootmem() walks the bootmem areas in the order they were
+> reserved, so if the kernel lands in a small area at the top of the memory
+> there is no room left for the DTB and kexec fails. For example, on an
+> arm64 VM with 2G of RAM and kho_bootmem=8M,64M,64M, the lowmem area is
+> reserved first at the top of the memory, the kernel image takes most of
+> it and kexec fails with
+>
+>   kexec_file(Image): Could not find any suitable kernel location!
+>
+> Sort the bootmem areas by address and walk them in ascending order, or in
+> descending order for top-down searches, like kexec_walk_resources() does.
+>
+> Fixes: 3bdecc3c93f9 ("kexec: add KHO support to kexec file loads")
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
+
+[...]
+
+-- 
+Regards,
+Pratyush Yadav
 
