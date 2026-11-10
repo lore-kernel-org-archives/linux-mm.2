@@ -1,136 +1,146 @@
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C94260A262F
-	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53D860A5BE2
+	for <linux-mm@archiver.kernel.org>; Tue, 10 Nov 2026 12:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.a=rsa-sha256 header.s=google header.b=Zc8Ypb8E
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=tSFQYWyR;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=V1tJ5Byu;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=tSFQYWyR;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=V1tJ5Byu
 Received: by kanga.kvack.org (Postfix)
-	id 395C26B05CA; Tue, 10 Nov 2026 07:56:47 -0500 (EST)
+	id C50776B05CC; Tue, 10 Nov 2026 07:57:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 36D5A6B05CB; Tue, 10 Nov 2026 07:56:47 -0500 (EST)
+	id C1FB96B05CD; Tue, 10 Nov 2026 07:57:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2832C6B05CC; Tue, 10 Nov 2026 07:56:47 -0500 (EST)
+	id B0F4A6B05CE; Tue, 10 Nov 2026 07:57:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ED7996B05CA
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:56:46 -0500 (EST)
-Received: from smtpin11.hostedemail.com (lb01a-stub [10.200.18.249])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 85991A0558
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:56:46 +0000 (UTC)
-X-FDA: 85419208812.11.880AB95
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 979B780005
-	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:56:44 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Zc8Ypb8E;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 888126B05CC
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 07:57:00 -0500 (EST)
+Received: from smtpin18.hostedemail.com (lb01a-stub [10.200.18.249])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2B399A854D
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:57:00 +0000 (UTC)
+X-FDA: 85419209400.18.B7561CC
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 24EFE100002
+	for <linux-mm@kvack.org>; Tue, 10 Nov 2026 12:56:57 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tSFQYWyR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=V1tJ5Byu;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tSFQYWyR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=V1tJ5Byu;
+	spf=pass (imf14.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Seal: i=1; a=rsa-sha256; d=hostedemail.com; s=arc-20220608; cv=none;
-	t=1794315404;
-	b=hIUlacHQlXzWz8/hY32uqpi4vmsyV/T6zKJwktcy/qrs0WLcofR1+KKjiF4hQbtyOtMTUC
-	FlHPiSpj2o5pG7zTe9+gd4TzYBNhW5U/XsS9W4s5MMfF0HNvF0oQT2jr4HwF0z5mIis5+2
-	94XtMw3k204JMBi/sZabG/kdznMWieY=
+	t=1794315418;
+	b=DMxGxp+82/G1S3iWBRfbjL8zIY7qFhantOtToQsIaQVADL/LjIhgv+y9pNYLJ2ncc3xBC/
+	d/3YVoykvkzY30w7P2fq9ZIqF7F5xhwkx+whHi7IMWYe2YgUXr49UkdlxNlSRDFGvVODuU
+	FJfms443DM3QsrqGpQ4j0VIDlaYQvgc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Zc8Ypb8E;
-	spf=pass (imf30.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.221.174 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tSFQYWyR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=V1tJ5Byu;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=tSFQYWyR;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=V1tJ5Byu;
+	spf=pass (imf14.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1794315404;
+	s=arc-20220608; t=1794315418;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K4NCnFvaGrDIOTRc5HujFwwUmTQ2N/bdVeWHbEi7j9U=;
-	b=d7Wm1jxPpvH6FRKot4JwMYKaZ2nk2fqDNdTVrHA520dZSTPSYb5cFe+u6k/5qTg6Wlh7/w
-	NQn7V4QNmr8Sy/mEDn4ltpOTieF5pmnQjeNajGrXWll6NwhisuhSrfhuEj3vf7Rc5IERi9
-	mDFg281zxrpzhLBbWJ8wj48pOy7MSko=
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5eadf48fb2dso762305e0c.1
-        for <linux-mm@kvack.org>; Tue, 10 Nov 2026 04:56:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1794315404; x=1794920204; darn=kvack.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:from:to:cc
-         :subject:date:message-id:reply-to:content-type;
-        bh=K4NCnFvaGrDIOTRc5HujFwwUmTQ2N/bdVeWHbEi7j9U=;
-        b=Zc8Ypb8EK45nibIuiqtlNJIVee20jwqmkaiWO3R59ZhmLsWGV/0xjxCmqpFB7/ImEP
-         A48BKATaH0eMhF1KkA3fDJNRauE4DnYcmxpih0w09Y+0deY786T6Gux/BVpPaZyYSNRh
-         TiRSoIs9n9/qJc2rl/yiFE2jlJ5ewkt9VfaNODQNgizltDRj+lCiwADXThhHMLek5Ksm
-         AaDy0NQCu/bl7ek95Ze4yiLlenEXbUXId/di9Z1S61xviO53pDRBEFFpw7YJVuABCR6I
-         3jIjKfFgQwc4R/Q5IjaenNpZTIEbYCqasaw5tzLT1GOY1CmoryrdtOOqpqzoANvLpTCi
-         N3Zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1794315404; x=1794920204;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-type:content-transfer-encoding:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=K4NCnFvaGrDIOTRc5HujFwwUmTQ2N/bdVeWHbEi7j9U=;
-        b=slF5Pjiy6gl2/JVbjdc9AQDqG5F+PmadMalYJSXJDUKRIzAbnwKG4XYBqF3qc/smHF
-         R60G3b+9+O7/cfflKzqXUPQOuEQuh6jaJB3GXozhRggAbpLxus9Uf+wl9F0NefQUo35K
-         xCKFjVp22LWASNIxcFo6nsLHOv3EKFgU+euw9fRS7SBBdU9HqqxFw+Ej2cR3QbZvRpVx
-         XuBdr5y5azTLrJalzTYUV14Lik6wB4OcAj4GfLbFKj0tIKfSGz5adk3fr2zx7+71T/QR
-         /aVpn2Lpx7QulRoOUbOnWT3jPk8rmGQG7J02a7TGERsMV4y29aCn6tEto7zTNNwQTeK6
-         liqA==
-X-Forwarded-Encrypted: i=1; AL+hErGVEhrHPKNqqNOefejoOgpwvRuMnFTQpetFUXfRQmlBqlttB9jAOohGsWE6J6qLxInVYlHwoTeUBQ==@kvack.org
-X-Gm-Message-State: APuU4Z/tIAQHCzHtBD811EMFpN9xIXVC1AlYtQ2e+GUm4c7j7+1e9yjs
-	J9MXGqdLit9ncpVY/4Tm5fDQcKYtPUVrw3agkNq3wYXMLCZIMuObJgddVv5zMqPp+S0=
-X-Gm-Gg: AYBFou34fQ72MDFAFHCINIuK0TDjs81905IOq5c9eAqp5SE9FPhGwBOUKqwM2oPtFku
-	ilRCP5Qj7Fno3Ye0PJ1V/ydPeFXb1g7yOCK/AYtRShzdlwsmT3R9jdytIU8tcy2VR+Il54SMD5r
-	9NZDY94PPOcIuXaPIV0gl2r7zwXYU7XeiYBdMuZxEpSepwn7Dcnf3ZTbz1BVYo+srdDueoi0mNi
-	13FDSDp1NNVRmR1E+aU0GbGlSIxfySXPhgw8A5w2lqSjNhqkvvmeqsqE6faNb4EPf8qMOReGAwH
-	GnIOPZnoRgRW9UOxa5nY9h3/1O8dCiFS7bgYcQ9qCdiDNEUKKDtVxofNz7Cw/nn5M7XkSzd3jh3
-	DwzUtZlvjT9hayPeQm1P4zDpkmE3GjI0d5RS7h71AqAiqkFNnHOATTdJuVhmOxyw5Xb6ifjnCGu
-	jlfiQhsO42V6ZMmU0o69BkttC9ZeBwSDt4FF79h46zPSvJ5LuJux8aogLxBP5zZjVZ+ZMb5oipl
-	NYqPYGCHvKQUrQBrS8+BnWXNyXs0niq9l+yZDlVb1PkYEkrGT6OgHI6m8+LGXMkgaWxLC4Aa/Z7
-	Jawz5i5WpnvEAzRLxnmkh1orIb1/UUkvH5t3c+0J06OPnoEpowrQY6/GlEwaFzKeBdn5ExIXRDS
-	vcO9lQmI5CGGwpDs7lVcBOCe35uen45tygS3uKM3ZsPVxmtiRQSdM
-X-Received: by 2002:a05:6122:3407:b0:5ec:3e18:a8da with SMTP id 71dfb90a1353d-5ee0d14a2e5mr823009e0c.17.1794315403552;
-        Tue, 10 Nov 2026 04:56:43 -0800 (PST)
-Received: from localhost (64.167.245.35.bc.googleusercontent.com. [35.245.167.64])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5ee0c5b2233sm1547234e0c.10.2026.11.10.04.56.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Nov 2026 04:56:42 -0800 (PST)
+	bh=8ydl7Tmlsy6sB/5DKTtOnjnkkw2YCPYFk9bjL7BuvBI=;
+	b=11fFxHy7vEerp7EqC55OFMbCdAo2QwbG6LWWboU4R8/jhl/l0nnkalN8zSPpXd2AqaxZO4
+	rghkYI9b+kKjZUGtncJRTRNF9Onjh7BqS+DtiAOoQQcmcQElqEh4FlP6eRbgFKC2KCJNAu
+	uqic76K4vbcxHsAudv44AIMT8Y5Mh/w=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 10FD721F68;
+	Tue, 10 Nov 2026 12:56:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794315417; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ydl7Tmlsy6sB/5DKTtOnjnkkw2YCPYFk9bjL7BuvBI=;
+	b=tSFQYWyRwwv+kHYE8YhpOGU4Ki3HgKpsjkr+3bnlJF4cyRVZi+z6dmRnLVspPlNWBQ97T6
+	CjWhI8INKAvD/P6E+SsUzIAB++2Mfn4yUQshTJILp/aD0y+vMUsCGK8B/SvT9SJxrm+lD6
+	OfAmAtDkJMnT/TjtT42JjMJHwAmLTYA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794315417;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ydl7Tmlsy6sB/5DKTtOnjnkkw2YCPYFk9bjL7BuvBI=;
+	b=V1tJ5Byu2B6p1tefK4YDbMgOvwybp9VjU+aSU5c9lZUhOg8WFHNH3DAT2n59zkgMTRqYSW
+	vjk8sfZwK3dN1ECg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1794315417; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ydl7Tmlsy6sB/5DKTtOnjnkkw2YCPYFk9bjL7BuvBI=;
+	b=tSFQYWyRwwv+kHYE8YhpOGU4Ki3HgKpsjkr+3bnlJF4cyRVZi+z6dmRnLVspPlNWBQ97T6
+	CjWhI8INKAvD/P6E+SsUzIAB++2Mfn4yUQshTJILp/aD0y+vMUsCGK8B/SvT9SJxrm+lD6
+	OfAmAtDkJMnT/TjtT42JjMJHwAmLTYA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1794315417;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8ydl7Tmlsy6sB/5DKTtOnjnkkw2YCPYFk9bjL7BuvBI=;
+	b=V1tJ5Byu2B6p1tefK4YDbMgOvwybp9VjU+aSU5c9lZUhOg8WFHNH3DAT2n59zkgMTRqYSW
+	vjk8sfZwK3dN1ECg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E25DE1339F;
+	Tue, 10 Nov 2026 12:56:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 6y7vMJgU82poRAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 10 Nov 2026 12:56:56 +0000
+Received: by quack.suse.cz (Postfix, from userid 1000)
+	id 8D370224E9; Tue, 10 Nov 2026 13:56:56 +0100 (CET)
+Date: Tue, 10 Nov 2026 13:56:56 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Jann Horn <jannh@google.com>, 
+	Chris Mason <mason@kernel.org>, Josef Bacik <josef@toxicpanda.com>, 
+	Christoph Hellwig <hch@lst.de>, linux-block@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-nvme@lists.infradead.org, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-scsi@vger.kernel.org, target-devel@vger.kernel.org, 
+	driver-core@lists.linux.dev, linux-mm@kvack.org, bpf@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, selinux@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-nfs@vger.kernel.org, netdev@vger.kernel.org, fuse-devel@lists.linux.dev, 
+	linux-efi@vger.kernel.org, xen-devel@lists.xenproject.org, ocfs2-devel@lists.linux.dev, 
+	linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-usb@vger.kernel.org, 
+	Amir Goldstein <amir73il@gmail.com>, linux-erofs@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH RFC 07/41] binfmt_misc: use fc_init_pseudo()
+Message-ID: <pgygyhsa4yghzrnta5qgeqehqixklm4tzdjz76ro7j6zy5r5ib@2xq25urai24i>
+References: <20261110-work-loop-pseudo-v1-0-4c998976c6c7@kernel.org>
+ <20261110-work-loop-pseudo-v1-7-4c998976c6c7@kernel.org>
 X-Archived-By: <archiver.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Nov 2026 07:56:41 -0500
-Message-Id: <DMRJQ42LR1D3.1GZKU9EX48KZU@soleen.com>
-Cc: <kvmarm@lists.linux.dev>, <linux-pci@vger.kernel.org>, "Pratyush Yadav"
- <pratyush@kernel.org>, <kexec@lists.infradead.org>, <kvm@vger.kernel.org>,
- <iommu@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
- <skhawaja@google.com>, <sagis@google.com>, <linux-arch@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v4 01/19] liveupdate, kho: Remove __packed from KHO, LUO
- and memfd ABI structures
-From: "Pasha Tatashin" <pasha.tatashin@soleen.com>
-To: "Tarun Sahu" <tarunsahu@google.com>, "Pasha Tatashin"
- <pasha.tatashin@soleen.com>, "Mike Rapoport" <rppt@kernel.org>,
- <robin.murphy@arm.com>, <maz@kernel.org>, <will@kernel.org>, "David
- Matlack" <dmatlack@google.com>, "Alexander Graf" <graf@amazon.com>,
- <seanjc@google.com>, <jgg@nvidia.com>, <loganodell@google.com>,
- <arnd@arndb.de>, <dwmw2@infradead.org>, <baolu.lu@linux.intel.com>, "Bjorn
- Helgaas" <bhelgaas@google.com>, <oupton@kernel.org>, <alex@shazbot.org>,
- <gle.com@google.com>, <pbonzini@redhat.com>, "Andrew Morton"
- <akpm@linux-foundation.org>, <kevin.tian@intel.com>, <joro@8bytes.org>
-X-Mailer: aerc 0.22.0-39-g5d7784875be2
-References: <20261110050202.529473-1-tarunsahu@google.com>
- <20261110050202.529473-2-tarunsahu@google.com>
-In-Reply-To: <20261110050202.529473-2-tarunsahu@google.com>
-X-Stat-Signature: zgpgcy6w83rizyw3fy4sjrkzixcnqzxu
-X-Rspamd-Queue-Id: 979B780005
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20261110-work-loop-pseudo-v1-7-4c998976c6c7@kernel.org>
+X-Spam-Level: 
+X-Spam-Score: -16.80
+X-Stat-Signature: n5fe9daunbdnezr8hizfeuycr3zzm3m9
+X-Rspamd-Queue-Id: 24EFE100002
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
 X-Spam-Status: No, score=-15.8 required=3.0 tests=BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	INCLUDES_CR_TRAILER,INCLUDES_PATCH,MAILING_LIST_MULTI,SPF_HELO_PASS,
-	SPF_PASS autolearn=unavailable autolearn_force=no version=4.0.1
-X-HE-Tag: 1794315404-425888
-X-HE-Meta: U2FsdGVkX1/76qezWrxDfkHDnNPkAZ2ad8Pv/41MRaV0ICHNVOjaTiqdyJmPXWvYBjtSkrsF9L85CBonpd6iltjed8b6ggfxHl1udKzWPD4W1dGznqOI4PRLDgcwyAWBczf4nfw5XYJQDJS0yaFSBIzZazBVoeyhKhZhPsJoVHJ02CFCYUOydDpZQzDviaOhcAULLMeKsLospCQO0FAPbG9zK/4d9pzLwphWwnZ7NB1trgThZ3S4vFbJRepHgRsVpZbmsnj+9XE36jYeiaZna2Anizi7O3gxBgeqJ7vz4X6YrKsYRiF0fco/p+oP+ctt8WCLTV8JHucjENRmWHeUR6sYttbbRzTSj5VxT0vZE984CAdDtznByKc5D/nde5ZjSsxKsiPmHZ7dR4ZntSCp/EaaZHidpqhtRQCUOjO7m14oGla/2IuizCfmo+ZhfeEQ9xpuCBfV/4iwqdZAagoJFSBYwZKHyY/27kR9Nhtld+5emvHOJ24hwLznwLSyY91d0YwteiFDf+Lo1CJyXPEY1JLl9Zse0a3nKVdnY+X7H0NgUaIpSl2NbctOsmrdJ7WIpUXC9ZqmB0CkWLOGB0k6cnU+QNgJ44e0072oz5Kqsdwr4MZPma6+hgR4Nf+OR8RxvOzvbemuJZWKG6JV3v1dA4hR0ummSzzMVnXrj8+KTXH6B36PlVBwF4o7MdhvdLyx8mhHgTkmksyNcVCbhL6ishjCGa2x0uxVryUPlTlhWRhNMSiWWhEyxryT2ISfFNcITw9fZw1sXhqeojssfxg4ixeCa4N62PWnaw7grbV1RogKxsIl7oDfi6CJpOvnjKrxNhjo0Q6TzgCEUB6SRMd+n3op+mt2CvfER/B4BPw2XOqkw1uVBYQOG61So03uDRDZCnvgrHV+Z25yKHl1kjVTctoH6YJ2hhYgvk860EzJIKEnP0EiIupViGruJP+qiGOmBr+CHVzaR+jqyBKOFiH
- rrX8rxms
- 5jeQYvIZdzoMTMPW1ngxZe6Rc7EW+PcH8hpXlnqt9WFtpfqQyY00bKwduWbzJXPjK0qxnkrXLkRhOZNplJFJfv+hGJebVx0eMKhYO7KnEQjjVQDJ15WI2jmrQhcYnvzRtU29BNXSe4DUi9C5syYRzxxyx09MOQOICAfUooLYenHs6+CGHGAg1jxbO8qdYBp/DTiuHFWdzG4OSk0Yaa2bHFfToRodI+9U08yLHCQQ/1BY04qEy82OWVtuiXxNll8InTVjIwsaqEK91aYO7X6/e5i9bNH7L6Gj33GRTuoVwb6LR6WJ6GruX7CGEBKir868xdz0BsEJNd1kGuLN1hxaKt2XkrjaEzuRQL/luMRHM2LtToRVwT4g5CExfx0NwLmlrWzxOtzq25C5B1ofvec/csytiW8ViC3O1jr/iYbcY5W9pJxk=
+	SPF_PASS autolearn=ham autolearn_force=no version=4.0.1
+X-HE-Tag: 1794315417-930977
+X-HE-Meta: U2FsdGVkX1/pqZd4IOsf5fWHEA5HhSHGm7BJdpENn5x1/mKkIyb7LG309MY1Vdu44AG3jZCp3bNh80HmJs8pFWFb002qhll9HqJF1eJ6RZxD+YSdU50Zq5UqCxIkE7VDJkoA5wT9R5YM2eUje2YL65x3k0s9mhJPCGw0b+LmSG0ilgBeo08vZok3tOV+L216SrlVDw7TRCiN+b1q5+cBDnSQXSII2QPoRjp8ZVmp4yR3mthMc7MaCRiMi9qTpVrIcE/jEP2wfqdC7SIMdSyLzkPfxpBbZi++sZm/I8kyK0Q75MAm4ALiO6qv6TA3fGqWxRr9LBp/Inkf9miNnE5k/RR2H8+Bt2tHWDs07TQ4Byqm2ocjUym02YPMyVbnOmCUL4Vj0MttypL86xArVlIoIadxeyJ1HzRUqZyC50vSaRwUfOgCX+AVaEuE+Ooh90xiuozwBL5yrSefmH5UkWd8jH3+dXYEKRPqfjHjL7AD8b8afqx/ZflcmeKhu37RrmeakN3YoiNBvZtNyuup4M+PGDUDRcg4ovAVXLm8TrbWQ+whrNWxn2Ypkl94pzmkqQ5qbaPUrZxmRf7eA7HuqePf2haeHoVyFoKbeP/+/+Foo5LfulpK5AH0Ph04GvNcctPJAgXyC9FsWdjoeIS08dsWCKdB/xL1qLNY0kuYs5qht2DGr8KNjIu3Y5/aec6spZA/D5AbHY8i0XAfguzq3hXkbfWeX5k/9/ADKHDSdHYl22QvmIN4Rs3ZNvN3tSjkuqJWnHYpWy/xGILuLZlQssvmb7SrvjS9rU+546qqGZMwop9vQRlopm4S89Bcx4rQJ4ekIwizrJPigpwmKkYdBfZYtYSYiYbHKgE/ZWDtj+kXMoNu8KX+D86OnaVLN/nQjLHlDhrRhpcN5WbhVPWIop1rwDTMUvET+4ueQrTH+KsARJOoIM32YHJq3DZRoNo4zd1MOdIUosTRo9p/KuIfYyi
+ r8S6uQEP
+ 1NLC/HW/eJnWUIB6b27iCLuXB2NNekiAFvJbMo+fSASc+tgpg8CtEnfthkrqXvT1TXN0o3iiPaYsL6mtar5jc5DsBQA2B3wWndTjSR4nAI5T2ezOoUw+MGS+SnRP3FlSBkVmebuuTJN2EFCO6CmwibzxKIw4uO1JR1ZAYbcYA/qtO66csEVwjFekoVyMIwfyiN0gRO8OPZNbZ2jjUH0Dv5hZmPoPKoBKdSxPMsFSWLGNo5aQUtE6QuU+aUlC0nXoCmcrtT0rVtzp1i7dOXHVCsuMuctRnzinUQWr4q+toaB06/o3acfpKTNVfgECzsNAo1Ar0PMSrKCSoNOZ6CLZytMKDgzYUk4KRlqhUA9f/NEGkDPRMFb5DIXgaDlFONUDJkM6N1x3m3kUbk2iH1quZC97ugv6650/faQaS
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,226 +149,57 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-26) on
 	aws-us-west-2-korg-listserv-alma10-1
 
-On Tue Nov 10, 2026 at 12:01 AM EST, Tarun Sahu wrote:
-> All structures in include/linux/kho/abi/block.h (struct
-> kho_block_header_ser), include/linux/kho/abi/luo.h (struct luo_ser,
-> struct luo_file_ser, struct luo_file_set_ser, struct luo_session_ser,
-> struct luo_flb_header_ser, struct luo_flb_ser) and
-> include/linux/kho/abi/memfd.h (struct memfd_luo_folio_ser, struct
-> memfd_luo_ser) have naturally aligned fields on 64-bit architectures,
-> with no padding holes between fields or tail padding. Assert both the
-> structure size and 8-byte alignment under CONFIG_64BIT at compile time.
-> Any future unaligned field addition should come with reserved field to
-> keep the structure aligned.
+On Tue 10-11-26 10:14:23, Christian Brauner wrote:
+> Initialize binfmt_misc as a pseudo filesystem instead of raising
+> SB_I_NOEXEC and SB_I_NODEV by hand. This adds SB_I_PSEUDO.
+> 
+> Signed-off-by: Christian Brauner (Amutable) <brauner@kernel.org>
 
-Just state:
+OK. Feel free to add:
 
-Remove __packed, as it may break natural alignment. Instead, ensure that=20
-all padding holes are explicitly covered by reserved or similar fields,=20
-as is already done for KHO/LUO serialized data, so no functional changes=20
-are intended by this change.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
->
-> Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+								Honza
+
 > ---
->  include/linux/kho/abi/block.h | 10 +++++++--
->  include/linux/kho/abi/luo.h   | 38 +++++++++++++++++++++++++++++------
->  include/linux/kho/abi/memfd.h | 16 ++++++++++++---
->  3 files changed, 53 insertions(+), 11 deletions(-)
->
-> diff --git a/include/linux/kho/abi/block.h b/include/linux/kho/abi/block.=
-h
-> index d06d64b963be..36bdbaf9b3b8 100644
-> --- a/include/linux/kho/abi/block.h
-> +++ b/include/linux/kho/abi/block.h
-> @@ -12,7 +12,7 @@
->   * pre-update kernel to a post-update kernel.
->   *
->   * This interface is a contract. Any modification to the structure field=
-s,
-> - * compatible strings, or the layout of the `__packed` serialization
-> + * compatible strings, or the layout of the serialization
->   * structures defined here constitutes a breaking change. Such changes r=
-equire
->   * incrementing the version number in the `KHO_FDT_COMPATIBLE` string to
->   * prevent a new kernel from misinterpreting data from an old kernel.
-> @@ -26,6 +26,8 @@
->  #define _LINUX_KHO_ABI_BLOCK_H
-> =20
->  #include <asm/page.h>
-> +#include <linux/build_bug.h>
-> +#include <linux/kconfig.h>
->  #include <linux/types.h>
-> =20
->  /**
-> @@ -49,6 +51,10 @@
->  struct kho_block_header_ser {
->  	u64 next;
->  	u64 count;
-> -} __packed;
-> +};
-> +
-> +static_assert(sizeof(struct kho_block_header_ser) =3D=3D 16);
-> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-> +	      __alignof__(struct kho_block_header_ser) =3D=3D 8);
-> =20
->  #endif /* _LINUX_KHO_ABI_BLOCK_H */
-> diff --git a/include/linux/kho/abi/luo.h b/include/linux/kho/abi/luo.h
-> index 288076de6d4a..721949374fa1 100644
-> --- a/include/linux/kho/abi/luo.h
-> +++ b/include/linux/kho/abi/luo.h
-> @@ -58,6 +58,8 @@
->  #define _LINUX_KHO_ABI_LUO_H
-> =20
->  #include <linux/align.h>
-> +#include <linux/build_bug.h>
-> +#include <linux/kconfig.h>
->  #include <linux/kho/abi/block.h>
->  #include <uapi/linux/liveupdate.h>
-> =20
-> @@ -82,7 +84,11 @@ struct luo_ser {
->  	u64 liveupdate_num;
->  	u64 sessions_pa;
->  	u64 flbs_pa;
-> -} __packed;
-> +};
-> +
-> +static_assert(sizeof(struct luo_ser) =3D=3D 32);
-> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-> +	      __alignof__(struct luo_ser) =3D=3D 8);
-
-Please remove the two assertions above throughout this patch, as they=20
-are replaced later in the series. In general, introducing add -> remove=20
--> add churn across a patch series is discouraged, as it indicates a=20
-lack of planning.
-
-> =20
->  #define LIVEUPDATE_HNDL_COMPAT_LENGTH	48
-> =20
-> @@ -98,7 +104,11 @@ struct luo_file_ser {
->  	char compatible[LIVEUPDATE_HNDL_COMPAT_LENGTH];
->  	u64 data;
->  	u64 token;
-> -} __packed;
-> +};
-> +
-> +static_assert(sizeof(struct luo_file_ser) =3D=3D 64);
-> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-> +	      __alignof__(struct luo_file_ser) =3D=3D 8);
-> =20
->  /**
->   * struct luo_file_set_ser - Represents the serialized metadata for file=
- set
-> @@ -113,7 +123,11 @@ struct luo_file_ser {
->  struct luo_file_set_ser {
->  	u64 files;
->  	u64 count;
-> -} __packed;
-> +};
-> +
-> +static_assert(sizeof(struct luo_file_set_ser) =3D=3D 16);
-> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-> +	      __alignof__(struct luo_file_set_ser) =3D=3D 8);
-> =20
->  /**
->   * struct luo_session_ser - Represents the serialized metadata for a LUO=
- session.
-> @@ -131,7 +145,11 @@ struct luo_file_set_ser {
->  struct luo_session_ser {
->  	char name[LIVEUPDATE_SESSION_NAME_LENGTH];
->  	struct luo_file_set_ser file_set_ser;
-> -} __packed;
-> +};
-> +
-> +static_assert(sizeof(struct luo_session_ser) =3D=3D 80);
-> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-> +	      __alignof__(struct luo_session_ser) =3D=3D 8);
-> =20
->  /* The max size is set so it can be reliably used during in serializatio=
-n */
->  #define LIVEUPDATE_FLB_COMPAT_LENGTH	48
-> @@ -152,7 +170,11 @@ struct luo_session_ser {
->  struct luo_flb_header_ser {
->  	u64 pgcnt;
->  	u64 count;
-> -} __packed;
-> +};
-> +
-> +static_assert(sizeof(struct luo_flb_header_ser) =3D=3D 16);
-> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-> +	      __alignof__(struct luo_flb_header_ser) =3D=3D 8);
-> =20
->  /**
->   * struct luo_flb_ser - Represents the serialized state of a single FLB =
-object.
-> @@ -175,7 +197,11 @@ struct luo_flb_ser {
->  	char name[LIVEUPDATE_FLB_COMPAT_LENGTH];
->  	u64 data;
->  	u64 count;
-> -} __packed;
-> +};
-> +
-> +static_assert(sizeof(struct luo_flb_ser) =3D=3D 64);
-> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-> +	      __alignof__(struct luo_flb_ser) =3D=3D 8);
-> =20
->  /* Kernel Live Update Test ABI */
->  #ifdef CONFIG_LIVEUPDATE_TEST
-> diff --git a/include/linux/kho/abi/memfd.h b/include/linux/kho/abi/memfd.=
-h
-> index 08b10fea2afc..376a724a1d8c 100644
-> --- a/include/linux/kho/abi/memfd.h
-> +++ b/include/linux/kho/abi/memfd.h
-> @@ -11,6 +11,8 @@
->  #ifndef _LINUX_KHO_ABI_MEMFD_H
->  #define _LINUX_KHO_ABI_MEMFD_H
-> =20
-> +#include <linux/build_bug.h>
-> +#include <linux/kconfig.h>
->  #include <linux/types.h>
->  #include <linux/kho/abi/kexec_handover.h>
-> =20
-> @@ -20,7 +22,7 @@
->   * memfd uses the ABI defined below for preserving its state across a ke=
-xec
->   * reboot using the LUO.
->   *
-> - * The state is serialized into a packed structure `struct memfd_luo_ser=
-`
-> + * The state is serialized into `struct memfd_luo_ser`
->   * which is handed over to the next kernel via the KHO mechanism.
->   *
->   * This interface is a contract. Any modification to the structure layou=
-t
-> @@ -54,7 +56,11 @@ struct memfd_luo_folio_ser {
->  	u64 pfn:52;
->  	u64 flags:12;
->  	u64 index;
-> -} __packed;
-> +};
-> +
-> +static_assert(sizeof(struct memfd_luo_folio_ser) =3D=3D 16);
-> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-> +	      __alignof__(struct memfd_luo_folio_ser) =3D=3D 8);
-> =20
->  /*
->   * The set of seals this version supports preserving. If support for any=
- new
-> @@ -85,7 +91,11 @@ struct memfd_luo_ser {
->  	u32 flags;
->  	u64 nr_folios;
->  	struct kho_vmalloc folios;
-> -} __packed;
-> +};
-> +
-> +static_assert(sizeof(struct memfd_luo_ser) =3D=3D 48);
-> +static_assert(!IS_ENABLED(CONFIG_64BIT) ||
-> +	      __alignof__(struct memfd_luo_ser) =3D=3D 8);
-> =20
->  /* The compatibility string for memfd file handler */
->  #define MEMFD_LUO_FH_COMPATIBLE	"memfd-v2"
-
---=20
-Pasha
-
+>  fs/binfmt_misc.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+> index d945b4f6e158..7dc233becd98 100644
+> --- a/fs/binfmt_misc.c
+> +++ b/fs/binfmt_misc.c
+> @@ -22,6 +22,7 @@
+>  #include <linux/file.h>
+>  #include <linux/fs.h>
+>  #include <linux/fs_context.h>
+> +#include <linux/pseudo_fs.h>
+>  #include <linux/init.h>
+>  #include <linux/kstrtox.h>
+>  #include <linux/limits.h>
+> @@ -1575,8 +1576,7 @@ static int bm_fill_super(struct super_block *sb, struct fs_context *fc)
+>  	if (user_ns != current_user_ns())
+>  		return -EINVAL;
+>  
+> -	/* Never exec off this instance and never let anything stack on it. */
+> -	sb->s_iflags |= SB_I_NOEXEC | SB_I_NODEV;
+> +	/* Never let anything stack on this instance. */
+>  	sb->s_stack_depth = FILESYSTEM_MAX_STACK_DEPTH;
+>  
+>  	/*
+> @@ -1660,6 +1660,7 @@ static void bm_kill_sb(struct super_block *sb)
+>  
+>  static int bm_init_fs_context(struct fs_context *fc)
+>  {
+> +	fc_init_pseudo(fc);
+>  	fc->ops = &bm_context_ops;
+>  	return 0;
+>  }
+> 
+> -- 
+> 2.53.0
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
